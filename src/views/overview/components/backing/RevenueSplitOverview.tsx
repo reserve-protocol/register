@@ -43,7 +43,7 @@ const RevenueBox = ({ type, distribution, address, ...props }: IRevenueBox) => {
       sx={{
         flexWrap: 'wrap',
         border: '1px solid',
-        borderColor: 'darkBorder',
+        borderColor: 'border',
         flexGrow: 1,
         borderRadius: borderRadius.boxes,
       }}

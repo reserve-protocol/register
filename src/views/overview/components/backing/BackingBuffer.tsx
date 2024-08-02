@@ -96,7 +96,7 @@ const BuckingBuffer = ({ ...props }: BoxProps) => {
         </Box>
       </Box>
 
-      <Box my={4}>
+      <Box m={4}>
         {backing ? (
           <ProgressBar
             percentage={percentage}
