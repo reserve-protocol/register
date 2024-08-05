@@ -186,7 +186,7 @@ export const truncateDecimals = (number: number, digits = 3) => {
   return truncatedNum / multiplier
 }
 
-export const stringToColor = (str: string) => {
+export const stringToColor = (str: string, opacity = 1) => {
   let hash = 0
   for (let i = 0; i < str.length; i++) {
     hash = str.charCodeAt(i) + ((hash << 5) - hash)
@@ -196,7 +196,7 @@ export const stringToColor = (str: string) => {
     const value = (hash >> (i * 8)) & 0xff
     color += `00${value.toString(16)}`.substr(-2)
   }
-  return color
+  return `${color}${Math.round(opacity * 255).toString(16)}`
 }
 
 export const parsePercent = (n: string): bigint => {
