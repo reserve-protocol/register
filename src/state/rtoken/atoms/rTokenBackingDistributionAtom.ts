@@ -16,6 +16,18 @@ import { Address, formatEther, hexToString } from 'viem'
 import { readContracts } from 'wagmi/actions'
 import rTokenAtom from './rTokenAtom'
 
+type BackingDistribution = {
+  backing: number
+  staked: number
+  collateralDistribution: {
+    [x: Address]: { share: number; targetAmts: string; targetUnit: string }
+  }
+  backingBuffer: {
+    required: number
+    actual: number
+  }
+}
+
 const rTokenBackingDistributionAtom = atomWithLoadable(async (get) => {
   const rToken = get(rTokenAtom)
   const chainId = get(chainIdAtom)
@@ -34,6 +46,7 @@ const rTokenBackingDistributionAtom = atomWithLoadable(async (get) => {
     [erc20s, uoaShares, targets],
     [backing, overCollateralization],
     [_, __, targetAmts],
+    [requiredBackingBuffer, actualBackingBuffer],
   ] = await readContracts({
     contracts: [
       {
@@ -49,6 +62,11 @@ const rTokenBackingDistributionAtom = atomWithLoadable(async (get) => {
       {
         ...callParams,
         functionName: 'primeBasket',
+        chainId,
+      },
+      {
+        ...callParams,
+        functionName: 'backingBuffer',
         chainId,
       },
     ],
@@ -67,11 +85,13 @@ const rTokenBackingDistributionAtom = atomWithLoadable(async (get) => {
           targetUnit: hexToString(targets[index], { size: 32 }),
         },
       }),
-      {} as {
-        [x: Address]: { share: number; targetAmts: string; targetUnit: string }
-      }
+      {} as BackingDistribution['collateralDistribution']
     ),
-  }
+    backingBuffer: {
+      required: +formatEther(requiredBackingBuffer),
+      actual: +formatEther(actualBackingBuffer),
+    },
+  } as BackingDistribution
 })
 
 export interface CollateralDetail extends Collateral {

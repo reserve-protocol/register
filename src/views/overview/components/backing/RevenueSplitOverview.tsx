@@ -43,7 +43,7 @@ const RevenueBox = ({ type, distribution, address, ...props }: IRevenueBox) => {
       sx={{
         flexWrap: 'wrap',
         border: '1px solid',
-        borderColor: 'darkBorder',
+        borderColor: 'border',
         flexGrow: 1,
         borderRadius: borderRadius.boxes,
       }}
@@ -101,17 +101,17 @@ const RevenueSplitOverview = (props: BoxProps) => {
   const data = useAtomValue(splitDataAtom)
 
   return (
-    <Box p="4" pb="0" {...props}>
+    <Box px={4} pb={3} {...props}>
       <Box variant="layout.verticalAlign" mb="4" sx={{ fontSize: 4 }}>
         <RevenueSplitIcon />
         <Text ml="2" variant="bold">
-          <Trans>Revenue Distribution</Trans>
+          <Trans>Revenue distribution</Trans>
         </Text>
       </Box>
       {!data && <Skeleton height={64} />}
-      <Box variant="layout.verticalAlign" sx={{ flexWrap: 'wrap' }}>
+      <Box variant="layout.verticalAlign" sx={{ flexWrap: 'wrap', gap: 4 }}>
         {data?.map((item, index) => (
-          <RevenueBox key={index} mr="4" mb="3" {...item} />
+          <RevenueBox key={index} {...item} />
         ))}
       </Box>
     </Box>

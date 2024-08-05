@@ -55,7 +55,7 @@ const TokenMandate = () => {
     >
       <MandateIcon />
       <Text sx={{ fontSize: 3 }} variant="strong" mb={2} mt={3}>
-        <Trans>Governor Mandate</Trans>
+        <Trans>Governor mandate</Trans>
       </Text>
       <Text as="p" variant="legend">
         {rToken?.mandate ? rToken.mandate : <Skeleton count={6} />}

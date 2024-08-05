@@ -127,6 +127,8 @@ export const colors = {
   divaBorder: 'rgba(180, 34, 252, 0.16)',
   divaBackground: 'rgba(167, 30, 254, 0.12)',
   rebalancing: '#FF8A00',
+  progressBar: 'white',
+  progressBarBackground: 'black',
   modes: {
     dark: {
       accentInverted: '#fff',
@@ -169,6 +171,8 @@ export const colors = {
       divaBorder: 'rgba(180, 34, 252, 0.16)',
       divaBackground: 'rgba(167, 30, 254, 0.12)',
       rebalancing: '#FF8A00',
+      progressBar: 'black',
+      progressBarBackground: 'white',
     },
   },
 }
