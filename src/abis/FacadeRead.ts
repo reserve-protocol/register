@@ -218,4 +218,40 @@ export default [
     stateMutability: 'nonpayable',
     type: 'function',
   },
+  { inputs: [], name: 'UIntOutOfBounds', type: 'error' },
+  {
+    inputs: [
+      {
+        internalType: 'contract IRToken[]',
+        name: 'rTokens',
+        type: 'address[]',
+      },
+    ],
+    name: 'revenues',
+    outputs: [
+      {
+        components: [
+          { internalType: 'contract IRToken', name: 'rToken', type: 'address' },
+          {
+            internalType: 'contract IRevenueTrader',
+            name: 'trader',
+            type: 'address',
+          },
+          { internalType: 'contract IERC20', name: 'sell', type: 'address' },
+          { internalType: 'contract IERC20', name: 'buy', type: 'address' },
+          { internalType: 'uint8', name: 'sellDecimals', type: 'uint8' },
+          { internalType: 'bool', name: 'settleable', type: 'bool' },
+          { internalType: 'string', name: 'symbol', type: 'string' },
+          { internalType: 'uint192', name: 'volume', type: 'uint192' },
+          { internalType: 'uint256', name: 'balance', type: 'uint256' },
+          { internalType: 'uint256', name: 'minTradeAmount', type: 'uint256' },
+        ],
+        internalType: 'struct RevenueFacet.Revenue[]',
+        name: '_revenues',
+        type: 'tuple[]',
+      },
+    ],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
 ] as const

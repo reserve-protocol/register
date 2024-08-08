@@ -18,6 +18,7 @@ import Overview from 'views/overview'
 import PortfolioWrapper from 'views/portfolio'
 import Staking from 'views/staking'
 import Home from 'views/home'
+import AvailableRevenue from 'views/explorer/components/revenue'
 
 // Preloadable components
 const Auctions = lazyWithPreload(() => import('./views/auctions'))
@@ -96,6 +97,7 @@ const AppRoutes = () => (
         path={ROUTES.EXPLORER_GOVERNANCE}
         element={<ExploreGovernance />}
       />
+      <Route path={ROUTES.EXPLORER_REVENUE} element={<AvailableRevenue />} />
     </Route>
     <Route path="*" element={<Box>Not found</Box>} />
   </Routes>
