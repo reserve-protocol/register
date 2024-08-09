@@ -71,7 +71,7 @@ const ListedTokensTable = (props: Partial<TableProps>) => {
         },
       }),
     ],
-    []
+  []
   )
 
   const handleClick = (data: any) => {

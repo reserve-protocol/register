@@ -218,7 +218,6 @@ export default [
     stateMutability: 'nonpayable',
     type: 'function',
   },
-  { inputs: [], name: 'UIntOutOfBounds', type: 'error' },
   {
     inputs: [
       {

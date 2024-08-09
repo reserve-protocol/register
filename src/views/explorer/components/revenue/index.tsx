@@ -98,8 +98,14 @@ const parseRevenue = (trades: readonly RevenueResponse[], chain: number) => {
     }, {} as RTokenRevenue),
   }
 
+  console.log(';tokens', revenue.tokens)
+
   for (const trade of trades) {
     const amount = Number(formatEther(trade.volume))
+
+    if (!revenue.tokens[trade.rToken]) {
+      continue
+    }
     revenue.tokens[trade.rToken].total += amount
     revenue.totalRevenue += amount
 
@@ -147,34 +153,35 @@ const parseRevenue = (trades: readonly RevenueResponse[], chain: number) => {
 }
 
 const useAvailableRevenue = (): Revenue | undefined => {
-  // const { data: mainnet } = useContractRead({
-  //   abi: FacadeRead,
-  //   address: FACADE_ADDRESS[ChainId.Mainnet],
-  //   functionName: 'revenues',
-  //   chainId: ChainId.Mainnet,
-  //   args: [Object.keys(rtokens[ChainId.Mainnet]) as Address[]],
-  // })
+  const { data: mainnet } = useContractRead({
+    abi: FacadeRead as any,
+    address: FACADE_ADDRESS[ChainId.Mainnet],
+    functionName: 'revenues',
+    chainId: ChainId.Mainnet,
+    args: [Object.keys(rtokens[ChainId.Mainnet]) as Address[]],
+  })
   const { data: base } = useContractRead({
-    abi: FacadeRead,
+    abi: FacadeRead as any,
     address: FACADE_ADDRESS[ChainId.Base],
     functionName: 'revenues',
     chainId: ChainId.Base,
     args: [Object.keys(rtokens[ChainId.Base]) as Address[]],
   })
-
-  // const { data: arbitrum } = useContractRead({
-  //   abi: FacadeRead,
-  //   address: FACADE_ADDRESS[ChainId.Arbitrum],
-  //   functionName: 'revenues',
-  //   chainId: ChainId.Arbitrum,
-  //   args: [Object.keys(rtokens[ChainId.Arbitrum]) as Address[]],
-  // })
+  const { data: arbitrum } = useContractRead({
+    abi: FacadeRead as any,
+    address: FACADE_ADDRESS[ChainId.Arbitrum],
+    functionName: 'revenues',
+    chainId: ChainId.Arbitrum,
+    args: [Object.keys(rtokens[ChainId.Arbitrum]) as Address[]],
+  })
 
   return useMemo(() => {
-    // if (mainnet && base && arbitrum) {
-    if (base) {
+    if (mainnet && base && arbitrum) {
+      console.log('mainnet', mainnet)
       const parsedData = {
+        [ChainId.Mainnet]: parseRevenue(mainnet, ChainId.Mainnet),
         [ChainId.Base]: parseRevenue(base, ChainId.Base),
+        [ChainId.Arbitrum]: parseRevenue(arbitrum, ChainId.Arbitrum),
       }
 
       const result = Object.keys(parsedData).reduce(
@@ -213,9 +220,11 @@ const useAvailableRevenue = (): Revenue | undefined => {
 const TradesTable = ({
   trades,
   rToken = true,
+  pagination = true,
 }: {
   trades: RevenueCollateral[]
   rToken?: boolean
+  pagination?: boolean
 }) => {
   const columnHelper = createColumnHelper<RevenueCollateral>()
 
@@ -318,7 +327,7 @@ const TradesTable = ({
       sorting
       sortBy={[{ id: 'value', desc: true }]}
       columnVisibility={!rToken ? ['none'] : undefined}
-      pagination
+      pagination={pagination}
     />
   )
 }
@@ -374,7 +383,7 @@ const RTokenRevenueOverview = ({ data }: { data: RevenueDetail }) => {
         </Box>
       }
     >
-      <TradesTable rToken={false} trades={data.trades} />
+      <TradesTable rToken={false} pagination={false} trades={data.trades} />
     </CollapsableBox>
   )
 }
