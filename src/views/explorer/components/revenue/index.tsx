@@ -214,7 +214,7 @@ const useAvailableRevenue = (): Revenue | undefined => {
     }
 
     return undefined // fetching...
-  }, [base]) // TODO: Add other chains
+  }, [base, mainnet, arbitrum])
 }
 
 const TradesTable = ({
