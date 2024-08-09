@@ -131,7 +131,7 @@ export const colors = {
   progressBarBackground: 'black',
   modes: {
     dark: {
-    accentInverted: '#fff',
+      accentInverted: '#fff',
       text: '#E4DEDE',
       shadow: 'rgba(0, 0, 0, 0.2)',
       rBlueLight: '#0D1321',
