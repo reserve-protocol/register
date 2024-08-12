@@ -97,7 +97,7 @@ type ZapContextType = {
 }
 
 const REFRESH_INTERVAL = 12000 // 12 seconds
-const EXPENSIVE_ZAP_THRESHOLD = 0.1 // TODO: change back to 50_000
+const EXPENSIVE_ZAP_THRESHOLD = 25_000
 
 const ZapContext = createContext<ZapContextType>({
   zapEnabled: true,

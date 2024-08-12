@@ -88,11 +88,11 @@ const MintersModal = () => {
             color: 'primary',
           }}
         >
-          Whale hello there 👋
+          Congratulations 🎉
         </Text>
         <Text sx={{ fontSize: '16px' }}>
-          Congratulations — You’ve unlocked an invitation to Reserve’s elite
-          program for large RToken minters. Opt-in participants enjoy access to
+          You’ve unlocked an invitation to Reserve Institutional’s elite program
+          for large RToken holders. Participants enjoy access to:
         </Text>
         <Box
           as="ul"
@@ -106,9 +106,9 @@ const MintersModal = () => {
             mb: 2,
           }}
         >
-          <Text as="li">Support from Reserve Institutional</Text>
-          <Text as="li">Exclusive alpha</Text>
-          <Text as="li">Online and in-person invite-only events</Text>
+          <Text as="li">1:1 support from Reserve Institutional</Text>
+          <Text as="li">Online & IRL invite-only events</Text>
+          <Text as="li">Exclusive alpha and insights</Text>
         </Box>
         <SocialMediaInput />
       </Box>
