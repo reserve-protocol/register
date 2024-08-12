@@ -1,6 +1,6 @@
 import { SVGProps } from 'react'
 
-const MorphoBlue = (props: SVGProps<SVGSVGElement>) => (
+const Morpho = (props: SVGProps<SVGSVGElement>) => (
   <svg
     width="16"
     height="16"
@@ -35,4 +35,4 @@ const MorphoBlue = (props: SVGProps<SVGSVGElement>) => (
   </svg>
 )
 
-export default MorphoBlue
+export default Morpho
