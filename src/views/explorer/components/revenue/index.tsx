@@ -15,12 +15,14 @@ import { Trader } from 'types'
 import { formatCurrency, formatUsdCurrencyCell, getTokenRoute } from 'utils'
 import { FACADE_ADDRESS, RSR_ADDRESS } from 'utils/addresses'
 import { ChainId } from 'utils/chains'
-import { ROUTES } from 'utils/constants'
+import { CHAIN_TAGS, ROUTES } from 'utils/constants'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { formatEther, formatUnits } from 'viem'
 import { Address, useContractRead } from 'wagmi'
 import TabMenu from 'components/tab-menu'
 import CirclesIcon from 'components/icons/CirclesIcon'
+import ChainLogo from 'components/icons/ChainLogo'
+import { Button } from 'components'
 
 type RevenueResponse = {
   balance: bigint
@@ -59,6 +61,7 @@ type RevenueDetail = {
   stakersRevenue: number
   holdersRevenue: number
   melting: number
+  outstandingTrades: number
   total: number
   n: number
   trades: RevenueCollateral[]
@@ -73,13 +76,35 @@ type Revenue = {
   tokens: RevenueDetail[]
   networks: { trades: number; revenue: number; chain: number }[]
   trades: number
+  outstandingTrades: number
   revenue: number
 }
+
+const ChainBadge = ({ chain }: { chain: number }) => (
+  <Box
+    variant="layout.verticalAlign"
+    sx={{
+      display: ['none', 'flex'],
+      backgroundColor: 'rgba(0, 82, 255, 0.06)',
+      border: '1px solid',
+      borderColor: 'rgba(0, 82, 255, 0.20)',
+      borderRadius: '50px',
+      padding: '4px 8px',
+      gap: 1,
+    }}
+  >
+    <ChainLogo chain={chain} fontSize={12} />
+    <Text sx={{ fontSize: 12 }} color="#627EEA">
+      {CHAIN_TAGS[chain] + ' Native'}
+    </Text>
+  </Box>
+)
 
 const parseRevenue = (trades: readonly RevenueResponse[], chain: number) => {
   const revenue = {
     totalRevenue: 0,
     availableTrades: 0,
+    outstandingTrades: 0,
     tokens: Object.values(rtokens[chain]).reduce((acc, rToken) => {
       acc[rToken.address] = {
         address: rToken.address as Address,
@@ -89,6 +114,7 @@ const parseRevenue = (trades: readonly RevenueResponse[], chain: number) => {
         melting: 0,
         total: 0,
         n: 0,
+        outstandingTrades: 0,
         trades: [],
         logo: `/svgs/${rToken.logo?.toLowerCase() ?? 'defaultLogo.svg'}`,
         chain,
@@ -98,26 +124,22 @@ const parseRevenue = (trades: readonly RevenueResponse[], chain: number) => {
     }, {} as RTokenRevenue),
   }
 
-  console.log(';tokens', revenue.tokens)
-
   for (const trade of trades) {
-    const amount = Number(formatEther(trade.volume))
-
-    if (!revenue.tokens[trade.rToken]) {
+    if (
+      !revenue.tokens[trade.rToken] ||
+      (trade.rToken === trade.buy && trade.sell === trade.rToken) ||
+      trade.buy === trade.sell ||
+      trade.balance <= 0n
+    ) {
       continue
     }
+
+    const amount = Number(formatEther(trade.volume))
+    const isStakerTrader = trade.buy === RSR_ADDRESS[chain]
+
     revenue.tokens[trade.rToken].total += amount
     revenue.totalRevenue += amount
-
-    // Melting
-    if (trade.rToken === trade.buy && trade.sell === trade.rToken) {
-      revenue.tokens[trade.rToken].melting = amount
-      continue
-    }
-
-    if (trade.buy === trade.sell || trade.balance <= 0n) continue
     revenue.availableTrades += 1
-    const isStakerTrader = trade.buy === RSR_ADDRESS[chain]
 
     // RSR Trader
     if (isStakerTrader) {
@@ -125,6 +147,12 @@ const parseRevenue = (trades: readonly RevenueResponse[], chain: number) => {
     } else {
       revenue.tokens[trade.rToken].holdersRevenue += amount
     }
+
+    if (trade.balance > trade.minTradeAmount) {
+      revenue.tokens[trade.rToken].outstandingTrades += 1
+      revenue.outstandingTrades += 1
+    }
+
     revenue.tokens[trade.rToken].n += 1
     revenue.tokens[trade.rToken].trades.push({
       address: trade.sell,
@@ -177,7 +205,6 @@ const useAvailableRevenue = (): Revenue | undefined => {
 
   return useMemo(() => {
     if (mainnet && base && arbitrum) {
-      console.log('mainnet', mainnet)
       const parsedData = {
         [ChainId.Mainnet]: parseRevenue(mainnet, ChainId.Mainnet),
         [ChainId.Base]: parseRevenue(base, ChainId.Base),
@@ -188,6 +215,7 @@ const useAvailableRevenue = (): Revenue | undefined => {
         (acc, chain) => {
           const revenue = parsedData[+chain].totalRevenue
           const trades = parsedData[+chain].availableTrades
+          const outstandingTrades = parsedData[+chain].outstandingTrades
 
           acc.networks.push({
             chain: +chain,
@@ -195,6 +223,7 @@ const useAvailableRevenue = (): Revenue | undefined => {
             trades,
           })
           acc.revenue += revenue
+          acc.outstandingTrades += outstandingTrades
           acc.trades += trades
           acc.tokens.push(...Object.values(parsedData[+chain].tokens))
 
@@ -203,6 +232,7 @@ const useAvailableRevenue = (): Revenue | undefined => {
         {
           revenue: 0,
           trades: 0,
+          outstandingTrades: 0,
           networks: [],
           tokens: [],
         } as Revenue
@@ -245,6 +275,7 @@ const TradesTable = ({
             <TokenItem
               symbol={data.row.original.rTokenSymbol}
               logo={data.row.original.rTokenLogo}
+              chainId={data.row.original.chain}
             />
           </Link>
         ),
@@ -314,6 +345,27 @@ const TradesTable = ({
         header: 'Amount',
         cell: formatUsdCurrencyCell,
       }),
+      columnHelper.accessor('address', {
+        header: '',
+        cell: (data) => (
+          <Button
+            small
+            variant="bordered"
+            onClick={() => {
+              window.open(
+                getTokenRoute(
+                  data.row.original.address,
+                  data.row.original.chain,
+                  ROUTES.AUCTIONS
+                ),
+                '_blank'
+              )
+            }}
+          >
+            Run
+          </Button>
+        ),
+      }),
     ]
 
     return c
@@ -326,7 +378,9 @@ const TradesTable = ({
       compact
       sorting
       sortBy={[{ id: 'value', desc: true }]}
-      columnVisibility={!rToken ? ['none'] : undefined}
+      columnVisibility={
+        !rToken ? ['none', '', '', '', '', '', 'none'] : undefined
+      }
       pagination={pagination}
     />
   )
@@ -364,21 +418,23 @@ const RTokenRevenueOverview = ({ data }: { data: RevenueDetail }) => {
             >
               {data.symbol}
             </Text>
-            <ExternalArrowIcon />
+            <ChainLogo chain={data.chain} />
           </Box>
           <Box variant="layout.verticalAlign" sx={{ gap: 3 }}>
             <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
-              <Text variant="legend">Melting:</Text>
-              <Text variant="strong">${formatCurrency(data.melting)}</Text>
-            </Box>
-            <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
               <Text variant="legend">Trades:</Text>
               <Text variant="strong">{data.n}</Text>
+              <Text variant="legend" sx={{ fontWeight: 500 }}>
+                ({data.outstandingTrades} available)
+              </Text>
             </Box>
             <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
               <Text variant="legend">Amount:</Text>
               <Text variant="strong">${formatCurrency(data.total)}</Text>
             </Box>
+            <Button small variant="bordered" onClick={handleRun}>
+              Run
+            </Button>
           </Box>
         </Box>
       }
@@ -439,10 +495,17 @@ const RevenueOverview = ({
 
   return (
     <Box>
-      <Box variant="layout.borderBox" sx={{ gap: 3, display: 'flex' }}>
+      <Box
+        variant="layout.borderBox"
+        sx={{ gap: 3, display: 'flex', justifyContent: 'center' }}
+      >
         <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
           <Text variant="legend">Trades:</Text>
           <Text variant="strong">{data?.trades ?? 0}</Text>
+        </Box>
+        <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
+          <Text variant="legend">Available Trades:</Text>
+          <Text variant="strong">{data?.outstandingTrades ?? 0}</Text>
         </Box>
         <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
           <Text variant="legend">Revenue:</Text>
