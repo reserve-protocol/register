@@ -15,7 +15,7 @@ import Dyson from 'components/icons/logos/Dyson'
 import Ethena from 'components/icons/logos/Ethena'
 import Extra from 'components/icons/logos/Extra'
 import Merkl from 'components/icons/logos/Merkl'
-import MorphoBlue from 'components/icons/logos/MorphoBlue'
+import Morpho from 'components/icons/logos/Morpho'
 import Stakedao from 'components/icons/logos/Stakedao'
 import Uniswap from 'components/icons/logos/Uniswap'
 import Yearn from 'components/icons/logos/Yearn'
@@ -46,6 +46,7 @@ export const PROJECT_ICONS: Record<string, React.ReactElement> = {
   'convex-finance': <Convex fontSize={16} />,
   'curve-dex': <Curve />,
   'aerodrome-v1': <Aerodrome />,
+  'aerodrome-slipstream': <Aerodrome />,
   stakedao: <Stakedao fontSize={16} />,
   'uniswap-v3': <Uniswap fontSize={16} />,
   'balancer-v2': <Balancer fontSize={16} />,
@@ -54,7 +55,7 @@ export const PROJECT_ICONS: Record<string, React.ReactElement> = {
   beefy: <Beefy />,
   concentrator: <Concentrator />,
   dyson: <Dyson />,
-  'morpho-blue': <MorphoBlue />,
+  'morpho-blue': <Morpho />,
   merkl: <Merkl />,
   ethena: <Ethena />,
   'dinero-(pirex-eth)': <Dinero />,

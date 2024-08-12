@@ -60,6 +60,10 @@ export const LP_PROJECTS: { [x: string]: { name: string; site: string } } = {
     name: 'Aerodrome',
     site: 'https://aerodrome.finance/',
   },
+  'aerodrome-slipstream': {
+    name: 'Aerodrome Slipstream',
+    site: 'https://aerodrome.finance/',
+  },
   beefy: {
     name: 'Beefy',
     site: 'https://app.beefy.finance/',
@@ -77,7 +81,7 @@ export const LP_PROJECTS: { [x: string]: { name: string; site: string } } = {
     site: 'https://app.camelot.exchange/',
   },
   'morpho-blue': {
-    name: 'Morpho Blue',
+    name: 'Morpho',
     site: 'https://app.morpho.org/',
   },
   merkl: {
@@ -339,12 +343,12 @@ export const collateralDisplay: Record<string, string> = {
   saethpyusd: 'AAVE PYUSD V3',
   sabasusdc: 'AAVE USDC V3',
   sfrxeth: 'Staked Frax ETH',
-  re7weth: 'Morpho Blue Re7 WETH Vault',
+  re7weth: 'Morpho Re7 WETH Vault',
   'stkcvxcrvusdusdt-f': ' Convex crvUSD/USDT',
   'stkcvxcrvusdusdc-f': 'Convex crvUSD/USDC',
-  steakpyusd: 'Morpho Blue pyUSD',
-  bbusdt: 'Morpho Blue USDT',
-  steakusdc: 'Morpho Blue USDC',
+  steakpyusd: 'Morpho pyUSD',
+  bbusdt: 'Morpho USDT',
+  steakusdc: 'Morpho USDC',
   saarbusdcn: 'AAVE USDC V3',
   saarbusdt: 'AAVE USDT V3',
   'stkcvxeth+eth-f': 'Convex ETH+/ETH',
