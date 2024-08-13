@@ -43,6 +43,7 @@ export interface ProposalDetail {
     voter: string
   }[]
   governor: Address
+  governanceFramework?: { name: string }
 }
 
 export type SimulationState = {
@@ -65,7 +66,9 @@ export const getProposalStatus = (
   blockNumber: number
 ): string => {
   let status: string = proposal.state || PROPOSAL_STATES.PENDING
-  const timeunit = isTimeunitGovernance(proposal.version ?? '1')
+  const timeunit = isTimeunitGovernance(
+    proposal?.governanceFramework?.name ?? '1'
+  )
     ? getCurrentTime()
     : blockNumber
 
