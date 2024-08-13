@@ -105,6 +105,109 @@ export const getProposalStatus = (
   return status
 }
 
+export const getProposalState = (
+  proposal: Partial<ProposalDetail>,
+  blockNumber: number,
+  chainId: number
+) => {
+  const timestamp = getCurrentTime()
+
+  const BLOCK_DURATION = blockDuration[chainId]
+
+  const state: {
+    state: string
+    deadline: null | number
+    quorum: boolean
+    for: number
+    against: number
+    abstain: number
+  } = {
+    state: proposal?.state ?? '',
+    deadline: null,
+    quorum: false,
+    for: 0,
+    against: 0,
+    abstain: 0,
+  }
+
+  if (
+    blockNumber &&
+    proposal &&
+    proposal.startBlock &&
+    proposal.endBlock &&
+    proposal.forWeightedVotes &&
+    proposal.abstainWeightedVotes &&
+    proposal.againstWeightedVotes &&
+    proposal.quorumVotes
+  ) {
+    const isTimeunit = isTimeunitGovernance(
+      proposal?.governanceFramework?.name ?? '1'
+    )
+    const timeunit = isTimeunit ? timestamp : blockNumber
+
+    // Proposal to be executed
+    // TODO: Guardian can cancel on this state!
+    if (
+      proposal.state === PROPOSAL_STATES.QUEUED &&
+      proposal.executionStartBlock
+    ) {
+      if (proposal.executionStartBlock > timeunit) {
+        state.deadline = isTimeunit
+          ? proposal.executionStartBlock - timestamp
+          : (proposal.executionStartBlock - blockNumber) * BLOCK_DURATION
+      } else {
+        state.deadline = proposal.executionETA! - timestamp
+      }
+    } else if (proposal.state === PROPOSAL_STATES.PENDING) {
+      if (timeunit > proposal.startBlock && timeunit < proposal.endBlock) {
+        state.state = PROPOSAL_STATES.ACTIVE
+        state.deadline = isTimeunit
+          ? proposal.endBlock - timestamp
+          : (proposal.endBlock - blockNumber) * BLOCK_DURATION
+      } else if (timeunit < proposal.startBlock) {
+        state.deadline = isTimeunit
+          ? proposal.startBlock - timestamp
+          : (proposal.startBlock - blockNumber) * BLOCK_DURATION
+      } else {
+        state.state = PROPOSAL_STATES.EXPIRED
+      }
+    } else if (proposal.state === PROPOSAL_STATES.ACTIVE) {
+      // Proposal voting ended check status
+      if (timeunit > proposal.endBlock) {
+        const forVotes = +proposal.forWeightedVotes
+        const againstVotes = +proposal.againstWeightedVotes
+        const quorum = +proposal.quorumVotes
+
+        if (againstVotes > forVotes) {
+          state.state = PROPOSAL_STATES.DEFEATED
+        } else if (forVotes < quorum) {
+          state.state = PROPOSAL_STATES.QUORUM_NOT_REACHED
+        } else {
+          state.state = PROPOSAL_STATES.SUCCEEDED
+        }
+      } else {
+        state.deadline = isTimeunit
+          ? proposal.endBlock - timestamp
+          : (proposal.endBlock - blockNumber) * BLOCK_DURATION
+      }
+    }
+
+    const totalVotes =
+      +proposal.forWeightedVotes +
+      +proposal.againstWeightedVotes +
+      +proposal.abstainWeightedVotes
+    state.quorum = +proposal.forWeightedVotes >= +proposal.quorumVotes
+
+    if (totalVotes) {
+      state.for = (+proposal.forWeightedVotes / totalVotes) * 100
+      state.abstain = (+proposal.abstainWeightedVotes / totalVotes) * 100
+      state.against = (+proposal.againstWeightedVotes / totalVotes) * 100
+    }
+  }
+
+  return state
+}
+
 export const getProposalStateAtom = atom((get) => {
   const blockNumber = get(blockAtom)
   const timestamp = getCurrentTime()
