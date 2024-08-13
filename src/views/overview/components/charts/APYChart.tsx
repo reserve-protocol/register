@@ -27,6 +27,7 @@ const historicalBasketsQuery = gql`
         }
         collateralDistribution
         rTokenDist
+        rsrDist
       }
     }
   }
@@ -111,7 +112,7 @@ const APYChart = (props: BoxProps) => {
             distribution: +distribution[c.id]?.dist,
           })),
           rTokenDist: hb.rTokenDist / 10000,
-          rsrDist: (10000 - hb.rTokenDist) / 10000,
+          rsrDist: hb.rsrDist / 10000,
         }
       }),
     [historicalBaskets]
