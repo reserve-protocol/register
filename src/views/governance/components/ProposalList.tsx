@@ -1,19 +1,19 @@
 import { Trans } from '@lingui/macro'
 import { SmallButton } from 'components/button'
 import EmptyBoxIcon from 'components/icons/EmptyBoxIcon'
-import dayjs from 'dayjs'
 import { gql } from 'graphql-request'
 import useQuery from 'hooks/useQuery'
 import { useBlockMemo } from 'hooks/utils'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
+import { Circle } from 'react-feather'
 import { useNavigate } from 'react-router-dom'
-import { selectedRTokenAtom } from 'state/atoms'
+import { chainIdAtom, selectedRTokenAtom } from 'state/atoms'
 import { Badge, Box, Text } from 'theme-ui'
 import { StringMap } from 'types'
-import { getProposalTitle } from 'utils'
+import { formatPercentage, getProposalTitle, parseDuration } from 'utils'
 import { PROPOSAL_STATES, formatConstant } from 'utils/constants'
-import { getProposalStatus } from '../views/proposal-detail/atom'
+import { getProposalState } from '../views/proposal-detail/atom'
 
 const query = gql`
   query getProposals($id: String!) {
@@ -28,7 +28,10 @@ const query = gql`
       state
       governance
       forWeightedVotes
+      abstainWeightedVotes
       againstWeightedVotes
+      executionStartBlock
+      executionETA
       quorumVotes
       startBlock
       endBlock
@@ -64,10 +67,16 @@ const useProposals = () => {
   }, [JSON.stringify(response)])
 }
 
+// {dayjs.unix(+proposal.creationTime).format('YYYY-M-D')}
+
 const ProposalItem = ({ proposal }: { proposal: StringMap }) => {
   const navigate = useNavigate()
   const blockNumber = useBlockMemo()
-  const status = getProposalStatus(proposal, blockNumber || 0)
+  const chain = useAtomValue(chainIdAtom)
+  const proposalState = useMemo(
+    () => getProposalState(proposal, blockNumber || 0, chain),
+    [proposal, blockNumber, chain]
+  )
 
   return (
     <Box
@@ -88,17 +97,76 @@ const ProposalItem = ({ proposal }: { proposal: StringMap }) => {
     >
       <Box mr={3}>
         <Text variant="strong">{getProposalTitle(proposal.description)}</Text>
-        <Text variant="legend" sx={{ fontSize: 1 }}>
-          <Trans>Created at:</Trans>{' '}
-          {dayjs.unix(+proposal.creationTime).format('YYYY-M-D')}
-        </Text>
+        {(proposalState.state === PROPOSAL_STATES.ACTIVE ||
+          proposalState.state === PROPOSAL_STATES.QUEUED) &&
+          proposalState.deadline &&
+          proposalState.deadline > 0 && (
+            <Box variant="layout.verticalAlign" sx={{ fontSize: 1 }}>
+              <Text variant="legend">
+                {proposalState.state === PROPOSAL_STATES.ACTIVE
+                  ? 'Voting ends in:'
+                  : 'Execution available in:'}
+              </Text>
+              <Text variant="strong" ml="1">
+                {parseDuration(proposalState.deadline, {
+                  units: ['d', 'h'],
+                  round: true,
+                })}
+              </Text>
+            </Box>
+          )}
+        {proposalState.state === PROPOSAL_STATES.PENDING &&
+        proposalState.deadline ? (
+          <Box variant="layout.verticalAlign" mt={2} sx={{ fontSize: 1 }}>
+            Voting starts in:{' '}
+            <Text variant="strong" ml="1">
+              {parseDuration(proposalState.deadline, {
+                units: ['d', 'h'],
+                round: true,
+              })}
+            </Text>
+          </Box>
+        ) : (
+          <Box
+            variant="layout.verticalAlign"
+            mt={2}
+            sx={{ gap: 2, fontSize: 1 }}
+          >
+            <div>
+              <Text variant="legend">
+                <Trans>Quorum?:</Trans>{' '}
+              </Text>
+              <Text
+                style={{ fontWeight: 500 }}
+                color={proposalState.quorum ? 'success' : 'warning'}
+              >
+                {proposalState.quorum ? 'Yes' : 'No'}
+              </Text>
+            </div>
+            <Circle size={4} />
+            <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
+              <Text variant="legend">Votes:</Text>
+              <Text color="primary" variant="strong">
+                {formatPercentage(proposalState.for)}
+              </Text>
+              /
+              <Text color="danger" variant="strong">
+                {formatPercentage(proposalState.against)}
+              </Text>
+              /
+              <Text variant="legend">
+                {formatPercentage(proposalState.abstain)}
+              </Text>
+            </Box>
+          </Box>
+        )}
       </Box>
       <Badge
         ml="auto"
         sx={{ flexShrink: 0 }}
-        variant={BADGE_VARIANT[status] || 'muted'}
+        variant={BADGE_VARIANT[proposalState.state] || 'muted'}
       >
-        {formatConstant(status)}
+        {formatConstant(proposalState.state)}
       </Badge>
     </Box>
   )

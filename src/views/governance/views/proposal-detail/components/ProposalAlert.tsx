@@ -19,14 +19,14 @@ const ProposalAlert = () => {
 
   return (
     <Box
-      ml="auto"
+      mx={3}
       py={2}
       px={3}
       sx={{
         display: 'flex',
         alignItems: 'center',
         background: 'infoBG',
-        borderRadius: '30px',
+        borderRadius: '10px',
         color: 'info',
         fontSize: 0,
       }}

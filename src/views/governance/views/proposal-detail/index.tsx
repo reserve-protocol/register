@@ -79,7 +79,6 @@ const ProposalSnapshot = ({
       onClick={handleSnapshot}
       disabled={!proposal}
       mr={3}
-      ml="auto"
     >
       <Download size={14} />
       <Text ml={2}>Download snapshot</Text>
@@ -162,7 +161,7 @@ const GovernanceProposalDetail = () => {
         mb={5}
         px={[1, 7]}
       >
-        <SmallButton variant="transparent" onClick={handleBack}>
+        <SmallButton variant="transparent" mr="auto" onClick={handleBack}>
           <Box variant="layout.verticalAlign">
             <ArrowLeft size={14} style={{ marginRight: 10 }} />
             <Trans>Back to governance</Trans>
@@ -175,7 +174,6 @@ const GovernanceProposalDetail = () => {
           <Box
             variant="layout.verticalAlign"
             sx={{
-              ml: 'auto',
               gap: 3,
               ':not(:has(> *))': { ml: 0 },
             }}
