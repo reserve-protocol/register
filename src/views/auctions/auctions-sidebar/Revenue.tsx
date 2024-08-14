@@ -60,8 +60,6 @@ const RevenueOverviewAtom = atom((get) => {
 
   if (revenueData && settleable) {
     const {
-      pendingToMelt,
-      pendingToMeltUsd,
       recollaterization,
       availableAuctionRevenue,
       unavailableAuctionRevenue,
@@ -71,7 +69,7 @@ const RevenueOverviewAtom = atom((get) => {
 
     state.isLoading = false
 
-    state.availableAmount = availableAuctionRevenue + pendingToMeltUsd
+    state.availableAmount = availableAuctionRevenue
     state.unavailableAmount = unavailableAuctionRevenue
 
     if (!recollaterization && settleable.length) {
@@ -84,12 +82,6 @@ const RevenueOverviewAtom = atom((get) => {
 
     if (unavailableAuctions.length) {
       state.unavailable.push(UnavailableRevenueAuctions)
-    }
-
-    if (!recollaterization && pendingToMelt > 0.1) {
-      state.available.push(MeltingBox)
-    } else {
-      state.unavailable.push(MeltingBox)
     }
   }
 
