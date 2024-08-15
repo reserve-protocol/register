@@ -466,7 +466,7 @@ const useProposalTx = () => {
               functionName: 'setBackupConfig',
               args: [
                 stringToHex(targetUnit.toUpperCase(), { size: 32 }),
-                parseEther(diversityFactor.toString()),
+                BigInt(diversityFactor),
                 backupCollaterals,
               ],
             })

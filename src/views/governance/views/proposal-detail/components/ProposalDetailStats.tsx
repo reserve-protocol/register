@@ -9,11 +9,21 @@ import { formatCurrency, getCurrentTime } from 'utils'
 import { accountVotesAtom, proposalDetailAtom } from '../atom'
 import { isTimeunitGovernance } from 'views/governance/utils'
 import dayjs from 'dayjs'
+import { useContractRead } from 'wagmi'
+import Governance from 'abis/Governance'
+import { formatEther } from 'viem'
 
 const ProposalDetailStats = () => {
   const proposal = useAtomValue(proposalDetailAtom)
   const isTimeunit = isTimeunitGovernance(proposal?.version ?? '1')
   const accountVotes = useAtomValue(accountVotesAtom)
+  const { data: quorum } = useContractRead({
+    abi: Governance,
+    functionName: 'quorum',
+    address: proposal?.governor ?? '0x1',
+    args: [BigInt(proposal?.creationTime || '0')],
+    enabled: !!proposal && proposal.quorumVotes !== '0',
+  })
 
   const blockNumber = useAtomValue(blockAtom)
   const quorumWeight = useMemo(() => {
@@ -22,13 +32,17 @@ const ProposalDetailStats = () => {
       proposal.forWeightedVotes &&
       proposal.startBlock
     ) {
+      const quorumVotes = Number(proposal.quorumVotes)
+        ? Number(proposal.quorumVotes)
+        : Number(formatEther(quorum ?? 0n))
+
       const total = +proposal.abstainWeightedVotes + +proposal.forWeightedVotes
 
-      return total / +proposal.quorumVotes
+      return total / quorumVotes
     }
 
     return 0
-  }, [proposal])
+  }, [proposal, quorum])
 
   return (
     <Box variant="layout.borderBox" p={0}>

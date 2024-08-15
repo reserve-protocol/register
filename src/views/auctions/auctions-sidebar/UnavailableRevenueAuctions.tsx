@@ -87,7 +87,6 @@ const useAuctions = () => {
 const ConfirmAuction = () => {
   const { isReady, write, hash, gas, validationError, isLoading } =
     useAuctions()
-  console.log('validation', validationError)
   const { status } = useWatchTransaction({ hash, label: 'Run auctions' })
   const closeSidebar = useSetAtom(auctionSidebarAtom)
 
