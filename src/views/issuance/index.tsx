@@ -1,6 +1,7 @@
 import AlertIcon from 'components/icons/AlertIcon'
 import { atom, useAtomValue } from 'jotai'
-import { rTokenAtom, rTokenStateAtom } from 'state/atoms'
+import { rTokenStateAtom } from 'state/atoms'
+import DisabledByGeolocationMessage from 'state/geolocation/DisabledByGeolocationMessage'
 import { Box, BoxProps, Divider, Grid, Text } from 'theme-ui'
 import About from './components/about'
 import Balances from './components/balances'
@@ -12,8 +13,6 @@ import RTokenZapIssuance from './components/zapV2/RTokenZapIssuance'
 import ZapToggle from './components/zapV2/ZapToggle'
 import ZapToggleBottom from './components/zapV2/ZapToggleBottom'
 import { ZapProvider, useZap } from './components/zapV2/context/ZapContext'
-import DisabledByGeolocationMessage from 'state/geolocation/DisabledByGeolocationMessage'
-import { ChainId } from 'utils/chains'
 
 const CollateralizationBanner = (props: BoxProps) => {
   const { isCollaterized } = useAtomValue(rTokenStateAtom)
@@ -62,8 +61,7 @@ const MaintenanceBanner = (props: BoxProps) => {
 
 // TODO: Use CMS for this state? or maybe environment variables, chain specific
 const maintenanceAtom = atom((get) => {
-  const rToken = get(rTokenAtom)
-  return rToken?.chainId === ChainId.Arbitrum
+  return false
 })
 
 const IssuanceMethods = () => {
