@@ -262,20 +262,26 @@ export const updateBasketUnitAtom = atom(
 // Multiply by 10 to avoid floating point precision issues (only 1 decimal allowed)
 export const isRevenueValidAtom = atom((get) => {
   const revenue = get(revenueSplitAtom)
-  let total = 0
+  let total = 0n
 
   for (const external of revenue.external) {
+    const holders = BigInt(Math.round(+external.holders * 100))
+    const stakers = BigInt(Math.round(+external.stakers * 100))
+
     // Validate internal address allocation
-    if (+external.holders * 10 + +external.stakers * 10 !== 1000) {
+    if (holders + stakers !== 10000n) {
       return false
     }
 
-    total += +external.total * 10
+    total += BigInt(Math.round(+external.total * 100))
   }
 
-  const sum = +revenue.stakers * 10 + +revenue.holders * 10 + total
+  const stakers = BigInt(Math.round(+revenue.stakers * 100))
+  const holders = BigInt(Math.round(+revenue.holders * 100))
 
-  if (sum !== 1000) {
+  const sum = stakers + holders + total
+
+  if (sum !== 10000n) {
     return false
   }
 

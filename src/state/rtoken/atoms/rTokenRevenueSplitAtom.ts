@@ -48,6 +48,37 @@ export const formatDistribution = (data: Distribution[]) => {
   return { holders, stakers, external: Object.values(external) }
 }
 
+// If the distribution is not adding 10000, we add the remaining to the larger share
+// This is a temporary fix until we have a better way to handle this
+// There's a rounding issue in the subgraph (just UI issue).
+const ensureValidDistribution = (data: Distribution[]) => {
+  const total = data.reduce(
+    (acc, { rTokenDist, rsrDist }) => acc + rTokenDist + rsrDist,
+    0
+  )
+
+  if (total === 10000) {
+    return data
+  }
+
+  const remaining = 10000 - total
+
+  const sorted = data.sort(
+    (a, b) => b.rTokenDist + b.rsrDist - (a.rTokenDist + a.rsrDist)
+  )
+  const largest = sorted[0]
+
+  return [
+    ...sorted.slice(1),
+    {
+      ...largest,
+      ...(largest.rTokenDist > largest.rsrDist
+        ? { rTokenDist: largest.rTokenDist + remaining }
+        : { rsrDist: largest.rsrDist + remaining }),
+    },
+  ]
+}
+
 const rTokenRevenueSplitAtom = atomWithLoadable(async (get) => {
   const contracts = get(rTokenContractsAtom)
   const gqlClient = get(gqlClientAtom)
@@ -106,7 +137,10 @@ const rTokenRevenueSplitAtom = atomWithLoadable(async (get) => {
     }
   }
 
-  return formatDistribution(request.rtoken.revenueDistribution)
+  const rawDist: Distribution[] = request.rtoken.revenueDistribution
+  const validDist = ensureValidDistribution(rawDist)
+
+  return formatDistribution(validDist)
 })
 
 export default rTokenRevenueSplitAtom
