@@ -14,6 +14,13 @@ import { arbitrum, base, mainnet } from 'wagmi/chains'
 import { infuraProvider } from 'wagmi/providers/infura'
 import AtomUpdater from './updaters/AtomUpdater'
 import { setupConfig } from './utils/mocks'
+import { ChainId } from 'utils/chains'
+
+const ANKR_PREFIX = {
+  [ChainId.Mainnet]: 'eth',
+  [ChainId.Base]: 'base',
+  [ChainId.Arbitrum]: 'arbitrum',
+}
 
 export const { chains, publicClient } = configureChains(
   [mainnet, base, arbitrum],
@@ -26,8 +33,16 @@ export const { chains, publicClient } = configureChains(
         }),
       ]
     : [
-        infuraProvider({ apiKey: 'b6bf7d3508c941499b10025c0776eaf8' }),
-        infuraProvider({ apiKey: '9aa3d95b3bc440fa88ea12eaa4456161' }),
+        infuraProvider({ apiKey: import.meta.env.VITE_INFURA }),
+        jsonRpcProvider({
+          rpc: (chain) => {
+            return {
+              http: `https://rpc.ankr.com/${ANKR_PREFIX[chain.id]}/${
+                import.meta.env.VITE_ANKR
+              }`,
+            }
+          },
+        }),
         alchemyProvider({ apiKey: import.meta.env.VITE_ALCHEMY }),
         publicProvider(),
       ]
