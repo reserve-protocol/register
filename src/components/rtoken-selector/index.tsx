@@ -3,7 +3,7 @@ import { useAtomValue } from 'jotai'
 import mixpanel from 'mixpanel-browser'
 import { useCallback, useState } from 'react'
 import { ChevronDown, ChevronUp } from 'react-feather'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useMatch, useNavigate } from 'react-router-dom'
 import { selectedRTokenAtom } from 'state/atoms'
 import { Box, BoxProps } from 'theme-ui'
 import { getTokenRoute } from 'utils'
@@ -29,8 +29,19 @@ const RTokenSelector = (props: BoxProps) => {
   const handleSelect = useCallback(
     (token: string, chain: number) => {
       if (token !== selected) {
+        let route = 'overview'
+
+        if (selected) {
+          if (location.pathname.includes('governance')) {
+            route = 'governance'
+          } else {
+            const split = location.pathname.split('/')
+            route = split[split.length - 1]
+          }
+        }
+
         trackToken(token)
-        navigate(getTokenRoute(token, chain))
+        navigate(getTokenRoute(token, chain, route))
         setVisible(false)
       }
     },
