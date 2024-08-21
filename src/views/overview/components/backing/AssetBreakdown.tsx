@@ -61,14 +61,9 @@ const AssetBreakdown = () => {
   const Current = tabComponents[current as keyof typeof tabComponents]
 
   return (
-    <Card p={4}>
+    <Card px={[2, 4]} pt={[3, 4]}>
       <Box variant="layout.verticalAlign">
         <Menu current={current} onChange={handleChange} />
-        {/* <Box variant="layout.verticalAlign" ml="auto">
-          <AsteriskIcon />
-          <Text mx="2">What if there’s a de-peg?</Text>
-          <ChevronDown size={16} />
-        </Box> */}
       </Box>
       <Flex
         mt={3}

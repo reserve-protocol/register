@@ -31,7 +31,7 @@ const Section = ({
   title: string
   description: React.ReactNode
 }) => (
-  <Box p={4} sx={{ borderBottom: '1px solid', borderColor: 'border' }}>
+  <Box p={[3, 4]} sx={{ borderBottom: '1px solid', borderColor: 'border' }}>
     <Box variant="layout.verticalAlign" mb={3}>
       <Brand />
       <Text ml="2" variant="bold">
@@ -110,7 +110,7 @@ const Risks = () => {
     <Card variant="inner">
       <Box
         variant="layout.verticalAlign"
-        p={4}
+        p={[3, 4]}
         sx={{ borderBottom: '1px solid', borderColor: 'border' }}
       >
         <RiskIcon />
@@ -121,7 +121,7 @@ const Risks = () => {
       {content.map((item, index) => (
         <Section key={index} {...item} />
       ))}
-      <Box variant="layout.verticalAlign" p={4}>
+      <Box variant="layout.verticalAlign" p={[3, 4]}>
         <AsteriskIcon />
         <Text ml="2" variant="legend">
           This list is not intended to be conclusive.{' '}

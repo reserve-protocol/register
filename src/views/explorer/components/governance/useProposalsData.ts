@@ -6,7 +6,10 @@ import { publicClient } from 'state/chain'
 import { atomWithLoadable } from 'utils/atoms/utils'
 import { supportedChainList } from 'utils/constants'
 import { getAddress } from 'viem'
-import { getProposalStatus } from 'views/governance/views/proposal-detail/atom'
+import {
+  getProposalState,
+  getProposalStatus,
+} from 'views/governance/views/proposal-detail/atom'
 import { filtersAtom } from './atoms'
 
 const explorerProposalsQuery = gql`
@@ -78,11 +81,11 @@ const useProposalsData = () => {
       if (data[chain]) {
         proposals.push(
           ...data[chain].proposals.map((entry: any) => {
-            const status = getProposalStatus(entry, blocks?.[chain] || 0)
+            const state = getProposalState(entry, blocks?.[chain] || 0, chain)
 
             return {
               ...entry,
-              status,
+              status: state.state,
               chain,
               rTokenAddress: getAddress(entry.governance.rToken.id),
               rTokenSymbol: entry.governance.rToken.token.symbol,
