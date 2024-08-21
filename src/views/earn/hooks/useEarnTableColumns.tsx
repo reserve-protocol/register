@@ -16,6 +16,7 @@ import Ethena from 'components/icons/logos/Ethena'
 import Extra from 'components/icons/logos/Extra'
 import Merkl from 'components/icons/logos/Merkl'
 import Morpho from 'components/icons/logos/Morpho'
+import Stader from 'components/icons/logos/Stader'
 import Stakedao from 'components/icons/logos/Stakedao'
 import Uniswap from 'components/icons/logos/Uniswap'
 import Yearn from 'components/icons/logos/Yearn'
@@ -59,6 +60,7 @@ export const PROJECT_ICONS: Record<string, React.ReactElement> = {
   merkl: <Merkl />,
   ethena: <Ethena />,
   'dinero-(pirex-eth)': <Dinero />,
+  stader: <Stader />,
 }
 
 const useEarnTableColumns = (compact: boolean) => {

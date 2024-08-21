@@ -96,6 +96,10 @@ export const LP_PROJECTS: { [x: string]: { name: string; site: string } } = {
     name: 'Dinero',
     site: 'https://dinero.xyz/',
   },
+  stader: {
+    name: 'Stader',
+    site: 'https://www.staderlabs.com/',
+  },
 }
 
 // List of supported networks with label
@@ -355,4 +359,5 @@ export const collateralDisplay: Record<string, string> = {
   'stkcvxeth+eth-f': 'Convex ETH+/ETH',
   apxeth: 'Autocompounding Pirex ETH',
   susde: 'Ethena Staked USDe',
+  ethx: 'Stader ETHx',
 }

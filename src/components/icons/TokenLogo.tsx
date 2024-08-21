@@ -81,7 +81,7 @@ const SVGS = new Set([
   'eth+',
 ])
 
-const PNGS = new Set(['steakusdc', 'mai', 'dola', 'fxusd', 'alusd'])
+const PNGS = new Set(['steakusdc', 'mai', 'dola', 'fxusd', 'alusd', 'ethx'])
 
 // Memoized token image
 const TokenImage = React.memo(
