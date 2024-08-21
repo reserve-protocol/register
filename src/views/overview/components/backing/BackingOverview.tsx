@@ -43,7 +43,7 @@ const BackingOverview = ({ current }: { current: string }) => {
     <Card
       variant="inner"
       mr={3}
-      p={4}
+      p={[3, 4]}
       mt={[3, 3, 3, 0]}
       sx={{
         flexDirection: 'column',

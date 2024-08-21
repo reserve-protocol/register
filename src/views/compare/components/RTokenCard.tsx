@@ -179,11 +179,12 @@ const RTokenCard = ({ token, ...props }: Props) => {
                   sx={{
                     gap: [0, 2],
                     flexDirection: ['column', 'row'],
+                    alignItems: ['start', 'center'],
                     flexWrap: 'wrap',
                   }}
                   mr={[2, 0]}
                 >
-                  <Box variant="layout.verticalAlign">
+                  <Box variant="layout.verticalAlign" mr="1">
                     <Box sx={{ display: ['none', 'flex'] }}>
                       <MoneyIcon />
                     </Box>
@@ -192,7 +193,6 @@ const RTokenCard = ({ token, ...props }: Props) => {
                     </Text>
                   </Box>
                   <Box
-                    ml="1"
                     variant="layout.verticalAlign"
                     sx={{
                       flexDirection: ['column', 'row'],
@@ -204,7 +204,7 @@ const RTokenCard = ({ token, ...props }: Props) => {
                       ${formatCurrency(token.supply, 0)}
                     </Text>
                     {supplyETHTerms && (
-                      <Text>
+                      <Text sx={{ fontSize: 1 }}>
                         {`(${formatCurrency(supplyETHTerms, 0)} ${
                           token.targetUnits
                         })`}
@@ -223,10 +223,14 @@ const RTokenCard = ({ token, ...props }: Props) => {
                   </Text>
                   <Text variant="strong">{token.targetUnits}</Text>
                 </Box>
-                <VerticalDivider sx={{ display: ['none', 'block'] }} />
+                <VerticalDivider sx={{ display: ['none', 'none', 'block'] }} />
                 <Box
                   variant="layout.verticalAlign"
-                  sx={{ gap: 2, display: ['none', 'flex'], flexWrap: 'wrap' }}
+                  sx={{
+                    gap: 2,
+                    display: ['none', 'none', 'flex'],
+                    flexWrap: 'wrap',
+                  }}
                 >
                   <CollaterizationIcon />
                   <Text variant="legend">

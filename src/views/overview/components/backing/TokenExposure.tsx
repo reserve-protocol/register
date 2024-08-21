@@ -88,7 +88,7 @@ const TokenExposure = () => {
     <Card variant="inner">
       <Box
         variant="layout.verticalAlign"
-        p={4}
+        p={[3, 4]}
         sx={{ borderBottom: '1px solid', borderColor: 'border' }}
       >
         <CirclesIcon color="currentColor" />
@@ -101,6 +101,7 @@ const TokenExposure = () => {
         <Card
           key={data.symbol}
           variant="section"
+          p={[3, 4]}
           sx={{ backgroundColor: 'backgroundNested' }}
         >
           <Box variant="layout.verticalAlign">

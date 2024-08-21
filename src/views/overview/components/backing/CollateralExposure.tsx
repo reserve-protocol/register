@@ -74,8 +74,7 @@ const CollateralDetails = ({
 
   return (
     <Box
-      py={4}
-      px={4}
+      p={[3, 4]}
       sx={{
         fontWeight: 700,
         cursor: 'pointer',
@@ -84,7 +83,7 @@ const CollateralDetails = ({
         borderBottom: '1px solid',
         borderColor: expanded ? 'inputBorder' : 'border',
         ':last-of-type': { borderBottom: 'none' },
-        '&:hover': { backgroundColor: 'inputBackground' },
+        '&:hover': { backgroundColor: ['none', 'inputBackground'] },
       }}
       onClick={() => setExpanded(!expanded)}
     >
@@ -232,8 +231,7 @@ const Header = () => {
   return (
     <Box
       variant="layout.verticalAlign"
-      p={4}
-      mb={[3, 0]}
+      p={[3, 4]}
       sx={{
         borderBottom: '1px solid',
         borderColor: 'border',
@@ -245,7 +243,7 @@ const Header = () => {
         <Trans>Collateral Exposure</Trans>
       </Text>
       <TabMenu
-        mt={[3, 0]}
+        mt={[2, 0]}
         active={backingType}
         items={backingOptions}
         small

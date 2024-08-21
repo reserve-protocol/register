@@ -16,7 +16,12 @@ const EndedDutchAuctions = (props: BoxProps) => {
         <Trans>Ended auctions</Trans>
       </Text>
       {data.length ? (
-        <Table columns={columns} data={data} pagination={{ pageSize: 5 }} />
+        <Table
+          columns={columns}
+          data={data}
+          compact
+          pagination={{ pageSize: 5 }}
+        />
       ) : (
         <EndedAuctionsSkeleton />
       )}
