@@ -62,7 +62,7 @@ const DgnETHButtonAppendix: FC<Props> = ({
     if (stakeTokenSupply === 0n) return '0%'
 
     const stakeAPY =
-      (_basketAPY * +formatUnits(tokenSupply, 18)) /
+      (_basketAPY * 0.95 * +formatUnits(tokenSupply, 18)) /
       +formatUnits(stakeTokenSupply, 21)
 
     return `${stakeAPY.toFixed(1)}%`
