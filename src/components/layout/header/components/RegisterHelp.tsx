@@ -11,6 +11,7 @@ import {
   DISCORD_INVITE,
   PROTOCOL_DOCS,
   REGISTER_FEEDBACK,
+  RESERVE_FORUM,
 } from 'utils/constants'
 import CoinbaseSubscribe from './CoinbaseSubscribe'
 
@@ -30,7 +31,7 @@ const HelpItem = ({
 }: HelpItemProps) => (
   <Box
     {...props}
-    p={3}
+    p={2}
     role="button"
     sx={{
       border: '1px solid',
@@ -70,6 +71,11 @@ const HelpContent = ({ onClose }: { onClose(): void }) => {
       title: t`Protocol Docs`,
       subtitle: t`Understand the Reserve Protocol.`,
       href: PROTOCOL_DOCS,
+    },
+    {
+      title: t`Register Forum`,
+      subtitle: t`Discussions of ideas and suggestion that the community has on improving the Reserve Ecosystem`,
+      href: RESERVE_FORUM,
     },
     {
       title: t`Reserve Discord`,
