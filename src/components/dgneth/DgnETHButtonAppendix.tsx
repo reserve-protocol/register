@@ -1,9 +1,10 @@
 import { FC, PropsWithChildren, memo, useMemo } from 'react'
 import { Plus } from 'react-feather'
+import useSWR from 'swr'
 import { Box, ButtonProps, Text } from 'theme-ui'
 import { ChainId } from 'utils/chains'
 import { formatUnits } from 'viem'
-import { useContractReads } from 'wagmi'
+import { erc20ABI, useContractReads } from 'wagmi'
 
 type Props = {
   rTokenSymbol?: string
@@ -24,68 +25,50 @@ const DgnETHButtonAppendix: FC<Props> = ({
   hideLabelOnMobile = false,
   children,
 }) => {
-  const isEnabled = rTokenSymbol === 'dgnETH'
-  const { data } = useContractReads({
+  const { data: supplies } = useContractReads({
     contracts: [
       {
-        abi: [
-          {
-            type: 'function',
-            name: 'rewardTracker',
-            inputs: [],
-            outputs: [
-              {
-                name: 'rewardPeriodStart',
-                type: 'uint256',
-                internalType: 'uint256',
-              },
-              {
-                name: 'rewardPeriodEnd',
-                type: 'uint256',
-                internalType: 'uint256',
-              },
-              {
-                name: 'rewardAmount',
-                type: 'uint256',
-                internalType: 'uint256',
-              },
-            ],
-            stateMutability: 'view',
-          },
-        ] as const,
+        abi: erc20ABI,
         chainId: ChainId.Mainnet,
-        address: STAKE_TOKEN_ADDRESS,
-        functionName: 'rewardTracker',
+        address: TOKEN_ADDRESS,
+        functionName: 'totalSupply',
       },
       {
-        abi: [
-          {
-            type: 'function',
-            name: 'totalAssets',
-            inputs: [],
-            outputs: [{ name: '', type: 'uint256', internalType: 'uint256' }],
-            stateMutability: 'view',
-          },
-        ] as const,
+        abi: erc20ABI,
         chainId: ChainId.Mainnet,
         address: STAKE_TOKEN_ADDRESS,
-        functionName: 'totalAssets',
+        functionName: 'totalSupply',
       },
     ],
     allowFailure: false,
-    enabled: isEnabled,
   })
 
+  const { data: yieldsAPIData } = useSWR(
+    'https://yields.reserve.org/pools',
+    fetcher
+  )
+
+  const _basketAPY = useMemo(() => {
+    const apiBasketAPY =
+      yieldsAPIData?.rtokensBasketAPY?.[ChainId.Mainnet]?.dgnETH
+    return apiBasketAPY || basketAPY
+  }, [yieldsAPIData, basketAPY])
+
   const apy = useMemo(() => {
-    if (!data) return '--%'
+    if (!_basketAPY || !supplies) return '0%'
 
-    const rewards = +formatUnits(data[0][2], 21)
-    const assets = +formatUnits(data[1], 21)
+    const [tokenSupply, stakeTokenSupply] = supplies
 
-    return ((rewards / assets) * 52 * 100).toFixed(1) + '%'
-  }, [data])
+    if (stakeTokenSupply === 0n) return '0%'
 
-  if (!isEnabled) return <>{children}</>
+    const stakeAPY =
+      (_basketAPY * 0.95 * +formatUnits(tokenSupply, 18)) /
+      +formatUnits(stakeTokenSupply, 21)
+
+    return `${stakeAPY.toFixed(1)}%`
+  }, [_basketAPY, supplies])
+
+  if (rTokenSymbol !== 'dgnETH') return <>{children}</>
 
   return (
     <Box
