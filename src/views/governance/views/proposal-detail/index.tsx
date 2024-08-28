@@ -204,15 +204,17 @@ const GovernanceProposalDetail = () => {
         )}
       </Box>
       <Grid
-        columns={[1, 1, 1, '2fr 1.5fr']}
+        columns={[1, 1, 1, '7fr 5fr']}
         gap={[0, 0, 0, 5]}
         px={[1, 5]}
         sx={{
+          bg: 'reserveBackground',
           height: '100%',
           position: 'relative',
           alignContent: 'flex-start',
           alignItems: 'flex-start',
           overflowY: 'auto',
+          py: '12px',
         }}
       >
         <ProposalDetailContent />
