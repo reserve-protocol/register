@@ -1,12 +1,15 @@
 import { Trans } from '@lingui/macro'
-import { Box, BoxProps, Card, Divider, Select, Text } from 'theme-ui'
-import TokenForm from './TokenForm'
-import { useAtom } from 'jotai'
-import { chainIdAtom } from 'state/atoms'
-import { ChainId } from 'utils/chains'
-import { useResetAtom } from 'jotai/utils'
+import ChainLogo from 'components/icons/ChainLogo'
 import { backupCollateralAtom, basketAtom } from 'components/rtoken-setup/atoms'
+import { useAtom } from 'jotai'
+import { useResetAtom } from 'jotai/utils'
 import { useFormContext } from 'react-hook-form'
+import { chainIdAtom } from 'state/atoms'
+import { Box, BoxProps, Card, Divider, Label, Radio, Text } from 'theme-ui'
+import { ChainId } from 'utils/chains'
+import { CHAIN_TAGS, supportedChainList } from 'utils/constants'
+import { useSwitchNetwork } from 'wagmi'
+import TokenForm from './TokenForm'
 
 type Defaults = [string, string][]
 
@@ -21,13 +24,51 @@ const l2Defaults: Defaults = [
   ['minTrade', '100'],
 ]
 
+const ChainOption = ({
+  chainId,
+  checked,
+  onChange,
+}: {
+  chainId: number
+  checked?: boolean
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
+}) => {
+  return (
+    <Label
+      variant="layout.verticalAlign"
+      sx={{
+        gap: 1,
+        justifyContent: 'space-between',
+        flexGrow: 1,
+        bg: 'background',
+        border: '1px solid',
+        borderRadius: '8px',
+        borderColor: 'border',
+        p: 3,
+      }}
+    >
+      <Box variant="layout.verticalAlign" sx={{ gap: 2 }}>
+        <ChainLogo chain={chainId} width={20} height={20} />
+        <Trans>{CHAIN_TAGS[chainId]}</Trans>
+      </Box>
+      <Radio
+        name="dark-mode"
+        value={chainId}
+        onChange={onChange}
+        checked={checked}
+      />
+    </Label>
+  )
+}
+
 const ChainSelector = () => {
   const [chainId, setChain] = useAtom(chainIdAtom)
   const resetBasket = useResetAtom(basketAtom)
   const resetBackup = useResetAtom(backupCollateralAtom)
   const { setValue } = useFormContext()
+  const { switchNetwork } = useSwitchNetwork()
 
-  const handleChainChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleChainChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newChain = +e.target.value
 
     if (chainId !== newChain) {
@@ -42,19 +83,34 @@ const ChainSelector = () => {
       }
 
       setChain(newChain)
+      switchNetwork && switchNetwork(newChain)
     }
   }
 
   return (
     <Box mb="3">
       <Text variant="subtitle" ml={3} mb="2" sx={{ fontSize: 1 }}>
-        Network
+        Chain
       </Text>
-      <Select value={chainId} onChange={handleChainChange}>
-        <option value={ChainId.Mainnet}>Ethereum</option>
-        <option value={ChainId.Base}>Base</option>
-        <option value={ChainId.Arbitrum}>Arbitrum One</option>
-      </Select>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: ['column', 'column', 'column', 'row'],
+          gap: 2,
+          '@media (max-width: 1430px)': {
+            flexDirection: 'column',
+          },
+        }}
+      >
+        {supportedChainList.map((chain) => (
+          <ChainOption
+            key={chain}
+            chainId={chain}
+            checked={chain === chainId}
+            onChange={handleChainChange}
+          />
+        ))}
+      </Box>
     </Box>
   )
 }
