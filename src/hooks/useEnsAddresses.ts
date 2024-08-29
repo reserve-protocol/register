@@ -2,6 +2,7 @@ import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { chainIdAtom } from 'state/atoms'
 import { ENS_ADDRESS } from 'utils/addresses'
+import { ChainId } from 'utils/chains'
 import { Address, useContractRead } from 'wagmi'
 
 export const useEnsAddresses = (addresses: string[]) => {
@@ -19,10 +20,12 @@ export const useEnsAddresses = (addresses: string[]) => {
         type: 'function',
       },
     ],
-    address: addresses.length ? (ENS_ADDRESS[chainId] as Address) : undefined,
+    address: addresses.length
+      ? (ENS_ADDRESS[ChainId.Mainnet] as Address)
+      : undefined,
     functionName: 'getNames',
     args: [addresses],
-    chainId,
+    chainId: ChainId.Mainnet,
   })
 
   return useMemo(() => {
