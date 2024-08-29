@@ -204,7 +204,7 @@ const GovernanceProposalDetail = () => {
         )}
       </Box>
       <Grid
-        columns={[1, 1, 1, '7fr 5fr']}
+        columns={[1, 1, 1, '10fr 5fr']}
         gap={[0, 0, 0, 5]}
         px={[1, 5]}
         sx={{
