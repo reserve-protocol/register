@@ -1,15 +1,16 @@
 import { Trans } from '@lingui/macro'
 import ChainLogo from 'components/icons/ChainLogo'
 import { backupCollateralAtom, basketAtom } from 'components/rtoken-setup/atoms'
-import { useAtom } from 'jotai'
+import { useAtom, useAtomValue } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
 import { useFormContext } from 'react-hook-form'
-import { chainIdAtom } from 'state/atoms'
+import { chainIdAtom, walletChainAtom } from 'state/atoms'
 import { Box, BoxProps, Card, Divider, Label, Radio, Text } from 'theme-ui'
 import { ChainId } from 'utils/chains'
 import { CHAIN_TAGS, supportedChainList } from 'utils/constants'
 import { useSwitchNetwork } from 'wagmi'
 import TokenForm from './TokenForm'
+import { useEffect } from 'react'
 
 type Defaults = [string, string][]
 
@@ -63,10 +64,17 @@ const ChainOption = ({
 
 const ChainSelector = () => {
   const [chainId, setChain] = useAtom(chainIdAtom)
+  const walletChainId = useAtomValue(walletChainAtom)
   const resetBasket = useResetAtom(basketAtom)
   const resetBackup = useResetAtom(backupCollateralAtom)
   const { setValue } = useFormContext()
   const { switchNetwork } = useSwitchNetwork()
+
+  useEffect(() => {
+    if (walletChainId && supportedChainList.includes(walletChainId)) {
+      setChain(walletChainId)
+    }
+  }, [])
 
   const handleChainChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newChain = +e.target.value
