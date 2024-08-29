@@ -68,7 +68,9 @@ const BuckingBuffer = ({ ...props }: BoxProps) => {
         >
           <Box variant="layout.verticalAlign" sx={{ gap: 2 }}>
             <BackingBufferIcon />
-            <Text variant="sectionTitle">Backing buffer</Text>
+            <Text variant="sectionTitle">
+              Revenue distribution backing buffer
+            </Text>
           </Box>
           <Box variant="layout.verticalAlign" sx={{ gap: 2 }}>
             <Text
@@ -88,7 +90,7 @@ const BuckingBuffer = ({ ...props }: BoxProps) => {
           </Box>
         </Box>
         <Box variant="layout.verticalAlign" sx={{ gap: 2 }}>
-          <Text variant="contentTitle">
+          <Text variant="contentTitle" sx={{ textAlign: ['left', 'right'] }}>
             Collateral yield is distributed as revenue when the backing buffer
             is full
           </Text>
