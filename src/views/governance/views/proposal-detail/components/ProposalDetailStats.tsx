@@ -5,11 +5,12 @@ import { Check, Slash, ThumbsDown, ThumbsUp, X } from 'react-feather'
 import { Box, Progress, Text } from 'theme-ui'
 import { formatEther } from 'viem'
 import { useContractReads } from 'wagmi'
-import { proposalDetailAtom } from '../atom'
+import { getProposalStateAtom, proposalDetailAtom } from '../atom'
 import { colors } from 'theme'
 import { formatCurrency, formatPercentage } from 'utils'
 import { rTokenAtom } from 'state/atoms'
 import { isTimeunitGovernance } from 'views/governance/utils'
+import { PROPOSAL_STATES } from 'utils/constants'
 
 const BooleanIcon = ({
   value,
@@ -42,6 +43,7 @@ const BooleanIcon = ({
 const ProposalDetailStats = () => {
   const rToken = useAtomValue(rTokenAtom)
   const proposal = useAtomValue(proposalDetailAtom)
+  const { state } = useAtomValue(getProposalStateAtom)
   const isTimeunit = isTimeunitGovernance(proposal?.version ?? '1')
 
   const { data } = useContractReads({
@@ -103,7 +105,10 @@ const ProposalDetailStats = () => {
   return (
     <Box sx={{ bg: 'background', borderRadius: '8px', p: 2 }}>
       <Text variant="title" sx={{ fontWeight: 'bold' }} p={3}>
-        Current votes
+        {[PROPOSAL_STATES.ACTIVE, PROPOSAL_STATES.PENDING].includes(state)
+          ? 'Current'
+          : 'Final'}{' '}
+        votes
       </Text>
       <Box
         sx={{
