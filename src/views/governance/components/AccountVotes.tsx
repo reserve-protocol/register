@@ -4,8 +4,13 @@ import { SmallButton } from 'components/button'
 import GoTo from 'components/button/GoTo'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
-import { useState } from 'react'
-import { chainIdAtom, stRsrBalanceAtom, walletAtom } from 'state/atoms'
+import { useMemo, useState } from 'react'
+import {
+  chainIdAtom,
+  rTokenGovernanceAtom,
+  stRsrBalanceAtom,
+  walletAtom,
+} from 'state/atoms'
 import { Box, Image, Text } from 'theme-ui'
 import { formatCurrency, shortenAddress } from 'utils'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
@@ -19,6 +24,12 @@ const AccountVotes = () => {
   const rToken = useRToken()
   const stRsrBalance = useAtomValue(stRsrBalanceAtom)
   const [isVisible, setVisible] = useState(false)
+  const governance = useAtomValue(rTokenGovernanceAtom)
+
+  const disabled = useMemo(
+    () => governance.name === 'Custom',
+    [governance.name]
+  )
 
   const { data: delegate } = useContractRead({
     address: account ? (rToken?.stToken?.address as Address) : undefined,
@@ -53,7 +64,12 @@ const AccountVotes = () => {
               your vote to yourself or another Eth address.
             </Trans>
           </Text>
-          <SmallButton mt={3} variant="primary" onClick={handleDelegate}>
+          <SmallButton
+            mt={3}
+            variant="primary"
+            onClick={handleDelegate}
+            disabled={disabled}
+          >
             <Trans>Delegate</Trans>
           </SmallButton>
           <Text ml={3} variant="legend" as="span">

@@ -8,7 +8,11 @@ import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { Circle } from 'react-feather'
 import { useNavigate } from 'react-router-dom'
-import { chainIdAtom, selectedRTokenAtom } from 'state/atoms'
+import {
+  chainIdAtom,
+  rTokenGovernanceAtom,
+  selectedRTokenAtom,
+} from 'state/atoms'
 import { Badge, Box, Text } from 'theme-ui'
 import { StringMap } from 'types'
 import { formatPercentage, getProposalTitle, parseDuration } from 'utils'
@@ -175,6 +179,12 @@ const ProposalItem = ({ proposal }: { proposal: StringMap }) => {
 const ProposalList = () => {
   const navigate = useNavigate()
   const { data } = useProposals()
+  const governance = useAtomValue(rTokenGovernanceAtom)
+
+  const disabled = useMemo(
+    () => governance.name === 'Custom',
+    [governance.name]
+  )
 
   return (
     <Box
@@ -190,7 +200,11 @@ const ProposalList = () => {
         <Text variant="sectionTitle">
           <Trans>Recent proposals</Trans>
         </Text>
-        <SmallButton ml="auto" onClick={() => navigate('proposal')}>
+        <SmallButton
+          ml="auto"
+          onClick={() => navigate('proposal')}
+          disabled={disabled}
+        >
           <Trans>Create proposal</Trans>
         </SmallButton>
       </Box>
