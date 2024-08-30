@@ -148,7 +148,7 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
   const [openSubmitModal, setOpenSubmitModal] = useState<boolean>(false)
   const [collectDust, setCollectDust] = useState<boolean>(true)
   const [onlyMint, setOnlyMint] = useState<boolean>(false)
-  const [slippage, setSlippage] = useState<bigint>(SLIPPAGE_OPTIONS[0])
+  const [slippage, setSlippage] = useState<bigint>(SLIPPAGE_OPTIONS[1])
   const [amountIn, _setAmountIn] = useState<string>('')
   const [selectedToken, setSelectedToken] = useState<ZapToken>()
   const [error, setError] = useState<ZapErrorType>()
