@@ -8,6 +8,7 @@ import { formatCurrency, shortenAddress } from 'utils'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { proposalDetailAtom } from '../atom'
 import { chainIdAtom } from 'state/atoms'
+import Blockies from 'components/blockies'
 
 interface Vote {
   voter: string
@@ -60,15 +61,15 @@ const ProposalVotes = () => {
   }, [proposal])
 
   return (
-    <Box variant="layout.borderBox" mt={4}>
-      <Box variant="layout.verticalAlign" mb={4}>
+    <Box sx={{ bg: 'background', borderRadius: '8px', p: 2, mt: 2 }}>
+      <Box variant="layout.verticalAlign" mb={2}>
         <Box
           variant="layout.verticalAlign"
           sx={{
             cursor: 'pointer',
-            borderRadius: 50,
+            borderRadius: '6px',
             overflow: 'hidden',
-            padding: 1,
+            padding: '2px',
             fontSize: 1,
             border: '1px solid',
             borderColor: 'inputBorder',
@@ -79,7 +80,7 @@ const ProposalVotes = () => {
             px={'10px'}
             sx={{
               textAlign: 'center',
-              borderRadius: 30,
+              borderRadius: '4px',
               backgroundColor:
                 current === VOTE_TYPE.FOR ? 'inputBorder' : 'none',
               color: 'text',
@@ -93,7 +94,7 @@ const ProposalVotes = () => {
             px={'10px'}
             sx={{
               textAlign: 'center',
-              borderRadius: 30,
+              borderRadius: '4px',
               backgroundColor:
                 current === VOTE_TYPE.AGAINST ? 'inputBorder' : 'none',
               color: 'text',
@@ -102,68 +103,81 @@ const ProposalVotes = () => {
           >
             <Trans>Votes against</Trans>
           </Box>
-        </Box>
-        {(!!Number(proposal?.forWeightedVotes) ||
-          !!Number(proposal?.againstWeightedVotes)) && (
-          <Progress
-            ml="auto"
-            max={1}
+          <Box
+            py={1}
+            px={'10px'}
             sx={{
-              width: '30%',
-              color: 'success',
-              backgroundColor: 'danger',
-              height: 4,
+              textAlign: 'center',
+              borderRadius: '4px',
+              backgroundColor:
+                current === VOTE_TYPE.ABSTAIN ? 'inputBorder' : 'none',
+              color: 'text',
             }}
-            value={forVotesWeight}
-          />
+            onClick={() => setCurrent(VOTE_TYPE.ABSTAIN)}
+          >
+            <Trans>Abstain</Trans>
+          </Box>
+        </Box>
+      </Box>
+
+      <Box
+        sx={{
+          bg: 'focusedBackground',
+          borderRadius: '6px',
+          overflow: 'hidden',
+          boxShadow: '0px 10px 38px 6px rgba(0, 0, 0, 0.05)',
+          py: 2,
+        }}
+      >
+        <Box sx={{ maxHeight: 420, overflow: 'auto' }}>
+          {(votes[current]?.sort((a, b) => +b.weight - +a.weight) || []).map(
+            (vote, index) => (
+              <Box
+                variant="layout.verticalAlign"
+                sx={{ gap: 2 }}
+                key={vote.voter}
+                py={2}
+                px={3}
+              >
+                <Blockies address={vote.voter} />
+                <Text>
+                  {!!ensRes[index] ? ensRes[index] : shortenAddress(vote.voter)}
+                </Text>
+                <GoTo
+                  href={getExplorerLink(
+                    vote.voter,
+                    chainId,
+                    ExplorerDataType.ADDRESS
+                  )}
+                />
+                <Text
+                  ml="auto"
+                  color={
+                    current === 'FOR'
+                      ? 'primary'
+                      : current === 'AGAINST'
+                      ? 'red'
+                      : 'secondaryText'
+                  }
+                >
+                  {formatCurrency(+vote.weight, 0, {
+                    notation: 'compact',
+                    compactDisplay: 'short',
+                  })}
+                </Text>
+              </Box>
+            )
+          )}
+        </Box>
+
+        {!votes[current]?.length && (
+          <Box sx={{ textAlign: 'center' }}>
+            <Text variant="legend">
+              <Trans>No votes</Trans>
+            </Text>
+          </Box>
         )}
       </Box>
-
-      <Box variant="layout.verticalAlign" mb={3}>
-        <Box variant="layout.square" mr={2} />
-        <Text variant="legend">Voter</Text>
-        <Text ml="auto" variant="legend">
-          Votes
-        </Text>
-      </Box>
-      <Box sx={{ maxHeight: 420, overflow: 'auto' }}>
-        {(votes[current] || []).map((vote, index) => (
-          <Box
-            variant="layout.verticalAlign"
-            key={vote.voter}
-            mt={!!index ? 2 : 0}
-          >
-            <Box
-              variant="layout.square"
-              sx={{
-                backgroundColor:
-                  current === VOTE_TYPE.FOR ? 'success' : 'danger',
-              }}
-              mr={2}
-            />
-            <Text>
-              {!!ensRes[index] ? ensRes[index] : shortenAddress(vote.voter)}
-            </Text>
-            <GoTo
-              ml={1}
-              href={getExplorerLink(
-                vote.voter,
-                chainId,
-                ExplorerDataType.ADDRESS
-              )}
-            />
-            <Text ml="auto">{formatCurrency(+vote.weight)}</Text>
-          </Box>
-        ))}
-      </Box>
-
-      {!votes[current]?.length && (
-        <Box sx={{ textAlign: 'center' }}>
-          <Text variant="legend">
-            <Trans>No votes</Trans>
-          </Text>
-        </Box>
-      )}
     </Box>
   )
 }

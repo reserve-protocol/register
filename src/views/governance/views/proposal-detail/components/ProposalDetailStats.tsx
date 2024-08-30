@@ -104,7 +104,11 @@ const ProposalDetailStats = () => {
 
   return (
     <Box sx={{ bg: 'background', borderRadius: '8px', p: 2 }}>
-      <Text variant="title" sx={{ fontWeight: 'bold' }} p={3}>
+      <Text
+        variant="title"
+        sx={{ fontWeight: 'bold', lineHeight: '20px' }}
+        p={3}
+      >
         {[PROPOSAL_STATES.ACTIVE, PROPOSAL_STATES.PENDING].includes(state)
           ? 'Current'
           : 'Final'}{' '}
