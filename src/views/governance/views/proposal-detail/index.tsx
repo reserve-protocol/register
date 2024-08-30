@@ -211,7 +211,7 @@ const GovernanceProposalDetail = () => {
       </Box>
       <Grid
         columns={[1, 1, 1, '10fr 5fr']}
-        gap={[0, 0, 0, 2]}
+        gap={[2]}
         px={[1, 2]}
         sx={{
           bg: 'reserveBackground',
