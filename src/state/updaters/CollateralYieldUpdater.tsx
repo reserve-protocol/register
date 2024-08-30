@@ -55,6 +55,7 @@ const poolsMap: Record<number, Record<string, string>> = {
     'a44febf3-34f6-4cd5-8ab1-f246ebe49f9e': 'steakusdc',
     '74346f6f-c7ee-4506-a204-baf48e13decb': 'stkcvxeth+eth-f',
     '66985a81-9c51-46ca-9977-42b4fe7bc6df': 'susde',
+    '90bfb3c2-5d35-4959-a275-ba5085b08aa3': 'ethx',
   },
   [ChainId.Base]: {
     'df65c4f4-e33a-481c-bac8-0c2252867c93': 'wcusdbcv3',

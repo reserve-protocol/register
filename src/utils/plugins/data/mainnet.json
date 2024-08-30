@@ -797,5 +797,19 @@
     "version": "3.4.0",
     "symbol": "sUSDe",
     "decimals": 18
+  },
+  {
+    "address": "0x73a36258E6A48D0095D1997Fec7F51e191B4Ec81",
+    "rewardTokens": [],
+    "protocol": "GENERIC",
+    "erc20": "0xA35b1B31Ce002FBF2058D22F30f95D405200A15b",
+    "chainlinkFeed": "0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419",
+    "delayUntilDefault": "86400",
+    "maxTradeVolume": "1000000",
+    "oracleTimeout": 3600,
+    "targetName": "ETH",
+    "version": "4.0.0",
+    "symbol": "ETHx",
+    "decimals": 18
   }
 ]
