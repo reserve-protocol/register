@@ -19,9 +19,16 @@ import { ContractProposal } from 'views/governance/atoms'
 
 interface Props extends BoxProps {
   data: ContractProposal
+  borderColor?: string
 }
 
-const CallData = ({ data }: { data: string }) => {
+const CallData = ({
+  data,
+  borderColor = 'darkBorder',
+}: {
+  data: string
+  borderColor?: string
+}) => {
   const [isOpen, setOpen] = useState(false)
 
   return (
@@ -39,7 +46,7 @@ const CallData = ({ data }: { data: string }) => {
       </Box>
       {isOpen && (
         <>
-          <Divider mb={3} mx={-4} sx={{ borderColor: 'darkBorder' }} />
+          <Divider mb={3} mx={-4} sx={{ borderColor }} />
           <Box as="code" sx={{ overflowWrap: 'break-word' }}>
             {data}
           </Box>
@@ -51,7 +58,11 @@ const CallData = ({ data }: { data: string }) => {
 }
 
 // Actions setPrimeBasket
-const ContractProposalDetails = ({ data, ...props }: Props) => {
+const ContractProposalDetails = ({
+  data,
+  borderColor = 'darkBorder',
+  ...props
+}: Props) => {
   const chainId = useAtomValue(chainIdAtom)
   const [colorMode] = useColorMode()
 
@@ -81,12 +92,10 @@ const ContractProposalDetails = ({ data, ...props }: Props) => {
           />
         </Box>
       </Box>
-      <Divider my={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />
+      <Divider my={4} mx={-4} sx={{ borderColor }} />
       {data.calls.map((call, index) => (
         <Box key={index}>
-          {!!index && (
-            <Divider mb={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />
-          )}
+          {!!index && <Divider mb={4} mx={-4} sx={{ borderColor }} />}
           <Box mb={3}>
             <Text
               variant="legend"
@@ -119,8 +128,8 @@ const ContractProposalDetails = ({ data, ...props }: Props) => {
             </Text>
           )}
 
-          <Divider mt={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />
-          <CallData data={call.callData} />
+          <Divider mt={4} mx={-4} sx={{ borderColor }} />
+          <CallData data={call.callData} borderColor={borderColor} />
         </Box>
       ))}
     </Card>

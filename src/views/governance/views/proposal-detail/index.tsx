@@ -31,6 +31,7 @@ import ProposalVote from './components/ProposalVote'
 import ProposalVotes from './components/ProposalVotes'
 import useProposalDetail from './useProposalDetail'
 import useRToken from 'hooks/useRToken'
+import ProposalDetailTitle from './components/ProposalDetailTitle'
 
 const JSONToFile = (obj: any, filename: string) => {
   const blob = new Blob([JSON.stringify(obj, null, 2)], {
@@ -154,59 +155,64 @@ const GovernanceProposalDetail = () => {
 
   return (
     <Box variant="layout.wrapper">
-      <Box
-        variant="layout.verticalAlign"
-        sx={{ justifyContent: 'space-between' }}
-        mt={6}
-        mb={5}
-        px={[1, 7]}
-      >
-        <SmallButton variant="transparent" mr="auto" onClick={handleBack}>
-          <Box variant="layout.verticalAlign">
-            <ArrowLeft size={14} style={{ marginRight: 10 }} />
-            <Trans>Back to governance</Trans>
-          </Box>
-        </SmallButton>
-        <ProposalAlert />
-        <ProposalSnapshot proposal={proposal} />
-        {state === PROPOSAL_STATES.SUCCEEDED && <ProposalQueue />}
-        {state === PROPOSAL_STATES.QUEUED && (
-          <Box
-            variant="layout.verticalAlign"
-            sx={{
-              gap: 3,
-              ':not(:has(> *))': { ml: 0 },
-            }}
-          >
-            <ProposalCancel />
-            <ProposalExecute />
-          </Box>
-        )}
-        {!!proposal?.executionTxnHash && (
-          <Button
-            small
-            variant="muted"
-            sx={{ display: 'flex', alignItems: 'center' }}
-            onClick={() =>
-              window.open(
-                getExplorerLink(
-                  proposal.executionTxnHash,
-                  chainId,
-                  ExplorerDataType.TRANSACTION
-                ),
-                '_blank'
-              )
-            }
-          >
-            <ExternalArrowIcon />
-            <Text ml={2}>View execute tx</Text>
-          </Button>
-        )}
+      <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+        <Box
+          variant="layout.verticalAlign"
+          sx={{ justifyContent: 'space-between' }}
+          mt={6}
+          mb={5}
+          px={[1, 7]}
+        >
+          <SmallButton variant="transparent" mr="auto" onClick={handleBack}>
+            <Box variant="layout.verticalAlign">
+              <ArrowLeft size={14} style={{ marginRight: 10 }} />
+              <Trans>Back to governance</Trans>
+            </Box>
+          </SmallButton>
+          <ProposalAlert />
+          <ProposalSnapshot proposal={proposal} />
+          {state === PROPOSAL_STATES.SUCCEEDED && <ProposalQueue />}
+          {state === PROPOSAL_STATES.QUEUED && (
+            <Box
+              variant="layout.verticalAlign"
+              sx={{
+                gap: 3,
+                ':not(:has(> *))': { ml: 0 },
+              }}
+            >
+              <ProposalCancel />
+              <ProposalExecute />
+            </Box>
+          )}
+          {!!proposal?.executionTxnHash && (
+            <Button
+              small
+              variant="muted"
+              sx={{ display: 'flex', alignItems: 'center' }}
+              onClick={() =>
+                window.open(
+                  getExplorerLink(
+                    proposal.executionTxnHash,
+                    chainId,
+                    ExplorerDataType.TRANSACTION
+                  ),
+                  '_blank'
+                )
+              }
+            >
+              <ExternalArrowIcon />
+              <Text ml={2}>View execute tx</Text>
+            </Button>
+          )}
+        </Box>
+        <Box>
+          <ProposalDetailTitle />
+        </Box>
       </Box>
       <Grid
         columns={[1, 1, 1, '10fr 5fr']}
-        gap={[0, 0, 0, 5]}
-        px={[1, 5]}
+        gap={[0, 0, 0, 2]}
+        px={[1, 2]}
         sx={{
           bg: 'reserveBackground',
           height: '100%',

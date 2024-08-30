@@ -8,6 +8,7 @@ import ContractProposalDetail from '../views/proposal-detail/components/Contract
 interface Props extends BoxProps {
   addresses: string[]
   calldatas: string[]
+  borderColor?: string
 }
 
 type ContractProposalMap = {
@@ -79,7 +80,7 @@ const ProposalDetail = ({ addresses, calldatas, ...props }: Props) => {
       )}
       {calls.map((address, index) => (
         <SectionWrapper key={address} navigationIndex={index}>
-          <ContractProposalDetail data={parse[address]} mb={4} />
+          <ContractProposalDetail data={parse[address]} mb={4} {...props} />
         </SectionWrapper>
       ))}
     </Box>

@@ -1,14 +1,14 @@
 import { Trans } from '@lingui/macro'
+import Blockies from 'components/blockies'
 import GoTo from 'components/button/GoTo'
 import { useEnsAddresses } from 'hooks/useEnsAddresses'
 import { atom, useAtomValue } from 'jotai'
-import { useMemo, useState } from 'react'
-import { Box, Progress, Text } from 'theme-ui'
+import { useState } from 'react'
+import { chainIdAtom } from 'state/atoms'
+import { Box, Text } from 'theme-ui'
 import { formatCurrency, shortenAddress } from 'utils'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { proposalDetailAtom } from '../atom'
-import { chainIdAtom } from 'state/atoms'
-import Blockies from 'components/blockies'
 
 interface Vote {
   voter: string
@@ -44,21 +44,10 @@ const getProposalVotes = atom((get) => {
 const ProposalVotes = () => {
   const chainId = useAtomValue(chainIdAtom)
   const votes = useAtomValue(getProposalVotes)
-  const proposal = useAtomValue(proposalDetailAtom)
   const [current, setCurrent] = useState(VOTE_TYPE.FOR)
 
   const addresses = (votes[current] || []).map((vote: Vote) => vote.voter)
   const ensRes: string[] = useEnsAddresses(addresses)
-
-  const forVotesWeight = useMemo(() => {
-    if (proposal?.abstainWeightedVotes && proposal.forWeightedVotes) {
-      const total = +proposal.abstainWeightedVotes + +proposal.forWeightedVotes
-
-      return (+proposal.forWeightedVotes * 100) / total
-    }
-
-    return 0
-  }, [proposal])
 
   return (
     <Box sx={{ bg: 'background', borderRadius: '8px', p: 2, mt: 2 }}>
