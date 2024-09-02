@@ -1,10 +1,15 @@
 import { useState, useEffect } from 'react'
 import { useBlockNumber } from 'wagmi'
 import { usePublicClient } from 'wagmi'
+import useRToken from './useRToken'
+import { ChainId } from 'utils/chains'
 
 function useBlockTimestamp(blockNumber?: number) {
+  const rToken = useRToken()
   const [timestamp, setTimestamp] = useState<number | undefined>(undefined)
-  const client = usePublicClient()
+  const client = usePublicClient({
+    chainId: rToken?.chainId || ChainId.Mainnet,
+  })
   const { data: currentBlockNumber } = useBlockNumber()
 
   const getBlockTimestampOrUndefined = async (_blockNumber: bigint) => {

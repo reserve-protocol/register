@@ -1,5 +1,11 @@
 import { Box, Text } from 'theme-ui'
-import { TimelineItemCreated, TimelineItemVotingDelay } from './TimelineItem'
+import {
+  TimelineItemCreated,
+  TimelineItemVotingPeriod,
+  TimelineItemVotingDelay,
+  TimelineItemVotingPeriodEnds,
+  TimelineItemVotingResult,
+} from './TimelineItem'
 
 const ProposalTimeline = () => {
   return (
@@ -34,6 +40,9 @@ const ProposalTimeline = () => {
         <Box py={2}>
           <TimelineItemCreated />
           <TimelineItemVotingDelay />
+          <TimelineItemVotingPeriod />
+          <TimelineItemVotingPeriodEnds />
+          <TimelineItemVotingResult />
         </Box>
       </Box>
     </Box>

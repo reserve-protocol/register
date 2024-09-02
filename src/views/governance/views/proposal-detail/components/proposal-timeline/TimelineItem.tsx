@@ -1,14 +1,30 @@
 import Address from 'components/address'
 import { useAtom, useAtomValue } from 'jotai'
 import { ReactNode } from 'react'
-import { Circle, Clock, Lock, Plus, Slash } from 'react-feather'
+import {
+  CheckCircle,
+  Circle,
+  Clock,
+  Lock,
+  PlayCircle,
+  Plus,
+  Slash,
+  StopCircle,
+  XCircle,
+  XOctagon,
+  XSquare,
+} from 'react-feather'
 import { Box, Progress, Text } from 'theme-ui'
-import { proposalDetailAtom } from '../../atom'
+import { getProposalStateAtom, proposalDetailAtom } from '../../atom'
 import dayjs from 'dayjs'
 import { formatDate, parseDuration } from 'utils'
 import useBlockTimestamp from 'hooks/useBlockTimestamp'
 import { isTimeunitGovernance } from 'views/governance/utils'
 import { end } from '@popperjs/core'
+import { blockTimestampAtom } from 'state/atoms'
+import { PROPOSAL_STATES } from 'utils/constants'
+import { proposalStatus } from 'views/explorer/components/governance/Filters'
+import { colors } from 'theme'
 
 // const mockTimeline = [
 //   {
@@ -70,11 +86,12 @@ import { end } from '@popperjs/core'
 
 type TimelineItemProps = {
   icon: ReactNode
-  title: string
+  title: ReactNode
   surtitle?: ReactNode
   subtitle?: ReactNode
   enabled?: boolean
   showProgress?: boolean
+  progress?: number
 }
 
 const TimelineItem = ({
@@ -84,6 +101,7 @@ const TimelineItem = ({
   subtitle,
   enabled = true,
   showProgress = false,
+  progress = 0,
 }: TimelineItemProps) => {
   return (
     <Box>
@@ -119,7 +137,7 @@ const TimelineItem = ({
       </Box>
       {showProgress && (
         <Progress
-          value={20}
+          value={progress}
           max={100}
           sx={{
             position: 'absolute',
@@ -146,10 +164,7 @@ export const TimelineItemCreated = () => {
       subtitle={
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           <Text>By:</Text>
-          <Address
-            address="0x8e0507C16435Caca6CB71a7Fb0e0636fd3891df4"
-            chain={1}
-          />
+          <Address address={proposal?.proposer || ''} chain={1} />
         </Box>
       }
     />
@@ -160,16 +175,106 @@ export const TimelineItemVotingDelay = () => {
   const proposal = useAtomValue(proposalDetailAtom)
   const isTimeunit = isTimeunitGovernance(proposal?.version ?? '1')
   const _startTime = useBlockTimestamp(proposal?.startBlock)
-  const _endTime = useBlockTimestamp(proposal?.endBlock)
 
   const startTime = isTimeunit ? proposal?.startBlock : _startTime
-  const endTime = isTimeunit ? proposal?.endBlock : _endTime
+  const creationTime = proposal?.creationTime
+  const duration = (startTime || 0) - +(creationTime || 0)
 
   return (
     <TimelineItem
       icon={<Clock size={18} />}
       title="Voting delay"
-      surtitle={parseDuration((endTime || 0) - (startTime || 0))}
+      surtitle={parseDuration(duration)}
+    />
+  )
+}
+
+export const TimelineItemVotingPeriod = () => {
+  const proposal = useAtomValue(proposalDetailAtom)
+  const isTimeunit = isTimeunitGovernance(proposal?.version ?? '1')
+  const _startTime = useBlockTimestamp(proposal?.startBlock)
+  const _endTime = useBlockTimestamp(proposal?.endBlock)
+
+  const currentTime = useAtomValue(blockTimestampAtom)
+  const startTime = isTimeunit ? proposal?.startBlock : _startTime
+  const endTime = isTimeunit ? proposal?.endBlock : _endTime
+  const duration = (endTime || 0) - (startTime || 0)
+  const elapsed = currentTime - (startTime || 0)
+  const enabled = currentTime > (startTime || 0)
+  const inProgress = currentTime < (endTime || 0)
+
+  return (
+    <TimelineItem
+      icon={<PlayCircle size={18} />}
+      title="Voting Period"
+      surtitle={formatDate(+(startTime || 0) * 1000)}
+      showProgress={enabled && inProgress}
+      progress={(duration > 0 ? elapsed / duration : 0) * 100}
+      enabled={enabled}
+    />
+  )
+}
+
+export const TimelineItemVotingPeriodEnds = () => {
+  const proposal = useAtomValue(proposalDetailAtom)
+  const isTimeunit = isTimeunitGovernance(proposal?.version ?? '1')
+  const _endTime = useBlockTimestamp(proposal?.endBlock)
+
+  const endTime = isTimeunit ? proposal?.endBlock : _endTime
+  const currentTime = useAtomValue(blockTimestampAtom)
+  const enabled = currentTime > (endTime || 0)
+  const elapsed = currentTime - (endTime || 0)
+
+  return (
+    <TimelineItem
+      icon={<StopCircle size={18} />}
+      title="Voting Period Ends"
+      surtitle={formatDate(+(endTime || 0) * 1000)}
+      subtitle={enabled ? '' : `in ${parseDuration(elapsed)}`}
+      enabled={enabled}
+    />
+  )
+}
+
+const VALID_STATES = [
+  PROPOSAL_STATES.DEFEATED,
+  PROPOSAL_STATES.QUORUM_NOT_REACHED,
+  PROPOSAL_STATES.SUCCEEDED,
+  PROPOSAL_STATES.EXPIRED,
+]
+const ICON_BY_STATE = {
+  [PROPOSAL_STATES.DEFEATED]: <XCircle color="red" size={18} />,
+  [PROPOSAL_STATES.QUORUM_NOT_REACHED]: <XSquare color="orange" size={18} />,
+  [PROPOSAL_STATES.EXPIRED]: <XOctagon color="gray" size={18} />,
+  [PROPOSAL_STATES.SUCCEEDED]: <CheckCircle color={colors.success} size={18} />,
+}
+const COLOR_BY_STATE = {
+  [PROPOSAL_STATES.DEFEATED]: 'red',
+  [PROPOSAL_STATES.QUORUM_NOT_REACHED]: 'orange',
+  [PROPOSAL_STATES.EXPIRED]: 'gray',
+  [PROPOSAL_STATES.SUCCEEDED]: 'success',
+}
+export const TimelineItemVotingResult = () => {
+  const proposal = useAtomValue(proposalDetailAtom)
+  const proposalState = useAtomValue(getProposalStateAtom)
+  const isTimeunit = isTimeunitGovernance(proposal?.version ?? '1')
+
+  const currentTime = useAtomValue(blockTimestampAtom)
+  const _endTime = useBlockTimestamp(proposal?.endBlock)
+  const endTime = isTimeunit ? proposal?.endBlock : _endTime
+  const show =
+    currentTime > (endTime || 0) && VALID_STATES.includes(proposalState.state)
+
+  if (!show) return null
+
+  return (
+    <TimelineItem
+      icon={ICON_BY_STATE[proposalState.state]}
+      title={
+        <Text color={COLOR_BY_STATE[proposalState.state]}>
+          {proposalStatus[proposalState.state]}
+        </Text>
+      }
     />
   )
 }
