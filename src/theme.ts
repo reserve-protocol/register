@@ -129,6 +129,7 @@ export const colors = {
   rebalancing: '#FF8A00',
   progressBar: 'white',
   progressBarBackground: 'black',
+  bgIcon: '#F2F2F2',
   modes: {
     dark: {
       accentInverted: '#fff',
@@ -173,6 +174,7 @@ export const colors = {
       rebalancing: '#FF8A00',
       progressBar: 'black',
       progressBarBackground: 'white',
+      bgIcon: '#1E1E1E',
     },
   },
 }

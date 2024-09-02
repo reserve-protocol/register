@@ -34,8 +34,7 @@ const ProposalDetailContent = () => {
             overflow: 'hidden',
             padding: '2px',
             fontSize: 1,
-            border: '1px solid',
-            borderColor: 'inputBorder',
+            bg: 'inputBackground',
           }}
         >
           <Box
@@ -45,8 +44,8 @@ const ProposalDetailContent = () => {
               textAlign: 'center',
               borderRadius: '4px',
               backgroundColor:
-                tab === TABS.DESCRIPTION ? 'inputBorder' : 'none',
-              color: 'text',
+                tab === TABS.DESCRIPTION ? 'focusedBackground' : 'none',
+              color: tab === TABS.DESCRIPTION ? 'accentInverted' : 'text',
             }}
             onClick={() => setTab(TABS.DESCRIPTION)}
           >
@@ -58,8 +57,9 @@ const ProposalDetailContent = () => {
             sx={{
               textAlign: 'center',
               borderRadius: '4px',
-              backgroundColor: tab === TABS.CHANGES ? 'inputBorder' : 'none',
-              color: 'text',
+              backgroundColor:
+                tab === TABS.CHANGES ? 'focusedBackground' : 'none',
+              color: tab === TABS.CHANGES ? 'accentInverted' : 'text',
             }}
             onClick={() => setTab(TABS.CHANGES)}
           >

@@ -32,7 +32,7 @@ import ProposalVotes from './components/ProposalVotes'
 import useProposalDetail from './useProposalDetail'
 import useRToken from 'hooks/useRToken'
 import ProposalDetailTitle from './components/ProposalDetailTitle'
-import ProposalTimeline from './components/ProposalTimeline'
+import ProposalTimeline from './components/proposal-timeline/index'
 
 const JSONToFile = (obj: any, filename: string) => {
   const blob = new Blob([JSON.stringify(obj, null, 2)], {

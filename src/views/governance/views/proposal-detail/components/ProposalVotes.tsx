@@ -60,8 +60,7 @@ const ProposalVotes = () => {
             overflow: 'hidden',
             padding: '2px',
             fontSize: 1,
-            border: '1px solid',
-            borderColor: 'inputBorder',
+            bg: 'inputBackground',
           }}
         >
           <Box
@@ -71,8 +70,8 @@ const ProposalVotes = () => {
               textAlign: 'center',
               borderRadius: '4px',
               backgroundColor:
-                current === VOTE_TYPE.FOR ? 'inputBorder' : 'none',
-              color: 'text',
+                current === VOTE_TYPE.FOR ? 'focusedBackground' : 'none',
+              color: current === VOTE_TYPE.FOR ? 'accentInverted' : 'text',
             }}
             onClick={() => setCurrent(VOTE_TYPE.FOR)}
           >
@@ -85,8 +84,8 @@ const ProposalVotes = () => {
               textAlign: 'center',
               borderRadius: '4px',
               backgroundColor:
-                current === VOTE_TYPE.AGAINST ? 'inputBorder' : 'none',
-              color: 'text',
+                current === VOTE_TYPE.AGAINST ? 'focusedBackground' : 'none',
+              color: current === VOTE_TYPE.AGAINST ? 'accentInverted' : 'text',
             }}
             onClick={() => setCurrent(VOTE_TYPE.AGAINST)}
           >
@@ -99,8 +98,8 @@ const ProposalVotes = () => {
               textAlign: 'center',
               borderRadius: '4px',
               backgroundColor:
-                current === VOTE_TYPE.ABSTAIN ? 'inputBorder' : 'none',
-              color: 'text',
+                current === VOTE_TYPE.ABSTAIN ? 'focusedBackground' : 'none',
+              color: current === VOTE_TYPE.ABSTAIN ? 'accentInverted' : 'text',
             }}
             onClick={() => setCurrent(VOTE_TYPE.ABSTAIN)}
           >

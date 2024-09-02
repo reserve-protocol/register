@@ -27,7 +27,7 @@ const BooleanIcon = ({
         display: 'flex',
         alignItems: 'center',
         p: '2px',
-        bg: 'secondary',
+        bg: 'bgIcon',
         borderRadius: '4px',
       }}
     >
@@ -178,7 +178,7 @@ const ProposalDetailStats = () => {
             <Box variant="layout.verticalAlign" sx={{ gap: '12px' }}>
               <BooleanIcon
                 value={majoritySupport}
-                colorSuccess={colors.primary}
+                colorSuccess={colors.accentInverted}
                 colorFailure="red"
               />
               <Text>Majority support</Text>
@@ -187,7 +187,7 @@ const ProposalDetailStats = () => {
               <Text
                 sx={{
                   fontWeight: 'bold',
-                  color: majoritySupport ? 'primary' : 'red',
+                  color: majoritySupport ? 'accentInverted' : 'red',
                 }}
               >
                 {majoritySupport ? 'Yes' : 'No'}
@@ -202,7 +202,7 @@ const ProposalDetailStats = () => {
             mt={2}
             sx={{
               width: '100%',
-              color: majoritySupport ? 'primary' : 'red',
+              color: majoritySupport ? 'accentInverted' : 'red',
               backgroundColor: 'lightgray',
               height: 4,
             }}
@@ -224,16 +224,18 @@ const ProposalDetailStats = () => {
               sx={{
                 display: 'flex',
                 alignItems: 'center',
-                p: 1,
-                bg: 'secondary',
+                justifyContent: 'center',
+                width: '28px',
+                height: '28px',
+                bg: 'bgIcon',
                 borderRadius: '4px',
               }}
             >
-              <ThumbsUp size={16} color={colors.primary} />
+              <ThumbsUp size={18} color={colors.accentInverted} />
             </Box>
             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
               <Text sx={{ minWidth: 60 }}>For</Text>
-              <Text sx={{ fontWeight: 'bold', color: 'primary' }}>
+              <Text sx={{ fontWeight: 'bold', color: 'accentInverted' }}>
                 {formatCurrency(+forVotes, 0, {
                   notation: 'compact',
                   compactDisplay: 'short',
@@ -264,12 +266,14 @@ const ProposalDetailStats = () => {
               sx={{
                 display: 'flex',
                 alignItems: 'center',
-                p: 1,
-                bg: 'secondary',
+                justifyContent: 'center',
+                width: '28px',
+                height: '28px',
+                bg: 'bgIcon',
                 borderRadius: '4px',
               }}
             >
-              <ThumbsDown size={16} color="red" />
+              <ThumbsDown size={18} color="red" />
             </Box>
           </Box>
         </Box>
@@ -285,12 +289,14 @@ const ProposalDetailStats = () => {
               sx={{
                 display: 'flex',
                 alignItems: 'center',
-                p: 1,
-                bg: 'secondary',
+                justifyContent: 'center',
+                width: '28px',
+                height: '28px',
+                bg: 'bgIcon',
                 borderRadius: '4px',
               }}
             >
-              <Slash size={16} />
+              <Slash size={18} />
             </Box>
             <Text sx={{ minWidth: 60 }}>Abstain</Text>
           </Box>

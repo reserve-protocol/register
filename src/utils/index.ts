@@ -5,6 +5,7 @@ import humanizeDuration from 'humanize-duration'
 import { BigNumberMap } from 'types'
 import { Address, getAddress, parseEther, parseUnits } from 'viem'
 import { CHAIN_TO_NETWORK, ROUTES } from './constants'
+import dayjs from 'dayjs'
 
 export const decimalPattern = /^[0-9]*[.]?[0-9]*$/i
 export const numberPattern = /^\d+$/
@@ -218,4 +219,15 @@ export const parseDuration = (
 export const getUTCStartOfDay = (timestamp: number) => {
   const date = new Date(timestamp * 1000)
   return Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate())
+}
+
+// Thu May 18, 03:16 pm
+export const formatDate = (timestamp?: string | number) => {
+  const date = dayjs(timestamp)
+  const currentYear = dayjs().year()
+  const formatString =
+    date.year() === currentYear
+      ? 'ddd MMM DD, hh:mm a'
+      : 'ddd MMM DD, YYYY, hh:mm a'
+  return date.format(formatString)
 }
