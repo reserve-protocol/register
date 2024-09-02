@@ -32,6 +32,7 @@ import ProposalVotes from './components/ProposalVotes'
 import useProposalDetail from './useProposalDetail'
 import useRToken from 'hooks/useRToken'
 import ProposalDetailTitle from './components/ProposalDetailTitle'
+import ProposalTimeline from './components/ProposalTimeline'
 
 const JSONToFile = (obj: any, filename: string) => {
   const blob = new Blob([JSON.stringify(obj, null, 2)], {
@@ -228,6 +229,7 @@ const GovernanceProposalDetail = () => {
           {(state === PROPOSAL_STATES.PENDING ||
             state === PROPOSAL_STATES.ACTIVE) && <ProposalVote mb="4" />}
           <ProposalDetailStats />
+          <ProposalTimeline />
           <ProposalVotes />
         </Box>
       </Grid>
