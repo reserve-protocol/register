@@ -110,18 +110,23 @@ export const TimelineItemCreated = () => {
 
 export const TimelineItemVotingDelay = () => {
   const proposal = useAtomValue(proposalDetailAtom)
+  const currentTime = useAtomValue(blockTimestampAtom)
   const isTimeunit = isTimeunitGovernance(proposal?.version ?? '1')
   const _startTime = useBlockTimestamp(proposal?.startBlock)
 
-  const startTime = isTimeunit ? proposal?.startBlock : _startTime
-  const creationTime = proposal?.creationTime
-  const duration = (startTime || 0) - +(creationTime || 0)
+  const startTime = +((isTimeunit ? proposal?.startBlock : _startTime) || 0)
+  const creationTime = +(proposal?.creationTime || 0)
+  const duration = startTime - creationTime
+  const showProgress = currentTime < startTime
+  const progress = duration > 0 ? (startTime - currentTime) / duration : 0
 
   return (
     <TimelineItem
       icon={<Clock size={18} />}
       title="Voting delay"
       surtitle={parseDuration(duration)}
+      showProgress={showProgress}
+      progress={progress * 100}
     />
   )
 }
@@ -155,12 +160,14 @@ export const TimelineItemVotingPeriod = () => {
 export const TimelineItemVotingPeriodEnds = () => {
   const proposal = useAtomValue(proposalDetailAtom)
   const isTimeunit = isTimeunitGovernance(proposal?.version ?? '1')
+  const _startTime = useBlockTimestamp(proposal?.startBlock)
   const _endTime = useBlockTimestamp(proposal?.endBlock)
 
+  const startTime = isTimeunit ? proposal?.startBlock : _startTime
   const endTime = isTimeunit ? proposal?.endBlock : _endTime
   const currentTime = useAtomValue(blockTimestampAtom)
   const enabled = currentTime > (endTime || 0)
-  const elapsed = currentTime - (endTime || 0)
+  const elapsed = Math.max(currentTime, startTime || 0) - (endTime || 0)
 
   return (
     <TimelineItem
@@ -251,7 +258,7 @@ export const TimelineItemQueued = () => {
       icon={<MoreHorizontal size={18} />}
       title="Queued"
       surtitle={formatDate(queueTime * 1000)}
-      subtitle={`${showProgress ? 'in ' : ''}${parseDuration(duration)}`}
+      subtitle={parseDuration(duration)}
       showProgress={showProgress}
       progress={(duration > 0 ? elapsed / duration : 0) * 100}
     />
