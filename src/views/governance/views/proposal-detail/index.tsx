@@ -5,12 +5,34 @@ import ProposalDetailStats from './components/ProposalDetailStats'
 import ProposalVotes from './components/ProposalVotes'
 import ProposalHeader from './ProposalHeader'
 import ProposalDetailAtomUpdater from './ProposalDetailAtomUpdater'
+import ProposalVote from './components/ProposalVote'
 
 const GovernanceProposalDetail = () => {
   return (
-    <Box variant="layout.wrapper">
+    <Box
+      variant="layout.wrapper"
+      sx={{ bg: 'reserveBackground', borderRadius: '14px' }}
+    >
       <ProposalDetailAtomUpdater />
-      <ProposalHeader />
+      <Grid
+        columns={[1, 1, 1, '10fr 5fr']}
+        gap={[2]}
+        p={[1, '2px']}
+        sx={{
+          bg: 'focusedBackground',
+          borderRadius: '14px',
+          border: '4px solid',
+          borderColor: 'reserveBackground',
+          height: '100%',
+          position: 'relative',
+          alignContent: 'flex-start',
+          alignItems: 'flex-start',
+          overflowY: 'auto',
+        }}
+      >
+        <ProposalHeader />
+        <ProposalVote />
+      </Grid>
       <Grid
         columns={[1, 1, 1, '10fr 5fr']}
         gap={[2]}

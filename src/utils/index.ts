@@ -110,6 +110,10 @@ export function shortenString(str: string) {
   return `${str.substring(0, 6)}...${str.substring(str.length - 4)}`
 }
 
+export function shortenStringN(str: string, chars = 5) {
+  return `${str.substring(0, chars)}...${str.substring(str.length - chars)}`
+}
+
 export function hasAllowance(
   allowances: BigNumberMap,
   requiredAllowances: BigNumberMap
