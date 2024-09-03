@@ -74,20 +74,24 @@ const CollateralDetails = ({
 
   return (
     <Box
-      p={[3, 4]}
       sx={{
         fontWeight: 700,
-        cursor: 'pointer',
         position: 'relative',
         alignItems: 'center',
         borderBottom: '1px solid',
         borderColor: expanded ? 'inputBorder' : 'border',
         ':last-of-type': { borderBottom: 'none' },
-        '&:hover': { backgroundColor: ['none', 'inputBackground'] },
       }}
-      onClick={() => setExpanded(!expanded)}
     >
-      <Grid columns={['1fr', '3fr 1fr 1fr 1fr']}>
+      <Grid
+        columns={['1fr', '3fr 1fr 1fr 1fr']}
+        onClick={() => setExpanded(!expanded)}
+        sx={{
+          cursor: 'pointer',
+          '&:hover': { backgroundColor: ['none', 'inputBackground'] },
+        }}
+        p={[3, 4]}
+      >
         <Box variant="layout.verticalAlign">
           <TokenLogo symbol={collateral.symbol} />
           <Text ml={2} variant="accent">
@@ -139,19 +143,20 @@ const CollateralDetails = ({
         </Box>
       </Grid>
       {!!expanded && (
-        <Box mt={3} sx={{ fontWeight: 400 }}>
+        <Box mt={3} sx={{ fontWeight: 400 }} px={[3, 4]} pb={[3, 4]}>
           <Text as="p">{collateral.description}</Text>
           <Box mt="3" variant="layout.verticalAlign" sx={{ flexWrap: 'wrap' }}>
             <Button
               mr="3"
               small
               variant="transparent"
-              onClick={() =>
+              onClick={(e) => {
+                e.stopPropagation()
                 window.open(
                   'https://reserve.org/protocol/introduction/',
                   '_blank'
                 )
-              }
+              }}
             >
               <Box variant="layout.verticalAlign">
                 <HiperlinkIcon />
