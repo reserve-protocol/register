@@ -11,17 +11,14 @@ import { keccak256, toBytes } from 'viem'
 
 const ProposalCancel = () => {
   const governance = useAtomValue(rTokenGovernanceAtom)
-  const timelockId = useAtomValue(timelockIdAtom);
+  const timelockId = useAtomValue(timelockIdAtom)
   const account = useAtomValue(walletAtom)
 
   const { data: canCancel } = useContractRead({
     address: governance.timelock,
     abi: Timelock,
     functionName: 'hasRole',
-    args: account ? [
-      keccak256(toBytes('CANCELLER_ROLE')),
-      account,
-    ] : undefined,
+    args: account ? [keccak256(toBytes('CANCELLER_ROLE')), account] : undefined,
   })
 
   const { write, isLoading, hash, isReady } = useContractWrite({
@@ -42,7 +39,7 @@ const ProposalCancel = () => {
 
   return (
     <TransactionButton
-      variant='danger'
+      variant="danger"
       small
       loading={isMining || isLoading}
       mining={isMining}

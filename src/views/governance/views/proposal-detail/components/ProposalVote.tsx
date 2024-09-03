@@ -42,6 +42,12 @@ const ProposalVote = (props: BoxProps) => {
     !!Number(balance) &&
     hasNoDelegates
 
+  if (
+    !(state === PROPOSAL_STATES.PENDING || state === PROPOSAL_STATES.ACTIVE)
+  ) {
+    return null
+  }
+
   return (
     <Box variant="layout.borderBox" sx={{ textAlign: 'center' }} {...props}>
       <Text variant="legend">
