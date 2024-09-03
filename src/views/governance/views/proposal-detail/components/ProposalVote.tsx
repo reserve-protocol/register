@@ -42,45 +42,63 @@ const ProposalVote = (props: BoxProps) => {
     !!Number(balance) &&
     hasNoDelegates
 
-  if (
-    !(state === PROPOSAL_STATES.PENDING || state === PROPOSAL_STATES.ACTIVE)
-  ) {
-    return null
-  }
-
   return (
-    <Box variant="layout.borderBox" sx={{ textAlign: 'center' }} {...props}>
-      <Text variant="legend">
-        <Trans>Your voting power</Trans>
-      </Text>
-      <Text variant="title" mt={1} mb={3}>
-        {formatCurrency(votePower ? +votePower : 0)}
-      </Text>
-      {hasUndelegatedBalance ? (
-        <Button sx={{ width: '100%' }} onClick={() => setDelegateVisible(true)}>
-          <Trans>Delegate voting power for future votes</Trans>
-        </Button>
-      ) : (
-        <Button
-          disabled={
-            !account ||
-            !!vote ||
-            state === PROPOSAL_STATES.PENDING ||
-            !votePower ||
-            votePower === '0.0'
-          }
-          sx={{ width: '100%' }}
-          onClick={() => setVoteVisible(true)}
-        >
-          {vote ? `You voted "${vote}"` : <Trans>Vote on-chain</Trans>}
-        </Button>
-      )}
-
-      {!account && (
-        <Text mt={3} sx={{ display: 'block', color: 'warning' }}>
-          <Trans>Please connect your wallet</Trans>
+    <Box
+      variant="layout.borderBox"
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        textAlign: 'center',
+        height: '100%',
+        justifyContent: 'space-between',
+      }}
+      {...props}
+    >
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          flexGrow: 1,
+        }}
+      >
+        <Text variant="legend">
+          <Trans>Your voting power</Trans>
         </Text>
-      )}
+        <Text variant="title" mt={1} mb={3}>
+          {formatCurrency(votePower ? +votePower : 0)}
+        </Text>
+      </Box>
+      <Box>
+        {hasUndelegatedBalance ? (
+          <Button
+            sx={{ width: '100%' }}
+            onClick={() => setDelegateVisible(true)}
+          >
+            <Trans>Delegate voting power for future votes</Trans>
+          </Button>
+        ) : (
+          <Button
+            disabled={
+              !account ||
+              !!vote ||
+              state !== PROPOSAL_STATES.ACTIVE ||
+              !votePower ||
+              votePower === '0.0'
+            }
+            sx={{ width: '100%' }}
+            onClick={() => setVoteVisible(true)}
+          >
+            {vote ? `You voted "${vote}"` : <Trans>Vote on-chain</Trans>}
+          </Button>
+        )}
+
+        {!account && (
+          <Text mt={3} sx={{ display: 'block', color: 'warning' }}>
+            <Trans>Please connect your wallet</Trans>
+          </Text>
+        )}
+      </Box>
       {isVoteVisible && <VoteModal onClose={() => setVoteVisible(false)} />}
       {isDelegateVisible && (
         <DelegateModal

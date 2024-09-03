@@ -31,7 +31,9 @@ const GovernanceProposalDetail = () => {
         }}
       >
         <ProposalHeader />
-        <ProposalVote />
+        <Box sx={{ py: 4, pr: [0, 1], height: '100%' }}>
+          <ProposalVote />
+        </Box>
       </Grid>
       <Grid
         columns={[1, 1, 1, '10fr 5fr']}

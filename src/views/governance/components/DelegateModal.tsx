@@ -47,7 +47,7 @@ const DelegateModal = ({
         mt={2}
         value={address}
         onChange={setAddress}
-        placeholder={t`Eth address`}
+        placeholder={t`ETH address`}
       />
     </TransactionModal>
   )
