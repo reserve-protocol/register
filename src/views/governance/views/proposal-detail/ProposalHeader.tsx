@@ -97,7 +97,11 @@ const ProposalCTAs = () => {
 const Dot = () => (
   <Box
     variant="layout.verticalAlign"
-    sx={{ justifyContent: 'center', fontWeight: 'bold' }}
+    sx={{
+      justifyContent: 'center',
+      fontWeight: 'bold',
+      display: ['none', 'block', 'block', 'block', 'block'],
+    }}
   >
     ·
   </Box>
@@ -124,13 +128,13 @@ const ProposalHeader = () => {
         display: 'flex',
         flexDirection: 'column',
         height: '100%',
-        gap: 8,
+        gap: [7, 8],
         p: 4,
       }}
     >
       <Box
         variant="layout.verticalAlign"
-        sx={{ gap: 2, justifyContent: 'space-between' }}
+        sx={{ gap: [3, 2], justifyContent: 'space-between', flexWrap: 'wrap' }}
       >
         <BackButton />
         <Box
@@ -177,6 +181,7 @@ const ProposalHeader = () => {
               gap: 5,
               fontSize: 2,
               justifyContent: 'space-between',
+              flexWrap: 'wrap',
             }}
           >
             <Box variant="layout.verticalAlign" sx={{ gap: 3 }}>
@@ -201,7 +206,10 @@ const ProposalHeader = () => {
                 </Link>
               </Box>
             </Box>
-            <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
+            <Box
+              variant="layout.verticalAlign"
+              sx={{ gap: [2, 1], flexWrap: 'wrap' }}
+            >
               <ProposalAlert />
               <ProposalSnapshot />
               <ProposalCTAs />
