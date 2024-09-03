@@ -5,6 +5,8 @@ import {
   TimelineItemVotingDelay,
   TimelineItemVotingPeriodEnds,
   TimelineItemVotingResult,
+  TimelineItemQueued,
+  TimelineItemEnd,
 } from './TimelineItem'
 
 const ProposalTimeline = () => {
@@ -33,7 +35,7 @@ const ProposalTimeline = () => {
             borderColor: 'borderSecondary',
             top: '40px',
             left: '29px',
-            height: 'calc(100% - 72px)',
+            height: 'calc(100% - 80px)',
             zIndex: 10,
           }}
         />
@@ -43,6 +45,8 @@ const ProposalTimeline = () => {
           <TimelineItemVotingPeriod />
           <TimelineItemVotingPeriodEnds />
           <TimelineItemVotingResult />
+          <TimelineItemQueued />
+          <TimelineItemEnd />
         </Box>
       </Box>
     </Box>

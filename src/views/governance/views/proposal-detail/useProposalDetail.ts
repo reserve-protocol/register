@@ -24,9 +24,12 @@ const query = gql`
       startBlock
       endBlock
       queueBlock
+      queueTime
       state
       executionStartBlock
       executionETA
+      executionTime
+      cancellationTime
       calldatas
       targets
       proposer {

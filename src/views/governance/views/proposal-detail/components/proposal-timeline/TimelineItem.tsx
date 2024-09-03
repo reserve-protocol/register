@@ -1,88 +1,25 @@
 import Address from 'components/address'
-import { useAtom, useAtomValue } from 'jotai'
+import useBlockTimestamp from 'hooks/useBlockTimestamp'
+import { useAtomValue } from 'jotai'
 import { ReactNode } from 'react'
 import {
   CheckCircle,
   Circle,
   Clock,
-  Lock,
+  MoreHorizontal,
   PlayCircle,
-  Plus,
-  Slash,
   StopCircle,
   XCircle,
   XOctagon,
   XSquare,
 } from 'react-feather'
-import { Box, Progress, Text } from 'theme-ui'
-import { getProposalStateAtom, proposalDetailAtom } from '../../atom'
-import dayjs from 'dayjs'
-import { formatDate, parseDuration } from 'utils'
-import useBlockTimestamp from 'hooks/useBlockTimestamp'
-import { isTimeunitGovernance } from 'views/governance/utils'
-import { end } from '@popperjs/core'
 import { blockTimestampAtom } from 'state/atoms'
-import { PROPOSAL_STATES } from 'utils/constants'
-import { proposalStatus } from 'views/explorer/components/governance/Filters'
 import { colors } from 'theme'
-
-// const mockTimeline = [
-//   {
-//     surtitle: 'Mon Jul 29, 04:40 pm',
-//     icon: <Plus size={18} />,
-//     title: 'Proposal created',
-//     subtitle: (
-//       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-//         <Text>By:</Text>
-//         <Address
-//           address="0x8e0507C16435Caca6CB71a7Fb0e0636fd3891df4"
-//           chain={1}
-//         />
-//       </Box>
-//     ),
-//     enabled: true,
-//   },
-//   {
-//     surtitle: '2 day',
-//     icon: <Clock size={18} />,
-//     title: 'Voting delay',
-//     enabled: true,
-//   },
-//   {
-//     surtitle: 'Mon Jul 31, 04:40 pm',
-//     icon: <Lock size={18} />,
-//     title: 'Snapshot taken',
-//     subtitle: (
-//       <Address address="0x8e0507C16435Caca6CB71a7Fb0e0636fd3891df4" chain={1} />
-//     ),
-//     enabled: true,
-//   },
-//   {
-//     surtitle: 'Mon Jul 31, 04:40 pm',
-//     icon: <Slash size={18} />,
-//     title: 'Voting period',
-//     enabled: true,
-//   },
-//   {
-//     surtitle: 'Mon Jul 31, 04:40 pm',
-//     icon: <Slash size={18} />,
-//     title: 'Voting period ends',
-//     subtitle: 'in 11 days',
-//     enabled: false,
-//   },
-//   {
-//     surtitle: 'Fast proposal',
-//     icon: <Clock size={18} />,
-//     title: 'Execution delay',
-//     subtitle: '1 week delay',
-//     enabled: false,
-//   },
-//   {
-//     icon: <Circle size={18} />,
-//     title: 'Execute proposal',
-//     enabled: false,
-//   },
-// ]
+import { Box, Progress, Text } from 'theme-ui'
+import { formatDate, parseDuration } from 'utils'
+import { PROPOSAL_STATES } from 'utils/constants'
+import { isTimeunitGovernance } from 'views/governance/utils'
+import { getProposalStateAtom, proposalDetailAtom } from '../../atom'
 
 type TimelineItemProps = {
   icon: ReactNode
@@ -241,29 +178,40 @@ const VALID_STATES = [
   PROPOSAL_STATES.QUORUM_NOT_REACHED,
   PROPOSAL_STATES.SUCCEEDED,
   PROPOSAL_STATES.EXPIRED,
+  PROPOSAL_STATES.QUEUED,
+  PROPOSAL_STATES.EXECUTED,
+  PROPOSAL_STATES.CANCELED,
 ]
+const TITLE_BY_STATE = {
+  [PROPOSAL_STATES.DEFEATED]: 'Proposal defeated',
+  [PROPOSAL_STATES.QUORUM_NOT_REACHED]: 'Quorum not reached',
+  [PROPOSAL_STATES.EXPIRED]: 'Proposal expired',
+  [PROPOSAL_STATES.SUCCEEDED]: 'Proposal succeeded',
+  [PROPOSAL_STATES.QUEUED]: 'Proposal succeeded',
+  [PROPOSAL_STATES.EXECUTED]: 'Proposal succeeded',
+  [PROPOSAL_STATES.CANCELED]: 'Proposal succeeded',
+}
 const ICON_BY_STATE = {
   [PROPOSAL_STATES.DEFEATED]: <XCircle color="red" size={18} />,
   [PROPOSAL_STATES.QUORUM_NOT_REACHED]: <XSquare color="orange" size={18} />,
   [PROPOSAL_STATES.EXPIRED]: <XOctagon color="gray" size={18} />,
   [PROPOSAL_STATES.SUCCEEDED]: <CheckCircle color={colors.success} size={18} />,
+  [PROPOSAL_STATES.QUEUED]: <CheckCircle color={colors.success} size={18} />,
+  [PROPOSAL_STATES.EXECUTED]: <CheckCircle color={colors.success} size={18} />,
+  [PROPOSAL_STATES.CANCELED]: <CheckCircle color={colors.success} size={18} />,
 }
 const COLOR_BY_STATE = {
   [PROPOSAL_STATES.DEFEATED]: 'red',
   [PROPOSAL_STATES.QUORUM_NOT_REACHED]: 'orange',
   [PROPOSAL_STATES.EXPIRED]: 'gray',
   [PROPOSAL_STATES.SUCCEEDED]: 'success',
+  [PROPOSAL_STATES.QUEUED]: 'success',
+  [PROPOSAL_STATES.EXECUTED]: 'success',
+  [PROPOSAL_STATES.CANCELED]: 'success',
 }
 export const TimelineItemVotingResult = () => {
-  const proposal = useAtomValue(proposalDetailAtom)
   const proposalState = useAtomValue(getProposalStateAtom)
-  const isTimeunit = isTimeunitGovernance(proposal?.version ?? '1')
-
-  const currentTime = useAtomValue(blockTimestampAtom)
-  const _endTime = useBlockTimestamp(proposal?.endBlock)
-  const endTime = isTimeunit ? proposal?.endBlock : _endTime
-  const show =
-    currentTime > (endTime || 0) && VALID_STATES.includes(proposalState.state)
+  const show = VALID_STATES.includes(proposalState.state)
 
   if (!show) return null
 
@@ -272,9 +220,78 @@ export const TimelineItemVotingResult = () => {
       icon={ICON_BY_STATE[proposalState.state]}
       title={
         <Text color={COLOR_BY_STATE[proposalState.state]}>
-          {proposalStatus[proposalState.state]}
+          {TITLE_BY_STATE[proposalState.state]}
         </Text>
       }
+    />
+  )
+}
+
+const VALID_STATES_QUEUED = [
+  PROPOSAL_STATES.QUEUED,
+  PROPOSAL_STATES.EXECUTED,
+  PROPOSAL_STATES.CANCELED,
+]
+export const TimelineItemQueued = () => {
+  const proposal = useAtomValue(proposalDetailAtom)
+  const proposalState = useAtomValue(getProposalStateAtom)
+
+  const queueTime = +(proposal?.queueTime || 0)
+  const executionTime = +(proposal?.executionETA || 0)
+  const currentTime = useAtomValue(blockTimestampAtom)
+  const duration = executionTime - queueTime
+  const elapsed = currentTime - queueTime
+  const show = VALID_STATES_QUEUED.includes(proposalState.state)
+  const showProgress = proposalState.state === PROPOSAL_STATES.QUEUED
+
+  if (!show) return null
+
+  return (
+    <TimelineItem
+      icon={<MoreHorizontal size={18} />}
+      title="Queued"
+      surtitle={formatDate(queueTime * 1000)}
+      subtitle={`${showProgress ? 'in ' : ''}${parseDuration(duration)}`}
+      showProgress={showProgress}
+      progress={(duration > 0 ? elapsed / duration : 0) * 100}
+    />
+  )
+}
+
+const VALID_STATES_END = [
+  PROPOSAL_STATES.QUEUED,
+  PROPOSAL_STATES.EXECUTED,
+  PROPOSAL_STATES.CANCELED,
+]
+const TITLE_BY_STATE_END = {
+  [PROPOSAL_STATES.QUEUED]: 'Execute proposal',
+  [PROPOSAL_STATES.EXECUTED]: 'Executed',
+  [PROPOSAL_STATES.CANCELED]: 'Canceled',
+}
+export const TimelineItemEnd = () => {
+  const proposal = useAtomValue(proposalDetailAtom)
+  const proposalState = useAtomValue(getProposalStateAtom)
+
+  const show = VALID_STATES_END.includes(proposalState.state)
+  const enabled = proposalState.state !== PROPOSAL_STATES.QUEUED
+  const executionTime = +(proposal?.executionTime || 0)
+  const executionETA = +(proposal?.executionETA || 0)
+  const cancellationTime = +(proposal?.cancellationTime || 0)
+
+  if (!show) return null
+
+  return (
+    <TimelineItem
+      icon={<Circle size={18} />}
+      title={TITLE_BY_STATE_END[proposalState.state]}
+      surtitle={formatDate(
+        (proposalState.state === PROPOSAL_STATES.QUEUED
+          ? executionETA
+          : proposalState.state === PROPOSAL_STATES.EXECUTED
+          ? executionTime
+          : cancellationTime) * 1000
+      )}
+      enabled={enabled}
     />
   )
 }
