@@ -16,6 +16,7 @@ import { usePrepareSendTransaction, useSendTransaction } from 'wagmi'
 import mixpanel from 'mixpanel-browser'
 import useWatchTransaction from 'hooks/useWatchTransaction'
 import { CHAIN_TAGS } from 'utils/constants'
+import { useRevokeUSDT } from '../hooks/useRevokeUSDT'
 
 type ZapTxContextType = {
   error?: ZapErrorType
@@ -31,6 +32,12 @@ type ZapTxContextType = {
   sendTransaction?: () => void
   receipt?: TransactionReceipt
   onGoingConfirmation: boolean
+
+  needsRevoke: boolean
+  loadingRevoke: boolean
+  revokeSuccess: boolean
+  validatingRevoke: boolean
+  revoke?: () => void
 }
 
 const ZapTxContext = createContext<ZapTxContextType>({
@@ -41,6 +48,10 @@ const ZapTxContext = createContext<ZapTxContextType>({
   loadingTx: false,
   validatingTx: false,
   onGoingConfirmation: false,
+  needsRevoke: false,
+  loadingRevoke: false,
+  revokeSuccess: false,
+  validatingRevoke: false,
 })
 
 export const useZapTx = () => {
@@ -86,7 +97,15 @@ export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     receipt: approvalReceipt,
     approvalSentError,
     approvalError,
+    needsRevoke,
   } = useApproval(chainId, account, allowance)
+
+  const {
+    isLoading: loadingRevoke,
+    isSuccess: revokeSuccess,
+    validatingRevoke,
+    revoke,
+  } = useRevokeUSDT(chainId, account, allowance)
 
   useEffect(() => {
     if (approvalSuccess) {
@@ -226,7 +245,8 @@ export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
       approvalSuccess ||
       loadingTx ||
       validatingTx ||
-      receipt) &&
+      receipt ||
+      loadingRevoke) &&
       !error
   )
 
@@ -361,6 +381,11 @@ export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
         sendTransaction,
         receipt,
         onGoingConfirmation,
+        needsRevoke,
+        loadingRevoke,
+        revokeSuccess,
+        validatingRevoke,
+        revoke,
       }}
     >
       {children}
