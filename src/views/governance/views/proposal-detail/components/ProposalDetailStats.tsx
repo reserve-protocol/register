@@ -135,7 +135,10 @@ const ProposalDetailStats = () => {
               <BooleanIcon value={quorumReached} />
               <Text>Quorum</Text>
             </Box>
-            <Box variant="layout.verticalAlign" sx={{ gap: 2, fontSize: 1 }}>
+            <Box
+              variant="layout.verticalAlign"
+              sx={{ gap: 2, fontSize: [1, 2] }}
+            >
               <Text
                 sx={{
                   fontWeight: 'bold',
@@ -183,7 +186,10 @@ const ProposalDetailStats = () => {
               />
               <Text>Majority support</Text>
             </Box>
-            <Box variant="layout.verticalAlign" sx={{ gap: 2, fontSize: 1 }}>
+            <Box
+              variant="layout.verticalAlign"
+              sx={{ gap: 2, fontSize: [1, 2] }}
+            >
               <Text
                 sx={{
                   fontWeight: 'bold',
