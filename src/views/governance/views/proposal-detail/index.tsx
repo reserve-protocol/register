@@ -11,7 +11,7 @@ const GovernanceProposalDetail = () => {
   return (
     <Box
       variant="layout.wrapper"
-      sx={{ bg: 'reserveBackground', borderRadius: '14px' }}
+      sx={{ bg: 'reserveBackground', borderRadius: '14px', m: [1, 4] }}
     >
       <ProposalDetailAtomUpdater />
       <Grid
