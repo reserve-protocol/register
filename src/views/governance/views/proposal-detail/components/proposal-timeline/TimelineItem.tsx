@@ -67,9 +67,9 @@ const TimelineItem = ({
           {icon}
         </Box>
         <Box sx={{ opacity: enabled ? 1 : 0.5 }}>
-          <Box sx={{ fontSize: 1 }}>{surtitle}</Box>
+          {!!subtitle && <Box sx={{ fontSize: 1 }}>{surtitle}</Box>}
           <Box sx={{ fontWeight: 'bold' }}>{title}</Box>
-          <Box sx={{ fontSize: 1 }}>{subtitle}</Box>
+          <Box sx={{ fontSize: 1 }}>{subtitle || surtitle}</Box>
         </Box>
       </Box>
       {showProgress && (

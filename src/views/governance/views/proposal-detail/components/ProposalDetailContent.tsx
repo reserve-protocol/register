@@ -80,7 +80,6 @@ const ProposalDetailContent = () => {
             sx={{
               bg: 'focusedBackground',
               borderRadius: '6px',
-              boxShadow: '0px 10px 38px 6px rgba(0, 0, 0, 0.05)',
               border: '1px solid',
               borderColor: 'borderSecondary',
             }}

@@ -135,7 +135,7 @@ const ProposalDetailStats = () => {
               <BooleanIcon value={quorumReached} />
               <Text>Quorum</Text>
             </Box>
-            <Box variant="layout.verticalAlign" sx={{ gap: 2 }}>
+            <Box variant="layout.verticalAlign" sx={{ gap: 2, fontSize: 1 }}>
               <Text
                 sx={{
                   fontWeight: 'bold',
@@ -146,12 +146,12 @@ const ProposalDetailStats = () => {
               </Text>
 
               <Text color="secondaryText" sx={{ whiteSpace: 'nowrap' }}>
-                {formatCurrency(currentQuorum, 2, {
+                {formatCurrency(currentQuorum, 0, {
                   notation: 'compact',
                   compactDisplay: 'short',
                 })}{' '}
                 of{' '}
-                {formatCurrency(quorumNeeded, 2, {
+                {formatCurrency(quorumNeeded, 0, {
                   notation: 'compact',
                   compactDisplay: 'short',
                 })}
@@ -183,7 +183,7 @@ const ProposalDetailStats = () => {
               />
               <Text>Majority support</Text>
             </Box>
-            <Box variant="layout.verticalAlign" sx={{ gap: 2 }}>
+            <Box variant="layout.verticalAlign" sx={{ gap: 2, fontSize: 1 }}>
               <Text
                 sx={{
                   fontWeight: 'bold',
