@@ -73,7 +73,7 @@ const HelpContent = ({ onClose }: { onClose(): void }) => {
       href: PROTOCOL_DOCS,
     },
     {
-      title: t`Register Forum`,
+      title: t`Reserve Forum`,
       subtitle: t`Discussions of ideas and suggestion that the community has on improving the Reserve Ecosystem`,
       href: RESERVE_FORUM,
     },
