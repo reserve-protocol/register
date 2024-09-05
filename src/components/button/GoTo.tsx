@@ -8,6 +8,7 @@ const GoTo = (props: LinkProps) => {
       variant="layout.verticalAlign"
       sx={{ cursor: 'pointer' }}
       {...props}
+      onClick={(e) => e.stopPropagation()}
     >
       <Text
         variant="layout.verticalAlign"

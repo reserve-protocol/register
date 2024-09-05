@@ -1,6 +1,7 @@
 import { t } from '@lingui/macro'
 import CollateralWrap from 'abis/CollateralWrap'
 import ERC20 from 'abis/ERC20'
+import USDT from 'abis/USDT'
 import { NumericalInput } from 'components'
 import { ExecuteButton } from 'components/button/TransactionButton'
 import TokenLogo from 'components/icons/TokenLogo'
@@ -12,6 +13,7 @@ import { chainIdAtom, walletAtom } from 'state/atoms'
 import { Box, BoxProps, Text } from 'theme-ui'
 import { CollateralPlugin } from 'types'
 import { formatCurrency, safeParseEther } from 'utils'
+import { ChainId } from 'utils/chains'
 import { BIGINT_MAX } from 'utils/constants'
 import { Address, useBalance, useContractRead } from 'wagmi'
 
@@ -61,6 +63,15 @@ const CollateralItem = ({ collateral, wrapping, ...props }: Props) => {
   const approveCall = useMemo(() => {
     if (!isValid || !wrapping || !wallet) {
       return undefined
+    }
+
+    if (collateral.underlyingToken === 'USDT' && chainId === ChainId.Mainnet) {
+      return {
+        abi: USDT,
+        address: collateral.underlyingAddress as Address,
+        functionName: 'approve',
+        args: [collateral.erc20, BIGINT_MAX],
+      }
     }
 
     return {

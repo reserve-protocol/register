@@ -1,4 +1,3 @@
-import { erc20ABI } from 'wagmi'
 import { useMemo } from 'react'
 import { Allowance } from 'types'
 import {
@@ -8,6 +7,9 @@ import {
   usePrepareContractWrite,
   useWaitForTransaction,
 } from 'wagmi'
+import { ChainId } from 'utils/chains'
+import ERC20 from 'abis/ERC20'
+import USDT from 'abis/USDT'
 
 export const useApproval = (
   chainId: number,
@@ -15,11 +17,12 @@ export const useApproval = (
   allowance?: Allowance | undefined
 ) => {
   const disable = allowance?.symbol === 'ETH'
+  const isUSDT = allowance?.symbol === 'USDT'
 
   const { data, isLoading: validatingAllowance } = useContractRead(
     allowance && account
       ? {
-          abi: erc20ABI,
+          abi: ERC20,
           functionName: 'allowance',
           address: allowance.token,
           args: [account, allowance.spender],
@@ -32,17 +35,41 @@ export const useApproval = (
   const hasAllowance =
     account && allowance && !disable ? (data ?? 0n) >= allowance.amount : false
 
-  const { config } = usePrepareContractWrite(
-    allowance && !hasAllowance
+  // Only for USDT on mainnet
+  const needsRevoke = Boolean(
+    !hasAllowance &&
+      data &&
+      allowance &&
+      data > 0n &&
+      chainId === ChainId.Mainnet &&
+      allowance.symbol === 'USDT'
+  )
+
+  const { config: configERC20 } = usePrepareContractWrite(
+    allowance && !hasAllowance && !isUSDT
       ? {
           address: allowance.token,
-          abi: erc20ABI,
+          abi: ERC20,
           functionName: 'approve',
           args: [allowance.spender, allowance.amount],
           enabled: !disable,
         }
       : undefined
   )
+
+  const { config: configUSDT } = usePrepareContractWrite(
+    allowance && !hasAllowance && isUSDT
+      ? {
+          address: allowance.token,
+          abi: USDT,
+          functionName: 'approve',
+          args: [allowance.spender, allowance.amount],
+          enabled: !disable,
+        }
+      : undefined
+  )
+
+  const config = (isUSDT ? configUSDT : configERC20) as any
 
   const {
     data: writeData,
@@ -76,6 +103,7 @@ export const useApproval = (
         receipt: undefined,
         approvalSentError: undefined,
         approvalError: undefined,
+        needsRevoke: false,
       }
     }
     return {
@@ -88,6 +116,7 @@ export const useApproval = (
       receipt,
       approvalSentError,
       approvalError,
+      needsRevoke,
     }
   }, [
     disable,
@@ -98,7 +127,8 @@ export const useApproval = (
     isLoading,
     approve,
     receipt,
+    approvalSentError,
     approvalError,
-    approvalError,
+    needsRevoke,
   ])
 }

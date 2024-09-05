@@ -22,6 +22,7 @@ import {
   rTokenStateAtom,
   walletAtom,
 } from 'state/atoms'
+import { isRTokenMintEnabled } from 'state/geolocation/atoms'
 import useSWR from 'swr'
 import { Link, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
@@ -36,7 +37,6 @@ import {
   SLIPPAGE_OPTIONS,
   zappableTokens,
 } from '../constants'
-import { isRTokenMintEnabled } from 'state/geolocation/atoms'
 
 export type IssuanceOperation = 'mint' | 'redeem'
 
@@ -176,8 +176,7 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
           ...token,
           balance: balances[token.address as Address]?.balance ?? '0',
         }))
-        .filter((token) => operation === 'mint' || token.symbol !== 'ETH')
-        .filter((token) => operation === 'redeem' || token.symbol !== 'USDT'),
+        .filter((token) => operation === 'mint' || token.symbol !== 'ETH'),
     [chainId, balances, operation]
   )
   const tokenPrice = useChainlinkPrice(

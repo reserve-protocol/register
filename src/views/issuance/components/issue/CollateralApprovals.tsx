@@ -1,4 +1,5 @@
 import ERC20 from 'abis/ERC20'
+import USDT from 'abis/USDT'
 import TransactionButton from 'components/button/TransactionButton'
 import OverviewIcon from 'components/icons/OverviewIcon'
 import TokenItem from 'components/token-item'
@@ -6,18 +7,20 @@ import useContractWrite from 'hooks/useContractWrite'
 import useRToken from 'hooks/useRToken'
 import useWatchTransaction from 'hooks/useWatchTransaction'
 import { useAtomValue } from 'jotai'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { CheckCircle, ChevronDown, ChevronUp } from 'react-feather'
+import { chainIdAtom } from 'state/atoms'
 import { Box, BoxProps, Divider, Flex, Spinner, Text } from 'theme-ui'
 import { Token } from 'types'
 import { formatCurrency } from 'utils'
+import { ChainId } from 'utils/chains'
 import { BIGINT_MAX } from 'utils/constants'
 import { Address, formatUnits } from 'viem'
 import { quantitiesAtom } from 'views/issuance/atoms'
 
 interface CollateralApprovalProps extends BoxProps {
   collateral: Token
-  amount: bigint | undefined
+  amount?: bigint
   allowance: boolean
   loading: boolean
 }
@@ -29,21 +32,41 @@ const CollateralApproval = ({
   loading,
   ...props
 }: CollateralApprovalProps) => {
+  const chainId = useAtomValue(chainIdAtom)
   const rToken = useRToken()
-  const { write, hash, isLoading, reset } = useContractWrite({
-    abi: ERC20,
-    address: collateral.address,
-    functionName: 'approve',
-    args: [
-      rToken?.address || '0x',
-      collateral.symbol === 'wcUSDCv3' || collateral.symbol === 'wcUSDbCv3'
-        ? BIGINT_MAX
-        : amount
-        ? (amount * 120n) / 100n
-        : 0n,
-    ],
-    enabled: !!rToken && !loading && !!amount && !allowance,
-  })
+
+  const approveCall = useMemo(() => {
+    if (!rToken || loading || !amount || allowance) {
+      return undefined
+    }
+
+    if (collateral.symbol === 'USDT' && chainId === ChainId.Mainnet) {
+      return {
+        abi: USDT,
+        address: collateral.address,
+        functionName: 'approve',
+        args: [rToken?.address || '0x', BIGINT_MAX],
+        enabled: !!rToken && !loading && !!amount && !allowance,
+      }
+    }
+
+    return {
+      abi: ERC20,
+      address: collateral.address,
+      functionName: 'approve',
+      args: [
+        rToken?.address || '0x',
+        collateral.symbol === 'wcUSDCv3' || collateral.symbol === 'wcUSDbCv3'
+          ? BIGINT_MAX
+          : amount
+          ? (amount * 120n) / 100n
+          : 0n,
+      ],
+      enabled: !!rToken && !loading && !!amount && !allowance,
+    }
+  }, [rToken, loading, amount, allowance, collateral])
+
+  const { write, hash, isLoading, reset } = useContractWrite(approveCall as any)
   const { status } = useWatchTransaction({
     hash,
     label: `Approve ${collateral.symbol}`,
