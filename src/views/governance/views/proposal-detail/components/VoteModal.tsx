@@ -7,7 +7,13 @@ import { ModalProps } from 'components/modal'
 import useContractWrite from 'hooks/useContractWrite'
 import { useAtomValue } from 'jotai'
 import { useState } from 'react'
-import { CheckCircle, ExternalLink, ThumbsUp } from 'react-feather'
+import {
+  CheckCircle,
+  ExternalLink,
+  Slash,
+  ThumbsDown,
+  ThumbsUp,
+} from 'react-feather'
 import { chainIdAtom, rTokenGovernanceAtom } from 'state/atoms'
 import { Box, Checkbox, Divider, Flex, Link, Text } from 'theme-ui'
 import { getProposalTitle, shortenAddress } from 'utils'
@@ -104,7 +110,9 @@ const VoteModal = (props: ModalProps) => {
           mt={!!index ? 2 : 0}
           key={option.value}
         >
-          <ThumbsUp size={16} />
+          {option.value === VOTE_TYPE.FOR && <ThumbsUp size={16} />}
+          {option.value === VOTE_TYPE.AGAINST && <ThumbsDown size={16} />}
+          {option.value === VOTE_TYPE.ABSTAIN && <Slash size={16} />}
           <Text variant="strong" ml={2}>
             {option.label}
           </Text>
