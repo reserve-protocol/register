@@ -32,10 +32,15 @@ const ExploreTransactions = () => {
   }, [])
 
   return (
-    <Box mt={5} mx={[1, 4]}>
-      <Box variant="layout.verticalAlign" mb={5}>
+    <Box mt={[3, 5]} mx={[2, 4]}>
+      <Box
+        variant="layout.verticalAlign"
+        sx={{ flexWrap: 'wrap', gap: 2 }}
+        pl={2}
+        mb={5}
+      >
         <TransactionsIcon fontSize={32} />
-        <Text ml="2" as="h2" variant="title" sx={{ fontSize: 4 }}>
+        <Text mr="auto" as="h2" variant="title" sx={{ fontSize: 4 }}>
           <Trans>Transactions</Trans>
         </Text>
         <TransactionFilters />

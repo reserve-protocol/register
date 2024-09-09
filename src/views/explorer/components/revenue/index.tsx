@@ -397,6 +397,7 @@ const RTokenRevenueOverview = ({ data }: { data: RevenueDetail }) => {
   return (
     <CollapsableBox
       variant="layout.borderBox"
+      p={[3, 4]}
       sx={{ background: 'contentBackground' }}
       header={
         <Box
@@ -420,7 +421,7 @@ const RTokenRevenueOverview = ({ data }: { data: RevenueDetail }) => {
             </Text>
             <ChainLogo chain={data.chain} />
           </Box>
-          <Box variant="layout.verticalAlign" sx={{ gap: 3 }}>
+          <Box variant="layout.verticalAlign" sx={{ gap: 3, flexWrap: 'wrap' }}>
             <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
               <Text variant="legend">Trades:</Text>
               <Text variant="strong">{data.n}</Text>
@@ -497,7 +498,13 @@ const RevenueOverview = ({
     <Box>
       <Box
         variant="layout.borderBox"
-        sx={{ gap: 3, display: 'flex', justifyContent: 'center' }}
+        p={[2, 3]}
+        sx={{
+          gap: [2, 3],
+          display: 'flex',
+          flexWrap: 'wrap',
+          justifyContent: 'center',
+        }}
       >
         <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
           <Text variant="legend">Trades:</Text>
@@ -540,7 +547,7 @@ const AvailableRevenue = () => {
   )
 
   return (
-    <Box variant="layout.tokenView">
+    <Box mt={[3, 5]} mx={[2, 3]}>
       <Box variant="layout.verticalAlign" mb={5}>
         <AuctionsIcon fontSize={32} />
         <Text ml="2" as="h2" variant="title" sx={{ fontSize: 4 }}>

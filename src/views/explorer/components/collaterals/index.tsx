@@ -9,7 +9,7 @@ import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { collateralYieldAtom } from 'state/atoms'
 import CollateralYieldUpdater from 'state/updaters/CollateralYieldUpdater'
-import { Box, Link, Text } from 'theme-ui'
+import { Box, Flex, Link, Text } from 'theme-ui'
 import { CollateralPlugin } from 'types'
 import { formatCurrency, formatPercentage, parseDuration } from 'utils'
 import { atomWithLoadable } from 'utils/atoms/utils'
@@ -60,26 +60,6 @@ const allPluginsAtom = atomWithLoadable(async (get) => {
     supply: formatUnits(supplies[index], plugin.decimals),
   }))
 })
-
-// export interface CollateralPlugin {
-//   symbol: string // collateral symbol
-//   address: Address // collateral plugin address
-//   erc20: Address // erc20 contract address for asset
-//   decimals: number // 6-18
-//   targetName: string // USD / EUR / etc
-//   rewardTokens: Address[] // yield token aave / compound wrapped Asset
-//   underlyingToken?: string
-//   underlyingAddress?: Address
-//   collateralToken?: string // Yield bearing token for aave
-//   collateralAddress?: Address
-//   protocol: ProtocolKey
-//   version: string
-//   custom?: boolean
-//   maxTradeVolume: string
-//   oracleTimeout: number
-//   chainlinkFeed: Address
-//   delayUntilDefault: string
-// }
 
 const PluginList = () => {
   const columnHelper = createColumnHelper<Plugin>()
@@ -206,28 +186,33 @@ const PluginList = () => {
 
 const Collaterals = () => {
   return (
-    <Box variant="layout.container">
+    <Box my={[3, 5]} mx={[2, 3]}>
       <CollateralYieldUpdater />
-      <Box variant="layout.verticalAlign" sx={{ gap: 2 }} mb={5}>
+      <Box
+        variant="layout.verticalAlign"
+        sx={{ gap: 2, flexWrap: 'wrap' }}
+        mb={[3, 5]}
+      >
         <BasketCubeIcon fontSize={32} />
-        <Text as="h2" variant="title" sx={{ fontSize: 4 }}>
+        <Text as="h2" variant="title" mr="auto" sx={{ fontSize: 4 }}>
           Available Collaterals
         </Text>
-        <Button
-          ml="auto"
-          small
-          variant="bordered"
-          onClick={() => window.open(REGISTER_FEEDBACK, '_blank')}
-        >
-          Request plugin
-        </Button>
-        <Button
-          small
-          variant="bordered"
-          onClick={() => window.open(DISCORD_INVITE, '_blank')}
-        >
-          Discuss on discord
-        </Button>
+        <Flex sx={{ gap: 2, ml: 2, display: ['none', 'flex'] }}>
+          <Button
+            small
+            variant="bordered"
+            onClick={() => window.open(REGISTER_FEEDBACK, '_blank')}
+          >
+            Request plugin
+          </Button>
+          <Button
+            small
+            variant="bordered"
+            onClick={() => window.open(DISCORD_INVITE, '_blank')}
+          >
+            Discuss on discord
+          </Button>
+        </Flex>
       </Box>
       <PluginList />
       <DeployHero mt={4} />

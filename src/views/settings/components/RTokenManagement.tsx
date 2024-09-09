@@ -31,6 +31,8 @@ const useGovernanceSetupRequired = () => {
     ],
   })
 
+  console.log('data', data)
+
   return data && !!accountRole?.owner
 }
 

@@ -78,10 +78,14 @@ const ExploreGovernance = () => {
   )
 
   return (
-    <Box mt={5} mx={[1, 4]}>
-      <Box variant="layout.verticalAlign" mb={5}>
+    <Box mt={[3, 5]} mx={[2, 3]}>
+      <Box
+        variant="layout.verticalAlign"
+        sx={{ flexWrap: 'wrap', gap: '2' }}
+        mb={5}
+      >
         <GovernanceIcon fontSize={32} />
-        <Text ml="2" as="h2" variant="title" sx={{ fontSize: 4 }}>
+        <Text as="h2" mr="auto" variant="title" sx={{ fontSize: 4 }}>
           <Trans>Proposals</Trans>
         </Text>
         <Filters />
@@ -91,6 +95,7 @@ const ExploreGovernance = () => {
         sortBy={[{ id: 'creationTime', desc: true }]}
         data={data}
         pagination={{ pageSize: 10 }}
+        columnVisibility={['', '', ['none', 'table-cell'], '']}
         columns={columns}
         sx={{ borderRadius: '0 0 20px 20px' }}
         compact
