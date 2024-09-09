@@ -69,7 +69,7 @@ const StakingVaultRevenue = () => {
     )
   }, [rTokenAPY, data])
 
-  const [currentAPY, nextEpochAPY, currentPeriodEnds, neededToHitAvg] =
+  const [currentAPY, nextPeriodAPY, currentPeriodEnds, neededToHitAvg] =
     useMemo(() => {
       if (!rToken || !rToken?.decimals || !data || !data?.[0])
         return [0, 0, '', 0]
@@ -100,14 +100,14 @@ const StakingVaultRevenue = () => {
           : (rewards * (currentTime - rewardsStart)) /
             (rewardsEnd - rewardsStart)
       const futureAmt = stBalance + rewards - assets - currentAccountedRewards
-      const _nextEpochAPY = (futureAmt / assets) * 52 * 100
+      const _nextPeriodAPY = (futureAmt / assets) * 52 * 100
 
       const _rewardsEnds = new Date(rewardsEnd * 1000).toLocaleString()
 
-      const delta = (avgAPY - _nextEpochAPY) / 100
+      const delta = (avgAPY - _nextPeriodAPY) / 100
       const _neededToHitAvg = delta > 0 ? (delta * stBalance) / 52 : 0
 
-      return [_currentAPY, _nextEpochAPY, _rewardsEnds, _neededToHitAvg]
+      return [_currentAPY, _nextPeriodAPY, _rewardsEnds, _neededToHitAvg]
     }, [data, rToken, avgAPY])
 
   if (!rToken || !rTokenVault) return null
@@ -151,10 +151,8 @@ const StakingVaultRevenue = () => {
             variant="layout.verticalAlign"
             sx={{ gap: 1, justifyContent: 'space-between' }}
           >
-            <Text variant="legend">
-              Current staking yield for future period
-            </Text>
-            <Text>{formatPercentage(nextEpochAPY)}</Text>
+            <Text variant="legend">Future sdgnETH APY</Text>
+            <Text>{formatPercentage(nextPeriodAPY)}</Text>
           </Box>
 
           <Box
