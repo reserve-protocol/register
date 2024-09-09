@@ -141,8 +141,10 @@ const ProposalHeader = () => {
         </Text>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
           <Box
-            variant="layout.verticalAlign"
             sx={{
+              display: 'flex',
+              flexDirection: ['column', 'row'],
+              alignItems: ['start', 'center'],
               gap: [2, 5],
               flexWrap: 'wrap',
             }}
