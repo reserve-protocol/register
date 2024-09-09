@@ -4,7 +4,17 @@ import { Suspense, lazy, useMemo, useState } from 'react'
 import { Box, Spinner } from 'theme-ui'
 import { StakeMetricType, stRsrTickerAtom } from 'views/staking/atoms'
 
-const StakingMetricCharts = lazy(() => import('./StakingMetricCharts'))
+const handleLoadError = () => {
+  window.location.reload()
+
+  return {
+    default: () => <div />,
+  }
+}
+
+const StakingMetricCharts = lazy(() =>
+  import('./StakingMetricCharts').catch(handleLoadError)
+)
 
 const Skeleton = () => (
   <Box

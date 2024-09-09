@@ -9,7 +9,15 @@ import CompareSkeleton from './CompareSkeleton'
 import CompareTokensTitle from './CompareTokensTitle'
 import DeployHero from './DeployHero'
 
-const RTokenList = lazy(() => import('./RTokenList'))
+const handleLoadError = () => {
+  window.location.reload()
+
+  return {
+    default: () => <div />,
+  }
+}
+
+const RTokenList = lazy(() => import('./RTokenList').catch(handleLoadError))
 
 const CompareTokens = () => {
   const navigate = useNavigate()
