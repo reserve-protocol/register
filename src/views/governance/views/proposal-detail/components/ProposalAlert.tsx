@@ -1,11 +1,10 @@
-import SpinnerIcon from 'components/icons/SpinnerIcon'
 import { useAtomValue } from 'jotai'
+import { ReactNode } from 'react'
 import { Check, Slash, X } from 'react-feather'
-import { Box, Text } from 'theme-ui'
+import { Box, Spinner, Text } from 'theme-ui'
 import { parseDurationShort } from 'utils'
 import { PROPOSAL_STATES } from 'utils/constants'
 import { getProposalStateAtom } from '../atom'
-import { ReactNode } from 'react'
 
 const FinalState = ({
   label,
@@ -149,7 +148,7 @@ const ProposalAlert = () => {
         height: '100%',
       }}
     >
-      <SpinnerIcon />
+      <Spinner size={18} color={DEADLINE_STATES[state.state].color} />
       <Text sx={{ fontSize: 1, mt: 1 }}>
         {DEADLINE_STATES[state.state].text}
       </Text>
