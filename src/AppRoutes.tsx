@@ -1,5 +1,5 @@
 import PreloadComponent, { LazyComponent } from 'components/lazy-component'
-import { lazy } from 'react'
+import { lazy, useEffect } from 'react'
 import { lazyWithPreload } from 'react-lazy-with-preload'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import RTokenContainer from 'state/rtoken/RTokenContainer'
@@ -20,24 +20,40 @@ import Staking from 'views/staking'
 import Home from 'views/home'
 import AvailableRevenue from 'views/explorer/components/revenue'
 
+const handleLoadError = () => {
+  window.location.reload()
+
+  return {
+    default: () => <div />,
+  }
+}
+
 // Preloadable components
-const Auctions = lazyWithPreload(() => import('./views/auctions'))
-const Governance = lazyWithPreload(() => import('./views/governance'))
-const GovernanceProposal = lazyWithPreload(
-  () => import('./views/governance/views/proposal')
+const Auctions = lazyWithPreload(() =>
+  import('./views/auctions').catch(handleLoadError)
 )
-const GovernanceProposalDetail = lazyWithPreload(
-  () => import('./views/governance/views/proposal-detail')
+const Governance = lazyWithPreload(() =>
+  import('./views/governance').catch(handleLoadError)
 )
-const GovernanceSetup = lazyWithPreload(
-  () => import('./views/deploy/components/Governance')
+const GovernanceProposal = lazyWithPreload(() =>
+  import('./views/governance/views/proposal').catch(handleLoadError)
 )
-const Settings = lazyWithPreload(() => import('./views/settings'))
+const GovernanceProposalDetail = lazyWithPreload(() =>
+  import('./views/governance/views/proposal-detail').catch(handleLoadError)
+)
+const GovernanceSetup = lazyWithPreload(() =>
+  import('./views/deploy/components/Governance').catch(handleLoadError)
+)
+const Settings = lazyWithPreload(() =>
+  import('./views/settings').catch(handleLoadError)
+)
 
 // Lazy components
-const Bridge = lazy(() => import('./views/bridge'))
-const AllTokenList = lazy(() => import('./views/tokens/Tokens'))
-const Deploy = lazy(() => import('./views/deploy'))
+const Bridge = lazy(() => import('./views/bridge').catch(handleLoadError))
+const AllTokenList = lazy(() =>
+  import('./views/tokens/Tokens').catch(handleLoadError)
+)
+const Deploy = lazy(() => import('./views/deploy').catch(handleLoadError))
 
 // TODO: Not sure if its worth to lazy load main routes
 const AppRoutes = () => (
