@@ -102,9 +102,9 @@ const StakingVaultRevenue = () => {
       const futureAmt = stBalance + rewards - assets - currentAccountedRewards
       const _nextEpochAPY = (futureAmt / assets) * 52 * 100
 
-      const _rewardsEnds = new Date(rewardsEnd * 1000).toLocaleDateString()
+      const _rewardsEnds = new Date(rewardsEnd * 1000).toLocaleString()
 
-      const delta = avgAPY - _currentAPY
+      const delta = (avgAPY - _nextEpochAPY) / 100
       const _neededToHitAvg = delta > 0 ? (delta * stBalance) / 52 : 0
 
       return [_currentAPY, _nextEpochAPY, _rewardsEnds, _neededToHitAvg]
