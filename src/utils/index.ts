@@ -213,11 +213,34 @@ export const getProposalTitle = (description: string) => {
   return description.split(/\r?\n/)[0].replaceAll('#', '').trim()
 }
 
+const shortEnglishHumanizer = humanizeDuration.humanizer({
+  language: 'shortEn',
+  languages: {
+    shortEn: {
+      y: () => 'y',
+      mo: () => 'mo',
+      w: () => 'w',
+      d: () => 'd',
+      h: () => 'h',
+      m: () => 'm',
+      s: () => 's',
+      ms: () => 'ms',
+    },
+  },
+})
+
 export const parseDuration = (
   duration: number,
   options?: humanizeDuration.Options
 ) => {
   return humanizeDuration(duration * 1000, options)
+}
+
+export const parseDurationShort = (
+  duration: number,
+  options?: humanizeDuration.Options
+) => {
+  return shortEnglishHumanizer(duration * 1000, options)
 }
 
 export const getUTCStartOfDay = (timestamp: number) => {

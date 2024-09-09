@@ -21,6 +21,8 @@ import ProposalExecute from './ProposalExecute'
 import ProposalQueue from './ProposalQueue'
 import ProposalAlert from './ProposalAlert'
 import VoteModal from './VoteModal'
+import AsteriskIcon from 'components/icons/AsteriskIcon'
+import DelegateIcon from 'components/icons/DelegateIcon'
 
 const ViewExecuteTxButton = () => {
   const { proposalId } = useParams()
@@ -31,9 +33,8 @@ const ViewExecuteTxButton = () => {
 
   return (
     <Button
-      small
-      variant="muted"
-      sx={{ display: 'flex', alignItems: 'center' }}
+      variant="bordered"
+      sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
       onClick={() =>
         window.open(
           getExplorerLink(
@@ -45,33 +46,25 @@ const ViewExecuteTxButton = () => {
         )
       }
     >
+      <Text mr={2}>View execute tx</Text>
       <ExternalArrowIcon />
-      <Text ml={2}>View execute tx</Text>
     </Button>
   )
 }
 
-const ProposalCTAs = () => {
-  const { state } = useAtomValue(getProposalStateAtom)
+const FINAL_STATES = [
+  PROPOSAL_STATES.EXECUTED,
+  PROPOSAL_STATES.DEFEATED,
+  PROPOSAL_STATES.EXPIRED,
+  PROPOSAL_STATES.CANCELED,
+  PROPOSAL_STATES.QUORUM_NOT_REACHED,
+  PROPOSAL_STATES.SUCCEEDED,
+]
 
-  return (
-    <>
-      {state === PROPOSAL_STATES.SUCCEEDED && <ProposalQueue />}
-      {state === PROPOSAL_STATES.QUEUED && (
-        <Box
-          variant="layout.verticalAlign"
-          sx={{
-            gap: 3,
-            ':not(:has(> *))': { ml: 0 },
-          }}
-        >
-          <ProposalCancel />
-          <ProposalExecute />
-        </Box>
-      )}
-    </>
-  )
-}
+const STATES_WITH_ACTIONS = [
+  PROPOSAL_STATES.SUCCEEDED,
+  PROPOSAL_STATES.EXECUTED,
+]
 
 // TODO: Validate voting power first?
 const ProposalVote = (props: BoxProps) => {
@@ -111,6 +104,9 @@ const ProposalVote = (props: BoxProps) => {
         textAlign: 'center',
         height: '100%',
         justifyContent: 'space-between',
+        p: 2,
+        gap: 2,
+        borderColor: 'borderSecondary',
       }}
       {...props}
     >
@@ -118,47 +114,91 @@ const ProposalVote = (props: BoxProps) => {
         sx={{
           display: 'flex',
           flexDirection: 'column',
-          justifyContent: 'center',
-          flexGrow: 1,
+          height: '100%',
+          borderRadius: '8px',
+          border: STATES_WITH_ACTIONS.includes(state) ? '1px solid' : 'none',
+          borderColor: 'borderSecondary',
+          bg: FINAL_STATES.includes(state) ? 'transparent' : 'focusBox',
         }}
       >
-        <Text variant="legend">
-          <Trans>Your voting power</Trans>
-        </Text>
-        <Text variant="title" mt={1} mb={3}>
-          {formatCurrency(votePower ? +votePower : 0)}
-        </Text>
-      </Box>
-      <Box>
-        {hasUndelegatedBalance ? (
-          <Button
-            sx={{ width: '100%' }}
-            onClick={() => setDelegateVisible(true)}
+        {!FINAL_STATES.includes(state) && (
+          <Box
+            variant="layout.verticalAlign"
+            sx={{
+              gap: 2,
+              p: '12px',
+              justifyContent: 'space-between',
+              fontSize: 1,
+              flexWrap: 'wrap',
+              borderBottom: '1px solid',
+              borderColor: 'borderSecondary',
+            }}
           >
-            <Trans>Delegate voting power for future votes</Trans>
-          </Button>
-        ) : (
-          <Button
-            disabled={
-              !account ||
-              !!vote ||
-              state !== PROPOSAL_STATES.ACTIVE ||
-              !votePower ||
-              votePower === '0.0'
-            }
-            sx={{ width: '100%' }}
-            onClick={() => setVoteVisible(true)}
-          >
-            {vote ? `You voted "${vote}"` : <Trans>Vote on-chain</Trans>}
-          </Button>
+            <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
+              <AsteriskIcon />
+              <Text>Your voting power:</Text>
+              <Text sx={{ fontWeight: 'bold' }}>
+                {formatCurrency(votePower ? +votePower : 0)}
+              </Text>
+            </Box>
+            <Box
+              variant="layout.verticalAlign"
+              sx={{
+                gap: 1,
+                color: hasUndelegatedBalance ? 'accentInverted' : 'muted',
+                cursor: hasUndelegatedBalance ? 'pointer' : 'default',
+              }}
+            >
+              <DelegateIcon />
+              <Text sx={{ fontWeight: 700 }}>Delegate</Text>
+            </Box>
+          </Box>
         )}
+        <Box sx={{ flexGrow: 1, p: '12px' }}>
+          <ProposalAlert />
+        </Box>
+      </Box>
+      {(state === PROPOSAL_STATES.PENDING ||
+        state === PROPOSAL_STATES.ACTIVE) && (
+        <Box>
+          {hasUndelegatedBalance ? (
+            <Button
+              sx={{ width: '100%' }}
+              onClick={() => setDelegateVisible(true)}
+            >
+              <Trans>Delegate voting power for future votes</Trans>
+            </Button>
+          ) : (
+            <Button
+              disabled={
+                !account ||
+                !!vote ||
+                state !== PROPOSAL_STATES.ACTIVE ||
+                !votePower ||
+                votePower === '0.0'
+              }
+              sx={{ width: '100%' }}
+              onClick={() => setVoteVisible(true)}
+            >
+              {vote ? `You voted "${vote}"` : <Trans>Vote on-chain</Trans>}
+            </Button>
+          )}
 
-        {!account && (
-          <Text mt={3} sx={{ display: 'block', color: 'warning' }}>
-            <Trans>Please connect your wallet</Trans>
-          </Text>
-        )}
-      </Box>
+          {!account && (
+            <Text mt={3} sx={{ display: 'block', color: 'warning' }}>
+              <Trans>Please connect your wallet</Trans>
+            </Text>
+          )}
+        </Box>
+      )}
+      {state === PROPOSAL_STATES.EXECUTED && <ViewExecuteTxButton />}
+      {state === PROPOSAL_STATES.SUCCEEDED && <ProposalQueue />}
+      {state === PROPOSAL_STATES.QUEUED && (
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+          <ProposalCancel />
+          <ProposalExecute />
+        </Box>
+      )}
       {isVoteVisible && <VoteModal onClose={() => setVoteVisible(false)} />}
       {isDelegateVisible && (
         <DelegateModal

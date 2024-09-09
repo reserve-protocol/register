@@ -5,11 +5,16 @@ import useContractWrite from 'hooks/useContractWrite'
 import useWatchTransaction from 'hooks/useWatchTransaction'
 import { useAtomValue } from 'jotai'
 import { rTokenGovernanceAtom } from 'state/atoms'
-import { canExecuteAtom, proposalTxArgsAtom } from '../atom'
+import {
+  canExecuteAtom,
+  getProposalStateAtom,
+  proposalTxArgsAtom,
+} from '../atom'
 
 const ProposalExecute = () => {
   const governance = useAtomValue(rTokenGovernanceAtom)
   const canExecute = useAtomValue(canExecuteAtom)
+  const { deadline } = useAtomValue(getProposalStateAtom)
 
   const { write, isLoading, hash, isReady } = useContractWrite({
     abi: Governance,
@@ -25,18 +30,17 @@ const ProposalExecute = () => {
     label: t`Execute proposal`,
   })
 
-  if (!canExecute || status === 'success') {
-    return null
-  }
+  if (!deadline || deadline > 0) return null
 
   return (
     <TransactionButton
       small
       loading={isMining || isLoading}
       mining={isMining}
-      disabled={!isReady}
+      disabled={!isReady || !canExecute || status === 'success'}
       onClick={write}
       text={t`Execute proposal`}
+      sx={{ height: '44px' }}
     />
   )
 }
