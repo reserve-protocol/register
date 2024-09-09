@@ -136,14 +136,14 @@ const StakingVaultRevenue = () => {
             variant="layout.verticalAlign"
             sx={{ gap: 1, justifyContent: 'space-between' }}
           >
-            <Text variant="legend">Current sdgnETH APY</Text>
+            <Text variant="legend">Current {rTokenVault.name} APY</Text>
             <Text>{formatPercentage(currentAPY)}</Text>
           </Box>
           <Box
             variant="layout.verticalAlign"
             sx={{ gap: 1, justifyContent: 'space-between' }}
           >
-            <Text variant="legend">30d avg sdgnETH APY</Text>
+            <Text variant="legend">30d avg {rTokenVault.name} APY</Text>
             <Text>{formatPercentage(avgAPY)}</Text>
           </Box>
 
@@ -170,7 +170,7 @@ const StakingVaultRevenue = () => {
             sx={{ gap: 1, justifyContent: 'space-between' }}
           >
             <Text variant="legend">
-              How much dgnETH is needed to hit the 30d avg
+              How much {rToken.symbol} is needed to hit the 30d avg
             </Text>
             <Text>{formatCurrency(neededToHitAvg)}</Text>
           </Box>
