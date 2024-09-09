@@ -1,17 +1,77 @@
 import { Trans } from '@lingui/macro'
 import StRSRVotes from 'abis/StRSRVotes'
+import { Button } from 'components'
+import ExternalArrowIcon from 'components/icons/ExternalArrowIcon'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
 import { useState } from 'react'
+import { useParams } from 'react-router-dom'
 import { chainIdAtom, stRsrBalanceAtom, walletAtom } from 'state/atoms'
-import { Box, BoxProps, Button, Text } from 'theme-ui'
+import { Box, BoxProps, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { PROPOSAL_STATES } from 'utils/constants'
+import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { zeroAddress } from 'viem'
 import DelegateModal from 'views/governance/components/DelegateModal'
 import { Address, useContractRead } from 'wagmi'
 import { accountVotesAtom, getProposalStateAtom } from '../atom'
+import useProposalDetail from '../useProposalDetail'
+import ProposalCancel from './ProposalCancel'
+import ProposalExecute from './ProposalExecute'
+import ProposalQueue from './ProposalQueue'
+import ProposalAlert from './ProposalAlert'
 import VoteModal from './VoteModal'
+
+const ViewExecuteTxButton = () => {
+  const { proposalId } = useParams()
+  const chainId = useAtomValue(chainIdAtom)
+  const { data: proposal } = useProposalDetail(proposalId ?? '')
+
+  if (!proposal?.executionTxnHash) return null
+
+  return (
+    <Button
+      small
+      variant="muted"
+      sx={{ display: 'flex', alignItems: 'center' }}
+      onClick={() =>
+        window.open(
+          getExplorerLink(
+            proposal.executionTxnHash,
+            chainId,
+            ExplorerDataType.TRANSACTION
+          ),
+          '_blank'
+        )
+      }
+    >
+      <ExternalArrowIcon />
+      <Text ml={2}>View execute tx</Text>
+    </Button>
+  )
+}
+
+const ProposalCTAs = () => {
+  const { state } = useAtomValue(getProposalStateAtom)
+
+  return (
+    <>
+      {state === PROPOSAL_STATES.SUCCEEDED && <ProposalQueue />}
+      {state === PROPOSAL_STATES.QUEUED && (
+        <Box
+          variant="layout.verticalAlign"
+          sx={{
+            gap: 3,
+            ':not(:has(> *))': { ml: 0 },
+          }}
+        >
+          <ProposalCancel />
+          <ProposalExecute />
+        </Box>
+      )}
+    </>
+  )
+}
 
 // TODO: Validate voting power first?
 const ProposalVote = (props: BoxProps) => {

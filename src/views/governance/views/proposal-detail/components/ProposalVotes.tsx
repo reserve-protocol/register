@@ -50,7 +50,7 @@ const ProposalVotes = () => {
   const ensRes: string[] = useEnsAddresses(addresses)
 
   return (
-    <Box sx={{ bg: 'background', borderRadius: '8px', p: 2, mt: 2 }}>
+    <Box sx={{ bg: 'cardBackground', borderRadius: '8px', p: 2, mt: 2 }}>
       <Box variant="layout.verticalAlign" mb={2}>
         <Box
           variant="layout.verticalAlign"
@@ -114,6 +114,8 @@ const ProposalVotes = () => {
           borderRadius: '6px',
           overflow: 'hidden',
           boxShadow: '0px 10px 38px 6px rgba(0, 0, 0, 0.05)',
+          border: '1px solid',
+          borderColor: 'borderSecondary',
           py: 2,
         }}
       >

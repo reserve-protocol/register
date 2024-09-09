@@ -1,24 +1,21 @@
 import Address from 'components/address'
-import Button, { SmallButton } from 'components/button'
+import { SmallButton } from 'components/button'
 import CopyValue from 'components/button/CopyValue'
-import ExternalArrowIcon from 'components/icons/ExternalArrowIcon'
 import dayjs from 'dayjs'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
 import { ArrowLeft, Link2 } from 'react-feather'
-import { useNavigate, useParams } from 'react-router-dom'
-import { chainIdAtom } from 'state/atoms'
+import { useNavigate } from 'react-router-dom'
 import { Box, Link, Text } from 'theme-ui'
 import { shortenString, shortenStringN } from 'utils'
-import { PROPOSAL_STATES, ROUTES } from 'utils/constants'
-import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
-import { getProposalStateAtom, proposalDetailAtom } from './atom'
-import ProposalAlert from './components/ProposalAlert'
-import ProposalCancel from './components/ProposalCancel'
-import ProposalExecute from './components/ProposalExecute'
-import ProposalQueue from './components/ProposalQueue'
+import { ROUTES } from 'utils/constants'
+import { proposalDetailAtom } from './atom'
 import ProposalSnapshot from './ProposalSnapshot'
-import useProposalDetail from './useProposalDetail'
+import { ReactNode } from 'react'
+import WalletIcon from 'components/icons/WalletIcon'
+import WalletOutlineIcon from 'components/icons/WalletOutlineIcon'
+import FingerprintIcon from 'components/icons/FingerprintIcon'
+import FilesIcon from 'components/icons/FilesIcon'
 
 const BackButton = () => {
   const navigate = useNavigate()
@@ -43,57 +40,6 @@ const BackButton = () => {
   )
 }
 
-const ViewExecuteTxButton = () => {
-  const { proposalId } = useParams()
-  const chainId = useAtomValue(chainIdAtom)
-  const { data: proposal } = useProposalDetail(proposalId ?? '')
-
-  if (!proposal?.executionTxnHash) return null
-
-  return (
-    <Button
-      small
-      variant="muted"
-      sx={{ display: 'flex', alignItems: 'center' }}
-      onClick={() =>
-        window.open(
-          getExplorerLink(
-            proposal.executionTxnHash,
-            chainId,
-            ExplorerDataType.TRANSACTION
-          ),
-          '_blank'
-        )
-      }
-    >
-      <ExternalArrowIcon />
-      <Text ml={2}>View execute tx</Text>
-    </Button>
-  )
-}
-
-const ProposalCTAs = () => {
-  const { state } = useAtomValue(getProposalStateAtom)
-
-  return (
-    <>
-      {state === PROPOSAL_STATES.SUCCEEDED && <ProposalQueue />}
-      {state === PROPOSAL_STATES.QUEUED && (
-        <Box
-          variant="layout.verticalAlign"
-          sx={{
-            gap: 3,
-            ':not(:has(> *))': { ml: 0 },
-          }}
-        >
-          <ProposalCancel />
-          <ProposalExecute />
-        </Box>
-      )}
-    </>
-  )
-}
-
 const Dot = () => (
   <Box
     variant="layout.verticalAlign"
@@ -104,6 +50,39 @@ const Dot = () => (
     }}
   >
     ·
+  </Box>
+)
+
+const StatItem = ({
+  label,
+  icon,
+  children,
+}: {
+  label: string
+  icon: ReactNode
+  children: ReactNode
+}) => (
+  <Box variant="layout.verticalAlign" sx={{ gap: '12px' }}>
+    <Box
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: 24,
+        height: 24,
+        bg: 'bgIcon',
+        borderRadius: '4px',
+        color: 'text',
+      }}
+    >
+      {icon}
+    </Box>
+    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+      <Text variant="legend" sx={{ fontSize: 1 }}>
+        {label}
+      </Text>
+      {children}
+    </Box>
   </Box>
 )
 
@@ -128,8 +107,8 @@ const ProposalHeader = () => {
         display: 'flex',
         flexDirection: 'column',
         height: '100%',
-        gap: [7, 8],
-        p: 4,
+        gap: [3, 8],
+        p: [3, 4],
       }}
     >
       <Box
@@ -137,84 +116,45 @@ const ProposalHeader = () => {
         sx={{ gap: [3, 2], justifyContent: 'space-between', flexWrap: 'wrap' }}
       >
         <BackButton />
-        <Box
-          variant="layout.verticalAlign"
-          sx={{ gap: 3, fontSize: 1, flexWrap: 'wrap' }}
-        >
-          <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
-            <Text variant="legend">Proposed by:</Text>
-            <Box sx={{ fontWeight: 'bold' }}>
-              {proposal?.proposer && rToken?.chainId && (
-                <Address address={proposal?.proposer} chain={rToken?.chainId} />
-              )}
-            </Box>
-          </Box>
-          <Dot />
-          <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
-            <Text variant="legend">ID:</Text>
-            <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
-              <Text sx={{ fontWeight: 'bold' }}>
-                {proposal?.id ? shortenString(proposal.id) : 'Loading...'}
-              </Text>
-              {!!proposal?.id && (
-                <CopyValue text={proposal.id} value={proposal.id} />
-              )}
-            </Box>
-          </Box>
-          <Dot />
-          <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
-            <Text variant="legend">Proposed on:</Text>
-            <Text sx={{ fontWeight: 'bold' }}>
-              {proposal?.creationTime
-                ? dayjs.unix(+proposal.creationTime).format('MMM D, YYYY')
-                : 'Loading...'}
-            </Text>
-          </Box>
-        </Box>
+        <ProposalSnapshot />
       </Box>
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: [2, 6] }}>
         <Text sx={{ fontSize: 4, fontWeight: 'bold' }}>{title}</Text>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
           <Box
             variant="layout.verticalAlign"
             sx={{
-              gap: 5,
-              fontSize: 2,
-              justifyContent: 'space-between',
+              gap: [2, 5],
               flexWrap: 'wrap',
             }}
           >
-            <Box variant="layout.verticalAlign" sx={{ gap: 3 }}>
-              <Box
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  p: 1,
-                  bg: 'bgIcon',
-                  borderRadius: '4px',
-                  color: 'text',
-                }}
-              >
-                <Link2 size={16} />
+            <StatItem label="Proposed on" icon={<FilesIcon />}>
+              <Text>
+                {proposal?.creationTime
+                  ? dayjs.unix(+proposal.creationTime).format('MMM D, YYYY')
+                  : 'Loading...'}
+              </Text>
+            </StatItem>
+            <StatItem label="Proposed by" icon={<WalletOutlineIcon />}>
+              <Box>
+                {proposal?.proposer && rToken?.chainId && (
+                  <Address
+                    address={proposal?.proposer}
+                    chain={rToken?.chainId}
+                  />
+                )}
               </Box>
-              <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                <Text variant="legend" sx={{ fontSize: 1 }}>
-                  Forum link
+            </StatItem>
+            <StatItem label="ID" icon={<FingerprintIcon />}>
+              <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
+                <Text>
+                  {proposal?.id ? shortenString(proposal.id) : 'Loading...'}
                 </Text>
-                <Link href={rfcLink} target="_blank">
-                  {shortenStringN(rfcLink, 12)}
-                </Link>
+                {!!proposal?.id && (
+                  <CopyValue text={proposal.id} value={proposal.id} />
+                )}
               </Box>
-            </Box>
-            <Box
-              variant="layout.verticalAlign"
-              sx={{ gap: [2, 1], flexWrap: 'wrap' }}
-            >
-              <ProposalAlert />
-              <ProposalSnapshot />
-              <ProposalCTAs />
-              <ViewExecuteTxButton />
-            </Box>
+            </StatItem>
           </Box>
         </Box>
       </Box>

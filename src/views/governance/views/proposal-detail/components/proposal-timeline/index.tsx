@@ -11,7 +11,7 @@ import {
 
 const ProposalTimeline = () => {
   return (
-    <Box sx={{ bg: 'background', borderRadius: '8px', p: 2, mt: 2 }}>
+    <Box sx={{ bg: 'cardBackground', borderRadius: '8px', p: 2, mt: 2 }}>
       <Text
         variant="title"
         sx={{ fontWeight: 'bold', lineHeight: '20px' }}
@@ -25,6 +25,8 @@ const ProposalTimeline = () => {
           bg: 'focusedBackground',
           borderRadius: '6px',
           overflow: 'hidden',
+          border: '1px solid',
+          borderColor: 'borderSecondary',
           boxShadow: '0px 10px 38px 6px rgba(0, 0, 0, 0.05)',
         }}
       >

@@ -48,10 +48,9 @@ const ProposalSnapshot = () => {
   return (
     <Button
       small
-      variant="bordered"
+      variant="transparent"
       onClick={handleSnapshot}
       disabled={!proposal}
-      mr={3}
     >
       <Download size={14} />
       <Text ml={2}>Download snapshot</Text>
