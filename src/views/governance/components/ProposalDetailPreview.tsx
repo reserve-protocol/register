@@ -78,11 +78,13 @@ const ProposalDetail = ({ addresses, calldatas, ...props }: Props) => {
           <Text sx={{ display: 'block' }}>Loading execution details...</Text>
         </Card>
       )}
-      {calls.map((address, index) => (
-        <SectionWrapper key={address} navigationIndex={index}>
-          <ContractProposalDetail data={parse[address]} mb={4} {...props} />
-        </SectionWrapper>
-      ))}
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+        {calls.map((address, index) => (
+          <SectionWrapper key={address} navigationIndex={index}>
+            <ContractProposalDetail data={parse[address]} {...props} />
+          </SectionWrapper>
+        ))}
+      </Box>
     </Box>
   )
 }
