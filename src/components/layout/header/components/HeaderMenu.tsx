@@ -11,6 +11,7 @@ import { borderRadius } from 'theme'
 import { Box, Text } from 'theme-ui'
 import { ROUTES } from 'utils/constants'
 import TokenToggle from './TokenToggle'
+import { Search } from 'react-feather'
 
 const TokenSelector = () => {
   const selectedRToken = useAtomValue(selectedRTokenAtom)
@@ -55,7 +56,11 @@ const HeaderMenu = () => {
         icon: <WalletOutlineIcon fontSize={16} />,
         to: ROUTES.PORTFOLIO,
       },
-      { label: t`Bridge`, icon: <BridgeNavIcon />, to: ROUTES.BRIDGE },
+      {
+        label: t`Explore`,
+        icon: <Search strokeWidth={1} size={16} />,
+        to: ROUTES.EXPLORER,
+      },
     ],
     []
   )
