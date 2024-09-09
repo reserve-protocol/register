@@ -181,14 +181,14 @@ const ProposalVote = (props: BoxProps) => {
               sx={{ width: '100%' }}
               onClick={() => setVoteVisible(true)}
             >
-              {vote ? `You voted "${vote}"` : <Trans>Vote on-chain</Trans>}
+              {!account ? (
+                'Please connect your wallet'
+              ) : vote ? (
+                `You voted "${vote}"`
+              ) : (
+                <Trans>Vote on-chain</Trans>
+              )}
             </Button>
-          )}
-
-          {!account && (
-            <Text mt={3} sx={{ display: 'block', color: 'warning' }}>
-              <Trans>Please connect your wallet</Trans>
-            </Text>
           )}
         </Box>
       )}

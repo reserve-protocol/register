@@ -1,6 +1,6 @@
 import SpinnerIcon from 'components/icons/SpinnerIcon'
 import { useAtomValue } from 'jotai'
-import { Check } from 'react-feather'
+import { Check, Slash, X } from 'react-feather'
 import { Box, Text } from 'theme-ui'
 import { parseDurationShort } from 'utils'
 import { PROPOSAL_STATES } from 'utils/constants'
@@ -10,10 +10,12 @@ const FinalState = ({
   label,
   color,
   bgColor,
+  icon,
 }: {
   label: string
   color: string
   bgColor: string
+  icon?: ReactNode
 }) => {
   return (
     <Box
@@ -37,7 +39,7 @@ const FinalState = ({
           padding: '8px',
         }}
       >
-        <Check size={20} />
+        {icon}
       </Box>
       <Text sx={{ fontSize: 3, fontWeight: 'bold' }}>{label}</Text>
     </Box>
@@ -49,31 +51,37 @@ const FINAL_STATES = {
     label: 'Executed',
     color: 'primary',
     bgColor: 'rgba(9, 85, 172, 0.10)',
+    icon: <Check size={20} />,
   },
   [PROPOSAL_STATES.DEFEATED]: {
     label: 'Defeated',
     color: 'red',
     bgColor: 'rgba(208, 90, 103, 0.10)',
+    icon: <X size={20} />,
   },
   [PROPOSAL_STATES.EXPIRED]: {
     label: 'Expired',
     color: 'gray',
     bgColor: 'rgba(0, 0, 0, 0.10)',
+    icon: <Slash size={20} />,
   },
   [PROPOSAL_STATES.CANCELED]: {
     label: 'Canceled',
     color: 'red',
     bgColor: 'rgba(208, 90, 103, 0.10)',
+    icon: <X size={20} />,
   },
   [PROPOSAL_STATES.QUORUM_NOT_REACHED]: {
     label: 'Quorum not reached',
     color: 'orange',
     bgColor: 'rgba(255, 152, 0, 0.10)',
+    icon: <X size={20} />,
   },
   [PROPOSAL_STATES.SUCCEEDED]: {
     label: 'Succeeded',
     color: 'green',
     bgColor: 'rgba(0, 255, 152, 0.10)',
+    icon: <Check size={20} />,
   },
 }
 
@@ -101,6 +109,7 @@ const ProposalAlert = () => {
         label={FINAL_STATES[state.state].label}
         color={FINAL_STATES[state.state].color}
         bgColor={FINAL_STATES[state.state].bgColor}
+        icon={FINAL_STATES[state.state].icon}
       />
     )
   }
