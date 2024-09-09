@@ -12,6 +12,7 @@ import SettleableAuctions from './SettleableAuctions'
 import UnavailableRevenueAuctions from './UnavailableRevenueAuctions'
 import RecollaterizationAlert from './RecollaterizationAlert'
 import ClaimRewards from './claim-rewards'
+import StakingVaultRevenue from './StakingVaultRevenue'
 
 const Placeholder = () => {
   const [colorMode] = useColorMode()
@@ -138,6 +139,7 @@ const Revenue = () => (
     <RecollaterizationAlert />
     <ActionableRevenue />
     <UnavailableRevenue />
+    <StakingVaultRevenue />
   </Box>
 )
 
