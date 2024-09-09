@@ -84,7 +84,7 @@ const HelpContent = ({ onClose }: { onClose(): void }) => {
     },
     {
       title: t`Reserve Bridge`,
-      subtitle: t`Bridge tokens across chains`,
+      subtitle: t`Transfer RTokens between Ethereum, Base, and Arbitrum`,
       href: 'https://app.reserve.org/bridge',
     },
   ]
