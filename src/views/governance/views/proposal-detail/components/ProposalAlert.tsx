@@ -5,6 +5,7 @@ import { Box, Text } from 'theme-ui'
 import { parseDurationShort } from 'utils'
 import { PROPOSAL_STATES } from 'utils/constants'
 import { getProposalStateAtom } from '../atom'
+import { ReactNode } from 'react'
 
 const FinalState = ({
   label,
@@ -15,7 +16,7 @@ const FinalState = ({
   label: string
   color: string
   bgColor: string
-  icon?: ReactNode
+  icon: ReactNode
 }) => {
   return (
     <Box
@@ -132,6 +133,7 @@ const ProposalAlert = () => {
         label="Passed"
         color="primary"
         bgColor="rgba(9, 85, 172, 0.10)"
+        icon={<Check size={20} />}
       />
     )
   }
