@@ -1,11 +1,10 @@
-import { Trans } from '@lingui/macro'
+import SpinnerIcon from 'components/icons/SpinnerIcon'
 import { useAtomValue } from 'jotai'
 import { Check } from 'react-feather'
-import { Box, Image, Text } from 'theme-ui'
-import { parseDuration, parseDurationShort } from 'utils'
+import { Box, Text } from 'theme-ui'
+import { parseDurationShort } from 'utils'
 import { PROPOSAL_STATES } from 'utils/constants'
 import { getProposalStateAtom } from '../atom'
-import SpinnerIcon from 'components/icons/SpinnerIcon'
 
 const FinalState = ({
   label,
@@ -110,6 +109,10 @@ const ProposalAlert = () => {
     units: ['d', 'h', 'm'],
     round: true,
   })
+
+  if (!Object.keys(DEADLINE_STATES).includes(state.state)) {
+    return null
+  }
 
   if (
     state.state === PROPOSAL_STATES.QUEUED &&
