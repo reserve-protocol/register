@@ -148,6 +148,7 @@ const ProposalVote = (props: BoxProps) => {
                 color: hasUndelegatedBalance ? 'accentInverted' : 'muted',
                 cursor: hasUndelegatedBalance ? 'pointer' : 'default',
               }}
+              onClick={() => hasUndelegatedBalance && setDelegateVisible(true)}
             >
               <DelegateIcon />
               <Text sx={{ fontWeight: 700 }}>Delegate</Text>
