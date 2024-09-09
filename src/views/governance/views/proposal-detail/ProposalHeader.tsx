@@ -1,21 +1,20 @@
 import Address from 'components/address'
 import { SmallButton } from 'components/button'
 import CopyValue from 'components/button/CopyValue'
+import FilesIcon from 'components/icons/FilesIcon'
+import FingerprintIcon from 'components/icons/FingerprintIcon'
+import WalletOutlineIcon from 'components/icons/WalletOutlineIcon'
 import dayjs from 'dayjs'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
-import { ArrowLeft, Link2 } from 'react-feather'
+import { ReactNode } from 'react'
+import { ArrowLeft, ArrowUpRight } from 'react-feather'
 import { useNavigate } from 'react-router-dom'
-import { Box, Link, Text } from 'theme-ui'
-import { shortenString, shortenStringN } from 'utils'
+import { Box, Text } from 'theme-ui'
+import { shortenString } from 'utils'
 import { ROUTES } from 'utils/constants'
 import { proposalDetailAtom } from './atom'
 import ProposalSnapshot from './ProposalSnapshot'
-import { ReactNode } from 'react'
-import WalletIcon from 'components/icons/WalletIcon'
-import WalletOutlineIcon from 'components/icons/WalletOutlineIcon'
-import FingerprintIcon from 'components/icons/FingerprintIcon'
-import FilesIcon from 'components/icons/FilesIcon'
 
 const BackButton = () => {
   const navigate = useNavigate()
@@ -119,7 +118,27 @@ const ProposalHeader = () => {
         <ProposalSnapshot />
       </Box>
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: [2, 6] }}>
-        <Text sx={{ fontSize: 4, fontWeight: 'bold' }}>{title}</Text>
+        <Text
+          sx={{
+            fontSize: 4,
+            fontWeight: 'bold',
+            ':hover': {
+              textDecoration: rfcLink ? 'underline' : 'none',
+              cursor: rfcLink ? 'pointer' : 'default',
+            },
+          }}
+          onClick={() => rfcLink && window.open(rfcLink, '_blank')}
+        >
+          {title}
+          <Box
+            sx={{
+              ml: 1,
+              display: rfcLink ? 'inline' : 'none',
+            }}
+          >
+            <ArrowUpRight size={18} />
+          </Box>
+        </Text>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
           <Box
             variant="layout.verticalAlign"
