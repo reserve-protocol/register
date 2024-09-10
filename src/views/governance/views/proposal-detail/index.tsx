@@ -11,18 +11,16 @@ const GovernanceProposalDetail = () => {
   return (
     <Box
       variant="layout.wrapper"
-      sx={{ bg: 'reserveBackground', borderRadius: '14px', m: [1, 4] }}
+      sx={{ bg: 'reserveBackground', borderRadius: '14px', m: [1, 4], p: 1 }}
     >
       <ProposalDetailAtomUpdater />
       <Grid
         columns={[1, 1, 1, '10fr 5fr']}
         gap={[2]}
-        p={[1, '2px']}
+        px={[1, 2]}
         sx={{
           bg: 'focusedBackground',
           borderRadius: '14px',
-          border: '4px solid',
-          borderColor: 'reserveBackground',
           height: '100%',
           position: 'relative',
           alignContent: 'flex-start',
@@ -31,7 +29,7 @@ const GovernanceProposalDetail = () => {
         }}
       >
         <ProposalHeader />
-        <Box sx={{ py: 2, pr: [0, 2], height: '100%' }}>
+        <Box sx={{ py: [1, 2], height: '100%' }}>
           <ProposalVote />
         </Box>
       </Grid>
