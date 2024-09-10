@@ -105,8 +105,9 @@ const ProposalHeader = () => {
       sx={{
         display: 'flex',
         flexDirection: 'column',
+        justifyContent: 'space-between',
         height: '100%',
-        gap: [3, 8],
+        gap: [3, 7],
         p: [3, 4],
       }}
     >
@@ -117,7 +118,7 @@ const ProposalHeader = () => {
         <BackButton />
         <ProposalSnapshot />
       </Box>
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: [2, 6] }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: [2, 4] }}>
         <Text
           sx={{
             fontSize: 4,

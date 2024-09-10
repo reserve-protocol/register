@@ -146,6 +146,7 @@ const ProposalAlert = () => {
         justifyContent: 'center',
         color: DEADLINE_STATES[state.state].color,
         height: '100%',
+        py: 4,
       }}
     >
       <Spinner size={18} color={DEADLINE_STATES[state.state].color} />
