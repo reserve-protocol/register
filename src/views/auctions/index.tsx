@@ -6,9 +6,14 @@ import BatchAuctions from './batch'
 import About from './components/About'
 import AuctionsHeader from './components/AuctionsHeader'
 import DutchAuctions from './dutch'
+import { useEffect } from 'react'
 
 const Auctions = () => {
   const platform = useAtomValue(auctionPlatformAtom)
+
+  useEffect(() => {
+    throw new Error('failed to fetch dynamic route')
+  }, [])
 
   return (
     <Box variant="layout.tokenView">

@@ -4,15 +4,7 @@ import { TrendingUp } from 'react-feather'
 import Skeleton from 'react-loading-skeleton'
 import { Box, Card, Text } from 'theme-ui'
 
-const handleLoadError = () => {
-  window.location.reload()
-
-  return {
-    default: () => <div />,
-  }
-}
-
-const Charts = lazy(() => import('./charts').catch(handleLoadError))
+const Charts = lazy(() => import('./charts'))
 
 const HistoricalMetrics = () => (
   <Box>

@@ -20,40 +20,24 @@ import Staking from 'views/staking'
 import Home from 'views/home'
 import AvailableRevenue from 'views/explorer/components/revenue'
 
-const handleLoadError = () => {
-  window.location.reload()
-
-  return {
-    default: () => <div />,
-  }
-}
-
 // Preloadable components
-const Auctions = lazyWithPreload(() =>
-  import('./views/auctions').catch(handleLoadError)
+const Auctions = lazyWithPreload(() => import('./views/auctions'))
+const Governance = lazyWithPreload(() => import('./views/governance'))
+const GovernanceProposal = lazyWithPreload(
+  () => import('./views/governance/views/proposal')
 )
-const Governance = lazyWithPreload(() =>
-  import('./views/governance').catch(handleLoadError)
+const GovernanceProposalDetail = lazyWithPreload(
+  () => import('./views/governance/views/proposal-detail')
 )
-const GovernanceProposal = lazyWithPreload(() =>
-  import('./views/governance/views/proposal').catch(handleLoadError)
+const GovernanceSetup = lazyWithPreload(
+  () => import('./views/deploy/components/Governance')
 )
-const GovernanceProposalDetail = lazyWithPreload(() =>
-  import('./views/governance/views/proposal-detail').catch(handleLoadError)
-)
-const GovernanceSetup = lazyWithPreload(() =>
-  import('./views/deploy/components/Governance').catch(handleLoadError)
-)
-const Settings = lazyWithPreload(() =>
-  import('./views/settings').catch(handleLoadError)
-)
+const Settings = lazyWithPreload(() => import('./views/settings'))
 
 // Lazy components
-const Bridge = lazy(() => import('./views/bridge').catch(handleLoadError))
-const AllTokenList = lazy(() =>
-  import('./views/tokens/Tokens').catch(handleLoadError)
-)
-const Deploy = lazy(() => import('./views/deploy').catch(handleLoadError))
+const Bridge = lazy(() => import('./views/bridge'))
+const AllTokenList = lazy(() => import('./views/tokens/Tokens'))
+const Deploy = lazy(() => import('./views/deploy'))
 
 // TODO: Not sure if its worth to lazy load main routes
 const AppRoutes = () => (
