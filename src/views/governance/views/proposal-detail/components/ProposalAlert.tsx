@@ -1,49 +1,161 @@
-import { Trans } from '@lingui/macro'
 import { useAtomValue } from 'jotai'
-import { Box, Image, Text } from 'theme-ui'
-import { parseDuration } from 'utils'
+import { ReactNode } from 'react'
+import { Check, Slash, X } from 'react-feather'
+import { Box, Spinner, Text } from 'theme-ui'
+import { parseDurationShort } from 'utils'
 import { PROPOSAL_STATES } from 'utils/constants'
 import { getProposalStateAtom } from '../atom'
+
+const FinalState = ({
+  label,
+  color,
+  bgColor,
+  icon,
+}: {
+  label: string
+  color: string
+  bgColor: string
+  icon: ReactNode
+}) => {
+  return (
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 2,
+        height: '100%',
+        color,
+      }}
+    >
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          background: bgColor,
+          borderRadius: '50%',
+          padding: '8px',
+        }}
+      >
+        {icon}
+      </Box>
+      <Text sx={{ fontSize: 3, fontWeight: 'bold' }}>{label}</Text>
+    </Box>
+  )
+}
+
+const FINAL_STATES = {
+  [PROPOSAL_STATES.EXECUTED]: {
+    label: 'Executed',
+    color: 'primary',
+    bgColor: 'rgba(9, 85, 172, 0.10)',
+    icon: <Check size={20} />,
+  },
+  [PROPOSAL_STATES.DEFEATED]: {
+    label: 'Defeated',
+    color: 'red',
+    bgColor: 'rgba(208, 90, 103, 0.10)',
+    icon: <X size={20} />,
+  },
+  [PROPOSAL_STATES.EXPIRED]: {
+    label: 'Expired',
+    color: 'gray',
+    bgColor: 'rgba(0, 0, 0, 0.10)',
+    icon: <Slash size={20} />,
+  },
+  [PROPOSAL_STATES.CANCELED]: {
+    label: 'Canceled',
+    color: 'red',
+    bgColor: 'rgba(208, 90, 103, 0.10)',
+    icon: <X size={20} />,
+  },
+  [PROPOSAL_STATES.QUORUM_NOT_REACHED]: {
+    label: 'Quorum not reached',
+    color: 'orange',
+    bgColor: 'rgba(255, 152, 0, 0.10)',
+    icon: <X size={20} />,
+  },
+  [PROPOSAL_STATES.SUCCEEDED]: {
+    label: 'Succeeded',
+    color: 'green',
+    bgColor: 'rgba(0, 255, 152, 0.10)',
+    icon: <Check size={20} />,
+  },
+}
+
+const DEADLINE_STATES = {
+  [PROPOSAL_STATES.ACTIVE]: {
+    text: 'Voting period ends in',
+    color: 'accentInverted',
+  },
+  [PROPOSAL_STATES.PENDING]: {
+    text: 'Voting begins in',
+    color: 'accentInverted',
+  },
+  [PROPOSAL_STATES.QUEUED]: {
+    text: 'Execution delay ends in',
+    color: 'orange',
+  },
+}
 
 const ProposalAlert = () => {
   const state = useAtomValue(getProposalStateAtom)
 
-  if (!state.deadline || state.deadline < 0) {
-    return null
+  if (Object.keys(FINAL_STATES).includes(state.state)) {
+    return (
+      <FinalState
+        label={FINAL_STATES[state.state].label}
+        color={FINAL_STATES[state.state].color}
+        bgColor={FINAL_STATES[state.state].bgColor}
+        icon={FINAL_STATES[state.state].icon}
+      />
+    )
   }
 
-  const deadline = parseDuration(state.deadline, {
+  const deadline = parseDurationShort(Math.max(state.deadline || 0, 0), {
     units: ['d', 'h', 'm'],
     round: true,
   })
 
+  if (!Object.keys(DEADLINE_STATES).includes(state.state)) {
+    return null
+  }
+
+  if (
+    state.state === PROPOSAL_STATES.QUEUED &&
+    (!state.deadline || state.deadline <= 0)
+  ) {
+    return (
+      <FinalState
+        label="Passed"
+        color="primary"
+        bgColor="rgba(9, 85, 172, 0.10)"
+        icon={<Check size={20} />}
+      />
+    )
+  }
+
   return (
     <Box
-      mx={3}
-      py={2}
-      px={3}
       sx={{
         display: 'flex',
+        flexDirection: 'column',
         alignItems: 'center',
-        background: 'infoBG',
-        borderRadius: '10px',
-        color: 'info',
-        fontSize: 0,
+        justifyContent: 'center',
+        color: DEADLINE_STATES[state.state].color,
+        height: '100%',
+        py: 4,
       }}
     >
-      <Image src="/svgs/asterisk.svg" />
-      <Text ml={2} mr="1" sx={{ fontWeight: 500 }}>
-        {state.state === PROPOSAL_STATES.ACTIVE && (
-          <Trans>Voting ends in:</Trans>
-        )}
-        {state.state === PROPOSAL_STATES.PENDING && (
-          <Trans>Voting starts in:</Trans>
-        )}
-        {state.state === PROPOSAL_STATES.QUEUED && (
-          <Trans>Execution delay ends in:</Trans>
-        )}
+      <Spinner size={18} color={DEADLINE_STATES[state.state].color} />
+      <Text sx={{ fontSize: 1, mt: 1 }}>
+        {DEADLINE_STATES[state.state].text}
       </Text>
-      {deadline}
+      <Text variant="title" sx={{ fontWeight: 'bold' }}>
+        {deadline}
+      </Text>
     </Box>
   )
 }

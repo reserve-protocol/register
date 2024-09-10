@@ -5,6 +5,7 @@ import humanizeDuration from 'humanize-duration'
 import { BigNumberMap } from 'types'
 import { Address, getAddress, parseEther, parseUnits } from 'viem'
 import { CHAIN_TO_NETWORK, ROUTES } from './constants'
+import dayjs from 'dayjs'
 
 export const decimalPattern = /^[0-9]*[.]?[0-9]*$/i
 export const numberPattern = /^\d+$/
@@ -109,6 +110,10 @@ export function shortenString(str: string) {
   return `${str.substring(0, 6)}...${str.substring(str.length - 4)}`
 }
 
+export function shortenStringN(str: string, chars = 5) {
+  return `${str.substring(0, chars)}...${str.substring(str.length - chars)}`
+}
+
 export function hasAllowance(
   allowances: BigNumberMap,
   requiredAllowances: BigNumberMap
@@ -208,6 +213,22 @@ export const getProposalTitle = (description: string) => {
   return description.split(/\r?\n/)[0].replaceAll('#', '').trim()
 }
 
+const shortEnglishHumanizer = humanizeDuration.humanizer({
+  language: 'shortEn',
+  languages: {
+    shortEn: {
+      y: () => 'y',
+      mo: () => 'mo',
+      w: () => 'w',
+      d: () => 'd',
+      h: () => 'h',
+      m: () => 'm',
+      s: () => 's',
+      ms: () => 'ms',
+    },
+  },
+})
+
 export const parseDuration = (
   duration: number,
   options?: humanizeDuration.Options
@@ -215,7 +236,25 @@ export const parseDuration = (
   return humanizeDuration(duration * 1000, options)
 }
 
+export const parseDurationShort = (
+  duration: number,
+  options?: humanizeDuration.Options
+) => {
+  return shortEnglishHumanizer(duration * 1000, options)
+}
+
 export const getUTCStartOfDay = (timestamp: number) => {
   const date = new Date(timestamp * 1000)
   return Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate())
+}
+
+// Thu May 18, 03:16 pm
+export const formatDate = (timestamp?: string | number) => {
+  const date = dayjs(timestamp)
+  const currentYear = dayjs().year()
+  const formatString =
+    date.year() === currentYear
+      ? 'ddd MMM DD, hh:mm a'
+      : 'ddd MMM DD, YYYY, hh:mm a'
+  return date.format(formatString)
 }

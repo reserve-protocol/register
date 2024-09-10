@@ -5,23 +5,21 @@ import useContractWrite from 'hooks/useContractWrite'
 import useWatchTransaction from 'hooks/useWatchTransaction'
 import { useAtomValue } from 'jotai'
 import { rTokenGovernanceAtom, walletAtom } from 'state/atoms'
-import { timelockIdAtom } from '../atom'
+import { getProposalStateAtom, timelockIdAtom } from '../atom'
 import { useContractRead } from 'wagmi'
 import { keccak256, toBytes } from 'viem'
 
 const ProposalCancel = () => {
   const governance = useAtomValue(rTokenGovernanceAtom)
-  const timelockId = useAtomValue(timelockIdAtom);
+  const timelockId = useAtomValue(timelockIdAtom)
   const account = useAtomValue(walletAtom)
+  const { deadline } = useAtomValue(getProposalStateAtom)
 
   const { data: canCancel } = useContractRead({
     address: governance.timelock,
     abi: Timelock,
     functionName: 'hasRole',
-    args: account ? [
-      keccak256(toBytes('CANCELLER_ROLE')),
-      account,
-    ] : undefined,
+    args: account ? [keccak256(toBytes('CANCELLER_ROLE')), account] : undefined,
   })
 
   const { write, isLoading, hash, isReady } = useContractWrite({
@@ -36,19 +34,23 @@ const ProposalCancel = () => {
     label: 'Proposal canceled',
   })
 
-  if (!canCancel || status == 'success') {
-    return null
-  }
+  if (!deadline || deadline <= 0) return null
 
   return (
     <TransactionButton
-      variant='danger'
+      variant="danger"
       small
       loading={isMining || isLoading}
       mining={isMining}
-      disabled={!isReady}
+      disabled={!isReady || !canCancel || status === 'success'}
       onClick={write}
       text={t`Cancel proposal`}
+      sx={{
+        height: '44px',
+        bg: 'transparent',
+        border: '1px solid',
+        borderColor: account ? 'danger' : 'primary',
+      }}
     />
   )
 }

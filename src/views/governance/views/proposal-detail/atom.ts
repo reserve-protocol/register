@@ -24,8 +24,11 @@ export interface ProposalDetail {
   startBlock: number
   endBlock: number
   queueBlock?: number
+  queueTime?: string
   executionStartBlock?: number
   executionETA?: number
+  executionTime?: string
+  cancellationTime?: string
   forWeightedVotes: string
   againstWeightedVotes: string
   abstainWeightedVotes: string

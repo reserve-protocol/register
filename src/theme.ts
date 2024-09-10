@@ -90,6 +90,7 @@ export const colors = {
   background: '#FEFBF8',
   backgroundNested: '#FEFBF8',
   focusedBackground: '#FFFFFF',
+  cardBackground: '#FEFBF8',
   inputBackground: '#E5E5E5',
   inputAlternativeBackground: '#f2f2f2',
   // contentBackground: '#F9F8F4',
@@ -129,6 +130,7 @@ export const colors = {
   rebalancing: '#FF8A00',
   progressBar: 'white',
   progressBarBackground: 'black',
+  bgIcon: '#F2F2F2',
   modes: {
     dark: {
       accentInverted: '#fff',
@@ -147,6 +149,7 @@ export const colors = {
       secondary: '#262321',
       backgroundNested: '#181715',
       focusedBackground: '#262321',
+      cardBackground: '#262321',
       focusBox: '#191816',
       inputBackground: '#000000',
       inputAlternativeBackground: '#000000',
@@ -173,6 +176,7 @@ export const colors = {
       rebalancing: '#FF8A00',
       progressBar: 'black',
       progressBarBackground: 'white',
+      bgIcon: '#1E1E1E',
     },
   },
 }

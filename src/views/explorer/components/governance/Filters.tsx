@@ -15,6 +15,8 @@ export const proposalStatus = {
   [PROPOSAL_STATES.EXECUTED]: 'Executed',
   [PROPOSAL_STATES.QUORUM_NOT_REACHED]: 'Quorum not reached',
   [PROPOSAL_STATES.CANCELED]: 'Canceled',
+  [PROPOSAL_STATES.SUCCEEDED]: 'Succeeded',
+  [PROPOSAL_STATES.EXPIRED]: 'Expired',
 }
 
 const ProposalStatusFilter = (

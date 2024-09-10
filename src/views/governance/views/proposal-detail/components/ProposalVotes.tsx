@@ -1,13 +1,14 @@
 import { Trans } from '@lingui/macro'
+import Blockies from 'components/blockies'
 import GoTo from 'components/button/GoTo'
 import { useEnsAddresses } from 'hooks/useEnsAddresses'
 import { atom, useAtomValue } from 'jotai'
-import { useMemo, useState } from 'react'
-import { Box, Progress, Text } from 'theme-ui'
+import { useState } from 'react'
+import { chainIdAtom } from 'state/atoms'
+import { Box, Text } from 'theme-ui'
 import { formatCurrency, shortenAddress } from 'utils'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { proposalDetailAtom } from '../atom'
-import { chainIdAtom } from 'state/atoms'
 
 interface Vote {
   voter: string
@@ -43,35 +44,23 @@ const getProposalVotes = atom((get) => {
 const ProposalVotes = () => {
   const chainId = useAtomValue(chainIdAtom)
   const votes = useAtomValue(getProposalVotes)
-  const proposal = useAtomValue(proposalDetailAtom)
   const [current, setCurrent] = useState(VOTE_TYPE.FOR)
 
   const addresses = (votes[current] || []).map((vote: Vote) => vote.voter)
   const ensRes: string[] = useEnsAddresses(addresses)
 
-  const forVotesWeight = useMemo(() => {
-    if (proposal?.abstainWeightedVotes && proposal.forWeightedVotes) {
-      const total = +proposal.abstainWeightedVotes + +proposal.forWeightedVotes
-
-      return (+proposal.forWeightedVotes * 100) / total
-    }
-
-    return 0
-  }, [proposal])
-
   return (
-    <Box variant="layout.borderBox" mt={4}>
-      <Box variant="layout.verticalAlign" mb={4}>
+    <Box sx={{ bg: 'cardBackground', borderRadius: '8px', p: 2, mt: 2 }}>
+      <Box variant="layout.verticalAlign" mb={2}>
         <Box
           variant="layout.verticalAlign"
           sx={{
             cursor: 'pointer',
-            borderRadius: 50,
+            borderRadius: '6px',
             overflow: 'hidden',
-            padding: 1,
+            padding: '2px',
             fontSize: 1,
-            border: '1px solid',
-            borderColor: 'inputBorder',
+            bg: 'inputBackground',
           }}
         >
           <Box
@@ -79,10 +68,10 @@ const ProposalVotes = () => {
             px={'10px'}
             sx={{
               textAlign: 'center',
-              borderRadius: 30,
+              borderRadius: '4px',
               backgroundColor:
-                current === VOTE_TYPE.FOR ? 'inputBorder' : 'none',
-              color: 'text',
+                current === VOTE_TYPE.FOR ? 'focusedBackground' : 'none',
+              color: current === VOTE_TYPE.FOR ? 'accentInverted' : 'text',
             }}
             onClick={() => setCurrent(VOTE_TYPE.FOR)}
           >
@@ -93,77 +82,92 @@ const ProposalVotes = () => {
             px={'10px'}
             sx={{
               textAlign: 'center',
-              borderRadius: 30,
+              borderRadius: '4px',
               backgroundColor:
-                current === VOTE_TYPE.AGAINST ? 'inputBorder' : 'none',
-              color: 'text',
+                current === VOTE_TYPE.AGAINST ? 'focusedBackground' : 'none',
+              color: current === VOTE_TYPE.AGAINST ? 'accentInverted' : 'text',
             }}
             onClick={() => setCurrent(VOTE_TYPE.AGAINST)}
           >
             <Trans>Votes against</Trans>
           </Box>
-        </Box>
-        {(!!Number(proposal?.forWeightedVotes) ||
-          !!Number(proposal?.againstWeightedVotes)) && (
-          <Progress
-            ml="auto"
-            max={1}
+          <Box
+            py={1}
+            px={'10px'}
             sx={{
-              width: '30%',
-              color: 'success',
-              backgroundColor: 'danger',
-              height: 4,
+              textAlign: 'center',
+              borderRadius: '4px',
+              backgroundColor:
+                current === VOTE_TYPE.ABSTAIN ? 'focusedBackground' : 'none',
+              color: current === VOTE_TYPE.ABSTAIN ? 'accentInverted' : 'text',
             }}
-            value={forVotesWeight}
-          />
+            onClick={() => setCurrent(VOTE_TYPE.ABSTAIN)}
+          >
+            <Trans>Abstain</Trans>
+          </Box>
+        </Box>
+      </Box>
+
+      <Box
+        sx={{
+          bg: 'focusedBackground',
+          borderRadius: '6px',
+          overflow: 'hidden',
+          boxShadow: '0px 10px 38px 6px rgba(0, 0, 0, 0.05)',
+          border: '1px solid',
+          borderColor: 'borderSecondary',
+          py: 2,
+        }}
+      >
+        <Box sx={{ maxHeight: 420, overflow: 'auto' }}>
+          {(votes[current]?.sort((a, b) => +b.weight - +a.weight) || []).map(
+            (vote, index) => (
+              <Box
+                variant="layout.verticalAlign"
+                sx={{ gap: 2 }}
+                key={vote.voter}
+                py={2}
+                px={3}
+              >
+                <Blockies address={vote.voter} />
+                <Text>
+                  {!!ensRes[index] ? ensRes[index] : shortenAddress(vote.voter)}
+                </Text>
+                <GoTo
+                  href={getExplorerLink(
+                    vote.voter,
+                    chainId,
+                    ExplorerDataType.ADDRESS
+                  )}
+                />
+                <Text
+                  ml="auto"
+                  color={
+                    current === 'FOR'
+                      ? 'primary'
+                      : current === 'AGAINST'
+                      ? 'red'
+                      : 'secondaryText'
+                  }
+                >
+                  {formatCurrency(+vote.weight, 0, {
+                    notation: 'compact',
+                    compactDisplay: 'short',
+                  })}
+                </Text>
+              </Box>
+            )
+          )}
+        </Box>
+
+        {!votes[current]?.length && (
+          <Box sx={{ textAlign: 'center' }}>
+            <Text variant="legend">
+              <Trans>No votes</Trans>
+            </Text>
+          </Box>
         )}
       </Box>
-
-      <Box variant="layout.verticalAlign" mb={3}>
-        <Box variant="layout.square" mr={2} />
-        <Text variant="legend">Voter</Text>
-        <Text ml="auto" variant="legend">
-          Votes
-        </Text>
-      </Box>
-      <Box sx={{ maxHeight: 420, overflow: 'auto' }}>
-        {(votes[current] || []).map((vote, index) => (
-          <Box
-            variant="layout.verticalAlign"
-            key={vote.voter}
-            mt={!!index ? 2 : 0}
-          >
-            <Box
-              variant="layout.square"
-              sx={{
-                backgroundColor:
-                  current === VOTE_TYPE.FOR ? 'success' : 'danger',
-              }}
-              mr={2}
-            />
-            <Text>
-              {!!ensRes[index] ? ensRes[index] : shortenAddress(vote.voter)}
-            </Text>
-            <GoTo
-              ml={1}
-              href={getExplorerLink(
-                vote.voter,
-                chainId,
-                ExplorerDataType.ADDRESS
-              )}
-            />
-            <Text ml="auto">{formatCurrency(+vote.weight)}</Text>
-          </Box>
-        ))}
-      </Box>
-
-      {!votes[current]?.length && (
-        <Box sx={{ textAlign: 'center' }}>
-          <Text variant="legend">
-            <Trans>No votes</Trans>
-          </Text>
-        </Box>
-      )}
     </Box>
   )
 }
