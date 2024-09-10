@@ -1,14 +1,15 @@
-import { Box, Card, Text } from 'theme-ui'
-import { formatCurrency, formatPercentage } from 'utils'
-import RevenueOverviewHeader from './RevenueOverviewHeader'
-import { erc20ABI, useContractReads } from 'wagmi'
-import useRToken from 'hooks/useRToken'
-import { RTOKEN_VAULT_STAKE } from 'utils/constants'
 import StakingVault from 'abis/StakingVault'
-import { useMemo } from 'react'
-import { formatUnits } from 'viem'
+import Help from 'components/help'
+import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
+import { useMemo } from 'react'
 import { estimatedApyAtom } from 'state/atoms'
+import { Box, Card, Divider, Text } from 'theme-ui'
+import { formatCurrency, formatPercentage } from 'utils'
+import { RTOKEN_VAULT_STAKE } from 'utils/constants'
+import { formatUnits } from 'viem'
+import { erc20ABI, useContractReads } from 'wagmi'
+import RevenueOverviewHeader from './RevenueOverviewHeader'
 
 const StakingVaultRevenue = () => {
   const rToken = useRToken()
@@ -137,22 +138,16 @@ const StakingVaultRevenue = () => {
             sx={{ gap: 1, justifyContent: 'space-between' }}
           >
             <Text variant="legend">Current {rTokenVault.name} APY</Text>
-            <Text>{formatPercentage(currentAPY)}</Text>
+            <Text sx={{ fontWeight: 'bold' }}>
+              {formatPercentage(currentAPY)}
+            </Text>
           </Box>
           <Box
             variant="layout.verticalAlign"
             sx={{ gap: 1, justifyContent: 'space-between' }}
           >
             <Text variant="legend">30d avg {rTokenVault.name} APY</Text>
-            <Text>{formatPercentage(avgAPY)}</Text>
-          </Box>
-
-          <Box
-            variant="layout.verticalAlign"
-            sx={{ gap: 1, justifyContent: 'space-between' }}
-          >
-            <Text variant="legend">Future sdgnETH APY</Text>
-            <Text>{formatPercentage(nextPeriodAPY)}</Text>
+            <Text sx={{ fontWeight: 'bold' }}>{formatPercentage(avgAPY)}</Text>
           </Box>
 
           <Box
@@ -160,17 +155,34 @@ const StakingVaultRevenue = () => {
             sx={{ gap: 1, justifyContent: 'space-between' }}
           >
             <Text variant="legend">Current reward period ends</Text>
-            <Text>{currentPeriodEnds}</Text>
+            <Text sx={{ fontWeight: 'bold' }}>{currentPeriodEnds}</Text>
+          </Box>
+
+          <Divider />
+
+          <Box
+            variant="layout.verticalAlign"
+            sx={{ gap: 1, justifyContent: 'space-between' }}
+          >
+            <Text variant="legend">Future sdgnETH APY (next period)</Text>
+            <Text sx={{ fontWeight: 'bold' }}>
+              {formatPercentage(nextPeriodAPY)}
+            </Text>
           </Box>
 
           <Box
             variant="layout.verticalAlign"
             sx={{ gap: 1, justifyContent: 'space-between' }}
           >
-            <Text variant="legend">
-              How much {rToken.symbol} is needed to hit the 30d avg
-            </Text>
-            <Text>{formatCurrency(neededToHitAvg)}</Text>
+            <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
+              <Text variant="legend">Delta from 30d avg</Text>
+              <Help
+                content={`How much ${rToken.symbol} is needed to hit the 30d avg`}
+              />
+            </Box>
+            <Text sx={{ fontWeight: 'bold' }}>{`${formatCurrency(
+              neededToHitAvg
+            )} ${rToken.symbol}`}</Text>
           </Box>
         </Box>
       </Card>
