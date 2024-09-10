@@ -70,7 +70,7 @@ const ProposalDetailContent = () => {
       {tab === TABS.DESCRIPTION ? (
         <MDEditor.Markdown
           source={description}
-          style={{ whiteSpace: 'pre-wrap', backgroundColor: 'transparent' }}
+          style={{ backgroundColor: 'transparent' }}
         />
       ) : (
         !!proposal && (
