@@ -201,7 +201,11 @@ const ProposalDetailStats = () => {
                 {majoritySupport ? 'Yes' : 'No'}
               </Text>
               <Text color="secondaryText">
-                {formatPercentage(majorityWeight * 100)}
+                {formatPercentage(
+                  (majoritySupport || !majorityWeight
+                    ? majorityWeight
+                    : 1 - majorityWeight) * 100
+                )}
               </Text>
             </Box>
           </Box>
@@ -211,10 +215,18 @@ const ProposalDetailStats = () => {
             sx={{
               width: '100%',
               color: majoritySupport ? 'accentInverted' : 'red',
-              backgroundColor: 'lightgray',
+              backgroundColor: !majorityWeight
+                ? 'lightgray'
+                : majoritySupport
+                ? 'red'
+                : 'accentInverted',
               height: 4,
             }}
-            value={majorityWeight}
+            value={
+              majoritySupport || !majorityWeight
+                ? majorityWeight
+                : 1 - majorityWeight
+            }
           />
         </Box>
         <Box variant="layout.verticalAlign">

@@ -49,7 +49,7 @@ const ProposalCancel = () => {
         height: '44px',
         bg: 'transparent',
         border: '1px solid',
-        borderColor: 'danger',
+        borderColor: account ? 'danger' : 'primary',
       }}
     />
   )

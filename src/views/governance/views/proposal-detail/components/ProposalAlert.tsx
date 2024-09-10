@@ -96,7 +96,7 @@ const DEADLINE_STATES = {
   },
   [PROPOSAL_STATES.QUEUED]: {
     text: 'Execution delay ends in',
-    color: 'red',
+    color: 'orange',
   },
 }
 
