@@ -5,8 +5,8 @@ import { formatCurrency } from 'utils'
 
 interface RevenueOverviewHeader extends BoxProps {
   text: string
-  help: string
-  amount: number
+  help?: string
+  amount?: number
   muted?: boolean
   loading?: boolean
 }
@@ -37,10 +37,12 @@ const RevenueOverviewHeader = ({
         <Spinner ml="auto" size={16} />
       ) : (
         <Box variant="layout.verticalAlign" ml="auto" sx={{ flexShrink: 0 }}>
-          <Text variant="strong" sx={{ color: 'text' }} mr="2">
-            ${formatCurrency(amount)}
-          </Text>
-          <Help content={help} />
+          {amount !== undefined && (
+            <Text variant="strong" sx={{ color: 'text' }} mr="2">
+              ${formatCurrency(amount)}
+            </Text>
+          )}
+          {help && <Help content={help} />}
         </Box>
       )}
     </Box>

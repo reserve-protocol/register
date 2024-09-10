@@ -9,6 +9,7 @@ import {
 import { ChainId } from './chains'
 import rtokens from '@reserve-protocol/rtokens'
 import RSV from './rsv'
+import { Address } from 'viem'
 
 export const VERSION = '3.0.0'
 
@@ -361,4 +362,15 @@ export const collateralDisplay: Record<string, string> = {
   apxeth: 'Autocompounding Pirex ETH',
   susde: 'Ethena Staked USDe',
   ethx: 'Stader ETHx',
+}
+
+export const RTOKEN_VAULT_STAKE: Record<
+  Address,
+  { name: string; address: Address }
+> = {
+  // dgnETH: sdgnETH
+  '0x005F893EcD7bF9667195642f7649DA8163e23658': {
+    name: 'sdgnETH',
+    address: '0x5BDd1fA233843Bfc034891BE8a6769e58F1e1346',
+  },
 }
