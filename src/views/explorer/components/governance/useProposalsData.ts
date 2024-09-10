@@ -22,9 +22,15 @@ const explorerProposalsQuery = gql`
       governance
       forWeightedVotes
       againstWeightedVotes
+      abstainWeightedVotes
       quorumVotes
       startBlock
       endBlock
+      executionStartBlock
+      executionETA
+      governanceFramework {
+        name
+      }
       governance {
         rToken {
           id
