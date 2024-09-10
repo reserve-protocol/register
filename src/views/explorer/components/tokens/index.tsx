@@ -110,11 +110,7 @@ const Filters = () => {
   }
 
   return (
-    <Box
-      ml="auto"
-      variant="layout.verticalAlign"
-      sx={{ alignItems: 'flex-end' }}
-    >
+    <Box variant="layout.verticalAlign" ml="1" sx={{ alignItems: 'flex-end' }}>
       <ChainFilter
         selected={filters.chains}
         onChange={(selected) => handleChange('chains', selected)}
@@ -227,10 +223,14 @@ const ExploreTokens = (props: Partial<TableProps>) => {
   }
 
   return (
-    <Box my={5} mx={[1, 4]}>
-      <Box variant="layout.verticalAlign" mb={5}>
+    <Box my={[3, 5]} mx={[2, 4]}>
+      <Box
+        variant="layout.verticalAlign"
+        sx={{ flexWrap: 'wrap', gap: 2 }}
+        mb={5}
+      >
         <BasketCubeIcon fontSize={32} />
-        <Text ml="2" as="h2" variant="title" sx={{ fontSize: 4 }}>
+        <Text mr="auto" as="h2" variant="title" sx={{ fontSize: 4 }}>
           <Trans>Featured RTokens</Trans>
         </Text>
         <Filters />

@@ -1,5 +1,5 @@
 import PreloadComponent, { LazyComponent } from 'components/lazy-component'
-import { lazy } from 'react'
+import { lazy, useEffect } from 'react'
 import { lazyWithPreload } from 'react-lazy-with-preload'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import RTokenContainer from 'state/rtoken/RTokenContainer'

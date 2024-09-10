@@ -53,7 +53,7 @@ const ProposalFilters = () => {
   }
 
   return (
-    <Box ml="auto" variant="layout.verticalAlign" sx={{ gap: 3 }}>
+    <Box variant="layout.verticalAlign" ml="1" sx={{ gap: 3 }}>
       <TokenFilter
         selected={filters.tokens}
         onChange={(selected) => handleChange('tokens', selected)}

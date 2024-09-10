@@ -22,9 +22,15 @@ const explorerProposalsQuery = gql`
       governance
       forWeightedVotes
       againstWeightedVotes
+      abstainWeightedVotes
       quorumVotes
       startBlock
       endBlock
+      executionStartBlock
+      executionETA
+      governanceFramework {
+        name
+      }
       governance {
         rToken {
           id
@@ -86,6 +92,7 @@ const useProposalsData = () => {
             return {
               ...entry,
               status: state.state,
+              state,
               chain,
               rTokenAddress: getAddress(entry.governance.rToken.id),
               rTokenSymbol: entry.governance.rToken.token.symbol,

@@ -11,7 +11,10 @@ import MultiselectDropdrown, {
   SelectOption,
 } from '../MultiselectDropdown'
 
-const TokenFilter = (props: Omit<IMultiselectDropdrown, 'options'>) => {
+const TokenFilter = ({
+  sx,
+  ...props
+}: Omit<IMultiselectDropdrown, 'options'>) => {
   const options = useMemo(() => {
     const items: SelectOption[] = []
 
@@ -29,7 +32,7 @@ const TokenFilter = (props: Omit<IMultiselectDropdrown, 'options'>) => {
   }, [])
 
   return (
-    <Box>
+    <Box sx={sx}>
       <Text variant="legend">
         <Trans>Tokens</Trans>
       </Text>

@@ -82,6 +82,11 @@ const HelpContent = ({ onClose }: { onClose(): void }) => {
       subtitle: t`Can’t find what you’re looking for elsewhere or want to join the conversation?`,
       href: DISCORD_INVITE,
     },
+    {
+      title: t`Reserve Bridge`,
+      subtitle: t`Transfer RTokens between Ethereum, Base, and Arbitrum`,
+      href: 'https://app.reserve.org/bridge',
+    },
   ]
 
   return (

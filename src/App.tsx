@@ -16,10 +16,25 @@ import AppRoutes from './AppRoutes'
 import Layout from './components/layout'
 import LanguageProvider from './i18n'
 import { theme } from './theme'
+import React from 'react'
+import { ErrorBoundary } from 'react-error-boundary'
 
 mixpanel.init(import.meta.env.VITE_MIXPANEL_KEY || 'mixpanel_key', {
   track_pageview: true,
 })
+
+const ErrorComponent = ({ error }: { error: Error }) => {
+  useEffect(() => {
+    if (
+      error.message.includes('Failed to fetch dynamically imported module') ||
+      error.message.includes('Importing a module script failed')
+    ) {
+      window.location.reload()
+    }
+  }, [error])
+
+  return <div>Something went wrong</div>
+}
 
 // Support for old routes redirects
 const Redirects = () => {
@@ -49,29 +64,45 @@ const ScrollToTop = () => {
   return null
 }
 
+const handleError = (error: Error) => {
+  if (
+    error.message.includes('Failed to fetch dynamically imported module') ||
+    error.message.includes('Importing a module script failed')
+  ) {
+    window.location.reload()
+  } else {
+    console.error(error)
+  }
+}
+
 /**
  * App Entry point
  *
  * @returns {JSX.Element}
  */
 const App = () => (
-  <Router>
-    <Analytics />
-    <Redirects />
-    <ScrollToTop />
-    <ThemeUIProvider theme={theme}>
-      <LanguageProvider>
-        <ChainProvider>
-          <Updater />
-          <TransactionSidebar />
-          <Layout>
-            <ToastContainer />
-            <AppRoutes />
-          </Layout>
-        </ChainProvider>
-      </LanguageProvider>
-    </ThemeUIProvider>
-  </Router>
+  <ErrorBoundary
+    fallback={<div>Something went wrong</div>}
+    onError={handleError}
+  >
+    <Router>
+      <Analytics />
+      <Redirects />
+      <ScrollToTop />
+      <ThemeUIProvider theme={theme}>
+        <LanguageProvider>
+          <ChainProvider>
+            <Updater />
+            <TransactionSidebar />
+            <Layout>
+              <ToastContainer />
+              <AppRoutes />
+            </Layout>
+          </ChainProvider>
+        </LanguageProvider>
+      </ThemeUIProvider>
+    </Router>
+  </ErrorBoundary>
 )
 
 export default App

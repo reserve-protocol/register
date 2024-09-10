@@ -15,7 +15,7 @@ const NavItem = ({
       display: 'block',
       paddingBottom: !isActive ? '15px' : '12px',
       paddingTop: '12px',
-      width: 120,
+      // width: 120,
       color: 'inherit',
       lineHeight: '32px',
       fontWeight: isActive ? 'bold' : 'normal',
@@ -36,11 +36,17 @@ const Navigation = () => {
       sx={{
         borderBottom: '1px solid',
         borderColor: 'border',
-        gap: 3,
+        gap: [3, 4],
         justifyContent: 'center',
+        fontSize: [1, 2],
       }}
     >
-      <NavItem to={ROUTES.EXPLORER_TRANSACTIONS}>Transactions</NavItem>
+      <NavItem to={ROUTES.EXPLORER_TRANSACTIONS}>
+        <Box as="span" sx={{ display: ['block', 'none'] }}>
+          Txs
+        </Box>
+        <Box sx={{ display: ['none', 'block'] }}>Transactions</Box>
+      </NavItem>
       <NavItem to={ROUTES.EXPLORER_TOKENS}>Tokens</NavItem>
       <NavItem to={ROUTES.EXPLORER_COLLATERALS}>Collaterals</NavItem>
       <NavItem to={ROUTES.EXPLORER_GOVERNANCE}>Governance</NavItem>

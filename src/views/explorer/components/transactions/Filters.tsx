@@ -12,7 +12,7 @@ const WalletFilter = () => {
   const setValue = useSetAtom(debouncedWalletInputAtom.debouncedValueAtom)
 
   return (
-    <Box ml={[0, 3]} sx={{ width: 160 }}>
+    <Box ml={[0, 3]} sx={{ width: 160, display: ['none', 'block'] }}>
       <Text ml={2} variant="legend">
         <Trans>Wallet</Trans>
       </Text>
@@ -35,9 +35,10 @@ const TransactionFilters = () => {
   }
 
   return (
-    <Box ml="auto" variant="layout.verticalAlign" sx={{ gap: 3 }}>
+    <Box variant="layout.verticalAlign" sx={{ gap: 3 }}>
       <WalletFilter />
       <TokenFilter
+        sx={{ display: ['none', 'block'] }}
         selected={filters.tokens}
         onChange={(selected) => handleChange('tokens', selected)}
       />
