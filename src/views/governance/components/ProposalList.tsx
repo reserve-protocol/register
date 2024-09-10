@@ -18,6 +18,7 @@ import { StringMap } from 'types'
 import { formatPercentage, getProposalTitle, parseDuration } from 'utils'
 import { PROPOSAL_STATES, formatConstant } from 'utils/constants'
 import { getProposalState } from '../views/proposal-detail/atom'
+import type { ProposalVotingState as IProposalVotingState } from '../views/proposal-detail/atom'
 
 const query = gql`
   query getProposals($id: String!) {
@@ -71,6 +72,70 @@ const useProposals = () => {
   }, [JSON.stringify(response)])
 }
 
+export const ProposalVotingState = ({
+  data,
+}: {
+  data: IProposalVotingState
+}) => (
+  <>
+    {(data.state === PROPOSAL_STATES.ACTIVE ||
+      data.state === PROPOSAL_STATES.QUEUED) &&
+      data.deadline &&
+      data.deadline > 0 && (
+        <Box variant="layout.verticalAlign" sx={{ fontSize: 1 }}>
+          <Text variant="legend">
+            {data.state === PROPOSAL_STATES.ACTIVE
+              ? 'Voting ends in:'
+              : 'Execution available in:'}
+          </Text>
+          <Text variant="strong" ml="1">
+            {parseDuration(data.deadline, {
+              units: ['d', 'h'],
+              round: true,
+            })}
+          </Text>
+        </Box>
+      )}
+    {data.state === PROPOSAL_STATES.PENDING && data.deadline ? (
+      <Box variant="layout.verticalAlign" mt={2} sx={{ fontSize: 1 }}>
+        Voting starts in:{' '}
+        <Text variant="strong" ml="1">
+          {parseDuration(data.deadline, {
+            units: ['d', 'h'],
+            round: true,
+          })}
+        </Text>
+      </Box>
+    ) : (
+      <Box variant="layout.verticalAlign" mt={2} sx={{ gap: 2, fontSize: 1 }}>
+        <div>
+          <Text variant="legend">
+            <Trans>Quorum?:</Trans>{' '}
+          </Text>
+          <Text
+            style={{ fontWeight: 500 }}
+            color={data.quorum ? 'success' : 'warning'}
+          >
+            {data.quorum ? 'Yes' : 'No'}
+          </Text>
+        </div>
+        <Circle size={4} />
+        <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
+          <Text variant="legend">Votes:</Text>
+          <Text color="primary" variant="strong">
+            {formatPercentage(data.for)}
+          </Text>
+          /
+          <Text color="danger" variant="strong">
+            {formatPercentage(data.against)}
+          </Text>
+          /<Text variant="legend">{formatPercentage(data.abstain)}</Text>
+        </Box>
+      </Box>
+    )}
+  </>
+)
+
 // {dayjs.unix(+proposal.creationTime).format('YYYY-M-D')}
 
 const ProposalItem = ({ proposal }: { proposal: StringMap }) => {
@@ -101,69 +166,7 @@ const ProposalItem = ({ proposal }: { proposal: StringMap }) => {
     >
       <Box mr={3}>
         <Text variant="strong">{getProposalTitle(proposal.description)}</Text>
-        {(proposalState.state === PROPOSAL_STATES.ACTIVE ||
-          proposalState.state === PROPOSAL_STATES.QUEUED) &&
-          proposalState.deadline &&
-          proposalState.deadline > 0 && (
-            <Box variant="layout.verticalAlign" sx={{ fontSize: 1 }}>
-              <Text variant="legend">
-                {proposalState.state === PROPOSAL_STATES.ACTIVE
-                  ? 'Voting ends in:'
-                  : 'Execution available in:'}
-              </Text>
-              <Text variant="strong" ml="1">
-                {parseDuration(proposalState.deadline, {
-                  units: ['d', 'h'],
-                  round: true,
-                })}
-              </Text>
-            </Box>
-          )}
-        {proposalState.state === PROPOSAL_STATES.PENDING &&
-        proposalState.deadline ? (
-          <Box variant="layout.verticalAlign" mt={2} sx={{ fontSize: 1 }}>
-            Voting starts in:{' '}
-            <Text variant="strong" ml="1">
-              {parseDuration(proposalState.deadline, {
-                units: ['d', 'h'],
-                round: true,
-              })}
-            </Text>
-          </Box>
-        ) : (
-          <Box
-            variant="layout.verticalAlign"
-            mt={2}
-            sx={{ gap: 2, fontSize: 1 }}
-          >
-            <div>
-              <Text variant="legend">
-                <Trans>Quorum?:</Trans>{' '}
-              </Text>
-              <Text
-                style={{ fontWeight: 500 }}
-                color={proposalState.quorum ? 'success' : 'warning'}
-              >
-                {proposalState.quorum ? 'Yes' : 'No'}
-              </Text>
-            </div>
-            <Circle size={4} />
-            <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
-              <Text variant="legend">Votes:</Text>
-              <Text color="primary" variant="strong">
-                {formatPercentage(proposalState.for)}
-              </Text>
-              /
-              <Text color="danger" variant="strong">
-                {formatPercentage(proposalState.against)}
-              </Text>
-              /
-              <Text variant="legend">
-                {formatPercentage(proposalState.abstain)}
-              </Text>
-            </Box>
-          </Box>
-        )}
+        <ProposalVotingState data={proposalState} />
       </Box>
       <Badge
         ml="auto"

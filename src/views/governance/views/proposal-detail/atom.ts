@@ -52,6 +52,15 @@ export type SimulationState = {
   error: Error | null
 }
 
+export type ProposalVotingState = {
+  state: string
+  deadline: null | number
+  quorum: boolean
+  for: number
+  against: number
+  abstain: number
+}
+
 export const proposalDetailAtom = atom<null | ProposalDetail>(null)
 export const accountVotesAtom = atom<{
   vote: null | string
@@ -109,7 +118,7 @@ export const getProposalState = (
   proposal: Partial<ProposalDetail>,
   blockNumber: number,
   chainId: number
-) => {
+): ProposalVotingState => {
   const timestamp = getCurrentTime()
 
   const BLOCK_DURATION = blockDuration[chainId]

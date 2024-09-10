@@ -12,6 +12,7 @@ import { getProposalTitle, getTokenRoute } from 'utils'
 import { PROPOSAL_STATES, ROUTES, formatConstant } from 'utils/constants'
 import useProposalsData, { ProposalRecord } from './useProposalsData'
 import Filters from './Filters'
+import { ProposalVotingState } from 'views/governance/components/ProposalList'
 
 const BADGE_VARIANT: StringMap = {
   [PROPOSAL_STATES.DEFEATED]: 'danger',
@@ -23,7 +24,8 @@ const BADGE_VARIANT: StringMap = {
 
 const ExploreGovernance = () => {
   const data = useProposalsData()
-  const columnHelper = createColumnHelper<ProposalRecord>()
+  // TODO: Proper typing to support the state
+  const columnHelper = createColumnHelper<any>()
   const columns = useMemo(
     () => [
       columnHelper.accessor('rTokenSymbol', {
@@ -40,25 +42,28 @@ const ExploreGovernance = () => {
       columnHelper.accessor('description', {
         header: t`Description`,
         cell: (data) => (
-          <Link
-            href={getTokenRoute(
-              data.row.original.rTokenAddress,
-              data.row.original.chain,
-              `${ROUTES.GOVERNANCE_PROPOSAL}/${data.row.original.id}`
-            )}
-            target="_blank"
-            sx={{ textDecoration: 'underline' }}
-          >
-            <Text sx={{ textTransform: 'capitalize' }}>
-              {getProposalTitle(data.getValue())}
-            </Text>
-          </Link>
+          <Box>
+            <Link
+              href={getTokenRoute(
+                data.row.original.rTokenAddress,
+                data.row.original.chain,
+                `${ROUTES.GOVERNANCE_PROPOSAL}/${data.row.original.id}`
+              )}
+              target="_blank"
+              sx={{ textDecoration: 'underline' }}
+            >
+              <Text sx={{ textTransform: 'capitalize' }}>
+                {getProposalTitle(data.getValue())}
+              </Text>
+            </Link>
+            <ProposalVotingState data={data.row.original.state} />
+          </Box>
         ),
       }),
       columnHelper.accessor('creationTime', {
         header: t`Created At`,
         cell: (data) => (
-          <Text>{dayjs.unix(+data.getValue()).format('YYYY-M-D HH:mm')}</Text>
+          <Text>{dayjs.unix(+data.getValue()).format('YYYY-M-D')}</Text>
         ),
       }),
       columnHelper.accessor('status', {

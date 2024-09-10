@@ -92,6 +92,7 @@ const useProposalsData = () => {
             return {
               ...entry,
               status: state.state,
+              state,
               chain,
               rTokenAddress: getAddress(entry.governance.rToken.id),
               rTokenSymbol: entry.governance.rToken.token.symbol,
