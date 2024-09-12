@@ -362,6 +362,7 @@ export const collateralDisplay: Record<string, string> = {
   apxeth: 'Autocompounding Pirex ETH',
   susde: 'Ethena Staked USDe',
   ethx: 'Stader ETHx',
+  pyusd: 'PayPal USD',
 }
 
 export const RTOKEN_VAULT_STAKE: Record<

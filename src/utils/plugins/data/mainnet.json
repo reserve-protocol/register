@@ -811,5 +811,19 @@
     "version": "4.0.0",
     "symbol": "ETHx",
     "decimals": 18
+  },
+  {
+    "address": "0xa5cde4fB1132daF8f4a0D3140859271208d944E9",
+    "rewardTokens": [],
+    "protocol": "GENERIC",
+    "erc20": "0x6c3ea9036406852006290770BEdFcAbA0e23A0e8",
+    "chainlinkFeed": "0x8f1dF6D7F2db73eECE86a18b4381F4707b918FB1",
+    "delayUntilDefault": "86400",
+    "maxTradeVolume": "500000",
+    "oracleTimeout": 86400,
+    "targetName": "USD",
+    "version": "3.4.0",
+    "symbol": "PYUSD",
+    "decimals": 6
   }
 ]
