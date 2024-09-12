@@ -1,3 +1,4 @@
+import { ReactNode } from 'react'
 import { X } from 'react-feather'
 import { mediumButton, smallButton } from 'theme'
 import {
@@ -38,7 +39,7 @@ const Button = ({
 export interface LoadingButtonProps extends ButtonProps {
   loading?: boolean
   loadingText?: string
-  text: string
+  text: ReactNode
 }
 
 export const LoadingButton = ({

@@ -1,6 +1,6 @@
 import { t } from '@lingui/macro'
 import { useAtomValue, useSetAtom } from 'jotai'
-import { useEffect } from 'react'
+import { ReactNode, useEffect } from 'react'
 import { chainIdAtom } from 'state/atoms'
 import {
   addTransactionAtom,
@@ -15,7 +15,7 @@ import { CHAIN_TAGS } from 'utils/constants'
 
 interface WatchOptions {
   hash: Hex | undefined
-  label: string
+  label: ReactNode
 }
 
 interface WatchResult {
