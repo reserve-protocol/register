@@ -1,5 +1,6 @@
 import { atom } from 'jotai'
 import { atomWithStorage } from 'jotai/utils'
+import { ReactNode } from 'react'
 import { chainIdAtom, walletAtom } from 'state/atoms'
 import { getCurrentTime } from 'utils'
 import { Address, Hex } from 'viem'
@@ -33,7 +34,7 @@ export const currentTxHistoryAtom = atom((get) => {
 
 export const addTransactionAtom = atom(
   null,
-  (get, set, [hash, label, status = 'loading']: [Hex, string, string?]) => {
+  (get, set, [hash, label, status = 'loading']: [Hex, ReactNode, string?]) => {
     const account = get(walletAtom)
 
     if (account && !get(transactionHistoryAtom)[hash]) {
