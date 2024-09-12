@@ -1,5 +1,7 @@
 import StakingVault from 'abis/StakingVault'
+import { LoadingButton } from 'components/button'
 import Help from 'components/help'
+import useContractWrite from 'hooks/useContractWrite'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
@@ -70,46 +72,65 @@ const StakingVaultRevenue = () => {
     )
   }, [rTokenAPY, data])
 
-  const [currentAPY, nextPeriodAPY, currentPeriodEnds, neededToHitAvg] =
-    useMemo(() => {
-      if (!rToken || !rToken?.decimals || !data || !data?.[0])
-        return [0, 0, '', 0]
+  const [
+    currentAPY,
+    nextPeriodAPY,
+    currentPeriodEnds,
+    neededToHitAvg,
+    showNudgeButton,
+  ] = useMemo(() => {
+    if (!rToken || !rToken?.decimals || !data || !data?.[0])
+      return [0, 0, '', 0, false]
 
-      const [
-        [rewardPeriodStart, rewardPeriodEnd, rewardsAmount],
-        totalAssets,
-        stakingTokenBalance,
-      ] = data as [bigint[], bigint, bigint]
+    const [
+      [rewardPeriodStart, rewardPeriodEnd, rewardsAmount],
+      totalAssets,
+      stakingTokenBalance,
+    ] = data as [bigint[], bigint, bigint]
 
-      const currentTime = Math.floor(new Date().getTime() / 1000)
-      const rewards = +formatUnits(rewardsAmount, rToken.decimals)
-      const rewardsStart = Number(rewardPeriodStart)
-      const rewardsEnd = Number(rewardPeriodEnd)
-      const assets = +formatUnits(totalAssets, rToken.decimals)
-      const stBalance = +formatUnits(stakingTokenBalance, 18)
+    const currentTime = Math.floor(new Date().getTime() / 1000)
+    const rewards = +formatUnits(rewardsAmount, rToken.decimals)
+    const rewardsStart = Number(rewardPeriodStart)
+    const rewardsEnd = Number(rewardPeriodEnd)
+    const assets = +formatUnits(totalAssets, rToken.decimals)
+    const stBalance = +formatUnits(stakingTokenBalance, 18)
 
-      const _currentAPY =
-        rewardsEnd > currentTime
-          ? (((rewards / assets) * 52 * 604_800) /
-              (Number(rewardsEnd) - Number(rewardsStart))) *
-            100
-          : ((stBalance - assets) / (assets * 52)) * 100
+    const _currentAPY =
+      rewardsEnd > currentTime
+        ? (((rewards / assets) * 52 * 604_800) /
+            (Number(rewardsEnd) - Number(rewardsStart))) *
+          100
+        : ((stBalance - assets) / (assets * 52)) * 100
 
-      const currentAccountedRewards =
-        currentTime >= rewardsEnd
-          ? rewards
-          : (rewards * (currentTime - rewardsStart)) /
-            (rewardsEnd - rewardsStart)
-      const futureAmt = stBalance + rewards - assets - currentAccountedRewards
-      const _nextPeriodAPY = (futureAmt / assets) * 52 * 100
+    const currentAccountedRewards =
+      currentTime >= rewardsEnd
+        ? rewards
+        : (rewards * (currentTime - rewardsStart)) / (rewardsEnd - rewardsStart)
+    const futureAmt = stBalance + rewards + currentAccountedRewards - assets
+    const _nextPeriodAPY = (futureAmt / (stBalance - futureAmt)) * 52 * 100
 
-      const _rewardsEnds = new Date(rewardsEnd * 1000).toLocaleString()
+    const _rewardsEnds = new Date(rewardsEnd * 1000).toLocaleString()
 
-      const delta = (avgAPY - _nextPeriodAPY) / 100
-      const _neededToHitAvg = delta > 0 ? (delta * stBalance) / 52 : 0
+    const delta = (avgAPY - _nextPeriodAPY) / 100
+    const _neededToHitAvg = delta > 0 ? (delta * stBalance) / 52 : 0
 
-      return [_currentAPY, _nextPeriodAPY, _rewardsEnds, _neededToHitAvg]
-    }, [data, rToken, avgAPY])
+    const _showNudgeButton = rewardsEnd < currentTime
+
+    return [
+      _currentAPY,
+      _nextPeriodAPY,
+      _rewardsEnds,
+      _neededToHitAvg,
+      _showNudgeButton,
+    ]
+  }, [data, rToken, avgAPY])
+
+  const { write, isLoading } = useContractWrite({
+    abi: StakingVault,
+    address: rTokenVault?.address,
+    functionName: 'addRewards',
+    args: [0n],
+  })
 
   if (!rToken || !rTokenVault) return null
 
@@ -184,6 +205,27 @@ const StakingVaultRevenue = () => {
               neededToHitAvg
             )} ${rToken.symbol}`}</Text>
           </Box>
+
+          <LoadingButton
+            loading={isLoading}
+            fullWidth
+            disabled={!showNudgeButton || isLoading}
+            onClick={() => write?.()}
+            mt={3}
+            py={2}
+            text={
+              <Box
+                variant="layout.verticalAlign"
+                sx={{ justifyContent: 'center', gap: 1 }}
+              >
+                <Text>Nudge</Text>
+                <Help
+                  content={`Starts the next ${rTokenVault.name} reward period once the current one ends. Disabled until then.`}
+                  placement="bottom"
+                />
+              </Box>
+            }
+          ></LoadingButton>
         </Box>
       </Card>
     </>
