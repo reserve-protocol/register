@@ -106,7 +106,8 @@ const StakingVaultRevenue = () => {
       currentTime >= rewardsEnd
         ? rewards
         : (rewards * (currentTime - rewardsStart)) / (rewardsEnd - rewardsStart)
-    const futureAmt = stBalance + rewards + currentAccountedRewards - assets
+    const futureAmt = stBalance + currentAccountedRewards - rewards - assets
+
     const _nextPeriodAPY = (futureAmt / (stBalance - futureAmt || 1)) * 52 * 100
 
     const _rewardsEnds = new Date(rewardsEnd * 1000).toLocaleString()
