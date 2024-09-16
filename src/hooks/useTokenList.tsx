@@ -26,6 +26,7 @@ export interface ListedToken {
   price: number
   transactionCount: number
   cumulativeVolume: number
+  volume7d: number
   targetUnits: string
   tokenApy: number
   backing: number
@@ -48,6 +49,16 @@ const tokenListAtom = atom<ListedToken[]>([])
 
 const tokenListQuery = gql`
   query GetTokenListOverview($tokenIds: [String]!, $fromTime: Int!) {
+    tokenDailySnapshots(
+      orderBy: timestamp
+      orderDirection: desc
+      where: { timestamp_gte: $fromTime, token_in: $tokenIds }
+    ) {
+      token {
+        id
+      }
+      dailyVolume
+    }
     tokens(
       where: { id_in: $tokenIds }
       orderBy: totalSupply
@@ -88,7 +99,7 @@ const tokenListQuery = gql`
 
 const useTokenList = () => {
   const [list, setList] = useAtom(tokenListAtom)
-  const fromTime = useTimeFrom(TIME_RANGES.MONTH)
+  const fromTime = useTimeFrom(TIME_RANGES.WEEK)
   const collateralYield = useAtomValue(collateralYieldAtom)
   const currentRsrPrice = useAtomValue(rsrPriceAtom)
 
@@ -198,6 +209,11 @@ const useTokenList = () => {
               ? ((basketApy * supply) / stakeUsd) * stakersShare
               : basketApy * stakersShare
 
+            const volume7d = data[chain].tokenDailySnapshots
+              .filter((snapshot: any) => snapshot.token.id === token.id)
+              .map((snapshot: any) => +formatEther(snapshot.dailyVolume))
+              .reduce((acc: number, curr: number) => acc + curr, 0)
+
             const tokenData = {
               id: getAddress(token.id),
               name: token.name,
@@ -208,6 +224,7 @@ const useTokenList = () => {
               transactionCount: Number(token.transferCount),
               cumulativeVolume:
                 +formatEther(token.cumulativeVolume) * +token.lastPriceUSD,
+              volume7d: volume7d * +token.lastPriceUSD,
               targetUnits: token?.rToken?.targetUnits,
               tokenApy,
               basketApy,

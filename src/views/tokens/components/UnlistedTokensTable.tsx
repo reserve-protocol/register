@@ -89,7 +89,7 @@ const UnlistedTokensTable = () => {
         header: t`Txs`,
       }),
       columnHelper.accessor('cumulativeVolume', {
-        header: t`Volume`,
+        header: t`Volume (all time)`,
         cell: formatUsdCurrencyCell,
       }),
       columnHelper.accessor('targetUnits', {

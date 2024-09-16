@@ -45,8 +45,8 @@ const ListedTokensTable = (props: Partial<TableProps>) => {
         header: t`Txs`,
         cell: formatCurrencyCell,
       }),
-      columnHelper.accessor('cumulativeVolume', {
-        header: t`Volume`,
+      columnHelper.accessor('volume7d', {
+        header: t`Volume (last 7d)`,
         cell: (data) => `$${formatCurrency(data.getValue(), 0)}`,
       }),
       columnHelper.accessor('targetUnits', {
@@ -71,7 +71,7 @@ const ListedTokensTable = (props: Partial<TableProps>) => {
         },
       }),
     ],
-  []
+    []
   )
 
   const handleClick = (data: any) => {
