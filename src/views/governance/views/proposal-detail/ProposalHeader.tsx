@@ -10,7 +10,7 @@ import { useAtomValue } from 'jotai'
 import { ReactNode } from 'react'
 import { ArrowLeft, ArrowUpRight } from 'react-feather'
 import { useNavigate } from 'react-router-dom'
-import { Box, Text } from 'theme-ui'
+import { Box, Link, Text } from 'theme-ui'
 import { shortenString } from 'utils'
 import { ROUTES } from 'utils/constants'
 import { proposalDetailAtom } from './atom'
@@ -118,28 +118,49 @@ const ProposalHeader = () => {
         <BackButton />
         <ProposalSnapshot />
       </Box>
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: [2, 4] }}>
-        <Text
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: [3, 4] }}>
+        <Box
           sx={{
-            fontSize: 4,
-            fontWeight: 'bold',
-            ':hover': {
-              textDecoration: rfcLink ? 'underline' : 'none',
-              cursor: rfcLink ? 'pointer' : 'default',
-            },
+            display: 'flex',
+            flexDirection: 'column',
+            borderBottom: '1px solid',
+            borderColor: 'borderSecondary',
+            pb: [3, 4],
+            gap: 2,
           }}
-          onClick={() => rfcLink && window.open(rfcLink, '_blank')}
         >
-          {title}
-          <Box
+          <Text
             sx={{
-              ml: 1,
-              display: rfcLink ? 'inline' : 'none',
+              fontSize: 4,
+              fontWeight: 'bold',
             }}
           >
-            <ArrowUpRight size={18} />
-          </Box>
-        </Text>
+            {title}
+          </Text>
+          {!!rfcLink && (
+            <Link
+              href={rfcLink}
+              target="_blank"
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 1,
+              }}
+            >
+              <Text
+                sx={{
+                  color: 'text',
+                  textOverflow: 'ellipsis',
+                  textDecoration: 'underline',
+                  fontWeight: 'semibold',
+                }}
+              >
+                {rfcLink}
+              </Text>
+              <ArrowUpRight size={16} />
+            </Link>
+          )}
+        </Box>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
           <Box
             sx={{
