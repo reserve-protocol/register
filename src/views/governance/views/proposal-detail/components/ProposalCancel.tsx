@@ -27,6 +27,7 @@ const ProposalCancel = () => {
     address: governance?.timelock,
     functionName: 'cancel',
     args: timelockId ? [timelockId] : undefined,
+    enabled: canCancel,
   })
 
   const { isMining, status } = useWatchTransaction({

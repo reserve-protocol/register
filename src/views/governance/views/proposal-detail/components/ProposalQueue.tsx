@@ -23,7 +23,7 @@ const ProposalQueue = () => {
 
   return (
     <TransactionButton
-      small
+      fullWidth
       loading={isMining || isLoading}
       mining={isMining}
       ml="auto"

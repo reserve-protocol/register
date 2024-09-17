@@ -6,10 +6,7 @@ import { publicClient } from 'state/chain'
 import { atomWithLoadable } from 'utils/atoms/utils'
 import { supportedChainList } from 'utils/constants'
 import { getAddress } from 'viem'
-import {
-  getProposalState,
-  getProposalStatus,
-} from 'views/governance/views/proposal-detail/atom'
+import { getProposalState } from 'views/governance/views/proposal-detail/atom'
 import { filtersAtom } from './atoms'
 
 const explorerProposalsQuery = gql`
@@ -26,7 +23,6 @@ const explorerProposalsQuery = gql`
       quorumVotes
       startBlock
       endBlock
-      executionStartBlock
       executionETA
       governanceFramework {
         name
