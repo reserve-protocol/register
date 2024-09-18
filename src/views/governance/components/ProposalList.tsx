@@ -35,7 +35,6 @@ const query = gql`
       forWeightedVotes
       abstainWeightedVotes
       againstWeightedVotes
-      executionStartBlock
       executionETA
       quorumVotes
       startBlock

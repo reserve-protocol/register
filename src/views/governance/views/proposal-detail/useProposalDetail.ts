@@ -1,8 +1,8 @@
 import { gql } from 'graphql-request'
 import useQuery from 'hooks/useQuery'
 import { useMemo } from 'react'
-import { ProposalDetail } from './atom'
 import { formatEther } from 'viem'
+import { ProposalDetail } from './atom'
 
 export enum ProposalStatus {
   Pending,
@@ -26,7 +26,6 @@ const query = gql`
       queueBlock
       queueTime
       state
-      executionStartBlock
       executionETA
       executionTime
       cancellationTime
@@ -61,12 +60,11 @@ const query = gql`
 const useProposalDetail = (
   id: string
 ): { data: ProposalDetail | null; error: boolean; loading: boolean } => {
-  const response = useQuery(id ? query : null, {
+  const { data, error } = useQuery(id ? query : null, {
     id,
   })
 
   return useMemo(() => {
-    const { data, error } = response
     const proposal = data?.proposal
       ? {
           ...data.proposal,
@@ -80,9 +78,6 @@ const useProposalDetail = (
           endBlock: +data.proposal.endBlock,
           queueBlock: data.proposal.queueBlock
             ? +data.proposal.queueBlock
-            : undefined,
-          executionStartBlock: data.proposal.executionStartBlock
-            ? +data.proposal.executionStartBlock
             : undefined,
           executionETA: data.proposal.executionETA
             ? +data.proposal.executionETA
@@ -106,7 +101,7 @@ const useProposalDetail = (
       error: !!error,
       loading: !data?.proposal && !error,
     }
-  }, [response])
+  }, [data, error])
 }
 
 export default useProposalDetail

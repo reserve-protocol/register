@@ -25,7 +25,6 @@ export interface ProposalDetail {
   endBlock: number
   queueBlock?: number
   queueTime?: string
-  executionStartBlock?: number
   executionETA?: number
   executionTime?: string
   cancellationTime?: string
@@ -159,17 +158,8 @@ export const getProposalState = (
 
     // Proposal to be executed
     // TODO: Guardian can cancel on this state!
-    if (
-      proposal.state === PROPOSAL_STATES.QUEUED &&
-      proposal.executionStartBlock
-    ) {
-      if (proposal.executionStartBlock > timeunit) {
-        state.deadline = isTimeunit
-          ? proposal.executionStartBlock - timestamp
-          : (proposal.executionStartBlock - blockNumber) * BLOCK_DURATION
-      } else {
-        state.deadline = proposal.executionETA! - timestamp
-      }
+    if (proposal.state === PROPOSAL_STATES.QUEUED && proposal.executionETA) {
+      state.deadline = proposal.executionETA - timestamp
     } else if (proposal.state === PROPOSAL_STATES.PENDING) {
       if (timeunit > proposal.startBlock && timeunit < proposal.endBlock) {
         state.state = PROPOSAL_STATES.ACTIVE
@@ -239,17 +229,8 @@ export const getProposalStateAtom = atom((get) => {
 
     // Proposal to be executed
     // TODO: Guardian can cancel on this state!
-    if (
-      proposal.state === PROPOSAL_STATES.QUEUED &&
-      proposal.executionStartBlock
-    ) {
-      if (proposal.executionStartBlock > timeunit) {
-        state.deadline = isTimeunit
-          ? proposal.executionStartBlock - timestamp
-          : (proposal.executionStartBlock - blockNumber) * BLOCK_DURATION
-      } else {
-        state.deadline = proposal.executionETA! - timestamp
-      }
+    if (proposal.state === PROPOSAL_STATES.QUEUED && proposal.executionETA) {
+      state.deadline = proposal.executionETA - timestamp
     } else if (proposal.state === PROPOSAL_STATES.PENDING) {
       if (timeunit > proposal.startBlock && timeunit < proposal.endBlock) {
         state.state = PROPOSAL_STATES.ACTIVE
@@ -331,14 +312,10 @@ export const timelockIdAtom = atom((get) => {
 })
 
 export const canExecuteAtom = atom((get) => {
+  const timestamp = getCurrentTime()
   const proposal = get(proposalDetailAtom)
-  const blockNumber = get(blockAtom)
 
-  return (
-    blockNumber &&
-    proposal?.executionStartBlock &&
-    proposal?.executionStartBlock <= blockNumber
-  )
+  return proposal?.executionETA && proposal.executionETA <= timestamp
 })
 
 export const simulationStateAtom = atomWithReset<SimulationState>({
