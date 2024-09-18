@@ -206,6 +206,7 @@ const CollateralItem = ({ collateral, wrapping, ...props }: Props) => {
       case 'MORPHO':
       case 'SDR':
       case 'USDM':
+      case 'PXETH':
         return {
           ...call,
           functionName: wrapping ? 'deposit' : 'redeem',

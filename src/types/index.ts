@@ -20,6 +20,7 @@ export type ProtocolKey =
   | 'STARGATE'
   | 'GENERIC'
   | 'USDM'
+  | 'PXETH'
 
 export type AddressMap = { [chainId: number]: Address }
 
