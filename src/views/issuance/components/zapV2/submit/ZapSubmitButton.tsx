@@ -4,6 +4,27 @@ import { LoadingButton } from 'components/button'
 import { TransactionButtonContainer } from 'components/button/TransactionButton'
 import mixpanel from 'mixpanel-browser'
 import DisabledByGeolocationMessage from 'state/geolocation/DisabledByGeolocationMessage'
+import { Box, Text } from 'theme-ui'
+import AlertIcon from 'components/icons/AlertIcon'
+import { rTokenAtom } from 'state/atoms'
+import { useAtomValue } from 'jotai'
+
+const NoSupplyWarning = () => {
+  const rToken = useAtomValue(rTokenAtom)
+
+  if (rToken?.supply !== 0) {
+    return null
+  }
+
+  return (
+    <Box variant="layout.verticalAlign" sx={{ gap: 2 }}>
+      <AlertIcon />
+      <Text variant="warning">
+        Zap minting is not available for RTokens with $0 TVL
+      </Text>
+    </Box>
+  )
+}
 
 const ZapSubmitButton = () => {
   const {
@@ -55,6 +76,7 @@ const ZapSubmitButton = () => {
         />
       </TransactionButtonContainer>
       <DisabledByGeolocationMessage />
+      <NoSupplyWarning />
     </>
   )
 }
