@@ -84,7 +84,7 @@ const APYChart = (props: BoxProps) => {
   const currentYields = useAtomValue(estimatedApyAtom)
   const [current, setCurrent] = useState(TIME_RANGES.MONTH)
   const fromTime = useTimeFrom(current)
-  const [selectedOption, setSelectedOption] = useState<APYOptions>('rsrAPY')
+  const [selectedOption, setSelectedOption] = useState<APYOptions>('rTokenAPY')
 
   const { data: historicalBaskets } = useQuery(
     rToken ? historicalBasketsQuery : null,
@@ -278,7 +278,7 @@ const APYChart = (props: BoxProps) => {
 
   return (
     <AreaChart
-      heading={t`APY`}
+      heading={t`${rToken?.symbol ?? ''} APY`}
       title={`${formatPercentage(currentValue)}`}
       data={filteredRows}
       domain={['auto', 'auto']}
@@ -289,15 +289,15 @@ const APYChart = (props: BoxProps) => {
       }}
       currentRange={current}
       onRangeChange={handleChange}
-      moreActions={
-        <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
-          <TabMenu
-            items={APY_OPTIONS}
-            active={selectedOption}
-            onMenuChange={(key) => setSelectedOption(key as APYOptions)}
-          />
-        </Box>
-      }
+      // moreActions={
+      //   <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
+      //     <TabMenu
+      //       items={APY_OPTIONS}
+      //       active={selectedOption}
+      //       onMenuChange={(key) => setSelectedOption(key as APYOptions)}
+      //     />
+      //   </Box>
+      // }
       {...props}
     />
   )

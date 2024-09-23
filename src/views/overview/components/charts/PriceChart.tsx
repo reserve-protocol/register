@@ -117,7 +117,7 @@ const PriceChart = (props: BoxProps) => {
 
   return (
     <AreaChart
-      heading={t`Price`}
+      heading={t`${rToken?.symbol ?? ''} Price`}
       title={priceTitle}
       data={rows}
       timeRange={TIME_RANGES}
