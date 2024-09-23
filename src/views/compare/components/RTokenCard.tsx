@@ -149,9 +149,9 @@ const RTokenCard = ({ token, ...props }: Props) => {
                   {priceETHTerms
                     ? `${priceETHTerms} ${token.targetUnits} ($${formatCurrency(
                         token.price,
-                        2
+                        3
                       )})`
-                    : `$${formatCurrency(token.price, 2)}`}
+                    : `$${formatCurrency(token.price, 3)}`}
                 </Text>
               </Box>
               <Box sx={{ display: ['block', 'none'] }}>
