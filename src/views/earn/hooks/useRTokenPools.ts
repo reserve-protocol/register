@@ -77,7 +77,7 @@ listedRTokens['0xcfa3ef56d303ae4faaba0592388f19d7c3399fb4'] =
 
 const earnPoolQuery = gql`
   query {
-    earnPoolsCollection {
+    earnPoolsCollection(limit: 1000) {
       items {
         llamaId
         url
