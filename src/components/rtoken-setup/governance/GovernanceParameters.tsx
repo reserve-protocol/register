@@ -25,8 +25,12 @@ const GovernanceParameters = ({
   ])
   const [votingDelayHelper, votingPeriodHelper, minDelayHelper] =
     useMemo(() => {
-      let votingDelayHelper = parseDuration(Number(votingDelay) || 0)
-      let votingPeriodHelper = parseDuration(Number(votingPeriod) || 0)
+      let votingDelayHelper = parseDuration(
+        (Number(votingDelay) || 0) * 60 * 60
+      )
+      let votingPeriodHelper = parseDuration(
+        (Number(votingPeriod) || 0) * 60 * 60
+      )
       let minDelayHelper = parseDuration((Number(minDelay) || 0) * 60 * 60)
 
       if (!timebased) {
@@ -47,11 +51,11 @@ const GovernanceParameters = ({
         <Trans>Governance parameters</Trans>
       </Text>
       <FormField
-        label={`Snapshot delay ${timebased ? '(seconds)' : '(blocks)'}`}
+        label={`Snapshot delay ${timebased ? '(hours)' : '(blocks)'}`}
         placeholder={t`Input delay`}
         helper={votingDelayHelper}
         help={`Delay (in number of ${
-          timebased ? 'seconds' : 'blocks'
+          timebased ? 'hours' : 'blocks'
         }) since the proposal is submitted until voting power is fixed and voting starts. This can be used to enforce a delay after a proposal is published for users to buy tokens, or delegate their votes.`}
         mb={3}
         name="votingDelay"
@@ -63,11 +67,11 @@ const GovernanceParameters = ({
         }}
       />
       <FormField
-        label={`Voting period ${timebased ? '(seconds)' : '(blocks)'}`}
+        label={`Voting period ${timebased ? '(hours)' : '(blocks)'}`}
         placeholder={t`Input voting period`}
         helper={votingPeriodHelper}
         help={t`Delay (in number of ${
-          timebased ? 'seconds' : 'blocks'
+          timebased ? 'hours' : 'blocks'
         }) since the proposal starts until voting ends.`}
         mb={4}
         name="votingPeriod"
