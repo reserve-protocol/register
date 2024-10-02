@@ -42,7 +42,9 @@ const AuctionActions = ({
   const approveCall = useMemo(() => {
     let amount = currentPrice
 
-    if (data?.buyingTokenSymbol.toLowerCase() === 'wcusdcv3') {
+    if (
+      ['wcusdcv3', 'wcusdtv3'].includes(data?.buyingTokenSymbol.toLowerCase())
+    ) {
       amount = BIGINT_MAX
     }
 

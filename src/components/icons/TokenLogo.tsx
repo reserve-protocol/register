@@ -28,6 +28,7 @@ const SVGS = new Set([
   'usdp',
   'wsgusdbc',
   'wcusdcv3',
+  'wcusdtv3',
   'wcusdbcv3',
   'wbtc',
   'cwbtc',
