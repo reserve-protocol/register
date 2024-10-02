@@ -171,6 +171,11 @@ const TokenLogo = ({
   )
 }
 
+const RTOKEN_LOGOS: Record<string, string> = {
+  dogeusd: '/imgs/dogeusd.png',
+  tusdx: '/imgs/tusdx.png',
+}
+
 interface TCurrentRTokenLogo extends BoxProps {
   width?: number
 }
@@ -183,7 +188,10 @@ export const CurrentRTokenLogo = ({
 
   return (
     <Box variant="layout.verticalAlign" {...props}>
-      <TokenImage src={rToken?.logo} width={width} />
+      <TokenImage
+        src={rToken?.logo || RTOKEN_LOGOS[rToken?.symbol?.toLowerCase() || '']}
+        width={width}
+      />
     </Box>
   )
 }
