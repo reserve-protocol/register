@@ -64,6 +64,7 @@ const poolsMap: Record<number, Record<string, string>> = {
     '9d09b0be-f6c2-463a-ad2c-4552b3e12bd9': 'wsgusdbc',
     '7e0661bf-8cf3-45e6-9424-31916d4c7b84': 'sabasusdc',
     '833ec61b-f9e6-46ac-9eff-2785808b2389': 'sabasusdbc',
+    'b90eba2e-ed29-414e-b16d-82f9c3eae707': 'meusd',
   },
   [ChainId.Arbitrum]: {
     'd9c395b9-00d0-4426-a6b3-572a6dd68e54': 'wcusdcv3',

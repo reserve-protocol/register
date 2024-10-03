@@ -338,6 +338,7 @@ export const collateralDisplay: Record<string, string> = {
   wmim3crv: 'Curve MIM/3CRV',
   sdai: 'Savings DAI',
   cbeth: 'Coinbase ETH',
+  meusd: 'Morpho eUSD',
   'mrp-ausdt': 'Morpho AAVE USDT',
   'mrp-ausdc': 'Morpho AAVE USDC',
   'mrp-adai': 'Morpho AAVE DAI',
