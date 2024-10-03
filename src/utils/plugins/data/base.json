@@ -89,7 +89,9 @@
   },
   {
     "address": "0xf7a9D27c3B60c78c6F6e2c2d6ED6E8B94b352461",
-    "rewardTokens": ["0xB8794Fb1CCd62bFe631293163F4A3fC2d22e37e0"],
+    "rewardTokens": [
+      "0xB8794Fb1CCd62bFe631293163F4A3fC2d22e37e0"
+    ],
     "protocol": "COMPv3",
     "erc20": "0x53f1Df4E5591Ae35Bf738742981669c3767241FA",
     "chainlinkFeed": "0x7e860098F58bBFC8648a4311b374B1D669a2bc6B",
@@ -115,6 +117,20 @@
     "targetName": "ETH",
     "version": "3.4.0",
     "symbol": "wstETH",
+    "decimals": 18
+  },
+  {
+    "address": "0x0f1e10871e6a2D3A5Aa696b85b39d61a22A9e8C3",
+    "rewardTokens": [],
+    "protocol": "GENERIC",
+    "erc20": "0xbb819D845b573B5D7C538F5b85057160cfb5f313",
+    "chainlinkFeed": "0x9b2C948dbA5952A1f5Ab6fA16101c1392b8da1ab",
+    "delayUntilDefault": "86400",
+    "maxTradeVolume": "1000000",
+    "oracleTimeout": 86400,
+    "targetName": "USD",
+    "version": "4.0.0",
+    "symbol": "meUSD",
     "decimals": 18
   }
 ]

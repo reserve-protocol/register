@@ -56,7 +56,9 @@ const CollateralApproval = ({
       functionName: 'approve',
       args: [
         rToken?.address || '0x',
-        collateral.symbol === 'wcUSDCv3' || collateral.symbol === 'wcUSDbCv3'
+        collateral.symbol === 'wcUSDCv3' ||
+        collateral.symbol === 'wcUSDTv3' ||
+        collateral.symbol === 'wcUSDbCv3'
           ? BIGINT_MAX
           : amount
           ? (amount * 120n) / 100n

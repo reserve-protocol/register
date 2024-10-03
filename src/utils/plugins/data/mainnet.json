@@ -404,6 +404,24 @@
     "underlyingToken": "cUSDCv3"
   },
   {
+    "address": "0x753142cc768C05Ea66A1b92622aFE148Ad44Cb30",
+    "rewardTokens": [
+      "0x63eDdF26Bc65eDa1D1c0147ce8E23c09BE963596"
+    ],
+    "protocol": "COMPv3",
+    "erc20": "0xbeD348315d7327Cd81d26338c11976674825bb14",
+    "chainlinkFeed": "0x3E7d1eAB13ad0104d2750B8863b489D65364e32D",
+    "delayUntilDefault": "86400",
+    "maxTradeVolume": "1000000",
+    "oracleTimeout": 86400,
+    "targetName": "USD",
+    "version": "4.0.0",
+    "symbol": "wcUSDTv3",
+    "decimals": 6,
+    "underlyingAddress": "0x3Afdc9BCA9213A35503b077a6072F3D0d5AB0840",
+    "underlyingToken": "cUSDTv3"
+  },
+  {
     "address": "0x8E5ADdC553962DAcdF48106B6218AC93DA9617b2",
     "rewardTokens": [
       "0xc18bF46F178F7e90b9CD8b7A8b00Af026D5ce3D3",
