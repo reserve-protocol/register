@@ -1,7 +1,7 @@
 import {
   RainbowKitProvider,
+  connectorsForWallets,
   darkTheme,
-  getDefaultWallets,
 } from '@rainbow-me/rainbowkit'
 import '@rainbow-me/rainbowkit/styles.css'
 
@@ -9,12 +9,24 @@ import { alchemyProvider } from '@wagmi/core/providers/alchemy'
 import { jsonRpcProvider } from '@wagmi/core/providers/jsonRpc'
 import { publicProvider } from '@wagmi/core/providers/public'
 import React from 'react'
+import { ChainId } from 'utils/chains'
 import { WagmiConfig, configureChains, createConfig } from 'wagmi'
 import { arbitrum, base, mainnet } from 'wagmi/chains'
 import { infuraProvider } from 'wagmi/providers/infura'
 import AtomUpdater from './updaters/AtomUpdater'
 import { setupConfig } from './utils/mocks'
-import { ChainId } from 'utils/chains'
+
+import {
+  braveWallet,
+  coinbaseWallet,
+  injectedWallet,
+  ledgerWallet,
+  metaMaskWallet,
+  rabbyWallet,
+  rainbowWallet,
+  safeWallet,
+  walletConnectWallet,
+} from '@rainbow-me/rainbowkit/wallets'
 
 const ANKR_PREFIX = {
   [ChainId.Mainnet]: 'eth',
@@ -48,11 +60,28 @@ export const { chains, publicClient } = configureChains(
       ]
 )
 
-const { connectors } = getDefaultWallets({
-  appName: 'Register',
-  projectId: import.meta.env.VITE_WALLETCONNECT_ID,
+const config = {
   chains,
-})
+  projectId: import.meta.env.VITE_WALLETCONNECT_ID || 'test-project',
+  appName: 'Register',
+}
+
+const connectors = connectorsForWallets([
+  {
+    groupName: 'Recommended',
+    wallets: [
+      injectedWallet({ chains }),
+      metaMaskWallet(config),
+      walletConnectWallet(config),
+      coinbaseWallet(config),
+      braveWallet(config),
+      rabbyWallet(config),
+      safeWallet(config),
+      ledgerWallet(config),
+      rainbowWallet(config),
+    ],
+  },
+])
 
 export const wagmiConfig = import.meta.env.VITE_TESTING
   ? setupConfig()
