@@ -3,6 +3,7 @@ import About from './components/About'
 import Hero from './components/Hero'
 import UseCases from './components/UseCases'
 import RegisterAbout from 'views/compare/components/RegisterAbout'
+import DeployHero from 'views/compare/components/DeployHero'
 
 const Home = () => {
   return (
@@ -25,8 +26,8 @@ const Home = () => {
         sx={{
           flexDirection: 'column',
           maxWidth: '98em',
-          height: 'calc(100vh - 120px)',
-          maxHeight: '900px',
+          height: ['auto', 'calc(100vh - 120px)'],
+          maxHeight: ['auto', '900px'],
         }}
         my={[0, 'auto']}
         mx="auto"
@@ -53,6 +54,10 @@ const Home = () => {
           },
         }}
       >
+        <Box sx={{ maxWidth: '98em' }} mx="auto" px={[0, 4]} mt="7">
+          <DeployHero />
+        </Box>
+
         <RegisterAbout />
       </Box>
     </Box>
