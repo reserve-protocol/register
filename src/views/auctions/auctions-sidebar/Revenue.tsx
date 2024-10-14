@@ -139,6 +139,7 @@ const Revenue = () => (
     <RecollaterizationAlert />
     <ActionableRevenue />
     <UnavailableRevenue />
+    <MeltingBox />
     <StakingVaultRevenue />
   </Box>
 )
