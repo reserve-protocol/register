@@ -1,4 +1,5 @@
 import {
+  DisclaimerComponent,
   RainbowKitProvider,
   connectorsForWallets,
   darkTheme,
@@ -27,6 +28,7 @@ import {
   safeWallet,
   walletConnectWallet,
 } from '@rainbow-me/rainbowkit/wallets'
+import { ROUTES } from 'utils/constants'
 
 const ANKR_PREFIX = {
   [ChainId.Mainnet]: 'eth',
@@ -91,6 +93,14 @@ export const wagmiConfig = import.meta.env.VITE_TESTING
       publicClient,
     })
 
+const Disclaimer: DisclaimerComponent = ({ Text, Link }) => (
+  <Text>
+    By connecting a wallet, you agree to ABC Labs{' '}
+    <Link href={ROUTES.TERMS}>Terms of Service</Link> and consent to its{' '}
+    <Link href={`${ROUTES.TERMS}?target=privacy`}>Privacy Policy</Link>
+  </Text>
+)
+
 /**
  * Wrapper around web3ReactProvider
  * Handles basic logic as well as adds related chain providers
@@ -103,6 +113,7 @@ const ChainProvider = ({ children }: { children: React.ReactNode }) => {
         theme={darkTheme({
           borderRadius: 'medium',
         })}
+        appInfo={{ appName: 'Reserve Register', disclaimer: Disclaimer }}
       >
         <AtomUpdater />
         {children}
