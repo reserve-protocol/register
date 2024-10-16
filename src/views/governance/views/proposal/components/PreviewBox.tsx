@@ -18,13 +18,6 @@ const PreviewBox = ({
 }: Props) => {
   const [visible, setVisible] = useState(!collapsed)
 
-  // React to external component collapse change?
-  // useEffect(() => {
-  //   if (collapsed !== visible) {
-  //     setVisible(collapsed)
-  //   }
-  // }, [collapsed])
-
   return (
     <Box {...props}>
       <Box

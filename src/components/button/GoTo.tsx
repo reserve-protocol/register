@@ -1,7 +1,7 @@
 import ExternalArrowIcon from 'components/icons/ExternalArrowIcon'
 import { Link, LinkProps, Text } from 'theme-ui'
 
-const GoTo = (props: LinkProps) => {
+const GoTo = ({ color, ...props }: LinkProps) => {
   return (
     <Link
       target="_blank"
@@ -12,9 +12,12 @@ const GoTo = (props: LinkProps) => {
     >
       <Text
         variant="layout.verticalAlign"
-        sx={{ color: 'secondaryText', ':hover': { color: 'text' } }}
+        sx={{
+          color: color ? color : 'secondaryText',
+          ':hover': { color: 'text' },
+        }}
       >
-        <ExternalArrowIcon />
+        <ExternalArrowIcon strokeWidth={1.5} />
       </Text>
     </Link>
   )
