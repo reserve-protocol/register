@@ -62,7 +62,7 @@ import useRToken from 'hooks/useRToken'
 import { spellAddressAtom } from '../components/SpellUpgrade'
 
 const paramParse: { [x: string]: (v: string) => bigint | number } = {
-  minTradeVolume: parseEther,
+  minTrade: parseEther,
   rTokenMaxTradeVolume: parseEther,
   rewardRatio: parseEther,
   withdrawalLeak: (v) => parseUnits(v, 16),
