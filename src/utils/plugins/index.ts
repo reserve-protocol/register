@@ -57,4 +57,24 @@ export const collateralsProtocolMap: {
   ),
 }
 
+export const collateralsMap = Object.keys(collateralPlugins).reduce(
+  (acc, chain) => {
+    const chainId = Number(chain)
+    if (!acc[chainId]) {
+      acc[chainId] = {}
+    }
+
+    return {
+      ...acc,
+      [chain]: collateralPlugins[chainId].reduce((acc, plugin) => {
+        return {
+          ...acc,
+          [plugin.address]: plugin,
+        }
+      }),
+    }
+  },
+  {} as { [chainId: number]: Record<string, CollateralPlugin> }
+)
+
 export default collateralPlugins

@@ -1,9 +1,9 @@
 import MDEditor from '@uiw/react-md-editor'
 import { useAtomValue } from 'jotai'
-import { Box, Card } from 'theme-ui'
-import { proposalDetailAtom } from '../atom'
 import { useState } from 'react'
+import { Box } from 'theme-ui'
 import ProposalDetail from 'views/governance/components/ProposalDetailPreview'
+import { proposalDetailAtom } from '../atom'
 
 const TABS = {
   DESCRIPTION: 'description',
@@ -77,6 +77,7 @@ const ProposalDetailContent = () => {
           <ProposalDetail
             addresses={proposal.targets}
             calldatas={proposal.calldatas}
+            snapshotBlock={proposal.creationBlock}
             sx={{
               bg: 'focusedBackground',
               borderRadius: '6px',

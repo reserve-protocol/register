@@ -8,6 +8,7 @@ import ProposalDetailAtomUpdater from './ProposalDetailAtomUpdater'
 import ProposalVote from './components/ProposalVote'
 
 const GovernanceProposalDetail = () => {
+  console.log('PARENT VIEW')
   return (
     <Box
       variant="layout.wrapper"

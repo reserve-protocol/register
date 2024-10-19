@@ -1,8 +1,11 @@
 import { Trans } from '@lingui/macro'
 import GoTo from 'components/button/GoTo'
 import { MODES } from 'components/dark-mode-toggle'
+import TokenLogo from 'components/icons/TokenLogo'
+import TabMenu from 'components/tab-menu'
+import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { ChevronDown, ChevronUp } from 'react-feather'
 import {
   JsonView,
@@ -21,12 +24,16 @@ import {
   Text,
   useColorMode,
 } from 'theme-ui'
+import { collateralDisplay } from 'utils/constants'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
+import { Address } from 'viem'
 import { safeJsonFormat } from 'views/deploy/utils'
 import { ContractProposal, ProposalCall } from 'views/governance/atoms'
+import { useBasketChangesSummary } from 'views/governance/hooks'
 
 interface Props extends BoxProps {
   data: ContractProposal
+  snapshotBlock?: number
   borderColor?: string
 }
 
@@ -122,26 +129,80 @@ const RawCallPreview = ({ call }: { call: ProposalCall }) => (
       <Trans>Parameters</Trans>
     </Text>
     <JSONPreview data={call.data} />
-
-    <Divider mt={3} sx={{ borderColor }} />
-    <CallData data={call.callData} borderColor={borderColor} />
   </>
 )
 
-const DetailedCallPreview = ({ call }: { call: ProposalCall }) => {
-  return <Box />
+// const fetchBasket
+
+type BasketInfo = {
+  collaterals: {
+    address: Address
+    symbol: string
+    displayName: string
+    weight: number
+    target: string
+    apy: number
+  }
 }
+
+// TODO: Currently only considering primary basket
+const DetailedCallPreview = ({
+  call,
+  snapshotBlock,
+  executionBlock,
+}: {
+  call: ProposalCall
+  snapshotBlock?: number
+  executionBlock?: number
+}) => {
+  const rToken = useRToken()
+  const { data, isLoading, error } = useBasketChangesSummary(
+    call.data,
+    rToken?.address,
+    rToken?.chainId,
+    snapshotBlock,
+    executionBlock
+  )
+
+  return (
+    <Box>
+      {data?.map((item) => (
+        <Box variant="layout.verticalAlign">
+          <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
+            <TokenLogo symbol={item.symbol} />
+            {collateralDisplay[item.symbol.toLowerCase()] || item.symbol}
+          </Box>
+          <Box variant="layout.verticalAlign">
+            {item.oldWeight} - {item.newWeight}
+          </Box>
+          <Box>{item.status}</Box>
+        </Box>
+      ))}
+    </Box>
+  )
+}
+
+const previewOptions = [
+  { label: 'Summary', key: 'summary' },
+  { label: 'Raw', key: 'raw' },
+]
 
 const CallPreview = ({
   call,
   index,
   total,
+  snapshotBlock,
 }: {
   call: ProposalCall
   index: number
   total: number
+  snapshotBlock?: number
 }) => {
-  const [detailed, setDetailed] = useState(false)
+  const displayDetailedOption = call.signature === 'setPrimeBasket'
+  const [detailed, setDetailed] = useState(
+    displayDetailedOption ? 'summary' : 'raw'
+  )
+  const isDetailed = detailed === 'summary'
 
   return (
     <Box
@@ -154,20 +215,42 @@ const CallPreview = ({
       }}
     >
       <Box variant="layout.verticalAlign" mb="2">
-        <Text variant="bold" color="primary" sx={{ fontSize: 2 }}>
-          {index + 1}/{total}
+        <Text
+          variant="bold"
+          color="primary"
+          className="mr-auto"
+          sx={{ fontSize: 2 }}
+        >
+          {index + 1}/{total} {isDetailed && 'Primary basket'}
         </Text>
+        {displayDetailedOption && (
+          <TabMenu
+            ml="auto"
+            active={detailed}
+            items={previewOptions}
+            background="border"
+            onMenuChange={(kind: string) => setDetailed(kind)}
+          />
+        )}
       </Box>
-      {detailed ? (
-        <DetailedCallPreview call={call} />
+      {isDetailed ? (
+        <DetailedCallPreview call={call} snapshotBlock={snapshotBlock} />
       ) : (
         <RawCallPreview call={call} />
       )}
+      <Divider mt={3} sx={{ borderColor }} />
+      <CallData data={call.callData} borderColor={borderColor} />
     </Box>
   )
 }
 
-const CallList = ({ calls }: { calls: ContractProposal['calls'] }) => {
+const CallList = ({
+  calls,
+  snapshotBlock,
+}: {
+  calls: ContractProposal['calls']
+  snapshotBlock?: number
+}) => {
   const total = calls.length
 
   return (
@@ -178,6 +261,7 @@ const CallList = ({ calls }: { calls: ContractProposal['calls'] }) => {
           call={call}
           index={index}
           total={total}
+          snapshotBlock={snapshotBlock}
         />
       ))}
     </Flex>
@@ -185,11 +269,7 @@ const CallList = ({ calls }: { calls: ContractProposal['calls'] }) => {
 }
 
 // Actions setPrimeBasket
-const ContractProposalDetails = ({
-  data,
-  borderColor = 'darkBorder',
-  ...props
-}: Props) => {
+const ContractProposalDetails = ({ data, snapshotBlock, ...props }: Props) => {
   if (!data.calls.length) {
     return null
   }
@@ -205,9 +285,9 @@ const ContractProposalDetails = ({
       {...props}
     >
       <Header label={data.label} address={data.address} />
-      <CallList calls={data.calls} />
+      <CallList calls={data.calls} snapshotBlock={snapshotBlock} />
     </Card>
   )
 }
 
-export default ContractProposalDetails
+export default React.memo(ContractProposalDetails)

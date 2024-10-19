@@ -3,7 +3,7 @@ import { gql } from 'graphql-request'
 import useQuery from 'hooks/useQuery'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue, useSetAtom } from 'jotai'
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import {
   rTokenGovernanceAtom,
   rTokenManagersAtom,
@@ -53,35 +53,38 @@ const RTokenGovernanceUpdater = () => {
     id: rToken?.address.toLowerCase(),
   })
 
-  const { data: onChainData } = useContractReads({
-    keepPreviousData: true,
-    contracts:
-      data?.governance?.governanceFrameworks?.[0]?.id &&
+  const contracts = useMemo(() => {
+    return data?.governance?.governanceFrameworks?.[0]?.id &&
       rToken?.chainId &&
       isTimeunitGovernance(data?.governance?.governanceFrameworks?.[0]?.name)
-        ? [
-            {
-              abi: GovernanceAnastasius,
-              chainId: rToken.chainId,
-              address: data.governance.governanceFrameworks[0].id as Address,
-              functionName: 'quorum',
-              args: [BigInt(Math.floor(Date.now() / 1000 - 100))],
-            },
-            {
-              abi: GovernanceAnastasius,
-              chainId: rToken.chainId,
-              address: data.governance.governanceFrameworks[0].id as Address,
-              functionName: 'quorumNumerator',
-              args: [BigInt(Math.floor(Date.now() / 1000 - 100))],
-            },
-            {
-              abi: GovernanceAnastasius,
-              chainId: rToken.chainId,
-              address: data.governance.governanceFrameworks[0].id as Address,
-              functionName: 'proposalThreshold',
-            },
-          ]
-        : undefined,
+      ? [
+          {
+            abi: GovernanceAnastasius,
+            chainId: rToken.chainId,
+            address: data.governance.governanceFrameworks[0].id as Address,
+            functionName: 'quorum',
+            args: [BigInt(Math.floor(Date.now() / 1000 - 100))],
+          },
+          {
+            abi: GovernanceAnastasius,
+            chainId: rToken.chainId,
+            address: data.governance.governanceFrameworks[0].id as Address,
+            functionName: 'quorumNumerator',
+            args: [BigInt(Math.floor(Date.now() / 1000 - 100))],
+          },
+          {
+            abi: GovernanceAnastasius,
+            chainId: rToken.chainId,
+            address: data.governance.governanceFrameworks[0].id as Address,
+            functionName: 'proposalThreshold',
+          },
+        ]
+      : undefined
+  }, [data, rToken])
+
+  const { data: onChainData } = useContractReads({
+    keepPreviousData: true,
+    contracts,
     allowFailure: false,
     enabled: !!data?.governance?.governanceFrameworks?.[0]?.id,
   })
@@ -112,11 +115,13 @@ const RTokenGovernanceUpdater = () => {
         const onChainProposalThreshold =
           onChainData?.[2] && stTokenSupply > 0
             ? Number(
-                (onChainData[2] * 100n - 99n) /
+                ((onChainData[2] as bigint) * 100n - 99n) /
                   BigInt(Math.floor(stTokenSupply * 1e6)) /
                   BigInt(1e6)
               )
             : undefined
+
+        console.log('SET GOVERNANCE!!!')
 
         setGovernance({
           name,
@@ -135,7 +140,7 @@ const RTokenGovernanceUpdater = () => {
         })
       }
     }
-  }, [data, onChainData, stTokenSupply])
+  }, [JSON.stringify(data), onChainData, stTokenSupply])
 
   return null
 }
