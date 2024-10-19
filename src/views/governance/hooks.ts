@@ -15,9 +15,10 @@ type BasketItem = Record<
 type DiffItem = {
   address: string
   symbol: string
-  status: 'added' | 'removed' | 'changed' | 'unchanged'
+  status: 'added' | 'removed' | 'reduced' | 'increased' | 'unchanged'
   oldWeight: number
   newWeight: number
+  targetUnit: string
 }
 
 export type PrimaryBasketRaw = [string[], bigint[]]
@@ -89,7 +90,7 @@ function basketDiff(
     } else if (!proposed[address]) {
       status = 'removed'
     } else if (oldWeight !== newWeight) {
-      status = 'changed'
+      status = oldWeight > newWeight ? 'reduced' : 'increased'
     } else {
       status = 'unchanged'
     }
@@ -99,6 +100,7 @@ function basketDiff(
       status,
       oldWeight,
       newWeight,
+      targetUnit: proposed[address]?.targetUnit || current[address]?.targetUnit,
       symbol: symbols[address],
     })
   }

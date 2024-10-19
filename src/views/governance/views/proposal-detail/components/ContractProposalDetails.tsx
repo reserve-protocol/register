@@ -6,7 +6,7 @@ import TabMenu from 'components/tab-menu'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
 import React, { useState } from 'react'
-import { ChevronDown, ChevronUp } from 'react-feather'
+import { ArrowRight, ChevronDown, ChevronUp, Circle } from 'react-feather'
 import {
   JsonView,
   collapseAllNested,
@@ -21,9 +21,11 @@ import {
   Card,
   Divider,
   Flex,
+  Grid,
   Text,
   useColorMode,
 } from 'theme-ui'
+import { formatPercentage } from 'utils'
 import { collateralDisplay } from 'utils/constants'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { Address } from 'viem'
@@ -166,18 +168,59 @@ const DetailedCallPreview = ({
 
   return (
     <Box>
-      {data?.map((item) => (
-        <Box variant="layout.verticalAlign">
-          <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
-            <TokenLogo symbol={item.symbol} />
-            {collateralDisplay[item.symbol.toLowerCase()] || item.symbol}
-          </Box>
-          <Box variant="layout.verticalAlign">
-            {item.oldWeight} - {item.newWeight}
-          </Box>
-          <Box>{item.status}</Box>
-        </Box>
-      ))}
+      <Grid
+        columns={3}
+        gap={2}
+        mb="2"
+        sx={{ color: 'secondaryText', fontSize: 1 }}
+      >
+        <Text>Collateral token</Text>
+        <Text mx="auto">Old weight / New weight</Text>
+        <Text ml="auto">Change</Text>
+      </Grid>
+      <Grid columns={3} gap={2}>
+        {data?.map((item) => (
+          <>
+            <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
+              <TokenLogo mr="2" symbol={item.symbol} />
+              <Box sx={{ fontSize: 1 }}>
+                <Text variant="bold">
+                  {collateralDisplay[item.symbol.toLowerCase()] || item.symbol}
+                </Text>
+                <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
+                  <Text sx={{ fontWeight: 500 }}>{item.targetUnit}</Text>|
+                  <Text variant="legend">APY:</Text>
+                </Box>
+              </Box>
+            </Box>
+            <Box
+              variant="layout.verticalAlign"
+              sx={{ justifyContent: 'center' }}
+            >
+              <Text sx={{ minWidth: '40px' }}>
+                {formatPercentage(item.oldWeight)}
+              </Text>
+              <Flex
+                mx="2"
+                sx={{
+                  backgroundColor: 'inputAlternativeBackground',
+                  height: '20px',
+                  width: '20px',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  borderRadius: '4px',
+                }}
+              >
+                <ArrowRight size={12} />
+              </Flex>
+              <Text sx={{ minWidth: '40px' }}>
+                {formatPercentage(item.newWeight)}
+              </Text>
+            </Box>
+            <Box ml="auto">{item.status}</Box>
+          </>
+        ))}
+      </Grid>
     </Box>
   )
 }
@@ -221,7 +264,7 @@ const CallPreview = ({
           className="mr-auto"
           sx={{ fontSize: 2 }}
         >
-          {index + 1}/{total} {isDetailed && 'Primary basket'}
+          {index + 1}/{total} {isDetailed && 'Set Primary basket'}
         </Text>
         {displayDetailedOption && (
           <TabMenu
