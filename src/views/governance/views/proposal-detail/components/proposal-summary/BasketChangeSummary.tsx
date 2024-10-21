@@ -63,14 +63,13 @@ const StatusBox = ({ status, sx = {}, ...props }: IStatusBox) => {
   return (
     <Box
       variant="layout.verticalAlign"
-      ml="auto"
       px="2"
       py="1"
       sx={{
         height: 'fit-content',
         border: '1px solid',
         borderColor: 'border',
-        fontSize: 1,
+        fontSize: [0, 1],
         fontWeight: 500,
         gap: 1,
         borderRadius: borderRadius.boxes,
@@ -114,6 +113,12 @@ const BasketDiffItem = ({ item }: { item: DiffItem }) => {
           fontWeight: 500,
         }}
       >
+        <StatusBox
+          sx={{ display: ['flex', 'none'] }}
+          mr="auto"
+          status={item.status}
+        />
+
         <Text
           sx={{
             minWidth: '52px',
@@ -147,9 +152,12 @@ const BasketDiffItem = ({ item }: { item: DiffItem }) => {
         >
           {formatPercentage(item.newWeight)}
         </Text>
-        <StatusBox sx={{ display: ['flex', 'none'] }} status={item.status} />
       </Box>
-      <StatusBox sx={{ display: ['none', 'flex'] }} status={item.status} />
+      <StatusBox
+        sx={{ display: ['none', 'flex'] }}
+        ml="auto"
+        status={item.status}
+      />
     </Grid>
   )
 }
@@ -227,7 +235,7 @@ const BasketChangeSummary = ({
         <Text mx="auto">Old weight / New weight</Text>
         <Text ml="auto">Change</Text>
       </Grid>
-      <Flex sx={{ flexDirection: 'column', gap: 2, width: '100%' }}>
+      <Flex sx={{ flexDirection: 'column', gap: [3, 2], width: '100%' }}>
         {data?.diff.map((item) => (
           <BasketDiffItem key={item.address} item={item} />
         ))}
