@@ -24,8 +24,8 @@ const ProposalDetailContent = () => {
   }
 
   return (
-    <Box sx={{ bg: 'cardBackground', borderRadius: '8px', p: 4 }}>
-      <Box variant="layout.verticalAlign" mb={4}>
+    <Box sx={{ bg: 'cardBackground', borderRadius: '8px', p: [2, 4] }}>
+      <Box variant="layout.verticalAlign" mb={[2, 4]}>
         <Box
           variant="layout.verticalAlign"
           sx={{

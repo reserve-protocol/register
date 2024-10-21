@@ -6,7 +6,7 @@ import { ArrowDown, ArrowRight, ArrowUp, Plus, X } from 'react-feather'
 import 'react-json-view-lite/dist/index.css'
 import { collateralYieldAtom } from 'state/atoms'
 import { borderRadius } from 'theme'
-import { Box, Flex, Grid, Spinner, Text } from 'theme-ui'
+import { Box, BoxProps, Flex, Grid, Spinner, Text } from 'theme-ui'
 import { formatPercentage } from 'utils'
 import { collateralDisplay } from 'utils/constants'
 import { ProposalCall } from 'views/governance/atoms'
@@ -32,7 +32,11 @@ const useBasketApy = (
   }, 0)
 }
 
-const StatusBox = ({ status }: { status: DiffItem['status'] }) => {
+interface IStatusBox extends BoxProps {
+  status: DiffItem['status']
+}
+
+const StatusBox = ({ status, sx = {}, ...props }: IStatusBox) => {
   const statusMap = {
     added: {
       label: 'Add',
@@ -70,7 +74,9 @@ const StatusBox = ({ status }: { status: DiffItem['status'] }) => {
         fontWeight: 500,
         gap: 1,
         borderRadius: borderRadius.boxes,
+        ...sx,
       }}
+      {...props}
     >
       {statusMap[status].icon}
       <Text color={status === 'unchanged' ? 'secondaryText' : 'text'}>
@@ -85,7 +91,7 @@ const BasketDiffItem = ({ item }: { item: DiffItem }) => {
   const apys = useAtomValue(collateralYieldAtom)[rToken?.chainId ?? 1] || {}
 
   return (
-    <>
+    <Grid columns={[1, 3]} gap={[1, 2]} sx={{ width: '100%' }}>
       <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
         <TokenLogo mr="2" symbol={item.symbol} />
         <Box sx={{ fontSize: 1 }}>
@@ -104,7 +110,7 @@ const BasketDiffItem = ({ item }: { item: DiffItem }) => {
       <Box
         variant="layout.verticalAlign"
         sx={{
-          justifyContent: 'center',
+          justifyContent: ['left', 'center'],
           fontWeight: 500,
         }}
       >
@@ -141,9 +147,10 @@ const BasketDiffItem = ({ item }: { item: DiffItem }) => {
         >
           {formatPercentage(item.newWeight)}
         </Text>
+        <StatusBox sx={{ display: ['flex', 'none'] }} status={item.status} />
       </Box>
-      <StatusBox status={item.status} />
-    </>
+      <StatusBox sx={{ display: ['none', 'flex'] }} status={item.status} />
+    </Grid>
   )
 }
 
@@ -172,7 +179,7 @@ const BasketAPYDiff = ({
       }}
     >
       <Text mr="auto">30-day blended APY:</Text>
-      <Text variant="legend" mr="1">
+      <Text variant="legend" ml="3" mr="1">
         {formatPercentage(currentApy)}
       </Text>
       <ArrowRight size={16} />
@@ -214,17 +221,17 @@ const BasketChangeSummary = ({
         columns={3}
         gap={2}
         mb="2"
-        sx={{ color: 'secondaryText', fontSize: 1 }}
+        sx={{ color: 'secondaryText', fontSize: 1, display: ['none', 'grid'] }}
       >
         <Text>Collateral token</Text>
         <Text mx="auto">Old weight / New weight</Text>
         <Text ml="auto">Change</Text>
       </Grid>
-      <Grid columns={3} gap={2}>
+      <Flex sx={{ flexDirection: 'column', gap: 2, width: '100%' }}>
         {data?.diff.map((item) => (
-          <BasketDiffItem item={item} />
+          <BasketDiffItem key={item.address} item={item} />
         ))}
-      </Grid>
+      </Flex>
       <BasketAPYDiff
         proposal={data?.proposalBasket}
         snapshot={data?.snapshotBasket}
