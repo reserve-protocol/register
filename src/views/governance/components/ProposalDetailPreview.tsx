@@ -77,12 +77,6 @@ const ProposalDetail = ({
   const [parse] = parseCallDatas(addresses, calldatas, interfaceMap)
   const calls = Object.keys(parse)
 
-  useEffect(() => {
-    console.log('INTERFACE CHANGED', interfaceMap)
-  }, [interfaceMap])
-
-  console.log('re render!!!')
-
   return (
     <Box>
       {!calls.length && (

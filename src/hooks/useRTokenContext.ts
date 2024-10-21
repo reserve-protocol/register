@@ -85,8 +85,6 @@ const useRTokenContext = () => {
     if (unlistedToken.isFetched && !rToken) {
       // Valid token set atom
       if (unlistedToken.data && tokenId) {
-        console.log('unlisted?', unlistedToken.data)
-
         const [symbol, name] = unlistedToken.data
 
         setRToken({

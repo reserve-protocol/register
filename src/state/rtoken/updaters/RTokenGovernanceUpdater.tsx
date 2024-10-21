@@ -121,8 +121,6 @@ const RTokenGovernanceUpdater = () => {
               )
             : undefined
 
-        console.log('SET GOVERNANCE!!!')
-
         setGovernance({
           name,
           proposalThreshold: (
