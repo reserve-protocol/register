@@ -12,7 +12,7 @@ export type BasketItem = Record<
   { address: Address; share: number; targetUnit: string }
 >
 
-type DiffItem = {
+export type DiffItem = {
   address: string
   symbol: string
   status: 'added' | 'removed' | 'reduced' | 'increased' | 'unchanged'

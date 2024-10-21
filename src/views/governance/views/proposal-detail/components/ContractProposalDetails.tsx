@@ -1,12 +1,10 @@
 import { Trans } from '@lingui/macro'
 import GoTo from 'components/button/GoTo'
 import { MODES } from 'components/dark-mode-toggle'
-import TokenLogo from 'components/icons/TokenLogo'
 import TabMenu from 'components/tab-menu'
-import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
 import React, { useState } from 'react'
-import { ArrowRight, ChevronDown, ChevronUp, Circle } from 'react-feather'
+import { ChevronDown, ChevronUp } from 'react-feather'
 import {
   JsonView,
   collapseAllNested,
@@ -14,28 +12,20 @@ import {
   defaultStyles,
 } from 'react-json-view-lite'
 import 'react-json-view-lite/dist/index.css'
-import { chainIdAtom, collateralYieldAtom } from 'state/atoms'
+import { chainIdAtom } from 'state/atoms'
 import {
   Box,
   BoxProps,
   Card,
   Divider,
   Flex,
-  Grid,
   Text,
   useColorMode,
 } from 'theme-ui'
-import { formatPercentage } from 'utils'
-import { collateralDisplay } from 'utils/constants'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
-import { Address } from 'viem'
 import { safeJsonFormat } from 'views/deploy/utils'
 import { ContractProposal, ProposalCall } from 'views/governance/atoms'
-import {
-  BasketItem,
-  PrimaryBasketRaw,
-  useBasketChangesSummary,
-} from 'views/governance/hooks'
+import BasketChangeSummary from './proposal-summary/BasketChangeSummary'
 
 interface Props extends BoxProps {
   data: ContractProposal
@@ -138,22 +128,6 @@ const RawCallPreview = ({ call }: { call: ProposalCall }) => (
   </>
 )
 
-const useBasketApy = (
-  basket: BasketItem,
-  chainId: number,
-  symbols: Record<string, string>
-) => {
-  const apys = useAtomValue(collateralYieldAtom)[chainId]
-
-  return Object.keys(basket).reduce((acc, token) => {
-    return (
-      acc +
-      (apys[symbols[token]?.toLowerCase()] || 0) *
-        (Number(basket[token].share) / 100)
-    )
-  }, 0)
-}
-
 // TODO: Currently only considering primary basket
 const DetailedCallPreview = ({
   call,
@@ -162,102 +136,7 @@ const DetailedCallPreview = ({
   call: ProposalCall
   snapshotBlock?: number
 }) => {
-  const rToken = useRToken()
-  const { data, isLoading, error } = useBasketChangesSummary(
-    call.data,
-    rToken?.address,
-    rToken?.chainId,
-    snapshotBlock
-  )
-  const apys = useAtomValue(collateralYieldAtom)[rToken?.chainId ?? 1] || {}
-  const proposedApy = useBasketApy(
-    data?.proposalBasket ?? {},
-    rToken?.chainId ?? 1,
-    data?.tokensMeta ?? {}
-  )
-  const currentApy = useBasketApy(
-    data?.snapshotBasket ?? {},
-    rToken?.chainId ?? 1,
-    data?.tokensMeta ?? {}
-  )
-
-  return (
-    <Box mt="2">
-      <Grid
-        columns={3}
-        gap={2}
-        mb="2"
-        sx={{ color: 'secondaryText', fontSize: 1 }}
-      >
-        <Text>Collateral token</Text>
-        <Text mx="auto">Old weight / New weight</Text>
-        <Text ml="auto">Change</Text>
-      </Grid>
-      <Grid columns={3} gap={2}>
-        {data?.diff.map((item) => (
-          <>
-            <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
-              <TokenLogo mr="2" symbol={item.symbol} />
-              <Box sx={{ fontSize: 1 }}>
-                <Text variant="bold">
-                  {collateralDisplay[item.symbol.toLowerCase()] || item.symbol}
-                </Text>
-                <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
-                  <Text sx={{ fontWeight: 500 }}>{item.targetUnit}</Text>|
-                  <Text variant="legend">APY:</Text>{' '}
-                  <Text sx={{ fontWeight: 500 }}>
-                    {formatPercentage(apys[item.symbol.toLowerCase()])}
-                  </Text>
-                </Box>
-              </Box>
-            </Box>
-            <Box
-              variant="layout.verticalAlign"
-              sx={{ justifyContent: 'center' }}
-            >
-              <Text sx={{ minWidth: '52px' }}>
-                {formatPercentage(item.oldWeight)}
-              </Text>
-              <Flex
-                mx="2"
-                sx={{
-                  backgroundColor: 'inputAlternativeBackground',
-                  height: '20px',
-                  width: '20px',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  borderRadius: '4px',
-                }}
-              >
-                <ArrowRight size={12} />
-              </Flex>
-              <Text sx={{ minWidth: '52px' }}>
-                {formatPercentage(item.newWeight)}
-              </Text>
-            </Box>
-            <Box ml="auto">{item.status}</Box>
-          </>
-        ))}
-      </Grid>
-      <Box
-        variant="layout.verticalAlign"
-        pt="3"
-        mt="2"
-        sx={{
-          borderTop: '1px solid',
-          fontWeight: 500,
-          borderColor: 'darkBorder',
-        }}
-      >
-        <Text mr="auto">30-day blended APY:</Text>
-        <Text variant="legend" mr="1">
-          {formatPercentage(currentApy)}
-        </Text>
-        <ArrowRight size={16} />
-        <Text ml="1">{formatPercentage(proposedApy)}</Text>
-      </Box>
-    </Box>
-  )
+  return <BasketChangeSummary call={call} snapshotBlock={snapshotBlock} />
 }
 
 const previewOptions = [
