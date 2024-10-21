@@ -226,14 +226,18 @@ const BasketChangeSummary = ({
   return (
     <Box mt="2">
       <Grid
-        columns={3}
+        columns={[2, 3]}
         gap={2}
         mb="2"
-        sx={{ color: 'secondaryText', fontSize: 1, display: ['none', 'grid'] }}
+        sx={{ color: 'secondaryText', fontSize: 1 }}
       >
         <Text>Collateral token</Text>
-        <Text mx="auto">Old weight / New weight</Text>
-        <Text ml="auto">Change</Text>
+        <Text mr={['none', 'auto']} ml="auto">
+          Old weight / New weight
+        </Text>
+        <Text ml="auto" sx={{ display: ['none', 'block'] }}>
+          Change
+        </Text>
       </Grid>
       <Flex sx={{ flexDirection: 'column', gap: [3, 2], width: '100%' }}>
         {data?.diff.map((item) => (
