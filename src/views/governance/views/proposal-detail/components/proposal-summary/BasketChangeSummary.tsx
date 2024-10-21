@@ -101,9 +101,24 @@ const BasketDiffItem = ({ item }: { item: DiffItem }) => {
           </Box>
         </Box>
       </Box>
-      <Box variant="layout.verticalAlign" sx={{ justifyContent: 'center' }}>
-        <Text sx={{ minWidth: '52px' }}>
-          {formatPercentage(item.oldWeight)}
+      <Box
+        variant="layout.verticalAlign"
+        sx={{
+          justifyContent: 'center',
+          fontWeight: 500,
+        }}
+      >
+        <Text
+          sx={{
+            minWidth: '52px',
+            color:
+              item.status === 'added' || item.status === 'unchanged'
+                ? 'secondaryText'
+                : 'text',
+            textAlign: 'right',
+          }}
+        >
+          {item.status === 'added' ? 'N/A' : formatPercentage(item.oldWeight)}
         </Text>
         <Flex
           mx="2"
@@ -118,7 +133,12 @@ const BasketDiffItem = ({ item }: { item: DiffItem }) => {
         >
           <ArrowRight size={12} />
         </Flex>
-        <Text sx={{ minWidth: '52px' }}>
+        <Text
+          sx={{
+            minWidth: '52px',
+            color: item.status === 'unchanged' ? 'secondaryText' : 'text',
+          }}
+        >
           {formatPercentage(item.newWeight)}
         </Text>
       </Box>

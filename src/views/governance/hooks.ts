@@ -81,6 +81,14 @@ const getTokensMeta = async (erc20s: Address[]) => {
   }, {} as Record<string, string>)
 }
 
+const PRIORITY_ORDER = {
+  added: 0,
+  removed: 1,
+  increased: 2,
+  reduced: 3,
+  unchanged: 4,
+}
+
 function basketDiff(
   current: BasketItem,
   proposed: BasketItem,
@@ -118,6 +126,8 @@ function basketDiff(
       symbol: symbols[address],
     })
   }
+
+  diff.sort((a, b) => PRIORITY_ORDER[a.status] - PRIORITY_ORDER[b.status])
 
   return diff
 }
