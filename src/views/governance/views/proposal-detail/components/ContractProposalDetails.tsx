@@ -14,7 +14,7 @@ import {
   defaultStyles,
 } from 'react-json-view-lite'
 import 'react-json-view-lite/dist/index.css'
-import { chainIdAtom } from 'state/atoms'
+import { chainIdAtom, collateralYieldAtom } from 'state/atoms'
 import {
   Box,
   BoxProps,
@@ -31,7 +31,11 @@ import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { Address } from 'viem'
 import { safeJsonFormat } from 'views/deploy/utils'
 import { ContractProposal, ProposalCall } from 'views/governance/atoms'
-import { useBasketChangesSummary } from 'views/governance/hooks'
+import {
+  BasketItem,
+  PrimaryBasketRaw,
+  useBasketChangesSummary,
+} from 'views/governance/hooks'
 
 interface Props extends BoxProps {
   data: ContractProposal
@@ -56,7 +60,7 @@ const CallData = ({
         variant="layout.verticalAlign"
         onClick={() => setOpen(!isOpen)}
       >
-        <Text variant="strong" mr="auto">
+        <Text variant="bold" mr="auto">
           <Trans>Executable code</Trans>
         </Text>
         {isOpen ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
@@ -134,40 +138,51 @@ const RawCallPreview = ({ call }: { call: ProposalCall }) => (
   </>
 )
 
-// const fetchBasket
+const useBasketApy = (
+  basket: BasketItem,
+  chainId: number,
+  symbols: Record<string, string>
+) => {
+  const apys = useAtomValue(collateralYieldAtom)[chainId]
 
-type BasketInfo = {
-  collaterals: {
-    address: Address
-    symbol: string
-    displayName: string
-    weight: number
-    target: string
-    apy: number
-  }
+  return Object.keys(basket).reduce((acc, token) => {
+    return (
+      acc +
+      (apys[symbols[token]?.toLowerCase()] || 0) *
+        (Number(basket[token].share) / 100)
+    )
+  }, 0)
 }
 
 // TODO: Currently only considering primary basket
 const DetailedCallPreview = ({
   call,
   snapshotBlock,
-  executionBlock,
 }: {
   call: ProposalCall
   snapshotBlock?: number
-  executionBlock?: number
 }) => {
   const rToken = useRToken()
   const { data, isLoading, error } = useBasketChangesSummary(
     call.data,
     rToken?.address,
     rToken?.chainId,
-    snapshotBlock,
-    executionBlock
+    snapshotBlock
+  )
+  const apys = useAtomValue(collateralYieldAtom)[rToken?.chainId ?? 1] || {}
+  const proposedApy = useBasketApy(
+    data?.proposalBasket ?? {},
+    rToken?.chainId ?? 1,
+    data?.tokensMeta ?? {}
+  )
+  const currentApy = useBasketApy(
+    data?.snapshotBasket ?? {},
+    rToken?.chainId ?? 1,
+    data?.tokensMeta ?? {}
   )
 
   return (
-    <Box>
+    <Box mt="2">
       <Grid
         columns={3}
         gap={2}
@@ -179,7 +194,7 @@ const DetailedCallPreview = ({
         <Text ml="auto">Change</Text>
       </Grid>
       <Grid columns={3} gap={2}>
-        {data?.map((item) => (
+        {data?.diff.map((item) => (
           <>
             <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
               <TokenLogo mr="2" symbol={item.symbol} />
@@ -189,7 +204,10 @@ const DetailedCallPreview = ({
                 </Text>
                 <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
                   <Text sx={{ fontWeight: 500 }}>{item.targetUnit}</Text>|
-                  <Text variant="legend">APY:</Text>
+                  <Text variant="legend">APY:</Text>{' '}
+                  <Text sx={{ fontWeight: 500 }}>
+                    {formatPercentage(apys[item.symbol.toLowerCase()])}
+                  </Text>
                 </Box>
               </Box>
             </Box>
@@ -197,7 +215,7 @@ const DetailedCallPreview = ({
               variant="layout.verticalAlign"
               sx={{ justifyContent: 'center' }}
             >
-              <Text sx={{ minWidth: '40px' }}>
+              <Text sx={{ minWidth: '52px' }}>
                 {formatPercentage(item.oldWeight)}
               </Text>
               <Flex
@@ -213,7 +231,7 @@ const DetailedCallPreview = ({
               >
                 <ArrowRight size={12} />
               </Flex>
-              <Text sx={{ minWidth: '40px' }}>
+              <Text sx={{ minWidth: '52px' }}>
                 {formatPercentage(item.newWeight)}
               </Text>
             </Box>
@@ -221,6 +239,23 @@ const DetailedCallPreview = ({
           </>
         ))}
       </Grid>
+      <Box
+        variant="layout.verticalAlign"
+        pt="3"
+        mt="2"
+        sx={{
+          borderTop: '1px solid',
+          fontWeight: 500,
+          borderColor: 'darkBorder',
+        }}
+      >
+        <Text mr="auto">30-day blended APY:</Text>
+        <Text variant="legend" mr="1">
+          {formatPercentage(currentApy)}
+        </Text>
+        <ArrowRight size={16} />
+        <Text ml="1">{formatPercentage(proposedApy)}</Text>
+      </Box>
     </Box>
   )
 }

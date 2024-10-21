@@ -7,7 +7,7 @@ import { formatEther, hexToString } from 'viem'
 import { Address, readContracts, useBlockNumber, useQuery } from 'wagmi'
 import { readContract } from 'wagmi/actions'
 
-type BasketItem = Record<
+export type BasketItem = Record<
   string,
   { address: Address; share: number; targetUnit: string }
 >
@@ -112,8 +112,7 @@ export const useBasketChangesSummary = (
   proposal: PrimaryBasketRaw,
   rTokenAddress?: Address,
   chainId?: number,
-  snapshotBlock?: number,
-  executionBlock?: number
+  snapshotBlock?: number
 ) => {
   const { data: currentBlock } = useBlockNumber()
   const data = useQuery(
@@ -143,7 +142,12 @@ export const useBasketChangesSummary = (
         ...(proposal[0] as Address[]),
       ])
 
-      return basketDiff(snapshotBasket, proposalBasket, tokensMeta)
+      return {
+        diff: basketDiff(snapshotBasket, proposalBasket, tokensMeta),
+        snapshotBasket,
+        proposalBasket,
+        tokensMeta,
+      }
     }
   )
 
