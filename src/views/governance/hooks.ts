@@ -29,7 +29,21 @@ const getSnapshotBasket = async (
   block: number
 ) => {
   const [erc20s, uoaShares, targets] = await readContract({
-    abi: FacadeRead,
+    abi: [
+      {
+        inputs: [
+          { internalType: 'contract IRToken', name: 'rToken', type: 'address' },
+        ],
+        name: 'basketBreakdown',
+        outputs: [
+          { internalType: 'address[]', name: 'erc20s', type: 'address[]' },
+          { internalType: 'uint192[]', name: 'uoaShares', type: 'uint192[]' },
+          { internalType: 'bytes32[]', name: 'targets', type: 'bytes32[]' },
+        ],
+        stateMutability: 'view',
+        type: 'function',
+      },
+    ] as const,
     functionName: 'basketBreakdown',
     address: FACADE_ADDRESS[chainId],
     args: [rTokenAddress],
