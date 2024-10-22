@@ -71,9 +71,7 @@
   },
   {
     "address": "0x9ca9A9cdcE9E943608c945E7001dC89EB163991E",
-    "rewardTokens": [
-      "0xF4493581D52671a9E04d693a68ccc61853bceEaE"
-    ],
+    "rewardTokens": ["0xF4493581D52671a9E04d693a68ccc61853bceEaE"],
     "protocol": "AAVE",
     "erc20": "0x717AC7A53C6a6a5529175dff7fCc76858436f8c0",
     "chainlinkFeed": "0xAed0c38402a5d19df6E4c03F4E2DceD6e29c1ee9",
@@ -91,9 +89,7 @@
   },
   {
     "address": "0xc4240D22FFa144E2712aACF3E2cC302af0339ED0",
-    "rewardTokens": [
-      "0xF4493581D52671a9E04d693a68ccc61853bceEaE"
-    ],
+    "rewardTokens": ["0xF4493581D52671a9E04d693a68ccc61853bceEaE"],
     "protocol": "AAVE",
     "erc20": "0xa8157BF67Fd7BcDCC139CB9Bf1bd7Eb921A779D3",
     "chainlinkFeed": "0x8fFfFfd4AfB6115b954Bd326cbe7B4BA576818f6",
@@ -111,9 +107,7 @@
   },
   {
     "address": "0x8d753659D4E4e4b4601c7F01Dc1c920cA538E333",
-    "rewardTokens": [
-      "0xF4493581D52671a9E04d693a68ccc61853bceEaE"
-    ],
+    "rewardTokens": ["0xF4493581D52671a9E04d693a68ccc61853bceEaE"],
     "protocol": "AAVE",
     "erc20": "0x684AA4faf9b07d5091B88c6e0a8160aCa5e6d17b",
     "chainlinkFeed": "0x3E7d1eAB13ad0104d2750B8863b489D65364e32D",
@@ -131,9 +125,7 @@
   },
   {
     "address": "0x01F9A6bf339cff820cA503A56FD3705AE35c27F7",
-    "rewardTokens": [
-      "0xF4493581D52671a9E04d693a68ccc61853bceEaE"
-    ],
+    "rewardTokens": ["0xF4493581D52671a9E04d693a68ccc61853bceEaE"],
     "protocol": "AAVE",
     "erc20": "0xf3840c4B214699F94fBB69ad3922f44176c93658",
     "chainlinkFeed": "0x833D8Eb16D306ed1FbB5D7A2E019e106B960965A",
@@ -151,9 +143,7 @@
   },
   {
     "address": "0xda5cc207CCefD116fF167a8ABEBBd52bD67C958E",
-    "rewardTokens": [
-      "0xF4493581D52671a9E04d693a68ccc61853bceEaE"
-    ],
+    "rewardTokens": ["0xF4493581D52671a9E04d693a68ccc61853bceEaE"],
     "protocol": "AAVE",
     "erc20": "0x5Ad7CeD3c64847980082e106390DeC3765A5f1C4",
     "chainlinkFeed": "0x09023c0DA49Aaf8fc3fA3ADF34C6A7016D38D5e3",
@@ -171,9 +161,7 @@
   },
   {
     "address": "0x337E418b880bDA5860e05D632CF039B7751B907B",
-    "rewardTokens": [
-      "0x63eDdF26Bc65eDa1D1c0147ce8E23c09BE963596"
-    ],
+    "rewardTokens": ["0x63eDdF26Bc65eDa1D1c0147ce8E23c09BE963596"],
     "protocol": "COMP",
     "erc20": "0x5d3a536E4D6DbD6114cc1Ead35777bAB948E3643",
     "chainlinkFeed": "0xAed0c38402a5d19df6E4c03F4E2DceD6e29c1ee9",
@@ -189,9 +177,7 @@
   },
   {
     "address": "0x043be931D9C4422e1cFeA528e19818dcDfdE9Ebc",
-    "rewardTokens": [
-      "0x63eDdF26Bc65eDa1D1c0147ce8E23c09BE963596"
-    ],
+    "rewardTokens": ["0x63eDdF26Bc65eDa1D1c0147ce8E23c09BE963596"],
     "protocol": "COMP",
     "erc20": "0x39AA39c021dfbaE8faC545936693aC917d5E7563",
     "chainlinkFeed": "0x8fFfFfd4AfB6115b954Bd326cbe7B4BA576818f6",
@@ -207,9 +193,7 @@
   },
   {
     "address": "0x5ceadb6606C5D82FcCd3f9b312C018fE1f8aa6dA",
-    "rewardTokens": [
-      "0x63eDdF26Bc65eDa1D1c0147ce8E23c09BE963596"
-    ],
+    "rewardTokens": ["0x63eDdF26Bc65eDa1D1c0147ce8E23c09BE963596"],
     "protocol": "COMP",
     "erc20": "0xf650C3d88D12dB855b8bf7D11Be6C55A4e07dCC9",
     "chainlinkFeed": "0x3E7d1eAB13ad0104d2750B8863b489D65364e32D",
@@ -225,9 +209,7 @@
   },
   {
     "address": "0xa0c02De8FfBb9759b9beBA5e29C82112688A0Ff4",
-    "rewardTokens": [
-      "0x63eDdF26Bc65eDa1D1c0147ce8E23c09BE963596"
-    ],
+    "rewardTokens": ["0x63eDdF26Bc65eDa1D1c0147ce8E23c09BE963596"],
     "protocol": "COMP",
     "erc20": "0x041171993284df560249B57358F931D9eB7b925D",
     "chainlinkFeed": "0x09023c0DA49Aaf8fc3fA3ADF34C6A7016D38D5e3",
@@ -243,9 +225,7 @@
   },
   {
     "address": "0xC0f89AFcb6F1c4E943aA61FFcdFc41fDcB7D84DD",
-    "rewardTokens": [
-      "0x63eDdF26Bc65eDa1D1c0147ce8E23c09BE963596"
-    ],
+    "rewardTokens": ["0x63eDdF26Bc65eDa1D1c0147ce8E23c09BE963596"],
     "protocol": "COMP",
     "erc20": "0xccF4429DB6322D5C611ee964527D42E5d685DD6a",
     "chainlinkFeed": "0xfdFD9C85aD200c506Cf9e21F1FD8dd01932FBB23",
@@ -387,9 +367,7 @@
   },
   {
     "address": "0x33Ba1BC07b0fafb4BBC1520B330081b91ca6bdf0",
-    "rewardTokens": [
-      "0x63eDdF26Bc65eDa1D1c0147ce8E23c09BE963596"
-    ],
+    "rewardTokens": ["0x63eDdF26Bc65eDa1D1c0147ce8E23c09BE963596"],
     "protocol": "COMPv3",
     "erc20": "0x27F2f159Fe990Ba83D57f39Fd69661764BEbf37a",
     "chainlinkFeed": "0x8fFfFfd4AfB6115b954Bd326cbe7B4BA576818f6",
@@ -404,12 +382,10 @@
     "underlyingToken": "cUSDCv3"
   },
   {
-    "address": "0x753142cc768C05Ea66A1b92622aFE148Ad44Cb30",
-    "rewardTokens": [
-      "0x63eDdF26Bc65eDa1D1c0147ce8E23c09BE963596"
-    ],
+    "address": "0x1B2256a88Bb9F2E54cC8D355D3161a2F069a320B",
+    "rewardTokens": ["0x63eDdF26Bc65eDa1D1c0147ce8E23c09BE963596"],
     "protocol": "COMPv3",
-    "erc20": "0xbeD348315d7327Cd81d26338c11976674825bb14",
+    "erc20": "0xEB74EC1d4C1DAB412D5d6674F6833FD19d3118Ce",
     "chainlinkFeed": "0x3E7d1eAB13ad0104d2750B8863b489D65364e32D",
     "delayUntilDefault": "86400",
     "maxTradeVolume": "1000000",
@@ -518,9 +494,7 @@
   },
   {
     "address": "0xcdc5f5e041b49cad373e94930e2b3be30be70535",
-    "rewardTokens": [
-      "0xc18bF46F178F7e90b9CD8b7A8b00Af026D5ce3D3"
-    ],
+    "rewardTokens": ["0xc18bF46F178F7e90b9CD8b7A8b00Af026D5ce3D3"],
     "protocol": "CURVE",
     "erc20": "0x3D07B9b2Aa60843470e6dAb09a0c3a31DE42E7Ea",
     "chainlinkFeed": "0x0000000000000000000000000000000000000001",
@@ -536,9 +510,7 @@
   },
   {
     "address": "0x692cf8CE08d03eF1f8C3dCa82F67935fa9417B62",
-    "rewardTokens": [
-      "0xc18bF46F178F7e90b9CD8b7A8b00Af026D5ce3D3"
-    ],
+    "rewardTokens": ["0xc18bF46F178F7e90b9CD8b7A8b00Af026D5ce3D3"],
     "protocol": "CURVE",
     "erc20": "0xB1d0076d156D83B117De3bc63E7CE8031AB117fD",
     "chainlinkFeed": "0x7A364e8770418566e3eb2001A96116E6138Eb32F",
@@ -554,9 +526,7 @@
   },
   {
     "address": "0xf59a7987EDd5380cbAb30c37D1c808686f9b67B9",
-    "rewardTokens": [
-      "0xc18bF46F178F7e90b9CD8b7A8b00Af026D5ce3D3"
-    ],
+    "rewardTokens": ["0xc18bF46F178F7e90b9CD8b7A8b00Af026D5ce3D3"],
     "protocol": "CURVE",
     "erc20": "0x8A6029C6D921dCa4fAbf6F5b2F6D14606F8Fd0aB",
     "chainlinkFeed": "0x0000000000000000000000000000000000000001",
