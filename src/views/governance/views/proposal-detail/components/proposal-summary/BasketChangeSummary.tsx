@@ -40,19 +40,20 @@ const StatusBox = ({ status, sx = {}, ...props }: IStatusBox) => {
   const statusMap = {
     added: {
       label: 'Add',
-      icon: <Plus size={16} />,
+      icon: <Plus size={16} color="#2150A9" />,
     },
     removed: {
       label: 'Remove',
-      icon: <X size={16} />,
+      icon: <X size={16} color="#FF0000" />,
     },
     increased: {
       label: 'Increase',
-      icon: <ArrowUp size={16} />,
+      icon: <ArrowUp size={16} color="#11BB8D" />,
     },
     reduced: {
       label: 'Reduce',
-      icon: <ArrowDown size={16} />,
+      color: 'warning',
+      icon: <ArrowDown size={16} color="#FF8A00" />,
     },
     unchanged: {
       label: 'No change',
@@ -63,7 +64,7 @@ const StatusBox = ({ status, sx = {}, ...props }: IStatusBox) => {
   return (
     <Box
       variant="layout.verticalAlign"
-      px="2"
+      px="10px"
       py="1"
       sx={{
         height: 'fit-content',
@@ -183,7 +184,7 @@ const BasketAPYDiff = ({
       sx={{
         borderTop: '1px solid',
         fontWeight: 500,
-        borderColor: 'darkBorder',
+        borderColor: 'border',
       }}
     >
       <Text mr="auto">30-day blended APY:</Text>

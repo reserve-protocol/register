@@ -1,5 +1,4 @@
 import ERC20 from 'abis/ERC20'
-import FacadeRead from 'abis/FacadeRead'
 import { truncateDecimals } from 'utils'
 import { FACADE_ADDRESS } from 'utils/addresses'
 import { collateralsMap } from 'utils/plugins'
@@ -122,7 +121,7 @@ function basketDiff(
       status,
       oldWeight,
       newWeight,
-      targetUnit: proposed[address]?.targetUnit || current[address]?.targetUnit,
+      targetUnit: current[address]?.targetUnit || proposed[address]?.targetUnit,
       symbol: symbols[address],
     })
   }

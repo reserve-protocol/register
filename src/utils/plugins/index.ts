@@ -69,7 +69,7 @@ export const collateralsMap = Object.keys(collateralPlugins).reduce(
       [chain]: collateralPlugins[chainId].reduce((acc, plugin) => {
         return {
           ...acc,
-          [plugin.address]: plugin,
+          [plugin.erc20]: plugin,
         }
       }),
     }

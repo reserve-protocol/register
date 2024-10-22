@@ -195,7 +195,7 @@ const CallPreview = ({
       ) : (
         <RawCallPreview call={call} />
       )}
-      <Divider mt={3} sx={{ borderColor }} />
+      <Divider mt={3} />
       <CallData data={call.callData} borderColor={borderColor} />
     </Box>
   )
