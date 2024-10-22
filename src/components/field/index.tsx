@@ -7,6 +7,7 @@ import { StringMap } from 'types'
 
 interface FieldProps extends InputProps {
   label?: string
+  strong?: boolean
   help?: string
   required?: boolean
 }
@@ -39,6 +40,7 @@ export const Field = ({
   label,
   help,
   required,
+  strong,
   children,
   sx = {},
   ...props
@@ -46,7 +48,14 @@ export const Field = ({
   <Box sx={{ ...sx, position: 'relative' }} {...props}>
     <Flex mb={2} sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
       <Box variant="layout.verticalAlign" sx={{ gap: 1 }} ml={3}>
-        <Text variant="subtitle" sx={{ fontSize: 1 }}>
+        <Text
+          variant="subtitle"
+          sx={{
+            fontSize: 1,
+            fontWeight: strong ? 700 : 400,
+            color: strong ? 'text' : 'inherit',
+          }}
+        >
           {label}
         </Text>
         {required && <Text color="red">*</Text>}

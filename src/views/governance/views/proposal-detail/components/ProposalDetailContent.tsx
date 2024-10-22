@@ -1,9 +1,9 @@
 import MDEditor from '@uiw/react-md-editor'
 import { useAtomValue } from 'jotai'
-import { Box, Card } from 'theme-ui'
-import { proposalDetailAtom } from '../atom'
 import { useState } from 'react'
+import { Box } from 'theme-ui'
 import ProposalDetail from 'views/governance/components/ProposalDetailPreview'
+import { proposalDetailAtom } from '../atom'
 
 const TABS = {
   DESCRIPTION: 'description',
@@ -24,8 +24,8 @@ const ProposalDetailContent = () => {
   }
 
   return (
-    <Box sx={{ bg: 'cardBackground', borderRadius: '8px', p: 4 }}>
-      <Box variant="layout.verticalAlign" mb={4}>
+    <Box sx={{ bg: 'cardBackground', borderRadius: '8px', p: 2 }}>
+      <Box variant="layout.verticalAlign" p={[0, 2]} mb="2">
         <Box
           variant="layout.verticalAlign"
           sx={{
@@ -67,16 +67,20 @@ const ProposalDetailContent = () => {
           </Box>
         </Box>
       </Box>
+
       {tab === TABS.DESCRIPTION ? (
-        <MDEditor.Markdown
-          source={description}
-          style={{ backgroundColor: 'transparent' }}
-        />
+        <Box px="3" pb="2">
+          <MDEditor.Markdown
+            source={description}
+            style={{ backgroundColor: 'transparent' }}
+          />
+        </Box>
       ) : (
         !!proposal && (
           <ProposalDetail
             addresses={proposal.targets}
             calldatas={proposal.calldatas}
+            snapshotBlock={proposal.creationBlock}
             sx={{
               bg: 'focusedBackground',
               borderRadius: '6px',
