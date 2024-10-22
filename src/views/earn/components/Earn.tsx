@@ -4,6 +4,7 @@ import { Box, Grid, Text } from 'theme-ui'
 import { filteredPoolsAtom } from '../atoms'
 import PoolsTable from './PoolsTable'
 import TableFilters from './TableFilters'
+import EarnTable from './earn-table'
 
 const EarnHeader = () => (
   <Box
@@ -39,11 +40,13 @@ const Pools = () => {
   return <PoolsTable data={data} />
 }
 
-const Earn = () => (
-  <Box variant="layout.wrapper" p={[1, 4]} py={[4, 7]}>
-    <EarnHeader />
-    <Pools />
-  </Box>
-)
+// const Earn = () => (
+//   <Box variant="layout.wrapper" p={[1, 4]} py={[4, 7]}>
+//     <EarnHeader />
+//     <Pools />
+//   </Box>
+// )
+
+const Earn = () => <EarnTable />
 
 export default Earn
