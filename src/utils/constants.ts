@@ -191,6 +191,7 @@ export const ROUTES = Object.freeze({
   EXPLORER_GOVERNANCE: '/explorer/governance',
   EXPLORER_REVENUE: '/explorer/revenue',
   EXPLORER_TRANSACTIONS: 'transactions',
+  TERMS: '/terms',
 })
 
 export const RSR: Token = {
