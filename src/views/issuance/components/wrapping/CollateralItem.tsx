@@ -39,7 +39,9 @@ const CollateralItem = ({ collateral, wrapping, ...props }: Props) => {
   const debouncedAmount = useDebounce(amount, 500)
 
   const useAssets = useMemo(
-    () => !wrapping && collateral.symbol === 'wcUSDCv3',
+    () =>
+      !wrapping &&
+      (collateral.symbol === 'wcUSDCv3' || collateral.symbol === 'wcUSDTv3'),
     [wrapping, collateral.symbol]
   )
 
