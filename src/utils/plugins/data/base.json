@@ -116,5 +116,21 @@
     "version": "3.4.0",
     "symbol": "wstETH",
     "decimals": 18
+  },
+  {
+    "address": "0x9216CD5cA133aBBd23cc6F873bB4a95A78032db0",
+    "rewardTokens": ["0x940181a94A35A4569E4529A3CDfB74e38FD98631"],
+    "protocol": "AERODROME",
+    "erc20": "0xDB5b8cead52f77De0f6B5255f73F348AAf2CBb8D",
+    "chainlinkFeed": "0x0000000000000000000000000000000000000001",
+    "delayUntilDefault": "259200",
+    "maxTradeVolume": "1000000",
+    "oracleTimeout": 86400,
+    "targetName": "USD",
+    "version": "4.0.0",
+    "symbol": "wsAMM-eUSD/USDC",
+    "decimals": 18,
+    "underlyingAddress": "0x7A034374C89C463DD65D8C9BCfe63BcBCED41f4F",
+    "underlyingToken": "sAMM-eUSD/USDC"
   }
 ]
