@@ -62,12 +62,13 @@ const getSnapshotBasket = async (
   }, {} as BasketItem)
 }
 
-const getTokensMeta = async (erc20s: Address[]) => {
+const getTokensMeta = async (erc20s: Address[], chainId: number) => {
   const symbols = await readContracts({
     contracts: erc20s.map((erc20) => ({
       abi: ERC20,
       address: erc20,
       functionName: 'symbol',
+      chainId,
     })),
     allowFailure: false,
   })
@@ -160,10 +161,13 @@ export const useBasketChangesSummary = (
         }
       }, {} as BasketItem)
 
-      const tokensMeta = await getTokensMeta([
-        ...(Object.keys(snapshotBasket) as Address[]),
-        ...(proposal[0] as Address[]),
-      ])
+      const tokensMeta = await getTokensMeta(
+        [
+          ...(Object.keys(snapshotBasket) as Address[]),
+          ...(proposal[0] as Address[]),
+        ],
+        chainId
+      )
 
       return {
         diff: basketDiff(snapshotBasket, proposalBasket, tokensMeta),
