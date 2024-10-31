@@ -101,7 +101,9 @@ const CollateralYieldUpdater = () => {
     if (data?.data) {
       const yields: CollateralYieldByChain = {
         [ChainId.Mainnet]: {},
-        [ChainId.Base]: {},
+        [ChainId.Base]: {
+          aeroUSDCeUSD: 10, // TODO: hardcoded
+        },
         [ChainId.Arbitrum]: {
           wusdm: 5, // TODO: hardcoded
         },
