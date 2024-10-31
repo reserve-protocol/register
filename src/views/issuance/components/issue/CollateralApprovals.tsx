@@ -87,7 +87,8 @@ const CollateralApproval = ({
         <Spinner ml={2} size={14} />
       ) : (
         <Text ml={2} sx={{ fontSize: 1 }} variant="legend">
-          ({formatCurrency(Number(formatUnits(amount, collateral.decimals)))})
+          ({formatCurrency(Number(formatUnits(amount, collateral.decimals)), 6)}
+          )
         </Text>
       )}
       {!!amount && (
