@@ -98,7 +98,7 @@ type ZapContextType = {
   setShowEliteProgramModal: (show: boolean) => void
 }
 
-const REFRESH_INTERVAL = 12000 // 12 seconds
+const REFRESH_INTERVAL = 24000 // 24 seconds
 const EXPENSIVE_ZAP_THRESHOLD = 25_000
 
 const ZapContext = createContext<ZapContextType>({

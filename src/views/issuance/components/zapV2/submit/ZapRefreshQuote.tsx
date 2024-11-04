@@ -5,7 +5,7 @@ import { useZap } from '../context/ZapContext'
 import { Clock } from 'react-feather'
 import { useZapTx } from '../context/ZapTxContext'
 
-const REFRESH_INTERVAL_SEC = 30
+const REFRESH_INTERVAL_SEC = 24
 
 const ZapRefreshQuote = ({ children }: { children: ReactNode }) => {
   const { validatingZap, loadingZap, refreshQuote } = useZap()
