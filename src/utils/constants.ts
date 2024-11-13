@@ -366,6 +366,7 @@ export const collateralDisplay: Record<string, string> = {
   susde: 'Ethena Staked USDe',
   ethx: 'Stader ETHx',
   pyusd: 'PayPal USD',
+  'wsamm-eusd/usdc': 'Aerodrome eUSD/USDC',
 }
 
 export const RTOKEN_VAULT_STAKE: Record<

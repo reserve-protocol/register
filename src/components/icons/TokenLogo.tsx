@@ -80,6 +80,7 @@ const SVGS = new Set([
   'sdt',
   'wusdm',
   'eth+',
+  'wsamm-eusd/usdc',
 ])
 
 const PNGS = new Set(['steakusdc', 'mai', 'dola', 'fxusd', 'alusd', 'ethx'])
