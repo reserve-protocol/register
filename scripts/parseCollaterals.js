@@ -118,6 +118,7 @@ const wrappedTokenMap = {
   saBasUSDC: protocols.AAVEv3,
   saArbUSDCn: protocols.AAVEv3Arbitrum,
   saArbUSDT: protocols.AAVEv3Arbitrum,
+  cUSDTv3: protocols.COMPv3,
   wUSDM: protocols.USDM,
   apxETH: protocols.PXETH,
   aeroUSDCeUSD: protocols.AERODROME,

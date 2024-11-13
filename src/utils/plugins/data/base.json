@@ -118,6 +118,20 @@
     "decimals": 18
   },
   {
+    "address": "0x0f1e10871e6a2D3A5Aa696b85b39d61a22A9e8C3",
+    "rewardTokens": [],
+    "protocol": "GENERIC",
+    "erc20": "0xbb819D845b573B5D7C538F5b85057160cfb5f313",
+    "chainlinkFeed": "0x9b2C948dbA5952A1f5Ab6fA16101c1392b8da1ab",
+    "delayUntilDefault": "86400",
+    "maxTradeVolume": "1000000",
+    "oracleTimeout": 86400,
+    "targetName": "USD",
+    "version": "4.0.0",
+    "symbol": "meUSD",
+    "decimals": 18
+  },
+  {
     "address": "0x9216CD5cA133aBBd23cc6F873bB4a95A78032db0",
     "rewardTokens": ["0x5D09F98B6fA59456E608bD20Ca806140884C3790"],
     "protocol": "AERODROME",
