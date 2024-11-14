@@ -28,7 +28,7 @@ const About = () => {
         sx={{
           flexGrow: 1,
           position: 'relative',
-          display: 'flex',
+          display: ['none', 'flex'],
           justifyContent: 'center',
           alignItems: 'flex-end',
           overflow: 'hidden',

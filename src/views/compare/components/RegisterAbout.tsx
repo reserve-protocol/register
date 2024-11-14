@@ -170,7 +170,7 @@ const RegisterAbout = () => (
     px={[1, 3]}
     sx={{ borderTop: '1px solid', borderColor: 'border' }}
   >
-    <Box my={[7, 8]} px={[4, 2]}>
+    <Box mt={[7, 8]} px={[4, 2]}>
       <Text
         variant="bold"
         mb={[6, 8]}
