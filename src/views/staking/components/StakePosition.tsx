@@ -12,7 +12,12 @@ const StakePosition = (props: BoxProps) => {
   const rate = useAtomValue(rateAtom)
   const balance = useAtomValue(stRsrBalanceAtom)
   const rsrPrice = useAtomValue(rsrPriceAtom)
-  const rewards = useAtomValue(accountCurrentPositionAtom)
+  let rewards = useAtomValue(accountCurrentPositionAtom)
+
+  // Prevent the case when the user withdraws and rewards get stuck awaiting for subgraph
+  if (!balance.value && rewards) {
+    rewards = 0
+  }
 
   return (
     <Box {...props}>
