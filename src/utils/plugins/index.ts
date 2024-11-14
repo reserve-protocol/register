@@ -8,6 +8,7 @@ import arbitrumPlugins from './data/arbitrum.json'
 import mainnetPlugins from './data/mainnet.json'
 import { Address } from 'viem'
 import {
+  AERO_ADDRESS,
   ARB_ADDRESS,
   COMP_ADDRESS,
   CRV_ADDRESS,
@@ -31,6 +32,7 @@ export const rewardsByProtocol: { [x: Address]: ProtocolKey[] } = {
   [STG_ADDRESS[ChainId.Base]]: ['STARGATE'],
   [ARB_ADDRESS[ChainId.Arbitrum]]: ['AAVEv3'],
   [COMP_ADDRESS[ChainId.Arbitrum]]: ['COMPv3'],
+  [AERO_ADDRESS[ChainId.Base]]: ['AERODROME'],
 }
 
 const collateralToProtocol = (acc: StringMap, curr: CollateralPlugin) => {
@@ -56,5 +58,25 @@ export const collateralsProtocolMap: {
     {}
   ),
 }
+
+export const collateralsMap = Object.keys(collateralPlugins).reduce(
+  (acc, chain) => {
+    const chainId = Number(chain)
+    if (!acc[chainId]) {
+      acc[chainId] = {}
+    }
+
+    return {
+      ...acc,
+      [chain]: collateralPlugins[chainId].reduce((acc, plugin) => {
+        return {
+          ...acc,
+          [plugin.erc20]: plugin,
+        }
+      }),
+    }
+  },
+  {} as { [chainId: number]: Record<string, CollateralPlugin> }
+)
 
 export default collateralPlugins

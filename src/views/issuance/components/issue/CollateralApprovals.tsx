@@ -56,7 +56,9 @@ const CollateralApproval = ({
       functionName: 'approve',
       args: [
         rToken?.address || '0x',
-        collateral.symbol === 'wcUSDCv3' || collateral.symbol === 'wcUSDbCv3'
+        collateral.symbol === 'wcUSDCv3' ||
+        collateral.symbol === 'wcUSDTv3' ||
+        collateral.symbol === 'wcUSDbCv3'
           ? BIGINT_MAX
           : amount
           ? (amount * 120n) / 100n
@@ -87,7 +89,8 @@ const CollateralApproval = ({
         <Spinner ml={2} size={14} />
       ) : (
         <Text ml={2} sx={{ fontSize: 1 }} variant="legend">
-          ({formatCurrency(Number(formatUnits(amount, collateral.decimals)))})
+          ({formatCurrency(Number(formatUnits(amount, collateral.decimals)), 6)}
+          )
         </Text>
       )}
       {!!amount && (

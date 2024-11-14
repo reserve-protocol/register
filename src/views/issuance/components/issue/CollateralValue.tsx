@@ -21,7 +21,7 @@ const CollateralValue: FC<CollateralValueProps> = ({
         <Text sx={{ color: 'secondaryText', fontSize: 14 }}>
           {' '}
           ($
-          {formatCurrency(Number(formatUnits(quantity, decimals)) * price)})
+          {formatCurrency(Number(formatUnits(quantity, decimals)) * price, 6)})
         </Text>
       )}
     </Text>

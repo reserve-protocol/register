@@ -28,6 +28,7 @@ const query = gql`
       state
       executionETA
       executionTime
+      creationBlock
       cancellationTime
       calldatas
       targets
@@ -93,6 +94,7 @@ const useProposalDetail = (
           quorumVotes: formatEther(data.proposal.quorumVotes || '0'),
           governor: data.proposal.governanceFramework.contractAddress,
           version: data.proposal.governanceFramework.name,
+          creationBlock: +data.proposal.creationBlock,
         }
       : null
 

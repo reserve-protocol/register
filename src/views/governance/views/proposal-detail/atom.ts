@@ -19,6 +19,7 @@ export interface ProposalDetail {
   id: string
   description: string
   creationTime: string
+  creationBlock: number
   state: string
   calldatas: Hex[]
   startBlock: number

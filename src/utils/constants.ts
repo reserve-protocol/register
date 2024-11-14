@@ -191,6 +191,7 @@ export const ROUTES = Object.freeze({
   EXPLORER_GOVERNANCE: '/explorer/governance',
   EXPLORER_REVENUE: '/explorer/revenue',
   EXPLORER_TRANSACTIONS: 'transactions',
+  TERMS: '/terms',
 })
 
 export const RSR: Token = {
@@ -328,6 +329,7 @@ export const collateralDisplay: Record<string, string> = {
   fdai: 'Flux DAI',
   ffrax: 'Flux FRAX',
   wcusdcv3: 'Compound USDC V3',
+  wcusdtv3: 'Compound USDT V3',
   wcusdbcv3: 'Compound USDbC V3',
   stkcvx3crv: 'Convex DAI/USDC/USDT',
   'stkcvxeusd3crv-f': 'Convex eUSD/FRAXBP',
@@ -337,6 +339,7 @@ export const collateralDisplay: Record<string, string> = {
   wmim3crv: 'Curve MIM/3CRV',
   sdai: 'Savings DAI',
   cbeth: 'Coinbase ETH',
+  meusd: 'Morpho eUSD',
   'mrp-ausdt': 'Morpho AAVE USDT',
   'mrp-ausdc': 'Morpho AAVE USDC',
   'mrp-adai': 'Morpho AAVE DAI',
@@ -363,6 +366,7 @@ export const collateralDisplay: Record<string, string> = {
   susde: 'Ethena Staked USDe',
   ethx: 'Stader ETHx',
   pyusd: 'PayPal USD',
+  'wsamm-eusd/usdc': 'Aerodrome eUSD/USDC',
 }
 
 export const RTOKEN_VAULT_STAKE: Record<

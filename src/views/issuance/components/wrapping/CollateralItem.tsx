@@ -39,7 +39,9 @@ const CollateralItem = ({ collateral, wrapping, ...props }: Props) => {
   const debouncedAmount = useDebounce(amount, 500)
 
   const useAssets = useMemo(
-    () => !wrapping && collateral.symbol === 'wcUSDCv3',
+    () =>
+      !wrapping &&
+      (collateral.symbol === 'wcUSDCv3' || collateral.symbol === 'wcUSDTv3'),
     [wrapping, collateral.symbol]
   )
 
@@ -202,6 +204,34 @@ const CollateralItem = ({ collateral, wrapping, ...props }: Props) => {
           ],
           functionName: wrapping ? 'deposit' : 'withdrawAndUnwrap',
           args: wrapping ? [parsedAmount, wallet] : [parsedAmount],
+        }
+      case 'AERODROME':
+        return {
+          ...call,
+          abi: [
+            {
+              inputs: [
+                { internalType: 'uint256', name: '_amount', type: 'uint256' },
+                { internalType: 'address', name: '_to', type: 'address' },
+              ],
+              name: 'deposit',
+              outputs: [],
+              stateMutability: 'nonpayable',
+              type: 'function',
+            },
+            {
+              inputs: [
+                { internalType: 'uint256', name: '_amount', type: 'uint256' },
+                { internalType: 'address', name: '_to', type: 'address' },
+              ],
+              name: 'withdraw',
+              outputs: [],
+              stateMutability: 'nonpayable',
+              type: 'function',
+            },
+          ],
+          functionName: wrapping ? 'deposit' : 'withdraw',
+          args: [parsedAmount, wallet],
         }
       case 'MORPHO':
       case 'SDR':

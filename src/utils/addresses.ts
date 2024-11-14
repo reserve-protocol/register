@@ -100,3 +100,7 @@ export const STG_ADDRESS: AddressMap = {
 export const ARB_ADDRESS: AddressMap = {
   [ChainId.Arbitrum]: '0x912CE59144191C1204E64559FE8253a0e49E6548',
 }
+
+export const AERO_ADDRESS: AddressMap = {
+  [ChainId.Base]: '0x940181a94A35A4569E4529A3CDfB74e38FD98631',
+}

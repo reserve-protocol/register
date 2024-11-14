@@ -4,10 +4,12 @@ import { Box, BoxProps, Card, Spinner, Text } from 'theme-ui'
 import { Hex, decodeFunctionData, getAbiItem, getAddress } from 'viem'
 import { ContractProposal, InterfaceMap, interfaceMapAtom } from '../atoms'
 import ContractProposalDetail from '../views/proposal-detail/components/ContractProposalDetails'
+import { useEffect } from 'react'
 
 interface Props extends BoxProps {
   addresses: string[]
   calldatas: string[]
+  snapshotBlock?: number
   borderColor?: string
 }
 
@@ -65,7 +67,12 @@ const parseCallDatas = (
   return [contractProposals, unparsed]
 }
 
-const ProposalDetail = ({ addresses, calldatas, ...props }: Props) => {
+const ProposalDetail = ({
+  addresses,
+  calldatas,
+  snapshotBlock,
+  ...props
+}: Props) => {
   const interfaceMap = useAtomValue(interfaceMapAtom)
   const [parse] = parseCallDatas(addresses, calldatas, interfaceMap)
   const calls = Object.keys(parse)
@@ -81,7 +88,11 @@ const ProposalDetail = ({ addresses, calldatas, ...props }: Props) => {
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
         {calls.map((address, index) => (
           <SectionWrapper key={address} navigationIndex={index}>
-            <ContractProposalDetail data={parse[address]} {...props} />
+            <ContractProposalDetail
+              data={parse[address]}
+              snapshotBlock={snapshotBlock}
+              {...props}
+            />
           </SectionWrapper>
         ))}
       </Box>

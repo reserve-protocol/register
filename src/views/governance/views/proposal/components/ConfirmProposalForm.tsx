@@ -43,12 +43,16 @@ const ConfirmProposalForm = ({
 
   return (
     <Box>
-      <Card p={4} mb={4}>
-        <Text variant="sectionTitle">
-          <Trans>Proposal description</Trans>
-        </Text>
-        <Divider my={4} mx={-4} />
-        <Field label={t`Title`} mb={3} required>
+      <Card
+        p={3}
+        mb={4}
+        sx={{
+          background: 'cardBackground',
+          border: '8px solid',
+          borderColor: 'contentBackground',
+        }}
+      >
+        <Field label={t`Proposal Title`} mb={3} strong required>
           <Input
             value={title}
             onChange={setTitle}
@@ -57,7 +61,7 @@ const ConfirmProposalForm = ({
           />
         </Field>
         {showRFC && (
-          <Field label={t`RFC`} mb={3} required>
+          <Field label={t`RFC`} mb={3} strong required>
             <Input
               value={rfc}
               onChange={setRFC}
@@ -66,7 +70,12 @@ const ConfirmProposalForm = ({
           </Field>
         )}
 
-        <Text variant="subtitle" ml={3} sx={{ fontSize: 1 }} mb={2}>
+        <Text
+          variant="subtitle"
+          ml={3}
+          sx={{ fontSize: 1, fontWeight: 700, color: 'text' }}
+          mb={2}
+        >
           <Trans>Description</Trans>
         </Text>
         <MDEditor value={description} onChange={setDescription} />

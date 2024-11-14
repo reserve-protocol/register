@@ -73,6 +73,11 @@ const protocols = {
     key: 'PXETH',
     underlying: 'asset',
   },
+  AERODROME: {
+    key: 'AERODROME',
+    underlying: 'underlying',
+    rewardTokens: ['AERO'],
+  },
 }
 
 const wrappedTokenMap = {
@@ -113,8 +118,10 @@ const wrappedTokenMap = {
   saBasUSDC: protocols.AAVEv3,
   saArbUSDCn: protocols.AAVEv3Arbitrum,
   saArbUSDT: protocols.AAVEv3Arbitrum,
+  cUSDTv3: protocols.COMPv3,
   wUSDM: protocols.USDM,
   apxETH: protocols.PXETH,
+  aeroUSDCeUSD: protocols.AERODROME,
 }
 
 // Default: run all collateral chains - you can comment which chain you want to run
