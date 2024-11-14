@@ -38,8 +38,8 @@ const Home = () => {
           <UseCases />
         </Box>
       </Grid>
-      <Box>
-        <Box sx={{ maxWidth: '98em' }} px={[2, 4]} mt={[3, 7]}>
+      <Box mx="auto" px={[2, 4]}>
+        <Box sx={{ maxWidth: '98em' }} mt={[3, 7]}>
           <DeployHero />
         </Box>
 
