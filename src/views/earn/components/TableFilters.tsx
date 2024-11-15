@@ -132,25 +132,33 @@ const TableFilters = () => {
   }, [])
 
   return (
-    <Box
-      variant="layout.verticalAlign"
-      sx={{
-        flexShrink: 0,
-        minWidth: [200, 'auto', 'auto'],
-        flexWrap: 'wrap',
-        gap: 2,
-      }}
-      marginLeft={[0, 0, 'auto']}
-    >
-      <SearchInput
-        placeholder="Search pool"
-        p={1}
-        value={search}
-        onChange={setSearch}
-        sx={{ maxWidth: ['auto', 200, 160], borderRadius: borderRadius.inputs }}
-      />
-      <FilterOptions />
-      <PoolsChainFilter />
+    <Box sx={{ backgroundColor: 'backgroundNested', width: '100%' }} p="2">
+      <Box
+        variant="layout.verticalAlign"
+        sx={{
+          width: '100%',
+          flexWrap: 'wrap',
+          gap: 2,
+        }}
+      >
+        <Box mr="auto">
+          <SearchInput
+            placeholder="Search pool"
+            p={1}
+            value={search}
+            onChange={setSearch}
+            sx={{
+              maxWidth: ['auto', 200],
+              borderRadius: borderRadius.inputs,
+            }}
+          />
+        </Box>
+
+        <Box variant="layout.verticalAlign" sx={{ gap: 2 }}>
+          <FilterOptions />
+          <PoolsChainFilter />
+        </Box>
+      </Box>
     </Box>
   )
 }
