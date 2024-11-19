@@ -5,10 +5,13 @@ import { useEffect } from 'react'
 import { AddressMap } from 'types'
 import {
   CollateralMetadata,
-  UnderlyingMetadata,
   collateralsMetadataAtom,
+  protocolMetadataAtom,
+  TokenMetadata,
+  tokenMetadataAtom,
 } from './atoms'
 import { stringToHex } from 'viem'
+import useCMSMetadata from 'hooks/useCMSMetadata'
 
 type QueryReponse = {
   rTokenAssetDocumentationCollection: {
@@ -23,6 +26,7 @@ type QueryReponse = {
       tokensCollection?: {
         items: {
           tokenTicker: string
+          name?: string
           addresses?: AddressMap
           color?: string
           rating?: string
@@ -61,6 +65,7 @@ const collateralsMetaQuery = gql`
         tokensCollection {
           items {
             tokenTicker
+            name
             addresses
             color
             rating
@@ -93,6 +98,7 @@ const setCollateralsMetadataAtom = atom(
       const underlying =
         item.tokensCollection?.items.reduce((acc, token) => {
           acc[token.tokenTicker] = {
+            name: token.name ?? '',
             symbol: token.tokenTicker ?? '',
             addresses: token.addresses ?? {},
             color: token.color ?? stringToHex(token.tokenTicker ?? 'notoken'),
@@ -102,7 +108,7 @@ const setCollateralsMetadataAtom = atom(
           }
 
           return acc
-        }, {} as Record<string, UnderlyingMetadata>) ?? {}
+        }, {} as Record<string, TokenMetadata>) ?? {}
 
       collateralData[item.id] = {
         id: item.id,
@@ -114,6 +120,7 @@ const setCollateralsMetadataAtom = atom(
         tokenDistribution: item.tokenDistribution,
         underlying,
         protocol: {
+          id: item.protocol?.id ?? '',
           name: item.protocol?.protocolName ?? 'Unknown',
           description: item.protocol?.protocolDescription ?? '',
           website: item.protocol?.website ?? '',
@@ -130,6 +137,9 @@ const setCollateralsMetadataAtom = atom(
 // Fetch collaterals CMS data
 const CMSUpdater = () => {
   const { data } = useCMSQuery(collateralsMetaQuery)
+  const metadata = useCMSMetadata()
+  const setTokensMetadata = useSetAtom(tokenMetadataAtom)
+  const setProtocolsMetadata = useSetAtom(protocolMetadataAtom)
   const setCollateralsMetadata = useSetAtom(setCollateralsMetadataAtom)
 
   useEffect(() => {
@@ -137,6 +147,13 @@ const CMSUpdater = () => {
       setCollateralsMetadata(data as QueryReponse)
     }
   }, [data])
+
+  useEffect(() => {
+    if (metadata) {
+      setTokensMetadata(metadata.tokens)
+      setProtocolsMetadata(metadata.protocols)
+    }
+  }, [JSON.stringify(metadata)])
 
   return null
 }

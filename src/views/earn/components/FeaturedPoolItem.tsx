@@ -6,7 +6,7 @@ import { useMemo } from 'react'
 import Skeleton from 'react-loading-skeleton'
 import { Pool } from 'state/pools/atoms'
 import { Box, Text } from 'theme-ui'
-import { PROJECT_ICONS } from '../hooks/useEarnTableColumns'
+import { PROJECT_ICONS } from '../utils/constants'
 
 const FeaturedPoolItem = ({ pool }: { pool?: Pool }) => {
   const underlyingTokens = useMemo(

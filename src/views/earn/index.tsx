@@ -1,6 +1,5 @@
 import { useEffect } from 'react'
 import { Box, Flex, Text, useColorMode } from 'theme-ui'
-import Earn from './components/Earn'
 import RegisterAbout from 'views/compare/components/RegisterAbout'
 import mixpanel from 'mixpanel-browser'
 import { Trans, t } from '@lingui/macro'
@@ -9,6 +8,7 @@ import HelpIcon from 'components/icons/HelpIcon'
 import { Zap } from 'react-feather'
 import { colors } from 'theme'
 import { MouseoverTooltip } from 'components/tooltip'
+import EarnTable from './components/earn-table'
 
 const HeroBackground = () => {
   const [colorMode] = useColorMode()
@@ -58,12 +58,7 @@ const Hero = () => (
           }}
         >
           <Trans>
-            Provide liquidity across DeFi & earn more with your RTokens
-          </Trans>
-        </Text>
-        <Text as="p" px={[2, 0]} sx={{ fontSize: [2, 3] }} mt={[3, 4]}>
-          <Trans>
-            DeFi yield opportunities for RTokens in Convex, Curve, Yearn & Beefy
+            Provide liquidity across DeFi & Earn more with your RTokens
           </Trans>
         </Text>
       </Box>
@@ -111,13 +106,12 @@ const EarnWrapper = () => {
   return (
     <>
       <Box sx={{ position: 'relative' }}>
-        <HeroBackground />
         <Hero />
         <Info />
         <FeaturedPools />
       </Box>
       <Box variant="layout.wrapper">
-        <Earn />
+        <EarnTable />
       </Box>
       <RegisterAbout />
     </>

@@ -16,7 +16,7 @@ import {
   poolChainsFilterAtom,
   poolFilterAtom,
   poolSearchFilterAtom,
-} from '../atoms'
+} from '../../../atoms'
 import PoolsChainFilter from './PoolsChainFilter'
 
 // Includes Eth+
@@ -132,7 +132,14 @@ const TableFilters = () => {
   }, [])
 
   return (
-    <Box sx={{ backgroundColor: 'backgroundNested', width: '100%' }} p="2">
+    <Box
+      sx={{
+        backgroundColor: 'backgroundNested',
+        width: '100%',
+        borderRadius: borderRadius.boxes,
+      }}
+      p="2"
+    >
       <Box
         variant="layout.verticalAlign"
         sx={{

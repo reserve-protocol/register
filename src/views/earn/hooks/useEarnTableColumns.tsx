@@ -2,33 +2,17 @@ import { t } from '@lingui/macro'
 import { createColumnHelper } from '@tanstack/react-table'
 import DivaBadge from 'components/diva-points/DivaBadge'
 import Help from 'components/help'
-import Beefy from 'components/icons/Beefy'
-import Camelot from 'components/icons/Camelot'
 import ChainLogo from 'components/icons/ChainLogo'
-import Concentrator from 'components/icons/Concentrator'
-import Aerodrome from 'components/icons/logos/Aerodrome'
-import Balancer from 'components/icons/logos/Balancer'
-import Convex from 'components/icons/logos/Convex'
-import Curve from 'components/icons/logos/Curve'
-import Dinero from 'components/icons/logos/Dinero'
-import Dyson from 'components/icons/logos/Dyson'
-import Ethena from 'components/icons/logos/Ethena'
-import Extra from 'components/icons/logos/Extra'
-import Merkl from 'components/icons/logos/Merkl'
-import Morpho from 'components/icons/logos/Morpho'
-import Stader from 'components/icons/logos/Stader'
-import Stakedao from 'components/icons/logos/Stakedao'
-import Uniswap from 'components/icons/logos/Uniswap'
-import Yearn from 'components/icons/logos/Yearn'
 import StackTokenLogo from 'components/token-logo/StackTokenLogo'
 import mixpanel from 'mixpanel-browser'
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 import { ArrowUpRight } from 'react-feather'
 import { Pool } from 'state/pools/atoms'
 import { colors } from 'theme'
 import { Box, Image, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { CHAIN_TAGS, LP_PROJECTS, NETWORKS } from 'utils/constants'
+import { PROJECT_ICONS } from '../utils/constants'
 
 export const columnVisibility = []
 
@@ -42,26 +26,6 @@ export const compactColumnVisibility = [
   ['none', 'table-cell'],
 ]
 
-export const PROJECT_ICONS: Record<string, React.ReactElement> = {
-  'yearn-finance': <Yearn fontSize={16} />,
-  'convex-finance': <Convex fontSize={16} />,
-  'curve-dex': <Curve />,
-  'aerodrome-v1': <Aerodrome />,
-  'aerodrome-slipstream': <Aerodrome />,
-  stakedao: <Stakedao fontSize={16} />,
-  'uniswap-v3': <Uniswap fontSize={16} />,
-  'balancer-v2': <Balancer fontSize={16} />,
-  'extra-finance': <Extra fontSize={16} />,
-  'camelot-v3': <Camelot />,
-  beefy: <Beefy />,
-  concentrator: <Concentrator />,
-  dyson: <Dyson />,
-  'morpho-blue': <Morpho />,
-  merkl: <Merkl />,
-  ethena: <Ethena />,
-  'dinero-(pirex-eth)': <Dinero />,
-  stader: <Stader />,
-}
 
 const useEarnTableColumns = (compact: boolean) => {
   const columnHelper = createColumnHelper<Pool>()
@@ -128,7 +92,7 @@ const useEarnTableColumns = (compact: boolean) => {
         },
       }),
       columnHelper.accessor('project', {
-        header: t`Project`,
+        header: t`Platform`,
         cell: (data) => (
           <Box variant="layout.verticalAlign">
             {PROJECT_ICONS[data.getValue()] ?? ''}
