@@ -1,5 +1,4 @@
 import { Row } from '@tanstack/react-table'
-import Sidebar from 'components/sidebar'
 import { Table } from 'components/table'
 import { useAtomValue } from 'jotai'
 import { Pool } from 'state/pools/atoms'
@@ -12,17 +11,17 @@ import PoolProjectDetails from './components/PoolProjectDetails'
 import PoolTokenDetails from './components/PoolTokenDetails'
 import PoolZapToEarn from './components/PoolZapToEarn'
 import useColumns from './hooks/useColumns'
-
-const ZapSidebar = ({ onClose }: { onClose(): void }) => {
-  return <Sidebar onClose={onClose}></Sidebar>
-}
+import { NETWORKS } from 'utils/constants'
 
 const PoolDetails = ({ row }: { row: Row<Pool> }) => {
   return (
     <Box sx={{ backgroundColor: 'focusedBackground' }}>
       <PoolZapToEarn pool="test" />
       <PoolTokenDetails tokens={row.original.underlyingTokens} />
-      <PoolProjectDetails project={row.original.project} />
+      <PoolProjectDetails
+        chain={NETWORKS[row.original.chain.toLowerCase()]}
+        project={row.original.project}
+      />
     </Box>
   )
 }

@@ -25,7 +25,7 @@ interface Props extends BoxProps {
   token: ListedToken
 }
 
-const ChainBadge = ({ chain }: { chain: number }) => (
+export const ChainBadge = ({ chain }: { chain: number }) => (
   <Box
     variant="layout.verticalAlign"
     sx={{
