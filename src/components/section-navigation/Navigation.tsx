@@ -1,13 +1,7 @@
-import styled from '@emotion/styled'
 import { useAtom } from 'jotai'
 import { useEffect } from 'react'
 import { Box, BoxProps, Text } from 'theme-ui'
 import { navigationIndexAtom } from './atoms'
-
-const Container = styled(Box)`
-  height: fit-content;
-  margin-bottom: 32px;
-`
 
 interface Props extends BoxProps {
   title?: string
@@ -37,7 +31,13 @@ const Navigation = ({ title, sections, initialIndex = 0, ...props }: Props) => {
   const active = Math.min(...current)
 
   return (
-    <Container {...props}>
+    <Box
+      {...props}
+      sx={{
+        height: 'fit-content',
+        marginBottom: '32px',
+      }}
+    >
       {!!title && (
         <Text variant="title" mb={4}>
           {title}
@@ -75,7 +75,7 @@ const Navigation = ({ title, sections, initialIndex = 0, ...props }: Props) => {
           )
         })}
       </Box>
-    </Container>
+    </Box>
   )
 }
 

@@ -1,4 +1,3 @@
-import styled from '@emotion/styled'
 import { Trans } from '@lingui/macro'
 import Button from 'components/button'
 import MenuIcon from 'components/icons/MenuIcon'
@@ -12,15 +11,6 @@ import { ConnectButton } from '@rainbow-me/rainbowkit'
 import ChainLogo from 'components/icons/ChainLogo'
 import { chainIdAtom, selectedRTokenAtom } from 'state/atoms'
 import { isTransactionRunning } from 'state/chain/atoms/transactionAtoms'
-
-const Container = styled(Box)`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 38px;
-  padding: 8px;
-  cursor: pointer;
-`
 
 const ErrorWrapper = ({
   chainId,
@@ -116,13 +106,20 @@ const Account = () => {
                 )
               }
 
+              // display: flex;
+              // justify-content: center;
+              // align-items: center;
+              // height: 38px;
+              // padding: 8px;
+              // cursor: pointer;
+
               return (
                 <ErrorWrapper
                   isValid={!invalidChain}
                   chainId={chain.id}
                   currentChain={chainId}
                 >
-                  <Container onClick={() => setVisible(true)}>
+                  <Box variant="layout.verticalAlign" sx={{ justifyContent: 'center', height: '38px' }} p="2" onClick={() => setVisible(true)}>
                     {!invalidChain ? (
                       <ChainLogo chain={chain.id} />
                     ) : (
@@ -136,7 +133,7 @@ const Account = () => {
                     </Text>
                     {isProcessing && <Spinner size={20} marginLeft={10} />}
                     <MenuIcon style={{ marginLeft: 10 }} />
-                  </Container>
+                  </Box>
                 </ErrorWrapper>
               )
             })()}

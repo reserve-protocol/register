@@ -36,7 +36,7 @@ type StateMulticallResult = {
         boolean,
         boolean,
         boolean,
-        boolean | undefined
+        boolean | undefined,
       ]
     | undefined
 }
@@ -209,11 +209,14 @@ const RTokenStateUpdater = () => {
 
   useEffect(() => {
     setCollateralStatus(
-      (collateralStatus || []).reduce((prev, status, index) => {
-        prev[rToken?.collaterals[index]?.address ?? ''] = status
+      (collateralStatus || []).reduce(
+        (prev, status, index) => {
+          prev[rToken?.collaterals[index]?.address ?? ''] = status
 
-        return prev
-      }, {} as { [x: string]: 0 | 1 | 2 })
+          return prev
+        },
+        {} as { [x: string]: 0 | 1 | 2 }
+      )
     )
   }, [collateralStatus])
 

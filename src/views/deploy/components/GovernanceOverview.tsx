@@ -1,4 +1,3 @@
-import styled from '@emotion/styled'
 import { Trans, t } from '@lingui/macro'
 import CopyValue from 'components/button/CopyValue'
 import GoTo from 'components/button/GoTo'
@@ -17,10 +16,6 @@ import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { Hex } from 'viem'
 import useGovernance from '../useGovernance'
 import TransactionError from 'components/transaction-error/TransactionError'
-
-const Container = styled(Box)`
-  height: fit-content;
-`
 
 const Pending = () => (
   <>
@@ -116,7 +111,7 @@ const GovernanceStatus = () => {
 }
 
 const GovernanceOverview = (props: BoxProps) => (
-  <Container variant="layout.borderBox" {...props}>
+  <Box sx={{ height: 'fit-content' }} variant="layout.borderBox" {...props}>
     <Flex
       sx={{
         alignItems: 'center',
@@ -143,7 +138,7 @@ const GovernanceOverview = (props: BoxProps) => (
         </Trans>
       </Text>
     </Box>
-  </Container>
+  </Box>
 )
 
 export default GovernanceOverview

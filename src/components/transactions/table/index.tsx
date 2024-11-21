@@ -1,11 +1,10 @@
-import styled from '@emotion/styled'
 import { t, Trans } from '@lingui/macro'
 import { createColumnHelper } from '@tanstack/react-table'
-import GoTo from 'components/button/GoTo'
 import Help from 'components/help'
 import ChainLogo from 'components/icons/ChainLogo'
 import { Table } from 'components/table'
 import { useAtomValue } from 'jotai'
+import mixpanel from 'mixpanel-browser'
 import { useMemo } from 'react'
 import { blockTimestampAtom, chainIdAtom, rTokenAtom } from 'state/atoms'
 import { borderRadius } from 'theme'
@@ -13,11 +12,6 @@ import { Box, BoxProps, Flex, Link, Text } from 'theme-ui'
 import { StringMap, TransactionRecord } from 'types'
 import { formatUsdCurrencyCell, relativeTime, shortenString } from 'utils'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
-import mixpanel from 'mixpanel-browser'
-
-const Container = styled(Box)`
-  overflow: auto;
-`
 
 interface Props extends BoxProps {
   data: TransactionRecord[]
@@ -133,7 +127,7 @@ const TransactionsTable = ({
   )
 
   return (
-    <Container
+    <Box
       {...props}
       px={[0, 2]}
       pt={[3, 5]}
@@ -143,6 +137,7 @@ const TransactionsTable = ({
         borderRadius: borderRadius.boxes,
         height: 'fit-content',
         maxHeight: ['360px', 'none'],
+        overflow: 'auto',
         ...sx,
       })}
     >
@@ -168,7 +163,7 @@ const TransactionsTable = ({
           </Text>
         </Box>
       )}
-    </Container>
+    </Box>
   )
 }
 
