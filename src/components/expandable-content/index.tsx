@@ -2,7 +2,8 @@ import { useState } from 'react'
 import { Minus, Plus } from 'react-feather'
 import { Box, BoxProps, Text } from 'theme-ui'
 
-export interface ExpandableContentProps extends Omit<BoxProps, 'title'> {
+export interface ExpandableContentProps
+  extends Omit<BoxProps, 'title' | 'content'> {
   title: React.ReactNode
   content: React.ReactNode
   expanded?: boolean

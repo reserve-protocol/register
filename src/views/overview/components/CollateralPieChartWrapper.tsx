@@ -29,7 +29,8 @@ const CollateralPieChartWrapper: FC<Props> = ({ token }) => {
         return {
           name: c.symbol,
           value:
-            +token.collateralDistribution[c.id.toLowerCase()]?.dist * 100 ?? 0,
+            +(token.collateralDistribution[c.id.toLowerCase()]?.dist ?? 0) *
+            100,
           color: cmsCollateral?.color || stringToColor(c.id),
           project: cmsCollateral?.protocol?.name || 'GENERIC',
           projectColor: cmsCollateral?.protocol?.color || 'gray',

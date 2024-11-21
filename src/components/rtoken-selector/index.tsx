@@ -57,7 +57,7 @@ const RTokenSelector = (props: BoxProps) => {
     <Popup
       show={isVisible}
       onDismiss={() => setVisible(false)}
-      content={<TokenList onSelect={handleSelect} onHome={handleHome} />}
+      content={<TokenList onSelect={handleSelect} />}
     >
       <Box
         {...props}

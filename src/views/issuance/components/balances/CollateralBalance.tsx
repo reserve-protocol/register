@@ -21,13 +21,13 @@ const CollateralBalance = ({ token, ...props }: Props) => {
     return (
       <TokenBalance
         symbol={token.symbol}
-        balance={+balances[token.address]?.balance ?? '0'}
+        balance={+(balances[token.address]?.balance ?? '0')}
         {...props}
       />
     )
   }
 
-  const current = +balances[token.address]?.balance ?? 0
+  const current = +(balances[token.address]?.balance ?? 0)
   const required = +formatUnits(quantities[token.address], token.decimals)
   const isValid =
     current && balances[token.address].value >= quantities[token.address]
@@ -37,7 +37,7 @@ const CollateralBalance = ({ token, ...props }: Props) => {
       <Flex variant="layout.verticalAlign">
         <TokenBalance
           symbol={token.symbol}
-          balance={+balances[token.address]?.balance ?? ''}
+          balance={+(balances[token.address]?.balance ?? '0')}
         />
         <Box ml="auto">
           <Circle
