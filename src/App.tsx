@@ -3,6 +3,7 @@ import ToastContainer from 'components/toaster-container/ToastContainer'
 import TransactionSidebar from 'components/transactions/manager/TransactionSidebar'
 import mixpanel from 'mixpanel-browser'
 import { useEffect } from 'react'
+import { ErrorBoundary } from 'react-error-boundary'
 import {
   BrowserRouter as Router,
   useLocation,
@@ -16,8 +17,6 @@ import AppRoutes from './AppRoutes'
 import Layout from './components/layout'
 import LanguageProvider from './i18n'
 import { theme } from './theme'
-import React from 'react'
-import { ErrorBoundary } from 'react-error-boundary'
 
 mixpanel.init(import.meta.env.VITE_MIXPANEL_KEY || 'mixpanel_key', {
   track_pageview: true,
@@ -85,7 +84,7 @@ const App = () => (
     fallback={<div>Something went wrong</div>}
     onError={handleError}
   >
-    <Router>
+    <Router future={{ v7_relativeSplatPath: true }}>
       <Analytics />
       <Redirects />
       <ScrollToTop />
