@@ -3,7 +3,7 @@ import { useAtomValue } from 'jotai'
 import { useEffect, useMemo, useState } from 'react'
 import { chainIdAtom, ethPriceAtom, gasFeeAtom } from 'state/atoms'
 import { EstimateContractGasParameters, formatEther, formatUnits } from 'viem'
-import { usePublicClient } from 'wagmi'
+import { useClient } from 'wagmi'
 
 export interface GasEstimation {
   isLoading: boolean
@@ -40,43 +40,43 @@ export const useStaticGasEstimate = (
   }, [gasPrice])
 }
 
-export const useGasEstimate = (
-  call: EstimateContractGasParameters | null
-): GasEstimation => {
-  const chainId = useAtomValue(chainIdAtom)
-  const client = usePublicClient({ chainId })
-  const fee = useAtomValue(gasFeeAtom)
-  const ethPrice = useAtomValue(ethPriceAtom)
-  const [state, setState] = useState(defaultGas)
+// export const useGasEstimate = (
+//   call: EstimateContractGasParameters | null
+// ): GasEstimation => {
+//   const chainId = useAtomValue(chainIdAtom)
+//   const client = useClient({ chainId })
+//   const fee = useAtomValue(gasFeeAtom)
+//   const ethPrice = useAtomValue(ethPriceAtom)
+//   const [state, setState] = useState(defaultGas)
 
-  const estimateGas = async () => {
-    // The app only show gas estimation on USD, if price data is not ready -> skip
-    if (!client || !call || !fee || !ethPrice) {
-      setState(defaultGas)
-      return
-    }
+//   const estimateGas = async () => {
+//     // The app only show gas estimation on USD, if price data is not ready -> skip
+//     if (!client || !call || !fee || !ethPrice) {
+//       setState(defaultGas)
+//       return
+//     }
 
-    setState({ ...defaultGas, isLoading: true })
+//     setState({ ...defaultGas, isLoading: true })
 
-    try {
-      const result = await client.estimateContractGas(call)
+//     try {
+//       const result = await client.estimateContractGas(call)
 
-      setState({
-        isLoading: false,
-        result,
-        estimateUsd: Number(formatEther(result * fee)) * ethPrice,
-        estimateEth: ((result * 150n) / 100n) * fee,
-      })
-    } catch (e) {
-      setState(defaultGas)
-    }
-  }
+//       setState({
+//         isLoading: false,
+//         result,
+//         estimateUsd: Number(formatEther(result * fee)) * ethPrice,
+//         estimateEth: ((result * 150n) / 100n) * fee,
+//       })
+//     } catch (e) {
+//       setState(defaultGas)
+//     }
+//   }
 
-  useEffect(() => {
-    estimateGas()
-  }, [client, fee, ethPrice, call])
+//   useEffect(() => {
+//     estimateGas()
+//   }, [client, fee, ethPrice, call])
 
-  return state
-}
+//   return state
+// }
 
-export default useGasEstimate
+// export default useGasEstimate

@@ -1,11 +1,12 @@
 import { ExternalAddressSplit } from 'components/rtoken-setup/atoms'
 import { gql } from 'graphql-request'
 import { chainIdAtom, gqlClientAtom } from 'state/atoms'
-import { publicClient } from 'state/chain'
 import { FURNACE_ADDRESS, ST_RSR_ADDRESS } from 'utils/addresses'
 import { atomWithLoadable } from 'utils/atoms/utils'
 import { parseAbiItem } from 'viem'
 import rTokenContractsAtom from './rTokenContractsAtom'
+import { getPublicClient } from 'wagmi/actions'
+import { wagmiConfig } from 'state/chain'
 
 export const shareToPercent = (shares: number): string => {
   return ((shares * 100) / 10000).toString()
@@ -105,7 +106,7 @@ const rTokenRevenueSplitAtom = atomWithLoadable(async (get) => {
 
   if (!request?.rtoken?.revenueDistribution?.length) {
     const chainId = get(chainIdAtom)
-    const client = publicClient({ chainId })
+    const client = getPublicClient(wagmiConfig, { chainId })
 
     if (!client) {
       return null
@@ -128,7 +129,7 @@ const rTokenRevenueSplitAtom = atomWithLoadable(async (get) => {
             ({
               ...(event?.args || {}),
               destination: event?.args?.dest || '0',
-            } as Distribution)
+            }) as Distribution
         )
       )
     } catch (e) {

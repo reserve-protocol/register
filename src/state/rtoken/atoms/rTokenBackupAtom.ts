@@ -5,9 +5,10 @@ import { chainIdAtom, rTokenAssetsAtom } from 'state/atoms'
 import { FACADE_ADDRESS } from 'utils/addresses'
 import { atomWithLoadable } from 'utils/atoms/utils'
 import { stringToHex } from 'viem'
-import { Address, readContracts } from 'wagmi'
+import { readContracts } from 'wagmi/actions'
 import rTokenAtom from './rTokenAtom'
 import rTokenBasketAtom from './rTokenBasketAtom'
+import { wagmiConfig } from 'state/chain'
 
 const rTokenBackupAtom = atomWithLoadable(async (get) => {
   const rToken = get(rTokenAtom)
@@ -27,14 +28,11 @@ const rTokenBackupAtom = atomWithLoadable(async (get) => {
         abi: FacadeRead,
         chainId,
         functionName: 'backupConfig',
-        args: [
-          rToken.address as Address,
-          stringToHex(targetUnit, { size: 32 }),
-        ],
-      } as const)
+        args: [rToken.address, stringToHex(targetUnit, { size: 32 })],
+      }) as const
   )
 
-  const multicallResult = await readContracts({
+  const multicallResult = await readContracts(wagmiConfig, {
     contracts: calls,
     allowFailure: false,
   })
@@ -52,10 +50,10 @@ const rTokenBackupAtom = atomWithLoadable(async (get) => {
           abi: ERC20,
           functionName: 'symbol',
           chainId,
-        } as const)
+        }) as const
     )
 
-    const symbols = await readContracts({
+    const symbols = await readContracts(wagmiConfig, {
       contracts: calls,
       allowFailure: false,
     })

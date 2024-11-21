@@ -23,7 +23,10 @@ import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import collateralPlugins from 'utils/plugins'
 import { formatUnits } from 'viem'
 import DeployHero from 'views/compare/components/DeployHero'
-import { erc20ABI, readContracts } from 'wagmi'
+import { readContracts } from 'wagmi/actions'
+import { erc20Abi } from 'viem'
+import { wagmiConfig } from 'state/chain'
+import { AvailableChain } from 'utils/chains'
 
 interface Plugin extends CollateralPlugin {
   apy: number
@@ -45,11 +48,11 @@ const allPluginsAtom = atomWithLoadable(async (get) => {
     }))
   )
 
-  const supplies = await readContracts({
+  const supplies = await readContracts(wagmiConfig, {
     allowFailure: false,
     contracts: pluginsMap.map((plugin) => ({
-      abi: erc20ABI,
-      chainId: plugin.chainId,
+      abi: erc20Abi,
+      chainId: plugin.chainId as AvailableChain,
       address: plugin.underlyingAddress || plugin.erc20,
       functionName: 'totalSupply',
     })),
@@ -57,7 +60,7 @@ const allPluginsAtom = atomWithLoadable(async (get) => {
 
   return pluginsMap.map((plugin, index) => ({
     ...plugin,
-    supply: formatUnits(supplies[index], plugin.decimals),
+    supply: formatUnits(supplies[index] as bigint, plugin.decimals),
   }))
 })
 
