@@ -46,7 +46,10 @@ const ProposalVotes = () => {
   const votes = useAtomValue(getProposalVotes)
   const [current, setCurrent] = useState(VOTE_TYPE.FOR)
 
-  const addresses = (votes[current] || []).map((vote: Vote) => vote.voter)
+  const currentVotes =
+    votes[current]?.sort((a, b) => +b.weight - +a.weight) || []
+
+  const addresses = currentVotes.map((vote: Vote) => vote.voter)
   const ensRes: string[] = useEnsAddresses(addresses)
 
   return (
@@ -120,47 +123,45 @@ const ProposalVotes = () => {
         }}
       >
         <Box sx={{ maxHeight: 420, overflow: 'auto' }}>
-          {(votes[current]?.sort((a, b) => +b.weight - +a.weight) || []).map(
-            (vote, index) => (
-              <Box
-                variant="layout.verticalAlign"
-                sx={{ gap: 2 }}
-                key={vote.voter}
-                py={2}
-                px={3}
+          {currentVotes.map((vote, index) => (
+            <Box
+              variant="layout.verticalAlign"
+              sx={{ gap: 2 }}
+              key={vote.voter}
+              py={2}
+              px={3}
+            >
+              <Blockies address={vote.voter} />
+              <Text>
+                {!!ensRes[index] ? ensRes[index] : shortenAddress(vote.voter)}
+              </Text>
+              <GoTo
+                href={getExplorerLink(
+                  vote.voter,
+                  chainId,
+                  ExplorerDataType.ADDRESS
+                )}
+              />
+              <Text
+                ml="auto"
+                color={
+                  current === 'FOR'
+                    ? 'primary'
+                    : current === 'AGAINST'
+                    ? 'red'
+                    : 'secondaryText'
+                }
               >
-                <Blockies address={vote.voter} />
-                <Text>
-                  {!!ensRes[index] ? ensRes[index] : shortenAddress(vote.voter)}
-                </Text>
-                <GoTo
-                  href={getExplorerLink(
-                    vote.voter,
-                    chainId,
-                    ExplorerDataType.ADDRESS
-                  )}
-                />
-                <Text
-                  ml="auto"
-                  color={
-                    current === 'FOR'
-                      ? 'primary'
-                      : current === 'AGAINST'
-                      ? 'red'
-                      : 'secondaryText'
-                  }
-                >
-                  {formatCurrency(+vote.weight, 0, {
-                    notation: 'compact',
-                    compactDisplay: 'short',
-                  })}
-                </Text>
-              </Box>
-            )
-          )}
+                {formatCurrency(+vote.weight, 0, {
+                  notation: 'compact',
+                  compactDisplay: 'short',
+                })}
+              </Text>
+            </Box>
+          ))}
         </Box>
 
-        {!votes[current]?.length && (
+        {!currentVotes.length && (
           <Box sx={{ textAlign: 'center' }}>
             <Text variant="legend">
               <Trans>No votes</Trans>
