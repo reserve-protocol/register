@@ -321,8 +321,18 @@ export const ZapProvider: FC<ZapProviderProps> = ({
         slippage: Number(slippage),
         signer: account as Address,
         trade: !onlyMint,
+        rToken: rToken?.address,
       })
-    }, [chainId, account, tokenIn, tokenOut, amountIn, slippage, onlyMint]),
+    }, [
+      chainId,
+      account,
+      tokenIn,
+      tokenOut,
+      amountIn,
+      slippage,
+      onlyMint,
+      rToken?.address,
+    ]),
     500
   )
 
