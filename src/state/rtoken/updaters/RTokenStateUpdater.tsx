@@ -20,6 +20,7 @@ import { VERSION } from 'utils/constants'
 import { Address, formatEther } from 'viem'
 import { useContractReads } from 'wagmi'
 import { rTokenStateAtom } from '../atoms/rTokenStateAtom'
+import { useWatchReadContracts } from 'hooks/useWatchReadContract'
 
 type StateMulticallResult = {
   data:
@@ -143,14 +144,13 @@ const RTokenStateUpdater = () => {
   }, [contracts, chainId])
 
   // Type result manually, data inferring doesn't work with conditional calls
-  const { data: rTokenState }: StateMulticallResult = useContractReads({
+  const { data: rTokenState }: StateMulticallResult = useWatchReadContracts({
     contracts: calls,
-    watch: true,
     allowFailure: false,
   })
 
   const { data: collateralStatus }: { data: (0 | 1 | 2)[] | undefined } =
-    useContractReads({
+    useWatchReadContracts({
       contracts:
         rToken && assets
           ? rToken.collaterals.map((c) => ({
@@ -160,7 +160,6 @@ const RTokenStateUpdater = () => {
               chainId,
             }))
           : [],
-      watch: true,
       allowFailure: false,
     })
 

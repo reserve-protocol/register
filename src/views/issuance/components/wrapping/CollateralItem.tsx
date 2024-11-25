@@ -7,6 +7,7 @@ import { ExecuteButton } from 'components/button/TransactionButton'
 import TokenLogo from 'components/icons/TokenLogo'
 import useDebounce from 'hooks/useDebounce'
 import useHasAllowance from 'hooks/useHasAllowance'
+import { useShouldRefresh } from 'hooks/useWatchReadContract'
 import { useAtomValue } from 'jotai'
 import { useEffect, useMemo, useState } from 'react'
 import { chainIdAtom, walletAtom } from 'state/atoms'
@@ -15,7 +16,8 @@ import { CollateralPlugin } from 'types'
 import { formatCurrency, safeParseEther } from 'utils'
 import { ChainId } from 'utils/chains'
 import { BIGINT_MAX } from 'utils/constants'
-import { Address, useBalance, useContractRead } from 'wagmi'
+import { Address } from 'viem'
+import { useBalance, useContractRead } from 'wagmi'
 
 interface Props extends BoxProps {
   collateral: CollateralPlugin
@@ -28,14 +30,22 @@ const CollateralItem = ({ collateral, wrapping, ...props }: Props) => {
   const fromToken = wrapping ? collateral.underlyingToken : collateral.symbol
   const toToken = wrapping ? collateral.symbol : collateral.underlyingToken
   const [amount, setAmount] = useState('')
+  const shouldRefetch = useShouldRefresh(chainId)
 
-  const { data } = useBalance({
+  const { data, refetch } = useBalance({
     address: wallet ? wallet : undefined,
     token: (wrapping
       ? collateral.underlyingAddress
       : collateral.erc20) as Address,
-    watch: true,
+    chainId,
   })
+
+  useEffect(() => {
+    if (shouldRefetch) {
+      refetch()
+    }
+  }, [refetch, shouldRefetch])
+
   const debouncedAmount = useDebounce(amount, 500)
 
   const useAssets = useMemo(
@@ -115,7 +125,7 @@ const CollateralItem = ({ collateral, wrapping, ...props }: Props) => {
     functionName: 'convertStaticToDynamic',
     args: [safeParseEther(debouncedAmount, data?.decimals)],
     chainId,
-    enabled: isValid && useAssets,
+    query: { enabled: isValid && useAssets },
   })
 
   const executeCall = useMemo(() => {

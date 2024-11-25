@@ -12,6 +12,7 @@ import { useContractRead, type UsePrepareContractWriteConfig } from 'wagmi'
 import TransactionConfirmedModal from './TransactionConfirmedModal'
 import TransactionError from './TransactionError'
 import { useMemo } from 'react'
+import { useWatchReadContract } from 'hooks/useWatchReadContract'
 
 export interface ITransactionModal extends Omit<ModalProps, 'onChange'> {
   title: string
@@ -30,14 +31,12 @@ const Approval = ({
 }: {
   data: Allowance
 }) => {
-  const { write, isLoading, hash, gas } = useContractWrite({
+  const { write, isLoading, isReady, hash, gas } = useContractWrite({
     address: token,
     abi: ERC20,
     functionName: 'approve',
     args: [spender, (amount * 120n) / 100n],
   })
-
-  const checkingAllowance = !gas.isLoading && !gas.estimateUsd
 
   return (
     <>
@@ -46,12 +45,8 @@ const Approval = ({
         loading={isLoading || !!hash}
         loadingText={hash ? 'Waiting for allowance...' : 'Sign in wallet...'}
         onClick={write}
-        disabled={!write || checkingAllowance}
-        text={
-          checkingAllowance
-            ? `Verifying allowance...`
-            : `Allow use of ${symbol}`
-        }
+        disabled={!isReady}
+        text={!isReady ? `Verifying allowance...` : `Allow use of ${symbol}`}
         fullWidth
         gas={gas}
       />
@@ -63,14 +58,13 @@ const useHasAllowance = (allowance: Allowance | undefined) => {
   const account = useAtomValue(walletAtom)
   const chainId = useAtomValue(chainIdAtom)
 
-  const { data } = useContractRead(
+  const { data } = useWatchReadContract(
     allowance && account
       ? {
           abi: ERC20,
           functionName: 'allowance',
           address: allowance.token,
           args: [account, allowance.spender],
-          watch: true,
           chainId,
         }
       : undefined

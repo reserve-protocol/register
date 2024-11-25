@@ -12,6 +12,7 @@ import {
   rTokenAtom,
   walletAtom,
 } from '../../atoms'
+import { useWatchReadContracts } from 'hooks/useWatchReadContract'
 
 const ZAP_TOKENS: { [x: number]: [Address, number][] } = {
   [ChainId.Mainnet]: [
@@ -81,10 +82,9 @@ export const TokenBalancesUpdater = () => {
   const setBalances = useSetAtom(balancesAtom)
   const wallet = useAtomValue(walletAtom)
 
-  const { data }: { data: bigint[] | undefined } = useContractReads({
+  const { data }: { data: bigint[] | undefined } = useWatchReadContracts({
     contracts: calls,
     allowFailure: false,
-    watch: true,
   })
   const { data: balance } = useBalance({
     address: wallet || undefined,

@@ -40,6 +40,20 @@ export const useStaticGasEstimate = (
   }, [gasPrice])
 }
 
+export const useGasAmount = (
+  gas: bigint | undefined
+): { eth: bigint; usd: number } => {
+  const fee = useAtomValue(gasFeeAtom)
+  const ethPrice = useAtomValue(ethPriceAtom)
+
+  if (!gas || !fee) return { eth: 0n, usd: 0 }
+
+  return {
+    usd: Number(formatEther(gas * fee)) * ethPrice,
+    eth: ((gas * 150n) / 100n) * fee,
+  }
+}
+
 // export const useGasEstimate = (
 //   call: EstimateContractGasParameters | null
 // ): GasEstimation => {

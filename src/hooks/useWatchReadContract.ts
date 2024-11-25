@@ -2,17 +2,19 @@ import { useAtomValue } from 'jotai'
 import { useEffect } from 'react'
 import { chainIdAtom } from 'state/atoms'
 import { ChainId } from 'utils/chains'
+import { Abi, ContractFunctionArgs, ContractFunctionName } from 'viem'
 import {
   useBlockNumber,
   useReadContract,
   useReadContracts,
   type UseReadContractsParameters,
   type UseReadContractParameters,
+  type UseReadContractReturnType,
   type UseReadContractsReturnType,
   type Config,
   type ResolvedRegister,
 } from 'wagmi'
-import { ReadContractsData } from 'wagmi/query'
+import { type ReadContractData, type ReadContractsData } from 'wagmi/query'
 
 const REFRESH_BLOCKS = {
   [ChainId.Mainnet]: 1n,
@@ -30,9 +32,23 @@ export const useShouldRefresh = (chain?: number) => {
   )
 }
 
-export const useWatchReadContract = (call: UseReadContractParameters) => {
-  const result = useReadContract(call)
-  const shouldRefresh = useShouldRefresh(call.chainId)
+export function useWatchReadContract<
+  const abi extends Abi | readonly unknown[],
+  functionName extends ContractFunctionName<abi, 'pure' | 'view'>,
+  args extends ContractFunctionArgs<abi, 'pure' | 'view', functionName>,
+  config extends Config = ResolvedRegister['config'],
+  selectData = ReadContractData<abi, functionName, args>,
+>(
+  parameters: UseReadContractParameters<
+    abi,
+    functionName,
+    args,
+    config,
+    selectData
+  > = {} as any
+): UseReadContractReturnType<abi, functionName, args, selectData> {
+  const result = useReadContract(parameters as UseReadContractParameters)
+  const shouldRefresh = useShouldRefresh(parameters?.chainId)
   const { refetch } = result
 
   useEffect(() => {
