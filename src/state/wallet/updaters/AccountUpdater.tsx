@@ -2,14 +2,11 @@ import { gql } from 'graphql-request'
 import { useMultichainQuery } from 'hooks/useQuery'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
-import { getAddress, trim } from 'viem'
-import { usePublicClient } from 'wagmi'
+import { getAddress } from 'viem'
 import {
   accountHoldingsAtom,
   accountRTokensAtom,
   accountTokensAtom,
-  chainIdAtom,
-  isSmartWalletAtom,
   rsrPriceAtom,
   walletAtom,
 } from '../../atoms'
@@ -92,13 +89,10 @@ export interface AccountRTokenPosition {
 const AccountUpdater = () => {
   const account = useAtomValue(walletAtom)
   const rsrPrice = useAtomValue(rsrPriceAtom)
-  const chainId = useAtomValue(chainIdAtom)
-  const client = usePublicClient({ chainId })
 
   const updateTokens = useSetAtom(accountTokensAtom)
   const updateHoldings = useSetAtom(accountHoldingsAtom)
   const updateAccountTokens = useSetAtom(accountRTokensAtom)
-  const updateIsSmartWallet = useSetAtom(isSmartWalletAtom)
 
   const { data, error } = useMultichainQuery(account ? accountQuery : null, {
     id: account?.toLowerCase(),
@@ -164,27 +158,6 @@ const AccountUpdater = () => {
       updateAccountTokens(accountRTokens)
     }
   }, [data])
-
-  const checkSmartWallet = async () => {
-    if (!account) {
-      updateIsSmartWallet(false)
-    }
-
-    try {
-      const walletByteCode = await client.getBytecode({ address: account! })
-      if (!walletByteCode || trim(walletByteCode) == '0x') {
-        updateIsSmartWallet(false)
-      } else {
-        updateIsSmartWallet(true)
-      }
-    } catch (e) {
-      updateIsSmartWallet(false)
-    }
-  }
-
-  useEffect(() => {
-    checkSmartWallet()
-  }, [account])
 
   return null
 }

@@ -151,5 +151,3 @@ export const accountDelegateAtom = atomWithLoadable(async (get) => {
 
   return delegate !== zeroAddress ? delegate : null
 })
-
-export const isSmartWalletAtom = atom(false)

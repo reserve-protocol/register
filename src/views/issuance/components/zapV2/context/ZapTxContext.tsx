@@ -1,22 +1,23 @@
+import useWatchTransaction from 'hooks/useWatchTransaction'
+import mixpanel from 'mixpanel-browser'
 import {
   FC,
   PropsWithChildren,
   createContext,
+  useCallback,
   useContext,
   useEffect,
   useMemo,
   useState,
 } from 'react'
+import { Allowance } from 'types'
+import { CHAIN_TAGS } from 'utils/constants'
+import { Address, TransactionReceipt, parseUnits } from 'viem'
+import { useSendTransaction } from 'wagmi'
+import { useApproval } from '../hooks/useApproval'
+import { useRevokeUSDT } from '../hooks/useRevokeUSDT'
 import { ZapErrorType } from '../ZapError'
 import { useZap } from './ZapContext'
-import { Allowance } from 'types'
-import { Address, TransactionReceipt, parseUnits } from 'viem'
-import { useApproval } from '../hooks/useApproval'
-import { usePrepareSendTransaction, useSendTransaction } from 'wagmi'
-import mixpanel from 'mixpanel-browser'
-import useWatchTransaction from 'hooks/useWatchTransaction'
-import { CHAIN_TAGS } from 'utils/constants'
-import { useRevokeUSDT } from '../hooks/useRevokeUSDT'
 
 type ZapTxContextType = {
   error?: ZapErrorType
@@ -208,37 +209,36 @@ export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     tokenOut,
   ])
 
-  // Transaction
-  const { config } = usePrepareSendTransaction(
-    zapResult && zapResult.tx && (hasAllowance || approvalSuccess)
-      ? {
-          data: zapResult.tx.data as Address,
-          gas: BigInt(zapResult.gas ?? 0) || undefined,
-          to: zapResult.tx.to as Address,
-          value: BigInt(zapResult.tx.value),
-        }
-      : undefined
-  )
-
   const {
     data,
-    isLoading: loadingTx,
+    isPending: loadingTx,
     isIdle: isIdleTx,
     sendTransaction,
     error: sendError,
-  } = useSendTransaction(config)
+  } = useSendTransaction()
 
   const {
     data: receipt,
     isMining: validatingTx,
     error: txError,
   } = useWatchTransaction({
-    hash: data?.hash,
+    hash: data,
     label:
       operation === 'mint'
         ? `Mint ${tokenOut.symbol}`
         : `Redeem ${tokenIn.symbol}`,
   })
+
+  const execute = useCallback(() => {
+    if (zapResult?.tx) {
+      sendTransaction({
+        data: zapResult.tx.data as Address,
+        gas: BigInt(zapResult.gas ?? 0) || undefined,
+        to: zapResult.tx.to as Address,
+        value: BigInt(zapResult.tx.value),
+      })
+    }
+  }, [sendTransaction, zapResult])
 
   const onGoingConfirmation = Boolean(
     (loadingApproval ||
@@ -252,13 +252,8 @@ export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
 
   useEffect(() => {
     if (!approvalSuccess) return
-    if (
-      !error &&
-      sendTransaction &&
-      isIdleTx &&
-      !(loadingTx || validatingTx || receipt)
-    ) {
-      sendTransaction()
+    if (!error && isIdleTx && !(loadingTx || validatingTx || receipt)) {
+      execute()
     }
   }, [
     approvalSuccess,
@@ -378,7 +373,7 @@ export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
         approve,
         loadingTx,
         validatingTx: Boolean(validatingTx),
-        sendTransaction,
+        sendTransaction: execute,
         receipt,
         onGoingConfirmation,
         needsRevoke,
