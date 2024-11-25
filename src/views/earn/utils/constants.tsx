@@ -40,6 +40,8 @@ export const ZAP_EARN_POOLS: Record<number, Record<string, ZapPool>> = {
       },
     },
   },
+  [ChainId.Base]: {},
+  [ChainId.Arbitrum]: {},
 }
 
 export const PROJECT_ICONS: Record<string, React.ReactElement> = {
