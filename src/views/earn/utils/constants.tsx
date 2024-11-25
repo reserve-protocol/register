@@ -16,18 +16,28 @@ import Yearn from 'components/icons/logos/Yearn'
 import Beefy from 'components/icons/Beefy'
 import Camelot from 'components/icons/Camelot'
 import { Token } from 'types'
+import { ChainId } from 'utils/chains'
 
 export type ZapPool = {
   out: Token
+  rToken: Token
 }
 
-export const ZAP_EARN: Record<string, ZapPool> = {
-  test: {
-    out: {
-      address: '0x',
-      decimals: 18,
-      name: 'test',
-      symbol: 'test',
+export const ZAP_EARN_POOLS: Record<number, Record<string, ZapPool>> = {
+  [ChainId.Mainnet]: {
+    '198b6ceb-b23e-4ca9-ab48-5be84255ca0b': {
+      out: {
+        address: '0x8cFE2f46052efE1a0784b0a28C802474C1dfd9D0',
+        decimals: 18,
+        name: 'Moo Convex ETH+',
+        symbol: 'mooConvexETH+',
+      },
+      rToken: {
+        address: '0xE72B141DF173b999AE7c1aDcbF60Cc9833Ce56a8',
+        decimals: 18,
+        name: 'ETHPlus',
+        symbol: 'ETH+',
+      },
     },
   },
 }

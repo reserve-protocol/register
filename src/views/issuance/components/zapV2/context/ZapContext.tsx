@@ -32,6 +32,7 @@ import {
   SLIPPAGE_OPTIONS,
   zappableTokens,
 } from '../constants'
+import { Token } from 'types'
 
 export type IssuanceOperation = 'mint' | 'redeem'
 
@@ -40,7 +41,7 @@ export type ZapToken = {
   symbol: string
   name: string
   decimals: number
-  targetUnit: string
+  targetUnit?: string
   price?: number
   balance?: string
 }
@@ -50,7 +51,7 @@ interface ZapProviderProps {
   // Either the rToken or the yield position token
   targetToken: ZapToken
   // rToken should be the underlying token of the yield position. Otherwise, it should be undefined.
-  rToken?: ZapToken
+  rToken?: Token
   issuanceAvailable?: number
   redemptionAvailable?: number
   rTokenMintEnabled?: { loading: boolean; value: boolean }

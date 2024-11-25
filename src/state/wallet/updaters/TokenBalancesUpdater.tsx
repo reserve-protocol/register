@@ -12,6 +12,7 @@ import {
   rTokenAtom,
   walletAtom,
 } from '../../atoms'
+import { ZAP_EARN_POOLS } from 'views/earn/utils/constants'
 
 const ZAP_TOKENS: { [x: number]: [Address, number][] } = {
   [ChainId.Mainnet]: [
@@ -58,7 +59,9 @@ const balancesCallAtom = atom((get) => {
       token.decimals,
     ]),
     ...ZAP_TOKENS[chainId],
-    // TODO: add yield tokens for zap2earn
+    ...Object.values(ZAP_EARN_POOLS[chainId]).map(
+      ({ out: { address, decimals } }): [Address, number] => [address, decimals]
+    ),
   ]
 
   if (rToken.stToken) {

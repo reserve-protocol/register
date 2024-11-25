@@ -2,18 +2,13 @@ import { Button } from 'components'
 import { useCallback, useState } from 'react'
 import { Zap } from 'react-feather'
 import { Box, Text } from 'theme-ui'
-import { ZAP_EARN } from 'views/earn/utils/constants'
 import EarnZapSidebar from './EarnZapSidebar'
 
 type SidebarStatus = 'deposit' | 'withdraw' | 'none'
 
-const PoolZapToEarn = ({ pool }: { pool: string }) => {
-  const isAvailable = !!ZAP_EARN[pool]
+const PoolZapToEarn = () => {
   const [sidebar, setSidebar] = useState<SidebarStatus>('none')
-
   const handleClose = useCallback(() => setSidebar('none'), [setSidebar])
-
-  if (!isAvailable) return null
 
   return (
     <>
