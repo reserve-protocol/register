@@ -12,7 +12,8 @@ import WrapSidebar from './components/wrapping/WrapSidebar'
 import RTokenZapIssuance from './components/zapV2/RTokenZapIssuance'
 import ZapToggle from './components/zapV2/ZapToggle'
 import ZapToggleBottom from './components/zapV2/ZapToggleBottom'
-import { ZapProvider, useZap } from './components/zapV2/context/ZapContext'
+import { useZap } from './components/zapV2/context/ZapContext'
+import { ZapRTokenProvider } from './components/zapV2/context/ZapRTokenContext'
 
 const CollateralizationBanner = (props: BoxProps) => {
   const { isCollaterized } = useAtomValue(rTokenStateAtom)
@@ -114,12 +115,12 @@ const IssuanceMethods = () => {
  */
 const Issuance = () => {
   return (
-    <ZapProvider>
+    <ZapRTokenProvider>
       <WrapSidebar />
       <Box sx={{ width: '100', p: [1, 0] }}>
         <IssuanceMethods />
       </Box>
-    </ZapProvider>
+    </ZapRTokenProvider>
   )
 }
 

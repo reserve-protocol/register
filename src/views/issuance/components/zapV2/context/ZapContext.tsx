@@ -4,7 +4,7 @@ import { useAtomValue } from 'jotai'
 import mixpanel from 'mixpanel-browser'
 import {
   FC,
-  PropsWithChildren,
+  ReactNode,
   createContext,
   useCallback,
   useContext,
@@ -16,13 +16,8 @@ import {
   balancesAtom,
   chainIdAtom,
   ethPriceAtom,
-  rTokenAtom,
-  rTokenBalanceAtom,
-  rTokenPriceAtom,
-  rTokenStateAtom,
   walletAtom,
 } from 'state/atoms'
-import { isRTokenMintEnabled } from 'state/geolocation/atoms'
 import useSWR from 'swr'
 import { Link, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
@@ -48,6 +43,18 @@ export type ZapToken = {
   targetUnit: string
   price?: number
   balance?: string
+}
+
+interface ZapProviderProps {
+  children: ReactNode
+  // Either the rToken or the yield position token
+  targetToken: ZapToken
+  // rToken should be the underlying token of the yield position. Otherwise, it should be undefined.
+  rToken?: ZapToken
+  issuanceAvailable?: number
+  redemptionAvailable?: number
+  rTokenMintEnabled?: { loading: boolean; value: boolean }
+  noSupply?: boolean
 }
 
 type ZapContextType = {
@@ -140,8 +147,16 @@ export const useZap = () => {
   return useContext(ZapContext)
 }
 
-export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
-  const [zapEnabled, setZapEnabled] = useState(true)
+export const ZapProvider: FC<ZapProviderProps> = ({
+  children,
+  targetToken,
+  rToken,
+  issuanceAvailable,
+  redemptionAvailable,
+  rTokenMintEnabled,
+  noSupply = false,
+}) => {
+  const [zapEnabled, setZapEnabled] = useState(!noSupply)
   const [operation, setOperation] = useState<IssuanceOperation>('mint')
   const [openSettings, setOpenSettings] = useState<boolean>(false)
   const [openTokenSelector, setOpenTokenSelector] = useState<boolean>(false)
@@ -158,18 +173,10 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
   const chainId = useAtomValue(chainIdAtom)
   const account = useAtomValue(walletAtom) || undefined
   const ethPrice = useAtomValue(ethPriceAtom)
-  const rTokenData = useAtomValue(rTokenAtom)
-  const rTokenPrice = useAtomValue(rTokenPriceAtom)
-  const rTokenBalance = useAtomValue(rTokenBalanceAtom)
   const balances = useAtomValue(balancesAtom)
-  const { issuanceAvailable, redemptionAvailable } =
-    useAtomValue(rTokenStateAtom)
-  const isEnabled = useAtomValue(isRTokenMintEnabled)
   const [showEliteProgramModal, setShowEliteProgramModal] = useState(false)
 
   const { data: gas } = useFeeData()
-
-  const noSupply = useMemo(() => rTokenData?.supply === 0, [rTokenData?.supply])
 
   // Disable zapping if there is no supply for the rToken
   useEffect(() => {
@@ -218,19 +225,6 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     resetZap()
   }, [resetZap, selectedToken, operation, zapEnabled])
 
-  const rToken: ZapToken = useMemo(
-    () => ({
-      address: rTokenData?.address as Address,
-      symbol: rTokenData?.symbol as string,
-      name: rTokenData?.name as string,
-      decimals: rTokenData?.decimals as number,
-      targetUnit: rTokenData?.targetUnits as string,
-      price: rTokenPrice,
-      balance: rTokenBalance?.balance,
-    }),
-    [rTokenData, rTokenPrice, rTokenBalance]
-  )
-
   const token = useMemo(
     () => ({
       address: selectedToken?.address as Address,
@@ -245,11 +239,16 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
   )
 
   const [tokenIn, tokenOut] = useMemo(
-    () => (operation === 'mint' ? [token, rToken] : [rToken, token]),
-    [rToken, token, operation]
+    () => (operation === 'mint' ? [token, targetToken] : [targetToken, token]),
+    [targetToken, token, operation]
   )
 
   const onClickMax = useCallback(() => {
+    if (rToken) {
+      setAmountIn(tokenIn.balance ?? '0')
+      return
+    }
+
     let maxTokenIn = +(tokenIn.balance ?? '0')
 
     if (operation === 'mint') {
@@ -268,16 +267,18 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
 
     if (+(tokenIn.balance ?? '0') > maxTokenIn) {
       const op = operation === 'mint' ? 'Mint' : 'Redeem'
-      const max = operation === 'mint' ? issuanceAvailable : redemptionAvailable
+      const max =
+        (operation === 'mint' ? issuanceAvailable : redemptionAvailable) || 0
       setError({
         title: `${op} amount above Global Max ${op}`,
         message: `Sorry, your request exceeds the Global Max ${op} limit. The Global Max ${op} is set at ${formatCurrency(
           max,
           5
-        )} ${rToken?.symbol}. You can only zap a maximum of ${formatCurrency(
-          maxTokenIn,
-          5
-        )} ${tokenIn.symbol}.`,
+        )} ${
+          targetToken?.symbol
+        }. You can only zap a maximum of ${formatCurrency(maxTokenIn, 5)} ${
+          tokenIn.symbol
+        }.`,
         color: 'warning',
         secondaryColor: 'rgba(255, 138, 0, 0.20)',
       })
@@ -291,7 +292,8 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     tokenOut.price,
     issuanceAvailable,
     redemptionAvailable,
-    rToken?.symbol,
+    targetToken?.symbol,
+    rToken,
   ])
 
   const endpoint = useDebounce(
@@ -303,8 +305,8 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
         isNaN(Number(amountIn)) ||
         amountIn === '' ||
         Number(amountIn) === 0 ||
-        isEnabled.loading ||
-        !isEnabled.value ||
+        (rTokenMintEnabled &&
+          (rTokenMintEnabled?.loading || !rTokenMintEnabled?.value)) ||
         noSupply
       ) {
         return null
@@ -403,13 +405,13 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
   useEffect(() => {
     if (endpoint) {
       mixpanel.track('api_request', {
-        page: 'rtoken_details',
+        page: rToken ? 'earn_page' : 'rtoken_details',
         section: 'issuance',
         product: 'zap',
         action: 'request',
         payload: {
           operation: operation,
-          rtoken: rToken.symbol,
+          rtoken: rToken ? rToken.symbol : targetToken.symbol,
           chain: CHAIN_TAGS[chainId],
           user: {
             wallet: account,
@@ -425,6 +427,7 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
   }, [
     operation,
     endpoint,
+    targetToken,
     rToken,
     chainId,
     account,
@@ -456,13 +459,13 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
       setOpenSubmitModal(false)
 
       mixpanel.track('api_error', {
-        page: 'rtoken_details',
+        page: rToken ? 'earn_page' : 'rtoken_details',
         section: 'issuance',
         product: 'zap',
         action: apiError?.message ? 'connection_error' : 'response_error',
         payload: {
           operation: operation,
-          rtoken: rToken.symbol,
+          rtoken: rToken ? rToken.symbol : targetToken.symbol,
           chain: CHAIN_TAGS[chainId],
           user: {
             wallet: account,
@@ -507,7 +510,7 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     setOpenSubmitModal,
     isRetrying,
     setIsRetrying,
-    rToken,
+    targetToken,
     chainId,
     account,
   ])
@@ -516,12 +519,12 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     (value: boolean) => {
       setZapEnabled(value)
       mixpanel.track('user_action', {
-        page: 'rtoken_details',
+        page: rToken ? 'earn_page' : 'rtoken_details',
         section: 'issuance',
         product: 'zap',
         action: value ? 'toggle_to_zap' : 'toggle_to_manual',
         payload: {
-          rtoken: rToken.symbol,
+          rtoken: rToken ? rToken.symbol : targetToken.symbol,
           chain: CHAIN_TAGS[chainId],
           user: {
             wallet: account,
@@ -529,19 +532,19 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
         },
       })
     },
-    [setZapEnabled, rToken, chainId, account]
+    [setZapEnabled, targetToken, rToken, chainId, account]
   )
 
   const refreshQuote = useCallback(() => {
     refetch()
     mixpanel.track('api_request', {
-      page: 'rtoken_details',
+      page: rToken ? 'earn_page' : 'rtoken_details',
       section: 'issuance',
       product: 'zap',
       action: 'refresh_quote',
       payload: {
         operation: operation,
-        rtoken: rToken.symbol,
+        rtoken: rToken ? rToken.symbol : targetToken.symbol,
         chain: CHAIN_TAGS[chainId],
         user: {
           wallet: account,
@@ -556,6 +559,7 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
   }, [
     refetch,
     operation,
+    targetToken,
     rToken,
     chainId,
     account,

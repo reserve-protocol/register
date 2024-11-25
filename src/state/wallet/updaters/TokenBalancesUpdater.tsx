@@ -58,6 +58,7 @@ const balancesCallAtom = atom((get) => {
       token.decimals,
     ]),
     ...ZAP_TOKENS[chainId],
+    // TODO: add yield tokens for zap2earn
   ]
 
   if (rToken.stToken) {
