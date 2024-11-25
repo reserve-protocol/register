@@ -22,19 +22,6 @@ mixpanel.init(import.meta.env.VITE_MIXPANEL_KEY || 'mixpanel_key', {
   track_pageview: true,
 })
 
-const ErrorComponent = ({ error }: { error: Error }) => {
-  useEffect(() => {
-    if (
-      error.message.includes('Failed to fetch dynamically imported module') ||
-      error.message.includes('Importing a module script failed')
-    ) {
-      window.location.reload()
-    }
-  }, [error])
-
-  return <div>Something went wrong</div>
-}
-
 // Support for old routes redirects
 const Redirects = () => {
   const navigate = useNavigate()

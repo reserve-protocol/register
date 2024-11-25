@@ -5,6 +5,8 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 // import RTokenContainer from 'state/rtoken/RTokenContainer'
 import { Box } from 'theme-ui'
 import { ROUTES } from 'utils/constants'
+import Bridge from 'views/bridge'
+import Compare from 'views/compare'
 import Home from 'views/home'
 import Terms from 'views/terms'
 // import EarnWrapper from 'views/earn'
@@ -46,8 +48,9 @@ import Terms from 'views/terms'
 const AppRoutes = () => (
   <Routes>
     <Route path={ROUTES.HOME} element={<Home />} />
-    {/* <Route path={ROUTES.COMPARE} element={<Compare />} />
-    <Route path={ROUTES.BRIDGE} element={<LazyComponent element={Bridge} />} />
+    <Route path={ROUTES.COMPARE} element={<Compare />} />
+    <Route path={ROUTES.BRIDGE} element={<Bridge />} />
+    {/* 
     <Route path={ROUTES.PORTFOLIO} element={<PortfolioWrapper />} />
     <Route path={ROUTES.EARN} element={<EarnWrapper />} />
     <Route path={ROUTES.DEPLOY} element={<LazyComponent element={Deploy} />} />

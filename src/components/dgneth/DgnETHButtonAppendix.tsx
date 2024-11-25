@@ -3,8 +3,8 @@ import { Plus } from 'react-feather'
 import useSWR from 'swr'
 import { Box, ButtonProps, Text } from 'theme-ui'
 import { ChainId } from 'utils/chains'
-import { formatUnits } from 'viem'
-import { erc20ABI, useContractReads } from 'wagmi'
+import { erc20Abi, formatUnits } from 'viem'
+import { useReadContracts } from 'wagmi'
 
 type Props = {
   rTokenSymbol?: string
@@ -25,16 +25,16 @@ const DgnETHButtonAppendix: FC<Props> = ({
   hideLabelOnMobile = false,
   children,
 }) => {
-  const { data: supplies } = useContractReads({
+  const { data: supplies } = useReadContracts({
     contracts: [
       {
-        abi: erc20ABI,
+        abi: erc20Abi,
         chainId: ChainId.Mainnet,
         address: TOKEN_ADDRESS,
         functionName: 'totalSupply',
       },
       {
-        abi: erc20ABI,
+        abi: erc20Abi,
         chainId: ChainId.Mainnet,
         address: STAKE_TOKEN_ADDRESS,
         functionName: 'totalSupply',

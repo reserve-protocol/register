@@ -43,18 +43,21 @@ const ERC20_WITHDRAWAL_ADDRESS = '0x4200000000000000000000000000000000000010'
 
 const ETH_TOKEN_ADDRESS = '0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000'
 
-const bridgeAssetMap = BRIDGE_ASSETS[ChainId.Base].reduce((prev, curr) => {
-  if (!curr.L1contract) {
-    prev[ETH_TOKEN_ADDRESS.toLowerCase()] = curr
-  } else {
-    prev[curr.L1contract.toLowerCase()] = curr
-    if (curr.L2contract) {
-      prev[curr.L2contract.toLowerCase()] = curr
+const bridgeAssetMap = BRIDGE_ASSETS[ChainId.Base].reduce(
+  (prev, curr) => {
+    if (!curr.L1contract) {
+      prev[ETH_TOKEN_ADDRESS.toLowerCase()] = curr
+    } else {
+      prev[curr.L1contract.toLowerCase()] = curr
+      if (curr.L2contract) {
+        prev[curr.L2contract.toLowerCase()] = curr
+      }
     }
-  }
 
-  return prev
-}, {} as Record<string, BridgeAsset>)
+    return prev
+  },
+  {} as Record<string, BridgeAsset>
+)
 
 export function explorerTxToBridgeWithdrawal(tx: any): BridgeWithdraw {
   const date = dayjs.unix(tx.timeStamp)

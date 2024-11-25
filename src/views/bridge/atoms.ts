@@ -1,13 +1,14 @@
 import BaseBridge from 'abis/BaseBridge'
 import { atom } from 'jotai'
 import { chainIdAtom, walletAtom } from 'state/atoms'
-import { publicClient } from 'state/chain'
+import { wagmiConfig } from 'state/chain'
 import { formatCurrency, safeParseEther } from 'utils'
 import atomWithDebounce from 'utils/atoms/atomWithDebounce'
 import { atomWithLoadable } from 'utils/atoms/utils'
-import { ChainId } from 'utils/chains'
-import { Address, ContractFunctionConfig, formatEther, formatUnits } from 'viem'
-import { UsePrepareContractWriteConfig, erc20ABI } from 'wagmi'
+import { AvailableChain, ChainId } from 'utils/chains'
+import { CHAIN_TAGS, supportedChainList } from 'utils/constants'
+import { Address, erc20Abi, formatEther, formatUnits } from 'viem'
+import { getBalance, readContracts } from 'wagmi/actions'
 import BRIDGE_ASSETS, { BridgeAsset } from './utils/assets'
 import {
   L1_BRIDGE_ADDRESS,
@@ -15,7 +16,6 @@ import {
   L2_BRIDGE_ADDRESS,
   L2_L1_MESSAGER_ADDRESS,
 } from './utils/constants'
-import { CHAIN_TAGS, supportedChainList } from 'utils/constants'
 
 const defaultBridgeAsset =
   new URL(window.location.href).searchParams.get('asset') ?? 'rsr'
@@ -83,28 +83,37 @@ export const bridgeTokensSortedAtom = atomWithLoadable(async (get) => {
   const wallet = get(walletAtom)
   const isWrapping = get(isBridgeWrappingAtom)
   const l2Chain = get(bridgeL2Atom)
-  const chain = isWrapping ? ChainId.Mainnet : l2Chain
-  const client = chain ? publicClient({ chainId: chain }) : null
+  const chain = (isWrapping ? ChainId.Mainnet : l2Chain) as AvailableChain
 
-  if (client && wallet) {
+  if (wallet) {
     try {
-      const contracts: ContractFunctionConfig[] = []
+      const contracts: {
+        address: Address
+        abi: typeof erc20Abi
+        args: [Address]
+        functionName: 'balanceOf'
+        chainId: AvailableChain
+      }[] = []
 
       for (const asset of list) {
         if (asset.L1contract && asset.L2contract) {
           contracts.push({
             address: isWrapping ? asset.L1contract : asset.L2contract,
-            abi: erc20ABI,
+            abi: erc20Abi,
             args: [wallet],
             functionName: 'balanceOf',
+            chainId: chain as AvailableChain,
           })
         }
       }
 
-      const result = await client.multicall({
-        contracts,
+      const result = await readContracts(wagmiConfig, {
+        contracts: contracts,
       })
-      const ethBalance = await client.getBalance({ address: wallet })
+      const { value: ethBalance } = await getBalance(wagmiConfig, {
+        address: wallet,
+        chainId: chain,
+      })
 
       // TODO: This is not a good sort because balances are not in the same units
       // TODO: Use oracles to get usd values? is it worth it?
@@ -187,8 +196,16 @@ export const bridgeTxAtom = atom((get) => {
     return undefined
   }
 
-  let address = token.L1contract ? L1_BRIDGE_TOKEN_ADDRESS : L1_BRIDGE_ADDRESS
-  let functionName = token.L1contract ? 'depositERC20' : 'depositTransaction'
+  let address: Address = token.L1contract
+    ? L1_BRIDGE_TOKEN_ADDRESS
+    : L1_BRIDGE_ADDRESS
+  let functionName:
+    | 'withdraw'
+    | 'initiateWithdrawal'
+    | 'depositERC20'
+    | 'depositTransaction' = token.L1contract
+    ? 'depositERC20'
+    : 'depositTransaction'
   let args: unknown[] = token.L1contract
     ? [token.L1contract, token.L2contract, amount, 1000n, '0x01']
     : [wallet, amount, 100000n, false, '0x01']
@@ -211,5 +228,5 @@ export const bridgeTxAtom = atom((get) => {
     value: !token.L1contract ? amount : undefined,
     abi: BaseBridge,
     args,
-  } as UsePrepareContractWriteConfig
+  } as const
 })
