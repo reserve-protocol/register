@@ -1,4 +1,3 @@
-import DivaPointsMint from 'components/diva-points/DivaPointsMint'
 import { ArrowDown } from 'react-feather'
 import { Box, Divider } from 'theme-ui'
 import ZapOperationDetails from './ZapOperationDetails'
@@ -60,7 +59,6 @@ const RTokenZapIssuance = ({ disableRedeem }: { disableRedeem: boolean }) => {
         </Box>
         <ZapOperationDetails />
         <ZapSubmit />
-        <DivaPointsMint />
       </Box>
     </Box>
   )

@@ -1,7 +1,6 @@
 import { Trans } from '@lingui/macro'
 import { Button } from 'components'
 import DgnETHButtonAppendix from 'components/dgneth/DgnETHButtonAppendix'
-import DivaButtonAppendix from 'components/diva-points/DivaButtonAppendix'
 import Popup from 'components/popup'
 import useRToken from 'hooks/useRToken'
 import { atom, useAtomValue } from 'jotai'
@@ -129,19 +128,17 @@ const OverviewActions = () => {
       }}
     >
       <DgnETHButtonAppendix rTokenSymbol={rToken?.symbol} basketAPY={basket}>
-        <DivaButtonAppendix rTokenSymbol={rToken?.symbol} hideLabelOnMobile>
-          <Button
-            variant="accent"
-            onClick={() => navigate(`../${ROUTES.ISSUANCE}`)}
-            sx={{ whiteSpace: 'nowrap' }}
-          >
-            <Trans>
-              {!!holders
-                ? `Mint ${formatCurrency(holders, 1)}% Est. APY`
-                : 'Mint'}
-            </Trans>
-          </Button>
-        </DivaButtonAppendix>
+        <Button
+          variant="accent"
+          onClick={() => navigate(`../${ROUTES.ISSUANCE}`)}
+          sx={{ whiteSpace: 'nowrap' }}
+        >
+          <Trans>
+            {!!holders
+              ? `Mint ${formatCurrency(holders, 1)}% Est. APY`
+              : 'Mint'}
+          </Trans>
+        </Button>
       </DgnETHButtonAppendix>
       <Button
         variant="bordered"
