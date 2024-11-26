@@ -6,8 +6,8 @@ import useWatchTransaction from 'hooks/useWatchTransaction'
 import { useAtomValue } from 'jotai'
 import { rTokenGovernanceAtom, walletAtom } from 'state/atoms'
 import { getProposalStateAtom, timelockIdAtom } from '../atom'
-import { useContractRead } from 'wagmi'
 import { keccak256, toBytes } from 'viem'
+import { useReadContract } from 'wagmi'
 
 const ProposalCancel = () => {
   const governance = useAtomValue(rTokenGovernanceAtom)
@@ -15,7 +15,7 @@ const ProposalCancel = () => {
   const account = useAtomValue(walletAtom)
   const { deadline } = useAtomValue(getProposalStateAtom)
 
-  const { data: canCancel } = useContractRead({
+  const { data: canCancel } = useReadContract({
     address: governance.timelock,
     abi: Timelock,
     functionName: 'hasRole',
@@ -27,7 +27,7 @@ const ProposalCancel = () => {
     address: governance?.timelock,
     functionName: 'cancel',
     args: timelockId ? [timelockId] : undefined,
-    enabled: canCancel,
+    query: { enabled: canCancel },
   })
 
   const { isMining, status } = useWatchTransaction({

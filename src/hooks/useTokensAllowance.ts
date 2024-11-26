@@ -4,6 +4,7 @@ import { useMemo } from 'react'
 import { chainIdAtom } from 'state/atoms'
 import { StringMap } from 'types'
 import { useWatchReadContracts } from './useWatchReadContract'
+import { Address } from 'viem'
 
 /**
  * Returns a hash of allowances for the given tokens

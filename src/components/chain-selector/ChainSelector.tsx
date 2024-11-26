@@ -15,17 +15,12 @@ import { ROUTES } from 'utils/constants'
 export const chainIcons = {
   [ChainId.Mainnet]: Ethereum,
   [ChainId.Base]: Base,
-  [ChainId.Hardhat]: Ethereum,
 }
 
 const CHAIN_LIST = [
   { label: 'Ethereum', id: ChainId.Mainnet },
   { label: 'Base', id: ChainId.Base },
 ]
-
-if (import.meta.env.DEV) {
-  CHAIN_LIST.push({ label: 'Hardhat', id: ChainId.Hardhat })
-}
 
 const ChainList = ({ onSelect }: { onSelect(chain: number): void }) => {
   const selected = useAtomValue(chainIdAtom)

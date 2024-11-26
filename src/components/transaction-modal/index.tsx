@@ -8,17 +8,17 @@ import { useAtomValue } from 'jotai'
 import { chainIdAtom, walletAtom } from 'state/atoms'
 import { Divider, Text, Box } from 'theme-ui'
 import { Allowance } from 'types'
-import { useContractRead, type UsePrepareContractWriteConfig } from 'wagmi'
 import TransactionConfirmedModal from './TransactionConfirmedModal'
 import TransactionError from './TransactionError'
 import { useMemo } from 'react'
 import { useWatchReadContract } from 'hooks/useWatchReadContract'
+import { UseSimulateContractParameters } from 'wagmi'
 
 export interface ITransactionModal extends Omit<ModalProps, 'onChange'> {
   title: string
   description: string
   children: React.ReactNode
-  call?: UsePrepareContractWriteConfig
+  call?: UseSimulateContractParameters
   requiredAllowance?: Allowance
   confirmLabel: string
   onClose: () => void
@@ -130,14 +130,8 @@ const TransactionModal = ({
     return <TransactionConfirmedModal hash={hash} onClose={onClose} />
   }
 
-  const isPreparing =
-    hasAllowance &&
-    call &&
-    !gas.isLoading &&
-    !isReady &&
-    !validationError &&
-    !isIdle &&
-    !disabled
+  const isPreparing = hasAllowance && call && !gas
+  !isReady && !validationError && !isIdle && !disabled
 
   return (
     <Modal title={title} onClose={onClose} {...props}>

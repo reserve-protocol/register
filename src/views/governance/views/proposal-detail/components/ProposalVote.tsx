@@ -11,9 +11,8 @@ import { Box, BoxProps, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { PROPOSAL_STATES } from 'utils/constants'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
-import { zeroAddress } from 'viem'
+import { Address, zeroAddress } from 'viem'
 import DelegateModal from 'views/governance/components/DelegateModal'
-import { Address, useContractRead } from 'wagmi'
 import { accountVotesAtom, getProposalStateAtom } from '../atom'
 import useProposalDetail from '../useProposalDetail'
 import ProposalCancel from './ProposalCancel'
@@ -23,6 +22,7 @@ import ProposalAlert from './ProposalAlert'
 import VoteModal from './VoteModal'
 import AsteriskIcon from 'components/icons/AsteriskIcon'
 import DelegateIcon from 'components/icons/DelegateIcon'
+import { useReadContract } from 'wagmi'
 
 const ViewExecuteTxButton = () => {
   const { proposalId } = useParams()
@@ -78,7 +78,7 @@ const ProposalVote = (props: BoxProps) => {
   const { votePower = '0.0', vote } = useAtomValue(accountVotesAtom)
   const { balance } = useAtomValue(stRsrBalanceAtom)
 
-  const { data: delegate } = useContractRead({
+  const { data: delegate } = useReadContract({
     address: account ? (rToken?.stToken?.address as Address) : undefined,
     abi: StRSRVotes,
     functionName: 'delegates',

@@ -7,9 +7,9 @@ import { chainIdAtom, walletAtom } from 'state/atoms'
 import { getCurrentTime } from 'utils'
 import { formatEther } from 'viem'
 import { isTimeunitGovernance } from 'views/governance/utils'
-import { useContractRead } from 'wagmi'
 import { accountVotesAtom, proposalDetailAtom } from './atom'
 import useProposalDetail from './useProposalDetail'
+import { useReadContract } from 'wagmi'
 
 const ProposalDetailAtomUpdater = () => {
   const { proposalId } = useParams()
@@ -20,7 +20,7 @@ const ProposalDetailAtomUpdater = () => {
   const setAccountVoting = useSetAtom(accountVotesAtom)
   const blockNumber = useBlockMemo()
 
-  const { data: votePower } = useContractRead({
+  const { data: votePower } = useReadContract({
     address: proposal?.governor,
     abi: Governance,
     functionName: 'getVotes',

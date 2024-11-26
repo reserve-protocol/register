@@ -6,11 +6,11 @@ import { useAtomValue } from 'jotai'
 import { accountRoleAtom, chainIdAtom } from 'state/atoms'
 import { Card, Flex, Text, Divider as _Divider } from 'theme-ui'
 import { FACADE_WRITE_ADDRESS } from 'utils/addresses'
-import { stringToHex } from 'viem'
-import { Address, useContractRead } from 'wagmi'
+import { Address, stringToHex } from 'viem'
 import FreezeManager from './FreezeManager'
 import GovernancePrompt from './GovernancePrompt'
 import PauseManager from './PauseManager'
+import { useReadContract } from 'wagmi'
 
 const Divider = () => <_Divider sx={{ borderColor: 'border' }} my={4} mx={-4} />
 
@@ -20,7 +20,7 @@ const useGovernanceSetupRequired = () => {
   const accountRole = useAtomValue(accountRoleAtom)
 
   // If the main contract still has OWNER role, then governance setup is pending
-  const { data } = useContractRead({
+  const { data } = useReadContract({
     address: rToken?.main as Address,
     abi: Main,
     functionName: 'hasRole',

@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 import { RSR_ADDRESS } from 'utils/addresses'
 import { ChainId } from 'utils/chains'
 import { Address, formatUnits } from 'viem'
-import { useBalance, useContractReads } from 'wagmi'
+import { useBalance } from 'wagmi'
 import {
   TokenBalanceMap,
   balancesAtom,
@@ -38,8 +38,6 @@ const ZAP_TOKENS: { [x: number]: [Address, number][] } = {
     ['0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f', 8], // WBTC
   ],
 }
-
-ZAP_TOKENS[ChainId.Hardhat] = ZAP_TOKENS[ChainId.Mainnet]
 
 // TODO: Add zapper tokens
 const balancesCallAtom = atom((get) => {

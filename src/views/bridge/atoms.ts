@@ -228,5 +228,5 @@ export const bridgeTxAtom = atom((get) => {
     value: !token.L1contract ? amount : undefined,
     abi: BaseBridge,
     args,
-  } as const
+  }
 })

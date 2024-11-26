@@ -17,7 +17,7 @@ import { formatCurrency, safeParseEther } from 'utils'
 import { ChainId } from 'utils/chains'
 import { BIGINT_MAX } from 'utils/constants'
 import { Address } from 'viem'
-import { useBalance, useContractRead } from 'wagmi'
+import { useBalance, useReadContract } from 'wagmi'
 
 interface Props extends BoxProps {
   collateral: CollateralPlugin
@@ -99,7 +99,7 @@ const CollateralItem = ({ collateral, wrapping, ...props }: Props) => {
     }
   }, [isValid, wrapping, debouncedAmount])
 
-  const { data: parsedAssets } = useContractRead({
+  const { data: parsedAssets } = useReadContract({
     abi: [
       {
         inputs: [

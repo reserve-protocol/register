@@ -4,7 +4,6 @@ import { Box, BoxProps, Card, Spinner, Text } from 'theme-ui'
 import { Hex, decodeFunctionData, getAbiItem, getAddress } from 'viem'
 import { ContractProposal, InterfaceMap, interfaceMapAtom } from '../atoms'
 import ContractProposalDetail from '../views/proposal-detail/components/ContractProposalDetails'
-import { useEffect } from 'react'
 
 interface Props extends BoxProps {
   addresses: string[]
@@ -52,7 +51,9 @@ const parseCallDatas = (
         contractProposals[address].calls.push({
           signature: functionCall.functionName,
           parameters:
-            result.inputs.map((input) => `${input.name}: ${input.type}`) ?? [],
+            result && 'inputs' in result
+              ? result.inputs.map((input) => `${input.name}: ${input.type}`)
+              : [],
           callData: calldatas[i],
           data: functionCall.args ?? [],
         })

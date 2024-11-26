@@ -18,7 +18,6 @@ import {
 } from 'state/atoms'
 import { VERSION } from 'utils/constants'
 import { Address, formatEther } from 'viem'
-import { useContractReads } from 'wagmi'
 import { rTokenStateAtom } from '../atoms/rTokenStateAtom'
 import { useWatchReadContracts } from 'hooks/useWatchReadContract'
 

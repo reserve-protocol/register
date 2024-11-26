@@ -47,7 +47,9 @@ export function useWatchReadContract<
     selectData
   > = {} as any
 ): UseReadContractReturnType<abi, functionName, args, selectData> {
-  const result = useReadContract(parameters as UseReadContractParameters)
+  const result = useReadContract(
+    parameters as UseReadContractParameters
+  ) as UseReadContractReturnType<abi, functionName, args, selectData>
   const shouldRefresh = useShouldRefresh(parameters?.chainId)
   const { refetch } = result
 

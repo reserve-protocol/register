@@ -11,6 +11,7 @@ import {
   isBridgeWrappingAtom,
   selectedBridgeToken,
 } from '../atoms'
+import { UseSimulateContractParameters } from 'wagmi'
 
 const ConfirmBridgeBtn = ({ onSuccess }: { onSuccess(): void }) => {
   const bridgeTransaction = useAtomValue(bridgeTxAtom)
@@ -27,7 +28,7 @@ const ConfirmBridgeBtn = ({ onSuccess }: { onSuccess(): void }) => {
     reset,
     isLoading,
     write,
-  } = useContractWrite(bridgeTransaction)
+  } = useContractWrite(bridgeTransaction as UseSimulateContractParameters)
   useWatchTransaction({ hash, label: 'Bridge to base' })
 
   const confirmLabel = useAtomValue(btnLabelAtom)

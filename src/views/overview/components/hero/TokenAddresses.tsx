@@ -10,6 +10,7 @@ import { chainIdAtom, selectedRTokenAtom } from 'state/atoms'
 import { rTokenMetaAtom } from 'state/rtoken/atoms/rTokenAtom'
 import { Box, Text } from 'theme-ui'
 import { shortenAddress } from 'utils'
+import { AvailableChain } from 'utils/chains'
 import { BRIDGED_RTOKENS } from 'utils/constants'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { Address } from 'viem'
@@ -63,7 +64,7 @@ const TokenAddresses = () => {
 
     if (bridged) {
       for (const token of bridged) {
-        chains.push(token.chain)
+        chains.push(token.chain as AvailableChain)
       }
     }
 

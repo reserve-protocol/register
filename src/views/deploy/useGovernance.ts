@@ -61,7 +61,7 @@ export const useGovernanceTx = () => {
           pausers: Address[]
           shortFreezers: Address[]
           longFreezers: Address[]
-        }
+        },
       ] = [
         rToken.address,
         !!defaultGovernance,
@@ -77,7 +77,7 @@ export const useGovernanceTx = () => {
         },
         {
           owner: defaultGovernance ? zeroAddress : (owner as Address),
-          guardian: defaultGovernance ? guardian as Address : zeroAddress,
+          guardian: defaultGovernance ? (guardian as Address) : zeroAddress,
           ...roles,
         },
       ]
@@ -99,7 +99,7 @@ const useGovernance = () => {
     abi: FacadeWrite,
     functionName: 'setupGovernance',
     args: txData,
-    enabled: !!txData,
+    query: { enabled: !!txData },
   })
 }
 
