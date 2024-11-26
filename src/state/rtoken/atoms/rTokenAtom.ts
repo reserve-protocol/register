@@ -72,9 +72,6 @@ const rTokenAtom: Atom<ReserveToken | null> = atomWithLoadable(
       },
     ].map((call) => ({ ...call, chainId }))
 
-    console.log('rTokenMEta', wagmiConfig)
-    console.log('chain', base.id)
-
     const [
       name,
       symbol,
@@ -105,8 +102,6 @@ const rTokenAtom: Atom<ReserveToken | null> = atomWithLoadable(
       contracts: rTokenMetaCalls,
       allowFailure: false,
     }))
-
-    console.log('holi', name)
 
     const tokensMetaCall = [
       ...getTokenReadCalls(stTokenAddress),

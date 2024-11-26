@@ -18,10 +18,11 @@ import {
 } from '@rainbow-me/rainbowkit/wallets'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import React from 'react'
+import { ROUTES } from 'utils/constants'
 import { WagmiProvider, createConfig, fallback, http } from 'wagmi'
 import { arbitrum, base, mainnet } from 'wagmi/chains'
+import { hashFn, structuralSharing } from 'wagmi/query'
 import AtomUpdater from './updaters/AtomUpdater'
-import { ROUTES } from 'utils/constants'
 
 const connectors = connectorsForWallets(
   [
@@ -75,8 +76,15 @@ export const wagmiConfig = createConfig({
   },
 })
 
-const queryClient = new QueryClient()
-
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      queryKeyHashFn: hashFn,
+      structuralSharing,
+    },
+  },
+})
 const Disclaimer: DisclaimerComponent = ({ Text, Link }) => (
   <Text>
     By connecting a wallet, you agree to ABC Labs{' '}
