@@ -1,7 +1,7 @@
 import Analytics from 'components/analytics/Analytics'
 import ToastContainer from 'components/toaster-container/ToastContainer'
 import TransactionSidebar from 'components/transactions/manager/TransactionSidebar'
-import mixpanel from 'mixpanel-browser'
+import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
 import { useEffect } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import {
@@ -71,7 +71,7 @@ const App = () => (
     fallback={<div>Something went wrong</div>}
     onError={handleError}
   >
-    <Router future={{ v7_relativeSplatPath: true }}>
+    <Router>
       <Analytics />
       <Redirects />
       <ScrollToTop />

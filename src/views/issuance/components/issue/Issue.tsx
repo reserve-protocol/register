@@ -3,7 +3,7 @@ import FacadeRead from 'abis/FacadeRead'
 import { Button } from 'components'
 import useRToken from 'hooks/useRToken'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
-import mixpanel from 'mixpanel-browser'
+import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
 import { useState } from 'react'
 import {
   balancesAtom,

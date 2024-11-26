@@ -2,7 +2,7 @@ import TransactionButton from 'components/button/TransactionButton'
 import useContractWrite from 'hooks/useContractWrite'
 import useWatchTransaction from 'hooks/useWatchTransaction'
 import { atom, useAtom, useAtomValue } from 'jotai'
-import mixpanel from 'mixpanel-browser'
+import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
 import { useEffect } from 'react'
 import {
   bridgeAmountAtom,

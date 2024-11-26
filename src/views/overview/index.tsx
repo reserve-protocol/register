@@ -1,7 +1,7 @@
 import SectionContainer from 'components/section-navigation/SectionContainer'
 import SectionWrapper from 'components/section-navigation/SectionWrapper'
 import { useAtomValue } from 'jotai'
-import mixpanel from 'mixpanel-browser'
+import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
 import { useEffect } from 'react'
 import { selectedRTokenAtom } from 'state/atoms'
 import { Divider } from 'theme-ui'

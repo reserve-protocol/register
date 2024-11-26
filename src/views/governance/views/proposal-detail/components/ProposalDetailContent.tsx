@@ -1,9 +1,11 @@
-import MDEditor from '@uiw/react-md-editor'
 import { useAtomValue } from 'jotai'
-import { useState } from 'react'
+import { lazy, Suspense, useState } from 'react'
 import { Box } from 'theme-ui'
 import ProposalDetail from 'views/governance/components/ProposalDetailPreview'
 import { proposalDetailAtom } from '../atom'
+import Skeleton from 'react-loading-skeleton'
+
+const DescriptionMarkdown = lazy(() => import('./ProposalMdDescription'))
 
 const TABS = {
   DESCRIPTION: 'description',
@@ -70,10 +72,9 @@ const ProposalDetailContent = () => {
 
       {tab === TABS.DESCRIPTION ? (
         <Box px="3" pb="2">
-          <MDEditor.Markdown
-            source={description}
-            style={{ backgroundColor: 'transparent' }}
-          />
+          <Suspense fallback={<Skeleton />}>
+            <DescriptionMarkdown description={description} />
+          </Suspense>
         </Box>
       ) : (
         !!proposal && (

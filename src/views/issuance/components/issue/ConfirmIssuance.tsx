@@ -4,7 +4,7 @@ import RToken from 'abis/RToken'
 import TransactionModal from 'components/transaction-modal'
 import useHasAllowance, { RequiredAllowance } from 'hooks/useHasAllowance'
 import { atom, useAtomValue } from 'jotai'
-import mixpanel from 'mixpanel-browser'
+import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
 import { useState } from 'react'
 import {
   chainIdAtom,

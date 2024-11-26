@@ -9,7 +9,7 @@ import {
 import { ChainId } from 'utils/chains'
 import { Hex, TransactionReceipt } from 'viem'
 import useNotification from './useNotification'
-import mixpanel from 'mixpanel-browser'
+import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
 import { CHAIN_TAGS } from 'utils/constants'
 import { useWaitForTransactionReceipt } from 'wagmi'
 
