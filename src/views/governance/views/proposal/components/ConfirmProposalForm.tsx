@@ -1,5 +1,5 @@
 import { Trans, t } from '@lingui/macro'
-import MDEditor from '@uiw/react-md-editor'
+// import MDEditor from '@uiw/react-md-editor'
 import { Input } from 'components'
 import Field from 'components/field'
 import useRToken from 'hooks/useRToken'
@@ -78,7 +78,7 @@ const ConfirmProposalForm = ({
         >
           <Trans>Description</Trans>
         </Text>
-        <MDEditor value={description} onChange={setDescription} />
+        {/* <MDEditor value={description} onChange={setDescription} /> */}
       </Card>
 
       <ProposalDetail addresses={addresses} calldatas={calldatas} />

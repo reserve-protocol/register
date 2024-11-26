@@ -1,4 +1,13 @@
 {
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "**/.server/**/*.ts",
+    "**/.server/**/*.tsx",
+    "**/.client/**/*.ts",
+    "**/.client/**/*.tsx",
+    ".react-router/types/**/*"
+  ],
   "compilerOptions": {
     "target": "ES2022",
     "lib": ["DOM", "DOM.Iterable", "ES2022"],
@@ -15,8 +24,8 @@
     "noEmit": true,
     "noFallthroughCasesInSwitch": true,
     "jsx": "react-jsx",
-    "types": ["vite/client"],
-    "baseUrl": "src"
-  },
-  "include": ["src"]
+    "types": ["@react-router/node", "vite/client"],
+    "baseUrl": "src",
+    "rootDirs": [".", "./.react-router/types"]
+  }
 }

@@ -9,6 +9,9 @@
 !.yarn/sdks
 !.yarn/versions
 
+/.cache
+.react-router
+
 # testing
 /coverage
 

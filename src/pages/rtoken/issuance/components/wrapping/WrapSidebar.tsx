@@ -1,10 +1,10 @@
 import Sidebar from 'components/sidebar'
 import { useAtom } from 'jotai'
-import { wrapSidebarAtom } from 'views/issuance/atoms'
 import DisplayMode from './DisplayMode'
 import WrapCollateralList from './WrapCollateralList'
 import WrapSidebarHeader from './WrapSidebarHeader'
 import WrapTypeToggle from './WrapTypeToggle'
+import { wrapSidebarAtom } from '../../atoms'
 
 const WrapSidebar = () => {
   const [isVisible, setVisible] = useAtom(wrapSidebarAtom)

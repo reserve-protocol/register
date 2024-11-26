@@ -18,7 +18,7 @@ import {
   isValidRedeemAmountAtom,
   redeemAmountAtom,
   redeemAmountDebouncedAtom,
-} from 'views/issuance/atoms'
+} from '../../atoms'
 import RedeemInput from './RedeemInput'
 import RedeemNonceModal from './RedeemNonceModal'
 import RedemptionQuote from './RedemptionQuote'

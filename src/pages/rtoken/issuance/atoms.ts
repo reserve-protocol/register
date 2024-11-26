@@ -7,9 +7,9 @@ import atomWithDebounce from 'utils/atoms/atomWithDebounce'
 import { atomWithLoadable } from 'utils/atoms/utils'
 import { quote } from 'utils/rsv'
 import { getAddress } from 'viem'
-import { chainIdAtom, rTokenAtom, rTokenBalanceAtom } from './../../state/atoms'
 import { simulateContract } from 'wagmi/actions'
 import { wagmiConfig } from 'state/chain'
+import { chainIdAtom, rTokenAtom, rTokenBalanceAtom } from 'state/atoms'
 
 export const wrapSidebarAtom = atom(false)
 

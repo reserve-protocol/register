@@ -106,7 +106,7 @@ const Navigation = () => {
 
   const PAGES = useMemo(() => {
     const items = [
-      { path: ROUTES.OVERVIEW, title: t`Overview`, Icon: OverviewIcon },
+      { path: '/', title: t`Overview`, Icon: OverviewIcon },
       { path: ROUTES.ISSUANCE, title: t`Mint + Redeem`, Icon: IssuanceIcon },
       { path: ROUTES.STAKING, title: t`Stake + Unstake`, Icon: StakeIcon },
       { path: ROUTES.AUCTIONS, title: t`Auctions`, Icon: AuctionsIcon },

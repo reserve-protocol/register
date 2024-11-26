@@ -1,14 +1,16 @@
 import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { reactRouter } from '@react-router/dev/vite'
 import viteTsconfigPaths from 'vite-tsconfig-paths'
 import path from 'path'
 import { lingui } from '@lingui/vite-plugin'
 import { viteStaticCopy } from 'vite-plugin-static-copy'
+import macrosPlugin from 'vite-plugin-babel-macros'
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
-    react({ babel: { plugins: ['macros'] } }),
+    reactRouter(),
+    macrosPlugin(),
     lingui(),
     viteTsconfigPaths(),
     viteStaticCopy({

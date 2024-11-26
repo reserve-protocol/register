@@ -3,11 +3,11 @@ import { Button, Card } from 'components'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useState } from 'react'
-import { isValidRedeemAmountAtom } from 'views/issuance/atoms'
 import ConfirmRedemption from './ConfirmRedemption'
 import RedeemInput from './RedeemInput'
 import { rTokenStateAtom } from 'state/atoms'
 import { customRedeemNonceAtom, redeemNonceAtom } from './atoms'
+import { isValidRedeemAmountAtom } from '../../atoms'
 
 const Redeem = () => {
   const rToken = useRToken()

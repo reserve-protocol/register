@@ -71,23 +71,23 @@ const App = () => (
     fallback={<div>Something went wrong</div>}
     onError={handleError}
   >
-    <Router future={{ v7_relativeSplatPath: true }}>
-      <Analytics />
-      <Redirects />
-      <ScrollToTop />
-      <ThemeUIProvider theme={theme}>
-        <LanguageProvider>
-          <ChainProvider>
-            <Updater />
-            <TransactionSidebar />
-            <Layout>
-              <ToastContainer />
-              <AppRoutes />
-            </Layout>
-          </ChainProvider>
-        </LanguageProvider>
-      </ThemeUIProvider>
-    </Router>
+    {/* <Router> */}
+    <Analytics />
+    <Redirects />
+    <ScrollToTop />
+    <ThemeUIProvider theme={theme}>
+      <LanguageProvider>
+        <ChainProvider>
+          <Updater />
+          <TransactionSidebar />
+          <Layout>
+            <ToastContainer />
+            <AppRoutes />
+          </Layout>
+        </ChainProvider>
+      </LanguageProvider>
+    </ThemeUIProvider>
+    {/* </Router> */}
   </ErrorBoundary>
 )
 

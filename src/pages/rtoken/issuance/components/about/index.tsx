@@ -2,7 +2,7 @@ import { Trans } from '@lingui/macro'
 import { SmallButton } from 'components/button'
 import { useSetAtom } from 'jotai'
 import { Box, Flex, Text } from 'theme-ui'
-import { wrapSidebarAtom } from 'views/issuance/atoms'
+import { wrapSidebarAtom } from '../../atoms'
 
 const About = () => {
   const setWrapping = useSetAtom(wrapSidebarAtom)

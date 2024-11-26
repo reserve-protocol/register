@@ -16,7 +16,7 @@ import { formatCurrency } from 'utils'
 import { ChainId } from 'utils/chains'
 import { BIGINT_MAX } from 'utils/constants'
 import { Address, formatUnits } from 'viem'
-import { quantitiesAtom } from 'views/issuance/atoms'
+import { quantitiesAtom } from '../../atoms'
 
 interface CollateralApprovalProps extends BoxProps {
   collateral: Token
@@ -61,8 +61,8 @@ const CollateralApproval = ({
         collateral.symbol === 'wcUSDbCv3'
           ? BIGINT_MAX
           : amount
-          ? (amount * 120n) / 100n
-          : 0n,
+            ? (amount * 120n) / 100n
+            : 0n,
       ],
       enabled: !!rToken && !loading && !!amount && !allowance,
     }

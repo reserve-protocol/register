@@ -1,4 +1,4 @@
-import MDEditor from '@uiw/react-md-editor'
+// import MDEditor from '@uiw/react-md-editor'
 import { useAtomValue } from 'jotai'
 import { useState } from 'react'
 import { Box } from 'theme-ui'
@@ -70,10 +70,10 @@ const ProposalDetailContent = () => {
 
       {tab === TABS.DESCRIPTION ? (
         <Box px="3" pb="2">
-          <MDEditor.Markdown
+          {/* <MDEditor.Markdown
             source={description}
             style={{ backgroundColor: 'transparent' }}
-          />
+          /> */}
         </Box>
       ) : (
         !!proposal && (

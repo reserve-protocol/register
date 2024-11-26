@@ -12,8 +12,8 @@ import { safeParseEther } from 'utils'
 import { FACADE_ADDRESS } from 'utils/addresses'
 import { atomWithLoadable } from 'utils/atoms/utils'
 import { formatUnits, getAddress, parseEther, parseUnits } from 'viem'
-import { redeemAmountDebouncedAtom } from 'views/issuance/atoms'
 import { simulateContract } from 'wagmi/actions'
+import { redeemAmountDebouncedAtom } from '../../atoms'
 
 interface RedeemQuote {
   [x: string]: { amount: bigint; targetAmount: bigint; loss: number }

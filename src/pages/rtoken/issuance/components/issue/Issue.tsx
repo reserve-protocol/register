@@ -18,7 +18,7 @@ import {
   issueAmountAtom,
   isValidIssuableAmountAtom,
   maxIssuableAtom,
-} from 'views/issuance/atoms'
+} from '../../atoms'
 import { usePublicClient } from 'wagmi'
 import ConfirmIssuance from './ConfirmIssuance'
 import IssueInput from './IssueInput'

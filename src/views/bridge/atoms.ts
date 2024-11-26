@@ -18,8 +18,13 @@ import {
 } from './utils/constants'
 
 const defaultBridgeAsset =
-  new URL(window.location.href).searchParams.get('asset') ?? 'rsr'
-const defaultL2 = new URL(window.location.href).searchParams.get('l2') ?? null
+  typeof window !== 'undefined'
+    ? (new URL(window.location.href).searchParams.get('asset') ?? 'rsr')
+    : 'rsr'
+const defaultL2 =
+  typeof window !== 'undefined'
+    ? (new URL(window.location.href).searchParams.get('l2') ?? null)
+    : null
 
 const defaultChain =
   defaultL2 && supportedChainList.find((chain) => chain === Number(defaultL2))

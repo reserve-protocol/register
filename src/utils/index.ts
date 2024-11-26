@@ -23,7 +23,7 @@ export function isAddress(value: string) {
 export const getTokenRoute = (
   token: string,
   chainId: number,
-  route: string = ROUTES.OVERVIEW
+  route: string = ''
 ) => `/${CHAIN_TO_NETWORK[chainId]}/token/${token.toLowerCase()}/${route}`
 
 // multiplier 150 -> 1.5

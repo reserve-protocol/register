@@ -2,9 +2,9 @@ import Help from 'components/help'
 import DivaIcon from 'components/icons/DivaIcon'
 import { useMemo } from 'react'
 import { Box, Text } from 'theme-ui'
-import { useZap } from 'views/issuance/components/zapV2/context/ZapContext'
 import useDivaPoints from './hooks/useDivaPoints'
 import { formatCurrency } from 'utils'
+import { useZap } from 'pages/rtoken/issuance/components/zapV2/context/ZapContext'
 
 const DivaPointsMint = () => {
   const { rewardsRate } = useDivaPoints()

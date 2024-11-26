@@ -23,6 +23,7 @@ const NavItem = ({
       borderColor: 'primary',
       textAlign: 'center',
     })}
+    end
     to={to}
   >
     {children}
@@ -41,7 +42,7 @@ const Navigation = () => {
         fontSize: [1, 2],
       }}
     >
-      <NavItem to={ROUTES.EXPLORER_TRANSACTIONS}>
+      <NavItem to={ROUTES.EXPLORER}>
         <Box as="span" sx={{ display: ['block', 'none'] }}>
           Txs
         </Box>
