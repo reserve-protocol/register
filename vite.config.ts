@@ -13,18 +13,18 @@ export default defineConfig({
     macrosPlugin(),
     lingui(),
     viteTsconfigPaths(),
-    viteStaticCopy({
-      targets: [
-        {
-          src: 'node_modules/@reserve-protocol/rtokens/images/*',
-          dest: 'svgs',
-        },
-        {
-          src: '_headers',
-          dest: '',
-        },
-      ],
-    }),
+    // viteStaticCopy({
+    //   targets: [
+    //     {
+    //       src: 'node_modules/@reserve-protocol/rtokens/images/*',
+    //       dest: 'svgs',
+    //     },
+    //     {
+    //       src: '_headers',
+    //       dest: '',
+    //     },
+    //   ],
+    // }),
     {
       name: 'configure-response-headers',
       configureServer(server) {
@@ -43,9 +43,6 @@ export default defineConfig({
       },
     },
   ],
-  build: {
-    outDir: 'build',
-  },
   resolve: {
     alias: {
       components: path.resolve('src/components/'),
