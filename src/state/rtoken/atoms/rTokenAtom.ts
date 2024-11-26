@@ -11,6 +11,7 @@ import { collateralDisplay } from 'utils/constants'
 import { collateralsProtocolMap } from 'utils/plugins'
 import { Address, formatEther, hexToString } from 'viem'
 import { readContracts } from 'wagmi/actions'
+import { base } from 'wagmi/chains'
 
 // RToken meta, pulled directly from the listed list or validated for unlisted tokens
 // Tokens without "logo" are unlisted
@@ -71,6 +72,9 @@ const rTokenAtom: Atom<ReserveToken | null> = atomWithLoadable(
       },
     ].map((call) => ({ ...call, chainId }))
 
+    console.log('rTokenMEta', wagmiConfig)
+    console.log('chain', base.id)
+
     const [
       name,
       symbol,
@@ -101,6 +105,8 @@ const rTokenAtom: Atom<ReserveToken | null> = atomWithLoadable(
       contracts: rTokenMetaCalls,
       allowFailure: false,
     }))
+
+    console.log('holi', name)
 
     const tokensMetaCall = [
       ...getTokenReadCalls(stTokenAddress),

@@ -46,11 +46,6 @@ const connectors = connectorsForWallets(
   }
 )
 
-const commonTransports = [
-  http(`https://mainnet.infura.io/v3/${import.meta.env.VITE_INFURA}`),
-  http(`https://eth-mainnet.alchemyapi.io/v2/${import.meta.env.VITE_ALCHEMY}`),
-]
-
 export const wagmiConfig = createConfig({
   chains: [mainnet, base, arbitrum],
   connectors,
@@ -58,19 +53,24 @@ export const wagmiConfig = createConfig({
     [mainnet.id]: import.meta.env.VITE_MAINNET_URL
       ? http(import.meta.env.VITE_MAINNET_URL)
       : fallback([
-          ...commonTransports,
-          http(`https://rpc.ankr.com/eth/${import.meta.env.VITE_ANKR}`),
-          http('https://mainnet.infura.io/v3/'),
+          http(`https://mainnet.infura.io/v3/${import.meta.env.VITE_INFURA}`),
+          http(
+            `https://eth-mainnet.alchemyapi.io/v2/${import.meta.env.VITE_ALCHEMY}`
+          ),
+          http(`https://rpc.ankr.com/mainnet/${import.meta.env.VITE_ANKR}`),
         ]),
     [base.id]: fallback([
-      ...commonTransports,
+      http(`https://base-mainnet.infura.io/v3/${import.meta.env.VITE_INFURA}`),
+      http(
+        `https://base-mainnet.g.alchemy.com/v2/${import.meta.env.VITE_ALCHEMY}`
+      ),
       http(`https://rpc.ankr.com/base/${import.meta.env.VITE_ANKR}`),
-      http('https://mainnet.infura.io/v3/'),
     ]),
     [arbitrum.id]: fallback([
-      ...commonTransports,
+      http(
+        `https://arbitrum-mainnet.infura.io/v3/${import.meta.env.VITE_INFURA}`
+      ),
       http(`https://rpc.ankr.com/arbitrum/${import.meta.env.VITE_ANKR}`),
-      http('https://mainnet.infura.io/v3/'),
     ]),
   },
 })
