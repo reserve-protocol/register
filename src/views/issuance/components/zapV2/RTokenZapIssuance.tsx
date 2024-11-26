@@ -7,7 +7,7 @@ import ZapInputContainer from './input/ZapInputContainer'
 import ZapOutputContainer from './output/ZapOutputContainer'
 import ZapSubmit from './submit/ZapSubmit'
 
-const RTokenZapIssuance = ({ disableRedeem }: { disableRedeem: boolean }) => {
+const RTokenZapIssuance = ({ disableRedeem }: { disableRedeem?: boolean }) => {
   return (
     <Box
       sx={{
@@ -36,7 +36,7 @@ const RTokenZapIssuance = ({ disableRedeem }: { disableRedeem: boolean }) => {
           position: 'relative',
         }}
       >
-        <ZapRedeemDisabled disableRedeem={disableRedeem} />
+        <ZapRedeemDisabled disableRedeem={!!disableRedeem} />
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
           <ZapInputContainer />
           <Box variant="layout.verticalAlign" sx={{ gap: '12px', px: 3 }}>

@@ -1,19 +1,12 @@
 import Sidebar from 'components/sidebar'
-import { Box } from 'theme-ui'
+import RTokenZapIssuance from 'views/issuance/components/zapV2/RTokenZapIssuance'
 
-// TODO: Implement ZapContext
-const PoolZap = ({ pool }: { pool: string }) => {
-  return <Box></Box>
-}
-
-const EarnZapSidebar = ({
-  onClose,
-  isWithdraw,
-}: {
-  onClose(): void
-  isWithdraw: boolean
-}) => {
-  return <Sidebar width={'520px'} onClose={onClose}></Sidebar>
+const EarnZapSidebar = ({ onClose }: { onClose(): void }) => {
+  return (
+    <Sidebar width={'580px'} onClose={onClose}>
+      <RTokenZapIssuance />
+    </Sidebar>
+  )
 }
 
 export default EarnZapSidebar

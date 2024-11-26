@@ -104,6 +104,7 @@ type ZapContextType = {
   isExpensiveZap: boolean
   showEliteProgramModal: boolean
   setShowEliteProgramModal: (show: boolean) => void
+  zapToYieldPosition: boolean
 }
 
 const REFRESH_INTERVAL = 24000 // 24 seconds
@@ -142,6 +143,7 @@ const ZapContext = createContext<ZapContextType>({
   isExpensiveZap: false,
   showEliteProgramModal: false,
   setShowEliteProgramModal: () => {},
+  zapToYieldPosition: false,
 })
 
 export const useZap = () => {
@@ -631,6 +633,7 @@ export const ZapProvider: FC<ZapProviderProps> = ({
         isExpensiveZap,
         showEliteProgramModal,
         setShowEliteProgramModal,
+        zapToYieldPosition: !!rToken,
       }}
     >
       {children}

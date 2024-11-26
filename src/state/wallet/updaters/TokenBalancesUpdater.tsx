@@ -47,14 +47,13 @@ const balancesCallAtom = atom((get) => {
   const rToken = get(rTokenAtom)
   const chainId = get(chainIdAtom)
 
-  if (!rToken || !wallet) {
+  if (!wallet) {
     return undefined
   }
 
   const tokens: [Address, number][] = [
-    [rToken.address, rToken.decimals],
     [RSR_ADDRESS[chainId], 18],
-    ...rToken.collaterals.map((token): [Address, number] => [
+    ...(rToken?.collaterals || []).map((token): [Address, number] => [
       token.address,
       token.decimals,
     ]),
@@ -64,7 +63,11 @@ const balancesCallAtom = atom((get) => {
     ),
   ]
 
-  if (rToken.stToken) {
+  if (rToken) {
+    tokens.push([rToken.address, rToken.decimals])
+  }
+
+  if (rToken?.stToken) {
     tokens.push([rToken.stToken.address, rToken.stToken.decimals])
   }
 

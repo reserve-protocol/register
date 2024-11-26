@@ -36,7 +36,7 @@ const PoolZapToEarn = () => {
             Deposit
           </Box>
         </Button>
-        <Button>
+        {/* <Button>
           <Box
             variant="layout.verticalAlign"
             sx={{ gap: 2 }}
@@ -45,14 +45,9 @@ const PoolZapToEarn = () => {
             <Zap size={16} />
             Withdraw
           </Box>
-        </Button>
+        </Button> */}
       </Box>
-      {sidebar !== 'none' && (
-        <EarnZapSidebar
-          isWithdraw={sidebar === 'withdraw'}
-          onClose={handleClose}
-        />
-      )}
+      {sidebar !== 'none' && <EarnZapSidebar onClose={handleClose} />}
     </>
   )
 }

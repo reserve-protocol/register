@@ -35,6 +35,7 @@ const ZapOperationDetails = () => {
             flexDirection: ['column', 'row'],
             alignItems: ['flex-start', 'center'],
             flexGrow: 1,
+            flexWrap: 'wrap',
             justifyContent: 'space-between',
             gap: 2,
           }}
