@@ -12,12 +12,7 @@ const Home = () => {
         display: 'flex',
         flexDirection: 'column',
         position: 'relative',
-        height: 'calc(100vh - 76px)',
         py: [0, 4],
-        '@media (min-height: 1200px)': {
-          height: 'auto',
-          py: 7,
-        },
       }}
     >
       <Grid
@@ -26,10 +21,7 @@ const Home = () => {
         sx={{
           flexDirection: 'column',
           maxWidth: '98em',
-          height: ['auto', 'calc(100vh - 120px)'],
-          maxHeight: ['auto', '900px'],
         }}
-        my={[0, 'auto']}
         mx="auto"
         px={[0, 4]}
       >
@@ -46,15 +38,8 @@ const Home = () => {
           <UseCases />
         </Box>
       </Grid>
-      <Box
-        sx={{
-          display: 'none',
-          '@media (min-height: 1200px)': {
-            display: 'block',
-          },
-        }}
-      >
-        <Box sx={{ maxWidth: '98em' }} mx="auto" px={[0, 4]} mt="7">
+      <Box mx="auto" px={[2, 4]}>
+        <Box sx={{ maxWidth: '98em' }} mt={[3, 7]}>
           <DeployHero />
         </Box>
 

@@ -1,7 +1,6 @@
 import { Address } from 'viem'
 
-const BASE_ZAP_API_URL =
-  'https://worker-summer-silence-5553.mig2151.workers.dev'
+const BASE_ZAP_API_URL = 'https://zapper-api.reserve.org'
 
 export type ZapPayload = {
   chainId: number
