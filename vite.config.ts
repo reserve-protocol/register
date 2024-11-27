@@ -49,6 +49,7 @@ export default defineConfig({
       components: path.resolve('src/components/'),
       types: path.resolve('src/types/'),
       utils: path.resolve('src/utils/'),
+      '@': path.resolve(__dirname, './src'),
     },
   },
   optimizeDeps: { exclude: ['ts-node'] },
