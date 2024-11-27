@@ -5,9 +5,10 @@ import ChainLogo from 'components/icons/ChainLogo'
 import StackTokenLogo from 'components/token-logo/StackTokenLogo'
 import mixpanel from 'mixpanel-browser'
 import { useMemo } from 'react'
-import { ChevronDown, ChevronUp } from 'react-feather'
+import { ArrowUpRight, ChevronDown, ChevronUp } from 'react-feather'
 import { Pool } from 'state/pools/atoms'
-import { Box, Text } from 'theme-ui'
+import { colors } from 'theme'
+import { Box, Text, Image } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { CHAIN_TAGS, LP_PROJECTS, NETWORKS } from 'utils/constants'
 import { PROJECT_ICONS } from 'views/earn/utils/constants'
@@ -40,6 +41,37 @@ const useColumns = () => {
                 <Text ml="2" sx={{ textDecoration: 'underline' }}>
                   {data.getValue()}
                 </Text>
+              </Box>
+              <Box
+                variant="layout.verticalAlign"
+                sx={{
+                  cursor: 'pointer',
+                  border: '1px solid',
+                  borderColor: 'border',
+                  backgroundColor: 'cardAlternative',
+                  borderRadius: '50px',
+                  width: 'fit-content',
+                  gap: 1,
+                  px: 2,
+                  py: 1,
+                  opacity: 0.3,
+                  ':hover': {
+                    opacity: 1,
+                  },
+                }}
+                onClick={() => {
+                  window.open(
+                    `https://defillama.com/yields/pool/${data.row.original.id}`,
+                    '_blank'
+                  )
+                  mixpanel.track('Viewed DefiLlama Link', {
+                    Pool: data.row.original.symbol,
+                    Protocol: data.row.original.project,
+                  })
+                }}
+              >
+                <Image src="/svgs/defillama.svg" height={16} width={16} />
+                <ArrowUpRight color={colors.secondaryText} size={14} />
               </Box>
             </Box>
           )
