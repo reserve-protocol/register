@@ -36,10 +36,15 @@ const ZapSubmitButton = () => {
     operation,
     error,
     endpoint,
+    chainId,
+    zapToYieldPosition,
   } = useZap()
 
   const title = useMemo(() => {
     if (error && error.submitButtonTitle) return error.submitButtonTitle
+    if (zapToYieldPosition) {
+      return 'Zap Deposit'
+    }
     return operation === 'mint' ? 'Zap Mint' : 'Zap Redeem'
   }, [error, operation])
 
@@ -64,7 +69,7 @@ const ZapSubmitButton = () => {
 
   return (
     <>
-      <TransactionButtonContainer sx={{ width: '100%' }}>
+      <TransactionButtonContainer sx={{ width: '100%' }} chain={chainId}>
         <LoadingButton
           onClick={onSubmit}
           loading={loadingZap || validatingZap}

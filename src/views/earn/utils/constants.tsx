@@ -40,7 +40,22 @@ export const ZAP_EARN_POOLS: Record<number, Record<string, ZapPool>> = {
       },
     },
   },
-  [ChainId.Base]: {},
+  [ChainId.Base]: {
+    'ee23472f-9d68-49c7-8441-6b96928e6352': {
+      out: {
+        address: '0xB62F13126fCD0dD49dE8fF811406554197Bd0E11',
+        decimals: 18,
+        name: 'Moo Aero hyUSD-eUSD',
+        symbol: 'mooAerohyUSD-eUSD',
+      },
+      rToken: {
+        address: '0xcc7ff230365bd730ee4b352cc2492cedac49383e',
+        decimals: 18,
+        name: 'High Yield USD',
+        symbol: 'hyUSD',
+      },
+    },
+  },
   [ChainId.Arbitrum]: {},
 }
 

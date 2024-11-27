@@ -4,33 +4,30 @@ import { useAtomValue } from 'jotai'
 import { Pool } from 'state/pools/atoms'
 import { borderRadius } from 'theme'
 import { Box, Card, Text } from 'theme-ui'
+import { NETWORKS } from 'utils/constants'
 import { filteredPoolsAtom } from 'views/earn/atoms'
 import useRTokenPools from 'views/earn/hooks/useRTokenPools'
-import TableFilters from './components/TableFilters'
+import { ZAP_EARN_POOLS } from 'views/earn/utils/constants'
+import { ZapYieldPositionProvider } from 'views/issuance/components/zapV2/context/ZapYieldPositionContext'
 import PoolProjectDetails from './components/PoolProjectDetails'
 import PoolTokenDetails from './components/PoolTokenDetails'
 import PoolZapToEarn from './components/PoolZapToEarn'
+import TableFilters from './components/TableFilters'
 import useColumns from './hooks/useColumns'
-import { NETWORKS } from 'utils/constants'
-import { ZapYieldPositionProvider } from 'views/issuance/components/zapV2/context/ZapYieldPositionContext'
-import { ZAP_EARN_POOLS } from 'views/earn/utils/constants'
 
 const PoolDetails = ({ row }: { row: Row<Pool> }) => {
-  const pool =
-    ZAP_EARN_POOLS[NETWORKS[row.original.chain.toLowerCase()]][row.original.id]
+  const chainId = NETWORKS[row.original.chain.toLowerCase()]
+  const pool = ZAP_EARN_POOLS[chainId][row.original.id]
 
   return (
     <Box sx={{ backgroundColor: 'focusedBackground' }}>
       {pool && (
         <ZapYieldPositionProvider yieldToken={pool.out} rToken={pool.rToken}>
-          <PoolZapToEarn />
+          <PoolZapToEarn chainId={chainId} />
         </ZapYieldPositionProvider>
       )}
       <PoolTokenDetails tokens={row.original.underlyingTokens} />
-      <PoolProjectDetails
-        chain={NETWORKS[row.original.chain.toLowerCase()]}
-        project={row.original.project}
-      />
+      <PoolProjectDetails chain={chainId} project={row.original.project} />
     </Box>
   )
 }
