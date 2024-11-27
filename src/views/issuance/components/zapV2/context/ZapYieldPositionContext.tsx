@@ -13,7 +13,6 @@ export const ZapYieldPositionProvider: FC<ZapYieldPositionProviderProps> = ({
   yieldToken,
   rToken,
 }) => {
-  // TODO: add price to yieldToken
   return (
     <ZapProvider targetToken={yieldToken} rToken={rToken}>
       {children}

@@ -396,7 +396,7 @@ export const ZapProvider: FC<ZapProviderProps> = ({
             (outputPriceValue + (data.result.dustValue ?? 0))) /
             inputPriceValue) *
           100
-        : 0
+        : data.result.priceImpact
 
     return [
       _amountOut,

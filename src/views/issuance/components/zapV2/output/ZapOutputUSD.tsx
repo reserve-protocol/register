@@ -5,11 +5,14 @@ import { useZap } from '../context/ZapContext'
 import Help from 'components/help'
 
 const ZapOutputUSD = () => {
-  const { tokenOut, amountOut, zapDustUSD, loadingZap } = useZap()
+  const { tokenOut, amountOut, zapDustUSD, loadingZap, zapResult } = useZap()
 
   if (loadingZap) {
     return <Skeleton height={18} width={240} />
   }
+
+  const out =
+    (tokenOut?.price || 0) * Number(amountOut) || zapResult?.amountOutValue || 0
 
   return (
     <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
@@ -17,7 +20,7 @@ const ZapOutputUSD = () => {
         variant="legend"
         sx={{ overflow: 'hidden', textOverflow: 'ellipsis' }}
       >
-        ${formatCurrency((tokenOut?.price || 0) * Number(amountOut), 2)}
+        ${formatCurrency(out, 2)}
       </Text>
       {zapDustUSD !== undefined && zapDustUSD !== 0 && (
         <>

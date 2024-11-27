@@ -11,7 +11,7 @@ interface Props extends BoxProps {
 }
 
 const ZapDetails = ({ hideGasCost, ...props }: Props) => {
-  const { priceImpact, slippage, loadingZap } = useZap()
+  const { priceImpact, slippage, loadingZap, zapToYieldPosition } = useZap()
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }} {...props}>
@@ -44,13 +44,15 @@ const ZapDetails = ({ hideGasCost, ...props }: Props) => {
           {formatSlippage(slippage)}
         </Text>
       </Box>
-      <Box
-        variant="layout.verticalAlign"
-        sx={{ justifyContent: 'space-between' }}
-      >
-        <Text sx={{ fontSize: 14 }}>Rate</Text>
-        <ZapRate sx={{ fontSize: 14, fontWeight: 500 }} />
-      </Box>
+      {!zapToYieldPosition && (
+        <Box
+          variant="layout.verticalAlign"
+          sx={{ justifyContent: 'space-between' }}
+        >
+          <Text sx={{ fontSize: 14 }}>Rate</Text>
+          <ZapRate sx={{ fontSize: 14, fontWeight: 500 }} />
+        </Box>
+      )}
       {!hideGasCost && <ZapGasCost />}
     </Box>
   )
