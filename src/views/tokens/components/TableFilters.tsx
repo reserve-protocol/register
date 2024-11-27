@@ -46,7 +46,6 @@ const ChainSelectFilter = () => {
         onChange={handleChange}
         sx={{ width: ['100%', 120] }}
         value={value}
-        placeholder={t`Name, symbol or target`}
       >
         <option value={0}>All</option>
         {supportedChainList.map((chain) => (
@@ -75,13 +74,7 @@ const RecordLimitSelect = () => {
         <Help content="Limit of records per chain" />
       </Box>
 
-      <Select
-        mt={1}
-        onChange={handleChange}
-        value={value}
-        sx={{ width: 120 }}
-        placeholder={t`Name, symbol or target`}
-      >
+      <Select mt={1} onChange={handleChange} value={value} sx={{ width: 120 }}>
         <option>10</option>
         <option>50</option>
         <option>100</option>

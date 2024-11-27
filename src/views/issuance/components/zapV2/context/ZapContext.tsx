@@ -1,7 +1,7 @@
 import { useChainlinkPrice } from 'hooks/useChainlinkPrice'
 import useDebounce from 'hooks/useDebounce'
 import { useAtomValue } from 'jotai'
-import mixpanel from 'mixpanel-browser'
+import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
 import {
   FC,
   PropsWithChildren,
@@ -261,7 +261,7 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
 
     const newAmount =
       maxTokenIn > +(tokenIn.balance ?? '0')
-        ? tokenIn.balance ?? '0'
+        ? (tokenIn.balance ?? '0')
         : maxTokenIn.toString()
 
     setAmountIn(newAmount)

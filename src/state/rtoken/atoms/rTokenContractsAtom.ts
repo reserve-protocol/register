@@ -1,17 +1,19 @@
-import { atomWithLoadable } from 'utils/atoms/utils'
-import rTokenAtom from './rTokenAtom'
-import { Address, readContracts } from 'wagmi'
+import AssetRegistry from 'abis/AssetRegistry'
+import BackingManager from 'abis/BackingManager'
+import BasketHandler from 'abis/BasketHandler'
+import Broker from 'abis/Broker'
+import Distributor from 'abis/Distributor'
+import Furnace from 'abis/Furnace'
 import Main from 'abis/Main'
+import RevenueTrader from 'abis/RevenueTrader'
 import RToken from 'abis/RToken'
 import StRSR from 'abis/StRSR'
-import BackingManager from 'abis/BackingManager'
-import RevenueTrader from 'abis/RevenueTrader'
-import Distributor from 'abis/Distributor'
-import AssetRegistry from 'abis/AssetRegistry'
-import Broker from 'abis/Broker'
-import Furnace from 'abis/Furnace'
-import BasketHandler from 'abis/BasketHandler'
 import { chainIdAtom } from 'state/atoms'
+import { atomWithLoadable } from 'utils/atoms/utils'
+import { Address } from 'viem'
+import { readContracts } from 'wagmi/actions'
+import rTokenAtom from './rTokenAtom'
+import { wagmiConfig } from 'state/chain'
 
 export type ContractKey =
   | 'token'
@@ -26,6 +28,7 @@ export type ContractKey =
   | 'distributor'
   | 'basketHandler'
 
+// TODO: Remove wagmi action move it to an updater for better refetching
 const rTokenContractsAtom = atomWithLoadable(async (get) => {
   const rToken = get(rTokenAtom)
   const chainId = get(chainIdAtom)
@@ -46,7 +49,7 @@ const rTokenContractsAtom = atomWithLoadable(async (get) => {
     assetRegistry,
     basketHandler,
     mainVersion,
-  ] = await readContracts({
+  ] = await readContracts(wagmiConfig, {
     contracts: [
       { ...mainCall, functionName: 'distributor' },
       { ...mainCall, functionName: 'backingManager' },
@@ -72,7 +75,7 @@ const rTokenContractsAtom = atomWithLoadable(async (get) => {
     brokerVersion,
     assetRegistryVersion,
     basketHandlerVersion,
-  ] = await readContracts({
+  ] = await readContracts(wagmiConfig, {
     contracts: [
       {
         abi: RToken,

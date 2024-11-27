@@ -1,6 +1,6 @@
 import Popup from 'components/popup'
 import { useAtomValue } from 'jotai'
-import mixpanel from 'mixpanel-browser'
+import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
 import { useCallback, useState } from 'react'
 import { ChevronDown, ChevronUp } from 'react-feather'
 import { useLocation, useMatch, useNavigate } from 'react-router-dom'
@@ -57,7 +57,7 @@ const RTokenSelector = (props: BoxProps) => {
     <Popup
       show={isVisible}
       onDismiss={() => setVisible(false)}
-      content={<TokenList onSelect={handleSelect} onHome={handleHome} />}
+      content={<TokenList onSelect={handleSelect} />}
     >
       <Box
         {...props}

@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react'
-import { useAtomValue } from 'jotai'
 import AssetAbi from 'abis/AssetAbi'
-import { getContract } from 'wagmi/actions'
+import { useAtomValue } from 'jotai'
+import { useEffect, useState } from 'react'
 import { chainIdAtom } from 'state/atoms'
-import { registerAssetsProposedAtom } from '../atoms'
+import { wagmiConfig } from 'state/chain'
 import { Address } from 'viem'
+import { readContract } from 'wagmi/actions'
+import { registerAssetsProposedAtom } from '../atoms'
 
 export interface RegisterAsset {
   asset: Address
@@ -18,14 +19,14 @@ const useRegisterAssets = () => {
 
   useEffect(() => {
     const fetchERC20Address = async (asset: Address) => {
-      const contract = getContract({
-        address: asset as Address,
-        abi: AssetAbi,
-        chainId: chainId,
-      })
-
       try {
-        const erc20 = await contract.read.erc20()
+        // const erc20 = await contract.read.erc20()
+        const erc20 = await readContract(wagmiConfig, {
+          address: asset as Address,
+          abi: AssetAbi,
+          chainId: chainId,
+          functionName: 'erc20',
+        })
         return { asset, erc20 }
       } catch (e) {
         console.error('Error fetching underlying erc20', e)

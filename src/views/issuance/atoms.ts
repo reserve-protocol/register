@@ -1,6 +1,5 @@
 import FacadeRead from 'abis/FacadeRead'
 import { atom } from 'jotai'
-import { publicClient } from 'state/chain'
 import { BigNumberMap } from 'types'
 import { safeParseEther } from 'utils'
 import { FACADE_ADDRESS } from 'utils/addresses'
@@ -9,6 +8,8 @@ import { atomWithLoadable } from 'utils/atoms/utils'
 import { quote } from 'utils/rsv'
 import { getAddress } from 'viem'
 import { chainIdAtom, rTokenAtom, rTokenBalanceAtom } from './../../state/atoms'
+import { simulateContract } from 'wagmi/actions'
+import { wagmiConfig } from 'state/chain'
 
 export const wrapSidebarAtom = atom(false)
 
@@ -45,9 +46,8 @@ export const quantitiesAtom = atomWithLoadable(async (get) => {
   const rToken = get(rTokenAtom)
   const amount = get(issueAmountDebouncedAtom)
   const chainId = get(chainIdAtom)
-  const client = publicClient({ chainId })
 
-  if (!rToken || !(Number(amount) > 0) || !client) {
+  if (!rToken || !(Number(amount) > 0)) {
     return null
   }
 
@@ -58,11 +58,12 @@ export const quantitiesAtom = atomWithLoadable(async (get) => {
 
   const {
     result: [tokens, deposits],
-  } = await client.simulateContract({
+  } = await simulateContract(wagmiConfig, {
     abi: FacadeRead,
     address: FACADE_ADDRESS[chainId],
     functionName: 'issue',
     args: [rToken.address, safeParseEther(amount)],
+    chainId,
   })
 
   return tokens.reduce((prev, current, currentIndex) => {

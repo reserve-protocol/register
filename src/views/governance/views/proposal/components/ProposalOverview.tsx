@@ -1,14 +1,9 @@
-import styled from '@emotion/styled'
 import { Trans } from '@lingui/macro'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { Box, BoxProps, Button, Flex, Text } from 'theme-ui'
 import { isProposalEditingAtom, isProposalValidAtom } from '../atoms'
 import CreateProposalActionIcon from 'components/icons/CreateProposalActionIcon'
 import ProposalPreview from './ProposalPreview'
-
-const Container = styled(Box)`
-  height: fit-content;
-`
 
 const ProposalOverview = (props: BoxProps) => {
   const isValid = useAtomValue(isProposalValidAtom)
@@ -20,7 +15,12 @@ const ProposalOverview = (props: BoxProps) => {
   }
 
   return (
-    <Container variant="layout.sticky" p={0} {...props}>
+    <Box
+      sx={{ height: 'fit-content' }}
+      variant="layout.sticky"
+      p={0}
+      {...props}
+    >
       <Box
         sx={{
           maxHeight: 'calc(100vh - 124px)',
@@ -57,7 +57,7 @@ const ProposalOverview = (props: BoxProps) => {
         </Flex>
         <ProposalPreview sx={{ flexGrow: 1, overflow: 'auto' }} />
       </Box>
-    </Container>
+    </Box>
   )
 }
 

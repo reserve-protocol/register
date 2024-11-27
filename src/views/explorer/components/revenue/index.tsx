@@ -3,7 +3,6 @@ import { createColumnHelper } from '@tanstack/react-table'
 import FacadeRead from 'abis/FacadeRead'
 import CollapsableBox from 'components/boxes/CollapsableBox'
 import AuctionsIcon from 'components/icons/AuctionsIcon'
-import ExternalArrowIcon from 'components/icons/ExternalArrowIcon'
 import TokenLogo from 'components/icons/TokenLogo'
 import { Table } from 'components/table'
 import TokenItem from 'components/token-item'
@@ -17,12 +16,12 @@ import { FACADE_ADDRESS, RSR_ADDRESS } from 'utils/addresses'
 import { ChainId } from 'utils/chains'
 import { CHAIN_TAGS, ROUTES } from 'utils/constants'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
-import { formatEther, formatUnits } from 'viem'
-import { Address, useContractRead } from 'wagmi'
+import { Address, formatEther, formatUnits } from 'viem'
 import TabMenu from 'components/tab-menu'
 import CirclesIcon from 'components/icons/CirclesIcon'
 import ChainLogo from 'components/icons/ChainLogo'
 import { Button } from 'components'
+import { useReadContract } from 'wagmi'
 
 type RevenueResponse = {
   balance: bigint
@@ -181,22 +180,22 @@ const parseRevenue = (trades: readonly RevenueResponse[], chain: number) => {
 }
 
 const useAvailableRevenue = (): Revenue | undefined => {
-  const { data: mainnet } = useContractRead({
-    abi: FacadeRead as any,
+  const { data: mainnet } = useReadContract({
+    abi: FacadeRead,
     address: FACADE_ADDRESS[ChainId.Mainnet],
     functionName: 'revenues',
     chainId: ChainId.Mainnet,
     args: [Object.keys(rtokens[ChainId.Mainnet]) as Address[]],
   })
-  const { data: base } = useContractRead({
-    abi: FacadeRead as any,
+  const { data: base } = useReadContract({
+    abi: FacadeRead,
     address: FACADE_ADDRESS[ChainId.Base],
     functionName: 'revenues',
     chainId: ChainId.Base,
     args: [Object.keys(rtokens[ChainId.Base]) as Address[]],
   })
-  const { data: arbitrum } = useContractRead({
-    abi: FacadeRead as any,
+  const { data: arbitrum } = useReadContract({
+    abi: FacadeRead,
     address: FACADE_ADDRESS[ChainId.Arbitrum],
     functionName: 'revenues',
     chainId: ChainId.Arbitrum,

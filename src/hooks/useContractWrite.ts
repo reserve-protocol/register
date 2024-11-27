@@ -1,47 +1,49 @@
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import {
-  useContractWrite as _useContractWrite,
-  usePrepareContractWrite,
+  useEstimateGas,
+  useSimulateContract,
+  UseSimulateContractParameters,
+  useWriteContract,
 } from 'wagmi'
 import { getSafeGasLimit } from './../utils/index'
-import useGasEstimate from './useGasEstimate'
 import type { Abi } from 'abitype'
-import type { UsePrepareContractWriteConfig } from 'wagmi'
 import { useAtomValue } from 'jotai'
 import { isWalletInvalidAtom } from 'state/atoms'
+import { ContractFunctionName } from 'viem'
 
 // Extends wagmi to include gas estimate and gas limit multiplier
 const useContractWrite = <
   TAbi extends Abi | readonly unknown[],
-  TFunctionName extends string,
-  TChainId extends number
+  TFunctionName extends ContractFunctionName<TAbi, 'nonpayable' | 'payable'>,
 >(
-  call: UsePrepareContractWriteConfig<TAbi, TFunctionName, TChainId> = {} as any
+  call: UseSimulateContractParameters<TAbi, TFunctionName> = {} as any
 ) => {
   const isWalletInvalid = useAtomValue(isWalletInvalidAtom)
-  const { config, isSuccess, error } = usePrepareContractWrite(
-    !isWalletInvalid ? (call as UsePrepareContractWriteConfig) : undefined
+  const { data, error, isLoading } = useSimulateContract(
+    !isWalletInvalid ? (call as UseSimulateContractParameters) : undefined
   )
+  const { data: gas } = useEstimateGas(data?.request)
 
-  const gas = useGasEstimate(isSuccess ? config.request : null)
+  const contractWrite = useWriteContract()
+  const { writeContract } = contractWrite
 
-  const contractWrite = _useContractWrite({
-    ...config,
-    request: {
-      ...config.request,
-      gas: gas.result ? getSafeGasLimit(gas.result) : undefined,
-    },
-  })
+  const handleWrite = useCallback(() => {
+    if (data?.request && gas) {
+      writeContract({ ...data.request, gas: getSafeGasLimit(gas) })
+    }
+  }, [data?.request, writeContract, gas])
 
   return useMemo(
     () => ({
       ...contractWrite,
       gas,
       validationError: error,
-      isReady: !!call?.address && !!gas.result && !!contractWrite.write,
-      hash: !contractWrite.isError ? contractWrite.data?.hash : undefined,
+      isReady: !!gas,
+      isLoading: contractWrite.isPending,
+      hash: contractWrite.data,
+      write: handleWrite,
     }),
-    [contractWrite]
+    [error, isLoading, contractWrite, gas, handleWrite]
   )
 }
 

@@ -10,9 +10,11 @@ import { chainIdAtom } from 'state/atoms'
 import { StringMap } from 'types'
 import { atomWithLoadable } from 'utils/atoms/utils'
 import { Address, formatEther } from 'viem'
-import { readContracts } from 'wagmi'
+import { readContracts } from 'wagmi/actions'
 import rTokenAssetsAtom from './rTokenAssetsAtom'
 import rTokenContractsAtom from './rTokenContractsAtom'
+import { wagmiConfig } from 'state/chain'
+import { AvailableChain } from 'utils/chains'
 
 const rTokenConfigurationAtom = atomWithLoadable(async (get) => {
   const contracts = get(rTokenContractsAtom)
@@ -53,7 +55,12 @@ const rTokenConfigurationAtom = atomWithLoadable(async (get) => {
     address: contracts.broker.address,
   }
 
-  const calls = [
+  const calls: Array<{
+    abi: any
+    address: Address
+    functionName: string
+    chainId: AvailableChain
+  }> = [
     {
       ...mainCall,
       functionName: 'shortFreeze',
@@ -147,7 +154,7 @@ const rTokenConfigurationAtom = atomWithLoadable(async (get) => {
       dutchTradeImplementation,
       warmupPeriod,
       withdrawalLeak,
-    ] = await readContracts({ contracts: calls })
+    ] = await readContracts(wagmiConfig, { contracts: calls })
 
     return {
       tradingDelay: (tradingDelay.result as number).toString(),

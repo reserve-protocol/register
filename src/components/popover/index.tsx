@@ -1,4 +1,3 @@
-import styled from '@emotion/styled'
 import { Options, Placement } from '@popperjs/core'
 import useOnClickOutside from 'hooks/useOnClickOutside'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
@@ -6,64 +5,76 @@ import { usePopper } from 'react-popper'
 import useInterval from '../../hooks/useInterval'
 import { createPortal } from 'react-dom'
 import { StringMap } from 'types'
+import { Box, BoxProps } from 'theme-ui'
 
-const PopoverContainer = styled.div<{ show: boolean }>`
-  z-index: 100010;
-  visibility: ${(props) => (props.show ? 'visible' : 'hidden')};
-  opacity: ${(props) => (props.show ? 1 : 0)};
-  transition: visibility 150ms linear, opacity 150ms linear;
-`
-// color: ${({ theme }) => theme.text2};
+const PopoverContainer = React.forwardRef<
+  HTMLDivElement,
+  BoxProps & { show: boolean }
+>(({ show, sx, ...props }, ref) => (
+  <Box
+    ref={ref}
+    sx={{
+      zIndex: 100010,
+      visibility: show ? 'visible' : 'hidden',
+      opacity: show ? 1 : 0,
+      transition: 'visibility 150ms linear, opacity 150ms linear',
+      ...sx,
+    }}
+    {...props}
+  />
+))
 
-const ReferenceElement = styled.div`
-  display: block;
-`
-
-// border: 1px solid ${({ theme }) => theme.bg2};
-// background: ${({ theme }) => theme.bg0};
-const Arrow = styled.div`
-  width: 8px;
-  height: 8px;
-  z-index: 100010;
-  ::before {
-    position: absolute;
-    width: 8px;
-    height: 8px;
-    z-index: 9998;
-    content: '';
-    border: 1px solid black;
-    transform: rotate(45deg);
-    background: white;
-  }
-  &.arrow-top {
-    bottom: -5px;
-    ::before {
-      border-top: none;
-      border-left: none;
-    }
-  }
-  &.arrow-bottom {
-    top: -5px;
-    ::before {
-      border-bottom: none;
-      border-right: none;
-    }
-  }
-  &.arrow-left {
-    right: -5px;
-    ::before {
-      border-bottom: none;
-      border-left: none;
-    }
-  }
-  &.arrow-right {
-    left: -5px;
-    ::before {
-      border-right: none;
-      border-top: none;
-    }
-  }
-`
+const Arrow = React.forwardRef<HTMLDivElement, BoxProps>(
+  ({ sx, ...props }, ref) => (
+    <Box
+      ref={ref}
+      sx={{
+        width: '8px',
+        height: '8px',
+        zIndex: 100010,
+        '&::before': {
+          position: 'absolute',
+          width: '8px',
+          height: '8px',
+          zIndex: 9998,
+          content: '""',
+          border: '1px solid black',
+          transform: 'rotate(45deg)',
+          background: 'white',
+        },
+        '&.arrow-top': {
+          bottom: '-5px',
+          '&::before': {
+            borderTop: 'none',
+            borderLeft: 'none',
+          },
+        },
+        '&.arrow-bottom': {
+          top: '-5px',
+          '&::before': {
+            borderBottom: 'none',
+            borderRight: 'none',
+          },
+        },
+        '&.arrow-left': {
+          right: '-5px',
+          '&::before': {
+            borderBottom: 'none',
+            borderLeft: 'none',
+          },
+        },
+        '&.arrow-right': {
+          left: '-5px',
+          '&::before': {
+            borderRight: 'none',
+            borderTop: 'none',
+          },
+        },
+      }}
+      {...props}
+    />
+  )
+)
 
 export interface PopoverProps {
   content: React.ReactNode
@@ -135,16 +146,15 @@ export default function Popover({
 
   return (
     <>
-      <ReferenceElement ref={setReferenceElement as any}>
+      <Box ref={(element: HTMLDivElement) => setReferenceElement(element)}>
         {children}
-      </ReferenceElement>
+      </Box>
       {createPortal(
         <PopoverContainer
           show={show}
           ref={popperElement}
-          style={{...styles.popper, zIndex}}
+          style={{ ...styles.popper, zIndex }}
           {...attributes.popper}
-          
         >
           {content}
           {arrow && (

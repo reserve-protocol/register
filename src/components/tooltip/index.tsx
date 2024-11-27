@@ -1,19 +1,8 @@
-import styled from '@emotion/styled'
+/** @jsxImportSource theme-ui */
 import { ReactNode, useCallback, useState } from 'react'
+import { Box } from 'theme-ui'
 
 import Popover, { PopoverProps } from '../popover'
-
-export const TooltipContainer = styled.div`
-  max-width: 340px;
-  padding: 0.8rem 1rem;
-  font-weight: 400;
-  word-break: break-word;
-  color: var(--theme-ui-colors-text);
-  background-color: var(--theme-ui-colors-backgroundNested);
-  border: 1px solid var(--theme-ui-colors-inputBorder);
-  box-shadow: 0px 4px 24px var(--theme-ui-colors-contentBackground);
-  border-radius: 8px;
-`
 
 interface TooltipProps extends Omit<PopoverProps, 'content'> {
   text: ReactNode
@@ -29,13 +18,26 @@ interface TooltipContentProps extends Omit<PopoverProps, 'content'> {
   disableHover?: boolean // disable the hover and content display
 }
 
+const TooltipBox = ({ children }: { children: ReactNode }) => (
+  <Box
+    sx={{
+      maxWidth: '340px',
+      padding: '0.8rem 1rem',
+      fontWeight: 400,
+      wordBreak: 'break-word',
+      color: 'var(--theme-ui-colors-text)',
+      backgroundColor: 'var(--theme-ui-colors-backgroundNested)',
+      border: '1px solid var(--theme-ui-colors-inputBorder)',
+      boxShadow: '0px 4px 24px var(--theme-ui-colors-contentBackground)',
+      borderRadius: '8px',
+    }}
+  >
+    {children}
+  </Box>
+)
+
 export default function Tooltip({ text, ...rest }: TooltipProps) {
-  return (
-    <Popover
-      content={text && <TooltipContainer>{text}</TooltipContainer>}
-      {...rest}
-    />
-  )
+  return <Popover content={text && <TooltipBox>{text}</TooltipBox>} {...rest} />
 }
 
 function TooltipContent({
@@ -45,7 +47,7 @@ function TooltipContent({
 }: TooltipContentProps) {
   return (
     <Popover
-      content={wrap ? <TooltipContainer>{content}</TooltipContainer> : content}
+      content={wrap ? <TooltipBox>{content}</TooltipBox> : content}
       {...rest}
     />
   )

@@ -1,31 +1,36 @@
-import styled from '@emotion/styled'
-import { Box } from 'theme-ui'
+import { Box, BoxProps } from 'theme-ui'
 import LangIcon from 'components/icons/Lang'
 import Popup from 'components/popup'
 import { useState } from 'react'
 import { transition } from 'theme'
 
-const ActionItem = styled(Box)`
-  transition: ${transition};
-  padding: 16px;
-  border-bottom: 1px solid var(--theme-ui-colors-border);
-  cursor: pointer;
+const ActionItem = ({ sx, ...props }: BoxProps) => (
+  <Box
+    sx={{
+      ...sx,
+      transition,
+      padding: '16px',
+      borderBottom: '1px solid',
+      borderColor: 'border',
+      cursor: 'pointer',
+      '&:first-of-type': {
+        borderTopLeftRadius: '4px',
+        borderTopRightRadius: '4px',
+      },
 
-  &:first-of-type {
-    border-top-left-radius: 4px;
-    border-top-right-radius: 4px;
-  }
+      '&:last-of-type': {
+        borderBottomLeftRadius: '4px',
+        borderBottomRightRadius: '4px',
+        borderBottom: 'none',
+      },
 
-  &:last-of-type {
-    border-bottom-left-radius: 4px;
-    border-bottom-right-radius: 4px;
-    border-bottom: none;
-  }
-
-  &:hover {
-    background-color: var(--theme-ui-colors-secondary);
-  }
-`
+      '&:hover': {
+        backgroundColor: 'secondary',
+      },
+    }}
+    {...props}
+  />
+)
 
 const LanguageList = ({ onChange }: { onChange(key: string): void }) => (
   <Box>

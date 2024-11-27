@@ -4,13 +4,13 @@ import { useMemo } from 'react'
 import { Check, Slash, ThumbsDown, ThumbsUp, X } from 'react-feather'
 import { Box, Progress, Text } from 'theme-ui'
 import { formatEther } from 'viem'
-import { useContractReads } from 'wagmi'
 import { getProposalStateAtom, proposalDetailAtom } from '../atom'
 import { colors } from 'theme'
 import { formatCurrency, formatPercentage } from 'utils'
 import { rTokenAtom } from 'state/atoms'
 import { isTimeunitGovernance } from 'views/governance/utils'
 import { PROPOSAL_STATES } from 'utils/constants'
+import { useReadContracts } from 'wagmi'
 
 const BooleanIcon = ({
   value,
@@ -46,7 +46,7 @@ const ProposalDetailStats = () => {
   const { state } = useAtomValue(getProposalStateAtom)
   const isTimeunit = isTimeunitGovernance(proposal?.version ?? '1')
 
-  const { data } = useContractReads({
+  const { data } = useReadContracts({
     contracts: [
       {
         address: proposal?.governor ?? '0x1',
@@ -68,7 +68,7 @@ const ProposalDetailStats = () => {
       },
     ],
     allowFailure: false,
-    enabled: !!proposal,
+    query: { enabled: !!proposal },
   })
 
   const [quorum, votes] = data ?? [0n, [0n, 0n, 0n]]
@@ -218,8 +218,8 @@ const ProposalDetailStats = () => {
               backgroundColor: !majorityWeight
                 ? 'lightgray'
                 : majoritySupport
-                ? 'red'
-                : 'accentInverted',
+                  ? 'red'
+                  : 'accentInverted',
               height: 4,
             }}
             value={

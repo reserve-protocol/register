@@ -1,32 +1,15 @@
-import styled from '@emotion/styled'
 import TokenItem from 'components/token-item'
 import useTokenList from 'hooks/useTokenList'
 import { useAtomValue } from 'jotai'
 import { memo, useMemo } from 'react'
-import { Box, Flex } from 'theme-ui'
+import { Box } from 'theme-ui'
 import availableTokensAtom from './atoms'
-
-const ActionItem = styled(Flex)`
-  padding: 16px;
-  cursor: pointer;
-  border-radius: 6px;
-
-  &:hover {
-    background-color: var(--theme-ui-colors-secondary);
-  }
-`
 
 /**
  * Token selector list of available RTokens
  */
 const TokenList = memo(
-  ({
-    onSelect,
-    onHome,
-  }: {
-    onSelect(address: string, chainId: number): void
-    onHome(): void
-  }) => {
+  ({ onSelect }: { onSelect(address: string, chainId: number): void }) => {
     const { list, isLoading } = useTokenList()
     const tokens = useAtomValue(availableTokensAtom)
 
@@ -62,8 +45,16 @@ const TokenList = memo(
         }}
       >
         {orderedTokens.map(({ id, logo, symbol, chain }) => (
-          <ActionItem
+          <Box
             key={id}
+            sx={{
+              padding: '16px',
+              cursor: 'pointer',
+              borderRadius: '6px',
+              '&:hover': {
+                backgroundColor: 'var(--theme-ui-colors-secondary)',
+              },
+            }}
             onClick={() => {
               onSelect(id, chain as number)
             }}
@@ -74,7 +65,7 @@ const TokenList = memo(
               logo={logo}
               chainId={chain}
             />
-          </ActionItem>
+          </Box>
         ))}
       </Box>
     )

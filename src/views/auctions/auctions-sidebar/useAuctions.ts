@@ -11,14 +11,14 @@ import {
   auctionsToSettleAtom,
   selectedAuctionsAtom,
 } from '../atoms'
-import { UsePrepareContractWriteConfig } from 'wagmi'
+import { UseSimulateContractParameters } from 'wagmi'
 
 export enum TradeKind {
   DUTCH_AUCTION,
   BATCH_AUCTION,
 }
 
-const auctionsTxAtom = atom((get): UsePrepareContractWriteConfig => {
+const auctionsTxAtom = atom((get): UseSimulateContractParameters => {
   const { availableAuctions: revenue = [], recollaterization } =
     get(auctionsOverviewAtom) || {}
   const chainId = get(chainIdAtom)
@@ -26,11 +26,17 @@ const auctionsTxAtom = atom((get): UsePrepareContractWriteConfig => {
   const auctionsToSettle = get(auctionsToSettleAtom) || []
   const kind = get(auctionPlatformAtom)
 
-  const traderToSettle = auctionsToSettle.reduce((acc, auction) => {
-    acc[auction.trader] = [...(acc[auction.trader] || []), auction.sell.address]
+  const traderToSettle = auctionsToSettle.reduce(
+    (acc, auction) => {
+      acc[auction.trader] = [
+        ...(acc[auction.trader] || []),
+        auction.sell.address,
+      ]
 
-    return acc
-  }, {} as { [x: Address]: Address[] })
+      return acc
+    },
+    {} as { [x: Address]: Address[] }
+  )
 
   if (recollaterization && !Object.keys(traderToSettle).length) {
     return {
@@ -41,16 +47,19 @@ const auctionsTxAtom = atom((get): UsePrepareContractWriteConfig => {
     }
   }
 
-  const traderAuctions = selectedAuctions.reduce((auctions, selectedIndex) => {
-    if (revenue[selectedIndex]?.canStart) {
-      auctions[revenue[selectedIndex].trader] = [
-        ...(auctions[revenue[selectedIndex].trader] || []),
-        revenue[selectedIndex].sell.address,
-      ]
-    }
+  const traderAuctions = selectedAuctions.reduce(
+    (auctions, selectedIndex) => {
+      if (revenue[selectedIndex]?.canStart) {
+        auctions[revenue[selectedIndex].trader] = [
+          ...(auctions[revenue[selectedIndex].trader] || []),
+          revenue[selectedIndex].sell.address,
+        ]
+      }
 
-    return auctions
-  }, {} as { [x: Address]: Address[] })
+      return auctions
+    },
+    {} as { [x: Address]: Address[] }
+  )
 
   const traders = new Set([
     ...Object.keys(traderAuctions),
@@ -81,7 +90,7 @@ const auctionsTxAtom = atom((get): UsePrepareContractWriteConfig => {
     address: FACADE_ACT_ADDRESS[chainId],
     args: [transactions],
     functionName: 'multicall',
-    enabled: !!transactions.length,
+    query: { enabled: !!transactions.length },
   }
 })
 

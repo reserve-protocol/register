@@ -2,7 +2,7 @@ import ERC20 from 'abis/ERC20'
 import { useAtomValue } from 'jotai'
 import { chainIdAtom, walletAtom } from 'state/atoms'
 import { Address } from 'viem'
-import { useContractReads } from 'wagmi'
+import { useWatchReadContracts } from './useWatchReadContract'
 
 export interface RequiredAllowance {
   token: Address
@@ -16,7 +16,7 @@ const useHasAllowance = (
   const account = useAtomValue(walletAtom)
   const chainId = useAtomValue(chainIdAtom)
 
-  const { data }: { data: bigint[] | undefined } = useContractReads(
+  const { data }: { data: bigint[] | undefined } = useWatchReadContracts(
     allowances && account
       ? {
           contracts: allowances.map((allowance) => ({
@@ -26,7 +26,6 @@ const useHasAllowance = (
             args: [account, allowance.spender],
             chainId,
           })),
-          watch: true,
           allowFailure: false,
         }
       : undefined

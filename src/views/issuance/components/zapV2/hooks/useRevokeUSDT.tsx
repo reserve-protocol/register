@@ -1,14 +1,13 @@
 import ERC20 from 'abis/ERC20'
 import USDT from 'abis/USDT'
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import { Allowance } from 'types'
 import { ChainId } from 'utils/chains'
+import { Address } from 'viem'
 import {
-  Address,
-  useContractRead,
-  useContractWrite,
-  usePrepareContractWrite,
-  useWaitForTransaction,
+  useReadContract,
+  useWaitForTransactionReceipt,
+  useWriteContract,
 } from 'wagmi'
 
 export const useRevokeUSDT = (
@@ -18,7 +17,7 @@ export const useRevokeUSDT = (
 ) => {
   const disable = allowance?.symbol !== 'USDT'
 
-  const { data, isLoading: validatingAllowance } = useContractRead(
+  const { data, isLoading: validatingAllowance } = useReadContract(
     allowance && account
       ? {
           abi: ERC20,
@@ -26,40 +25,39 @@ export const useRevokeUSDT = (
           address: allowance.token,
           args: [account, allowance.spender],
           chainId,
-          enabled: !disable,
+          query: { enabled: !disable },
         }
       : undefined
   )
 
   const canRevoke = account && allowance && !disable ? (data ?? 0n) > 0n : false
 
-  const { config } = usePrepareContractWrite(
-    allowance && canRevoke
-      ? {
-          address: allowance.token,
-          abi: USDT,
-          functionName: 'approve',
-          args: [allowance.spender, 0n],
-          enabled: !disable,
-        }
-      : undefined
-  )
-
   const {
-    data: writeData,
-    write: revoke,
-    isLoading: revoking,
+    data: hash,
+    writeContract,
+    isPending: revoking,
     error: revokeSentError,
-  } = useContractWrite(config)
+  } = useWriteContract()
+
+  const handleRevoke = useCallback(() => {
+    if (allowance) {
+      writeContract({
+        address: allowance.token,
+        abi: USDT,
+        functionName: 'approve',
+        args: [allowance.spender, 0n],
+      })
+    }
+  }, [allowance])
 
   const {
     data: receipt,
     status: revokeStatus,
     isLoading: validatingRevoke,
     error: revokeError,
-  } = useWaitForTransaction({
-    hash: writeData?.hash,
-    enabled: !disable && !!writeData?.hash,
+  } = useWaitForTransactionReceipt({
+    hash: hash,
+    query: { enabled: !disable },
   })
 
   const isLoading = revoking || validatingRevoke
@@ -85,7 +83,7 @@ export const useRevokeUSDT = (
       validatingRevoke,
       isLoading,
       isSuccess,
-      revoke,
+      revoke: handleRevoke,
       receipt,
       revokeSentError,
       revokeError,
@@ -97,7 +95,7 @@ export const useRevokeUSDT = (
     validatingRevoke,
     isSuccess,
     isLoading,
-    revoke,
+    handleRevoke,
     receipt,
     revokeSentError,
     revokeError,

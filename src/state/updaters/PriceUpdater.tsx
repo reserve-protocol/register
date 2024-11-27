@@ -14,7 +14,7 @@ import {
 import { FACADE_ADDRESS } from 'utils/addresses'
 import { ChainId } from 'utils/chains'
 import { Address, formatEther, formatUnits } from 'viem'
-import { useContractRead, useContractReads, useFeeData } from 'wagmi'
+import { useEstimateFeesPerGas, useReadContract, useReadContracts } from 'wagmi'
 
 const CHAINLINK_FEES: Address[] = [
   '0x759bbc1be8f90ee6457c44abc7d443842a976d02', // RSR/USD
@@ -39,10 +39,10 @@ const PricesUpdater = () => {
   const setGasPrice = useSetAtom(gasFeeAtom)
   const setRTokenPrice = useSetAtom(rTokenPriceAtom)
 
-  const { data: gasQuote } = useFeeData()
+  const { data: gasQuote } = useEstimateFeesPerGas()
 
   // Price for RSR and ETH pull from chainlink
-  const multicallResult = useContractReads({
+  const multicallResult = useReadContracts({
     contracts: CHAINLINK_FEES.map((address) => ({
       abi: Chainlink,
       address,
@@ -51,13 +51,13 @@ const PricesUpdater = () => {
     })),
     allowFailure: false,
   })
-  const { data: rTokenPrice } = useContractRead({
+  const { data: rTokenPrice } = useReadContract({
     abi: FacadeRead,
     address: rToken ? FACADE_ADDRESS[chainId] : undefined,
     functionName: 'price',
     chainId,
     args: [rToken as Address],
-    enabled: !!rToken,
+    query: { enabled: !!rToken },
   })
 
   useEffect(() => {
@@ -79,7 +79,7 @@ const PricesUpdater = () => {
 
   useEffect(() => {
     if (gasQuote) {
-      setGasPrice(gasQuote.gasPrice)
+      setGasPrice(gasQuote.gasPrice ?? 0n)
     }
   }, [gasQuote])
 

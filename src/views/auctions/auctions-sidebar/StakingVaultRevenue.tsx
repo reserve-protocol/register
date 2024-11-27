@@ -9,9 +9,9 @@ import { estimatedApyAtom } from 'state/atoms'
 import { Box, Card, Divider, Text } from 'theme-ui'
 import { formatCurrency, formatPercentage } from 'utils'
 import { RTOKEN_VAULT_STAKE } from 'utils/constants'
-import { formatUnits } from 'viem'
-import { erc20ABI, useContractReads } from 'wagmi'
+import { erc20Abi, formatUnits } from 'viem'
 import RevenueOverviewHeader from './RevenueOverviewHeader'
+import { useReadContracts } from 'wagmi'
 
 const StakingVaultRevenue = () => {
   const rToken = useRToken()
@@ -21,7 +21,7 @@ const StakingVaultRevenue = () => {
     ? RTOKEN_VAULT_STAKE[rToken.address]
     : null
 
-  const { data } = useContractReads({
+  const { data } = useReadContracts({
     contracts: [
       {
         abi: StakingVault,
@@ -36,27 +36,27 @@ const StakingVaultRevenue = () => {
         chainId: rToken?.chainId,
       },
       {
-        abi: erc20ABI,
+        abi: erc20Abi,
         address: rToken?.address,
         functionName: 'balanceOf',
-        args: rTokenVault?.address ? [rTokenVault?.address] : [],
+        args: rTokenVault?.address ? [rTokenVault.address] : undefined,
         chainId: rToken?.chainId,
       },
       {
-        abi: erc20ABI,
+        abi: erc20Abi,
         chainId: rToken?.chainId,
         address: rToken?.address,
         functionName: 'totalSupply',
       },
       {
-        abi: erc20ABI,
+        abi: erc20Abi,
         chainId: rToken?.chainId,
         address: rTokenVault?.address,
         functionName: 'totalSupply',
       },
     ],
     allowFailure: false,
-    enabled: !!rTokenVault && !!rToken,
+    query: { enabled: !!rTokenVault && !!rToken },
   })
 
   const avgAPY = useMemo(() => {
@@ -86,7 +86,13 @@ const StakingVaultRevenue = () => {
       [rewardPeriodStart, rewardPeriodEnd, rewardsAmount],
       totalAssets,
       stakingTokenBalance,
-    ] = data as [bigint[], bigint, bigint]
+    ] = data as [
+      readonly [bigint, bigint, bigint],
+      bigint,
+      bigint,
+      bigint,
+      bigint,
+    ]
 
     const currentTime = Math.floor(new Date().getTime() / 1000)
     const rewards = +formatUnits(rewardsAmount, rToken.decimals)

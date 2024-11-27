@@ -38,6 +38,7 @@ import { ContractKey } from 'state/rtoken/atoms/rTokenContractsAtom'
 import { parsePercent } from 'utils'
 import { FURNACE_ADDRESS, ST_RSR_ADDRESS } from 'utils/addresses'
 import {
+  Address,
   Hex,
   encodeFunctionData,
   parseEther,
@@ -46,7 +47,6 @@ import {
   zeroAddress,
 } from 'viem'
 import { getSharesFromSplit } from 'views/deploy/utils'
-import { Address } from 'wagmi'
 import {
   backupChangesAtom,
   isNewBasketProposedAtom,
@@ -74,7 +74,7 @@ const paramParse: { [x: string]: (v: string) => bigint | number } = {
   shortFreeze: Number,
   longFreeze: Number,
   warmupPeriod: Number,
-  minDelay: (v) => +v * 60 * 60, 
+  minDelay: (v) => +v * 60 * 60,
   proposalThresholdAsMicroPercent: (v) => BigInt(+v * 1e6),
   quorumPercent: Number,
 }

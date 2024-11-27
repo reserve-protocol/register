@@ -7,7 +7,7 @@ import { bridgeApprovalAtom, selectedBridgeToken } from '../atoms'
 const ApproveBridgeBtn = () => {
   const approve = useAtomValue(bridgeApprovalAtom)
   const selectedToken = useAtomValue(selectedBridgeToken)
-  const { isLoading, gas, hash, write } = useContractWrite(
+  const { isLoading, gas, hash, isReady, write } = useContractWrite(
     approve
       ? {
           address: approve.token,
@@ -18,17 +18,15 @@ const ApproveBridgeBtn = () => {
       : undefined
   )
 
-  const checkingAllowance = !gas.isLoading && !gas.estimateUsd
-
   return (
     <TransactionButton
       loading={isLoading || !!hash}
-      disabled={!write || checkingAllowance}
+      disabled={!isReady}
       loadingText={hash ? 'Waiting for allowance...' : 'Sign in wallet...'}
       gas={gas}
       onClick={write}
       text={
-        checkingAllowance
+        !isReady
           ? `Verifying allowance...`
           : `Allow use of ${selectedToken.L1symbol}`
       }

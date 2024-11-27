@@ -9,9 +9,10 @@ import {
 } from 'state/atoms'
 import { FACADE_ADDRESS } from 'utils/addresses'
 import { formatEther } from 'viem'
-import { useContractRead } from 'wagmi'
 import { pendingRSRAtom } from '../../atoms'
-import { publicClient } from 'state/chain'
+import { useReadContract } from 'wagmi'
+import { getStorageAt } from 'wagmi/actions'
+import { wagmiConfig } from 'state/chain'
 
 /**
  * Fetch pending issuances
@@ -26,7 +27,7 @@ const PendingBalancesUpdater = () => {
   const setPendingRSR = useSetAtom(pendingRSRAtom)
   const [draftEra, setDraftEra] = useState(0)
 
-  const { data, refetch, isFetched } = useContractRead(
+  const { data, refetch, isFetched } = useReadContract(
     rToken && account
       ? {
           abi: FacadeRead,
@@ -50,10 +51,10 @@ const PendingBalancesUpdater = () => {
     }
 
     try {
-      const client = publicClient({ chainId })
       const draftEra: string =
-        (await client.getStorageAt({
+        (await getStorageAt(wagmiConfig, {
           address: rToken.stToken?.address!,
+          chainId,
           slot: '0x0000000000000000000000000000000000000000000000000000000000000109',
         })) || '0'
 
@@ -61,7 +62,7 @@ const PendingBalancesUpdater = () => {
     } catch (e) {
       console.error('error pulling storage slot', e)
     }
-  }, [setDraftEra, rToken])
+  }, [setDraftEra, chainId, rToken])
 
   useEffect(() => {
     fetchDraftEra()

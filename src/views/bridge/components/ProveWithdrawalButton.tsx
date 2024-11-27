@@ -1,10 +1,10 @@
 import { t, Trans } from '@lingui/macro'
 import TransactionButton from 'components/button/TransactionButton'
 import useWatchTransaction from 'hooks/useWatchTransaction'
-import { memo } from 'react'
+import { memo, useCallback } from 'react'
 import { Text } from 'theme-ui'
 import { ChainId } from 'utils/chains'
-import { useContractWrite } from 'wagmi'
+import { useContractWrite, useWriteContract } from 'wagmi'
 import { usePrepareProveWithdrawal } from '../hooks/usePrepareProveWithdrawal'
 
 type ProveWithdrawalButtonProps = {
@@ -20,14 +20,17 @@ export const ProveWithdrawalButton = memo(function ProveWithdrawalButton({
     txHash,
     blockNumberOfLatestL2OutputProposal
   )
-  const {
-    write: submitProof,
-    isLoading,
-    data,
-  } = useContractWrite(proveWithdrawalConfig)
+
+  const { writeContract, isPending, data } = useWriteContract()
+
+  const submitProof = useCallback(() => {
+    if (proveWithdrawalConfig?.request) {
+      writeContract(proveWithdrawalConfig.request)
+    }
+  }, [writeContract, proveWithdrawalConfig])
 
   const { isMining, status } = useWatchTransaction({
-    hash: data?.hash,
+    hash: data,
     label: 'Verify base withdraw',
   })
 
@@ -41,7 +44,7 @@ export const ProveWithdrawalButton = memo(function ProveWithdrawalButton({
 
   return (
     <TransactionButton
-      loading={isLoading || isMining}
+      loading={isPending || isMining}
       mining={isMining}
       chain={ChainId.Mainnet}
       sx={{ width: ['100%', 'auto'] }}

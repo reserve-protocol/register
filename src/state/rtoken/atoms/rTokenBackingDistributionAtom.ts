@@ -15,6 +15,7 @@ import { TARGET_UNITS } from 'utils/constants'
 import { Address, formatEther, hexToString } from 'viem'
 import { readContracts } from 'wagmi/actions'
 import rTokenAtom from './rTokenAtom'
+import { wagmiConfig } from 'state/chain'
 
 type BackingDistribution = {
   backing: number
@@ -47,7 +48,7 @@ const rTokenBackingDistributionAtom = atomWithLoadable(async (get) => {
     [backing, overCollateralization],
     [_, __, targetAmts],
     [requiredBackingBuffer, actualBackingBuffer],
-  ] = await readContracts({
+  ] = await readContracts(wagmiConfig, {
     contracts: [
       {
         ...callParams,

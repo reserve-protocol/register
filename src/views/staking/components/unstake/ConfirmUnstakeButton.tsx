@@ -13,8 +13,8 @@ import { Box, Link, Spinner, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { unstakeDelayAtom } from 'views/staking/atoms'
-import { UsePrepareContractWriteConfig } from 'wagmi'
 import { unstakeGasEstimateAtom, unstakeTransactionAtom } from './atoms'
+import { UseSimulateContractParameters } from 'wagmi'
 
 const GasEstimate = () => {
   const estimate = useAtomValue(unstakeGasEstimateAtom)
@@ -38,7 +38,7 @@ const GasEstimate = () => {
 
 const ConfirmUnstakeButton = () => {
   const chain = useAtomValue(chainIdAtom)
-  const tx: UsePrepareContractWriteConfig | undefined = useAtomValue(
+  const tx: UseSimulateContractParameters | undefined = useAtomValue(
     unstakeTransactionAtom
   )
   const delay = useAtomValue(unstakeDelayAtom)

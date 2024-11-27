@@ -56,7 +56,7 @@ export const useDeploy = () => {
     abi: FacadeWrite,
     functionName: 'deployRToken',
     args: txData,
-    enabled: !!txData,
+    query: { enabled: !!txData },
   })
 }
 

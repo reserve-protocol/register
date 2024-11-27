@@ -15,12 +15,12 @@ import {
 } from 'state/atoms'
 import { Box, Grid, Image, Text } from 'theme-ui'
 import { formatCurrency, getCurrentTime } from 'utils'
-import { formatEther, formatEther as formatEtherViem } from 'viem'
+import { Address, formatEther, formatEther as formatEtherViem } from 'viem'
 import RolesView from 'views/settings/components/RolesView'
 import SettingItem from 'views/settings/components/SettingItem'
-import { Address, useContractRead } from 'wagmi'
 import { isTimeunitGovernance } from '../utils'
 import AccountVotes from './AccountVotes'
+import { useReadContract } from 'wagmi'
 
 const query = gql`
   query getGovernanceStats($id: String!) {
@@ -78,7 +78,7 @@ const VotingPower = () => {
     }
   }, [!!blockNumber, !!account, governance?.governor, chainId])
 
-  const { data: votes } = useContractRead(snapshot)
+  const { data: votes } = useReadContract(snapshot)
 
   return (
     <Box p={4} sx={{ borderBottom: '1px solid', borderColor: 'border' }}>

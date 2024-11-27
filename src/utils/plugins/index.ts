@@ -18,9 +18,9 @@ import {
 } from 'utils/addresses'
 
 const collateralPlugins: { [chainId: number]: CollateralPlugin[] } = {
-  [ChainId.Mainnet]: mainnetPlugins,
-  [ChainId.Base]: basePlugins,
-  [ChainId.Arbitrum]: arbitrumPlugins,
+  [ChainId.Mainnet]: mainnetPlugins as CollateralPlugin[],
+  [ChainId.Base]: basePlugins as CollateralPlugin[],
+  [ChainId.Arbitrum]: arbitrumPlugins as CollateralPlugin[],
 }
 
 export const rewardsByProtocol: { [x: Address]: ProtocolKey[] } = {

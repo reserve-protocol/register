@@ -1,14 +1,16 @@
 import { Trans, t } from '@lingui/macro'
-import MDEditor from '@uiw/react-md-editor'
 import { Input } from 'components'
 import Field from 'components/field'
 import useRToken from 'hooks/useRToken'
 import { useSetAtom } from 'jotai'
-import { useEffect, useMemo, useState } from 'react'
+import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
 import { Box, Card, Divider, Text } from 'theme-ui'
 import { LISTED_RTOKEN_ADDRESSES } from 'utils/constants'
 import ProposalDetail from 'views/governance/components/ProposalDetailPreview'
 import { proposalDescriptionAtom } from '../atoms'
+import Skeleton from 'react-loading-skeleton'
+
+const MDEditor = lazy(() => import('@uiw/react-md-editor'))
 
 const ConfirmProposalForm = ({
   addresses,
@@ -78,7 +80,9 @@ const ConfirmProposalForm = ({
         >
           <Trans>Description</Trans>
         </Text>
-        <MDEditor value={description} onChange={setDescription} />
+        <Suspense fallback={<Skeleton />}>
+          <MDEditor value={description} onChange={setDescription} />
+        </Suspense>
       </Card>
 
       <ProposalDetail addresses={addresses} calldatas={calldatas} />

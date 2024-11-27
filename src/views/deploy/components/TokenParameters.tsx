@@ -6,11 +6,11 @@ import { useResetAtom } from 'jotai/utils'
 import { useFormContext } from 'react-hook-form'
 import { chainIdAtom, walletChainAtom } from 'state/atoms'
 import { Box, BoxProps, Card, Divider, Label, Radio, Text } from 'theme-ui'
-import { ChainId } from 'utils/chains'
+import { AvailableChain, ChainId } from 'utils/chains'
 import { CHAIN_TAGS, supportedChainList } from 'utils/constants'
-import { useSwitchNetwork } from 'wagmi'
 import TokenForm from './TokenForm'
 import { useEffect } from 'react'
+import { useSwitchChain } from 'wagmi'
 
 type Defaults = [string, string][]
 
@@ -68,11 +68,11 @@ const ChainSelector = () => {
   const resetBasket = useResetAtom(basketAtom)
   const resetBackup = useResetAtom(backupCollateralAtom)
   const { setValue } = useFormContext()
-  const { switchNetwork } = useSwitchNetwork()
+  const { switchChain } = useSwitchChain()
 
   useEffect(() => {
     if (walletChainId && supportedChainList.includes(walletChainId)) {
-      setChain(walletChainId)
+      setChain(walletChainId as AvailableChain)
     }
   }, [])
 
@@ -90,8 +90,8 @@ const ChainSelector = () => {
         setValue(key, value)
       }
 
-      setChain(newChain)
-      switchNetwork && switchNetwork(newChain)
+      setChain(newChain as AvailableChain)
+      switchChain && switchChain({ chainId: newChain })
     }
   }
 

@@ -3,8 +3,6 @@ import rTokenAtom from './rTokenAtom'
 import rTokenBackingDistributionAtom from './rTokenBackingDistributionAtom'
 import { Basket } from 'components/rtoken-setup/atoms'
 import rTokenAssetsAtom from './rTokenAssetsAtom'
-import { Address } from 'viem'
-import { useContractRead } from 'wagmi'
 
 const rTokenBasketAtom = atom((get) => {
   const rToken = get(rTokenAtom)

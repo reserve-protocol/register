@@ -1,17 +1,17 @@
 import FacadeRead from 'abis/FacadeRead'
 import RToken from 'abis/RToken'
 import { Atom, atom } from 'jotai'
+import { wagmiConfig } from 'state/chain'
 import { chainIdAtom, rTokenListAtom } from 'state/chain/atoms/chainAtoms'
 import { ReserveToken, Token } from 'types'
 import { getTokenReadCalls } from 'utils'
 import { FACADE_ADDRESS } from 'utils/addresses'
 import { atomWithLoadable } from 'utils/atoms/utils'
-import { ChainId } from 'utils/chains'
 import { collateralDisplay } from 'utils/constants'
 import { collateralsProtocolMap } from 'utils/plugins'
-import { formatEther, hexToString } from 'viem'
-import { Address } from 'wagmi'
+import { Address, formatEther, hexToString } from 'viem'
 import { readContracts } from 'wagmi/actions'
+import { base } from 'wagmi/chains'
 
 // RToken meta, pulled directly from the listed list or validated for unlisted tokens
 // Tokens without "logo" are unlisted
@@ -95,10 +95,10 @@ const rTokenAtom: Atom<ReserveToken | null> = atomWithLoadable(
           bigint,
           Address[],
           Address,
-          Address[][]
+          Address[][],
         ]
       >
-    >readContracts({
+    >readContracts(wagmiConfig, {
       contracts: rTokenMetaCalls,
       allowFailure: false,
     }))
@@ -111,7 +111,7 @@ const rTokenAtom: Atom<ReserveToken | null> = atomWithLoadable(
       ),
     ].map((call) => ({ ...call, chainId }))
 
-    const tokensMeta = await (<Promise<string[]>>readContracts({
+    const tokensMeta = await (<Promise<string[]>>readContracts(wagmiConfig, {
       contracts: tokensMetaCall,
       allowFailure: false,
     }))

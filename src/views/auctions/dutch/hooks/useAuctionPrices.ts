@@ -10,7 +10,7 @@ import {
 } from 'state/atoms'
 import { blockDuration } from 'utils/constants'
 import { Address, formatUnits } from 'viem'
-import { useContractRead } from 'wagmi'
+import { useReadContract } from 'wagmi'
 
 const useAuctionPrices = (
   contractAddress: Address,
@@ -36,10 +36,10 @@ const useAuctionPrices = (
   )
 
   const { data: priceResult } = <{ data: bigint | undefined }>(
-    useContractRead(call)
+    useReadContract(call)
   )
   const { data: nextPriceResult } = <{ data: bigint | undefined }>(
-    useContractRead({
+    useReadContract({
       ...call,
       args: [
         isLegacy

@@ -1,15 +1,14 @@
-import { useMemo } from 'react'
-import { Allowance } from 'types'
-import {
-  Address,
-  useContractRead,
-  useContractWrite,
-  usePrepareContractWrite,
-  useWaitForTransaction,
-} from 'wagmi'
-import { ChainId } from 'utils/chains'
 import ERC20 from 'abis/ERC20'
 import USDT from 'abis/USDT'
+import { useCallback, useMemo } from 'react'
+import { Allowance } from 'types'
+import { ChainId } from 'utils/chains'
+import { Address, erc20Abi } from 'viem'
+import {
+  useReadContract,
+  useWaitForTransactionReceipt,
+  useWriteContract,
+} from 'wagmi'
 
 export const useApproval = (
   chainId: number,
@@ -19,7 +18,7 @@ export const useApproval = (
   const disable = allowance?.symbol === 'ETH'
   const isUSDT = allowance?.symbol === 'USDT'
 
-  const { data, isLoading: validatingAllowance } = useContractRead(
+  const { data, isLoading: validatingAllowance } = useReadContract(
     allowance && account
       ? {
           abi: ERC20,
@@ -27,7 +26,7 @@ export const useApproval = (
           address: allowance.token,
           args: [account, allowance.spender],
           chainId,
-          enabled: !disable,
+          query: { enabled: !disable },
         }
       : undefined
   )
@@ -45,47 +44,34 @@ export const useApproval = (
       allowance.symbol === 'USDT'
   )
 
-  const { config: configERC20 } = usePrepareContractWrite(
-    allowance && !hasAllowance && !isUSDT
-      ? {
-          address: allowance.token,
-          abi: ERC20,
-          functionName: 'approve',
-          args: [allowance.spender, allowance.amount],
-          enabled: !disable,
-        }
-      : undefined
-  )
-
-  const { config: configUSDT } = usePrepareContractWrite(
-    allowance && !hasAllowance && isUSDT
-      ? {
-          address: allowance.token,
-          abi: USDT,
-          functionName: 'approve',
-          args: [allowance.spender, allowance.amount],
-          enabled: !disable,
-        }
-      : undefined
-  )
-
-  const config = (isUSDT ? configUSDT : configERC20) as any
-
   const {
-    data: writeData,
-    write: approve,
-    isLoading: approving,
+    writeContract,
+    data: hash,
+    isPending: approving,
     error: approvalSentError,
-  } = useContractWrite(config)
+  } = useWriteContract()
+
+  const handleApprove = useCallback(() => {
+    if (allowance) {
+      const { token, spender, amount } = allowance
+
+      writeContract({
+        address: token,
+        abi: isUSDT ? USDT : erc20Abi,
+        functionName: 'approve',
+        args: [spender, amount],
+      })
+    }
+  }, [allowance])
 
   const {
     data: receipt,
     status: approvalStatus,
     isLoading: validatingApproval,
     error: approvalError,
-  } = useWaitForTransaction({
-    hash: writeData?.hash,
-    enabled: !disable && !!writeData?.hash,
+  } = useWaitForTransactionReceipt({
+    hash,
+    query: { enabled: !disable },
   })
 
   const isLoading = approving || validatingApproval
@@ -112,7 +98,7 @@ export const useApproval = (
       hasAllowance: hasAllowance || isSuccess,
       isLoading,
       isSuccess,
-      approve,
+      approve: handleApprove,
       receipt,
       approvalSentError,
       approvalError,
@@ -125,7 +111,7 @@ export const useApproval = (
     hasAllowance,
     isSuccess,
     isLoading,
-    approve,
+    handleApprove,
     receipt,
     approvalSentError,
     approvalError,

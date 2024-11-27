@@ -2,7 +2,7 @@ import RToken from 'abis/RToken'
 import { ListedToken } from 'hooks/useTokenList'
 import { useMemo } from 'react'
 import { formatEther, getAddress } from 'viem'
-import { useContractReads } from 'wagmi'
+import { useReadContracts } from 'wagmi'
 
 const usePriceETH = ({
   id,
@@ -16,10 +16,7 @@ const usePriceETH = ({
     basketsNeeded: number
   }
 >) => {
-  const { data } = useContractReads({
-    select: (data) => {
-      return (data as bigint[]).map((value) => Number(formatEther(value)))
-    },
+  const { data } = useReadContracts({
     contracts: [
       ...(targetUnits === 'ETH' && id && chain && (!basketsNeeded || !supply)
         ? [
@@ -38,6 +35,11 @@ const usePriceETH = ({
           ]
         : []),
     ],
+    query: {
+      select: (data) => {
+        return (data as bigint[]).map((value) => Number(formatEther(value)))
+      },
+    },
     allowFailure: false,
   })
 

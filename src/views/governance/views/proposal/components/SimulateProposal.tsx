@@ -1,19 +1,19 @@
 import { Trans, t } from '@lingui/macro'
 import { LoadingButton } from 'components/button'
-import { Box, BoxProps, Container, Flex, Link, Spinner, Text } from 'theme-ui'
-import { TENDERLY_SHARING_URL } from 'utils/constants'
-import { UsePrepareContractWriteConfig } from 'wagmi'
-import IssuanceIcon from 'components/icons/IssuanceIcon'
-import useProposalSimulation from '../hooks/useProposalSimulation'
-import { TenderlySimulation } from 'types'
 import ExternalArrowIcon from 'components/icons/ExternalArrowIcon'
+import IssuanceIcon from 'components/icons/IssuanceIcon'
 import Tenderly from 'components/icons/logos/Tenderly'
-import { useEffect } from 'react'
 import { useResetAtom } from 'jotai/utils'
+import { useEffect } from 'react'
+import { Box, BoxProps, Flex, Link, Spinner, Text } from 'theme-ui'
+import { TenderlySimulation } from 'types'
+import { TENDERLY_SHARING_URL } from 'utils/constants'
 import { simulationStateAtom } from '../../proposal-detail/atom'
+import useProposalSimulation from '../hooks/useProposalSimulation'
+import { UseSimulateContractParameters } from 'wagmi'
 
 interface Props extends BoxProps {
-  tx: UsePrepareContractWriteConfig
+  tx: UseSimulateContractParameters
 }
 
 const getButtonStyles = (sim: TenderlySimulation | null) => {

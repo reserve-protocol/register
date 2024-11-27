@@ -3,12 +3,11 @@ import { useMemo } from 'react'
 import { chainIdAtom } from 'state/atoms'
 import { ENS_ADDRESS } from 'utils/addresses'
 import { ChainId } from 'utils/chains'
-import { Address, useContractRead } from 'wagmi'
+import { Address } from 'viem'
+import { useReadContract } from 'wagmi'
 
 export const useEnsAddresses = (addresses: string[]) => {
-  const chainId = useAtomValue(chainIdAtom)
-
-  const { data } = useContractRead({
+  const { data } = useReadContract({
     abi: [
       {
         inputs: [
@@ -24,7 +23,7 @@ export const useEnsAddresses = (addresses: string[]) => {
       ? (ENS_ADDRESS[ChainId.Mainnet] as Address)
       : undefined,
     functionName: 'getNames',
-    args: [addresses],
+    args: [addresses] as [Address[]],
     chainId: ChainId.Mainnet,
   })
 

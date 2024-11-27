@@ -1,4 +1,5 @@
 import rtokens from '@reserve-protocol/rtokens'
+import BasketHandler from 'abis/BasketHandler'
 import { RevenueSplit } from 'components/rtoken-setup/atoms'
 import { gql } from 'graphql-request'
 import { atom, useAtom, useAtomValue } from 'jotai'
@@ -14,8 +15,7 @@ import {
 import { formatEther, getAddress } from 'viem'
 import { useMultichainQuery } from './useQuery'
 import useTimeFrom from './useTimeFrom'
-import BasketHandler from 'abis/BasketHandler'
-import { useContractReads } from 'wagmi'
+import { useWatchReadContracts } from './useWatchReadContract'
 
 export interface ListedToken {
   id: string
@@ -140,10 +140,9 @@ const useTokenList = () => {
   }, [data, supportedChainList])
 
   const { data: collateralized }: { data: boolean[] | undefined } =
-    useContractReads({
+    useWatchReadContracts({
       contracts: calls,
       allowFailure: false,
-      watch: true,
     })
 
   useEffect(() => {

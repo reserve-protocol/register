@@ -4,7 +4,7 @@ import { MouseoverTooltip } from 'components/tooltip'
 import { ReactNode } from 'react'
 import { Box, BoxProps } from 'theme-ui'
 
-interface Props extends BoxProps {
+interface Props extends Omit<BoxProps, 'content'> {
   content: ReactNode
   size?: number
   color?: string
