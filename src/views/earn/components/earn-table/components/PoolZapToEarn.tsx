@@ -29,29 +29,17 @@ const PoolZapToEarn = ({ chainId }: { chainId: number }) => {
             token in your wallet"
           </Text>
         </Box>
-        <Button>
-          <Box
-            variant="layout.verticalAlign"
-            sx={{ gap: 2 }}
-            onClick={() => {
-              setChain(chainId)
-              setSidebar('deposit')
-            }}
-          >
+        <Button
+          onClick={() => {
+            setChain(chainId)
+            setSidebar('deposit')
+          }}
+        >
+          <Box variant="layout.verticalAlign" sx={{ gap: 2 }}>
             <Zap size={16} />
             Deposit
           </Box>
         </Button>
-        {/* <Button>
-          <Box
-            variant="layout.verticalAlign"
-            sx={{ gap: 2 }}
-            onClick={() => setSidebar('withdraw')}
-          >
-            <Zap size={16} />
-            Withdraw
-          </Box>
-        </Button> */}
       </Box>
       {sidebar !== 'none' && <EarnZapSidebar onClose={handleClose} />}
     </>
