@@ -1,7 +1,7 @@
 import { useAtomValue } from 'jotai'
 import { lazy, Suspense, useState } from 'react'
 import { Box } from 'theme-ui'
-import ProposalDetail from 'views/governance/components/ProposalDetailPreview'
+import ProposalDetail from '@/views/rtoken/governance/components/ProposalDetailPreview'
 import { proposalDetailAtom } from '../atom'
 import Skeleton from 'react-loading-skeleton'
 
