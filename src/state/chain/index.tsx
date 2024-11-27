@@ -5,18 +5,6 @@ import {
   darkTheme,
 } from '@rainbow-me/rainbowkit'
 import '@rainbow-me/rainbowkit/styles.css'
-
-import { alchemyProvider } from '@wagmi/core/providers/alchemy'
-import { jsonRpcProvider } from '@wagmi/core/providers/jsonRpc'
-import { publicProvider } from '@wagmi/core/providers/public'
-import React from 'react'
-import { ChainId } from 'utils/chains'
-import { WagmiConfig, configureChains, createConfig } from 'wagmi'
-import { arbitrum, base, mainnet } from 'wagmi/chains'
-import { infuraProvider } from 'wagmi/providers/infura'
-import AtomUpdater from './updaters/AtomUpdater'
-import { setupConfig } from './utils/mocks'
-
 import {
   braveWallet,
   coinbaseWallet,
@@ -28,71 +16,75 @@ import {
   safeWallet,
   walletConnectWallet,
 } from '@rainbow-me/rainbowkit/wallets'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import React from 'react'
 import { ROUTES } from 'utils/constants'
+import { WagmiProvider, createConfig, fallback, http } from 'wagmi'
+import { arbitrum, base, mainnet } from 'wagmi/chains'
+import { hashFn, structuralSharing } from 'wagmi/query'
+import AtomUpdater from './updaters/AtomUpdater'
 
-const ANKR_PREFIX = {
-  [ChainId.Mainnet]: 'eth',
-  [ChainId.Base]: 'base',
-  [ChainId.Arbitrum]: 'arbitrum',
-}
-
-export const { chains, publicClient } = configureChains(
-  [mainnet, base, arbitrum],
-  import.meta.env.VITE_MAINNET_URL
-    ? [
-        jsonRpcProvider({
-          rpc: () => ({
-            http: import.meta.env.VITE_MAINNET_URL,
-          }),
-        }),
-      ]
-    : [
-        infuraProvider({ apiKey: import.meta.env.VITE_INFURA }),
-        jsonRpcProvider({
-          rpc: (chain) => {
-            return {
-              http: `https://rpc.ankr.com/${ANKR_PREFIX[chain.id]}/${
-                import.meta.env.VITE_ANKR
-              }`,
-            }
-          },
-        }),
-        alchemyProvider({ apiKey: import.meta.env.VITE_ALCHEMY }),
-        publicProvider(),
-      ]
+const connectors = connectorsForWallets(
+  [
+    {
+      groupName: 'Recommended',
+      wallets: [
+        injectedWallet,
+        metaMaskWallet,
+        walletConnectWallet,
+        coinbaseWallet,
+        braveWallet,
+        rabbyWallet,
+        safeWallet,
+        ledgerWallet,
+        rainbowWallet,
+      ],
+    },
+  ],
+  {
+    appName: 'Reserve Register',
+    projectId: import.meta.env.VITE_WALLETCONNECT_ID || 'test-project',
+  }
 )
 
-const config = {
-  chains,
-  projectId: import.meta.env.VITE_WALLETCONNECT_ID || 'test-project',
-  appName: 'Register',
-}
-
-const connectors = connectorsForWallets([
-  {
-    groupName: 'Recommended',
-    wallets: [
-      injectedWallet({ chains }),
-      metaMaskWallet(config),
-      walletConnectWallet(config),
-      coinbaseWallet(config),
-      braveWallet(config),
-      rabbyWallet(config),
-      safeWallet(config),
-      ledgerWallet(config),
-      rainbowWallet(config),
-    ],
+export const wagmiConfig = createConfig({
+  chains: [mainnet, base, arbitrum],
+  connectors,
+  transports: {
+    [mainnet.id]: import.meta.env.VITE_MAINNET_URL
+      ? http(import.meta.env.VITE_MAINNET_URL)
+      : fallback([
+          http(`https://mainnet.infura.io/v3/${import.meta.env.VITE_INFURA}`),
+          http(
+            `https://eth-mainnet.alchemyapi.io/v2/${import.meta.env.VITE_ALCHEMY}`
+          ),
+          http(`https://rpc.ankr.com/mainnet/${import.meta.env.VITE_ANKR}`),
+        ]),
+    [base.id]: fallback([
+      http(`https://base-mainnet.infura.io/v3/${import.meta.env.VITE_INFURA}`),
+      http(
+        `https://base-mainnet.g.alchemy.com/v2/${import.meta.env.VITE_ALCHEMY}`
+      ),
+      http(`https://rpc.ankr.com/base/${import.meta.env.VITE_ANKR}`),
+    ]),
+    [arbitrum.id]: fallback([
+      http(
+        `https://arbitrum-mainnet.infura.io/v3/${import.meta.env.VITE_INFURA}`
+      ),
+      http(`https://rpc.ankr.com/arbitrum/${import.meta.env.VITE_ANKR}`),
+    ]),
   },
-])
+})
 
-export const wagmiConfig = import.meta.env.VITE_TESTING
-  ? setupConfig()
-  : createConfig({
-      autoConnect: true,
-      connectors,
-      publicClient,
-    })
-
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      queryKeyHashFn: hashFn,
+      structuralSharing,
+    },
+  },
+})
 const Disclaimer: DisclaimerComponent = ({ Text, Link }) => (
   <Text>
     By connecting a wallet, you agree to ABC Labs{' '}
@@ -101,24 +93,21 @@ const Disclaimer: DisclaimerComponent = ({ Text, Link }) => (
   </Text>
 )
 
-/**
- * Wrapper around web3ReactProvider
- * Handles basic logic as well as adds related chain providers
- */
 const ChainProvider = ({ children }: { children: React.ReactNode }) => {
   return (
-    <WagmiConfig config={wagmiConfig}>
-      <RainbowKitProvider
-        chains={chains}
-        theme={darkTheme({
-          borderRadius: 'medium',
-        })}
-        appInfo={{ appName: 'Reserve Register', disclaimer: Disclaimer }}
-      >
-        <AtomUpdater />
-        {children}
-      </RainbowKitProvider>
-    </WagmiConfig>
+    <WagmiProvider config={wagmiConfig}>
+      <QueryClientProvider client={queryClient}>
+        <RainbowKitProvider
+          theme={darkTheme({
+            borderRadius: 'medium',
+          })}
+          appInfo={{ appName: 'Reserve Register', disclaimer: Disclaimer }}
+        >
+          <AtomUpdater />
+          {children}
+        </RainbowKitProvider>
+      </QueryClientProvider>
+    </WagmiProvider>
   )
 }
 

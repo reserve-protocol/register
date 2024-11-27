@@ -8,7 +8,6 @@ export const chainIcons: Record<number | string, any> = {
   [ChainId.Mainnet]: Ethereum,
   [ChainId.Base]: Base,
   [ChainId.Arbitrum]: Arbitrum,
-  [ChainId.Hardhat]: Ethereum,
   Ethereum: Ethereum,
   Base: Base,
 }

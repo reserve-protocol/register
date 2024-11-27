@@ -1,7 +1,7 @@
 import Analytics from 'components/analytics/Analytics'
 import ToastContainer from 'components/toaster-container/ToastContainer'
 import TransactionSidebar from 'components/transactions/manager/TransactionSidebar'
-import mixpanel from 'mixpanel-browser'
+import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
 import { useEffect } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import {
@@ -21,19 +21,6 @@ import { theme } from './theme'
 mixpanel.init(import.meta.env.VITE_MIXPANEL_KEY || 'mixpanel_key', {
   track_pageview: true,
 })
-
-const ErrorComponent = ({ error }: { error: Error }) => {
-  useEffect(() => {
-    if (
-      error.message.includes('Failed to fetch dynamically imported module') ||
-      error.message.includes('Importing a module script failed')
-    ) {
-      window.location.reload()
-    }
-  }, [error])
-
-  return <div>Something went wrong</div>
-}
 
 // Support for old routes redirects
 const Redirects = () => {
@@ -84,7 +71,7 @@ const App = () => (
     fallback={<div>Something went wrong</div>}
     onError={handleError}
   >
-    <Router future={{ v7_relativeSplatPath: true }}>
+    <Router>
       <Analytics />
       <Redirects />
       <ScrollToTop />

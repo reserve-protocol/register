@@ -8,7 +8,7 @@ import {
   rTokenAtom,
   rTokenContractsAtom,
 } from 'state/atoms'
-import { publicClient } from 'state/chain'
+import { wagmiConfig } from 'state/chain'
 import { Token } from 'types'
 import {
   FACADE_ACT_ADDRESS,
@@ -17,7 +17,7 @@ import {
 } from 'utils/addresses'
 import { atomWithLoadable } from 'utils/atoms/utils'
 import { Address, formatEther, formatUnits, zeroAddress } from 'viem'
-import { readContracts } from 'wagmi/actions'
+import { readContracts, simulateContract } from 'wagmi/actions'
 import { Claimable } from './auctions-sidebar/claim-rewards/types'
 
 export interface Auction {
@@ -130,18 +130,16 @@ export const auctionsToSettleAtom = atomWithLoadable(
     ]
 
     try {
-      const result = await (<Promise<[string[], string[], string[]]>>(
-        readContracts({
-          contracts: traders.map(({ address, version }) => ({
-            abi: FacadeRead,
-            address: FACADE_ADDRESS[chainId],
-            functionName: 'auctionsSettleable',
-            args: [address],
-            chainId,
-          })),
-          allowFailure: false,
-        })
-      ))
+      const result = await (readContracts(wagmiConfig, {
+        contracts: traders.map(({ address, version }) => ({
+          abi: FacadeRead,
+          address: FACADE_ADDRESS[chainId],
+          functionName: 'auctionsSettleable',
+          args: [address],
+          chainId,
+        })),
+        allowFailure: false,
+      }) as unknown as Promise<[string[], string[], string[]]>)
 
       return result.reduce((auctionsToSettle, current, index) => {
         auctionsToSettle.push(
@@ -189,14 +187,14 @@ export const auctionsOverviewAtom = atomWithLoadable(
     const assets = get(rTokenAssetsAtom)
     const rToken = get(rTokenAtom)
     const chainId = get(chainIdAtom)
-    const client = publicClient({ chainId })
 
-    if (!client || !contracts || !rToken || !assets) {
+    if (!contracts || !rToken || !assets) {
       return null
     }
     const call = {
       abi: FacadeAct,
       address: FACADE_ACT_ADDRESS[chainId],
+      chainId,
     }
 
     const [
@@ -204,19 +202,19 @@ export const auctionsOverviewAtom = atomWithLoadable(
       { result: rTokenRevenueOverview },
       recoAuction,
     ] = await Promise.all([
-      client.simulateContract({
+      simulateContract(wagmiConfig, {
         ...call,
         functionName: 'revenueOverview',
         args: [contracts.rsrTrader.address],
       }),
-      client.simulateContract({
+      simulateContract(wagmiConfig, {
         ...call,
         functionName: 'revenueOverview',
         args: [contracts.rTokenTrader.address],
       }),
       (async (): Promise<[boolean, Address, Address, bigint]> => {
         try {
-          const { result } = await client.simulateContract({
+          const { result } = await simulateContract(wagmiConfig, {
             ...call,
             functionName: 'nextRecollateralizationAuction',
             args: [contracts.backingManager.address, 0],

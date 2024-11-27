@@ -1,17 +1,17 @@
 import { useAtom, useAtomValue } from 'jotai'
 import { useCallback } from 'react'
-import { rTokenAtom, rTokenGovernanceAtom, rTokenStateAtom } from 'state/atoms'
+import { chainIdAtom, rTokenGovernanceAtom, rTokenStateAtom } from 'state/atoms'
 import {
   SimulationConfig,
   StorageEncodingResponse,
   TenderlyPayload,
   TenderlySimulation,
 } from 'types'
-import { PublicClient, usePublicClient } from 'wagmi'
-import { getContract } from 'wagmi/actions'
 import useProposalTx from './useProposalTx'
 
 import Governance from 'abis/Governance'
+import { wagmiConfig } from 'state/chain'
+import { AvailableChain } from 'utils/chains'
 import {
   BLOCK_GAS_LIMIT,
   DEFAULT_FROM,
@@ -21,6 +21,7 @@ import {
   TENDERLY_SIM_URL,
 } from 'utils/constants'
 import {
+  Address,
   encodeAbiParameters,
   encodeFunctionData,
   keccak256,
@@ -29,8 +30,10 @@ import {
   stringToBytes,
   toHex,
 } from 'viem'
-import { simulationStateAtom } from '../../proposal-detail/atom'
 import { isTimeunitGovernance } from 'views/governance/utils'
+import { useBlock } from 'wagmi'
+import { readContract } from 'wagmi/actions'
+import { simulationStateAtom } from '../../proposal-detail/atom'
 
 /**
  * @notice Encode state overrides
@@ -100,24 +103,22 @@ const sleep = (delay: number) =>
 const simulateNew = async (
   config: SimulationConfig,
   votingTokenSupply: number,
-  governance: any,
-  client: PublicClient,
-  isTimeUnitGovernance: boolean
+  isTimeUnitGovernance: boolean,
+  chainId: AvailableChain,
+  blockNumber: number,
+  blockTimestamp: bigint,
+  governorAddress: Address
 ): Promise<TenderlySimulation> => {
   const { targets, values, calldatas, description } = config
 
-  const blockNumberToUse = Number((await client.getBlock()).number) - 20 // ensure tenderly has the block
+  const blockNumberToUse = blockNumber - 20 // ensure tenderly has the block
 
-  const latestBlock = await client.getBlock({
-    blockNumber: BigInt(blockNumberToUse),
-  })
-  const governor = getContract({
-    address: governance.governor!,
+  const timelockAddr = await readContract(wagmiConfig, {
+    address: governorAddress,
     abi: Governance,
-    chainId: client.chain.id,
+    chainId,
+    functionName: 'timelock',
   })
-
-  const timelockAddr = await governor.read.timelock()
   const descriptionHash = keccak256(stringToBytes(description))
 
   const proposalId = BigInt(
@@ -129,7 +130,7 @@ const simulateNew = async (
     )
   )
 
-  const simTimestamp = latestBlock.timestamp + 1n
+  const simTimestamp = blockTimestamp + 1n
 
   // Generate the state object needed to mark the transactions as queued in the Timelock's storage
   const timelockStorageObj: Record<string, string> = {}
@@ -181,16 +182,16 @@ const simulateNew = async (
   }
 
   const stateOverrides = {
-    networkID: client.chain.id.toString(),
+    networkID: chainId.toString(),
     stateOverrides: {
       [timelockAddr]: {
         value: timelockStorageObj,
       },
-      [governor.address]: {
+      [governorAddress]: {
         value: governorStateOverrides,
       },
     },
-    blockNumber: Number(latestBlock.number),
+    blockNumber,
   }
 
   const storageObj = await sendEncodeRequest(stateOverrides)
@@ -199,13 +200,13 @@ const simulateNew = async (
     readonly `0x${string}`[],
     readonly bigint[],
     readonly `0x${string}`[],
-    `0x${string}`
+    `0x${string}`,
   ] = [targets, values, calldatas, descriptionHash]
   const simulationPayload: TenderlyPayload = {
-    network_id: client.chain.id,
-    block_number: Number(latestBlock.number),
+    network_id: chainId,
+    block_number: blockNumber,
     from: DEFAULT_FROM,
-    to: governor.address,
+    to: governorAddress,
     input: encodeFunctionData({
       abi: Governance,
       functionName: 'execute',
@@ -228,9 +229,8 @@ const simulateNew = async (
         storage: storageObj.stateOverrides[timelockAddr.toLowerCase()].value,
       },
       // Ensure governor storage is properly configured so `state(proposalId)` returns `Queued`
-      [governor.address]: {
-        storage:
-          storageObj.stateOverrides[governor.address.toLowerCase()].value,
+      [governorAddress]: {
+        storage: storageObj.stateOverrides[governorAddress.toLowerCase()].value,
       },
     },
   }
@@ -245,11 +245,11 @@ const simulateNew = async (
 }
 
 const useProposalSimulation = () => {
-  const rToken = useAtomValue(rTokenAtom)
+  const chainId = useAtomValue(chainIdAtom)
+  const { data: block } = useBlock({ chainId })
   const { stTokenSupply: votingTokenSupply } = useAtomValue(rTokenStateAtom)
   const governance = useAtomValue(rTokenGovernanceAtom)
   const [simState, setSimState] = useAtom(simulationStateAtom)
-  const client = usePublicClient({ chainId: rToken?.chainId })
   const isTimeUnitGovernance = isTimeunitGovernance(governance.name)
   const tx = useProposalTx()
 
@@ -268,15 +268,17 @@ const useProposalSimulation = () => {
       const result = await simulateNew(
         config,
         votingTokenSupply,
-        governance,
-        client,
-        isTimeUnitGovernance
+        isTimeUnitGovernance,
+        chainId,
+        Number(block?.number ?? 0n),
+        block?.timestamp ?? 0n,
+        governance.governor as Address
       )
       setSimState({ data: result, loading: false, error: null })
     } catch (err: any) {
       setSimState({ data: null, loading: false, error: err })
     }
-  }, [config, votingTokenSupply, governance, client])
+  }, [config, votingTokenSupply, governance])
 
   return {
     sim: simState.data,

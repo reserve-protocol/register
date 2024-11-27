@@ -3,7 +3,8 @@ import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { chainIdAtom } from 'state/atoms'
 import { StringMap } from 'types'
-import { Address, useContractReads } from 'wagmi'
+import { useWatchReadContracts } from './useWatchReadContract'
+import { Address } from 'viem'
 
 /**
  * Returns a hash of allowances for the given tokens
@@ -29,22 +30,25 @@ const useTokensAllowance = (
     [tokens.toString(), account, chainId]
   )
 
-  const { data } = useContractReads({ contracts: calls, watch: true })
+  const { data } = useWatchReadContracts({ contracts: calls })
 
   if (!data) {
     return {}
   }
 
-  return data.reduce((acc, current, index) => {
-    const [address] = tokens[index]
-    if (current.result) {
-      acc[address] = current.result
-    } else {
-      acc[address] = 0
-    }
+  return data.reduce(
+    (acc, current, index) => {
+      const [address] = tokens[index]
+      if (current.result) {
+        acc[address] = current.result
+      } else {
+        acc[address] = 0
+      }
 
-    return acc
-  }, <StringMap>{})
+      return acc
+    },
+    <StringMap>{}
+  )
 }
 
 export default useTokensAllowance

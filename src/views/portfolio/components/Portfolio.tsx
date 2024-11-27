@@ -6,7 +6,7 @@ import PositionIcon from 'components/icons/PositionIcon'
 import TokenLogo from 'components/icons/TokenLogo'
 import useRTokenLogo from 'hooks/useRTokenLogo'
 import { useAtomValue } from 'jotai'
-import mixpanel from 'mixpanel-browser'
+import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
 import { LogIn } from 'react-feather'
 import { useNavigate } from 'react-router-dom'
 import {

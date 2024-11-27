@@ -12,7 +12,7 @@ import {
 import { isAddress } from 'utils'
 import { Address } from 'viem'
 import { isTimeunitGovernance } from 'views/governance/utils'
-import { useContractReads } from 'wagmi'
+import { useReadContracts } from 'wagmi'
 
 // Added name order to governanceFrameworks so that "Governor Anastasius"
 // is first element (until we add a timestamp field).
@@ -82,12 +82,14 @@ const RTokenGovernanceUpdater = () => {
       : undefined
   }, [data, rToken])
 
-  const { data: onChainData } = useContractReads({
-    keepPreviousData: true,
-    contracts,
-    allowFailure: false,
-    enabled: !!data?.governance?.governanceFrameworks?.[0]?.id,
-  })
+  const { data: onChainData }: { data: [bigint, bigint, bigint] | undefined } =
+    useReadContracts({
+      contracts,
+      allowFailure: false,
+      query: {
+        enabled: !!data?.governance?.governanceFrameworks?.[0]?.id,
+      },
+    })
 
   useEffect(() => {
     if (data?.rtoken) {
@@ -138,7 +140,7 @@ const RTokenGovernanceUpdater = () => {
         })
       }
     }
-  }, [JSON.stringify(data), onChainData, stTokenSupply])
+  }, [data, onChainData, stTokenSupply])
 
   return null
 }

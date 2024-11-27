@@ -7,12 +7,13 @@ import {
   rTokenAtom,
   rTokenStateAtom,
 } from 'state/atoms'
-import { publicClient } from 'state/chain'
+import { wagmiConfig } from 'state/chain'
 import { safeParseEther } from 'utils'
 import { FACADE_ADDRESS } from 'utils/addresses'
 import { atomWithLoadable } from 'utils/atoms/utils'
 import { formatUnits, getAddress, parseEther, parseUnits } from 'viem'
 import { redeemAmountDebouncedAtom } from 'views/issuance/atoms'
+import { simulateContract } from 'wagmi/actions'
 
 interface RedeemQuote {
   [x: string]: { amount: bigint; targetAmount: bigint; loss: number }
@@ -37,7 +38,6 @@ export const redeemQuotesAtom = atomWithLoadable(async (get) => {
   const amount = get(redeemAmountDebouncedAtom)
   const chainId = get(chainIdAtom)
   const quotes: { [x: string]: RedeemQuote } = {}
-  const client = publicClient({ chainId })
 
   if (isNaN(+amount) || Number(amount) <= 0) {
     return { [currentNonce.toString()]: {} } // empty default to 0 on UI but no loading state
@@ -56,7 +56,7 @@ export const redeemQuotesAtom = atomWithLoadable(async (get) => {
     }
   }
 
-  if (!rToken || !assets || !client) {
+  if (!rToken || !assets) {
     return null
   }
 
@@ -66,11 +66,12 @@ export const redeemQuotesAtom = atomWithLoadable(async (get) => {
   if (isLegacy) {
     const {
       result: [tokens, deposits],
-    } = await client.simulateContract({
+    } = await simulateContract(wagmiConfig, {
       abi: FacadeRead,
       address: FACADE_ADDRESS[chainId],
       functionName: 'issue',
       args: [rToken.address, parsedAmount],
+      chainId,
     })
 
     quotes[currentNonce.toString()] = tokens.reduce(
@@ -87,11 +88,12 @@ export const redeemQuotesAtom = atomWithLoadable(async (get) => {
   } else {
     const {
       result: [tokens, withdrawals, available],
-    } = await client.simulateContract({
+    } = await simulateContract(wagmiConfig, {
       abi: FacadeRead,
       address: FACADE_ADDRESS[chainId],
       functionName: 'redeem',
       args: [rToken.address, parsedAmount],
+      chainId,
     })
 
     quotes[currentNonce.toString()] = tokens.reduce(
@@ -122,7 +124,7 @@ export const redeemQuotesAtom = atomWithLoadable(async (get) => {
     if (!isCollaterized) {
       const {
         result: [tokens, withdrawals],
-      } = await client.simulateContract({
+      } = await simulateContract(wagmiConfig, {
         abi: FacadeRead,
         address: FACADE_ADDRESS[chainId],
         functionName: 'redeemCustom',
@@ -132,6 +134,7 @@ export const redeemQuotesAtom = atomWithLoadable(async (get) => {
           [currentNonce - 1],
           [parseEther('1')],
         ],
+        chainId,
       })
 
       quotes[currentNonce - 1] = tokens.reduce(

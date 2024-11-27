@@ -8,9 +8,10 @@ import {
   rTokenMetaAtom,
   selectedRTokenAtom,
 } from 'state/rtoken/atoms/rTokenAtom'
+import { AvailableChain } from 'utils/chains'
 import { NETWORKS, ROUTES } from 'utils/constants'
 import { Address, getAddress } from 'viem'
-import { useContractReads, useSwitchNetwork } from 'wagmi'
+import { useReadContracts, useSwitchChain } from 'wagmi'
 
 const getListedRToken = (tokenId: string, chainId: number) => {
   if (!tokenId || !rtokens[chainId]) {
@@ -26,10 +27,10 @@ const getListedRToken = (tokenId: string, chainId: number) => {
 
 const useRTokenContext = () => {
   const navigate = useNavigate()
-  const { switchNetwork } = useSwitchNetwork()
+  const { switchChain } = useSwitchChain()
   const walletChain = useAtomValue(walletChainAtom)
   const { chain, tokenId } = useParams()
-  const chainId = NETWORKS[chain ?? '']
+  const chainId = NETWORKS[chain ?? ''] as AvailableChain
   const rToken = useMemo(() => {
     const listedToken = getListedRToken(tokenId as string, chainId)
 
@@ -41,9 +42,9 @@ const useRTokenContext = () => {
   const selected = useAtomValue(selectedRTokenAtom)
 
   // TODO: This hook triggers unexpected re-renders, fixed on wagmiv2
-  const unlistedToken = useContractReads({
+  const unlistedToken = useReadContracts({
     allowFailure: false,
-    enabled: !rToken,
+    query: { enabled: !rToken },
     contracts: [
       {
         address: tokenId as Address,
@@ -102,8 +103,8 @@ const useRTokenContext = () => {
   }, [unlistedToken.status])
 
   useEffect(() => {
-    if (switchNetwork && chainId && selected && chainId !== walletChain) {
-      switchNetwork(chainId)
+    if (switchChain && chainId && selected && chainId !== walletChain) {
+      switchChain({ chainId })
     }
   }, [chainId, selected])
 

@@ -8,10 +8,10 @@ import {
 } from 'state/chain/atoms/transactionAtoms'
 import { ChainId } from 'utils/chains'
 import { Hex, TransactionReceipt } from 'viem'
-import { useWaitForTransaction } from 'wagmi'
 import useNotification from './useNotification'
-import mixpanel from 'mixpanel-browser'
+import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
 import { CHAIN_TAGS } from 'utils/constants'
+import { useWaitForTransactionReceipt } from 'wagmi'
 
 interface WatchOptions {
   hash: Hex | undefined
@@ -21,7 +21,7 @@ interface WatchOptions {
 interface WatchResult {
   data?: TransactionReceipt
   isMining?: boolean
-  status: 'success' | 'error' | 'loading' | 'idle'
+  status: 'success' | 'error' | 'pending' | 'idle'
   error?: string
 }
 
@@ -37,7 +37,7 @@ const useWatchTransaction = ({ hash, label }: WatchOptions): WatchResult => {
     status,
     error,
     isLoading: isMining,
-  } = useWaitForTransaction({
+  } = useWaitForTransactionReceipt({
     hash,
     confirmations: chainId === ChainId.Mainnet ? 1 : 3,
   })

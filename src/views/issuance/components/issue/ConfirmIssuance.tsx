@@ -4,7 +4,7 @@ import RToken from 'abis/RToken'
 import TransactionModal from 'components/transaction-modal'
 import useHasAllowance, { RequiredAllowance } from 'hooks/useHasAllowance'
 import { atom, useAtomValue } from 'jotai'
-import mixpanel from 'mixpanel-browser'
+import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
 import { useState } from 'react'
 import {
   chainIdAtom,
@@ -20,9 +20,9 @@ import {
   issueAmountDebouncedAtom,
   quantitiesAtom,
 } from 'views/issuance/atoms'
-import { useContractRead } from 'wagmi'
 import CollateralApprovals from './CollateralApprovals'
 import IssueInput from './IssueInput'
+import { useReadContract } from 'wagmi'
 
 const callAtom = atom((get) => {
   const rToken = get(rTokenAtom)
@@ -68,7 +68,7 @@ const ConfirmIssuance = ({ onClose }: { onClose: () => void }) => {
   const chain = useAtomValue(chainIdAtom)
   const call = useAtomValue(callAtom)
 
-  const { data: isReady } = useContractRead({
+  const { data: isReady } = useReadContract({
     abi: BasketHandler,
     address: rTokenContracts?.basketHandler?.address,
     functionName: 'isReady',

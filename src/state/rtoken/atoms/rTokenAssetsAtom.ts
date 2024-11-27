@@ -1,12 +1,13 @@
 import AssetAbi from 'abis/AssetAbi'
 import AssetRegistry from 'abis/AssetRegistry'
+import { chainIdAtom } from 'state/atoms'
+import { wagmiConfig } from 'state/chain'
 import { Token } from 'types'
 import { getTokenReadCalls } from 'utils'
 import { atomWithLoadable } from 'utils/atoms/utils'
 import { Address, formatEther, formatUnits } from 'viem'
-import { getContract, readContracts } from 'wagmi/actions'
+import { readContract, readContracts } from 'wagmi/actions'
 import rTokenContractsAtom from './rTokenContractsAtom'
-import { chainIdAtom } from 'state/atoms'
 
 export interface RTokenAsset {
   address: Address
@@ -16,6 +17,7 @@ export interface RTokenAsset {
   version: string
 }
 
+// TODO: Remove from here and move it to an updater or react-query
 const rTokenAssetsAtom = atomWithLoadable(async (get) => {
   const contracts = get(rTokenContractsAtom)
   const chainId = get(chainIdAtom)
@@ -25,13 +27,12 @@ const rTokenAssetsAtom = atomWithLoadable(async (get) => {
   }
 
   try {
-    const registryContract = getContract({
+    const { erc20s, assets } = await readContract(wagmiConfig, {
       address: contracts.assetRegistry.address as Address,
       abi: AssetRegistry,
+      functionName: 'getRegistry',
       chainId,
     })
-
-    const { erc20s, assets } = await registryContract.read.getRegistry()
 
     const calls = assets
       .reduce((calls, asset, index) => {
@@ -55,9 +56,11 @@ const rTokenAssetsAtom = atomWithLoadable(async (get) => {
       }, [] as any)
       .map((call: any) => ({ ...call, chainId }))
 
-    const result = await readContracts({
+    const _result = await readContracts(wagmiConfig, {
       contracts: calls,
     })
+    // Make it mutable instead of readonly
+    const result = [..._result]
 
     const registeredAssets: {
       [x: string]: RTokenAsset

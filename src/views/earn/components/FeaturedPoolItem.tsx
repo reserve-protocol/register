@@ -1,7 +1,7 @@
 import { Button } from 'components'
 import ChainLogo from 'components/icons/ChainLogo'
 import StackTokenLogo from 'components/token-logo/StackTokenLogo'
-import mixpanel from 'mixpanel-browser'
+import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
 import { useMemo } from 'react'
 import Skeleton from 'react-loading-skeleton'
 import { Pool } from 'state/pools/atoms'

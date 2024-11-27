@@ -3,7 +3,7 @@ import { useAtomValue } from 'jotai'
 import { useEffect, useMemo, useState } from 'react'
 import { chainIdAtom, ethPriceAtom, gasFeeAtom } from 'state/atoms'
 import { EstimateContractGasParameters, formatEther, formatUnits } from 'viem'
-import { usePublicClient } from 'wagmi'
+import { useClient } from 'wagmi'
 
 export interface GasEstimation {
   isLoading: boolean
@@ -40,43 +40,57 @@ export const useStaticGasEstimate = (
   }, [gasPrice])
 }
 
-export const useGasEstimate = (
-  call: EstimateContractGasParameters | null
-): GasEstimation => {
-  const chainId = useAtomValue(chainIdAtom)
-  const client = usePublicClient({ chainId })
+export const useGasAmount = (
+  gas: bigint | undefined
+): { eth: bigint; usd: number } => {
   const fee = useAtomValue(gasFeeAtom)
   const ethPrice = useAtomValue(ethPriceAtom)
-  const [state, setState] = useState(defaultGas)
 
-  const estimateGas = async () => {
-    // The app only show gas estimation on USD, if price data is not ready -> skip
-    if (!client || !call || !fee || !ethPrice) {
-      setState(defaultGas)
-      return
-    }
+  if (!gas || !fee) return { eth: 0n, usd: 0 }
 
-    setState({ ...defaultGas, isLoading: true })
-
-    try {
-      const result = await client.estimateContractGas(call)
-
-      setState({
-        isLoading: false,
-        result,
-        estimateUsd: Number(formatEther(result * fee)) * ethPrice,
-        estimateEth: ((result * 150n) / 100n) * fee,
-      })
-    } catch (e) {
-      setState(defaultGas)
-    }
+  return {
+    usd: Number(formatEther(gas * fee)) * ethPrice,
+    eth: ((gas * 150n) / 100n) * fee,
   }
-
-  useEffect(() => {
-    estimateGas()
-  }, [client, fee, ethPrice, call])
-
-  return state
 }
 
-export default useGasEstimate
+// export const useGasEstimate = (
+//   call: EstimateContractGasParameters | null
+// ): GasEstimation => {
+//   const chainId = useAtomValue(chainIdAtom)
+//   const client = useClient({ chainId })
+//   const fee = useAtomValue(gasFeeAtom)
+//   const ethPrice = useAtomValue(ethPriceAtom)
+//   const [state, setState] = useState(defaultGas)
+
+//   const estimateGas = async () => {
+//     // The app only show gas estimation on USD, if price data is not ready -> skip
+//     if (!client || !call || !fee || !ethPrice) {
+//       setState(defaultGas)
+//       return
+//     }
+
+//     setState({ ...defaultGas, isLoading: true })
+
+//     try {
+//       const result = await client.estimateContractGas(call)
+
+//       setState({
+//         isLoading: false,
+//         result,
+//         estimateUsd: Number(formatEther(result * fee)) * ethPrice,
+//         estimateEth: ((result * 150n) / 100n) * fee,
+//       })
+//     } catch (e) {
+//       setState(defaultGas)
+//     }
+//   }
+
+//   useEffect(() => {
+//     estimateGas()
+//   }, [client, fee, ethPrice, call])
+
+//   return state
+// }
+
+// export default useGasEstimate

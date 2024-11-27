@@ -44,7 +44,7 @@ const ClaimAllRewardsButton = () => {
       fullWidth
       disabled={!isReady}
       gas={gas}
-      loading={isLoading || status === 'loading'}
+      loading={isLoading || status === 'pending'}
       onClick={write}
     />
   )

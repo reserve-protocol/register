@@ -82,7 +82,7 @@ const ConfirmAuction = () => {
         variant={isLoading ? 'accentAction' : 'primary'}
         disabled={!isReady}
         gas={gas}
-        loading={isLoading || status === 'loading'}
+        loading={isLoading || status === 'pending'}
         onClick={write}
       />
     </Box>

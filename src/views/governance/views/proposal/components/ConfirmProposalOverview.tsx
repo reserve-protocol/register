@@ -13,19 +13,19 @@ import { chainIdAtom } from 'state/atoms'
 import { Box, BoxProps, Flex, Spinner, Text } from 'theme-ui'
 import { getTokenRoute, shortenString } from 'utils'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
-import { UsePrepareContractWriteConfig } from 'wagmi'
 import { isProposalEditingAtom } from '../atoms'
 import useRToken from 'hooks/useRToken'
 import { ROUTES } from 'utils/constants'
+import { UseSimulateContractParameters } from 'wagmi'
 
 interface Props extends BoxProps {
-  tx: UsePrepareContractWriteConfig
+  tx: UseSimulateContractParameters
 }
 
 const ProposalStatus = ({
   transactionState,
 }: {
-  transactionState: UsePrepareContractWriteConfig | undefined
+  transactionState: UseSimulateContractParameters | undefined
 }) => {
   const navigate = useNavigate()
   const { gas, write, isReady, isLoading, hash } =

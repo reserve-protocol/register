@@ -2,17 +2,15 @@ import rtokens from '@reserve-protocol/rtokens'
 import { GraphQLClient } from 'graphql-request'
 import { atom } from 'jotai'
 import { getCurrentTime } from 'utils'
-import { atomWithLoadable } from 'utils/atoms/utils'
-import { ChainId, defaultChain } from 'utils/chains'
+import { AvailableChain, ChainId, defaultChain } from 'utils/chains'
 import { blockDuration } from 'utils/constants'
-import { formatEther } from 'viem'
-import { Address } from 'wagmi'
+import { formatEther, Address } from 'viem'
 /**
  * #########################
  * Chain state related atoms
  * #########################
  */
-export const chainIdAtom = atom<number>(defaultChain)
+export const chainIdAtom = atom<AvailableChain>(defaultChain)
 export const blockAtom = atom<number | undefined>(undefined)
 export const blockTimestampAtom = atom<number>(getCurrentTime())
 // Acts as an application timer, basically it gets updated every minute which is a good debounce metric
@@ -86,8 +84,6 @@ export const SUBGRAPH_URL = {
     'https://subgraph.satsuma-prod.com/327d6f1d3de6/reserve/reserve-base/api',
   [ChainId.Arbitrum]:
     'https://subgraph.satsuma-prod.com/327d6f1d3de6/reserve/reserve-arbitrum/api',
-  [ChainId.Hardhat]:
-    'https://api.thegraph.com/subgraphs/name/lcamargof/reserve-test',
 }
 
 // TODO: Multi fork network graph

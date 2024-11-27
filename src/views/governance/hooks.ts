@@ -1,10 +1,13 @@
+import { useQuery } from '@tanstack/react-query'
 import ERC20 from 'abis/ERC20'
+import { wagmiConfig } from 'state/chain'
 import { truncateDecimals } from 'utils'
 import { FACADE_ADDRESS } from 'utils/addresses'
+import { AvailableChain } from 'utils/chains'
 import { collateralsMap } from 'utils/plugins'
-import { formatEther, hexToString } from 'viem'
-import { Address, readContracts, useBlockNumber, useQuery } from 'wagmi'
-import { readContract } from 'wagmi/actions'
+import { Address, formatEther, hexToString } from 'viem'
+import { useBlockNumber } from 'wagmi'
+import { readContract, readContracts } from 'wagmi/actions'
 
 export type BasketItem = Record<
   string,
@@ -27,7 +30,7 @@ const getSnapshotBasket = async (
   chainId: number,
   block: number
 ) => {
-  const [erc20s, uoaShares, targets] = await readContract({
+  const [erc20s, uoaShares, targets] = await readContract(wagmiConfig, {
     abi: [
       {
         inputs: [
@@ -47,7 +50,7 @@ const getSnapshotBasket = async (
     address: FACADE_ADDRESS[chainId],
     args: [rTokenAddress],
     blockNumber: BigInt(block),
-    chainId,
+    chainId: chainId as AvailableChain,
   })
 
   return erc20s.reduce((acc, current, index) => {
@@ -63,22 +66,25 @@ const getSnapshotBasket = async (
 }
 
 const getTokensMeta = async (erc20s: Address[], chainId: number) => {
-  const symbols = await readContracts({
+  const symbols = await readContracts(wagmiConfig, {
     contracts: erc20s.map((erc20) => ({
       abi: ERC20,
       address: erc20,
       functionName: 'symbol',
-      chainId,
+      chainId: chainId as AvailableChain,
     })),
     allowFailure: false,
   })
 
-  return symbols.reduce((acc, symbol, index) => {
-    return {
-      ...acc,
-      [erc20s[index]]: symbol,
-    }
-  }, {} as Record<string, string>)
+  return symbols.reduce(
+    (acc, symbol, index) => {
+      return {
+        ...acc,
+        [erc20s[index]]: symbol as string,
+      }
+    },
+    {} as Record<string, string>
+  )
 }
 
 const PRIORITY_ORDER = {
@@ -139,9 +145,9 @@ export const useBasketChangesSummary = (
   snapshotBlock?: number
 ) => {
   const { data: currentBlock } = useBlockNumber()
-  const data = useQuery(
-    ['basketDiff', !!currentBlock, proposal, rTokenAddress],
-    async () => {
+  const data = useQuery({
+    queryKey: ['basketDiff', !!currentBlock, proposal, rTokenAddress],
+    queryFn: async () => {
       if (!currentBlock || !rTokenAddress || !chainId) return undefined
 
       const snapshotBasket = await getSnapshotBasket(
@@ -175,8 +181,8 @@ export const useBasketChangesSummary = (
         proposalBasket,
         tokensMeta,
       }
-    }
-  )
+    },
+  })
 
   return data
 }

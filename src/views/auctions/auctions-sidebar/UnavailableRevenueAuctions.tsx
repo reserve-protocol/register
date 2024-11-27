@@ -8,7 +8,6 @@ import { chainIdAtom } from 'state/atoms'
 import { Box, Divider } from 'theme-ui'
 import { FACADE_ACT_ADDRESS } from 'utils/addresses'
 import { Address, Hex, encodeFunctionData } from 'viem'
-import { UsePrepareContractWriteConfig } from 'wagmi'
 import {
   auctionSidebarAtom,
   auctionsOverviewAtom,
@@ -18,6 +17,7 @@ import RevenueAuctionItem from './RevenueAuctionItem'
 import RevenueBoxContainer from './RevenueBoxContainer'
 import useContractWrite from 'hooks/useContractWrite'
 import TransactionButton from 'components/button/TransactionButton'
+import { UseSimulateContractParameters } from 'wagmi'
 
 const setAuctionAtom = atom(null, (get, set, index: number) => {
   const selected = get(selectedUnavailableAuctionsAtom)
@@ -33,19 +33,22 @@ const setAuctionAtom = atom(null, (get, set, index: number) => {
 })
 
 // TODO: Removed a lot of the logic, rethink this feature
-const auctionsTxAtom = atom((get): UsePrepareContractWriteConfig => {
+const auctionsTxAtom = atom((get): UseSimulateContractParameters => {
   const { unavailableAuctions: revenue = [] } = get(auctionsOverviewAtom) || {}
   const chainId = get(chainIdAtom)
   const selectedAuctions = get(selectedUnavailableAuctionsAtom)
 
-  const traderAuctions = selectedAuctions.reduce((auctions, selectedIndex) => {
-    auctions[revenue[selectedIndex].trader] = [
-      ...(auctions[revenue[selectedIndex].trader] || []),
-      revenue[selectedIndex].sell.address,
-    ]
+  const traderAuctions = selectedAuctions.reduce(
+    (auctions, selectedIndex) => {
+      auctions[revenue[selectedIndex].trader] = [
+        ...(auctions[revenue[selectedIndex].trader] || []),
+        revenue[selectedIndex].sell.address,
+      ]
 
-    return auctions
-  }, {} as { [x: Address]: Address[] })
+      return auctions
+    },
+    {} as { [x: Address]: Address[] }
+  )
 
   const traders = new Set([...Object.keys(traderAuctions)])
 
@@ -73,7 +76,7 @@ const auctionsTxAtom = atom((get): UsePrepareContractWriteConfig => {
     address: FACADE_ACT_ADDRESS[chainId],
     args: [transactions],
     functionName: 'multicall',
-    enabled: !!transactions.length,
+    query: { enabled: !!transactions.length },
   }
 })
 
@@ -104,7 +107,7 @@ const ConfirmAuction = () => {
         variant={isLoading ? 'accentAction' : 'primary'}
         disabled={!isReady}
         gas={gas}
-        loading={isLoading || status === 'loading'}
+        loading={isLoading || status === 'pending'}
         onClick={write}
       />
     </Box>

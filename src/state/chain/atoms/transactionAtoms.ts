@@ -81,38 +81,3 @@ export const updateTransactionAtom = atom(
 export const isTransactionRunning = atom(
   (get) => get(currentTxHistoryAtom)[0]?.status === 'loading'
 )
-
-// TODO: for reference loading transactions
-// const txStorage = createJSONStorage<TransactionMap>(() => localStorage)
-// txStorage.getItem = (key: string): TransactionMap => {
-//   const data = localStorage?.getItem(key)
-
-//   if (!data) return {}
-
-//   try {
-//     const parsed = JSON.parse(data) as TransactionMap
-
-//     return Object.keys(parsed).reduce((txMap, chainId) => {
-//       txMap[chainId] = Object.keys(parsed[chainId]).reduce((txs, wallet) => {
-//         txs[wallet] = parsed[chainId][wallet].map((tx) => {
-//           if (
-//             tx.status === TRANSACTION_STATUS.SIGNING ||
-//             tx.status === TRANSACTION_STATUS.PENDING
-//           ) {
-//             return { ...tx, status: TRANSACTION_STATUS.UNKNOWN }
-//           }
-
-//           return tx
-//         })
-
-//         return txs
-//       }, {} as WalletTransaction)
-
-//       return txMap
-//     }, {} as TransactionMap)
-//   } catch (e) {
-//     console.error('Error parsing transaction', e)
-//     localStorage.setItem(key, JSON.stringify({}))
-//     return {}
-//   }
-// }

@@ -14,9 +14,9 @@ import {
 import { Box, Image, Text } from 'theme-ui'
 import { formatCurrency, shortenAddress } from 'utils'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
-import { Address, useContractRead } from 'wagmi'
 import DelegateModal from './DelegateModal'
-import { zeroAddress } from 'viem'
+import { Address, zeroAddress } from 'viem'
+import { useWatchReadContract } from 'hooks/useWatchReadContract'
 
 const AccountVotes = () => {
   const account = useAtomValue(walletAtom)
@@ -31,12 +31,11 @@ const AccountVotes = () => {
     [governance.name]
   )
 
-  const { data: delegate } = useContractRead({
+  const { data: delegate } = useWatchReadContract({
     address: account ? (rToken?.stToken?.address as Address) : undefined,
     abi: StRSRVotes,
     functionName: 'delegates',
     args: account ? [account as Address] : undefined,
-    watch: true,
     chainId,
   })
 
