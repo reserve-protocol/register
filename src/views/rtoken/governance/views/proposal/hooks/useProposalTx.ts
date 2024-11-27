@@ -46,7 +46,7 @@ import {
   stringToHex,
   zeroAddress,
 } from 'viem'
-import { getSharesFromSplit } from 'views/deploy/utils'
+import { getSharesFromSplit } from '@/views/rtoken/deploy/utils'
 import {
   backupChangesAtom,
   isNewBasketProposedAtom,
@@ -56,7 +56,7 @@ import {
   roleChangesAtom,
 } from '../atoms'
 import useUpgradeHelper from './useUpgradeHelper'
-import { isTimeunitGovernance } from 'views/governance/utils'
+import { isTimeunitGovernance } from '@/views/rtoken/governance/utils'
 import Spell from 'abis/Spell'
 import useRToken from 'hooks/useRToken'
 import { spellAddressAtom } from '../components/SpellUpgrade'

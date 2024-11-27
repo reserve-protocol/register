@@ -8,7 +8,7 @@ import { getProposalStateAtom, proposalDetailAtom } from '../atom'
 import { colors } from 'theme'
 import { formatCurrency, formatPercentage } from 'utils'
 import { rTokenAtom } from 'state/atoms'
-import { isTimeunitGovernance } from 'views/governance/utils'
+import { isTimeunitGovernance } from '@/views/rtoken/governance/utils'
 import { PROPOSAL_STATES } from 'utils/constants'
 import { useReadContracts } from 'wagmi'
 

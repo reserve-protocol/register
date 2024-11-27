@@ -16,7 +16,7 @@ import {
 import { boxShadow } from 'theme'
 import { Box, BoxProps, Card, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
-import { pendingRSRSummaryAtom } from 'views/staking/atoms'
+import { pendingRSRSummaryAtom } from '@/views/rtoken/staking/atoms'
 
 const Header = () => (
   <Box

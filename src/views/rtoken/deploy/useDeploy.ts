@@ -13,8 +13,8 @@ import {
   isBasketValidAtom,
   isRevenueValidAtom,
   revenueSplitAtom,
-} from '../../components/rtoken-setup/atoms'
-import { isValidExternalMapAtom } from './../../components/rtoken-setup/atoms'
+} from '@/components/rtoken-setup/atoms'
+import { isValidExternalMapAtom } from '@/components/rtoken-setup/atoms'
 import { getDeployParameters } from './utils'
 
 export const deployIdAtom = atomWithReset('')

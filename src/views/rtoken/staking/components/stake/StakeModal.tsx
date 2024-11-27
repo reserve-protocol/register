@@ -17,7 +17,7 @@ import {
 import AmountPreview from '../AmountPreview'
 import ConfirmStakeButton from './ConfirmStakeButton'
 import DelegateStake from './DelegateStake'
-import { stRsrTickerAtom } from 'views/staking/atoms'
+import { stRsrTickerAtom } from '@/views/rtoken/staking/atoms'
 import UnstakeDelay from '../UnstakeDelay'
 
 const AmountsPreview = () => {

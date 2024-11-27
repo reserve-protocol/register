@@ -1,4 +1,4 @@
-import { StakeMetricType } from 'views/staking/atoms'
+import { StakeMetricType } from '@/views/rtoken/staking/atoms'
 import ExchangeRate from './ExchangeRate'
 import StakeHistory from './StakeHistory'
 

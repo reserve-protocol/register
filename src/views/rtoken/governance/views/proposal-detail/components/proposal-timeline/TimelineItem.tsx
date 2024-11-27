@@ -18,7 +18,7 @@ import { colors } from 'theme'
 import { Box, Progress, Text } from 'theme-ui'
 import { formatDate, parseDuration } from 'utils'
 import { PROPOSAL_STATES } from 'utils/constants'
-import { isTimeunitGovernance } from 'views/governance/utils'
+import { isTimeunitGovernance } from '@/views/rtoken/governance/utils'
 import { getProposalStateAtom, proposalDetailAtom } from '../../atom'
 
 type TimelineItemProps = {
@@ -295,8 +295,8 @@ export const TimelineItemEnd = () => {
         (proposalState.state === PROPOSAL_STATES.QUEUED
           ? executionETA
           : proposalState.state === PROPOSAL_STATES.EXECUTED
-          ? executionTime
-          : cancellationTime) * 1000
+            ? executionTime
+            : cancellationTime) * 1000
       )}
       enabled={enabled}
     />

@@ -1,6 +1,6 @@
 import Sidebar from 'components/sidebar'
 import { useAtom } from 'jotai'
-import { wrapSidebarAtom } from 'views/issuance/atoms'
+import { wrapSidebarAtom } from '@/views/rtoken/issuance/atoms'
 import DisplayMode from './DisplayMode'
 import WrapCollateralList from './WrapCollateralList'
 import WrapSidebarHeader from './WrapSidebarHeader'

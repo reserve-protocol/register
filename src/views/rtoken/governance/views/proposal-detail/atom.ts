@@ -13,7 +13,7 @@ import {
 import { TenderlySimulation } from 'types'
 import { atomWithReset } from 'jotai/utils'
 import { getCurrentTime } from 'utils'
-import { isTimeunitGovernance } from 'views/governance/utils'
+import { isTimeunitGovernance } from '@/views/rtoken/governance/utils'
 
 export interface ProposalDetail {
   id: string

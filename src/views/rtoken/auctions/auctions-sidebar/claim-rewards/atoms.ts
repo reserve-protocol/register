@@ -3,7 +3,7 @@ import { rTokenAtom } from 'state/atoms'
 import { Trader } from 'types'
 import { TRADERS } from 'utils/constants'
 import { rewardsByProtocol } from 'utils/plugins'
-import { auctionsOverviewAtom } from 'views/auctions/atoms'
+import { auctionsOverviewAtom } from '@/views/rtoken/auctions/atoms'
 import { TraderEmissions } from './types'
 
 export const traderRewardsAtom = atom((get) => {

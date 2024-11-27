@@ -12,7 +12,7 @@ import {
 import { isAmountValid, safeParseEther } from 'utils'
 import { RSR_ADDRESS } from 'utils/addresses'
 import { Address } from 'viem'
-import { rateAtom } from 'views/staking/atoms'
+import { rateAtom } from '@/views/rtoken/staking/atoms'
 
 export const customDelegateAtom = atom('')
 

@@ -1,13 +1,8 @@
+import { wrapSidebarAtom } from '@/views/rtoken/issuance/atoms'
 import { Trans } from '@lingui/macro'
-import Sidebar from 'components/sidebar'
-import { useAtom, useSetAtom } from 'jotai'
+import { useSetAtom } from 'jotai'
 import { X } from 'react-feather'
 import { Button, Divider, Flex, Text } from 'theme-ui'
-import { wrapSidebarAtom } from 'views/issuance/atoms'
-
-import DisplayMode from './DisplayMode'
-import WrapCollateralList from './WrapCollateralList'
-import WrapTypeToggle from './WrapTypeToggle'
 
 const WrapSidebarHeader = () => {
   const close = useSetAtom(wrapSidebarAtom)

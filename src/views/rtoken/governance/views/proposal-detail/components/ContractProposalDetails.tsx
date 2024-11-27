@@ -23,8 +23,8 @@ import {
   useColorMode,
 } from 'theme-ui'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
-import { safeJsonFormat } from 'views/deploy/utils'
-import { ContractProposal, ProposalCall } from 'views/governance/atoms'
+import { safeJsonFormat } from '@/views/rtoken/deploy/utils'
+import { ContractProposal, ProposalCall } from '@/views/rtoken/governance/atoms'
 import BasketChangeSummary from './proposal-summary/BasketChangeSummary'
 
 interface Props extends BoxProps {

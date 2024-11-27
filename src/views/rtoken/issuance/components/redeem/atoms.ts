@@ -12,7 +12,7 @@ import { safeParseEther } from 'utils'
 import { FACADE_ADDRESS } from 'utils/addresses'
 import { atomWithLoadable } from 'utils/atoms/utils'
 import { formatUnits, getAddress, parseEther, parseUnits } from 'viem'
-import { redeemAmountDebouncedAtom } from 'views/issuance/atoms'
+import { redeemAmountDebouncedAtom } from '@/views/rtoken/issuance/atoms'
 import { simulateContract } from 'wagmi/actions'
 
 interface RedeemQuote {

@@ -2,9 +2,9 @@ import { Trans } from '@lingui/macro'
 import { Table } from 'components/table'
 import { useAtomValue } from 'jotai'
 import { Box, BoxProps, Text } from 'theme-ui'
-import useColumns from 'views/auctions/components/useColumns'
+import useColumns from '@/views/rtoken/auctions/components/useColumns'
 import { endedDutchTradesAtom } from '../atoms'
-import EndedAuctionsSkeleton from 'views/auctions/components/EndedAuctionsSkeleton'
+import EndedAuctionsSkeleton from '@/views/rtoken/auctions/components/EndedAuctionsSkeleton'
 
 const EndedDutchAuctions = (props: BoxProps) => {
   const columns = useColumns(true)

@@ -5,7 +5,7 @@ import {
 } from 'components/rtoken-setup/atoms'
 import { StringMap } from 'types'
 import { Address, parseEther, stringToHex, zeroAddress } from 'viem'
-import { parsePercent } from './../../utils/index'
+import { parsePercent } from '@/utils'
 
 export interface RevenueDist {
   rTokenDist: number

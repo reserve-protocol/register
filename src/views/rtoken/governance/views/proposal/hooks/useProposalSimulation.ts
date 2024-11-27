@@ -30,7 +30,7 @@ import {
   stringToBytes,
   toHex,
 } from 'viem'
-import { isTimeunitGovernance } from 'views/governance/utils'
+import { isTimeunitGovernance } from '@/views/rtoken/governance/utils'
 import { useBlock } from 'wagmi'
 import { readContract } from 'wagmi/actions'
 import { simulationStateAtom } from '../../proposal-detail/atom'

@@ -8,7 +8,7 @@ import { Box, Text } from 'theme-ui'
 import { Trader } from 'types'
 import { formatCurrency } from 'utils'
 import { Address, encodeFunctionData } from 'viem'
-import { auctionSessionAtom } from 'views/auctions/atoms'
+import { auctionSessionAtom } from '@/views/rtoken/auctions/atoms'
 import { traderRewardsAtom } from '../atoms'
 import { RewardTokenWithCollaterals } from '../types'
 

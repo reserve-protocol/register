@@ -10,7 +10,10 @@ import { useAtomValue } from 'jotai'
 import { rTokenStateAtom, rsrPriceAtom } from 'state/atoms'
 import { Box, BoxProps, Card, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
-import { pendingRSRSummaryAtom, unstakeDelayAtom } from 'views/staking/atoms'
+import {
+  pendingRSRSummaryAtom,
+  unstakeDelayAtom,
+} from '@/views/rtoken/staking/atoms'
 
 const Header = () => {
   const delay = useAtomValue(unstakeDelayAtom)

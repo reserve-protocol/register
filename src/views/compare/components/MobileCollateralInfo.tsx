@@ -5,7 +5,7 @@ import { memo, useState } from 'react'
 import { ChevronDown, ChevronUp } from 'react-feather'
 import { useNavigate } from 'react-router-dom'
 import { Box, BoxProps, Divider, Text } from 'theme-ui'
-import CollateralPieChartTooltip from 'views/overview/components/CollateralPieChartTooltip'
+import CollateralPieChartTooltip from '@/views/rtoken/overview/components/CollateralPieChartTooltip'
 
 interface Props extends BoxProps {
   token: ListedToken

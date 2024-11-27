@@ -4,7 +4,7 @@ import { rsrBalanceAtom, rsrPriceAtom } from 'state/atoms'
 import { borderRadius } from 'theme'
 import { Box, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
-import { rateAtom } from 'views/staking/atoms'
+import { rateAtom } from '@/views/rtoken/staking/atoms'
 import { unStakeAmountAtom } from './atoms'
 
 const RsrBalance = () => {

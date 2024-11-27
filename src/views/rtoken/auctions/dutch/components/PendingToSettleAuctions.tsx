@@ -2,7 +2,7 @@ import { Trans } from '@lingui/macro'
 import { Table } from 'components/table'
 import { useAtomValue } from 'jotai'
 import { Box, BoxProps, Text } from 'theme-ui'
-import useColumns from 'views/auctions/components/useColumns'
+import useColumns from '@/views/rtoken/auctions/components/useColumns'
 import { pendingDutchTradesAtom } from '../atoms'
 
 const PendingToSettleAuctions = (props: BoxProps) => {

@@ -10,7 +10,7 @@ import { rTokenStateAtom } from 'state/atoms'
 import { Box, BoxProps, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { TIME_RANGES } from 'utils/constants'
-import { stRsrTickerAtom } from 'views/staking/atoms'
+import { stRsrTickerAtom } from '@/views/rtoken/staking/atoms'
 
 const query = gql`
   query getRTokenExchangeRate($id: String!, $fromTime: Int!) {

@@ -19,7 +19,7 @@ import {
   issueAmountAtom,
   issueAmountDebouncedAtom,
   quantitiesAtom,
-} from 'views/issuance/atoms'
+} from '@/views/rtoken/issuance/atoms'
 import CollateralApprovals from './CollateralApprovals'
 import IssueInput from './IssueInput'
 import { useReadContract } from 'wagmi'

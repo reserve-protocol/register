@@ -4,7 +4,7 @@ import { useAtomValue } from 'jotai'
 import { rTokenGovernanceAtom, secondsPerBlockAtom } from 'state/atoms'
 import { BoxProps, Card, Text, Divider } from 'theme-ui'
 import { formatPercentage, parseDuration, shortenAddress } from 'utils'
-import { isTimeunitGovernance } from 'views/governance/utils'
+import { isTimeunitGovernance } from '@/views/rtoken/governance/utils'
 
 const getLegend = (
   isTimepoint: boolean,

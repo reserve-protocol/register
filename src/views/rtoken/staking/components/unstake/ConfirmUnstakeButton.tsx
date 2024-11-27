@@ -12,7 +12,7 @@ import { chainIdAtom } from 'state/atoms'
 import { Box, Link, Spinner, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
-import { unstakeDelayAtom } from 'views/staking/atoms'
+import { unstakeDelayAtom } from '@/views/rtoken/staking/atoms'
 import { unstakeGasEstimateAtom, unstakeTransactionAtom } from './atoms'
 import { UseSimulateContractParameters } from 'wagmi'
 

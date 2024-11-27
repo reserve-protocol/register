@@ -7,7 +7,7 @@ import { Box, BoxProps, Flex, Progress, Text } from 'theme-ui'
 import { Token } from 'types'
 import { formatCurrency } from 'utils'
 import { formatUnits } from 'viem'
-import { quantitiesAtom } from 'views/issuance/atoms'
+import { quantitiesAtom } from '@/views/rtoken/issuance/atoms'
 
 interface Props extends BoxProps {
   token: Token

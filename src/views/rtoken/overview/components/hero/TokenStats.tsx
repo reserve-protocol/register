@@ -5,7 +5,7 @@ import { rTokenPriceAtom, rTokenStateAtom, rsrPriceAtom } from 'state/atoms'
 import { Box, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import OverviewActions from './OverviewActions'
-import { rTokenTargetPriceAtom } from 'views/overview/atoms'
+import { rTokenTargetPriceAtom } from '@/views/rtoken/overview/atoms'
 
 const rTokenOverviewAtom = atom((get) => {
   const state = get(rTokenStateAtom)

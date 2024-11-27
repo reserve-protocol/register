@@ -6,7 +6,7 @@ import { rsrPriceAtom, stRsrBalanceAtom } from 'state/atoms'
 import { borderRadius } from 'theme'
 import { Box, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
-import { rateAtom, stRsrTickerAtom } from 'views/staking/atoms'
+import { rateAtom, stRsrTickerAtom } from '@/views/rtoken/staking/atoms'
 import InputPostfix from '../InputPostfix'
 import { unStakeAmountAtom } from './atoms'
 

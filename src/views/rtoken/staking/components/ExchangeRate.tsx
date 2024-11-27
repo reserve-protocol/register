@@ -1,7 +1,7 @@
 import { useAtomValue } from 'jotai'
 import { Box, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
-import { rateAtom, stRsrTickerAtom } from 'views/staking/atoms'
+import { rateAtom, stRsrTickerAtom } from '@/views/rtoken/staking/atoms'
 
 const ExchangeRate = () => {
   const ticker = useAtomValue(stRsrTickerAtom)

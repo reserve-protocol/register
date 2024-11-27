@@ -9,12 +9,12 @@ import { borderRadius } from 'theme'
 import { Box, BoxProps, Flex, Grid, Spinner, Text } from 'theme-ui'
 import { formatPercentage } from 'utils'
 import { collateralDisplay } from 'utils/constants'
-import { ProposalCall } from 'views/governance/atoms'
+import { ProposalCall } from '@/views/rtoken/governance/atoms'
 import {
   BasketItem,
   DiffItem,
   useBasketChangesSummary,
-} from 'views/governance/hooks'
+} from '@/views/rtoken/governance/hooks'
 
 const useBasketApy = (
   basket: BasketItem,

@@ -2,7 +2,7 @@ import TabMenu from 'components/tab-menu'
 import { useAtomValue } from 'jotai'
 import { Suspense, lazy, useMemo, useState } from 'react'
 import { Box, Spinner } from 'theme-ui'
-import { StakeMetricType, stRsrTickerAtom } from 'views/staking/atoms'
+import { StakeMetricType, stRsrTickerAtom } from '@/views/rtoken/staking/atoms'
 
 const StakingMetricCharts = lazy(() => import('./StakingMetricCharts'))
 

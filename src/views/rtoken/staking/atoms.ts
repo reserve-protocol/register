@@ -9,7 +9,7 @@ import {
   rTokenConfigurationAtom,
   rTokenStateAtom,
   walletAtom,
-} from './../../state/atoms'
+} from '@/state/atoms'
 
 export const unstakeDelayAtom = atom((get) => {
   const params = get(rTokenConfigurationAtom)

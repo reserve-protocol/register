@@ -3,7 +3,7 @@ import { useAtomValue } from 'jotai'
 import { Box, Text } from 'theme-ui'
 import { ongoingDutchTradesAtom } from '../atoms'
 import DutchAuction from './DutchAuction'
-import OngoingAuctionsSkeleton from 'views/auctions/components/OngoingAuctionsSkeleton'
+import OngoingAuctionsSkeleton from '@/views/rtoken/auctions/components/OngoingAuctionsSkeleton'
 
 const OngoingDutchAuctions = () => {
   const trades = useAtomValue(ongoingDutchTradesAtom)

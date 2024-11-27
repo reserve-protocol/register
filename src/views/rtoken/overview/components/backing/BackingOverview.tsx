@@ -14,7 +14,7 @@ import {
 import { Box, Card, Flex, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import CollateralsChart from './CollateralsChart'
-import { rTokenTargetPriceAtom } from 'views/overview/atoms'
+import { rTokenTargetPriceAtom } from '@/views/rtoken/overview/atoms'
 
 // TODO: TARGET PEG PRICE (ETH+)
 const backingOverviewAtom = atom((get) => {

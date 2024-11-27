@@ -2,7 +2,7 @@ import GovernanceParameters from 'components/rtoken-setup/governance/GovernanceP
 import { useAtomValue } from 'jotai'
 import { rTokenGovernanceAtom } from 'state/atoms'
 import { Box, Card } from 'theme-ui'
-import { isTimeunitGovernance } from 'views/governance/utils'
+import { isTimeunitGovernance } from '@/views/rtoken/governance/utils'
 
 const ProposalGovernanceParams = () => {
   const governance = useAtomValue(rTokenGovernanceAtom)
