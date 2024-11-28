@@ -3,6 +3,7 @@ import { createColumnHelper } from '@tanstack/react-table'
 import Help from 'components/help'
 import ChainLogo from 'components/icons/ChainLogo'
 import StackTokenLogo from 'components/token-logo/StackTokenLogo'
+import { useAtomValue } from 'jotai'
 import mixpanel from 'mixpanel-browser'
 import { useMemo } from 'react'
 import {
@@ -12,15 +13,23 @@ import {
   Circle,
   Zap,
 } from 'react-feather'
+import { balancesAtom } from 'state/atoms'
 import { Pool } from 'state/pools/atoms'
 import { colors } from 'theme'
 import { Box, Image, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { CHAIN_TAGS, LP_PROJECTS, NETWORKS } from 'utils/constants'
-import { PROJECT_ICONS, ZAP_EARN_POOLS_IDS } from 'views/earn/utils/constants'
+import { getAddress } from 'viem'
+import {
+  PROJECT_ICONS,
+  ZAP_EARN_POOLS,
+  ZAP_EARN_POOLS_IDS,
+} from 'views/earn/utils/constants'
 
 const useColumns = () => {
   const columnHelper = createColumnHelper<Pool>()
+  const balances = useAtomValue(balancesAtom)
+
   return useMemo(
     () => [
       columnHelper.accessor('symbol', {
@@ -114,7 +123,25 @@ const useColumns = () => {
       }),
       columnHelper.accessor('url', {
         header: t`My deposits`,
-        cell: (data) => `$${0}`,
+        cell: ({
+          row: {
+            original: { id, chain },
+          },
+        }) => {
+          const chainId = NETWORKS[chain.toLowerCase()]
+          const tokenOut: string =
+            ZAP_EARN_POOLS[chainId]?.[id]?.out?.address || ''
+          const balance = tokenOut
+            ? balances[getAddress(tokenOut)]?.balance || '0'
+            : '0'
+          return (
+            <Box sx={{ textAlign: 'end' }}>
+              {formatCurrency(Number(balance), 5, {
+                minimumFractionDigits: 0,
+              })}
+            </Box>
+          )
+        },
       }),
       columnHelper.accessor('apy', {
         header: () => {
