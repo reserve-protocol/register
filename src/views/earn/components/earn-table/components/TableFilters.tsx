@@ -18,6 +18,8 @@ import {
   poolSearchFilterAtom,
 } from '../../../atoms'
 import PoolsChainFilter from './PoolsChainFilter'
+import { Zap } from 'react-feather'
+import { ZAP_EARN_POOLS } from 'views/earn/utils/constants'
 
 // Includes Eth+
 const ETH_ADDRESSES = [
@@ -40,22 +42,33 @@ const FilterOptions = () => {
       {
         text: 'All',
         icon: <CirclesIcon />,
-        filter: { stables: false, tokens: [] },
+        filter: { stables: false, tokens: [], pools: [] },
       },
       {
         text: 'Stables',
-        filter: { stables: true, tokens: [] },
+        filter: { stables: true, tokens: [], pools: [] },
         icon: <EarnNavIcon style={{ margin: '0 -3px 0 -3px' }} />,
       },
       {
         text: 'ETH',
         icon: <Ethereum />,
-        filter: { stables: false, tokens: ETH_ADDRESSES },
+        filter: { stables: false, tokens: ETH_ADDRESSES, pools: [] },
       },
       {
         text: 'RSR',
         icon: <TokenLogo symbol="rsr" width="16px" />,
-        filter: { stables: false, tokens: RSR_ADDRESSES },
+        filter: { stables: false, tokens: RSR_ADDRESSES, pools: [] },
+      },
+      {
+        text: 'Zap',
+        icon: <Zap size={18} strokeWidth={1.2} />,
+        filter: {
+          stables: false,
+          tokens: [],
+          pools: Object.values(ZAP_EARN_POOLS).flatMap((pools) =>
+            Object.keys(pools)
+          ),
+        },
       },
     ],
     []

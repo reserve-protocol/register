@@ -68,7 +68,7 @@ const Pools = () => {
         }}
       />
       {!isLoading && !data.length && (
-        <Box mt={5} sx={{ textAlign: 'center' }}>
+        <Box mt={5} pb={5} sx={{ textAlign: 'center' }}>
           <Text variant="legend">No yield opportunities found</Text>
         </Box>
       )}

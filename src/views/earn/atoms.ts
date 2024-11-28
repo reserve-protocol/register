@@ -11,9 +11,11 @@ export const poolChainsFilterAtom = atom(
 export const poolFilterAtom = atomWithReset<{
   stables: boolean
   tokens: string[]
+  pools: string[]
 }>({
   stables: false,
   tokens: [],
+  pools: [],
 })
 
 export const filterOptionAtom = atom(0)
@@ -48,6 +50,10 @@ export const filteredPoolsAtom = atom((get) => {
       ) {
         return false
       }
+    }
+
+    if (filters?.pools?.length && !filters.pools.includes(pool.id)) {
+      return false
     }
 
     if (search) {
