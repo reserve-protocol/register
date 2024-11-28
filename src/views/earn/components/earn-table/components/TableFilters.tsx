@@ -19,7 +19,7 @@ import {
 } from '../../../atoms'
 import PoolsChainFilter from './PoolsChainFilter'
 import { Zap } from 'react-feather'
-import { ZAP_EARN_POOLS } from 'views/earn/utils/constants'
+import { ZAP_EARN_POOLS, ZAP_EARN_POOLS_IDS } from 'views/earn/utils/constants'
 
 // Includes Eth+
 const ETH_ADDRESSES = [
@@ -61,13 +61,11 @@ const FilterOptions = () => {
       },
       {
         text: 'Zap',
-        icon: <Zap size={18} strokeWidth={1.2} />,
+        icon: <Zap size={18} strokeWidth={1.2} fill="inherit" />,
         filter: {
           stables: false,
           tokens: [],
-          pools: Object.values(ZAP_EARN_POOLS).flatMap((pools) =>
-            Object.keys(pools)
-          ),
+          pools: ZAP_EARN_POOLS_IDS,
         },
       },
     ],
@@ -118,6 +116,7 @@ const setPageSearchAtom = atom(null, (get, set, search: string) => {
   set(poolFilterAtom, {
     stables: false,
     tokens: search ? search.split(',') : [],
+    pools: [],
   })
   set(poolSearchFilterAtom, '')
   set(

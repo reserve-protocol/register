@@ -35,6 +35,10 @@ export const ZAP_EARN_POOLS: Record<number, Record<string, ZapPool>> = {
   [ChainId.Arbitrum]: arbitrumPools,
 }
 
+export const ZAP_EARN_POOLS_IDS: string[] = Object.values(
+  ZAP_EARN_POOLS
+).flatMap((pools) => Object.keys(pools))
+
 export const PROJECT_ICONS: Record<string, React.ReactElement> = {
   'yearn-finance': <Yearn fontSize={16} />,
   'convex-finance': <Convex fontSize={16} />,

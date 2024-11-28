@@ -5,13 +5,19 @@ import ChainLogo from 'components/icons/ChainLogo'
 import StackTokenLogo from 'components/token-logo/StackTokenLogo'
 import mixpanel from 'mixpanel-browser'
 import { useMemo } from 'react'
-import { ArrowUpRight, ChevronDown, ChevronUp } from 'react-feather'
+import {
+  ArrowUpRight,
+  ChevronDown,
+  ChevronUp,
+  Circle,
+  Zap,
+} from 'react-feather'
 import { Pool } from 'state/pools/atoms'
 import { colors } from 'theme'
-import { Box, Text, Image } from 'theme-ui'
+import { Box, Image, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { CHAIN_TAGS, LP_PROJECTS, NETWORKS } from 'utils/constants'
-import { PROJECT_ICONS } from 'views/earn/utils/constants'
+import { PROJECT_ICONS, ZAP_EARN_POOLS_IDS } from 'views/earn/utils/constants'
 
 const useColumns = () => {
   const columnHelper = createColumnHelper<Pool>()
@@ -128,10 +134,43 @@ const useColumns = () => {
       columnHelper.accessor('id', {
         header: '',
         cell: ({ row }) => {
-          return row.getIsExpanded() ? (
-            <ChevronUp size={16} />
-          ) : (
-            <ChevronDown size={16} />
+          return (
+            <Box
+              variant="layout.verticalAlign"
+              sx={{ gap: 1, width: 100, justifyContent: 'end' }}
+            >
+              {ZAP_EARN_POOLS_IDS.includes(row.original.id) && (
+                <Box
+                  variant="layout.verticalAlign"
+                  sx={{
+                    bg: 'cardAlternative',
+                    borderRadius: '18px',
+                    border: '1px solid',
+                    borderColor: 'border',
+                    px: 2,
+                    py: 1,
+                    gap: 1,
+                    color: 'accentInverted',
+                  }}
+                >
+                  <Zap
+                    size={14}
+                    strokeWidth={1.2}
+                    fill={colors.accentInverted}
+                  />
+                  <Circle
+                    size={7}
+                    strokeWidth={1.2}
+                    fill={colors.accentInverted}
+                  />
+                </Box>
+              )}
+              {row.getIsExpanded() ? (
+                <ChevronUp size={16} />
+              ) : (
+                <ChevronDown size={16} />
+              )}
+            </Box>
           )
         },
       }),
