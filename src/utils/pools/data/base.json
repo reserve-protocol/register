@@ -54,5 +54,75 @@
       "name": "Based ETH",
       "symbol": "bsdETH"
     }
+  },
+  "426e9a15-3937-470e-9aee-3a25a6dfb838": {
+    "out": {
+      "address": "0x4d3ceBA4349ADB06d2De8EBD2F9320A61303aD81",
+      "decimals": 18,
+      "name": "Aerodrome hyUSD-eUSD Factory yVault",
+      "symbol": "yvAero-hyUSD-eUSD-f"
+    },
+    "rToken": {
+      "address": "0xcc7ff230365bd730ee4b352cc2492cedac49383e",
+      "decimals": 18,
+      "name": "High Yield USD",
+      "symbol": "hyUSD"
+    }
+  },
+  "5b0696bf-4a37-45b7-8319-49ffbbbf5a16": {
+    "out": {
+      "address": "0xbfDb6140a85d669B136579E95e7673f27Ef41BB0",
+      "decimals": 18,
+      "name": "Dyson Aerodrome hyUSD/eUSD VLP Vault",
+      "symbol": "Dyson-Aero-hyUSDeUSD-VLP-Vault"
+    },
+    "rToken": {
+      "address": "0xcc7ff230365bd730ee4b352cc2492cedac49383e",
+      "decimals": 18,
+      "name": "High Yield USD",
+      "symbol": "hyUSD"
+    }
+  },
+  "219a3ece-18a6-43e7-8917-e1124498ebe8": {
+    "out": {
+      "address": "0xb5E331615FdbA7DF49e05CdEACEb14Acdd5091c3",
+      "decimals": 18,
+      "name": "Volatile AMM - hyUSD/eUSD",
+      "symbol": "vAMM-hyUSD/eUSD"
+    },
+    "rToken": {
+      "address": "0xcc7ff230365bd730ee4b352cc2492cedac49383e",
+      "decimals": 18,
+      "name": "High Yield USD",
+      "symbol": "hyUSD"
+    }
+  },
+  "0112f957-4369-490f-882f-018c0e0fdf9b": {
+    "out": {
+      "address": "0x95F04B5594e2a944CA91d56933D119841eeF9a99",
+      "decimals": 18,
+      "name": "Volatile AMM - RSR/bsdETH",
+      "symbol": "vAMM-RSR/bsdETH"
+    },
+    "rToken": {
+      "address": "0xCb327b99fF831bF8223cCEd12B1338FF3aA322Ff",
+      "decimals": 18,
+      "name": "Based ETH",
+      "symbol": "bsdETH"
+    }
+  },
+  "57d5dc30-8ade-4f40-87d2-6065297d0705": {
+    "out": {
+      "address": "0x6B87B8663eE63191887F18225F79D9eEb2DE0d34",
+      "decimals": 18,
+      "name": "Volatile AMM - WETH/bsdETH",
+      "symbol": "vAMM-WETH/bsdETH"
+    },
+    "rToken": {
+      "address": "0xCb327b99fF831bF8223cCEd12B1338FF3aA322Ff",
+      "decimals": 18,
+      "name": "Based ETH",
+      "symbol": "bsdETH"
+    }
   }
 }

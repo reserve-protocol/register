@@ -26,5 +26,173 @@
       "name": "Electronic Dollar",
       "symbol": "eUSD"
     }
+  },
+  "b636821a-7fbb-4f29-b896-098e80ad2299": {
+    "out": {
+      "address": "0xBfBC4acAE2ceC91A5bC80eCA1C9290F92959f7c3",
+      "decimals": 18,
+      "name": "Curve eUSD-USDC Factory yVault",
+      "symbol": "yvCurve-eUSD-USDC-f"
+    },
+    "rToken": {
+      "address": "0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f",
+      "decimals": 18,
+      "name": "Electronic Dollar",
+      "symbol": "eUSD"
+    }
+  },
+  "8f9f8a30-1841-4578-aac2-e3174168588d": {
+    "out": {
+      "address": "0x961Ad224fedDFa468c81acB3A9Cc2cC4731809f4",
+      "decimals": 18,
+      "name": "Curve dgnETH-ETH+ Factory yVault",
+      "symbol": "yvCurve-dgnETH-ETH+-f"
+    },
+    "rToken": {
+      "address": "0x005F893EcD7bF9667195642f7649DA8163e23658",
+      "decimals": 18,
+      "name": "Degen ETH",
+      "symbol": "dgnETH"
+    }
+  },
+  "52dd9b80-774f-414b-bf57-83fa5335f707": {
+    "out": {
+      "address": "0x849dC56ceCa7Cf55AbF5ec87910DA21c5C7dA581",
+      "decimals": 18,
+      "name": "Curve ETH+ Factory yVault",
+      "symbol": "yvCurve-ETH+-f"
+    },
+    "rToken": {
+      "address": "0xE72B141DF173b999AE7c1aDcbF60Cc9833Ce56a8",
+      "decimals": 18,
+      "name": "ETHPlus",
+      "symbol": "ETH+"
+    }
+  },
+  "c04005c9-7e34-41a6-91c4-295834ed8ac0": {
+    "out": {
+      "address": "0x8cF0E5399fEdf0fA6918d8c8a5E54e94C28a7989",
+      "decimals": 18,
+      "name": "Convex CRV Curve.fi Factory USD Metapool: eUSD+FRAX/USDC (FRAXBP)",
+      "symbol": "crveUSD3CRV-f"
+    },
+    "rToken": {
+      "address": "0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f",
+      "decimals": 18,
+      "name": "Electronic Dollar",
+      "symbol": "eUSD"
+    }
+  },
+  "e41e49e0-f4a5-4959-a653-9eab6b65d05f": {
+    "out": {
+      "address": "0x354278Eb9c0a8b1f4Ab8231c0C4741DA05a76206",
+      "decimals": 18,
+      "name": "Convex CRV eUSD/USDC",
+      "symbol": "crveUSDUSDC"
+    },
+    "rToken": {
+      "address": "0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f",
+      "decimals": 18,
+      "name": "Electronic Dollar",
+      "symbol": "eUSD"
+    }
+  },
+  "d3f24e3d-03ab-454a-ab6c-a353590d1f84": {
+    "out": {
+      "address": "0x354278Eb9c0a8b1f4Ab8231c0C4741DA05a76206",
+      "decimals": 18,
+      "name": "Convex CRV eUSD/USDC",
+      "symbol": "crveUSDUSDC"
+    },
+    "rToken": {
+      "address": "0x005F893EcD7bF9667195642f7649DA8163e23658",
+      "decimals": 18,
+      "name": "Degen ETH",
+      "symbol": "dgnETH"
+    }
+  },
+  "74346f6f-c7ee-4506-a204-baf48e13decb": {
+    "out": {
+      "address": "0x90D5B65Af52654A2B230244a61DD4Ce3CFa4835f",
+      "decimals": 18,
+      "name": "Convex Curve.fi Factory Crypto Pool: ETH+/ETH",
+      "symbol": "cvxETH+ETH-f"
+    },
+    "rToken": {
+      "address": "0xE72B141DF173b999AE7c1aDcbF60Cc9833Ce56a8",
+      "decimals": 18,
+      "name": "ETHPlus",
+      "symbol": "ETH+"
+    }
+  },
+  "51916b88-38f9-45b1-b839-2e27c0f31d0b": {
+    "out": {
+      "address": "0x90D5B65Af52654A2B230244a61DD4Ce3CFa4835f",
+      "decimals": 18,
+      "name": "Convex Curve.fi Factory Crypto Pool: ETH+/ETH",
+      "symbol": "cvxETH+ETH-f"
+    },
+    "rToken": {
+      "address": "0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f",
+      "decimals": 18,
+      "name": "Electronic Dollar",
+      "symbol": "eUSD"
+    }
+  },
+  "68d3a2ae-71e8-4e1d-bc34-3d1b11f1f16e": {
+    "out": {
+      "address": "0x17E7c7379fa5c121C4898760EACFfA7D73A0D160",
+      "decimals": 18,
+      "name": "Convex CRV eUSD/mkUSD",
+      "symbol": "crveUSDmkUSD"
+    },
+    "rToken": {
+      "address": "0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f",
+      "decimals": 18,
+      "name": "Electronic Dollar",
+      "symbol": "eUSD"
+    }
+  },
+  "8e2423b4-b7a2-4e6f-a714-1bc0407f02e9": {
+    "out": {
+      "address": "0x70528C2Bc8328837969c033b658D8207c64D8E02",
+      "decimals": 18,
+      "name": "Concentrator: ETH+ETH-f",
+      "symbol": "consETHETH-f"
+    },
+    "rToken": {
+      "address": "0xE72B141DF173b999AE7c1aDcbF60Cc9833Ce56a8",
+      "decimals": 18,
+      "name": "ETHPlus",
+      "symbol": "ETH+"
+    }
+  },
+  "85ecffb3-d5ef-445d-859e-e10380bb0fb7": {
+    "out": {
+      "address": "0x41639ABcA04c22e80326A96C8fE2882C97BaEb6e",
+      "decimals": 18,
+      "name": "Stake DAO eUSDUSDC Gauge",
+      "symbol": "sdeUSDUSDC-gauge"
+    },
+    "rToken": {
+      "address": "0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f",
+      "decimals": 18,
+      "name": "Electronic Dollar",
+      "symbol": "eUSD"
+    }
+  },
+  "30d38900-3d6a-40fb-afd7-c25e66725b18": {
+    "out": {
+      "address": "0xE94aFF2Bd6A12DD16C21648Cae71D2B47E405a9C",
+      "decimals": 18,
+      "name": "Stake DAO ETH+ETH-f Gauge",
+      "symbol": "sdETH+ETH-f-gauge"
+    },
+    "rToken": {
+      "address": "0xE72B141DF173b999AE7c1aDcbF60Cc9833Ce56a8",
+      "decimals": 18,
+      "name": "ETHPlus",
+      "symbol": "ETH+"
+    }
   }
 }
