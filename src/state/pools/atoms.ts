@@ -1,4 +1,5 @@
 import { atom } from 'jotai'
+import { TokenBalance } from 'state/atoms'
 import { BRIDGE_RTOKEN_MAP, LISTED_RTOKEN_ADDRESSES } from 'utils/constants'
 
 export interface Pool {
@@ -72,3 +73,5 @@ export const rTokenPoolsAtom = atom<RTokenPoolsMap>((get) => {
     return rTokenPools
   }, {} as RTokenPoolsMap)
 })
+
+export const poolBalancesAtom = atom<Record<string, TokenBalance>>({})

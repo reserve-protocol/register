@@ -5,12 +5,14 @@ import Ethereum from 'components/icons/logos/Ethereum'
 import { SearchInput } from 'components/input'
 import { atom, useAtom, useSetAtom } from 'jotai'
 import { useEffect, useMemo } from 'react'
+import { Zap } from 'react-feather'
 import { useSearchParams } from 'react-router-dom'
 import { borderRadius } from 'theme'
 import { Box, Text } from 'theme-ui'
 import { RSR_ADDRESS } from 'utils/addresses'
 import { ChainId } from 'utils/chains'
 import { supportedChainList } from 'utils/constants'
+import { ZAP_EARN_POOLS_IDS } from 'views/earn/utils/constants'
 import {
   filterOptionAtom,
   poolChainsFilterAtom,
@@ -18,8 +20,6 @@ import {
   poolSearchFilterAtom,
 } from '../../../atoms'
 import PoolsChainFilter from './PoolsChainFilter'
-import { Zap } from 'react-feather'
-import { ZAP_EARN_POOLS, ZAP_EARN_POOLS_IDS } from 'views/earn/utils/constants'
 
 // Includes Eth+
 const ETH_ADDRESSES = [

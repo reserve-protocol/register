@@ -13,8 +13,7 @@ import {
   Circle,
   Zap,
 } from 'react-feather'
-import { balancesAtom } from 'state/atoms'
-import { Pool } from 'state/pools/atoms'
+import { Pool, poolBalancesAtom } from 'state/pools/atoms'
 import { colors } from 'theme'
 import { Box, Image, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
@@ -28,7 +27,7 @@ import {
 
 const useColumns = () => {
   const columnHelper = createColumnHelper<Pool>()
-  const balances = useAtomValue(balancesAtom)
+  const balances = useAtomValue(poolBalancesAtom)
 
   return useMemo(
     () => [
@@ -132,7 +131,7 @@ const useColumns = () => {
           const tokenOut: string =
             ZAP_EARN_POOLS[chainId]?.[id]?.out?.address || ''
           const balance = tokenOut
-            ? balances[getAddress(tokenOut)]?.balance || '0'
+            ? balances[`${chainId}-${tokenOut}`]?.balance || '0'
             : '0'
           return (
             <Box sx={{ textAlign: 'end' }}>

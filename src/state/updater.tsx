@@ -1,4 +1,5 @@
 import CMSUpdater from './cms'
+import { PoolTokensBalancesUpdater } from './pools/updaters/PoolTokensBalancesUpdater'
 import RTokenUpdater from './rtoken/updater'
 import CollateralYieldUpdater from './updaters/CollateralYieldUpdater'
 import PricesUpdater from './updaters/PriceUpdater'
@@ -17,6 +18,7 @@ const Updater = () => {
       <RTokenUpdater />
       <CollateralYieldUpdater />
       <TokenBalancesUpdater />
+      <PoolTokensBalancesUpdater />
     </>
   )
 }
