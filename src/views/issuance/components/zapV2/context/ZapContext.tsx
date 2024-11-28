@@ -198,6 +198,7 @@ export const ZapProvider: FC<ZapProviderProps> = ({
         .filter((token) => operation === 'mint' || token.symbol !== 'ETH'),
     [chainId, balances, operation]
   )
+
   const tokenPrice = useChainlinkPrice(
     chainId,
     selectedToken?.address as Address
