@@ -1,0 +1,58 @@
+{
+  "375c9ebc-8d4c-4d75-a290-a8de7b135142": {
+    "out": {
+      "address": "0x22a0B976b3c2f1f695e25A15b8449a785F17f8Ae",
+      "decimals": 18,
+      "name": "Moo Aero RSR-bsdETH",
+      "symbol": "mooAeroRSR-bsdETH"
+    },
+    "rToken": {
+      "address": "0xCb327b99fF831bF8223cCEd12B1338FF3aA322Ff",
+      "decimals": 18,
+      "name": "Based ETH",
+      "symbol": "bsdETH"
+    }
+  },
+  "ee23472f-9d68-49c7-8441-6b96928e6352": {
+    "out": {
+      "address": "0xB62F13126fCD0dD49dE8fF811406554197Bd0E11",
+      "decimals": 18,
+      "name": "Moo Aero hyUSD-eUSD",
+      "symbol": "mooAerohyUSD-eUSD"
+    },
+    "rToken": {
+      "address": "0xcc7ff230365bd730ee4b352cc2492cedac49383e",
+      "decimals": 18,
+      "name": "High Yield USD",
+      "symbol": "hyUSD"
+    }
+  },
+  "5f83ac83-753a-4382-869f-38c4e1658a36": {
+    "out": {
+      "address": "0xB614A6E6c21202De79DceB95AE2dd4817DD7e14b",
+      "decimals": 18,
+      "name": "Moo Aero ETH-bsdETH",
+      "symbol": "mooAeroETH-bsdETH"
+    },
+    "rToken": {
+      "address": "0xCb327b99fF831bF8223cCEd12B1338FF3aA322Ff",
+      "decimals": 18,
+      "name": "Based ETH",
+      "symbol": "bsdETH"
+    }
+  },
+  "fbbcbea4-247e-408a-9a8f-a695cab5866e": {
+    "out": {
+      "address": "0x79c92ad4455866524dACFC4085253CE97aACEcF0",
+      "decimals": 18,
+      "name": "Moo Beefy Aero bsdETH-WETH",
+      "symbol": "mooBeefyAerobsdETH-WETH"
+    },
+    "rToken": {
+      "address": "0xCb327b99fF831bF8223cCEd12B1338FF3aA322Ff",
+      "decimals": 18,
+      "name": "Based ETH",
+      "symbol": "bsdETH"
+    }
+  }
+}

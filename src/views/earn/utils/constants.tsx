@@ -17,6 +17,12 @@ import Beefy from 'components/icons/Beefy'
 import Camelot from 'components/icons/Camelot'
 import { Token } from 'types'
 import { ChainId } from 'utils/chains'
+// @ts-ignore
+import mainnetPools from 'utils/pools/data/mainnet.json'
+// @ts-ignore
+import basePools from 'utils/pools/data/base.json'
+// @ts-ignore
+import arbitrumPools from 'utils/pools/data/arbitrum.json'
 
 export type ZapPool = {
   out: Token
@@ -24,39 +30,9 @@ export type ZapPool = {
 }
 
 export const ZAP_EARN_POOLS: Record<number, Record<string, ZapPool>> = {
-  [ChainId.Mainnet]: {
-    '198b6ceb-b23e-4ca9-ab48-5be84255ca0b': {
-      out: {
-        address: '0x8cFE2f46052efE1a0784b0a28C802474C1dfd9D0',
-        decimals: 18,
-        name: 'Moo Convex ETH+',
-        symbol: 'mooConvexETH+',
-      },
-      rToken: {
-        address: '0xE72B141DF173b999AE7c1aDcbF60Cc9833Ce56a8',
-        decimals: 18,
-        name: 'ETHPlus',
-        symbol: 'ETH+',
-      },
-    },
-  },
-  [ChainId.Base]: {
-    'ee23472f-9d68-49c7-8441-6b96928e6352': {
-      out: {
-        address: '0xB62F13126fCD0dD49dE8fF811406554197Bd0E11',
-        decimals: 18,
-        name: 'Moo Aero hyUSD-eUSD',
-        symbol: 'mooAerohyUSD-eUSD',
-      },
-      rToken: {
-        address: '0xcc7ff230365bd730ee4b352cc2492cedac49383e',
-        decimals: 18,
-        name: 'High Yield USD',
-        symbol: 'hyUSD',
-      },
-    },
-  },
-  [ChainId.Arbitrum]: {},
+  [ChainId.Mainnet]: mainnetPools,
+  [ChainId.Base]: basePools,
+  [ChainId.Arbitrum]: arbitrumPools,
 }
 
 export const PROJECT_ICONS: Record<string, React.ReactElement> = {

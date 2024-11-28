@@ -29,7 +29,8 @@ const useColumns = () => {
                   color: 'secondaryText',
                   ':hover': { color: 'text' },
                 }}
-                onClick={() => {
+                onClick={(e) => {
+                  e.stopPropagation()
                   window.open(data.row.original.url, '_blank')
                   mixpanel.track('Viewed External Earn Link', {
                     Pool: data.row.original.symbol,
@@ -59,7 +60,8 @@ const useColumns = () => {
                     opacity: 1,
                   },
                 }}
-                onClick={() => {
+                onClick={(e) => {
+                  e.stopPropagation()
                   window.open(
                     `https://defillama.com/yields/pool/${data.row.original.id}`,
                     '_blank'
