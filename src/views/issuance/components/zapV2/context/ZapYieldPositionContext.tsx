@@ -1,6 +1,8 @@
 import { FC, ReactNode } from 'react'
 import { ZapProvider } from './ZapContext'
 import { Token } from 'types'
+import { balancesAtom } from 'state/atoms'
+import { useAtomValue } from 'jotai'
 
 interface ZapYieldPositionProviderProps {
   children: ReactNode
@@ -13,8 +15,14 @@ export const ZapYieldPositionProvider: FC<ZapYieldPositionProviderProps> = ({
   yieldToken,
   rToken,
 }) => {
+  const balances = useAtomValue(balancesAtom)
+  const yieldTokenWithBalance = {
+    ...yieldToken,
+    balance: balances[yieldToken.address].balance,
+  }
+
   return (
-    <ZapProvider targetToken={yieldToken} rToken={rToken}>
+    <ZapProvider targetToken={yieldTokenWithBalance} rToken={rToken}>
       {children}
     </ZapProvider>
   )
