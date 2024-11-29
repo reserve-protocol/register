@@ -1,5 +1,5 @@
 import { t, Trans } from '@lingui/macro'
-import { InfoItem } from 'components/info-box'
+import { InfoItem } from '@/components/old/info-box'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
 import { rTokenGovernanceAtom } from 'state/atoms'
@@ -36,7 +36,7 @@ const BasicInfo = () => {
       />
       <InfoItem
         title={t`Owner Address`}
-        subtitle={shortenAddress(timelock ? timelock : governor ?? '')}
+        subtitle={shortenAddress(timelock ? timelock : (governor ?? ''))}
         address={timelock || governor}
       />
     </Card>

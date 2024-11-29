@@ -1,6 +1,6 @@
 import { Trans, t } from '@lingui/macro'
 import StRSR from 'abis/StRSR'
-import TransactionButton from 'components/button/TransactionButton'
+import TransactionButton from '@/components/old/button/TransactionButton'
 import TokenLogo from 'components/icons/TokenLogo'
 import useContractWrite from 'hooks/useContractWrite'
 import useRToken from 'hooks/useRToken'

@@ -1,6 +1,6 @@
 import { t } from '@lingui/macro'
 import { Container } from 'components'
-import { ContentHead } from 'components/info-box'
+import { ContentHead } from '@/components/old/info-box'
 import ListedTokensTable from 'components/tables/ListedTokensTable'
 import { Divider } from 'theme-ui'
 import DeployHero from 'views/compare/components/DeployHero'

@@ -1,6 +1,6 @@
 import { t } from '@lingui/macro'
-import CollapsableBox from 'components/boxes/CollapsableBox'
-import SelectableBox from 'components/boxes/SelectableBox'
+import CollapsableBox from '@/components/old/boxes/CollapsableBox'
+import SelectableBox from '@/components/old/boxes/SelectableBox'
 import Help from 'components/help'
 import TokenLogo from 'components/icons/TokenLogo'
 import { useAtomValue } from 'jotai'
@@ -147,8 +147,8 @@ const TraderEmissions = ({ trader, ...props }: Props) => {
         const amountColor = isBelowMin
           ? 'secondaryText'
           : isSelected
-          ? 'rBlue'
-          : 'text'
+            ? 'rBlue'
+            : 'text'
 
         return (
           <SelectableBox

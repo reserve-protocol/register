@@ -1,6 +1,6 @@
 import { t } from '@lingui/macro'
 import { Modal } from 'components'
-import { ModalProps } from 'components/modal'
+import { ModalProps } from '@/components/old/modal'
 import TokenItem from 'components/token-item'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { ChevronLeft } from 'lucide-react'

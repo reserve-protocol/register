@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro'
-import { SmallButton } from 'components/button'
+import { SmallButton } from '@/components/old/button'
 import SectionWrapper from 'components/section-navigation/SectionWrapper'
 import { useState } from 'react'
 import { ChevronDown, ChevronUp } from 'lucide-react'

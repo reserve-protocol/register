@@ -1,4 +1,4 @@
-import Button from 'components/button'
+import Button from '@/components/old/button'
 import { ReactNode, useEffect, useState } from 'react'
 import { Box, Text } from 'theme-ui'
 import { useZap } from '../context/ZapContext'

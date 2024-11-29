@@ -2,10 +2,10 @@ import { Options, Placement } from '@popperjs/core'
 import useOnClickOutside from 'hooks/useOnClickOutside'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { usePopper } from 'react-popper'
-import useInterval from '../../hooks/useInterval'
 import { createPortal } from 'react-dom'
 import { StringMap } from 'types'
 import { Box, BoxProps } from 'theme-ui'
+import useInterval from '@/hooks/useInterval'
 
 const PopoverContainer = React.forwardRef<
   HTMLDivElement,

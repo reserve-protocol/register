@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro'
-import { SmallButton } from 'components/button'
+import { SmallButton } from '@/components/old/button'
 import OverviewIcon from 'components/icons/OverviewIcon'
 import BackupBasket from 'components/rtoken-setup/basket/BackupBasket'
 import CollateralModal from 'components/rtoken-setup/basket/CollateralModal'

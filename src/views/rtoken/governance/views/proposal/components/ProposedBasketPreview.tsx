@@ -1,5 +1,5 @@
 import { t, Trans } from '@lingui/macro'
-import { SmallButton } from 'components/button'
+import { SmallButton } from '@/components/old/button'
 import { useAtom, useAtomValue } from 'jotai'
 import { Box, BoxProps, Checkbox, Text } from 'theme-ui'
 import {

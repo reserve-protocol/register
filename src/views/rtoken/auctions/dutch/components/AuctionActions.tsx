@@ -1,6 +1,6 @@
 import DutchTradeAbi from 'abis/DutchTrade'
 import ERC20 from 'abis/ERC20'
-import { ExecuteButton } from 'components/button/TransactionButton'
+import { ExecuteButton } from '@/components/old/button/TransactionButton'
 import useHasAllowance from 'hooks/useHasAllowance'
 import { useAtomValue } from 'jotai'
 import { useCallback, useMemo, useState } from 'react'

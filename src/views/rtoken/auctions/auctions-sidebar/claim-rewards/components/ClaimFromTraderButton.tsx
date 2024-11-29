@@ -1,6 +1,6 @@
 import { Trans, t } from '@lingui/macro'
 import RevenueTrader from 'abis/RevenueTrader'
-import { ExecuteButton } from 'components/button/TransactionButton'
+import { ExecuteButton } from '@/components/old/button/TransactionButton'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useMemo } from 'react'
 import { rTokenContractsAtom, walletAtom } from 'state/atoms'

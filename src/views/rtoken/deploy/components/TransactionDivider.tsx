@@ -1,6 +1,6 @@
 import { Trans, t } from '@lingui/macro'
 import { InfoBox } from 'components'
-import { SmallButton } from 'components/button'
+import { SmallButton } from '@/components/old/button'
 import { useAtomValue } from 'jotai'
 import { chainIdAtom } from 'state/atoms'
 import { Box, Card, Flex, Image } from 'theme-ui'

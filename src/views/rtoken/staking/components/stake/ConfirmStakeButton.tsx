@@ -1,6 +1,6 @@
 import { Trans, t } from '@lingui/macro'
 import { Button } from 'components'
-import { TransactionButtonContainer } from 'components/button/TransactionButton'
+import { TransactionButtonContainer } from '@/components/old/button/TransactionButton'
 import CheckCircleIcon from 'components/icons/CheckCircleIcon'
 import GasIcon from 'components/icons/GasIcon'
 import TransactionsIcon from 'components/icons/TransactionsIcon'

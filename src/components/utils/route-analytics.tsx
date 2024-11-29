@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import ReactGA from 'react-ga'
 
-const Analytics = () => {
+const RouteAnalytics = () => {
   const location = useLocation()
 
   useEffect(() => {
@@ -13,4 +13,4 @@ const Analytics = () => {
   return null
 }
 
-export default Analytics
+export default RouteAnalytics

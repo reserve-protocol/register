@@ -1,5 +1,5 @@
 import { Trans, t } from '@lingui/macro'
-import TablePlaceholder from 'components/table/components/TablePlaceholder'
+import TablePlaceholder from '@/components/old/table/components/TablePlaceholder'
 import Skeleton from 'react-loading-skeleton'
 import { Box, Grid, Text } from 'theme-ui'
 import { useBlockNumberOfLatestL2OutputProposal } from '../hooks/useWithdrawStatus'

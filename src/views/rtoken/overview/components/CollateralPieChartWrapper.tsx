@@ -1,7 +1,7 @@
 import { t } from '@lingui/macro'
 import ChevronRight from 'components/icons/ChevronRight'
 import CircleIcon from 'components/icons/CircleIcon'
-import { MouseoverTooltipContent } from 'components/tooltip'
+import { MouseoverTooltipContent } from '@/components/old/tooltip'
 import { ListedToken } from 'hooks/useTokenList'
 import { FC, memo, useMemo, useState } from 'react'
 import { Box, Button, Text } from 'theme-ui'

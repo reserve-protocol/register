@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro'
-import { SmallButton } from 'components/button'
+import { SmallButton } from '@/components/old/button'
 import EmptyBoxIcon from 'components/icons/EmptyBoxIcon'
 import { gql } from 'graphql-request'
 import useQuery from 'hooks/useQuery'

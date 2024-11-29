@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro'
-import { SmallButton } from 'components/button'
+import { SmallButton } from '@/components/old/button'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
 import { useCallback } from 'react'

@@ -1,5 +1,5 @@
 import { Trans, t } from '@lingui/macro'
-import ExpandableContent from 'components/expandable-content'
+import ExpandableContent from '@/components/old/expandable-content'
 import { Box, BoxProps, Text } from 'theme-ui'
 
 const faqs = [

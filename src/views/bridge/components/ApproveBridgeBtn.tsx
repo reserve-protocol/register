@@ -1,5 +1,5 @@
 import ERC20 from 'abis/ERC20'
-import TransactionButton from 'components/button/TransactionButton'
+import TransactionButton from '@/components/old/button/TransactionButton'
 import useContractWrite from 'hooks/useContractWrite'
 import { useAtomValue } from 'jotai'
 import { bridgeApprovalAtom, selectedBridgeToken } from '../atoms'

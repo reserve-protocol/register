@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro'
-import Button from 'components/button'
+import Button from '@/components/old/button'
 import ExternalArrowIcon from 'components/icons/ExternalArrowIcon'
 import { borderRadius } from 'theme'
 import { Box, BoxProps, Flex, Image, Text } from 'theme-ui'

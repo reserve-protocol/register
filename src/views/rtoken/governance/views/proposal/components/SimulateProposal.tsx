@@ -1,5 +1,5 @@
 import { Trans, t } from '@lingui/macro'
-import { LoadingButton } from 'components/button'
+import { LoadingButton } from '@/components/old/button'
 import ExternalArrowIcon from 'components/icons/ExternalArrowIcon'
 import IssuanceIcon from 'components/icons/IssuanceIcon'
 import Tenderly from 'components/icons/logos/Tenderly'

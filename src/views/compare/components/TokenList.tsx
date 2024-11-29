@@ -1,6 +1,6 @@
 import { t, Trans } from '@lingui/macro'
-import { SmallButton } from 'components/button'
-import { ContentHead } from 'components/info-box'
+import { SmallButton } from '@/components/old/button'
+import { ContentHead } from '@/components/old/info-box'
 import ListedTokensTable from 'components/tables/ListedTokensTable'
 import { useNavigate } from 'react-router-dom'
 import { Box, BoxProps, Flex } from 'theme-ui'

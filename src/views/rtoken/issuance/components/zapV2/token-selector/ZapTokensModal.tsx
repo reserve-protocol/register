@@ -1,6 +1,6 @@
 import { Modal } from 'components'
 import TokenLogo from 'components/icons/TokenLogo'
-import { SearchInput } from 'components/input'
+import { SearchInput } from '@/components/old/input'
 import { useMemo, useState } from 'react'
 import { ArrowUpRight, X } from 'lucide-react'
 import { colors } from 'theme'

@@ -1,6 +1,6 @@
 import { Trans } from '@lingui/macro'
-import Blockies from 'components/blockies'
-import GoTo from 'components/button/GoTo'
+import BlockiesAvatar from '@/components/utils/blockies-avatar'
+import GoTo from '@/components/old/button/GoTo'
 import { useEnsAddresses } from 'hooks/useEnsAddresses'
 import { atom, useAtomValue } from 'jotai'
 import { useState } from 'react'
@@ -131,7 +131,7 @@ const ProposalVotes = () => {
               py={2}
               px={3}
             >
-              <Blockies address={vote.voter} />
+              <BlockiesAvatar address={vote.voter} />
               <Text>
                 {!!ensRes[index] ? ensRes[index] : shortenAddress(vote.voter)}
               </Text>
@@ -148,8 +148,8 @@ const ProposalVotes = () => {
                   current === 'FOR'
                     ? 'primary'
                     : current === 'AGAINST'
-                    ? 'red'
-                    : 'secondaryText'
+                      ? 'red'
+                      : 'secondaryText'
                 }
               >
                 {formatCurrency(+vote.weight, 0, {

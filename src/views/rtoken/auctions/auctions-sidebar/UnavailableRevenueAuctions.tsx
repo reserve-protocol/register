@@ -16,7 +16,7 @@ import {
 import RevenueAuctionItem from './RevenueAuctionItem'
 import RevenueBoxContainer from './RevenueBoxContainer'
 import useContractWrite from 'hooks/useContractWrite'
-import TransactionButton from 'components/button/TransactionButton'
+import TransactionButton from '@/components/old/button/TransactionButton'
 import { UseSimulateContractParameters } from 'wagmi'
 
 const setAuctionAtom = atom(null, (get, set, index: number) => {

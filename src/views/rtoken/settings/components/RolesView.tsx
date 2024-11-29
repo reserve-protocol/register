@@ -1,6 +1,6 @@
 import { Trans } from '@lingui/macro'
-import GoTo from 'components/button/GoTo'
-import Popup from 'components/popup'
+import GoTo from '@/components/old/button/GoTo'
+import Popup from '@/components/old/popup'
 import { useAtomValue } from 'jotai'
 import { useState } from 'react'
 import { chainIdAtom } from 'state/atoms'

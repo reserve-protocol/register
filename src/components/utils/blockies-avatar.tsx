@@ -2,13 +2,13 @@ import * as blockies from 'blockies-ts'
 import { useMemo } from 'react'
 import { Image } from 'theme-ui'
 
-type BlockiesProps = {
+type BlockiesAvatarProps = {
   address: string
   size?: number
   className?: string
 }
 
-const Blockies = ({ address, size = 24 }: BlockiesProps) => {
+const BlockiesAvatar = ({ address, size = 24 }: BlockiesAvatarProps) => {
   const avatarImgSrc = useMemo(() => {
     return blockies.create({ seed: address.toLocaleLowerCase() }).toDataURL()
   }, [address])
@@ -24,4 +24,4 @@ const Blockies = ({ address, size = 24 }: BlockiesProps) => {
   )
 }
 
-export default Blockies
+export default BlockiesAvatar

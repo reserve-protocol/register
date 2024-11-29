@@ -1,7 +1,7 @@
 import { t } from '@lingui/macro'
 import { createColumnHelper } from '@tanstack/react-table'
 import ChainLogo from 'components/icons/ChainLogo'
-import { Table, TableProps } from 'components/table'
+import { Table, TableProps } from '@/components/old/table'
 import TokenItem from 'components/token-item'
 import useRTokenLogo from 'hooks/useRTokenLogo'
 import useTokenList, { ListedToken } from 'hooks/useTokenList'

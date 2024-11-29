@@ -1,7 +1,7 @@
 import { Trans, t } from '@lingui/macro'
 import { createColumnHelper } from '@tanstack/react-table'
 import GovernanceIcon from 'components/icons/GovernanceIcon'
-import { Table } from 'components/table'
+import { Table } from '@/components/old/table'
 import TokenItem from 'components/token-item'
 import dayjs from 'dayjs'
 import useRTokenLogo from 'hooks/useRTokenLogo'

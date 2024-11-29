@@ -1,6 +1,6 @@
 import { t } from '@lingui/macro'
 import { InfoBox } from 'components'
-import { SmallButton } from 'components/button'
+import { SmallButton } from '@/components/old/button'
 import { Box, BoxProps, Flex } from 'theme-ui'
 
 const ListingInfo = (props: BoxProps) => (

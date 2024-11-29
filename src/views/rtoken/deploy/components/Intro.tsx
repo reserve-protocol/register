@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro'
-import { SmallButton } from 'components/button'
+import { SmallButton } from '@/components/old/button'
 import DeployIntroIcon from 'components/icons/DeployIntroIcon'
 import { Box, BoxProps, Card, Flex, Text } from 'theme-ui'
 import { DISCORD_INVITE } from 'utils/constants'

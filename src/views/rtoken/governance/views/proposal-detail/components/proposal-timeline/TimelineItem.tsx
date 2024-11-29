@@ -1,4 +1,4 @@
-import Address from 'components/address'
+import ExplorerAddress from '@/components/utils/explorer-address'
 import useBlockTimestamp from 'hooks/useBlockTimestamp'
 import { useAtomValue } from 'jotai'
 import { ReactNode } from 'react'
@@ -101,7 +101,7 @@ export const TimelineItemCreated = () => {
       subtitle={
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           <Text>By:</Text>
-          <Address address={proposal?.proposer || ''} chain={1} />
+          <ExplorerAddress address={proposal?.proposer || ''} chain={1} />
         </Box>
       }
     />

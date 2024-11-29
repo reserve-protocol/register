@@ -1,6 +1,6 @@
 import { t, Trans } from '@lingui/macro'
-import GoTo from 'components/button/GoTo'
-import { InfoItem } from 'components/info-box'
+import GoTo from '@/components/old/button/GoTo'
+import { InfoItem } from '@/components/old/info-box'
 import { useAtomValue } from 'jotai'
 import { chainIdAtom, rTokenRevenueSplitAtom } from 'state/atoms'
 import { Box, BoxProps, Card, Text, Divider } from 'theme-ui'

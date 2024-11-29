@@ -1,5 +1,5 @@
 import { t, Trans } from '@lingui/macro'
-import TransactionButton from 'components/button/TransactionButton'
+import TransactionButton from '@/components/old/button/TransactionButton'
 import useWatchTransaction from 'hooks/useWatchTransaction'
 import { memo, useCallback } from 'react'
 import { Text } from 'theme-ui'

@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro'
-import InfoBox from 'components/info-box'
+import InfoBox from '@/components/old/info-box'
 import TabMenu from 'components/tab-menu'
 import { useMemo } from 'react'
 import { ArrowDown, ArrowUp } from 'lucide-react'

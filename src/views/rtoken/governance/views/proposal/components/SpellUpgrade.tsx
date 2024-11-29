@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro'
-import DocsLink from 'components/docs-link/DocsLink'
+import DocsLink from '@/components/utils/docs-link'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { chainIdAtom } from 'state/atoms'
 import { Box, BoxProps, Card, Divider, Label, Radio, Text } from 'theme-ui'

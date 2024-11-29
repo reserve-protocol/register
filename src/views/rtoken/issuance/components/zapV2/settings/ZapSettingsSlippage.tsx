@@ -1,4 +1,4 @@
-import ButtonGroup from 'components/button/ButtonGroup'
+import ButtonGroup from '@/components/old/button/ButtonGroup'
 import { useMemo, useState } from 'react'
 import { Box } from 'theme-ui'
 import { formatNumber } from '../utils'

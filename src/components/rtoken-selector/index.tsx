@@ -1,4 +1,4 @@
-import Popup from 'components/popup'
+import Popup from '@/components/old/popup'
 import { useAtomValue } from 'jotai'
 import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
 import { useCallback, useState } from 'react'

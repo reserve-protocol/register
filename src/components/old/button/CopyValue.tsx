@@ -1,5 +1,5 @@
 import { t } from '@lingui/macro'
-import { MouseoverTooltip } from 'components/tooltip'
+import { MouseoverTooltip } from '@/components/old/tooltip'
 import { useState } from 'react'
 import CopyIcon from 'components/icons/CopyIcon'
 import { ButtonProps, IconButton } from 'theme-ui'

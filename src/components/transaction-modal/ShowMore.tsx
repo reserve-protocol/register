@@ -1,4 +1,4 @@
-import Button from 'components/button'
+import Button from '@/components/old/button'
 import AsteriskIcon from 'components/icons/AsteriskIcon'
 import { useState } from 'react'
 import { Box, BoxProps, Divider, Text } from 'theme-ui'

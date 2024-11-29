@@ -3,20 +3,20 @@ import { Box, BoxProps } from 'theme-ui'
 import { shortenAddress } from 'utils'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 
-type AddressProps = {
+type ExplorerAddressProps = {
   address: string
   chain: number
   type?: ExplorerDataType
   className?: string
 }
 
-const Address = ({
+const ExplorerAddress = ({
   address,
   chain,
   type = ExplorerDataType.ADDRESS,
   sx,
   ...props
-}: AddressProps & BoxProps) => {
+}: ExplorerAddressProps & BoxProps) => {
   const handleAddress = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation()
     window.open(getExplorerLink(address, chain, type), '_blank')
@@ -50,4 +50,4 @@ const Address = ({
   )
 }
 
-export default Address
+export default ExplorerAddress

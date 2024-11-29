@@ -1,6 +1,6 @@
 import { t } from '@lingui/macro'
 import FacadeAct from 'abis/FacadeAct'
-import { ExecuteButton } from 'components/button/TransactionButton'
+import { ExecuteButton } from '@/components/old/button/TransactionButton'
 import MeltIcon from 'components/icons/MeltIcon'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'

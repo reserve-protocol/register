@@ -1,5 +1,5 @@
-import Analytics from 'components/analytics/Analytics'
-import ToastContainer from 'components/toaster-container/ToastContainer'
+import RouteAnalytics from '@/components/utils/route-analytics'
+import ToastContainer from '@/components/old/toaster-container/ToastContainer'
 import TransactionSidebar from 'components/transactions/manager/TransactionSidebar'
 import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
 import { useEffect } from 'react'
@@ -72,7 +72,7 @@ const App = () => (
     onError={handleError}
   >
     <Router>
-      <Analytics />
+      <RouteAnalytics />
       <Redirects />
       <ScrollToTop />
       <ThemeUIProvider theme={theme}>

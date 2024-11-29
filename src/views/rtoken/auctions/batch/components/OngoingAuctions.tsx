@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro'
-import { Table } from 'components/table'
+import { Table } from '@/components/old/table'
 import { useAtomValue } from 'jotai'
 import { Box, BoxProps, Text } from 'theme-ui'
 import { currentTradesAtom } from '../../atoms'

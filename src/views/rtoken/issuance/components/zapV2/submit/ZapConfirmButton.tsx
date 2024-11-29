@@ -1,4 +1,4 @@
-import { LoadingButton } from 'components/button'
+import { LoadingButton } from '@/components/old/button'
 import TransactionsIcon from 'components/icons/TransactionsIcon'
 import { Box, Spinner, Text } from 'theme-ui'
 import { useZap } from '../context/ZapContext'
@@ -27,8 +27,8 @@ const ZapConfirmButton = () => {
               {!receipt
                 ? `Confirm ${operation}`
                 : receipt.status === 'success'
-                ? 'Transaction Submitted'
-                : 'Transaction Failed'}
+                  ? 'Transaction Submitted'
+                  : 'Transaction Failed'}
             </Text>
             {(loadingTx ||
               validatingTx ||

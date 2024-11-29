@@ -1,5 +1,5 @@
 import { t, Trans } from '@lingui/macro'
-import { SmallButton } from 'components/button'
+import { SmallButton } from '@/components/old/button'
 import { ArrowRight, Plus, Square, X } from 'lucide-react'
 import { useFormContext } from 'react-hook-form'
 import { Box, BoxProps, Text } from 'theme-ui'

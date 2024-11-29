@@ -1,4 +1,4 @@
-import { LoadingButton } from 'components/button'
+import { LoadingButton } from '@/components/old/button'
 import TokenLogo from 'components/icons/TokenLogo'
 import { Box, Spinner, Text } from 'theme-ui'
 import { useZap } from '../context/ZapContext'

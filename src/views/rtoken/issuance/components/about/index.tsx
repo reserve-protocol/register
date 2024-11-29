@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro'
-import { SmallButton } from 'components/button'
+import { SmallButton } from '@/components/old/button'
 import { useSetAtom } from 'jotai'
 import { Box, Flex, Text } from 'theme-ui'
 import { wrapSidebarAtom } from '@/views/rtoken/issuance/atoms'

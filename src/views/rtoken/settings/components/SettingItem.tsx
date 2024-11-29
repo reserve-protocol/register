@@ -1,5 +1,5 @@
 import { t } from '@lingui/macro'
-import { LoadingButton } from 'components/button'
+import { LoadingButton } from '@/components/old/button'
 import { Box, Flex, BoxProps, Image, Text } from 'theme-ui'
 
 interface ItemProps extends BoxProps {

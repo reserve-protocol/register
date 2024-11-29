@@ -1,6 +1,6 @@
 import ERC20 from 'abis/ERC20'
 import USDT from 'abis/USDT'
-import TransactionButton from 'components/button/TransactionButton'
+import TransactionButton from '@/components/old/button/TransactionButton'
 import OverviewIcon from 'components/icons/OverviewIcon'
 import TokenItem from 'components/token-item'
 import useContractWrite from 'hooks/useContractWrite'

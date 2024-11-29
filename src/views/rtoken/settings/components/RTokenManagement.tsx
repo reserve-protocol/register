@@ -1,6 +1,6 @@
 import { Trans } from '@lingui/macro'
 import Main from 'abis/Main'
-import DocsLink from 'components/docs-link/DocsLink'
+import DocsLink from '@/components/utils/docs-link'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
 import { accountRoleAtom, chainIdAtom } from 'state/atoms'

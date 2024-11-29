@@ -1,5 +1,5 @@
 import { t } from '@lingui/macro'
-import { SmallButton } from 'components/button'
+import { SmallButton } from '@/components/old/button'
 import TokenItem from 'components/token-item'
 import dayjs from 'dayjs'
 import { useAtomValue, useSetAtom } from 'jotai'

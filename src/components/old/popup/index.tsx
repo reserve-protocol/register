@@ -1,5 +1,5 @@
 import { Box } from 'theme-ui'
-import Popover, { PopoverProps } from 'components/popover'
+import Popover, { PopoverProps } from '../popover'
 
 const Popup = ({ content, containerProps = {}, ...props }: PopoverProps) => {
   return (

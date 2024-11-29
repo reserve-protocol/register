@@ -1,6 +1,6 @@
 import { Trans } from '@lingui/macro'
 import { Input } from 'components'
-import { SmallButton } from 'components/button'
+import { SmallButton } from '@/components/old/button'
 import { useState } from 'react'
 import { Box, Text } from 'theme-ui'
 import { isAddress } from 'utils'

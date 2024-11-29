@@ -1,6 +1,6 @@
 import { t, Trans } from '@lingui/macro'
 import Help from 'components/help'
-import IconInfo from 'components/info-icon'
+import IconInfo from '@/components/old/info-icon'
 import useRToken from 'hooks/useRToken'
 import useTokenStats from 'hooks/useTokenStats'
 import { useAtomValue } from 'jotai'

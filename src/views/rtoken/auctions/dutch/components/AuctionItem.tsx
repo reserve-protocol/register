@@ -1,5 +1,5 @@
 import CalculatorIcon from 'components/icons/CalculatorIcon'
-import { MouseoverTooltip } from 'components/tooltip'
+import { MouseoverTooltip } from '@/components/old/tooltip'
 import { ChevronDown } from 'lucide-react'
 import { Box, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'

@@ -1,6 +1,6 @@
 import { Box, BoxProps } from 'theme-ui'
 import LangIcon from 'components/icons/Lang'
-import Popup from 'components/popup'
+import Popup from '@/components/old/popup'
 import { useState } from 'react'
 import { transition } from 'theme'
 

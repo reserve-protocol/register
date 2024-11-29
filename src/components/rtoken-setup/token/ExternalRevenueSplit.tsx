@@ -1,5 +1,5 @@
 import { t, Trans } from '@lingui/macro'
-import { SmallButton } from 'components/button'
+import { SmallButton } from '@/components/old/button'
 import Field, { FieldInput, getErrorMessage } from 'components/field'
 import { useAtomValue } from 'jotai'
 import { useEffect } from 'react'

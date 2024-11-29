@@ -1,6 +1,6 @@
 import { t, Trans } from '@lingui/macro'
 import { Button } from 'components'
-import DgnETHButtonAppendix from 'components/dgneth/DgnETHButtonAppendix'
+import DgnETHButtonAppendix from '@/components/utils/integrations/dgneth-btn-appendix'
 import ChainLogo from 'components/icons/ChainLogo'
 import ChevronRight from 'components/icons/ChevronRight'
 import CollaterizationIcon from 'components/icons/CollaterizationIcon'

@@ -1,5 +1,5 @@
 import { t, Trans } from '@lingui/macro'
-import { InfoItem } from 'components/info-box'
+import { InfoItem } from '@/components/old/info-box'
 import { useAtomValue } from 'jotai'
 import { rTokenGovernanceAtom, secondsPerBlockAtom } from 'state/atoms'
 import { BoxProps, Card, Text, Divider } from 'theme-ui'

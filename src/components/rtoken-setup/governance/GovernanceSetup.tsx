@@ -14,7 +14,7 @@ import {
 } from 'theme-ui'
 import { addressPattern } from 'utils'
 import GovernanceParameters from './GovernanceParameters'
-import DocsLink from 'components/docs-link/DocsLink'
+import DocsLink from '@/components/utils/docs-link'
 import RolesSetup from './RoleSetup'
 
 interface Props extends BoxProps {

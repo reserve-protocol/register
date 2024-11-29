@@ -1,5 +1,5 @@
 import { t, Trans } from '@lingui/macro'
-import { SmallButton } from 'components/button'
+import { SmallButton } from '@/components/old/button'
 import Navigation from 'components/section-navigation/Navigation'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'

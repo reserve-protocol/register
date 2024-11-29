@@ -1,6 +1,6 @@
 import { t, Trans } from '@lingui/macro'
-import { SmallButton } from 'components/button'
-import DocsLink from 'components/docs-link/DocsLink'
+import { SmallButton } from '@/components/old/button'
+import DocsLink from '@/components/utils/docs-link'
 import Help from 'components/help'
 import EmptyBoxIcon from 'components/icons/EmptyBoxIcon'
 import { useAtomValue } from 'jotai'

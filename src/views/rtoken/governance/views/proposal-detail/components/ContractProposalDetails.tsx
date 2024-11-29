@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro'
-import GoTo from 'components/button/GoTo'
+import GoTo from '@/components/old/button/GoTo'
 import { MODES } from 'components/dark-mode-toggle'
 import TabMenu from 'components/tab-menu'
 import { useAtomValue } from 'jotai'

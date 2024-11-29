@@ -1,5 +1,5 @@
 import { Button } from 'components'
-import Popup from 'components/popup'
+import Popup from '@/components/old/popup'
 import { useCallback, useState } from 'react'
 import { ChevronDown, ChevronUp } from 'lucide-react'
 import { Box, BoxProps, Divider, Flex, Switch, Text } from 'theme-ui'

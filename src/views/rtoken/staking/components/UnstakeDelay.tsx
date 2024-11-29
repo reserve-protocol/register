@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro'
-import CollapsableBox from 'components/boxes/CollapsableBox'
+import CollapsableBox from '@/components/old/boxes/CollapsableBox'
 import { useAtomValue } from 'jotai'
 import { ArrowRight } from 'lucide-react'
 import { Box, BoxProps, Text } from 'theme-ui'

@@ -1,5 +1,5 @@
 import { t, Trans } from '@lingui/macro'
-import { ContentHead } from 'components/info-box'
+import { ContentHead } from '@/components/old/info-box'
 import { Box, BoxProps, Grid, Link, Text } from 'theme-ui'
 
 /**

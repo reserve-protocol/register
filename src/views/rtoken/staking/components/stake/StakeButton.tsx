@@ -1,6 +1,6 @@
 import { Trans } from '@lingui/macro'
 import { Button } from 'components'
-import { TransactionButtonContainer } from 'components/button/TransactionButton'
+import { TransactionButtonContainer } from '@/components/old/button/TransactionButton'
 import { useAtomValue } from 'jotai'
 import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
 import { useCallback, useState } from 'react'

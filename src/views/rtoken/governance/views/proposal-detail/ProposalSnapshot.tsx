@@ -1,4 +1,4 @@
-import Button from 'components/button'
+import Button from '@/components/old/button'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
 import { Download } from 'lucide-react'

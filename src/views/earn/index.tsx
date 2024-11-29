@@ -8,7 +8,7 @@ import FeaturedPools from './components/FeaturedPools'
 import HelpIcon from 'components/icons/HelpIcon'
 import { Zap } from 'lucide-react'
 import { colors } from 'theme'
-import { MouseoverTooltip } from 'components/tooltip'
+import { MouseoverTooltip } from '@/components/old/tooltip'
 
 const HeroBackground = () => {
   const [colorMode] = useColorMode()

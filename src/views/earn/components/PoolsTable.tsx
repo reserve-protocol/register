@@ -1,4 +1,4 @@
-import { Table, TableProps } from 'components/table'
+import { Table, TableProps } from '@/components/old/table'
 import { Pool } from 'state/pools/atoms'
 import useEarnTableColumns, {
   columnVisibility,

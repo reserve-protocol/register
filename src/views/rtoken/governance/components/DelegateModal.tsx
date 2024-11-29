@@ -1,6 +1,6 @@
 import { t, Trans } from '@lingui/macro'
 import StRSRVotes from 'abis/StRSRVotes'
-import Input from 'components/input'
+import Input from '@/components/old/input'
 import TransactionModal from 'components/transaction-modal'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'

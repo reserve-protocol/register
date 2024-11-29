@@ -1,6 +1,6 @@
 import { t } from '@lingui/macro'
 import { Table } from '@tanstack/react-table'
-import { SmallButton } from 'components/button'
+import { SmallButton } from '@/components/old/button'
 import Help from 'components/help'
 import { Box, BoxProps, Text } from 'theme-ui'
 

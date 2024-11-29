@@ -1,5 +1,5 @@
 import { t, Trans } from '@lingui/macro'
-import { InfoItem } from 'components/info-box'
+import { InfoItem } from '@/components/old/info-box'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
 import { chainIdAtom, rTokenAssetsAtom, rTokenContractsAtom } from 'state/atoms'
