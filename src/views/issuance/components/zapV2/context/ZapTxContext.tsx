@@ -74,6 +74,7 @@ export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     resetZap,
     isExpensiveZap,
     setShowEliteProgramModal,
+    zapToYieldPosition,
   } = useZap()
 
   // Approval
@@ -330,7 +331,7 @@ export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
         },
       })
       // elite program
-      if (operation === 'mint' && isExpensiveZap) {
+      if (operation === 'mint' && isExpensiveZap && !zapToYieldPosition) {
         setShowEliteProgramModal(true)
         return
       }

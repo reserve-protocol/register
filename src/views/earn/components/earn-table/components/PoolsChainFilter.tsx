@@ -1,6 +1,6 @@
 import ChainFilter from 'components/filters/chain/ChainFilter'
 import { useAtom } from 'jotai'
-import { poolChainsFilterAtom } from '../atoms'
+import { poolChainsFilterAtom } from '../../../atoms'
 
 const PoolsChainFilter = () => {
   const [chains, setChains] = useAtom(poolChainsFilterAtom)

@@ -3,33 +3,34 @@ import { createColumnHelper } from '@tanstack/react-table'
 import Help from 'components/help'
 import ChainLogo from 'components/icons/ChainLogo'
 import StackTokenLogo from 'components/token-logo/StackTokenLogo'
+import { useAtomValue } from 'jotai'
 import mixpanel from 'mixpanel-browser'
 import { useMemo } from 'react'
-import { ArrowUpRight } from 'react-feather'
-import { Pool } from 'state/pools/atoms'
+import {
+  ArrowUpRight,
+  ChevronDown,
+  ChevronUp,
+  Circle,
+  Zap,
+} from 'react-feather'
+import { Pool, poolBalancesAtom } from 'state/pools/atoms'
 import { colors } from 'theme'
 import { Box, Image, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { CHAIN_TAGS, LP_PROJECTS, NETWORKS } from 'utils/constants'
-import { PROJECT_ICONS } from '../utils/constants'
+import { getAddress } from 'viem'
+import {
+  PROJECT_ICONS,
+  ZAP_EARN_POOLS,
+  ZAP_EARN_POOLS_IDS,
+} from 'views/earn/utils/constants'
 
-export const columnVisibility = []
-
-export const compactColumnVisibility = [
-  '',
-  '',
-  ['none', 'table-cell'],
-  '',
-  ['none', 'none', 'none', 'table-cell'],
-  ['none', 'none', 'none', 'table-cell'],
-  ['none', 'table-cell'],
-]
-
-
-const useEarnTableColumns = (compact: boolean) => {
+const useColumns = () => {
   const columnHelper = createColumnHelper<Pool>()
-  return useMemo(() => {
-    return [
+  const balances = useAtomValue(poolBalancesAtom)
+
+  return useMemo(
+    () => [
       columnHelper.accessor('symbol', {
         header: t`Pool`,
         cell: (data) => {
@@ -42,7 +43,8 @@ const useEarnTableColumns = (compact: boolean) => {
                   color: 'secondaryText',
                   ':hover': { color: 'text' },
                 }}
-                onClick={() => {
+                onClick={(e) => {
+                  e.stopPropagation()
                   window.open(data.row.original.url, '_blank')
                   mixpanel.track('Viewed External Earn Link', {
                     Pool: data.row.original.symbol,
@@ -72,7 +74,8 @@ const useEarnTableColumns = (compact: boolean) => {
                     opacity: 1,
                   },
                 }}
-                onClick={() => {
+                onClick={(e) => {
+                  e.stopPropagation()
                   window.open(
                     `https://defillama.com/yields/pool/${data.row.original.id}`,
                     '_blank'
@@ -110,11 +113,31 @@ const useEarnTableColumns = (compact: boolean) => {
                 fontSize={16}
                 chain={NETWORKS[data.getValue().toLowerCase()]}
               />
-              {!compact && (
-                <Text ml="2" sx={{ display: ['block', 'none', 'block'] }}>
-                  {CHAIN_TAGS[NETWORKS[data.getValue().toLowerCase()]]}
-                </Text>
-              )}
+              <Text ml="2" sx={{ display: ['block', 'none', 'block'] }}>
+                {CHAIN_TAGS[NETWORKS[data.getValue().toLowerCase()]]}
+              </Text>
+            </Box>
+          )
+        },
+      }),
+      columnHelper.accessor('url', {
+        header: t`My deposits`,
+        cell: ({
+          row: {
+            original: { id, chain },
+          },
+        }) => {
+          const chainId = NETWORKS[chain.toLowerCase()]
+          const tokenOut: string =
+            ZAP_EARN_POOLS[chainId]?.[id]?.out?.address || ''
+          const balance = tokenOut
+            ? balances[`${chainId}-${tokenOut}`]?.balance || '0'
+            : '0'
+          return (
+            <Box sx={{ textAlign: 'end' }}>
+              {formatCurrency(Number(balance), 5, {
+                minimumFractionDigits: 0,
+              })}
             </Box>
           )
         },
@@ -130,41 +153,56 @@ const useEarnTableColumns = (compact: boolean) => {
         },
         cell: (data) => `${formatCurrency(data.getValue(), 1)}%`,
       }),
-      columnHelper.accessor('apyBase', {
-        header: () => {
-          return (
-            <Box variant="layout.verticalAlign">
-              <Text mr={1}>Base APY</Text>
-              <Help content="Annualised percentage yield from trading fees/supplying. For dexes 24h fees are used and scaled those to a year." />
-            </Box>
-          )
-        },
-        cell: (data) => `${formatCurrency(data.getValue(), 1)}%`,
-      }),
-      columnHelper.accessor('apyReward', {
-        header: () => {
-          return (
-            <Box variant="layout.verticalAlign">
-              <Text mr={1}>Reward APY</Text>
-              <Help content="Annualised percentage yield from incentives" />
-            </Box>
-          )
-        },
-        cell: (data) => (
-          <Box
-            variant="layout.verticalAlign"
-            sx={{ gap: 2, minWidth: '156px' }}
-          >
-            {`${formatCurrency(data.getValue(), 1)}%`}
-          </Box>
-        ),
-      }),
       columnHelper.accessor('tvlUsd', {
         header: t`TVL`,
         cell: (data) => `$${formatCurrency(data.getValue(), 0)}`,
       }),
-    ]
-  }, [compact])
+      columnHelper.accessor('id', {
+        header: '',
+        cell: ({ row }) => {
+          return (
+            <Box
+              variant="layout.verticalAlign"
+              sx={{ gap: 1, width: 100, justifyContent: 'end' }}
+            >
+              {ZAP_EARN_POOLS_IDS.includes(row.original.id) && (
+                <Box
+                  variant="layout.verticalAlign"
+                  sx={{
+                    bg: 'cardAlternative',
+                    borderRadius: '18px',
+                    border: '1px solid',
+                    borderColor: 'border',
+                    px: 2,
+                    py: 1,
+                    gap: 1,
+                    color: 'accentInverted',
+                  }}
+                >
+                  <Zap
+                    size={14}
+                    strokeWidth={1.2}
+                    fill={colors.accentInverted}
+                  />
+                  <Circle
+                    size={7}
+                    strokeWidth={1.2}
+                    fill={colors.accentInverted}
+                  />
+                </Box>
+              )}
+              {row.getIsExpanded() ? (
+                <ChevronUp size={16} />
+              ) : (
+                <ChevronDown size={16} />
+              )}
+            </Box>
+          )
+        },
+      }),
+    ],
+    [columnHelper]
+  )
 }
 
-export default useEarnTableColumns
+export default useColumns

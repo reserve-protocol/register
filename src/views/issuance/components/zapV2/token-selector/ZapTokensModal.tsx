@@ -117,6 +117,7 @@ const ZapTokensModal = () => {
       onClose={() => setOpenTokenSelector(false)}
       closeOnClickAway
       hideCloseButton
+      zIndex={100001}
     >
       <Box
         sx={{

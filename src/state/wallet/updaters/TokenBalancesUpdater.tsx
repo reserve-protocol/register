@@ -12,6 +12,7 @@ import {
   rTokenAtom,
   walletAtom,
 } from '../../atoms'
+import { ZAP_EARN_POOLS } from 'views/earn/utils/constants'
 
 const ZAP_TOKENS: { [x: number]: [Address, number][] } = {
   [ChainId.Mainnet]: [
@@ -46,21 +47,27 @@ const balancesCallAtom = atom((get) => {
   const rToken = get(rTokenAtom)
   const chainId = get(chainIdAtom)
 
-  if (!rToken || !wallet) {
+  if (!wallet) {
     return undefined
   }
 
   const tokens: [Address, number][] = [
-    [rToken.address, rToken.decimals],
     [RSR_ADDRESS[chainId], 18],
-    ...rToken.collaterals.map((token): [Address, number] => [
+    ...(rToken?.collaterals || []).map((token): [Address, number] => [
       token.address,
       token.decimals,
     ]),
     ...ZAP_TOKENS[chainId],
+    ...Object.values(ZAP_EARN_POOLS[chainId]).map(
+      ({ out: { address, decimals } }): [Address, number] => [address, decimals]
+    ),
   ]
 
-  if (rToken.stToken) {
+  if (rToken) {
+    tokens.push([rToken.address, rToken.decimals])
+  }
+
+  if (rToken?.stToken) {
     tokens.push([rToken.stToken.address, rToken.stToken.decimals])
   }
 
@@ -80,6 +87,7 @@ export const TokenBalancesUpdater = () => {
   const { tokens, calls } = useAtomValue(balancesCallAtom) ?? {}
   const setBalances = useSetAtom(balancesAtom)
   const wallet = useAtomValue(walletAtom)
+  const chainId = useAtomValue(chainIdAtom)
 
   const { data }: { data: bigint[] | undefined } = useContractReads({
     contracts: calls,
@@ -88,6 +96,7 @@ export const TokenBalancesUpdater = () => {
   })
   const { data: balance } = useBalance({
     address: wallet || undefined,
+    chainId,
   })
 
   useEffect(() => {
@@ -111,7 +120,7 @@ export const TokenBalancesUpdater = () => {
 
       setBalances(balances)
     }
-  }, [data, balance])
+  }, [data, tokens, balance])
 
   return null
 }

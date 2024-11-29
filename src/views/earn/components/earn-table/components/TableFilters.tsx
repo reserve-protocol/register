@@ -5,18 +5,20 @@ import Ethereum from 'components/icons/logos/Ethereum'
 import { SearchInput } from 'components/input'
 import { atom, useAtom, useSetAtom } from 'jotai'
 import { useEffect, useMemo } from 'react'
+import { Zap } from 'react-feather'
 import { useSearchParams } from 'react-router-dom'
 import { borderRadius } from 'theme'
 import { Box, Text } from 'theme-ui'
 import { RSR_ADDRESS } from 'utils/addresses'
 import { ChainId } from 'utils/chains'
 import { supportedChainList } from 'utils/constants'
+import { ZAP_EARN_POOLS_IDS } from 'views/earn/utils/constants'
 import {
   filterOptionAtom,
   poolChainsFilterAtom,
   poolFilterAtom,
   poolSearchFilterAtom,
-} from '../atoms'
+} from '../../../atoms'
 import PoolsChainFilter from './PoolsChainFilter'
 
 // Includes Eth+
@@ -40,22 +42,31 @@ const FilterOptions = () => {
       {
         text: 'All',
         icon: <CirclesIcon />,
-        filter: { stables: false, tokens: [] },
+        filter: { stables: false, tokens: [], pools: [] },
       },
       {
         text: 'Stables',
-        filter: { stables: true, tokens: [] },
+        filter: { stables: true, tokens: [], pools: [] },
         icon: <EarnNavIcon style={{ margin: '0 -3px 0 -3px' }} />,
       },
       {
         text: 'ETH',
         icon: <Ethereum />,
-        filter: { stables: false, tokens: ETH_ADDRESSES },
+        filter: { stables: false, tokens: ETH_ADDRESSES, pools: [] },
       },
       {
         text: 'RSR',
         icon: <TokenLogo symbol="rsr" width="16px" />,
-        filter: { stables: false, tokens: RSR_ADDRESSES },
+        filter: { stables: false, tokens: RSR_ADDRESSES, pools: [] },
+      },
+      {
+        text: 'Zap',
+        icon: <Zap size={18} strokeWidth={1.2} fill="inherit" />,
+        filter: {
+          stables: false,
+          tokens: [],
+          pools: ZAP_EARN_POOLS_IDS,
+        },
       },
     ],
     []
@@ -105,6 +116,7 @@ const setPageSearchAtom = atom(null, (get, set, search: string) => {
   set(poolFilterAtom, {
     stables: false,
     tokens: search ? search.split(',') : [],
+    pools: [],
   })
   set(poolSearchFilterAtom, '')
   set(
@@ -133,24 +145,39 @@ const TableFilters = () => {
 
   return (
     <Box
-      variant="layout.verticalAlign"
       sx={{
-        flexShrink: 0,
-        minWidth: [200, 'auto', 'auto'],
-        flexWrap: 'wrap',
-        gap: 2,
+        backgroundColor: 'backgroundNested',
+        width: '100%',
+        borderRadius: borderRadius.boxes,
       }}
-      marginLeft={[0, 0, 'auto']}
+      p="2"
     >
-      <SearchInput
-        placeholder="Search pool"
-        p={1}
-        value={search}
-        onChange={setSearch}
-        sx={{ maxWidth: ['auto', 200, 160], borderRadius: borderRadius.inputs }}
-      />
-      <FilterOptions />
-      <PoolsChainFilter />
+      <Box
+        variant="layout.verticalAlign"
+        sx={{
+          width: '100%',
+          flexWrap: 'wrap',
+          gap: 2,
+        }}
+      >
+        <Box mr="auto">
+          <SearchInput
+            placeholder="Search pool"
+            p={1}
+            value={search}
+            onChange={setSearch}
+            sx={{
+              maxWidth: ['auto', 200],
+              borderRadius: borderRadius.inputs,
+            }}
+          />
+        </Box>
+
+        <Box variant="layout.verticalAlign" sx={{ gap: 2 }}>
+          <FilterOptions />
+          <PoolsChainFilter />
+        </Box>
+      </Box>
     </Box>
   )
 }

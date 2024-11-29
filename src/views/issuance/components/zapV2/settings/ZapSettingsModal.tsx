@@ -8,7 +8,7 @@ import ZapSettingsSlippage from './ZapSettingsSlippage'
 import ZapSettingsOnlyMint from './ZapSettingsOnlyMint'
 
 const ZapSettingsModal = () => {
-  const { setOpenSettings } = useZap()
+  const { setOpenSettings, zapToYieldPosition } = useZap()
 
   return (
     <Modal
@@ -18,6 +18,7 @@ const ZapSettingsModal = () => {
       onClose={() => setOpenSettings(false)}
       closeOnClickAway
       hideCloseButton
+      zIndex={100001}
     >
       <Box
         sx={{
@@ -58,21 +59,23 @@ const ZapSettingsModal = () => {
             </Box>
             <ZapSettingsCollectDust />
           </Box>
-          <Box>
-            <Box
-              variant="layout.verticalAlign"
-              pl={'12px'}
-              pr={4}
-              py={2}
-              sx={{ justifyContent: 'space-between' }}
-            >
-              <Text variant="legend">Mint RTokens?</Text>
-              <Help
-                content={`By enabling this option, the zapper will only attempt to mint RTokens instead of trading for them. This can help you avoid trading fees and slippage.`}
-              />
+          {!zapToYieldPosition && (
+            <Box>
+              <Box
+                variant="layout.verticalAlign"
+                pl={'12px'}
+                pr={4}
+                py={2}
+                sx={{ justifyContent: 'space-between' }}
+              >
+                <Text variant="legend">Mint RTokens?</Text>
+                <Help
+                  content={`By enabling this option, the zapper will only attempt to mint RTokens instead of trading for them. This can help you avoid trading fees and slippage.`}
+                />
+              </Box>
+              <ZapSettingsOnlyMint />
             </Box>
-            <ZapSettingsOnlyMint />
-          </Box>
+          )}
           <Box>
             <Box
               variant="layout.verticalAlign"

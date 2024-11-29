@@ -1,0 +1,16 @@
+{
+  "8d2020df-9a95-4e0c-aca0-0d300b907896": {
+    "out": {
+      "address": "0x38Fb2BbedacDCC3490ee84a1e454324C16f31dae",
+      "decimals": 18,
+      "name": "Moo Curve KNOX-eUSD-v2",
+      "symbol": "mooCurveKNOX-eUSD-v2"
+    },
+    "rToken": {
+      "address": "0x0BBF664D46becc28593368c97236FAa0fb397595",
+      "decimals": 18,
+      "name": "KNOX Dollar",
+      "symbol": "KNOX"
+    }
+  }
+}

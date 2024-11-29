@@ -10,9 +10,10 @@ export interface ModalProps extends BoxProps {
   closeOnClickAway?: boolean
   titleProps?: any
   hideCloseButton?: boolean
+  zIndex?: number
 }
 
-const Overlay = (props: BoxProps) => (
+const Overlay = ({ zIndex, ...props }: BoxProps & { zIndex: number }) => (
   <Box
     {...props}
     sx={{
@@ -21,9 +22,9 @@ const Overlay = (props: BoxProps) => (
       left: 0,
       bottom: 0,
       top: 0,
-      zIndex: 1,
       overflow: 'auto',
       background: 'modalOverlay',
+      zIndex,
     }}
   />
 )
@@ -95,6 +96,7 @@ const Modal = ({
   children,
   closeOnClickAway = false,
   hideCloseButton = false,
+  zIndex = 1,
   ...props
 }: ModalProps) => {
   const dialogRef = useRef<HTMLDivElement>(null)
@@ -127,7 +129,7 @@ const Modal = ({
   }, [closeOnClickAway])
 
   return createPortal(
-    <Overlay>
+    <Overlay zIndex={zIndex}>
       <Dialog {...props} ref={dialogRef}>
         <Header {...props} hideCloseButton={hideCloseButton} />
         {children}

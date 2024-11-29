@@ -2,6 +2,7 @@ import { atom } from 'jotai'
 import { AddressMap } from 'types'
 
 export interface ProjectMetadata {
+  id: string
   name: string
   description: string
   docs: string
@@ -10,8 +11,9 @@ export interface ProjectMetadata {
   color?: string
 }
 
-export interface UnderlyingMetadata {
+export interface TokenMetadata {
   symbol: string
+  name: string
   addresses: AddressMap
   color: string
   description: string
@@ -27,7 +29,7 @@ export interface CollateralMetadata {
   llamaId?: string
   color: string
   tokenDistribution?: { token: string; distribution: number }[]
-  underlying: Record<string, UnderlyingMetadata>
+  underlying: Record<string, TokenMetadata>
   protocol: ProjectMetadata
 }
 
@@ -38,4 +40,11 @@ export const collateralsMetadataAtom = atom<Record<
   CollateralMetadata
 > | null>(null)
 
-// TODO: Add earn cms related data here
+export const protocolMetadataAtom = atom<Record<
+  string,
+  ProjectMetadata
+> | null>(null)
+
+export const tokenMetadataAtom = atom<Record<string, TokenMetadata> | null>(
+  null
+)

@@ -6,18 +6,21 @@ import ZapTabs from './ZapTabs'
 import ZapInputContainer from './input/ZapInputContainer'
 import ZapOutputContainer from './output/ZapOutputContainer'
 import ZapSubmit from './submit/ZapSubmit'
+import { useZap } from './context/ZapContext'
 
-const RTokenZapIssuance = ({ disableRedeem }: { disableRedeem: boolean }) => {
+const RTokenZapIssuance = ({ disableRedeem }: { disableRedeem?: boolean }) => {
+  const { zapToYieldPosition } = useZap()
+
   return (
     <Box
       sx={{
-        mt: [0, 4],
-        ml: [0, 4],
-        mr: [0, 4, 4, 0],
+        mt: zapToYieldPosition ? 0 : [0, 4],
+        ml: zapToYieldPosition ? 0 : [0, 4],
+        mr: zapToYieldPosition ? 0 : [0, 4, 4, 0],
         display: 'flex',
         flexDirection: 'column',
         alignSelf: 'stretch',
-        borderRadius: '14px',
+        borderRadius: zapToYieldPosition ? 0 : '14px',
         bg: 'cardAlternative',
         boxShadow: '0px 10px 38px 6px rgba(0, 0, 0, 0.05)',
         height: 'fit-content',
@@ -36,7 +39,7 @@ const RTokenZapIssuance = ({ disableRedeem }: { disableRedeem: boolean }) => {
           position: 'relative',
         }}
       >
-        <ZapRedeemDisabled disableRedeem={disableRedeem} />
+        <ZapRedeemDisabled disableRedeem={!!disableRedeem} />
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
           <ZapInputContainer />
           <Box variant="layout.verticalAlign" sx={{ gap: '12px', px: 3 }}>

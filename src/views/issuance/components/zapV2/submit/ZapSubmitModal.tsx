@@ -113,8 +113,13 @@ const slide = keyframes`
 `
 
 const ZapSubmitModal = () => {
-  const { setOpenSubmitModal, operation, refreshQuote, showEliteProgramModal } =
-    useZap()
+  const {
+    setOpenSubmitModal,
+    operation,
+    refreshQuote,
+    showEliteProgramModal,
+    zapToYieldPosition,
+  } = useZap()
 
   return (
     <Modal
@@ -130,6 +135,7 @@ const ZapSubmitModal = () => {
           showEliteProgramModal ? `${slide} 0.5s forwards` : 'none',
         ],
       }}
+      zIndex={100001}
     >
       <Box
         sx={{
@@ -149,7 +155,7 @@ const ZapSubmitModal = () => {
       >
         <Box variant="layout.verticalAlign" p={4} mb={[3, 0]} pt={4} pb={0}>
           <Text variant="title" sx={{ fontWeight: 'bold' }}>
-            {`Review ${operation}`}
+            {`Review ${zapToYieldPosition ? 'deposit' : operation}`}
           </Text>
           <Button
             variant="circle"

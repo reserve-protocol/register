@@ -6,10 +6,14 @@ import ZapSettings from './settings/ZapSettings'
 import ZapRefreshButton from './refresh/ZapRefreshButton'
 
 const ZapTabs = () => {
-  const { operation, setOperation } = useZap()
+  const { operation, setOperation, zapToYieldPosition } = useZap()
   const backingOptions = [
-    { key: 'mint', label: 'Mint', icon: <Plus size={16} /> },
-    { key: 'redeem', label: 'Redeem', icon: <Minus size={16} /> },
+    ...(zapToYieldPosition
+      ? [{ key: 'mint', label: 'Deposit', icon: <Plus size={16} /> }]
+      : [
+          { key: 'mint', label: 'Mint', icon: <Plus size={16} /> },
+          { key: 'redeem', label: 'Redeem', icon: <Minus size={16} /> },
+        ]),
   ]
 
   return (

@@ -9,7 +9,8 @@ import ZapDetails from './overview/ZapDetails'
 
 const ZapOperationDetails = () => {
   const [collapsed, setCollapsed] = useState(true)
-  const { gasCost, amountIn, tokenIn, isExpensiveZap } = useZap()
+  const { gasCost, amountIn, tokenIn, isExpensiveZap, zapToYieldPosition } =
+    useZap()
 
   useEffect(() => {
     if (isExpensiveZap) {
@@ -35,11 +36,12 @@ const ZapOperationDetails = () => {
             flexDirection: ['column', 'row'],
             alignItems: ['flex-start', 'center'],
             flexGrow: 1,
+            flexWrap: 'wrap',
             justifyContent: 'space-between',
             gap: 2,
           }}
         >
-          <ZapRate />
+          {!zapToYieldPosition && <ZapRate />}
           <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
             <GasIcon />
             <Text>

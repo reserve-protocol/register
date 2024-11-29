@@ -29,7 +29,7 @@ const ZapOutputContainer = () => {
       >
         <ZapOutput />
         {!loadingZap && (
-          <Text variant="legend" ml="2">
+          <Text variant="legend" ml="2" sx={{ whiteSpace: 'nowrap' }}>
             {tokenOut.symbol}
           </Text>
         )}

@@ -6,7 +6,13 @@ import { useZapTx } from '../context/ZapTxContext'
 import ZapGasCost from '../overview/ZapGasCost'
 
 const ZapConfirmButton = () => {
-  const { operation, zapResult, validatingZap, loadingZap } = useZap()
+  const {
+    operation,
+    zapResult,
+    validatingZap,
+    loadingZap,
+    zapToYieldPosition,
+  } = useZap()
   const {
     hasAllowance,
     approvalSuccess,
@@ -25,7 +31,9 @@ const ZapConfirmButton = () => {
           <Box>
             <Text variant="bold" sx={{ display: 'block' }}>
               {!receipt
-                ? `Confirm ${operation}`
+                ? zapToYieldPosition
+                  ? 'Confirm deposit'
+                  : `Confirm ${operation}`
                 : receipt.status === 'success'
                 ? 'Transaction Submitted'
                 : 'Transaction Failed'}
@@ -57,7 +65,13 @@ const ZapConfirmButton = () => {
         <LoadingButton
           onClick={() => sendTransaction?.()}
           loading={!zapResult || loadingZap || validatingZap}
-          text={operation === 'mint' ? 'Confirm Mint' : 'Confirm Redeem'}
+          text={
+            zapToYieldPosition
+              ? 'Confirm Deposit'
+              : operation === 'mint'
+              ? 'Confirm Mint'
+              : 'Confirm Redeem'
+          }
           fullWidth
           loadingText="Finding route..."
         />
