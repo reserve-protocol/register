@@ -6,12 +6,12 @@ import { ListedToken } from 'hooks/useTokenList'
 import { FC, memo, useMemo, useState } from 'react'
 import { Box, Button, Text } from 'theme-ui'
 import { stringToColor } from 'utils'
-import CollateralPieChart from 'views/overview/components/CollateralPieChart'
 import CollateralPieChartTooltip from './CollateralPieChartTooltip'
 import HelpIcon from 'components/icons/HelpIcon'
 import CollaterizationIcon from 'components/icons/CollaterizationIcon'
 import { useAtomValue } from 'jotai'
 import { collateralsMetadataAtom } from 'state/cms/atoms'
+import CollateralPieChart from './CollateralPieChart'
 
 type Props = {
   token: ListedToken
