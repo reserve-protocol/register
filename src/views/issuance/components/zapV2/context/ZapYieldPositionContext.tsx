@@ -18,7 +18,7 @@ export const ZapYieldPositionProvider: FC<ZapYieldPositionProviderProps> = ({
   const balances = useAtomValue(balancesAtom)
   const yieldTokenWithBalance = {
     ...yieldToken,
-    balance: balances[yieldToken.address].balance,
+    balance: balances[yieldToken.address]?.balance || '0',
   }
 
   return (
