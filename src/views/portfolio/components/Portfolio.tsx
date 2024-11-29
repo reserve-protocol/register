@@ -1,6 +1,5 @@
 import { Trans } from '@lingui/macro'
 import { useConnectModal } from '@rainbow-me/rainbowkit'
-import DivaPointsEarned from 'components/diva-points/DivaPointsEarned'
 import ChainLogo from 'components/icons/ChainLogo'
 import PositionIcon from 'components/icons/PositionIcon'
 import TokenLogo from 'components/icons/TokenLogo'
@@ -173,7 +172,6 @@ const Portfolio = (props: BoxProps) => {
             ))}
           </Box>
         </Box>
-        <DivaPointsEarned />
         {rTokens?.length > 0 && (
           <Box mt={[4, 5]}>
             <Text

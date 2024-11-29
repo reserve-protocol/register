@@ -1,5 +1,6 @@
 import { t, Trans } from '@lingui/macro'
 import { Button } from 'components'
+import DgnETHButtonAppendix from 'components/dgneth/DgnETHButtonAppendix'
 import ChainLogo from 'components/icons/ChainLogo'
 import ChevronRight from 'components/icons/ChevronRight'
 import CollaterizationIcon from 'components/icons/CollaterizationIcon'
@@ -18,8 +19,6 @@ import usePriceETH from '../hooks/usePriceETH'
 import EarnButton from './EarnButton'
 import MobileCollateralInfo from './MobileCollateralInfo'
 import VerticalDivider from './VerticalDivider'
-import DivaButtonAppendix from 'components/diva-points/DivaButtonAppendix'
-import DgnETHButtonAppendix from 'components/dgneth/DgnETHButtonAppendix'
 
 interface Props extends BoxProps {
   token: ListedToken
@@ -256,24 +255,18 @@ const RTokenCard = ({ token, ...props }: Props) => {
                   borderColor="white"
                   hideLabelOnMobile
                 >
-                  <DivaButtonAppendix
-                    rTokenSymbol={token.symbol}
-                    borderColor="white"
-                    hideLabelOnMobile
+                  <Button
+                    medium
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      handleNavigate(ROUTES.ISSUANCE)
+                    }}
+                    sx={{ whiteSpace: 'nowrap' }}
                   >
-                    <Button
-                      medium
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        handleNavigate(ROUTES.ISSUANCE)
-                      }}
-                      sx={{ whiteSpace: 'nowrap' }}
-                    >
-                      {token.tokenApy
-                        ? `Mint ${token.tokenApy.toFixed(1)}% Est. APY`
-                        : 'Mint'}
-                    </Button>
-                  </DivaButtonAppendix>
+                    {token.tokenApy
+                      ? `Mint ${token.tokenApy.toFixed(1)}% Est. APY`
+                      : 'Mint'}
+                  </Button>
                 </DgnETHButtonAppendix>
                 <Button
                   medium

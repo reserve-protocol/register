@@ -103,12 +103,13 @@ export const getProposalStatus = (
     timeunit > (proposal.endBlock || 0)
   ) {
     const forVotes = parseEther(proposal.forWeightedVotes ?? '0')
+    const abstainVotes = parseEther(proposal.abstainWeightedVotes ?? '0')
     const againstVotes = parseEther(proposal.againstWeightedVotes ?? '0')
     const quorum = parseEther(proposal.quorumVotes ?? '0')
 
     if (forVotes <= againstVotes) {
       return PROPOSAL_STATES.DEFEATED
-    } else if (forVotes < quorum) {
+    } else if (forVotes + abstainVotes < quorum) {
       return PROPOSAL_STATES.QUORUM_NOT_REACHED
     }
     return PROPOSAL_STATES.SUCCEEDED
@@ -178,12 +179,13 @@ export const getProposalState = (
       // Proposal voting ended check status
       if (timeunit > proposal.endBlock) {
         const forVotes = +proposal.forWeightedVotes
+        const abstainVotes = +proposal.abstainWeightedVotes
         const againstVotes = +proposal.againstWeightedVotes
         const quorum = +proposal.quorumVotes
 
         if (againstVotes > forVotes) {
           state.state = PROPOSAL_STATES.DEFEATED
-        } else if (forVotes < quorum) {
+        } else if (forVotes + abstainVotes < quorum) {
           state.state = PROPOSAL_STATES.QUORUM_NOT_REACHED
         } else {
           state.state = PROPOSAL_STATES.SUCCEEDED
@@ -249,12 +251,13 @@ export const getProposalStateAtom = atom((get) => {
       // Proposal voting ended check status
       if (timeunit > proposal.endBlock) {
         const forVotes = +proposal.forWeightedVotes
+        const abstainVotes = +proposal.abstainWeightedVotes
         const againstVotes = +proposal.againstWeightedVotes
         const quorum = +proposal.quorumVotes
 
         if (againstVotes > forVotes) {
           state.state = PROPOSAL_STATES.DEFEATED
-        } else if (forVotes < quorum) {
+        } else if (forVotes + abstainVotes < quorum) {
           state.state = PROPOSAL_STATES.QUORUM_NOT_REACHED
         } else {
           state.state = PROPOSAL_STATES.SUCCEEDED
