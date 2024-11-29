@@ -1,7 +1,7 @@
 import Governance from 'abis/Governance'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
-import { Check, Slash, ThumbsDown, ThumbsUp, X } from 'react-feather'
+import { Check, Slash, ThumbsDown, ThumbsUp, X } from 'lucide-react'
 import { Box, Progress, Text } from 'theme-ui'
 import { formatEther } from 'viem'
 import { getProposalStateAtom, proposalDetailAtom } from '../atom'

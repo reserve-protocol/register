@@ -6,7 +6,7 @@ import useContractWrite from 'hooks/useContractWrite'
 import useRToken from 'hooks/useRToken'
 import useWatchTransaction from 'hooks/useWatchTransaction'
 import { useAtomValue } from 'jotai'
-import { Check } from 'react-feather'
+import { Check } from 'lucide-react'
 import {
   rTokenStateAtom,
   rTokenTradingAvailableAtom,

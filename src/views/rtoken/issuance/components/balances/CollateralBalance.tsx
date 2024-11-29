@@ -1,7 +1,7 @@
 import { Trans } from '@lingui/macro'
 import TokenBalance from 'components/token-balance'
 import { useAtomValue } from 'jotai'
-import { Circle } from 'react-feather'
+import { Circle } from 'lucide-react'
 import { balancesAtom } from 'state/atoms'
 import { Box, BoxProps, Flex, Progress, Text } from 'theme-ui'
 import { Token } from 'types'

@@ -12,7 +12,7 @@ import {
   XCircle,
   XOctagon,
   XSquare,
-} from 'react-feather'
+} from 'lucide-react'
 import { blockTimestampAtom } from 'state/atoms'
 import { colors } from 'theme'
 import { Box, Progress, Text } from 'theme-ui'

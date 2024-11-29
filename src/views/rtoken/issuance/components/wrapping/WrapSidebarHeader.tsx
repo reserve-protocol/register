@@ -1,7 +1,7 @@
 import { wrapSidebarAtom } from '@/views/rtoken/issuance/atoms'
 import { Trans } from '@lingui/macro'
 import { useSetAtom } from 'jotai'
-import { X } from 'react-feather'
+import { X } from 'lucide-react'
 import { Button, Divider, Flex, Text } from 'theme-ui'
 
 const WrapSidebarHeader = () => {

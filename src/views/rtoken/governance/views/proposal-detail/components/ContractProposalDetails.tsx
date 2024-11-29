@@ -4,7 +4,7 @@ import { MODES } from 'components/dark-mode-toggle'
 import TabMenu from 'components/tab-menu'
 import { useAtomValue } from 'jotai'
 import React, { useState } from 'react'
-import { ChevronDown, ChevronUp } from 'react-feather'
+import { ChevronDown, ChevronUp } from 'lucide-react'
 import {
   JsonView,
   collapseAllNested,
