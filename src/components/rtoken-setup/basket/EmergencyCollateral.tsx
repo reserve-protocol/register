@@ -19,7 +19,7 @@ import Help from 'components/help'
 import SortableItem from 'components/sortable/SortableItem'
 import { useSetAtom } from 'jotai'
 import { useMemo } from 'react'
-import { Move, X } from 'react-feather'
+import { Move, X } from 'lucide-react'
 import {
   Box,
   CardProps,

@@ -1,7 +1,7 @@
 import { Trans } from '@lingui/macro'
 import CollapsableBox from 'components/boxes/CollapsableBox'
 import { useAtomValue } from 'jotai'
-import { ArrowRight } from 'react-feather'
+import { ArrowRight } from 'lucide-react'
 import { Box, BoxProps, Text } from 'theme-ui'
 import { unstakeDelayAtom } from '../atoms'
 

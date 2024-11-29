@@ -1,5 +1,5 @@
 import { useCallback } from 'react'
-import { Search } from 'react-feather'
+import { Search } from 'lucide-react'
 import {
   Box,
   Input as ThemeInput,

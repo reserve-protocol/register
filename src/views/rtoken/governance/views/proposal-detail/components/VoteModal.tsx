@@ -13,7 +13,7 @@ import {
   Slash,
   ThumbsDown,
   ThumbsUp,
-} from 'react-feather'
+} from 'lucide-react'
 import { chainIdAtom, rTokenGovernanceAtom } from 'state/atoms'
 import { Box, Checkbox, Divider, Flex, Link, Text } from 'theme-ui'
 import { getProposalTitle, shortenAddress } from 'utils'

@@ -1,6 +1,6 @@
 import { t, Trans } from '@lingui/macro'
 import { SmallButton } from 'components/button'
-import { ArrowRight, Plus, Square, X } from 'react-feather'
+import { ArrowRight, Plus, Square, X } from 'lucide-react'
 import { useFormContext } from 'react-hook-form'
 import { Box, BoxProps, Text } from 'theme-ui'
 import { ParameterChange } from '../hooks/useParametersChanges'

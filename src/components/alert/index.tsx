@@ -1,4 +1,4 @@
-import { AlertCircle } from 'react-feather'
+import { AlertCircle } from 'lucide-react'
 import { Box, BoxProps, Text } from 'theme-ui'
 
 interface Props extends BoxProps {

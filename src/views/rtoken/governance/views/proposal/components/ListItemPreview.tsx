@@ -1,6 +1,6 @@
 import { Trans } from '@lingui/macro'
 import { SmallButton } from 'components/button'
-import { Plus, X } from 'react-feather'
+import { Plus, X } from 'lucide-react'
 import { Box, BoxProps, Text } from 'theme-ui'
 
 interface Props extends BoxProps {

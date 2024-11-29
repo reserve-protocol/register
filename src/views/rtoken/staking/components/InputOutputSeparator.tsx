@@ -1,4 +1,4 @@
-import { ArrowDown } from 'react-feather'
+import { ArrowDown } from 'lucide-react'
 import { borderRadius } from 'theme'
 import { Box, Divider } from 'theme-ui'
 

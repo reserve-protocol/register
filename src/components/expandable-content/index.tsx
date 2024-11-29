@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Minus, Plus } from 'react-feather'
+import { Minus, Plus } from 'lucide-react'
 import { Box, BoxProps, Text } from 'theme-ui'
 
 export interface ExpandableContentProps

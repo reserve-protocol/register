@@ -1,6 +1,6 @@
 import { forwardRef, useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
-import { X } from 'react-feather'
+import { X } from 'lucide-react'
 import { Box, BoxProps, Button, Divider, Flex, Text } from 'theme-ui'
 
 export interface ModalProps extends BoxProps {

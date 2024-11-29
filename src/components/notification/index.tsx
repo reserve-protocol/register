@@ -1,4 +1,4 @@
-import { X } from 'react-feather'
+import { X } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { Box, Button, Flex, Text } from 'theme-ui'
 

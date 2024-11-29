@@ -1,7 +1,7 @@
 import { Trans } from '@lingui/macro'
 import { Button } from 'components'
 import { Suspense, lazy } from 'react'
-import { ArrowRight } from 'react-feather'
+import { ArrowRight } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { Box, Flex } from 'theme-ui'
 import { ROUTES } from 'utils/constants'

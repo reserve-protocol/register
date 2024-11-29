@@ -6,7 +6,7 @@ import useQuery from 'hooks/useQuery'
 import { useBlockMemo } from 'hooks/utils'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
-import { Circle } from 'react-feather'
+import { Circle } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import {
   chainIdAtom,

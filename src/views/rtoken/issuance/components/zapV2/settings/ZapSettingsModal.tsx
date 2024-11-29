@@ -1,6 +1,6 @@
 import { Button, Modal } from 'components'
 import Help from 'components/help'
-import { X } from 'react-feather'
+import { X } from 'lucide-react'
 import { Box, Text } from 'theme-ui'
 import { useZap } from '../context/ZapContext'
 import ZapSettingsCollectDust from './ZapSettingsCollectDust'

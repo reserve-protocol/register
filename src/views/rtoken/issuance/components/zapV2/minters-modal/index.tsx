@@ -1,7 +1,7 @@
 import { keyframes, useTheme } from '@emotion/react'
 import { Button } from 'components'
 import BankIcon from 'components/icons/BankIcon'
-import { ChevronLeft } from 'react-feather'
+import { ChevronLeft } from 'lucide-react'
 import { Box, Text } from 'theme-ui'
 import { useZap } from '../context/ZapContext'
 import SocialMediaInput from './SocialMediaInput'

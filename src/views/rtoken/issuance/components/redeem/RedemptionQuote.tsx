@@ -1,7 +1,7 @@
 import OverviewIcon from 'components/icons/OverviewIcon'
 import useRToken from 'hooks/useRToken'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
-import { ChevronRight } from 'react-feather'
+import { ChevronRight } from 'lucide-react'
 import { chainIdAtom, isModuleLegacyAtom, rTokenStateAtom } from 'state/atoms'
 import { Box, Text } from 'theme-ui'
 import { BigNumberMap } from 'types'

@@ -11,7 +11,7 @@ import { borderRadius } from 'theme'
 import { Box, Text } from 'theme-ui'
 import { ROUTES } from 'utils/constants'
 import TokenToggle from './TokenToggle'
-import { Search } from 'react-feather'
+import { Search } from 'lucide-react'
 
 const TokenSelector = () => {
   const selectedRToken = useAtomValue(selectedRTokenAtom)

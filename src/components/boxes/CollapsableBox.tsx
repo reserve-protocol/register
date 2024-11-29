@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ChevronDown, ChevronUp } from 'react-feather'
+import { ChevronDown, ChevronUp } from 'lucide-react'
 import { Box, BoxProps, Divider, Flex } from 'theme-ui'
 
 interface Props extends BoxProps {

@@ -1,5 +1,5 @@
 import { ReactNode } from 'react'
-import { X } from 'react-feather'
+import { X } from 'lucide-react'
 import { mediumButton, smallButton } from 'theme'
 import {
   Button as ThemeButton,

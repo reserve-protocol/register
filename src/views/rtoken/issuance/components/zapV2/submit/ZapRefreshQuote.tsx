@@ -2,7 +2,7 @@ import Button from 'components/button'
 import { ReactNode, useEffect, useState } from 'react'
 import { Box, Text } from 'theme-ui'
 import { useZap } from '../context/ZapContext'
-import { Clock } from 'react-feather'
+import { Clock } from 'lucide-react'
 import { useZapTx } from '../context/ZapTxContext'
 
 const REFRESH_INTERVAL_SEC = 24

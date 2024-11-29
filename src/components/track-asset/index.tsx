@@ -1,5 +1,5 @@
 import { MouseoverTooltip } from 'components/tooltip'
-import { Bookmark } from 'react-feather'
+import { Bookmark } from 'lucide-react'
 import { IconButton } from 'theme-ui'
 import { Token } from 'types'
 import { useWalletClient } from 'wagmi'

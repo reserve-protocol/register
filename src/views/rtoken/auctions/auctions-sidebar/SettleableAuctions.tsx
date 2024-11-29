@@ -2,7 +2,7 @@ import { t } from '@lingui/macro'
 import FacadeAct from 'abis/FacadeAct'
 import { ExecuteButton } from 'components/button/TransactionButton'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
-import { Check } from 'react-feather'
+import { Check } from 'lucide-react'
 import { chainIdAtom } from 'state/atoms'
 import { FACADE_ACT_ADDRESS } from 'utils/addresses'
 import { Address, Hex, encodeFunctionData } from 'viem'
@@ -17,11 +17,17 @@ const settleTxAtom = atom((get) => {
     return undefined
   }
 
-  const traderToSettle = auctionsToSettle.reduce((acc, auction) => {
-    acc[auction.trader] = [...(acc[auction.trader] || []), auction.sell.address]
+  const traderToSettle = auctionsToSettle.reduce(
+    (acc, auction) => {
+      acc[auction.trader] = [
+        ...(acc[auction.trader] || []),
+        auction.sell.address,
+      ]
 
-    return acc
-  }, {} as { [x: Address]: Address[] })
+      return acc
+    },
+    {} as { [x: Address]: Address[] }
+  )
 
   const transactions = (Object.keys(traderToSettle) as Address[]).reduce(
     (auctions, trader) => {

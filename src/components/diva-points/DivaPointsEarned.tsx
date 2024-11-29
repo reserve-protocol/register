@@ -1,7 +1,7 @@
 import Button from 'components/button'
 import { Box, Text } from 'theme-ui'
 import useDivaPoints from './hooks/useDivaPoints'
-import { ArrowUpRight } from 'react-feather'
+import { ArrowUpRight } from 'lucide-react'
 import DivaIcon from 'components/icons/DivaIcon'
 import AsteriskIcon from 'components/icons/AsteriskIcon'
 

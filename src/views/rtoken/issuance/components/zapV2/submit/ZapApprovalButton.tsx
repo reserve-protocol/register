@@ -1,6 +1,6 @@
 import { LoadingButton } from 'components/button'
 import TokenLogo from 'components/icons/TokenLogo'
-import { Check } from 'react-feather'
+import { Check } from 'lucide-react'
 import { Box, Spinner, Text } from 'theme-ui'
 import { useZap } from '../context/ZapContext'
 import { useZapTx } from '../context/ZapTxContext'

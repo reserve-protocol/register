@@ -1,5 +1,5 @@
 import TabMenu from 'components/tab-menu'
-import { Minus, Plus } from 'react-feather'
+import { Minus, Plus } from 'lucide-react'
 import { Box } from 'theme-ui'
 import { useZap } from './context/ZapContext'
 import ZapSettings from './settings/ZapSettings'

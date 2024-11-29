@@ -1,6 +1,6 @@
 import { Button } from 'components'
 import { useState } from 'react'
-import { ChevronDown, ChevronUp } from 'react-feather'
+import { ChevronDown, ChevronUp } from 'lucide-react'
 import { Box, BoxProps, Card, Divider, Spinner, Text } from 'theme-ui'
 
 export interface RevenueBoxContainerProps extends BoxProps {

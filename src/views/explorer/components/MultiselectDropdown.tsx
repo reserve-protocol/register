@@ -1,7 +1,7 @@
 import { Button } from 'components'
 import Popup from 'components/popup'
 import { useCallback, useState } from 'react'
-import { ChevronDown, ChevronUp } from 'react-feather'
+import { ChevronDown, ChevronUp } from 'lucide-react'
 import { Box, BoxProps, Divider, Flex, Switch, Text } from 'theme-ui'
 
 export interface SelectOption {
@@ -26,11 +26,14 @@ const OptionSelection = ({
   minLimit,
 }: IMultiselectDropdrown) => {
   const [values, setValues] = useState(
-    options.reduce((acc, v) => {
-      acc[v.value] = selected.includes(v.value)
+    options.reduce(
+      (acc, v) => {
+        acc[v.value] = selected.includes(v.value)
 
-      return acc
-    }, {} as Record<string, boolean>)
+        return acc
+      },
+      {} as Record<string, boolean>
+    )
   )
 
   const handleApply = () => {
@@ -47,10 +50,13 @@ const OptionSelection = ({
 
   const handleAll = () => {
     setValues(
-      Object.keys(values).reduce((acc, key) => {
-        acc[key] = false
-        return acc
-      }, {} as Record<string, boolean>)
+      Object.keys(values).reduce(
+        (acc, key) => {
+          acc[key] = false
+          return acc
+        },
+        {} as Record<string, boolean>
+      )
     )
   }
 

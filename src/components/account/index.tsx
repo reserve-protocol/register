@@ -5,7 +5,7 @@ import { MouseoverTooltipContent } from 'components/tooltip'
 import { txSidebarToggleAtom } from 'components/transactions/manager/atoms'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { ReactNode } from 'react'
-import { AlertCircle, Power } from 'react-feather'
+import { AlertCircle, Power } from 'lucide-react'
 import { Box, Card, Flex, Spinner, Text } from 'theme-ui'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import ChainLogo from 'components/icons/ChainLogo'
@@ -119,7 +119,12 @@ const Account = () => {
                   chainId={chain.id}
                   currentChain={chainId}
                 >
-                  <Box variant="layout.verticalAlign" sx={{ justifyContent: 'center', height: '38px' }} p="2" onClick={() => setVisible(true)}>
+                  <Box
+                    variant="layout.verticalAlign"
+                    sx={{ justifyContent: 'center', height: '38px' }}
+                    p="2"
+                    onClick={() => setVisible(true)}
+                  >
                     {!invalidChain ? (
                       <ChainLogo chain={chain.id} />
                     ) : (

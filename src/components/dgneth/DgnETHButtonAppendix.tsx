@@ -1,5 +1,5 @@
 import { FC, PropsWithChildren, memo, useMemo } from 'react'
-import { Plus } from 'react-feather'
+import { Plus } from 'lucide-react'
 import useSWR from 'swr'
 import { Box, ButtonProps, Text } from 'theme-ui'
 import { ChainId } from 'utils/chains'

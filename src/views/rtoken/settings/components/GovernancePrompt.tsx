@@ -1,6 +1,6 @@
 import { Trans } from '@lingui/macro'
 import useRToken from 'hooks/useRToken'
-import { AlertCircle } from 'react-feather'
+import { AlertCircle } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { Box, Button, Flex, Text } from 'theme-ui'
 import { ROUTES } from 'utils/constants'

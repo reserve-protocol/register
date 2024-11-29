@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 import toast from 'react-hot-toast'
 import Notification from 'components/notification'
-import { AlertCircle, Check } from 'react-feather'
+import { AlertCircle, Check } from 'lucide-react'
 
 export const notifySuccess = (title: string, subtitle: string) =>
   toast((t) => (

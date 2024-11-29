@@ -1,5 +1,5 @@
 import Help from 'components/help'
-import { Circle } from 'react-feather'
+import { Circle } from 'lucide-react'
 import { Box, BoxProps, Spinner, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 

@@ -1,4 +1,4 @@
-import { Settings } from 'react-feather'
+import { Settings } from 'lucide-react'
 import { IconButton } from 'theme-ui'
 import { useZap } from '../context/ZapContext'
 import ZapSettingsModal from './ZapSettingsModal'

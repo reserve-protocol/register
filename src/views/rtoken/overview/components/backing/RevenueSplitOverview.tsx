@@ -4,7 +4,7 @@ import RevenueSplitIcon from 'components/icons/RevenueSplitIcon'
 import TokenLogo, { CurrentRTokenLogo } from 'components/icons/TokenLogo'
 import { atom, useAtomValue } from 'jotai'
 import { useMemo } from 'react'
-import { ArrowRight, ArrowUpRight } from 'react-feather'
+import { ArrowRight, ArrowUpRight } from 'lucide-react'
 import Skeleton from 'react-loading-skeleton'
 import { chainIdAtom, rTokenRevenueSplitAtom } from 'state/atoms'
 import { borderRadius } from 'theme'
@@ -110,9 +110,7 @@ const RevenueSplitOverview = (props: BoxProps) => {
       </Box>
       {!data && <Skeleton height={64} />}
       <Box variant="layout.verticalAlign" sx={{ flexWrap: 'wrap', gap: 4 }}>
-        {data?.map((item, index) => (
-          <RevenueBox key={index} {...item} />
-        ))}
+        {data?.map((item, index) => <RevenueBox key={index} {...item} />)}
       </Box>
     </Box>
   )

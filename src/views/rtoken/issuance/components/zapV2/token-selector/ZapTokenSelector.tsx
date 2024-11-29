@@ -1,4 +1,4 @@
-import { ChevronDown } from 'react-feather'
+import { ChevronDown } from 'lucide-react'
 import { Box } from 'theme-ui'
 import { useZap } from '../context/ZapContext'
 import ZapTokenSelected from './ZapTokenSelected'

@@ -5,7 +5,7 @@ import {
   revenueSplitAtom,
 } from 'components/rtoken-setup/atoms'
 import { useAtom, useAtomValue } from 'jotai'
-import { Plus, X } from 'react-feather'
+import { Plus, X } from 'lucide-react'
 import { Box, BoxProps, Text } from 'theme-ui'
 import { shortenAddress } from 'utils'
 import { revenueSplitChangesAtom } from '../atoms'

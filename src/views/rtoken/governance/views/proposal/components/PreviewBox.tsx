@@ -1,6 +1,6 @@
 import { Trans } from '@lingui/macro'
 import { useState } from 'react'
-import { ChevronDown, ChevronUp } from 'react-feather'
+import { ChevronDown, ChevronUp } from 'lucide-react'
 import { Box, BoxProps, Text } from 'theme-ui'
 
 interface Props extends BoxProps {

@@ -1,6 +1,6 @@
 import { Trans } from '@lingui/macro'
 import VoteIcon from 'components/icons/VoteIcon'
-import { Edit2 } from 'react-feather'
+import { Edit2 } from 'lucide-react'
 import { Box, Divider, IconButton, Text } from 'theme-ui'
 import { shortenAddress } from 'utils'
 import EditDelegate from './EditDelegate'

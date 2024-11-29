@@ -3,7 +3,7 @@ import GoTo from 'components/button/GoTo'
 import TokenLogo from 'components/icons/TokenLogo'
 import { useAtomValue } from 'jotai'
 import { useState } from 'react'
-import { ChevronDown, ChevronUp } from 'react-feather'
+import { ChevronDown, ChevronUp } from 'lucide-react'
 import { chainIdAtom, collateralYieldAtom } from 'state/atoms'
 import {
   Box,

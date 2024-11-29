@@ -1,6 +1,6 @@
 import { useAtomValue } from 'jotai'
 import { ReactNode } from 'react'
-import { Check, Slash, X } from 'react-feather'
+import { Check, Slash, X } from 'lucide-react'
 import { Box, Spinner, Text } from 'theme-ui'
 import { parseDurationShort } from 'utils'
 import { PROPOSAL_STATES } from 'utils/constants'

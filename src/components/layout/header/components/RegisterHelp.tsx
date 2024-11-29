@@ -4,7 +4,7 @@ import ThemeColorMode from 'components/dark-mode-toggle/ThemeColorMode'
 import ExternalArrowIcon from 'components/icons/ExternalArrowIcon'
 import Popup from 'components/popup'
 import { useState } from 'react'
-import { MoreHorizontal } from 'react-feather'
+import { MoreHorizontal } from 'lucide-react'
 import { borderRadius } from 'theme'
 import { Box, BoxProps, Divider, Text } from 'theme-ui'
 import {

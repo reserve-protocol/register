@@ -1,6 +1,6 @@
 import DivaIcon from 'components/icons/DivaIcon'
 import { FC, PropsWithChildren, memo } from 'react'
-import { Plus } from 'react-feather'
+import { Plus } from 'lucide-react'
 import { Box, ButtonProps, Text } from 'theme-ui'
 import useDivaPoints from './hooks/useDivaPoints'
 

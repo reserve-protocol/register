@@ -1,6 +1,6 @@
 import { Trans } from '@lingui/macro'
 import Help from 'components/help'
-import { AlertCircle } from 'react-feather'
+import { AlertCircle } from 'lucide-react'
 import { Box, BoxProps, Text, Card } from 'theme-ui'
 
 const Caution = (props: BoxProps) => (

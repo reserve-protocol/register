@@ -1,7 +1,7 @@
 import Button from 'components/button'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
-import { Download } from 'react-feather'
+import { Download } from 'lucide-react'
 import { useParams } from 'react-router-dom'
 import { rTokenGovernanceAtom } from 'state/atoms'
 import { Text } from 'theme-ui'

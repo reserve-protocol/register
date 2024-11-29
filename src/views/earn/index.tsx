@@ -6,7 +6,7 @@ import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
 import { Trans, t } from '@lingui/macro'
 import FeaturedPools from './components/FeaturedPools'
 import HelpIcon from 'components/icons/HelpIcon'
-import { Zap } from 'react-feather'
+import { Zap } from 'lucide-react'
 import { colors } from 'theme'
 import { MouseoverTooltip } from 'components/tooltip'
 

@@ -1,5 +1,5 @@
 import DivaPointsMint from 'components/diva-points/DivaPointsMint'
-import { ArrowDown } from 'react-feather'
+import { ArrowDown } from 'lucide-react'
 import { Box, Divider } from 'theme-ui'
 import ZapOperationDetails from './ZapOperationDetails'
 import ZapRedeemDisabled from './ZapRedeemDisabled'

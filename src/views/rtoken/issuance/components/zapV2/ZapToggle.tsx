@@ -1,6 +1,6 @@
 import { Trans } from '@lingui/macro'
 import Help from 'components/help'
-import { Zap as ZapIcon } from 'react-feather'
+import { Zap as ZapIcon } from 'lucide-react'
 import { Box, Switch, Text } from 'theme-ui'
 
 const ZapToggle = ({

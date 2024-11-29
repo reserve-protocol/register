@@ -9,7 +9,7 @@ import {
   Row,
 } from '@tanstack/react-table'
 import React, { Fragment, useCallback, useMemo, useState } from 'react'
-import { ArrowDown, ArrowUp } from 'react-feather'
+import { ArrowDown, ArrowUp } from 'lucide-react'
 import { Box, BoxProps, Flex } from 'theme-ui'
 import { StringMap } from 'types'
 import TablePagination from './components/TablePagination'

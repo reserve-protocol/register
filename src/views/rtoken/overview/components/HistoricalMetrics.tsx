@@ -1,6 +1,6 @@
 import { Trans } from '@lingui/macro'
 import { Suspense, lazy } from 'react'
-import { TrendingUp } from 'react-feather'
+import { TrendingUp } from 'lucide-react'
 import Skeleton from 'react-loading-skeleton'
 import { Box, Card, Text } from 'theme-ui'
 

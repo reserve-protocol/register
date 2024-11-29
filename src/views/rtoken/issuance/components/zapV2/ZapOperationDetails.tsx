@@ -4,7 +4,7 @@ import { formatCurrency } from 'utils'
 import { useZap } from './context/ZapContext'
 import ZapRate from './overview/ZapRate'
 import { useEffect, useState } from 'react'
-import { ChevronDown, ChevronUp } from 'react-feather'
+import { ChevronDown, ChevronUp } from 'lucide-react'
 import ZapDetails from './overview/ZapDetails'
 
 const ZapOperationDetails = () => {

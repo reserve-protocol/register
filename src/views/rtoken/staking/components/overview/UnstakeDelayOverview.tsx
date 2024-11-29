@@ -1,6 +1,6 @@
 import { atom, useAtomValue } from 'jotai'
 import { useState } from 'react'
-import { Minus, Plus } from 'react-feather'
+import { Minus, Plus } from 'lucide-react'
 import { rTokenConfigurationAtom } from 'state/atoms'
 import { Box, Text } from 'theme-ui'
 import { parseDuration } from 'utils'

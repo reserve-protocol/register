@@ -1,5 +1,5 @@
 import TokenLogo from 'components/icons/TokenLogo'
-import { ArrowRight } from 'react-feather'
+import { ArrowRight } from 'lucide-react'
 import { Box, Card, Divider, Grid } from 'theme-ui'
 import { Address } from 'viem'
 import { DutchTrade } from '../atoms'
