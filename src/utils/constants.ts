@@ -161,6 +161,7 @@ export const ROUTES = Object.freeze({
   ISSUANCE: 'issuance',
   AUCTIONS: 'auctions',
   DEPLOY: '/deploy',
+  NEW_DEPLOY: '/new-deploy',
   SETTINGS: 'settings',
   GOVERNANCE_SETUP: 'governance/setup',
   GOVERNANCE_INFO: 'governance-info',
@@ -278,13 +279,16 @@ export const BRIDGED_RTOKENS = {
 
 export const BRIDGE_RTOKEN_MAP = Object.entries(
   BRIDGED_RTOKENS[ChainId.Mainnet]
-).reduce((acc, [key, tokens]) => {
-  for (const token of tokens) {
-    acc[token.address] = key
-  }
+).reduce(
+  (acc, [key, tokens]) => {
+    for (const token of tokens) {
+      acc[token.address] = key
+    }
 
-  return acc
-}, {} as Record<string, string>)
+    return acc
+  },
+  {} as Record<string, string>
+)
 
 for (const chain of supportedChainList) {
   LISTED_RTOKEN_ADDRESSES[chain] = [
