@@ -345,7 +345,7 @@ export const collateralDisplay: Record<string, string> = {
   sabasusdc: 'AAVE USDC V3',
   sfrxeth: 'Staked Frax ETH',
   re7weth: 'Morpho Re7 WETH Vault',
-  'stkcvxcrvusdusdt-f': ' Convex crvUSD/USDT',
+  'stkcvxcrvusdusdt-f': 'Convex crvUSD/USDT',
   'stkcvxcrvusdusdc-f': 'Convex crvUSD/USDC',
   steakpyusd: 'Morpho pyUSD',
   bbusdt: 'Morpho USDT',
@@ -357,7 +357,13 @@ export const collateralDisplay: Record<string, string> = {
   susde: 'Ethena Staked USDe',
   ethx: 'Stader ETHx',
   pyusd: 'PayPal USD',
-  'wsamm-eusd/usdc': 'Aerodrome eUSD/USDC',
+  'wsamm-eusd/usdc': 'Aerodrome eUSD/USDC LP',
+  'wvamm-weth/degen': 'Aerodrome WETH/DEGEN LP',
+  'wvamm-weth/well': 'Aerodrome WETH/WELL LP',
+  'wvamm-weth/cbbtc': 'Aerodrome WETH/cbBTC LP',
+  'wvamm-mog/weth': 'Aerodrome Mog/WETH LP',
+  'wvamm-weth/aero': 'Aerodrome WETH/AERO LP',
+  'wsamm-usdz/usdc': 'Aerodrome USDz/USDC LP',
 }
 
 export const RTOKEN_VAULT_STAKE: Record<
