@@ -15,18 +15,19 @@ import {
 } from 'lucide-react'
 import { ReactNode, useEffect } from 'react'
 import { deploySectionAtom } from '../atoms'
+import ChainSelector from './chain-selector'
 
 export type DeploySection = {
   icon: ReactNode
   title: string
-  content: string
+  content: ReactNode
 }
 
 export const DEPLOY_SECTIONS: DeploySection[] = [
   {
     icon: <Asterisk size={24} strokeWidth={1.5} />,
     title: 'Select chain',
-    content: 'content',
+    content: <ChainSelector />,
   },
   {
     icon: <BasketCubeIcon fontSize={24} />,
