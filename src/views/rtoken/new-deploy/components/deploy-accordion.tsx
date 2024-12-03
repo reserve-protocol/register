@@ -66,7 +66,10 @@ const DeployAccordionTrigger = ({
   return (
     <AccordionTrigger
       withChevron={false}
-      className="flex items-center justify-between w-full p-6"
+      className={cn(
+        'flex items-center justify-between w-full p-6',
+        isActive ? 'pb-3' : ''
+      )}
     >
       <div className="flex items-center gap-2">
         <div
@@ -78,7 +81,10 @@ const DeployAccordionTrigger = ({
           {icon}
         </div>
         <div
-          className={cn('text-xl font-bold', isActive ? 'text-primary' : '')}
+          className={cn(
+            'text-xl font-bold animate-fade-in',
+            isActive ? 'text-primary hidden' : ''
+          )}
         >
           {title}
         </div>
@@ -121,7 +127,12 @@ const DeployAccordion = () => {
           className="border-b-4 border-t border-secondary rounded-xl bg-background"
         >
           <DeployAccordionTrigger icon={icon} title={title} />
-          <AccordionContent className="px-8">{content}</AccordionContent>
+          <AccordionContent className="flex flex-col animate-fade-in">
+            <div className="text-2xl font-bold text-primary ml-6 mb-2">
+              {title}
+            </div>
+            {content}
+          </AccordionContent>
         </AccordionItem>
       ))}
     </Accordion>
