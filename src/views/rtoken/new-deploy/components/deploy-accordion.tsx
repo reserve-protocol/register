@@ -116,7 +116,7 @@ const DeployAccordion = () => {
     <Accordion
       type="single"
       collapsible
-      className="w-full bg-secondary"
+      className="w-full bg-secondary rounded-xl"
       value={section}
       onValueChange={(value) => setSection(value)}
     >
@@ -124,7 +124,7 @@ const DeployAccordion = () => {
         <AccordionItem
           key={title}
           value={title}
-          className="border-b-4 border-t border-secondary rounded-xl bg-background"
+          className="[&:not(:last-child)]:border-b-4 [&:not(:first-child)]:border-t border-secondary rounded-[1.25rem] bg-card"
         >
           <DeployAccordionTrigger icon={icon} title={title} />
           <AccordionContent className="flex flex-col animate-fade-in">

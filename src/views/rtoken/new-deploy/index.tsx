@@ -9,15 +9,17 @@ const Deploy = () => {
   })
 
   return (
-    <div className="container grid grid-cols-3 gap-2 py-12">
-      <FormProvider {...form}>
-        <div className="flex rounded-2xl border-4 border-secondary col-span-2">
-          <DeployAccordion />
-        </div>
-        <div className="flex h-max rounded-2xl border-4 border-secondary col-span-1">
-          Right
-        </div>
-      </FormProvider>
+    <div className="min-h-full">
+      <div className="container grid grid-cols-3 gap-2 py-12">
+        <FormProvider {...form}>
+          <div className="flex rounded-3xl border-4 border-secondary col-span-2">
+            <DeployAccordion />
+          </div>
+          <div className="flex h-max rounded-3xl border-4 border-secondary col-span-1">
+            Right
+          </div>
+        </FormProvider>
+      </div>
     </div>
   )
 }

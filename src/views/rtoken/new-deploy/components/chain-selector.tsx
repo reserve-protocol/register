@@ -36,7 +36,7 @@ const ChainOption = ({
   return (
     <div
       className={cn(
-        'flex flex-1 items-center gap-4 justify-between border border-border rounded-lg p-4',
+        'flex flex-1 items-center gap-4 justify-between border border-muted rounded-xl p-4',
         checked ? 'bg-background' : 'bg-muted'
       )}
       role="button"
