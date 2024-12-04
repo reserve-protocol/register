@@ -59,11 +59,12 @@ export const DEPLOY_STEPS: DeployStep[] = [
 ]
 
 const DeployAccordionTrigger = ({
+  id,
   icon,
   title,
-}: Pick<DeployStep, 'icon' | 'title'>) => {
+}: Omit<DeployStep, 'content'>) => {
   const selectedSection = useAtomValue(deployStepAtom)
-  const isActive = selectedSection === title
+  const isActive = selectedSection === id
 
   return (
     <AccordionTrigger
@@ -128,7 +129,7 @@ const DeployAccordion = () => {
           value={id}
           className="[&:not(:last-child)]:border-b-4 [&:not(:first-child)]:border-t border-secondary rounded-[1.25rem] bg-card"
         >
-          <DeployAccordionTrigger icon={icon} title={title} />
+          <DeployAccordionTrigger id={id} icon={icon} title={title} />
           <AccordionContent className="flex flex-col animate-fade-in">
             <div className="text-2xl font-bold text-primary ml-6 mb-2">
               {title}
