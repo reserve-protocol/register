@@ -36,8 +36,8 @@ const ChainOption = ({
   return (
     <div
       className={cn(
-        'flex flex-1 items-center gap-4 justify-between border border-muted rounded-xl p-4',
-        checked ? 'bg-background' : 'bg-muted'
+        'flex flex-1 items-center gap-4 justify-between border rounded-xl p-4 text-base cursor-pointer',
+        checked ? 'bg-card border-border' : 'bg-muted border-muted'
       )}
       role="button"
       onClick={() => onClick && onClick(chainId as AvailableChain)}

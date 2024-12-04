@@ -15,7 +15,7 @@ import {
 } from 'lucide-react'
 import { ReactNode, useEffect } from 'react'
 import { deploySectionAtom } from '../atoms'
-import ChainSelector from './chain-selector'
+import MetadataAndChain from './metadata-and-chain'
 
 export type DeploySection = {
   icon: ReactNode
@@ -26,8 +26,8 @@ export type DeploySection = {
 export const DEPLOY_SECTIONS: DeploySection[] = [
   {
     icon: <Asterisk size={24} strokeWidth={1.5} />,
-    title: 'Select chain',
-    content: <ChainSelector />,
+    title: 'Metadata & Chain',
+    content: <MetadataAndChain />,
   },
   {
     icon: <BasketCubeIcon fontSize={24} />,
