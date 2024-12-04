@@ -1,17 +1,12 @@
 import { t } from '@lingui/macro'
 import { atom } from 'jotai'
 import { atomWithReset } from 'jotai/utils'
-import {
-  chainIdAtom,
-  rTokenAssetsAtom,
-  secondsPerBlockAtom,
-  selectedRTokenAtom,
-} from 'state/atoms'
+import { chainIdAtom, rTokenAssetsAtom, selectedRTokenAtom } from 'state/atoms'
 import { CollateralPlugin } from 'types'
 import { isAddress, truncateDecimals } from 'utils'
 import { RSR_ADDRESS } from 'utils/addresses'
 import collateralPlugins from 'utils/plugins'
-import { Address, parseEther } from 'viem'
+import { Address } from 'viem'
 
 export interface Collateral {
   symbol: string
@@ -299,6 +294,8 @@ export const isValidExternalMapAtom = atom((get) => {
 
   return true
 })
+
+export const basketTargetUnitPriceAtom = atom<Record<string, number>>({})
 
 export const setupRolesAtom = atomWithReset({
   pausers: [] as Address[],
