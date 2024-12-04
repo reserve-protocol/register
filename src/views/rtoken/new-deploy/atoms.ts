@@ -1,4 +1,4 @@
 import { atom } from 'jotai'
-import { DEPLOY_SECTIONS, DeploySection } from './components/deploy-accordion'
+import { DeployStepId } from './form-fields'
 
-export const deploySectionAtom = atom<DeploySection['title']>('')
+export const deployStepAtom = atom<DeployStepId | undefined>(undefined)

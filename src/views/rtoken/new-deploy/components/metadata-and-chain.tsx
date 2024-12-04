@@ -1,8 +1,9 @@
-import BasicMetadata from './basic-metadata'
 import ChainSelector from './chain-selector'
+import BasicMetadataForm from './forms/basic-metadata-form'
+import NextButton from './forms/next-button'
 
 const Description = () => (
-  <div className="px-6 pb-4 text-base">
+  <div className="px-6 pb-6 text-base">
     “Bridged tokens can be used in the index. Chain selection determines where
     you deploy etc etc etc.”
   </div>
@@ -10,11 +11,12 @@ const Description = () => (
 
 const MetadataAndChain = () => {
   return (
-    <div>
+    <>
       <Description />
-      <BasicMetadata />
+      <BasicMetadataForm />
       <ChainSelector />
-    </div>
+      <NextButton />
+    </>
   )
 }
 

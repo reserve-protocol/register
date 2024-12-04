@@ -14,42 +14,44 @@ import {
   ChevronUpIcon,
 } from 'lucide-react'
 import { ReactNode, useEffect } from 'react'
-import { deploySectionAtom } from '../atoms'
+import { deployStepAtom } from '../atoms'
 import MetadataAndChain from './metadata-and-chain'
+import { DeployStepId } from '../form-fields'
 
-export type DeploySection = {
+export type DeployStep = {
+  id: DeployStepId
   icon: ReactNode
   title: string
   content: ReactNode
 }
 
-export const DEPLOY_SECTIONS: DeploySection[] = [
+export const DEPLOY_STEPS: DeployStep[] = [
   {
+    id: 'metadata',
     icon: <Asterisk size={24} strokeWidth={1.5} />,
     title: 'Metadata & Chain',
     content: <MetadataAndChain />,
   },
   {
+    id: 'primary-basket',
     icon: <BasketCubeIcon fontSize={24} />,
     title: 'Primary basket',
     content: 'content',
   },
   {
+    id: 'emergency-collateral',
     icon: <Asterisk size={24} strokeWidth={1.5} />,
     title: 'Emergency collateral',
     content: 'content',
   },
   {
+    id: 'revenue-distribution',
     icon: <Asterisk size={24} strokeWidth={1.5} />,
     title: 'Revenue distribution',
     content: 'content',
   },
   {
-    icon: <Asterisk size={24} strokeWidth={1.5} />,
-    title: 'Basic metadata',
-    content: 'content',
-  },
-  {
+    id: 'governance',
     icon: <Asterisk size={24} strokeWidth={1.5} />,
     title: 'Governance',
     content: 'content',
@@ -57,10 +59,11 @@ export const DEPLOY_SECTIONS: DeploySection[] = [
 ]
 
 const DeployAccordionTrigger = ({
+  id,
   icon,
   title,
-}: Omit<DeploySection, 'content'>) => {
-  const selectedSection = useAtomValue(deploySectionAtom)
+}: Omit<DeployStep, 'content'>) => {
+  const selectedSection = useAtomValue(deployStepAtom)
   const isActive = selectedSection === title
 
   return (
@@ -106,10 +109,10 @@ const DeployAccordionTrigger = ({
 }
 
 const DeployAccordion = () => {
-  const [section, setSection] = useAtom(deploySectionAtom)
+  const [section, setSection] = useAtom(deployStepAtom)
 
   useEffect(() => {
-    setSection(DEPLOY_SECTIONS[0].title)
+    setSection(DEPLOY_STEPS[0].id)
   }, [])
 
   return (
@@ -118,15 +121,15 @@ const DeployAccordion = () => {
       collapsible
       className="w-full bg-secondary rounded-xl"
       value={section}
-      onValueChange={(value) => setSection(value)}
+      onValueChange={(value) => setSection(value as DeployStepId)}
     >
-      {DEPLOY_SECTIONS.map(({ icon, title, content }) => (
+      {DEPLOY_STEPS.map(({ id, icon, title, content }) => (
         <AccordionItem
-          key={title}
-          value={title}
+          key={id}
+          value={id}
           className="[&:not(:last-child)]:border-b-4 [&:not(:first-child)]:border-t border-secondary rounded-[1.25rem] bg-card"
         >
-          <DeployAccordionTrigger icon={icon} title={title} />
+          <DeployAccordionTrigger id={id} icon={icon} title={title} />
           <AccordionContent className="flex flex-col animate-fade-in">
             <div className="text-2xl font-bold text-primary ml-6 mb-2">
               {title}

@@ -24,20 +24,54 @@ const inputVariants = cva(
 
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement>,
-    VariantProps<typeof inputVariants> {}
+    VariantProps<typeof inputVariants> {
+  startAdornment?: JSX.Element
+  endAdornment?: JSX.Element
+}
 export interface NumericalInputProps extends Omit<InputProps, 'onChange'> {
   onChange(value: string): void
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, variant, type, ...props }, ref) => {
+  (
+    { className, variant, type, startAdornment, endAdornment, ...props },
+    ref
+  ) => {
+    const hasAdornment = Boolean(startAdornment) || Boolean(endAdornment)
     return (
-      <input
-        type={type}
-        className={cn(inputVariants({ variant, className }))}
-        ref={ref}
-        {...props}
-      />
+      <>
+        {hasAdornment ? (
+          <div
+            className="flex items-center justify-center gap-2 px-3 h-12 rounded-xl border border-input bg-transparent ring-offset-background focus-within:ring-1 focus-within:ring-ring focus-within:ring-offset-2 data-[disabled=true]:cursor-not-allowed data-[disabled=true]:opacity-50"
+            data-disabled={props.disabled}
+          >
+            {startAdornment && (
+              <div className={cn('text-muted-foreground')}>
+                {startAdornment}
+              </div>
+            )}
+            <input
+              type={type}
+              className={cn(
+                'flex h-full w-full rounded-xl bg-transparent py-2 text-sm file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground shadow-none outline-none border-none focus-visible:outline-none focus-visible:border-none focus-visible:shadow-none',
+                className
+              )}
+              ref={ref}
+              {...props}
+            />
+            {endAdornment && (
+              <div className={cn('text-muted-foreground')}>{endAdornment}</div>
+            )}
+          </div>
+        ) : (
+          <input
+            type={type}
+            className={cn(inputVariants({ variant, className }))}
+            ref={ref}
+            {...props}
+          />
+        )}
+      </>
     )
   }
 )

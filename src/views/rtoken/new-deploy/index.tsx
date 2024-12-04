@@ -1,11 +1,16 @@
-import { rTokenDefaultValues } from 'components/rtoken-setup/atoms'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { FormProvider, useForm } from 'react-hook-form'
 import DeployAccordion from './components/deploy-accordion'
+import {
+  DeployFormSchema,
+  DeployInputs,
+  dtfDeployDefaultValues,
+} from './form-fields'
 
 const Deploy = () => {
-  const form = useForm({
-    mode: 'onChange',
-    defaultValues: rTokenDefaultValues,
+  const form = useForm<DeployInputs>({
+    resolver: zodResolver(DeployFormSchema),
+    defaultValues: dtfDeployDefaultValues,
   })
 
   return (
