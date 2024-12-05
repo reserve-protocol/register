@@ -7,28 +7,21 @@ import HeaderMenu from './HeaderMenu'
 import RegisterHelp from './RegisterHelp'
 import Blog from './Blog'
 
+// px={[2, 5]}
+// variant="layout.wrapper"
+// sx={{
+//   alignItems: 'center',
+//   height: ['52px', '72px'],
+//   justifyContent: ['left', 'center'],
+//   position: 'relative',
+// }}
 /**
  * Application header
  */
 const AppHeader = () => {
   return (
-    <Box
-      sx={{
-        width: '100%',
-        borderBottom: '1px solid',
-        borderColor: 'border',
-      }}
-    >
-      <Flex
-        px={[2, 5]}
-        variant="layout.wrapper"
-        sx={{
-          alignItems: 'center',
-          height: ['52px', '72px'],
-          justifyContent: ['left', 'center'],
-          position: 'relative',
-        }}
-      >
+    <div className="w-full border-b">
+      <div className="container flex items-center h-[52px] md:h-[72px] justify-center relative">
         <Box
           variant="layout.verticalAlign"
           sx={{ position: ['relative', 'absolute'], left: ['8px', '24px'] }}
@@ -62,8 +55,8 @@ const AppHeader = () => {
           />
           <Account />
         </Box>
-      </Flex>
-    </Box>
+      </div>
+    </div>
   )
 }
 export default AppHeader
