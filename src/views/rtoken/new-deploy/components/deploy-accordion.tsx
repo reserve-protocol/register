@@ -17,6 +17,7 @@ import { ReactNode, useEffect } from 'react'
 import { deployStepAtom } from '../atoms'
 import MetadataAndChain from './metadata-and-chain'
 import { DeployStepId } from '../form-fields'
+import FTokenBasket from './ftoken-basket'
 
 export type DeployStep = {
   id: DeployStepId
@@ -35,8 +36,8 @@ export const DEPLOY_STEPS: DeployStep[] = [
   {
     id: 'primary-basket',
     icon: <BasketCubeIcon fontSize={24} />,
-    title: 'Primary basket',
-    content: 'content',
+    title: 'FToken Basket',
+    content: <FTokenBasket />,
   },
   {
     id: 'emergency-collateral',
