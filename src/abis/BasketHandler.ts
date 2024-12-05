@@ -1,9 +1,5 @@
 export default [
-  {
-    inputs: [],
-    name: 'UIntOutOfBounds',
-    type: 'error',
-  },
+  { inputs: [], name: 'UIntOutOfBounds', type: 'error' },
   {
     anonymous: false,
     inputs: [
@@ -32,12 +28,7 @@ export default [
         name: 'targetName',
         type: 'bytes32',
       },
-      {
-        indexed: false,
-        internalType: 'uint256',
-        name: 'max',
-        type: 'uint256',
-      },
+      { indexed: false, internalType: 'uint256', name: 'max', type: 'uint256' },
       {
         indexed: false,
         internalType: 'contract IERC20[]',
@@ -69,12 +60,7 @@ export default [
         name: 'refAmts',
         type: 'uint192[]',
       },
-      {
-        indexed: false,
-        internalType: 'bool',
-        name: 'disabled',
-        type: 'bool',
-      },
+      { indexed: false, internalType: 'bool', name: 'disabled', type: 'bool' },
     ],
     name: 'BasketSet',
     type: 'event',
@@ -114,14 +100,28 @@ export default [
   {
     anonymous: false,
     inputs: [
-      {
-        indexed: false,
-        internalType: 'uint8',
-        name: 'version',
-        type: 'uint8',
-      },
+      { indexed: false, internalType: 'uint8', name: 'version', type: 'uint8' },
     ],
     name: 'Initialized',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: 'uint48',
+        name: 'oldVal',
+        type: 'uint48',
+      },
+      {
+        indexed: false,
+        internalType: 'uint48',
+        name: 'newVal',
+        type: 'uint48',
+      },
+    ],
+    name: 'LastCollateralizedChanged',
     type: 'event',
   },
   {
@@ -184,64 +184,32 @@ export default [
   {
     inputs: [],
     name: 'MAX_TARGET_AMT',
-    outputs: [
-      {
-        internalType: 'uint192',
-        name: '',
-        type: 'uint192',
-      },
-    ],
+    outputs: [{ internalType: 'uint192', name: '', type: 'uint192' }],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [],
     name: 'MAX_WARMUP_PERIOD',
-    outputs: [
-      {
-        internalType: 'uint48',
-        name: '',
-        type: 'uint48',
-      },
-    ],
+    outputs: [{ internalType: 'uint48', name: '', type: 'uint48' }],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [],
     name: 'MIN_WARMUP_PERIOD',
-    outputs: [
-      {
-        internalType: 'uint48',
-        name: '',
-        type: 'uint48',
-      },
-    ],
+    outputs: [{ internalType: 'uint48', name: '', type: 'uint48' }],
     stateMutability: 'view',
     type: 'function',
   },
   {
-    inputs: [
-      {
-        internalType: 'address',
-        name: 'account',
-        type: 'address',
-      },
-    ],
+    inputs: [{ internalType: 'address', name: 'account', type: 'address' }],
     name: 'basketsHeldBy',
     outputs: [
       {
         components: [
-          {
-            internalType: 'uint192',
-            name: 'bottom',
-            type: 'uint192',
-          },
-          {
-            internalType: 'uint192',
-            name: 'top',
-            type: 'uint192',
-          },
+          { internalType: 'uint192', name: 'bottom', type: 'uint192' },
+          { internalType: 'uint192', name: 'top', type: 'uint192' },
         ],
         internalType: 'struct BasketRange',
         name: 'baskets',
@@ -259,62 +227,38 @@ export default [
     type: 'function',
   },
   {
+    inputs: [
+      { internalType: 'contract IERC20[]', name: 'erc20s', type: 'address[]' },
+      { internalType: 'uint192[]', name: 'targetAmts', type: 'uint192[]' },
+    ],
+    name: 'forceSetPrimeBasket',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
     inputs: [],
     name: 'fullyCollateralized',
-    outputs: [
-      {
-        internalType: 'bool',
-        name: '',
-        type: 'bool',
-      },
-    ],
+    outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
     stateMutability: 'view',
     type: 'function',
   },
   {
-    inputs: [
-      {
-        internalType: 'bytes32',
-        name: 'targetName',
-        type: 'bytes32',
-      },
-    ],
+    inputs: [{ internalType: 'bytes32', name: 'targetName', type: 'bytes32' }],
     name: 'getBackupConfig',
     outputs: [
-      {
-        internalType: 'contract IERC20[]',
-        name: 'erc20s',
-        type: 'address[]',
-      },
-      {
-        internalType: 'uint256',
-        name: 'max',
-        type: 'uint256',
-      },
+      { internalType: 'contract IERC20[]', name: 'erc20s', type: 'address[]' },
+      { internalType: 'uint256', name: 'max', type: 'uint256' },
     ],
     stateMutability: 'view',
     type: 'function',
   },
   {
-    inputs: [
-      {
-        internalType: 'uint48',
-        name: 'basketNonce',
-        type: 'uint48',
-      },
-    ],
+    inputs: [{ internalType: 'uint48', name: 'basketNonce', type: 'uint48' }],
     name: 'getHistoricalBasket',
     outputs: [
-      {
-        internalType: 'contract IERC20[]',
-        name: 'erc20s',
-        type: 'address[]',
-      },
-      {
-        internalType: 'uint256[]',
-        name: 'quantities',
-        type: 'uint256[]',
-      },
+      { internalType: 'contract IERC20[]', name: 'erc20s', type: 'address[]' },
+      { internalType: 'uint256[]', name: 'quantities', type: 'uint256[]' },
     ],
     stateMutability: 'view',
     type: 'function',
@@ -323,37 +267,18 @@ export default [
     inputs: [],
     name: 'getPrimeBasket',
     outputs: [
-      {
-        internalType: 'contract IERC20[]',
-        name: 'erc20s',
-        type: 'address[]',
-      },
-      {
-        internalType: 'bytes32[]',
-        name: 'targetNames',
-        type: 'bytes32[]',
-      },
-      {
-        internalType: 'uint192[]',
-        name: 'targetAmts',
-        type: 'uint192[]',
-      },
+      { internalType: 'contract IERC20[]', name: 'erc20s', type: 'address[]' },
+      { internalType: 'bytes32[]', name: 'targetNames', type: 'bytes32[]' },
+      { internalType: 'uint192[]', name: 'targetAmts', type: 'uint192[]' },
     ],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [
-      {
-        internalType: 'contract IMain',
-        name: 'main_',
-        type: 'address',
-      },
-      {
-        internalType: 'uint48',
-        name: 'warmupPeriod_',
-        type: 'uint48',
-      },
+      { internalType: 'contract IMain', name: 'main_', type: 'address' },
+      { internalType: 'uint48', name: 'warmupPeriod_', type: 'uint48' },
+      { internalType: 'bool', name: 'reweightable_', type: 'bool' },
     ],
     name: 'init',
     outputs: [],
@@ -363,13 +288,14 @@ export default [
   {
     inputs: [],
     name: 'isReady',
-    outputs: [
-      {
-        internalType: 'bool',
-        name: '',
-        type: 'bool',
-      },
-    ],
+    outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'lastCollateralized',
+    outputs: [{ internalType: 'uint48', name: '', type: 'uint48' }],
     stateMutability: 'view',
     type: 'function',
   },
@@ -377,16 +303,8 @@ export default [
     inputs: [],
     name: 'lotPrice',
     outputs: [
-      {
-        internalType: 'uint192',
-        name: 'lotLow',
-        type: 'uint192',
-      },
-      {
-        internalType: 'uint192',
-        name: 'lotHigh',
-        type: 'uint192',
-      },
+      { internalType: 'uint192', name: 'lotLow', type: 'uint192' },
+      { internalType: 'uint192', name: 'lotHigh', type: 'uint192' },
     ],
     stateMutability: 'view',
     type: 'function',
@@ -394,26 +312,14 @@ export default [
   {
     inputs: [],
     name: 'main',
-    outputs: [
-      {
-        internalType: 'contract IMain',
-        name: '',
-        type: 'address',
-      },
-    ],
+    outputs: [{ internalType: 'contract IMain', name: '', type: 'address' }],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [],
     name: 'nonce',
-    outputs: [
-      {
-        internalType: 'uint48',
-        name: '',
-        type: 'uint48',
-      },
-    ],
+    outputs: [{ internalType: 'uint48', name: '', type: 'uint48' }],
     stateMutability: 'view',
     type: 'function',
   },
@@ -421,16 +327,8 @@ export default [
     inputs: [],
     name: 'price',
     outputs: [
-      {
-        internalType: 'uint192',
-        name: 'low',
-        type: 'uint192',
-      },
-      {
-        internalType: 'uint192',
-        name: 'high',
-        type: 'uint192',
-      },
+      { internalType: 'uint192', name: 'low', type: 'uint192' },
+      { internalType: 'uint192', name: 'high', type: 'uint192' },
     ],
     stateMutability: 'view',
     type: 'function',
@@ -438,118 +336,52 @@ export default [
   {
     inputs: [],
     name: 'proxiableUUID',
-    outputs: [
-      {
-        internalType: 'bytes32',
-        name: '',
-        type: 'bytes32',
-      },
-    ],
+    outputs: [{ internalType: 'bytes32', name: '', type: 'bytes32' }],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [
-      {
-        internalType: 'contract IERC20',
-        name: 'erc20',
-        type: 'address',
-      },
+      { internalType: 'contract IERC20', name: 'erc20', type: 'address' },
     ],
     name: 'quantity',
-    outputs: [
-      {
-        internalType: 'uint192',
-        name: '',
-        type: 'uint192',
-      },
-    ],
+    outputs: [{ internalType: 'uint192', name: '', type: 'uint192' }],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [
-      {
-        internalType: 'contract IERC20',
-        name: 'erc20',
-        type: 'address',
-      },
-      {
-        internalType: 'contract IAsset',
-        name: 'asset',
-        type: 'address',
-      },
+      { internalType: 'contract IERC20', name: 'erc20', type: 'address' },
+      { internalType: 'contract IAsset', name: 'asset', type: 'address' },
     ],
     name: 'quantityUnsafe',
-    outputs: [
-      {
-        internalType: 'uint192',
-        name: '',
-        type: 'uint192',
-      },
-    ],
+    outputs: [{ internalType: 'uint192', name: '', type: 'uint192' }],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [
-      {
-        internalType: 'uint192',
-        name: 'amount',
-        type: 'uint192',
-      },
-      {
-        internalType: 'enum RoundingMode',
-        name: 'rounding',
-        type: 'uint8',
-      },
+      { internalType: 'uint192', name: 'amount', type: 'uint192' },
+      { internalType: 'enum RoundingMode', name: 'rounding', type: 'uint8' },
     ],
     name: 'quote',
     outputs: [
-      {
-        internalType: 'address[]',
-        name: 'erc20s',
-        type: 'address[]',
-      },
-      {
-        internalType: 'uint256[]',
-        name: 'quantities',
-        type: 'uint256[]',
-      },
+      { internalType: 'address[]', name: 'erc20s', type: 'address[]' },
+      { internalType: 'uint256[]', name: 'quantities', type: 'uint256[]' },
     ],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [
-      {
-        internalType: 'uint48[]',
-        name: 'basketNonces',
-        type: 'uint48[]',
-      },
-      {
-        internalType: 'uint192[]',
-        name: 'portions',
-        type: 'uint192[]',
-      },
-      {
-        internalType: 'uint192',
-        name: 'amount',
-        type: 'uint192',
-      },
+      { internalType: 'uint48[]', name: 'basketNonces', type: 'uint48[]' },
+      { internalType: 'uint192[]', name: 'portions', type: 'uint192[]' },
+      { internalType: 'uint192', name: 'amount', type: 'uint192' },
     ],
     name: 'quoteCustomRedemption',
     outputs: [
-      {
-        internalType: 'address[]',
-        name: 'erc20s',
-        type: 'address[]',
-      },
-      {
-        internalType: 'uint256[]',
-        name: 'quantities',
-        type: 'uint256[]',
-      },
+      { internalType: 'address[]', name: 'erc20s', type: 'address[]' },
+      { internalType: 'uint256[]', name: 'quantities', type: 'uint256[]' },
     ],
     stateMutability: 'view',
     type: 'function',
@@ -562,22 +394,17 @@ export default [
     type: 'function',
   },
   {
+    inputs: [],
+    name: 'reweightable',
+    outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
     inputs: [
-      {
-        internalType: 'bytes32',
-        name: 'targetName',
-        type: 'bytes32',
-      },
-      {
-        internalType: 'uint256',
-        name: 'max',
-        type: 'uint256',
-      },
-      {
-        internalType: 'contract IERC20[]',
-        name: 'erc20s',
-        type: 'address[]',
-      },
+      { internalType: 'bytes32', name: 'targetName', type: 'bytes32' },
+      { internalType: 'uint256', name: 'max', type: 'uint256' },
+      { internalType: 'contract IERC20[]', name: 'erc20s', type: 'address[]' },
     ],
     name: 'setBackupConfig',
     outputs: [],
@@ -586,16 +413,8 @@ export default [
   },
   {
     inputs: [
-      {
-        internalType: 'contract IERC20[]',
-        name: 'erc20s',
-        type: 'address[]',
-      },
-      {
-        internalType: 'uint192[]',
-        name: 'targetAmts',
-        type: 'uint192[]',
-      },
+      { internalType: 'contract IERC20[]', name: 'erc20s', type: 'address[]' },
+      { internalType: 'uint192[]', name: 'targetAmts', type: 'uint192[]' },
     ],
     name: 'setPrimeBasket',
     outputs: [],
@@ -603,13 +422,7 @@ export default [
     type: 'function',
   },
   {
-    inputs: [
-      {
-        internalType: 'uint48',
-        name: 'val',
-        type: 'uint48',
-      },
-    ],
+    inputs: [{ internalType: 'uint48', name: 'val', type: 'uint48' }],
     name: 'setWarmupPeriod',
     outputs: [],
     stateMutability: 'nonpayable',
@@ -619,11 +432,7 @@ export default [
     inputs: [],
     name: 'status',
     outputs: [
-      {
-        internalType: 'enum CollateralStatus',
-        name: 'status_',
-        type: 'uint8',
-      },
+      { internalType: 'enum CollateralStatus', name: 'status_', type: 'uint8' },
     ],
     stateMutability: 'view',
     type: 'function',
@@ -631,13 +440,7 @@ export default [
   {
     inputs: [],
     name: 'timestamp',
-    outputs: [
-      {
-        internalType: 'uint48',
-        name: '',
-        type: 'uint48',
-      },
-    ],
+    outputs: [{ internalType: 'uint48', name: '', type: 'uint48' }],
     stateMutability: 'view',
     type: 'function',
   },
@@ -650,11 +453,7 @@ export default [
   },
   {
     inputs: [
-      {
-        internalType: 'address',
-        name: 'newImplementation',
-        type: 'address',
-      },
+      { internalType: 'address', name: 'newImplementation', type: 'address' },
     ],
     name: 'upgradeTo',
     outputs: [],
@@ -663,16 +462,8 @@ export default [
   },
   {
     inputs: [
-      {
-        internalType: 'address',
-        name: 'newImplementation',
-        type: 'address',
-      },
-      {
-        internalType: 'bytes',
-        name: 'data',
-        type: 'bytes',
-      },
+      { internalType: 'address', name: 'newImplementation', type: 'address' },
+      { internalType: 'bytes', name: 'data', type: 'bytes' },
     ],
     name: 'upgradeToAndCall',
     outputs: [],
@@ -682,26 +473,14 @@ export default [
   {
     inputs: [],
     name: 'version',
-    outputs: [
-      {
-        internalType: 'string',
-        name: '',
-        type: 'string',
-      },
-    ],
+    outputs: [{ internalType: 'string', name: '', type: 'string' }],
     stateMutability: 'pure',
     type: 'function',
   },
   {
     inputs: [],
     name: 'warmupPeriod',
-    outputs: [
-      {
-        internalType: 'uint48',
-        name: '',
-        type: 'uint48',
-      },
-    ],
+    outputs: [{ internalType: 'uint48', name: '', type: 'uint48' }],
     stateMutability: 'view',
     type: 'function',
   },

@@ -3,13 +3,18 @@ import { NumericalInput } from 'components'
 import Help from 'components/help'
 import TokenLogo from 'components/icons/TokenLogo'
 import IconInfo from 'components/info-icon'
-import { useSetAtom } from 'jotai'
+import { useAtomValue, useSetAtom } from 'jotai'
 import { useMemo } from 'react'
 import { X } from 'react-feather'
 import { Box, CardProps, Divider, Flex, IconButton, Text } from 'theme-ui'
-import { truncateDecimals } from 'utils'
-import { PrimaryUnitBasket, updateBasketUnitAtom } from '../atoms'
+import { formatCurrency, truncateDecimals } from 'utils'
+import {
+  basketTargetUnitPriceAtom,
+  PrimaryUnitBasket,
+  updateBasketUnitAtom,
+} from '../atoms'
 import { collateralDisplay } from 'utils/constants'
+import Skeleton from 'react-loading-skeleton'
 
 interface UnitBasketProps extends CardProps {
   data: PrimaryUnitBasket
@@ -23,6 +28,7 @@ interface UnitBasketProps extends CardProps {
  */
 const UnitBasket = ({ data, readOnly, unit, ...props }: UnitBasketProps) => {
   const updateBasket = useSetAtom(updateBasketUnitAtom)
+  const targetUnitPrice = useAtomValue(basketTargetUnitPriceAtom)[unit]
 
   const totalDistribution = useMemo(
     () => data.distribution.reduce((count, n) => count + Number(n), 0),
@@ -72,12 +78,16 @@ const UnitBasket = ({ data, readOnly, unit, ...props }: UnitBasketProps) => {
       <Divider my={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />
       {!readOnly && (
         <>
-          <Flex sx={{ justifyContent: 'space-between' }} mb={3} mt={4}>
+          <Flex
+            sx={{ justifyContent: 'space-between', flexWrap: 'wrap', gap: 2 }}
+            mb={3}
+            mt={4}
+          >
             <Text variant="title">
               {unit} <Trans>Basket</Trans>
             </Text>
             <Flex sx={{ alignItems: 'center' }}>
-              <Box sx={{ width: 64 }} mx={3}>
+              <Box sx={{ width: 64 }} mr={3}>
                 <NumericalInput
                   variant={+data.scale > 0 ? 'smallInput' : 'inputError'}
                   value={data.scale}
@@ -85,7 +95,16 @@ const UnitBasket = ({ data, readOnly, unit, ...props }: UnitBasketProps) => {
                   onChange={handleScale}
                 />
               </Box>
-              <Text mr={2}>{unit}</Text>
+              <Box>
+                <Text mr={2}>{unit}</Text>
+                {targetUnitPrice ? (
+                  <Text variant="legend" sx={{ display: 'block', fontSize: 1 }}>
+                    1 = {formatCurrency(targetUnitPrice)}$
+                  </Text>
+                ) : (
+                  <Skeleton />
+                )}
+              </Box>
               <Help
                 content={t`Basket scale for this unit of account. This is used to initially calculate how much of each token is required for minting.`}
               />

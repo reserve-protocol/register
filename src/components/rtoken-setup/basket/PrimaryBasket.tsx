@@ -1,14 +1,22 @@
 import { t, Trans } from '@lingui/macro'
+import NewCollateralAbi from 'abis/NewCollateralAbi'
 import { SmallButton } from 'components/button'
 import DocsLink from 'components/docs-link/DocsLink'
 import Help from 'components/help'
 import EmptyBoxIcon from 'components/icons/EmptyBoxIcon'
-import { useAtomValue } from 'jotai'
-import { useCallback } from 'react'
+import { useAtomValue, useSetAtom } from 'jotai'
+import { useCallback, useEffect, useMemo } from 'react'
 import { chainIdAtom, collateralYieldAtom } from 'state/atoms'
 import { Box, BoxProps, Divider, Flex, Text } from 'theme-ui'
-import { formatPercentage, truncateDecimals } from 'utils'
-import { Basket, basketAtom, Collateral } from '../atoms'
+import {
+  formatCurrency,
+  formatPercentage,
+  getPrice,
+  truncateDecimals,
+} from 'utils'
+import { formatEther } from 'viem'
+import { useContractReads } from 'wagmi'
+import { Basket, basketAtom, basketTargetUnitPriceAtom } from '../atoms'
 import UnitBasket from './UnitBasket'
 
 interface Props extends BoxProps {
@@ -21,10 +29,18 @@ interface Props extends BoxProps {
   readOnly?: boolean
 }
 
-const getBasketComposition = (basket: Basket) => {
+const getBasketComposition = (
+  basket: Basket,
+  targetUnitPrice: Record<string, number>
+) => {
   return Object.keys(basket)
     .reduce((acc, unit) => {
-      return `${acc} + ${truncateDecimals(+basket[unit].scale, 18)} ${unit}`
+      return `${acc} + ${truncateDecimals(
+        +basket[unit].scale,
+        18
+      )} ${unit} ($${formatCurrency(
+        +basket[unit].scale * (targetUnitPrice[unit] || 0)
+      )})`
     }, '')
     .substring(2)
 }
@@ -50,6 +66,115 @@ const Placeholder = () => (
   </Box>
 )
 
+const usePricePerTarget = (basket: Basket) => {
+  const chainId = useAtomValue(chainIdAtom)
+  const [units, calls] = useMemo(() => {
+    const units = Object.keys(basket)
+    const calls = units.reduce((acc, unit) => {
+      const call = {
+        abi: NewCollateralAbi,
+        address: basket[unit].collaterals[0].address,
+        chainId,
+      }
+
+      return [
+        ...acc,
+        {
+          ...call,
+          functionName: 'price',
+        },
+        { ...call, functionName: 'refPerTok' },
+        { ...call, functionName: 'targetPerRef' },
+      ]
+    }, [] as any)
+
+    return [units, calls]
+  }, [JSON.stringify(basket), chainId])
+
+  const result = useContractReads({
+    contracts: calls,
+    allowFailure: false,
+    watch: false,
+    select: (data) => {
+      return units.reduce((acc, unit, index) => {
+        if (unit === 'USD') {
+          acc[unit] = 1
+          return acc
+        }
+
+        const price = getPrice(data[index * 3] as [bigint, bigint])
+        const refPerTok = Number(formatEther(data[index * 3 + 1] as bigint))
+        const targetPerRef = Number(formatEther(data[index * 3 + 2] as bigint))
+        acc[unit] = price / refPerTok / targetPerRef
+
+        return acc
+      }, {} as Record<string, number>)
+    },
+  })
+
+  return result
+}
+
+const TargetPriceUpdater = () => {
+  const basket = useAtomValue(basketAtom)
+  const result = usePricePerTarget(basket)
+  const setTargetPrices = useSetAtom(basketTargetUnitPriceAtom)
+
+  useEffect(() => {
+    if (result.data) setTargetPrices(result.data)
+  }, [result])
+
+  return null
+}
+
+const BasketEstimatedApy = () => {
+  const basket = useAtomValue(basketAtom)
+  const chainId = useAtomValue(chainIdAtom)
+  const collateralYields = useAtomValue(collateralYieldAtom)
+  const targetUnitPrice = useAtomValue(basketTargetUnitPriceAtom)
+  const units = Object.keys(basket)
+
+  const getEstApy = useCallback(() => {
+    return Object.keys(basket).reduce((prev, current, index) => {
+      const currentBasket = basket[current]
+      const scale = Number(currentBasket.scale)
+      let targetUnitApy = 0
+
+      for (let i = 0; i < currentBasket.collaterals.length; i++) {
+        targetUnitApy +=
+          (collateralYields[chainId]?.[
+            currentBasket.collaterals[i].symbol.toLowerCase()
+          ] || 0) * (+currentBasket.distribution[i] / 100 || 0)
+      }
+
+      return prev + targetUnitApy * scale
+    }, 0)
+  }, [collateralYields, basket, chainId])
+
+  return (
+    <Flex sx={{ justiftContent: 'space-between', alignItems: 'center' }}>
+      <Flex mr={'auto'} sx={{ flexDirection: 'column' }}>
+        <Text variant="legend">1 Token =</Text>
+        <Text variant="title">
+          {!!units.length
+            ? getBasketComposition(basket, targetUnitPrice)
+            : '--'}
+        </Text>
+        <Text variant="legend" mt={2}>
+          <Trans>Estimated basket APY</Trans> =
+        </Text>
+        <Text variant="title">{formatPercentage(getEstApy())}</Text>
+      </Flex>
+      <Help
+        ml={2}
+        size={14}
+        mt="1px"
+        content={t`Total initial RToken scale including all targets. If your RToken only has one target unit this will be the same as the basket scale input.`}
+      />
+    </Flex>
+  )
+}
+
 // TODO: Create read only component and remove readOnly flag
 /**
  * View: Deploy -> Basket setup
@@ -60,25 +185,8 @@ const PrimaryBasket = ({
   readOnly = false,
   ...props
 }: Props) => {
-  const chainId = useAtomValue(chainIdAtom)
   const basket = useAtomValue(basketAtom)
   const units = Object.keys(basket)
-  const collateralYields = useAtomValue(collateralYieldAtom)
-
-  const getEstApy = useCallback(() => {
-    return Object.keys(basket).reduce((prev, current) => {
-      const currentBasket = basket[current]
-
-      for (let i = 0; i < currentBasket.collaterals.length; i++) {
-        prev +=
-          (collateralYields[chainId]?.[
-            currentBasket.collaterals[i].symbol.toLowerCase()
-          ] || 0) * (+currentBasket.distribution[i] / 100 || 0)
-      }
-
-      return prev
-    }, 0)
-  }, [collateralYields, basket, chainId])
 
   return (
     <Box {...props}>
@@ -110,26 +218,10 @@ const PrimaryBasket = ({
       {!readOnly && (
         <>
           <Divider my={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />
-          <Flex sx={{ justiftContent: 'space-between', alignItems: 'center' }}>
-            <Flex mr={'auto'} sx={{ flexDirection: 'column' }}>
-              <Text variant="legend">1 Token =</Text>
-              <Text variant="title">
-                {!!units.length ? getBasketComposition(basket) : '--'}
-              </Text>
-              <Text variant="legend" mt={2}>
-                <Trans>Estimated basket APY</Trans> =
-              </Text>
-              <Text variant="title">{formatPercentage(getEstApy())}</Text>
-            </Flex>
-            <Help
-              ml={2}
-              size={14}
-              mt="1px"
-              content={t`Total initial RToken scale including all targets. If your RToken only has one target unit this will be the same as the basket scale input.`}
-            />
-          </Flex>
+          <BasketEstimatedApy />
         </>
       )}
+      <TargetPriceUpdater />
     </Box>
   )
 }

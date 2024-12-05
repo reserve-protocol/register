@@ -126,6 +126,11 @@ const rTokenConfigurationAtom = atomWithLoadable(async (get) => {
       ...stRSRCall,
       functionName: 'withdrawalLeak',
     },
+    {
+      abi: BasketHandler,
+      address: contracts.basketHandler.address,
+      functionName: 'reweightable',
+    },
   ].map((call) => ({ ...call, chainId }))
 
   try {
@@ -147,6 +152,7 @@ const rTokenConfigurationAtom = atomWithLoadable(async (get) => {
       dutchTradeImplementation,
       warmupPeriod,
       withdrawalLeak,
+      reweightable,
     ] = await readContracts({ contracts: calls })
 
     return {
@@ -193,6 +199,10 @@ const rTokenConfigurationAtom = atomWithLoadable(async (get) => {
         withdrawalLeak.status === 'success'
           ? (+formatEther(withdrawalLeak.result as bigint) * 100).toString()
           : '0',
+      reweightable:
+        reweightable.status === 'success'
+          ? Boolean(reweightable.result)
+          : false,
     } as StringMap
   } catch (e) {
     console.error('error fetching parameters', e)
