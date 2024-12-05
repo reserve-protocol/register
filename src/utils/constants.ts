@@ -19,6 +19,7 @@ export const REGISTER_FEEDBACK = 'https://reserve.canny.io/register-app'
 export const RESERVE_FORUM = 'https://forum.reserve.org/'
 export const REGISTER_BUGS =
   'https://reserve.canny.io/defi-surfaces-bug-reporting'
+export const RESERVE_STORAGE = 'https://storage.reserve.org/'
 
 export const LP_PROJECTS: { [x: string]: { name: string; site: string } } = {
   'curve-dex': {
@@ -278,13 +279,16 @@ export const BRIDGED_RTOKENS = {
 
 export const BRIDGE_RTOKEN_MAP = Object.entries(
   BRIDGED_RTOKENS[ChainId.Mainnet]
-).reduce((acc, [key, tokens]) => {
-  for (const token of tokens) {
-    acc[token.address] = key
-  }
+).reduce(
+  (acc, [key, tokens]) => {
+    for (const token of tokens) {
+      acc[token.address] = key
+    }
 
-  return acc
-}, {} as Record<string, string>)
+    return acc
+  },
+  {} as Record<string, string>
+)
 
 for (const chain of supportedChainList) {
   LISTED_RTOKEN_ADDRESSES[chain] = [

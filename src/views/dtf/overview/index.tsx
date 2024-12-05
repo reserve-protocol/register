@@ -1,5 +1,9 @@
 import { Card } from '@/components/ui/card'
 import LandingMint from './components/landing-mint'
+import { Box } from '@/components/ui/box'
+import { Link as LinkIcon } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Link } from '@/components/ui/link'
 
 const Performance = () => {
   return (
@@ -9,10 +13,18 @@ const Performance = () => {
   )
 }
 
-const TokenDescription = () => {
+const TokenDetails = () => {
   return (
     <Card className="p-6 h-96">
-      <div className="flex">card title</div>
+      <div className="flex">
+        card title
+        <Link>
+          <Box variant="circle">
+            <LinkIcon size={12} />
+          </Box>
+          Website
+        </Link>
+      </div>
     </Card>
   )
 }
@@ -22,12 +34,12 @@ const Content = () => {
     <div className="rounded-2xl bg-secondary flex-1">
       <Performance />
       <div className="flex flex-col gap-1 m-1 -mt-20">
-        <TokenDescription />
-        <TokenDescription />
+        <TokenDetails />
+        <TokenDetails />
 
-        <TokenDescription />
-        <TokenDescription />
-        <TokenDescription />
+        <TokenDetails />
+        <TokenDetails />
+        <TokenDetails />
       </div>
     </div>
   )
