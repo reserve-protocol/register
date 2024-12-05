@@ -82,7 +82,7 @@ const PriceChart = (props: BoxProps) => {
           const display =
             rToken?.targetUnits === 'ETH' && currentPrice === 'ETH'
               ? `${formatCurrency(+basketRate, 4)} ETH`
-              : `$${formatCurrency(+priceUSD)}`
+              : `$${formatCurrency(+priceUSD, rToken?.targetUnits === 'ETH' ? 2 : 3)}`
           return {
             value,
             label: dayjs.unix(+timestamp).format('YYYY-M-D HH:mm:ss'),
@@ -121,11 +121,7 @@ const PriceChart = (props: BoxProps) => {
       title={priceTitle}
       data={rows}
       timeRange={TIME_RANGES}
-      domain={
-        rToken?.targetUnits === 'ETH' && currentPrice === 'ETH'
-          ? ['auto', 'auto']
-          : undefined
-      }
+      domain={['auto', 'auto']}
       currentRange={current}
       onRangeChange={handleChange}
       moreActions={
