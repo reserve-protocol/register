@@ -25,6 +25,8 @@ import Staking from '@/views/rtoken/staking'
 import Terms from 'views/terms'
 import GovernanceSetup from '@/views/rtoken/deploy/components/Governance'
 import AllTokenList from './views/tokens/Tokens'
+import DTFContainer from './views/dtf/dtf-container'
+import DTFOverview from './views/dtf/overview'
 
 const AppRoutes = () => (
   <Routes>
@@ -52,6 +54,10 @@ const AppRoutes = () => (
       />
       <Route path={ROUTES.GOVERNANCE_SETUP} element={<GovernanceSetup />} />
       <Route path={ROUTES.SETTINGS} element={<Settings />} />
+    </Route>
+    <Route path={`/:chain/dtf/:tokenId`} element={<DTFContainer />}>
+      <Route index element={<Navigate replace to={ROUTES.OVERVIEW} />} />
+      <Route path={ROUTES.OVERVIEW} element={<DTFOverview />} />
     </Route>
     <Route path={ROUTES.EXPLORER} element={<Explorer />}>
       <Route
