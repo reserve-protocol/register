@@ -1,5 +1,5 @@
 import NextButton from './forms/next-button'
-import FTokenSelector from './ftoken-selector'
+import TokenSelector from './token-selector'
 
 const Description = () => (
   <div className="px-6 pb-6 text-base">
@@ -13,7 +13,7 @@ const FTokenBasket = () => {
   return (
     <>
       <Description />
-      <FTokenSelector />
+      <TokenSelector />
       <NextButton />
     </>
   )
