@@ -1,5 +1,4 @@
 import { Card } from '@/components/ui/card'
-import LandingMint from './components/landing-mint'
 import { Box } from '@/components/ui/box'
 import { Link as LinkIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -18,7 +17,6 @@ import {
   ResponsiveContainer,
   XAxis,
 } from 'recharts'
-import PriceChart from './components/price-chart'
 
 const chartData = [
   { month: 'January', desktop: 186 },
@@ -59,49 +57,48 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
-const TokenDetails = () => {
+const PriceChart = () => {
+  const percentageChange = '+4.56%'
+  const currentPrice = '$304.03'
   return (
-    <Card className="p-6 h-96">
-      <div className="flex">
-        card title
-        <Link>
-          <Box variant="circle">
-            <LinkIcon size={12} />
-          </Box>
-          Website
-        </Link>
-      </div>
-    </Card>
-  )
-}
-
-const Content = () => {
-  return (
-    <div className="rounded-2xl bg-secondary flex-1">
-      <PriceChart />
-      <div className="flex flex-col gap-1 m-1 -mt-20">
-        <TokenDetails />
-        <TokenDetails />
-
-        <TokenDetails />
-        <TokenDetails />
-        <TokenDetails />
-      </div>
-    </div>
-  )
-}
-
-const DTFOverview = () => {
-  return (
-    <div className="flex gap-2">
-      <Content />
-      <div>
-        <div className="sticky top-0">
-          <LandingMint className="hidden xl:block" />
+    <div className="rounded-2xl rounded-b-none bg-[#021122] w-full p-6 pb-20 color-[#fff] h-[500px]">
+      <div className="flex justify-between">
+        <div>
+          <span className="text-white">7d performance</span>
+          <div className="mt-1 mb-3 text-5xl font-bold text-white">
+            {percentageChange}
+          </div>
+          <p className="text-sm text-muted">
+            <span className="text-white/80">Price:</span> {currentPrice}
+          </p>
+        </div>
+        <div className="flex gap-1">
+          {timeRanges.map((range) => (
+            <Button
+              key={range.value}
+              // variant={range.value === '1w' ? 'muted' : 'ghost'}
+              variant="ghost"
+              className={`h-9 text-white rounded-[60px] ${range.value === '1w' ? 'bg-muted/20' : ''}`}
+            >
+              {range.label}
+            </Button>
+          ))}
         </div>
       </div>
+      <ChartContainer config={chartConfig} className="h-96 w-full pb-28">
+        <LineChart data={data}>
+          <Line
+            type="monotone"
+            dataKey="value"
+            stroke="#ffffff"
+            strokeWidth={2}
+            dot={false}
+            isAnimationActive={false}
+          />
+        </LineChart>
+      </ChartContainer>
     </div>
   )
 }
 
-export default DTFOverview
+export default PriceChart

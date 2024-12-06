@@ -108,5 +108,8 @@
     "vite-bundle-visualizer": "1.2.1",
     "vite-plugin-static-copy": "^2.1.0",
     "vite-tsconfig-paths": "^4.2.0"
+  },
+  "overrides": {
+    "react-is": "19.0.0"
   }
 }
