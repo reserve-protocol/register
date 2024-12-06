@@ -12,18 +12,9 @@ import { AvailableChain, supportedChains } from '@/utils/chains'
 import { NETWORKS, ROUTES } from '@/utils/constants'
 import TokenNavigation from 'components/layout/navigation/TokenNavigation'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { useEffect, useMemo } from 'react'
+import { useEffect } from 'react'
 import { Outlet, useNavigate, useParams } from 'react-router-dom'
-import { Address } from 'viem'
 import { useSwitchChain } from 'wagmi'
-
-const useRouteTokenParams = () => {
-  const { chain, tokenId } = useParams()
-  return {
-    chain: NETWORKS[chain ?? ''] as AvailableChain,
-    tokenId: tokenId as Address,
-  }
-}
 
 const useChainWatch = () => {
   const { switchChain } = useSwitchChain()
