@@ -13,6 +13,8 @@ type BasicInput = {
   label: string
   placeholder: string
   type?: React.HTMLInputTypeAttribute
+  labelPosition?: 'start' | 'end'
+  defaultValue?: string | number
 }
 
 const BasicInput = ({
@@ -20,9 +22,17 @@ const BasicInput = ({
   label,
   placeholder,
   type = 'text',
+  labelPosition = 'end',
+  defaultValue = '',
   ...props
 }: React.HTMLAttributes<HTMLDivElement> & BasicInput) => {
   const form = useFormContext()
+
+  const adornment = (
+    <FormLabel className="pr-1 font-normal text-base text-nowrap">
+      {label}
+    </FormLabel>
+  )
 
   return (
     <div {...props}>
@@ -35,13 +45,13 @@ const BasicInput = ({
               <Input
                 type={type}
                 placeholder={placeholder}
-                endAdornment={
-                  <FormLabel className="pr-1 font-normal text-base text-nowrap">
-                    {label}
-                  </FormLabel>
+                startAdornment={
+                  labelPosition === 'start' ? adornment : undefined
                 }
+                endAdornment={labelPosition === 'end' ? adornment : undefined}
                 className="px-1 text-base"
                 {...field}
+                value={field.value ?? defaultValue}
               />
             </FormControl>
             <FormMessage />

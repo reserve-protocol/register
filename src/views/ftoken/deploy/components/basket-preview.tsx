@@ -5,6 +5,7 @@ import { useAtomValue, useSetAtom } from 'jotai'
 import { DollarSign, XIcon } from 'lucide-react'
 import { basketAtom } from '../atoms'
 import { Input } from 'theme-ui'
+import BasicInput from './basic-input'
 
 const RemoveTokenButton = ({ address }: Pick<Token, 'address'>) => {
   const setBasket = useSetAtom(basketAtom)
@@ -24,19 +25,24 @@ const RemoveTokenButton = ({ address }: Pick<Token, 'address'>) => {
   )
 }
 
-const BasketValue = () => {
+const TokenDistribution = ({ tokenIndex }: { tokenIndex: number }) => {
   return (
-    <div className="flex items-center gap-2 justify-between">
-      <div className="flex items-center gap-2">
-        <DollarSign size={24} strokeWidth={1.5} />
-        <div className="text-base font-bold">0.00</div>
-      </div>
-      <Input></Input>
-    </div>
+    <BasicInput
+      className="max-w-32"
+      fieldName={`tokenDistribution.${tokenIndex}`}
+      label="%"
+      placeholder="0"
+      defaultValue={0}
+    />
   )
 }
 
-const TokenPreview = ({ address, name, symbol }: Token) => {
+const TokenPreview = ({
+  address,
+  name,
+  symbol,
+  index,
+}: Token & { index: number }) => {
   return (
     <label
       htmlFor={address}
@@ -55,6 +61,7 @@ const TokenPreview = ({ address, name, symbol }: Token) => {
         </div>
       </div>
       <div className="flex items-center gap-[12px]">
+        <TokenDistribution tokenIndex={index} />
         <RemoveTokenButton address={address} />
       </div>
     </label>
@@ -68,8 +75,8 @@ const BasketPreview = () => {
 
   return (
     <div className="flex flex-col mb-2 mx-2 rounded-xl bg-muted/70">
-      {basket.map((token) => (
-        <TokenPreview key={token.address} {...token} />
+      {basket.map((token, index) => (
+        <TokenPreview key={token.address} {...token} index={index} />
       ))}
     </div>
   )

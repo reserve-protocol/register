@@ -44,7 +44,7 @@ const InputWithAdornment = React.forwardRef<
 >(({ startAdornment, endAdornment, className, type, ...props }, ref) => {
   return (
     <div
-      className="flex items-center justify-center gap-2 px-3 h-12 rounded-xl border border-input bg-transparent ring-offset-background focus-within:ring-1 focus-within:ring-ring focus-within:ring-offset-2 data-[disabled=true]:cursor-not-allowed data-[disabled=true]:opacity-50"
+      className="flex items-center justify-center gap-2 px-3 h-12 rounded-xl border border-input bg-transparent ring-offset-background focus-within:ring-1 focus-within:ring-ring focus-within:ring-offset-2 data-[disabled=true]:cursor-not-allowed data-[disabled=true]:opacity-50 !bg-card"
       data-disabled={props.disabled}
     >
       {startAdornment && (
