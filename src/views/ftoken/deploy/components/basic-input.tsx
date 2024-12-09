@@ -12,12 +12,14 @@ type BasicInput = {
   fieldName: string
   label: string
   placeholder: string
+  type?: React.HTMLInputTypeAttribute
 }
 
 const BasicInput = ({
   fieldName,
   label,
   placeholder,
+  type = 'text',
   ...props
 }: React.HTMLAttributes<HTMLDivElement> & BasicInput) => {
   const form = useFormContext()
@@ -31,6 +33,7 @@ const BasicInput = ({
           <FormItem>
             <FormControl>
               <Input
+                type={type}
                 placeholder={placeholder}
                 endAdornment={
                   <FormLabel className="pr-1 font-normal text-base text-nowrap">

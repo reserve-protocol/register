@@ -21,10 +21,24 @@ import { cn } from '@/lib/utils'
 import { useResetAtom } from 'jotai/utils'
 
 const OpenButton = () => (
+  <div className="flex items-center justify-center h-80 border-t border-b border-border mb-2">
+    <DrawerTrigger asChild>
+      <Button
+        variant="outline-primary"
+        className="flex gap-2 text-base pl-3 pr-4 py-5 rounded-xl"
+      >
+        <PlusIcon size={16} />
+        Add collateral
+      </Button>
+    </DrawerTrigger>
+  </div>
+)
+
+const OpenButtonSecondary = () => (
   <DrawerTrigger asChild>
     <Button
-      variant="outline-primary"
-      className="flex gap-2 text-base pl-3 pr-4 py-5 rounded-xl"
+      variant="accent"
+      className="flex gap-2 text-base pl-3 pr-4 py-7 mx-2 rounded-xl bg-muted/80"
     >
       <PlusIcon size={16} />
       Add collateral
@@ -108,6 +122,26 @@ const TokenListItem = ({
   )
 }
 
+const TokenSelectorHeader = () => {
+  const selectedTokens = useAtomValue(selectedTokensAtom)
+  return (
+    <>
+      <DrawerTitle className="flex gap-2 mb-2">
+        <CloseButton />
+        <TabsList className="h-9">
+          <TabsTrigger value="all" className="w-max h-7">
+            All
+          </TabsTrigger>
+          <TabsTrigger value="selected" className="w-max h-7">
+            Selected ({selectedTokens.length})
+          </TabsTrigger>
+        </TabsList>
+      </DrawerTitle>
+      <SearchToken />
+    </>
+  )
+}
+
 const TokenList = ({ showSelected = false }: { showSelected?: boolean }) => {
   const rTokens = zappableTokens[1] // TODO: replace with real data
   const search = useAtomValue(searchTokenAtom)
@@ -138,7 +172,7 @@ const SubmitSelectedTokens = () => {
   const disabled = selectedTokens.length === 0
 
   return (
-    <DrawerTrigger disabled={disabled}>
+    <DrawerTrigger asChild disabled={disabled}>
       <Button
         className={cn(
           'rounded-xl w-full py-7 text-base',
@@ -163,49 +197,37 @@ const SubmitSelectedTokens = () => {
 }
 
 const TokenSelector = () => {
-  const selectedTokens = useAtomValue(selectedTokensAtom)
+  const basket = useAtomValue(basketAtom)
   const resetSelectedTokens = useResetAtom(selectedTokensAtom)
   const resetSearchToken = useResetAtom(searchTokenAtom)
 
   return (
-    <div className="flex items-center justify-center h-80 border-t border-b border-border mb-2">
-      <Drawer
-        direction="right"
-        onClose={() => {
-          resetSelectedTokens()
-          resetSearchToken()
-        }}
-      >
-        <OpenButton />
-        <DrawerContent className="fixed left-auto right-2 top-2 bottom-2 outline-none w-[500px] flex bg-transparent border-none mt-0">
-          <div className="bg-card h-full w-full grow p-2 flex flex-col rounded-[16px]">
-            <Tabs defaultValue="all">
-              <DrawerTitle className="flex gap-2 mb-2">
-                <CloseButton />
-                <TabsList className="h-9">
-                  <TabsTrigger value="all" className="w-max h-7">
-                    All
-                  </TabsTrigger>
-                  <TabsTrigger value="selected" className="w-max h-7">
-                    Selected ({selectedTokens.length})
-                  </TabsTrigger>
-                </TabsList>
-              </DrawerTitle>
-              <SearchToken />
-              <TabsContent value="all">
-                <TokenList />
-              </TabsContent>
-              <TabsContent value="selected">
-                <TokenList showSelected={true} />
-              </TabsContent>
-            </Tabs>
-            <DrawerFooter className="p-0">
-              <SubmitSelectedTokens />
-            </DrawerFooter>
-          </div>
-        </DrawerContent>
-      </Drawer>
-    </div>
+    <Drawer
+      direction="right"
+      onClose={() => {
+        resetSelectedTokens()
+        resetSearchToken()
+      }}
+    >
+      {!!basket.length ? <OpenButtonSecondary /> : <OpenButton />}
+
+      <DrawerContent className="fixed left-auto right-2 top-2 bottom-2 outline-none w-[500px] flex bg-transparent border-none mt-0">
+        <div className="bg-card h-full w-full grow p-2 flex flex-col rounded-[16px] overflow-y-auto">
+          <Tabs defaultValue="all">
+            <TokenSelectorHeader />
+            <TabsContent value="all">
+              <TokenList />
+            </TabsContent>
+            <TabsContent value="selected">
+              <TokenList showSelected={true} />
+            </TabsContent>
+          </Tabs>
+          <DrawerFooter className="p-0 mt-2">
+            <SubmitSelectedTokens />
+          </DrawerFooter>
+        </div>
+      </DrawerContent>
+    </Drawer>
   )
 }
 

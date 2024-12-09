@@ -12,7 +12,7 @@ export const dtfDeploySteps: Record<DeployStepId, { fields: string[] }> = {
     fields: ['name', 'symbol'],
   },
   'primary-basket': {
-    fields: [],
+    fields: ['initialValue'],
   },
   'emergency-collateral': {
     fields: [],
@@ -28,11 +28,13 @@ export const dtfDeploySteps: Record<DeployStepId, { fields: string[] }> = {
 export const DeployFormSchema = z.object({
   name: z.string().min(1, 'Token name is required'),
   symbol: z.string().min(1, 'Token symbol is required'),
+  initialValue: z.coerce.number().min(0, 'Initial value is required'),
 })
 
 export const dtfDeployDefaultValues = {
   name: '',
   symbol: '',
+  initialValue: 1,
 }
 
 export type DeployInputs = z.infer<typeof DeployFormSchema>

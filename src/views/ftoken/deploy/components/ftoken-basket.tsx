@@ -1,3 +1,5 @@
+import BasketPreview from './basket-preview'
+import BasketValue from './basket-value'
 import NextButton from './forms/next-button'
 import TokenSelector from './token-selector'
 
@@ -13,7 +15,9 @@ const FTokenBasket = () => {
   return (
     <>
       <Description />
+      <BasketPreview />
       <TokenSelector />
+      <BasketValue />
       <NextButton />
     </>
   )
