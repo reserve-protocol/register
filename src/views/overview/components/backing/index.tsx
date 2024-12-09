@@ -63,7 +63,7 @@ const BackingResume = () => {
   const unitCount = useAtomValue(unitCountAtom)
   const legend = useAtomValue(pegsAtom)
 
-  if (unitCount > 2) return null
+  if (unitCount > 2) return <Box mb={5} />
 
   return (
     <Text
