@@ -6,6 +6,7 @@ import {
   DeployInputs,
   dtfDeployDefaultValues,
 } from './form-fields'
+import PriceUpdater from './updaters/PriceUpdater'
 
 const Deploy = () => {
   const form = useForm<DeployInputs>({
@@ -16,6 +17,7 @@ const Deploy = () => {
   return (
     <div className="min-h-full">
       <div className="container grid grid-cols-3 gap-2 py-12">
+        <PriceUpdater />
         <FormProvider {...form}>
           <div className="flex rounded-3xl border-4 border-secondary col-span-2">
             <DeployAccordion />

@@ -1,4 +1,6 @@
+import TokenLogo from '@/components/icons/TokenLogo'
 import { Button } from '@/components/ui/button'
+import { Checkbox } from '@/components/ui/checkbox'
 import {
   Drawer,
   DrawerContent,
@@ -6,19 +8,21 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from '@/components/ui/drawer'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { zappableTokens } from '@/views/rtoken/issuance/components/zapV2/constants'
-import { useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { ArrowUpRightIcon, PlusIcon, XIcon } from 'lucide-react'
-import { basketAtom, searchTokenAtom, selectedTokensAtom } from '../atoms'
-import { Token } from '@/types'
-import TokenLogo from '@/components/icons/TokenLogo'
-import { shortenAddress } from '@/utils'
-import { Checkbox } from '@/components/ui/checkbox'
-import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { SearchInput } from '@/components/ui/input'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { cn } from '@/lib/utils'
+import { Token } from '@/types'
+import { shortenAddress } from '@/utils'
+import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
+import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
+import { ArrowUpRightIcon, PlusIcon, XIcon } from 'lucide-react'
+import {
+  basketAtom,
+  searchTokenAtom,
+  selectedTokensAtom,
+  tokenListAtom,
+} from '../atoms'
 
 const OpenButton = () => (
   <div className="flex items-center justify-center h-80 border-t border-b border-border mb-2">
@@ -143,10 +147,10 @@ const TokenSelectorHeader = () => {
 }
 
 const TokenList = ({ showSelected = false }: { showSelected?: boolean }) => {
-  const rTokens = zappableTokens[1] // TODO: replace with real data
+  const allTokens = useAtomValue(tokenListAtom)
   const search = useAtomValue(searchTokenAtom)
 
-  const filteredTokens = rTokens.filter(
+  const filteredTokens = allTokens.filter(
     (token) =>
       token.name.toLowerCase().includes(search.toLowerCase()) ||
       token.symbol.toLowerCase().includes(search.toLowerCase()) ||

@@ -1,10 +1,11 @@
 import TokenLogo from '@/components/icons/TokenLogo'
 import { Token } from '@/types'
-import { shortenAddress } from '@/utils'
+import { formatCurrency, shortenAddress } from '@/utils'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { XIcon } from 'lucide-react'
-import { basketAtom } from '../atoms'
+import { basketAtom, tokenPricesAtom } from '../atoms'
 import BasicInput from './basic-input'
+import { useFormContext } from 'react-hook-form'
 
 const RemoveTokenButton = ({ address }: Pick<Token, 'address'>) => {
   const setBasket = useSetAtom(basketAtom)
@@ -42,6 +43,19 @@ const TokenPreview = ({
   symbol,
   index,
 }: Token & { index: number }) => {
+  const form = useFormContext()
+
+  const [initialValue, tokenDistribution] = form.watch([
+    `initialValue`,
+    `tokenDistribution.${index}`,
+  ])
+
+  const tokenPrices = useAtomValue(tokenPricesAtom)
+  const tokenPrice = tokenPrices[address]
+
+  const tokenQty =
+    (initialValue * (tokenDistribution / 100)) / (tokenPrice || 1)
+
   return (
     <label
       htmlFor={address}
@@ -53,7 +67,12 @@ const TokenPreview = ({
         <div className="flex flex-col">
           <div className="text-base font-bold">{name}</div>
           <div className="flex items-center gap-1 text-sm text-muted-foreground">
-            <span>{symbol}</span>
+            <span>
+              {formatCurrency(tokenQty, 6, {
+                minimumFractionDigits: 0,
+              })}{' '}
+              {symbol}
+            </span>
             <span>•</span>
             <span>{shortenAddress(address)}</span>
           </div>
