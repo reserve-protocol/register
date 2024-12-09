@@ -2,9 +2,8 @@ import TokenLogo from '@/components/icons/TokenLogo'
 import { Token } from '@/types'
 import { shortenAddress } from '@/utils'
 import { useAtomValue, useSetAtom } from 'jotai'
-import { DollarSign, XIcon } from 'lucide-react'
+import { XIcon } from 'lucide-react'
 import { basketAtom } from '../atoms'
-import { Input } from 'theme-ui'
 import BasicInput from './basic-input'
 
 const RemoveTokenButton = ({ address }: Pick<Token, 'address'>) => {

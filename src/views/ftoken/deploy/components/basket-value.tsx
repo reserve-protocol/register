@@ -35,7 +35,7 @@ const BasketValue = () => {
           </span>
         </div>
       </div>
-      <div className="w-48">
+      <div className="w-44">
         <FTokenValueInput />
       </div>
     </div>
