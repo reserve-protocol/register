@@ -32,6 +32,41 @@ export interface NumericalInputProps extends Omit<InputProps, 'onChange'> {
   onChange(value: string): void
 }
 
+export interface InputWithAdornmentProps
+  extends React.InputHTMLAttributes<HTMLInputElement> {
+  startAdornment?: JSX.Element
+  endAdornment?: JSX.Element
+}
+
+const InputWithAdornment = React.forwardRef<
+  HTMLInputElement,
+  InputWithAdornmentProps
+>(({ startAdornment, endAdornment, className, type, ...props }, ref) => {
+  return (
+    <div
+      className="flex items-center justify-center gap-2 px-3 h-12 rounded-xl border border-input bg-transparent ring-offset-background focus-within:ring-1 focus-within:ring-ring focus-within:ring-offset-2 data-[disabled=true]:cursor-not-allowed data-[disabled=true]:opacity-50"
+      data-disabled={props.disabled}
+    >
+      {startAdornment && (
+        <div className={cn('text-muted-foreground')}>{startAdornment}</div>
+      )}
+      <input
+        type={type}
+        className={cn(
+          'flex h-full w-full rounded-xl bg-transparent py-2 text-sm file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground shadow-none outline-none border-none focus-visible:outline-none focus-visible:border-none focus-visible:shadow-none',
+          className
+        )}
+        ref={ref}
+        {...props}
+      />
+      {endAdornment && (
+        <div className={cn('text-muted-foreground')}>{endAdornment}</div>
+      )}
+    </div>
+  )
+})
+InputWithAdornment.displayName = 'InputWithAdornment'
+
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
   (
     { className, variant, type, startAdornment, endAdornment, ...props },
@@ -41,26 +76,14 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 
     if (hasAdornment) {
       return (
-        <div
-          className="flex items-center justify-center gap-2 px-3 h-12 rounded-xl border border-input bg-transparent ring-offset-background focus-within:ring-1 focus-within:ring-ring focus-within:ring-offset-2 data-[disabled=true]:cursor-not-allowed data-[disabled=true]:opacity-50"
-          data-disabled={props.disabled}
-        >
-          {startAdornment && (
-            <div className={cn('text-muted-foreground')}>{startAdornment}</div>
-          )}
-          <input
-            type={type}
-            className={cn(
-              'flex h-full w-full rounded-xl bg-transparent py-2 text-sm file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground shadow-none outline-none border-none focus-visible:outline-none focus-visible:border-none focus-visible:shadow-none',
-              className
-            )}
-            ref={ref}
-            {...props}
-          />
-          {endAdornment && (
-            <div className={cn('text-muted-foreground')}>{endAdornment}</div>
-          )}
-        </div>
+        <InputWithAdornment
+          startAdornment={startAdornment}
+          endAdornment={endAdornment}
+          className={className}
+          type={type}
+          {...props}
+          ref={ref}
+        />
       )
     }
 
