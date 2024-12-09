@@ -4,12 +4,16 @@ import ERC20 from 'abis/ERC20'
 import humanizeDuration from 'humanize-duration'
 import { BigNumberMap } from 'types'
 import { Address, getAddress, parseEther, parseUnits } from 'viem'
-import { CHAIN_TO_NETWORK, ROUTES } from './constants'
+import { CHAIN_TO_NETWORK, RESERVE_STORAGE, ROUTES } from './constants'
 import dayjs from 'dayjs'
 
 export const decimalPattern = /^[0-9]*[.]?[0-9]*$/i
 export const numberPattern = /^\d+$/
 export const addressPattern = /^0x[a-fA-F0-9]{40}$/
+
+export function getAssetURI(key: string) {
+  return `${RESERVE_STORAGE}/${key}`
+}
 
 // returns the checksummed address if the address is valid, otherwise returns false
 export function isAddress(value: string) {
