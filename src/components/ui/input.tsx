@@ -134,7 +134,7 @@ const SearchInput = React.forwardRef<
   return (
     <div className={cn('relative', className)}>
       <Search
-        className="absolute top-[10px] left-3 top-1/2 -translate-y-1/2"
+        className="absolute left-3 top-1/2 -translate-y-1/2"
         size={16}
         strokeWidth={1.2}
       />

@@ -18,11 +18,13 @@ import { deployStepAtom } from '../atoms'
 import MetadataAndChain from './metadata-and-chain'
 import { DeployStepId } from '../form-fields'
 import FTokenBasket from './ftoken-basket'
+import Governance from './governance'
 
 export type DeployStep = {
   id: DeployStepId
   icon: ReactNode
   title: string
+  titleSecondary: string
   content: ReactNode
 }
 
@@ -31,30 +33,28 @@ export const DEPLOY_STEPS: DeployStep[] = [
     id: 'metadata',
     icon: <Asterisk size={24} strokeWidth={1.5} />,
     title: 'Metadata & Chain',
+    titleSecondary: 'Metadata & Chain',
     content: <MetadataAndChain />,
   },
   {
-    id: 'primary-basket',
+    id: 'basket',
     icon: <BasketCubeIcon fontSize={24} />,
-    title: 'FToken Basket',
+    title: 'Basket',
+    titleSecondary: 'What should the initial index include?',
     content: <FTokenBasket />,
-  },
-  {
-    id: 'emergency-collateral',
-    icon: <Asterisk size={24} strokeWidth={1.5} />,
-    title: 'Emergency collateral',
-    content: 'content',
-  },
-  {
-    id: 'revenue-distribution',
-    icon: <Asterisk size={24} strokeWidth={1.5} />,
-    title: 'Revenue distribution',
-    content: 'content',
   },
   {
     id: 'governance',
     icon: <Asterisk size={24} strokeWidth={1.5} />,
     title: 'Governance',
+    titleSecondary: 'How would you like to govern?',
+    content: <Governance />,
+  },
+  {
+    id: 'revenue-distribution',
+    icon: <Asterisk size={24} strokeWidth={1.5} />,
+    title: 'Revenue distribution',
+    titleSecondary: 'Revenue distribution',
     content: 'content',
   },
 ]
@@ -63,7 +63,7 @@ const DeployAccordionTrigger = ({
   id,
   icon,
   title,
-}: Omit<DeployStep, 'content'>) => {
+}: Omit<DeployStep, 'content' | 'titleSecondary'>) => {
   const selectedSection = useAtomValue(deployStepAtom)
   const isActive = selectedSection === id
 
@@ -124,7 +124,7 @@ const DeployAccordion = () => {
       value={section}
       onValueChange={(value) => setSection(value as DeployStepId)}
     >
-      {DEPLOY_STEPS.map(({ id, icon, title, content }) => (
+      {DEPLOY_STEPS.map(({ id, icon, title, titleSecondary, content }) => (
         <AccordionItem
           key={id}
           value={id}
@@ -133,7 +133,7 @@ const DeployAccordion = () => {
           <DeployAccordionTrigger id={id} icon={icon} title={title} />
           <AccordionContent className="flex flex-col animate-fade-in">
             <div className="text-2xl font-bold text-primary ml-6 mb-2">
-              {title}
+              {titleSecondary}
             </div>
             {content}
           </AccordionContent>
