@@ -8,7 +8,7 @@ import {
 } from './form-fields'
 import PriceUpdater from './updaters/PriceUpdater'
 
-const Deploy = () => {
+const IndexTokenDeploy = () => {
   const form = useForm<DeployInputs>({
     resolver: zodResolver(DeployFormSchema),
     defaultValues: dtfDeployDefaultValues,
@@ -31,4 +31,4 @@ const Deploy = () => {
   )
 }
 
-export default Deploy
+export default IndexTokenDeploy

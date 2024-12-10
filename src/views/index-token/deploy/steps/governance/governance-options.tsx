@@ -1,9 +1,9 @@
 import { cn } from '@/lib/utils'
 import { Asterisk } from 'lucide-react'
 import { ReactNode, useState } from 'react'
-import GovernanceNewERC20 from './forms/governance-new-erc20'
-import GovernanceExistingERC20 from './forms/governance-existing-erc20'
-import GovernanceSpecificWallet from './forms/governance-specific-wallet'
+import GovernanceNewERC20 from './form-new-erc20'
+import GovernanceExistingERC20 from './form-existing-erc20'
+import GovernanceSpecificWallet from './form-specific-wallet'
 import { useFormContext } from 'react-hook-form'
 
 const GOVERNANCE_OPTIONS = [

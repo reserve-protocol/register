@@ -6,7 +6,7 @@ import Auctions from '@/views/rtoken/auctions'
 import Bridge from 'views/bridge'
 import Compare from 'views/compare'
 import Deploy from '@/views/rtoken/deploy'
-import FTokenDeploy from '@/views/ftoken/deploy'
+import IndexTokenDeploy from '@/views/index-token/deploy'
 import EarnWrapper from 'views/earn'
 import Explorer from 'views/explorer'
 import Collaterals from 'views/explorer/components/collaterals'
@@ -37,7 +37,7 @@ const AppRoutes = () => (
     <Route path={ROUTES.PORTFOLIO} element={<PortfolioWrapper />} />
     <Route path={ROUTES.EARN} element={<EarnWrapper />} />
     <Route path={ROUTES.DEPLOY} element={<Deploy />} />
-    <Route path={ROUTES.FTOKEN_DEPLOY} element={<FTokenDeploy />} />
+    <Route path={ROUTES.INDEX_TOKEN_DEPLOY} element={<IndexTokenDeploy />} />
     <Route path={ROUTES.TOKENS} element={<AllTokenList />} />
     <Route path={`/:chain/token/:tokenId`} element={<RTokenContainer />}>
       <Route index element={<Navigate replace to={ROUTES.OVERVIEW} />} />
