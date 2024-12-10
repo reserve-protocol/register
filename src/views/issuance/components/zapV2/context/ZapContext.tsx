@@ -294,6 +294,10 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     rToken?.symbol,
   ])
 
+  const multiSearch = useMemo(() => (rTokenData?.collaterals.filter((c) => c.protocol === 'AERODROME').length || 0) > 1, [
+    rTokenData,
+  ])
+
   const endpoint = useDebounce(
     useMemo(() => {
       if (
@@ -318,8 +322,9 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
         slippage: Number(slippage),
         signer: account as Address,
         trade: !onlyMint,
+        multiSearch,
       })
-    }, [chainId, account, tokenIn, tokenOut, amountIn, slippage, onlyMint]),
+    }, [chainId, account, tokenIn, tokenOut, amountIn, slippage, onlyMint, multiSearch]),
     500
   )
 

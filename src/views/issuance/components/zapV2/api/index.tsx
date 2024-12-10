@@ -1,6 +1,7 @@
 import { Address } from 'viem'
 
 const BASE_ZAP_API_URL = 'https://zapper-api.reserve.org'
+const BASE_ZAP_MULTISEARCH_API_URL = 'https://zapper-api-stage.reserve.org'
 
 export type ZapPayload = {
   chainId: number
@@ -10,6 +11,7 @@ export type ZapPayload = {
   slippage: number
   signer: Address
   trade: boolean
+  multiSearch?: boolean
 }
 
 export type ZapResult = {
@@ -48,6 +50,10 @@ export type ZapResponse = {
 
 export const fetcher = (url: string) => fetch(url).then((res) => res.json())
 
+const getBaseZapUrl = (multiSearch = false) => {
+  return multiSearch ? BASE_ZAP_MULTISEARCH_API_URL : BASE_ZAP_API_URL
+}
+
 const zapper = {
   zap: ({
     chainId,
@@ -57,8 +63,9 @@ const zapper = {
     slippage,
     signer,
     trade,
+    multiSearch,
   }: ZapPayload) =>
-    `${BASE_ZAP_API_URL}/?chainId=${chainId}&signer=${signer}&tokenIn=${tokenIn}&amountIn=${amountIn}&tokenOut=${tokenOut}&slippage=${slippage}&trade=${trade}`,
+    `${getBaseZapUrl(multiSearch)}/?chainId=${chainId}&signer=${signer}&tokenIn=${tokenIn}&amountIn=${amountIn}&tokenOut=${tokenOut}&slippage=${slippage}&trade=${trade}`,
 }
 
 export default zapper
