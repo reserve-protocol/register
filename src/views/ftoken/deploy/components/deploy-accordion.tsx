@@ -63,7 +63,7 @@ const DeployAccordionTrigger = ({
   id,
   icon,
   title,
-}: Omit<DeployStep, 'content'>) => {
+}: Omit<DeployStep, 'content' | 'titleSecondary'>) => {
   const selectedSection = useAtomValue(deployStepAtom)
   const isActive = selectedSection === id
 

@@ -4,6 +4,7 @@ import { ReactNode, useState } from 'react'
 import GovernanceNewERC20 from './forms/governance-new-erc20'
 import GovernanceExistingERC20 from './forms/governance-existing-erc20'
 import GovernanceSpecificWallet from './forms/governance-specific-wallet'
+import { useFormContext } from 'react-hook-form'
 
 const GOVERNANCE_OPTIONS = [
   {
@@ -12,6 +13,7 @@ const GOVERNANCE_OPTIONS = [
       'Explain the benefit of using our framwork & clarify that it doesn’t mean giving.',
     icon: <Asterisk size={24} strokeWidth={1.5} />,
     form: <GovernanceNewERC20 />,
+    fields: ['governanceERC20name', 'governanceERC20symbol'],
   },
   {
     title: 'Existing ERC20 token',
@@ -19,6 +21,7 @@ const GOVERNANCE_OPTIONS = [
       'Explain the benefit of using our framwork & clarify that it doesn’t mean.',
     icon: <Asterisk size={24} strokeWidth={1.5} />,
     form: <GovernanceExistingERC20 />,
+    fields: ['governanceERC20address'],
   },
   {
     title: 'Specific wallet address',
@@ -26,6 +29,7 @@ const GOVERNANCE_OPTIONS = [
       'Explain the benefit of using our framwork & clarify that it doesn’t mean.',
     icon: <Asterisk size={24} strokeWidth={1.5} />,
     form: <GovernanceSpecificWallet />,
+    fields: ['governanceWalletAddress'],
   },
 ]
 
@@ -46,10 +50,25 @@ const GovernanceOption = ({
   selected,
   setSelected,
 }: GovernanceOptionProps) => {
+  const { resetField } = useFormContext()
+
+  const resetNotSelected = () => {
+    GOVERNANCE_OPTIONS.forEach((option) => {
+      if (option.title !== title) {
+        option.fields.forEach((field: string) => resetField(field))
+      }
+    })
+  }
+
+  const onSelect = () => {
+    setSelected()
+    resetNotSelected()
+  }
+
   return (
     <div
       role="button"
-      onClick={setSelected}
+      onClick={onSelect}
       className={cn(
         'flex flex-col gap-2 rounded-xl border border-border cursor-pointer',
         selected ? 'bg-muted' : 'bg-card'
