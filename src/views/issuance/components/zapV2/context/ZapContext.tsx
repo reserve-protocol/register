@@ -169,15 +169,6 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
 
   const { data: gas } = useFeeData()
 
-  const noSupply = useMemo(() => rTokenData?.supply === 0, [rTokenData?.supply])
-
-  // Disable zapping if there is no supply for the rToken
-  useEffect(() => {
-    if (noSupply) {
-      setZapEnabled(false)
-    }
-  }, [noSupply])
-
   const tokens: ZapToken[] = useMemo(
     () =>
       (zappableTokens[chainId] || [])
@@ -308,8 +299,7 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
         amountIn === '' ||
         Number(amountIn) === 0 ||
         isEnabled.loading ||
-        !isEnabled.value ||
-        noSupply
+        !isEnabled.value
       ) {
         return null
       }
