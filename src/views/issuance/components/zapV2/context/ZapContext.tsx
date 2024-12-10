@@ -169,15 +169,6 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
 
   const { data: gas } = useFeeData()
 
-  const noSupply = useMemo(() => rTokenData?.supply === 0, [rTokenData?.supply])
-
-  // Disable zapping if there is no supply for the rToken
-  useEffect(() => {
-    if (noSupply) {
-      setZapEnabled(false)
-    }
-  }, [noSupply])
-
   const tokens: ZapToken[] = useMemo(
     () =>
       (zappableTokens[chainId] || [])
@@ -294,6 +285,10 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     rToken?.symbol,
   ])
 
+  const multiSearch = useMemo(() => (rTokenData?.collaterals.filter((c) => c.protocol === 'AERODROME').length || 0) > 1, [
+    rTokenData,
+  ])
+
   const endpoint = useDebounce(
     useMemo(() => {
       if (
@@ -304,8 +299,7 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
         amountIn === '' ||
         Number(amountIn) === 0 ||
         isEnabled.loading ||
-        !isEnabled.value ||
-        noSupply
+        !isEnabled.value
       ) {
         return null
       }
@@ -318,8 +312,9 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
         slippage: Number(slippage),
         signer: account as Address,
         trade: !onlyMint,
+        multiSearch,
       })
-    }, [chainId, account, tokenIn, tokenOut, amountIn, slippage, onlyMint]),
+    }, [chainId, account, tokenIn, tokenOut, amountIn, slippage, onlyMint, multiSearch]),
     500
   )
 
