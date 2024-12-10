@@ -1,4 +1,5 @@
 import NextButton from '../../components/next-button'
+import DemurrageFeeSelector from './demurrage-fee-selector'
 
 const Description = () => (
   <div className="px-6 pb-6 text-base">
@@ -12,6 +13,7 @@ const DemurrageFee = () => {
   return (
     <>
       <Description />
+      <DemurrageFeeSelector />
       <NextButton />
     </>
   )

@@ -24,7 +24,7 @@ export const dtfDeploySteps: Record<DeployStepId, { fields: string[] }> = {
     ],
   },
   'demurrage-fee': {
-    fields: ['customDemurrageFee'],
+    fields: ['demurrageFee'],
   },
   'revenue-distribution': {
     fields: [],
@@ -52,11 +52,10 @@ export const DeployFormSchema = z
       .string()
       .refine(isAddress, { message: 'Invalid Address' })
       .optional(),
-    customDemurrageFee: z.coerce
+    demurrageFee: z.coerce
       .number()
       .min(0, 'Demurrage fee must be 0 or greater')
-      .max(100, 'Demurrage fee must be 100 or less')
-      .optional(),
+      .max(100, 'Demurrage fee must be 100 or less'),
   })
   .refine((data) => {
     const governanceNewERC20 =
@@ -80,7 +79,7 @@ export const dtfDeployDefaultValues = {
   governanceERC20symbol: '',
   governanceERC20address: undefined,
   governanceWalletAddress: undefined,
-  customDemurrageFee: 0,
+  demurrageFee: 0,
 }
 
 export type DeployInputs = z.infer<typeof DeployFormSchema>

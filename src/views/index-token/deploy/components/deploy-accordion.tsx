@@ -19,7 +19,7 @@ import MetadataAndChain from '../steps/metadata'
 import { DeployStepId } from '../form-fields'
 import FTokenBasket from '../steps/basket'
 import Governance from '../steps/governance'
-import DemurrageFee from '../steps/fee/demurrage-fee'
+import DemurrageFee from '../steps/fee'
 
 export type DeployStep = {
   id: DeployStepId
