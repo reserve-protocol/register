@@ -3,7 +3,7 @@ import { CellContext } from '@tanstack/react-table'
 import ERC20 from 'abis/ERC20'
 import humanizeDuration from 'humanize-duration'
 import { BigNumberMap } from 'types'
-import { Address, getAddress, parseEther, parseUnits } from 'viem'
+import { Address, formatEther, getAddress, parseEther, parseUnits } from 'viem'
 import { CHAIN_TO_NETWORK, ROUTES } from './constants'
 import dayjs from 'dayjs'
 
@@ -18,6 +18,10 @@ export function isAddress(value: string) {
   } catch {
     return null
   }
+}
+
+export function getPrice([lowPrice, highPrice]: [bigint, bigint]) {
+  return Number(formatEther((lowPrice + highPrice) / 2n))
 }
 
 export const getTokenRoute = (
