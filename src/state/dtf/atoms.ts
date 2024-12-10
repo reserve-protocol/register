@@ -4,16 +4,17 @@ import { atom } from 'jotai'
 import { Address } from 'viem'
 
 // TODO: placeholders
-interface FToken extends Token {
+export interface IToken extends Token {
   chain: AvailableChain
 }
 
-interface FTokenBasket {
+export interface ITokenBasket {
   tokens: Token[]
   weights: bigint[]
+  percents: string[]
 }
 
-interface FTokenMeta {
+export interface ITokenMeta {
   description: string
   tags: string[]
   logo: string
@@ -23,24 +24,24 @@ interface FTokenMeta {
   deployerNote: string
 }
 
-interface FTokenConfiguration {
+export interface ITokenConfiguration {
   fee: number
   IsManaged: boolean
 }
 
-interface FTokenGovernance {
+export interface ITokenGovernance {
   address: Address
   deployer: Address
 }
 
-export const fTokenAddressAtom = atom<Address | null>(null)
+export const iTokenAddressAtom = atom<Address | null>(null)
 
-export const fTokenAtom = atom<null | FToken>(null)
+export const iTokenAtom = atom<null | IToken>(null)
 
-export const fTokenBasketAtom = atom<null | FTokenBasket>(null)
+export const iTokenBasketAtom = atom<null | ITokenBasket>(null)
 
-export const fTokenMetaAtom = atom<null | FTokenMeta>(null)
+export const iTokenMetaAtom = atom<null | ITokenMeta>(null)
 
-export const fTokenConfigurationAtom = atom<null | FTokenConfiguration>(null)
+export const iTokenConfigurationAtom = atom<null | ITokenConfiguration>(null)
 
-export const fTokenGovernanceAtom = atom<null | FTokenGovernance>(null)
+export const iTokenGovernanceAtom = atom<null | ITokenGovernance>(null)

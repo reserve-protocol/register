@@ -1,22 +1,6 @@
-import { Card } from '@/components/ui/card'
-import { Box } from '@/components/ui/box'
-import { Link as LinkIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Link } from '@/components/ui/link'
-import {
-  ChartConfig,
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from '@/components/ui/chart'
-import {
-  AreaChart,
-  CartesianGrid,
-  Line,
-  LineChart,
-  ResponsiveContainer,
-  XAxis,
-} from 'recharts'
+import { ChartConfig, ChartContainer } from '@/components/ui/chart'
+import { Line, LineChart } from 'recharts'
 
 const chartData = [
   { month: 'January', desktop: 186 },

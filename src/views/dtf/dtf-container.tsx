@@ -1,11 +1,11 @@
 import { chainIdAtom, walletChainAtom } from '@/state/atoms'
 import {
-  fTokenAddressAtom,
-  fTokenAtom,
-  fTokenBasketAtom,
-  fTokenConfigurationAtom,
-  fTokenGovernanceAtom,
-  fTokenMetaAtom,
+  iTokenAddressAtom,
+  iTokenAtom,
+  iTokenBasketAtom,
+  iTokenConfigurationAtom,
+  iTokenGovernanceAtom,
+  iTokenMetaAtom,
 } from '@/state/dtf/atoms'
 import { isAddress } from '@/utils'
 import { AvailableChain, supportedChains } from '@/utils/chains'
@@ -29,15 +29,15 @@ const useChainWatch = () => {
 }
 
 const DTFContextUpdater = () => {
-  const token = useAtomValue(fTokenAddressAtom)
+  const token = useAtomValue(iTokenAddressAtom)
   const chainId = useAtomValue(chainIdAtom)
 
   // Temporal, individual hooks for each atom
-  const setTokenData = useSetAtom(fTokenAtom)
-  const setTokenMeta = useSetAtom(fTokenMetaAtom)
-  const setTokenConfiguration = useSetAtom(fTokenConfigurationAtom)
-  const setTokenGovernance = useSetAtom(fTokenGovernanceAtom)
-  const setTokenBasket = useSetAtom(fTokenBasketAtom)
+  const setTokenData = useSetAtom(iTokenAtom)
+  const setTokenMeta = useSetAtom(iTokenMetaAtom)
+  const setTokenConfiguration = useSetAtom(iTokenConfigurationAtom)
+  const setTokenGovernance = useSetAtom(iTokenGovernanceAtom)
+  const setTokenBasket = useSetAtom(iTokenBasketAtom)
 
   useEffect(() => {
     if (token) {
@@ -74,8 +74,33 @@ const DTFContextUpdater = () => {
             address: '0x1234567890123456789012345678901234567890',
             decimals: 18,
           },
+          {
+            symbol: 'MEME 2',
+            name: 'Meme Coin',
+            address: '0x1234567890123456789012345678901234567890',
+            decimals: 18,
+          },
+          {
+            symbol: 'MEME 3',
+            name: 'Meme Coin',
+            address: '0x1234567890123456789012345678901234567890',
+            decimals: 18,
+          },
+          {
+            symbol: 'MEME 4',
+            name: 'Meme Coin',
+            address: '0x1234567890123456789012345678901234567890',
+            decimals: 18,
+          },
+          {
+            symbol: 'MEME 6',
+            name: 'Meme Coin',
+            address: '0x1234567890123456789012345678901234567890',
+            decimals: 18,
+          },
         ],
-        weights: [100n],
+        weights: [20n, 20n, 20n, 20n, 20n],
+        percents: ['20', '20', '20', '20', '20'],
       })
     }
   }, [token])
@@ -88,12 +113,12 @@ const Updater = () => {
   const { chain, tokenId } = useParams()
   const navigate = useNavigate()
   const setChain = useSetAtom(chainIdAtom)
-  const [currentToken, setTokenAddress] = useAtom(fTokenAddressAtom)
-  const setTokenData = useSetAtom(fTokenAtom)
-  const setTokenMeta = useSetAtom(fTokenMetaAtom)
-  const setTokenConfiguration = useSetAtom(fTokenConfigurationAtom)
-  const setTokenGovernance = useSetAtom(fTokenGovernanceAtom)
-  const setTokenBasket = useSetAtom(fTokenBasketAtom)
+  const [currentToken, setTokenAddress] = useAtom(iTokenAddressAtom)
+  const setTokenData = useSetAtom(iTokenAtom)
+  const setTokenMeta = useSetAtom(iTokenMetaAtom)
+  const setTokenConfiguration = useSetAtom(iTokenConfigurationAtom)
+  const setTokenGovernance = useSetAtom(iTokenGovernanceAtom)
+  const setTokenBasket = useSetAtom(iTokenBasketAtom)
   useChainWatch()
 
   const resetState = () => {
