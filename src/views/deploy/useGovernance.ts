@@ -77,7 +77,7 @@ export const useGovernanceTx = () => {
         },
         {
           owner: defaultGovernance ? zeroAddress : (owner as Address),
-          guardian: defaultGovernance ? guardian as Address : zeroAddress,
+          guardian: defaultGovernance ? (guardian as Address) : zeroAddress,
           ...roles,
         },
       ]

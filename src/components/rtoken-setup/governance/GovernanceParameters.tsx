@@ -62,7 +62,7 @@ const GovernanceParameters = ({
         options={{
           required: true,
           pattern: numberPattern,
-          min: 1,
+          min: 24,
           max: timebased ? 168 : timeToBlocks(604800, secondsPerBlock), // 1 week
         }}
       />
