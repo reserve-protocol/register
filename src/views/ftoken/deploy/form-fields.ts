@@ -57,8 +57,8 @@ export const DeployFormSchema = z
 
     return (
       (governanceNewERC20 && !governanceExistingERC20 && !governanceWallet) ||
-      (governanceExistingERC20 && !governanceNewERC20 && !governanceWallet) ||
-      (governanceWallet && !governanceNewERC20 && !governanceExistingERC20)
+      (!governanceNewERC20 && governanceExistingERC20 && !governanceWallet) ||
+      (!governanceNewERC20 && !governanceExistingERC20 && governanceWallet)
     )
   })
 
@@ -67,6 +67,10 @@ export const dtfDeployDefaultValues = {
   symbol: '',
   initialValue: 1,
   tokensDistribution: [],
+  governanceERC20name: '',
+  governanceERC20symbol: '',
+  governanceERC20address: '',
+  governanceWalletAddress: '',
 }
 
 export type DeployInputs = z.infer<typeof DeployFormSchema>
