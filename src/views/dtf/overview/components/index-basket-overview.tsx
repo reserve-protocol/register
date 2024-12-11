@@ -1,11 +1,25 @@
 import TokenLogo from '@/components/token-logo'
 import { Box } from '@/components/ui/box'
+import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
 import { ITokenBasket, iTokenBasketAtom } from '@/state/dtf/atoms'
 import { useAtomValue } from 'jotai'
-import { Asterisk, BoxIcon } from 'lucide-react'
+import { ArrowUpRight, Asterisk, BoxIcon } from 'lucide-react'
+import React from 'react'
 
-const IndexBasketVisual = ({ basket }: { basket: ITokenBasket }) => {
+interface BasketOverviewProps extends React.HTMLAttributes<HTMLDivElement> {
+  basket: ITokenBasket
+}
+
+const IndexBasketVisual = ({ basket, ...props }: BasketOverviewProps) => {
   const MAX_BAR_TOKENS = 4
   const { tokens, percents } = basket
   const emptySpaces =
@@ -14,7 +28,7 @@ const IndexBasketVisual = ({ basket }: { basket: ITokenBasket }) => {
       : 0 // Number of empty spaces to show
 
   return (
-    <div className="relative h-20 rounded-lg overflow-hidden">
+    <div className="relative h-20 rounded-lg overflow-hidden -mx-4" {...props}>
       {/* Token sections */}
       {tokens.slice(0, MAX_BAR_TOKENS).map((token, index) => (
         <div
@@ -70,8 +84,56 @@ const IndexBasketVisual = ({ basket }: { basket: ITokenBasket }) => {
   )
 }
 
-const IndexBasketTokens = () => {
-  return <div>list</div>
+const IndexBasketTokens = ({ basket, ...props }: BasketOverviewProps) => {
+  const { tokens, percents } = basket
+
+  return (
+    <div {...props}>
+      <Table>
+        <TableHeader>
+          <TableRow className="border-none">
+            <TableHead>Token</TableHead>
+            <TableHead>Symbol</TableHead>
+            <TableHead>Weight</TableHead>
+            <TableHead>Dex screener</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {tokens.map((token, index) => (
+            <TableRow key={token.symbol} className="border-none">
+              <TableCell>
+                <div className="flex items-center gap-2">
+                  <TokenLogo symbol={token.symbol} />
+                  {token.name}
+                </div>
+              </TableCell>
+              <TableCell>${token.symbol}</TableCell>
+              <TableCell className="text-blue-600 font-bold">
+                {percents[index]}%
+              </TableCell>
+              <TableCell className="">
+                <Button variant="link" size="sm" className="h-8 w-8 p-0">
+                  <Box variant="circle">
+                    <ArrowUpRight className="h-4 w-4" />
+                  </Box>
+                </Button>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+
+      {tokens.length > 5 && (
+        <Button
+          variant="outline"
+          className="w-full"
+          onClick={() => console.log('View all assets clicked')}
+        >
+          View all {tokens.length} assets
+        </Button>
+      )}
+    </div>
+  )
 }
 
 const IndexBasketPreview = () => {
@@ -84,6 +146,7 @@ const IndexBasketPreview = () => {
   return (
     <div>
       <IndexBasketVisual basket={basket} />
+      <IndexBasketTokens className="mt-4 -mx-5 -mb-5" basket={basket} />
     </div>
   )
 }
@@ -104,7 +167,7 @@ const IndexBasketOverview = () => {
         </div>
       </div>
       <h2 className="text-4xl mb-2">What’s in this token?</h2>
-      <p className="text-legend">
+      <p className="text-legend mb-4">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
         tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
         veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea

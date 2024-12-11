@@ -78,7 +78,7 @@ const IndexTokenOverview = () => {
       ) : (
         <>
           <h4>${data.symbol}</h4>
-          <h1 className="mt-4 text-5xl font-medium">{data.name}</h1>
+          <h1 className="mt-4 text-2xl md:text-5xl font-medium">{data.name}</h1>
         </>
       )}
       <div className="flex items-center gap-1 mt-4">
@@ -87,7 +87,7 @@ const IndexTokenOverview = () => {
           <Skeleton className="w-30 h-5" />
         ) : (
           <Link>
-            <span className="font-bold">{governance.deployer}</span>
+            <span className="font-bold break-all">{governance.deployer}</span>
             <Box variant="circle">
               <ArrowUpRight size={12} />
             </Box>

@@ -27,10 +27,8 @@ const DTFOverview = () => {
   return (
     <div className="flex gap-2">
       <Content />
-      <div>
-        <div className="sticky top-0">
-          <LandingMint className="hidden xl:block" />
-        </div>
+      <div className="hidden xl:block">
+        <LandingMint className="sticky top-0" />
       </div>
     </div>
   )

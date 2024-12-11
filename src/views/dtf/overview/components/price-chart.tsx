@@ -56,7 +56,7 @@ const PriceChart = () => {
             <span className="text-white/80">Price:</span> {currentPrice}
           </p>
         </div>
-        <div className="flex gap-1">
+        <div className="gap-1 hidden md:flex">
           {timeRanges.map((range) => (
             <Button
               key={range.value}
