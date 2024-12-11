@@ -32,6 +32,7 @@ export interface ITokenConfiguration {
 export interface ITokenGovernance {
   address: Address
   deployer: Address
+  token: Token
 }
 
 export const iTokenAddressAtom = atom<Address | null>(null)

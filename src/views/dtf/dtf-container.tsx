@@ -65,6 +65,12 @@ const DTFContextUpdater = () => {
       setTokenGovernance({
         address: '0x1234567890123456789012345678901234567890',
         deployer: '0x1234567890123456789012345678901234567890',
+        token: {
+          symbol: 'RSR',
+          name: 'Reserve Rights',
+          address: '0x1234567890123456789012345678901234567890',
+          decimals: 18,
+        },
       })
       setTokenBasket({
         tokens: [

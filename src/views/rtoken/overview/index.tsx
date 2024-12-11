@@ -19,7 +19,7 @@ const Tracking = () => {
     if (rToken) {
       mixpanel.track('Visted RToken Overview', {
         RToken: rToken?.toLowerCase(),
-      })
+    })
     }
   }, [rToken])
 
