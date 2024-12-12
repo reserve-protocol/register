@@ -162,7 +162,7 @@ export const ROUTES = Object.freeze({
   ISSUANCE: 'issuance',
   AUCTIONS: 'auctions',
   DEPLOY: '/deploy',
-  FTOKEN_DEPLOY: '/ftoken-deploy',
+  INDEX_TOKEN_DEPLOY: '/index-dtf-deploy',
   SETTINGS: 'settings',
   GOVERNANCE_SETUP: 'governance/setup',
   GOVERNANCE_INFO: 'governance-info',

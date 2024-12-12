@@ -5,6 +5,7 @@ export type DeployStepId =
   | 'metadata'
   | 'basket'
   | 'governance'
+  | 'demurrage-fee'
   | 'revenue-distribution'
 
 export const dtfDeploySteps: Record<DeployStepId, { fields: string[] }> = {
@@ -21,6 +22,9 @@ export const dtfDeploySteps: Record<DeployStepId, { fields: string[] }> = {
       'governanceERC20address',
       'governanceWalletAddress',
     ],
+  },
+  'demurrage-fee': {
+    fields: ['demurrageFee'],
   },
   'revenue-distribution': {
     fields: [],
@@ -48,6 +52,10 @@ export const DeployFormSchema = z
       .string()
       .refine(isAddress, { message: 'Invalid Address' })
       .optional(),
+    demurrageFee: z.coerce
+      .number()
+      .min(0, 'Demurrage fee must be 0 or greater')
+      .max(100, 'Demurrage fee must be 100 or less'),
   })
   .refine((data) => {
     const governanceNewERC20 =
@@ -69,8 +77,9 @@ export const dtfDeployDefaultValues = {
   tokensDistribution: [],
   governanceERC20name: '',
   governanceERC20symbol: '',
-  governanceERC20address: '',
-  governanceWalletAddress: '',
+  governanceERC20address: undefined,
+  governanceWalletAddress: undefined,
+  demurrageFee: 0,
 }
 
 export type DeployInputs = z.infer<typeof DeployFormSchema>

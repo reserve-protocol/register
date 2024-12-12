@@ -1,6 +1,6 @@
 import BasketPreview from './basket-preview'
 import BasketValue from './basket-value'
-import NextButton from './forms/next-button'
+import NextButton from '../../components/next-button'
 import TokenSelector from './token-selector'
 
 const Description = () => (

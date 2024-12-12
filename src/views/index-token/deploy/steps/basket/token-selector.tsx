@@ -22,7 +22,7 @@ import {
   searchTokenAtom,
   selectedTokensAtom,
   tokenListAtom,
-} from '../atoms'
+} from '../../atoms'
 
 const OpenButton = () => (
   <div className="flex items-center justify-center h-80 border-t border-b border-border mb-2">

@@ -1,6 +1,6 @@
 import ChainSelector from './chain-selector'
-import BasicMetadataForm from './forms/basic-metadata-form'
-import NextButton from './forms/next-button'
+import NextButton from '../../components/next-button'
+import BasicMetadataForm from './form-basic-metadata'
 
 const Description = () => (
   <div className="px-6 pb-6 text-base">

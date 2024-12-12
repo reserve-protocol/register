@@ -3,7 +3,7 @@ import { Token } from '@/types'
 import { formatCurrency, shortenAddress } from '@/utils'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { XIcon } from 'lucide-react'
-import { basketAtom, tokenPricesAtom } from '../atoms'
+import { basketAtom, tokenPricesAtom } from '../../atoms'
 import BasicInput from './basic-input'
 import { useFormContext } from 'react-hook-form'
 

@@ -15,10 +15,11 @@ import {
 } from 'lucide-react'
 import { ReactNode, useEffect } from 'react'
 import { deployStepAtom } from '../atoms'
-import MetadataAndChain from './metadata-and-chain'
+import MetadataAndChain from '../steps/metadata'
 import { DeployStepId } from '../form-fields'
-import FTokenBasket from './ftoken-basket'
-import Governance from './governance'
+import FTokenBasket from '../steps/basket'
+import Governance from '../steps/governance'
+import DemurrageFee from '../steps/fee'
 
 export type DeployStep = {
   id: DeployStepId
@@ -49,6 +50,13 @@ export const DEPLOY_STEPS: DeployStep[] = [
     title: 'Governance',
     titleSecondary: 'How would you like to govern?',
     content: <Governance />,
+  },
+  {
+    id: 'demurrage-fee',
+    icon: <Asterisk size={24} strokeWidth={1.5} />,
+    title: 'Demurrage Fee',
+    titleSecondary: 'Demurrage Fee',
+    content: <DemurrageFee />,
   },
   {
     id: 'revenue-distribution',

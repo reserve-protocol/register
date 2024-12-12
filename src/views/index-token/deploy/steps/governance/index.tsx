@@ -1,4 +1,4 @@
-import NextButton from './forms/next-button'
+import NextButton from '../../components/next-button'
 import GovernanceOptions from './governance-options'
 
 const Description = () => (

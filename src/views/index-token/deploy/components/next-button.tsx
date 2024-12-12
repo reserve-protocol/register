@@ -2,8 +2,8 @@ import { Button } from '@/components/ui/button'
 
 import { useAtomValue } from 'jotai'
 import { SubmitHandler, useFormContext } from 'react-hook-form'
-import { deployStepAtom } from '../../atoms'
-import { DeployInputs, dtfDeploySteps } from '../../form-fields'
+import { deployStepAtom } from '../atoms'
+import { DeployInputs, dtfDeploySteps } from '../form-fields'
 
 type FieldName = keyof DeployInputs
 

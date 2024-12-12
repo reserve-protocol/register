@@ -1,4 +1,4 @@
-import BasicInput from '../basic-input'
+import BasicInput from '../basket/basic-input'
 
 const GovernanceExistingERC20 = () => {
   return (
