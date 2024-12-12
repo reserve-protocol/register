@@ -18,6 +18,7 @@ import AtomUpdater from './updaters/AtomUpdater'
 import { setupConfig } from './utils/mocks'
 
 import {
+  bitgetWallet,
   braveWallet,
   coinbaseWallet,
   injectedWallet,
@@ -75,6 +76,7 @@ const connectors = connectorsForWallets([
       injectedWallet({ chains }),
       metaMaskWallet(config),
       walletConnectWallet(config),
+      bitgetWallet(config),
       coinbaseWallet(config),
       braveWallet(config),
       rabbyWallet(config),
