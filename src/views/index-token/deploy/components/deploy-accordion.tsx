@@ -20,6 +20,7 @@ import { DeployStepId } from '../form-fields'
 import FTokenBasket from '../steps/basket'
 import Governance from '../steps/governance'
 import DemurrageFee from '../steps/fee'
+import RevenueDistribution from '../steps/revenue'
 
 export type DeployStep = {
   id: DeployStepId
@@ -63,7 +64,7 @@ export const DEPLOY_STEPS: DeployStep[] = [
     icon: <Asterisk size={24} strokeWidth={1.5} />,
     title: 'Revenue distribution',
     titleSecondary: 'Revenue distribution',
-    content: 'content',
+    content: <RevenueDistribution />,
   },
 ]
 
