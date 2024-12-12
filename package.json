@@ -93,6 +93,7 @@
   "devDependencies": {
     "@lingui/cli": "4.14.0",
     "@lingui/vite-plugin": "4.14.0",
+    "@locator/babel-jsx": "^0.4.4",
     "@playwright/test": "^1.38.0",
     "@react-spring/types": "^9.4.5",
     "@testing-library/jest-dom": "^5.16.4",
