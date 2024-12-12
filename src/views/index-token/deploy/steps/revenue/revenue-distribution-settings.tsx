@@ -1,5 +1,6 @@
 import { Asterisk } from 'lucide-react'
 import BasicInput from '../basket/basic-input'
+import AdditionalRevenueRecipients from './additional-revenue-recipients'
 
 const SETTINGS = [
   {
@@ -24,33 +25,36 @@ const SETTINGS = [
 
 const RevenueDistributionSettings = () => {
   return (
-    <div className="flex flex-col gap-2 mx-2 mb-2">
-      {SETTINGS.map(({ title, description, field }) => (
-        <div
-          className="w-full rounded-xl flex items-center gap-2 justify-between px-4 py-3 bg-muted/70"
-          key={title}
-        >
-          <div className="flex items-center gap-2">
-            <div className="bg-muted-foreground/10 rounded-full">
-              <Asterisk size={32} strokeWidth={1.5} />
-            </div>
+    <div className="flex flex-col gap-2 mx-2 mb-3">
+      <div className="flex flex-col gap-2">
+        {SETTINGS.map(({ title, description, field }) => (
+          <div
+            className="w-full rounded-xl flex items-center gap-2 justify-between px-4 py-3 bg-muted/70"
+            key={title}
+          >
+            <div className="flex items-center gap-2">
+              <div className="bg-muted-foreground/10 rounded-full">
+                <Asterisk size={32} strokeWidth={1.5} />
+              </div>
 
-            <div className="flex flex-col">
-              <div className="text-base font-bold">{title}</div>
-              <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                {description}
+              <div className="flex flex-col">
+                <div className="text-base font-bold">{title}</div>
+                <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                  {description}
+                </div>
               </div>
             </div>
+            <BasicInput
+              className="max-w-32"
+              fieldName={field}
+              label="%"
+              placeholder="0"
+              defaultValue={0}
+            />
           </div>
-          <BasicInput
-            className="max-w-32"
-            fieldName={field}
-            label="%"
-            placeholder="0"
-            defaultValue={0}
-          />
-        </div>
-      ))}
+        ))}
+      </div>
+      <AdditionalRevenueRecipients />
     </div>
   )
 }

@@ -51,7 +51,7 @@ const NextButton = () => {
 
   return (
     <div className="px-2 pb-2">
-      {stepError && <div className="mb-2 text-red-500">{stepError}</div>}
+      {stepError && <div className="mx-4 mb-2 text-red-500">{stepError}</div>}
       <Button
         className="rounded-xl w-full py-7 text-base"
         onClick={() => next()}

@@ -7,7 +7,7 @@ const DEMURRAGE_OPTIONS = [0, 0.25, 0.5, 1, 1.5, 2]
 
 const DemurrageFeeSelector = () => {
   const { watch, setValue } = useFormContext()
-  console.log()
+
   return (
     <div className="flex items-center gap-2 mx-6 mb-6">
       <ToggleGroup
