@@ -11,7 +11,6 @@ const FORMS = [
     label: 'Address',
     placeholder: '0x...',
   },
-
   {
     title: 'Voting Quorum',
     description:

@@ -82,11 +82,8 @@ const AdditionalRevenueRecipients = () => {
   return (
     <div className="flex flex-col gap-2">
       {recipients.map(({ address, share }, index) => (
-        <div className="flex flex-col gap-2">
-          <AdditionalRevenueRecipient
-            index={index}
-            key={`${index}${address}${share}`}
-          />
+        <div className="flex flex-col gap-2" key={`${index}${address}${share}`}>
+          <AdditionalRevenueRecipient index={index} />
         </div>
       ))}
       <AddRecipientButton />

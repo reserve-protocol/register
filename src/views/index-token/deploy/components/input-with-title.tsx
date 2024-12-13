@@ -5,12 +5,14 @@ type InputWithTitleProps = BasicInputProps & {
   title: string
   description: string
   icon: ReactNode
+  children?: ReactNode
 }
 
 const InputWithTitle = ({
   title,
   description,
   icon,
+  children,
   ...props
 }: InputWithTitleProps) => (
   <div
@@ -28,6 +30,7 @@ const InputWithTitle = ({
       </div>
     </div>
     <BasicInput {...props} />
+    {children}
   </div>
 )
 
