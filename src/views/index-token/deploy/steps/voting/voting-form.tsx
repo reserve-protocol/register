@@ -1,3 +1,4 @@
+import { humanizeMinutes } from '@/utils'
 import { Asterisk } from 'lucide-react'
 import ToggleGroupWithCustom from '../../components/toggle-group-with-custom'
 
@@ -6,8 +7,8 @@ const VOTING_PERIOD = {
   description:
     'How to distribute the revenue from this fee is defines in the revenue distribution section.',
   icon: <Asterisk size={32} strokeWidth={1.5} />,
-  options: [20, 60, 240, 1440, 1080],
-  optionsFormatter: (option: number) => option.toString(),
+  options: [20, 60, 240, 1440, 10080],
+  optionsFormatter: (option: number) => humanizeMinutes(option),
   customLabel: 'minutes',
   customPlaceholder: 'Enter custom length',
 }
@@ -18,7 +19,7 @@ const VOTING_QUORUM = {
     'How to distribute the revenue from this fee is defines in the revenue distribution section.',
   icon: <Asterisk size={32} strokeWidth={1.5} />,
   options: [20, 30, 40, 60, 80],
-  optionsFormatter: (option: number) => option.toString(),
+  optionsFormatter: (option: number) => `${option.toString()}%`,
   customLabel: '%',
   customPlaceholder: 'Enter custom',
 }
@@ -28,8 +29,8 @@ const VOTING_EXECUTION_DELAY = {
   description:
     'How to distribute the revenue from this fee is defines in the revenue distribution section.',
   icon: <Asterisk size={32} strokeWidth={1.5} />,
-  options: [20, 60, 240, 1440, 1080],
-  optionsFormatter: (option: number) => option.toString(),
+  options: [20, 60, 240, 1440, 10080],
+  optionsFormatter: (option: number) => humanizeMinutes(option),
   customLabel: 'minutes',
   customPlaceholder: 'Enter custom length',
 }
