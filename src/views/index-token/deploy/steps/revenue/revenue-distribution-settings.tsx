@@ -29,7 +29,7 @@ const RevenueDistributionSettings = () => {
       <div className="flex flex-col gap-2">
         {SETTINGS.map(({ title, description, field }) => (
           <div
-            className="w-full rounded-xl flex items-center gap-2 justify-between px-4 py-3 bg-muted/70"
+            className="w-full rounded-xl flex items-center gap-2 justify-between p-4 bg-muted/70"
             key={title}
           >
             <div className="flex items-center gap-2">

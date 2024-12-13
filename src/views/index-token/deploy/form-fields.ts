@@ -7,6 +7,9 @@ export type DeployStepId =
   | 'governance'
   | 'demurrage-fee'
   | 'revenue-distribution'
+  | 'auctions'
+  | 'roles'
+  | 'voting'
 
 export const dtfDeploySteps: Record<DeployStepId, { fields: string[] }> = {
   metadata: {
@@ -32,6 +35,35 @@ export const dtfDeploySteps: Record<DeployStepId, { fields: string[] }> = {
       'deployerShare',
       'fixedPlatformFee',
       'additionalRevenueRecipients',
+    ],
+  },
+  auctions: {
+    fields: [
+      'auctionLength',
+      'auctionDelay',
+      'auctionLauncher',
+      'customAuctionLength',
+      'customAuctionDelay',
+      'additionalAuctionLaunchers',
+    ],
+  },
+  roles: {
+    fields: ['guardianAddress', 'brandManagerAddress'],
+  },
+  voting: {
+    fields: [
+      'basketVotingPeriod',
+      'customBasketVotingPeriod',
+      'basketVotingQuorum',
+      'customBasketVotingQuorum',
+      'basketExecutionDelay',
+      'customBasketExecutionDelay',
+      'governanceVotingPeriod',
+      'customGovernanceVotingPeriod',
+      'governanceVotingQuorum',
+      'customGovernanceVotingQuorum',
+      'governanceExecutionDelay',
+      'customGovernanceExecutionDelay',
     ],
   },
 }
@@ -72,6 +104,34 @@ export const DeployFormSchema = z
         })
       )
       .optional(),
+    auctionLength: z.coerce.number().min(0).optional(),
+    auctionDelay: z.coerce.number().min(0).optional(),
+    auctionLauncher: z
+      .string()
+      .refine(isAddress, { message: 'Invalid Address' }),
+    customAuctionLength: z.coerce.number().min(0).optional(),
+    customAuctionDelay: z.coerce.number().min(0).optional(),
+    additionalAuctionLaunchers: z.array(
+      z.string().refine(isAddress, { message: 'Invalid Address' })
+    ),
+    guardianAddress: z
+      .string()
+      .refine(isAddress, { message: 'Invalid Address' }),
+    brandManagerAddress: z
+      .string()
+      .refine(isAddress, { message: 'Invalid Address' }),
+    basketVotingPeriod: z.coerce.number().min(0).optional(),
+    customBasketVotingPeriod: z.coerce.number().min(0).optional(),
+    basketVotingQuorum: z.coerce.number().min(0).optional(),
+    customBasketVotingQuorum: z.coerce.number().min(0).optional(),
+    basketExecutionDelay: z.coerce.number().min(0).optional(),
+    customBasketExecutionDelay: z.coerce.number().min(0).optional(),
+    governanceVotingPeriod: z.coerce.number().min(0).optional(),
+    customGovernanceVotingPeriod: z.coerce.number().min(0).optional(),
+    governanceVotingQuorum: z.coerce.number().min(0).optional(),
+    customGovernanceVotingQuorum: z.coerce.number().min(0).optional(),
+    governanceExecutionDelay: z.coerce.number().min(0).optional(),
+    customGovernanceExecutionDelay: z.coerce.number().min(0).optional(),
   })
   .refine(
     (data) => {
@@ -125,6 +185,48 @@ export const DeployFormSchema = z
       path: ['revenue-distribution'],
     }
   )
+  .refine(
+    (data) => {
+      // Check if the auction settings are valid
+      const auctionLengthSet = data.auctionLength || data.customAuctionLength
+      const auctionDelaySet = data.auctionDelay || data.customAuctionDelay
+      return auctionLengthSet && auctionDelaySet
+    },
+    {
+      message: 'Auction settings are invalid',
+      path: ['auctions'],
+    }
+  )
+  .refine(
+    (data) => {
+      // Check if the voting settings are valid
+      const basketVotingPeriodSet =
+        data.basketVotingPeriod || data.customBasketVotingPeriod
+      const basketVotingQuorumSet =
+        data.basketVotingQuorum || data.customBasketVotingQuorum
+      const basketExecutionDelaySet =
+        data.basketExecutionDelay || data.customBasketExecutionDelay
+      const governanceVotingPeriodSet =
+        data.governanceVotingPeriod || data.customGovernanceVotingPeriod
+      const governanceVotingQuorumSet =
+        data.governanceVotingQuorum || data.customGovernanceVotingQuorum
+      const governanceExecutionDelaySet =
+        data.governanceExecutionDelay || data.customGovernanceExecutionDelay
+
+      return (
+        basketVotingPeriodSet &&
+        basketVotingQuorumSet &&
+        basketExecutionDelaySet &&
+        governanceVotingPeriodSet &&
+        governanceVotingQuorumSet &&
+        governanceExecutionDelaySet
+      )
+    },
+    {
+      message: 'Voting settings are invalid',
+      path: ['voting'],
+    }
+  )
 
 export const dtfDeployDefaultValues = {
   name: '',
@@ -140,6 +242,26 @@ export const dtfDeployDefaultValues = {
   deployerShare: 0,
   fixedPlatformFee: 0,
   additionalRevenueRecipients: [],
+  auctionLength: 0,
+  auctionDelay: 0,
+  auctionLauncher: '',
+  customAuctionLength: undefined,
+  customAuctionDelay: undefined,
+  additionalAuctionLaunchers: [],
+  guardianAddress: '',
+  brandManagerAddress: '',
+  basketVotingPeriod: 20,
+  customBasketVotingPeriod: undefined,
+  basketVotingQuorum: 20,
+  customBasketVotingQuorum: undefined,
+  basketExecutionDelay: 20,
+  customBasketExecutionDelay: undefined,
+  governanceVotingPeriod: 20,
+  customGovernanceVotingPeriod: undefined,
+  governanceVotingQuorum: 20,
+  customGovernanceVotingQuorum: undefined,
+  governanceExecutionDelay: 20,
+  customGovernanceExecutionDelay: undefined,
 }
 
 export type DeployInputs = z.infer<typeof DeployFormSchema>
