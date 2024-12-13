@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button'
 import { PlusIcon, XIcon } from 'lucide-react'
-import BasicInput from '../basket/basic-input'
+import BasicInput from '../../components/basic-input'
 import { useFormContext } from 'react-hook-form'
 import { Address } from 'viem'
 

@@ -1,6 +1,6 @@
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { formatPercentage } from '@/utils'
-import BasicInput from '../basket/basic-input'
+import BasicInput from '../../components/basic-input'
 import { useFormContext } from 'react-hook-form'
 
 const DEMURRAGE_OPTIONS = [0, 0.25, 0.5, 1, 1.5, 2]

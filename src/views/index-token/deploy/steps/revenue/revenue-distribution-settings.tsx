@@ -1,5 +1,5 @@
 import { Asterisk } from 'lucide-react'
-import BasicInput from '../basket/basic-input'
+import BasicInput from '../../components/basic-input'
 import AdditionalRevenueRecipients from './additional-revenue-recipients'
 
 const SETTINGS = [

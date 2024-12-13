@@ -4,7 +4,7 @@ import { formatCurrency, shortenAddress } from '@/utils'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { XIcon } from 'lucide-react'
 import { basketAtom, tokenPricesAtom } from '../../atoms'
-import BasicInput from './basic-input'
+import BasicInput from '../../components/basic-input'
 import { useFormContext } from 'react-hook-form'
 
 const RemoveTokenButton = ({ address }: Pick<Token, 'address'>) => {
