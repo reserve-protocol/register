@@ -8,7 +8,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { useFormContext } from 'react-hook-form'
 
-type BasicInput = {
+export type BasicInputProps = {
   fieldName: string
   label: string
   placeholder: string
@@ -25,7 +25,7 @@ const BasicInput = ({
   labelPosition = 'end',
   defaultValue = '',
   ...props
-}: React.HTMLAttributes<HTMLDivElement> & BasicInput) => {
+}: React.HTMLAttributes<HTMLDivElement> & BasicInputProps) => {
   const form = useFormContext()
 
   const adornment = (

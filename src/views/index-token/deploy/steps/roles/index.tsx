@@ -1,4 +1,5 @@
 import NextButton from '../../components/next-button'
+import RolesForm from './roles-form'
 
 const Description = () => (
   <div className="px-6 pb-6 text-base">
@@ -11,6 +12,7 @@ const Roles = () => {
   return (
     <>
       <Description />
+      <RolesForm />
       <NextButton />
     </>
   )

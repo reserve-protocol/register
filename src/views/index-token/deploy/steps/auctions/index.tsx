@@ -1,4 +1,5 @@
 import NextButton from '../../components/next-button'
+import AuctionsForm from './auctions-form'
 
 const Description = () => (
   <div className="px-6 pb-6 text-base">
@@ -11,6 +12,7 @@ const Auctions = () => {
   return (
     <>
       <Description />
+      <AuctionsForm />
       <NextButton />
     </>
   )
