@@ -8,7 +8,19 @@ import { viteStaticCopy } from 'vite-plugin-static-copy'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
-    react({ babel: { plugins: ['macros'] } }),
+    react({
+      babel: {
+        plugins: [
+          'macros',
+          [
+            '@locator/babel-jsx/dist',
+            {
+              env: 'development',
+            },
+          ],
+        ],
+      },
+    }),
     lingui(),
     viteTsconfigPaths(),
     viteStaticCopy({

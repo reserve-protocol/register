@@ -20,7 +20,7 @@ const BasketValue = () => {
   if (basket.length === 0) return null
 
   return (
-    <div className="p-5 flex items-center gap-2 justify-between">
+    <div className="p-5 px-6 flex items-center gap-2 justify-between">
       <div className="flex items-center gap-2">
         <div className="p-1 bg-muted/80 rounded-full">
           <DollarSign size={24} strokeWidth={1.5} />

@@ -27,7 +27,12 @@ export const dtfDeploySteps: Record<DeployStepId, { fields: string[] }> = {
     fields: ['demurrageFee'],
   },
   'revenue-distribution': {
-    fields: [],
+    fields: [
+      'governanceShare',
+      'deployerShare',
+      'fixedPlatformFee',
+      'additionalRevenueRecipients',
+    ],
   },
 }
 
@@ -56,19 +61,70 @@ export const DeployFormSchema = z
       .number()
       .min(0, 'Demurrage fee must be 0 or greater')
       .max(100, 'Demurrage fee must be 100 or less'),
+    governanceShare: z.coerce.number().min(0).max(100),
+    deployerShare: z.coerce.number().min(0).max(100),
+    fixedPlatformFee: z.coerce.number().min(0).max(100),
+    additionalRevenueRecipients: z
+      .array(
+        z.object({
+          address: z.string().refine(isAddress, { message: 'Invalid Address' }),
+          share: z.coerce.number().min(0).max(100),
+        })
+      )
+      .optional(),
   })
-  .refine((data) => {
-    const governanceNewERC20 =
-      data.governanceERC20name && data.governanceERC20symbol
-    const governanceExistingERC20 = data.governanceERC20address
-    const governanceWallet = data.governanceWalletAddress
+  .refine(
+    (data) => {
+      // Check if the sum of the tokens distribution is 100
+      const totalDist = data.tokensDistribution.reduce(
+        (acc, val) => acc + val,
+        0
+      )
+      return totalDist === 100
+    },
+    {
+      message: 'The sum of the tokens distribution must be 100',
+      path: ['basket'],
+    }
+  )
+  .refine(
+    (data) => {
+      // Check if the governance settings are valid
+      const governanceNewERC20 =
+        data.governanceERC20name && data.governanceERC20symbol
+      const governanceExistingERC20 = data.governanceERC20address
+      const governanceWallet = data.governanceWalletAddress
 
-    return (
-      (governanceNewERC20 && !governanceExistingERC20 && !governanceWallet) ||
-      (!governanceNewERC20 && governanceExistingERC20 && !governanceWallet) ||
-      (!governanceNewERC20 && !governanceExistingERC20 && governanceWallet)
-    )
-  })
+      return (
+        (governanceNewERC20 && !governanceExistingERC20 && !governanceWallet) ||
+        (!governanceNewERC20 && governanceExistingERC20 && !governanceWallet) ||
+        (!governanceNewERC20 && !governanceExistingERC20 && governanceWallet)
+      )
+    },
+    { message: 'Invalid governance settings', path: ['governance'] }
+  )
+  .refine(
+    (data) => {
+      // Check if the sum of the shares is 100, including additional revenue recipients
+      const additionalShares =
+        data.additionalRevenueRecipients?.reduce(
+          (acc, { share }) => acc + share,
+          0
+        ) || 0
+
+      const totalShares =
+        data.governanceShare +
+        data.deployerShare +
+        data.fixedPlatformFee +
+        additionalShares
+
+      return totalShares === 100
+    },
+    {
+      message: 'The sum of the shares must be 100',
+      path: ['revenue-distribution'],
+    }
+  )
 
 export const dtfDeployDefaultValues = {
   name: '',
@@ -80,6 +136,10 @@ export const dtfDeployDefaultValues = {
   governanceERC20address: undefined,
   governanceWalletAddress: undefined,
   demurrageFee: 0,
+  governanceShare: 0,
+  deployerShare: 0,
+  fixedPlatformFee: 0,
+  additionalRevenueRecipients: [],
 }
 
 export type DeployInputs = z.infer<typeof DeployFormSchema>
