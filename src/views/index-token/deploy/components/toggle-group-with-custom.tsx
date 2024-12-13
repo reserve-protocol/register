@@ -42,6 +42,38 @@ const CustomInput = ({
   )
 }
 
+const ToggleGroupSelector = ({
+  fieldName,
+  options,
+  optionsFormatter,
+}: Pick<
+  ToggleGroupWithCustomProps,
+  'fieldName' | 'options' | 'optionsFormatter'
+>) => {
+  const { watch, setValue } = useFormContext()
+  return (
+    <ToggleGroup
+      type="single"
+      className="bg-muted-foreground/10 p-1 rounded-xl justify-start w-max"
+      value={watch(fieldName).toString()}
+      onValueChange={(value) => {
+        const parsedValue = parseFloat(value)
+        setValue(fieldName, isNaN(parsedValue) ? undefined : parsedValue)
+      }}
+    >
+      {options.map((option) => (
+        <ToggleGroupItem
+          key={option}
+          value={option.toString()}
+          className="px-5 h-8 rounded-lg data-[state=on]:bg-card text-secondary-foreground/80 data-[state=on]:text-primary"
+        >
+          {optionsFormatter(option)}
+        </ToggleGroupItem>
+      ))}
+    </ToggleGroup>
+  )
+}
+
 const ToggleGroupWithCustom = ({
   title,
   description,
@@ -52,53 +84,35 @@ const ToggleGroupWithCustom = ({
   customFieldName,
   customLabel,
   customPlaceholder,
-}: ToggleGroupWithCustomProps) => {
-  const { watch, setValue } = useFormContext()
+}: ToggleGroupWithCustomProps) => (
+  <div
+    className="w-full rounded-xl flex flex-col gap-3 justify-between p-4 bg-muted/70"
+    key={title}
+  >
+    <div className="flex items-center gap-2">
+      <div className="bg-muted-foreground/10 rounded-full">{icon}</div>
 
-  return (
-    <div
-      className="w-full rounded-xl flex flex-col gap-3 justify-between p-4 bg-muted/70"
-      key={title}
-    >
-      <div className="flex items-center gap-2">
-        <div className="bg-muted-foreground/10 rounded-full">{icon}</div>
-
-        <div className="flex flex-col">
-          <div className="text-base font-bold">{title}</div>
-          <div className="flex items-center gap-1 text-sm text-muted-foreground">
-            {description}
-          </div>
+      <div className="flex flex-col">
+        <div className="text-base font-bold">{title}</div>
+        <div className="flex items-center gap-1 text-sm text-muted-foreground">
+          {description}
         </div>
       </div>
-      <div className="flex items-center justify-between gap-2">
-        <ToggleGroup
-          type="single"
-          className="bg-muted-foreground/10 p-1 rounded-xl justify-start w-max"
-          value={watch(fieldName).toString()}
-          onValueChange={(value) => {
-            const parsedValue = parseFloat(value)
-            setValue(fieldName, isNaN(parsedValue) ? undefined : parsedValue)
-          }}
-        >
-          {options.map((option) => (
-            <ToggleGroupItem
-              key={option}
-              value={option.toString()}
-              className="px-5 h-8 rounded-lg data-[state=on]:bg-card text-secondary-foreground/80 data-[state=on]:text-primary"
-            >
-              {optionsFormatter(option)}
-            </ToggleGroupItem>
-          ))}
-        </ToggleGroup>
-        <CustomInput
-          fieldName={fieldName}
-          customFieldName={customFieldName}
-          customLabel={customLabel}
-          customPlaceholder={customPlaceholder}
-        />
-      </div>
     </div>
-  )
-}
+    <div className="flex items-center justify-between gap-2">
+      <ToggleGroupSelector
+        fieldName={fieldName}
+        options={options}
+        optionsFormatter={optionsFormatter}
+      />
+      <CustomInput
+        fieldName={fieldName}
+        customFieldName={customFieldName}
+        customLabel={customLabel}
+        customPlaceholder={customPlaceholder}
+      />
+    </div>
+  </div>
+)
 
 export default ToggleGroupWithCustom
