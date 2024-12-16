@@ -27,7 +27,7 @@ export const dtfDeploySteps: Record<DeployStepId, { fields: string[] }> = {
     ],
   },
   'demurrage-fee': {
-    fields: ['demurrageFee'],
+    fields: ['demurrageFee', 'customDemurrageFee'],
   },
   'revenue-distribution': {
     fields: [
@@ -92,7 +92,13 @@ export const DeployFormSchema = z
     demurrageFee: z.coerce
       .number()
       .min(0, 'Demurrage fee must be 0 or greater')
-      .max(100, 'Demurrage fee must be 100 or less'),
+      .max(100, 'Demurrage fee must be 100 or less')
+      .optional(),
+    customDemurrageFee: z.coerce
+      .number()
+      .min(0, 'Demurrage fee must be 0 or greater')
+      .max(100, 'Demurrage fee must be 100 or less')
+      .optional(),
     governanceShare: z.coerce.number().min(0).max(100),
     deployerShare: z.coerce.number().min(0).max(100),
     fixedPlatformFee: z.coerce.number().min(0).max(100),
@@ -162,6 +168,16 @@ export const DeployFormSchema = z
       )
     },
     { message: 'Invalid governance settings', path: ['governance'] }
+  )
+  .refine(
+    (data) => {
+      // Check if the demurrage fee is set
+      return data.demurrageFee || data.customDemurrageFee
+    },
+    {
+      message: 'Demurrage fee is required',
+      path: ['demurrage-fee'],
+    }
   )
   .refine(
     (data) => {

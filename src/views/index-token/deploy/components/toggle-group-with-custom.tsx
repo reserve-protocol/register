@@ -44,13 +44,19 @@ const CustomInput = ({
 
 const ToggleGroupSelector = ({
   fieldName,
+  customFieldName,
   options,
   optionsFormatter,
 }: Pick<
   ToggleGroupWithCustomProps,
-  'fieldName' | 'options' | 'optionsFormatter'
+  'fieldName' | 'customFieldName' | 'options' | 'optionsFormatter'
 >) => {
   const { watch, setValue } = useFormContext()
+
+  const resetCustomField = () => {
+    setValue(customFieldName, '')
+  }
+
   return (
     <ToggleGroup
       type="single"
@@ -59,6 +65,7 @@ const ToggleGroupSelector = ({
       onValueChange={(value) => {
         const parsedValue = parseFloat(value)
         setValue(fieldName, isNaN(parsedValue) ? undefined : parsedValue)
+        resetCustomField()
       }}
     >
       {options.map((option) => (
@@ -102,6 +109,7 @@ const ToggleGroupWithCustom = ({
     <div className="flex items-center justify-between gap-2">
       <ToggleGroupSelector
         fieldName={fieldName}
+        customFieldName={customFieldName}
         options={options}
         optionsFormatter={optionsFormatter}
       />

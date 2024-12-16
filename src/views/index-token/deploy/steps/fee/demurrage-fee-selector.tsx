@@ -8,6 +8,14 @@ const DEMURRAGE_OPTIONS = [0, 0.25, 0.5, 1, 1.5, 2]
 const DemurrageFeeSelector = () => {
   const { watch, setValue } = useFormContext()
 
+  const resetField = () => {
+    setValue('demurrageFee', '')
+  }
+
+  const resetCustomField = () => {
+    setValue('customDemurrageFee', '')
+  }
+
   return (
     <div className="flex items-center gap-2 mx-6 mb-6">
       <ToggleGroup
@@ -17,6 +25,7 @@ const DemurrageFeeSelector = () => {
         onValueChange={(value) => {
           const parsedValue = parseFloat(value)
           setValue('demurrageFee', isNaN(parsedValue) ? 0 : parsedValue)
+          resetCustomField()
         }}
       >
         {DEMURRAGE_OPTIONS.map((option) => (
@@ -30,8 +39,12 @@ const DemurrageFeeSelector = () => {
           </ToggleGroupItem>
         ))}
       </ToggleGroup>
-      <div className="w-24">
-        <BasicInput fieldName="demurrageFee" label="%" placeholder="0.00" />
+      <div className="w-24" onClick={resetField} role="button">
+        <BasicInput
+          fieldName="customDemurrageFee"
+          label="%"
+          placeholder="0.00"
+        />
       </div>
     </div>
   )
