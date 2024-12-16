@@ -1,3 +1,4 @@
+import { data } from 'react-router-dom'
 import { isAddress } from 'viem'
 import { z } from 'zod'
 
@@ -114,7 +115,8 @@ export const DeployFormSchema = z
     auctionDelay: z.coerce.number().min(0).optional(),
     auctionLauncher: z
       .string()
-      .refine(isAddress, { message: 'Invalid Address' }),
+      .refine(isAddress, { message: 'Invalid Address' })
+      .optional(),
     customAuctionLength: z.coerce.number().min(0).optional(),
     customAuctionDelay: z.coerce.number().min(0).optional(),
     additionalAuctionLaunchers: z.array(
@@ -122,10 +124,12 @@ export const DeployFormSchema = z
     ),
     guardianAddress: z
       .string()
-      .refine(isAddress, { message: 'Invalid Address' }),
+      .refine(isAddress, { message: 'Invalid Address' })
+      .optional(),
     brandManagerAddress: z
       .string()
-      .refine(isAddress, { message: 'Invalid Address' }),
+      .refine(isAddress, { message: 'Invalid Address' })
+      .optional(),
     basketVotingPeriod: z.coerce.number().min(0).optional(),
     customBasketVotingPeriod: z.coerce.number().min(0).optional(),
     basketVotingQuorum: z.coerce.number().min(0).optional(),
@@ -172,7 +176,7 @@ export const DeployFormSchema = z
   .refine(
     (data) => {
       // Check if the demurrage fee is set
-      return data.demurrageFee || data.customDemurrageFee
+      return data.demurrageFee !== undefined || data.customDemurrageFee
     },
     {
       message: 'Demurrage fee is required',
@@ -201,11 +205,17 @@ export const DeployFormSchema = z
       path: ['revenue-distribution'],
     }
   )
+  .refine((data) => data.auctionLauncher, {
+    message: 'Auction launcher address is required',
+    path: ['auctionLauncher'],
+  })
   .refine(
     (data) => {
       // Check if the auction settings are valid
-      const auctionLengthSet = data.auctionLength || data.customAuctionLength
-      const auctionDelaySet = data.auctionDelay || data.customAuctionDelay
+      const auctionLengthSet =
+        data.auctionLength !== undefined || data.customAuctionLength
+      const auctionDelaySet =
+        data.auctionDelay !== undefined || data.customAuctionDelay
       return auctionLengthSet && auctionDelaySet
     },
     {
@@ -213,6 +223,14 @@ export const DeployFormSchema = z
       path: ['auctions'],
     }
   )
+  .refine((data) => data.guardianAddress, {
+    message: 'Guardian address is required',
+    path: ['guardianAddress'],
+  })
+  .refine((data) => data.brandManagerAddress, {
+    message: 'Brand manager address is required',
+    path: ['brandManagerAddress'],
+  })
   .refine(
     (data) => {
       // Check if the voting settings are valid

@@ -7,10 +7,20 @@ import { basketAtom, tokenPricesAtom } from '../../atoms'
 import BasicInput from '../../components/basic-input'
 import { useFormContext } from 'react-hook-form'
 
-const RemoveTokenButton = ({ address }: Pick<Token, 'address'>) => {
+const RemoveTokenButton = ({
+  tokenIndex,
+  address,
+}: { tokenIndex: number } & Pick<Token, 'address'>) => {
+  const { getValues, setValue } = useFormContext()
   const setBasket = useSetAtom(basketAtom)
 
   const removeToken = () => {
+    const currentTokens = getValues('tokensDistribution') as number[]
+    const updatedTokens = currentTokens.filter(
+      (_, index) => index !== tokenIndex
+    )
+    setValue('tokensDistribution', updatedTokens)
+
     setBasket((prev) => prev.filter((token) => token.address !== address))
   }
 
@@ -80,7 +90,7 @@ const TokenPreview = ({
       </div>
       <div className="flex items-center gap-[12px]">
         <TokenDistribution tokenIndex={index} />
-        <RemoveTokenButton address={address} />
+        <RemoveTokenButton tokenIndex={index} address={address} />
       </div>
     </label>
   )
