@@ -95,6 +95,8 @@ export const wagmiConfig = import.meta.env.VITE_TESTING
       publicClient,
     })
 
+
+
 const Disclaimer: DisclaimerComponent = ({ Text, Link }) => (
   <Text>
     By connecting a wallet, you agree to ABC Labs{' '}

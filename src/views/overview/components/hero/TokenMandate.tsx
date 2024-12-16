@@ -12,7 +12,7 @@ const OffChainNote = () => {
   const rTokenList = useAtomValue(rTokenListAtom)
   const [expanded, setExpanded] = useState(false)
 
-  if (!rToken?.listed) {
+  if (!rToken?.listed || !rTokenList[rToken.address]?.about) {
     return null
   }
 
