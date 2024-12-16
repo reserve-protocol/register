@@ -23,7 +23,7 @@ type ExtendedFieldErrors<TFieldValues extends FieldValues> =
 
 const NextButton = () => {
   const [deployStep, setDeployStep] = useAtom(deployStepAtom)
-  const { reset, trigger, handleSubmit, formState } =
+  const { reset, trigger, handleSubmit, formState, getValues } =
     useFormContext<DeployInputs>()
 
   const formErrors = formState.errors as ExtendedFieldErrors<

@@ -1,4 +1,3 @@
-import { data } from 'react-router-dom'
 import { isAddress } from 'viem'
 import { z } from 'zod'
 
@@ -75,7 +74,12 @@ export const DeployFormSchema = z
     symbol: z.string().min(1, 'Token symbol is required'),
     initialValue: z.coerce.number().positive('Initial value must be positive'),
     tokensDistribution: z.array(
-      z.coerce.number().positive('Token distribution must be positive')
+      z.object({
+        address: z.string().refine(isAddress, { message: 'Invalid Address' }),
+        percentage: z.coerce
+          .number()
+          .positive('Token distribution must be positive'),
+      })
     ),
     governanceERC20name: z.string().min(1, 'Token name is required').optional(),
     governanceERC20symbol: z
@@ -147,7 +151,7 @@ export const DeployFormSchema = z
     (data) => {
       // Check if the sum of the tokens distribution is 100
       const totalDist = data.tokensDistribution.reduce(
-        (acc, val) => acc + val,
+        (acc, { percentage }) => acc + percentage,
         0
       )
       return totalDist === 100

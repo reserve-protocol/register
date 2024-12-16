@@ -39,7 +39,7 @@ const TokenDistribution = ({ tokenIndex }: { tokenIndex: number }) => {
   return (
     <BasicInput
       className="max-w-32"
-      fieldName={`tokensDistribution.${tokenIndex}`}
+      fieldName={`tokensDistribution.${tokenIndex}.percentage`}
       label="%"
       placeholder="0"
       defaultValue={0}
@@ -57,7 +57,7 @@ const TokenPreview = ({
 
   const [initialValue, tokenDistribution] = form.watch([
     `initialValue`,
-    `tokensDistribution.${index}`,
+    `tokensDistribution.${index}.percentage`,
   ])
 
   const tokenPrices = useAtomValue(tokenPricesAtom)
