@@ -81,9 +81,21 @@ const SVGS = new Set([
   'wusdm',
   'eth+',
   'wsamm-eusd/usdc',
+  'wvamm-weth-degen',
+  'wvamm-weth-well',
+  'wvamm-weth-cbbtc',
 ])
 
-const PNGS = new Set(['steakusdc', 'mai', 'dola', 'fxusd', 'alusd', 'ethx'])
+const PNGS = new Set([
+  'steakusdc',
+  'mai',
+  'dola',
+  'fxusd',
+  'alusd',
+  'ethx',
+  'wvamm-weth-aero',
+  'wvamm-mog-weth',
+])
 
 // Memoized token image
 const TokenImage = React.memo(
@@ -122,6 +134,10 @@ const TokenLogo = ({
 
   if (tokenSymbol?.endsWith('-VAULT')) {
     tokenSymbol = tokenSymbol.replace('-VAULT', '')
+  }
+
+  if (tokenSymbol?.includes('/')) {
+    tokenSymbol = tokenSymbol.replaceAll('/', '-')
   }
 
   if (!imgSrc) {

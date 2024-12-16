@@ -220,7 +220,11 @@ const RTokenCard = ({ token, ...props }: Props) => {
                   <Text variant="legend">
                     <Trans>Peg:</Trans>
                   </Text>
-                  <Text variant="strong">{token.targetUnits}</Text>
+                  <Text variant="strong">
+                    {token?.targetUnits?.split(',').length > 2
+                      ? `${token?.targetUnits?.split(',').length} targets`
+                      : token.targetUnits}
+                  </Text>
                 </Box>
                 <VerticalDivider sx={{ display: ['none', 'none', 'block'] }} />
                 <Box
