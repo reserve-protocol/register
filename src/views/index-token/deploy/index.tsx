@@ -7,6 +7,7 @@ import {
   dtfDeployDefaultValues,
 } from './form-fields'
 import PriceUpdater from './updaters/PriceUpdater'
+import RightPanel from './components/right-panel'
 
 const IndexTokenDeploy = () => {
   const form = useForm<DeployInputs>({
@@ -23,7 +24,7 @@ const IndexTokenDeploy = () => {
             <DeployAccordion />
           </div>
           <div className="flex h-max rounded-3xl border-4 border-secondary col-span-1">
-            Right
+            <RightPanel />
           </div>
         </FormProvider>
       </div>
