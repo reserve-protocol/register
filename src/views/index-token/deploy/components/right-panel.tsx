@@ -1,9 +1,11 @@
 import DiscordIcon from '@/components/icons/DiscordIcon'
 import { RTokenIcon } from '@/components/icons/logos'
-import { Button } from '@/components/ui/button'
 import Timeline from '@/components/ui/timeline'
 import { Asterisk, PlayIcon } from 'lucide-react'
 import { ReactNode } from 'react'
+import SubmitButton from './submit-button'
+import { useAtomValue } from 'jotai'
+import { formReadyForSubmitAtom } from '../atoms'
 
 const IndexTokenGraphic = () => {
   return (
@@ -13,32 +15,31 @@ const IndexTokenGraphic = () => {
   )
 }
 
-const timelineItems = [
-  {
-    title: 'Configure FToken',
-    isActive: true,
-  },
-  {
-    title: 'Deploy $SUPER',
-    children: (
-      <Button className="w-full" disabled>
-        Deploy
-      </Button>
-    ),
-  },
-  {
-    title: 'Is there some kind of waiting period?',
-    rightText: '30 minutes',
-  },
-  {
-    title: 'FToken ready to use',
-  },
-  {
-    title: 'Stake ERC20 to govern',
-  },
-]
-
 const DeployTimeline = () => {
+  const formReadyForSubmit = useAtomValue(formReadyForSubmitAtom)
+
+  const timelineItems = [
+    {
+      title: 'Configure FToken',
+      isActive: true,
+    },
+    {
+      title: 'Deploy $SUPER',
+      children: <SubmitButton />,
+      isActive: formReadyForSubmit,
+    },
+    {
+      title: 'Is there some kind of waiting period?',
+      rightText: '30 minutes',
+    },
+    {
+      title: 'FToken ready to use',
+    },
+    {
+      title: 'Stake ERC20 to govern',
+    },
+  ]
+
   return (
     <div className="w-full rounded-3xl bg-background flex flex-col gap-3 px-8 py-6">
       <Timeline items={timelineItems} />

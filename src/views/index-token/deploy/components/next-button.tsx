@@ -1,14 +1,14 @@
 import { Button } from '@/components/ui/button'
 
-import { useAtom } from 'jotai'
+import { useAtom, useSetAtom } from 'jotai'
+import { FieldErrors, FieldValues, useFormContext } from 'react-hook-form'
+import { deployStepAtom, formReadyForSubmitAtom } from '../atoms'
 import {
-  FieldErrors,
-  FieldValues,
-  SubmitHandler,
-  useFormContext,
-} from 'react-hook-form'
-import { deployStepAtom } from '../atoms'
-import { DeployInputs, DeployStepId, dtfDeploySteps } from '../form-fields'
+  DeployFormSchema,
+  DeployInputs,
+  DeployStepId,
+  dtfDeploySteps,
+} from '../form-fields'
 import { DEPLOY_STEPS } from './deploy-accordion'
 
 type FieldName = keyof DeployInputs
@@ -23,19 +23,14 @@ type ExtendedFieldErrors<TFieldValues extends FieldValues> =
 
 const NextButton = () => {
   const [deployStep, setDeployStep] = useAtom(deployStepAtom)
-  const { reset, trigger, handleSubmit, formState, getValues } =
-    useFormContext<DeployInputs>()
+  const setFormReadyForSubmit = useSetAtom(formReadyForSubmitAtom)
+  const { trigger, formState, getValues } = useFormContext<DeployInputs>()
 
   const formErrors = formState.errors as ExtendedFieldErrors<
     typeof formState.errors
   >
 
   const stepError = deployStep ? formErrors[deployStep]?.message : ''
-
-  const processForm: SubmitHandler<DeployInputs> = (data) => {
-    console.log(data)
-    reset()
-  }
 
   const validateCurrentStepAndGoNext = async () => {
     if (!deployStep) return
@@ -56,9 +51,14 @@ const NextButton = () => {
   }
 
   const validateFormAndSubmit = async () => {
-    // const output = await trigger()
-    // if (!output) return
-    // await handleSubmit(processForm)()
+    const values = getValues()
+    const validation = DeployFormSchema.safeParse(values)
+
+    if (!validation.success) {
+      return setFormReadyForSubmit(false)
+    }
+
+    return setFormReadyForSubmit(true)
   }
 
   const next = async () => {
