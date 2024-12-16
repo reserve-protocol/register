@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button'
 import { PlusIcon, XIcon } from 'lucide-react'
-import BasicInput from '../basket/basic-input'
+import BasicInput from '../../components/basic-input'
 import { useFormContext } from 'react-hook-form'
 import { Address } from 'viem'
 
@@ -82,11 +82,8 @@ const AdditionalRevenueRecipients = () => {
   return (
     <div className="flex flex-col gap-2">
       {recipients.map(({ address, share }, index) => (
-        <div className="flex flex-col gap-2">
-          <AdditionalRevenueRecipient
-            index={index}
-            key={`${index}${address}${share}`}
-          />
+        <div className="flex flex-col gap-2" key={`${index}${address}${share}`}>
+          <AdditionalRevenueRecipient index={index} />
         </div>
       ))}
       <AddRecipientButton />

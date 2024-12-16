@@ -14,3 +14,5 @@ export const basketAtom = atom<Token[]>([])
 
 export const tokenListAtom = atom<Token[]>(zappableTokens[1]) // TODO: replace with real data
 export const tokenPricesAtom = atom<Record<Address, number>>({})
+
+export const formReadyForSubmitAtom = atom(false)

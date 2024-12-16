@@ -1,7 +1,7 @@
 import { useAtomValue } from 'jotai'
 import { DollarSign } from 'lucide-react'
 import { basketAtom } from '../../atoms'
-import BasicInput from './basic-input'
+import BasicInput from '../../components/basic-input'
 
 const FTokenValueInput = () => {
   return (

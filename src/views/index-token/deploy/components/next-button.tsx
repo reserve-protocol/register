@@ -1,14 +1,15 @@
 import { Button } from '@/components/ui/button'
 
-import { useAtomValue } from 'jotai'
+import { useAtom, useSetAtom } from 'jotai'
+import { FieldErrors, FieldValues, useFormContext } from 'react-hook-form'
+import { deployStepAtom, formReadyForSubmitAtom } from '../atoms'
 import {
-  FieldErrors,
-  FieldValues,
-  SubmitHandler,
-  useFormContext,
-} from 'react-hook-form'
-import { deployStepAtom } from '../atoms'
-import { DeployInputs, DeployStepId, dtfDeploySteps } from '../form-fields'
+  DeployFormSchema,
+  DeployInputs,
+  DeployStepId,
+  dtfDeploySteps,
+} from '../form-fields'
+import { DEPLOY_STEPS } from './deploy-accordion'
 
 type FieldName = keyof DeployInputs
 type ExtendedFieldErrors<TFieldValues extends FieldValues> =
@@ -21,9 +22,9 @@ type ExtendedFieldErrors<TFieldValues extends FieldValues> =
   }
 
 const NextButton = () => {
-  const deployStep = useAtomValue(deployStepAtom)
-  const { reset, trigger, handleSubmit, formState } =
-    useFormContext<DeployInputs>()
+  const [deployStep, setDeployStep] = useAtom(deployStepAtom)
+  const setFormReadyForSubmit = useSetAtom(formReadyForSubmitAtom)
+  const { trigger, formState, getValues } = useFormContext<DeployInputs>()
 
   const formErrors = formState.errors as ExtendedFieldErrors<
     typeof formState.errors
@@ -31,22 +32,38 @@ const NextButton = () => {
 
   const stepError = deployStep ? formErrors[deployStep]?.message : ''
 
-  const processForm: SubmitHandler<DeployInputs> = (data) => {
-    console.log(data)
-    reset()
-  }
-
-  const next = async () => {
+  const validateCurrentStepAndGoNext = async () => {
     if (!deployStep) return
 
     const fields = dtfDeploySteps[deployStep].fields
-    const output = await trigger(fields as FieldName[], {
+    const output = await trigger([...fields, deployStep] as FieldName[], {
       shouldFocus: true,
     })
 
     if (!output) return
 
-    await handleSubmit(processForm)()
+    const currentStepIdx = DEPLOY_STEPS.findIndex(
+      (step) => step.id === deployStep
+    )
+    const nextStep = DEPLOY_STEPS[currentStepIdx + 1]?.id
+
+    setDeployStep(nextStep)
+  }
+
+  const validateFormAndSubmit = async () => {
+    const values = getValues()
+    const validation = DeployFormSchema.safeParse(values)
+
+    if (!validation.success) {
+      return setFormReadyForSubmit(false)
+    }
+
+    return setFormReadyForSubmit(true)
+  }
+
+  const next = async () => {
+    validateCurrentStepAndGoNext()
+    validateFormAndSubmit()
   }
 
   return (

@@ -21,6 +21,9 @@ import FTokenBasket from '../steps/basket'
 import Governance from '../steps/governance'
 import DemurrageFee from '../steps/fee'
 import RevenueDistribution from '../steps/revenue'
+import Auctions from '../steps/auctions'
+import Roles from '../steps/roles'
+import Voting from '../steps/voting'
 
 export type DeployStep = {
   id: DeployStepId
@@ -65,6 +68,27 @@ export const DEPLOY_STEPS: DeployStep[] = [
     title: 'Revenue distribution',
     titleSecondary: 'Revenue distribution',
     content: <RevenueDistribution />,
+  },
+  {
+    id: 'auctions',
+    icon: <Asterisk size={24} strokeWidth={1.5} />,
+    title: 'Auctions',
+    titleSecondary: 'Auctions',
+    content: <Auctions />,
+  },
+  {
+    id: 'roles',
+    icon: <Asterisk size={24} strokeWidth={1.5} />,
+    title: 'Roles',
+    titleSecondary: 'Roles',
+    content: <Roles />,
+  },
+  {
+    id: 'voting',
+    icon: <Asterisk size={24} strokeWidth={1.5} />,
+    title: 'Voting',
+    titleSecondary: 'Voting',
+    content: <Voting />,
   },
 ]
 

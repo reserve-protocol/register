@@ -23,6 +23,7 @@ import {
   selectedTokensAtom,
   tokenListAtom,
 } from '../../atoms'
+import { useFormContext } from 'react-hook-form'
 
 const OpenButton = () => (
   <div className="flex items-center justify-center h-80 border-t border-b border-border mb-2">
@@ -171,9 +172,31 @@ const TokenList = ({ showSelected = false }: { showSelected?: boolean }) => {
 }
 
 const SubmitSelectedTokens = () => {
+  const { setValue } = useFormContext()
   const selectedTokens = useAtomValue(selectedTokensAtom)
   const setBasket = useSetAtom(basketAtom)
   const disabled = selectedTokens.length === 0
+
+  const onSubmit = () => {
+    setBasket((prev) => {
+      const newBasket = [
+        ...prev.filter(
+          (t) => !selectedTokens.some((s) => s.address === t.address)
+        ),
+        ...selectedTokens,
+      ]
+
+      setValue(
+        'tokensDistribution',
+        newBasket.map((token) => ({
+          address: token.address,
+          percentage: 0,
+        }))
+      )
+
+      return newBasket
+    })
+  }
 
   return (
     <DrawerTrigger asChild disabled={disabled}>
@@ -183,14 +206,7 @@ const SubmitSelectedTokens = () => {
           disabled ? 'bg-muted-foreground' : ''
         )}
         disabled={disabled}
-        onClick={() => {
-          setBasket((prev) => [
-            ...prev.filter(
-              (t) => !selectedTokens.some((s) => s.address === t.address)
-            ),
-            ...selectedTokens,
-          ])
-        }}
+        onClick={onSubmit}
       >
         {disabled
           ? 'Select tokens'
