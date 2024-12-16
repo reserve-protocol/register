@@ -7,7 +7,7 @@ import { ReactNode } from 'react'
 
 const IndexTokenGraphic = () => {
   return (
-    <div className="w-full h-40 rounded-3xl bg-background flex items-center justify-center">
+    <div className="w-full h-[165px] rounded-3xl bg-background flex items-center justify-center">
       <div className="text-muted-foreground">Index token graphic</div>
     </div>
   )
@@ -40,7 +40,7 @@ const timelineItems = [
 
 const DeployTimeline = () => {
   return (
-    <div className="w-full rounded-3xl bg-background flex flex-col gap-3 p-6">
+    <div className="w-full rounded-3xl bg-background flex flex-col gap-3 px-8 py-6">
       <Timeline items={timelineItems} />
     </div>
   )

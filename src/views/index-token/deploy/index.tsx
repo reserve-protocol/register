@@ -20,7 +20,7 @@ const IndexTokenDeploy = () => {
       <div className="container grid grid-cols-3 gap-2 py-12">
         <PriceUpdater />
         <FormProvider {...form}>
-          <div className="flex rounded-3xl border-4 border-secondary col-span-2">
+          <div className="flex rounded-3xl border-4 border-secondary col-span-2 h-max">
             <DeployAccordion />
           </div>
           <div className="flex h-max rounded-3xl border-4 border-secondary col-span-1">
