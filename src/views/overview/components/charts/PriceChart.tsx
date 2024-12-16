@@ -7,7 +7,7 @@ import useQuery from 'hooks/useQuery'
 import useRToken from 'hooks/useRToken'
 import useTimeFrom from 'hooks/useTimeFrom'
 import { useAtomValue } from 'jotai'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { rTokenPriceAtom } from 'state/atoms'
 import { Box, BoxProps } from 'theme-ui'
 import { formatCurrency } from 'utils'
@@ -54,7 +54,7 @@ const PRICE_OPTIONS = [
 const PriceChart = (props: BoxProps) => {
   const rToken = useRToken()
   const [current, setCurrent] = useState(TIME_RANGES.MONTH)
-  const [currentPrice, setCurrentPrice] = useState<'ETH' | 'USD'>('ETH')
+  const [currentPrice, setCurrentPrice] = useState<'ETH' | 'USD'>('USD')
   const price = useAtomValue(rTokenPriceAtom)
   const fromTime = useTimeFrom(current)
   const query = current === TIME_RANGES.DAY ? hourlyPriceQuery : dailyPriceQuery
@@ -82,7 +82,10 @@ const PriceChart = (props: BoxProps) => {
           const display =
             rToken?.targetUnits === 'ETH' && currentPrice === 'ETH'
               ? `${formatCurrency(+basketRate, 4)} ETH`
-              : `$${formatCurrency(+priceUSD, rToken?.targetUnits === 'ETH' ? 2 : 3)}`
+              : `$${formatCurrency(
+                  +priceUSD,
+                  rToken?.targetUnits === 'ETH' ? 2 : 3
+                )}`
           return {
             value,
             label: dayjs.unix(+timestamp).format('YYYY-M-D HH:mm:ss'),
@@ -92,6 +95,15 @@ const PriceChart = (props: BoxProps) => {
       ) || []
     )
   }, [data, currentPrice, rToken?.symbol, rToken?.targetUnits])
+
+  // TODO: HACK to display correct prices
+  useEffect(() => {
+    if (rToken?.symbol?.includes('ETH')) {
+      setCurrentPrice('ETH')
+    } else {
+      setCurrentPrice('USD')
+    }
+  }, [rToken?.symbol])
 
   const priceTitle = useMemo(() => {
     if (rToken?.targetUnits === 'ETH' && currentPrice === 'ETH') {
