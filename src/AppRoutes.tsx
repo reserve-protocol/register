@@ -28,10 +28,13 @@ import GovernanceSetup from '@/views/rtoken/deploy/components/Governance'
 import AllTokenList from './views/tokens/Tokens'
 import DTFContainer from './views/dtf/dtf-container'
 import DTFOverview from './views/dtf/overview'
+import Discover from './views/discover'
 
+// TODO: Remove COMPARE
 const AppRoutes = () => (
   <Routes>
     <Route path={ROUTES.HOME} element={<Home />} />
+    <Route path={ROUTES.DISCOVER} element={<Discover />} />
     <Route path={ROUTES.COMPARE} element={<Compare />} />
     <Route path={ROUTES.BRIDGE} element={<Bridge />} />
     <Route path={ROUTES.PORTFOLIO} element={<PortfolioWrapper />} />
