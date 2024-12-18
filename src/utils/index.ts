@@ -262,3 +262,12 @@ export const formatDate = (timestamp?: string | number) => {
       : 'ddd MMM DD, YYYY, hh:mm a'
   return date.format(formatString)
 }
+
+export const humanizeMinutes = (minutes: number) => {
+  if (minutes <= 60) {
+    return `${minutes}m`
+  }
+  return humanizeDuration(minutes * 60 * 1000, {
+    language: 'en',
+  })
+}
