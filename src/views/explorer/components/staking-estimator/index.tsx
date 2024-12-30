@@ -1,33 +1,14 @@
 import { Trans, t } from '@lingui/macro'
 import { CellContext, Row, createColumnHelper } from '@tanstack/react-table'
-import BasketCubeIcon from 'components/icons/BasketCubeIcon'
-import ChainLogo from 'components/icons/ChainLogo'
 import { Table, TableProps } from 'components/table'
 import TokenItem from 'components/token-item'
 import useRTokenLogo from 'hooks/useRTokenLogo'
 import useTokenList, { ListedToken } from 'hooks/useTokenList'
-import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { useMemo, useState } from 'react'
-import { ChevronDown, ChevronUp } from 'react-feather'
+import { useMemo } from 'react'
 import { Box, Link, Text } from 'theme-ui'
-import {
-  formatCurrency,
-  formatPercentage,
-  formatUsdCurrencyCell,
-  getTokenRoute,
-} from 'utils'
-import { ROUTES, TARGET_UNITS, supportedChainList } from 'utils/constants'
-import CirclesIcon from 'components/icons/CirclesIcon'
-import Ethereum from 'components/icons/logos/Ethereum'
-import EarnNavIcon from 'components/icons/EarnNavIcon'
-import { borderRadius } from 'theme'
-import ChainFilter from 'views/explorer/components/filters/ChainFilter'
+import { formatCurrency, formatPercentage, getTokenRoute } from 'utils'
+import { ROUTES } from 'utils/constants'
 import CalculatorIcon from 'components/icons/CalculatorIcon'
-
-const filtersAtom = atom<{ chains: string[]; targets: string[] }>({
-  chains: supportedChainList.map((chain) => chain.toString()),
-  targets: [TARGET_UNITS.USD, TARGET_UNITS.ETH],
-})
 
 const renderSubComponent = ({ row }: { row: Row<ListedToken> }) => {
   return (
