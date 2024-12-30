@@ -19,6 +19,7 @@ import PortfolioWrapper from 'views/portfolio'
 import Staking from 'views/staking'
 import Home from 'views/home'
 import AvailableRevenue from 'views/explorer/components/revenue'
+import StakingEstimator from 'views/explorer/components/staking-estimator'
 import Terms from 'views/terms'
 
 // Preloadable components
@@ -99,6 +100,10 @@ const AppRoutes = () => (
         element={<ExploreGovernance />}
       />
       <Route path={ROUTES.EXPLORER_REVENUE} element={<AvailableRevenue />} />
+      <Route
+        path={ROUTES.EXPLORER_STAKING_ESTIMATOR}
+        element={<StakingEstimator />}
+      />
     </Route>
     <Route path={ROUTES.TERMS} element={<Terms />} />
     <Route path="*" element={<Box>Not found</Box>} />
