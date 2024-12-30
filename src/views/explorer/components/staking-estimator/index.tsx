@@ -189,7 +189,6 @@ const ExploreStakingEstimator = (props: Partial<TableProps>) => {
         data={list}
         isLoading={isLoading && !list.length}
         columns={columns}
-        onRowClick={handleClick}
         sorting
         sortBy={[{ id: 'supply', desc: true }]}
         sx={{ borderRadius: '0 0 20px 20px' }}
