@@ -51,18 +51,11 @@ const OpenButtonSecondary = () => (
   </DrawerTrigger>
 )
 
-const CloseButton = () => (
-  <DrawerTrigger asChild className="w-max rounded-xl px-2 h-9">
-    <Button variant="outline">
-      <XIcon size={20} strokeWidth={1.5} />
-    </Button>
-  </DrawerTrigger>
-)
-
 const SearchToken = () => {
   const [search, setSearch] = useAtom(searchTokenAtom)
   return (
     <SearchInput
+      className="mx-2"
       placeholder="Search by token name or address"
       value={search}
       onChange={(e) => {
@@ -130,20 +123,16 @@ const TokenListItem = ({
 const TokenSelectorHeader = () => {
   const selectedTokens = useAtomValue(selectedTokensAtom)
   return (
-    <>
-      <DrawerTitle className="flex gap-2 mb-2">
-        <CloseButton />
-        <TabsList className="h-9">
-          <TabsTrigger value="all" className="w-max h-7">
-            All
-          </TabsTrigger>
-          <TabsTrigger value="selected" className="w-max h-7">
-            Selected ({selectedTokens.length})
-          </TabsTrigger>
-        </TabsList>
-      </DrawerTitle>
-      <SearchToken />
-    </>
+    <DrawerTitle className="flex gap-2 mt-2 px-2 mb-2">
+      <TabsList className="h-9">
+        <TabsTrigger value="all" className="w-max h-7">
+          All
+        </TabsTrigger>
+        <TabsTrigger value="selected" className="w-max h-7">
+          Selected ({selectedTokens.length})
+        </TabsTrigger>
+      </TabsList>
+    </DrawerTitle>
   )
 }
 
@@ -159,7 +148,7 @@ const TokenList = ({ showSelected = false }: { showSelected?: boolean }) => {
   )
 
   return (
-    <div className="flex flex-col gap-1">
+    <div className="flex flex-col px-2 gap-1 ">
       {filteredTokens.map((token) => (
         <TokenListItem
           key={token.address}
@@ -231,21 +220,23 @@ const TokenSelector = () => {
     >
       {!!basket.length ? <OpenButtonSecondary /> : <OpenButton />}
 
-      <DrawerContent className="fixed left-auto right-2 top-2 bottom-2 outline-none w-[500px] flex bg-transparent border-none mt-0">
-        <div className="bg-card h-full w-full grow p-2 flex flex-col rounded-[16px] overflow-y-auto">
-          <Tabs defaultValue="all">
-            <TokenSelectorHeader />
-            <TabsContent value="all">
-              <TokenList />
-            </TabsContent>
-            <TabsContent value="selected">
-              <TokenList showSelected={true} />
-            </TabsContent>
-          </Tabs>
-          <DrawerFooter className="p-0 mt-auto">
-            <SubmitSelectedTokens />
-          </DrawerFooter>
-        </div>
+      <DrawerContent>
+        <Tabs
+          defaultValue="all"
+          className="flex flex-col flex-grow overflow-hidden relative"
+        >
+          <TokenSelectorHeader />
+          <SearchToken />
+          <TabsContent value="all" className="overflow-auto">
+            <TokenList />
+          </TabsContent>
+          <TabsContent value="selected" className="overflow-auto">
+            <TokenList showSelected={true} />
+          </TabsContent>
+        </Tabs>
+        <DrawerFooter>
+          <SubmitSelectedTokens />
+        </DrawerFooter>
       </DrawerContent>
     </Drawer>
   )
