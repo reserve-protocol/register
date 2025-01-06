@@ -35,11 +35,11 @@ const DrawerOverlay = React.forwardRef<
 DrawerOverlay.displayName = DrawerPrimitive.Overlay.displayName
 
 const DrawerCloseButton = () => (
-  <DrawerTrigger
-    asChild
-    className="fixed right-2 top-2 w-max rounded-xl px-2 h-9"
-  >
-    <Button variant="outline">
+  <DrawerTrigger asChild>
+    <Button
+      variant="outline"
+      className="fixed z-10 right-2 top-2 w-max rounded-xl px-2 h-9"
+    >
       <XIcon size={20} strokeWidth={1.5} />
     </Button>
   </DrawerTrigger>

@@ -1,3 +1,4 @@
+import TokenLogo from '@/components/token-logo'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import {
@@ -8,62 +9,71 @@ import {
   DrawerTrigger,
 } from '@/components/ui/drawer'
 import { SearchInput } from '@/components/ui/input'
+import { Skeleton } from '@/components/ui/skeleton'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { cn } from '@/lib/utils'
 import { Token } from '@/types'
 import { shortenAddress } from '@/utils'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
+import { useQuery } from '@tanstack/react-query'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
 import { ArrowUpRightIcon, PlusIcon } from 'lucide-react'
 import { useFormContext } from 'react-hook-form'
-import {
-  basketAtom,
-  searchTokenAtom,
-  selectedTokensAtom,
-  tokenListAtom,
-} from '../../atoms'
-import { useQuery } from '@tanstack/react-query'
-import TokenLogo from '@/components/token-logo'
+import { basketAtom, searchTokenAtom, selectedTokensAtom } from '../../atoms'
+import AutoSizer from 'react-virtualized-auto-sizer'
+import { FixedSizeList as List } from 'react-window'
+import { useMemo, useCallback } from 'react'
 
-const OpenButton = () => (
-  <div className="flex items-center justify-center h-80 border-t border-b border-border mb-2">
+interface TokenButtonProps {
+  variant: 'primary' | 'secondary'
+}
+
+const TokenButton = ({ variant }: TokenButtonProps) => {
+  const isPrimary = variant === 'primary'
+  return (
     <DrawerTrigger asChild>
       <Button
-        variant="outline-primary"
-        className="flex gap-2 text-base pl-3 pr-4 py-5 rounded-xl"
+        variant={isPrimary ? 'outline-primary' : 'accent'}
+        className={cn(
+          'flex gap-2 text-base pl-3 pr-4 rounded-xl',
+          isPrimary ? 'py-5' : 'py-7 mx-2 bg-muted/80'
+        )}
       >
         <PlusIcon size={16} />
         Add collateral
       </Button>
     </DrawerTrigger>
+  )
+}
+
+const OpenButton = () => (
+  <div className="flex items-center justify-center h-80 border-t border-b border-border mb-2">
+    <TokenButton variant="primary" />
   </div>
 )
 
-const OpenButtonSecondary = () => (
-  <DrawerTrigger asChild>
-    <Button
-      variant="accent"
-      className="flex gap-2 text-base pl-3 pr-4 py-7 mx-2 rounded-xl bg-muted/80"
-    >
-      <PlusIcon size={16} />
-      Add collateral
-    </Button>
-  </DrawerTrigger>
-)
+const OpenButtonSecondary = () => <TokenButton variant="secondary" />
 
 const SearchToken = () => {
   const [search, setSearch] = useAtom(searchTokenAtom)
+  const handleSearch = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => setSearch(e.target.value),
+    [setSearch]
+  )
+
   return (
     <SearchInput
       className="mx-2"
       placeholder="Search by token name or address"
       value={search}
-      onChange={(e) => {
-        setSearch(e.target.value)
-      }}
+      onChange={handleSearch}
     />
   )
+}
+
+interface TokenListItemProps extends Token {
+  showSelected?: boolean
 }
 
 const TokenListItem = ({
@@ -72,24 +82,25 @@ const TokenListItem = ({
   symbol,
   decimals,
   logoURI,
-  showSelected = false,
-}: Token & { showSelected?: boolean }) => {
+}: TokenListItemProps) => {
   const [selectedTokens, setSelectedTokens] = useAtom(selectedTokensAtom)
   const checked = selectedTokens.some((t) => t.address === address)
-  const onCheckedChange = (checked: boolean) => {
-    setSelectedTokens((prev) => [
-      ...prev.filter((t) => t.address !== address),
-      ...(checked ? [{ address, name, symbol, decimals }] : []),
-    ])
-  }
 
-  if (showSelected && !checked) return null
+  const onCheckedChange = useCallback(
+    (checked: boolean) => {
+      setSelectedTokens((prev) => [
+        ...prev.filter((t) => t.address !== address),
+        ...(checked ? [{ address, name, symbol, decimals, logoURI }] : []),
+      ])
+    },
+    [address, name, symbol, decimals, setSelectedTokens]
+  )
 
   return (
     <label
       htmlFor={address}
       role="div"
-      className="w-full rounded-xl flex items-center gap-2 justify-between px-4 py-3 bg-muted cursor-pointer"
+      className="w-full rounded-xl flex items-center gap-2 justify-between px-4 py-3 bg-muted cursor-pointer hover:bg-muted/80 transition-colors"
     >
       <div className="flex items-center gap-2">
         <TokenLogo src={logoURI} size="xl" />
@@ -104,10 +115,11 @@ const TokenListItem = ({
       </div>
       <div className="flex items-center gap-[12px]">
         <a
-          className="bg-muted-foreground/10 rounded-full p-1 hover:bg-muted-foreground/20"
+          className="bg-muted-foreground/10 rounded-full p-1 hover:bg-muted-foreground/20 transition-colors"
           role="button"
-          href={getExplorerLink(address, 1, ExplorerDataType.TOKEN)} // TODO: replace with real data
+          href={getExplorerLink(address, 1, ExplorerDataType.TOKEN)}
           target="_blank"
+          rel="noopener noreferrer"
         >
           <ArrowUpRightIcon size={24} strokeWidth={1.5} />
         </a>
@@ -138,32 +150,122 @@ const TokenSelectorHeader = () => {
   )
 }
 
-const TokenList = ({ showSelected = false }: { showSelected?: boolean }) => {
+const LoadingSkeletons = () => (
+  <>
+    {Array.from({ length: 4 }).map((_, i) => (
+      <Skeleton key={i} className="h-[68px]" />
+    ))}
+  </>
+)
+
+interface TokenListProps {
+  showSelected?: boolean
+}
+
+const TokenList = ({ showSelected = false }: TokenListProps) => {
   const search = useAtomValue(searchTokenAtom)
-  const { data: tokenList = [] } = useQuery({
+  const {
+    data: tokenList = [],
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: ['coingecko-tokens'],
     queryFn: async () => {
-      const response = await fetch('https://tokens.coingecko.com/base/all.json')
-      const data = await response.json()
-      return data.tokens as Token[]
+      try {
+        const response = await fetch(
+          'https://tokens.coingecko.com/base/all.json'
+        )
+        if (!response.ok) {
+          throw new Error('Failed to fetch token list')
+        }
+        const data = await response.json()
+        return data.tokens as Token[]
+      } catch (error) {
+        console.error('Error fetching token list:', error)
+        throw error
+      }
     },
+    staleTime: 5 * 60 * 1000, // Cache for 5 minutes
+    retry: 2,
   })
 
-  const filteredTokens = tokenList.filter(
-    (token) =>
-      token.name.toLowerCase().includes(search.toLowerCase()) ||
-      token.symbol.toLowerCase().includes(search.toLowerCase()) ||
-      token.address.toLowerCase().includes(search.toLowerCase())
+  const filteredTokens = useMemo(() => {
+    if (!tokenList.length) return []
+
+    const searchLower = search.trim().toLowerCase()
+    if (!searchLower) return tokenList
+
+    return tokenList.filter((token) => {
+      const { name, symbol, address } = token
+      return (
+        name.toLowerCase().includes(searchLower) ||
+        symbol.toLowerCase().includes(searchLower) ||
+        address.toLowerCase() === searchLower // Exact match for addresses
+      )
+    })
+  }, [tokenList, search])
+
+  const renderRow = useCallback(
+    ({ index, style }: { index: number; style: React.CSSProperties }) => {
+      const token = filteredTokens[index]
+      if (!token) return null
+
+      return (
+        <div style={style} className="px-2">
+          <TokenListItem
+            key={token.address}
+            showSelected={showSelected}
+            {...token}
+          />
+        </div>
+      )
+    },
+    [filteredTokens, showSelected]
   )
 
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center h-full p-4 text-center text-muted-foreground">
+        <p>Failed to load tokens</p>
+        <p className="text-sm">Please try again later</p>
+      </div>
+    )
+  }
+
   return (
-    <div className="flex flex-col px-2 gap-1 ">
-      {filteredTokens.map((token) => (
-        <TokenListItem
-          key={token.address}
-          showSelected={showSelected}
-          {...token}
-        />
+    <div className="flex flex-col h-full gap-1">
+      {isLoading ? (
+        <LoadingSkeletons />
+      ) : filteredTokens.length === 0 ? (
+        <div className="flex items-center justify-center h-full text-muted-foreground">
+          No tokens found
+        </div>
+      ) : (
+        <AutoSizer>
+          {({ height, width }) => (
+            <List
+              height={height}
+              itemCount={filteredTokens.length}
+              itemSize={72}
+              width={width}
+              className="hidden-scrollbar"
+              overscanCount={20}
+            >
+              {renderRow}
+            </List>
+          )}
+        </AutoSizer>
+      )}
+    </div>
+  )
+}
+
+const SelectedTokenList = () => {
+  const selectedTokens = useAtomValue(selectedTokensAtom)
+  return (
+    <div className="flex flex-col h-full px-2 gap-1">
+      {selectedTokens.map((token) => (
+        <TokenListItem key={token.address} {...token} />
       ))}
     </div>
   )
@@ -175,7 +277,7 @@ const SubmitSelectedTokens = () => {
   const setBasket = useSetAtom(basketAtom)
   const disabled = selectedTokens.length === 0
 
-  const onSubmit = () => {
+  const onSubmit = useCallback(() => {
     setBasket((prev) => {
       const newBasket = [
         ...prev.filter(
@@ -194,7 +296,7 @@ const SubmitSelectedTokens = () => {
 
       return newBasket
     })
-  }
+  }, [selectedTokens, setBasket, setValue])
 
   return (
     <DrawerTrigger asChild disabled={disabled}>
@@ -219,14 +321,13 @@ const TokenSelector = () => {
   const resetSelectedTokens = useResetAtom(selectedTokensAtom)
   const resetSearchToken = useResetAtom(searchTokenAtom)
 
+  const handleClose = useCallback(() => {
+    resetSelectedTokens()
+    resetSearchToken()
+  }, [resetSelectedTokens, resetSearchToken])
+
   return (
-    <Drawer
-      direction="right"
-      onClose={() => {
-        resetSelectedTokens()
-        resetSearchToken()
-      }}
-    >
+    <Drawer direction="right" onClose={handleClose}>
       {!!basket.length ? <OpenButtonSecondary /> : <OpenButton />}
 
       <DrawerContent>
@@ -236,11 +337,11 @@ const TokenSelector = () => {
         >
           <TokenSelectorHeader />
           <SearchToken />
-          <TabsContent value="all" className="overflow-auto">
+          <TabsContent value="all" className="flex-grow overflow-auto">
             <TokenList />
           </TabsContent>
           <TabsContent value="selected" className="overflow-auto">
-            <TokenList showSelected={true} />
+            <SelectedTokenList />
           </TabsContent>
         </Tabs>
         <DrawerFooter>

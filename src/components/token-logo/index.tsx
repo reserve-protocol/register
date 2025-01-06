@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { RESERVE_STORAGE } from '@/utils/constants'
+import { cn } from '@/lib/utils'
 
 type Sizes = 'sm' | 'md' | 'lg' | 'xl'
 
@@ -60,6 +61,7 @@ const TokenLogo = React.forwardRef<HTMLImageElement, Props>((props, ref) => {
       height={h}
       width={w}
       style={{ height: h, width: w }}
+      className={cn('flex-shrink-0 rounded-full', className)}
       {...rest}
     />
   )
