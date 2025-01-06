@@ -13,15 +13,28 @@ const sizeMap: Record<Sizes, { width: number; height: number }> = {
 interface Props extends React.ImgHTMLAttributes<HTMLImageElement> {
   symbol?: string
   size?: Sizes
+  address?: string
+  chain?: number
 }
 
 const TokenLogo = React.forwardRef<HTMLImageElement, Props>((props, ref) => {
-  const { symbol, size = 'md', height, width, className, src, ...rest } = props
+  const {
+    symbol,
+    size = 'md',
+    height,
+    address,
+    chain,
+    width,
+    className,
+    src,
+    ...rest
+  } = props
+  const h = height || sizeMap[size].height
+  const w = width || sizeMap[size].width
   const [srcState, setSrcState] = React.useState('')
 
-  const preloadImage = (symbol: string): Promise<string> => {
+  const preloadImage = (url: string): Promise<string> => {
     return new Promise((resolve) => {
-      const url = RESERVE_STORAGE + symbol + '.png'
       const highResImage = new Image()
       highResImage.src = url
       highResImage.onload = () => {
@@ -31,17 +44,22 @@ const TokenLogo = React.forwardRef<HTMLImageElement, Props>((props, ref) => {
   }
 
   React.useEffect(() => {
-    if (symbol && !src) {
-      preloadImage(symbol).then(setSrcState)
+    if (!src && (symbol || (address && chain))) {
+      const href = symbol
+        ? RESERVE_STORAGE + symbol + '.png'
+        : `https://token-icons.llamao.fi/icons/tokens/${chain}/${address}?h=${h}&w=${w}`
+
+      preloadImage(href).then(setSrcState)
     }
-  }, [symbol])
+  }, [symbol, address, chain])
 
   return (
     <img
       src={src || srcState || '/svgs/defaultLogo.svg'}
       ref={ref}
-      height={height || sizeMap[size].height}
-      width={width || sizeMap[size].width}
+      height={h}
+      width={w}
+      style={{ height: h, width: w }}
       {...rest}
     />
   )

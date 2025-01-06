@@ -1,4 +1,3 @@
-import TokenLogo from '@/components/icons/TokenLogo'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import {
@@ -16,14 +15,16 @@ import { shortenAddress } from '@/utils'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
-import { ArrowUpRightIcon, PlusIcon, XIcon } from 'lucide-react'
+import { ArrowUpRightIcon, PlusIcon } from 'lucide-react'
+import { useFormContext } from 'react-hook-form'
 import {
   basketAtom,
   searchTokenAtom,
   selectedTokensAtom,
   tokenListAtom,
 } from '../../atoms'
-import { useFormContext } from 'react-hook-form'
+import { useQuery } from '@tanstack/react-query'
+import TokenLogo from '@/components/token-logo'
 
 const OpenButton = () => (
   <div className="flex items-center justify-center h-80 border-t border-b border-border mb-2">
@@ -70,6 +71,7 @@ const TokenListItem = ({
   name,
   symbol,
   decimals,
+  logoURI,
   showSelected = false,
 }: Token & { showSelected?: boolean }) => {
   const [selectedTokens, setSelectedTokens] = useAtom(selectedTokensAtom)
@@ -89,8 +91,8 @@ const TokenListItem = ({
       role="div"
       className="w-full rounded-xl flex items-center gap-2 justify-between px-4 py-3 bg-muted cursor-pointer"
     >
-      <div className="flex gap-2">
-        <TokenLogo symbol={symbol} width={32} />
+      <div className="flex items-center gap-2">
+        <TokenLogo src={logoURI} size="xl" />
         <div className="flex flex-col">
           <div className="text-base font-bold">{name}</div>
           <div className="flex items-center gap-1 text-sm text-muted-foreground">
@@ -137,10 +139,17 @@ const TokenSelectorHeader = () => {
 }
 
 const TokenList = ({ showSelected = false }: { showSelected?: boolean }) => {
-  const allTokens = useAtomValue(tokenListAtom)
   const search = useAtomValue(searchTokenAtom)
+  const { data: tokenList = [] } = useQuery({
+    queryKey: ['coingecko-tokens'],
+    queryFn: async () => {
+      const response = await fetch('https://tokens.coingecko.com/base/all.json')
+      const data = await response.json()
+      return data.tokens as Token[]
+    },
+  })
 
-  const filteredTokens = allTokens.filter(
+  const filteredTokens = tokenList.filter(
     (token) =>
       token.name.toLowerCase().includes(search.toLowerCase()) ||
       token.symbol.toLowerCase().includes(search.toLowerCase()) ||
