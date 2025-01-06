@@ -55,7 +55,6 @@ export function useWatchReadContract<
 
   useEffect(() => {
     if (shouldRefresh) {
-      console.log('refetch!')
       refetch()
     }
   }, [shouldRefresh])
@@ -84,7 +83,6 @@ export function useWatchReadContracts<
 
   useEffect(() => {
     if (shouldRefresh) {
-      console.log('refetch!')
       refetch()
     }
   }, [shouldRefresh])

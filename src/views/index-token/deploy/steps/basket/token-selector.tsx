@@ -242,7 +242,7 @@ const TokenSelector = () => {
               <TokenList showSelected={true} />
             </TabsContent>
           </Tabs>
-          <DrawerFooter className="p-0 mt-2">
+          <DrawerFooter className="p-0 mt-auto">
             <SubmitSelectedTokens />
           </DrawerFooter>
         </div>

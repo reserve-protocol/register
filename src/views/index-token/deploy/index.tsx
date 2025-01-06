@@ -17,13 +17,13 @@ const IndexTokenDeploy = () => {
 
   return (
     <div className="min-h-full">
-      <div className="container grid grid-cols-3 gap-2 py-12">
+      <div className="container grid grid-cols-2 lg:grid-cols-3 gap-2 py-6 px-4">
         <PriceUpdater />
         <FormProvider {...form}>
           <div className="flex rounded-3xl border-4 border-secondary col-span-2 h-max">
             <DeployAccordion />
           </div>
-          <div className="flex h-max rounded-3xl border-4 border-secondary col-span-1">
+          <div className="hidden lg:flex h-max rounded-3xl border-4 border-secondary col-span-1">
             <RightPanel />
           </div>
         </FormProvider>

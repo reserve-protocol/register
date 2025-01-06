@@ -3,6 +3,7 @@ import { tokenListAtom, tokenPricesAtom } from '../atoms'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 
+// TODO: Most likely going away
 const PriceUpdater = () => {
   const allTokens = useAtomValue(tokenListAtom)
   const setTokenPrices = useSetAtom(tokenPricesAtom)

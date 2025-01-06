@@ -48,6 +48,7 @@ const BasicInput = ({
                 startAdornment={
                   labelPosition === 'start' ? adornment : undefined
                 }
+                autoComplete="off"
                 endAdornment={labelPosition === 'end' ? adornment : undefined}
                 className="px-1 text-base"
                 {...field}

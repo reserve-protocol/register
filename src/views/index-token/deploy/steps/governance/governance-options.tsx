@@ -7,14 +7,14 @@ import GovernanceSpecificWallet from './form-specific-wallet'
 import { useFormContext } from 'react-hook-form'
 
 const GOVERNANCE_OPTIONS = [
-  {
-    title: 'New ERC20 token',
-    description:
-      'Explain the benefit of using our framwork & clarify that it doesn’t mean giving.',
-    icon: <Asterisk size={24} strokeWidth={1.5} />,
-    form: <GovernanceNewERC20 />,
-    fields: ['governanceERC20name', 'governanceERC20symbol'],
-  },
+  // {
+  //   title: 'New ERC20 token',
+  //   description:
+  //     'Explain the benefit of using our framwork & clarify that it doesn’t mean giving.',
+  //   icon: <Asterisk size={24} strokeWidth={1.5} />,
+  //   form: <GovernanceNewERC20 />,
+  //   fields: ['governanceERC20name', 'governanceERC20symbol'],
+  // },
   {
     title: 'Existing ERC20 token',
     description:

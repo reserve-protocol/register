@@ -53,6 +53,7 @@ const ChainOption = ({
   )
 }
 
+// TODO: Currently only "Base" is supported and shown, this component also handles the chain switching to Base
 const ChainSelector = () => {
   const [chainId, setChain] = useAtom(chainIdAtom)
   const walletChainId = useAtomValue(walletChainAtom)
@@ -84,9 +85,16 @@ const ChainSelector = () => {
     }
   }
 
+  useEffect(() => {
+    if (chainId !== ChainId.Base) {
+      handleChainChange(ChainId.Base as AvailableChain)
+    }
+  }, [])
+
   return (
     <div className="flex flex-col lg:flex-row gap-2 p-2">
-      {supportedChainList.map((chain) => (
+      {/* {supportedChainList.map((chain) => ( */}
+      {[ChainId.Base].map((chain) => (
         <ChainOption
           key={chain}
           chainId={chain}
