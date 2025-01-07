@@ -1,11 +1,11 @@
 import DiscordIcon from '@/components/icons/DiscordIcon'
 import { RTokenIcon } from '@/components/icons/logos'
 import Timeline from '@/components/ui/timeline'
+import { useAtomValue } from 'jotai'
 import { Asterisk, PlayIcon } from 'lucide-react'
 import { ReactNode } from 'react'
-import SubmitButton from './submit-button'
-import { useAtomValue } from 'jotai'
 import { formReadyForSubmitAtom } from '../atoms'
+import ConfirmIndexDeploy from '../steps/confirm-deploy'
 
 const IndexTokenGraphic = () => {
   return (
@@ -20,12 +20,12 @@ const DeployTimeline = () => {
 
   const timelineItems = [
     {
-      title: 'Configure FToken',
+      title: 'Configure Index DTF',
       isActive: true,
     },
     {
       title: 'Deploy $SUPER',
-      children: <SubmitButton />,
+      children: <ConfirmIndexDeploy />,
       isActive: formReadyForSubmit,
     },
     {
@@ -33,7 +33,7 @@ const DeployTimeline = () => {
       rightText: '30 minutes',
     },
     {
-      title: 'FToken ready to use',
+      title: 'Index DTF ready to use',
     },
     {
       title: 'Stake ERC20 to govern',

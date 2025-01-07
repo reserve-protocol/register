@@ -19,11 +19,11 @@ import { useQuery } from '@tanstack/react-query'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
 import { ArrowUpRightIcon, PlusIcon } from 'lucide-react'
+import { useCallback, useEffect, useMemo } from 'react'
 import { useFormContext } from 'react-hook-form'
-import { basketAtom, searchTokenAtom, selectedTokensAtom } from '../../atoms'
 import AutoSizer from 'react-virtualized-auto-sizer'
 import { FixedSizeList as List } from 'react-window'
-import { useMemo, useCallback } from 'react'
+import { basketAtom, searchTokenAtom, selectedTokensAtom } from '../../atoms'
 
 interface TokenButtonProps {
   variant: 'primary' | 'secondary'
@@ -318,8 +318,15 @@ const SubmitSelectedTokens = () => {
 
 const TokenSelector = () => {
   const basket = useAtomValue(basketAtom)
+  const setSelectedTokens = useSetAtom(selectedTokensAtom)
   const resetSelectedTokens = useResetAtom(selectedTokensAtom)
   const resetSearchToken = useResetAtom(searchTokenAtom)
+
+  useEffect(() => {
+    if (basket.length) {
+      setSelectedTokens(basket)
+    }
+  }, [basket, setSelectedTokens])
 
   const handleClose = useCallback(() => {
     resetSelectedTokens()
@@ -327,7 +334,7 @@ const TokenSelector = () => {
   }, [resetSelectedTokens, resetSearchToken])
 
   return (
-    <Drawer direction="right" onClose={handleClose}>
+    <Drawer onClose={handleClose}>
       {!!basket.length ? <OpenButtonSecondary /> : <OpenButton />}
 
       <DrawerContent>

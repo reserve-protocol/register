@@ -53,7 +53,6 @@ const ChainOption = ({
   )
 }
 
-// TODO: Currently only "Base" is supported and shown, this component also handles the chain switching to Base
 const ChainSelector = () => {
   const [chainId, setChain] = useAtom(chainIdAtom)
   const walletChainId = useAtomValue(walletChainAtom)
@@ -93,8 +92,7 @@ const ChainSelector = () => {
 
   return (
     <div className="flex flex-col lg:flex-row gap-2 p-2">
-      {/* {supportedChainList.map((chain) => ( */}
-      {[ChainId.Base].map((chain) => (
+      {[ChainId.Mainnet, ChainId.Base].map((chain) => (
         <ChainOption
           key={chain}
           chainId={chain}

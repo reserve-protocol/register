@@ -50,6 +50,7 @@ const TokenDistribution = ({ tokenIndex }: { tokenIndex: number }) => {
 const TokenPreview = ({
   address,
   name,
+  logoURI,
   symbol,
   index,
 }: Token & { index: number }) => {
@@ -73,7 +74,7 @@ const TokenPreview = ({
       className="w-full flex items-center gap-2 justify-between p-4 [&:not(:last-child)]:border-b-[1px]"
     >
       <div className="flex gap-2">
-        <TokenLogo symbol={symbol} width={32} />
+        <TokenLogo symbol={symbol} src={logoURI} width={32} />
         <div className="flex flex-col">
           <div className="text-base font-bold">{name}</div>
           <div className="flex items-center gap-1 text-sm text-muted-foreground">
