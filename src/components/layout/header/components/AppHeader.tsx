@@ -1,34 +1,98 @@
 import Account from 'components/account'
 import ThemeColorMode from 'components/dark-mode-toggle/ThemeColorMode'
-import { Box, Flex } from 'theme-ui'
+import { Box } from 'theme-ui'
 import Brand from './Brand'
 import CoinbaseSubscribe from './CoinbaseSubscribe'
-import HeaderMenu from './HeaderMenu'
+// import HeaderMenu from './HeaderMenu'
+import BasketCubeIcon from '@/components/icons/BasketCubeIcon'
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  navigationMenuTriggerStyle,
+} from '@/components/ui/navigation-menu'
+import { cn } from '@/lib/utils'
+import { ROUTES } from '@/utils/constants'
+import { t } from '@lingui/macro'
+import { Asterisk, DollarSign, Rocket } from 'lucide-react'
+import { useMemo } from 'react'
+import { NavLink } from 'react-router-dom'
 import RegisterHelp from './RegisterHelp'
-import Blog from './Blog'
 
-// px={[2, 5]}
-// variant="layout.wrapper"
-// sx={{
-//   alignItems: 'center',
-//   height: ['52px', '72px'],
-//   justifyContent: ['left', 'center'],
-//   position: 'relative',
-// }}
+const HeaderMenu = () => {
+  const menuItems = useMemo(
+    () => [
+      {
+        label: t`Discover`,
+        icon: <BasketCubeIcon fontSize={14} />,
+        to: ROUTES.DISCOVER,
+      },
+      {
+        label: t`Farm`,
+        icon: <DollarSign size={14} />,
+        to: ROUTES.EARN,
+      },
+      {
+        label: t`Deploy`,
+        icon: <Rocket size={14} />,
+        to: ROUTES.DEPLOY,
+      },
+    ],
+    []
+  )
+
+  return (
+    <NavigationMenu>
+      <NavigationMenuList>
+        {menuItems.map((item) => (
+          <NavigationMenuItem key={item.to}>
+            <NavLink to={item.to}>
+              {({ isActive }: { isActive: boolean }) => (
+                <div
+                  className={cn(
+                    navigationMenuTriggerStyle(),
+                    isActive && 'text-primary font-bold'
+                  )}
+                >
+                  {item.icon}
+                  {item.label}
+                </div>
+              )}
+            </NavLink>
+          </NavigationMenuItem>
+        ))}
+        <NavigationMenuItem>
+          <NavigationMenuTrigger>
+            <Asterisk size={16} />
+            More
+          </NavigationMenuTrigger>
+          <NavigationMenuContent>
+            <NavigationMenuLink>Link</NavigationMenuLink>
+          </NavigationMenuContent>
+        </NavigationMenuItem>
+      </NavigationMenuList>
+    </NavigationMenu>
+  )
+}
+
 /**
  * Application header
  */
 const AppHeader = () => {
   return (
     <div className="w-full border-b">
-      <div className="container flex items-center h-[52px] md:h-[72px] justify-center relative">
-        <Box
+      <div className="container flex items-center h-[52px] md:h-[72px] px-6">
+        <Brand mr={4} />
+        {/* <Box
           variant="layout.verticalAlign"
           sx={{ position: ['relative', 'absolute'], left: ['8px', '24px'] }}
         >
           <Brand mr={4} />
           <Blog />
-        </Box>
+        </Box> */}
         <HeaderMenu />
         <Box
           variant="layout.verticalAlign"

@@ -20,7 +20,7 @@ import {
 import { Box, Card, Flex, Grid, Text } from 'theme-ui'
 import { formatCurrency, shortenAddress } from 'utils'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
-import VerticalDivider from 'views/compare/components/VerticalDivider'
+import VerticalDivider from '@/views/discover/components/yield/components/VerticalDivider'
 
 interface DetailedCollateralWithMeta extends CollateralDetail {
   website?: string

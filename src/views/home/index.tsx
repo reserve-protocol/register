@@ -2,8 +2,8 @@ import { Box, Grid } from 'theme-ui'
 import About from './components/About'
 import Hero from './components/Hero'
 import UseCases from './components/UseCases'
-import RegisterAbout from 'views/compare/components/RegisterAbout'
-import DeployHero from 'views/compare/components/DeployHero'
+import RegisterAbout from '@/views/discover/components/yield/components/RegisterAbout'
+import DeployHero from '@/views/discover/components/yield/components/DeployHero'
 
 const maxWidth = '98em'
 

@@ -102,7 +102,31 @@ body {
   }
 }
 
+@font-face {
+  font-family: 'TWK Lausanne';
+  src: url('/fonts/TWKLausanne-300.otf') format('woff');
+  font-weight: 300;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'TWK Lausanne';
+  src: url('/fonts/TWKLausanne-500.otf') format('woff');
+  font-weight: 500;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'TWK Lausanne';
+  src: url('/fonts/TWKLausanne-700.otf') format('woff');
+  font-weight: 700;
+  font-display: swap;
+}
+
 @layer base {
+  html {
+    font-family: 'TWK Lausanne', system-ui, sans-serif;
+  }
   * {
     @apply border-border;
   }

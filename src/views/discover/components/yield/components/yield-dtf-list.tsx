@@ -6,7 +6,7 @@ import { chainsFilterAtom, targetFilterAtom } from './CompareFilters'
 import CompareSkeleton from './CompareSkeleton'
 import RTokenCard from './RTokenCard'
 
-const RTokenList = () => {
+const YieldDTfList = () => {
   const { list, isLoading } = useTokenList()
   // Load pools to get rtoken earn info
   useRTokenPools()
@@ -41,4 +41,4 @@ const RTokenList = () => {
   )
 }
 
-export default RTokenList
+export default YieldDTfList

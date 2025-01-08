@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { Box, Flex, Text, useColorMode } from 'theme-ui'
 import Earn from './components/Earn'
-import RegisterAbout from 'views/compare/components/RegisterAbout'
+import RegisterAbout from '@/views/discover/components/yield/components/RegisterAbout'
 import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
 import { Trans, t } from '@lingui/macro'
 import FeaturedPools from './components/FeaturedPools'

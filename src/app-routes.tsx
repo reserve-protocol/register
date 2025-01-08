@@ -4,7 +4,6 @@ import { Box } from 'theme-ui'
 import { ROUTES } from 'utils/constants'
 import Auctions from '@/views/yield-dtf/auctions'
 import Bridge from 'views/bridge'
-import Compare from 'views/compare'
 import DeployYieldDTF from '@/views/yield-dtf/deploy'
 import DeployIndexDTF from '@/views/index-dtf/deploy'
 import EarnWrapper from 'views/earn'
@@ -36,7 +35,6 @@ const AppRoutes = () => (
   <Routes>
     <Route path={ROUTES.HOME} element={<Home />} />
     <Route path={ROUTES.DISCOVER} element={<Discover />} />
-    <Route path={ROUTES.COMPARE} element={<Compare />} />
     <Route path={ROUTES.BRIDGE} element={<Bridge />} />
     <Route path={ROUTES.PORTFOLIO} element={<PortfolioWrapper />} />
     <Route path={ROUTES.EARN} element={<EarnWrapper />} />

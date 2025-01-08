@@ -17,7 +17,7 @@ const ChoiceButton = ({ isSelected, ...props }: IDiscoverDTFChoice) => {
       {...props}
       variant="ghost"
       className={cn(
-        'flex gap-2 items-center border-b-2 h-auto text-legend/60 border-b-legend/60 py-4 rounded-none hover:text-primary hover:border-primary ',
+        'flex gap-2 font-light items-center border-b-2 h-auto text-legend/60 border-b-legend/60 py-4 rounded-none hover:text-primary hover:border-primary ',
         isSelected ? 'border-b-primary text-primary' : ''
       )}
     />

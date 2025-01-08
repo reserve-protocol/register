@@ -14,7 +14,7 @@ import { rTokenCollateralDetailedAtom } from 'state/rtoken/atoms/rTokenBackingDi
 import { Box, Card, Text } from 'theme-ui'
 import { shortenAddress } from 'utils'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
-import VerticalDivider from 'views/compare/components/VerticalDivider'
+import VerticalDivider from '@/views/discover/components/yield/components/VerticalDivider'
 
 interface TokenExposure {
   symbol: string

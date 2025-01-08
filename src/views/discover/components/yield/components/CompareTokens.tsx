@@ -24,7 +24,9 @@ const CompareTokens = () => {
 
   return (
     <Box variant="layout.wrapper" px={[2, 4]} pt={[0]}>
-      <CompareTokensTitle />
+      <h2 className="text-primary text-center text-xl font-bold mb-6">
+        All Reserve Yield DTFs
+      </h2>
       <Suspense fallback={<CompareSkeleton />}>
         <RTokenList />
       </Suspense>
@@ -42,7 +44,6 @@ const CompareTokens = () => {
           </Box>
         </Button>
       </Flex>
-      <DeployHero />
     </Box>
   )
 }
