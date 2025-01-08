@@ -51,10 +51,11 @@ export const UnstakeFlow = () => {
   )
 }
 
+// TODO: Fix types, react version mismatch
 const UnstakeDelay = (props: BoxProps) => {
   const delay = useAtomValue(unstakeDelayAtom)
-
   return (
+    // @ts-ignore
     <CollapsableBox
       divider={false}
       header={
