@@ -5,8 +5,8 @@ import { ROUTES } from 'utils/constants'
 import Auctions from '@/views/rtoken/auctions'
 import Bridge from 'views/bridge'
 import Compare from 'views/compare'
-import Deploy from '@/views/rtoken/deploy'
-import IndexTokenDeploy from '@/views/index-token/deploy'
+import DeployYieldDTF from '@/views/rtoken/deploy'
+import DeployIndexDTF from '@/views/index-token/deploy'
 import EarnWrapper from 'views/earn'
 import Explorer from 'views/explorer'
 import Collaterals from 'views/explorer/components/collaterals'
@@ -29,6 +29,7 @@ import AllTokenList from './views/tokens/Tokens'
 import DTFContainer from './views/dtf/dtf-container'
 import DTFOverview from './views/dtf/overview'
 import Discover from './views/discover'
+import Deploy from './views/deploy'
 
 // TODO: Remove COMPARE
 const AppRoutes = () => (
@@ -40,7 +41,8 @@ const AppRoutes = () => (
     <Route path={ROUTES.PORTFOLIO} element={<PortfolioWrapper />} />
     <Route path={ROUTES.EARN} element={<EarnWrapper />} />
     <Route path={ROUTES.DEPLOY} element={<Deploy />} />
-    <Route path={ROUTES.INDEX_TOKEN_DEPLOY} element={<IndexTokenDeploy />} />
+    <Route path={ROUTES.DEPLOY_YIELD} element={<DeployYieldDTF />} />
+    <Route path={ROUTES.DEPLOY_INDEX} element={<DeployIndexDTF />} />
     <Route path={ROUTES.TOKENS} element={<AllTokenList />} />
     <Route path={`/:chain/token/:tokenId`} element={<RTokenContainer />}>
       <Route index element={<Navigate replace to={ROUTES.OVERVIEW} />} />

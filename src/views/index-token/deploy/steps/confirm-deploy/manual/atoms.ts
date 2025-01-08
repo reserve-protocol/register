@@ -13,10 +13,12 @@ export const assetsAllowanceAtom = atom<Record<string, bigint>>({})
 export const formattedAssetsAllowanceAtom = atom<Record<string, number>>(
   (get) => {
     const basket = get(basketAtom)
+    const assetsAllowance = get(assetsAllowanceAtom)
+
     return basket.reduce(
       (acc, token) => {
         acc[token.address] = Number(
-          formatUnits(get(assetsAllowanceAtom)[token.address], token.decimals)
+          formatUnits(assetsAllowance[token.address] ?? 0n, token.decimals)
         )
         return acc
       },
@@ -50,7 +52,12 @@ export const basketRequiredAmountsAtom = atom<Record<string, number>>((get) => {
   )
 })
 // Allowance atom validation
+// TODO: validate balances as well include it on the balances updater!
 export const hasAssetsAllowanceAtom = atom((get) => {
+  const initialTokens = get(initialTokensAtom)
+
+  if (!initialTokens) return false
+
   const assetsAllowance = get(formattedAssetsAllowanceAtom)
   const basketRequiredAmounts = get(basketRequiredAmountsAtom)
   return Object.entries(basketRequiredAmounts).every(
