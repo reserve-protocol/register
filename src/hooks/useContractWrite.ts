@@ -19,7 +19,7 @@ const useContractWrite = <
   call: UseSimulateContractParameters<TAbi, TFunctionName> = {} as any
 ) => {
   const isWalletInvalid = useAtomValue(isWalletInvalidAtom)
-  const { data, error, isLoading } = useSimulateContract(
+  const { data, error, isLoading, isSuccess } = useSimulateContract(
     !isWalletInvalid ? (call as UseSimulateContractParameters) : undefined
   )
   const { data: gas } = useEstimateGas(data?.request)
@@ -38,7 +38,7 @@ const useContractWrite = <
       ...contractWrite,
       gas,
       validationError: error,
-      isReady: !!gas,
+      isReady: !!gas && isSuccess,
       isLoading: contractWrite.isPending,
       hash: contractWrite.data,
       write: handleWrite,
