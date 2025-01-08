@@ -2,7 +2,11 @@ import useTokenList from 'hooks/useTokenList'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import useRTokenPools from 'views/earn/hooks/useRTokenPools'
-import { chainsFilterAtom, targetFilterAtom } from './CompareFilters'
+import CompareFilters, {
+  chainsFilterAtom,
+  searchFilterAtom,
+  targetFilterAtom,
+} from './CompareFilters'
 import CompareSkeleton from './CompareSkeleton'
 import RTokenCard from './RTokenCard'
 
@@ -13,6 +17,7 @@ const YieldDTfList = () => {
 
   const chains = useAtomValue(chainsFilterAtom)
   const targets = useAtomValue(targetFilterAtom)
+  const search = useAtomValue(searchFilterAtom)
 
   const filteredList = useMemo(() => {
     return list.filter((token) => {
@@ -27,12 +32,26 @@ const YieldDTfList = () => {
         return false
       }
 
+      if (search) {
+        const searchLower = search.toLowerCase()
+        const nameMatch = token.name.toLowerCase().includes(searchLower)
+        const symbolMatch = token.symbol.toLowerCase().includes(searchLower)
+        const collateralMatch = token.collaterals?.some((collateral) =>
+          collateral.symbol.toLowerCase().includes(searchLower)
+        )
+
+        if (!nameMatch && !symbolMatch && !collateralMatch) {
+          return false
+        }
+      }
+
       return true
     })
-  }, [list, chains, targets])
+  }, [list, chains, targets, search])
 
   return (
     <div className="flex flex-col gap-1 p-1 rounded-[20px] bg-secondary">
+      <CompareFilters />
       {isLoading && !filteredList.length && <CompareSkeleton />}
       {filteredList.map((token) => (
         <RTokenCard key={token.id} token={token} mb={[2, 4]} />
