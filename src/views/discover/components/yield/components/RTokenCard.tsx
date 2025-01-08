@@ -1,6 +1,8 @@
+import DgnETHButtonAppendix from '@/components/utils/integrations/dgneth-btn-appendix'
+import CollateralPieChartWrapper from '@/views/yield-dtf/overview/components/CollateralPieChartWrapper'
+import RTokenAddresses from '@/views/yield-dtf/overview/components/RTokenAddresses'
 import { t, Trans } from '@lingui/macro'
 import { Button } from 'components'
-import DgnETHButtonAppendix from '@/components/utils/integrations/dgneth-btn-appendix'
 import ChainLogo from 'components/icons/ChainLogo'
 import ChevronRight from 'components/icons/ChevronRight'
 import CollaterizationIcon from 'components/icons/CollaterizationIcon'
@@ -10,11 +12,9 @@ import TokenLogo from 'components/icons/TokenLogo'
 import { ListedToken } from 'hooks/useTokenList'
 import { memo } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Box, BoxProps, Card, Text } from 'theme-ui'
+import { Box, BoxProps, Text } from 'theme-ui'
 import { formatCurrency, getTokenRoute } from 'utils'
 import { CHAIN_TAGS, ROUTES } from 'utils/constants'
-import CollateralPieChartWrapper from '@/views/yield-dtf/overview/components/CollateralPieChartWrapper'
-import RTokenAddresses from '@/views/yield-dtf/overview/components/RTokenAddresses'
 import usePriceETH from '../hooks/usePriceETH'
 import EarnButton from './EarnButton'
 import MobileCollateralInfo from './MobileCollateralInfo'
@@ -25,23 +25,12 @@ interface Props extends BoxProps {
 }
 
 const ChainBadge = ({ chain }: { chain: number }) => (
-  <Box
-    variant="layout.verticalAlign"
-    sx={{
-      display: ['none', 'flex'],
-      backgroundColor: 'rgba(0, 82, 255, 0.06)',
-      border: '1px solid',
-      borderColor: 'rgba(0, 82, 255, 0.20)',
-      borderRadius: '50px',
-      padding: '4px 8px',
-      gap: 1,
-    }}
-  >
+  <div className="hidden md:flex items-center bg-[rgba(0,82,255,0.06)] border border-[rgba(0,82,255,0.20)] rounded-[50px] px-2 py-1 gap-1">
     <ChainLogo chain={chain} fontSize={12} />
-    <Text sx={{ fontSize: 12 }} color="#627EEA">
+    <span className="text-xs text-primary">
       {CHAIN_TAGS[chain] + ' Native'}
-    </Text>
-  </Box>
+    </span>
+  </div>
 )
 
 // TODO: Component should be splitted
@@ -54,21 +43,8 @@ const RTokenCard = ({ token, ...props }: Props) => {
   }
 
   return (
-    <Card
-      sx={{
-        backgroundColor: 'contentBackground',
-        borderRadius: ['10px', '20px'],
-        borderBottom: '2px solid',
-        borderColor: 'transparent',
-        '&:hover': {
-          borderColor: ['transparent', 'primary'],
-        },
-        minHeight: ['100%', '316px'],
-        cursor: 'pointer',
-
-        transition: 'border-color 0.3s ease',
-      }}
-      p={[0, 3]}
+    <div
+      className="bg-card rounded-[20px] border-b-2 border-transparent hover:md:border-primary min-h-full md:min-h-[316px] cursor-pointer transition-[border-color] duration-300 ease-in-out p-0 md:p-3"
       onClick={(e) => {
         e.stopPropagation()
         handleNavigate(ROUTES.OVERVIEW)
@@ -293,7 +269,7 @@ const RTokenCard = ({ token, ...props }: Props) => {
           <MobileCollateralInfo token={token} />
         </Box>
       </Box>
-    </Card>
+    </div>
   )
 }
 

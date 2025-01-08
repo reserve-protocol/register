@@ -32,12 +32,12 @@ const YieldDTfList = () => {
   }, [list, chains, targets])
 
   return (
-    <>
+    <div className="flex flex-col gap-1 p-1 rounded-[20px] bg-secondary">
       {isLoading && !filteredList.length && <CompareSkeleton />}
       {filteredList.map((token) => (
         <RTokenCard key={token.id} token={token} mb={[2, 4]} />
       ))}
-    </>
+    </div>
   )
 }
 

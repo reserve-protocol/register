@@ -48,16 +48,28 @@ const DarkModeToggle = ({
   const linesProps = useSpring({ opacity, config: properties.springConfig })
 
   const handleToggle = () => {
-    document.documentElement.setAttribute(
-      'data-color-mode',
-      mode === MODES.LIGHT ? 'dark' : 'light'
-    )
-    onToggle(mode === MODES.LIGHT ? MODES.DARK : MODES.LIGHT)
+    const newMode = mode === MODES.LIGHT ? MODES.DARK : MODES.LIGHT
+    // Update theme-ui theme
+    document.documentElement.setAttribute('data-color-mode', newMode)
+    // Update Tailwind theme
+    if (newMode === MODES.DARK) {
+      document.documentElement.classList.add('dark')
+    } else {
+      document.documentElement.classList.remove('dark')
+    }
+    onToggle(newMode)
   }
 
   useEffect(() => {
+    // Sync theme-ui theme
     if (mode !== document.documentElement.getAttribute('data-color-mode')) {
       document.documentElement.setAttribute('data-color-mode', mode)
+    }
+    // Sync Tailwind theme
+    if (mode === MODES.DARK) {
+      document.documentElement.classList.add('dark')
+    } else {
+      document.documentElement.classList.remove('dark')
     }
   }, [])
 
