@@ -15,7 +15,7 @@ const mockData: DeployInputs = {
     { address: '0x940181a94a35a4569e4529a3cdfb74e38fd98631', percentage: 50 },
   ],
   governanceERC20address: '0xaB36452DbAC151bE02b16Ca17d8919826072f64a',
-  demurrageFee: 0,
+  folioFee: 0,
   governanceShare: 100,
   deployerShare: 0,
   fixedPlatformFee: 0,

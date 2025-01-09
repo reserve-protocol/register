@@ -9,7 +9,7 @@ import { getSafeGasLimit } from './../utils/index'
 import type { Abi } from 'abitype'
 import { useAtomValue } from 'jotai'
 import { isWalletInvalidAtom } from 'state/atoms'
-import { ContractFunctionName } from 'viem'
+import { ContractFunctionName, encodeFunctionData } from 'viem'
 
 // Extends wagmi to include gas estimate and gas limit multiplier
 const useContractWrite = <
@@ -22,7 +22,21 @@ const useContractWrite = <
   const { data, error, isLoading, isSuccess } = useSimulateContract(
     !isWalletInvalid ? (call as UseSimulateContractParameters) : undefined
   )
-  const { data: gas } = useEstimateGas(data?.request)
+  const { data: gas } = useEstimateGas(
+    data?.request
+      ? {
+          to: data.request.address,
+          data: encodeFunctionData({
+            abi: call.abi as any,
+            functionName: call.functionName,
+            args: call.args as any,
+          }),
+        }
+      : undefined
+  )
+
+  console.log('gas', gas)
+  console.log('data', data)
 
   const contractWrite = useWriteContract()
   const { writeContract } = contractWrite

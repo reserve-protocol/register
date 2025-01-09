@@ -72,7 +72,7 @@ const ToggleGroupSelector = ({
         <ToggleGroupItem
           key={option}
           value={option.toString()}
-          className="px-5 h-8 rounded-lg data-[state=on]:bg-card text-secondary-foreground/80 data-[state=on]:text-primary"
+          className="px-5 h-8 whitespace-nowrap rounded-lg data-[state=on]:bg-card text-secondary-foreground/80 data-[state=on]:text-primary"
         >
           {optionsFormatter(option)}
         </ToggleGroupItem>

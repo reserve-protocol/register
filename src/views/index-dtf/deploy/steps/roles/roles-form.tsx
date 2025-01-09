@@ -12,7 +12,7 @@ const FORMS = [
     placeholder: '0x...',
   },
   {
-    title: 'Voting Quorum',
+    title: 'Brand Manager',
     description:
       'Amount of time until auctions can be permissionlessly executed, bypassing the auction launcher',
     icon: <Asterisk size={32} strokeWidth={1.5} />,

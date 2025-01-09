@@ -19,7 +19,7 @@ import MetadataAndChain from '../steps/metadata'
 import { DeployStepId } from '../form-fields'
 import FTokenBasket from '../steps/basket'
 import Governance from '../steps/governance'
-import DemurrageFee from '../steps/fee'
+import Fees from '../steps/fee'
 import RevenueDistribution from '../steps/revenue'
 import Auctions from '../steps/auctions'
 import Roles from '../steps/roles'
@@ -56,11 +56,11 @@ export const DEPLOY_STEPS: DeployStep[] = [
     content: <Governance />,
   },
   {
-    id: 'demurrage-fee',
+    id: 'fees',
     icon: <Asterisk size={24} strokeWidth={1.5} />,
-    title: 'Demurrage Fee',
-    titleSecondary: 'Demurrage Fee',
-    content: <DemurrageFee />,
+    title: 'Fees',
+    titleSecondary: 'Fees',
+    content: <Fees />,
   },
   {
     id: 'revenue-distribution',

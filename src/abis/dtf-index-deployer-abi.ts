@@ -1,202 +1,442 @@
 export default [
   {
+    type: 'constructor',
     inputs: [
-      { internalType: 'address', name: '_daoFeeRegistry', type: 'address' },
-      { internalType: 'address', name: '_versionRegistry', type: 'address' },
       {
+        name: '_daoFeeRegistry',
+        type: 'address',
         internalType: 'address',
+      },
+      {
+        name: '_versionRegistry',
+        type: 'address',
+        internalType: 'address',
+      },
+      {
         name: '_governorImplementation',
         type: 'address',
+        internalType: 'address',
       },
       {
-        internalType: 'address',
         name: '_timelockImplementation',
         type: 'address',
+        internalType: 'address',
       },
     ],
     stateMutability: 'nonpayable',
-    type: 'constructor',
-  },
-  { inputs: [], name: 'FailedDeployment', type: 'error' },
-  { inputs: [], name: 'FolioDeployer__LengthMismatch', type: 'error' },
-  {
-    inputs: [
-      { internalType: 'uint256', name: 'balance', type: 'uint256' },
-      { internalType: 'uint256', name: 'needed', type: 'uint256' },
-    ],
-    name: 'InsufficientBalance',
-    type: 'error',
   },
   {
-    inputs: [{ internalType: 'address', name: 'token', type: 'address' }],
-    name: 'SafeERC20FailedOperation',
-    type: 'error',
-  },
-  {
-    inputs: [],
+    type: 'function',
     name: 'daoFeeRegistry',
-    outputs: [{ internalType: 'address', name: '', type: 'address' }],
+    inputs: [],
+    outputs: [
+      {
+        name: '',
+        type: 'address',
+        internalType: 'address',
+      },
+    ],
     stateMutability: 'view',
-    type: 'function',
   },
   {
+    type: 'function',
+    name: 'deployFolio',
     inputs: [
       {
-        components: [
-          { internalType: 'string', name: 'name', type: 'string' },
-          { internalType: 'string', name: 'symbol', type: 'string' },
-          { internalType: 'address[]', name: 'assets', type: 'address[]' },
-          { internalType: 'uint256[]', name: 'amounts', type: 'uint256[]' },
-          { internalType: 'uint256', name: 'initialShares', type: 'uint256' },
-        ],
-        internalType: 'struct IFolio.FolioBasicDetails',
         name: 'basicDetails',
         type: 'tuple',
+        internalType: 'struct IFolio.FolioBasicDetails',
+        components: [
+          {
+            name: 'name',
+            type: 'string',
+            internalType: 'string',
+          },
+          {
+            name: 'symbol',
+            type: 'string',
+            internalType: 'string',
+          },
+          {
+            name: 'assets',
+            type: 'address[]',
+            internalType: 'address[]',
+          },
+          {
+            name: 'amounts',
+            type: 'uint256[]',
+            internalType: 'uint256[]',
+          },
+          {
+            name: 'initialShares',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+        ],
       },
       {
-        components: [
-          { internalType: 'uint256', name: 'tradeDelay', type: 'uint256' },
-          { internalType: 'uint256', name: 'auctionLength', type: 'uint256' },
-          {
-            components: [
-              { internalType: 'address', name: 'recipient', type: 'address' },
-              { internalType: 'uint96', name: 'portion', type: 'uint96' },
-            ],
-            internalType: 'struct IFolio.FeeRecipient[]',
-            name: 'feeRecipients',
-            type: 'tuple[]',
-          },
-          { internalType: 'uint256', name: 'folioFee', type: 'uint256' },
-        ],
-        internalType: 'struct IFolio.FolioAdditionalDetails',
         name: 'additionalDetails',
         type: 'tuple',
+        internalType: 'struct IFolio.FolioAdditionalDetails',
+        components: [
+          {
+            name: 'tradeDelay',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+          {
+            name: 'auctionLength',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+          {
+            name: 'feeRecipients',
+            type: 'tuple[]',
+            internalType: 'struct IFolio.FeeRecipient[]',
+            components: [
+              {
+                name: 'recipient',
+                type: 'address',
+                internalType: 'address',
+              },
+              {
+                name: 'portion',
+                type: 'uint96',
+                internalType: 'uint96',
+              },
+            ],
+          },
+          {
+            name: 'folioFee',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+          {
+            name: 'mintingFee',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+        ],
       },
-      { internalType: 'address', name: 'owner', type: 'address' },
-      { internalType: 'address[]', name: 'tradeProposers', type: 'address[]' },
-      { internalType: 'address[]', name: 'priceCurators', type: 'address[]' },
+      {
+        name: 'owner',
+        type: 'address',
+        internalType: 'address',
+      },
+      {
+        name: 'tradeProposers',
+        type: 'address[]',
+        internalType: 'address[]',
+      },
+      {
+        name: 'priceCurators',
+        type: 'address[]',
+        internalType: 'address[]',
+      },
     ],
-    name: 'deployFolio',
     outputs: [
-      { internalType: 'address', name: 'folio_', type: 'address' },
-      { internalType: 'address', name: 'folioAdmin_', type: 'address' },
+      {
+        name: 'folio_',
+        type: 'address',
+        internalType: 'address',
+      },
+      {
+        name: 'folioAdmin_',
+        type: 'address',
+        internalType: 'address',
+      },
     ],
     stateMutability: 'nonpayable',
-    type: 'function',
   },
   {
+    type: 'function',
+    name: 'deployGovernedFolio',
     inputs: [
-      { internalType: 'contract IVotes', name: 'stToken', type: 'address' },
       {
-        components: [
-          { internalType: 'string', name: 'name', type: 'string' },
-          { internalType: 'string', name: 'symbol', type: 'string' },
-          { internalType: 'address[]', name: 'assets', type: 'address[]' },
-          { internalType: 'uint256[]', name: 'amounts', type: 'uint256[]' },
-          { internalType: 'uint256', name: 'initialShares', type: 'uint256' },
-        ],
-        internalType: 'struct IFolio.FolioBasicDetails',
+        name: 'stToken',
+        type: 'address',
+        internalType: 'contract IVotes',
+      },
+      {
         name: 'basicDetails',
         type: 'tuple',
+        internalType: 'struct IFolio.FolioBasicDetails',
+        components: [
+          {
+            name: 'name',
+            type: 'string',
+            internalType: 'string',
+          },
+          {
+            name: 'symbol',
+            type: 'string',
+            internalType: 'string',
+          },
+          {
+            name: 'assets',
+            type: 'address[]',
+            internalType: 'address[]',
+          },
+          {
+            name: 'amounts',
+            type: 'uint256[]',
+            internalType: 'uint256[]',
+          },
+          {
+            name: 'initialShares',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+        ],
       },
       {
-        components: [
-          { internalType: 'uint256', name: 'tradeDelay', type: 'uint256' },
-          { internalType: 'uint256', name: 'auctionLength', type: 'uint256' },
-          {
-            components: [
-              { internalType: 'address', name: 'recipient', type: 'address' },
-              { internalType: 'uint96', name: 'portion', type: 'uint96' },
-            ],
-            internalType: 'struct IFolio.FeeRecipient[]',
-            name: 'feeRecipients',
-            type: 'tuple[]',
-          },
-          { internalType: 'uint256', name: 'folioFee', type: 'uint256' },
-        ],
-        internalType: 'struct IFolio.FolioAdditionalDetails',
         name: 'additionalDetails',
         type: 'tuple',
+        internalType: 'struct IFolio.FolioAdditionalDetails',
+        components: [
+          {
+            name: 'tradeDelay',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+          {
+            name: 'auctionLength',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+          {
+            name: 'feeRecipients',
+            type: 'tuple[]',
+            internalType: 'struct IFolio.FeeRecipient[]',
+            components: [
+              {
+                name: 'recipient',
+                type: 'address',
+                internalType: 'address',
+              },
+              {
+                name: 'portion',
+                type: 'uint96',
+                internalType: 'uint96',
+              },
+            ],
+          },
+          {
+            name: 'folioFee',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+          {
+            name: 'mintingFee',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+        ],
       },
       {
-        components: [
-          { internalType: 'uint48', name: 'votingDelay', type: 'uint48' },
-          { internalType: 'uint32', name: 'votingPeriod', type: 'uint32' },
-          {
-            internalType: 'uint256',
-            name: 'proposalThreshold',
-            type: 'uint256',
-          },
-          { internalType: 'uint256', name: 'quorumPercent', type: 'uint256' },
-          { internalType: 'uint256', name: 'timelockDelay', type: 'uint256' },
-          { internalType: 'address', name: 'guardian', type: 'address' },
-        ],
-        internalType: 'struct IFolioDeployer.GovParams',
         name: 'ownerGovParams',
         type: 'tuple',
-      },
-      {
+        internalType: 'struct IFolioDeployer.GovParams',
         components: [
-          { internalType: 'uint48', name: 'votingDelay', type: 'uint48' },
-          { internalType: 'uint32', name: 'votingPeriod', type: 'uint32' },
           {
-            internalType: 'uint256',
+            name: 'votingDelay',
+            type: 'uint48',
+            internalType: 'uint48',
+          },
+          {
+            name: 'votingPeriod',
+            type: 'uint32',
+            internalType: 'uint32',
+          },
+          {
             name: 'proposalThreshold',
             type: 'uint256',
+            internalType: 'uint256',
           },
-          { internalType: 'uint256', name: 'quorumPercent', type: 'uint256' },
-          { internalType: 'uint256', name: 'timelockDelay', type: 'uint256' },
-          { internalType: 'address', name: 'guardian', type: 'address' },
+          {
+            name: 'quorumPercent',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+          {
+            name: 'timelockDelay',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+          {
+            name: 'guardian',
+            type: 'address',
+            internalType: 'address',
+          },
         ],
-        internalType: 'struct IFolioDeployer.GovParams',
+      },
+      {
         name: 'tradingGovParams',
         type: 'tuple',
+        internalType: 'struct IFolioDeployer.GovParams',
+        components: [
+          {
+            name: 'votingDelay',
+            type: 'uint48',
+            internalType: 'uint48',
+          },
+          {
+            name: 'votingPeriod',
+            type: 'uint32',
+            internalType: 'uint32',
+          },
+          {
+            name: 'proposalThreshold',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+          {
+            name: 'quorumPercent',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+          {
+            name: 'timelockDelay',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+          {
+            name: 'guardian',
+            type: 'address',
+            internalType: 'address',
+          },
+        ],
       },
-      { internalType: 'address[]', name: 'priceCurators', type: 'address[]' },
+      {
+        name: 'priceCurators',
+        type: 'address[]',
+        internalType: 'address[]',
+      },
     ],
-    name: 'deployGovernedFolio',
     outputs: [
-      { internalType: 'address', name: 'folio', type: 'address' },
-      { internalType: 'address', name: 'proxyAdmin', type: 'address' },
-      { internalType: 'address', name: 'ownerGovernor', type: 'address' },
-      { internalType: 'address', name: 'tradingGovernor', type: 'address' },
+      {
+        name: 'folio',
+        type: 'address',
+        internalType: 'address',
+      },
+      {
+        name: 'proxyAdmin',
+        type: 'address',
+        internalType: 'address',
+      },
+      {
+        name: 'ownerGovernor',
+        type: 'address',
+        internalType: 'address',
+      },
+      {
+        name: 'tradingGovernor',
+        type: 'address',
+        internalType: 'address',
+      },
     ],
     stateMutability: 'nonpayable',
-    type: 'function',
   },
   {
-    inputs: [],
+    type: 'function',
     name: 'folioImplementation',
-    outputs: [{ internalType: 'address', name: '', type: 'address' }],
+    inputs: [],
+    outputs: [
+      {
+        name: '',
+        type: 'address',
+        internalType: 'address',
+      },
+    ],
     stateMutability: 'view',
-    type: 'function',
   },
   {
-    inputs: [],
+    type: 'function',
     name: 'governorImplementation',
-    outputs: [{ internalType: 'address', name: '', type: 'address' }],
+    inputs: [],
+    outputs: [
+      {
+        name: '',
+        type: 'address',
+        internalType: 'address',
+      },
+    ],
     stateMutability: 'view',
-    type: 'function',
   },
   {
-    inputs: [],
+    type: 'function',
     name: 'timelockImplementation',
-    outputs: [{ internalType: 'address', name: '', type: 'address' }],
+    inputs: [],
+    outputs: [
+      {
+        name: '',
+        type: 'address',
+        internalType: 'address',
+      },
+    ],
     stateMutability: 'view',
-    type: 'function',
   },
   {
-    inputs: [],
+    type: 'function',
     name: 'version',
-    outputs: [{ internalType: 'string', name: '', type: 'string' }],
+    inputs: [],
+    outputs: [
+      {
+        name: '',
+        type: 'string',
+        internalType: 'string',
+      },
+    ],
     stateMutability: 'pure',
-    type: 'function',
   },
   {
-    inputs: [],
-    name: 'versionRegistry',
-    outputs: [{ internalType: 'address', name: '', type: 'address' }],
-    stateMutability: 'view',
     type: 'function',
+    name: 'versionRegistry',
+    inputs: [],
+    outputs: [
+      {
+        name: '',
+        type: 'address',
+        internalType: 'address',
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'error',
+    name: 'FailedDeployment',
+    inputs: [],
+  },
+  {
+    type: 'error',
+    name: 'FolioDeployer__LengthMismatch',
+    inputs: [],
+  },
+  {
+    type: 'error',
+    name: 'InsufficientBalance',
+    inputs: [
+      {
+        name: 'balance',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+      {
+        name: 'needed',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+    ],
+  },
+  {
+    type: 'error',
+    name: 'SafeERC20FailedOperation',
+    inputs: [
+      {
+        name: 'token',
+        type: 'address',
+        internalType: 'address',
+      },
+    ],
   },
 ] as const

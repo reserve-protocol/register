@@ -25,6 +25,7 @@ type FolioConfig = {
     portion: bigint
   }[]
   folioFee: bigint
+  mintingFee: bigint
 }
 
 type DeployParams = [FolioParams, FolioConfig, Address, Address[], Address[]]
@@ -112,7 +113,8 @@ const txAtom = atom<
       //   })
       // ),
       // folioFee: BigInt(formData.fixedPlatformFee),
-      folioFee: parseEther('0.01'),
+      folioFee: 1n,
+      mintingFee: parseEther('0.001'),
     },
     // formData.governanceERC20address ?? '0x',
     MOCK,
@@ -148,6 +150,8 @@ const ConfirmManualDeployButton = () => {
     isLoading,
     write,
   } = useContractWrite(tx)
+
+  console.log('hash', !!hash ? 'Confirming tx...' : 'Pending, sign in wallet')
 
   return (
     <div>

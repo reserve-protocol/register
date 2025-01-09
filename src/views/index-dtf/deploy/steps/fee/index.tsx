@@ -1,5 +1,6 @@
 import NextButton from '../../components/next-button'
-import DemurrageFeeSelector from './demurrage-fee-selector'
+import FolioFeeSelector from './folio-fee-selector'
+import MintFeeSelector from './mint-fee-selector'
 
 const Description = () => (
   <div className="px-6 pb-6 text-base">
@@ -9,14 +10,15 @@ const Description = () => (
   </div>
 )
 
-const DemurrageFee = () => {
+const Fees = () => {
   return (
     <>
       <Description />
-      <DemurrageFeeSelector />
+      <FolioFeeSelector />
+      <MintFeeSelector />
       <NextButton />
     </>
   )
 }
 
-export default DemurrageFee
+export default Fees

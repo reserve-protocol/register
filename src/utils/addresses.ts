@@ -29,18 +29,18 @@ export const FACADE_ACT_ADDRESS: AddressMap = {
 export const FACADE_WRITE_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0x1D94290F82D0B417B088d9F5dB316B11C9cf220C',
   [ChainId.Base]: '0x43E205A805c4be5A62C71d49de68dF60200548A0',
-[ChainId.Arbitrum]: '0xe2B652E538543d02f985A5E422645A704633956d',
+  [ChainId.Arbitrum]: '0xe2B652E538543d02f985A5E422645A704633956d',
 }
 
 export const INDEX_DEPLOYER_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0x',
-  [ChainId.Base]: '0xaa599d1da0dcc11b3a27b78808f8a5e0209d2406',
+  [ChainId.Base]: '0xFAA802A52DB4CED46860E82b23e5b740e2D682b0',
   [ChainId.Arbitrum]: '0x',
 }
 
 export const INDEX_GOVERNANCE_DEPLOYER_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0x',
-  [ChainId.Base]: '0x6e32f4988f920c3fbb52573a67b6261a7704491b',
+  [ChainId.Base]: '0x754fAb80FeeE061567498DB9B66c15ABd9Ddb11B',
   [ChainId.Arbitrum]: '0x',
 }
 

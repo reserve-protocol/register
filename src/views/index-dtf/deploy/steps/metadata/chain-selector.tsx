@@ -80,6 +80,7 @@ const ChainSelector = () => {
       for (const [key, value] of defaults) {
         setValue(key, value)
       }
+      setChain(newChain)
       switchChain && switchChain({ chainId: newChain })
     }
   }

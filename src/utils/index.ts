@@ -30,8 +30,8 @@ export const getTokenRoute = (
   route: string = ROUTES.OVERVIEW
 ) => `/${CHAIN_TO_NETWORK[chainId]}/token/${token.toLowerCase()}/${route}`
 
-// multiplier 150 -> 1.5
-export const getSafeGasLimit = (gas: bigint, multiplier = 150n) =>
+// multiplier 200 -> 2
+export const getSafeGasLimit = (gas: bigint, multiplier = 200n) =>
   (gas * multiplier) / 100n
 
 export function getCurrentTime() {

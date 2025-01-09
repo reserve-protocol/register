@@ -30,7 +30,6 @@ import DTFOverview from './views/index-dtf/overview'
 import Discover from './views/discover'
 import Deploy from './views/deploy'
 
-// TODO: Remove COMPARE
 const AppRoutes = () => (
   <Routes>
     <Route path={ROUTES.HOME} element={<Home />} />

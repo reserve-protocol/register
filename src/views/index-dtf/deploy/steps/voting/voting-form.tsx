@@ -2,6 +2,17 @@ import { humanizeMinutes } from '@/utils'
 import { Asterisk } from 'lucide-react'
 import ToggleGroupWithCustom from '../../components/toggle-group-with-custom'
 
+const VOTING_DELAY = {
+  title: 'Voting Delay',
+  description:
+    'How to distribute the revenue from this fee is defines in the revenue distribution section.',
+  icon: <Asterisk size={32} strokeWidth={1.5} />,
+  options: [20, 60, 240, 1440, 10080],
+  optionsFormatter: (option: number) => humanizeMinutes(option),
+  customLabel: 'minutes',
+  customPlaceholder: 'Enter custom length',
+}
+
 const VOTING_PERIOD = {
   title: 'Voting Period',
   description:
@@ -40,6 +51,11 @@ const VOTING_FORM = [
     title: 'Basket Changes',
     forms: [
       {
+        ...VOTING_DELAY,
+        fieldName: 'basketVotingDelay',
+        customFieldName: 'customBasketVotingDelay',
+      },
+      {
         ...VOTING_PERIOD,
         fieldName: 'basketVotingPeriod',
         customFieldName: 'customBasketVotingPeriod',
@@ -59,6 +75,11 @@ const VOTING_FORM = [
   {
     title: 'Governance Changes',
     forms: [
+      {
+        ...VOTING_DELAY,
+        fieldName: 'governanceVotingDelay',
+        customFieldName: 'customGovernanceVotingDelay',
+      },
       {
         ...VOTING_PERIOD,
         fieldName: 'governanceVotingPeriod',

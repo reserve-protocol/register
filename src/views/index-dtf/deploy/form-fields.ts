@@ -5,7 +5,7 @@ export type DeployStepId =
   | 'metadata'
   | 'basket'
   | 'governance'
-  | 'demurrage-fee'
+  | 'fees'
   | 'revenue-distribution'
   | 'auctions'
   | 'roles'
@@ -26,8 +26,8 @@ export const dtfDeploySteps: Record<DeployStepId, { fields: string[] }> = {
       'governanceWalletAddress',
     ],
   },
-  'demurrage-fee': {
-    fields: ['demurrageFee', 'customDemurrageFee'],
+  fees: {
+    fields: ['folioFee', 'customFolioFee', 'mintFee', 'customMintFee'],
   },
   'revenue-distribution': {
     fields: [
@@ -52,12 +52,16 @@ export const dtfDeploySteps: Record<DeployStepId, { fields: string[] }> = {
   },
   voting: {
     fields: [
+      'basketVotingDelay',
+      'customBasketVotingDelay',
       'basketVotingPeriod',
       'customBasketVotingPeriod',
       'basketVotingQuorum',
       'customBasketVotingQuorum',
       'basketExecutionDelay',
       'customBasketExecutionDelay',
+      'governanceVotingDelay',
+      'customGovernanceVotingDelay',
       'governanceVotingPeriod',
       'customGovernanceVotingPeriod',
       'governanceVotingQuorum',
@@ -94,15 +98,25 @@ export const DeployFormSchema = z
       .string()
       .refine(isAddress, { message: 'Invalid Address' })
       .optional(),
-    demurrageFee: z.coerce
+    folioFee: z.coerce
       .number()
-      .min(0, 'Demurrage fee must be 0 or greater')
-      .max(100, 'Demurrage fee must be 100 or less')
+      .min(0, 'Folio fee must be 0 or greater')
+      .max(50, 'Folio fee must be 50 or less')
       .optional(),
-    customDemurrageFee: z.coerce
+    customFolioFee: z.coerce
       .number()
-      .min(0, 'Demurrage fee must be 0 or greater')
-      .max(100, 'Demurrage fee must be 100 or less')
+      .min(0, 'Folio fee must be 0 or greater')
+      .max(50, 'Folio fee must be 50 or less')
+      .optional(),
+    mintFee: z.coerce
+      .number()
+      .min(0.05, 'Mint fee must be 0.05 or greater')
+      .max(10, 'Mint fee must be 10 or less')
+      .optional(),
+    customMintFee: z.coerce
+      .number()
+      .min(0.05, 'Mint fee must be 0.05 or greater')
+      .max(10, 'Mint fee must be 10 or less')
       .optional(),
     governanceShare: z.coerce.number().min(0).max(100),
     deployerShare: z.coerce.number().min(0).max(100),
@@ -134,12 +148,16 @@ export const DeployFormSchema = z
       .string()
       .refine(isAddress, { message: 'Invalid Address' })
       .optional(),
+    basketVotingDelay: z.coerce.number().min(0).optional(),
+    customBasketVotingDelay: z.coerce.number().min(0).optional(),
     basketVotingPeriod: z.coerce.number().min(0).optional(),
     customBasketVotingPeriod: z.coerce.number().min(0).optional(),
     basketVotingQuorum: z.coerce.number().min(0).optional(),
     customBasketVotingQuorum: z.coerce.number().min(0).optional(),
     basketExecutionDelay: z.coerce.number().min(0).optional(),
     customBasketExecutionDelay: z.coerce.number().min(0).optional(),
+    governanceVotingDelay: z.coerce.number().min(0).optional(),
+    customGovernanceVotingDelay: z.coerce.number().min(0).optional(),
     governanceVotingPeriod: z.coerce.number().min(0).optional(),
     customGovernanceVotingPeriod: z.coerce.number().min(0).optional(),
     governanceVotingQuorum: z.coerce.number().min(0).optional(),
@@ -179,12 +197,22 @@ export const DeployFormSchema = z
   )
   .refine(
     (data) => {
-      // Check if the demurrage fee is set
-      return data.demurrageFee !== undefined || data.customDemurrageFee
+      // Check if the folio fee is set
+      return data.folioFee !== undefined || data.customFolioFee
     },
     {
-      message: 'Demurrage fee is required',
-      path: ['demurrage-fee'],
+      message: 'Folio fee is required',
+      path: ['fees'],
+    }
+  )
+  .refine(
+    (data) => {
+      // Check if the folio fee is set
+      return data.mintFee !== undefined || data.mintFee
+    },
+    {
+      message: 'Mint fee is required',
+      path: ['fees'],
     }
   )
   .refine(
@@ -238,12 +266,16 @@ export const DeployFormSchema = z
   .refine(
     (data) => {
       // Check if the voting settings are valid
+      const basketVotingDelaySet =
+        data.basketVotingDelay || data.customBasketVotingDelay
       const basketVotingPeriodSet =
         data.basketVotingPeriod || data.customBasketVotingPeriod
       const basketVotingQuorumSet =
         data.basketVotingQuorum || data.customBasketVotingQuorum
       const basketExecutionDelaySet =
         data.basketExecutionDelay || data.customBasketExecutionDelay
+      const governanceVotingDelaySet =
+        data.governanceVotingDelay || data.customGovernanceVotingDelay
       const governanceVotingPeriodSet =
         data.governanceVotingPeriod || data.customGovernanceVotingPeriod
       const governanceVotingQuorumSet =
@@ -252,9 +284,11 @@ export const DeployFormSchema = z
         data.governanceExecutionDelay || data.customGovernanceExecutionDelay
 
       return (
+        basketVotingDelaySet &&
         basketVotingPeriodSet &&
         basketVotingQuorumSet &&
         basketExecutionDelaySet &&
+        governanceVotingDelaySet &&
         governanceVotingPeriodSet &&
         governanceVotingQuorumSet &&
         governanceExecutionDelaySet
@@ -275,7 +309,10 @@ export const dtfDeployDefaultValues = {
   governanceERC20symbol: undefined,
   governanceERC20address: undefined,
   governanceWalletAddress: undefined,
-  demurrageFee: 0,
+  folioFee: 0,
+  customFolioFee: undefined,
+  mintFee: 0.05,
+  customMintFee: undefined,
   governanceShare: 0,
   deployerShare: 0,
   fixedPlatformFee: 0,
@@ -288,12 +325,16 @@ export const dtfDeployDefaultValues = {
   additionalAuctionLaunchers: [],
   guardianAddress: undefined,
   brandManagerAddress: undefined,
+  basketVotingDelay: 20,
+  customBasketVotingDelay: undefined,
   basketVotingPeriod: 20,
   customBasketVotingPeriod: undefined,
   basketVotingQuorum: 20,
   customBasketVotingQuorum: undefined,
   basketExecutionDelay: 20,
   customBasketExecutionDelay: undefined,
+  governanceVotingDelay: 20,
+  customGovernanceVotingDelay: undefined,
   governanceVotingPeriod: 20,
   customGovernanceVotingPeriod: undefined,
   governanceVotingQuorum: 20,
