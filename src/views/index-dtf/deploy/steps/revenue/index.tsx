@@ -1,4 +1,6 @@
 import NextButton from '../../components/next-button'
+import MintFeeSelector from '../fee/mint-fee-selector'
+import FolioFeeSelector from '../fee/folio-fee-selector'
 import RevenueDistributionSettings from './revenue-distribution-settings'
 
 const Description = () => (
@@ -12,6 +14,13 @@ const Description = () => (
 const RevenueDistribution = () => {
   return (
     <>
+      <Description />
+
+      <FolioFeeSelector />
+      <MintFeeSelector />
+      <h1 className="text-2xl font-bold text-primary my-4 ml-6">
+        Distribution
+      </h1>
       <Description />
       <RevenueDistributionSettings />
       <NextButton />

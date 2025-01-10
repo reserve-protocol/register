@@ -11,6 +11,7 @@ import {
 } from './atoms'
 import ConfirmManualDeployButton from './components/confirm-manual-deploy-button'
 import DeployAssetsApproval from './components/deploy-assets-approvals'
+import { indexDeployFormDataAtom } from '../atoms'
 
 const AssetAllowanceUpdater = () => {
   const basketAssets = useAtomValue(basketAllowanceAtom)
@@ -39,11 +40,27 @@ const InitialFolioInput = () => {
   )
 }
 
+const Preview = () => {
+  const formData = useAtomValue(indexDeployFormDataAtom)
+
+  return (
+    <details className="p-2 rounded-lg bg-muted/50">
+      <summary className="cursor-pointer font-medium">
+        Preview Form Data
+      </summary>
+      <pre className="mt-2 p-4 rounded bg-muted overflow-auto">
+        <code>{JSON.stringify(formData, null, 2)}</code>
+      </pre>
+    </details>
+  )
+}
+
 const ManualIndexDeploy = () => (
   <>
     <div className="flex-grow">
       <InitialFolioInput />
       <DeployAssetsApproval />
+      <Preview />
     </div>
     <DrawerFooter className="p-2">
       <ConfirmManualDeployButton />

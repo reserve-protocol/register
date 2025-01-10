@@ -16,7 +16,7 @@ const SETTINGS = [
     field: 'deployerShare',
   },
   {
-    title: 'Fixed platform fee',
+    title: 'Fixed platform share',
     description:
       'How to distribute the revenue from this fee is defines in the revenue distribution section.',
     field: 'fixedPlatformFee',
@@ -48,6 +48,7 @@ const RevenueDistributionSettings = () => {
               className="max-w-32"
               fieldName={field}
               label="%"
+              disabled={field === 'fixedPlatformFee'}
               placeholder="0"
               defaultValue={0}
             />

@@ -24,6 +24,17 @@ const VOTING_PERIOD = {
   customPlaceholder: 'Enter custom length',
 }
 
+const VOTING_THRESHOLD = {
+  title: 'Voting Threshold',
+  description:
+    'How to distribute the revenue from this fee is defines in the revenue distribution section.',
+  icon: <Asterisk size={32} strokeWidth={1.5} />,
+  options: [0.01, 0.05, 0.1, 0.25, 0.5],
+  optionsFormatter: (option: number) => `${option.toString()}%`,
+  customLabel: '%',
+  customPlaceholder: 'Enter custom',
+}
+
 const VOTING_QUORUM = {
   title: 'Voting Quorum',
   description:
@@ -66,6 +77,11 @@ const VOTING_FORM = [
         customFieldName: 'customBasketVotingQuorum',
       },
       {
+        ...VOTING_THRESHOLD,
+        fieldName: 'basketVotingThreshold',
+        customFieldName: 'customBasketVotingThreshold',
+      },
+      {
         ...VOTING_EXECUTION_DELAY,
         fieldName: 'basketExecutionDelay',
         customFieldName: 'customBasketExecutionDelay',
@@ -89,6 +105,11 @@ const VOTING_FORM = [
         ...VOTING_QUORUM,
         fieldName: 'governanceVotingQuorum',
         customFieldName: 'customGovernanceVotingQuorum',
+      },
+      {
+        ...VOTING_THRESHOLD,
+        fieldName: 'governanceVotingThreshold',
+        customFieldName: 'customGovernanceVotingThreshold',
       },
       {
         ...VOTING_EXECUTION_DELAY,

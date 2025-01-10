@@ -13,14 +13,9 @@ export default [
         internalType: 'address',
       },
       {
-        name: '_governorImplementation',
+        name: '_governanceDeployer',
         type: 'address',
-        internalType: 'address',
-      },
-      {
-        name: '_timelockImplementation',
-        type: 'address',
-        internalType: 'address',
+        internalType: 'contract IGovernanceDeployer',
       },
     ],
     stateMutability: 'nonpayable',
@@ -133,6 +128,11 @@ export default [
         type: 'address[]',
         internalType: 'address[]',
       },
+      {
+        name: 'vibesOfficers',
+        type: 'address[]',
+        internalType: 'address[]',
+      },
     ],
     outputs: [
       {
@@ -236,7 +236,7 @@ export default [
       {
         name: 'ownerGovParams',
         type: 'tuple',
-        internalType: 'struct IFolioDeployer.GovParams',
+        internalType: 'struct IGovernanceDeployer.GovParams',
         components: [
           {
             name: 'votingDelay',
@@ -273,7 +273,7 @@ export default [
       {
         name: 'tradingGovParams',
         type: 'tuple',
-        internalType: 'struct IFolioDeployer.GovParams',
+        internalType: 'struct IGovernanceDeployer.GovParams',
         components: [
           {
             name: 'votingDelay',
@@ -312,6 +312,11 @@ export default [
         type: 'address[]',
         internalType: 'address[]',
       },
+      {
+        name: 'vibesOfficers',
+        type: 'address[]',
+        internalType: 'address[]',
+      },
     ],
     outputs: [
       {
@@ -330,7 +335,17 @@ export default [
         internalType: 'address',
       },
       {
+        name: 'ownerTimelock',
+        type: 'address',
+        internalType: 'address',
+      },
+      {
         name: 'tradingGovernor',
+        type: 'address',
+        internalType: 'address',
+      },
+      {
+        name: 'tradingTimelock',
         type: 'address',
         internalType: 'address',
       },
@@ -352,26 +367,13 @@ export default [
   },
   {
     type: 'function',
-    name: 'governorImplementation',
+    name: 'governanceDeployer',
     inputs: [],
     outputs: [
       {
         name: '',
         type: 'address',
-        internalType: 'address',
-      },
-    ],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    name: 'timelockImplementation',
-    inputs: [],
-    outputs: [
-      {
-        name: '',
-        type: 'address',
-        internalType: 'address',
+        internalType: 'contract IGovernanceDeployer',
       },
     ],
     stateMutability: 'view',
@@ -403,30 +405,77 @@ export default [
     stateMutability: 'view',
   },
   {
-    type: 'error',
-    name: 'FailedDeployment',
-    inputs: [],
+    type: 'event',
+    name: 'FolioDeployed',
+    inputs: [
+      {
+        name: 'folioOwner',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+      {
+        name: 'folio',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+      {
+        name: 'folioAdmin',
+        type: 'address',
+        indexed: false,
+        internalType: 'address',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'GovernedFolioDeployed',
+    inputs: [
+      {
+        name: 'stToken',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+      {
+        name: 'folio',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+      {
+        name: 'ownerGovernor',
+        type: 'address',
+        indexed: false,
+        internalType: 'address',
+      },
+      {
+        name: 'ownerTimelock',
+        type: 'address',
+        indexed: false,
+        internalType: 'address',
+      },
+      {
+        name: 'tradingGovernor',
+        type: 'address',
+        indexed: false,
+        internalType: 'address',
+      },
+      {
+        name: 'tradingTimelock',
+        type: 'address',
+        indexed: false,
+        internalType: 'address',
+      },
+    ],
+    anonymous: false,
   },
   {
     type: 'error',
     name: 'FolioDeployer__LengthMismatch',
     inputs: [],
-  },
-  {
-    type: 'error',
-    name: 'InsufficientBalance',
-    inputs: [
-      {
-        name: 'balance',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-      {
-        name: 'needed',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-    ],
   },
   {
     type: 'error',

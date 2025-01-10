@@ -14,3 +14,5 @@ export const basketAtom = atom<Token[]>([])
 export const tokenPricesAtom = atom<Record<Address, number>>({})
 
 export const formReadyForSubmitAtom = atom(false)
+
+export const daoTokenAddressAtom = atom<Address | undefined>(undefined)

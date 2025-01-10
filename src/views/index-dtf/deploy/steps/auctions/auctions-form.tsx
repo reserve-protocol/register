@@ -10,7 +10,7 @@ const TOGGLE_FORMS = [
     description:
       'How to distribute the revenue from this fee is defines in the revenue distribution section.',
     icon: <Asterisk size={32} strokeWidth={1.5} />,
-    options: [0, 15, 30, 45, 60],
+    options: [1, 15, 30, 45, 60],
     optionsFormatter: (option: number) => humanizeMinutes(option),
     fieldName: 'auctionLength',
     customFieldName: 'customAuctionLength',

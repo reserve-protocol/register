@@ -55,18 +55,18 @@ export const DEPLOY_STEPS: DeployStep[] = [
     titleSecondary: 'How would you like to govern?',
     content: <Governance />,
   },
-  {
-    id: 'fees',
-    icon: <Asterisk size={24} strokeWidth={1.5} />,
-    title: 'Fees',
-    titleSecondary: 'Fees',
-    content: <Fees />,
-  },
+  // {
+  //   id: 'fees',
+  //   icon: <Asterisk size={24} strokeWidth={1.5} />,
+  //   title: 'Fees',
+  //   titleSecondary: 'Fees',
+  //   content: <Fees />,
+  // },
   {
     id: 'revenue-distribution',
     icon: <Asterisk size={24} strokeWidth={1.5} />,
-    title: 'Revenue distribution',
-    titleSecondary: 'Revenue distribution',
+    title: 'Monetization',
+    titleSecondary: 'Fees',
     content: <RevenueDistribution />,
   },
   {
