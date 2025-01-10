@@ -35,9 +35,6 @@ const useContractWrite = <
       : undefined
   )
 
-  console.log('gas', gas)
-  console.log('data', data)
-
   const contractWrite = useWriteContract()
   const { writeContract } = contractWrite
 

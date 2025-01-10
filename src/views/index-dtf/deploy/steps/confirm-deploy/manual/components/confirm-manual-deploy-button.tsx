@@ -7,7 +7,9 @@ import { atom, useAtomValue } from 'jotai'
 import { Address, parseEther, parseUnits } from 'viem'
 import { indexDeployFormDataAtom } from '../../atoms'
 import { assetDistributionAtom, initialTokensAtom } from '../atoms'
-import { basketAtom } from '@/views/index-dtf/deploy/atoms'
+import { basketAtom, daoTokenAddressAtom } from '@/views/index-dtf/deploy/atoms'
+import { DeployInputs } from '@/views/index-dtf/deploy/form-fields'
+import { useWaitForTransactionReceipt } from 'wagmi'
 
 type FolioParams = {
   name: string
@@ -28,44 +30,118 @@ type FolioConfig = {
   mintingFee: bigint
 }
 
-type DeployParams = [FolioParams, FolioConfig, Address, Address[], Address[]]
+type GovernanceConfig = {
+  votingDelay: number
+  votingPeriod: number
+  proposalThreshold: bigint
+  quorumPercent: bigint
+  timelockDelay: bigint
+  guardian: Address
+}
 
-// // === Auth roles ===
-// bytes32 constant OWNER = keccak256("OWNER");
-// bytes32 constant PRICE_ORACLE = keccak256("PRICE_ORACLE");
-// bytes32 public constant DEFAULT_ADMIN_ROLE = 0x00;
+type DeployParamsUngoverned = [
+  Address,
+  FolioParams,
+  FolioConfig,
+  Address,
+  Address[],
+  Address[],
+]
 
-// uint256 constant D6_TOKEN_1 = 1e6;
-// uint256 constant D6_TOKEN_10K = 1e10; // 1e4 = 10K tokens with 6 decimals
-// uint256 constant D6_TOKEN_100K = 1e11; // 1e5 = 100K tokens with 6 decimals
-// uint256 constant D6_TOKEN_1M = 1e12; // 1e5 = 100K tokens with 6 decimals
-// uint256 constant D18_TOKEN_1 = 1e18;
-// uint256 constant D18_TOKEN_10K = 1e22; // 1e4 = 10K tokens with 18 decimals
-// uint256 constant D18_TOKEN_100K = 1e23; // 1e5 = 100K tokens with 18 decimals
-// uint256 constant D18_TOKEN_1M = 1e24; // 1e6 = 1M tokens with 18 decimals
-// uint256 constant D27_TOKEN_1 = 1e27;
-// uint256 constant D27_TOKEN_10K = 1e31; // 1e4 = 10K tokens with 27 decimals
-// uint256 constant D27_TOKEN_100K = 1e32; // 1e5 = 100K tokens with 27 decimals
-// uint256 constant D27_TOKEN_1M = 1e33; // 1e6 = 1M tokens with 27 decimals
+type DeployParams = [
+  Address,
+  FolioParams,
+  FolioConfig,
+  GovernanceConfig,
+  GovernanceConfig,
+  Address[],
+  Address[],
+]
 
-// uint256 constant YEAR_IN_SECONDS = 31536000;
+function calculateShare(sharePercentage: number, denominator: number) {
+  const share = sharePercentage / 100
 
-// address priceCurator = 0x00000000000000000000000000000000000000cc; // has PRICE_CURATOR
-// address dao = 0xDA00000000000000000000000000000000000000; // has TRADE_PROPOSER
-// address owner = 0xfF00000000000000000000000000000000000000; // has DEFAULT_ADMIN_ROLE
-// address user1 = 0xaa00000000000000000000000000000000000000;
-// address user2 = 0xbb00000000000000000000000000000000000000;
-// address feeReceiver = 0xCc00000000000000000000000000000000000000;
-// IERC20 USDC;
-// IERC20 DAI;
-// IERC20 MEME;
-// IERC20 USDT; // not in basket
+  if (denominator > 0) {
+    const shareNumerator = share / denominator
+    return parseEther(shareNumerator.toString())
+  }
+
+  return parseEther(share.toString())
+}
+
+function calculateRevenueDistribution(
+  formData: DeployInputs,
+  wallet: Address,
+  stToken: Address
+) {
+  const totalSharesDenominator = (100 - formData.fixedPlatformFee) / 100
+
+  let revenueDistribution: { recipient: Address; portion: bigint }[] = []
+
+  // First add all additional recipients except the last one
+  const additionalRecipients = formData.additionalRevenueRecipients ?? []
+  for (let i = 0; i < additionalRecipients.length - 1; i++) {
+    revenueDistribution.push({
+      recipient: additionalRecipients[i].address,
+      portion: calculateShare(
+        additionalRecipients[i].share,
+        totalSharesDenominator
+      ),
+    })
+  }
+
+  // Add deployer share if not the last one
+  if (
+    formData.deployerShare > 0 &&
+    (formData.governanceShare > 0 || additionalRecipients.length > 0)
+  ) {
+    revenueDistribution.push({
+      recipient: wallet,
+      portion: calculateShare(formData.deployerShare, totalSharesDenominator),
+    })
+  }
+
+  // Add governance share if not the last one
+  if (formData.governanceShare > 0 && additionalRecipients.length > 0) {
+    revenueDistribution.push({
+      recipient: stToken,
+      portion: calculateShare(formData.governanceShare, totalSharesDenominator),
+    })
+  }
+
+  // Calculate sum of all portions so far
+  const currentSum = revenueDistribution.reduce(
+    (sum, item) => sum + item.portion,
+    0n
+  )
+
+  // Add the last recipient with adjusted portion to make total sum exactly 1
+  if (additionalRecipients.length > 0) {
+    const lastRecipient = additionalRecipients[additionalRecipients.length - 1]
+    revenueDistribution.push({
+      recipient: lastRecipient.address,
+      portion: parseEther('1') - currentSum,
+    })
+  } else if (formData.deployerShare > 0) {
+    revenueDistribution.push({
+      recipient: wallet,
+      portion: parseEther('1') - currentSum,
+    })
+  } else if (formData.governanceShare > 0) {
+    revenueDistribution.push({
+      recipient: stToken,
+      portion: parseEther('1') - currentSum,
+    })
+  }
+
+  return revenueDistribution
+}
 
 const txAtom = atom<
   | {
       address: Address
       abi: typeof dtfIndexDeployerAbi
-      functionName: 'deployFolio'
+      functionName: 'deployGovernedFolio'
       args: DeployParams
     }
   | undefined
@@ -74,84 +150,75 @@ const txAtom = atom<
   const chainId = get(chainIdAtom)
   const formData = get(indexDeployFormDataAtom)
   const distribution = get(assetDistributionAtom)
+  const stToken = get(daoTokenAddressAtom)
   const basket = get(basketAtom)
   const wallet = get(walletAtom)
 
-  const MOCK = wallet ?? '0x0000000000000000000000000000000000000000'
-
-  if (!formData || !initialTokens) return undefined
+  if (!formData || !initialTokens || !stToken || !wallet) return undefined
 
   const args: DeployParams = [
+    stToken,
     {
       name: formData.name,
       symbol: formData.symbol,
-      // assets: basket.map((token) => token.address),
-      assets: ['0xaB36452DbAC151bE02b16Ca17d8919826072f64a'],
-      amounts: [parseEther('1')],
-      // amounts: basket.map(
-      //   (token) =>
-      //     parseUnits(distribution[token.address].toString(), token.decimals)
-      //   // 1n
-      // ),
+      assets: basket.map((token) => token.address),
+      amounts: basket.map((token) =>
+        parseUnits(distribution[token.address].toString(), token.decimals)
+      ),
       initialShares: parseEther(initialTokens),
     },
     {
-      // tradeDelay: BigInt(formData.auctionDelay as number),
-      tradeDelay: BigInt(1),
-      // auctionLength: BigInt(formData.auctionLength as number),
-      auctionLength: BigInt(60),
-      feeRecipients: [
-        {
-          recipient: MOCK,
-          portion: parseEther('1'),
-        },
-      ],
-      // feeRecipients: (formData.additionalRevenueRecipients ?? []).map(
-      //   (recipient) => ({
-      //     recipient: recipient.address,
-      //     portion: parseEther(recipient.share.toString()),
-      //   })
-      // ),
-      // folioFee: BigInt(formData.fixedPlatformFee),
-      folioFee: 1n,
-      mintingFee: parseEther('0.001'),
+      tradeDelay: BigInt(formData.auctionDelay! * 60),
+      auctionLength: BigInt(formData.auctionLength! * 60),
+      feeRecipients: calculateRevenueDistribution(formData, wallet, stToken),
+      folioFee: BigInt(439591053.36 * formData.folioFee!),
+      mintingFee: parseEther((formData.mintFee! / 100).toString()),
     },
-    // formData.governanceERC20address ?? '0x',
-    MOCK,
-    [MOCK],
-    // [
-    //   formData.auctionLauncher as Address,
-    //   ...(formData.additionalAuctionLaunchers ?? []).map(
-    //     (launcher) => launcher
-    //   ),
-    // ], // proposers
-    [MOCK], // price curators
+    {
+      votingDelay: formData.governanceVotingDelay! * 60,
+      votingPeriod: formData.governanceVotingPeriod! * 60,
+      proposalThreshold: parseEther(
+        formData.governanceVotingThreshold!.toString()
+      ),
+      quorumPercent: BigInt(formData.governanceVotingQuorum!),
+      timelockDelay: BigInt(formData.governanceExecutionDelay! * 60),
+      guardian: formData.guardianAddress!,
+    },
+    {
+      votingDelay: formData.basketVotingDelay! * 60,
+      votingPeriod: formData.basketVotingPeriod! * 60,
+      proposalThreshold: parseEther(formData.basketVotingThreshold!.toString()),
+      quorumPercent: BigInt(formData.basketVotingQuorum!),
+      timelockDelay: BigInt(formData.basketExecutionDelay! * 60),
+      guardian: formData.guardianAddress!,
+    },
+    [formData.auctionLauncher!, ...(formData.additionalAuctionLaunchers ?? [])],
+    [formData.brandManagerAddress!],
   ]
 
   return {
     address: INDEX_DEPLOYER_ADDRESS[chainId],
     abi: dtfIndexDeployerAbi,
-    functionName: 'deployFolio',
+    functionName: 'deployGovernedFolio',
     args,
   }
 })
 
 const ConfirmManualDeployButton = () => {
   const tx = useAtomValue(txAtom)
-  console.log('tx', tx)
-  const {
-    isReady,
-    gas,
-    hash,
-    validationError,
-    status,
-    error,
-    reset,
-    isLoading,
-    write,
-  } = useContractWrite(tx)
+  const { isReady, gas, hash, validationError, error, isLoading, write } =
+    useContractWrite(tx)
 
-  console.log('hash', !!hash ? 'Confirming tx...' : 'Pending, sign in wallet')
+  const {
+    data: receipt,
+    isSuccess,
+    isError: txError,
+  } = useWaitForTransactionReceipt({
+    hash,
+  })
+
+  console.log('receipt', receipt)
+  console.log('error', validationError)
 
   return (
     <div>
@@ -161,7 +228,7 @@ const ConfirmManualDeployButton = () => {
         loading={isLoading || !!hash}
         loadingText={!!hash ? 'Confirming tx...' : 'Pending, sign in wallet'}
         onClick={write}
-        text={'Deploy'}
+        text={isReady ? 'Deploy' : 'Preparing deploy...'}
         fullWidth
         error={validationError || error}
       />

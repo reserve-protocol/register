@@ -30,6 +30,7 @@ const buttonVariants = cva(
         sm: 'h-9 rounded-md px-3',
         lg: 'h-11 rounded-md px-8',
         icon: 'h-9 rounded-md w-9 px-2',
+        'icon-rounded': 'h-8 rounded-full w-8 px-2',
         inline: 'h-auto p-0 m-0',
       },
     },

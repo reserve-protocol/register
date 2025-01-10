@@ -15,4 +15,7 @@ export const tokenPricesAtom = atom<Record<Address, number>>({})
 
 export const formReadyForSubmitAtom = atom(false)
 
-export const daoTokenAddressAtom = atom<Address | undefined>(undefined)
+// TODO: Remove hardcoded value
+export const daoTokenAddressAtom = atom<Address | undefined>(
+  '0xaB36452DbAC151bE02b16Ca17d8919826072f64a'
+)
