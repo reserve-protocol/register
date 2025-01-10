@@ -5,6 +5,8 @@ import RegisterAbout from '@/views/discover/components/yield/components/Register
 import HistoricalTVL from './components/historical-tvl'
 import { Button } from '@/components/ui/button'
 import { ArrowRight } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import TokenLogo from '@/components/token-logo'
 
 const Hero = () => (
   <div className="grid lg:grid-cols-2 grid-cols-1 divide-x divide-white rounded-sm bg-primary relative h-[506px]">
@@ -34,17 +36,19 @@ const DTFCategory = ({
       className={`border rounded-2xl bg-[url('${image}')] bg-cover bg-center`}
     >
       <div className="h-64"></div>
-      <div className="bg-card rounded-2xl p-4 m-1">
-        <h3 className="text-2xl">{title} -</h3>
-        <h4 className="text-2xl text-primary">{subtitle}</h4>
-        <p className="my-2">{description}</p>
-        <div className="flex items-center">
-          <h4 className="text-xl font-bold text-primary">View all {title}</h4>
-          <Button size="icon-rounded" className="ml-auto">
-            <ArrowRight />
-          </Button>
+      <Link to={`/discover`}>
+        <div className="bg-card rounded-2xl p-4 m-1 border border-card hover:border-primary transition-all duration-300 cursor-pointer">
+          <h3 className="text-2xl">{title} -</h3>
+          <h4 className="text-2xl text-primary">{subtitle}</h4>
+          <p className="my-2">{description}</p>
+          <div className="flex items-center">
+            <h4 className="text-xl font-bold text-primary">View all {title}</h4>
+            <Button size="icon-rounded" className="ml-auto">
+              <ArrowRight />
+            </Button>
+          </div>
         </div>
-      </div>
+      </Link>
     </div>
   )
 }
@@ -75,6 +79,77 @@ const DTFCategories = () => {
   )
 }
 
+const FeaturedDTFs = () => {
+  return (
+    <div className="grid lg:grid-cols-2 grid-cols-1 gap-4 mt-4">
+      <div className="flex flex-col">
+        <div className="flex items-center border-b gap-2 p-4">
+          <TokenLogo symbol="rsr" size="xl" />
+          <div className="flex flex-col">
+            <span className="text-xl font-bold">RSR</span>
+            <p>Description</p>
+          </div>
+          <Button size="icon-rounded" variant="muted" className="ml-auto mr-1">
+            <ArrowRight />
+          </Button>
+        </div>
+        <div className="flex items-center border-b gap-2 p-4">
+          <TokenLogo symbol="rsr" size="xl" />
+          <div className="flex flex-col">
+            <span className="text-xl font-bold">RSR</span>
+            <p>Description</p>
+          </div>
+          <Button size="icon-rounded" variant="muted" className="ml-auto mr-1">
+            <ArrowRight />
+          </Button>
+        </div>
+        <div className="flex items-center border-b gap-2 p-4">
+          <TokenLogo symbol="rsr" size="xl" />
+          <div className="flex flex-col">
+            <span className="text-xl font-bold">RSR</span>
+            <p>Description</p>
+          </div>
+          <Button size="icon-rounded" variant="muted" className="ml-auto mr-1">
+            <ArrowRight />
+          </Button>
+        </div>
+      </div>
+      <div className="flex flex-col">
+        <div className="flex items-center border-b gap-2 p-4">
+          <TokenLogo symbol="rsr" size="xl" />
+          <div className="flex flex-col">
+            <span className="text-xl font-bold">RSR</span>
+            <p>Description</p>
+          </div>
+          <Button size="icon-rounded" variant="muted" className="ml-auto mr-1">
+            <ArrowRight />
+          </Button>
+        </div>
+        <div className="flex items-center border-b gap-2 p-4">
+          <TokenLogo symbol="rsr" size="xl" />
+          <div className="flex flex-col">
+            <span className="text-xl font-bold">RSR</span>
+            <p>Description</p>
+          </div>
+          <Button size="icon-rounded" variant="muted" className="ml-auto mr-1">
+            <ArrowRight />
+          </Button>
+        </div>
+        <div className="flex items-center border-b gap-2 p-4">
+          <TokenLogo symbol="rsr" size="xl" />
+          <div className="flex flex-col">
+            <span className="text-xl font-bold">RSR</span>
+            <p>Description</p>
+          </div>
+          <Button size="icon-rounded" variant="muted" className="ml-auto mr-1">
+            <ArrowRight />
+          </Button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 const Home = () => (
   <div className="container px-4 mb-6">
     <div className="text-primary">
@@ -86,6 +161,7 @@ const Home = () => (
     </div>
     <Hero />
     <DTFCategories />
+    <FeaturedDTFs />
     <RegisterAbout />
   </div>
 )
