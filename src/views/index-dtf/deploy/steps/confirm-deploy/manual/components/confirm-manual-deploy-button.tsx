@@ -4,12 +4,14 @@ import useContractWrite from '@/hooks/useContractWrite'
 import { chainIdAtom, walletAtom } from '@/state/atoms'
 import { INDEX_DEPLOYER_ADDRESS } from '@/utils/addresses'
 import { atom, useAtomValue } from 'jotai'
-import { Address, parseEther, parseUnits } from 'viem'
+import { Address, parseEther, parseEventLogs, parseUnits } from 'viem'
 import { indexDeployFormDataAtom } from '../../atoms'
 import { assetDistributionAtom, initialTokensAtom } from '../atoms'
 import { basketAtom, daoTokenAddressAtom } from '@/views/index-dtf/deploy/atoms'
 import { DeployInputs } from '@/views/index-dtf/deploy/form-fields'
 import { useWaitForTransactionReceipt } from 'wagmi'
+import { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 type FolioParams = {
   name: string
@@ -76,25 +78,15 @@ function calculateRevenueDistribution(
 ) {
   const totalSharesDenominator = (100 - formData.fixedPlatformFee) / 100
 
-  let revenueDistribution: { recipient: Address; portion: bigint }[] = []
-
-  // First add all additional recipients except the last one
-  const additionalRecipients = formData.additionalRevenueRecipients ?? []
-  for (let i = 0; i < additionalRecipients.length - 1; i++) {
-    revenueDistribution.push({
-      recipient: additionalRecipients[i].address,
-      portion: calculateShare(
-        additionalRecipients[i].share,
-        totalSharesDenominator
-      ),
-    })
-  }
+  let revenueDistribution: { recipient: Address; portion: bigint }[] = (
+    formData.additionalRevenueRecipients || []
+  ).map((recipient) => ({
+    recipient: recipient.address,
+    portion: calculateShare(recipient.share, totalSharesDenominator),
+  }))
 
   // Add deployer share if not the last one
-  if (
-    formData.deployerShare > 0 &&
-    (formData.governanceShare > 0 || additionalRecipients.length > 0)
-  ) {
+  if (formData.deployerShare > 0) {
     revenueDistribution.push({
       recipient: wallet,
       portion: calculateShare(formData.deployerShare, totalSharesDenominator),
@@ -102,7 +94,7 @@ function calculateRevenueDistribution(
   }
 
   // Add governance share if not the last one
-  if (formData.governanceShare > 0 && additionalRecipients.length > 0) {
+  if (formData.governanceShare > 0) {
     revenueDistribution.push({
       recipient: stToken,
       portion: calculateShare(formData.governanceShare, totalSharesDenominator),
@@ -110,29 +102,16 @@ function calculateRevenueDistribution(
   }
 
   // Calculate sum of all portions so far
-  const currentSum = revenueDistribution.reduce(
-    (sum, item) => sum + item.portion,
-    0n
-  )
+  if (revenueDistribution.length > 1) {
+    const currentSum = revenueDistribution
+      .slice(0, -1)
+      .reduce((sum, item) => sum + item.portion, 0n)
 
-  // Add the last recipient with adjusted portion to make total sum exactly 1
-  if (additionalRecipients.length > 0) {
-    const lastRecipient = additionalRecipients[additionalRecipients.length - 1]
-    revenueDistribution.push({
-      recipient: lastRecipient.address,
-      portion: parseEther('1') - currentSum,
-    })
-  } else if (formData.deployerShare > 0) {
-    revenueDistribution.push({
-      recipient: wallet,
-      portion: parseEther('1') - currentSum,
-    })
-  } else if (formData.governanceShare > 0) {
-    revenueDistribution.push({
-      recipient: stToken,
-      portion: parseEther('1') - currentSum,
-    })
+    revenueDistribution[revenueDistribution.length - 1].portion =
+      parseEther('1') - currentSum
   }
+
+  revenueDistribution.sort((a, b) => (a.portion < b.portion ? -1 : 1))
 
   return revenueDistribution
 }
@@ -205,6 +184,8 @@ const txAtom = atom<
 })
 
 const ConfirmManualDeployButton = () => {
+  const navigate = useNavigate()
+  const chainId = useAtomValue(chainIdAtom)
   const tx = useAtomValue(txAtom)
   const { isReady, gas, hash, validationError, error, isLoading, write } =
     useContractWrite(tx)
@@ -217,8 +198,20 @@ const ConfirmManualDeployButton = () => {
     hash,
   })
 
-  console.log('receipt', receipt)
-  console.log('error', validationError)
+  useEffect(() => {
+    if (receipt) {
+      const event = parseEventLogs({
+        abi: dtfIndexDeployerAbi,
+        logs: receipt.logs,
+        eventName: 'FolioDeployed',
+      })[0]
+
+      // TODO: Handle edge case when event is not found? why would that happen?
+      if (event) {
+        navigate(`/${chainId}/dtf/${event.args.folio}`)
+      }
+    }
+  }, [receipt])
 
   return (
     <div>
