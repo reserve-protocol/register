@@ -25,8 +25,8 @@ import Staking from '@/views/yield-dtf/staking'
 import Terms from 'views/terms'
 import GovernanceSetup from '@/views/yield-dtf/deploy/components/Governance'
 import AllTokenList from './views/tokens/Tokens'
-import DTFContainer from './views/index-dtf/index-dtf-container'
-import DTFOverview from './views/index-dtf/overview'
+import IndexDTFContainer from './views/index-dtf/index-dtf-container'
+import IndexDTFOverview from './views/index-dtf/overview'
 import Discover from './views/discover'
 import Deploy from './views/deploy'
 
@@ -59,9 +59,9 @@ const AppRoutes = () => (
       <Route path={ROUTES.GOVERNANCE_SETUP} element={<GovernanceSetup />} />
       <Route path={ROUTES.SETTINGS} element={<Settings />} />
     </Route>
-    <Route path={`/:chain/dtf/:tokenId`} element={<DTFContainer />}>
+    <Route path={`/:chain/index-dtf/:tokenId`} element={<IndexDTFContainer />}>
       <Route index element={<Navigate replace to={ROUTES.OVERVIEW} />} />
-      <Route path={ROUTES.OVERVIEW} element={<DTFOverview />} />
+      <Route path={ROUTES.OVERVIEW} element={<IndexDTFOverview />} />
     </Route>
     <Route path={ROUTES.EXPLORER} element={<Explorer />}>
       <Route

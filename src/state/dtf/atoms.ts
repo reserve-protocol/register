@@ -35,14 +35,18 @@ export interface ITokenGovernance {
   token: Token
 }
 
-export const iTokenAddressAtom = atom<Address | null>(null)
+export const iTokenAddressAtom = atom<Address | undefined>(undefined)
 
-export const iTokenAtom = atom<null | IToken>(null)
+export const iTokenAtom = atom<IToken | undefined>(undefined)
 
-export const iTokenBasketAtom = atom<null | ITokenBasket>(null)
+export const iTokenBasketAtom = atom<ITokenBasket | undefined>(undefined)
 
-export const iTokenMetaAtom = atom<null | ITokenMeta>(null)
+export const iTokenMetaAtom = atom<ITokenMeta | undefined>(undefined)
 
-export const iTokenConfigurationAtom = atom<null | ITokenConfiguration>(null)
+export const iTokenConfigurationAtom = atom<ITokenConfiguration | undefined>(
+  undefined
+)
 
-export const iTokenGovernanceAtom = atom<null | ITokenGovernance>(null)
+export const iTokenGovernanceAtom = atom<ITokenGovernance | undefined>(
+  undefined
+)

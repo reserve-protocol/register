@@ -22,6 +22,18 @@ const useContractWrite = <
   const { data, error, isLoading, isSuccess } = useSimulateContract(
     !isWalletInvalid ? (call as UseSimulateContractParameters) : undefined
   )
+
+  if (call.args) {
+    console.log(
+      'callData',
+      encodeFunctionData({
+        abi: call.abi as any,
+        functionName: call.functionName,
+        args: call.args as any,
+      })
+    )
+  }
+
   const { data: gas } = useEstimateGas(
     data?.request
       ? {

@@ -111,7 +111,7 @@ function calculateRevenueDistribution(
       parseEther('1') - currentSum
   }
 
-  revenueDistribution.sort((a, b) => (a.portion < b.portion ? -1 : 1))
+  revenueDistribution.sort((a, b) => (a.recipient < b.recipient ? -1 : 1))
 
   return revenueDistribution
 }
@@ -208,7 +208,7 @@ const ConfirmManualDeployButton = () => {
 
       // TODO: Handle edge case when event is not found? why would that happen?
       if (event) {
-        navigate(`/${chainId}/dtf/${event.args.folio}`)
+        navigate(`/${chainId}/index-dtf/${event.args.folio}`)
       }
     }
   }, [receipt])

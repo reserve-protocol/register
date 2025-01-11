@@ -17,5 +17,5 @@ export const formReadyForSubmitAtom = atom(false)
 
 // TODO: Remove hardcoded value
 export const daoTokenAddressAtom = atom<Address | undefined>(
-  '0xaB36452DbAC151bE02b16Ca17d8919826072f64a'
+  '0x8c02287d6eb56b7cedd715c399d1bf068c1bac5e'
 )

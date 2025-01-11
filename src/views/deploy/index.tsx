@@ -14,6 +14,7 @@ interface DeployBoxProps {
   chains: number[]
   infoText: string
   infoStyle: 'primary' | 'black'
+  image: string
 }
 
 const DeployBox = ({
@@ -21,6 +22,7 @@ const DeployBox = ({
   description,
   buttonText,
   buttonVariant = 'default',
+  image,
   route,
   chains,
   infoText,
@@ -32,7 +34,9 @@ const DeployBox = ({
   const bgColor = infoStyle === 'primary' ? 'bg-primary' : 'bg-black'
 
   return (
-    <div className="flex flex-col bg-muted rounded-2xl flex-grow h-[522px] w-[588px] group">
+    <div
+      className={`flex flex-col bg-muted rounded-2xl flex-grow h-[522px] w-[588px]  bg-[url('${image}')] bg-cover bg-center group`}
+    >
       <div className="flex items-center p-4">
         <div className="flex items-center gap-2 mr-auto">
           <div
@@ -103,23 +107,25 @@ const Deploy = () => {
       <Header />
       <div className="flex flex-wrap gap-4 mt-10">
         <DeployBox
+          title="Create an Index DTF"
+          description={description}
+          buttonText="Get Started"
+          route={ROUTES.DEPLOY_INDEX}
+          chains={[ChainId.Mainnet, ChainId.Base]}
+          infoText="What are Index DTFs?"
+          infoStyle="primary"
+          image="https://storage.reserve.org/index-dtf-cover.png"
+        />
+        <DeployBox
           title="Create a Yield DTF"
           description={description}
+          buttonVariant="secondary"
           buttonText="Get Started"
           route={ROUTES.DEPLOY_YIELD}
           chains={[ChainId.Mainnet, ChainId.Base, ChainId.Arbitrum]}
           infoText="What are Yield DTFs?"
-          infoStyle="primary"
-        />
-        <DeployBox
-          title="Create an Index DTF"
-          description={description}
-          buttonText="Get Started"
-          buttonVariant="secondary"
-          route={ROUTES.DEPLOY_INDEX}
-          chains={[ChainId.Mainnet, ChainId.Base]}
-          infoText="What are Index DTFs?"
           infoStyle="black"
+          image="https://storage.reserve.org/yield-dtf-cover.png"
         />
       </div>
     </div>
