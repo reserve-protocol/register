@@ -22,7 +22,7 @@ const buttonVariants = cva(
         ghost: 'hover:bg-accent hover:text-accent-foreground',
         'ghost-accent': 'hover:bg-primary hover:text-white',
         link: 'text-foreground underline-offset-4 hover:text-primary',
-        muted: 'text-foreground bg-mutedSecondary hover:bg-mutedSecondary/80',
+        muted: 'text-foreground bg-border hover:bg-border/80',
       },
       size: {
         default: 'h-10 px-4 py-2',

@@ -2,15 +2,6 @@ import { Button } from '@/components/ui/button'
 import { ChartConfig, ChartContainer } from '@/components/ui/chart'
 import { Line, LineChart } from 'recharts'
 
-const chartData = [
-  { month: 'January', desktop: 186 },
-  { month: 'February', desktop: 305 },
-  { month: 'March', desktop: 237 },
-  { month: 'April', desktop: 73 },
-  { month: 'May', desktop: 209 },
-  { month: 'June', desktop: 214 },
-]
-
 const data = [
   { timestamp: 1, value: 280 },
   { timestamp: 2, value: 275 },
