@@ -23,7 +23,7 @@ const Content = () => {
   )
 }
 
-const DTFOverview = () => {
+const IndexDTFOverview = () => {
   return (
     <div className="flex gap-2">
       <Content />
@@ -34,4 +34,4 @@ const DTFOverview = () => {
   )
 }
 
-export default DTFOverview
+export default IndexDTFOverview

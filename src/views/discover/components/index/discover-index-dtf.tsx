@@ -1,4 +1,5 @@
 import { Card, CardContent, CardTitle } from '@/components/ui/card'
+import useIndexDTFList from '@/hooks/useIndexDTFList'
 import { Circle } from 'lucide-react'
 
 const DiscoverHighlightIndex = () => {
@@ -32,7 +33,13 @@ const DiscoverHighlightIndex = () => {
   )
 }
 
-// const IndexDTFTable
+const IndexDTFList = () => {
+  const { data, isLoading } = useIndexDTFList()
+
+  console.log(data)
+
+  return <div>IndexDTFList</div>
+}
 
 const DiscoverIndexDTF = () => {
   return (
@@ -41,6 +48,7 @@ const DiscoverIndexDTF = () => {
       <h2 className="text-primary text-center text-xl font-bold mb-6">
         All Reserve Index DTFs
       </h2>
+      <IndexDTFList />
     </div>
   )
 }

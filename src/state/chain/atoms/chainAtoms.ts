@@ -86,6 +86,13 @@ export const SUBGRAPH_URL = {
     'https://subgraph.satsuma-prod.com/327d6f1d3de6/reserve/reserve-arbitrum/api',
 }
 
+export const INDEX_DTF_SUBGRAPH_URL = {
+  [ChainId.Mainnet]: '', // TODO?
+  [ChainId.Base]:
+    'https://subgraph.satsuma-prod.com/327d6f1d3de6/reserve/dtf-index-base/api',
+  [ChainId.Arbitrum]: '', // TODO? maybe never
+}
+
 // TODO: Multi fork network graph
 export const GRAPH_CLIENTS = {
   [ChainId.Mainnet]: new GraphQLClient(

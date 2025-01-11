@@ -5,6 +5,9 @@ import useSWR from 'swr'
 import useSWRImmutable from 'swr/immutable'
 import { supportedChainList } from 'utils/constants'
 
+// TODO: Need to figure out a way to refactor this to work with mutligraphs
+// TODO: For now index-dtf will be separate and will use react-query
+
 type FetcherArgs = [RequestDocument, Record<string, any>]
 
 const multichainFetcher = async (
@@ -29,10 +32,13 @@ const multichainFetcher = async (
 
   const results = await Promise.all(calls)
 
-  return supportedChainList.reduce((acc, current, index) => {
-    acc[current] = results[index]
-    return acc
-  }, {} as { [x: number]: any })
+  return supportedChainList.reduce(
+    (acc, current, index) => {
+      acc[current] = results[index]
+      return acc
+    },
+    {} as { [x: number]: any }
+  )
 }
 
 const useQuery = (
