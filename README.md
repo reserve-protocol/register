@@ -39,4 +39,4 @@ Related subgraph [here](https://github.com/reserve-protocol/reserve-subgraph)
 
 ## Contributing
 
-Fork this repository and create a pull request against the `master` branch
+Fork this repository and create a pull request against the `master` branch.
