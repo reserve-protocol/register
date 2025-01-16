@@ -125,7 +125,7 @@ body {
 
 @layer base {
   html {
-    /* font-family: 'TWK Lausanne', system-ui, sans-serif; */
+    font-family: 'TWK Lausanne', system-ui, sans-serif;
   }
   * {
     @apply border-border;

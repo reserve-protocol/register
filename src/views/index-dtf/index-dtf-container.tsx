@@ -220,7 +220,7 @@ const Updater = () => {
 }
 
 const IndexDTFContainer = () => (
-  <div className="container flex flex-col-reverse md:flex-row mb-[72px] lg:mb-0">
+  <div className="container flex flex-col-reverse md:flex-row mb-[72px] h-full lg:mb-0">
     <Updater />
     <IndexDTFNavigation />
     <div className="flex-grow">

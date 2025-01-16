@@ -8,6 +8,7 @@ import ManualIndexDeploy from './manual'
 import DaoToken from './components/dao-token'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import SimpleIndexDeploy from './simple'
+import { useEffect } from 'react'
 
 const mockData: DeployInputs = {
   name: 'test',

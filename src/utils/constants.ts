@@ -156,6 +156,13 @@ export const TIME_RANGE_VALUE: { [x: string]: number } = {
   [TIME_RANGES.YEAR]: 31104000,
 }
 
+export const GOVERNANCE_PROPOSAL_TYPES = {
+  BASKET: 'basket',
+  FEES: 'fees',
+  ROLES: 'roles',
+  OTHER: 'other',
+}
+
 export const ROUTES = Object.freeze({
   OVERVIEW: 'overview',
   STAKING: 'staking',
@@ -173,6 +180,7 @@ export const ROUTES = Object.freeze({
   WALLET: '/wallet',
   TOKENS: '/tokens',
   GOVERNANCE: 'governance',
+  GOVERNANCE_PROPOSE: 'propose',
   GOVERNANCE_PROPOSAL: 'governance/proposal',
   ZAP: '/zap',
   BRIDGE: '/bridge',
