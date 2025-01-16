@@ -19,7 +19,7 @@ export default [
   },
   {
     type: 'function',
-    name: 'PRICE_CURATOR',
+    name: 'TRADE_LAUNCHER',
     inputs: [],
     outputs: [
       {
@@ -137,19 +137,65 @@ export default [
         internalType: 'contract IERC20',
       },
       {
-        name: 'sellAmount',
-        type: 'uint256',
-        internalType: 'uint256',
+        name: 'sellLimit',
+        type: 'tuple',
+        internalType: 'struct IFolio.Range',
+        components: [
+          {
+            name: 'spot',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+          {
+            name: 'low',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+          {
+            name: 'high',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+        ],
       },
       {
-        name: 'startPrice',
-        type: 'uint256',
-        internalType: 'uint256',
+        name: 'buyLimit',
+        type: 'tuple',
+        internalType: 'struct IFolio.Range',
+        components: [
+          {
+            name: 'spot',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+          {
+            name: 'low',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+          {
+            name: 'high',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+        ],
       },
       {
-        name: 'endPrice',
-        type: 'uint256',
-        internalType: 'uint256',
+        name: 'prices',
+        type: 'tuple',
+        internalType: 'struct IFolio.Prices',
+        components: [
+          {
+            name: 'start',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+          {
+            name: 'end',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+        ],
       },
       {
         name: 'ttl',
@@ -347,15 +393,10 @@ export default [
   },
   {
     type: 'function',
-    name: 'getBidAmount',
+    name: 'getBid',
     inputs: [
       {
         name: 'tradeId',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-      {
-        name: 'amount',
         type: 'uint256',
         internalType: 'uint256',
       },
@@ -364,10 +405,15 @@ export default [
         type: 'uint256',
         internalType: 'uint256',
       },
+      {
+        name: 'sellAmount',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
     ],
     outputs: [
       {
-        name: '',
+        name: 'bidAmount',
         type: 'uint256',
         internalType: 'uint256',
       },
@@ -676,6 +722,30 @@ export default [
   },
   {
     type: 'function',
+    name: 'lot',
+    inputs: [
+      {
+        name: 'tradeId',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+      {
+        name: 'timestamp',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+    ],
+    outputs: [
+      {
+        name: 'sellAmount',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
     name: 'mint',
     inputs: [
       {
@@ -748,6 +818,16 @@ export default [
     inputs: [
       {
         name: 'tradeId',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+      {
+        name: 'sellLimit',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+      {
+        name: 'buyLimit',
         type: 'uint256',
         internalType: 'uint256',
       },
@@ -1052,6 +1132,25 @@ export default [
   },
   {
     type: 'function',
+    name: 'tradeEnds',
+    inputs: [
+      {
+        name: '',
+        type: 'address',
+        internalType: 'address',
+      },
+    ],
+    outputs: [
+      {
+        name: '',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
     name: 'trades',
     inputs: [
       {
@@ -1077,19 +1176,65 @@ export default [
         internalType: 'contract IERC20',
       },
       {
-        name: 'sellAmount',
-        type: 'uint256',
-        internalType: 'uint256',
+        name: 'sellLimit',
+        type: 'tuple',
+        internalType: 'struct IFolio.Range',
+        components: [
+          {
+            name: 'spot',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+          {
+            name: 'low',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+          {
+            name: 'high',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+        ],
       },
       {
-        name: 'startPrice',
-        type: 'uint256',
-        internalType: 'uint256',
+        name: 'buyLimit',
+        type: 'tuple',
+        internalType: 'struct IFolio.Range',
+        components: [
+          {
+            name: 'spot',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+          {
+            name: 'low',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+          {
+            name: 'high',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+        ],
       },
       {
-        name: 'endPrice',
-        type: 'uint256',
-        internalType: 'uint256',
+        name: 'prices',
+        type: 'tuple',
+        internalType: 'struct IFolio.Prices',
+        components: [
+          {
+            name: 'start',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+          {
+            name: 'end',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+        ],
       },
       {
         name: 'availableAt',
@@ -1251,31 +1396,6 @@ export default [
   },
   {
     type: 'event',
-    name: 'Bid',
-    inputs: [
-      {
-        name: 'tradeId',
-        type: 'uint256',
-        indexed: true,
-        internalType: 'uint256',
-      },
-      {
-        name: 'sellAmount',
-        type: 'uint256',
-        indexed: false,
-        internalType: 'uint256',
-      },
-      {
-        name: 'buyAmount',
-        type: 'uint256',
-        indexed: false,
-        internalType: 'uint256',
-      },
-    ],
-    anonymous: false,
-  },
-  {
-    type: 'event',
     name: 'FeeRecipientSet',
     inputs: [
       {
@@ -1295,10 +1415,35 @@ export default [
   },
   {
     type: 'event',
+    name: 'FolioFeePaid',
+    inputs: [
+      {
+        name: 'recipient',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+      {
+        name: 'amount',
+        type: 'uint256',
+        indexed: false,
+        internalType: 'uint256',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
     name: 'FolioFeeSet',
     inputs: [
       {
         name: 'newFee',
+        type: 'uint256',
+        indexed: false,
+        internalType: 'uint256',
+      },
+      {
+        name: 'feeAnnually',
         type: 'uint256',
         indexed: false,
         internalType: 'uint256',
@@ -1331,6 +1476,25 @@ export default [
     inputs: [
       {
         name: 'newFee',
+        type: 'uint256',
+        indexed: false,
+        internalType: 'uint256',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'ProtocolFeePaid',
+    inputs: [
+      {
+        name: 'recipient',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+      {
+        name: 'amount',
         type: 'uint256',
         indexed: false,
         internalType: 'uint256',
@@ -1436,13 +1600,135 @@ export default [
         internalType: 'address',
       },
       {
-        name: 'amount',
+        name: 'trade',
+        type: 'tuple',
+        indexed: false,
+        internalType: 'struct IFolio.Trade',
+        components: [
+          {
+            name: 'id',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+          {
+            name: 'sell',
+            type: 'address',
+            internalType: 'contract IERC20',
+          },
+          {
+            name: 'buy',
+            type: 'address',
+            internalType: 'contract IERC20',
+          },
+          {
+            name: 'sellLimit',
+            type: 'tuple',
+            internalType: 'struct IFolio.Range',
+            components: [
+              {
+                name: 'spot',
+                type: 'uint256',
+                internalType: 'uint256',
+              },
+              {
+                name: 'low',
+                type: 'uint256',
+                internalType: 'uint256',
+              },
+              {
+                name: 'high',
+                type: 'uint256',
+                internalType: 'uint256',
+              },
+            ],
+          },
+          {
+            name: 'buyLimit',
+            type: 'tuple',
+            internalType: 'struct IFolio.Range',
+            components: [
+              {
+                name: 'spot',
+                type: 'uint256',
+                internalType: 'uint256',
+              },
+              {
+                name: 'low',
+                type: 'uint256',
+                internalType: 'uint256',
+              },
+              {
+                name: 'high',
+                type: 'uint256',
+                internalType: 'uint256',
+              },
+            ],
+          },
+          {
+            name: 'prices',
+            type: 'tuple',
+            internalType: 'struct IFolio.Prices',
+            components: [
+              {
+                name: 'start',
+                type: 'uint256',
+                internalType: 'uint256',
+              },
+              {
+                name: 'end',
+                type: 'uint256',
+                internalType: 'uint256',
+              },
+            ],
+          },
+          {
+            name: 'availableAt',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+          {
+            name: 'launchTimeout',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+          {
+            name: 'start',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+          {
+            name: 'end',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+          {
+            name: 'k',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+        ],
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'TradeBid',
+    inputs: [
+      {
+        name: 'tradeId',
+        type: 'uint256',
+        indexed: true,
+        internalType: 'uint256',
+      },
+      {
+        name: 'sellAmount',
         type: 'uint256',
         indexed: false,
         internalType: 'uint256',
       },
       {
-        name: 'startPrice',
+        name: 'buyAmount',
         type: 'uint256',
         indexed: false,
         internalType: 'uint256',
@@ -1487,28 +1773,113 @@ export default [
         internalType: 'uint256',
       },
       {
-        name: 'startPrice',
-        type: 'uint256',
+        name: 'trade',
+        type: 'tuple',
         indexed: false,
-        internalType: 'uint256',
-      },
-      {
-        name: 'endPrice',
-        type: 'uint256',
-        indexed: false,
-        internalType: 'uint256',
-      },
-      {
-        name: 'start',
-        type: 'uint256',
-        indexed: false,
-        internalType: 'uint256',
-      },
-      {
-        name: 'end',
-        type: 'uint256',
-        indexed: false,
-        internalType: 'uint256',
+        internalType: 'struct IFolio.Trade',
+        components: [
+          {
+            name: 'id',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+          {
+            name: 'sell',
+            type: 'address',
+            internalType: 'contract IERC20',
+          },
+          {
+            name: 'buy',
+            type: 'address',
+            internalType: 'contract IERC20',
+          },
+          {
+            name: 'sellLimit',
+            type: 'tuple',
+            internalType: 'struct IFolio.Range',
+            components: [
+              {
+                name: 'spot',
+                type: 'uint256',
+                internalType: 'uint256',
+              },
+              {
+                name: 'low',
+                type: 'uint256',
+                internalType: 'uint256',
+              },
+              {
+                name: 'high',
+                type: 'uint256',
+                internalType: 'uint256',
+              },
+            ],
+          },
+          {
+            name: 'buyLimit',
+            type: 'tuple',
+            internalType: 'struct IFolio.Range',
+            components: [
+              {
+                name: 'spot',
+                type: 'uint256',
+                internalType: 'uint256',
+              },
+              {
+                name: 'low',
+                type: 'uint256',
+                internalType: 'uint256',
+              },
+              {
+                name: 'high',
+                type: 'uint256',
+                internalType: 'uint256',
+              },
+            ],
+          },
+          {
+            name: 'prices',
+            type: 'tuple',
+            internalType: 'struct IFolio.Prices',
+            components: [
+              {
+                name: 'start',
+                type: 'uint256',
+                internalType: 'uint256',
+              },
+              {
+                name: 'end',
+                type: 'uint256',
+                internalType: 'uint256',
+              },
+            ],
+          },
+          {
+            name: 'availableAt',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+          {
+            name: 'launchTimeout',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+          {
+            name: 'start',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+          {
+            name: 'end',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+          {
+            name: 'k',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+        ],
       },
     ],
     anonymous: false,
@@ -1662,6 +2033,11 @@ export default [
   },
   {
     type: 'error',
+    name: 'Folio__ExcessiveBid',
+    inputs: [],
+  },
+  {
+    type: 'error',
     name: 'Folio__FeeRecipientInvalidAddress',
     inputs: [],
   },
@@ -1673,6 +2049,11 @@ export default [
   {
     type: 'error',
     name: 'Folio__FolioFeeTooHigh',
+    inputs: [],
+  },
+  {
+    type: 'error',
+    name: 'Folio__FolioFeeTooLow',
     inputs: [],
   },
   {
@@ -1718,12 +2099,17 @@ export default [
   },
   {
     type: 'error',
+    name: 'Folio__InvalidBuyLimit',
+    inputs: [],
+  },
+  {
+    type: 'error',
     name: 'Folio__InvalidPrices',
     inputs: [],
   },
   {
     type: 'error',
-    name: 'Folio__InvalidSellAmount',
+    name: 'Folio__InvalidSellLimit',
     inputs: [],
   },
   {
@@ -1769,6 +2155,11 @@ export default [
   {
     type: 'error',
     name: 'Folio__TradeCannotBeOpenedPermissionlesslyYet',
+    inputs: [],
+  },
+  {
+    type: 'error',
+    name: 'Folio__TradeCollision',
     inputs: [],
   },
   {
@@ -1842,6 +2233,17 @@ export default [
         name: 'x',
         type: 'int256',
         internalType: 'SD59x18',
+      },
+    ],
+  },
+  {
+    type: 'error',
+    name: 'PRBMath_UD60x18_Exp2_InputTooBig',
+    inputs: [
+      {
+        name: 'x',
+        type: 'uint256',
+        internalType: 'UD60x18',
       },
     ],
   },

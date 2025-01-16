@@ -77,11 +77,6 @@ const VOTING_FORM = [
         customFieldName: 'customBasketVotingQuorum',
       },
       {
-        ...VOTING_THRESHOLD,
-        fieldName: 'basketVotingThreshold',
-        customFieldName: 'customBasketVotingThreshold',
-      },
-      {
         ...VOTING_EXECUTION_DELAY,
         fieldName: 'basketExecutionDelay',
         customFieldName: 'customBasketExecutionDelay',
@@ -105,11 +100,6 @@ const VOTING_FORM = [
         ...VOTING_QUORUM,
         fieldName: 'governanceVotingQuorum',
         customFieldName: 'customGovernanceVotingQuorum',
-      },
-      {
-        ...VOTING_THRESHOLD,
-        fieldName: 'governanceVotingThreshold',
-        customFieldName: 'customGovernanceVotingThreshold',
       },
       {
         ...VOTING_EXECUTION_DELAY,

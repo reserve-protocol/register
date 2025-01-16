@@ -124,7 +124,7 @@ export default [
         internalType: 'address[]',
       },
       {
-        name: 'priceCurators',
+        name: 'tradeLaunchers',
         type: 'address[]',
         internalType: 'address[]',
       },
@@ -308,14 +308,26 @@ export default [
         ],
       },
       {
-        name: 'priceCurators',
-        type: 'address[]',
-        internalType: 'address[]',
-      },
-      {
-        name: 'vibesOfficers',
-        type: 'address[]',
-        internalType: 'address[]',
+        name: 'govRoles',
+        type: 'tuple',
+        internalType: 'struct IGovernanceDeployer.GovRoles',
+        components: [
+          {
+            name: 'existingTradeProposers',
+            type: 'address[]',
+            internalType: 'address[]',
+          },
+          {
+            name: 'tradeLaunchers',
+            type: 'address[]',
+            internalType: 'address[]',
+          },
+          {
+            name: 'vibesOfficers',
+            type: 'address[]',
+            internalType: 'address[]',
+          },
+        ],
       },
     ],
     outputs: [
