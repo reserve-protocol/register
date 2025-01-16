@@ -11,7 +11,7 @@ import {
 } from 'state/atoms'
 import { isAddress } from 'utils'
 import { Address } from 'viem'
-import { isTimeunitGovernance } from '@/views/rtoken/governance/utils'
+import { isTimeunitGovernance } from '@/views/yield-dtf/governance/utils'
 import { useReadContracts } from 'wagmi'
 
 // Added name order to governanceFrameworks so that "Governor Anastasius"

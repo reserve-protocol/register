@@ -22,7 +22,7 @@ import {
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import collateralPlugins from 'utils/plugins'
 import { formatUnits } from 'viem'
-import DeployHero from 'views/compare/components/DeployHero'
+import DeployHero from '@/views/discover/components/yield/components/DeployHero'
 import { readContracts } from 'wagmi/actions'
 import { erc20Abi } from 'viem'
 import { wagmiConfig } from 'state/chain'

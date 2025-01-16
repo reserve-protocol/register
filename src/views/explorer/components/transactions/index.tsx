@@ -5,9 +5,11 @@ import { Box, Text } from 'theme-ui'
 import useTransactionColumns from './useTransactionColumns'
 import useTransactionData from './useTransactionData'
 import TransactionFilters from './Filters'
-import { useCallback } from 'react'
+import { useCallback, useEffect } from 'react'
 import { useSetAtom } from 'jotai'
 import { sortByAtom } from './atoms'
+import { TransactionRecord } from '@/types'
+import { formatEther } from 'viem'
 
 const sortKeyMap: Record<string, string> = {
   token_symbol: 'token__symbol',
@@ -31,6 +33,54 @@ const ExploreTransactions = () => {
     }
   }, [])
 
+  useEffect(() => {
+    if (data) {
+      const result = data.reduce((acc: any, item: any) => {
+        if (+item.timestamp > 1731562865) {
+          const amount = Number(formatEther(item.amount))
+          const amountUSD = Number(item.amountUSD)
+          const date = new Date(item.timestamp * 1000)
+          const formattedDate = `${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
+
+          if (item.type === 'MINT') {
+            acc[formattedDate] = acc[formattedDate] || {
+              mint: 0,
+              mintUSD: 0,
+              redeem: 0,
+              redeemUSD: 0,
+            }
+            acc[formattedDate].mint += amount
+            acc[formattedDate].mintUSD += amountUSD
+          } else if (item.type === 'REDEEM') {
+            acc[formattedDate] = acc[formattedDate] || {
+              mint: 0,
+              mintUSD: 0,
+              redeem: 0,
+              redeemUSD: 0,
+            }
+            acc[formattedDate].redeem += amount
+            acc[formattedDate].redeemUSD += amountUSD
+          }
+        }
+        return acc
+      }, {})
+
+      const csvRows = [
+        ['Date', 'Mint', 'Mint USD', 'Redeem', 'Redeem USD'],
+        ...Object.entries(result).map(([date, values]: any) => [
+          date,
+          values.mint,
+          values.mintUSD,
+          values.redeem,
+          values.redeemUSD,
+        ]),
+      ]
+        .map((row) => row.join(','))
+        .join('\n')
+
+      console.log(csvRows)
+    }
+  }, [data])
   return (
     <Box mt={[3, 5]} mx={[2, 4]}>
       <Box

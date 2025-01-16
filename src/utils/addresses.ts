@@ -32,6 +32,18 @@ export const FACADE_WRITE_ADDRESS: AddressMap = {
   [ChainId.Arbitrum]: '0xe2B652E538543d02f985A5E422645A704633956d',
 }
 
+export const INDEX_DEPLOYER_ADDRESS: AddressMap = {
+  [ChainId.Mainnet]: '0x',
+  [ChainId.Base]: '0xa38A23f85Bae3f9aCeB7b07de665619016db1a06',
+  [ChainId.Arbitrum]: '0x',
+}
+
+export const INDEX_GOVERNANCE_DEPLOYER_ADDRESS: AddressMap = {
+  [ChainId.Mainnet]: '0x',
+  [ChainId.Base]: '0x66b553E2DB6645e5badFCFA82A3ADB336502B550',
+  [ChainId.Arbitrum]: '0x',
+}
+
 /**
  * ERC20 token addresses
  */

@@ -11,6 +11,13 @@ const config = {
         '2xl': '1400px',
       },
     },
+    fontWeight: {
+      light: '300',
+      normal: '300',
+      medium: '500',
+      semibold: '500',
+      bold: '700',
+    },
     extend: {
       colors: {
         border: 'hsl(var(--border))',

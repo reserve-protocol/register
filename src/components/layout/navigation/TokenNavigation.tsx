@@ -236,7 +236,6 @@ const TokenNavigation = () => {
     <Box
       sx={{
         width: ['100%', '100%', '220px'],
-        borderRight: ['none', 'none', '1px solid'],
         borderTop: ['1px solid', '1px solid', 'none'],
         borderColor: ['border', 'border', 'border'],
         position: ['fixed', 'fixed', 'relative'],

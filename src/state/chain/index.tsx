@@ -86,14 +86,15 @@ const queryClient = new QueryClient({
   },
 })
 const Disclaimer: DisclaimerComponent = ({ Text, Link }) => (
-  <Text>
+  <div>
     By connecting a wallet, you agree to ABC Labs{' '}
-    <Link href={ROUTES.TERMS}>Terms of Service</Link> and consent to its{' '}
-    <Link href={`${ROUTES.TERMS}?target=privacy`}>Privacy Policy</Link>
-  </Text>
+    <a href={ROUTES.TERMS}>Terms of Service</a> and consent to its{' '}
+    <a href={`${ROUTES.TERMS}?target=privacy`}>Privacy Policy</a>
+  </div>
 )
 
-const ChainProvider = ({ children }: { children: React.ReactNode }) => {
+// TODO: Fix types, react version mismatch
+const ChainProvider = ({ children }: { children: any }) => {
   return (
     <WagmiProvider config={wagmiConfig}>
       <QueryClientProvider client={queryClient}>

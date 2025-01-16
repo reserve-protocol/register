@@ -5,7 +5,7 @@ import { useMemo } from 'react'
 import { ChainId } from 'utils/chains'
 import { supportedChainList } from 'utils/constants'
 import { getAddress } from 'viem'
-import { getProposalState } from '@/views/rtoken/governance/views/proposal-detail/atom'
+import { getProposalState } from '@/views/yield-dtf/governance/views/proposal-detail/atom'
 import { useBlockNumber } from 'wagmi'
 import { filtersAtom } from './atoms'
 

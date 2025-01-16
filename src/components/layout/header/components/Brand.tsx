@@ -23,7 +23,7 @@ const Brand = (props: BoxProps) => {
       <Box
         pt="1"
         sx={{
-          display: ['none', 'none', 'none', 'flex'],
+          display: ['none', 'none', 'flex'],
           alignItems: 'center',
         }}
         {...props}
@@ -33,7 +33,7 @@ const Brand = (props: BoxProps) => {
       <Box
         mr={2}
         sx={{
-          display: ['flex', 'flex', 'flex', 'none'],
+          display: ['flex', 'flex', 'none'],
           alignItems: 'center',
           justifyContent: 'center',
           fontSize: 4,

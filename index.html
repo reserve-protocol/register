@@ -1,82 +1,109 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link href="https://fonts.cdnfonts.com/css/satoshi" rel="stylesheet" />
-
     <meta name="theme-color" content="#000000" />
     <meta
       name="description"
-      content="Reserve Register is an open source
-    interface for the Reserve protocol to explore, research, and interact with
-    asset-backed currencies called RTokens, create and launch new RTokens, stake
-    and unstake Reserve Rights tokens ($RSR), and more."
+      content="Reserve Register is an open source interface for the Reserve protocol to explore, research, and interact with asset-backed currencies called RTokens, create and launch new RTokens, stake and unstake Reserve Rights tokens ($RSR), and more."
     />
+
+    <link rel="icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" href="/logo192.png" />
     <link rel="manifest" href="/manifest.json" />
+    <link
+      rel="preload"
+      as="font"
+      type="font/otf"
+      href="/fonts/TWKLausanne-300.otf"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/otf"
+      href="/fonts/TWKLausanne-500.otf"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/otf"
+      href="/fonts/TWKLausanne-700.otf"
+      crossorigin
+    />
+
+    <!-- 
+    <link rel="preconnect" href="https://fonts.cdnfonts.com" />
+    <link rel="stylesheet" href="https://fonts.cdnfonts.com/css/satoshi" /> -->
+
     <title>Reserve Register - Reserve Protocol Interface</title>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
+
+    <script type="module" src="/src/index.tsx"></script>
+
+    <!-- Analytics -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-DMSRQ8XLEE"
+    ></script>
+    <script>
+      if (window.location.hostname !== 'localhost') {
+        window.dataLayer = window.dataLayer || []
+        function gtag() {
+          dataLayer.push(arguments)
+        }
+        gtag('js', new Date())
+        gtag('config', 'G-DMSRQ8XLEE')
+      }
+    </script>
+
+    <!-- Coinbase -->
+    <script
+      defer
+      src="https://broadcast.coinbase.com/subscribe-button.js"
+    ></script>
+
+    <!-- Meta Pixel -->
+    <script>
+      !(function (f, b, e, v, n, t, s) {
+        if (f.fbq) return
+        n = f.fbq = function () {
+          n.callMethod
+            ? n.callMethod.apply(n, arguments)
+            : n.queue.push(arguments)
+        }
+        if (!f._fbq) f._fbq = n
+        n.push = n
+        n.loaded = !0
+        n.version = '2.0'
+        n.queue = []
+        t = b.createElement(e)
+        t.async = !0
+        t.src = v
+        s = b.getElementsByTagName(e)[0]
+        s.parentNode.insertBefore(t, s)
+      })(
+        window,
+        document,
+        'script',
+        'https://connect.facebook.net/en_US/fbevents.js'
+      )
+      fbq('init', '1639552693295571')
+      fbq('track', 'PageView')
+    </script>
+    <noscript>
+      <img
+        height="1"
+        width="1"
+        style="display: none"
+        src="https://www.facebook.com/tr?id=1639552693295571&ev=PageView&noscript=1"
+        alt=""
+      />
+    </noscript>
   </body>
-  <script type="module" src="/src/index.tsx"></script>
-  <!-- Google tag (gtag.js) -->
-  <script
-    async
-    src="https://www.googletagmanager.com/gtag/js?id=G-DMSRQ8XLEE"
-  ></script>
-  <!-- Coinbase subscribe button integration -->
-  <script
-    defer
-    src="https://broadcast.coinbase.com/subscribe-button.js"
-  ></script>
-  <script>
-    if (window.location.hostname !== 'localhost') {
-      window.dataLayer = window.dataLayer || []
-      function gtag() {
-        dataLayer.push(arguments)
-      }
-      gtag('js', new Date())
-      gtag('config', 'G-DMSRQ8XLEE')
-    }
-  </script>
-  <!-- Meta Pixel Code -->
-  <script>
-    !(function (f, b, e, v, n, t, s) {
-      if (f.fbq) return
-      n = f.fbq = function () {
-        n.callMethod
-          ? n.callMethod.apply(n, arguments)
-          : n.queue.push(arguments)
-      }
-      if (!f._fbq) f._fbq = n
-      n.push = n
-      n.loaded = !0
-      n.version = '2.0'
-      n.queue = []
-      t = b.createElement(e)
-      t.async = !0
-      t.src = v
-      s = b.getElementsByTagName(e)[0]
-      s.parentNode.insertBefore(t, s)
-    })(
-      window,
-      document,
-      'script',
-      'https://connect.facebook.net/en_US/fbevents.js'
-    )
-    fbq('init', '1639552693295571')
-    fbq('track', 'PageView')
-  </script>
-  <noscript
-    ><img
-      height="1"
-      width="1"
-      style="display: none"
-      src="https://www.facebook.com/tr?id=1639552693295571&ev=PageView&noscript=1"
-  /></noscript>
-  <!-- End Meta Pixel Code -->
 </html>

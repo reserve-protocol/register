@@ -162,7 +162,8 @@ export const ROUTES = Object.freeze({
   ISSUANCE: 'issuance',
   AUCTIONS: 'auctions',
   DEPLOY: '/deploy',
-  INDEX_TOKEN_DEPLOY: '/index-dtf-deploy',
+  DEPLOY_YIELD: '/deploy/yield-dtf',
+  DEPLOY_INDEX: '/deploy/index-dtf',
   SETTINGS: 'settings',
   GOVERNANCE_SETUP: 'governance/setup',
   GOVERNANCE_INFO: 'governance-info',
@@ -185,6 +186,7 @@ export const ROUTES = Object.freeze({
   EXPLORER_REVENUE: '/explorer/revenue',
   EXPLORER_TRANSACTIONS: 'transactions',
   TERMS: '/terms',
+  DISCOVER: '/discover',
 })
 
 export const RSR: Token = {

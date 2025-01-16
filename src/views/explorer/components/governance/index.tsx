@@ -12,7 +12,7 @@ import { getProposalTitle, getTokenRoute } from 'utils'
 import { PROPOSAL_STATES, ROUTES, formatConstant } from 'utils/constants'
 import useProposalsData, { ProposalRecord } from './useProposalsData'
 import Filters from './Filters'
-import { ProposalVotingState } from '@/views/rtoken/governance/components/ProposalList'
+import { ProposalVotingState } from '@/views/yield-dtf/governance/components/ProposalList'
 
 const BADGE_VARIANT: StringMap = {
   [PROPOSAL_STATES.DEFEATED]: 'danger',

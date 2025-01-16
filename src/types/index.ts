@@ -76,6 +76,7 @@ export interface Token {
   symbol: string
   name: string
   decimals: number
+  logoURI?: string
 }
 
 export interface Collateral extends Token {

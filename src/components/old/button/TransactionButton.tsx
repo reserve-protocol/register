@@ -128,7 +128,7 @@ const TransactionButton = ({
 
   return (
     <>
-      <LoadingButton loading={loading} {...props} />
+      <LoadingButton loading={loading} loadingText={loadingText} {...props} />
       {!!gas && <GasEstimateLabel gas={gas} />}
       {!!error && (
         <TransactionError sx={{ textAlign: 'center' }} mt={3} error={error} />

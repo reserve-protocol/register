@@ -2,6 +2,8 @@ import * as React from 'react'
 import { Drawer as DrawerPrimitive } from 'vaul'
 
 import { cn } from '@/lib/utils'
+import { Button } from './button'
+import { XIcon } from 'lucide-react'
 
 const Drawer = ({
   shouldScaleBackground = true,
@@ -9,6 +11,7 @@ const Drawer = ({
 }: React.ComponentProps<typeof DrawerPrimitive.Root>) => (
   <DrawerPrimitive.Root
     shouldScaleBackground={shouldScaleBackground}
+    direction="right"
     {...props}
   />
 )
@@ -32,6 +35,17 @@ const DrawerOverlay = React.forwardRef<
 ))
 DrawerOverlay.displayName = DrawerPrimitive.Overlay.displayName
 
+const DrawerCloseButton = () => (
+  <DrawerTrigger asChild>
+    <Button
+      variant="outline"
+      className="fixed z-10 right-2 top-2 w-max rounded-xl px-2 h-9"
+    >
+      <XIcon size={20} strokeWidth={1.5} />
+    </Button>
+  </DrawerTrigger>
+)
+
 const DrawerContent = React.forwardRef<
   React.ElementRef<typeof DrawerPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Content>
@@ -41,12 +55,12 @@ const DrawerContent = React.forwardRef<
     <DrawerPrimitive.Content
       ref={ref}
       className={cn(
-        'fixed inset-x-0 bottom-0 z-50 mt-24 flex h-auto flex-col rounded-t-[10px] border bg-background',
+        'fixed inset-x-0 md:left-auto left-2 right-2 top-2 bottom-2 z-50 outline-none md:w-[512px] flex h-auto flex-col rounded-2xl overflow-x-hidden overflow-y-auto  bg-card',
         className
       )}
       {...props}
     >
-      {/* <div className="mx-auto mt-4 h-2 w-[100px] rounded-full bg-muted" /> */}
+      <DrawerCloseButton />
       {children}
     </DrawerPrimitive.Content>
   </DrawerPortal>
@@ -69,7 +83,7 @@ const DrawerFooter = ({
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
-    className={cn('mt-auto flex flex-col gap-2 p-4', className)}
+    className={cn('mt-auto flex flex-col gap-2 p-2', className)}
     {...props}
   />
 )

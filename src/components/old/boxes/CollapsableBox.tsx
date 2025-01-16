@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { ChevronDown, ChevronUp } from 'lucide-react'
 import { Box, BoxProps, Divider, Flex } from 'theme-ui'
 
-interface Props extends BoxProps {
+interface Props extends Omit<BoxProps, 'onToggle'> {
   defaultOpen?: boolean
   open?: boolean
   divider?: boolean

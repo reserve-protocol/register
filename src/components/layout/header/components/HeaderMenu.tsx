@@ -1,3 +1,4 @@
+// TODO: @deprecated
 import { t } from '@lingui/macro'
 import BasketCubeIcon from 'components/icons/BasketCubeIcon'
 import BridgeNavIcon from 'components/icons/BridgeNavIcon'
