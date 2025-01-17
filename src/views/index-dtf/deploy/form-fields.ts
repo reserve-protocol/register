@@ -12,7 +12,7 @@ export type DeployStepId =
 
 export const dtfDeploySteps: Record<DeployStepId, { fields: string[] }> = {
   metadata: {
-    fields: ['name', 'symbol'],
+    fields: ['name', 'symbol', 'mandate'],
   },
   basket: {
     fields: ['initialValue', 'tokensDistribution'],
@@ -76,6 +76,7 @@ export const DeployFormSchema = z
   .object({
     name: z.string().min(1, 'Token name is required'),
     symbol: z.string().min(1, 'Token symbol is required'),
+    mandate: z.string().optional(),
     initialValue: z.coerce.number().positive('Initial value must be positive'),
     tokensDistribution: z.array(
       z.object({
