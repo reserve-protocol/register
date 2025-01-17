@@ -9,16 +9,16 @@ interface TokenPrice {
   price?: number
 }
 
+const PRICES_BASE_URL =
+  'http://reserve-api-base-alb-979856128.us-east-1.elb.amazonaws.com/current/prices?tokens='
+
 const BasketPriceUpdater = () => {
   const [basket, setBasket] = useAtom(basketAtom)
 
-  // /current/prices?tokens=0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913,0xc1cba3fcea344f92d9239c08c0568f6f2f0ee452
+  const url = PRICES_BASE_URL + basket.map((token) => token.address).join(',')
 
-  const baseURL =
-    'http://reserve-api-base-alb-979856128.us-east-1.elb.amazonaws.com/current/prices?tokens='
-  const url = baseURL + basket.map((token) => token.address).join(',')
   const { data: tokenPrices = [] } = useQuery({
-    queryKey: ['price-tokens'],
+    queryKey: ['price-tokens', url],
     queryFn: async () => {
       try {
         const response = await fetch(url)
