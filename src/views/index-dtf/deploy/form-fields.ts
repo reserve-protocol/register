@@ -18,12 +18,7 @@ export const dtfDeploySteps: Record<DeployStepId, { fields: string[] }> = {
     fields: ['initialValue', 'tokensDistribution'],
   },
   governance: {
-    fields: [
-      'governanceERC20name',
-      'governanceERC20symbol',
-      'governanceERC20address',
-      'governanceWalletAddress',
-    ],
+    fields: ['governanceERC20address', 'governanceWalletAddress'],
   },
   'revenue-distribution': {
     fields: [
@@ -86,10 +81,9 @@ export const DeployFormSchema = z
           .positive('Token distribution must be positive'),
       })
     ),
-    governanceERC20name: z.string().min(1, 'Token name is required').optional(),
-    governanceERC20symbol: z
+    governanceVoteLock: z
       .string()
-      .min(1, 'Token symbol is required')
+      .refine(isAddress, { message: 'Invalid Address' })
       .optional(),
     governanceERC20address: z
       .string()
@@ -191,15 +185,20 @@ export const DeployFormSchema = z
   .refine(
     (data) => {
       // Check if the governance settings are valid
-      const governanceNewERC20 =
-        data.governanceERC20name && data.governanceERC20symbol
       const governanceExistingERC20 = data.governanceERC20address
+      const governanceExistingVoteLock = data.governanceVoteLock
       const governanceWallet = data.governanceWalletAddress
 
       return (
-        (governanceNewERC20 && !governanceExistingERC20 && !governanceWallet) ||
-        (!governanceNewERC20 && governanceExistingERC20 && !governanceWallet) ||
-        (!governanceNewERC20 && !governanceExistingERC20 && governanceWallet)
+        (governanceExistingVoteLock &&
+          !governanceExistingERC20 &&
+          !governanceWallet) ||
+        (!governanceExistingVoteLock &&
+          governanceExistingERC20 &&
+          !governanceWallet) ||
+        (!governanceExistingVoteLock &&
+          !governanceExistingERC20 &&
+          governanceWallet)
       )
     },
     { message: 'Invalid governance settings', path: ['governance'] }
@@ -318,11 +317,11 @@ export const DeployFormSchema = z
 export const dtfDeployDefaultValues = {
   name: '',
   symbol: '',
+  mandate: '',
   initialValue: 1,
   tokensDistribution: [],
-  governanceERC20name: undefined,
-  governanceERC20symbol: undefined,
   governanceERC20address: undefined,
+  governanceVoteLock: undefined,
   governanceWalletAddress: undefined,
   folioFee: 0,
   customFolioFee: undefined,

@@ -1,20 +1,12 @@
 import { cn } from '@/lib/utils'
 import { Asterisk } from 'lucide-react'
 import { ReactNode, useState } from 'react'
-import GovernanceNewERC20 from './form-new-erc20'
+import GovernanceExistingVoteLock from './form-existing-vote-lock'
 import GovernanceExistingERC20 from './form-existing-erc20'
 import GovernanceSpecificWallet from './form-specific-wallet'
 import { useFormContext } from 'react-hook-form'
 
 const GOVERNANCE_OPTIONS = [
-  // {
-  //   title: 'New ERC20 token',
-  //   description:
-  //     'Explain the benefit of using our framwork & clarify that it doesn’t mean giving.',
-  //   icon: <Asterisk size={24} strokeWidth={1.5} />,
-  //   form: <GovernanceNewERC20 />,
-  //   fields: ['governanceERC20name', 'governanceERC20symbol'],
-  // },
   {
     title: 'Existing ERC20 token',
     description:
@@ -22,6 +14,14 @@ const GOVERNANCE_OPTIONS = [
     icon: <Asterisk size={24} strokeWidth={1.5} />,
     form: <GovernanceExistingERC20 />,
     fields: ['governanceERC20address'],
+  },
+  {
+    title: 'Existing Vote Lock contract',
+    description:
+      'Explain the benefit of using our framwork & clarify that it doesn’t mean giving.',
+    icon: <Asterisk size={24} strokeWidth={1.5} />,
+    form: <GovernanceExistingVoteLock />,
+    fields: ['governanceVoteLock'],
   },
   {
     title: 'Specific wallet address',
