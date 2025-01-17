@@ -93,7 +93,8 @@ const ChainSelector = () => {
 
   return (
     <div className="flex flex-col lg:flex-row gap-2 p-2">
-      {[ChainId.Mainnet, ChainId.Base].map((chain) => (
+      {/* Just Base for the moment */}
+      {[ChainId.Base].map((chain) => (
         <ChainOption
           key={chain}
           chainId={chain}
