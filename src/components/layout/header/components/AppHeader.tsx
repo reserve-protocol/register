@@ -18,8 +18,8 @@ import { cn } from '@/lib/utils'
 import { ROUTES } from '@/utils/constants'
 import { t } from '@lingui/macro'
 import { Asterisk, DollarSign, Rocket } from 'lucide-react'
-import { useMemo } from 'react'
-import { NavLink } from 'react-router-dom'
+import { ReactNode, useMemo } from 'react'
+import { NavLink, useLocation } from 'react-router-dom'
 import RegisterHelp from './RegisterHelp'
 
 const HeaderMenu = () => {
@@ -78,12 +78,21 @@ const HeaderMenu = () => {
   )
 }
 
+const Container = ({ children }: { children: ReactNode }) => {
+  // Check if the route is a "index-dtf" route
+  const isIndexDTF = useLocation().pathname.includes('index-dtf')
+
+  return (
+    <div className={cn('w-full', !isIndexDTF && 'border-b')}>{children}</div>
+  )
+}
+
 /**
  * Application header
  */
 const AppHeader = () => {
   return (
-    <div className="w-full border-b">
+    <Container>
       <div className="container flex items-center h-[52px] md:h-[72px] px-6">
         <Brand mr={4} />
         {/* <Box
@@ -94,33 +103,27 @@ const AppHeader = () => {
           <Blog />
         </Box> */}
         <HeaderMenu />
-        <Box
-          variant="layout.verticalAlign"
-          sx={{ position: 'absolute', right: ['8px', '24px'] }}
-        >
-          <ThemeColorMode
-            sx={{
-              display: ['none', 'flex'],
-              px: 2,
-              mr: 1,
-              py: '3px',
-              maxWidth: '32px',
-              borderRadius: '6px',
-              cursor: 'pointer',
-              ':hover': {
-                backgroundColor: 'secondaryBackground',
-              },
-            }}
-          />
-          <RegisterHelp />
-          <CoinbaseSubscribe
-            mr="2"
-            sx={{ display: ['none', 'none', 'block'] }}
-          />
-          <Account />
-        </Box>
+
+        <ThemeColorMode
+          sx={{
+            display: ['none', 'flex'],
+            px: 2,
+            mr: 1,
+            py: '3px',
+            maxWidth: '32px',
+            borderRadius: '6px',
+            ml: 'auto',
+            cursor: 'pointer',
+            ':hover': {
+              backgroundColor: 'secondaryBackground',
+            },
+          }}
+        />
+        <RegisterHelp />
+        <CoinbaseSubscribe mr="2" sx={{ display: ['none', 'none', 'block'] }} />
+        <Account />
       </div>
-    </div>
+    </Container>
   )
 }
 export default AppHeader

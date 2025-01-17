@@ -22,6 +22,7 @@ const config = {
     borderRadius: {
       ...defaultTheme.borderRadius,
       '3xl': '1.25rem',
+      '4xl': '1.5rem',
     },
     extend: {
       colors: {

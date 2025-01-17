@@ -2,7 +2,7 @@ import { Token } from '@/types'
 import { atom } from 'jotai'
 import { ProposedTrade } from './utils/get-rebalance-trades'
 
-type Step = 'basket' | 'prices' | 'expiration'
+export type Step = 'basket' | 'prices' | 'expiration' | 'confirmation'
 
 export const stepAtom = atom<Step>('basket')
 
