@@ -11,8 +11,6 @@ export const searchTokenAtom = atomWithReset<string>('')
 
 export const basketAtom = atom<Token[]>([])
 
-export const tokenPricesAtom = atom<Record<Address, number>>({})
-
 export const formReadyForSubmitAtom = atom(false)
 
 // TODO: Remove hardcoded value

@@ -7,6 +7,7 @@ import {
   dtfDeployDefaultValues,
 } from './form-fields'
 import RightPanel from './components/right-panel'
+import Updater from './updater'
 
 const IndexTokenDeploy = () => {
   const form = useForm<DeployInputs>({
@@ -26,6 +27,7 @@ const IndexTokenDeploy = () => {
           </div>
         </FormProvider>
       </div>
+      <Updater />
     </div>
   )
 }
