@@ -1,4 +1,5 @@
 import type { Config } from 'tailwindcss'
+import defaultTheme from 'tailwindcss/defaultTheme'
 
 const config = {
   darkMode: ['class'],
@@ -17,6 +18,10 @@ const config = {
       medium: '500',
       semibold: '500',
       bold: '700',
+    },
+    borderRadius: {
+      ...defaultTheme.borderRadius,
+      '3xl': '1.25rem',
     },
     extend: {
       colors: {

@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
-import { ROUTES } from '@/utils/constants'
+import { ROUTES, GOVERNANCE_PROPOSAL_TYPES } from '@/utils/constants'
 import { Trans } from '@lingui/macro'
 import { ArrowRight, Asterisk } from 'lucide-react'
 import { Link } from 'react-router-dom'
@@ -9,25 +9,25 @@ const proposalTypes = [
   {
     icon: <Asterisk size={24} />,
     title: 'DTF Basket',
-    route: '/index-dtf/governance/proposals/basket',
+    route: GOVERNANCE_PROPOSAL_TYPES.BASKET,
     enabled: true,
   },
   {
     icon: <Asterisk size={24} />,
     title: 'Fees',
-    route: '/index-dtf/governance/proposals/basket',
+    route: GOVERNANCE_PROPOSAL_TYPES.FEES,
     enabled: false,
   },
   {
     icon: <Asterisk size={24} />,
     title: 'Roles',
-    route: '/index-dtf/governance/proposals/basket',
+    route: GOVERNANCE_PROPOSAL_TYPES.ROLES,
     enabled: false,
   },
   {
     icon: <Asterisk size={24} />,
     title: 'Other',
-    route: '/index-dtf/governance/proposals/basket',
+    route: GOVERNANCE_PROPOSAL_TYPES.OTHER,
     enabled: false,
   },
 ]

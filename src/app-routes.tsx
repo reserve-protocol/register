@@ -12,7 +12,7 @@ import Staking from '@/views/yield-dtf/staking'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import RTokenContainer from 'state/rtoken/RTokenContainer'
 import { Box } from 'theme-ui'
-import { ROUTES } from 'utils/constants'
+import { GOVERNANCE_PROPOSAL_TYPES, ROUTES } from 'utils/constants'
 import Bridge from 'views/bridge'
 import EarnWrapper from 'views/earn'
 import Explorer from 'views/explorer'
@@ -80,7 +80,7 @@ const AppRoutes = () => (
         element={<IndexDTFPropose />}
       />
       <Route
-        path={`${ROUTES.GOVERNANCE_PROPOSE}/basket`}
+        path={`${ROUTES.GOVERNANCE}/${ROUTES.GOVERNANCE_PROPOSE}/${GOVERNANCE_PROPOSAL_TYPES.BASKET}`}
         element={<IndexDTFBasketProposal />}
       />
     </Route>
