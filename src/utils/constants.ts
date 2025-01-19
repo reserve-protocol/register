@@ -181,6 +181,7 @@ export const ROUTES = Object.freeze({
   EXPLORER_COLLATERALS: 'collaterals',
   EXPLORER_GOVERNANCE: '/explorer/governance',
   EXPLORER_REVENUE: '/explorer/revenue',
+  EXPLORER_STAKING_ESTIMATOR: '/explorer/staking-estimator',
   EXPLORER_TRANSACTIONS: 'transactions',
   TERMS: '/terms',
 })
