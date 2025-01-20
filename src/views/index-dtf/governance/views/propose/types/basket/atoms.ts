@@ -196,3 +196,16 @@ type TradeRangeOption = 'defer' | 'include'
 export const tradeRangeOptionAtom = atom<TradeRangeOption | undefined>(
   undefined
 )
+
+export const permissionlessLaunchingAtom = atom<number | undefined>(undefined)
+
+export const stepStateAtom = atom<Record<Step, boolean>>((get) => ({
+  basket: get(isProposedBasketValidAtom),
+  prices: get(tradeRangeOptionAtom) !== undefined,
+  expiration: get(permissionlessLaunchingAtom) !== undefined,
+  confirmation: true,
+}))
+
+export const isBasketProposalValidAtom = atom((get) =>
+  Object.values(get(stepStateAtom)).every((value) => value)
+)

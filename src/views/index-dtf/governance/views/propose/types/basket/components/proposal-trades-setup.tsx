@@ -129,7 +129,9 @@ const ProposedTradeItem = ({
   const chainId = useAtomValue(chainIdAtom)
 
   return (
-    <div className={cn('flex gap-2 items-center py-4 pl-2', className)}>
+    <div
+      className={cn('flex flex-wrap gap-2 items-center py-4 pl-2', className)}
+    >
       <TokenLogo chain={chainId} address={trade.token.address} />
       <div className="mr-auto text-primary">
         <span>Buy {trade.token.symbol}</span>
@@ -190,22 +192,35 @@ const ProposedTradeGroup = ({ group }: { group: IProposedTradeGroup }) => (
   </Row>
 )
 
-const ProposalTradesSetup = () => {
+const OrganizedTrades = () => {
   const organizedTrades = useAtomValue(organizedTradesAtom)
 
+  if (!organizedTrades) {
+    return (
+      <div className="p-4 text-legend text-center">No trades available</div>
+    )
+  }
+
+  return (
+    <>
+      {Object.keys(organizedTrades).map((key) => (
+        <ProposedTradeGroup key={key} group={organizedTrades[key]} />
+      ))}
+    </>
+  )
+}
+
+const ProposalTradesSetup = () => {
   return (
     <div className="flex flex-col gap-2">
       <Row>
         <div className="p-4 text-legend">Selling</div>
-        <div className="flex items-center p-4 flex-grow border-b text-legend">
-          <span>Buying</span>
-          <span className="ml-auto">Expected volatility</span>
+        <div className="flex items-center gap-2 flex-wrap p-4 flex-grow border-b text-legend">
+          <span className="mr-auto">Buying</span>
+          <span>Expected volatility</span>
         </div>
       </Row>
-      {!!organizedTrades &&
-        Object.keys(organizedTrades).map((key) => (
-          <ProposedTradeGroup key={key} group={organizedTrades[key]} />
-        ))}
+      <OrganizedTrades />
     </div>
   )
 }

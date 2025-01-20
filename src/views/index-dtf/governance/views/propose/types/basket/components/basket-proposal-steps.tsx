@@ -10,12 +10,13 @@ import { useAtom, useAtomValue } from 'jotai'
 import {
   ArrowLeftIcon,
   Asterisk,
+  CheckIcon,
   ChevronDownIcon,
   ChevronUpIcon,
 } from 'lucide-react'
 import { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
-import { Step, stepAtom } from '../atoms'
+import { Step, stepAtom, stepStateAtom } from '../atoms'
 import ProposalBasketSetup from './proposal-basket-setup'
 import ProposalTradingExpiration from './proposal-trading-expiration'
 import ProposalTradingRanges from './proposal-trading-ranges'
@@ -60,6 +61,7 @@ export const DEPLOY_STEPS: ProposalStep[] = [
 const StepTrigger = ({ id, icon, title, index }: ProposalStepTrigger) => {
   const selectedSection = useAtomValue(stepAtom)
   const isActive = selectedSection === id
+  const isCompleted = useAtomValue(stepStateAtom)[id]
 
   return (
     <AccordionTrigger
@@ -72,16 +74,19 @@ const StepTrigger = ({ id, icon, title, index }: ProposalStepTrigger) => {
       <div className="flex items-center gap-2">
         <div
           className={cn(
-            'rounded-full p-1',
-            isActive ? 'bg-primary/10 text-primary' : 'bg-muted-foreground/10'
+            'rounded-full flex-shrink-0 p-1',
+            isActive || isCompleted
+              ? 'bg-primary/10 text-primary'
+              : 'bg-muted-foreground/10'
           )}
         >
-          {icon}
+          {isCompleted ? <CheckIcon size={24} strokeWidth={1.5} /> : icon}
         </div>
         <div
           className={cn(
             'text-xl font-bold animate-fade-in',
-            isActive ? 'text-primary hidden' : ''
+            isActive || isCompleted ? 'text-primary' : '',
+            isActive ? 'hidden' : ''
           )}
         >
           {title}
