@@ -11,6 +11,9 @@ const mockPrices = {
   '0xa99f6e6785da0f5d6fb42495fe424bce029eeb3e': 4.37, // PENDLE
 }
 
+// 100k
+const mockTVL = parseEther('100000')
+
 // ~10k usd token value
 // 40% RSR
 // 20% Virtuals
@@ -172,20 +175,30 @@ export const proposedInxexTradesAtom = atom<ProposedTrade[]>((get) => {
   if (!isValid || !proposedBasket) return []
 
   const tokens: string[] = []
+  const decimals: bigint[] = []
   const bals: bigint[] = []
   const targetBasket: bigint[] = []
-  const prices: bigint[] = []
-  const error: bigint[] = []
+  const prices: number[] = []
+  const error: number[] = []
 
   for (const asset of Object.keys(proposedBasket)) {
     tokens.push(asset)
     bals.push(proposedBasket[asset].balance)
+    decimals.push(BigInt(proposedBasket[asset].token.decimals))
     targetBasket.push(parseUnits(proposedShares[asset], 16))
-    prices.push(parseEther(priceMap[asset].toString()))
-    error.push(parseEther('0.5'))
+    prices.push(priceMap[asset])
+    error.push(0.1)
   }
 
-  return getRebalanceTrades(tokens, bals, targetBasket, prices, error)
+  return getRebalanceTrades(
+    mockTVL,
+    tokens,
+    decimals,
+    bals,
+    targetBasket,
+    prices,
+    error
+  )
 })
 
 // Volatility of proposed trades, array index is the trade index

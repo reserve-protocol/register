@@ -5,7 +5,7 @@ import { chainIdAtom } from '@/state/atoms'
 import { Token } from '@/types'
 import { formatPercentage } from '@/utils'
 import { atom, useAtom, useAtomValue } from 'jotai'
-import { formatUnits } from 'viem'
+import { formatUnits, parseEther } from 'viem'
 import {
   proposedIndexBasketAtom,
   proposedInxexTradesAtom,
@@ -32,9 +32,17 @@ type IProposedTradeGroup = {
 
 type OrganizedTrades = Record<string, IProposedTradeGroup>
 
+const dtfDataAtom = atom((get) => {
+  return {
+    supply: parseEther('100000'), // 100k 18D
+    supplyUsd: 100000,
+  }
+})
+
 const organizedTradesAtom = atom((get) => {
   const basket = get(proposedIndexBasketAtom)
   const trades = get(proposedInxexTradesAtom)
+  const dtfData = get(dtfDataAtom)
 
   if (!basket || !trades) return undefined
 
