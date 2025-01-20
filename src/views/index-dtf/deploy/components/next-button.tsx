@@ -2,7 +2,11 @@ import { Button } from '@/components/ui/button'
 
 import { useAtom, useSetAtom } from 'jotai'
 import { FieldErrors, FieldValues, useFormContext } from 'react-hook-form'
-import { deployStepAtom, formReadyForSubmitAtom } from '../atoms'
+import {
+  deployStepAtom,
+  formReadyForSubmitAtom,
+  validatedSectionsAtom,
+} from '../atoms'
 import {
   DeployFormSchema,
   DeployInputs,
@@ -25,6 +29,7 @@ const NextButton = () => {
   const [deployStep, setDeployStep] = useAtom(deployStepAtom)
   const setFormReadyForSubmit = useSetAtom(formReadyForSubmitAtom)
   const { trigger, formState, getValues } = useFormContext<DeployInputs>()
+  const setValidatedSections = useSetAtom(validatedSectionsAtom)
 
   const formErrors = formState.errors as ExtendedFieldErrors<
     typeof formState.errors
@@ -39,6 +44,11 @@ const NextButton = () => {
     const output = await trigger([...fields, deployStep] as FieldName[], {
       shouldFocus: true,
     })
+
+    setValidatedSections((prev) => ({
+      ...prev,
+      [deployStep as DeployStepId]: Boolean(output),
+    }))
 
     if (!output) return
 

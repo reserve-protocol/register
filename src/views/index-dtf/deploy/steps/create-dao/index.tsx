@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button'
 import { chainIdAtom } from '@/state/atoms'
 import { INDEX_GOVERNANCE_DEPLOYER_ADDRESS } from '@/utils/addresses'
 import { useAtomValue, useSetAtom } from 'jotai'
+import { useEffect } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { erc20Abi, isAddress, parseEther } from 'viem'
 import {
@@ -10,11 +11,11 @@ import {
   useWaitForTransactionReceipt,
   useWriteContract,
 } from 'wagmi'
-import { daoCreatedAtom } from '../../atoms'
-import { useEffect } from 'react'
+import { daoCreatedAtom, formReadyForSubmitAtom } from '../../atoms'
 
 const CreateDAO = () => {
   const chainId = useAtomValue(chainIdAtom)
+  const formReadyForSubmit = useAtomValue(formReadyForSubmitAtom)
   const { watch, getValues } = useFormContext()
   const governanceERC20address = watch('governanceERC20address')
   const setDaoCreated = useSetAtom(daoCreatedAtom)
@@ -82,7 +83,11 @@ const CreateDAO = () => {
       <Button
         className="w-full"
         disabled={
-          !governanceERC20address || !symbol || isPending || (data && !receipt)
+          !formReadyForSubmit ||
+          !governanceERC20address ||
+          !symbol ||
+          isPending ||
+          (data && !receipt)
         }
         onClick={submit}
       >

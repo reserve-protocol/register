@@ -102,6 +102,11 @@ const VOTING_FORM = [
         customFieldName: 'customGovernanceVotingPeriod',
       },
       {
+        ...VOTING_THRESHOLD,
+        fieldName: 'governanceVotingThreshold',
+        customFieldName: 'customGovernanceVotingThreshold',
+      },
+      {
         ...VOTING_QUORUM,
         fieldName: 'governanceVotingQuorum',
         customFieldName: 'customGovernanceVotingQuorum',

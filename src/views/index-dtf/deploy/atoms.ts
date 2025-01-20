@@ -11,7 +11,7 @@ export const selectedTokensAtom = atomWithReset<Token[]>([])
 export const searchTokenAtom = atomWithReset<string>('')
 export const daoCreatedAtom = atomWithReset<boolean>(false)
 
-export const basketAtom = atom<Token[]>([])
+export const basketAtom = atomWithReset<Token[]>([])
 
 export const formReadyForSubmitAtom = atom(false)
 
@@ -23,3 +23,15 @@ export const daoTokenAddressAtom = atom<Address | undefined>(
 export const selectedGovernanceOptionAtom = atom<GovernanceTypes>(
   'governanceERC20address'
 )
+
+export const validatedSectionsAtom = atomWithReset<
+  Record<DeployStepId, boolean>
+>({
+  metadata: false,
+  basket: false,
+  governance: false,
+  'revenue-distribution': false,
+  auctions: false,
+  roles: false,
+  voting: false,
+})

@@ -326,7 +326,6 @@ const TokenSelector = () => {
   const setSelectedTokens = useSetAtom(selectedTokensAtom)
   const resetSelectedTokens = useResetAtom(selectedTokensAtom)
   const resetSearchToken = useResetAtom(searchTokenAtom)
-  const resetDaoCreated = useResetAtom(daoCreatedAtom)
 
   useEffect(() => {
     if (basket.length) {
@@ -337,8 +336,7 @@ const TokenSelector = () => {
   const handleClose = useCallback(() => {
     resetSelectedTokens()
     resetSearchToken()
-    resetDaoCreated()
-  }, [resetSelectedTokens, resetSearchToken, resetDaoCreated])
+  }, [resetSelectedTokens, resetSearchToken])
 
   return (
     <Drawer onClose={handleClose}>

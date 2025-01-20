@@ -1,4 +1,6 @@
-import { isAddress } from 'viem'
+import { wagmiConfig } from '@/state/chain'
+import { Address, erc20Abi, isAddress } from 'viem'
+import { readContract } from 'wagmi/actions'
 import { z } from 'zod'
 
 export type DeployStepId =
@@ -67,6 +69,19 @@ export const dtfDeploySteps: Record<DeployStepId, { fields: string[] }> = {
   },
 }
 
+const isERC20 = async (address: Address) => {
+  try {
+    await readContract(wagmiConfig, {
+      abi: erc20Abi,
+      functionName: 'symbol',
+      address,
+    })
+  } catch (e) {
+    return false
+  }
+  return true
+}
+
 export const DeployFormSchema = z
   .object({
     name: z.string().min(1, 'Token name is required'),
@@ -88,6 +103,7 @@ export const DeployFormSchema = z
     governanceERC20address: z
       .string()
       .refine(isAddress, { message: 'Invalid Address' })
+      .refine(isERC20, { message: 'Invalid ERC20 address' })
       .optional(),
     governanceWalletAddress: z
       .string()
@@ -183,7 +199,7 @@ export const DeployFormSchema = z
     }
   )
   .refine(
-    (data) => {
+    async (data) => {
       // Check if the governance settings are valid
       const governanceExistingERC20 = data.governanceERC20address
       const governanceExistingVoteLock = data.governanceVoteLock
@@ -238,10 +254,10 @@ export const DeployFormSchema = z
         data.fixedPlatformFee +
         additionalShares
 
-      return totalShares === 100
+      return totalShares <= 100
     },
     {
-      message: 'The sum of the shares must be 100',
+      message: 'The sum of the shares must be 100 or less',
       path: ['revenue-distribution'],
     }
   )
@@ -273,6 +289,7 @@ export const DeployFormSchema = z
   })
   .refine(
     (data) => {
+      console.log('entra')
       // Check if the voting settings are valid
       const basketVotingDelaySet =
         data.basketVotingDelay || data.customBasketVotingDelay
@@ -353,6 +370,8 @@ export const dtfDeployDefaultValues = {
   customGovernanceVotingDelay: undefined,
   governanceVotingPeriod: 20,
   customGovernanceVotingPeriod: undefined,
+  governanceVotingThreshold: 0.01,
+  customGovernanceVotingThreshold: undefined,
   governanceVotingQuorum: 20,
   customGovernanceVotingQuorum: undefined,
   governanceExecutionDelay: 20,
