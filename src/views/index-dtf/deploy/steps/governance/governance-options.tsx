@@ -68,7 +68,7 @@ const GovernanceOption = ({
       selected ? 'bg-muted' : 'bg-card'
     )}
   >
-    <div className="flex items-center gap-2 p-3">
+    <div className="flex items-center gap-2 p-4">
       <div
         className={cn(
           'rounded-full p-1',
@@ -88,7 +88,7 @@ const GovernanceOption = ({
         </div>
       </div>
     </div>
-    {selected && <div className="pb-3">{form}</div>}
+    {selected && <div className="pb-4">{form}</div>}
   </div>
 )
 

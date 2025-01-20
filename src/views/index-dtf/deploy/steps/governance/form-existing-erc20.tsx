@@ -2,6 +2,37 @@ import { useFormContext } from 'react-hook-form'
 import BasicInput from '../../components/basic-input'
 import { useReadContract } from 'wagmi'
 import { erc20Abi, isAddress } from 'viem'
+import { Separator } from '@/components/ui/separator'
+import { ArrowUpRightIcon } from 'lucide-react'
+
+const LaunchTokenBanner = () => {
+  return (
+    <div
+      className="flex items-center gap-2 justify-between"
+      role="button"
+      onClick={() => window.open('https://xyz.xyz')}
+    >
+      <div className="flex items-center gap-2">
+        <img
+          alt="hero-splash"
+          src="https://storage.reserve.org/tokens.png"
+          className="h-5"
+        />
+        <div>
+          <div className="font-bold">
+            Want to launch a new ERC20 for governance?
+          </div>
+          <div className="text-muted-foreground">
+            We recommend launcing your new ERC20 token on XYZ.XYZ.
+          </div>
+        </div>
+      </div>
+      <div className="bg-muted-foreground/10 rounded-full p-1" role="button">
+        <ArrowUpRightIcon size={24} strokeWidth={1.5} />
+      </div>
+    </div>
+  )
+}
 
 const GovernanceExistingERC20 = () => {
   const { watch } = useFormContext()
@@ -15,13 +46,15 @@ const GovernanceExistingERC20 = () => {
   })
 
   return (
-    <div className="px-2">
+    <div className="px-3">
       <BasicInput
         fieldName="governanceERC20address"
         label={symbol || 'ERC20 address'}
         placeholder="0x..."
         highlightLabel={!!symbol}
       />
+      <Separator className="my-4" />
+      <LaunchTokenBanner />
     </div>
   )
 }

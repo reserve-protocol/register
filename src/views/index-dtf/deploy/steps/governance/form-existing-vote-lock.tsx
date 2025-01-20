@@ -2,7 +2,7 @@ import BasicInput from '../../components/basic-input'
 
 const GovernanceExistingVoteLock = () => {
   return (
-    <div className="flex flex-col gap-2 px-2">
+    <div className="flex flex-col gap-2 px-3">
       <BasicInput
         fieldName="governanceVoteLock"
         label="Vote Lock address"
