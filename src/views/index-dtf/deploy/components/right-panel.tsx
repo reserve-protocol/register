@@ -8,7 +8,6 @@ import {
   daoCreatedAtom,
   formReadyForSubmitAtom,
   selectedGovernanceOptionAtom,
-  validatedSectionsAtom,
 } from '../atoms'
 import ConfirmIndexDeploy from '../steps/confirm-deploy'
 import CreateDAO from '../steps/create-dao'
@@ -46,11 +45,13 @@ const DeployTimeline = () => {
     {
       title: 'Deploy Index DTF',
       children: <ConfirmIndexDeploy />,
-      isActive: (showCreateGovernanceDAO && daoCreated) || formReadyForSubmit,
+      isActive:
+        (showCreateGovernanceDAO && daoCreated) ||
+        (!showCreateGovernanceDAO && formReadyForSubmit),
     },
     {
       title: 'Index DTF successfully deployed',
-      isActive: formReadyForSubmit,
+      isActive: (!showCreateGovernanceDAO || daoCreated) && formReadyForSubmit,
     },
   ]
 

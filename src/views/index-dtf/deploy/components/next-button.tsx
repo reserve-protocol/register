@@ -2,17 +2,8 @@ import { Button } from '@/components/ui/button'
 
 import { useAtom, useSetAtom } from 'jotai'
 import { FieldErrors, FieldValues, useFormContext } from 'react-hook-form'
-import {
-  deployStepAtom,
-  formReadyForSubmitAtom,
-  validatedSectionsAtom,
-} from '../atoms'
-import {
-  DeployFormSchema,
-  DeployInputs,
-  DeployStepId,
-  dtfDeploySteps,
-} from '../form-fields'
+import { deployStepAtom, validatedSectionsAtom } from '../atoms'
+import { DeployInputs, DeployStepId, dtfDeploySteps } from '../form-fields'
 import { DEPLOY_STEPS } from './deploy-accordion'
 
 type FieldName = keyof DeployInputs
@@ -27,8 +18,7 @@ type ExtendedFieldErrors<TFieldValues extends FieldValues> =
 
 const NextButton = () => {
   const [deployStep, setDeployStep] = useAtom(deployStepAtom)
-  const setFormReadyForSubmit = useSetAtom(formReadyForSubmitAtom)
-  const { trigger, formState, getValues } = useFormContext<DeployInputs>()
+  const { trigger, formState } = useFormContext<DeployInputs>()
   const setValidatedSections = useSetAtom(validatedSectionsAtom)
 
   const formErrors = formState.errors as ExtendedFieldErrors<
@@ -60,20 +50,8 @@ const NextButton = () => {
     setDeployStep(nextStep)
   }
 
-  const validateFormAndSubmit = async () => {
-    const values = getValues()
-    const validation = DeployFormSchema.safeParse(values)
-
-    if (!validation.success) {
-      return setFormReadyForSubmit(false)
-    }
-
-    return setFormReadyForSubmit(true)
-  }
-
   const next = async () => {
     validateCurrentStepAndGoNext()
-    validateFormAndSubmit()
   }
 
   return (

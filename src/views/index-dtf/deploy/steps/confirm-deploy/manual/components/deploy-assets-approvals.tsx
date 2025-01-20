@@ -96,7 +96,7 @@ const DeployAssetsApproval = () => {
   return (
     <div className="flex flex-col mt-2 gap-2">
       {basket.map((token) => (
-        <div className="flex items-center gap-2 px-2">
+        <div className="flex items-center gap-2 px-2" key={token.address}>
           <TokenLogo symbol={token.symbol} src={token.logoURI} size="xl" />
           <div className="flex flex-col mr-auto">
             <div className="text-base font-bold">{token.name}</div>

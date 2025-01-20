@@ -112,17 +112,17 @@ export const DeployFormSchema = z
     folioFee: z.coerce
       .number()
       .min(0, 'Folio fee must be 0 or greater')
-      .max(50, 'Folio fee must be 50% or less')
+      .max(10, 'Folio fee must be 10% or less')
       .optional(),
     customFolioFee: z.coerce
       .number()
       .min(0, 'Folio fee must be 0 or greater')
-      .max(50, 'Folio fee must be 50% or less')
+      .max(5, 'Folio fee must be 5% or less')
       .optional(),
     mintFee: z.coerce
       .number()
       .min(0.05, 'Mint fee must be 0.05% or greater')
-      .max(10, 'Mint fee must be 10% or less')
+      .max(5, 'Mint fee must be 5% or less')
       .optional(),
     customMintFee: z.coerce
       .number()
@@ -199,7 +199,7 @@ export const DeployFormSchema = z
     }
   )
   .refine(
-    async (data) => {
+    (data) => {
       // Check if the governance settings are valid
       const governanceExistingERC20 = data.governanceERC20address
       const governanceExistingVoteLock = data.governanceVoteLock

@@ -13,8 +13,6 @@ export const daoCreatedAtom = atomWithReset<boolean>(false)
 
 export const basketAtom = atomWithReset<Token[]>([])
 
-export const formReadyForSubmitAtom = atom(false)
-
 // TODO: Remove hardcoded value
 export const daoTokenAddressAtom = atom<Address | undefined>(
   '0x8c02287d6eb56b7cedd715c399d1bf068c1bac5e'
@@ -34,4 +32,9 @@ export const validatedSectionsAtom = atomWithReset<
   auctions: false,
   roles: false,
   voting: false,
+})
+
+export const formReadyForSubmitAtom = atom((get) => {
+  const validatedSections = get(validatedSectionsAtom)
+  return Object.values(validatedSections).every(Boolean)
 })
