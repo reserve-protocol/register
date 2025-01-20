@@ -343,6 +343,8 @@ export const dtfDeployDefaultValues = {
   customBasketVotingDelay: undefined,
   basketVotingPeriod: 20,
   customBasketVotingPeriod: undefined,
+  basketVotingThreshold: 20,
+  customBasketVotingThreshold: undefined,
   basketVotingQuorum: 20,
   customBasketVotingQuorum: undefined,
   basketExecutionDelay: 20,

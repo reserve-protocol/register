@@ -4,8 +4,13 @@ import Timeline from '@/components/ui/timeline'
 import { useAtomValue } from 'jotai'
 import { Asterisk, PlayIcon } from 'lucide-react'
 import { ReactNode } from 'react'
-import { formReadyForSubmitAtom, selectedGovernanceOptionAtom } from '../atoms'
+import {
+  daoCreatedAtom,
+  formReadyForSubmitAtom,
+  selectedGovernanceOptionAtom,
+} from '../atoms'
 import ConfirmIndexDeploy from '../steps/confirm-deploy'
+import CreateDAO from '../steps/create-dao'
 
 const IndexTokenGraphic = () => {
   return (
@@ -19,6 +24,7 @@ const DeployTimeline = () => {
   const formReadyForSubmit = useAtomValue(formReadyForSubmitAtom)
   const showCreateGovernanceDAO =
     useAtomValue(selectedGovernanceOptionAtom) === 'governanceERC20address'
+  const daoCreated = useAtomValue(daoCreatedAtom)
 
   const timelineItems = [
     {
@@ -28,9 +34,11 @@ const DeployTimeline = () => {
     ...(showCreateGovernanceDAO
       ? [
           {
-            title: 'Sign tx to create governance DAO',
-            children: <ConfirmIndexDeploy />,
-            isActive: formReadyForSubmit,
+            title: daoCreated
+              ? 'Governance DAO created'
+              : 'Sign tx to create governance DAO',
+            children: !daoCreated && <CreateDAO />,
+            isActive: daoCreated,
           },
         ]
       : []),

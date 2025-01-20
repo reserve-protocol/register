@@ -23,7 +23,12 @@ import { useCallback, useEffect, useMemo } from 'react'
 import { useFormContext } from 'react-hook-form'
 import AutoSizer from 'react-virtualized-auto-sizer'
 import { FixedSizeList as List } from 'react-window'
-import { basketAtom, searchTokenAtom, selectedTokensAtom } from '../../atoms'
+import {
+  basketAtom,
+  daoCreatedAtom,
+  searchTokenAtom,
+  selectedTokensAtom,
+} from '../../atoms'
 
 interface TokenButtonProps {
   variant: 'primary' | 'secondary'
@@ -321,6 +326,7 @@ const TokenSelector = () => {
   const setSelectedTokens = useSetAtom(selectedTokensAtom)
   const resetSelectedTokens = useResetAtom(selectedTokensAtom)
   const resetSearchToken = useResetAtom(searchTokenAtom)
+  const resetDaoCreated = useResetAtom(daoCreatedAtom)
 
   useEffect(() => {
     if (basket.length) {
@@ -331,7 +337,8 @@ const TokenSelector = () => {
   const handleClose = useCallback(() => {
     resetSelectedTokens()
     resetSearchToken()
-  }, [resetSelectedTokens, resetSearchToken])
+    resetDaoCreated()
+  }, [resetSelectedTokens, resetSearchToken, resetDaoCreated])
 
   return (
     <Drawer onClose={handleClose}>

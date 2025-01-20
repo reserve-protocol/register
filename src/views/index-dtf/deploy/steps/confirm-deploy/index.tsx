@@ -5,7 +5,6 @@ import { SubmitHandler, useFormContext } from 'react-hook-form'
 import { DeployInputs } from '../../form-fields'
 import { indexDeployFormDataAtom } from './atoms'
 import ManualIndexDeploy from './manual'
-import DaoToken from './components/dao-token'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import SimpleIndexDeploy from './simple'
 
