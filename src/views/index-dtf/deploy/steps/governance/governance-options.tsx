@@ -5,9 +5,17 @@ import GovernanceExistingVoteLock from './form-existing-vote-lock'
 import GovernanceExistingERC20 from './form-existing-erc20'
 import GovernanceSpecificWallet from './form-specific-wallet'
 import { useFormContext } from 'react-hook-form'
+import { useAtom } from 'jotai'
+import { selectedGovernanceOptionAtom } from '../../atoms'
+
+export type GovernanceTypes =
+  | 'governanceERC20address'
+  | 'governanceVoteLock'
+  | 'governanceWalletAddress'
 
 const GOVERNANCE_OPTIONS = [
   {
+    type: 'governanceERC20address',
     title: 'Existing ERC20 token',
     description:
       'Explain the benefit of using our framwork & clarify that it doesn’t mean.',
@@ -16,6 +24,7 @@ const GOVERNANCE_OPTIONS = [
     fields: ['governanceERC20address'],
   },
   {
+    type: 'governanceVoteLock',
     title: 'Existing Vote Lock contract',
     description:
       'Explain the benefit of using our framwork & clarify that it doesn’t mean giving.',
@@ -24,6 +33,7 @@ const GOVERNANCE_OPTIONS = [
     fields: ['governanceVoteLock'],
   },
   {
+    type: 'governanceWalletAddress',
     title: 'Specific wallet address',
     description:
       'Explain the benefit of using our framwork & clarify that it doesn’t mean.',
@@ -83,26 +93,26 @@ const GovernanceOption = ({
 )
 
 const GovernanceOptions = () => {
-  const [selected, setSelected] = useState<number>(0)
+  const [selected, setSelected] = useAtom(selectedGovernanceOptionAtom)
   const { resetField } = useFormContext()
 
-  const onSelected = (optionIndex: number) => {
-    GOVERNANCE_OPTIONS.forEach((option, index) => {
-      if (optionIndex !== index) {
-        option.fields.forEach((field: string) => resetField(field))
+  const onSelected = (selectedType: GovernanceTypes) => {
+    GOVERNANCE_OPTIONS.forEach(({ type, fields }) => {
+      if (selectedType !== type) {
+        fields.forEach((field: string) => resetField(field))
       }
     })
-    setSelected(optionIndex)
+    setSelected(selectedType)
   }
 
   return (
     <div className="mx-2 mb-2 flex flex-col gap-1">
-      {GOVERNANCE_OPTIONS.map((option, index) => (
+      {GOVERNANCE_OPTIONS.map((option) => (
         <GovernanceOption
           key={option.title}
           {...option}
-          selected={index === selected}
-          setSelected={() => onSelected(index)}
+          selected={selected === option.type}
+          setSelected={() => onSelected(option.type as GovernanceTypes)}
         />
       ))}
     </div>

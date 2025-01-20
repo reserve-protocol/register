@@ -4,7 +4,7 @@ import Timeline from '@/components/ui/timeline'
 import { useAtomValue } from 'jotai'
 import { Asterisk, PlayIcon } from 'lucide-react'
 import { ReactNode } from 'react'
-import { formReadyForSubmitAtom } from '../atoms'
+import { formReadyForSubmitAtom, selectedGovernanceOptionAtom } from '../atoms'
 import ConfirmIndexDeploy from '../steps/confirm-deploy'
 
 const IndexTokenGraphic = () => {
@@ -17,26 +17,27 @@ const IndexTokenGraphic = () => {
 
 const DeployTimeline = () => {
   const formReadyForSubmit = useAtomValue(formReadyForSubmitAtom)
+  const showCreateGovernanceDAO =
+    useAtomValue(selectedGovernanceOptionAtom) === 'governanceERC20address'
 
   const timelineItems = [
     {
-      title: 'Configure Index DTF',
+      title: 'Configure your Index DTF',
       isActive: true,
     },
+    ...(showCreateGovernanceDAO
+      ? [
+          {
+            title: 'Sign tx to create governance DAO',
+            children: <ConfirmIndexDeploy />,
+            isActive: formReadyForSubmit,
+          },
+        ]
+      : []),
     {
       title: 'Deploy $SUPER',
       children: <ConfirmIndexDeploy />,
       isActive: formReadyForSubmit,
-    },
-    {
-      title: 'Is there some kind of waiting period?',
-      rightText: '30 minutes',
-    },
-    {
-      title: 'Index DTF ready to use',
-    },
-    {
-      title: 'Stake ERC20 to govern',
     },
   ]
 
