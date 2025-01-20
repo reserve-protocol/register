@@ -31,7 +31,7 @@ const MintFeeSelector = () => {
           </div>
         </div>
       </div>
-      <div className="flex items-center gap-2 mx-6 ">
+      <div className="flex items-center gap-2">
         <ToggleGroup
           type="single"
           className="bg-muted-foreground/10 p-1 rounded-xl justify-start w-max"

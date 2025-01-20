@@ -96,22 +96,22 @@ export const DeployFormSchema = z
     folioFee: z.coerce
       .number()
       .min(0, 'Folio fee must be 0 or greater')
-      .max(20, 'Folio fee must be 20% or less')
+      .max(50, 'Folio fee must be 50% or less')
       .optional(),
     customFolioFee: z.coerce
       .number()
       .min(0, 'Folio fee must be 0 or greater')
-      .max(20, 'Folio fee must be 20% or less')
+      .max(50, 'Folio fee must be 50% or less')
       .optional(),
     mintFee: z.coerce
       .number()
       .min(0.05, 'Mint fee must be 0.05% or greater')
-      .max(5, 'Mint fee must be 5% or less')
+      .max(10, 'Mint fee must be 10% or less')
       .optional(),
     customMintFee: z.coerce
       .number()
       .min(0.05, 'Mint fee must be 0.05% or greater')
-      .max(5, 'Mint fee must be 5% or less')
+      .max(10, 'Mint fee must be 10% or less')
       .optional(),
     governanceShare: z.coerce.number().min(0).max(100),
     deployerShare: z.coerce.number().min(0).max(100),
