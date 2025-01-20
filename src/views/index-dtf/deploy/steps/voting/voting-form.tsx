@@ -72,6 +72,11 @@ const VOTING_FORM = [
         customFieldName: 'customBasketVotingPeriod',
       },
       {
+        ...VOTING_THRESHOLD,
+        fieldName: 'basketVotingThreshold',
+        customFieldName: 'customBasketVotingThreshold',
+      },
+      {
         ...VOTING_QUORUM,
         fieldName: 'basketVotingQuorum',
         customFieldName: 'customBasketVotingQuorum',
