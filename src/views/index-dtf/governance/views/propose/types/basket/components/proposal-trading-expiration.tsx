@@ -39,7 +39,9 @@ const ProposalTradingExpiration = () => {
           </div>
           <Checkbox />
         </div>
-        <Button className="w-full my-2">Confirm</Button>
+        <Button className="w-full my-2" size="lg">
+          Confirm
+        </Button>
       </div>
     </>
   )

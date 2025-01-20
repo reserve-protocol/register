@@ -16,7 +16,7 @@ import {
 import { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { Step, stepAtom } from '../atoms'
-import ProposalBasketSetup from './proposal-baset-setup'
+import ProposalBasketSetup from './proposal-basket-setup'
 import ProposalTradingExpiration from './proposal-trading-expiration'
 import ProposalTradingRanges from './proposal-trading-ranges'
 

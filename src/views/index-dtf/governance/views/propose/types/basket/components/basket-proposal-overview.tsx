@@ -8,7 +8,7 @@ const BasketProposalOverview = () => {
   const dtf = useAtomValue(iTokenAtom)
 
   return (
-    <div className="border-4 border-secondary rounded-3xl bg-card">
+    <div className="border-4 border-secondary rounded-3xl bg-card h-[fit-content] sticky top-0">
       <div className="flex items-center p-6 gap-2">
         <TokenLogo size="lg" />
         <h3 className="font-bold mr-auto">${dtf?.symbol}</h3>
