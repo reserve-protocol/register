@@ -44,6 +44,7 @@ const CreateDAO = () => {
   const submit = () => {
     const formData = getValues()
 
+    const vlSymbol = `vl${symbol}-${formData.symbol}`
     const basketVotingDelay =
       formData.basketVotingDelay || formData.customBasketVotingDelay
     const basketVotingPeriod =
@@ -61,8 +62,8 @@ const CreateDAO = () => {
       abi: dtfIndexGovernanceDeployerAbi,
       functionName: 'deployGovernedStakingToken',
       args: [
-        `Vote Lock ${symbol}`,
-        `vl${symbol}`,
+        `Vote Lock ${vlSymbol}`,
+        vlSymbol,
         governanceERC20address,
         {
           votingDelay: basketVotingDelay! * 60,
