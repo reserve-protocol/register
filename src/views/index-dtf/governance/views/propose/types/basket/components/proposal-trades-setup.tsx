@@ -1,19 +1,18 @@
 import TokenLogo from '@/components/token-logo'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
+import { Trade } from '@/lib/index-rebalance/types'
+import { getBasketPortion } from '@/lib/index-rebalance/utils'
 import { cn } from '@/lib/utils'
 import { chainIdAtom } from '@/state/atoms'
 import { Token } from '@/types'
 import { formatPercentage } from '@/utils'
 import { atom, useAtom, useAtomValue } from 'jotai'
-import { parseEther } from 'viem'
 import {
   priceMapAtom,
   proposedIndexBasketAtom,
   proposedInxexTradesAtom,
   tradeVolatilityAtom,
 } from '../atoms'
-import { getBasketPortion } from '@/lib/index-rebalance/utils'
-import { Trade } from '@/lib/index-rebalance/types'
 
 type ProposedTradeWithMeta = Trade & {
   index: number
@@ -34,13 +33,6 @@ type IProposedTradeGroup = {
 }
 
 type OrganizedTrades = Record<string, IProposedTradeGroup>
-
-const dtfDataAtom = atom((get) => {
-  return {
-    supply: parseEther('100000'), // 100k 18D
-    supplyUsd: 100000,
-  }
-})
 
 const organizedTradesAtom = atom((get) => {
   const basket = get(proposedIndexBasketAtom)
