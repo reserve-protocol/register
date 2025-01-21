@@ -1,4 +1,7 @@
 import TokenLogo from '@/components/token-logo'
+import TokenSelectorDrawer, {
+  TokenDrawerTrigger,
+} from '@/components/token-selector-drawer'
 import { Button } from '@/components/ui/button'
 import { NumericalInput } from '@/components/ui/input'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -12,6 +15,7 @@ import {
 } from '@/components/ui/table'
 import { cn } from '@/lib/utils'
 import { chainIdAtom } from '@/state/chain/atoms/chainAtoms'
+import { Token } from '@/types'
 import { formatPercentage, shortenAddress } from '@/utils'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import {
@@ -22,9 +26,6 @@ import {
   proposedSharesAtom,
   stepAtom,
 } from '../atoms'
-import TokenSelectorDrawer, {
-  TokenDrawerTrigger,
-} from '@/components/token-selector-drawer'
 
 const assetsAtom = atom((get) => {
   const proposedBasket = get(proposedIndexBasketAtom)
@@ -108,14 +109,66 @@ const Allocation = () => {
   )
 }
 
+// TODO: Handle with address checksum vs lowercase format
+const setNewBasketAtom = atom(null, (get, set, tokens: Token[]) => {
+  const proposedShareMap = get(proposedSharesAtom)
+  const proposedIndexBasket = get(proposedIndexBasketAtom) || {}
+  const newProposedIndexBasket: Record<string, IndexAssetShares> = {}
+  const newProposedShares: Record<string, string> = {}
+
+  // Create a map of tokens
+  const tokenMap = tokens.reduce(
+    (acc, token) => {
+      acc[token.address] = token
+      return acc
+    },
+    {} as Record<string, Token>
+  )
+
+  // Get unit string array of token addresses + proposedIndexBasket keys
+  const tokenAddresses = new Set([
+    ...Object.keys(proposedIndexBasket),
+    ...Object.keys(tokenMap),
+  ])
+
+  for (const tokenAddress of tokenAddresses) {
+    const token =
+      tokenMap[tokenAddress] || proposedIndexBasket[tokenAddress].token
+    const currentShares =
+      proposedIndexBasket[tokenAddress]?.currentShares ?? '0'
+
+    // Keep all assets on the basket, removed assets just adjust proposed shares
+    newProposedIndexBasket[tokenAddress] = {
+      token,
+      currentShares,
+      balance: proposedIndexBasket[tokenAddress]?.balance ?? 0n,
+    }
+
+    // If asset was removed, set proposed shares to 0
+    newProposedShares[tokenAddress] = tokenMap[tokenAddress]
+      ? (proposedShareMap[tokenAddress] ?? '0')
+      : '0'
+  }
+
+  set(proposedIndexBasketAtom, newProposedIndexBasket)
+  set(proposedSharesAtom, newProposedShares)
+})
+
+const currentProposedBasketTokensAtom = atom((get) => {
+  const proposedIndexBasket = get(proposedIndexBasketAtom)
+  return Object.values(proposedIndexBasket || {}).map((asset) => asset.token)
+})
+
 const TokenSelector = () => {
-  // const [selectedTokens, setSelectedTokens] = useAtom(selectedTokensAtom)
+  const setNewBasket = useSetAtom(setNewBasketAtom)
+  const currentProposedBasketTokens = useAtomValue(
+    currentProposedBasketTokensAtom
+  )
 
   return (
     <TokenSelectorDrawer
-      selectedTokens={[]}
-      onAdd={() => {}}
-      onClose={() => {}}
+      selectedTokens={currentProposedBasketTokens}
+      onAdd={setNewBasket}
     >
       <TokenDrawerTrigger className="mr-auto" />
     </TokenSelectorDrawer>
