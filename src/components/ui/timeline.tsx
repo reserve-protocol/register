@@ -1,4 +1,5 @@
-import { Asterisk } from 'lucide-react'
+import { cn } from '@/lib/utils'
+import { Asterisk, Check } from 'lucide-react'
 import { ReactNode } from 'react'
 
 interface TimelineItem {
@@ -6,6 +7,7 @@ interface TimelineItem {
   isActive?: boolean
   rightText?: string
   children?: ReactNode
+  isCompleted?: boolean
 }
 
 interface TimelineProps {
@@ -23,9 +25,18 @@ const Timeline = ({ items }: TimelineProps) => {
         {items.map((item, index) => (
           <div key={index} className="relative flex items-center">
             {/* Circle marker */}
-            <div className="absolute left-[-24px] h-[22px] w-[22px] rounded-full border-2 border-gray-200 bg-white">
+            <div
+              className={cn(
+                'absolute left-[-24px] h-[22px] w-[22px] rounded-full border-2 border-gray-200 bg-white',
+                (item.isActive || item.isCompleted) &&
+                  'border-primary/10 bg-[#E4E9EF]'
+              )}
+            >
               {item.isActive && (
                 <Asterisk className="absolute left-1/2 top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 text-blue-500" />
+              )}
+              {item.isCompleted && (
+                <Check className="absolute left-1/2 top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 text-blue-500" />
               )}
             </div>
 

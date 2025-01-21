@@ -1,19 +1,21 @@
 import TokenLogo from '@/components/token-logo'
 import { Button } from '@/components/ui/button'
 import { iTokenAtom } from '@/state/dtf/atoms'
-import { useAtomValue } from 'jotai'
+import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { Link } from 'react-router-dom'
-import { isBasketProposalValidAtom } from '../atoms'
+import { isBasketProposalValidAtom, isProposalConfirmedAtom } from '../atoms'
 import Timeline from '@/components/ui/timeline'
+import SubmitProposalButton from './submit-proposal-button'
 
+// TODO: get governance route to navigate back to governance
 const Header = () => {
   const dtf = useAtomValue(iTokenAtom)
 
   return (
-    <div className="flex items-center p-6 gap-2">
+    <div className="flex items-center p-6 gap-2 bg-card rounded-t-3xl">
       <TokenLogo size="lg" />
       <h3 className="font-bold mr-auto">${dtf?.symbol}</h3>
-      <Link to="../">
+      <Link to="..">
         <Button
           variant="outline"
           size="xs"
@@ -28,21 +30,31 @@ const Header = () => {
 
 const ConfirmProposalButton = () => {
   const isValid = useAtomValue(isBasketProposalValidAtom)
+  const [isProposalConfirmed, setIsProposalConfirmed] = useAtom(
+    isProposalConfirmedAtom
+  )
 
   return (
-    <Button className="w-full" disabled={!isValid}>
-      Confirm & prepare proposal
+    <Button
+      className="w-full"
+      disabled={!isValid}
+      variant={isProposalConfirmed ? 'outline' : 'default'}
+      onClick={() => setIsProposalConfirmed(!isProposalConfirmed)}
+    >
+      {isProposalConfirmed ? 'Edit proposal' : 'Confirm & prepare proposal'}
     </Button>
   )
 }
 
 const ProposalInstructions = () => {
   const isValid = useAtomValue(isBasketProposalValidAtom)
+  const confirmed = useAtomValue(isProposalConfirmedAtom)
 
   const timelineItems = [
     {
       title: 'Configure proposal',
-      isActive: true,
+      isActive: !isValid,
+      isCompleted: isValid,
     },
     {
       title: 'Finalize basket proposal',
@@ -52,16 +64,18 @@ const ProposalInstructions = () => {
           <ConfirmProposalButton />
         </div>
       ),
-      isActive: isValid,
+      isActive: isValid && !confirmed,
+      isCompleted: confirmed,
     },
     {
       title: 'Review & describe your proposal',
       children: (
         <div className="flex flex-col gap-1 w-full">
           <span>Review & describe your proposal</span>
-          <Button disabled>Submit proposal onchain</Button>
+          <SubmitProposalButton />
         </div>
       ),
+      isActive: confirmed,
     },
     {
       title: 'Voting delay begins',
@@ -77,7 +91,7 @@ const ProposalInstructions = () => {
 
 const BasketProposalOverview = () => {
   return (
-    <div className="border-4 border-secondary rounded-3xl bg-card h-[fit-content] sticky top-0">
+    <div className="border-4 border-secondary rounded-3xl bg-background h-[fit-content] sticky top-0">
       <Header />
       <ProposalInstructions />
     </div>

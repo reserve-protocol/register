@@ -1,7 +1,8 @@
+import dtfIndexAbi from '@/abis/dtf-index-abi'
+import { getTrades } from '@/lib/index-rebalance/get-trades'
 import { Token } from '@/types'
-import { atom } from 'jotai'
-import { getRebalanceTrades, ProposedTrade } from './utils/get-rebalance-trades'
-import { parseEther, parseUnits } from 'viem'
+import { atom, Getter } from 'jotai'
+import { Address, encodeFunctionData, Hex, parseEther, parseUnits } from 'viem'
 
 const mockPrices = {
   '0xab36452dbac151be02b16ca17d8919826072f64a': 0.016, // RSR
@@ -82,6 +83,7 @@ const mockProposedShares = {
 }
 
 export type Step = 'basket' | 'prices' | 'expiration' | 'confirmation'
+export const isProposalConfirmedAtom = atom(false)
 
 export const stepAtom = atom<Step>('basket')
 
@@ -166,39 +168,8 @@ export const isProposedBasketValidAtom = atom((get) => {
 })
 
 // Get proposed trades from algo if the target basket is valid
-export const proposedInxexTradesAtom = atom<ProposedTrade[]>((get) => {
-  const proposedBasket = get(proposedIndexBasketAtom)
-  const proposedShares = get(proposedSharesAtom)
-  const priceMap = get(priceMapAtom)
-  const isValid = get(isProposedBasketValidAtom)
-
-  if (!isValid || !proposedBasket) return []
-
-  const tokens: string[] = []
-  const decimals: bigint[] = []
-  const bals: bigint[] = []
-  const targetBasket: bigint[] = []
-  const prices: number[] = []
-  const error: number[] = []
-
-  for (const asset of Object.keys(proposedBasket)) {
-    tokens.push(asset)
-    bals.push(proposedBasket[asset].balance)
-    decimals.push(BigInt(proposedBasket[asset].token.decimals))
-    targetBasket.push(parseUnits(proposedShares[asset], 16))
-    prices.push(priceMap[asset])
-    error.push(0.1)
-  }
-
-  return getRebalanceTrades(
-    mockTVL,
-    tokens,
-    decimals,
-    bals,
-    targetBasket,
-    prices,
-    error
-  )
+export const proposedInxexTradesAtom = atom((get) => {
+  return getProposedTrades(get, false)
 })
 
 // Volatility of proposed trades, array index is the trade index
@@ -222,3 +193,78 @@ export const stepStateAtom = atom<Record<Step, boolean>>((get) => ({
 export const isBasketProposalValidAtom = atom((get) =>
   Object.values(get(stepStateAtom)).every((value) => value)
 )
+
+export const proposalDescriptionAtom = atom<string | undefined>(undefined)
+
+export const basketProposalCalldatasAtom = atom<Hex[] | undefined>((get) => {
+  const deferredTrades = get(proposedInxexTradesAtom)
+  const tradeRangeOption = get(tradeRangeOptionAtom)
+  const isConfirmed = get(isProposalConfirmedAtom)
+
+  if (!deferredTrades?.length || !isConfirmed || !tradeRangeOption)
+    return undefined
+
+  const trades =
+    tradeRangeOption === 'defer' ? deferredTrades : getProposedTrades(get, true)
+
+  return trades.map((trade, i) => {
+    return encodeFunctionData({
+      abi: dtfIndexAbi,
+      functionName: 'approveTrade',
+      args: [
+        BigInt(i), // TODO: will be removed
+        trade.sell as Address,
+        trade.buy as Address,
+        {
+          spot: trade.sellLimit.spot,
+          low: trade.sellLimit.low,
+          high: trade.sellLimit.high,
+        },
+        {
+          spot: trade.buyLimit.spot,
+          low: trade.buyLimit.low,
+          high: trade.buyLimit.high,
+        },
+        {
+          start: trade.prices.start,
+          end: trade.prices.end,
+        },
+        0n, // TODO: TTL
+      ],
+    })
+  })
+})
+
+const VOLATILITY_VALUES = [0.1, 0.2, 0.5]
+
+function getProposedTrades(get: Getter, deferred = false) {
+  const proposedBasket = get(proposedIndexBasketAtom)
+  const proposedShares = get(proposedSharesAtom)
+  const priceMap = get(priceMapAtom)
+  const isValid = get(isProposedBasketValidAtom)
+  const volatility = get(tradeVolatilityAtom)
+
+  if (!isValid || !proposedBasket) return []
+
+  const tokens: string[] = []
+  const decimals: bigint[] = []
+  const bals: bigint[] = []
+  const targetBasket: bigint[] = []
+  const prices: number[] = []
+  const error: number[] = []
+
+  let index = 0
+
+  for (const asset of Object.keys(proposedBasket)) {
+    tokens.push(asset)
+    bals.push(proposedBasket[asset].balance)
+    decimals.push(BigInt(proposedBasket[asset].token.decimals))
+    targetBasket.push(parseUnits(proposedShares[asset], 16))
+    prices.push(priceMap[asset])
+    // TODO: assume trades always have the same order...
+    error.push(deferred ? 1 : VOLATILITY_VALUES[volatility[index]] || 0.1)
+    index++
+  }
+
+  return getTrades(mockTVL, tokens, decimals, bals, targetBasket, prices, error)
+}

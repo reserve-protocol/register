@@ -5,17 +5,20 @@ import { chainIdAtom } from '@/state/atoms'
 import { Token } from '@/types'
 import { formatPercentage } from '@/utils'
 import { atom, useAtom, useAtomValue } from 'jotai'
-import { formatUnits, parseEther } from 'viem'
+import { parseEther } from 'viem'
 import {
+  priceMapAtom,
   proposedIndexBasketAtom,
   proposedInxexTradesAtom,
   tradeVolatilityAtom,
 } from '../atoms'
-import { ProposedTrade } from '../utils/get-rebalance-trades'
+import { getBasketPortion } from '@/lib/index-rebalance/utils'
+import { Trade } from '@/lib/index-rebalance/types'
 
-type ProposedTradeWithMeta = ProposedTrade & {
+type ProposedTradeWithMeta = Trade & {
   index: number
   token: Token
+  shares: number
 }
 
 type SellData = {
@@ -42,7 +45,7 @@ const dtfDataAtom = atom((get) => {
 const organizedTradesAtom = atom((get) => {
   const basket = get(proposedIndexBasketAtom)
   const trades = get(proposedInxexTradesAtom)
-  const dtfData = get(dtfDataAtom)
+  const priceMap = get(priceMapAtom)
 
   if (!basket || !trades) return undefined
 
@@ -64,19 +67,24 @@ const organizedTradesAtom = atom((get) => {
       ...trade,
       index,
       token: basket[trade.buy].token,
+      shares:
+        getBasketPortion(
+          trade.buyLimit.spot,
+          BigInt(basket[trade.buy].token.decimals),
+          priceMap[trade.buy],
+          1 // TODO: Mocked DTF price
+        )[0] *
+          100 -
+        Number(basket[trade.buy].currentShares),
     })
-    acc[trade.sell].sell.amount += trade.sellLimit
-    acc[trade.sell].sell.percent = Number(
-      formatUnits(
-        (basket[trade.sell].balance / acc[trade.sell].sell.amount) * 100n,
-        basket[trade.sell].token.decimals
-      )
-    )
-
-    console.log('sell', {
-      balance: basket[trade.sell].balance,
-      amount: acc[trade.sell].sell.amount,
-    })
+    acc[trade.sell].sell.amount += trade.sellLimit.spot
+    acc[trade.sell].sell.percent =
+      getBasketPortion(
+        trade.sellLimit.spot,
+        BigInt(basket[trade.sell].token.decimals),
+        priceMap[trade.sell],
+        1 // TODO: Mocked DTF price
+      )[0] * 100
 
     return acc
   }, {} as OrganizedTrades)
@@ -143,7 +151,7 @@ const ProposedTradeItem = ({
       <TokenLogo chain={chainId} address={trade.token.address} />
       <div className="mr-auto text-primary">
         <span>Buy {trade.token.symbol}</span>
-        <h4 className="text-xl font-bold">{formatPercentage(2)}</h4>
+        <h4 className="text-xl font-bold">+{formatPercentage(trade.shares)}</h4>
       </div>
       <ProposedTradeVolatility index={trade.index} />
     </div>
