@@ -161,7 +161,7 @@ const Header = () => (
   </div>
 )
 
-export const ProposalVotingState = ({ data }: { data: VotingState }) => {
+const VoteStateHeader = ({ data }: { data: VotingState }) => {
   if (
     (data.state === PROPOSAL_STATES.ACTIVE ||
       data.state === PROPOSAL_STATES.QUEUED) &&
@@ -169,7 +169,7 @@ export const ProposalVotingState = ({ data }: { data: VotingState }) => {
     data.deadline > 0
   ) {
     return (
-      <div className="flex items-center text-sm gap-1 mt-2">
+      <div className="flex items-center text-sm gap-1 mt-0.5">
         <span className="text-legend">
           {data.state === PROPOSAL_STATES.ACTIVE
             ? 'Voting ends in:'
@@ -185,6 +185,10 @@ export const ProposalVotingState = ({ data }: { data: VotingState }) => {
     )
   }
 
+  return null
+}
+
+export const ProposalVotingState = ({ data }: { data: VotingState }) => {
   if (data.state === PROPOSAL_STATES.PENDING && data.deadline) {
     return (
       <div className="flex items-center mt-2 text-sm">
@@ -200,31 +204,34 @@ export const ProposalVotingState = ({ data }: { data: VotingState }) => {
   }
 
   return (
-    <div className="flex items-center mt-2 gap-2 text-sm">
-      <div>
-        <span className="text-legend">Quorum?:</span>{' '}
-        <span
-          className={cn(
-            'font-semibold',
-            data.quorum ? 'text-success' : 'text-warning'
-          )}
-        >
-          {data.quorum ? 'Yes' : 'No'}
-        </span>
+    <>
+      <VoteStateHeader data={data} />
+      <div className="flex items-center mt-2 gap-2 text-sm">
+        <div>
+          <span className="text-legend">Quorum?:</span>{' '}
+          <span
+            className={cn(
+              'font-semibold',
+              data.quorum ? 'text-success' : 'text-warning'
+            )}
+          >
+            {data.quorum ? 'Yes' : 'No'}
+          </span>
+        </div>
+        <Circle size={4} />
+        <div className="flex items-center gap-1">
+          <span className="text-legend">Votes:</span>
+          <span className="font-semibold text-primary">
+            {formatPercentage(data.for)}
+          </span>
+          /
+          <span className="font-semibold text-destructive">
+            {formatPercentage(data.against)}
+          </span>
+          /<span className="text-legend">{formatPercentage(data.abstain)}</span>
+        </div>
       </div>
-      <Circle size={4} />
-      <div className="flex items-center gap-1">
-        <span className="text-legend">Votes:</span>
-        <span className="font-semibold text-primary">
-          {formatPercentage(data.for)}
-        </span>
-        /
-        <span className="font-semibold text-destructive">
-          {formatPercentage(data.against)}
-        </span>
-        /<span className="text-legend">{formatPercentage(data.abstain)}</span>
-      </div>
-    </div>
+    </>
   )
 }
 

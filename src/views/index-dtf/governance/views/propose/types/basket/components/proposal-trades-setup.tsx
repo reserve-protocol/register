@@ -181,11 +181,11 @@ const ProposedTradeSold = ({
         <h3 className="text-sm">Sell ${sell.token.symbol}</h3>
         <div className="flex items-center gap-2">
           <h4 className="text-xl font-bold mr-auto">
-            {formatPercentage(sell.percent)}
+            {formatPercentage(Number(sell.shares) - sell.percent)}
           </h4>
           <span className="text-sm">
             From {formatPercentage(Number(sell.shares))} to{' '}
-            {formatPercentage(Number(sell.shares) - sell.percent)}
+            {formatPercentage(sell.percent)}
           </span>
         </div>
       </div>
