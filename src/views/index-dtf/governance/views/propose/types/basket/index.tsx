@@ -19,6 +19,7 @@ const Updater = () => {
   const setTradeVolatility = useSetAtom(tradeVolatilityAtom)
   const setTradeRangeOption = useSetAtom(tradeRangeOptionAtom)
   const setPermissionlessLaunching = useSetAtom(permissionlessLaunchingAtom)
+  const tradeConfirmation = useSetAtom(isProposalConfirmedAtom)
 
   useEffect(() => {
     return () => {
@@ -28,6 +29,7 @@ const Updater = () => {
       setTradeVolatility([])
       setTradeRangeOption(undefined)
       setPermissionlessLaunching(undefined)
+      tradeConfirmation(false)
     }
   }, [])
 
@@ -43,7 +45,7 @@ const ProposalStage = () => {
 }
 
 const IndexDTFBasketProposal = () => (
-  <div className="grid grid-cols-[1.5fr_1fr] gap-2 pr-2 pb-6">
+  <div className="grid grid-cols-1 xl:grid-cols-[1.5fr_1fr] gap-2 pb-6 pr-2 overflow-x-hidden">
     <ProposalStage />
     <div>
       <BasketProposalOverview />

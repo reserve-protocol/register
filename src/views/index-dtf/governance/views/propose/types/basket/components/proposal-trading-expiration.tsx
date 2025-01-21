@@ -2,7 +2,12 @@ import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Asterisk } from 'lucide-react'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { permissionlessLaunchingAtom, stepAtom } from '../atoms'
+import {
+  isBasketProposalValidAtom,
+  isProposalConfirmedAtom,
+  permissionlessLaunchingAtom,
+  stepAtom,
+} from '../atoms'
 import { cn } from '@/lib/utils'
 
 interface PermissionOption {
@@ -67,14 +72,24 @@ const PermissionCard = ({ option }: { option: PermissionOption }) => {
 
 const NextButton = () => {
   const permissionlessLaunching = useAtomValue(permissionlessLaunchingAtom)
+  const isValid = useAtomValue(isBasketProposalValidAtom)
   const setStep = useSetAtom(stepAtom)
+  const setConfirmation = useSetAtom(isProposalConfirmedAtom)
+
+  const handleClick = () => {
+    setStep('confirmation')
+
+    if (isValid) {
+      setConfirmation(true)
+    }
+  }
 
   return (
     <Button
       className="w-full my-2"
       size="lg"
       disabled={permissionlessLaunching === undefined}
-      onClick={() => setStep('confirmation')}
+      onClick={handleClick}
     >
       Confirm
     </Button>

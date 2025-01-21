@@ -117,7 +117,7 @@ const BasketProposalSteps = () => {
     <Accordion
       type="single"
       collapsible
-      className="w-full bg-secondary rounded-4xl pb-0.5"
+      className="w-full bg-secondary rounded-4xl pb-0.5 h-fit"
       value={step}
       onValueChange={(value) => setStep(value as Step)}
     >

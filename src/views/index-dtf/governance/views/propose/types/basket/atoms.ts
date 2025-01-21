@@ -110,7 +110,7 @@ export const priceMapAtom = atom<Record<string, number>>(mockPrices)
 
 export const proposedIndexBasketStateAtom = atom<{
   changed: boolean
-  remainingAllocation: string
+  remainingAllocation: number
   isValid: boolean
 }>((get) => {
   const proposedBasket = get(proposedIndexBasketAtom)
@@ -118,7 +118,7 @@ export const proposedIndexBasketStateAtom = atom<{
   const priceMap = get(priceMapAtom)
   const defaultState = {
     changed: false,
-    remainingAllocation: '0',
+    remainingAllocation: 0,
     isValid: false,
   }
 
@@ -128,7 +128,7 @@ export const proposedIndexBasketStateAtom = atom<{
   // Calculate total allocation and check for changes
   const initialState = {
     changed: false,
-    currentAllocation: 0n,
+    currentAllocation: 0,
   }
 
   // Move to true if any asset don't have a price
@@ -145,7 +145,7 @@ export const proposedIndexBasketStateAtom = atom<{
           acc.changed ||
           token.currentShares !== proposedShares[token.token.address],
         currentAllocation:
-          acc.currentAllocation + BigInt(proposedShares[token.token.address]),
+          acc.currentAllocation + Number(proposedShares[token.token.address]),
       }
     },
     initialState
@@ -157,8 +157,8 @@ export const proposedIndexBasketStateAtom = atom<{
   // Calculate remaining allocation and validity
   return {
     changed,
-    remainingAllocation: (100n - currentAllocation).toString(),
-    isValid: currentAllocation === 100n,
+    remainingAllocation: 100 - currentAllocation,
+    isValid: currentAllocation === 100,
   }
 })
 

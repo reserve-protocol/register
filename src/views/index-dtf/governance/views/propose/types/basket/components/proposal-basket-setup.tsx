@@ -12,15 +12,19 @@ import {
 } from '@/components/ui/table'
 import { cn } from '@/lib/utils'
 import { chainIdAtom } from '@/state/chain/atoms/chainAtoms'
-import { shortenAddress } from '@/utils'
+import { formatPercentage, shortenAddress } from '@/utils'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import {
   IndexAssetShares,
   isProposedBasketValidAtom,
   proposedIndexBasketAtom,
+  proposedIndexBasketStateAtom,
   proposedSharesAtom,
   stepAtom,
 } from '../atoms'
+import TokenSelectorDrawer, {
+  TokenDrawerTrigger,
+} from '@/components/token-selector-drawer'
 
 const assetsAtom = atom((get) => {
   const proposedBasket = get(proposedIndexBasketAtom)
@@ -34,7 +38,7 @@ const NewSharesCell = ({ asset }: { asset: string }) => {
   const [newShares, setNewShares] = useAtom(proposedSharesAtom)
 
   return (
-    <TableCell className="bg-primary/10">
+    <TableCell className="bg-primary/10 w-10">
       <NumericalInput
         placeholder="0%"
         className="w-24 text-center"
@@ -61,7 +65,7 @@ const DeltaSharesCell = ({ asset }: { asset: string }) => {
       })}
     >
       {deltaShares > 0 && '+'}
-      {deltaShares}%
+      {formatPercentage(deltaShares)}
     </TableCell>
   )
 }
@@ -71,7 +75,7 @@ const AssetRow = ({ asset }: { asset: IndexAssetShares }) => {
 
   return (
     <TableRow>
-      <TableCell className="border-r w-[50%]">
+      <TableCell className="border-r">
         <div className="flex items-center gap-2">
           <TokenLogo size="xl" address={asset.token.address} chain={chainId} />
           <div>
@@ -82,10 +86,39 @@ const AssetRow = ({ asset }: { asset: IndexAssetShares }) => {
           </div>
         </div>
       </TableCell>
-      <TableCell className="text-center">{asset.currentShares}%</TableCell>
+      <TableCell className="text-center">
+        {formatPercentage(Number(asset.currentShares))}
+      </TableCell>
       <NewSharesCell asset={asset.token.address} />
       <DeltaSharesCell asset={asset.token.address} />
     </TableRow>
+  )
+}
+
+const Allocation = () => {
+  const { remainingAllocation } = useAtomValue(proposedIndexBasketStateAtom)
+
+  return (
+    <div>
+      <span className="text-legend">Remaining allocation:</span>{' '}
+      <span className={cn('', remainingAllocation !== 0 && 'text-destructive')}>
+        {formatPercentage(remainingAllocation)}
+      </span>
+    </div>
+  )
+}
+
+const TokenSelector = () => {
+  // const [selectedTokens, setSelectedTokens] = useAtom(selectedTokensAtom)
+
+  return (
+    <TokenSelectorDrawer
+      selectedTokens={[]}
+      onAdd={() => {}}
+      onClose={() => {}}
+    >
+      <TokenDrawerTrigger className="mr-auto" />
+    </TokenSelectorDrawer>
   )
 }
 
@@ -101,20 +134,25 @@ const ProposalBasketTable = () => {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="border-r w-[50%]">Token</TableHead>
-            <TableHead className="w-24">Current</TableHead>
+            <TableHead className="border-r ">Token</TableHead>
+            <TableHead className="w-24 text-center">Current</TableHead>
             <TableHead className="bg-primary/10 text-primary text-center font-bold">
               New
             </TableHead>
-            <TableHead className="w-24">Delta</TableHead>
+            <TableHead className="w-24 text-center">Delta</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {assets.map((asset) => (
             <AssetRow key={asset.token.address} asset={asset} />
           ))}
-          <TableRow>
-            <TableCell colSpan={4}>Total</TableCell>
+          <TableRow className="hover:bg-card">
+            <TableCell colSpan={4}>
+              <div className="flex items-center">
+                <TokenSelector />
+                <Allocation />
+              </div>
+            </TableCell>
           </TableRow>
         </TableBody>
       </Table>
