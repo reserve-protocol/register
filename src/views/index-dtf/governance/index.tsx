@@ -1,13 +1,14 @@
-import { Button } from '@/components/ui/button'
-import { ROUTES } from '@/utils/constants'
-import { Link } from 'react-router-dom'
+import GovernanceProposalList from './components/governance-proposal-list'
+
+const GovernanceStats = () => {
+  return <div>stats</div>
+}
 
 const IndexDTFGovernance = () => {
   return (
-    <div>
-      <Link to={ROUTES.GOVERNANCE_PROPOSE}>
-        <Button>Propose</Button>
-      </Link>
+    <div className="grid grid-cols-[1.5fr_1fr] gap-2 pr-2 pb-6">
+      <GovernanceProposalList />
+      <GovernanceStats />
     </div>
   )
 }

@@ -68,7 +68,17 @@ const config = {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))',
         },
-        legend: 'hsl(var(--legend))',
+        legend: {
+          DEFAULT: 'hsl(var(--legend))',
+          foreground: 'hsl(var(--legend-foreground))',
+        },
+        success: {
+          DEFAULT: 'hsl(var(--success))',
+          foreground: 'hsl(var(--success-foreground))',
+        },
+        warning: {
+          DEFAULT: 'hsl(var(--warning))',
+        },
       },
       borderRadius: {
         lg: 'var(--radius)',

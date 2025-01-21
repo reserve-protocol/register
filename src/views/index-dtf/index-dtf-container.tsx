@@ -10,8 +10,7 @@ import {
 } from '@/state/dtf/atoms'
 import { isAddress } from '@/utils'
 import { AvailableChain, supportedChains } from '@/utils/chains'
-import { NETWORKS, ROUTES } from '@/utils/constants'
-import TokenNavigation from 'components/layout/navigation/TokenNavigation'
+import { ROUTES } from '@/utils/constants'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { Outlet, useNavigate, useParams } from 'react-router-dom'
@@ -35,7 +34,7 @@ const DTFContextUpdater = () => {
   const token = useAtomValue(iTokenAddressAtom)
   const chainId = useAtomValue(chainIdAtom)
 
-  const { data } = useReadContracts(
+  const { data, error, isLoading } = useReadContracts(
     token
       ? {
           contracts: [
@@ -79,6 +78,8 @@ const DTFContextUpdater = () => {
       : undefined
   )
 
+  console.log('error?', error)
+
   // Temporal, individual hooks for each atom
   const setTokenData = useSetAtom(iTokenAtom)
   const setTokenMeta = useSetAtom(iTokenMetaAtom)
@@ -87,6 +88,7 @@ const DTFContextUpdater = () => {
   const setTokenBasket = useSetAtom(iTokenBasketAtom)
 
   useEffect(() => {
+    console.log('token meta?', { token, data })
     if (token && data) {
       setTokenData({
         symbol: data.symbol,

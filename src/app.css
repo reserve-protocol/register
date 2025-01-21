@@ -68,6 +68,9 @@ body {
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --legend: 0 0% 40%;
+    --success: 164 83% 40%;
+    --success-foreground: 0 0% 100%;
+    --warning: 32 100% 50%;
   }
 
   .dark {
@@ -99,6 +102,9 @@ body {
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
     --legend: 0 0% 60%;
+    --success: 164 83% 40%;
+    --success-foreground: 0 0% 100%;
+    --warning: 32 100% 50%;
   }
 }
 
