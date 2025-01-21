@@ -1,7 +1,6 @@
-import { wagmiConfig } from '@/state/chain'
-import { Address, erc20Abi, isAddress } from 'viem'
-import { readContract } from 'wagmi/actions'
+import { isAddress } from 'viem'
 import { z } from 'zod'
+import { isERC20, isVoteLockAddress } from './utils'
 
 export type DeployStepId =
   | 'metadata'
@@ -20,7 +19,11 @@ export const dtfDeploySteps: Record<DeployStepId, { fields: string[] }> = {
     fields: ['initialValue', 'tokensDistribution'],
   },
   governance: {
-    fields: ['governanceERC20address', 'governanceWalletAddress'],
+    fields: [
+      'governanceERC20address',
+      'governanceVoteLock',
+      'governanceWalletAddress',
+    ],
   },
   'revenue-distribution': {
     fields: [
@@ -69,19 +72,6 @@ export const dtfDeploySteps: Record<DeployStepId, { fields: string[] }> = {
   },
 }
 
-const isERC20 = async (address: Address) => {
-  try {
-    await readContract(wagmiConfig, {
-      abi: erc20Abi,
-      functionName: 'symbol',
-      address,
-    })
-  } catch (e) {
-    return false
-  }
-  return true
-}
-
 export const DeployFormSchema = z
   .object({
     name: z.string().min(1, 'Token name is required'),
@@ -99,6 +89,7 @@ export const DeployFormSchema = z
     governanceVoteLock: z
       .string()
       .refine(isAddress, { message: 'Invalid Address' })
+      .refine(isVoteLockAddress, { message: 'Unsupported Vote Lock Address' })
       .optional(),
     governanceERC20address: z
       .string()

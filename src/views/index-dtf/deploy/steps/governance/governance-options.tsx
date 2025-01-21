@@ -5,8 +5,11 @@ import GovernanceExistingVoteLock from './form-existing-vote-lock'
 import GovernanceExistingERC20 from './form-existing-erc20'
 import GovernanceSpecificWallet from './form-specific-wallet'
 import { useFormContext } from 'react-hook-form'
-import { useAtom } from 'jotai'
-import { selectedGovernanceOptionAtom } from '../../atoms'
+import { useAtom, useSetAtom } from 'jotai'
+import {
+  selectedGovernanceOptionAtom,
+  validatedSectionsAtom,
+} from '../../atoms'
 
 export type GovernanceTypes =
   | 'governanceERC20address'
@@ -21,7 +24,7 @@ const GOVERNANCE_OPTIONS = [
       'Explain the benefit of using our framwork & clarify that it doesn’t mean.',
     icon: <Asterisk size={24} strokeWidth={1.5} />,
     form: <GovernanceExistingERC20 />,
-    fields: ['governanceERC20address'],
+    resetFields: ['governanceERC20address'],
   },
   {
     type: 'governanceVoteLock',
@@ -30,7 +33,7 @@ const GOVERNANCE_OPTIONS = [
       'Explain the benefit of using our framwork & clarify that it doesn’t mean giving.',
     icon: <Asterisk size={24} strokeWidth={1.5} />,
     form: <GovernanceExistingVoteLock />,
-    fields: ['governanceVoteLock'],
+    resetFields: ['governanceVoteLock', 'governanceShare'],
   },
   {
     type: 'governanceWalletAddress',
@@ -39,7 +42,7 @@ const GOVERNANCE_OPTIONS = [
       'Explain the benefit of using our framwork & clarify that it doesn’t mean.',
     icon: <Asterisk size={24} strokeWidth={1.5} />,
     form: <GovernanceSpecificWallet />,
-    fields: ['governanceWalletAddress'],
+    resetFields: ['governanceWalletAddress', 'governanceShare'],
   },
 ]
 
@@ -94,14 +97,19 @@ const GovernanceOption = ({
 
 const GovernanceOptions = () => {
   const [selected, setSelected] = useAtom(selectedGovernanceOptionAtom)
+  const setValidatedSections = useSetAtom(validatedSectionsAtom)
   const { resetField } = useFormContext()
 
   const onSelected = (selectedType: GovernanceTypes) => {
-    GOVERNANCE_OPTIONS.forEach(({ type, fields }) => {
+    GOVERNANCE_OPTIONS.forEach(({ type, resetFields }) => {
       if (selectedType !== type) {
-        fields.forEach((field: string) => resetField(field))
+        resetFields.forEach((field: string) => resetField(field))
       }
     })
+    setValidatedSections((prev) => ({
+      ...prev,
+      'revenue-distribution': false,
+    }))
     setSelected(selectedType)
   }
 

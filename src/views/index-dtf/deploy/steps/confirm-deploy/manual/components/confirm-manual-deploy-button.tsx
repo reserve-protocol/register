@@ -264,10 +264,7 @@ const txAtom = atom<
     ownerGovernanceConfig,
     tradingGovernanceConfig,
     {
-      existingTradeProposers: [
-        formData.auctionLauncher!,
-        ...(formData.additionalAuctionLaunchers ?? []),
-      ],
+      existingTradeProposers: [],
       tradeLaunchers: [
         formData.auctionLauncher!,
         ...(formData.additionalAuctionLaunchers ?? []),
