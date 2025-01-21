@@ -109,7 +109,7 @@ const DeployAssetsApproval = () => {
             <div>
               <span className="text-legend">Balance:</span>{' '}
               <TokenBalance
-                required={basketAmountMap[token.address]}
+                required={basketAmountMap[token.address] * 1.1} // 10% buffer
                 address={token.address}
                 decimals={token.decimals}
               />

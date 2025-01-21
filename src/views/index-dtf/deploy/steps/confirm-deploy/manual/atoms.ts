@@ -1,5 +1,3 @@
-// TODO: Currently using numbers, approvals will be bumped so not an issue
-
 import { chainIdAtom } from '@/state/atoms'
 import { INDEX_DEPLOYER_ADDRESS } from '@/utils/addresses'
 import { atom } from 'jotai'
@@ -7,7 +5,6 @@ import { formatUnits } from 'viem'
 import { basketAtom } from '../../../atoms'
 import { indexDeployFormDataAtom } from '../atoms'
 
-// But ideally we should use BigInts
 export const initialTokensAtom = atom('1')
 
 export const assetsAllowanceAtom = atom<Record<string, bigint>>({})

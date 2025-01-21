@@ -15,7 +15,11 @@ import { useEffect } from 'react'
 import { Address, parseEther, parseEventLogs, parseUnits } from 'viem'
 import { useWaitForTransactionReceipt } from 'wagmi'
 import { indexDeployFormDataAtom } from '../../atoms'
-import { basketRequiredAmountsAtom, initialTokensAtom } from '../atoms'
+import {
+  basketRequiredAmountsAtom,
+  hasAssetsAllowanceAtom,
+  initialTokensAtom,
+} from '../atoms'
 
 type FolioParams = {
   name: string
@@ -283,10 +287,11 @@ const txAtom = atom<
 const ConfirmManualDeployButton = () => {
   const tx = useAtomValue(txAtom)
   const daoCreated = useAtomValue(daoCreatedAtom)
+  const hasAssetsAllowance = useAtomValue(hasAssetsAllowanceAtom)
   const setDeployedDTF = useSetAtom(deployedDTFAtom)
 
   const { isReady, gas, hash, validationError, error, isLoading, write } =
-    useContractWrite(tx)
+    useContractWrite({ ...tx, query: { enabled: !!hasAssetsAllowance } })
 
   const { data: receipt, error: txError } = useWaitForTransactionReceipt({
     hash,
@@ -304,7 +309,6 @@ const ConfirmManualDeployButton = () => {
       if (event) {
         const { folio } = event.args
         setDeployedDTF(folio)
-        // navigate(`/${chainId}/index-dtf/${event.args.folio}`)
       }
     }
   }, [receipt])
