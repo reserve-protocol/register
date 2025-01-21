@@ -6,6 +6,7 @@ import { Asterisk, PlayIcon } from 'lucide-react'
 import { ReactNode } from 'react'
 import {
   daoCreatedAtom,
+  deployedDTFAtom,
   formReadyForSubmitAtom,
   selectedGovernanceOptionAtom,
 } from '../atoms'
@@ -25,6 +26,7 @@ const DeployTimeline = () => {
   const showCreateGovernanceDAO =
     useAtomValue(selectedGovernanceOptionAtom) === 'governanceERC20address'
   const daoCreated = useAtomValue(daoCreatedAtom)
+  const deployedDTF = useAtomValue(deployedDTFAtom)
 
   const timelineItems = [
     {
@@ -51,7 +53,7 @@ const DeployTimeline = () => {
     },
     {
       title: 'Index DTF successfully deployed',
-      isActive: (!showCreateGovernanceDAO || daoCreated) && formReadyForSubmit,
+      isActive: !!deployedDTF,
     },
   ]
 

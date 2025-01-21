@@ -7,11 +7,11 @@ import {
   basketAtom,
   daoCreatedAtom,
   daoTokenAddressAtom,
+  deployedDTFAtom,
 } from '@/views/index-dtf/deploy/atoms'
 import { DeployInputs } from '@/views/index-dtf/deploy/form-fields'
-import { atom, useAtomValue } from 'jotai'
+import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { Address, parseEther, parseEventLogs, parseUnits } from 'viem'
 import { useWaitForTransactionReceipt } from 'wagmi'
 import { indexDeployFormDataAtom } from '../../atoms'
@@ -85,7 +85,7 @@ function calculateShare(sharePercentage: number, denominator: number) {
 function calculateRevenueDistribution(
   formData: DeployInputs,
   wallet: Address,
-  govToken: Address
+  stToken?: Address
 ) {
   const totalSharesDenominator = (100 - formData.fixedPlatformFee) / 100
 
@@ -105,9 +105,9 @@ function calculateRevenueDistribution(
   }
 
   // Add governance share if not the last one
-  if (formData.governanceShare > 0) {
+  if (formData.governanceShare > 0 && stToken) {
     revenueDistribution.push({
-      recipient: govToken,
+      recipient: stToken,
       portion: calculateShare(formData.governanceShare, totalSharesDenominator),
     })
   }
@@ -169,13 +169,7 @@ const txAtom = atom<
     auctionLength: BigInt(
       (formData.auctionLength || formData.customAuctionLength || 0)! * 60
     ),
-    feeRecipients: calculateRevenueDistribution(
-      formData,
-      wallet,
-      (stToken ||
-        formData.governanceVoteLock ||
-        formData.governanceWalletAddress)!
-    ),
+    feeRecipients: calculateRevenueDistribution(formData, wallet, stToken),
     folioFee: BigInt(
       439591053.36 * (formData.folioFee || formData.customFolioFee || 0)!
     ),
@@ -287,18 +281,14 @@ const txAtom = atom<
 })
 
 const ConfirmManualDeployButton = () => {
-  const navigate = useNavigate()
-  const chainId = useAtomValue(chainIdAtom)
   const tx = useAtomValue(txAtom)
   const daoCreated = useAtomValue(daoCreatedAtom)
+  const setDeployedDTF = useSetAtom(deployedDTFAtom)
+
   const { isReady, gas, hash, validationError, error, isLoading, write } =
     useContractWrite(tx)
 
-  const {
-    data: receipt,
-    isSuccess,
-    isError: txError,
-  } = useWaitForTransactionReceipt({
+  const { data: receipt, error: txError } = useWaitForTransactionReceipt({
     hash,
   })
 
@@ -312,7 +302,9 @@ const ConfirmManualDeployButton = () => {
 
       // TODO: Handle edge case when event is not found? why would that happen?
       if (event) {
-        navigate(`/${chainId}/index-dtf/${event.args.folio}`)
+        const { folio } = event.args
+        setDeployedDTF(folio)
+        // navigate(`/${chainId}/index-dtf/${event.args.folio}`)
       }
     }
   }, [receipt])
@@ -327,7 +319,7 @@ const ConfirmManualDeployButton = () => {
         onClick={write}
         text={isReady ? 'Deploy' : 'Preparing deploy...'}
         fullWidth
-        error={validationError || error}
+        error={validationError || error || txError}
       />
     </div>
   )

@@ -21,6 +21,8 @@ import { useFormContext } from 'react-hook-form'
 import {
   basketAtom,
   daoCreatedAtom,
+  daoTokenAddressAtom,
+  deployedDTFAtom,
   deployStepAtom,
   validatedSectionsAtom,
 } from '../atoms'
@@ -160,6 +162,8 @@ const DeployAccordion = () => {
   const resetBasket = useResetAtom(basketAtom)
   const resetDaoCreated = useResetAtom(daoCreatedAtom)
   const resetValidatedSections = useResetAtom(validatedSectionsAtom)
+  const resetDaoTokenAddress = useResetAtom(daoTokenAddressAtom)
+  const resetDeployedDTF = useResetAtom(deployedDTFAtom)
 
   useEffect(() => {
     setSection(DEPLOY_STEPS[0].id)
@@ -169,6 +173,8 @@ const DeployAccordion = () => {
       resetBasket()
       resetDaoCreated()
       resetValidatedSections()
+      resetDaoTokenAddress()
+      resetDeployedDTF()
     }
   }, [])
 

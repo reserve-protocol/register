@@ -13,7 +13,7 @@ export const daoCreatedAtom = atomWithReset<boolean>(false)
 
 export const basketAtom = atomWithReset<Token[]>([])
 
-export const daoTokenAddressAtom = atom<Address | undefined>(undefined)
+export const daoTokenAddressAtom = atomWithReset<Address | undefined>(undefined)
 
 export const selectedGovernanceOptionAtom = atom<GovernanceTypes>(
   'governanceERC20address'
@@ -35,3 +35,5 @@ export const formReadyForSubmitAtom = atom((get) => {
   const validatedSections = get(validatedSectionsAtom)
   return Object.values(validatedSections).every(Boolean)
 })
+
+export const deployedDTFAtom = atomWithReset<Address | undefined>(undefined)
