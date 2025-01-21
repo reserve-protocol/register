@@ -4,8 +4,14 @@ import Timeline from '@/components/ui/timeline'
 import { useAtomValue } from 'jotai'
 import { Asterisk, PlayIcon } from 'lucide-react'
 import { ReactNode } from 'react'
-import { formReadyForSubmitAtom } from '../atoms'
+import {
+  daoCreatedAtom,
+  deployedDTFAtom,
+  formReadyForSubmitAtom,
+  selectedGovernanceOptionAtom,
+} from '../atoms'
 import ConfirmIndexDeploy from '../steps/confirm-deploy'
+import CreateDAO from '../steps/create-dao'
 
 const IndexTokenGraphic = () => {
   return (
@@ -17,26 +23,44 @@ const IndexTokenGraphic = () => {
 
 const DeployTimeline = () => {
   const formReadyForSubmit = useAtomValue(formReadyForSubmitAtom)
+  const showCreateGovernanceDAO =
+    useAtomValue(selectedGovernanceOptionAtom) === 'governanceERC20address'
+  const daoCreated = useAtomValue(daoCreatedAtom)
+  const deployedDTF = useAtomValue(deployedDTFAtom)
 
   const timelineItems = [
     {
-      title: 'Configure Index DTF',
+      title: 'Configure your Index DTF',
       isActive: true,
     },
+    ...(showCreateGovernanceDAO
+      ? [
+          {
+            title: daoCreated
+              ? 'Governance DAO created'
+              : 'Sign tx to create governance DAO',
+            children: !daoCreated && <CreateDAO />,
+            isActive: formReadyForSubmit,
+          },
+        ]
+      : []),
     {
-      title: 'Deploy $SUPER',
-      children: <ConfirmIndexDeploy />,
-      isActive: formReadyForSubmit,
+      title: 'Deploy Index DTF',
+      children: (
+        <ConfirmIndexDeploy
+          isActive={
+            (showCreateGovernanceDAO && daoCreated) ||
+            (!showCreateGovernanceDAO && formReadyForSubmit)
+          }
+        />
+      ),
+      isActive:
+        (showCreateGovernanceDAO && daoCreated) ||
+        (!showCreateGovernanceDAO && formReadyForSubmit),
     },
     {
-      title: 'Is there some kind of waiting period?',
-      rightText: '30 minutes',
-    },
-    {
-      title: 'Index DTF ready to use',
-    },
-    {
-      title: 'Stake ERC20 to govern',
+      title: 'Index DTF successfully deployed',
+      isActive: !!deployedDTF,
     },
   ]
 

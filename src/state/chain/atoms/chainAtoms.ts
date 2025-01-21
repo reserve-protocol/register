@@ -86,6 +86,11 @@ export const SUBGRAPH_URL = {
     'https://subgraph.satsuma-prod.com/327d6f1d3de6/reserve/reserve-arbitrum/api',
 }
 
+export const INDEX_SUBGRAPH_URL = {
+  [ChainId.Base]:
+    'https://subgraph.satsuma-prod.com/327d6f1d3de6/reserve/dtf-index-base/api',
+}
+
 export const INDEX_DTF_SUBGRAPH_URL = {
   [ChainId.Mainnet]: '', // TODO?
   [ChainId.Base]:
@@ -108,6 +113,10 @@ export const GRAPH_CLIENTS = {
       },
     }
   ),
+}
+
+export const INDEX_GRAPH_CLIENTS = {
+  [ChainId.Base]: new GraphQLClient(INDEX_SUBGRAPH_URL[ChainId.Base]),
 }
 
 export const gqlClientAtom = atom(

@@ -1,5 +1,6 @@
 import { isAddress } from 'viem'
 import { z } from 'zod'
+import { isERC20, isVoteLockAddress } from './utils'
 
 export type DeployStepId =
   | 'metadata'
@@ -12,16 +13,15 @@ export type DeployStepId =
 
 export const dtfDeploySteps: Record<DeployStepId, { fields: string[] }> = {
   metadata: {
-    fields: ['name', 'symbol'],
+    fields: ['name', 'symbol', 'mandate'],
   },
   basket: {
     fields: ['initialValue', 'tokensDistribution'],
   },
   governance: {
     fields: [
-      'governanceERC20name',
-      'governanceERC20symbol',
       'governanceERC20address',
+      'governanceVoteLock',
       'governanceWalletAddress',
     ],
   },
@@ -76,6 +76,7 @@ export const DeployFormSchema = z
   .object({
     name: z.string().min(1, 'Token name is required'),
     symbol: z.string().min(1, 'Token symbol is required'),
+    mandate: z.string().optional(),
     initialValue: z.coerce.number().positive('Initial value must be positive'),
     tokensDistribution: z.array(
       z.object({
@@ -85,14 +86,15 @@ export const DeployFormSchema = z
           .positive('Token distribution must be positive'),
       })
     ),
-    governanceERC20name: z.string().min(1, 'Token name is required').optional(),
-    governanceERC20symbol: z
+    governanceVoteLock: z
       .string()
-      .min(1, 'Token symbol is required')
+      .refine(isAddress, { message: 'Invalid Address' })
+      .refine(isVoteLockAddress, { message: 'Unsupported Vote Lock Address' })
       .optional(),
     governanceERC20address: z
       .string()
       .refine(isAddress, { message: 'Invalid Address' })
+      .refine(isERC20, { message: 'Invalid ERC20 address' })
       .optional(),
     governanceWalletAddress: z
       .string()
@@ -101,12 +103,12 @@ export const DeployFormSchema = z
     folioFee: z.coerce
       .number()
       .min(0, 'Folio fee must be 0 or greater')
-      .max(20, 'Folio fee must be 20% or less')
+      .max(10, 'Folio fee must be 10% or less')
       .optional(),
     customFolioFee: z.coerce
       .number()
       .min(0, 'Folio fee must be 0 or greater')
-      .max(20, 'Folio fee must be 20% or less')
+      .max(5, 'Folio fee must be 5% or less')
       .optional(),
     mintFee: z.coerce
       .number()
@@ -116,7 +118,7 @@ export const DeployFormSchema = z
     customMintFee: z.coerce
       .number()
       .min(0.05, 'Mint fee must be 0.05% or greater')
-      .max(5, 'Mint fee must be 5% or less')
+      .max(10, 'Mint fee must be 10% or less')
       .optional(),
     governanceShare: z.coerce.number().min(0).max(100),
     deployerShare: z.coerce.number().min(0).max(100),
@@ -190,15 +192,20 @@ export const DeployFormSchema = z
   .refine(
     (data) => {
       // Check if the governance settings are valid
-      const governanceNewERC20 =
-        data.governanceERC20name && data.governanceERC20symbol
       const governanceExistingERC20 = data.governanceERC20address
+      const governanceExistingVoteLock = data.governanceVoteLock
       const governanceWallet = data.governanceWalletAddress
 
       return (
-        (governanceNewERC20 && !governanceExistingERC20 && !governanceWallet) ||
-        (!governanceNewERC20 && governanceExistingERC20 && !governanceWallet) ||
-        (!governanceNewERC20 && !governanceExistingERC20 && governanceWallet)
+        (governanceExistingVoteLock &&
+          !governanceExistingERC20 &&
+          !governanceWallet) ||
+        (!governanceExistingVoteLock &&
+          governanceExistingERC20 &&
+          !governanceWallet) ||
+        (!governanceExistingVoteLock &&
+          !governanceExistingERC20 &&
+          governanceWallet)
       )
     },
     { message: 'Invalid governance settings', path: ['governance'] }
@@ -317,11 +324,11 @@ export const DeployFormSchema = z
 export const dtfDeployDefaultValues = {
   name: '',
   symbol: '',
+  mandate: '',
   initialValue: 1,
   tokensDistribution: [],
-  governanceERC20name: undefined,
-  governanceERC20symbol: undefined,
   governanceERC20address: undefined,
+  governanceVoteLock: undefined,
   governanceWalletAddress: undefined,
   folioFee: 0,
   customFolioFee: undefined,
@@ -343,6 +350,8 @@ export const dtfDeployDefaultValues = {
   customBasketVotingDelay: undefined,
   basketVotingPeriod: 20,
   customBasketVotingPeriod: undefined,
+  basketVotingThreshold: 0.01,
+  customBasketVotingThreshold: undefined,
   basketVotingQuorum: 20,
   customBasketVotingQuorum: undefined,
   basketExecutionDelay: 20,
@@ -351,6 +360,8 @@ export const dtfDeployDefaultValues = {
   customGovernanceVotingDelay: undefined,
   governanceVotingPeriod: 20,
   customGovernanceVotingPeriod: undefined,
+  governanceVotingThreshold: 0.01,
+  customGovernanceVotingThreshold: undefined,
   governanceVotingQuorum: 20,
   customGovernanceVotingQuorum: undefined,
   governanceExecutionDelay: 20,

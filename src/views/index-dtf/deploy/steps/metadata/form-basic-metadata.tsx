@@ -9,6 +9,11 @@ const BasicMetadataForm = () => {
         placeholder="Super duper token number 1"
       />
       <BasicInput fieldName="symbol" label="Symbol" placeholder="$Super" />
+      <BasicInput
+        fieldName="mandate"
+        label="Mandate"
+        placeholder="Index DTF mandate"
+      />
     </div>
   )
 }

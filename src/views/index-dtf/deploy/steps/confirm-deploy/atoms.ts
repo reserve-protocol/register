@@ -1,4 +1,6 @@
-import { atom } from 'jotai'
+import { atomWithReset } from 'jotai/utils'
 import { DeployInputs } from '../../form-fields'
 
-export const indexDeployFormDataAtom = atom<DeployInputs | undefined>(undefined)
+export const indexDeployFormDataAtom = atomWithReset<DeployInputs | undefined>(
+  undefined
+)

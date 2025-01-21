@@ -1,6 +1,8 @@
 import { Asterisk } from 'lucide-react'
 import BasicInput from '../../components/basic-input'
 import AdditionalRevenueRecipients from './additional-revenue-recipients'
+import { useAtomValue } from 'jotai'
+import { selectedGovernanceOptionAtom } from '../../atoms'
 
 const SETTINGS = [
   {
@@ -24,10 +26,18 @@ const SETTINGS = [
 ]
 
 const RevenueDistributionSettings = () => {
+  const selectedGovOption = useAtomValue(selectedGovernanceOptionAtom)
+
+  const settings = SETTINGS.filter(
+    ({ field }) =>
+      field !== 'governanceShare' ||
+      selectedGovOption === 'governanceERC20address'
+  )
+
   return (
     <div className="flex flex-col gap-2 mx-2 mb-3">
       <div className="flex flex-col gap-2">
-        {SETTINGS.map(({ title, description, field }) => (
+        {settings.map(({ title, description, field }) => (
           <div
             className="w-full rounded-xl flex items-center gap-2 justify-between p-4 bg-muted/70"
             key={title}

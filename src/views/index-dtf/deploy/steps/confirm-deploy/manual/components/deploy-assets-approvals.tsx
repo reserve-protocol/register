@@ -9,7 +9,6 @@ import { CheckCircle2 } from 'lucide-react'
 import { Address, erc20Abi, formatUnits, parseUnits } from 'viem'
 import { useReadContract, useWriteContract } from 'wagmi'
 import {
-  assetsAllowanceAtom,
   basketRequiredAmountsAtom,
   formattedAssetsAllowanceAtom,
 } from '../atoms'
@@ -41,7 +40,7 @@ const TokenBalance = ({
         color: required ? (balance >= required ? 'green' : 'red') : 'inherit',
       }}
     >
-      {formatCurrency(balance)}
+      {formatCurrency(balance, 3)}
     </span>
   )
 }
@@ -96,7 +95,7 @@ const DeployAssetsApproval = () => {
   return (
     <div className="flex flex-col mt-2 gap-2">
       {basket.map((token) => (
-        <div className="flex items-center gap-2 px-2">
+        <div className="flex items-center gap-2 px-2" key={token.address}>
           <TokenLogo symbol={token.symbol} src={token.logoURI} size="xl" />
           <div className="flex flex-col mr-auto">
             <div className="text-base font-bold">{token.name}</div>
@@ -110,7 +109,7 @@ const DeployAssetsApproval = () => {
             <div>
               <span className="text-legend">Balance:</span>{' '}
               <TokenBalance
-                required={basketAmountMap[token.address]}
+                required={basketAmountMap[token.address] * 1.1} // 10% buffer
                 address={token.address}
                 decimals={token.decimals}
               />
@@ -118,7 +117,7 @@ const DeployAssetsApproval = () => {
             <div>
               <span className="text-legend">Required:</span>{' '}
               <span className="font-semibold">
-                {formatCurrency(basketAmountMap[token.address])}
+                {formatCurrency(basketAmountMap[token.address], 3)}
               </span>
             </div>
           </div>
