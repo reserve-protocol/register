@@ -44,7 +44,10 @@ const Timeline = ({ items }: TimelineProps) => {
             <div className="flex-1">
               <div className="flex items-center justify-between px-1">
                 {item.children ? (
-                  item.children
+                  <div className="flex flex-col gap-2 w-full">
+                    <span className="text-base">{item.title}</span>
+                    {item.children}
+                  </div>
                 ) : (
                   <>
                     <span className="text-base">{item.title}</span>

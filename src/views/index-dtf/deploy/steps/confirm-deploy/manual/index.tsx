@@ -11,7 +11,6 @@ import {
 } from './atoms'
 import ConfirmManualDeployButton from './components/confirm-manual-deploy-button'
 import DeployAssetsApproval from './components/deploy-assets-approvals'
-import { indexDeployFormDataAtom } from '../atoms'
 
 const AssetAllowanceUpdater = () => {
   const basketAssets = useAtomValue(basketAllowanceAtom)
@@ -32,7 +31,7 @@ const InitialFolioInput = () => {
   return (
     <div className="p-2">
       <NumericalInput
-        placeholder="Enter initial tokens"
+        placeholder="Enter initial amount of tokens"
         onChange={setInitialTokens}
         value={initialTokens}
       />
@@ -40,29 +39,13 @@ const InitialFolioInput = () => {
   )
 }
 
-const Preview = () => {
-  const formData = useAtomValue(indexDeployFormDataAtom)
-
-  return (
-    <details className="p-2 rounded-lg bg-muted/50">
-      <summary className="cursor-pointer font-medium">
-        Preview Form Data
-      </summary>
-      <pre className="mt-2 p-4 rounded bg-muted overflow-auto">
-        <code>{JSON.stringify(formData, null, 2)}</code>
-      </pre>
-    </details>
-  )
-}
-
 const ManualIndexDeploy = () => (
   <>
-    <div className="flex-grow">
+    <div className="flex-grow px-4">
       <InitialFolioInput />
       <DeployAssetsApproval />
-      <Preview />
     </div>
-    <DrawerFooter className="p-2">
+    <DrawerFooter className="p-4">
       <ConfirmManualDeployButton />
     </DrawerFooter>
     <AssetAllowanceUpdater />

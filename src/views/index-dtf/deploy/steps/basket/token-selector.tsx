@@ -23,7 +23,12 @@ import { useCallback, useEffect, useMemo } from 'react'
 import { useFormContext } from 'react-hook-form'
 import AutoSizer from 'react-virtualized-auto-sizer'
 import { FixedSizeList as List } from 'react-window'
-import { basketAtom, searchTokenAtom, selectedTokensAtom } from '../../atoms'
+import {
+  basketAtom,
+  daoCreatedAtom,
+  searchTokenAtom,
+  selectedTokensAtom,
+} from '../../atoms'
 
 interface TokenButtonProps {
   variant: 'primary' | 'secondary'
@@ -152,8 +157,8 @@ const TokenSelectorHeader = () => {
 
 const LoadingSkeletons = () => (
   <>
-    {Array.from({ length: 4 }).map((_, i) => (
-      <Skeleton key={i} className="h-[68px]" />
+    {Array.from({ length: 10 }).map((_, i) => (
+      <Skeleton key={i} className="min-h-[68px] mx-2 rounded-xl" />
     ))}
   </>
 )

@@ -1,35 +1,48 @@
 import { cn } from '@/lib/utils'
 import { Asterisk } from 'lucide-react'
 import { ReactNode, useState } from 'react'
-import GovernanceNewERC20 from './form-new-erc20'
+import GovernanceExistingVoteLock from './form-existing-vote-lock'
 import GovernanceExistingERC20 from './form-existing-erc20'
 import GovernanceSpecificWallet from './form-specific-wallet'
 import { useFormContext } from 'react-hook-form'
+import { useAtom, useSetAtom } from 'jotai'
+import {
+  selectedGovernanceOptionAtom,
+  validatedSectionsAtom,
+} from '../../atoms'
+
+export type GovernanceTypes =
+  | 'governanceERC20address'
+  | 'governanceVoteLock'
+  | 'governanceWalletAddress'
 
 const GOVERNANCE_OPTIONS = [
-  // {
-  //   title: 'New ERC20 token',
-  //   description:
-  //     'Explain the benefit of using our framwork & clarify that it doesn’t mean giving.',
-  //   icon: <Asterisk size={24} strokeWidth={1.5} />,
-  //   form: <GovernanceNewERC20 />,
-  //   fields: ['governanceERC20name', 'governanceERC20symbol'],
-  // },
   {
+    type: 'governanceERC20address',
     title: 'Existing ERC20 token',
     description:
       'Explain the benefit of using our framwork & clarify that it doesn’t mean.',
     icon: <Asterisk size={24} strokeWidth={1.5} />,
     form: <GovernanceExistingERC20 />,
-    fields: ['governanceERC20address'],
+    resetFields: ['governanceERC20address'],
   },
   {
+    type: 'governanceVoteLock',
+    title: 'Existing Vote Lock contract',
+    description:
+      'Explain the benefit of using our framwork & clarify that it doesn’t mean giving.',
+    icon: <Asterisk size={24} strokeWidth={1.5} />,
+    form: <GovernanceExistingVoteLock />,
+    resetFields: ['governanceVoteLock', 'governanceShare'],
+  },
+  {
+    type: 'governanceWalletAddress',
     title: 'Specific wallet address',
     description:
       'Explain the benefit of using our framwork & clarify that it doesn’t mean.',
     icon: <Asterisk size={24} strokeWidth={1.5} />,
     form: <GovernanceSpecificWallet />,
-    fields: ['governanceWalletAddress'],
+    resetFields: ['governanceWalletAddress', 'governanceShare'],
   },
 ]
 
@@ -58,7 +71,7 @@ const GovernanceOption = ({
       selected ? 'bg-muted' : 'bg-card'
     )}
   >
-    <div className="flex items-center gap-2 p-3">
+    <div className="flex items-center gap-2 p-4">
       <div
         className={cn(
           'rounded-full p-1',
@@ -78,31 +91,36 @@ const GovernanceOption = ({
         </div>
       </div>
     </div>
-    {selected && <div className="pb-3">{form}</div>}
+    {selected && <div className="pb-4">{form}</div>}
   </div>
 )
 
 const GovernanceOptions = () => {
-  const [selected, setSelected] = useState<number>(0)
+  const [selected, setSelected] = useAtom(selectedGovernanceOptionAtom)
+  const setValidatedSections = useSetAtom(validatedSectionsAtom)
   const { resetField } = useFormContext()
 
-  const onSelected = (optionIndex: number) => {
-    GOVERNANCE_OPTIONS.forEach((option, index) => {
-      if (optionIndex !== index) {
-        option.fields.forEach((field: string) => resetField(field))
+  const onSelected = (selectedType: GovernanceTypes) => {
+    GOVERNANCE_OPTIONS.forEach(({ type, resetFields }) => {
+      if (selectedType !== type) {
+        resetFields.forEach((field: string) => resetField(field))
       }
     })
-    setSelected(optionIndex)
+    setValidatedSections((prev) => ({
+      ...prev,
+      'revenue-distribution': false,
+    }))
+    setSelected(selectedType)
   }
 
   return (
     <div className="mx-2 mb-2 flex flex-col gap-1">
-      {GOVERNANCE_OPTIONS.map((option, index) => (
+      {GOVERNANCE_OPTIONS.map((option) => (
         <GovernanceOption
           key={option.title}
           {...option}
-          selected={index === selected}
-          setSelected={() => onSelected(index)}
+          selected={selected === option.type}
+          setSelected={() => onSelected(option.type as GovernanceTypes)}
         />
       ))}
     </div>

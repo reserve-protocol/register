@@ -6,6 +6,7 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { cn } from '@/lib/utils'
 import { useFormContext } from 'react-hook-form'
 
 export type BasicInputProps = {
@@ -16,6 +17,7 @@ export type BasicInputProps = {
   labelPosition?: 'start' | 'end'
   disabled?: boolean
   defaultValue?: string | number
+  highlightLabel?: boolean
 }
 
 const BasicInput = ({
@@ -26,12 +28,18 @@ const BasicInput = ({
   labelPosition = 'end',
   defaultValue = '',
   disabled = false,
+  highlightLabel = false,
   ...props
 }: React.HTMLAttributes<HTMLDivElement> & BasicInputProps) => {
   const form = useFormContext()
 
   const adornment = (
-    <FormLabel className="pr-1 font-normal text-base text-nowrap">
+    <FormLabel
+      className={cn(
+        'pr-1 font-normal text-base text-nowrap',
+        highlightLabel && 'text-primary'
+      )}
+    >
       {label}
     </FormLabel>
   )

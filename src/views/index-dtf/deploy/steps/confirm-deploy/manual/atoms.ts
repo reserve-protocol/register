@@ -1,15 +1,14 @@
-// TODO: Currently using numbers, approvals will be bumped so not an issue
-
-import { atom } from 'jotai'
-import { basketAtom } from '../../../atoms'
-import { formatUnits } from 'viem'
-import { indexDeployFormDataAtom } from '../atoms'
 import { chainIdAtom } from '@/state/atoms'
 import { INDEX_DEPLOYER_ADDRESS } from '@/utils/addresses'
+import { atom } from 'jotai'
+import { formatUnits } from 'viem'
+import { basketAtom } from '../../../atoms'
+import { indexDeployFormDataAtom } from '../atoms'
 
-// But ideally we should use BigInts
-export const initialTokensAtom = atom('')
+export const initialTokensAtom = atom('1')
+
 export const assetsAllowanceAtom = atom<Record<string, bigint>>({})
+
 export const formattedAssetsAllowanceAtom = atom<Record<string, number>>(
   (get) => {
     const basket = get(basketAtom)
@@ -26,6 +25,7 @@ export const formattedAssetsAllowanceAtom = atom<Record<string, number>>(
     )
   }
 )
+
 // Quantities of assets for 1 folio
 export const assetDistributionAtom = atom<Record<string, number>>((get) => {
   const formData = get(indexDeployFormDataAtom)
@@ -39,18 +39,24 @@ export const assetDistributionAtom = atom<Record<string, number>>((get) => {
     ) ?? {}
   )
 })
+
 // Required quantities of assets for initial tokens
 export const basketRequiredAmountsAtom = atom<Record<string, number>>((get) => {
+  const formData = get(indexDeployFormDataAtom)
+  const initialValue = Number(formData?.initialValue || 1)
   const initialTokens = get(initialTokensAtom)
   const assetDistribution = get(assetDistributionAtom)
+
   return Object.entries(assetDistribution).reduce(
     (acc, [address, percentage]) => {
-      acc[address] = (Number(initialTokens) * percentage) / 100
+      acc[address] =
+        (Number(initialTokens || 1) * initialValue * percentage) / 100
       return acc
     },
     {} as Record<string, number>
   )
 })
+
 // Allowance atom validation
 // TODO: validate balances as well include it on the balances updater!
 export const hasAssetsAllowanceAtom = atom((get) => {
@@ -64,6 +70,7 @@ export const hasAssetsAllowanceAtom = atom((get) => {
     ([address, required]) => assetsAllowance[address] >= required
   )
 })
+
 export const basketAllowanceAtom = atom((get) => {
   const basket = get(basketAtom)
   const chainId = get(chainIdAtom)

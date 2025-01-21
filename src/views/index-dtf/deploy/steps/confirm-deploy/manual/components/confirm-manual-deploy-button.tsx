@@ -3,15 +3,23 @@ import TransactionButton from '@/components/old/button/TransactionButton'
 import useContractWrite from '@/hooks/useContractWrite'
 import { chainIdAtom, walletAtom } from '@/state/atoms'
 import { INDEX_DEPLOYER_ADDRESS } from '@/utils/addresses'
-import { atom, useAtomValue } from 'jotai'
-import { Address, parseEther, parseEventLogs, parseUnits } from 'viem'
-import { indexDeployFormDataAtom } from '../../atoms'
-import { assetDistributionAtom, initialTokensAtom } from '../atoms'
-import { basketAtom, daoTokenAddressAtom } from '@/views/index-dtf/deploy/atoms'
+import {
+  basketAtom,
+  daoCreatedAtom,
+  daoTokenAddressAtom,
+  deployedDTFAtom,
+} from '@/views/index-dtf/deploy/atoms'
 import { DeployInputs } from '@/views/index-dtf/deploy/form-fields'
-import { useWaitForTransactionReceipt } from 'wagmi'
+import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Address, parseEther, parseEventLogs, parseUnits } from 'viem'
+import { useWaitForTransactionReceipt } from 'wagmi'
+import { indexDeployFormDataAtom } from '../../atoms'
+import {
+  basketRequiredAmountsAtom,
+  hasAssetsAllowanceAtom,
+  initialTokensAtom,
+} from '../atoms'
 
 type FolioParams = {
   name: string
@@ -21,13 +29,15 @@ type FolioParams = {
   initialShares: bigint
 }
 
+type FeeRecipient = {
+  recipient: Address
+  portion: bigint
+}
+
 type FolioConfig = {
   tradeDelay: bigint
   auctionLength: bigint
-  feeRecipients: {
-    recipient: Address
-    portion: bigint
-  }[]
+  feeRecipients: FeeRecipient[]
   folioFee: bigint
   mintingFee: bigint
 }
@@ -41,14 +51,11 @@ type GovernanceConfig = {
   guardian: Address
 }
 
-type DeployParamsUngoverned = [
-  Address,
-  FolioParams,
-  FolioConfig,
-  Address,
-  Address[],
-  Address[],
-]
+type GovernanceRoles = {
+  existingTradeProposers: Address[]
+  tradeLaunchers: Address[]
+  vibesOfficers: Address[]
+}
 
 type DeployParams = [
   Address,
@@ -56,6 +63,14 @@ type DeployParams = [
   FolioConfig,
   GovernanceConfig,
   GovernanceConfig,
+  GovernanceRoles,
+]
+
+type DeployParamsUngoverned = [
+  FolioParams,
+  FolioConfig,
+  Address,
+  Address[],
   Address[],
   Address[],
 ]
@@ -74,11 +89,11 @@ function calculateShare(sharePercentage: number, denominator: number) {
 function calculateRevenueDistribution(
   formData: DeployInputs,
   wallet: Address,
-  stToken: Address
+  stToken?: Address
 ) {
   const totalSharesDenominator = (100 - formData.fixedPlatformFee) / 100
 
-  let revenueDistribution: { recipient: Address; portion: bigint }[] = (
+  let revenueDistribution: FeeRecipient[] = (
     formData.additionalRevenueRecipients || []
   ).map((recipient) => ({
     recipient: recipient.address,
@@ -94,7 +109,7 @@ function calculateRevenueDistribution(
   }
 
   // Add governance share if not the last one
-  if (formData.governanceShare > 0) {
+  if (formData.governanceShare > 0 && stToken) {
     revenueDistribution.push({
       recipient: stToken,
       portion: calculateShare(formData.governanceShare, totalSharesDenominator),
@@ -123,56 +138,139 @@ const txAtom = atom<
       functionName: 'deployGovernedFolio'
       args: DeployParams
     }
+  | {
+      address: Address
+      abi: typeof dtfIndexDeployerAbi
+      functionName: 'deployFolio'
+      args: DeployParamsUngoverned
+    }
   | undefined
 >((get) => {
   const initialTokens = get(initialTokensAtom)
   const chainId = get(chainIdAtom)
   const formData = get(indexDeployFormDataAtom)
-  const distribution = get(assetDistributionAtom)
+  const tokenAmounts = get(basketRequiredAmountsAtom)
   const stToken = get(daoTokenAddressAtom)
   const basket = get(basketAtom)
   const wallet = get(walletAtom)
 
-  if (!formData || !initialTokens || !stToken || !wallet) return undefined
+  if (!formData || !initialTokens || !wallet) return undefined
+
+  const folioParams: FolioParams = {
+    name: formData.name,
+    symbol: formData.symbol,
+    assets: basket.map((token) => token.address),
+    amounts: basket.map((token) =>
+      parseUnits(tokenAmounts[token.address].toString(), token.decimals)
+    ),
+    initialShares: parseEther(initialTokens),
+  }
+
+  const folioConfig: FolioConfig = {
+    tradeDelay: BigInt(
+      (formData.auctionDelay || formData.customAuctionDelay || 0)! * 60
+    ),
+    auctionLength: BigInt(
+      (formData.auctionLength || formData.customAuctionLength || 0)! * 60
+    ),
+    feeRecipients: calculateRevenueDistribution(formData, wallet, stToken),
+    folioFee: BigInt(
+      439591053.36 * (formData.folioFee || formData.customFolioFee || 0)!
+    ),
+    mintingFee: parseEther(
+      ((formData.mintFee || formData.customMintFee || 0)! / 100).toString()
+    ),
+  }
+
+  if (!stToken) {
+    // Ungoverned deploy
+    const args: DeployParamsUngoverned = [
+      folioParams,
+      folioConfig,
+      wallet,
+      [
+        formData.auctionLauncher!,
+        ...(formData.additionalAuctionLaunchers ?? []),
+      ],
+      [
+        formData.auctionLauncher!,
+        ...(formData.additionalAuctionLaunchers ?? []),
+      ],
+      [formData.brandManagerAddress!],
+    ]
+
+    return {
+      address: INDEX_DEPLOYER_ADDRESS[chainId],
+      abi: dtfIndexDeployerAbi,
+      functionName: 'deployFolio',
+      args,
+    }
+  }
+
+  const ownerGovernanceConfig: GovernanceConfig = {
+    votingDelay:
+      (formData.governanceVotingDelay ||
+        formData.customGovernanceVotingDelay ||
+        0)! * 60,
+    votingPeriod:
+      (formData.governanceVotingPeriod ||
+        formData.customGovernanceVotingPeriod ||
+        0)! * 60,
+    proposalThreshold: parseEther(
+      (formData.governanceVotingThreshold ||
+        formData.customGovernanceVotingThreshold ||
+        0)!.toString()
+    ),
+    quorumPercent: BigInt(
+      (formData.governanceVotingQuorum ||
+        formData.customGovernanceVotingQuorum ||
+        0)!
+    ),
+    timelockDelay: BigInt(
+      (formData.governanceExecutionDelay ||
+        formData.customGovernanceExecutionDelay ||
+        0)! * 60
+    ),
+    guardian: formData.guardianAddress!,
+  }
+
+  const tradingGovernanceConfig: GovernanceConfig = {
+    votingDelay:
+      (formData.basketVotingDelay || formData.customBasketVotingDelay || 0)! *
+      60,
+    votingPeriod:
+      (formData.basketVotingPeriod || formData.customBasketVotingPeriod || 0)! *
+      60,
+    proposalThreshold: parseEther(
+      (formData.basketVotingThreshold ||
+        formData.customBasketVotingThreshold ||
+        0)!.toString()
+    ),
+    quorumPercent: BigInt(
+      (formData.basketVotingQuorum || formData.customBasketVotingQuorum || 0)!
+    ),
+    timelockDelay: BigInt(
+      (formData.basketExecutionDelay ||
+        formData.customBasketExecutionDelay ||
+        0)! * 60
+    ),
+    guardian: formData.guardianAddress!,
+  }
 
   const args: DeployParams = [
     stToken,
+    folioParams,
+    folioConfig,
+    ownerGovernanceConfig,
+    tradingGovernanceConfig,
     {
-      name: formData.name,
-      symbol: formData.symbol,
-      assets: basket.map((token) => token.address),
-      amounts: basket.map((token) =>
-        parseUnits(distribution[token.address].toString(), token.decimals)
-      ),
-      initialShares: parseEther(initialTokens),
+      existingTradeProposers: [],
+      tradeLaunchers: [
+        formData.auctionLauncher!,
+        ...(formData.additionalAuctionLaunchers ?? []),
+      ],
+      vibesOfficers: [formData.brandManagerAddress!],
     },
-    {
-      tradeDelay: BigInt(formData.auctionDelay! * 60),
-      auctionLength: BigInt(formData.auctionLength! * 60),
-      feeRecipients: calculateRevenueDistribution(formData, wallet, stToken),
-      folioFee: BigInt(439591053.36 * formData.folioFee!),
-      mintingFee: parseEther((formData.mintFee! / 100).toString()),
-    },
-    {
-      votingDelay: formData.governanceVotingDelay! * 60,
-      votingPeriod: formData.governanceVotingPeriod! * 60,
-      proposalThreshold: parseEther(
-        formData.governanceVotingThreshold!.toString()
-      ),
-      quorumPercent: BigInt(formData.governanceVotingQuorum!),
-      timelockDelay: BigInt(formData.governanceExecutionDelay! * 60),
-      guardian: formData.guardianAddress!,
-    },
-    {
-      votingDelay: formData.basketVotingDelay! * 60,
-      votingPeriod: formData.basketVotingPeriod! * 60,
-      proposalThreshold: parseEther(formData.basketVotingThreshold!.toString()),
-      quorumPercent: BigInt(formData.basketVotingQuorum!),
-      timelockDelay: BigInt(formData.basketExecutionDelay! * 60),
-      guardian: formData.guardianAddress!,
-    },
-    [formData.auctionLauncher!, ...(formData.additionalAuctionLaunchers ?? [])],
-    [formData.brandManagerAddress!],
   ]
 
   return {
@@ -184,17 +282,15 @@ const txAtom = atom<
 })
 
 const ConfirmManualDeployButton = () => {
-  const navigate = useNavigate()
-  const chainId = useAtomValue(chainIdAtom)
   const tx = useAtomValue(txAtom)
-  const { isReady, gas, hash, validationError, error, isLoading, write } =
-    useContractWrite(tx)
+  const daoCreated = useAtomValue(daoCreatedAtom)
+  const hasAssetsAllowance = useAtomValue(hasAssetsAllowanceAtom)
+  const setDeployedDTF = useSetAtom(deployedDTFAtom)
 
-  const {
-    data: receipt,
-    isSuccess,
-    isError: txError,
-  } = useWaitForTransactionReceipt({
+  const { isReady, gas, hash, validationError, error, isLoading, write } =
+    useContractWrite({ ...tx, query: { enabled: !!hasAssetsAllowance } })
+
+  const { data: receipt, error: txError } = useWaitForTransactionReceipt({
     hash,
   })
 
@@ -203,12 +299,13 @@ const ConfirmManualDeployButton = () => {
       const event = parseEventLogs({
         abi: dtfIndexDeployerAbi,
         logs: receipt.logs,
-        eventName: 'FolioDeployed',
+        eventName: daoCreated ? 'GovernedFolioDeployed' : 'FolioDeployed',
       })[0]
 
       // TODO: Handle edge case when event is not found? why would that happen?
       if (event) {
-        navigate(`/${chainId}/index-dtf/${event.args.folio}`)
+        const { folio } = event.args
+        setDeployedDTF(folio)
       }
     }
   }, [receipt])
@@ -223,7 +320,7 @@ const ConfirmManualDeployButton = () => {
         onClick={write}
         text={isReady ? 'Deploy' : 'Preparing deploy...'}
         fullWidth
-        error={validationError || error}
+        error={validationError || error || txError}
       />
     </div>
   )

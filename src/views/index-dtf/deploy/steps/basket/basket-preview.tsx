@@ -3,9 +3,9 @@ import { Token } from '@/types'
 import { formatCurrency, shortenAddress } from '@/utils'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { XIcon } from 'lucide-react'
-import { basketAtom, tokenPricesAtom } from '../../atoms'
-import BasicInput from '../../components/basic-input'
 import { useFormContext } from 'react-hook-form'
+import { basketAtom } from '../../atoms'
+import BasicInput from '../../components/basic-input'
 
 const RemoveTokenButton = ({
   tokenIndex,
@@ -43,6 +43,7 @@ const TokenDistribution = ({ tokenIndex }: { tokenIndex: number }) => {
       label="%"
       placeholder="0"
       defaultValue={0}
+      type="number"
     />
   )
 }
@@ -53,6 +54,7 @@ const TokenPreview = ({
   logoURI,
   symbol,
   index,
+  price,
 }: Token & { index: number }) => {
   const form = useFormContext()
 
@@ -61,11 +63,8 @@ const TokenPreview = ({
     `tokensDistribution.${index}.percentage`,
   ])
 
-  const tokenPrices = useAtomValue(tokenPricesAtom)
-  const tokenPrice = tokenPrices[address]
-
-  const tokenQty =
-    (initialValue * (tokenDistribution / 100)) / (tokenPrice || 1)
+  const tokenQty = (initialValue * (tokenDistribution / 100)) / (price || 1)
+  const tokenUSD = tokenQty * (price || 1)
 
   return (
     <label
@@ -77,14 +76,25 @@ const TokenPreview = ({
         <TokenLogo symbol={symbol} src={logoURI} width={32} />
         <div className="flex flex-col">
           <div className="text-base font-bold">{name}</div>
-          <div className="flex items-center gap-1 text-sm text-muted-foreground">
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <span className="text-primary">
-              {formatCurrency(tokenQty, 6, {
-                minimumFractionDigits: 0,
-              })}{' '}
+              {tokenQty < 1
+                ? formatCurrency(tokenQty, 0, {
+                    maximumSignificantDigits: 4,
+                  })
+                : formatCurrency(tokenQty, 2, {
+                    minimumFractionDigits: 0,
+                  })}{' '}
               {symbol}
             </span>
-            <span>•</span>
+            <span className="text-foreground text-[8px]">•</span>
+            <span className="text-foreground">
+              $
+              {formatCurrency(tokenUSD, 2, {
+                minimumFractionDigits: 0,
+              })}
+            </span>
+            <span className="text-foreground text-[8px]">•</span>
             <span>{shortenAddress(address)}</span>
           </div>
         </div>
