@@ -1,13 +1,13 @@
 import { Button } from '@/components/ui/button'
 import { Drawer, DrawerContent, DrawerTitle } from '@/components/ui/drawer'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useAtom, useAtomValue } from 'jotai'
 import { SubmitHandler, useFormContext } from 'react-hook-form'
+import { deployedDTFAtom } from '../../atoms'
 import { DeployInputs } from '../../form-fields'
 import { indexDeployFormDataAtom } from './atoms'
 import ManualIndexDeploy from './manual'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import SimpleIndexDeploy from './simple'
-import { deployedDTFAtom, formReadyForSubmitAtom } from '../../atoms'
 import SuccessView from './success'
 
 const Header = () => {
@@ -26,10 +26,9 @@ const Header = () => {
   )
 }
 
-const ConfirmIndexDeploy = () => {
+const ConfirmIndexDeploy = ({ isActive }: { isActive: boolean }) => {
   const { handleSubmit } = useFormContext<DeployInputs>()
   const [formData, setFormData] = useAtom(indexDeployFormDataAtom)
-  const formReadyForSubmit = useAtomValue(formReadyForSubmitAtom)
   const deployedDTF = useAtomValue(deployedDTFAtom)
 
   const processForm: SubmitHandler<DeployInputs> = (data) => {
@@ -42,11 +41,7 @@ const ConfirmIndexDeploy = () => {
 
   return (
     <Drawer open={!!formData}>
-      <Button
-        className="w-full"
-        disabled={!formReadyForSubmit}
-        onClick={submitForm}
-      >
+      <Button className="w-full" disabled={!isActive} onClick={submitForm}>
         Deploy
       </Button>
 

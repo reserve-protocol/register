@@ -46,7 +46,14 @@ const DeployTimeline = () => {
       : []),
     {
       title: 'Deploy Index DTF',
-      children: <ConfirmIndexDeploy />,
+      children: (
+        <ConfirmIndexDeploy
+          isActive={
+            (showCreateGovernanceDAO && daoCreated) ||
+            (!showCreateGovernanceDAO && formReadyForSubmit)
+          }
+        />
+      ),
       isActive:
         (showCreateGovernanceDAO && daoCreated) ||
         (!showCreateGovernanceDAO && formReadyForSubmit),

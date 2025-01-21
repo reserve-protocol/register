@@ -24,6 +24,8 @@ import {
   daoTokenAddressAtom,
   deployedDTFAtom,
   deployStepAtom,
+  searchTokenAtom,
+  selectedTokensAtom,
   validatedSectionsAtom,
 } from '../atoms'
 import { DeployStepId } from '../form-fields'
@@ -34,6 +36,7 @@ import MetadataAndChain from '../steps/metadata'
 import RevenueDistribution from '../steps/revenue'
 import Roles from '../steps/roles'
 import Voting from '../steps/voting'
+import { indexDeployFormDataAtom } from '../steps/confirm-deploy/atoms'
 
 export type DeployStep = {
   id: DeployStepId
@@ -164,6 +167,9 @@ const DeployAccordion = () => {
   const resetValidatedSections = useResetAtom(validatedSectionsAtom)
   const resetDaoTokenAddress = useResetAtom(daoTokenAddressAtom)
   const resetDeployedDTF = useResetAtom(deployedDTFAtom)
+  const resetDeployFormData = useResetAtom(indexDeployFormDataAtom)
+  const resetSelectedTokens = useResetAtom(selectedTokensAtom)
+  const resetSearchToken = useResetAtom(searchTokenAtom)
 
   useEffect(() => {
     setSection(DEPLOY_STEPS[0].id)
@@ -175,6 +181,9 @@ const DeployAccordion = () => {
       resetValidatedSections()
       resetDaoTokenAddress()
       resetDeployedDTF()
+      resetDeployFormData()
+      resetSelectedTokens()
+      resetSearchToken()
     }
   }, [])
 
