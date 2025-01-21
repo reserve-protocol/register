@@ -1,20 +1,18 @@
+import MetamaskIcon from '@/components/icons/logos/Metamask'
 import { Button } from '@/components/ui/button'
 import ExplorerAddress from '@/components/utils/explorer-address'
 import { chainIdAtom } from '@/state/atoms'
 import { useAtomValue } from 'jotai'
 import { Asterisk, Bookmark, Check } from 'lucide-react'
+import { ReactNode } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { erc20Abi } from 'viem'
 import { useReadContract } from 'wagmi'
 import { daoTokenAddressAtom, deployedDTFAtom } from '../../../atoms'
 import { indexDeployFormDataAtom } from '../atoms'
-import { ReactNode } from 'react'
 import { initialTokensAtom } from '../manual/atoms'
-import MetamaskIcon from '@/components/icons/logos/Metamask'
 
 const Item = ({ title, children }: { title: string; children: ReactNode }) => {
-  const chainId = useAtomValue(chainIdAtom)
-
   return (
     <div className="flex items-center gap-2 justify-between text-gray-800">
       <div className="flex items-center gap-2">

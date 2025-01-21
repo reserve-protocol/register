@@ -41,7 +41,7 @@ const ConfirmIndexDeploy = () => {
   }
 
   return (
-    <Drawer open={!!formData} onClose={() => setFormData(undefined)}>
+    <Drawer open={!!formData}>
       <Button
         className="w-full"
         disabled={!formReadyForSubmit}
@@ -50,7 +50,7 @@ const ConfirmIndexDeploy = () => {
         Deploy
       </Button>
 
-      {!deployedDTF ? (
+      {deployedDTF ? (
         <DrawerContent className="text-white max-h-[900px]">
           <SuccessView />
         </DrawerContent>
