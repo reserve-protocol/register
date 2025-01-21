@@ -43,6 +43,7 @@ const TokenDistribution = ({ tokenIndex }: { tokenIndex: number }) => {
       label="%"
       placeholder="0"
       defaultValue={0}
+      type="number"
     />
   )
 }

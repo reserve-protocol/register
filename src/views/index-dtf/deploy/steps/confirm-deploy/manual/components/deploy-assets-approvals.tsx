@@ -9,7 +9,6 @@ import { CheckCircle2 } from 'lucide-react'
 import { Address, erc20Abi, formatUnits, parseUnits } from 'viem'
 import { useReadContract, useWriteContract } from 'wagmi'
 import {
-  assetsAllowanceAtom,
   basketRequiredAmountsAtom,
   formattedAssetsAllowanceAtom,
 } from '../atoms'
@@ -41,7 +40,7 @@ const TokenBalance = ({
         color: required ? (balance >= required ? 'green' : 'red') : 'inherit',
       }}
     >
-      {formatCurrency(balance)}
+      {formatCurrency(balance, 3)}
     </span>
   )
 }
@@ -118,7 +117,7 @@ const DeployAssetsApproval = () => {
             <div>
               <span className="text-legend">Required:</span>{' '}
               <span className="font-semibold">
-                {formatCurrency(basketAmountMap[token.address])}
+                {formatCurrency(basketAmountMap[token.address], 3)}
               </span>
             </div>
           </div>

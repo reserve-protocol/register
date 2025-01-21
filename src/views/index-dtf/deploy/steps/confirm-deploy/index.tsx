@@ -1,12 +1,13 @@
 import { Button } from '@/components/ui/button'
 import { Drawer, DrawerContent, DrawerTitle } from '@/components/ui/drawer'
-import { useAtom } from 'jotai'
+import { useAtom, useAtomValue } from 'jotai'
 import { SubmitHandler, useFormContext } from 'react-hook-form'
 import { DeployInputs } from '../../form-fields'
 import { indexDeployFormDataAtom } from './atoms'
 import ManualIndexDeploy from './manual'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import SimpleIndexDeploy from './simple'
+import { formReadyForSubmitAtom } from '../../atoms'
 
 const mockData: DeployInputs = {
   name: 'test',
@@ -41,16 +42,16 @@ const mockData: DeployInputs = {
 }
 
 const Header = () => {
-  const { watch } = useFormContext<DeployInputs>()
+  const form = useAtomValue(indexDeployFormDataAtom)
 
   return (
-    <div className="p-6">
+    <div className="p-6 py-2">
       <h1 className="text-primary text-2xl font-bold">
         Create the genesis token
       </h1>
       <p className="mt-1">
-        You need mint at least $1 worth of {watch('symbol')} in order to create
-        your new Index DTF.
+        You need mint at least ${form?.initialValue} worth of {form?.symbol} in
+        order to create your new Index DTF.
       </p>
     </div>
   )
@@ -59,8 +60,8 @@ const Header = () => {
 const ConfirmIndexDeploy = () => {
   const { handleSubmit } = useFormContext<DeployInputs>()
   const [formData, setFormData] = useAtom(indexDeployFormDataAtom)
+  const formReadyForSubmit = useAtomValue(formReadyForSubmitAtom)
   const processForm: SubmitHandler<DeployInputs> = (data) => {
-    console.log('data', JSON.stringify(data))
     setFormData(data)
   }
 
@@ -72,9 +73,8 @@ const ConfirmIndexDeploy = () => {
     <Drawer open={!!formData} onClose={() => setFormData(undefined)}>
       <Button
         className="w-full"
-        // disabled={!formReadyForSubmit}
-        // onClick={submitForm}
-        onClick={() => setFormData(mockData)}
+        disabled={!formReadyForSubmit}
+        onClick={submitForm}
       >
         Deploy
       </Button>

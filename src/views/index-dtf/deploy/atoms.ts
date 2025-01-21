@@ -13,10 +13,7 @@ export const daoCreatedAtom = atomWithReset<boolean>(false)
 
 export const basketAtom = atomWithReset<Token[]>([])
 
-// TODO: Remove hardcoded value
-export const daoTokenAddressAtom = atom<Address | undefined>(
-  '0x8c02287d6eb56b7cedd715c399d1bf068c1bac5e'
-)
+export const daoTokenAddressAtom = atom<Address | undefined>(undefined)
 
 export const selectedGovernanceOptionAtom = atom<GovernanceTypes>(
   'governanceERC20address'

@@ -5,13 +5,17 @@ import { INDEX_GOVERNANCE_DEPLOYER_ADDRESS } from '@/utils/addresses'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { useFormContext } from 'react-hook-form'
-import { erc20Abi, isAddress, parseEther } from 'viem'
+import { erc20Abi, isAddress, parseEther, parseEventLogs } from 'viem'
 import {
   useReadContract,
   useWaitForTransactionReceipt,
   useWriteContract,
 } from 'wagmi'
-import { daoCreatedAtom, formReadyForSubmitAtom } from '../../atoms'
+import {
+  daoCreatedAtom,
+  daoTokenAddressAtom,
+  formReadyForSubmitAtom,
+} from '../../atoms'
 
 const CreateDAO = () => {
   const chainId = useAtomValue(chainIdAtom)
@@ -19,6 +23,7 @@ const CreateDAO = () => {
   const { watch, getValues } = useFormContext()
   const governanceERC20address = watch('governanceERC20address')
   const setDaoCreated = useSetAtom(daoCreatedAtom)
+  const setStToken = useSetAtom(daoTokenAddressAtom)
 
   const { data: symbol } = useReadContract({
     abi: erc20Abi,
@@ -71,10 +76,20 @@ const CreateDAO = () => {
     })
   }
 
-  // onSuccess set daoCreated to true
   useEffect(() => {
     if (receipt && isSuccess) {
       setDaoCreated(true)
+
+      const event = parseEventLogs({
+        abi: dtfIndexGovernanceDeployerAbi,
+        logs: receipt.logs,
+        eventName: 'DeployedGovernedStakingToken',
+      })[0]
+
+      if (event) {
+        const { stToken } = event.args
+        setStToken(stToken)
+      }
     }
   }, [receipt, isSuccess, setDaoCreated])
 

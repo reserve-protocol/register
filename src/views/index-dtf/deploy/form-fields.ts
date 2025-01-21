@@ -254,10 +254,10 @@ export const DeployFormSchema = z
         data.fixedPlatformFee +
         additionalShares
 
-      return totalShares <= 100
+      return totalShares === 100
     },
     {
-      message: 'The sum of the shares must be 100 or less',
+      message: 'The sum of the shares must be 100',
       path: ['revenue-distribution'],
     }
   )
@@ -289,7 +289,6 @@ export const DeployFormSchema = z
   })
   .refine(
     (data) => {
-      console.log('entra')
       // Check if the voting settings are valid
       const basketVotingDelaySet =
         data.basketVotingDelay || data.customBasketVotingDelay
