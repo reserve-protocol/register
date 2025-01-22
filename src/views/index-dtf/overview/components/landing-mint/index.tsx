@@ -8,7 +8,7 @@ const MintBox = () => {
 
 const LandingMint = (props: React.HTMLAttributes<HTMLDivElement>) => {
   return (
-    <div className="hidden xl:block " {...props}>
+    <div className="hidden xl:block" {...props}>
       <img width={475} height={424} alt="DTF meme" src={IMG_SRC} />
       <div className="sticky top-0">
         <MintBox />

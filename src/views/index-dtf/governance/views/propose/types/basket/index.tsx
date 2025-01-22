@@ -14,13 +14,13 @@ const ProposalStage = () => {
 }
 
 const IndexDTFBasketProposal = () => (
-  <div className="grid grid-cols-1 xl:grid-cols-[1.5fr_1fr] gap-2 pb-6 pr-2 overflow-x-hidden">
-    <ProposalStage />
-    <div>
+  <>
+    <div className="grid grid-cols-1 xl:grid-cols-[1.5fr_1fr] gap-2 pr-2 pb-6 relative">
+      <ProposalStage />
       <BasketProposalOverview />
     </div>
     <Updater />
-  </div>
+  </>
 )
 
 export default IndexDTFBasketProposal

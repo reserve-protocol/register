@@ -75,7 +75,7 @@ const TypeList = () => (
 
 const ProposalTypeSelection = () => {
   return (
-    <div className="flex h-full w-full">
+    <div className="flex h-[calc(100vh-146px)] lg:h-[calc(100vh-72px)] w-full">
       <div className="flex items-center justify-center m-4 flex-grow  border-dashed border-2 border-foreground/40 rounded-3xl">
         <div className="bg-secondary rounded-3xl w-[408px]">
           <Header />

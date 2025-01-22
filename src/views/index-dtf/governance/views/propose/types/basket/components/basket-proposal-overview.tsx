@@ -91,7 +91,7 @@ const ProposalInstructions = () => {
 
 const BasketProposalOverview = () => {
   return (
-    <div className="border-4 border-secondary rounded-3xl bg-background h-[fit-content] sticky top-0">
+    <div className="border-4 overflow-hidden w-full border-secondary rounded-3xl bg-background h-[fit-content] sticky top-0">
       <Header />
       <ProposalInstructions />
     </div>
