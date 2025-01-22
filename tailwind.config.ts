@@ -1,4 +1,5 @@
 import type { Config } from 'tailwindcss'
+import defaultTheme from 'tailwindcss/defaultTheme'
 
 const config = {
   darkMode: ['class'],
@@ -17,6 +18,11 @@ const config = {
       medium: '500',
       semibold: '500',
       bold: '700',
+    },
+    borderRadius: {
+      ...defaultTheme.borderRadius,
+      '3xl': '1.25rem',
+      '4xl': '1.5rem',
     },
     extend: {
       colors: {
@@ -62,7 +68,17 @@ const config = {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))',
         },
-        legend: 'hsl(var(--legend))',
+        legend: {
+          DEFAULT: 'hsl(var(--legend))',
+          foreground: 'hsl(var(--legend-foreground))',
+        },
+        success: {
+          DEFAULT: 'hsl(var(--success))',
+          foreground: 'hsl(var(--success-foreground))',
+        },
+        warning: {
+          DEFAULT: 'hsl(var(--warning))',
+        },
       },
       borderRadius: {
         lg: 'var(--radius)',

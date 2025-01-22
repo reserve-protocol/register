@@ -103,7 +103,7 @@ const Deploy = () => {
     "Reserve's RToken Factory Contracts: A platform for creating tokens backed by a diverse array of ERC20 collateral."
 
   return (
-    <div className="container mt-10 mb-4 px-4">
+  <div className="container mt-10 mb-4 px-4">
       <Header />
       <div className="flex flex-wrap gap-4 mt-10">
         <DeployBox

@@ -6,7 +6,7 @@ import { Address } from 'viem'
 
 const tokenListQuery = gql`
   query GetIndexDTFList {
-    folios(orderBy: token__totalSupply, orderDirection: desc) {
+    dtfs(orderBy: token__totalSupply, orderDirection: desc) {
       id
       stToken {
         id
@@ -22,7 +22,7 @@ const tokenListQuery = gql`
 `
 
 type Response = {
-  folios: {
+  dtfs: {
     id: string
     stToken: {
       id: Address
@@ -64,7 +64,7 @@ const useIndexDTFList = () => {
         tokenListQuery
       )
 
-      return base.folios.map((folio: Response['folios'][number]) => {
+      return base.dtfs.map((folio: Response['dtfs'][number]) => {
         return {
           address: folio.id,
           symbol: folio.token.symbol,

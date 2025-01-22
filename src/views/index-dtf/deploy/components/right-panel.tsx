@@ -65,7 +65,7 @@ const DeployTimeline = () => {
   ]
 
   return (
-    <div className="w-full rounded-3xl bg-background flex flex-col gap-3 px-8 py-6">
+    <div className="w-full  rounded-3xl bg-background flex flex-col gap-3 px-8 py-6">
       <Timeline items={timelineItems} />
     </div>
   )

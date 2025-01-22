@@ -12,7 +12,7 @@ import Staking from '@/views/yield-dtf/staking'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import RTokenContainer from 'state/rtoken/RTokenContainer'
 import { Box } from 'theme-ui'
-import { ROUTES } from 'utils/constants'
+import { GOVERNANCE_PROPOSAL_TYPES, ROUTES } from 'utils/constants'
 import Bridge from 'views/bridge'
 import EarnWrapper from 'views/earn'
 import Explorer from 'views/explorer'
@@ -33,6 +33,8 @@ import IndexDTFIssuance from './views/index-dtf/issuance'
 import IndexDTFOverview from './views/index-dtf/overview'
 import IndexDTFSettings from './views/index-dtf/settings'
 import AllTokenList from './views/tokens/Tokens'
+import IndexDTFPropose from './views/index-dtf/governance/views/propose'
+import IndexDTFBasketProposal from './views/index-dtf/governance/views/propose/types/basket'
 
 const AppRoutes = () => (
   <Routes>
@@ -70,9 +72,17 @@ const AppRoutes = () => (
       <Route index element={<Navigate replace to={ROUTES.OVERVIEW} />} />
       <Route path={ROUTES.OVERVIEW} element={<IndexDTFOverview />} />
       <Route path={ROUTES.ISSUANCE} element={<IndexDTFIssuance />} />
-      <Route path={ROUTES.GOVERNANCE} element={<IndexDTFGovernance />} />
       <Route path={ROUTES.AUCTIONS} element={<IndexDTFAuctions />} />
       <Route path={ROUTES.SETTINGS} element={<IndexDTFSettings />} />
+      <Route path={ROUTES.GOVERNANCE} element={<IndexDTFGovernance />} />
+      <Route
+        path={`${ROUTES.GOVERNANCE}/${ROUTES.GOVERNANCE_PROPOSE}`}
+        element={<IndexDTFPropose />}
+      />
+      <Route
+        path={`${ROUTES.GOVERNANCE}/${ROUTES.GOVERNANCE_PROPOSE}/${GOVERNANCE_PROPOSAL_TYPES.BASKET}`}
+        element={<IndexDTFBasketProposal />}
+      />
     </Route>
     {/* Explorer */}
     <Route path={ROUTES.EXPLORER} element={<Explorer />}>

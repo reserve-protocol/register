@@ -35,24 +35,43 @@ const TokenLogo = React.forwardRef<HTMLImageElement, Props>((props, ref) => {
   const [srcState, setSrcState] = React.useState('')
 
   const preloadImage = (url: string): Promise<string> => {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       const highResImage = new Image()
       highResImage.src = url
       highResImage.onload = () => {
         resolve(url)
+      }
+      highResImage.onerror = () => {
+        reject(new Error(`Failed to load image: ${url}`))
       }
     })
   }
 
   React.useEffect(() => {
     if (!src && (symbol || (address && chain))) {
-      const href = symbol
-        ? RESERVE_STORAGE + symbol + '.png'
-        : `https://token-icons.llamao.fi/icons/tokens/${chain}/${address}?h=${h}&w=${w}`
+      const dexscreenerUrl = `https://dd.dexscreener.com/ds-data/tokens/base/${address}.png?size=lg`
+      const llamaUrl = `https://token-icons.llamao.fi/icons/tokens/${chain}/${address}?h=${h}&w=${w}`
+      const symbolUrl = symbol ? RESERVE_STORAGE + symbol + '.png' : null
 
-      preloadImage(href).then(setSrcState)
+      if (symbolUrl) {
+        preloadImage(symbolUrl)
+          .then(setSrcState)
+          .catch(() => {
+            // Fallback silently
+          })
+      } else {
+        preloadImage(dexscreenerUrl)
+          .then(setSrcState)
+          .catch(() => {
+            preloadImage(llamaUrl)
+              .then(setSrcState)
+              .catch(() => {
+                // Fallback silently
+              })
+          })
+      }
     }
-  }, [symbol, address, chain])
+  }, [symbol, address, chain, h, w, src])
 
   return (
     <img

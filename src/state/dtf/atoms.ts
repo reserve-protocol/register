@@ -35,6 +35,55 @@ export interface ITokenGovernance {
   token: Token
 }
 
+// TODO: I dislike having a super object like this, but its good for MVP
+export interface IndexDTF {
+  id: Address
+  deployer: Address
+  ownerAddress: Address
+  ownerGovernance?: {
+    id: Address
+    votingDelay: number
+    votingPeriod: number
+    timelock: {
+      id: Address
+      guardians: Address[]
+      executionDelay: number
+    }
+  }
+  tradingGovernance?: {
+    id: Address
+    votingDelay: number
+    votingPeriod: number
+    timelock: {
+      id: Address
+      guardians: Address[]
+      executionDelay: number
+    }
+  }
+  token: {
+    id: Address
+    name: string
+    symbol: string
+    decimals: number
+    totalSupply: string
+  }
+  stToken?: {
+    id: Address
+    token: {
+      name: string
+      symbol: string
+      decimals: number
+      totalSupply: string
+    }
+    underlying: {
+      name: string
+      symbol: string
+      address: Address
+      decimals: number
+    }
+  }
+}
+
 export const iTokenAddressAtom = atom<Address | undefined>(undefined)
 
 export const iTokenAtom = atom<IToken | undefined>(undefined)
@@ -50,3 +99,16 @@ export const iTokenConfigurationAtom = atom<ITokenConfiguration | undefined>(
 export const iTokenGovernanceAtom = atom<ITokenGovernance | undefined>(
   undefined
 )
+
+// Final atoms
+export const indexDTFBasketAtom = atom<Token[] | undefined>(undefined)
+
+export const indexDTFBasketPricesAtom = atom<Record<string, number>>({})
+
+export const indexDTFBasketAmountsAtom = atom<Record<string, number>>({})
+
+export const indexDTFBasketSharesAtom = atom<Record<string, number>>({})
+
+export const indexDTFAtom = atom<IndexDTF | undefined>(undefined)
+
+export const indexDTFFeeAtom = atom<number | undefined>(undefined)

@@ -20,6 +20,8 @@ export const RESERVE_FORUM = 'https://forum.reserve.org/'
 export const REGISTER_BUGS =
   'https://reserve.canny.io/defi-surfaces-bug-reporting'
 export const RESERVE_STORAGE = 'https://storage.reserve.org/'
+export const RESERVE_API =
+  'http://reserve-api-base-alb-979856128.us-east-1.elb.amazonaws.com/'
 
 export const LP_PROJECTS: { [x: string]: { name: string; site: string } } = {
   'curve-dex': {
@@ -156,6 +158,13 @@ export const TIME_RANGE_VALUE: { [x: string]: number } = {
   [TIME_RANGES.YEAR]: 31104000,
 }
 
+export const GOVERNANCE_PROPOSAL_TYPES = {
+  BASKET: 'basket',
+  FEES: 'fees',
+  ROLES: 'roles',
+  OTHER: 'other',
+}
+
 export const ROUTES = Object.freeze({
   OVERVIEW: 'overview',
   STAKING: 'staking',
@@ -173,6 +182,7 @@ export const ROUTES = Object.freeze({
   WALLET: '/wallet',
   TOKENS: '/tokens',
   GOVERNANCE: 'governance',
+  GOVERNANCE_PROPOSE: 'propose',
   GOVERNANCE_PROPOSAL: 'governance/proposal',
   ZAP: '/zap',
   BRIDGE: '/bridge',

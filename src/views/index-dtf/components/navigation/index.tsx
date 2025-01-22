@@ -85,11 +85,11 @@ const NavigationItems = () => {
         label: t`Auctions`,
         route: ROUTES.AUCTIONS,
       },
-      {
-        icon: <Asterisk size={12} />,
-        label: t`DTF settings`,
-        route: ROUTES.SETTINGS,
-      },
+      // {
+      //   icon: <Asterisk size={12} />,
+      //   label: t`DTF settings`,
+      //   route: ROUTES.SETTINGS,
+      // },
     ],
     []
   )
@@ -105,7 +105,7 @@ const NavigationItems = () => {
 
 const IndexDTFNavigation = () => {
   return (
-    <div className="w-full p-6 fixed bottom-0 lg:relative border-t lg:border-t-0 lg:w-56 flex-shrink-0 bg-background z-[1] h-[72px] lg:h-auto">
+    <div className="w-full lg:sticky lg:top-0 p-6 fixed bottom-0 border-t lg:border-t-0 lg:w-56 flex-shrink-0 bg-background z-[1] h-[72px] lg:h-full">
       <div className="sticky top-6">
         <Header />
         <NavigationItems />
