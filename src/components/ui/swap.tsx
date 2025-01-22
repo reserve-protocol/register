@@ -90,7 +90,7 @@ const TokenOutputBox = ({ to }: Pick<SwapProps, 'to'>) => {
     <div className="p-4 bg-card rounded-xl border-border border">
       <h3>{to.title || 'You receive:'}</h3>
       <div className="flex items-center gap-2">
-        <h4 className="text-3xl font-semibold mr-auto">{to.value}</h4>
+        <h4 className="text-3xl font-semibold mr-auto">{to.value || '0'}</h4>
         <TokenLogo size="lg" address={to.address} chain={chainId} />
         <h4 className="text-2xl font-semibold">{to.symbol}</h4>
       </div>

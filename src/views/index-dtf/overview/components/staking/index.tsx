@@ -1,4 +1,3 @@
-import dtfIndexStakingVault from '@/abis/dtf-index-staking-vault'
 import {
   Drawer,
   DrawerContent,
@@ -15,16 +14,20 @@ import { formatCurrency } from '@/utils'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { Minus, Plus } from 'lucide-react'
 import { ReactNode, useEffect } from 'react'
-import { formatUnits, parseUnits } from 'viem'
-import { useReadContract } from 'wagmi'
 import {
+  currentStakingTabAtom,
   inputBalanceAtom,
   inputPriceAtom,
   stakingInputAtom,
   underlyingBalanceAtom,
   underlyingStTokenPriceAtom,
+  unlockBalanceAtom,
+  unlockBalanceRawAtom,
 } from './atoms'
 import SubmitStakeButton from './submit-stake-button'
+import { useReadContract } from 'wagmi'
+import dtfIndexStakingVault from '@/abis/dtf-index-staking-vault'
+import { walletAtom } from '@/state/atoms'
 
 const TABS = [
   {
@@ -40,12 +43,16 @@ const TABS = [
 ]
 
 const Staking = ({ children }: { children: ReactNode }) => {
+  const wallet = useAtomValue(walletAtom)
   const indexDTF = useAtomValue(indexDTFAtom)
+  const [currentTab, setCurrentTab] = useAtom(currentStakingTabAtom)
   const [input, onChange] = useAtom(stakingInputAtom)
   const inputPrice = useAtomValue(inputPriceAtom)
   const inputBalance = useAtomValue(inputBalanceAtom)
+  const unlockBalance = useAtomValue(unlockBalanceAtom)
   const setUnderlyingPrice = useSetAtom(underlyingStTokenPriceAtom)
   const setUnderlyingBalance = useSetAtom(underlyingBalanceAtom)
+  const setUnlockBalanceRaw = useSetAtom(unlockBalanceRawAtom)
 
   const { data: priceResponse } = useAssetPrice(
     indexDTF?.stToken?.underlying.address
@@ -55,11 +62,12 @@ const Staking = ({ children }: { children: ReactNode }) => {
     indexDTF?.stToken?.underlying.address
   )
 
-  const { data: shares } = useReadContract({
+  const { data: unlockBalanceRaw } = useReadContract({
     abi: dtfIndexStakingVault,
-    functionName: 'convertToShares',
+    functionName: 'maxWithdraw',
     address: indexDTF?.stToken?.id,
-    args: [parseUnits(input, indexDTF?.stToken?.underlying.decimals || 18)],
+    args: [wallet!],
+    query: { enabled: !!wallet },
   })
 
   useEffect(() => {
@@ -70,8 +78,12 @@ const Staking = ({ children }: { children: ReactNode }) => {
     setUnderlyingBalance(balance)
   }, [balance, setUnderlyingBalance])
 
+  useEffect(() => {
+    setUnlockBalanceRaw(unlockBalanceRaw)
+  }, [unlockBalanceRaw, setUnlockBalanceRaw])
+
   const onMax = () => {
-    onChange(inputBalance)
+    onChange(currentTab === 'lock' ? inputBalance : unlockBalance)
   }
 
   if (!indexDTF || !indexDTF.stToken) {
@@ -83,7 +95,11 @@ const Staking = ({ children }: { children: ReactNode }) => {
       <DrawerTrigger asChild>{children}</DrawerTrigger>
       <DrawerContent>
         <Tabs
-          defaultValue="lock"
+          value={currentTab}
+          onValueChange={(tab) => {
+            setCurrentTab(tab as 'lock' | 'unlock')
+            onChange('')
+          }}
           className="flex flex-col flex-grow overflow-hidden relative"
         >
           <DrawerTitle className="flex gap-2 mt-2 px-2 mb-2">
@@ -119,14 +135,29 @@ const Staking = ({ children }: { children: ReactNode }) => {
                 address: indexDTF.stToken.id,
                 symbol: indexDTF.stToken.token.symbol,
                 price: `$${formatCurrency(inputPrice)}`,
-                value: shares
-                  ? formatUnits(shares, indexDTF.stToken.token.decimals)
-                  : '...',
+                value: input,
               }}
             />
           </TabsContent>
           <TabsContent value="unlock" className="overflow-auto p-2 mt-0">
-            unlock
+            <Swap
+              from={{
+                title: 'You unlock:',
+                address: indexDTF.stToken.id,
+                symbol: indexDTF.stToken.token.symbol,
+                value: input,
+                onChange,
+                price: `$${formatCurrency(inputPrice)}`,
+                balance: `${formatCurrency(Number(unlockBalance))}`,
+                onMax,
+              }}
+              to={{
+                address: indexDTF.stToken.underlying.address,
+                symbol: indexDTF.stToken.underlying.symbol,
+                price: `$${formatCurrency(inputPrice)}`,
+                value: input,
+              }}
+            />
           </TabsContent>
         </Tabs>
         <DrawerFooter>
