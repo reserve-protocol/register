@@ -1,3 +1,4 @@
+import dtfIndexStakingVault from '@/abis/dtf-index-staking-vault'
 import {
   Drawer,
   DrawerContent,
@@ -9,6 +10,8 @@ import Swap from '@/components/ui/swap'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useAssetPrice } from '@/hooks/useAssetPrices'
 import useERC20Balance from '@/hooks/useERC20Balance'
+import { useWatchReadContract } from '@/hooks/useWatchReadContract'
+import { walletAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { formatCurrency } from '@/utils'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
@@ -25,9 +28,7 @@ import {
   unlockBalanceRawAtom,
 } from './atoms'
 import SubmitStakeButton from './submit-stake-button'
-import { useReadContract } from 'wagmi'
-import dtfIndexStakingVault from '@/abis/dtf-index-staking-vault'
-import { walletAtom } from '@/state/atoms'
+import SubmitUnstakeButton from './submit-unstake-button copy'
 
 const TABS = [
   {
@@ -62,7 +63,7 @@ const Staking = ({ children }: { children: ReactNode }) => {
     indexDTF?.stToken?.underlying.address
   )
 
-  const { data: unlockBalanceRaw } = useReadContract({
+  const { data: unlockBalanceRaw } = useWatchReadContract({
     abi: dtfIndexStakingVault,
     functionName: 'maxWithdraw',
     address: indexDTF?.stToken?.id,
@@ -160,8 +161,12 @@ const Staking = ({ children }: { children: ReactNode }) => {
             />
           </TabsContent>
         </Tabs>
-        <DrawerFooter>
-          <SubmitStakeButton />
+        <DrawerFooter className="mb-2">
+          {currentTab === 'lock' ? (
+            <SubmitStakeButton />
+          ) : (
+            <SubmitUnstakeButton />
+          )}
         </DrawerFooter>
       </DrawerContent>
     </Drawer>
