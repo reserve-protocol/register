@@ -6,29 +6,30 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from '@/components/ui/drawer'
-import Swap from '@/components/ui/swap'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useAssetPrice } from '@/hooks/useAssetPrices'
 import useERC20Balance from '@/hooks/useERC20Balance'
 import { useWatchReadContract } from '@/hooks/useWatchReadContract'
 import { walletAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
-import { formatCurrency } from '@/utils'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { Minus, Plus } from 'lucide-react'
+import { Minus, OctagonAlert, Plus } from 'lucide-react'
 import { ReactNode, useEffect } from 'react'
+import { useReadContract } from 'wagmi'
 import {
   currentStakingTabAtom,
-  inputBalanceAtom,
-  inputPriceAtom,
+  lockCheckboxAtom,
   stakingInputAtom,
   underlyingBalanceAtom,
   underlyingStTokenPriceAtom,
-  unlockBalanceAtom,
   unlockBalanceRawAtom,
+  unlockDelayAtom,
 } from './atoms'
-import SubmitStakeButton from './submit-stake-button'
-import SubmitUnstakeButton from './submit-unstake-button copy'
+import LockView from './lock'
+import SubmitLockButton from './lock/submit-lock-button'
+import SubmitUnlockButton from './unlock/submit-unlock-button copy'
+import UnlockView from './unlock'
+import { Checkbox } from '@/components/ui/checkbox'
 
 const TABS = [
   {
@@ -43,17 +44,49 @@ const TABS = [
   },
 ]
 
+const LockCheckbox = () => {
+  const indexDTF = useAtomValue(indexDTFAtom)
+  const delay = useAtomValue(unlockDelayAtom)
+  const [checkbox, setCheckbox] = useAtom(lockCheckboxAtom)
+
+  if (!indexDTF?.stToken || !delay) return null
+
+  return (
+    <label className="flex flex-col gap-2 p-4 cursor-pointer">
+      <OctagonAlert size={16} className="text-warning" />
+      <div className="flex items-end gap-2 justify-between">
+        <div className="max-w-sm">
+          <div className="font-bold">
+            I’m aware of the {delay}-day unlock delay
+          </div>
+          <div className="text-sm text-legend">
+            If you decide to unlock {indexDTF.stToken.underlying.symbol} in the
+            future, you’ll need to wait {delay} days until you can complete the
+            withdrawal
+          </div>
+        </div>
+        <div className="flex items-center p-[6px] border border-border rounded-lg">
+          <Checkbox
+            checked={checkbox}
+            onCheckedChange={(checked: boolean) => setCheckbox(checked)}
+          />
+        </div>
+      </div>
+    </label>
+  )
+}
+
 const Staking = ({ children }: { children: ReactNode }) => {
   const wallet = useAtomValue(walletAtom)
   const indexDTF = useAtomValue(indexDTFAtom)
   const [currentTab, setCurrentTab] = useAtom(currentStakingTabAtom)
-  const [input, onChange] = useAtom(stakingInputAtom)
-  const inputPrice = useAtomValue(inputPriceAtom)
-  const inputBalance = useAtomValue(inputBalanceAtom)
-  const unlockBalance = useAtomValue(unlockBalanceAtom)
+  const isLock = currentTab === 'lock'
+  const setInput = useSetAtom(stakingInputAtom)
   const setUnderlyingPrice = useSetAtom(underlyingStTokenPriceAtom)
   const setUnderlyingBalance = useSetAtom(underlyingBalanceAtom)
   const setUnlockBalanceRaw = useSetAtom(unlockBalanceRawAtom)
+  const setUnlockDelay = useSetAtom(unlockDelayAtom)
+  const setCheckbox = useSetAtom(lockCheckboxAtom)
 
   const { data: priceResponse } = useAssetPrice(
     indexDTF?.stToken?.underlying.address
@@ -71,6 +104,13 @@ const Staking = ({ children }: { children: ReactNode }) => {
     query: { enabled: !!wallet },
   })
 
+  const { data: delay } = useReadContract({
+    abi: dtfIndexStakingVault,
+    functionName: 'unstakingDelay',
+    address: indexDTF?.stToken?.id,
+    args: [],
+  })
+
   useEffect(() => {
     setUnderlyingPrice(priceResponse?.[0]?.price)
   }, [priceResponse, setUnderlyingPrice])
@@ -83,13 +123,9 @@ const Staking = ({ children }: { children: ReactNode }) => {
     setUnlockBalanceRaw(unlockBalanceRaw)
   }, [unlockBalanceRaw, setUnlockBalanceRaw])
 
-  const onMax = () => {
-    onChange(currentTab === 'lock' ? inputBalance : unlockBalance)
-  }
-
-  if (!indexDTF || !indexDTF.stToken) {
-    return null
-  }
+  useEffect(() => {
+    setUnlockDelay(delay ? Number(delay) / 86400 : undefined)
+  }, [delay, setUnlockDelay])
 
   return (
     <Drawer>
@@ -99,7 +135,8 @@ const Staking = ({ children }: { children: ReactNode }) => {
           value={currentTab}
           onValueChange={(tab) => {
             setCurrentTab(tab as 'lock' | 'unlock')
-            onChange('')
+            setInput('')
+            setCheckbox(false)
           }}
           className="flex flex-col flex-grow overflow-hidden relative"
         >
@@ -117,56 +154,16 @@ const Staking = ({ children }: { children: ReactNode }) => {
               ))}
             </TabsList>
           </DrawerTitle>
-          <TabsContent
-            value="lock"
-            className="flex-grow overflow-auto p-2 mt-0"
-          >
-            <Swap
-              from={{
-                title: 'You lock:',
-                address: indexDTF.stToken.underlying.address,
-                symbol: indexDTF.stToken.underlying.symbol,
-                value: input,
-                onChange,
-                price: `$${formatCurrency(inputPrice)}`,
-                balance: `${formatCurrency(Number(inputBalance))}`,
-                onMax,
-              }}
-              to={{
-                address: indexDTF.stToken.id,
-                symbol: indexDTF.stToken.token.symbol,
-                price: `$${formatCurrency(inputPrice)}`,
-                value: input,
-              }}
-            />
+          <TabsContent value="lock" className="h-full overflow-auto  p-2 mt-0">
+            <LockView />
           </TabsContent>
           <TabsContent value="unlock" className="overflow-auto p-2 mt-0">
-            <Swap
-              from={{
-                title: 'You unlock:',
-                address: indexDTF.stToken.id,
-                symbol: indexDTF.stToken.token.symbol,
-                value: input,
-                onChange,
-                price: `$${formatCurrency(inputPrice)}`,
-                balance: `${formatCurrency(Number(unlockBalance))}`,
-                onMax,
-              }}
-              to={{
-                address: indexDTF.stToken.underlying.address,
-                symbol: indexDTF.stToken.underlying.symbol,
-                price: `$${formatCurrency(inputPrice)}`,
-                value: input,
-              }}
-            />
+            <UnlockView />
           </TabsContent>
         </Tabs>
         <DrawerFooter className="mb-2">
-          {currentTab === 'lock' ? (
-            <SubmitStakeButton />
-          ) : (
-            <SubmitUnstakeButton />
-          )}
+          {isLock && <LockCheckbox />}
+          {isLock ? <SubmitLockButton /> : <SubmitUnlockButton />}
         </DrawerFooter>
       </DrawerContent>
     </Drawer>

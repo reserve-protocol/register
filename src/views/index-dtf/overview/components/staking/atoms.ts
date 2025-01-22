@@ -8,6 +8,8 @@ export const stakingInputAtom = atomWithReset<string>('')
 export const underlyingStTokenPriceAtom = atom<number | undefined>(undefined)
 export const underlyingBalanceAtom = atom<bigint | undefined>(undefined)
 export const unlockBalanceRawAtom = atom<bigint | undefined>(undefined)
+export const unlockDelayAtom = atom<number | undefined>(undefined)
+export const lockCheckboxAtom = atom<boolean>(false)
 
 export const inputPriceAtom = atom<number>((get) => {
   const input = get(stakingInputAtom)

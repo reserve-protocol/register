@@ -107,7 +107,7 @@ const ArrowSeparator = () => (
 
 const Swap = (props: SwapProps) => {
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col">
       <TokenInputBox {...props} />
       <ArrowSeparator />
       <TokenOutputBox {...props} />

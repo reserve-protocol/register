@@ -8,14 +8,19 @@ import { useResetAtom } from 'jotai/utils'
 import { useEffect } from 'react'
 import { erc20Abi, parseUnits } from 'viem'
 import { useReadContract, useWaitForTransactionReceipt } from 'wagmi'
-import { stakingInputAtom, underlyingBalanceAtom } from './atoms'
+import {
+  lockCheckboxAtom,
+  stakingInputAtom,
+  underlyingBalanceAtom,
+} from '../atoms'
 
-const SubmitStakeButton = () => {
+const SubmitLockButton = () => {
   const account = useAtomValue(walletAtom)
   const stToken = useAtomValue(indexDTFAtom)!.stToken!
   const input = useAtomValue(stakingInputAtom)
   const balance = useAtomValue(underlyingBalanceAtom)
   const amountToLock = parseUnits(input, stToken.underlying.decimals)
+  const checkbox = useAtomValue(lockCheckboxAtom)
   const resetInput = useResetAtom(stakingInputAtom)
 
   const {
@@ -80,6 +85,7 @@ const SubmitStakeButton = () => {
     <div>
       <TransactionButton
         disabled={
+          !checkbox ||
           receipt?.status === 'success' ||
           amountToLock === 0n ||
           (readyToSubmit ? !isReady : !approvalReady)
@@ -117,4 +123,4 @@ const SubmitStakeButton = () => {
   )
 }
 
-export default SubmitStakeButton
+export default SubmitLockButton

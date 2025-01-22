@@ -1,21 +1,26 @@
 import dtfIndexStakingVault from '@/abis/dtf-index-staking-vault'
 import TransactionButton from '@/components/old/button/TransactionButton'
 import useContractWrite from '@/hooks/useContractWrite'
+import { walletAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { useAtomValue } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
 import { useEffect } from 'react'
 import { parseUnits } from 'viem'
-import { useReadContract, useWaitForTransactionReceipt } from 'wagmi'
-import { stakingInputAtom, underlyingBalanceAtom } from './atoms'
-import { walletAtom } from '@/state/atoms'
+import { useWaitForTransactionReceipt } from 'wagmi'
+import {
+  stakingInputAtom,
+  underlyingBalanceAtom,
+  unlockDelayAtom,
+} from '../atoms'
 
-const SubmitUnstakeButton = () => {
+const SubmitUnlockButton = () => {
   const account = useAtomValue(walletAtom)
   const stToken = useAtomValue(indexDTFAtom)!.stToken!
   const input = useAtomValue(stakingInputAtom)
   const balance = useAtomValue(underlyingBalanceAtom)
   const amountToUnlock = parseUnits(input, stToken.token.decimals)
+  const unlockDelay = useAtomValue(unlockDelayAtom)
   const resetInput = useResetAtom(stakingInputAtom)
 
   const readyToSubmit =
@@ -29,15 +34,6 @@ const SubmitUnstakeButton = () => {
       args: [amountToUnlock, account!, account!],
       query: { enabled: readyToSubmit },
     })
-
-  const { data: delay } = useReadContract({
-    abi: dtfIndexStakingVault,
-    functionName: 'unstakingDelay',
-    address: stToken?.id,
-    args: [],
-  })
-
-  const delayInDays = delay ? Number(delay) / 86400 : 0
 
   const { data: receipt, error: txError } = useWaitForTransactionReceipt({
     hash,
@@ -60,7 +56,7 @@ const SubmitUnstakeButton = () => {
         text={
           receipt?.status === 'success'
             ? 'Transaction confirmed'
-            : `Begin ${delayInDays ? `${delayInDays}-day` : ''} unlock delay`
+            : `Begin ${unlockDelay ? `${unlockDelay}-day` : ''} unlock delay`
         }
         fullWidth
         error={validationError || error || txError}
@@ -69,4 +65,4 @@ const SubmitUnstakeButton = () => {
   )
 }
 
-export default SubmitUnstakeButton
+export default SubmitUnlockButton
