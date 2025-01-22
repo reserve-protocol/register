@@ -2,14 +2,17 @@ import TokenLogo from '@/components/token-logo'
 import { Box } from '@/components/ui/box'
 import { Card } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
-import { iTokenAtom, iTokenGovernanceAtom } from '@/state/dtf/atoms'
+import { chainIdAtom } from '@/state/atoms'
+import { indexDTFAtom, iTokenAtom } from '@/state/dtf/atoms'
+import { parseDuration } from '@/utils'
 import { useAtomValue } from 'jotai'
 import { ArrowUpRight, Fingerprint } from 'lucide-react'
 
 const GovernanceDetails = () => {
-  const governance = useAtomValue(iTokenGovernanceAtom)
+  const indexDTF = useAtomValue(indexDTFAtom)
+  const chainId = useAtomValue(chainIdAtom)
 
-  if (!governance) {
+  if (!indexDTF) {
     return (
       <div>
         <Skeleton className="h-6 mb-2" />
@@ -20,6 +23,10 @@ const GovernanceDetails = () => {
     )
   }
 
+  if (!indexDTF.ownerGovernance) {
+    return <div>Self governed token!</div>
+  }
+
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center flex-wrap gap-2">
@@ -28,12 +35,14 @@ const GovernanceDetails = () => {
           Governor proposes a change to the basket
         </span>
         <span className="text-sm text-legend">
-          Any {governance.token.symbol} staker
+          Any {indexDTF.stToken?.token.symbol ?? 'Unknown'} staker
         </span>
       </div>
       <div className="flex items-center flex-wrap gap-2">
         <Box variant="circle" className="bg-black text-white"></Box>
-        <span className="font-bold mr-auto">30 minute voting period </span>
+        <span className="font-bold mr-auto">
+          {parseDuration(indexDTF.ownerGovernance.votingPeriod)} voting period{' '}
+        </span>
         <span className="text-sm text-legend">
           Requires majority ‘yes’ & quorum to pass
         </span>
@@ -48,14 +57,17 @@ const GovernanceDetails = () => {
         </span>
       </div>
       <div className="flex items-center gap-2 rounded-xl bg-black/5 p-4 -m-4 mt-2">
-        <TokenLogo symbol={governance.token.symbol} />
+        <TokenLogo
+          size="xl"
+          address={indexDTF.stToken?.underlying.address ?? 'Unknown'}
+          chain={chainId}
+        />
         <div className="mr-auto">
           <h4 className="font-bold">
-            Stake ${governance.token.symbol} to participate
+            Stake ${indexDTF.stToken?.underlying.symbol ?? 'Unknown'} to
+            participate
           </h4>
-          <span className="legend">
-            Earn ≈2.4% APY as a reward for governing
-          </span>
+          <span className="legend">Earn DTFs as a reward for governing</span>
         </div>
         <Box variant="circle" className="h-8 w-8">
           <ArrowUpRight size={16} />

@@ -1,13 +1,16 @@
 import { Box } from '@/components/ui/box'
 import { Card } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
-import { iTokenConfigurationAtom, iTokenMetaAtom } from '@/state/dtf/atoms'
+import { indexDTFAtom, indexDTFFeeAtom } from '@/state/dtf/atoms'
+import { formatPercentage } from '@/utils'
 import { useAtomValue } from 'jotai'
 import { ArrowUpRight, Fingerprint } from 'lucide-react'
 
 const IndexAboutOverview = () => {
-  const data = useAtomValue(iTokenMetaAtom)
-  const config = useAtomValue(iTokenConfigurationAtom)
+  const data = useAtomValue(indexDTFAtom)
+  const fee = useAtomValue(indexDTFFeeAtom)
+
+  console.log('fee', fee)
 
   return (
     <Card className="p-6">
@@ -16,7 +19,7 @@ const IndexAboutOverview = () => {
           <Fingerprint size={20} />
         </div>
 
-        {!config ? (
+        {fee === undefined ? (
           <Skeleton className="w-60 h-6" />
         ) : (
           <div className="flex gap-4">
@@ -24,16 +27,8 @@ const IndexAboutOverview = () => {
               <Box variant="circle">
                 <ArrowUpRight size={12} />
               </Box>
-              <span className="font-medium">
-                {config.IsManaged ? 'Managed' : 'Volatile'}
-              </span>
-            </div>
-            <div className="flex gap-1">
-              <Box variant="circle">
-                <ArrowUpRight size={12} />
-              </Box>
               <span className="text-legend">TVL Fee:</span>
-              <span className="font-bold">{config.fee}%</span>
+              <span className="font-bold">{formatPercentage(fee)}</span>
             </div>
           </div>
         )}
@@ -45,7 +40,7 @@ const IndexAboutOverview = () => {
             <Skeleton className="w-full h-20" />
           </div>
         ) : (
-          <p className="text-legend">{data.description}</p>
+          <p className="text-legend">Display mandate HERE!</p>
         )}
       </div>
     </Card>

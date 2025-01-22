@@ -2,6 +2,7 @@ import TokenLogo from '@/components/token-logo'
 import { Box } from '@/components/ui/box'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
+import { ScrollArea } from '@/components/ui/scroll-area'
 import {
   Table,
   TableBody,
@@ -10,10 +11,19 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { ITokenBasket, iTokenBasketAtom } from '@/state/dtf/atoms'
+import { cn } from '@/lib/utils'
+import { chainIdAtom } from '@/state/atoms'
+import {
+  indexDTFBasketAtom,
+  indexDTFBasketSharesAtom,
+  ITokenBasket,
+  iTokenBasketAtom,
+} from '@/state/dtf/atoms'
+import { Token } from '@/types'
+import { formatPercentage } from '@/utils'
 import { useAtomValue } from 'jotai'
 import { ArrowUpRight, Asterisk, BoxIcon } from 'lucide-react'
-import React from 'react'
+import React, { useState } from 'react'
 
 interface BasketOverviewProps extends React.HTMLAttributes<HTMLDivElement> {
   basket: ITokenBasket
@@ -84,52 +94,67 @@ const IndexBasketVisual = ({ basket, ...props }: BasketOverviewProps) => {
   )
 }
 
-const IndexBasketTokens = ({ basket, ...props }: BasketOverviewProps) => {
-  const { tokens, percents } = basket
+const IndexBasketTokens = ({
+  basket,
+  className,
+}: {
+  basket: Token[]
+  className?: string
+}) => {
+  const [viewAll, setViewAll] = useState(false)
+  const basketShares = useAtomValue(indexDTFBasketSharesAtom)
+  const chainId = useAtomValue(chainIdAtom)
 
   return (
-    <div {...props}>
-      <Table>
-        <TableHeader>
-          <TableRow className="border-none">
-            <TableHead>Token</TableHead>
-            <TableHead>Symbol</TableHead>
-            <TableHead>Weight</TableHead>
-            <TableHead>Dex screener</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {tokens.map((token, index) => (
-            <TableRow key={token.symbol} className="border-none">
-              <TableCell>
-                <div className="flex items-center gap-2">
-                  <TokenLogo symbol={token.symbol} />
-                  {token.name}
-                </div>
-              </TableCell>
-              <TableCell>${token.symbol}</TableCell>
-              <TableCell className="text-blue-600 font-bold">
-                {percents[index]}%
-              </TableCell>
-              <TableCell className="">
-                <Button variant="link" size="sm" className="h-8 w-8 p-0">
-                  <Box variant="circle">
-                    <ArrowUpRight className="h-4 w-4" />
-                  </Box>
-                </Button>
-              </TableCell>
+    <div className={className}>
+      <ScrollArea className={cn('max-h-96 relative')}>
+        <Table>
+          <TableHeader>
+            <TableRow className="border-none text-legend bg-card sticky top-0 ">
+              <TableHead>Token</TableHead>
+              <TableHead>Symbol</TableHead>
+              <TableHead>Weight</TableHead>
+              <TableHead>Dex screener</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-
-      {tokens.length > 5 && (
+          </TableHeader>
+          <TableBody>
+            {basket
+              .slice(0, viewAll ? basket.length : 5)
+              .map((token, index) => (
+                <TableRow key={token.symbol} className="border-none">
+                  <TableCell>
+                    <div className="flex items-center font-semibold gap-2">
+                      <TokenLogo
+                        size="lg"
+                        address={token.address}
+                        chain={chainId}
+                      />
+                      {token.name}
+                    </div>
+                  </TableCell>
+                  <TableCell>${token.symbol}</TableCell>
+                  <TableCell className="text-blue-600 font-bold">
+                    {formatPercentage(basketShares[token.address] * 100)}
+                  </TableCell>
+                  <TableCell className="">
+                    <Button variant="link" size="sm" className="h-8 w-8 p-0">
+                      <Box variant="circle">
+                        <ArrowUpRight className="h-4 w-4" />
+                      </Box>
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+          </TableBody>
+        </Table>
+      </ScrollArea>
+      {basket.length > 5 && (
         <Button
           variant="outline"
-          className="w-full"
-          onClick={() => console.log('View all assets clicked')}
+          className="w-full rounded-2xl"
+          onClick={() => setViewAll(!viewAll)}
         >
-          View all {tokens.length} assets
+          {viewAll ? 'View less' : `View all ${basket.length} assets`}
         </Button>
       )}
     </div>
@@ -137,7 +162,7 @@ const IndexBasketTokens = ({ basket, ...props }: BasketOverviewProps) => {
 }
 
 const IndexBasketPreview = () => {
-  const basket = useAtomValue(iTokenBasketAtom)
+  const basket = useAtomValue(indexDTFBasketAtom)
 
   if (!basket) {
     return <div></div>
@@ -145,7 +170,7 @@ const IndexBasketPreview = () => {
 
   return (
     <div>
-      <IndexBasketVisual basket={basket} />
+      {/* <IndexBasketVisual basket={basket} /> */}
       <IndexBasketTokens className="mt-4 -mx-5 -mb-5" basket={basket} />
     </div>
   )

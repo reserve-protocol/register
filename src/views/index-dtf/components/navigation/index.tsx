@@ -85,11 +85,11 @@ const NavigationItems = () => {
         label: t`Auctions`,
         route: ROUTES.AUCTIONS,
       },
-      {
-        icon: <Asterisk size={12} />,
-        label: t`DTF settings`,
-        route: ROUTES.SETTINGS,
-      },
+      // {
+      //   icon: <Asterisk size={12} />,
+      //   label: t`DTF settings`,
+      //   route: ROUTES.SETTINGS,
+      // },
     ],
     []
   )

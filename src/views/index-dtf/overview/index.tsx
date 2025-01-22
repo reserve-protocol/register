@@ -16,7 +16,7 @@ const Content = () => {
         <IndexAboutOverview />
         <IndexBasketOverview />
         <IndexGovernanceOverview />
-        <IndexCreatorOverview />
+        {/* <IndexCreatorOverview /> */}
         <IndexDisclousure />
       </div>
     </div>
