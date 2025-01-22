@@ -1,15 +1,15 @@
 import { cn } from '@/lib/utils'
-import { Asterisk } from 'lucide-react'
-import { ReactNode, useState } from 'react'
-import GovernanceExistingVoteLock from './form-existing-vote-lock'
-import GovernanceExistingERC20 from './form-existing-erc20'
-import GovernanceSpecificWallet from './form-specific-wallet'
-import { useFormContext } from 'react-hook-form'
 import { useAtom, useSetAtom } from 'jotai'
+import { Asterisk } from 'lucide-react'
+import { ReactNode } from 'react'
+import { useFormContext } from 'react-hook-form'
 import {
   selectedGovernanceOptionAtom,
   validatedSectionsAtom,
 } from '../../atoms'
+import GovernanceExistingERC20 from './form-existing-erc20'
+import GovernanceExistingVoteLock from './form-existing-vote-lock'
+import GovernanceSpecificWallet from './form-specific-wallet'
 
 export type GovernanceTypes =
   | 'governanceERC20address'
@@ -24,7 +24,7 @@ const GOVERNANCE_OPTIONS = [
       'Explain the benefit of using our framwork & clarify that it doesn’t mean.',
     icon: <Asterisk size={24} strokeWidth={1.5} />,
     form: <GovernanceExistingERC20 />,
-    resetFields: ['governanceERC20address'],
+    resetFields: ['governanceVoteLock', 'governanceWalletAddress'],
   },
   {
     type: 'governanceVoteLock',
@@ -33,7 +33,7 @@ const GOVERNANCE_OPTIONS = [
       'Explain the benefit of using our framwork & clarify that it doesn’t mean giving.',
     icon: <Asterisk size={24} strokeWidth={1.5} />,
     form: <GovernanceExistingVoteLock />,
-    resetFields: ['governanceVoteLock', 'governanceShare'],
+    resetFields: ['governanceERC20address', 'governanceWalletAddress'],
   },
   {
     type: 'governanceWalletAddress',
@@ -42,7 +42,11 @@ const GOVERNANCE_OPTIONS = [
       'Explain the benefit of using our framwork & clarify that it doesn’t mean.',
     icon: <Asterisk size={24} strokeWidth={1.5} />,
     form: <GovernanceSpecificWallet />,
-    resetFields: ['governanceWalletAddress', 'governanceShare'],
+    resetFields: [
+      'governanceERC20address',
+      'governanceVoteLock',
+      'governanceShare',
+    ],
   },
 ]
 
@@ -101,11 +105,10 @@ const GovernanceOptions = () => {
   const { resetField } = useFormContext()
 
   const onSelected = (selectedType: GovernanceTypes) => {
-    GOVERNANCE_OPTIONS.forEach(({ type, resetFields }) => {
-      if (selectedType !== type) {
-        resetFields.forEach((field: string) => resetField(field))
-      }
-    })
+    const resetFields =
+      GOVERNANCE_OPTIONS.find((option) => option.type === selected)
+        ?.resetFields || []
+    resetFields.forEach((field: string) => resetField(field))
     setValidatedSections((prev) => ({
       ...prev,
       'revenue-distribution': false,

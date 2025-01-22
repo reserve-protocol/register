@@ -31,7 +31,7 @@ const RevenueDistributionSettings = () => {
   const settings = SETTINGS.filter(
     ({ field }) =>
       field !== 'governanceShare' ||
-      selectedGovOption === 'governanceERC20address'
+      selectedGovOption !== 'governanceWalletAddress'
   )
 
   return (

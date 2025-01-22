@@ -14,7 +14,7 @@ const MintFeeSelector = () => {
   }
 
   const resetCustomField = () => {
-    setValue('customMintFee', '')
+    setValue('customMintFee', undefined)
   }
 
   return (

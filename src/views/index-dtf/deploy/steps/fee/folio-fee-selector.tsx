@@ -14,7 +14,7 @@ const FolioFeeSelector = () => {
   }
 
   const resetCustomField = () => {
-    setValue('customFolioFee', '')
+    setValue('customFolioFee', undefined)
   }
 
   return (
