@@ -69,22 +69,16 @@ const DTFContextUpdater = () => {
               abi: dtfIndexAbi,
               functionName: 'folioFee',
             },
-            {
-              address: token,
-              abi: dtfIndexAbi,
-              functionName: 'mintingFee',
-            },
           ],
           allowFailure: false,
           query: {
             select: (data) => {
-              const [name, symbol, folioFee, mintingFee] = data
+              const [name, symbol, folioFee] = data
 
               return {
                 name,
                 symbol,
                 folioFee: Number((folioFee / 43959105336n) * 100n),
-                mintingFee: Number(formatEther(mintingFee * 100n)),
               }
             },
           },
@@ -364,7 +358,7 @@ const Updater = () => {
 }
 
 const IndexDTFContainer = () => (
-  <div className="container flex flex-col-reverse md:flex-row mb-[72px] h-full lg:mb-0">
+  <div className="container flex flex-col-reverse md:flex-row mb-[72px] lg:mb-0 relative">
     <Updater />
     <IndexDTFNavigation />
     <div className="flex-grow">

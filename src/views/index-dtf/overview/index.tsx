@@ -27,9 +27,7 @@ const IndexDTFOverview = () => {
   return (
     <div className="flex gap-2">
       <Content />
-      <div className="hidden xl:block">
-        <LandingMint className="sticky top-0" />
-      </div>
+      <LandingMint />
     </div>
   )
 }
