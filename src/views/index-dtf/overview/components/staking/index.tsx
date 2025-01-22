@@ -1,3 +1,4 @@
+import dtfIndexStakingVault from '@/abis/dtf-index-staking-vault'
 import {
   Drawer,
   DrawerContent,
@@ -7,8 +8,22 @@ import {
 } from '@/components/ui/drawer'
 import Swap from '@/components/ui/swap'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { useAssetPrice } from '@/hooks/useAssetPrices'
+import useERC20Balance from '@/hooks/useERC20Balance'
+import { indexDTFAtom } from '@/state/dtf/atoms'
+import { formatCurrency } from '@/utils'
+import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { Minus, Plus } from 'lucide-react'
-import { ReactNode } from 'react'
+import { ReactNode, useEffect } from 'react'
+import { formatUnits, parseUnits } from 'viem'
+import { useReadContract } from 'wagmi'
+import {
+  inputBalanceAtom,
+  inputPriceAtom,
+  stakingInputAtom,
+  underlyingBalanceAtom,
+  underlyingStTokenPriceAtom,
+} from './atoms'
 import SubmitStakeButton from './submit-stake-button'
 
 const TABS = [
@@ -25,6 +40,44 @@ const TABS = [
 ]
 
 const Staking = ({ children }: { children: ReactNode }) => {
+  const indexDTF = useAtomValue(indexDTFAtom)
+  const [input, onChange] = useAtom(stakingInputAtom)
+  const inputPrice = useAtomValue(inputPriceAtom)
+  const inputBalance = useAtomValue(inputBalanceAtom)
+  const setUnderlyingPrice = useSetAtom(underlyingStTokenPriceAtom)
+  const setUnderlyingBalance = useSetAtom(underlyingBalanceAtom)
+
+  const { data: priceResponse } = useAssetPrice(
+    indexDTF?.stToken?.underlying.address
+  )
+
+  const { data: balance } = useERC20Balance(
+    indexDTF?.stToken?.underlying.address
+  )
+
+  const { data: shares } = useReadContract({
+    abi: dtfIndexStakingVault,
+    functionName: 'convertToShares',
+    address: indexDTF?.stToken?.id,
+    args: [parseUnits(input, indexDTF?.stToken?.underlying.decimals || 18)],
+  })
+
+  useEffect(() => {
+    setUnderlyingPrice(priceResponse?.[0]?.price)
+  }, [priceResponse, setUnderlyingPrice])
+
+  useEffect(() => {
+    setUnderlyingBalance(balance)
+  }, [balance, setUnderlyingBalance])
+
+  const onMax = () => {
+    onChange(inputBalance)
+  }
+
+  if (!indexDTF || !indexDTF.stToken) {
+    return null
+  }
+
   return (
     <Drawer>
       <DrawerTrigger asChild>{children}</DrawerTrigger>
@@ -54,13 +107,21 @@ const Staking = ({ children }: { children: ReactNode }) => {
             <Swap
               from={{
                 title: 'You lock:',
-                price: '$10000',
-                balance: '1000',
-                onMax: () => console.log('max'),
+                address: indexDTF.stToken.underlying.address,
+                symbol: indexDTF.stToken.underlying.symbol,
+                value: input,
+                onChange,
+                price: `$${formatCurrency(inputPrice)}`,
+                balance: `${formatCurrency(Number(inputBalance))}`,
+                onMax,
               }}
               to={{
-                title: 'You receive:',
-                price: '$10000',
+                address: indexDTF.stToken.id,
+                symbol: indexDTF.stToken.token.symbol,
+                price: `$${formatCurrency(inputPrice)}`,
+                value: shares
+                  ? formatUnits(shares, indexDTF.stToken.token.decimals)
+                  : '...',
               }}
             />
           </TabsContent>

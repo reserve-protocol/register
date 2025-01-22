@@ -1,16 +1,19 @@
 import TokenLogo from '@/components/token-logo'
 import { Button } from '@/components/ui/button'
 import { NumericalInput } from '@/components/ui/input'
+import { chainIdAtom } from '@/state/atoms'
+import { useAtomValue } from 'jotai'
 import { ArrowDown } from 'lucide-react'
-import { ReactNode } from 'react'
 
 type SwapItem = {
   title?: string
   price?: string
-  icon?: ReactNode
+  address?: string
   symbol?: string
   balance?: string
   onMax?: () => void
+  value?: string
+  onChange?: (value: string) => void
 }
 
 type SwapProps = {
@@ -18,13 +21,18 @@ type SwapProps = {
   to: SwapItem
 }
 
-const TokenInput = ({ price = '' }: Pick<SwapItem, 'price'>) => {
+const TokenInput = ({
+  price = '',
+  value = '',
+  onChange = () => {},
+}: Pick<SwapItem, 'price' | 'value' | 'onChange'>) => {
   return (
     <div className="flex flex-col flex-grow">
       <NumericalInput
+        value={value}
         variant="transparent"
         placeholder="0"
-        onChange={() => {}}
+        onChange={onChange}
         autoFocus
       />
       <span className="text-legend mt-1.5">{price}</span>
@@ -33,15 +41,19 @@ const TokenInput = ({ price = '' }: Pick<SwapItem, 'price'>) => {
 }
 
 const TokenSelector = ({
+  address = '',
+  symbol = '',
   balance = '',
   onMax = () => {},
-}: Pick<SwapItem, 'balance' | 'onMax'>) => {
+}: Pick<SwapItem, 'address' | 'symbol' | 'balance' | 'onMax'>) => {
+  const chainId = useAtomValue(chainIdAtom)
+
   return (
     <div className="flex flex-col gap-1 items-end">
       {/* Replace this with a dropdown */}
       <div className="flex items-center gap-1 text-2xl">
-        <TokenLogo size="lg" />
-        <span>USDC</span>
+        <TokenLogo size="lg" address={address} chain={chainId} />
+        <span>{symbol}</span>
       </div>
       <div className="flex items-center gap-1 text-base">
         <span className="text-legend">Balance</span>
@@ -59,32 +71,30 @@ const TokenSelector = ({
   )
 }
 
-const TokenInputBox = ({
-  from: { title = 'You use:', price, balance, onMax },
-}: Pick<SwapProps, 'from'>) => {
+const TokenInputBox = ({ from }: Pick<SwapProps, 'from'>) => {
   return (
     <div className="p-4 bg-muted rounded-xl">
-      <h3>{title}</h3>
+      <h3>{from?.title || 'You use:'}</h3>
       <div className="flex gap-2">
-        <TokenInput price={price} />
-        <TokenSelector balance={balance} onMax={onMax} />
+        <TokenInput {...from} />
+        <TokenSelector {...from} />
       </div>
     </div>
   )
 }
 
-const TokenOutputBox = ({
-  to: { title = 'You receive:', price = '' },
-}: Pick<SwapProps, 'to'>) => {
+const TokenOutputBox = ({ to }: Pick<SwapProps, 'to'>) => {
+  const chainId = useAtomValue(chainIdAtom)
+
   return (
     <div className="p-4 bg-card rounded-xl border-border border">
-      <h3>{title}</h3>
+      <h3>{to.title || 'You receive:'}</h3>
       <div className="flex items-center gap-2">
-        <h4 className="text-3xl font-semibold mr-auto">0</h4>
-        <TokenLogo size="lg" />
-        <h4 className="text-2xl font-semibold">DTF</h4>
+        <h4 className="text-3xl font-semibold mr-auto">{to.value}</h4>
+        <TokenLogo size="lg" address={to.address} chain={chainId} />
+        <h4 className="text-2xl font-semibold">{to.symbol}</h4>
       </div>
-      <div className="flex items-center text-legend">{price}</div>
+      <div className="flex items-center text-legend">{to.price}</div>
     </div>
   )
 }
