@@ -26,13 +26,17 @@ const stTokenQuery = gql`
   }
 `
 
-export const isVoteLockAddress = async (address: Address) => {
+export const getStToken = async (address: Address) => {
   try {
     const data = await INDEX_GRAPH_CLIENTS[ChainId.Base].request(stTokenQuery, {
       id: address.toLowerCase(),
     })
-    return Boolean(data.stakingToken)
+    return data.stakingToken
   } catch (e) {
-    return false
+    return null
   }
+}
+
+export const isVoteLockAddress = async (address: Address) => {
+  return Boolean(await getStToken(address))
 }
