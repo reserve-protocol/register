@@ -264,8 +264,6 @@ const IndexDTFMetadataUpdater = () => {
     enabled: !!token,
   })
 
-  console.log('error', error)
-
   useEffect(() => {
     if (data) {
       setIndexDTF(data.dtf)

@@ -20,8 +20,7 @@ export const RESERVE_FORUM = 'https://forum.reserve.org/'
 export const REGISTER_BUGS =
   'https://reserve.canny.io/defi-surfaces-bug-reporting'
 export const RESERVE_STORAGE = 'https://storage.reserve.org/'
-export const RESERVE_API =
-  'http://reserve-api-base-alb-979856128.us-east-1.elb.amazonaws.com/'
+export const RESERVE_API = 'https://api.reserve.org/'
 
 export const LP_PROJECTS: { [x: string]: { name: string; site: string } } = {
   'curve-dex': {

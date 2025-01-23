@@ -21,7 +21,6 @@ export const dtfSupplyAtom = atom<bigint>(0n)
 // Editable shares
 export const proposedSharesAtom = atom<Record<string, string>>({})
 
-// TODO: Mocked
 export const proposedIndexBasketAtom = atom<
   Record<string, IndexAssetShares> | undefined
 >(undefined)
@@ -79,7 +78,7 @@ export const proposedIndexBasketStateAtom = atom<{
   return {
     changed,
     remainingAllocation: 100 - currentAllocation,
-    isValid: currentAllocation === 100,
+    isValid: Math.abs(currentAllocation - 100) <= 0.001,
   }
 })
 
@@ -158,6 +157,8 @@ export const basketProposalCalldatasAtom = atom<Hex[] | undefined>((get) => {
 
 const VOLATILITY_VALUES = [0.1, 0.2, 0.5]
 
+// TODO: This re-run when volatility changes which is not optimal
+// TODO: Decouple into an external function so its called only when needed!
 function getProposedTrades(get: Getter, deferred = false) {
   const proposedBasket = get(proposedIndexBasketAtom)
   const proposedShares = get(proposedSharesAtom)
@@ -188,5 +189,17 @@ function getProposedTrades(get: Getter, deferred = false) {
     index++
   }
 
+  console.log(
+    '--------------------------------------------------------------------------------'
+  )
+  console.log('tokens', tokens)
+  console.log('decimals', decimals)
+  console.log('bals', bals)
+  console.log('targetBasket', targetBasket)
+  console.log('prices', prices)
+  console.log('error', error)
+  console.log(
+    '--------------------------------------------------------------------------------'
+  )
   return getTrades(supply, tokens, decimals, bals, targetBasket, prices, error)
 }

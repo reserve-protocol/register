@@ -98,13 +98,20 @@ const AssetRow = ({ asset }: { asset: IndexAssetShares }) => {
 }
 
 const Allocation = () => {
-  const { remainingAllocation } = useAtomValue(proposedIndexBasketStateAtom)
+  const { remainingAllocation, isValid } = useAtomValue(
+    proposedIndexBasketStateAtom
+  )
 
   return (
     <div>
       <span className="text-legend">Remaining allocation:</span>{' '}
-      <span className={cn('', remainingAllocation !== 0 && 'text-destructive')}>
-        {formatPercentage(remainingAllocation)}
+      <span
+        className={cn(
+          '',
+          remainingAllocation !== 0 && !isValid && 'text-destructive'
+        )}
+      >
+        {formatPercentage(Math.abs(remainingAllocation))}
       </span>
     </div>
   )

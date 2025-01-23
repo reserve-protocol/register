@@ -108,6 +108,8 @@ const Updater = () => {
         }
       )
 
+      console.log('data', data)
+
       return {
         proposals: [
           ...(data.ownerGovernance.proposals ?? []),

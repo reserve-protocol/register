@@ -32,9 +32,11 @@ export const getTrades = (
 
   // convert price number inputs to bigints
 
+  // convert price number inputs to bigints
+
   // D27{USD/tok} = {USD/wholeTok} * D27 / {tok/wholeTok}
   const prices = _prices.map((a, i) =>
-    BigInt(Math.round((a * D27) / Number(10n ** decimals[i])))
+    BigInt(Math.round((a * D27) / 10 ** Number(decimals[i])))
   )
 
   // D27{1} = {1} * D27
@@ -42,7 +44,6 @@ export const getTrades = (
 
   // D27{1} = D18{1} * D9
   targetBasket = targetBasket.map((a) => a * 10n ** 9n)
-  tolerance = tolerance * 10n ** 9n
 
   console.log(
     '--------------------------------------------------------------------------------'
@@ -50,7 +51,6 @@ export const getTrades = (
 
   // D27{1} approx sum 1e27
   const currentBasket = getCurrentBasket(bals, decimals, _prices)
-  console.log('currentBasket', currentBasket)
 
   // D27{USD}, {USD/wholeShare}
   const [sharesValue, sharePrice] = getSharePricing(
@@ -78,6 +78,9 @@ export const getTrades = (
     // D27{USD}
     let biggestSurplus = 0n
     let biggestDeficit = 0n
+
+    console.log('currentBasket', currentBasket)
+    console.log('targetBasket', targetBasket)
 
     for (let i = 0; i < tokens.length; i++) {
       if (
@@ -126,9 +129,10 @@ export const getTrades = (
     currentBasket[y] += backingTraded
 
     // D27{1}
-    let avgPriceError = (priceError[x] + priceError[y]) / 2n
-    if (priceError[x] >= D27n || priceError[y] >= D27n) {
-      avgPriceError = D27n
+    const avgPriceError = (priceError[x] + priceError[y]) / 2n
+
+    if (avgPriceError >= D27) {
+      throw new Error('error too large')
     }
 
     // D27{tok/share} = D27{1} * D27{USD} / D27{USD/tok} / {share}
@@ -148,23 +152,13 @@ export const getTrades = (
 
     // D27{buyTok/sellTok} = D27{buyTok/sellTok} * D27 / D27{1}
     const startPrice =
-      avgPriceError >= D27n
-        ? 0n
-        : (price * D27n + D27n - avgPriceError - 1n) / (D27n - avgPriceError)
+      (price * D27n + D27n - avgPriceError - 1n) / (D27n - avgPriceError)
     const endPrice = (price * (D27n - avgPriceError)) / D27n
 
     // add trade into set
 
     trades.push(
-      makeTrade(
-        tokens[x],
-        tokens[y],
-        sellLimit,
-        buyLimit,
-        startPrice,
-        endPrice,
-        avgPriceError
-      )
+      makeTrade(tokens[x], tokens[y], sellLimit, buyLimit, startPrice, endPrice)
     )
 
     // do not remove console.logs they do not show in tests that succeed
