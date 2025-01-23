@@ -1,10 +1,10 @@
 import TokenLogo from '@/components/token-logo'
 import { Button } from '@/components/ui/button'
+import Timeline from '@/components/ui/timeline'
 import { iTokenAtom } from '@/state/dtf/atoms'
-import { useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { useAtom, useAtomValue } from 'jotai'
 import { Link } from 'react-router-dom'
 import { isBasketProposalValidAtom, isProposalConfirmedAtom } from '../atoms'
-import Timeline from '@/components/ui/timeline'
 import SubmitProposalButton from './submit-proposal-button'
 
 // TODO: get governance route to navigate back to governance
@@ -58,23 +58,13 @@ const ProposalInstructions = () => {
     },
     {
       title: 'Finalize basket proposal',
-      children: (
-        <div className="flex flex-col gap-1 w-full">
-          <span>Finalize basket proposal</span>
-          <ConfirmProposalButton />
-        </div>
-      ),
+      children: <ConfirmProposalButton />,
       isActive: isValid && !confirmed,
       isCompleted: confirmed,
     },
     {
       title: 'Review & describe your proposal',
-      children: (
-        <div className="flex flex-col gap-1 w-full">
-          <span>Review & describe your proposal</span>
-          <SubmitProposalButton />
-        </div>
-      ),
+      children: <SubmitProposalButton />,
       isActive: confirmed,
     },
     {

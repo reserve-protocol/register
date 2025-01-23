@@ -74,7 +74,7 @@ export const useIndexBasket = (token: string | undefined, chainId: number) => {
         let index = 0
         return assets.map((asset) => {
           const token = {
-            address: asset,
+            address: asset.toLowerCase(),
             name: data[index] as string,
             symbol: data[index + 1] as string,
             decimals: data[index + 2] as number,
@@ -106,8 +106,8 @@ export const useIndexBasket = (token: string | undefined, chainId: number) => {
     const { prices, amounts } = priceResult.basket.reduce(
       (acc, asset) => {
         totalUsd += asset.amount * asset.price
-        acc.prices[asset.address] = asset.price
-        acc.amounts[asset.address] = asset.amount * asset.price
+        acc.prices[asset.address.toLowerCase()] = asset.price
+        acc.amounts[asset.address.toLowerCase()] = asset.amount * asset.price
         return acc
       },
       {

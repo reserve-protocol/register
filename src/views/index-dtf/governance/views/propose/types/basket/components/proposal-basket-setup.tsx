@@ -26,6 +26,7 @@ import {
   proposedSharesAtom,
   stepAtom,
 } from '../atoms'
+import { Address } from 'viem'
 
 const assetsAtom = atom((get) => {
   const proposedBasket = get(proposedIndexBasketAtom)
@@ -110,11 +111,16 @@ const Allocation = () => {
 }
 
 // TODO: Handle with address checksum vs lowercase format
-const setNewBasketAtom = atom(null, (get, set, tokens: Token[]) => {
+const setNewBasketAtom = atom(null, (get, set, _tokens: Token[]) => {
   const proposedShareMap = get(proposedSharesAtom)
   const proposedIndexBasket = get(proposedIndexBasketAtom) || {}
   const newProposedIndexBasket: Record<string, IndexAssetShares> = {}
   const newProposedShares: Record<string, string> = {}
+  // Make sure addresses are lowercase
+  const tokens = _tokens.map((token) => ({
+    ...token,
+    address: token.address.toLowerCase() as Address,
+  }))
 
   // Create a map of tokens
   const tokenMap = tokens.reduce(

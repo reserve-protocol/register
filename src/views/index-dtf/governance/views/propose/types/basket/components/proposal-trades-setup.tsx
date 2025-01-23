@@ -39,7 +39,7 @@ const organizedTradesAtom = atom((get) => {
   const trades = get(proposedInxexTradesAtom)
   const priceMap = get(priceMapAtom)
 
-  if (!basket || !trades) return undefined
+  if (!basket || !trades || !trades.length) return undefined
 
   // Group trades by sell token
   return trades.reduce((acc, trade, index) => {
