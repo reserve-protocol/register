@@ -1,4 +1,5 @@
 import dtfIndexStakingVault from '@/abis/dtf-index-staking-vault'
+import { Checkbox } from '@/components/ui/checkbox'
 import {
   Drawer,
   DrawerContent,
@@ -13,7 +14,7 @@ import { useWatchReadContract } from '@/hooks/useWatchReadContract'
 import { walletAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { Minus, OctagonAlert, Plus } from 'lucide-react'
+import { Asterisk, Minus, OctagonAlert, Plus } from 'lucide-react'
 import { ReactNode, useEffect } from 'react'
 import { useReadContract } from 'wagmi'
 import {
@@ -27,9 +28,8 @@ import {
 } from './atoms'
 import LockView from './lock'
 import SubmitLockButton from './lock/submit-lock-button'
-import SubmitUnlockButton from './unlock/submit-unlock-button copy'
 import UnlockView from './unlock'
-import { Checkbox } from '@/components/ui/checkbox'
+import SubmitUnlockButton from './unlock/submit-unlock-button copy'
 
 const TABS = [
   {
@@ -73,6 +73,35 @@ const LockCheckbox = () => {
         </div>
       </div>
     </label>
+  )
+}
+
+const UnlockProcess = () => {
+  const indexDTF = useAtomValue(indexDTFAtom)
+  const delay = useAtomValue(unlockDelayAtom)
+
+  if (!indexDTF?.stToken || !delay) return null
+
+  return (
+    <div className="flex-grow flex flex-col gap-1 items-center justify-center">
+      <div className="rounded-full bg-primary p-1 w-max">
+        <Asterisk size={20} className="text-white" />
+      </div>
+      <div className="font-bold mt-3">Unlock process</div>
+      <div className="text-primary mt-3">1.</div>
+      <div className="text-md max-w-sm text-center -mt-1">
+        A {delay}-day unlock delay period begins & you stop accumulating rewards
+      </div>
+      <div className="text-primary mt-3">2.</div>
+      <div className="text-md max-w-sm text-center -mt-1">
+        Wait {delay} days
+      </div>
+      <div className="text-primary mt-3">3.</div>
+      <div className="text-md max-w-sm text-center -mt-1">
+        Come back to your account balance page to withdraw your unlocked{' '}
+        {indexDTF.stToken.underlying.symbol}
+      </div>
+    </div>
   )
 }
 
@@ -138,7 +167,7 @@ const Staking = ({ children }: { children: ReactNode }) => {
             setInput('')
             setCheckbox(false)
           }}
-          className="flex flex-col flex-grow overflow-hidden relative"
+          className="flex flex-col"
         >
           <DrawerTitle className="flex gap-2 mt-2 px-2 mb-2">
             <TabsList className="h-9">
@@ -161,8 +190,8 @@ const Staking = ({ children }: { children: ReactNode }) => {
             <UnlockView />
           </TabsContent>
         </Tabs>
-        <DrawerFooter className="mb-2">
-          {isLock && <LockCheckbox />}
+        <DrawerFooter className="flex-grow justify-end mb-2">
+          {isLock ? <LockCheckbox /> : <UnlockProcess />}
           {isLock ? <SubmitLockButton /> : <SubmitUnlockButton />}
         </DrawerFooter>
       </DrawerContent>
