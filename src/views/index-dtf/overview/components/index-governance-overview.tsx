@@ -7,6 +7,7 @@ import { indexDTFAtom, iTokenAtom } from '@/state/dtf/atoms'
 import { parseDuration } from '@/utils'
 import { useAtomValue } from 'jotai'
 import { ArrowUpRight, Fingerprint } from 'lucide-react'
+import Staking from './staking'
 
 const GovernanceDetails = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
@@ -56,23 +57,28 @@ const GovernanceDetails = () => {
           Guardian can veto up until trading happens
         </span>
       </div>
-      <div className="flex items-center gap-2 rounded-xl bg-black/5 p-4 -m-4 mt-2">
-        <TokenLogo
-          size="xl"
-          address={indexDTF.stToken?.underlying.address ?? 'Unknown'}
-          chain={chainId}
-        />
-        <div className="mr-auto">
-          <h4 className="font-bold">
-            Stake ${indexDTF.stToken?.underlying.symbol ?? 'Unknown'} to
-            participate
-          </h4>
-          <span className="legend">Earn DTFs as a reward for governing</span>
+      <Staking>
+        <div
+          className="flex items-center gap-2 rounded-xl bg-black/5 p-4 -m-4 mt-2"
+          role="button"
+        >
+          <TokenLogo
+            size="xl"
+            address={indexDTF.stToken?.underlying.address ?? 'Unknown'}
+            chain={chainId}
+          />
+          <div className="mr-auto">
+            <h4 className="font-bold">
+              Stake ${indexDTF.stToken?.underlying.symbol ?? 'Unknown'} to
+              participate
+            </h4>
+            <span className="legend">Earn DTFs as a reward for governing</span>
+          </div>
+          <Box variant="circle" className="h-8 w-8">
+            <ArrowUpRight size={16} />
+          </Box>
         </div>
-        <Box variant="circle" className="h-8 w-8">
-          <ArrowUpRight size={16} />
-        </Box>
-      </div>
+      </Staking>
     </div>
   )
 }

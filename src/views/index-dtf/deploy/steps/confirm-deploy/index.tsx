@@ -1,14 +1,20 @@
 import { Button } from '@/components/ui/button'
-import { Drawer, DrawerContent, DrawerTitle } from '@/components/ui/drawer'
+import {
+  Drawer,
+  DrawerContent,
+  DrawerTitle,
+  DrawerTrigger,
+} from '@/components/ui/drawer'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { useAtom, useAtomValue } from 'jotai'
+import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { SubmitHandler, useFormContext } from 'react-hook-form'
-import { deployedDTFAtom } from '../../atoms'
+import { daoTokenAddressAtom, deployedDTFAtom } from '../../atoms'
 import { DeployInputs } from '../../form-fields'
 import { indexDeployFormDataAtom } from './atoms'
 import ManualIndexDeploy from './manual'
 import SimpleIndexDeploy from './simple'
 import SuccessView from './success'
+import { getStToken } from '../../utils'
 
 const Header = () => {
   const form = useAtomValue(indexDeployFormDataAtom)
@@ -30,9 +36,17 @@ const ConfirmIndexDeploy = ({ isActive }: { isActive: boolean }) => {
   const { handleSubmit } = useFormContext<DeployInputs>()
   const [formData, setFormData] = useAtom(indexDeployFormDataAtom)
   const deployedDTF = useAtomValue(deployedDTFAtom)
+  const setStTokenAddress = useSetAtom(daoTokenAddressAtom)
 
   const processForm: SubmitHandler<DeployInputs> = (data) => {
-    setFormData(data)
+    if (data.governanceVoteLock) {
+      getStToken(data.governanceVoteLock).then(({ id }) => {
+        setStTokenAddress(id)
+        setFormData(data)
+      })
+    } else {
+      setFormData(data)
+    }
   }
 
   const submitForm = () => {
@@ -40,10 +54,12 @@ const ConfirmIndexDeploy = ({ isActive }: { isActive: boolean }) => {
   }
 
   return (
-    <Drawer open={!!formData}>
-      <Button className="w-full" disabled={!isActive} onClick={submitForm}>
-        Deploy
-      </Button>
+    <Drawer>
+      <DrawerTrigger>
+        <Button className="w-full" disabled={!isActive} onClick={submitForm}>
+          Deploy
+        </Button>
+      </DrawerTrigger>
 
       {deployedDTF ? (
         <DrawerContent className="text-white max-h-[900px]">

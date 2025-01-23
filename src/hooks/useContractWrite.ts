@@ -61,7 +61,7 @@ const useContractWrite = <
       ...contractWrite,
       gas,
       validationError: error,
-      isReady: !!gas && isSuccess,
+      isReady: !!data?.request && isSuccess,
       isLoading: contractWrite.isPending,
       hash: contractWrite.data,
       write: handleWrite,

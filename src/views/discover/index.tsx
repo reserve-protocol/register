@@ -7,7 +7,7 @@ const Discover = () => {
   const [type, setType] = useState<DTFChoice>(DTFChoice.IndexDTF)
 
   return (
-    <div className="container">
+    <div className="container pb-6">
       <DiscoverDTFChoice value={type} onChange={setType} />
       {type === DTFChoice.IndexDTF ? (
         <DiscoverIndexDTF />
