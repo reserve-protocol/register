@@ -183,11 +183,15 @@ const txAtom = atom<
   }
 
   if (!stToken) {
+    const owner = formData.governanceWalletAddress
+
+    if (!owner) return undefined
+
     // Ungoverned deploy
     const args: DeployParamsUngoverned = [
       folioParams,
       folioConfig,
-      wallet,
+      owner,
       [
         formData.auctionLauncher!,
         ...(formData.additionalAuctionLaunchers ?? []),
