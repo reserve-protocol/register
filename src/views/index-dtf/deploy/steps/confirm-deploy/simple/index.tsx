@@ -1,8 +1,23 @@
-import TokenLogo from '@/components/token-logo'
 import { Button } from '@/components/ui/button'
-import { Input, NumericalInput } from '@/components/ui/input'
+import Swap from '@/components/ui/swap'
+import { useChainlinkPrice } from '@/hooks/useChainlinkPrice'
+import { chainIdAtom } from '@/state/atoms'
+import { formatCurrency } from '@/utils'
 import { Trans } from '@lingui/macro'
-import { ChevronDown, RefreshCw } from 'lucide-react'
+import { useAtom, useAtomValue } from 'jotai'
+import { RefreshCw } from 'lucide-react'
+import { Address } from 'viem'
+import { indexDeployFormDataAtom } from '../atoms'
+import {
+  defaultInputTokenAtom,
+  inputAmountAtom,
+  inputBalanceAtom,
+  inputTokenAtom,
+  zapDeployPayloadAtom,
+} from './atoms'
+import useDebounce from '@/hooks/useDebounce'
+import zapper from '@/views/yield-dtf/issuance/components/zapV2/api'
+import { useZapDeployQuery } from '@/hooks/useZapDeployQuery'
 
 const SimpleDeployButton = () => {
   return (
@@ -23,71 +38,34 @@ const RefreshQuote = () => {
   )
 }
 
-const TokenInput = () => {
-  return (
-    <div className="flex flex-col flex-grow">
-      <NumericalInput
-        variant="transparent"
-        placeholder="0"
-        onChange={() => {}}
-      />
-      <span className="text-legend mt-1.5">$blabla</span>
-    </div>
-  )
-}
-
-const TokenSelector = () => {
-  return (
-    <div className="flex flex-col gap-1">
-      <Button variant="ghost" className="flex gap-2 text-2xl pr-0">
-        <TokenLogo size="xl" />
-        <span>USDC</span>
-        <div className="bg-card rounded-full h-6 w-6">
-          <ChevronDown />
-        </div>
-      </Button>
-      <div className="flex items-center gap-1">
-        <span className="text-legend">Balance</span>
-        <span className="font-bold">1,45M</span>
-        <Button
-          variant="outline-primary"
-          className="rounded-[40px] ml-1"
-          size="xs"
-        >
-          Max
-        </Button>
-      </div>
-    </div>
-  )
-}
-
-const TokenInputBox = () => {
-  return (
-    <div className="p-4 bg-border/70 rounded-xl">
-      <h3>You use:</h3>
-      <div className="flex gap-2">
-        <TokenInput />
-        <TokenSelector />
-      </div>
-    </div>
-  )
-}
-
-const TokenOutputBox = () => {
-  return (
-    <div className="p-4 bg-border/70 rounded-xl">
-      <h3>You mint:</h3>
-      <div className="flex items-center gap-2">
-        <h4 className="text-3xl font-bold mr-auto">0</h4>
-        <TokenLogo size="xl" />
-        <h4 className="text-3xl font-bold">DTF</h4>
-      </div>
-      <div className="flex items-center"></div>
-    </div>
-  )
-}
-
 const SimpleIndexDeploy = () => {
+  const chainId = useAtomValue(chainIdAtom)
+  const inputToken = useAtomValue(inputTokenAtom)
+  const inputBalance = useAtomValue(inputBalanceAtom)
+  const defaultInputToken = useAtomValue(defaultInputTokenAtom)
+  const form = useAtomValue(indexDeployFormDataAtom)
+  const [inputAmount, setInputAmount] = useAtom(inputAmountAtom)
+  const zapDeployPayload = useAtomValue(zapDeployPayloadAtom)
+
+  const url = form?.governanceWalletAddress
+    ? zapper.zapDeployUngoverned(chainId)
+    : zapper.zapDeploy(chainId)
+  const requestBody = useDebounce(zapDeployPayload, 500)
+
+  const tokenIn = inputToken || defaultInputToken
+  const tokenPrice = useChainlinkPrice(chainId, tokenIn?.address as Address)
+  const inputPrice = (tokenPrice || 0) * Number(inputAmount)
+
+  const onMax = () => {
+    setInputAmount(inputBalance?.balance || '0')
+  }
+
+  const { data, isLoading, error } = useZapDeployQuery(url, requestBody)
+
+  console.log({ data, isLoading, error })
+
+  if (!form) return null
+
   return (
     <div className="flex flex-col h-full">
       <div className="flex-grow">
@@ -95,9 +73,25 @@ const SimpleIndexDeploy = () => {
           <h4 className="font-bold mr-auto">How much do you want to mint?</h4>
           <RefreshQuote />
         </div>
-        <div className="p-2">
-          <TokenInputBox />
-          <TokenOutputBox />
+        <div className="px-2">
+          <Swap
+            from={{
+              price: `$${formatCurrency(inputPrice)}`,
+              address: tokenIn.address,
+              symbol: tokenIn.symbol,
+              balance: `${formatCurrency(Number(inputBalance?.balance || '0'))}`,
+              value: inputAmount,
+              onChange: setInputAmount,
+              onMax,
+            }}
+            to={{
+              title: 'You mint:',
+              price: undefined,
+              symbol: form.symbol,
+              balance: undefined,
+              value: undefined,
+            }}
+          />{' '}
         </div>
       </div>
       <SimpleDeployButton />

@@ -6,15 +6,15 @@ import {
   DrawerTrigger,
 } from '@/components/ui/drawer'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { useAtomValue, useSetAtom } from 'jotai'
 import { SubmitHandler, useFormContext } from 'react-hook-form'
 import { daoTokenAddressAtom, deployedDTFAtom } from '../../atoms'
 import { DeployInputs } from '../../form-fields'
+import { getStToken } from '../../utils'
 import { indexDeployFormDataAtom } from './atoms'
 import ManualIndexDeploy from './manual'
 import SimpleIndexDeploy from './simple'
 import SuccessView from './success'
-import { getStToken } from '../../utils'
 
 const Header = () => {
   const form = useAtomValue(indexDeployFormDataAtom)
@@ -34,8 +34,8 @@ const Header = () => {
 
 const ConfirmIndexDeploy = ({ isActive }: { isActive: boolean }) => {
   const { handleSubmit } = useFormContext<DeployInputs>()
-  const [formData, setFormData] = useAtom(indexDeployFormDataAtom)
   const deployedDTF = useAtomValue(deployedDTFAtom)
+  const setFormData = useSetAtom(indexDeployFormDataAtom)
   const setStTokenAddress = useSetAtom(daoTokenAddressAtom)
 
   const processForm: SubmitHandler<DeployInputs> = (data) => {
@@ -55,7 +55,7 @@ const ConfirmIndexDeploy = ({ isActive }: { isActive: boolean }) => {
 
   return (
     <Drawer>
-      <DrawerTrigger>
+      <DrawerTrigger disabled={!isActive}>
         <Button className="w-full" disabled={!isActive} onClick={submitForm}>
           Deploy
         </Button>

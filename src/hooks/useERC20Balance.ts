@@ -3,6 +3,8 @@ import { useAtomValue } from 'jotai'
 import { Address, erc20Abi } from 'viem'
 import { useWatchReadContract } from './useWatchReadContract'
 
+const ETH_ADDRESS = '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'
+
 const useERC20Balance = (address: Address | undefined) => {
   const wallet = useAtomValue(walletAtom)
 
@@ -11,7 +13,7 @@ const useERC20Balance = (address: Address | undefined) => {
     address,
     functionName: 'balanceOf',
     args: [wallet ?? '0x'],
-    query: { enabled: !!(wallet && address) },
+    query: { enabled: !!(wallet && address && address !== ETH_ADDRESS) },
   })
 }
 
