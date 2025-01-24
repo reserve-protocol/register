@@ -40,10 +40,13 @@ const SimpleDeployButton = ({
     query: { enabled: approvalNeeded },
   })
 
-  const { data: approvalReceipt, error: approvalTxError } =
-    useWaitForTransactionReceipt({
-      hash: approvalHash,
-    })
+  const {
+    data: approvalReceipt,
+    isLoading: confirmingApproval,
+    error: approvalTxError,
+  } = useWaitForTransactionReceipt({
+    hash: approvalHash,
+  })
 
   const readyToSubmit = !approvalNeeded || approvalReceipt?.status === 'success'
 
@@ -92,10 +95,14 @@ const SimpleDeployButton = ({
 
   return (
     <TransactionButton
-      disabled={approvalNeeded ? !approvalReady : !readyToSubmit}
-      loading={approving || loadingTx || validatingTx}
+      disabled={
+        approvalNeeded
+          ? !approvalReady || confirmingApproval || approving
+          : !readyToSubmit || loadingTx || validatingTx
+      }
+      loading={approving || loadingTx || validatingTx || confirmingApproval}
       loadingText={
-        approving || loadingTx || validatingTx
+        validatingTx || confirmingApproval
           ? 'Confirming tx...'
           : 'Pending, sign in wallet'
       }

@@ -100,12 +100,15 @@ const ConfirmIndexDeploy = ({ isActive }: { isActive: boolean }) => {
             <TabsContent
               value="simple"
               className="flex-grow overflow-auto relative"
+              // Prevent the drawer from closing when clicking on the content
+              onPointerDown={(e) => e.stopPropagation()}
             >
               <SimpleIndexDeploy />
             </TabsContent>
             <TabsContent
               value="manual"
               className="flex-grow overflow-auto relative"
+              onPointerDown={(e) => e.stopPropagation()}
             >
               <ManualIndexDeploy />
             </TabsContent>

@@ -93,7 +93,7 @@ const SimpleIndexDeploy = () => {
           />{' '}
         </div>
       </div>
-      <div className="p-2">
+      <div className="p-2 pb-4">
         {data?.status === 'success' && data?.result && !insufficientBalance ? (
           <SimpleDeployButton data={data?.result} />
         ) : (
