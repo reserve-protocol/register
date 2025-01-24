@@ -6,22 +6,21 @@ import { selectedGovernanceOptionAtom } from '../../atoms'
 
 const SETTINGS = [
   {
-    title: 'Governance share',
+    title: 'Platform',
     description:
-      'How to distribute the revenue from this fee is defines in the revenue distribution section.',
-    field: 'governanceShare',
+      'Percentage of fee revenue sent to the protocol; cannot be changed by governance.',
+    field: 'fixedPlatformFee',
   },
   {
-    title: 'Deployer share',
-    description:
-      'How to distribute the revenue from this fee is defines in the revenue distribution section.',
+    title: 'Creator',
+    description: 'Percentage of fee revenue sent to the creator of the DTF.',
     field: 'deployerShare',
   },
   {
-    title: 'Fixed platform share',
+    title: 'Governance',
     description:
-      'How to distribute the revenue from this fee is defines in the revenue distribution section.',
-    field: 'fixedPlatformFee',
+      'Percentage of fee revenue sent to the vote-lock DAO governing the DTF.',
+    field: 'governanceShare',
   },
 ]
 

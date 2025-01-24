@@ -7,6 +7,7 @@ import {
   selectedGovernanceOptionAtom,
   validatedSectionsAtom,
 } from '../../atoms'
+import Ticker from '../../utils/ticker'
 import GovernanceExistingERC20 from './form-existing-erc20'
 import GovernanceExistingVoteLock from './form-existing-vote-lock'
 import GovernanceSpecificWallet from './form-specific-wallet'
@@ -19,27 +20,50 @@ export type GovernanceTypes =
 const GOVERNANCE_OPTIONS = [
   {
     type: 'governanceERC20address',
-    title: 'Existing ERC20 token',
-    description:
-      'Explain the benefit of using our framwork & clarify that it doesn’t mean.',
+    title: 'Create a New DAO',
+    description: (
+      <span>
+        Enter the contract address of an ERC-20 that can be vote-locked to
+        govern <Ticker />.
+      </span>
+    ),
     icon: <Asterisk size={24} strokeWidth={1.5} />,
     form: <GovernanceExistingERC20 />,
     resetFields: ['governanceVoteLock', 'governanceWalletAddress'],
   },
   {
     type: 'governanceVoteLock',
-    title: 'Existing Vote Lock contract',
-    description:
-      'Explain the benefit of using our framwork & clarify that it doesn’t mean giving.',
+    title: 'Use an Existing DAO',
+    description: (
+      <span>
+        Enter the contract address of an existing vote-lock DAO to govern{' '}
+        <Ticker />. This DAO must have been created by the Reserve Index
+        Protocol, and the contract must implement{' '}
+        <a
+          href="https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/governance/utils/IVotes.sol"
+          target="_blank"
+          rel="noreferrer"
+          className="text-primary"
+        >
+          IVotes.sol
+        </a>
+        .
+      </span>
+    ),
     icon: <Asterisk size={24} strokeWidth={1.5} />,
     form: <GovernanceExistingVoteLock />,
     resetFields: ['governanceERC20address', 'governanceWalletAddress'],
   },
   {
     type: 'governanceWalletAddress',
-    title: 'Specific wallet address',
-    description:
-      'Explain the benefit of using our framwork & clarify that it doesn’t mean.',
+    title: 'Use an External Wallet',
+    description: (
+      <span>
+        Enter the wallet address that will have centralized control of{' '}
+        <Ticker />. Be aware, that having centralized control limits who can
+        interact with <Ticker /> on Register.
+      </span>
+    ),
     icon: <Asterisk size={24} strokeWidth={1.5} />,
     form: <GovernanceSpecificWallet />,
     resetFields: [
@@ -52,7 +76,7 @@ const GOVERNANCE_OPTIONS = [
 
 type GovernanceOptionProps = {
   title: string
-  description: string
+  description: ReactNode
   icon: ReactNode
   form: ReactNode
   selected: boolean

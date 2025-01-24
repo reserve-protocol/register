@@ -46,7 +46,7 @@ const TokenButton = ({ variant }: TokenButtonProps) => {
         )}
       >
         <PlusIcon size={16} />
-        Add collateral
+        Add token
       </Button>
     </DrawerTrigger>
   )

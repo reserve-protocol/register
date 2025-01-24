@@ -9,7 +9,8 @@ export type DeployStepId =
   | 'revenue-distribution'
   | 'auctions'
   | 'roles'
-  | 'voting'
+  | 'basket-changes'
+  | 'other-changes'
 
 export const dtfDeploySteps: Record<DeployStepId, { fields: string[] }> = {
   metadata: {
@@ -50,7 +51,7 @@ export const dtfDeploySteps: Record<DeployStepId, { fields: string[] }> = {
   roles: {
     fields: ['guardianAddress', 'brandManagerAddress'],
   },
-  voting: {
+  'basket-changes': {
     fields: [
       'basketVotingDelay',
       'customBasketVotingDelay',
@@ -60,6 +61,10 @@ export const dtfDeploySteps: Record<DeployStepId, { fields: string[] }> = {
       'customBasketVotingQuorum',
       'basketExecutionDelay',
       'customBasketExecutionDelay',
+    ],
+  },
+  'other-changes': {
+    fields: [
       'governanceVotingDelay',
       'customGovernanceVotingDelay',
       'governanceVotingPeriod',
@@ -280,7 +285,7 @@ export const DeployFormSchema = z
   })
   .refine(
     (data) => {
-      // Check if the voting settings are valid
+      // Check if the basket changes settings are valid
       const basketVotingDelaySet =
         data.basketVotingDelay || data.customBasketVotingDelay
       const basketVotingPeriodSet =
@@ -291,6 +296,23 @@ export const DeployFormSchema = z
         data.basketVotingThreshold || data.customBasketVotingThreshold
       const basketExecutionDelaySet =
         data.basketExecutionDelay || data.customBasketExecutionDelay
+
+      return (
+        basketVotingDelaySet &&
+        basketVotingPeriodSet &&
+        basketVotingQuorumSet &&
+        basketVotingThresholdSet &&
+        basketExecutionDelaySet
+      )
+    },
+    {
+      message: 'Basket changes settings are invalid',
+      path: ['basket-changes'],
+    }
+  )
+  .refine(
+    (data) => {
+      // Check if the governance settings are valid
       const governanceVotingDelaySet =
         data.governanceVotingDelay || data.customGovernanceVotingDelay
       const governanceVotingPeriodSet =
@@ -303,11 +325,6 @@ export const DeployFormSchema = z
         data.governanceExecutionDelay || data.customGovernanceExecutionDelay
 
       return (
-        basketVotingDelaySet &&
-        basketVotingPeriodSet &&
-        basketVotingQuorumSet &&
-        basketVotingThresholdSet &&
-        basketExecutionDelaySet &&
         governanceVotingDelaySet &&
         governanceVotingPeriodSet &&
         governanceVotingQuorumSet &&
@@ -316,8 +333,8 @@ export const DeployFormSchema = z
       )
     },
     {
-      message: 'Voting settings are invalid',
-      path: ['voting'],
+      message: 'Other changes settings are invalid',
+      path: ['other-changes'],
     }
   )
 

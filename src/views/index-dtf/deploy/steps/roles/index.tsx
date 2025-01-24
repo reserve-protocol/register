@@ -3,8 +3,9 @@ import RolesForm from './roles-form'
 
 const Description = () => (
   <div className="px-6 pb-6 text-base">
-    The price curator is responsible for choosing a target price for the trade
-    and initiating the dutch auction.
+    The Reserve Index Protocol provides several roles that can improve the
+    safety and experience of DTF holders and governors. These roles are mutable
+    and can be changed by governance in the future.
   </div>
 )
 

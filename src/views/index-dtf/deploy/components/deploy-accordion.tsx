@@ -35,8 +35,9 @@ import Governance from '../steps/governance'
 import MetadataAndChain from '../steps/metadata'
 import RevenueDistribution from '../steps/revenue'
 import Roles from '../steps/roles'
-import Voting from '../steps/voting'
+import BasketChanges from '../steps/basket-changes'
 import { indexDeployFormDataAtom } from '../steps/confirm-deploy/atoms'
+import OtherChanges from '../steps/other-changes'
 
 export type DeployStep = {
   id: DeployStepId
@@ -50,37 +51,30 @@ export const DEPLOY_STEPS: DeployStep[] = [
   {
     id: 'metadata',
     icon: <Asterisk size={24} strokeWidth={1.5} />,
-    title: 'Metadata & Chain',
-    titleSecondary: 'Metadata & Chain',
+    title: 'Metadata',
+    titleSecondary: 'Metadata',
     content: <MetadataAndChain />,
   },
   {
     id: 'basket',
     icon: <BasketCubeIcon fontSize={24} />,
     title: 'Basket',
-    titleSecondary: 'What should the initial index include?',
+    titleSecondary: 'Basket',
     content: <FTokenBasket />,
   },
   {
     id: 'governance',
     icon: <Asterisk size={24} strokeWidth={1.5} />,
     title: 'Governance',
-    titleSecondary: 'How would you like to govern?',
+    titleSecondary: 'Governance Type',
     content: <Governance />,
   },
   {
     id: 'revenue-distribution',
     icon: <Asterisk size={24} strokeWidth={1.5} />,
-    title: 'Monetization',
+    title: 'Fees',
     titleSecondary: 'Fees',
     content: <RevenueDistribution />,
-  },
-  {
-    id: 'auctions',
-    icon: <Asterisk size={24} strokeWidth={1.5} />,
-    title: 'Auctions',
-    titleSecondary: 'Auctions',
-    content: <Auctions />,
   },
   {
     id: 'roles',
@@ -90,11 +84,25 @@ export const DEPLOY_STEPS: DeployStep[] = [
     content: <Roles />,
   },
   {
-    id: 'voting',
+    id: 'auctions',
     icon: <Asterisk size={24} strokeWidth={1.5} />,
-    title: 'Voting',
-    titleSecondary: 'Voting',
-    content: <Voting />,
+    title: 'Auctions',
+    titleSecondary: 'Auctions',
+    content: <Auctions />,
+  },
+  {
+    id: 'basket-changes',
+    icon: <Asterisk size={24} strokeWidth={1.5} />,
+    title: 'Basket Changes',
+    titleSecondary: 'Basket Changes',
+    content: <BasketChanges />,
+  },
+  {
+    id: 'other-changes',
+    icon: <Asterisk size={24} strokeWidth={1.5} />,
+    title: 'Other Changes',
+    titleSecondary: 'Other Changes',
+    content: <OtherChanges />,
   },
 ]
 

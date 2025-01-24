@@ -4,8 +4,9 @@ import BasicMetadataForm from './form-basic-metadata'
 
 const Description = () => (
   <div className="px-6 pb-6 text-base">
-    “Bridged tokens can be used in the index. Chain selection determines where
-    you deploy etc etc etc.”
+    Please provide the necessary information and select the chain you would like
+    it to launch on. The Name and Symbol are immutable. The Mandate can be
+    changed by governance in the future.
   </div>
 )
 
