@@ -20,9 +20,20 @@ import {
 } from './atoms'
 import SimpleDeployButton from './simple-deploy-button'
 
-const RefreshQuote = () => {
+const RefreshQuote = ({
+  onClick,
+  disabled,
+}: {
+  onClick?: () => void
+  disabled?: boolean
+}) => {
   return (
-    <Button className="gap-2 text-legend" variant="ghost">
+    <Button
+      className="gap-2 text-legend"
+      variant="ghost"
+      onClick={onClick}
+      disabled={disabled}
+    >
       <RefreshCw size={16} />
       <Trans>Refresh quote</Trans>
     </Button>
@@ -55,7 +66,7 @@ const SimpleIndexDeploy = () => {
     ? parseUnits(inputAmount, tokenIn.decimals) > inputBalance?.value
     : false
 
-  const { data, isLoading, error } = useZapDeployQuery(
+  const { data, isLoading, error, isFetching, refetch } = useZapDeployQuery(
     url,
     requestBody,
     insufficientBalance
@@ -69,9 +80,11 @@ const SimpleIndexDeploy = () => {
   return (
     <div className="flex flex-col h-full">
       <div className="flex-grow">
-        <div className="flex items-center mx-6">
-          <h4 className="font-bold mr-auto">How much do you want to mint?</h4>
-          <RefreshQuote />
+        <div className="flex items-center mx-2 mb-1">
+          <h4 className="font-bold ml-4 mr-auto">
+            How much do you want to mint?
+          </h4>
+          <RefreshQuote onClick={refetch} disabled={isFetching} />
         </div>
         <div className="px-2">
           <Swap
@@ -94,12 +107,15 @@ const SimpleIndexDeploy = () => {
         </div>
       </div>
       <div className="p-2 pb-4">
-        {data?.status === 'success' && data?.result && !insufficientBalance ? (
+        {data?.status === 'success' &&
+        data?.result &&
+        !insufficientBalance &&
+        !isFetching ? (
           <SimpleDeployButton data={data?.result} />
         ) : (
           <>
             <Button size="lg" className="w-full" disabled>
-              {isLoading
+              {isLoading || isFetching
                 ? 'Loading...'
                 : error || data?.status === 'error'
                   ? insufficientBalance

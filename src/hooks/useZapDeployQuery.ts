@@ -29,5 +29,6 @@ export const useZapDeployQuery = (
     },
     enabled: !!payload && !disabled,
     staleTime: 12000,
+    refetchInterval: 12000,
   })
 }
