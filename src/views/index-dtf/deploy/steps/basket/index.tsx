@@ -5,9 +5,9 @@ import TokenSelector from './token-selector'
 
 const Description = () => (
   <div className="px-6 pb-6 text-base">
-    Define what portion of the revenue goes to the RToken holders versus RSR
-    stakers. It can also be configured to send a portion of the revenue of an
-    RToken to any arbitrary Ethereum address (wallet or smart contract).
+    An Index DTF is a tokenized basket of assets. Please add the tokens that
+    will compose your index DTF basket at launch. The basket can be changed by
+    governance in the future.
   </div>
 )
 

@@ -14,7 +14,7 @@ const FolioFeeSelector = () => {
   }
 
   const resetCustomField = () => {
-    setValue('customFolioFee', '')
+    setValue('customFolioFee', undefined)
   }
 
   return (
@@ -25,9 +25,10 @@ const FolioFeeSelector = () => {
         </div>
 
         <div className="flex flex-col">
-          <div className="text-base font-bold">Folio fee</div>
+          <div className="text-base font-bold">Annualized TVL Fee</div>
           <div className="flex items-center gap-1 text-sm text-muted-foreground">
-            Describe folio fee...
+            A optional percentage-based fee charged by the DTF based on the
+            total value of the tokens held in the contract.
           </div>
         </div>
       </div>

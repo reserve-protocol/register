@@ -9,7 +9,7 @@ import {
   daoTokenAddressAtom,
   deployedDTFAtom,
 } from '@/views/index-dtf/deploy/atoms'
-import { DeployInputs } from '@/views/index-dtf/deploy/form-fields'
+import { calculateRevenueDistribution } from '@/views/index-dtf/deploy/utils'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { Address, parseEther, parseEventLogs, parseUnits } from 'viem'
@@ -29,7 +29,7 @@ type FolioParams = {
   initialShares: bigint
 }
 
-type FeeRecipient = {
+export type FeeRecipient = {
   recipient: Address
   portion: bigint
 }
@@ -74,62 +74,6 @@ type DeployParamsUngoverned = [
   Address[],
   Address[],
 ]
-
-function calculateShare(sharePercentage: number, denominator: number) {
-  const share = sharePercentage / 100
-
-  if (denominator > 0) {
-    const shareNumerator = share / denominator
-    return parseEther(shareNumerator.toString())
-  }
-
-  return parseEther(share.toString())
-}
-
-function calculateRevenueDistribution(
-  formData: DeployInputs,
-  wallet: Address,
-  stToken?: Address
-) {
-  const totalSharesDenominator = (100 - formData.fixedPlatformFee) / 100
-
-  let revenueDistribution: FeeRecipient[] = (
-    formData.additionalRevenueRecipients || []
-  ).map((recipient) => ({
-    recipient: recipient.address,
-    portion: calculateShare(recipient.share, totalSharesDenominator),
-  }))
-
-  // Add deployer share if not the last one
-  if (formData.deployerShare > 0) {
-    revenueDistribution.push({
-      recipient: wallet,
-      portion: calculateShare(formData.deployerShare, totalSharesDenominator),
-    })
-  }
-
-  // Add governance share if not the last one
-  if (formData.governanceShare > 0 && stToken) {
-    revenueDistribution.push({
-      recipient: stToken,
-      portion: calculateShare(formData.governanceShare, totalSharesDenominator),
-    })
-  }
-
-  // Calculate sum of all portions so far
-  if (revenueDistribution.length > 1) {
-    const currentSum = revenueDistribution
-      .slice(0, -1)
-      .reduce((sum, item) => sum + item.portion, 0n)
-
-    revenueDistribution[revenueDistribution.length - 1].portion =
-      parseEther('1') - currentSum
-  }
-
-  revenueDistribution.sort((a, b) => (a.recipient < b.recipient ? -1 : 1))
-
-  return revenueDistribution
-}
 
 const txAtom = atom<
   | {
@@ -183,15 +127,16 @@ const txAtom = atom<
   }
 
   if (!stToken) {
+    const owner = formData.governanceWalletAddress
+
+    if (!owner) return undefined
+
     // Ungoverned deploy
     const args: DeployParamsUngoverned = [
       folioParams,
       folioConfig,
-      wallet,
-      [
-        formData.auctionLauncher!,
-        ...(formData.additionalAuctionLaunchers ?? []),
-      ],
+      owner,
+      [],
       [
         formData.auctionLauncher!,
         ...(formData.additionalAuctionLaunchers ?? []),

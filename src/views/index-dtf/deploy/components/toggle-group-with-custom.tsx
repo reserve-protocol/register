@@ -54,7 +54,7 @@ const ToggleGroupSelector = ({
   const { watch, setValue } = useFormContext()
 
   const resetCustomField = () => {
-    setValue(customFieldName, '')
+    setValue(customFieldName, undefined)
   }
 
   return (

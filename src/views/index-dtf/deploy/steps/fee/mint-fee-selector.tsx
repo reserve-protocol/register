@@ -14,7 +14,7 @@ const MintFeeSelector = () => {
   }
 
   const resetCustomField = () => {
-    setValue('customMintFee', '')
+    setValue('customMintFee', undefined)
   }
 
   return (
@@ -25,9 +25,10 @@ const MintFeeSelector = () => {
         </div>
 
         <div className="flex flex-col">
-          <div className="text-base font-bold">Mint fee</div>
+          <div className="text-base font-bold">Mint Fee</div>
           <div className="flex items-center gap-1 text-sm text-muted-foreground">
-            Describe mint fee...
+            A one-time fee deducted from the tokens a user receives when they
+            mint the DTF.
           </div>
         </div>
       </div>

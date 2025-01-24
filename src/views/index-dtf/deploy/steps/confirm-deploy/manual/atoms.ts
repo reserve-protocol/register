@@ -4,8 +4,9 @@ import { atom } from 'jotai'
 import { formatUnits } from 'viem'
 import { basketAtom } from '../../../atoms'
 import { indexDeployFormDataAtom } from '../atoms'
+import { atomWithReset } from 'jotai/utils'
 
-export const initialTokensAtom = atom('1')
+export const initialTokensAtom = atomWithReset<string>('1')
 
 export const assetsAllowanceAtom = atom<Record<string, bigint>>({})
 
@@ -43,14 +44,17 @@ export const assetDistributionAtom = atom<Record<string, number>>((get) => {
 // Required quantities of assets for initial tokens
 export const basketRequiredAmountsAtom = atom<Record<string, number>>((get) => {
   const formData = get(indexDeployFormDataAtom)
+  const basket = get(basketAtom)
   const initialValue = Number(formData?.initialValue || 1)
   const initialTokens = get(initialTokensAtom)
   const assetDistribution = get(assetDistributionAtom)
 
   return Object.entries(assetDistribution).reduce(
     (acc, [address, percentage]) => {
+      const price =
+        basket.find((token) => token.address === address)?.price || 1
       acc[address] =
-        (Number(initialTokens || 1) * initialValue * percentage) / 100
+        (Number(initialTokens || 1) * initialValue * percentage) / 100 / price
       return acc
     },
     {} as Record<string, number>

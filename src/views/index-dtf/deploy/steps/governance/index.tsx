@@ -1,13 +1,17 @@
 import NextButton from '../../components/next-button'
+import Ticker from '../../utils/ticker'
 import GovernanceOptions from './governance-options'
 
-const Description = () => (
-  <div className="px-6 pb-6 text-base">
-    Define what portion of the revenue goes to the RToken holders versus RSR
-    stakers. It can also be configured to send a portion of the revenue of an
-    RToken to any arbitrary Ethereum address (wallet or smart contract).
-  </div>
-)
+const Description = () => {
+  return (
+    <div className="px-6 pb-6 text-base">
+      Please enter the address of the wallet or contract that will govern{' '}
+      <Ticker />. The Reserve Index Protocol can support both one-man rule and
+      DAO governance. Be aware, that having centralized control limits who can
+      interact with <Ticker /> on Register.
+    </div>
+  )
+}
 
 const Governance = () => {
   return (

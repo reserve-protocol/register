@@ -28,7 +28,8 @@ export const validatedSectionsAtom = atomWithReset<
   'revenue-distribution': false,
   auctions: false,
   roles: false,
-  voting: false,
+  'basket-changes': false,
+  'other-changes': false,
 })
 
 export const formReadyForSubmitAtom = atom((get) => {

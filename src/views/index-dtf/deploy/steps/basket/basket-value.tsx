@@ -2,6 +2,7 @@ import { useAtomValue } from 'jotai'
 import { DollarSign } from 'lucide-react'
 import { basketAtom } from '../../atoms'
 import BasicInput from '../../components/basic-input'
+import Ticker from '../../utils/ticker'
 
 const FTokenValueInput = () => {
   return (
@@ -26,12 +27,11 @@ const BasketValue = () => {
           <DollarSign size={24} strokeWidth={1.5} />
         </div>
         <div className="flex flex-col max-w-md">
-          <span className="text-base font-bold">
-            Approximate inital value of 1 $DTF
-          </span>
+          <span className="text-base font-bold">Price at launch</span>
           <span className="text-sm text-secondary-foreground">
-            (Heads up about not using proper oracles & this being approximate
-            values which will inform final units at deploy)
+            The approximate value of 1 unit of <Ticker /> when the DTF is
+            created. The exact price may be different due to market volatility
+            and errors in oracle pricing.
           </span>
         </div>
       </div>

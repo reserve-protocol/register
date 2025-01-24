@@ -1,15 +1,16 @@
 import { cn } from '@/lib/utils'
-import { Asterisk } from 'lucide-react'
-import { ReactNode, useState } from 'react'
-import GovernanceExistingVoteLock from './form-existing-vote-lock'
-import GovernanceExistingERC20 from './form-existing-erc20'
-import GovernanceSpecificWallet from './form-specific-wallet'
-import { useFormContext } from 'react-hook-form'
 import { useAtom, useSetAtom } from 'jotai'
+import { Asterisk } from 'lucide-react'
+import { ReactNode } from 'react'
+import { useFormContext } from 'react-hook-form'
 import {
   selectedGovernanceOptionAtom,
   validatedSectionsAtom,
 } from '../../atoms'
+import Ticker from '../../utils/ticker'
+import GovernanceExistingERC20 from './form-existing-erc20'
+import GovernanceExistingVoteLock from './form-existing-vote-lock'
+import GovernanceSpecificWallet from './form-specific-wallet'
 
 export type GovernanceTypes =
   | 'governanceERC20address'
@@ -19,36 +20,63 @@ export type GovernanceTypes =
 const GOVERNANCE_OPTIONS = [
   {
     type: 'governanceERC20address',
-    title: 'Existing ERC20 token',
-    description:
-      'Explain the benefit of using our framwork & clarify that it doesn’t mean.',
+    title: 'Create a New DAO',
+    description: (
+      <span>
+        Enter the contract address of an ERC-20 that can be vote-locked to
+        govern <Ticker />.
+      </span>
+    ),
     icon: <Asterisk size={24} strokeWidth={1.5} />,
     form: <GovernanceExistingERC20 />,
-    resetFields: ['governanceERC20address'],
+    resetFields: ['governanceVoteLock', 'governanceWalletAddress'],
   },
   {
     type: 'governanceVoteLock',
-    title: 'Existing Vote Lock contract',
-    description:
-      'Explain the benefit of using our framwork & clarify that it doesn’t mean giving.',
+    title: 'Use an Existing DAO',
+    description: (
+      <span>
+        Enter the contract address of an existing vote-lock DAO to govern{' '}
+        <Ticker />. This DAO must have been created by the Reserve Index
+        Protocol, and the contract must implement{' '}
+        <a
+          href="https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/governance/utils/IVotes.sol"
+          target="_blank"
+          rel="noreferrer"
+          className="text-primary"
+        >
+          IVotes.sol
+        </a>
+        .
+      </span>
+    ),
     icon: <Asterisk size={24} strokeWidth={1.5} />,
     form: <GovernanceExistingVoteLock />,
-    resetFields: ['governanceVoteLock', 'governanceShare'],
+    resetFields: ['governanceERC20address', 'governanceWalletAddress'],
   },
   {
     type: 'governanceWalletAddress',
-    title: 'Specific wallet address',
-    description:
-      'Explain the benefit of using our framwork & clarify that it doesn’t mean.',
+    title: 'Use an External Wallet',
+    description: (
+      <span>
+        Enter the wallet address that will have centralized control of{' '}
+        <Ticker />. Be aware, that having centralized control limits who can
+        interact with <Ticker /> on Register.
+      </span>
+    ),
     icon: <Asterisk size={24} strokeWidth={1.5} />,
     form: <GovernanceSpecificWallet />,
-    resetFields: ['governanceWalletAddress', 'governanceShare'],
+    resetFields: [
+      'governanceERC20address',
+      'governanceVoteLock',
+      'governanceShare',
+    ],
   },
 ]
 
 type GovernanceOptionProps = {
   title: string
-  description: string
+  description: ReactNode
   icon: ReactNode
   form: ReactNode
   selected: boolean
@@ -101,11 +129,10 @@ const GovernanceOptions = () => {
   const { resetField } = useFormContext()
 
   const onSelected = (selectedType: GovernanceTypes) => {
-    GOVERNANCE_OPTIONS.forEach(({ type, resetFields }) => {
-      if (selectedType !== type) {
-        resetFields.forEach((field: string) => resetField(field))
-      }
-    })
+    const resetFields =
+      GOVERNANCE_OPTIONS.find((option) => option.type === selected)
+        ?.resetFields || []
+    resetFields.forEach((field: string) => resetField(field))
     setValidatedSections((prev) => ({
       ...prev,
       'revenue-distribution': false,
