@@ -1,6 +1,6 @@
 import dtfIndexAbi from '@/abis/dtf-index-abi'
 import { getTrades } from '@/lib/index-rebalance/get-trades'
-import { indexDTFAtom, iTokenAddressAtom } from '@/state/dtf/atoms'
+import { iTokenAddressAtom } from '@/state/dtf/atoms'
 import { Token } from '@/types'
 import { atom, Getter } from 'jotai'
 import { Address, encodeFunctionData, Hex, parseUnits } from 'viem'
@@ -17,6 +17,9 @@ export interface IndexAssetShares {
 }
 
 export const dtfSupplyAtom = atom<bigint>(0n)
+export const dtfTradeDelay = atom<bigint>(0n)
+export const permissionlessLaunchingWindowAtom = atom('24')
+export const customPermissionlessLaunchingWindowAtom = atom('')
 
 // Editable shares
 export const proposedSharesAtom = atom<Record<string, string>>({})
@@ -116,10 +119,36 @@ export const isBasketProposalValidAtom = atom((get) =>
 
 export const proposalDescriptionAtom = atom<string | undefined>(undefined)
 
+export const ttlATom = atom((get) => {
+  const tradeDelay = get(dtfTradeDelay)
+  const permissionlessLaunching = get(permissionlessLaunchingAtom)
+  const permissionlessLaunchingWindow = get(permissionlessLaunchingWindowAtom)
+  const customPermissionlessLaunchingWindow = get(
+    customPermissionlessLaunchingWindowAtom
+  )
+
+  // Is different than undefined and 0
+  if (!permissionlessLaunching) {
+    return tradeDelay > 0n ? tradeDelay - 1n : tradeDelay
+  }
+
+  const window =
+    Number(
+      customPermissionlessLaunchingWindow
+        ? customPermissionlessLaunchingWindow
+        : permissionlessLaunchingWindow
+    ) *
+    60 *
+    60
+
+  return isNaN(window) ? tradeDelay : tradeDelay + BigInt(Math.round(window))
+})
+
 export const basketProposalCalldatasAtom = atom<Hex[] | undefined>((get) => {
   const deferredTrades = get(proposedInxexTradesAtom)
   const tradeRangeOption = get(tradeRangeOptionAtom)
   const isConfirmed = get(isProposalConfirmedAtom)
+  const ttl = get(ttlATom)
 
   if (!deferredTrades?.length || !isConfirmed || !tradeRangeOption)
     return undefined
@@ -149,7 +178,7 @@ export const basketProposalCalldatasAtom = atom<Hex[] | undefined>((get) => {
           start: trade.prices.start,
           end: trade.prices.end,
         },
-        0n, // TODO: TTL
+        ttl,
       ],
     })
   })

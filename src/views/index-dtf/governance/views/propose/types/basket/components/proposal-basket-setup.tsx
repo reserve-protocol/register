@@ -16,7 +16,7 @@ import {
 import { cn } from '@/lib/utils'
 import { chainIdAtom } from '@/state/chain/atoms/chainAtoms'
 import { Token } from '@/types'
-import { formatPercentage, shortenAddress, truncateDecimals } from '@/utils'
+import { formatPercentage, shortenAddress } from '@/utils'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { ArrowRightCircle } from 'lucide-react'
 import { Address } from 'viem'
@@ -85,10 +85,9 @@ const AssetCellInfo = ({ asset }: { asset: IndexAssetShares }) => {
   const handleFill = () => {
     setTargetShares({
       ...targetShares,
-      [asset.token.address]: truncateDecimals(
-        Number(targetShares[asset.token.address]) + state.remainingAllocation,
-        2
-      ).toString(),
+      [asset.token.address]: (
+        Number(targetShares[asset.token.address]) + state.remainingAllocation
+      ).toFixed(2),
     })
   }
 

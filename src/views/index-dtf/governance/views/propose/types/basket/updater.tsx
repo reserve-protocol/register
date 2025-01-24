@@ -8,9 +8,10 @@ import {
 import { useQuery } from '@tanstack/react-query'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useMemo } from 'react'
-import { useReadContract } from 'wagmi'
+import { useReadContract, useReadContracts } from 'wagmi'
 import {
   dtfSupplyAtom,
+  dtfTradeDelay,
   IndexAssetShares,
   isProposalConfirmedAtom,
   permissionlessLaunchingAtom,
@@ -93,26 +94,35 @@ const BasketPriceUpdater = () => {
 }
 
 const useInitialBasket = ():
-  | [bigint, Record<string, IndexAssetShares>, Record<string, number>]
+  | [bigint, Record<string, IndexAssetShares>, Record<string, number>, bigint]
   | undefined => {
   const dtfAddress = useAtomValue(iTokenAddressAtom)
   const basket = useAtomValue(indexDTFBasketAtom)
   const shares = useAtomValue(indexDTFBasketSharesAtom)
-  const { data: totalSupply } = useReadContract({
-    address: dtfAddress,
-    abi: dtfIndexAbi,
-    functionName: 'totalSupply',
+  const { data } = useReadContracts({
+    contracts: [
+      {
+        address: dtfAddress,
+        abi: dtfIndexAbi,
+        functionName: 'totalSupply',
+      },
+      {
+        address: dtfAddress,
+        abi: dtfIndexAbi,
+        functionName: 'tradeDelay',
+      },
+    ],
+    allowFailure: false,
   })
   const priceMap = useAtomValue(indexDTFBasketPricesAtom)
 
   return useMemo(() => {
     // Need to make sure prices/basket/data exists!
-    if (Object.keys(priceMap).length === 0 || !totalSupply || !basket)
-      return undefined
+    if (Object.keys(priceMap).length === 0 || !data || !basket) return undefined
 
-    // const initialBasket: Record<string, IndexAssetShares> = {}
-    let totalUsd = 0
+    const [totalSupply, tradeDelay] = data
 
+    // Create a copy so the value doesn't mutate!
     const initialBasket = basket.reduce(
       (acc, asset) => {
         acc[asset.address.toLowerCase()] = {
@@ -124,8 +134,8 @@ const useInitialBasket = ():
       {} as Record<string, IndexAssetShares>
     )
 
-    return [totalSupply, initialBasket, priceMap]
-  }, [Object.keys(priceMap).length, !!totalSupply, !!basket])
+    return [totalSupply, initialBasket, priceMap, tradeDelay]
+  }, [Object.keys(priceMap).length, !!data, !!basket])
 }
 
 const InitialBasketUpdater = () => {
@@ -133,11 +143,12 @@ const InitialBasketUpdater = () => {
   const setProposedBasket = useSetAtom(proposedIndexBasketAtom)
   const setPriceMap = useSetAtom(priceMapAtom)
   const setSupply = useSetAtom(dtfSupplyAtom)
+  const setTradeDelay = useSetAtom(dtfTradeDelay)
   const setProposedShares = useSetAtom(proposedSharesAtom)
 
   useEffect(() => {
     if (initialBasket) {
-      const [totalSupply, basket, priceMap] = initialBasket
+      const [totalSupply, basket, priceMap, tradeDelay] = initialBasket
       setPriceMap(priceMap)
       setProposedShares(
         Object.values(basket).reduce(
@@ -150,6 +161,7 @@ const InitialBasketUpdater = () => {
       )
       setProposedBasket(basket)
       setSupply(totalSupply)
+      setTradeDelay(tradeDelay)
     }
   }, [!!initialBasket])
 
