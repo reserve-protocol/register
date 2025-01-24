@@ -16,9 +16,11 @@ import {
   inputAmountAtom,
   inputBalanceAtom,
   inputTokenAtom,
+  tokensAtom,
   zapDeployPayloadAtom,
 } from './atoms'
 import SimpleDeployButton from './simple-deploy-button'
+import { zappableTokens } from '@/views/yield-dtf/issuance/components/zapV2/constants'
 
 const RefreshQuote = ({
   onClick,
@@ -42,12 +44,13 @@ const RefreshQuote = ({
 
 const SimpleIndexDeploy = () => {
   const chainId = useAtomValue(chainIdAtom)
-  const inputToken = useAtomValue(inputTokenAtom)
+  const [inputToken, setInputToken] = useAtom(inputTokenAtom)
   const inputBalance = useAtomValue(inputBalanceAtom)
   const defaultInputToken = useAtomValue(defaultInputTokenAtom)
   const form = useAtomValue(indexDeployFormDataAtom)
   const [inputAmount, setInputAmount] = useAtom(inputAmountAtom)
   const zapDeployPayload = useAtomValue(zapDeployPayloadAtom)
+  const tokens = useAtomValue(tokensAtom)
 
   const url = form?.governanceWalletAddress
     ? zapper.zapDeployUngoverned(chainId)
@@ -96,6 +99,8 @@ const SimpleIndexDeploy = () => {
               value: inputAmount,
               onChange: setInputAmount,
               onMax,
+              tokens,
+              onTokenSelect: setInputToken,
             }}
             to={{
               title: 'You mint:',

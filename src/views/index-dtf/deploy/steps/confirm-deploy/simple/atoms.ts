@@ -32,6 +32,15 @@ export const inputBalanceAtom = atom<TokenBalance | undefined>((get) => {
   return balances[token.address]
 })
 
+export const tokensAtom = atom<(Token & { balance?: string })[]>((get) => {
+  const chainId = get(chainIdAtom)
+  const balances = get(balancesAtom)
+  return zappableTokens[chainId].map((token) => ({
+    ...token,
+    balance: balances[token.address]?.balance,
+  }))
+})
+
 export const zapDeployPayloadAtom = atom<
   ZapDeployBody | ZapDeployUngovernedBody | undefined
 >((get) => {

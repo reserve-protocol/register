@@ -1,9 +1,20 @@
 import TokenLogo from '@/components/token-logo'
 import { Button } from '@/components/ui/button'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 import { NumericalInput } from '@/components/ui/input'
 import { chainIdAtom } from '@/state/atoms'
+import { Token } from '@/types'
+import { formatCurrency } from '@/utils'
 import { useAtomValue } from 'jotai'
-import { ArrowDown } from 'lucide-react'
+import { ArrowDown, ChevronDown, ChevronUp } from 'lucide-react'
+import React from 'react'
+
+type TokenWithBalance = Token & { balance?: string }
 
 type SwapItem = {
   title?: string
@@ -14,6 +25,8 @@ type SwapItem = {
   onMax?: () => void
   value?: string
   onChange?: (value: string) => void
+  tokens?: TokenWithBalance[]
+  onTokenSelect?: (token: Token) => void
 }
 
 type SwapProps = {
@@ -45,16 +58,80 @@ const TokenSelector = ({
   symbol = '',
   balance = '',
   onMax = () => {},
-}: Pick<SwapItem, 'address' | 'symbol' | 'balance' | 'onMax'>) => {
+  tokens,
+  onTokenSelect,
+}: Pick<
+  SwapItem,
+  'address' | 'symbol' | 'balance' | 'onMax' | 'tokens' | 'onTokenSelect'
+>) => {
   const chainId = useAtomValue(chainIdAtom)
+  const [open, setOpen] = React.useState(false)
+
+  if (!tokens || tokens.length === 0) {
+    return (
+      <div className="flex flex-col gap-1 items-end">
+        <div className="flex items-center gap-1 font-semibold text-2xl">
+          <TokenLogo size="lg" address={address} chain={chainId} />
+          <span>{symbol}</span>
+        </div>
+        <div className="flex items-center gap-1 text-base">
+          <span className="text-legend">Balance</span>
+          <span className="font-bold">{balance}</span>
+          <Button
+            variant="ghost"
+            className="rounded-[40px] ml-1 bg-primary/10 text-primary hover:bg-primary/20 hover:text-primary"
+            size="xs"
+            onClick={onMax}
+          >
+            Max
+          </Button>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="flex flex-col gap-1 items-end">
-      {/* Replace this with a dropdown */}
-      <div className="flex items-center gap-1 font-semibold text-2xl">
-        <TokenLogo size="lg" address={address} chain={chainId} />
-        <span>{symbol}</span>
-      </div>
+      <DropdownMenu open={open} onOpenChange={setOpen}>
+        <DropdownMenuTrigger asChild>
+          <Button
+            variant="ghost"
+            className="flex items-center text-2xl gap-1 font-semibold h-auto hover:bg-accent px-2 justify-between"
+          >
+            <div className="flex items-center gap-1">
+              <TokenLogo size="lg" address={address} chain={chainId} />
+              <span>{symbol}</span>
+            </div>
+            {open ? (
+              <ChevronUp className="h-5 w-5 text-muted-foreground" />
+            ) : (
+              <ChevronDown className="h-5 w-5 text-muted-foreground" />
+            )}
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent
+          align="end"
+          className="min-w-[200px] max-h-[300px] overflow-y-auto"
+        >
+          {tokens.map((token) => (
+            <DropdownMenuItem
+              key={token.address}
+              onClick={() => onTokenSelect?.(token)}
+              className="flex items-center justify-between gap-2 pr-2"
+            >
+              <div className="flex items-center gap-2">
+                <TokenLogo size="md" address={token.address} chain={chainId} />
+                <span className="text-lg font-semibold">{token.symbol}</span>
+              </div>
+              <span className="text-sm text-muted-foreground">
+                {token?.balance
+                  ? `${formatCurrency(Number(token.balance), 4)}`
+                  : 0}
+              </span>
+            </DropdownMenuItem>
+          ))}
+        </DropdownMenuContent>
+      </DropdownMenu>
       <div className="flex items-center gap-1 text-base">
         <span className="text-legend">Balance</span>
         <span className="font-bold">{balance}</span>
