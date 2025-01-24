@@ -19,7 +19,7 @@ const RevenueDistribution = () => {
       <FolioFeeSelector />
       <MintFeeSelector />
       <h1 className="text-2xl font-bold text-primary my-4 ml-6">
-        Distribution
+        Fee Distribution
       </h1>
       <Description />
       <RevenueDistributionSettings />

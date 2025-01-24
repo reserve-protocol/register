@@ -26,7 +26,7 @@ const AddRecipientButton = () => {
       onClick={onAdd}
     >
       <PlusIcon size={16} />
-      Add additional recipient
+      Add additional recipients
     </Button>
   )
 }
