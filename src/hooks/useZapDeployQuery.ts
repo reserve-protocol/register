@@ -7,7 +7,8 @@ import { useQuery } from '@tanstack/react-query'
 
 export const useZapDeployQuery = (
   url: string,
-  payload: ZapDeployBody | ZapDeployUngovernedBody | undefined
+  payload: ZapDeployBody | ZapDeployUngovernedBody | undefined,
+  disabled: boolean
 ) => {
   return useQuery({
     queryKey: ['zapDeploy', url, payload],
@@ -26,7 +27,7 @@ export const useZapDeployQuery = (
 
       return response.json()
     },
-    enabled: !!payload,
-    refetchOnWindowFocus: false,
+    enabled: !!payload && !disabled,
+    staleTime: 12000,
   })
 }

@@ -1,12 +1,15 @@
 import { Button } from '@/components/ui/button'
 import Swap from '@/components/ui/swap'
 import { useChainlinkPrice } from '@/hooks/useChainlinkPrice'
+import useDebounce from '@/hooks/useDebounce'
+import { useZapDeployQuery } from '@/hooks/useZapDeployQuery'
 import { chainIdAtom } from '@/state/atoms'
 import { formatCurrency } from '@/utils'
+import zapper from '@/views/yield-dtf/issuance/components/zapV2/api'
 import { Trans } from '@lingui/macro'
 import { useAtom, useAtomValue } from 'jotai'
 import { RefreshCw } from 'lucide-react'
-import { Address } from 'viem'
+import { Address, formatEther, parseUnits } from 'viem'
 import { indexDeployFormDataAtom } from '../atoms'
 import {
   defaultInputTokenAtom,
@@ -15,19 +18,7 @@ import {
   inputTokenAtom,
   zapDeployPayloadAtom,
 } from './atoms'
-import useDebounce from '@/hooks/useDebounce'
-import zapper from '@/views/yield-dtf/issuance/components/zapV2/api'
-import { useZapDeployQuery } from '@/hooks/useZapDeployQuery'
-
-const SimpleDeployButton = () => {
-  return (
-    <div className="m-2">
-      <Button size="lg" className="w-full">
-        Create
-      </Button>
-    </div>
-  )
-}
+import SimpleDeployButton from './simple-deploy-button'
 
 const RefreshQuote = () => {
   return (
@@ -60,9 +51,18 @@ const SimpleIndexDeploy = () => {
     setInputAmount(inputBalance?.balance || '0')
   }
 
-  const { data, isLoading, error } = useZapDeployQuery(url, requestBody)
+  const insufficientBalance = inputBalance?.value
+    ? parseUnits(inputAmount, tokenIn.decimals) > inputBalance?.value
+    : false
 
-  console.log({ data, isLoading, error })
+  const { data, isLoading, error } = useZapDeployQuery(
+    url,
+    requestBody,
+    insufficientBalance
+  )
+
+  const priceTo = data?.result?.amountOutValue
+  const valueTo = data?.result?.amountOut
 
   if (!form) return null
 
@@ -86,15 +86,35 @@ const SimpleIndexDeploy = () => {
             }}
             to={{
               title: 'You mint:',
-              price: undefined,
+              price: priceTo ? `$${formatCurrency(priceTo)}` : undefined,
               symbol: form.symbol,
-              balance: undefined,
-              value: undefined,
+              value: formatEther(BigInt(valueTo || 0)),
             }}
           />{' '}
         </div>
       </div>
-      <SimpleDeployButton />
+      <div className="p-2">
+        {data?.status === 'success' && data?.result && !insufficientBalance ? (
+          <SimpleDeployButton data={data?.result} />
+        ) : (
+          <>
+            <Button size="lg" className="w-full" disabled>
+              {isLoading
+                ? 'Loading...'
+                : error || data?.status === 'error'
+                  ? insufficientBalance
+                    ? 'Insufficient balance'
+                    : 'Error'
+                  : 'Deploy'}
+            </Button>
+            {data?.error && (
+              <div className="text-red-500 text-sm text-center mt-2">
+                {data.error}
+              </div>
+            )}
+          </>
+        )}
+      </div>
     </div>
   )
 }

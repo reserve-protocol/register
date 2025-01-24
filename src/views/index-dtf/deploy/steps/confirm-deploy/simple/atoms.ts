@@ -16,9 +16,10 @@ import { basketAtom, daoTokenAddressAtom } from '../../../atoms'
 import { calculateRevenueDistribution } from '../../../utils'
 import { indexDeployFormDataAtom } from '../atoms'
 import { basketRequiredAmountsAtom, initialTokensAtom } from '../manual/atoms'
+import { atomWithReset } from 'jotai/utils'
 
 export const inputTokenAtom = atom<Token | undefined>(undefined)
-export const inputAmountAtom = atom<string>('')
+export const inputAmountAtom = atomWithReset<string>('')
 
 export const defaultInputTokenAtom = atom<Token>((get) => {
   const chainId = get(chainIdAtom)
@@ -59,7 +60,7 @@ export const zapDeployPayloadAtom = atom<
     assets: basket.map((token) => token.address),
     amounts: basket.map((token) =>
       parseUnits(
-        tokenAmounts[token.address].toString(),
+        tokenAmounts[token.address]?.toString() || '0',
         token.decimals
       ).toString()
     ),

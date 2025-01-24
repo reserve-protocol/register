@@ -8,7 +8,11 @@ import { ReactNode } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { erc20Abi } from 'viem'
 import { useReadContract } from 'wagmi'
-import { daoTokenAddressAtom, deployedDTFAtom } from '../../../atoms'
+import {
+  daoCreatedAtom,
+  daoTokenAddressAtom,
+  deployedDTFAtom,
+} from '../../../atoms'
 import { indexDeployFormDataAtom } from '../atoms'
 import { initialTokensAtom } from '../manual/atoms'
 
@@ -34,6 +38,7 @@ const SuccessView = () => {
   const form = useAtomValue(indexDeployFormDataAtom)
   const initialTokens = useAtomValue(initialTokensAtom)
   const stToken = useAtomValue(daoTokenAddressAtom)
+  const daoCreated = useAtomValue(daoCreatedAtom)
 
   const onClick = () => {
     if (!deployedDTF) return
@@ -78,7 +83,7 @@ const SuccessView = () => {
             </div>
           </div>
           <div className="flex flex-col gap-3">
-            {!!stToken && (
+            {!!(daoCreated && stToken) && (
               <Item title={`You created vl${symbol} DAO`}>
                 <ExplorerAddress address={stToken} chain={chainId} />
               </Item>
