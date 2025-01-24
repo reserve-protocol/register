@@ -20,7 +20,6 @@ import {
   zapDeployPayloadAtom,
 } from './atoms'
 import SimpleDeployButton from './simple-deploy-button'
-import { zappableTokens } from '@/views/yield-dtf/issuance/components/zapV2/constants'
 
 const RefreshQuote = ({
   onClick,
