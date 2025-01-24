@@ -6,15 +6,18 @@ import {
   DrawerTrigger,
 } from '@/components/ui/drawer'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { useAtomValue, useSetAtom } from 'jotai'
 import { SubmitHandler, useFormContext } from 'react-hook-form'
 import { daoTokenAddressAtom, deployedDTFAtom } from '../../atoms'
 import { DeployInputs } from '../../form-fields'
+import { getStToken } from '../../utils'
 import { indexDeployFormDataAtom } from './atoms'
 import ManualIndexDeploy from './manual'
 import SimpleIndexDeploy from './simple'
 import SuccessView from './success'
-import { getStToken } from '../../utils'
+import { initialTokensAtom } from './manual/atoms'
+import { useResetAtom } from 'jotai/utils'
+import { inputAmountAtom } from './simple/atoms'
 
 const Header = () => {
   const form = useAtomValue(indexDeployFormDataAtom)
@@ -34,18 +37,19 @@ const Header = () => {
 
 const ConfirmIndexDeploy = ({ isActive }: { isActive: boolean }) => {
   const { handleSubmit } = useFormContext<DeployInputs>()
-  const [formData, setFormData] = useAtom(indexDeployFormDataAtom)
   const deployedDTF = useAtomValue(deployedDTFAtom)
+  const setFormData = useSetAtom(indexDeployFormDataAtom)
   const setStTokenAddress = useSetAtom(daoTokenAddressAtom)
+  const resetInitialTokens = useResetAtom(initialTokensAtom)
+  const resetInput = useResetAtom(inputAmountAtom)
 
-  const processForm: SubmitHandler<DeployInputs> = (data) => {
+  const processForm: SubmitHandler<DeployInputs> = async (data) => {
     if (data.governanceVoteLock) {
-      getStToken(data.governanceVoteLock).then(({ id }) => {
-        setStTokenAddress(id)
-        setFormData(data)
-      })
+      setFormData({ ...data })
+      const stToken = await getStToken(data.governanceVoteLock)
+      setStTokenAddress(stToken.id)
     } else {
-      setFormData(data)
+      setFormData({ ...data })
     }
   }
 
@@ -55,7 +59,7 @@ const ConfirmIndexDeploy = ({ isActive }: { isActive: boolean }) => {
 
   return (
     <Drawer>
-      <DrawerTrigger>
+      <DrawerTrigger disabled={!isActive} asChild>
         <Button className="w-full" disabled={!isActive} onClick={submitForm}>
           Deploy
         </Button>
@@ -73,10 +77,21 @@ const ConfirmIndexDeploy = ({ isActive }: { isActive: boolean }) => {
           >
             <DrawerTitle className="p-4">
               <TabsList className="h-9">
-                <TabsTrigger value="simple" className="w-max h-7">
+                <TabsTrigger
+                  value="simple"
+                  className="w-max h-7"
+                  onClick={() => {
+                    resetInitialTokens()
+                    resetInput()
+                  }}
+                >
                   Simple deploy
                 </TabsTrigger>
-                <TabsTrigger value="manual" className="w-max h-7">
+                <TabsTrigger
+                  value="manual"
+                  className="w-max h-7"
+                  onClick={resetInitialTokens}
+                >
                   Manual deploy
                 </TabsTrigger>
               </TabsList>
@@ -85,12 +100,15 @@ const ConfirmIndexDeploy = ({ isActive }: { isActive: boolean }) => {
             <TabsContent
               value="simple"
               className="flex-grow overflow-auto relative"
+              // Prevent the drawer from closing when clicking on the content
+              onPointerDown={(e) => e.stopPropagation()}
             >
               <SimpleIndexDeploy />
             </TabsContent>
             <TabsContent
               value="manual"
               className="flex-grow overflow-auto relative"
+              onPointerDown={(e) => e.stopPropagation()}
             >
               <ManualIndexDeploy />
             </TabsContent>

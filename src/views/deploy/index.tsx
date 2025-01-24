@@ -1,5 +1,6 @@
 import ChainLogo from '@/components/icons/ChainLogo'
 import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
 import { ChainId } from '@/utils/chains'
 import { ROUTES } from '@/utils/constants'
 import { Asterisk, Play } from 'lucide-react'
@@ -15,6 +16,7 @@ interface DeployBoxProps {
   infoText: string
   infoStyle: 'primary' | 'black'
   image: string
+  type: 'index' | 'yield'
 }
 
 const DeployBox = ({
@@ -27,6 +29,7 @@ const DeployBox = ({
   chains,
   infoText,
   infoStyle,
+  type,
 }: DeployBoxProps) => {
   const borderColor =
     infoStyle === 'primary' ? 'border-primary' : 'border-black'
@@ -35,7 +38,12 @@ const DeployBox = ({
 
   return (
     <div
-      className={`flex flex-col bg-muted rounded-2xl flex-grow h-[522px] w-[588px]  bg-[url('${image}')] bg-cover bg-center group`}
+      className={cn(
+        `flex flex-col bg-muted rounded-2xl flex-grow h-[522px] w-[588px] bg-cover bg-center group`,
+        type === 'index'
+          ? `bg-[url('https://storage.reserve.org/index-dtf-cover.png')]`
+          : `bg-[url('https://storage.reserve.org/yield-dtf-cover.png')]`
+      )}
     >
       <div className="flex items-center p-4">
         <div className="flex items-center gap-2 mr-auto">
@@ -103,7 +111,7 @@ const Deploy = () => {
     "Reserve's RToken Factory Contracts: A platform for creating tokens backed by a diverse array of ERC20 collateral."
 
   return (
-  <div className="container mt-10 mb-4 px-4">
+    <div className="container mt-10 mb-4 px-4">
       <Header />
       <div className="flex flex-wrap gap-4 mt-10">
         <DeployBox
@@ -114,6 +122,7 @@ const Deploy = () => {
           chains={[ChainId.Mainnet, ChainId.Base]}
           infoText="What are Index DTFs?"
           infoStyle="primary"
+          type="index"
           image="https://storage.reserve.org/index-dtf-cover.png"
         />
         <DeployBox
@@ -125,6 +134,7 @@ const Deploy = () => {
           chains={[ChainId.Mainnet, ChainId.Base, ChainId.Arbitrum]}
           infoText="What are Yield DTFs?"
           infoStyle="black"
+          type="yield"
           image="https://storage.reserve.org/yield-dtf-cover.png"
         />
       </div>

@@ -43,7 +43,6 @@ const RTokenZapIssuance = ({ disableRedeem }: { disableRedeem: boolean }) => {
             <Divider sx={{ flexGrow: 1, borderColor: 'borderSecondary' }} />
             <Box
               p="1"
-              pb="0"
               sx={{
                 border: '1px solid',
                 borderColor: 'borderSecondary',
