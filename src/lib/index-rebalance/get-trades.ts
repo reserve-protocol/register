@@ -1,6 +1,6 @@
+import { D27, D27n, D9 } from './numbers'
 import { Trade } from './types'
-import { D27, D27n } from './numbers'
-import { getCurrentBasket, getSharePricing, makeTrade } from './utils'
+import { makeTrade } from './utils'
 
 /**
  * Get trades from basket
@@ -12,25 +12,25 @@ import { getCurrentBasket, getSharePricing, makeTrade } from './utils'
  * @param supply {share} Ideal basket
  * @param tokens Addresses of tokens in the basket
  * @param decimals Decimals of each token
- * @param bals {tok} Current balances
+ * @param currentBasket D18{1} Current balances
  * @param targetBasket D18{1} Ideal basket
  * @param _prices {USD/wholeTok} USD prices for each *whole* token
  * @param _priceError {1} Price error, pass 1 to fully defer to price curator / auction launcher
+ * @param _dtfPrice {USD/wholeShare} DTF price
  * @param tolerance D18{1} Tolerance for rebalancing to determine when to tolerance trade or not, default 0.1%
  */
 export const getTrades = (
   supply: bigint,
   tokens: string[],
   decimals: bigint[],
-  bals: bigint[],
+  currentBasket: bigint[],
   targetBasket: bigint[],
   _prices: number[],
   _priceError: number[],
+  _dtfPrice: number,
   tolerance: bigint = 10n ** 14n // 0.01%
 ): Trade[] => {
   const trades: Trade[] = []
-
-  // convert price number inputs to bigints
 
   // convert price number inputs to bigints
 
@@ -40,7 +40,12 @@ export const getTrades = (
   )
 
   // D27{1} = {1} * D27
-  const priceError = _priceError.map((a) => BigInt(Math.round(a * D27)))
+  const priceError = _priceError.map((a) => BigInt(a * D27))
+
+  // upscale currentBasket and targetBasket to D27
+
+  // D27{1} = D18{1} * D9
+  currentBasket = currentBasket.map((a) => a * 10n ** 9n)
 
   // D27{1} = D18{1} * D9
   targetBasket = targetBasket.map((a) => a * 10n ** 9n)
@@ -49,17 +54,10 @@ export const getTrades = (
     '--------------------------------------------------------------------------------'
   )
 
-  // D27{1} approx sum 1e27
-  const currentBasket = getCurrentBasket(bals, decimals, _prices)
+  // D27{USD} = {USD/wholeShare} * D27 * {share} / {share/wholeShare}
+  const sharesValue = BigInt(Math.round(_dtfPrice * D9)) * supply
 
-  // D27{USD}, {USD/wholeShare}
-  const [sharesValue, sharePrice] = getSharePricing(
-    supply,
-    bals,
-    decimals,
-    _prices
-  )
-  console.log('shares', sharesValue, sharePrice)
+  console.log('sharesValue', sharesValue)
 
   // queue up trades until there are no more trades-to-make greater than tolerance in size
   //
@@ -78,9 +76,6 @@ export const getTrades = (
     // D27{USD}
     let biggestSurplus = 0n
     let biggestDeficit = 0n
-
-    console.log('currentBasket', currentBasket)
-    console.log('targetBasket', targetBasket)
 
     for (let i = 0; i < tokens.length; i++) {
       if (
@@ -108,6 +103,9 @@ export const getTrades = (
       }
     }
 
+    console.log('biggestSurplus', biggestSurplus)
+    console.log('biggestDeficit', biggestDeficit)
+
     // if we don't find any more trades, we're done
     if (x == tokens.length || y == tokens.length) {
       return trades
@@ -129,10 +127,9 @@ export const getTrades = (
     currentBasket[y] += backingTraded
 
     // D27{1}
-    const avgPriceError = (priceError[x] + priceError[y]) / 2n
-
-    if (avgPriceError >= D27) {
-      throw new Error('error too large')
+    let avgPriceError = (priceError[x] + priceError[y]) / 2n
+    if (priceError[x] > D27n || priceError[y] > D27n) {
+      throw new Error('price error too large')
     }
 
     // D27{tok/share} = D27{1} * D27{USD} / D27{USD/tok} / {share}
@@ -152,16 +149,26 @@ export const getTrades = (
 
     // D27{buyTok/sellTok} = D27{buyTok/sellTok} * D27 / D27{1}
     const startPrice =
-      (price * D27n + D27n - avgPriceError - 1n) / (D27n - avgPriceError)
+      avgPriceError >= D27n
+        ? 0n
+        : (price * D27n + D27n - avgPriceError - 1n) / (D27n - avgPriceError)
     const endPrice = (price * (D27n - avgPriceError)) / D27n
 
     // add trade into set
 
     trades.push(
-      makeTrade(tokens[x], tokens[y], sellLimit, buyLimit, startPrice, endPrice)
+      makeTrade(
+        tokens[x],
+        tokens[y],
+        sellLimit,
+        buyLimit,
+        startPrice,
+        endPrice,
+        avgPriceError
+      )
     )
 
-    // do not remove console.logs they do not show in tests that succeed
+    // do not remove console.logs
     console.log('sellLimit', trades[trades.length - 1].sellLimit.spot)
     console.log('buyLimit', trades[trades.length - 1].buyLimit.spot)
     console.log('startPrice', trades[trades.length - 1].prices.start)

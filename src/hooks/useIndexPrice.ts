@@ -11,6 +11,7 @@ type Response = {
     address: Address
     amount: number
     price: number
+    weight: string
   }[]
 }
 
@@ -103,25 +104,19 @@ export const useIndexBasket = (token: string | undefined, chainId: number) => {
 
     let totalUsd = 0
 
-    const { prices, amounts } = priceResult.basket.reduce(
+    const { prices, amounts, shares } = priceResult.basket.reduce(
       (acc, asset) => {
         totalUsd += asset.amount * asset.price
         acc.prices[asset.address.toLowerCase()] = asset.price
         acc.amounts[asset.address.toLowerCase()] = asset.amount * asset.price
+        acc.shares[asset.address.toLowerCase()] = asset.weight
         return acc
       },
       {
         prices: { [token]: priceResult.price } as Record<string, number>,
         amounts: {} as Record<string, number>,
+        shares: {} as Record<string, string>,
       }
-    )
-
-    const shares = Object.keys(amounts).reduce(
-      (acc, asset) => {
-        acc[asset] = amounts[asset] / totalUsd
-        return acc
-      },
-      {} as Record<string, number>
     )
 
     return {

@@ -16,8 +16,10 @@ import {
 import { cn } from '@/lib/utils'
 import { chainIdAtom } from '@/state/chain/atoms/chainAtoms'
 import { Token } from '@/types'
-import { formatPercentage, shortenAddress } from '@/utils'
+import { formatPercentage, shortenAddress, truncateDecimals } from '@/utils'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { ArrowRightCircle } from 'lucide-react'
+import { Address } from 'viem'
 import {
   IndexAssetShares,
   isProposedBasketValidAtom,
@@ -26,7 +28,6 @@ import {
   proposedSharesAtom,
   stepAtom,
 } from '../atoms'
-import { Address } from 'viem'
 
 const assetsAtom = atom((get) => {
   const proposedBasket = get(proposedIndexBasketAtom)
@@ -72,30 +73,55 @@ const DeltaSharesCell = ({ asset }: { asset: string }) => {
   )
 }
 
-const AssetRow = ({ asset }: { asset: IndexAssetShares }) => {
+const AssetCellInfo = ({ asset }: { asset: IndexAssetShares }) => {
   const chainId = useAtomValue(chainIdAtom)
+  const state = useAtomValue(proposedIndexBasketStateAtom)
+  const [targetShares, setTargetShares] = useAtom(proposedSharesAtom)
+  const canFill =
+    state.remainingAllocation !== 0 &&
+    !state.isValid &&
+    Number(targetShares[asset.token.address]) + state.remainingAllocation >= 0
+
+  const handleFill = () => {
+    setTargetShares({
+      ...targetShares,
+      [asset.token.address]: truncateDecimals(
+        Number(targetShares[asset.token.address]) + state.remainingAllocation,
+        2
+      ).toString(),
+    })
+  }
 
   return (
-    <TableRow>
-      <TableCell className="border-r">
-        <div className="flex items-center gap-2">
-          <TokenLogo size="xl" address={asset.token.address} chain={chainId} />
-          <div>
-            <h4 className="font-bold mb-1">{asset.token.symbol}</h4>
-            <p className="text-sm text-legend">
-              {shortenAddress(asset.token.address)}
-            </p>
-          </div>
+    <TableCell className="border-r">
+      <div className="flex items-center gap-2">
+        <TokenLogo size="xl" address={asset.token.address} chain={chainId} />
+        <div className="mr-auto">
+          <h4 className="font-bold mb-1">{asset.token.symbol}</h4>
+          <p className="text-sm text-legend">
+            {shortenAddress(asset.token.address)}
+          </p>
         </div>
-      </TableCell>
-      <TableCell className="text-center">
-        {formatPercentage(Number(asset.currentShares))}
-      </TableCell>
-      <NewSharesCell asset={asset.token.address} />
-      <DeltaSharesCell asset={asset.token.address} />
-    </TableRow>
+        {canFill && (
+          <Button variant="ghost" size="icon-rounded" onClick={handleFill}>
+            <ArrowRightCircle />
+          </Button>
+        )}
+      </div>
+    </TableCell>
   )
 }
+
+const AssetRow = ({ asset }: { asset: IndexAssetShares }) => (
+  <TableRow>
+    <AssetCellInfo asset={asset} />
+    <TableCell className="text-center">
+      {formatPercentage(Number(asset.currentShares))}
+    </TableCell>
+    <NewSharesCell asset={asset.token.address} />
+    <DeltaSharesCell asset={asset.token.address} />
+  </TableRow>
+)
 
 const Allocation = () => {
   const { remainingAllocation, isValid } = useAtomValue(
@@ -154,7 +180,6 @@ const setNewBasketAtom = atom(null, (get, set, _tokens: Token[]) => {
     newProposedIndexBasket[tokenAddress] = {
       token,
       currentShares,
-      balance: proposedIndexBasket[tokenAddress]?.balance ?? 0n,
     }
 
     // If asset was removed, set proposed shares to 0

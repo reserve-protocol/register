@@ -1,5 +1,6 @@
 import dtfIndexAbi from '@/abis/dtf-index-abi'
 import { getTrades } from '@/lib/index-rebalance/get-trades'
+import { indexDTFAtom, iTokenAddressAtom } from '@/state/dtf/atoms'
 import { Token } from '@/types'
 import { atom, Getter } from 'jotai'
 import { Address, encodeFunctionData, Hex, parseUnits } from 'viem'
@@ -12,7 +13,6 @@ export const stepAtom = atom<Step>('basket')
 // Loaded from basket and modified when asset is added/removed
 export interface IndexAssetShares {
   token: Token
-  balance: bigint
   currentShares: string
 }
 
@@ -166,23 +166,32 @@ function getProposedTrades(get: Getter, deferred = false) {
   const isValid = get(isProposedBasketValidAtom)
   const volatility = get(tradeVolatilityAtom)
   const supply = get(dtfSupplyAtom)
+  const dtfAddress = get(iTokenAddressAtom)
 
-  if (!isValid || !proposedBasket) return []
+  if (!isValid || !proposedBasket || !dtfAddress || !priceMap[dtfAddress])
+    return []
 
   const tokens: string[] = []
   const decimals: bigint[] = []
-  const bals: bigint[] = []
+  const currentBasket: bigint[] = []
   const targetBasket: bigint[] = []
   const prices: number[] = []
   const error: number[] = []
+
+  const decimalsStr: string[] = []
+  const currentBasketStr: string[] = []
+  const targetBasketStr: string[] = []
 
   let index = 0
 
   for (const asset of Object.keys(proposedBasket)) {
     tokens.push(asset)
-    bals.push(proposedBasket[asset].balance)
     decimals.push(BigInt(proposedBasket[asset].token.decimals))
+    decimalsStr.push(proposedBasket[asset].token.decimals.toString())
+    currentBasket.push(parseUnits(proposedBasket[asset].currentShares, 16))
+    currentBasketStr.push(proposedBasket[asset].currentShares)
     targetBasket.push(parseUnits(proposedShares[asset], 16))
+    targetBasketStr.push(proposedShares[asset])
     prices.push(priceMap[asset])
     // TODO: assume trades always have the same order...
     error.push(deferred ? 1 : VOLATILITY_VALUES[volatility[index]] || 0.1)
@@ -190,16 +199,30 @@ function getProposedTrades(get: Getter, deferred = false) {
   }
 
   console.log(
-    '--------------------------------------------------------------------------------'
+    'INPUTS',
+    JSON.stringify(
+      {
+        supply: supply.toString(),
+        tokens,
+        decimalsStr,
+        currentBasketStr,
+        targetBasketStr,
+        prices,
+        error,
+      },
+      null,
+      2
+    )
   )
-  console.log('tokens', tokens)
-  console.log('decimals', decimals)
-  console.log('bals', bals)
-  console.log('targetBasket', targetBasket)
-  console.log('prices', prices)
-  console.log('error', error)
-  console.log(
-    '--------------------------------------------------------------------------------'
+
+  return getTrades(
+    supply,
+    tokens,
+    decimals,
+    currentBasket,
+    targetBasket,
+    prices,
+    error,
+    priceMap[dtfAddress]
   )
-  return getTrades(supply, tokens, decimals, bals, targetBasket, prices, error)
 }
