@@ -386,3 +386,10 @@ export const RTOKEN_VAULT_STAKE: Record<
     address: '0x5BDd1fA233843Bfc034891BE8a6769e58F1e1346',
   },
 }
+
+export const DTF_CATEGORIES = {
+  MEMES: 'memes',
+  DEFI: 'defi',
+  AI: 'ai',
+  RWA: 'rwa',
+} as const

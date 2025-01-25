@@ -12,6 +12,14 @@ import { ColumnDef } from '@tanstack/react-table'
 import { ArrowRight, Circle } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { Line, LineChart } from 'recharts'
+import DTFFilters from './components/Filters'
+import { useAtomValue } from 'jotai'
+import { useMemo } from 'react'
+import {
+  categoryFilterAtom,
+  chainFilterAtom,
+  searchFilterAtom,
+} from './atoms/filter'
 
 const DiscoverHighlightIndex = () => {
   return (
@@ -176,15 +184,48 @@ const columns: ColumnDef<IndexDTFItem>[] = [
 const IndexDTFList = () => {
   const { data, isLoading } = useIndexDTFList()
 
+  const search = useAtomValue(searchFilterAtom)
+  const categories = useAtomValue(categoryFilterAtom)
+  const chains = useAtomValue(chainFilterAtom)
+
+  const filtered = useMemo(() => {
+    if (!data) {
+      return []
+    }
+
+    // TODO(jg): Add category to branding?
+    return data.filter((dtf) => {
+      if (!chains.length || !chains.includes(dtf.chainId)) {
+        return false
+      }
+
+      if (search) {
+        const searchLower = search.toLowerCase()
+        const nameMatch = dtf.name.toLowerCase().includes(searchLower)
+        const symbolMatch = dtf.symbol.toLowerCase().includes(searchLower)
+        const collateralMatch = dtf.basket?.some((collateral) =>
+          collateral.symbol.toLowerCase().includes(searchLower)
+        )
+
+        if (!nameMatch && !symbolMatch && !collateralMatch) {
+          return false
+        }
+      }
+
+      return true
+    })
+  }, [data, categories, search, chains])
+
   if (isLoading) {
     return <Skeleton className="h-[500px] rounded-[20px]" />
   }
 
   return (
     <div className="flex flex-col gap-1 p-1 rounded-[20px] bg-secondary">
+      <DTFFilters />
       <DataTable
         columns={columns}
-        data={data ?? []}
+        data={filtered}
         className={cn(
           'bg-card text-base rounded-[20px]',
           '[&_thead_th]:px-6',

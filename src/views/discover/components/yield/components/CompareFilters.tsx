@@ -5,9 +5,8 @@ import EarnNavIcon from 'components/icons/EarnNavIcon'
 import Ethereum from 'components/icons/logos/Ethereum'
 import { atom, useAtom, useSetAtom } from 'jotai'
 import { useMemo, useState } from 'react'
-import { borderRadius } from 'theme'
-import { Box, Text } from 'theme-ui'
 import { TARGET_UNITS, supportedChainList } from 'utils/constants'
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 
 export const searchFilterAtom = atom('')
 
@@ -16,7 +15,6 @@ export const chainsFilterAtom = atom(
 )
 
 export const targetFilterAtom = atom([TARGET_UNITS.ETH, TARGET_UNITS.USD])
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 
 const TargetFilter = () => {
   const [selected, setSelected] = useState('0')
@@ -69,7 +67,7 @@ const TargetFilter = () => {
   )
 }
 
-const SearchFilter = () => {
+export const SearchFilter = () => {
   const [search, setSearch] = useAtom(searchFilterAtom)
 
   return (
