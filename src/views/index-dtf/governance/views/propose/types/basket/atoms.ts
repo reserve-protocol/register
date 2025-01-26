@@ -92,7 +92,7 @@ export const isProposedBasketValidAtom = atom((get) => {
 
 // Get proposed trades from algo if the target basket is valid
 export const proposedInxexTradesAtom = atom((get) => {
-  return getProposedTrades(get, false)
+  return getProposedTrades(get, true)
 })
 
 // Volatility of proposed trades, array index is the trade index
@@ -154,7 +154,7 @@ export const basketProposalCalldatasAtom = atom<Hex[] | undefined>((get) => {
     return undefined
 
   const trades =
-    tradeRangeOption === 'defer' ? deferredTrades : getProposedTrades(get, true)
+    tradeRangeOption === 'defer' ? deferredTrades : getProposedTrades(get)
 
   return trades.map((trade, i) => {
     return encodeFunctionData({
@@ -222,8 +222,12 @@ function getProposedTrades(get: Getter, deferred = false) {
     targetBasket.push(parseUnits(proposedShares[asset], 16))
     targetBasketStr.push(proposedShares[asset])
     prices.push(priceMap[asset])
+
     // TODO: assume trades always have the same order...
-    error.push(deferred ? 1 : VOLATILITY_VALUES[volatility[index]] || 0.1)
+    error.push(
+      deferred ? 0.9 : VOLATILITY_VALUES[volatility[index] || 0] || 0.1
+    )
+
     index++
   }
 

@@ -22,6 +22,7 @@ import {
   tradeRangeOptionAtom,
   tradeVolatilityAtom,
 } from './atoms'
+import { chainIdAtom } from '@/state/atoms'
 
 const PRICES_BASE_URL =
   'http://reserve-api-base-alb-979856128.us-east-1.elb.amazonaws.com/current/prices?tokens='
@@ -99,17 +100,20 @@ const useInitialBasket = ():
   const dtfAddress = useAtomValue(iTokenAddressAtom)
   const basket = useAtomValue(indexDTFBasketAtom)
   const shares = useAtomValue(indexDTFBasketSharesAtom)
+  const chainId = useAtomValue(chainIdAtom)
   const { data } = useReadContracts({
     contracts: [
       {
         address: dtfAddress,
         abi: dtfIndexAbi,
         functionName: 'totalSupply',
+        chainId,
       },
       {
         address: dtfAddress,
         abi: dtfIndexAbi,
         functionName: 'tradeDelay',
+        chainId,
       },
     ],
     allowFailure: false,

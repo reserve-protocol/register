@@ -68,6 +68,7 @@ const DTFContextUpdater = () => {
               address: token,
               abi: dtfIndexAbi,
               functionName: 'folioFee',
+              chainId,
             },
           ],
           allowFailure: false,
@@ -85,6 +86,8 @@ const DTFContextUpdater = () => {
         }
       : undefined
   )
+
+  console.log('initial load', { data, error })
 
   // Temporal, individual hooks for each atom
   const setTokenData = useSetAtom(iTokenAtom)
