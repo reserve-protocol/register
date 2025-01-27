@@ -113,7 +113,10 @@ export const useIndexBasket = (token: string | undefined, chainId: number) => {
         return acc
       },
       {
-        prices: { [token]: priceResult.price } as Record<string, number>,
+        prices: { [token.toLowerCase()]: priceResult.price } as Record<
+          string,
+          number
+        >,
         amounts: {} as Record<string, number>,
         shares: {} as Record<string, string>,
       }
