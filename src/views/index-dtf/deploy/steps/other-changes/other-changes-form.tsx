@@ -24,7 +24,6 @@ const FORMS = [
   },
   {
     ...VOTING_THRESHOLD,
-    title: 'Proposal Threshold',
     description:
       'The minimum percentage of votes that must be held in order to create a proposal.',
     fieldName: 'governanceVotingThreshold',

@@ -28,7 +28,8 @@ const MintFeeSelector = () => {
           <div className="text-base font-bold">Mint Fee</div>
           <div className="flex items-center gap-1 text-sm text-muted-foreground">
             A one-time fee deducted from the tokens a user receives when they
-            mint the DTF.
+            mint the DTF. The platform will keep the greater of 0.15% or 50% of
+            revenue from this fee.
           </div>
         </div>
       </div>
