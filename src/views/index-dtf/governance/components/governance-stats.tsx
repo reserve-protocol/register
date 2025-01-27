@@ -14,8 +14,8 @@ const useVotingPower = (): number => {
   const account = useAtomValue(walletAtom)
   const dtf = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
-  const { data: votes } = useReadContract({
-    address: dtf?.stToken?.id ?? '0x',
+  const { data: votes, error } = useReadContract({
+    address: dtf?.ownerGovernance?.id ?? '0x',
     functionName: 'getVotes',
     abi: dtfIndexGovernance,
     args: [account as Address, BigInt(getCurrentTime() - 12)],

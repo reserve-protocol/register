@@ -7,7 +7,7 @@ import {
   VotingState,
 } from '@/lib/governance'
 import { cn } from '@/lib/utils'
-import { formatPercentage, parseDuration } from '@/utils'
+import { formatPercentage, getProposalTitle, parseDuration } from '@/utils'
 import { formatConstant, PROPOSAL_STATES, ROUTES } from '@/utils/constants'
 import { useAtomValue } from 'jotai'
 import { Circle } from 'lucide-react'
@@ -54,7 +54,7 @@ export const ProposalVotingState = ({ data }: { data: VotingState }) => {
   if (data.state === PROPOSAL_STATES.PENDING && data.deadline) {
     return (
       <div className="flex items-center mt-2 text-sm">
-        Voting starts in:
+        <span className="text-legend block mr-1">Voting starts in:</span>
         <span className="font-semibold">
           {parseDuration(data.deadline, {
             units: ['d', 'h'],
@@ -111,12 +111,14 @@ const ProposalListItem = ({ proposal }: { proposal: PartialProposal }) => {
   const proposalState = getProposalState(proposal)
 
   return (
-    <div
-      role="button"
+    <Link
+      to={`proposal/${proposal.id}`}
       className="flex items-center gap-2 p-4 [&:not(:last-child)]:border-b cursor-pointer transition-all hover:bg-border/50"
     >
       <div className="mr-auto">
-        <h2 className="font-semibold">{proposal.description}</h2>
+        <h2 className="font-semibold">
+          {getProposalTitle(proposal.description)}
+        </h2>
         <ProposalVotingState data={proposalState} />
       </div>
       <div
@@ -127,7 +129,7 @@ const ProposalListItem = ({ proposal }: { proposal: PartialProposal }) => {
       >
         {formatConstant(proposalState.state)}
       </div>
-    </div>
+    </Link>
   )
 }
 

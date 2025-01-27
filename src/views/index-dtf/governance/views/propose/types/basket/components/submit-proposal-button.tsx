@@ -8,6 +8,7 @@ import DTFIndexGovernance from '@/abis/dtf-index-governance'
 import { useNavigate } from 'react-router-dom'
 import { indexDTFAtom, iTokenAddressAtom } from '@/state/dtf/atoms'
 import { Address } from 'viem'
+import { Loader2 } from 'lucide-react'
 
 const isProposalReady = atom((get) => {
   const wallet = get(walletAtom)
@@ -73,6 +74,9 @@ const SubmitProposalButton = () => {
       className="w-full"
       variant="default"
     >
+      {(isPending || !!data) && (
+        <Loader2 className="w-4 h-4 animate-spin mr-2" />
+      )}
       {isPending && 'Pending, sign in wallet...'}
       {!isPending && !!data && 'Waiting for confirmation...'}
       {!isPending && !data && 'Submit proposal onchain'}
