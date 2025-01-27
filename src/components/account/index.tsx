@@ -11,6 +11,7 @@ import { ConnectButton } from '@rainbow-me/rainbowkit'
 import ChainLogo from 'components/icons/ChainLogo'
 import { chainIdAtom, selectedRTokenAtom } from 'state/atoms'
 import { isTransactionRunning } from 'state/chain/atoms/transactionAtoms'
+import PortfolioSidebar from '@/views/portfolio/sidebar'
 
 const ErrorWrapper = ({
   chainId,
@@ -123,8 +124,9 @@ const Account = () => {
                     variant="layout.verticalAlign"
                     sx={{ justifyContent: 'center', height: '38px' }}
                     p="2"
-                    onClick={() => setVisible(true)}
+                    // onClick={() => setVisible(true)}
                   >
+                    <PortfolioSidebar />
                     {!invalidChain ? (
                       <ChainLogo chain={chain.id} />
                     ) : (
