@@ -28,7 +28,8 @@ const FolioFeeSelector = () => {
           <div className="text-base font-bold">Annualized TVL Fee</div>
           <div className="flex items-center gap-1 text-sm text-muted-foreground">
             A optional percentage-based fee charged by the DTF based on the
-            total value of the tokens held in the contract.
+            total value of the tokens held in the contract. The platform will
+            keep 50% of revenue from this fee.
           </div>
         </div>
       </div>

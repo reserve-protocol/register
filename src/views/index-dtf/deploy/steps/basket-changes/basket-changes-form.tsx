@@ -21,7 +21,7 @@ export const VOTING_PERIOD = {
 }
 
 export const VOTING_THRESHOLD = {
-  title: 'Voting Threshold',
+  title: 'Proposal Threshold',
   icon: <Asterisk size={32} strokeWidth={1.5} />,
   options: [0.01, 0.05, 0.1, 0.25, 0.5],
   optionsFormatter: (option: number) => `${option.toString()}%`,
