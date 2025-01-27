@@ -1,15 +1,14 @@
 import { useSetAtom, useAtom } from 'jotai'
-import { useState, useMemo } from 'react'
+import { useState } from 'react'
 import { SearchInput } from '@/components/ui/input'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import {
   searchFilterAtom,
-  categoryFilterAtom,
   chainFilterAtom,
 } from '@/views/discover/components/index/atoms/filter'
-import { DTF_CATEGORIES } from '@/utils/constants'
-import AsteriskIcon from '@/components/icons/AsteriskIcon'
 import { ChainId } from '@/utils/chains'
+import ChainLogo from '@/components/icons/ChainLogo'
+import { LayoutGrid } from 'lucide-react'
 
 const SingleToggleFilter = ({
   options,
@@ -17,7 +16,11 @@ const SingleToggleFilter = ({
   value,
 }: {
   value: string
-  options: { text: string; filter: string[] | number[] }[]
+  options: {
+    icon: React.ReactNode
+    text: string
+    filter: string[] | number[]
+  }[]
   onValueChange: (value: string) => void
 }) => {
   return (
@@ -27,15 +30,13 @@ const SingleToggleFilter = ({
       onValueChange={onValueChange}
       className="bg-card rounded-2xl px-4 py-2"
     >
-      {options.map(({ text }, index) => (
+      {options.map(({ text, icon }, index) => (
         <ToggleGroupItem
           key={text}
           value={index.toString()}
-          className="flex items-center gap-0 h-8 px-2 data-[state=on]:bg-[#f2f2f2] data-[state=on]:text-primary hover:text-primary"
+          className="flex items-center gap-0 h-8 px-2 data-[state=on]:bg-[#f2f2f2] data-[state=on]:text-primary hover:text-primary hover:bg-[#f2f2f2]"
         >
-          <div className="[&_svg]:h-[12px] [&_svg]:w-[12px] [&_path]:stroke-[1.5]">
-            <AsteriskIcon />
-          </div>
+          {icon}
           <div className="hidden sm:inline ml-[6px]">{text}</div>
         </ToggleGroupItem>
       ))}
@@ -43,61 +44,22 @@ const SingleToggleFilter = ({
   )
 }
 
-const categories = [
-  {
-    text: 'All',
-    filter: Object.keys(DTF_CATEGORIES),
-  },
-  {
-    text: 'Memes',
-    filter: [DTF_CATEGORIES.MEMES],
-  },
-  {
-    text: 'DeFi',
-    filter: [DTF_CATEGORIES.DEFI],
-  },
-  {
-    text: 'AI',
-    filter: [DTF_CATEGORIES.AI],
-  },
-  {
-    text: 'RWA',
-    filter: [DTF_CATEGORIES.RWA],
-  },
-]
-
-const CategoryFilter = () => {
-  const [selected, setSelected] = useState('0')
-  const setFilters = useSetAtom(categoryFilterAtom)
-
-  const handleSelect = (value: string) => {
-    setSelected(value)
-    setFilters(categories[Number(value)]?.filter ?? [])
-  }
-
-  return (
-    <SingleToggleFilter
-      value={selected}
-      options={categories}
-      onValueChange={handleSelect}
-    />
-  )
-}
-
-const chains = [
-  {
-    text: 'All chains',
-    filter: [ChainId.Base],
-  },
-  {
-    text: 'Base',
-    filter: [ChainId.Base],
-  },
-]
-
 const ChainFilter = () => {
   const [selected, setSelected] = useState('0')
   const setFilters = useSetAtom(chainFilterAtom)
+
+  const chains = [
+    {
+      icon: <LayoutGrid />,
+      text: 'All chains',
+      filter: [ChainId.Base],
+    },
+    {
+      icon: <ChainLogo chain={ChainId.Base} />,
+      text: 'Base',
+      filter: [ChainId.Base],
+    },
+  ]
 
   const handleSelect = (value: string) => {
     setSelected(value)
@@ -130,7 +92,6 @@ const DTFFilters = () => {
   return (
     <div className="flex items-center gap-1">
       <SearchFilter />
-      <CategoryFilter />
       <ChainFilter />
     </div>
   )

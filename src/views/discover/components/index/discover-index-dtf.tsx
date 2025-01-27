@@ -1,7 +1,6 @@
 import TokenLogo from '@/components/token-logo'
 import StackTokenLogo from '@/components/token-logo/StackTokenLogo'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardTitle } from '@/components/ui/card'
 import { ChartConfig, ChartContainer } from '@/components/ui/chart'
 import DataTable from '@/components/ui/data-table'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -9,48 +8,13 @@ import useIndexDTFList, { type IndexDTFItem } from '@/hooks/useIndexDTFList'
 import { cn } from '@/lib/utils'
 import { formatCurrency, formatPercentage } from '@/utils'
 import { ColumnDef } from '@tanstack/react-table'
-import { ArrowRight, Circle } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { Line, LineChart } from 'recharts'
 import DTFFilters from './components/Filters'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
-import {
-  categoryFilterAtom,
-  chainFilterAtom,
-  searchFilterAtom,
-} from './atoms/filter'
-
-const DiscoverHighlightIndex = () => {
-  return (
-    <div>
-      <h2 className="text-primary text-center text-xl font-bold">Discover</h2>
-      <div className="flex py-6 gap-2">
-        <Card className="border-secondary border-2 flex-grow ">
-          <CardTitle className="p-4 text-md font-light text-primary flex flex-col items-center gap-1 border-b border-secondary">
-            <Circle className="h-4 w-4" />
-            Highest Market Cap DTF
-          </CardTitle>
-          <CardContent className="p-4"></CardContent>
-        </Card>
-        <Card className="border-secondary border-2 flex-grow ">
-          <CardTitle className="p-4 text-md font-light text-primary flex flex-col items-center gap-1 border-b border-secondary">
-            <Circle className="h-4 w-4" />
-            Highest Market Cap DTF
-          </CardTitle>
-          <CardContent className="p-4"></CardContent>
-        </Card>
-        <Card className="border-secondary border-2 flex-grow ">
-          <CardTitle className="p-4 text-md font-light text-primary flex flex-col items-center gap-1 border-b border-secondary">
-            <Circle className="h-4 w-4" />
-            Highest Market Cap DTF
-          </CardTitle>
-          <CardContent className="p-4"></CardContent>
-        </Card>
-      </div>
-    </div>
-  )
-}
+import { chainFilterAtom, searchFilterAtom } from './atoms/filter'
 
 const chartConfig = {
   desktop: {
@@ -185,7 +149,6 @@ const IndexDTFList = () => {
   const { data, isLoading } = useIndexDTFList()
 
   const search = useAtomValue(searchFilterAtom)
-  const categories = useAtomValue(categoryFilterAtom)
   const chains = useAtomValue(chainFilterAtom)
 
   const filtered = useMemo(() => {
@@ -214,7 +177,7 @@ const IndexDTFList = () => {
 
       return true
     })
-  }, [data, categories, search, chains])
+  }, [data, search, chains])
 
   if (isLoading) {
     return <Skeleton className="h-[500px] rounded-[20px]" />
@@ -238,15 +201,7 @@ const IndexDTFList = () => {
 }
 
 const DiscoverIndexDTF = () => {
-  return (
-    <div className="px-6">
-      <DiscoverHighlightIndex />
-      <h2 className="text-primary text-center text-xl font-bold mb-6">
-        All Reserve Index DTFs
-      </h2>
-      <IndexDTFList />
-    </div>
-  )
+  return <IndexDTFList />
 }
 
 export default DiscoverIndexDTF
