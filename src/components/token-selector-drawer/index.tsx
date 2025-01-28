@@ -12,6 +12,7 @@ import { SearchInput } from '@/components/ui/input'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { cn } from '@/lib/utils'
+import { chainIdAtom } from '@/state/atoms'
 import { Token } from '@/types'
 import { shortenAddress } from '@/utils'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
@@ -72,6 +73,7 @@ const TokenListItem = ({
   decimals,
   logoURI,
 }: TokenListItemProps) => {
+  const chainId = useAtomValue(chainIdAtom)
   const [selectedTokens, setSelectedTokens] = useAtom(selectedTokensAtom)
   const checked = selectedTokens.some((t) => t.address === address)
 
@@ -106,7 +108,7 @@ const TokenListItem = ({
         <a
           className="bg-muted-foreground/10 rounded-full p-1 hover:bg-muted-foreground/20 transition-colors"
           role="button"
-          href={getExplorerLink(address, 1, ExplorerDataType.TOKEN)}
+          href={getExplorerLink(address, chainId, ExplorerDataType.TOKEN)}
           target="_blank"
           rel="noopener noreferrer"
         >

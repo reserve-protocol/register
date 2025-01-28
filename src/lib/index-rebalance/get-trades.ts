@@ -1,6 +1,6 @@
+import { D27, D27n, D9 } from './numbers'
 import { Trade } from './types'
-import { D27, D27n } from './numbers'
-import { getCurrentBasket, getSharePricing, makeTrade } from './utils'
+import { makeTrade } from './utils'
 
 /**
  * Get trades from basket
@@ -12,20 +12,22 @@ import { getCurrentBasket, getSharePricing, makeTrade } from './utils'
  * @param supply {share} Ideal basket
  * @param tokens Addresses of tokens in the basket
  * @param decimals Decimals of each token
- * @param bals {tok} Current balances
+ * @param currentBasket D18{1} Current balances
  * @param targetBasket D18{1} Ideal basket
  * @param _prices {USD/wholeTok} USD prices for each *whole* token
  * @param _priceError {1} Price error, pass 1 to fully defer to price curator / auction launcher
+ * @param _dtfPrice {USD/wholeShare} DTF price
  * @param tolerance D18{1} Tolerance for rebalancing to determine when to tolerance trade or not, default 0.1%
  */
 export const getTrades = (
   supply: bigint,
   tokens: string[],
   decimals: bigint[],
-  bals: bigint[],
+  currentBasket: bigint[],
   targetBasket: bigint[],
   _prices: number[],
   _priceError: number[],
+  _dtfPrice: number,
   tolerance: bigint = 10n ** 14n // 0.01%
 ): Trade[] => {
   const trades: Trade[] = []
@@ -34,32 +36,28 @@ export const getTrades = (
 
   // D27{USD/tok} = {USD/wholeTok} * D27 / {tok/wholeTok}
   const prices = _prices.map((a, i) =>
-    BigInt(Math.round((a * D27) / Number(10n ** decimals[i])))
+    BigInt(Math.round((a * D27) / 10 ** Number(decimals[i])))
   )
 
   // D27{1} = {1} * D27
-  const priceError = _priceError.map((a) => BigInt(Math.round(a * D27)))
+  const priceError = _priceError.map((a) => BigInt(a * D27))
+
+  // upscale currentBasket and targetBasket to D27
+
+  // D27{1} = D18{1} * D9
+  currentBasket = currentBasket.map((a) => a * 10n ** 9n)
 
   // D27{1} = D18{1} * D9
   targetBasket = targetBasket.map((a) => a * 10n ** 9n)
-  tolerance = tolerance * 10n ** 9n
 
   console.log(
     '--------------------------------------------------------------------------------'
   )
 
-  // D27{1} approx sum 1e27
-  const currentBasket = getCurrentBasket(bals, decimals, _prices)
-  console.log('currentBasket', currentBasket)
+  // D27{USD} = {USD/wholeShare} * D27 * {share} / {share/wholeShare}
+  const sharesValue = BigInt(Math.round(_dtfPrice * D9)) * supply
 
-  // D27{USD}, {USD/wholeShare}
-  const [sharesValue, sharePrice] = getSharePricing(
-    supply,
-    bals,
-    decimals,
-    _prices
-  )
-  console.log('shares', sharesValue, sharePrice)
+  console.log('sharesValue', sharesValue)
 
   // queue up trades until there are no more trades-to-make greater than tolerance in size
   //
@@ -105,6 +103,9 @@ export const getTrades = (
       }
     }
 
+    console.log('biggestSurplus', biggestSurplus)
+    console.log('biggestDeficit', biggestDeficit)
+
     // if we don't find any more trades, we're done
     if (x == tokens.length || y == tokens.length) {
       return trades
@@ -127,8 +128,8 @@ export const getTrades = (
 
     // D27{1}
     let avgPriceError = (priceError[x] + priceError[y]) / 2n
-    if (priceError[x] >= D27n || priceError[y] >= D27n) {
-      avgPriceError = D27n
+    if (priceError[x] > D27n || priceError[y] > D27n) {
+      throw new Error('price error too large')
     }
 
     // D27{tok/share} = D27{1} * D27{USD} / D27{USD/tok} / {share}
@@ -167,7 +168,7 @@ export const getTrades = (
       )
     )
 
-    // do not remove console.logs they do not show in tests that succeed
+    // do not remove console.logs
     console.log('sellLimit', trades[trades.length - 1].sellLimit.spot)
     console.log('buyLimit', trades[trades.length - 1].buyLimit.spot)
     console.log('startPrice', trades[trades.length - 1].prices.start)

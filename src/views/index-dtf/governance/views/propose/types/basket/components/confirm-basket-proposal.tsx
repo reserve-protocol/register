@@ -1,9 +1,19 @@
 import ProposalDescriptionForm from '@/components/governance/proposal-description-form'
-import { proposalDescriptionAtom } from '../atoms'
-import { useSetAtom } from 'jotai'
+import {
+  indexDTFBasketAtom,
+  indexDTFBasketSharesAtom,
+  iTokenAddressAtom,
+} from '@/state/dtf/atoms'
+import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
+import {
+  basketProposalCalldatasAtom,
+  priceMapAtom,
+  proposalDescriptionAtom,
+} from '../atoms'
+import BasketProposalPreview from './proposal-basket-preview'
 
-const ConfirmBasketProposal = () => {
+const ProposalDescription = () => {
   const setDescription = useSetAtom(proposalDescriptionAtom)
 
   useEffect(() => {
@@ -12,9 +22,32 @@ const ConfirmBasketProposal = () => {
     }
   }, [])
 
+  return <ProposalDescriptionForm onChange={setDescription} />
+}
+
+const ProposalPreview = () => {
+  const calldatas = useAtomValue(basketProposalCalldatasAtom)
+  const basket = useAtomValue(indexDTFBasketAtom)
+  const shares = useAtomValue(indexDTFBasketSharesAtom)
+  const prices = useAtomValue(priceMapAtom)
+  const address = useAtomValue(iTokenAddressAtom)
+
   return (
-    <div className="bg-secondary rounded-3xl p-1">
-      <ProposalDescriptionForm onChange={setDescription} />
+    <BasketProposalPreview
+      calldatas={calldatas}
+      basket={basket}
+      shares={shares}
+      prices={prices}
+      address={address}
+    />
+  )
+}
+
+const ConfirmBasketProposal = () => {
+  return (
+    <div className="flex flex-col gap-1 bg-secondary rounded-3xl p-1">
+      <ProposalDescription />
+      <ProposalPreview />
     </div>
   )
 }

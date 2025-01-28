@@ -34,6 +34,7 @@ import IndexDTFOverview from './views/index-dtf/overview'
 import IndexDTFSettings from './views/index-dtf/settings'
 import AllTokenList from './views/tokens/Tokens'
 import IndexDTFPropose from './views/index-dtf/governance/views/propose'
+import IndexProposal from './views/index-dtf/governance/views/proposal'
 import IndexDTFBasketProposal from './views/index-dtf/governance/views/propose/types/basket'
 
 const AppRoutes = () => (
@@ -82,6 +83,10 @@ const AppRoutes = () => (
       <Route
         path={`${ROUTES.GOVERNANCE}/${ROUTES.GOVERNANCE_PROPOSE}/${GOVERNANCE_PROPOSAL_TYPES.BASKET}`}
         element={<IndexDTFBasketProposal />}
+      />
+      <Route
+        path={`${ROUTES.GOVERNANCE_PROPOSAL}/:proposalId`}
+        element={<IndexProposal />}
       />
     </Route>
     {/* Explorer */}

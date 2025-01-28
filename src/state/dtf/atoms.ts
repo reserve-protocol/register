@@ -107,7 +107,7 @@ export const indexDTFBasketPricesAtom = atom<Record<string, number>>({})
 
 export const indexDTFBasketAmountsAtom = atom<Record<string, number>>({})
 
-export const indexDTFBasketSharesAtom = atom<Record<string, number>>({})
+export const indexDTFBasketSharesAtom = atom<Record<string, string>>({})
 
 export const indexDTFAtom = atom<IndexDTF | undefined>(undefined)
 

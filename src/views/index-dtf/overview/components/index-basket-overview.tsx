@@ -17,10 +17,8 @@ import {
   indexDTFBasketAtom,
   indexDTFBasketSharesAtom,
   ITokenBasket,
-  iTokenBasketAtom,
 } from '@/state/dtf/atoms'
 import { Token } from '@/types'
-import { formatPercentage } from '@/utils'
 import { useAtomValue } from 'jotai'
 import { ArrowUpRight, Asterisk, BoxIcon } from 'lucide-react'
 import React, { useState } from 'react'
@@ -134,7 +132,7 @@ const IndexBasketTokens = ({
                   </TableCell>
                   <TableCell>${token.symbol}</TableCell>
                   <TableCell className="text-blue-600 font-bold">
-                    {formatPercentage(basketShares[token.address] * 100)}
+                    {basketShares[token.address]}%
                   </TableCell>
                   <TableCell className="">
                     <Button variant="link" size="sm" className="h-8 w-8 p-0">
