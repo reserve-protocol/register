@@ -42,9 +42,10 @@ const SubmitProposalButton = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      // Go back to gov list
-      // TODO: Maybe add a timeout of 1m and then refetch proposal list?
-      navigate(`../${ROUTES.GOVERNANCE}`)
+      // Give some time for the proposal to be created on the subgraph
+      setTimeout(() => {
+        navigate(`../${ROUTES.GOVERNANCE}`)
+      }, 5000)
     }
   }, [isSuccess])
 

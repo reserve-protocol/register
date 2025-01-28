@@ -196,9 +196,9 @@ function getProposedTrades(get: Getter, deferred = false) {
   const volatility = get(tradeVolatilityAtom)
   const supply = get(dtfSupplyAtom)
   const dtfAddress = get(iTokenAddressAtom)
+  const dtfPrice = priceMap[dtfAddress?.toLowerCase() || '']
 
-  if (!isValid || !proposedBasket || !dtfAddress || !priceMap[dtfAddress])
-    return []
+  if (!isValid || !proposedBasket || !dtfAddress || !dtfPrice) return []
 
   const tokens: string[] = []
   const decimals: bigint[] = []
@@ -256,6 +256,6 @@ function getProposedTrades(get: Getter, deferred = false) {
     targetBasket,
     prices,
     error,
-    priceMap[dtfAddress]
+    dtfPrice
   )
 }

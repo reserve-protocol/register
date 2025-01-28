@@ -125,9 +125,9 @@ export const useIndexBasket = (token: string | undefined, chainId: number) => {
     return {
       isLoading: false,
       data: {
-        price: prices.price,
+        price: priceResult.price,
         basket: basket,
-        prices,
+        prices: { ...prices, [token.toLowerCase()]: priceResult.price },
         amounts,
         shares,
       },
