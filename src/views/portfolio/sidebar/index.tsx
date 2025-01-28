@@ -1,5 +1,6 @@
 import { Asterisk, ChevronDown, ChevronRight } from 'lucide-react'
 
+import WalletOutlineIcon from '@/components/icons/WalletOutlineIcon'
 import CopyValue from '@/components/old/button/CopyValue'
 import { Avatar } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
@@ -7,7 +8,6 @@ import { Card } from '@/components/ui/card'
 import {
   Drawer,
   DrawerContent,
-  DrawerFooter,
   DrawerTitle,
   DrawerTrigger,
 } from '@/components/ui/drawer'
@@ -145,7 +145,7 @@ const PortfolioHeader = () => {
         if (!account) return null
 
         return (
-          <div className="flex items-center gap-2 p-6 w-full">
+          <div className="flex items-center gap-2 p-6 pb-2 w-full">
             <div className="relative flex items-center gap-2">
               <BlockiesAvatar
                 size={32}
@@ -154,8 +154,8 @@ const PortfolioHeader = () => {
               />
               <div className="absolute right-0 bottom-0 translate-x-0.5 translate-y-0.5">
                 <div className="relative ml-1 h-[10px] w-[10px]">
-                  <div className="absolute h-full w-full animate-ping rounded-full bg-green-500" />
-                  <div className="absolute h-full w-full rounded-full bg-green-500" />
+                  <div className="absolute h-full w-full animate-ping rounded-full bg-green-400" />
+                  <div className="absolute h-full w-full rounded-full bg-green-400" />
                 </div>
               </div>
             </div>
@@ -190,32 +190,23 @@ const PortfolioHeader = () => {
 const PortfolioContent = () => {
   return (
     <Card className="flex h-full w-full flex-col overflow-hidden">
-      <div className="border-b p-6">
-        <img
-          src="https://v0.blob.com/tree-blue.png"
-          alt="Tree icon"
-          className="mb-4 h-8 w-8"
-        />
-        <div className="mb-2 text-lg">Total Reserve holdings</div>
-        <div className="mb-4 flex items-baseline gap-2">
-          <span className="text-4xl font-medium text-[#0052ff]">
-            $781,100.00
-          </span>
-          <span className="text-[#0052ff]">4.54%</span>
-          <span className="text-sm text-muted-foreground">(+$0.00)</span>
-          <span className="text-sm text-muted-foreground">Last 7d</span>
+      <div className="p-6 pt-5 flex flex-col justify-center gap-8 text-primary">
+        <WalletOutlineIcon className="h-9 w-9 -ml-[2px] -mt-[2px]" />
+        <div className="flex flex-col justify-center gap-4">
+          <span className="text-base">Total Reserve holdings</span>
+          <span className="text-5xl">$781,100.00</span>
         </div>
-        <Tabs defaultValue="all">
-          <TabsList className="w-full justify-start gap-2">
-            <TabsTrigger value="all">All</TabsTrigger>
-            <TabsTrigger value="vote-locked">Vote locked</TabsTrigger>
-            <TabsTrigger value="staked-rsr">Staked RSR</TabsTrigger>
-            <TabsTrigger value="index-dtfs">Index DTFs</TabsTrigger>
-            <TabsTrigger value="yield-dtfs">Yield DTFs</TabsTrigger>
-            <TabsTrigger value="rsr">RSR</TabsTrigger>
-          </TabsList>
-        </Tabs>
       </div>
+      <Tabs defaultValue="all">
+        <TabsList className="w-full justify-start px-6 py-3 gap-4 bg-transparent [&>button]:px-0 [&>button]:text-base [&>button]:font-light [&>button]:bg-transparent data-[state=active]:[&>button]:font-bold data-[state=active]:[&>button]:text-primary data-[state=active]:[&>button]:shadow-none">
+          <TabsTrigger value="all">All</TabsTrigger>
+          <TabsTrigger value="vote-locked">Vote locked</TabsTrigger>
+          <TabsTrigger value="staked-rsr">Staked RSR</TabsTrigger>
+          <TabsTrigger value="index-dtfs">Index DTFs</TabsTrigger>
+          <TabsTrigger value="yield-dtfs">Yield DTFs</TabsTrigger>
+          <TabsTrigger value="rsr">RSR</TabsTrigger>
+        </TabsList>
+      </Tabs>
       <div className="flex-1 overflow-auto">
         <div className="border-b p-4">
           <h2 className="mb-2 text-lg font-semibold">Unlocking</h2>
@@ -277,9 +268,6 @@ const PortfolioSidebar = ({ children }: { children: ReactNode }) => {
           <PortfolioHeader />
         </DrawerTitle>
         <PortfolioContent />
-        <DrawerFooter className="flex-grow justify-end mb-2">
-          Footer
-        </DrawerFooter>
       </DrawerContent>
     </Drawer>
   )
