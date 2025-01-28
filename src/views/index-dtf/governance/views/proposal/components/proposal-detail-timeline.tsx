@@ -81,7 +81,10 @@ export const TimelineItemCreated = () => {
       subtitle={
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           <Text>By:</Text>
-          <ExplorerAddress address={proposal?.proposer || ''} chain={1} />
+          <ExplorerAddress
+            address={proposal?.proposer?.address || ''}
+            chain={1}
+          />
         </Box>
       }
     />

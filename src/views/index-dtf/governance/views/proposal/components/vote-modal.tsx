@@ -92,11 +92,13 @@ const VoteModal = (props: ModalProps) => {
           <Text variant="legend">
             <Trans>Proposed by</Trans>:
           </Text>
-          <Text ml={1}>{shortenAddress(proposal?.proposer || '')}</Text>
+          <Text ml={1}>
+            {shortenAddress(proposal?.proposer?.address ?? '')}
+          </Text>
           <GoTo
             ml={2}
             href={getExplorerLink(
-              proposal?.proposer ?? '',
+              proposal?.proposer?.address ?? '',
               chainId,
               ExplorerDataType.ADDRESS
             )}

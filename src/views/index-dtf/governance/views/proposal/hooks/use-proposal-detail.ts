@@ -33,7 +33,7 @@ type Result = {
     calldatas: Hex[]
     targets: Address[]
     proposer: {
-      address: string
+      address: Address
     }
     votes: {
       choice: string
@@ -125,7 +125,6 @@ const useProposalDetail = (proposalId: string | undefined) => {
           voter: data.voter?.address ?? '',
           weight: data.weight ? formatEther(data.weight) : '0',
         })),
-        proposer: (proposal.proposer?.address ?? '0x') as Address,
         voteStart: +proposal.voteStart,
         voteEnd: +proposal.voteEnd,
         queueBlock: proposal.queueBlock ? +proposal.queueBlock : undefined,

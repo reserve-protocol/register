@@ -132,10 +132,6 @@ const Updater = () => {
 }
 
 const IndexDTFAuctions = () => {
-  const tradesByProposal = useAtomValue(dtfTradesByProposalAtom)
-
-  console.log(tradesByProposal)
-
   return (
     <div className="container">
       <ProposalTrades />

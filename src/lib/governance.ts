@@ -41,7 +41,6 @@ export interface ProposalDetail extends PartialProposal {
   againstDelegateVotes: string
   executionTxnHash?: string
   targets: Address[]
-  proposer: Address
   votes: {
     choice: string
     weight: string

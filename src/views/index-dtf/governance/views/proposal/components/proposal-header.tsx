@@ -99,7 +99,10 @@ const ProposalParams = () => {
         >
           <div>
             {proposal?.proposer && (
-              <ExplorerAddress address={proposal?.proposer} chain={chainId} />
+              <ExplorerAddress
+                address={proposal?.proposer?.address}
+                chain={chainId}
+              />
             )}
           </div>
         </StatItem>
