@@ -1,9 +1,9 @@
-import { ChevronDown, ChevronRight, Copy, Sparkle } from 'lucide-react'
+import { Asterisk, ChevronDown, ChevronRight } from 'lucide-react'
 
+import CopyValue from '@/components/old/button/CopyValue'
 import { Avatar } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import {
   Drawer,
   DrawerContent,
@@ -11,6 +11,11 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from '@/components/ui/drawer'
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import BlockiesAvatar from '@/components/utils/blockies-avatar'
+import { shortenAddress } from '@/utils'
+import { ConnectButton } from '@rainbow-me/rainbowkit'
+import { ReactNode } from 'react'
 
 interface TokenRowProps {
   icon: string
@@ -133,27 +138,58 @@ function TokenRow({
   )
 }
 
+const PortfolioHeader = () => {
+  return (
+    <ConnectButton.Custom>
+      {({ account, openAccountModal }) => {
+        if (!account) return null
+
+        return (
+          <div className="flex items-center gap-2 p-6 w-full">
+            <div className="relative flex items-center gap-2">
+              <BlockiesAvatar
+                size={32}
+                address={account.address}
+                className="rounded-[10px]"
+              />
+              <div className="absolute right-0 bottom-0 translate-x-0.5 translate-y-0.5">
+                <div className="relative ml-1 h-[10px] w-[10px]">
+                  <div className="absolute h-full w-full animate-ping rounded-full bg-green-500" />
+                  <div className="absolute h-full w-full rounded-full bg-green-500" />
+                </div>
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              <span className="text-base font-light">
+                {shortenAddress(account.address)}
+              </span>
+              <div className="flex items-center gap-[6px]">
+                <div className="flex items-center rounded-full bg-muted p-1">
+                  <CopyValue
+                    value={account.address}
+                    size={16}
+                    placement="right"
+                  />
+                </div>
+                <div
+                  className="flex items-center rounded-full border border-red-200 text-red-500 p-1"
+                  role="button"
+                  onClick={openAccountModal}
+                >
+                  <Asterisk size={16} />
+                </div>
+              </div>
+            </div>
+          </div>
+        )
+      }}
+    </ConnectButton.Custom>
+  )
+}
+
 const PortfolioContent = () => {
   return (
     <Card className="flex h-full w-full flex-col overflow-hidden">
-      <div className="flex items-center gap-2 border-b p-4">
-        <Avatar className="h-8 w-8 bg-orange-100">
-          <span className="text-orange-500">🐱</span>
-        </Avatar>
-        <div className="flex items-center gap-2">
-          <span className="font-medium">0xd3Cd...9785</span>
-          <Button variant="ghost" size="icon" className="h-6 w-6">
-            <Copy className="h-4 w-4" />
-          </Button>
-          <Button variant="ghost" size="icon" className="h-6 w-6">
-            <Sparkle className="h-4 w-4" />
-          </Button>
-        </div>
-        <div className="relative ml-1 h-2 w-2">
-          <div className="absolute h-full w-full animate-ping rounded-full bg-green-500" />
-          <div className="absolute h-full w-full rounded-full bg-green-500" />
-        </div>
-      </div>
       <div className="border-b p-6">
         <img
           src="https://v0.blob.com/tree-blue.png"
@@ -231,17 +267,15 @@ const PortfolioContent = () => {
   )
 }
 
-const PortfolioSidebar = () => {
+const PortfolioSidebar = ({ children }: { children: ReactNode }) => {
   return (
     <Drawer>
-      <DrawerTrigger asChild>
-        <Button variant="ghost" size="icon" className="h-6 w-6">
-          Open
-          <ChevronRight className="h-4 w-4" />
-        </Button>
-      </DrawerTrigger>
-      <DrawerContent>
-        <DrawerTitle className="flex gap-2 mt-2 px-2 mb-2">Title</DrawerTitle>
+      <DrawerTrigger asChild>{children}</DrawerTrigger>
+      {/* target close button and add mt-4 */}
+      <DrawerContent className="first:[&>button]:top-[22px] first:[&>button]:right-[22px]">
+        <DrawerTitle className="w-full">
+          <PortfolioHeader />
+        </DrawerTitle>
         <PortfolioContent />
         <DrawerFooter className="flex-grow justify-end mb-2">
           Footer

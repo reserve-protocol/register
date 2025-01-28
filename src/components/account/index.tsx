@@ -120,27 +120,32 @@ const Account = () => {
                   chainId={chain.id}
                   currentChain={chainId}
                 >
-                  <Box
-                    variant="layout.verticalAlign"
-                    sx={{ justifyContent: 'center', height: '38px' }}
-                    p="2"
-                    // onClick={() => setVisible(true)}
-                  >
-                    <PortfolioSidebar />
-                    {!invalidChain ? (
-                      <ChainLogo chain={chain.id} />
-                    ) : (
-                      <AlertCircle fill="#FF0000" color="#fff" />
-                    )}
-                    <Text
-                      sx={{ display: ['none', 'inherit', 'inherit'] }}
-                      ml={2}
+                  <PortfolioSidebar>
+                    <Box
+                      variant="layout.verticalAlign"
+                      sx={{
+                        justifyContent: 'center',
+                        height: '38px',
+                        cursor: 'pointer',
+                      }}
+                      p="2"
+                      // onClick={() => setVisible(true)}
                     >
-                      {account.displayName}
-                    </Text>
-                    {isProcessing && <Spinner size={20} marginLeft={10} />}
-                    <MenuIcon style={{ marginLeft: 10 }} />
-                  </Box>
+                      {!invalidChain ? (
+                        <ChainLogo chain={chain.id} />
+                      ) : (
+                        <AlertCircle fill="#FF0000" color="#fff" />
+                      )}
+                      <Text
+                        sx={{ display: ['none', 'inherit', 'inherit'] }}
+                        ml={2}
+                      >
+                        {account.displayName}
+                      </Text>
+                      {isProcessing && <Spinner size={20} marginLeft={10} />}
+                      <MenuIcon style={{ marginLeft: 10 }} />
+                    </Box>
+                  </PortfolioSidebar>
                 </ErrorWrapper>
               )
             })()}
