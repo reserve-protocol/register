@@ -6,7 +6,7 @@ import { useQuery } from '@tanstack/react-query'
 import request, { gql } from 'graphql-request'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
-import { Address, formatEther, formatUnits } from 'viem'
+import { Address, formatEther } from 'viem'
 import { indexGovernanceOverviewAtom, refetchTokenAtom } from './atoms'
 
 type Response = {
@@ -51,6 +51,10 @@ const query = gql`
         quorumVotes
         voteStart
         voteEnd
+        executionBlock
+        proposer {
+          address
+        }
       }
       proposalCount
     }
@@ -67,6 +71,10 @@ const query = gql`
         quorumVotes
         voteStart
         voteEnd
+        executionBlock
+        proposer {
+          address
+        }
       }
       proposalCount
     }

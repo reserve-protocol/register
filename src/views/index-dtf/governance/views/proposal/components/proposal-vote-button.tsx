@@ -35,6 +35,8 @@ const ProposalVoteButton = () => {
   const { votePower = '0.0', vote } = useAtomValue(accountVotesAtom)
   const state = useAtomValue(proposalStateAtom)
 
+  console.log('vote?', vote)
+
   if (hasUndelegatedBalance) {
     return <DelegateButton />
   }

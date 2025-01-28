@@ -144,10 +144,10 @@ const QuorumStat = ({
           </span>
         </div>
       </div>
-      <div className="w-full h-1 bg-gray-200 rounded-full">
+      <div className=" relative h-1 bg-gray-200 rounded-full">
         <div
           className={`h-full rounded-full ${quorumReached ? 'bg-green-500' : 'bg-orange-500'}`}
-          style={{ width: `${quorumWeight * 100}%` }}
+          style={{ width: `${Math.min(quorumWeight * 100, 100)}%` }}
         />
       </div>
     </div>
@@ -180,9 +180,12 @@ const MajoritySupportStat = ({
           </span>
           <span className="text-legend">
             {formatPercentage(
-              (majoritySupport || !majorityWeight
-                ? majorityWeight
-                : 1 - majorityWeight) * 100
+              Math.min(
+                (majoritySupport || !majorityWeight
+                  ? majorityWeight
+                  : 1 - majorityWeight) * 100,
+                100
+              )
             )}
           </span>
         </div>
@@ -193,11 +196,12 @@ const MajoritySupportStat = ({
             majoritySupport ? 'bg-accent-inverted' : 'bg-red-500'
           } ${!majorityWeight ? 'bg-gray-200' : ''}`}
           style={{
-            width: `${
+            width: `${Math.min(
               (majoritySupport || !majorityWeight
                 ? majorityWeight
-                : 1 - majorityWeight) * 100
-            }%`,
+                : 1 - majorityWeight) * 100,
+              100
+            )}%`,
           }}
         />
       </div>

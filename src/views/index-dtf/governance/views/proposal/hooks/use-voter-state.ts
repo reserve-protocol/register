@@ -23,6 +23,9 @@ const useVoterState = () => {
         : undefined,
   })
 
+  console.log('votePower', votePower)
+  console.log('votes', proposal?.votes)
+
   return useMemo(() => {
     if (!proposal || !votePower || !account) return undefined
 

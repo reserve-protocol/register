@@ -14,6 +14,10 @@ export interface PartialProposal {
   quorumVotes: number
   voteStart: number
   voteEnd: number
+  executionBlock?: string
+  proposer: {
+    address: Address
+  }
 }
 
 export type VotingState = {
@@ -37,7 +41,6 @@ export interface ProposalDetail extends PartialProposal {
   againstDelegateVotes: string
   executionTxnHash?: string
   targets: Address[]
-  proposer: Address
   votes: {
     choice: string
     weight: string
