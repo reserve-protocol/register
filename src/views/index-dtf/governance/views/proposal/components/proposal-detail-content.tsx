@@ -80,7 +80,7 @@ const ProposalChanges = () => {
 
 const ProposalDetailContent = () => {
   return (
-    <Tabs className="bg-card rounded-3xl " defaultValue={TABS.DESCRIPTION}>
+    <Tabs className="bg-card rounded-3xl h-fit" defaultValue={TABS.DESCRIPTION}>
       <TabsList className="h-9 mx-4 mt-4">
         <TabsTrigger value={TABS.DESCRIPTION} className="w-max h-7">
           Description

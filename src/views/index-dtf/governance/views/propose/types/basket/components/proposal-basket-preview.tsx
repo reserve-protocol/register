@@ -274,7 +274,7 @@ const Row = ({
 }
 
 const ProposedTradeGroup = ({ group }: { group: IProposedTradeGroup }) => (
-  <Row className="border-b p-2">
+  <Row className="p-2">
     <ProposedTradeSold sell={group.sell} multiple={group.trades.length > 1} />
     <div className="flex flex-col">
       {group.trades.map((trade, index) => (

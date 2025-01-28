@@ -1,19 +1,17 @@
 import ProposalDescriptionForm from '@/components/governance/proposal-description-form'
 import {
-  basketProposalCalldatasAtom,
-  priceMapAtom,
-  proposalDescriptionAtom,
-} from '../atoms'
-import { useAtomValue, useSetAtom } from 'jotai'
-import { useEffect } from 'react'
-import { Hex } from 'viem'
-import { Token } from '@/types'
-import BasketProposalPreview from './proposal-basket-preview'
-import {
   indexDTFBasketAtom,
   indexDTFBasketSharesAtom,
   iTokenAddressAtom,
 } from '@/state/dtf/atoms'
+import { useAtomValue, useSetAtom } from 'jotai'
+import { useEffect } from 'react'
+import {
+  basketProposalCalldatasAtom,
+  priceMapAtom,
+  proposalDescriptionAtom,
+} from '../atoms'
+import BasketProposalPreview from './proposal-basket-preview'
 
 const ProposalDescription = () => {
   const setDescription = useSetAtom(proposalDescriptionAtom)
@@ -33,8 +31,6 @@ const ProposalPreview = () => {
   const shares = useAtomValue(indexDTFBasketSharesAtom)
   const prices = useAtomValue(priceMapAtom)
   const address = useAtomValue(iTokenAddressAtom)
-
-  console.log('calldatas', calldatas)
 
   return (
     <BasketProposalPreview

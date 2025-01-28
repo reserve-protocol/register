@@ -17,7 +17,7 @@ const Proposal = () => (
       <Separator className="my-2 bg-white" />
       <div className="grid grid-cols-1 lg:grid-cols-[10fr_5fr] gap-2 rounded-3xl">
         <ProposalDetailContent />
-        <div className="border-l pl-2 border-white">
+        <div className="flex flex-col gap-2 border-l pl-2 border-white">
           <ProposalDetailStats />
           <ProposalDetailTimeline />
           <ProposalDetailVotes />
