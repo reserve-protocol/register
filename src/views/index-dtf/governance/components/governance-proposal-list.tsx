@@ -18,6 +18,8 @@ import { useAtom, useAtomValue } from 'jotai'
 import { Circle, RefreshCcw } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { governanceProposalsAtom, refetchTokenAtom } from '../atoms'
+import { useState } from 'react'
+import { useEffect } from 'react'
 
 // The refresh button is a decent? idea but easily abused
 const Header = () => {
@@ -131,6 +133,21 @@ const BADGE_VARIANT = {
 
 const ProposalListItem = ({ proposal }: { proposal: PartialProposal }) => {
   const proposalState = getProposalState(proposal)
+  const [, forceUpdate] = useState({})
+
+  // Re-render component every minute
+  useEffect(() => {
+    if (
+      proposalState.state === PROPOSAL_STATES.ACTIVE ||
+      proposalState.state === PROPOSAL_STATES.PENDING
+    ) {
+      const interval = setInterval(() => {
+        forceUpdate({})
+      }, 60 * 1000)
+
+      return () => clearInterval(interval)
+    }
+  }, [proposalState.state])
 
   return (
     <Link
