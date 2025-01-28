@@ -31,6 +31,7 @@ import { Outlet, useNavigate, useParams } from 'react-router-dom'
 import { erc20Abi } from 'viem'
 import { useReadContracts, useSwitchChain } from 'wagmi'
 import IndexDTFNavigation from './components/navigation'
+import GovernanceUpdater from './governance/updater'
 
 const useChainWatch = () => {
   const { switchChain } = useSwitchChain()
@@ -86,8 +87,6 @@ const DTFContextUpdater = () => {
         }
       : undefined
   )
-
-  console.log('initial load', { data, error })
 
   // Temporal, individual hooks for each atom
   const setTokenData = useSetAtom(iTokenAtom)
@@ -275,6 +274,7 @@ const Updater = () => {
       <IndexDTFMetadataUpdater />
       <IndexDTFBasketUpdater />
       <DTFContextUpdater />
+      <GovernanceUpdater />
     </>
   )
 }

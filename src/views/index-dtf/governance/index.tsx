@@ -15,7 +15,7 @@ const IndexDTFGovernance = () => {
           <GovernanceStats />
         </div>
       </div>
-      <Updater />
+      {/* <Updater /> */}
     </>
   )
 }

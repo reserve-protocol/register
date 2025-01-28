@@ -24,7 +24,6 @@ interface Vote {
 
 const proposalVotesAtom = atom((get) => {
   const proposal = get(proposalDetailAtom)
-  console.log('proposal', proposal)
   const votes: { [x: string]: Vote[] } = {
     [TABS.FOR]: [],
     [TABS.AGAINST]: [],

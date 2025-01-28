@@ -14,6 +14,10 @@ export interface PartialProposal {
   quorumVotes: number
   voteStart: number
   voteEnd: number
+  executionBlock?: string
+  proposer: {
+    address: Address
+  }
 }
 
 export type VotingState = {
