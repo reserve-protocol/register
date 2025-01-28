@@ -6,8 +6,8 @@ import { useQuery } from '@tanstack/react-query'
 import request, { gql } from 'graphql-request'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
-import { Address, formatUnits } from 'viem'
-import { indexGovernanceOverviewAtom } from './atoms'
+import { Address, formatEther, formatUnits } from 'viem'
+import { indexGovernanceOverviewAtom, refetchTokenAtom } from './atoms'
 
 type Response = {
   ownerGovernance: {
@@ -94,9 +94,10 @@ const query = gql`
 // TODO: Maybe move this updater to the top of the context? and reset on token change
 const Updater = () => {
   const setGovernanceOverview = useSetAtom(indexGovernanceOverviewAtom)
+  const refetchToken = useAtomValue(refetchTokenAtom)
   const dtf = useAtomValue(indexDTFAtom)
   const { data } = useQuery({
-    queryKey: ['governance-overview', dtf?.ownerGovernance?.id],
+    queryKey: ['governance-overview', dtf?.ownerGovernance?.id, refetchToken],
     queryFn: async () => {
       const data = await request<Response>(
         INDEX_DTF_SUBGRAPH_URL[ChainId.Base],
@@ -108,24 +109,17 @@ const Updater = () => {
         }
       )
 
-      console.log('data', data)
-
       return {
         proposals: [
           ...(data.ownerGovernance.proposals ?? []),
           ...(data.tradingGovernance?.proposals ?? []),
-        ],
+        ].sort((a, b) => b.creationTime - a.creationTime),
         proposalCount:
           +data.ownerGovernance.proposalCount +
           +(data.tradingGovernance?.proposalCount ?? 0),
         delegates: data.stakingToken?.delegates ?? [],
         delegatesCount: +(data.stakingToken?.totalDelegates ?? 0),
-        voteSupply: data.stakingToken?.token.totalSupply
-          ? +formatUnits(
-              data.stakingToken.token.totalSupply,
-              data.stakingToken.token.decimals
-            )
-          : 0,
+        voteSupply: +formatEther(data.stakingToken?.token.totalSupply ?? 0n),
       }
     },
     enabled: !!dtf?.ownerGovernance?.id && !!dtf?.stToken?.id,

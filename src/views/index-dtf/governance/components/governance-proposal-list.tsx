@@ -7,22 +7,43 @@ import {
   VotingState,
 } from '@/lib/governance'
 import { cn } from '@/lib/utils'
-import { formatPercentage, getProposalTitle, parseDuration } from '@/utils'
+import {
+  formatPercentage,
+  getCurrentTime,
+  getProposalTitle,
+  parseDuration,
+} from '@/utils'
 import { formatConstant, PROPOSAL_STATES, ROUTES } from '@/utils/constants'
-import { useAtomValue } from 'jotai'
-import { Circle } from 'lucide-react'
+import { useAtom, useAtomValue } from 'jotai'
+import { Circle, RefreshCcw } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import { governanceProposalsAtom } from '../atoms'
+import { governanceProposalsAtom, refetchTokenAtom } from '../atoms'
 
-const Header = () => (
-  <div className="p-4 flex items-center gap-2">
-    <h1 className="font-bold text-xl mr-auto">Recent proposals</h1>
-    <Link to={ROUTES.GOVERNANCE_PROPOSE}>
-      <Button size="sm">Create proposal</Button>
-    </Link>
-  </div>
-)
+// The refresh button is a decent? idea but easily abused
+const Header = () => {
+  const [refetchTime, setRefetchToken] = useAtom(refetchTokenAtom)
 
+  // const handleRefresh = () => {
+  //   const currentTime = getCurrentTime()
+
+  //   // Prevents button spamming
+  //   if (refetchTime + 1 < currentTime) {
+  //     setRefetchToken(currentTime)
+  //   }
+  // }
+
+  return (
+    <div className="p-4 flex items-center gap-2">
+      <h1 className="font-bold text-xl mr-auto">Recent proposals</h1>
+      {/* <Button variant="ghost" className="mr-auto" onClick={handleRefresh}>
+        <RefreshCcw className="w-4 h-4" />
+      </Button> */}
+      <Link to={ROUTES.GOVERNANCE_PROPOSE}>
+        <Button size="sm">Create proposal</Button>
+      </Link>
+    </div>
+  )
+}
 const VoteStateHeader = ({ data }: { data: VotingState }) => {
   if (
     (data.state === PROPOSAL_STATES.ACTIVE ||
@@ -57,7 +78,7 @@ export const ProposalVotingState = ({ data }: { data: VotingState }) => {
         <span className="text-legend block mr-1">Voting starts in:</span>
         <span className="font-semibold">
           {parseDuration(data.deadline, {
-            units: ['d', 'h'],
+            units: ['d', 'h', 'm'],
             round: true,
           })}
         </span>

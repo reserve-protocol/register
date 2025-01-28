@@ -32,7 +32,7 @@ export const governanceStatsAtom = atom<GovernanceStats | undefined>((get) => {
   return {
     proposalCount: overview.proposalCount,
     totalDelegates: overview.delegatesCount,
-    voteTokenSupply: overview.voteSupply,
+    voteTokenSupply: overview.voteSupply, // TODO: Not sure what is going on here?
   }
 })
 
@@ -45,7 +45,7 @@ export const topDelegatesAtom = atom<
 
   return overview.delegates.map((delegate) => ({
     ...delegate,
-    weightedVotes: delegate.delegatedVotes / overview.voteSupply,
+    weightedVotes: (delegate.delegatedVotes / overview.voteSupply) * 100,
   }))
 })
 
@@ -55,3 +55,5 @@ export const governanceProposalsAtom = atom<PartialProposal[] | undefined>(
     return overview?.proposals
   }
 )
+
+export const refetchTokenAtom = atom(0)

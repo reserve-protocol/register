@@ -40,7 +40,7 @@ const organizedTradesAtom = atom((get) => {
   const basket = get(proposedIndexBasketAtom)
   const trades = get(proposedInxexTradesAtom)
   const priceMap = get(priceMapAtom)
-  const dtfPrice = priceMap[dtf ?? '']
+  const dtfPrice = priceMap[dtf?.toLowerCase() ?? '']
 
   if (!basket || !trades || !trades.length || !dtfPrice) return undefined
 
