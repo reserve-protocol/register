@@ -112,14 +112,20 @@ const txAtom = atom<
 
   const folioConfig: FolioConfig = {
     tradeDelay: BigInt(
-      (formData.auctionDelay || formData.customAuctionDelay || 0)! * 60
+      Math.floor(
+        (formData.auctionDelay || formData.customAuctionDelay || 0)! * 60
+      )
     ),
     auctionLength: BigInt(
-      (formData.auctionLength || formData.customAuctionLength || 0)! * 60
+      Math.floor(
+        (formData.auctionLength || formData.customAuctionLength || 0)! * 60
+      )
     ),
     feeRecipients: calculateRevenueDistribution(formData, wallet, stToken),
     folioFee: BigInt(
-      439591053.36 * (formData.folioFee || formData.customFolioFee || 0)!
+      Math.floor(
+        439591053.36 * (formData.folioFee || formData.customFolioFee || 0)!
+      )
     ),
     mintingFee: parseEther(
       ((formData.mintFee || formData.customMintFee || 0)! / 100).toString()
@@ -167,14 +173,18 @@ const txAtom = atom<
         0)!.toString()
     ),
     quorumPercent: BigInt(
-      (formData.governanceVotingQuorum ||
-        formData.customGovernanceVotingQuorum ||
-        0)!
+      Math.floor(
+        (formData.governanceVotingQuorum ||
+          formData.customGovernanceVotingQuorum ||
+          0)!
+      )
     ),
     timelockDelay: BigInt(
-      (formData.governanceExecutionDelay ||
-        formData.customGovernanceExecutionDelay ||
-        0)! * 60
+      Math.floor(
+        (formData.governanceExecutionDelay ||
+          formData.customGovernanceExecutionDelay ||
+          0)! * 60
+      )
     ),
     guardian: formData.guardianAddress!,
   }
@@ -192,12 +202,16 @@ const txAtom = atom<
         0)!.toString()
     ),
     quorumPercent: BigInt(
-      (formData.basketVotingQuorum || formData.customBasketVotingQuorum || 0)!
+      Math.floor(
+        (formData.basketVotingQuorum || formData.customBasketVotingQuorum || 0)!
+      )
     ),
     timelockDelay: BigInt(
-      (formData.basketExecutionDelay ||
-        formData.customBasketExecutionDelay ||
-        0)! * 60
+      Math.floor(
+        (formData.basketExecutionDelay ||
+          formData.customBasketExecutionDelay ||
+          0)! * 60
+      )
     ),
     guardian: formData.guardianAddress!,
   }

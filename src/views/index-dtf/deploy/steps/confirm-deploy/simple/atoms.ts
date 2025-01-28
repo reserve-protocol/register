@@ -77,16 +77,22 @@ export const zapDeployPayloadAtom = atom<
 
   const additionalDetails = {
     tradeDelay: BigInt(
-      (formData.auctionDelay || formData.customAuctionDelay || 0)! * 60
+      Math.floor(
+        (formData.auctionDelay || formData.customAuctionDelay || 0)! * 60
+      )
     ).toString(),
     auctionLength: BigInt(
-      (formData.auctionLength || formData.customAuctionLength || 0)! * 60
+      Math.floor(
+        (formData.auctionLength || formData.customAuctionLength || 0)! * 60
+      )
     ).toString(),
     feeRecipients: calculateRevenueDistribution(formData, wallet, stToken).map(
       ({ recipient, portion }) => ({ recipient, portion: portion.toString() })
     ),
     folioFee: BigInt(
-      439591053.36 * (formData.folioFee || formData.customFolioFee || 0)!
+      Math.floor(
+        439591053.36 * (formData.folioFee || formData.customFolioFee || 0)!
+      )
     ).toString(),
     mintingFee: parseEther(
       ((formData.mintFee || formData.customMintFee || 0)! / 100).toString()
@@ -134,14 +140,18 @@ export const zapDeployPayloadAtom = atom<
         0)!.toString()
     ).toString(),
     quorumPercent: BigInt(
-      (formData.governanceVotingQuorum ||
-        formData.customGovernanceVotingQuorum ||
-        0)!
+      Math.floor(
+        (formData.governanceVotingQuorum ||
+          formData.customGovernanceVotingQuorum ||
+          0)!
+      )
     ).toString(),
     timelockDelay: BigInt(
-      (formData.governanceExecutionDelay ||
-        formData.customGovernanceExecutionDelay ||
-        0)! * 60
+      Math.floor(
+        (formData.governanceExecutionDelay ||
+          formData.customGovernanceExecutionDelay ||
+          0)! * 60
+      )
     ).toString(),
     guardian: formData.guardianAddress!,
   }
@@ -161,12 +171,16 @@ export const zapDeployPayloadAtom = atom<
         0)!.toString()
     ).toString(),
     quorumPercent: BigInt(
-      (formData.basketVotingQuorum || formData.customBasketVotingQuorum || 0)!
+      Math.floor(
+        (formData.basketVotingQuorum || formData.customBasketVotingQuorum || 0)!
+      )
     ).toString(),
     timelockDelay: BigInt(
-      (formData.basketExecutionDelay ||
-        formData.customBasketExecutionDelay ||
-        0)! * 60
+      Math.floor(
+        (formData.basketExecutionDelay ||
+          formData.customBasketExecutionDelay ||
+          0)! * 60
+      )
     ).toString(),
     guardian: formData.guardianAddress!,
   }
