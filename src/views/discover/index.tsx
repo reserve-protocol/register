@@ -7,7 +7,7 @@ const Discover = () => {
       <div className="bg-primary">
         <HistoricalTVL />
       </div>
-      <DiscoverTabs className="mt-12" />
+      <DiscoverTabs className="mt-6 sm:mt-12" />
     </>
   )
 }

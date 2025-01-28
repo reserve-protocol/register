@@ -9,11 +9,13 @@ import {
 import { ChainId } from '@/utils/chains'
 import ChainLogo from '@/components/icons/ChainLogo'
 import { LayoutGrid } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
 const SingleToggleFilter = ({
   options,
   onValueChange,
   value,
+  className,
 }: {
   value: string
   options: {
@@ -22,13 +24,14 @@ const SingleToggleFilter = ({
     filter: string[] | number[]
   }[]
   onValueChange: (value: string) => void
+  className?: string
 }) => {
   return (
     <ToggleGroup
       type="single"
       value={value}
       onValueChange={onValueChange}
-      className="bg-card rounded-2xl px-4 py-2"
+      className={cn('bg-card rounded-bl-2xl rounded-br-2xl sm:rounded-2xl px-4 py-2', className)}
     >
       {options.map(({ text, icon }, index) => (
         <ToggleGroupItem
@@ -37,7 +40,7 @@ const SingleToggleFilter = ({
           className="flex items-center gap-0 h-8 px-2 data-[state=on]:bg-[#f2f2f2] data-[state=on]:text-primary hover:text-primary hover:bg-[#f2f2f2]"
         >
           {icon}
-          <div className="hidden sm:inline ml-[6px]">{text}</div>
+          <div className="hidden sm:block ml-[6px]">{text}</div>
         </ToggleGroupItem>
       ))}
     </ToggleGroup>
@@ -83,14 +86,14 @@ export const SearchFilter = () => {
       placeholder="Search by name, ticker or collateral"
       value={search}
       onChange={(e) => setSearch(e.target.value)}
-      className="flex-grow rounded-2xl [&_input]:rounded-2xl"
+      className="flex-grow [&_input]:rounded-bl-none [&_input]:rounded-br-none [&_input]:border-none sm:[&_input]:rounded-2xl"
     />
   )
 }
 
 const DTFFilters = () => {
   return (
-    <div className="flex items-center gap-1">
+    <div className="flex flex-col items-stretch sm:flex-row sm:items-center gap-[2px] sm:gap-1">
       <SearchFilter />
       <ChainFilter />
     </div>

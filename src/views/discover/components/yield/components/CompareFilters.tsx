@@ -51,7 +51,7 @@ const TargetFilter = () => {
       type="single"
       value={selected}
       onValueChange={handleSelect}
-      className="bg-card rounded-2xl p-2"
+      className="flex-grow bg-card rounded-br-2xl sm:rounded-2xl p-2"
     >
       {options.map(({ text, icon }, index) => (
         <ToggleGroupItem
@@ -75,7 +75,7 @@ export const SearchFilter = () => {
       placeholder="Search by name, ticker or collateral"
       value={search}
       onChange={(e) => setSearch(e.target.value)}
-      className="flex-grow rounded-2xl"
+      className="flex-grow [&_input]:rounded-bl-none [&_input]:rounded-br-none [&_input]:border-none sm:[&_input]:rounded-2xl"
     />
   )
 }
@@ -84,13 +84,20 @@ const CompareFilters = () => {
   const [chains, setChains] = useAtom(chainsFilterAtom)
 
   return (
-    <div className="flex items-center gap-1">
+    <div className="flex flex-col items-stretch sm:flex-row sm:items-center gap-[2px] sm:gap-1">
       <SearchFilter />
-
-      <div className="rounded-2xl bg-card">
-        <ChainFilter height={48} rounded chains={chains} onChange={setChains} />
+      <div className="flex gap-[2px] sm:gap-1">
+        <div className="rounded-bl-2xl sm:rounded-2xl basis-1/2 bg-card">
+          <ChainFilter
+            className="!border-none"
+            height={48}
+            rounded
+            chains={chains}
+            onChange={setChains}
+          />
+        </div>
+        <TargetFilter />
       </div>
-      <TargetFilter />
     </div>
   )
 }

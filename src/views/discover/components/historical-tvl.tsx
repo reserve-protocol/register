@@ -128,8 +128,8 @@ const Heading = () => {
   } = useProtocolMetrics()
 
   return (
-    <div className="absolute top-8 w-full flex justify-between text-white">
-      <div>
+    <>
+      <div className="absolute top-3 sm:top-8 left-3 sm:left-0 right-3 text-white">
         <RootIcon className="border rounded-full h-[32px] w-[32px]" />
         <h2 className="text-[22px] mt-6 mb-4 font-light leading-none">
           TVL in Reserve
@@ -137,13 +137,13 @@ const Heading = () => {
         {isLoading ? (
           <Skeleton className="w-88 h-[60px]" />
         ) : (
-          <div className="flex items-center">
-            <h3 className="text-[60px] font-semibold leading-none">
+          <div className="flex items-center justify-between sm:justify-start">
+            <h3 className="text-[44px] sm:text-[60px] font-semibold leading-none">
               ${formatCurrency(tvl, 0)}
             </h3>
             <Button
               variant="none"
-              className="ml-3 w-[44px] h-[44px] p-0 bg-[#276ab6] text-white hover:bg-[#276ab6]"
+              className="ml-3 w-[40px] h-[40px] sm:w-[44px] sm:h-[44px] p-0 bg-[#276ab6] text-white hover:bg-[#276ab6]"
               size="icon-rounded"
             >
               <ArrowRight className="-rotate-45" size={24} />
@@ -151,7 +151,7 @@ const Heading = () => {
           </div>
         )}
 
-        <div className="flex gap-2 mt-3 text-[22px] leading-none">
+        <div className="flex justify-between sm:justify-start gap-2 mt-3 text-[22px] leading-none">
           <span className="font-light">Annualized protocol revenue:</span>
           {isLoading ? (
             <Skeleton className="h-6 w-14" />
@@ -170,7 +170,7 @@ const Heading = () => {
           )}
         </div>
       </div>
-      <div>
+      <div className="absolute top-3 sm:top-8 right-3 sm:right-0 text-white">
         <Button
           variant="outline"
           className="rounded-[50px] p-1 h-8 hover:bg-white"
@@ -181,11 +181,12 @@ const Heading = () => {
           <span className="ml-1 mr-2">What are DTFs?</span>
         </Button>
       </div>
-    </div>
+    </>
   )
 }
 
 const HistoricalTVLChart = () => {
+  // TODO(jg): Add DTF TVL
   const data = useHistoricalTVL()
 
   return (
@@ -220,9 +221,9 @@ const HistoricalTVLChart = () => {
 
 const HistoricalTVL = () => {
   return (
-    <div className="container px-6 h-[520px]">
+    <div className="container sm:px-6 h-[400px] sm:h-[520px]">
       <div className="relative h-full flex flex-col justify-end">
-        <div className="h-[420px]">
+        <div className="h-[160px] sm:h-[420px]">
           <HistoricalTVLChart />
         </div>
         <Heading />

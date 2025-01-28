@@ -11,7 +11,7 @@ import { ColumnDef } from '@tanstack/react-table'
 import { ArrowRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { Line, LineChart } from 'recharts'
-import DTFFilters from './components/Filters'
+import DTFFilters from './components/dtf-filters'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { chainFilterAtom, searchFilterAtom } from './atoms/filter'
@@ -50,7 +50,7 @@ const columns: ColumnDef<IndexDTFItem>[] = [
     cell: ({ row }) => {
       return (
         <div className="flex gap-2 items-center">
-          <TokenLogo size="xl" />
+          <TokenLogo address={row.original.address} size="xl" />
           <div>
             <h4 className="font-semibold mb-[2px]">{row.original.name}</h4>
             <span className="text-legend">${row.original.symbol}</span>
@@ -145,6 +145,46 @@ const columns: ColumnDef<IndexDTFItem>[] = [
   },
 ]
 
+const DTFCard = ({ dtf }: { dtf: IndexDTFItem }) => {
+  const LIMIT = 4
+
+  const head = dtf.basket.slice(0, LIMIT)
+  const tail = dtf.basket.length - LIMIT
+
+  const percentageChange = calculatePercentageChange(dtf.performance)
+
+  return (
+    <div className="p-4 [&:not(:last-child)]:border-b">
+      <div className="flex justify-between mb-2">
+        <TokenLogo address={dtf.address} size="xl" />
+        <div>
+          <span>{percentageChange} </span>
+          <span className="text-legend">(7d)</span>
+        </div>
+      </div>
+      <div className="flex justify-between">
+        <div>
+          <h4 className="font-semibold mb-[2px]">{dtf.name}</h4>
+          <div className="flex">
+            <div>{head.map((t) => t.symbol).join(', ')}</div>
+            {tail > 0 && <div className="text-[#0955AC] ml-[6px]">+{tail}</div>}
+          </div>
+        </div>
+
+        <div className="flex items-end">
+          <Link
+            to={`/${dtf.chainId}/index-dtf/${dtf.address}/overview`}
+          >
+            <Button variant="muted" size="icon-rounded">
+              <ArrowRight size={16} />
+            </Button>
+          </Link>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 const IndexDTFList = () => {
   const { data, isLoading } = useIndexDTFList()
 
@@ -156,7 +196,6 @@ const IndexDTFList = () => {
       return []
     }
 
-    // TODO(jg): Add category to branding?
     return data.filter((dtf) => {
       if (!chains.length || !chains.includes(dtf.chainId)) {
         return false
@@ -190,12 +229,17 @@ const IndexDTFList = () => {
         columns={columns}
         data={filtered}
         className={cn(
-          'bg-card text-base rounded-[20px]',
+          'hidden sm:table bg-card text-base rounded-[20px]',
           '[&_thead_th]:px-6',
           '[&_tbody_td]:px-6',
           '[&_tbody]:rounded-[20px] [&_tbody_tr:last-child_td]:rounded-bl-[20px] [&_tbody_tr:last-child_td:last-child]:rounded-br-[20px]'
         )}
       />
+      <div className="sm:hidden bg-card rounded-[20px]">
+        {filtered.map((dtf) => {
+          return <DTFCard key={dtf.address} dtf={dtf} />
+        })}
+      </div>
     </div>
   )
 }
