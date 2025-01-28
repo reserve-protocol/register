@@ -1,54 +1,14 @@
-import { Tabs, TabsContent } from '@/components/ui/tabs'
-import DiscoverIndexDTF from './components/index/discover-index-dtf'
-import DiscoverYieldDTF from './components/yield/discover-yield-dtf'
-import DiscoverTabList, { Tab } from './components/discover-tab-list'
-
-import tabIndex from './assets/tab_index.jpg'
-import tabYield from './assets/tab_yield.jpg'
-import YieldIconAlt from '@/components/icons/YieldIconAlt'
-
-const tabs: Tab[] = [
-  {
-    value: 'index',
-    icon: tabIndex,
-    title: 'Index DTFs',
-    subtitle: 'Get easy exposure to narratives, indexes, and ecosystems',
-  },
-  {
-    value: 'yield',
-    icon: tabYield,
-    title: 'Yield DTFs',
-    subtitle:
-      'Earn yield safely with over-collateralized and diversified DeFi positions',
-  },
-]
+import HistoricalTVL from './components/historical-tvl'
+import DiscoverTabs from './components/discover-tabs'
 
 const Discover = () => {
   return (
-    <div className="container pb-6 px-4 mt-12">
-      <div className="flex justify-center md:justify-between items-center gap-16 px-8 mb-10">
-        <YieldIconAlt className="hidden md:block opacity-20" />
-        <YieldIconAlt className="hidden md:block opacity-40" />
-        <YieldIconAlt className="hidden md:block opacity-60" />
-        <h2 className="text-primary text-2xl font-bold whitespace-nowrap">
-          Select a DTF Category
-        </h2>
-        <YieldIconAlt className="hidden md:block scale-x-[-1] opcaity-60" />
-        <YieldIconAlt className="hidden md:block scale-x-[-1] opacity-40" />
-        <YieldIconAlt className="hidden md:block scale-x-[-1] opacity-20" />
+    <>
+      <div className="bg-primary">
+        <HistoricalTVL />
       </div>
-      <Tabs defaultValue="index">
-        <DiscoverTabList tabs={tabs} className="mb-4" />
-
-        <TabsContent className="mt-0" value="index">
-          <DiscoverIndexDTF />
-        </TabsContent>
-
-        <TabsContent className="mt-0" value="yield">
-          <DiscoverYieldDTF />
-        </TabsContent>
-      </Tabs>
-    </div>
+      <DiscoverTabs className="mt-12" />
+    </>
   )
 }
 

@@ -91,6 +91,7 @@ const Container = ({ children }: { children: ReactNode }) => {
  * Application header
  */
 const AppHeader = () => {
+  const x = useLocation()
   return (
     <Container>
       <div className="container flex items-center h-[52px] md:h-[72px] px-6">
