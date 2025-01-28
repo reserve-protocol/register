@@ -15,7 +15,9 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import BlockiesAvatar from '@/components/utils/blockies-avatar'
 import { shortenAddress } from '@/utils'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
-import { ReactNode } from 'react'
+import { ReactNode, useEffect, useRef, useState } from 'react'
+import React from 'react'
+import { cn } from '@/lib/utils'
 
 interface TokenRowProps {
   icon: string
@@ -188,16 +190,43 @@ const PortfolioHeader = () => {
 }
 
 const PortfolioContent = () => {
+  const [isSticky, setIsSticky] = useState(false)
+  const observerTarget = useRef(null)
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([e]) => {
+        setIsSticky(!e.isIntersecting)
+      },
+      { threshold: [1], rootMargin: '-1px 0px 0px 0px' }
+    )
+
+    if (observerTarget.current) {
+      observer.observe(observerTarget.current)
+    }
+
+    return () => {
+      observer.disconnect()
+    }
+  }, [])
+
   return (
-    <Card className="flex h-full w-full flex-col overflow-hidden">
+    <Card className="flex h-full w-full flex-col overflow-auto">
       <div className="p-6 pt-5 flex flex-col justify-center gap-8 text-primary">
-        <WalletOutlineIcon className="h-9 w-9 -ml-[2px] -mt-[2px]" />
+        <WalletOutlineIcon className="h-9 w-9 -ml-[1px] -mt-[1px]" />
         <div className="flex flex-col justify-center gap-4">
           <span className="text-base">Total Reserve holdings</span>
           <span className="text-5xl">$781,100.00</span>
         </div>
       </div>
-      <Tabs defaultValue="all">
+      <div ref={observerTarget} className="h-[1px] w-full" />
+      <Tabs
+        defaultValue="all"
+        className={cn(
+          'sticky top-0 z-10 bg-card transition-all duration-200',
+          isSticky && 'border-b border-border'
+        )}
+      >
         <TabsList className="w-full justify-start px-6 py-3 gap-4 bg-transparent [&>button]:px-0 [&>button]:text-base [&>button]:font-light [&>button]:bg-transparent data-[state=active]:[&>button]:font-bold data-[state=active]:[&>button]:text-primary data-[state=active]:[&>button]:shadow-none">
           <TabsTrigger value="all">All</TabsTrigger>
           <TabsTrigger value="vote-locked">Vote locked</TabsTrigger>
@@ -207,7 +236,12 @@ const PortfolioContent = () => {
           <TabsTrigger value="rsr">RSR</TabsTrigger>
         </TabsList>
       </Tabs>
-      <div className="flex-1 overflow-auto">
+      <div
+        className={cn(
+          'flex-1 transition-colors duration-200',
+          isSticky && 'bg-muted/50'
+        )}
+      >
         <div className="border-b p-4">
           <h2 className="mb-2 text-lg font-semibold">Unlocking</h2>
           <TokenRow
@@ -236,6 +270,36 @@ const PortfolioContent = () => {
             chevron
             estimatedApy="4.52%"
             reward="+4.45M RSR"
+          />
+        </div>
+        <div className="p-4">
+          <h2 className="mb-2 text-lg font-semibold">Index DTFs</h2>
+          <TokenRow
+            icon="https://v0.blob.com/token-icon.png"
+            amount="100.3M"
+            name="BIGTOMTOM10"
+            value="145.34K"
+            performance={{
+              value: '+14.23%',
+              chart: true,
+            }}
+            price="304.54"
+            chevron
+          />
+        </div>
+        <div className="p-4">
+          <h2 className="mb-2 text-lg font-semibold">Index DTFs</h2>
+          <TokenRow
+            icon="https://v0.blob.com/token-icon.png"
+            amount="100.3M"
+            name="BIGTOMTOM10"
+            value="145.34K"
+            performance={{
+              value: '+14.23%',
+              chart: true,
+            }}
+            price="304.54"
+            chevron
           />
         </div>
         <div className="p-4">
