@@ -126,8 +126,9 @@ const BADGE_VARIANT = {
   [PROPOSAL_STATES.ACTIVE]: 'primary',
   [PROPOSAL_STATES.QUEUED]: 'primary',
   [PROPOSAL_STATES.EXECUTED]: 'success',
+  [PROPOSAL_STATES.SUCCEEDED]: 'primary',
   [PROPOSAL_STATES.CANCELED]: 'destructive',
-  [PROPOSAL_STATES.PENDING]: 'legend',
+  [PROPOSAL_STATES.PENDING]: 'warning',
   [PROPOSAL_STATES.EXPIRED]: 'legend',
 }
 

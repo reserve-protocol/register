@@ -151,7 +151,6 @@ const useProposalDetail = (proposalId: string | undefined) => {
         },
       }
       proposalDetail.votingState = getProposalState(proposalDetail)
-      console.log('proposalDetail', proposalDetail)
       proposalDetail.state = proposalDetail.votingState.state
 
       return proposalDetail

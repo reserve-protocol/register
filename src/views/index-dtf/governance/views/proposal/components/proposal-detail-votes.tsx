@@ -11,9 +11,9 @@ import { atom, useAtomValue } from 'jotai'
 import { proposalDetailAtom } from '../atom'
 
 const TABS = {
-  FOR: 'for',
-  AGAINST: 'against',
-  ABSTAIN: 'abstain',
+  FOR: 'FOR',
+  AGAINST: 'AGAINST',
+  ABSTAIN: 'ABSTAIN',
 }
 
 interface Vote {
@@ -24,6 +24,7 @@ interface Vote {
 
 const proposalVotesAtom = atom((get) => {
   const proposal = get(proposalDetailAtom)
+  console.log('proposal', proposal)
   const votes: { [x: string]: Vote[] } = {
     [TABS.FOR]: [],
     [TABS.AGAINST]: [],

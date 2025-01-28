@@ -1,12 +1,11 @@
-import { t, Trans } from '@lingui/macro'
-import Governance from 'abis/Governance'
-import { Modal } from 'components'
 import GoTo from '@/components/old/button/GoTo'
 import TransactionButton from '@/components/old/button/TransactionButton'
 import { ModalProps } from '@/components/old/modal'
+import { t, Trans } from '@lingui/macro'
+import Governance from 'abis/Governance'
+import { Modal } from 'components'
 import useContractWrite from 'hooks/useContractWrite'
 import { useAtomValue } from 'jotai'
-import { useState } from 'react'
 import {
   CheckCircle,
   ExternalLink,
@@ -14,7 +13,8 @@ import {
   ThumbsDown,
   ThumbsUp,
 } from 'lucide-react'
-import { chainIdAtom, rTokenGovernanceAtom } from 'state/atoms'
+import { useState } from 'react'
+import { chainIdAtom } from 'state/atoms'
 import { Box, Checkbox, Divider, Flex, Link, Text } from 'theme-ui'
 import { getProposalTitle, shortenAddress } from 'utils'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
@@ -70,7 +70,7 @@ const VoteModal = (props: ModalProps) => {
           <Link
             href={getExplorerLink(hash, chainId, ExplorerDataType.TRANSACTION)}
             target="_blank"
-            sx={{ fontSize: 1 }}
+            className="text-sm flex items-center gap-1"
           >
             <ExternalLink size={12} /> <Trans>View on etherscan</Trans>
           </Link>
