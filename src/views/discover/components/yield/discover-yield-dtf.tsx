@@ -29,10 +29,7 @@ const Footer = () => (
  */
 const DiscoverYieldDTF = () => {
   return (
-    <div className="px-4">
-      <h2 className="text-primary text-center text-xl font-bold mb-8">
-        All Reserve Yield DTFs
-      </h2>
+    <div>
       <Suspense fallback={<CompareSkeleton />}>
         <YieldDTfList />
       </Suspense>

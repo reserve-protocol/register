@@ -16,7 +16,6 @@ const Brand = (props: BoxProps) => {
       sx={{
         cursor: 'pointer',
         alignItems: 'center',
-        color: 'accent',
         display: 'flex',
       }}
     >

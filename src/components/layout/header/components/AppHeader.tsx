@@ -1,6 +1,5 @@
 import Account from 'components/account'
 import ThemeColorMode from 'components/dark-mode-toggle/ThemeColorMode'
-import { Box } from 'theme-ui'
 import Brand from './Brand'
 import CoinbaseSubscribe from './CoinbaseSubscribe'
 // import HeaderMenu from './HeaderMenu'
@@ -80,10 +79,22 @@ const HeaderMenu = () => {
 
 const Container = ({ children }: { children: ReactNode }) => {
   // Check if the route is a "index-dtf" route
-  const isIndexDTF = useLocation().pathname.includes('index-dtf')
+  const { pathname } = useLocation()
+
+  const border = !['index-dtf', ROUTES.DISCOVER].some((r) =>
+    pathname.includes(r)
+  )
 
   return (
-    <div className={cn('w-full', !isIndexDTF && 'border-b')}>{children}</div>
+    <div
+      className={cn(
+        'w-full',
+        pathname.includes(ROUTES.DISCOVER) && 'bg-primary text-white',
+        border && 'border-b'
+      )}
+    >
+      {children}
+    </div>
   )
 }
 
@@ -91,37 +102,48 @@ const Container = ({ children }: { children: ReactNode }) => {
  * Application header
  */
 const AppHeader = () => {
+  const { pathname } = useLocation()
   return (
     <Container>
-      <div className="container flex items-center h-[52px] md:h-[72px] px-6">
-        <Brand mr={4} />
-        {/* <Box
+      <div className="container sm:px-6">
+        <div className="border-b flex items-center h-[56px] md:h-[72px] px-6 sm:px-0">
+          <Brand
+            mr={4}
+            className={cn(
+              pathname.includes(ROUTES.DISCOVER) ? 'text-white' : 'text-primary'
+            )}
+          />
+          {/* <Box
           variant="layout.verticalAlign"
           sx={{ position: ['relative', 'absolute'], left: ['8px', '24px'] }}
         >
           <Brand mr={4} />
           <Blog />
         </Box> */}
-        <HeaderMenu />
+          <HeaderMenu />
 
-        <ThemeColorMode
-          sx={{
-            display: ['none', 'flex'],
-            px: 2,
-            mr: 1,
-            py: '3px',
-            maxWidth: '32px',
-            borderRadius: '6px',
-            ml: 'auto',
-            cursor: 'pointer',
-            ':hover': {
-              backgroundColor: 'secondaryBackground',
-            },
-          }}
-        />
-        <RegisterHelp />
-        <CoinbaseSubscribe mr="2" sx={{ display: ['none', 'none', 'block'] }} />
-        <Account />
+          <ThemeColorMode
+            sx={{
+              display: ['none', 'flex'],
+              px: 2,
+              mr: 1,
+              py: '3px',
+              maxWidth: '32px',
+              borderRadius: '6px',
+              ml: 'auto',
+              cursor: 'pointer',
+              ':hover': {
+                backgroundColor: 'secondaryBackground',
+              },
+            }}
+          />
+          <RegisterHelp />
+          <CoinbaseSubscribe
+            mr="2"
+            sx={{ display: ['none', 'none', 'block'] }}
+          />
+          <Account />
+        </div>
       </div>
     </Container>
   )

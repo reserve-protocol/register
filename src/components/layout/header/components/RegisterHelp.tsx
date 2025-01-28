@@ -102,7 +102,7 @@ const HelpContent = ({ onClose }: { onClose(): void }) => {
           },
         }}
       >
-        {items.map((item, i) => (
+        {items.map((item) => (
           <HelpItem key={item.href} onClose={onClose} {...item} />
         ))}
       </Box>
