@@ -8,8 +8,8 @@ import ProposalDetailTimeline from './components/proposal-detail-timeline'
 import { Separator } from '@/components/ui/separator'
 
 const Proposal = () => (
-  <>
-    <div className="container bg-secondary rounded-3xl p-1 mr-2 mb-2">
+  <div className="container pr-2">
+    <div className="bg-secondary rounded-3xl p-1 mb-2">
       <div className="grid grid-cols-1 lg:grid-cols-[10fr_5fr] gap-2 bg-card rounded-3xl">
         <ProposalHeader />
         <ProposalVote />
@@ -25,7 +25,7 @@ const Proposal = () => (
       </div>
     </div>
     <Updater />
-  </>
+  </div>
 )
 
 export default Proposal

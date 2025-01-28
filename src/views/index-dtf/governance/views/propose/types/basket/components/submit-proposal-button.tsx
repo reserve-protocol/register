@@ -1,14 +1,15 @@
-import { Button } from '@/components/ui/button'
-import { atom, useAtomValue } from 'jotai'
-import { basketProposalCalldatasAtom, proposalDescriptionAtom } from '../atoms'
-import { chainIdAtom, walletAtom } from '@/state/atoms'
-import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
-import { useEffect } from 'react'
 import DTFIndexGovernance from '@/abis/dtf-index-governance'
-import { useNavigate } from 'react-router-dom'
+import { Button } from '@/components/ui/button'
+import { chainIdAtom, walletAtom } from '@/state/atoms'
 import { indexDTFAtom, iTokenAddressAtom } from '@/state/dtf/atoms'
-import { Address } from 'viem'
+import { ROUTES } from '@/utils/constants'
+import { atom, useAtomValue } from 'jotai'
 import { Loader2 } from 'lucide-react'
+import { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { Address } from 'viem'
+import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
+import { basketProposalCalldatasAtom, proposalDescriptionAtom } from '../atoms'
 
 const isProposalReady = atom((get) => {
   const wallet = get(walletAtom)
@@ -43,7 +44,7 @@ const SubmitProposalButton = () => {
     if (isSuccess) {
       // Go back to gov list
       // TODO: Maybe add a timeout of 1m and then refetch proposal list?
-      navigate('../../')
+      navigate(`../${ROUTES.GOVERNANCE}`)
     }
   }, [isSuccess])
 

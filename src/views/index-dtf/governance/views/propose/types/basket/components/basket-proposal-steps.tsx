@@ -20,6 +20,7 @@ import { Step, stepAtom, stepStateAtom } from '../atoms'
 import ProposalBasketSetup from './proposal-basket-setup'
 import ProposalTradingExpiration from './proposal-trading-expiration'
 import ProposalTradingRanges from './proposal-trading-ranges'
+import { ROUTES } from '@/utils/constants'
 
 export type ProposalStep = {
   id: Step
@@ -122,7 +123,10 @@ const BasketProposalSteps = () => {
       onValueChange={(value) => setStep(value as Step)}
     >
       <div className="p-4 pb-3 flex items-center gap-2">
-        <Link to="../" className="ml-3">
+        <Link
+          to={`../${ROUTES.GOVERNANCE}/${ROUTES.GOVERNANCE_PROPOSE}`}
+          className="ml-3"
+        >
           <Button variant="outline" size="icon-rounded">
             <ArrowLeftIcon size={24} strokeWidth={1.5} />
           </Button>

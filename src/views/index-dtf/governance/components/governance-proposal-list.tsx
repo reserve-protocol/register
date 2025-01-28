@@ -105,6 +105,7 @@ const BADGE_VARIANT = {
   [PROPOSAL_STATES.EXECUTED]: 'success',
   [PROPOSAL_STATES.CANCELED]: 'destructive',
   [PROPOSAL_STATES.PENDING]: 'legend',
+  [PROPOSAL_STATES.EXPIRED]: 'legend',
 }
 
 const ProposalListItem = ({ proposal }: { proposal: PartialProposal }) => {
@@ -123,7 +124,7 @@ const ProposalListItem = ({ proposal }: { proposal: PartialProposal }) => {
       </div>
       <div
         className={cn(
-          'rounded-full text-sm font-bold py-2 border px-3',
+          'rounded-full text-sm font-semibold py-2 border px-3',
           `text-${BADGE_VARIANT[proposalState.state]}`
         )}
       >

@@ -6,6 +6,7 @@ import { useAtom, useAtomValue } from 'jotai'
 import { Link } from 'react-router-dom'
 import { isBasketProposalValidAtom, isProposalConfirmedAtom } from '../atoms'
 import SubmitProposalButton from './submit-proposal-button'
+import { ROUTES } from '@/utils/constants'
 
 // TODO: get governance route to navigate back to governance
 const Header = () => {
@@ -15,7 +16,7 @@ const Header = () => {
     <div className="flex items-center p-6 gap-2 bg-card rounded-t-3xl">
       <TokenLogo size="lg" />
       <h3 className="font-bold mr-auto">${dtf?.symbol}</h3>
-      <Link to="..">
+      <Link to={`../${ROUTES.GOVERNANCE}`}>
         <Button
           variant="outline"
           size="xs"
