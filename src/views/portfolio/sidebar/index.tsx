@@ -13,11 +13,10 @@ import {
 } from '@/components/ui/drawer'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import BlockiesAvatar from '@/components/utils/blockies-avatar'
+import { cn } from '@/lib/utils'
 import { shortenAddress } from '@/utils'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { ReactNode, useEffect, useRef, useState } from 'react'
-import React from 'react'
-import { cn } from '@/lib/utils'
 
 interface TokenRowProps {
   icon: string
@@ -189,6 +188,62 @@ const PortfolioHeader = () => {
   )
 }
 
+const PortfolioSection = () => {
+  return (
+    <div className="p-4">
+      <h2 className="mb-3 text-base font-bold">Unlocking</h2>
+      <TokenRow
+        icon="https://v0.blob.com/token-icon.png"
+        amount="10.2K"
+        name="stAERO"
+        value="18.87K"
+        onWithdraw={() => {}}
+      />
+      <TokenRow
+        icon="https://v0.blob.com/token-icon.png"
+        amount="10.2K"
+        name="stAERO"
+        value="18.87K"
+        timer="2d 32m 3s"
+        onCancel={() => {}}
+      />
+      <TokenRow
+        icon="https://v0.blob.com/token-icon.png"
+        amount="12M"
+        name="hyusdRSR"
+        value="150K"
+        chevron
+        estimatedApy="4.52%"
+        reward="+4.45M RSR"
+      />
+      <TokenRow
+        icon="https://v0.blob.com/token-icon.png"
+        amount="100.3M"
+        name="BIGTOMTOM10"
+        value="145.34K"
+        performance={{
+          value: '+14.23%',
+          chart: true,
+        }}
+        price="304.54"
+        chevron
+      />
+    </div>
+  )
+}
+
+const PortfolioSummary = () => {
+  return (
+    <div className="p-6 pt-5 flex flex-col justify-center gap-8 text-primary">
+      <WalletOutlineIcon className="h-9 w-9 -ml-[1px] -mt-[1px]" />
+      <div className="flex flex-col justify-center gap-4">
+        <span className="text-base">Total Reserve holdings</span>
+        <span className="text-5xl">$781,100.00</span>
+      </div>
+    </div>
+  )
+}
+
 const PortfolioContent = () => {
   const [isSticky, setIsSticky] = useState(false)
   const observerTarget = useRef(null)
@@ -212,22 +267,16 @@ const PortfolioContent = () => {
 
   return (
     <Card className="flex h-full w-full flex-col overflow-auto">
-      <div className="p-6 pt-5 flex flex-col justify-center gap-8 text-primary">
-        <WalletOutlineIcon className="h-9 w-9 -ml-[1px] -mt-[1px]" />
-        <div className="flex flex-col justify-center gap-4">
-          <span className="text-base">Total Reserve holdings</span>
-          <span className="text-5xl">$781,100.00</span>
-        </div>
-      </div>
+      <PortfolioSummary />
       <div ref={observerTarget} className="h-[1px] w-full" />
       <Tabs
         defaultValue="all"
         className={cn(
-          'sticky top-0 z-10 bg-card transition-all duration-200',
+          'sticky top-0 z-10 bg-card transition-all duration-200 pb-2',
           isSticky && 'border-b border-border'
         )}
       >
-        <TabsList className="w-full justify-start px-6 py-3 gap-4 bg-transparent [&>button]:px-0 [&>button]:text-base [&>button]:font-light [&>button]:bg-transparent data-[state=active]:[&>button]:font-bold data-[state=active]:[&>button]:text-primary data-[state=active]:[&>button]:shadow-none">
+        <TabsList className="w-full justify-between px-6 py-3 bg-transparent [&>button]:flex [&>button]:items-center [&>button]:justify-center [&>button]:px-0 [&>button]:text-base [&>button]:font-light [&>button]:bg-transparent [&>button]:whitespace-nowrap data-[state=active]:[&>button]:font-bold data-[state=active]:[&>button]:text-primary data-[state=active]:[&>button]:shadow-none">
           <TabsTrigger value="all">All</TabsTrigger>
           <TabsTrigger value="vote-locked">Vote locked</TabsTrigger>
           <TabsTrigger value="staked-rsr">Staked RSR</TabsTrigger>
@@ -238,85 +287,12 @@ const PortfolioContent = () => {
       </Tabs>
       <div
         className={cn(
-          'flex-1 transition-colors duration-200',
-          isSticky && 'bg-muted/50'
+          'flex-1 transition-colors duration-200 p-2 [&:not(:last-child)]:[&>div]:border-b',
+          isSticky && 'bg-muted/20'
         )}
       >
-        <div className="border-b p-4">
-          <h2 className="mb-2 text-lg font-semibold">Unlocking</h2>
-          <TokenRow
-            icon="https://v0.blob.com/token-icon.png"
-            amount="10.2K"
-            name="stAERO"
-            value="18.87K"
-            onWithdraw={() => {}}
-          />
-          <TokenRow
-            icon="https://v0.blob.com/token-icon.png"
-            amount="10.2K"
-            name="stAERO"
-            value="18.87K"
-            timer="2d 32m 3s"
-            onCancel={() => {}}
-          />
-        </div>
-        <div className="border-b p-4">
-          <h2 className="mb-2 text-lg font-semibold">Staked RSR</h2>
-          <TokenRow
-            icon="https://v0.blob.com/token-icon.png"
-            amount="12M"
-            name="hyusdRSR"
-            value="150K"
-            chevron
-            estimatedApy="4.52%"
-            reward="+4.45M RSR"
-          />
-        </div>
-        <div className="p-4">
-          <h2 className="mb-2 text-lg font-semibold">Index DTFs</h2>
-          <TokenRow
-            icon="https://v0.blob.com/token-icon.png"
-            amount="100.3M"
-            name="BIGTOMTOM10"
-            value="145.34K"
-            performance={{
-              value: '+14.23%',
-              chart: true,
-            }}
-            price="304.54"
-            chevron
-          />
-        </div>
-        <div className="p-4">
-          <h2 className="mb-2 text-lg font-semibold">Index DTFs</h2>
-          <TokenRow
-            icon="https://v0.blob.com/token-icon.png"
-            amount="100.3M"
-            name="BIGTOMTOM10"
-            value="145.34K"
-            performance={{
-              value: '+14.23%',
-              chart: true,
-            }}
-            price="304.54"
-            chevron
-          />
-        </div>
-        <div className="p-4">
-          <h2 className="mb-2 text-lg font-semibold">Index DTFs</h2>
-          <TokenRow
-            icon="https://v0.blob.com/token-icon.png"
-            amount="100.3M"
-            name="BIGTOMTOM10"
-            value="145.34K"
-            performance={{
-              value: '+14.23%',
-              chart: true,
-            }}
-            price="304.54"
-            chevron
-          />
-        </div>
+        <PortfolioSection />
+        <PortfolioSection />
       </div>
     </Card>
   )
@@ -326,7 +302,7 @@ const PortfolioSidebar = ({ children }: { children: ReactNode }) => {
   return (
     <Drawer>
       <DrawerTrigger asChild>{children}</DrawerTrigger>
-      {/* target close button and add mt-4 */}
+      {/* target close button and add spacing */}
       <DrawerContent className="first:[&>button]:top-[22px] first:[&>button]:right-[22px]">
         <DrawerTitle className="w-full">
           <PortfolioHeader />

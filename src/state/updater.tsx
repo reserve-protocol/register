@@ -1,3 +1,4 @@
+import IndexDTFUpdater from '@/views/portfolio/updaters/index-dtf-updater'
 import CMSUpdater from './cms'
 import RTokenUpdater from './rtoken/updater'
 import CollateralYieldUpdater from './updaters/CollateralYieldUpdater'
@@ -17,6 +18,7 @@ const Updater = () => {
       <RTokenUpdater />
       <CollateralYieldUpdater />
       <TokenBalancesUpdater />
+      <IndexDTFUpdater />
     </>
   )
 }
