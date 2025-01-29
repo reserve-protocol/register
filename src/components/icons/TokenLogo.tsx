@@ -13,7 +13,7 @@ interface Props extends BoxProps {
   bordered?: boolean
 }
 
-const SVGS = new Set([
+export const SVGS = new Set([
   'dai',
   'cdai',
   'rsr',
@@ -83,7 +83,14 @@ const SVGS = new Set([
   'wsamm-eusd/usdc',
 ])
 
-const PNGS = new Set(['steakusdc', 'mai', 'dola', 'fxusd', 'alusd', 'ethx'])
+export const PNGS = new Set([
+  'steakusdc',
+  'mai',
+  'dola',
+  'fxusd',
+  'alusd',
+  'ethx',
+])
 
 // Memoized token image
 const TokenImage = React.memo(

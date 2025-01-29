@@ -71,7 +71,12 @@ const TokenSelector = ({
     return (
       <div className="flex flex-col gap-1 items-end">
         <div className="flex items-center gap-1 font-semibold text-2xl">
-          <TokenLogo size="lg" address={address} chain={chainId} />
+          <TokenLogo
+            size="lg"
+            symbol={symbol}
+            address={address}
+            chain={chainId}
+          />
           <span>{symbol}</span>
         </div>
         <div className="flex items-center gap-1 text-base">
@@ -99,7 +104,12 @@ const TokenSelector = ({
             className="flex items-center text-2xl gap-1 font-semibold h-auto hover:bg-accent px-2 justify-between"
           >
             <div className="flex items-center gap-1">
-              <TokenLogo size="lg" address={address} chain={chainId} />
+              <TokenLogo
+                size="lg"
+                symbol={symbol}
+                address={address}
+                chain={chainId}
+              />
               <span>{symbol}</span>
             </div>
             {open ? (
@@ -120,7 +130,12 @@ const TokenSelector = ({
               className="flex items-center justify-between gap-2 pr-2"
             >
               <div className="flex items-center gap-2">
-                <TokenLogo size="md" address={token.address} chain={chainId} />
+                <TokenLogo
+                  size="md"
+                  symbol={token.symbol}
+                  address={token.address}
+                  chain={chainId}
+                />
                 <span className="text-lg font-semibold">{token.symbol}</span>
               </div>
               <span className="text-sm text-muted-foreground">
@@ -168,7 +183,12 @@ const TokenOutputBox = ({ to }: Pick<SwapProps, 'to'>) => {
       <h3>{to.title || 'You receive:'}</h3>
       <div className="flex items-center gap-1">
         <h4 className="text-3xl font-semibold mr-auto">{to.value || '0'}</h4>
-        <TokenLogo size="lg" address={to.address} chain={chainId} />
+        <TokenLogo
+          size="lg"
+          symbol={to.symbol}
+          address={to.address}
+          chain={chainId}
+        />
         <h4 className="text-2xl font-semibold">{to.symbol}</h4>
       </div>
       <div className="flex items-center text-legend">{to.price}</div>
