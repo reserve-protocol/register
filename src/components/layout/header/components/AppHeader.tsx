@@ -27,7 +27,7 @@ const HeaderMenu = () => {
       {
         label: t`Discover`,
         icon: <BasketCubeIcon fontSize={14} />,
-        to: ROUTES.DISCOVER,
+        to: ROUTES.HOME,
       },
       {
         label: t`Farm`,
@@ -82,8 +82,6 @@ const Container = ({ children }: { children: ReactNode }) => {
   const { pathname } = useLocation()
 
   const border = !pathname.includes('index-dtf') || pathname === '/'
-
-  console.log('border', border)
 
   return <div className={cn('w-full', border && 'border-b')}>{children}</div>
 }
