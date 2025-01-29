@@ -1,10 +1,6 @@
 import { PartialProposal } from '@/lib/governance'
 import { getBasketPortion } from '@/lib/index-rebalance/utils'
-import {
-  indexDTFBasketPricesAtom,
-  indexDTFBasketSharesAtom,
-  indexDTFPriceAtom,
-} from '@/state/dtf/atoms'
+import { indexDTFBasketSharesAtom, indexDTFPriceAtom } from '@/state/dtf/atoms'
 import { Token } from '@/types'
 import { atom } from 'jotai'
 import { governanceProposalsAtom } from '../governance/atoms'
@@ -38,6 +34,18 @@ export type AssetTrade = {
   sellShare?: number
   deltaBuyShare?: number
   deltaSellShare?: number
+}
+
+export const VOLATILITY_OPTIONS = {
+  LOW: 'Low',
+  MEDIUM: 'Medium',
+  HIGH: 'High',
+}
+
+export const VOLATILITY_VALUES = {
+  [VOLATILITY_OPTIONS.LOW]: 0.01,
+  [VOLATILITY_OPTIONS.MEDIUM]: 0.05,
+  [VOLATILITY_OPTIONS.HIGH]: 0.1,
 }
 
 // TODO: Expand this? can know if trades expired or are permissionless or are all run or if there is one active etc
@@ -126,11 +134,36 @@ export const dtfTradesMapAtom = atom<Record<string, AssetTrade>>((get) => {
   )
 })
 
-export const dtfTradeVolatilityAtom = atom<Record<string, number>>(
-  {} as Record<string, number>
-)
+export const dtfTradeVolatilityAtom = atom<Record<string, string>>({})
 
 export const selectedTradesAtom = atom<Record<string, string>>({})
+
+export const addSelectedTradeAtom = atom(null, (get, set, tradeId: string) => {
+  const selectedTrades = get(selectedTradesAtom)
+
+  if (selectedTrades[tradeId]) {
+    delete selectedTrades[tradeId]
+    set(selectedTradesAtom, { ...selectedTrades })
+  } else {
+    set(selectedTradesAtom, { ...selectedTrades, [tradeId]: tradeId })
+  }
+})
+
+export const setTradeVolatilityAtom = atom(
+  null,
+  (get, set, [tradeId, volatility]: [string, string]) => {
+    const selectedTrades = get(selectedTradesAtom)
+
+    set(dtfTradeVolatilityAtom, {
+      ...get(dtfTradeVolatilityAtom),
+      [tradeId]: volatility,
+    })
+
+    if (!selectedTrades[tradeId]) {
+      set(selectedTradesAtom, { ...selectedTrades, [tradeId]: tradeId })
+    }
+  }
+)
 
 // TODO: There are some edge cases with this grouping, worth revisiting
 export const dtfTradesByProposalAtom = atom<TradesByProposal[] | undefined>(
