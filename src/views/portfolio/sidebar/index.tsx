@@ -418,7 +418,7 @@ const PortfolioContent = () => {
       </Tabs>
       <div
         className={cn(
-          'flex-1 transition-colors duration-200 p-2 [&:not(:last-child)]:[&>div]:border-b',
+          'flex-1 transition-colors duration-200 p-2 [&:not(:last-child)]:[&>div]:border-b first:[&>div]:-mt-2',
           isSticky && 'bg-muted/20'
         )}
       >
