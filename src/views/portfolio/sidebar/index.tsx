@@ -1,9 +1,8 @@
-import { Asterisk, ChevronDown, ChevronRight } from 'lucide-react'
+import { Asterisk } from 'lucide-react'
 
 import WalletOutlineIcon from '@/components/icons/WalletOutlineIcon'
 import CopyValue from '@/components/old/button/CopyValue'
-import { Avatar } from '@/components/ui/avatar'
-import { Button } from '@/components/ui/button'
+import TokenLogo from '@/components/token-logo'
 import { Card } from '@/components/ui/card'
 import {
   Drawer,
@@ -14,26 +13,40 @@ import {
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import BlockiesAvatar from '@/components/utils/blockies-avatar'
 import { cn } from '@/lib/utils'
-import { formatCurrency, shortenAddress } from '@/utils'
-import { ConnectButton } from '@rainbow-me/rainbowkit'
-import { ReactNode, useEffect, useRef, useState } from 'react'
 import { Token } from '@/types'
-import TokenLogo from '@/components/token-logo'
-import { formatUnits } from 'viem'
-import { useAtomValue } from 'jotai'
-import { accountTokenPricesAtom, accountUnclaimedLocksAtom } from '../atoms'
+import { formatCurrency, formatTokenAmount, shortenAddress } from '@/utils'
 import { ChainId } from '@/utils/chains'
+import { ConnectButton } from '@rainbow-me/rainbowkit'
+import { useAtom, useAtomValue } from 'jotai'
+import { ReactNode, useEffect, useRef, useState } from 'react'
+import { formatUnits } from 'viem'
+import {
+  accountIndexTokensAtom,
+  accountStakingTokensAtom,
+  accountTokenPricesAtom,
+  accountUnclaimedLocksAtom,
+  selectedPortfolioTabAtom,
+} from '../atoms'
 
 interface TokenRowProps {
   token: Token
   underlying?: Token
   chainId: number
   amount: bigint
+  children: ReactNode
 }
 
-function TokenRow({ token, chainId, amount, underlying }: TokenRowProps) {
+function TokenRow({
+  token,
+  chainId,
+  amount,
+  underlying,
+  children,
+}: TokenRowProps) {
   const prices = useAtomValue(accountTokenPricesAtom)
-  const formattedAmount = formatUnits(amount, token.decimals)
+  const formattedAmount = formatTokenAmount(
+    Number(formatUnits(amount, token.decimals))
+  )
   const tokenPrice = prices[underlying?.address ?? token.address]
   const value = tokenPrice ? tokenPrice * Number(formattedAmount) : 0
 
@@ -48,14 +61,18 @@ function TokenRow({ token, chainId, amount, underlying }: TokenRowProps) {
         <div className="flex flex-col">
           <div className="flex items-center gap-[6px] font-bold">
             <span className="text-primary">{formattedAmount}</span>
-            <span>{token.name}</span>
+            <span className="text-ellipsis">{token.name}</span>
           </div>
           <span className="text-sm text-muted-foreground">
-            ${formatCurrency(value)}
+            $
+            {formatCurrency(value, 2, {
+              notation: 'compact',
+              compactDisplay: 'short',
+            })}
           </span>
         </div>
       </div>
-      <div>Action</div>
+      <div>{children}</div>
     </div>
   )
 }
@@ -121,8 +138,36 @@ const PortfolioSummary = () => {
   )
 }
 
+const VoteLocked = () => {
+  const stTokens = useAtomValue(accountStakingTokensAtom)
+  const selectedTab = useAtomValue(selectedPortfolioTabAtom)
+
+  if (!stTokens || !['all', 'vote-locked'].includes(selectedTab)) return null
+
+  return (
+    <div className="p-4">
+      <h2 className="mb-3 text-base font-bold">Vote Locked</h2>
+      {stTokens.map((stToken) => (
+        <TokenRow
+          key={stToken.address}
+          token={stToken}
+          chainId={ChainId.Base} // TODO: change
+          amount={stToken.amount}
+          underlying={stToken.underlying}
+        >
+          <div>Action</div>
+        </TokenRow>
+      ))}
+    </div>
+  )
+}
+
 const Unlocking = () => {
   const locks = useAtomValue(accountUnclaimedLocksAtom)
+  const selectedTab = useAtomValue(selectedPortfolioTabAtom)
+
+  if (!locks || !['all', 'vote-locked'].includes(selectedTab)) return null
+
   return (
     <div className="p-4">
       <h2 className="mb-3 text-base font-bold">Unlocking</h2>
@@ -133,13 +178,74 @@ const Unlocking = () => {
           chainId={ChainId.Base} // TODO: change
           amount={lock.amount}
           underlying={lock.underlying}
-        />
+        >
+          <div>Action</div>
+        </TokenRow>
       ))}
     </div>
   )
 }
 
+const IndexDTFs = () => {
+  const indexDTFs = useAtomValue(accountIndexTokensAtom)
+  const selectedTab = useAtomValue(selectedPortfolioTabAtom)
+
+  if (!indexDTFs || !['all', 'index-dtfs'].includes(selectedTab)) return null
+
+  return (
+    <div className="p-4">
+      <h2 className="mb-3 text-base font-bold">Index DTFs</h2>
+      {indexDTFs.map((token) => (
+        <TokenRow
+          key={token.address}
+          token={token}
+          chainId={ChainId.Base} // TODO: change
+          amount={token.amount}
+        >
+          <div>Action</div>
+        </TokenRow>
+      ))}
+    </div>
+  )
+}
+
+export type PortfolioTabs =
+  | 'all'
+  | 'vote-locked'
+  | 'staked-rsr'
+  | 'index-dtfs'
+  | 'yield-dtfs'
+  | 'rsr'
+
+const PORTFOLIO_TABS: { value: PortfolioTabs; label: string }[] = [
+  {
+    value: 'all',
+    label: 'All',
+  },
+  {
+    value: 'vote-locked',
+    label: 'Vote locked',
+  },
+  {
+    value: 'staked-rsr',
+    label: 'Staked RSR',
+  },
+  {
+    value: 'index-dtfs',
+    label: 'Index DTFs',
+  },
+  {
+    value: 'yield-dtfs',
+    label: 'Yield DTFs',
+  },
+  {
+    value: 'rsr',
+    label: 'RSR',
+  },
+]
+
 const PortfolioContent = () => {
+  const [selectedTab, setSelectedTab] = useAtom(selectedPortfolioTabAtom)
   const [isSticky, setIsSticky] = useState(false)
   const observerTarget = useRef(null)
 
@@ -165,19 +271,19 @@ const PortfolioContent = () => {
       <PortfolioSummary />
       <div ref={observerTarget} className="h-[1px] w-full" />
       <Tabs
-        defaultValue="all"
+        value={selectedTab}
+        onValueChange={(tab) => setSelectedTab(tab as PortfolioTabs)}
         className={cn(
           'sticky top-0 z-10 bg-card transition-all duration-200 pb-2',
           isSticky && 'border-b border-border'
         )}
       >
         <TabsList className="w-full justify-between px-6 py-3 bg-transparent [&>button]:flex [&>button]:items-center [&>button]:justify-center [&>button]:px-0 [&>button]:text-base [&>button]:font-light [&>button]:bg-transparent [&>button]:whitespace-nowrap data-[state=active]:[&>button]:font-bold data-[state=active]:[&>button]:text-primary data-[state=active]:[&>button]:shadow-none">
-          <TabsTrigger value="all">All</TabsTrigger>
-          <TabsTrigger value="vote-locked">Vote locked</TabsTrigger>
-          <TabsTrigger value="staked-rsr">Staked RSR</TabsTrigger>
-          <TabsTrigger value="index-dtfs">Index DTFs</TabsTrigger>
-          <TabsTrigger value="yield-dtfs">Yield DTFs</TabsTrigger>
-          <TabsTrigger value="rsr">RSR</TabsTrigger>
+          {PORTFOLIO_TABS.map(({ label, value }) => (
+            <TabsTrigger value={value} key={value}>
+              {label}
+            </TabsTrigger>
+          ))}
         </TabsList>
       </Tabs>
       <div
@@ -187,6 +293,8 @@ const PortfolioContent = () => {
         )}
       >
         <Unlocking />
+        <VoteLocked />
+        <IndexDTFs />
       </div>
     </Card>
   )
