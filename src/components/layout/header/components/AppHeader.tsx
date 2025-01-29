@@ -27,7 +27,7 @@ const HeaderMenu = () => {
       {
         label: t`Discover`,
         icon: <BasketCubeIcon fontSize={14} />,
-        to: ROUTES.DISCOVER,
+        to: ROUTES.HOME,
       },
       {
         label: t`Farm`,
@@ -81,15 +81,9 @@ const Container = ({ children }: { children: ReactNode }) => {
   // Check if the route is a "index-dtf" route
   const { pathname } = useLocation()
 
-  const border = !['index-dtf', ROUTES.DISCOVER].some((r) =>
-    pathname.includes(r)
-  )
+  const border = !pathname.includes('index-dtf') || pathname === '/'
 
-  return (
-    <div className={cn('w-full', border || (pathname === '/' && 'border-b'))}>
-      {children}
-    </div>
-  )
+  return <div className={cn('w-full', border && 'border-b')}>{children}</div>
 }
 
 /**
@@ -99,7 +93,7 @@ const AppHeader = () => {
   return (
     <Container>
       <div className="container sm:px-6">
-        <div className="border-b flex items-center h-[56px] md:h-[72px] px-6 sm:px-0">
+        <div className="flex items-center h-[56px] md:h-[72px] px-6 sm:px-0">
           <Brand mr={4} className="text-primary" />
           {/* <Box
           variant="layout.verticalAlign"
