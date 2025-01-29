@@ -1,4 +1,3 @@
-import LeafIcon from '@/components/icons/LeafIcon'
 import RootIcon from '@/components/icons/RootIcon'
 import { Skeleton } from '@/components/ui/skeleton'
 import ChainLogo from 'components/icons/ChainLogo'
@@ -135,7 +134,7 @@ const Heading = () => {
           TVL in Reserve
         </h2>
         {isLoading ? (
-          <Skeleton className="w-88 h-[60px]" />
+          <Skeleton className="w-[320px] h-[60px]" />
         ) : (
           <div className="flex items-center justify-between sm:justify-start">
             <h3 className="text-[44px] sm:text-[60px] font-semibold leading-none">
