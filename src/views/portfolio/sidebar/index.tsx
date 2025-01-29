@@ -32,9 +32,14 @@ import {
   selectedPortfolioTabAtom,
   totalAccountHoldingsAtom,
 } from '../atoms'
+import {
+  IndexDTFAction,
+  StakeRSRAction,
+  YieldDTFAction,
+} from './components/actions'
 
 interface TokenRowProps {
-  children: ReactNode
+  children?: ReactNode
   token: Token
   chainId: number
   usdPrice?: number
@@ -227,7 +232,10 @@ const IndexDTFs = () => {
           chainId={ChainId.Base} // TODO: change
           amount={token.amount}
         >
-          <div>Action</div>
+          <IndexDTFAction
+            indexDTFChainId={ChainId.Base} // TODO: change
+            indexDTFAddress={token.address}
+          />
         </TokenRow>
       ))}
     </div>
@@ -258,7 +266,11 @@ const YieldDTFs = () => {
           usdPrice={token.usdPrice}
           usdAmount={token.usdAmount}
         >
-          <div>Action</div>
+          <YieldDTFAction
+            yieldDTFAddress={token.address}
+            yieldDTFChainId={token.chain}
+            yieldDTFUsdPrice={token.usdPrice}
+          />
         </TokenRow>
       ))}
     </div>
@@ -290,7 +302,10 @@ const StakedRSR = () => {
           usdPrice={rsrPrice || 0}
           usdAmount={token.stakedRSRUsd}
         >
-          <div>Action</div>
+          <StakeRSRAction
+            yieldDTFAddress={token.address}
+            yieldDTFChainId={token.chain}
+          />
         </TokenRow>
       ))}
     </div>
@@ -319,9 +334,7 @@ const RSR = () => {
           token={{ address: RSR_ADDRESS[currentChainId], ...token }} // TODO: use currentChainId to hack rsrPrice
           chainId={Number(chainId)}
           amount={(rsrBalances[Number(chainId)] as bigint) ?? 0n}
-        >
-          <div>Action</div>
-        </TokenRow>
+        />
       ))}
     </div>
   )
