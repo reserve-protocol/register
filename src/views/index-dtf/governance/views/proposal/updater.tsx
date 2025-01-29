@@ -18,7 +18,6 @@ const FINALIZED_PROPOSAL_STATES = [
 const Updater = () => {
   const { proposalId } = useParams()
   const { data: proposalDetail, error } = useProposalDetail(proposalId)
-  console.log('error', { error, proposalDetail })
   const accountVotes = useVoterState()
   const [proposal, setProposalDetail] = useAtom(proposalDetailAtom)
   const setAccountVotes = useSetAtom(accountVotesAtom)

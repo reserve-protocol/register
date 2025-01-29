@@ -11,37 +11,14 @@ const Brand = (props: BoxProps) => {
   }
 
   return (
-    <Flex
-      onClick={handleClick}
-      sx={{
-        cursor: 'pointer',
-        alignItems: 'center',
-        display: 'flex',
-      }}
-    >
-      <Box
-        pt="1"
-        sx={{
-          display: ['none', 'none', 'flex'],
-          alignItems: 'center',
-        }}
-        {...props}
-      >
+    <div onClick={handleClick} {...props}>
+      <div className="hidden md:hidden lg:flex items-center pt-1">
         <Logo />
-      </Box>
-      <Box
-        mr={2}
-        sx={{
-          display: ['flex', 'flex', 'none'],
-          alignItems: 'center',
-          justifyContent: 'center',
-          fontSize: 4,
-        }}
-        {...props}
-      >
+      </div>
+      <div className="flex lg:hidden items-center justify-center text-2xl mr-2">
         <RBrand />
-      </Box>
-    </Flex>
+      </div>
+    </div>
   )
 }
 

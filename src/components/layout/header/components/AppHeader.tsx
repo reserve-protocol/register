@@ -44,7 +44,7 @@ const HeaderMenu = () => {
   )
 
   return (
-    <NavigationMenu>
+    <NavigationMenu className="mr-auto border md:border-none rounded-3xl">
       <NavigationMenuList>
         {menuItems.map((item) => (
           <NavigationMenuItem key={item.to}>
@@ -57,7 +57,7 @@ const HeaderMenu = () => {
                   )}
                 >
                   {item.icon}
-                  {item.label}
+                  <span className="hidden md:block">{item.label}</span>
                 </div>
               )}
             </NavLink>
@@ -66,7 +66,7 @@ const HeaderMenu = () => {
         <NavigationMenuItem>
           <NavigationMenuTrigger>
             <Asterisk size={16} />
-            More
+            <span className="hidden md:block">More</span>
           </NavigationMenuTrigger>
           <NavigationMenuContent>
             <NavigationMenuLink>Link</NavigationMenuLink>
@@ -83,7 +83,16 @@ const Container = ({ children }: { children: ReactNode }) => {
 
   const border = !pathname.includes('index-dtf') || pathname === '/'
 
-  return <div className={cn('w-full', border && 'border-b')}>{children}</div>
+  return (
+    <div
+      className={cn(
+        'w-full overflow-hidden flex-shrink-0',
+        border && 'border-b'
+      )}
+    >
+      {children}
+    </div>
+  )
 }
 
 /**
@@ -92,40 +101,28 @@ const Container = ({ children }: { children: ReactNode }) => {
 const AppHeader = () => {
   return (
     <Container>
-      <div className="container sm:px-6">
-        <div className="flex items-center h-[56px] md:h-[72px] px-6 sm:px-0">
-          <Brand mr={4} className="text-primary" />
-          {/* <Box
-          variant="layout.verticalAlign"
-          sx={{ position: ['relative', 'absolute'], left: ['8px', '24px'] }}
-        >
-          <Brand mr={4} />
-          <Blog />
-        </Box> */}
-          <HeaderMenu />
+      <div className="container flex items-center h-[56px] md:h-[72px] px-2 sm:px-6">
+        <Brand mr={4} className="text-primary " />
+        <HeaderMenu />
 
-          <ThemeColorMode
-            sx={{
-              display: ['none', 'flex'],
-              px: 2,
-              mr: 1,
-              py: '3px',
-              maxWidth: '32px',
-              borderRadius: '6px',
-              ml: 'auto',
-              cursor: 'pointer',
-              ':hover': {
-                backgroundColor: 'secondaryBackground',
-              },
-            }}
-          />
-          <RegisterHelp />
-          <CoinbaseSubscribe
-            mr="2"
-            sx={{ display: ['none', 'none', 'block'] }}
-          />
-          <Account />
-        </div>
+        <ThemeColorMode
+          sx={{
+            display: ['none', 'flex'],
+            px: 2,
+            mr: 1,
+            py: '3px',
+            maxWidth: '32px',
+            borderRadius: '6px',
+            ml: 'auto',
+            cursor: 'pointer',
+            ':hover': {
+              backgroundColor: 'secondaryBackground',
+            },
+          }}
+        />
+        <RegisterHelp />
+        <CoinbaseSubscribe mr="2" sx={{ display: ['none', 'none', 'block'] }} />
+        <Account />
       </div>
     </Container>
   )
