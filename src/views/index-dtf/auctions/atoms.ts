@@ -49,13 +49,15 @@ export const allPricesAtom = atom<Record<string, number> | undefined>(undefined)
 
 export const dtfTradesAtom = atom<AssetTrade[] | undefined>(undefined)
 
+export const tradeVolatilityAtom = atom<Record<string, number>>(
+  {} as Record<string, number>
+)
+
 export const dtfTradesWithSharesAtom = atom<AssetTrade[] | undefined>((get) => {
   const trades = get(dtfTradesAtom)
   const allPrices = get(allPricesAtom)
   const currentShares = get(indexDTFBasketSharesAtom)
   const dtfPrice = get(indexDTFPriceAtom)
-
-  console.log('all prices')
 
   if (
     !allPrices ||
