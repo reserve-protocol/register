@@ -13,6 +13,7 @@ import {
   proposedInxexTradesAtom,
   tradeVolatilityAtom,
 } from '../atoms'
+import { iTokenAddressAtom } from '@/state/dtf/atoms'
 
 type ProposedTradeWithMeta = Trade & {
   index: number
@@ -35,11 +36,13 @@ type IProposedTradeGroup = {
 type OrganizedTrades = Record<string, IProposedTradeGroup>
 
 const organizedTradesAtom = atom((get) => {
+  const dtf = get(iTokenAddressAtom)
   const basket = get(proposedIndexBasketAtom)
   const trades = get(proposedInxexTradesAtom)
   const priceMap = get(priceMapAtom)
+  const dtfPrice = priceMap[dtf?.toLowerCase() ?? '']
 
-  if (!basket || !trades) return undefined
+  if (!basket || !trades || !trades.length || !dtfPrice) return undefined
 
   // Group trades by sell token
   return trades.reduce((acc, trade, index) => {
@@ -64,7 +67,7 @@ const organizedTradesAtom = atom((get) => {
           trade.buyLimit.spot,
           BigInt(basket[trade.buy].token.decimals),
           priceMap[trade.buy],
-          1 // TODO: Mocked DTF price
+          dtfPrice
         )[0] *
           100 -
         Number(basket[trade.buy].currentShares),
@@ -75,7 +78,7 @@ const organizedTradesAtom = atom((get) => {
         trade.sellLimit.spot,
         BigInt(basket[trade.sell].token.decimals),
         priceMap[trade.sell],
-        1 // TODO: Mocked DTF price
+        dtfPrice
       )[0] * 100
 
     return acc
@@ -173,9 +176,12 @@ const ProposedTradeSold = ({
         <h3 className="text-sm">Sell ${sell.token.symbol}</h3>
         <div className="flex items-center gap-2">
           <h4 className="text-xl font-bold mr-auto">
-            {formatPercentage(Number(sell.shares) - sell.percent)}
+            {formatPercentage(Number(sell.shares) - sell.percent).replace(
+              '-',
+              ''
+            )}
           </h4>
-          <span className="text-sm">
+          <span className="text-sm text-right">
             From {formatPercentage(Number(sell.shares))} to{' '}
             {formatPercentage(sell.percent)}
           </span>

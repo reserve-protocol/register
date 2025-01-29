@@ -3,36 +3,31 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { Asterisk } from 'lucide-react'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import {
+  customPermissionlessLaunchingWindowAtom,
+  dtfTradeDelay,
   isBasketProposalValidAtom,
   isProposalConfirmedAtom,
   permissionlessLaunchingAtom,
+  permissionlessLaunchingWindowAtom,
   stepAtom,
 } from '../atoms'
 import { cn } from '@/lib/utils'
+import { useMemo } from 'react'
+import { parseDuration } from '@/utils'
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
+import { NumericalInput } from '@/components/ui/input'
+
+enum PermissionOptionId {
+  NO_PERMISSIONLESS_LAUNCHING = 0,
+  PERMISSIONLESS_LAUNCHING = 1,
+}
 
 interface PermissionOption {
-  id: number
+  id: PermissionOptionId
   title: string
   description: string
   icon: JSX.Element
 }
-
-const permissionOptions: PermissionOption[] = [
-  {
-    id: 0,
-    title: "Don't allow permissionless launching",
-    description:
-      'A trade should expire if the trade launcher does not launch within their 4h window.',
-    icon: <Asterisk size={24} strokeWidth={1.5} />,
-  },
-  {
-    id: 1,
-    title: 'Allow permissionless launching',
-    description:
-      'Defined as the duration after X when anyone can start an auction.',
-    icon: <Asterisk size={24} strokeWidth={1.5} />,
-  },
-]
 
 const PermissionCard = ({ option }: { option: PermissionOption }) => {
   const [permissionlessLaunching, setPermissionlessLaunching] = useAtom(
@@ -44,7 +39,7 @@ const PermissionCard = ({ option }: { option: PermissionOption }) => {
     <div
       className={cn(
         'flex items-center gap-2 border rounded-xl p-4 cursor-pointer hover:bg-border',
-        isSelected && 'bg-border'
+        isSelected && 'bg-foreground/5'
       )}
       onClick={() => setPermissionlessLaunching(option.id)}
     >
@@ -96,7 +91,79 @@ const NextButton = () => {
   )
 }
 
+const WINDOW_OPTIONS = ['2', '6', '24']
+
+const PermissionlessWindow = () => {
+  const selectedPermission = useAtomValue(permissionlessLaunchingAtom)
+  const [permissionlessLaunching, setPermissionlessLaunching] = useAtom(
+    permissionlessLaunchingWindowAtom
+  )
+  const [
+    customPermissionlessLaunchingWindow,
+    setCustomPermissionlessLaunchingWindow,
+  ] = useAtom(customPermissionlessLaunchingWindowAtom)
+
+  if (selectedPermission !== PermissionOptionId.PERMISSIONLESS_LAUNCHING) {
+    return null
+  }
+
+  return (
+    <div className="flex items-center gap-2 rounded-xl bg-foreground/5 p-4">
+      <ToggleGroup
+        type="single"
+        className="bg-muted-foreground/10 p-1 rounded-xl justify-start flex-grow"
+        value={
+          customPermissionlessLaunchingWindow
+            ? 'custom'
+            : permissionlessLaunching
+        }
+        onValueChange={(value) => {
+          if (value) {
+            setPermissionlessLaunching(value)
+            setCustomPermissionlessLaunchingWindow('')
+          }
+        }}
+      >
+        {WINDOW_OPTIONS.map((option) => (
+          <ToggleGroupItem
+            key={option}
+            value={option.toString()}
+            className="px-5 h-8 whitespace-nowrap rounded-lg data-[state=on]:bg-card text-secondary-foreground/80 data-[state=on]:text-primary flex-grow"
+          >
+            {option} hours
+          </ToggleGroupItem>
+        ))}
+      </ToggleGroup>
+      <NumericalInput
+        className="w-40"
+        placeholder="Enter custom window"
+        value={customPermissionlessLaunchingWindow}
+        onChange={(value) => setCustomPermissionlessLaunchingWindow(value)}
+      />
+    </div>
+  )
+}
+
 const ProposalTradingExpiration = () => {
+  const tradeDelay = useAtomValue(dtfTradeDelay)
+  const permissionOptions: PermissionOption[] = useMemo(
+    () => [
+      {
+        id: PermissionOptionId.NO_PERMISSIONLESS_LAUNCHING,
+        title: "Don't allow permissionless launching",
+        description: `A trade should expire if the trade launcher does not launch within their ${parseDuration(Number(tradeDelay))} window.`,
+        icon: <Asterisk size={24} strokeWidth={1.5} />,
+      },
+      {
+        id: PermissionOptionId.PERMISSIONLESS_LAUNCHING,
+        title: 'Allow permissionless launching',
+        description: `Defined as the duration after ${parseDuration(Number(tradeDelay))} when anyone can start an auction.`,
+        icon: <Asterisk size={24} strokeWidth={1.5} />,
+      },
+    ],
+    [tradeDelay]
+  )
+
   return (
     <>
       <p className="mx-6 mb-6">
@@ -107,6 +174,7 @@ const ProposalTradingExpiration = () => {
         {permissionOptions.map((option) => (
           <PermissionCard key={option.id} option={option} />
         ))}
+        <PermissionlessWindow />
         <NextButton />
       </div>
     </>

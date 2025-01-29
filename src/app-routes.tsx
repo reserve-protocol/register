@@ -34,12 +34,13 @@ import IndexDTFOverview from './views/index-dtf/overview'
 import IndexDTFSettings from './views/index-dtf/settings'
 import AllTokenList from './views/tokens/Tokens'
 import IndexDTFPropose from './views/index-dtf/governance/views/propose'
+import IndexProposal from './views/index-dtf/governance/views/proposal'
 import IndexDTFBasketProposal from './views/index-dtf/governance/views/propose/types/basket'
 
 const AppRoutes = () => (
   <Routes>
-    <Route path={ROUTES.HOME} element={<Home />} />
-    <Route path={ROUTES.DISCOVER} element={<Discover />} />
+    <Route path={ROUTES.HOME} element={<Discover />} />
+    {/* <Route path={ROUTES.DISCOVER} element={<Discover />} /> */}
     <Route path={ROUTES.BRIDGE} element={<Bridge />} />
     <Route path={ROUTES.PORTFOLIO} element={<PortfolioWrapper />} />
     <Route path={ROUTES.EARN} element={<EarnWrapper />} />
@@ -82,6 +83,10 @@ const AppRoutes = () => (
       <Route
         path={`${ROUTES.GOVERNANCE}/${ROUTES.GOVERNANCE_PROPOSE}/${GOVERNANCE_PROPOSAL_TYPES.BASKET}`}
         element={<IndexDTFBasketProposal />}
+      />
+      <Route
+        path={`${ROUTES.GOVERNANCE_PROPOSAL}/:proposalId`}
+        element={<IndexProposal />}
       />
     </Route>
     {/* Explorer */}

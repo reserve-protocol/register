@@ -18,6 +18,8 @@ import { chainIdAtom } from '@/state/chain/atoms/chainAtoms'
 import { Token } from '@/types'
 import { formatPercentage, shortenAddress } from '@/utils'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { ArrowRightCircle } from 'lucide-react'
+import { Address } from 'viem'
 import {
   IndexAssetShares,
   isProposedBasketValidAtom,
@@ -71,50 +73,86 @@ const DeltaSharesCell = ({ asset }: { asset: string }) => {
   )
 }
 
-const AssetRow = ({ asset }: { asset: IndexAssetShares }) => {
+const AssetCellInfo = ({ asset }: { asset: IndexAssetShares }) => {
   const chainId = useAtomValue(chainIdAtom)
+  const state = useAtomValue(proposedIndexBasketStateAtom)
+  const [targetShares, setTargetShares] = useAtom(proposedSharesAtom)
+  const canFill =
+    state.remainingAllocation !== 0 &&
+    !state.isValid &&
+    Number(targetShares[asset.token.address]) + state.remainingAllocation >= 0
+
+  const handleFill = () => {
+    setTargetShares({
+      ...targetShares,
+      [asset.token.address]: (
+        Number(targetShares[asset.token.address]) + state.remainingAllocation
+      ).toFixed(2),
+    })
+  }
 
   return (
-    <TableRow>
-      <TableCell className="border-r">
-        <div className="flex items-center gap-2">
-          <TokenLogo size="xl" address={asset.token.address} chain={chainId} />
-          <div>
-            <h4 className="font-bold mb-1">{asset.token.symbol}</h4>
-            <p className="text-sm text-legend">
-              {shortenAddress(asset.token.address)}
-            </p>
-          </div>
+    <TableCell className="border-r">
+      <div className="flex items-center gap-2">
+        <TokenLogo size="xl" address={asset.token.address} chain={chainId} />
+        <div className="mr-auto">
+          <h4 className="font-bold mb-1">{asset.token.symbol}</h4>
+          <p className="text-sm text-legend">
+            {shortenAddress(asset.token.address)}
+          </p>
         </div>
-      </TableCell>
-      <TableCell className="text-center">
-        {formatPercentage(Number(asset.currentShares))}
-      </TableCell>
-      <NewSharesCell asset={asset.token.address} />
-      <DeltaSharesCell asset={asset.token.address} />
-    </TableRow>
+        {canFill && (
+          <Button variant="ghost" size="icon-rounded" onClick={handleFill}>
+            <ArrowRightCircle />
+          </Button>
+        )}
+      </div>
+    </TableCell>
   )
 }
 
+const AssetRow = ({ asset }: { asset: IndexAssetShares }) => (
+  <TableRow>
+    <AssetCellInfo asset={asset} />
+    <TableCell className="text-center">
+      {formatPercentage(Number(asset.currentShares))}
+    </TableCell>
+    <NewSharesCell asset={asset.token.address} />
+    <DeltaSharesCell asset={asset.token.address} />
+  </TableRow>
+)
+
 const Allocation = () => {
-  const { remainingAllocation } = useAtomValue(proposedIndexBasketStateAtom)
+  const { remainingAllocation, isValid } = useAtomValue(
+    proposedIndexBasketStateAtom
+  )
 
   return (
     <div>
       <span className="text-legend">Remaining allocation:</span>{' '}
-      <span className={cn('', remainingAllocation !== 0 && 'text-destructive')}>
-        {formatPercentage(remainingAllocation)}
+      <span
+        className={cn(
+          '',
+          remainingAllocation !== 0 && !isValid && 'text-destructive'
+        )}
+      >
+        {formatPercentage(Math.abs(remainingAllocation))}
       </span>
     </div>
   )
 }
 
 // TODO: Handle with address checksum vs lowercase format
-const setNewBasketAtom = atom(null, (get, set, tokens: Token[]) => {
+const setNewBasketAtom = atom(null, (get, set, _tokens: Token[]) => {
   const proposedShareMap = get(proposedSharesAtom)
   const proposedIndexBasket = get(proposedIndexBasketAtom) || {}
   const newProposedIndexBasket: Record<string, IndexAssetShares> = {}
   const newProposedShares: Record<string, string> = {}
+  // Make sure addresses are lowercase
+  const tokens = _tokens.map((token) => ({
+    ...token,
+    address: token.address.toLowerCase() as Address,
+  }))
 
   // Create a map of tokens
   const tokenMap = tokens.reduce(
@@ -141,7 +179,6 @@ const setNewBasketAtom = atom(null, (get, set, tokens: Token[]) => {
     newProposedIndexBasket[tokenAddress] = {
       token,
       currentShares,
-      balance: proposedIndexBasket[tokenAddress]?.balance ?? 0n,
     }
 
     // If asset was removed, set proposed shares to 0

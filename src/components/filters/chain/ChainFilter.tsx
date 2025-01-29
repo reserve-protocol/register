@@ -15,6 +15,7 @@ type ChainFilterProps = {
   onChange: (selected: string[]) => void
   height?: number
   rounded?: boolean
+  className?: string
 }
 
 const ChainFilter = ({
@@ -22,6 +23,7 @@ const ChainFilter = ({
   onChange,
   height,
   rounded,
+  className,
 }: ChainFilterProps) => {
   const options = useMemo(
     () =>
@@ -55,6 +57,7 @@ const ChainFilter = ({
           py: '6px',
           height,
         }}
+        className={className}
       >
         {Boolean(chainsLogos.length) && (
           <StackedChainLogo chains={chainsLogos} />

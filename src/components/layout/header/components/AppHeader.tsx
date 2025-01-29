@@ -1,6 +1,5 @@
 import Account from 'components/account'
 import ThemeColorMode from 'components/dark-mode-toggle/ThemeColorMode'
-import { Box } from 'theme-ui'
 import Brand from './Brand'
 import CoinbaseSubscribe from './CoinbaseSubscribe'
 // import HeaderMenu from './HeaderMenu'
@@ -28,7 +27,7 @@ const HeaderMenu = () => {
       {
         label: t`Discover`,
         icon: <BasketCubeIcon fontSize={14} />,
-        to: ROUTES.DISCOVER,
+        to: ROUTES.HOME,
       },
       {
         label: t`Farm`,
@@ -45,7 +44,7 @@ const HeaderMenu = () => {
   )
 
   return (
-    <NavigationMenu>
+    <NavigationMenu className="mr-auto border md:border-none rounded-3xl">
       <NavigationMenuList>
         {menuItems.map((item) => (
           <NavigationMenuItem key={item.to}>
@@ -58,7 +57,7 @@ const HeaderMenu = () => {
                   )}
                 >
                   {item.icon}
-                  {item.label}
+                  <span className="hidden md:block">{item.label}</span>
                 </div>
               )}
             </NavLink>
@@ -67,7 +66,7 @@ const HeaderMenu = () => {
         <NavigationMenuItem>
           <NavigationMenuTrigger>
             <Asterisk size={16} />
-            More
+            <span className="hidden md:block">More</span>
           </NavigationMenuTrigger>
           <NavigationMenuContent>
             <NavigationMenuLink>Link</NavigationMenuLink>
@@ -80,10 +79,19 @@ const HeaderMenu = () => {
 
 const Container = ({ children }: { children: ReactNode }) => {
   // Check if the route is a "index-dtf" route
-  const isIndexDTF = useLocation().pathname.includes('index-dtf')
+  const { pathname } = useLocation()
+
+  const border = !pathname.includes('index-dtf') || pathname === '/'
 
   return (
-    <div className={cn('w-full', !isIndexDTF && 'border-b')}>{children}</div>
+    <div
+      className={cn(
+        'w-full overflow-hidden flex-shrink-0',
+        border && 'border-b'
+      )}
+    >
+      {children}
+    </div>
   )
 }
 
@@ -93,15 +101,8 @@ const Container = ({ children }: { children: ReactNode }) => {
 const AppHeader = () => {
   return (
     <Container>
-      <div className="container flex items-center h-[52px] md:h-[72px] px-6">
-        <Brand mr={4} />
-        {/* <Box
-          variant="layout.verticalAlign"
-          sx={{ position: ['relative', 'absolute'], left: ['8px', '24px'] }}
-        >
-          <Brand mr={4} />
-          <Blog />
-        </Box> */}
+      <div className="container flex items-center h-[56px] md:h-[72px] px-2 sm:px-6">
+        <Brand mr={4} className="text-primary " />
         <HeaderMenu />
 
         <ThemeColorMode

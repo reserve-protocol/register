@@ -14,6 +14,8 @@ const ProposalDescriptionForm = ({ onChange }: IProposalDescriptionForm) => {
   const [description, setDescription] = useState<string | undefined>('')
 
   useEffect(() => {
+    if (!title) return onChange('')
+
     onChange(`# ${title} \n [${rfc}](${rfc}) \n ${description || ''}`)
   }, [title, description, rfc, onChange])
 

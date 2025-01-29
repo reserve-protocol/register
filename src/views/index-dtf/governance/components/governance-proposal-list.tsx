@@ -1,166 +1,51 @@
 import { Button } from '@/components/ui/button'
-import { cn } from '@/lib/utils'
-import { formatConstant, PROPOSAL_STATES, ROUTES } from '@/utils/constants'
-import { data, Link } from 'react-router-dom'
+import { ScrollArea } from '@/components/ui/scroll-area'
+import { Skeleton } from '@/components/ui/skeleton'
 import {
   getProposalState,
   PartialProposal,
   VotingState,
 } from '@/lib/governance'
-import { formatPercentage, parseDuration } from '@/utils'
-import { Circle } from 'lucide-react'
-import { ScrollArea } from '@/components/ui/scroll-area'
+import { cn } from '@/lib/utils'
+import {
+  formatPercentage,
+  getCurrentTime,
+  getProposalTitle,
+  parseDuration,
+} from '@/utils'
+import { formatConstant, PROPOSAL_STATES, ROUTES } from '@/utils/constants'
+import { useAtom, useAtomValue } from 'jotai'
+import { Circle, RefreshCcw } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import { governanceProposalsAtom, refetchTokenAtom } from '../atoms'
+import { useState } from 'react'
+import { useEffect } from 'react'
 
-const useProposals = () => {
-  const mockProposals: PartialProposal[] = [
-    {
-      id: '1',
-      description: 'Update collateral requirements for ETH lending',
-      creationTime: Math.floor(Date.now() / 1000) - 86400 * 7, // 7 days ago
-      state: PROPOSAL_STATES.ACTIVE,
-      forWeightedVotes: 1500000,
-      abstainWeightedVotes: 250000,
-      againstWeightedVotes: 750000,
-      executionETA: Math.floor(Date.now() / 1000) + 86400 * 3,
-      quorumVotes: 2000000,
-      voteStart: Math.floor(Date.now() / 1000) - 86400 * 5,
-      voteEnd: Math.floor(Date.now() / 1000) + 86400 * 2,
-    },
-    {
-      id: '2',
-      description: 'Implement new liquidation mechanism',
-      creationTime: Math.floor(Date.now() / 1000) - 86400 * 14,
-      state: PROPOSAL_STATES.EXECUTED,
-      forWeightedVotes: 2500000,
-      abstainWeightedVotes: 100000,
-      againstWeightedVotes: 400000,
-      executionETA: Math.floor(Date.now() / 1000) - 86400 * 2,
-      quorumVotes: 2000000,
-      voteStart: Math.floor(Date.now() / 1000) - 86400 * 12,
-      voteEnd: Math.floor(Date.now() / 1000) - 86400 * 5,
-    },
-    {
-      id: '3',
-      description: 'Add USDC as supported collateral',
-      creationTime: Math.floor(Date.now() / 1000) - 86400 * 21,
-      state: PROPOSAL_STATES.DEFEATED,
-      forWeightedVotes: 900000,
-      abstainWeightedVotes: 100000,
-      againstWeightedVotes: 1500000,
-      executionETA: 0,
-      quorumVotes: 2000000,
-      voteStart: Math.floor(Date.now() / 1000) - 86400 * 19,
-      voteEnd: Math.floor(Date.now() / 1000) - 86400 * 12,
-    },
-    {
-      id: '4',
-      description: 'Adjust protocol fees',
-      creationTime: Math.floor(Date.now() / 1000) - 86400 * 2,
-      state: PROPOSAL_STATES.PENDING,
-      forWeightedVotes: 0,
-      abstainWeightedVotes: 0,
-      againstWeightedVotes: 0,
-      executionETA: 0,
-      quorumVotes: 2000000,
-      voteStart: Math.floor(Date.now() / 1000) + 86400,
-      voteEnd: Math.floor(Date.now() / 1000) + 86400 * 8,
-    },
-    {
-      id: '5',
-      description: 'Upgrade governance parameters',
-      creationTime: Math.floor(Date.now() / 1000) - 86400 * 28,
-      state: PROPOSAL_STATES.QUEUED,
-      forWeightedVotes: 2200000,
-      abstainWeightedVotes: 300000,
-      againstWeightedVotes: 500000,
-      executionETA: Math.floor(Date.now() / 1000) + 86400,
-      quorumVotes: 2000000,
-      voteStart: Math.floor(Date.now() / 1000) - 86400 * 26,
-      voteEnd: Math.floor(Date.now() / 1000) - 86400 * 19,
-    },
-    {
-      id: '6',
-      description: 'Add new market makers',
-      creationTime: Math.floor(Date.now() / 1000) - 86400 * 35,
-      state: PROPOSAL_STATES.EXECUTED,
-      forWeightedVotes: 2800000,
-      abstainWeightedVotes: 100000,
-      againstWeightedVotes: 100000,
-      executionETA: Math.floor(Date.now() / 1000) - 86400 * 20,
-      quorumVotes: 2000000,
-      voteStart: Math.floor(Date.now() / 1000) - 86400 * 33,
-      voteEnd: Math.floor(Date.now() / 1000) - 86400 * 26,
-    },
-    {
-      id: '7',
-      description: 'Update oracle implementation',
-      creationTime: Math.floor(Date.now() / 1000) - 86400 * 42,
-      state: PROPOSAL_STATES.EXECUTED,
-      forWeightedVotes: 2600000,
-      abstainWeightedVotes: 200000,
-      againstWeightedVotes: 200000,
-      executionETA: Math.floor(Date.now() / 1000) - 86400 * 27,
-      quorumVotes: 2000000,
-      voteStart: Math.floor(Date.now() / 1000) - 86400 * 40,
-      voteEnd: Math.floor(Date.now() / 1000) - 86400 * 33,
-    },
-    {
-      id: '8',
-      description: 'Implement emergency shutdown mechanism',
-      creationTime: Math.floor(Date.now() / 1000) - 86400 * 49,
-      state: PROPOSAL_STATES.CANCELED,
-      forWeightedVotes: 500000,
-      abstainWeightedVotes: 100000,
-      againstWeightedVotes: 400000,
-      executionETA: 0,
-      quorumVotes: 2000000,
-      voteStart: Math.floor(Date.now() / 1000) - 86400 * 47,
-      voteEnd: Math.floor(Date.now() / 1000) - 86400 * 40,
-    },
-    {
-      id: '9',
-      description: 'Add new risk parameters',
-      creationTime: Math.floor(Date.now() / 1000) - 86400 * 56,
-      state: PROPOSAL_STATES.EXECUTED,
-      forWeightedVotes: 2400000,
-      abstainWeightedVotes: 300000,
-      againstWeightedVotes: 300000,
-      executionETA: Math.floor(Date.now() / 1000) - 86400 * 41,
-      quorumVotes: 2000000,
-      voteStart: Math.floor(Date.now() / 1000) - 86400 * 54,
-      voteEnd: Math.floor(Date.now() / 1000) - 86400 * 47,
-    },
-    {
-      id: '10',
-      description: 'Update interest rate model',
-      creationTime: Math.floor(Date.now() / 1000) - 86400 * 63,
-      state: PROPOSAL_STATES.EXECUTED,
-      forWeightedVotes: 2700000,
-      abstainWeightedVotes: 200000,
-      againstWeightedVotes: 100000,
-      executionETA: Math.floor(Date.now() / 1000) - 86400 * 48,
-      quorumVotes: 2000000,
-      voteStart: Math.floor(Date.now() / 1000) - 86400 * 61,
-      voteEnd: Math.floor(Date.now() / 1000) - 86400 * 54,
-    },
-  ]
+// The refresh button is a decent? idea but easily abused
+const Header = () => {
+  const [refetchTime, setRefetchToken] = useAtom(refetchTokenAtom)
 
-  return {
-    data: mockProposals,
-    loading: false,
-    error: false,
-  }
+  // const handleRefresh = () => {
+  //   const currentTime = getCurrentTime()
+
+  //   // Prevents button spamming
+  //   if (refetchTime + 1 < currentTime) {
+  //     setRefetchToken(currentTime)
+  //   }
+  // }
+
+  return (
+    <div className="p-4 flex items-center gap-2">
+      <h1 className="font-bold text-xl mr-auto">Recent proposals</h1>
+      {/* <Button variant="ghost" className="mr-auto" onClick={handleRefresh}>
+        <RefreshCcw className="w-4 h-4" />
+      </Button> */}
+      <Link to={ROUTES.GOVERNANCE_PROPOSE}>
+        <Button size="sm">Create proposal</Button>
+      </Link>
+    </div>
+  )
 }
-
-const Header = () => (
-  <div className="p-4 flex items-center gap-2">
-    <h1 className="font-bold text-xl mr-auto">Recent proposals</h1>
-    <Link to={ROUTES.GOVERNANCE_PROPOSE}>
-      <Button size="sm">Create proposal</Button>
-    </Link>
-  </div>
-)
-
 const VoteStateHeader = ({ data }: { data: VotingState }) => {
   if (
     (data.state === PROPOSAL_STATES.ACTIVE ||
@@ -192,10 +77,10 @@ export const ProposalVotingState = ({ data }: { data: VotingState }) => {
   if (data.state === PROPOSAL_STATES.PENDING && data.deadline) {
     return (
       <div className="flex items-center mt-2 text-sm">
-        Voting starts in:
+        <span className="text-legend block mr-1">Voting starts in:</span>
         <span className="font-semibold">
           {parseDuration(data.deadline, {
-            units: ['d', 'h'],
+            units: ['d', 'h', 'm'],
             round: true,
           })}
         </span>
@@ -241,39 +126,65 @@ const BADGE_VARIANT = {
   [PROPOSAL_STATES.ACTIVE]: 'primary',
   [PROPOSAL_STATES.QUEUED]: 'primary',
   [PROPOSAL_STATES.EXECUTED]: 'success',
+  [PROPOSAL_STATES.SUCCEEDED]: 'primary',
   [PROPOSAL_STATES.CANCELED]: 'destructive',
-  [PROPOSAL_STATES.PENDING]: 'legend',
+  [PROPOSAL_STATES.PENDING]: 'warning',
+  [PROPOSAL_STATES.EXPIRED]: 'legend',
 }
 
 const ProposalListItem = ({ proposal }: { proposal: PartialProposal }) => {
   const proposalState = getProposalState(proposal)
+  const [, forceUpdate] = useState({})
+
+  // Re-render component every minute
+  useEffect(() => {
+    if (
+      proposalState.state === PROPOSAL_STATES.ACTIVE ||
+      proposalState.state === PROPOSAL_STATES.PENDING
+    ) {
+      const interval = setInterval(() => {
+        forceUpdate({})
+      }, 60 * 1000)
+
+      return () => clearInterval(interval)
+    }
+  }, [proposalState.state])
 
   return (
-    <div
-      role="button"
+    <Link
+      to={`proposal/${proposal.id}`}
       className="flex items-center gap-2 p-4 [&:not(:last-child)]:border-b cursor-pointer transition-all hover:bg-border/50"
     >
       <div className="mr-auto">
-        <h2 className="font-semibold">{proposal.description}</h2>
+        <h2 className="font-semibold">
+          {getProposalTitle(proposal.description)}
+        </h2>
         <ProposalVotingState data={proposalState} />
       </div>
       <div
         className={cn(
-          'rounded-full text-sm font-bold py-2 border px-3',
+          'rounded-full text-sm font-semibold py-2 border px-3',
           `text-${BADGE_VARIANT[proposalState.state]}`
         )}
       >
         {formatConstant(proposalState.state)}
       </div>
-    </div>
+    </Link>
   )
 }
 
 const ProposalList = () => {
-  const { data, loading, error } = useProposals()
+  const data = useAtomValue(governanceProposalsAtom)
+
+  if (!data) return <Skeleton className="h-[520px] w-full m-1 rounded-3xl" />
 
   return (
-    <ScrollArea className="h-[520px] bg-card rounded-3xl m-1">
+    <ScrollArea className="max-h-[520px] bg-card rounded-3xl m-1">
+      {data.length === 0 && (
+        <div className="flex items-center justify-center h-96">
+          <p className="text-muted-foreground">No proposals found</p>
+        </div>
+      )}
       {data.map((proposal) => (
         <ProposalListItem key={proposal.id} proposal={proposal} />
       ))}
@@ -283,7 +194,7 @@ const ProposalList = () => {
 
 const GovernanceProposalList = () => {
   return (
-    <div className="rounded-3xl bg-secondary">
+    <div className="rounded-3xl bg-secondary pb-0.5">
       <Header />
       <ProposalList />
     </div>

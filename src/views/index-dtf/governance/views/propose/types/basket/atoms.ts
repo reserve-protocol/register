@@ -1,86 +1,9 @@
 import dtfIndexAbi from '@/abis/dtf-index-abi'
 import { getTrades } from '@/lib/index-rebalance/get-trades'
+import { iTokenAddressAtom } from '@/state/dtf/atoms'
 import { Token } from '@/types'
 import { atom, Getter } from 'jotai'
-import { Address, encodeFunctionData, Hex, parseEther, parseUnits } from 'viem'
-
-const mockPrices = {
-  '0xab36452dbac151be02b16ca17d8919826072f64a': 0.016, // RSR
-  '0x940181a94a35a4569e4529a3cdfb74e38fd98631': 1.35, // AERO
-  '0x0b3e328455c4059eeb9e3f84b5543f74e24e7e1b': 3.35, // virtual
-  '0x532f27101965dd16442e59d40670faf5ebb142e4': 0.1326, // BRETT
-  '0xa99f6e6785da0f5d6fb42495fe424bce029eeb3e': 4.37, // PENDLE
-}
-
-// 100k
-const mockTVL = parseEther('100000')
-
-// ~10k usd token value
-// 40% RSR
-// 20% Virtuals
-// 10% BRETT
-// 15% AERO
-// 15% PENDLE
-const mockProposedBasket: Record<string, IndexAssetShares> = {
-  '0xab36452dbac151be02b16ca17d8919826072f64a': {
-    token: {
-      address: '0xab36452dbac151be02b16ca17d8919826072f64a',
-      symbol: 'RSR',
-      name: 'Reserve Rights',
-      decimals: 18,
-    },
-    balance: parseEther('2500000'), // $40k worth at $0.016 per token
-    currentShares: '40',
-  },
-  '0x0b3e328455c4059eeb9e3f84b5543f74e24e7e1b': {
-    token: {
-      address: '0x0b3e328455c4059eeb9e3f84b5543f74e24e7e1b',
-      symbol: 'VIRTUAL',
-      name: 'Virtual Token',
-      decimals: 18,
-    },
-    balance: parseEther('5970.149253731343'), // $20k worth at $3.35 per token
-    currentShares: '20',
-  },
-  '0x532f27101965dd16442e59d40670faf5ebb142e4': {
-    token: {
-      address: '0x532f27101965dd16442e59d40670faf5ebb142e4',
-      symbol: 'BRETT',
-      name: 'Brett Token',
-      decimals: 18,
-    },
-    balance: parseEther('75414.781297134238'), // $10k worth at $0.1326 per token
-    currentShares: '10',
-  },
-  '0x940181a94a35a4569e4529a3cdfb74e38fd98631': {
-    token: {
-      address: '0x940181a94a35a4569e4529a3cdfb74e38fd98631',
-      symbol: 'AERO',
-      name: 'Aerodrome',
-      decimals: 18,
-    },
-    balance: parseEther('11111.111111111111'), // $15k worth at $1.35 per token
-    currentShares: '15',
-  },
-  '0xa99f6e6785da0f5d6fb42495fe424bce029eeb3e': {
-    token: {
-      address: '0xa99f6e6785da0f5d6fb42495fe424bce029eeb3e',
-      symbol: 'PENDLE',
-      name: 'Pendle',
-      decimals: 18,
-    },
-    balance: parseEther('3432.494279176201'), // $15k worth at $4.37 per token
-    currentShares: '15',
-  },
-}
-
-const mockProposedShares = {
-  '0xab36452dbac151be02b16ca17d8919826072f64a': '40',
-  '0x0b3e328455c4059eeb9e3f84b5543f74e24e7e1b': '20',
-  '0x532f27101965dd16442e59d40670faf5ebb142e4': '10',
-  '0x940181a94a35a4569e4529a3cdfb74e38fd98631': '15',
-  '0xa99f6e6785da0f5d6fb42495fe424bce029eeb3e': '15',
-}
+import { Address, encodeFunctionData, Hex, parseUnits } from 'viem'
 
 export type Step = 'basket' | 'prices' | 'expiration' | 'confirmation'
 export const isProposalConfirmedAtom = atom(false)
@@ -90,23 +13,23 @@ export const stepAtom = atom<Step>('basket')
 // Loaded from basket and modified when asset is added/removed
 export interface IndexAssetShares {
   token: Token
-  balance: bigint
   currentShares: string
 }
 
-// Editable shares
-// TODO: Mocked
-export const proposedSharesAtom =
-  atom<Record<string, string>>(mockProposedShares)
+export const dtfSupplyAtom = atom<bigint>(0n)
+export const dtfTradeDelay = atom<bigint>(0n)
+export const permissionlessLaunchingWindowAtom = atom('24')
+export const customPermissionlessLaunchingWindowAtom = atom('')
 
-// TODO: Mocked
+// Editable shares
+export const proposedSharesAtom = atom<Record<string, string>>({})
+
 export const proposedIndexBasketAtom = atom<
   Record<string, IndexAssetShares> | undefined
->(mockProposedBasket)
+>(undefined)
 
 // Map token address to price
-// TODO: mocked
-export const priceMapAtom = atom<Record<string, number>>(mockPrices)
+export const priceMapAtom = atom<Record<string, number>>({})
 
 export const proposedIndexBasketStateAtom = atom<{
   changed: boolean
@@ -158,7 +81,7 @@ export const proposedIndexBasketStateAtom = atom<{
   return {
     changed,
     remainingAllocation: 100 - currentAllocation,
-    isValid: currentAllocation === 100,
+    isValid: Math.abs(currentAllocation - 100) <= 0.001,
   }
 })
 
@@ -169,7 +92,7 @@ export const isProposedBasketValidAtom = atom((get) => {
 
 // Get proposed trades from algo if the target basket is valid
 export const proposedInxexTradesAtom = atom((get) => {
-  return getProposedTrades(get, false)
+  return getProposedTrades(get, true)
 })
 
 // Volatility of proposed trades, array index is the trade index
@@ -196,16 +119,42 @@ export const isBasketProposalValidAtom = atom((get) =>
 
 export const proposalDescriptionAtom = atom<string | undefined>(undefined)
 
+export const ttlATom = atom((get) => {
+  const tradeDelay = get(dtfTradeDelay)
+  const permissionlessLaunching = get(permissionlessLaunchingAtom)
+  const permissionlessLaunchingWindow = get(permissionlessLaunchingWindowAtom)
+  const customPermissionlessLaunchingWindow = get(
+    customPermissionlessLaunchingWindowAtom
+  )
+
+  // Is different than undefined and 0
+  if (!permissionlessLaunching) {
+    return tradeDelay > 0n ? tradeDelay - 1n : tradeDelay
+  }
+
+  const window =
+    Number(
+      customPermissionlessLaunchingWindow
+        ? customPermissionlessLaunchingWindow
+        : permissionlessLaunchingWindow
+    ) *
+    60 *
+    60
+
+  return isNaN(window) ? tradeDelay : tradeDelay + BigInt(Math.round(window))
+})
+
 export const basketProposalCalldatasAtom = atom<Hex[] | undefined>((get) => {
   const deferredTrades = get(proposedInxexTradesAtom)
   const tradeRangeOption = get(tradeRangeOptionAtom)
   const isConfirmed = get(isProposalConfirmedAtom)
+  const ttl = get(ttlATom)
 
   if (!deferredTrades?.length || !isConfirmed || !tradeRangeOption)
     return undefined
 
   const trades =
-    tradeRangeOption === 'defer' ? deferredTrades : getProposedTrades(get, true)
+    tradeRangeOption === 'defer' ? deferredTrades : getProposedTrades(get)
 
   return trades.map((trade, i) => {
     return encodeFunctionData({
@@ -229,7 +178,7 @@ export const basketProposalCalldatasAtom = atom<Hex[] | undefined>((get) => {
           start: trade.prices.start,
           end: trade.prices.end,
         },
-        0n, // TODO: TTL
+        ttl,
       ],
     })
   })
@@ -237,34 +186,76 @@ export const basketProposalCalldatasAtom = atom<Hex[] | undefined>((get) => {
 
 const VOLATILITY_VALUES = [0.1, 0.2, 0.5]
 
+// TODO: This re-run when volatility changes which is not optimal
+// TODO: Decouple into an external function so its called only when needed!
 function getProposedTrades(get: Getter, deferred = false) {
   const proposedBasket = get(proposedIndexBasketAtom)
   const proposedShares = get(proposedSharesAtom)
   const priceMap = get(priceMapAtom)
   const isValid = get(isProposedBasketValidAtom)
   const volatility = get(tradeVolatilityAtom)
+  const supply = get(dtfSupplyAtom)
+  const dtfAddress = get(iTokenAddressAtom)
+  const dtfPrice = priceMap[dtfAddress?.toLowerCase() || '']
 
-  if (!isValid || !proposedBasket) return []
+  if (!isValid || !proposedBasket || !dtfAddress || !dtfPrice) return []
 
   const tokens: string[] = []
   const decimals: bigint[] = []
-  const bals: bigint[] = []
+  const currentBasket: bigint[] = []
   const targetBasket: bigint[] = []
   const prices: number[] = []
   const error: number[] = []
+
+  const decimalsStr: string[] = []
+  const currentBasketStr: string[] = []
+  const targetBasketStr: string[] = []
 
   let index = 0
 
   for (const asset of Object.keys(proposedBasket)) {
     tokens.push(asset)
-    bals.push(proposedBasket[asset].balance)
     decimals.push(BigInt(proposedBasket[asset].token.decimals))
+    decimalsStr.push(proposedBasket[asset].token.decimals.toString())
+    currentBasket.push(parseUnits(proposedBasket[asset].currentShares, 16))
+    currentBasketStr.push(proposedBasket[asset].currentShares)
     targetBasket.push(parseUnits(proposedShares[asset], 16))
+    targetBasketStr.push(proposedShares[asset])
     prices.push(priceMap[asset])
+
     // TODO: assume trades always have the same order...
-    error.push(deferred ? 1 : VOLATILITY_VALUES[volatility[index]] || 0.1)
+    error.push(
+      deferred ? 0.9 : VOLATILITY_VALUES[volatility[index] || 0] || 0.1
+    )
+
     index++
   }
 
-  return getTrades(mockTVL, tokens, decimals, bals, targetBasket, prices, error)
+  console.log(
+    'INPUTS',
+    JSON.stringify(
+      {
+        supply: supply.toString(),
+        tokens,
+        decimalsStr,
+        currentBasketStr,
+        targetBasketStr,
+        prices,
+        error,
+      },
+      null,
+      2
+    )
+  )
+
+  return getTrades(
+    supply,
+    tokens,
+    decimals,
+    currentBasket,
+    targetBasket,
+    prices,
+    error,
+    dtfPrice
+  )
 }

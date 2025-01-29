@@ -49,8 +49,8 @@ const TokenLogo = React.forwardRef<HTMLImageElement, Props>((props, ref) => {
 
   React.useEffect(() => {
     if (!src && (symbol || (address && chain))) {
-      const dexscreenerUrl = `https://dd.dexscreener.com/ds-data/tokens/base/${address}.png?size=lg`
-      const llamaUrl = `https://token-icons.llamao.fi/icons/tokens/${chain}/${address}?h=${h}&w=${w}`
+      const dexscreenerUrl = `https://dd.dexscreener.com/ds-data/tokens/base/${address?.toLowerCase()}.png?size=lg`
+      const llamaUrl = `https://token-icons.llamao.fi/icons/tokens/${chain}/${address?.toLowerCase()}?h=${h}&w=${w}`
       const symbolUrl = symbol ? RESERVE_STORAGE + symbol + '.png' : null
 
       if (symbolUrl) {

@@ -107,8 +107,17 @@ export const indexDTFBasketPricesAtom = atom<Record<string, number>>({})
 
 export const indexDTFBasketAmountsAtom = atom<Record<string, number>>({})
 
-export const indexDTFBasketSharesAtom = atom<Record<string, number>>({})
+export const indexDTFBasketSharesAtom = atom<Record<string, string>>({})
 
 export const indexDTFAtom = atom<IndexDTF | undefined>(undefined)
 
 export const indexDTFFeeAtom = atom<number | undefined>(undefined)
+
+export const indexDTFPriceAtom = atom((get) => {
+  const dtf = get(indexDTFAtom)
+  const basketPrices = get(indexDTFBasketPricesAtom)
+
+  if (!dtf || !basketPrices) return undefined
+
+  return basketPrices[dtf.token.id.toLowerCase()]
+})

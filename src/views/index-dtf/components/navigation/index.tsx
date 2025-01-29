@@ -55,7 +55,7 @@ const NavigationItem = ({
           >
             {icon}
           </div>
-          <div className="text-sm">{label}</div>
+          <div className="text-sm hidden md:block">{label}</div>
         </div>
       )}
     </NavLink>
