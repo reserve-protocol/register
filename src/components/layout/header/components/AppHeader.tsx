@@ -86,13 +86,7 @@ const Container = ({ children }: { children: ReactNode }) => {
   )
 
   return (
-    <div
-      className={cn(
-        'w-full',
-        pathname.includes(ROUTES.DISCOVER) && 'bg-primary text-white',
-        border && 'border-b'
-      )}
-    >
+    <div className={cn('w-full', border || (pathname === '/' && 'border-b'))}>
       {children}
     </div>
   )
@@ -102,17 +96,11 @@ const Container = ({ children }: { children: ReactNode }) => {
  * Application header
  */
 const AppHeader = () => {
-  const { pathname } = useLocation()
   return (
     <Container>
       <div className="container sm:px-6">
         <div className="border-b flex items-center h-[56px] md:h-[72px] px-6 sm:px-0">
-          <Brand
-            mr={4}
-            className={cn(
-              pathname.includes(ROUTES.DISCOVER) ? 'text-white' : 'text-primary'
-            )}
-          />
+          <Brand mr={4} className="text-primary" />
           {/* <Box
           variant="layout.verticalAlign"
           sx={{ position: ['relative', 'absolute'], left: ['8px', '24px'] }}

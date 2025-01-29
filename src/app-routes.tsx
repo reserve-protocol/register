@@ -39,7 +39,7 @@ import IndexDTFBasketProposal from './views/index-dtf/governance/views/propose/t
 
 const AppRoutes = () => (
   <Routes>
-    <Route path={ROUTES.HOME} element={<Home />} />
+    <Route path={ROUTES.HOME} element={<Discover />} />
     <Route path={ROUTES.DISCOVER} element={<Discover />} />
     <Route path={ROUTES.BRIDGE} element={<Bridge />} />
     <Route path={ROUTES.PORTFOLIO} element={<PortfolioWrapper />} />
