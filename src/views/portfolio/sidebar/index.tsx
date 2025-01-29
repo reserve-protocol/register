@@ -14,7 +14,7 @@ import {
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import BlockiesAvatar from '@/components/utils/blockies-avatar'
 import { cn } from '@/lib/utils'
-import { chainIdAtom } from '@/state/atoms'
+import { accountTokensAtom, chainIdAtom } from '@/state/atoms'
 import { Token } from '@/types'
 import { formatCurrency, formatTokenAmount, shortenAddress } from '@/utils'
 import { RSR_ADDRESS } from '@/utils/addresses'
@@ -22,7 +22,7 @@ import { ChainId } from '@/utils/chains'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { useAtom, useAtomValue } from 'jotai'
 import { ReactNode, useEffect, useRef, useState } from 'react'
-import { formatUnits } from 'viem'
+import { Address, formatUnits } from 'viem'
 import {
   accountIndexTokensAtom,
   accountStakingTokensAtom,
@@ -34,26 +34,33 @@ import {
 } from '../atoms'
 
 interface TokenRowProps {
-  token: Token
-  underlying?: Token
-  chainId: number
-  amount: bigint
   children: ReactNode
+  token: Token
+  chainId: number
+  usdPrice?: number
+  usdAmount?: number
+  underlying?: Token
+  amount?: bigint
+  amountInt?: number
 }
 
 function TokenRow({
+  children,
   token,
   chainId,
   amount,
+  amountInt,
   underlying,
-  children,
+  usdPrice,
+  usdAmount,
 }: TokenRowProps) {
   const prices = useAtomValue(accountTokenPricesAtom)
   const formattedAmount = formatTokenAmount(
-    Number(formatUnits(amount, token.decimals))
+    amountInt || Number(formatUnits(amount ?? 0n, token.decimals))
   )
-  const tokenPrice = prices[underlying?.address ?? token.address]
-  const value = tokenPrice ? tokenPrice * Number(formattedAmount) : 0
+  const tokenPrice = usdPrice || prices[underlying?.address ?? token.address]
+  const value =
+    usdAmount || (tokenPrice ? tokenPrice * Number(formattedAmount) : 0)
 
   return (
     <div className="flex items-center justify-between py-4">
@@ -227,6 +234,37 @@ const IndexDTFs = () => {
   )
 }
 
+const YieldDTFs = () => {
+  const yieldDTFs = useAtomValue(accountTokensAtom)
+  const selectedTab = useAtomValue(selectedPortfolioTabAtom)
+  console.log(yieldDTFs)
+  if (!yieldDTFs.length || !['all', 'yield-dtfs'].includes(selectedTab))
+    return null
+
+  return (
+    <div className="p-4">
+      <h2 className="mb-3 text-base font-bold">Yield DTFs</h2>
+      {yieldDTFs.map((token) => (
+        <TokenRow
+          key={token.address}
+          token={{
+            address: token.address as Address,
+            name: token.name,
+            symbol: token.symbol,
+            decimals: 18,
+          }}
+          chainId={token.chain}
+          amountInt={token.balance}
+          usdPrice={token.usdPrice}
+          usdAmount={token.usdAmount}
+        >
+          <div>Action</div>
+        </TokenRow>
+      ))}
+    </div>
+  )
+}
+
 const RSR = () => {
   const currentChainId = useAtomValue(chainIdAtom)
   const selectedTab = useAtomValue(selectedPortfolioTabAtom)
@@ -343,6 +381,7 @@ const PortfolioContent = () => {
         <Unlocking />
         <VoteLocked />
         <IndexDTFs />
+        <YieldDTFs />
         <RSR />
       </div>
     </Card>
