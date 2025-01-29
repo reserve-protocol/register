@@ -10,8 +10,51 @@ import {
 import { useEffect } from 'react'
 import { getAddress, stringToHex } from 'viem'
 
+type TokenType = 'DTF' | 'VOTE' | 'ASSET'
+
+interface Token {
+  id: string
+  name: string
+  symbol: string
+  decimals: number
+}
+
+interface Delegate {
+  address: string
+}
+
+interface AccountBalance {
+  token: Token & { type: TokenType }
+  amount: string
+  delegate: Delegate | null
+}
+
+interface AccountLock {
+  lockId: string
+  amount: string
+  unlockTime: string
+  token: {
+    token: Token
+    underlying: Token
+  }
+}
+
+interface AccountDataResponse {
+  account: {
+    balances: AccountBalance[]
+    locks: AccountLock[]
+  }
+}
+
+interface UnderlyingTokensResponse {
+  stakingTokens: {
+    id: string
+    underlying: Token
+  }[]
+}
+
 const accountDataQuery = gql`
-  query getStakingToken($id: String!) {
+  query getAccountData($id: String!) {
     account(id: $id) {
       balances {
         token {
@@ -49,41 +92,19 @@ const accountDataQuery = gql`
   }
 `
 
-type TokenType = 'DTF' | 'VOTE' | 'ASSET'
-
-interface Token {
-  id: string
-  name: string
-  symbol: string
-  decimals: number
-}
-
-interface Delegate {
-  address: string
-}
-
-interface AccountBalance {
-  token: Token & { type: TokenType }
-  amount: string
-  delegate: Delegate | null
-}
-
-interface AccountLock {
-  lockId: string
-  amount: string
-  unlockTime: string
-  token: {
-    token: Token
-    underlying: Token
+const underlyingTokenQuery = gql`
+  query getUnderlyingTokens($tokenIds: [String]!) {
+    stakingTokens(where: { id_in: $tokenIds }) {
+      id
+      underlying {
+        id
+        name
+        symbol
+        decimals
+      }
+    }
   }
-}
-
-interface AccountDataResponse {
-  account: {
-    balances: AccountBalance[]
-    locks: AccountLock[]
-  }
-}
+`
 
 const IndexDTFUpdater = () => {
   const account = useAtomValue(walletAtom)
@@ -91,13 +112,42 @@ const IndexDTFUpdater = () => {
   const setStakingTokens = useSetAtom(accountStakingTokensAtom)
   const setUnclaimedLocks = useSetAtom(accountUnclaimedLocksAtom)
 
-  const { data } = useIndexDTFSubgraph(account ? accountDataQuery : null, {
-    id: account?.toLowerCase(),
-  })
+  const { data: accountDataResponse } = useIndexDTFSubgraph(
+    account ? accountDataQuery : null,
+    {
+      id: account?.toLowerCase(),
+    }
+  )
+
+  const stTokens = (
+    accountDataResponse as AccountDataResponse
+  )?.account.balances
+    .filter(({ token }) => token.type === 'VOTE')
+    .map(({ token }) => token.id)
+
+  const { data: underlyingTokensResponse } = useIndexDTFSubgraph(
+    stTokens?.length ? underlyingTokenQuery : null,
+    {
+      tokenIds: stTokens,
+    }
+  )
 
   useEffect(() => {
-    if (!data) return
-    const accountData = data as AccountDataResponse
+    if (!accountDataResponse) return
+    const accountData = accountDataResponse as AccountDataResponse
+    const underlyingTokensData = underlyingTokensResponse as
+      | UnderlyingTokensResponse
+      | undefined
+
+    const underlyingTokensMap: Record<string, Token> = (
+      underlyingTokensData?.stakingTokens || []
+    ).reduce(
+      (acc, { id, underlying }) => {
+        acc[id.toLowerCase()] = underlying
+        return acc
+      },
+      {} as Record<string, Token>
+    )
 
     const balances = accountData.account.balances.map(
       ({ token, amount, delegate }) => ({
@@ -113,6 +163,27 @@ const IndexDTFUpdater = () => {
 
     const indexTokens = balances.filter(({ type }) => type === 'DTF')
     const stakingTokens = balances.filter(({ type }) => type === 'VOTE')
+
+    if (
+      stakingTokens.length > 0 &&
+      Object.keys(underlyingTokensMap).length === 0
+    ) {
+      // Prevent the app from crashing until the underlying tokens are fetched
+      return
+    }
+
+    const stakingTokensWithUnderlying = stakingTokens.map((stToken) => {
+      const underlying = underlyingTokensMap[stToken.address.toLowerCase()]!
+      return {
+        ...stToken,
+        underlying: {
+          address: getAddress(underlying.id),
+          symbol: underlying.symbol,
+          name: underlying.name,
+          decimals: underlying.decimals,
+        },
+      }
+    })
 
     const unclaimedLocks = accountData.account.locks.map(
       ({ lockId, token: { token, underlying }, amount, unlockTime }) => ({
@@ -135,9 +206,9 @@ const IndexDTFUpdater = () => {
     )
 
     setIndexTokens(indexTokens)
-    setStakingTokens(stakingTokens)
+    setStakingTokens(stakingTokensWithUnderlying)
     setUnclaimedLocks(unclaimedLocks)
-  }, [data])
+  }, [accountDataResponse, underlyingTokensResponse])
 
   return null
 }

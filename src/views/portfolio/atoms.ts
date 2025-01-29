@@ -9,6 +9,7 @@ interface IndexToken extends Token {
 interface StakingToken extends Token {
   amount: bigint
   delegate: Address | null
+  underlying: Token
 }
 
 interface Lock {
