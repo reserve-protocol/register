@@ -8,8 +8,12 @@ import {
   accountTokenPricesAtom,
   accountUnclaimedLocksAtom,
 } from '../atoms'
+import { chainIdAtom, rsrPriceAtom } from '@/state/atoms'
+import { RSR_ADDRESS } from '@/utils/addresses'
 
 const IndexDTFPricesUpdater = () => {
+  const chainId = useAtomValue(chainIdAtom)
+  const rsrPrice = useAtomValue(rsrPriceAtom)
   const indexTokens = useAtomValue(accountIndexTokensAtom)
   const stakingTokens = useAtomValue(accountStakingTokensAtom)
   const unclaimedLocks = useAtomValue(accountUnclaimedLocksAtom)
@@ -29,11 +33,13 @@ const IndexDTFPricesUpdater = () => {
   const { data: assetPrices } = useAssetPrices(assetAddresses)
 
   useEffect(() => {
-    const newPrices: Record<Address, number> = {}
+    const newPrices: Record<Address, number> = {
+      [RSR_ADDRESS[chainId]]: rsrPrice,
+    }
     dtfPrices?.forEach((dtf) => (newPrices[dtf.address] = dtf.price))
     assetPrices?.forEach((asset) => (newPrices[asset.address] = asset.price))
     setTokenPrices(newPrices)
-  }, [dtfPrices, assetPrices, indexTokens, stakingTokens])
+  }, [dtfPrices, assetPrices, indexTokens, stakingTokens, rsrPrice, chainId])
 
   return null
 }

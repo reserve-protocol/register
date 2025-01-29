@@ -1,5 +1,6 @@
 import { Asterisk } from 'lucide-react'
 
+import ChainLogo from '@/components/icons/ChainLogo'
 import WalletOutlineIcon from '@/components/icons/WalletOutlineIcon'
 import CopyValue from '@/components/old/button/CopyValue'
 import TokenLogo from '@/components/token-logo'
@@ -13,8 +14,10 @@ import {
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import BlockiesAvatar from '@/components/utils/blockies-avatar'
 import { cn } from '@/lib/utils'
+import { chainIdAtom } from '@/state/atoms'
 import { Token } from '@/types'
 import { formatCurrency, formatTokenAmount, shortenAddress } from '@/utils'
+import { RSR_ADDRESS } from '@/utils/addresses'
 import { ChainId } from '@/utils/chains'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { useAtom, useAtomValue } from 'jotai'
@@ -25,7 +28,9 @@ import {
   accountStakingTokensAtom,
   accountTokenPricesAtom,
   accountUnclaimedLocksAtom,
+  rsrBalancesAtom,
   selectedPortfolioTabAtom,
+  totalAccountHoldingsAtom,
 } from '../atoms'
 
 interface TokenRowProps {
@@ -53,11 +58,17 @@ function TokenRow({
   return (
     <div className="flex items-center justify-between py-4">
       <div className="flex items-center gap-2">
-        <TokenLogo
-          size="xl"
-          address={underlying?.address ?? token.address}
-          chain={chainId}
-        />
+        <div className="relative">
+          <TokenLogo
+            size="xl"
+            symbol={underlying?.symbol ?? token.symbol}
+            address={underlying?.address ?? token.address}
+            chain={chainId}
+          />
+          <div className="absolute right-0 bottom-0">
+            <ChainLogo chain={chainId} fontSize={12} />
+          </div>
+        </div>
         <div className="flex flex-col">
           <div className="flex items-center gap-[6px] font-bold">
             <span className="text-primary">{formattedAmount}</span>
@@ -127,12 +138,16 @@ const PortfolioHeader = () => {
 }
 
 const PortfolioSummary = () => {
+  const totalAccountHoldings = useAtomValue(totalAccountHoldingsAtom)
+
   return (
     <div className="p-6 pt-5 flex flex-col justify-center gap-8 text-primary">
       <WalletOutlineIcon className="h-9 w-9 -ml-[1px] -mt-[1px]" />
       <div className="flex flex-col justify-center gap-4">
         <span className="text-base">Total Reserve holdings</span>
-        <span className="text-5xl">$781,100.00</span>
+        <span className="text-5xl">
+          ${formatCurrency(totalAccountHoldings)}
+        </span>
       </div>
     </div>
   )
@@ -142,7 +157,8 @@ const VoteLocked = () => {
   const stTokens = useAtomValue(accountStakingTokensAtom)
   const selectedTab = useAtomValue(selectedPortfolioTabAtom)
 
-  if (!stTokens || !['all', 'vote-locked'].includes(selectedTab)) return null
+  if (!stTokens.length || !['all', 'vote-locked'].includes(selectedTab))
+    return null
 
   return (
     <div className="p-4">
@@ -166,7 +182,8 @@ const Unlocking = () => {
   const locks = useAtomValue(accountUnclaimedLocksAtom)
   const selectedTab = useAtomValue(selectedPortfolioTabAtom)
 
-  if (!locks || !['all', 'vote-locked'].includes(selectedTab)) return null
+  if (!locks.length || !['all', 'vote-locked'].includes(selectedTab))
+    return null
 
   return (
     <div className="p-4">
@@ -190,7 +207,8 @@ const IndexDTFs = () => {
   const indexDTFs = useAtomValue(accountIndexTokensAtom)
   const selectedTab = useAtomValue(selectedPortfolioTabAtom)
 
-  if (!indexDTFs || !['all', 'index-dtfs'].includes(selectedTab)) return null
+  if (!indexDTFs.length || !['all', 'index-dtfs'].includes(selectedTab))
+    return null
 
   return (
     <div className="p-4">
@@ -201,6 +219,36 @@ const IndexDTFs = () => {
           token={token}
           chainId={ChainId.Base} // TODO: change
           amount={token.amount}
+        >
+          <div>Action</div>
+        </TokenRow>
+      ))}
+    </div>
+  )
+}
+
+const RSR = () => {
+  const currentChainId = useAtomValue(chainIdAtom)
+  const selectedTab = useAtomValue(selectedPortfolioTabAtom)
+  const rsrBalances = useAtomValue(rsrBalancesAtom)
+
+  const token = {
+    symbol: 'RSR',
+    name: 'Reserve Rights',
+    decimals: 18,
+  }
+
+  if (!rsrBalances || !['all', 'rsr'].includes(selectedTab)) return null
+
+  return (
+    <div className="p-4">
+      <h2 className="mb-3 text-base font-bold">RSR</h2>
+      {Object.entries(RSR_ADDRESS).map(([chainId]) => (
+        <TokenRow
+          key={chainId}
+          token={{ address: RSR_ADDRESS[currentChainId], ...token }} // TODO: use currentChainId to hack rsrPrice
+          chainId={Number(chainId)}
+          amount={(rsrBalances[Number(chainId)] as bigint) ?? 0n}
         >
           <div>Action</div>
         </TokenRow>
@@ -295,6 +343,7 @@ const PortfolioContent = () => {
         <Unlocking />
         <VoteLocked />
         <IndexDTFs />
+        <RSR />
       </div>
     </Card>
   )
