@@ -23,3 +23,4 @@ interface Lock {
 export const accountIndexTokensAtom = atom<IndexToken[]>([])
 export const accountStakingTokensAtom = atom<StakingToken[]>([])
 export const accountUnclaimedLocksAtom = atom<Lock[]>([])
+export const accountTokenPricesAtom = atom<Record<Address, number>>({})

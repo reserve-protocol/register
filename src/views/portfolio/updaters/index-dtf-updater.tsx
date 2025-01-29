@@ -164,10 +164,7 @@ const IndexDTFUpdater = () => {
     const indexTokens = balances.filter(({ type }) => type === 'DTF')
     const stakingTokens = balances.filter(({ type }) => type === 'VOTE')
 
-    if (
-      stakingTokens.length > 0 &&
-      Object.keys(underlyingTokensMap).length === 0
-    ) {
+    if (stakingTokens.length !== Object.keys(underlyingTokensMap).length) {
       // Prevent the app from crashing until the underlying tokens are fetched
       return
     }
