@@ -9,8 +9,7 @@ interface TokenPrice {
   price?: number
 }
 
-const PRICES_BASE_URL =
-  'http://reserve-api-base-alb-979856128.us-east-1.elb.amazonaws.com/current/prices?tokens='
+const PRICES_BASE_URL = 'https://api.reserve.org/current/prices?tokens='
 
 const BasketPriceUpdater = () => {
   const [basket, setBasket] = useAtom(basketAtom)

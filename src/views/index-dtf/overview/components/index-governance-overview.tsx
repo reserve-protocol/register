@@ -64,6 +64,7 @@ const GovernanceDetails = () => {
         >
           <TokenLogo
             size="xl"
+            symbol={indexDTF.stToken?.underlying.symbol}
             address={indexDTF.stToken?.underlying.address ?? 'Unknown'}
             chain={chainId}
           />

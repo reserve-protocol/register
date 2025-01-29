@@ -24,8 +24,7 @@ import {
 } from './atoms'
 import { chainIdAtom } from '@/state/atoms'
 
-const PRICES_BASE_URL =
-  'http://reserve-api-base-alb-979856128.us-east-1.elb.amazonaws.com/current/prices?tokens='
+const PRICES_BASE_URL = 'https://api.reserve.org/current/prices?tokens='
 
 const tokensUrlAtom = atom((get) => {
   const proposedIndexBasket = get(proposedIndexBasketAtom)
