@@ -14,7 +14,7 @@ import {
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import BlockiesAvatar from '@/components/utils/blockies-avatar'
 import { cn } from '@/lib/utils'
-import { accountTokensAtom, chainIdAtom } from '@/state/atoms'
+import { accountTokensAtom, chainIdAtom, rsrPriceAtom } from '@/state/atoms'
 import { Token } from '@/types'
 import { formatCurrency, formatTokenAmount, shortenAddress } from '@/utils'
 import { RSR_ADDRESS } from '@/utils/addresses'
@@ -79,7 +79,7 @@ function TokenRow({
         <div className="flex flex-col">
           <div className="flex items-center gap-[6px] font-bold">
             <span className="text-primary">{formattedAmount}</span>
-            <span className="text-ellipsis">{token.name}</span>
+            <span className="text-ellipsis">{token.symbol}</span>
           </div>
           <span className="text-sm text-muted-foreground">
             $
@@ -237,7 +237,7 @@ const IndexDTFs = () => {
 const YieldDTFs = () => {
   const yieldDTFs = useAtomValue(accountTokensAtom)
   const selectedTab = useAtomValue(selectedPortfolioTabAtom)
-  console.log(yieldDTFs)
+
   if (!yieldDTFs.length || !['all', 'yield-dtfs'].includes(selectedTab))
     return null
 
@@ -257,6 +257,38 @@ const YieldDTFs = () => {
           amountInt={token.balance}
           usdPrice={token.usdPrice}
           usdAmount={token.usdAmount}
+        >
+          <div>Action</div>
+        </TokenRow>
+      ))}
+    </div>
+  )
+}
+
+const StakedRSR = () => {
+  const rsrPrice = useAtomValue(rsrPriceAtom)
+  const yieldDTFs = useAtomValue(accountTokensAtom)
+  const selectedTab = useAtomValue(selectedPortfolioTabAtom)
+
+  if (!yieldDTFs.length || !['all', 'staked-rsr'].includes(selectedTab))
+    return null
+
+  return (
+    <div className="p-4">
+      <h2 className="mb-3 text-base font-bold">Staked RSR</h2>
+      {yieldDTFs.map((token) => (
+        <TokenRow
+          key={token.address}
+          token={{
+            address: token.address as Address,
+            name: `${token.name?.toLowerCase()} RSR`,
+            symbol: `${token.symbol?.toLowerCase()}RSR`,
+            decimals: 18,
+          }}
+          chainId={token.chain}
+          amountInt={token.stakedRSR}
+          usdPrice={rsrPrice || 0}
+          usdAmount={token.stakedRSRUsd}
         >
           <div>Action</div>
         </TokenRow>
@@ -380,6 +412,7 @@ const PortfolioContent = () => {
       >
         <Unlocking />
         <VoteLocked />
+        <StakedRSR />
         <IndexDTFs />
         <YieldDTFs />
         <RSR />
