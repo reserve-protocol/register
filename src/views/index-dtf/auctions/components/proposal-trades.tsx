@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/accordion'
 import { Skeleton } from '@/components/ui/skeleton'
 import { chainIdAtom } from '@/state/atoms'
-import { shortenAddress } from '@/utils'
+import { formatPercentage, shortenAddress } from '@/utils'
 import { ROUTES } from '@/utils/constants'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { useAtomValue } from 'jotai'
@@ -41,19 +41,52 @@ const LaunchTradesPanel = () => {
   )
 }
 
+const Share = ({
+  share,
+  prefix,
+}: {
+  share: number | undefined
+  prefix?: string
+}) => {
+  if (!share) return <Skeleton className="h-8 w-14" />
+
+  return (
+    <h4 className="font-bold text-2xl">
+      {prefix}
+      {formatPercentage(share)}
+    </h4>
+  )
+}
+
+const ShareRange = ({
+  from,
+  to,
+}: {
+  from: number | undefined
+  to: number | undefined
+}) => {
+  if (!from || !to) return <Skeleton className="h-8 w-14" />
+
+  return (
+    <span className="text-xs whitespace-nowrap">
+      from {formatPercentage(from)} to {formatPercentage(to)}
+    </span>
+  )
+}
+
 const TradeItem = ({ trade }: { trade: AssetTrade }) => {
   const chainId = useAtomValue(chainIdAtom)
 
   return (
     <div className="flex items-center p-3 rounded-xl border">
-      <div className="grid grid-cols-[1fr_auto_1fr] gap-2 items-center w-72 mr-auto">
+      <div className="grid grid-cols-[1fr_auto_1fr] gap-2 items-center w-80 mr-auto">
         <div className="flex flex-col gap-1">
           <span>Sell ${trade.sell.symbol}</span>
           <div className="flex items-center gap-1">
             <TokenLogo address={trade.sell.address} chain={chainId} size="lg" />
-            <h4 className="font-bold text-2xl">-1%</h4>
+            <Share share={trade.deltaSellShare} />
           </div>
-          <span>from x% to x%</span>
+          <ShareRange from={trade.currentSellShare} to={trade.sellShare} />
         </div>
         <div className="bg-muted rounded-full p-1 text-legend">
           <ArrowRight size={18} />
@@ -61,10 +94,10 @@ const TradeItem = ({ trade }: { trade: AssetTrade }) => {
         <div className="flex flex-col gap-1 items-end">
           <span>Buy ${trade.buy.symbol}</span>
           <div className="flex items-center gap-1">
-            <h4 className="font-bold text-2xl">+1%</h4>
+            <Share share={trade.deltaBuyShare} prefix="+" />
             <TokenLogo address={trade.buy.address} chain={chainId} size="lg" />
           </div>
-          <span>from x% to x%</span>
+          <ShareRange from={trade.currentBuyShare} to={trade.buyShare} />
         </div>
       </div>
       <div className="rounded-xl border p-2"></div>
@@ -132,17 +165,12 @@ const ProposalTradeItem = ({ data }: { data: TradesByProposal }) => {
           </div>
           <Link
             target="_blank"
+            className="flex items-center gap-1 text-sm rounded-3xl border p-2 mr-4"
             to={`../${ROUTES.GOVERNANCE_PROPOSAL}/${data.proposal.id}`}
           >
-            <Button
-              variant="outline"
-              className="gap-1 rounded-3xl mr-4"
-              size="sm"
-            >
-              <FileText size={16} strokeWidth={1.5} />
-              View proposal
-              <ArrowUpRightIcon size={14} />
-            </Button>
+            <FileText size={16} strokeWidth={1.5} />
+            View proposal
+            <ArrowUpRightIcon size={14} />
           </Link>
         </div>
       </AccordionTrigger>
@@ -173,7 +201,7 @@ const ProposalTradesList = () => {
 
 const ProposalTrades = () => {
   return (
-    <div className="grid grid-cols-1 xl:grid-cols-[2fr_1fr] gap-2 ml-2 xl:ml-0 mr-2">
+    <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-2 ml-2 lg:ml-0 mr-2">
       <ProposalTradesList />
       <LaunchTradesPanel />
     </div>
