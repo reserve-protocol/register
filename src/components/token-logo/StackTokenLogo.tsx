@@ -1,12 +1,14 @@
-import TokenLogo from 'components/icons/TokenLogo'
+import LegacyTokenLogo from 'components/icons/TokenLogo'
+import TokenLogo from '.'
 import React from 'react'
 import { Box, BoxProps } from 'theme-ui'
 
 interface Props extends BoxProps {
-  tokens: { symbol: string; logo?: string; address: string }[]
+  tokens: { symbol: string; logo?: string; address: string; chain?: number }[]
   size?: number
   reverseStack?: boolean
   overlap?: number
+  outsource?: boolean
 }
 
 const StackTokenLogo = React.memo(
@@ -16,6 +18,7 @@ const StackTokenLogo = React.memo(
     size,
     reverseStack = false,
     overlap = 0,
+    outsource = false,
     ...props
   }: Props) => {
     return (
@@ -37,7 +40,7 @@ const StackTokenLogo = React.memo(
                 sx={{ width: '28px' }}
                 key={token.address}
               >
-                <TokenLogo
+                <LegacyTokenLogo
                   width={size}
                   sx={{
                     position: 'relative',
@@ -45,7 +48,7 @@ const StackTokenLogo = React.memo(
                   }}
                   symbol={'frax'}
                 />
-                <TokenLogo
+                <LegacyTokenLogo
                   width={size}
                   sx={{
                     position: 'relative',
@@ -58,13 +61,8 @@ const StackTokenLogo = React.memo(
           }
 
           const gap = -(size ? size / 2 : 6) - overlap
-          const m = reverseStack
-            ? index === tokens.length - 1
-              ? 0
-              : gap
-            : index === 0
-              ? 0
-              : gap
+          const first = reverseStack ? index === tokens.length - 1 : index === 0
+          const m = first ? 0 : gap
 
           return (
             <Box
@@ -75,7 +73,20 @@ const StackTokenLogo = React.memo(
                 marginRight: `${m}px`,
               }}
             >
-              <TokenLogo width={size} symbol={token.symbol} src={token.logo} />
+              {outsource ? (
+                <TokenLogo
+                  width={size}
+                  height={size}
+                  chain={token.chain}
+                  address={token.address}
+                />
+              ) : (
+                <LegacyTokenLogo
+                  width={size}
+                  symbol={token.symbol}
+                  src={token.logo}
+                />
+              )}
             </Box>
           )
         })}

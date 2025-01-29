@@ -72,7 +72,13 @@ const columns: ColumnDef<IndexDTFItem>[] = [
       return (
         <div className="flex items-center gap-2">
           <div>
-            <StackTokenLogo tokens={head} overlap={2} size={24} reverseStack />
+            <StackTokenLogo
+              tokens={head.map((r) => ({ ...r, chain: row.original.chainId }))}
+              overlap={2}
+              size={24}
+              reverseStack
+              outsource
+            />
           </div>
           <div className="flex">
             <div>{head.map((t) => t.symbol).join(', ')}</div>
@@ -172,9 +178,7 @@ const DTFCard = ({ dtf }: { dtf: IndexDTFItem }) => {
         </div>
 
         <div className="flex items-end">
-          <Link
-            to={`/${dtf.chainId}/index-dtf/${dtf.address}/overview`}
-          >
+          <Link to={`/${dtf.chainId}/index-dtf/${dtf.address}/overview`}>
             <Button variant="muted" size="icon-rounded">
               <ArrowRight size={16} />
             </Button>
