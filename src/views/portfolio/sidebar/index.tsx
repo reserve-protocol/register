@@ -20,7 +20,7 @@ import { formatCurrency, formatTokenAmount, shortenAddress } from '@/utils'
 import { RSR_ADDRESS } from '@/utils/addresses'
 import { ChainId } from '@/utils/chains'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
-import { useAtom, useAtomValue } from 'jotai'
+import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { ReactNode, useEffect, useRef, useState } from 'react'
 import { Address, formatUnits } from 'viem'
 import {
@@ -34,8 +34,8 @@ import {
 } from '../atoms'
 import {
   IndexDTFAction,
-  UnlockAction,
   StakeRSRAction,
+  UnlockAction,
   YieldDTFAction,
 } from './components/actions'
 
@@ -183,9 +183,7 @@ const VoteLocked = () => {
           chainId={ChainId.Base} // TODO: change
           amount={stToken.amount}
           underlying={stToken.underlying}
-        >
-          <div>Action</div>
-        </TokenRow>
+        />
       ))}
     </div>
   )
@@ -413,7 +411,7 @@ const PortfolioContent = () => {
         <TabsList className="w-full justify-between px-6 py-3 bg-transparent [&>button]:flex [&>button]:items-center [&>button]:justify-center [&>button]:px-0 [&>button]:text-base [&>button]:font-light [&>button]:bg-transparent [&>button]:whitespace-nowrap data-[state=active]:[&>button]:font-bold data-[state=active]:[&>button]:text-primary data-[state=active]:[&>button]:shadow-none">
           {PORTFOLIO_TABS.map(({ label, value }) => (
             <TabsTrigger value={value} key={value}>
-              {label}
+              <span className="text-sm md:text-base">{label}</span>
             </TabsTrigger>
           ))}
         </TabsList>
@@ -436,8 +434,9 @@ const PortfolioContent = () => {
 }
 
 const PortfolioSidebar = ({ children }: { children: ReactNode }) => {
+  const setSelectedTab = useSetAtom(selectedPortfolioTabAtom)
   return (
-    <Drawer>
+    <Drawer onClose={() => setSelectedTab('all')}>
       <DrawerTrigger asChild>{children}</DrawerTrigger>
       {/* target close button and add spacing */}
       <DrawerContent className="first:[&>button]:top-[22px] first:[&>button]:right-[22px]">
