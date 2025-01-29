@@ -14,127 +14,48 @@ import {
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import BlockiesAvatar from '@/components/utils/blockies-avatar'
 import { cn } from '@/lib/utils'
-import { shortenAddress } from '@/utils'
+import { formatCurrency, shortenAddress } from '@/utils'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { ReactNode, useEffect, useRef, useState } from 'react'
+import { Token } from '@/types'
+import TokenLogo from '@/components/token-logo'
+import { formatUnits } from 'viem'
+import { useAtomValue } from 'jotai'
+import { accountTokenPricesAtom, accountUnclaimedLocksAtom } from '../atoms'
+import { ChainId } from '@/utils/chains'
 
 interface TokenRowProps {
-  icon: string
-  amount: string
-  value: string
-  name: string
-  timer?: string
-  onCancel?: () => void
-  onWithdraw?: () => void
-  chevron?: boolean
-  performance?: {
-    value: string
-    chart?: boolean
-  }
-  price?: string
-  estimatedApy?: string
-  reward?: string
+  token: Token
+  underlying?: Token
+  chainId: number
+  amount: bigint
 }
 
-function TokenRow({
-  icon,
-  amount,
-  value,
-  name,
-  timer,
-  onCancel,
-  onWithdraw,
-  chevron,
-  performance,
-  price,
-  estimatedApy,
-  reward,
-}: TokenRowProps) {
+function TokenRow({ token, chainId, amount, underlying }: TokenRowProps) {
+  const prices = useAtomValue(accountTokenPricesAtom)
+  const formattedAmount = formatUnits(amount, token.decimals)
+  const tokenPrice = prices[underlying?.address ?? token.address]
+  const value = tokenPrice ? tokenPrice * Number(formattedAmount) : 0
+
   return (
     <div className="flex items-center justify-between py-4">
-      <div className="flex items-center gap-3">
-        <Avatar className="h-8 w-8">
-          <img
-            src={icon || '/placeholder.svg'}
-            alt={name}
-            className="rounded-full"
-          />
-        </Avatar>
+      <div className="flex items-center gap-2">
+        <TokenLogo
+          size="xl"
+          address={underlying?.address ?? token.address}
+          chain={chainId}
+        />
         <div className="flex flex-col">
-          <div className="flex items-center gap-2">
-            <span className="font-medium text-[#0052ff]">{amount}</span>
-            <span>{name}</span>
+          <div className="flex items-center gap-[6px] font-bold">
+            <span className="text-primary">{formattedAmount}</span>
+            <span>{token.name}</span>
           </div>
-          <span className="text-sm text-muted-foreground">${value}</span>
+          <span className="text-sm text-muted-foreground">
+            ${formatCurrency(value)}
+          </span>
         </div>
       </div>
-      <div className="flex items-center gap-4">
-        {timer && (
-          <div className="flex items-center gap-2">
-            <span className="text-sm text-muted-foreground">{timer}</span>
-            <Button
-              variant="link"
-              className="h-auto p-0 text-sm font-normal text-red-500"
-              onClick={onCancel}
-            >
-              Cancel
-            </Button>
-          </div>
-        )}
-        {onWithdraw && (
-          <Button variant="outline" size="sm" onClick={onWithdraw}>
-            Withdraw
-          </Button>
-        )}
-        {chevron && <ChevronRight className="h-5 w-5 text-muted-foreground" />}
-        {performance && (
-          <div className="flex items-center gap-2">
-            <div className="text-right">
-              <div className="flex items-center gap-1">
-                <span className="text-sm font-medium">24h performance:</span>
-                <span className="text-sm text-[#0052ff]">
-                  {performance.value}
-                </span>
-              </div>
-              {price && (
-                <div className="text-sm text-muted-foreground">
-                  Price ${price}
-                </div>
-              )}
-            </div>
-            {performance.chart && (
-              <svg
-                className="h-8 w-16"
-                viewBox="0 0 64 32"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <path
-                  d="M0 24L16 16L32 20L48 8L64 12"
-                  className="text-[#0052ff]"
-                />
-              </svg>
-            )}
-            <ChevronRight className="h-5 w-5 text-muted-foreground" />
-          </div>
-        )}
-        {estimatedApy && (
-          <div className="flex items-center gap-2">
-            <div className="text-right">
-              <div className="text-sm text-muted-foreground">Est APY:</div>
-              <div className="font-medium">{estimatedApy}</div>
-            </div>
-            <div className="flex items-center gap-1">
-              <span className="text-[#0052ff]">{reward}</span>
-              <Button variant="outline" size="icon" className="h-6 w-6">
-                <ChevronDown className="h-4 w-4" />
-              </Button>
-            </div>
-            <ChevronRight className="h-5 w-5 text-muted-foreground" />
-          </div>
-        )}
-      </div>
+      <div>Action</div>
     </div>
   )
 }
@@ -188,50 +109,6 @@ const PortfolioHeader = () => {
   )
 }
 
-const PortfolioSection = () => {
-  return (
-    <div className="p-4">
-      <h2 className="mb-3 text-base font-bold">Unlocking</h2>
-      <TokenRow
-        icon="https://v0.blob.com/token-icon.png"
-        amount="10.2K"
-        name="stAERO"
-        value="18.87K"
-        onWithdraw={() => {}}
-      />
-      <TokenRow
-        icon="https://v0.blob.com/token-icon.png"
-        amount="10.2K"
-        name="stAERO"
-        value="18.87K"
-        timer="2d 32m 3s"
-        onCancel={() => {}}
-      />
-      <TokenRow
-        icon="https://v0.blob.com/token-icon.png"
-        amount="12M"
-        name="hyusdRSR"
-        value="150K"
-        chevron
-        estimatedApy="4.52%"
-        reward="+4.45M RSR"
-      />
-      <TokenRow
-        icon="https://v0.blob.com/token-icon.png"
-        amount="100.3M"
-        name="BIGTOMTOM10"
-        value="145.34K"
-        performance={{
-          value: '+14.23%',
-          chart: true,
-        }}
-        price="304.54"
-        chevron
-      />
-    </div>
-  )
-}
-
 const PortfolioSummary = () => {
   return (
     <div className="p-6 pt-5 flex flex-col justify-center gap-8 text-primary">
@@ -240,6 +117,24 @@ const PortfolioSummary = () => {
         <span className="text-base">Total Reserve holdings</span>
         <span className="text-5xl">$781,100.00</span>
       </div>
+    </div>
+  )
+}
+
+const Unlocking = () => {
+  const locks = useAtomValue(accountUnclaimedLocksAtom)
+  return (
+    <div className="p-4">
+      <h2 className="mb-3 text-base font-bold">Unlocking</h2>
+      {locks.map((lock) => (
+        <TokenRow
+          key={lock.lockId}
+          token={lock.token}
+          chainId={ChainId.Base} // TODO: change
+          amount={lock.amount}
+          underlying={lock.underlying}
+        />
+      ))}
     </div>
   )
 }
@@ -291,8 +186,7 @@ const PortfolioContent = () => {
           isSticky && 'bg-muted/20'
         )}
       >
-        <PortfolioSection />
-        <PortfolioSection />
+        <Unlocking />
       </div>
     </Card>
   )
