@@ -4,18 +4,18 @@ import { Address, Chain, formatUnits, Hex, parseUnits } from 'viem'
 import { PortfolioTabs } from './sidebar'
 import { accountHoldingsAtom, rsrPriceAtom } from '@/state/atoms'
 
-interface IndexToken extends Token {
+export interface IndexToken extends Token {
   amount: bigint
 }
 
-interface StakingToken extends Token {
+export interface StakingToken extends Token {
   amount: bigint
   delegate: Address | null
   underlying: Token
 }
 
-interface Lock {
-  lockId: Hex
+export interface Lock {
+  lockId: bigint
   amount: bigint
   unlockTime: number
   token: Token

@@ -2,13 +2,13 @@ import useIndexDTFSubgraph from '@/hooks/useIndexDTFSugbraph'
 import { walletAtom } from '@/state/atoms'
 import { gql } from 'graphql-request'
 import { useAtomValue, useSetAtom } from 'jotai'
+import { useEffect } from 'react'
+import { getAddress } from 'viem'
 import {
   accountIndexTokensAtom,
   accountStakingTokensAtom,
   accountUnclaimedLocksAtom,
 } from '../atoms'
-import { useEffect } from 'react'
-import { getAddress, stringToHex } from 'viem'
 
 type TokenType = 'DTF' | 'VOTE' | 'ASSET'
 
@@ -184,7 +184,7 @@ const IndexDTFUpdater = () => {
 
     const unclaimedLocks = accountData.account.locks.map(
       ({ lockId, token: { token, underlying }, amount, unlockTime }) => ({
-        lockId: stringToHex(lockId, { size: 32 }),
+        lockId: BigInt(lockId),
         amount: BigInt(amount),
         unlockTime: Number(unlockTime),
         token: {

@@ -34,6 +34,7 @@ import {
 } from '../atoms'
 import {
   IndexDTFAction,
+  UnlockAction,
   StakeRSRAction,
   YieldDTFAction,
 } from './components/actions'
@@ -202,13 +203,13 @@ const Unlocking = () => {
       <h2 className="mb-3 text-base font-bold">Unlocking</h2>
       {locks.map((lock) => (
         <TokenRow
-          key={lock.lockId}
+          key={lock.lockId.toString()}
           token={lock.token}
           chainId={ChainId.Base} // TODO: change
           amount={lock.amount}
           underlying={lock.underlying}
         >
-          <div>Action</div>
+          <UnlockAction {...lock} />
         </TokenRow>
       ))}
     </div>
