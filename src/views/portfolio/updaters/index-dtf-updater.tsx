@@ -40,9 +40,9 @@ interface AccountLock {
 }
 
 interface AccountDataResponse {
-  account: {
-    balances: AccountBalance[]
-    locks: AccountLock[]
+  account?: {
+    balances?: AccountBalance[]
+    locks?: AccountLock[]
   }
 }
 
@@ -120,8 +120,8 @@ const IndexDTFUpdater = () => {
   )
 
   const stTokens = (
-    accountDataResponse as AccountDataResponse
-  )?.account.balances
+    (accountDataResponse as AccountDataResponse)?.account?.balances || []
+  )
     .filter(({ token }) => token.type === 'VOTE')
     .map(({ token }) => token.id)
 
@@ -149,7 +149,7 @@ const IndexDTFUpdater = () => {
       {} as Record<string, Token>
     )
 
-    const balances = accountData.account.balances.map(
+    const balances = (accountData?.account?.balances || []).map(
       ({ token, amount, delegate }) => ({
         address: getAddress(token.id),
         symbol: token.symbol,
@@ -182,7 +182,7 @@ const IndexDTFUpdater = () => {
       }
     })
 
-    const unclaimedLocks = accountData.account.locks.map(
+    const unclaimedLocks = (accountData?.account?.locks || []).map(
       ({ lockId, token: { token, underlying }, amount, unlockTime }) => ({
         lockId: BigInt(lockId),
         amount: BigInt(amount),
