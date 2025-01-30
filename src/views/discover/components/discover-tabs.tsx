@@ -42,7 +42,7 @@ const Title = () => {
 
 const DiscoverTabs = ({ className }: { className: string }) => {
   return (
-    <div className={cn('container pb-6 px-4', className)}>
+    <div className={cn('container pb-6 px-2 md:px-4', className)}>
       <Title />
       <Tabs defaultValue="index">
         <DiscoverTabList tabs={tabs} className="mb-4" />

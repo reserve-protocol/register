@@ -41,7 +41,7 @@ export type FeeRecipient = {
 }
 
 type FolioConfig = {
-  tradeDelay: bigint
+  auctionDelay: bigint
   auctionLength: bigint
   feeRecipients: FeeRecipient[]
   tvlFee: bigint
@@ -55,7 +55,7 @@ type GovernanceConfig = {
   proposalThreshold: bigint
   quorumPercent: bigint
   timelockDelay: bigint
-  guardian: Address
+  guardians: Address[]
 }
 
 type GovernanceRoles = {
@@ -118,7 +118,7 @@ const txAtom = atom<
   }
 
   const folioConfig: FolioConfig = {
-    tradeDelay: BigInt(
+    auctionDelay: BigInt(
       Math.floor(
         (formData.auctionDelay || formData.customAuctionDelay || 0)! * 60
       )
@@ -196,7 +196,7 @@ const txAtom = atom<
           0)! * 60
       )
     ),
-    guardian: formData.guardianAddress ?? zeroAddress,
+    guardians: [formData.guardianAddress ?? zeroAddress],
   }
 
   const tradingGovernanceConfig: GovernanceConfig = {
@@ -223,7 +223,7 @@ const txAtom = atom<
           0)! * 60
       )
     ),
-    guardian: formData.guardianAddress ?? zeroAddress,
+    guardians: [formData.guardianAddress ?? zeroAddress],
   }
 
   const args: DeployParams = [
