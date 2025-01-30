@@ -17,6 +17,7 @@ import { initialTokensAtom } from './manual/atoms'
 import SimpleIndexDeploy from './simple'
 import { inputAmountAtom } from './simple/atoms'
 import SuccessView from './success'
+import Ticker from '../../utils/ticker'
 
 const Header = () => {
   const form = useAtomValue(indexDeployFormDataAtom)
@@ -59,7 +60,9 @@ const ConfirmIndexDeploy = ({ isActive }: { isActive: boolean }) => {
     <Drawer>
       <DrawerTrigger disabled={!isActive} asChild>
         <Button className="w-full" disabled={!isActive} onClick={submitForm}>
-          Create
+          <span>
+            Create <Ticker defaultSymbol="" />
+          </span>
         </Button>
       </DrawerTrigger>
 
