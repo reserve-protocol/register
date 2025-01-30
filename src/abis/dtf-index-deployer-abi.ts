@@ -24,13 +24,7 @@ export default [
     type: 'function',
     name: 'daoFeeRegistry',
     inputs: [],
-    outputs: [
-      {
-        name: '',
-        type: 'address',
-        internalType: 'address',
-      },
-    ],
+    outputs: [{ name: '', type: 'address', internalType: 'address' }],
     stateMutability: 'view',
   },
   {
@@ -42,16 +36,8 @@ export default [
         type: 'tuple',
         internalType: 'struct IFolio.FolioBasicDetails',
         components: [
-          {
-            name: 'name',
-            type: 'string',
-            internalType: 'string',
-          },
-          {
-            name: 'symbol',
-            type: 'string',
-            internalType: 'string',
-          },
+          { name: 'name', type: 'string', internalType: 'string' },
+          { name: 'symbol', type: 'string', internalType: 'string' },
           {
             name: 'assets',
             type: 'address[]',
@@ -75,7 +61,7 @@ export default [
         internalType: 'struct IFolio.FolioAdditionalDetails',
         components: [
           {
-            name: 'tradeDelay',
+            name: 'auctionDelay',
             type: 'uint256',
             internalType: 'uint256',
           },
@@ -94,35 +80,15 @@ export default [
                 type: 'address',
                 internalType: 'address',
               },
-              {
-                name: 'portion',
-                type: 'uint96',
-                internalType: 'uint96',
-              },
+              { name: 'portion', type: 'uint96', internalType: 'uint96' },
             ],
           },
-          {
-            name: 'tvlFee',
-            type: 'uint256',
-            internalType: 'uint256',
-          },
-          {
-            name: 'mintFee',
-            type: 'uint256',
-            internalType: 'uint256',
-          },
-          {
-            name: 'mandate',
-            type: 'string',
-            internalType: 'string',
-          },
+          { name: 'tvlFee', type: 'uint256', internalType: 'uint256' },
+          { name: 'mintFee', type: 'uint256', internalType: 'uint256' },
+          { name: 'mandate', type: 'string', internalType: 'string' },
         ],
       },
-      {
-        name: 'owner',
-        type: 'address',
-        internalType: 'address',
-      },
+      { name: 'owner', type: 'address', internalType: 'address' },
       {
         name: 'auctionApprovers',
         type: 'address[]',
@@ -140,16 +106,8 @@ export default [
       },
     ],
     outputs: [
-      {
-        name: 'folio',
-        type: 'address',
-        internalType: 'contract Folio',
-      },
-      {
-        name: 'folioAdmin',
-        type: 'address',
-        internalType: 'address',
-      },
+      { name: 'folio', type: 'address', internalType: 'contract Folio' },
+      { name: 'proxyAdmin', type: 'address', internalType: 'address' },
     ],
     stateMutability: 'nonpayable',
   },
@@ -167,16 +125,8 @@ export default [
         type: 'tuple',
         internalType: 'struct IFolio.FolioBasicDetails',
         components: [
-          {
-            name: 'name',
-            type: 'string',
-            internalType: 'string',
-          },
-          {
-            name: 'symbol',
-            type: 'string',
-            internalType: 'string',
-          },
+          { name: 'name', type: 'string', internalType: 'string' },
+          { name: 'symbol', type: 'string', internalType: 'string' },
           {
             name: 'assets',
             type: 'address[]',
@@ -200,7 +150,7 @@ export default [
         internalType: 'struct IFolio.FolioAdditionalDetails',
         components: [
           {
-            name: 'tradeDelay',
+            name: 'auctionDelay',
             type: 'uint256',
             internalType: 'uint256',
           },
@@ -219,28 +169,12 @@ export default [
                 type: 'address',
                 internalType: 'address',
               },
-              {
-                name: 'portion',
-                type: 'uint96',
-                internalType: 'uint96',
-              },
+              { name: 'portion', type: 'uint96', internalType: 'uint96' },
             ],
           },
-          {
-            name: 'tvlFee',
-            type: 'uint256',
-            internalType: 'uint256',
-          },
-          {
-            name: 'mintFee',
-            type: 'uint256',
-            internalType: 'uint256',
-          },
-          {
-            name: 'mandate',
-            type: 'string',
-            internalType: 'string',
-          },
+          { name: 'tvlFee', type: 'uint256', internalType: 'uint256' },
+          { name: 'mintFee', type: 'uint256', internalType: 'uint256' },
+          { name: 'mandate', type: 'string', internalType: 'string' },
         ],
       },
       {
@@ -248,11 +182,7 @@ export default [
         type: 'tuple',
         internalType: 'struct IGovernanceDeployer.GovParams',
         components: [
-          {
-            name: 'votingDelay',
-            type: 'uint48',
-            internalType: 'uint48',
-          },
+          { name: 'votingDelay', type: 'uint48', internalType: 'uint48' },
           {
             name: 'votingPeriod',
             type: 'uint32',
@@ -274,9 +204,9 @@ export default [
             internalType: 'uint256',
           },
           {
-            name: 'guardian',
-            type: 'address',
-            internalType: 'address',
+            name: 'guardians',
+            type: 'address[]',
+            internalType: 'address[]',
           },
         ],
       },
@@ -285,11 +215,7 @@ export default [
         type: 'tuple',
         internalType: 'struct IGovernanceDeployer.GovParams',
         components: [
-          {
-            name: 'votingDelay',
-            type: 'uint48',
-            internalType: 'uint48',
-          },
+          { name: 'votingDelay', type: 'uint48', internalType: 'uint48' },
           {
             name: 'votingPeriod',
             type: 'uint32',
@@ -311,9 +237,9 @@ export default [
             internalType: 'uint256',
           },
           {
-            name: 'guardian',
-            type: 'address',
-            internalType: 'address',
+            name: 'guardians',
+            type: 'address[]',
+            internalType: 'address[]',
           },
         ],
       },
@@ -341,26 +267,10 @@ export default [
       },
     ],
     outputs: [
-      {
-        name: 'folio',
-        type: 'address',
-        internalType: 'contract Folio',
-      },
-      {
-        name: 'proxyAdmin',
-        type: 'address',
-        internalType: 'address',
-      },
-      {
-        name: 'ownerGovernor',
-        type: 'address',
-        internalType: 'address',
-      },
-      {
-        name: 'ownerTimelock',
-        type: 'address',
-        internalType: 'address',
-      },
+      { name: 'folio', type: 'address', internalType: 'contract Folio' },
+      { name: 'proxyAdmin', type: 'address', internalType: 'address' },
+      { name: 'ownerGovernor', type: 'address', internalType: 'address' },
+      { name: 'ownerTimelock', type: 'address', internalType: 'address' },
       {
         name: 'tradingGovernor',
         type: 'address',
@@ -378,13 +288,7 @@ export default [
     type: 'function',
     name: 'folioImplementation',
     inputs: [],
-    outputs: [
-      {
-        name: '',
-        type: 'address',
-        internalType: 'address',
-      },
-    ],
+    outputs: [{ name: '', type: 'address', internalType: 'address' }],
     stateMutability: 'view',
   },
   {
@@ -404,26 +308,14 @@ export default [
     type: 'function',
     name: 'version',
     inputs: [],
-    outputs: [
-      {
-        name: '',
-        type: 'string',
-        internalType: 'string',
-      },
-    ],
+    outputs: [{ name: '', type: 'string', internalType: 'string' }],
     stateMutability: 'pure',
   },
   {
     type: 'function',
     name: 'versionRegistry',
     inputs: [],
-    outputs: [
-      {
-        name: '',
-        type: 'address',
-        internalType: 'address',
-      },
-    ],
+    outputs: [{ name: '', type: 'address', internalType: 'address' }],
     stateMutability: 'view',
   },
   {
@@ -494,20 +386,10 @@ export default [
     ],
     anonymous: false,
   },
-  {
-    type: 'error',
-    name: 'FolioDeployer__LengthMismatch',
-    inputs: [],
-  },
+  { type: 'error', name: 'FolioDeployer__LengthMismatch', inputs: [] },
   {
     type: 'error',
     name: 'SafeERC20FailedOperation',
-    inputs: [
-      {
-        name: 'token',
-        type: 'address',
-        internalType: 'address',
-      },
-    ],
+    inputs: [{ name: 'token', type: 'address', internalType: 'address' }],
   },
 ] as const
