@@ -20,19 +20,19 @@ import { ArrowRight, Play } from 'lucide-react'
 
 const COLORS: Record<string, any> = {
   ethereum: {
-    fill: '#fff',
-    stroke: '#fff',
-    // stroke: '#3B3B3B',
+    fill: '#2150A9',
+    // stroke: '#fff',
+    stroke: '#2150A9',
   },
   base: {
-    fill: '#fff',
-    stroke: '#fff',
-    // stroke: '#1552F0',
+    fill: '#2150A9',
+    // stroke: '#fff',
+    stroke: '#2150A9',
   },
   arbitrum: {
-    fill: '#fff',
-    stroke: '#fff',
-    // stroke: '#162B4E',
+    fill: '#2150A9',
+    // stroke: '#fff',
+    stroke: '#2150A9',
   },
 }
 
@@ -128,7 +128,7 @@ const Heading = () => {
 
   return (
     <>
-      <div className="absolute top-3 sm:top-8 left-3 sm:left-0 right-3 text-white">
+      <div className="absolute top-3 sm:top-8 left-3 sm:left-0 right-3 text-primary">
         <RootIcon className="border rounded-full h-[32px] w-[32px]" />
         <h2 className="text-[22px] mt-6 mb-4 font-light leading-none">
           TVL in Reserve
@@ -169,13 +169,13 @@ const Heading = () => {
           )}
         </div>
       </div>
-      <div className="absolute top-3 sm:top-8 right-3 sm:right-0 text-white">
+      <div className="absolute top-3 sm:top-8 right-3 sm:right-0 text-primary">
         <Button
-          variant="outline"
-          className="rounded-[50px] p-1 h-8 hover:bg-white"
+          variant="outline-primary"
+          className="rounded-[50px] p-1 h-8 hover:bg-primary"
         >
-          <div className="rounded-full w-6 h-6 bg-white text-primary flex items-center justify-center">
-            <Play size={12} fill="currentColor" />
+          <div className="rounded-full w-6 h-6 bg-primary text-primary flex items-center justify-center">
+            <Play size={16} fill="#fff" />
           </div>
           <span className="ml-1 mr-2">What are DTFs?</span>
         </Button>
@@ -200,7 +200,7 @@ const HistoricalTVLChart = () => {
       >
         <XAxis dataKey="day" style={{ display: 'none' }} />
         <YAxis hide visibility="0" domain={['dataMin', 'dataMax']} />
-        <Tooltip content={<CustomTooltip />} />
+        <Tooltip wrapperStyle={{ zIndex: 1000 }} content={<CustomTooltip />} />
         {Object.keys(NETWORKS).map((network) => (
           <Area
             key={network}
@@ -220,8 +220,8 @@ const HistoricalTVLChart = () => {
 
 const HistoricalTVL = () => {
   return (
-    <div className="container sm:px-6 h-[400px] sm:h-[520px]">
-      <div className="relative h-full flex flex-col justify-end">
+    <div className="container px-0 2xl:px-6 h-[400px] sm:h-[520px]">
+      <div className="relative h-full flex flex-col justify-end border-t border-primary">
         <div className="h-[160px] sm:h-[420px]">
           <HistoricalTVLChart />
         </div>

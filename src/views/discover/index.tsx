@@ -4,7 +4,7 @@ import DiscoverTabs from './components/discover-tabs'
 const Discover = () => {
   return (
     <>
-      <div className="bg-primary">
+      <div className="border-b border-primary">
         <HistoricalTVL />
       </div>
       <DiscoverTabs className="mt-6 sm:mt-12" />
