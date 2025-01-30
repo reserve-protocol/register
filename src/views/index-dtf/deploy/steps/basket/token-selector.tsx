@@ -195,14 +195,16 @@ const TokenList = ({ showSelected = false }: TokenListProps) => {
     const searchLower = search.trim().toLowerCase()
     if (!searchLower) return tokenList
 
-    return tokenList.filter((token) => {
-      const { name, symbol, address } = token
-      return (
-        name.toLowerCase().includes(searchLower) ||
-        symbol.toLowerCase().includes(searchLower) ||
-        address.toLowerCase() === searchLower // Exact match for addresses
-      )
-    })
+    return tokenList
+      .filter((token) => {
+        const { name, symbol, address } = token
+        return (
+          name.toLowerCase().includes(searchLower) ||
+          symbol.toLowerCase().includes(searchLower) ||
+          address.toLowerCase() === searchLower // Exact match for addresses
+        )
+      })
+      .sort((a, b) => a.name.length - b.name.length)
   }, [tokenList, search])
 
   const renderRow = useCallback(
