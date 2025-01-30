@@ -94,7 +94,7 @@ const TokenListItem = ({
       className="w-full rounded-xl flex items-center gap-2 justify-between px-4 py-3 bg-muted cursor-pointer hover:bg-muted/80 transition-colors"
     >
       <div className="flex items-center gap-2">
-        <TokenLogo src={logoURI} size="xl" />
+        <TokenLogo src={logoURI?.replace('thumb', 'small')} size="xl" />
         <div className="flex flex-col">
           <div className="text-base font-bold">{name}</div>
           <div className="flex items-center gap-1 text-sm text-muted-foreground">

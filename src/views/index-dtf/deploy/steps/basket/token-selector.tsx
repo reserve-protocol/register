@@ -23,12 +23,7 @@ import { useCallback, useEffect, useMemo } from 'react'
 import { useFormContext } from 'react-hook-form'
 import AutoSizer from 'react-virtualized-auto-sizer'
 import { FixedSizeList as List } from 'react-window'
-import {
-  basketAtom,
-  daoCreatedAtom,
-  searchTokenAtom,
-  selectedTokensAtom,
-} from '../../atoms'
+import { basketAtom, searchTokenAtom, selectedTokensAtom } from '../../atoms'
 
 interface TokenButtonProps {
   variant: 'primary' | 'secondary'
@@ -108,7 +103,7 @@ const TokenListItem = ({
       className="w-full rounded-xl flex items-center gap-2 justify-between px-4 py-3 bg-muted cursor-pointer hover:bg-muted/80 transition-colors"
     >
       <div className="flex items-center gap-2">
-        <TokenLogo src={logoURI} size="xl" />
+        <TokenLogo src={logoURI?.replace('thumb', 'small')} size="xl" />
         <div className="flex flex-col">
           <div className="text-base font-bold">{name}</div>
           <div className="flex items-center gap-1 text-sm text-muted-foreground">
@@ -213,6 +208,7 @@ const TokenList = ({ showSelected = false }: TokenListProps) => {
   const renderRow = useCallback(
     ({ index, style }: { index: number; style: React.CSSProperties }) => {
       const token = filteredTokens[index]
+
       if (!token) return null
 
       return (
