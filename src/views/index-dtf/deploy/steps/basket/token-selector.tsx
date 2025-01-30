@@ -24,6 +24,7 @@ import { useFormContext } from 'react-hook-form'
 import AutoSizer from 'react-virtualized-auto-sizer'
 import { FixedSizeList as List } from 'react-window'
 import { basketAtom, searchTokenAtom, selectedTokensAtom } from '../../atoms'
+import { chainIdAtom } from '@/state/atoms'
 
 interface TokenButtonProps {
   variant: 'primary' | 'secondary'
@@ -83,6 +84,7 @@ const TokenListItem = ({
   decimals,
   logoURI,
 }: TokenListItemProps) => {
+  const chainId = useAtomValue(chainIdAtom)
   const [selectedTokens, setSelectedTokens] = useAtom(selectedTokensAtom)
   const checked = selectedTokens.some((t) => t.address === address)
 
@@ -117,7 +119,7 @@ const TokenListItem = ({
         <a
           className="bg-muted-foreground/10 rounded-full p-1 hover:bg-muted-foreground/20 transition-colors"
           role="button"
-          href={getExplorerLink(address, 1, ExplorerDataType.TOKEN)}
+          href={getExplorerLink(address, chainId, ExplorerDataType.TOKEN)}
           target="_blank"
           rel="noopener noreferrer"
         >
