@@ -99,10 +99,12 @@ export const zapDeployPayloadAtom = atom<
 
   const existingTradeProposers = [] as Address[]
   const tradeLaunchers = [
-    formData.auctionLauncher!,
+    ...(formData.auctionLauncher ? [formData.auctionLauncher!] : []),
     ...(formData.additionalAuctionLaunchers ?? []),
   ]
-  const vibesOfficers = [formData.brandManagerAddress!]
+  const vibesOfficers = [
+    ...(formData.brandManagerAddress ? [formData.brandManagerAddress!] : []),
+  ]
 
   // Ungoverned DTF
   if (!stToken) {
@@ -151,7 +153,9 @@ export const zapDeployPayloadAtom = atom<
           0)! * 60
       )
     ).toString(),
-    guardian: formData.guardianAddress!,
+    ...(formData.guardianAddress
+      ? { guardian: formData.guardianAddress! }
+      : {}),
   }
 
   const tradingGovParams = {
@@ -180,7 +184,9 @@ export const zapDeployPayloadAtom = atom<
           0)! * 60
       )
     ).toString(),
-    guardian: formData.guardianAddress!,
+    ...(formData.guardianAddress
+      ? { guardian: formData.guardianAddress! }
+      : {}),
   }
 
   return {

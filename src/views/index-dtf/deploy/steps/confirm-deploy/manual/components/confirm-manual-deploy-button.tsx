@@ -48,13 +48,13 @@ type GovernanceConfig = {
   proposalThreshold: bigint
   quorumPercent: bigint
   timelockDelay: bigint
-  guardian: Address
+  guardian?: Address
 }
 
 type GovernanceRoles = {
   existingTradeProposers: Address[]
   tradeLaunchers: Address[]
-  vibesOfficers: Address[]
+  vibesOfficers?: Address[]
 }
 
 type DeployParams = [
@@ -142,10 +142,14 @@ const txAtom = atom<
       owner,
       [],
       [
-        formData.auctionLauncher!,
+        ...(formData.auctionLauncher ? [formData.auctionLauncher!] : []),
         ...(formData.additionalAuctionLaunchers ?? []),
       ],
-      [formData.brandManagerAddress!],
+      [
+        ...(formData.brandManagerAddress
+          ? [formData.brandManagerAddress!]
+          : []),
+      ],
     ]
 
     return {
@@ -184,7 +188,9 @@ const txAtom = atom<
           0)! * 60
       )
     ),
-    guardian: formData.guardianAddress!,
+    ...(formData.guardianAddress
+      ? { guardian: formData.guardianAddress! }
+      : {}),
   }
 
   const tradingGovernanceConfig: GovernanceConfig = {
@@ -211,7 +217,9 @@ const txAtom = atom<
           0)! * 60
       )
     ),
-    guardian: formData.guardianAddress!,
+    ...(formData.guardianAddress
+      ? { guardian: formData.guardianAddress! }
+      : {}),
   }
 
   const args: DeployParams = [
@@ -223,10 +231,14 @@ const txAtom = atom<
     {
       existingTradeProposers: [],
       tradeLaunchers: [
-        formData.auctionLauncher!,
+        ...(formData.auctionLauncher ? [formData.auctionLauncher!] : []),
         ...(formData.additionalAuctionLaunchers ?? []),
       ],
-      vibesOfficers: [formData.brandManagerAddress!],
+      vibesOfficers: [
+        ...(formData.brandManagerAddress
+          ? [formData.brandManagerAddress!]
+          : []),
+      ],
     },
   ]
 

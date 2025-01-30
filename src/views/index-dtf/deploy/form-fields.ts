@@ -277,10 +277,6 @@ export const DeployFormSchema = z
       path: ['revenue-distribution'],
     }
   )
-  .refine((data) => data.auctionLauncher, {
-    message: 'Auction launcher address is required',
-    path: ['auctionLauncher'],
-  })
   .refine(
     (data) => {
       // Check if the auction settings are valid
@@ -295,14 +291,6 @@ export const DeployFormSchema = z
       path: ['auctions'],
     }
   )
-  .refine((data) => data.guardianAddress, {
-    message: 'Guardian address is required',
-    path: ['guardianAddress'],
-  })
-  .refine((data) => data.brandManagerAddress, {
-    message: 'Brand manager address is required',
-    path: ['brandManagerAddress'],
-  })
   .refine(
     (data) => {
       // Check if the basket changes settings are valid

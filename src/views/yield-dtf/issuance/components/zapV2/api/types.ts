@@ -6,7 +6,7 @@ export type GovParamsJson = {
   proposalThreshold: string
   quorumPercent: string
   timelockDelay: string
-  guardian: Address
+  guardian?: Address
 }
 
 export interface ZapDeployBody {
