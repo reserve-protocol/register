@@ -148,9 +148,6 @@ const DeployAccordionTrigger = ({
       </div>
       <div className="flex items-center gap-1">
         <div className="bg-muted-foreground/10 rounded-full p-1" role="button">
-          <ArrowUpRightIcon size={24} strokeWidth={1.5} />
-        </div>
-        <div className="bg-muted-foreground/10 rounded-full p-1" role="button">
           {validated ? (
             <div className="p-1">
               <Edit2 size={16} strokeWidth={1.5} />
