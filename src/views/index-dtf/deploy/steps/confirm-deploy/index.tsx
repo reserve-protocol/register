@@ -59,7 +59,7 @@ const ConfirmIndexDeploy = ({ isActive }: { isActive: boolean }) => {
     <Drawer>
       <DrawerTrigger disabled={!isActive} asChild>
         <Button className="w-full" disabled={!isActive} onClick={submitForm}>
-          Deploy
+          Create
         </Button>
       </DrawerTrigger>
 
