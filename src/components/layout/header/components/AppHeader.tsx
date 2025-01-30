@@ -81,7 +81,7 @@ const Container = ({ children }: { children: ReactNode }) => {
   // Check if the route is a "index-dtf" route
   const { pathname } = useLocation()
 
-  const border = !pathname.includes('index-dtf') || pathname === '/'
+  const border = !pathname.includes('index-dtf') && pathname !== '/'
 
   return (
     <div
@@ -102,10 +102,10 @@ const AppHeader = () => {
   return (
     <Container>
       <div className="container flex items-center h-[56px] md:h-[72px] px-2 sm:px-6">
-        <Brand mr={4} className="text-primary " />
+        <Brand className="text-primary mr-4 cursor-pointer" />
         <HeaderMenu />
 
-        <ThemeColorMode
+        {/* <ThemeColorMode
           sx={{
             display: ['none', 'flex'],
             px: 2,
@@ -119,7 +119,7 @@ const AppHeader = () => {
               backgroundColor: 'secondaryBackground',
             },
           }}
-        />
+        /> */}
         <RegisterHelp />
         <CoinbaseSubscribe mr="2" sx={{ display: ['none', 'none', 'block'] }} />
         <Account />
