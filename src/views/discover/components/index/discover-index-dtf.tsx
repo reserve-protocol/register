@@ -10,7 +10,7 @@ import { formatCurrency, formatPercentage } from '@/utils'
 import { ColumnDef } from '@tanstack/react-table'
 import { ArrowRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import { Line, LineChart } from 'recharts'
+import { Line, LineChart, YAxis } from 'recharts'
 import DTFFilters from './components/dtf-filters'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
@@ -105,6 +105,7 @@ const columns: ColumnDef<IndexDTFItem>[] = [
           {performance.length > 0 && (
             <ChartContainer config={chartConfig} className="h-6 w-16">
               <LineChart data={performance}>
+                <YAxis hide visibility="0" domain={['dataMin', 'dataMax']} />
                 <Line
                   type="monotone"
                   dataKey="value"
