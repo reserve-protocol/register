@@ -7,17 +7,16 @@ import {
 } from '@/components/ui/drawer'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useAtomValue, useSetAtom } from 'jotai'
+import { useResetAtom } from 'jotai/utils'
 import { SubmitHandler, useFormContext } from 'react-hook-form'
 import { daoTokenAddressAtom, deployedDTFAtom } from '../../atoms'
 import { DeployInputs } from '../../form-fields'
-import { getStToken } from '../../utils'
 import { indexDeployFormDataAtom } from './atoms'
 import ManualIndexDeploy from './manual'
-import SimpleIndexDeploy from './simple'
-import SuccessView from './success'
 import { initialTokensAtom } from './manual/atoms'
-import { useResetAtom } from 'jotai/utils'
+import SimpleIndexDeploy from './simple'
 import { inputAmountAtom } from './simple/atoms'
+import SuccessView from './success'
 
 const Header = () => {
   const form = useAtomValue(indexDeployFormDataAtom)
@@ -43,11 +42,10 @@ const ConfirmIndexDeploy = ({ isActive }: { isActive: boolean }) => {
   const resetInitialTokens = useResetAtom(initialTokensAtom)
   const resetInput = useResetAtom(inputAmountAtom)
 
-  const processForm: SubmitHandler<DeployInputs> = async (data) => {
+  const processForm: SubmitHandler<DeployInputs> = (data) => {
     if (data.governanceVoteLock) {
       setFormData({ ...data })
-      const stToken = await getStToken(data.governanceVoteLock)
-      setStTokenAddress(stToken.id)
+      setStTokenAddress(data.governanceVoteLock)
     } else {
       setFormData({ ...data })
     }
