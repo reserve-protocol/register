@@ -100,8 +100,8 @@ export const DEPLOY_STEPS: DeployStep[] = [
   {
     id: 'other-changes',
     icon: <Asterisk size={24} strokeWidth={1.5} />,
-    title: 'Other Changes',
-    titleSecondary: 'Other Changes',
+    title: 'Other Governance Changes',
+    titleSecondary: 'Other Governance Changes',
     content: <OtherChanges />,
   },
 ]
