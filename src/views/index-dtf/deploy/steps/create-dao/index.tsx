@@ -5,7 +5,13 @@ import { INDEX_GOVERNANCE_DEPLOYER_ADDRESS } from '@/utils/addresses'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { useFormContext } from 'react-hook-form'
-import { erc20Abi, isAddress, parseEther, parseEventLogs } from 'viem'
+import {
+  erc20Abi,
+  isAddress,
+  parseEther,
+  parseEventLogs,
+  zeroAddress,
+} from 'viem'
 import {
   useReadContract,
   useWaitForTransactionReceipt,
@@ -14,6 +20,7 @@ import {
 import {
   daoCreatedAtom,
   daoTokenAddressAtom,
+  daoTokenSymbolAtom,
   formReadyForSubmitAtom,
 } from '../../atoms'
 
@@ -23,7 +30,8 @@ const CreateDAO = () => {
   const { watch, getValues } = useFormContext()
   const governanceERC20address = watch('governanceERC20address')
   const setDaoCreated = useSetAtom(daoCreatedAtom)
-  const setStToken = useSetAtom(daoTokenAddressAtom)
+  const setStTokenAddress = useSetAtom(daoTokenAddressAtom)
+  const setStTokenSymbol = useSetAtom(daoTokenSymbolAtom)
 
   const { data: symbol } = useReadContract({
     abi: erc20Abi,
@@ -71,7 +79,7 @@ const CreateDAO = () => {
           proposalThreshold: parseEther(basketVotingThreshold!.toString()),
           quorumPercent: BigInt(Math.floor(basketVotingQuorum!)),
           timelockDelay: BigInt(Math.floor(basketExecutionDelay!) * 60),
-          guardian: guardianAddress!,
+          guardian: guardianAddress ?? zeroAddress,
         },
       ],
     })
@@ -89,7 +97,8 @@ const CreateDAO = () => {
 
       if (event) {
         const { stToken } = event.args
-        setStToken(stToken)
+        setStTokenAddress(stToken)
+        setStTokenSymbol(`vl${symbol}`)
       }
     }
   }, [receipt, isSuccess, setDaoCreated])

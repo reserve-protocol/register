@@ -6,6 +6,7 @@ import { Asterisk, PlayIcon } from 'lucide-react'
 import { ReactNode } from 'react'
 import {
   daoCreatedAtom,
+  daoTokenSymbolAtom,
   deployedDTFAtom,
   formReadyForSubmitAtom,
   selectedGovernanceOptionAtom,
@@ -24,6 +25,7 @@ const DeployTimeline = () => {
   const showCreateGovernanceDAO =
     useAtomValue(selectedGovernanceOptionAtom) === 'governanceERC20address'
   const daoCreated = useAtomValue(daoCreatedAtom)
+  const stTokenSymbol = useAtomValue(daoTokenSymbolAtom)
   const deployedDTF = useAtomValue(deployedDTFAtom)
 
   const timelineItems = [
@@ -35,7 +37,9 @@ const DeployTimeline = () => {
       ? [
           {
             title: daoCreated
-              ? 'Governance DAO created'
+              ? stTokenSymbol
+                ? `Created ${stTokenSymbol} DAO`
+                : 'Governance DAO created'
               : 'Sign tx to create governance DAO',
             children: !daoCreated && <CreateDAO />,
             isActive: formReadyForSubmit,

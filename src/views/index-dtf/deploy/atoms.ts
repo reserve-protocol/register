@@ -14,6 +14,7 @@ export const daoCreatedAtom = atomWithReset<boolean>(false)
 export const basketAtom = atomWithReset<Token[]>([])
 
 export const daoTokenAddressAtom = atomWithReset<Address | undefined>(undefined)
+export const daoTokenSymbolAtom = atomWithReset<string>('')
 
 export const selectedGovernanceOptionAtom = atom<GovernanceTypes>(
   'governanceERC20address'

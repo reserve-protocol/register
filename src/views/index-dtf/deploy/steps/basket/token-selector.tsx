@@ -78,7 +78,7 @@ const EvenDistributionButton = () => {
   return (
     <Button
       variant="accent"
-      className="flex gap-2 text-base pl-3 pr-4 rounded-xl text-nowrap w-48 py-7 ml-2 -mr-2 bg-muted/80"
+      className="flex gap-2 text-base pl-3 pr-4 rounded-xl text-nowrap w-48 py-7 -mr-2 bg-muted/80"
       onClick={onEvenDistribution}
       disabled={!basket.length}
     >
