@@ -6,9 +6,9 @@ const Description = () => {
   return (
     <div className="px-6 pb-6 text-base">
       Please enter the address of the wallet or contract that will govern{' '}
-      <Ticker />. The Reserve Index Protocol can support both one-man rule and
-      DAO governance. Be aware, that having centralized control limits who can
-      interact with <Ticker /> on Register.
+      <Ticker />. The Reserve Index Protocol can support both one-person rule
+      and DAO governance. Be aware, that having centralized control limits who
+      can interact with <Ticker /> on Register.
     </div>
   )
 }
