@@ -12,6 +12,7 @@ import { SearchInput } from '@/components/ui/input'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { cn } from '@/lib/utils'
+import { chainIdAtom } from '@/state/atoms'
 import { Token } from '@/types'
 import { shortenAddress } from '@/utils'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
@@ -24,7 +25,6 @@ import { useFormContext } from 'react-hook-form'
 import AutoSizer from 'react-virtualized-auto-sizer'
 import { FixedSizeList as List } from 'react-window'
 import { basketAtom, searchTokenAtom, selectedTokensAtom } from '../../atoms'
-import { chainIdAtom } from '@/state/atoms'
 
 interface TokenButtonProps {
   variant: 'primary' | 'secondary'
@@ -38,7 +38,7 @@ const TokenButton = ({ variant }: TokenButtonProps) => {
         variant={isPrimary ? 'outline-primary' : 'accent'}
         className={cn(
           'flex gap-2 text-base pl-3 pr-4 rounded-xl',
-          isPrimary ? 'py-5' : 'py-7 mx-2 bg-muted/80'
+          isPrimary ? 'py-5' : 'w-full py-7 mx-2 bg-muted/80'
         )}
       >
         <PlusIcon size={16} />
@@ -54,7 +54,50 @@ const OpenButton = () => (
   </div>
 )
 
-const OpenButtonSecondary = () => <TokenButton variant="secondary" />
+const EvenDistributionButton = () => {
+  const { setValue } = useFormContext()
+  const basket = useAtomValue(basketAtom)
+
+  const onEvenDistribution = useCallback(() => {
+    if (!basket.length) return
+
+    const basePercentage = Math.floor((100 / basket.length) * 100) / 100
+    const totalBasePercentages = basePercentage * (basket.length - 1)
+    const lastTokenPercentage = +(100 - totalBasePercentages).toFixed(2)
+
+    setValue(
+      'tokensDistribution',
+      basket.map((token, index) => ({
+        address: token.address,
+        percentage:
+          index === basket.length - 1 ? lastTokenPercentage : basePercentage,
+      }))
+    )
+  }, [basket, setValue])
+
+  return (
+    <Button
+      variant="accent"
+      className="flex gap-2 text-base pl-3 pr-4 rounded-xl text-nowrap w-48 py-7 ml-2 -mr-2 bg-muted/80"
+      onClick={onEvenDistribution}
+      disabled={!basket.length}
+    >
+      Even distribution
+    </Button>
+  )
+}
+
+const OpenButtonSecondary = () => {
+  return (
+    <div className="flex items-center gap-2 mr-4">
+      <div className="flex-1">
+        <TokenButton variant="secondary" />
+      </div>
+      <data value=""></data>
+      <EvenDistributionButton />
+    </div>
+  )
+}
 
 const SearchToken = () => {
   const [search, setSearch] = useAtom(searchTokenAtom)
