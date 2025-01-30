@@ -128,7 +128,7 @@ const Heading = () => {
 
   return (
     <>
-      <div className="absolute top-3 sm:top-8 left-3 sm:left-0 right-3 text-primary">
+      <div className="absolute top-3 sm:top-8 left-3 sm:left-0 right-3 text-primary px-6 2xl:px-0">
         <RootIcon className="border rounded-full h-[32px] w-[32px]" />
         <h2 className="text-[22px] mt-6 mb-4 font-light leading-none">
           TVL in Reserve
@@ -142,7 +142,7 @@ const Heading = () => {
             </h3>
             <Button
               variant="none"
-              className="ml-3 w-[40px] h-[40px] sm:w-[44px] sm:h-[44px] p-0 bg-[#276ab6] text-white hover:bg-[#276ab6]"
+              className="ml-3 w-[40px] h-[40px] sm:w-[44px] sm:h-[44px] p-0 bg-primary/10 text-primary hover:bg-primary/20"
               size="icon-rounded"
             >
               <ArrowRight className="-rotate-45" size={24} />
@@ -169,7 +169,7 @@ const Heading = () => {
           )}
         </div>
       </div>
-      <div className="absolute top-3 sm:top-8 right-3 sm:right-0 text-primary">
+      <div className="absolute top-3 sm:top-8 right-4 2xl:right-2 text-primary">
         <Button
           variant="outline-primary"
           className="rounded-[50px] p-1 h-8 hover:bg-primary"
