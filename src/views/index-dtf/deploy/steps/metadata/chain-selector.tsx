@@ -24,6 +24,27 @@ const l2Defaults: Defaults = [
   ['minTrade', '100'],
 ]
 
+const ComingSoonOption = ({ network }: { network: 'mainnet' | 'solana' }) => {
+  return (
+    <div className="flex flex-1 items-center justify-between gap-2 border rounded-xl p-4 text-base bg-muted border-muted">
+      {network === 'mainnet' ? (
+        <div className="flex items-center gap-2 font-bold">
+          <ChainLogo chain={ChainId.Mainnet} width={20} height={20} />
+          {CHAIN_TAGS[ChainId.Mainnet]}
+        </div>
+      ) : (
+        <div className="flex items-center gap-2 font-bold">
+          <ChainLogo chain="Solana" width={20} height={20} />
+          Solana
+        </div>
+      )}
+      <div className="text-nowrap text-legend text-xs border rounded-full px-2 py-1 bg-card">
+        Coming soon
+      </div>
+    </div>
+  )
+}
+
 const ChainOption = ({
   chainId,
   checked,
@@ -92,7 +113,7 @@ const ChainSelector = () => {
   }, [])
 
   return (
-    <div className="flex flex-col lg:flex-row gap-2 p-2">
+    <div className="flex flex-col lg:flex-row gap-2 p-2 flex-wrap">
       {/* Just Base for the moment */}
       {[ChainId.Base].map((chain) => (
         <ChainOption
@@ -102,6 +123,8 @@ const ChainSelector = () => {
           onClick={handleChainChange}
         />
       ))}
+      <ComingSoonOption network="mainnet" />
+      <ComingSoonOption network="solana" />
     </div>
   )
 }
