@@ -1,6 +1,6 @@
 import { isAddress } from 'viem'
 import { z } from 'zod'
-import { isERC20, isVoteLockAddress } from './utils'
+import { isERC20, isNotStRSR, isVoteLockAddress } from './utils'
 
 export type DeployStepId =
   | 'metadata'
@@ -99,6 +99,9 @@ export const DeployFormSchema = z
     governanceVoteLock: z
       .string()
       .refine(isAddress, { message: 'Invalid Address' })
+      .refine(isNotStRSR, {
+        message: 'stRSR DAO contracts for Yield DTFs are not supported',
+      })
       .refine(isVoteLockAddress, { message: 'Unsupported Vote Lock Address' })
       .optional(),
     governanceERC20address: z

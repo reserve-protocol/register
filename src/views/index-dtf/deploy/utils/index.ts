@@ -1,4 +1,4 @@
-import { INDEX_GRAPH_CLIENTS } from '@/state/atoms'
+import { GRAPH_CLIENTS, INDEX_GRAPH_CLIENTS } from '@/state/atoms'
 import { wagmiConfig } from '@/state/chain'
 import { AvailableChain, ChainId } from '@/utils/chains'
 import { DeployInputs } from '@/views/index-dtf/deploy/form-fields'
@@ -42,6 +42,28 @@ export const getStToken = async (address: Address) => {
 
 export const isVoteLockAddress = async (address: Address) => {
   return Boolean(await getStToken(address))
+}
+
+const stRSRQuery = gql`
+  query getStRSR($id: String!) {
+    rewardTokens(where: { token: $id }) {
+      id
+    }
+  }
+`
+export const getStRSR = async (address: Address) => {
+  try {
+    const data = await GRAPH_CLIENTS[ChainId.Base].request(stRSRQuery, {
+      id: address.toLowerCase(),
+    })
+    return data.rewardTokens.length > 0
+  } catch (e) {
+    return null
+  }
+}
+
+export const isNotStRSR = async (address: Address) => {
+  return !Boolean(await getStRSR(address))
 }
 
 const calculateShare = (sharePercentage: number, denominator: number) => {
