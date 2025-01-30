@@ -6,6 +6,9 @@ import { XIcon } from 'lucide-react'
 import { useFormContext } from 'react-hook-form'
 import { basketAtom } from '../../atoms'
 import BasicInput from '../../components/basic-input'
+import ExplorerAddress from '@/components/utils/explorer-address'
+import { chainIdAtom } from '@/state/atoms'
+import { ExplorerDataType } from '@/utils/getExplorerLink'
 
 const RemoveTokenButton = ({
   tokenIndex,
@@ -56,6 +59,7 @@ const TokenPreview = ({
   index,
   price,
 }: Token & { index: number }) => {
+  const chainId = useAtomValue(chainIdAtom)
   const form = useFormContext()
 
   const [initialValue, tokenDistribution] = form.watch([
@@ -95,7 +99,11 @@ const TokenPreview = ({
               })}
             </span>
             <span className="text-foreground text-[8px]">•</span>
-            <span>{shortenAddress(address)}</span>
+            <ExplorerAddress
+              address={address}
+              chain={chainId}
+              type={ExplorerDataType.TOKEN}
+            />
           </div>
         </div>
       </div>
