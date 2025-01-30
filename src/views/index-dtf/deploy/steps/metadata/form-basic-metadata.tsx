@@ -4,7 +4,7 @@ const BasicMetadataForm = () => {
   return (
     <div className="flex flex-col gap-2 px-2">
       <BasicInput fieldName="name" label="Name" placeholder="New Index DTF" />
-      <BasicInput fieldName="symbol" label="Symbol" placeholder="$TICKER" />
+      <BasicInput fieldName="symbol" label="Symbol" placeholder="TICKER" />
       <BasicInput
         fieldName="mandate"
         label="Mandate"
