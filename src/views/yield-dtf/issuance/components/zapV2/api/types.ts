@@ -6,7 +6,7 @@ export type GovParamsJson = {
   proposalThreshold: string
   quorumPercent: string
   timelockDelay: string
-  guardian?: Address
+  guardian: Address
 }
 
 export interface ZapDeployBody {
@@ -37,9 +37,9 @@ export interface ZapDeployBody {
   }
   ownerGovParams: GovParamsJson
   tradingGovParams: GovParamsJson
-  existingTradeProposers: Address[]
-  tradeLaunchers: Address[]
-  vibesOfficers: Address[]
+  existingAuctionApprovers: Address[]
+  auctionLaunchers: Address[]
+  brandManagers: Address[]
 }
 
 export interface ZapDeployUngovernedBody {
@@ -68,7 +68,7 @@ export interface ZapDeployUngovernedBody {
     folioFee: string
     mintingFee: string
   }
-  existingTradeProposers: Address[]
-  tradeLaunchers: Address[]
-  vibesOfficers: Address[]
+  existingAuctionApprovers: Address[]
+  auctionLaunchers: Address[]
+  brandManagers: Address[]
 }

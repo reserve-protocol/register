@@ -11,7 +11,7 @@ import {
 } from '@/views/yield-dtf/issuance/components/zapV2/api/types'
 import { zappableTokens } from '@/views/yield-dtf/issuance/components/zapV2/constants'
 import { atom } from 'jotai'
-import { Address, parseEther, parseUnits } from 'viem'
+import { Address, parseEther, parseUnits, zeroAddress } from 'viem'
 import { basketAtom, daoTokenAddressAtom } from '../../../atoms'
 import { calculateRevenueDistribution } from '../../../utils'
 import { indexDeployFormDataAtom } from '../atoms'
@@ -97,12 +97,12 @@ export const zapDeployPayloadAtom = atom<
     ).toString(),
   }
 
-  const existingTradeProposers = [] as Address[]
-  const tradeLaunchers = [
+  const existingAuctionApprovers = [] as Address[]
+  const auctionLaunchers = [
     ...(formData.auctionLauncher ? [formData.auctionLauncher!] : []),
     ...(formData.additionalAuctionLaunchers ?? []),
   ]
-  const vibesOfficers = [
+  const brandManagers = [
     ...(formData.brandManagerAddress ? [formData.brandManagerAddress!] : []),
   ]
 
@@ -116,9 +116,9 @@ export const zapDeployPayloadAtom = atom<
       owner,
       basicDetails,
       additionalDetails,
-      existingTradeProposers,
-      tradeLaunchers,
-      vibesOfficers,
+      existingAuctionApprovers,
+      auctionLaunchers,
+      brandManagers,
     }
   }
 
@@ -153,9 +153,7 @@ export const zapDeployPayloadAtom = atom<
           0)! * 60
       )
     ).toString(),
-    ...(formData.guardianAddress
-      ? { guardian: formData.guardianAddress! }
-      : {}),
+    guardian: formData.guardianAddress ?? zeroAddress,
   }
 
   const tradingGovParams = {
@@ -184,9 +182,7 @@ export const zapDeployPayloadAtom = atom<
           0)! * 60
       )
     ).toString(),
-    ...(formData.guardianAddress
-      ? { guardian: formData.guardianAddress! }
-      : {}),
+    guardian: formData.guardianAddress ?? zeroAddress,
   }
 
   return {
@@ -196,8 +192,8 @@ export const zapDeployPayloadAtom = atom<
     additionalDetails,
     ownerGovParams,
     tradingGovParams,
-    existingTradeProposers,
-    tradeLaunchers,
-    vibesOfficers,
+    existingAuctionApprovers,
+    auctionLaunchers,
+    brandManagers,
   }
 })

@@ -12,7 +12,13 @@ import {
 import { calculateRevenueDistribution } from '@/views/index-dtf/deploy/utils'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
-import { Address, parseEther, parseEventLogs, parseUnits } from 'viem'
+import {
+  Address,
+  parseEther,
+  parseEventLogs,
+  parseUnits,
+  zeroAddress,
+} from 'viem'
 import { useWaitForTransactionReceipt } from 'wagmi'
 import { indexDeployFormDataAtom } from '../../atoms'
 import {
@@ -49,7 +55,7 @@ type GovernanceConfig = {
   proposalThreshold: bigint
   quorumPercent: bigint
   timelockDelay: bigint
-  guardian?: Address
+  guardian: Address
 }
 
 type GovernanceRoles = {
@@ -190,9 +196,7 @@ const txAtom = atom<
           0)! * 60
       )
     ),
-    ...(formData.guardianAddress
-      ? { guardian: formData.guardianAddress! }
-      : {}),
+    guardian: formData.guardianAddress ?? zeroAddress,
   }
 
   const tradingGovernanceConfig: GovernanceConfig = {
@@ -219,9 +223,7 @@ const txAtom = atom<
           0)! * 60
       )
     ),
-    ...(formData.guardianAddress
-      ? { guardian: formData.guardianAddress! }
-      : {}),
+    guardian: formData.guardianAddress ?? zeroAddress,
   }
 
   const args: DeployParams = [
