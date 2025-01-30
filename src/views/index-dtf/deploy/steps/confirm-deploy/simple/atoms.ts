@@ -89,12 +89,13 @@ export const zapDeployPayloadAtom = atom<
     feeRecipients: calculateRevenueDistribution(formData, wallet, stToken).map(
       ({ recipient, portion }) => ({ recipient, portion: portion.toString() })
     ),
-    folioFee: parseEther(
+    tvlFee: parseEther(
       ((formData.folioFee || formData.customFolioFee || 0)! / 100).toString()
     ).toString(),
-    mintingFee: parseEther(
+    mintFee: parseEther(
       ((formData.mintFee || formData.customMintFee || 0)! / 100).toString()
     ).toString(),
+    mandate: formData.mandate || '',
   }
 
   const existingAuctionApprovers = [] as Address[]
