@@ -60,7 +60,7 @@ const BasicInput = ({
                 }
                 autoComplete="off"
                 endAdornment={labelPosition === 'end' ? adornment : undefined}
-                className="px-1 text-base"
+                className="px-1 text-base [&:focus::placeholder]:opacity-0 [&:focus::placeholder]:transition-opacity"
                 {...field}
                 value={field.value ?? defaultValue}
                 disabled={disabled}

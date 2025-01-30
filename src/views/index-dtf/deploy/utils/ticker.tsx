@@ -1,8 +1,8 @@
 import { useFormContext } from 'react-hook-form'
 
-const Ticker = () => {
+const Ticker = ({ defaultSymbol = '$TICKER' }: { defaultSymbol?: string }) => {
   const { watch } = useFormContext()
-  const symbol = watch('symbol') || '$TICKER'
+  const symbol = watch('symbol') || defaultSymbol
 
   return <span className="font-semibold">{symbol}</span>
 }

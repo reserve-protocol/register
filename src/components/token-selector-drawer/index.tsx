@@ -94,7 +94,7 @@ const TokenListItem = ({
       className="w-full rounded-xl flex items-center gap-2 justify-between px-4 py-3 bg-muted cursor-pointer hover:bg-muted/80 transition-colors"
     >
       <div className="flex items-center gap-2">
-        <TokenLogo src={logoURI} size="xl" />
+        <TokenLogo src={logoURI?.replace('thumb', 'small')} size="xl" />
         <div className="flex flex-col">
           <div className="text-base font-bold">{name}</div>
           <div className="flex items-center gap-1 text-sm text-muted-foreground">
@@ -186,14 +186,16 @@ const TokenList = ({ showSelected = false }: TokenListProps) => {
     const searchLower = search.trim().toLowerCase()
     if (!searchLower) return tokenList
 
-    return tokenList.filter((token) => {
-      const { name, symbol, address } = token
-      return (
-        name.toLowerCase().includes(searchLower) ||
-        symbol.toLowerCase().includes(searchLower) ||
-        address.toLowerCase() === searchLower // Exact match for addresses
-      )
-    })
+    return tokenList
+      .filter((token) => {
+        const { name, symbol, address } = token
+        return (
+          name.toLowerCase().includes(searchLower) ||
+          symbol.toLowerCase().includes(searchLower) ||
+          address.toLowerCase() === searchLower // Exact match for addresses
+        )
+      })
+      .sort((a, b) => a.name.length - b.name.length)
   }, [tokenList, search])
 
   const renderRow = useCallback(

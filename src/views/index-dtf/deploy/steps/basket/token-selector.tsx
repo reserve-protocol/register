@@ -12,6 +12,7 @@ import { SearchInput } from '@/components/ui/input'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { cn } from '@/lib/utils'
+import { chainIdAtom } from '@/state/atoms'
 import { Token } from '@/types'
 import { shortenAddress } from '@/utils'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
@@ -23,12 +24,7 @@ import { useCallback, useEffect, useMemo } from 'react'
 import { useFormContext } from 'react-hook-form'
 import AutoSizer from 'react-virtualized-auto-sizer'
 import { FixedSizeList as List } from 'react-window'
-import {
-  basketAtom,
-  daoCreatedAtom,
-  searchTokenAtom,
-  selectedTokensAtom,
-} from '../../atoms'
+import { basketAtom, searchTokenAtom, selectedTokensAtom } from '../../atoms'
 
 interface TokenButtonProps {
   variant: 'primary' | 'secondary'
@@ -42,7 +38,7 @@ const TokenButton = ({ variant }: TokenButtonProps) => {
         variant={isPrimary ? 'outline-primary' : 'accent'}
         className={cn(
           'flex gap-2 text-base pl-3 pr-4 rounded-xl',
-          isPrimary ? 'py-5' : 'py-7 mx-2 bg-muted/80'
+          isPrimary ? 'py-5' : 'w-full py-7 mx-2 bg-muted/80'
         )}
       >
         <PlusIcon size={16} />
@@ -58,7 +54,50 @@ const OpenButton = () => (
   </div>
 )
 
-const OpenButtonSecondary = () => <TokenButton variant="secondary" />
+const EvenDistributionButton = () => {
+  const { setValue } = useFormContext()
+  const basket = useAtomValue(basketAtom)
+
+  const onEvenDistribution = useCallback(() => {
+    if (!basket.length) return
+
+    const basePercentage = Math.floor((100 / basket.length) * 100) / 100
+    const totalBasePercentages = basePercentage * (basket.length - 1)
+    const lastTokenPercentage = +(100 - totalBasePercentages).toFixed(2)
+
+    setValue(
+      'tokensDistribution',
+      basket.map((token, index) => ({
+        address: token.address,
+        percentage:
+          index === basket.length - 1 ? lastTokenPercentage : basePercentage,
+      }))
+    )
+  }, [basket, setValue])
+
+  return (
+    <Button
+      variant="accent"
+      className="flex gap-2 text-base pl-3 pr-4 rounded-xl text-nowrap w-48 py-7 -mr-2 bg-muted/80"
+      onClick={onEvenDistribution}
+      disabled={!basket.length}
+    >
+      Even distribution
+    </Button>
+  )
+}
+
+const OpenButtonSecondary = () => {
+  return (
+    <div className="flex items-center gap-2 mr-4">
+      <div className="flex-1">
+        <TokenButton variant="secondary" />
+      </div>
+      <data value=""></data>
+      <EvenDistributionButton />
+    </div>
+  )
+}
 
 const SearchToken = () => {
   const [search, setSearch] = useAtom(searchTokenAtom)
@@ -88,6 +127,7 @@ const TokenListItem = ({
   decimals,
   logoURI,
 }: TokenListItemProps) => {
+  const chainId = useAtomValue(chainIdAtom)
   const [selectedTokens, setSelectedTokens] = useAtom(selectedTokensAtom)
   const checked = selectedTokens.some((t) => t.address === address)
 
@@ -108,7 +148,7 @@ const TokenListItem = ({
       className="w-full rounded-xl flex items-center gap-2 justify-between px-4 py-3 bg-muted cursor-pointer hover:bg-muted/80 transition-colors"
     >
       <div className="flex items-center gap-2">
-        <TokenLogo src={logoURI} size="xl" />
+        <TokenLogo src={logoURI?.replace('thumb', 'small')} size="xl" />
         <div className="flex flex-col">
           <div className="text-base font-bold">{name}</div>
           <div className="flex items-center gap-1 text-sm text-muted-foreground">
@@ -122,7 +162,7 @@ const TokenListItem = ({
         <a
           className="bg-muted-foreground/10 rounded-full p-1 hover:bg-muted-foreground/20 transition-colors"
           role="button"
-          href={getExplorerLink(address, 1, ExplorerDataType.TOKEN)}
+          href={getExplorerLink(address, chainId, ExplorerDataType.TOKEN)}
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -200,19 +240,22 @@ const TokenList = ({ showSelected = false }: TokenListProps) => {
     const searchLower = search.trim().toLowerCase()
     if (!searchLower) return tokenList
 
-    return tokenList.filter((token) => {
-      const { name, symbol, address } = token
-      return (
-        name.toLowerCase().includes(searchLower) ||
-        symbol.toLowerCase().includes(searchLower) ||
-        address.toLowerCase() === searchLower // Exact match for addresses
-      )
-    })
+    return tokenList
+      .filter((token) => {
+        const { name, symbol, address } = token
+        return (
+          name.toLowerCase().includes(searchLower) ||
+          symbol.toLowerCase().includes(searchLower) ||
+          address.toLowerCase() === searchLower // Exact match for addresses
+        )
+      })
+      .sort((a, b) => a.name.length - b.name.length)
   }, [tokenList, search])
 
   const renderRow = useCallback(
     ({ index, style }: { index: number; style: React.CSSProperties }) => {
       const token = filteredTokens[index]
+
       if (!token) return null
 
       return (
@@ -277,13 +320,26 @@ const SelectedTokenList = () => {
 }
 
 const SubmitSelectedTokens = () => {
-  const { setValue } = useFormContext()
+  const { setValue, getValues } = useFormContext()
   const selectedTokens = useAtomValue(selectedTokensAtom)
   const setBasket = useSetAtom(basketAtom)
   const disabled = selectedTokens.length === 0
 
   const onSubmit = useCallback(() => {
     setBasket((prev) => {
+      // Get current token distributions
+      const currentDistributions = getValues('tokensDistribution') || []
+      const distributionsMap = currentDistributions.reduce(
+        (
+          acc: Record<string, number>,
+          { address, percentage }: { address: string; percentage: number }
+        ) => {
+          acc[address.toLowerCase()] = percentage
+          return acc
+        },
+        {} as Record<string, number>
+      )
+
       const newBasket = [
         ...prev.filter(
           (t) => !selectedTokens.some((s) => s.address === t.address)
@@ -291,17 +347,18 @@ const SubmitSelectedTokens = () => {
         ...selectedTokens,
       ]
 
+      // Preserve existing percentages or set to 0 for new tokens
       setValue(
         'tokensDistribution',
         newBasket.map((token) => ({
           address: token.address,
-          percentage: 0,
+          percentage: distributionsMap[token.address.toLowerCase()] || 0,
         }))
       )
 
       return newBasket
     })
-  }, [selectedTokens, setBasket, setValue])
+  }, [selectedTokens, setBasket, setValue, getValues])
 
   return (
     <DrawerTrigger asChild disabled={disabled}>
@@ -328,9 +385,7 @@ const TokenSelector = () => {
   const resetSearchToken = useResetAtom(searchTokenAtom)
 
   useEffect(() => {
-    if (basket.length) {
-      setSelectedTokens(basket)
-    }
+    setSelectedTokens(basket)
   }, [basket, setSelectedTokens])
 
   const handleClose = useCallback(() => {

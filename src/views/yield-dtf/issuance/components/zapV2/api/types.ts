@@ -32,14 +32,15 @@ export interface ZapDeployBody {
       recipient: Address
       portion: string
     }[]
-    folioFee: string
-    mintingFee: string
+    tvlFee: string
+    mintFee: string
+    mandate: string
   }
   ownerGovParams: GovParamsJson
   tradingGovParams: GovParamsJson
-  existingTradeProposers: Address[]
-  tradeLaunchers: Address[]
-  vibesOfficers: Address[]
+  existingAuctionApprovers: Address[]
+  auctionLaunchers: Address[]
+  brandManagers: Address[]
 }
 
 export interface ZapDeployUngovernedBody {
@@ -65,10 +66,11 @@ export interface ZapDeployUngovernedBody {
       recipient: Address
       portion: string
     }[]
-    folioFee: string
-    mintingFee: string
+    tvlFee: string
+    mintFee: string
+    mandate: string
   }
-  existingTradeProposers: Address[]
-  tradeLaunchers: Address[]
-  vibesOfficers: Address[]
+  existingAuctionApprovers: Address[]
+  auctionLaunchers: Address[]
+  brandManagers: Address[]
 }

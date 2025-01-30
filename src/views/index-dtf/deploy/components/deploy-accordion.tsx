@@ -100,8 +100,8 @@ export const DEPLOY_STEPS: DeployStep[] = [
   {
     id: 'other-changes',
     icon: <Asterisk size={24} strokeWidth={1.5} />,
-    title: 'Other Changes',
-    titleSecondary: 'Other Changes',
+    title: 'Other Governance Changes',
+    titleSecondary: 'Other Governance Changes',
     content: <OtherChanges />,
   },
 ]
@@ -147,9 +147,6 @@ const DeployAccordionTrigger = ({
         </div>
       </div>
       <div className="flex items-center gap-1">
-        <div className="bg-muted-foreground/10 rounded-full p-1" role="button">
-          <ArrowUpRightIcon size={24} strokeWidth={1.5} />
-        </div>
         <div className="bg-muted-foreground/10 rounded-full p-1" role="button">
           {validated ? (
             <div className="p-1">

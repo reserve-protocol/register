@@ -6,6 +6,7 @@ import { Asterisk, PlayIcon } from 'lucide-react'
 import { ReactNode } from 'react'
 import {
   daoCreatedAtom,
+  daoTokenSymbolAtom,
   deployedDTFAtom,
   formReadyForSubmitAtom,
   selectedGovernanceOptionAtom,
@@ -15,9 +16,7 @@ import CreateDAO from '../steps/create-dao'
 
 const IndexTokenGraphic = () => {
   return (
-    <div className="w-full h-[165px] rounded-3xl bg-background flex items-center justify-center">
-      <div className="text-muted-foreground">Index token graphic</div>
-    </div>
+    <div className="w-full h-[165px] rounded-2xl bg-background flex items-center justify-center bg-[url('https://storage.reserve.org/deploy-graph.png')] bg-cover bg-no-repeat" />
   )
 }
 
@@ -26,6 +25,7 @@ const DeployTimeline = () => {
   const showCreateGovernanceDAO =
     useAtomValue(selectedGovernanceOptionAtom) === 'governanceERC20address'
   const daoCreated = useAtomValue(daoCreatedAtom)
+  const stTokenSymbol = useAtomValue(daoTokenSymbolAtom)
   const deployedDTF = useAtomValue(deployedDTFAtom)
 
   const timelineItems = [
@@ -37,7 +37,9 @@ const DeployTimeline = () => {
       ? [
           {
             title: daoCreated
-              ? 'Governance DAO created'
+              ? stTokenSymbol
+                ? `Created ${stTokenSymbol} DAO`
+                : 'Governance DAO created'
               : 'Sign tx to create governance DAO',
             children: !daoCreated && <CreateDAO />,
             isActive: formReadyForSubmit,
@@ -45,7 +47,7 @@ const DeployTimeline = () => {
         ]
       : []),
     {
-      title: 'Deploy Index DTF',
+      title: 'Create Index DTF',
       children: (
         <ConfirmIndexDeploy
           isActive={
@@ -59,7 +61,7 @@ const DeployTimeline = () => {
         (!showCreateGovernanceDAO && formReadyForSubmit),
     },
     {
-      title: 'Index DTF successfully deployed',
+      title: 'Index DTF successfully created',
       isActive: !!deployedDTF,
     },
   ]

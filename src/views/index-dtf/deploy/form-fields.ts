@@ -1,6 +1,6 @@
 import { isAddress } from 'viem'
 import { z } from 'zod'
-import { isERC20, isVoteLockAddress } from './utils'
+import { isERC20, isNotStRSR, isVoteLockAddress } from './utils'
 
 export type DeployStepId =
   | 'metadata'
@@ -80,7 +80,12 @@ export const dtfDeploySteps: Record<DeployStepId, { fields: string[] }> = {
 export const DeployFormSchema = z
   .object({
     name: z.string().min(1, 'Token name is required'),
-    symbol: z.string().min(1, 'Token symbol is required'),
+    symbol: z
+      .string()
+      .min(1, 'Token symbol is required')
+      .refine((value) => !value.includes(' '), {
+        message: 'Token symbol cannot contain spaces',
+      }),
     mandate: z.string().optional(),
     initialValue: z.coerce.number().positive('Initial value must be positive'),
     tokensDistribution: z.array(
@@ -94,6 +99,9 @@ export const DeployFormSchema = z
     governanceVoteLock: z
       .string()
       .refine(isAddress, { message: 'Invalid Address' })
+      .refine(isNotStRSR, {
+        message: 'stRSR DAO contracts for Yield DTFs are not supported',
+      })
       .refine(isVoteLockAddress, { message: 'Unsupported Vote Lock Address' })
       .optional(),
     governanceERC20address: z
@@ -182,16 +190,28 @@ export const DeployFormSchema = z
   })
   .refine(
     (data) => {
-      // Check if the sum of the tokens distribution is 100
-      const totalDist = data.tokensDistribution.reduce(
-        (acc, { percentage }) => acc + percentage,
+      const total = data.tokensDistribution?.reduce(
+        (sum, { percentage }) => sum + percentage,
         0
       )
-      return totalDist === 100
+      return total === 100
     },
-    {
-      message: 'The sum of the tokens distribution must be 100',
-      path: ['basket'],
+    (data) => {
+      const total =
+        data.tokensDistribution?.reduce(
+          (sum, { percentage }) => sum + percentage,
+          0
+        ) || 0
+      const difference = 100 - total
+
+      return {
+        message: `The sum of the tokens distribution must be 100% (${
+          difference > 0
+            ? `${difference}% missing`
+            : `${Math.abs(difference)}% excess`
+        }).`,
+        path: ['basket'],
+      }
     }
   )
   .refine(
@@ -257,10 +277,6 @@ export const DeployFormSchema = z
       path: ['revenue-distribution'],
     }
   )
-  .refine((data) => data.auctionLauncher, {
-    message: 'Auction launcher address is required',
-    path: ['auctionLauncher'],
-  })
   .refine(
     (data) => {
       // Check if the auction settings are valid
@@ -275,14 +291,6 @@ export const DeployFormSchema = z
       path: ['auctions'],
     }
   )
-  .refine((data) => data.guardianAddress, {
-    message: 'Guardian address is required',
-    path: ['guardianAddress'],
-  })
-  .refine((data) => data.brandManagerAddress, {
-    message: 'Brand manager address is required',
-    path: ['brandManagerAddress'],
-  })
   .refine(
     (data) => {
       // Check if the basket changes settings are valid
@@ -353,7 +361,7 @@ export const dtfDeployDefaultValues = {
   customMintFee: undefined,
   governanceShare: 0,
   deployerShare: 0,
-  fixedPlatformFee: 20,
+  fixedPlatformFee: 50,
   additionalRevenueRecipients: [],
   auctionLength: 15,
   auctionDelay: 15,

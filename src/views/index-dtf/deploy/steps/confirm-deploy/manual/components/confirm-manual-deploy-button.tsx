@@ -12,7 +12,13 @@ import {
 import { calculateRevenueDistribution } from '@/views/index-dtf/deploy/utils'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
-import { Address, parseEther, parseEventLogs, parseUnits } from 'viem'
+import {
+  Address,
+  parseEther,
+  parseEventLogs,
+  parseUnits,
+  zeroAddress,
+} from 'viem'
 import { useWaitForTransactionReceipt } from 'wagmi'
 import { indexDeployFormDataAtom } from '../../atoms'
 import {
@@ -123,10 +129,8 @@ const txAtom = atom<
       )
     ),
     feeRecipients: calculateRevenueDistribution(formData, wallet, stToken),
-    tvlFee: BigInt(
-      Math.floor(
-        439591053.36 * (formData.folioFee || formData.customFolioFee || 0)!
-      )
+    tvlFee: parseEther(
+      ((formData.folioFee || formData.customFolioFee || 0)! / 100).toString()
     ),
     mintFee: parseEther(
       ((formData.mintFee || formData.customMintFee || 0)! / 100).toString()
@@ -146,10 +150,14 @@ const txAtom = atom<
       owner,
       [],
       [
-        formData.auctionLauncher!,
+        ...(formData.auctionLauncher ? [formData.auctionLauncher!] : []),
         ...(formData.additionalAuctionLaunchers ?? []),
       ],
-      [formData.brandManagerAddress!],
+      [
+        ...(formData.brandManagerAddress
+          ? [formData.brandManagerAddress!]
+          : []),
+      ],
     ]
 
     return {
@@ -188,7 +196,7 @@ const txAtom = atom<
           0)! * 60
       )
     ),
-    guardian: formData.guardianAddress!,
+    guardian: formData.guardianAddress ?? zeroAddress,
   }
 
   const tradingGovernanceConfig: GovernanceConfig = {
@@ -215,7 +223,7 @@ const txAtom = atom<
           0)! * 60
       )
     ),
-    guardian: formData.guardianAddress!,
+    guardian: formData.guardianAddress ?? zeroAddress,
   }
 
   const args: DeployParams = [
@@ -227,10 +235,14 @@ const txAtom = atom<
     {
       existingAuctionApprovers: [],
       auctionLaunchers: [
-        formData.auctionLauncher!,
+        ...(formData.auctionLauncher ? [formData.auctionLauncher!] : []),
         ...(formData.additionalAuctionLaunchers ?? []),
       ],
-      brandManagers: [formData.brandManagerAddress!],
+      brandManagers: [
+        ...(formData.brandManagerAddress
+          ? [formData.brandManagerAddress!]
+          : []),
+      ],
     },
   ]
 

@@ -11,7 +11,7 @@ import {
 } from '@/views/yield-dtf/issuance/components/zapV2/api/types'
 import { zappableTokens } from '@/views/yield-dtf/issuance/components/zapV2/constants'
 import { atom } from 'jotai'
-import { Address, parseEther, parseUnits } from 'viem'
+import { Address, parseEther, parseUnits, zeroAddress } from 'viem'
 import { basketAtom, daoTokenAddressAtom } from '../../../atoms'
 import { calculateRevenueDistribution } from '../../../utils'
 import { indexDeployFormDataAtom } from '../atoms'
@@ -89,22 +89,23 @@ export const zapDeployPayloadAtom = atom<
     feeRecipients: calculateRevenueDistribution(formData, wallet, stToken).map(
       ({ recipient, portion }) => ({ recipient, portion: portion.toString() })
     ),
-    folioFee: BigInt(
-      Math.floor(
-        439591053.36 * (formData.folioFee || formData.customFolioFee || 0)!
-      )
+    tvlFee: parseEther(
+      ((formData.folioFee || formData.customFolioFee || 0)! / 100).toString()
     ).toString(),
-    mintingFee: parseEther(
+    mintFee: parseEther(
       ((formData.mintFee || formData.customMintFee || 0)! / 100).toString()
     ).toString(),
+    mandate: formData.mandate || '',
   }
 
-  const existingTradeProposers = [] as Address[]
-  const tradeLaunchers = [
-    formData.auctionLauncher!,
+  const existingAuctionApprovers = [] as Address[]
+  const auctionLaunchers = [
+    ...(formData.auctionLauncher ? [formData.auctionLauncher!] : []),
     ...(formData.additionalAuctionLaunchers ?? []),
   ]
-  const vibesOfficers = [formData.brandManagerAddress!]
+  const brandManagers = [
+    ...(formData.brandManagerAddress ? [formData.brandManagerAddress!] : []),
+  ]
 
   // Ungoverned DTF
   if (!stToken) {
@@ -116,9 +117,9 @@ export const zapDeployPayloadAtom = atom<
       owner,
       basicDetails,
       additionalDetails,
-      existingTradeProposers,
-      tradeLaunchers,
-      vibesOfficers,
+      existingAuctionApprovers,
+      auctionLaunchers,
+      brandManagers,
     }
   }
 
@@ -153,7 +154,7 @@ export const zapDeployPayloadAtom = atom<
           0)! * 60
       )
     ).toString(),
-    guardian: formData.guardianAddress!,
+    guardian: formData.guardianAddress ?? zeroAddress,
   }
 
   const tradingGovParams = {
@@ -182,7 +183,7 @@ export const zapDeployPayloadAtom = atom<
           0)! * 60
       )
     ).toString(),
-    guardian: formData.guardianAddress!,
+    guardian: formData.guardianAddress ?? zeroAddress,
   }
 
   return {
@@ -192,8 +193,8 @@ export const zapDeployPayloadAtom = atom<
     additionalDetails,
     ownerGovParams,
     tradingGovParams,
-    existingTradeProposers,
-    tradeLaunchers,
-    vibesOfficers,
+    existingAuctionApprovers,
+    auctionLaunchers,
+    brandManagers,
   }
 })

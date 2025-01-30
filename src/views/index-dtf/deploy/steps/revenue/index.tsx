@@ -5,6 +5,14 @@ import RevenueDistributionSettings from './revenue-distribution-settings'
 
 const Description = () => (
   <div className="px-6 pb-6 text-base">
+    Define how much the Index DTF will charge token holders to mint the DTF and
+    to hold the DTF over time. A portion of these fees will be sent directly to
+    the platform.
+  </div>
+)
+
+const FeeDistributionDescription = () => (
+  <div className="px-6 pb-6 text-base">
     Define what portion of the revenue goes to the RToken holders versus RSR
     stakers. It can also be configured to send a portion of the revenue of an
     RToken to any arbitrary Ethereum address (wallet or smart contract).
@@ -15,13 +23,12 @@ const RevenueDistribution = () => {
   return (
     <>
       <Description />
-
       <FolioFeeSelector />
       <MintFeeSelector />
       <h1 className="text-2xl font-bold text-primary my-4 ml-6">
         Fee Distribution
       </h1>
-      <Description />
+      <FeeDistributionDescription />
       <RevenueDistributionSettings />
       <NextButton />
     </>

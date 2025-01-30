@@ -10,7 +10,7 @@ const LaunchTokenBanner = () => {
     <div
       className="flex items-center gap-2 justify-between"
       role="button"
-      onClick={() => window.open('https://xyz.xyz')}
+      onClick={() => window.open('https://ape.store/')}
     >
       <div className="flex items-center gap-2">
         <img
@@ -23,7 +23,8 @@ const LaunchTokenBanner = () => {
             Want to launch a new ERC20 for governance?
           </div>
           <div className="text-muted-foreground">
-            We recommend launcing your new ERC20 token on XYZ.XYZ.
+            We recommend launching your new ERC20 toke on{' '}
+            <span className="text-primary">ape.store</span>
           </div>
         </div>
       </div>
