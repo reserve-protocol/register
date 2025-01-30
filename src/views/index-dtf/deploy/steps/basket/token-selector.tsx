@@ -340,9 +340,7 @@ const TokenSelector = () => {
   const resetSearchToken = useResetAtom(searchTokenAtom)
 
   useEffect(() => {
-    if (basket.length) {
-      setSelectedTokens(basket)
-    }
+    setSelectedTokens(basket)
   }, [basket, setSelectedTokens])
 
   const handleClose = useCallback(() => {
