@@ -275,13 +275,26 @@ const SelectedTokenList = () => {
 }
 
 const SubmitSelectedTokens = () => {
-  const { setValue } = useFormContext()
+  const { setValue, getValues } = useFormContext()
   const selectedTokens = useAtomValue(selectedTokensAtom)
   const setBasket = useSetAtom(basketAtom)
   const disabled = selectedTokens.length === 0
 
   const onSubmit = useCallback(() => {
     setBasket((prev) => {
+      // Get current token distributions
+      const currentDistributions = getValues('tokensDistribution') || []
+      const distributionsMap = currentDistributions.reduce(
+        (
+          acc: Record<string, number>,
+          { address, percentage }: { address: string; percentage: number }
+        ) => {
+          acc[address.toLowerCase()] = percentage
+          return acc
+        },
+        {} as Record<string, number>
+      )
+
       const newBasket = [
         ...prev.filter(
           (t) => !selectedTokens.some((s) => s.address === t.address)
@@ -289,17 +302,18 @@ const SubmitSelectedTokens = () => {
         ...selectedTokens,
       ]
 
+      // Preserve existing percentages or set to 0 for new tokens
       setValue(
         'tokensDistribution',
         newBasket.map((token) => ({
           address: token.address,
-          percentage: 0,
+          percentage: distributionsMap[token.address.toLowerCase()] || 0,
         }))
       )
 
       return newBasket
     })
-  }, [selectedTokens, setBasket, setValue])
+  }, [selectedTokens, setBasket, setValue, getValues])
 
   return (
     <DrawerTrigger asChild disabled={disabled}>
