@@ -34,7 +34,6 @@ import { Link } from 'react-router-dom'
 import { Address, decodeFunctionData, Hex } from 'viem'
 
 type Trade = {
-  id: bigint
   sell: Address
   buy: Address
   sellLimit: {
@@ -72,10 +71,9 @@ const useDecodedTrades = (calldatas: Hex[] | undefined): Trade[] => {
         data: calldata,
       })
 
-      const [id, sell, buy, sellLimit, buyLimit, prices, ttl] = args
+      const [sell, buy, sellLimit, buyLimit, prices, ttl] = args
 
       return {
-        id: id as bigint,
         sell: sell as Address,
         buy: buy as Address,
         sellLimit: sellLimit as {
@@ -322,16 +320,15 @@ const RawPreview = ({
   return (
     <div className="p-4 flex flex-col gap-2">
       {trades.map((trade, i) => (
-        <div className="flex flex-col gap-2" key={trade.id.toString()}>
+        <div className="flex flex-col gap-2" key={i.toString()}>
           <h4 className="text-primary text-lg font-semibold">
             {i + 1}/{totalTrades}
           </h4>
           <div>
             <span className="text-legend text-sm block mb-1">Signature</span>
             <span className="font-semibold">
-              approveTrade(tradeId: uint256, sell: address, buy: address,
-              sellLimit: IFolio.Range, buyLimit: IFolio.Range, prices:
-              IFolio.Range, ttl: uint256)
+              approveTrade(sell: address, buy: address, sellLimit: IFolio.Range,
+              buyLimit: IFolio.Range, prices: IFolio.Range, ttl: uint256)
             </span>
           </div>
           <div>

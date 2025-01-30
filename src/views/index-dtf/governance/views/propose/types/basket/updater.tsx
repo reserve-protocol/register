@@ -111,7 +111,7 @@ const useInitialBasket = ():
       {
         address: dtfAddress,
         abi: dtfIndexAbi,
-        functionName: 'tradeDelay',
+        functionName: 'auctionDelay',
         chainId,
       },
     ],
