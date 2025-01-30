@@ -15,9 +15,7 @@ import CreateDAO from '../steps/create-dao'
 
 const IndexTokenGraphic = () => {
   return (
-    <div className="w-full h-[165px] rounded-3xl bg-background flex items-center justify-center">
-      <div className="text-muted-foreground">Index token graphic</div>
-    </div>
+    <div className="w-full h-[165px] rounded-2xl bg-background flex items-center justify-center bg-[url('https://storage.reserve.org/deploy-graph.png')] bg-cover bg-no-repeat" />
   )
 }
 
