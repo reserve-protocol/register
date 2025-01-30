@@ -26,7 +26,7 @@ const l2Defaults: Defaults = [
 
 const ComingSoonOption = ({ network }: { network: 'mainnet' | 'solana' }) => {
   return (
-    <div className="flex flex-1 items-center justify-between gap-2 border rounded-xl p-4 text-base bg-muted border-muted">
+    <div className="flex flex-1 items-center justify-between gap-2 border rounded-xl p-4 text-base bg-muted border-muted cursor-not-allowed">
       {network === 'mainnet' ? (
         <div className="flex items-center gap-2 font-bold">
           <ChainLogo chain={ChainId.Mainnet} width={20} height={20} />
@@ -58,7 +58,7 @@ const ChainOption = ({
     <div
       className={cn(
         'flex flex-1 items-center gap-4 justify-between border rounded-xl p-4 text-base cursor-pointer',
-        checked ? 'bg-card border-border' : 'bg-muted border-muted'
+        checked ? 'bg-card border-primary' : 'bg-muted border-muted'
       )}
       role="button"
       onClick={() => onClick && onClick(chainId as AvailableChain)}
@@ -67,8 +67,8 @@ const ChainOption = ({
         <ChainLogo chain={chainId} width={20} height={20} />
         {CHAIN_TAGS[chainId]}
       </div>
-      <div className="flex justify-end w-6">
-        {checked && <CheckIcon size={16} strokeWidth={1.2} />}
+      <div className="flex justify-end w-6 text-primary">
+        {checked && <CheckIcon size={20} strokeWidth={1.6} />}
       </div>
     </div>
   )
