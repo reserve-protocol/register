@@ -373,7 +373,7 @@ export const dtfDeployDefaultValues = {
   customMintFee: undefined,
   governanceShare: 0,
   deployerShare: 0,
-  fixedPlatformFee: 20,
+  fixedPlatformFee: 50,
   additionalRevenueRecipients: [],
   auctionLength: 15,
   auctionDelay: 15,

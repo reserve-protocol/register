@@ -122,10 +122,8 @@ const txAtom = atom<
       )
     ),
     feeRecipients: calculateRevenueDistribution(formData, wallet, stToken),
-    folioFee: BigInt(
-      Math.floor(
-        439591053.36 * (formData.folioFee || formData.customFolioFee || 0)!
-      )
+    folioFee: parseEther(
+      ((formData.folioFee || formData.customFolioFee || 0)! / 100).toString()
     ),
     mintingFee: parseEther(
       ((formData.mintFee || formData.customMintFee || 0)! / 100).toString()
