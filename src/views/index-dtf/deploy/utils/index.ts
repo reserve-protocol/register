@@ -1,6 +1,6 @@
 import { INDEX_GRAPH_CLIENTS } from '@/state/atoms'
 import { wagmiConfig } from '@/state/chain'
-import { ChainId } from '@/utils/chains'
+import { AvailableChain, ChainId } from '@/utils/chains'
 import { DeployInputs } from '@/views/index-dtf/deploy/form-fields'
 import { gql } from 'graphql-request'
 import { Address, erc20Abi, parseEther } from 'viem'
@@ -13,6 +13,7 @@ export const isERC20 = async (address: Address) => {
       abi: erc20Abi,
       functionName: 'symbol',
       address,
+      chainId: ChainId.Base as AvailableChain, // TODO: remove hardcoded chainId
     })
   } catch (e) {
     return false
