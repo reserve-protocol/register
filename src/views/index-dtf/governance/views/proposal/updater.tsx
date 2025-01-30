@@ -35,6 +35,13 @@ const Updater = () => {
   }, [accountVotes])
 
   useEffect(() => {
+    return () => {
+      setProposalDetail(undefined)
+      setAccountVotes({ vote: null, votePower: null })
+    }
+  }, [])
+
+  useEffect(() => {
     if (proposal) {
       // Refresh proposal voting state every minute
       if (!FINALIZED_PROPOSAL_STATES.includes(proposal.state)) {

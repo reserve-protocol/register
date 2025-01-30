@@ -102,14 +102,19 @@ export default [
             ],
           },
           {
-            name: 'folioFee',
+            name: 'tvlFee',
             type: 'uint256',
             internalType: 'uint256',
           },
           {
-            name: 'mintingFee',
+            name: 'mintFee',
             type: 'uint256',
             internalType: 'uint256',
+          },
+          {
+            name: 'mandate',
+            type: 'string',
+            internalType: 'string',
           },
         ],
       },
@@ -119,29 +124,29 @@ export default [
         internalType: 'address',
       },
       {
-        name: 'tradeProposers',
+        name: 'auctionApprovers',
         type: 'address[]',
         internalType: 'address[]',
       },
       {
-        name: 'tradeLaunchers',
+        name: 'auctionLaunchers',
         type: 'address[]',
         internalType: 'address[]',
       },
       {
-        name: 'vibesOfficers',
+        name: 'brandManagers',
         type: 'address[]',
         internalType: 'address[]',
       },
     ],
     outputs: [
       {
-        name: 'folio_',
+        name: 'folio',
         type: 'address',
-        internalType: 'address',
+        internalType: 'contract Folio',
       },
       {
-        name: 'folioAdmin_',
+        name: 'folioAdmin',
         type: 'address',
         internalType: 'address',
       },
@@ -222,14 +227,19 @@ export default [
             ],
           },
           {
-            name: 'folioFee',
+            name: 'tvlFee',
             type: 'uint256',
             internalType: 'uint256',
           },
           {
-            name: 'mintingFee',
+            name: 'mintFee',
             type: 'uint256',
             internalType: 'uint256',
+          },
+          {
+            name: 'mandate',
+            type: 'string',
+            internalType: 'string',
           },
         ],
       },
@@ -313,17 +323,17 @@ export default [
         internalType: 'struct IGovernanceDeployer.GovRoles',
         components: [
           {
-            name: 'existingTradeProposers',
+            name: 'existingAuctionApprovers',
             type: 'address[]',
             internalType: 'address[]',
           },
           {
-            name: 'tradeLaunchers',
+            name: 'auctionLaunchers',
             type: 'address[]',
             internalType: 'address[]',
           },
           {
-            name: 'vibesOfficers',
+            name: 'brandManagers',
             type: 'address[]',
             internalType: 'address[]',
           },
@@ -334,7 +344,7 @@ export default [
       {
         name: 'folio',
         type: 'address',
-        internalType: 'address',
+        internalType: 'contract Folio',
       },
       {
         name: 'proxyAdmin',

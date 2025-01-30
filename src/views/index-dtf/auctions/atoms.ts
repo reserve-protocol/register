@@ -4,6 +4,43 @@ import { indexDTFBasketSharesAtom, indexDTFPriceAtom } from '@/state/dtf/atoms'
 import { Token } from '@/types'
 import { atom } from 'jotai'
 import { governanceProposalsAtom } from '../governance/atoms'
+import { getCurrentTime } from '@/utils'
+
+export const TRADE_STATE = {
+  PENDING: 'PENDING', // Only for auction launcher!
+  AVAILABLE: 'AVAILABLE', // Permissionless avalable
+  RUNNING: 'RUNNING', // Auction launched
+  COMPLETED: 'COMPLETED', // Auction completed (BIDDED)
+  EXPIRED: 'EXPIRED', // Auction expired
+}
+
+export function getTradeState(trade: AssetTrade) {
+  const currentTime = getCurrentTime()
+
+  // Lets start with the completed state!
+  if (trade.closedTimestamp) {
+    return TRADE_STATE.COMPLETED
+  }
+
+  // Trade has launched, if its not closed then is still running or expired
+  if (trade.start && trade.end) {
+    if (currentTime < trade.end) {
+      return TRADE_STATE.RUNNING
+    }
+
+    return TRADE_STATE.EXPIRED
+  }
+
+  if (currentTime >= trade.launchTimeout) {
+    return TRADE_STATE.EXPIRED
+  }
+
+  if (trade.availableAt >= currentTime) {
+    return TRADE_STATE.AVAILABLE
+  }
+
+  return TRADE_STATE.PENDING
+}
 
 export type AssetTrade = {
   id: string
@@ -34,6 +71,8 @@ export type AssetTrade = {
   sellShare?: number
   deltaBuyShare?: number
   deltaSellShare?: number
+  closedTransactionHash?: string
+  state: string
 }
 
 export const VOLATILITY_OPTIONS = {
@@ -57,8 +96,8 @@ export const allPricesAtom = atom<Record<string, number> | undefined>(undefined)
 
 export const dtfTradesAtom = atom<AssetTrade[] | undefined>(undefined)
 
-export const tradeVolatilityAtom = atom<Record<string, number>>(
-  {} as Record<string, number>
+export const tradeVolatilityAtom = atom<Record<string, string>>(
+  {} as Record<string, string>
 )
 
 export const dtfTradesWithSharesAtom = atom<AssetTrade[] | undefined>((get) => {
@@ -153,6 +192,8 @@ export const setTradeVolatilityAtom = atom(
   null,
   (get, set, [tradeId, volatility]: [string, string]) => {
     const selectedTrades = get(selectedTradesAtom)
+
+    console.log('setTradeVolatilityAtom', tradeId, volatility)
 
     set(dtfTradeVolatilityAtom, {
       ...get(dtfTradeVolatilityAtom),

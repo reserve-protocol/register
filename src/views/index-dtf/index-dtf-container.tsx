@@ -68,7 +68,7 @@ const DTFContextUpdater = () => {
             {
               address: token,
               abi: dtfIndexAbi,
-              functionName: 'folioFee',
+              functionName: 'tvlFee',
               chainId,
             },
           ],

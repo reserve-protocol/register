@@ -38,8 +38,9 @@ type FolioConfig = {
   tradeDelay: bigint
   auctionLength: bigint
   feeRecipients: FeeRecipient[]
-  folioFee: bigint
-  mintingFee: bigint
+  tvlFee: bigint
+  mintFee: bigint
+  mandate: string
 }
 
 type GovernanceConfig = {
@@ -52,9 +53,9 @@ type GovernanceConfig = {
 }
 
 type GovernanceRoles = {
-  existingTradeProposers: Address[]
-  tradeLaunchers: Address[]
-  vibesOfficers?: Address[]
+  existingAuctionApprovers: Address[]
+  auctionLaunchers: Address[]
+  brandManagers: Address[]
 }
 
 type DeployParams = [
@@ -122,12 +123,13 @@ const txAtom = atom<
       )
     ),
     feeRecipients: calculateRevenueDistribution(formData, wallet, stToken),
-    folioFee: parseEther(
+    tvlFee: parseEther(
       ((formData.folioFee || formData.customFolioFee || 0)! / 100).toString()
     ),
-    mintingFee: parseEther(
+    mintFee: parseEther(
       ((formData.mintFee || formData.customMintFee || 0)! / 100).toString()
     ),
+    mandate: formData.mandate || '',
   }
 
   if (!stToken) {
@@ -229,12 +231,12 @@ const txAtom = atom<
     ownerGovernanceConfig,
     tradingGovernanceConfig,
     {
-      existingTradeProposers: [],
-      tradeLaunchers: [
+      existingAuctionApprovers: [],
+      auctionLaunchers: [
         ...(formData.auctionLauncher ? [formData.auctionLauncher!] : []),
         ...(formData.additionalAuctionLaunchers ?? []),
       ],
-      vibesOfficers: [
+      brandManagers: [
         ...(formData.brandManagerAddress
           ? [formData.brandManagerAddress!]
           : []),

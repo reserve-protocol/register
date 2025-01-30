@@ -159,9 +159,8 @@ export const basketProposalCalldatasAtom = atom<Hex[] | undefined>((get) => {
   return trades.map((trade, i) => {
     return encodeFunctionData({
       abi: dtfIndexAbi,
-      functionName: 'approveTrade',
+      functionName: 'approveAuction',
       args: [
-        BigInt(i), // TODO: will be removed
         trade.sell as Address,
         trade.buy as Address,
         {
