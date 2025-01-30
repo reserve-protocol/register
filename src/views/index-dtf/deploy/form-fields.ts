@@ -187,16 +187,28 @@ export const DeployFormSchema = z
   })
   .refine(
     (data) => {
-      // Check if the sum of the tokens distribution is 100
-      const totalDist = data.tokensDistribution.reduce(
-        (acc, { percentage }) => acc + percentage,
+      const total = data.tokensDistribution?.reduce(
+        (sum, { percentage }) => sum + percentage,
         0
       )
-      return totalDist === 100
+      return total === 100
     },
-    {
-      message: 'The sum of the tokens distribution must be 100',
-      path: ['basket'],
+    (data) => {
+      const total =
+        data.tokensDistribution?.reduce(
+          (sum, { percentage }) => sum + percentage,
+          0
+        ) || 0
+      const difference = 100 - total
+
+      return {
+        message: `The sum of the tokens distribution must be 100% (${
+          difference > 0
+            ? `${difference}% missing`
+            : `${Math.abs(difference)}% excess`
+        }).`,
+        path: ['basket'],
+      }
     }
   )
   .refine(
