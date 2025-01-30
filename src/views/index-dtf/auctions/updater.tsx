@@ -6,7 +6,12 @@ import { useQuery } from '@tanstack/react-query'
 import request, { gql } from 'graphql-request'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { use, useEffect } from 'react'
-import { allPricesAtom, AssetTrade, dtfTradesAtom } from './atoms'
+import {
+  allPricesAtom,
+  AssetTrade,
+  dtfTradesAtom,
+  getTradeState,
+} from './atoms'
 import { useAssetPrices } from '@/hooks/useAssetPrices'
 
 type Response = {
@@ -33,6 +38,7 @@ type Response = {
     launchedTimestamp: string
     closedTimestamp: string
     approvedBlockNumber: string
+    closedTransactionHash: string
   }[]
 }
 
@@ -70,6 +76,7 @@ const query = gql`
       approvedTimestamp
       launchedTimestamp
       closedTimestamp
+      closedTransactionHash
     }
   }
 `
@@ -91,27 +98,33 @@ const useTrades = () => {
       )
 
       // Return an array of trades
-      return data.trades.map((trade) => ({
-        ...trade,
-        soldAmount: BigInt(trade.soldAmount),
-        boughtAmount: BigInt(trade.boughtAmount),
-        startPrice: BigInt(trade.startPrice),
-        endPrice: BigInt(trade.endPrice),
-        sellLimitSpot: BigInt(trade.sellLimitSpot),
-        sellLimitHigh: BigInt(trade.sellLimitHigh),
-        sellLimitLow: BigInt(trade.sellLimitLow),
-        buyLimitLow: BigInt(trade.buyLimitLow),
-        buyLimitSpot: BigInt(trade.buyLimitSpot),
-        buyLimitHigh: BigInt(trade.buyLimitHigh),
-        availableAt: Number(trade.availableAt),
-        launchTimeout: Number(trade.launchTimeout),
-        start: Number(trade.start),
-        end: Number(trade.end),
-        approvedTimestamp: Number(trade.approvedTimestamp),
-        launchedTimestamp: Number(trade.launchedTimestamp),
-        closedTimestamp: Number(trade.closedTimestamp),
-        approvedBlock: trade.approvedBlock,
-      })) as AssetTrade[]
+      return data.trades.map((trade) => {
+        const parsedTrade: AssetTrade = {
+          ...trade,
+          soldAmount: BigInt(trade.soldAmount),
+          boughtAmount: BigInt(trade.boughtAmount),
+          startPrice: BigInt(trade.startPrice),
+          endPrice: BigInt(trade.endPrice),
+          sellLimitSpot: BigInt(trade.sellLimitSpot),
+          sellLimitHigh: BigInt(trade.sellLimitHigh),
+          sellLimitLow: BigInt(trade.sellLimitLow),
+          buyLimitLow: BigInt(trade.buyLimitLow),
+          buyLimitSpot: BigInt(trade.buyLimitSpot),
+          buyLimitHigh: BigInt(trade.buyLimitHigh),
+          availableAt: Number(trade.availableAt),
+          launchTimeout: Number(trade.launchTimeout),
+          start: Number(trade.start),
+          end: Number(trade.end),
+          approvedTimestamp: Number(trade.approvedTimestamp),
+          launchedTimestamp: Number(trade.launchedTimestamp),
+          closedTimestamp: Number(trade.closedTimestamp),
+          approvedBlockNumber: trade.approvedBlockNumber,
+          state: 'PENDING',
+        }
+        parsedTrade.state = getTradeState(parsedTrade)
+
+        return parsedTrade
+      })
     },
     enabled: !!dtf?.id,
     refetchInterval: 1000 * 60 * 10, // 10 minutes

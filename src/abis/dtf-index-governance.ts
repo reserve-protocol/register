@@ -1612,6 +1612,11 @@ export default [
   },
   {
     type: 'error',
+    name: 'Governor__InvalidProposalThreshold',
+    inputs: [],
+  },
+  {
+    type: 'error',
     name: 'InvalidAccountNonce',
     inputs: [
       {
