@@ -78,7 +78,7 @@ export const zapDeployPayloadAtom = atom<
   }
 
   const additionalDetails = {
-    auctionDelay: BigInt(
+    tradeDelay: BigInt(
       Math.floor(
         (formData.auctionDelay || formData.customAuctionDelay || 0)! * 60
       )
@@ -91,10 +91,10 @@ export const zapDeployPayloadAtom = atom<
     feeRecipients: calculateRevenueDistribution(formData, wallet, stToken).map(
       ({ recipient, portion }) => ({ recipient, portion: portion.toString() })
     ),
-    tvlFee: parseEther(
+    folioFee: parseEther(
       ((formData.folioFee || formData.customFolioFee || 0)! / 100).toString()
     ).toString(),
-    mintFee: parseEther(
+    mintingFee: parseEther(
       ((formData.mintFee || formData.customMintFee || 0)! / 100).toString()
     ).toString(),
     mandate: formData.mandate || '',
@@ -118,8 +118,8 @@ export const zapDeployPayloadAtom = atom<
       basicDetails,
       additionalDetails,
       existingAuctionApprovers,
-      auctionLaunchers,
-      brandManagers,
+      tradeLaunchers: auctionLaunchers,
+      vibesOfficers: brandManagers,
     }
   }
 
@@ -194,7 +194,7 @@ export const zapDeployPayloadAtom = atom<
     ownerGovParams,
     tradingGovParams,
     existingAuctionApprovers,
-    auctionLaunchers,
-    brandManagers,
+    tradeLaunchers: auctionLaunchers,
+    vibesOfficers: brandManagers,
   }
 })
