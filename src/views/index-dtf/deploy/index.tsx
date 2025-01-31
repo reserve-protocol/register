@@ -23,14 +23,14 @@ const DeployerHeader = () => {
         </div>
         <div className="text-xl font-bold">Create New Index DTF</div>
       </div>
-      <div className="flex items-center gap-2">
+      <div
+        className="flex items-center gap-2 cursor-pointer"
+        onClick={() => navigate(ROUTES.DEPLOY_YIELD)}
+        role="button"
+      >
         <Flower size={16} strokeWidth={2} />
         <div>Looking for yield DTFs?</div>
-        <div
-          className="rounded-full p-0.5 bg-primary text-white cursor-pointer"
-          role="button"
-          onClick={() => navigate(ROUTES.DEPLOY_YIELD)}
-        >
+        <div className="rounded-full p-0.5 bg-primary text-white">
           <ArrowUpRight size={12} strokeWidth={2} />
         </div>
       </div>

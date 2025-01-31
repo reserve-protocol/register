@@ -1,11 +1,14 @@
 import DiscordIcon from '@/components/icons/DiscordIcon'
 import { RTokenIcon } from '@/components/icons/logos'
 import Timeline from '@/components/ui/timeline'
+import ExplorerAddress from '@/components/utils/explorer-address'
+import { chainIdAtom } from '@/state/atoms'
 import { useAtomValue } from 'jotai'
-import { Asterisk, PlayIcon } from 'lucide-react'
+import { Asterisk } from 'lucide-react'
 import { ReactNode } from 'react'
 import {
   daoCreatedAtom,
+  daoTokenAddressAtom,
   daoTokenSymbolAtom,
   deployedDTFAtom,
   formReadyForSubmitAtom,
@@ -13,6 +16,7 @@ import {
 } from '../atoms'
 import ConfirmIndexDeploy from '../steps/confirm-deploy'
 import CreateDAO from '../steps/create-dao'
+import { DISCORD_INVITE, INDEX_PROTOCOL_DOCS } from '@/utils/constants'
 
 const IndexTokenGraphic = () => {
   return (
@@ -21,10 +25,12 @@ const IndexTokenGraphic = () => {
 }
 
 const DeployTimeline = () => {
+  const chainId = useAtomValue(chainIdAtom)
   const formReadyForSubmit = useAtomValue(formReadyForSubmitAtom)
   const showCreateGovernanceDAO =
     useAtomValue(selectedGovernanceOptionAtom) === 'governanceERC20address'
   const daoCreated = useAtomValue(daoCreatedAtom)
+  const stTokenAddress = useAtomValue(daoTokenAddressAtom)
   const stTokenSymbol = useAtomValue(daoTokenSymbolAtom)
   const deployedDTF = useAtomValue(deployedDTFAtom)
 
@@ -41,6 +47,10 @@ const DeployTimeline = () => {
                 ? `Created ${stTokenSymbol} DAO`
                 : 'Governance DAO created'
               : 'Sign tx to create governance DAO',
+            rightText:
+              daoCreated && stTokenAddress ? (
+                <ExplorerAddress address={stTokenAddress} chain={chainId} />
+              ) : undefined,
             children: !daoCreated && <CreateDAO />,
             isActive: formReadyForSubmit,
           },
@@ -107,13 +117,21 @@ const HelpText = () => {
         </span>
       </div>
       <div className="flex gap-2">
-        <SocialMediaLink href="" icon={<DiscordIcon />} title="Discord" />
-        <SocialMediaLink href="" icon={<RTokenIcon />} title="Docs" />
         <SocialMediaLink
+          href={DISCORD_INVITE}
+          icon={<DiscordIcon />}
+          title="Discord"
+        />
+        <SocialMediaLink
+          href={INDEX_PROTOCOL_DOCS}
+          icon={<RTokenIcon />}
+          title="Docs"
+        />
+        {/* <SocialMediaLink
           href=""
           icon={<PlayIcon size={16} />}
           title="Tutorial"
-        />
+        /> */}
       </div>
     </div>
   )

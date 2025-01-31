@@ -23,18 +23,22 @@ const ExplorerAddress = ({
   }
   return (
     <Box
+      role="button"
+      onClick={handleAddress}
       sx={{
         display: 'flex',
         alignItems: 'center',
         gap: 1,
+        ':hover': {
+          color: 'primary',
+          cursor: 'pointer',
+        },
         ...sx,
       }}
       {...props}
     >
       {shortenAddress(address)}
       <Box
-        role="button"
-        onClick={handleAddress}
         sx={{
           display: 'flex',
           alignItems: 'center',

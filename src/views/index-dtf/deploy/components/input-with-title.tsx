@@ -1,18 +1,18 @@
 import { ReactNode } from 'react'
-import BasicInput, { BasicInputProps } from './basic-input'
+import BasicInputWithAdditional, {
+  BasicInputWithAdditionalProps,
+} from './basic-input-with-additionals'
 
-type InputWithTitleProps = BasicInputProps & {
+type InputWithTitleProps = BasicInputWithAdditionalProps & {
   title: string
   description: string
   icon: ReactNode
-  children?: ReactNode
 }
 
 const InputWithTitle = ({
   title,
   description,
   icon,
-  children,
   ...props
 }: InputWithTitleProps) => (
   <div
@@ -29,8 +29,7 @@ const InputWithTitle = ({
         </div>
       </div>
     </div>
-    <BasicInput {...props} />
-    {children}
+    <BasicInputWithAdditional {...props} />
   </div>
 )
 

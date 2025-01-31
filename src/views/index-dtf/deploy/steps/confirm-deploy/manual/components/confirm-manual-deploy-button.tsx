@@ -25,6 +25,7 @@ import {
   toHex,
   zeroAddress,
 } from 'viem'
+
 import { useWaitForTransactionReceipt } from 'wagmi'
 import { indexDeployFormDataAtom } from '../../atoms'
 import {
@@ -146,6 +147,12 @@ const txAtom = atom<
     mandate: formData.mandate || '',
   }
 
+  const guardians = formData.guardians.filter(Boolean) as Address[]
+  const brandManagers = formData.brandManagers.filter(Boolean) as Address[]
+  const auctionLaunchers = formData.auctionLaunchers.filter(
+    Boolean
+  ) as Address[]
+
   if (!stToken) {
     const owner = formData.governanceWalletAddress
 
@@ -157,15 +164,8 @@ const txAtom = atom<
       folioConfig,
       owner,
       [],
-      [
-        ...(formData.auctionLauncher ? [formData.auctionLauncher!] : []),
-        ...(formData.additionalAuctionLaunchers ?? []),
-      ],
-      [
-        ...(formData.brandManagerAddress
-          ? [formData.brandManagerAddress!]
-          : []),
-      ],
+      [...auctionLaunchers],
+      [...brandManagers],
       keccak256(toBytes(getCurrentTime())),
     ]
 
@@ -205,7 +205,7 @@ const txAtom = atom<
           0)! * 60
       )
     ),
-    guardians: [formData.guardianAddress ?? zeroAddress],
+    guardians,
   }
 
   const tradingGovernanceConfig: GovernanceConfig = {
@@ -232,7 +232,7 @@ const txAtom = atom<
           0)! * 60
       )
     ),
-    guardians: [formData.guardianAddress ?? zeroAddress],
+    guardians,
   }
 
   const args: DeployParams = [
@@ -243,15 +243,8 @@ const txAtom = atom<
     tradingGovernanceConfig,
     {
       existingAuctionApprovers: [],
-      auctionLaunchers: [
-        ...(formData.auctionLauncher ? [formData.auctionLauncher!] : []),
-        ...(formData.additionalAuctionLaunchers ?? []),
-      ],
-      brandManagers: [
-        ...(formData.brandManagerAddress
-          ? [formData.brandManagerAddress!]
-          : []),
-      ],
+      auctionLaunchers,
+      brandManagers,
     },
     keccak256(toBytes(getCurrentTime())),
   ]
@@ -268,6 +261,7 @@ const ConfirmManualDeployButton = () => {
   const tx = useAtomValue(txAtom)
   const daoCreated = useAtomValue(daoCreatedAtom)
   const hasAssetsAllowance = useAtomValue(hasAssetsAllowanceAtom)
+  console.log('hasAssetsAllowance', hasAssetsAllowance)
   const setDeployedDTF = useSetAtom(deployedDTFAtom)
 
   const { isReady, gas, hash, validationError, error, isLoading, write } =
