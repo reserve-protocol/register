@@ -79,7 +79,7 @@ const CreateDAO = () => {
           proposalThreshold: parseEther(basketVotingThreshold!.toString()),
           quorumPercent: BigInt(Math.floor(basketVotingQuorum!)),
           timelockDelay: BigInt(Math.floor(basketExecutionDelay!) * 60),
-          guardians: [guardianAddress ?? zeroAddress],
+          guardians: guardianAddress ? [guardianAddress] : [],
         },
       ],
     })

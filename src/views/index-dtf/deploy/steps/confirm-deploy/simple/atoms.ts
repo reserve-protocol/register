@@ -78,7 +78,7 @@ export const zapDeployPayloadAtom = atom<
   }
 
   const additionalDetails = {
-    tradeDelay: BigInt(
+    auctionDelay: BigInt(
       Math.floor(
         (formData.auctionDelay || formData.customAuctionDelay || 0)! * 60
       )
@@ -156,7 +156,7 @@ export const zapDeployPayloadAtom = atom<
           0)! * 60
       )
     ).toString(),
-    guardian: formData.guardianAddress ?? zeroAddress,
+    guardians: formData.guardianAddress ? [formData.guardianAddress] : [],
   }
 
   const tradingGovParams = {
@@ -185,7 +185,7 @@ export const zapDeployPayloadAtom = atom<
           0)! * 60
       )
     ).toString(),
-    guardian: formData.guardianAddress ?? zeroAddress,
+    guardians: formData.guardianAddress ? [formData.guardianAddress] : [],
   }
 
   return {

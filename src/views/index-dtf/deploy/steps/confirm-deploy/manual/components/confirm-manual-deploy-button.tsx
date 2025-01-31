@@ -196,7 +196,7 @@ const txAtom = atom<
           0)! * 60
       )
     ),
-    guardians: [formData.guardianAddress ?? zeroAddress],
+    guardians: formData.guardianAddress ? [formData.guardianAddress] : [],
   }
 
   const tradingGovernanceConfig: GovernanceConfig = {
@@ -223,7 +223,7 @@ const txAtom = atom<
           0)! * 60
       )
     ),
-    guardians: [formData.guardianAddress ?? zeroAddress],
+    guardians: formData.guardianAddress ? [formData.guardianAddress] : [],
   }
 
   const args: DeployParams = [
