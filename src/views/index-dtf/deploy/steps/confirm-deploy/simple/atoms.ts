@@ -105,7 +105,7 @@ export const zapDeployPayloadAtom = atom<
   const auctionLaunchers = formData.auctionLaunchers.filter(
     Boolean
   ) as Address[]
-  const existingAuctionApprovers = [] as Address[]
+  const existingTradeProposers = [] as Address[]
 
   // Ungoverned DTF
   if (!stToken) {
@@ -117,7 +117,7 @@ export const zapDeployPayloadAtom = atom<
       owner,
       basicDetails,
       additionalDetails,
-      existingAuctionApprovers,
+      existingTradeProposers,
       tradeLaunchers: auctionLaunchers,
       vibesOfficers: brandManagers,
     }
@@ -193,7 +193,7 @@ export const zapDeployPayloadAtom = atom<
     additionalDetails,
     ownerGovParams,
     tradingGovParams,
-    existingAuctionApprovers,
+    existingTradeProposers,
     tradeLaunchers: auctionLaunchers,
     vibesOfficers: brandManagers,
   }

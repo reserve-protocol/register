@@ -39,7 +39,7 @@ interface BaseZapDeployBody {
 
   tradeLaunchers: Address[]
   vibesOfficers: Address[]
-  existingAuctionApprovers: Address[]
+  existingTradeProposers: Address[]
 }
 
 export interface ZapDeployBody extends BaseZapDeployBody {
