@@ -6,6 +6,8 @@ import {
 } from '@rainbow-me/rainbowkit'
 import '@rainbow-me/rainbowkit/styles.css'
 import {
+  binanceWallet,
+  bitgetWallet,
   braveWallet,
   coinbaseWallet,
   injectedWallet,
@@ -17,7 +19,6 @@ import {
   walletConnectWallet,
 } from '@rainbow-me/rainbowkit/wallets'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import React from 'react'
 import { ROUTES } from 'utils/constants'
 import { WagmiProvider, createConfig, fallback, http } from 'wagmi'
 import { arbitrum, base, mainnet } from 'wagmi/chains'
@@ -34,6 +35,8 @@ const connectors = connectorsForWallets(
         walletConnectWallet,
         coinbaseWallet,
         braveWallet,
+        bitgetWallet,
+        binanceWallet,
         rabbyWallet,
         safeWallet,
         ledgerWallet,

@@ -24,7 +24,11 @@ export default [
         type: 'tuple',
         internalType: 'struct IGovernanceDeployer.GovParams',
         components: [
-          { name: 'votingDelay', type: 'uint48', internalType: 'uint48' },
+          {
+            name: 'votingDelay',
+            type: 'uint48',
+            internalType: 'uint48',
+          },
           {
             name: 'votingPeriod',
             type: 'uint32',
@@ -57,10 +61,23 @@ export default [
         type: 'address',
         internalType: 'contract IVotes',
       },
+      {
+        name: 'deploymentNonce',
+        type: 'bytes32',
+        internalType: 'bytes32',
+      },
     ],
     outputs: [
-      { name: 'governor', type: 'address', internalType: 'address' },
-      { name: 'timelock', type: 'address', internalType: 'address' },
+      {
+        name: 'governor',
+        type: 'address',
+        internalType: 'address',
+      },
+      {
+        name: 'timelock',
+        type: 'address',
+        internalType: 'address',
+      },
     ],
     stateMutability: 'nonpayable',
   },
@@ -68,8 +85,16 @@ export default [
     type: 'function',
     name: 'deployGovernedStakingToken',
     inputs: [
-      { name: 'name', type: 'string', internalType: 'string' },
-      { name: 'symbol', type: 'string', internalType: 'string' },
+      {
+        name: 'name',
+        type: 'string',
+        internalType: 'string',
+      },
+      {
+        name: 'symbol',
+        type: 'string',
+        internalType: 'string',
+      },
       {
         name: 'underlying',
         type: 'address',
@@ -80,7 +105,11 @@ export default [
         type: 'tuple',
         internalType: 'struct IGovernanceDeployer.GovParams',
         components: [
-          { name: 'votingDelay', type: 'uint48', internalType: 'uint48' },
+          {
+            name: 'votingDelay',
+            type: 'uint48',
+            internalType: 'uint48',
+          },
           {
             name: 'votingPeriod',
             type: 'uint32',
@@ -108,6 +137,11 @@ export default [
           },
         ],
       },
+      {
+        name: 'deploymentNonce',
+        type: 'bytes32',
+        internalType: 'bytes32',
+      },
     ],
     outputs: [
       {
@@ -115,8 +149,16 @@ export default [
         type: 'address',
         internalType: 'contract StakingVault',
       },
-      { name: 'governor', type: 'address', internalType: 'address' },
-      { name: 'timelock', type: 'address', internalType: 'address' },
+      {
+        name: 'governor',
+        type: 'address',
+        internalType: 'address',
+      },
+      {
+        name: 'timelock',
+        type: 'address',
+        internalType: 'address',
+      },
     ],
     stateMutability: 'nonpayable',
   },
@@ -124,21 +166,39 @@ export default [
     type: 'function',
     name: 'governorImplementation',
     inputs: [],
-    outputs: [{ name: '', type: 'address', internalType: 'address' }],
+    outputs: [
+      {
+        name: '',
+        type: 'address',
+        internalType: 'address',
+      },
+    ],
     stateMutability: 'view',
   },
   {
     type: 'function',
     name: 'timelockImplementation',
     inputs: [],
-    outputs: [{ name: '', type: 'address', internalType: 'address' }],
+    outputs: [
+      {
+        name: '',
+        type: 'address',
+        internalType: 'address',
+      },
+    ],
     stateMutability: 'view',
   },
   {
     type: 'function',
     name: 'version',
     inputs: [],
-    outputs: [{ name: '', type: 'string', internalType: 'string' }],
+    outputs: [
+      {
+        name: '',
+        type: 'string',
+        internalType: 'string',
+      },
+    ],
     stateMutability: 'pure',
   },
   {
@@ -197,13 +257,25 @@ export default [
     ],
     anonymous: false,
   },
-  { type: 'error', name: 'FailedDeployment', inputs: [] },
+  {
+    type: 'error',
+    name: 'FailedDeployment',
+    inputs: [],
+  },
   {
     type: 'error',
     name: 'InsufficientBalance',
     inputs: [
-      { name: 'balance', type: 'uint256', internalType: 'uint256' },
-      { name: 'needed', type: 'uint256', internalType: 'uint256' },
+      {
+        name: 'balance',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+      {
+        name: 'needed',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
     ],
   },
 ] as const
