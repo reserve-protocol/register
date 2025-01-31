@@ -15,6 +15,17 @@ import { Link } from 'react-router-dom'
 import { dtfTradesByProposalAtom, TradesByProposal } from '../atoms'
 import AuctionList from './auction-list'
 import AuctionOverview from './auctions-overview'
+import Spinner from '@/components/ui/spinner'
+import { Button } from '@/components/ui/button'
+import {
+  Table,
+  TableCell,
+  TableBody,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
+import ProposalTradesSkeleton from './proposal-trades-skeleton'
 
 const ProposalTradeHeader = ({ data }: { data: TradesByProposal }) => {
   const chainId = useAtomValue(chainIdAtom)
@@ -73,15 +84,13 @@ const ProposalTradeItem = ({ data }: { data: TradesByProposal }) => {
 const ProposalTradesList = () => {
   const tradesByProposal = useAtomValue(dtfTradesByProposalAtom)
 
-  if (!tradesByProposal) return <Skeleton className="h-14" />
-
   return (
     <Accordion
       className="bg-secondary rounded-3xl h-fit"
       type="single"
       collapsible
     >
-      {tradesByProposal.map((value) => (
+      {tradesByProposal?.map((value) => (
         <ProposalTradeItem key={value.proposal.id} data={value} />
       ))}
     </Accordion>
@@ -89,8 +98,18 @@ const ProposalTradesList = () => {
 }
 
 const ProposalTrades = () => {
+  const tradesByProposal = useAtomValue(dtfTradesByProposalAtom)
+
+  if (!tradesByProposal || tradesByProposal.length === 0)
+    return (
+      <ProposalTradesSkeleton
+        loading={!tradesByProposal}
+        empty={tradesByProposal?.length === 0}
+      />
+    )
+
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-2 ml-2 lg:ml-0 mr-2">
+    <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-2 ml-2 lg:ml-0 mr-2 mb-5">
       <ProposalTradesList />
       <AuctionOverview />
     </div>
