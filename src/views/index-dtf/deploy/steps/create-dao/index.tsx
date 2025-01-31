@@ -8,8 +8,11 @@ import { useFormContext } from 'react-hook-form'
 import {
   erc20Abi,
   isAddress,
+  keccak256,
   parseEther,
   parseEventLogs,
+  toBytes,
+  toHex,
   zeroAddress,
 } from 'viem'
 import {
@@ -23,6 +26,7 @@ import {
   daoTokenSymbolAtom,
   formReadyForSubmitAtom,
 } from '../../atoms'
+import { getCurrentTime } from '@/utils'
 
 const CreateDAO = () => {
   const chainId = useAtomValue(chainIdAtom)
@@ -81,6 +85,7 @@ const CreateDAO = () => {
           timelockDelay: BigInt(Math.floor(basketExecutionDelay!) * 60),
           guardians,
         },
+        keccak256(toBytes(getCurrentTime())),
       ],
     })
   }

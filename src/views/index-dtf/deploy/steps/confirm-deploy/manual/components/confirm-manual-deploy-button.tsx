@@ -2,6 +2,7 @@ import dtfIndexDeployerAbi from '@/abis/dtf-index-deployer-abi'
 import TransactionButton from '@/components/old/button/TransactionButton'
 import useContractWrite from '@/hooks/useContractWrite'
 import { chainIdAtom, walletAtom } from '@/state/atoms'
+import { getCurrentTime } from '@/utils'
 import { INDEX_DEPLOYER_ADDRESS } from '@/utils/addresses'
 import {
   basketAtom,
@@ -12,7 +13,19 @@ import {
 import { calculateRevenueDistribution } from '@/views/index-dtf/deploy/utils'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
-import { Address, parseEther, parseEventLogs, parseUnits } from 'viem'
+import {
+  Address,
+  Hex,
+  keccak256,
+  numberToBytes,
+  parseEther,
+  parseEventLogs,
+  parseUnits,
+  toBytes,
+  toHex,
+  zeroAddress,
+} from 'viem'
+
 import { useWaitForTransactionReceipt } from 'wagmi'
 import { indexDeployFormDataAtom } from '../../atoms'
 import {
@@ -65,6 +78,7 @@ type DeployParams = [
   GovernanceConfig,
   GovernanceConfig,
   GovernanceRoles,
+  Hex,
 ]
 
 type DeployParamsUngoverned = [
@@ -74,6 +88,7 @@ type DeployParamsUngoverned = [
   Address[],
   Address[],
   Address[],
+  Hex,
 ]
 
 const txAtom = atom<
@@ -151,6 +166,7 @@ const txAtom = atom<
       [],
       [...auctionLaunchers],
       [...brandManagers],
+      keccak256(toBytes(getCurrentTime())),
     ]
 
     return {
@@ -230,6 +246,7 @@ const txAtom = atom<
       auctionLaunchers,
       brandManagers,
     },
+    keccak256(toBytes(getCurrentTime())),
   ]
 
   return {
@@ -253,6 +270,8 @@ const ConfirmManualDeployButton = () => {
   const { data: receipt, error: txError } = useWaitForTransactionReceipt({
     hash,
   })
+
+  console.log('validation error', validationError)
 
   useEffect(() => {
     if (receipt) {
