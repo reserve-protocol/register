@@ -16,6 +16,7 @@ import ConfirmIndexDeploy from '../steps/confirm-deploy'
 import CreateDAO from '../steps/create-dao'
 import ExplorerAddress from '@/components/utils/explorer-address'
 import { chainIdAtom } from '@/state/atoms'
+import { DISCORD_INVITE, INDEX_PROTOCOL_DOCS } from '@/utils/constants'
 
 const IndexTokenGraphic = () => {
   return (
@@ -116,13 +117,21 @@ const HelpText = () => {
         </span>
       </div>
       <div className="flex gap-2">
-        <SocialMediaLink href="" icon={<DiscordIcon />} title="Discord" />
-        <SocialMediaLink href="" icon={<RTokenIcon />} title="Docs" />
         <SocialMediaLink
+          href={DISCORD_INVITE}
+          icon={<DiscordIcon />}
+          title="Discord"
+        />
+        <SocialMediaLink
+          href={INDEX_PROTOCOL_DOCS}
+          icon={<RTokenIcon />}
+          title="Docs"
+        />
+        {/* <SocialMediaLink
           href=""
           icon={<PlayIcon size={16} />}
           title="Tutorial"
-        />
+        /> */}
       </div>
     </div>
   )
