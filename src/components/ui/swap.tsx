@@ -6,13 +6,15 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { NumericalInput } from '@/components/ui/input'
+import { Input, NumericalInput } from '@/components/ui/input'
 import { chainIdAtom } from '@/state/atoms'
 import { Token } from '@/types'
 import { formatCurrency } from '@/utils'
 import { useAtomValue } from 'jotai'
 import { ArrowDown, ChevronDown, ChevronUp } from 'lucide-react'
-import React from 'react'
+import React, { useState } from 'react'
+import { ToggleGroup, ToggleGroupItem } from './toggle-group'
+import GaugeIcon from '../icons/GaugeIcon'
 
 type TokenWithBalance = Token & { balance?: string }
 
@@ -201,6 +203,72 @@ const ArrowSeparator = () => (
     <ArrowDown size={16} />
   </div>
 )
+
+export const SlippageSelector = ({
+  value,
+  onChange,
+  options = ['100', '200', '1000'],
+  formatOption = (option) => `${(1 / Number(option)) * 100}%`,
+}: {
+  value: string
+  onChange: (value: string) => void
+  options?: string[]
+  formatOption?: (option: string) => string
+}) => {
+  const [customValue, setCustomValue] = useState('')
+
+  const handleCustomChange = (value: string) => {
+    try {
+      const parsedValue = 1 / (Number(value) / 100)
+      setCustomValue(value)
+      onChange(parsedValue.toString())
+    } catch (error) {
+      setCustomValue(value)
+    }
+  }
+
+  const onSelectOption = (value: string) => {
+    onChange(value)
+    setCustomValue('')
+  }
+
+  return (
+    <div className="flex items-center gap-2 p-2 rounded-xl bg-muted justify-between">
+      <div className="flex items-center gap-1">
+        <GaugeIcon height={16} width={16} />
+        <div className="text-sm font-semibold">Max slippage</div>
+      </div>
+      <div className="flex items-center gap-2">
+        <ToggleGroup
+          type="single"
+          className="bg-muted-foreground/10 p-1 rounded-lg justify-start w-max"
+          value={customValue ? '' : value}
+          onValueChange={onSelectOption}
+        >
+          {options.map((option) => (
+            <ToggleGroupItem
+              key={option}
+              value={option.toString()}
+              aria-label={`Toggle ${option}`}
+              className="px-3 rounded-md data-[state=on]:bg-card text-secondary-foreground/80 data-[state=on]:text-primary"
+              size="xs"
+            >
+              {formatOption(option)}
+            </ToggleGroupItem>
+          ))}
+        </ToggleGroup>
+        <div className="w-20" role="button">
+          <Input
+            placeholder="Custom"
+            className="h-9 px-[10px] rounded-lg text-base [&:focus::placeholder]:opacity-0 [&:focus::placeholder]:transition-opacity focus-visible:ring-0 focus-visible:ring-offset-0 focus:border-transparent active:border-transparent"
+            value={customValue}
+            onChange={(e) => handleCustomChange(e.target.value)}
+          />
+        </div>
+      </div>
+    </div>
+  )
+}
 
 const Swap = (props: SwapProps) => {
   return (

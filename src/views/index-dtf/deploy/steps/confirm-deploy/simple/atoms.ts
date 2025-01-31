@@ -20,6 +20,7 @@ import { atomWithReset } from 'jotai/utils'
 
 export const inputTokenAtom = atom<Token | undefined>(undefined)
 export const inputAmountAtom = atomWithReset<string>('')
+export const slippageAtom = atomWithReset<string>('100')
 
 export const defaultInputTokenAtom = atom<Token>((get) => {
   const chainId = get(chainIdAtom)
@@ -52,6 +53,7 @@ export const zapDeployPayloadAtom = atom<
   const stToken = get(daoTokenAddressAtom)
   const basket = get(basketAtom)
   const wallet = get(walletAtom)
+  const slippage = get(slippageAtom)
 
   if (!formData || !initialTokens || !wallet || !Number(amountIn))
     return undefined
@@ -60,7 +62,7 @@ export const zapDeployPayloadAtom = atom<
     tokenIn: tokenIn.address,
     amountIn: parseUnits(amountIn, tokenIn.decimals).toString(),
     signer: wallet,
-    slippage: undefined, // TODO: add
+    slippage: slippage ? Number(slippage) : undefined,
   }
 
   const basicDetails = {
