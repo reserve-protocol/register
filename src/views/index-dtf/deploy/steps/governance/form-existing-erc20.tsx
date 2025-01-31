@@ -15,7 +15,7 @@ const LaunchTokenBanner = () => {
       <div className="flex items-center gap-2">
         <img
           alt="hero-splash"
-          src="https://storage.reserve.org/tokens.png"
+          src="https://storage.reserve.org/ape-store.png"
           className="h-5"
         />
         <div>
