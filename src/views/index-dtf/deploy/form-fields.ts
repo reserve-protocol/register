@@ -1,6 +1,11 @@
 import { isAddress } from 'viem'
 import { z } from 'zod'
-import { isERC20, isNotStRSR, isVoteLockAddress } from './utils'
+import {
+  isERC20,
+  isNotStRSR,
+  noSpecialCharacters,
+  isVoteLockAddress,
+} from './utils'
 
 export type DeployStepId =
   | 'metadata'
@@ -79,12 +84,20 @@ export const dtfDeploySteps: Record<DeployStepId, { fields: string[] }> = {
 
 export const DeployFormSchema = z
   .object({
-    name: z.string().min(1, 'Token name is required'),
+    name: z
+      .string()
+      .min(1, 'Token name is required')
+      .refine(noSpecialCharacters, {
+        message: 'Token name cannot contain special characters or emojis',
+      }),
     symbol: z
       .string()
       .min(1, 'Token symbol is required')
       .refine((value) => !value.includes(' '), {
         message: 'Token symbol cannot contain spaces',
+      })
+      .refine(noSpecialCharacters, {
+        message: 'Token symbol cannot contain special characters or emojis',
       }),
     mandate: z.string().optional(),
     initialValue: z.coerce.number().positive('Initial value must be positive'),
