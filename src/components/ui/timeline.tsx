@@ -5,7 +5,7 @@ import { ReactNode } from 'react'
 interface TimelineItem {
   title: string
   isActive?: boolean
-  rightText?: string
+  rightText?: ReactNode
   children?: ReactNode
   isCompleted?: boolean
 }
@@ -50,9 +50,9 @@ const Timeline = ({ items }: TimelineProps) => {
                   </div>
                 ) : (
                   <>
-                    <span className="text-base">{item.title}</span>
+                    <div className="text-base">{item.title}</div>
                     {item.rightText && (
-                      <span className="text-gray-500">{item.rightText}</span>
+                      <div className="text-gray-500">{item.rightText}</div>
                     )}
                   </>
                 )}

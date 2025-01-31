@@ -71,7 +71,7 @@ const SuccessView = () => {
   }
 
   return (
-    <div className="flex flex-col items-center justify-end h-full bg-[url('https://storage.reserve.org/bigbang.png')] bg-no-repeat bg-contain">
+    <div className="flex flex-col items-center justify-end h-full bg-[url('https://storage.reserve.org/bigbang.png')] bg-no-repeat bg-cover bg-center">
       <div className="rounded-2xl bg-card w-full">
         <div className="p-6 flex flex-col gap-4">
           <div className="flex flex-col gap-3 text-primary">

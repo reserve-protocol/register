@@ -63,7 +63,7 @@ const CreateDAO = () => {
       formData.basketVotingQuorum || formData.customBasketVotingQuorum
     const basketExecutionDelay =
       formData.basketExecutionDelay || formData.customBasketExecutionDelay
-    const guardianAddress = formData.guardianAddress
+    const guardians = formData.guardians.filter(Boolean)
 
     writeContract({
       address: INDEX_GOVERNANCE_DEPLOYER_ADDRESS[chainId],
@@ -79,7 +79,7 @@ const CreateDAO = () => {
           proposalThreshold: parseEther(basketVotingThreshold!.toString()),
           quorumPercent: BigInt(Math.floor(basketVotingQuorum!)),
           timelockDelay: BigInt(Math.floor(basketExecutionDelay!) * 60),
-          guardians: [guardianAddress ?? zeroAddress],
+          guardians,
         },
       ],
     })

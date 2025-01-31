@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button'
-import Swap from '@/components/ui/swap'
+import Swap, { SlippageSelector } from '@/components/ui/swap'
 import { useChainlinkPrice } from '@/hooks/useChainlinkPrice'
 import useDebounce from '@/hooks/useDebounce'
 import { useZapDeployQuery } from '@/hooks/useZapDeployQuery'
@@ -16,6 +16,7 @@ import {
   inputAmountAtom,
   inputBalanceAtom,
   inputTokenAtom,
+  slippageAtom,
   tokensAtom,
   zapDeployPayloadAtom,
 } from './atoms'
@@ -48,6 +49,7 @@ const SimpleIndexDeploy = () => {
   const defaultInputToken = useAtomValue(defaultInputTokenAtom)
   const form = useAtomValue(indexDeployFormDataAtom)
   const [inputAmount, setInputAmount] = useAtom(inputAmountAtom)
+  const [slippage, setSlippage] = useAtom(slippageAtom)
   const zapDeployPayload = useAtomValue(zapDeployPayloadAtom)
   const tokens = useAtomValue(tokensAtom)
 
@@ -88,7 +90,7 @@ const SimpleIndexDeploy = () => {
           </h4>
           <RefreshQuote onClick={refetch} disabled={isFetching} />
         </div>
-        <div className="px-2">
+        <div className="flex flex-col gap-1 px-2">
           <Swap
             from={{
               price: `$${formatCurrency(inputPrice)}`,
@@ -107,7 +109,8 @@ const SimpleIndexDeploy = () => {
               symbol: form.symbol,
               value: formatEther(BigInt(valueTo || 0)),
             }}
-          />{' '}
+          />
+          <SlippageSelector value={slippage} onChange={setSlippage} />
         </div>
       </div>
       <div className="p-2 pb-4">

@@ -1,6 +1,11 @@
 import { isAddress } from 'viem'
 import { z } from 'zod'
-import { isERC20, isNotStRSR, isVoteLockAddress } from './utils'
+import {
+  isERC20,
+  isNotStRSR,
+  noSpecialCharacters,
+  isVoteLockAddress,
+} from './utils'
 
 export type DeployStepId =
   | 'metadata'
@@ -42,14 +47,12 @@ export const dtfDeploySteps: Record<DeployStepId, { fields: string[] }> = {
     fields: [
       'auctionLength',
       'auctionDelay',
-      'auctionLauncher',
       'customAuctionLength',
       'customAuctionDelay',
-      'additionalAuctionLaunchers',
     ],
   },
   roles: {
-    fields: ['guardianAddress', 'brandManagerAddress'],
+    fields: ['guardians', 'brandManagers', 'auctionLaunchers'],
   },
   'basket-changes': {
     fields: [
@@ -79,12 +82,20 @@ export const dtfDeploySteps: Record<DeployStepId, { fields: string[] }> = {
 
 export const DeployFormSchema = z
   .object({
-    name: z.string().min(1, 'Token name is required'),
+    name: z
+      .string()
+      .min(1, 'Token name is required')
+      .refine(noSpecialCharacters, {
+        message: 'Token name cannot contain special characters or emojis',
+      }),
     symbol: z
       .string()
       .min(1, 'Token symbol is required')
       .refine((value) => !value.includes(' '), {
         message: 'Token symbol cannot contain spaces',
+      })
+      .refine(noSpecialCharacters, {
+        message: 'Token symbol cannot contain special characters or emojis',
       }),
     mandate: z.string().optional(),
     initialValue: z.coerce.number().positive('Initial value must be positive'),
@@ -146,23 +157,17 @@ export const DeployFormSchema = z
       .optional(),
     auctionLength: z.coerce.number().min(0).optional(),
     auctionDelay: z.coerce.number().min(0).optional(),
-    auctionLauncher: z
-      .string()
-      .refine(isAddress, { message: 'Invalid Address' })
-      .optional(),
     customAuctionLength: z.coerce.number().min(1).max(10080).optional(),
     customAuctionDelay: z.coerce.number().min(0).max(10080).optional(),
-    additionalAuctionLaunchers: z.array(
-      z.string().refine(isAddress, { message: 'Invalid Address' })
+    guardians: z.array(
+      z.string().refine(isAddress, { message: 'Invalid Address' }).optional()
     ),
-    guardianAddress: z
-      .string()
-      .refine(isAddress, { message: 'Invalid Address' })
-      .optional(),
-    brandManagerAddress: z
-      .string()
-      .refine(isAddress, { message: 'Invalid Address' })
-      .optional(),
+    brandManagers: z.array(
+      z.string().refine(isAddress, { message: 'Invalid Address' }).optional()
+    ),
+    auctionLaunchers: z.array(
+      z.string().refine(isAddress, { message: 'Invalid Address' }).optional()
+    ),
     basketVotingDelay: z.coerce.number().min(0).optional(),
     customBasketVotingDelay: z.coerce.number().min(0).optional(),
     basketVotingPeriod: z.coerce.number().min(0).optional(),
@@ -365,12 +370,11 @@ export const dtfDeployDefaultValues = {
   additionalRevenueRecipients: [],
   auctionLength: 15,
   auctionDelay: 15,
-  auctionLauncher: undefined,
   customAuctionLength: undefined,
   customAuctionDelay: undefined,
-  additionalAuctionLaunchers: [],
-  guardianAddress: undefined,
-  brandManagerAddress: undefined,
+  guardians: [],
+  brandManagers: [],
+  auctionLaunchers: [],
   basketVotingDelay: 20,
   customBasketVotingDelay: undefined,
   basketVotingPeriod: 20,

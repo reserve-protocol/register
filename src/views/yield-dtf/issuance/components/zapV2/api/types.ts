@@ -6,10 +6,10 @@ export type GovParamsJson = {
   proposalThreshold: string
   quorumPercent: string
   timelockDelay: string
-  guardian: Address
+  guardians: Address[]
 }
 
-export interface ZapDeployBody {
+interface BaseZapDeployBody {
   tokenIn: Address
   amountIn: string
   signer: Address
@@ -17,7 +17,6 @@ export interface ZapDeployBody {
   recipient?: Address // defaults to signer
   dustRecipient?: Address // defaults to recipient
 
-  stToken: Address
   basicDetails: {
     // token quantities pr 1 share of output
     assets: Address[]
@@ -25,6 +24,7 @@ export interface ZapDeployBody {
     name: string
     symbol: string
   }
+
   additionalDetails: {
     tradeDelay: string
     auctionLength: string
@@ -32,45 +32,22 @@ export interface ZapDeployBody {
       recipient: Address
       portion: string
     }[]
-    tvlFee: string
-    mintFee: string
+    folioFee: string
+    mintingFee: string
     mandate: string
   }
+
+  tradeLaunchers: Address[]
+  vibesOfficers: Address[]
+  existingAuctionApprovers: Address[]
+}
+
+export interface ZapDeployBody extends BaseZapDeployBody {
+  stToken: Address
   ownerGovParams: GovParamsJson
   tradingGovParams: GovParamsJson
-  existingAuctionApprovers: Address[]
-  auctionLaunchers: Address[]
-  brandManagers: Address[]
 }
 
-export interface ZapDeployUngovernedBody {
-  tokenIn: Address
-  amountIn: string
-  signer: Address
-  slippage?: number // default value => 0.001 or 0.1%
-  recipient?: Address // defaults to signer
-  dustRecipient?: Address // defaults to recipient
-
+export interface ZapDeployUngovernedBody extends BaseZapDeployBody {
   owner: Address
-  basicDetails: {
-    // token quantities pr 1 share of output
-    assets: Address[]
-    amounts: string[]
-    name: string
-    symbol: string
-  }
-  additionalDetails: {
-    tradeDelay: string
-    auctionLength: string
-    feeRecipients: {
-      recipient: Address
-      portion: string
-    }[]
-    tvlFee: string
-    mintFee: string
-    mandate: string
-  }
-  existingAuctionApprovers: Address[]
-  auctionLaunchers: Address[]
-  brandManagers: Address[]
 }

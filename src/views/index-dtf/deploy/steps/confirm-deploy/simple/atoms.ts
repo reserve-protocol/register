@@ -11,15 +11,16 @@ import {
 } from '@/views/yield-dtf/issuance/components/zapV2/api/types'
 import { zappableTokens } from '@/views/yield-dtf/issuance/components/zapV2/constants'
 import { atom } from 'jotai'
-import { Address, parseEther, parseUnits, zeroAddress } from 'viem'
+import { atomWithReset } from 'jotai/utils'
+import { Address, parseEther, parseUnits } from 'viem'
 import { basketAtom, daoTokenAddressAtom } from '../../../atoms'
 import { calculateRevenueDistribution } from '../../../utils'
 import { indexDeployFormDataAtom } from '../atoms'
 import { basketRequiredAmountsAtom, initialTokensAtom } from '../manual/atoms'
-import { atomWithReset } from 'jotai/utils'
 
 export const inputTokenAtom = atom<Token | undefined>(undefined)
 export const inputAmountAtom = atomWithReset<string>('')
+export const slippageAtom = atomWithReset<string>('100')
 
 export const defaultInputTokenAtom = atom<Token>((get) => {
   const chainId = get(chainIdAtom)
@@ -52,6 +53,7 @@ export const zapDeployPayloadAtom = atom<
   const stToken = get(daoTokenAddressAtom)
   const basket = get(basketAtom)
   const wallet = get(walletAtom)
+  const slippage = get(slippageAtom)
 
   if (!formData || !initialTokens || !wallet || !Number(amountIn))
     return undefined
@@ -60,7 +62,7 @@ export const zapDeployPayloadAtom = atom<
     tokenIn: tokenIn.address,
     amountIn: parseUnits(amountIn, tokenIn.decimals).toString(),
     signer: wallet,
-    slippage: undefined, // TODO: add
+    slippage: slippage ? Number(slippage) : undefined,
   }
 
   const basicDetails = {
@@ -89,23 +91,21 @@ export const zapDeployPayloadAtom = atom<
     feeRecipients: calculateRevenueDistribution(formData, wallet, stToken).map(
       ({ recipient, portion }) => ({ recipient, portion: portion.toString() })
     ),
-    tvlFee: parseEther(
+    folioFee: parseEther(
       ((formData.folioFee || formData.customFolioFee || 0)! / 100).toString()
     ).toString(),
-    mintFee: parseEther(
+    mintingFee: parseEther(
       ((formData.mintFee || formData.customMintFee || 0)! / 100).toString()
     ).toString(),
     mandate: formData.mandate || '',
   }
 
+  const guardians = formData.guardians.filter(Boolean) as Address[]
+  const brandManagers = formData.brandManagers.filter(Boolean) as Address[]
+  const auctionLaunchers = formData.auctionLaunchers.filter(
+    Boolean
+  ) as Address[]
   const existingAuctionApprovers = [] as Address[]
-  const auctionLaunchers = [
-    ...(formData.auctionLauncher ? [formData.auctionLauncher!] : []),
-    ...(formData.additionalAuctionLaunchers ?? []),
-  ]
-  const brandManagers = [
-    ...(formData.brandManagerAddress ? [formData.brandManagerAddress!] : []),
-  ]
 
   // Ungoverned DTF
   if (!stToken) {
@@ -118,8 +118,8 @@ export const zapDeployPayloadAtom = atom<
       basicDetails,
       additionalDetails,
       existingAuctionApprovers,
-      auctionLaunchers,
-      brandManagers,
+      tradeLaunchers: auctionLaunchers,
+      vibesOfficers: brandManagers,
     }
   }
 
@@ -154,7 +154,7 @@ export const zapDeployPayloadAtom = atom<
           0)! * 60
       )
     ).toString(),
-    guardian: formData.guardianAddress ?? zeroAddress,
+    guardians,
   }
 
   const tradingGovParams = {
@@ -183,7 +183,7 @@ export const zapDeployPayloadAtom = atom<
           0)! * 60
       )
     ).toString(),
-    guardian: formData.guardianAddress ?? zeroAddress,
+    guardians,
   }
 
   return {
@@ -194,7 +194,7 @@ export const zapDeployPayloadAtom = atom<
     ownerGovParams,
     tradingGovParams,
     existingAuctionApprovers,
-    auctionLaunchers,
-    brandManagers,
+    tradeLaunchers: auctionLaunchers,
+    vibesOfficers: brandManagers,
   }
 })

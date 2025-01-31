@@ -12,13 +12,7 @@ import {
 import { calculateRevenueDistribution } from '@/views/index-dtf/deploy/utils'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
-import {
-  Address,
-  parseEther,
-  parseEventLogs,
-  parseUnits,
-  zeroAddress,
-} from 'viem'
+import { Address, parseEther, parseEventLogs, parseUnits } from 'viem'
 import { useWaitForTransactionReceipt } from 'wagmi'
 import { indexDeployFormDataAtom } from '../../atoms'
 import {
@@ -138,6 +132,12 @@ const txAtom = atom<
     mandate: formData.mandate || '',
   }
 
+  const guardians = formData.guardians.filter(Boolean) as Address[]
+  const brandManagers = formData.brandManagers.filter(Boolean) as Address[]
+  const auctionLaunchers = formData.auctionLaunchers.filter(
+    Boolean
+  ) as Address[]
+
   if (!stToken) {
     const owner = formData.governanceWalletAddress
 
@@ -149,15 +149,8 @@ const txAtom = atom<
       folioConfig,
       owner,
       [],
-      [
-        ...(formData.auctionLauncher ? [formData.auctionLauncher!] : []),
-        ...(formData.additionalAuctionLaunchers ?? []),
-      ],
-      [
-        ...(formData.brandManagerAddress
-          ? [formData.brandManagerAddress!]
-          : []),
-      ],
+      [...auctionLaunchers],
+      [...brandManagers],
     ]
 
     return {
@@ -196,7 +189,7 @@ const txAtom = atom<
           0)! * 60
       )
     ),
-    guardians: [formData.guardianAddress ?? zeroAddress],
+    guardians,
   }
 
   const tradingGovernanceConfig: GovernanceConfig = {
@@ -223,7 +216,7 @@ const txAtom = atom<
           0)! * 60
       )
     ),
-    guardians: [formData.guardianAddress ?? zeroAddress],
+    guardians,
   }
 
   const args: DeployParams = [
@@ -234,15 +227,8 @@ const txAtom = atom<
     tradingGovernanceConfig,
     {
       existingAuctionApprovers: [],
-      auctionLaunchers: [
-        ...(formData.auctionLauncher ? [formData.auctionLauncher!] : []),
-        ...(formData.additionalAuctionLaunchers ?? []),
-      ],
-      brandManagers: [
-        ...(formData.brandManagerAddress
-          ? [formData.brandManagerAddress!]
-          : []),
-      ],
+      auctionLaunchers,
+      brandManagers,
     },
   ]
 
@@ -258,6 +244,7 @@ const ConfirmManualDeployButton = () => {
   const tx = useAtomValue(txAtom)
   const daoCreated = useAtomValue(daoCreatedAtom)
   const hasAssetsAllowance = useAtomValue(hasAssetsAllowanceAtom)
+  console.log('hasAssetsAllowance', hasAssetsAllowance)
   const setDeployedDTF = useSetAtom(deployedDTFAtom)
 
   const { isReady, gas, hash, validationError, error, isLoading, write } =
