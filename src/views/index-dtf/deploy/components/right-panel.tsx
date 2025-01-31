@@ -6,6 +6,7 @@ import { Asterisk, PlayIcon } from 'lucide-react'
 import { ReactNode } from 'react'
 import {
   daoCreatedAtom,
+  daoTokenAddressAtom,
   daoTokenSymbolAtom,
   deployedDTFAtom,
   formReadyForSubmitAtom,
@@ -13,6 +14,8 @@ import {
 } from '../atoms'
 import ConfirmIndexDeploy from '../steps/confirm-deploy'
 import CreateDAO from '../steps/create-dao'
+import ExplorerAddress from '@/components/utils/explorer-address'
+import { chainIdAtom } from '@/state/atoms'
 
 const IndexTokenGraphic = () => {
   return (
@@ -21,10 +24,12 @@ const IndexTokenGraphic = () => {
 }
 
 const DeployTimeline = () => {
+  const chainId = useAtomValue(chainIdAtom)
   const formReadyForSubmit = useAtomValue(formReadyForSubmitAtom)
   const showCreateGovernanceDAO =
     useAtomValue(selectedGovernanceOptionAtom) === 'governanceERC20address'
   const daoCreated = useAtomValue(daoCreatedAtom)
+  const stTokenAddress = useAtomValue(daoTokenAddressAtom)
   const stTokenSymbol = useAtomValue(daoTokenSymbolAtom)
   const deployedDTF = useAtomValue(deployedDTFAtom)
 
@@ -41,6 +46,10 @@ const DeployTimeline = () => {
                 ? `Created ${stTokenSymbol} DAO`
                 : 'Governance DAO created'
               : 'Sign tx to create governance DAO',
+            rightText:
+              daoCreated && stTokenAddress ? (
+                <ExplorerAddress address={stTokenAddress} chain={chainId} />
+              ) : undefined,
             children: !daoCreated && <CreateDAO />,
             isActive: formReadyForSubmit,
           },
