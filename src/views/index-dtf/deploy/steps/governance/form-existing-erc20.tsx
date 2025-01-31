@@ -10,12 +10,16 @@ const LaunchTokenBanner = () => {
     <div
       className="flex items-center gap-2 justify-between"
       role="button"
-      onClick={() => window.open('https://ape.store/')}
+      onClick={() =>
+        window.open(
+          'https://www.createmytoken.com/token-generator/create-token-on-base/'
+        )
+      }
     >
       <div className="flex items-center gap-2">
         <img
           alt="hero-splash"
-          src="https://storage.reserve.org/ape-store.png"
+          src="https://storage.reserve.org/create-my-token.png"
           className="h-5"
         />
         <div>
@@ -24,7 +28,7 @@ const LaunchTokenBanner = () => {
           </div>
           <div className="text-muted-foreground">
             We recommend launching your new ERC20 toke on{' '}
-            <span className="text-primary">ape.store</span>
+            <span className="text-primary">CreateMyToken.com</span>
           </div>
         </div>
       </div>
@@ -47,7 +51,7 @@ const GovernanceExistingERC20 = () => {
   })
 
   return (
-    <div className="px-3">
+    <div className="px-4">
       <BasicInput
         fieldName="governanceERC20address"
         label={symbol || 'ERC20 address'}
