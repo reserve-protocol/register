@@ -1,8 +1,10 @@
 import DiscordIcon from '@/components/icons/DiscordIcon'
 import { RTokenIcon } from '@/components/icons/logos'
 import Timeline from '@/components/ui/timeline'
+import ExplorerAddress from '@/components/utils/explorer-address'
+import { chainIdAtom } from '@/state/atoms'
 import { useAtomValue } from 'jotai'
-import { Asterisk, PlayIcon } from 'lucide-react'
+import { Asterisk } from 'lucide-react'
 import { ReactNode } from 'react'
 import {
   daoCreatedAtom,
@@ -14,8 +16,6 @@ import {
 } from '../atoms'
 import ConfirmIndexDeploy from '../steps/confirm-deploy'
 import CreateDAO from '../steps/create-dao'
-import ExplorerAddress from '@/components/utils/explorer-address'
-import { chainIdAtom } from '@/state/atoms'
 import { DISCORD_INVITE, INDEX_PROTOCOL_DOCS } from '@/utils/constants'
 
 const IndexTokenGraphic = () => {
