@@ -11,12 +11,12 @@ import {
 } from '@/views/yield-dtf/issuance/components/zapV2/api/types'
 import { zappableTokens } from '@/views/yield-dtf/issuance/components/zapV2/constants'
 import { atom } from 'jotai'
-import { Address, parseEther, parseUnits, zeroAddress } from 'viem'
+import { atomWithReset } from 'jotai/utils'
+import { Address, parseEther, parseUnits } from 'viem'
 import { basketAtom, daoTokenAddressAtom } from '../../../atoms'
 import { calculateRevenueDistribution } from '../../../utils'
 import { indexDeployFormDataAtom } from '../atoms'
 import { basketRequiredAmountsAtom, initialTokensAtom } from '../manual/atoms'
-import { atomWithReset } from 'jotai/utils'
 
 export const inputTokenAtom = atom<Token | undefined>(undefined)
 export const inputAmountAtom = atomWithReset<string>('')
@@ -100,14 +100,12 @@ export const zapDeployPayloadAtom = atom<
     mandate: formData.mandate || '',
   }
 
+  const guardians = formData.guardians.filter(Boolean) as Address[]
+  const brandManagers = formData.brandManagers.filter(Boolean) as Address[]
+  const auctionLaunchers = formData.auctionLaunchers.filter(
+    Boolean
+  ) as Address[]
   const existingAuctionApprovers = [] as Address[]
-  const auctionLaunchers = [
-    ...(formData.auctionLauncher ? [formData.auctionLauncher!] : []),
-    ...(formData.additionalAuctionLaunchers ?? []),
-  ]
-  const brandManagers = [
-    ...(formData.brandManagerAddress ? [formData.brandManagerAddress!] : []),
-  ]
 
   // Ungoverned DTF
   if (!stToken) {
@@ -156,7 +154,7 @@ export const zapDeployPayloadAtom = atom<
           0)! * 60
       )
     ).toString(),
-    guardians: formData.guardianAddress ? [formData.guardianAddress] : [],
+    guardians,
   }
 
   const tradingGovParams = {
@@ -185,7 +183,7 @@ export const zapDeployPayloadAtom = atom<
           0)! * 60
       )
     ).toString(),
-    guardians: formData.guardianAddress ? [formData.guardianAddress] : [],
+    guardians,
   }
 
   return {

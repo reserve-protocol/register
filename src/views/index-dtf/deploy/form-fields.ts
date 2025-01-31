@@ -47,14 +47,12 @@ export const dtfDeploySteps: Record<DeployStepId, { fields: string[] }> = {
     fields: [
       'auctionLength',
       'auctionDelay',
-      'auctionLauncher',
       'customAuctionLength',
       'customAuctionDelay',
-      'additionalAuctionLaunchers',
     ],
   },
   roles: {
-    fields: ['guardianAddress', 'brandManagerAddress'],
+    fields: ['guardians', 'brandManagers', 'auctionLaunchers'],
   },
   'basket-changes': {
     fields: [
@@ -159,23 +157,17 @@ export const DeployFormSchema = z
       .optional(),
     auctionLength: z.coerce.number().min(0).optional(),
     auctionDelay: z.coerce.number().min(0).optional(),
-    auctionLauncher: z
-      .string()
-      .refine(isAddress, { message: 'Invalid Address' })
-      .optional(),
     customAuctionLength: z.coerce.number().min(1).max(10080).optional(),
     customAuctionDelay: z.coerce.number().min(0).max(10080).optional(),
-    additionalAuctionLaunchers: z.array(
-      z.string().refine(isAddress, { message: 'Invalid Address' })
+    guardians: z.array(
+      z.string().refine(isAddress, { message: 'Invalid Address' }).optional()
     ),
-    guardianAddress: z
-      .string()
-      .refine(isAddress, { message: 'Invalid Address' })
-      .optional(),
-    brandManagerAddress: z
-      .string()
-      .refine(isAddress, { message: 'Invalid Address' })
-      .optional(),
+    brandManagers: z.array(
+      z.string().refine(isAddress, { message: 'Invalid Address' }).optional()
+    ),
+    auctionLaunchers: z.array(
+      z.string().refine(isAddress, { message: 'Invalid Address' }).optional()
+    ),
     basketVotingDelay: z.coerce.number().min(0).optional(),
     customBasketVotingDelay: z.coerce.number().min(0).optional(),
     basketVotingPeriod: z.coerce.number().min(0).optional(),
@@ -378,12 +370,11 @@ export const dtfDeployDefaultValues = {
   additionalRevenueRecipients: [],
   auctionLength: 15,
   auctionDelay: 15,
-  auctionLauncher: undefined,
   customAuctionLength: undefined,
   customAuctionDelay: undefined,
-  additionalAuctionLaunchers: [],
-  guardianAddress: undefined,
-  brandManagerAddress: undefined,
+  guardians: [],
+  brandManagers: [],
+  auctionLaunchers: [],
   basketVotingDelay: 20,
   customBasketVotingDelay: undefined,
   basketVotingPeriod: 20,
