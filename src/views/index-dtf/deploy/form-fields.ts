@@ -6,7 +6,7 @@ import {
   noSpecialCharacters,
   isVoteLockAddress,
 } from './utils'
-import { Decimal } from 'decimal.js/decimal'
+import { Decimal } from './utils/decimals'
 
 export type DeployStepId =
   | 'metadata'
