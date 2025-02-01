@@ -125,6 +125,8 @@ const Heading = () => {
     isLoading,
   } = useProtocolMetrics()
 
+  const revenue = rsrStakerAnnualizedRevenue + rTokenAnnualizedRevenue
+
   return (
     <div className="absolute top-6 left-6 flex flex-col gap-2 text-white">
       <RootIcon />
@@ -140,19 +142,15 @@ const Heading = () => {
       <div className="flex gap-2 mt-2">
         <LeafIcon />
         <span>Annualized protocol revenue:</span>
-        {isLoading ? (
+        {isLoading || !revenue ? (
           <Skeleton className="h-6 w-14" />
         ) : (
           <span className="font-bold">
             $
-            {formatCurrency(
-              rsrStakerAnnualizedRevenue + rTokenAnnualizedRevenue,
-              1,
-              {
-                notation: 'compact',
-                compactDisplay: 'short',
-              }
-            )}
+            {formatCurrency(revenue, 1, {
+              notation: 'compact',
+              compactDisplay: 'short',
+            })}
           </span>
         )}
       </div>

@@ -1,9 +1,9 @@
-import Account from 'components/account'
-import ThemeColorMode from 'components/dark-mode-toggle/ThemeColorMode'
-import Brand from './Brand'
-import CoinbaseSubscribe from './CoinbaseSubscribe'
 // import HeaderMenu from './HeaderMenu'
-import BasketCubeIcon from '@/components/icons/BasketCubeIcon'
+import Binoculars from '@/components/icons/Binoculars'
+import CirclesIcon from '@/components/icons/CirclesIcon'
+import Money from '@/components/icons/Money'
+import RSRSquare from '@/components/icons/RSRSquare'
+import ReserveSquare from '@/components/icons/ReserveSquare'
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -12,7 +12,6 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
-  NavigationMenuViewport,
 } from '@/components/ui/navigation-menu'
 import { cn } from '@/lib/utils'
 import {
@@ -24,22 +23,9 @@ import {
   ROUTES,
 } from '@/utils/constants'
 import { t } from '@lingui/macro'
-import {
-  ArrowRight,
-  ArrowUpRight,
-  Asterisk,
-  DollarSign,
-  Rocket,
-  SquarePlus,
-} from 'lucide-react'
-import { ReactNode, useEffect, useMemo } from 'react'
-import { NavLink, useLocation } from 'react-router-dom'
-import RegisterHelp from './RegisterHelp'
-import Binoculars from '@/components/icons/Binoculars'
-import Money from '@/components/icons/Money'
-import CirclesIcon from '@/components/icons/CirclesIcon'
-import RSRSquare from '@/components/icons/RSRSquare'
-import ReserveSquare from '@/components/icons/ReserveSquare'
+import { ArrowRight, ArrowUpRight, Asterisk, SquarePlus } from 'lucide-react'
+import { useMemo } from 'react'
+import { NavLink } from 'react-router-dom'
 
 const REGISTER_MORE_LINKS = [
   {
@@ -89,7 +75,7 @@ const EXTERNAL_LINKS = [
   },
 ]
 
-const HeaderMenu = () => {
+const AppNavigation = () => {
   const menuItems = useMemo(
     () => [
       {
@@ -105,7 +91,7 @@ const HeaderMenu = () => {
       {
         label: t`Create new DTF`,
         icon: <SquarePlus strokeWidth={1.5} size={16} />,
-        to: ROUTES.DEPLOY,
+        to: ROUTES.DEPLOY_INDEX,
       },
     ],
     []
@@ -148,9 +134,9 @@ const HeaderMenu = () => {
               </div>
               {REGISTER_MORE_LINKS.map((item) => (
                 <NavigationMenuLink
+                  key={item.to}
                   asChild
-                  className="p-4 gap-2 flex items-center rounded-3xl bg-card"
-                  key={item.label}
+                  className="p-4 gap-2 flex items-center rounded-3xl bg-card border border-transparent hover:border-primary"
                 >
                   <NavLink to={item.to}>
                     <div className="bg-primary p-1 rounded-full text-primary-foreground">
@@ -171,7 +157,7 @@ const HeaderMenu = () => {
               <NavigationMenuLink
                 href={REGISTER_FEEDBACK}
                 target="_blank"
-                className="p-4 gap-2 flex items-center rounded-3xl bg-card"
+                className="p-4 gap-2 flex items-center rounded-3xl bg-card border border-transparent hover:border-primary"
               >
                 <div className="bg-primary p-1 rounded-full text-primary-foreground">
                   <Asterisk size={16} />
@@ -191,10 +177,10 @@ const HeaderMenu = () => {
               </div>
               {EXTERNAL_LINKS.map((item) => (
                 <NavigationMenuLink
+                  key={item.to}
                   href={item.to}
                   target="_blank"
-                  className="p-4 gap-2 flex items-center rounded-3xl bg-card"
-                  key={item.label}
+                  className="p-4 gap-2 flex items-center rounded-3xl bg-card border border-transparent hover:border-primary"
                 >
                   <div className="bg-primary p-1 rounded-full text-primary-foreground">
                     <Asterisk size={16} />
@@ -218,54 +204,4 @@ const HeaderMenu = () => {
   )
 }
 
-const Container = ({ children }: { children: ReactNode }) => {
-  // Check if the route is a "index-dtf" route
-  const { pathname } = useLocation()
-
-  const border = !pathname.includes('index-dtf') && pathname !== '/'
-
-  return (
-    <div className={cn('w-full flex-shrink-0', border && 'border-b')}>
-      {children}
-    </div>
-  )
-}
-
-/**
- * Application header
- */
-const AppHeader = () => {
-  // TODO: Temporal, force light mode
-  useEffect(() => {
-    document.documentElement.setAttribute('data-color-mode', 'light')
-    document.documentElement.classList.remove('dark')
-  }, [])
-
-  return (
-    <Container>
-      <div className="container flex items-center h-[56px] md:h-[72px] px-2 sm:px-6">
-        <Brand className="text-primary mr-4 cursor-pointer" />
-        <HeaderMenu />
-        {/* 
-        <ThemeColorMode
-          sx={{
-            display: ['none', 'flex'],
-            px: 2,
-            mr: 1,
-            py: '3px',
-            maxWidth: '32px',
-            borderRadius: '6px',
-            ml: 'auto',
-            cursor: 'pointer',
-            ':hover': {
-              backgroundColor: 'secondaryBackground',
-            },
-          }}
-        /> */}
-        <CoinbaseSubscribe mr="2" sx={{ display: ['none', 'none', 'block'] }} />
-        <Account />
-      </div>
-    </Container>
-  )
-}
-export default AppHeader
+export default AppNavigation

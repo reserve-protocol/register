@@ -12,11 +12,13 @@ import {
 } from 'recharts'
 import { Box, Card, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
-import { NETWORKS, capitalize } from 'utils/constants'
+import { DUNE_DASHBOARD, NETWORKS, capitalize } from 'utils/constants'
 import useHistoricalTVL from '@/views/home/hooks/useHistoricalTVL'
 import useProtocolMetrics from '@/views/home/hooks/useProtocolMetrics'
 import { Button } from '@/components/ui/button'
 import { ArrowRight, Play } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import tabIndex from '../assets/tab_index.jpg'
 
 const COLORS: Record<string, any> = {
   ethereum: {
@@ -126,10 +128,12 @@ const Heading = () => {
     isLoading,
   } = useProtocolMetrics()
 
+  const revenue = rsrStakerAnnualizedRevenue + rTokenAnnualizedRevenue
+
   return (
     <>
       <div className="absolute top-3 sm:top-8 left-3 sm:left-0 right-3 text-primary px-6 2xl:px-0">
-        <RootIcon className="border rounded-full h-[32px] w-[32px]" />
+        <img src={tabIndex} className="rounded-full h-4 w-4 sm:h-8 sm:w-8" />
         <h2 className="text-[22px] mt-6 mb-4 font-light leading-none">
           TVL in Reserve
         </h2>
@@ -140,31 +144,29 @@ const Heading = () => {
             <h3 className="text-[44px] sm:text-[60px] font-semibold leading-none">
               ${formatCurrency(tvl, 0)}
             </h3>
-            <Button
-              variant="none"
-              className="ml-3 w-[40px] h-[40px] sm:w-[44px] sm:h-[44px] p-0 bg-primary/10 text-primary hover:bg-primary/20"
-              size="icon-rounded"
-            >
-              <ArrowRight className="-rotate-45" size={24} />
-            </Button>
+            <Link target="_blank" to={DUNE_DASHBOARD}>
+              <Button
+                variant="none"
+                className="ml-3 w-[40px] h-[40px] sm:w-[44px] sm:h-[44px] p-0 bg-primary/10 text-primary hover:bg-primary/20"
+                size="icon-rounded"
+              >
+                <ArrowRight className="-rotate-45" size={24} />
+              </Button>
+            </Link>
           </div>
         )}
 
         <div className="flex justify-between sm:justify-start gap-2 mt-3 text-[22px] leading-none">
           <span className="font-light">Annualized protocol revenue:</span>
-          {isLoading ? (
+          {isLoading || !revenue ? (
             <Skeleton className="h-6 w-14" />
           ) : (
             <span className="font-bold">
               $
-              {formatCurrency(
-                rsrStakerAnnualizedRevenue + rTokenAnnualizedRevenue,
-                1,
-                {
-                  notation: 'compact',
-                  compactDisplay: 'short',
-                }
-              )}
+              {formatCurrency(revenue, 1, {
+                notation: 'compact',
+                compactDisplay: 'short',
+              })}
             </span>
           )}
         </div>

@@ -7,18 +7,26 @@ import { cn } from '@/lib/utils'
 
 import tabIndex from '../assets/tab_index.jpg'
 import tabYield from '../assets/tab_yield.jpg'
+import { Flower, Scale, ShipWheel } from 'lucide-react'
 
 const tabs: Tab[] = [
   {
     value: 'index',
-    icon: tabIndex,
+    icon: <ShipWheel />,
     title: 'Index DTFs',
     subtitle: 'Get easy exposure to narratives, indexes, and ecosystems',
   },
   {
     value: 'yield',
-    icon: tabYield,
+    icon: <Flower />,
     title: 'Yield DTFs',
+    subtitle:
+      'Earn yield safely with over-collateralized and diversified DeFi positions',
+  },
+  {
+    value: 'stablecoins',
+    icon: <Scale />,
+    title: 'Stablecoins',
     subtitle:
       'Earn yield safely with over-collateralized and diversified DeFi positions',
   },
@@ -53,6 +61,10 @@ const DiscoverTabs = ({ className }: { className: string }) => {
 
         <TabsContent className="mt-0" value="yield">
           <DiscoverYieldDTF />
+        </TabsContent>
+
+        <TabsContent className="mt-0" value="stablecoins">
+          <DiscoverYieldDTF stablecoins />
         </TabsContent>
       </Tabs>
     </div>

@@ -8,13 +8,13 @@ import useIndexDTFList, { type IndexDTFItem } from '@/hooks/useIndexDTFList'
 import { cn } from '@/lib/utils'
 import { formatCurrency, formatPercentage } from '@/utils'
 import { ColumnDef } from '@tanstack/react-table'
-import { ArrowRight } from 'lucide-react'
-import { Link } from 'react-router-dom'
-import { Line, LineChart, YAxis } from 'recharts'
-import DTFFilters from './components/dtf-filters'
 import { useAtomValue } from 'jotai'
+import { ArrowRight } from 'lucide-react'
 import { useMemo } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { Line, LineChart, YAxis } from 'recharts'
 import { chainFilterAtom, searchFilterAtom } from './atoms/filter'
+import DTFFilters from './components/dtf-filters'
 
 const chartConfig = {
   desktop: {
@@ -27,7 +27,7 @@ const calculatePercentageChange = (
   performance: IndexDTFItem['performance']
 ) => {
   if (performance.length === 0) {
-    return 'N/A'
+    return <span className="text-legend">No data</span>
   }
   const firstValue = performance[0].value
   const lastValue = performance[performance.length - 1].value
@@ -192,7 +192,7 @@ const DTFCard = ({ dtf }: { dtf: IndexDTFItem }) => {
 
 const IndexDTFList = () => {
   const { data, isLoading } = useIndexDTFList()
-
+  const navigate = useNavigate()
   const search = useAtomValue(searchFilterAtom)
   const chains = useAtomValue(chainFilterAtom)
 
@@ -227,12 +227,17 @@ const IndexDTFList = () => {
     return <Skeleton className="h-[500px] rounded-[20px]" />
   }
 
+  const handleRowClick = (row: IndexDTFItem) => {
+    navigate(`/${row.chainId}/index-dtf/${row.address}/overview`)
+  }
+
   return (
     <div className="flex flex-col gap-1 p-1 rounded-[20px] bg-secondary">
       <DTFFilters />
       <DataTable
         columns={columns}
         data={filtered}
+        onRowClick={handleRowClick}
         className={cn(
           'hidden sm:table bg-card text-base rounded-[20px]',
           '[&_thead_th]:px-6',

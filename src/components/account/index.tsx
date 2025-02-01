@@ -5,7 +5,7 @@ import { MouseoverTooltipContent } from '@/components/old/tooltip'
 import { txSidebarToggleAtom } from 'components/transactions/manager/atoms'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { ReactNode } from 'react'
-import { AlertCircle, Power } from 'lucide-react'
+import { AlertCircle, Menu, Power } from 'lucide-react'
 import { Box, Card, Flex, Spinner, Text } from 'theme-ui'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import ChainLogo from 'components/icons/ChainLogo'
@@ -143,7 +143,7 @@ const Account = () => {
                         {account.displayName}
                       </Text>
                       {isProcessing && <Spinner size={20} marginLeft={10} />}
-                      <MenuIcon style={{ marginLeft: 10 }} />
+                      <Menu className="ml-2" size={16} />
                     </Box>
                   </PortfolioSidebar>
                 </ErrorWrapper>

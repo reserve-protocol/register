@@ -1,3 +1,4 @@
+import Reserve from '@/components/icons/Reserve'
 import { Trans } from '@lingui/macro'
 import DiscordIcon from 'components/icons/DiscordIcon'
 import GithubIcon from 'components/icons/GithubIcon'
@@ -152,7 +153,7 @@ const DashedDivider = () => (
  * Section: Home > About footer
  */
 const RegisterAbout = () => (
-  <div className="w-full mt-12">
+  <div className="w-full mt-12 pb-6">
     <div className="mt-[28px] md:mt-[32px] px-[16px] md:px-8">
       <p className="font-bold text-xl text-center text-primary mb-[24px] md:mb-[32px]">
         <Trans>Not sure what you're looking at?</Trans>
@@ -163,7 +164,7 @@ const RegisterAbout = () => (
       <SocialLinks />
       <DashedDivider />
       <div className="text-center text-primary flex flex-col items-center gap-2">
-        <Logo />
+        <Reserve />
         <a
           className="block text-sm"
           target="_blank"
