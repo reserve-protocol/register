@@ -5,7 +5,7 @@ import { useFormContext } from 'react-hook-form'
 
 type ToggleGroupWithCustomProps = {
   title: string
-  description: string
+  description: ReactNode
   icon: ReactNode
   options: number[]
   optionsFormatter: (option: number) => string
