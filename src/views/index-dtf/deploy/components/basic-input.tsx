@@ -58,7 +58,7 @@ const BasicInput = ({
                 startAdornment={
                   labelPosition === 'start' ? adornment : undefined
                 }
-                autoComplete="off"
+                autoComplete="new-password"
                 endAdornment={labelPosition === 'end' ? adornment : undefined}
                 className="px-1 text-base [&:focus::placeholder]:opacity-0 [&:focus::placeholder]:transition-opacity"
                 {...field}

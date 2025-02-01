@@ -66,7 +66,7 @@ export const zapDeployPayloadAtom = atom<
   }
 
   const basicDetails = {
-    name: formData.name,
+    name: formData.tokenName,
     symbol: formData.symbol,
     assets: basket.map((token) => token.address),
     amounts: basket.map((token) =>
