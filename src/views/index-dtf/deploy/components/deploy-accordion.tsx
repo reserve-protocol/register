@@ -65,7 +65,7 @@ export const DEPLOY_STEPS: DeployStep[] = [
   {
     id: 'governance',
     icon: <Asterisk size={24} strokeWidth={1.5} />,
-    title: 'Governance',
+    title: 'Governance Body',
     titleSecondary: 'Governance Type',
     content: <Governance />,
   },
@@ -93,15 +93,15 @@ export const DEPLOY_STEPS: DeployStep[] = [
   {
     id: 'basket-changes',
     icon: <Asterisk size={24} strokeWidth={1.5} />,
-    title: 'Basket Changes',
-    titleSecondary: 'Basket Changes',
+    title: 'Basket Governance Settings',
+    titleSecondary: 'Basket Governance Settings',
     content: <BasketChanges />,
   },
   {
     id: 'other-changes',
     icon: <Asterisk size={24} strokeWidth={1.5} />,
-    title: 'Other Governance Changes',
-    titleSecondary: 'Other Governance Changes',
+    title: 'Non-Basket Governance Settings',
+    titleSecondary: 'Non-Basket Governance Settings',
     content: <OtherChanges />,
   },
 ]
@@ -118,6 +118,7 @@ const DeployAccordionTrigger = ({
   return (
     <AccordionTrigger
       withChevron={false}
+      disabled={!validated && isActive}
       className={cn(
         'flex items-center justify-between w-full p-6',
         isActive ? 'pb-3' : ''
@@ -153,7 +154,11 @@ const DeployAccordionTrigger = ({
               <Edit2 size={16} strokeWidth={1.5} />
             </div>
           ) : isActive ? (
-            <ChevronUpIcon size={24} strokeWidth={1.5} />
+            <ChevronUpIcon
+              size={24}
+              strokeWidth={1.5}
+              className="text-muted-foreground"
+            />
           ) : (
             <ChevronDownIcon size={24} strokeWidth={1.5} />
           )}

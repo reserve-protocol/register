@@ -79,7 +79,7 @@ const SuccessView = () => {
               <Asterisk size={32} />
             </div>
             <div className="text-xl font-bold">
-              {`Congratulations ${form!.name} is now live`}
+              {`Congratulations ${form!.tokenName} is now live`}
             </div>
           </div>
           <div className="flex flex-col gap-3">
@@ -89,7 +89,7 @@ const SuccessView = () => {
               </Item>
             )}
             {!!deployedDTF && (
-              <Item title={`You created the ${form!.name} DTF`}>
+              <Item title={`You created the ${form!.tokenName} DTF`}>
                 <ExplorerAddress address={deployedDTF} chain={chainId} />
               </Item>
             )}

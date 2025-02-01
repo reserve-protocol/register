@@ -24,15 +24,11 @@ const FORMS = [
   },
   {
     ...VOTING_THRESHOLD,
-    description:
-      'The minimum percentage of votes that must be held in order to create a proposal.',
     fieldName: 'governanceVotingThreshold',
     customFieldName: 'customGovernanceVotingThreshold',
   },
   {
     ...VOTING_QUORUM,
-    description:
-      'The minimum percentage of eligible votes that must be cast for the vote to be valid.',
     fieldName: 'governanceVotingQuorum',
     customFieldName: 'customGovernanceVotingQuorum',
   },

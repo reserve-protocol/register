@@ -3,6 +3,7 @@ import BasicInput from '../../components/basic-input'
 import AdditionalRevenueRecipients from './additional-revenue-recipients'
 import { useAtomValue } from 'jotai'
 import { selectedGovernanceOptionAtom } from '../../atoms'
+import { useFormContext } from 'react-hook-form'
 
 const SETTINGS = [
   {
@@ -10,6 +11,7 @@ const SETTINGS = [
     description:
       'Percentage of fee revenue sent to the protocol; cannot be changed by governance.',
     field: 'fixedPlatformFee',
+    disabled: true,
   },
   {
     title: 'Creator',
@@ -25,6 +27,7 @@ const SETTINGS = [
 ]
 
 const RevenueDistributionSettings = () => {
+  const { getValues } = useFormContext()
   const selectedGovOption = useAtomValue(selectedGovernanceOptionAtom)
 
   const settings = SETTINGS.filter(
@@ -36,7 +39,7 @@ const RevenueDistributionSettings = () => {
   return (
     <div className="flex flex-col gap-2 mx-2 mb-3">
       <div className="flex flex-col gap-2">
-        {settings.map(({ title, description, field }) => (
+        {settings.map(({ title, description, field, disabled }) => (
           <div
             className="w-full rounded-xl flex items-center gap-2 justify-between p-4 bg-muted/70"
             key={title}
@@ -53,14 +56,19 @@ const RevenueDistributionSettings = () => {
                 </div>
               </div>
             </div>
-            <BasicInput
-              className="max-w-32"
-              fieldName={field}
-              label="%"
-              disabled={field === 'fixedPlatformFee'}
-              placeholder="0"
-              defaultValue={0}
-            />
+            {disabled ? (
+              <div className="flex items-center gap-1 font-semibold px-[18px]">
+                {getValues(field)} %
+              </div>
+            ) : (
+              <BasicInput
+                className="max-w-32"
+                fieldName={field}
+                label="%"
+                placeholder="0"
+                defaultValue={0}
+              />
+            )}
           </div>
         ))}
       </div>
