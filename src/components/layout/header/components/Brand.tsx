@@ -1,3 +1,4 @@
+import ReserveSquare from '@/components/icons/ReserveSquare'
 import Logo from 'components/icons/Logo'
 import RBrand from 'components/icons/RBrand'
 import { useNavigate } from 'react-router-dom'
@@ -16,7 +17,7 @@ const Brand = (props: BoxProps) => {
         <Logo />
       </div>
       <div className="flex lg:hidden items-center justify-center text-2xl mr-2">
-        <RBrand />
+        <ReserveSquare />
       </div>
     </div>
   )
