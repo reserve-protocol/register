@@ -1,3 +1,4 @@
+import Reserve from '@/components/icons/Reserve'
 import { Trans } from '@lingui/macro'
 import DiscordIcon from 'components/icons/DiscordIcon'
 import GithubIcon from 'components/icons/GithubIcon'
@@ -163,7 +164,7 @@ const RegisterAbout = () => (
       <SocialLinks />
       <DashedDivider />
       <div className="text-center text-primary flex flex-col items-center gap-2">
-        <Logo />
+        <Reserve />
         <a
           className="block text-sm"
           target="_blank"

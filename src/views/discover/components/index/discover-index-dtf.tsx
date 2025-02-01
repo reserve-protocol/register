@@ -27,7 +27,7 @@ const calculatePercentageChange = (
   performance: IndexDTFItem['performance']
 ) => {
   if (performance.length === 0) {
-    return 'N/A'
+    return <span className="text-legend">No data</span>
   }
   const firstValue = performance[0].value
   const lastValue = performance[performance.length - 1].value

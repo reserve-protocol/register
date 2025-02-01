@@ -1,11 +1,8 @@
 import Reserve from '@/components/icons/Reserve'
 import ReserveSquare from '@/components/icons/ReserveSquare'
-import Logo from 'components/icons/Logo'
-import RBrand from 'components/icons/RBrand'
 import { useNavigate } from 'react-router-dom'
-import { Box, BoxProps, Flex } from 'theme-ui'
 
-const Brand = (props: BoxProps) => {
+const Brand = ({ className }: { className?: string }) => {
   const navigate = useNavigate()
 
   const handleClick = () => {
@@ -13,7 +10,7 @@ const Brand = (props: BoxProps) => {
   }
 
   return (
-    <div onClick={handleClick} {...props}>
+    <div onClick={handleClick} className={className}>
       <div className="hidden md:hidden lg:flex items-center">
         <Reserve />
       </div>

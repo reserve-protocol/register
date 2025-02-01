@@ -134,6 +134,7 @@ const AppNavigation = () => {
               </div>
               {REGISTER_MORE_LINKS.map((item) => (
                 <NavigationMenuLink
+                  key={item.to}
                   asChild
                   className="p-4 gap-2 flex items-center rounded-3xl bg-card border border-transparent hover:border-primary"
                 >
@@ -176,6 +177,7 @@ const AppNavigation = () => {
               </div>
               {EXTERNAL_LINKS.map((item) => (
                 <NavigationMenuLink
+                  key={item.to}
                   href={item.to}
                   target="_blank"
                   className="p-4 gap-2 flex items-center rounded-3xl bg-card border border-transparent hover:border-primary"

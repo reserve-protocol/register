@@ -10,7 +10,9 @@ import CompareFilters, {
 import CompareSkeleton from './CompareSkeleton'
 import RTokenCard from './RTokenCard'
 
-const YieldDTfList = () => {
+const STABLECOINS = ['eUSD', 'rgUSD', 'dgnETH']
+
+const YieldDTfList = ({ stablecoins = false }: { stablecoins?: boolean }) => {
   const { list, isLoading } = useTokenList()
   // Load pools to get rtoken earn info
   useRTokenPools()
@@ -45,9 +47,19 @@ const YieldDTfList = () => {
         }
       }
 
+      const isStablecoin = STABLECOINS.includes(token.symbol)
+
+      if (stablecoins && !isStablecoin) {
+        return false
+      }
+
+      if (!stablecoins && isStablecoin) {
+        return false
+      }
+
       return true
     })
-  }, [list, chains, targets, search])
+  }, [list, chains, targets, search, stablecoins])
 
   return (
     <div className="flex flex-col gap-1 p-1 rounded-[20px] bg-secondary">

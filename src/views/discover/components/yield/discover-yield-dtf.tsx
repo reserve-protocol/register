@@ -27,11 +27,11 @@ const Footer = () => (
 /**
  * Main Compare screen
  */
-const DiscoverYieldDTF = () => {
+const DiscoverYieldDTF = ({ stablecoins }: { stablecoins?: boolean }) => {
   return (
     <div>
       <Suspense fallback={<CompareSkeleton />}>
-        <YieldDTfList />
+        <YieldDTfList stablecoins={stablecoins} />
       </Suspense>
       <Footer />
     </div>
