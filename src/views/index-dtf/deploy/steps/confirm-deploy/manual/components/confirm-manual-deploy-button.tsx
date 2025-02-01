@@ -117,7 +117,7 @@ const txAtom = atom<
   if (!formData || !initialTokens || !wallet) return undefined
 
   const folioParams: FolioParams = {
-    name: formData.name,
+    name: formData.tokenName,
     symbol: formData.symbol,
     assets: basket.map((token) => token.address),
     amounts: basket.map((token) =>

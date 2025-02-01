@@ -61,7 +61,7 @@ const NextButton = () => {
         className="rounded-xl w-full py-7 text-base"
         onClick={() => next()}
       >
-        Next
+        Confirm
       </Button>
     </div>
   )

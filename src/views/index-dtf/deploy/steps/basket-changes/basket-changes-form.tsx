@@ -27,6 +27,8 @@ export const VOTING_THRESHOLD = {
   optionsFormatter: (option: number) => `${option.toString()}%`,
   customLabel: '%',
   customPlaceholder: 'Enter custom',
+  description:
+    'The minimum percentage of governance power needed in order to initiate a proposal.',
 }
 
 export const VOTING_QUORUM = {
@@ -36,6 +38,16 @@ export const VOTING_QUORUM = {
   optionsFormatter: (option: number) => `${option.toString()}%`,
   customLabel: '%',
   customPlaceholder: 'Enter custom',
+  description: (
+    <span>
+      The minimum percentage of votes that must be cast as{' '}
+      <span className="font-bold">yes</span> or{' '}
+      <span className="font-bold">abstain</span> in order for the proposal to be
+      eligible to pass (<span className="font-bold">yes</span> votes still must
+      outnumber <span className="font-bold">no</span> votes in order to pass the
+      proposal).
+    </span>
+  ),
 }
 
 export const VOTING_EXECUTION_DELAY = {
@@ -64,15 +76,11 @@ const FORM = [
   },
   {
     ...VOTING_THRESHOLD,
-    description:
-      'The minimum percentage of votes in favor of a basket change for it to be approved.',
     fieldName: 'basketVotingThreshold',
     customFieldName: 'customBasketVotingThreshold',
   },
   {
     ...VOTING_QUORUM,
-    description:
-      'The minimum percentage of eligible votes that must be cast for the vote to be valid.',
     fieldName: 'basketVotingQuorum',
     customFieldName: 'customBasketVotingQuorum',
   },
