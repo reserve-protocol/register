@@ -1,3 +1,4 @@
+import Reserve from '@/components/icons/Reserve'
 import ReserveSquare from '@/components/icons/ReserveSquare'
 import Logo from 'components/icons/Logo'
 import RBrand from 'components/icons/RBrand'
@@ -13,8 +14,8 @@ const Brand = (props: BoxProps) => {
 
   return (
     <div onClick={handleClick} {...props}>
-      <div className="hidden md:hidden lg:flex items-center pt-1">
-        <Logo />
+      <div className="hidden md:hidden lg:flex items-center">
+        <Reserve />
       </div>
       <div className="flex lg:hidden items-center justify-center text-2xl mr-2">
         <ReserveSquare />

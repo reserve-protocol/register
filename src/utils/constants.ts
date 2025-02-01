@@ -23,6 +23,8 @@ export const REGISTER_BUGS =
   'https://reserve.canny.io/defi-surfaces-bug-reporting'
 export const RESERVE_STORAGE = 'https://storage.reserve.org/'
 export const RESERVE_API = 'https://api.reserve.org/'
+export const DUNE_DASHBOARD =
+  'https://dune.com/reserve-protocol/reserve-protocol-overview'
 
 export const LP_PROJECTS: { [x: string]: { name: string; site: string } } = {
   'curve-dex': {
