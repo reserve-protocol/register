@@ -1,6 +1,7 @@
 import dtfIndexGovernanceDeployerAbi from '@/abis/dtf-index-governance-deployer-abi'
 import { Button } from '@/components/ui/button'
 import { chainIdAtom } from '@/state/atoms'
+import { getCurrentTime } from '@/utils'
 import { INDEX_GOVERNANCE_DEPLOYER_ADDRESS } from '@/utils/addresses'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
@@ -12,8 +13,6 @@ import {
   parseEther,
   parseEventLogs,
   toBytes,
-  toHex,
-  zeroAddress,
 } from 'viem'
 import {
   useReadContract,
@@ -26,7 +25,6 @@ import {
   daoTokenSymbolAtom,
   formReadyForSubmitAtom,
 } from '../../atoms'
-import { getCurrentTime } from '@/utils'
 
 const CreateDAO = () => {
   const chainId = useAtomValue(chainIdAtom)

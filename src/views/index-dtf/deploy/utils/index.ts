@@ -8,12 +8,15 @@ import { readContract } from 'wagmi/actions'
 import { FeeRecipient } from '../steps/confirm-deploy/manual/components/confirm-manual-deploy-button'
 
 export const isERC20 = async (address: Address) => {
+  // TODO: Find a better way to get chainId without hooks
+  const chainId = ChainId.Base as AvailableChain
+
   try {
     await readContract(wagmiConfig, {
       abi: erc20Abi,
       functionName: 'symbol',
       address,
-      chainId: ChainId.Base as AvailableChain, // TODO: remove hardcoded chainId
+      chainId,
     })
   } catch (e) {
     return false

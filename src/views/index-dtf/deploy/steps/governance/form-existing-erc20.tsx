@@ -5,6 +5,8 @@ import { erc20Abi, isAddress } from 'viem'
 import { Separator } from '@/components/ui/separator'
 import { ArrowUpRightIcon } from 'lucide-react'
 import { ChainId } from '@/utils/chains'
+import { chainIdAtom } from '@/state/atoms'
+import { useAtomValue } from 'jotai'
 
 const LaunchTokenBanner = () => {
   return (
@@ -41,6 +43,7 @@ const LaunchTokenBanner = () => {
 }
 
 const GovernanceExistingERC20 = () => {
+  const chainId = useAtomValue(chainIdAtom)
   const { watch } = useFormContext()
   const governanceERC20address = watch('governanceERC20address')
 
@@ -49,7 +52,7 @@ const GovernanceExistingERC20 = () => {
     functionName: 'symbol',
     address: governanceERC20address,
     query: { enabled: isAddress(governanceERC20address) },
-    chainId: ChainId.Base, // TODO: change hardcoded chainId
+    chainId,
   })
 
   return (

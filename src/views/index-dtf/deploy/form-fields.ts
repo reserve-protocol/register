@@ -6,6 +6,7 @@ import {
   noSpecialCharacters,
   isVoteLockAddress,
 } from './utils'
+import { Decimal } from 'decimal.js/decimal'
 
 export type DeployStepId =
   | 'metadata'
@@ -196,27 +197,50 @@ export const DeployFormSchema = z
   .refine(
     (data) => {
       const total = data.tokensDistribution?.reduce(
-        (sum, { percentage }) => sum + percentage,
-        0
+        (sum, { percentage }) => sum.plus(new Decimal(percentage)),
+        new Decimal(0)
       )
-      return total === 100
+      return total.eq(new Decimal(100))
     },
     (data) => {
       const total =
         data.tokensDistribution?.reduce(
-          (sum, { percentage }) => sum + percentage,
-          0
-        ) || 0
-      const difference = 100 - total
+          (sum, { percentage }) => sum.plus(new Decimal(percentage)),
+          new Decimal(0)
+        ) || new Decimal(0)
+      const difference = new Decimal(100).minus(total)
 
       return {
         message: `The sum of the tokens distribution must be 100% (${
-          difference > 0
-            ? `${difference}% missing`
-            : `${Math.abs(difference)}% excess`
+          difference.isPositive()
+            ? `${difference.toString()}% missing`
+            : `${difference.abs().toString()}% excess`
         }).`,
         path: ['basket'],
       }
+    }
+  )
+  .refine(
+    (data) => {
+      const totalShares = [
+        data.governanceShare,
+        data.deployerShare,
+        ...(data.additionalRevenueRecipients?.map((r) => r.share) || []),
+      ]
+
+      const total = totalShares.reduce(
+        (sum, share) => sum.plus(new Decimal(share || 0)),
+        new Decimal(0)
+      )
+
+      return total
+        .plus(new Decimal(data.fixedPlatformFee))
+        .lte(new Decimal(100))
+    },
+    {
+      message:
+        'The sum of governance share, deployer share, additional recipients shares and platform fee must not exceed 100%',
+      path: ['revenue-distribution'],
     }
   )
   .refine(
@@ -258,28 +282,6 @@ export const DeployFormSchema = z
     {
       message: 'Mint fee is required',
       path: ['mintFee'],
-    }
-  )
-  .refine(
-    (data) => {
-      // Check if the sum of the shares is 100, including additional revenue recipients
-      const additionalShares =
-        data.additionalRevenueRecipients?.reduce(
-          (acc, { share }) => acc + share,
-          0
-        ) || 0
-
-      const totalShares =
-        data.governanceShare +
-        data.deployerShare +
-        data.fixedPlatformFee +
-        additionalShares
-
-      return totalShares === 100
-    },
-    {
-      message: 'The sum of the shares must be 100',
-      path: ['revenue-distribution'],
     }
   )
   .refine(
