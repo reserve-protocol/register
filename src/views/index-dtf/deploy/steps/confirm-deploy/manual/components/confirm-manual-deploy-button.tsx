@@ -261,7 +261,6 @@ const ConfirmManualDeployButton = () => {
   const tx = useAtomValue(txAtom)
   const daoCreated = useAtomValue(daoCreatedAtom)
   const hasAssetsAllowance = useAtomValue(hasAssetsAllowanceAtom)
-  console.log('hasAssetsAllowance', hasAssetsAllowance)
   const setDeployedDTF = useSetAtom(deployedDTFAtom)
 
   const { isReady, gas, hash, validationError, error, isLoading, write } =

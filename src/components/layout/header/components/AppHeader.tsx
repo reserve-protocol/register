@@ -17,7 +17,7 @@ import { cn } from '@/lib/utils'
 import { ROUTES } from '@/utils/constants'
 import { t } from '@lingui/macro'
 import { Asterisk, DollarSign, Rocket } from 'lucide-react'
-import { ReactNode, useMemo } from 'react'
+import { ReactNode, useEffect, useMemo } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 import RegisterHelp from './RegisterHelp'
 
@@ -99,13 +99,19 @@ const Container = ({ children }: { children: ReactNode }) => {
  * Application header
  */
 const AppHeader = () => {
+  // TODO: Temporal, force light mode
+  useEffect(() => {
+    document.documentElement.setAttribute('data-color-mode', 'light')
+    document.documentElement.classList.remove('dark')
+  }, [])
+
   return (
     <Container>
       <div className="container flex items-center h-[56px] md:h-[72px] px-2 sm:px-6">
         <Brand className="text-primary mr-4 cursor-pointer" />
         <HeaderMenu />
-
-        {/* <ThemeColorMode
+        {/* 
+        <ThemeColorMode
           sx={{
             display: ['none', 'flex'],
             px: 2,
