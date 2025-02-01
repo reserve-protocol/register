@@ -4,6 +4,7 @@ import { useReadContract } from 'wagmi'
 import { erc20Abi, isAddress } from 'viem'
 import { Separator } from '@/components/ui/separator'
 import { ArrowUpRightIcon } from 'lucide-react'
+import { ChainId } from '@/utils/chains'
 
 const LaunchTokenBanner = () => {
   return (
@@ -48,6 +49,7 @@ const GovernanceExistingERC20 = () => {
     functionName: 'symbol',
     address: governanceERC20address,
     query: { enabled: isAddress(governanceERC20address) },
+    chainId: ChainId.Base, // TODO: change hardcoded chainId
   })
 
   return (

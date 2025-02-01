@@ -4,6 +4,7 @@ import useIndexDTFSubgraph from '@/hooks/useIndexDTFSugbraph'
 import { useFormContext } from 'react-hook-form'
 import { erc20Abi, isAddress } from 'viem'
 import { useReadContract } from 'wagmi'
+import { ChainId } from '@/utils/chains'
 
 const stTokenQuery = gql`
   query getStakingToken($id: String!) {
@@ -32,6 +33,7 @@ const GovernanceExistingVoteLock = () => {
       enabled:
         stToken?.stakingToken?.id && isAddress(stToken?.stakingToken?.id),
     },
+    chainId: ChainId.Base, // TODO: change hardcoded chainId
   })
 
   return (

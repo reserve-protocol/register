@@ -1,8 +1,6 @@
 import ChainLogo from '@/components/icons/ChainLogo'
 import { cn } from '@/lib/utils'
-import { backupCollateralAtom, basketAtom } from 'components/rtoken-setup/atoms'
 import { useAtom, useAtomValue } from 'jotai'
-import { useResetAtom } from 'jotai/utils'
 import { CheckIcon } from 'lucide-react'
 import { useEffect } from 'react'
 import { useFormContext } from 'react-hook-form'
@@ -77,8 +75,6 @@ const ChainOption = ({
 const ChainSelector = () => {
   const [chainId, setChain] = useAtom(chainIdAtom)
   const walletChainId = useAtomValue(walletChainAtom)
-  const resetBasket = useResetAtom(basketAtom)
-  const resetBackup = useResetAtom(backupCollateralAtom)
   const { setValue } = useFormContext()
   const { switchChain } = useSwitchChain()
 
@@ -92,9 +88,6 @@ const ChainSelector = () => {
 
   const handleChainChange = (newChain: AvailableChain) => {
     if (chainId !== newChain) {
-      resetBasket()
-      resetBackup()
-
       const defaults =
         newChain === ChainId.Mainnet ? mainnetDefaults : l2Defaults
 
@@ -107,10 +100,10 @@ const ChainSelector = () => {
   }
 
   useEffect(() => {
-    if (chainId !== ChainId.Base) {
-      handleChainChange(ChainId.Base as AvailableChain)
-    }
-  }, [])
+    // Force Base for now
+    setChain(ChainId.Base as AvailableChain)
+    switchChain && switchChain({ chainId: ChainId.Base })
+  }, [chainId, setChain, switchChain])
 
   return (
     <div className="flex flex-col lg:flex-row gap-2 p-2 flex-wrap">
