@@ -30,6 +30,7 @@ const CreateDAO = () => {
   const chainId = useAtomValue(chainIdAtom)
   const formReadyForSubmit = useAtomValue(formReadyForSubmitAtom)
   const { watch, getValues } = useFormContext()
+  const indexDTFSymbol = watch('symbol')
   const governanceERC20address = watch('governanceERC20address')
   const setDaoCreated = useSetAtom(daoCreatedAtom)
   const setStTokenAddress = useSetAtom(daoTokenAddressAtom)
@@ -51,10 +52,11 @@ const CreateDAO = () => {
     hash: data,
   })
 
+  const vlSymbol = `vl${symbol}${indexDTFSymbol ? `-${indexDTFSymbol}` : ''}`
+
   const submit = () => {
     const formData = getValues()
 
-    const vlSymbol = `vl${symbol}-${formData.symbol}`
     const basketVotingDelay =
       formData.basketVotingDelay || formData.customBasketVotingDelay
     const basketVotingPeriod =
@@ -101,7 +103,7 @@ const CreateDAO = () => {
       if (event) {
         const { stToken } = event.args
         setStTokenAddress(stToken)
-        setStTokenSymbol(`vl${symbol}`)
+        setStTokenSymbol(vlSymbol)
       }
     }
   }, [receipt, isSuccess, setDaoCreated])
@@ -122,7 +124,7 @@ const CreateDAO = () => {
         {isPending || (data && !receipt)
           ? 'Creating...'
           : symbol
-            ? `Create vl${symbol} DAO`
+            ? `Create ${vlSymbol} DAO`
             : 'Create DAO'}
       </Button>
       {(isError || txError) && (
