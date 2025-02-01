@@ -233,14 +233,32 @@ export const DeployFormSchema = z
         new Decimal(0)
       )
 
-      return total
-        .plus(new Decimal(data.fixedPlatformFee))
-        .lte(new Decimal(100))
+      return total.plus(new Decimal(data.fixedPlatformFee)).eq(new Decimal(100))
     },
-    {
-      message:
-        'The sum of governance share, deployer share, additional recipients shares and platform fee must not exceed 100%',
-      path: ['revenue-distribution'],
+    (data) => {
+      const totalShares = [
+        data.governanceShare,
+        data.deployerShare,
+        ...(data.additionalRevenueRecipients?.map((r) => r.share) || []),
+      ]
+
+      const total = totalShares.reduce(
+        (sum, share) => sum.plus(new Decimal(share || 0)),
+        new Decimal(0)
+      )
+
+      const difference = new Decimal(100).minus(
+        total.plus(new Decimal(data.fixedPlatformFee))
+      )
+
+      return {
+        message: `The sum of governance share, creator share, additional recipients shares and platform share must be 100% (${
+          difference.isPositive()
+            ? `${difference.toString()}% missing`
+            : `${difference.abs().toString()}% excess`
+        })`,
+        path: ['revenue-distribution'],
+      }
     }
   )
   .refine(
