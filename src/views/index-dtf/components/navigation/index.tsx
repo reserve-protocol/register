@@ -1,7 +1,7 @@
 import TokenLogo from '@/components/token-logo'
 import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
-import { iTokenAtom } from '@/state/dtf/atoms'
+import { indexDTFAtom } from '@/state/dtf/atoms'
 import { ROUTES } from '@/utils/constants'
 import { t } from '@lingui/macro'
 import { useAtomValue } from 'jotai'
@@ -10,9 +10,9 @@ import { useMemo } from 'react'
 import { NavLink } from 'react-router-dom'
 
 const Header = () => {
-  const token = useAtomValue(iTokenAtom)
+  const dtf = useAtomValue(indexDTFAtom)
 
-  if (!token) {
+  if (!dtf) {
     return (
       <div className="hidden lg:flex flex-col gap-2 mb-4">
         <Skeleton className="h-10 w-10" />
@@ -23,8 +23,8 @@ const Header = () => {
 
   return (
     <div className="lg:flex flex-col gap-2 hidden mb-4">
-      <TokenLogo size="lg" symbol={token.address} />
-      <h4 className="font-bold">${token.symbol}</h4>
+      <TokenLogo size="lg" symbol={dtf.token.symbol} />
+      <h4 className="font-bold">${dtf.token.symbol}</h4>
     </div>
   )
 }

@@ -1,4 +1,4 @@
-import { Token } from '@/types'
+import { IndexDTF, Token } from '@/types'
 import { AvailableChain } from '@/utils/chains'
 import { atom } from 'jotai'
 import { Address } from 'viem'
@@ -35,58 +35,7 @@ export interface ITokenGovernance {
   token: Token
 }
 
-// TODO: I dislike having a super object like this, but its good for MVP
-export interface IndexDTF {
-  id: Address
-  deployer: Address
-  ownerAddress: Address
-  ownerGovernance?: {
-    id: Address
-    votingDelay: number
-    votingPeriod: number
-    timelock: {
-      id: Address
-      guardians: Address[]
-      executionDelay: number
-    }
-  }
-  tradingGovernance?: {
-    id: Address
-    votingDelay: number
-    votingPeriod: number
-    timelock: {
-      id: Address
-      guardians: Address[]
-      executionDelay: number
-    }
-  }
-  token: {
-    id: Address
-    name: string
-    symbol: string
-    decimals: number
-    totalSupply: string
-  }
-  stToken?: {
-    id: Address
-    token: {
-      name: string
-      symbol: string
-      decimals: number
-      totalSupply: string
-    }
-    underlying: {
-      name: string
-      symbol: string
-      address: Address
-      decimals: number
-    }
-  }
-}
-
 export const iTokenAddressAtom = atom<Address | undefined>(undefined)
-
-export const iTokenAtom = atom<IToken | undefined>(undefined)
 
 export const iTokenBasketAtom = atom<ITokenBasket | undefined>(undefined)
 

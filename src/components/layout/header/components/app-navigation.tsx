@@ -61,9 +61,9 @@ const AppNavigation = () => {
           to: ROUTES.BRIDGE,
         },
         {
-          label: t`Create new Yield DTF`,
+          label: t`Yield DTF Creator`,
           icon: <Asterisk size={16} />,
-          description: t`Get an overview of everything going on.`,
+          description: t`Make a new over-collateralized yield DTF`,
           to: ROUTES.DEPLOY_YIELD,
         },
       ],

@@ -259,3 +259,60 @@ export interface TenderlySimulation {
 }
 
 export type Trader = 'backingManager' | 'rsrTrader' | 'rTokenTrader'
+
+export type IndexDTF = {
+  id: Address
+  deployer: Address
+  ownerAddress: Address
+  mintingFee: number
+  tvlFee: number
+  annualizedTvlFee: number
+  mandate: string
+  auctionDelay: number
+  auctionLength: number
+  auctionApprovers: Address[]
+  auctionLaunchers: Address[]
+  brandManagers: Address[]
+  ownerGovernance?: {
+    id: Address
+    votingDelay: number
+    votingPeriod: number
+    timelock: {
+      id: Address
+      guardians: Address[]
+      executionDelay: number
+    }
+  }
+  tradingGovernance?: {
+    id: Address
+    votingDelay: number
+    votingPeriod: number
+    timelock: {
+      id: Address
+      guardians: Address[]
+      executionDelay: number
+    }
+  }
+  token: {
+    id: Address
+    name: string
+    symbol: string
+    decimals: number
+    totalSupply: string
+  }
+  stToken?: {
+    id: Address
+    token: {
+      name: string
+      symbol: string
+      decimals: number
+      totalSupply: string
+    }
+    underlying: {
+      name: string
+      symbol: string
+      address: Address
+      decimals: number
+    }
+  }
+}

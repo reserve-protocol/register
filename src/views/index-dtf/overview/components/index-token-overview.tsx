@@ -2,11 +2,7 @@ import { Box } from '@/components/ui/box'
 import { Card } from '@/components/ui/card'
 import { Link } from '@/components/ui/link'
 import { Skeleton } from '@/components/ui/skeleton'
-import {
-  iTokenAtom,
-  iTokenGovernanceAtom,
-  iTokenMetaAtom,
-} from '@/state/dtf/atoms'
+import { indexDTFAtom, iTokenMetaAtom } from '@/state/dtf/atoms'
 import { useAtomValue } from 'jotai'
 import { ArrowUpRight, Link as LinkIcon, X } from 'lucide-react'
 
@@ -57,9 +53,8 @@ const TokenNameSkeleton = () => (
 )
 
 const IndexTokenOverview = () => {
-  const data = useAtomValue(iTokenAtom)
+  const dtf = useAtomValue(indexDTFAtom)
   const meta = useAtomValue(iTokenMetaAtom)
-  const governance = useAtomValue(iTokenGovernanceAtom)
 
   return (
     <Card className="p-6">
@@ -67,27 +62,29 @@ const IndexTokenOverview = () => {
         <div className="mr-auto">
           <img
             src={meta?.logo || DEFAULT_LOGO}
-            alt={data?.symbol ?? 'dtf token logo'}
+            alt={dtf?.token.symbol ?? 'dtf token logo'}
             className="h-8 w-8 rounded-full"
           />
         </div>
         <TokenSocials />
       </div>
-      {!data ? (
+      {!dtf ? (
         <TokenNameSkeleton />
       ) : (
         <>
-          <h4>${data.symbol}</h4>
-          <h1 className="mt-4 text-2xl md:text-5xl font-medium">{data.name}</h1>
+          <h4>${dtf.token.symbol}</h4>
+          <h1 className="mt-4 text-2xl md:text-5xl font-medium">
+            {dtf.token.name}
+          </h1>
         </>
       )}
       <div className="flex items-center gap-1 mt-4">
         <span className="text-legend">Owner</span>
-        {!governance ? (
+        {!dtf?.deployer ? (
           <Skeleton className="w-30 h-5" />
         ) : (
           <Link>
-            <span className="font-bold break-all">{governance.deployer}</span>
+            <span className="font-bold break-all">{dtf?.deployer}</span>
             <Box variant="circle">
               <ArrowUpRight size={12} />
             </Box>

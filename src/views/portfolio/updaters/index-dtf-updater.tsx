@@ -56,7 +56,7 @@ interface UnderlyingTokensResponse {
 const accountDataQuery = gql`
   query getAccountData($id: String!) {
     account(id: $id) {
-      balances {
+      balances(where: { amount_gt: 0 }) {
         token {
           id
           name
@@ -69,7 +69,7 @@ const accountDataQuery = gql`
           address
         }
       }
-      locks(where: { claimedBlock: null, cancelledBlock: null }) {
+      locks(where: { claimedBlock: null, cancelledBlock: null, amount_gt: 0 }) {
         lockId
         token {
           token {

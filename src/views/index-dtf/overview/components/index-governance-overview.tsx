@@ -3,7 +3,7 @@ import { Box } from '@/components/ui/box'
 import { Card } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import { chainIdAtom } from '@/state/atoms'
-import { indexDTFAtom, iTokenAtom } from '@/state/dtf/atoms'
+import { indexDTFAtom } from '@/state/dtf/atoms'
 import { parseDuration } from '@/utils'
 import { useAtomValue } from 'jotai'
 import { ArrowUpRight, Fingerprint } from 'lucide-react'
@@ -85,7 +85,7 @@ const GovernanceDetails = () => {
 }
 
 const IndexGovernanceOverview = () => {
-  const token = useAtomValue(iTokenAtom)
+  const indexDTF = useAtomValue(indexDTFAtom)
 
   return (
     <Card className="p-6">
@@ -105,7 +105,7 @@ const IndexGovernanceOverview = () => {
         </p>
         <div className="my-4 flex items-center gap-2">
           <h3 className="text-xl text-primary mr-auto font-bold">
-            How changes to ${token?.symbol || 'DTF'} occur
+            How changes to {indexDTF?.token.symbol || 'DTF'} occur
           </h3>
           <Box variant="circle" className="h-8 w-8">
             <ArrowUpRight size={16} />

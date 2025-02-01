@@ -1,21 +1,21 @@
 import TokenLogo from '@/components/token-logo'
 import { Button } from '@/components/ui/button'
 import Timeline from '@/components/ui/timeline'
-import { iTokenAtom } from '@/state/dtf/atoms'
 import { useAtom, useAtomValue } from 'jotai'
 import { Link } from 'react-router-dom'
 import { isBasketProposalValidAtom, isProposalConfirmedAtom } from '../atoms'
 import SubmitProposalButton from './submit-proposal-button'
 import { ROUTES } from '@/utils/constants'
+import { indexDTFAtom } from '@/state/dtf/atoms'
 
 // TODO: get governance route to navigate back to governance
 const Header = () => {
-  const dtf = useAtomValue(iTokenAtom)
+  const dtf = useAtomValue(indexDTFAtom)
 
   return (
     <div className="flex items-center p-6 gap-2 bg-card rounded-t-3xl">
       <TokenLogo size="lg" />
-      <h3 className="font-bold mr-auto">${dtf?.symbol}</h3>
+      <h3 className="font-bold mr-auto">${dtf?.token.symbol}</h3>
       <Link to={`../${ROUTES.GOVERNANCE}`}>
         <Button
           variant="outline"

@@ -1,20 +1,13 @@
-import dtfIndexAbi from '@/abis/dtf-index-abi'
+import useIndexDTF from '@/hooks/useIndexDTF'
 import { useIndexBasket } from '@/hooks/useIndexPrice'
+import { chainIdAtom, walletChainAtom } from '@/state/atoms'
 import {
-  chainIdAtom,
-  INDEX_DTF_SUBGRAPH_URL,
-  walletChainAtom,
-} from '@/state/atoms'
-import {
-  IndexDTF,
   indexDTFAtom,
   indexDTFBasketAmountsAtom,
   indexDTFBasketAtom,
   indexDTFBasketPricesAtom,
   indexDTFBasketSharesAtom,
-  indexDTFFeeAtom,
   iTokenAddressAtom,
-  iTokenAtom,
   iTokenBasketAtom,
   iTokenConfigurationAtom,
   iTokenGovernanceAtom,
@@ -23,13 +16,10 @@ import {
 import { isAddress } from '@/utils'
 import { AvailableChain, supportedChains } from '@/utils/chains'
 import { ROUTES } from '@/utils/constants'
-import { useQuery } from '@tanstack/react-query'
-import request, { gql } from 'graphql-request'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { Outlet, useNavigate, useParams } from 'react-router-dom'
-import { erc20Abi } from 'viem'
-import { useReadContracts, useSwitchChain } from 'wagmi'
+import { useSwitchChain } from 'wagmi'
 import IndexDTFNavigation from './components/navigation'
 import GovernanceUpdater from './governance/updater'
 
@@ -45,151 +35,16 @@ const useChainWatch = () => {
   }, [chainId])
 }
 
-const DTFContextUpdater = () => {
-  const token = useAtomValue(iTokenAddressAtom)
-  const chainId = useAtomValue(chainIdAtom)
-
-  const { data, error, isLoading } = useReadContracts(
-    token
-      ? {
-          contracts: [
-            {
-              address: token,
-              abi: erc20Abi,
-              functionName: 'name',
-              chainId,
-            },
-            {
-              address: token,
-              abi: erc20Abi,
-              functionName: 'symbol',
-              chainId,
-            },
-            {
-              address: token,
-              abi: dtfIndexAbi,
-              functionName: 'tvlFee',
-              chainId,
-            },
-          ],
-          allowFailure: false,
-          query: {
-            select: (data) => {
-              const [name, symbol, folioFee] = data
-
-              return {
-                name,
-                symbol,
-                folioFee: Number((folioFee / 43959105336n) * 100n),
-              }
-            },
-          },
-        }
-      : undefined
-  )
-
-  // Temporal, individual hooks for each atom
-  const setTokenData = useSetAtom(iTokenAtom)
-  const setFee = useSetAtom(indexDTFFeeAtom)
-
-  useEffect(() => {
-    if (token && data) {
-      setTokenData({
-        symbol: data.symbol,
-        name: data.name,
-        address: token,
-        decimals: 18,
-        chain: chainId,
-      })
-      setFee(data.folioFee)
-    }
-  }, [token, chainId, data])
-
-  return null
-}
-
-type DTFQueryResponse = {
-  dtf: IndexDTF
-}
-
-const dtfQuery = gql`
-  query getDTF($id: String!) {
-    dtf(id: $id) {
-      id
-      deployer
-      ownerAddress
-      ownerGovernance {
-        id
-        votingDelay
-        votingPeriod
-        timelock {
-          id
-          guardians
-          executionDelay
-        }
-      }
-      tradingGovernance {
-        id
-        votingDelay
-        votingPeriod
-        timelock {
-          id
-          guardians
-          executionDelay
-        }
-      }
-      token {
-        id
-        name
-        symbol
-        decimals
-        totalSupply
-      }
-      stToken {
-        id
-        token {
-          name
-          symbol
-          decimals
-          totalSupply
-        }
-        underlying {
-          name
-          symbol
-          address
-          decimals
-        }
-      }
-    }
-  }
-`
-
 const IndexDTFMetadataUpdater = () => {
   const token = useAtomValue(iTokenAddressAtom)
   const chainId = useAtomValue(chainIdAtom)
   const setIndexDTF = useSetAtom(indexDTFAtom)
 
-  const { data, error } = useQuery({
-    queryKey: ['index-dtf-metadata', token, chainId],
-    queryFn: async () => {
-      if (!token) return undefined
-
-      const response: DTFQueryResponse = await request(
-        INDEX_DTF_SUBGRAPH_URL[chainId],
-        dtfQuery,
-        {
-          id: token.toLowerCase(),
-        }
-      )
-
-      return response
-    },
-    enabled: !!token,
-  })
+  const { data } = useIndexDTF(token, chainId)
 
   useEffect(() => {
     if (data) {
-      setIndexDTF(data.dtf)
+      setIndexDTF(data)
     }
   }, [data])
 
@@ -232,7 +87,6 @@ const Updater = () => {
   const navigate = useNavigate()
   const setChain = useSetAtom(chainIdAtom)
   const [currentToken, setTokenAddress] = useAtom(iTokenAddressAtom)
-  const setTokenData = useSetAtom(iTokenAtom)
   const setTokenMeta = useSetAtom(iTokenMetaAtom)
   const setTokenConfiguration = useSetAtom(iTokenConfigurationAtom)
   const setTokenGovernance = useSetAtom(iTokenGovernanceAtom)
@@ -241,7 +95,6 @@ const Updater = () => {
   useChainWatch()
 
   const resetState = () => {
-    setTokenData(undefined)
     setTokenMeta(undefined)
     setTokenConfiguration(undefined)
     setTokenGovernance(undefined)
@@ -273,7 +126,6 @@ const Updater = () => {
     <>
       <IndexDTFMetadataUpdater />
       <IndexDTFBasketUpdater />
-      <DTFContextUpdater />
       <GovernanceUpdater />
     </>
   )
