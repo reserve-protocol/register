@@ -27,72 +27,72 @@ import { ArrowRight, ArrowUpRight, Asterisk, SquarePlus } from 'lucide-react'
 import { useMemo } from 'react'
 import { NavLink } from 'react-router-dom'
 
-const REGISTER_MORE_LINKS = [
-  {
-    label: t`DTF Explorer`,
-    icon: <Asterisk size={16} />,
-    description: t`Get an overview of everything going on.`,
-    to: ROUTES.EXPLORER,
-  },
-  {
-    label: t`Reserve Bridge`,
-    icon: <Asterisk size={16} />,
-    description: t`Transfer DTFs across chains`,
-    to: ROUTES.BRIDGE,
-  },
-  {
-    label: t`Create new Yield DTF`,
-    icon: <Asterisk size={16} />,
-    description: t`Get an overview of everything going on.`,
-    to: ROUTES.DEPLOY_YIELD,
-  },
-]
-
-const EXTERNAL_LINKS = [
-  {
-    label: t`Reserve Blog`,
-    icon: <Asterisk size={16} />,
-    description: t`Stay up to date in long-form`,
-    to: RESERVE_BLOG,
-  },
-  {
-    label: t`Protocol Docs`,
-    icon: <Asterisk size={16} />,
-    description: t`Understand the Reserve Protocol.`,
-    to: PROTOCOL_DOCS,
-  },
-  {
-    label: t`Reserve Forum`,
-    icon: <Asterisk size={16} />,
-    description: t`Discussions of ecosystem ideas.`,
-    to: RESERVE_FORUM,
-  },
-  {
-    label: t`Reserve Discord`,
-    icon: <Asterisk size={16} />,
-    description: t`Join the conversation or ask questions.`,
-    to: DISCORD_INVITE,
-  },
-]
-
 const AppNavigation = () => {
-  const menuItems = useMemo(
+  const [menuItems, moreLinks, externalLinks] = useMemo(
     () => [
-      {
-        label: t`Browse DTFs`,
-        icon: <Binoculars />,
-        to: ROUTES.HOME,
-      },
-      {
-        label: t`Farm Rewards`,
-        icon: <Money />,
-        to: ROUTES.EARN,
-      },
-      {
-        label: t`Create new DTF`,
-        icon: <SquarePlus strokeWidth={1.5} size={16} />,
-        to: ROUTES.DEPLOY_INDEX,
-      },
+      [
+        {
+          label: t`Browse DTFs`,
+          icon: <Binoculars />,
+          to: ROUTES.HOME,
+        },
+        {
+          label: t`Farm Rewards`,
+          icon: <Money />,
+          to: ROUTES.EARN,
+        },
+        {
+          label: t`Create new DTF`,
+          icon: <SquarePlus strokeWidth={1.5} size={16} />,
+          to: ROUTES.DEPLOY_INDEX,
+        },
+      ],
+      [
+        {
+          label: t`DTF Explorer`,
+          icon: <Asterisk size={16} />,
+          description: t`Get an overview of everything going on.`,
+          to: ROUTES.EXPLORER,
+        },
+        {
+          label: t`Reserve Bridge`,
+          icon: <Asterisk size={16} />,
+          description: t`Transfer DTFs across chains`,
+          to: ROUTES.BRIDGE,
+        },
+        {
+          label: t`Create new Yield DTF`,
+          icon: <Asterisk size={16} />,
+          description: t`Get an overview of everything going on.`,
+          to: ROUTES.DEPLOY_YIELD,
+        },
+      ],
+      [
+        {
+          label: t`Reserve Blog`,
+          icon: <Asterisk size={16} />,
+          description: t`Stay up to date in long-form`,
+          to: RESERVE_BLOG,
+        },
+        {
+          label: t`Protocol Docs`,
+          icon: <Asterisk size={16} />,
+          description: t`Understand the Reserve Protocol.`,
+          to: PROTOCOL_DOCS,
+        },
+        {
+          label: t`Reserve Forum`,
+          icon: <Asterisk size={16} />,
+          description: t`Discussions of ecosystem ideas.`,
+          to: RESERVE_FORUM,
+        },
+        {
+          label: t`Reserve Discord`,
+          icon: <Asterisk size={16} />,
+          description: t`Join the conversation or ask questions.`,
+          to: DISCORD_INVITE,
+        },
+      ],
     ],
     []
   )
@@ -132,7 +132,7 @@ const AppNavigation = () => {
               <div className="p-2 flex justify-center ">
                 <RSRSquare />
               </div>
-              {REGISTER_MORE_LINKS.map((item) => (
+              {moreLinks.map((item) => (
                 <NavigationMenuLink
                   key={item.to}
                   asChild
@@ -175,7 +175,7 @@ const AppNavigation = () => {
               <div className="flex justify-center p-2">
                 <ReserveSquare />
               </div>
-              {EXTERNAL_LINKS.map((item) => (
+              {externalLinks.map((item) => (
                 <NavigationMenuLink
                   key={item.to}
                   href={item.to}
