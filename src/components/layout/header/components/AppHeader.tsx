@@ -150,6 +150,7 @@ const HeaderMenu = () => {
                 <NavigationMenuLink
                   asChild
                   className="p-4 gap-2 flex items-center rounded-3xl bg-card"
+                  key={item.label}
                 >
                   <NavLink to={item.to}>
                     <div className="bg-primary p-1 rounded-full text-primary-foreground">
@@ -193,6 +194,7 @@ const HeaderMenu = () => {
                   href={item.to}
                   target="_blank"
                   className="p-4 gap-2 flex items-center rounded-3xl bg-card"
+                  key={item.label}
                 >
                   <div className="bg-primary p-1 rounded-full text-primary-foreground">
                     <Asterisk size={16} />
