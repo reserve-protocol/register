@@ -118,6 +118,7 @@ const DeployAccordionTrigger = ({
   return (
     <AccordionTrigger
       withChevron={false}
+      disabled={!validated && isActive}
       className={cn(
         'flex items-center justify-between w-full p-6',
         isActive ? 'pb-3' : ''
@@ -153,7 +154,11 @@ const DeployAccordionTrigger = ({
               <Edit2 size={16} strokeWidth={1.5} />
             </div>
           ) : isActive ? (
-            <ChevronUpIcon size={24} strokeWidth={1.5} />
+            <ChevronUpIcon
+              size={24}
+              strokeWidth={1.5}
+              className="text-muted-foreground"
+            />
           ) : (
             <ChevronDownIcon size={24} strokeWidth={1.5} />
           )}
