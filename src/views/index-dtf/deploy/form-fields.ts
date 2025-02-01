@@ -161,13 +161,28 @@ export const DeployFormSchema = z
     customAuctionLength: z.coerce.number().min(1).max(10080).optional(),
     customAuctionDelay: z.coerce.number().min(0).max(10080).optional(),
     guardians: z.array(
-      z.string().refine(isAddress, { message: 'Invalid Address' }).optional()
+      z
+        .string()
+        .refine((value) => !value || isAddress(value), {
+          message: 'Invalid Address',
+        })
+        .optional()
     ),
     brandManagers: z.array(
-      z.string().refine(isAddress, { message: 'Invalid Address' }).optional()
+      z
+        .string()
+        .refine((value) => !value || isAddress(value), {
+          message: 'Invalid Address',
+        })
+        .optional()
     ),
     auctionLaunchers: z.array(
-      z.string().refine(isAddress, { message: 'Invalid Address' }).optional()
+      z
+        .string()
+        .refine((value) => !value || isAddress(value), {
+          message: 'Invalid Address',
+        })
+        .optional()
     ),
     basketVotingDelay: z.coerce.number().min(0).optional(),
     customBasketVotingDelay: z.coerce.number().min(0).optional(),
