@@ -58,13 +58,7 @@ const LoadingSkeleton = () => (
   </div>
 )
 
-const ProposalTradesSkeleton = ({
-  loading,
-  empty,
-}: {
-  loading: boolean
-  empty: boolean
-}) => {
+const ProposalTradesSkeleton = ({ loading }: { loading: boolean }) => {
   if (loading) {
     return <LoadingSkeleton />
   }
