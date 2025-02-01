@@ -6,11 +6,10 @@ import { useAtomValue } from 'jotai'
 import { Asterisk, Bookmark, Check } from 'lucide-react'
 import { ReactNode } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { erc20Abi } from 'viem'
-import { useReadContract } from 'wagmi'
 import {
   daoCreatedAtom,
   daoTokenAddressAtom,
+  daoTokenSymbolAtom,
   deployedDTFAtom,
 } from '../../../atoms'
 import { indexDeployFormDataAtom } from '../atoms'
@@ -39,20 +38,12 @@ const SuccessView = () => {
   const initialTokens = useAtomValue(initialTokensAtom)
   const stToken = useAtomValue(daoTokenAddressAtom)
   const daoCreated = useAtomValue(daoCreatedAtom)
+  const stTokenSymbol = useAtomValue(daoTokenSymbolAtom)
 
   const onClick = () => {
     if (!deployedDTF) return
     navigate(`/${chainId}/index-dtf/${deployedDTF}`)
   }
-
-  const { data: symbol } = useReadContract({
-    abi: erc20Abi,
-    functionName: 'symbol',
-    address: form!.governanceERC20address,
-    query: {
-      enabled: Boolean(form!.governanceERC20address && stToken),
-    },
-  })
 
   const addTokenToWallet = () => {
     if (!deployedDTF) return
@@ -83,8 +74,8 @@ const SuccessView = () => {
             </div>
           </div>
           <div className="flex flex-col gap-3">
-            {!!(daoCreated && stToken) && (
-              <Item title={`You created vl${symbol} DAO`}>
+            {!!(daoCreated && stToken && stTokenSymbol) && (
+              <Item title={`You created ${stTokenSymbol} DAO`}>
                 <ExplorerAddress address={stToken} chain={chainId} />
               </Item>
             )}

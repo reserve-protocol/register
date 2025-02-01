@@ -5,6 +5,8 @@ import { useFormContext } from 'react-hook-form'
 import { erc20Abi, isAddress } from 'viem'
 import { useReadContract } from 'wagmi'
 import { ChainId } from '@/utils/chains'
+import { useAtomValue } from 'jotai'
+import { chainIdAtom } from '@/state/atoms'
 
 const stTokenQuery = gql`
   query getStakingToken($id: String!) {
@@ -15,6 +17,7 @@ const stTokenQuery = gql`
 `
 
 const GovernanceExistingVoteLock = () => {
+  const chainId = useAtomValue(chainIdAtom)
   const { watch } = useFormContext()
   const governanceVoteLock = watch('governanceVoteLock')
 
@@ -33,7 +36,7 @@ const GovernanceExistingVoteLock = () => {
       enabled:
         stToken?.stakingToken?.id && isAddress(stToken?.stakingToken?.id),
     },
-    chainId: ChainId.Base, // TODO: change hardcoded chainId
+    chainId,
   })
 
   return (

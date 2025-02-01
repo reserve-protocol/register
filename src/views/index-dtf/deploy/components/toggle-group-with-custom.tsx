@@ -64,7 +64,9 @@ const ToggleGroupSelector = ({
       value={watch(fieldName).toString()}
       onValueChange={(value) => {
         const parsedValue = parseFloat(value)
-        setValue(fieldName, isNaN(parsedValue) ? undefined : parsedValue)
+        if (!isNaN(parsedValue)) {
+          setValue(fieldName, parsedValue)
+        }
         resetCustomField()
       }}
     >

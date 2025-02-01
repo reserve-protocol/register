@@ -232,6 +232,8 @@ const TokenList = ({ showSelected = false }: TokenListProps) => {
     },
     staleTime: 5 * 60 * 1000, // Cache for 5 minutes
     retry: 2,
+    select: (data) =>
+      data.sort((a, b) => a.name.trim().localeCompare(b.name.trim())),
   })
 
   const filteredTokens = useMemo(() => {
