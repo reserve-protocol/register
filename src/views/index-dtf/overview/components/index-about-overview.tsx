@@ -98,6 +98,8 @@ const IndexBasketVisual = ({ basket, ...props }: BasketOverviewProps) => {
   )
 }
 
+const MAX_TOKENS = 10
+
 const IndexBasketTokens = ({
   basket,
   className,
@@ -118,12 +120,12 @@ const IndexBasketTokens = ({
               <TableHead>Token</TableHead>
               <TableHead>Symbol</TableHead>
               <TableHead className="text-center">Weight</TableHead>
-              <TableHead className="text-right">Dex screener</TableHead>
+              <TableHead className="text-right"></TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {basket
-              .slice(0, viewAll ? basket.length : 5)
+              .slice(0, viewAll ? basket.length : MAX_TOKENS)
               .map((token, index) => (
                 <TableRow key={token.symbol} className="border-none">
                   <TableCell>
@@ -152,7 +154,7 @@ const IndexBasketTokens = ({
           </TableBody>
         </Table>
       </ScrollArea>
-      {basket.length > 5 && (
+      {basket.length > MAX_TOKENS && (
         <Button
           variant="outline"
           className="w-full rounded-2xl"
