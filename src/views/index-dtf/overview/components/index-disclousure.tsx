@@ -1,12 +1,12 @@
 import { Card } from '@/components/ui/card'
-import { Fingerprint } from 'lucide-react'
+import { Fingerprint, Signature } from 'lucide-react'
 
 const IndexDisclousure = () => {
   return (
     <Card className="p-6">
       <div className="flex items-center gap-1 mb-16">
         <div className="rounded-full border border-foreground p-2 mr-auto">
-          <Fingerprint size={20} />
+          <Signature size={20} />
         </div>
       </div>
       <div className="flex items-center gap-2 mb-4"></div>

@@ -1,49 +1,57 @@
-import { Box } from '@/components/ui/box'
+import ChainLogo from '@/components/icons/ChainLogo'
+import CopyValue from '@/components/old/button/CopyValue'
 import { Card } from '@/components/ui/card'
-import { Link } from '@/components/ui/link'
 import { Skeleton } from '@/components/ui/skeleton'
-import { indexDTFAtom, iTokenMetaAtom } from '@/state/dtf/atoms'
+import { chainIdAtom } from '@/state/atoms'
+import {
+  indexDTFAtom,
+  iTokenAddressAtom,
+  iTokenMetaAtom,
+} from '@/state/dtf/atoms'
+import { shortenAddress } from '@/utils'
+import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { useAtomValue } from 'jotai'
-import { ArrowUpRight, Link as LinkIcon, X } from 'lucide-react'
+import { ArrowUpRight, MousePointerClick, ScrollText } from 'lucide-react'
+import { Link } from 'react-router-dom'
 
 const DEFAULT_LOGO = 'https://storage.reserve.org/dtf-default.png'
 
-const TokenSocials = () => {
-  const data = useAtomValue(iTokenMetaAtom)
+// const TokenSocials = () => {
+//   const data = useAtomValue(iTokenMetaAtom)
 
-  if (!data) {
-    return <Skeleton className="w-60 h-6" />
-  }
+//   if (!data) {
+//     return <Skeleton className="w-60 h-6" />
+//   }
 
-  return (
-    <div className="flex gap-3">
-      {data.website && (
-        <Link>
-          <Box variant="circle">
-            <LinkIcon size={12} />
-          </Box>
-          Website
-        </Link>
-      )}
-      {data.telegram && (
-        <Link>
-          <Box variant="circle">
-            <LinkIcon size={12} />
-          </Box>
-          Telegram
-        </Link>
-      )}
-      {data.twitter && (
-        <Link>
-          <Box variant="circle">
-            <X size={12} />
-          </Box>
-          Twitter
-        </Link>
-      )}
-    </div>
-  )
-}
+//   return (
+//     <div className="flex gap-3">
+//       {data.website && (
+//         <Link>
+//           <Box variant="circle">
+//             <LinkIcon size={12} />
+//           </Box>
+//           Website
+//         </Link>
+//       )}
+//       {data.telegram && (
+//         <Link>
+//           <Box variant="circle">
+//             <LinkIcon size={12} />
+//           </Box>
+//           Telegram
+//         </Link>
+//       )}
+//       {data.twitter && (
+//         <Link>
+//           <Box variant="circle">
+//             <X size={12} />
+//           </Box>
+//           Twitter
+//         </Link>
+//       )}
+//     </div>
+//   )
+// }
 
 const TokenNameSkeleton = () => (
   <div className="flex flex-col gap-4">
@@ -52,13 +60,102 @@ const TokenNameSkeleton = () => (
   </div>
 )
 
+const TokenAddresses = () => {
+  const chainId = useAtomValue(chainIdAtom)
+  const address = useAtomValue(iTokenAddressAtom)
+
+  if (!address) {
+    return null
+  }
+
+  return (
+    <div className="flex items-center gap-2">
+      <ChainLogo chain={chainId} />
+      <span>{shortenAddress(address)}</span>
+      <div className="p-1 bg-muted rounded-full">
+        <CopyValue value={address} />
+      </div>
+      <Link
+        to={getExplorerLink(address, chainId, ExplorerDataType.TOKEN)}
+        target="_blank"
+      >
+        <ArrowUpRight size={16} />
+      </Link>
+    </div>
+  )
+}
+
+const RolesOverview = () => {
+  const dtf = useAtomValue(indexDTFAtom)
+  const chainId = useAtomValue(chainIdAtom)
+
+  return (
+    <div className="grid grid-cols-2 border-t px-2 pt-2">
+      <div className="flex items-center border-r gap-2 p-2">
+        <div className="p-1.5 border border-foreground rounded-full">
+          <ScrollText size={16} />
+        </div>
+        <div>
+          <span className="text-legend text-sm">Creator:</span>
+          {dtf?.deployer ? (
+            <div className="flex items-center gap-1">
+              <span className="font-bold">{shortenAddress(dtf.deployer)}</span>
+              <Link
+                to={getExplorerLink(
+                  dtf.deployer,
+                  chainId,
+                  ExplorerDataType.ADDRESS
+                )}
+                target="_blank"
+                className="p-1 bg-muted rounded-full"
+              >
+                <ArrowUpRight size={12} />
+              </Link>
+            </div>
+          ) : (
+            <Skeleton className="w-30 h-5" />
+          )}
+        </div>
+      </div>
+      <div className="flex items-center border-r gap-2 p-2">
+        <div className="p-1.5 border border-foreground rounded-full">
+          <MousePointerClick size={16} />
+        </div>
+        <div>
+          <span className="text-legend text-sm">Auction Launcher:</span>
+          {dtf?.auctionLaunchers.length ? (
+            <div className="flex items-center gap-1">
+              <span className="font-bold">
+                {shortenAddress(dtf?.auctionLaunchers[0])}
+              </span>
+              <Link
+                to={getExplorerLink(
+                  dtf.auctionLaunchers[0],
+                  chainId,
+                  ExplorerDataType.ADDRESS
+                )}
+                target="_blank"
+                className="p-1 bg-muted rounded-full"
+              >
+                <ArrowUpRight size={12} />
+              </Link>
+            </div>
+          ) : (
+            <Skeleton className="w-30 h-5" />
+          )}
+        </div>
+      </div>
+    </div>
+  )
+}
+
 const IndexTokenOverview = () => {
   const dtf = useAtomValue(indexDTFAtom)
   const meta = useAtomValue(iTokenMetaAtom)
 
   return (
-    <Card className="p-6">
-      <div className="flex items-center mb-24">
+    <Card className="p-2">
+      <div className="flex items-center mb-16 p-4">
         <div className="mr-auto">
           <img
             src={meta?.logo || DEFAULT_LOGO}
@@ -66,31 +163,24 @@ const IndexTokenOverview = () => {
             className="h-8 w-8 rounded-full"
           />
         </div>
-        <TokenSocials />
+        <TokenAddresses />
+
+        {/* <TokenSocials /> */}
       </div>
-      {!dtf ? (
-        <TokenNameSkeleton />
-      ) : (
-        <>
-          <h4>${dtf.token.symbol}</h4>
-          <h1 className="mt-4 text-2xl md:text-5xl font-medium">
-            {dtf.token.name}
-          </h1>
-        </>
-      )}
-      <div className="flex items-center gap-1 mt-4">
-        <span className="text-legend">Owner</span>
-        {!dtf?.deployer ? (
-          <Skeleton className="w-30 h-5" />
+      <div className="p-4">
+        {!dtf ? (
+          <TokenNameSkeleton />
         ) : (
-          <Link>
-            <span className="font-bold break-all">{dtf?.deployer}</span>
-            <Box variant="circle">
-              <ArrowUpRight size={12} />
-            </Box>
-          </Link>
+          <>
+            <h4>${dtf.token.symbol}</h4>
+            <h1 className="mt-4 text-2xl md:text-5xl font-medium">
+              {dtf.token.name}
+            </h1>
+          </>
         )}
       </div>
+
+      <RolesOverview />
     </Card>
   )
 }

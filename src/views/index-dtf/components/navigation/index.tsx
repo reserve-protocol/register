@@ -1,3 +1,6 @@
+import GovernanceIcon from '@/components/icons/Governance'
+import IssuanceIcon from '@/components/icons/Issuance'
+import TradeIcon from '@/components/icons/Trade'
 import TokenLogo from '@/components/token-logo'
 import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
@@ -22,9 +25,8 @@ const Header = () => {
   }
 
   return (
-    <div className="lg:flex flex-col gap-2 hidden mb-4">
-      <TokenLogo size="lg" symbol={dtf.token.symbol} />
-      <h4 className="font-bold">${dtf.token.symbol}</h4>
+    <div className="lg:flex flex-col gap-2 hidden pb-4 mb-4 border-b">
+      <h4 className="text-legend">${dtf.token.symbol}</h4>
     </div>
   )
 }
@@ -47,14 +49,14 @@ const NavigationItem = ({
             isActive ? 'text-primary' : 'text-text'
           )}
         >
-          <div
+          {/* <div
             className={cn(
               'flex items-center justify-center rounded-full h-6 w-6 border border-border',
               isActive ? 'bg-primary/10' : 'bg-border'
             )}
-          >
-            {icon}
-          </div>
+          > */}
+          <div className="h-6 w-6 flex items-center justify-center">{icon}</div>
+          {/* </div> */}
           <div className="text-sm hidden md:block">{label}</div>
         </div>
       )}
@@ -63,25 +65,27 @@ const NavigationItem = ({
 }
 
 const NavigationItems = () => {
+  const dtf = useAtomValue(indexDTFAtom)
+
   const items = useMemo(
     () => [
       {
-        icon: <Asterisk size={12} />,
+        icon: <TokenLogo symbol={dtf?.token.symbol} />,
         label: t`Overview`,
         route: ROUTES.OVERVIEW,
       },
       {
-        icon: <Asterisk size={12} />,
+        icon: <IssuanceIcon />,
         label: t`Mint + Redeem`,
         route: ROUTES.ISSUANCE,
       },
       {
-        icon: <Asterisk size={12} />,
+        icon: <GovernanceIcon />,
         label: t`Governance`,
         route: ROUTES.GOVERNANCE,
       },
       {
-        icon: <Asterisk size={12} />,
+        icon: <TradeIcon />,
         label: t`Auctions`,
         route: ROUTES.AUCTIONS,
       },
@@ -91,7 +95,7 @@ const NavigationItems = () => {
       //   route: ROUTES.SETTINGS,
       // },
     ],
-    []
+    [dtf?.token.symbol]
   )
 
   return (
