@@ -42,7 +42,10 @@ const IndexBasketVisual = ({ basket, ...props }: BasketOverviewProps) => {
       : 0 // Number of empty spaces to show
 
   return (
-    <div className="relative h-20 rounded-lg overflow-hidden -mx-4" {...props}>
+    <div
+      className="relative h-20 rounded-lg overflow-hidden -mx-2 sm:-mx-4"
+      {...props}
+    >
       {/* Token sections */}
       {tokens.slice(0, MAX_BAR_TOKENS).map((token, index) => (
         <div
@@ -177,7 +180,10 @@ const IndexBasketPreview = () => {
   return (
     <div>
       {/* <IndexBasketVisual basket={basket} /> */}
-      <IndexBasketTokens className="-mx-5 -mb-5" basket={basket} />
+      <IndexBasketTokens
+        className="-mx-4 sm:-mx-5 -mb-4 sm:-mb-5"
+        basket={basket}
+      />
     </div>
   )
 }
@@ -186,7 +192,7 @@ const IndexAboutOverview = () => {
   const data = useAtomValue(indexDTFAtom)
 
   return (
-    <Card className="p-6">
+    <Card className="p-4 sm:p-6">
       <div className="flex items-center gap-2 mb-16">
         <div className="rounded-full border border-foreground p-2 mr-auto">
           <BrickWall size={20} />

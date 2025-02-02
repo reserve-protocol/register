@@ -12,7 +12,7 @@ import Staking from './staking'
 
 const Container = ({ children }: { children: React.ReactNode }) => {
   return (
-    <Card className="p-6">
+    <Card className="p-4 sm:p-6">
       <div className="flex items-center gap-2 mb-16">
         <div className="rounded-full border border-foreground p-2 mr-auto">
           <GovernanceIcon />

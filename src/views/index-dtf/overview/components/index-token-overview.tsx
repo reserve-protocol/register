@@ -90,9 +90,9 @@ const RolesOverview = () => {
   const chainId = useAtomValue(chainIdAtom)
 
   return (
-    <div className="grid grid-cols-2 border-t px-2 pt-2">
-      <div className="flex items-center border-r gap-2 p-2">
-        <div className="p-1.5 border border-foreground rounded-full">
+    <div className="grid grid-cols-2 border-t px-2 sm:pt-2">
+      <div className="flex items-center border-r gap-2 sm:p-2">
+        <div className="hidden sm:block p-1.5 border border-foreground rounded-full">
           <ScrollText size={16} />
         </div>
         <div>
@@ -118,7 +118,7 @@ const RolesOverview = () => {
         </div>
       </div>
       <div className="flex items-center gap-2 p-2 pl-4">
-        <div className="p-1.5 border border-foreground rounded-full">
+        <div className="hidden sm:block p-1.5 border border-foreground rounded-full">
           <MousePointerClick size={16} />
         </div>
         <div>
@@ -155,7 +155,7 @@ const IndexTokenOverview = () => {
 
   return (
     <Card className="p-2">
-      <div className="flex items-center mb-16 p-4">
+      <div className="flex items-center sm:mb-16 p-2 sm:p-4">
         <div className="mr-auto">
           <img
             src={meta?.logo || DEFAULT_LOGO}
@@ -167,13 +167,13 @@ const IndexTokenOverview = () => {
 
         {/* <TokenSocials /> */}
       </div>
-      <div className="p-4">
+      <div className="p-2 sm:p-4">
         {!dtf ? (
           <TokenNameSkeleton />
         ) : (
           <>
             <h4>${dtf.token.symbol}</h4>
-            <h1 className="mt-4 text-2xl md:text-5xl font-medium">
+            <h1 className="mt-2 sm:mt-4 text-2xl md:text-5xl font-medium">
               {dtf.token.name}
             </h1>
           </>
