@@ -117,7 +117,7 @@ const RolesOverview = () => {
           )}
         </div>
       </div>
-      <div className="flex items-center border-r gap-2 p-2">
+      <div className="flex items-center gap-2 p-2 pl-4">
         <div className="p-1.5 border border-foreground rounded-full">
           <MousePointerClick size={16} />
         </div>
