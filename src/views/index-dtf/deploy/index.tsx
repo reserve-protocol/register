@@ -24,7 +24,7 @@ const DeployerHeader = () => {
         <div className="text-xl font-bold">Create New Index DTF</div>
       </div>
       <div
-        className="flex items-center gap-2 cursor-pointer"
+        className="hidden sm:flex items-center gap-2 cursor-pointer"
         onClick={() => navigate(ROUTES.DEPLOY_YIELD)}
         role="button"
       >
@@ -46,13 +46,13 @@ const IndexTokenDeploy = () => {
 
   return (
     <div className="min-h-full">
-      <div className="container grid grid-cols-2 lg:grid-cols-3 gap-2 py-6 px-4">
+      <div className="container grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-2 py-2 sm:py-6 px-0 sm:px-2">
         <FormProvider {...form}>
-          <div className="flex flex-col rounded-3xl border-4 border-secondary bg-secondary col-span-2 h-max">
+          <div className="flex flex-col rounded-3xl border-4 border-secondary bg-secondary h-max">
             <DeployerHeader />
             <DeployAccordion />
           </div>
-          <div className="hidden lg:flex h-max rounded-3xl border-4 border-secondary col-span-1">
+          <div className=" h-max rounded-3xl border-4 border-secondary col-span-1">
             <RightPanel />
           </div>
         </FormProvider>
