@@ -161,32 +161,34 @@ const DTFCard = ({ dtf }: { dtf: IndexDTFItem }) => {
   const percentageChange = calculatePercentageChange(dtf.performance)
 
   return (
-    <div className="p-4 [&:not(:last-child)]:border-b">
-      <div className="flex justify-between mb-2">
-        <TokenLogo address={dtf.address} size="xl" />
-        <div>
-          <span>{percentageChange} </span>
-          <span className="text-legend">(7d)</span>
-        </div>
-      </div>
-      <div className="flex justify-between">
-        <div>
-          <h4 className="font-semibold mb-[2px]">{dtf.name}</h4>
-          <div className="flex">
-            <div>{head.map((t) => t.symbol).join(', ')}</div>
-            {tail > 0 && <div className="text-[#0955AC] ml-[6px]">+{tail}</div>}
+    <Link to={`/${dtf.chainId}/index-dtf/${dtf.address}/overview`}>
+      <div className="p-4 [&:not(:last-child)]:border-b">
+        <div className="flex justify-between mb-2">
+          <TokenLogo address={dtf.address} size="xl" />
+          <div>
+            <span>{percentageChange} </span>
+            <span className="text-legend">(7d)</span>
           </div>
         </div>
+        <div className="flex justify-between">
+          <div>
+            <h4 className="font-semibold mb-[2px]">{dtf.name}</h4>
+            <div className="flex">
+              <div>{head.map((t) => t.symbol).join(', ')}</div>
+              {tail > 0 && (
+                <div className="text-[#0955AC] ml-[6px]">+{tail}</div>
+              )}
+            </div>
+          </div>
 
-        <div className="flex items-end">
-          <Link to={`/${dtf.chainId}/index-dtf/${dtf.address}/overview`}>
+          <div className="flex items-end">
             <Button variant="muted" size="icon-rounded">
               <ArrowRight size={16} />
             </Button>
-          </Link>
+          </div>
         </div>
       </div>
-    </div>
+    </Link>
   )
 }
 
