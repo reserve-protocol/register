@@ -132,22 +132,22 @@ const Heading = () => {
 
   return (
     <>
-      <div className="absolute top-3 sm:top-8 left-3 sm:left-0 right-3 text-primary px-6 2xl:px-0">
-        <img src={tabIndex} className="rounded-full h-4 w-4 sm:h-8 sm:w-8" />
-        <h2 className="text-[22px] mt-6 mb-4 font-light leading-none">
+      <div className="absolute top-3 sm:top-8 left-0 sm:left-0 right-3 text-primary px-4 md:px-6 2xl:px-0">
+        <img src={tabIndex} className="rounded-full h-6 w-6 sm:h-8 sm:w-8" />
+        <h2 className="sm:text-2xl text-base mt-6 mb-4 font-light leading-none">
           TVL in Reserve
         </h2>
         {isLoading ? (
           <Skeleton className="w-[320px] h-[60px]" />
         ) : (
-          <div className="flex items-center justify-between sm:justify-start">
-            <h3 className="text-[44px] sm:text-[60px] font-semibold leading-none">
+          <div className="flex items-center ">
+            <h3 className="text-4xl sm:text-5xl sm:text-[60px] font-semibold leading-none">
               ${formatCurrency(tvl, 0)}
             </h3>
             <Link target="_blank" to={DUNE_DASHBOARD}>
               <Button
                 variant="none"
-                className="ml-3 w-[40px] h-[40px] sm:w-[44px] sm:h-[44px] p-0 bg-primary/10 text-primary hover:bg-primary/20"
+                className="ml-3  w-10 h-10 sm:w-[44px] sm:h-[44px] p-0 bg-primary/10 text-primary hover:bg-primary/20"
                 size="icon-rounded"
               >
                 <ArrowRight className="-rotate-45" size={24} />
@@ -156,7 +156,7 @@ const Heading = () => {
           </div>
         )}
 
-        <div className="flex justify-between sm:justify-start gap-2 mt-3 text-[22px] leading-none">
+        <div className="flex gap-2 mt-3 text-base sm:text-xl leading-none">
           <span className="font-light">Annualized protocol revenue:</span>
           {isLoading || !revenue ? (
             <Skeleton className="h-6 w-14" />
@@ -171,7 +171,7 @@ const Heading = () => {
           )}
         </div>
       </div>
-      <div className="absolute top-3 sm:top-8 right-4 2xl:right-2 text-primary">
+      <div className="absolute hidden sm:block top-3 sm:top-8 right-4 2xl:right-2 text-primary">
         <Button
           variant="outline-primary"
           className="rounded-[50px] p-1 h-8 hover:bg-primary"
@@ -222,7 +222,7 @@ const HistoricalTVLChart = () => {
 
 const HistoricalTVL = () => {
   return (
-    <div className="container px-0 2xl:px-6 h-[400px] sm:h-[520px]">
+    <div className="container px-0 2xl:px-6 h-80 sm:h-[520px]">
       <div className="relative h-full flex flex-col justify-end border-t border-primary">
         <div className="h-[160px] sm:h-[420px]">
           <HistoricalTVLChart />

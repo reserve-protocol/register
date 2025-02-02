@@ -10,7 +10,7 @@ import CompareFilters, {
 import CompareSkeleton from './CompareSkeleton'
 import RTokenCard from './RTokenCard'
 
-const STABLECOINS = ['eUSD', 'rgUSD', 'dgnETH']
+const STABLECOINS = ['eUSD', 'rgUSD']
 
 const YieldDTfList = ({ stablecoins = false }: { stablecoins?: boolean }) => {
   const { list, isLoading } = useTokenList()
