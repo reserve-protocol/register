@@ -80,7 +80,7 @@ const TradesSetup = () => {
 const ProposalTradingRanges = () => {
   return (
     <>
-      <p className="mx-6 mb-6">
+      <p className="text-sm sm:text-base mx-4 sm:mx-6 mb-6">
         Set the new desired percentages and we will calculate the required
         trades needed to adopt the new basket if the proposal passes governance.
       </p>

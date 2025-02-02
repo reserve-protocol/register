@@ -28,6 +28,8 @@ import {
   proposedSharesAtom,
   stepAtom,
 } from '../atoms'
+import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
+import { Link } from 'react-router-dom'
 
 const assetsAtom = atom((get) => {
   const proposedBasket = get(proposedIndexBasketAtom)
@@ -93,7 +95,15 @@ const AssetCellInfo = ({ asset }: { asset: IndexAssetShares }) => {
 
   return (
     <TableCell className="border-r">
-      <div className="flex items-center gap-2">
+      <Link
+        target="_blank"
+        to={getExplorerLink(
+          asset.token.address,
+          chainId,
+          ExplorerDataType.TOKEN
+        )}
+        className="flex items-center gap-2 cursor-pointer group"
+      >
         <TokenLogo size="xl" address={asset.token.address} chain={chainId} />
         <div className="mr-auto">
           <h4 className="font-bold mb-1">{asset.token.symbol}</h4>
@@ -106,7 +116,7 @@ const AssetCellInfo = ({ asset }: { asset: IndexAssetShares }) => {
             <ArrowRightCircle />
           </Button>
         )}
-      </div>
+      </Link>
     </TableCell>
   )
 }
@@ -220,11 +230,11 @@ const ProposalBasketTable = () => {
   }
 
   return (
-    <div className="border rounded-xl">
+    <div className="border rounded-xl overflow-auto">
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="border-r ">Token</TableHead>
+            <TableHead className="border-r min-w-48">Token</TableHead>
             <TableHead className="w-24 text-center">Current</TableHead>
             <TableHead className="bg-primary/10 text-primary text-center font-bold">
               New
@@ -272,7 +282,7 @@ const NextButton = () => {
 const ProposalBasketSetup = () => {
   return (
     <>
-      <p className="mx-6 mb-6">
+      <p className="text-sm sm:text-base mx-4 sm:mx-6 mb-6">
         Set the new desired percentages and we will calculate the required
         trades needed to adopt the new basket if the proposal passes governance.
       </p>

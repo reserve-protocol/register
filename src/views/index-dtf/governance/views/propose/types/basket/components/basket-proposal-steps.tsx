@@ -68,7 +68,7 @@ const StepTrigger = ({ id, icon, title, index }: ProposalStepTrigger) => {
     <AccordionTrigger
       withChevron={false}
       className={cn(
-        'flex items-center justify-between w-full p-6',
+        'flex items-center justify-between w-full p-4 sm:p-6',
         isActive ? 'pb-3' : ''
       )}
     >
@@ -85,7 +85,7 @@ const StepTrigger = ({ id, icon, title, index }: ProposalStepTrigger) => {
         </div>
         <div
           className={cn(
-            'text-xl font-bold animate-fade-in',
+            'text-left text-base sm:text-xl font-bold animate-fade-in',
             isActive || isCompleted ? 'text-primary' : '',
             isActive ? 'hidden' : ''
           )}
@@ -97,7 +97,9 @@ const StepTrigger = ({ id, icon, title, index }: ProposalStepTrigger) => {
         {/* <div className="bg-muted-foreground/10 rounded-full p-1" role="button">
             <ArrowUpRightIcon size={24} strokeWidth={1.5} />
           </div> */}
-        <span className="text-primary text-sm">Step {index + 1}/3</span>
+        <span className="text-primary whitespace-nowrap text-xs sm:text-sm">
+          Step {index + 1}/3
+        </span>
         <div className="bg-muted-foreground/10 rounded-full p-1" role="button">
           {isActive ? (
             <ChevronUpIcon size={24} strokeWidth={1.5} />
@@ -125,7 +127,7 @@ const BasketProposalSteps = () => {
       <div className="p-4 pb-3 flex items-center gap-2">
         <Link
           to={`../${ROUTES.GOVERNANCE}/${ROUTES.GOVERNANCE_PROPOSE}`}
-          className="ml-3"
+          className="sm:ml-3"
         >
           <Button variant="outline" size="icon-rounded">
             <ArrowLeftIcon size={24} strokeWidth={1.5} />
@@ -138,11 +140,11 @@ const BasketProposalSteps = () => {
           <AccordionItem
             key={id}
             value={id}
-            className=" rounded-3xl bg-card m-1 border-none"
+            className="rounded-3xl bg-card m-1 border-none"
           >
             <StepTrigger id={id} icon={icon} title={title} index={index} />
             <AccordionContent className="flex flex-col animate-fade-in">
-              <h2 className="text-2xl font-bold text-primary ml-6 mb-2">
+              <h2 className="text-xl  sm:text-2xl font-bold text-primary mx-4 sm:mx-6 mb-2">
                 {titleSecondary}
               </h2>
               {content}

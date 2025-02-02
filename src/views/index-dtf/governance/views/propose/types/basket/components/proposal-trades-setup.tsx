@@ -226,12 +226,12 @@ const OrganizedTrades = () => {
 
 const ProposalTradesSetup = () => {
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 overflow-auto">
       <Row>
         <div className="p-4 text-legend">Selling</div>
         <div className="flex items-center gap-2 flex-wrap p-4 flex-grow border-b text-legend">
           <span className="mr-auto">Buying</span>
-          <span>Expected volatility</span>
+          <span className="hidden sm:block">Expected volatility</span>
         </div>
       </Row>
       <OrganizedTrades />

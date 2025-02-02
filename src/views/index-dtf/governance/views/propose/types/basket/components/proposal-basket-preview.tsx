@@ -142,7 +142,7 @@ const BasketPreview = ({ basket }: { basket: EstimatedBasket | undefined }) => {
   if (!basket) return <Skeleton className="h-[200px]" />
 
   return (
-    <div className="rounded-3xl bg-card">
+    <div className="rounded-3xl bg-card overflow-auto">
       <Table>
         <TableHeader>
           <TableRow>
@@ -157,20 +157,30 @@ const BasketPreview = ({ basket }: { basket: EstimatedBasket | undefined }) => {
         <TableBody>
           {Object.entries(basket).map(([address, asset]) => (
             <TableRow key={address}>
-              <TableCell className="border-r">
-                <div className="flex items-center gap-2">
+              <TableCell className="border-r min-w-48">
+                <Link
+                  target="_blank"
+                  to={getExplorerLink(
+                    asset.token.address,
+                    chainId,
+                    ExplorerDataType.TOKEN
+                  )}
+                  className="flex items-center gap-2 cursor-pointer group"
+                >
                   <TokenLogo
                     size="xl"
                     address={asset.token.address}
                     chain={chainId}
                   />
                   <div className="mr-auto">
-                    <h4 className="font-bold mb-1">{asset.token.symbol}</h4>
+                    <h4 className="font-bold mb-1 group-hover:text-primary">
+                      {asset.token.symbol}
+                    </h4>
                     <p className="text-sm text-legend">
                       {shortenAddress(asset.token.address)}
                     </p>
                   </div>
-                </div>
+                </Link>
               </TableCell>
               <TableCell className="text-center ">
                 {asset.currentShares}%
@@ -290,12 +300,12 @@ const TradesPreview = ({ trades }: { trades: OrganizedTrades | undefined }) => {
   if (!trades) return <Skeleton className="h-[200px]" />
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 overflow-auto">
       <Row>
         <div className="p-4 text-legend">Selling</div>
         <div className="flex items-center gap-2 flex-wrap p-4 flex-grow border-b text-legend">
           <span className="mr-auto">Buying</span>
-          <span>Expected volatility</span>
+          <span className="hidden sm:block">Expected volatility</span>
         </div>
       </Row>
       {Object.keys(trades).map((key) => (

@@ -33,7 +33,7 @@ const proposalTypes = [
 ]
 
 const Header = () => (
-  <div className="flex flex-row items-center border-none p-7 py-5">
+  <div className="flex flex-row items-center border-none p-4 sm:p-7 py-5">
     <h1 className="mr-auto text-primary text-xl font-bold">
       <Trans>Select proposal type</Trans>
     </h1>
@@ -76,8 +76,8 @@ const TypeList = () => (
 const ProposalTypeSelection = () => {
   return (
     <div className="flex h-[calc(100vh-146px)] lg:h-[calc(100vh-72px)] w-full">
-      <div className="flex items-center justify-center m-4 flex-grow  border-dashed border-2 border-foreground/40 rounded-3xl">
-        <div className="bg-secondary rounded-3xl w-[408px]">
+      <div className="flex items-center justify-center m-4 flex-grow border-none sm:border-dashed border-2 border-foreground/40 rounded-3xl">
+        <div className="bg-secondary rounded-3xl w-full sm:w-[408px]">
           <Header />
           <TypeList />
         </div>

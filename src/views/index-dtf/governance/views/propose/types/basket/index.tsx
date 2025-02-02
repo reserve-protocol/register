@@ -15,7 +15,7 @@ const ProposalStage = () => {
 
 const IndexDTFBasketProposal = () => (
   <>
-    <div className="grid grid-cols-1 xl:grid-cols-[1.5fr_1fr] gap-2 pr-2 pb-6 relative">
+    <div className="grid grid-cols-1 xl:grid-cols-[1.5fr_1fr] gap-2 pr-0 lg:pr-2 pb-2 sm:pb-6 relative">
       <ProposalStage />
       <BasketProposalOverview />
     </div>
