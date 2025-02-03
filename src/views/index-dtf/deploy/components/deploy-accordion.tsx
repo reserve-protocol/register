@@ -9,7 +9,6 @@ import { cn } from '@/lib/utils'
 import { useAtom, useAtomValue } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
 import {
-  ArrowUpRightIcon,
   Asterisk,
   Check,
   ChevronDownIcon,
@@ -31,13 +30,13 @@ import {
 import { DeployStepId } from '../form-fields'
 import Auctions from '../steps/auctions'
 import FTokenBasket from '../steps/basket'
-import Governance from '../steps/governance'
-import MetadataAndChain from '../steps/metadata'
-import RevenueDistribution from '../steps/revenue'
-import Roles from '../steps/roles'
 import BasketChanges from '../steps/basket-changes'
 import { indexDeployFormDataAtom } from '../steps/confirm-deploy/atoms'
+import Governance from '../steps/governance'
+import MetadataAndChain from '../steps/metadata'
 import OtherChanges from '../steps/other-changes'
+import RevenueDistribution from '../steps/revenue'
+import Roles from '../steps/roles'
 
 export type DeployStep = {
   id: DeployStepId
@@ -118,7 +117,6 @@ const DeployAccordionTrigger = ({
   return (
     <AccordionTrigger
       withChevron={false}
-      disabled={!validated && isActive}
       className={cn(
         'flex items-center justify-between w-full p-6',
         isActive ? 'pb-3' : ''
@@ -154,11 +152,7 @@ const DeployAccordionTrigger = ({
               <Edit2 size={16} strokeWidth={1.5} />
             </div>
           ) : isActive ? (
-            <ChevronUpIcon
-              size={24}
-              strokeWidth={1.5}
-              className="text-muted-foreground"
-            />
+            <ChevronUpIcon size={24} strokeWidth={1.5} />
           ) : (
             <ChevronDownIcon size={24} strokeWidth={1.5} />
           )}
