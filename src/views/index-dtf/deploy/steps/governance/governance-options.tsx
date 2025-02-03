@@ -130,7 +130,7 @@ const GovernanceOptions = () => {
 
   const onSelected = (selectedType: GovernanceTypes) => {
     const resetFields =
-      GOVERNANCE_OPTIONS.find((option) => option.type === selected)
+      GOVERNANCE_OPTIONS.find((option) => option.type === selectedType)
         ?.resetFields || []
     resetFields.forEach((field: string) => resetField(field))
     setValidatedSections((prev) => ({

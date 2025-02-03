@@ -4,7 +4,7 @@ import { chainIdAtom } from '@/state/atoms'
 import { getCurrentTime } from '@/utils'
 import { INDEX_GOVERNANCE_DEPLOYER_ADDRESS } from '@/utils/addresses'
 import { useAtomValue, useSetAtom } from 'jotai'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 import {
   erc20Abi,
@@ -25,13 +25,15 @@ import {
   daoTokenSymbolAtom,
   formReadyForSubmitAtom,
 } from '../../atoms'
+import { Input } from '@/components/ui/input'
 
 const CreateDAO = () => {
   const chainId = useAtomValue(chainIdAtom)
+  const [name, setName] = useState('')
   const formReadyForSubmit = useAtomValue(formReadyForSubmitAtom)
   const { watch, getValues } = useFormContext()
-  const indexDTFSymbol = watch('symbol')
   const governanceERC20address = watch('governanceERC20address')
+  const indexDTFSymbol = watch('symbol')
   const setDaoCreated = useSetAtom(daoCreatedAtom)
   const setStTokenAddress = useSetAtom(daoTokenAddressAtom)
   const setStTokenSymbol = useSetAtom(daoTokenSymbolAtom)
@@ -52,21 +54,16 @@ const CreateDAO = () => {
     hash: data,
   })
 
-  const vlSymbol = `vl${symbol}${indexDTFSymbol ? `-${indexDTFSymbol}` : ''}`
+  const vlSymbol = `vl${symbol}${name ? `-${name}` : ''}`
 
   const submit = () => {
     const formData = getValues()
 
-    const basketVotingDelay =
-      formData.basketVotingDelay || formData.customBasketVotingDelay
-    const basketVotingPeriod =
-      formData.basketVotingPeriod || formData.customBasketVotingPeriod
-    const basketVotingThreshold =
-      formData.basketVotingThreshold || formData.customBasketVotingThreshold
-    const basketVotingQuorum =
-      formData.basketVotingQuorum || formData.customBasketVotingQuorum
-    const basketExecutionDelay =
-      formData.basketExecutionDelay || formData.customBasketExecutionDelay
+    const basketVotingDelay = (formData.basketVotingDelay || 0) * 3600
+    const basketVotingPeriod = (formData.basketVotingPeriod || 0) * 3600
+    const basketVotingThreshold = formData.basketVotingThreshold || 0
+    const basketVotingQuorum = formData.basketVotingQuorum || 0
+    const basketExecutionDelay = (formData.basketExecutionDelay || 0) * 3600
     const guardians = formData.guardians.filter(Boolean)
 
     writeContract({
@@ -78,17 +75,21 @@ const CreateDAO = () => {
         vlSymbol,
         governanceERC20address,
         {
-          votingDelay: basketVotingDelay! * 60,
-          votingPeriod: basketVotingPeriod! * 60,
-          proposalThreshold: parseEther(basketVotingThreshold!.toString()),
-          quorumPercent: BigInt(Math.floor(basketVotingQuorum!)),
-          timelockDelay: BigInt(Math.floor(basketExecutionDelay!) * 60),
+          votingDelay: basketVotingDelay,
+          votingPeriod: basketVotingPeriod,
+          proposalThreshold: parseEther(basketVotingThreshold.toString()),
+          quorumPercent: BigInt(Math.floor(basketVotingQuorum)),
+          timelockDelay: BigInt(Math.floor(basketExecutionDelay)),
           guardians,
         },
         keccak256(toBytes(getCurrentTime())),
       ],
     })
   }
+
+  useEffect(() => {
+    setName(indexDTFSymbol)
+  }, [indexDTFSymbol])
 
   useEffect(() => {
     if (receipt && isSuccess) {
@@ -109,11 +110,25 @@ const CreateDAO = () => {
   }, [receipt, isSuccess, setDaoCreated])
 
   return (
-    <>
+    <div className="flex flex-col gap-2">
+      {!!formReadyForSubmit && (
+        <Input
+          className="[&:focus::placeholder]:opacity-0 [&:focus::placeholder]:transition-opacity"
+          placeholder="suffix"
+          startAdornment={
+            <span className="text-sm text-muted-foreground">{`vl${symbol}-`}</span>
+          }
+          value={name}
+          onChange={(e) =>
+            setName(e.target.value.slice(0, 12).replaceAll(' ', ''))
+          }
+        />
+      )}
       <Button
         className="w-full"
         disabled={
           !formReadyForSubmit ||
+          !name ||
           !governanceERC20address ||
           !symbol ||
           isPending ||
@@ -132,7 +147,7 @@ const CreateDAO = () => {
           Error creating DAO token
         </div>
       )}
-    </>
+    </div>
   )
 }
 

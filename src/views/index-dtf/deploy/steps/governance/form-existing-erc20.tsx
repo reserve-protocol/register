@@ -1,12 +1,11 @@
-import { useFormContext } from 'react-hook-form'
-import BasicInput from '../../components/basic-input'
-import { useReadContract } from 'wagmi'
-import { erc20Abi, isAddress } from 'viem'
 import { Separator } from '@/components/ui/separator'
-import { ArrowUpRightIcon } from 'lucide-react'
-import { ChainId } from '@/utils/chains'
 import { chainIdAtom } from '@/state/atoms'
 import { useAtomValue } from 'jotai'
+import { ArrowUpRightIcon } from 'lucide-react'
+import { useFormContext } from 'react-hook-form'
+import { erc20Abi, isAddress } from 'viem'
+import { useReadContract } from 'wagmi'
+import BasicInput from '../../components/basic-input'
 
 const LaunchTokenBanner = () => {
   return (
@@ -30,7 +29,7 @@ const LaunchTokenBanner = () => {
             Want to launch a new ERC20 for governance?
           </div>
           <div className="text-muted-foreground">
-            We recommend launching your new ERC20 toke on{' '}
+            We recommend launching your new ERC20 token on{' '}
             <span className="text-primary">CreateMyToken.com</span>
           </div>
         </div>

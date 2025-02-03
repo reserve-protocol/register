@@ -3,6 +3,7 @@ import { PlusIcon, XIcon } from 'lucide-react'
 import BasicInput from '../../components/basic-input'
 import { useFormContext } from 'react-hook-form'
 import { Address } from 'viem'
+import { ReactNode } from 'react'
 
 type Recipient = {
   address: Address
@@ -22,7 +23,7 @@ const AddRecipientButton = () => {
   return (
     <Button
       variant="accent"
-      className="flex gap-2 text-base pl-3 pr-4 py-7 rounded-xl bg-muted/80"
+      className="flex gap-2 text-base pl-3 pr-4 py-7 rounded-xl bg-muted/80 w-full"
       onClick={onAdd}
     >
       <PlusIcon size={16} />
@@ -74,7 +75,7 @@ const AdditionalRevenueRecipient = ({ index }: { index: number }) => {
   )
 }
 
-const AdditionalRevenueRecipients = () => {
+const AdditionalRevenueRecipients = ({ children }: { children: ReactNode }) => {
   const { watch } = useFormContext()
 
   const recipients = watch('additionalRevenueRecipients') as Recipient[]
@@ -86,7 +87,12 @@ const AdditionalRevenueRecipients = () => {
           <AdditionalRevenueRecipient index={index} />
         </div>
       ))}
-      <AddRecipientButton />
+      <div className="flex items-center gap-2 mr-2">
+        <div className="flex-1">
+          <AddRecipientButton />
+        </div>
+        {children}
+      </div>
     </div>
   )
 }

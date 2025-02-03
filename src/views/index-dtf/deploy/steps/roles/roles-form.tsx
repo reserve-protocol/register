@@ -14,8 +14,21 @@ const FORMS = [
   },
   {
     title: 'Brand Manager',
-    description:
-      'A trusted actor that can manage social links and appearances of the DTF in the Register UI.',
+    description: (
+      <span>
+        A trusted actor that can manage social links and appearances of the DTF
+        in the Register UI. This gives brand manager ability to update things on{' '}
+        <a
+          href="https://reserve.org"
+          target="_blank"
+          rel="noreferrer"
+          className="text-primary"
+        >
+          Reserve.org
+        </a>{' '}
+        but no protocol level controls.
+      </span>
+    ),
     icon: <Asterisk size={32} strokeWidth={1.5} />,
     fieldName: 'brandManagers',
     buttonLabel: 'Add additional brand manager',

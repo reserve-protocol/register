@@ -1,29 +1,29 @@
-import { humanizeMinutes } from '@/utils'
+import { humanizeTimeFromHours } from '@/utils'
 import { Asterisk } from 'lucide-react'
 import ToggleGroupWithCustom from '../../components/toggle-group-with-custom'
 
 export const VOTING_DELAY = {
   title: 'Voting Delay',
   icon: <Asterisk size={32} strokeWidth={1.5} />,
-  options: [20, 60, 240, 1440, 10080],
-  optionsFormatter: (option: number) => humanizeMinutes(option),
-  customLabel: 'minutes',
+  options: [1, 12, 24, 48],
+  optionsFormatter: (option: number) => humanizeTimeFromHours(option),
+  customLabel: 'hours',
   customPlaceholder: 'Enter custom length',
 }
 
 export const VOTING_PERIOD = {
   title: 'Voting Period',
   icon: <Asterisk size={32} strokeWidth={1.5} />,
-  options: [20, 60, 240, 1440, 10080],
-  optionsFormatter: (option: number) => humanizeMinutes(option),
-  customLabel: 'minutes',
+  options: [1, 24, 48, 72],
+  optionsFormatter: (option: number) => humanizeTimeFromHours(option),
+  customLabel: 'hours',
   customPlaceholder: 'Enter custom length',
 }
 
 export const VOTING_THRESHOLD = {
   title: 'Proposal Threshold',
   icon: <Asterisk size={32} strokeWidth={1.5} />,
-  options: [0.01, 0.05, 0.1, 0.25, 0.5],
+  options: [0.01, 0.1, 1, 10],
   optionsFormatter: (option: number) => `${option.toString()}%`,
   customLabel: '%',
   customPlaceholder: 'Enter custom',
@@ -34,7 +34,7 @@ export const VOTING_THRESHOLD = {
 export const VOTING_QUORUM = {
   title: 'Voting Quorum',
   icon: <Asterisk size={32} strokeWidth={1.5} />,
-  options: [20, 30, 40, 60, 80],
+  options: [10, 15, 20, 25],
   optionsFormatter: (option: number) => `${option.toString()}%`,
   customLabel: '%',
   customPlaceholder: 'Enter custom',
@@ -53,9 +53,9 @@ export const VOTING_QUORUM = {
 export const VOTING_EXECUTION_DELAY = {
   title: 'Execution Delay',
   icon: <Asterisk size={32} strokeWidth={1.5} />,
-  options: [20, 60, 240, 1440, 10080],
-  optionsFormatter: (option: number) => humanizeMinutes(option),
-  customLabel: 'minutes',
+  options: [0.25, 24, 36, 48],
+  optionsFormatter: (option: number) => humanizeTimeFromHours(option),
+  customLabel: 'hours',
   customPlaceholder: 'Enter custom length',
 }
 
@@ -65,31 +65,26 @@ const FORM = [
     description:
       'The time between a basket change proposal being submitted and when governors can cast their votes.',
     fieldName: 'basketVotingDelay',
-    customFieldName: 'customBasketVotingDelay',
   },
   {
     ...VOTING_PERIOD,
     description:
       'How long governors have to cast their votes on a basket change after the voting delay.',
     fieldName: 'basketVotingPeriod',
-    customFieldName: 'customBasketVotingPeriod',
   },
   {
     ...VOTING_THRESHOLD,
     fieldName: 'basketVotingThreshold',
-    customFieldName: 'customBasketVotingThreshold',
   },
   {
     ...VOTING_QUORUM,
     fieldName: 'basketVotingQuorum',
-    customFieldName: 'customBasketVotingQuorum',
   },
   {
     ...VOTING_EXECUTION_DELAY,
     description:
       'The time period between when a basket change proposal is considered successful and when the auction can be formally approved.',
     fieldName: 'basketExecutionDelay',
-    customFieldName: 'customBasketExecutionDelay',
   },
 ]
 

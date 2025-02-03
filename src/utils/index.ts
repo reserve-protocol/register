@@ -285,3 +285,15 @@ export const humanizeMinutes = (minutes: number) => {
     language: 'en',
   })
 }
+
+export const humanizeTimeFromHours = (hours: number) => {
+  return humanizeDuration(hours * 60 * 60 * 1000, {
+    language: 'en',
+  })
+}
+
+export const humanizeTimeFromDays = (days: number) => {
+  return humanizeDuration(days * 24 * 60 * 60 * 1000, {
+    language: 'en',
+  })
+}

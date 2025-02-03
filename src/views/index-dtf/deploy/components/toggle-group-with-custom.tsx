@@ -2,6 +2,7 @@ import { ReactNode } from 'react'
 import BasicInput from './basic-input'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { useFormContext } from 'react-hook-form'
+import WarningBanner from './warning-banner'
 
 type ToggleGroupWithCustomProps = {
   title: string
@@ -10,31 +11,24 @@ type ToggleGroupWithCustomProps = {
   options: number[]
   optionsFormatter: (option: number) => string
   fieldName: string
-  customFieldName: string
   customLabel: string
   customPlaceholder: string
+  warningMessage?: ReactNode
 }
 
 const CustomInput = ({
   fieldName,
-  customFieldName,
   customLabel,
   customPlaceholder,
 }: Pick<
   ToggleGroupWithCustomProps,
-  'fieldName' | 'customFieldName' | 'customLabel' | 'customPlaceholder'
+  'fieldName' | 'customLabel' | 'customPlaceholder'
 >) => {
-  const { setValue } = useFormContext()
-
-  const resetField = () => {
-    setValue(fieldName, '')
-  }
-
   return (
-    <div role="button" onClick={resetField}>
+    <div role="button">
       <BasicInput
         type="number"
-        fieldName={customFieldName}
+        fieldName={fieldName}
         label={customLabel}
         placeholder={customPlaceholder}
       />
@@ -44,18 +38,13 @@ const CustomInput = ({
 
 const ToggleGroupSelector = ({
   fieldName,
-  customFieldName,
   options,
   optionsFormatter,
 }: Pick<
   ToggleGroupWithCustomProps,
-  'fieldName' | 'customFieldName' | 'options' | 'optionsFormatter'
+  'fieldName' | 'options' | 'optionsFormatter'
 >) => {
   const { watch, setValue } = useFormContext()
-
-  const resetCustomField = () => {
-    setValue(customFieldName, undefined)
-  }
 
   return (
     <ToggleGroup
@@ -67,7 +56,6 @@ const ToggleGroupSelector = ({
         if (!isNaN(parsedValue)) {
           setValue(fieldName, parsedValue)
         }
-        resetCustomField()
       }}
     >
       {options.map((option) => (
@@ -90,9 +78,9 @@ const ToggleGroupWithCustom = ({
   options,
   optionsFormatter,
   fieldName,
-  customFieldName,
   customLabel,
   customPlaceholder,
+  warningMessage,
 }: ToggleGroupWithCustomProps) => (
   <div
     className="w-full rounded-xl flex flex-col gap-3 justify-between p-4 bg-muted/70"
@@ -111,17 +99,20 @@ const ToggleGroupWithCustom = ({
     <div className="flex items-center justify-between gap-2">
       <ToggleGroupSelector
         fieldName={fieldName}
-        customFieldName={customFieldName}
         options={options}
         optionsFormatter={optionsFormatter}
       />
       <CustomInput
         fieldName={fieldName}
-        customFieldName={customFieldName}
         customLabel={customLabel}
         customPlaceholder={customPlaceholder}
       />
     </div>
+    {!!warningMessage && (
+      <div className="-mt-3">
+        <WarningBanner title="Caution" description={warningMessage} />
+      </div>
+    )}
   </div>
 )
 

@@ -79,23 +79,19 @@ export const zapDeployPayloadAtom = atom<
 
   const additionalDetails = {
     tradeDelay: BigInt(
-      Math.floor(
-        (formData.auctionDelay || formData.customAuctionDelay || 0)! * 60
-      )
+      Math.floor((formData.auctionDelay || 0)! * 3600)
     ).toString(),
     auctionLength: BigInt(
-      Math.floor(
-        (formData.auctionLength || formData.customAuctionLength || 0)! * 60
-      )
+      Math.floor((formData.auctionLength || 0)! * 60)
     ).toString(),
     feeRecipients: calculateRevenueDistribution(formData, wallet, stToken).map(
       ({ recipient, portion }) => ({ recipient, portion: portion.toString() })
     ),
     folioFee: parseEther(
-      ((formData.folioFee || formData.customFolioFee || 0)! / 100).toString()
+      ((formData.folioFee || 0)! / 100).toString()
     ).toString(),
     mintingFee: parseEther(
-      ((formData.mintFee || formData.customMintFee || 0)! / 100).toString()
+      ((formData.mintFee || 0)! / 100).toString()
     ).toString(),
     mandate: formData.mandate || '',
   }
@@ -125,63 +121,31 @@ export const zapDeployPayloadAtom = atom<
 
   // Governed DTF
   const ownerGovParams = {
-    votingDelay: (
-      (formData.governanceVotingDelay ||
-        formData.customGovernanceVotingDelay ||
-        0)! * 60
-    ).toString(),
-    votingPeriod: (
-      (formData.governanceVotingPeriod ||
-        formData.customGovernanceVotingPeriod ||
-        0)! * 60
-    ).toString(),
+    votingDelay: ((formData.governanceVotingDelay || 0)! * 86400).toString(),
+    votingPeriod: ((formData.governanceVotingPeriod || 0)! * 86400).toString(),
     proposalThreshold: parseEther(
-      (formData.governanceVotingThreshold ||
-        formData.customGovernanceVotingThreshold ||
-        0)!.toString()
+      (formData.governanceVotingThreshold || 0)!.toString()
     ).toString(),
     quorumPercent: BigInt(
-      Math.floor(
-        (formData.governanceVotingQuorum ||
-          formData.customGovernanceVotingQuorum ||
-          0)!
-      )
+      Math.floor((formData.governanceVotingQuorum || 0)!)
     ).toString(),
     timelockDelay: BigInt(
-      Math.floor(
-        (formData.governanceExecutionDelay ||
-          formData.customGovernanceExecutionDelay ||
-          0)! * 60
-      )
+      Math.floor((formData.governanceExecutionDelay || 0)! * 86400)
     ).toString(),
     guardians,
   }
 
   const tradingGovParams = {
-    votingDelay: (
-      (formData.basketVotingDelay || formData.customBasketVotingDelay || 0)! *
-      60
-    ).toString(),
-    votingPeriod: (
-      (formData.basketVotingPeriod || formData.customBasketVotingPeriod || 0)! *
-      60
-    ).toString(),
+    votingDelay: ((formData.basketVotingDelay || 0)! * 3600).toString(),
+    votingPeriod: ((formData.basketVotingPeriod || 0)! * 3600).toString(),
     proposalThreshold: parseEther(
-      (formData.basketVotingThreshold ||
-        formData.customBasketVotingThreshold ||
-        0)!.toString()
+      (formData.basketVotingThreshold || 0)!.toString()
     ).toString(),
     quorumPercent: BigInt(
-      Math.floor(
-        (formData.basketVotingQuorum || formData.customBasketVotingQuorum || 0)!
-      )
+      Math.floor((formData.basketVotingQuorum || 0)!)
     ).toString(),
     timelockDelay: BigInt(
-      Math.floor(
-        (formData.basketExecutionDelay ||
-          formData.customBasketExecutionDelay ||
-          0)! * 60
-      )
+      Math.floor((formData.basketExecutionDelay || 0)! * 3600)
     ).toString(),
     guardians,
   }
