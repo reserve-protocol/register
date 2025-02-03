@@ -118,8 +118,8 @@ const EarnWrapper = () => {
       </Box>
       <Box variant="layout.wrapper">
         <Earn />
+        <RegisterAbout />
       </Box>
-      <RegisterAbout />
     </>
   )
 }
