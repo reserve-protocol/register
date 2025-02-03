@@ -69,6 +69,12 @@ const AppNavigation = () => {
       ],
       [
         {
+          label: t`Feedback`,
+          icon: <Asterisk size={16} />,
+          description: t`File issues or upvote existing ones`,
+          to: REGISTER_FEEDBACK,
+        },
+        {
           label: t`Reserve Blog`,
           icon: <Asterisk size={16} />,
           description: t`Stay up to date in long-form`,
@@ -129,9 +135,6 @@ const AppNavigation = () => {
           </NavigationMenuTrigger>
           <NavigationMenuContent className="rounded-3xl">
             <div className="bg-secondary w-72 sm:w-96 flex p-1 flex-col gap-1">
-              <div className="p-2 flex justify-center ">
-                <RSRSquare />
-              </div>
               {moreLinks.map((item) => (
                 <NavigationMenuLink
                   key={item.to}
@@ -154,27 +157,6 @@ const AppNavigation = () => {
                   </NavLink>
                 </NavigationMenuLink>
               ))}
-              <NavigationMenuLink
-                href={REGISTER_FEEDBACK}
-                target="_blank"
-                className="p-4 gap-2 flex items-center rounded-3xl bg-card border border-transparent hover:border-primary"
-              >
-                <div className="bg-primary p-1 rounded-full text-primary-foreground">
-                  <Asterisk size={16} />
-                </div>
-                <div className="mr-auto">
-                  <span className="font-bold">Feedbback</span>
-                  <p className="hidden md:block text-sm text-legend">
-                    File issues or upvote existing ones
-                  </p>
-                </div>
-                <div className="bg-muted p-1 rounded-full">
-                  <ArrowUpRight size={16} />
-                </div>
-              </NavigationMenuLink>
-              <div className="flex justify-center p-2">
-                <ReserveSquare />
-              </div>
               {externalLinks.map((item) => (
                 <NavigationMenuLink
                   key={item.to}

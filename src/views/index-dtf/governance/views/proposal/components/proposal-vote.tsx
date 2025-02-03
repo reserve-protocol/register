@@ -52,8 +52,8 @@ const ViewExecuteTxButton = () => {
       target="_blank"
     >
       <Button
-        variant="outline"
-        className="flex items-center gap-2 justify-center"
+        variant="outline-primary"
+        className="flex items-center gap-2 justify-center w-full"
       >
         <span>View execute tx</span>
         <ArrowUpRight size={16} strokeWidth={1.5} />
