@@ -189,13 +189,13 @@ const updateTradeStateAtom = atom(null, (get, set) => {
       // If the trade is available but not expired
       if (
         trade.availableAt > currentTime &&
-        trade.launchTimeout < currentTime
+        trade.launchTimeout > currentTime
       ) {
         updatedTrades[trade.id] = {
           ...trade,
           state: TRADE_STATE.AVAILABLE,
         }
-      } else if (trade.launchTimeout >= currentTime) {
+      } else if (currentTime + 10 >= trade.launchTimeout) {
         updatedTrades[trade.id] = {
           ...trade,
           state: TRADE_STATE.EXPIRED,

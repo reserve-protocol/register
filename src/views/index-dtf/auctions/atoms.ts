@@ -40,7 +40,7 @@ export function getTradeState(trade: AssetTrade) {
     return TRADE_STATE.EXPIRED
   }
 
-  if (trade.availableAt >= currentTime) {
+  if (currentTime >= trade.availableAt) {
     return TRADE_STATE.AVAILABLE
   }
 

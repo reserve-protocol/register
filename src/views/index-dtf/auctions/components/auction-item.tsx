@@ -111,6 +111,8 @@ const TradeButton = ({
     hash: data,
   })
 
+  console.log('trade', trade)
+
   const isLoading = isPending || (!!data && !isSuccess && !isError)
   const canLaunch =
     trade.state === TRADE_STATE.AVAILABLE ||
