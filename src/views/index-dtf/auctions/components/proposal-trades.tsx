@@ -15,9 +15,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { dtfTradesByProposalAtom, TradesByProposal } from '../atoms'
 import AuctionList from './auction-list'
-import AuctionOverview from './auctions-overview'
 import ProposalTradesSkeleton from './proposal-trades-skeleton'
-import { Separator } from '@/components/ui/separator'
 
 function getTimerFormat(seconds: number) {
   const timeUnits = {
