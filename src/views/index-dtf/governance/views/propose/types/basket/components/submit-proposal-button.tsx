@@ -45,7 +45,7 @@ const SubmitProposalButton = () => {
       // Give some time for the proposal to be created on the subgraph
       setTimeout(() => {
         navigate(`../${ROUTES.GOVERNANCE}`)
-      }, 5000)
+      }, 10000) // TODO: who knows if this works well!!! they can just refresh the page
     }
   }, [isSuccess])
 

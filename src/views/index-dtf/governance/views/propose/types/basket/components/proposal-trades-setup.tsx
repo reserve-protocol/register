@@ -143,7 +143,11 @@ const ProposedTradeItem = ({
     <div
       className={cn('flex flex-wrap gap-2 items-center py-4 pl-2', className)}
     >
-      <TokenLogo chain={chainId} address={trade.token.address} />
+      <TokenLogo
+        chain={chainId}
+        symbol={trade.token.symbol}
+        address={trade.token.address}
+      />
       <div className="mr-auto text-primary">
         <span>Buy {trade.token.symbol}</span>
         <h4 className="text-xl font-bold">+{formatPercentage(trade.shares)}</h4>
@@ -170,7 +174,12 @@ const ProposedTradeSold = ({
       )}
     >
       <div className={multiple ? 'w-52' : undefined}>
-        <TokenLogo chain={chainId} address={sell.token?.address} size="lg" />
+        <TokenLogo
+          chain={chainId}
+          symbol={sell.token?.symbol}
+          address={sell.token?.address}
+          size="lg"
+        />
       </div>
       <div className="flex flex-col justify-end flex-grow">
         <h3 className="text-sm">Sell ${sell.token.symbol}</h3>

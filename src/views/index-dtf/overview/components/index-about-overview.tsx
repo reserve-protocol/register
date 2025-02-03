@@ -1,14 +1,16 @@
 import { Box } from '@/components/ui/box'
 import { Card } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
-import { indexDTFAtom, indexDTFFeeAtom } from '@/state/dtf/atoms'
+import { indexDTFAtom } from '@/state/dtf/atoms'
 import { formatPercentage } from '@/utils'
 import { useAtomValue } from 'jotai'
-import { ArrowUpRight, BrickWall, Fingerprint } from 'lucide-react'
+import { ArrowUpRight, BrickWall } from 'lucide-react'
 
+import Money from '@/components/icons/Money'
 import TokenLogo from '@/components/token-logo'
 import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import { Separator } from '@/components/ui/separator'
 import {
   Table,
   TableBody,
@@ -26,8 +28,6 @@ import {
 } from '@/state/dtf/atoms'
 import { Token } from '@/types'
 import React, { useState } from 'react'
-import Money from '@/components/icons/Money'
-import { Separator } from '@/components/ui/separator'
 
 interface BasketOverviewProps extends React.HTMLAttributes<HTMLDivElement> {
   basket: ITokenBasket
@@ -135,6 +135,7 @@ const IndexBasketTokens = ({
                     <div className="flex items-center font-semibold gap-2">
                       <TokenLogo
                         size="lg"
+                        symbol={token.symbol}
                         address={token.address}
                         chain={chainId}
                       />

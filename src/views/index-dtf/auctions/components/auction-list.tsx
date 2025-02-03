@@ -7,25 +7,19 @@ const TradesHeader = () => {
   return (
     <div className="flex items-center">
       <h2 className="font-bold text-base ml-3 mr-auto">
-        All trades in proposal
+        All Auctions in proposal
       </h2>
-      <Button className="text-primary gap-1" variant="ghost-accent">
-        <Square size={16} className="relative -top-[1px]" />
-        Select all
-      </Button>
     </div>
   )
 }
 
-const AuctionList = ({ trades }: { trades: AssetTrade[] }) => {
-  return (
-    <div className="flex flex-col gap-2 bg-card p-2 md:p-4 rounded-3xl">
-      <TradesHeader />
-      {trades.map((trade) => (
-        <AuctionItem key={trade.id} trade={trade} />
-      ))}
-    </div>
-  )
-}
+const AuctionList = ({ trades }: { trades: AssetTrade[] }) => (
+  <div className="flex flex-col gap-2 bg-card p-2 md:p-4 rounded-3xl">
+    <TradesHeader />
+    {trades.map((trade) => (
+      <AuctionItem key={trade.id} trade={trade} />
+    ))}
+  </div>
+)
 
 export default AuctionList

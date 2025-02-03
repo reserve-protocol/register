@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { RESERVE_STORAGE } from '@/utils/constants'
 import { cn } from '@/lib/utils'
-import { SVGS, PNGS } from '@/components/icons/TokenLogo'
 
 type Sizes = 'sm' | 'md' | 'lg' | 'xl'
 
@@ -57,16 +56,16 @@ const TokenLogo = React.forwardRef<HTMLImageElement, Props>((props, ref) => {
     })
   }
 
-  const getSymbolSrc = (symbol: string) => {
-    const normalizedSymbol = symbol.toLowerCase()
-    if (SVGS.has(normalizedSymbol)) {
-      return `/svgs/${normalizedSymbol}.svg`
-    }
-    if (PNGS.has(normalizedSymbol)) {
-      return `/imgs/${normalizedSymbol}.png`
-    }
-    return RESERVE_STORAGE + symbol + '.png'
-  }
+  // const getSymbolSrc = (symbol: string) => {
+  //   const normalizedSymbol = symbol.toLowerCase()
+  //   if (SVGS.has(normalizedSymbol)) {
+  //     return `/svgs/${normalizedSymbol}.svg`
+  //   }
+  //   if (PNGS.has(normalizedSymbol)) {
+  //     return `/imgs/${normalizedSymbol}.png`
+  //   }
+  //   return RESERVE_STORAGE + symbol + '.png'
+  // }
 
   const loadImage = React.useCallback(async () => {
     try {
@@ -83,15 +82,26 @@ const TokenLogo = React.forwardRef<HTMLImageElement, Props>((props, ref) => {
           ? symbol.replace('-VAULT', '')
           : symbol
 
-        try {
-          const symbolUrl = getSymbolSrc(symbolWithoutVault)
-          const url = await tryLoadImage(symbolUrl)
-          setCurrentSrc(url)
+        const imgSrc = getKnownTokenLogo(symbolWithoutVault)
+        if (imgSrc) {
+          setCurrentSrc(imgSrc)
           return
-        } catch (error) {
-          console.debug(`Failed to load symbol image for ${symbol}`)
         }
       }
+      // if (symbol) {
+      //   const symbolWithoutVault = symbol.endsWith('-VAULT')
+      //     ? symbol.replace('-VAULT', '')
+      //     : symbol
+
+      //   try {
+      //     const symbolUrl = getSymbolSrc(symbolWithoutVault)
+      //     const url = await tryLoadImage(symbolUrl)
+      //     setCurrentSrc(url)
+      //     return
+      //   } catch (error) {
+      //     console.debug(`Failed to load symbol image for ${symbol}`)
+      //   }
+      // }
 
       // If we have address and chain, try external APIs
       if (address && chain) {
@@ -143,3 +153,92 @@ const TokenLogo = React.forwardRef<HTMLImageElement, Props>((props, ref) => {
 TokenLogo.displayName = 'TokenLogo'
 
 export default TokenLogo
+
+export const SVGS = new Set([
+  'dai',
+  'cdai',
+  'rsr',
+  'strsr',
+  'rsv',
+  'tusd',
+  'usdt',
+  'cusdt',
+  'usdc',
+  'cusdc',
+  'usdbc',
+  'usdp',
+  'wsgusdbc',
+  'wcusdcv3',
+  'wcusdtv3',
+  'wcusdbcv3',
+  'wbtc',
+  'cwbtc',
+  'ceth',
+  'eth',
+  'busd',
+  'weth',
+  'sadai',
+  'sausdc',
+  'sabasusdbc',
+  'sausdt',
+  'eurt',
+  'fusdc',
+  'fusdt',
+  'fdai',
+  'wcUSDCv3',
+  'wsteth',
+  'cbeth',
+  'meusd',
+  'reth',
+  'stkcvx3crv',
+  'stkcvxcrv3crypto',
+  'stkcvxeusd3crv-f',
+  'stkcvxeth+eth-f',
+  'stkcvxmim-3lp3crv-f',
+  'sdai',
+  'mrp-ausdt',
+  'mrp-ausdc',
+  'mrp-adai',
+  'mrp-awbtc',
+  'mrp-aweth',
+  'mrp-awteth',
+  'mrp-asteth',
+  'frax',
+  'crvusd',
+  'mkusd',
+  'eusd',
+  're7weth',
+  'saethusdc',
+  'saethpyusd',
+  'pyusd',
+  'sabasusdc',
+  'saarbusdcn',
+  'sfrxeth',
+  'usd+',
+  'pxeth',
+  'apxeth',
+  'susde',
+  'sdt',
+  'wusdm',
+  'eth+',
+  'wsamm-eusd/usdc',
+])
+
+export const PNGS = new Set([
+  'steakusdc',
+  'mai',
+  'dola',
+  'fxusd',
+  'alusd',
+  'ethx',
+])
+
+function getKnownTokenLogo(symbol: string) {
+  if (SVGS.has(symbol.toLowerCase())) {
+    return `/svgs/${symbol.toLowerCase()}.svg`
+  }
+  if (PNGS.has(symbol.toLowerCase())) {
+    return `/imgs/${symbol.toLowerCase()}.png`
+  }
+  return ''
+}
