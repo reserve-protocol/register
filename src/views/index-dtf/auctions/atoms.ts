@@ -98,6 +98,7 @@ export type TradesByProposal = {
   trades: AssetTrade[]
   completed: number
   expired: number
+  expiresAt: number
   availableAt: number
 }
 export const allPricesAtom = atom<Record<string, number> | undefined>(undefined)
@@ -238,6 +239,7 @@ export const dtfTradesByProposalAtom = atom<TradesByProposal[] | undefined>(
           completed: 0,
           expired: 0,
           availableAt: 0,
+          expiresAt: 0,
         }
       }
     }
@@ -249,6 +251,8 @@ export const dtfTradesByProposalAtom = atom<TradesByProposal[] | undefined>(
           trade.state === TRADE_STATE.COMPLETED ? 1 : 0
         tradesByProposal[trade.approvedBlockNumber].expired +=
           trade.state === TRADE_STATE.EXPIRED ? 1 : 0
+        tradesByProposal[trade.approvedBlockNumber].expiresAt =
+          trade.launchTimeout
         tradesByProposal[trade.approvedBlockNumber].availableAt =
           trade.availableAt
       }
@@ -258,7 +262,7 @@ export const dtfTradesByProposalAtom = atom<TradesByProposal[] | undefined>(
       .filter((proposal) => proposal.trades.length > 0)
       .sort(
         (a, b) =>
-          Number(a.proposal.executionBlock) - Number(b.proposal.executionBlock)
+          Number(b.proposal.executionBlock) - Number(a.proposal.executionBlock)
       )
   }
 )

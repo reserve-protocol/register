@@ -1,9 +1,11 @@
+import dtfIndexAbi from '@/abis/dtf-index-abi'
 import TokenLogo from '@/components/token-logo'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { cn } from '@/lib/utils'
 import { chainIdAtom } from '@/state/atoms'
+import { indexDTFAtom } from '@/state/dtf/atoms'
 import { formatPercentage, getCurrentTime, shortenString } from '@/utils'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
@@ -13,26 +15,20 @@ import {
   Check,
   Link,
   LoaderCircle,
-  Square,
-  SquareCheck,
   X,
 } from 'lucide-react'
+import { useEffect } from 'react'
+import { Address } from 'viem'
+import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
 import {
-  addSelectedTradeAtom,
   AssetTrade,
   dtfTradeMapAtom,
   dtfTradeVolatilityAtom,
   isAuctionLauncherAtom,
-  selectedTradesAtom,
   setTradeVolatilityAtom,
   TRADE_STATE,
   VOLATILITY_OPTIONS,
 } from '../atoms'
-import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
-import { useEffect } from 'react'
-import { indexDTFAtom } from '@/state/dtf/atoms'
-import dtfIndexAbi from '@/abis/dtf-index-abi'
-import { Address } from 'viem'
 
 const TradeCompletedStatus = ({ className }: { className?: string }) => {
   return (
@@ -110,8 +106,6 @@ const TradeButton = ({
   const { isSuccess } = useWaitForTransactionReceipt({
     hash: data,
   })
-
-  console.log('trade', trade)
 
   const isLoading = isPending || (!!data && !isSuccess && !isError)
   const canLaunch =
