@@ -22,14 +22,13 @@ const FeeDistributionDescription = () => (
 const TOGGLE_FORMS = [
   {
     title: 'Annualized TVL Fee',
-    description: `A optional percentage-based fee charged by the DTF based on the
+    description: `An optional percentage-based fee charged by the DTF based on the
             total value of the tokens held in the contract. The platform will
             keep 50% of revenue from this fee.`,
     icon: <Asterisk size={32} strokeWidth={1.5} />,
     options: [0.15, 0.5, 1, 2],
     optionsFormatter: (option: number) => formatPercentage(option),
     fieldName: 'folioFee',
-    customFieldName: 'customFolioFee',
     customLabel: '%',
     customPlaceholder: '0.00',
   },
@@ -43,7 +42,6 @@ const TOGGLE_FORMS = [
     options: [0.15, 0.3, 0.5, 1, 2],
     optionsFormatter: (option: number) => formatPercentage(option),
     fieldName: 'mintFee',
-    customFieldName: 'customMintFee',
     customLabel: '%',
     customPlaceholder: '0.00',
   },

@@ -59,16 +59,11 @@ const CreateDAO = () => {
   const submit = () => {
     const formData = getValues()
 
-    const basketVotingDelay =
-      formData.basketVotingDelay || formData.customBasketVotingDelay
-    const basketVotingPeriod =
-      formData.basketVotingPeriod || formData.customBasketVotingPeriod
-    const basketVotingThreshold =
-      formData.basketVotingThreshold || formData.customBasketVotingThreshold
-    const basketVotingQuorum =
-      formData.basketVotingQuorum || formData.customBasketVotingQuorum
-    const basketExecutionDelay =
-      formData.basketExecutionDelay || formData.customBasketExecutionDelay
+    const basketVotingDelay = formData.basketVotingDelay
+    const basketVotingPeriod = formData.basketVotingPeriod
+    const basketVotingThreshold = formData.basketVotingThreshold
+    const basketVotingQuorum = formData.basketVotingQuorum
+    const basketExecutionDelay = formData.basketExecutionDelay
     const guardians = formData.guardians.filter(Boolean)
 
     writeContract({

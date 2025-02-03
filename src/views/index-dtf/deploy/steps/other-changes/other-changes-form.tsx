@@ -13,31 +13,26 @@ const FORMS = [
     description:
       'The time between a proposal being submitted and when governors can cast their votes.',
     fieldName: 'governanceVotingDelay',
-    customFieldName: 'customGovernanceVotingDelay',
   },
   {
     ...VOTING_PERIOD,
     description:
       'How long governors have to cast their votes on a proposal after the voting delay.',
     fieldName: 'governanceVotingPeriod',
-    customFieldName: 'customGovernanceVotingPeriod',
   },
   {
     ...VOTING_THRESHOLD,
     fieldName: 'governanceVotingThreshold',
-    customFieldName: 'customGovernanceVotingThreshold',
   },
   {
     ...VOTING_QUORUM,
     fieldName: 'governanceVotingQuorum',
-    customFieldName: 'customGovernanceVotingQuorum',
   },
   {
     ...VOTING_EXECUTION_DELAY,
     description:
       'The time period between when a proposal is approved and when it can be executed.',
     fieldName: 'governanceExecutionDelay',
-    customFieldName: 'customGovernanceExecutionDelay',
   },
 ]
 

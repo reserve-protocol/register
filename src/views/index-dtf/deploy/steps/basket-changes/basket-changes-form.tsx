@@ -65,31 +65,26 @@ const FORM = [
     description:
       'The time between a basket change proposal being submitted and when governors can cast their votes.',
     fieldName: 'basketVotingDelay',
-    customFieldName: 'customBasketVotingDelay',
   },
   {
     ...VOTING_PERIOD,
     description:
       'How long governors have to cast their votes on a basket change after the voting delay.',
     fieldName: 'basketVotingPeriod',
-    customFieldName: 'customBasketVotingPeriod',
   },
   {
     ...VOTING_THRESHOLD,
     fieldName: 'basketVotingThreshold',
-    customFieldName: 'customBasketVotingThreshold',
   },
   {
     ...VOTING_QUORUM,
     fieldName: 'basketVotingQuorum',
-    customFieldName: 'customBasketVotingQuorum',
   },
   {
     ...VOTING_EXECUTION_DELAY,
     description:
       'The time period between when a basket change proposal is considered successful and when the auction can be formally approved.',
     fieldName: 'basketExecutionDelay',
-    customFieldName: 'customBasketExecutionDelay',
   },
 ]
 

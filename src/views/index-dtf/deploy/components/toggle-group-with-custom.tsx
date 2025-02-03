@@ -10,31 +10,23 @@ type ToggleGroupWithCustomProps = {
   options: number[]
   optionsFormatter: (option: number) => string
   fieldName: string
-  customFieldName: string
   customLabel: string
   customPlaceholder: string
 }
 
 const CustomInput = ({
   fieldName,
-  customFieldName,
   customLabel,
   customPlaceholder,
 }: Pick<
   ToggleGroupWithCustomProps,
-  'fieldName' | 'customFieldName' | 'customLabel' | 'customPlaceholder'
+  'fieldName' | 'customLabel' | 'customPlaceholder'
 >) => {
-  const { setValue } = useFormContext()
-
-  const resetField = () => {
-    setValue(fieldName, '')
-  }
-
   return (
-    <div role="button" onClick={resetField}>
+    <div role="button">
       <BasicInput
         type="number"
-        fieldName={customFieldName}
+        fieldName={fieldName}
         label={customLabel}
         placeholder={customPlaceholder}
       />
@@ -44,18 +36,13 @@ const CustomInput = ({
 
 const ToggleGroupSelector = ({
   fieldName,
-  customFieldName,
   options,
   optionsFormatter,
 }: Pick<
   ToggleGroupWithCustomProps,
-  'fieldName' | 'customFieldName' | 'options' | 'optionsFormatter'
+  'fieldName' | 'options' | 'optionsFormatter'
 >) => {
   const { watch, setValue } = useFormContext()
-
-  const resetCustomField = () => {
-    setValue(customFieldName, undefined)
-  }
 
   return (
     <ToggleGroup
@@ -67,7 +54,6 @@ const ToggleGroupSelector = ({
         if (!isNaN(parsedValue)) {
           setValue(fieldName, parsedValue)
         }
-        resetCustomField()
       }}
     >
       {options.map((option) => (
@@ -90,7 +76,6 @@ const ToggleGroupWithCustom = ({
   options,
   optionsFormatter,
   fieldName,
-  customFieldName,
   customLabel,
   customPlaceholder,
 }: ToggleGroupWithCustomProps) => (
@@ -111,13 +96,11 @@ const ToggleGroupWithCustom = ({
     <div className="flex items-center justify-between gap-2">
       <ToggleGroupSelector
         fieldName={fieldName}
-        customFieldName={customFieldName}
         options={options}
         optionsFormatter={optionsFormatter}
       />
       <CustomInput
         fieldName={fieldName}
-        customFieldName={customFieldName}
         customLabel={customLabel}
         customPlaceholder={customPlaceholder}
       />
