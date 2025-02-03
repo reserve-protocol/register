@@ -30,11 +30,14 @@ const Intro = () => (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-7">
       <div>
         <p className="mt-3 text-sm text-legend">
+          <a className="underline" href="https://reserve.org/" target="_blank">
+            Welcome to the Reserve.org
+          </a>{' '}
           <Trans>
-            Welcome to Register - the user interface for registering,
-            inspecting, and interacting with RTokens. "RToken" is the generic
-            name given to asset-backed stablecoins created on the Reserve
-            Protocol, the creation of which is entirely permissionless.
+            - the user interface for registering, inspecting, and interacting
+            with Decentralized Token Folios (”DTFs”). A DTF is the generic name
+            given to asset-backed indexes. DTFs can be permissionlessly created
+            on the Reserve Protocol.
           </Trans>
         </p>
         <p className="mt-2 text-sm text-legend">
@@ -42,22 +45,26 @@ const Intro = () => (
             Whether you're an economist looking to improve the fiat standard, a
             DeFi-entrepreneur seeking to fill a gap in the market, or simply an
             innovator with a wild idea, anyone can create their own asset-backed
-            currency.
+            index.
           </Trans>
         </p>
         <p className="mt-2 text-sm text-legend">
           <Trans>
-            RTokens live on a blockchain, either Ethereum or Base, which means
-            that they can be transacted worldwide within seconds. They're also
-            100% backed by other assets living on that same blockchain. The
-            users of the currency can - at any time - redeem their RTokens for
-            backing assets worthe the same value.
+            DTFs live on a blockchain, either Ethereum, Base, or Solana which
+            means that they can be transacted worldwide within seconds. They're
+            also 100% backed by other assets living on that same blockchain. The
+            users of the currency can - at any time - redeem their DTF for
+            backing assets worth the same value.
           </Trans>
         </p>
       </div>
       <div>
         <p className="mt-3 text-sm text-legend">
           <Trans>
+            Whenever you see the term "overcollateralization", we're referring
+            to the built-in defense mechanism included in Yield DTFs that help
+            protect their stability in the case of any of their backing assets
+            defaulting. You can learn more about overcollateralization here.
             Whenever you see the term "overcollateralization", we're referring
             to the built-in defence mechanism included in RTokens that help
             protect their stability in the case of any of their backing assets
@@ -77,7 +84,7 @@ const Intro = () => (
             Discord server. We'd be more than happy to help!
           </Trans>{' '}
           <a className="underline" href={PROTOCOL_DOCS} target="_blank">
-            You can also read the Reserve Protocol Documentation.{' '}
+            You can also read the Reserve Protocol Documentation.
           </a>
         </p>
       </div>
@@ -107,20 +114,24 @@ const About = () => (
       </h3>
       <p className="mt-2 text-sm text-legend">
         <Trans>
-          Register is an open source project developed and maintained by ABC
-          Labs as the first dApp to interact with the Reserve Protocol and
-          various RTokens deployed with the platform.
+          This app is an open source project developed and maintained by ABC
+          Labs to interact with the Reserve Protocol and various DTFs deployed
+          with the protocol.
         </Trans>
       </p>
       <p className="mt-2 text-sm text-legend">
         <Trans>
-          If an RToken is listed on Register, it doesn't mean that ABC Labs
-          endorses the safety or risk levels of the RToken or that ABC Labs was
-          involved in the creation of or is in anyway responsible for the
-          RToken. ABC Labs requires Github requests with additional information
-          beyond what is available on the blockchain to give users relevant data
-          to make informed decisions. As a user, please evaluate any new RToken
-          carefully before holding or staking your RSR on them.
+          If a DTF is listed on this app, it doesn't mean that ABC Labs endorses
+          the safety or risk levels of the DTF or that ABC Labs was involved in
+          the creation of or is in anyway responsible for the DTF.
+        </Trans>
+      </p>
+      <p className="mt-2 text-sm text-legend">
+        <Trans>
+          ABC Labs requires additional information beyond what is available on
+          the blockchain to give users relevant data to make informed decisions.
+          As a user, please evaluate any new DTF carefully before holding,
+          staking RSR, or vote locking tokens on them.
         </Trans>
       </p>
     </div>

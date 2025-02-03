@@ -42,7 +42,7 @@ const AppNavigation = () => {
           to: ROUTES.EARN,
         },
         {
-          label: t`Create new DTF`,
+          label: t`Create New DTF`,
           icon: <SquarePlus strokeWidth={1.5} size={16} />,
           to: ROUTES.DEPLOY_INDEX,
         },
@@ -51,7 +51,7 @@ const AppNavigation = () => {
         {
           label: t`DTF Explorer`,
           icon: <Asterisk size={16} />,
-          description: t`Get an overview of everything going on.`,
+          description: t`Get an overview of everything going on`,
           to: ROUTES.EXPLORER,
         },
         {
@@ -77,25 +77,25 @@ const AppNavigation = () => {
         {
           label: t`Reserve Blog`,
           icon: <Asterisk size={16} />,
-          description: t`Stay up to date in long-form`,
+          description: t`Stay up to date in long form`,
           to: RESERVE_BLOG,
         },
         {
           label: t`Protocol Docs`,
           icon: <Asterisk size={16} />,
-          description: t`Understand the Reserve Protocol.`,
+          description: t`Understand the Reserve Protocol`,
           to: PROTOCOL_DOCS,
         },
         {
           label: t`Reserve Forum`,
           icon: <Asterisk size={16} />,
-          description: t`Discussions of ecosystem ideas.`,
+          description: t`Discussions of ecosystem ideas`,
           to: RESERVE_FORUM,
         },
         {
           label: t`Reserve Discord`,
           icon: <Asterisk size={16} />,
-          description: t`Join the conversation or ask questions.`,
+          description: t`Join the conversation or ask questions`,
           to: DISCORD_INVITE,
         },
       ],

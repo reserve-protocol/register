@@ -22,10 +22,10 @@ const EarnHeader = () => (
       <YieldIcon fontSize={60} />
       <Box>
         <Text mb={[0, 1]} sx={{ fontSize: [3, 4] }} variant="strong">
-          RToken yield opportunities
+          DTFs yield opportunities
         </Text>
         <Text variant="legend" sx={{ fontSize: [1, 2] }}>
-          Yield opportunities for RTokens across the DeFi landscape.
+          Yield opportunities for DTFs across the DeFi landscape.
         </Text>
       </Box>
     </Box>

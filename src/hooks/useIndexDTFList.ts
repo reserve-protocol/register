@@ -3,6 +3,8 @@ import { RESERVE_API } from '@/utils/constants'
 import { useQuery } from '@tanstack/react-query'
 import { Address } from 'viem'
 
+type Performance = { timestamp: number; value: number }
+
 export type IndexDTFItem = {
   address: Address
   symbol: string
@@ -10,8 +12,18 @@ export type IndexDTFItem = {
   price: number
   fee: number
   basket: { address: Address; symbol: string }[]
-  performance: { timestamp: number; value: number }[] // [1, 2, 3, 4, 5, 6, 7] price per day!
+  performance: Performance[]
+  performancePercent: number
   chainId: number
+}
+
+const calculatePercentageChange = (performance: Performance[]) => {
+  if (performance.length === 0) {
+    return 0
+  }
+  const firstValue = performance[0].value
+  const lastValue = performance[performance.length - 1].value
+  return ((lastValue - firstValue) / firstValue) * 100
 }
 
 const REFRESH_INTERVAL = 1000 * 60 * 10 // 10 minutes
@@ -31,7 +43,12 @@ const useIndexDTFList = () => {
         throw new Error('Failed to fetch dtf list')
       }
 
-      return (await response.json()) as IndexDTFItem[]
+      const data = await response.json()
+
+      return data.map((item: any) => ({
+        ...item,
+        performancePercent: calculatePercentageChange(item.performance),
+      })) as IndexDTFItem[]
     },
     refetchInterval: REFRESH_INTERVAL,
     staleTime: REFRESH_INTERVAL,
