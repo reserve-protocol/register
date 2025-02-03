@@ -227,19 +227,20 @@ const UnlistedToken = () => {
     isLoading: loadingPrice,
     isError: isErrorPrice,
   } = useAssetPrice(search)
+
   const {
     data: token,
     isLoading: loadingMetadata,
     isError: isErrorMetadata,
-  } = useTokensInfo([search])
+  } = useTokensInfo([search.toLowerCase()])
 
   useEffect(() => {
-    if (tokenPrice && token?.[search]) {
+    if (tokenPrice && token?.[search.toLowerCase()]) {
       setExtraTokens((prev) => [
         ...prev.filter(
           ({ address }) => address.toLowerCase() !== search.toLowerCase()
         ),
-        token[search],
+        token[search.toLowerCase()],
       ])
     }
   }, [tokenPrice, token, setExtraTokens])
