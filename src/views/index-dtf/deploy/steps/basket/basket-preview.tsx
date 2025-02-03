@@ -78,7 +78,13 @@ const TokenPreview = ({
       className="w-full flex items-center gap-2 justify-between p-4 [&:not(:last-child)]:border-b-[1px]"
     >
       <div className="flex items-center gap-2">
-        <TokenLogo symbol={symbol} src={logoURI} size="xl" />
+        <TokenLogo
+          symbol={symbol}
+          src={logoURI}
+          address={address}
+          chain={chainId}
+          size="xl"
+        />
         <div className="flex flex-col">
           <div className="text-base font-bold">{name}</div>
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
