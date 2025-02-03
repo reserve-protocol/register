@@ -24,6 +24,10 @@ export class Decimal {
   }
 
   toDisplayString(decimals = 2): string {
+    if (Number.isInteger(this.value)) {
+      return this.value.toString()
+    }
+
     return this.value.toFixed(decimals)
   }
 
