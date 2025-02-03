@@ -223,7 +223,7 @@ const HistoricalTVLChart = () => {
 const HistoricalTVL = () => {
   return (
     <div className="container px-0 2xl:px-6 h-80 sm:h-[520px]">
-      <div className="relative h-full flex flex-col justify-end border-t border-primary">
+      <div className="relative h-full flex flex-col justify-end ">
         <div className="h-[160px] sm:h-[420px]">
           <HistoricalTVLChart />
         </div>

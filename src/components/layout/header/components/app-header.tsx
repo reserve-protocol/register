@@ -11,7 +11,7 @@ const Container = ({ children }: { children: ReactNode }) => {
   // Check if the route is a "index-dtf" route
   const { pathname } = useLocation()
 
-  const border = !pathname.includes('index-dtf') && pathname !== '/'
+  const border = !pathname.includes('index-dtf')
 
   return (
     <div className={cn('w-full flex-shrink-0', border && 'border-b')}>
