@@ -17,9 +17,13 @@ export const useAssetPrices = (tokens: string[]) => {
         if (!response.ok) {
           throw new Error('Failed to fetch token prices')
         }
-        const data = (await response.json()) as TokenPrice[]
+        const data = await response.json()
 
-        return data
+        if (data?.statusCode) {
+          throw new Error(data.message)
+        }
+
+        return data as TokenPrice[]
       } catch (error) {
         console.error('Error fetching token prices:', error)
         throw error

@@ -14,7 +14,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { cn } from '@/lib/utils'
 import { chainIdAtom } from '@/state/atoms'
 import { Token } from '@/types'
-import { shortenAddress } from '@/utils'
+import { isAddress, shortenAddress } from '@/utils'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { useQuery } from '@tanstack/react-query'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
@@ -24,7 +24,14 @@ import { useCallback, useEffect, useMemo } from 'react'
 import { useFormContext } from 'react-hook-form'
 import AutoSizer from 'react-virtualized-auto-sizer'
 import { FixedSizeList as List } from 'react-window'
-import { basketAtom, searchTokenAtom, selectedTokensAtom } from '../../atoms'
+import {
+  basketAtom,
+  extraTokensAtom,
+  searchTokenAtom,
+  selectedTokensAtom,
+} from '../../atoms'
+import { useAssetPrice } from '@/hooks/useAssetPrices'
+import useTokensInfo from '@/hooks/useTokensInfo'
 
 interface TokenButtonProps {
   variant: 'primary' | 'secondary'
@@ -207,8 +214,49 @@ interface TokenListProps {
   showSelected?: boolean
 }
 
+const UnlistedToken = () => {
+  const search = useAtomValue(searchTokenAtom)
+  const setExtraTokens = useSetAtom(extraTokensAtom)
+
+  const {
+    data: tokenPrice,
+    isLoading: loadingPrice,
+    isError: isErrorPrice,
+  } = useAssetPrice(search)
+  const {
+    data: token,
+    isLoading: loadingMetadata,
+    isError: isErrorMetadata,
+  } = useTokensInfo([search])
+
+  useEffect(() => {
+    if (tokenPrice && token?.[search]) {
+      setExtraTokens((prev) => [
+        ...prev.filter(
+          ({ address }) => address.toLowerCase() !== search.toLowerCase()
+        ),
+        token[search],
+      ])
+    }
+  }, [tokenPrice, token, setExtraTokens])
+
+  if (loadingPrice || loadingMetadata) return <LoadingSkeletons />
+
+  if (isErrorPrice || isErrorMetadata) {
+    return (
+      <div className="flex items-center justify-center h-full text-muted-foreground">
+        Token not supported
+      </div>
+    )
+  }
+
+  return null
+}
+
 const TokenList = ({ showSelected = false }: TokenListProps) => {
   const search = useAtomValue(searchTokenAtom)
+  const extraTokens = useAtomValue(extraTokensAtom)
+
   const {
     data: tokenList = [],
     isLoading,
@@ -237,12 +285,13 @@ const TokenList = ({ showSelected = false }: TokenListProps) => {
   })
 
   const filteredTokens = useMemo(() => {
-    if (!tokenList.length) return []
+    const fullTokenList = [...extraTokens, ...tokenList]
+    if (!fullTokenList.length) return []
 
     const searchLower = search.trim().toLowerCase()
-    if (!searchLower) return tokenList
+    if (!searchLower) return fullTokenList
 
-    return tokenList
+    return fullTokenList
       .filter((token) => {
         const { name, symbol, address } = token
         return (
@@ -252,7 +301,7 @@ const TokenList = ({ showSelected = false }: TokenListProps) => {
         )
       })
       .sort((a, b) => a.name.length - b.name.length)
-  }, [tokenList, search])
+  }, [tokenList, extraTokens, search])
 
   const renderRow = useCallback(
     ({ index, style }: { index: number; style: React.CSSProperties }) => {
@@ -273,6 +322,11 @@ const TokenList = ({ showSelected = false }: TokenListProps) => {
     [filteredTokens, showSelected]
   )
 
+  const isUnlistedToken = useMemo(
+    () => filteredTokens.length === 0 && isAddress(search),
+    [filteredTokens, search]
+  )
+
   if (error) {
     return (
       <div className="flex flex-col items-center justify-center h-full p-4 text-center text-muted-foreground">
@@ -286,6 +340,8 @@ const TokenList = ({ showSelected = false }: TokenListProps) => {
     <div className="flex flex-col h-full gap-1">
       {isLoading ? (
         <LoadingSkeletons />
+      ) : isUnlistedToken ? (
+        <UnlistedToken />
       ) : filteredTokens.length === 0 ? (
         <div className="flex items-center justify-center h-full text-muted-foreground">
           No tokens found

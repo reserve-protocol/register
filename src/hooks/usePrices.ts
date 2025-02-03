@@ -17,7 +17,11 @@ async function fetchPrices<T>(
     if (!response.ok) {
       throw new Error('Failed to fetch prices')
     }
-    return response.json()
+    const result = await response.json()
+    if (result?.statusCode) {
+      throw new Error(result.message)
+    }
+    return result
   } catch (error) {
     console.error('Error fetching prices:', error)
     throw error
