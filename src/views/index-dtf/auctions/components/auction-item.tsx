@@ -174,7 +174,8 @@ const ShareRange = ({
   from: number | undefined
   to: number | undefined
 }) => {
-  if (!from || !to) return <Skeleton className="h-8 w-14" />
+  if (from == undefined || to === undefined)
+    return <Skeleton className="h-8 w-14" />
 
   return (
     <span className="text-xs whitespace-nowrap">
