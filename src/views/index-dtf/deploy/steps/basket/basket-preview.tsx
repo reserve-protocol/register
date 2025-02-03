@@ -1,4 +1,3 @@
-import TokenLogo from '@/components/icons/TokenLogo'
 import { Token } from '@/types'
 import { formatCurrency, shortenAddress } from '@/utils'
 import { useAtomValue, useSetAtom } from 'jotai'
@@ -10,6 +9,7 @@ import ExplorerAddress from '@/components/utils/explorer-address'
 import { chainIdAtom } from '@/state/atoms'
 import { ExplorerDataType } from '@/utils/getExplorerLink'
 import { Decimal } from '../../utils/decimals'
+import TokenLogo from '@/components/token-logo'
 
 const RemoveTokenButton = ({
   tokenIndex,
@@ -77,8 +77,8 @@ const TokenPreview = ({
       role="div"
       className="w-full flex items-center gap-2 justify-between p-4 [&:not(:last-child)]:border-b-[1px]"
     >
-      <div className="flex gap-2">
-        <TokenLogo symbol={symbol} src={logoURI} width={32} />
+      <div className="flex items-center gap-2">
+        <TokenLogo symbol={symbol} src={logoURI} size="xl" />
         <div className="flex flex-col">
           <div className="text-base font-bold">{name}</div>
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
