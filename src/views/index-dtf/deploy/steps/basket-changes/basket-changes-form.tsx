@@ -1,22 +1,22 @@
-import { humanizeMinutes } from '@/utils'
+import { humanizeHours, humanizeMinutes } from '@/utils'
 import { Asterisk } from 'lucide-react'
 import ToggleGroupWithCustom from '../../components/toggle-group-with-custom'
 
 export const VOTING_DELAY = {
   title: 'Voting Delay',
   icon: <Asterisk size={32} strokeWidth={1.5} />,
-  options: [20, 60, 240, 1440, 2880],
-  optionsFormatter: (option: number) => humanizeMinutes(option),
-  customLabel: 'minutes',
+  options: [1, 12, 24, 48],
+  optionsFormatter: (option: number) => humanizeHours(option),
+  customLabel: 'hours',
   customPlaceholder: 'Enter custom length',
 }
 
 export const VOTING_PERIOD = {
   title: 'Voting Period',
   icon: <Asterisk size={32} strokeWidth={1.5} />,
-  options: [20, 60, 240, 1440, 2880],
-  optionsFormatter: (option: number) => humanizeMinutes(option),
-  customLabel: 'minutes',
+  options: [1, 24, 48, 72],
+  optionsFormatter: (option: number) => humanizeHours(option),
+  customLabel: 'hours',
   customPlaceholder: 'Enter custom length',
 }
 
@@ -53,9 +53,9 @@ export const VOTING_QUORUM = {
 export const VOTING_EXECUTION_DELAY = {
   title: 'Execution Delay',
   icon: <Asterisk size={32} strokeWidth={1.5} />,
-  options: [20, 60, 240, 1440, 2880],
-  optionsFormatter: (option: number) => humanizeMinutes(option),
-  customLabel: 'minutes',
+  options: [1, 24, 36, 48],
+  optionsFormatter: (option: number) => humanizeHours(option),
+  customLabel: 'hours',
   customPlaceholder: 'Enter custom length',
 }
 

@@ -179,14 +179,14 @@ const txAtom = atom<
   }
 
   const tradingGovernanceConfig: GovernanceConfig = {
-    votingDelay: (formData.basketVotingDelay || 0)! * 60,
-    votingPeriod: (formData.basketVotingPeriod || 0)! * 60,
+    votingDelay: (formData.basketVotingDelay || 0)! * 3600,
+    votingPeriod: (formData.basketVotingPeriod || 0)! * 3600,
     proposalThreshold: parseEther(
       (formData.basketVotingThreshold || 0)!.toString()
     ),
     quorumPercent: BigInt(Math.floor((formData.basketVotingQuorum || 0)!)),
     timelockDelay: BigInt(
-      Math.floor((formData.basketExecutionDelay || 0)! * 60)
+      Math.floor((formData.basketExecutionDelay || 0)! * 3600)
     ),
     guardians,
   }

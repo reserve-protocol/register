@@ -59,11 +59,11 @@ const CreateDAO = () => {
   const submit = () => {
     const formData = getValues()
 
-    const basketVotingDelay = formData.basketVotingDelay
-    const basketVotingPeriod = formData.basketVotingPeriod
-    const basketVotingThreshold = formData.basketVotingThreshold
-    const basketVotingQuorum = formData.basketVotingQuorum
-    const basketExecutionDelay = formData.basketExecutionDelay
+    const basketVotingDelay = (formData.basketVotingDelay || 0) * 3600
+    const basketVotingPeriod = (formData.basketVotingPeriod || 0) * 3600
+    const basketVotingThreshold = formData.basketVotingThreshold || 0
+    const basketVotingQuorum = formData.basketVotingQuorum || 0
+    const basketExecutionDelay = (formData.basketExecutionDelay || 0) * 3600
     const guardians = formData.guardians.filter(Boolean)
 
     writeContract({
@@ -75,11 +75,11 @@ const CreateDAO = () => {
         vlSymbol,
         governanceERC20address,
         {
-          votingDelay: basketVotingDelay! * 60,
-          votingPeriod: basketVotingPeriod! * 60,
-          proposalThreshold: parseEther(basketVotingThreshold!.toString()),
-          quorumPercent: BigInt(Math.floor(basketVotingQuorum!)),
-          timelockDelay: BigInt(Math.floor(basketExecutionDelay!) * 60),
+          votingDelay: basketVotingDelay,
+          votingPeriod: basketVotingPeriod,
+          proposalThreshold: parseEther(basketVotingThreshold.toString()),
+          quorumPercent: BigInt(Math.floor(basketVotingQuorum)),
+          timelockDelay: BigInt(Math.floor(basketExecutionDelay)),
           guardians,
         },
         keccak256(toBytes(getCurrentTime())),

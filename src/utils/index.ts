@@ -285,3 +285,21 @@ export const humanizeMinutes = (minutes: number) => {
     language: 'en',
   })
 }
+
+export const humanizeHours = (hours: number) => {
+  if (hours < 24) {
+    return `${hours}h`
+  }
+  return humanizeDuration(hours * 60 * 60 * 1000, {
+    language: 'en',
+  })
+}
+
+export const humanizeDays = (days: number) => {
+  if (days < 30) {
+    return `${days}d`
+  }
+  return humanizeDuration(days * 24 * 60 * 60 * 1000, {
+    language: 'en',
+  })
+}

@@ -1,3 +1,4 @@
+import { humanizeMinutes } from '@/utils'
 import ToggleGroupWithCustom from '../../components/toggle-group-with-custom'
 import {
   VOTING_DELAY,
@@ -10,12 +11,18 @@ import {
 const FORMS = [
   {
     ...VOTING_DELAY,
+    options: [20, 60, 240, 1440, 2880],
+    optionsFormatter: (option: number) => humanizeMinutes(option),
+    customLabel: 'minutes',
     description:
       'The time between a proposal being submitted and when governors can cast their votes.',
     fieldName: 'governanceVotingDelay',
   },
   {
     ...VOTING_PERIOD,
+    options: [20, 60, 240, 1440, 2880],
+    optionsFormatter: (option: number) => humanizeMinutes(option),
+    customLabel: 'minutes',
     description:
       'How long governors have to cast their votes on a proposal after the voting delay.',
     fieldName: 'governanceVotingPeriod',
@@ -30,6 +37,9 @@ const FORMS = [
   },
   {
     ...VOTING_EXECUTION_DELAY,
+    options: [20, 60, 240, 1440, 2880],
+    optionsFormatter: (option: number) => humanizeMinutes(option),
+    customLabel: 'minutes',
     description:
       'The time period between when a proposal is approved and when it can be executed.',
     fieldName: 'governanceExecutionDelay',

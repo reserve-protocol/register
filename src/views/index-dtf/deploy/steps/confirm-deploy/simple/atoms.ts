@@ -136,8 +136,8 @@ export const zapDeployPayloadAtom = atom<
   }
 
   const tradingGovParams = {
-    votingDelay: ((formData.basketVotingDelay || 0)! * 60).toString(),
-    votingPeriod: ((formData.basketVotingPeriod || 0)! * 60).toString(),
+    votingDelay: ((formData.basketVotingDelay || 0)! * 3600).toString(),
+    votingPeriod: ((formData.basketVotingPeriod || 0)! * 3600).toString(),
     proposalThreshold: parseEther(
       (formData.basketVotingThreshold || 0)!.toString()
     ).toString(),
@@ -145,7 +145,7 @@ export const zapDeployPayloadAtom = atom<
       Math.floor((formData.basketVotingQuorum || 0)!)
     ).toString(),
     timelockDelay: BigInt(
-      Math.floor((formData.basketExecutionDelay || 0)! * 60)
+      Math.floor((formData.basketExecutionDelay || 0)! * 3600)
     ).toString(),
     guardians,
   }
