@@ -166,14 +166,14 @@ const txAtom = atom<
   }
 
   const ownerGovernanceConfig: GovernanceConfig = {
-    votingDelay: (formData.governanceVotingDelay || 0)! * 60,
-    votingPeriod: (formData.governanceVotingPeriod || 0)! * 60,
+    votingDelay: (formData.governanceVotingDelay || 0)! * 86400,
+    votingPeriod: (formData.governanceVotingPeriod || 0)! * 86400,
     proposalThreshold: parseEther(
       (formData.governanceVotingThreshold || 0)!.toString()
     ),
     quorumPercent: BigInt(Math.floor((formData.governanceVotingQuorum || 0)!)),
     timelockDelay: BigInt(
-      Math.floor((formData.governanceExecutionDelay || 0)! * 60)
+      Math.floor((formData.governanceExecutionDelay || 0)! * 86400)
     ),
     guardians,
   }

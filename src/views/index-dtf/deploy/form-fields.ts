@@ -282,11 +282,11 @@ export const dtfDeployDefaultValues = {
   basketVotingThreshold: 0.01,
   basketVotingQuorum: 10,
   basketExecutionDelay: 48,
-  governanceVotingDelay: 2880,
-  governanceVotingPeriod: 2880,
+  governanceVotingDelay: 2,
+  governanceVotingPeriod: 2,
   governanceVotingThreshold: 0.01,
   governanceVotingQuorum: 10,
-  governanceExecutionDelay: 2880,
+  governanceExecutionDelay: 2,
 }
 
 export type DeployInputs = z.infer<typeof DeployFormSchema>

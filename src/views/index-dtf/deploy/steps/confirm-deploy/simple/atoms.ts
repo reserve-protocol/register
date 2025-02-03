@@ -121,8 +121,8 @@ export const zapDeployPayloadAtom = atom<
 
   // Governed DTF
   const ownerGovParams = {
-    votingDelay: ((formData.governanceVotingDelay || 0)! * 60).toString(),
-    votingPeriod: ((formData.governanceVotingPeriod || 0)! * 60).toString(),
+    votingDelay: ((formData.governanceVotingDelay || 0)! * 86400).toString(),
+    votingPeriod: ((formData.governanceVotingPeriod || 0)! * 86400).toString(),
     proposalThreshold: parseEther(
       (formData.governanceVotingThreshold || 0)!.toString()
     ).toString(),
@@ -130,7 +130,7 @@ export const zapDeployPayloadAtom = atom<
       Math.floor((formData.governanceVotingQuorum || 0)!)
     ).toString(),
     timelockDelay: BigInt(
-      Math.floor((formData.governanceExecutionDelay || 0)! * 60)
+      Math.floor((formData.governanceExecutionDelay || 0)! * 86400)
     ).toString(),
     guardians,
   }
