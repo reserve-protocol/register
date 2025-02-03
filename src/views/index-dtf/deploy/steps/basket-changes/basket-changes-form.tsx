@@ -5,7 +5,7 @@ import ToggleGroupWithCustom from '../../components/toggle-group-with-custom'
 export const VOTING_DELAY = {
   title: 'Voting Delay',
   icon: <Asterisk size={32} strokeWidth={1.5} />,
-  options: [20, 60, 240, 1440, 10080],
+  options: [20, 60, 240, 1440, 2880],
   optionsFormatter: (option: number) => humanizeMinutes(option),
   customLabel: 'minutes',
   customPlaceholder: 'Enter custom length',
@@ -14,7 +14,7 @@ export const VOTING_DELAY = {
 export const VOTING_PERIOD = {
   title: 'Voting Period',
   icon: <Asterisk size={32} strokeWidth={1.5} />,
-  options: [20, 60, 240, 1440, 10080],
+  options: [20, 60, 240, 1440, 2880],
   optionsFormatter: (option: number) => humanizeMinutes(option),
   customLabel: 'minutes',
   customPlaceholder: 'Enter custom length',
@@ -34,7 +34,7 @@ export const VOTING_THRESHOLD = {
 export const VOTING_QUORUM = {
   title: 'Voting Quorum',
   icon: <Asterisk size={32} strokeWidth={1.5} />,
-  options: [20, 30, 40, 60, 80],
+  options: [10, 20, 30, 40, 60],
   optionsFormatter: (option: number) => `${option.toString()}%`,
   customLabel: '%',
   customPlaceholder: 'Enter custom',
@@ -53,7 +53,7 @@ export const VOTING_QUORUM = {
 export const VOTING_EXECUTION_DELAY = {
   title: 'Execution Delay',
   icon: <Asterisk size={32} strokeWidth={1.5} />,
-  options: [20, 60, 240, 1440, 10080],
+  options: [20, 60, 240, 1440, 2880],
   optionsFormatter: (option: number) => humanizeMinutes(option),
   customLabel: 'minutes',
   customPlaceholder: 'Enter custom length',
