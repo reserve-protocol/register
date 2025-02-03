@@ -30,7 +30,7 @@ const LaunchTokenBanner = () => {
             Want to launch a new ERC20 for governance?
           </div>
           <div className="text-muted-foreground">
-            We recommend launching your new ERC20 toke on{' '}
+            We recommend launching your new ERC20 token on{' '}
             <span className="text-primary">CreateMyToken.com</span>
           </div>
         </div>
