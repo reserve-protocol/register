@@ -26,7 +26,7 @@ const TOGGLE_FORMS = [
             total value of the tokens held in the contract. The platform will
             keep 50% of revenue from this fee.`,
     icon: <Asterisk size={32} strokeWidth={1.5} />,
-    options: [0, 0.25, 0.5, 1, 1.5, 2],
+    options: [0.15, 0.5, 1, 2],
     optionsFormatter: (option: number) => formatPercentage(option),
     fieldName: 'folioFee',
     customFieldName: 'customFolioFee',
@@ -40,7 +40,7 @@ const TOGGLE_FORMS = [
             mint the DTF. The platform will keep the greater of 0.15% or 50% of
             revenue from this fee.`,
     icon: <Asterisk size={32} strokeWidth={1.5} />,
-    options: [0.05, 0.25, 0.5, 1, 1.5, 2],
+    options: [0.15, 0.3, 0.5, 1, 2],
     optionsFormatter: (option: number) => formatPercentage(option),
     fieldName: 'mintFee',
     customFieldName: 'customMintFee',
