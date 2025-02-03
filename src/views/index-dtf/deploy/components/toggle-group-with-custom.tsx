@@ -2,6 +2,7 @@ import { ReactNode } from 'react'
 import BasicInput from './basic-input'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { useFormContext } from 'react-hook-form'
+import WarningBanner from './warning-banner'
 
 type ToggleGroupWithCustomProps = {
   title: string
@@ -12,6 +13,7 @@ type ToggleGroupWithCustomProps = {
   fieldName: string
   customLabel: string
   customPlaceholder: string
+  warningMessage?: ReactNode
 }
 
 const CustomInput = ({
@@ -78,6 +80,7 @@ const ToggleGroupWithCustom = ({
   fieldName,
   customLabel,
   customPlaceholder,
+  warningMessage,
 }: ToggleGroupWithCustomProps) => (
   <div
     className="w-full rounded-xl flex flex-col gap-3 justify-between p-4 bg-muted/70"
@@ -105,6 +108,11 @@ const ToggleGroupWithCustom = ({
         customPlaceholder={customPlaceholder}
       />
     </div>
+    {!!warningMessage && (
+      <div className="-mt-3">
+        <WarningBanner title="Caution" description={warningMessage} />
+      </div>
+    )}
   </div>
 )
 
