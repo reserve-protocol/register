@@ -127,7 +127,7 @@ const txAtom = atom<
   }
 
   const folioConfig: FolioConfig = {
-    auctionDelay: BigInt(Math.floor((formData.auctionDelay || 0)! * 60)),
+    auctionDelay: BigInt(Math.floor((formData.auctionDelay || 0)! * 3600)),
     auctionLength: BigInt(Math.floor((formData.auctionLength || 0)! * 60)),
     feeRecipients: calculateRevenueDistribution(formData, wallet, stToken),
     tvlFee: parseEther(((formData.folioFee || 0)! / 100).toString()),

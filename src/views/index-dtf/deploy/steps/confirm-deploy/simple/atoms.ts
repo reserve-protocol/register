@@ -79,7 +79,7 @@ export const zapDeployPayloadAtom = atom<
 
   const additionalDetails = {
     tradeDelay: BigInt(
-      Math.floor((formData.auctionDelay || 0)! * 60)
+      Math.floor((formData.auctionDelay || 0)! * 3600)
     ).toString(),
     auctionLength: BigInt(
       Math.floor((formData.auctionLength || 0)! * 60)

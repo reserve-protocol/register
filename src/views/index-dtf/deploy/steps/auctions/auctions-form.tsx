@@ -8,7 +8,7 @@ const TOGGLE_FORMS = [
     description:
       'How long dutch auctions will run when swapping tokens out of the basket.',
     icon: <Asterisk size={32} strokeWidth={1.5} />,
-    options: [1, 15, 30, 45, 60],
+    options: [15, 30, 60],
     optionsFormatter: (option: number) => humanizeMinutes(option),
     fieldName: 'auctionLength',
     customLabel: 'minutes',
@@ -20,10 +20,10 @@ const TOGGLE_FORMS = [
     description:
       'How long an auction can exist in an approved state while only launchable by an Auction Launcher.  Once the delay runs out, anyone can launch the auction.',
     icon: <Asterisk size={32} strokeWidth={1.5} />,
-    options: [0, 15, 30, 45, 60],
-    optionsFormatter: (option: number) => humanizeMinutes(option),
+    options: [1, 24, 36],
+    optionsFormatter: (option: number) => `${option}h`,
     fieldName: 'auctionDelay',
-    customLabel: 'minutes',
+    customLabel: 'hours',
     customPlaceholder: 'Enter custom length',
   },
 ]
