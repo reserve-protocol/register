@@ -3,7 +3,8 @@ import BasicInput from '../../components/basic-input'
 import AdditionalRevenueRecipients from './additional-revenue-recipients'
 import { useAtomValue } from 'jotai'
 import { selectedGovernanceOptionAtom } from '../../atoms'
-import { useFormContext } from 'react-hook-form'
+import { useFormContext, useWatch } from 'react-hook-form'
+import { Decimal } from '../../utils/decimals'
 
 const SETTINGS = [
   {
@@ -26,6 +27,66 @@ const SETTINGS = [
   },
 ]
 
+const useFormValues = () => {
+  const { getValues } = useFormContext()
+
+  return {
+    ...useWatch(), // subscribe to form value updates
+
+    ...getValues(), // always merge with latest form values
+  }
+}
+
+const RemainingAllocation = () => {
+  const { watch } = useFormContext()
+
+  // Hack to update nested values
+  useFormValues()
+
+  const [
+    fixedPlatformFee,
+    governanceShare,
+    deployerShare,
+    additionalRevenueRecipients,
+  ] = watch([
+    'fixedPlatformFee',
+    'governanceShare',
+    'deployerShare',
+    'additionalRevenueRecipients',
+  ])
+
+  const remaining = new Decimal(100).minus(
+    new Decimal(fixedPlatformFee || 0)
+      .plus(new Decimal(governanceShare || 0))
+      .plus(new Decimal(deployerShare || 0))
+      .plus(
+        additionalRevenueRecipients?.reduce(
+          (sum: Decimal, recipient: { share: number }) =>
+            sum.plus(new Decimal(recipient.share || 0)),
+          new Decimal(0)
+        ) || 0
+      )
+  )
+
+  const remainingAllocation = remaining.isPositive()
+    ? remaining.min(100)
+    : new Decimal(0)
+
+  const displayValue =
+    remainingAllocation.isPositive() &&
+    remainingAllocation.value < 0.01 &&
+    remainingAllocation.value > 0
+      ? '< 0.01'
+      : remainingAllocation.toDisplayString()
+
+  return (
+    <div className="text-base ml-auto px-4">
+      <span className="text-muted-foreground">Remaining allocation:</span>{' '}
+      {displayValue}%
+    </div>
+  )
+}
+
 const RevenueDistributionSettings = () => {
   const { getValues } = useFormContext()
   const selectedGovOption = useAtomValue(selectedGovernanceOptionAtom)
@@ -38,6 +99,7 @@ const RevenueDistributionSettings = () => {
 
   return (
     <div className="flex flex-col gap-2 mx-2 mb-3">
+      <RemainingAllocation />
       <div className="flex flex-col gap-2">
         {settings.map(({ title, description, field, disabled }) => (
           <div
@@ -57,7 +119,7 @@ const RevenueDistributionSettings = () => {
               </div>
             </div>
             {disabled ? (
-              <div className="flex items-center gap-1 font-semibold px-[18px]">
+              <div className="flex justify-end items-center gap-1 font-semibold px-[18px] border-lg border border-muted-foreground/10 rounded-lg w-18 h-10 flex-nowrap">
                 {getValues(field)} %
               </div>
             ) : (
