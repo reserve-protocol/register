@@ -1,10 +1,12 @@
-import { Asterisk } from 'lucide-react'
-import BasicInput from '../../components/basic-input'
-import AdditionalRevenueRecipients from './additional-revenue-recipients'
+import { Button } from '@/components/ui/button'
 import { useAtomValue } from 'jotai'
-import { selectedGovernanceOptionAtom } from '../../atoms'
+import { Asterisk } from 'lucide-react'
+import { useCallback } from 'react'
 import { useFormContext, useWatch } from 'react-hook-form'
+import { selectedGovernanceOptionAtom } from '../../atoms'
+import BasicInput from '../../components/basic-input'
 import { Decimal } from '../../utils/decimals'
+import AdditionalRevenueRecipients from './additional-revenue-recipients'
 
 const SETTINGS = [
   {
@@ -87,6 +89,59 @@ const RemainingAllocation = () => {
   )
 }
 
+const EvenDistributionButton = () => {
+  const { setValue, getValues } = useFormContext()
+  const selectedGovOption = useAtomValue(selectedGovernanceOptionAtom)
+
+  const onEvenDistribution = useCallback(() => {
+    const fixedPlatformFee = getValues('fixedPlatformFee') || 0
+    const additionalRecipients = getValues('additionalRevenueRecipients') || []
+    const isGovSharePresent = selectedGovOption !== 'governanceWalletAddress'
+    const isAdditionalRecipientsPresent = additionalRecipients.length > 0
+
+    const participantsCount = [
+      true, // deployerShare
+      isGovSharePresent, // governanceShare
+      ...additionalRecipients.map(Boolean),
+    ].filter(Boolean).length
+
+    const remainingPercentage = new Decimal(100).minus(fixedPlatformFee)
+    const baseShare =
+      Math.floor((remainingPercentage.value / participantsCount) * 100) / 100
+    const totalPercentage = baseShare * (participantsCount - 1)
+    const lastShare = +(remainingPercentage.value - totalPercentage).toFixed(2)
+
+    setValue('deployerShare', baseShare)
+
+    if (isGovSharePresent) {
+      setValue('governanceShare', baseShare)
+    }
+
+    if (isAdditionalRecipientsPresent) {
+      setValue(
+        'additionalRevenueRecipients',
+        additionalRecipients.map(
+          (recipient: { address: string; share: number }, index: number) => ({
+            ...recipient,
+            share:
+              index === additionalRecipients.length - 1 ? lastShare : baseShare,
+          })
+        )
+      )
+    }
+  }, [getValues, setValue, selectedGovOption])
+
+  return (
+    <Button
+      variant="accent"
+      className="flex gap-2 text-base pl-3 pr-4 rounded-xl text-nowrap w-48 py-7 -mr-2 bg-muted/80"
+      onClick={onEvenDistribution}
+    >
+      Even distribution
+    </Button>
+  )
+}
+
 const RevenueDistributionSettings = () => {
   const { getValues } = useFormContext()
   const selectedGovOption = useAtomValue(selectedGovernanceOptionAtom)
@@ -119,7 +174,7 @@ const RevenueDistributionSettings = () => {
               </div>
             </div>
             {disabled ? (
-              <div className="flex justify-end items-center gap-1 font-semibold px-[18px] border-lg border border-muted-foreground/10 rounded-lg w-18 h-10 flex-nowrap">
+              <div className="flex justify-end items-center gap-1 font-semibold px-[18px] border-lg bg-muted-foreground/5 rounded-lg w-19 h-10 flex-nowrap">
                 {getValues(field)} %
               </div>
             ) : (
@@ -134,7 +189,9 @@ const RevenueDistributionSettings = () => {
           </div>
         ))}
       </div>
-      <AdditionalRevenueRecipients />
+      <AdditionalRevenueRecipients>
+        <EvenDistributionButton />
+      </AdditionalRevenueRecipients>
     </div>
   )
 }
