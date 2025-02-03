@@ -5,7 +5,7 @@ import BasicInputWithAdditional, {
 
 type InputWithTitleProps = BasicInputWithAdditionalProps & {
   title: string
-  description: string
+  description: ReactNode
   icon: ReactNode
 }
 
