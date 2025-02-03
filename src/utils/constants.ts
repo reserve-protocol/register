@@ -15,7 +15,7 @@ export const VERSION = '3.0.0'
 
 export const DISCORD_INVITE = 'https://discord.gg/reserveprotocol'
 export const PROTOCOL_DOCS = 'https://reserve.org/protocol/'
-export const INDEX_PROTOCOL_DOCS = 'https://reserve.org/index-protocol/'
+export const INDEX_PROTOCOL_DOCS = 'https://reserve.org/protocol/index_dtfs/'
 export const REGISTER_FEEDBACK = 'https://reserve.canny.io/register-app'
 export const RESERVE_BLOG = 'https://blog.reserve.org/'
 export const RESERVE_FORUM = 'https://forum.reserve.org/'
