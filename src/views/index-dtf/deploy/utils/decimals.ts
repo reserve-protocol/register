@@ -1,5 +1,5 @@
 export class Decimal {
-  private value: number
+  public value: number
 
   constructor(value: number | string) {
     this.value = typeof value === 'string' ? parseFloat(value) : value
@@ -23,6 +23,10 @@ export class Decimal {
     return this.value.toString()
   }
 
+  toDisplayString(decimals = 2): string {
+    return this.value.toFixed(decimals)
+  }
+
   abs(): Decimal {
     return new Decimal(Math.abs(this.value))
   }
@@ -31,6 +35,16 @@ export class Decimal {
     const otherValue = other instanceof Decimal ? other.value : other
     const epsilon = 1e-10
     return Math.abs(this.value - otherValue) < epsilon
+  }
+
+  min(other: Decimal | number): Decimal {
+    const otherValue = other instanceof Decimal ? other.value : other
+    return new Decimal(Math.min(this.value, otherValue))
+  }
+
+  max(other: Decimal | number): Decimal {
+    const otherValue = other instanceof Decimal ? other.value : other
+    return new Decimal(Math.max(this.value, otherValue))
   }
 
   static from(value: number | string): Decimal {

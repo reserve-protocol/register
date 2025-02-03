@@ -9,6 +9,7 @@ import BasicInput from '../../components/basic-input'
 import ExplorerAddress from '@/components/utils/explorer-address'
 import { chainIdAtom } from '@/state/atoms'
 import { ExplorerDataType } from '@/utils/getExplorerLink'
+import { Decimal } from '../../utils/decimals'
 
 const RemoveTokenButton = ({
   tokenIndex,
@@ -115,16 +116,50 @@ const TokenPreview = ({
   )
 }
 
+const RemainingAllocation = () => {
+  const form = useFormContext()
+  const tokenDistribution = form.watch(`tokensDistribution`)
+
+  const remaining = new Decimal(100).minus(
+    tokenDistribution.reduce(
+      (sum: Decimal, { percentage }: { percentage: string }) =>
+        sum.plus(new Decimal(percentage || 0)),
+      new Decimal(0)
+    )
+  )
+
+  const remainingAllocation = remaining.isPositive()
+    ? remaining.min(100)
+    : new Decimal(0)
+
+  const displayValue =
+    remainingAllocation.isPositive() &&
+    remainingAllocation.value < 0.01 &&
+    remainingAllocation.value > 0
+      ? '< 0.01'
+      : remainingAllocation.toDisplayString()
+
+  return (
+    <div className="text-base ml-auto px-6">
+      <span className="text-muted-foreground">Remaining allocation:</span>{' '}
+      {displayValue}%
+    </div>
+  )
+}
+
 const BasketPreview = () => {
   const basket = useAtomValue(basketAtom)
 
   if (basket.length === 0) return null
 
   return (
-    <div className="flex flex-col mb-2 mx-2 rounded-xl bg-muted/70">
-      {basket.map((token, index) => (
-        <TokenPreview key={token.address} {...token} index={index} />
-      ))}
+    <div className="flex flex-col gap-2">
+      <RemainingAllocation />
+      <div className="flex flex-col mb-2 mx-2 rounded-xl bg-muted/70">
+        {basket.map((token, index) => (
+          <TokenPreview key={token.address} {...token} index={index} />
+        ))}
+      </div>
     </div>
   )
 }
