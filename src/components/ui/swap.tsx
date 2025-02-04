@@ -237,7 +237,10 @@ export const SlippageSelector = ({
     <div className="flex items-center gap-2 p-2 rounded-xl bg-muted justify-between">
       <div className="flex items-center gap-1">
         <GaugeIcon height={16} width={16} />
-        <div className="text-sm font-semibold">Max slippage</div>
+        <div className="text-sm font-semibold">
+          <span className="inline-block sm:hidden">Slippage</span>
+          <span className="hidden sm:inline-block">Max slippage</span>
+        </div>
       </div>
       <div className="flex items-center gap-2">
         <ToggleGroup
@@ -258,7 +261,7 @@ export const SlippageSelector = ({
             </ToggleGroupItem>
           ))}
         </ToggleGroup>
-        <div className="w-20" role="button">
+        <div className="w-20 hidden sm:block" role="button">
           <Input
             placeholder="Custom"
             className="h-9 px-[10px] rounded-lg text-base [&:focus::placeholder]:opacity-0 [&:focus::placeholder]:transition-opacity focus-visible:ring-0 focus-visible:ring-offset-0 focus:border-transparent active:border-transparent"
