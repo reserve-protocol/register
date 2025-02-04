@@ -7,7 +7,6 @@ import {
 } from '@/components/ui/drawer'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import useERC20Balance from '@/hooks/useERC20Balance'
-import { walletAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { ReactNode, useEffect } from 'react'
@@ -20,7 +19,6 @@ import Buy from './buy'
 import Sell from './sell'
 
 const ZapMint = ({ children }: { children: ReactNode }) => {
-  const wallet = useAtomValue(walletAtom)
   const indexDTF = useAtomValue(indexDTFAtom)
   const [currentTab, setCurrentTab] = useAtom(currentZapMintTabAtom)
   const isBuy = currentTab === 'buy'
@@ -28,8 +26,9 @@ const ZapMint = ({ children }: { children: ReactNode }) => {
   const setIndexDTFBalance = useSetAtom(indexDTFBalanceAtom)
 
   const { data: balance } = useERC20Balance(indexDTF?.id)
+
   useEffect(() => {
-    setIndexDTFBalance(balance)
+    setIndexDTFBalance(balance || 0n)
   }, [balance, setIndexDTFBalance])
 
   return (
