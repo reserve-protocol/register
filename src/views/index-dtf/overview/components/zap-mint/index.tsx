@@ -57,7 +57,7 @@ const ZapMint = ({ children }: { children: ReactNode }) => {
             </TabsList>
             <div className="mr-11">
               <RefreshQuote
-                onClick={zapRefetch}
+                onClick={zapRefetch.fn}
                 disabled={zapFetching || zapOngoingTx}
               />
             </div>

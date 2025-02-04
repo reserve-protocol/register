@@ -59,7 +59,11 @@ const Buy = () => {
             value: formatEther(BigInt(valueTo || 0)),
           }}
         />
-        <SlippageSelector value={slippage} onChange={setSlippage} />
+        <SlippageSelector
+          value={slippage}
+          onChange={setSlippage}
+          options={['200', '1000', '10000']}
+        />
       </div>
       <div className="mb-2">
         <SubmitZap

@@ -1,3 +1,4 @@
+import CopyValue from '@/components/old/button/CopyValue'
 import { Button } from '@/components/ui/button'
 import Swap, { SlippageSelector } from '@/components/ui/swap'
 import { useChainlinkPrice } from '@/hooks/useChainlinkPrice'
@@ -8,7 +9,8 @@ import { formatCurrency } from '@/utils'
 import zapper from '@/views/yield-dtf/issuance/components/zapV2/api'
 import { Trans } from '@lingui/macro'
 import { useAtom, useAtomValue } from 'jotai'
-import { Download, RefreshCw } from 'lucide-react'
+import { RefreshCw } from 'lucide-react'
+import { useEffect } from 'react'
 import { Address, formatEther, parseUnits } from 'viem'
 import { indexDeployFormDataAtom } from '../atoms'
 import {
@@ -22,8 +24,6 @@ import {
   zapDeployPayloadAtom,
 } from './atoms'
 import SimpleDeployButton from './simple-deploy-button'
-import { useEffect } from 'react'
-import CopyValue from '@/components/old/button/CopyValue'
 
 const CopyPayloadButton = () => {
   const zapDeployPayload = useAtomValue(zapDeployPayloadAtom)
@@ -84,7 +84,7 @@ const SimpleIndexDeploy = () => {
     ? parseUnits(inputAmount, tokenIn.decimals) > inputBalance?.value
     : false
 
-  const { data, isLoading, error, isFetching, refetch } = useZapDeployQuery(
+  const { data, isLoading, isFetching, refetch } = useZapDeployQuery(
     url,
     requestBody,
     insufficientBalance || ongoingTx
