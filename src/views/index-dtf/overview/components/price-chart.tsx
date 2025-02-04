@@ -77,7 +77,7 @@ const PriceChart = () => {
               calculatePercentageChange(history.timeseries)
             )}
           </div>
-          <p className="flex items-center gap-1 text-base text-muted">
+          <div className="flex items-center gap-1 text-base text-muted">
             <PriceTag />
             <span className="text-white/80">Price:</span>
             {price === undefined ? (
@@ -85,7 +85,7 @@ const PriceChart = () => {
             ) : (
               <span>${formatCurrency(price.price, 5)}</span>
             )}
-          </p>
+          </div>
         </div>
         <div className="gap-1 hidden md:flex">
           {timeRanges.map((tr) => (

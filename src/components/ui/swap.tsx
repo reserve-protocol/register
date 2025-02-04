@@ -62,10 +62,11 @@ const TokenSelector = ({
   onMax = () => {},
   tokens,
   onTokenSelect,
+  output = false,
 }: Pick<
   SwapItem,
   'address' | 'symbol' | 'balance' | 'onMax' | 'tokens' | 'onTokenSelect'
->) => {
+> & { output?: boolean }) => {
   const chainId = useAtomValue(chainIdAtom)
   const [open, setOpen] = React.useState(false)
 
@@ -81,18 +82,20 @@ const TokenSelector = ({
           />
           <span>{symbol}</span>
         </div>
-        <div className="flex items-center gap-1 text-base">
-          <span className="text-legend">Balance</span>
-          <span className="font-bold">{balance}</span>
-          <Button
-            variant="ghost"
-            className="rounded-[40px] ml-1 bg-primary/10 text-primary hover:bg-primary/20 hover:text-primary"
-            size="xs"
-            onClick={onMax}
-          >
-            Max
-          </Button>
-        </div>
+        {!output && (
+          <div className="flex items-center gap-1 text-base">
+            <span className="text-legend">Balance</span>
+            <span className="font-bold">{balance}</span>
+            <Button
+              variant="ghost"
+              className="rounded-[40px] ml-1 bg-primary/10 text-primary hover:bg-primary/20 hover:text-primary"
+              size="xs"
+              onClick={onMax}
+            >
+              Max
+            </Button>
+          </div>
+        )}
       </div>
     )
   }
@@ -149,18 +152,20 @@ const TokenSelector = ({
           ))}
         </DropdownMenuContent>
       </DropdownMenu>
-      <div className="flex items-center gap-1 text-base">
-        <span className="text-legend">Balance</span>
-        <span className="font-bold">{balance}</span>
-        <Button
-          variant="ghost"
-          className="rounded-[40px] ml-1 bg-primary/10 text-primary hover:bg-primary/20 hover:text-primary"
-          size="xs"
-          onClick={onMax}
-        >
-          Max
-        </Button>
-      </div>
+      {!output && (
+        <div className="flex items-center gap-1 text-base">
+          <span className="text-legend">Balance</span>
+          <span className="font-bold">{balance}</span>
+          <Button
+            variant="ghost"
+            className="rounded-[40px] ml-1 bg-primary/10 text-primary hover:bg-primary/20 hover:text-primary"
+            size="xs"
+            onClick={onMax}
+          >
+            Max
+          </Button>
+        </div>
+      )}
     </div>
   )
 }
@@ -178,20 +183,12 @@ const TokenInputBox = ({ from }: Pick<SwapProps, 'from'>) => {
 }
 
 const TokenOutputBox = ({ to }: Pick<SwapProps, 'to'>) => {
-  const chainId = useAtomValue(chainIdAtom)
-
   return (
     <div className="p-4 bg-card rounded-xl border-border border">
       <h3>{to.title || 'You receive:'}</h3>
       <div className="flex items-center gap-1">
         <h4 className="text-3xl font-semibold mr-auto">{to.value || '0'}</h4>
-        <TokenLogo
-          size="lg"
-          symbol={to.symbol}
-          address={to.address}
-          chain={chainId}
-        />
-        <h4 className="text-2xl font-semibold">{to.symbol}</h4>
+        <TokenSelector {...to} output />
       </div>
       <div className="flex items-center text-legend">{to.price}</div>
     </div>

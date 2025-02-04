@@ -10,9 +10,12 @@ import {
 } from '@/state/dtf/atoms'
 import { shortenAddress } from '@/utils'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
-import { useAtomValue } from 'jotai'
+import { useAtomValue, useSetAtom } from 'jotai'
 import { ArrowUpRight, MousePointerClick, ScrollText } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { currentZapMintTabAtom } from './zap-mint/atom'
+import ZapMint from './zap-mint'
+import { Button } from '@/components/ui/button'
 
 const DEFAULT_LOGO = 'https://storage.reserve.org/dtf-default.png'
 
@@ -81,6 +84,38 @@ const TokenAddresses = () => {
       >
         <ArrowUpRight size={16} />
       </Link>
+    </div>
+  )
+}
+
+const ZapBuySellButtons = () => {
+  const setZapMintTab = useSetAtom(currentZapMintTabAtom)
+  return (
+    <div className="block xl:hidden w-full mb-3 mt-2">
+      <ZapMint>
+        <div
+          className="flex gap-2"
+          onClick={(e) => {
+            if (!(e.target instanceof HTMLButtonElement)) {
+              e.preventDefault()
+            }
+          }}
+        >
+          <Button
+            className="rounded-xl h-12 w-full"
+            onClick={() => setZapMintTab('buy')}
+          >
+            Buy
+          </Button>
+          <Button
+            className="rounded-xl h-12 w-full"
+            variant="outline"
+            onClick={() => setZapMintTab('sell')}
+          >
+            Sell
+          </Button>
+        </div>
+      </ZapMint>
     </div>
   )
 }
@@ -179,6 +214,7 @@ const IndexTokenOverview = () => {
           </>
         )}
       </div>
+      <ZapBuySellButtons />
 
       <RolesOverview />
     </Card>
