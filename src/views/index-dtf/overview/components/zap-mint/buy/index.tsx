@@ -1,17 +1,22 @@
 import Swap, { SlippageSelector } from '@/components/ui/swap'
 import { useChainlinkPrice } from '@/hooks/useChainlinkPrice'
+import useZapSwapQuery from '@/hooks/useZapSwapQuery'
 import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { formatCurrency } from '@/utils'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { formatEther } from 'viem'
+import { useEffect } from 'react'
+import { formatEther, parseUnits } from 'viem'
 import {
   selectedTokenAtom,
   selectedTokenBalanceAtom,
   selectedTokenOrDefaultAtom,
   slippageAtom,
   tokensAtom,
+  zapFetchingAtom,
   zapMintInputAtom,
+  zapOngoingTxAtom,
+  zapRefetchAtom,
 } from '../atom'
 import SubmitZap from '../submit-zap'
 
@@ -24,16 +29,48 @@ const Buy = () => {
   const tokens = useAtomValue(tokensAtom)
   const setInputToken = useSetAtom(selectedTokenAtom)
   const [slippage, setSlippage] = useAtom(slippageAtom)
+  const [ongoingTx, setOngoingTx] = useAtom(zapOngoingTxAtom)
+  const setZapRefetch = useSetAtom(zapRefetchAtom)
+  const setZapFetching = useSetAtom(zapFetchingAtom)
   const selectedTokenPrice = useChainlinkPrice(chainId, selectedToken.address)
   const inputPrice = (selectedTokenPrice || 0) * Number(inputAmount)
   const onMax = () => setInputAmount(selectedTokenBalance?.balance || '0')
 
-  const priceTo = 0 // TODO: get price from zap
-  const valueTo = '0' // TODO: get value from zap
-  const showTxButton = false
-  const fetchingZapper = false
-  const insufficientBalance = false
-  const zapperErrorMessage = ''
+  const insufficientBalance =
+    parseUnits(inputAmount, selectedToken.decimals) >
+    (selectedTokenBalance?.value || 0n)
+
+  const { data, isLoading, isFetching, refetch } = useZapSwapQuery({
+    tokenIn: selectedToken.address,
+    // tokenOut: indexDTF?.id,
+    tokenOut: '0xCb327b99fF831bF8223cCEd12B1338FF3aA322Ff', // TODO: Remove this
+    amountIn: parseUnits(inputAmount, selectedToken.decimals).toString(),
+    slippage: Number(slippage),
+    disabled: insufficientBalance || ongoingTx,
+  })
+
+  const priceTo = data?.result?.amountOutValue
+  const valueTo = data?.result?.amountOut
+  const showTxButton = Boolean(
+    data?.status === 'success' &&
+      data?.result &&
+      !insufficientBalance &&
+      !isFetching
+  )
+  const fetchingZapper = isLoading || isFetching
+  const zapperErrorMessage = data?.error || ''
+
+  useEffect(() => {
+    setZapRefetch({ fn: refetch })
+  }, [refetch, setZapRefetch])
+
+  useEffect(() => {
+    setZapFetching(fetchingZapper)
+  }, [fetchingZapper, setZapFetching])
+
+  useEffect(() => {
+    setOngoingTx(false)
+  }, [])
 
   if (!indexDTF) return null
 

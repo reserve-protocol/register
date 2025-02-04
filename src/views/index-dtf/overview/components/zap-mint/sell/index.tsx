@@ -3,6 +3,7 @@ import useZapSwapQuery from '@/hooks/useZapSwapQuery'
 import { indexDTFAtom, indexDTFPriceAtom } from '@/state/dtf/atoms'
 import { formatCurrency } from '@/utils'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { useEffect } from 'react'
 import { formatEther, parseEther } from 'viem'
 import {
   indexDTFBalanceAtom,
@@ -16,7 +17,6 @@ import {
   zapRefetchAtom,
 } from '../atom'
 import SubmitZap from '../submit-zap'
-import { useEffect } from 'react'
 
 const Sell = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
@@ -37,8 +37,7 @@ const Sell = () => {
   const insufficientBalance = parseEther(inputAmount) > indexDTFBalance
 
   const { data, isLoading, isFetching, refetch } = useZapSwapQuery({
-    // tokenIn: indexDTF?.id,
-    tokenIn: '0xcb327b99ff831bf8223cced12b1338ff3aa322ff', // TODO: Remove this
+    tokenIn: indexDTF?.id,
     tokenOut: selectedToken.address,
     amountIn: parseEther(inputAmount).toString(),
     slippage: Number(slippage),

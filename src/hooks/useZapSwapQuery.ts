@@ -18,7 +18,7 @@ const useZapSwapQuery = ({
   disabled,
 }: {
   tokenIn?: Address
-  tokenOut: Address
+  tokenOut?: Address
   amountIn: string
   slippage: number
   disabled: boolean
@@ -28,7 +28,13 @@ const useZapSwapQuery = ({
 
   const endpoint = useDebounce(
     useMemo(() => {
-      if (!tokenIn) return null
+      if (
+        !tokenIn ||
+        !tokenOut ||
+        isNaN(Number(amountIn)) ||
+        Number(amountIn) === 0
+      )
+        return null
       return zapper.zap({
         chainId,
         tokenIn: tokenIn === ETH_ADDRESS ? zeroAddress : tokenIn,
