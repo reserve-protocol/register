@@ -28,6 +28,7 @@ import {
   accountStakingTokensAtom,
   accountTokenPricesAtom,
   accountUnclaimedLocksAtom,
+  portfolioSidebarOpenAtom,
   rsrBalancesAtom,
   selectedPortfolioTabAtom,
   totalAccountHoldingsAtom,
@@ -452,10 +453,21 @@ const PortfolioContent = () => {
 const PortfolioSidebar = ({ children }: { children: ReactNode }) => {
   const setSelectedTab = useSetAtom(selectedPortfolioTabAtom)
   const dismissible = useAtomValue(portfolioDismissibleAtom)
+  const [open, setOpen] = useAtom(portfolioSidebarOpenAtom)
+
   return (
-    <Drawer onClose={() => setSelectedTab('all')} dismissible={dismissible}>
-      <DrawerTrigger asChild>{children}</DrawerTrigger>
-      {/* target close button and add spacing */}
+    <Drawer
+      open={open}
+      onOpenChange={setOpen}
+      onClose={() => {
+        setSelectedTab('all')
+        setOpen(false)
+      }}
+      dismissible={dismissible}
+    >
+      <DrawerTrigger asChild onClick={() => setOpen(true)}>
+        {children}
+      </DrawerTrigger>
       <DrawerContent className="first:[&>button]:top-[22px] first:[&>button]:right-[22px]">
         <DrawerTitle className="w-full">
           <PortfolioHeader />
