@@ -69,7 +69,7 @@ const TokenSelector = ({
 > & { output?: boolean }) => {
   const chainId = useAtomValue(chainIdAtom)
   const [open, setOpen] = React.useState(false)
-  console.log(output)
+
   if (!tokens || tokens.length === 0) {
     return (
       <div className="flex flex-col gap-1 items-end">
