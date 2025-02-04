@@ -11,10 +11,12 @@ const LoadingButton = ({
   fetchingZapper,
   insufficientBalance,
   zapperErrorMessage,
+  buttonLabel,
 }: {
   fetchingZapper: boolean
   insufficientBalance: boolean
   zapperErrorMessage: string
+  buttonLabel: string
 }) => {
   return (
     <>
@@ -23,7 +25,7 @@ const LoadingButton = ({
           ? 'Loading...'
           : insufficientBalance
             ? 'Insufficient balance'
-            : 'Deploy'}
+            : buttonLabel}
       </Button>
       {zapperErrorMessage && (
         <div className="text-red-500 text-sm text-center mt-2">
@@ -168,6 +170,7 @@ const SubmitZap = ({
       fetchingZapper={fetchingZapper}
       insufficientBalance={insufficientBalance}
       zapperErrorMessage={zapperErrorMessage}
+      buttonLabel={buttonLabel}
     />
   )
 }

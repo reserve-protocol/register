@@ -124,7 +124,7 @@ const PriceChart = () => {
           ))}
         </div>
       </div>
-      {history !== undefined && (
+      {history !== undefined && history?.timeseries?.length > 0 && (
         <ChartContainer config={chartConfig} className="h-96 w-full pb-28">
           <LineChart data={history?.timeseries}>
             <YAxis

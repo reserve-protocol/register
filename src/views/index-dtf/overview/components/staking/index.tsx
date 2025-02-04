@@ -21,6 +21,7 @@ import {
   currentStakingTabAtom,
   lockCheckboxAtom,
   stakingInputAtom,
+  stakingSidebarOpenAtom,
   underlyingBalanceAtom,
   underlyingStTokenPriceAtom,
   unlockBalanceRawAtom,
@@ -57,11 +58,11 @@ const LockCheckbox = () => {
       <div className="flex items-end gap-2 justify-between">
         <div className="max-w-sm">
           <div className="font-bold">
-            I’m aware of the {delay}-day unlock delay
+            I'm aware of the {delay}-day unlock delay
           </div>
           <div className="text-sm text-legend">
             If you decide to unlock {indexDTF.stToken.underlying.symbol} in the
-            future, you’ll need to wait {delay} days until you can complete the
+            future, you'll need to wait {delay} days until you can complete the
             withdrawal
           </div>
         </div>
@@ -109,6 +110,7 @@ const Staking = ({ children }: { children: ReactNode }) => {
   const wallet = useAtomValue(walletAtom)
   const indexDTF = useAtomValue(indexDTFAtom)
   const [currentTab, setCurrentTab] = useAtom(currentStakingTabAtom)
+  const [open, setOpen] = useAtom(stakingSidebarOpenAtom)
   const isLock = currentTab === 'lock'
   const setInput = useSetAtom(stakingInputAtom)
   const setUnderlyingPrice = useSetAtom(underlyingStTokenPriceAtom)
@@ -157,8 +159,19 @@ const Staking = ({ children }: { children: ReactNode }) => {
   }, [delay, setUnlockDelay])
 
   return (
-    <Drawer>
-      <DrawerTrigger asChild>{children}</DrawerTrigger>
+    <Drawer
+      open={open}
+      onOpenChange={setOpen}
+      onClose={() => {
+        setCurrentTab('lock')
+        setInput('')
+        setCheckbox(false)
+        setOpen(false)
+      }}
+    >
+      <DrawerTrigger asChild onClick={() => setOpen(true)}>
+        {children}
+      </DrawerTrigger>
       <DrawerContent>
         <Tabs
           value={currentTab}

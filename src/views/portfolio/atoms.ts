@@ -22,6 +22,7 @@ export interface Lock {
   underlying: Token
 }
 
+export const portfolioSidebarOpenAtom = atom(false)
 export const selectedPortfolioTabAtom = atom<PortfolioTabs>('all')
 export const accountIndexTokensAtom = atom<IndexToken[]>([])
 export const accountStakingTokensAtom = atom<StakingToken[]>([])

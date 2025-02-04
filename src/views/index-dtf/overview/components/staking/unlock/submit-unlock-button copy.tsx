@@ -3,16 +3,18 @@ import TransactionButton from '@/components/old/button/TransactionButton'
 import useContractWrite from '@/hooks/useContractWrite'
 import { walletAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
-import { useAtomValue } from 'jotai'
+import { useAtomValue, useSetAtom } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
 import { useEffect } from 'react'
 import { parseUnits } from 'viem'
 import { useWaitForTransactionReceipt } from 'wagmi'
 import {
   stakingInputAtom,
+  stakingSidebarOpenAtom,
   underlyingBalanceAtom,
   unlockDelayAtom,
 } from '../atoms'
+import { portfolioSidebarOpenAtom } from '@/views/portfolio/atoms'
 
 const SubmitUnlockButton = () => {
   const account = useAtomValue(walletAtom)
@@ -22,6 +24,8 @@ const SubmitUnlockButton = () => {
   const amountToUnlock = parseUnits(input, stToken.token.decimals)
   const unlockDelay = useAtomValue(unlockDelayAtom)
   const resetInput = useResetAtom(stakingInputAtom)
+  const setPortfolioSidebarOpen = useSetAtom(portfolioSidebarOpenAtom)
+  const setStakingSidebarOpen = useSetAtom(stakingSidebarOpenAtom)
 
   const readyToSubmit =
     !!account && !!balance && amountToUnlock > 0n && amountToUnlock <= balance
@@ -42,6 +46,8 @@ const SubmitUnlockButton = () => {
   useEffect(() => {
     if (receipt?.status === 'success') {
       resetInput()
+      setStakingSidebarOpen(false)
+      setPortfolioSidebarOpen(true)
     }
   }, [receipt])
 

@@ -3,13 +3,14 @@ import { basketAtom } from './atoms'
 import { useQuery } from '@tanstack/react-query'
 import { Address } from 'viem'
 import { useEffect } from 'react'
+import { RESERVE_API } from '@/utils/constants'
 
 interface TokenPrice {
   address: Address
   price?: number
 }
 
-const PRICES_BASE_URL = 'https://api.reserve.org/current/prices?tokens='
+const PRICES_BASE_URL = `${RESERVE_API}current/prices?tokens=`
 
 const BasketPriceUpdater = () => {
   const [basket, setBasket] = useAtom(basketAtom)
