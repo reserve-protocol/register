@@ -145,7 +145,7 @@ const SubmitZap = ({
   zapperErrorMessage,
   onSuccess,
 }: {
-  data: ZapResult
+  data?: ZapResult
   buttonLabel: string
   inputSymbol: string
   outputSymbol: string
@@ -155,7 +155,7 @@ const SubmitZap = ({
   zapperErrorMessage: string
   onSuccess?: () => void
 }) => {
-  return showTxButton ? (
+  return showTxButton && data ? (
     <SubmitZapButton
       data={data}
       buttonLabel={buttonLabel}

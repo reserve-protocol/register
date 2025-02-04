@@ -42,8 +42,7 @@ const Buy = () => {
 
   const { data, isLoading, isFetching, refetch } = useZapSwapQuery({
     tokenIn: selectedToken.address,
-    // tokenOut: indexDTF?.id,
-    tokenOut: '0xCb327b99fF831bF8223cCEd12B1338FF3aA322Ff', // TODO: Remove this
+    tokenOut: indexDTF?.id,
     amountIn: parseUnits(inputAmount, selectedToken.decimals).toString(),
     slippage: Number(slippage),
     disabled: insufficientBalance || ongoingTx,
@@ -104,22 +103,7 @@ const Buy = () => {
       </div>
       <div className="mb-2">
         <SubmitZap
-          data={{
-            tokenIn: selectedToken.address,
-            amountIn: '',
-            amountInValue: null,
-            tokenOut: indexDTF.id,
-            amountOut: '',
-            amountOutValue: null,
-            approvalAddress: indexDTF.id,
-            approvalNeeded: false,
-            insufficientFunds: false,
-            dust: [],
-            dustValue: null,
-            gas: null,
-            priceImpact: 0,
-            tx: null,
-          }}
+          data={data?.result}
           buttonLabel={`Buy ${indexDTF.token.symbol}`}
           inputSymbol={selectedToken.symbol}
           outputSymbol={indexDTF.token.symbol}
