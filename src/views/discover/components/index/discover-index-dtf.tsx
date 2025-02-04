@@ -53,7 +53,7 @@ const columns: ColumnDef<IndexDTFItem>[] = [
       return (
         <div className="flex gap-2 items-center">
           <TokenLogo address={row.original.address} size="xl" />
-          <div>
+          <div className="max-w-52 break-words">
             <h4 className="font-semibold mb-[2px]">{row.original.name}</h4>
             <span className="text-legend">${row.original.symbol}</span>
           </div>

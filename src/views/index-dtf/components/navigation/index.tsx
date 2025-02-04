@@ -32,7 +32,7 @@ const Header = () => {
       <div className="p-1 rounded-full bg-muted">
         <ChevronLeft size={16} />
       </div>
-      <h4 className="text-legend">${dtf.token.symbol}</h4>
+      <h4 className="text-legend max-w-40 break-words">${dtf.token.symbol}</h4>
     </Link>
   )
 }
