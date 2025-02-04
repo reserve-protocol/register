@@ -3,15 +3,18 @@ import StackTokenLogo from '@/components/token-logo/StackTokenLogo'
 import { Button } from '@/components/ui/button'
 import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
-import { useAtomValue } from 'jotai'
+import { useAtomValue, useSetAtom } from 'jotai'
 import { ArrowLeftRight } from 'lucide-react'
 import React from 'react'
+import ZapMint from '../zap-mint'
+import { currentZapMintTabAtom } from '../zap-mint/atom'
 
 const IMG_SRC = 'https://storage.reserve.org/dtf-details.webp'
 
 const MintBox = () => {
   const dtf = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
+  const setZapMintTab = useSetAtom(currentZapMintTabAtom)
 
   return (
     <div className="rounded-3xl bg-card p-2">
@@ -43,12 +46,30 @@ const MintBox = () => {
           </div>
         </div>
       </div>
-      <div className="flex flex-col gap-2">
-        <Button className="rounded-xl h-12">Buy</Button>
-        <Button className="rounded-xl h-12" variant="outline">
-          Sell
-        </Button>
-      </div>
+      <ZapMint>
+        <div
+          className="flex flex-col gap-2"
+          onClick={(e) => {
+            if (!(e.target instanceof HTMLButtonElement)) {
+              e.preventDefault()
+            }
+          }}
+        >
+          <Button
+            className="rounded-xl h-12"
+            onClick={() => setZapMintTab('buy')}
+          >
+            Buy
+          </Button>
+          <Button
+            className="rounded-xl h-12"
+            variant="outline"
+            onClick={() => setZapMintTab('sell')}
+          >
+            Sell
+          </Button>
+        </div>
+      </ZapMint>
     </div>
   )
 }
