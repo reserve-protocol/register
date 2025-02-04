@@ -42,7 +42,7 @@ const ProposalDescription = () => {
   }
 
   return (
-    <div className="px-3 pb-2">
+    <div className="px-6 pt-4 pb-2">
       <Suspense fallback={<Skeleton className="h-80" />}>
         <DescriptionMarkdown description={description} />
       </Suspense>

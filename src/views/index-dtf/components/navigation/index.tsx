@@ -8,9 +8,9 @@ import { indexDTFAtom } from '@/state/dtf/atoms'
 import { ROUTES } from '@/utils/constants'
 import { t } from '@lingui/macro'
 import { useAtomValue } from 'jotai'
-import { Asterisk } from 'lucide-react'
+import { Asterisk, ChevronLeft } from 'lucide-react'
 import { useMemo } from 'react'
-import { NavLink } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 
 const Header = () => {
   const dtf = useAtomValue(indexDTFAtom)
@@ -25,9 +25,15 @@ const Header = () => {
   }
 
   return (
-    <div className="lg:flex flex-col gap-2 hidden pb-4 mb-4 border-b">
+    <Link
+      to={ROUTES.HOME}
+      className="lg:flex items-center gap-2 hidden pb-4 mb-4 border-b"
+    >
+      <div className="p-1 rounded-full bg-muted">
+        <ChevronLeft size={16} />
+      </div>
       <h4 className="text-legend">${dtf.token.symbol}</h4>
-    </div>
+    </Link>
   )
 }
 

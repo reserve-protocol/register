@@ -22,20 +22,42 @@ import {
   RESERVE_FORUM,
   ROUTES,
 } from '@/utils/constants'
-import { t } from '@lingui/macro'
+import { t, Trans } from '@lingui/macro'
 import { ArrowRight, ArrowUpRight, Asterisk, SquarePlus } from 'lucide-react'
 import { useMemo } from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useLocation } from 'react-router-dom'
+
+const DiscoverItem = () => {
+  const { pathname } = useLocation()
+  const isDTF = pathname.includes('dtf')
+
+  return (
+    <NavigationMenuItem>
+      <NavigationMenuLink asChild>
+        <NavLink to={ROUTES.HOME}>
+          {({ isActive }: { isActive: boolean }) => (
+            <div
+              className={cn(
+                navigationMenuTriggerStyle(),
+                (isActive || isDTF) && 'text-primary font-bold'
+              )}
+            >
+              <Binoculars />
+              <span className="hidden md:block">
+                <Trans>Discover DTFs</Trans>
+              </span>
+            </div>
+          )}
+        </NavLink>
+      </NavigationMenuLink>
+    </NavigationMenuItem>
+  )
+}
 
 const AppNavigation = () => {
   const [menuItems, moreLinks, externalLinks] = useMemo(
     () => [
       [
-        {
-          label: t`Browse DTFs`,
-          icon: <Binoculars />,
-          to: ROUTES.HOME,
-        },
         {
           label: t`Farm Rewards`,
           icon: <Money />,
@@ -109,6 +131,7 @@ const AppNavigation = () => {
       vClassName="-left-10 md:left-40"
     >
       <NavigationMenuList>
+        <DiscoverItem />
         {menuItems.map((item) => (
           <NavigationMenuItem key={item.to}>
             <NavigationMenuLink asChild>
