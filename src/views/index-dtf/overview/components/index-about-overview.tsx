@@ -28,6 +28,8 @@ import {
 } from '@/state/dtf/atoms'
 import { Token } from '@/types'
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
+import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 
 interface BasketOverviewProps extends React.HTMLAttributes<HTMLDivElement> {
   basket: ITokenBasket
@@ -147,11 +149,21 @@ const IndexBasketTokens = ({
                     {basketShares[token.address]}%
                   </TableCell>
                   <TableCell className="text-right">
-                    <Button variant="link" size="sm" className="h-8 w-8 p-0">
-                      <Box variant="circle">
+                    <Link
+                      to={getExplorerLink(
+                        token.address,
+                        chainId,
+                        ExplorerDataType.TOKEN
+                      )}
+                      target="_blank"
+                    >
+                      <Box
+                        variant="circle"
+                        className="hover:bg-primary/10 hover:text-primary"
+                      >
                         <ArrowUpRight className="h-4 w-4" />
                       </Box>
-                    </Button>
+                    </Link>
                   </TableCell>
                 </TableRow>
               ))}
