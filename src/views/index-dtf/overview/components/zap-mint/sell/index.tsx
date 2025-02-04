@@ -65,6 +65,7 @@ const Sell = () => {
 
   useEffect(() => {
     setOngoingTx(false)
+    setInputAmount('')
   }, [])
 
   if (!indexDTF) return null

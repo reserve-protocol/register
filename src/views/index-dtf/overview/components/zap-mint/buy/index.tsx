@@ -69,6 +69,7 @@ const Buy = () => {
 
   useEffect(() => {
     setOngoingTx(false)
+    setInputAmount('')
   }, [])
 
   if (!indexDTF) return null
