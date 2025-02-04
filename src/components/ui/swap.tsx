@@ -42,7 +42,7 @@ const TokenInput = ({
   onChange = () => {},
 }: Pick<SwapItem, 'price' | 'value' | 'onChange'>) => {
   return (
-    <div className="flex flex-col flex-grow">
+    <div className="flex flex-col flex-grow min-w-0">
       <NumericalInput
         value={value}
         variant="transparent"
@@ -50,7 +50,9 @@ const TokenInput = ({
         onChange={onChange}
         autoFocus
       />
-      <span className="text-legend mt-1.5">{price}</span>
+      <div className="w-full overflow-hidden">
+        <span className="text-legend mt-1.5 block truncate">{price}</span>
+      </div>
     </div>
   )
 }
@@ -72,7 +74,7 @@ const TokenSelector = ({
 
   if (!tokens || tokens.length === 0) {
     return (
-      <div className="flex flex-col gap-1 items-end">
+      <div className="flex flex-col gap-1 items-end min-w-fit">
         <div className="flex items-center gap-1 font-semibold text-2xl">
           <TokenLogo
             size="lg"
@@ -101,7 +103,7 @@ const TokenSelector = ({
   }
 
   return (
-    <div className="flex flex-col gap-1 items-end">
+    <div className="flex flex-col gap-1 items-end min-w-fit">
       <DropdownMenu open={open} onOpenChange={setOpen}>
         <DropdownMenuTrigger asChild>
           <Button
@@ -190,7 +192,9 @@ const TokenOutputBox = ({ to }: Pick<SwapProps, 'to'>) => {
         <h4 className="text-3xl font-semibold mr-auto">{to.value || '0'}</h4>
         <TokenSelector {...to} output />
       </div>
-      <div className="flex items-center text-legend">{to.price}</div>
+      <div className="w-full overflow-hidden">
+        <span className="text-legend block truncate">{to.price}</span>
+      </div>
     </div>
   )
 }
