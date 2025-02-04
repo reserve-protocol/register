@@ -61,7 +61,6 @@ const ErrorWrapper = ({
  */
 const Account = () => {
   const setVisible = useSetAtom(txSidebarToggleAtom)
-  const isProcessing = useAtomValue(isTransactionRunning)
   const chainId = useAtomValue(chainIdAtom)
   const isTokenSelected = !!useAtomValue(selectedRTokenAtom)
 
@@ -142,7 +141,6 @@ const Account = () => {
                       >
                         {account.displayName}
                       </Text>
-                      {isProcessing && <Spinner size={20} marginLeft={10} />}
                       <Menu className="ml-2" size={16} />
                     </Box>
                   </PortfolioSidebar>
