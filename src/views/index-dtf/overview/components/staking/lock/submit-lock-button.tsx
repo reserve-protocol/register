@@ -3,7 +3,7 @@ import TransactionButton from '@/components/old/button/TransactionButton'
 import useContractWrite from '@/hooks/useContractWrite'
 import { walletAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
-import { useAtomValue } from 'jotai'
+import { useAtomValue, useSetAtom } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
 import { useEffect } from 'react'
 import { erc20Abi, parseUnits } from 'viem'
@@ -11,8 +11,10 @@ import { useReadContract, useWaitForTransactionReceipt } from 'wagmi'
 import {
   lockCheckboxAtom,
   stakingInputAtom,
+  stakingSidebarOpenAtom,
   underlyingBalanceAtom,
 } from '../atoms'
+import { portfolioSidebarOpenAtom } from '@/views/portfolio/atoms'
 
 const SubmitLockButton = () => {
   const account = useAtomValue(walletAtom)
@@ -22,6 +24,8 @@ const SubmitLockButton = () => {
   const amountToLock = parseUnits(input, stToken.underlying.decimals)
   const checkbox = useAtomValue(lockCheckboxAtom)
   const resetInput = useResetAtom(stakingInputAtom)
+  const setPortfolioSidebarOpen = useSetAtom(portfolioSidebarOpenAtom)
+  const setStakingSidebarOpen = useSetAtom(stakingSidebarOpenAtom)
 
   const {
     data: allowance,
@@ -78,6 +82,8 @@ const SubmitLockButton = () => {
   useEffect(() => {
     if (receipt?.status === 'success') {
       resetInput()
+      setStakingSidebarOpen(false)
+      setPortfolioSidebarOpen(true)
     }
   }, [receipt])
 

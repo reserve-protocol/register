@@ -3,6 +3,7 @@ import { atom } from 'jotai'
 import { atomWithReset } from 'jotai/utils'
 import { formatUnits } from 'viem'
 
+export const stakingSidebarOpenAtom = atom(false)
 export const currentStakingTabAtom = atom<'lock' | 'unlock'>('lock')
 export const stakingInputAtom = atomWithReset<string>('')
 export const underlyingStTokenPriceAtom = atom<number | undefined>(undefined)
