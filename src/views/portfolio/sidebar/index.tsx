@@ -20,7 +20,7 @@ import { formatCurrency, formatTokenAmount, shortenAddress } from '@/utils'
 import { RSR_ADDRESS } from '@/utils/addresses'
 import { ChainId } from '@/utils/chains'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
-import { useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { ReactNode, useEffect, useRef, useState } from 'react'
 import { Address, formatUnits } from 'viem'
 import {
@@ -38,6 +38,8 @@ import {
   UnlockAction,
   YieldDTFAction,
 } from './components/actions'
+
+const portfolioDismissibleAtom = atom(true)
 
 interface TokenRowProps {
   children?: ReactNode
@@ -104,8 +106,22 @@ function TokenRow({
 const PortfolioHeader = () => {
   return (
     <ConnectButton.Custom>
-      {({ account, openAccountModal }) => {
+      {({ account, openAccountModal, accountModalOpen }) => {
+        const setDismissible = useSetAtom(portfolioDismissibleAtom)
+
         if (!account) return null
+
+        useEffect(() => {
+          if (!accountModalOpen) {
+            setDismissible(true)
+          }
+        }, [accountModalOpen])
+
+        const handleAccountModal = () => {
+          setDismissible(false)
+          document.body.style.pointerEvents = 'auto'
+          openAccountModal()
+        }
 
         return (
           <div className="flex items-center gap-2 p-6 pb-2 w-full">
@@ -137,7 +153,7 @@ const PortfolioHeader = () => {
                 <div
                   className="flex items-center rounded-full border border-red-200 text-red-500 p-1"
                   role="button"
-                  onClick={openAccountModal}
+                  onClick={handleAccountModal}
                 >
                   <Asterisk size={16} />
                 </div>
@@ -435,8 +451,9 @@ const PortfolioContent = () => {
 
 const PortfolioSidebar = ({ children }: { children: ReactNode }) => {
   const setSelectedTab = useSetAtom(selectedPortfolioTabAtom)
+  const dismissible = useAtomValue(portfolioDismissibleAtom)
   return (
-    <Drawer onClose={() => setSelectedTab('all')}>
+    <Drawer onClose={() => setSelectedTab('all')} dismissible={dismissible}>
       <DrawerTrigger asChild>{children}</DrawerTrigger>
       {/* target close button and add spacing */}
       <DrawerContent className="first:[&>button]:top-[22px] first:[&>button]:right-[22px]">

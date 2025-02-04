@@ -23,7 +23,7 @@ const Timeline = ({ items }: TimelineProps) => {
       {/* Timeline items */}
       <div className="space-y-4">
         {items.map((item, index) => (
-          <div key={index} className="relative flex items-center">
+          <div key={index} className="relative flex items-bottom">
             {/* Circle marker */}
             <div
               className={cn(

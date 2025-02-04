@@ -104,7 +104,12 @@ const AssetCellInfo = ({ asset }: { asset: IndexAssetShares }) => {
         )}
         className="flex items-center gap-2 cursor-pointer group"
       >
-        <TokenLogo size="xl" address={asset.token.address} chain={chainId} />
+        <TokenLogo
+          size="xl"
+          symbol={asset.token.symbol}
+          address={asset.token.address}
+          chain={chainId}
+        />
         <div className="mr-auto">
           <h4 className="font-bold mb-1">{asset.token.symbol}</h4>
           <p className="text-sm text-legend">

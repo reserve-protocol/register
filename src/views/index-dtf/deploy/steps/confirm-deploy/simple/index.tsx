@@ -8,7 +8,7 @@ import { formatCurrency } from '@/utils'
 import zapper from '@/views/yield-dtf/issuance/components/zapV2/api'
 import { Trans } from '@lingui/macro'
 import { useAtom, useAtomValue } from 'jotai'
-import { RefreshCw } from 'lucide-react'
+import { Download, RefreshCw } from 'lucide-react'
 import { Address, formatEther, parseUnits } from 'viem'
 import { indexDeployFormDataAtom } from '../atoms'
 import {
@@ -16,12 +16,25 @@ import {
   inputAmountAtom,
   inputBalanceAtom,
   inputTokenAtom,
+  ongoingTxAtom,
   slippageAtom,
   tokensAtom,
   zapDeployPayloadAtom,
 } from './atoms'
 import SimpleDeployButton from './simple-deploy-button'
+import { useEffect } from 'react'
+import CopyValue from '@/components/old/button/CopyValue'
 
+const CopyPayloadButton = () => {
+  const zapDeployPayload = useAtomValue(zapDeployPayloadAtom)
+
+  return (
+    <div className="flex items-center gap-1 text-xs">
+      <div>Copy payload to share with engineering team</div>
+      <CopyValue value={JSON.stringify(zapDeployPayload)} placement="top" />
+    </div>
+  )
+}
 const RefreshQuote = ({
   onClick,
   disabled,
@@ -31,7 +44,7 @@ const RefreshQuote = ({
 }) => {
   return (
     <Button
-      className="gap-2 text-legend"
+      className="gap-2 text-legend rounded-xl"
       variant="ghost"
       onClick={onClick}
       disabled={disabled}
@@ -52,6 +65,7 @@ const SimpleIndexDeploy = () => {
   const [slippage, setSlippage] = useAtom(slippageAtom)
   const zapDeployPayload = useAtomValue(zapDeployPayloadAtom)
   const tokens = useAtomValue(tokensAtom)
+  const [ongoingTx, setOngoingTx] = useAtom(ongoingTxAtom)
 
   const url = form?.governanceWalletAddress
     ? zapper.zapDeployUngoverned(chainId)
@@ -73,11 +87,15 @@ const SimpleIndexDeploy = () => {
   const { data, isLoading, error, isFetching, refetch } = useZapDeployQuery(
     url,
     requestBody,
-    insufficientBalance
+    insufficientBalance || ongoingTx
   )
 
   const priceTo = data?.result?.amountOutValue
   const valueTo = data?.result?.amountOut
+
+  useEffect(() => {
+    setOngoingTx(false)
+  }, [])
 
   if (!form) return null
 
@@ -88,7 +106,7 @@ const SimpleIndexDeploy = () => {
           <h4 className="font-bold ml-4 mr-auto">
             How much do you want to mint?
           </h4>
-          <RefreshQuote onClick={refetch} disabled={isFetching} />
+          <RefreshQuote onClick={refetch} disabled={isFetching || ongoingTx} />
         </div>
         <div className="flex flex-col gap-1 px-2">
           <Swap
@@ -124,15 +142,16 @@ const SimpleIndexDeploy = () => {
             <Button size="lg" className="w-full" disabled>
               {isLoading || isFetching
                 ? 'Loading...'
-                : error || data?.status === 'error'
-                  ? insufficientBalance
-                    ? 'Insufficient balance'
-                    : 'Error'
+                : insufficientBalance
+                  ? 'Insufficient balance'
                   : 'Deploy'}
             </Button>
             {data?.error && (
-              <div className="text-red-500 text-sm text-center mt-2">
-                {data.error}
+              <div className="flex flex-col items-center gap-2">
+                <div className="text-red-500 text-sm text-center mt-2">
+                  {data.error}
+                </div>
+                <CopyPayloadButton />
               </div>
             )}
           </>

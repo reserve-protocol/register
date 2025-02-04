@@ -4,8 +4,11 @@ import {
   flexRender,
   getCoreRowModel,
   getExpandedRowModel,
+  SortingState,
   getPaginationRowModel,
   useReactTable,
+  getSortedRowModel,
+  Column,
 } from '@tanstack/react-table'
 
 import {
@@ -18,6 +21,9 @@ import {
 } from '@/components/ui/table'
 import { cn } from '@/lib/utils'
 import { Fragment, useState } from 'react'
+import React from 'react'
+import { Button } from './button'
+import { ArrowDown, ArrowUp } from 'lucide-react'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -31,6 +37,29 @@ interface DataTableProps<TData, TValue> {
   noResultsClassName?: string
 }
 
+export const SorteableButton = ({
+  column,
+  children,
+}: {
+  column: Column<any, any>
+  children: React.ReactNode
+}) => {
+  return (
+    <Button
+      variant="ghost"
+      className="font-light text-legend text-base"
+      onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+    >
+      {children}
+      {column.getIsSorted() === 'asc' ? (
+        <ArrowUp className="ml-2 h-4 w-4" />
+      ) : column.getIsSorted() === 'desc' ? (
+        <ArrowDown className="ml-2 h-4 w-4" />
+      ) : null}
+    </Button>
+  )
+}
+
 function DataTable<TData, TValue>({
   columns,
   data,
@@ -42,6 +71,7 @@ function DataTable<TData, TValue>({
   subComponentClassName,
   noResultsClassName,
 }: DataTableProps<TData, TValue>) {
+  const [sorting, setSorting] = React.useState<SortingState>([])
   const [expandedRowId, setExpandedRowId] = useState<string | null>(null)
 
   const table = useReactTable({
@@ -50,6 +80,11 @@ function DataTable<TData, TValue>({
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getExpandedRowModel: getExpandedRowModel(),
+    onSortingChange: setSorting,
+    getSortedRowModel: getSortedRowModel(),
+    state: {
+      sorting,
+    },
   })
 
   const expandedRows = table

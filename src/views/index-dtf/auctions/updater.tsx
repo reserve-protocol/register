@@ -1,18 +1,22 @@
+import { useAssetPrices } from '@/hooks/useAssetPrices'
 import { INDEX_DTF_SUBGRAPH_URL } from '@/state/chain/atoms/chainAtoms'
 import { indexDTFAtom, indexDTFBasketPricesAtom } from '@/state/dtf/atoms'
 import { Token } from '@/types'
+import { getCurrentTime } from '@/utils'
 import { ChainId } from '@/utils/chains'
 import { useQuery } from '@tanstack/react-query'
 import request, { gql } from 'graphql-request'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
-import { use, useEffect } from 'react'
+import { useEffect } from 'react'
 import {
   allPricesAtom,
   AssetTrade,
+  dtfTradeMapAtom,
   dtfTradesAtom,
   getTradeState,
+  selectedTradesAtom,
+  TRADE_STATE,
 } from './atoms'
-import { useAssetPrices } from '@/hooks/useAssetPrices'
 
 type Response = {
   trades: {
@@ -127,7 +131,7 @@ const useTrades = () => {
       })
     },
     enabled: !!dtf?.id,
-    refetchInterval: 1000 * 60 * 10, // 10 minutes
+    refetchInterval: 1000 * 60, // every minute!
   })
 }
 
@@ -169,18 +173,84 @@ const setAllPricesAtom = atom(
   }
 )
 
+// This atom will run every second! it will make sure that the trade states are updated
+const updateTradeStateAtom = atom(null, (get, set) => {
+  const tradeMap = get(dtfTradeMapAtom)
+  const selectedTrades = get(selectedTradesAtom)
+
+  if (!tradeMap) return
+
+  const currentTime = getCurrentTime()
+  const updatedTrades: Record<string, AssetTrade> = {}
+  const removedTrades: Record<string, boolean> = {}
+
+  for (const trade of Object.values(tradeMap)) {
+    if (trade.state === TRADE_STATE.PENDING) {
+      // If the trade is available but not expired
+      if (
+        trade.availableAt > currentTime &&
+        trade.launchTimeout > currentTime
+      ) {
+        updatedTrades[trade.id] = {
+          ...trade,
+          state: TRADE_STATE.AVAILABLE,
+        }
+      } else if (currentTime + 10 >= trade.launchTimeout) {
+        updatedTrades[trade.id] = {
+          ...trade,
+          state: TRADE_STATE.EXPIRED,
+        }
+        removedTrades[trade.id] = false
+      }
+    }
+  }
+
+  if (Object.keys(updatedTrades).length > 0) {
+    set(dtfTradeMapAtom, { ...tradeMap, ...updatedTrades })
+
+    // Remove selected trades that are no longer available
+    if (Object.keys(removedTrades).length > 0) {
+      set(selectedTradesAtom, { ...selectedTrades, ...removedTrades })
+    }
+  }
+})
+
 const Updater = () => {
-  const setTrades = useSetAtom(dtfTradesAtom)
+  const setTrades = useSetAtom(dtfTradeMapAtom)
   const untrackedAssets = useAtomValue(missingTradeTokensAtom)
   const { data: untrackedPrices } = useAssetPrices(untrackedAssets ?? [])
   const setAllPrices = useSetAtom(setAllPricesAtom)
+  const updateTradeState = useSetAtom(updateTradeStateAtom)
   const trades = useTrades()
 
   useEffect(() => {
     if (trades.data) {
-      setTrades(trades.data)
+      setTrades(
+        trades.data.reduce(
+          (acc, trade) => {
+            acc[trade.id] = trade
+            return acc
+          },
+          {} as Record<string, AssetTrade>
+        )
+      )
     }
-  }, [trades.data])
+  }, [
+    JSON.stringify(trades.data, (_, v) =>
+      typeof v === 'bigint' ? v.toString() : v
+    ),
+  ])
+
+  // Refresh trade states every second
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      updateTradeState()
+    }, 1000)
+
+    return () => {
+      clearTimeout(timeout)
+    }
+  }, [])
 
   useEffect(() => {
     if (untrackedPrices) {

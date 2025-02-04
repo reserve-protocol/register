@@ -25,7 +25,7 @@ const CustomInput = ({
   'fieldName' | 'customLabel' | 'customPlaceholder'
 >) => {
   return (
-    <div role="button">
+    <div role="button" className="w-48">
       <BasicInput
         type="number"
         fieldName={fieldName}

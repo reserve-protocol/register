@@ -2,14 +2,14 @@ import TokenLogo from '@/components/token-logo'
 import StackTokenLogo from '@/components/token-logo/StackTokenLogo'
 import { Button } from '@/components/ui/button'
 import { ChartConfig, ChartContainer } from '@/components/ui/chart'
-import DataTable from '@/components/ui/data-table'
+import DataTable, { SorteableButton } from '@/components/ui/data-table'
 import { Skeleton } from '@/components/ui/skeleton'
 import useIndexDTFList, { type IndexDTFItem } from '@/hooks/useIndexDTFList'
 import { cn } from '@/lib/utils'
 import { formatCurrency, formatPercentage } from '@/utils'
 import { ColumnDef } from '@tanstack/react-table'
 import { useAtomValue } from 'jotai'
-import { ArrowRight } from 'lucide-react'
+import { ArrowDown, ArrowRight, ArrowUp, ArrowUpDown } from 'lucide-react'
 import { useMemo } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Line, LineChart, YAxis } from 'recharts'
@@ -45,7 +45,9 @@ const TableHeader = ({
 
 const columns: ColumnDef<IndexDTFItem>[] = [
   {
-    header: () => <TableHeader>Name</TableHeader>,
+    header: ({ column }) => (
+      <SorteableButton column={column}>Name</SorteableButton>
+    ),
     accessorKey: 'name',
     cell: ({ row }) => {
       return (
@@ -89,12 +91,12 @@ const columns: ColumnDef<IndexDTFItem>[] = [
     },
   },
   {
-    header: () => (
-      <TableHeader className="text-right max-w-[340px]">
+    header: ({ column }) => (
+      <SorteableButton column={column}>
         Performance (Last 7 Days)
-      </TableHeader>
+      </SorteableButton>
     ),
-    accessorKey: 'performance',
+    accessorKey: 'performancePercent',
     cell: ({ row }) => {
       const { performance } = row.original
       const percentageChange = calculatePercentageChange(performance)
@@ -122,7 +124,11 @@ const columns: ColumnDef<IndexDTFItem>[] = [
     },
   },
   {
-    header: () => <TableHeader className="text-right">Price</TableHeader>,
+    header: ({ column }) => (
+      <TableHeader className="text-right">
+        <SorteableButton column={column}>Price</SorteableButton>
+      </TableHeader>
+    ),
     accessorKey: 'price',
     cell: ({ row }) => {
       return (
@@ -131,21 +137,16 @@ const columns: ColumnDef<IndexDTFItem>[] = [
     },
   },
   {
-    header: () => (
-      <TableHeader className="text-right">Annualized TVL Fee</TableHeader>
+    header: ({ column }) => (
+      <TableHeader className="text-right">
+        <SorteableButton column={column}>Annualized TVL Fee</SorteableButton>
+      </TableHeader>
     ),
     accessorKey: 'fee',
     cell: ({ row }) => {
       return (
         <div className="flex items-center justify-end">
           <div className="mr-6">{formatPercentage(row.original.fee)}</div>
-          <Link
-            to={`/${row.original.chainId}/index-dtf/${row.original.address}/overview`}
-          >
-            <Button variant="muted" size="icon-rounded">
-              <ArrowRight size={16} />
-            </Button>
-          </Link>
         </div>
       )
     },

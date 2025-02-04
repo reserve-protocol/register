@@ -42,6 +42,8 @@ export const tokensAtom = atom<(Token & { balance?: string })[]>((get) => {
   }))
 })
 
+export const ongoingTxAtom = atom<boolean>(false)
+
 export const zapDeployPayloadAtom = atom<
   ZapDeployBody | ZapDeployUngovernedBody | undefined
 >((get) => {

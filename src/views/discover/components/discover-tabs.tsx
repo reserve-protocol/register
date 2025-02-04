@@ -5,8 +5,6 @@ import DiscoverTabList, { Tab } from './discover-tab-list'
 import YieldIconAlt from '@/components/icons/YieldIconAlt'
 import { cn } from '@/lib/utils'
 
-import tabIndex from '../assets/tab_index.jpg'
-import tabYield from '../assets/tab_yield.jpg'
 import { Flower, Scale, ShipWheel } from 'lucide-react'
 
 const tabs: Tab[] = [
@@ -20,15 +18,13 @@ const tabs: Tab[] = [
     value: 'yield',
     icon: <Flower />,
     title: 'Yield DTFs',
-    subtitle:
-      'Earn yield safely with over-collateralized and diversified DeFi positions',
+    subtitle: 'Earn yield safely with diversified DeFi positions',
   },
   {
     value: 'stablecoins',
     icon: <Scale />,
     title: 'Stablecoins',
-    subtitle:
-      'Earn yield safely with over-collateralized and diversified DeFi positions',
+    subtitle: 'Overcollateralized tokens pegged to the US dollar',
   },
 ]
 

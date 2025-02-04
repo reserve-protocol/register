@@ -1,10 +1,15 @@
 import { PartialProposal } from '@/lib/governance'
 import { getBasketPortion } from '@/lib/index-rebalance/utils'
-import { indexDTFBasketSharesAtom, indexDTFPriceAtom } from '@/state/dtf/atoms'
+import { walletAtom } from '@/state/atoms'
+import {
+  indexDTFAtom,
+  indexDTFBasketSharesAtom,
+  indexDTFPriceAtom,
+} from '@/state/dtf/atoms'
 import { Token } from '@/types'
+import { getCurrentTime } from '@/utils'
 import { atom } from 'jotai'
 import { governanceProposalsAtom } from '../governance/atoms'
-import { getCurrentTime } from '@/utils'
 
 export const TRADE_STATE = {
   PENDING: 'PENDING', // Only for auction launcher!
@@ -35,7 +40,7 @@ export function getTradeState(trade: AssetTrade) {
     return TRADE_STATE.EXPIRED
   }
 
-  if (trade.availableAt >= currentTime) {
+  if (currentTime >= trade.availableAt) {
     return TRADE_STATE.AVAILABLE
   }
 
@@ -91,10 +96,30 @@ export const VOLATILITY_VALUES = {
 export type TradesByProposal = {
   proposal: PartialProposal
   trades: AssetTrade[]
+  completed: number
+  expired: number
+  expiresAt: number
+  availableAt: number
 }
 export const allPricesAtom = atom<Record<string, number> | undefined>(undefined)
 
-export const dtfTradesAtom = atom<AssetTrade[] | undefined>(undefined)
+export const isAuctionLauncherAtom = atom((get) => {
+  const wallet = get(walletAtom)
+  const dtf = get(indexDTFAtom)
+  return !!dtf?.auctionLaunchers.find(
+    (launcher) => launcher.toLowerCase() === wallet?.toLowerCase()
+  )
+})
+
+// Make this a map so we can easily update the trade state using the id
+export const dtfTradeMapAtom = atom<Record<string, AssetTrade> | undefined>(
+  undefined
+)
+
+export const dtfTradesAtom = atom<AssetTrade[] | undefined>((get) => {
+  const tradeMap = get(dtfTradeMapAtom)
+  return tradeMap ? Object.values(tradeMap) : undefined
+})
 
 export const tradeVolatilityAtom = atom<Record<string, string>>(
   {} as Record<string, string>
@@ -175,34 +200,24 @@ export const dtfTradesMapAtom = atom<Record<string, AssetTrade>>((get) => {
 
 export const dtfTradeVolatilityAtom = atom<Record<string, string>>({})
 
-export const selectedTradesAtom = atom<Record<string, string>>({})
+export const selectedTradesAtom = atom<Record<string, boolean>>({})
 
 export const addSelectedTradeAtom = atom(null, (get, set, tradeId: string) => {
   const selectedTrades = get(selectedTradesAtom)
 
-  if (selectedTrades[tradeId]) {
-    delete selectedTrades[tradeId]
-    set(selectedTradesAtom, { ...selectedTrades })
-  } else {
-    set(selectedTradesAtom, { ...selectedTrades, [tradeId]: tradeId })
-  }
+  set(selectedTradesAtom, {
+    ...selectedTrades,
+    [tradeId]: !selectedTrades[tradeId],
+  })
 })
 
 export const setTradeVolatilityAtom = atom(
   null,
   (get, set, [tradeId, volatility]: [string, string]) => {
-    const selectedTrades = get(selectedTradesAtom)
-
-    console.log('setTradeVolatilityAtom', tradeId, volatility)
-
     set(dtfTradeVolatilityAtom, {
       ...get(dtfTradeVolatilityAtom),
       [tradeId]: volatility,
     })
-
-    if (!selectedTrades[tradeId]) {
-      set(selectedTradesAtom, { ...selectedTrades, [tradeId]: tradeId })
-    }
   }
 )
 
@@ -221,6 +236,10 @@ export const dtfTradesByProposalAtom = atom<TradesByProposal[] | undefined>(
         tradesByProposal[proposal.executionBlock] = {
           proposal,
           trades: [],
+          completed: 0,
+          expired: 0,
+          availableAt: 0,
+          expiresAt: 0,
         }
       }
     }
@@ -228,12 +247,22 @@ export const dtfTradesByProposalAtom = atom<TradesByProposal[] | undefined>(
     for (const trade of trades) {
       if (trade.approvedBlockNumber in tradesByProposal) {
         tradesByProposal[trade.approvedBlockNumber].trades.push(trade)
+        tradesByProposal[trade.approvedBlockNumber].completed +=
+          trade.state === TRADE_STATE.COMPLETED ? 1 : 0
+        tradesByProposal[trade.approvedBlockNumber].expired +=
+          trade.state === TRADE_STATE.EXPIRED ? 1 : 0
+        tradesByProposal[trade.approvedBlockNumber].expiresAt =
+          trade.launchTimeout
+        tradesByProposal[trade.approvedBlockNumber].availableAt =
+          trade.availableAt
       }
     }
 
-    return Object.values(tradesByProposal).sort(
-      (a, b) =>
-        Number(a.proposal.executionBlock) - Number(b.proposal.executionBlock)
-    )
+    return Object.values(tradesByProposal)
+      .filter((proposal) => proposal.trades.length > 0)
+      .sort(
+        (a, b) =>
+          Number(b.proposal.executionBlock) - Number(a.proposal.executionBlock)
+      )
   }
 )

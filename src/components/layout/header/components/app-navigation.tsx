@@ -22,27 +22,49 @@ import {
   RESERVE_FORUM,
   ROUTES,
 } from '@/utils/constants'
-import { t } from '@lingui/macro'
+import { t, Trans } from '@lingui/macro'
 import { ArrowRight, ArrowUpRight, Asterisk, SquarePlus } from 'lucide-react'
 import { useMemo } from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useLocation } from 'react-router-dom'
+
+const DiscoverItem = () => {
+  const { pathname } = useLocation()
+  const isDTF = pathname.includes('dtf')
+
+  return (
+    <NavigationMenuItem>
+      <NavigationMenuLink asChild>
+        <NavLink to={ROUTES.HOME}>
+          {({ isActive }: { isActive: boolean }) => (
+            <div
+              className={cn(
+                navigationMenuTriggerStyle(),
+                (isActive || isDTF) && 'text-primary font-bold'
+              )}
+            >
+              <Binoculars />
+              <span className="hidden md:block">
+                <Trans>Discover DTFs</Trans>
+              </span>
+            </div>
+          )}
+        </NavLink>
+      </NavigationMenuLink>
+    </NavigationMenuItem>
+  )
+}
 
 const AppNavigation = () => {
   const [menuItems, moreLinks, externalLinks] = useMemo(
     () => [
       [
         {
-          label: t`Browse DTFs`,
-          icon: <Binoculars />,
-          to: ROUTES.HOME,
-        },
-        {
           label: t`Farm Rewards`,
           icon: <Money />,
           to: ROUTES.EARN,
         },
         {
-          label: t`Create new DTF`,
+          label: t`Create New DTF`,
           icon: <SquarePlus strokeWidth={1.5} size={16} />,
           to: ROUTES.DEPLOY_INDEX,
         },
@@ -51,7 +73,7 @@ const AppNavigation = () => {
         {
           label: t`DTF Explorer`,
           icon: <Asterisk size={16} />,
-          description: t`Get an overview of everything going on.`,
+          description: t`Get an overview of everything going on`,
           to: ROUTES.EXPLORER,
         },
         {
@@ -69,27 +91,33 @@ const AppNavigation = () => {
       ],
       [
         {
+          label: t`Feedback`,
+          icon: <Asterisk size={16} />,
+          description: t`File issues or upvote existing ones`,
+          to: REGISTER_FEEDBACK,
+        },
+        {
           label: t`Reserve Blog`,
           icon: <Asterisk size={16} />,
-          description: t`Stay up to date in long-form`,
+          description: t`Stay up to date in long form`,
           to: RESERVE_BLOG,
         },
         {
           label: t`Protocol Docs`,
           icon: <Asterisk size={16} />,
-          description: t`Understand the Reserve Protocol.`,
+          description: t`Understand the Reserve Protocol`,
           to: PROTOCOL_DOCS,
         },
         {
           label: t`Reserve Forum`,
           icon: <Asterisk size={16} />,
-          description: t`Discussions of ecosystem ideas.`,
+          description: t`Discussions of ecosystem ideas`,
           to: RESERVE_FORUM,
         },
         {
           label: t`Reserve Discord`,
           icon: <Asterisk size={16} />,
-          description: t`Join the conversation or ask questions.`,
+          description: t`Join the conversation or ask questions`,
           to: DISCORD_INVITE,
         },
       ],
@@ -103,6 +131,7 @@ const AppNavigation = () => {
       vClassName="-left-10 md:left-40"
     >
       <NavigationMenuList>
+        <DiscoverItem />
         {menuItems.map((item) => (
           <NavigationMenuItem key={item.to}>
             <NavigationMenuLink asChild>
@@ -129,9 +158,6 @@ const AppNavigation = () => {
           </NavigationMenuTrigger>
           <NavigationMenuContent className="rounded-3xl">
             <div className="bg-secondary w-72 sm:w-96 flex p-1 flex-col gap-1">
-              <div className="p-2 flex justify-center ">
-                <RSRSquare />
-              </div>
               {moreLinks.map((item) => (
                 <NavigationMenuLink
                   key={item.to}
@@ -154,27 +180,6 @@ const AppNavigation = () => {
                   </NavLink>
                 </NavigationMenuLink>
               ))}
-              <NavigationMenuLink
-                href={REGISTER_FEEDBACK}
-                target="_blank"
-                className="p-4 gap-2 flex items-center rounded-3xl bg-card border border-transparent hover:border-primary"
-              >
-                <div className="bg-primary p-1 rounded-full text-primary-foreground">
-                  <Asterisk size={16} />
-                </div>
-                <div className="mr-auto">
-                  <span className="font-bold">Feedbback</span>
-                  <p className="hidden md:block text-sm text-legend">
-                    File issues or upvote existing ones
-                  </p>
-                </div>
-                <div className="bg-muted p-1 rounded-full">
-                  <ArrowUpRight size={16} />
-                </div>
-              </NavigationMenuLink>
-              <div className="flex justify-center p-2">
-                <ReserveSquare />
-              </div>
               {externalLinks.map((item) => (
                 <NavigationMenuLink
                   key={item.to}

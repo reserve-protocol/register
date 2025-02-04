@@ -31,7 +31,10 @@ const SingleToggleFilter = ({
       type="single"
       value={value}
       onValueChange={onValueChange}
-      className={cn('bg-card rounded-bl-2xl rounded-br-2xl sm:rounded-2xl px-4 py-2', className)}
+      className={cn(
+        'bg-card rounded-bl-2xl rounded-br-2xl sm:rounded-2xl px-4 py-2',
+        className
+      )}
     >
       {options.map(({ text, icon }, index) => (
         <ToggleGroupItem
@@ -95,7 +98,7 @@ const DTFFilters = () => {
   return (
     <div className="flex flex-col items-stretch sm:flex-row sm:items-center gap-[2px] sm:gap-1">
       <SearchFilter />
-      <ChainFilter />
+      {/* <ChainFilter /> */}
     </div>
   )
 }
