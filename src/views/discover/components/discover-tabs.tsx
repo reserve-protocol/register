@@ -5,8 +5,6 @@ import DiscoverTabList, { Tab } from './discover-tab-list'
 import YieldIconAlt from '@/components/icons/YieldIconAlt'
 import { cn } from '@/lib/utils'
 
-import tabIndex from '../assets/tab_index.jpg'
-import tabYield from '../assets/tab_yield.jpg'
 import { Flower, Scale, ShipWheel } from 'lucide-react'
 
 const tabs: Tab[] = [
