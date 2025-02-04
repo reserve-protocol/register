@@ -114,7 +114,6 @@ const PortfolioHeader = () => {
         useEffect(() => {
           if (!accountModalOpen) {
             setDismissible(true)
-            document.body.style.pointerEvents = 'none'
           }
         }, [accountModalOpen])
 
