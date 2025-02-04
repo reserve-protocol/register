@@ -19,12 +19,12 @@ const useVoterState = () => {
     chainId,
     args:
       account && proposal
-        ? [account, BigInt(Math.min(proposal?.voteStart - 1, getCurrentTime()))]
+        ? [
+            account,
+            BigInt(Math.min(proposal?.voteStart - 1, getCurrentTime() - 1)),
+          ]
         : undefined,
   })
-
-  console.log('votePower', votePower)
-  console.log('votes', proposal?.votes)
 
   return useMemo(() => {
     if (!proposal || !votePower || !account) return undefined
