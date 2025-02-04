@@ -23,6 +23,7 @@ import { Address } from 'viem'
 import {
   IndexAssetShares,
   isProposedBasketValidAtom,
+  priceMapAtom,
   proposedIndexBasketAtom,
   proposedIndexBasketStateAtom,
   proposedSharesAtom,
@@ -95,33 +96,34 @@ const AssetCellInfo = ({ asset }: { asset: IndexAssetShares }) => {
 
   return (
     <TableCell className="border-r">
-      <Link
-        target="_blank"
-        to={getExplorerLink(
-          asset.token.address,
-          chainId,
-          ExplorerDataType.TOKEN
-        )}
-        className="flex items-center gap-2 cursor-pointer group"
-      >
+      <div className="flex items-center gap-2 cursor-pointer group">
         <TokenLogo
           size="xl"
           symbol={asset.token.symbol}
           address={asset.token.address}
           chain={chainId}
         />
-        <div className="mr-auto">
+        <Link
+          target="_blank"
+          to={getExplorerLink(
+            asset.token.address,
+            chainId,
+            ExplorerDataType.TOKEN
+          )}
+          className="mr-auto"
+        >
           <h4 className="font-bold mb-1">{asset.token.symbol}</h4>
           <p className="text-sm text-legend">
             {shortenAddress(asset.token.address)}
           </p>
-        </div>
+        </Link>
+
         {canFill && (
           <Button variant="ghost" size="icon-rounded" onClick={handleFill}>
             <ArrowRightCircle />
           </Button>
         )}
-      </Link>
+      </div>
     </TableCell>
   )
 }
@@ -267,6 +269,17 @@ const ProposalBasketTable = () => {
 
 const NextButton = () => {
   const isValid = useAtomValue(isProposedBasketValidAtom)
+  const prices = useAtomValue(priceMapAtom)
+  const proposedBasket = useAtomValue(proposedIndexBasketAtom)
+
+  // TODO: Debugging
+  const basketWithPrices = Object.values(proposedBasket || {}).map((asset) => ({
+    ...asset,
+    price: prices[asset.token.address.toLowerCase()],
+  }))
+
+  console.log('basketWithPrices', basketWithPrices)
+
   const setStep = useSetAtom(stepAtom)
   const handleNext = () => {
     setStep('prices')

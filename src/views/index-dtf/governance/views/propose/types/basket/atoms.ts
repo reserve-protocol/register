@@ -59,9 +59,8 @@ export const proposedIndexBasketStateAtom = atom<{
 
   const { changed, currentAllocation } = Object.values(proposedBasket).reduce(
     (acc, token) => {
-      if (!priceMap[token.token.address]) {
+      if (!priceMap[token.token.address.toLowerCase()]) {
         invalidAsset = true
-        return acc
       }
       return {
         changed:
@@ -81,7 +80,7 @@ export const proposedIndexBasketStateAtom = atom<{
   return {
     changed,
     remainingAllocation: 100 - currentAllocation,
-    isValid: Math.abs(currentAllocation - 100) <= 0.001,
+    isValid: Math.abs(currentAllocation - 100) <= 0.001 && !invalidAsset,
   }
 })
 
