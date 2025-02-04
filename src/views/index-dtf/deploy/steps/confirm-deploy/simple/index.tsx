@@ -16,11 +16,13 @@ import {
   inputAmountAtom,
   inputBalanceAtom,
   inputTokenAtom,
+  ongoingTxAtom,
   slippageAtom,
   tokensAtom,
   zapDeployPayloadAtom,
 } from './atoms'
 import SimpleDeployButton from './simple-deploy-button'
+import { useEffect } from 'react'
 
 const RefreshQuote = ({
   onClick,
@@ -52,6 +54,7 @@ const SimpleIndexDeploy = () => {
   const [slippage, setSlippage] = useAtom(slippageAtom)
   const zapDeployPayload = useAtomValue(zapDeployPayloadAtom)
   const tokens = useAtomValue(tokensAtom)
+  const [ongoingTx, setOngoingTx] = useAtom(ongoingTxAtom)
 
   const url = form?.governanceWalletAddress
     ? zapper.zapDeployUngoverned(chainId)
@@ -73,11 +76,15 @@ const SimpleIndexDeploy = () => {
   const { data, isLoading, error, isFetching, refetch } = useZapDeployQuery(
     url,
     requestBody,
-    insufficientBalance
+    insufficientBalance || ongoingTx
   )
 
   const priceTo = data?.result?.amountOutValue
   const valueTo = data?.result?.amountOut
+
+  useEffect(() => {
+    setOngoingTx(false)
+  }, [])
 
   if (!form) return null
 

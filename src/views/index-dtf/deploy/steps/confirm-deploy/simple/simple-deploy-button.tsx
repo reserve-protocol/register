@@ -9,7 +9,7 @@ import { useEffect } from 'react'
 import dtfIndexDeployerAbi from '@/abis/dtf-index-deployer-abi'
 import useWatchTransaction from '@/hooks/useWatchTransaction'
 import { indexDeployFormDataAtom } from '../atoms'
-import { defaultInputTokenAtom, inputTokenAtom } from './atoms'
+import { defaultInputTokenAtom, inputTokenAtom, ongoingTxAtom } from './atoms'
 
 const SimpleDeployButton = ({
   data: { approvalNeeded, approvalAddress, tokenIn, amountIn, tx, gas },
@@ -21,7 +21,7 @@ const SimpleDeployButton = ({
   const defaultInputToken = useAtomValue(defaultInputTokenAtom)
   const daoCreated = useAtomValue(daoCreatedAtom)
   const setDeployedDTF = useSetAtom(deployedDTFAtom)
-
+  const setOngoingTx = useSetAtom(ongoingTxAtom)
   const usedToken = inputToken || defaultInputToken
 
   const {
@@ -32,6 +32,7 @@ const SimpleDeployButton = ({
     hash: approvalHash,
     error: approvalError,
     validationError: approvalValidationError,
+    isError: isErrorApproval,
   } = useContractWrite({
     abi: erc20Abi,
     address: tokenIn,
@@ -55,6 +56,7 @@ const SimpleDeployButton = ({
     isPending: loadingTx,
     sendTransaction,
     error: sendError,
+    isError: isErrorSend,
   } = useSendTransaction()
 
   const {
@@ -93,6 +95,26 @@ const SimpleDeployButton = ({
     }
   }, [receipt])
 
+  useEffect(() => {
+    if (
+      approvalReceipt ||
+      approvalTxError ||
+      receipt ||
+      txError ||
+      isErrorApproval ||
+      isErrorSend
+    ) {
+      setOngoingTx(false)
+    }
+  }, [
+    receipt,
+    approvalReceipt,
+    approvalTxError,
+    txError,
+    isErrorApproval,
+    isErrorSend,
+  ])
+
   return (
     <TransactionButton
       disabled={
@@ -107,7 +129,10 @@ const SimpleDeployButton = ({
           : 'Pending, sign in wallet'
       }
       gas={readyToSubmit ? (gas ? BigInt(gas) : undefined) : approvalGas}
-      onClick={readyToSubmit ? execute : approve}
+      onClick={() => {
+        setOngoingTx(true)
+        readyToSubmit ? execute() : approve()
+      }}
       text={
         readyToSubmit
           ? `Create ${form?.symbol || 'DTF'}`
