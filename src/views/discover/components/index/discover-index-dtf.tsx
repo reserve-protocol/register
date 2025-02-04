@@ -70,6 +70,8 @@ const columns: ColumnDef<IndexDTFItem>[] = [
       const head = row.original.basket.slice(0, LIMIT)
       const tail = row.original.basket.length - LIMIT
 
+      console.log('head', row.original.basket)
+
       // TODO(jg): Logos for basket assets
       return (
         <div className="flex items-center gap-2">

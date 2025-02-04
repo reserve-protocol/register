@@ -103,7 +103,7 @@ const IndexBasketVisual = ({ basket, ...props }: BasketOverviewProps) => {
   )
 }
 
-const MAX_TOKENS = 10
+const MAX_TOKENS = 5
 
 const IndexBasketTokens = ({
   basket,
@@ -117,8 +117,8 @@ const IndexBasketTokens = ({
   const chainId = useAtomValue(chainIdAtom)
 
   return (
-    <div className={className}>
-      <ScrollArea className={cn('max-h-96 relative')}>
+    <div className={cn('relative', className)}>
+      <ScrollArea className={cn('flex max-h-[620px] flex-col overflow-y-auto')}>
         <Table>
           <TableHeader>
             <TableRow className="border-none text-legend bg-card sticky top-0 ">
@@ -129,6 +129,44 @@ const IndexBasketTokens = ({
             </TableRow>
           </TableHeader>
           <TableBody>
+            {basket
+              .slice(0, viewAll ? basket.length : MAX_TOKENS)
+              .map((token, index) => (
+                <TableRow key={token.symbol} className="border-none">
+                  <TableCell>
+                    <div className="flex items-center font-semibold gap-2">
+                      <TokenLogo
+                        size="lg"
+                        symbol={token.symbol}
+                        address={token.address}
+                        chain={chainId}
+                      />
+                      {token.name}
+                    </div>
+                  </TableCell>
+                  <TableCell>${token.symbol}</TableCell>
+                  <TableCell className="text-primary text-center font-bold">
+                    {basketShares[token.address]}%
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <Link
+                      to={getExplorerLink(
+                        token.address,
+                        chainId,
+                        ExplorerDataType.TOKEN
+                      )}
+                      target="_blank"
+                    >
+                      <Box
+                        variant="circle"
+                        className="hover:bg-primary/10 hover:text-primary"
+                      >
+                        <ArrowUpRight className="h-4 w-4" />
+                      </Box>
+                    </Link>
+                  </TableCell>
+                </TableRow>
+              ))}
             {basket
               .slice(0, viewAll ? basket.length : MAX_TOKENS)
               .map((token, index) => (
