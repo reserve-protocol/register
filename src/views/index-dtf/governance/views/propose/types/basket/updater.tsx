@@ -23,8 +23,9 @@ import {
   tradeVolatilityAtom,
 } from './atoms'
 import { chainIdAtom } from '@/state/atoms'
+import { RESERVE_API } from '@/utils/constants'
 
-const PRICES_BASE_URL = 'https://api.reserve.org/current/prices?tokens='
+const PRICES_BASE_URL = `${RESERVE_API}current/prices?tokens=`
 
 const tokensUrlAtom = atom((get) => {
   const proposedIndexBasket = get(proposedIndexBasketAtom)

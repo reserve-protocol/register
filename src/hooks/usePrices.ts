@@ -1,8 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { Address } from 'viem'
 import { AssetPrice, DTFPrice } from '@/types/prices'
-
-const RESERVE_API = 'https://api.reserve.org'
+import { RESERVE_API } from '@/utils/constants'
 
 async function fetchPrices<T>(
   endpoint: string,
