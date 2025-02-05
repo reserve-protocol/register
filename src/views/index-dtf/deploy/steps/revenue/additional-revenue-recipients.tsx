@@ -68,6 +68,7 @@ const AdditionalRevenueRecipient = ({ index }: { index: number }) => {
           label="%"
           placeholder="0"
           defaultValue={0}
+          decimalPlaces={2}
         />
       </div>
       <RemoveRecipientButton index={index} />

@@ -92,6 +92,7 @@ export const DeployFormSchema = z
         address: z.string().refine(isAddress, { message: 'Invalid Address' }),
         percentage: z.coerce
           .number()
+          .multipleOf(0.01, 'Max precision is 0.01%')
           .positive('Token distribution must be positive'),
       })
     ),
@@ -120,14 +121,30 @@ export const DeployFormSchema = z
       .number()
       .min(0.15, 'Mint Fee must be 0.15% or greater')
       .max(5, 'Mint Fee must be 5% or less'),
-    governanceShare: z.coerce.number().min(0).max(100),
-    deployerShare: z.coerce.number().min(0).max(100),
-    fixedPlatformFee: z.coerce.number().min(0).max(100),
+    governanceShare: z.coerce
+      .number()
+      .multipleOf(0.01, 'Max precision is 0.01%')
+      .min(0)
+      .max(100),
+    deployerShare: z.coerce
+      .number()
+      .multipleOf(0.01, 'Max precision is 0.01%')
+      .min(0)
+      .max(100),
+    fixedPlatformFee: z.coerce
+      .number()
+      .multipleOf(0.01, 'Max precision is 0.01%')
+      .min(0)
+      .max(100),
     additionalRevenueRecipients: z
       .array(
         z.object({
           address: z.string().refine(isAddress, { message: 'Invalid Address' }),
-          share: z.coerce.number().min(0).max(100),
+          share: z.coerce
+            .number()
+            .multipleOf(0.01, 'Max precision is 0.01%')
+            .min(0)
+            .max(100),
         })
       )
       .optional(),
@@ -185,11 +202,7 @@ export const DeployFormSchema = z
       const difference = new Decimal(100).minus(total)
 
       const absDifference = difference.abs()
-
-      const displayDifference =
-        absDifference.value < 0.01 && absDifference.value > 0
-          ? '< 0.01'
-          : absDifference.toDisplayString()
+      const displayDifference = absDifference.toDisplayString()
 
       return {
         message: `The sum of the tokens distribution must be 100% (${
@@ -233,11 +246,7 @@ export const DeployFormSchema = z
       )
 
       const absDifference = difference.abs()
-
-      const displayDifference =
-        absDifference.value < 0.01 && absDifference.value > 0
-          ? '< 0.01'
-          : absDifference.toDisplayString()
+      const displayDifference = absDifference.toDisplayString()
 
       return {
         message: `The sum of governance share, creator share, additional recipients shares and platform share must be 100% (${
