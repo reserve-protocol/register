@@ -1,6 +1,9 @@
+import withNavigationGuard from '@/hoc/with-navigation-guard'
+import { ROUTES } from '@/utils/constants'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { ShipWheel, Flower, ArrowUpRight } from 'lucide-react'
+import { ArrowUpRight, Flower, ShipWheel } from 'lucide-react'
 import { FormProvider, useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
 import DeployAccordion from './components/deploy-accordion'
 import RightPanel from './components/right-panel'
 import {
@@ -9,8 +12,6 @@ import {
   dtfDeployDefaultValues,
 } from './form-fields'
 import Updater from './updater'
-import { useNavigate } from 'react-router-dom'
-import { ROUTES } from '@/utils/constants'
 
 const DeployerHeader = () => {
   const navigate = useNavigate()
@@ -52,7 +53,7 @@ const IndexTokenDeploy = () => {
             <DeployerHeader />
             <DeployAccordion />
           </div>
-          <div className=" h-max rounded-3xl border-4 border-secondary col-span-1">
+          <div className="h-max rounded-3xl border-4 border-secondary col-span-1">
             <RightPanel />
           </div>
         </FormProvider>
@@ -62,4 +63,4 @@ const IndexTokenDeploy = () => {
   )
 }
 
-export default IndexTokenDeploy
+export default withNavigationGuard(IndexTokenDeploy)

@@ -24,7 +24,7 @@ export const slippageAtom = atomWithReset<string>('100')
 
 export const defaultInputTokenAtom = atom<Token>((get) => {
   const chainId = get(chainIdAtom)
-  return zappableTokens[chainId][1]
+  return zappableTokens[chainId][0]
 })
 
 export const inputBalanceAtom = atom<TokenBalance | undefined>((get) => {

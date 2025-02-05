@@ -15,9 +15,8 @@ const TOGGLE_FORMS = [
   },
 
   {
-    title: 'Auction delay',
-    description:
-      'How long an auction can exist in an approved state while only launchable by an Auction Launcher.  Once the delay runs out, anyone can launch the auction.',
+    title: 'Exclusive Launch Window',
+    description: `How long should the exclusive launch window be? During the exclusive launch window, auction launchers are the only people who can start a new auction. The exclusive launch window start after after a basket change is approved and the basket change’s execution delay is completed.`,
     icon: <Asterisk size={32} strokeWidth={1.5} />,
     options: [0, 12, 24, 48],
     optionsFormatter: (option: number) =>
