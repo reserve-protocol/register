@@ -1,5 +1,6 @@
 import dtfIndexGovernanceDeployerAbi from '@/abis/dtf-index-governance-deployer-abi'
 import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 import { chainIdAtom } from '@/state/atoms'
 import { getCurrentTime } from '@/utils'
 import { INDEX_GOVERNANCE_DEPLOYER_ADDRESS } from '@/utils/addresses'
@@ -25,7 +26,6 @@ import {
   daoTokenSymbolAtom,
   formReadyForSubmitAtom,
 } from '../../atoms'
-import { Input } from '@/components/ui/input'
 
 const CreateDAO = () => {
   const chainId = useAtomValue(chainIdAtom)
@@ -45,12 +45,13 @@ const CreateDAO = () => {
     query: { enabled: isAddress(governanceERC20address) },
   })
 
-  const { writeContract, data, isPending, isError } = useWriteContract()
   const {
-    data: receipt,
-    isSuccess,
-    isError: txError,
-  } = useWaitForTransactionReceipt({
+    writeContract,
+    data,
+    isPending,
+    error: prepareWriteError,
+  } = useWriteContract()
+  const { data: receipt, error: txError } = useWaitForTransactionReceipt({
     hash: data,
   })
 
@@ -92,7 +93,7 @@ const CreateDAO = () => {
   }, [indexDTFSymbol])
 
   useEffect(() => {
-    if (receipt && isSuccess) {
+    if (receipt?.status === 'success') {
       setDaoCreated(true)
 
       const event = parseEventLogs({
@@ -107,7 +108,7 @@ const CreateDAO = () => {
         setStTokenSymbol(vlSymbol)
       }
     }
-  }, [receipt, isSuccess, setDaoCreated])
+  }, [receipt, setDaoCreated])
 
   return (
     <div className="flex flex-col gap-2">
@@ -142,9 +143,10 @@ const CreateDAO = () => {
             ? `Create ${vlSymbol} DAO`
             : 'Create DAO'}
       </Button>
-      {(isError || txError) && (
+      {(prepareWriteError || txError) && (
         <div className="px-4 py-2 text-sm font-medium text-red-800 bg-red-100 rounded-md">
-          Error creating DAO token
+          Error creating DAO token.
+          {prepareWriteError?.message || txError?.message}
         </div>
       )}
     </div>

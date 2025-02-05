@@ -57,7 +57,13 @@ export const zapDeployPayloadAtom = atom<
   const wallet = get(walletAtom)
   const slippage = get(slippageAtom)
 
-  if (!formData || !initialTokens || !wallet || !Number(amountIn))
+  if (
+    !formData ||
+    !initialTokens ||
+    !isNaN(Number(initialTokens)) ||
+    !wallet ||
+    !Number(amountIn)
+  )
     return undefined
 
   const commonZapParams = {

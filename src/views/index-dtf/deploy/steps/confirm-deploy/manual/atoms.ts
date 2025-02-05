@@ -54,7 +54,7 @@ export const basketRequiredAmountsAtom = atom<Record<string, number>>((get) => {
       const price =
         basket.find((token) => token.address === address)?.price || 1
       acc[address] =
-        (Number(initialTokens || 1) * initialValue * percentage) / 100 / price
+        ((Number(initialTokens) || 1) * initialValue * percentage) / 100 / price
       return acc
     },
     {} as Record<string, number>
@@ -66,7 +66,12 @@ export const basketRequiredAmountsAtom = atom<Record<string, number>>((get) => {
 export const hasAssetsAllowanceAtom = atom((get) => {
   const initialTokens = get(initialTokensAtom)
 
-  if (!initialTokens) return false
+  if (
+    !initialTokens ||
+    Number(initialTokens) === 0 ||
+    isNaN(Number(initialTokens))
+  )
+    return false
 
   const assetsAllowance = get(formattedAssetsAllowanceAtom)
   const basketRequiredAmounts = get(basketRequiredAmountsAtom)

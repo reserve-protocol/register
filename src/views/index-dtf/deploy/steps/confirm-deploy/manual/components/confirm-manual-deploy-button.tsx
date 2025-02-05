@@ -111,7 +111,8 @@ const txAtom = atom<
   const basket = get(basketAtom)
   const wallet = get(walletAtom)
 
-  if (!formData || !initialTokens || !wallet) return undefined
+  if (!formData || !initialTokens || isNaN(Number(initialTokens)) || !wallet)
+    return undefined
 
   const folioParams: FolioParams = {
     name: formData.tokenName,
