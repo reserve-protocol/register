@@ -36,6 +36,7 @@
     "blockies-ts": "^1.0.0",
     "buffer": "^6.0.3",
     "class-variance-authority": "^0.7.1",
+    "decimal.js-light": "^2.5.1",
     "clsx": "^2.1.1",
     "dayjs": "^1.11.10",
     "graphql": "^16.8.1",
@@ -44,8 +45,8 @@
     "jotai": "^1.12.0",
     "lucide-react": "^0.461.0",
     "mixpanel-browser": "2.56.0",
-    "react": "19.0.0",
-    "react-dom": "19.0.0",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
     "react-error-boundary": "4.1.2",
     "react-ga": "^3.3.1",
     "react-hook-form": "^7.31.3",
@@ -107,8 +108,8 @@
     "@types/jest": "29.5.14",
     "@types/mixpanel-browser": "^2.50.2",
     "@types/node": "22.9.1",
-    "@types/react": "19.0.0",
-    "@types/react-dom": "19.0.0",
+    "@types/react": "18.3.1",
+    "@types/react-dom": "18.3.1",
     "@types/react-window": "^1.8.8",
     "@viem/anvil": "0.0.10",
     "@vitejs/plugin-react": "4.3.3",
@@ -122,8 +123,5 @@
     "vite-bundle-visualizer": "1.2.1",
     "vite-plugin-static-copy": "^2.1.0",
     "vite-tsconfig-paths": "^4.2.0"
-  },
-  "overrides": {
-    "react-is": "19.0.0"
   }
 }
