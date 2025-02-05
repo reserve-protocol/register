@@ -18,6 +18,7 @@ export type BasicInputProps = {
   disabled?: boolean
   defaultValue?: string | number
   highlightLabel?: boolean
+  decimalPlaces?: number
 }
 
 const BasicInput = ({
@@ -29,6 +30,7 @@ const BasicInput = ({
   defaultValue = '',
   disabled = false,
   highlightLabel = false,
+  decimalPlaces,
   ...props
 }: React.HTMLAttributes<HTMLDivElement> & BasicInputProps) => {
   const form = useFormContext()
@@ -53,6 +55,18 @@ const BasicInput = ({
           <FormItem>
             <FormControl>
               <Input
+                onInput={(e) => {
+                  if (decimalPlaces) {
+                    const value = e.currentTarget.value
+                    const hasDecimal = value.includes('.')
+                    if (hasDecimal) {
+                      const [integer, decimal] = value.split('.')
+                      if (decimal.length > decimalPlaces) {
+                        e.currentTarget.value = `${integer}.${decimal.slice(0, decimalPlaces)}`
+                      }
+                    }
+                  }
+                }}
                 type={type}
                 placeholder={placeholder}
                 startAdornment={

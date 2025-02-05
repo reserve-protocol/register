@@ -72,13 +72,7 @@ const RemainingAllocation = () => {
 
   const isNegative = remaining.isNegative()
   const absValue = remaining.abs()
-
-  const displayValue =
-    absValue.value < 0.01 && absValue.value > 0
-      ? isNegative
-        ? '> -0.01'
-        : '< 0.01'
-      : (isNegative ? '-' : '') + absValue.toDisplayString()
+  const displayValue = absValue.toDisplayString()
 
   return (
     <div className="text-base ml-auto px-4">
@@ -183,6 +177,7 @@ const RevenueDistributionSettings = () => {
                 label="%"
                 placeholder="0"
                 defaultValue={0}
+                decimalPlaces={2}
               />
             )}
           </div>
