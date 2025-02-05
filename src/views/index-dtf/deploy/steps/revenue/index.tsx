@@ -47,7 +47,7 @@ const RevenueDistribution = () => {
               total value of the tokens held in the contract. The platform will
               keep 50% of revenue from this fee.`,
       icon: <Asterisk size={32} strokeWidth={1.5} />,
-      options: [0.15, 0.5, 1, 2],
+      options: [0.15, 0.3, 0.5, 1, 2],
       optionsFormatter: (option: number) => formatPercentage(option),
       fieldName: 'folioFee',
       customLabel: '%',

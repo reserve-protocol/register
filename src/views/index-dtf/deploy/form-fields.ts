@@ -280,7 +280,7 @@ export const dtfDeployDefaultValues = {
   governanceERC20address: undefined,
   governanceVoteLock: undefined,
   governanceWalletAddress: undefined,
-  folioFee: 2,
+  folioFee: 1,
   mintFee: 0.5,
   governanceShare: 0,
   deployerShare: 0,
