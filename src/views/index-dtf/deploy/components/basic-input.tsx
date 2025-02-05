@@ -64,6 +64,8 @@ const BasicInput = ({
                 {...field}
                 value={field.value ?? defaultValue}
                 disabled={disabled}
+                onFocus={(e) => e.target.select()}
+                onWheel={(e) => e.currentTarget.blur()}
               />
             </FormControl>
             <FormMessage />
