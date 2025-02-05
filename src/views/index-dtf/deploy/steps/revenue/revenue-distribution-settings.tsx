@@ -70,21 +70,20 @@ const RemainingAllocation = () => {
       )
   )
 
-  const remainingAllocation = remaining.isPositive()
-    ? remaining.min(100)
-    : new Decimal(0)
+  const isNegative = remaining.isNegative()
+  const absValue = remaining.abs()
 
   const displayValue =
-    remainingAllocation.isPositive() &&
-    remainingAllocation.value < 0.01 &&
-    remainingAllocation.value > 0
-      ? '< 0.01'
-      : remainingAllocation.toDisplayString()
+    absValue.value < 0.01 && absValue.value > 0
+      ? isNegative
+        ? '> -0.01'
+        : '< 0.01'
+      : (isNegative ? '-' : '') + absValue.toDisplayString()
 
   return (
     <div className="text-base ml-auto px-4">
       <span className="text-muted-foreground">Remaining allocation:</span>{' '}
-      {displayValue}%
+      <span className={isNegative ? 'text-red-500' : ''}>{displayValue}%</span>
     </div>
   )
 }
