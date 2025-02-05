@@ -3,8 +3,8 @@ import { z } from 'zod'
 import {
   isERC20,
   isNotStRSR,
-  noSpecialCharacters,
   isVoteLockAddress,
+  noSpecialCharacters,
 } from './utils'
 import { Decimal } from './utils/decimals'
 
@@ -184,11 +184,18 @@ export const DeployFormSchema = z
         ) || new Decimal(0)
       const difference = new Decimal(100).minus(total)
 
+      const absDifference = difference.abs()
+
+      const displayDifference =
+        absDifference.value < 0.01 && absDifference.value > 0
+          ? '< 0.01'
+          : absDifference.toDisplayString()
+
       return {
         message: `The sum of the tokens distribution must be 100% (${
           difference.isPositive()
-            ? `${difference.toString()}% missing`
-            : `${difference.abs().toString()}% excess`
+            ? `${displayDifference}% missing`
+            : `${displayDifference}% excess`
         }).`,
         path: ['basket'],
       }
@@ -225,11 +232,18 @@ export const DeployFormSchema = z
         total.plus(new Decimal(data.fixedPlatformFee))
       )
 
+      const absDifference = difference.abs()
+
+      const displayDifference =
+        absDifference.value < 0.01 && absDifference.value > 0
+          ? '< 0.01'
+          : absDifference.toDisplayString()
+
       return {
         message: `The sum of governance share, creator share, additional recipients shares and platform share must be 100% (${
           difference.isPositive()
-            ? `${difference.toString()}% missing`
-            : `${difference.abs().toString()}% excess`
+            ? `${displayDifference}% missing`
+            : `${displayDifference}% excess`
         })`,
         path: ['revenue-distribution'],
       }
