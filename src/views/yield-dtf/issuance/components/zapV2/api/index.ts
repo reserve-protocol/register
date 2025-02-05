@@ -1,8 +1,8 @@
 import { RESERVE_API } from '@/utils/constants'
 import { Address } from 'viem'
 
-// const BASE_ZAP_API_URL = 'https://zapper-api-stage.reserve.org' // TODO: change to prod
-const BASE_ZAP_API_URL = RESERVE_API + 'zapper'
+const BASE_ZAP_API_URL = 'https://zapper-api-stage.reserve.org' // TODO: change to prod
+// const BASE_ZAP_API_URL = RESERVE_API + 'zapper'
 
 export type ZapPayload = {
   chainId: number

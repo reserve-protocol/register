@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button'
-
 import { useAtom, useSetAtom } from 'jotai'
+import { useEffect } from 'react'
 import { FieldErrors, FieldValues, useFormContext } from 'react-hook-form'
 import { deployStepAtom, validatedSectionsAtom } from '../atoms'
 import { DeployInputs, DeployStepId, dtfDeploySteps } from '../form-fields'
@@ -18,12 +18,21 @@ type ExtendedFieldErrors<TFieldValues extends FieldValues> =
 
 const NextButton = () => {
   const [deployStep, setDeployStep] = useAtom(deployStepAtom)
-  const { trigger, formState } = useFormContext<DeployInputs>()
+  const { trigger, formState, watch } = useFormContext<DeployInputs>()
   const setValidatedSections = useSetAtom(validatedSectionsAtom)
 
   const formErrors = formState.errors as ExtendedFieldErrors<
     typeof formState.errors
   >
+
+  useEffect(() => {
+    const subscription = watch(() => {
+      if (deployStep && formErrors[deployStep]) {
+        delete formErrors[deployStep]
+      }
+    })
+    return () => subscription.unsubscribe()
+  }, [watch, deployStep, formErrors])
 
   const stepError = deployStep ? formErrors[deployStep]?.message : ''
 

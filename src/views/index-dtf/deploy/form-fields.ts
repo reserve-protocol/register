@@ -3,8 +3,8 @@ import { z } from 'zod'
 import {
   isERC20,
   isNotStRSR,
-  noSpecialCharacters,
   isVoteLockAddress,
+  noSpecialCharacters,
 } from './utils'
 import { Decimal } from './utils/decimals'
 
@@ -184,11 +184,18 @@ export const DeployFormSchema = z
         ) || new Decimal(0)
       const difference = new Decimal(100).minus(total)
 
+      const absDifference = difference.abs()
+
+      const displayDifference =
+        absDifference.value < 0.01 && absDifference.value > 0
+          ? '< 0.01'
+          : absDifference.toDisplayString()
+
       return {
         message: `The sum of the tokens distribution must be 100% (${
           difference.isPositive()
-            ? `${difference.toString()}% missing`
-            : `${difference.abs().toString()}% excess`
+            ? `${displayDifference}% missing`
+            : `${displayDifference}% excess`
         }).`,
         path: ['basket'],
       }
@@ -225,11 +232,18 @@ export const DeployFormSchema = z
         total.plus(new Decimal(data.fixedPlatformFee))
       )
 
+      const absDifference = difference.abs()
+
+      const displayDifference =
+        absDifference.value < 0.01 && absDifference.value > 0
+          ? '< 0.01'
+          : absDifference.toDisplayString()
+
       return {
         message: `The sum of governance share, creator share, additional recipients shares and platform share must be 100% (${
           difference.isPositive()
-            ? `${difference.toString()}% missing`
-            : `${difference.abs().toString()}% excess`
+            ? `${displayDifference}% missing`
+            : `${displayDifference}% excess`
         })`,
         path: ['revenue-distribution'],
       }
@@ -256,6 +270,33 @@ export const DeployFormSchema = z
     },
     { message: 'Invalid governance settings', path: ['governance'] }
   )
+  .refine(
+    (data) =>
+      new Set(data.guardians?.map((item) => item?.toLowerCase() || item))
+        .size === data.guardians.length,
+    {
+      message: 'Duplicated guardians',
+      path: ['roles'],
+    }
+  )
+  .refine(
+    (data) =>
+      new Set(data.brandManagers?.map((item) => item?.toLowerCase() || item))
+        .size === data.brandManagers.length,
+    {
+      message: 'Duplicated brand managers',
+      path: ['roles'],
+    }
+  )
+  .refine(
+    (data) =>
+      new Set(data.auctionLaunchers?.map((item) => item?.toLowerCase() || item))
+        .size === data.auctionLaunchers.length,
+    {
+      message: 'Duplicated auction launchers',
+      path: ['roles'],
+    }
+  )
 
 export const dtfDeployDefaultValues = {
   tokenName: '',
@@ -266,14 +307,14 @@ export const dtfDeployDefaultValues = {
   governanceERC20address: undefined,
   governanceVoteLock: undefined,
   governanceWalletAddress: undefined,
-  folioFee: 2,
+  folioFee: 1,
   mintFee: 0.5,
   governanceShare: 0,
   deployerShare: 0,
   fixedPlatformFee: 50,
   additionalRevenueRecipients: [],
   auctionLength: 30,
-  auctionDelay: 24,
+  auctionDelay: 12,
   guardians: [],
   brandManagers: [],
   auctionLaunchers: [],

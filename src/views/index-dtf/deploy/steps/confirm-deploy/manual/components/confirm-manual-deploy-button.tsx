@@ -17,13 +17,10 @@ import {
   Address,
   Hex,
   keccak256,
-  numberToBytes,
   parseEther,
   parseEventLogs,
   parseUnits,
   toBytes,
-  toHex,
-  zeroAddress,
 } from 'viem'
 
 import { useWaitForTransactionReceipt } from 'wagmi'
@@ -225,8 +222,6 @@ const ConfirmManualDeployButton = () => {
   const { data: receipt, error: txError } = useWaitForTransactionReceipt({
     hash,
   })
-
-  console.log('validation error', validationError)
 
   useEffect(() => {
     if (receipt) {

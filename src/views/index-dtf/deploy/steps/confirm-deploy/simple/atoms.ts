@@ -24,7 +24,7 @@ export const slippageAtom = atomWithReset<string>('100')
 
 export const defaultInputTokenAtom = atom<Token>((get) => {
   const chainId = get(chainIdAtom)
-  return zappableTokens[chainId][1]
+  return zappableTokens[chainId][0]
 })
 
 export const inputBalanceAtom = atom<TokenBalance | undefined>((get) => {
@@ -64,7 +64,7 @@ export const zapDeployPayloadAtom = atom<
     tokenIn: tokenIn.address,
     amountIn: parseUnits(amountIn, tokenIn.decimals).toString(),
     signer: wallet,
-    slippage: slippage ? Number(slippage) : undefined,
+    slippage: slippage ? 1 / Number(slippage) : undefined,
   }
 
   const basicDetails = {

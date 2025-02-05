@@ -19,6 +19,10 @@ export class Decimal {
     return this.value > 0
   }
 
+  isNegative(): boolean {
+    return this.value < 0
+  }
+
   toString(): string {
     return this.value.toString()
   }
