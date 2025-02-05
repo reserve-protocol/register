@@ -270,6 +270,33 @@ export const DeployFormSchema = z
     },
     { message: 'Invalid governance settings', path: ['governance'] }
   )
+  .refine(
+    (data) =>
+      new Set(data.guardians?.map((item) => item?.toLowerCase() || item))
+        .size === data.guardians.length,
+    {
+      message: 'Duplicated guardians',
+      path: ['roles'],
+    }
+  )
+  .refine(
+    (data) =>
+      new Set(data.brandManagers?.map((item) => item?.toLowerCase() || item))
+        .size === data.brandManagers.length,
+    {
+      message: 'Duplicated brand managers',
+      path: ['roles'],
+    }
+  )
+  .refine(
+    (data) =>
+      new Set(data.auctionLaunchers?.map((item) => item?.toLowerCase() || item))
+        .size === data.auctionLaunchers.length,
+    {
+      message: 'Duplicated auction launchers',
+      path: ['roles'],
+    }
+  )
 
 export const dtfDeployDefaultValues = {
   tokenName: '',
@@ -287,7 +314,7 @@ export const dtfDeployDefaultValues = {
   fixedPlatformFee: 50,
   additionalRevenueRecipients: [],
   auctionLength: 30,
-  auctionDelay: 24,
+  auctionDelay: 12,
   guardians: [],
   brandManagers: [],
   auctionLaunchers: [],

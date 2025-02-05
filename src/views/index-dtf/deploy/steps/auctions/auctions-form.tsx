@@ -5,8 +5,7 @@ import ToggleGroupWithCustom from '../../components/toggle-group-with-custom'
 const TOGGLE_FORMS = [
   {
     title: 'Auction length',
-    description:
-      'How long dutch auctions will run when swapping tokens out of the basket.',
+    description: `How long dutch auctions will run when swapping tokens out of the basket. Shorter auction lengths benefit from less market volatility effecting the price during the auction. Longer auctions benefit from having more time for discovering the best price when swapping two tokens.`,
     icon: <Asterisk size={32} strokeWidth={1.5} />,
     options: [15, 30, 60],
     optionsFormatter: (option: number) => humanizeMinutes(option),
@@ -20,8 +19,9 @@ const TOGGLE_FORMS = [
     description:
       'How long an auction can exist in an approved state while only launchable by an Auction Launcher.  Once the delay runs out, anyone can launch the auction.',
     icon: <Asterisk size={32} strokeWidth={1.5} />,
-    options: [1, 24, 36],
-    optionsFormatter: (option: number) => `${option}h`,
+    options: [0, 12, 24, 48],
+    optionsFormatter: (option: number) =>
+      option === 0 ? 'None' : `${option}h`,
     fieldName: 'auctionDelay',
     customLabel: 'hours',
     customPlaceholder: 'Enter custom length',
