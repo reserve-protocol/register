@@ -1,5 +1,5 @@
 import dtfIndexAbi from '@/abis/dtf-index-abi'
-import { getTrades } from '@/lib/index-rebalance/get-trades'
+import { getAuctions } from '@/lib/index-rebalance/get-auctionts'
 import { iTokenAddressAtom } from '@/state/dtf/atoms'
 import { Token } from '@/types'
 import { atom, Getter } from 'jotai'
@@ -222,31 +222,12 @@ function getProposedTrades(get: Getter, deferred = false) {
     prices.push(priceMap[asset])
 
     // TODO: assume trades always have the same order...
-    error.push(
-      deferred ? 0.9 : VOLATILITY_VALUES[volatility[index] || 0] || 0.1
-    )
+    error.push(deferred ? 1 : VOLATILITY_VALUES[volatility[index] || 0] || 0.1)
 
     index++
   }
 
-  console.log(
-    'INPUTS',
-    JSON.stringify(
-      {
-        supply: supply.toString(),
-        tokens,
-        decimalsStr,
-        currentBasketStr,
-        targetBasketStr,
-        prices,
-        error,
-      },
-      null,
-      2
-    )
-  )
-
-  return getTrades(
+  return getAuctions(
     supply,
     tokens,
     decimals,
