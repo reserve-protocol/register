@@ -1,57 +1,61 @@
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
-import { Asterisk } from 'lucide-react'
-import { useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { stepAtom, tradeRangeOptionAtom } from '../atoms'
 import { cn } from '@/lib/utils'
+import { useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { Asterisk } from 'lucide-react'
+import { useEffect } from 'react'
+import {
+  isDeferAvailableAtom,
+  setTradeRangeOptionAtom,
+  stepAtom,
+  tradeRangeOptionAtom,
+  TradeRangeOption as TradeRangeOptionType,
+} from '../atoms'
 import ProposalTradesSetup from './proposal-trades-setup'
 
 type TradeRangeOptionProps = {
   title: string
   description: string
-  value: 'defer' | 'include'
+  value: TradeRangeOptionType
+  disabled?: boolean
+  checked: boolean
+  onClick: () => void
 }
 
 const TradeRangeOption = ({
   title,
   description,
   value,
-}: TradeRangeOptionProps) => {
-  const [option, setOption] = useAtom(tradeRangeOptionAtom)
-  const isChecked = option === value
-
-  return (
+  disabled,
+  checked,
+  onClick,
+}: TradeRangeOptionProps) => (
+  <div
+    role="button"
+    className={cn(
+      'flex items-center gap-2 border rounded-xl p-4 cursor-pointer transition-all duration-200 hover:bg-border',
+      checked && 'bg-border',
+      disabled && 'opacity-50 hover:bg-transparent'
+    )}
+    onClick={disabled ? undefined : onClick}
+  >
     <div
-      role="button"
       className={cn(
-        'flex items-center gap-2 border rounded-xl p-4 cursor-pointer transition-all duration-200 hover:bg-border',
-        isChecked && 'bg-border'
+        'flex items-center flex-shrink-0 justify-center w-8 h-8 bg-foreground/10 rounded-full',
+        checked && 'bg-primary/10 text-primary'
       )}
-      onClick={() => setOption(value)}
     >
-      <div
-        className={cn(
-          'flex items-center flex-shrink-0 justify-center w-8 h-8 bg-foreground/10 rounded-full',
-          isChecked && 'bg-primary/10 text-primary'
-        )}
-      >
-        <Asterisk size={24} strokeWidth={1.5} />
-      </div>
-      <div className="mr-auto">
-        <h4
-          className={cn(
-            'font-bold mb-1 text-base',
-            isChecked && 'text-primary'
-          )}
-        >
-          {title}
-        </h4>
-        <p className="text-sm text-legend">{description}</p>
-      </div>
-      <Checkbox checked={isChecked} />
+      <Asterisk size={24} strokeWidth={1.5} />
     </div>
-  )
-}
+    <div className="mr-auto">
+      <h4 className={cn('font-bold mb-1 text-base', checked && 'text-primary')}>
+        {title}
+      </h4>
+      <p className="text-sm text-legend">{description}</p>
+    </div>
+    <Checkbox checked={checked} />
+  </div>
+)
 
 const NextButton = () => {
   const isValid = !!useAtomValue(tradeRangeOptionAtom)
@@ -78,6 +82,13 @@ const TradesSetup = () => {
 }
 
 const ProposalTradingRanges = () => {
+  const isDeferAvailable = useAtomValue(isDeferAvailableAtom)
+  const [option, setOption] = useAtom(tradeRangeOptionAtom)
+
+  useEffect(() => {
+    if (!isDeferAvailable) setOption('include')
+  }, [isDeferAvailable])
+
   return (
     <>
       <p className="text-sm sm:text-base mx-4 sm:mx-6 mb-6">
@@ -89,11 +100,16 @@ const ProposalTradingRanges = () => {
           title="Defer to price curator"
           description="Explain the benefit of using our framwork & clarify that it doesn't mean."
           value="defer"
+          disabled={!isDeferAvailable}
+          onClick={() => setOption('defer')}
+          checked={option === 'defer'}
         />
         <TradeRangeOption
           title="Include price range(s) in proposal"
           description="Explain the benefit of using our framwork & clarify that it doesn't mean."
           value="include"
+          onClick={() => setOption('include')}
+          checked={option === 'include'}
         />
         <TradesSetup />
         <NextButton />

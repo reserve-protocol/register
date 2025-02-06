@@ -1,14 +1,29 @@
 import dtfIndexAbi from '@/abis/dtf-index-abi'
 import { getAuctions } from '@/lib/index-rebalance/get-auctionts'
-import { iTokenAddressAtom } from '@/state/dtf/atoms'
+import { indexDTFAtom, iTokenAddressAtom } from '@/state/dtf/atoms'
 import { Token } from '@/types'
 import { atom, Getter } from 'jotai'
 import { Address, encodeFunctionData, Hex, parseUnits } from 'viem'
 
 export type Step = 'basket' | 'prices' | 'expiration' | 'confirmation'
+export type TradeRangeOption = 'defer' | 'include'
 export const isProposalConfirmedAtom = atom(false)
 
 export const stepAtom = atom<Step>('basket')
+
+export const tradeRangeOptionAtom = atom<TradeRangeOption | undefined>(
+  undefined
+)
+
+export const permissionlessLaunchingAtom = atom<number | undefined>(undefined)
+
+export const setTradeRangeOptionAtom = atom(
+  null,
+  (get, set, option: TradeRangeOption) => {
+    set(tradeRangeOptionAtom, option)
+    set(permissionlessLaunchingAtom, option === 'defer' ? 0 : undefined)
+  }
+)
 
 // Loaded from basket and modified when asset is added/removed
 export interface IndexAssetShares {
@@ -96,14 +111,6 @@ export const proposedInxexTradesAtom = atom((get) => {
 
 // Volatility of proposed trades, array index is the trade index
 export const tradeVolatilityAtom = atom<number[]>([])
-
-type TradeRangeOption = 'defer' | 'include'
-
-export const tradeRangeOptionAtom = atom<TradeRangeOption | undefined>(
-  undefined
-)
-
-export const permissionlessLaunchingAtom = atom<number | undefined>(undefined)
 
 export const stepStateAtom = atom<Record<Step, boolean>>((get) => ({
   basket: get(isProposedBasketValidAtom),
@@ -238,3 +245,11 @@ function getProposedTrades(get: Getter, deferred = false) {
     dtfPrice
   )
 }
+
+export const isDeferAvailableAtom = atom((get) => {
+  const dtf = get(indexDTFAtom)
+
+  if (!dtf) return true
+
+  return dtf?.auctionDelay > 10
+})

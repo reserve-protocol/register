@@ -1,14 +1,16 @@
 import dtfIndexAbi from '@/abis/dtf-index-abi'
+import { chainIdAtom } from '@/state/atoms'
 import {
   indexDTFBasketAtom,
   indexDTFBasketPricesAtom,
   indexDTFBasketSharesAtom,
   iTokenAddressAtom,
 } from '@/state/dtf/atoms'
+import { RESERVE_API } from '@/utils/constants'
 import { useQuery } from '@tanstack/react-query'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useMemo } from 'react'
-import { useReadContract, useReadContracts } from 'wagmi'
+import { useReadContracts } from 'wagmi'
 import {
   dtfSupplyAtom,
   dtfTradeDelay,
@@ -22,8 +24,6 @@ import {
   tradeRangeOptionAtom,
   tradeVolatilityAtom,
 } from './atoms'
-import { chainIdAtom } from '@/state/atoms'
-import { RESERVE_API } from '@/utils/constants'
 
 const PRICES_BASE_URL = `${RESERVE_API}current/prices?tokens=`
 

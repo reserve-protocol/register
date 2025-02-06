@@ -6,13 +6,15 @@ import {
   customPermissionlessLaunchingWindowAtom,
   dtfTradeDelay,
   isBasketProposalValidAtom,
+  isDeferAvailableAtom,
   isProposalConfirmedAtom,
   permissionlessLaunchingAtom,
   permissionlessLaunchingWindowAtom,
   stepAtom,
+  tradeRangeOptionAtom,
 } from '../atoms'
 import { cn } from '@/lib/utils'
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { parseDuration } from '@/utils'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { NumericalInput } from '@/components/ui/input'
@@ -27,6 +29,7 @@ interface PermissionOption {
   title: string
   description: string
   icon: JSX.Element
+  disabled?: boolean
 }
 
 const PermissionCard = ({ option }: { option: PermissionOption }) => {
@@ -39,9 +42,14 @@ const PermissionCard = ({ option }: { option: PermissionOption }) => {
     <div
       className={cn(
         'flex items-center gap-2 border rounded-xl p-4 cursor-pointer hover:bg-border',
-        isSelected && 'bg-foreground/5'
+        isSelected && 'bg-foreground/5',
+        option.disabled && 'opacity-50 hover:bg-transparent'
       )}
-      onClick={() => setPermissionlessLaunching(option.id)}
+      onClick={
+        option.disabled
+          ? undefined
+          : () => setPermissionlessLaunching(option.id)
+      }
     >
       <div
         className={cn(
@@ -59,7 +67,12 @@ const PermissionCard = ({ option }: { option: PermissionOption }) => {
       </div>
       <Checkbox
         checked={isSelected}
-        onCheckedChange={() => setPermissionlessLaunching(option.id)}
+        disabled={option.disabled}
+        onCheckedChange={
+          option.disabled
+            ? undefined
+            : () => setPermissionlessLaunching(option.id)
+        }
       />
     </div>
   )
@@ -146,6 +159,9 @@ const PermissionlessWindow = () => {
 
 const ProposalTradingExpiration = () => {
   const tradeDelay = useAtomValue(dtfTradeDelay)
+  const priceRangeOption = useAtomValue(tradeRangeOptionAtom)
+  const isDeferAvailable = useAtomValue(isDeferAvailableAtom)
+  const setPermissionlessLaunching = useSetAtom(permissionlessLaunchingAtom)
   const permissionOptions: PermissionOption[] = useMemo(
     () => [
       {
@@ -153,16 +169,26 @@ const ProposalTradingExpiration = () => {
         title: "Don't allow permissionless launching",
         description: `A trade should expire if the trade launcher does not launch within their ${parseDuration(Number(tradeDelay))} window.`,
         icon: <Asterisk size={24} strokeWidth={1.5} />,
+        disabled: !isDeferAvailable,
       },
       {
         id: PermissionOptionId.PERMISSIONLESS_LAUNCHING,
         title: 'Allow permissionless launching',
         description: `Defined as the duration after ${parseDuration(Number(tradeDelay))} when anyone can start an auction.`,
         icon: <Asterisk size={24} strokeWidth={1.5} />,
+        disabled: priceRangeOption === 'defer',
       },
     ],
-    [tradeDelay]
+    [tradeDelay, isDeferAvailable, priceRangeOption]
   )
+
+  useEffect(() => {
+    if (priceRangeOption === 'defer') {
+      setPermissionlessLaunching(PermissionOptionId.NO_PERMISSIONLESS_LAUNCHING)
+    } else if (priceRangeOption === 'include' && !isDeferAvailable) {
+      setPermissionlessLaunching(PermissionOptionId.PERMISSIONLESS_LAUNCHING)
+    }
+  }, [priceRangeOption, isDeferAvailable])
 
   return (
     <>

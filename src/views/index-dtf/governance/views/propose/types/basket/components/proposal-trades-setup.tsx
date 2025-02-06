@@ -218,8 +218,6 @@ const ProposedTradeGroup = ({ group }: { group: IProposedTradeGroup }) => (
 const OrganizedTrades = () => {
   const organizedTrades = useAtomValue(organizedTradesAtom)
 
-  console.log('organizedTrades', organizedTrades)
-
   if (!organizedTrades) {
     return (
       <div className="p-4 text-legend text-center">No trades available</div>
