@@ -235,7 +235,7 @@ const UnlistedToken = () => {
   } = useTokensInfo([search.toLowerCase()])
 
   useEffect(() => {
-    if (tokenPrice && token?.[search.toLowerCase()]) {
+    if (tokenPrice && tokenPrice.length && token?.[search.toLowerCase()]) {
       setExtraTokens((prev) => [
         ...prev.filter(
           ({ address }) => address.toLowerCase() !== search.toLowerCase()
