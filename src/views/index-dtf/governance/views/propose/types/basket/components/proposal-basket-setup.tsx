@@ -302,8 +302,11 @@ const ProposalBasketSetup = () => {
   return (
     <>
       <p className="text-sm sm:text-base mx-4 sm:mx-6 mb-6">
-        Set the new desired percentages and we will calculate the required
-        trades needed to adopt the new basket if the proposal passes governance.
+        Enter the updated weights for the tokens in the basket. Remember, the
+        weights represent the proportion of each token relative to the total USD
+        value of basket at the time of the proposal. We will calculate the
+        required auctions needed to adopt the new basket if the proposal passes
+        governance.
       </p>
       <div className="flex flex-col gap-2 mx-2">
         <ProposalBasketTable />
