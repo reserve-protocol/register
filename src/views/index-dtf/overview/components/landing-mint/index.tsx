@@ -77,7 +77,7 @@ const MintBox = () => {
 const LandingMint = (props: React.HTMLAttributes<HTMLDivElement>) => {
   return (
     <div
-      className="hidden bg-muted h-fit p-1 rounded-3xl xl:flex xl:flex-col xl:gap-1"
+      className="hidden bg-muted h-fit p-1 rounded-3xl sticky top-0 xl:flex xl:flex-col xl:gap-1"
       {...props}
     >
       <img width={475} height={424} alt="DTF meme" src={IMG_SRC} />
