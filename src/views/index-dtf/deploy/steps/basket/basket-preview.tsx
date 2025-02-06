@@ -42,6 +42,7 @@ const RemoveTokenButton = ({
 const TokenDistribution = ({ tokenIndex }: { tokenIndex: number }) => {
   return (
     <BasicInput
+      type="number"
       className="max-w-32"
       fieldName={`tokensDistribution.${tokenIndex}.percentage`}
       label="%"

@@ -56,6 +56,12 @@ const BasicInput = ({
             <FormControl>
               <Input
                 onInput={(e) => {
+                  if (type === 'number' || decimalPlaces) {
+                    const value = e.currentTarget.value
+                    if (value.includes('-')) {
+                      e.currentTarget.value = value.replace('-', '')
+                    }
+                  }
                   if (decimalPlaces) {
                     const value = e.currentTarget.value
                     const hasDecimal = value.includes('.')
