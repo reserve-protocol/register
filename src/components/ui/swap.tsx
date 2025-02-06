@@ -15,6 +15,7 @@ import { ArrowDown, ChevronDown, ChevronUp } from 'lucide-react'
 import React, { useState } from 'react'
 import { ToggleGroup, ToggleGroupItem } from './toggle-group'
 import GaugeIcon from '../icons/GaugeIcon'
+import { cn } from '@/lib/utils'
 
 type TokenWithBalance = Token & { balance?: string }
 
@@ -262,12 +263,34 @@ export const SlippageSelector = ({
           ))}
         </ToggleGroup>
         <div className="w-20 hidden sm:block" role="button">
-          <Input
-            placeholder="Custom"
-            className="h-9 px-[10px] rounded-lg text-base [&:focus::placeholder]:opacity-0 [&:focus::placeholder]:transition-opacity focus-visible:ring-0 focus-visible:ring-offset-0 focus:border-transparent active:border-transparent"
-            value={customValue}
-            onChange={(e) => handleCustomChange(e.target.value)}
-          />
+          <div className="relative">
+            <Input
+              placeholder="Custom"
+              className={cn(
+                'h-9 px-[10px] rounded-lg text-base [&:focus::placeholder]:opacity-0 [&:focus::placeholder]:transition-opacity focus-visible:ring-0 focus-visible:ring-offset-0 focus:border-transparent active:border-transparent',
+                customValue && 'pl-2 pr-6'
+              )}
+              value={customValue}
+              type="text"
+              pattern="^(?:100|[0-9]{1,2})(?:\.[0-9]{1,3})?$"
+              onChange={(e) => {
+                const value = e.target.value
+                if (
+                  value === '' ||
+                  (/^\d*\.?\d{0,3}$/.test(value) &&
+                    Number(value) >= 0 &&
+                    Number(value) <= 100)
+                ) {
+                  handleCustomChange(value)
+                }
+              }}
+            />
+            {customValue && (
+              <span className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground">
+                %
+              </span>
+            )}
+          </div>
         </div>
       </div>
     </div>
