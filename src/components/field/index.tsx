@@ -109,9 +109,10 @@ export const FormField = ({
   } = useFormContext()
   const fieldState = getFieldState(name)
   let errorMessage = ''
-
   if (errors && errors[name]) {
-    errorMessage = errors[name]?.message || getErrorMessage(errors[name])
+    errorMessage = String(
+      errors[name]?.message || getErrorMessage(errors[name])
+    )
   }
 
   return useMemo(

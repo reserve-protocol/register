@@ -11,7 +11,6 @@ import Settings from '@/views/yield-dtf/settings'
 import Staking from '@/views/yield-dtf/staking'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import RTokenContainer from 'state/rtoken/RTokenContainer'
-import { Box } from 'theme-ui'
 import { GOVERNANCE_PROPOSAL_TYPES, ROUTES } from 'utils/constants'
 import Bridge from 'views/bridge'
 import EarnWrapper from 'views/earn'
@@ -21,33 +20,29 @@ import ExploreGovernance from 'views/explorer/components/governance'
 import AvailableRevenue from 'views/explorer/components/revenue'
 import ExploreTokens from 'views/explorer/components/tokens'
 import ExploreTransactions from 'views/explorer/components/transactions'
-import Home from 'views/home'
-import PortfolioWrapper from 'views/portfolio'
 import Terms from 'views/terms'
-import Deploy from './views/deploy'
 import Discover from './views/discover'
 import IndexDTFAuctions from './views/index-dtf/auctions'
 import IndexDTFGovernance from './views/index-dtf/governance'
+import IndexProposal from './views/index-dtf/governance/views/proposal'
+import IndexDTFPropose from './views/index-dtf/governance/views/propose'
+import IndexDTFBasketProposal from './views/index-dtf/governance/views/propose/types/basket'
 import IndexDTFContainer from './views/index-dtf/index-dtf-container'
 import IndexDTFIssuance from './views/index-dtf/issuance'
 import IndexDTFOverview from './views/index-dtf/overview'
 import IndexDTFSettings from './views/index-dtf/settings'
-import AllTokenList from './views/tokens/Tokens'
-import IndexDTFPropose from './views/index-dtf/governance/views/propose'
-import IndexProposal from './views/index-dtf/governance/views/proposal'
-import IndexDTFBasketProposal from './views/index-dtf/governance/views/propose/types/basket'
+import AllYieldDTFList from './views/tokens/Tokens'
 
+// TODO: Remove terms!
+// TODO: Fix recoll call on yield dtf auction page
 const AppRoutes = () => (
   <Routes>
     <Route path={ROUTES.HOME} element={<Discover />} />
-    {/* <Route path={ROUTES.DISCOVER} element={<Discover />} /> */}
     <Route path={ROUTES.BRIDGE} element={<Bridge />} />
-    <Route path={ROUTES.PORTFOLIO} element={<PortfolioWrapper />} />
     <Route path={ROUTES.EARN} element={<EarnWrapper />} />
-    <Route path={ROUTES.DEPLOY} element={<Deploy />} />
     <Route path={ROUTES.DEPLOY_YIELD} element={<DeployYieldDTF />} />
     <Route path={ROUTES.DEPLOY_INDEX} element={<DeployIndexDTF />} />
-    <Route path={ROUTES.TOKENS} element={<AllTokenList />} />
+    <Route path={ROUTES.TOKENS} element={<AllYieldDTFList />} />
     <Route path={ROUTES.TERMS} element={<Terms />} />
     {/* Yield DTF */}
     <Route path={`/:chain/token/:tokenId`} element={<RTokenContainer />}>
@@ -107,7 +102,7 @@ const AppRoutes = () => (
       />
       <Route path={ROUTES.EXPLORER_REVENUE} element={<AvailableRevenue />} />
     </Route>
-    <Route path="*" element={<Box>Not found</Box>} />
+    <Route path="*" element={<div>Not found</div>} />
   </Routes>
 )
 

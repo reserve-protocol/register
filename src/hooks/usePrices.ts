@@ -30,7 +30,7 @@ async function fetchPrices<T>(
 export const useAssetPrices = (tokens?: Address[]) => {
   return useQuery({
     queryKey: ['asset-prices', tokens],
-    queryFn: () => fetchPrices<AssetPrice>('/current/prices?tokens=', tokens),
+    queryFn: () => fetchPrices<AssetPrice>('current/prices?tokens=', tokens),
     staleTime: 5 * 60 * 1000, // Cache for 5 minutes
     retry: 2,
     enabled: !!tokens?.length,
@@ -40,7 +40,7 @@ export const useAssetPrices = (tokens?: Address[]) => {
 export const useDTFPrices = (addresses?: Address[]) => {
   return useQuery({
     queryKey: ['dtf-prices', addresses],
-    queryFn: () => fetchPrices<DTFPrice>('/current/dtfs?addresses=', addresses),
+    queryFn: () => fetchPrices<DTFPrice>('current/dtfs?addresses=', addresses),
     staleTime: 5 * 60 * 1000, // Cache for 5 minutes
     retry: 2,
     enabled: !!addresses?.length,
