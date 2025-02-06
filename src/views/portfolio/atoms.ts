@@ -23,12 +23,14 @@ export interface Lock {
 }
 
 export const portfolioSidebarOpenAtom = atom(false)
+export const portfolioShowRewardsAtom = atom(false)
 export const selectedPortfolioTabAtom = atom<PortfolioTabs>('all')
 export const accountIndexTokensAtom = atom<IndexToken[]>([])
 export const accountStakingTokensAtom = atom<StakingToken[]>([])
 export const accountUnclaimedLocksAtom = atom<Lock[]>([])
 export const accountTokenPricesAtom = atom<Record<Address, number>>({})
 export const rsrBalancesAtom = atom<Record<Chain['id'], bigint>>({})
+export const accountRewardsAtom = atom<Record<Address, Address[]>>({})
 
 export const indexAccountHoldingsAtom = atom<number>((get) => {
   const indexTokens = get(accountIndexTokensAtom)

@@ -1,4 +1,4 @@
-import { Asterisk } from 'lucide-react'
+import { ArrowLeft, Asterisk } from 'lucide-react'
 
 import ChainLogo from '@/components/icons/ChainLogo'
 import WalletOutlineIcon from '@/components/icons/WalletOutlineIcon'
@@ -28,6 +28,7 @@ import {
   accountStakingTokensAtom,
   accountTokenPricesAtom,
   accountUnclaimedLocksAtom,
+  portfolioShowRewardsAtom,
   portfolioSidebarOpenAtom,
   rsrBalancesAtom,
   selectedPortfolioTabAtom,
@@ -37,8 +38,10 @@ import {
   IndexDTFAction,
   StakeRSRAction,
   UnlockAction,
+  VoteLockAction,
   YieldDTFAction,
 } from './components/actions'
+import { Button } from '@/components/ui/button'
 
 const portfolioDismissibleAtom = atom(true)
 
@@ -51,6 +54,7 @@ interface TokenRowProps {
   underlying?: Token
   amount?: bigint
   amountInt?: number
+  onClick?: () => void
 }
 
 function TokenRow({
@@ -62,6 +66,7 @@ function TokenRow({
   underlying,
   usdPrice,
   usdAmount,
+  onClick,
 }: TokenRowProps) {
   const prices = useAtomValue(accountTokenPricesAtom)
   const formattedAmount = formatTokenAmount(
@@ -72,7 +77,13 @@ function TokenRow({
     usdAmount || (tokenPrice ? tokenPrice * Number(formattedAmount) : 0)
 
   return (
-    <div className="flex items-center justify-between py-4">
+    <div
+      className={cn(
+        'flex items-center justify-between py-4',
+        onClick && 'cursor-pointer'
+      )}
+      onClick={onClick}
+    >
       <div className="flex items-center gap-2">
         <div className="relative">
           <TokenLogo
@@ -108,6 +119,7 @@ const PortfolioHeader = () => {
   return (
     <ConnectButton.Custom>
       {({ account, openAccountModal, accountModalOpen }) => {
+        const [showRewards, setShowRewards] = useAtom(portfolioShowRewardsAtom)
         const setDismissible = useSetAtom(portfolioDismissibleAtom)
 
         if (!account) return null
@@ -125,8 +137,17 @@ const PortfolioHeader = () => {
         }
 
         return (
-          <div className="flex items-center gap-2 p-6 pb-2 w-full">
+          <div className="flex items-center gap-2 p-6 pt-[22px] pb-2 w-full">
             <div className="relative flex items-center gap-2">
+              {showRewards && (
+                <Button
+                  variant="outline"
+                  className="rounded-xl px-2 h-9 animate-width-expand"
+                  onClick={() => setShowRewards(false)}
+                >
+                  <ArrowLeft size={20} strokeWidth={1.5} />
+                </Button>
+              )}
               <BlockiesAvatar
                 size={32}
                 address={account.address}
@@ -186,6 +207,7 @@ const PortfolioSummary = () => {
 const VoteLocked = () => {
   const stTokens = useAtomValue(accountStakingTokensAtom)
   const selectedTab = useAtomValue(selectedPortfolioTabAtom)
+  const setShowRewards = useSetAtom(portfolioShowRewardsAtom)
 
   if (!stTokens.length || !['all', 'vote-locked'].includes(selectedTab))
     return null
@@ -200,7 +222,10 @@ const VoteLocked = () => {
           chainId={ChainId.Base} // TODO: change
           amount={stToken.amount}
           underlying={stToken.underlying}
-        />
+          onClick={() => setShowRewards(true)}
+        >
+          <VoteLockAction stToken={stToken.address} chainId={ChainId.Base} />
+        </TokenRow>
       ))}
     </div>
   )
@@ -450,9 +475,14 @@ const PortfolioContent = () => {
   )
 }
 
+const PortfolioRewardsContent = () => {
+  return <div>Rewards</div>
+}
+
 const PortfolioSidebar = ({ children }: { children: ReactNode }) => {
   const setSelectedTab = useSetAtom(selectedPortfolioTabAtom)
   const dismissible = useAtomValue(portfolioDismissibleAtom)
+  const showRewards = useAtomValue(portfolioShowRewardsAtom)
   const [open, setOpen] = useAtom(portfolioSidebarOpenAtom)
 
   return (
@@ -472,7 +502,7 @@ const PortfolioSidebar = ({ children }: { children: ReactNode }) => {
         <DrawerTitle className="w-full">
           <PortfolioHeader />
         </DrawerTitle>
-        <PortfolioContent />
+        {showRewards ? <PortfolioRewardsContent /> : <PortfolioContent />}
       </DrawerContent>
     </Drawer>
   )

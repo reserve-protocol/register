@@ -118,12 +118,18 @@ const config = {
             opacity: '0',
           },
         },
+        'width-expand': {
+          '0%': { transform: 'scaleX(0)', opacity: '0' },
+          '100%': { transform: 'scaleX(1)', opacity: '1' },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
         'fade-in': 'fade-in 0.5s ease-in-out 0s 1 forwards',
         'fade-out': 'fade-out 0.5s ease-in-out 0s 1 forwards',
+        'width-expand':
+          'width-expand 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) forwards',
       },
     },
   },

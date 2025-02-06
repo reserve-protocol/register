@@ -194,3 +194,20 @@ export const UnlockAction = (lock: Lock) => {
   }
   return <CancelLockAction {...lock} />
 }
+
+export const VoteLockAction = ({
+  stToken,
+  chainId,
+}: {
+  stToken: Address
+  chainId: number
+}) => {
+  return (
+    <div className="flex items-center gap-2">
+      <div className="text-sm">
+        <span className="text-muted-foreground">Rewards</span> $
+      </div>
+      <ChevronRight className="h-4 w-4" />
+    </div>
+  )
+}
