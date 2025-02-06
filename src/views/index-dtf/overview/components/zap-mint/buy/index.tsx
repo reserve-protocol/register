@@ -44,7 +44,7 @@ const Buy = () => {
     tokenIn: selectedToken.address,
     tokenOut: indexDTF?.id,
     amountIn: parseUnits(inputAmount, selectedToken.decimals).toString(),
-    slippage: Number(slippage),
+    slippage: isFinite(Number(slippage)) ? Number(slippage) : 10000,
     disabled: insufficientBalance || ongoingTx,
   })
 

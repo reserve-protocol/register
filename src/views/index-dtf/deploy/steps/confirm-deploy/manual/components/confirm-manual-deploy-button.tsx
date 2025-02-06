@@ -112,7 +112,8 @@ const txAtom = atom<
   const basket = get(basketAtom)
   const wallet = get(walletAtom)
 
-  if (!formData || !initialTokens || !wallet) return undefined
+  if (!formData || !initialTokens || isNaN(Number(initialTokens)) || !wallet)
+    return undefined
 
   const folioParams: FolioParams = {
     name: formData.tokenName,
@@ -128,11 +129,11 @@ const txAtom = atom<
   }
 
   const folioConfig: FolioConfig = {
-    auctionDelay: BigInt(Math.floor((formData.auctionDelay || 0)! * 3600)),
-    auctionLength: BigInt(Math.floor((formData.auctionLength || 0)! * 60)),
+    auctionDelay: BigInt(Math.floor((formData.auctionDelay || 0) * 3600)),
+    auctionLength: BigInt(Math.floor((formData.auctionLength || 0) * 60)),
     feeRecipients: calculateRevenueDistribution(formData, wallet, stToken),
-    tvlFee: parseEther(((formData.folioFee || 0)! / 100).toString()),
-    mintFee: parseEther(((formData.mintFee || 0)! / 100).toString()),
+    tvlFee: parseEther(((formData.folioFee || 0) / 100).toString()),
+    mintFee: parseEther(((formData.mintFee || 0) / 100).toString()),
     mandate: formData.mandate || '',
   }
 
@@ -167,27 +168,27 @@ const txAtom = atom<
   }
 
   const ownerGovernanceConfig: GovernanceConfig = {
-    votingDelay: (formData.governanceVotingDelay || 0)! * 86400,
-    votingPeriod: (formData.governanceVotingPeriod || 0)! * 86400,
+    votingDelay: Math.floor((formData.governanceVotingDelay || 0) * 86400),
+    votingPeriod: Math.floor((formData.governanceVotingPeriod || 0) * 86400),
     proposalThreshold: parseEther(
-      (formData.governanceVotingThreshold || 0)!.toString()
+      (formData.governanceVotingThreshold || 0).toString()
     ),
-    quorumPercent: BigInt(Math.floor((formData.governanceVotingQuorum || 0)!)),
+    quorumPercent: BigInt(Math.floor(formData.governanceVotingQuorum || 0)),
     timelockDelay: BigInt(
-      Math.floor((formData.governanceExecutionDelay || 0)! * 86400)
+      Math.floor((formData.governanceExecutionDelay || 0) * 86400)
     ),
     guardians,
   }
 
   const tradingGovernanceConfig: GovernanceConfig = {
-    votingDelay: (formData.basketVotingDelay || 0)! * 3600,
-    votingPeriod: (formData.basketVotingPeriod || 0)! * 3600,
+    votingDelay: Math.floor((formData.basketVotingDelay || 0) * 3600),
+    votingPeriod: Math.floor((formData.basketVotingPeriod || 0) * 3600),
     proposalThreshold: parseEther(
-      (formData.basketVotingThreshold || 0)!.toString()
+      (formData.basketVotingThreshold || 0).toString()
     ),
-    quorumPercent: BigInt(Math.floor((formData.basketVotingQuorum || 0)!)),
+    quorumPercent: BigInt(Math.floor(formData.basketVotingQuorum || 0)),
     timelockDelay: BigInt(
-      Math.floor((formData.basketExecutionDelay || 0)! * 3600)
+      Math.floor((formData.basketExecutionDelay || 0) * 3600)
     ),
     guardians,
   }

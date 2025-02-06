@@ -31,6 +31,7 @@ const CustomInput = ({
         fieldName={fieldName}
         label={customLabel}
         placeholder={customPlaceholder}
+        decimalPlaces={2}
       />
     </div>
   )

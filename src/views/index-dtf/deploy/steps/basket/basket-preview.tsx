@@ -1,7 +1,7 @@
 import { Token } from '@/types'
 import { formatCurrency, shortenAddress } from '@/utils'
 import { useAtomValue, useSetAtom } from 'jotai'
-import { XIcon } from 'lucide-react'
+import { CircleAlert, XIcon } from 'lucide-react'
 import { useFormContext } from 'react-hook-form'
 import { basketAtom } from '../../atoms'
 import BasicInput from '../../components/basic-input'
@@ -42,6 +42,7 @@ const RemoveTokenButton = ({
 const TokenDistribution = ({ tokenIndex }: { tokenIndex: number }) => {
   return (
     <BasicInput
+      type="number"
       className="max-w-32"
       fieldName={`tokensDistribution.${tokenIndex}.percentage`}
       label="%"
@@ -68,8 +69,12 @@ const TokenPreview = ({
     `tokensDistribution.${index}.percentage`,
   ])
 
-  const tokenQty = (initialValue * (tokenDistribution / 100)) / (price || 1)
-  const tokenUSD = tokenQty * (price || 1)
+  const tokenQty =
+    price && price > 0
+      ? (initialValue * (tokenDistribution / 100)) / price
+      : undefined
+  const tokenUSD =
+    tokenQty !== undefined && price ? tokenQty * price : undefined
 
   return (
     <label
@@ -88,23 +93,34 @@ const TokenPreview = ({
         <div className="flex flex-col">
           <div className="text-base font-bold">{name}</div>
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <span className="text-primary">
-              {tokenQty < 1
-                ? formatCurrency(tokenQty, 0, {
-                    maximumSignificantDigits: 4,
-                  })
-                : formatCurrency(tokenQty, 2, {
-                    minimumFractionDigits: 0,
-                  })}{' '}
-              {symbol}
-            </span>
+            {tokenQty !== undefined ? (
+              <span className="text-primary">
+                {tokenQty < 1
+                  ? formatCurrency(tokenQty, 0, {
+                      maximumSignificantDigits: 4,
+                    })
+                  : formatCurrency(tokenQty, 2, {
+                      minimumFractionDigits: 0,
+                    })}{' '}
+                {symbol}
+              </span>
+            ) : (
+              <span className="text-muted-foreground">{symbol}</span>
+            )}
             <span className="text-foreground text-[8px]">•</span>
-            <span className="text-foreground">
-              $
-              {formatCurrency(tokenUSD, 2, {
-                minimumFractionDigits: 0,
-              })}
-            </span>
+            {tokenUSD !== undefined ? (
+              <span className="text-foreground">
+                $
+                {formatCurrency(tokenUSD, 2, {
+                  minimumFractionDigits: 0,
+                })}
+              </span>
+            ) : (
+              <div className="flex items-center gap-1 text-red-500 bg-red-500/10 rounded-full px-2 py-0.5">
+                <CircleAlert size={14} />
+                <span>Price not available</span>
+              </div>
+            )}
             <span className="text-foreground text-[8px]">•</span>
             <ExplorerAddress
               address={address}
