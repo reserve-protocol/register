@@ -119,7 +119,10 @@ const txAtom = atom<
     symbol: formData.symbol,
     assets: basket.map((token) => token.address),
     amounts: basket.map((token) =>
-      parseUnits(tokenAmounts[token.address].toString(), token.decimals)
+      parseUnits(
+        tokenAmounts[token.address].toFixed(token.decimals),
+        token.decimals
+      )
     ),
     initialShares: parseEther(initialTokens),
   }
