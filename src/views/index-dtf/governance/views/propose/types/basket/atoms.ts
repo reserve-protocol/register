@@ -17,14 +17,6 @@ export const tradeRangeOptionAtom = atom<TradeRangeOption | undefined>(
 
 export const permissionlessLaunchingAtom = atom<number | undefined>(undefined)
 
-export const setTradeRangeOptionAtom = atom(
-  null,
-  (get, set, option: TradeRangeOption) => {
-    set(tradeRangeOptionAtom, option)
-    set(permissionlessLaunchingAtom, option === 'defer' ? 0 : undefined)
-  }
-)
-
 // Loaded from basket and modified when asset is added/removed
 export interface IndexAssetShares {
   token: Token

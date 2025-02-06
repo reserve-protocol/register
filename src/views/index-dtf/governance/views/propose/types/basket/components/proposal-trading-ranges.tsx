@@ -6,7 +6,6 @@ import { Asterisk } from 'lucide-react'
 import { useEffect } from 'react'
 import {
   isDeferAvailableAtom,
-  setTradeRangeOptionAtom,
   stepAtom,
   tradeRangeOptionAtom,
   TradeRangeOption as TradeRangeOptionType,
