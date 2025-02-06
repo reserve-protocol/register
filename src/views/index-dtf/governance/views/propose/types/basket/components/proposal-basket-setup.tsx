@@ -104,20 +104,20 @@ const AssetCellInfo = ({ asset }: { asset: IndexAssetShares }) => {
           address={asset.token.address}
           chain={chainId}
         />
-        <Link
-          target="_blank"
-          to={getExplorerLink(
-            asset.token.address,
-            chainId,
-            ExplorerDataType.TOKEN
-          )}
-          className="mr-auto"
-        >
+        <div className="mr-auto">
           <h4 className="font-bold mb-1">{asset.token.symbol}</h4>
-          <p className="text-sm text-legend">
+          <Link
+            to={getExplorerLink(
+              asset.token.address,
+              chainId,
+              ExplorerDataType.TOKEN
+            )}
+            target="_blank"
+            className="text-sm text-legend hover:underline hover:text-primary"
+          >
             {shortenAddress(asset.token.address)}
-          </p>
-        </Link>
+          </Link>
+        </div>
 
         {canFill && (
           <Button variant="ghost" size="icon-rounded" onClick={handleFill}>
