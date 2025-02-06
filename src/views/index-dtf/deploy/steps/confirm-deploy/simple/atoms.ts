@@ -16,7 +16,7 @@ import { Address, parseEther, parseUnits } from 'viem'
 import { basketAtom, daoTokenAddressAtom } from '../../../atoms'
 import { calculateRevenueDistribution } from '../../../utils'
 import { indexDeployFormDataAtom } from '../atoms'
-import { basketRequiredAmountsAtom, initialTokensAtom } from '../manual/atoms'
+import { basketRequiredAmountsAtom } from '../manual/atoms'
 
 export const inputTokenAtom = atom<Token | undefined>(undefined)
 export const inputAmountAtom = atomWithReset<string>('')
@@ -50,21 +50,15 @@ export const zapDeployPayloadAtom = atom<
   const tokenIn = get(inputTokenAtom) || get(defaultInputTokenAtom)
   const amountIn = get(inputAmountAtom)
   const formData = get(indexDeployFormDataAtom)
-  const initialTokens = get(initialTokensAtom)
   const tokenAmounts = get(basketRequiredAmountsAtom)
   const stToken = get(daoTokenAddressAtom)
   const basket = get(basketAtom)
   const wallet = get(walletAtom)
   const slippage = get(slippageAtom)
 
-  if (
-    !formData ||
-    !initialTokens ||
-    !isNaN(Number(initialTokens)) ||
-    !wallet ||
-    !Number(amountIn)
-  )
+  if (!formData || !wallet || !Number(amountIn)) {
     return undefined
+  }
 
   const commonZapParams = {
     tokenIn: tokenIn.address,
