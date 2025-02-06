@@ -41,8 +41,6 @@ const TokenBalance = ({
     setHasBalance(balance >= required)
   }, [balance, required])
 
-  console.log('decimals', { required, balance })
-
   return (
     <div className="flex flex-col text-sm mr-2 ">
       <div className="flex gap-1 justify-end items-center">
