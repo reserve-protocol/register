@@ -5,14 +5,16 @@ import { chainIdAtom, walletAtom } from '@/state/atoms'
 import { formatCurrency, shortenAddress } from '@/utils'
 import { INDEX_DEPLOYER_ADDRESS } from '@/utils/addresses'
 import { basketAtom } from '@/views/index-dtf/deploy/atoms'
-import { useAtomValue } from 'jotai'
+import { useAtomValue, useSetAtom } from 'jotai'
 import { CheckCircle2, Wallet } from 'lucide-react'
 import { Address, erc20Abi, formatUnits, parseUnits } from 'viem'
 import { useReadContract, useWriteContract } from 'wagmi'
 import {
   basketRequiredAmountsAtom,
   formattedAssetsAllowanceAtom,
+  hasBalanceAtom,
 } from '../atoms'
+import { useEffect } from 'react'
 
 const TokenBalance = ({
   address,
@@ -24,6 +26,7 @@ const TokenBalance = ({
   required: number
 }) => {
   const wallet = useAtomValue(walletAtom)
+  const setHasBalance = useSetAtom(hasBalanceAtom)
   const { data } = useReadContract({
     abi: erc20Abi,
     address,
@@ -33,6 +36,10 @@ const TokenBalance = ({
   })
 
   const balance = Number(formatUnits(data ?? 0n, decimals))
+
+  useEffect(() => {
+    setHasBalance(balance >= required)
+  }, [balance, required])
 
   return (
     <div className="flex flex-col text-sm mr-2 ">

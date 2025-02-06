@@ -10,6 +10,8 @@ export const initialTokensAtom = atomWithReset<string>('1')
 
 export const assetsAllowanceAtom = atom<Record<string, bigint>>({})
 
+export const hasBalanceAtom = atom(false)
+
 export const formattedAssetsAllowanceAtom = atom<Record<string, number>>(
   (get) => {
     const basket = get(basketAtom)

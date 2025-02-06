@@ -28,6 +28,7 @@ import { indexDeployFormDataAtom } from '../../atoms'
 import {
   basketRequiredAmountsAtom,
   hasAssetsAllowanceAtom,
+  hasBalanceAtom,
   initialTokensAtom,
 } from '../atoms'
 
@@ -214,10 +215,14 @@ const ConfirmManualDeployButton = () => {
   const tx = useAtomValue(txAtom)
   const daoCreated = useAtomValue(daoCreatedAtom)
   const hasAssetsAllowance = useAtomValue(hasAssetsAllowanceAtom)
+  const hasBalance = useAtomValue(hasBalanceAtom)
   const setDeployedDTF = useSetAtom(deployedDTFAtom)
 
   const { isReady, hash, validationError, error, isLoading, write } =
-    useContractWrite({ ...tx, query: { enabled: !!hasAssetsAllowance } })
+    useContractWrite({
+      ...tx,
+      query: { enabled: !!hasAssetsAllowance && hasBalance },
+    })
 
   const { data: receipt, error: txError } = useWaitForTransactionReceipt({
     hash,
@@ -243,6 +248,10 @@ const ConfirmManualDeployButton = () => {
 
   if (!hasAssetsAllowance) {
     title = 'Pending allowance...'
+  }
+
+  if (hasAssetsAllowance && !hasBalance) {
+    title = 'Insufficient asset balance'
   }
 
   return (
