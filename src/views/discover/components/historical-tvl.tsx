@@ -13,12 +13,20 @@ import {
 import { Box, Card, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { DUNE_DASHBOARD, NETWORKS, capitalize } from 'utils/constants'
-import useHistoricalTVL from '@/views/home/hooks/useHistoricalTVL'
+import useHistoricalTVL, {
+  DailyTVL,
+  DEFAULT_TVL_BY_CHAIN,
+} from '@/views/home/hooks/useHistoricalTVL'
 import useProtocolMetrics from '@/views/home/hooks/useProtocolMetrics'
 import { Button } from '@/components/ui/button'
 import { ArrowRight, Play } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import tabIndex from '../assets/tab_index.jpg'
+import useDTFHistoricalTVL, {
+  DTFStats,
+  DTFStatsSnapshot,
+} from '../hooks/use-dtf-historical-tvl'
+import { useMemo } from 'react'
 
 const COLORS: Record<string, any> = {
   ethereum: {
@@ -122,13 +130,29 @@ function CustomTooltip({ payload, label, active }: any) {
   )
 }
 
-const Heading = () => {
+const Heading = ({ dtfStats }: { dtfStats?: DTFStats }) => {
   const {
-    data: { tvl, rsrStakerAnnualizedRevenue, rTokenAnnualizedRevenue },
+    data: { tvl: rTVL, rsrStakerAnnualizedRevenue, rTokenAnnualizedRevenue },
     isLoading,
   } = useProtocolMetrics()
 
-  const revenue = rsrStakerAnnualizedRevenue + rTokenAnnualizedRevenue
+  const revenue =
+    rsrStakerAnnualizedRevenue +
+    rTokenAnnualizedRevenue +
+    Object.keys(NETWORKS).reduce((revenue, chain) => {
+      if (!dtfStats || !dtfStats[chain] || dtfStats[chain].length === 0) {
+        return revenue
+      }
+      return revenue + dtfStats[chain].slice(-1)[0].revenue
+    }, 0)
+  const tvl =
+    rTVL +
+    Object.keys(NETWORKS).reduce((tvl, chain) => {
+      if (!dtfStats || !dtfStats[chain] || dtfStats[chain].length === 0) {
+        return tvl
+      }
+      return tvl + dtfStats[chain].slice(-1)[0].tvl
+    }, 0)
 
   return (
     <>
@@ -186,14 +210,47 @@ const Heading = () => {
   )
 }
 
-const HistoricalTVLChart = () => {
-  // TODO(jg): Add DTF TVL
+const HistoricalTVLChart = ({ dtfStats }: { dtfStats?: DTFStats }) => {
   const data = useHistoricalTVL()
+
+  const updated = useMemo(() => {
+    if (data.length == 0 || !dtfStats) {
+      return data
+    }
+
+    const lookup: Record<number, DailyTVL> = {}
+
+    for (const key in NETWORKS) {
+      const k = key as keyof typeof NETWORKS
+      if (!dtfStats[k]) {
+        continue
+      }
+      for (const entry of dtfStats[k]) {
+        const { timestamp, tvl } = entry
+        const ts = timestamp * 1_000
+        if (!lookup[timestamp]) {
+          lookup[ts] = { day: ts, ...DEFAULT_TVL_BY_CHAIN }
+        }
+        lookup[ts][k] = (lookup[ts][k] || 0) + tvl
+      }
+    }
+
+    return data.map((entry) => {
+      const updatedValues = lookup[entry.day] || {}
+      const newEntry = { ...entry }
+
+      for (const key in NETWORKS) {
+        newEntry[key] = (entry[key] || 0) + (updatedValues[key] || 0)
+      }
+
+      return newEntry
+    })
+  }, [data, dtfStats])
 
   return (
     <ResponsiveContainer width="100%" height="100%">
       <AreaChart
-        data={data}
+        data={updated}
         margin={{
           right: 0,
           bottom: -30,
@@ -221,13 +278,14 @@ const HistoricalTVLChart = () => {
 }
 
 const HistoricalTVL = () => {
+  const { data: dtfStats } = useDTFHistoricalTVL()
   return (
     <div className="container px-0 2xl:px-6 h-80 sm:h-[520px]">
       <div className="relative h-full flex flex-col justify-end ">
         <div className="h-[160px] sm:h-[420px]">
-          <HistoricalTVLChart />
+          <HistoricalTVLChart dtfStats={dtfStats} />
         </div>
-        <Heading />
+        <Heading dtfStats={dtfStats} />
       </div>
     </div>
   )
