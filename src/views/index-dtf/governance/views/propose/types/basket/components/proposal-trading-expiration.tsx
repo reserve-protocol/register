@@ -1,7 +1,11 @@
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
-import { Asterisk } from 'lucide-react'
+import { NumericalInput } from '@/components/ui/input'
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
+import { cn } from '@/lib/utils'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { Asterisk } from 'lucide-react'
+import { useEffect, useMemo } from 'react'
 import {
   customPermissionlessLaunchingWindowAtom,
   dtfTradeDelay,
@@ -13,11 +17,6 @@ import {
   stepAtom,
   tradeRangeOptionAtom,
 } from '../atoms'
-import { cn } from '@/lib/utils'
-import { useEffect, useMemo } from 'react'
-import { parseDuration } from '@/utils'
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
-import { NumericalInput } from '@/components/ui/input'
 
 enum PermissionOptionId {
   NO_PERMISSIONLESS_LAUNCHING = 0,
@@ -104,7 +103,7 @@ const NextButton = () => {
   )
 }
 
-const WINDOW_OPTIONS = ['2', '6', '24']
+const WINDOW_OPTIONS = ['12', '24', '36', '48']
 
 const PermissionlessWindow = () => {
   const selectedPermission = useAtomValue(permissionlessLaunchingAtom)
@@ -166,15 +165,17 @@ const ProposalTradingExpiration = () => {
     () => [
       {
         id: PermissionOptionId.NO_PERMISSIONLESS_LAUNCHING,
-        title: "Don't allow permissionless launching",
-        description: `A trade should expire if the trade launcher does not launch within their ${parseDuration(Number(tradeDelay))} window.`,
+        title: 'Auction Launchers',
+        description:
+          'Only Auction Launchers will be able to start auctions. After the exclusive launch window for Auction Launcher, any remaining auctions to started will expire.',
         icon: <Asterisk size={24} strokeWidth={1.5} />,
         disabled: !isDeferAvailable,
       },
       {
         id: PermissionOptionId.PERMISSIONLESS_LAUNCHING,
-        title: 'Allow permissionless launching',
-        description: `Defined as the duration after ${parseDuration(Number(tradeDelay))} when anyone can start an auction.`,
+        title: 'Auction Launcher + Community',
+        description:
+          'Both Auction Launchers AND community members can start auctions. Auction Launchers will still have an Exclusive Launch Window, but afterward anyone in the community can start an auction. Please specify how long community members should be allow to start auctions after the Exclusive Launch Window. ',
         icon: <Asterisk size={24} strokeWidth={1.5} />,
         disabled: priceRangeOption === 'defer',
       },
@@ -193,8 +194,8 @@ const ProposalTradingExpiration = () => {
   return (
     <>
       <p className="text-sm sm:text-base mx-4 sm:mx-6 mb-6">
-        Set the new desired percentages and we will calculate the required
-        trades needed to adopt the new basket if the proposal passes governance.
+        Who will be able to launch auctions and how long will they have before
+        the auctions expire.
       </p>
       <div className="flex flex-col gap-2 mx-2">
         {permissionOptions.map((option) => (
