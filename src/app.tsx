@@ -1,5 +1,5 @@
-import RouteAnalytics from '@/components/utils/route-analytics'
 import ToastContainer from '@/components/old/toaster-container/ToastContainer'
+import RouteAnalytics from '@/components/utils/route-analytics'
 import TransactionSidebar from 'components/transactions/manager/TransactionSidebar'
 import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
 import { useEffect } from 'react'
@@ -61,16 +61,45 @@ const handleError = (error: Error) => {
   }
 }
 
+function FallbackUI({
+  error,
+  resetErrorBoundary,
+}: {
+  error: Error
+  resetErrorBoundary: () => void
+}) {
+  return (
+    <div className="bg-secondary flex flex-col gap-4 justify-center items-center">
+      <div className="bg-card container rounded-3xl p-4">
+        <h1 className="text-3xl text-center mb-2">
+          An unexpected error ocurred
+        </h1>
+        <p className="text-destructive">Error: {error.message}</p>
+        <code className="text-sm bg-muted p-4 block whitespace-pre-wrap rounded-lg font-mono overflow-x-auto">
+          {error.stack}
+        </code>
+        <div className="flex justify-center mt-4 items-center gap-2">
+          <button
+            onClick={() => {
+              window.location.reload()
+            }}
+            className="bg-primary text-primary-foreground rounded-full px-4 py-2"
+          >
+            Reload page
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 /**
  * App Entry point
  *
  * @returns {JSX.Element}
  */
 const App = () => (
-  <ErrorBoundary
-    fallback={<div>Something went wrong</div>}
-    onError={handleError}
-  >
+  <ErrorBoundary FallbackComponent={FallbackUI} onError={handleError}>
     <Router>
       <RouteAnalytics />
       <Redirects />

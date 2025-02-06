@@ -31,6 +31,7 @@ import {
 } from '../atoms'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { Link } from 'react-router-dom'
+import { useEffect } from 'react'
 
 const assetsAtom = atom((get) => {
   const proposedBasket = get(proposedIndexBasketAtom)
