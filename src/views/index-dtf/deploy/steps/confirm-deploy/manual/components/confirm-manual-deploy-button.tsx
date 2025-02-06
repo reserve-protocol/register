@@ -216,7 +216,7 @@ const ConfirmManualDeployButton = () => {
   const hasAssetsAllowance = useAtomValue(hasAssetsAllowanceAtom)
   const setDeployedDTF = useSetAtom(deployedDTFAtom)
 
-  const { isReady, gas, hash, validationError, error, isLoading, write } =
+  const { isReady, hash, validationError, error, isLoading, write } =
     useContractWrite({ ...tx, query: { enabled: !!hasAssetsAllowance } })
 
   const { data: receipt, error: txError } = useWaitForTransactionReceipt({
@@ -239,15 +239,21 @@ const ConfirmManualDeployButton = () => {
     }
   }, [receipt])
 
+  let title = isReady ? 'Create DTF' : 'Preparing transaction...'
+
+  if (!hasAssetsAllowance) {
+    title = 'Pending allowance...'
+  }
+
   return (
-    <div>
+    <div className="pt-2 border-t">
       <TransactionButton
         disabled={!isReady}
-        gas={gas}
+        gas={undefined}
         loading={isLoading || !!hash}
         loadingText={!!hash ? 'Confirming tx...' : 'Pending, sign in wallet'}
         onClick={write}
-        text={isReady ? 'Deploy' : 'Preparing deploy...'}
+        text={title}
         fullWidth
         error={validationError || error || txError}
       />
