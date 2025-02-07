@@ -4,7 +4,6 @@ import TransactionError from 'components/transaction-error/TransactionError'
 import useContractWrite from 'hooks/useContractWrite'
 import { useGasAmount } from 'hooks/useGasEstimate'
 import useNotification from 'hooks/useNotification'
-import useSwitchChain from 'hooks/useSwitchChain'
 import useWatchTransaction from 'hooks/useWatchTransaction'
 import { useAtomValue } from 'jotai'
 import { useEffect } from 'react'
@@ -13,7 +12,7 @@ import { chainIdAtom, walletAtom, walletChainAtom } from 'state/atoms'
 import { Box, BoxProps, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { CHAIN_TAGS } from 'utils/constants'
-import { UseSimulateContractParameters } from 'wagmi'
+import { UseSimulateContractParameters, useSwitchChain } from 'wagmi'
 import Button, { ButtonProps, LoadingButton, LoadingButtonProps } from '.'
 
 interface TransactionButtonProps extends LoadingButtonProps {
@@ -61,7 +60,7 @@ export const TransactionButtonContainer = ({
   const walletChain = useAtomValue(walletChainAtom)
   const chainId = useAtomValue(chainIdAtom)
   const isInvalidWallet = walletChain !== (chain || chainId)
-  const switchChain = useSwitchChain()
+  const { switchChain } = useSwitchChain()
   let Component = children
 
   if (!wallet) {
@@ -72,7 +71,7 @@ export const TransactionButtonContainer = ({
         variant="accentAction"
         fullWidth
         onClick={() => {
-          switchChain(chain || chainId)
+          switchChain({ chainId: chain || chainId })
         }}
       >
         <Text>Switch to {CHAIN_TAGS[chain || chainId]}</Text>
@@ -95,7 +94,7 @@ const TransactionButton = ({
   const address = useAtomValue(walletAtom)
   const walletChain = useAtomValue(walletChainAtom)
   const chainId = useAtomValue(chainIdAtom)
-  const switchChain = useSwitchChain()
+  const { switchChain } = useSwitchChain()
   const isInvalidWallet = chain
     ? chain !== chainId || walletChain !== chain
     : walletChain !== chainId
@@ -111,10 +110,10 @@ const TransactionButton = ({
         disabled={false}
         onClick={() => {
           if (chain && chain !== chainId) {
-            switchChain(chain)
+            switchChain({ chainId: chain })
           }
 
-          switchChain(chain || chainId)
+          switchChain({ chainId: chain || chainId })
         }}
       >
         <Text>Switch to {CHAIN_TAGS[chain || chainId]}</Text>

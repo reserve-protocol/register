@@ -442,6 +442,7 @@ const useBasketProposalContext = (
 
   return useMemo(() => {
     if (
+      isThereMissingTokens === undefined ||
       (isThereMissingTokens && (!newPrices || !newTokensInfo)) ||
       !dtf ||
       !basket
@@ -468,6 +469,7 @@ const useBasketProposalContext = (
       ),
       ...newTokensInfo,
     }
+
     const dtfPrice = allPrices[dtf?.toLowerCase() ?? ''] ?? 0
     // Create initial estimated basket
     const estimatedBasket = Object.entries(allTokens).reduce(
@@ -578,6 +580,15 @@ const BasketProposalPreview = ({
     prices,
     trades
   )
+
+  console.log('basketProposalContext', {
+    address,
+    basket,
+    shares,
+    prices,
+    trades,
+    basketProposalContext,
+  })
 
   return (
     <Tabs
