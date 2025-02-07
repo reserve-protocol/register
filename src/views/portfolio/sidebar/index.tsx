@@ -42,6 +42,7 @@ import {
   VoteLockAction,
   YieldDTFAction,
   RewardAction,
+  ClaimAllButton,
 } from './components/actions'
 import { Button } from '@/components/ui/button'
 
@@ -213,6 +214,7 @@ const VoteLocked = () => {
   const stTokens = useAtomValue(accountStakingTokensAtom)
   const selectedTab = useAtomValue(selectedPortfolioTabAtom)
   const setShowRewards = useSetAtom(portfolioShowRewardsAtom)
+  const accountRewards = useAtomValue(accountRewardsAtom)
 
   if (!stTokens.length || !['all', 'vote-locked'].includes(selectedTab))
     return null
@@ -227,9 +229,15 @@ const VoteLocked = () => {
           chainId={ChainId.Base} // TODO: change
           amount={stToken.amount}
           underlying={stToken.underlying}
-          onClick={() => setShowRewards(true)}
+          onClick={
+            !!accountRewards[stToken.address]?.length
+              ? () => setShowRewards(true)
+              : undefined
+          }
         >
-          <VoteLockAction stToken={stToken.address} chainId={ChainId.Base} />
+          {!!accountRewards[stToken.address]?.length && (
+            <VoteLockAction stToken={stToken.address} chainId={ChainId.Base} />
+          )}
         </TokenRow>
       ))}
     </div>
@@ -503,8 +511,13 @@ const PortfolioRewardsContent = () => {
               chainId={chainId}
               amount={stToken.amount}
               underlying={stToken.underlying}
-              className="first:[&>div]:flex-col first:[&>div]:items-start p-2 text-xl"
-            />
+              className="[&>div]:flex-col [&>div]:items-start p-2 text-xl items-end mb-1.5"
+            >
+              <ClaimAllButton
+                stTokenAddress={stToken.address}
+                rewards={stToken.rewards}
+              />
+            </TokenRow>
             {stToken.rewards.map((reward, idx) => (
               <TokenRow
                 key={idx}
@@ -514,7 +527,10 @@ const PortfolioRewardsContent = () => {
                 usdAmount={reward.accruedUSD}
                 className="p-2"
               >
-                <RewardAction reward={reward} />
+                <RewardAction
+                  stTokenAddress={stToken.address}
+                  reward={reward}
+                />
               </TokenRow>
             ))}
           </div>

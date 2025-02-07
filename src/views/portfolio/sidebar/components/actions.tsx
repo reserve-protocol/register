@@ -15,6 +15,7 @@ import {
 } from 'wagmi'
 import {
   type Lock,
+  RewardToken,
   accountRewardsAtom,
   accountTokenPricesAtom,
 } from '../../atoms'
@@ -242,10 +243,29 @@ export const VoteLockAction = ({
 }
 
 export const RewardAction = ({
+  stTokenAddress,
   reward,
 }: {
-  reward: { accruedUSD?: number }
+  stTokenAddress: Address
+  reward: RewardToken
 }) => {
+  const { writeContract, data: hash, isPending } = useWriteContract()
+
+  const write = () => {
+    writeContract({
+      abi: dtfIndexStakingVault,
+      functionName: 'claimRewards',
+      address: stTokenAddress,
+      args: [[reward.address]],
+    })
+  }
+
+  const { data: receipt } = useWaitForTransactionReceipt({
+    hash,
+  })
+
+  const loading = !receipt && (isPending || !!hash || (hash && !receipt))
+
   return (
     <div className="flex items-center gap-2">
       <span className="text-sm">
@@ -254,12 +274,62 @@ export const RewardAction = ({
           : '$0'}
       </span>
       <Button
+        onClick={write}
+        disabled={receipt?.status === 'success' || loading}
         variant="outline"
-        size="sm"
         className="rounded-full text-sm hover:text-primary text-primary disabled:border-border border-primary"
+        size="sm"
       >
-        Claim
+        {loading
+          ? !!hash
+            ? 'Confirming tx...'
+            : 'Pending, sign in wallet'
+          : receipt?.status === 'success'
+            ? 'Claimed'
+            : 'Claim'}
       </Button>
     </div>
+  )
+}
+
+export const ClaimAllButton = ({
+  stTokenAddress,
+  rewards,
+}: {
+  stTokenAddress: Address
+  rewards: RewardToken[]
+}) => {
+  const { writeContract, data: hash, isPending } = useWriteContract()
+
+  const write = () => {
+    writeContract({
+      abi: dtfIndexStakingVault,
+      functionName: 'claimRewards',
+      address: stTokenAddress,
+      args: [rewards.map(({ address }) => address)],
+    })
+  }
+
+  const { data: receipt } = useWaitForTransactionReceipt({
+    hash,
+  })
+
+  const loading = !receipt && (isPending || !!hash || (hash && !receipt))
+
+  return (
+    <Button
+      onClick={write}
+      disabled={receipt?.status === 'success' || loading}
+      className="rounded-full text-sm"
+      size="sm"
+    >
+      {loading
+        ? !!hash
+          ? 'Confirming tx...'
+          : 'Pending, sign in wallet'
+        : receipt?.status === 'success'
+          ? 'Claimed'
+          : 'Claim All'}
+    </Button>
   )
 }
