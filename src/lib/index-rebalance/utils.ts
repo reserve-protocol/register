@@ -1,4 +1,7 @@
-import { D9, D9n, D18n, D27, D27n } from './numbers'
+import { Decimal } from 'decimal.js-light'
+
+import { D9d, D18n, D27d } from './numbers'
+import { Auction } from './types'
 
 /**
  * @param limit D27{tok/share} Range.buyLimit or Range.sellLimit
@@ -15,21 +18,26 @@ export const getBasketPortion = (
   _sharePrice: number
 ): [number, bigint] => {
   // D27{USD/share} = {USD/wholeShare} * D27 / {share/wholeShare}
-  const sharePrice = BigInt(Math.round(_sharePrice * D9))
+  const sharePrice = BigInt(new Decimal(_sharePrice).mul(D9d).toFixed(0))
 
   // D27{USD/tok} = {USD/wholeTok} * D27 / {tok/wholeTok}
-  const price = BigInt(Math.round(_price * D27)) / 10n ** decimals
+  const price = BigInt(
+    new Decimal(_price)
+      .mul(D27d)
+      .div(new Decimal(`1e${decimals}`))
+      .toFixed(0)
+  )
 
   // D27{1} = D27{tok/share} * D27{USD/tok} / D27{USD/share}
   const portion = (limit * price) / sharePrice
 
-  return [Number(portion) / D27, portion]
+  return [new Decimal(portion.toString()).div(D27d).toNumber(), portion]
 }
 
 /**
  * @param bals {tok} Current balances
  * @param decimals Decimals of each token
- * @param prices {USD/wholeTok} USD prices for each *whole* token
+ * @param _prices {USD/wholeTok} USD prices for each *whole* token
  * @returns D18{1} Current basket, total will be around 1e18 but not exactly
  */
 export const getCurrentBasket = (
@@ -38,7 +46,14 @@ export const getCurrentBasket = (
   _prices: number[]
 ): bigint[] => {
   // D27{USD/tok} = {USD/wholeTok} * D27 / {tok/wholeTok}
-  const prices = _prices.map((a, i) => BigInt(a * D27) / 10n ** decimals[i])
+  const prices = _prices.map((a, i) =>
+    BigInt(
+      new Decimal(a)
+        .mul(D27d)
+        .div(new Decimal(`1e${decimals[i]}`))
+        .toFixed(0)
+    )
+  )
 
   // D27{USD} = {tok} * D27{USD/tok}
   const values = bals.map((bal, i) => bal * prices[i])
@@ -54,7 +69,7 @@ export const getCurrentBasket = (
  * @param supply {share} DTF supply
  * @param bals {tok} Current balances
  * @param decimals Decimals of each token
- * @param prices {USD/wholeTok} USD prices for each *whole* token
+ * @param _prices {USD/wholeTok} USD prices for each *whole* token
  * @returns sharesValue D27{USD} Estimated USD value of all the shares
  * @returns sharePrice {USD/wholeShare} Estimated USD value of each *whole* share
  */
@@ -65,19 +80,29 @@ export const getSharePricing = (
   _prices: number[]
 ): [bigint, number] => {
   // D27{USD/tok} = {USD/wholeTok} * D27 / {tok/wholeTok}
-  const prices = _prices.map((a, i) => BigInt(a * D27) / 10n ** decimals[i])
+  const prices = _prices.map((a, i) =>
+    BigInt(
+      new Decimal(a)
+        .mul(D27d)
+        .div(new Decimal(`1e${decimals[i]}`))
+        .toFixed(0)
+    )
+  )
 
   // D27{USD} = {tok} * D27{USD/tok}
   const values = bals.map((bal, i) => bal * prices[i])
   const total = values.reduce((a, b) => a + b)
 
   // {USD/wholeShare} = D27{USD} / (D18{wholeShare} * D9)
-  const per = Number(total) / Number(supply * D9n)
+  // const per = Number(total) / Number(supply * D9n);
+  const per = new Decimal(total.toString())
+    .div(new Decimal(supply.toString()).mul(D9d))
+    .toNumber()
 
   return [total, per]
 }
 
-export const makeTrade = (
+export const makeAuction = (
   sell: string,
   buy: string,
   sellLimit: bigint,
@@ -85,31 +110,45 @@ export const makeTrade = (
   startPrice: bigint,
   endPrice: bigint,
   avgPriceError: bigint = 0n
-) => {
+): Auction => {
+  if (sellLimit >= 10n ** 54n) {
+    sellLimit = 10n ** 54n
+  }
+  if (buyLimit >= 10n ** 54n) {
+    buyLimit = 10n ** 54n
+  }
+  if (startPrice >= 10n ** 54n || endPrice >= 10n ** 54n) {
+    throw new Error(`price outside 1e54 range [${startPrice}, ${endPrice}]`)
+  }
+
   return {
     sell: sell,
     buy: buy,
     sellLimit: {
       spot: sellLimit,
-      low: (sellLimit * (D27n - avgPriceError)) / D27n,
+      low:
+        avgPriceError >= D18n
+          ? 0n
+          : (sellLimit * (D18n - avgPriceError)) / D18n,
       high:
-        avgPriceError >= D27n
+        avgPriceError >= D18n
           ? 10n ** 54n
-          : (sellLimit * D27n + D27n - avgPriceError - 1n) /
-            (D27n - avgPriceError),
+          : (sellLimit * D18n + D18n - avgPriceError - 1n) /
+            (D18n - avgPriceError),
     },
     buyLimit: {
       spot: buyLimit,
-      low: (buyLimit * (D27n - avgPriceError)) / D27n,
+      low:
+        avgPriceError >= D18n ? 1n : (buyLimit * (D18n - avgPriceError)) / D18n,
       high:
-        avgPriceError >= D27n
+        avgPriceError >= D18n
           ? 10n ** 54n
-          : (buyLimit * D27n + D27n - avgPriceError - 1n) /
-            (D27n - avgPriceError),
+          : (buyLimit * D18n + D18n - avgPriceError - 1n) /
+            (D18n - avgPriceError),
     },
     prices: {
-      start: startPrice,
-      end: endPrice,
+      start: avgPriceError == D18n ? 0n : startPrice,
+      end: avgPriceError == D18n ? 0n : endPrice,
     },
   }
 }

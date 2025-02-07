@@ -157,7 +157,9 @@ const RemainingAllocation = () => {
   return (
     <div className="text-base ml-auto px-6">
       <span className="text-muted-foreground">Remaining allocation:</span>{' '}
-      <span className={isNegative ? 'text-red-500' : ''}>{displayValue}%</span>
+      <span className={isNegative ? 'text-red-500' : ''}>
+        {isNegative ? `-${displayValue}` : displayValue}%
+      </span>
     </div>
   )
 }

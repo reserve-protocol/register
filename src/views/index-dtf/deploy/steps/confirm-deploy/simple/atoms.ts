@@ -73,7 +73,7 @@ export const zapDeployPayloadAtom = atom<
     assets: basket.map((token) => token.address),
     amounts: basket.map((token) =>
       parseUnits(
-        tokenAmounts[token.address]?.toString() || '0',
+        tokenAmounts[token.address].toFixed(token.decimals),
         token.decimals
       ).toString()
     ),

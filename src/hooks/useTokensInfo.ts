@@ -1,26 +1,32 @@
+import { chainIdAtom } from '@/state/atoms'
 import { Token } from '@/types'
-import { useMemo } from 'react'
+import { useAtomValue } from 'jotai'
 import { Address } from 'viem'
 import { erc20Abi } from 'viem'
 import { useReadContracts } from 'wagmi'
 
 const useTokensInfo = (addresses: string[]) => {
+  const chainId = useAtomValue(chainIdAtom)
+
   return useReadContracts({
     contracts: addresses.flatMap((address) => [
       {
         address: address as Address,
         abi: erc20Abi,
         functionName: 'name',
+        chainId,
       },
       {
         address: address as Address,
         abi: erc20Abi,
         functionName: 'symbol',
+        chainId,
       },
       {
         address: address as Address,
         abi: erc20Abi,
         functionName: 'decimals',
+        chainId,
       },
     ]),
     allowFailure: false,

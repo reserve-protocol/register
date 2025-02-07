@@ -31,6 +31,7 @@ import {
 } from '../atoms'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { Link } from 'react-router-dom'
+import { useEffect } from 'react'
 
 const assetsAtom = atom((get) => {
   const proposedBasket = get(proposedIndexBasketAtom)
@@ -103,20 +104,21 @@ const AssetCellInfo = ({ asset }: { asset: IndexAssetShares }) => {
           address={asset.token.address}
           chain={chainId}
         />
-        <Link
-          target="_blank"
-          to={getExplorerLink(
-            asset.token.address,
-            chainId,
-            ExplorerDataType.TOKEN
-          )}
-          className="mr-auto"
-        >
+        <div className="mr-auto">
           <h4 className="font-bold mb-1">{asset.token.symbol}</h4>
-          <p className="text-sm text-legend">
+          <Link
+            to={getExplorerLink(
+              asset.token.address,
+              chainId,
+              ExplorerDataType.TOKEN
+            )}
+            tabIndex={-1}
+            target="_blank"
+            className="text-sm text-legend hover:underline hover:text-primary"
+          >
             {shortenAddress(asset.token.address)}
-          </p>
-        </Link>
+          </Link>
+        </div>
 
         {canFill && (
           <Button variant="ghost" size="icon-rounded" onClick={handleFill}>
@@ -301,8 +303,11 @@ const ProposalBasketSetup = () => {
   return (
     <>
       <p className="text-sm sm:text-base mx-4 sm:mx-6 mb-6">
-        Set the new desired percentages and we will calculate the required
-        trades needed to adopt the new basket if the proposal passes governance.
+        Enter the updated weights for the tokens in the basket. Remember, the
+        weights represent the proportion of each token relative to the total USD
+        value of basket at the time of the proposal. We will calculate the
+        required auctions needed to adopt the new basket if the proposal passes
+        governance.
       </p>
       <div className="flex flex-col gap-2 mx-2">
         <ProposalBasketTable />

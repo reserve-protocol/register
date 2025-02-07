@@ -1,6 +1,6 @@
 import TokenLogo from '@/components/token-logo'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
-import { Trade } from '@/lib/index-rebalance/types'
+import { Auction } from '@/lib/index-rebalance/types'
 import { getBasketPortion } from '@/lib/index-rebalance/utils'
 import { cn } from '@/lib/utils'
 import { chainIdAtom } from '@/state/atoms'
@@ -15,7 +15,7 @@ import {
 } from '../atoms'
 import { iTokenAddressAtom } from '@/state/dtf/atoms'
 
-type ProposedTradeWithMeta = Trade & {
+type ProposedTradeWithMeta = Auction & {
   index: number
   token: Token
   shares: number

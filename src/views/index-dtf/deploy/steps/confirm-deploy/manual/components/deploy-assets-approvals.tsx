@@ -60,7 +60,7 @@ const TokenBalance = ({
             balance >= required ? 'text-success' : 'text-destructive'
           )}
         >
-          {formatCurrency(required, 1, {
+          {formatCurrency(required, 9, {
             notation: 'compact',
             compactDisplay: 'short',
           })}
