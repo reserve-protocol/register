@@ -23,7 +23,8 @@ export interface Lock {
 }
 
 export interface RewardToken extends Token {
-  balance: bigint
+  accrued: bigint
+  accruedUSD?: number
 }
 
 export const portfolioSidebarOpenAtom = atom(false)

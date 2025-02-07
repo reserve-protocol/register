@@ -6,6 +6,7 @@
     "skipLibCheck": true,
     "esModuleInterop": true,
     "strict": true,
+    "strictNullChecks": true,
     "forceConsistentCasingInFileNames": true,
     "module": "ESNext",
     "moduleResolution": "Bundler",
