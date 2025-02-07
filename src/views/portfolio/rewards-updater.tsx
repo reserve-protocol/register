@@ -61,18 +61,18 @@ const RewardsUpdater = () => {
   const stTokens = useAtomValue(accountStakingTokensAtom)
   const setRewards = useSetAtom(accountRewardsAtom)
 
-  // const rewardsData = rewardsDataMock
+  const rewardsData = rewardsDataMock
 
-  const { data: rewardsData } = useReadContracts({
-    contracts: stTokens.map((stToken) => ({
-      address: stToken.address,
-      abi: getAllRewardTokensAbi,
-      functionName: 'getAllRewardTokens',
-      chainId: ChainId.Base,
-    })),
-    allowFailure: false,
-    query: { enabled: stTokens.length > 0 && !!account },
-  })
+  // const { data: rewardsData } = useReadContracts({
+  //   contracts: stTokens.map((stToken) => ({
+  //     address: stToken.address,
+  //     abi: getAllRewardTokensAbi,
+  //     functionName: 'getAllRewardTokens',
+  //     chainId: ChainId.Base,
+  //   })),
+  //   allowFailure: false,
+  //   query: { enabled: stTokens.length > 0 && !!account },
+  // })
 
   const rewardsMap = useMemo(() => {
     if (!rewardsData) return {}
@@ -88,41 +88,41 @@ const RewardsUpdater = () => {
     Object.values(rewardsMap).flat() || []
   )
 
-  // const accruedRewards = accruedRewardsMock
+  const accruedRewards = accruedRewardsMock
 
-  const { data: accruedRewards } = useReadContracts({
-    contracts: Object.entries(rewardsMap).flatMap(([stToken, rewards]) =>
-      rewards.flatMap((reward) => [
-        {
-          address: reward,
-          abi: erc20Abi,
-          functionName: 'symbol',
-          chainId: ChainId.Base,
-        },
-        {
-          address: reward,
-          abi: erc20Abi,
-          functionName: 'name',
-          chainId: ChainId.Base,
-        },
-        {
-          address: reward,
-          abi: erc20Abi,
-          functionName: 'decimals',
-          chainId: ChainId.Base,
-        },
-        {
-          address: stToken as Address,
-          abi: dtfIndexStakingVaultAbi,
-          functionName: 'userRewardTrackers',
-          args: [reward, account!],
-          chainId: ChainId.Base,
-        },
-      ])
-    ),
-    allowFailure: false,
-    query: { enabled: Object.keys(rewardsMap).length > 0 && !!account },
-  })
+  // const { data: accruedRewards } = useReadContracts({
+  //   contracts: Object.entries(rewardsMap).flatMap(([stToken, rewards]) =>
+  //     rewards.flatMap((reward) => [
+  //       {
+  //         address: reward,
+  //         abi: erc20Abi,
+  //         functionName: 'symbol',
+  //         chainId: ChainId.Base,
+  //       },
+  //       {
+  //         address: reward,
+  //         abi: erc20Abi,
+  //         functionName: 'name',
+  //         chainId: ChainId.Base,
+  //       },
+  //       {
+  //         address: reward,
+  //         abi: erc20Abi,
+  //         functionName: 'decimals',
+  //         chainId: ChainId.Base,
+  //       },
+  //       {
+  //         address: stToken as Address,
+  //         abi: dtfIndexStakingVaultAbi,
+  //         functionName: 'userRewardTrackers',
+  //         args: [reward, account!],
+  //         chainId: ChainId.Base,
+  //       },
+  //     ])
+  //   ),
+  //   allowFailure: false,
+  //   query: { enabled: Object.keys(rewardsMap).length > 0 && !!account },
+  // })
 
   useEffect(() => {
     if (accruedRewards !== undefined) {
@@ -130,6 +130,8 @@ const RewardsUpdater = () => {
       const rewardsFinal = Object.entries(rewardsMap).map(
         ([stToken, rewardAddresses]) => {
           const rewards = rewardAddresses.map((rewardAddress) => {
+            const symbol = accruedRewards?.[currentIndex++] as string
+            const name = accruedRewards?.[currentIndex++] as string
             const decimals = accruedRewards?.[currentIndex++] as number
             const accrued = (
               accruedRewards?.[currentIndex++] as [bigint, bigint]
@@ -138,6 +140,7 @@ const RewardsUpdater = () => {
               (token) =>
                 token.address.toLowerCase() === rewardAddress.toLowerCase()
             )?.price
+
             const accruedUSD =
               accrued && price
                 ? Number(formatUnits(accrued, decimals)) * price
@@ -145,8 +148,8 @@ const RewardsUpdater = () => {
 
             return {
               address: rewardAddress,
-              symbol: accruedRewards?.[currentIndex++] as string,
-              name: accruedRewards?.[currentIndex++] as string,
+              symbol,
+              name,
               decimals,
               accrued,
               price,
@@ -159,7 +162,7 @@ const RewardsUpdater = () => {
 
       setRewards(Object.fromEntries(rewardsFinal))
     }
-  }, [accruedRewards, rewardsMap, setRewards, rewardsPrices])
+  }, [accruedRewards, rewardsMap, rewardsPrices])
 
   return null
 }

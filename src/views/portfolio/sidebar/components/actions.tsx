@@ -13,7 +13,12 @@ import {
   useWaitForTransactionReceipt,
   useWriteContract,
 } from 'wagmi'
-import { type Lock, accountTokenPricesAtom } from '../../atoms'
+import {
+  type Lock,
+  accountRewardsAtom,
+  accountTokenPricesAtom,
+} from '../../atoms'
+import StackTokenLogo from '@/components/token-logo/StackTokenLogo'
 
 export const NavigateTo = ({ src }: { src: string }) => {
   return (
@@ -202,12 +207,59 @@ export const VoteLockAction = ({
   stToken: Address
   chainId: number
 }) => {
+  const accountRewards = useAtomValue(accountRewardsAtom)
+  const stTokenRewards = accountRewards[stToken]
+  const totalAccruedUSD =
+    stTokenRewards?.reduce(
+      (acc, reward) => acc + (reward?.accruedUSD || 0),
+      0
+    ) || 0
+
   return (
     <div className="flex items-center gap-2">
-      <div className="text-sm">
-        <span className="text-muted-foreground">Rewards</span> $
-      </div>
+      {!!totalAccruedUSD && (
+        <div className="flex items-center gap-1">
+          <div className="text-sm">
+            <span className="text-muted-foreground">Rewards</span>{' '}
+            <span className="text-primary">
+              ${formatCurrency(totalAccruedUSD)}
+            </span>
+          </div>
+          <StackTokenLogo
+            tokens={
+              stTokenRewards
+                ?.slice(0, 3)
+                .map((t) => ({ chain: chainId, ...t })) || []
+            }
+            overlap={6}
+            reverseStack
+          />
+        </div>
+      )}
       <ChevronRight className="h-4 w-4" />
+    </div>
+  )
+}
+
+export const RewardAction = ({
+  reward,
+}: {
+  reward: { accruedUSD?: number }
+}) => {
+  return (
+    <div className="flex items-center gap-2">
+      <span className="text-sm">
+        {reward.accruedUSD !== undefined
+          ? `$${formatCurrency(reward.accruedUSD, 2)}`
+          : '$0'}
+      </span>
+      <Button
+        variant="outline"
+        size="sm"
+        className="rounded-full text-sm hover:text-primary text-primary disabled:border-border border-primary"
+      >
+        Claim
+      </Button>
     </div>
   )
 }

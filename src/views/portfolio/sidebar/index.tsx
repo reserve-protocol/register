@@ -25,6 +25,7 @@ import { ReactNode, useEffect, useRef, useState } from 'react'
 import { Address, formatUnits } from 'viem'
 import {
   accountIndexTokensAtom,
+  accountRewardsAtom,
   accountStakingTokensAtom,
   accountTokenPricesAtom,
   accountUnclaimedLocksAtom,
@@ -40,6 +41,7 @@ import {
   UnlockAction,
   VoteLockAction,
   YieldDTFAction,
+  RewardAction,
 } from './components/actions'
 import { Button } from '@/components/ui/button'
 
@@ -55,6 +57,7 @@ interface TokenRowProps {
   amount?: bigint
   amountInt?: number
   onClick?: () => void
+  className?: string
 }
 
 function TokenRow({
@@ -67,6 +70,7 @@ function TokenRow({
   usdPrice,
   usdAmount,
   onClick,
+  className,
 }: TokenRowProps) {
   const prices = useAtomValue(accountTokenPricesAtom)
   const formattedAmount = formatTokenAmount(
@@ -80,6 +84,7 @@ function TokenRow({
     <div
       className={cn(
         'flex items-center justify-between py-4',
+        className,
         onClick && 'cursor-pointer'
       )}
       onClick={onClick}
@@ -476,7 +481,47 @@ const PortfolioContent = () => {
 }
 
 const PortfolioRewardsContent = () => {
-  return <div>Rewards</div>
+  const accountStTokens = useAtomValue(accountStakingTokensAtom)
+  const accountRewards = useAtomValue(accountRewardsAtom)
+  const chainId = ChainId.Base
+
+  const stTokensWithRewards = accountStTokens
+    .filter((stToken) => accountRewards[stToken.address]?.length > 0)
+    .map((stToken) => ({
+      ...stToken,
+      rewards: accountRewards[stToken.address],
+    }))
+
+  return (
+    <Card className="flex h-full w-full flex-col overflow-auto p-4">
+      {stTokensWithRewards.map((stToken) => {
+        return (
+          <div key={stToken.address} className="mb-6 border-b pb-4">
+            <TokenRow
+              key={stToken.address}
+              token={stToken}
+              chainId={chainId}
+              amount={stToken.amount}
+              underlying={stToken.underlying}
+              className="first:[&>div]:flex-col first:[&>div]:items-start p-2 text-xl"
+            />
+            {stToken.rewards.map((reward, idx) => (
+              <TokenRow
+                key={idx}
+                token={reward}
+                amount={reward.accrued}
+                chainId={chainId}
+                usdAmount={reward.accruedUSD}
+                className="p-2"
+              >
+                <RewardAction reward={reward} />
+              </TokenRow>
+            ))}
+          </div>
+        )
+      })}
+    </Card>
+  )
 }
 
 const PortfolioSidebar = ({ children }: { children: ReactNode }) => {
