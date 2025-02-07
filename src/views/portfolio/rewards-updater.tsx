@@ -1,46 +1,15 @@
-import dtfIndexStakingVaultAbi from '@/abis/dtf-index-staking-vault'
+import { useAssetPrices } from '@/hooks/useAssetPrices'
 import { walletAtom } from '@/state/atoms'
 import { ChainId } from '@/utils/chains'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useMemo } from 'react'
-import { Address, erc20Abi, formatUnits, parseUnits } from 'viem'
+import { Address, erc20Abi, formatUnits } from 'viem'
 import { useReadContracts } from 'wagmi'
 import {
   accountRewardsAtom,
   accountStakingTokensAtom,
   RewardToken,
 } from './atoms'
-import { useAssetPrices } from '@/hooks/useAssetPrices'
-
-// const rewardsDataMock = [
-//   [
-//     '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913',
-//     '0x50c5725949A6F0c72E6C4a641F24049A917DB0Cb',
-//   ],
-//   [
-//     '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913',
-//     '0xCb327b99fF831bF8223cCEd12B1338FF3aA322Ff',
-//   ],
-// ]
-
-// const accruedRewardsMock = [
-//   'USDC',
-//   'USD Coin',
-//   6,
-//   [1n, 100000000n],
-//   'DAI',
-//   'Dai Stablecoin',
-//   18,
-//   [1n, 200000000000000000000],
-//   'USDC',
-//   'USD Coin',
-//   6,
-//   [1n, 300000000n],
-//   'bsdETH',
-//   'Based ETH',
-//   18,
-//   [1n, 7000000000000000000n],
-// ]
 
 // For some reason, the getAllRewardTokens throws a type
 // error when using the abi directly from the contract
@@ -54,6 +23,38 @@ const getAllRewardTokensAbi = [
         name: '',
         type: 'address[]',
         internalType: 'address[]',
+      },
+    ],
+    stateMutability: 'view',
+  },
+] as const
+
+const userRewardTrackersAbi = [
+  {
+    type: 'function',
+    name: 'userRewardTrackers',
+    inputs: [
+      {
+        name: 'token',
+        type: 'address',
+        internalType: 'address',
+      },
+      {
+        name: 'user',
+        type: 'address',
+        internalType: 'address',
+      },
+    ],
+    outputs: [
+      {
+        name: 'lastRewardIndex',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+      {
+        name: 'accruedRewards',
+        type: 'uint256',
+        internalType: 'uint256',
       },
     ],
     stateMutability: 'view',
@@ -113,7 +114,7 @@ const RewardsUpdater = () => {
         },
         {
           address: stToken as Address,
-          abi: dtfIndexStakingVaultAbi,
+          abi: userRewardTrackersAbi,
           functionName: 'userRewardTrackers',
           args: [reward, account!],
           chainId: ChainId.Base,
