@@ -14,6 +14,10 @@ import {
 import Buy from '../overview/components/zap-mint/buy'
 import RefreshQuote from '../overview/components/zap-mint/refresh-quote'
 import Sell from '../overview/components/zap-mint/sell'
+import { ManualOpsSwitch } from '../overview/components/manual-ops/manual-ops-switch'
+import { manualOperationsSwitchAtom } from '../overview/components/manual-ops/atoms'
+import ManualRedeem from '../overview/components/manual-ops/manual-redeem'
+import { cn } from '@/lib/utils'
 
 const IndexDTFIssuance = () => {
   const [currentTab, setCurrentTab] = useAtom(currentZapMintTabAtom)
@@ -23,6 +27,7 @@ const IndexDTFIssuance = () => {
   const zapOngoingTx = useAtomValue(zapOngoingTxAtom)
   const setInput = useSetAtom(zapMintInputAtom)
   const setIndexDTFBalance = useSetAtom(indexDTFBalanceAtom)
+  const [manual, setManual] = useAtom(manualOperationsSwitchAtom)
 
   const { data: balance } = useERC20Balance(indexDTF?.id)
 
@@ -33,7 +38,12 @@ const IndexDTFIssuance = () => {
   if (!indexDTF) return null
 
   return (
-    <div className="flex flex-col flex-grow max-w-2xl h-[500px] bg-card rounded-xl p-2 border border-border mx-auto">
+    <div
+      className={cn(
+        'flex flex-col flex-grow max-w-2xl bg-card rounded-xl p-2 border border-border mx-auto',
+        manual ? 'h-auto' : 'h-[500px]'
+      )}
+    >
       <Tabs
         value={currentTab}
         onValueChange={(tab) => {
@@ -47,10 +57,19 @@ const IndexDTFIssuance = () => {
             <TabsTrigger value="buy">Buy</TabsTrigger>
             <TabsTrigger value="sell">Sell</TabsTrigger>
           </TabsList>
-          <RefreshQuote
-            onClick={zapRefetch.fn}
-            disabled={zapFetching || zapOngoingTx}
-          />
+          <div className="flex gap-1">
+            {currentTab === 'sell' && (
+              <ManualOpsSwitch
+                label="Manual Redeem"
+                checked={manual}
+                onCheckedChange={(c) => setManual(c)}
+              />
+            )}
+            <RefreshQuote
+              onClick={zapRefetch.fn}
+              disabled={zapFetching || zapOngoingTx}
+            />
+          </div>
         </div>
         <TabsContent
           value="buy"
@@ -66,7 +85,7 @@ const IndexDTFIssuance = () => {
           // Prevent the drawer from closing when clicking on the content
           onPointerDown={(e) => e.stopPropagation()}
         >
-          <Sell />
+          {manual ? <ManualRedeem /> : <Sell />}
         </TabsContent>
       </Tabs>
     </div>

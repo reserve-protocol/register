@@ -173,7 +173,7 @@ const TokenSelector = ({
   )
 }
 
-const TokenInputBox = ({ from }: Pick<SwapProps, 'from'>) => {
+export const TokenInputBox = ({ from }: Pick<SwapProps, 'from'>) => {
   return (
     <div className="p-4 bg-muted rounded-xl">
       <h3>{from?.title || 'You use:'}</h3>

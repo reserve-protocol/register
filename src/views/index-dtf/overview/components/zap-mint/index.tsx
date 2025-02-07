@@ -20,6 +20,9 @@ import {
 import Buy from './buy'
 import Sell from './sell'
 import RefreshQuote from './refresh-quote'
+import { manualOperationsSwitchAtom } from '../manual-ops/atoms'
+import { ManualOpsSwitch } from '../manual-ops/manual-ops-switch'
+import ManualRedeem from '../manual-ops/manual-redeem'
 
 const ZapMint = ({ children }: { children: ReactNode }) => {
   const [currentTab, setCurrentTab] = useAtom(currentZapMintTabAtom)
@@ -29,6 +32,7 @@ const ZapMint = ({ children }: { children: ReactNode }) => {
   const zapOngoingTx = useAtomValue(zapOngoingTxAtom)
   const setInput = useSetAtom(zapMintInputAtom)
   const setIndexDTFBalance = useSetAtom(indexDTFBalanceAtom)
+  const [manual, setManual] = useAtom(manualOperationsSwitchAtom)
 
   const { data: balance } = useERC20Balance(indexDTF?.id)
 
@@ -55,11 +59,20 @@ const ZapMint = ({ children }: { children: ReactNode }) => {
               <TabsTrigger value="buy">Buy</TabsTrigger>
               <TabsTrigger value="sell">Sell</TabsTrigger>
             </TabsList>
-            <div className="mr-11">
-              <RefreshQuote
-                onClick={zapRefetch.fn}
-                disabled={zapFetching || zapOngoingTx}
-              />
+            <div className="flex items-center gap-1 mr-11">
+              {currentTab === 'sell' && (
+                <ManualOpsSwitch
+                  label="Manual Redeem"
+                  checked={manual}
+                  onCheckedChange={(c) => setManual(c)}
+                />
+              )}
+              {!manual && (
+                <RefreshQuote
+                  onClick={zapRefetch.fn}
+                  disabled={zapFetching || zapOngoingTx}
+                />
+              )}
             </div>
           </DrawerTitle>
           <TabsContent
@@ -76,7 +89,7 @@ const ZapMint = ({ children }: { children: ReactNode }) => {
             // Prevent the drawer from closing when clicking on the content
             onPointerDown={(e) => e.stopPropagation()}
           >
-            <Sell />
+            {manual ? <ManualRedeem /> : <Sell />}
           </TabsContent>
         </Tabs>
       </DrawerContent>
