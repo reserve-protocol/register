@@ -7,6 +7,7 @@ import AccountUpdater from './wallet/updaters/AccountUpdater'
 import { TokenBalancesUpdater } from './wallet/updaters/TokenBalancesUpdater'
 import IndexDTFPricesUpdater from '@/views/portfolio/updaters/index-dtf-prices-updater'
 import RSRBalancesUpdater from '@/views/portfolio/updaters/rsr-balances-updater'
+import RewardsUpdater from '@/views/portfolio/rewards-updater'
 
 /**
  * Updater
@@ -23,6 +24,7 @@ const Updater = () => {
       <IndexDTFUpdater />
       <IndexDTFPricesUpdater />
       <RSRBalancesUpdater />
+      <RewardsUpdater />
     </>
   )
 }
