@@ -38,6 +38,24 @@ const accruedRewardsMock = [
   [1n, 7000000000000000000n],
 ]
 
+// For some reason, the getAllRewardTokens throws a type
+// error when using the abi directly from the contract
+const getAllRewardTokensAbi = [
+  {
+    type: 'function',
+    name: 'getAllRewardTokens',
+    inputs: [],
+    outputs: [
+      {
+        name: '',
+        type: 'address[]',
+        internalType: 'address[]',
+      },
+    ],
+    stateMutability: 'view',
+  },
+] as const
+
 const RewardsUpdater = () => {
   const account = useAtomValue(walletAtom)
   const stTokens = useAtomValue(accountStakingTokensAtom)
@@ -48,7 +66,7 @@ const RewardsUpdater = () => {
   const { data: rewardsData } = useReadContracts({
     contracts: stTokens.map((stToken) => ({
       address: stToken.address,
-      abi: dtfIndexStakingVaultAbi,
+      abi: getAllRewardTokensAbi,
       functionName: 'getAllRewardTokens',
       chainId: ChainId.Base,
     })),
@@ -60,7 +78,7 @@ const RewardsUpdater = () => {
     if (!rewardsData) return {}
     return Object.fromEntries(
       stTokens.map((stToken, index) => {
-        const tokenRewards = (rewardsData[index] || []) as Address[]
+        const tokenRewards = rewardsData[index]
         return [stToken.address, tokenRewards]
       })
     )
