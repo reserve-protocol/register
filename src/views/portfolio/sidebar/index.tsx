@@ -16,7 +16,13 @@ import BlockiesAvatar from '@/components/utils/blockies-avatar'
 import { cn } from '@/lib/utils'
 import { accountTokensAtom, chainIdAtom, rsrPriceAtom } from '@/state/atoms'
 import { Token } from '@/types'
-import { formatCurrency, formatTokenAmount, shortenAddress } from '@/utils'
+import {
+  formatCurrency,
+  formatTokenAmount,
+  getFolioRoute,
+  getTokenRoute,
+  shortenAddress,
+} from '@/utils'
 import { RSR_ADDRESS } from '@/utils/addresses'
 import { ChainId } from '@/utils/chains'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
@@ -45,6 +51,8 @@ import {
   ClaimAllButton,
 } from './components/actions'
 import { Button } from '@/components/ui/button'
+import { useNavigate } from 'react-router-dom'
+import { ROUTES } from '@/utils/constants'
 
 const portfolioDismissibleAtom = atom(true)
 
@@ -270,8 +278,10 @@ const Unlocking = () => {
 }
 
 const IndexDTFs = () => {
+  const navigate = useNavigate()
   const indexDTFs = useAtomValue(accountIndexTokensAtom)
   const selectedTab = useAtomValue(selectedPortfolioTabAtom)
+  const chainId = ChainId.Base
 
   if (!indexDTFs.length || !['all', 'index-dtfs'].includes(selectedTab))
     return null
@@ -283,13 +293,11 @@ const IndexDTFs = () => {
         <TokenRow
           key={token.address}
           token={token}
-          chainId={ChainId.Base} // TODO: change
+          chainId={chainId} // TODO: change
           amount={token.amount}
+          onClick={() => navigate(getFolioRoute(token.address, chainId))}
         >
-          <IndexDTFAction
-            indexDTFChainId={ChainId.Base} // TODO: change
-            indexDTFAddress={token.address}
-          />
+          <IndexDTFAction indexDTFAddress={token.address} />
         </TokenRow>
       ))}
     </div>
@@ -297,6 +305,7 @@ const IndexDTFs = () => {
 }
 
 const YieldDTFs = () => {
+  const navigate = useNavigate()
   const yieldDTFs = useAtomValue(accountTokensAtom)
   const selectedTab = useAtomValue(selectedPortfolioTabAtom)
 
@@ -319,12 +328,9 @@ const YieldDTFs = () => {
           amountInt={token.balance}
           usdPrice={token.usdPrice}
           usdAmount={token.usdAmount}
+          onClick={() => navigate(getTokenRoute(token.address, token.chain))}
         >
-          <YieldDTFAction
-            yieldDTFAddress={token.address}
-            yieldDTFChainId={token.chain}
-            yieldDTFUsdPrice={token.usdPrice}
-          />
+          <YieldDTFAction yieldDTFUsdPrice={token.usdPrice} />
         </TokenRow>
       ))}
     </div>
@@ -332,6 +338,7 @@ const YieldDTFs = () => {
 }
 
 const StakedRSR = () => {
+  const navigate = useNavigate()
   const rsrPrice = useAtomValue(rsrPriceAtom)
   const yieldDTFs = useAtomValue(accountTokensAtom)
   const selectedTab = useAtomValue(selectedPortfolioTabAtom)
@@ -355,11 +362,11 @@ const StakedRSR = () => {
           amountInt={token.stakedRSR}
           usdPrice={rsrPrice || 0}
           usdAmount={token.stakedRSRUsd}
+          onClick={() =>
+            navigate(getTokenRoute(token.address, token.chain, ROUTES.STAKING))
+          }
         >
-          <StakeRSRAction
-            yieldDTFAddress={token.address}
-            yieldDTFChainId={token.chain}
-          />
+          <StakeRSRAction />
         </TokenRow>
       ))}
     </div>
