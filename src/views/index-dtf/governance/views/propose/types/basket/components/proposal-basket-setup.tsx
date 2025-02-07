@@ -112,6 +112,7 @@ const AssetCellInfo = ({ asset }: { asset: IndexAssetShares }) => {
               chainId,
               ExplorerDataType.TOKEN
             )}
+            tabIndex={-1}
             target="_blank"
             className="text-sm text-legend hover:underline hover:text-primary"
           >
