@@ -5,7 +5,11 @@ import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useMemo } from 'react'
 import { Address, erc20Abi, formatUnits, parseUnits } from 'viem'
 import { useReadContracts } from 'wagmi'
-import { accountRewardsAtom, accountStakingTokensAtom } from './atoms'
+import {
+  accountRewardsAtom,
+  accountStakingTokensAtom,
+  RewardToken,
+} from './atoms'
 import { useAssetPrices } from '@/hooks/useAssetPrices'
 
 // const rewardsDataMock = [
@@ -72,11 +76,11 @@ const RewardsUpdater = () => {
     query: { enabled: stTokens.length > 0 && !!account },
   })
 
-  const rewardsMap = useMemo(() => {
+  const rewardsMap: Record<Address, Address[]> = useMemo(() => {
     if (!rewardsData) return {}
     return Object.fromEntries(
       stTokens.map((stToken, index) => {
-        const tokenRewards = rewardsData[index]
+        const tokenRewards = rewardsData[index] as Address[]
         return [stToken.address, tokenRewards]
       })
     )
@@ -123,40 +127,43 @@ const RewardsUpdater = () => {
   useEffect(() => {
     if (accruedRewards !== undefined) {
       let currentIndex = 0
-      const rewardsFinal = Object.entries(rewardsMap).map(
-        ([stToken, rewardAddresses]) => {
-          const rewards = rewardAddresses.map((rewardAddress) => {
-            const symbol = accruedRewards?.[currentIndex++] as string
-            const name = accruedRewards?.[currentIndex++] as string
-            const decimals = accruedRewards?.[currentIndex++] as number
-            const accrued = (
-              accruedRewards?.[currentIndex++] as [bigint, bigint]
-            )[1] as bigint
-            const price = rewardsPrices?.find(
-              (token) =>
-                token.address.toLowerCase() === rewardAddress.toLowerCase()
-            )?.price
+      const entries = Object.entries(rewardsMap) as [Address, Address[]][]
+      const rewardsFinal = entries.map(([stToken, rewardAddresses]) => {
+        const rewards = rewardAddresses.map((rewardAddress) => {
+          const symbol = accruedRewards?.[currentIndex++] as string
+          const name = accruedRewards?.[currentIndex++] as string
+          const decimals = accruedRewards?.[currentIndex++] as number
+          const accrued = (
+            accruedRewards?.[currentIndex++] as [bigint, bigint]
+          )[1] as bigint
+          const price = rewardsPrices?.find(
+            (token) =>
+              token.address.toLowerCase() === rewardAddress.toLowerCase()
+          )?.price
 
-            const accruedUSD =
-              accrued && price
-                ? Number(formatUnits(accrued, decimals)) * price
-                : undefined
+          const accruedUSD =
+            accrued && price
+              ? Number(formatUnits(accrued, decimals)) * price
+              : undefined
 
-            return {
-              address: rewardAddress,
-              symbol,
-              name,
-              decimals,
-              accrued,
-              price,
-              accruedUSD,
-            }
-          })
-          return [stToken, rewards]
-        }
-      )
+          return {
+            address: rewardAddress,
+            symbol,
+            name,
+            decimals,
+            accrued,
+            price,
+            accruedUSD,
+          }
+        })
+        return [stToken, rewards]
+      })
 
-      setRewards(Object.fromEntries(rewardsFinal))
+      const result = Object.fromEntries(rewardsFinal) as Record<
+        Address,
+        RewardToken[]
+      >
+      setRewards(result)
     }
   }, [accruedRewards, rewardsMap, rewardsPrices])
 
