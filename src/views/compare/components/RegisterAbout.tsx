@@ -1,6 +1,7 @@
 import { Trans } from '@lingui/macro'
 import DiscordIcon from 'components/icons/DiscordIcon'
 import GithubIcon from 'components/icons/GithubIcon'
+import XIcon from 'components/icons/XIcon'
 import Logo from 'components/icons/Logo'
 import { Link as RouterLink } from 'react-router-dom'
 import { Box, Divider, Grid, Link, Text } from 'theme-ui'
@@ -20,7 +21,14 @@ const SocialLinks = () => (
       style={{ all: 'unset', cursor: 'pointer' }}
       target="_blank"
     >
-      <DiscordIcon />
+      <DiscordIcon style={{ marginRight: 20 }} />
+    </RouterLink>
+    <RouterLink
+      to="https://x.com/reserveprotocol"
+      target="_blank"
+      style={{ all: 'unset', cursor: 'pointer' }}
+    >
+      <XIcon height={32} width={32} fill="currentColor" />
     </RouterLink>
   </Box>
 )
