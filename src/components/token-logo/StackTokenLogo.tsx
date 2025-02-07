@@ -77,6 +77,7 @@ const StackTokenLogo = React.memo(
                 <TokenLogo
                   width={size}
                   height={size}
+                  symbol={token.symbol}
                   chain={token.chain}
                   address={token.address}
                 />

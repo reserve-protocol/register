@@ -30,6 +30,12 @@ export const getTokenRoute = (
   route: string = ROUTES.OVERVIEW
 ) => `/${CHAIN_TO_NETWORK[chainId]}/token/${token.toLowerCase()}/${route}`
 
+export const getFolioRoute = (
+  token: string,
+  chainId: number,
+  route: string = ROUTES.OVERVIEW
+) => `/${chainId}/index-dtf/${token.toLowerCase()}/${route}`
+
 // multiplier 200 -> 2
 export const getSafeGasLimit = (gas: bigint, multiplier = 200n) =>
   (gas * multiplier) / 100n

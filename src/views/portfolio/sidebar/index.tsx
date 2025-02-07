@@ -1,4 +1,4 @@
-import { Asterisk } from 'lucide-react'
+import { ArrowLeft, Asterisk } from 'lucide-react'
 
 import ChainLogo from '@/components/icons/ChainLogo'
 import WalletOutlineIcon from '@/components/icons/WalletOutlineIcon'
@@ -16,7 +16,13 @@ import BlockiesAvatar from '@/components/utils/blockies-avatar'
 import { cn } from '@/lib/utils'
 import { accountTokensAtom, chainIdAtom, rsrPriceAtom } from '@/state/atoms'
 import { Token } from '@/types'
-import { formatCurrency, formatTokenAmount, shortenAddress } from '@/utils'
+import {
+  formatCurrency,
+  formatTokenAmount,
+  getFolioRoute,
+  getTokenRoute,
+  shortenAddress,
+} from '@/utils'
 import { RSR_ADDRESS } from '@/utils/addresses'
 import { ChainId } from '@/utils/chains'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
@@ -25,9 +31,11 @@ import { ReactNode, useEffect, useRef, useState } from 'react'
 import { Address, formatUnits } from 'viem'
 import {
   accountIndexTokensAtom,
+  accountRewardsAtom,
   accountStakingTokensAtom,
   accountTokenPricesAtom,
   accountUnclaimedLocksAtom,
+  portfolioShowRewardsAtom,
   portfolioSidebarOpenAtom,
   rsrBalancesAtom,
   selectedPortfolioTabAtom,
@@ -37,8 +45,14 @@ import {
   IndexDTFAction,
   StakeRSRAction,
   UnlockAction,
+  VoteLockAction,
   YieldDTFAction,
+  RewardAction,
+  ClaimAllButton,
 } from './components/actions'
+import { Button } from '@/components/ui/button'
+import { useNavigate } from 'react-router-dom'
+import { ROUTES } from '@/utils/constants'
 
 const portfolioDismissibleAtom = atom(true)
 
@@ -51,6 +65,8 @@ interface TokenRowProps {
   underlying?: Token
   amount?: bigint
   amountInt?: number
+  onClick?: () => void
+  className?: string
 }
 
 function TokenRow({
@@ -62,6 +78,8 @@ function TokenRow({
   underlying,
   usdPrice,
   usdAmount,
+  onClick,
+  className,
 }: TokenRowProps) {
   const prices = useAtomValue(accountTokenPricesAtom)
   const formattedAmount = formatTokenAmount(
@@ -72,7 +90,14 @@ function TokenRow({
     usdAmount || (tokenPrice ? tokenPrice * Number(formattedAmount) : 0)
 
   return (
-    <div className="flex items-center justify-between py-4">
+    <div
+      className={cn(
+        'flex items-center justify-between py-4',
+        className,
+        onClick && 'cursor-pointer'
+      )}
+      onClick={onClick}
+    >
       <div className="flex items-center gap-2">
         <div className="relative">
           <TokenLogo
@@ -108,6 +133,7 @@ const PortfolioHeader = () => {
   return (
     <ConnectButton.Custom>
       {({ account, openAccountModal, accountModalOpen }) => {
+        const [showRewards, setShowRewards] = useAtom(portfolioShowRewardsAtom)
         const setDismissible = useSetAtom(portfolioDismissibleAtom)
 
         if (!account) return null
@@ -125,8 +151,17 @@ const PortfolioHeader = () => {
         }
 
         return (
-          <div className="flex items-center gap-2 p-6 pb-2 w-full">
+          <div className="flex items-center gap-2 p-6 pt-[22px] pb-2 w-full">
             <div className="relative flex items-center gap-2">
+              {showRewards && (
+                <Button
+                  variant="outline"
+                  className="rounded-xl px-2 h-9 animate-width-expand"
+                  onClick={() => setShowRewards(false)}
+                >
+                  <ArrowLeft size={20} strokeWidth={1.5} />
+                </Button>
+              )}
               <BlockiesAvatar
                 size={32}
                 address={account.address}
@@ -186,6 +221,8 @@ const PortfolioSummary = () => {
 const VoteLocked = () => {
   const stTokens = useAtomValue(accountStakingTokensAtom)
   const selectedTab = useAtomValue(selectedPortfolioTabAtom)
+  const setShowRewards = useSetAtom(portfolioShowRewardsAtom)
+  const accountRewards = useAtomValue(accountRewardsAtom)
 
   if (!stTokens.length || !['all', 'vote-locked'].includes(selectedTab))
     return null
@@ -200,7 +237,16 @@ const VoteLocked = () => {
           chainId={ChainId.Base} // TODO: change
           amount={stToken.amount}
           underlying={stToken.underlying}
-        />
+          onClick={
+            !!accountRewards[stToken.address]?.length
+              ? () => setShowRewards(true)
+              : undefined
+          }
+        >
+          {!!accountRewards[stToken.address]?.length && (
+            <VoteLockAction stToken={stToken.address} chainId={ChainId.Base} />
+          )}
+        </TokenRow>
       ))}
     </div>
   )
@@ -232,8 +278,10 @@ const Unlocking = () => {
 }
 
 const IndexDTFs = () => {
+  const navigate = useNavigate()
   const indexDTFs = useAtomValue(accountIndexTokensAtom)
   const selectedTab = useAtomValue(selectedPortfolioTabAtom)
+  const chainId = ChainId.Base
 
   if (!indexDTFs.length || !['all', 'index-dtfs'].includes(selectedTab))
     return null
@@ -245,13 +293,11 @@ const IndexDTFs = () => {
         <TokenRow
           key={token.address}
           token={token}
-          chainId={ChainId.Base} // TODO: change
+          chainId={chainId} // TODO: change
           amount={token.amount}
+          onClick={() => navigate(getFolioRoute(token.address, chainId))}
         >
-          <IndexDTFAction
-            indexDTFChainId={ChainId.Base} // TODO: change
-            indexDTFAddress={token.address}
-          />
+          <IndexDTFAction indexDTFAddress={token.address} />
         </TokenRow>
       ))}
     </div>
@@ -259,6 +305,7 @@ const IndexDTFs = () => {
 }
 
 const YieldDTFs = () => {
+  const navigate = useNavigate()
   const yieldDTFs = useAtomValue(accountTokensAtom)
   const selectedTab = useAtomValue(selectedPortfolioTabAtom)
 
@@ -281,12 +328,9 @@ const YieldDTFs = () => {
           amountInt={token.balance}
           usdPrice={token.usdPrice}
           usdAmount={token.usdAmount}
+          onClick={() => navigate(getTokenRoute(token.address, token.chain))}
         >
-          <YieldDTFAction
-            yieldDTFAddress={token.address}
-            yieldDTFChainId={token.chain}
-            yieldDTFUsdPrice={token.usdPrice}
-          />
+          <YieldDTFAction yieldDTFUsdPrice={token.usdPrice} />
         </TokenRow>
       ))}
     </div>
@@ -294,6 +338,7 @@ const YieldDTFs = () => {
 }
 
 const StakedRSR = () => {
+  const navigate = useNavigate()
   const rsrPrice = useAtomValue(rsrPriceAtom)
   const yieldDTFs = useAtomValue(accountTokensAtom)
   const selectedTab = useAtomValue(selectedPortfolioTabAtom)
@@ -317,11 +362,11 @@ const StakedRSR = () => {
           amountInt={token.stakedRSR}
           usdPrice={rsrPrice || 0}
           usdAmount={token.stakedRSRUsd}
+          onClick={() =>
+            navigate(getTokenRoute(token.address, token.chain, ROUTES.STAKING))
+          }
         >
-          <StakeRSRAction
-            yieldDTFAddress={token.address}
-            yieldDTFChainId={token.chain}
-          />
+          <StakeRSRAction />
         </TokenRow>
       ))}
     </div>
@@ -450,9 +495,62 @@ const PortfolioContent = () => {
   )
 }
 
+const PortfolioRewardsContent = () => {
+  const accountStTokens = useAtomValue(accountStakingTokensAtom)
+  const accountRewards = useAtomValue(accountRewardsAtom)
+  const chainId = ChainId.Base
+
+  const stTokensWithRewards = accountStTokens
+    .filter((stToken) => accountRewards[stToken.address]?.length > 0)
+    .map((stToken) => ({
+      ...stToken,
+      rewards: accountRewards[stToken.address],
+    }))
+
+  return (
+    <Card className="flex h-full w-full flex-col overflow-auto p-4">
+      {stTokensWithRewards.map((stToken) => {
+        return (
+          <div key={stToken.address} className="mb-6 border-b pb-4">
+            <TokenRow
+              key={stToken.address}
+              token={stToken}
+              chainId={chainId}
+              amount={stToken.amount}
+              underlying={stToken.underlying}
+              className="[&>div]:flex-col [&>div]:items-start p-2 text-xl items-end mb-1.5"
+            >
+              <ClaimAllButton
+                stTokenAddress={stToken.address}
+                rewards={stToken.rewards}
+              />
+            </TokenRow>
+            {stToken.rewards.map((reward, idx) => (
+              <TokenRow
+                key={idx}
+                token={reward}
+                amount={reward.accrued}
+                chainId={chainId}
+                usdAmount={reward.accruedUSD}
+                className="p-2"
+              >
+                <RewardAction
+                  stTokenAddress={stToken.address}
+                  reward={reward}
+                />
+              </TokenRow>
+            ))}
+          </div>
+        )
+      })}
+    </Card>
+  )
+}
+
 const PortfolioSidebar = ({ children }: { children: ReactNode }) => {
   const setSelectedTab = useSetAtom(selectedPortfolioTabAtom)
   const dismissible = useAtomValue(portfolioDismissibleAtom)
+  const showRewards = useAtomValue(portfolioShowRewardsAtom)
   const [open, setOpen] = useAtom(portfolioSidebarOpenAtom)
 
   return (
@@ -472,7 +570,7 @@ const PortfolioSidebar = ({ children }: { children: ReactNode }) => {
         <DrawerTitle className="w-full">
           <PortfolioHeader />
         </DrawerTitle>
-        <PortfolioContent />
+        {showRewards ? <PortfolioRewardsContent /> : <PortfolioContent />}
       </DrawerContent>
     </Drawer>
   )

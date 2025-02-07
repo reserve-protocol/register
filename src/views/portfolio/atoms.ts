@@ -22,13 +22,20 @@ export interface Lock {
   underlying: Token
 }
 
+export interface RewardToken extends Token {
+  accrued: bigint
+  accruedUSD?: number
+}
+
 export const portfolioSidebarOpenAtom = atom(false)
+export const portfolioShowRewardsAtom = atom(false)
 export const selectedPortfolioTabAtom = atom<PortfolioTabs>('all')
 export const accountIndexTokensAtom = atom<IndexToken[]>([])
 export const accountStakingTokensAtom = atom<StakingToken[]>([])
 export const accountUnclaimedLocksAtom = atom<Lock[]>([])
 export const accountTokenPricesAtom = atom<Record<Address, number>>({})
 export const rsrBalancesAtom = atom<Record<Chain['id'], bigint>>({})
+export const accountRewardsAtom = atom<Record<Address, RewardToken[]>>({})
 
 export const indexAccountHoldingsAtom = atom<number>((get) => {
   const indexTokens = get(accountIndexTokensAtom)

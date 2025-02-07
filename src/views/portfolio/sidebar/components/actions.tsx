@@ -13,37 +13,21 @@ import {
   useWaitForTransactionReceipt,
   useWriteContract,
 } from 'wagmi'
-import { type Lock, accountTokenPricesAtom } from '../../atoms'
+import {
+  type Lock,
+  RewardToken,
+  accountRewardsAtom,
+  accountTokenPricesAtom,
+} from '../../atoms'
+import StackTokenLogo from '@/components/token-logo/StackTokenLogo'
 
-export const NavigateTo = ({ src }: { src: string }) => {
-  return (
-    <a href={src} className="text-primary">
-      <ChevronRight className="h-4 w-4" />
-    </a>
-  )
-}
-
-export const StakeRSRAction = ({
-  yieldDTFChainId,
-  yieldDTFAddress,
-}: {
-  yieldDTFChainId: number
-  yieldDTFAddress: string
-}) => {
-  return (
-    <NavigateTo
-      src={`/${CHAIN_TO_NETWORK[yieldDTFChainId]}/token/${yieldDTFAddress}/${ROUTES.STAKING}`}
-    />
-  )
+export const StakeRSRAction = () => {
+  return <ChevronRight className="h-4 w-4 text-primary" />
 }
 
 export const YieldDTFAction = ({
-  yieldDTFChainId,
-  yieldDTFAddress,
   yieldDTFUsdPrice,
 }: {
-  yieldDTFChainId: number
-  yieldDTFAddress: string
   yieldDTFUsdPrice: number
 }) => {
   return (
@@ -52,18 +36,14 @@ export const YieldDTFAction = ({
         <span className="text-muted-foreground">Price</span> $
         {formatCurrency(yieldDTFUsdPrice)}
       </div>
-      <NavigateTo
-        src={`/${CHAIN_TO_NETWORK[yieldDTFChainId]}/token/${yieldDTFAddress}/${ROUTES.OVERVIEW}`}
-      />
+      <ChevronRight className="h-4 w-4 text-primary" />
     </div>
   )
 }
 
 export const IndexDTFAction = ({
-  indexDTFChainId,
   indexDTFAddress,
 }: {
-  indexDTFChainId: number
   indexDTFAddress: Address
 }) => {
   const prices = useAtomValue(accountTokenPricesAtom)
@@ -75,9 +55,7 @@ export const IndexDTFAction = ({
         <span className="text-muted-foreground">Price</span> $
         {formatCurrency(indexDTFUsdPrice)}
       </div>
-      <NavigateTo
-        src={`/${indexDTFChainId}/index-dtf/${indexDTFAddress}/${ROUTES.OVERVIEW}`}
-      />
+      <ChevronRight className="h-4 w-4 text-primary" />
     </div>
   )
 }
@@ -193,4 +171,137 @@ export const UnlockAction = (lock: Lock) => {
     return <LockWithdrawAction {...lock} />
   }
   return <CancelLockAction {...lock} />
+}
+
+export const VoteLockAction = ({
+  stToken,
+  chainId,
+}: {
+  stToken: Address
+  chainId: number
+}) => {
+  const accountRewards = useAtomValue(accountRewardsAtom)
+  const stTokenRewards = accountRewards[stToken]
+  const totalAccruedUSD =
+    stTokenRewards?.reduce(
+      (acc, reward) => acc + (reward?.accruedUSD || 0),
+      0
+    ) || 0
+
+  return (
+    <div className="flex items-center gap-2">
+      {!!totalAccruedUSD && (
+        <div className="flex items-center gap-1">
+          <div className="text-sm">
+            <span className="text-muted-foreground">Rewards</span>{' '}
+            <span className="text-primary">
+              ${formatCurrency(totalAccruedUSD)}
+            </span>
+          </div>
+          <StackTokenLogo
+            tokens={
+              stTokenRewards
+                ?.slice(0, 3)
+                .map((t) => ({ chain: chainId, ...t })) || []
+            }
+            overlap={6}
+            reverseStack
+          />
+        </div>
+      )}
+      <ChevronRight className="h-4 w-4" />
+    </div>
+  )
+}
+
+export const RewardAction = ({
+  stTokenAddress,
+  reward,
+}: {
+  stTokenAddress: Address
+  reward: RewardToken
+}) => {
+  const { writeContract, data: hash, isPending } = useWriteContract()
+
+  const write = () => {
+    writeContract({
+      abi: dtfIndexStakingVault,
+      functionName: 'claimRewards',
+      address: stTokenAddress,
+      args: [[reward.address]],
+    })
+  }
+
+  const { data: receipt } = useWaitForTransactionReceipt({
+    hash,
+  })
+
+  const loading = !receipt && (isPending || !!hash || (hash && !receipt))
+
+  return (
+    <div className="flex items-center gap-2">
+      <span className="text-sm">
+        {reward.accruedUSD !== undefined
+          ? `$${formatCurrency(reward.accruedUSD, 2)}`
+          : '$0'}
+      </span>
+      <Button
+        onClick={write}
+        disabled={receipt?.status === 'success' || loading}
+        variant="outline"
+        className="rounded-full text-sm hover:text-primary text-primary disabled:border-border border-primary"
+        size="sm"
+      >
+        {loading
+          ? !!hash
+            ? 'Confirming tx...'
+            : 'Pending, sign in wallet'
+          : receipt?.status === 'success'
+            ? 'Claimed'
+            : 'Claim'}
+      </Button>
+    </div>
+  )
+}
+
+export const ClaimAllButton = ({
+  stTokenAddress,
+  rewards,
+}: {
+  stTokenAddress: Address
+  rewards: RewardToken[]
+}) => {
+  const { writeContract, data: hash, isPending } = useWriteContract()
+
+  const write = () => {
+    writeContract({
+      abi: dtfIndexStakingVault,
+      functionName: 'claimRewards',
+      address: stTokenAddress,
+      args: [rewards.map(({ address }) => address)],
+    })
+  }
+
+  const { data: receipt } = useWaitForTransactionReceipt({
+    hash,
+  })
+
+  const loading = !receipt && (isPending || !!hash || (hash && !receipt))
+
+  return (
+    <Button
+      onClick={write}
+      disabled={receipt?.status === 'success' || loading}
+      className="rounded-full text-sm"
+      size="sm"
+    >
+      {loading
+        ? !!hash
+          ? 'Confirming tx...'
+          : 'Pending, sign in wallet'
+        : receipt?.status === 'success'
+          ? 'Claimed'
+          : 'Claim All'}
+    </Button>
+  )
 }
