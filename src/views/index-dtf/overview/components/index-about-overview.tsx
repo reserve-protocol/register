@@ -118,7 +118,12 @@ const IndexBasketTokens = ({
 
   return (
     <div className={cn('relative', className)}>
-      <ScrollArea className={cn('flex max-h-[620px] flex-col overflow-y-auto')}>
+      <ScrollArea
+        className={cn(
+          'flex max-h-[620px] flex-col overflow-y-auto',
+          viewAll && basket.length > MAX_TOKENS && 'max-h-[1240px]'
+        )}
+      >
         <Table>
           <TableHeader>
             <TableRow className="border-none text-legend bg-card sticky top-0 ">
