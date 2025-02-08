@@ -9,6 +9,7 @@ import {
   useReactTable,
   getSortedRowModel,
   Column,
+  Table as TableType,
 } from '@tanstack/react-table'
 
 import {
@@ -20,7 +21,7 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { cn } from '@/lib/utils'
-import { Fragment, useState } from 'react'
+import { Fragment, useMemo, useState } from 'react'
 import React from 'react'
 import { Button } from './button'
 import { ArrowDown, ArrowUp } from 'lucide-react'
@@ -60,25 +61,62 @@ export const SorteableButton = ({
   )
 }
 
+const Pagination = ({ table }: { table: TableType<any> }) => {
+  return (
+    <div className="flex items-center justify-end space-x-2 py-4">
+      <Button
+        variant="outline"
+        size="sm"
+        onClick={() => table.previousPage()}
+        disabled={!table.getCanPreviousPage()}
+      >
+        Previous
+      </Button>
+      <Button
+        variant="outline"
+        size="sm"
+        onClick={() => table.nextPage()}
+        disabled={!table.getCanNextPage()}
+      >
+        Next
+      </Button>
+    </div>
+  )
+}
+
+interface DataTableComponentProps<TData, TValue>
+  extends DataTableProps<TData, TValue> {
+  className?: string
+  expandable?: boolean
+  allowMultipleExpand?: boolean
+  pagination?: boolean | { pageSize: number }
+  onRowClick?: (data: TData, row: Row<TData>) => void
+  renderSubComponent?: (props: { row: Row<TData> }) => React.ReactElement
+  subComponentClassName?: string
+  noResultsClassName?: string
+}
+
 function DataTable<TData, TValue>({
   columns,
   data,
   className,
   expandable = true,
   allowMultipleExpand = true,
+  pagination,
   onRowClick,
   renderSubComponent,
   subComponentClassName,
   noResultsClassName,
-}: DataTableProps<TData, TValue>) {
+}: DataTableComponentProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([])
+  const paginationState = useMemo(() => ({ pageSize: 10, pageIndex: 0 }), [])
   const [expandedRowId, setExpandedRowId] = useState<string | null>(null)
 
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
+    getPaginationRowModel: !!pagination ? getPaginationRowModel() : undefined,
     getExpandedRowModel: getExpandedRowModel(),
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
@@ -204,6 +242,7 @@ function DataTable<TData, TValue>({
           )}
         </TableBody>
       </Table>
+      {pagination && <Pagination table={table} />}
     </>
   )
 }
