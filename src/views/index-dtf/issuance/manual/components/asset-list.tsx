@@ -221,7 +221,7 @@ const AssetList = () => {
 
   return (
     <div className="rounded-3xl bg-card border h-fit">
-      <div className="p-4 border-b flex items-center">
+      <div className="p-4 border-b flex items-center h-16">
         <h1 className="font-bold">
           {mode === 'buy' ? 'Required Approvals' : 'You will receive'}
         </h1>

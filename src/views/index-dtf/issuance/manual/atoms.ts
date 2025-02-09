@@ -5,7 +5,7 @@ import { _atomWithDebounce } from 'utils/atoms/atomWithDebounce'
 import { parseEther } from 'viem'
 
 export const modeAtom = atom<'buy' | 'sell'>('buy')
-export const amountAtom = _atomWithDebounce('')
+export const amountAtom = atom('')
 export const assetDistributionAtom = atom<Record<string, bigint>>({})
 export const balanceMapAtom = atom<Record<string, bigint>>({})
 
@@ -20,7 +20,7 @@ export const unlimitedApprovalAtom = atom(false)
 export const allowanceMapAtom = atom<Record<string, bigint>>({})
 
 export const assetAmountsMapAtom = atom((get) => {
-  const amount = get(amountAtom.currentValueAtom)
+  const amount = get(amountAtom)
   const assetDistribution = get(assetDistributionAtom)
 
   if (!amount || isNaN(Number(amount))) {
@@ -86,7 +86,7 @@ export const maxAmountAtom = atom((get) => {
 })
 
 export const usdAmountAtom = atom((get) => {
-  const amount = get(amountAtom.currentValueAtom)
+  const amount = get(amountAtom)
   const price = get(indexDTFPriceAtom)
 
   if (isNaN(Number(amount)) || !price) {

@@ -4,7 +4,7 @@ import { amountAtom, modeAtom } from '../atoms'
 
 const ModeSelector = () => {
   const [mode, setMode] = useAtom(modeAtom)
-  const setAmount = useSetAtom(amountAtom.debouncedValueAtom)
+  const setAmount = useSetAtom(amountAtom)
 
   return (
     <ToggleGroup

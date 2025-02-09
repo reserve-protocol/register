@@ -5,7 +5,7 @@ import { chainIdAtom, walletAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { formatCurrency, safeParseEther } from '@/utils'
 import { ROUTES } from '@/utils/constants'
-import { atom, useAtomValue, useSetAtom } from 'jotai'
+import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { AlertCircle } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
@@ -36,7 +36,7 @@ const getErrorMessage = (error: Error) => {
 
 const isValidAtom = atom<[boolean, string]>((get) => {
   const mode = get(modeAtom)
-  const amount = get(amountAtom.debouncedValueAtom)
+  const amount = get(amountAtom)
   const indexDTF = get(indexDTFAtom)
   const balanceMap = get(balanceMapAtom)
   const allowanceMap = get(allowanceMapAtom)
@@ -45,15 +45,17 @@ const isValidAtom = atom<[boolean, string]>((get) => {
   if (
     !indexDTF ||
     isNaN(Number(amount)) ||
+    Number(amount) <= 0 ||
     !Object.keys(balanceMap).length ||
     !Object.keys(allowanceMap).length ||
     !Object.keys(requiredAmounts).length
-  )
+  ) {
     return [false, '']
+  }
 
   // Simple case, on redeem just check if the balance is enough
   if (mode === 'sell') {
-    const isValid = (balanceMap[indexDTF.id] ?? 0n) >= safeParseEther(amount)
+    const isValid = balanceMap[indexDTF.id] >= safeParseEther(amount)
     return [isValid, isValid ? '' : 'Insufficient balance']
   }
 
@@ -73,7 +75,7 @@ const isValidAtom = atom<[boolean, string]>((get) => {
 // TODO: Maybe worth doing the new tx button?
 const SubmitButton = () => {
   const mode = useAtomValue(modeAtom)
-  const amount = useAtomValue(amountAtom.currentValueAtom)
+  const [amount, setAmount] = useAtom(amountAtom)
   const [actionMsg, setActionMsg] = useState('') // used for toast description
   const {
     data,
@@ -90,7 +92,6 @@ const SubmitButton = () => {
   const wallet = useAtomValue(walletAtom)
   const indexDTF = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
-  const setAmount = useSetAtom(amountAtom.debouncedValueAtom)
 
   useEffect(() => {
     if (isSuccess) {
@@ -155,7 +156,6 @@ const SubmitButton = () => {
   } else if (data) {
     label = 'Confirming transaction...'
   }
-
   return (
     <div className="flex flex-col gap-2">
       <TransactionButtonContainer>

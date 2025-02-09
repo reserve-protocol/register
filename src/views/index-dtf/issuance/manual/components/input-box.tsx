@@ -3,14 +3,14 @@ import { Button } from '@/components/ui/button'
 import { NumericalInput } from '@/components/ui/input'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { formatCurrency } from '@/utils'
-import { useAtomValue, useSetAtom } from 'jotai'
+import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { formatEther } from 'viem'
 import { amountAtom, maxAmountAtom, modeAtom, usdAmountAtom } from '../atoms'
 
 const DTFMaxAmount = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
   const maxAmount = useAtomValue(maxAmountAtom)
-  const setMaxAmount = useSetAtom(amountAtom.debouncedValueAtom)
+  const setMaxAmount = useSetAtom(amountAtom)
 
   return (
     <div className="flex flex-col gap-2">
@@ -43,8 +43,7 @@ const DTFMaxAmount = () => {
 
 const AmountInput = () => {
   const mode = useAtomValue(modeAtom)
-  const amount = useAtomValue(amountAtom.currentValueAtom)
-  const setAmount = useSetAtom(amountAtom.debouncedValueAtom)
+  const [amount, setAmount] = useAtom(amountAtom)
   const usdAmount = useAtomValue(usdAmountAtom)
 
   return (
