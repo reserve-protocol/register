@@ -1,4 +1,6 @@
-import TransactionButton from '@/components/old/button/TransactionButton'
+import TransactionButton, {
+  TransactionButtonContainer,
+} from '@/components/old/button/TransactionButton'
 import { Button } from '@/components/ui/button'
 import useContractWrite from '@/hooks/useContractWrite'
 import useWatchTransaction from '@/hooks/useWatchTransaction'
@@ -38,12 +40,14 @@ const LoadingButton = ({
 
 const SubmitZapButton = ({
   data: { approvalNeeded, approvalAddress, tokenIn, amountIn, tx, gas },
+  chainId,
   buttonLabel,
   inputSymbol,
   outputSymbol,
   onSuccess,
 }: {
   data: ZapResult
+  chainId: number
   buttonLabel: string
   inputSymbol: string
   outputSymbol: string
@@ -110,6 +114,7 @@ const SubmitZapButton = ({
 
   return (
     <TransactionButton
+      chain={chainId}
       disabled={
         approvalNeeded
           ? !approvalReady || confirmingApproval || approving
@@ -138,6 +143,7 @@ const SubmitZapButton = ({
 
 const SubmitZap = ({
   data,
+  chainId,
   buttonLabel,
   inputSymbol,
   outputSymbol,
@@ -148,6 +154,7 @@ const SubmitZap = ({
   onSuccess,
 }: {
   data?: ZapResult
+  chainId: number
   buttonLabel: string
   inputSymbol: string
   outputSymbol: string
@@ -160,18 +167,21 @@ const SubmitZap = ({
   return showTxButton && data ? (
     <SubmitZapButton
       data={data}
+      chainId={chainId}
       buttonLabel={buttonLabel}
       inputSymbol={inputSymbol}
       outputSymbol={outputSymbol}
       onSuccess={onSuccess}
     />
   ) : (
-    <LoadingButton
-      fetchingZapper={fetchingZapper}
-      insufficientBalance={insufficientBalance}
-      zapperErrorMessage={zapperErrorMessage}
-      buttonLabel={buttonLabel}
-    />
+    <TransactionButtonContainer chain={chainId}>
+      <LoadingButton
+        fetchingZapper={fetchingZapper}
+        insufficientBalance={insufficientBalance}
+        zapperErrorMessage={zapperErrorMessage}
+        buttonLabel={buttonLabel}
+      />
+    </TransactionButtonContainer>
   )
 }
 

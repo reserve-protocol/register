@@ -101,6 +101,7 @@ const Sell = () => {
       <div className="mb-2">
         <SubmitZap
           data={data?.result}
+          chainId={indexDTF.chainId}
           buttonLabel={`Sell ${indexDTF.token.symbol}`}
           inputSymbol={indexDTF.token.symbol}
           outputSymbol={selectedToken.symbol}

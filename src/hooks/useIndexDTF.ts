@@ -1,5 +1,6 @@
 import { INDEX_DTF_SUBGRAPH_URL } from '@/state/chain/atoms/chainAtoms'
 import { IndexDTF } from '@/types'
+import { ChainId } from '@/utils/chains'
 import { useQuery } from '@tanstack/react-query'
 import request, { gql } from 'graphql-request'
 import { Address, formatEther } from 'viem'
@@ -142,6 +143,7 @@ const useIndexDTF = (address: string | undefined, chainId: number) => {
 
       const data: IndexDTF = {
         ...dtf,
+        chainId: ChainId.Base, // TODO: change hardcoded chainId
         mintingFee: +formatEther(BigInt(dtf.mintingFee)),
         tvlFee: +formatEther(BigInt(dtf.tvlFee)),
         annualizedTvlFee: +formatEther(BigInt(dtf.annualizedTvlFee)),

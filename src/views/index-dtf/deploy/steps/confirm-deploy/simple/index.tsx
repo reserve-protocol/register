@@ -24,6 +24,7 @@ import {
   zapDeployPayloadAtom,
 } from './atoms'
 import SimpleDeployButton from './simple-deploy-button'
+import { TransactionButtonContainer } from '@/components/old/button/TransactionButton'
 
 const CopyPayloadButton = () => {
   const zapDeployPayload = useAtomValue(zapDeployPayloadAtom)
@@ -138,7 +139,7 @@ const SimpleIndexDeploy = () => {
         !isFetching ? (
           <SimpleDeployButton data={data?.result} />
         ) : (
-          <>
+          <TransactionButtonContainer chain={chainId}>
             <Button size="lg" className="w-full" disabled>
               {isLoading || isFetching
                 ? 'Loading...'
@@ -154,7 +155,7 @@ const SimpleIndexDeploy = () => {
                 <CopyPayloadButton />
               </div>
             )}
-          </>
+          </TransactionButtonContainer>
         )}
       </div>
     </div>
