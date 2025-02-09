@@ -7,6 +7,7 @@ import { INDEX_DEPLOYER_ADDRESS } from '@/utils/addresses'
 import { basketAtom } from '@/views/index-dtf/deploy/atoms'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { CheckCircle2, Wallet } from 'lucide-react'
+import { useEffect } from 'react'
 import { Address, erc20Abi, formatUnits, parseUnits } from 'viem'
 import { useReadContract, useWriteContract } from 'wagmi'
 import {
@@ -14,7 +15,6 @@ import {
   formattedAssetsAllowanceAtom,
   hasBalanceAtom,
 } from '../atoms'
-import { useEffect } from 'react'
 
 const TokenBalance = ({
   address,
@@ -26,12 +26,14 @@ const TokenBalance = ({
   required: number
 }) => {
   const wallet = useAtomValue(walletAtom)
+  const chainId = useAtomValue(chainIdAtom)
   const setHasBalance = useSetAtom(hasBalanceAtom)
   const { data } = useReadContract({
     abi: erc20Abi,
     address,
     functionName: 'balanceOf',
     args: [wallet ?? '0x'],
+    chainId,
     query: { enabled: !!wallet },
   })
 
@@ -92,6 +94,7 @@ const ApproveAsset = ({
         INDEX_DEPLOYER_ADDRESS[chainId],
         parseUnits((amount * 2).toString(), decimals),
       ],
+      chainId,
     })
   }
 

@@ -303,3 +303,25 @@ export const humanizeTimeFromDays = (days: number) => {
     language: 'en',
   })
 }
+
+export const cutDecimals = (value: string, min = 2, max = 9) => {
+  const [integer, decimals] = value.split('.')
+  if (!decimals) return value
+  if (decimals.length <= min) return value
+
+  // Find first non-zero digit
+  const firstNonZeroIndex = decimals.split('').findIndex((d) => d !== '0')
+
+  if (firstNonZeroIndex === -1) {
+    // All zeros after decimal, return min digits
+    return `${integer}.${decimals.slice(0, min)}`
+  }
+
+  // For very small numbers (many leading zeros), keep up to the first non-zero + 2 digits
+  if (firstNonZeroIndex >= min) {
+    return `${integer}.${decimals.slice(0, Math.min(firstNonZeroIndex + 3, decimals.length))}`
+  }
+
+  // Normal case - return min +
+  return `${integer}.${decimals.slice(0, min)}`
+}
