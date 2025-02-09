@@ -4,7 +4,7 @@ import { indexDTFAtom, indexDTFPriceAtom } from '@/state/dtf/atoms'
 import { formatCurrency } from '@/utils'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
-import { formatEther, parseEther } from 'viem'
+import { formatEther, formatUnits, parseEther } from 'viem'
 import {
   indexDTFBalanceAtom,
   selectedTokenAtom,
@@ -87,7 +87,7 @@ const Sell = () => {
             address: selectedToken.address,
             symbol: selectedToken.symbol,
             price: priceTo ? `$${formatCurrency(priceTo)}` : undefined,
-            value: formatEther(BigInt(valueTo || 0)),
+            value: formatUnits(BigInt(valueTo || 0), selectedToken.decimals),
             tokens,
             onTokenSelect: setInputToken,
           }}
