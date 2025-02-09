@@ -75,7 +75,7 @@ const TokenSelector = ({
 
   if (!tokens || tokens.length === 0) {
     return (
-      <div className="flex flex-col gap-1 items-end min-w-fit">
+      <div className="flex flex-col gap-1 justify-between items-end min-w-fit">
         <div className="flex items-center gap-1 font-semibold text-2xl">
           <TokenLogo
             size="lg"
@@ -104,12 +104,13 @@ const TokenSelector = ({
   }
 
   return (
-    <div className="flex flex-col gap-1 items-end min-w-fit">
+    <div className="flex flex-col justify-between gap-1 mt-1 items-end min-w-fit">
       <DropdownMenu open={open} onOpenChange={setOpen}>
         <DropdownMenuTrigger asChild>
           <Button
             variant="ghost"
             className="flex items-center text-2xl gap-1 font-semibold h-auto hover:bg-accent px-2 justify-between"
+            size="lg"
           >
             <div className="flex items-center gap-1">
               <TokenLogo
@@ -189,8 +190,19 @@ const TokenOutputBox = ({ to }: Pick<SwapProps, 'to'>) => {
   return (
     <div className="p-4 bg-card rounded-xl border-border border">
       <h3>{to.title || 'You receive:'}</h3>
-      <div className="flex items-center gap-1">
-        <h4 className="text-3xl font-semibold mr-auto">{to.value || '0'}</h4>
+      <div className="flex items-center gap-2">
+        <NumericalInput
+          value={to.value || '0'}
+          variant="transparent"
+          placeholder="0"
+          onChange={() => {}}
+          autoFocus
+          disabled
+          className="disabled:cursor-auto disabled:opacity-100"
+        />
+        {/* <h4 className="text-3xl font-semibold mr-auto w-full overflow-hidden">
+          {to.value || '0'}
+        </h4> */}
         <TokenSelector {...to} output />
       </div>
       <div className="w-full overflow-hidden">

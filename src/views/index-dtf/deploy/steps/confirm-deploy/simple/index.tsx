@@ -85,11 +85,8 @@ const SimpleIndexDeploy = () => {
     ? parseUnits(inputAmount, tokenIn.decimals) > inputBalance?.value
     : false
 
-  const { data, isLoading, isFetching, refetch } = useZapDeployQuery(
-    url,
-    requestBody,
-    insufficientBalance || ongoingTx
-  )
+  const { data, isLoading, isFetching, refetch, failureReason } =
+    useZapDeployQuery(url, requestBody, insufficientBalance || ongoingTx)
 
   const priceTo = data?.result?.amountOutValue
   const valueTo = data?.result?.amountOut
@@ -136,7 +133,8 @@ const SimpleIndexDeploy = () => {
         {data?.status === 'success' &&
         data?.result &&
         !insufficientBalance &&
-        !isFetching ? (
+        !isFetching &&
+        !failureReason ? (
           <SimpleDeployButton data={data?.result} />
         ) : (
           <TransactionButtonContainer chain={chainId}>
@@ -147,10 +145,10 @@ const SimpleIndexDeploy = () => {
                   ? 'Insufficient balance'
                   : 'Deploy'}
             </Button>
-            {data?.error && (
+            {(data?.error || failureReason?.message) && (
               <div className="flex flex-col items-center gap-2">
                 <div className="text-red-500 text-sm text-center mt-2">
-                  {data.error}
+                  {data?.error || failureReason?.message}
                 </div>
                 <CopyPayloadButton />
               </div>

@@ -36,13 +36,14 @@ const Sell = () => {
 
   const insufficientBalance = parseEther(inputAmount) > indexDTFBalance
 
-  const { data, isLoading, isFetching, refetch } = useZapSwapQuery({
-    tokenIn: indexDTF?.id,
-    tokenOut: selectedToken.address,
-    amountIn: parseEther(inputAmount).toString(),
-    slippage: Number(slippage),
-    disabled: insufficientBalance || ongoingTx,
-  })
+  const { data, isLoading, isFetching, refetch, failureReason } =
+    useZapSwapQuery({
+      tokenIn: indexDTF?.id,
+      tokenOut: selectedToken.address,
+      amountIn: parseEther(inputAmount).toString(),
+      slippage: Number(slippage),
+      disabled: insufficientBalance || ongoingTx,
+    })
 
   const priceTo = data?.result?.amountOutValue
   const valueTo = data?.result?.amountOut
@@ -53,7 +54,7 @@ const Sell = () => {
       !isFetching
   )
   const fetchingZapper = isLoading || isFetching
-  const zapperErrorMessage = data?.error || ''
+  const zapperErrorMessage = data?.error || failureReason?.message || ''
 
   useEffect(() => {
     setZapRefetch({ fn: refetch })
