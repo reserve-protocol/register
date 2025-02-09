@@ -20,6 +20,8 @@ import {
   modeAtom,
 } from '../atoms'
 import { cn } from '@/lib/utils'
+import { Link } from 'react-router-dom'
+import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 
 const ApproveAsset = ({ address }: { address: Address }) => {
   const indexDTF = useAtomValue(indexDTFAtom)
@@ -161,7 +163,13 @@ const AssetItem = ({ token }: { token: Token }) => {
         <div className="flex items-center gap-1 text-sm text-muted-foreground">
           <span>{token.symbol}</span>
           <span>•</span>
-          <span>{shortenAddress(token.address)}</span>
+          <Link
+            to={getExplorerLink(token.address, chainId, ExplorerDataType.TOKEN)}
+            target="_blank"
+            className="hover:text-primary hover:underline"
+          >
+            {shortenAddress(token.address)}
+          </Link>
         </div>
       </div>
       <AssetAmount token={token} />
