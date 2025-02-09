@@ -6,6 +6,7 @@ import { formatCurrency } from '@/utils'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { formatEther } from 'viem'
 import { amountAtom, maxAmountAtom, modeAtom, usdAmountAtom } from '../atoms'
+import { useEffect } from 'react'
 
 const DTFMaxAmount = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
@@ -45,6 +46,10 @@ const AmountInput = () => {
   const mode = useAtomValue(modeAtom)
   const [amount, setAmount] = useAtom(amountAtom)
   const usdAmount = useAtomValue(usdAmountAtom)
+
+  useEffect(() => {
+    setAmount('')
+  }, [])
 
   return (
     <div className="flex flex-col">

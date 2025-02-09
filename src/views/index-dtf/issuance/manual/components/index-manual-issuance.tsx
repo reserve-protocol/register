@@ -34,6 +34,11 @@ const getErrorMessage = (error: Error) => {
   return message
 }
 
+const VALIDATION_ERRORS = {
+  BALANCE: 'Insufficient balance',
+  ALLOWANCE: 'Need to approve use of tokens',
+}
+
 const isValidAtom = atom<[boolean, string]>((get) => {
   const mode = get(modeAtom)
   const amount = get(amountAtom)
@@ -56,16 +61,16 @@ const isValidAtom = atom<[boolean, string]>((get) => {
   // Simple case, on redeem just check if the balance is enough
   if (mode === 'sell') {
     const isValid = balanceMap[indexDTF.id] >= safeParseEther(amount)
-    return [isValid, isValid ? '' : 'Insufficient balance']
+    return [isValid, isValid ? '' : VALIDATION_ERRORS.BALANCE]
   }
 
   // On mint, check if the allowance and balance is enough for each asset
   for (const asset of Object.keys(requiredAmounts)) {
     if ((balanceMap[asset] ?? 0n) < requiredAmounts[asset]) {
-      return [false, 'Insufficient balance']
+      return [false, VALIDATION_ERRORS.BALANCE]
     }
     if ((allowanceMap[asset] ?? 0n) < requiredAmounts[asset]) {
-      return [false, 'Insufficient allowance']
+      return [false, VALIDATION_ERRORS.ALLOWANCE]
     }
   }
 
@@ -170,7 +175,13 @@ const SubmitButton = () => {
       </TransactionButtonContainer>
 
       {(validationError || error) && (
-        <Alert variant="destructive">
+        <Alert
+          variant={
+            validationError === VALIDATION_ERRORS.ALLOWANCE
+              ? 'warning'
+              : 'destructive'
+          }
+        >
           <AlertTitle className="flex items-center gap-2">
             <AlertCircle className="w-4 h-4" />{' '}
             {validationError || 'Transaction failed'}

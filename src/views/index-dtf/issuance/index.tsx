@@ -74,13 +74,14 @@ const IndexDTFIssuance = () => {
           </TabsContent>
         </Tabs>
       </div>
-      <div className="w-[560px] mx-auto rounded-3xl border p-4 flex items-center gap-2">
-        <p className="text-sm text-muted-foreground">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam,
-          quos.
+      <div className="w-full sm:w-[560px] mx-auto rounded-3xl border p-4 flex items-center gap-2">
+        <p className="text-sm text-muted-foreground mr-auto">
+          Having issues {currentTab === 'buy' ? 'minting' : 'redeeming'}?
         </p>
         <Link to={`./manual`}>
-          <Button>Manual mode</Button>
+          <Button variant="muted" size="xs">
+            Switch to manual {currentTab === 'buy' ? 'minting' : 'redeeming'}
+          </Button>
         </Link>
       </div>
     </div>
