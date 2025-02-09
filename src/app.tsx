@@ -17,6 +17,7 @@ import AppRoutes from './app-routes'
 import Layout from './components/layout'
 import LanguageProvider from './i18n'
 import { theme } from './theme'
+import { Toaster } from './components/ui/sonner'
 
 mixpanel.init(import.meta.env.VITE_MIXPANEL_KEY || 'mixpanel_key', {
   track_pageview: true,
@@ -110,6 +111,7 @@ const App = () => (
             <Updater />
             <TransactionSidebar />
             <Layout>
+              <Toaster />
               <ToastContainer />
               <AppRoutes />
             </Layout>

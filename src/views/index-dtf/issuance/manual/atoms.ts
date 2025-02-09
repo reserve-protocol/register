@@ -53,8 +53,6 @@ export const maxMintAmountAtom = atom((get) => {
 
   // Initialize max amount as undefined
   let maxAmount: bigint | undefined
-
-  // Iterate through each asset in the distribution
   for (const asset in assetDistribution) {
     // Skip if asset doesn't exist in balance map
     if (!balanceMap[asset]) {
@@ -62,11 +60,13 @@ export const maxMintAmountAtom = atom((get) => {
     }
 
     // Calculate possible mint amount for this asset
-    const requiredAmount = assetDistribution[asset]
+    // currentBalance / requiredAmountPerToken = possible index tokens that can be minted
+    const requiredAmountPerToken = assetDistribution[asset] // Amount needed per 1 index token
     const currentBalance = balanceMap[asset]
-    const possibleAmount = currentBalance / requiredAmount
 
-    // Update max amount if this is the limiting factor
+    const possibleAmount =
+      (currentBalance * parseEther('1')) / requiredAmountPerToken
+
     if (maxAmount === undefined || possibleAmount < maxAmount) {
       maxAmount = possibleAmount
     }

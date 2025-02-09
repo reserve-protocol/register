@@ -174,13 +174,13 @@ const AssetList = () => {
   const basket = useAtomValue(indexDTFBasketAtom)
 
   return (
-    <div className="rounded-3xl bg-card border">
+    <div className="rounded-3xl bg-card border h-fit">
       <div className="p-4 border-b">
         <h1 className="font-bold">
           {mode === 'buy' ? 'Required Approvals' : 'You will receive'}
         </h1>
       </div>
-      <ScrollArea className="flex flex-col  max-h-[calc(100vh-10rem)]">
+      <ScrollArea className="flex flex-col lg:max-h-[calc(100vh-10rem)]">
         {basket?.map((token) => (
           <AssetItem key={token.address} token={token} />
         ))}

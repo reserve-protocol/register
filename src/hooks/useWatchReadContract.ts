@@ -18,7 +18,7 @@ import { type ReadContractData, type ReadContractsData } from 'wagmi/query'
 
 const REFRESH_BLOCKS = {
   [ChainId.Mainnet]: 1n,
-  [ChainId.Base]: 5n,
+  [ChainId.Base]: 3n,
   [ChainId.Arbitrum]: 5n,
 }
 
