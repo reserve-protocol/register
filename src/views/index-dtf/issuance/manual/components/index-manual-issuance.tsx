@@ -24,6 +24,16 @@ import ModeSelector from './mode-selector'
 import Spinner from '@/components/ui/spinner'
 import { TransactionButtonContainer } from '@/components/old/button/TransactionButton'
 
+const getErrorMessage = (error: Error) => {
+  const messageSplit = error.message.split('\n')
+  const message =
+    messageSplit.length > 1
+      ? messageSplit[0] + ' ' + messageSplit[1]
+      : (messageSplit[0] ?? '')
+
+  return message
+}
+
 const isValidAtom = atom<[boolean, string]>((get) => {
   const mode = get(modeAtom)
   const amount = get(amountAtom.debouncedValueAtom)
@@ -165,7 +175,11 @@ const SubmitButton = () => {
             <AlertCircle className="w-4 h-4" />{' '}
             {validationError || 'Transaction failed'}
           </AlertTitle>
-          {!!error && <AlertDescription>{error.name}</AlertDescription>}
+          {!!error && !validationError && (
+            <AlertDescription className="ml-6">
+              {getErrorMessage(error)}
+            </AlertDescription>
+          )}
         </Alert>
       )}
     </div>
