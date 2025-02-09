@@ -22,6 +22,7 @@ import {
 import { cn } from '@/lib/utils'
 import { Link } from 'react-router-dom'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
+import { Skeleton } from '@/components/ui/skeleton'
 
 const ApproveAsset = ({ address }: { address: Address }) => {
   const indexDTF = useAtomValue(indexDTFAtom)
@@ -177,6 +178,20 @@ const AssetItem = ({ token }: { token: Token }) => {
   )
 }
 
+const Placeholder = () => {
+  return (
+    <div className="flex flex-col">
+      {[...Array(5)].map((_, i) => (
+        <div key={i} className="flex items-center border-t gap-2 p-2">
+          <Skeleton className="rounded-full h-8 w-8" />
+          <Skeleton className="w-40 h-11" />
+          <Skeleton className="ml-auto w-16 h-8" />
+        </div>
+      ))}
+    </div>
+  )
+}
+
 const AssetList = () => {
   const mode = useAtomValue(modeAtom)
   const basket = useAtomValue(indexDTFBasketAtom)
@@ -192,6 +207,7 @@ const AssetList = () => {
         {basket?.map((token) => (
           <AssetItem key={token.address} token={token} />
         ))}
+        {!basket && <Placeholder />}
       </ScrollArea>
     </div>
   )
