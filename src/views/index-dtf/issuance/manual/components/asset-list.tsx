@@ -1,6 +1,9 @@
 import TokenLogo from '@/components/token-logo'
 import { Button } from '@/components/ui/button'
+import { Checkbox } from '@/components/ui/checkbox'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import { Skeleton } from '@/components/ui/skeleton'
+import { cn } from '@/lib/utils'
 import { chainIdAtom } from '@/state/atoms'
 import {
   indexDTFAtom,
@@ -9,8 +12,11 @@ import {
 } from '@/state/dtf/atoms'
 import { Token } from '@/types'
 import { cutDecimals, formatCurrency, shortenAddress } from '@/utils'
-import { useAtomValue } from 'jotai'
+import { BIGINT_MAX } from '@/utils/constants'
+import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
+import { useAtom, useAtomValue } from 'jotai'
 import { CheckCircle2, Wallet } from 'lucide-react'
+import { Link } from 'react-router-dom'
 import { Address, erc20Abi, formatUnits } from 'viem'
 import { useWriteContract } from 'wagmi'
 import {
@@ -18,11 +24,8 @@ import {
   assetAmountsMapAtom,
   balanceMapAtom,
   modeAtom,
+  unlimitedApprovalAtom,
 } from '../atoms'
-import { cn } from '@/lib/utils'
-import { Link } from 'react-router-dom'
-import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
-import { Skeleton } from '@/components/ui/skeleton'
 
 const ApproveAsset = ({ address }: { address: Address }) => {
   const indexDTF = useAtomValue(indexDTFAtom)
@@ -31,17 +34,20 @@ const ApproveAsset = ({ address }: { address: Address }) => {
   const allowanceMap = useAtomValue(allowanceMapAtom)
   const assetAmountsMap = useAtomValue(assetAmountsMapAtom)
   const amount = assetAmountsMap[address] ?? 0n
+  const isUnlimited = useAtomValue(unlimitedApprovalAtom)
 
   if (!amount) return null
 
   const approve = () => {
     if (!indexDTF || !assetAmountsMap[address]) return
 
+    const amount = isUnlimited ? BIGINT_MAX : assetAmountsMap[address] * 2n
+
     writeContract({
       abi: erc20Abi,
       address,
       functionName: 'approve',
-      args: [indexDTF.id, assetAmountsMap[address] * 2n],
+      args: [indexDTF.id, amount],
       chainId,
     })
   }
@@ -192,16 +198,34 @@ const Placeholder = () => {
   )
 }
 
+const UnlimitedApproval = () => {
+  const [unlimitedApproval, setUnlimitedApproval] = useAtom(
+    unlimitedApprovalAtom
+  )
+
+  return (
+    <div
+      role="button"
+      onClick={() => setUnlimitedApproval(!unlimitedApproval)}
+      className="flex items-center gap-2 ml-auto text-legend text-sm border rounded-3xl p-1 px-3 cursor-pointer hover:bg-primary/10 hover:text-primary"
+    >
+      <span>Unlimited</span>
+      <Checkbox className="h-4 w-4" checked={unlimitedApproval} />
+    </div>
+  )
+}
+
 const AssetList = () => {
   const mode = useAtomValue(modeAtom)
   const basket = useAtomValue(indexDTFBasketAtom)
 
   return (
     <div className="rounded-3xl bg-card border h-fit">
-      <div className="p-4 border-b">
+      <div className="p-4 border-b flex items-center">
         <h1 className="font-bold">
           {mode === 'buy' ? 'Required Approvals' : 'You will receive'}
         </h1>
+        {mode === 'buy' && <UnlimitedApproval />}
       </div>
       <ScrollArea className="flex flex-col lg:max-h-[calc(100vh-10rem)]">
         {basket?.map((token) => (
