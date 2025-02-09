@@ -30,6 +30,7 @@ const DTFMaxAmount = () => {
         </span>
         <Button
           variant="outline-primary"
+          className="bg-primary/10 rounded-full border-primary/10"
           size="xs"
           onClick={() => setMaxAmount(formatEther(maxAmount))}
         >
