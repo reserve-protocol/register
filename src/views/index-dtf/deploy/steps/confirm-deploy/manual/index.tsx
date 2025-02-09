@@ -62,13 +62,13 @@ const InitialFolioInput = () => {
 
 const ManualIndexDeploy = () => (
   <div className="flex flex-col h-full">
-    <ScrollArea className="flex-grow overflow-auto px-4">
+    <ScrollArea className="overflow-auto px-4">
       <InitialFolioInput />
       <DeployAssetsApproval />
     </ScrollArea>
-    <DrawerFooter className="mt-auto p-4">
+    <div className="p-4">
       <ConfirmManualDeployButton />
-    </DrawerFooter>
+    </div>
     <AssetAllowanceUpdater />
   </div>
 )

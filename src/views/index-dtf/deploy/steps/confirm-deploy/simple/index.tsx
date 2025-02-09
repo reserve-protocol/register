@@ -101,8 +101,8 @@ const SimpleIndexDeploy = () => {
   if (!form) return null
 
   return (
-    <div className="flex flex-col h-full">
-      <div className="flex-grow">
+    <div className="flex flex-col h-full gap-2">
+      <div>
         <div className="flex items-center mx-2 mb-1">
           <h4 className="font-bold ml-4 mr-auto">
             How much do you want to mint?

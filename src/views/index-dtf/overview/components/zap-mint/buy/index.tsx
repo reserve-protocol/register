@@ -75,7 +75,7 @@ const Buy = () => {
   if (!indexDTF) return null
 
   return (
-    <div className="flex flex-col justify-between gap-2 h-full">
+    <div className="flex flex-col gap-2 h-full">
       <div className="flex flex-col gap-1">
         <Swap
           from={{
