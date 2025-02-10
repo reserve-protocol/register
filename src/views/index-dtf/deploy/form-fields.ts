@@ -3,6 +3,7 @@ import { z } from 'zod'
 import {
   isERC20,
   isNotStRSR,
+  isNotVoteLockAddress,
   isVoteLockAddress,
   noSpecialCharacters,
 } from './utils'
@@ -100,7 +101,7 @@ export const DeployFormSchema = z
       .string()
       .refine(isAddress, { message: 'Invalid Address' })
       .refine(isNotStRSR, {
-        message: 'stRSR DAO contracts for Yield DTFs are not supported',
+        message: 'stRSR DAO contracts for Index DTFs are not supported',
       })
       .refine(isVoteLockAddress, { message: 'Unsupported Vote Lock Address' })
       .optional(),
@@ -108,6 +109,9 @@ export const DeployFormSchema = z
       .string()
       .refine(isAddress, { message: 'Invalid Address' })
       .refine(isERC20, { message: 'Invalid ERC20 address' })
+      .refine(isNotVoteLockAddress, {
+        message: 'Vote Lock address is not allowed for new DAO',
+      })
       .optional(),
     governanceWalletAddress: z
       .string()

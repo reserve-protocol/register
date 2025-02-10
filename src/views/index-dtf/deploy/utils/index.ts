@@ -47,6 +47,10 @@ export const isVoteLockAddress = async (address: Address) => {
   return Boolean(await getStToken(address))
 }
 
+export const isNotVoteLockAddress = async (address: Address) => {
+  return !(await isVoteLockAddress(address))
+}
+
 const stRSRQuery = gql`
   query getStRSR($id: String!) {
     rewardTokens(where: { token: $id }) {
