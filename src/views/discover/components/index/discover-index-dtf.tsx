@@ -139,14 +139,14 @@ const columns: ColumnDef<IndexDTFItem>[] = [
   {
     header: ({ column }) => (
       <TableHeader className="text-right">
-        <SorteableButton column={column}>Annualized TVL Fee</SorteableButton>
+        <SorteableButton column={column}>Market Cap</SorteableButton>
       </TableHeader>
     ),
-    accessorKey: 'fee',
+    accessorKey: 'marketCap',
     cell: ({ row }) => {
       return (
         <div className="flex items-center justify-end">
-          <div className="mr-6">{formatPercentage(row.original.fee)}</div>
+          <div className="mr-6">${formatCurrency(row.original.marketCap)}</div>
         </div>
       )
     },
