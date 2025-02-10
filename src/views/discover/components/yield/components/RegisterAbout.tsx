@@ -25,7 +25,7 @@ const SocialLinks = () => (
 const Intro = () => (
   <div>
     <h2 className="text-2xl font-semibold">
-      <Trans>A Brief RToken Introduction</Trans>
+      <Trans>A Brief DTF Introduction</Trans>
     </h2>
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-7">
       <div>

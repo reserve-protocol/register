@@ -8,6 +8,7 @@ import { Address, formatEther } from 'viem'
 type DTFQueryResponse = {
   dtf: {
     id: Address
+    timestamp: number
     deployer: Address
     ownerAddress: Address
     mintingFee: string // bigint D18
@@ -68,6 +69,7 @@ const dtfQuery = gql`
   query getDTF($id: String!) {
     dtf(id: $id) {
       id
+      timestamp
       deployer
       ownerAddress
       mintingFee

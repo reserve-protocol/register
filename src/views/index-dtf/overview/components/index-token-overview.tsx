@@ -17,7 +17,7 @@ import { currentZapMintTabAtom } from './zap-mint/atom'
 import ZapMint from './zap-mint'
 import { Button } from '@/components/ui/button'
 
-const DEFAULT_LOGO = 'https://storage.reserve.org/dtf-default.png'
+const DEFAULT_LOGO = 'https://storage.reserve.org/dtf-default-icon.png'
 
 // const TokenSocials = () => {
 //   const data = useAtomValue(iTokenMetaAtom)

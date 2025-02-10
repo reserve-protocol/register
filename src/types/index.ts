@@ -262,6 +262,7 @@ export type Trader = 'backingManager' | 'rsrTrader' | 'rTokenTrader'
 
 export type IndexDTF = {
   id: Address
+  timestamp: number
   chainId: number
   deployer: Address
   ownerAddress: Address

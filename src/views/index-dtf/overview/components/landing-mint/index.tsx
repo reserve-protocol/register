@@ -9,7 +9,7 @@ import React from 'react'
 import ZapMint from '../zap-mint'
 import { currentZapMintTabAtom } from '../zap-mint/atom'
 
-const IMG_SRC = 'https://storage.reserve.org/dtf-details.webp'
+const IMG_SRC = 'https://storage.reserve.org/dtf-default-2.png'
 
 const MintBox = () => {
   const dtf = useAtomValue(indexDTFAtom)
@@ -80,7 +80,13 @@ const LandingMint = (props: React.HTMLAttributes<HTMLDivElement>) => {
       className="hidden bg-muted h-fit p-1 rounded-3xl sticky top-0 xl:flex xl:flex-col xl:gap-1"
       {...props}
     >
-      <img width={475} height={424} alt="DTF meme" src={IMG_SRC} />
+      <img
+        width={475}
+        height={424}
+        alt="DTF meme"
+        src={IMG_SRC}
+        className="rounded-2xl"
+      />
       <div className="sticky top-0 w-[475px]">
         <MintBox />
       </div>

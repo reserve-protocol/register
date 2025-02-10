@@ -1,5 +1,6 @@
 import GovernanceIcon from '@/components/icons/Governance'
 import IssuanceIcon from '@/components/icons/Issuance'
+import ManagerIcon from '@/components/icons/ManagerIcon'
 import TradeIcon from '@/components/icons/Trade'
 import TokenLogo from '@/components/token-logo'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -93,11 +94,11 @@ const NavigationItems = () => {
         label: t`Auctions`,
         route: ROUTES.AUCTIONS,
       },
-      // {
-      //   icon: <Asterisk size={12} />,
-      //   label: t`DTF settings`,
-      //   route: ROUTES.SETTINGS,
-      // },
+      {
+        icon: <ManagerIcon />,
+        label: t`Details + Roles`,
+        route: ROUTES.SETTINGS,
+      },
     ],
     [dtf?.token.symbol]
   )
