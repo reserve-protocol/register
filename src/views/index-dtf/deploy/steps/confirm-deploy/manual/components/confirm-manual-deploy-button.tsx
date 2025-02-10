@@ -221,7 +221,7 @@ const ConfirmManualDeployButton = () => {
   const hasAssetsAllowance = useAtomValue(hasAssetsAllowanceAtom)
   const hasBalance = useAtomValue(hasBalanceAtom)
   const setDeployedDTF = useSetAtom(deployedDTFAtom)
-
+  const chainId = useAtomValue(chainIdAtom)
   const { isReady, hash, validationError, error, isLoading, write } =
     useContractWrite({
       ...tx,
@@ -230,6 +230,7 @@ const ConfirmManualDeployButton = () => {
 
   const { data: receipt, error: txError } = useWaitForTransactionReceipt({
     hash,
+    chainId,
   })
 
   useEffect(() => {

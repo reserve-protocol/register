@@ -1,7 +1,7 @@
 import dtfIndexStakingVault from '@/abis/dtf-index-staking-vault'
 import TransactionButton from '@/components/old/button/TransactionButton'
 import useContractWrite from '@/hooks/useContractWrite'
-import { walletAtom } from '@/state/atoms'
+import { chainIdAtom, walletAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
@@ -26,6 +26,7 @@ const SubmitUnlockButton = () => {
   const resetInput = useResetAtom(stakingInputAtom)
   const setPortfolioSidebarOpen = useSetAtom(portfolioSidebarOpenAtom)
   const setStakingSidebarOpen = useSetAtom(stakingSidebarOpenAtom)
+  const chainId = useAtomValue(chainIdAtom)
 
   const readyToSubmit =
     !!account && !!balance && amountToUnlock > 0n && amountToUnlock <= balance
@@ -37,10 +38,12 @@ const SubmitUnlockButton = () => {
       address: stToken.id,
       args: [amountToUnlock, account!, account!],
       query: { enabled: readyToSubmit },
+      chainId,
     })
 
   const { data: receipt, error: txError } = useWaitForTransactionReceipt({
     hash,
+    chainId,
   })
 
   useEffect(() => {

@@ -71,6 +71,7 @@ export const useApproval = (
     error: approvalError,
   } = useWaitForTransactionReceipt({
     hash,
+    chainId,
     query: { enabled: !disable },
   })
 

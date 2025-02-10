@@ -71,6 +71,7 @@ const SubmitZapButton = ({
     functionName: 'approve',
     args: [approvalAddress, BigInt(amountIn)],
     query: { enabled: approvalNeeded },
+    chainId,
   })
 
   const {
@@ -79,6 +80,7 @@ const SubmitZapButton = ({
     error: approvalTxError,
   } = useWaitForTransactionReceipt({
     hash: approvalHash,
+    chainId,
   })
 
   const readyToSubmit = !approvalNeeded || approvalReceipt?.status === 'success'
@@ -108,6 +110,7 @@ const SubmitZapButton = ({
       gas: BigInt(gas ?? 0) || undefined,
       to: tx.to as Address,
       value: BigInt(tx.value),
+      chainId,
     })
   }
 

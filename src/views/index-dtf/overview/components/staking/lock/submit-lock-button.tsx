@@ -1,7 +1,7 @@
 import dtfIndexStakingVault from '@/abis/dtf-index-staking-vault'
 import TransactionButton from '@/components/old/button/TransactionButton'
 import useContractWrite from '@/hooks/useContractWrite'
-import { walletAtom } from '@/state/atoms'
+import { chainIdAtom, walletAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
@@ -26,6 +26,7 @@ const SubmitLockButton = () => {
   const resetInput = useResetAtom(stakingInputAtom)
   const setPortfolioSidebarOpen = useSetAtom(portfolioSidebarOpenAtom)
   const setStakingSidebarOpen = useSetAtom(stakingSidebarOpenAtom)
+  const chainId = useAtomValue(chainIdAtom)
 
   const {
     data: allowance,
@@ -36,6 +37,7 @@ const SubmitLockButton = () => {
     functionName: 'allowance',
     address: stToken.underlying.address,
     args: [account!, stToken.id],
+    chainId,
     query: { enabled: !!account },
   })
 
@@ -54,6 +56,7 @@ const SubmitLockButton = () => {
     address: stToken.underlying.address,
     functionName: 'approve',
     args: [stToken.id, amountToLock],
+    chainId,
     query: {
       enabled: !hasAllowance && !!balance && amountToLock <= balance,
     },
@@ -62,6 +65,7 @@ const SubmitLockButton = () => {
   const { data: approvalReceipt, error: approvalTxError } =
     useWaitForTransactionReceipt({
       hash: approvalHash,
+      chainId,
     })
 
   const readyToSubmit = hasAllowance || approvalReceipt?.status === 'success'
@@ -73,10 +77,12 @@ const SubmitLockButton = () => {
       address: stToken.id,
       args: [amountToLock],
       query: { enabled: readyToSubmit },
+      chainId,
     })
 
   const { data: receipt, error: txError } = useWaitForTransactionReceipt({
     hash,
+    chainId,
   })
 
   useEffect(() => {

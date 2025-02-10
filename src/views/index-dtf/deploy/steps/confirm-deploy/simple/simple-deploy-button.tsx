@@ -10,6 +10,7 @@ import dtfIndexDeployerAbi from '@/abis/dtf-index-deployer-abi'
 import useWatchTransaction from '@/hooks/useWatchTransaction'
 import { indexDeployFormDataAtom } from '../atoms'
 import { defaultInputTokenAtom, inputTokenAtom, ongoingTxAtom } from './atoms'
+import { chainIdAtom } from '@/state/atoms'
 
 const SimpleDeployButton = ({
   data: { approvalNeeded, approvalAddress, tokenIn, amountIn, tx, gas },
@@ -23,7 +24,7 @@ const SimpleDeployButton = ({
   const setDeployedDTF = useSetAtom(deployedDTFAtom)
   const setOngoingTx = useSetAtom(ongoingTxAtom)
   const usedToken = inputToken || defaultInputToken
-
+  const chainId = useAtomValue(chainIdAtom)
   const {
     write: approve,
     isReady: approvalReady,
@@ -47,6 +48,7 @@ const SimpleDeployButton = ({
     error: approvalTxError,
   } = useWaitForTransactionReceipt({
     hash: approvalHash,
+    chainId,
   })
 
   const readyToSubmit = !approvalNeeded || approvalReceipt?.status === 'success'

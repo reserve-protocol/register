@@ -79,6 +79,7 @@ const isValidAtom = atom<[boolean, string]>((get) => {
 
 // TODO: Maybe worth doing the new tx button?
 const SubmitButton = () => {
+  const chainId = useAtomValue(chainIdAtom)
   const mode = useAtomValue(modeAtom)
   const [amount, setAmount] = useAtom(amountAtom)
   const [actionMsg, setActionMsg] = useState('') // used for toast description
@@ -91,12 +92,12 @@ const SubmitButton = () => {
   } = useWriteContract()
   const { isSuccess, error: txError } = useWaitForTransactionReceipt({
     hash: data,
+    chainId,
   })
   const requiredAmounts = useAtomValue(assetAmountsMapAtom)
   const [isValid, validationError] = useAtomValue(isValidAtom)
   const wallet = useAtomValue(walletAtom)
   const indexDTF = useAtomValue(indexDTFAtom)
-  const chainId = useAtomValue(chainIdAtom)
 
   useEffect(() => {
     if (isSuccess) {

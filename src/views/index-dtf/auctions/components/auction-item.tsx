@@ -100,11 +100,13 @@ const TradeButton = ({
   trade: AssetTrade
   className?: string
 }) => {
+  const chainId = useAtomValue(chainIdAtom)
   const isAuctionLauncher = useAtomValue(isAuctionLauncherAtom)
   const updateTradeState = useSetAtom(updateTradeStateAtom)
   const { writeContract, isError, isPending, data } = useWriteContract()
   const { isSuccess } = useWaitForTransactionReceipt({
     hash: data,
+    chainId,
   })
 
   const isLoading = isPending || (!!data && !isSuccess && !isError)

@@ -53,6 +53,7 @@ const CreateDAO = () => {
   } = useWriteContract()
   const { data: receipt, error: txError } = useWaitForTransactionReceipt({
     hash: data,
+    chainId,
   })
 
   const vlSymbol = `vl${symbol}${name ? `-${name}` : ''}`

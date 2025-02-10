@@ -20,6 +20,7 @@ import {
   accountTokenPricesAtom,
 } from '../../atoms'
 import StackTokenLogo from '@/components/token-logo/StackTokenLogo'
+import { chainIdAtom } from '@/state/atoms'
 
 export const StakeRSRAction = () => {
   return <ChevronRight className="h-4 w-4 text-primary" />
@@ -61,10 +62,12 @@ export const IndexDTFAction = ({
 }
 
 export const LockWithdrawAction = ({ token, lockId }: Lock) => {
+  const chainId = useAtomValue(chainIdAtom)
   const { data: unstakingManagerAddress } = useReadContract({
     abi: dtfIndexStakingVault,
     functionName: 'unstakingManager',
     address: token.address,
+    chainId,
   })
 
   const { writeContract, data: hash, isPending } = useWriteContract()
@@ -77,11 +80,13 @@ export const LockWithdrawAction = ({ token, lockId }: Lock) => {
       functionName: 'claimLock',
       address: unstakingManagerAddress,
       args: [lockId],
+      chainId,
     })
   }
 
   const { data: receipt } = useWaitForTransactionReceipt({
     hash,
+    chainId,
   })
 
   const loading = !receipt && (isPending || !!hash || (hash && !receipt))
@@ -106,10 +111,12 @@ export const LockWithdrawAction = ({ token, lockId }: Lock) => {
 }
 
 export const CancelLockAction = ({ token, lockId, unlockTime }: Lock) => {
+  const chainId = useAtomValue(chainIdAtom)
   const { data: unstakingManagerAddress } = useReadContract({
     abi: dtfIndexStakingVault,
     functionName: 'unstakingManager',
     address: token.address,
+    chainId,
   })
 
   const { writeContract, data: hash, isPending } = useWriteContract()
@@ -122,11 +129,13 @@ export const CancelLockAction = ({ token, lockId, unlockTime }: Lock) => {
       functionName: 'cancelLock',
       address: unstakingManagerAddress,
       args: [lockId],
+      chainId,
     })
   }
 
   const { data: receipt } = useWaitForTransactionReceipt({
     hash,
+    chainId,
   })
 
   const timeNow = useCurrentTime()
@@ -222,6 +231,7 @@ export const RewardAction = ({
   reward: RewardToken
 }) => {
   const { writeContract, data: hash, isPending } = useWriteContract()
+  const chainId = useAtomValue(chainIdAtom)
 
   const write = () => {
     writeContract({
@@ -229,11 +239,13 @@ export const RewardAction = ({
       functionName: 'claimRewards',
       address: stTokenAddress,
       args: [[reward.address]],
+      chainId,
     })
   }
 
   const { data: receipt } = useWaitForTransactionReceipt({
     hash,
+    chainId,
   })
 
   const loading = !receipt && (isPending || !!hash || (hash && !receipt))
@@ -271,6 +283,7 @@ export const ClaimAllButton = ({
   stTokenAddress: Address
   rewards: RewardToken[]
 }) => {
+  const chainId = useAtomValue(chainIdAtom)
   const { writeContract, data: hash, isPending } = useWriteContract()
 
   const write = () => {
@@ -279,11 +292,13 @@ export const ClaimAllButton = ({
       functionName: 'claimRewards',
       address: stTokenAddress,
       args: [rewards.map(({ address }) => address)],
+      chainId,
     })
   }
 
   const { data: receipt } = useWaitForTransactionReceipt({
     hash,
+    chainId,
   })
 
   const loading = !receipt && (isPending || !!hash || (hash && !receipt))
