@@ -182,11 +182,8 @@ const DeployAccordion = () => {
       const element = document.getElementById(`deploy-section-${sectionId}`)
       if (element) {
         const wrapper = document.getElementById('app-container')
-        const header = document.querySelector('.flex.items-center.justify-between.gap-2.text-primary')
-        if (wrapper && header) {
-          // Account for header height + padding + extra spacing for visual comfort
-          const headerHeight = header.getBoundingClientRect().height
-          const count = element.offsetTop - wrapper.scrollTop - headerHeight - 10
+        if (wrapper) {
+          const count = element.offsetTop - wrapper.scrollTop
           wrapper.scrollBy({ top: count, left: 0, behavior: 'smooth' })
         }
       }
