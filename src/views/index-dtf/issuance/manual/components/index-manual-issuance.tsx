@@ -1,15 +1,17 @@
 import dtfIndexAbi from '@/abis/dtf-index-abi'
+import { TransactionButtonContainer } from '@/components/old/button/TransactionButton'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
+import Spinner from '@/components/ui/spinner'
 import { chainIdAtom, walletAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { formatCurrency, safeParseEther } from '@/utils'
 import { ROUTES } from '@/utils/constants'
-import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { atom, useAtom, useAtomValue } from 'jotai'
 import { AlertCircle } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { toast } from 'sonner'
 import { Link } from 'react-router-dom'
+import { toast } from 'sonner'
 import { Address } from 'viem'
 import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
 import {
@@ -21,8 +23,6 @@ import {
 } from '../atoms'
 import InputBox from './input-box'
 import ModeSelector from './mode-selector'
-import Spinner from '@/components/ui/spinner'
-import { TransactionButtonContainer } from '@/components/old/button/TransactionButton'
 
 const getErrorMessage = (error: Error) => {
   const messageSplit = error.message.split('\n')
@@ -205,13 +205,12 @@ const IndexManualIssuance = () => {
         <InputBox />
         <SubmitButton />
       </div>
-      <div className="mt-4 rounded-3xl border p-4 flex items-center gap-2">
-        <p className="text-sm text-muted-foreground">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam,
-          quos.
-        </p>
+      <div className="mt-4 rounded-3xl border p-4 flex items-center justify-between gap-2">
+        <p className="text-sm text-muted-foreground">Having issues minting?</p>
         <Link to={`../${ROUTES.ISSUANCE}`}>
-          <Button variant="outline-primary">Simple mode</Button>
+          <Button variant="muted" size="xs">
+            Switch to zap minting
+          </Button>
         </Link>
       </div>
     </div>
