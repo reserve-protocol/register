@@ -197,7 +197,7 @@ const DeployAccordion = () => {
       collapsible
       className="w-full bg-secondary rounded-xl"
       value={section}
-      onValueChange={(value) => setSection(value as DeployStepId)}
+      onValueChange={(value: string) => setSection(value as DeployStepId)}
     >
       {DEPLOY_STEPS.map(({ id, icon, title, titleSecondary, content }) => (
         <AccordionItem

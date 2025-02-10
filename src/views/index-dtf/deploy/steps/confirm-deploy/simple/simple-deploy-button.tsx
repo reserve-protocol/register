@@ -2,8 +2,8 @@ import TransactionButton from '@/components/old/button/TransactionButton'
 import useContractWrite from '@/hooks/useContractWrite'
 import { ZapResult } from '@/views/yield-dtf/issuance/components/zapV2/api'
 import { useAtomValue, useSetAtom } from 'jotai'
-import { Address, erc20Abi, parseEventLogs } from 'viem'
-import { useSendTransaction, useWaitForTransactionReceipt } from 'wagmi'
+import { Address, erc20Abi, decodeEventLog } from 'viem'
+import { useSendTransaction, useWaitForTransaction } from 'wagmi'
 import { daoCreatedAtom, deployedDTFAtom } from '../../../atoms'
 import { useEffect } from 'react'
 import dtfIndexDeployerAbi from '@/abis/dtf-index-deployer-abi'
@@ -46,7 +46,7 @@ const SimpleDeployButton = ({
     data: approvalReceipt,
     isLoading: confirmingApproval,
     error: approvalTxError,
-  } = useWaitForTransactionReceipt({
+  } = useWaitForTransaction({
     hash: approvalHash,
     chainId,
   })
@@ -55,7 +55,7 @@ const SimpleDeployButton = ({
 
   const {
     data,
-    isPending: loadingTx,
+    isLoading: loadingTx,
     sendTransaction,
     error: sendError,
     isError: isErrorSend,
@@ -66,7 +66,7 @@ const SimpleDeployButton = ({
     isMining: validatingTx,
     error: txError,
   } = useWatchTransaction({
-    hash: data,
+    hash: data ? (typeof data === 'string' ? data : `0x${data.toString()}`) : undefined,
     label: `Deployed & minted ${form?.symbol || 'DTF'}`,
   })
 
@@ -83,11 +83,17 @@ const SimpleDeployButton = ({
 
   useEffect(() => {
     if (receipt) {
-      const event = parseEventLogs({
-        abi: dtfIndexDeployerAbi,
-        logs: receipt.logs,
-        eventName: daoCreated ? 'GovernedFolioDeployed' : 'FolioDeployed',
-      })[0]
+      const event = receipt.logs.map(log => {
+        try {
+          return decodeEventLog({
+            abi: dtfIndexDeployerAbi,
+            data: log.data,
+            topics: log.topics,
+          })
+        } catch {
+          return null
+        }
+      }).find(log => log?.eventName === (daoCreated ? 'GovernedFolioDeployed' : 'FolioDeployed'))
 
       // TODO: Handle edge case when event is not found? why would that happen?
       if (event) {

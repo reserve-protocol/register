@@ -30,7 +30,7 @@ const NextButton = () => {
       if (deployStep && formErrors[deployStep]) {
         delete formErrors[deployStep]
       }
-    })
+    }) as { unsubscribe: () => void }
     return () => subscription.unsubscribe()
   }, [watch, deployStep, formErrors])
 

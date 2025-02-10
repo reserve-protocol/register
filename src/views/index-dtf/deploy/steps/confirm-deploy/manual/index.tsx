@@ -41,10 +41,10 @@ const InitialFolioInput = () => {
         <div className="flex items-center">
           <div className="flex flex-col flex-grow min-w-0">
             <NumericalInput
-              value={initialTokens}
+              value={initialTokens.toString()}
               variant="transparent"
               placeholder="0"
-              onChange={setInitialTokens}
+              onChange={(value: string) => setInitialTokens(value)}
               autoFocus
             />
             <div className="w-full overflow-hidden">
