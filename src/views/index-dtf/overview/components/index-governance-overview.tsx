@@ -4,11 +4,12 @@ import { Box } from '@/components/ui/box'
 import { Card } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { Skeleton } from '@/components/ui/skeleton'
-import { chainIdAtom } from '@/state/atoms'
+import { chainIdAtom, walletAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { useAtomValue } from 'jotai'
 import { ArrowDown, ArrowRight, Asterisk, Check } from 'lucide-react'
 import Staking from './staking'
+import { useConnectModal } from '@rainbow-me/rainbowkit'
 
 const Container = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -26,9 +27,41 @@ const Container = ({ children }: { children: React.ReactNode }) => {
   )
 }
 
-const IndexGovernanceOverview = () => {
+const OpenLockDrawerButton = ({ onClick }: { onClick?: () => void }) => {
   const dtf = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
+
+  if (!dtf) return
+
+  return (
+    <div
+      className="flex items-center gap-2 rounded-xl hover:bg-primary/10 p-4 -m-4 mt-2"
+      role="button"
+      onClick={() => onClick?.()}
+    >
+      <TokenLogo
+        size="xl"
+        symbol={dtf.stToken?.underlying.symbol}
+        address={dtf.stToken?.underlying.address ?? 'Unknown'}
+        chain={chainId}
+      />
+      <h4 className="font-bold mr-auto text-primary">
+        Lock ${dtf.stToken?.underlying.symbol ?? 'Unknown'} to to Govern & Earn
+      </h4>
+      <Box
+        variant="circle"
+        className="h-8 w-8 bg-primary text-primary-foreground"
+      >
+        <ArrowRight size={16} />
+      </Box>
+    </div>
+  )
+}
+
+const IndexGovernanceOverview = () => {
+  const account = useAtomValue(walletAtom)
+  const { openConnectModal } = useConnectModal()
+  const dtf = useAtomValue(indexDTFAtom)
 
   if (!dtf) {
     return (
@@ -48,29 +81,13 @@ const IndexGovernanceOverview = () => {
         In exchange for locking their tokens and participating in governance,
         governors earn a portion of the TVL fee charged by the DTF.
       </p>
-      <Staking>
-        <div
-          className="flex items-center gap-2 rounded-xl hover:bg-primary/10 p-4 -m-4 mt-2"
-          role="button"
-        >
-          <TokenLogo
-            size="xl"
-            symbol={dtf.stToken?.underlying.symbol}
-            address={dtf.stToken?.underlying.address ?? 'Unknown'}
-            chain={chainId}
-          />
-          <h4 className="font-bold mr-auto text-primary">
-            Lock ${dtf.stToken?.underlying.symbol ?? 'Unknown'} to to Govern &
-            Earn
-          </h4>
-          <Box
-            variant="circle"
-            className="h-8 w-8 bg-primary text-primary-foreground"
-          >
-            <ArrowRight size={16} />
-          </Box>
-        </div>
-      </Staking>
+      {account ? (
+        <Staking>
+          <OpenLockDrawerButton />
+        </Staking>
+      ) : (
+        <OpenLockDrawerButton onClick={openConnectModal} />
+      )}
       <Separator className="my-6" />
       <h3 className="text-legend mr-auto mb-6">
         How changes to ${dtf?.token.symbol || 'DTF'} occur
