@@ -28,6 +28,7 @@ const StackTokenLogo = React.memo(
           position: 'relative',
           display: 'flex',
           flexDirection: reverseStack ? 'row-reverse' : 'row',
+          minWidth: 'max-content',
           ...sx,
         }}
         {...props}
