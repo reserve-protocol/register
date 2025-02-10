@@ -163,7 +163,7 @@ const DTFCard = ({ dtf }: { dtf: IndexDTFItem }) => {
 
   return (
     <Link to={`/${dtf.chainId}/index-dtf/${dtf.address}/overview`}>
-      <div className="p-4 [&:not(:last-child)]:border-b">
+      <div className="p-4">
         <div className="flex justify-between mb-2">
           <TokenLogo address={dtf.address} size="xl" />
           <div>
@@ -249,9 +249,11 @@ const IndexDTFList = () => {
         )}
       />
       <div className="sm:hidden bg-card rounded-[20px]">
-        {filtered.map((dtf) => {
-          return <DTFCard key={dtf.address} dtf={dtf} />
-        })}
+        {filtered.map((dtf) => (
+          <div key={dtf.address} className="[&:not(:last-child)]:border-b">
+            <DTFCard dtf={dtf} />
+          </div>
+        ))}
       </div>
     </div>
   )
