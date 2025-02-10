@@ -8,6 +8,7 @@ import {
 import { cn } from '@/lib/utils'
 import { useAtom, useAtomValue } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
+import useScrollTo from '@/hooks/useScrollTo'
 import {
   Asterisk,
   Check,
@@ -175,6 +176,20 @@ const DeployAccordion = () => {
   const resetSelectedTokens = useResetAtom(selectedTokensAtom)
   const resetSearchToken = useResetAtom(searchTokenAtom)
 
+  const scrollToSection = (sectionId: string) => {
+    // Wait for accordion animation to complete (200ms) plus a small buffer
+    setTimeout(() => {
+      const element = document.getElementById(`deploy-section-${sectionId}`)
+      if (element) {
+        const wrapper = document.getElementById('app-container')
+        if (wrapper) {
+          const count = element.offsetTop - wrapper.scrollTop - 72 // Fixed 72px offset as requested
+          wrapper.scrollBy({ top: count, left: 0, behavior: 'smooth' })
+        }
+      }
+    }, 250) // 200ms animation duration + 50ms buffer for safety
+  }
+
   useEffect(() => {
     setSection(DEPLOY_STEPS[0].id)
 
@@ -197,12 +212,18 @@ const DeployAccordion = () => {
       collapsible
       className="w-full bg-secondary rounded-xl"
       value={section}
-      onValueChange={(value) => setSection(value as DeployStepId)}
+      onValueChange={(value: string) => {
+        setSection(value as DeployStepId)
+        if (value) {
+          scrollToSection(value)
+        }
+      }}
     >
       {DEPLOY_STEPS.map(({ id, icon, title, titleSecondary, content }) => (
         <AccordionItem
           key={id}
           value={id}
+          id={`deploy-section-${id}`}
           className="[&:not(:last-child)]:border-b-4 [&:not(:first-child)]:border-t border-secondary rounded-[1.25rem] bg-card"
         >
           <DeployAccordionTrigger
