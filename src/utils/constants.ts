@@ -173,6 +173,7 @@ export const ROUTES = Object.freeze({
   STAKING: 'staking',
   ISSUANCE: 'issuance',
   AUCTIONS: 'auctions',
+  MANAGE: 'manage',
   DEPLOY: '/deploy',
   DEPLOY_YIELD: '/deploy/yield-dtf',
   DEPLOY_INDEX: '/deploy/index-dtf',

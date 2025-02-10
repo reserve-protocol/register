@@ -29,10 +29,11 @@ import IndexDTFPropose from './views/index-dtf/governance/views/propose'
 import IndexDTFBasketProposal from './views/index-dtf/governance/views/propose/types/basket'
 import IndexDTFContainer from './views/index-dtf/index-dtf-container'
 import IndexDTFIssuance from './views/index-dtf/issuance'
+import IndexDTFManualIssuance from './views/index-dtf/issuance/manual'
+import IndexDTFManage from './views/index-dtf/manage'
 import IndexDTFOverview from './views/index-dtf/overview'
 import IndexDTFSettings from './views/index-dtf/settings'
 import AllYieldDTFList from './views/tokens/Tokens'
-import IndexDTFManualIssuance from './views/index-dtf/issuance/manual'
 
 // TODO: Remove terms!
 // TODO: Fix recoll call on yield dtf auction page
@@ -68,6 +69,7 @@ const AppRoutes = () => (
     <Route path={`/:chain/index-dtf/:tokenId`} element={<IndexDTFContainer />}>
       <Route index element={<Navigate replace to={ROUTES.OVERVIEW} />} />
       <Route path={ROUTES.OVERVIEW} element={<IndexDTFOverview />} />
+      <Route path={ROUTES.MANAGE} element={<IndexDTFManage />} />
       <Route path={ROUTES.ISSUANCE} element={<IndexDTFIssuance />} />
       <Route
         path={`${ROUTES.ISSUANCE}/manual`}
