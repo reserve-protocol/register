@@ -34,7 +34,7 @@ const historicalConfigs = {
   '1y': { to: currentHour, from: currentHour - 31_536_000, interval: '1d' },
 } as const
 
-const plabel = {
+const periodLabel = {
   '1d': '24h',
   '1w': '7d',
   '1m': '30d',
@@ -93,9 +93,11 @@ const PriceChart = () => {
   const dtf = useAtomValue(indexDTFAtom)
   const [range, setRange] = useState<Range>('1w')
 
+  const showHourlyInterval = now - (dtf?.timestamp || 0) < 30 * 86_400
   const { data: history } = useIndexDTFPriceHistory({
     address: dtf?.id,
     ...historicalConfigs[range],
+    ...(showHourlyInterval ? { interval: '1h' } : {}),
   })
 
   const { data: price } = useIndexDTFCurrentPrice({ address: dtf?.id })
@@ -112,7 +114,9 @@ const PriceChart = () => {
             )}
           </div>
           <div className="flex items-center gap-1">
-            <span className="text-white">{plabel[range]} performance: </span>
+            <span className="text-white">
+              {periodLabel[range]} performance:{' '}
+            </span>
             <div className="text-base">
               {history === undefined ? (
                 <Skeleton className="min-w-20 h-[16px]" />
