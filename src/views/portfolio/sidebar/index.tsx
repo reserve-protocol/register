@@ -1,9 +1,10 @@
-import { ArrowLeft, Asterisk } from 'lucide-react'
+import { ArrowLeft, LogOut } from 'lucide-react'
 
 import ChainLogo from '@/components/icons/ChainLogo'
 import WalletOutlineIcon from '@/components/icons/WalletOutlineIcon'
 import CopyValue from '@/components/old/button/CopyValue'
 import TokenLogo from '@/components/token-logo'
+import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import {
   Drawer,
@@ -25,9 +26,11 @@ import {
 } from '@/utils'
 import { RSR_ADDRESS } from '@/utils/addresses'
 import { ChainId } from '@/utils/chains'
+import { ROUTES } from '@/utils/constants'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { ReactNode, useEffect, useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Address, formatUnits } from 'viem'
 import {
   accountIndexTokensAtom,
@@ -42,17 +45,14 @@ import {
   totalAccountHoldingsAtom,
 } from '../atoms'
 import {
+  ClaimAllButton,
   IndexDTFAction,
+  RewardAction,
   StakeRSRAction,
   UnlockAction,
   VoteLockAction,
   YieldDTFAction,
-  RewardAction,
-  ClaimAllButton,
 } from './components/actions'
-import { Button } from '@/components/ui/button'
-import { useNavigate } from 'react-router-dom'
-import { ROUTES } from '@/utils/constants'
 
 const portfolioDismissibleAtom = atom(true)
 
@@ -191,7 +191,7 @@ const PortfolioHeader = () => {
                   role="button"
                   onClick={handleAccountModal}
                 >
-                  <Asterisk size={16} />
+                  <LogOut size={14} />
                 </div>
               </div>
             </div>

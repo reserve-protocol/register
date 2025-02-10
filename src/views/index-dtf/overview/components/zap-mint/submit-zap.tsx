@@ -5,9 +5,11 @@ import { Button } from '@/components/ui/button'
 import useContractWrite from '@/hooks/useContractWrite'
 import useWatchTransaction from '@/hooks/useWatchTransaction'
 import { ZapResult } from '@/views/yield-dtf/issuance/components/zapV2/api'
+import { useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { Address, erc20Abi } from 'viem'
 import { useSendTransaction, useWaitForTransactionReceipt } from 'wagmi'
+import { zapOngoingTxAtom } from './atom'
 
 const LoadingButton = ({
   fetchingZapper,
@@ -53,6 +55,7 @@ const SubmitZapButton = ({
   outputSymbol: string
   onSuccess?: () => void
 }) => {
+  const setOngoingTx = useSetAtom(zapOngoingTxAtom)
   const {
     write: approve,
     isReady: approvalReady,
@@ -61,6 +64,7 @@ const SubmitZapButton = ({
     hash: approvalHash,
     error: approvalError,
     validationError: approvalValidationError,
+    isError: isErrorApproval,
   } = useContractWrite({
     abi: erc20Abi,
     address: tokenIn,
@@ -84,6 +88,7 @@ const SubmitZapButton = ({
     isPending: loadingTx,
     sendTransaction,
     error: sendError,
+    isError: isErrorSend,
   } = useSendTransaction()
 
   const {
@@ -112,6 +117,26 @@ const SubmitZapButton = ({
     }
   }, [receipt, onSuccess])
 
+  useEffect(() => {
+    if (
+      approvalReceipt ||
+      approvalTxError ||
+      receipt ||
+      txError ||
+      isErrorApproval ||
+      isErrorSend
+    ) {
+      setOngoingTx(false)
+    }
+  }, [
+    receipt,
+    approvalReceipt,
+    approvalTxError,
+    txError,
+    isErrorApproval,
+    isErrorSend,
+  ])
+
   return (
     <TransactionButton
       chain={chainId}
@@ -127,7 +152,10 @@ const SubmitZapButton = ({
           : 'Pending, sign in wallet'
       }
       gas={readyToSubmit ? (gas ? BigInt(gas) : undefined) : approvalGas}
-      onClick={readyToSubmit ? execute : approve}
+      onClick={() => {
+        setOngoingTx(true)
+        readyToSubmit ? execute() : approve()
+      }}
       text={readyToSubmit ? buttonLabel : `Approve use of ${inputSymbol}`}
       fullWidth
       error={
