@@ -181,7 +181,7 @@ const DeployAccordion = () => {
     if (element) {
       const wrapper = document.getElementById('app-container')
       if (wrapper) {
-        const count = element.offsetTop - wrapper.scrollTop - 20
+        const count = element.offsetTop - wrapper.scrollTop - 80 // Increased offset to better align with section titles
         wrapper.scrollBy({ top: count, left: 0, behavior: 'smooth' })
       }
     }
