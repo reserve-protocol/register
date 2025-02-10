@@ -177,17 +177,20 @@ const DeployAccordion = () => {
   const resetSearchToken = useResetAtom(searchTokenAtom)
 
   const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(`deploy-section-${sectionId}`)
-    if (element) {
-      const wrapper = document.getElementById('app-container')
-      const header = document.querySelector('.flex.items-center.justify-between.gap-2.text-primary')
-      if (wrapper && header) {
-        // Account for header height + padding + extra spacing for visual comfort
-        const headerHeight = header.getBoundingClientRect().height
-        const count = element.offsetTop - wrapper.scrollTop - headerHeight - 10
-        wrapper.scrollBy({ top: count, left: 0, behavior: 'smooth' })
+    // Wait for accordion animation to complete (200ms) plus a small buffer
+    setTimeout(() => {
+      const element = document.getElementById(`deploy-section-${sectionId}`)
+      if (element) {
+        const wrapper = document.getElementById('app-container')
+        const header = document.querySelector('.flex.items-center.justify-between.gap-2.text-primary')
+        if (wrapper && header) {
+          // Account for header height + padding + extra spacing for visual comfort
+          const headerHeight = header.getBoundingClientRect().height
+          const count = element.offsetTop - wrapper.scrollTop - headerHeight - 10
+          wrapper.scrollBy({ top: count, left: 0, behavior: 'smooth' })
+        }
       }
-    }
+    }, 250) // 200ms animation duration + 50ms buffer for safety
   }
 
   useEffect(() => {
