@@ -139,14 +139,14 @@ const columns: ColumnDef<IndexDTFItem>[] = [
   {
     header: ({ column }) => (
       <TableHeader className="text-right">
-        <SorteableButton column={column}>Annualized TVL Fee</SorteableButton>
+        <SorteableButton column={column}>Market Cap</SorteableButton>
       </TableHeader>
     ),
-    accessorKey: 'fee',
+    accessorKey: 'marketCap',
     cell: ({ row }) => {
       return (
         <div className="flex items-center justify-end">
-          <div className="mr-6">{formatPercentage(row.original.fee)}</div>
+          <div className="mr-6">${formatCurrency(row.original.marketCap)}</div>
         </div>
       )
     },
@@ -163,7 +163,7 @@ const DTFCard = ({ dtf }: { dtf: IndexDTFItem }) => {
 
   return (
     <Link to={`/${dtf.chainId}/index-dtf/${dtf.address}/overview`}>
-      <div className="p-4 [&:not(:last-child)]:border-b">
+      <div className="p-4">
         <div className="flex justify-between mb-2">
           <TokenLogo address={dtf.address} size="xl" />
           <div>
@@ -249,9 +249,11 @@ const IndexDTFList = () => {
         )}
       />
       <div className="sm:hidden bg-card rounded-[20px]">
-        {filtered.map((dtf) => {
-          return <DTFCard key={dtf.address} dtf={dtf} />
-        })}
+        {filtered.map((dtf) => (
+          <div key={dtf.address} className="[&:not(:last-child)]:border-b">
+            <DTFCard dtf={dtf} />
+          </div>
+        ))}
       </div>
     </div>
   )
