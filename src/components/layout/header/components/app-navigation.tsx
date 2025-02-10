@@ -59,7 +59,7 @@ const AppNavigation = () => {
     () => [
       [
         {
-          label: t`Farm Rewards`,
+          label: t`Earn Yield`,
           icon: <Money />,
           to: ROUTES.EARN,
         },
