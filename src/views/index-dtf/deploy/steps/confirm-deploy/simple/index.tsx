@@ -104,7 +104,10 @@ const SimpleIndexDeploy = () => {
           <h4 className="font-bold ml-4 mr-auto">
             How much do you want to mint?
           </h4>
-          <RefreshQuote onClick={refetch} disabled={isFetching || ongoingTx} />
+          <RefreshQuote
+            onClick={refetch}
+            disabled={isFetching || ongoingTx || !zapDeployPayload}
+          />
         </div>
         <div className="flex flex-col gap-1 px-2">
           <Swap

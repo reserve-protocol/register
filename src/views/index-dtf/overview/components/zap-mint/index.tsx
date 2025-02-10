@@ -27,8 +27,9 @@ const ZapMint = ({ children }: { children: ReactNode }) => {
   const zapRefetch = useAtomValue(zapRefetchAtom)
   const zapFetching = useAtomValue(zapFetchingAtom)
   const zapOngoingTx = useAtomValue(zapOngoingTxAtom)
-  const setInput = useSetAtom(zapMintInputAtom)
+  const [input, setInput] = useAtom(zapMintInputAtom)
   const setIndexDTFBalance = useSetAtom(indexDTFBalanceAtom)
+  const invalidInput = isNaN(Number(input)) || Number(input) === 0
 
   const { data: balance } = useERC20Balance(indexDTF?.id)
 
@@ -58,7 +59,7 @@ const ZapMint = ({ children }: { children: ReactNode }) => {
             <div className="mr-11">
               <RefreshQuote
                 onClick={zapRefetch.fn}
-                disabled={zapFetching || zapOngoingTx}
+                disabled={zapFetching || zapOngoingTx || invalidInput}
               />
             </div>
           </DrawerTitle>
