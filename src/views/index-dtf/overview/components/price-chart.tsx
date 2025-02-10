@@ -57,7 +57,18 @@ const calculatePercentageChange = (
   const firstValue = performance[0].price
   const lastValue = performance[performance.length - 1].price
   const percentageChange = ((lastValue - firstValue) / firstValue) * 100
-  return `${percentageChange > 0 ? '+' : ''}${percentageChange.toFixed(2)}%`
+
+  return (
+    <span
+      className={
+        percentageChange < 0
+          ? 'text-red-500'
+          : percentageChange > 0
+            ? 'text-success'
+            : ''
+      }
+    >{`${percentageChange > 0 ? '+' : ''}${percentageChange.toFixed(2)}%`}</span>
+  )
 }
 
 function CustomTooltip({ payload, active }: any) {
@@ -92,23 +103,23 @@ const PriceChart = () => {
   return (
     <div className="rounded-2xl rounded-b-none bg-[#021122] w-full p-6 pb-20 color-[#fff] h-[500px]">
       <div className="flex justify-between">
-        <div>
-          <span className="text-white">{plabel[range]} performance</span>
-          <div className="mt-1 mb-3 text-5xl font-bold text-white">
-            {history === undefined ? (
-              <Skeleton className="min-w-[180px] h-[48px]" />
-            ) : (
-              calculatePercentageChange(history.timeseries)
-            )}
-          </div>
-          <div className="flex items-center gap-1 text-base text-muted">
-            <PriceTag />
-            <span className="text-white/80">Price:</span>
+        <div className="mb-3">
+          <div className="flex items-center gap-1 text-5xl font-bold text-white mb-2">
             {price === undefined ? (
-              <Skeleton className="min-w-20 h-[14px]" />
+              <Skeleton className="min-w-[200px] h-[48px]" />
             ) : (
               <span>${formatCurrency(price.price, 5)}</span>
             )}
+          </div>
+          <div className="flex items-center gap-1">
+            <span className="text-white">{plabel[range]} performance: </span>
+            <div className="text-base">
+              {history === undefined ? (
+                <Skeleton className="min-w-20 h-[16px]" />
+              ) : (
+                calculatePercentageChange(history.timeseries)
+              )}
+            </div>
           </div>
         </div>
         <div className="gap-1 hidden md:flex">
