@@ -183,7 +183,7 @@ const DeployAccordion = () => {
       if (element) {
         const wrapper = document.getElementById('app-container')
         if (wrapper) {
-          const count = element.offsetTop - wrapper.scrollTop
+          const count = element.offsetTop - wrapper.scrollTop - 72 // Fixed 72px offset as requested
           wrapper.scrollBy({ top: count, left: 0, behavior: 'smooth' })
         }
       }
