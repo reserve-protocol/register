@@ -62,6 +62,10 @@ type DTFQueryResponse = {
         decimals: number
       }
     }
+    totalRevenue: number
+    protocolRevenue: number
+    governanceRevenue: number
+    externalRevenue: number
   }
 }
 
@@ -81,6 +85,10 @@ const dtfQuery = gql`
       auctionApprovers
       auctionLaunchers
       brandManagers
+      totalRevenue
+      protocolRevenue
+      governanceRevenue
+      externalRevenue
       ownerGovernance {
         id
         votingDelay

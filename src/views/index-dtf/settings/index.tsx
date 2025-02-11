@@ -3,7 +3,11 @@ import { Card } from '@/components/ui/card'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { IndexDTF } from '@/types'
 import { formatCurrency, formatPercentage } from '@/utils'
-import { formatUnits } from 'viem'
+import { formatEther, formatUnits } from 'viem'
+import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
+import { Button } from '@/components/ui/button'
+import { chainIdAtom } from '@/state/atoms'
+import dtfIndexAbi from '@/abis/dtf-index-abi'
 
 const Section = ({
   title,
@@ -38,6 +42,42 @@ const ArrayRow = ({ label, value }: { label: string; value: any[] }) => (
   />
 )
 
+const DistributeFees = () => {
+  const indexDTF = useAtomValue(indexDTFAtom)
+  const chainId = useAtomValue(chainIdAtom)
+  const { data: hash, writeContract, isPending } = useWriteContract()
+
+  const { data: receipt, isLoading } = useWaitForTransactionReceipt({
+    hash,
+    chainId,
+  })
+
+  if (!indexDTF) return null
+
+  const distributeFees = () => {
+    writeContract({
+      abi: dtfIndexAbi,
+      address: indexDTF.id,
+      functionName: 'distributeFees',
+      chainId,
+    })
+  }
+
+  return (
+    <Button
+      className="col-span-2"
+      onClick={distributeFees}
+      disabled={isPending || isLoading || receipt?.status === 'success'}
+    >
+      {isPending || isLoading
+        ? 'Loading...'
+        : receipt?.status === 'success'
+          ? 'Fees distributed'
+          : 'Distribute Fees'}
+    </Button>
+  )
+}
+
 const IndexDTFSettings = () => {
   const indexDTF = useAtomValue(indexDTFAtom) as IndexDTF | null
 
@@ -62,6 +102,31 @@ const IndexDTFSettings = () => {
           />
           <Row label="Auction Delay" value={`${indexDTF.auctionDelay} sec`} />
           <Row label="Auction Length" value={`${indexDTF.auctionLength} sec`} />
+          <Row
+            label="Total Revenue"
+            value={`${formatCurrency(
+              Number(formatEther(BigInt(indexDTF.totalRevenue)))
+            )} ${indexDTF.token.symbol}`}
+          />
+          <Row
+            label="Protocol Revenue"
+            value={`${formatCurrency(
+              Number(formatEther(BigInt(indexDTF.protocolRevenue)))
+            )} ${indexDTF.token.symbol}`}
+          />
+          <Row
+            label="Governance Revenue"
+            value={`${formatCurrency(
+              Number(formatEther(BigInt(indexDTF.governanceRevenue)))
+            )} ${indexDTF.token.symbol}`}
+          />
+          <Row
+            label="External Revenue"
+            value={`${formatCurrency(
+              Number(formatEther(BigInt(indexDTF.externalRevenue)))
+            )} ${indexDTF.token.symbol}`}
+          />
+          <DistributeFees />
         </div>
       </Section>
 
