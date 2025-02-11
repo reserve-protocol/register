@@ -61,6 +61,11 @@ const ChainFilter = () => {
       filter: [ChainId.Base],
     },
     {
+      icon: <ChainLogo chain={ChainId.Mainnet} />,
+      text: 'Ethereum',
+      filter: [ChainId.Mainnet],
+    },
+    {
       icon: <ChainLogo chain={ChainId.Base} />,
       text: 'Base',
       filter: [ChainId.Base],
@@ -98,7 +103,7 @@ const DTFFilters = () => {
   return (
     <div className="flex flex-col items-stretch sm:flex-row sm:items-center gap-[2px] sm:gap-1">
       <SearchFilter />
-      {/* <ChainFilter /> */}
+      <ChainFilter />
     </div>
   )
 }

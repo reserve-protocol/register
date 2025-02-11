@@ -1,5 +1,5 @@
 import { PartialProposal } from '@/lib/governance'
-import { INDEX_DTF_SUBGRAPH_URL } from '@/state/atoms'
+import { chainIdAtom, INDEX_DTF_SUBGRAPH_URL } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { ChainId } from '@/utils/chains'
 import { useQuery } from '@tanstack/react-query'
@@ -104,11 +104,12 @@ const Updater = () => {
   const setGovernanceOverview = useSetAtom(indexGovernanceOverviewAtom)
   const refetchToken = useAtomValue(refetchTokenAtom)
   const dtf = useAtomValue(indexDTFAtom)
+  const chainId = useAtomValue(chainIdAtom)
   const { data } = useQuery({
     queryKey: ['governance-overview', dtf?.ownerGovernance?.id, refetchToken],
     queryFn: async () => {
       const data = await request<Response>(
-        INDEX_DTF_SUBGRAPH_URL[ChainId.Base],
+        INDEX_DTF_SUBGRAPH_URL[chainId],
         query,
         {
           ownerGovernance: dtf?.ownerGovernance?.id ?? '',

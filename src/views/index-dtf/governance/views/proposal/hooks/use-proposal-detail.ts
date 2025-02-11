@@ -1,8 +1,9 @@
 import { getProposalState, ProposalDetail } from '@/lib/governance'
-import { INDEX_DTF_SUBGRAPH_URL } from '@/state/atoms'
+import { chainIdAtom, INDEX_DTF_SUBGRAPH_URL } from '@/state/atoms'
 import { ChainId } from '@/utils/chains'
 import { useQuery } from '@tanstack/react-query'
 import request, { gql } from 'graphql-request'
+import { useAtomValue } from 'jotai'
 import { Address, formatEther, Hex } from 'viem'
 
 export enum ProposalStatus {
@@ -99,6 +100,8 @@ const query = gql`
 `
 
 const useProposalDetail = (proposalId: string | undefined) => {
+  const chainId = useAtomValue(chainIdAtom)
+
   return useQuery({
     queryKey: ['proposal', proposalId],
     queryFn: async () => {
@@ -107,7 +110,7 @@ const useProposalDetail = (proposalId: string | undefined) => {
       }
 
       const { proposal } = await request<Result>(
-        INDEX_DTF_SUBGRAPH_URL[ChainId.Base],
+        INDEX_DTF_SUBGRAPH_URL[chainId],
         query,
         {
           id: proposalId,

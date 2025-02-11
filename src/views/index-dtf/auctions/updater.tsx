@@ -1,9 +1,11 @@
 import { useAssetPrices } from '@/hooks/useAssetPrices'
-import { INDEX_DTF_SUBGRAPH_URL } from '@/state/chain/atoms/chainAtoms'
+import {
+  chainIdAtom,
+  INDEX_DTF_SUBGRAPH_URL,
+} from '@/state/chain/atoms/chainAtoms'
 import { indexDTFAtom, indexDTFBasketPricesAtom } from '@/state/dtf/atoms'
 import { Token } from '@/types'
 import { getCurrentTime } from '@/utils'
-import { ChainId } from '@/utils/chains'
 import { useQuery } from '@tanstack/react-query'
 import request, { gql } from 'graphql-request'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
@@ -87,6 +89,7 @@ const query = gql`
 
 const useTrades = () => {
   const dtf = useAtomValue(indexDTFAtom)
+  const chainId = useAtomValue(chainIdAtom)
 
   return useQuery({
     queryKey: ['trades', dtf?.id],
@@ -94,7 +97,7 @@ const useTrades = () => {
       if (!dtf?.id) return undefined
 
       const data = await request<Response>(
-        INDEX_DTF_SUBGRAPH_URL[ChainId.Base],
+        INDEX_DTF_SUBGRAPH_URL[chainId],
         query,
         {
           dtf: dtf?.id ?? '',

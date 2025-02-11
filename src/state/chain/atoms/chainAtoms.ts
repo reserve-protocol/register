@@ -93,7 +93,7 @@ export const INDEX_SUBGRAPH_URL = {
 
 export const INDEX_DTF_SUBGRAPH_URL = {
   [ChainId.Mainnet]:
-    'https://subgraph.satsuma-prod.com/327d6f1d3de6/reserve/dtf-index-base/api', // TODO?
+    'https://subgraph.satsuma-prod.com/327d6f1d3de6/reserve/dtf-index-mainnet/api', // TODO?
   [ChainId.Base]:
     'https://subgraph.satsuma-prod.com/327d6f1d3de6/reserve/dtf-index-base/api',
   [ChainId.Arbitrum]:
