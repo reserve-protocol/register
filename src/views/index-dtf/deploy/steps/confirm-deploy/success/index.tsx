@@ -14,6 +14,7 @@ import {
 } from '../../../atoms'
 import { indexDeployFormDataAtom } from '../atoms'
 import { initialTokensAtom } from '../manual/atoms'
+import { getFolioRoute } from '@/utils'
 
 const Item = ({ title, children }: { title: string; children: ReactNode }) => {
   return (
@@ -42,7 +43,7 @@ const SuccessView = () => {
 
   const onClick = () => {
     if (!deployedDTF) return
-    navigate(`/${chainId}/index-dtf/${deployedDTF}`)
+    navigate(getFolioRoute(deployedDTF, chainId))
   }
 
   const addTokenToWallet = () => {

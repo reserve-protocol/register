@@ -6,7 +6,7 @@ import DataTable, { SorteableButton } from '@/components/ui/data-table'
 import { Skeleton } from '@/components/ui/skeleton'
 import useIndexDTFList, { type IndexDTFItem } from '@/hooks/useIndexDTFList'
 import { cn } from '@/lib/utils'
-import { formatCurrency, formatPercentage } from '@/utils'
+import { formatCurrency, formatPercentage, getFolioRoute } from '@/utils'
 import { ColumnDef } from '@tanstack/react-table'
 import { useAtomValue } from 'jotai'
 import { ArrowDown, ArrowRight, ArrowUp, ArrowUpDown } from 'lucide-react'
@@ -163,7 +163,7 @@ const DTFCard = ({ dtf }: { dtf: IndexDTFItem }) => {
   const percentageChange = calculatePercentageChange(dtf.performance)
 
   return (
-    <Link to={`/${dtf.chainId}/index-dtf/${dtf.address}/overview`}>
+    <Link to={getFolioRoute(dtf.address, dtf.chainId)}>
       <div className="p-4">
         <div className="flex justify-between mb-2">
           <TokenLogo address={dtf.address} size="xl" />
@@ -232,9 +232,7 @@ const IndexDTFList = () => {
   }
 
   const handleRowClick = (row: IndexDTFItem) => {
-    navigate(
-      `/${CHAIN_TO_NETWORK[row.chainId]}/index-dtf/${row.address}/overview`
-    )
+    navigate(getFolioRoute(row.address, row.chainId))
   }
 
   return (
