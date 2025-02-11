@@ -145,7 +145,7 @@ const useIndexDTF = (address: string | undefined, chainId: number) => {
 
       const data: IndexDTF = {
         ...dtf,
-        chainId: ChainId.Base, // TODO: change hardcoded chainId
+        chainId,
         mintingFee: +formatEther(BigInt(dtf.mintingFee)),
         tvlFee: +formatEther(BigInt(dtf.tvlFee)),
         annualizedTvlFee: +formatEther(BigInt(dtf.annualizedTvlFee)),

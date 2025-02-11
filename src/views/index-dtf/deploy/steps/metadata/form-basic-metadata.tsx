@@ -7,6 +7,7 @@ const BasicMetadataForm = () => {
         fieldName="tokenName"
         label="Name"
         placeholder="New Index DTF"
+        autoFocus
       />
       <BasicInput fieldName="symbol" label="Symbol" placeholder="TICKER" />
       <BasicInput

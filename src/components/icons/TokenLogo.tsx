@@ -81,15 +81,20 @@ export const SVGS = new Set([
   'wusdm',
   'eth+',
   'wsamm-eusd/usdc',
+  'wvamm-weth-degen',
+  'wvamm-weth-well',
+  'wvamm-weth-cbbtc',
 ])
 
-export const PNGS = new Set([
+const PNGS = new Set([
   'steakusdc',
   'mai',
   'dola',
   'fxusd',
   'alusd',
   'ethx',
+  'wvamm-weth-aero',
+  'wvamm-mog-weth',
 ])
 
 // Memoized token image
@@ -129,6 +134,10 @@ const TokenLogo = ({
 
   if (tokenSymbol?.endsWith('-VAULT')) {
     tokenSymbol = tokenSymbol.replace('-VAULT', '')
+  }
+
+  if (tokenSymbol?.includes('/')) {
+    tokenSymbol = tokenSymbol.replaceAll('/', '-')
   }
 
   if (!imgSrc) {

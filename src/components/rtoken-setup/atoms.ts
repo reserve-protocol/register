@@ -1,17 +1,12 @@
 import { t } from '@lingui/macro'
 import { atom } from 'jotai'
 import { atomWithReset } from 'jotai/utils'
-import {
-  chainIdAtom,
-  rTokenAssetsAtom,
-  secondsPerBlockAtom,
-  selectedRTokenAtom,
-} from 'state/atoms'
+import { chainIdAtom, rTokenAssetsAtom, selectedRTokenAtom } from 'state/atoms'
 import { CollateralPlugin } from 'types'
 import { isAddress, truncateDecimals } from 'utils'
 import { RSR_ADDRESS } from 'utils/addresses'
 import collateralPlugins from 'utils/plugins'
-import { Address, parseEther } from 'viem'
+import { Address } from 'viem'
 
 export interface Collateral {
   symbol: string
@@ -81,14 +76,17 @@ export const getCollateralFromBasket = (basket: Basket | BackupBasket) => {
 }
 // TODO: This may not be needed?
 const getCollateralByTarget = (collaterals: CollateralPlugin[]) => {
-  return collaterals.reduce((acc, collateral) => {
-    acc[collateral.targetName] = [
-      ...(acc[collateral.targetName] ?? []),
-      collateral,
-    ]
+  return collaterals.reduce(
+    (acc, collateral) => {
+      acc[collateral.targetName] = [
+        ...(acc[collateral.targetName] ?? []),
+        collateral,
+      ]
 
-    return acc
-  }, {} as { [x: string]: Collateral[] })
+      return acc
+    },
+    {} as { [x: string]: Collateral[] }
+  )
 }
 
 export const isValidBasketAtom = atom((get): [boolean, string[]] => {
@@ -299,6 +297,8 @@ export const isValidExternalMapAtom = atom((get) => {
 
   return true
 })
+
+export const basketTargetUnitPriceAtom = atom<Record<string, number>>({})
 
 export const setupRolesAtom = atomWithReset({
   pausers: [] as Address[],

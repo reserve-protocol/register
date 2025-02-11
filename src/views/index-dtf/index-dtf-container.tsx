@@ -15,7 +15,7 @@ import {
 } from '@/state/dtf/atoms'
 import { isAddress } from '@/utils'
 import { AvailableChain, supportedChains } from '@/utils/chains'
-import { ROUTES } from '@/utils/constants'
+import { NETWORKS, ROUTES } from '@/utils/constants'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { Outlet, useNavigate, useParams } from 'react-router-dom'
@@ -92,6 +92,11 @@ const Updater = () => {
   const setTokenGovernance = useSetAtom(iTokenGovernanceAtom)
   const setTokenBasket = useSetAtom(iTokenBasketAtom)
   const resetAtoms = useSetAtom(resetStateAtom)
+  const chainId = NETWORKS[chain ?? ''] as AvailableChain
+
+  console.log('chain', chain)
+  console.log('chainId', chainId)
+
   useChainWatch()
 
   const resetState = () => {
@@ -108,16 +113,16 @@ const Updater = () => {
   useEffect(() => {
     const tokenAddress = isAddress(tokenId ?? '')
 
-    if (!supportedChains.has(Number(chain)) || !tokenAddress) {
+    if (!supportedChains.has(chainId) || !tokenAddress) {
       navigate(ROUTES.NOT_FOUND)
     }
 
     if (tokenAddress !== currentToken) {
       resetState()
-      setChain(Number(chain) as AvailableChain)
+      setChain(chainId)
       setTokenAddress(tokenAddress ?? undefined)
     }
-  }, [tokenId, chain])
+  }, [tokenId, chainId])
 
   // Reset state on unmount
   useEffect(() => resetState, [])

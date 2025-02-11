@@ -122,6 +122,12 @@ const wrappedTokenMap = {
   wUSDM: protocols.USDM,
   apxETH: protocols.PXETH,
   aeroUSDCeUSD: protocols.AERODROME,
+  aeroWETHAERO: protocols.AERODROME,
+  aeroMOGWETH: protocols.AERODROME,
+  aeroUSDzUSDC: protocols.AERODROME,
+  aeroWETHcbBTC: protocols.AERODROME,
+  aeroWETHWELL: protocols.AERODROME,
+  aeroWETHDEGEN: protocols.AERODROME,
 }
 
 // Default: run all collateral chains - you can comment which chain you want to run
@@ -139,7 +145,13 @@ const chainsMap = [
   },
   {
     prefix: 'base',
-    chain: chains.base,
+    chain: {
+      ...chains.base,
+      rpcUrls: {
+        public: { http: ['https://base.llamarpc.com'] },
+        default: { http: ['https://base.llamarpc.com'] },
+      },
+    },
     collaterals: require('./data/base-collaterals.json'),
   },
   {

@@ -3,7 +3,7 @@ import { CellContext } from '@tanstack/react-table'
 import ERC20 from 'abis/ERC20'
 import humanizeDuration from 'humanize-duration'
 import { BigNumberMap } from 'types'
-import { Address, getAddress, parseEther, parseUnits } from 'viem'
+import { Address, formatEther, getAddress, parseEther, parseUnits } from 'viem'
 import { CHAIN_TO_NETWORK, RESERVE_STORAGE, ROUTES } from './constants'
 import dayjs from 'dayjs'
 
@@ -13,6 +13,10 @@ export const addressPattern = /^0x[a-fA-F0-9]{40}$/
 
 export function getAssetURI(key: string) {
   return `${RESERVE_STORAGE}/${key}`
+}
+
+export function getPrice([lowPrice, highPrice]: [bigint, bigint]) {
+  return Number(formatEther((lowPrice + highPrice) / 2n))
 }
 
 export const cutDecimals = (value: string, min = 2, max = 9) => {

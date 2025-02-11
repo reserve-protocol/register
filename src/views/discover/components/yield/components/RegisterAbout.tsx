@@ -2,15 +2,20 @@ import Reserve from '@/components/icons/Reserve'
 import { Trans } from '@lingui/macro'
 import DiscordIcon from 'components/icons/DiscordIcon'
 import GithubIcon from 'components/icons/GithubIcon'
-import Logo from 'components/icons/Logo'
+import { XIcon } from 'lucide-react'
 import { Link as RouterLink } from 'react-router-dom'
-import { Box, Divider, Grid, Link, Text } from 'theme-ui'
-import { DISCORD_INVITE, PROTOCOL_DOCS } from 'utils/constants'
+import { Divider } from 'theme-ui'
+import {
+  DISCORD_INVITE,
+  PROTOCOL_DOCS,
+  REPOSITORY_URL,
+  RESERVE_X,
+} from 'utils/constants'
 
 const SocialLinks = () => (
   <div className="flex items-center mt-8 text-2xl">
     <RouterLink
-      to="https://github.com/reserve-protocol/register"
+      to={REPOSITORY_URL}
       target="_blank"
       className="cursor-pointer mr-5"
     >
@@ -18,6 +23,13 @@ const SocialLinks = () => (
     </RouterLink>
     <RouterLink to={DISCORD_INVITE} className="cursor-pointer" target="_blank">
       <DiscordIcon />
+    </RouterLink>
+    <RouterLink
+      to={RESERVE_X}
+      target="_blank"
+      style={{ all: 'unset', cursor: 'pointer' }}
+    >
+      <XIcon height={32} width={32} fill="currentColor" />
     </RouterLink>
   </div>
 )

@@ -415,6 +415,16 @@ const useProposalTx = () => {
 
         const adjustedWeights = adjustWeightsIfNeeded(weights, weightsSum)
 
+        if (rTokenConfig?.reweightable) {
+          addresses.push(contracts.basketHandler.address)
+          calls.push(
+            encodeFunctionData({
+              abi: BasketHandler,
+              functionName: 'refreshBasket',
+            })
+          )
+        }
+
         // Set primeBasket with new collaterals and weights
         addresses.push(contracts.basketHandler.address)
         calls.push(

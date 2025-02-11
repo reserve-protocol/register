@@ -15,6 +15,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { Line, LineChart, YAxis } from 'recharts'
 import { chainFilterAtom, searchFilterAtom } from './atoms/filter'
 import DTFFilters from './components/dtf-filters'
+import { CHAIN_TO_NETWORK } from '@/utils/constants'
 
 const chartConfig = {
   desktop: {
@@ -231,7 +232,9 @@ const IndexDTFList = () => {
   }
 
   const handleRowClick = (row: IndexDTFItem) => {
-    navigate(`/${row.chainId}/index-dtf/${row.address}/overview`)
+    navigate(
+      `/${CHAIN_TO_NETWORK[row.chainId]}/index-dtf/${row.address}/overview`
+    )
   }
 
   return (

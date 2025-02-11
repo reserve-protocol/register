@@ -19,11 +19,14 @@ const pegsAtom = atom((get) => {
     return null
   }
 
-  const unitCount = rToken.collaterals.reduce((acc, collateral) => {
-    acc[distribution[collateral.address].targetUnit] =
-      acc[distribution[collateral.address].targetUnit] + 1 || 1
-    return acc
-  }, {} as { [x: string]: number })
+  const unitCount = rToken.collaterals.reduce(
+    (acc, collateral) => {
+      acc[distribution[collateral.address].targetUnit] =
+        acc[distribution[collateral.address].targetUnit] + 1 || 1
+      return acc
+    },
+    {} as { [x: string]: number }
+  )
 
   const totalUnits = Object.keys(unitCount).length
 
@@ -40,8 +43,33 @@ const pegsAtom = atom((get) => {
   }, `${rToken.symbol} has `)
 })
 
+const unitCountAtom = atom((get) => {
+  const rToken = get(rTokenAtom)
+  const distribution = get(
+    rTokenBackingDistributionAtom
+  )?.collateralDistribution
+
+  if (!rToken || !distribution) {
+    return 0
+  }
+
+  const unitCount = rToken.collaterals.reduce(
+    (acc, collateral) => {
+      acc[distribution[collateral.address].targetUnit] =
+        acc[distribution[collateral.address].targetUnit] + 1 || 1
+      return acc
+    },
+    {} as { [x: string]: number }
+  )
+
+  return Object.keys(unitCount).length
+})
+
 const BackingResume = () => {
+  const unitCount = useAtomValue(unitCountAtom)
   const legend = useAtomValue(pegsAtom)
+
+  if (unitCount > 2) return <Box mb={5} />
 
   return (
     <Text

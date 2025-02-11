@@ -19,6 +19,7 @@ export type BasicInputProps = {
   defaultValue?: string | number
   highlightLabel?: boolean
   decimalPlaces?: number
+  autoFocus?: boolean
 }
 
 const BasicInput = ({
@@ -30,6 +31,7 @@ const BasicInput = ({
   defaultValue = '',
   disabled = false,
   highlightLabel = false,
+  autoFocus = false,
   decimalPlaces,
   ...props
 }: React.HTMLAttributes<HTMLDivElement> & BasicInputProps) => {
@@ -78,6 +80,7 @@ const BasicInput = ({
                 startAdornment={
                   labelPosition === 'start' ? adornment : undefined
                 }
+                autoFocus={autoFocus}
                 autoComplete="new-password"
                 endAdornment={labelPosition === 'end' ? adornment : undefined}
                 className="px-1 text-base [&:focus::placeholder]:opacity-0 [&:focus::placeholder]:transition-opacity"

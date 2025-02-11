@@ -100,15 +100,16 @@ const ChainSelector = () => {
   }
 
   useEffect(() => {
-    // Force Base for now
-    setChain(ChainId.Base as AvailableChain)
-    switchChain && switchChain({ chainId: ChainId.Base })
-  }, [chainId, setChain, switchChain])
+    if (chainId !== ChainId.Base || chainId !== ChainId.Mainnet) {
+      setChain(ChainId.Base as AvailableChain)
+      switchChain && switchChain({ chainId: ChainId.Base })
+    }
+  }, [setChain, switchChain])
 
   return (
     <div className="flex flex-col lg:flex-row gap-2 p-2 flex-wrap">
       {/* Just Base for the moment */}
-      {[ChainId.Base].map((chain) => (
+      {[ChainId.Mainnet, ChainId.Base].map((chain) => (
         <ChainOption
           key={chain}
           chainId={chain}
@@ -116,7 +117,6 @@ const ChainSelector = () => {
           onClick={handleChainChange}
         />
       ))}
-      <ComingSoonOption network="mainnet" />
       <ComingSoonOption network="solana" />
     </div>
   )
