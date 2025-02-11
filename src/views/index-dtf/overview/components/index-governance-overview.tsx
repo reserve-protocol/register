@@ -10,6 +10,7 @@ import { useAtomValue } from 'jotai'
 import { ArrowDown, ArrowRight, Asterisk, Check } from 'lucide-react'
 import Staking from './staking'
 import { useConnectModal } from '@rainbow-me/rainbowkit'
+import { forwardRef } from 'react'
 
 const Container = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -27,7 +28,10 @@ const Container = ({ children }: { children: React.ReactNode }) => {
   )
 }
 
-const OpenLockDrawerButton = ({ onClick }: { onClick?: () => void }) => {
+const OpenLockDrawerButton = forwardRef<
+  HTMLDivElement,
+  { onClick?: () => void }
+>(({ onClick }, ref) => {
   const dtf = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
 
@@ -35,6 +39,7 @@ const OpenLockDrawerButton = ({ onClick }: { onClick?: () => void }) => {
 
   return (
     <div
+      ref={ref}
       className="flex items-center gap-2 rounded-xl hover:bg-primary/10 p-4 -m-4 mt-2"
       role="button"
       onClick={() => onClick?.()}
@@ -56,7 +61,7 @@ const OpenLockDrawerButton = ({ onClick }: { onClick?: () => void }) => {
       </Box>
     </div>
   )
-}
+})
 
 const IndexGovernanceOverview = () => {
   const account = useAtomValue(walletAtom)
