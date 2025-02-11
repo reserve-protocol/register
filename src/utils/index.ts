@@ -15,6 +15,28 @@ export function getAssetURI(key: string) {
   return `${RESERVE_STORAGE}/${key}`
 }
 
+export const cutDecimals = (value: string, min = 2, max = 9) => {
+  const [integer, decimals] = value.split('.')
+  if (!decimals) return value
+  if (decimals.length <= min) return value
+
+  // Find first non-zero digit
+  const firstNonZeroIndex = decimals.split('').findIndex((d) => d !== '0')
+
+  if (firstNonZeroIndex === -1) {
+    // All zeros after decimal, return min digits
+    return `${integer}.${decimals.slice(0, min)}`
+  }
+
+  // For very small numbers (many leading zeros), keep up to the first non-zero + 2 digits
+  if (firstNonZeroIndex >= min) {
+    return `${integer}.${decimals.slice(0, Math.min(firstNonZeroIndex + 1, decimals.length))}`
+  }
+
+  // Normal case - return min +
+  return `${integer}.${decimals.slice(0, min)}`
+}
+
 // returns the checksummed address if the address is valid, otherwise returns false
 export function isAddress(value: string) {
   try {
@@ -152,11 +174,14 @@ export function formatCurrency(
   decimals = 2,
   options: Intl.NumberFormatOptions = {}
 ): string {
-  return Intl.NumberFormat('en-US', {
-    maximumFractionDigits: decimals,
-    minimumFractionDigits: Math.min(2, decimals),
-    ...options,
-  }).format(value)
+  return cutDecimals(
+    Intl.NumberFormat('en-US', {
+      maximumFractionDigits: 9,
+      minimumFractionDigits: Math.min(2, decimals),
+      ...options,
+    }).format(value),
+    decimals
+  )
 }
 
 export function formatTokenAmount(value: number) {
@@ -302,26 +327,4 @@ export const humanizeTimeFromDays = (days: number) => {
   return humanizeDuration(days * 24 * 60 * 60 * 1000, {
     language: 'en',
   })
-}
-
-export const cutDecimals = (value: string, min = 2, max = 9) => {
-  const [integer, decimals] = value.split('.')
-  if (!decimals) return value
-  if (decimals.length <= min) return value
-
-  // Find first non-zero digit
-  const firstNonZeroIndex = decimals.split('').findIndex((d) => d !== '0')
-
-  if (firstNonZeroIndex === -1) {
-    // All zeros after decimal, return min digits
-    return `${integer}.${decimals.slice(0, min)}`
-  }
-
-  // For very small numbers (many leading zeros), keep up to the first non-zero + 2 digits
-  if (firstNonZeroIndex >= min) {
-    return `${integer}.${decimals.slice(0, Math.min(firstNonZeroIndex + 3, decimals.length))}`
-  }
-
-  // Normal case - return min +
-  return `${integer}.${decimals.slice(0, min)}`
 }
