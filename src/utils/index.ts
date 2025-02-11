@@ -60,7 +60,7 @@ export const getFolioRoute = (
   token: string,
   chainId: number,
   route: string = ROUTES.OVERVIEW
-) => `/${chainId}/index-dtf/${token.toLowerCase()}/${route}`
+) => `/${CHAIN_TO_NETWORK[chainId]}/index-dtf/${token.toLowerCase()}/${route}`
 
 // multiplier 200 -> 2
 export const getSafeGasLimit = (gas: bigint, multiplier = 200n) =>
