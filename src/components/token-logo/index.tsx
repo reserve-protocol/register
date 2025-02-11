@@ -143,7 +143,13 @@ const TokenLogo = React.forwardRef<HTMLImageElement, Props>((props, ref) => {
       height={h}
       width={w}
       style={{ height: h, width: w }}
-      className={cn('flex-shrink-0 rounded-full bg-muted', className)}
+      className={cn(
+        'flex-shrink-0 rounded-full',
+        className,
+        currentSrc && !currentSrc.includes('defaultLogo')
+          ? 'bg-black'
+          : 'bg-muted'
+      )}
       onError={() => setCurrentSrc('/svgs/defaultLogo.svg')}
       {...rest}
     />
