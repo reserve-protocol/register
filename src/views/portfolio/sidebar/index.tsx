@@ -29,7 +29,7 @@ import { ChainId } from '@/utils/chains'
 import { ROUTES } from '@/utils/constants'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { ReactNode, useEffect, useRef, useState } from 'react'
+import { ReactNode, useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Address, formatUnits } from 'viem'
 import {
@@ -99,7 +99,7 @@ function TokenRow({
       onClick={onClick}
     >
       <div className="flex items-center gap-2">
-        <div className="relative">
+        <div className="relative flex-shrink-0">
           <TokenLogo
             size="xl"
             symbol={underlying?.symbol ?? token.symbol}
@@ -309,13 +309,18 @@ const YieldDTFs = () => {
   const yieldDTFs = useAtomValue(accountTokensAtom)
   const selectedTab = useAtomValue(selectedPortfolioTabAtom)
 
-  if (!yieldDTFs.length || !['all', 'yield-dtfs'].includes(selectedTab))
+  const filteredYieldDTFs = useMemo(
+    () => yieldDTFs.filter(({ usdAmount }) => usdAmount > 0.01),
+    [yieldDTFs]
+  )
+
+  if (!filteredYieldDTFs.length || !['all', 'yield-dtfs'].includes(selectedTab))
     return null
 
   return (
     <div className="p-4">
       <h2 className="mb-3 text-base font-bold">Yield DTFs</h2>
-      {yieldDTFs.map((token) => (
+      {filteredYieldDTFs.map((token) => (
         <TokenRow
           key={token.address}
           token={{
@@ -343,13 +348,18 @@ const StakedRSR = () => {
   const yieldDTFs = useAtomValue(accountTokensAtom)
   const selectedTab = useAtomValue(selectedPortfolioTabAtom)
 
-  if (!yieldDTFs.length || !['all', 'staked-rsr'].includes(selectedTab))
+  const filteredYieldDTFs = useMemo(
+    () => yieldDTFs.filter(({ stakedRSRUsd }) => stakedRSRUsd > 0.01),
+    [yieldDTFs]
+  )
+
+  if (!filteredYieldDTFs.length || !['all', 'staked-rsr'].includes(selectedTab))
     return null
 
   return (
     <div className="p-4">
       <h2 className="mb-3 text-base font-bold">Staked RSR</h2>
-      {yieldDTFs.map((token) => (
+      {filteredYieldDTFs.map((token) => (
         <TokenRow
           key={token.address}
           token={{

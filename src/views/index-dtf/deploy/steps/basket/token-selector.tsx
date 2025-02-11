@@ -32,6 +32,7 @@ import {
 } from '../../atoms'
 import { useAssetPrice } from '@/hooks/useAssetPrices'
 import useTokensInfo from '@/hooks/useTokensInfo'
+import { RESERVE_API } from '@/utils/constants'
 
 interface TokenButtonProps {
   variant: 'primary' | 'secondary'
@@ -267,17 +268,15 @@ const TokenList = ({ showSelected = false }: TokenListProps) => {
     isLoading,
     error,
   } = useQuery({
-    queryKey: ['coingecko-tokens'],
+    queryKey: ['zapper-tokens'],
     queryFn: async () => {
       try {
-        const response = await fetch(
-          'https://tokens.coingecko.com/base/all.json'
-        )
+        const response = await fetch(RESERVE_API + 'zapper/tokens')
         if (!response.ok) {
           throw new Error('Failed to fetch token list')
         }
         const data = await response.json()
-        return data.tokens as Token[]
+        return data as Token[]
       } catch (error) {
         console.error('Error fetching token list:', error)
         throw error
@@ -285,8 +284,6 @@ const TokenList = ({ showSelected = false }: TokenListProps) => {
     },
     staleTime: 5 * 60 * 1000, // Cache for 5 minutes
     retry: 2,
-    select: (data) =>
-      data.sort((a, b) => a.name.trim().localeCompare(b.name.trim())),
   })
 
   const filteredTokens = useMemo(() => {

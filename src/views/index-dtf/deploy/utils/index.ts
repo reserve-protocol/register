@@ -137,3 +137,17 @@ export const noSpecialCharacters = (value: string) => {
   if (containsEmoji.test(value)) return false
   return alphanumericWithSpaces.test(value)
 }
+
+export const scrollToSection = (sectionId: string) => {
+  // Wait for accordion animation to complete (200ms) plus a small buffer
+  setTimeout(() => {
+    const element = document.getElementById(`deploy-section-${sectionId}`)
+    if (element) {
+      const wrapper = document.getElementById('app-container')
+      if (wrapper) {
+        const count = element.offsetTop - wrapper.scrollTop - 72 // Fixed 72px offset as requested
+        wrapper.scrollBy({ top: count, left: 0, behavior: 'smooth' })
+      }
+    }
+  }, 250) // 200ms animation duration + 50ms buffer for safety
+}

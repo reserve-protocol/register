@@ -8,7 +8,6 @@ import {
 import { cn } from '@/lib/utils'
 import { useAtom, useAtomValue } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
-import useScrollTo from '@/hooks/useScrollTo'
 import {
   Asterisk,
   Check,
@@ -38,6 +37,7 @@ import MetadataAndChain from '../steps/metadata'
 import OtherChanges from '../steps/other-changes'
 import RevenueDistribution from '../steps/revenue'
 import Roles from '../steps/roles'
+import { scrollToSection } from '../utils'
 
 export type DeployStep = {
   id: DeployStepId
@@ -175,20 +175,6 @@ const DeployAccordion = () => {
   const resetDeployFormData = useResetAtom(indexDeployFormDataAtom)
   const resetSelectedTokens = useResetAtom(selectedTokensAtom)
   const resetSearchToken = useResetAtom(searchTokenAtom)
-
-  const scrollToSection = (sectionId: string) => {
-    // Wait for accordion animation to complete (200ms) plus a small buffer
-    setTimeout(() => {
-      const element = document.getElementById(`deploy-section-${sectionId}`)
-      if (element) {
-        const wrapper = document.getElementById('app-container')
-        if (wrapper) {
-          const count = element.offsetTop - wrapper.scrollTop - 72 // Fixed 72px offset as requested
-          wrapper.scrollBy({ top: count, left: 0, behavior: 'smooth' })
-        }
-      }
-    }, 250) // 200ms animation duration + 50ms buffer for safety
-  }
 
   useEffect(() => {
     setSection(DEPLOY_STEPS[0].id)

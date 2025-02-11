@@ -5,6 +5,7 @@ import { FieldErrors, FieldValues, useFormContext } from 'react-hook-form'
 import { deployStepAtom, validatedSectionsAtom } from '../atoms'
 import { DeployInputs, DeployStepId, dtfDeploySteps } from '../form-fields'
 import { DEPLOY_STEPS } from './deploy-accordion'
+import { scrollToSection } from '../utils'
 
 type FieldName = keyof DeployInputs
 type ExtendedFieldErrors<TFieldValues extends FieldValues> =
@@ -56,6 +57,7 @@ const NextButton = () => {
     )
     const nextStep = DEPLOY_STEPS[currentStepIdx + 1]?.id
 
+    scrollToSection(nextStep ?? DEPLOY_STEPS[0])
     setDeployStep(nextStep)
   }
 

@@ -94,9 +94,6 @@ const Updater = () => {
   const resetAtoms = useSetAtom(resetStateAtom)
   const chainId = NETWORKS[chain ?? ''] as AvailableChain
 
-  console.log('chain', chain)
-  console.log('chainId', chainId)
-
   useChainWatch()
 
   const resetState = () => {
