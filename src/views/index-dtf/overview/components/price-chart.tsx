@@ -102,6 +102,9 @@ const PriceChart = () => {
 
   const { data: price } = useIndexDTFCurrentPrice({ address: dtf?.id })
 
+  const timeseries =
+    history?.timeseries.filter(({ price }) => Boolean(price)) || []
+
   return (
     <div className="rounded-2xl rounded-b-none bg-[#021122] w-full p-6 pb-20 color-[#fff] h-[500px]">
       <div className="flex justify-between">
@@ -121,7 +124,7 @@ const PriceChart = () => {
               {history === undefined ? (
                 <Skeleton className="min-w-20 h-[16px]" />
               ) : (
-                calculatePercentageChange(history.timeseries)
+                calculatePercentageChange(timeseries)
               )}
             </div>
           </div>
@@ -139,9 +142,9 @@ const PriceChart = () => {
           ))}
         </div>
       </div>
-      {history !== undefined && history?.timeseries?.length > 0 && (
+      {history !== undefined && timeseries.length > 0 && (
         <ChartContainer config={chartConfig} className="h-96 w-full pb-28">
-          <LineChart data={history?.timeseries}>
+          <LineChart data={timeseries}>
             <YAxis
               dataKey="price"
               hide
