@@ -21,7 +21,11 @@ const SocialLinks = () => (
     >
       <GithubIcon />
     </RouterLink>
-    <RouterLink to={DISCORD_INVITE} className="cursor-pointer" target="_blank">
+    <RouterLink
+      to={DISCORD_INVITE}
+      className="cursor-pointer mr-5"
+      target="_blank"
+    >
       <DiscordIcon />
     </RouterLink>
     <RouterLink

@@ -1,17 +1,14 @@
-import { Trans } from '@lingui/macro'
 import Button from '@/components/old/button'
-import MenuIcon from 'components/icons/MenuIcon'
 import { MouseoverTooltipContent } from '@/components/old/tooltip'
-import { txSidebarToggleAtom } from 'components/transactions/manager/atoms'
-import { useAtomValue, useSetAtom } from 'jotai'
-import { ReactNode } from 'react'
-import { AlertCircle, Menu, Power } from 'lucide-react'
-import { Box, Card, Flex, Spinner, Text } from 'theme-ui'
+import PortfolioSidebar from '@/views/portfolio/sidebar'
+import { Trans } from '@lingui/macro'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import ChainLogo from 'components/icons/ChainLogo'
+import { useAtomValue } from 'jotai'
+import { AlertCircle, Menu, Power } from 'lucide-react'
+import { ReactNode } from 'react'
 import { chainIdAtom, selectedRTokenAtom } from 'state/atoms'
-import { isTransactionRunning } from 'state/chain/atoms/transactionAtoms'
-import PortfolioSidebar from '@/views/portfolio/sidebar'
+import { Box, Card, Flex, Text } from 'theme-ui'
 
 const ErrorWrapper = ({
   chainId,
@@ -60,7 +57,6 @@ const ErrorWrapper = ({
  * Handles wallet interaction
  */
 const Account = () => {
-  const setVisible = useSetAtom(txSidebarToggleAtom)
   const chainId = useAtomValue(chainIdAtom)
   const isTokenSelected = !!useAtomValue(selectedRTokenAtom)
 
@@ -105,13 +101,6 @@ const Account = () => {
                   </Button>
                 )
               }
-
-              // display: flex;
-              // justify-content: center;
-              // align-items: center;
-              // height: 38px;
-              // padding: 8px;
-              // cursor: pointer;
 
               return (
                 <ErrorWrapper

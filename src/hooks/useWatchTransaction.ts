@@ -1,17 +1,13 @@
 import { t } from '@lingui/macro'
-import { useAtomValue, useSetAtom } from 'jotai'
+import { useAtomValue } from 'jotai'
+import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
 import { ReactNode, useEffect } from 'react'
 import { chainIdAtom } from 'state/atoms'
-import {
-  addTransactionAtom,
-  updateTransactionAtom,
-} from 'state/chain/atoms/transactionAtoms'
 import { ChainId } from 'utils/chains'
-import { Hex, TransactionReceipt } from 'viem'
-import useNotification from './useNotification'
-import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
 import { CHAIN_TAGS } from 'utils/constants'
+import { Hex, TransactionReceipt } from 'viem'
 import { useWaitForTransactionReceipt } from 'wagmi'
+import useNotification from './useNotification'
 
 interface WatchOptions {
   hash: Hex | undefined
@@ -28,8 +24,6 @@ interface WatchResult {
 // Watch tx status, send notifications and track history
 const useWatchTransaction = ({ hash, label }: WatchOptions): WatchResult => {
   const notify = useNotification()
-  const addTransaction = useSetAtom(addTransactionAtom)
-  const updateTransaction = useSetAtom(updateTransactionAtom)
   const chainId = useAtomValue(chainIdAtom)
 
   const {
@@ -43,11 +37,9 @@ const useWatchTransaction = ({ hash, label }: WatchOptions): WatchResult => {
   })
 
   useEffect(() => {
-    if (!hash) return
-    addTransaction([hash, label])
-    if (!data) return
+    if (!hash || !data) return
+
     if (status === 'success') {
-      updateTransaction([hash, 'success', Number(data.blockNumber)])
       notify(
         t`Transaction confirmed`,
         `At block ${Number(data.blockNumber)}`,
@@ -64,7 +56,6 @@ const useWatchTransaction = ({ hash, label }: WatchOptions): WatchResult => {
         },
       })
     } else if (status === 'error') {
-      updateTransaction([hash, 'error'])
       notify(
         t`Transaction reverted`,
         error?.message ?? 'Unknown error',
@@ -81,16 +72,7 @@ const useWatchTransaction = ({ hash, label }: WatchOptions): WatchResult => {
         },
       })
     }
-  }, [
-    hash,
-    label,
-    data,
-    status,
-    error,
-    addTransaction,
-    updateTransaction,
-    notify,
-  ])
+  }, [hash, label, data, status, error, notify])
 
   return {
     data,
