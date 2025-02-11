@@ -2,6 +2,8 @@ import { useAtomValue } from 'jotai'
 import { Card } from '@/components/ui/card'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { IndexDTF } from '@/types'
+import { formatCurrency, formatPercentage } from '@/utils'
+import { formatUnits } from 'viem'
 
 const Section = ({
   title,
@@ -50,11 +52,13 @@ const IndexDTFSettings = () => {
           <Row label="Deployer" value={indexDTF.deployer} />
           <Row label="Owner" value={indexDTF.ownerAddress} />
           <Row label="Mandate" value={indexDTF.mandate} />
-          <Row label="Minting Fee" value={`${indexDTF.mintingFee}%`} />
-          <Row label="TVL Fee" value={`${indexDTF.tvlFee}%`} />
+          <Row
+            label="Minting Fee"
+            value={formatPercentage(indexDTF.mintingFee * 100)}
+          />
           <Row
             label="Annualized TVL Fee"
-            value={`${indexDTF.annualizedTvlFee}%`}
+            value={formatPercentage(indexDTF.annualizedTvlFee * 100)}
           />
           <Row label="Auction Delay" value={`${indexDTF.auctionDelay} sec`} />
           <Row label="Auction Length" value={`${indexDTF.auctionLength} sec`} />
@@ -151,7 +155,17 @@ const IndexDTFSettings = () => {
           <Row label="Name" value={indexDTF.token.name} />
           <Row label="Symbol" value={indexDTF.token.symbol} />
           <Row label="Decimals" value={indexDTF.token.decimals} />
-          <Row label="Total Supply" value={indexDTF.token.totalSupply} />
+          <Row
+            label="Total Supply"
+            value={formatCurrency(
+              Number(
+                formatUnits(
+                  BigInt(indexDTF.token.totalSupply),
+                  indexDTF.token.decimals
+                )
+              )
+            )}
+          />
         </div>
       </Section>
 
@@ -165,7 +179,14 @@ const IndexDTFSettings = () => {
             <Row label="Decimals" value={indexDTF.stToken.token.decimals} />
             <Row
               label="Total Supply"
-              value={indexDTF.stToken.token.totalSupply}
+              value={formatCurrency(
+                Number(
+                  formatUnits(
+                    BigInt(indexDTF.stToken.token.totalSupply),
+                    indexDTF.stToken.token.decimals
+                  )
+                )
+              )}
             />
             <div className="md:col-span-2">
               <span className="text-sm font-medium text-gray-600">
