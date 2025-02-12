@@ -36,20 +36,28 @@ const useIndexDTFList = () => {
   return useQuery({
     queryKey: ['index-dtf-list'],
     queryFn: async (): Promise<IndexDTFItem[]> => {
-      const response = await fetch(
-        `${RESERVE_API}discover/dtf?chainId=${ChainId.Base}&limit=100`
-      )
+      const f = async (chain: number) => {
+        const response = await fetch(
+          `${RESERVE_API}discover/dtf?chainId=${chain}&limit=100`
+        )
 
-      if (!response.ok) {
-        throw new Error('Failed to fetch dtf list')
+        if (!response.ok) {
+          throw new Error('Failed to fetch dtf list')
+        }
+
+        const data = await response.json()
+
+        return data.map((item: any) => ({
+          ...item,
+          performancePercent: calculatePercentageChange(item.performance),
+        })) as IndexDTFItem[]
       }
 
-      const data = await response.json()
+      const responses = await Promise.all(
+        [ChainId.Base, ChainId.Mainnet].map(f)
+      )
 
-      return data.map((item: any) => ({
-        ...item,
-        performancePercent: calculatePercentageChange(item.performance),
-      })) as IndexDTFItem[]
+      return responses.flat().sort((x, y) => y.marketCap - x.marketCap)
     },
     refetchInterval: REFRESH_INTERVAL,
     staleTime: REFRESH_INTERVAL,

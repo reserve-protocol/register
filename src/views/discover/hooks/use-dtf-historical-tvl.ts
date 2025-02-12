@@ -22,25 +22,32 @@ export type UseIndexDTFPriceHistoryParams = {
   interval: '1h' | '1d'
 }
 
-// TODO(jg): multichain
 const useDTFHistoricalTVL = () => {
   return useQuery({
     queryKey: ['dtf-historical-tvl'],
     queryFn: async (): Promise<DTFStats> => {
-      const sp = new URLSearchParams()
-      sp.set('chainId', ChainId.Base.toString())
+      const f = async (chain: number) => {
+        const sp = new URLSearchParams()
+        sp.set('chainId', chain.toString())
 
-      const response = await fetch(
-        `${RESERVE_API}historical/tvl?${sp.toString()}`
-      )
+        const response = await fetch(
+          `${RESERVE_API}historical/tvl?${sp.toString()}`
+        )
 
-      if (!response.ok) {
-        throw new Error('Failed to fetch dtf tvl history')
+        if (!response.ok) {
+          throw new Error(
+            `Failed to fetch dtf tvl history for chain id: ${chain}`
+          )
+        }
+        const series = (await response.json()) as DTFStatsSnapshot[]
+        return series
       }
 
-      const series = (await response.json()) as DTFStatsSnapshot[]
+      const [base, ethereum] = await Promise.all(
+        [ChainId.Base, ChainId.Mainnet].map(f)
+      )
 
-      return { base: series }
+      return { base, ethereum }
     },
     refetchInterval: REFRESH_INTERVAL,
     staleTime: REFRESH_INTERVAL,
