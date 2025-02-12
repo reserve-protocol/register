@@ -59,7 +59,6 @@ const useZapSwapQuery = ({
       return response.json()
     },
     enabled: !!endpoint && !disabled,
-    staleTime: 12000,
     refetchInterval: 12000,
   })
 }

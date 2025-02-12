@@ -19,7 +19,7 @@ import {
   ChevronUp,
   Loader,
 } from 'lucide-react'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import GaugeIcon from '../icons/GaugeIcon'
 import { ToggleGroup, ToggleGroupItem } from './toggle-group'
 import { Skeleton } from './skeleton'
@@ -215,7 +215,7 @@ const SlowLoading = () => {
   }, [])
 
   return (
-    <div className="absolute inset-0 flex flex-col items-center justify-center z-10 w-full h-full bg-cover bg-center bg-[url('https://storage.reserve.org/degen.gif')]">
+    <div className="absolute inset-0 flex flex-col items-center justify-center z-10 w-full h-full bg-cover bg-center bg-[url('https://storage.reserve.org/degen.gif')] rounded-xl">
       <div className="flex items-center gap-1 justify-between bg-card rounded-full px-3 py-2 text-sm text-primary border border-primary">
         <div className="flex items-center gap-1">
           <Loader size={16} className="animate-spin-slow" />
@@ -237,7 +237,7 @@ const SlowLoading = () => {
 const TokenOutputBox = ({ to, loading }: Pick<SwapProps, 'to' | 'loading'>) => {
   const [slowLoading, setSlowLoading] = useState(false)
 
-  React.useEffect(() => {
+  useEffect(() => {
     let slowLoadingTimeout: NodeJS.Timeout | undefined
     let minimumDisplayTimeout: NodeJS.Timeout | undefined
 
@@ -297,7 +297,7 @@ const ArrowSeparator = ({ onSwap }: Pick<SwapProps, 'onSwap'>) => {
   if (onSwap) {
     return (
       <Button
-        className="h-8 px-[6px] rounded-xl w-max mx-auto border-white border-2 -mt-4 -mb-4 z-10 text-foreground bg-muted hover:bg-border"
+        className="h-8 px-[6px] rounded-xl w-max mx-auto border-white border-2 -mt-4 -mb-4 z-20 text-foreground bg-muted hover:bg-border"
         onClick={onSwap}
       >
         <ArrowUpDown size={16} />
@@ -305,7 +305,7 @@ const ArrowSeparator = ({ onSwap }: Pick<SwapProps, 'onSwap'>) => {
     )
   }
   return (
-    <div className="rounded-xl bg-muted w-max p-2 mx-auto border-white border-2 -mt-4 -mb-4 z-10">
+    <div className="rounded-xl bg-muted w-max p-2 mx-auto border-white border-2 -mt-4 -mb-4 z-20">
       <ArrowDown size={16} />
     </div>
   )

@@ -18,6 +18,7 @@ import {
   zapRefetchAtom,
 } from '../atom'
 import SubmitZap from '../submit-zap'
+import useLoadingAfterRefetch from '../../hooks/useLoadingAfterRefetch'
 
 const Sell = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
@@ -47,13 +48,15 @@ const Sell = () => {
       disabled: insufficientBalance || ongoingTx,
     })
 
+  const { loadingAfterRefetch } = useLoadingAfterRefetch(data)
+
   const priceTo = data?.result?.amountOutValue
   const valueTo = data?.result?.amountOut
   const showTxButton = Boolean(
     data?.status === 'success' &&
       data?.result &&
       !insufficientBalance &&
-      !isFetching
+      !isLoading
   )
   const fetchingZapper = isLoading || isFetching
   const zapperErrorMessage = data?.error || failureReason?.message || ''
@@ -99,7 +102,7 @@ const Sell = () => {
           onTokenSelect: setInputToken,
         }}
         onSwap={changeTab}
-        loading={fetchingZapper}
+        loading={isLoading || loadingAfterRefetch}
       />
       <SubmitZap
         data={data?.result}
@@ -108,7 +111,7 @@ const Sell = () => {
         inputSymbol={indexDTF.token.symbol}
         outputSymbol={selectedToken.symbol}
         showTxButton={showTxButton}
-        fetchingZapper={fetchingZapper}
+        fetchingZapper={isLoading}
         insufficientBalance={insufficientBalance}
         zapperErrorMessage={zapperErrorMessage}
       />

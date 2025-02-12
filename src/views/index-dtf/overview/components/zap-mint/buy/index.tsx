@@ -5,7 +5,7 @@ import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { formatCurrency } from '@/utils'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { formatEther, parseUnits } from 'viem'
 import {
   currentZapMintTabAtom,
@@ -20,6 +20,7 @@ import {
   zapRefetchAtom,
 } from '../atom'
 import SubmitZap from '../submit-zap'
+import useLoadingAfterRefetch from '../../hooks/useLoadingAfterRefetch'
 
 const Buy = () => {
   const chainId = useAtomValue(chainIdAtom)
@@ -51,13 +52,15 @@ const Buy = () => {
       disabled: insufficientBalance || ongoingTx,
     })
 
+  const { loadingAfterRefetch } = useLoadingAfterRefetch(data)
+
   const priceTo = data?.result?.amountOutValue
   const valueTo = data?.result?.amountOut
   const showTxButton = Boolean(
     data?.status === 'success' &&
       data?.result &&
       !insufficientBalance &&
-      !isFetching
+      !isLoading
   )
   const fetchingZapper = isLoading || isFetching
   const zapperErrorMessage = data?.error || failureReason?.message || ''
@@ -106,7 +109,7 @@ const Buy = () => {
           value: formatEther(BigInt(valueTo || 0)),
         }}
         onSwap={changeTab}
-        loading={fetchingZapper}
+        loading={isLoading || loadingAfterRefetch}
       />
       <SubmitZap
         data={data?.result}
@@ -115,7 +118,7 @@ const Buy = () => {
         inputSymbol={selectedToken.symbol}
         outputSymbol={indexDTF.token.symbol}
         showTxButton={showTxButton}
-        fetchingZapper={fetchingZapper}
+        fetchingZapper={isLoading}
         insufficientBalance={insufficientBalance}
         zapperErrorMessage={zapperErrorMessage}
       />
