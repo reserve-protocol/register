@@ -99,6 +99,7 @@ const Sell = () => {
           onTokenSelect: setInputToken,
         }}
         onSwap={changeTab}
+        loading={fetchingZapper}
       />
       <SubmitZap
         data={data?.result}

@@ -16,6 +16,7 @@ import { ArrowDown, ArrowUpDown, ChevronDown, ChevronUp } from 'lucide-react'
 import React, { useState } from 'react'
 import GaugeIcon from '../icons/GaugeIcon'
 import { ToggleGroup, ToggleGroupItem } from './toggle-group'
+import { Skeleton } from './skeleton'
 
 type TokenWithBalance = Token & { balance?: string }
 
@@ -36,6 +37,7 @@ type SwapProps = {
   from: SwapItem
   to: SwapItem
   onSwap?: () => void
+  loading?: boolean
 }
 
 const TokenInput = ({
@@ -179,25 +181,33 @@ const TokenInputBox = ({ from }: Pick<SwapProps, 'from'>) => {
   )
 }
 
-const TokenOutputBox = ({ to }: Pick<SwapProps, 'to'>) => {
+const TokenOutputBox = ({ to, loading }: Pick<SwapProps, 'to' | 'loading'>) => {
   return (
     <div className="flex flex-col gap-1 p-4 bg-card rounded-xl border-border border">
       <div>
         <h3>{to.title || 'You receive:'}</h3>
-        <div className="flex items-center gap-2">
-          <NumericalInput
-            value={to.value || '0'}
-            variant="transparent"
-            placeholder="0"
-            onChange={() => {}}
-            autoFocus
-            disabled
-            className="disabled:cursor-auto disabled:opacity-100"
-          />
+        <div className="flex items-center gap-2 justify-between">
+          {loading ? (
+            <Skeleton className="w-full h-[40px]" />
+          ) : (
+            <NumericalInput
+              value={to.value || '0'}
+              variant="transparent"
+              placeholder="0"
+              onChange={() => {}}
+              autoFocus
+              disabled
+              className="disabled:cursor-auto disabled:opacity-100"
+            />
+          )}
           <TokenSelector {...to} />
         </div>
       </div>
-      <PriceValue price={to.price} />
+      {loading ? (
+        <Skeleton className="w-[60%] h-[24px]" />
+      ) : (
+        <PriceValue price={to.price} />
+      )}
     </div>
   )
 }

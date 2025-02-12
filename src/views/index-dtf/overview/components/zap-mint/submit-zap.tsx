@@ -10,6 +10,7 @@ import { useEffect } from 'react'
 import { Address, erc20Abi } from 'viem'
 import { useSendTransaction, useWaitForTransactionReceipt } from 'wagmi'
 import { zapOngoingTxAtom } from './atom'
+import TransactionError from '@/components/transaction-error/TransactionError'
 
 const LoadingButton = ({
   fetchingZapper,
@@ -114,6 +115,13 @@ const SubmitZapButton = ({
     })
   }
 
+  const error =
+    approvalError ||
+    approvalValidationError ||
+    approvalTxError ||
+    sendError ||
+    (txError ? Error(txError) : undefined)
+
   useEffect(() => {
     if (receipt) {
       onSuccess?.()
@@ -141,37 +149,33 @@ const SubmitZapButton = ({
   ])
 
   return (
-    <TransactionButton
-      chain={chainId}
-      disabled={
-        approvalNeeded
-          ? !approvalReady || confirmingApproval || approving
-          : !readyToSubmit || loadingTx || validatingTx
-      }
-      loading={approving || loadingTx || validatingTx || confirmingApproval}
-      loadingText={
-        validatingTx || confirmingApproval
-          ? 'Confirming tx...'
-          : 'Pending, sign in wallet'
-      }
-      // gas={readyToSubmit ? (gas ? BigInt(gas) : undefined) : approvalGas}
-      onClick={() => {
-        setOngoingTx(true)
-        readyToSubmit ? execute() : approve()
-      }}
-      text={readyToSubmit ? buttonLabel : `Approve use of ${inputSymbol}`}
-      fullWidth
-      error={
-        approvalError ||
-        approvalValidationError ||
-        approvalTxError ||
-        sendError ||
-        (txError ? Error(txError) : undefined)
-      }
-      sx={{
-        borderRadius: '12px',
-      }}
-    />
+    <div className="flex flex-col gap-1">
+      <TransactionButton
+        chain={chainId}
+        disabled={
+          approvalNeeded
+            ? !approvalReady || confirmingApproval || approving
+            : !readyToSubmit || loadingTx || validatingTx
+        }
+        loading={approving || loadingTx || validatingTx || confirmingApproval}
+        loadingText={
+          validatingTx || confirmingApproval
+            ? 'Confirming tx...'
+            : 'Pending, sign in wallet'
+        }
+        // gas={readyToSubmit ? (gas ? BigInt(gas) : undefined) : approvalGas}
+        onClick={() => {
+          setOngoingTx(true)
+          readyToSubmit ? execute() : approve()
+        }}
+        text={readyToSubmit ? buttonLabel : `Approve use of ${inputSymbol}`}
+        fullWidth
+        sx={{
+          borderRadius: '12px',
+        }}
+      />
+      {error && <TransactionError error={error} />}
+    </div>
   )
 }
 

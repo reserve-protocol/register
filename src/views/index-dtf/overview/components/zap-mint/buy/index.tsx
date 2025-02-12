@@ -61,6 +61,7 @@ const Buy = () => {
   )
   const fetchingZapper = isLoading || isFetching
   const zapperErrorMessage = data?.error || failureReason?.message || ''
+  const dustValue = data?.result?.dustValue || 0
 
   const changeTab = () => {
     setCurrentTab((prev) => (prev === 'sell' ? 'buy' : 'sell'))
@@ -99,10 +100,13 @@ const Buy = () => {
         to={{
           address: indexDTF.id,
           symbol: indexDTF.token.symbol,
-          price: priceTo ? `$${formatCurrency(priceTo)}` : undefined,
+          price: priceTo
+            ? `$${formatCurrency(priceTo)}${dustValue > 0.01 ? ` + $${formatCurrency(dustValue)} in dust` : ''}`
+            : undefined,
           value: formatEther(BigInt(valueTo || 0)),
         }}
         onSwap={changeTab}
+        loading={fetchingZapper}
       />
       <SubmitZap
         data={data?.result}
