@@ -237,6 +237,7 @@ export const PNGS = new Set([
   'fxusd',
   'alusd',
   'ethx',
+  'dtf',
 ])
 
 function getKnownTokenLogo(symbol: string) {
