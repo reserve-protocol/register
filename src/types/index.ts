@@ -275,6 +275,10 @@ export type IndexDTF = {
   auctionApprovers: Address[]
   auctionLaunchers: Address[]
   brandManagers: Address[]
+  feeRecipients: {
+    address: Address
+    percentage: string
+  }[]
   ownerGovernance?: {
     id: Address
     votingDelay: number

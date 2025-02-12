@@ -231,6 +231,7 @@ export const supportedChainList = [
   ChainId.Arbitrum,
 ]
 
+export const FIXED_PLATFORM_FEE = 50
 // Load environment variables.
 export const TENDERLY_ACCESS_TOKEN: string = import.meta.env
   .VITE_TENDERLY_ACCESS_TOKEN!

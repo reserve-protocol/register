@@ -20,6 +20,7 @@ type DTFQueryResponse = {
     auctionApprovers: Address[]
     auctionLaunchers: Address[]
     brandManagers: Address[]
+    feeRecipients: string
     ownerGovernance?: {
       id: Address
       votingDelay: number
@@ -93,6 +94,7 @@ const dtfQuery = gql`
       protocolRevenue
       governanceRevenue
       externalRevenue
+      feeRecipients
       ownerGovernance {
         id
         votingDelay
@@ -143,6 +145,18 @@ const dtfQuery = gql`
   }
 `
 
+const parseFeeRecipients = (raw: string) => {
+  const recipients = raw.split(',').map((recipient) => {
+    const [address, percentage] = recipient.split(':')
+    return {
+      address,
+      percentage: formatEther(BigInt(percentage) * 100n),
+    }
+  })
+
+  return recipients as { address: Address; percentage: string }[]
+}
+
 const useIndexDTF = (address: string | undefined, chainId: number) => {
   return useQuery<IndexDTF | undefined>({
     queryKey: ['index-dtf-metadata', address, chainId],
@@ -167,6 +181,7 @@ const useIndexDTF = (address: string | undefined, chainId: number) => {
         annualizedTvlFee: +formatEther(BigInt(dtf.annualizedTvlFee)),
         auctionDelay: Number(dtf.auctionDelay),
         auctionLength: Number(dtf.auctionLength),
+        feeRecipients: parseFeeRecipients(dtf.feeRecipients),
       }
 
       return data

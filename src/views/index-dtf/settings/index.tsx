@@ -14,6 +14,7 @@ import {
   parseDuration,
   shortenAddress,
 } from '@/utils'
+import { FIXED_PLATFORM_FEE } from '@/utils/constants'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { t } from '@lingui/macro'
 import { atom, useAtomValue } from 'jotai'
@@ -26,13 +27,17 @@ import {
   FileLock2,
   Hash,
   Image,
+  Landmark,
+  LandPlot,
   MousePointerBan,
   MousePointerClick,
   Pause,
+  RailSymbol,
   ShieldCheck,
   ShieldHalf,
   Signature,
   TableRowsSplit,
+  TrainTrack,
 } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { formatEther } from 'viem'
@@ -54,11 +59,13 @@ const InfoCard = ({
   action,
   children,
   secondary = false,
+  className,
 }: {
   title: string
   action?: React.ReactNode
   children: React.ReactNode
   secondary?: boolean
+  className?: string
 }) => (
   <Card
     className={cn(
@@ -73,7 +80,8 @@ const InfoCard = ({
     <div
       className={cn(
         'bg-card mx-1 mb-1 rounded-3xl',
-        secondary && 'bg-background'
+        secondary && 'bg-background',
+        className
       )}
     >
       {children}
@@ -205,12 +213,75 @@ const GovernanceTokenInfo = () => {
   )
 }
 
+type Recipient = {
+  label: string
+  value: string
+  address?: string
+  icon: React.ReactNode
+}
+
+const feeRecipientsAtom = atom((get) => {
+  const indexDTF = get(indexDTFAtom)
+
+  if (!indexDTF) return undefined
+
+  const platformShare = {
+    label: t`Fixed Platform Share`,
+    value: `${FIXED_PLATFORM_FEE}%`,
+    icon: <IconWrapper Component={TrainTrack} />,
+  }
+  const deployerShare = {
+    label: t`Deployer Share`,
+    value: '0%',
+    address: indexDTF.deployer,
+    icon: <IconWrapper Component={LandPlot} />,
+  }
+  const governanceShare = {
+    label: t`Governance Share`,
+    value: '0%',
+    icon: <IconWrapper Component={Landmark} />,
+  }
+  const externalRecipients: Recipient[] = []
+  const PERCENT_ADJUST = 100 / FIXED_PLATFORM_FEE
+
+  for (const recipient of indexDTF.feeRecipients) {
+    // Deployer share
+    if (recipient.address.toLowerCase() === indexDTF.deployer.toLowerCase()) {
+      deployerShare.value = formatPercentage(
+        Number(recipient.percentage) / PERCENT_ADJUST
+      )
+    } else if (
+      recipient.address.toLowerCase() ===
+      indexDTF.ownerGovernance?.id.toLowerCase()
+    ) {
+      governanceShare.value = formatPercentage(
+        Number(recipient.percentage) / PERCENT_ADJUST
+      )
+    } else {
+      externalRecipients.push({
+        label: `Other recipient ${externalRecipients.length + 1}`,
+        value: formatPercentage(Number(recipient.percentage) / PERCENT_ADJUST),
+        address: recipient.address,
+        icon: <IconWrapper Component={Hash} />,
+      })
+    }
+  }
+
+  return [
+    platformShare,
+    governanceShare,
+    deployerShare,
+    ...externalRecipients,
+  ] as Recipient[]
+})
+
 // TODO: Share distribution pending subgraph work!
 const FeesInfo = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
+  const feeRecipients = useAtomValue(feeRecipientsAtom)
 
   return (
-    <InfoCard title={t`Fees & Revenue Distribution`}>
+    <InfoCard title={t`Fees & Revenue Distribution`} className="bg-secondary">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-1 bg-secondary">
         <InfoCardItem
           className="bg-card rounded-3xl"
@@ -232,6 +303,18 @@ const FeesInfo = () => {
             indexDTF ? formatPercentage(indexDTF?.mintingFee * 100) : undefined
           }
         />
+      </div>
+      <div className="bg-card rounded-3xl mt-1">
+        {feeRecipients?.map((recipient, index) => (
+          <InfoCardItem
+            key={recipient.label}
+            label={recipient.label}
+            value={recipient.value}
+            icon={recipient.icon}
+            address={recipient.address}
+            border={!!index}
+          />
+        ))}
       </div>
     </InfoCard>
   )
