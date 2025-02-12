@@ -12,7 +12,13 @@ import { chainIdAtom } from '@/state/atoms'
 import { Token } from '@/types'
 import { formatCurrency } from '@/utils'
 import { useAtomValue } from 'jotai'
-import { ArrowDown, ArrowUpDown, ChevronDown, ChevronUp } from 'lucide-react'
+import {
+  ArrowDown,
+  ArrowUpDown,
+  ChevronDown,
+  ChevronUp,
+  Loader,
+} from 'lucide-react'
 import React, { useState } from 'react'
 import GaugeIcon from '../icons/GaugeIcon'
 import { ToggleGroup, ToggleGroupItem } from './toggle-group'
@@ -181,9 +187,84 @@ const TokenInputBox = ({ from }: Pick<SwapProps, 'from'>) => {
   )
 }
 
-const TokenOutputBox = ({ to, loading }: Pick<SwapProps, 'to' | 'loading'>) => {
+const SLOW_LOADING_TEXTS = [
+  'Searching DEX Liquidity',
+  'Assembling different routes',
+  'Evaluating slippage',
+  'Reducing potential dust',
+  'Loading DTF',
+]
+
+const SlowLoading = () => {
+  const [countdown, setCountdown] = useState(60)
+  const [textIndex, setTextIndex] = useState(0)
+
+  React.useEffect(() => {
+    const countdownInterval = setInterval(() => {
+      setCountdown((prev) => (prev > 0 ? prev - 1 : 0))
+    }, 1000)
+
+    const textInterval = setInterval(() => {
+      setTextIndex((prev) => (prev + 1) % SLOW_LOADING_TEXTS.length)
+    }, 12000)
+
+    return () => {
+      clearInterval(countdownInterval)
+      clearInterval(textInterval)
+    }
+  }, [])
+
   return (
-    <div className="flex flex-col gap-1 p-4 bg-card rounded-xl border-border border">
+    <div className="absolute inset-0 flex flex-col items-center justify-center z-10 w-full h-full bg-cover bg-center bg-[url('https://storage.reserve.org/degen.gif')]">
+      <div className="flex items-center gap-1 justify-between bg-card rounded-full px-3 py-2 text-sm text-primary border border-primary">
+        <div className="flex items-center gap-1">
+          <Loader size={16} className="animate-spin-slow" />
+          {SLOW_LOADING_TEXTS[textIndex]}
+        </div>
+        <div
+          className={cn(
+            'text-muted-foreground',
+            countdown > 0 ? 'min-w-4' : ''
+          )}
+        >
+          {countdown > 0 && `${countdown}s`}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+const TokenOutputBox = ({ to, loading }: Pick<SwapProps, 'to' | 'loading'>) => {
+  const [slowLoading, setSlowLoading] = useState(false)
+
+  React.useEffect(() => {
+    let slowLoadingTimeout: NodeJS.Timeout | undefined
+    let minimumDisplayTimeout: NodeJS.Timeout | undefined
+
+    if (loading) {
+      slowLoadingTimeout = setTimeout(() => {
+        setSlowLoading(true)
+        minimumDisplayTimeout = setTimeout(() => {
+          if (!loading) {
+            setSlowLoading(false)
+          }
+        }, 3000)
+      }, 3000)
+    } else {
+      clearTimeout(slowLoadingTimeout)
+      clearTimeout(minimumDisplayTimeout)
+      setSlowLoading(false)
+    }
+
+    return () => {
+      clearTimeout(slowLoadingTimeout)
+      clearTimeout(minimumDisplayTimeout)
+    }
+  }, [loading])
+
+  return (
+    <div className="relative flex flex-col gap-1 p-4 bg-card rounded-xl border-border border">
+      {slowLoading && <SlowLoading />}
       <div>
         <h3>{to.title || 'You receive:'}</h3>
         <div className="flex items-center gap-2 justify-between">
