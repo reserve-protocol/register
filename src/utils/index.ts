@@ -20,25 +20,33 @@ export function getPrice([lowPrice, highPrice]: [bigint, bigint]) {
 }
 
 export const cutDecimals = (value: string, min = 2, max = 9) => {
-  const [integer, decimals] = value.split('.')
+  // Extract potential postfix
+  const lastChar = value[value.length - 1]
+  const postfix = isNaN(Number(lastChar)) ? lastChar : ''
+  const numberPart = postfix ? value.slice(0, -1) : value
+
+  const [integer, decimals] = numberPart.split('.')
   if (!decimals) return value
+  if (min === 0) return integer + (postfix || '')
   if (decimals.length <= min) return value
 
   // Find first non-zero digit
   const firstNonZeroIndex = decimals.split('').findIndex((d) => d !== '0')
 
+  let result
   if (firstNonZeroIndex === -1) {
     // All zeros after decimal, return min digits
-    return `${integer}.${decimals.slice(0, min)}`
+    result = `${integer}.${decimals.slice(0, min)}`
+  } else if (firstNonZeroIndex >= min) {
+    // For very small numbers (many leading zeros), keep up to the first non-zero + 2 digits
+    result = `${integer}.${decimals.slice(0, Math.min(firstNonZeroIndex + 1, decimals.length))}`
+  } else {
+    // Normal case - return min digits
+    result = `${integer}.${decimals.slice(0, min)}`
   }
 
-  // For very small numbers (many leading zeros), keep up to the first non-zero + 2 digits
-  if (firstNonZeroIndex >= min) {
-    return `${integer}.${decimals.slice(0, Math.min(firstNonZeroIndex + 1, decimals.length))}`
-  }
-
-  // Normal case - return min +
-  return `${integer}.${decimals.slice(0, min)}`
+  // Add back postfix if it existed
+  return postfix ? result + postfix : result
 }
 
 // returns the checksummed address if the address is valid, otherwise returns false
