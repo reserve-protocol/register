@@ -8,6 +8,7 @@ import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
 import { Button } from '@/components/ui/button'
 import { chainIdAtom } from '@/state/atoms'
 import dtfIndexAbi from '@/abis/dtf-index-abi'
+import { TransactionButtonContainer } from '@/components/old/button/TransactionButton'
 
 const Section = ({
   title,
@@ -44,12 +45,11 @@ const ArrayRow = ({ label, value }: { label: string; value: any[] }) => (
 
 const DistributeFees = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
-  const chainId = useAtomValue(chainIdAtom)
-  const { data: hash, writeContract, isPending } = useWriteContract()
+  const { data: hash, writeContract, isPending, error } = useWriteContract()
 
   const { data: receipt, isLoading } = useWaitForTransactionReceipt({
     hash,
-    chainId,
+    chainId: indexDTF?.chainId,
   })
 
   if (!indexDTF) return null
@@ -59,22 +59,24 @@ const DistributeFees = () => {
       abi: dtfIndexAbi,
       address: indexDTF.id,
       functionName: 'distributeFees',
-      chainId,
+      chainId: indexDTF.chainId,
     })
   }
 
   return (
-    <Button
-      className="col-span-2"
-      onClick={distributeFees}
-      disabled={isPending || isLoading || receipt?.status === 'success'}
-    >
-      {isPending || isLoading
-        ? 'Loading...'
-        : receipt?.status === 'success'
-          ? 'Fees distributed'
-          : 'Distribute Fees'}
-    </Button>
+    <TransactionButtonContainer chain={indexDTF.chainId} className="col-span-2">
+      <Button
+        onClick={distributeFees}
+        disabled={isPending || isLoading || receipt?.status === 'success'}
+        className="w-full"
+      >
+        {isPending || isLoading
+          ? 'Loading...'
+          : receipt?.status === 'success'
+            ? 'Fees distributed'
+            : 'Distribute Fees'}
+      </Button>
+    </TransactionButtonContainer>
   )
 }
 
