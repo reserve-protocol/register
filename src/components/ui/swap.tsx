@@ -66,7 +66,7 @@ const TokenSelector = ({
   if (!tokens || tokens.length === 0) {
     return (
       <div className="flex flex-col gap-1 justify-between items-end min-w-fit">
-        <div className="flex items-center gap-1 font-semibold text-2xl">
+        <div className="flex items-center gap-1 text-2xl">
           <TokenLogo
             size="lg"
             symbol={symbol}
@@ -80,15 +80,15 @@ const TokenSelector = ({
   }
 
   return (
-    <div className="flex flex-col justify-between gap-1 mt-1 items-end min-w-fit">
+    <div className="flex flex-col justify-between gap-1 mt-1 items-end min-w-fit -mr-1.5">
       <DropdownMenu open={open} onOpenChange={setOpen}>
         <DropdownMenuTrigger asChild>
           <Button
             variant="ghost"
-            className="flex items-center text-2xl gap-1 font-semibold h-auto hover:bg-accent px-2 justify-between"
+            className="flex items-center text-2xl gap-2 h-auto hover:bg-accent px-1.5 justify-between"
             size="lg"
           >
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1 font-light">
               <TokenLogo
                 size="lg"
                 symbol={symbol}
@@ -97,11 +97,13 @@ const TokenSelector = ({
               />
               <span>{symbol}</span>
             </div>
-            {open ? (
-              <ChevronUp className="h-5 w-5 text-muted-foreground" />
-            ) : (
-              <ChevronDown className="h-5 w-5 text-muted-foreground" />
-            )}
+            <div className="flex items-center rounded-full bg-white p-0.5">
+              {open ? (
+                <ChevronUp className="h-5 w-5" />
+              ) : (
+                <ChevronDown className="h-5 w-5" />
+              )}
+            </div>
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent
@@ -121,7 +123,7 @@ const TokenSelector = ({
                   address={token.address}
                   chain={chainId}
                 />
-                <span className="text-lg font-semibold">{token.symbol}</span>
+                <span className="text-lg">{token.symbol}</span>
               </div>
               <span className="text-sm text-muted-foreground">
                 {token?.balance
@@ -179,19 +181,21 @@ const TokenInputBox = ({ from }: Pick<SwapProps, 'from'>) => {
 
 const TokenOutputBox = ({ to }: Pick<SwapProps, 'to'>) => {
   return (
-    <div className="p-4 bg-card rounded-xl border-border border">
-      <h3>{to.title || 'You receive:'}</h3>
-      <div className="flex items-center gap-2">
-        <NumericalInput
-          value={to.value || '0'}
-          variant="transparent"
-          placeholder="0"
-          onChange={() => {}}
-          autoFocus
-          disabled
-          className="disabled:cursor-auto disabled:opacity-100"
-        />
-        <TokenSelector {...to} />
+    <div className="flex flex-col gap-1 p-4 bg-card rounded-xl border-border border">
+      <div>
+        <h3>{to.title || 'You receive:'}</h3>
+        <div className="flex items-center gap-2">
+          <NumericalInput
+            value={to.value || '0'}
+            variant="transparent"
+            placeholder="0"
+            onChange={() => {}}
+            autoFocus
+            disabled
+            className="disabled:cursor-auto disabled:opacity-100"
+          />
+          <TokenSelector {...to} />
+        </div>
       </div>
       <PriceValue price={to.price} />
     </div>
@@ -202,7 +206,7 @@ const ArrowSeparator = ({ onSwap }: Pick<SwapProps, 'onSwap'>) => {
   if (onSwap) {
     return (
       <Button
-        className="h-9 px-2 rounded-xl w-max mx-auto border-white border-2 -mt-4 -mb-4 z-10 text-foreground bg-muted hover:bg-border"
+        className="h-8 px-[6px] rounded-xl w-max mx-auto border-white border-2 -mt-4 -mb-4 z-10 text-foreground bg-muted hover:bg-border"
         onClick={onSwap}
       >
         <ArrowUpDown size={16} />
@@ -309,7 +313,7 @@ export const SlippageSelector = ({
 
 const Swap = (props: SwapProps) => {
   return (
-    <div className="flex flex-col">
+    <div className={cn('flex flex-col', props.onSwap ? 'gap-0.5' : 'gap-0')}>
       <TokenInputBox {...props} />
       <ArrowSeparator {...props} />
       <TokenOutputBox {...props} />
