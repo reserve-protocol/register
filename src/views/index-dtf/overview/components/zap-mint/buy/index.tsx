@@ -8,6 +8,7 @@ import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { formatEther, parseUnits } from 'viem'
 import {
+  currentZapMintTabAtom,
   selectedTokenAtom,
   selectedTokenBalanceAtom,
   selectedTokenOrDefaultAtom,
@@ -32,6 +33,7 @@ const Buy = () => {
   const [ongoingTx, setOngoingTx] = useAtom(zapOngoingTxAtom)
   const setZapRefetch = useSetAtom(zapRefetchAtom)
   const setZapFetching = useSetAtom(zapFetchingAtom)
+  const setCurrentTab = useSetAtom(currentZapMintTabAtom)
   const selectedTokenPrice = useChainlinkPrice(chainId, selectedToken.address)
   const inputPrice = (selectedTokenPrice || 0) * Number(inputAmount)
   const onMax = () => setInputAmount(selectedTokenBalance?.balance || '0')
@@ -59,6 +61,11 @@ const Buy = () => {
   )
   const fetchingZapper = isLoading || isFetching
   const zapperErrorMessage = data?.error || failureReason?.message || ''
+
+  const changeTab = () => {
+    setCurrentTab((prev) => (prev === 'sell' ? 'buy' : 'sell'))
+    setInputAmount('')
+  }
 
   useEffect(() => {
     setZapRefetch({ fn: refetch })
@@ -96,6 +103,7 @@ const Buy = () => {
             price: priceTo ? `$${formatCurrency(priceTo)}` : undefined,
             value: formatEther(BigInt(valueTo || 0)),
           }}
+          onSwap={changeTab}
         />
         <SlippageSelector
           value={slippage}

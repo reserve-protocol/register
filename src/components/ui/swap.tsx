@@ -11,7 +11,7 @@ import { chainIdAtom } from '@/state/atoms'
 import { Token } from '@/types'
 import { formatCurrency } from '@/utils'
 import { useAtomValue } from 'jotai'
-import { ArrowDown, ChevronDown, ChevronUp } from 'lucide-react'
+import { ArrowDown, ArrowUpDown, ChevronDown, ChevronUp } from 'lucide-react'
 import React, { useState } from 'react'
 import { ToggleGroup, ToggleGroupItem } from './toggle-group'
 import GaugeIcon from '../icons/GaugeIcon'
@@ -35,6 +35,7 @@ type SwapItem = {
 type SwapProps = {
   from: SwapItem
   to: SwapItem
+  onSwap?: () => void
 }
 
 const TokenInput = ({
@@ -43,13 +44,14 @@ const TokenInput = ({
   onChange = () => {},
 }: Pick<SwapItem, 'price' | 'value' | 'onChange'>) => {
   return (
-    <div className="flex flex-col flex-grow min-w-0">
+    <div className="flex flex-col flex-grow min-w-0 text-primary">
       <NumericalInput
         value={value}
         variant="transparent"
         placeholder="0"
         onChange={onChange}
         autoFocus
+        className="placeholder:text-primary/70"
       />
       <div className="w-full overflow-hidden">
         <span className="text-legend mt-1.5 block truncate">{price}</span>
@@ -91,7 +93,7 @@ const TokenSelector = ({
             <span className="font-bold">{balance}</span>
             <Button
               variant="ghost"
-              className="rounded-[40px] ml-1 bg-primary/10 text-primary hover:bg-primary/20 hover:text-primary"
+              className="rounded-[40px] ml-1 bg-primary/10 text-primary/80 hover:bg-primary/20 hover:text-primary/80 font-semibold"
               size="xs"
               onClick={onMax}
             >
@@ -162,7 +164,7 @@ const TokenSelector = ({
           <span className="font-bold">{balance}</span>
           <Button
             variant="ghost"
-            className="rounded-[40px] ml-1 bg-primary/10 text-primary hover:bg-primary/20 hover:text-primary"
+            className="rounded-[40px] ml-1 bg-primary/10 text-primary/80 hover:bg-primary/20 hover:text-primary/80 font-semibold"
             size="xs"
             onClick={onMax}
           >
@@ -177,7 +179,7 @@ const TokenSelector = ({
 const TokenInputBox = ({ from }: Pick<SwapProps, 'from'>) => {
   return (
     <div className="p-4 bg-muted rounded-xl">
-      <h3>{from?.title || 'You use:'}</h3>
+      <h3 className="text-primary">{from?.title || 'You use:'}</h3>
       <div className="flex gap-2">
         <TokenInput {...from} />
         <TokenSelector {...from} />
@@ -212,11 +214,23 @@ const TokenOutputBox = ({ to }: Pick<SwapProps, 'to'>) => {
   )
 }
 
-const ArrowSeparator = () => (
-  <div className="rounded-xl bg-muted w-max p-2 mx-auto border-white border-2 -mt-4 -mb-4 z-10">
-    <ArrowDown size={16} />
-  </div>
-)
+const ArrowSeparator = ({ onSwap }: Pick<SwapProps, 'onSwap'>) => {
+  if (onSwap) {
+    return (
+      <Button
+        className="h-9 px-2 rounded-xl w-max mx-auto border-white border-2 -mt-4 -mb-4 z-10 text-foreground bg-muted hover:bg-border"
+        onClick={onSwap}
+      >
+        <ArrowUpDown size={16} />
+      </Button>
+    )
+  }
+  return (
+    <div className="rounded-xl bg-muted w-max p-2 mx-auto border-white border-2 -mt-4 -mb-4 z-10">
+      <ArrowDown size={16} />
+    </div>
+  )
+}
 
 export const SlippageSelector = ({
   value,
@@ -313,7 +327,7 @@ const Swap = (props: SwapProps) => {
   return (
     <div className="flex flex-col">
       <TokenInputBox {...props} />
-      <ArrowSeparator />
+      <ArrowSeparator {...props} />
       <TokenOutputBox {...props} />
     </div>
   )

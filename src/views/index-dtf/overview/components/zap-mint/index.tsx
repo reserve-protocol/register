@@ -1,13 +1,14 @@
+import { Button } from '@/components/ui/button'
 import {
-  Drawer,
-  DrawerContent,
-  DrawerTitle,
-  DrawerTrigger,
-} from '@/components/ui/drawer'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
 import useERC20Balance from '@/hooks/useERC20Balance'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { X } from 'lucide-react'
 import { ReactNode, useEffect } from 'react'
 import {
   currentZapMintTabAtom,
@@ -18,11 +19,11 @@ import {
   zapRefetchAtom,
 } from './atom'
 import Buy from './buy'
-import Sell from './sell'
 import RefreshQuote from './refresh-quote'
+import Sell from './sell'
 
 const ZapMint = ({ children }: { children: ReactNode }) => {
-  const [currentTab, setCurrentTab] = useAtom(currentZapMintTabAtom)
+  const currentTab = useAtomValue(currentZapMintTabAtom)
   const indexDTF = useAtomValue(indexDTFAtom)
   const zapRefetch = useAtomValue(zapRefetchAtom)
   const zapFetching = useAtomValue(zapFetchingAtom)
@@ -40,48 +41,26 @@ const ZapMint = ({ children }: { children: ReactNode }) => {
   if (!indexDTF) return null
 
   return (
-    <Drawer>
-      <DrawerTrigger asChild>{children}</DrawerTrigger>
-      <DrawerContent className="flex-grow">
-        <Tabs
-          value={currentTab}
-          onValueChange={(tab) => {
-            setCurrentTab(tab as 'buy' | 'sell')
-            setInput('')
-          }}
-          className="flex flex-col flex-grow"
-        >
-          <DrawerTitle className="flex justify-between gap-2 mt-2 px-2 mb-2">
-            <TabsList className="h-9">
-              <TabsTrigger value="buy">Buy</TabsTrigger>
-              <TabsTrigger value="sell">Sell</TabsTrigger>
-            </TabsList>
-            <div className="mr-11">
-              <RefreshQuote
-                onClick={zapRefetch.fn}
-                disabled={zapFetching || zapOngoingTx || invalidInput}
-              />
-            </div>
-          </DrawerTitle>
-          <TabsContent
-            value="buy"
-            className="flex-grow overflow-auto relative px-2 mt-0"
-            // Prevent the drawer from closing when clicking on the content
-            onPointerDown={(e) => e.stopPropagation()}
-          >
-            <Buy />
-          </TabsContent>
-          <TabsContent
-            value="sell"
-            className="flex-grow overflow-auto relative px-2 mt-0"
-            // Prevent the drawer from closing when clicking on the content
-            onPointerDown={(e) => e.stopPropagation()}
-          >
-            <Sell />
-          </TabsContent>
-        </Tabs>
-      </DrawerContent>
-    </Drawer>
+    <Dialog>
+      <DialogTrigger asChild>{children}</DialogTrigger>
+      <DialogContent showClose={false} className="p-2 sm:rounded-3xl">
+        <DialogTitle className="flex justify-between gap-2">
+          <RefreshQuote
+            small
+            onClick={zapRefetch.fn}
+            disabled={zapFetching || zapOngoingTx || invalidInput}
+          />
+          <DialogTrigger asChild>
+            <Button variant="outline" className="h-[34px] px-2 rounded-xl">
+              <X size={16} />
+            </Button>
+          </DialogTrigger>
+        </DialogTitle>
+        <div className="flex-grow overflow-auto relative mt-0">
+          {currentTab === 'buy' ? <Buy /> : <Sell />}
+        </div>
+      </DialogContent>
+    </Dialog>
   )
 }
 
