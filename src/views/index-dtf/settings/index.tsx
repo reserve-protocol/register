@@ -7,8 +7,13 @@ import { Card } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
 import { chainIdAtom } from '@/state/atoms'
-import { indexDTFAtom } from '@/state/dtf/atoms'
-import { formatPercentage, parseDuration, shortenAddress } from '@/utils'
+import { indexDTFAtom, indexDTFPriceAtom } from '@/state/dtf/atoms'
+import {
+  formatCurrency,
+  formatPercentage,
+  parseDuration,
+  shortenAddress,
+} from '@/utils'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { t } from '@lingui/macro'
 import { atom, useAtomValue } from 'jotai'
@@ -31,7 +36,11 @@ import {
 } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { formatEther } from 'viem'
-import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
+import {
+  useReadContract,
+  useWaitForTransactionReceipt,
+  useWriteContract,
+} from 'wagmi'
 
 const IconWrapper = ({ Component }: { Component: React.ElementType }) => (
   <div className="border rounded-full border-foreground p-2">
@@ -292,7 +301,14 @@ const GovernanceInfo = ({ basket }: { basket?: boolean }) => {
 
 const DistributeFees = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
+  const price = useAtomValue(indexDTFPriceAtom)
   const { data: hash, writeContract, isPending, error } = useWriteContract()
+  const { data: pendingFees } = useReadContract({
+    abi: dtfIndexAbi,
+    address: indexDTF?.id,
+    functionName: 'getPendingFeeShares',
+    chainId: indexDTF?.chainId,
+  })
 
   const { data: receipt, isLoading } = useWaitForTransactionReceipt({
     hash,
@@ -310,17 +326,35 @@ const DistributeFees = () => {
     })
   }
 
+  const formattedPendingFees = Number(formatEther(pendingFees ?? 0n))
+
   return (
     <InfoCard title={t`Distribute Fees`} secondary>
       <div className="p-4 flex flex-col gap-4">
         Distribute accumulated fees to the recipients. Anyone can trigger this
         transaction.
+        <div className="flex flex-col  gap-1">
+          <span className="text-legend block">Pending distribution</span>
+          {pendingFees === undefined ? (
+            <Skeleton className="h-4 w-20" />
+          ) : (
+            <div>
+              <span className="mr-1">
+                {formatCurrency(formattedPendingFees)} ${indexDTF.token.symbol}
+              </span>
+              <span className="text-legend text-sm">
+                (${formatCurrency(formattedPendingFees * (price ?? 0))})
+              </span>
+            </div>
+          )}
+        </div>
         <TransactionButtonContainer
           chain={indexDTF.chainId}
           className="col-span-2"
         >
           <Button
             onClick={distributeFees}
+            variant="outline-primary"
             disabled={isPending || isLoading || receipt?.status === 'success'}
             className="w-full"
           >
