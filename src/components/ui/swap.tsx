@@ -49,7 +49,7 @@ const TokenInput = ({
       placeholder="0"
       onChange={onChange}
       autoFocus
-      className="placeholder:text-primary/70"
+      className="placeholder:text-primary/70 text-primary"
     />
   )
 }
@@ -66,7 +66,7 @@ const TokenSelector = ({
   if (!tokens || tokens.length === 0) {
     return (
       <div className="flex flex-col gap-1 justify-between items-end min-w-fit">
-        <div className="flex items-center gap-1 text-2xl">
+        <div className="flex items-center gap-1 text-2xl font-semibold">
           <TokenLogo
             size="lg"
             symbol={symbol}
@@ -88,7 +88,7 @@ const TokenSelector = ({
             className="flex items-center text-2xl gap-2 h-auto hover:bg-accent px-1.5 justify-between"
             size="lg"
           >
-            <div className="flex items-center gap-1 font-light">
+            <div className="flex items-center gap-1">
               <TokenLogo
                 size="lg"
                 symbol={symbol}
@@ -139,7 +139,7 @@ const TokenSelector = ({
 }
 
 const PriceValue = ({ price }: Pick<SwapItem, 'price'>) => (
-  <div className="w-full overflow-hidden">
+  <div className="max-w-[120px] sm:max-w-[200px] overflow-hidden">
     <span className="text-legend block truncate">{price || '$0.00'}</span>
   </div>
 )

@@ -27,8 +27,8 @@ const Sell = () => {
   const indexDTFBalance = useAtomValue(indexDTFBalanceAtom)
   const indxDTFParsedBalance = formatEther(indexDTFBalance)
   const tokens = useAtomValue(tokensAtom)
+  const slippage = useAtomValue(slippageAtom)
   const setInputToken = useSetAtom(selectedTokenAtom)
-  const [slippage, setSlippage] = useAtom(slippageAtom)
   const [ongoingTx, setOngoingTx] = useAtom(zapOngoingTxAtom)
   const setZapRefetch = useSetAtom(zapRefetchAtom)
   const setZapFetching = useSetAtom(zapFetchingAtom)
@@ -80,46 +80,37 @@ const Sell = () => {
 
   return (
     <div className="flex flex-col gap-2 h-full">
-      <div className="flex flex-col gap-1">
-        <Swap
-          from={{
-            price: `$${formatCurrency(inputPrice)}`,
-            address: indexDTF.id,
-            symbol: indexDTF.token.symbol,
-            balance: `${formatCurrency(Number(indxDTFParsedBalance))}`,
-            value: inputAmount,
-            onChange: setInputAmount,
-            onMax,
-          }}
-          to={{
-            address: selectedToken.address,
-            symbol: selectedToken.symbol,
-            price: priceTo ? `$${formatCurrency(priceTo)}` : undefined,
-            value: formatUnits(BigInt(valueTo || 0), selectedToken.decimals),
-            tokens,
-            onTokenSelect: setInputToken,
-          }}
-          onSwap={changeTab}
-        />
-        <SlippageSelector
-          value={slippage}
-          onChange={setSlippage}
-          options={['200', '1000', '10000']}
-        />
-      </div>
-      <div className="mb-2">
-        <SubmitZap
-          data={data?.result}
-          chainId={indexDTF.chainId}
-          buttonLabel={`Sell ${indexDTF.token.symbol}`}
-          inputSymbol={indexDTF.token.symbol}
-          outputSymbol={selectedToken.symbol}
-          showTxButton={showTxButton}
-          fetchingZapper={fetchingZapper}
-          insufficientBalance={insufficientBalance}
-          zapperErrorMessage={zapperErrorMessage}
-        />
-      </div>
+      <Swap
+        from={{
+          price: `$${formatCurrency(inputPrice)}`,
+          address: indexDTF.id,
+          symbol: indexDTF.token.symbol,
+          balance: `${formatCurrency(Number(indxDTFParsedBalance))}`,
+          value: inputAmount,
+          onChange: setInputAmount,
+          onMax,
+        }}
+        to={{
+          address: selectedToken.address,
+          symbol: selectedToken.symbol,
+          price: priceTo ? `$${formatCurrency(priceTo)}` : undefined,
+          value: formatUnits(BigInt(valueTo || 0), selectedToken.decimals),
+          tokens,
+          onTokenSelect: setInputToken,
+        }}
+        onSwap={changeTab}
+      />
+      <SubmitZap
+        data={data?.result}
+        chainId={indexDTF.chainId}
+        buttonLabel={`Sell ${indexDTF.token.symbol}`}
+        inputSymbol={indexDTF.token.symbol}
+        outputSymbol={selectedToken.symbol}
+        showTxButton={showTxButton}
+        fetchingZapper={fetchingZapper}
+        insufficientBalance={insufficientBalance}
+        zapperErrorMessage={zapperErrorMessage}
+      />
     </div>
   )
 }

@@ -42,7 +42,6 @@ const useZapSwapQuery = ({
         amountIn,
         slippage,
         signer: account as Address,
-        trade: true,
       })
     }, [chainId, account, tokenIn, tokenOut, amountIn, slippage]),
     500

@@ -8,11 +8,12 @@ import {
 import useERC20Balance from '@/hooks/useERC20Balance'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { X } from 'lucide-react'
+import { ArrowLeft, Settings, X } from 'lucide-react'
 import { ReactNode, useEffect } from 'react'
 import {
   currentZapMintTabAtom,
   indexDTFBalanceAtom,
+  showZapSettingsAtom,
   zapFetchingAtom,
   zapMintInputAtom,
   zapOngoingTxAtom,
@@ -21,14 +22,16 @@ import {
 import Buy from './buy'
 import RefreshQuote from './refresh-quote'
 import Sell from './sell'
+import ZapSettings from './zap-settings'
 
 const ZapMint = ({ children }: { children: ReactNode }) => {
   const currentTab = useAtomValue(currentZapMintTabAtom)
+  const [showSettings, setShowSettings] = useAtom(showZapSettingsAtom)
   const indexDTF = useAtomValue(indexDTFAtom)
   const zapRefetch = useAtomValue(zapRefetchAtom)
   const zapFetching = useAtomValue(zapFetchingAtom)
   const zapOngoingTx = useAtomValue(zapOngoingTxAtom)
-  const [input, setInput] = useAtom(zapMintInputAtom)
+  const input = useAtomValue(zapMintInputAtom)
   const setIndexDTFBalance = useSetAtom(indexDTFBalanceAtom)
   const invalidInput = isNaN(Number(input)) || Number(input) === 0
 
@@ -41,27 +44,46 @@ const ZapMint = ({ children }: { children: ReactNode }) => {
   if (!indexDTF) return null
 
   return (
-    <Dialog>
+    <Dialog onOpenChange={() => setShowSettings(false)}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent
         showClose={false}
         className="p-2 sm:rounded-3xl border-none"
       >
         <DialogTitle className="flex justify-between gap-2">
-          <RefreshQuote
-            small
-            onClick={zapRefetch.fn}
-            disabled={zapFetching || zapOngoingTx || invalidInput}
-          />
+          {showSettings ? (
+            <Button
+              variant="outline"
+              className="h-[34px] px-2 rounded-xl"
+              onClick={() => setShowSettings(false)}
+            >
+              <ArrowLeft size={16} />
+            </Button>
+          ) : (
+            <div className="flex justify-between gap-1">
+              <Button
+                variant="outline"
+                className="h-[34px] px-2 rounded-xl"
+                onClick={() => setShowSettings(true)}
+              >
+                <Settings size={16} />
+              </Button>
+              <RefreshQuote
+                small
+                onClick={zapRefetch.fn}
+                loading={zapFetching}
+                disabled={zapFetching || zapOngoingTx || invalidInput}
+              />
+            </div>
+          )}
           <DialogTrigger asChild>
             <Button variant="outline" className="h-[34px] px-2 rounded-xl">
               <X size={16} />
             </Button>
           </DialogTrigger>
         </DialogTitle>
-        <div className="flex-grow overflow-auto relative mt-0">
-          {currentTab === 'buy' ? <Buy /> : <Sell />}
-        </div>
+        {!showSettings && (currentTab === 'buy' ? <Buy /> : <Sell />)}
+        {showSettings && <ZapSettings />}
       </DialogContent>
     </Dialog>
   )

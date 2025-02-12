@@ -24,7 +24,7 @@ const LoadingButton = ({
 }) => {
   return (
     <>
-      <Button size="lg" className="w-full" disabled>
+      <Button size="lg" className="w-full rounded-xl" disabled>
         {fetchingZapper
           ? 'Loading...'
           : insufficientBalance
@@ -154,7 +154,7 @@ const SubmitZapButton = ({
           ? 'Confirming tx...'
           : 'Pending, sign in wallet'
       }
-      gas={readyToSubmit ? (gas ? BigInt(gas) : undefined) : approvalGas}
+      // gas={readyToSubmit ? (gas ? BigInt(gas) : undefined) : approvalGas}
       onClick={() => {
         setOngoingTx(true)
         readyToSubmit ? execute() : approve()
@@ -168,6 +168,9 @@ const SubmitZapButton = ({
         sendError ||
         (txError ? Error(txError) : undefined)
       }
+      sx={{
+        borderRadius: '12px',
+      }}
     />
   )
 }

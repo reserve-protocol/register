@@ -1,16 +1,30 @@
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
-import { RefreshCw } from 'lucide-react'
+import { Loader, RefreshCw } from 'lucide-react'
 
 const RefreshQuote = ({
   onClick,
+  loading,
   disabled,
   small = false,
 }: {
   onClick?: () => void
+  loading?: boolean
   disabled?: boolean
   small?: boolean
 }) => {
+  if (loading) {
+    return (
+      <Button
+        size="sm"
+        className="h-[34px] px-2 rounded-xl cursor-not-allowed hover:bg-inherit"
+        variant="outline"
+      >
+        <Loader size={16} className="animate-spin-slow" />
+      </Button>
+    )
+  }
+
   return (
     <Button
       size="sm"
