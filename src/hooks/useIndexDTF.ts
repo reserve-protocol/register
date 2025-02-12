@@ -24,6 +24,8 @@ type DTFQueryResponse = {
       id: Address
       votingDelay: number
       votingPeriod: number
+      proposalThreshold: number
+      quorumNumerator: number
       timelock: {
         id: Address
         guardians: Address[]
@@ -34,6 +36,8 @@ type DTFQueryResponse = {
       id: Address
       votingDelay: number
       votingPeriod: number
+      proposalThreshold: number
+      quorumNumerator: number
       timelock: {
         id: Address
         guardians: Address[]
@@ -93,6 +97,8 @@ const dtfQuery = gql`
         id
         votingDelay
         votingPeriod
+        proposalThreshold
+        quorumNumerator
         timelock {
           id
           guardians
@@ -103,6 +109,8 @@ const dtfQuery = gql`
         id
         votingDelay
         votingPeriod
+        proposalThreshold
+        quorumNumerator
         timelock {
           id
           guardians

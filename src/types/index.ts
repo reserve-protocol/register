@@ -279,6 +279,8 @@ export type IndexDTF = {
     id: Address
     votingDelay: number
     votingPeriod: number
+    proposalThreshold: number
+    quorumNumerator: number
     timelock: {
       id: Address
       guardians: Address[]
@@ -289,6 +291,8 @@ export type IndexDTF = {
     id: Address
     votingDelay: number
     votingPeriod: number
+    proposalThreshold: number
+    quorumNumerator: number
     timelock: {
       id: Address
       guardians: Address[]
