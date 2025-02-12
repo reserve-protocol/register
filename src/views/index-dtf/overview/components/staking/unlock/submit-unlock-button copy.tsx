@@ -32,14 +32,18 @@ const SubmitUnlockButton = () => {
     !!account && !!balance && amountToUnlock > 0n && amountToUnlock <= balance
 
   const { isReady, gas, hash, validationError, error, isLoading, write } =
-    useContractWrite({
-      abi: dtfIndexStakingVault,
-      functionName: 'withdraw',
-      address: stToken.id,
-      args: [amountToUnlock, account!, account!],
-      query: { enabled: readyToSubmit },
-      chainId,
-    })
+    useContractWrite(
+      account
+        ? {
+            abi: dtfIndexStakingVault,
+            functionName: 'withdraw',
+            address: stToken.id,
+            args: [amountToUnlock, account, account],
+            query: { enabled: readyToSubmit },
+            chainId,
+          }
+        : undefined
+    )
 
   const { data: receipt, error: txError } = useWaitForTransactionReceipt({
     hash,

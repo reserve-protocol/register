@@ -19,7 +19,7 @@ const GovernanceDelegateList = () => {
   return (
     <div className="rounded-3xl bg-secondary pb-0.5">
       <div className="p-4">
-        <h2 className="font-bold text-xl">Top voting addresses</h2>
+        <h2 className="font-bold text-xl text-primary">Top voting addresses</h2>
       </div>
       <div className="bg-card m-1 rounded-3xl">
         <Table>

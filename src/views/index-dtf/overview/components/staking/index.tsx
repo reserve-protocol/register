@@ -131,7 +131,7 @@ const Staking = ({ children }: { children: ReactNode }) => {
     abi: dtfIndexStakingVault,
     functionName: 'maxWithdraw',
     address: indexDTF?.stToken?.id,
-    args: [wallet!],
+    args: [wallet ?? '0x'],
     query: { enabled: !!wallet },
   })
 

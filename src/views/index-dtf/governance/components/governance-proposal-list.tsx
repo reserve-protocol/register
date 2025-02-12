@@ -15,7 +15,7 @@ import {
 } from '@/utils'
 import { formatConstant, PROPOSAL_STATES, ROUTES } from '@/utils/constants'
 import { useAtom, useAtomValue } from 'jotai'
-import { Circle, RefreshCcw } from 'lucide-react'
+import { Circle, PlusSquare, RefreshCcw } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { governanceProposalsAtom, refetchTokenAtom } from '../atoms'
 import { useState } from 'react'
@@ -23,7 +23,7 @@ import { useEffect } from 'react'
 
 // The refresh button is a decent? idea but easily abused
 const Header = () => {
-  const [refetchTime, setRefetchToken] = useAtom(refetchTokenAtom)
+  // const [refetchTime, setRefetchToken] = useAtom(refetchTokenAtom)
 
   // const handleRefresh = () => {
   //   const currentTime = getCurrentTime()
@@ -36,12 +36,21 @@ const Header = () => {
 
   return (
     <div className="p-4 flex items-center gap-2">
-      <h1 className="font-bold text-xl mr-auto">Recent proposals</h1>
+      <h1 className="font-bold text-xl text-primary mr-auto">
+        Recent proposals
+      </h1>
       {/* <Button variant="ghost" className="mr-auto" onClick={handleRefresh}>
         <RefreshCcw className="w-4 h-4" />
       </Button> */}
       <Link to={ROUTES.GOVERNANCE_PROPOSE}>
-        <Button size="sm">Create proposal</Button>
+        <Button
+          className="text-primary hover:text-primary gap-1"
+          variant="ghost"
+          size="sm"
+        >
+          <PlusSquare size={16} />
+          Create proposal
+        </Button>
       </Link>
     </div>
   )

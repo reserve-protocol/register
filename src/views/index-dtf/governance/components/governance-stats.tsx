@@ -5,16 +5,18 @@ import { chainIdAtom, walletAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { formatCurrency, getCurrentTime } from '@/utils'
 import { t } from '@lingui/macro'
-import { useAtomValue } from 'jotai'
+import { atom, useAtomValue } from 'jotai'
 import { Address, formatEther } from 'viem'
 import { useReadContract } from 'wagmi'
 import { governanceStatsAtom } from '../atoms'
+import { Archive, FileStack, Notebook } from 'lucide-react'
+import TokenLogo from '@/components/token-logo'
 
 const useVotingPower = (): number => {
   const account = useAtomValue(walletAtom)
   const dtf = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
-  const { data: votes, error } = useReadContract({
+  const { data: votes } = useReadContract({
     address: dtf?.ownerGovernance?.id ?? '0x',
     functionName: 'getVotes',
     abi: dtfIndexGovernance,
@@ -30,15 +32,27 @@ const useVotingPower = (): number => {
 
 const VotingPower = () => {
   const votingPower = useVotingPower()
+  const dtf = useAtomValue(indexDTFAtom)
+  const chainId = useAtomValue(chainIdAtom)
 
   return (
-    <div className="flex flex-col gap-4 p-6">
-      <h4 className="font-semibold">Voting power</h4>
-      <IconInfo
-        icon={<img alt="vote-supply" src="/svgs/vote-supply.svg" />}
-        title={t`current`}
-        text={formatCurrency(votingPower)}
+    <div className="flex items-center gap-3 p-6">
+      <TokenLogo
+        size="lg"
+        symbol={dtf?.stToken?.underlying.symbol}
+        address={dtf?.stToken?.underlying.address}
+        chain={chainId}
       />
+      <div className="flex flex-col ">
+        <span className="text-legend text-sm">Vote locked</span>
+        <span className="font-bold">
+          {formatCurrency(votingPower, 1, {
+            notation: 'compact',
+            compactDisplay: 'short',
+          })}{' '}
+          ${dtf?.stToken?.token.symbol}
+        </span>
+      </div>
     </div>
   )
 }
@@ -61,8 +75,8 @@ const IconInfo = ({
   loading,
 }: IconInfoProps) => (
   <div className={cn('flex items-center', className)}>
-    {icon}
-    <div className="ml-2">
+    <div className="border rounded-full border-foreground p-1">{icon}</div>
+    <div className="ml-3">
       <div className="flex items-center">
         <span className="text-legend text-sm">{title}</span>
       </div>
@@ -71,43 +85,39 @@ const IconInfo = ({
   </div>
 )
 
+const governanceStatsListAtom = atom((get) => {
+  const stats = get(governanceStatsAtom)
+
+  return [
+    {
+      icon: <FileStack size={14} />,
+      title: t`Proposals`,
+      text: formatCurrency(stats?.proposalCount ?? 0, 0),
+    },
+    {
+      icon: <Archive size={14} />,
+      title: t`Vote Supply`,
+      text: formatCurrency(stats?.voteTokenSupply ?? 0, 0),
+    },
+    {
+      icon: <Notebook size={14} />,
+      title: t`Voting Addresses`,
+      text: formatCurrency(stats?.totalDelegates ?? 0, 0),
+    },
+  ]
+})
+
 const GovernanceStats = () => {
-  const stats = useAtomValue(governanceStatsAtom)
+  const governanceStatsList = useAtomValue(governanceStatsListAtom)
 
   return (
-    <div className="flex rounded-3xl bg-secondary">
-      <div className="bg-card m-1 grid grid-cols-2 w-full rounded-3xl">
-        <div className="flex flex-col gap-4 p-6 border-b border-r">
-          <h4 className="font-semibold">Proposals</h4>
-          <IconInfo
-            icon={<img alt="proposals" src="/svgs/proposals.svg" />}
-            title={t`All time`}
-            text={formatCurrency(stats?.proposalCount ?? 0, 0)}
-            loading={!stats}
-          />
-        </div>
+    <div className="flex flex-col rounded-3xl bg-background">
+      {governanceStatsList.map(({ icon, title, text }) => (
         <div className="flex flex-col gap-4 p-6 border-b">
-          <h4 className="font-semibold">Vote Supply</h4>
-          <IconInfo
-            icon={<img alt="vote-supply" src="/svgs/vote-supply.svg" />}
-            title={t`Current`}
-            text={formatCurrency(stats?.voteTokenSupply ?? 0, 0)}
-            loading={!stats}
-          />
+          <IconInfo icon={icon} title={title} text={text} />
         </div>
-        <div className="flex flex-col gap-4 p-6 border-r">
-          <h4 className="font-semibold">Voting Addresses</h4>
-          <IconInfo
-            icon={
-              <img alt="voting-addresses" src="/svgs/voting-addresses.svg" />
-            }
-            title={t`Current`}
-            text={formatCurrency(stats?.totalDelegates ?? 0, 0)}
-            loading={!stats}
-          />
-        </div>
-        <VotingPower />
-      </div>
+      ))}
+      <VotingPower />
     </div>
   )
 }
