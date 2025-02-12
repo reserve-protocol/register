@@ -7,15 +7,15 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Input, NumericalInput } from '@/components/ui/input'
+import { cn } from '@/lib/utils'
 import { chainIdAtom } from '@/state/atoms'
 import { Token } from '@/types'
 import { formatCurrency } from '@/utils'
 import { useAtomValue } from 'jotai'
 import { ArrowDown, ArrowUpDown, ChevronDown, ChevronUp } from 'lucide-react'
 import React, { useState } from 'react'
-import { ToggleGroup, ToggleGroupItem } from './toggle-group'
 import GaugeIcon from '../icons/GaugeIcon'
-import { cn } from '@/lib/utils'
+import { ToggleGroup, ToggleGroupItem } from './toggle-group'
 
 type TokenWithBalance = Token & { balance?: string }
 
@@ -39,39 +39,27 @@ type SwapProps = {
 }
 
 const TokenInput = ({
-  price = '',
   value = '',
   onChange = () => {},
-}: Pick<SwapItem, 'price' | 'value' | 'onChange'>) => {
+}: Pick<SwapItem, 'value' | 'onChange'>) => {
   return (
-    <div className="flex flex-col flex-grow min-w-0 text-primary">
-      <NumericalInput
-        value={value}
-        variant="transparent"
-        placeholder="0"
-        onChange={onChange}
-        autoFocus
-        className="placeholder:text-primary/70"
-      />
-      <div className="w-full overflow-hidden">
-        <span className="text-legend mt-1.5 block truncate">{price}</span>
-      </div>
-    </div>
+    <NumericalInput
+      value={value}
+      variant="transparent"
+      placeholder="0"
+      onChange={onChange}
+      autoFocus
+      className="placeholder:text-primary/70"
+    />
   )
 }
 
 const TokenSelector = ({
   address = '',
   symbol = '',
-  balance = '',
-  onMax = () => {},
   tokens,
   onTokenSelect,
-  output = false,
-}: Pick<
-  SwapItem,
-  'address' | 'symbol' | 'balance' | 'onMax' | 'tokens' | 'onTokenSelect'
-> & { output?: boolean }) => {
+}: Pick<SwapItem, 'address' | 'symbol' | 'tokens' | 'onTokenSelect'>) => {
   const chainId = useAtomValue(chainIdAtom)
   const [open, setOpen] = React.useState(false)
 
@@ -87,20 +75,6 @@ const TokenSelector = ({
           />
           <span>{symbol}</span>
         </div>
-        {!output && (
-          <div className="flex items-center gap-1 text-base">
-            <span className="text-legend">Balance</span>
-            <span className="font-bold">{balance}</span>
-            <Button
-              variant="ghost"
-              className="rounded-[40px] ml-1 bg-primary/10 text-primary/80 hover:bg-primary/20 hover:text-primary/80 font-semibold"
-              size="xs"
-              onClick={onMax}
-            >
-              Max
-            </Button>
-          </div>
-        )}
       </div>
     )
   }
@@ -158,31 +132,46 @@ const TokenSelector = ({
           ))}
         </DropdownMenuContent>
       </DropdownMenu>
-      {!output && (
-        <div className="flex items-center gap-1 text-base">
-          <span className="text-legend">Balance</span>
-          <span className="font-bold">{balance}</span>
-          <Button
-            variant="ghost"
-            className="rounded-[40px] ml-1 bg-primary/10 text-primary/80 hover:bg-primary/20 hover:text-primary/80 font-semibold"
-            size="xs"
-            onClick={onMax}
-          >
-            Max
-          </Button>
-        </div>
-      )}
     </div>
   )
 }
 
+const PriceValue = ({ price }: Pick<SwapItem, 'price'>) => (
+  <div className="w-full overflow-hidden">
+    <span className="text-legend block truncate">{price || '$0.00'}</span>
+  </div>
+)
+
+const MaxButton = ({ balance, onMax }: Pick<SwapItem, 'balance' | 'onMax'>) => (
+  <div className="flex items-center gap-1 text-base">
+    <span className="text-legend">Balance</span>
+    <span className="font-bold">{balance}</span>
+    <Button
+      variant="ghost"
+      className="h-6 rounded-full ml-1 bg-primary/10 text-primary/80 hover:bg-primary/15 hover:text-primary/80 font-semibold"
+      size="xs"
+      onClick={onMax}
+    >
+      Max
+    </Button>
+  </div>
+)
+
 const TokenInputBox = ({ from }: Pick<SwapProps, 'from'>) => {
   return (
-    <div className="p-4 bg-muted rounded-xl">
-      <h3 className="text-primary">{from?.title || 'You use:'}</h3>
-      <div className="flex gap-2">
-        <TokenInput {...from} />
-        <TokenSelector {...from} />
+    <div className="flex flex-col gap-1 p-4 bg-muted rounded-xl">
+      <div>
+        <h3 className="text-primary">{from?.title || 'You use:'}</h3>
+        <div className="flex gap-2">
+          <TokenInput {...from} />
+          <TokenSelector {...from} />
+        </div>
+      </div>
+      <div>
+        <div className="flex items-center gap-2 justify-between">
+          <PriceValue price={from.price} />
+          <MaxButton balance={from.balance} onMax={from.onMax} />
+        </div>
       </div>
     </div>
   )
@@ -202,14 +191,9 @@ const TokenOutputBox = ({ to }: Pick<SwapProps, 'to'>) => {
           disabled
           className="disabled:cursor-auto disabled:opacity-100"
         />
-        {/* <h4 className="text-3xl font-semibold mr-auto w-full overflow-hidden">
-          {to.value || '0'}
-        </h4> */}
-        <TokenSelector {...to} output />
+        <TokenSelector {...to} />
       </div>
-      <div className="w-full overflow-hidden">
-        <span className="text-legend block truncate">{to.price}</span>
-      </div>
+      <PriceValue price={to.price} />
     </div>
   )
 }

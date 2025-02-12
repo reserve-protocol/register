@@ -43,7 +43,10 @@ const ZapMint = ({ children }: { children: ReactNode }) => {
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent showClose={false} className="p-2 sm:rounded-3xl">
+      <DialogContent
+        showClose={false}
+        className="p-2 sm:rounded-3xl border-none"
+      >
         <DialogTitle className="flex justify-between gap-2">
           <RefreshQuote
             small
