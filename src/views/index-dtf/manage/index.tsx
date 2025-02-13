@@ -1,13 +1,21 @@
-import { zodResolver } from '@hookform/resolvers/zod'
-import { manageFormSchema } from './components/schema'
-import { useForm } from 'react-hook-form'
-import ManageForm from './components/manage-form'
-import { ManageFormValues } from './components/schema'
-import { Form } from '@/components/ui/form'
 import { Button } from '@/components/ui/button'
+import { Form } from '@/components/ui/form'
 import { uploadFileToIpfs } from '@/lib/ipfs-upload'
+import { RESERVE_API } from '@/utils/constants'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
+import { useForm } from 'react-hook-form'
 import CoverImages from './components/cover-images'
+import ManageForm from './components/manage-form'
+import { manageFormSchema, ManageFormValues } from './components/schema'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { type Address } from 'viem'
+import { base } from 'viem/chains'
+import { createSiweMessage } from 'viem/siwe'
+import { useAccount, useConnect, useSignMessage } from 'wagmi'
+import { useAtomValue } from 'jotai'
+import { chainIdAtom } from '@/state/atoms'
+import SubmitButton from './components/submit-button'
 
 const defaultValues: ManageFormValues = {
   hidden: false,
@@ -83,6 +91,151 @@ const useUploadFiles = (files: ManageFormValues['files']) => {
   }
 }
 
+interface AuthResponse {
+  valid: boolean
+}
+
+interface VerifySignaturePayload {
+  address: Address
+  chainId: number
+  nonce: string
+  signature: string
+}
+
+// GET
+const NONCE_ENDPOINT = `${RESERVE_API}/folio-manager/nonce`
+// POST
+const VERIFY_ENDPOINT = `${RESERVE_API}/folio-manager/verify`
+// GET
+const GET_DTF_DATA = `${RESERVE_API}/folio-manager/read`
+// SAVE
+const SAVE_DTF_DATA = `${RESERVE_API}/folio-manager/save`
+
+const api = {
+  getNonce: async (): Promise<{ nonce: string }> => {
+    const response = await fetch('/folio-manager/nonce')
+    if (!response.ok) throw new Error('Failed to get nonce')
+    return response.json()
+  },
+
+  verifySignature: async (
+    payload: VerifySignaturePayload
+  ): Promise<AuthResponse> => {
+    const response = await fetch('/folio-manager/verify', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    })
+
+    if (!response.ok) throw new Error('Verification failed')
+    return response.json()
+  },
+}
+
+// export const WalletAuth = () => {
+//   const [error, setError] = useState<string | null>(null)
+//   const queryClient = useQueryClient()
+
+//   const { address, isConnected } = useAccount()
+//   const chainId = useAtomValue(chainIdAtom)
+
+//   const { signMessage } = useSignMessage()
+
+//   // Mutation for getting nonce
+//   const nonceMutation = useMutation({
+//     mutationFn: api.getNonce,
+//     onError: (error) => {
+//       setError(error instanceof Error ? error.message : 'Failed to get nonce')
+//     },
+//   })
+
+//   // Mutation for verifying signature
+//   const verifyMutation = useMutation({
+//     mutationFn: api.verifySignature,
+//     onSuccess: (data) => {
+//       if (data.valid) {
+//         // You might want to store some auth state here
+//         queryClient.invalidateQueries({ queryKey: ['user'] })
+//       } else {
+//         setError('Signature verification failed')
+//       }
+//     },
+//     onError: (error) => {
+//       setError(error instanceof Error ? error.message : 'Verification failed')
+//     },
+//   })
+
+//   const handleSignIn = async () => {
+//     if (!address) return
+
+//     setError(null)
+
+//     try {
+//       // Get nonce
+//       const { nonce } = await nonceMutation.mutateAsync()
+
+//       // Create SIWE message
+//       const message = createSiweMessage({
+//         address,
+//         chainId,
+//         domain: 'app.reserve.org',
+//         nonce,
+//         uri: 'https://app.reserve.org',
+//         version: '1',
+//       })
+
+//       // Request signature
+//       const signature = await signMessage({ message })
+
+//       // Verify signature
+//       await verifyMutation.mutateAsync({
+//         address,
+//         chainId,
+//         nonce,
+//         signature,
+//       })
+//     } catch (err) {
+//       setError(err instanceof Error ? err.message : 'Authentication failed')
+//     }
+//   }
+
+//   const isLoading = nonceMutation.isPending || verifyMutation.isPending
+
+//   return (
+//     <div className="flex flex-col gap-4">
+//       <button
+//         onClick={handleSignIn}
+//         disabled={isLoading}
+//         className="px-4 py-2 bg-blue-500 text-white rounded disabled:opacity-50"
+//       >
+//         {isLoading
+//           ? nonceMutation.isPending
+//             ? 'Getting nonce...'
+//             : 'Verifying signature...'
+//           : isConnected
+//             ? 'Sign Message'
+//             : 'Connect Wallet'}
+//       </button>
+
+//       {error && <div className="text-red-500">{error}</div>}
+
+//       {(nonceMutation.error || verifyMutation.error) && (
+//         <div className="text-red-500">
+//           {nonceMutation.error?.message || verifyMutation.error?.message}
+//         </div>
+//       )}
+
+//       {isConnected && <div className="text-sm">Connected: {address}</div>}
+
+//       {chain && chain.id !== base.id && (
+//         <div className="text-yellow-500">Please switch to Base network</div>
+//       )}
+//     </div>
+//   )
+// }
+
 const IndexDTFManage = () => {
   const form = useForm<ManageFormValues>({
     resolver: zodResolver(manageFormSchema),
@@ -106,11 +259,7 @@ const IndexDTFManage = () => {
       >
         <ManageForm />
         <div className="flex flex-col gap-2">
-          <div className="rounded-3xl p-2 shadow-md bg-card">
-            <Button type="submit" className="w-full rounded-xl">
-              Submit all changes
-            </Button>
-          </div>
+          <SubmitButton />
           <CoverImages />
         </div>
       </form>
