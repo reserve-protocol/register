@@ -12,7 +12,9 @@ import { ArrowLeft, Settings, X } from 'lucide-react'
 import { ReactNode, useEffect } from 'react'
 import {
   currentZapMintTabAtom,
+  defaultSelectedTokenAtom,
   indexDTFBalanceAtom,
+  selectedTokenAtom,
   showZapSettingsAtom,
   zapFetchingAtom,
   zapMintInputAtom,
@@ -27,6 +29,8 @@ import ZapSettings from './zap-settings'
 const ZapMint = ({ children }: { children: ReactNode }) => {
   const currentTab = useAtomValue(currentZapMintTabAtom)
   const [showSettings, setShowSettings] = useAtom(showZapSettingsAtom)
+  const defaultToken = useAtomValue(defaultSelectedTokenAtom)
+  const setSelectedToken = useSetAtom(selectedTokenAtom)
   const indexDTF = useAtomValue(indexDTFAtom)
   const zapRefetch = useAtomValue(zapRefetchAtom)
   const zapFetching = useAtomValue(zapFetchingAtom)
@@ -41,10 +45,15 @@ const ZapMint = ({ children }: { children: ReactNode }) => {
     setIndexDTFBalance(balance || 0n)
   }, [balance, setIndexDTFBalance])
 
+  const reset = () => {
+    setShowSettings(false)
+    setSelectedToken(defaultToken)
+  }
+
   if (!indexDTF) return null
 
   return (
-    <Dialog onOpenChange={() => setShowSettings(false)}>
+    <Dialog onOpenChange={() => reset()}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent
         showClose={false}
