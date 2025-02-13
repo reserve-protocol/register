@@ -22,7 +22,7 @@ export const RESERVE_FORUM = 'https://forum.reserve.org/'
 export const REGISTER_BUGS =
   'https://reserve.canny.io/defi-surfaces-bug-reporting'
 export const RESERVE_STORAGE = 'https://storage.reserve.org/'
-export const RESERVE_API = 'https://api-stage.reserve.org/'
+export const RESERVE_API = 'https://api-staging.reserve.org/'
 export const DUNE_DASHBOARD =
   'https://dune.com/reserve-protocol/reserve-protocol-overview'
 export const REPOSITORY_URL = 'https://github.com/reserve-protocol/register'
