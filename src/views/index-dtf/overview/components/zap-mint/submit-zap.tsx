@@ -1,8 +1,11 @@
 import TransactionButton, {
   TransactionButtonContainer,
 } from '@/components/old/button/TransactionButton'
+import FusionTokenLogo from '@/components/token-logo/fustion-token-logo'
+import TransactionError from '@/components/transaction-error/TransactionError'
 import { Button } from '@/components/ui/button'
 import useContractWrite from '@/hooks/useContractWrite'
+import useNotification from '@/hooks/useNotification'
 import useWatchTransaction from '@/hooks/useWatchTransaction'
 import { ZapResult } from '@/views/yield-dtf/issuance/components/zapV2/api'
 import { useSetAtom } from 'jotai'
@@ -24,7 +27,7 @@ const LoadingButton = ({
 }) => {
   return (
     <>
-      <Button size="lg" className="w-full" disabled>
+      <Button size="lg" className="w-full rounded-xl" disabled>
         {fetchingZapper
           ? 'Loading...'
           : insufficientBalance
@@ -41,11 +44,21 @@ const LoadingButton = ({
 }
 
 const SubmitZapButton = ({
-  data: { approvalNeeded, approvalAddress, tokenIn, amountIn, tx, gas },
+  data: {
+    tokenIn,
+    tokenOut,
+    approvalNeeded,
+    approvalAddress,
+    amountIn,
+    tx,
+    gas,
+  },
   chainId,
   buttonLabel,
   inputSymbol,
   outputSymbol,
+  inputAmount,
+  outputAmount,
   onSuccess,
 }: {
   data: ZapResult
@@ -53,8 +66,11 @@ const SubmitZapButton = ({
   buttonLabel: string
   inputSymbol: string
   outputSymbol: string
+  inputAmount: string
+  outputAmount: string
   onSuccess?: () => void
 }) => {
+  const notify = useNotification()
   const setOngoingTx = useSetAtom(zapOngoingTxAtom)
   const {
     write: approve,
@@ -100,6 +116,17 @@ const SubmitZapButton = ({
   } = useWatchTransaction({
     hash: data,
     label: `Swapped ${inputSymbol} for ${outputSymbol}`,
+    successMessage: {
+      title: `Swapped`,
+      subtitle: `${inputAmount} ${inputSymbol} for ${outputAmount} ${outputSymbol}`,
+      type: 'success',
+      icon: (
+        <FusionTokenLogo
+          left={{ symbol: inputSymbol, chainId, address: tokenIn }}
+          right={{ symbol: outputSymbol, chainId, address: tokenOut }}
+        />
+      ),
+    },
   })
 
   const execute = () => {
@@ -113,6 +140,13 @@ const SubmitZapButton = ({
       chainId,
     })
   }
+
+  const error =
+    approvalError ||
+    approvalValidationError ||
+    approvalTxError ||
+    sendError ||
+    (txError ? Error(txError) : undefined)
 
   useEffect(() => {
     if (receipt) {
@@ -141,34 +175,33 @@ const SubmitZapButton = ({
   ])
 
   return (
-    <TransactionButton
-      chain={chainId}
-      disabled={
-        approvalNeeded
-          ? !approvalReady || confirmingApproval || approving
-          : !readyToSubmit || loadingTx || validatingTx
-      }
-      loading={approving || loadingTx || validatingTx || confirmingApproval}
-      loadingText={
-        validatingTx || confirmingApproval
-          ? 'Confirming tx...'
-          : 'Pending, sign in wallet'
-      }
-      gas={readyToSubmit ? (gas ? BigInt(gas) : undefined) : approvalGas}
-      onClick={() => {
-        setOngoingTx(true)
-        readyToSubmit ? execute() : approve()
-      }}
-      text={readyToSubmit ? buttonLabel : `Approve use of ${inputSymbol}`}
-      fullWidth
-      error={
-        approvalError ||
-        approvalValidationError ||
-        approvalTxError ||
-        sendError ||
-        (txError ? Error(txError) : undefined)
-      }
-    />
+    <div className="flex flex-col gap-1">
+      <TransactionButton
+        chain={chainId}
+        disabled={
+          approvalNeeded
+            ? !approvalReady || confirmingApproval || approving
+            : !readyToSubmit || loadingTx || validatingTx
+        }
+        loading={approving || loadingTx || validatingTx || confirmingApproval}
+        loadingText={
+          validatingTx || confirmingApproval
+            ? 'Confirming tx...'
+            : 'Pending, sign in wallet'
+        }
+        // gas={readyToSubmit ? (gas ? BigInt(gas) : undefined) : approvalGas}
+        onClick={() => {
+          setOngoingTx(true)
+          readyToSubmit ? execute() : approve()
+        }}
+        text={readyToSubmit ? buttonLabel : `Approve use of ${inputSymbol}`}
+        fullWidth
+        sx={{
+          borderRadius: '12px',
+        }}
+      />
+      <TransactionError error={error} className="text-center" />
+    </div>
   )
 }
 
@@ -178,6 +211,8 @@ const SubmitZap = ({
   buttonLabel,
   inputSymbol,
   outputSymbol,
+  inputAmount,
+  outputAmount,
   showTxButton,
   fetchingZapper,
   insufficientBalance,
@@ -189,6 +224,8 @@ const SubmitZap = ({
   buttonLabel: string
   inputSymbol: string
   outputSymbol: string
+  inputAmount: string
+  outputAmount: string
   showTxButton: boolean
   fetchingZapper: boolean
   insufficientBalance: boolean
@@ -202,6 +239,8 @@ const SubmitZap = ({
       buttonLabel={buttonLabel}
       inputSymbol={inputSymbol}
       outputSymbol={outputSymbol}
+      inputAmount={inputAmount}
+      outputAmount={outputAmount}
       onSuccess={onSuccess}
     />
   ) : (

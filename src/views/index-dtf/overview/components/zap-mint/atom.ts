@@ -5,6 +5,7 @@ import { atom } from 'jotai'
 import { atomWithReset } from 'jotai/utils'
 
 export const currentZapMintTabAtom = atom<'buy' | 'sell'>('buy')
+export const showZapSettingsAtom = atom<boolean>(false)
 export const zapMintInputAtom = atomWithReset<string>('')
 export const indexDTFBalanceAtom = atom<bigint>(0n)
 

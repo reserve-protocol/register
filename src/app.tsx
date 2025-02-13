@@ -1,4 +1,3 @@
-import ToastContainer from '@/components/old/toaster-container/ToastContainer'
 import RouteAnalytics from '@/components/utils/route-analytics'
 import TransactionSidebar from 'components/transactions/manager/TransactionSidebar'
 import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
@@ -15,9 +14,9 @@ import { ThemeUIProvider } from 'theme-ui'
 import { getTokenRoute } from 'utils'
 import AppRoutes from './app-routes'
 import Layout from './components/layout'
+import { Toaster } from './components/ui/sonner'
 import LanguageProvider from './i18n'
 import { theme } from './theme'
-import { Toaster } from './components/ui/sonner'
 
 mixpanel.init(import.meta.env.VITE_MIXPANEL_KEY || 'mixpanel_key', {
   track_pageview: true,
@@ -111,8 +110,7 @@ const App = () => (
             <Updater />
             <TransactionSidebar />
             <Layout>
-              <Toaster />
-              <ToastContainer />
+              <Toaster closeButton />
               <AppRoutes />
             </Layout>
           </ChainProvider>

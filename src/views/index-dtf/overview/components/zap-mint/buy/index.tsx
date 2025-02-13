@@ -1,4 +1,4 @@
-import Swap, { SlippageSelector } from '@/components/ui/swap'
+import Swap from '@/components/ui/swap'
 import { useChainlinkPrice } from '@/hooks/useChainlinkPrice'
 import useZapSwapQuery from '@/hooks/useZapSwapQuery'
 import { chainIdAtom } from '@/state/atoms'
@@ -7,7 +7,9 @@ import { formatCurrency } from '@/utils'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { formatEther, parseUnits } from 'viem'
+import useLoadingAfterRefetch from '../../hooks/useLoadingAfterRefetch'
 import {
+  currentZapMintTabAtom,
   selectedTokenAtom,
   selectedTokenBalanceAtom,
   selectedTokenOrDefaultAtom,
@@ -19,6 +21,7 @@ import {
   zapRefetchAtom,
 } from '../atom'
 import SubmitZap from '../submit-zap'
+import ZapDetails from '../zap-details'
 
 const Buy = () => {
   const chainId = useAtomValue(chainIdAtom)
@@ -27,11 +30,12 @@ const Buy = () => {
   const selectedToken = useAtomValue(selectedTokenOrDefaultAtom)
   const selectedTokenBalance = useAtomValue(selectedTokenBalanceAtom)
   const tokens = useAtomValue(tokensAtom)
+  const slippage = useAtomValue(slippageAtom)
   const setInputToken = useSetAtom(selectedTokenAtom)
-  const [slippage, setSlippage] = useAtom(slippageAtom)
   const [ongoingTx, setOngoingTx] = useAtom(zapOngoingTxAtom)
   const setZapRefetch = useSetAtom(zapRefetchAtom)
   const setZapFetching = useSetAtom(zapFetchingAtom)
+  const setCurrentTab = useSetAtom(currentZapMintTabAtom)
   const selectedTokenPrice = useChainlinkPrice(chainId, selectedToken.address)
   const inputPrice = (selectedTokenPrice || 0) * Number(inputAmount)
   const onMax = () => setInputAmount(selectedTokenBalance?.balance || '0')
@@ -49,16 +53,24 @@ const Buy = () => {
       disabled: insufficientBalance || ongoingTx,
     })
 
+  const { loadingAfterRefetch } = useLoadingAfterRefetch(data)
+
   const priceTo = data?.result?.amountOutValue
   const valueTo = data?.result?.amountOut
   const showTxButton = Boolean(
     data?.status === 'success' &&
       data?.result &&
       !insufficientBalance &&
-      !isFetching
+      !isLoading
   )
   const fetchingZapper = isLoading || isFetching
   const zapperErrorMessage = data?.error || failureReason?.message || ''
+  const dustValue = data?.result?.dustValue || 0
+
+  const changeTab = () => {
+    setCurrentTab((prev) => (prev === 'sell' ? 'buy' : 'sell'))
+    setInputAmount('')
+  }
 
   useEffect(() => {
     setZapRefetch({ fn: refetch })
@@ -77,45 +89,44 @@ const Buy = () => {
 
   return (
     <div className="flex flex-col gap-2 h-full">
-      <div className="flex flex-col gap-1">
-        <Swap
-          from={{
-            price: `$${formatCurrency(inputPrice)}`,
-            address: selectedToken.address,
-            symbol: selectedToken.symbol,
-            balance: `${formatCurrency(Number(selectedTokenBalance?.balance || '0'))}`,
-            value: inputAmount,
-            onChange: setInputAmount,
-            onMax,
-            tokens,
-            onTokenSelect: setInputToken,
-          }}
-          to={{
-            address: indexDTF.id,
-            symbol: indexDTF.token.symbol,
-            price: priceTo ? `$${formatCurrency(priceTo)}` : undefined,
-            value: formatEther(BigInt(valueTo || 0)),
-          }}
-        />
-        <SlippageSelector
-          value={slippage}
-          onChange={setSlippage}
-          options={['200', '1000', '10000']}
-        />
-      </div>
-      <div className="mb-2">
-        <SubmitZap
-          data={data?.result}
-          chainId={indexDTF.chainId}
-          buttonLabel={`Buy ${indexDTF.token.symbol}`}
-          inputSymbol={selectedToken.symbol}
-          outputSymbol={indexDTF.token.symbol}
-          showTxButton={showTxButton}
-          fetchingZapper={fetchingZapper}
-          insufficientBalance={insufficientBalance}
-          zapperErrorMessage={zapperErrorMessage}
-        />
-      </div>
+      <Swap
+        from={{
+          price: `$${formatCurrency(inputPrice)}`,
+          address: selectedToken.address,
+          symbol: selectedToken.symbol,
+          balance: `${formatCurrency(Number(selectedTokenBalance?.balance || '0'))}`,
+          value: inputAmount,
+          onChange: setInputAmount,
+          onMax,
+          tokens,
+          onTokenSelect: setInputToken,
+        }}
+        to={{
+          address: indexDTF.id,
+          symbol: indexDTF.token.symbol,
+          price: priceTo
+            ? `$${formatCurrency(priceTo)}${dustValue > 0.01 ? ` + $${formatCurrency(dustValue)} in dust` : ''}`
+            : undefined,
+          value: formatEther(BigInt(valueTo || 0)),
+        }}
+        onSwap={changeTab}
+        loading={isLoading || loadingAfterRefetch}
+      />
+      {!!data?.result && <ZapDetails data={data.result} />}
+      <SubmitZap
+        data={data?.result}
+        chainId={indexDTF.chainId}
+        buttonLabel={`Buy ${indexDTF.token.symbol}`}
+        inputSymbol={selectedToken.symbol}
+        outputSymbol={indexDTF.token.symbol}
+        inputAmount={formatCurrency(Number(inputAmount))}
+        outputAmount={formatCurrency(Number(formatEther(BigInt(valueTo || 0))))}
+        showTxButton={showTxButton}
+        fetchingZapper={isLoading}
+        insufficientBalance={insufficientBalance}
+        zapperErrorMessage={zapperErrorMessage}
+        onSuccess={() => setInputAmount('')}
+      />
     </div>
   )
 }

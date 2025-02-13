@@ -122,6 +122,14 @@ const config = {
           '0%': { transform: 'scaleX(0)', opacity: '0' },
           '100%': { transform: 'scaleX(1)', opacity: '1' },
         },
+        'spin-slow': {
+          from: {
+            transform: 'rotate(0deg)',
+          },
+          to: {
+            transform: 'rotate(360deg)',
+          },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
@@ -130,6 +138,7 @@ const config = {
         'fade-out': 'fade-out 0.5s ease-in-out 0s 1 forwards',
         'width-expand':
           'width-expand 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) forwards',
+        'spin-slow': 'spin-slow 4s linear infinite',
       },
     },
   },

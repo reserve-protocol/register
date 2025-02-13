@@ -8,8 +8,6 @@ import { useMemo } from 'react'
 import { Address, zeroAddress } from 'viem'
 import useDebounce from './useDebounce'
 
-const ETH_ADDRESS = '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'
-
 const useZapSwapQuery = ({
   tokenIn,
   tokenOut,
@@ -37,12 +35,11 @@ const useZapSwapQuery = ({
         return null
       return zapper.zap({
         chainId,
-        tokenIn: tokenIn === ETH_ADDRESS ? zeroAddress : tokenIn,
+        tokenIn,
         tokenOut,
         amountIn,
         slippage,
         signer: account as Address,
-        trade: true,
       })
     }, [chainId, account, tokenIn, tokenOut, amountIn, slippage]),
     500
@@ -60,7 +57,6 @@ const useZapSwapQuery = ({
       return response.json()
     },
     enabled: !!endpoint && !disabled,
-    staleTime: 12000,
     refetchInterval: 12000,
   })
 }
