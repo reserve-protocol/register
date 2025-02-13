@@ -82,12 +82,12 @@ function TokenRow({
   className,
 }: TokenRowProps) {
   const prices = useAtomValue(accountTokenPricesAtom)
-  const formattedAmount = formatTokenAmount(
-    amountInt || Number(formatUnits(amount ?? 0n, token.decimals))
-  )
+  const _amount = amountInt || Number(formatUnits(amount ?? 0n, token.decimals))
+  const formattedAmount = formatTokenAmount(_amount)
+
   const tokenPrice = usdPrice || prices[underlying?.address ?? token.address]
-  const value =
-    usdAmount || (tokenPrice ? tokenPrice * Number(formattedAmount) : 0)
+
+  const value = usdAmount || (tokenPrice ? tokenPrice * _amount : 0)
 
   return (
     <div

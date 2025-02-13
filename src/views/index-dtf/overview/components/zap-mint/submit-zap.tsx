@@ -5,7 +5,6 @@ import FusionTokenLogo from '@/components/token-logo/fustion-token-logo'
 import TransactionError from '@/components/transaction-error/TransactionError'
 import { Button } from '@/components/ui/button'
 import useContractWrite from '@/hooks/useContractWrite'
-import useNotification from '@/hooks/useNotification'
 import useWatchTransaction from '@/hooks/useWatchTransaction'
 import { ZapResult } from '@/views/yield-dtf/issuance/components/zapV2/api'
 import { useSetAtom } from 'jotai'
@@ -70,7 +69,6 @@ const SubmitZapButton = ({
   outputAmount: string
   onSuccess?: () => void
 }) => {
-  const notify = useNotification()
   const setOngoingTx = useSetAtom(zapOngoingTxAtom)
   const {
     write: approve,
