@@ -19,10 +19,18 @@ import {
   ChevronUp,
   Loader,
 } from 'lucide-react'
-import React, { useEffect, useState } from 'react'
+import React, { ReactNode, useEffect, useState } from 'react'
 import GaugeIcon from '../icons/GaugeIcon'
 import { ToggleGroup, ToggleGroupItem } from './toggle-group'
 import { Skeleton } from './skeleton'
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from './accordion'
+import { Separator } from './separator'
+import Help from '../help'
 
 type TokenWithBalance = Token & { balance?: string }
 
@@ -215,7 +223,7 @@ const SlowLoading = () => {
   }, [])
 
   return (
-    <div className="absolute inset-0 flex flex-col items-center justify-center z-10 w-full h-full bg-cover bg-center bg-[url('https://storage.reserve.org/degen.gif')] rounded-xl">
+    <div className="absolute inset-0 flex flex-col items-center justify-center z-10 w-full h-full bg-cover bg-center bg-[url('https://storage.reserve.org/degen.gif')] rounded-xl animate-fade-in">
       <div className="flex items-center gap-1 justify-between bg-card rounded-full px-3 py-2 text-sm text-primary border border-primary">
         <div className="flex items-center gap-1">
           <Loader size={16} className="animate-spin-slow" />
@@ -399,6 +407,49 @@ export const SlippageSelector = ({
         </div>
       </div>
     </div>
+  )
+}
+
+type ZapDetailItem = {
+  left: ReactNode
+  right: ReactNode
+  help?: ReactNode
+}
+
+const ZapDetailItem = ({ left, right, help }: ZapDetailItem) => {
+  return (
+    <div className="flex gap-1 items-center justify-between flex-1 px-1">
+      <div className="flex gap-1 items-center">
+        <div>{left}</div>
+        <Help content={help} />
+      </div>
+      <div>{right}</div>
+    </div>
+  )
+}
+
+type ZapDetailsProps = {
+  visible: ZapDetailItem
+  details: ZapDetailItem[]
+}
+
+export const ZapDetails = ({ visible, details }: ZapDetailsProps) => {
+  return (
+    <Accordion type="single" collapsible>
+      <AccordionItem value="item-1" className="border-b-0">
+        <AccordionTrigger className="px-3 py-2">
+          <ZapDetailItem {...visible} />
+        </AccordionTrigger>
+        <AccordionContent>
+          <Separator className="mt-2" />
+          <div className="px-3 pt-4 pb-2 flex flex-col gap-3">
+            {details.map((detail) => (
+              <ZapDetailItem {...detail} />
+            ))}
+          </div>
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
   )
 }
 

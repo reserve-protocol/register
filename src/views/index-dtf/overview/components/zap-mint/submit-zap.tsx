@@ -174,7 +174,7 @@ const SubmitZapButton = ({
           borderRadius: '12px',
         }}
       />
-      {error && <TransactionError error={error} />}
+      <TransactionError error={error} className="text-center" />
     </div>
   )
 }

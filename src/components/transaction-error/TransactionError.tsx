@@ -13,7 +13,7 @@ const TransactionError = ({ error, ...props }: Props) => {
   const message =
     messageSplit.length > 1
       ? messageSplit[0] + ' ' + messageSplit[1]
-      : messageSplit[0] ?? ''
+      : (messageSplit[0] ?? '')
 
   return (
     <Box {...props}>

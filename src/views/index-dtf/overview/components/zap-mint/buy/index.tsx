@@ -1,4 +1,4 @@
-import Swap, { SlippageSelector } from '@/components/ui/swap'
+import Swap, { SlippageSelector, ZapDetails } from '@/components/ui/swap'
 import { useChainlinkPrice } from '@/hooks/useChainlinkPrice'
 import useZapSwapQuery from '@/hooks/useZapSwapQuery'
 import { chainIdAtom } from '@/state/atoms'
@@ -110,6 +110,25 @@ const Buy = () => {
         }}
         onSwap={changeTab}
         loading={isLoading || loadingAfterRefetch}
+      />
+      <ZapDetails
+        visible={{
+          left: 'asd',
+          right: 'asd',
+          help: 'asd',
+        }}
+        details={[
+          {
+            left: 'asd',
+            right: 'asd',
+            help: 'asd',
+          },
+          {
+            left: 'asd',
+            right: 'asd',
+            help: 'asd',
+          },
+        ]}
       />
       <SubmitZap
         data={data?.result}
