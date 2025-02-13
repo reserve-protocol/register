@@ -20,6 +20,7 @@ import {
 import Buy from '../overview/components/zap-mint/buy'
 import RefreshQuote from '../overview/components/zap-mint/refresh-quote'
 import Sell from '../overview/components/zap-mint/sell'
+import ZapSettings from '../overview/components/zap-mint/zap-settings'
 
 const IndexDTFIssuance = () => {
   const [currentTab, setCurrentTab] = useAtom(currentZapMintTabAtom)
@@ -94,12 +95,22 @@ const IndexDTFIssuance = () => {
               </>
             )}
           </div>
-          <TabsContent value="buy">
-            <Buy />
-          </TabsContent>
-          <TabsContent value="sell">
-            <Sell />
-          </TabsContent>
+          {!showSettings && (
+            <>
+              <TabsContent value="buy">
+                <Buy />
+              </TabsContent>
+              <TabsContent value="sell">
+                <Sell />
+              </TabsContent>
+            </>
+          )}
+
+          {showSettings && (
+            <div className="mt-2">
+              <ZapSettings />
+            </div>
+          )}
         </Tabs>
       </div>
       <div className="w-full sm:w-[560px] mx-auto">
