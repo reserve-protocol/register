@@ -203,11 +203,17 @@ const SLOW_LOADING_TEXTS = [
   'Loading DTF',
 ]
 
-const SlowLoading = () => {
+const SlowLoading = ({ enabled }: { enabled: boolean }) => {
   const [countdown, setCountdown] = useState(60)
   const [textIndex, setTextIndex] = useState(0)
 
-  React.useEffect(() => {
+  useEffect(() => {
+    if (!enabled) {
+      setCountdown(60)
+      setTextIndex(0)
+      return
+    }
+
     const countdownInterval = setInterval(() => {
       setCountdown((prev) => (prev > 0 ? prev - 1 : 0))
     }, 1000)
@@ -220,10 +226,15 @@ const SlowLoading = () => {
       clearInterval(countdownInterval)
       clearInterval(textInterval)
     }
-  }, [])
+  }, [enabled])
 
   return (
-    <div className="absolute inset-0 flex flex-col items-center justify-center z-10 w-full h-full bg-cover bg-center bg-[url('https://storage.reserve.org/degen.gif')] rounded-xl animate-fade-in">
+    <div
+      className={cn(
+        "absolute inset-0 flex flex-col items-center justify-center z-10 w-full h-full bg-cover bg-center bg-[url('https://storage.reserve.org/degen.gif')] rounded-xl opacity-0",
+        enabled ? 'animate-fade-in' : ''
+      )}
+    >
       <div className="flex items-center gap-1 justify-between bg-card rounded-full px-3 py-2 text-sm text-primary border border-primary">
         <div className="flex items-center gap-1">
           <Loader size={16} className="animate-spin-slow" />
@@ -272,7 +283,7 @@ const TokenOutputBox = ({ to, loading }: Pick<SwapProps, 'to' | 'loading'>) => {
 
   return (
     <div className="relative flex flex-col gap-1 p-4 bg-card rounded-xl border-border border">
-      {slowLoading && <SlowLoading />}
+      <SlowLoading enabled={slowLoading} />
       <div>
         <h3>{to.title || 'You receive:'}</h3>
         <div className="flex items-center gap-2 justify-between">
