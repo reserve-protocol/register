@@ -18,7 +18,6 @@ const defaultValues: ManageFormValues = {
     description: '',
     notesFromCreator: '',
     tags: [],
-    hidden: false,
   },
   creator: {
     name: '',

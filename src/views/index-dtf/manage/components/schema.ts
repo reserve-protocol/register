@@ -1,6 +1,7 @@
 import { z } from 'zod'
 
 export const manageFormSchema = z.object({
+  hidden: z.boolean(),
   dtf: z.object({
     icon: z.string().url(),
     cover: z.string().url(),
@@ -8,7 +9,6 @@ export const manageFormSchema = z.object({
     description: z.string(),
     notesFromCreator: z.string(),
     tags: z.array(z.string()),
-    hidden: z.boolean(),
   }),
   creator: z.object({
     name: z.string(),

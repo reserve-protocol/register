@@ -1,18 +1,16 @@
-import { FormDescription, FormMessage } from '@/components/ui/form'
-
-import { Input } from '@/components/ui/input'
+import { FormMessage } from '@/components/ui/form'
 
 import {
   FormControl,
+  FormField,
   FormItem,
   FormLabel,
-  FormField,
 } from '@/components/ui/form'
 
-import { useForm } from 'react-hook-form'
-import { Textarea } from '@/components/ui/textarea'
-import { ImageUploader } from './logo-upload'
 import { Switch } from '@/components/ui/switch'
+import { Textarea } from '@/components/ui/textarea'
+import { useForm } from 'react-hook-form'
+import { ImageUploader } from './logo-upload'
 import MultiSelectTags from './manage-tags'
 
 const ManageAbout = () => {
@@ -58,8 +56,8 @@ const ManageAbout = () => {
           </p>
         </div>
         <Switch
-          checked={form.watch('dtf.hidden')}
-          onCheckedChange={(checked) => form.setValue('dtf.hidden', checked)}
+          checked={form.watch('hidden')}
+          onCheckedChange={(checked) => form.setValue('hidden', checked)}
         />
       </div>
     </div>
