@@ -1,12 +1,13 @@
-import Swap, { SlippageSelector, ZapDetails } from '@/components/ui/swap'
+import Swap from '@/components/ui/swap'
 import { useChainlinkPrice } from '@/hooks/useChainlinkPrice'
 import useZapSwapQuery from '@/hooks/useZapSwapQuery'
 import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { formatCurrency } from '@/utils'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { formatEther, parseUnits } from 'viem'
+import useLoadingAfterRefetch from '../../hooks/useLoadingAfterRefetch'
 import {
   currentZapMintTabAtom,
   selectedTokenAtom,
@@ -20,7 +21,7 @@ import {
   zapRefetchAtom,
 } from '../atom'
 import SubmitZap from '../submit-zap'
-import useLoadingAfterRefetch from '../../hooks/useLoadingAfterRefetch'
+import ZapDetails from '../zap-details'
 
 const Buy = () => {
   const chainId = useAtomValue(chainIdAtom)
@@ -111,25 +112,7 @@ const Buy = () => {
         onSwap={changeTab}
         loading={isLoading || loadingAfterRefetch}
       />
-      <ZapDetails
-        visible={{
-          left: 'asd',
-          right: 'asd',
-          help: 'asd',
-        }}
-        details={[
-          {
-            left: 'asd',
-            right: 'asd',
-            help: 'asd',
-          },
-          {
-            left: 'asd',
-            right: 'asd',
-            help: 'asd',
-          },
-        ]}
-      />
+      {!!data?.result && <ZapDetails data={data.result} />}
       <SubmitZap
         data={data?.result}
         chainId={indexDTF.chainId}

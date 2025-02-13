@@ -1,10 +1,11 @@
-import Swap, { SlippageSelector } from '@/components/ui/swap'
+import Swap from '@/components/ui/swap'
 import useZapSwapQuery from '@/hooks/useZapSwapQuery'
 import { indexDTFAtom, indexDTFPriceAtom } from '@/state/dtf/atoms'
 import { formatCurrency } from '@/utils'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { formatEther, formatUnits, parseEther } from 'viem'
+import useLoadingAfterRefetch from '../../hooks/useLoadingAfterRefetch'
 import {
   currentZapMintTabAtom,
   indexDTFBalanceAtom,
@@ -18,7 +19,7 @@ import {
   zapRefetchAtom,
 } from '../atom'
 import SubmitZap from '../submit-zap'
-import useLoadingAfterRefetch from '../../hooks/useLoadingAfterRefetch'
+import { ZapDetails } from '../zap-details'
 
 const Sell = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
@@ -104,6 +105,7 @@ const Sell = () => {
         onSwap={changeTab}
         loading={isLoading || loadingAfterRefetch}
       />
+      {!!data?.result && <ZapDetails data={data.result} />}
       <SubmitZap
         data={data?.result}
         chainId={indexDTF.chainId}

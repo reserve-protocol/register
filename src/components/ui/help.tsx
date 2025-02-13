@@ -11,16 +11,24 @@ interface HelpProps {
   content: ReactNode
   size?: number
   side?: 'top' | 'right' | 'bottom' | 'left'
+  className?: string
 }
 
-const Help: React.FC<HelpProps> = ({ content, size = 12, side = 'top' }) => {
+const Help: React.FC<HelpProps> = ({
+  content,
+  size = 12,
+  side = 'top',
+  className,
+}) => {
   return (
     <TooltipProvider>
       <Tooltip delayDuration={0}>
         <TooltipTrigger>
-          <HelpCircle size={size} />
+          <HelpCircle size={size} className={className} />
         </TooltipTrigger>
-        <TooltipContent side={side}>{content}</TooltipContent>
+        <TooltipContent side={side} className="max-w-xs">
+          {content}
+        </TooltipContent>
       </Tooltip>
     </TooltipProvider>
   )

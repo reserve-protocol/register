@@ -410,41 +410,50 @@ export const SlippageSelector = ({
   )
 }
 
-type ZapDetailItem = {
+type SwapDetailItem = {
   left: ReactNode
-  right: ReactNode
+  right?: ReactNode
   help?: ReactNode
 }
 
-const ZapDetailItem = ({ left, right, help }: ZapDetailItem) => {
+const SwapDetailItem = ({ left, right, help }: SwapDetailItem) => {
   return (
     <div className="flex gap-1 items-center justify-between flex-1 px-1">
       <div className="flex gap-1 items-center">
         <div>{left}</div>
-        <Help content={help} />
+        {!!help && <Help content={help} className="text-muted-foreground" />}
       </div>
-      <div>{right}</div>
+      {!!right && <div className="animate-fade-in">{right}</div>}
     </div>
   )
 }
 
-type ZapDetailsProps = {
-  visible: ZapDetailItem
-  details: ZapDetailItem[]
+type SwapDetailsProps = {
+  visible: SwapDetailItem
+  details: SwapDetailItem[]
 }
 
-export const ZapDetails = ({ visible, details }: ZapDetailsProps) => {
+export const SwapDetails = ({ visible, details }: SwapDetailsProps) => {
+  const [open, setOpen] = useState(false)
   return (
-    <Accordion type="single" collapsible>
-      <AccordionItem value="item-1" className="border-b-0">
-        <AccordionTrigger className="px-3 py-2">
-          <ZapDetailItem {...visible} />
+    <Accordion
+      type="single"
+      collapsible
+      value={String(open)}
+      onValueChange={(value) => setOpen(Boolean(value))}
+    >
+      <AccordionItem value="true" className="border-b-0">
+        <AccordionTrigger className="px-3 py-2 font-light">
+          <SwapDetailItem
+            left={visible.left}
+            right={open ? undefined : visible.right}
+          />
         </AccordionTrigger>
         <AccordionContent>
           <Separator className="mt-2" />
-          <div className="px-3 pt-4 pb-2 flex flex-col gap-3">
+          <div className="px-3 pt-4 pb-2 flex flex-col gap-2">
             {details.map((detail) => (
-              <ZapDetailItem {...detail} />
+              <SwapDetailItem {...detail} />
             ))}
           </div>
         </AccordionContent>
