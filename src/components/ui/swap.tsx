@@ -324,11 +324,13 @@ export const SlippageSelector = ({
   onChange,
   options = ['100', '200', '1000'],
   formatOption = (option) => `${(1 / Number(option)) * 100}%`,
+  hideTitle = false,
 }: {
   value: string
   onChange: (value: string) => void
   options?: string[]
   formatOption?: (option: string) => string
+  hideTitle?: boolean
 }) => {
   const [customValue, setCustomValue] = useState('')
 
@@ -348,14 +350,21 @@ export const SlippageSelector = ({
   }
 
   return (
-    <div className="flex items-center gap-2 p-2 rounded-xl bg-muted justify-between">
-      <div className="flex items-center gap-1">
-        <GaugeIcon height={16} width={16} />
-        <div className="text-sm font-semibold">
-          <span className="inline-block sm:hidden">Slippage</span>
-          <span className="hidden sm:inline-block">Max slippage</span>
+    <div
+      className={cn(
+        'flex items-center gap-2 rounded-xl justify-between',
+        hideTitle ? '' : 'bg-muted p-2'
+      )}
+    >
+      {!hideTitle && (
+        <div className="flex items-center gap-1">
+          <GaugeIcon height={16} width={16} />
+          <div className="text-sm font-semibold">
+            <span className="inline-block sm:hidden">Slippage</span>
+            <span className="hidden sm:inline-block">Max slippage</span>
+          </div>
         </div>
-      </div>
+      )}
       <div className="flex items-center gap-2">
         <ToggleGroup
           type="single"
@@ -380,7 +389,7 @@ export const SlippageSelector = ({
             <Input
               placeholder="Custom"
               className={cn(
-                'h-9 px-[10px] rounded-lg text-base [&:focus::placeholder]:opacity-0 [&:focus::placeholder]:transition-opacity focus-visible:ring-0 focus-visible:ring-offset-0 focus:border-transparent active:border-transparent',
+                'h-9 px-[10px] rounded-lg text-base [&:focus::placeholder]:opacity-0 [&:focus::placeholder]:transition-opacity focus-visible:ring-0 focus-visible:ring-offset-0 ',
                 customValue && 'pl-2 pr-6'
               )}
               value={customValue}
