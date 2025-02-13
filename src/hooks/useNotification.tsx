@@ -1,47 +1,35 @@
-import { useCallback } from 'react'
-import toast from 'react-hot-toast'
 import Notification from 'components/notification'
 import { AlertCircle, Check } from 'lucide-react'
+import { ReactNode, useCallback } from 'react'
+import { toast } from 'sonner'
 
 export const notifySuccess = (title: string, subtitle: string) =>
-  toast((t) => (
-    <Notification
-      title={title}
-      subtitle={subtitle}
-      toastId={t.id}
-      icon={<Check stroke="var(--theme-ui-colors-text" />}
-    />
-  ))
+  toast.success(title, {
+    description: subtitle,
+  })
 
 export const notifyError = (title: string, subtitle: string) =>
-  toast((t) => (
-    <Notification
-      title={title}
-      subtitle={subtitle}
-      toastId={t.id}
-      icon={<AlertCircle stroke="var(--theme-ui-colors-text" />}
-    />
-  ))
+  toast.error(title, {
+    description: subtitle,
+  })
 
 const useNotification = () => {
   return useCallback(
-    (title: string, subtitle: string, type?: 'success' | 'error') => {
-      let icon: React.ReactNode | undefined = undefined
+    (
+      title: string,
+      subtitle: string,
+      type?: 'success' | 'error',
+      icon?: ReactNode
+    ) => {
+      let _icon: ReactNode | undefined = icon
 
-      if (type) {
+      if (type && !_icon) {
         const props = { stroke: 'var(--theme-ui-colors-text' }
-        icon =
+        _icon =
           type === 'success' ? <Check {...props} /> : <AlertCircle {...props} />
       }
 
-      toast((t) => (
-        <Notification
-          title={title}
-          subtitle={subtitle}
-          toastId={t.id}
-          icon={icon}
-        />
-      ))
+      toast(<Notification title={title} subtitle={subtitle} icon={_icon} />)
     },
     []
   )

@@ -1,41 +1,27 @@
-import { X } from 'lucide-react'
-import toast from 'react-hot-toast'
-import { Box, Button, Flex, Text } from 'theme-ui'
+import React from 'react'
 
-const Notification = ({
-  toastId,
+interface NotificationProps {
+  icon?: React.ReactNode
+  title: string
+  subtitle?: string
+}
+
+const Notification: React.FC<NotificationProps> = ({
   icon,
   title,
   subtitle,
-}: {
-  toastId: string
-  icon?: any
-  title: string
-  subtitle?: string
 }) => {
   return (
-    <Box p={2} sx={{ width: '100%' }}>
-      <Flex>
-        {!!icon && icon}
-        <Button
-          ml="auto"
-          variant="circle"
-          onClick={() => toast.remove(toastId)}
-        >
-          <X />
-        </Button>
-      </Flex>
-      <Box mt={2}>
-        <Text sx={{ display: 'block', color: 'text' }} mb={1}>
-          {title}
-        </Text>
-        {!!subtitle && (
-          <Text sx={{ fontSize: 1 }} variant="legend">
-            {subtitle}
-          </Text>
+    <div className="flex items-center gap-2">
+      {icon && <div>{icon}</div>}
+
+      <div>
+        <div className="font-bold text-base text-primary">{title}</div>
+        {subtitle && (
+          <div className="text-sm text-muted-foreground">{subtitle}</div>
         )}
-      </Box>
-    </Box>
+      </div>
+    </div>
   )
 }
 

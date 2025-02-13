@@ -12,6 +12,12 @@ import useNotification from './useNotification'
 interface WatchOptions {
   hash: Hex | undefined
   label: ReactNode
+  successMessage?: {
+    title: string
+    subtitle?: string
+    type?: 'success' | 'error'
+    icon?: ReactNode
+  }
 }
 
 interface WatchResult {
@@ -22,7 +28,11 @@ interface WatchResult {
 }
 
 // Watch tx status, send notifications and track history
-const useWatchTransaction = ({ hash, label }: WatchOptions): WatchResult => {
+const useWatchTransaction = ({
+  hash,
+  label,
+  successMessage,
+}: WatchOptions): WatchResult => {
   const notify = useNotification()
   const chainId = useAtomValue(chainIdAtom)
 
@@ -41,9 +51,10 @@ const useWatchTransaction = ({ hash, label }: WatchOptions): WatchResult => {
 
     if (status === 'success') {
       notify(
-        t`Transaction confirmed`,
-        `At block ${Number(data.blockNumber)}`,
-        'success'
+        successMessage?.title ?? t`Transaction confirmed`,
+        successMessage?.subtitle ?? `At block ${Number(data.blockNumber)}`,
+        successMessage?.type ?? 'success',
+        successMessage?.icon
       )
       mixpanel.track('transaction', {
         product: label,

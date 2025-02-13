@@ -1,8 +1,11 @@
 import TransactionButton, {
   TransactionButtonContainer,
 } from '@/components/old/button/TransactionButton'
+import FusionTokenLogo from '@/components/token-logo/fustion-token-logo'
+import TransactionError from '@/components/transaction-error/TransactionError'
 import { Button } from '@/components/ui/button'
 import useContractWrite from '@/hooks/useContractWrite'
+import useNotification from '@/hooks/useNotification'
 import useWatchTransaction from '@/hooks/useWatchTransaction'
 import { ZapResult } from '@/views/yield-dtf/issuance/components/zapV2/api'
 import { useSetAtom } from 'jotai'
@@ -10,7 +13,6 @@ import { useEffect } from 'react'
 import { Address, erc20Abi } from 'viem'
 import { useSendTransaction, useWaitForTransactionReceipt } from 'wagmi'
 import { zapOngoingTxAtom } from './atom'
-import TransactionError from '@/components/transaction-error/TransactionError'
 
 const LoadingButton = ({
   fetchingZapper,
@@ -42,11 +44,21 @@ const LoadingButton = ({
 }
 
 const SubmitZapButton = ({
-  data: { approvalNeeded, approvalAddress, tokenIn, amountIn, tx, gas },
+  data: {
+    tokenIn,
+    tokenOut,
+    approvalNeeded,
+    approvalAddress,
+    amountIn,
+    tx,
+    gas,
+  },
   chainId,
   buttonLabel,
   inputSymbol,
   outputSymbol,
+  inputAmount,
+  outputAmount,
   onSuccess,
 }: {
   data: ZapResult
@@ -54,8 +66,11 @@ const SubmitZapButton = ({
   buttonLabel: string
   inputSymbol: string
   outputSymbol: string
+  inputAmount: string
+  outputAmount: string
   onSuccess?: () => void
 }) => {
+  const notify = useNotification()
   const setOngoingTx = useSetAtom(zapOngoingTxAtom)
   const {
     write: approve,
@@ -101,6 +116,17 @@ const SubmitZapButton = ({
   } = useWatchTransaction({
     hash: data,
     label: `Swapped ${inputSymbol} for ${outputSymbol}`,
+    successMessage: {
+      title: `Swapped`,
+      subtitle: `${inputAmount} ${inputSymbol} for ${outputAmount} ${outputSymbol}`,
+      type: 'success',
+      icon: (
+        <FusionTokenLogo
+          left={{ symbol: inputSymbol, chainId, address: tokenIn }}
+          right={{ symbol: outputSymbol, chainId, address: tokenOut }}
+        />
+      ),
+    },
   })
 
   const execute = () => {
@@ -185,6 +211,8 @@ const SubmitZap = ({
   buttonLabel,
   inputSymbol,
   outputSymbol,
+  inputAmount,
+  outputAmount,
   showTxButton,
   fetchingZapper,
   insufficientBalance,
@@ -196,6 +224,8 @@ const SubmitZap = ({
   buttonLabel: string
   inputSymbol: string
   outputSymbol: string
+  inputAmount: string
+  outputAmount: string
   showTxButton: boolean
   fetchingZapper: boolean
   insufficientBalance: boolean
@@ -209,6 +239,8 @@ const SubmitZap = ({
       buttonLabel={buttonLabel}
       inputSymbol={inputSymbol}
       outputSymbol={outputSymbol}
+      inputAmount={inputAmount}
+      outputAmount={outputAmount}
       onSuccess={onSuccess}
     />
   ) : (

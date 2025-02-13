@@ -119,10 +119,13 @@ const Buy = () => {
         buttonLabel={`Buy ${indexDTF.token.symbol}`}
         inputSymbol={selectedToken.symbol}
         outputSymbol={indexDTF.token.symbol}
+        inputAmount={formatCurrency(Number(inputAmount))}
+        outputAmount={formatCurrency(Number(formatEther(BigInt(valueTo || 0))))}
         showTxButton={showTxButton}
         fetchingZapper={isLoading}
         insufficientBalance={insufficientBalance}
         zapperErrorMessage={zapperErrorMessage}
+        onSuccess={() => setInputAmount('')}
       />
     </div>
   )
