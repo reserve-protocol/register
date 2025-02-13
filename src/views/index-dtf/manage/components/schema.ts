@@ -1,31 +1,38 @@
 import { z } from 'zod'
 
-export const dtfFormSchema = z.object({
-  // About section
-  dtfIcon: z.string().optional(),
-  categoryTags: z.array(
-    z.object({
-      type: z.string(),
-      selected: z.boolean(),
-    })
-  ),
-  aboutDtf: z.string(),
-
-  // Creator section
-  creatorImage: z.string().optional(),
-  creatorName: z.string().min(1, 'Creator name is required'),
-  creatorLink: z.string().url('Please enter a valid URL'),
-
-  // Curator section
-  curatorImage: z.string().optional(),
-  curatorName: z.string().min(1, 'Curator name is required'),
-  curatorLink: z.string().url('Please enter a valid URL'),
-
-  // Social links
-  twitterLink: z.string().url('Please enter a valid URL').optional(),
-  telegramLink: z.string().url('Please enter a valid URL').optional(),
-  discordLink: z.string().url('Please enter a valid URL').optional(),
-  websiteLink: z.string().url('Please enter a valid URL').optional(),
+export const manageFormSchema = z.object({
+  hidden: z.boolean(),
+  dtf: z.object({
+    icon: z.string().url(),
+    cover: z.string().url(),
+    mobileCover: z.string().url(),
+    description: z.string(),
+    notesFromCreator: z.string(),
+    tags: z.array(z.string()),
+  }),
+  creator: z.object({
+    name: z.string(),
+    icon: z.string().url(),
+    link: z.string().url(),
+  }),
+  curator: z.object({
+    name: z.string(),
+    icon: z.string().url(),
+    link: z.string().url(),
+  }),
+  socials: z.object({
+    twitter: z.string().url(),
+    telegram: z.string().url(),
+    discord: z.string().url(),
+    website: z.string().url(),
+  }),
+  files: z.object({
+    logo: z.instanceof(File).nullable(),
+    creatorLogo: z.instanceof(File).nullable(),
+    curatorLogo: z.instanceof(File).nullable(),
+    desktopCover: z.instanceof(File).nullable(),
+    mobileCover: z.instanceof(File).nullable(),
+  }),
 })
 
-export type DTFFormValues = z.infer<typeof dtfFormSchema>
+export type ManageFormValues = z.infer<typeof manageFormSchema>

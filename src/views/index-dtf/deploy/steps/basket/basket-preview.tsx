@@ -1,15 +1,15 @@
+import TokenLogo from '@/components/token-logo'
+import ExplorerAddress from '@/components/utils/explorer-address'
+import { chainIdAtom } from '@/state/atoms'
 import { Token } from '@/types'
-import { formatCurrency, shortenAddress } from '@/utils'
+import { formatCurrency } from '@/utils'
+import { ExplorerDataType } from '@/utils/getExplorerLink'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { CircleAlert, XIcon } from 'lucide-react'
 import { useFormContext } from 'react-hook-form'
 import { basketAtom } from '../../atoms'
 import BasicInput from '../../components/basic-input'
-import ExplorerAddress from '@/components/utils/explorer-address'
-import { chainIdAtom } from '@/state/atoms'
-import { ExplorerDataType } from '@/utils/getExplorerLink'
 import { Decimal } from '../../utils/decimals'
-import TokenLogo from '@/components/token-logo'
 
 const RemoveTokenButton = ({
   tokenIndex,

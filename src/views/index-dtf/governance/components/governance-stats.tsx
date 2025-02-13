@@ -113,7 +113,7 @@ const GovernanceStats = () => {
   return (
     <div className="flex flex-col rounded-3xl bg-background">
       {governanceStatsList.map(({ icon, title, text }) => (
-        <div className="flex flex-col gap-4 p-6 border-b">
+        <div className="flex flex-col gap-4 p-6 border-b" key={title}>
           <IconInfo icon={icon} title={title} text={text} />
         </div>
       ))}

@@ -61,7 +61,10 @@ const GovernanceGuardians = () => {
   return (
     <div className="flex flex-col bg-background rounded-3xl">
       {guardians.map((guardian, index) => (
-        <div className={cn('flex items-center p-6', !!index && 'border-t')}>
+        <div
+          className={cn('flex items-center p-6', !!index && 'border-t')}
+          key={guardian}
+        >
           <div className="border rounded-full border-foreground p-1">
             <ShieldHalf size={14} />
           </div>
