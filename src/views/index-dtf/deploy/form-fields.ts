@@ -53,6 +53,7 @@ export const dtfDeploySteps: Record<DeployStepId, { fields: string[] }> = {
     fields: [
       'basketVotingDelay',
       'basketVotingPeriod',
+      'basketVotingThreshold',
       'basketVotingQuorum',
       'basketExecutionDelay',
     ],
@@ -61,6 +62,7 @@ export const dtfDeploySteps: Record<DeployStepId, { fields: string[] }> = {
     fields: [
       'governanceVotingDelay',
       'governanceVotingPeriod',
+      'governanceVotingThreshold',
       'governanceVotingQuorum',
       'governanceExecutionDelay',
     ],
