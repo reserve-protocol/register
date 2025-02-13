@@ -69,6 +69,7 @@ const Buy = () => {
 
   const changeTab = () => {
     setCurrentTab((prev) => (prev === 'sell' ? 'buy' : 'sell'))
+    setInputToken(tokens[1])
     setInputAmount('')
   }
 

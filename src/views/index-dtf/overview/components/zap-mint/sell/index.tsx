@@ -30,7 +30,7 @@ const Sell = () => {
   const indxDTFParsedBalance = formatEther(indexDTFBalance)
   const tokens = useAtomValue(tokensAtom)
   const slippage = useAtomValue(slippageAtom)
-  const setInputToken = useSetAtom(selectedTokenAtom)
+  const setOutputToken = useSetAtom(selectedTokenAtom)
   const [ongoingTx, setOngoingTx] = useAtom(zapOngoingTxAtom)
   const setZapRefetch = useSetAtom(zapRefetchAtom)
   const setZapFetching = useSetAtom(zapFetchingAtom)
@@ -64,6 +64,7 @@ const Sell = () => {
 
   const changeTab = () => {
     setCurrentTab((prev) => (prev === 'sell' ? 'buy' : 'sell'))
+    setOutputToken(tokens[0])
     setInputAmount('')
   }
 
@@ -99,8 +100,8 @@ const Sell = () => {
           symbol: selectedToken.symbol,
           price: priceTo ? `$${formatCurrency(priceTo)}` : undefined,
           value: formatUnits(BigInt(valueTo || 0), selectedToken.decimals),
-          tokens,
-          onTokenSelect: setInputToken,
+          tokens: tokens.slice(1),
+          onTokenSelect: setOutputToken,
         }}
         onSwap={changeTab}
         loading={isLoading || loadingAfterRefetch}
