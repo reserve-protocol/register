@@ -5,6 +5,9 @@ import ManageForm from './components/manage-form'
 import { ManageFormValues } from './components/schema'
 import { Form } from '@/components/ui/form'
 import { Button } from '@/components/ui/button'
+import { uploadFileToIpfs } from '@/lib/ipfs-upload'
+import { useState } from 'react'
+import CoverImages from './components/cover-images'
 
 const defaultValues: ManageFormValues = {
   hidden: false,
@@ -40,15 +43,59 @@ const defaultValues: ManageFormValues = {
     mobileCover: null,
   },
 }
+const useUploadFiles = (files: ManageFormValues['files']) => {
+  const [isUploading, setIsUploading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [uploadedFiles, setUploadedFiles] = useState<{ [key: string]: string }>(
+    {}
+  )
+
+  const upload = async () => {
+    setIsUploading(true)
+    setError(null)
+
+    try {
+      const uploads = Object.entries(files)
+        .filter(([_, file]) => file !== null)
+        .map(async ([key, file]) => {
+          const result = await uploadFileToIpfs(file as File)
+          return [key, result.ipfsResolved]
+        })
+
+      const results = await Promise.all(uploads)
+      const uploadResults = Object.fromEntries(results)
+
+      setUploadedFiles(uploadResults)
+      return uploadResults
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to upload files')
+      return null
+    } finally {
+      setIsUploading(false)
+    }
+  }
+
+  return {
+    upload,
+    isUploading,
+    error,
+    uploadedFiles,
+  }
+}
 
 const IndexDTFManage = () => {
   const form = useForm<ManageFormValues>({
     resolver: zodResolver(manageFormSchema),
     defaultValues,
   })
+  const [isSigning, setSigning] = useState(false)
+  const [isUploading, setUploading] = useState(false)
+  const [isSubmitting, setSubmitting] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
-  const onSubmit = (data: ManageFormValues) => {
-    console.log(data)
+  const onSubmit = async (data: ManageFormValues) => {
+    try {
+    } catch (e) {}
   }
 
   return (
@@ -58,14 +105,14 @@ const IndexDTFManage = () => {
         className="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-2 pr-2 pb-4"
       >
         <ManageForm />
-        <div>
+        <div className="flex flex-col gap-2">
           <div className="rounded-3xl p-2 shadow-md bg-card">
             <Button type="submit" className="w-full rounded-xl">
               Submit all changes
             </Button>
           </div>
+          <CoverImages />
         </div>
-        {/* <ManageDTF /> */}
       </form>
     </Form>
   )
