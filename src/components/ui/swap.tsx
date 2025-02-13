@@ -30,7 +30,7 @@ import {
   AccordionTrigger,
 } from './accordion'
 import { Separator } from './separator'
-import Help from '../help'
+import Help from './help'
 
 type TokenWithBalance = Token & { balance?: string }
 
