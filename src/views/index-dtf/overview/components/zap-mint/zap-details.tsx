@@ -83,6 +83,11 @@ export const ZapDetails = ({ data }: { data: ZapResult }) => {
           right: <span>{formatPercentage(maxSlippage)}</span>,
           help: 'The maximum amount of slippage you are willing to accept when minting. Higher slippage settings will make the transaction more likely to succeed, but may result in fewer tokens minted.',
         },
+        {
+          left: <span className="text-muted-foreground">Price Impact</span>,
+          right: <span>{formatPercentage(data.priceImpact)}</span>,
+          help: 'The impact your trade has on the market price.',
+        },
       ]}
     />
   )
