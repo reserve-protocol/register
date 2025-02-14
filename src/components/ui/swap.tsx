@@ -343,7 +343,9 @@ export const SlippageSelector = ({
   formatOption?: (option: string) => string
   hideTitle?: boolean
 }) => {
-  const [customValue, setCustomValue] = useState('')
+  const [customValue, setCustomValue] = useState(
+    (1 / (Number(value) / 100)).toFixed(3)
+  )
 
   const handleCustomChange = (value: string) => {
     try {
@@ -357,7 +359,8 @@ export const SlippageSelector = ({
 
   const onSelectOption = (value: string) => {
     onChange(value)
-    setCustomValue('')
+    const parsedValue = 1 / (Number(value) / 100)
+    setCustomValue(parsedValue.toFixed(3))
   }
 
   return (
@@ -380,7 +383,7 @@ export const SlippageSelector = ({
         <ToggleGroup
           type="single"
           className="bg-muted-foreground/10 p-1 rounded-lg justify-start w-max"
-          value={customValue ? '' : value}
+          value={value}
           onValueChange={onSelectOption}
         >
           {options.map((option) => (

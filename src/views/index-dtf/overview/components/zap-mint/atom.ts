@@ -38,7 +38,7 @@ export const tokensAtom = atom<(Token & { balance?: string })[]>((get) => {
   }))
 })
 
-export const slippageAtom = atomWithReset<string>('10000')
+export const slippageAtom = atomWithReset<string>('1000')
 export const zapRefetchAtom = atom<{ fn: () => void }>({ fn: () => {} })
 export const zapFetchingAtom = atom<boolean>(false)
 export const zapOngoingTxAtom = atom<boolean>(false)
