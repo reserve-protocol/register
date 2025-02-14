@@ -1,9 +1,7 @@
 import { INDEX_GRAPH_CLIENTS } from '@/state/chain/atoms/chainAtoms'
 import { ChainId } from '@/utils/chains'
 import { RequestDocument } from 'graphql-request'
-import useSWR from 'swr'
-
-type FetcherArgs = [RequestDocument, Record<string, any>]
+import { useQuery } from '@tanstack/react-query'
 
 const useIndexDTFSubgraph = (
   query: RequestDocument | null = null,
@@ -13,9 +11,15 @@ const useIndexDTFSubgraph = (
 ) => {
   const client = INDEX_GRAPH_CLIENTS[chainId]
 
-  const fetcher = (props: FetcherArgs) => client.request(...props)
-
-  return useSWR<any>(query ? [query, variables] : null, fetcher, config)
+  return useQuery({
+    queryKey: query ? ['indexDTFSubgraph', chainId, variables] : null,
+    queryFn: async () => {
+      if (!query) return null
+      return client.request(query, variables)
+    },
+    enabled: !!query,
+    ...config,
+  })
 }
 
 export default useIndexDTFSubgraph

@@ -1,10 +1,11 @@
 import dtfIndexStakingVault from '@/abis/dtf-index-staking-vault'
 import dtfIndexUnstakingManager from '@/abis/dtf-index-unstaking-manager'
+import StackTokenLogo from '@/components/token-logo/StackTokenLogo'
 import { Button } from '@/components/ui/button'
 import Spinner from '@/components/ui/spinner'
 import useCurrentTime from '@/hooks/useCurrentTime'
+import { chainIdAtom } from '@/state/atoms'
 import { formatCurrency, parseDurationShort } from '@/utils'
-import { CHAIN_TO_NETWORK, ROUTES } from '@/utils/constants'
 import { useAtomValue } from 'jotai'
 import { ChevronRight } from 'lucide-react'
 import { Address } from 'viem'
@@ -19,8 +20,6 @@ import {
   accountRewardsAtom,
   accountTokenPricesAtom,
 } from '../../atoms'
-import StackTokenLogo from '@/components/token-logo/StackTokenLogo'
-import { chainIdAtom } from '@/state/atoms'
 
 export const StakeRSRAction = () => {
   return <ChevronRight className="h-4 w-4 text-primary" />

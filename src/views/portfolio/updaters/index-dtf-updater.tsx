@@ -9,7 +9,6 @@ import {
   accountStakingTokensAtom,
   accountUnclaimedLocksAtom,
 } from '../atoms'
-import { ChainId } from '@/utils/chains'
 
 type TokenType = 'DTF' | 'VOTE' | 'ASSET'
 
@@ -107,7 +106,7 @@ const underlyingTokenQuery = gql`
   }
 `
 
-const IndexDTFUpdater = () => {
+const IndexDTFUpdater = ({ chainId }: { chainId: number }) => {
   const account = useAtomValue(walletAtom)
   const setIndexTokens = useSetAtom(accountIndexTokensAtom)
   const setStakingTokens = useSetAtom(accountStakingTokensAtom)
@@ -119,7 +118,7 @@ const IndexDTFUpdater = () => {
       id: account?.toLowerCase(),
     },
     {},
-    ChainId.Base
+    chainId
   )
 
   const stTokens = (
@@ -134,7 +133,7 @@ const IndexDTFUpdater = () => {
       tokenIds: stTokens,
     },
     {},
-    ChainId.Base
+    chainId
   )
 
   useEffect(() => {
@@ -157,6 +156,7 @@ const IndexDTFUpdater = () => {
     const balances = (accountData?.account?.balances || []).map(
       ({ token, amount, delegate }) => ({
         address: getAddress(token.id),
+        chainId,
         symbol: token.symbol,
         name: token.name,
         decimals: token.decimals,
@@ -178,6 +178,7 @@ const IndexDTFUpdater = () => {
       const underlying = underlyingTokensMap[stToken.address.toLowerCase()]!
       return {
         ...stToken,
+        chainId,
         underlying: {
           address: getAddress(underlying.id),
           symbol: underlying.symbol,
@@ -189,6 +190,7 @@ const IndexDTFUpdater = () => {
 
     const unclaimedLocks = (accountData?.account?.locks || []).map(
       ({ lockId, token: { token, underlying }, amount, unlockTime }) => ({
+        chainId,
         lockId: BigInt(lockId),
         amount: BigInt(amount),
         unlockTime: Number(unlockTime),
@@ -207,9 +209,33 @@ const IndexDTFUpdater = () => {
       })
     )
 
-    setIndexTokens(indexTokens)
-    setStakingTokens(stakingTokensWithUnderlying)
-    setUnclaimedLocks(unclaimedLocks)
+    setIndexTokens((prev) => [
+      ...prev.filter(
+        (i) =>
+          !indexTokens.some(
+            (j) => i.address === j.address && i.chainId === j.chainId
+          )
+      ),
+      ...indexTokens,
+    ])
+    setStakingTokens((prev) => [
+      ...prev.filter(
+        (i) =>
+          !stakingTokensWithUnderlying.some(
+            (j) => i.address === j.address && i.chainId === j.chainId
+          )
+      ),
+      ...stakingTokensWithUnderlying,
+    ])
+    setUnclaimedLocks((prev) => [
+      ...prev.filter(
+        (i) =>
+          !unclaimedLocks.some(
+            (j) => i.lockId === j.lockId && i.chainId === j.chainId
+          )
+      ),
+      ...unclaimedLocks,
+    ])
   }, [accountDataResponse, underlyingTokensResponse])
 
   return null
