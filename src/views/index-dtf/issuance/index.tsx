@@ -12,6 +12,7 @@ import {
   indexDTFBalanceAtom,
   selectedTokenAtom,
   showZapSettingsAtom,
+  tokensAtom,
   zapFetchingAtom,
   zapMintInputAtom,
   zapOngoingTxAtom,
@@ -27,6 +28,7 @@ const IndexDTFIssuance = () => {
   const [showSettings, setShowSettings] = useAtom(showZapSettingsAtom)
   const defaultToken = useAtomValue(defaultSelectedTokenAtom)
   const setSelectedToken = useSetAtom(selectedTokenAtom)
+  const tokens = useAtomValue(tokensAtom)
   const indexDTF = useAtomValue(indexDTFAtom)
   const zapRefetch = useAtomValue(zapRefetchAtom)
   const zapFetching = useAtomValue(zapFetchingAtom)
@@ -46,6 +48,11 @@ const IndexDTFIssuance = () => {
     setSelectedToken(defaultToken)
   }
 
+  const changeTab = (tab: string) => {
+    setCurrentTab(tab as 'buy' | 'sell')
+    setSelectedToken(tab === 'buy' ? tokens[0] : tokens[1])
+  }
+
   useEffect(() => {
     return () => {
       reset()
@@ -60,7 +67,7 @@ const IndexDTFIssuance = () => {
         <Tabs
           value={currentTab}
           className="flex flex-col flex-grow"
-          onValueChange={(tab) => setCurrentTab(tab as 'buy' | 'sell')}
+          onValueChange={changeTab}
         >
           <div className="flex justify-between gap-2">
             {showSettings ? (
@@ -95,22 +102,20 @@ const IndexDTFIssuance = () => {
               </>
             )}
           </div>
-          {!showSettings && (
-            <>
-              <TabsContent value="buy">
-                <Buy />
-              </TabsContent>
-              <TabsContent value="sell">
-                <Sell />
-              </TabsContent>
-            </>
-          )}
-
           {showSettings && (
             <div className="mt-2">
               <ZapSettings />
             </div>
           )}
+
+          <div className={showSettings ? 'hidden' : 'opacity-100'}>
+            <TabsContent value="buy">
+              <Buy />
+            </TabsContent>
+            <TabsContent value="sell">
+              <Sell />
+            </TabsContent>
+          </div>
         </Tabs>
       </div>
       <div className="w-full sm:w-[560px] mx-auto">

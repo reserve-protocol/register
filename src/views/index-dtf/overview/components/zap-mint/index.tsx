@@ -14,6 +14,7 @@ import {
   currentZapMintTabAtom,
   defaultSelectedTokenAtom,
   indexDTFBalanceAtom,
+  openZapMintModalAtom,
   selectedTokenAtom,
   showZapSettingsAtom,
   zapFetchingAtom,
@@ -27,6 +28,7 @@ import Sell from './sell'
 import ZapSettings from './zap-settings'
 
 const ZapMint = ({ children }: { children: ReactNode }) => {
+  const [open, setOpen] = useAtom(openZapMintModalAtom)
   const currentTab = useAtomValue(currentZapMintTabAtom)
   const [showSettings, setShowSettings] = useAtom(showZapSettingsAtom)
   const defaultToken = useAtomValue(defaultSelectedTokenAtom)
@@ -45,15 +47,21 @@ const ZapMint = ({ children }: { children: ReactNode }) => {
     setIndexDTFBalance(balance || 0n)
   }, [balance, setIndexDTFBalance])
 
-  const reset = () => {
-    setShowSettings(false)
-    setSelectedToken(defaultToken)
-  }
+  useEffect(() => {
+    if (open) {
+      setShowSettings(false)
+      setSelectedToken(defaultToken)
+    }
+    return () => {
+      setShowSettings(false)
+      setSelectedToken(defaultToken)
+    }
+  }, [open, defaultToken, setSelectedToken, setShowSettings])
 
   if (!indexDTF) return null
 
   return (
-    <Dialog onOpenChange={() => reset()}>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent
         showClose={false}
@@ -91,8 +99,10 @@ const ZapMint = ({ children }: { children: ReactNode }) => {
             </Button>
           </DialogTrigger>
         </DialogTitle>
-        {!showSettings && (currentTab === 'buy' ? <Buy /> : <Sell />)}
         {showSettings && <ZapSettings />}
+        <div className={showSettings ? 'hidden' : 'opacity-100'}>
+          {currentTab === 'buy' ? <Buy /> : <Sell />}
+        </div>
       </DialogContent>
     </Dialog>
   )

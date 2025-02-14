@@ -4,6 +4,7 @@ import { zappableTokens } from '@/views/yield-dtf/issuance/components/zapV2/cons
 import { atom } from 'jotai'
 import { atomWithReset } from 'jotai/utils'
 
+export const openZapMintModalAtom = atom(false)
 export const currentZapMintTabAtom = atom<'buy' | 'sell'>('buy')
 export const showZapSettingsAtom = atom<boolean>(false)
 export const zapMintInputAtom = atomWithReset<string>('')
@@ -38,7 +39,7 @@ export const tokensAtom = atom<(Token & { balance?: string })[]>((get) => {
   }))
 })
 
-export const slippageAtom = atomWithReset<string>('1000')
+export const slippageAtom = atomWithReset<string>('500')
 export const zapRefetchAtom = atom<{ fn: () => void }>({ fn: () => {} })
 export const zapFetchingAtom = atom<boolean>(false)
 export const zapOngoingTxAtom = atom<boolean>(false)
