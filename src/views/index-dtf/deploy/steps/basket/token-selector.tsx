@@ -33,6 +33,7 @@ import {
 import { useAssetPrice } from '@/hooks/useAssetPrices'
 import useTokensInfo from '@/hooks/useTokensInfo'
 import { RESERVE_API } from '@/utils/constants'
+import { ChainId } from '@/utils/chains'
 
 interface TokenButtonProps {
   variant: 'primary' | 'secondary'
@@ -262,6 +263,7 @@ const UnlistedToken = () => {
 const TokenList = ({ showSelected = false }: TokenListProps) => {
   const search = useAtomValue(searchTokenAtom)
   const extraTokens = useAtomValue(extraTokensAtom)
+  const chainId = useAtomValue(chainIdAtom)
 
   const {
     data: tokenList = [],
@@ -271,11 +273,19 @@ const TokenList = ({ showSelected = false }: TokenListProps) => {
     queryKey: ['zapper-tokens'],
     queryFn: async () => {
       try {
-        const response = await fetch(RESERVE_API + 'zapper/tokens')
+        const url =
+          chainId === ChainId.Mainnet
+            ? 'https://tokens.coingecko.com/ethereum/all.json'
+            : RESERVE_API + 'zapper/tokens'
+        const response = await fetch(url)
         if (!response.ok) {
           throw new Error('Failed to fetch token list')
         }
         const data = await response.json()
+
+        if (chainId === ChainId.Mainnet) {
+          return data.tokens as Token[]
+        }
         return data as Token[]
       } catch (error) {
         console.error('Error fetching token list:', error)

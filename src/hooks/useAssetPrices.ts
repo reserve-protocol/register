@@ -1,5 +1,7 @@
+import { chainIdAtom } from '@/state/atoms'
 import { RESERVE_API } from '@/utils/constants'
 import { useQuery } from '@tanstack/react-query'
+import { useAtomValue } from 'jotai'
 import { Address } from 'viem'
 
 interface TokenPrice {
@@ -7,7 +9,8 @@ interface TokenPrice {
   price?: number
 }
 export const useAssetPrices = (tokens: string[]) => {
-  const url = `${RESERVE_API}current/prices?tokens=${tokens.join(',')}`
+  const chainId = useAtomValue(chainIdAtom)
+  const url = `${RESERVE_API}current/prices?chainId=${chainId}&tokens=${tokens.join(',')}`
 
   return useQuery({
     queryKey: ['asset-price', url],
