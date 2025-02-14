@@ -58,7 +58,7 @@ const ChainFilter = () => {
     {
       icon: <LayoutGrid />,
       text: 'All chains',
-      filter: [ChainId.Base],
+      filter: [ChainId.Base, ChainId.Mainnet],
     },
     {
       icon: <ChainLogo chain={ChainId.Mainnet} />,

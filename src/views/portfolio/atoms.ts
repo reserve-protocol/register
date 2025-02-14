@@ -5,16 +5,19 @@ import { PortfolioTabs } from './sidebar'
 import { accountHoldingsAtom, rsrPriceAtom } from '@/state/atoms'
 
 export interface IndexToken extends Token {
+  chainId: number
   amount: bigint
 }
 
 export interface StakingToken extends Token {
+  chainId: number
   amount: bigint
   delegate: Address | null
   underlying: Token
 }
 
 export interface Lock {
+  chainId: number
   lockId: bigint
   amount: bigint
   unlockTime: number
@@ -23,6 +26,7 @@ export interface Lock {
 }
 
 export interface RewardToken extends Token {
+  chainId: number
   accrued: bigint
   accruedUSD?: number
 }

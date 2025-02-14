@@ -145,7 +145,7 @@ const CreateDAO = () => {
             : 'Create DAO'}
       </Button>
       {(prepareWriteError || txError) && (
-        <div className="px-4 py-2 text-sm font-medium text-red-800 bg-red-100 rounded-md">
+        <div className="px-4 py-2 text-sm font-medium text-red-800 bg-red-100 rounded-md break-words">
           Error creating DAO token.
           {prepareWriteError?.message || txError?.message}
         </div>

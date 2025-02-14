@@ -28,6 +28,7 @@ import {
 const PRICES_BASE_URL = `${RESERVE_API}current/prices?tokens=`
 
 const tokensUrlAtom = atom((get) => {
+  const chainId = get(chainIdAtom)
   const proposedIndexBasket = get(proposedIndexBasketAtom)
   const priceMap = get(priceMapAtom)
 
@@ -46,7 +47,7 @@ const tokensUrlAtom = atom((get) => {
 
   if (addresses.length === 0) return undefined
 
-  return `${PRICES_BASE_URL}${addresses.join(',')}`
+  return `${PRICES_BASE_URL}${addresses.join(',')}&chainId=${chainId}`
 })
 
 const BasketPriceUpdater = () => {

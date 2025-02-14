@@ -100,7 +100,7 @@ const ChainSelector = () => {
   }
 
   useEffect(() => {
-    if (chainId !== ChainId.Base || chainId !== ChainId.Mainnet) {
+    if (chainId !== ChainId.Base && chainId !== ChainId.Mainnet) {
       setChain(ChainId.Base as AvailableChain)
       switchChain && switchChain({ chainId: ChainId.Base })
     }

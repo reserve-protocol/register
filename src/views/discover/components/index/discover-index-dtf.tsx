@@ -15,7 +15,8 @@ import { Link, useNavigate } from 'react-router-dom'
 import { Line, LineChart, YAxis } from 'recharts'
 import { chainFilterAtom, searchFilterAtom } from './atoms/filter'
 import DTFFilters from './components/dtf-filters'
-import { CHAIN_TO_NETWORK } from '@/utils/constants'
+import { CHAIN_TAGS, CHAIN_TO_NETWORK } from '@/utils/constants'
+import ChainLogo from '@/components/icons/ChainLogo'
 
 const chartConfig = {
   desktop: {
@@ -58,6 +59,20 @@ const columns: ColumnDef<IndexDTFItem>[] = [
             <h4 className="font-semibold mb-[2px]">{row.original.name}</h4>
             <span className="text-legend">${row.original.symbol}</span>
           </div>
+        </div>
+      )
+    },
+  },
+  {
+    header: ({ column }) => (
+      <SorteableButton column={column}>Network</SorteableButton>
+    ),
+    accessorKey: 'chainId',
+    cell: ({ row }) => {
+      return (
+        <div className="flex gap-2 items-center">
+          <ChainLogo chain={row.original.chainId} />
+          {CHAIN_TAGS[row.original.chainId]}
         </div>
       )
     },

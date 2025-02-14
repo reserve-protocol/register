@@ -1,9 +1,10 @@
-import { useAtom } from 'jotai'
+import { useAtom, useAtomValue } from 'jotai'
 import { basketAtom } from './atoms'
 import { useQuery } from '@tanstack/react-query'
 import { Address } from 'viem'
 import { useEffect } from 'react'
 import { RESERVE_API } from '@/utils/constants'
+import { chainIdAtom } from '@/state/atoms'
 
 interface TokenPrice {
   address: Address
@@ -13,12 +14,16 @@ interface TokenPrice {
 const PRICES_BASE_URL = `${RESERVE_API}current/prices?tokens=`
 
 const BasketPriceUpdater = () => {
+  const chainId = useAtomValue(chainIdAtom)
   const [basket, setBasket] = useAtom(basketAtom)
 
-  const url = PRICES_BASE_URL + basket.map((token) => token.address).join(',')
+  const url =
+    PRICES_BASE_URL +
+    basket.map((token) => token.address).join(',') +
+    `&chainId=${chainId}`
 
   const { data: tokenPrices = [] } = useQuery({
-    queryKey: ['price-tokens', url],
+    queryKey: ['price-tokens', url, chainId],
     queryFn: async () => {
       try {
         const response = await fetch(url)

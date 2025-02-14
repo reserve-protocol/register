@@ -1,10 +1,10 @@
 import dtfIndexStakingVault from '@/abis/dtf-index-staking-vault'
 import dtfIndexUnstakingManager from '@/abis/dtf-index-unstaking-manager'
+import StackTokenLogo from '@/components/token-logo/StackTokenLogo'
 import { Button } from '@/components/ui/button'
 import Spinner from '@/components/ui/spinner'
 import useCurrentTime from '@/hooks/useCurrentTime'
 import { formatCurrency, parseDurationShort } from '@/utils'
-import { CHAIN_TO_NETWORK, ROUTES } from '@/utils/constants'
 import { useAtomValue } from 'jotai'
 import { ChevronRight } from 'lucide-react'
 import { Address } from 'viem'
@@ -19,8 +19,7 @@ import {
   accountRewardsAtom,
   accountTokenPricesAtom,
 } from '../../atoms'
-import StackTokenLogo from '@/components/token-logo/StackTokenLogo'
-import { chainIdAtom } from '@/state/atoms'
+import { TransactionButtonContainer } from '@/components/old/button/TransactionButton'
 
 export const StakeRSRAction = () => {
   return <ChevronRight className="h-4 w-4 text-primary" />
@@ -61,8 +60,7 @@ export const IndexDTFAction = ({
   )
 }
 
-export const LockWithdrawAction = ({ token, lockId }: Lock) => {
-  const chainId = useAtomValue(chainIdAtom)
+export const LockWithdrawAction = ({ token, lockId, chainId }: Lock) => {
   const { data: unstakingManagerAddress } = useReadContract({
     abi: dtfIndexStakingVault,
     functionName: 'unstakingManager',
@@ -92,26 +90,32 @@ export const LockWithdrawAction = ({ token, lockId }: Lock) => {
   const loading = !receipt && (isPending || !!hash || (hash && !receipt))
 
   return (
-    <Button
-      onClick={write}
-      disabled={receipt?.status === 'success' || loading}
-      variant="outline"
-      className="rounded-full text-sm hover:text-primary text-primary disabled:border-border border-primary"
-      size="sm"
-    >
-      {loading
-        ? !!hash
-          ? 'Confirming tx...'
-          : 'Pending, sign in wallet'
-        : receipt?.status === 'success'
-          ? 'Withdrawn'
-          : 'Withdraw'}
-    </Button>
+    <TransactionButtonContainer chain={chainId}>
+      <Button
+        onClick={write}
+        disabled={receipt?.status === 'success' || loading}
+        variant="outline"
+        className="rounded-full text-sm hover:text-primary text-primary disabled:border-border border-primary"
+        size="sm"
+      >
+        {loading
+          ? !!hash
+            ? 'Confirming tx...'
+            : 'Pending, sign in wallet'
+          : receipt?.status === 'success'
+            ? 'Withdrawn'
+            : 'Withdraw'}
+      </Button>
+    </TransactionButtonContainer>
   )
 }
 
-export const CancelLockAction = ({ token, lockId, unlockTime }: Lock) => {
-  const chainId = useAtomValue(chainIdAtom)
+export const CancelLockAction = ({
+  token,
+  lockId,
+  unlockTime,
+  chainId,
+}: Lock) => {
   const { data: unstakingManagerAddress } = useReadContract({
     abi: dtfIndexStakingVault,
     functionName: 'unstakingManager',
@@ -154,21 +158,23 @@ export const CancelLockAction = ({ token, lockId, unlockTime }: Lock) => {
           <span className="text-muted-foreground">{timeLeftString}</span>
         </div>
       )}
-      <Button
-        variant="ghost"
-        className="rounded-full text-sm text-red-600 hover:text-red-600"
-        size="sm"
-        disabled={receipt?.status === 'success' || loading}
-        onClick={write}
-      >
-        {loading
-          ? !!hash
-            ? 'Confirming tx...'
-            : 'Pending, sign in wallet'
-          : receipt?.status === 'success'
-            ? 'Cancelled'
-            : 'Cancel'}
-      </Button>
+      <TransactionButtonContainer chain={chainId}>
+        <Button
+          variant="ghost"
+          className="rounded-full text-sm text-red-600 hover:text-red-600"
+          size="sm"
+          disabled={receipt?.status === 'success' || loading}
+          onClick={write}
+        >
+          {loading
+            ? !!hash
+              ? 'Confirming tx...'
+              : 'Pending, sign in wallet'
+            : receipt?.status === 'success'
+              ? 'Cancelled'
+              : 'Cancel'}
+        </Button>
+      </TransactionButtonContainer>
     </div>
   )
 }
@@ -230,8 +236,8 @@ export const RewardAction = ({
   stTokenAddress: Address
   reward: RewardToken
 }) => {
+  const chainId = reward.chainId
   const { writeContract, data: hash, isPending } = useWriteContract()
-  const chainId = useAtomValue(chainIdAtom)
 
   const write = () => {
     writeContract({
@@ -257,21 +263,23 @@ export const RewardAction = ({
           ? `$${formatCurrency(reward.accruedUSD, 2)}`
           : '$0'}
       </span>
-      <Button
-        onClick={write}
-        disabled={receipt?.status === 'success' || loading}
-        variant="outline"
-        className="rounded-full text-sm hover:text-primary text-primary disabled:border-border border-primary"
-        size="sm"
-      >
-        {loading
-          ? !!hash
-            ? 'Confirming tx...'
-            : 'Pending, sign in wallet'
-          : receipt?.status === 'success'
-            ? 'Claimed'
-            : 'Claim'}
-      </Button>
+      <TransactionButtonContainer chain={chainId}>
+        <Button
+          onClick={write}
+          disabled={receipt?.status === 'success' || loading}
+          variant="outline"
+          className="rounded-full text-sm hover:text-primary text-primary disabled:border-border border-primary"
+          size="sm"
+        >
+          {loading
+            ? !!hash
+              ? 'Confirming tx...'
+              : 'Pending, sign in wallet'
+            : receipt?.status === 'success'
+              ? 'Claimed'
+              : 'Claim'}
+        </Button>
+      </TransactionButtonContainer>
     </div>
   )
 }
@@ -283,7 +291,7 @@ export const ClaimAllButton = ({
   stTokenAddress: Address
   rewards: RewardToken[]
 }) => {
-  const chainId = useAtomValue(chainIdAtom)
+  const chainId = rewards[0]?.chainId
   const { writeContract, data: hash, isPending } = useWriteContract()
 
   const write = () => {
@@ -304,19 +312,21 @@ export const ClaimAllButton = ({
   const loading = !receipt && (isPending || !!hash || (hash && !receipt))
 
   return (
-    <Button
-      onClick={write}
-      disabled={receipt?.status === 'success' || loading}
-      className="rounded-full text-sm"
-      size="sm"
-    >
-      {loading
-        ? !!hash
-          ? 'Confirming tx...'
-          : 'Pending, sign in wallet'
-        : receipt?.status === 'success'
-          ? 'Claimed'
-          : 'Claim All'}
-    </Button>
+    <TransactionButtonContainer chain={chainId}>
+      <Button
+        onClick={write}
+        disabled={receipt?.status === 'success' || loading}
+        className="rounded-full text-sm"
+        size="sm"
+      >
+        {loading
+          ? !!hash
+            ? 'Confirming tx...'
+            : 'Pending, sign in wallet'
+          : receipt?.status === 'success'
+            ? 'Claimed'
+            : 'Claim All'}
+      </Button>
+    </TransactionButtonContainer>
   )
 }

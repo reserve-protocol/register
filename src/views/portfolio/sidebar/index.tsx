@@ -25,7 +25,6 @@ import {
   shortenAddress,
 } from '@/utils'
 import { RSR_ADDRESS } from '@/utils/addresses'
-import { ChainId } from '@/utils/chains'
 import { ROUTES } from '@/utils/constants'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
@@ -234,7 +233,7 @@ const VoteLocked = () => {
         <TokenRow
           key={stToken.address}
           token={stToken}
-          chainId={ChainId.Base} // TODO: change
+          chainId={stToken.chainId}
           amount={stToken.amount}
           underlying={stToken.underlying}
           onClick={
@@ -244,7 +243,10 @@ const VoteLocked = () => {
           }
         >
           {!!accountRewards[stToken.address]?.length && (
-            <VoteLockAction stToken={stToken.address} chainId={ChainId.Base} />
+            <VoteLockAction
+              stToken={stToken.address}
+              chainId={stToken.chainId}
+            />
           )}
         </TokenRow>
       ))}
@@ -266,7 +268,7 @@ const Unlocking = () => {
         <TokenRow
           key={lock.lockId.toString()}
           token={lock.token}
-          chainId={ChainId.Base} // TODO: change
+          chainId={lock.chainId}
           amount={lock.amount}
           underlying={lock.underlying}
         >
@@ -281,7 +283,6 @@ const IndexDTFs = () => {
   const navigate = useNavigate()
   const indexDTFs = useAtomValue(accountIndexTokensAtom)
   const selectedTab = useAtomValue(selectedPortfolioTabAtom)
-  const chainId = ChainId.Base
 
   if (!indexDTFs.length || !['all', 'index-dtfs'].includes(selectedTab))
     return null
@@ -293,9 +294,9 @@ const IndexDTFs = () => {
         <TokenRow
           key={token.address}
           token={token}
-          chainId={chainId} // TODO: change
+          chainId={token.chainId}
           amount={token.amount}
-          onClick={() => navigate(getFolioRoute(token.address, chainId))}
+          onClick={() => navigate(getFolioRoute(token.address, token.chainId))}
         >
           <IndexDTFAction indexDTFAddress={token.address} />
         </TokenRow>
@@ -349,7 +350,7 @@ const StakedRSR = () => {
   const selectedTab = useAtomValue(selectedPortfolioTabAtom)
 
   const filteredYieldDTFs = useMemo(
-    () => yieldDTFs.filter(({ stakedRSRUsd }) => stakedRSRUsd > 0.01),
+    () => yieldDTFs.filter(({ stakedRSR }) => stakedRSR > 1),
     [yieldDTFs]
   )
 
@@ -508,7 +509,6 @@ const PortfolioContent = () => {
 const PortfolioRewardsContent = () => {
   const accountStTokens = useAtomValue(accountStakingTokensAtom)
   const accountRewards = useAtomValue(accountRewardsAtom)
-  const chainId = ChainId.Base
 
   const stTokensWithRewards = accountStTokens
     .filter((stToken) => accountRewards[stToken.address]?.length > 0)
@@ -525,7 +525,7 @@ const PortfolioRewardsContent = () => {
             <TokenRow
               key={stToken.address}
               token={stToken}
-              chainId={chainId}
+              chainId={stToken.chainId}
               amount={stToken.amount}
               underlying={stToken.underlying}
               className="[&>div]:flex-col [&>div]:items-start p-2 text-xl items-end mb-1.5"
@@ -540,7 +540,7 @@ const PortfolioRewardsContent = () => {
                 key={idx}
                 token={reward}
                 amount={reward.accrued}
-                chainId={chainId}
+                chainId={reward.chainId}
                 usdAmount={reward.accruedUSD}
                 className="p-2"
               >

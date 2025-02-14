@@ -1,7 +1,8 @@
-import { Address } from 'viem'
-import { ChainId } from '@/utils/chains'
+import { chainIdAtom } from '@/state/atoms'
 import { RESERVE_API } from '@/utils/constants'
 import { useQuery } from '@tanstack/react-query'
+import { useAtomValue } from 'jotai'
+import { Address } from 'viem'
 
 type IndexDTFPrice = {
   price: number
@@ -19,15 +20,20 @@ export type UseIndexDTFCurrentPriceParams = {
   address?: Address
 }
 
-const useIndexDTFCurrentPrice = ({ address }: UseIndexDTFCurrentPriceParams) => {
+const useIndexDTFCurrentPrice = ({
+  address,
+}: UseIndexDTFCurrentPriceParams) => {
+  const chainId = useAtomValue(chainIdAtom)
   return useQuery({
-    queryKey: ['dtf-current-price', address],
+    queryKey: ['dtf-current-price', address, chainId],
     queryFn: async (): Promise<IndexDTFPrice> => {
       const sp = new URLSearchParams()
-      sp.set('chainId', ChainId.Base.toString())
+      sp.set('chainId', chainId.toString())
       sp.set('address', address?.toLowerCase() ?? '')
 
-      const response = await fetch(`${RESERVE_API}current/dtf?${sp.toString()}`)
+      const response = await fetch(
+        `${RESERVE_API}current/dtf?${sp.toString()}&chainId=${chainId}`
+      )
 
       if (!response.ok) {
         throw new Error('Failed to fetch dtf price history')

@@ -25,7 +25,9 @@ const GovernanceExistingVoteLock = () => {
     governanceVoteLock ? stTokenQuery : null,
     {
       id: governanceVoteLock?.toLowerCase(),
-    }
+    },
+    {},
+    chainId
   )
 
   const { data: symbol } = useReadContract({

@@ -1,4 +1,4 @@
-import { useAssetPrices } from '@/hooks/useAssetPrices'
+import { useDTFPrices } from '@/hooks/usePrices'
 import { walletAtom } from '@/state/atoms'
 import { ChainId } from '@/utils/chains'
 import { useAtomValue, useSetAtom } from 'jotai'
@@ -71,55 +71,69 @@ const RewardsUpdater = () => {
       address: stToken.address,
       abi: getAllRewardTokensAbi,
       functionName: 'getAllRewardTokens',
-      chainId: ChainId.Base,
+      chainId: stToken.chainId,
     })),
     allowFailure: false,
     query: { enabled: stTokens.length > 0 && !!account },
   })
 
-  const rewardsMap: Record<Address, Address[]> = useMemo(() => {
-    if (!rewardsData) return {}
-    return Object.fromEntries(
-      stTokens.map((stToken, index) => {
-        const tokenRewards = rewardsData[index] as Address[]
-        return [stToken.address, tokenRewards]
-      })
-    )
-  }, [rewardsData, stTokens])
+  const rewardsMap: Record<Address, { chainId: number; rewards: Address[] }> =
+    useMemo(() => {
+      if (!rewardsData) return {}
+      return Object.fromEntries(
+        stTokens.map((stToken, index) => {
+          const rewards = rewardsData[index] as Address[]
+          return [stToken.address, { chainId: stToken.chainId, rewards }]
+        })
+      )
+    }, [rewardsData, stTokens])
 
-  const { data: rewardsPrices } = useAssetPrices(
-    Object.values(rewardsMap).flat() || []
+  const { data: baseRewardsPrices } = useDTFPrices(
+    Object.values(rewardsMap)
+      .filter(({ chainId }) => chainId === ChainId.Base)
+      .map(({ rewards }) => rewards.map((reward) => reward))
+      .flat() || [],
+    ChainId.Base
+  )
+
+  const { data: mainnetRewardsPrices } = useDTFPrices(
+    Object.values(rewardsMap)
+      .filter(({ chainId }) => chainId === ChainId.Mainnet)
+      .map(({ rewards }) => rewards.map((reward) => reward))
+      .flat() || [],
+    ChainId.Mainnet
   )
 
   const { data: accruedRewards } = useReadContracts({
-    contracts: Object.entries(rewardsMap).flatMap(([stToken, rewards]) =>
-      rewards.flatMap((reward) => [
-        {
-          address: reward,
-          abi: erc20Abi,
-          functionName: 'symbol',
-          chainId: ChainId.Base,
-        },
-        {
-          address: reward,
-          abi: erc20Abi,
-          functionName: 'name',
-          chainId: ChainId.Base,
-        },
-        {
-          address: reward,
-          abi: erc20Abi,
-          functionName: 'decimals',
-          chainId: ChainId.Base,
-        },
-        {
-          address: stToken as Address,
-          abi: userRewardTrackersAbi,
-          functionName: 'userRewardTrackers',
-          args: [reward, account!],
-          chainId: ChainId.Base,
-        },
-      ])
+    contracts: Object.entries(rewardsMap).flatMap(
+      ([stToken, { chainId, rewards }]) =>
+        rewards.flatMap((reward) => [
+          {
+            address: reward,
+            abi: erc20Abi,
+            functionName: 'symbol',
+            chainId,
+          },
+          {
+            address: reward,
+            abi: erc20Abi,
+            functionName: 'name',
+            chainId,
+          },
+          {
+            address: reward,
+            abi: erc20Abi,
+            functionName: 'decimals',
+            chainId,
+          },
+          {
+            address: stToken as Address,
+            abi: userRewardTrackersAbi,
+            functionName: 'userRewardTrackers',
+            args: [reward, account!],
+            chainId,
+          },
+        ])
     ),
     allowFailure: false,
     query: { enabled: Object.keys(rewardsMap).length > 0 && !!account },
@@ -128,37 +142,47 @@ const RewardsUpdater = () => {
   useEffect(() => {
     if (accruedRewards !== undefined) {
       let currentIndex = 0
-      const entries = Object.entries(rewardsMap) as [Address, Address[]][]
-      const rewardsFinal = entries.map(([stToken, rewardAddresses]) => {
-        const rewards = rewardAddresses.map((rewardAddress) => {
-          const symbol = accruedRewards?.[currentIndex++] as string
-          const name = accruedRewards?.[currentIndex++] as string
-          const decimals = accruedRewards?.[currentIndex++] as number
-          const accrued = (
-            accruedRewards?.[currentIndex++] as [bigint, bigint]
-          )[1] as bigint
-          const price = rewardsPrices?.find(
-            (token) =>
-              token.address.toLowerCase() === rewardAddress.toLowerCase()
-          )?.price
+      const entries = Object.entries(rewardsMap) as [
+        Address,
+        { chainId: number; rewards: Address[] },
+      ][]
+      const rewardsFinal = entries.map(
+        ([stToken, { chainId, rewards: rewardAddresses }]) => {
+          const rewards = rewardAddresses.map((rewardAddress) => {
+            const symbol = accruedRewards?.[currentIndex++] as string
+            const name = accruedRewards?.[currentIndex++] as string
+            const decimals = accruedRewards?.[currentIndex++] as number
+            const accrued = (
+              accruedRewards?.[currentIndex++] as [bigint, bigint]
+            )[1] as bigint
+            const price = (
+              chainId === ChainId.Mainnet
+                ? mainnetRewardsPrices
+                : baseRewardsPrices
+            )?.find(
+              (token) =>
+                token.address.toLowerCase() === rewardAddress.toLowerCase()
+            )?.price
 
-          const accruedUSD =
-            accrued && price
-              ? Number(formatUnits(accrued, decimals)) * price
-              : undefined
+            const accruedUSD =
+              accrued !== undefined && price !== undefined
+                ? Number(formatUnits(accrued, decimals)) * price
+                : undefined
 
-          return {
-            address: rewardAddress,
-            symbol,
-            name,
-            decimals,
-            accrued,
-            price,
-            accruedUSD,
-          }
-        })
-        return [stToken, rewards]
-      })
+            return {
+              address: rewardAddress,
+              chainId,
+              symbol,
+              name,
+              decimals,
+              accrued,
+              price,
+              accruedUSD,
+            }
+          })
+          return [stToken, rewards]
+        }
+      )
 
       const result = Object.fromEntries(rewardsFinal) as Record<
         Address,
@@ -166,7 +190,7 @@ const RewardsUpdater = () => {
       >
       setRewards(result)
     }
-  }, [accruedRewards, rewardsMap, rewardsPrices])
+  }, [accruedRewards, rewardsMap, mainnetRewardsPrices, baseRewardsPrices])
 
   return null
 }

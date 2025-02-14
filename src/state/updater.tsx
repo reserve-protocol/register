@@ -8,6 +8,7 @@ import { TokenBalancesUpdater } from './wallet/updaters/TokenBalancesUpdater'
 import IndexDTFPricesUpdater from '@/views/portfolio/updaters/index-dtf-prices-updater'
 import RSRBalancesUpdater from '@/views/portfolio/updaters/rsr-balances-updater'
 import RewardsUpdater from '@/views/portfolio/rewards-updater'
+import { ChainId } from '@/utils/chains'
 
 /**
  * Updater
@@ -21,7 +22,8 @@ const Updater = () => {
       <RTokenUpdater />
       <CollateralYieldUpdater />
       <TokenBalancesUpdater />
-      <IndexDTFUpdater />
+      <IndexDTFUpdater chainId={ChainId.Mainnet} />
+      <IndexDTFUpdater chainId={ChainId.Base} />
       <IndexDTFPricesUpdater />
       <RSRBalancesUpdater />
       <RewardsUpdater />
