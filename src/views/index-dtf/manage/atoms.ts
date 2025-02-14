@@ -8,5 +8,6 @@ export const signatureAtom = atom<Record<
     nonce: string
     chainId: number
     address: Address
+    issuedAt: Date
   }
 > | null>(null)

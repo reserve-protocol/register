@@ -34,6 +34,8 @@ const currentSignatureAtom = atom((get) => {
   return signature[wallet]
 })
 
+const currentDate = new Date()
+
 const AuthenticateButton = () => {
   const signature = useAtomValue(currentSignatureAtom)
   const setSignature = useSetAtom(signatureAtom)
@@ -56,6 +58,7 @@ const AuthenticateButton = () => {
         domain: 'app.reserve.org',
         uri: 'https://app.reserve.org',
         version: '1',
+        issuedAt: currentDate,
       }),
     })
   }
@@ -69,6 +72,7 @@ const AuthenticateButton = () => {
         nonce: nonce.nonce,
         chainId,
         address: wallet,
+        issuedAt: currentDate,
       },
     })
   }, [signedMessage])
@@ -122,7 +126,6 @@ const SubmitButton = () => {
     'idle' | 'uploading' | 'submitting' | 'success'
   >('idle')
   const [error, setError] = useState<string | null>(null)
-  const client = usePublicClient()
 
   if (!signature) return <AuthenticateButton />
 
@@ -151,29 +154,6 @@ const SubmitButton = () => {
             payload[key][value] = file.ipfsResolved
           }
         }
-      }
-
-      const message = createSiweMessage({
-        address: signature.address,
-        chainId: signature.chainId,
-        domain: 'app.reserve.org',
-        nonce: signature.nonce,
-        uri: 'https://app.reserve.org',
-        version: '1',
-      })
-
-      console.log('message', message)
-
-      const valid = await client?.verifySiweMessage({
-        message,
-        signature: signature.signature,
-        address: signature.address,
-      })
-
-      console.log('valid', valid)
-
-      if (!valid) {
-        throw new Error('Invalid signature')
       }
 
       setState('submitting')
