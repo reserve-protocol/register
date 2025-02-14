@@ -91,7 +91,7 @@ function CustomTooltip({ payload, active }: any) {
 const PriceChart = () => {
   const dtf = useAtomValue(indexDTFAtom)
   const [range, setRange] = useState<Range>('1w')
-  console.log(dtf)
+
   const showHourlyInterval = now - (dtf?.timestamp || 0) < 30 * 86_400
   const { data: history } = useIndexDTFPriceHistory({
     address: dtf?.id,
