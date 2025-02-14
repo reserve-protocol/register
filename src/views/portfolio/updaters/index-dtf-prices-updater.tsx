@@ -27,10 +27,11 @@ const IndexDTFPricesUpdater = () => {
   ]
 
   const { data: dtfPrices } = useDTFPrices(
-    indexTokens.map((token) => token.address)
+    indexTokens.map((token) => token.address),
+    chainId
   )
 
-  const { data: assetPrices } = useAssetPrices(assetAddresses)
+  const { data: assetPrices } = useAssetPrices(assetAddresses, chainId)
 
   useEffect(() => {
     const newPrices: Record<Address, number> = {

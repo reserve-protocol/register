@@ -1,6 +1,8 @@
+import { chainIdAtom } from '@/state/atoms'
 import { Token } from '@/types'
 import { RESERVE_API } from '@/utils/constants'
 import { useQuery } from '@tanstack/react-query'
+import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { Address, erc20Abi } from 'viem'
 import { useReadContracts } from 'wagmi'
@@ -16,12 +18,13 @@ type Response = {
 }
 
 const useIndexPrice = (token: string | undefined) => {
+  const chainId = useAtomValue(chainIdAtom)
   return useQuery({
-    queryKey: ['index-dtf-price', token],
+    queryKey: ['index-dtf-price', token, chainId],
     queryFn: async () => {
       try {
         const response = await fetch(
-          `${RESERVE_API}current/dtf?address=${token}`
+          `${RESERVE_API}current/dtf?address=${token}&chainId=${chainId}`
         )
         if (!response.ok) {
           throw new Error('Failed to fetch token prices')

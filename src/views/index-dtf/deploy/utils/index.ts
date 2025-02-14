@@ -1,6 +1,6 @@
 import { GRAPH_CLIENTS, INDEX_GRAPH_CLIENTS } from '@/state/atoms'
 import { wagmiConfig } from '@/state/chain'
-import { AvailableChain, ChainId } from '@/utils/chains'
+import { ChainId } from '@/utils/chains'
 import { DeployInputs } from '@/views/index-dtf/deploy/form-fields'
 import { gql } from 'graphql-request'
 import { Address, erc20Abi, parseEther } from 'viem'
@@ -8,15 +8,11 @@ import { readContract } from 'wagmi/actions'
 import { FeeRecipient } from '../steps/confirm-deploy/manual/components/confirm-manual-deploy-button'
 
 export const isERC20 = async (address: Address) => {
-  // TODO: Find a better way to get chainId without hooks
-  const chainId = ChainId.Base as AvailableChain
-
   try {
     await readContract(wagmiConfig, {
       abi: erc20Abi,
       functionName: 'symbol',
       address,
-      chainId,
     })
   } catch (e) {
     return false
