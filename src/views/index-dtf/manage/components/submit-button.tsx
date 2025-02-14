@@ -122,7 +122,7 @@ const SubmitButton = () => {
   const dtf = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
   const signature = useAtomValue(currentSignatureAtom)
-  const { handleSubmit } = useFormContext()
+  const { handleSubmit, formState } = useFormContext()
   const [state, setState] = useState<
     'idle' | 'uploading' | 'submitting' | 'success'
   >('idle')
@@ -158,6 +158,13 @@ const SubmitButton = () => {
       }
 
       setState('submitting')
+
+      if (payload.dtf.tags.length) {
+        payload.dtf.tags = payload.dtf.tags.map(
+          (tag: { value: string; label: string }) => tag.value
+        )
+      }
+
       const response = await fetch(SAVE_DTF_DATA, {
         method: 'POST',
         headers: {

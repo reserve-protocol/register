@@ -8,7 +8,9 @@ export const manageFormSchema = z.object({
     mobileCover: z.string().optional(),
     description: z.string().optional(),
     notesFromCreator: z.string().optional(),
-    tags: z.array(z.string()).optional(),
+    tags: z
+      .array(z.object({ value: z.string(), label: z.string() }))
+      .optional(),
   }),
   creator: z.object({
     name: z.string().optional(),

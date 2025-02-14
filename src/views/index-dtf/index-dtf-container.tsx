@@ -18,13 +18,13 @@ import {
 import { isAddress } from '@/utils'
 import { AvailableChain, supportedChains } from '@/utils/chains'
 import { NETWORKS, RESERVE_API, ROUTES } from '@/utils/constants'
+import { useQuery } from '@tanstack/react-query'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { Outlet, useNavigate, useParams } from 'react-router-dom'
 import { useSwitchChain } from 'wagmi'
 import IndexDTFNavigation from './components/navigation'
 import GovernanceUpdater from './governance/updater'
-import { useQuery } from '@tanstack/react-query'
 
 const useChainWatch = () => {
   const { switchChain } = useSwitchChain()
@@ -49,13 +49,12 @@ const IndexDTFMetadataUpdater = () => {
     queryFn: async () => {
       if (!data) return undefined
 
-      console.log('fetch ran')
+      const res = await fetch(
+        `${RESERVE_API}folio-manager/read?folio=${data.id.toLowerCase()}&chainId=${chainId}`
+      )
 
-      const response = await fetch(
-        `${RESERVE_API}folio-manager/read?folio=${data.id}&chainId=${chainId}`
-      ).then((res) => res.json())
+      const response = await res.json()
 
-      console.log('response', response)
       if (response.status !== 'ok')
         throw new Error('Failed to fetch brand data')
 
