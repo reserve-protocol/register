@@ -1,5 +1,6 @@
-import CopyValue from '@/components/old/button/CopyValue'
+import { TransactionButtonContainer } from '@/components/old/button/TransactionButton'
 import { Button } from '@/components/ui/button'
+import Copy from '@/components/ui/copy'
 import Swap, { SlippageSelector } from '@/components/ui/swap'
 import { useChainlinkPrice } from '@/hooks/useChainlinkPrice'
 import useDebounce from '@/hooks/useDebounce'
@@ -24,7 +25,6 @@ import {
   zapDeployPayloadAtom,
 } from './atoms'
 import SimpleDeployButton from './simple-deploy-button'
-import { TransactionButtonContainer } from '@/components/old/button/TransactionButton'
 
 const CopyPayloadButton = () => {
   const zapDeployPayload = useAtomValue(zapDeployPayloadAtom)
@@ -32,7 +32,7 @@ const CopyPayloadButton = () => {
   return (
     <div className="flex items-center gap-1 text-xs">
       <div>Copy payload to share with engineering team</div>
-      <CopyValue value={JSON.stringify(zapDeployPayload)} placement="top" />
+      <Copy value={JSON.stringify(zapDeployPayload)} />
     </div>
   )
 }
