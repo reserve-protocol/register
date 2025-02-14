@@ -1,19 +1,20 @@
-import { FormMessage } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
 import {
   FormControl,
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from '@/components/ui/form'
-import { useForm } from 'react-hook-form'
+import { Input } from '@/components/ui/input'
+import { useFormContext } from 'react-hook-form'
 import { ImageUploader } from './logo-upload'
+
 const ManageCreator = () => {
-  const form = useForm()
+  const form = useFormContext()
 
   return (
     <div className="flex flex-col gap-2 p-2">
-      <label className="ml-3">Creator icon</label>
+      <label className="ml-3">Creator Image</label>
       <ImageUploader
         onChange={(file) => form.setValue('files.creatorLogo', file)}
       />

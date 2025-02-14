@@ -8,7 +8,9 @@ export const uploadFileToIpfs = async (file: File | Blob) => {
     url: IPFS_NODE,
   })
 
-  const response = await ipfs.add(file)
+  const response = await ipfs.add(file, {
+    pin: true,
+  })
   const ipfsHash = response.cid.toV0().toString()
 
   return {

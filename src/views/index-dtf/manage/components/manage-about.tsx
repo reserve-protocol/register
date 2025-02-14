@@ -9,12 +9,12 @@ import {
 
 import { Switch } from '@/components/ui/switch'
 import { Textarea } from '@/components/ui/textarea'
-import { useForm } from 'react-hook-form'
+import { useFormContext } from 'react-hook-form'
 import { ImageUploader } from './logo-upload'
 import MultiSelectTags from './manage-tags'
 
 const ManageAbout = () => {
-  const form = useForm()
+  const form = useFormContext()
 
   return (
     <div className="flex flex-col gap-2 p-2">

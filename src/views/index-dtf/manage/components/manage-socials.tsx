@@ -1,15 +1,14 @@
-import { FormMessage } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
 import {
   FormControl,
   FormField,
   FormItem,
   FormLabel,
 } from '@/components/ui/form'
-import { useForm } from 'react-hook-form'
+import { Input } from '@/components/ui/input'
+import { useFormContext } from 'react-hook-form'
 
 const ManageSocials = () => {
-  const form = useForm()
+  const form = useFormContext()
 
   return (
     <div className="flex flex-col gap-2 p-2">
@@ -22,7 +21,6 @@ const ManageSocials = () => {
             <FormControl>
               <Input placeholder="https://x.com/username" {...field} />
             </FormControl>
-            <FormMessage />
           </FormItem>
         )}
       />
@@ -35,7 +33,6 @@ const ManageSocials = () => {
             <FormControl>
               <Input placeholder="https://t.me/username" {...field} />
             </FormControl>
-            <FormMessage />
           </FormItem>
         )}
       />
@@ -48,7 +45,6 @@ const ManageSocials = () => {
             <FormControl>
               <Input placeholder="https://discord.com/username" {...field} />
             </FormControl>
-            <FormMessage />
           </FormItem>
         )}
       />
@@ -61,7 +57,6 @@ const ManageSocials = () => {
             <FormControl>
               <Input placeholder="https://example.com" {...field} />
             </FormControl>
-            <FormMessage />
           </FormItem>
         )}
       />

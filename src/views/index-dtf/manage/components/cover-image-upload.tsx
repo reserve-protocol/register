@@ -98,20 +98,10 @@ function CoverImageUploader({
     maxSize: MAX_FILE_SIZE,
   })
 
-  const clearImage = useCallback(
-    (e: React.MouseEvent) => {
-      e.stopPropagation()
-      updatePreview(null)
-      onChange?.(null)
-      setError(null)
-    },
-    [onChange, updatePreview]
-  )
-
   return (
     <div
       className={cn(
-        'flex flex-col gap-1 bg-muted rounded-3xl cursor-pointer p-1'
+        'flex flex-col gap-1 bg-muted/90 rounded-3xl cursor-pointer p-1'
       )}
       {...getRootProps()}
     >

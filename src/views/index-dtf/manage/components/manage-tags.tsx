@@ -1,5 +1,5 @@
 import { MultiSelect } from '@/components/ui/multiselect'
-import { Controller, useForm } from 'react-hook-form'
+import { Controller, useFormContext } from 'react-hook-form'
 
 const options = [
   { value: 'AI', label: 'AI' },
@@ -29,11 +29,7 @@ const options = [
 ]
 
 export default function MultiSelectTags() {
-  const { control, watch } = useForm()
-
-  const selectedTags = watch('dtf.tags')
-
-  console.log(selectedTags)
+  const { control, watch } = useFormContext()
 
   return (
     <div className="w-full">

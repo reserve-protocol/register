@@ -6,11 +6,11 @@ import {
   FormItem,
   FormLabel,
 } from '@/components/ui/form'
-import { useForm } from 'react-hook-form'
+import { useFormContext } from 'react-hook-form'
 import { ImageUploader } from './logo-upload'
 
 const ManageCurator = () => {
-  const form = useForm()
+  const form = useFormContext()
 
   return (
     <div className="flex flex-col gap-2 p-2">
@@ -33,7 +33,7 @@ const ManageCurator = () => {
       />
       <FormField
         control={form.control}
-        name="website"
+        name="curator.link"
         render={({ field }) => (
           <FormItem>
             <FormLabel>Curator Link</FormLabel>
