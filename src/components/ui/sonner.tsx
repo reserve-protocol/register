@@ -11,7 +11,6 @@ const Toaster = ({ ...props }: ToasterProps) => {
   return (
     <Sonner
       closeButton
-      duration={6000}
       position="top-center"
       style={{
         ...(isDesktop
