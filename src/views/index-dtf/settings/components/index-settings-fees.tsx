@@ -51,8 +51,7 @@ const feeRecipientsAtom = atom((get) => {
         Number(recipient.percentage) / PERCENT_ADJUST
       )
     } else if (
-      recipient.address.toLowerCase() ===
-      indexDTF.ownerGovernance?.id.toLowerCase()
+      recipient.address.toLowerCase() === indexDTF.stToken?.id.toLowerCase()
     ) {
       governanceShare.value = formatPercentage(
         Number(recipient.percentage) / PERCENT_ADJUST
