@@ -110,7 +110,7 @@ const App = () => (
             <Updater />
             <TransactionSidebar />
             <Layout>
-              <Toaster closeButton />
+              <Toaster />
               <AppRoutes />
             </Layout>
           </ChainProvider>

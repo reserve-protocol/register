@@ -10,6 +10,7 @@ import { formatEther, parseUnits } from 'viem'
 import useLoadingAfterRefetch from '../../hooks/useLoadingAfterRefetch'
 import {
   currentZapMintTabAtom,
+  openZapMintModalAtom,
   selectedTokenAtom,
   selectedTokenBalanceAtom,
   selectedTokenOrDefaultAtom,
@@ -36,6 +37,7 @@ const Buy = () => {
   const setZapRefetch = useSetAtom(zapRefetchAtom)
   const setZapFetching = useSetAtom(zapFetchingAtom)
   const setCurrentTab = useSetAtom(currentZapMintTabAtom)
+  const setOpen = useSetAtom(openZapMintModalAtom)
   const selectedTokenPrice = useChainlinkPrice(chainId, selectedToken.address)
   const inputPrice = (selectedTokenPrice || 0) * Number(inputAmount)
   const onMax = () => setInputAmount(selectedTokenBalance?.balance || '0')
@@ -126,7 +128,10 @@ const Buy = () => {
         fetchingZapper={isLoading}
         insufficientBalance={insufficientBalance}
         zapperErrorMessage={zapperErrorMessage}
-        onSuccess={() => setInputAmount('')}
+        onSuccess={() => {
+          setInputAmount('')
+          setOpen(false)
+        }}
       />
     </div>
   )

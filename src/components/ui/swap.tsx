@@ -476,7 +476,7 @@ export const SwapDetails = ({ visible, details }: SwapDetailsProps) => {
           <Separator className="mt-2" />
           <div className="px-3 pt-4 pb-2 flex flex-col gap-2">
             {details.map((detail) => (
-              <SwapDetailItem {...detail} />
+              <SwapDetailItem {...detail} key={detail?.left?.toString()} />
             ))}
           </div>
         </AccordionContent>

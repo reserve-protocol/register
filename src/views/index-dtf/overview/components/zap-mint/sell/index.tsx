@@ -9,6 +9,7 @@ import useLoadingAfterRefetch from '../../hooks/useLoadingAfterRefetch'
 import {
   currentZapMintTabAtom,
   indexDTFBalanceAtom,
+  openZapMintModalAtom,
   selectedTokenAtom,
   selectedTokenOrDefaultAtom,
   slippageAtom,
@@ -35,6 +36,7 @@ const Sell = () => {
   const setZapRefetch = useSetAtom(zapRefetchAtom)
   const setZapFetching = useSetAtom(zapFetchingAtom)
   const setCurrentTab = useSetAtom(currentZapMintTabAtom)
+  const setOpen = useSetAtom(openZapMintModalAtom)
   const inputPrice = (indexDTFPrice || 0) * Number(inputAmount)
   const onMax = () => setInputAmount(indxDTFParsedBalance)
 
@@ -119,7 +121,10 @@ const Sell = () => {
         fetchingZapper={isLoading}
         insufficientBalance={insufficientBalance}
         zapperErrorMessage={zapperErrorMessage}
-        onSuccess={() => setInputAmount('')}
+        onSuccess={() => {
+          setInputAmount('')
+          setOpen(false)
+        }}
       />
     </div>
   )
