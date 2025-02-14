@@ -1,19 +1,18 @@
+import InfoBox from '@/components/old/info-box'
 import { Button } from '@/components/ui/button'
 import { ChartConfig, ChartContainer } from '@/components/ui/chart'
+import { Skeleton } from '@/components/ui/skeleton'
 import { indexDTFAtom } from '@/state/dtf/atoms'
+import { formatCurrency } from '@/utils'
+import dayjs from 'dayjs'
 import { useAtomValue } from 'jotai'
+import { useState } from 'react'
 import { Line, LineChart, Tooltip, YAxis } from 'recharts'
+import { Card } from 'theme-ui'
+import useIndexDTFCurrentPrice from '../hooks/use-dtf-price'
 import useIndexDTFPriceHistory, {
   IndexDTFPerformance,
 } from '../hooks/use-dtf-price-history'
-import { useState } from 'react'
-import useIndexDTFCurrentPrice from '../hooks/use-dtf-price'
-import { Skeleton } from '@/components/ui/skeleton'
-import { formatCurrency } from '@/utils'
-import InfoBox from '@/components/old/info-box'
-import PriceTag from '@/components/icons/PriceTag'
-import { Card } from 'theme-ui'
-import dayjs from 'dayjs'
 
 const chartConfig = {
   desktop: {
@@ -92,7 +91,7 @@ function CustomTooltip({ payload, active }: any) {
 const PriceChart = () => {
   const dtf = useAtomValue(indexDTFAtom)
   const [range, setRange] = useState<Range>('1w')
-
+  console.log(dtf)
   const showHourlyInterval = now - (dtf?.timestamp || 0) < 30 * 86_400
   const { data: history } = useIndexDTFPriceHistory({
     address: dtf?.id,
