@@ -3,10 +3,11 @@ import zapper, {
   ZapResponse,
 } from '@/views/yield-dtf/issuance/components/zapV2/api'
 import { useQuery } from '@tanstack/react-query'
-import { useAtomValue } from 'jotai'
-import { useMemo } from 'react'
+import { useAtomValue, useSetAtom } from 'jotai'
+import { useEffect, useMemo } from 'react'
 import { Address, zeroAddress } from 'viem'
 import useDebounce from './useDebounce'
+import { zapSwapEndpointAtom } from '@/views/index-dtf/overview/components/zap-mint/atom'
 
 const useZapSwapQuery = ({
   tokenIn,
@@ -23,6 +24,7 @@ const useZapSwapQuery = ({
 }) => {
   const chainId = useAtomValue(chainIdAtom)
   const account = useAtomValue(walletAtom)
+  const setZapSwapEndpoint = useSetAtom(zapSwapEndpointAtom)
 
   const endpoint = useDebounce(
     useMemo(() => {
@@ -44,6 +46,10 @@ const useZapSwapQuery = ({
     }, [chainId, account, tokenIn, tokenOut, amountIn, slippage]),
     500
   )
+
+  useEffect(() => {
+    setZapSwapEndpoint(endpoint ?? '')
+  }, [endpoint])
 
   return useQuery({
     queryKey: ['zapDeploy', endpoint],
