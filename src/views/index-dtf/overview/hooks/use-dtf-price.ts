@@ -1,9 +1,8 @@
-import { Address } from 'viem'
-import { ChainId } from '@/utils/chains'
+import { chainIdAtom } from '@/state/atoms'
 import { RESERVE_API } from '@/utils/constants'
 import { useQuery } from '@tanstack/react-query'
 import { useAtomValue } from 'jotai'
-import { chainIdAtom } from '@/state/atoms'
+import { Address } from 'viem'
 
 type IndexDTFPrice = {
   price: number

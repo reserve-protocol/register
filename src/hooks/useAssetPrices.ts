@@ -8,12 +8,13 @@ interface TokenPrice {
   address: Address
   price?: number
 }
-export const useAssetPrices = (tokens: string[]) => {
-  const chainId = useAtomValue(chainIdAtom)
+export const useAssetPrices = (tokens: string[], chain?: number) => {
+  const currentChainId = useAtomValue(chainIdAtom)
+  const chainId = chain || currentChainId
   const url = `${RESERVE_API}current/prices?chainId=${chainId}&tokens=${tokens.join(',')}`
 
   return useQuery({
-    queryKey: ['asset-price', url],
+    queryKey: ['asset-price', url, chainId],
     queryFn: async () => {
       try {
         const response = await fetch(url)

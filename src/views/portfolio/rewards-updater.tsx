@@ -1,5 +1,6 @@
-import { useAssetPrices } from '@/hooks/useAssetPrices'
+import { useDTFPrices } from '@/hooks/usePrices'
 import { walletAtom } from '@/state/atoms'
+import { ChainId } from '@/utils/chains'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useMemo } from 'react'
 import { Address, erc20Abi, formatUnits } from 'viem'
@@ -87,10 +88,20 @@ const RewardsUpdater = () => {
       )
     }, [rewardsData, stTokens])
 
-  const { data: rewardsPrices } = useAssetPrices(
+  const { data: baseRewardsPrices } = useDTFPrices(
     Object.values(rewardsMap)
-      .map(({ rewards }) => rewards)
-      .flat() || []
+      .filter(({ chainId }) => chainId === ChainId.Base)
+      .map(({ rewards }) => rewards.map((reward) => reward))
+      .flat() || [],
+    ChainId.Base
+  )
+
+  const { data: mainnetRewardsPrices } = useDTFPrices(
+    Object.values(rewardsMap)
+      .filter(({ chainId }) => chainId === ChainId.Mainnet)
+      .map(({ rewards }) => rewards.map((reward) => reward))
+      .flat() || [],
+    ChainId.Mainnet
   )
 
   const { data: accruedRewards } = useReadContracts({
@@ -144,13 +155,17 @@ const RewardsUpdater = () => {
             const accrued = (
               accruedRewards?.[currentIndex++] as [bigint, bigint]
             )[1] as bigint
-            const price = rewardsPrices?.find(
+            const price = (
+              chainId === ChainId.Mainnet
+                ? mainnetRewardsPrices
+                : baseRewardsPrices
+            )?.find(
               (token) =>
                 token.address.toLowerCase() === rewardAddress.toLowerCase()
             )?.price
 
             const accruedUSD =
-              accrued && price
+              accrued !== undefined && price !== undefined
                 ? Number(formatUnits(accrued, decimals)) * price
                 : undefined
 
@@ -175,7 +190,7 @@ const RewardsUpdater = () => {
       >
       setRewards(result)
     }
-  }, [accruedRewards, rewardsMap, rewardsPrices])
+  }, [accruedRewards, rewardsMap, mainnetRewardsPrices, baseRewardsPrices])
 
   return null
 }

@@ -83,7 +83,7 @@ const useWatchTransaction = ({
         },
       })
     }
-  }, [hash, label, data, status, error, notify])
+  }, [hash, data, status, error, notify])
 
   return {
     data,

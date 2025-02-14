@@ -3,13 +3,8 @@ import { Address } from 'viem'
 import { AssetPrice, DTFPrice } from '@/types/prices'
 import { RESERVE_API } from '@/utils/constants'
 
-async function fetchPrices<T>(
-  endpoint: string,
-  tokens?: Address[]
-): Promise<T[]> {
-  if (!tokens?.length) return []
-
-  const url = `${RESERVE_API}${endpoint}${tokens.join(',')}`
+async function fetchPrices<T>(endpoint: string): Promise<T[]> {
+  const url = `${RESERVE_API}${endpoint}`
 
   try {
     const response = await fetch(url)
