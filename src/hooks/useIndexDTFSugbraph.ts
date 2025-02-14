@@ -8,9 +8,10 @@ type FetcherArgs = [RequestDocument, Record<string, any>]
 const useIndexDTFSubgraph = (
   query: RequestDocument | null = null,
   variables: any = {},
-  config: any = {}
+  config: any = {},
+  chainId: number = ChainId.Base
 ) => {
-  const client = INDEX_GRAPH_CLIENTS[ChainId.Base]
+  const client = INDEX_GRAPH_CLIENTS[chainId]
 
   const fetcher = (props: FetcherArgs) => client.request(...props)
 

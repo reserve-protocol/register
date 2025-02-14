@@ -9,6 +9,7 @@ import {
   accountStakingTokensAtom,
   accountUnclaimedLocksAtom,
 } from '../atoms'
+import { ChainId } from '@/utils/chains'
 
 type TokenType = 'DTF' | 'VOTE' | 'ASSET'
 
@@ -116,7 +117,9 @@ const IndexDTFUpdater = () => {
     account ? accountDataQuery : null,
     {
       id: account?.toLowerCase(),
-    }
+    },
+    {},
+    ChainId.Base
   )
 
   const stTokens = (
@@ -129,7 +132,9 @@ const IndexDTFUpdater = () => {
     stTokens?.length ? underlyingTokenQuery : null,
     {
       tokenIds: stTokens,
-    }
+    },
+    {},
+    ChainId.Base
   )
 
   useEffect(() => {

@@ -30,10 +30,19 @@ const stTokenQuery = gql`
 
 export const getStToken = async (address: Address) => {
   try {
-    const data = await INDEX_GRAPH_CLIENTS[ChainId.Base].request(stTokenQuery, {
-      id: address.toLowerCase(),
-    })
-    return data.stakingToken
+    const dataBase = await INDEX_GRAPH_CLIENTS[ChainId.Base].request(
+      stTokenQuery,
+      {
+        id: address.toLowerCase(),
+      }
+    )
+    const dataMainnet = await INDEX_GRAPH_CLIENTS[ChainId.Mainnet].request(
+      stTokenQuery,
+      {
+        id: address.toLowerCase(),
+      }
+    )
+    return dataBase.stakingToken || dataMainnet.stakingToken
   } catch (e) {
     return null
   }
