@@ -1,6 +1,7 @@
-import { Form } from '@/components/ui/form'
-import { RESERVE_API } from '@/utils/constants'
+import { indexDTFBrandAtom } from '@/state/dtf/atoms'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useAtomValue } from 'jotai'
+import { useEffect } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import CoverImages from './components/cover-images'
 import ManageForm from './components/manage-form'
@@ -42,26 +43,22 @@ const defaultValues: ManageFormValues = {
   },
 }
 
-const GET_DTF_DATA = `${RESERVE_API}/folio-manager/read`
-
 const IndexDTFManage = () => {
   const form = useForm<ManageFormValues>({
     resolver: zodResolver(manageFormSchema),
     defaultValues,
     mode: 'onChange',
   })
+  const data = useAtomValue(indexDTFBrandAtom)
 
-  // const handleSubmit = async (data: ManageFormValues) => {
-  //   console.log('hola')
-  //   try {
-  //     // Add your form submission logic here
-  //     // For example:
-  //     // await submitManageForm(data);
-  //     console.log('Form submitted successfully:', data)
-  //   } catch (error) {
-  //     console.error('Error submitting form:', error)
-  //   }
-  // }
+  useEffect(() => {
+    if (data) {
+      form.reset({
+        ...defaultValues,
+        ...data,
+      })
+    }
+  }, [!!data])
 
   return (
     <FormProvider {...form}>
@@ -77,79 +74,3 @@ const IndexDTFManage = () => {
 }
 
 export default IndexDTFManage
-
-// TODO: Snippet
-// import { useState } from "react"
-// import { useForm } from "react-hook-form"
-// import { ImageUploader } from "@/components/image-uploader"
-// import { Button } from "@/components/ui/button"
-// import { uploadFileToIpfs, type IpfsUploadResult } from "@/lib/ipfs"
-
-// interface FormData {
-//   title: string
-//   imageFile: File | null
-//   imageIpfs?: IpfsUploadResult
-// }
-
-// export default function ExampleUsage() {
-//   const [isUploading, setIsUploading] = useState(false)
-//   const { register, handleSubmit, setValue, watch } = useForm<FormData>({
-//     defaultValues: {
-//       imageFile: null,
-//     },
-//   })
-
-//   const onSubmit = async (data: FormData) => {
-//     if (!data.imageFile) {
-//       console.error("No image selected")
-//       return
-//     }
-
-//     // First upload to IPFS
-//     setIsUploading(true)
-//     try {
-//       const ipfsResult = await uploadFileToIpfs(data.imageFile)
-
-//       // Now submit the form with the IPFS data
-//       const finalData = {
-//         ...data,
-//         imageIpfs: ipfsResult,
-//       }
-
-//       console.log("Submitting form with data:", finalData)
-//       // Call your API here
-//     } catch (error) {
-//       console.error("Failed to upload to IPFS:", error)
-//     } finally {
-//       setIsUploading(false)
-//     }
-//   }
-
-//   return (
-//     <div className="max-w-xl mx-auto p-6">
-//       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-//         <div>
-//           <ImageUploader value={watch("imageFile")} onChange={(file) => setValue("imageFile", file)} />
-//         </div>
-
-//         {isUploading && (
-//           <div className="p-4 text-center border rounded-lg">
-//             <p className="text-sm italic text-muted-foreground">
-//               "In digital realms we wait with grace,
-//               <br />
-//               While pixels journey through time and space.
-//               <br />
-//               Through IPFS they find their way,
-//               <br />
-//               Soon your image here will stay."
-//             </p>
-//           </div>
-//         )}
-
-//         <Button type="submit" disabled={isUploading}>
-//           {isUploading ? "Uploading..." : "Submit"}
-//         </Button>
-//       </form>
-//     </div>
-//   )
-// }

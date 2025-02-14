@@ -1,13 +1,10 @@
 import { atom } from 'jotai'
-import { Address, Hex } from 'viem'
+import { Hex } from 'viem'
 
 export const signatureAtom = atom<Record<
   string,
   {
     signature: Hex
-    nonce: string
-    chainId: number
-    address: Address
-    issuedAt: Date
+    message: string
   }
 > | null>(null)

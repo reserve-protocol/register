@@ -17,6 +17,7 @@ const ManageCreator = () => {
       <label className="ml-3">Creator Image</label>
       <ImageUploader
         onChange={(file) => form.setValue('files.creatorLogo', file)}
+        defaultImage={form.watch('creator.icon')}
       />
       <FormField
         control={form.control}

@@ -120,7 +120,7 @@ export function ImageUploader({
               <img
                 src={preview || '/placeholder.svg'}
                 alt="Preview"
-                className="object-cover rounded-full"
+                className="object-cover  w-full h-full rounded-full"
               />
             </div>
             <span className="text-sm truncate flex-1">

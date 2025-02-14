@@ -2,12 +2,13 @@ import TokenLogo from '@/components/token-logo'
 import StackTokenLogo from '@/components/token-logo/StackTokenLogo'
 import { Button } from '@/components/ui/button'
 import { chainIdAtom } from '@/state/atoms'
-import { indexDTFAtom } from '@/state/dtf/atoms'
+import { indexDTFAtom, indexDTFBrandAtom } from '@/state/dtf/atoms'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { ArrowLeftRight } from 'lucide-react'
 import React from 'react'
 import ZapMint from '../zap-mint'
 import { currentZapMintTabAtom } from '../zap-mint/atom'
+import defaultCover from './default-cover.png'
 
 const IMG_SRC = 'https://storage.reserve.org/dtf-default-2.png'
 
@@ -74,19 +75,29 @@ const MintBox = () => {
   )
 }
 
+const CoverImage = () => {
+  const brand = useAtomValue(indexDTFBrandAtom)
+
+  return (
+    <div className="rounded-3xl overflow-hidden">
+      <img
+        width={475}
+        height={424}
+        className="object-cover h-[424px] w-[475px]"
+        alt="DTF meme"
+        src={brand?.dtf?.cover || defaultCover}
+      />
+    </div>
+  )
+}
+
 const LandingMint = (props: React.HTMLAttributes<HTMLDivElement>) => {
   return (
     <div
       className="hidden bg-muted h-fit p-1 rounded-3xl sticky top-0 xl:flex xl:flex-col xl:gap-1"
       {...props}
     >
-      <img
-        width={475}
-        height={424}
-        alt="DTF meme"
-        src={IMG_SRC}
-        className="rounded-2xl"
-      />
+      <CoverImage />
       <div className="sticky top-0 w-[475px]">
         <MintBox />
       </div>

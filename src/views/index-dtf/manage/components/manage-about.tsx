@@ -19,7 +19,10 @@ const ManageAbout = () => {
   return (
     <div className="flex flex-col gap-2 p-2">
       <label className="ml-3">DTF Icon</label>
-      <ImageUploader onChange={(file) => form.setValue('files.logo', file)} />
+      <ImageUploader
+        onChange={(file) => form.setValue('files.logo', file)}
+        defaultImage={form.watch('dtf.icon')}
+      />
       <MultiSelectTags />
       <FormField
         control={form.control}

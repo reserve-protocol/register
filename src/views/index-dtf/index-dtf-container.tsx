@@ -7,6 +7,8 @@ import {
   indexDTFBasketAtom,
   indexDTFBasketPricesAtom,
   indexDTFBasketSharesAtom,
+  IndexDTFBrand,
+  indexDTFBrandAtom,
   iTokenAddressAtom,
   iTokenBasketAtom,
   iTokenConfigurationAtom,
@@ -15,13 +17,14 @@ import {
 } from '@/state/dtf/atoms'
 import { isAddress } from '@/utils'
 import { AvailableChain, supportedChains } from '@/utils/chains'
-import { NETWORKS, ROUTES } from '@/utils/constants'
+import { NETWORKS, RESERVE_API, ROUTES } from '@/utils/constants'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { Outlet, useNavigate, useParams } from 'react-router-dom'
 import { useSwitchChain } from 'wagmi'
 import IndexDTFNavigation from './components/navigation'
 import GovernanceUpdater from './governance/updater'
+import { useQuery } from '@tanstack/react-query'
 
 const useChainWatch = () => {
   const { switchChain } = useSwitchChain()
@@ -39,14 +42,40 @@ const IndexDTFMetadataUpdater = () => {
   const token = useAtomValue(iTokenAddressAtom)
   const chainId = useAtomValue(chainIdAtom)
   const setIndexDTF = useSetAtom(indexDTFAtom)
-
+  const setIndexDTFBrand = useSetAtom(indexDTFBrandAtom)
   const { data } = useIndexDTF(token, chainId)
+  const { data: brandData } = useQuery({
+    queryKey: ['brand', data?.id],
+    queryFn: async () => {
+      if (!data) return undefined
+
+      console.log('fetch ran')
+
+      const response = await fetch(
+        `${RESERVE_API}folio-manager/read?folio=${data.id}&chainId=${chainId}`
+      ).then((res) => res.json())
+
+      console.log('response', response)
+      if (response.status !== 'ok')
+        throw new Error('Failed to fetch brand data')
+
+      return response.parsedData as IndexDTFBrand
+    },
+    enabled: !!data,
+  })
 
   useEffect(() => {
     if (data) {
       setIndexDTF(data)
     }
   }, [data])
+
+  useEffect(() => {
+    if (brandData) {
+      console.log('brandData', brandData)
+      setIndexDTFBrand(brandData)
+    }
+  }, [brandData])
 
   return null
 }

@@ -2,6 +2,7 @@ import { IndexDTF, Token } from '@/types'
 import { AvailableChain } from '@/utils/chains'
 import { atom } from 'jotai'
 import { Address } from 'viem'
+import { walletAtom } from '../atoms'
 
 // TODO: placeholders
 export interface IToken extends Token {
@@ -35,6 +36,33 @@ export interface ITokenGovernance {
   token: Token
 }
 
+export interface IndexDTFBrand {
+  dtf: {
+    icon: string
+    cover: string
+    mobileCover: string
+    description: string
+    notesFromCreator: string
+    tags: string[]
+  }
+  creator: {
+    name: string
+    icon: string
+    link: string
+  }
+  curator: {
+    name: string
+    icon: string
+    link: string
+  }
+  socials: {
+    twitter: string
+    telegram: string
+    discord: string
+    website: string
+  }
+}
+
 export const iTokenAddressAtom = atom<Address | undefined>(undefined)
 
 export const iTokenBasketAtom = atom<ITokenBasket | undefined>(undefined)
@@ -60,6 +88,8 @@ export const indexDTFBasketSharesAtom = atom<Record<string, string>>({})
 
 export const indexDTFAtom = atom<IndexDTF | undefined>(undefined)
 
+export const indexDTFBrandAtom = atom<IndexDTFBrand | undefined>(undefined)
+
 export const indexDTFFeeAtom = atom<number | undefined>(undefined)
 
 export const indexDTFPriceAtom = atom((get) => {
@@ -69,4 +99,22 @@ export const indexDTFPriceAtom = atom((get) => {
   if (!dtf || !basketPrices) return undefined
 
   return basketPrices[dtf.token.id.toLowerCase()]
+})
+
+export const isBrandManagerAtom = atom((get) => {
+  const dtf = get(indexDTFAtom)
+  const wallet = get(walletAtom)
+
+  return !!dtf?.brandManagers.find(
+    (manager) => manager.toLowerCase() === wallet?.toLowerCase()
+  )
+})
+
+export const isAuctionLauncherAtom = atom((get) => {
+  const dtf = get(indexDTFAtom)
+  const wallet = get(walletAtom)
+
+  return !!dtf?.auctionLaunchers.find(
+    (launcher) => launcher.toLowerCase() === wallet?.toLowerCase()
+  )
 })

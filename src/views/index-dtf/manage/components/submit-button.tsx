@@ -1,18 +1,23 @@
 import { TransactionButtonContainer } from '@/components/old/button/TransactionButton'
 import { Button } from '@/components/ui/button'
+import Spinner from '@/components/ui/spinner'
 import { uploadFileToIpfs } from '@/lib/ipfs-upload'
 import { chainIdAtom, walletAtom } from '@/state/atoms'
+import {
+  indexDTFAtom,
+  IndexDTFBrand,
+  indexDTFBrandAtom,
+  isBrandManagerAtom,
+} from '@/state/dtf/atoms'
 import { RESERVE_API } from '@/utils/constants'
 import { useQuery } from '@tanstack/react-query'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useState } from 'react'
 import { FieldValues, SubmitHandler, useFormContext } from 'react-hook-form'
-import { usePublicClient, useSignMessage } from 'wagmi'
-import { signatureAtom } from '../atoms'
-import Spinner from '@/components/ui/spinner'
 import { toast } from 'sonner'
-import { indexDTFAtom } from '@/state/dtf/atoms'
 import { createSiweMessage } from 'viem/siwe'
+import { useSignMessage } from 'wagmi'
+import { signatureAtom } from '../atoms'
 
 const NONCE_ENDPOINT = `${RESERVE_API}folio-manager/nonce`
 const SAVE_DTF_DATA = `${RESERVE_API}folio-manager/save`
@@ -34,14 +39,13 @@ const currentSignatureAtom = atom((get) => {
   return signature[wallet]
 })
 
-const currentDate = new Date()
-
 const AuthenticateButton = () => {
   const signature = useAtomValue(currentSignatureAtom)
   const setSignature = useSetAtom(signatureAtom)
   const chainId = useAtomValue(chainIdAtom)
   const wallet = useAtomValue(walletAtom)
   const { signMessage, data: signedMessage } = useSignMessage()
+  const [message, setMessage] = useState('')
   const { data: nonce } = useQuery({
     queryKey: ['nonce'],
     queryFn: () => api.getNonce(),
@@ -50,17 +54,17 @@ const AuthenticateButton = () => {
   const handleSignMessage = () => {
     if (!wallet || !nonce) return
 
-    signMessage({
-      message: createSiweMessage({
-        nonce: nonce.nonce,
-        address: wallet,
-        chainId,
-        domain: 'app.reserve.org',
-        uri: 'https://app.reserve.org',
-        version: '1',
-        issuedAt: currentDate,
-      }),
+    const message = createSiweMessage({
+      nonce: nonce.nonce,
+      address: wallet,
+      chainId,
+      domain: 'app.reserve.org',
+      uri: 'https://app.reserve.org',
+      version: '1',
     })
+
+    setMessage(message)
+    signMessage({ message })
   }
 
   useEffect(() => {
@@ -69,10 +73,7 @@ const AuthenticateButton = () => {
     setSignature({
       [wallet]: {
         signature: signedMessage,
-        nonce: nonce.nonce,
-        chainId,
-        address: wallet,
-        issuedAt: currentDate,
+        message,
       },
     })
   }, [signedMessage])
@@ -126,8 +127,8 @@ const SubmitButton = () => {
     'idle' | 'uploading' | 'submitting' | 'success'
   >('idle')
   const [error, setError] = useState<string | null>(null)
-
-  if (!signature) return <AuthenticateButton />
+  const updateBrandData = useSetAtom(indexDTFBrandAtom)
+  const isBrandManager = useAtomValue(isBrandManagerAtom)
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     if (!dtf) return
@@ -171,14 +172,16 @@ const SubmitButton = () => {
       })
 
       if (!response.ok) {
-        throw new Error('Failed to save DTF')
+        const body = await response.json()
+        throw new Error(body.message)
       }
-      toast.success('DTF updated successfully')
+      toast.success('DTF updated successfully', { position: 'bottom-right' })
+      updateBrandData(payload as IndexDTFBrand)
       setState('idle')
-    } catch (e) {
+    } catch (e: any) {
       console.error('Error submitting form:', e)
-      toast.error('Failed to update DTF')
-      setError(e as string)
+      toast.error('Failed to update DTF', { position: 'bottom-right' })
+      setError(e?.message ?? 'Unexpected error')
       setState('idle')
     }
   }
@@ -191,6 +194,16 @@ const SubmitButton = () => {
 
   if (state === 'uploading') label = 'Uploading files...'
   if (state === 'submitting') label = 'Submitting...'
+
+  if (!isBrandManager)
+    return (
+      <div className="rounded-3xl p-2 shadow-md bg-card">
+        <Button disabled className="w-full rounded-xl gap-1">
+          Only Brand Manager
+        </Button>
+      </div>
+    )
+  if (!signature) return <AuthenticateButton />
 
   return (
     <div className="rounded-3xl p-2 shadow-md bg-card">

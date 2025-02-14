@@ -8,7 +8,7 @@ import Header from './header'
  * @returns {JSX.Element}
  */
 const Layout = ({ children }: { children: ReactNode }) => (
-  <div className="flex flex-col h-full overflow-x-hidden relative">
+  <div className="flex flex-col h-full overflow-hidden relative">
     <Header />
     <div id="app-container" className="overflow-auto  flex-grow">
       {children}

@@ -17,6 +17,7 @@ const ManageCurator = () => {
       <label className="ml-3">Curator Image</label>
       <ImageUploader
         onChange={(file) => form.setValue('files.curatorLogo', file)}
+        defaultImage={form.watch('curator.icon')}
       />
       <FormField
         control={form.control}

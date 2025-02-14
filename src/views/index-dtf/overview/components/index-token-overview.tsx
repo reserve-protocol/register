@@ -5,17 +5,25 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { chainIdAtom } from '@/state/atoms'
 import {
   indexDTFAtom,
+  indexDTFBrandAtom,
+  isBrandManagerAtom,
   iTokenAddressAtom,
   iTokenMetaAtom,
 } from '@/state/dtf/atoms'
 import { shortenAddress } from '@/utils'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { useAtomValue, useSetAtom } from 'jotai'
-import { ArrowUpRight, MousePointerClick, ScrollText } from 'lucide-react'
+import {
+  ArrowUpRight,
+  ImagePlus,
+  MousePointerClick,
+  ScrollText,
+} from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { currentZapMintTabAtom } from './zap-mint/atom'
 import ZapMint from './zap-mint'
 import { Button } from '@/components/ui/button'
+import TokenLogo from '@/components/token-logo'
 
 const DEFAULT_LOGO = 'https://storage.reserve.org/dtf-default-icon.png'
 
@@ -186,17 +194,34 @@ const RolesOverview = () => {
 
 const IndexTokenOverview = () => {
   const dtf = useAtomValue(indexDTFAtom)
-  const meta = useAtomValue(iTokenMetaAtom)
+  const brand = useAtomValue(indexDTFBrandAtom)
+  const isBrandManager = useAtomValue(isBrandManagerAtom)
 
   return (
     <Card className="p-2">
       <div className="flex items-center sm:mb-16 p-2 sm:p-4">
-        <div className="mr-auto">
-          <img
-            src={meta?.logo || DEFAULT_LOGO}
-            alt={dtf?.token.symbol ?? 'dtf token logo'}
-            className="h-8 w-8 rounded-full"
-          />
+        <div className="flex items-center mr-auto">
+          {!brand ? (
+            <Skeleton className="h-8 w-8 rounded-full" />
+          ) : (
+            <TokenLogo
+              src={brand?.dtf?.icon || undefined}
+              alt={dtf?.token.symbol ?? 'dtf token logo'}
+              size="xl"
+            />
+          )}
+          {isBrandManager && (
+            <Link to="../manage">
+              <Button
+                variant="outline"
+                size="sm"
+                className="gap-1 rounded-full ml-3"
+              >
+                <ImagePlus size={14} />
+                Edit page
+              </Button>
+            </Link>
+          )}
         </div>
         <TokenAddresses />
 
