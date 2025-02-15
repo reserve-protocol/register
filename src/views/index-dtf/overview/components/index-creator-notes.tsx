@@ -12,7 +12,7 @@ const IndexCreatorNotes = () => {
   const data = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
 
-  if (!brandData?.dtf.notesFromCreator || !data) return null
+  if (!brandData?.dtf?.notesFromCreator || !data) return null
 
   return (
     <Card className="p-6">
@@ -43,7 +43,7 @@ const IndexCreatorNotes = () => {
       </div>
       <div className="flex items-center gap-2 mb-4"></div>
       <h2 className="text-4xl mb-2">Notes from the creator</h2>
-      <p className="text-legend">{brandData.dtf.notesFromCreator}</p>
+      <p className="text-legend">{brandData.dtf?.notesFromCreator}</p>
     </Card>
   )
 }

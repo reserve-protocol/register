@@ -239,7 +239,7 @@ const TokenSocials = () => {
 
   return (
     <div className="flex gap-2 mt-3">
-      {Object.entries(data.socials).map(([key, value]) => (
+      {Object.entries(data?.socials || {}).map(([key, value]) => (
         <Link
           key={key}
           to={value}
@@ -258,8 +258,6 @@ const Mandate = () => {
   const data = useAtomValue(indexDTFAtom)
   const brandData = useAtomValue(indexDTFBrandAtom)
 
-  console.log(brandData)
-
   if (!data || !brandData) {
     return <Skeleton className="w-full h-20" />
   }
@@ -273,7 +271,7 @@ const Mandate = () => {
         </div>
       ) : (
         <p className="text-legend">
-          {brandData.dtf.description || data.mandate}
+          {brandData.dtf?.description || data.mandate}
         </p>
       )}
     </div>
