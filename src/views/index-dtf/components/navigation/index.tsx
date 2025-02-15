@@ -5,7 +5,7 @@ import TradeIcon from '@/components/icons/Trade'
 import TokenLogo from '@/components/token-logo'
 import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
-import { indexDTFAtom } from '@/state/dtf/atoms'
+import { indexDTFAtom, indexDTFBrandAtom } from '@/state/dtf/atoms'
 import { ROUTES } from '@/utils/constants'
 import { t } from '@lingui/macro'
 import { useAtomValue } from 'jotai'
@@ -71,11 +71,17 @@ const NavigationItem = ({
 
 const NavigationItems = () => {
   const dtf = useAtomValue(indexDTFAtom)
+  const brandData = useAtomValue(indexDTFBrandAtom)
 
   const items = useMemo(
     () => [
       {
-        icon: <TokenLogo symbol={dtf?.token.symbol} />,
+        icon: (
+          <TokenLogo
+            src={brandData?.dtf?.icon ?? undefined}
+            symbol={dtf?.token.symbol}
+          />
+        ),
         label: t`Overview`,
         route: ROUTES.OVERVIEW,
       },
@@ -100,7 +106,7 @@ const NavigationItems = () => {
         route: ROUTES.SETTINGS,
       },
     ],
-    [dtf?.token.symbol]
+    [dtf?.token.symbol, brandData]
   )
 
   return (

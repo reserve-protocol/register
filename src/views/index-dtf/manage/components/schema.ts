@@ -23,9 +23,34 @@ export const manageFormSchema = z.object({
     link: z.string().url().optional().or(z.literal('')),
   }),
   socials: z.object({
-    twitter: z.string().url().optional().or(z.literal('')),
-    telegram: z.string().url().optional().or(z.literal('')),
-    discord: z.string().url().optional().or(z.literal('')),
+    twitter: z
+      .string()
+      .url()
+      .refine((url) => !url || url.includes('x.com') || url.includes('x.com'), {
+        message: 'Must be a valid Twitter/X URL',
+      })
+      .optional()
+      .or(z.literal('')),
+    telegram: z
+      .string()
+      .url()
+      .refine((url) => !url || url.includes('t.me'), {
+        message: 'Must be a valid Telegram URL',
+      })
+      .optional()
+      .or(z.literal('')),
+    discord: z
+      .string()
+      .url()
+      .refine(
+        (url) =>
+          !url || url.includes('discord.com') || url.includes('discord.gg'),
+        {
+          message: 'Must be a valid Discord URL',
+        }
+      )
+      .optional()
+      .or(z.literal('')),
     website: z.string().url().optional().or(z.literal('')),
   }),
   files: z.object({

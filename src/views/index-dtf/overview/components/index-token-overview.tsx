@@ -1,5 +1,7 @@
 import ChainLogo from '@/components/icons/ChainLogo'
 import CopyValue from '@/components/old/button/CopyValue'
+import TokenLogo from '@/components/token-logo'
+import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import { chainIdAtom } from '@/state/atoms'
@@ -8,7 +10,6 @@ import {
   indexDTFBrandAtom,
   isBrandManagerAtom,
   iTokenAddressAtom,
-  iTokenMetaAtom,
 } from '@/state/dtf/atoms'
 import { shortenAddress } from '@/utils'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
@@ -20,47 +21,8 @@ import {
   ScrollText,
 } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import { currentZapMintTabAtom } from './zap-mint/atom'
 import ZapMint from './zap-mint'
-import { Button } from '@/components/ui/button'
-import TokenLogo from '@/components/token-logo'
-
-// const TokenSocials = () => {
-//   const data = useAtomValue(iTokenMetaAtom)
-
-//   if (!data) {
-//     return <Skeleton className="w-60 h-6" />
-//   }
-
-//   return (
-//     <div className="flex gap-3">
-//       {data.website && (
-//         <Link>
-//           <Box variant="circle">
-//             <LinkIcon size={12} />
-//           </Box>
-//           Website
-//         </Link>
-//       )}
-//       {data.telegram && (
-//         <Link>
-//           <Box variant="circle">
-//             <LinkIcon size={12} />
-//           </Box>
-//           Telegram
-//         </Link>
-//       )}
-//       {data.twitter && (
-//         <Link>
-//           <Box variant="circle">
-//             <X size={12} />
-//           </Box>
-//           Twitter
-//         </Link>
-//       )}
-//     </div>
-//   )
-// }
+import { currentZapMintTabAtom } from './zap-mint/atom'
 
 const TokenNameSkeleton = () => (
   <div className="flex flex-col gap-4">
@@ -222,8 +184,6 @@ const IndexTokenOverview = () => {
           )}
         </div>
         <TokenAddresses />
-
-        {/* <TokenSocials /> */}
       </div>
       <div className="p-2 sm:p-4 relative max-w-96 sm:max-w-[620px] break-words">
         {!dtf ? (

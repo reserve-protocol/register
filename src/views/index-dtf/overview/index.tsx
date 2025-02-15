@@ -6,6 +6,7 @@ import IndexTokenOverview from './components/index-token-overview'
 import LandingMint from './components/landing-mint'
 import PriceChart from './components/price-chart'
 import { indexDTFAtom } from '@/state/dtf/atoms'
+import IndexCreatorNotes from './components/index-creator-notes'
 
 const Content = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
@@ -16,7 +17,7 @@ const Content = () => {
         <IndexTokenOverview />
         <IndexAboutOverview />
         {!!indexDTF?.stToken && <IndexGovernanceOverview />}
-        {/* <IndexCreatorOverview /> */}
+        <IndexCreatorNotes />
         <IndexDisclousure />
       </div>
     </div>

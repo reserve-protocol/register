@@ -27,9 +27,14 @@ import {
   ITokenBasket,
 } from '@/state/dtf/atoms'
 import { Token } from '@/types'
+import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
+import DiscordIcon from '@/components/icons/DiscordIcon'
+import TelegramIcon from '@/components/icons/TelegramIcon'
+import { indexDTFBrandAtom } from '@/state/dtf/atoms'
+import { LinkIcon, Twitter } from 'lucide-react'
+import XIcon from '@/components/icons/XIcon'
 
 interface BasketOverviewProps extends React.HTMLAttributes<HTMLDivElement> {
   basket: ITokenBasket
@@ -206,42 +211,107 @@ const IndexBasketPreview = () => {
   )
 }
 
-const IndexAboutOverview = () => {
+const SOCIAL_MAP: Record<string, { icon: React.ReactNode; label: string }> = {
+  website: {
+    icon: <LinkIcon size={14} />,
+    label: 'Website',
+  },
+  telegram: {
+    icon: <TelegramIcon />,
+    label: 'Telegram',
+  },
+  discord: {
+    icon: <DiscordIcon />,
+    label: 'Discord',
+  },
+  twitter: {
+    icon: <XIcon width={20} height={20} />,
+    label: 'Twitter',
+  },
+}
+
+const TokenSocials = () => {
+  const data = useAtomValue(indexDTFBrandAtom)
+
+  if (!data) {
+    return <Skeleton className="w-60 h-6" />
+  }
+
+  return (
+    <div className="flex gap-2 mt-3">
+      {Object.entries(data.socials).map(([key, value]) => (
+        <Link
+          key={key}
+          to={value}
+          target="_blank"
+          className="flex items-center gap-2 border rounded-full py-1 px-2 text-sm hover:bg-primary/10 hover:text-primary"
+        >
+          {SOCIAL_MAP[key].icon}
+          {SOCIAL_MAP[key].label}
+        </Link>
+      ))}
+    </div>
+  )
+}
+
+const Mandate = () => {
+  const data = useAtomValue(indexDTFAtom)
+  const brandData = useAtomValue(indexDTFBrandAtom)
+
+  console.log(brandData)
+
+  if (!data || !brandData) {
+    return <Skeleton className="w-full h-20" />
+  }
+
+  return (
+    <div>
+      <h2 className="text-4xl mb-2">About this DTF</h2>
+      {!data ? (
+        <div>
+          <Skeleton className="w-full h-20" />
+        </div>
+      ) : (
+        <p className="text-legend">
+          {brandData.dtf.description || data.mandate}
+        </p>
+      )}
+    </div>
+  )
+}
+
+const Header = () => {
   const data = useAtomValue(indexDTFAtom)
 
   return (
-    <Card className="p-4 sm:p-6">
-      <div className="flex items-center gap-2 mb-16">
-        <div className="rounded-full border border-foreground p-2 mr-auto">
-          <BrickWall size={20} />
-        </div>
+    <div className="flex items-center gap-2 mb-16">
+      <div className="rounded-full border border-foreground p-2 mr-auto">
+        <BrickWall size={20} />
+      </div>
 
-        {!data ? (
-          <Skeleton className="w-60 h-6" />
-        ) : (
-          <div className="flex gap-1 items-center">
-            <Money />
-            <span className="text-legend">TVL Fee:</span>
-            <span className="font-bold">
-              {formatPercentage(data.annualizedTvlFee * 100)}
-            </span>
-          </div>
-        )}
-      </div>
-      <div>
-        <h2 className="text-4xl mb-2">About this DTF</h2>
-        {!data ? (
-          <div>
-            <Skeleton className="w-full h-20" />
-          </div>
-        ) : (
-          <p className="text-legend">{data.mandate}</p>
-        )}
-      </div>
-      <Separator className="mt-4 mb-2 -mx-2" />
-      <IndexBasketPreview />
-    </Card>
+      {!data ? (
+        <Skeleton className="w-60 h-6" />
+      ) : (
+        <div className="flex gap-1 items-center">
+          <Money />
+          <span className="text-legend">TVL Fee:</span>
+          <span className="font-bold">
+            {formatPercentage(data.annualizedTvlFee * 100)}
+          </span>
+        </div>
+      )}
+    </div>
   )
 }
+
+const IndexAboutOverview = () => (
+  <Card className="p-4 sm:p-6">
+    <Header />
+    <Mandate />
+    <TokenSocials />
+    <Separator className="mt-4 mb-2 -mx-2" />
+    <IndexBasketPreview />
+  </Card>
+)
 
 export default IndexAboutOverview
