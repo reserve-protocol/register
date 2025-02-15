@@ -90,19 +90,27 @@ const ZapBuySellButtons = () => {
 
 const RolesOverview = () => {
   const dtf = useAtomValue(indexDTFAtom)
+  const brandData = useAtomValue(indexDTFBrandAtom)
   const chainId = useAtomValue(chainIdAtom)
 
   return (
     <div className="grid grid-cols-2 border-t px-2 sm:pt-2">
       <div className="flex items-center border-r gap-2 sm:p-2">
-        <div className="hidden sm:block p-1.5 border border-foreground rounded-full">
-          <ScrollText size={16} />
-        </div>
+        {brandData?.creator?.icon ? (
+          <TokenLogo src={brandData.creator.icon} size="xl" />
+        ) : (
+          <div className="hidden sm:block p-1.5 border border-foreground rounded-full">
+            <ScrollText size={16} />
+          </div>
+        )}
+
         <div>
           <span className="text-legend text-sm">Creator:</span>
           {dtf?.deployer ? (
             <div className="flex items-center gap-1">
-              <span className="font-bold">{shortenAddress(dtf.deployer)}</span>
+              <span className="font-bold">
+                {brandData?.creator?.name || shortenAddress(dtf.deployer)}
+              </span>
               <Link
                 to={getExplorerLink(
                   dtf.deployer,
@@ -120,34 +128,54 @@ const RolesOverview = () => {
           )}
         </div>
       </div>
-      <div className="flex items-center gap-2 p-2 pl-4">
-        <div className="hidden sm:block p-1.5 border border-foreground rounded-full">
-          <MousePointerClick size={16} />
-        </div>
-        <div>
-          <span className="text-legend text-sm">Auction Launcher:</span>
-          {dtf?.auctionLaunchers.length ? (
-            <div className="flex items-center gap-1">
-              <span className="font-bold">
-                {shortenAddress(dtf?.auctionLaunchers[0])}
-              </span>
-              <Link
-                to={getExplorerLink(
-                  dtf.auctionLaunchers[0],
-                  chainId,
-                  ExplorerDataType.ADDRESS
-                )}
-                target="_blank"
-                className="p-1 bg-muted rounded-full"
-              >
+      {brandData?.curator?.name ? (
+        <div className="flex items-center gap-2 p-2 pl-4">
+          <TokenLogo src={brandData.curator.icon || undefined} size="xl" />
+
+          <div>
+            <span className="text-legend text-sm">Curator:</span>
+            <Link
+              to={brandData.curator.link}
+              target="_blank"
+              className="flex items-center gap-1"
+            >
+              <span className="font-bold">{brandData.curator.name}</span>
+              <div className="rounded-full p-1 bg-muted">
                 <ArrowUpRight size={12} />
-              </Link>
-            </div>
-          ) : (
-            <Skeleton className="w-30 h-5" />
-          )}
+              </div>
+            </Link>
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className="flex items-center gap-2 p-2 pl-4">
+          <div className="hidden sm:block p-1.5 border border-foreground rounded-full">
+            <MousePointerClick size={16} />
+          </div>
+          <div>
+            <span className="text-legend text-sm">Auction Launcher:</span>
+            {dtf?.auctionLaunchers.length ? (
+              <div className="flex items-center gap-1">
+                <span className="font-bold">
+                  {shortenAddress(dtf?.auctionLaunchers[0])}
+                </span>
+                <Link
+                  to={getExplorerLink(
+                    dtf.auctionLaunchers[0],
+                    chainId,
+                    ExplorerDataType.ADDRESS
+                  )}
+                  target="_blank"
+                  className="p-1 bg-muted rounded-full"
+                >
+                  <ArrowUpRight size={12} />
+                </Link>
+              </div>
+            ) : (
+              <Skeleton className="w-30 h-5" />
+            )}
+          </div>
+        </div>
+      )}
     </div>
   )
 }
