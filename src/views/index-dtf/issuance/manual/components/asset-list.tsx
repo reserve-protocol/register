@@ -26,25 +26,47 @@ import {
   modeAtom,
   unlimitedApprovalAtom,
 } from '../atoms'
+import useIsUSDT from '@/hooks/useIsUSDT'
+import USDT from '@/abis/USDT'
+import Help from '@/components/ui/help'
 
 const ApproveAsset = ({ address }: { address: Address }) => {
   const indexDTF = useAtomValue(indexDTFAtom)
   const { writeContract, isPending, isSuccess } = useWriteContract()
+  const {
+    writeContract: writeContractRevoke,
+    isPending: isPendingRevoke,
+    isSuccess: isSuccessRevoke,
+  } = useWriteContract()
   const chainId = useAtomValue(chainIdAtom)
   const allowanceMap = useAtomValue(allowanceMapAtom)
   const assetAmountsMap = useAtomValue(assetAmountsMapAtom)
   const amount = assetAmountsMap[address] ?? 0n
   const isUnlimited = useAtomValue(unlimitedApprovalAtom)
 
+  const { isUSDT, needsRevoke } = useIsUSDT(address, chainId, indexDTF?.id)
+
   if (!amount) return null
+
+  const revoke = () => {
+    if (!indexDTF) return
+    writeContractRevoke({
+      abi: USDT,
+      address,
+      functionName: 'approve',
+      args: [indexDTF.id, 0n],
+      chainId,
+    })
+  }
 
   const approve = () => {
     if (!indexDTF || !assetAmountsMap[address]) return
 
-    const amount = isUnlimited ? BIGINT_MAX : assetAmountsMap[address] * 2n
+    const amount =
+      isUnlimited || isUSDT ? BIGINT_MAX : assetAmountsMap[address] * 2n
 
     writeContract({
-      abi: erc20Abi,
+      abi: isUSDT ? USDT : erc20Abi,
       address,
       functionName: 'approve',
       args: [indexDTF.id, amount],
@@ -57,6 +79,31 @@ const ApproveAsset = ({ address }: { address: Address }) => {
     (allowanceMap[address] && amount && allowanceMap[address] >= amount)
   ) {
     return <CheckCircle2 className="mx-2" color="green" size={24} />
+  }
+
+  if (needsRevoke && !isSuccessRevoke) {
+    return (
+      <Button
+        variant="outline-primary"
+        className="rounded-full"
+        onClick={revoke}
+        size="xs"
+        disabled={isPendingRevoke}
+      >
+        <div className="flex items-center gap-1">
+          {isPendingRevoke ? 'Revoking...' : 'Revoke'}
+          <Help
+            side="bottom"
+            content={
+              <span className="text-sm text-wrap font-light">
+                This is a USDT token or a fork of USDT. You need to revoke the
+                approval before you can approve it.
+              </span>
+            }
+          />
+        </div>
+      </Button>
+    )
   }
 
   return (
