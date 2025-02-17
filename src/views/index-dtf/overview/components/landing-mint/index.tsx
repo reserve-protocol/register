@@ -10,10 +10,9 @@ import ZapMint from '../zap-mint'
 import { currentZapMintTabAtom } from '../zap-mint/atom'
 import defaultCover from './default-cover.png'
 
-const IMG_SRC = 'https://storage.reserve.org/dtf-default-2.png'
-
 const MintBox = () => {
   const dtf = useAtomValue(indexDTFAtom)
+  const brand = useAtomValue(indexDTFBrandAtom)
   const chainId = useAtomValue(chainIdAtom)
   const setZapMintTab = useSetAtom(currentZapMintTabAtom)
 
@@ -30,12 +29,7 @@ const MintBox = () => {
             size={24}
           />
           <ArrowLeftRight className="w-4 h-4" />
-          <TokenLogo
-            symbol={dtf?.token.symbol}
-            address={dtf?.id}
-            chain={chainId}
-            size="lg"
-          />
+          <TokenLogo src={brand?.dtf?.icon || undefined} size="lg" />
         </div>
         <div className="flex flex-col gap-1">
           <div className="text-xl font-bold text-primary">

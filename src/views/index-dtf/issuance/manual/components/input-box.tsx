@@ -1,7 +1,7 @@
 import TokenLogo from '@/components/token-logo'
 import { Button } from '@/components/ui/button'
 import { NumericalInput } from '@/components/ui/input'
-import { indexDTFAtom } from '@/state/dtf/atoms'
+import { indexDTFAtom, indexDTFBrandAtom } from '@/state/dtf/atoms'
 import { formatCurrency } from '@/utils'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { formatEther } from 'viem'
@@ -12,11 +12,12 @@ const DTFMaxAmount = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
   const maxAmount = useAtomValue(maxAmountAtom)
   const setMaxAmount = useSetAtom(amountAtom)
+  const brand = useAtomValue(indexDTFBrandAtom)
 
   return (
     <div className="flex flex-col gap-2">
       <div className="flex items-center justify-end gap-2">
-        <TokenLogo size="xl" />
+        <TokenLogo src={brand?.dtf?.icon || undefined} size="xl" />
         <h2 className="text-2xl max-w-52 break-words font-bold">
           {indexDTF?.token.symbol ?? 'DTF'}
         </h2>

@@ -31,6 +31,7 @@ import {
 } from './accordion'
 import { Separator } from './separator'
 import Help from './help'
+import { indexDTFAtom, indexDTFBrandAtom } from '@/state/dtf/atoms'
 
 type TokenWithBalance = Token & { balance?: string }
 
@@ -77,6 +78,12 @@ const TokenSelector = ({
   onTokenSelect,
 }: Pick<SwapItem, 'address' | 'symbol' | 'tokens' | 'onTokenSelect'>) => {
   const chainId = useAtomValue(chainIdAtom)
+  const brand = useAtomValue(indexDTFBrandAtom)
+  const dtf = useAtomValue(indexDTFAtom)
+  const src =
+    brand?.dtf?.icon && address.toLowerCase() === dtf?.id.toLowerCase()
+      ? brand?.dtf?.icon
+      : undefined
   const [open, setOpen] = React.useState(false)
 
   if (!tokens || tokens.length === 0) {
@@ -85,6 +92,7 @@ const TokenSelector = ({
         <div className="flex items-center gap-1 text-2xl font-semibold">
           <TokenLogo
             size="lg"
+            src={src}
             symbol={symbol}
             address={address}
             chain={chainId}
