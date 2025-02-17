@@ -125,7 +125,7 @@ const IndexBasketTokens = ({
     <div className={cn('relative', className)}>
       <ScrollArea
         className={cn(
-          'flex max-h-[620px] flex-col overflow-y-auto',
+          'flex md:max-h-[620px] flex-col overflow-y-auto',
           viewAll && basket.length > MAX_TOKENS && 'max-h-[1240px]'
         )}
       >
@@ -133,7 +133,7 @@ const IndexBasketTokens = ({
           <TableHeader>
             <TableRow className="border-none text-legend bg-card sticky top-0 ">
               <TableHead>Token</TableHead>
-              <TableHead>Symbol</TableHead>
+              <TableHead>Ticker</TableHead>
               <TableHead className="text-center">Weight</TableHead>
               <TableHead className="text-right"></TableHead>
             </TableRow>
@@ -144,17 +144,21 @@ const IndexBasketTokens = ({
               .map((token, index) => (
                 <TableRow key={token.symbol} className="border-none">
                   <TableCell>
-                    <div className="flex items-center font-semibold gap-2">
+                    <div className="flex items-center font-semibold gap-2 break-words">
                       <TokenLogo
                         size="lg"
                         symbol={token.symbol}
                         address={token.address}
                         chain={chainId}
                       />
-                      {token.name}
+                      <span className="max-w-20">{token.name}</span>
                     </div>
                   </TableCell>
-                  <TableCell>${token.symbol}</TableCell>
+                  <TableCell>
+                    <span className="max-w-20 break-words">
+                      ${token.symbol}
+                    </span>
+                  </TableCell>
                   <TableCell className="text-primary text-center font-bold">
                     {basketShares[token.address]}%
                   </TableCell>
@@ -238,7 +242,7 @@ const TokenSocials = () => {
   }
 
   return (
-    <div className="flex gap-2 mt-3">
+    <div className="flex gap-2 mt-3 flex-wrap">
       {Object.entries(data?.socials || {}).map(([key, value]) => (
         <Link
           key={key}

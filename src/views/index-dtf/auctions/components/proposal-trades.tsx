@@ -192,11 +192,4 @@ const ProposalTrades = () => {
   )
 }
 
-// return (
-// <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-2 ml-2 lg:ml-0 mr-2 mb-5">
-// <ProposalTradesList />
-// <AuctionOverview />
-// </div>
-// )
-
 export default ProposalTrades

@@ -104,7 +104,7 @@ const IndexGovernanceOverview = () => {
           </div>
           <span className="font-bold">
             ${dtf.stToken?.underlying.symbol} holders vote-lock their tokens to
-            become a governor
+            become a Governor
           </span>
         </div>
         <div className="flex items-center gap-2">
@@ -128,7 +128,7 @@ const IndexGovernanceOverview = () => {
             <Check size={16} />
           </div>
           <span className="font-bold">
-            If the proposal passes, the changes are executed on-chain
+            If the proposal passes, its change(s) are executed onchain
           </span>
         </div>
       </div>

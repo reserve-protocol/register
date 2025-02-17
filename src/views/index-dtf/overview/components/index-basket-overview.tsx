@@ -105,12 +105,12 @@ const IndexBasketTokens = ({
 
   return (
     <div className={className}>
-      <ScrollArea className={cn('max-h-96 relative')}>
+      <ScrollArea className={cn('md:max-h-96 relative')}>
         <Table>
           <TableHeader>
             <TableRow className="border-none text-legend bg-card sticky top-0 ">
               <TableHead>Token</TableHead>
-              <TableHead>Symbol</TableHead>
+              <TableHead>Ticker</TableHead>
               <TableHead>Weight</TableHead>
               <TableHead>Dex screener</TableHead>
             </TableRow>
