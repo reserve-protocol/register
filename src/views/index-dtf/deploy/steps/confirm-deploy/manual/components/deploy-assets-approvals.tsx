@@ -136,6 +136,7 @@ const ApproveAsset = ({
         variant="outline-primary"
         className="rounded-full"
         onClick={revoke}
+        disabled={isPendingRevoke}
       >
         <div className="flex items-center gap-1">
           {isPendingRevoke ? 'Revoking...' : 'Revoke'}
