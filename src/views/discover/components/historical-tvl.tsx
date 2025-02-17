@@ -156,7 +156,7 @@ const Heading = ({ dtfStats }: { dtfStats?: DTFStats }) => {
 
   return (
     <>
-      <div className="absolute top-3 sm:top-8 left-0 sm:left-0 right-3 text-primary px-4 md:px-6 2xl:px-0">
+      <div className="absolute top-3 sm:top-8 left-0 sm:left-0 right-3 text-primary px-4 md:px-6 2xl:px-0 w-auto sm:w-[560px]">
         <img src={tabIndex} className="rounded-full h-6 w-6 sm:h-8 sm:w-8" />
         <h2 className="sm:text-2xl text-base mt-6 mb-4 font-light leading-none">
           TVL in Reserve
