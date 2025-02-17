@@ -16,6 +16,11 @@ export type IndexDTFItem = {
   performance: Performance[]
   performancePercent: number
   chainId: number
+  brand?: {
+    icon?: string
+    cover?: string
+    tags?: string[]
+  }
 }
 
 const calculatePercentageChange = (performance: Performance[]) => {

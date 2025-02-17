@@ -54,7 +54,7 @@ const columns: ColumnDef<IndexDTFItem>[] = [
     cell: ({ row }) => {
       return (
         <div className="flex gap-2 items-center">
-          <TokenLogo address={row.original.address} size="xl" />
+          <TokenLogo src={row.original.brand?.icon || undefined} size="xl" />
           <div className="max-w-52 break-words">
             <h4 className="font-semibold mb-[2px]">{row.original.name}</h4>
             <span className="text-legend">${row.original.symbol}</span>
@@ -181,7 +181,7 @@ const DTFCard = ({ dtf }: { dtf: IndexDTFItem }) => {
     <Link to={getFolioRoute(dtf.address, dtf.chainId)}>
       <div className="p-4">
         <div className="flex justify-between mb-2">
-          <TokenLogo address={dtf.address} size="xl" />
+          <TokenLogo src={dtf?.brand?.icon || undefined} size="xl" />
           <div>
             <span>{percentageChange} </span>
             <span className="text-legend">(7d)</span>
