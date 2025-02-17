@@ -15,12 +15,14 @@ const useZapSwapQuery = ({
   amountIn,
   slippage,
   disabled,
+  forceMint,
 }: {
   tokenIn?: Address
   tokenOut?: Address
   amountIn: string
   slippage: number
   disabled: boolean
+  forceMint: boolean
 }) => {
   const chainId = useAtomValue(chainIdAtom)
   const account = useAtomValue(walletAtom)
@@ -42,8 +44,9 @@ const useZapSwapQuery = ({
         amountIn,
         slippage,
         signer: account as Address,
+        trade: !forceMint,
       })
-    }, [chainId, account, tokenIn, tokenOut, amountIn, slippage]),
+    }, [chainId, account, tokenIn, tokenOut, amountIn, slippage, forceMint]),
     500
   )
 
