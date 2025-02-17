@@ -1,18 +1,19 @@
 import { GRAPH_CLIENTS, INDEX_GRAPH_CLIENTS } from '@/state/atoms'
 import { wagmiConfig } from '@/state/chain'
-import { ChainId } from '@/utils/chains'
 import { DeployInputs } from '@/views/index-dtf/deploy/form-fields'
 import { gql } from 'graphql-request'
 import { Address, erc20Abi, parseEther } from 'viem'
 import { readContract } from 'wagmi/actions'
 import { FeeRecipient } from '../steps/confirm-deploy/manual/components/confirm-manual-deploy-button'
+import { AvailableChain } from '@/utils/chains'
 
-export const isERC20 = async (address: Address) => {
+export const isERC20 = async (address: Address, chainId: number) => {
   try {
     await readContract(wagmiConfig, {
       abi: erc20Abi,
       functionName: 'symbol',
       address,
+      chainId: chainId as AvailableChain,
     })
   } catch (e) {
     return false
@@ -28,32 +29,26 @@ const stTokenQuery = gql`
   }
 `
 
-export const getStToken = async (address: Address) => {
+export const getStToken = async (address: Address, chainId: number) => {
   try {
-    const dataBase = await INDEX_GRAPH_CLIENTS[ChainId.Base].request(
-      stTokenQuery,
-      {
-        id: address.toLowerCase(),
-      }
-    )
-    const dataMainnet = await INDEX_GRAPH_CLIENTS[ChainId.Mainnet].request(
-      stTokenQuery,
-      {
-        id: address.toLowerCase(),
-      }
-    )
-    return dataBase.stakingToken || dataMainnet.stakingToken
+    const data = await INDEX_GRAPH_CLIENTS[chainId].request(stTokenQuery, {
+      id: address.toLowerCase(),
+    })
+    return data.stakingToken
   } catch (e) {
     return null
   }
 }
 
-export const isVoteLockAddress = async (address: Address) => {
-  return Boolean(await getStToken(address))
+export const isVoteLockAddress = async (address: Address, chainId: number) => {
+  return Boolean(await getStToken(address, chainId))
 }
 
-export const isNotVoteLockAddress = async (address: Address) => {
-  return !(await isVoteLockAddress(address))
+export const isNotVoteLockAddress = async (
+  address: Address,
+  chainId: number
+) => {
+  return !(await isVoteLockAddress(address, chainId))
 }
 
 const stRSRQuery = gql`
@@ -63,9 +58,9 @@ const stRSRQuery = gql`
     }
   }
 `
-export const getStRSR = async (address: Address) => {
+export const getStRSR = async (address: Address, chainId: number) => {
   try {
-    const data = await GRAPH_CLIENTS[ChainId.Base].request(stRSRQuery, {
+    const data = await GRAPH_CLIENTS[chainId].request(stRSRQuery, {
       id: address.toLowerCase(),
     })
     return data.rewardTokens.length > 0
@@ -74,8 +69,8 @@ export const getStRSR = async (address: Address) => {
   }
 }
 
-export const isNotStRSR = async (address: Address) => {
-  return !Boolean(await getStRSR(address))
+export const isNotStRSR = async (address: Address, chainId: number) => {
+  return !Boolean(await getStRSR(address, chainId))
 }
 
 const calculateShare = (sharePercentage: number, denominator: number) => {

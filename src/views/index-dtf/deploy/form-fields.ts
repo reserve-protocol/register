@@ -8,6 +8,7 @@ import {
   noSpecialCharacters,
 } from './utils'
 import { Decimal } from './utils/decimals'
+import { ChainId } from '@/utils/chains'
 
 export type DeployStepId =
   | 'metadata'
@@ -21,7 +22,7 @@ export type DeployStepId =
 
 export const dtfDeploySteps: Record<DeployStepId, { fields: string[] }> = {
   metadata: {
-    fields: ['tokenName', 'symbol', 'mandate'],
+    fields: ['tokenName', 'symbol', 'mandate', 'chain'],
   },
   basket: {
     fields: ['initialValue', 'tokensDistribution'],
@@ -89,6 +90,11 @@ export const DeployFormSchema = z
         message: 'Token symbol cannot contain special characters or emojis',
       }),
     mandate: z.string().optional(),
+    chain: z
+      .number()
+      .refine((value) => value === ChainId.Mainnet || value === ChainId.Base, {
+        message: 'Chain must be either Mainnet or Base',
+      }),
     initialValue: z.coerce.number().positive('Initial value must be positive'),
     tokensDistribution: z.array(
       z.object({
@@ -102,18 +108,10 @@ export const DeployFormSchema = z
     governanceVoteLock: z
       .string()
       .refine(isAddress, { message: 'Invalid Address' })
-      .refine(isNotStRSR, {
-        message: 'stRSR DAO contracts for Index DTFs are not supported',
-      })
-      .refine(isVoteLockAddress, { message: 'Unsupported Vote Lock Address' })
       .optional(),
     governanceERC20address: z
       .string()
       .refine(isAddress, { message: 'Invalid Address' })
-      .refine(isERC20, { message: 'Invalid ERC20 address' })
-      .refine(isNotVoteLockAddress, {
-        message: 'Vote Lock address is not allowed for new DAO',
-      })
       .optional(),
     governanceWalletAddress: z
       .string()
@@ -191,6 +189,42 @@ export const DeployFormSchema = z
     governanceVotingThreshold: z.coerce.number().min(0).max(100),
     governanceExecutionDelay: z.coerce.number().min(0),
   })
+  .refine(
+    (data) =>
+      !data.governanceERC20address ||
+      isERC20(data.governanceERC20address, data.chain),
+    {
+      message: 'Invalid ERC20 address',
+      path: ['governanceERC20address'],
+    }
+  )
+  .refine(
+    (data) =>
+      !data.governanceERC20address ||
+      isNotVoteLockAddress(data.governanceERC20address, data.chain),
+    {
+      message: 'Vote Lock address is not allowed for new DAO',
+      path: ['governanceERC20address'],
+    }
+  )
+  .refine(
+    (data) =>
+      !data.governanceVoteLock ||
+      isNotStRSR(data.governanceVoteLock, data.chain),
+    {
+      message: 'stRSR DAO contracts for Index DTFs are not supported',
+      path: ['governanceVoteLock'],
+    }
+  )
+  .refine(
+    (data) =>
+      !data.governanceVoteLock ||
+      isVoteLockAddress(data.governanceVoteLock, data.chain),
+    {
+      message: 'Unsupported Vote Lock Address',
+      path: ['governanceVoteLock'],
+    }
+  )
   .refine(
     (data) => {
       const total = data.tokensDistribution?.reduce(
@@ -317,6 +351,7 @@ export const dtfDeployDefaultValues = {
   tokenName: '',
   symbol: '',
   mandate: '',
+  chain: ChainId.Base,
   initialValue: 1,
   tokensDistribution: [],
   governanceERC20address: undefined,

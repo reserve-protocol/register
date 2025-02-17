@@ -26,6 +26,7 @@ import {
   daoTokenSymbolAtom,
   formReadyForSubmitAtom,
 } from '../../atoms'
+import { TransactionButtonContainer } from '@/components/old/button/TransactionButton'
 
 const CreateDAO = () => {
   const chainId = useAtomValue(chainIdAtom)
@@ -34,6 +35,7 @@ const CreateDAO = () => {
   const { watch, getValues } = useFormContext()
   const governanceERC20address = watch('governanceERC20address')
   const indexDTFSymbol = watch('symbol')
+  const formChainId = watch('chain')
   const setDaoCreated = useSetAtom(daoCreatedAtom)
   const setStTokenAddress = useSetAtom(daoTokenAddressAtom)
   const setStTokenSymbol = useSetAtom(daoTokenSymbolAtom)
@@ -126,24 +128,26 @@ const CreateDAO = () => {
           }
         />
       )}
-      <Button
-        className="w-full"
-        disabled={
-          !formReadyForSubmit ||
-          !name ||
-          !governanceERC20address ||
-          !symbol ||
-          isPending ||
-          (data && !receipt)
-        }
-        onClick={submit}
-      >
-        {isPending || (data && !receipt)
-          ? 'Creating...'
-          : symbol
-            ? `Create ${vlSymbol} DAO`
-            : 'Create DAO'}
-      </Button>
+      <TransactionButtonContainer chain={formChainId}>
+        <Button
+          className="w-full"
+          disabled={
+            !formReadyForSubmit ||
+            !name ||
+            !governanceERC20address ||
+            !symbol ||
+            isPending ||
+            (data && !receipt)
+          }
+          onClick={submit}
+        >
+          {isPending || (data && !receipt)
+            ? 'Creating...'
+            : symbol
+              ? `Create ${vlSymbol} DAO`
+              : 'Create DAO'}
+        </Button>
+      </TransactionButtonContainer>
       {(prepareWriteError || txError) && (
         <div className="px-4 py-2 text-sm font-medium text-red-800 bg-red-100 rounded-md break-words">
           Error creating DAO token.

@@ -9,18 +9,7 @@ import { AvailableChain, ChainId } from 'utils/chains'
 import { CHAIN_TAGS, supportedChainList } from 'utils/constants'
 import { useSwitchChain } from 'wagmi'
 
-type Defaults = [string, string][]
-
-const mainnetDefaults: Defaults = [
-  ['withdrawalLeak', '5'],
-  ['dutchAuctionLength', '1800'],
-  ['minTrade', '1000'],
-]
-const l2Defaults: Defaults = [
-  ['withdrawalLeak', '1'],
-  ['dutchAuctionLength', '900'],
-  ['minTrade', '100'],
-]
+const SUPPORTED_CHAINS = [ChainId.Mainnet, ChainId.Base]
 
 const ComingSoonOption = ({ network }: { network: 'mainnet' | 'solana' }) => {
   return (
@@ -75,8 +64,9 @@ const ChainOption = ({
 const ChainSelector = () => {
   const [chainId, setChain] = useAtom(chainIdAtom)
   const walletChainId = useAtomValue(walletChainAtom)
-  const { setValue } = useFormContext()
+  const { watch, setValue } = useFormContext()
   const { switchChain } = useSwitchChain()
+  const formChainId = watch('chain')
 
   useEffect(() => {
     if (walletChainId && supportedChainList.includes(walletChainId)) {
@@ -87,33 +77,27 @@ const ChainSelector = () => {
   }, [chainId, setChain, walletChainId])
 
   const handleChainChange = (newChain: AvailableChain) => {
+    setValue('chain', newChain)
     if (chainId !== newChain) {
-      const defaults =
-        newChain === ChainId.Mainnet ? mainnetDefaults : l2Defaults
-
-      for (const [key, value] of defaults) {
-        setValue(key, value)
-      }
       setChain(newChain)
       switchChain && switchChain({ chainId: newChain })
     }
   }
 
   useEffect(() => {
-    if (chainId !== ChainId.Base && chainId !== ChainId.Mainnet) {
-      setChain(ChainId.Base as AvailableChain)
-      switchChain && switchChain({ chainId: ChainId.Base })
+    if (!SUPPORTED_CHAINS.includes(chainId)) {
+      setChain(formChainId as AvailableChain)
+      switchChain && switchChain({ chainId: formChainId })
     }
-  }, [setChain, switchChain])
+  }, [setChain, switchChain, chainId, formChainId])
 
   return (
     <div className="flex flex-col lg:flex-row gap-2 p-2 flex-wrap">
-      {/* Just Base for the moment */}
-      {[ChainId.Mainnet, ChainId.Base].map((chain) => (
+      {SUPPORTED_CHAINS.map((chain) => (
         <ChainOption
           key={chain}
           chainId={chain}
-          checked={chain === chainId}
+          checked={chain === formChainId}
           onClick={handleChainChange}
         />
       ))}
