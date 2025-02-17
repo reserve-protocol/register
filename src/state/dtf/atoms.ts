@@ -101,11 +101,22 @@ export const indexDTFPriceAtom = atom((get) => {
   return basketPrices[dtf.token.id.toLowerCase()]
 })
 
+// TODO: Retrieve from server, hardcoded for now
+const WHITELISTED_ADDRESSES = [
+  '0x2dc04Aeae96e2f2b642b066e981e80Fe57abb5b2',
+  '0x8e0507C16435Caca6CB71a7Fb0e0636fd3891df4',
+]
+
 export const isBrandManagerAtom = atom((get) => {
   const dtf = get(indexDTFAtom)
   const wallet = get(walletAtom)
 
-  return !!dtf?.brandManagers.find(
+  const brandManagerAddresses = [
+    ...(dtf?.brandManagers ?? []),
+    ...WHITELISTED_ADDRESSES,
+  ]
+
+  return brandManagerAddresses.find(
     (manager) => manager.toLowerCase() === wallet?.toLowerCase()
   )
 })
