@@ -1,5 +1,7 @@
 import dtfIndexDeployerAbi from '@/abis/dtf-index-deployer-abi'
-import TransactionButton from '@/components/old/button/TransactionButton'
+import TransactionButton, {
+  TransactionButtonContainer,
+} from '@/components/old/button/TransactionButton'
 import useContractWrite from '@/hooks/useContractWrite'
 import { chainIdAtom, walletAtom } from '@/state/atoms'
 import { getCurrentTime } from '@/utils'
@@ -31,6 +33,7 @@ import {
   hasBalanceAtom,
   initialTokensAtom,
 } from '../atoms'
+import { useFormContext } from 'react-hook-form'
 
 type FolioParams = {
   name: string
@@ -216,6 +219,9 @@ const txAtom = atom<
 })
 
 const ConfirmManualDeployButton = () => {
+  const { watch } = useFormContext()
+  const formChainId = watch('chain')
+  console.log(formChainId)
   const tx = useAtomValue(txAtom)
   const daoCreated = useAtomValue(daoCreatedAtom)
   const hasAssetsAllowance = useAtomValue(hasAssetsAllowanceAtom)
@@ -261,16 +267,18 @@ const ConfirmManualDeployButton = () => {
 
   return (
     <div className="pt-2 border-t">
-      <TransactionButton
-        disabled={!isReady}
-        gas={undefined}
-        loading={isLoading || !!hash}
-        loadingText={!!hash ? 'Confirming tx...' : 'Pending, sign in wallet'}
-        onClick={write}
-        text={title}
-        fullWidth
-        error={validationError || error || txError}
-      />
+      <TransactionButtonContainer chain={formChainId}>
+        <TransactionButton
+          disabled={!isReady}
+          gas={undefined}
+          loading={isLoading || !!hash}
+          loadingText={!!hash ? 'Confirming tx...' : 'Pending, sign in wallet'}
+          onClick={write}
+          text={title}
+          fullWidth
+          error={validationError || error || txError}
+        />
+      </TransactionButtonContainer>
     </div>
   )
 }

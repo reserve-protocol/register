@@ -67,6 +67,7 @@ const SimpleIndexDeploy = () => {
   const zapDeployPayload = useAtomValue(zapDeployPayloadAtom)
   const tokens = useAtomValue(tokensAtom)
   const [ongoingTx, setOngoingTx] = useAtom(ongoingTxAtom)
+  const formChainId = form?.chain
 
   const url = form?.governanceWalletAddress
     ? zapper.zapDeployUngoverned(chainId)
@@ -133,31 +134,33 @@ const SimpleIndexDeploy = () => {
         </div>
       </div>
       <div className="p-2 pb-4">
-        {data?.status === 'success' &&
-        data?.result &&
-        !insufficientBalance &&
-        !isFetching &&
-        !failureReason ? (
-          <SimpleDeployButton data={data?.result} />
-        ) : (
-          <TransactionButtonContainer chain={chainId}>
-            <Button size="lg" className="w-full" disabled>
-              {isLoading || isFetching
-                ? 'Loading...'
-                : insufficientBalance
-                  ? 'Insufficient balance'
-                  : 'Deploy'}
-            </Button>
-            {(data?.error || failureReason?.message) && (
-              <div className="flex flex-col items-center gap-2">
-                <div className="text-red-500 text-sm text-center mt-2">
-                  {data?.error || failureReason?.message}
+        <TransactionButtonContainer chain={formChainId}>
+          {data?.status === 'success' &&
+          data?.result &&
+          !insufficientBalance &&
+          !isFetching &&
+          !failureReason ? (
+            <SimpleDeployButton data={data?.result} />
+          ) : (
+            <>
+              <Button size="lg" className="w-full" disabled>
+                {isLoading || isFetching
+                  ? 'Loading...'
+                  : insufficientBalance
+                    ? 'Insufficient balance'
+                    : 'Deploy'}
+              </Button>
+              {(data?.error || failureReason?.message) && (
+                <div className="flex flex-col items-center gap-2">
+                  <div className="text-red-500 text-sm text-center mt-2">
+                    {data?.error || failureReason?.message}
+                  </div>
+                  <CopyPayloadButton />
                 </div>
-                <CopyPayloadButton />
-              </div>
-            )}
-          </TransactionButtonContainer>
-        )}
+              )}
+            </>
+          )}
+        </TransactionButtonContainer>
       </div>
     </div>
   )

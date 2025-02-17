@@ -18,6 +18,7 @@ import SimpleIndexDeploy from './simple'
 import { inputAmountAtom } from './simple/atoms'
 import SuccessView from './success'
 import Ticker from '../../utils/ticker'
+import { TransactionButtonContainer } from '@/components/old/button/TransactionButton'
 
 const Header = () => {
   const form = useAtomValue(indexDeployFormDataAtom)
@@ -36,12 +37,13 @@ const Header = () => {
 }
 
 const ConfirmIndexDeploy = ({ isActive }: { isActive: boolean }) => {
-  const { handleSubmit } = useFormContext<DeployInputs>()
+  const { handleSubmit, watch } = useFormContext<DeployInputs>()
   const deployedDTF = useAtomValue(deployedDTFAtom)
   const setFormData = useSetAtom(indexDeployFormDataAtom)
   const setStTokenAddress = useSetAtom(daoTokenAddressAtom)
   const resetInitialTokens = useResetAtom(initialTokensAtom)
   const resetInput = useResetAtom(inputAmountAtom)
+  const formChainId = watch('chain')
 
   const processForm: SubmitHandler<DeployInputs> = (data) => {
     if (data.governanceVoteLock) {
@@ -58,13 +60,15 @@ const ConfirmIndexDeploy = ({ isActive }: { isActive: boolean }) => {
 
   return (
     <Drawer>
-      <DrawerTrigger disabled={!isActive} asChild>
-        <Button className="w-full" disabled={!isActive} onClick={submitForm}>
-          <span>
-            Create <Ticker defaultSymbol="" />
-          </span>
-        </Button>
-      </DrawerTrigger>
+      <TransactionButtonContainer chain={formChainId}>
+        <DrawerTrigger disabled={!isActive} asChild>
+          <Button className="w-full" disabled={!isActive} onClick={submitForm}>
+            <span>
+              Create <Ticker defaultSymbol="" />
+            </span>
+          </Button>
+        </DrawerTrigger>
+      </TransactionButtonContainer>
 
       {deployedDTF ? (
         <DrawerContent className="text-white max-h-[900px]">
