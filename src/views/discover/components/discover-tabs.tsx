@@ -31,7 +31,7 @@ const tabs: Tab[] = [
 const Title = () => {
   return (
     <div className="flex justify-between items-center gap-2 sm:gap-16 px-4 sm:px-8 mb-5 sm:mb-10">
-      <YieldIconAlt className="min-w-4 min-h-4 hidden md:block sm:opacity-20" />
+      <YieldIconAlt className="min-w-4 min-h-4 hidden lg:block sm:opacity-20" />
       <YieldIconAlt className="min-w-4 min-h-4 text-primary sm:text-inherit sm:opacity-40" />
       <YieldIconAlt className="min-w-4 min-h-4 text-primary sm:text-inherit sm:opacity-60" />
       <h2 className="text-primary text-xl sm:text-2xl font-bold whitespace-nowrap">
@@ -39,7 +39,7 @@ const Title = () => {
       </h2>
       <YieldIconAlt className="min-w-4 min-h-4 text-primary sm:text-inherit scale-x-[-1] sm:opcaity-60" />
       <YieldIconAlt className="min-w-4 min-h-4 text-primary sm:text-inherit scale-x-[-1] sm:opacity-40" />
-      <YieldIconAlt className="min-w-4 min-h-4 hidden md:block scale-x-[-1] sm:opacity-20" />
+      <YieldIconAlt className="min-w-4 min-h-4 hidden lg:block scale-x-[-1] sm:opacity-20" />
     </div>
   )
 }

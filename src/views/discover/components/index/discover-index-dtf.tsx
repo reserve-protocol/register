@@ -118,7 +118,7 @@ const columns: ColumnDef<IndexDTFItem>[] = [
       const percentageChange = calculatePercentageChange(performance)
 
       return (
-        <div className="flex items-center justify-end gap-4">
+        <div className="flex items-center justify-center gap-4">
           <span>{percentageChange}</span>
           {performance.length > 0 && (
             <ChartContainer config={chartConfig} className="h-6 w-16">
@@ -139,19 +139,19 @@ const columns: ColumnDef<IndexDTFItem>[] = [
       )
     },
   },
-  {
-    header: ({ column }) => (
-      <TableHeader className="text-right">
-        <SorteableButton column={column}>Price</SorteableButton>
-      </TableHeader>
-    ),
-    accessorKey: 'price',
-    cell: ({ row }) => {
-      return (
-        <div className="text-right">${formatCurrency(row.original.price)}</div>
-      )
-    },
-  },
+  // {
+  //   header: ({ column }) => (
+  //     <TableHeader className="text-right">
+  //       <SorteableButton column={column}>Price</SorteableButton>
+  //     </TableHeader>
+  //   ),
+  //   accessorKey: 'price',
+  //   cell: ({ row }) => {
+  //     return (
+  //       <div className="text-right">${formatCurrency(row.original.price)}</div>
+  //     )
+  //   },
+  // },
   {
     header: ({ column }) => (
       <TableHeader className="text-right">
@@ -259,7 +259,7 @@ const IndexDTFList = () => {
           data={filtered}
           onRowClick={handleRowClick}
           className={cn(
-            'hidden sm:table bg-card text-base rounded-[20px]',
+            'hidden lg:table bg-card text-base rounded-[20px]',
             '[&_thead_th]:px-6',
             '[&_tbody_td]:px-6',
             '[&_tbody]:rounded-[20px] [&_tbody_tr:last-child_td]:rounded-bl-[20px] [&_tbody_tr:last-child_td:last-child]:rounded-br-[20px]'
@@ -267,7 +267,7 @@ const IndexDTFList = () => {
         />
       </div>
 
-      <div className="sm:hidden bg-card rounded-[20px]">
+      <div className="lg:hidden bg-card rounded-[20px]">
         {filtered.map((dtf) => (
           <div key={dtf.address} className="[&:not(:last-child)]:border-b">
             <DTFCard dtf={dtf} />
