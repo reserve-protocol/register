@@ -12,7 +12,8 @@ export const ZapDetails = ({ data }: { data: ZapResult }) => {
   const selectedToken = useAtomValue(selectedTokenOrDefaultAtom)
   const slippage = useAtomValue(slippageAtom)
   const dtfAsTokenIn =
-    data.tokenIn.toLowerCase() !== selectedToken.address.toLowerCase()
+    data.tokenIn.toLowerCase() !== selectedToken.address.toLowerCase() &&
+    data.tokenIn !== '0x4200000000000000000000000000000000000006'
 
   const tokenInSymbol = dtfAsTokenIn
     ? indexDTF?.token.symbol || ''
