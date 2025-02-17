@@ -1,10 +1,10 @@
-import { SlippageSelector } from '@/components/ui/swap'
-import { useAtom } from 'jotai'
-import { slippageAtom } from './atom'
-import Help from '@/components/ui/help'
 import { Checkbox } from '@/components/ui/checkbox'
+import Help from '@/components/ui/help'
+import { SlippageSelector } from '@/components/ui/swap'
 import { broom } from '@lucide/lab'
-import { Icon } from 'lucide-react'
+import { useAtom } from 'jotai'
+import { Anvil, Icon } from 'lucide-react'
+import { forceMintAtom, slippageAtom } from './atom'
 
 const ZapSettingsRowTitle = ({
   title,
@@ -21,6 +21,7 @@ const ZapSettingsRowTitle = ({
 
 const ZapSettings = () => {
   const [slippage, setSlippage] = useAtom(slippageAtom)
+  const [forceMint, setForceMint] = useAtom(forceMintAtom)
   return (
     <div className="min-h-[306px] border-t border-border -mx-2 px-2 py-4 flex flex-col gap-4">
       <div className="flex flex-col gap-2">
@@ -28,7 +29,7 @@ const ZapSettings = () => {
           title="Collect dust?"
           help="Dust is the leftover amount of tokens that cannot be exchanged. If you choose to collect dust, it will be sent back to your wallet. Sending dust back to the wallet will increase transaction fee."
         />
-        <div className="rounded-xl border border-border pl-2 pr-3 py-3 flex items-center gap-1 justify-between">
+        <div className="rounded-xl border border-border px-3 py-3 flex items-center gap-1 justify-between">
           <div className="flex items-center gap-1">
             <Icon
               iconNode={broom}
@@ -51,6 +52,24 @@ const ZapSettings = () => {
           options={['50', '100', '200', '500']}
           hideTitle
         />
+      </div>
+      <div className="flex flex-col gap-2">
+        <ZapSettingsRowTitle
+          title="Force DTF mint?"
+          help="This is useful if you want to mint the DTF without trading."
+        />
+        <div className="rounded-xl border border-border px-3 py-3 flex items-center gap-1 justify-between">
+          <div className="flex items-center gap-1">
+            <Anvil size={16} className="text-muted-foreground" />
+            <div>Force minting DTF</div>
+          </div>
+          <Checkbox
+            checked={forceMint}
+            onCheckedChange={(value) =>
+              setForceMint(value === 'indeterminate' ? false : value)
+            }
+          />
+        </div>
       </div>
     </div>
   )

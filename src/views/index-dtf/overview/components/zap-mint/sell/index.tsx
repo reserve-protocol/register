@@ -8,6 +8,7 @@ import { formatEther, formatUnits, parseEther } from 'viem'
 import useLoadingAfterRefetch from '../../hooks/useLoadingAfterRefetch'
 import {
   currentZapMintTabAtom,
+  forceMintAtom,
   indexDTFBalanceAtom,
   openZapMintModalAtom,
   selectedTokenAtom,
@@ -31,6 +32,7 @@ const Sell = () => {
   const indxDTFParsedBalance = formatEther(indexDTFBalance)
   const tokens = useAtomValue(tokensAtom)
   const slippage = useAtomValue(slippageAtom)
+  const forceMint = useAtomValue(forceMintAtom)
   const setOutputToken = useSetAtom(selectedTokenAtom)
   const [ongoingTx, setOngoingTx] = useAtom(zapOngoingTxAtom)
   const setZapRefetch = useSetAtom(zapRefetchAtom)
@@ -49,6 +51,7 @@ const Sell = () => {
       amountIn: parseEther(inputAmount).toString(),
       slippage: Number(slippage),
       disabled: insufficientBalance || ongoingTx,
+      forceMint,
     })
 
   const { loadingAfterRefetch } = useLoadingAfterRefetch(data)
