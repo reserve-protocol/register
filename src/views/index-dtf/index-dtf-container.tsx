@@ -90,7 +90,12 @@ const IndexDTFBasketUpdater = () => {
 
   useEffect(() => {
     if (data) {
-      setBasket(data.basket)
+      setBasket(
+        data.basket.sort(
+          (a, b) =>
+            Number(data.shares[b.address]) - Number(data.shares[a.address])
+        )
+      )
       setBasketPrices(data.prices)
       setBasketAmounts(data.amounts)
       setBasketShares(data.shares)
