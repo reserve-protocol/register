@@ -243,17 +243,20 @@ const TokenSocials = () => {
 
   return (
     <div className="flex gap-2 mt-3 flex-wrap">
-      {Object.entries(data?.socials || {}).map(([key, value]) => (
-        <Link
-          key={key}
-          to={value}
-          target="_blank"
-          className="flex items-center gap-2 border rounded-full py-1 px-2 text-sm hover:bg-primary/10 hover:text-primary"
-        >
-          {SOCIAL_MAP[key].icon}
-          {SOCIAL_MAP[key].label}
-        </Link>
-      ))}
+      {Object.entries(data?.socials || {}).map(
+        ([key, value]) =>
+          !!value && (
+            <Link
+              key={key}
+              to={value}
+              target="_blank"
+              className="flex items-center gap-2 border rounded-full py-1 px-2 text-sm hover:bg-primary/10 hover:text-primary"
+            >
+              {SOCIAL_MAP[key].icon}
+              {SOCIAL_MAP[key].label}
+            </Link>
+          )
+      )}
     </div>
   )
 }
