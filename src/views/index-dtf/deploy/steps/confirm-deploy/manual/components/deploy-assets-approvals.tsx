@@ -1,9 +1,13 @@
+import USDT from '@/abis/USDT'
 import TokenLogo from '@/components/token-logo'
 import { Button } from '@/components/ui/button'
+import Help from '@/components/ui/help'
+import useIsUSDT from '@/hooks/useIsUSDT'
 import { cn } from '@/lib/utils'
 import { chainIdAtom, walletAtom } from '@/state/atoms'
 import { formatCurrency, shortenAddress } from '@/utils'
 import { INDEX_DEPLOYER_ADDRESS } from '@/utils/addresses'
+import { BIGINT_MAX } from '@/utils/constants'
 import { basketAtom } from '@/views/index-dtf/deploy/atoms'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { CheckCircle2, Wallet } from 'lucide-react'
@@ -82,17 +86,38 @@ const ApproveAsset = ({
   amount: number
 }) => {
   const { writeContract, isPending, isSuccess } = useWriteContract()
+  const {
+    writeContract: writeContractRevoke,
+    isPending: isPendingRevoke,
+    isSuccess: isSuccessRevoke,
+  } = useWriteContract()
   const chainId = useAtomValue(chainIdAtom)
   const assetsAllowance = useAtomValue(formattedAssetsAllowanceAtom)
 
+  const { isUSDT, needsRevoke } = useIsUSDT(
+    address,
+    chainId,
+    INDEX_DEPLOYER_ADDRESS[chainId]
+  )
+
+  const revoke = () => {
+    writeContractRevoke({
+      abi: USDT,
+      address,
+      functionName: 'approve',
+      args: [INDEX_DEPLOYER_ADDRESS[chainId], 0n],
+      chainId,
+    })
+  }
+
   const approve = () => {
     writeContract({
-      abi: erc20Abi,
+      abi: isUSDT ? USDT : erc20Abi,
       address,
       functionName: 'approve',
       args: [
         INDEX_DEPLOYER_ADDRESS[chainId],
-        parseUnits((amount * 2).toString(), decimals),
+        isUSDT ? BIGINT_MAX : parseUnits((amount * 2).toString(), decimals),
       ],
       chainId,
     })
@@ -103,6 +128,29 @@ const ApproveAsset = ({
     (assetsAllowance[address] && amount && assetsAllowance[address] >= amount)
   ) {
     return <CheckCircle2 className="mx-2" color="green" size={24} />
+  }
+
+  if (needsRevoke && !isSuccessRevoke) {
+    return (
+      <Button
+        variant="outline-primary"
+        className="rounded-full"
+        onClick={revoke}
+      >
+        <div className="flex items-center gap-1">
+          {isPendingRevoke ? 'Revoking...' : 'Revoke'}
+          <Help
+            side="bottom"
+            content={
+              <span className="text-sm text-wrap font-light">
+                This is a USDT token or a fork of USDT. You need to revoke the
+                approval before you can approve it.
+              </span>
+            }
+          />
+        </div>
+      </Button>
+    )
   }
 
   return (

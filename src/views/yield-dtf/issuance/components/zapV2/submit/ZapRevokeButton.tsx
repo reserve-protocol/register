@@ -5,7 +5,7 @@ import { useZap } from '../context/ZapContext'
 import { useZapTx } from '../context/ZapTxContext'
 import Help from 'components/help'
 
-const ZapApprovalButton = () => {
+const ZapRevokeButton = () => {
   const { tokenIn, loadingZap, validatingZap } = useZap()
 
   const { loadingRevoke, validatingRevoke, revoke } = useZapTx()
@@ -55,4 +55,4 @@ const ZapApprovalButton = () => {
   )
 }
 
-export default ZapApprovalButton
+export default ZapRevokeButton
