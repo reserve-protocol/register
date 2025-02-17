@@ -16,12 +16,12 @@ const IndexCreatorNotes = () => {
 
   return (
     <Card className="p-6">
-      <div className="flex items-center gap-1 mb-16">
+      <div className="flex items-center gap-1 mb-4">
         <div className="rounded-full border border-foreground p-2 mr-auto">
-          <ScrollText size={20} />
+          <ScrollText size={14} />
         </div>
         <div className="flex items-center gap-1">
-          <ScrollText size={20} strokeWidth={1} />
+          <ScrollText size={14} strokeWidth={1} />
           <span className="text-legend">Creator:</span>
           <Link
             to={getExplorerLink(

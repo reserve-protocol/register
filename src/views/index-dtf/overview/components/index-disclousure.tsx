@@ -5,13 +5,13 @@ import { Fingerprint, Signature } from 'lucide-react'
 const IndexDisclousure = () => {
   return (
     <Card className="p-6">
-      <div className="flex items-center gap-1 mb-16">
+      <div className="flex items-center gap-1">
         <div className="rounded-full border border-foreground p-2 mr-auto">
-          <Signature size={20} />
+          <Signature size={14} />
         </div>
       </div>
       <div className="flex items-center gap-2 mb-4"></div>
-      <h2 className="text-4xl mb-2">Disclosures</h2>
+      <h2 className="text-2xl font-semibold mb-2">Disclosures</h2>
       <p className="text-legend">
         By using app.reserve.org (the “Website”), you expressly acknowledge that
         you have read and understood the{' '}

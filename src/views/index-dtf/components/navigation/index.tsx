@@ -9,6 +9,7 @@ import { indexDTFAtom, indexDTFBrandAtom } from '@/state/dtf/atoms'
 import { ROUTES } from '@/utils/constants'
 import { t } from '@lingui/macro'
 import { useAtomValue } from 'jotai'
+import { Globe } from 'lucide-react'
 import { useMemo } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 
@@ -76,12 +77,7 @@ const NavigationItems = () => {
   const items = useMemo(
     () => [
       {
-        icon: (
-          <TokenLogo
-            src={brandData?.dtf?.icon ?? undefined}
-            symbol={dtf?.token.symbol}
-          />
-        ),
+        icon: <Globe size={14} />,
         label: t`Overview`,
         route: ROUTES.OVERVIEW,
       },
@@ -122,7 +118,6 @@ const IndexDTFNavigation = () => {
   return (
     <div className="w-full lg:sticky lg:top-0 p-6 fixed bottom-0 border-t lg:border-t-0 lg:w-56 flex-shrink-0 bg-background z-[1] h-[72px] lg:h-full">
       <div className="sticky top-6">
-        <Header />
         <NavigationItems />
       </div>
     </div>

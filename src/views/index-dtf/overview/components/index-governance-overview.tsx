@@ -15,13 +15,13 @@ import { forwardRef } from 'react'
 const Container = ({ children }: { children: React.ReactNode }) => {
   return (
     <Card className="p-4 sm:p-6">
-      <div className="flex items-center gap-2 mb-16">
+      <div className="flex items-center gap-2 mb-4">
         <div className="rounded-full border border-foreground p-2 mr-auto">
           <GovernanceIcon />
         </div>
       </div>
       <div>
-        <h2 className="text-4xl mb-2">Governance</h2>
+        <h2 className="text-2xl font-semibold mb-2">Governance</h2>
         {children}
       </div>
     </Card>

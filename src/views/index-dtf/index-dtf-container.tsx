@@ -71,7 +71,6 @@ const IndexDTFMetadataUpdater = () => {
 
   useEffect(() => {
     if (brandData) {
-      console.log('brandData', brandData)
       setIndexDTFBrand(brandData)
     }
   }, [brandData])

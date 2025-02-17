@@ -187,7 +187,7 @@ const IndexTokenOverview = () => {
 
   return (
     <Card className="p-2">
-      <div className="flex items-center sm:mb-16 p-2 sm:p-4">
+      <div className="flex items-center p-2 sm:p-4">
         <div className="flex items-center mr-auto">
           {!brand ? (
             <Skeleton className="h-8 w-8 rounded-full" />
@@ -213,13 +213,13 @@ const IndexTokenOverview = () => {
         </div>
         <TokenAddresses />
       </div>
-      <div className="p-2 sm:p-4 relative max-w-96 sm:max-w-[620px] break-words">
+      <div className="p-2 sm:px-4 sm:pb-4 pt-0 relative max-w-96 sm:max-w-[620px] break-words">
         {!dtf ? (
           <TokenNameSkeleton />
         ) : (
           <>
             <h4>${dtf.token.symbol}</h4>
-            <h1 className="mt-2 sm:mt-4 text-2xl md:text-5xl  font-medium w-full break-words">
+            <h1 className="mt-1 text-2xl md:text-3xl  font-medium w-full break-words">
               {dtf.token.name}
             </h1>
           </>

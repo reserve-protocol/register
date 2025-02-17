@@ -268,7 +268,7 @@ const Mandate = () => {
 
   return (
     <div>
-      <h2 className="text-4xl mb-2">About this DTF</h2>
+      <h2 className="text-2xl font-semibold mb-2">About this DTF</h2>
       {!data ? (
         <div>
           <Skeleton className="w-full h-20" />
@@ -286,9 +286,9 @@ const Header = () => {
   const data = useAtomValue(indexDTFAtom)
 
   return (
-    <div className="flex items-center gap-2 mb-16">
+    <div className="flex items-center gap-2 mb-4">
       <div className="rounded-full border border-foreground p-2 mr-auto">
-        <BrickWall size={20} />
+        <BrickWall size={14} strokeWidth={1.5} />
       </div>
 
       {!data ? (
