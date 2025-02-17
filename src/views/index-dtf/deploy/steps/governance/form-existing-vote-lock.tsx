@@ -1,12 +1,11 @@
-import { gql } from 'graphql-request'
-import BasicInput from '../../components/basic-input'
 import useIndexDTFSubgraph from '@/hooks/useIndexDTFSugbraph'
+import { chainIdAtom } from '@/state/atoms'
+import { gql } from 'graphql-request'
+import { useAtomValue } from 'jotai'
 import { useFormContext } from 'react-hook-form'
 import { erc20Abi, isAddress } from 'viem'
 import { useReadContract } from 'wagmi'
-import { ChainId } from '@/utils/chains'
-import { useAtomValue } from 'jotai'
-import { chainIdAtom } from '@/state/atoms'
+import BasicInput from '../../components/basic-input'
 
 const stTokenQuery = gql`
   query getStakingToken($id: String!) {

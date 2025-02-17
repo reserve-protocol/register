@@ -221,7 +221,6 @@ const txAtom = atom<
 const ConfirmManualDeployButton = () => {
   const { watch } = useFormContext()
   const formChainId = watch('chain')
-  console.log(formChainId)
   const tx = useAtomValue(txAtom)
   const daoCreated = useAtomValue(daoCreatedAtom)
   const hasAssetsAllowance = useAtomValue(hasAssetsAllowanceAtom)
