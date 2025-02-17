@@ -46,45 +46,38 @@ const Intro = () => (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-7">
       <div>
         <p className="mt-3 text-sm text-legend">
-          <a className="underline" href="https://reserve.org/" target="_blank">
-            Welcome to the Reserve.org
-          </a>{' '}
           <Trans>
-            - the user interface for registering, inspecting, and interacting
-            with Decentralized Token Folios (”DTFs”). A DTF is the generic name
-            given to asset-backed indexes. DTFs can be permissionlessly created
-            on the Reserve Protocol.
+            Welcome to Reserve — a platform for creating, exploring, and
+            interacting with Decentralized Token Folios (“DTFs”). A DTF is the
+            generic name given to any onchain asset-backed index. DTFs can be
+            created on Reserve’s Yield Protocol or Index Protocol
+            permissionlessly, by any person or entity.
           </Trans>
         </p>
         <p className="mt-2 text-sm text-legend">
           <Trans>
-            Whether you're an economist looking to improve the fiat standard, a
-            DeFi-entrepreneur seeking to fill a gap in the market, or simply an
-            innovator with a wild idea, anyone can create their own asset-backed
-            index.
+            Whether you’re an economist looking to improve the fiat standard, a
+            DeFi entrepreneur seeking to fill a gap in the market, or simply an
+            innovator with a wild idea, Reserve makes it easy to launch your own
+            asset-backed index.
           </Trans>
         </p>
         <p className="mt-2 text-sm text-legend">
           <Trans>
-            DTFs live on a blockchain, either Ethereum, Base, or Solana which
-            means that they can be transacted worldwide within seconds. They're
-            also 100% backed by other assets living on that same blockchain. The
-            users of the currency can - at any time - redeem their DTF for
-            backing assets worth the same value.
+            DTFs live on blockchain networks including Ethereum, Base, and
+            (soon) Solana, enabling worldwide transactions within seconds. Each
+            DTF is 100% backed by other assets on the same blockchain. Users can
+            redeem their DTF tokens for the underlying backing assets at any
+            time without anyone else’s involvement.
           </Trans>
         </p>
       </div>
       <div>
         <p className="mt-3 text-sm text-legend">
           <Trans>
-            Whenever you see the term "overcollateralization", we're referring
-            to the built-in defense mechanism included in Yield DTFs that help
-            protect their stability in the case of any of their backing assets
-            defaulting. You can learn more about overcollateralization here.
-            Whenever you see the term "overcollateralization", we're referring
-            to the built-in defence mechanism included in RTokens that help
-            protect their stability in the case of any of their backing assets
-            defaulting.
+            Yield DTFs (created on the Reserve Yield Protocol) feature built-in
+            overcollateralization — a defense mechanism that helps protect
+            stability if any backing assets default.
           </Trans>{' '}
           <a
             className="underline"
@@ -96,11 +89,11 @@ const Intro = () => (
         </p>
         <p className="mt-2 text-sm text-legend">
           <Trans>
-            Still have questions? Come talk to the Reserve community in our
-            Discord server. We'd be more than happy to help!
+            Still have questions? Come talk to us in the Reserve Discord server.
+            We’d be happy to help! You can also
           </Trans>{' '}
           <a className="underline" href={PROTOCOL_DOCS} target="_blank">
-            You can also read the Reserve Protocol Documentation.
+            explore the Reserve Documentation for more details.
           </a>
         </p>
       </div>

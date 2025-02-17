@@ -1,16 +1,16 @@
+import YieldIconAlt from '@/components/icons/YieldIconAlt'
 import { Tabs, TabsContent } from '@/components/ui/tabs'
+import { cn } from '@/lib/utils'
+import DiscoverTabList, { Tab } from './discover-tab-list'
 import DiscoverIndexDTF from './index/discover-index-dtf'
 import DiscoverYieldDTF from './yield/discover-yield-dtf'
-import DiscoverTabList, { Tab } from './discover-tab-list'
-import YieldIconAlt from '@/components/icons/YieldIconAlt'
-import { cn } from '@/lib/utils'
 
-import { Flower, Scale, ShipWheel } from 'lucide-react'
+import { Flower, Globe, Scale } from 'lucide-react'
 
 const tabs: Tab[] = [
   {
     value: 'index',
-    icon: <ShipWheel />,
+    icon: <Globe />,
     title: 'Index DTFs',
     subtitle: 'Get easy exposure to narratives, indexes, and ecosystems',
   },

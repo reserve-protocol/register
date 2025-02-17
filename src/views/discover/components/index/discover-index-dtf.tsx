@@ -253,17 +253,20 @@ const IndexDTFList = () => {
   return (
     <div className="flex flex-col gap-1 p-1 rounded-[20px] bg-secondary">
       <DTFFilters />
-      <DataTable
-        columns={columns}
-        data={filtered}
-        onRowClick={handleRowClick}
-        className={cn(
-          'hidden sm:table bg-card text-base rounded-[20px]',
-          '[&_thead_th]:px-6',
-          '[&_tbody_td]:px-6',
-          '[&_tbody]:rounded-[20px] [&_tbody_tr:last-child_td]:rounded-bl-[20px] [&_tbody_tr:last-child_td:last-child]:rounded-br-[20px]'
-        )}
-      />
+      <div className="overflow-auto">
+        <DataTable
+          columns={columns}
+          data={filtered}
+          onRowClick={handleRowClick}
+          className={cn(
+            'hidden sm:table bg-card text-base rounded-[20px]',
+            '[&_thead_th]:px-6',
+            '[&_tbody_td]:px-6',
+            '[&_tbody]:rounded-[20px] [&_tbody_tr:last-child_td]:rounded-bl-[20px] [&_tbody_tr:last-child_td:last-child]:rounded-br-[20px]'
+          )}
+        />
+      </div>
+
       <div className="sm:hidden bg-card rounded-[20px]">
         {filtered.map((dtf) => (
           <div key={dtf.address} className="[&:not(:last-child)]:border-b">

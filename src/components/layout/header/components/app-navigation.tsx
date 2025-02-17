@@ -23,7 +23,13 @@ import {
   ROUTES,
 } from '@/utils/constants'
 import { t, Trans } from '@lingui/macro'
-import { ArrowRight, ArrowUpRight, Asterisk, SquarePlus } from 'lucide-react'
+import {
+  ArrowRight,
+  ArrowUpRight,
+  Asterisk,
+  Globe,
+  SquarePlus,
+} from 'lucide-react'
 import { useMemo } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 
@@ -65,7 +71,7 @@ const AppNavigation = () => {
         },
         {
           label: t`Create New DTF`,
-          icon: <SquarePlus strokeWidth={1.5} size={16} />,
+          icon: <Globe strokeWidth={1.5} size={16} />,
           to: ROUTES.DEPLOY_INDEX,
         },
       ],
