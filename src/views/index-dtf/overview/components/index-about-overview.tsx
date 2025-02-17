@@ -151,7 +151,7 @@ const IndexBasketTokens = ({
                         address={token.address}
                         chain={chainId}
                       />
-                      <span className="max-w-20">{token.name}</span>
+                      <span className="max-w-20 md:max-w-52">{token.name}</span>
                     </div>
                   </TableCell>
                   <TableCell>
