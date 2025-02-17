@@ -94,7 +94,7 @@ const SubmitZapButton = ({
     abi: erc20Abi,
     address: tokenIn,
     functionName: 'approve',
-    args: [approvalAddress, BigInt(amountIn)],
+    args: [approvalAddress, (BigInt(amountIn) * 120n) / 100n],
     query: { enabled: approvalNeeded },
     chainId,
   })
