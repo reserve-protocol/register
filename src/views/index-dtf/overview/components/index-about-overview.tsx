@@ -110,6 +110,8 @@ const IndexBasketVisual = ({ basket, ...props }: BasketOverviewProps) => {
 
 const MAX_TOKENS = 10
 
+// TODO: had an scrollarea but it looks kind of odd?
+// TODO: above will be a problem for... 50-100 token baskets.. solve in the future!
 const IndexBasketTokens = ({
   basket,
   className,
@@ -123,67 +125,65 @@ const IndexBasketTokens = ({
 
   return (
     <div className={cn('relative', className)}>
-      <ScrollArea
+      {/* <ScrollArea
         className={cn(
           'flex md:max-h-[620px] flex-col overflow-y-auto',
           viewAll && basket.length > MAX_TOKENS && 'max-h-[1240px]'
         )}
-      >
-        <Table>
-          <TableHeader>
-            <TableRow className="border-none text-legend bg-card sticky top-0 ">
-              <TableHead>Token</TableHead>
-              <TableHead>Ticker</TableHead>
-              <TableHead className="text-center">Weight</TableHead>
-              <TableHead className="text-right"></TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {basket
-              .slice(0, viewAll ? basket.length : MAX_TOKENS)
-              .map((token, index) => (
-                <TableRow key={token.symbol} className="border-none">
-                  <TableCell>
-                    <div className="flex items-center font-semibold gap-2 break-words">
-                      <TokenLogo
-                        size="lg"
-                        symbol={token.symbol}
-                        address={token.address}
-                        chain={chainId}
-                      />
-                      <span className="max-w-20 md:max-w-52">{token.name}</span>
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <span className="max-w-20 break-words">
-                      ${token.symbol}
-                    </span>
-                  </TableCell>
-                  <TableCell className="text-primary text-center font-bold">
-                    {basketShares[token.address]}%
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <Link
-                      to={getExplorerLink(
-                        token.address,
-                        chainId,
-                        ExplorerDataType.TOKEN
-                      )}
-                      target="_blank"
+      > */}
+      <Table>
+        <TableHeader>
+          <TableRow className="border-none text-legend bg-card sticky top-0 ">
+            <TableHead>Token</TableHead>
+            <TableHead>Ticker</TableHead>
+            <TableHead className="text-center">Weight</TableHead>
+            <TableHead className="text-right"></TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {basket
+            .slice(0, viewAll ? basket.length : MAX_TOKENS)
+            .map((token, index) => (
+              <TableRow key={token.symbol} className="border-none">
+                <TableCell>
+                  <div className="flex items-center font-semibold gap-2 break-words">
+                    <TokenLogo
+                      size="lg"
+                      symbol={token.symbol}
+                      address={token.address}
+                      chain={chainId}
+                    />
+                    <span className="max-w-20 md:max-w-52">{token.name}</span>
+                  </div>
+                </TableCell>
+                <TableCell>
+                  <span className="max-w-20 break-words">${token.symbol}</span>
+                </TableCell>
+                <TableCell className="text-primary text-center font-bold">
+                  {basketShares[token.address]}%
+                </TableCell>
+                <TableCell className="text-right">
+                  <Link
+                    to={getExplorerLink(
+                      token.address,
+                      chainId,
+                      ExplorerDataType.TOKEN
+                    )}
+                    target="_blank"
+                  >
+                    <Box
+                      variant="circle"
+                      className="hover:bg-primary/10 hover:text-primary"
                     >
-                      <Box
-                        variant="circle"
-                        className="hover:bg-primary/10 hover:text-primary"
-                      >
-                        <ArrowUpRight className="h-4 w-4" />
-                      </Box>
-                    </Link>
-                  </TableCell>
-                </TableRow>
-              ))}
-          </TableBody>
-        </Table>
-      </ScrollArea>
+                      <ArrowUpRight className="h-4 w-4" />
+                    </Box>
+                  </Link>
+                </TableCell>
+              </TableRow>
+            ))}
+        </TableBody>
+      </Table>
+      {/* </ScrollArea> */}
       {basket.length > MAX_TOKENS && (
         <Button
           variant="outline"
