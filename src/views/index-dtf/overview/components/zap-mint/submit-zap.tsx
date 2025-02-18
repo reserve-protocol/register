@@ -108,6 +108,9 @@ const SubmitZapButton = ({
     chainId,
   })
 
+  const addStepOneLabel =
+    approvalNeeded && approvalReceipt?.status !== 'success'
+  const addStepTwoLabel = approvalReceipt?.status === 'success'
   const readyToSubmit = !approvalNeeded || approvalReceipt?.status === 'success'
 
   const {
@@ -203,7 +206,11 @@ const SubmitZapButton = ({
           setOngoingTx(true)
           readyToSubmit ? execute() : approve()
         }}
-        text={readyToSubmit ? buttonLabel : `Approve use of ${inputSymbol}`}
+        text={
+          readyToSubmit
+            ? `${addStepTwoLabel ? 'Step 2. ' : ''}${buttonLabel}`
+            : `${addStepOneLabel ? 'Step 1. ' : ''}Approve use of ${inputSymbol}`
+        }
         fullWidth
         sx={{
           borderRadius: '12px',
