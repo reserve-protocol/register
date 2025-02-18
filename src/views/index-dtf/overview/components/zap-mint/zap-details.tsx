@@ -103,7 +103,7 @@ const ZapDetails = ({ data }: { data: ZapResult }) => {
                     </span>
                   </span>
                 ),
-                help: 'A one-time fee deducted from the tokens a user receives when they mint the DTF. The platform will keep 50% of revenue from this fee.',
+                help: 'A one-time fee deduction from the tokens you are using to create a share of the DTF. This fee is set by the Governors of the DTF.',
               },
             ]
           : []),
