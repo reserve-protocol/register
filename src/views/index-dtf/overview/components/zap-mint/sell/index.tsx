@@ -21,7 +21,7 @@ import {
   zapRefetchAtom,
 } from '../atom'
 import SubmitZap from '../submit-zap'
-import { ZapDetails } from '../zap-details'
+import ZapDetails, { ZapPriceImpact } from '../zap-details'
 
 const Sell = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
@@ -66,6 +66,7 @@ const Sell = () => {
   )
   const fetchingZapper = isLoading || isFetching
   const zapperErrorMessage = data?.error || failureReason?.message || ''
+  const dustValue = data?.result?.dustValue || 0
 
   const changeTab = () => {
     setCurrentTab((prev) => (prev === 'sell' ? 'buy' : 'sell'))
@@ -103,7 +104,15 @@ const Sell = () => {
         to={{
           address: selectedToken.address,
           symbol: selectedToken.symbol,
-          price: priceTo ? `$${formatCurrency(priceTo)}` : undefined,
+          price: priceTo ? (
+            <span>
+              ${formatCurrency(priceTo)}
+              {dustValue > 0.01
+                ? ` + $${formatCurrency(dustValue)} in dust `
+                : ' '}
+              <ZapPriceImpact data={data?.result} />
+            </span>
+          ) : undefined,
           value: formatUnits(BigInt(valueTo || 0), selectedToken.decimals),
           tokens: tokens.slice(1),
           onTokenSelect: setOutputToken,

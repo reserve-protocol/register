@@ -49,7 +49,7 @@ const ZapSettings = () => {
         <SlippageSelector
           value={slippage}
           onChange={setSlippage}
-          options={['50', '100', '200', '500']}
+          options={['20', '50', '100', '200']}
           hideTitle
         />
       </div>

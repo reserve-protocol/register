@@ -1,13 +1,41 @@
 import { SwapDetails } from '@/components/ui/swap'
 import { indexDTFAtom } from '@/state/dtf/atoms'
+import { formatCurrency, formatPercentage } from '@/utils'
 import { ZapResult } from '@/views/yield-dtf/issuance/components/zapV2/api'
 import Decimal from 'decimal.js-light'
 import { useAtomValue } from 'jotai'
-import { selectedTokenOrDefaultAtom, slippageAtom } from './atom'
 import { formatUnits } from 'viem'
-import { formatCurrency, formatPercentage } from '@/utils'
+import { selectedTokenOrDefaultAtom, slippageAtom } from './atom'
 
-export const ZapDetails = ({ data }: { data: ZapResult }) => {
+export const ZapPriceImpact = ({
+  data,
+  isDetail = false,
+}: {
+  data?: ZapResult
+  isDetail?: boolean
+}) => {
+  const priceImpact = data?.truePriceImpact || 0
+  const priceImpactColor =
+    priceImpact > 10
+      ? 'text-red-500'
+      : priceImpact > 5
+        ? 'text-yellow-500'
+        : priceImpact < 0
+          ? 'text-green-500'
+          : isDetail
+            ? ''
+            : 'text-muted-foreground'
+  return (
+    <span className={priceImpactColor}>
+      {isDetail ? '' : '('}
+      {priceImpact > 0 ? (isDetail ? '' : '-') : '+'}
+      {formatPercentage(Math.abs(priceImpact))}
+      {isDetail ? '' : ')'}
+    </span>
+  )
+}
+
+const ZapDetails = ({ data }: { data: ZapResult }) => {
   const indexDTF = useAtomValue(indexDTFAtom)
   const selectedToken = useAtomValue(selectedTokenOrDefaultAtom)
   const slippage = useAtomValue(slippageAtom)
@@ -75,7 +103,7 @@ export const ZapDetails = ({ data }: { data: ZapResult }) => {
                     </span>
                   </span>
                 ),
-                help: 'A one-time fee deducted from the tokens a user receives when they mint the DTF. The platform will keep 50% of revenue from this fee.',
+                help: 'A one-time fee deduction from the tokens you are using to create a share of the DTF. This fee is set by the Governors of the DTF.',
               },
             ]
           : []),
@@ -86,7 +114,7 @@ export const ZapDetails = ({ data }: { data: ZapResult }) => {
         },
         {
           left: <span className="text-muted-foreground">Price Impact</span>,
-          right: <span>{formatPercentage(data.priceImpact)}</span>,
+          right: <ZapPriceImpact data={data} isDetail />,
           help: 'The impact your trade has on the market price.',
         },
       ]}

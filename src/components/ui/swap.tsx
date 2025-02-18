@@ -37,7 +37,7 @@ type TokenWithBalance = Token & { balance?: string }
 
 type SwapItem = {
   title?: string
-  price?: string
+  price?: ReactNode
   address?: string
   symbol?: string
   balance?: string
@@ -228,7 +228,7 @@ const SlowLoading = ({ enabled }: { enabled: boolean }) => {
 
     const textInterval = setInterval(() => {
       setTextIndex((prev) => (prev + 1) % SLOW_LOADING_TEXTS.length)
-    }, 12000)
+    }, 5000)
 
     return () => {
       clearInterval(countdownInterval)
@@ -341,7 +341,7 @@ const ArrowSeparator = ({ onSwap }: Pick<SwapProps, 'onSwap'>) => {
 export const SlippageSelector = ({
   value,
   onChange,
-  options = ['100', '200', '1000'],
+  options = ['20', '50', '100', '200'],
   formatOption = (option) => `${(1 / Number(option)) * 100}%`,
   hideTitle = false,
 }: {

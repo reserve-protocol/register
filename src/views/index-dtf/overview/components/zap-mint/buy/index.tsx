@@ -23,7 +23,7 @@ import {
   zapRefetchAtom,
 } from '../atom'
 import SubmitZap from '../submit-zap'
-import ZapDetails from '../zap-details'
+import ZapDetails, { ZapPriceImpact } from '../zap-details'
 
 const Buy = () => {
   const chainId = useAtomValue(chainIdAtom)
@@ -110,9 +110,15 @@ const Buy = () => {
         to={{
           address: indexDTF.id,
           symbol: indexDTF.token.symbol,
-          price: priceTo
-            ? `$${formatCurrency(priceTo)}${dustValue > 0.01 ? ` + $${formatCurrency(dustValue)} in dust` : ''}`
-            : undefined,
+          price: priceTo ? (
+            <span>
+              ${formatCurrency(priceTo)}
+              {dustValue > 0.01
+                ? ` + $${formatCurrency(dustValue)} in dust `
+                : ' '}
+              <ZapPriceImpact data={data?.result} />
+            </span>
+          ) : undefined,
           value: formatEther(BigInt(valueTo || 0)),
         }}
         onSwap={changeTab}

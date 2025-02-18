@@ -35,6 +35,7 @@ export type ZapResult = {
 
   gas: string | null
   priceImpact: number // 0.0% => no impact | 10 => 10% impact
+  truePriceImpact: number // -10% => positive impact,  10 => 10% negative impact
   tx: {
     data: string
     to: Address
