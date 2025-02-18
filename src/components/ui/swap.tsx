@@ -37,7 +37,7 @@ type TokenWithBalance = Token & { balance?: string }
 
 type SwapItem = {
   title?: string
-  price?: string
+  price?: ReactNode
   address?: string
   symbol?: string
   balance?: string
