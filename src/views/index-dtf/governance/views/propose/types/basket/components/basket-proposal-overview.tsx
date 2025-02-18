@@ -6,15 +6,16 @@ import { Link } from 'react-router-dom'
 import { isBasketProposalValidAtom, isProposalConfirmedAtom } from '../atoms'
 import SubmitProposalButton from './submit-proposal-button'
 import { ROUTES } from '@/utils/constants'
-import { indexDTFAtom } from '@/state/dtf/atoms'
+import { indexDTFAtom, indexDTFBrandAtom } from '@/state/dtf/atoms'
 
 // TODO: get governance route to navigate back to governance
 const Header = () => {
   const dtf = useAtomValue(indexDTFAtom)
+  const brand = useAtomValue(indexDTFBrandAtom)
 
   return (
     <div className="flex items-center p-6 gap-2 bg-card rounded-t-3xl">
-      <TokenLogo size="lg" />
+      <TokenLogo size="lg" src={brand?.dtf?.icon || undefined} />
       <h3 className="font-bold mr-auto">${dtf?.token.symbol}</h3>
       <Link to={`../${ROUTES.GOVERNANCE}`}>
         <Button

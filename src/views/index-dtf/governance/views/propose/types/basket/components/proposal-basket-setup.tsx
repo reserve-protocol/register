@@ -17,8 +17,10 @@ import { cn } from '@/lib/utils'
 import { chainIdAtom } from '@/state/chain/atoms/chainAtoms'
 import { Token } from '@/types'
 import { formatPercentage, shortenAddress } from '@/utils'
+import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { ArrowRightCircle } from 'lucide-react'
+import { PaintBucket } from 'lucide-react'
+import { Link } from 'react-router-dom'
 import { Address } from 'viem'
 import {
   IndexAssetShares,
@@ -29,9 +31,6 @@ import {
   proposedSharesAtom,
   stepAtom,
 } from '../atoms'
-import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
-import { Link } from 'react-router-dom'
-import { useEffect } from 'react'
 
 const assetsAtom = atom((get) => {
   const proposedBasket = get(proposedIndexBasketAtom)
@@ -121,8 +120,8 @@ const AssetCellInfo = ({ asset }: { asset: IndexAssetShares }) => {
         </div>
 
         {canFill && (
-          <Button variant="ghost" size="icon-rounded" onClick={handleFill}>
-            <ArrowRightCircle />
+          <Button variant="outline" size="icon-rounded" onClick={handleFill}>
+            <PaintBucket />
           </Button>
         )}
       </div>
@@ -130,12 +129,30 @@ const AssetCellInfo = ({ asset }: { asset: IndexAssetShares }) => {
   )
 }
 
+const CurrentSharesCell = ({ asset }: { asset: IndexAssetShares }) => {
+  const [targetShares, setTargetShares] = useAtom(proposedSharesAtom)
+
+  const handleClick = () => {
+    setTargetShares({
+      ...targetShares,
+      [asset.token.address]: asset.currentShares,
+    })
+  }
+
+  return (
+    <TableCell
+      className="text-center cursor-pointer hover:text-primary"
+      onClick={handleClick}
+    >
+      {formatPercentage(Number(asset.currentShares))}
+    </TableCell>
+  )
+}
+
 const AssetRow = ({ asset }: { asset: IndexAssetShares }) => (
   <TableRow>
     <AssetCellInfo asset={asset} />
-    <TableCell className="text-center">
-      {formatPercentage(Number(asset.currentShares))}
-    </TableCell>
+    <CurrentSharesCell asset={asset} />
     <NewSharesCell asset={asset.token.address} />
     <DeltaSharesCell asset={asset.token.address} />
   </TableRow>
@@ -155,7 +172,7 @@ const Allocation = () => {
           remainingAllocation !== 0 && !isValid && 'text-destructive'
         )}
       >
-        {formatPercentage(Math.abs(remainingAllocation))}
+        {formatPercentage(remainingAllocation)}
       </span>
     </div>
   )
@@ -271,17 +288,6 @@ const ProposalBasketTable = () => {
 
 const NextButton = () => {
   const isValid = useAtomValue(isProposedBasketValidAtom)
-  const prices = useAtomValue(priceMapAtom)
-  const proposedBasket = useAtomValue(proposedIndexBasketAtom)
-
-  // TODO: Debugging
-  const basketWithPrices = Object.values(proposedBasket || {}).map((asset) => ({
-    ...asset,
-    price: prices[asset.token.address.toLowerCase()],
-  }))
-
-  console.log('basketWithPrices', basketWithPrices)
-
   const setStep = useSetAtom(stepAtom)
   const handleNext = () => {
     setStep('prices')
@@ -294,7 +300,7 @@ const NextButton = () => {
       className="w-full my-2"
       size="lg"
     >
-      Next | Set price range(s)
+      Next
     </Button>
   )
 }

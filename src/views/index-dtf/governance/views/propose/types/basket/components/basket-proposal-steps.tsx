@@ -8,11 +8,14 @@ import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { useAtom, useAtomValue } from 'jotai'
 import {
+  AlignCenterVertical,
   ArrowLeftIcon,
   Asterisk,
+  Boxes,
   CheckIcon,
   ChevronDownIcon,
   ChevronUpIcon,
+  Sunrise,
 } from 'lucide-react'
 import { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
@@ -38,21 +41,21 @@ interface ProposalStepTrigger
 export const DEPLOY_STEPS: ProposalStep[] = [
   {
     id: 'basket',
-    icon: <Asterisk size={24} strokeWidth={1.5} />,
+    icon: <Boxes size={16} strokeWidth={1.5} />,
     title: 'Set basket composition',
     titleSecondary: 'Basket Composition',
     content: <ProposalBasketSetup />,
   },
   {
     id: 'prices',
-    icon: <Asterisk size={24} strokeWidth={1.5} />,
+    icon: <AlignCenterVertical size={16} strokeWidth={1.5} />,
     title: 'Price Settings',
     titleSecondary: 'Price Settings',
     content: <ProposalTradingRanges />,
   },
   {
     id: 'expiration',
-    icon: <Asterisk size={24} strokeWidth={1.5} />,
+    icon: <Sunrise size={16} strokeWidth={1.5} />,
     title: 'Launch Settings',
     titleSecondary: 'Launch Settings',
     content: <ProposalTradingExpiration />,
@@ -75,13 +78,13 @@ const StepTrigger = ({ id, icon, title, index }: ProposalStepTrigger) => {
       <div className="flex items-center gap-2">
         <div
           className={cn(
-            'rounded-full flex-shrink-0 p-1',
+            'rounded-full flex-shrink-0 p-2',
             isActive || isCompleted
               ? 'bg-primary/10 text-primary'
               : 'bg-muted-foreground/10'
           )}
         >
-          {isCompleted ? <CheckIcon size={24} strokeWidth={1.5} /> : icon}
+          {isCompleted ? <CheckIcon size={16} strokeWidth={1.5} /> : icon}
         </div>
         <div
           className={cn(

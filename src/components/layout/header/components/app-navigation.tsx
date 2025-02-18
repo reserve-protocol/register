@@ -26,7 +26,6 @@ import { t, Trans } from '@lingui/macro'
 import {
   ArrowRight,
   ArrowUpRight,
-  Asterisk,
   Cable,
   Ear,
   Flower,

@@ -120,38 +120,41 @@ const PermissionlessWindow = () => {
   }
 
   return (
-    <div className="flex items-center gap-2 rounded-xl bg-foreground/5 p-4">
-      <ToggleGroup
-        type="single"
-        className="bg-muted-foreground/10 p-1 rounded-xl justify-start flex-grow"
-        value={
-          customPermissionlessLaunchingWindow
-            ? 'custom'
-            : permissionlessLaunching
-        }
-        onValueChange={(value) => {
-          if (value) {
-            setPermissionlessLaunching(value)
-            setCustomPermissionlessLaunchingWindow('')
+    <div className="flex flex-col justify-center gap-3 rounded-xl bg-foreground/5 p-4">
+      <h4 className="font-semibold ml-3">Community Launch Window</h4>
+      <div className="flex items-center gap-2">
+        <ToggleGroup
+          type="single"
+          className="bg-muted-foreground/10 p-1 rounded-xl justify-start flex-grow"
+          value={
+            customPermissionlessLaunchingWindow
+              ? 'custom'
+              : permissionlessLaunching
           }
-        }}
-      >
-        {WINDOW_OPTIONS.map((option) => (
-          <ToggleGroupItem
-            key={option}
-            value={option.toString()}
-            className="px-5 h-8 whitespace-nowrap rounded-lg data-[state=on]:bg-card text-secondary-foreground/80 data-[state=on]:text-primary flex-grow"
-          >
-            {option} hours
-          </ToggleGroupItem>
-        ))}
-      </ToggleGroup>
-      <NumericalInput
-        className="hidden sm:block w-40"
-        placeholder="Enter custom window"
-        value={customPermissionlessLaunchingWindow}
-        onChange={(value) => setCustomPermissionlessLaunchingWindow(value)}
-      />
+          onValueChange={(value) => {
+            if (value) {
+              setPermissionlessLaunching(value)
+              setCustomPermissionlessLaunchingWindow('')
+            }
+          }}
+        >
+          {WINDOW_OPTIONS.map((option) => (
+            <ToggleGroupItem
+              key={option}
+              value={option.toString()}
+              className="px-5 h-8 whitespace-nowrap rounded-lg data-[state=on]:bg-card text-secondary-foreground/80 data-[state=on]:text-primary flex-grow"
+            >
+              {option} hours
+            </ToggleGroupItem>
+          ))}
+        </ToggleGroup>
+        <NumericalInput
+          className="hidden sm:block w-40"
+          placeholder="Enter custom hours"
+          value={customPermissionlessLaunchingWindow}
+          onChange={(value) => setCustomPermissionlessLaunchingWindow(value)}
+        />
+      </div>
     </div>
   )
 }
@@ -175,7 +178,7 @@ const ProposalTradingExpiration = () => {
         id: PermissionOptionId.PERMISSIONLESS_LAUNCHING,
         title: 'Auction Launcher + Community',
         description:
-          'Both Auction Launchers AND community members can start auctions. Auction Launchers will still have an Exclusive Launch Window, but afterward anyone in the community can start an auction. Please specify how long community members should be allow to start auctions after the Exclusive Launch Window. ',
+          'Both Auction Launchers AND community members can start auctions. Auction Launchers will still have an Exclusive Launch Window, but afterward anyone in the community can start an auction. Please specify how long community members should be allow to start auctions after the Exclusive Launch Window.',
         icon: <Asterisk size={24} strokeWidth={1.5} />,
         disabled: priceRangeOption === 'defer',
       },

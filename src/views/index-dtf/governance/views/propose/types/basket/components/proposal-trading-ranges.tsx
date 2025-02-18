@@ -67,7 +67,7 @@ const NextButton = () => {
       disabled={!isValid}
       onClick={() => setStep('expiration')}
     >
-      Next | Set trade expiration
+      Next
     </Button>
   )
 }
@@ -91,21 +91,22 @@ const ProposalTradingRanges = () => {
   return (
     <>
       <p className="text-sm sm:text-base mx-4 sm:mx-6 mb-6">
-        Set the new desired percentages and we will calculate the required
-        trades needed to adopt the new basket if the proposal passes governance.
+        Set expected pricing volatility for each token pair. The auction
+        launcher can modify the pricing information within these volatility
+        bounds.
       </p>
       <div className="flex flex-col gap-2 mx-2">
         <TradeRangeOption
-          title="Defer to price curator"
-          description="Explain the benefit of using our framwork & clarify that it doesn't mean."
+          title="Defer to Auction Launcher"
+          description="Rely solely on the Auction Launcher to provide accurate pricing information when swapping assets. This option increases the amount of damage from mistakes or a rogue Auction Launcher."
           value="defer"
           disabled={!isDeferAvailable}
           onClick={() => setOption('defer')}
           checked={option === 'defer'}
         />
         <TradeRangeOption
-          title="Include price range(s) in proposal"
-          description="Explain the benefit of using our framwork & clarify that it doesn't mean."
+          title="Set Price Range(s)"
+          description="Set guardrails for the auction launcher by specifying the expected price volatility (low, medium, or high) for each auction. "
           value="include"
           onClick={() => setOption('include')}
           checked={option === 'include'}
