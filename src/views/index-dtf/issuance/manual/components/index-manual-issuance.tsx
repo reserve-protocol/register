@@ -199,6 +199,7 @@ const SubmitButton = () => {
 }
 
 const IndexManualIssuance = () => {
+  const mode = useAtomValue(modeAtom)
   return (
     <div>
       <div className="flex flex-col gap-2 border bg-card rounded-3xl p-4 h-fit">
@@ -210,7 +211,7 @@ const IndexManualIssuance = () => {
         <p className="text-sm text-muted-foreground">Having issues minting?</p>
         <Link to={`../${ROUTES.ISSUANCE}`}>
           <Button variant="muted" size="xs">
-            Switch to zap minting
+            Switch to zap {mode === 'buy' ? 'minting' : 'redeeming'}
           </Button>
         </Link>
       </div>
