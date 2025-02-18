@@ -1,6 +1,6 @@
-import { isAddress } from 'viem'
 import { z } from 'zod'
 import {
+  isAddressNotStrict,
   isERC20,
   isNotStRSR,
   isNotVoteLockAddress,
@@ -98,7 +98,9 @@ export const DeployFormSchema = z
     initialValue: z.coerce.number().positive('Initial value must be positive'),
     tokensDistribution: z.array(
       z.object({
-        address: z.string().refine(isAddress, { message: 'Invalid Address' }),
+        address: z
+          .string()
+          .refine(isAddressNotStrict, { message: 'Invalid Address' }),
         percentage: z.coerce
           .number()
           .multipleOf(0.01, 'Max precision is 0.01%')
@@ -107,15 +109,15 @@ export const DeployFormSchema = z
     ),
     governanceVoteLock: z
       .string()
-      .refine(isAddress, { message: 'Invalid Address' })
+      .refine(isAddressNotStrict, { message: 'Invalid Address' })
       .optional(),
     governanceERC20address: z
       .string()
-      .refine(isAddress, { message: 'Invalid Address' })
+      .refine(isAddressNotStrict, { message: 'Invalid Address' })
       .optional(),
     governanceWalletAddress: z
       .string()
-      .refine(isAddress, { message: 'Invalid Address' })
+      .refine(isAddressNotStrict, { message: 'Invalid Address' })
       .optional(),
     folioFee: z.coerce
       .number()
@@ -143,7 +145,9 @@ export const DeployFormSchema = z
     additionalRevenueRecipients: z
       .array(
         z.object({
-          address: z.string().refine(isAddress, { message: 'Invalid Address' }),
+          address: z
+            .string()
+            .refine(isAddressNotStrict, { message: 'Invalid Address' }),
           share: z.coerce
             .number()
             .multipleOf(0.01, 'Max precision is 0.01%')
@@ -157,7 +161,7 @@ export const DeployFormSchema = z
     guardians: z.array(
       z
         .string()
-        .refine((value) => !value || isAddress(value), {
+        .refine((value) => !value || isAddressNotStrict(value), {
           message: 'Invalid Address',
         })
         .optional()
@@ -165,7 +169,7 @@ export const DeployFormSchema = z
     brandManagers: z.array(
       z
         .string()
-        .refine((value) => !value || isAddress(value), {
+        .refine((value) => !value || isAddressNotStrict(value), {
           message: 'Invalid Address',
         })
         .optional()
@@ -173,7 +177,7 @@ export const DeployFormSchema = z
     auctionLaunchers: z.array(
       z
         .string()
-        .refine((value) => !value || isAddress(value), {
+        .refine((value) => !value || isAddressNotStrict(value), {
           message: 'Invalid Address',
         })
         .optional()
@@ -354,6 +358,9 @@ export const DeployFormSchema = z
           : []),
         ...(data.governanceVoteLock
           ? [data.governanceVoteLock.toLowerCase()]
+          : []),
+        ...(data.governanceWalletAddress
+          ? [data.governanceWalletAddress.toLowerCase()]
           : []),
       ]
       return (

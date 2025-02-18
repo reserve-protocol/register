@@ -2,7 +2,7 @@ import { GRAPH_CLIENTS, INDEX_GRAPH_CLIENTS } from '@/state/atoms'
 import { wagmiConfig } from '@/state/chain'
 import { DeployInputs } from '@/views/index-dtf/deploy/form-fields'
 import { gql } from 'graphql-request'
-import { Address, erc20Abi, parseEther } from 'viem'
+import { Address, erc20Abi, isAddress, parseEther } from 'viem'
 import { readContract } from 'wagmi/actions'
 import { FeeRecipient } from '../steps/confirm-deploy/manual/components/confirm-manual-deploy-button'
 import { AvailableChain } from '@/utils/chains'
@@ -19,6 +19,10 @@ export const isERC20 = async (address: Address, chainId: number) => {
     return false
   }
   return true
+}
+
+export const isAddressNotStrict = (address: string): address is Address => {
+  return isAddress(address, { strict: false })
 }
 
 const stTokenQuery = gql`
@@ -124,7 +128,9 @@ export const calculateRevenueDistribution = (
       parseEther('1') - currentSum
   }
 
-  revenueDistribution.sort((a, b) => (a.recipient < b.recipient ? -1 : 1))
+  revenueDistribution.sort((a, b) =>
+    a.recipient.toLowerCase().localeCompare(b.recipient.toLowerCase())
+  )
 
   return revenueDistribution
 }
