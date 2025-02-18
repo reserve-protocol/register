@@ -341,7 +341,7 @@ const ArrowSeparator = ({ onSwap }: Pick<SwapProps, 'onSwap'>) => {
 export const SlippageSelector = ({
   value,
   onChange,
-  options = ['100', '200', '1000'],
+  options = ['20', '50', '100', '200'],
   formatOption = (option) => `${(1 / Number(option)) * 100}%`,
   hideTitle = false,
 }: {
