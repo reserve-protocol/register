@@ -112,11 +112,14 @@ const RolesOverview = () => {
                 {brandData?.creator?.name || shortenAddress(dtf.deployer)}
               </span>
               <Link
-                to={getExplorerLink(
-                  dtf.deployer,
-                  chainId,
-                  ExplorerDataType.ADDRESS
-                )}
+                to={
+                  brandData?.creator?.link ||
+                  getExplorerLink(
+                    dtf.deployer,
+                    chainId,
+                    ExplorerDataType.ADDRESS
+                  )
+                }
                 target="_blank"
                 className="p-1 bg-muted rounded-full"
               >
