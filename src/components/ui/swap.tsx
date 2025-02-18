@@ -228,7 +228,7 @@ const SlowLoading = ({ enabled }: { enabled: boolean }) => {
 
     const textInterval = setInterval(() => {
       setTextIndex((prev) => (prev + 1) % SLOW_LOADING_TEXTS.length)
-    }, 12000)
+    }, 5000)
 
     return () => {
       clearInterval(countdownInterval)
