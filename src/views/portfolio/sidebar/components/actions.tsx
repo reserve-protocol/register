@@ -205,25 +205,23 @@ export const VoteLockAction = ({
 
   return (
     <div className="flex items-center gap-2">
-      {!!totalAccruedUSD && (
-        <div className="flex items-center gap-1">
-          <div className="text-sm">
-            <span className="text-muted-foreground">Rewards</span>{' '}
-            <span className="text-primary">
-              ${formatCurrency(totalAccruedUSD)}
-            </span>
-          </div>
-          <StackTokenLogo
-            tokens={
-              stTokenRewards
-                ?.slice(0, 3)
-                .map((t) => ({ chain: chainId, ...t })) || []
-            }
-            overlap={6}
-            reverseStack
-          />
+      <div className="flex items-center gap-1">
+        <div className="text-sm">
+          <span className="text-muted-foreground">Rewards</span>{' '}
+          <span className="text-primary">
+            ${formatCurrency(totalAccruedUSD)}
+          </span>
         </div>
-      )}
+        <StackTokenLogo
+          tokens={
+            stTokenRewards
+              ?.slice(0, 3)
+              .map((t) => ({ chain: chainId, ...t })) || []
+          }
+          overlap={6}
+          reverseStack
+        />
+      </div>
       <ChevronRight className="h-4 w-4" />
     </div>
   )

@@ -148,38 +148,40 @@ const RewardsUpdater = () => {
       ][]
       const rewardsFinal = entries.map(
         ([stToken, { chainId, rewards: rewardAddresses }]) => {
-          const rewards = rewardAddresses.map((rewardAddress) => {
-            const symbol = accruedRewards?.[currentIndex++] as string
-            const name = accruedRewards?.[currentIndex++] as string
-            const decimals = accruedRewards?.[currentIndex++] as number
-            const accrued = (
-              accruedRewards?.[currentIndex++] as [bigint, bigint]
-            )[1] as bigint
-            const price = (
-              chainId === ChainId.Mainnet
-                ? mainnetRewardsPrices
-                : baseRewardsPrices
-            )?.find(
-              (token) =>
-                token.address.toLowerCase() === rewardAddress.toLowerCase()
-            )?.price
+          const rewards = rewardAddresses
+            .map((rewardAddress) => {
+              const symbol = accruedRewards?.[currentIndex++] as string
+              const name = accruedRewards?.[currentIndex++] as string
+              const decimals = accruedRewards?.[currentIndex++] as number
+              const accrued = (
+                accruedRewards?.[currentIndex++] as [bigint, bigint]
+              )[1] as bigint
+              const price = (
+                chainId === ChainId.Mainnet
+                  ? mainnetRewardsPrices
+                  : baseRewardsPrices
+              )?.find(
+                (token) =>
+                  token.address.toLowerCase() === rewardAddress.toLowerCase()
+              )?.price
 
-            const accruedUSD =
-              accrued !== undefined && price !== undefined
-                ? Number(formatUnits(accrued, decimals)) * price
-                : undefined
+              const accruedUSD =
+                accrued !== undefined && price !== undefined
+                  ? Number(formatUnits(accrued, decimals)) * price
+                  : undefined
 
-            return {
-              address: rewardAddress,
-              chainId,
-              symbol,
-              name,
-              decimals,
-              accrued,
-              price,
-              accruedUSD,
-            }
-          })
+              return {
+                address: rewardAddress,
+                chainId,
+                symbol,
+                name,
+                decimals,
+                accrued,
+                price,
+                accruedUSD,
+              }
+            })
+            .filter(({ accrued }) => accrued !== 0n)
           return [stToken, rewards]
         }
       )

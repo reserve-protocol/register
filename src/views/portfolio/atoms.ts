@@ -1,8 +1,8 @@
+import { accountHoldingsAtom, rsrPriceAtom } from '@/state/atoms'
 import { Token } from '@/types'
 import { atom } from 'jotai'
-import { Address, Chain, formatUnits, Hex, parseUnits } from 'viem'
+import { Address, Chain, formatUnits } from 'viem'
 import { PortfolioTabs } from './sidebar'
-import { accountHoldingsAtom, rsrPriceAtom } from '@/state/atoms'
 
 export interface IndexToken extends Token {
   chainId: number
