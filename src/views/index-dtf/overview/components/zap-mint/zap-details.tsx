@@ -20,7 +20,7 @@ export const ZapPriceImpact = ({
       ? 'text-red-500'
       : priceImpact > 5
         ? 'text-yellow-500'
-        : priceImpact <= -5
+        : priceImpact < 0
           ? 'text-green-500'
           : isDetail
             ? ''
