@@ -10,6 +10,20 @@ import RSRBalancesUpdater from '@/views/portfolio/updaters/rsr-balances-updater'
 import RewardsUpdater from '@/views/portfolio/rewards-updater'
 import { ChainId } from '@/utils/chains'
 
+export const PortfolioUpdater = () => {
+  return (
+    <>
+      <AccountUpdater />
+      <TokenBalancesUpdater />
+      <IndexDTFUpdater chainId={ChainId.Mainnet} />
+      <IndexDTFUpdater chainId={ChainId.Base} />
+      <IndexDTFPricesUpdater />
+      <RSRBalancesUpdater />
+      <RewardsUpdater />
+    </>
+  )
+}
+
 /**
  * Updater
  */
@@ -18,15 +32,9 @@ const Updater = () => {
     <>
       <CMSUpdater />
       <PricesUpdater />
-      <AccountUpdater />
       <RTokenUpdater />
       <CollateralYieldUpdater />
-      <TokenBalancesUpdater />
-      <IndexDTFUpdater chainId={ChainId.Mainnet} />
-      <IndexDTFUpdater chainId={ChainId.Base} />
-      <IndexDTFPricesUpdater />
-      <RSRBalancesUpdater />
-      <RewardsUpdater />
+      <PortfolioUpdater />
     </>
   )
 }

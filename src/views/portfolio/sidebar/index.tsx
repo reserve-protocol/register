@@ -52,6 +52,7 @@ import {
   VoteLockAction,
   YieldDTFAction,
 } from './components/actions'
+import { PortfolioUpdater } from '@/state/updater'
 
 const portfolioDismissibleAtom = atom(true)
 
@@ -130,74 +131,79 @@ function TokenRow({
 
 const PortfolioHeader = () => {
   return (
-    <ConnectButton.Custom>
-      {({ account, openAccountModal, accountModalOpen }) => {
-        const [showRewards, setShowRewards] = useAtom(portfolioShowRewardsAtom)
-        const setDismissible = useSetAtom(portfolioDismissibleAtom)
+    <>
+      <PortfolioUpdater />
+      <ConnectButton.Custom>
+        {({ account, openAccountModal, accountModalOpen }) => {
+          const [showRewards, setShowRewards] = useAtom(
+            portfolioShowRewardsAtom
+          )
+          const setDismissible = useSetAtom(portfolioDismissibleAtom)
 
-        if (!account) return null
+          if (!account) return null
 
-        useEffect(() => {
-          if (!accountModalOpen) {
-            setDismissible(true)
+          useEffect(() => {
+            if (!accountModalOpen) {
+              setDismissible(true)
+            }
+          }, [accountModalOpen])
+
+          const handleAccountModal = () => {
+            setDismissible(false)
+            document.body.style.pointerEvents = 'auto'
+            openAccountModal()
           }
-        }, [accountModalOpen])
 
-        const handleAccountModal = () => {
-          setDismissible(false)
-          document.body.style.pointerEvents = 'auto'
-          openAccountModal()
-        }
-
-        return (
-          <div className="flex items-center gap-2 p-6 pt-[22px] pb-2 w-full">
-            <div className="relative flex items-center gap-2">
-              {showRewards && (
-                <Button
-                  variant="outline"
-                  className="rounded-xl px-2 h-9 animate-width-expand"
-                  onClick={() => setShowRewards(false)}
-                >
-                  <ArrowLeft size={20} strokeWidth={1.5} />
-                </Button>
-              )}
-              <BlockiesAvatar
-                size={32}
-                address={account.address}
-                className="rounded-[10px]"
-              />
-              <div className="absolute right-0 bottom-0 translate-x-0.5 translate-y-0.5">
-                <div className="relative ml-1 h-[10px] w-[10px]">
-                  <div className="absolute h-full w-full animate-ping rounded-full bg-green-400" />
-                  <div className="absolute h-full w-full rounded-full bg-green-400" />
+          return (
+            <div className="flex items-center gap-2 p-6 pt-[22px] pb-2 w-full">
+              <div className="relative flex items-center gap-2">
+                {showRewards && (
+                  <Button
+                    variant="outline"
+                    className="rounded-xl px-2 h-9 animate-width-expand"
+                    onClick={() => setShowRewards(false)}
+                  >
+                    <ArrowLeft size={20} strokeWidth={1.5} />
+                  </Button>
+                )}
+                <BlockiesAvatar
+                  size={32}
+                  address={account.address}
+                  className="rounded-[10px]"
+                />
+                <div className="absolute right-0 bottom-0 translate-x-0.5 translate-y-0.5">
+                  <div className="relative ml-1 h-[10px] w-[10px]">
+                    <div className="absolute h-full w-full animate-ping rounded-full bg-green-400" />
+                    <div className="absolute h-full w-full rounded-full bg-green-400" />
+                  </div>
+                </div>
+              </div>
+              <div className="flex items-center gap-3">
+                <span className="text-base font-light">
+                  {shortenAddress(account.address)}
+                </span>
+                <div className="flex items-center gap-[6px]">
+                  <div className="flex items-center rounded-full bg-muted p-1">
+                    <CopyValue
+                      value={account.address}
+                      size={16}
+                      placement="right"
+                    />
+                  </div>
+                  <div
+                    className="flex items-center rounded-full border border-red-200 text-red-500 p-1"
+                    role="button"
+                    onClick={handleAccountModal}
+                  >
+                    <LogOut size={14} />
+                  </div>
                 </div>
               </div>
             </div>
-            <div className="flex items-center gap-3">
-              <span className="text-base font-light">
-                {shortenAddress(account.address)}
-              </span>
-              <div className="flex items-center gap-[6px]">
-                <div className="flex items-center rounded-full bg-muted p-1">
-                  <CopyValue
-                    value={account.address}
-                    size={16}
-                    placement="right"
-                  />
-                </div>
-                <div
-                  className="flex items-center rounded-full border border-red-200 text-red-500 p-1"
-                  role="button"
-                  onClick={handleAccountModal}
-                >
-                  <LogOut size={14} />
-                </div>
-              </div>
-            </div>
-          </div>
-        )
-      }}
-    </ConnectButton.Custom>
+          )
+        }}
+      </ConnectButton.Custom>
+    </>
   )
 }
 
