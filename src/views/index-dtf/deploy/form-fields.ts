@@ -346,6 +346,32 @@ export const DeployFormSchema = z
       path: ['roles'],
     }
   )
+  .refine(
+    (data) => {
+      const governanceAddresses = [
+        ...(data.governanceERC20address
+          ? [data.governanceERC20address.toLowerCase()]
+          : []),
+        ...(data.governanceVoteLock
+          ? [data.governanceVoteLock.toLowerCase()]
+          : []),
+      ]
+      return (
+        new Set([
+          ...(data.additionalRevenueRecipients?.map(
+            (item) => item?.address?.toLowerCase() || item?.address
+          ) || []),
+          ...governanceAddresses,
+        ]).size ===
+        (data.additionalRevenueRecipients?.length || 0) +
+          governanceAddresses.length
+      )
+    },
+    {
+      message: 'Duplicated additional recipients',
+      path: ['revenue-distribution'],
+    }
+  )
 
 export const dtfDeployDefaultValues = {
   tokenName: '',
