@@ -124,6 +124,7 @@ const Updater = () => {
   const setTokenGovernance = useSetAtom(iTokenGovernanceAtom)
   const setTokenBasket = useSetAtom(iTokenBasketAtom)
   const resetAtoms = useSetAtom(resetStateAtom)
+  const setIndexDTFBrand = useSetAtom(indexDTFBrandAtom)
   const chainId = NETWORKS[chain ?? ''] as AvailableChain
 
   useChainWatch()
@@ -133,7 +134,7 @@ const Updater = () => {
     setTokenConfiguration(undefined)
     setTokenGovernance(undefined)
     setTokenBasket(undefined)
-
+    setIndexDTFBrand(undefined)
     // Remove duplicates
     resetAtoms()
   }

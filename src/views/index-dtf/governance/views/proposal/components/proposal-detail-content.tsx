@@ -9,7 +9,7 @@ import {
   indexDTFBasketPricesAtom,
   indexDTFBasketSharesAtom,
 } from '@/state/dtf/atoms'
-import BasketProposalPreview from '../../propose/types/basket/components/proposal-basket-preview'
+import BasketProposalPreview from '../../propose/basket/components/proposal-basket-preview'
 import { Address } from 'viem'
 
 const TABS = {

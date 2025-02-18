@@ -144,7 +144,7 @@ const TokenLogo = React.forwardRef<HTMLImageElement, Props>((props, ref) => {
       width={w}
       style={{ height: h, width: w }}
       className={cn(
-        'flex-shrink-0 rounded-full',
+        'flex-shrink-0 rounded-full object-contain object-center',
         className,
         currentSrc && !currentSrc.includes('defaultLogo')
           ? 'bg-black'

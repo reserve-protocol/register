@@ -2,12 +2,19 @@ import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { ROUTES, GOVERNANCE_PROPOSAL_TYPES } from '@/utils/constants'
 import { Trans } from '@lingui/macro'
-import { ArrowRight, Asterisk } from 'lucide-react'
+import {
+  ArrowLeft,
+  ArrowRight,
+  Asterisk,
+  Boxes,
+  Crown,
+  LayoutGrid,
+} from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 const proposalTypes = [
   {
-    icon: <Asterisk size={24} />,
+    icon: <Boxes strokeWidth={1.5} size={16} />,
     title: 'DTF Basket',
     route: GOVERNANCE_PROPOSAL_TYPES.BASKET,
     enabled: true,
@@ -19,13 +26,13 @@ const proposalTypes = [
     enabled: false,
   },
   {
-    icon: <Asterisk size={24} />,
+    icon: <Crown size={16} />,
     title: 'Roles',
     route: GOVERNANCE_PROPOSAL_TYPES.ROLES,
     enabled: false,
   },
   {
-    icon: <Asterisk size={24} />,
+    icon: <LayoutGrid size={16} />,
     title: 'Other',
     route: GOVERNANCE_PROPOSAL_TYPES.OTHER,
     enabled: false,
@@ -33,18 +40,16 @@ const proposalTypes = [
 ]
 
 const Header = () => (
-  <div className="flex flex-row items-center border-none p-4 sm:p-7 py-5">
-    <h1 className="mr-auto text-primary text-xl font-bold">
+  <div className="flex flex-row items-center border-none p-4 pl-7 pb-3">
+    <Link
+      className="p-2 rounded-full border border-primary text-primary hover:bg-primary/10"
+      to={`../${ROUTES.GOVERNANCE}`}
+    >
+      <ArrowLeft size={14} />
+    </Link>
+    <h1 className="ml-4 text-primary text-xl font-bold">
       <Trans>Select proposal type</Trans>
     </h1>
-    <Link to={`../${ROUTES.GOVERNANCE}`}>
-      <Button
-        variant="outline"
-        className="text-destructive hover:text-destructive"
-      >
-        Cancel
-      </Button>
-    </Link>
   </div>
 )
 
@@ -61,11 +66,11 @@ const TypeList = () => (
             'opacity-50 cursor-not-allowed hover:text-muted-foreground'
         )}
       >
-        <div className="rounded-full h-8 w-8 bg-input flex items-center justify-center">
+        <div className="rounded-full h-8 w-8 border border-foreground flex items-center justify-center">
           {proposalType.icon}
         </div>
         <h4 className="bg-card m-1 mr-auto font-bold">{proposalType.title}</h4>
-        <div className="rounded-full h-8 w-8 bg-input flex items-center justify-center">
+        <div className="rounded-full h-8 w-8 bg-muted flex items-center justify-center">
           <ArrowRight size={16} />
         </div>
       </Link>

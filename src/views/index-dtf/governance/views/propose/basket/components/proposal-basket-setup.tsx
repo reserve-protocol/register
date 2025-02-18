@@ -248,6 +248,33 @@ const TokenSelector = () => {
   )
 }
 
+const EvenDistribution = () => {
+  const [proposedShares, setProposedShares] = useAtom(proposedSharesAtom)
+
+  const handleEvenDistribution = () => {
+    const numTokens = Object.keys(proposedShares).length
+    const evenShare = (100 / numTokens).toFixed(2)
+
+    // Handle rounding error to ensure total is exactly 100
+    const shares = Object.keys(proposedShares).map((key, i) => {
+      if (i === numTokens - 1) {
+        // Last token gets remaining balance to equal 100
+        const sumOthers = (numTokens - 1) * Number(evenShare)
+        return [key, (100 - sumOthers).toFixed(2)]
+      }
+      return [key, evenShare]
+    })
+
+    setProposedShares(Object.fromEntries(shares))
+  }
+
+  return (
+    <Button variant="outline" size="sm" onClick={handleEvenDistribution}>
+      Even distribution
+    </Button>
+  )
+}
+
 const ProposalBasketTable = () => {
   const { assets, isLoading } = useAtomValue(assetsAtom)
 
@@ -276,7 +303,10 @@ const ProposalBasketTable = () => {
             <TableCell colSpan={4}>
               <div className="flex items-center">
                 <TokenSelector />
-                <Allocation />
+                <div className="flex flex-col gap-2">
+                  <EvenDistribution />
+                  <Allocation />
+                </div>
               </div>
             </TableCell>
           </TableRow>
