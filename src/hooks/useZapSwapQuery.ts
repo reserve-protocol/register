@@ -8,6 +8,7 @@ import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useMemo } from 'react'
 import { Address } from 'viem'
 import useDebounce from './useDebounce'
+import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
 
 const useZapSwapQuery = ({
   tokenIn,
@@ -16,6 +17,7 @@ const useZapSwapQuery = ({
   slippage,
   disabled,
   forceMint,
+  dtfTicker,
 }: {
   tokenIn?: Address
   tokenOut?: Address
@@ -23,6 +25,7 @@ const useZapSwapQuery = ({
   slippage: number
   disabled: boolean
   forceMint: boolean
+  dtfTicker: string
 }) => {
   const chainId = useAtomValue(chainIdAtom)
   const account = useAtomValue(walletAtom)
@@ -68,10 +71,30 @@ const useZapSwapQuery = ({
           throw new Error(`Error: ${response.status}`)
         }
         const data = await response.json()
+
+        if (data) {
+          mixpanel.track('index-dtf-zap-swap', {
+            event: 'index-dtf-zap-swap',
+            wa: account,
+            ca: tokenIn,
+            ticker: dtfTicker,
+            endpoint: endpoint,
+            status: data.status,
+            tokenIn,
+            tokenOut,
+            amountInValue: data.result?.amountInValue,
+            amountOutValue: data.result?.amountOutValue,
+            dustValue: data.result?.dustValue,
+            truePriceImpact: data.result?.truePriceImpact,
+          })
+        }
+
         if (data && data.status === 'error') {
           throw new Error(data.error)
         }
+
         lastData = data
+
         if (
           data &&
           data.result &&
@@ -87,6 +110,7 @@ const useZapSwapQuery = ({
         }
         break
       }
+
       return lastData
     },
     enabled: !!endpoint && !disabled,

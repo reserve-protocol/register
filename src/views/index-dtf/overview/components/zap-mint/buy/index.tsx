@@ -56,6 +56,7 @@ const Buy = () => {
       slippage: isFinite(Number(slippage)) ? Number(slippage) : 10000,
       disabled: insufficientBalance || ongoingTx,
       forceMint,
+      dtfTicker: indexDTF?.token.symbol || '',
     })
 
   const { loadingAfterRefetch } = useLoadingAfterRefetch(data)

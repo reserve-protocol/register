@@ -52,6 +52,7 @@ const Sell = () => {
       slippage: Number(slippage),
       disabled: insufficientBalance || ongoingTx,
       forceMint,
+      dtfTicker: indexDTF?.token.symbol || '',
     })
 
   const { loadingAfterRefetch } = useLoadingAfterRefetch(data)
