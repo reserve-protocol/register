@@ -1,12 +1,10 @@
 import { chainIdAtom } from '@/state/atoms'
-import { Token } from '@/types'
 import { RESERVE_API } from '@/utils/constants'
 import { useQuery } from '@tanstack/react-query'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
-import { Address, erc20Abi } from 'viem'
-import { useReadContracts } from 'wagmi'
-import useTokensMetadata from './useTokensMetadata'
+import { Address } from 'viem'
+import useTokensInfo from './useTokensInfo'
 
 type Response = {
   price: number
@@ -46,15 +44,15 @@ const useIndexPrice = (token: string | undefined) => {
 
 export const useIndexBasket = (token: string | undefined, chainId: number) => {
   const { data: priceResult } = useIndexPrice(token)
-  const assets = useMemo(() => {
-    if (!priceResult) return []
+  const assets = useMemo(
+    () => priceResult?.basket?.map((asset) => asset.address) || [],
+    [priceResult]
+  )
 
-    return priceResult.basket.map((asset) => asset.address)
-  }, [priceResult])
-
-  const basket = useTokensMetadata(assets, chainId)
+  const { data: basketMap } = useTokensInfo(assets)
 
   return useMemo(() => {
+    const basket = Object.values(basketMap || {})
     if (!basket || !priceResult || !token)
       return {
         isLoading: true,
@@ -97,5 +95,5 @@ export const useIndexBasket = (token: string | undefined, chainId: number) => {
         shares,
       },
     }
-  }, [basket, priceResult])
+  }, [basketMap, priceResult])
 }
