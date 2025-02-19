@@ -100,6 +100,7 @@ export type TradesByProposal = {
   expired: number
   expiresAt: number
   availableAt: number
+  status: string
 }
 export const allPricesAtom = atom<Record<string, number> | undefined>(undefined)
 
@@ -240,6 +241,7 @@ export const dtfTradesByProposalAtom = atom<TradesByProposal[] | undefined>(
           expired: 0,
           availableAt: 0,
           expiresAt: 0,
+          status: 'PENDING',
         }
       }
     }
@@ -255,6 +257,18 @@ export const dtfTradesByProposalAtom = atom<TradesByProposal[] | undefined>(
           trade.launchTimeout
         tradesByProposal[trade.approvedBlockNumber].availableAt =
           trade.availableAt
+
+        // Update status based on trade states
+        const proposal = tradesByProposal[trade.approvedBlockNumber]
+        const totalTrades = proposal.trades.length
+
+        if (proposal.completed === totalTrades) {
+          proposal.status = 'COMPLETED'
+        } else if (proposal.expired === totalTrades) {
+          proposal.status = 'EXPIRED'
+        } else if (trade.state === TRADE_STATE.RUNNING) {
+          proposal.status = 'ONGOING'
+        }
       }
     }
 

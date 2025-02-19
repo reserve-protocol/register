@@ -72,24 +72,34 @@ const ProposalIndicators = ({ data }: { data: TradesByProposal }) => {
     return () => clearInterval(interval)
   }, [])
 
-  if (!isAvailable && !isExpired) {
+  if (data.status === 'ONGOING') {
     return (
       <Container>
-        <Spinner />
-        Permissionless in:{' '}
-        <span className="font-semibold">{getTimerFormat(availableAt)}</span>
+        <Spinner className="text-primary" />
+        <span className="text-primary font-bold">Ongoing</span>
       </Container>
     )
   }
+  if (data.status === 'PENDING') {
+    if (!isAvailable && !isExpired) {
+      return (
+        <Container>
+          <Spinner />
+          Permissionless in:{' '}
+          <span className="font-semibold">{getTimerFormat(availableAt)}</span>
+        </Container>
+      )
+    }
 
-  if (!isExpired) {
-    return (
-      <Container>
-        <Spinner />
-        Auction expires in:{' '}
-        <span className="font-semibold">{getTimerFormat(expiresAt)}</span>
-      </Container>
-    )
+    if (!isExpired) {
+      return (
+        <Container>
+          <Spinner />
+          Auction expires in:{' '}
+          <span className="font-semibold">{getTimerFormat(expiresAt)}</span>
+        </Container>
+      )
+    }
   }
 
   return (
