@@ -1,4 +1,5 @@
 import { chainIdAtom } from '@/state/atoms'
+import { indexDTFPriceAtom } from '@/state/dtf/atoms'
 import { RESERVE_API } from '@/utils/constants'
 import { useQuery } from '@tanstack/react-query'
 import { useAtomValue } from 'jotai'
@@ -28,8 +29,17 @@ const useIndexDTFPriceHistory = ({
   interval,
 }: UseIndexDTFPriceHistoryParams) => {
   const chainId = useAtomValue(chainIdAtom)
+  const currentPrice = useAtomValue(indexDTFPriceAtom)
+
   return useQuery({
-    queryKey: ['dtf-historical-price', address, from, to, interval],
+    queryKey: [
+      'dtf-historical-price',
+      address,
+      from,
+      to,
+      interval,
+      currentPrice,
+    ],
     queryFn: async (): Promise<IndexDTFPerformance> => {
       const sp = new URLSearchParams()
       sp.set('chainId', chainId.toString())
@@ -46,7 +56,16 @@ const useIndexDTFPriceHistory = ({
         throw new Error('Failed to fetch dtf price history')
       }
 
-      return (await response.json()) as IndexDTFPerformance
+      const data = (await response.json()) as IndexDTFPerformance
+
+      if (currentPrice) {
+        data.timeseries.push({
+          timestamp: Date.now(),
+          price: currentPrice,
+        })
+      }
+
+      return data
     },
     enabled: Boolean(address),
     refetchInterval: REFRESH_INTERVAL,
