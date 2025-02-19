@@ -55,6 +55,7 @@ const useTokensInfo = (addresses: string[]) => {
             const decimals = data[index + 2] as number
 
             const filter = new Filter()
+            filter.removeWords('god')
 
             const name = filter.clean(
               useBytes32
