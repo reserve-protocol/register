@@ -65,7 +65,9 @@ const Sell = () => {
       !isLoading
   )
   const fetchingZapper = isLoading || isFetching
-  const zapperErrorMessage = data?.error || failureReason?.message || ''
+  const zapperErrorMessage = isFetching
+    ? ''
+    : data?.error || failureReason?.message || ''
   const dustValue = data?.result?.dustValue || 0
 
   const changeTab = () => {

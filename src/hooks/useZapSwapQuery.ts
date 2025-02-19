@@ -1,13 +1,13 @@
 import { chainIdAtom, walletAtom } from '@/state/atoms'
+import { zapSwapEndpointAtom } from '@/views/index-dtf/overview/components/zap-mint/atom'
 import zapper, {
   ZapResponse,
 } from '@/views/yield-dtf/issuance/components/zapV2/api'
 import { useQuery } from '@tanstack/react-query'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useMemo } from 'react'
-import { Address, zeroAddress } from 'viem'
+import { Address } from 'viem'
 import useDebounce from './useDebounce'
-import { zapSwapEndpointAtom } from '@/views/index-dtf/overview/components/zap-mint/atom'
 
 const useZapSwapQuery = ({
   tokenIn,
@@ -57,16 +57,42 @@ const useZapSwapQuery = ({
   return useQuery({
     queryKey: ['zapDeploy', endpoint],
     queryFn: async (): Promise<ZapResponse> => {
-      const response = await fetch(endpoint!)
+      // If dust > 1% of amountOutValue, retry up to 3 times.
+      const maxDustRetries = 3
+      let dustAttempt = 0
+      let lastData: ZapResponse
 
-      if (!response.ok) {
-        throw new Error(`Error: ${response.status}`)
+      while (true) {
+        const response = await fetch(endpoint!)
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status}`)
+        }
+        const data = await response.json()
+        if (data && data.status === 'error') {
+          throw new Error(data.error)
+        }
+        lastData = data
+        if (
+          data &&
+          data.result &&
+          data.result.amountOutValue &&
+          data.result.dustValue
+        ) {
+          const amountOut = Number(data.result.amountOutValue)
+          const dust = Number(data.result.dustValue)
+          if (dust > 0.01 * amountOut && dustAttempt < maxDustRetries) {
+            dustAttempt++
+            continue
+          }
+        }
+        break
       }
-
-      return response.json()
+      return lastData
     },
     enabled: !!endpoint && !disabled,
     refetchInterval: 12000,
+    retry: 3,
+    retryDelay: (attempt) => Math.min(1000 * Math.pow(2, attempt), 10000),
   })
 }
 

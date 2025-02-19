@@ -163,7 +163,7 @@ const TokenSelector = ({
 }
 
 const PriceValue = ({ price }: Pick<SwapItem, 'price'>) => (
-  <div className="max-w-[120px] sm:max-w-[200px] overflow-hidden">
+  <div className="max-w-[300px] overflow-hidden">
     <span className="text-legend block truncate">{price || '$0.00'}</span>
   </div>
 )
