@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { RESERVE_STORAGE } from '@/utils/constants'
+import { RESERVE_STORAGE, UNIVERSAL_ASSETS } from '@/utils/constants'
 import { cn } from '@/lib/utils'
 
 type Sizes = 'sm' | 'md' | 'lg' | 'xl'
@@ -34,6 +34,7 @@ const TokenLogo = React.forwardRef<HTMLImageElement, Props>((props, ref) => {
   const h = height || sizeMap[size].height
   const w = width || sizeMap[size].width
   const [currentSrc, setCurrentSrc] = React.useState('')
+  const [isWrapped, setIsWrapped] = React.useState(false)
 
   const tryLoadImage = async (url: string): Promise<string> => {
     return new Promise((resolve, reject) => {
@@ -103,6 +104,18 @@ const TokenLogo = React.forwardRef<HTMLImageElement, Props>((props, ref) => {
       //   }
       // }
 
+      if (address && symbol && UNIVERSAL_ASSETS.has(address.toLowerCase())) {
+        try {
+          const universalUrl = `https://www.universal.xyz/wrapped-tokens/UA-${symbol.toUpperCase().substring(1)}.svg`
+          const url = await tryLoadImage(universalUrl)
+          setCurrentSrc(url)
+          setIsWrapped(true)
+          return
+        } catch (error) {
+          console.debug(`Failed to load dexscreener image for ${address}`)
+        }
+      }
+
       // If we have address and chain, try external APIs
       if (address && chain) {
         try {
@@ -144,11 +157,12 @@ const TokenLogo = React.forwardRef<HTMLImageElement, Props>((props, ref) => {
       width={w}
       style={{ height: h, width: w }}
       className={cn(
-        'flex-shrink-0 rounded-full object-contain object-center',
+        'flex-shrink-0 object-contain object-center',
         className,
         currentSrc && !currentSrc.includes('defaultLogo')
           ? 'bg-black'
-          : 'bg-muted'
+          : 'bg-muted',
+        isWrapped ? 'bg-transparent' : 'rounded-full'
       )}
       onError={() => setCurrentSrc('/svgs/defaultLogo.svg')}
       {...rest}
