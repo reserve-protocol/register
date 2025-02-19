@@ -6,6 +6,7 @@ import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { Address, erc20Abi } from 'viem'
 import { useReadContracts } from 'wagmi'
+import useTokensMetadata from './useTokensMetadata'
 
 type Response = {
   price: number
@@ -50,47 +51,8 @@ export const useIndexBasket = (token: string | undefined, chainId: number) => {
 
     return priceResult.basket.map((asset) => asset.address)
   }, [priceResult])
-  const { data: basket } = useReadContracts({
-    contracts: assets.flatMap((asset) => [
-      {
-        address: asset,
-        abi: erc20Abi,
-        functionName: 'name',
-        chainId,
-      },
-      {
-        address: asset,
-        abi: erc20Abi,
-        functionName: 'symbol',
-        chainId,
-      },
-      {
-        address: asset,
-        abi: erc20Abi,
-        functionName: 'decimals',
-        chainId,
-      },
-    ]),
-    allowFailure: false,
-    query: {
-      enabled: assets.length > 0,
-      select: (data) => {
-        let index = 0
-        return assets.map((asset) => {
-          const token = {
-            address: asset.toLowerCase(),
-            name: data[index] as string,
-            symbol: data[index + 1] as string,
-            decimals: data[index + 2] as number,
-          } as Token
 
-          index += 3
-
-          return token
-        })
-      },
-    },
-  })
+  const basket = useTokensMetadata(assets, chainId)
 
   return useMemo(() => {
     if (!basket || !priceResult || !token)
