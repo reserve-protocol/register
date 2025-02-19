@@ -73,11 +73,11 @@ const CoverImage = () => {
   const brand = useAtomValue(indexDTFBrandAtom)
 
   return (
-    <div className="overflow-hidden">
+    <div className="overflow-hidden rounded-3xl bg-muted p-1">
       <img
-        width={475}
-        height={424}
-        className="object-cover h-[424px] w-[475px] rounded-3xl"
+        width={468}
+        height={416}
+        className="object-cover h-[416px] w-[468px] rounded-3xl"
         alt="DTF meme"
         src={brand?.dtf?.cover || defaultCover}
       />
