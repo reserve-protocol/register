@@ -57,19 +57,37 @@ const useZapSwapQuery = ({
   return useQuery({
     queryKey: ['zapDeploy', endpoint],
     queryFn: async (): Promise<ZapResponse> => {
-      const response = await fetch(endpoint!)
+      // If dust > 1% of amountOutValue, retry up to 3 times.
+      const maxDustRetries = 3
+      let dustAttempt = 0
+      let lastData: ZapResponse
 
-      if (!response.ok) {
-        throw new Error(`Error: ${response.status}`)
+      while (true) {
+        const response = await fetch(endpoint!)
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status}`)
+        }
+        const data = await response.json()
+        if (data && data.status === 'error') {
+          throw new Error(data.error)
+        }
+        lastData = data
+        if (
+          data &&
+          data.result &&
+          data.result.amountOutValue &&
+          data.result.dustValue
+        ) {
+          const amountOut = Number(data.result.amountOutValue)
+          const dust = Number(data.result.dustValue)
+          if (dust > 0.01 * amountOut && dustAttempt < maxDustRetries) {
+            dustAttempt++
+            continue
+          }
+        }
+        break
       }
-
-      const data = await response.json()
-
-      if (data && data.status === 'error') {
-        throw new Error(data.error)
-      }
-
-      return data
+      return lastData
     },
     enabled: !!endpoint && !disabled,
     refetchInterval: 12000,
