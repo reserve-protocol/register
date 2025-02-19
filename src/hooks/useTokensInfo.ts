@@ -1,6 +1,7 @@
 import { chainIdAtom } from '@/state/atoms'
 import { Token } from '@/types'
 import { ChainId } from '@/utils/chains'
+import { Filter } from 'bad-words'
 import { useAtomValue } from 'jotai'
 import { Address, erc20Abi_bytes32, Hex, trim, hexToString } from 'viem'
 import { erc20Abi } from 'viem'
@@ -53,9 +54,13 @@ const useTokensInfo = (addresses: string[]) => {
             const rawSymbol = data[index + 1]
             const decimals = data[index + 2] as number
 
-            const name = useBytes32
-              ? hexToString(trim(rawName as Hex, { dir: 'right' }))
-              : (rawName as string)
+            const filter = new Filter()
+
+            const name = filter.clean(
+              useBytes32
+                ? hexToString(trim(rawName as Hex, { dir: 'right' }))
+                : (rawName as string)
+            )
             const symbol = useBytes32
               ? hexToString(trim(rawSymbol as Hex, { dir: 'right' }))
               : (rawSymbol as string)
