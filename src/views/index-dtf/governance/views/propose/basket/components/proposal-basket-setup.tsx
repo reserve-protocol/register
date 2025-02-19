@@ -84,6 +84,7 @@ const AssetCellInfo = ({ asset }: { asset: IndexAssetShares }) => {
     state.remainingAllocation !== 0 &&
     !state.isValid &&
     Number(targetShares[asset.token.address]) + state.remainingAllocation >= 0
+  const negativeAllocation = state.remainingAllocation < 0
 
   const handleFill = () => {
     setTargetShares({
@@ -121,7 +122,7 @@ const AssetCellInfo = ({ asset }: { asset: IndexAssetShares }) => {
 
         {canFill && (
           <Button variant="outline" size="icon-rounded" onClick={handleFill}>
-            <PaintBucket />
+            <PaintBucket className={negativeAllocation ? 'scale-x-[-1]' : ''} />
           </Button>
         )}
       </div>
