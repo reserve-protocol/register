@@ -26,7 +26,7 @@ export type ProposalStep = {
   id: Step
   icon: ReactNode
   title: string
-  description: string
+  description: ReactNode
   content: ReactNode
 }
 
@@ -35,32 +35,54 @@ export const DEPLOY_STEPS: ProposalStep[] = [
     id: 'about',
     icon: <Signature size={14} />,
     title: 'About',
-    description:
-      'Define what portion of the revenue goes to the RToken holders versus RSR stakers. It can also be configured to send a portion of the revenue of an RToken to.',
+    description: (
+      <span>
+        Customize the appearance of this DTF on{' '}
+        <a
+          href="https://app.reserve.org"
+          target="_blank"
+          className="text-primary"
+        >
+          app.reserve.org
+        </a>{' '}
+        and provide additional information for prospective holders. These
+        changes will not automatically populate on external services like
+        CoinGecko or CoinMarketCap.
+      </span>
+    ),
     content: <ManageAbout />,
   },
   {
     id: 'creator',
     icon: <ScrollText size={14} />,
     title: 'Creator',
-    description:
-      'Define what portion of the revenue goes to the RToken holders versus RSR stakers. It can also be configured to send a portion of the revenue of an RToken to.',
+    description: (
+      <span>
+        Customize the creator section below the DTF name. You can choose the
+        profile picture, name of the creator, and provide a link to the creators
+        website.
+      </span>
+    ),
     content: <ManageCreator />,
   },
   {
     id: 'curator',
     icon: <NotepadText size={14} />,
     title: 'Curator',
-    description:
-      'Define what portion of the revenue goes to the RToken holders versus RSR stakers. It can also be configured to send a portion of the revenue of an RToken to.',
+    description: (
+      <span>
+        Customize the curator section below the DTF name. You can choose the
+        profile picture, name of the creator, and provide a link to the creators
+        website.
+      </span>
+    ),
     content: <ManageCurator />,
   },
   {
     id: 'socials',
     icon: <ScanQrCode size={14} />,
     title: 'Socials',
-    description:
-      'Define what portion of the revenue goes to the RToken holders versus RSR stakers. It can also be configured to send a portion of the revenue of an RToken to.',
+    description: 'Add links to your social media accounts and website.',
     content: <ManageSocials />,
   },
 ]

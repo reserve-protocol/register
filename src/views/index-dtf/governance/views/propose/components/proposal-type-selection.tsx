@@ -55,22 +55,31 @@ const Header = () => (
 
 const TypeList = () => (
   <div className="bg-card m-1 rounded-3xl">
-    {proposalTypes.map((proposalType, index) => (
+    {proposalTypes.map(({ title, icon, route, enabled }, index) => (
       <Link
-        key={proposalType.title}
-        to={proposalType.enabled ? proposalType.route : ''}
+        key={title}
+        to={enabled ? route : ''}
         className={cn(
           'flex flex-row items-center p-6 gap-4 hover:text-primary',
           index !== proposalTypes.length - 1 ? 'border-b border-border' : '',
-          !proposalType.enabled &&
-            'opacity-50 cursor-not-allowed hover:text-muted-foreground'
+          !enabled && 'cursor-not-allowed hover:text-muted-foreground'
         )}
       >
         <div className="rounded-full h-8 w-8 border border-foreground flex items-center justify-center">
-          {proposalType.icon}
+          {icon}
         </div>
-        <h4 className="bg-card m-1 mr-auto font-bold">{proposalType.title}</h4>
-        <div className="rounded-full h-8 w-8 bg-muted flex items-center justify-center">
+        <h4 className="bg-card m-1 mr-auto font-bold">{title}</h4>
+        {!enabled && (
+          <div className="text-nowrap text-legend text-xs border rounded-full px-2 py-1 bg-card">
+            Coming soon
+          </div>
+        )}
+        <div
+          className={cn(
+            'rounded-full h-8 w-8 bg-muted flex items-center justify-center',
+            !enabled && 'opacity-50'
+          )}
+        >
           <ArrowRight size={16} />
         </div>
       </Link>
