@@ -73,11 +73,11 @@ const CoverImage = () => {
   const brand = useAtomValue(indexDTFBrandAtom)
 
   return (
-    <div className="rounded-3xl overflow-hidden">
+    <div className="overflow-hidden">
       <img
         width={475}
         height={424}
-        className="object-cover h-[424px] w-[475px]"
+        className="object-cover h-[424px] w-[475px] rounded-3xl"
         alt="DTF meme"
         src={brand?.dtf?.cover || defaultCover}
       />
@@ -87,12 +87,9 @@ const CoverImage = () => {
 
 const LandingMint = (props: React.HTMLAttributes<HTMLDivElement>) => {
   return (
-    <div
-      className="hidden bg-muted h-fit p-1 rounded-3xl sticky top-0 xl:flex xl:flex-col xl:gap-1"
-      {...props}
-    >
+    <div className="hidden xl:flex xl:flex-col xl:gap-1 relative" {...props}>
       <CoverImage />
-      <div className="sticky top-0 w-[475px]">
+      <div className="w-[475px] sticky top-0 rounded-3xl bg-muted p-1">
         <MintBox />
       </div>
     </div>
