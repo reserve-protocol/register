@@ -1,13 +1,13 @@
 import { chainIdAtom, walletAtom } from '@/state/atoms'
+import { zapSwapEndpointAtom } from '@/views/index-dtf/overview/components/zap-mint/atom'
 import zapper, {
   ZapResponse,
 } from '@/views/yield-dtf/issuance/components/zapV2/api'
 import { useQuery } from '@tanstack/react-query'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useMemo } from 'react'
-import { Address, zeroAddress } from 'viem'
+import { Address } from 'viem'
 import useDebounce from './useDebounce'
-import { zapSwapEndpointAtom } from '@/views/index-dtf/overview/components/zap-mint/atom'
 
 const useZapSwapQuery = ({
   tokenIn,
@@ -63,10 +63,18 @@ const useZapSwapQuery = ({
         throw new Error(`Error: ${response.status}`)
       }
 
-      return response.json()
+      const data = await response.json()
+
+      if (data && data.status === 'error') {
+        throw new Error(data.error)
+      }
+
+      return data
     },
     enabled: !!endpoint && !disabled,
     refetchInterval: 12000,
+    retry: 3,
+    retryDelay: (attempt) => Math.min(1000 * Math.pow(2, attempt), 10000),
   })
 }
 
