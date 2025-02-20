@@ -53,6 +53,7 @@ const Sell = () => {
       disabled: insufficientBalance || ongoingTx,
       forceMint,
       dtfTicker: indexDTF?.token.symbol || '',
+      type: 'sell',
     })
 
   const { loadingAfterRefetch } = useLoadingAfterRefetch(data)

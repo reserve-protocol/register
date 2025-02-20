@@ -18,6 +18,7 @@ const useZapSwapQuery = ({
   disabled,
   forceMint,
   dtfTicker,
+  type,
 }: {
   tokenIn?: Address
   tokenOut?: Address
@@ -26,6 +27,7 @@ const useZapSwapQuery = ({
   disabled: boolean
   forceMint: boolean
   dtfTicker: string
+  type: 'buy' | 'sell'
 }) => {
   const chainId = useAtomValue(chainIdAtom)
   const account = useAtomValue(walletAtom)
@@ -78,6 +80,7 @@ const useZapSwapQuery = ({
             wa: account,
             ca: tokenIn,
             ticker: dtfTicker,
+            type,
             endpoint: endpoint,
             status: data.status,
             tokenIn,
