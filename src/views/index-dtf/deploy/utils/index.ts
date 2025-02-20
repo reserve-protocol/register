@@ -136,7 +136,7 @@ export const calculateRevenueDistribution = (
 }
 
 export const noSpecialCharacters = (value: string) => {
-  const alphanumericWithSpaces = /^[a-zA-Z0-9\s.]*$/
+  const alphanumericWithSpaces = /^[a-zA-Z0-9\s.\-/&]*$/
   const containsEmoji =
     /[\p{Extended_Pictographic}\u{1F3FB}-\u{1F3FF}\u{1F9B0}-\u{1F9B3}]/u
 

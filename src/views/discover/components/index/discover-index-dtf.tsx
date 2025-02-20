@@ -17,6 +17,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { Line, LineChart, YAxis } from 'recharts'
 import { chainFilterAtom, searchFilterAtom } from './atoms/filter'
 import DTFFilters from './components/dtf-filters'
+import TitleContainer from '../title-container'
 
 const chartConfig = {
   desktop: {
@@ -283,10 +284,11 @@ const IndexDTFList = () => {
           }
           onRowClick={handleRowClick}
           className={cn(
-            'hidden lg:table bg-card text-base rounded-[20px]',
-            '[&_thead_th]:px-6',
-            '[&_tbody_td]:px-6',
-            '[&_tbody]:rounded-[20px] [&_tbody_tr:last-child_td]:rounded-bl-[20px] [&_tbody_tr:last-child_td:last-child]:rounded-br-[20px]'
+            'hidden lg:block',
+            '[&_table]:bg-card [&_table]:rounded-[20px] [&_table]:text-base',
+            '[&_table_thead_th]:px-6',
+            '[&_table_tbody_td]:px-6',
+            '[&_table_tbody]:rounded-[20px] [&_table_tbody_tr:last-child_td]:rounded-bl-[20px] [&_table_tbody_tr:last-child_td:last-child]:rounded-br-[20px]'
           )}
         />
       </div>
@@ -303,7 +305,15 @@ const IndexDTFList = () => {
 }
 
 const DiscoverIndexDTF = () => {
-  return <IndexDTFList />
+  return (
+    <div>
+      {/* <TitleContainer title="Release Week DTFs" />
+
+      <TitleContainer title="All Reserve Index DTFs" /> */}
+
+      <IndexDTFList />
+    </div>
+  )
 }
 
 export default DiscoverIndexDTF

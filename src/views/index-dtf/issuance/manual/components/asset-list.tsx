@@ -1,8 +1,12 @@
+import USDT from '@/abis/USDT'
+import { DecimalDisplay } from '@/components/decimal-display'
 import TokenLogo from '@/components/token-logo'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
+import Help from '@/components/ui/help'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Skeleton } from '@/components/ui/skeleton'
+import useIsUSDT from '@/hooks/useIsUSDT'
 import { cn } from '@/lib/utils'
 import { chainIdAtom } from '@/state/atoms'
 import {
@@ -11,7 +15,7 @@ import {
   indexDTFBasketPricesAtom,
 } from '@/state/dtf/atoms'
 import { Token } from '@/types'
-import { cutDecimals, formatCurrency, shortenAddress } from '@/utils'
+import { formatCurrency, shortenAddress } from '@/utils'
 import { BIGINT_MAX } from '@/utils/constants'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { useAtom, useAtomValue } from 'jotai'
@@ -26,9 +30,6 @@ import {
   modeAtom,
   unlimitedApprovalAtom,
 } from '../atoms'
-import useIsUSDT from '@/hooks/useIsUSDT'
-import USDT from '@/abis/USDT'
-import Help from '@/components/ui/help'
 
 const ApproveAsset = ({ address }: { address: Address }) => {
   const indexDTF = useAtomValue(indexDTFAtom)
@@ -137,7 +138,7 @@ const RedeemAssetAmount = ({ token }: { token: Token }) => {
       <div className="flex items center gap-1">
         <span className="text-legend">Amount:</span>
         <span className="text-primary font-semibold">
-          {formatCurrency(amount, 2)}
+          <DecimalDisplay value={amount} />
         </span>
       </div>
     </div>
@@ -155,10 +156,7 @@ const AssetBalance = ({ token }: { token: Token }) => {
       <div className="flex gap-1 justify-end items-center">
         <Wallet size={16} />
         <span className="font-semibold">
-          {formatCurrency(numericBalance, 1, {
-            notation: 'compact',
-            compactDisplay: 'short',
-          })}
+          <DecimalDisplay value={numericBalance} />
         </span>
       </div>
       {!!numericRequired && (
@@ -170,12 +168,7 @@ const AssetBalance = ({ token }: { token: Token }) => {
               balance >= required ? 'text-success' : 'text-destructive'
             )}
           >
-            {cutDecimals(
-              formatCurrency(numericRequired, 9, {
-                notation: 'compact',
-                compactDisplay: 'short',
-              })
-            )}
+            <DecimalDisplay value={numericRequired} />
           </span>
         </div>
       )}

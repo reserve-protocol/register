@@ -223,8 +223,8 @@ function DataTable<TData, TValue>({
   }
 
   return (
-    <>
-      <Table className={cn('', className)}>
+    <div className={cn('w-full', className)}>
+      <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow
@@ -313,7 +313,7 @@ function DataTable<TData, TValue>({
         </TableBody>
       </Table>
       {pagination && <Pagination table={table} />}
-    </>
+    </div>
   )
 }
 

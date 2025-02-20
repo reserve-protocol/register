@@ -1,7 +1,7 @@
 import { Box } from '@/components/ui/box'
 import { Card } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
-import { indexDTFAtom } from '@/state/dtf/atoms'
+import { indexDTFAtom, indexDTFBasketPricesAtom } from '@/state/dtf/atoms'
 import { formatPercentage } from '@/utils'
 import { useAtomValue } from 'jotai'
 import { ArrowUpRight, BrickWall } from 'lucide-react'
@@ -199,7 +199,10 @@ const IndexBasketTokens = ({
 
 const IndexBasketPreview = () => {
   const basket = useAtomValue(indexDTFBasketAtom)
+  const prices = useAtomValue(indexDTFBasketPricesAtom)
 
+  console.log('basket', basket)
+  console.log('prices', prices)
   if (!basket) {
     return <Skeleton className="mt-2 w-full h-20" />
   }
