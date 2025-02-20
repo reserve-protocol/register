@@ -102,29 +102,32 @@ Input.displayName = 'Input'
 
 const inputRegex = RegExp(`^[0-9]*[.]?[0-9]*$`)
 
-const NumericalInput = ({ onChange, ...props }: NumericalInputProps) => {
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const input = e.target.value.replace(/,/g, '.')
-    if (e.target.value === '' || inputRegex.test(input)) {
-      onChange(input)
+const NumericalInput = React.forwardRef<HTMLInputElement, NumericalInputProps>(
+  ({ onChange, ...props }, ref) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const input = e.target.value.replace(/,/g, '.')
+      if (e.target.value === '' || inputRegex.test(input)) {
+        onChange(input)
+      }
     }
-  }
 
-  return (
-    <Input
-      onChange={handleChange}
-      inputMode="decimal"
-      autoComplete="off"
-      autoCorrect="off"
-      type="text"
-      pattern="^[0-9]*[.,]?[0-9]*$"
-      minLength={1}
-      maxLength={79}
-      spellCheck="false"
-      {...props}
-    />
-  )
-}
+    return (
+      <Input
+        onChange={handleChange}
+        inputMode="decimal"
+        autoComplete="off"
+        autoCorrect="off"
+        type="text"
+        pattern="^[0-9]*[.,]?[0-9]*$"
+        minLength={1}
+        maxLength={79}
+        spellCheck="false"
+        ref={ref}
+        {...props}
+      />
+    )
+  }
+)
 
 NumericalInput.displayName = 'Numerical Input'
 

@@ -19,7 +19,13 @@ import {
   ChevronUp,
   Loader,
 } from 'lucide-react'
-import React, { ReactNode, useEffect, useState } from 'react'
+import React, {
+  ReactNode,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react'
 import GaugeIcon from '../icons/GaugeIcon'
 import { ToggleGroup, ToggleGroupItem } from './toggle-group'
 import { Skeleton } from './skeleton'
@@ -32,6 +38,7 @@ import {
 import { Separator } from './separator'
 import Help from './help'
 import { indexDTFAtom, indexDTFBrandAtom } from '@/state/dtf/atoms'
+import useMediaQuery from '@/hooks/useMediaQuery'
 
 type TokenWithBalance = Token & { balance?: string }
 
@@ -54,19 +61,31 @@ type SwapProps = {
   onSwap?: () => void
   loading?: boolean
 }
-
 const TokenInput = ({
   value = '',
   onChange = () => {},
 }: Pick<SwapItem, 'value' | 'onChange'>) => {
+  const ref = useRef<HTMLInputElement>(null)
+  const isDesktop = useMediaQuery('(min-width: 768px)')
+
+  useLayoutEffect(() => {
+    if (isDesktop && ref.current) {
+      // Need to wait a tick for the input to be properly mounted
+      setTimeout(() => {
+        ref.current?.focus()
+      }, 0)
+    }
+  }, [isDesktop])
+
   return (
     <NumericalInput
       value={value}
       variant="transparent"
       placeholder="0"
       onChange={onChange}
-      autoFocus
       className="placeholder:text-primary/70 text-primary"
+      ref={ref}
+      autoFocus={isDesktop}
     />
   )
 }
