@@ -1,7 +1,7 @@
 import TransactionButton, {
   TransactionButtonContainer,
 } from '@/components/old/button/TransactionButton'
-import FusionTokenLogo from '@/components/token-logo/fustion-token-logo'
+import FusionTokenLogo from '@/components/token-logo/fusion-token-logo'
 import TransactionError from '@/components/transaction-error/TransactionError'
 import { Button } from '@/components/ui/button'
 import useContractWrite from '@/hooks/useContractWrite'

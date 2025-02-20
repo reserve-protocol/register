@@ -70,7 +70,20 @@ const useZapSwapQuery = ({
       while (true) {
         const response = await fetch(endpoint!)
         if (!response.ok) {
-          throw new Error(`Error: ${response.status}`)
+          const error = response.status
+          mixpanel.track('index-dtf-zap-swap', {
+            event: 'index-dtf-zap-swap',
+            wa: account,
+            ca: tokenIn,
+            ticker: dtfTicker,
+            type,
+            endpoint: endpoint,
+            status: 'error',
+            tokenIn,
+            tokenOut,
+            error,
+          })
+          throw new Error(`Error: ${error}`)
         }
         const data = await response.json()
 

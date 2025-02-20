@@ -6,22 +6,45 @@ import { Separator } from '@/components/ui/separator'
 import { Skeleton } from '@/components/ui/skeleton'
 import { chainIdAtom, walletAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
-import { useAtomValue } from 'jotai'
-import { ArrowDown, ArrowRight, Asterisk, Check } from 'lucide-react'
-import Staking from './staking'
 import { useConnectModal } from '@rainbow-me/rainbowkit'
+import { useAtomValue } from 'jotai'
+import { ArrowRight } from 'lucide-react'
 import { forwardRef } from 'react'
+import { InnerGovernanceInfo } from '../../settings/components/index-settings-governance'
+import Staking from './staking'
+import { Link } from 'react-router-dom'
+import { ROUTES } from '@/utils/constants'
+import { getFolioRoute } from '@/utils'
+import { Button } from '@/components/ui/button'
 
 const Container = ({ children }: { children: React.ReactNode }) => {
+  const dtf = useAtomValue(indexDTFAtom)
+  const chainId = useAtomValue(chainIdAtom)
+
+  if (!dtf) return null
+
   return (
-    <Card className="p-4 sm:p-6">
-      <div className="flex items-center gap-2 mb-4">
+    <Card className="p-2 sm:p-4">
+      <div className="flex items-center gap-2 mb-4 px-2 pt-2 justify-between">
         <div className="rounded-full border border-foreground p-2 mr-auto">
           <GovernanceIcon />
         </div>
+        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+          <span>View non-basket governance settings</span>
+          <Link
+            to={getFolioRoute(
+              dtf.id,
+              chainId,
+              ROUTES.SETTINGS + '#non-basket-governance'
+            )}
+            className="p-1 bg-muted rounded-full"
+          >
+            <ArrowRight size={14} />
+          </Link>
+        </div>
       </div>
       <div>
-        <h2 className="text-2xl font-semibold mb-2">Governance</h2>
+        <h2 className="text-2xl font-semibold mb-2 px-2">Basket Governance</h2>
         {children}
       </div>
     </Card>
@@ -63,6 +86,30 @@ const OpenLockDrawerButton = forwardRef<
   )
 })
 
+const ViewNonBasketGovernanceButton = () => {
+  const dtf = useAtomValue(indexDTFAtom)
+  const chainId = useAtomValue(chainIdAtom)
+
+  if (!dtf) return null
+
+  return (
+    <Link
+      to={getFolioRoute(
+        dtf.id,
+        chainId,
+        ROUTES.SETTINGS + '#non-basket-governance'
+      )}
+    >
+      <Button variant="outline" asChild className="w-full rounded-lg">
+        <div className="flex items-center gap-1.5">
+          <span>View non-basket governance settings</span>
+          <ArrowRight size={14} />
+        </div>
+      </Button>
+    </Link>
+  )
+}
+
 const IndexGovernanceOverview = () => {
   const account = useAtomValue(walletAtom)
   const { openConnectModal } = useConnectModal()
@@ -78,60 +125,27 @@ const IndexGovernanceOverview = () => {
 
   return (
     <Container>
-      <p className="text-legend">
-        ${dtf.token.symbol} is governed by the ${dtf.stToken?.underlying.symbol}{' '}
-        token. {dtf.stToken?.underlying.symbol} holders must vote-lock their
-        tokens to become a governor of the ${dtf.token.symbol}. Governors can
-        propose changes to the basket and vote on proposal by other governors.
-        In exchange for locking their tokens and participating in governance,
-        governors earn a portion of the TVL fee charged by the DTF.
-      </p>
-      {account ? (
-        <Staking>
-          <OpenLockDrawerButton />
-        </Staking>
-      ) : (
-        <OpenLockDrawerButton onClick={openConnectModal} />
-      )}
-      <Separator className="my-6" />
-      <h3 className="text-legend mr-auto mb-6">
-        How changes to ${dtf?.token.symbol || 'DTF'} occur
-      </h3>
-      <div className="flex flex-col gap-4">
-        <div className="flex items-center gap-2">
-          <div className="border border-foreground p-0.5 rounded-full">
-            <Asterisk size={16} />
-          </div>
-          <span className="font-bold">
-            ${dtf.stToken?.underlying.symbol} holders vote-lock their tokens to
-            become a Governor
-          </span>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="border border-foreground p-0.5 rounded-full">
-            <ArrowDown size={16} />
-          </div>
-          <span className="font-bold">
-            A Governor proposes a change to the basket
-          </span>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="border border-foreground p-0.5 rounded-full">
-            <ArrowDown size={16} />
-          </div>
-          <span className="font-bold">
-            Governors have to vote on the proposal
-          </span>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="border border-foreground p-0.5 rounded-full">
-            <Check size={16} />
-          </div>
-          <span className="font-bold">
-            If the proposal passes, its change(s) are executed onchain
-          </span>
-        </div>
+      <div className="p-2 pb-0">
+        <p className="text-legend">
+          ${dtf.token.symbol} is governed by the $
+          {dtf.stToken?.underlying.symbol} token.{' '}
+          {dtf.stToken?.underlying.symbol} holders must vote-lock their tokens
+          to become a governor of the ${dtf.token.symbol}. Governors can propose
+          changes to the basket and vote on proposal by other governors. In
+          exchange for locking their tokens and participating in governance,
+          governors earn a portion of the TVL fee charged by the DTF.
+        </p>
+        {account ? (
+          <Staking>
+            <OpenLockDrawerButton />
+          </Staking>
+        ) : (
+          <OpenLockDrawerButton onClick={openConnectModal} />
+        )}
       </div>
+      <Separator className="my-6" />
+      <InnerGovernanceInfo basket className="[&>*]:px-0 px-2 -mt-3" />
+      <ViewNonBasketGovernanceButton />
     </Container>
   )
 }

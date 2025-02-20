@@ -12,8 +12,15 @@ import {
 } from 'lucide-react'
 import { formatEther } from 'viem'
 import { IconWrapper, InfoCard, InfoCardItem } from './settings-info-card'
+import { cn } from '@/lib/utils'
 
-const GovernanceInfo = ({ basket }: { basket?: boolean }) => {
+export const InnerGovernanceInfo = ({
+  basket,
+  className,
+}: {
+  basket?: boolean
+  className?: string
+}) => {
   const indexDTF = useAtomValue(indexDTFAtom)
 
   if (
@@ -26,7 +33,7 @@ const GovernanceInfo = ({ basket }: { basket?: boolean }) => {
   const data = basket ? indexDTF?.tradingGovernance : indexDTF?.ownerGovernance
 
   return (
-    <InfoCard title={basket ? t`Basket Governance` : t`Non-Basket Governance`}>
+    <div className={cn(className)}>
       <InfoCardItem
         label={t`Governor Address`}
         icon={<IconWrapper Component={Hash} />}
@@ -71,6 +78,26 @@ const GovernanceInfo = ({ basket }: { basket?: boolean }) => {
         label={t`Execution Delay`}
         value={data ? parseDuration(data.timelock.executionDelay) : undefined}
       />
+    </div>
+  )
+}
+
+const GovernanceInfo = ({ basket }: { basket?: boolean }) => {
+  const indexDTF = useAtomValue(indexDTFAtom)
+
+  if (
+    indexDTF &&
+    ((basket && !indexDTF.tradingGovernance) ||
+      (!basket && !indexDTF.ownerGovernance))
+  )
+    return null
+
+  return (
+    <InfoCard
+      title={basket ? t`Basket Governance` : t`Non-Basket Governance`}
+      id={basket ? 'basket-governance' : 'non-basket-governance'}
+    >
+      <InnerGovernanceInfo basket={basket} />
     </InfoCard>
   )
 }

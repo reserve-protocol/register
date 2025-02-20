@@ -131,7 +131,7 @@ const IndexBasketTokens = ({
           viewAll && basket.length > MAX_TOKENS && 'max-h-[1240px]'
         )}
       > */}
-      <Table>
+      <Table className="mx-1">
         <TableHeader>
           <TableRow className="border-none text-legend bg-card sticky top-0 ">
             <TableHead>Token</TableHead>

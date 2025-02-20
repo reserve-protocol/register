@@ -1,6 +1,8 @@
 import * as React from 'react'
 import { RESERVE_STORAGE, UNIVERSAL_ASSETS } from '@/utils/constants'
 import { cn } from '@/lib/utils'
+import { useAtomValue } from 'jotai'
+import { indexDTFIconsAtom } from '@/views/portfolio/atoms'
 
 type Sizes = 'sm' | 'md' | 'lg' | 'xl'
 
@@ -19,6 +21,7 @@ interface Props extends React.ImgHTMLAttributes<HTMLImageElement> {
 }
 
 const TokenLogo = React.forwardRef<HTMLImageElement, Props>((props, ref) => {
+  const indexDTFIcons = useAtomValue(indexDTFIconsAtom)
   const {
     symbol,
     size = 'md',
@@ -103,6 +106,14 @@ const TokenLogo = React.forwardRef<HTMLImageElement, Props>((props, ref) => {
       //     console.debug(`Failed to load symbol image for ${symbol}`)
       //   }
       // }
+
+      const foundIndexDTFIcon =
+        address && chain && indexDTFIcons[chain]?.[address.toLowerCase()]
+      if (foundIndexDTFIcon) {
+        const imgUrl = await tryLoadImage(foundIndexDTFIcon)
+        setCurrentSrc(imgUrl)
+        return
+      }
 
       if (address && symbol && UNIVERSAL_ASSETS.has(address.toLowerCase())) {
         try {
