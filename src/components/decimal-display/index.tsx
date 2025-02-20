@@ -15,7 +15,7 @@ export const useNumberFormat = (
 
     // Special case for zero
     if (num === 0) {
-      return currency ? `$0` : '0'
+      return '0'
     }
 
     const absNum = Math.abs(num)
@@ -26,7 +26,7 @@ export const useNumberFormat = (
       const shortValue = absNum / Math.pow(1000, suffixNum)
       const suffix = suffixes[suffixNum]
       const sign = num < 0 ? '-' : ''
-      return `${currency ? '$' : ''}${sign}${shortValue.toFixed(1)}${suffix}`
+      return `${sign}${shortValue.toFixed(1)}${suffix}`
     }
 
     // For non-compact formatting
@@ -47,7 +47,7 @@ export const useNumberFormat = (
       const withCommas = currency
         ? Number(formatted).toLocaleString('en-US')
         : formatted
-      return `${num < 0 ? '-' : ''}${currency ? '$' : ''}${withCommas}`
+      return `${num < 0 ? '-' : ''}${withCommas}`
     } else {
       // For numbers < 1, use the original formatting with subscript
       const fullNumber = absNum.toFixed(27)
@@ -62,7 +62,7 @@ export const useNumberFormat = (
         formattedNumber += `.${significantDecimals.slice(0, decimals)}`
       }
 
-      return `${num < 0 ? '-' : ''}${currency ? '$' : ''}${formattedNumber}`
+      return `${num < 0 ? '-' : ''}${formattedNumber}`
     }
   }, [value, decimals, currency, compact, trimZeros])
 }
@@ -78,9 +78,9 @@ interface DecimalDisplayProps {
 export const DecimalDisplay: React.FC<DecimalDisplayProps> = ({
   value,
   decimals = 2,
-  currency = false,
-  compact = false,
+  currency = true,
   trimZeros = true,
+  compact = false,
 }) => {
   const formattedNumber = useNumberFormat(
     value,
