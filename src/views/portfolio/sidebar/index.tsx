@@ -272,7 +272,7 @@ const Unlocking = () => {
       <h2 className="mb-3 text-base font-bold">Unlocking</h2>
       {locks.map((lock) => (
         <TokenRow
-          key={lock.lockId.toString()}
+          key={`${lock.token.address}-${lock.lockId}-${lock.chainId}`}
           token={lock.token}
           chainId={lock.chainId}
           amount={lock.amount}

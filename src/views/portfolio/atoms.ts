@@ -40,6 +40,9 @@ export const accountUnclaimedLocksAtom = atom<Lock[]>([])
 export const accountTokenPricesAtom = atom<Record<Address, number>>({})
 export const rsrBalancesAtom = atom<Record<Chain['id'], bigint>>({})
 export const accountRewardsAtom = atom<Record<Address, RewardToken[]>>({})
+export const indexDTFIconsAtom = atom<Record<number, Record<string, string>>>(
+  {}
+)
 
 export const indexAccountHoldingsAtom = atom<number>((get) => {
   const indexTokens = get(accountIndexTokensAtom)

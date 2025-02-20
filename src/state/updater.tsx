@@ -1,14 +1,15 @@
+import { ChainId } from '@/utils/chains'
+import RewardsUpdater from '@/views/portfolio/rewards-updater'
+import IndexDTFIconsUpdater from '@/views/portfolio/updaters/index-dtf-icons-updater'
+import IndexDTFPricesUpdater from '@/views/portfolio/updaters/index-dtf-prices-updater'
 import IndexDTFUpdater from '@/views/portfolio/updaters/index-dtf-updater'
+import RSRBalancesUpdater from '@/views/portfolio/updaters/rsr-balances-updater'
 import CMSUpdater from './cms'
 import RTokenUpdater from './rtoken/updater'
 import CollateralYieldUpdater from './updaters/CollateralYieldUpdater'
 import PricesUpdater from './updaters/PriceUpdater'
 import AccountUpdater from './wallet/updaters/AccountUpdater'
 import { TokenBalancesUpdater } from './wallet/updaters/TokenBalancesUpdater'
-import IndexDTFPricesUpdater from '@/views/portfolio/updaters/index-dtf-prices-updater'
-import RSRBalancesUpdater from '@/views/portfolio/updaters/rsr-balances-updater'
-import RewardsUpdater from '@/views/portfolio/rewards-updater'
-import { ChainId } from '@/utils/chains'
 
 export const PortfolioUpdater = () => {
   return (
@@ -20,6 +21,7 @@ export const PortfolioUpdater = () => {
       <IndexDTFPricesUpdater />
       <RSRBalancesUpdater />
       <RewardsUpdater />
+      <IndexDTFIconsUpdater />
     </>
   )
 }
