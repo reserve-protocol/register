@@ -26,6 +26,15 @@ import Buy from './buy'
 import RefreshQuote from './refresh-quote'
 import Sell from './sell'
 import ZapSettings from './zap-settings'
+import useMediaQuery from '@/hooks/useMediaQuery'
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTrigger,
+} from '@/components/ui/drawer'
 
 const ZapMint = ({ children }: { children: ReactNode }) => {
   const [open, setOpen] = useAtom(openZapMintModalAtom)
@@ -40,6 +49,7 @@ const ZapMint = ({ children }: { children: ReactNode }) => {
   const input = useAtomValue(zapMintInputAtom)
   const setIndexDTFBalance = useSetAtom(indexDTFBalanceAtom)
   const invalidInput = isNaN(Number(input)) || Number(input) === 0
+  const isDesktop = useMediaQuery('(min-width: 768px)')
 
   const { data: balance } = useERC20Balance(indexDTF?.id)
 
@@ -60,14 +70,60 @@ const ZapMint = ({ children }: { children: ReactNode }) => {
 
   if (!indexDTF) return null
 
+  if (isDesktop) {
+    return (
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogTrigger asChild>{children}</DialogTrigger>
+        <DialogContent
+          showClose={false}
+          className="p-2 sm:rounded-3xl border-none"
+        >
+          <DialogTitle className="flex justify-between gap-2">
+            {showSettings ? (
+              <Button
+                variant="outline"
+                className="h-[34px] px-2 rounded-xl"
+                onClick={() => setShowSettings(false)}
+              >
+                <ArrowLeft size={16} />
+              </Button>
+            ) : (
+              <div className="flex justify-between gap-1">
+                <Button
+                  variant="outline"
+                  className="h-[34px] px-2 rounded-xl"
+                  onClick={() => setShowSettings(true)}
+                >
+                  <Settings size={16} />
+                </Button>
+                <RefreshQuote
+                  small
+                  onClick={zapRefetch.fn}
+                  loading={zapFetching}
+                  disabled={zapFetching || zapOngoingTx || invalidInput}
+                />
+              </div>
+            )}
+            <DialogTrigger asChild>
+              <Button variant="outline" className="h-[34px] px-2 rounded-xl">
+                <X size={16} />
+              </Button>
+            </DialogTrigger>
+          </DialogTitle>
+          {showSettings && <ZapSettings />}
+          <div className={showSettings ? 'hidden' : 'opacity-100'}>
+            {currentTab === 'buy' ? <Buy /> : <Sell />}
+          </div>
+        </DialogContent>
+      </Dialog>
+    )
+  }
+
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent
-        showClose={false}
-        className="p-2 sm:rounded-3xl border-none"
-      >
-        <DialogTitle className="flex justify-between gap-2">
+    <Drawer open={open} onOpenChange={setOpen} direction="bottom">
+      <DrawerTrigger asChild>{children}</DrawerTrigger>
+      <DrawerContent className="p-2">
+        <DrawerHeader className="flex justify-between gap-2">
           {showSettings ? (
             <Button
               variant="outline"
@@ -93,18 +149,18 @@ const ZapMint = ({ children }: { children: ReactNode }) => {
               />
             </div>
           )}
-          <DialogTrigger asChild>
+          {/* <DrawerClose asChild>
             <Button variant="outline" className="h-[34px] px-2 rounded-xl">
               <X size={16} />
             </Button>
-          </DialogTrigger>
-        </DialogTitle>
+          </DrawerClose> */}
+        </DrawerHeader>
         {showSettings && <ZapSettings />}
         <div className={showSettings ? 'hidden' : 'opacity-100'}>
           {currentTab === 'buy' ? <Buy /> : <Sell />}
         </div>
-      </DialogContent>
-    </Dialog>
+      </DrawerContent>
+    </Drawer>
   )
 }
 

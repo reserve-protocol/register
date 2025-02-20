@@ -581,15 +581,6 @@ const BasketProposalPreview = ({
     trades
   )
 
-  console.log('basketProposalContext', {
-    address,
-    basket,
-    shares,
-    prices,
-    trades,
-    basketProposalContext,
-  })
-
   return (
     <Tabs
       defaultValue="basket"

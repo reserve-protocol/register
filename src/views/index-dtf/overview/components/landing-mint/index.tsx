@@ -1,3 +1,4 @@
+import CoverPlaceholder from '@/components/icons/cover-placeholder'
 import TokenLogo from '@/components/token-logo'
 import StackTokenLogo from '@/components/token-logo/StackTokenLogo'
 import { Button } from '@/components/ui/button'
@@ -8,7 +9,6 @@ import { ArrowLeftRight } from 'lucide-react'
 import React from 'react'
 import ZapMint from '../zap-mint'
 import { currentZapMintTabAtom } from '../zap-mint/atom'
-import defaultCover from './default-cover.png'
 
 const MintBox = () => {
   const dtf = useAtomValue(indexDTFAtom)
@@ -74,13 +74,17 @@ const CoverImage = () => {
 
   return (
     <div className="overflow-hidden rounded-3xl bg-muted p-1">
-      <img
-        width={468}
-        height={416}
-        className="object-cover h-[416px] w-[468px] rounded-3xl"
-        alt="DTF meme"
-        src={brand?.dtf?.cover || defaultCover}
-      />
+      {brand?.dtf?.cover ? (
+        <img
+          width={468}
+          height={416}
+          className="object-cover h-[416px] w-[468px] rounded-3xl"
+          alt="DTF meme"
+          src={brand.dtf.cover}
+        />
+      ) : (
+        <CoverPlaceholder />
+      )}
     </div>
   )
 }

@@ -96,7 +96,7 @@ const ProposalDetailVotes = () => {
       </TabsList>
       <div className="bg-card rounded-3xl p-4 border mt-2">
         {Object.entries(votes).map(([key, value]) => (
-          <TabsContent value={key}>
+          <TabsContent value={key} key={key}>
             <VoteList votes={value} />
           </TabsContent>
         ))}

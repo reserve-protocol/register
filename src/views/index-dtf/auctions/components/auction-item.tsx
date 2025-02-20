@@ -305,26 +305,26 @@ const AuctionContext = ({ trade }: { trade: AssetTrade }) => {
     return <ProposedTradeVolatility tradeId={trade.id} />
   }
 
-  if (trade.state === TRADE_STATE.COMPLETED && trade.closedTransactionHash) {
-    return (
-      <Link
-        className="flex items-center text-primary cursor-pointer gap-1"
-        to={getExplorerLink(
-          trade.closedTransactionHash,
-          chainId,
-          ExplorerDataType.TRANSACTION
-        )}
-      >
-        <div className="p-1 rounded-ful bg-primary text-primary-foreground">
-          <Check size={12} />
-        </div>
-        <span>{shortenString(trade.closedTransactionHash)}</span>
-        <div className="p-1 rounded-full bg-muted text-foreground">
-          <ArrowUpRight size={12} />
-        </div>
-      </Link>
-    )
-  }
+  // if (trade.state === TRADE_STATE.COMPLETED && trade.closedTransactionHash) {
+  //   return (
+  //     <Link
+  //       className="flex items-center text-primary cursor-pointer gap-1"
+  //       to={getExplorerLink(
+  //         trade.closedTransactionHash,
+  //         chainId,
+  //         ExplorerDataType.TRANSACTION
+  //       )}
+  //     >
+  //       <div className="p-1 rounded-ful bg-primary text-primary-foreground">
+  //         <Check size={12} />
+  //       </div>
+  //       <span>{shortenString(trade.closedTransactionHash)}</span>
+  //       <div className="p-1 rounded-full bg-muted text-foreground">
+  //         <ArrowUpRight size={12} />
+  //       </div>
+  //     </Link>
+  //   )
+  // }
 
   return null
 }
