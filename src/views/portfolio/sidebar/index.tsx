@@ -1,4 +1,4 @@
-import { ArrowLeft, Power } from 'lucide-react'
+import { ArrowLeft, Loader, Power, RefreshCw } from 'lucide-react'
 
 import ChainLogo from '@/components/icons/ChainLogo'
 import WalletOutlineIcon from '@/components/icons/WalletOutlineIcon'
@@ -16,13 +16,13 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import BlockiesAvatar from '@/components/utils/blockies-avatar'
 import { cn } from '@/lib/utils'
 import { accountTokensAtom, chainIdAtom, rsrPriceAtom } from '@/state/atoms'
-import { PortfolioUpdater } from '@/state/updater'
 import { Token } from '@/types'
 import {
   formatCurrency,
   formatTokenAmount,
   getFolioRoute,
   getTokenRoute,
+  parseDurationShort,
   shortenAddress,
 } from '@/utils'
 import { RSR_ADDRESS } from '@/utils/addresses'
@@ -38,6 +38,8 @@ import {
   accountStakingTokensAtom,
   accountTokenPricesAtom,
   accountUnclaimedLocksAtom,
+  portfolioLastUpdatedAtom,
+  portfolioRefreshFnAtom,
   portfolioShowRewardsAtom,
   portfolioSidebarOpenAtom,
   rsrBalancesAtom,
@@ -53,6 +55,8 @@ import {
   VoteLockAction,
   YieldDTFAction,
 } from './components/actions'
+import humanizeDuration from 'humanize-duration'
+import { Skeleton } from '@/components/ui/skeleton'
 
 const portfolioDismissibleAtom = atom(true)
 
@@ -129,33 +133,102 @@ function TokenRow({
   )
 }
 
+const PortfolioRefresher = () => {
+  const lastUpdated = useAtomValue(portfolioLastUpdatedAtom)
+  const refreshFn = useAtomValue(portfolioRefreshFnAtom)
+  const [elapsed, setElapsed] = useState(
+    Math.floor((Date.now() - lastUpdated) / 1000)
+  )
+  const [loading, setLoading] = useState(true) // Initialize as true
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setElapsed(Math.floor((Date.now() - lastUpdated) / 1000))
+    }, 1000)
+
+    return () => clearInterval(interval)
+  }, [lastUpdated])
+
+  useEffect(() => {
+    refreshFn?.()
+    // Set initial loading state
+    setTimeout(() => {
+      setLoading(false)
+    }, 2000)
+  }, [refreshFn])
+
+  const handleRefresh = () => {
+    setLoading(true)
+    refreshFn?.()
+    setTimeout(() => {
+      setLoading(false)
+    }, 2000)
+  }
+
+  return (
+    <div className="flex items-center gap-1 sm:gap-2 flex-row-reverse sm:flex-row">
+      <div className="text-sm text-muted-foreground">
+        {loading ? (
+          <Skeleton className="h-5 w-24 bg-muted animate-pulse rounded" />
+        ) : (
+          <span className="font-light text-sm text-muted-foreground">
+            Updated{' '}
+            <span className="font-semibold min-w-[17px] inline-block text-center">
+              {' '}
+              {parseDurationShort(elapsed)
+                .replaceAll(' ', '')
+                .replaceAll(',', ' ')}
+            </span>{' '}
+            ago
+          </span>
+        )}
+      </div>
+      {loading ? (
+        <Button
+          size="sm"
+          className="h-8 px-2 rounded-xl cursor-not-allowed hover:bg-inherit"
+          variant="outline"
+        >
+          <Loader size={16} className="animate-spin-slow" />
+        </Button>
+      ) : (
+        <Button
+          size="sm"
+          className="h-8 px-2 gap-2 text-legend rounded-xl disabled:pointer-events-auto disabled:cursor-not-allowed"
+          variant="outline"
+          onClick={handleRefresh}
+        >
+          <RefreshCw size={16} />
+        </Button>
+      )}
+    </div>
+  )
+}
+
 const PortfolioHeader = () => {
   return (
-    <>
-      <PortfolioUpdater />
-      <ConnectButton.Custom>
-        {({ account, openAccountModal, accountModalOpen }) => {
-          const [showRewards, setShowRewards] = useAtom(
-            portfolioShowRewardsAtom
-          )
-          const setDismissible = useSetAtom(portfolioDismissibleAtom)
+    <ConnectButton.Custom>
+      {({ account, openAccountModal, accountModalOpen }) => {
+        const [showRewards, setShowRewards] = useAtom(portfolioShowRewardsAtom)
+        const setDismissible = useSetAtom(portfolioDismissibleAtom)
 
-          if (!account) return null
+        if (!account) return null
 
-          useEffect(() => {
-            if (!accountModalOpen) {
-              setDismissible(true)
-            }
-          }, [accountModalOpen])
-
-          const handleAccountModal = () => {
-            setDismissible(false)
-            document.body.style.pointerEvents = 'auto'
-            openAccountModal()
+        useEffect(() => {
+          if (!accountModalOpen) {
+            setDismissible(true)
           }
+        }, [accountModalOpen])
 
-          return (
-            <div className="flex items-center gap-2 p-6 pt-[22px] pb-2 w-full">
+        const handleAccountModal = () => {
+          setDismissible(false)
+          document.body.style.pointerEvents = 'auto'
+          openAccountModal()
+        }
+
+        return (
+          <div className="flex items-center gap-6 p-6 pt-[22px] pb-2 justify-between flex-wrap mr-9">
+            <div className="flex items-center gap-2">
               <div className="relative flex items-center gap-2">
                 {showRewards && (
                   <Button
@@ -196,10 +269,11 @@ const PortfolioHeader = () => {
                 </div>
               </div>
             </div>
-          )
-        }}
-      </ConnectButton.Custom>
-    </>
+            <PortfolioRefresher />
+          </div>
+        )
+      }}
+    </ConnectButton.Custom>
   )
 }
 
@@ -578,7 +652,7 @@ const PortfolioSidebar = ({ children }: { children: ReactNode }) => {
       <DrawerTrigger asChild onClick={() => setOpen(true)}>
         {children}
       </DrawerTrigger>
-      <DrawerContent className="first:[&>button]:top-[22px] first:[&>button]:right-[22px]">
+      <DrawerContent className="first:[&>button]:top-[22px] first:[&>button]:right-[22px] first:[&>button]:h-8 first:[&>button]:w-8">
         <DrawerTitle className="w-full">
           <PortfolioHeader />
         </DrawerTitle>

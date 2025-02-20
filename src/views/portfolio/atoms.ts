@@ -43,6 +43,8 @@ export const accountRewardsAtom = atom<Record<Address, RewardToken[]>>({})
 export const indexDTFIconsAtom = atom<Record<number, Record<string, string>>>(
   {}
 )
+export const portfolioLastUpdatedAtom = atom<number>(0)
+export const portfolioRefreshFnAtom = atom<(() => void) | null>(null)
 
 export const indexAccountHoldingsAtom = atom<number>((get) => {
   const indexTokens = get(accountIndexTokensAtom)
