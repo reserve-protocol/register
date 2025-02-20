@@ -1,11 +1,14 @@
 import CopyValue from '@/components/old/button/CopyValue'
 import { Card } from '@/components/ui/card'
+import Copy from '@/components/ui/copy'
 import { Skeleton } from '@/components/ui/skeleton'
+import useScrollTo from '@/hooks/useScrollTo'
 import { cn } from '@/lib/utils'
 import { chainIdAtom } from '@/state/atoms'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { useAtomValue } from 'jotai'
 import { ArrowUpRight } from 'lucide-react'
+import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
 const IconWrapper = ({ Component }: { Component: React.ElementType }) => (
@@ -21,34 +24,48 @@ const InfoCard = ({
   children,
   secondary = false,
   className,
+  id,
 }: {
   title: string
   action?: React.ReactNode
   children: React.ReactNode
   secondary?: boolean
   className?: string
-}) => (
-  <Card
-    className={cn(
-      'rounded-3xl flex flex-col bg-secondary',
-      secondary && 'bg-primary/10'
-    )}
-  >
-    <div className="p-4 flex items-center gap-2">
-      <h1 className="font-bold text-xl text-primary mr-auto">{title}</h1>
-      {action}
-    </div>
-    <div
+  id?: string
+}) => {
+  const scrollTo = useScrollTo(id || '')
+
+  useEffect(() => {
+    const section = window.location.hash.slice(1)
+    if (section && section === id) {
+      scrollTo()
+    }
+  }, [id, scrollTo])
+
+  return (
+    <Card
+      id={id}
       className={cn(
-        'bg-card mx-1 mb-1 rounded-3xl',
-        secondary && 'bg-background',
-        className
+        'rounded-3xl flex flex-col bg-secondary',
+        secondary && 'bg-primary/10'
       )}
     >
-      {children}
-    </div>
-  </Card>
-)
+      <div className="p-4 flex items-center gap-2">
+        <h1 className="font-bold text-xl text-primary mr-auto">{title}</h1>
+        {action}
+      </div>
+      <div
+        className={cn(
+          'bg-card mx-1 mb-1 rounded-3xl',
+          secondary && 'bg-background',
+          className
+        )}
+      >
+        {children}
+      </div>
+    </Card>
+  )
+}
 
 const InfoCardItem = ({
   label,
@@ -86,8 +103,8 @@ const InfoCardItem = ({
       </div>
       {!!address && (
         <div className="flex items-center gap-2">
-          <div className="p-1 bg-muted rounded-full">
-            <CopyValue value={address} />
+          <div className="flex items-center justify-center bg-muted rounded-full p-1.5">
+            <Copy value={address} size={10} />
           </div>
           <Link
             to={getExplorerLink(address, chainId, ExplorerDataType.ADDRESS)}
