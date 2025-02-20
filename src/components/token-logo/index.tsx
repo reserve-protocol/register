@@ -1,8 +1,9 @@
-import * as React from 'react'
-import { RESERVE_STORAGE, UNIVERSAL_ASSETS } from '@/utils/constants'
 import { cn } from '@/lib/utils'
-import { useAtomValue } from 'jotai'
+import { UNIVERSAL_ASSETS } from '@/utils/constants'
 import { indexDTFIconsAtom } from '@/views/portfolio/atoms'
+import { useAtom, useAtomValue } from 'jotai'
+import * as React from 'react'
+import { routeCacheAtom } from './atoms'
 
 type Sizes = 'sm' | 'md' | 'lg' | 'xl'
 
@@ -22,6 +23,7 @@ interface Props extends React.ImgHTMLAttributes<HTMLImageElement> {
 
 const TokenLogo = React.forwardRef<HTMLImageElement, Props>((props, ref) => {
   const indexDTFIcons = useAtomValue(indexDTFIconsAtom)
+  const [routeCache, setRouteCache] = useAtom(routeCacheAtom)
   const {
     symbol,
     size = 'md',
@@ -55,27 +57,35 @@ const TokenLogo = React.forwardRef<HTMLImageElement, Props>((props, ref) => {
 
       img.onerror = () => {
         clearTimeout(timeoutId)
-        reject(new Error(`Failed to load image: ${url}`))
+        reject() // Remove error message to avoid console logging
       }
     })
   }
 
-  // const getSymbolSrc = (symbol: string) => {
-  //   const normalizedSymbol = symbol.toLowerCase()
-  //   if (SVGS.has(normalizedSymbol)) {
-  //     return `/svgs/${normalizedSymbol}.svg`
-  //   }
-  //   if (PNGS.has(normalizedSymbol)) {
-  //     return `/imgs/${normalizedSymbol}.png`
-  //   }
-  //   return RESERVE_STORAGE + symbol + '.png'
-  // }
+  const cacheUrl = (url: string) => {
+    if (address && chain) {
+      setRouteCache((prev) => ({
+        ...prev,
+        [`${address.toLowerCase()}-${chain}`]: url,
+      }))
+    }
+  }
 
   const loadImage = React.useCallback(async () => {
     try {
+      // check cache first
+      if (address && chain) {
+        const cacheKey = `${address.toLowerCase()}-${chain}`
+        if (routeCache[cacheKey]) {
+          setCurrentSrc(routeCache[cacheKey])
+          return
+        }
+      }
+
       // If we have a direct src, try to use it first
       if (propsSrc) {
         const url = await tryLoadImage(propsSrc)
+        cacheUrl(url)
         setCurrentSrc(url)
         return
       }
@@ -88,29 +98,17 @@ const TokenLogo = React.forwardRef<HTMLImageElement, Props>((props, ref) => {
 
         const imgSrc = getKnownTokenLogo(symbolWithoutVault)
         if (imgSrc) {
+          cacheUrl(imgSrc)
           setCurrentSrc(imgSrc)
           return
         }
       }
-      // if (symbol) {
-      //   const symbolWithoutVault = symbol.endsWith('-VAULT')
-      //     ? symbol.replace('-VAULT', '')
-      //     : symbol
-
-      //   try {
-      //     const symbolUrl = getSymbolSrc(symbolWithoutVault)
-      //     const url = await tryLoadImage(symbolUrl)
-      //     setCurrentSrc(url)
-      //     return
-      //   } catch (error) {
-      //     console.debug(`Failed to load symbol image for ${symbol}`)
-      //   }
-      // }
 
       const foundIndexDTFIcon =
         address && chain && indexDTFIcons[chain]?.[address.toLowerCase()]
       if (foundIndexDTFIcon) {
         const imgUrl = await tryLoadImage(foundIndexDTFIcon)
+        cacheUrl(imgUrl)
         setCurrentSrc(imgUrl)
         return
       }
@@ -119,6 +117,7 @@ const TokenLogo = React.forwardRef<HTMLImageElement, Props>((props, ref) => {
         try {
           const universalUrl = `https://www.universal.xyz/wrapped-tokens/UA-${symbol.toUpperCase().substring(1)}.svg`
           const url = await tryLoadImage(universalUrl)
+          // cacheUrl(url) // don't cache universal logos because of the wrapper... solve later
           setCurrentSrc(url)
           setIsWrapped(true)
           return
@@ -132,6 +131,7 @@ const TokenLogo = React.forwardRef<HTMLImageElement, Props>((props, ref) => {
         try {
           const dexscreenerUrl = `https://dd.dexscreener.com/ds-data/tokens/base/${address?.toLowerCase()}.png?size=lg`
           const url = await tryLoadImage(dexscreenerUrl)
+          cacheUrl(url)
           setCurrentSrc(url)
           return
         } catch (error) {
@@ -141,6 +141,7 @@ const TokenLogo = React.forwardRef<HTMLImageElement, Props>((props, ref) => {
         try {
           const llamaUrl = `https://token-icons.llamao.fi/icons/tokens/${chain}/${address?.toLowerCase()}?h=${h}&w=${w}`
           const url = await tryLoadImage(llamaUrl)
+          cacheUrl(url)
           setCurrentSrc(url)
           return
         } catch (error) {
@@ -171,9 +172,6 @@ const TokenLogo = React.forwardRef<HTMLImageElement, Props>((props, ref) => {
         'flex-shrink-0 object-contain object-center',
         className,
         TRANSPARENT_TOKENS.has(symbol?.toLowerCase() || '') && 'bg-black',
-        // currentSrc && !currentSrc.includes('defaultLogo')
-        //   ? 'bg-black'
-        //   : 'bg-muted',
         isWrapped ? 'bg-transparent' : 'rounded-full'
       )}
       onError={() => setCurrentSrc('/svgs/defaultLogo.svg')}

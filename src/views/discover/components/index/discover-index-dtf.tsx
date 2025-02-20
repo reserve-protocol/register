@@ -53,18 +53,17 @@ const columns: ColumnDef<IndexDTFItem>[] = [
     accessorKey: 'name',
     cell: ({ row }) => {
       return (
-        <div className="flex gap-2 items-center">
-          <TokenLogo src={row.original.brand?.icon || undefined} size="xl" />
+        <div className="flex gap-3 items-center">
+          <div className="relative">
+            <TokenLogo src={row.original.brand?.icon || undefined} size="xl" />
+            <ChainLogo
+              chain={row.original.chainId}
+              className="absolute -bottom-1 -right-1"
+            />
+          </div>
           <div className="break-words  max-w-[420px]">
             <h4 className="font-semibold mb-[2px]">{row.original.name}</h4>
-            <div className="flex items-center gap-1">
-              <span className="text-legend">${row.original.symbol}</span>
-
-              <div className="flex gap-1 items-center text-primary p-1 px-2 text-xs border-primary bg-primary/10 rounded-full">
-                <ChainLogo chain={row.original.chainId} />
-                {CHAIN_TAGS[row.original.chainId]}
-              </div>
-            </div>
+            <span className="text-legend">${row.original.symbol}</span>
           </div>
         </div>
       )

@@ -1,4 +1,4 @@
-import { useSetAtom, useAtom } from 'jotai'
+import { useSetAtom, useAtom, useAtomValue } from 'jotai'
 import { useState } from 'react'
 import { SearchInput } from '@/components/ui/input'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
@@ -51,7 +51,10 @@ const SingleToggleFilter = ({
 }
 
 const ChainFilter = () => {
-  const [selected, setSelected] = useState('0')
+  const currentFilter = useAtomValue(chainFilterAtom)
+  const [selected, setSelected] = useState(
+    currentFilter.length > 1 ? '0' : currentFilter[0] === 1 ? '1' : '2'
+  )
   const setFilters = useSetAtom(chainFilterAtom)
 
   const chains = [
