@@ -19,7 +19,7 @@ import {
   accountRewardsAtom,
   accountTokenPricesAtom,
 } from '../../atoms'
-import { TransactionButtonContainer } from '@/components/old/button/TransactionButton'
+import { TransactionButtonContainer } from '@/components/ui/transaction'
 
 export const StakeRSRAction = () => {
   return <ChevronRight className="h-4 w-4 text-primary" />
@@ -90,7 +90,12 @@ export const LockWithdrawAction = ({ token, lockId, chainId }: Lock) => {
   const loading = !receipt && (isPending || !!hash || (hash && !receipt))
 
   return (
-    <TransactionButtonContainer chain={chainId}>
+    <TransactionButtonContainer
+      chain={chainId}
+      size="sm"
+      switchChainButtonClassName="rounded-full"
+      connectButtonClassName="rounded-full"
+    >
       <Button
         onClick={write}
         disabled={receipt?.status === 'success' || loading}
@@ -158,7 +163,12 @@ export const CancelLockAction = ({
           <span className="text-muted-foreground">{timeLeftString}</span>
         </div>
       )}
-      <TransactionButtonContainer chain={chainId}>
+      <TransactionButtonContainer
+        chain={chainId}
+        size="sm"
+        switchChainButtonClassName="rounded-full"
+        connectButtonClassName="rounded-full"
+      >
         <Button
           variant="ghost"
           className="rounded-full text-sm text-red-600 hover:text-red-600"
@@ -261,7 +271,12 @@ export const RewardAction = ({
           ? `$${formatCurrency(reward.accruedUSD, 2)}`
           : '$0'}
       </span>
-      <TransactionButtonContainer chain={chainId}>
+      <TransactionButtonContainer
+        chain={chainId}
+        size="sm"
+        switchChainButtonClassName="rounded-full"
+        connectButtonClassName="rounded-full"
+      >
         <Button
           onClick={write}
           disabled={receipt?.status === 'success' || loading}
@@ -310,7 +325,12 @@ export const ClaimAllButton = ({
   const loading = !receipt && (isPending || !!hash || (hash && !receipt))
 
   return (
-    <TransactionButtonContainer chain={chainId}>
+    <TransactionButtonContainer
+      chain={chainId}
+      size="sm"
+      switchChainButtonClassName="rounded-full"
+      connectButtonClassName="rounded-full"
+    >
       <Button
         onClick={write}
         disabled={receipt?.status === 'success' || loading}
