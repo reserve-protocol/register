@@ -66,7 +66,7 @@ const TokenBalance = ({
             balance >= required ? 'text-success' : 'text-destructive'
           )}
         >
-          {formatCurrency(required, 9, {
+          {formatCurrency(required, 2, {
             notation: 'compact',
             compactDisplay: 'short',
           })}
@@ -157,7 +157,7 @@ const ApproveAsset = ({
   return (
     <Button
       variant="outline-primary"
-      className="rounded-full"
+      className="rounded-full "
       onClick={approve}
       disabled={isPending || !amount}
     >

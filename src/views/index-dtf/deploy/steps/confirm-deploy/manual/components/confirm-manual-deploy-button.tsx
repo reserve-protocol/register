@@ -124,7 +124,8 @@ const txAtom = atom<
     assets: basket.map((token) => token.address),
     amounts: basket.map((token) =>
       parseUnits(
-        tokenAmounts[token.address].toFixed(token.decimals),
+        // TODO: this should not happen? it seems it happens when allocation is 0 for an asset
+        tokenAmounts[token.address]?.toFixed(token.decimals) ?? '0',
         token.decimals
       )
     ),

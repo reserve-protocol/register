@@ -53,7 +53,10 @@ const columns: ColumnDef<IndexDTFItem>[] = [
     accessorKey: 'name',
     cell: ({ row }) => {
       return (
-        <div className="flex gap-3 items-center">
+        <Link
+          to={getFolioRoute(row.original.address, row.original.chainId)}
+          className="flex gap-3 items-center"
+        >
           <div className="relative">
             <TokenLogo src={row.original.brand?.icon || undefined} size="xl" />
             <ChainLogo
@@ -65,7 +68,7 @@ const columns: ColumnDef<IndexDTFItem>[] = [
             <h4 className="font-semibold mb-[2px]">{row.original.name}</h4>
             <span className="text-legend">${row.original.symbol}</span>
           </div>
-        </div>
+        </Link>
       )
     },
   },
