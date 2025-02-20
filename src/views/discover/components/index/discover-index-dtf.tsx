@@ -55,24 +55,17 @@ const columns: ColumnDef<IndexDTFItem>[] = [
       return (
         <div className="flex gap-2 items-center">
           <TokenLogo src={row.original.brand?.icon || undefined} size="xl" />
-          <div className="max-w-52 break-words">
+          <div className="break-words  max-w-[420px]">
             <h4 className="font-semibold mb-[2px]">{row.original.name}</h4>
-            <span className="text-legend">${row.original.symbol}</span>
+            <div className="flex items-center gap-1">
+              <span className="text-legend">${row.original.symbol}</span>
+
+              <div className="flex gap-1 items-center text-primary p-1 px-2 text-xs border-primary bg-primary/10 rounded-full">
+                <ChainLogo chain={row.original.chainId} />
+                {CHAIN_TAGS[row.original.chainId]}
+              </div>
+            </div>
           </div>
-        </div>
-      )
-    },
-  },
-  {
-    header: ({ column }) => (
-      <SorteableButton column={column}>Network</SorteableButton>
-    ),
-    accessorKey: 'chainId',
-    cell: ({ row }) => {
-      return (
-        <div className="flex gap-2 items-center">
-          <ChainLogo chain={row.original.chainId} />
-          {CHAIN_TAGS[row.original.chainId]}
         </div>
       )
     },
@@ -81,14 +74,14 @@ const columns: ColumnDef<IndexDTFItem>[] = [
     header: () => <TableHeader>Backing</TableHeader>,
     accessorKey: 'basket',
     cell: ({ row }) => {
-      const LIMIT = 3
+      const LIMIT = 7
 
       const head = row.original.basket.slice(0, LIMIT)
       const tail = row.original.basket.length - LIMIT
 
       // TODO(jg): Logos for basket assets
       return (
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 ">
           <div>
             <StackTokenLogo
               tokens={head.map((r) => ({ ...r, chain: row.original.chainId }))}
@@ -98,10 +91,25 @@ const columns: ColumnDef<IndexDTFItem>[] = [
               outsource
             />
           </div>
-          <div className="flex">
+          {/* <div className="flex">
             <div>{head.map((t) => t.symbol).join(', ')}</div>
             {tail > 0 && <div className="text-[#0955AC] ml-[6px]">+{tail}</div>}
-          </div>
+          </div> */}
+        </div>
+      )
+    },
+  },
+  {
+    accessorKey: 'chainId',
+    header: () => <div className="text-center text-legend">Tags</div>,
+    cell: ({ row }) => {
+      return (
+        <div className="text-center">
+          {row.original.brand?.tags?.length ? (
+            row.original.brand.tags.join(', ')
+          ) : (
+            <div className="text-legend">None</div>
+          )}
         </div>
       )
     },
@@ -119,7 +127,12 @@ const columns: ColumnDef<IndexDTFItem>[] = [
 
       return (
         <div className="flex items-center justify-center gap-4">
-          <span>{percentageChange}</span>
+          <div className="text-right">
+            <span>{percentageChange}</span>
+            <span className="block text-legend text-xs mt-0.5">
+              (${formatCurrency(row.original.price)})
+            </span>
+          </div>
           {performance.length > 0 && (
             <ChartContainer config={chartConfig} className="h-6 w-16">
               <LineChart data={performance}>
@@ -174,7 +187,6 @@ const DTFCard = ({ dtf }: { dtf: IndexDTFItem }) => {
 
   const head = dtf.basket.slice(0, LIMIT)
   const tail = dtf.basket.length - LIMIT
-
   const percentageChange = calculatePercentageChange(dtf.performance)
 
   return (
@@ -229,11 +241,14 @@ const IndexDTFList = () => {
         const searchLower = search.toLowerCase()
         const nameMatch = dtf.name.toLowerCase().includes(searchLower)
         const symbolMatch = dtf.symbol.toLowerCase().includes(searchLower)
+        const tagMatch = dtf.brand?.tags?.some((tag) =>
+          tag.toLowerCase().includes(searchLower)
+        )
         const collateralMatch = dtf.basket?.some((collateral) =>
           collateral.symbol.toLowerCase().includes(searchLower)
         )
 
-        if (!nameMatch && !symbolMatch && !collateralMatch) {
+        if (!nameMatch && !symbolMatch && !collateralMatch && !tagMatch) {
           return false
         }
       }

@@ -91,7 +91,7 @@ export const SearchFilter = () => {
 
   return (
     <SearchInput
-      placeholder="Search by name, ticker or collateral"
+      placeholder="Search by name, ticker, tag or collateral"
       value={search}
       onChange={(e) => setSearch(e.target.value)}
       className="flex-grow [&_input]:border-none sm:[&_input]:rounded-2xl"
