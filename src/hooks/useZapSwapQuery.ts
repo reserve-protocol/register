@@ -102,6 +102,7 @@ const useZapSwapQuery = ({
             amountOutValue: data.result?.amountOutValue,
             dustValue: data.result?.dustValue,
             truePriceImpact: data.result?.truePriceImpact,
+            error: data?.error,
           })
         }
 
