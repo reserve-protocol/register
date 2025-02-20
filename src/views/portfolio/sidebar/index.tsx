@@ -1,11 +1,11 @@
-import { ArrowLeft, LogOut } from 'lucide-react'
+import { ArrowLeft, Power } from 'lucide-react'
 
 import ChainLogo from '@/components/icons/ChainLogo'
 import WalletOutlineIcon from '@/components/icons/WalletOutlineIcon'
-import CopyValue from '@/components/old/button/CopyValue'
 import TokenLogo from '@/components/token-logo'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
+import Copy from '@/components/ui/copy'
 import {
   Drawer,
   DrawerContent,
@@ -16,6 +16,7 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import BlockiesAvatar from '@/components/utils/blockies-avatar'
 import { cn } from '@/lib/utils'
 import { accountTokensAtom, chainIdAtom, rsrPriceAtom } from '@/state/atoms'
+import { PortfolioUpdater } from '@/state/updater'
 import { Token } from '@/types'
 import {
   formatCurrency,
@@ -52,7 +53,6 @@ import {
   VoteLockAction,
   YieldDTFAction,
 } from './components/actions'
-import { PortfolioUpdater } from '@/state/updater'
 
 const portfolioDismissibleAtom = atom(true)
 
@@ -183,19 +183,15 @@ const PortfolioHeader = () => {
                   {shortenAddress(account.address)}
                 </span>
                 <div className="flex items-center gap-[6px]">
-                  <div className="flex items-center rounded-full bg-muted p-1">
-                    <CopyValue
-                      value={account.address}
-                      size={16}
-                      placement="right"
-                    />
+                  <div className="flex items-center rounded-full bg-muted p-1.5 hover:bg-gray-500/20 transition-colors duration-200">
+                    <Copy value={account.address} size={12} side="bottom" />
                   </div>
                   <div
-                    className="flex items-center rounded-full border border-red-200 text-red-500 p-1"
+                    className="flex items-center rounded-full border p-1 border-red-50 text-red-500 bg-red-50 hover:bg-red-500/20 transition-colors duration-200"
                     role="button"
                     onClick={handleAccountModal}
                   >
-                    <LogOut size={14} />
+                    <Power size={14} />
                   </div>
                 </div>
               </div>
