@@ -166,13 +166,14 @@ const TokenLogo = React.forwardRef<HTMLImageElement, Props>((props, ref) => {
       src={currentSrc || '/svgs/defaultLogo.svg'}
       height={h}
       width={w}
-      style={{ height: h, width: w }}
+      style={{ width: w }}
       className={cn(
         'flex-shrink-0 object-contain object-center',
         className,
-        currentSrc && !currentSrc.includes('defaultLogo')
-          ? 'bg-black'
-          : 'bg-muted',
+        TRANSPARENT_TOKENS.has(symbol?.toLowerCase() || '') && 'bg-black',
+        // currentSrc && !currentSrc.includes('defaultLogo')
+        //   ? 'bg-black'
+        //   : 'bg-muted',
         isWrapped ? 'bg-transparent' : 'rounded-full'
       )}
       onError={() => setCurrentSrc('/svgs/defaultLogo.svg')}
@@ -184,6 +185,8 @@ const TokenLogo = React.forwardRef<HTMLImageElement, Props>((props, ref) => {
 TokenLogo.displayName = 'TokenLogo'
 
 export default TokenLogo
+
+export const TRANSPARENT_TOKENS = new Set(['altt', 'emp'])
 
 export const SVGS = new Set([
   'dai',
@@ -263,6 +266,12 @@ export const PNGS = new Set([
   'alusd',
   'ethx',
   'dtf',
+  'trx',
+  'wbnb',
+  'toncoin',
+  'bgb',
+  'sttao',
+  'bonk',
 ])
 
 function getKnownTokenLogo(symbol: string) {
