@@ -10,6 +10,7 @@ import {
   getSortedRowModel,
   Column,
   Table as TableType,
+  PaginationState,
 } from '@tanstack/react-table'
 
 import {
@@ -24,7 +25,7 @@ import { cn } from '@/lib/utils'
 import { Fragment, useMemo, useState } from 'react'
 import React from 'react'
 import { Button } from './button'
-import { ArrowDown, ArrowUp } from 'lucide-react'
+import { ArrowDown, ArrowUp, ChevronLeft, ChevronRight } from 'lucide-react'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -63,23 +64,84 @@ export const SorteableButton = ({
 
 const Pagination = ({ table }: { table: TableType<any> }) => {
   return (
-    <div className="flex items-center justify-end space-x-2 py-4">
-      <Button
-        variant="outline"
-        size="sm"
-        onClick={() => table.previousPage()}
-        disabled={!table.getCanPreviousPage()}
-      >
-        Previous
-      </Button>
-      <Button
-        variant="outline"
-        size="sm"
-        onClick={() => table.nextPage()}
-        disabled={!table.getCanNextPage()}
-      >
-        Next
-      </Button>
+    <div className="flex items-center justify-between py-4">
+      <div className="text-sm text-muted-foreground ml-6">
+        Showing {table.getState().pagination.pageSize} out of{' '}
+        {table.getFilteredRowModel().rows.length}
+      </div>
+      <div className="flex-1 flex items-center justify-center">
+        <div className="flex items-center space-x-2">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+          >
+            <ChevronLeft size={16} />
+          </Button>
+          <div className="flex items-center gap-2">
+            {(() => {
+              const pageCount = table.getPageCount()
+              const currentPage = table.getState().pagination.pageIndex + 1
+              const pages = []
+
+              // Always show first page
+              pages.push(1)
+
+              if (pageCount <= 5) {
+                // Show all pages if 5 or fewer
+                for (let i = 2; i <= pageCount; i++) {
+                  pages.push(i)
+                }
+              } else {
+                // Show current page and surrounding pages
+                if (currentPage > 3) {
+                  pages.push('...')
+                }
+
+                for (
+                  let i = Math.max(2, currentPage - 1);
+                  i <= Math.min(currentPage + 1, pageCount - 1);
+                  i++
+                ) {
+                  pages.push(i)
+                }
+
+                if (currentPage < pageCount - 2) {
+                  pages.push('...')
+                }
+
+                // Always show last page
+                pages.push(pageCount)
+              }
+
+              return pages.map((pageNumber) =>
+                pageNumber === '...' ? (
+                  <span key={`ellipsis-${pageNumber}`}>...</span>
+                ) : (
+                  <Button
+                    key={pageNumber}
+                    variant={currentPage === pageNumber ? undefined : 'ghost'}
+                    size="sm"
+                    onClick={() => table.setPageIndex(Number(pageNumber) - 1)}
+                  >
+                    {pageNumber}
+                  </Button>
+                )
+              )
+            })()}
+          </div>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+          >
+            <ChevronRight size={16} />
+          </Button>
+        </div>
+      </div>
+      <div className="w-[200px]" /> {/* Spacer to balance the layout */}
     </div>
   )
 }
@@ -109,7 +171,13 @@ function DataTable<TData, TValue>({
   noResultsClassName,
 }: DataTableComponentProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([])
-  const paginationState = useMemo(() => ({ pageSize: 10, pageIndex: 0 }), [])
+  const [paginationState, setPaginationState] = React.useState<PaginationState>(
+    {
+      pageSize:
+        typeof pagination === 'boolean' ? 10 : pagination?.pageSize || 10,
+      pageIndex: 0,
+    }
+  )
   const [expandedRowId, setExpandedRowId] = useState<string | null>(null)
 
   const table = useReactTable({
@@ -117,11 +185,13 @@ function DataTable<TData, TValue>({
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: !!pagination ? getPaginationRowModel() : undefined,
+    onPaginationChange: setPaginationState,
     getExpandedRowModel: getExpandedRowModel(),
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
     state: {
       sorting,
+      pagination: paginationState,
     },
   })
 

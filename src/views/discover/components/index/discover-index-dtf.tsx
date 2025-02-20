@@ -272,6 +272,13 @@ const IndexDTFList = () => {
         <DataTable
           columns={columns}
           data={filtered}
+          pagination={
+            filtered.length > 20
+              ? {
+                  pageSize: 20,
+                }
+              : undefined
+          }
           onRowClick={handleRowClick}
           className={cn(
             'hidden lg:table bg-card text-base rounded-[20px]',
