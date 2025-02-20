@@ -122,7 +122,10 @@ const ZapMint = ({ children }: { children: ReactNode }) => {
   return (
     <Drawer open={open} onOpenChange={setOpen} direction="bottom">
       <DrawerTrigger asChild>{children}</DrawerTrigger>
-      <DrawerContent className="p-2">
+      <DrawerContent
+        showClose={false}
+        className="bottom-0 top-auto left-0 right-0 rounded-b-none overflow-hidden"
+      >
         <DrawerHeader className="flex justify-between gap-2">
           {showSettings ? (
             <Button
@@ -149,15 +152,17 @@ const ZapMint = ({ children }: { children: ReactNode }) => {
               />
             </div>
           )}
-          {/* <DrawerClose asChild>
+          <DrawerClose asChild>
             <Button variant="outline" className="h-[34px] px-2 rounded-xl">
               <X size={16} />
             </Button>
-          </DrawerClose> */}
+          </DrawerClose>
         </DrawerHeader>
-        {showSettings && <ZapSettings />}
-        <div className={showSettings ? 'hidden' : 'opacity-100'}>
-          {currentTab === 'buy' ? <Buy /> : <Sell />}
+        <div className="p-2 ">
+          {showSettings && <ZapSettings />}
+          <div className={showSettings ? 'hidden' : 'opacity-100'}>
+            {currentTab === 'buy' ? <Buy /> : <Sell />}
+          </div>
         </div>
       </DrawerContent>
     </Drawer>

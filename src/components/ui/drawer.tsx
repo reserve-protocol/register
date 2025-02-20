@@ -48,8 +48,10 @@ const DrawerCloseButton = () => (
 
 const DrawerContent = React.forwardRef<
   React.ElementRef<typeof DrawerPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Content>
->(({ className, children, ...props }, ref) => (
+  React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Content> & {
+    showClose?: boolean
+  }
+>(({ className, children, showClose = true, ...props }, ref) => (
   <DrawerPortal>
     <DrawerOverlay />
     <DrawerPrimitive.Content
@@ -60,7 +62,7 @@ const DrawerContent = React.forwardRef<
       )}
       {...props}
     >
-      <DrawerCloseButton />
+      {showClose && <DrawerCloseButton />}
       {children}
     </DrawerPrimitive.Content>
   </DrawerPortal>
