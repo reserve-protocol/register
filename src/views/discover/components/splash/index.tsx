@@ -15,6 +15,7 @@ import { Drawer } from '@/components/ui/drawer'
 import { cn } from '@/lib/utils'
 import { atomWithStorage } from 'jotai/utils'
 import { useAtom } from 'jotai'
+import { DTF_VIDEO } from '@/utils/constants'
 
 const Flower = (props: SVGProps<SVGSVGElement>) => (
   <svg
@@ -138,7 +139,12 @@ const Presentation = ({
           </ul>
         </div>
         <div className="sm:border-t sm:p-6 px-6 pb-6 flex gap-3 flex-col lg:flex-row">
-          <Button variant="outline-primary" className="gap-1" size="lg">
+          <Button
+            variant="outline-primary"
+            className="gap-1"
+            size="lg"
+            onClick={() => window.open(DTF_VIDEO, '_blank')}
+          >
             <Play size={16} />
             Watch our DTF Explainer
           </Button>

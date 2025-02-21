@@ -27,6 +27,8 @@ export const DUNE_DASHBOARD =
   'https://dune.com/reserve-protocol/reserve-protocol-overview'
 export const REPOSITORY_URL = 'https://github.com/reserve-protocol/register'
 export const RESERVE_X = 'https://x.com/reserveprotocol'
+export const DTF_VIDEO =
+  'https://www.youtube.com/watch?v=EL9OHjIab_w&ab_channel=Reserve'
 
 export const LP_PROJECTS: { [x: string]: { name: string; site: string } } = {
   'curve-dex': {
