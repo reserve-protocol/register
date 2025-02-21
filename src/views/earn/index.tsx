@@ -75,7 +75,7 @@ const Info = () => {
   return (
     <Box variant="layout.centered" mt={4} mb={7} pb={[0, 2]}>
       <MouseoverTooltip
-        placement="right"
+        placement="bottom"
         text={t`DeFi protocols oftentimes have incentives for liquidity that are paid in their token or a combination of tokens. By providing liquidity for trading or lending or other activities on these protocols, you can earn rewards that are sometimes quite high! Note that there are always risks (smart contract risks, impermanent loss risks, etc), in providing liquidity on these protocols so please make sure you understand things before blindly diving in.`}
       >
         <Box
