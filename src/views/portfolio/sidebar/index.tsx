@@ -102,7 +102,7 @@ function TokenRow({
   return (
     <div
       className={cn(
-        'flex items-center justify-between py-4',
+        'flex items-center justify-between py-4 flex-wrap gap-4',
         className,
         onClick && 'cursor-pointer'
       )}
