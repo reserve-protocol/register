@@ -12,7 +12,12 @@ import {
 } from 'recharts'
 import { Box, Card, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
-import { DUNE_DASHBOARD, NETWORKS, capitalize } from 'utils/constants'
+import {
+  DTF_VIDEO,
+  DUNE_DASHBOARD,
+  NETWORKS,
+  capitalize,
+} from 'utils/constants'
 import useHistoricalTVL, {
   DailyTVL,
   DEFAULT_TVL_BY_CHAIN,
@@ -199,6 +204,7 @@ const Heading = ({ dtfStats }: { dtfStats?: DTFStats }) => {
         <Button
           variant="outline-primary"
           className="rounded-[50px] p-1 h-8 hover:bg-primary"
+          onClick={() => window.open(DTF_VIDEO, '_blank')}
         >
           <div className="rounded-full w-6 h-6 bg-primary text-primary flex items-center justify-center">
             <Play size={16} fill="#fff" />
