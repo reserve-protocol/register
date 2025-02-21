@@ -20,7 +20,7 @@ const options = [
   { value: 'LST', label: 'LST' },
   { value: 'LRT', label: 'LRT' },
   { value: 'Perps', label: 'Perps' },
-  { value: 'Derivaties', label: 'Derivaties' },
+  { value: 'Derivatives', label: 'Derivatives' },
   { value: 'ZK', label: 'ZK' },
   { value: 'Ecosystem', label: 'Ecosystem' },
   { value: 'Bitcoin', label: 'Bitcoin' },
