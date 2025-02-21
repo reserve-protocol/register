@@ -2,9 +2,10 @@ import { BoxProps, Box, Text } from 'theme-ui'
 
 interface Props extends BoxProps {
   error?: Error | null
+  withName?: boolean
 }
 
-const TransactionError = ({ error, ...props }: Props) => {
+const TransactionError = ({ error, withName = true, ...props }: Props) => {
   if (!error) {
     return null
   }
@@ -21,8 +22,8 @@ const TransactionError = ({ error, ...props }: Props) => {
         variant="error"
         sx={{ whiteSpace: 'break-spaces', wordBreak: 'break-all' }}
       >
-        {error.name}:
-        <br />
+        {withName && `${error.name}:`}
+        {withName && <br />}
         {message}
       </Text>
     </Box>

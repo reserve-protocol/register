@@ -2,27 +2,16 @@ import TransactionButton, {
   TransactionButtonContainer,
 } from '@/components/old/button/TransactionButton'
 import FusionTokenLogo from '@/components/token-logo/fusion-token-logo'
-import TransactionError from '@/components/transaction-error/TransactionError'
 import { Button } from '@/components/ui/button'
 import useContractWrite from '@/hooks/useContractWrite'
 import useWatchTransaction from '@/hooks/useWatchTransaction'
 import { ZapResult } from '@/views/yield-dtf/issuance/components/zapV2/api'
-import { useAtomValue, useSetAtom } from 'jotai'
+import { useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { Address, erc20Abi } from 'viem'
 import { useSendTransaction, useWaitForTransactionReceipt } from 'wagmi'
-import { zapOngoingTxAtom, zapSwapEndpointAtom } from './atom'
-import Copy from '@/components/ui/copy'
-
-const CopySwapButton = () => {
-  const endpoint = useAtomValue(zapSwapEndpointAtom)
-  return (
-    <div className="flex items-center gap-1 text-xs mx-auto">
-      <div>Copy swap params to share with engineering team</div>
-      <Copy value={endpoint} />
-    </div>
-  )
-}
+import { zapOngoingTxAtom } from './atom'
+import ZapErrorMsg, { ZapTxErrorMsg } from './zap-error-msg'
 
 const LoadingButton = ({
   fetchingZapper,
@@ -44,11 +33,7 @@ const LoadingButton = ({
             ? 'Insufficient balance'
             : buttonLabel}
       </Button>
-      {zapperErrorMessage && (
-        <div className="text-red-500 text-sm text-center mt-2">
-          {zapperErrorMessage}
-        </div>
-      )}
+      <ZapErrorMsg error={zapperErrorMessage} />
     </>
   )
 }
@@ -216,8 +201,7 @@ const SubmitZapButton = ({
           borderRadius: '12px',
         }}
       />
-      <TransactionError error={error} className="text-center" />
-      {error && <CopySwapButton />}
+      <ZapTxErrorMsg error={error} />
     </div>
   )
 }
