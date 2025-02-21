@@ -25,6 +25,7 @@ import { Outlet, useNavigate, useParams } from 'react-router-dom'
 import { useSwitchChain } from 'wagmi'
 import IndexDTFNavigation from './components/navigation'
 import GovernanceUpdater from './governance/updater'
+import FeedbackButton from '@/components/feedback-button'
 
 const useChainWatch = () => {
   const { switchChain } = useSwitchChain()
@@ -168,6 +169,7 @@ const Updater = () => {
 
 const IndexDTFContainer = () => (
   <div className="container flex flex-col-reverse md:flex-row mb-[72px] lg:mb-0">
+    <FeedbackButton />
     <Updater />
     <IndexDTFNavigation />
     <div className="flex-grow">
