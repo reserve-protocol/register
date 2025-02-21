@@ -1,4 +1,4 @@
-import { ArrowLeft, Loader, Power, RefreshCw } from 'lucide-react'
+import { ArrowLeft, Loader, Power, RefreshCw, Menu } from 'lucide-react'
 
 import ChainLogo from '@/components/icons/ChainLogo'
 import WalletOutlineIcon from '@/components/icons/WalletOutlineIcon'
@@ -57,6 +57,12 @@ import {
 } from './components/actions'
 import humanizeDuration from 'humanize-duration'
 import { Skeleton } from '@/components/ui/skeleton'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 
 const portfolioDismissibleAtom = atom(true)
 
@@ -281,7 +287,7 @@ const PortfolioSummary = () => {
   const totalAccountHoldings = useAtomValue(totalAccountHoldingsAtom)
 
   return (
-    <div className="p-6 pt-5 flex flex-col justify-center gap-8 text-primary">
+    <div className="p-6 pt-5 flex flex-col justify-center gap-3 sm:gap-8 text-primary">
       <WalletOutlineIcon className="h-9 w-9 -ml-[1px] -mt-[1px]" />
       <div className="flex flex-col justify-center gap-4">
         <span className="text-base">Total Reserve holdings</span>
@@ -526,6 +532,7 @@ const PORTFOLIO_TABS: { value: PortfolioTabs; label: string }[] = [
 const PortfolioContent = () => {
   const [selectedTab, setSelectedTab] = useAtom(selectedPortfolioTabAtom)
   const [isSticky, setIsSticky] = useState(false)
+  // hack for rainbow wallet modal
   const observerTarget = useRef(null)
 
   useEffect(() => {
@@ -557,13 +564,47 @@ const PortfolioContent = () => {
           isSticky && 'border-b border-border'
         )}
       >
-        <TabsList className="w-full justify-between px-6 py-3 bg-transparent [&>button]:flex [&>button]:items-center [&>button]:justify-center [&>button]:px-0 [&>button]:text-base [&>button]:font-light [&>button]:bg-transparent [&>button]:whitespace-nowrap data-[state=active]:[&>button]:font-bold data-[state=active]:[&>button]:text-primary data-[state=active]:[&>button]:shadow-none">
-          {PORTFOLIO_TABS.map(({ label, value }) => (
-            <TabsTrigger value={value} key={value}>
-              <span className="text-sm md:text-base">{label}</span>
-            </TabsTrigger>
-          ))}
-        </TabsList>
+        {/* Mobile Menu */}
+        <div className="md:hidden px-6 py-2">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" className="w-full justify-between">
+                <span>
+                  {
+                    PORTFOLIO_TABS.find((tab) => tab.value === selectedTab)
+                      ?.label
+                  }
+                </span>
+                <Menu className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-full min-w-[200px]">
+              {PORTFOLIO_TABS.map(({ label, value }) => (
+                <DropdownMenuItem
+                  key={value}
+                  className={cn(
+                    'cursor-pointer focus:bg-primary/10',
+                    selectedTab === value && 'bg-primary/10 font-bold'
+                  )}
+                  onClick={() => setSelectedTab(value as PortfolioTabs)}
+                >
+                  {label}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+
+        {/* Desktop Tabs */}
+        <div className="hidden md:block">
+          <TabsList className="w-full justify-between px-6 py-3 bg-transparent [&>button]:flex [&>button]:items-center [&>button]:justify-center [&>button]:px-0 [&>button]:text-base [&>button]:font-light [&>button]:bg-transparent [&>button]:whitespace-nowrap data-[state=active]:[&>button]:font-bold data-[state=active]:[&>button]:text-primary data-[state=active]:[&>button]:shadow-none">
+            {PORTFOLIO_TABS.map(({ label, value }) => (
+              <TabsTrigger value={value} key={value}>
+                <span className="text-sm md:text-base">{label}</span>
+              </TabsTrigger>
+            ))}
+          </TabsList>
+        </div>
       </Tabs>
       <div
         className={cn(
