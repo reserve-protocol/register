@@ -76,9 +76,9 @@ const CoverImage = () => {
     <div className="overflow-hidden rounded-3xl bg-muted p-1">
       {brand?.dtf?.cover ? (
         <img
-          width={468}
-          height={416}
-          className="object-cover h-[416px] w-[468px] rounded-3xl"
+          width={448}
+          height={448}
+          className="object-cover h-[448px] w-[448px] rounded-3xl"
           alt="DTF meme"
           src={brand.dtf.cover}
         />
@@ -93,7 +93,7 @@ const LandingMint = (props: React.HTMLAttributes<HTMLDivElement>) => {
   return (
     <div className="hidden xl:flex xl:flex-col xl:gap-1 relative" {...props}>
       <CoverImage />
-      <div className="w-[475px] sticky top-0 rounded-3xl bg-muted p-1">
+      <div className="w-[456px] sticky top-0 rounded-3xl bg-muted p-1">
         <MintBox />
       </div>
     </div>

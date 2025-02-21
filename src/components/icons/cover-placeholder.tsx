@@ -3,8 +3,8 @@ import { SVGProps } from 'react'
 const CoverPlaceholder = (props: SVGProps<SVGSVGElement>) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width={468}
-    height={460}
+    width={448}
+    height={448}
     fill="none"
     {...props}
   >
