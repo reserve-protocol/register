@@ -13,6 +13,8 @@ import useMediaQuery from '@/hooks/useMediaQuery'
 import { DrawerContent } from '@/components/ui/drawer'
 import { Drawer } from '@/components/ui/drawer'
 import { cn } from '@/lib/utils'
+import { atomWithStorage } from 'jotai/utils'
+import { useAtom } from 'jotai'
 
 const Flower = (props: SVGProps<SVGSVGElement>) => (
   <svg
@@ -150,8 +152,10 @@ const Presentation = ({
   )
 }
 
+const splashVisibleAtom = atomWithStorage('splashVisible', true)
+
 const Splash = () => {
-  const [open, setOpen] = useState(true)
+  const [open, setOpen] = useAtom(splashVisibleAtom)
   const isDesktop = useMediaQuery('(min-width: 967px)')
   const animationFit = useMediaQuery('(min-height: 800px)')
 

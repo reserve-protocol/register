@@ -2,10 +2,7 @@ import { useSetAtom, useAtom, useAtomValue } from 'jotai'
 import { useState } from 'react'
 import { SearchInput } from '@/components/ui/input'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
-import {
-  searchFilterAtom,
-  chainFilterAtom,
-} from '@/views/discover/components/index/atoms/filter'
+import { searchFilterAtom, chainFilterAtom } from '../atoms'
 import { ChainId } from '@/utils/chains'
 import ChainLogo from '@/components/icons/ChainLogo'
 import { LayoutGrid } from 'lucide-react'

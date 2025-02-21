@@ -75,9 +75,6 @@ function FallbackUI({
           An unexpected error ocurred
         </h1>
         <p className="text-destructive">Error: {error.message}</p>
-        <code className="text-sm bg-muted p-4 block whitespace-pre-wrap rounded-lg font-mono overflow-x-auto">
-          {error.stack}
-        </code>
         <div className="flex justify-center mt-4 items-center gap-2">
           <button
             onClick={() => {
