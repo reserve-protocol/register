@@ -9,7 +9,7 @@ import {
   ZapDeployBody,
   ZapDeployUngovernedBody,
 } from '@/views/yield-dtf/issuance/components/zapV2/api/types'
-import { zappableTokens } from '@/views/yield-dtf/issuance/components/zapV2/constants'
+import { reducedZappableTokens } from '@/views/yield-dtf/issuance/components/zapV2/constants'
 import { atom } from 'jotai'
 import { atomWithReset } from 'jotai/utils'
 import { Address, parseEther, parseUnits } from 'viem'
@@ -24,7 +24,7 @@ export const slippageAtom = atomWithReset<string>('100')
 
 export const defaultInputTokenAtom = atom<Token>((get) => {
   const chainId = get(chainIdAtom)
-  return zappableTokens[chainId][0]
+  return reducedZappableTokens[chainId][0]
 })
 
 export const inputBalanceAtom = atom<TokenBalance | undefined>((get) => {
@@ -36,7 +36,7 @@ export const inputBalanceAtom = atom<TokenBalance | undefined>((get) => {
 export const tokensAtom = atom<(Token & { balance?: string })[]>((get) => {
   const chainId = get(chainIdAtom)
   const balances = get(balancesAtom)
-  return zappableTokens[chainId].map((token) => ({
+  return reducedZappableTokens[chainId].map((token) => ({
     ...token,
     balance: balances[token.address]?.balance,
   }))
