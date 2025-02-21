@@ -1,7 +1,7 @@
 import { ChainId } from 'utils/chains'
 import { Address } from 'viem'
 
-const mainnetTokens = [
+const reducedMainnetTokens = [
   {
     address: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE' as Address,
     symbol: 'ETH',
@@ -23,6 +23,10 @@ const mainnetTokens = [
     decimals: 6,
     targetUnit: 'USD',
   },
+]
+
+const mainnetTokens = [
+  ...reducedMainnetTokens,
   {
     address: '0xdAC17F958D2ee523a2206206994597C13D831ec7' as Address,
     symbol: 'USDT',
@@ -53,7 +57,7 @@ const mainnetTokens = [
   },
 ]
 
-const baseTokens = [
+const reducedBaseTokens = [
   {
     address: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE' as Address,
     symbol: 'ETH',
@@ -69,16 +73,20 @@ const baseTokens = [
     targetUnit: 'ETH',
   },
   {
-    address: '0xd9aAEc86B65D86f6A7B5B1b0c42FFA531710b6CA' as Address,
-    symbol: 'USDbC',
-    name: 'USDbC',
-    decimals: 6,
-    targetUnit: 'USD',
-  },
-  {
     address: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913' as Address,
     symbol: 'USDC',
     name: 'USDC',
+    decimals: 6,
+    targetUnit: 'USD',
+  },
+]
+
+const baseTokens = [
+  ...reducedBaseTokens,
+  {
+    address: '0xd9aAEc86B65D86f6A7B5B1b0c42FFA531710b6CA' as Address,
+    symbol: 'USDbC',
+    name: 'USDbC',
     decimals: 6,
     targetUnit: 'USD',
   },
@@ -105,7 +113,7 @@ const baseTokens = [
   },
 ]
 
-const arbitrumTokens = [
+const reducedArbitrumTokens = [
   {
     address: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE' as Address,
     symbol: 'ETH',
@@ -127,6 +135,10 @@ const arbitrumTokens = [
     decimals: 6,
     targetUnit: 'USD',
   },
+]
+
+const arbitrumTokens = [
+  ...reducedArbitrumTokens,
   {
     address: '0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9' as Address,
     symbol: 'USDT',
@@ -154,6 +166,12 @@ export const zappableTokens = {
   [ChainId.Mainnet]: mainnetTokens,
   [ChainId.Base]: baseTokens,
   [ChainId.Arbitrum]: arbitrumTokens,
+}
+
+export const reducedZappableTokens = {
+  [ChainId.Mainnet]: reducedMainnetTokens,
+  [ChainId.Base]: reducedBaseTokens,
+  [ChainId.Arbitrum]: reducedArbitrumTokens,
 }
 
 export const SLIPPAGE_OPTIONS = [100000n, 10000n, 1000n]

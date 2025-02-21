@@ -1,6 +1,6 @@
 import { balancesAtom, chainIdAtom, TokenBalance } from '@/state/atoms'
 import { Token } from '@/types'
-import { zappableTokens } from '@/views/yield-dtf/issuance/components/zapV2/constants'
+import { reducedZappableTokens } from '@/views/yield-dtf/issuance/components/zapV2/constants'
 import { atom } from 'jotai'
 import { atomWithReset } from 'jotai/utils'
 
@@ -14,7 +14,7 @@ export const selectedTokenAtom = atom<Token | undefined>(undefined)
 export const defaultSelectedTokenAtom = atom<Token>((get) => {
   const chainId = get(chainIdAtom)
   const currentTab = get(currentZapMintTabAtom)
-  return zappableTokens[chainId][currentTab === 'buy' ? 0 : 1]
+  return reducedZappableTokens[chainId][currentTab === 'buy' ? 0 : 1]
 })
 export const selectedTokenOrDefaultAtom = atom<Token>((get) => {
   const selectedToken = get(selectedTokenAtom)
@@ -33,7 +33,7 @@ export const selectedTokenBalanceAtom = atom<TokenBalance | undefined>(
 export const tokensAtom = atom<(Token & { balance?: string })[]>((get) => {
   const chainId = get(chainIdAtom)
   const balances = get(balancesAtom)
-  return zappableTokens[chainId].map((token) => ({
+  return reducedZappableTokens[chainId].map((token) => ({
     ...token,
     balance: balances[token.address]?.balance,
   }))
