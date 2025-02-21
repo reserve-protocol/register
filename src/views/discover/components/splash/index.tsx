@@ -70,7 +70,7 @@ function Explainer() {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length)
-    }, 1500)
+    }, 2500)
 
     return () => clearInterval(interval)
   }, [])
@@ -115,7 +115,7 @@ const Presentation = ({
             <Sparkle size={14} strokeWidth={1} />
             New
           </div>
-          <h1 className="text-primary text-[28px] max-[967px]:text-2xl font-semibold">
+          <h1 className="text-primary text-[28px] max-[967px]:text-2xl font-semibold -mb-1">
             Decentralized Token Folios (DTFs)
           </h1>
           <h2 className="text-[28px] max-[967px]:text-2xl font-semibold">
