@@ -51,6 +51,12 @@ const Navigation = () => {
       <NavItem to={ROUTES.EXPLORER_COLLATERALS}>Collaterals</NavItem>
       <NavItem to={ROUTES.EXPLORER_GOVERNANCE}>Governance</NavItem>
       <NavItem to={ROUTES.EXPLORER_REVENUE}>Revenue</NavItem>
+      <NavItem to={ROUTES.EXPLORER_STAKING_ESTIMATOR}>
+        <Box as="span" sx={{ display: ['block', 'none'] }}>
+          Estimator
+        </Box>
+        <Box sx={{ display: ['none', 'block'] }}>Staking Estimator</Box>
+      </NavItem>
     </Box>
   )
 }
