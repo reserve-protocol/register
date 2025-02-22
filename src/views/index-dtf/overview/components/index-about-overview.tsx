@@ -124,18 +124,12 @@ const IndexBasketTokens = ({
   const chainId = useAtomValue(chainIdAtom)
 
   return (
-    <div className={cn('relative', className)}>
-      {/* <ScrollArea
-        className={cn(
-          'flex md:max-h-[620px] flex-col overflow-y-auto',
-          viewAll && basket.length > MAX_TOKENS && 'max-h-[1240px]'
-        )}
-      > */}
-      <Table className="mx-1">
+    <div className={cn('relative ', className)}>
+      <Table className="sm:mx-1">
         <TableHeader>
           <TableRow className="border-none text-legend bg-card sticky top-0 ">
             <TableHead>Token</TableHead>
-            <TableHead>Ticker</TableHead>
+            <TableHead className="hidden sm:table-cell">Ticker</TableHead>
             <TableHead className="text-center">Weight</TableHead>
             <TableHead className="text-right"></TableHead>
           </TableRow>
@@ -153,11 +147,18 @@ const IndexBasketTokens = ({
                       address={token.address}
                       chain={chainId}
                     />
-                    <span className="max-w-20 md:max-w-52">{token.name}</span>
+                    <div className="max-w-32 md:max-w-72 lg:max-w-52">
+                      <span className="block">{token.name}</span>
+                      <span className="block text-xs text-legend font-normal max-w-20 break-words">
+                        ${token.symbol}
+                      </span>
+                    </div>
                   </div>
                 </TableCell>
-                <TableCell>
-                  <span className="max-w-20 break-words">${token.symbol}</span>
+                <TableCell className="hidden sm:table-cell">
+                  <span className="sm:max-w-20 break-words">
+                    ${token.symbol}
+                  </span>
                 </TableCell>
                 <TableCell className="text-primary text-center font-bold">
                   {basketShares[token.address]}%
@@ -183,7 +184,6 @@ const IndexBasketTokens = ({
             ))}
         </TableBody>
       </Table>
-      {/* </ScrollArea> */}
       {basket.length > MAX_TOKENS && (
         <Button
           variant="outline"
@@ -201,8 +201,6 @@ const IndexBasketPreview = () => {
   const basket = useAtomValue(indexDTFBasketAtom)
   const prices = useAtomValue(indexDTFBasketPricesAtom)
 
-  console.log('basket', basket)
-  console.log('prices', prices)
   if (!basket) {
     return <Skeleton className="mt-2 w-full h-20" />
   }
