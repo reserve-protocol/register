@@ -10,13 +10,13 @@ import { ArrowRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 const IndexDTFCard = ({ dtf }: { dtf: IndexDTFItem }) => {
-  const LIMIT = 7
+  const LIMIT = 10
 
   const head = dtf.basket.slice(0, LIMIT)
 
   return (
     <Link
-      className="bg-card flex rounded-3xl gap-3 p-3"
+      className="bg-background flex rounded-3xl gap-3 p-3"
       to={getFolioRoute(dtf.address, dtf.chainId)}
     >
       {dtf?.brand?.cover ? (
@@ -49,7 +49,7 @@ const IndexDTFCard = ({ dtf }: { dtf: IndexDTFItem }) => {
           </Button>
         </div>
         <h4 className="font-semibold text-sm mt-auto pt-2">{dtf.name}</h4>
-        <div className="flex items-center text-xs ">
+        <div className="flex items-end text-xs ">
           <StackTokenLogo
             tokens={head.map((r) => ({ ...r, chain: dtf.chainId }))}
             overlap={2}
