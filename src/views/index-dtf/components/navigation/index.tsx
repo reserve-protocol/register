@@ -52,7 +52,7 @@ const NavigationItems = () => {
   const items = useMemo(
     () => [
       {
-        icon: <Globe className="h-6 w-6 md:w-3 md:h-3" />,
+        icon: <Globe strokeWidth={1.5} className="h-6 w-6 md:w-3 md:h-3" />,
         label: t`Overview`,
         route: ROUTES.OVERVIEW,
       },

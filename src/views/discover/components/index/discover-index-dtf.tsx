@@ -33,10 +33,13 @@ const IndexDTFList = () => {
 
 const DiscoverIndexDTF = () => {
   return (
-    <div className="mt-6">
-      <TitleContainer title="Release Week DTFs" className="hidden lg:flex" />
+    <div className="mt-0 md:mt-6">
+      <TitleContainer title="Release Week DTFs" />
       <IndexDTFFeatured />
-      <TitleContainer title="All Reserve Index DTFs" className="mt-10" />
+      <TitleContainer
+        title="All Reserve Index DTFs"
+        className="mt-4 md:mt-10"
+      />
       <IndexDTFList />
     </div>
   )

@@ -12,17 +12,17 @@ const TitleContainer = ({
   return (
     <div
       className={cn(
-        'flex justify-between text-legend items-center gap-6 px-4 mb-5 sm:mb-10',
+        'flex justify-center md:justify-between text-legend items-center gap-6 px-4 mb-4 sm:mb-10',
         className
       )}
     >
-      <Hash className="flex-shrink-0" size={16} />
-      <Separator orientation="horizontal" className="flex-1" />
-      <h2 className="flex-shrink-0 text-primary text-xl sm:text-2xl font-bold whitespace-nowrap">
+      <Hash className="flex-shrink-0 hidden sm:block" size={16} />
+      <Separator orientation="horizontal" className="flex-1 hidden sm:flex" />
+      <h2 className="flex-shrink-0 text-primary text-base  sm:text-2xl font-bold whitespace-nowrap">
         {title}
       </h2>
-      <Separator orientation="horizontal" className="flex-1" />
-      <Hash className="flex-shrink-0" size={16} />
+      <Separator orientation="horizontal" className="flex-1 hidden sm:flex" />
+      <Hash className="flex-shrink-0 hidden sm:block" size={16} />
     </div>
   )
 }

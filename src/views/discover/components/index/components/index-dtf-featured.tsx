@@ -38,15 +38,15 @@ const FEATURED = [
 
 const IndexDTFFeatured = () => {
   return (
-    <div className="hidden lg:grid grid-cols-3 gap-4">
+    <div className="grid grid-cols-[285px_285px_285px] lg:grid-cols-3 gap-4 overflow-x-auto">
       {FEATURED.map((dtf) => (
         <Link
           to={getFolioRoute(dtf.address, dtf.chainId)}
           key={dtf.address}
-          className="p-1 bg-muted rounded-3xl h-fit"
+          className="p-1 bg-muted rounded-3xl flex flex-col min-w-[285px]"
         >
           <img alt="featured dtf" className="w-full" src={dtf.cover} />
-          <div className="flex items-center gap-3 rounded-3xl bg-card p-6">
+          <div className="flex items-center gap-3 flex-grow rounded-3xl bg-card p-6">
             <div className="relative">
               <TokenLogo src={dtf.icon} size="xl" />
               <ChainLogo

@@ -28,7 +28,7 @@ const DiscoverTabTrigger = ({
     >
       <div className="hidden sm:block">{icon}</div>
       <div className="text-left ml-1 sm:ml-3">
-        <h4 className="text-base font-bold">{title}</h4>
+        <h4 className="text-base lg:font-bold">{title}</h4>
         <div className="hidden lg:block text-sm font-light text-wrap">
           {subtitle}
         </div>
