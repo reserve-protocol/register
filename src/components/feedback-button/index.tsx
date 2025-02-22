@@ -4,7 +4,7 @@ import { REGISTER_FEEDBACK } from '@/utils/constants'
 
 const FeedbackButton = () => {
   return (
-    <div className="fixed bottom-4 left-4 z-50">
+    <div className="hidden lg:flex fixed bottom-4 left-4 z-50">
       <Button
         size="lg"
         variant="fab"

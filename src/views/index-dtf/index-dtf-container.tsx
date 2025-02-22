@@ -112,6 +112,7 @@ const resetStateAtom = atom(null, (get, set) => {
   set(indexDTFBasketAmountsAtom, {})
   set(indexDTFBasketSharesAtom, {})
   set(indexDTFAtom, undefined)
+  set(indexDTFBrandAtom, undefined)
 })
 
 // TODO: Hook currently re-renders a lot because of a wagmi bug, different component to avoid tree re-renders
@@ -120,22 +121,12 @@ const Updater = () => {
   const navigate = useNavigate()
   const setChain = useSetAtom(chainIdAtom)
   const [currentToken, setTokenAddress] = useAtom(iTokenAddressAtom)
-  const setTokenMeta = useSetAtom(iTokenMetaAtom)
-  const setTokenConfiguration = useSetAtom(iTokenConfigurationAtom)
-  const setTokenGovernance = useSetAtom(iTokenGovernanceAtom)
-  const setTokenBasket = useSetAtom(iTokenBasketAtom)
   const resetAtoms = useSetAtom(resetStateAtom)
-  const setIndexDTFBrand = useSetAtom(indexDTFBrandAtom)
-  const chainId = NETWORKS[chain ?? ''] as AvailableChain
+  const chainId = NETWORKS[chain ?? '']
 
   useChainWatch()
 
   const resetState = () => {
-    setTokenMeta(undefined)
-    setTokenConfiguration(undefined)
-    setTokenGovernance(undefined)
-    setTokenBasket(undefined)
-    setIndexDTFBrand(undefined)
     // Remove duplicates
     resetAtoms()
   }
@@ -150,7 +141,7 @@ const Updater = () => {
 
     if (tokenAddress !== currentToken) {
       resetState()
-      setChain(chainId)
+      setChain(chainId as AvailableChain)
       setTokenAddress(tokenAddress ?? undefined)
     }
   }, [tokenId, chainId])

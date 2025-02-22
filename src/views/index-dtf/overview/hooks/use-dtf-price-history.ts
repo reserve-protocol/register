@@ -3,13 +3,16 @@ import { indexDTFPriceAtom } from '@/state/dtf/atoms'
 import { RESERVE_API } from '@/utils/constants'
 import { useQuery } from '@tanstack/react-query'
 import { useAtomValue } from 'jotai'
-import { Address } from 'viem'
+import { Address, erc20Abi, formatEther } from 'viem'
+import { useReadContract } from 'wagmi'
 
 export type IndexDTFPerformance = {
   address: Address
   timeseries: {
     timestamp: number
     price: number
+    marketCap: number
+    totalSupply: number
   }[]
 }
 
@@ -30,6 +33,14 @@ const useIndexDTFPriceHistory = ({
 }: UseIndexDTFPriceHistoryParams) => {
   const chainId = useAtomValue(chainIdAtom)
   const currentPrice = useAtomValue(indexDTFPriceAtom)
+  const { data: supply } = useReadContract({
+    address: address as Address,
+    abi: erc20Abi,
+    functionName: 'totalSupply',
+    query: {
+      enabled: Boolean(address),
+    },
+  })
 
   return useQuery({
     queryKey: [
@@ -58,10 +69,14 @@ const useIndexDTFPriceHistory = ({
 
       const data = (await response.json()) as IndexDTFPerformance
 
-      if (currentPrice) {
+      if (currentPrice && supply) {
+        const numberSupply = +formatEther(supply)
+
         data.timeseries.push({
           timestamp: Date.now(),
           price: currentPrice,
+          marketCap: currentPrice * numberSupply,
+          totalSupply: numberSupply,
         })
       }
 

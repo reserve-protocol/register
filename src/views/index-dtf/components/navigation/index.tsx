@@ -2,40 +2,14 @@ import GovernanceIcon from '@/components/icons/Governance'
 import IssuanceIcon from '@/components/icons/Issuance'
 import ManagerIcon from '@/components/icons/ManagerIcon'
 import TradeIcon from '@/components/icons/Trade'
-import TokenLogo from '@/components/token-logo'
-import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
-import { indexDTFAtom, indexDTFBrandAtom } from '@/state/dtf/atoms'
+import { indexDTFAtom } from '@/state/dtf/atoms'
 import { ROUTES } from '@/utils/constants'
 import { t } from '@lingui/macro'
 import { useAtomValue } from 'jotai'
 import { Globe } from 'lucide-react'
 import { useMemo } from 'react'
-import { Link, NavLink } from 'react-router-dom'
-
-const Header = () => {
-  const dtf = useAtomValue(indexDTFAtom)
-
-  if (!dtf) {
-    return (
-      <div className="hidden lg:flex flex-col gap-2 mb-4">
-        <Skeleton className="h-4 w-20" />
-      </div>
-    )
-  }
-
-  return (
-    <Link
-      to={ROUTES.HOME}
-      className="lg:flex items-center gap-2 hidden pb-4 mb-4 border-b"
-    >
-      {/* <div className="p-1 rounded-full bg-muted">
-        <ChevronLeft size={16} />
-      </div> */}
-      <h4 className="text-legend max-w-40 break-words">${dtf.token.symbol}</h4>
-    </Link>
-  )
-}
+import { NavLink } from 'react-router-dom'
 
 const NavigationItem = ({
   icon,
@@ -72,7 +46,6 @@ const NavigationItem = ({
 
 const NavigationItems = () => {
   const dtf = useAtomValue(indexDTFAtom)
-  const brandData = useAtomValue(indexDTFBrandAtom)
 
   const items = useMemo(
     () => [
@@ -102,7 +75,7 @@ const NavigationItems = () => {
         route: ROUTES.SETTINGS,
       },
     ],
-    [dtf?.token.symbol, brandData]
+    [dtf?.token.symbol]
   )
 
   return (

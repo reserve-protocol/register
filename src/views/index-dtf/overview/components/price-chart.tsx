@@ -22,6 +22,7 @@ const chartConfig = {
 } satisfies ChartConfig
 
 type Range = '1d' | '1w' | '1m' | '1y'
+type DataType = 'price' | 'marketCap' | 'totalSupply'
 
 const now = Math.floor(Date.now() / 1_000)
 const currentHour = Math.floor(now / 3_600) * 3_600
@@ -47,15 +48,24 @@ const timeRanges = [
   // { label: '1Y', value: '1y' },
 ] as const
 
+const dataTypes = [
+  { label: 'Price', value: 'price' },
+  { label: 'Market Cap', value: 'marketCap' },
+  { label: 'Supply', value: 'totalSupply' },
+] as const
+
 const calculatePercentageChange = (
-  performance: IndexDTFPerformance['timeseries']
+  performance: IndexDTFPerformance['timeseries'],
+  dataType: DataType
 ) => {
   if (performance.length === 0) {
     return <span className="text-legend">No data</span>
   }
-  const firstValue = performance[0].price
-  const lastValue = performance[performance.length - 1].price
-  const percentageChange = ((lastValue - firstValue) / firstValue) * 100
+  const firstValue = performance[0][dataType]
+  const lastValue = performance[performance.length - 1][dataType]
+
+  const percentageChange =
+    firstValue === 0 ? lastValue : ((lastValue - firstValue) / firstValue) * 100
 
   return (
     <span
@@ -70,17 +80,17 @@ const calculatePercentageChange = (
   )
 }
 
-function CustomTooltip({ payload, active }: any) {
+function CustomTooltip({ payload, active, dataType }: any) {
   if (active && payload) {
     const subtitle = dayjs
       .unix(+payload[0]?.payload?.timestamp)
       .format('YYYY-M-D HH:mm:ss')
+    const value = payload[0]?.payload?.[dataType]
+    const formattedValue =
+      dataType === 'price' ? formatCurrency(value, 5) : formatCurrency(value, 2)
     return (
       <Card backgroundColor="white">
-        <InfoBox
-          title={'$' + formatCurrency(payload[0]?.payload?.price, 5)}
-          subtitle={subtitle}
-        />
+        <InfoBox title={'$' + formattedValue} subtitle={subtitle} />
       </Card>
     )
   }
@@ -88,9 +98,16 @@ function CustomTooltip({ payload, active }: any) {
   return null
 }
 
+const TITLES = {
+  price: 'Price',
+  marketCap: 'Market Cap',
+  totalSupply: 'Total Supply',
+}
+
 const PriceChart = () => {
   const dtf = useAtomValue(indexDTFAtom)
   const [range, setRange] = useState<Range>('1w')
+  const [dataType, setDataType] = useState<DataType>('price')
 
   const showHourlyInterval = now - (dtf?.timestamp || 0) < 30 * 86_400
   const { data: history } = useIndexDTFPriceHistory({
@@ -99,69 +116,92 @@ const PriceChart = () => {
     ...(showHourlyInterval ? { interval: '1h' } : {}),
   })
 
-  const { data: price } = useIndexDTFCurrentPrice({ address: dtf?.id })
-
   const timeseries =
     history?.timeseries.filter(({ price }) => Boolean(price)) || []
 
+  // h-[500px]
   return (
-    <div className="rounded-2xl rounded-b-none bg-[#021122] w-full p-6 pb-20 color-[#fff] h-[500px]">
+    <div className="rounded-2xl rounded-b-none bg-[#021122] w-full p-6 pb-20  color-[#fff] h-[542px]">
       <div className="flex justify-between">
         <div className="mb-3">
-          <div className="flex items-center gap-1 text-5xl font-bold text-white mb-2">
-            {price === undefined ? (
-              <Skeleton className="min-w-[200px] h-[48px]" />
+          <h4 className="text-card/80 mb-2">{TITLES[dataType]}</h4>
+          <div className="flex items-center gap-1 text-3xl font-bold text-white mb-2">
+            {!history ? (
+              <Skeleton className="min-w-[200px] h-9" />
             ) : (
-              <span>${formatCurrency(price.price, 5)}</span>
+              <span>
+                {dataType !== 'totalSupply' ? '$' : ''}
+                {formatCurrency(
+                  timeseries[timeseries.length - 1][dataType],
+                  // dataType === 'marketCap' ? 2 : 5
+                  2
+                )}
+              </span>
             )}
           </div>
           <div className="flex items-center gap-1">
-            <span className="text-white">
-              {periodLabel[range]} performance:{' '}
-            </span>
+            <span className="text-white/80">{periodLabel[range]} change: </span>
             <div className="text-base">
               {history === undefined ? (
                 <Skeleton className="min-w-20 h-[16px]" />
               ) : (
-                calculatePercentageChange(timeseries)
+                calculatePercentageChange(timeseries, dataType)
               )}
             </div>
           </div>
         </div>
-        <div className="gap-1 hidden md:flex">
+        <div className="flex flex-col gap-2"></div>
+      </div>
+      <div className="h-60">
+        {history !== undefined && timeseries.length > 0 && (
+          <ChartContainer config={chartConfig} className="h-60 w-full ">
+            <LineChart data={timeseries}>
+              <YAxis
+                dataKey={dataType}
+                hide
+                visibility="0"
+                domain={['dataMin', 'dataMax']}
+              />
+              <Tooltip content={<CustomTooltip dataType={dataType} />} />
+              <Line
+                type="monotone"
+                dataKey={dataType}
+                stroke="#ffffff"
+                strokeWidth={2}
+                dot={false}
+                isAnimationActive={false}
+              />
+            </LineChart>
+          </ChartContainer>
+        )}
+      </div>
+
+      <div className="flex items-center pb-28 mt-8">
+        <div className="gap-1 hidden md:flex mr-auto">
           {timeRanges.map((tr) => (
             <Button
               key={tr.value}
               variant="ghost"
-              className={`h-9 text-white rounded-[60px] ${tr.value === range ? 'bg-muted/20' : ''}`}
+              className={`h-7 px-3 text-white/80 rounded-[60px] ${tr.value === range ? 'bg-muted/20 text-white' : ''}`}
               onClick={() => setRange(tr.value)}
             >
               {tr.label}
             </Button>
           ))}
         </div>
+        <div className="gap-1 hidden md:flex">
+          {dataTypes.map((dt) => (
+            <Button
+              key={dt.value}
+              variant="ghost"
+              className={`h-7 px-3 text-white/80  rounded-[60px]  ${dt.value === dataType ? 'bg-muted/20 text-white' : ''}`}
+              onClick={() => setDataType(dt.value)}
+            >
+              {dt.label}
+            </Button>
+          ))}
+        </div>
       </div>
-      {history !== undefined && timeseries.length > 0 && (
-        <ChartContainer config={chartConfig} className="h-96 w-full pb-28">
-          <LineChart data={timeseries}>
-            <YAxis
-              dataKey="price"
-              hide
-              visibility="0"
-              domain={['dataMin', 'dataMax']}
-            />
-            <Tooltip content={<CustomTooltip />} />
-            <Line
-              type="monotone"
-              dataKey="price"
-              stroke="#ffffff"
-              strokeWidth={2}
-              dot={false}
-              isAnimationActive={false}
-            />
-          </LineChart>
-        </ChartContainer>
-      )}
     </div>
   )
 }

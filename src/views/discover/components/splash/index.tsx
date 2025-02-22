@@ -124,13 +124,10 @@ const Presentation = ({
           <h2 className="text-[28px] max-[967px]:text-2xl font-semibold">
             Like ETFs, but for crypto.
           </h2>
-          <p className="sm:hidden">
-            Get diversified exposure to multiple projects with a single swap—no
-            more managing individual tokens or constant rebalancing.
-          </p>
           <p className="mt-1 hidden sm:block">
-            Get broad market exposure or buy into narratives in a single click
-            with the Reserve Index Protocol. Every Index DTF is
+            Get broad crypto exposure and buy into specific narratives with a
+            single click. Like ETFs do in TradFi, but in a decentralized
+            way. Every Index DTF is
           </p>
           <ul className="list-disc list-inside ml-3 mt-1 hidden sm:block">
             <li>Backed 1:1</li>
