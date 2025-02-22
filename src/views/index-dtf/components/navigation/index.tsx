@@ -25,8 +25,8 @@ const NavigationItem = ({
       {({ isActive }) => (
         <div
           className={cn(
-            'flex items-center gap-2 h-6 hover:text-primary',
-            isActive ? 'text-primary' : 'text-text'
+            'flex items-center transition-all rounded-full justify-center gap-2 h-10 w-10 md:h-6 md:w-6 hover:text-primary',
+            isActive ? 'text-primary bg-primary/10' : 'text-text'
           )}
         >
           {/* <div
@@ -50,27 +50,27 @@ const NavigationItems = () => {
   const items = useMemo(
     () => [
       {
-        icon: <Globe size={14} />,
+        icon: <Globe className="h-6 w-6 md:w-3 md:h-3" />,
         label: t`Overview`,
         route: ROUTES.OVERVIEW,
       },
       {
-        icon: <IssuanceIcon />,
+        icon: <IssuanceIcon className="text-2xl md:text-sm" />,
         label: t`Mint + Redeem`,
         route: ROUTES.ISSUANCE,
       },
       {
-        icon: <GovernanceIcon />,
+        icon: <GovernanceIcon className="text-2xl md:text-sm" />,
         label: t`Governance`,
         route: ROUTES.GOVERNANCE,
       },
       {
-        icon: <TradeIcon />,
+        icon: <TradeIcon className="text-2xl md:text-sm" />,
         label: t`Auctions`,
         route: ROUTES.AUCTIONS,
       },
       {
-        icon: <ManagerIcon />,
+        icon: <ManagerIcon className="text-2xl md:text-sm" />,
         label: t`Details + Roles`,
         route: ROUTES.SETTINGS,
       },
@@ -89,7 +89,7 @@ const NavigationItems = () => {
 
 const IndexDTFNavigation = () => {
   return (
-    <div className="w-full lg:sticky lg:top-0 p-6 fixed bottom-0 border-t lg:border-t-0 lg:w-56 flex-shrink-0 bg-background z-[1] h-[72px] lg:h-full">
+    <div className="w-full lg:sticky lg:top-0 p-3 md:p-6 fixed bottom-0 border-t lg:border-t-0 lg:w-56 flex-shrink-0 bg-background z-[1] h-16 lg:h-full">
       <div className="sticky top-6">
         <NavigationItems />
       </div>

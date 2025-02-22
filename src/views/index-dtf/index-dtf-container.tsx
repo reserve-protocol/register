@@ -10,10 +10,6 @@ import {
   IndexDTFBrand,
   indexDTFBrandAtom,
   iTokenAddressAtom,
-  iTokenBasketAtom,
-  iTokenConfigurationAtom,
-  iTokenGovernanceAtom,
-  iTokenMetaAtom,
 } from '@/state/dtf/atoms'
 import { isAddress } from '@/utils'
 import { AvailableChain, supportedChains } from '@/utils/chains'
@@ -161,7 +157,7 @@ const Updater = () => {
 }
 
 const IndexDTFContainer = () => (
-  <div className="container flex flex-col-reverse md:flex-row mb-[72px] lg:mb-0">
+  <div className="container flex flex-col-reverse md:flex-row mb-16 lg:mb-0">
     <FeedbackButton />
     <Updater />
     <IndexDTFNavigation />
