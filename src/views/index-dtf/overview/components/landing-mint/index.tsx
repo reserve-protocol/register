@@ -9,6 +9,7 @@ import { ArrowLeftRight } from 'lucide-react'
 import React from 'react'
 import ZapMint from '../zap-mint'
 import { currentZapMintTabAtom } from '../zap-mint/atom'
+import { Skeleton } from '@/components/ui/skeleton'
 
 const MintBox = () => {
   const dtf = useAtomValue(indexDTFAtom)
@@ -71,6 +72,10 @@ const MintBox = () => {
 
 const CoverImage = () => {
   const brand = useAtomValue(indexDTFBrandAtom)
+
+  if (!brand) {
+    return <Skeleton className="w-[456px] h-[456px] rounded-3xl" />
+  }
 
   return (
     <div className="overflow-hidden rounded-3xl bg-muted p-1">

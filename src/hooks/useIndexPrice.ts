@@ -37,7 +37,7 @@ const useIndexPrice = (token: string | undefined) => {
       }
     },
     staleTime: 5 * 60 * 1000, // Cache for 5 minutes
-    retry: 2,
+    retry: 5,
     enabled: !!token,
   })
 }

@@ -116,7 +116,7 @@ const IndexBasketTokens = ({
   basket,
   className,
 }: {
-  basket: Token[]
+  basket: Token[] | undefined
   className?: string
 }) => {
   const [viewAll, setViewAll] = useState(false)
@@ -135,56 +135,77 @@ const IndexBasketTokens = ({
           </TableRow>
         </TableHeader>
         <TableBody>
-          {basket
-            .slice(0, viewAll ? basket.length : MAX_TOKENS)
-            .map((token, index) => (
-              <TableRow key={token.symbol} className="border-none">
-                <TableCell>
-                  <div className="flex items-center font-semibold gap-2 break-words">
-                    <TokenLogo
-                      size="lg"
-                      symbol={token.symbol}
-                      address={token.address}
-                      chain={chainId}
-                    />
-                    <div className="max-w-32 md:max-w-72 lg:max-w-52">
-                      <span className="block">{token.name}</span>
-                      <span className="block text-xs text-legend font-normal max-w-20 break-words">
+          {!basket?.length // Loading skeleton rows
+            ? Array.from({ length: 10 }).map((_, i) => (
+                <TableRow key={i}>
+                  <TableCell className="flex items-center gap-3">
+                    <Skeleton className="h-8 w-8 rounded-full" />
+                    <div className="flex flex-col gap-1">
+                      <Skeleton className="h-4 w-[120px]" />
+                      <Skeleton className="h-3 w-[80px]" />
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton className="h-4 w-[100px]" />
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <Skeleton className="h-4 w-[60px] ml-auto" />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton className="h-4 w-4" />
+                  </TableCell>
+                </TableRow>
+              ))
+            : basket
+                .slice(0, viewAll ? basket.length : MAX_TOKENS)
+                .map((token, index) => (
+                  <TableRow key={token.symbol} className="border-none">
+                    <TableCell>
+                      <div className="flex items-center font-semibold gap-2 break-words">
+                        <TokenLogo
+                          size="lg"
+                          symbol={token.symbol}
+                          address={token.address}
+                          chain={chainId}
+                        />
+                        <div className="max-w-32 md:max-w-72 lg:max-w-52">
+                          <span className="block">{token.name}</span>
+                          <span className="block text-xs text-legend font-normal max-w-20 break-words">
+                            ${token.symbol}
+                          </span>
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell className="hidden sm:table-cell">
+                      <span className="sm:max-w-20 break-words">
                         ${token.symbol}
                       </span>
-                    </div>
-                  </div>
-                </TableCell>
-                <TableCell className="hidden sm:table-cell">
-                  <span className="sm:max-w-20 break-words">
-                    ${token.symbol}
-                  </span>
-                </TableCell>
-                <TableCell className="text-primary text-center font-bold">
-                  {basketShares[token.address]}%
-                </TableCell>
-                <TableCell className="text-right">
-                  <Link
-                    to={getExplorerLink(
-                      token.address,
-                      chainId,
-                      ExplorerDataType.TOKEN
-                    )}
-                    target="_blank"
-                  >
-                    <Box
-                      variant="circle"
-                      className="hover:bg-primary/10 hover:text-primary"
-                    >
-                      <ArrowUpRight className="h-4 w-4" />
-                    </Box>
-                  </Link>
-                </TableCell>
-              </TableRow>
-            ))}
+                    </TableCell>
+                    <TableCell className="text-primary text-center font-bold">
+                      {basketShares[token.address]}%
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <Link
+                        to={getExplorerLink(
+                          token.address,
+                          chainId,
+                          ExplorerDataType.TOKEN
+                        )}
+                        target="_blank"
+                      >
+                        <Box
+                          variant="circle"
+                          className="hover:bg-primary/10 hover:text-primary"
+                        >
+                          <ArrowUpRight className="h-4 w-4" />
+                        </Box>
+                      </Link>
+                    </TableCell>
+                  </TableRow>
+                ))}
         </TableBody>
       </Table>
-      {basket.length > MAX_TOKENS && (
+      {basket && basket.length > MAX_TOKENS && (
         <Button
           variant="outline"
           className="w-full rounded-2xl"
@@ -199,11 +220,6 @@ const IndexBasketTokens = ({
 
 const IndexBasketPreview = () => {
   const basket = useAtomValue(indexDTFBasketAtom)
-  const prices = useAtomValue(indexDTFBasketPricesAtom)
-
-  if (!basket) {
-    return <Skeleton className="mt-2 w-full h-20" />
-  }
 
   return (
     <div>
