@@ -83,7 +83,7 @@ const CoverImage = () => {
           src={brand.dtf.cover}
         />
       ) : (
-        <CoverPlaceholder />
+        <CoverPlaceholder className="text-legend" />
       )}
     </div>
   )

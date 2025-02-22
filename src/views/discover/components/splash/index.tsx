@@ -160,7 +160,7 @@ const splashVisibleAtom = atomWithStorage('splashVisible', true)
 const Splash = () => {
   const [open, setOpen] = useAtom(splashVisibleAtom)
   const isDesktop = useMediaQuery('(min-width: 967px)')
-  const animationFit = useMediaQuery('(min-height: 800px)')
+  const animationFit = useMediaQuery('(min-height: 760px)')
 
   if (isDesktop) {
     return (

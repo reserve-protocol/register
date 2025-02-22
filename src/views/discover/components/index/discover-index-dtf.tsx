@@ -20,11 +20,9 @@ const IndexDTFList = () => {
         <IndexDTFTable data={data} />
       </div>
 
-      <div className="lg:hidden bg-card rounded-[20px]">
+      <div className="lg:hidden flex flex-col gap-1">
         {data.map((dtf) => (
-          <div key={dtf.address} className="[&:not(:last-child)]:border-b">
-            <IndexDTFCard dtf={dtf} />
-          </div>
+          <IndexDTFCard key={dtf.address} dtf={dtf} />
         ))}
       </div>
     </div>

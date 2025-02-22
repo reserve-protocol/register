@@ -25,7 +25,7 @@ const NavigationItem = ({
       {({ isActive }) => (
         <div
           className={cn(
-            'flex items-center transition-all rounded-full justify-center gap-2 h-10 w-10 md:h-6 md:w-6 hover:text-primary',
+            'flex items-center transition-all rounded-full gap-2  hover:text-primary',
             isActive
               ? 'text-primary bg-primary/10 md:bg-transparent'
               : 'text-text'
@@ -37,7 +37,9 @@ const NavigationItem = ({
               isActive ? 'bg-primary/10' : 'bg-border'
             )}
           > */}
-          <div className="h-6 w-6 flex items-center justify-center">{icon}</div>
+          <div className="h-10 w-10 md:h-6 md:w-6 flex items-center justify-center">
+            {icon}
+          </div>
           {/* </div> */}
           <div className="text-sm hidden md:block">{label}</div>
         </div>
