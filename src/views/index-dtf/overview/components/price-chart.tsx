@@ -163,7 +163,7 @@ const Selectors = ({ className }: { className?: string }) => {
 
 const PriceChart = () => {
   const dtf = useAtomValue(indexDTFAtom)
-  const [range, setRange] = useState<Range>('1w')
+  const range = useAtomValue(timeRangeAtom)
   const dataType = useAtomValue(dataTypeAtom)
 
   const showHourlyInterval = now - (dtf?.timestamp || 0) < 30 * 86_400
