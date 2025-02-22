@@ -11,7 +11,7 @@ import IndexCreatorNotes from './components/index-creator-notes'
 const Content = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
   return (
-    <div className="rounded-2xl bg-secondary flex-1 mb-4">
+    <div className="rounded-2xl bg-secondary flex-1 lg:mb-4">
       <PriceChart />
       <div className="flex flex-col gap-1 m-1 -mt-20">
         <IndexTokenOverview />

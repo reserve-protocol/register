@@ -9,7 +9,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { Frown } from 'lucide-react'
 
 const LoadingSkeleton = () => (
   <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-2 ml-2 lg:ml-0 mr-2 mb-5">
@@ -64,7 +63,7 @@ const ProposalTradesSkeleton = ({ loading }: { loading: boolean }) => {
   }
 
   return (
-    <div className="flex h-[calc(100vh-146px)] lg:h-[calc(100vh-72px)] w-full">
+    <div className="flex h-[calc(100vh-180px)] lg:h-[calc(100vh-72px)] w-full">
       <div className="flex flex-col items-center justify-center m-4 flex-grow  border-dashed border-2 border-foreground/40 rounded-3xl">
         <h1 className="font-bold text-xl mt-2">
           No available/upcoming auctions

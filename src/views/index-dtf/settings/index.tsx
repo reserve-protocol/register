@@ -6,7 +6,7 @@ import GovernanceTokenInfo from './components/index-settings-governance-token'
 import RolesInfo from './components/index-settings-roles'
 
 const IndexDTFSettings = () => (
-  <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-2 mb-4">
+  <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-2 lg:mb-4">
     <div className="flex flex-col gap-2">
       <BasicInfo />
       <GovernanceTokenInfo />

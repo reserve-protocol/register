@@ -65,34 +65,39 @@ const useDecodedTrades = (calldatas: Hex[] | undefined): Trade[] => {
   return useMemo(() => {
     if (!calldatas) return []
 
-    return calldatas.map((calldata) => {
-      const { args } = decodeFunctionData({
-        abi: dtfIndexAbi,
-        data: calldata,
+    try {
+      return calldatas.map((calldata) => {
+        const { args } = decodeFunctionData({
+          abi: dtfIndexAbi,
+          data: calldata,
+        })
+
+        const [sell, buy, sellLimit, buyLimit, prices, ttl] = args
+
+        return {
+          sell: sell as Address,
+          buy: buy as Address,
+          sellLimit: sellLimit as {
+            spot: bigint
+            low: bigint
+            high: bigint
+          },
+          buyLimit: buyLimit as {
+            spot: bigint
+            low: bigint
+            high: bigint
+          },
+          prices: prices as {
+            start: bigint
+            end: bigint
+          },
+          ttl: ttl as bigint,
+        }
       })
-
-      const [sell, buy, sellLimit, buyLimit, prices, ttl] = args
-
-      return {
-        sell: sell as Address,
-        buy: buy as Address,
-        sellLimit: sellLimit as {
-          spot: bigint
-          low: bigint
-          high: bigint
-        },
-        buyLimit: buyLimit as {
-          spot: bigint
-          low: bigint
-          high: bigint
-        },
-        prices: prices as {
-          start: bigint
-          end: bigint
-        },
-        ttl: ttl as bigint,
-      }
-    })
+    } catch (error) {
+      console.error(error)
+      return []
+    }
   }, [calldatas])
 }
 

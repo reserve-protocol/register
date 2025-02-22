@@ -6,7 +6,7 @@ import GovernanceVoteLock from './components/governance-vote-lock'
 
 // Updater lives in the main container!
 const IndexDTFGovernance = () => (
-  <div className="grid grid-cols-1 lg:grid-cols-[1.5fr_1fr] gap-2 lg:pr-2 pb-6">
+  <div className="grid grid-cols-1 lg:grid-cols-[1.5fr_1fr] gap-2 lg:pr-2 lg:pb-4">
     <div className="flex flex-col gap-2">
       <GovernanceProposalList />
       <GovernanceDelegateList />
