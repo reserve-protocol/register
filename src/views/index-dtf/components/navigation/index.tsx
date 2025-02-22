@@ -26,7 +26,9 @@ const NavigationItem = ({
         <div
           className={cn(
             'flex items-center transition-all rounded-full justify-center gap-2 h-10 w-10 md:h-6 md:w-6 hover:text-primary',
-            isActive ? 'text-primary bg-primary/10' : 'text-text'
+            isActive
+              ? 'text-primary bg-primary/10 md:bg-transparent'
+              : 'text-text'
           )}
         >
           {/* <div
