@@ -141,7 +141,9 @@ const Updater = () => {
 
     if (tokenAddress !== currentToken) {
       resetState()
-      setChain(chainId as AvailableChain)
+      if (chainId) {
+        setChain(chainId as AvailableChain)
+      }
       setTokenAddress(tokenAddress ?? undefined)
     }
   }, [tokenId, chainId])
