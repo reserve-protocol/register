@@ -5,7 +5,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { formatCurrency } from '@/utils'
 import dayjs from 'dayjs'
-import { useAtomValue } from 'jotai'
+import { atom, useAtom, useAtomValue } from 'jotai'
 import { useState } from 'react'
 import { Line, LineChart, Tooltip, YAxis } from 'recharts'
 import { Card } from 'theme-ui'
@@ -13,6 +13,7 @@ import useIndexDTFCurrentPrice from '../hooks/use-dtf-price'
 import useIndexDTFPriceHistory, {
   IndexDTFPerformance,
 } from '../hooks/use-dtf-price-history'
+import { cn } from '@/lib/utils'
 
 const chartConfig = {
   desktop: {
@@ -104,10 +105,65 @@ const TITLES = {
   totalSupply: 'Total Supply',
 }
 
+const dataTypeAtom = atom<DataType>('price')
+const timeRangeAtom = atom<Range>('1w')
+
+const DataTypeSelector = ({ className }: { className?: string }) => {
+  const [dataType, setDataType] = useAtom(dataTypeAtom)
+
+  return (
+    <div className={cn('gap-1', className)}>
+      {dataTypes.map((dt) => (
+        <Button
+          key={dt.value}
+          variant="ghost"
+          className={`h-6 text-xs sm:text-sm px-2 sm:px-3 text-white/80  rounded-[60px]  ${dt.value === dataType ? 'bg-muted/20 text-white' : ''}`}
+          onClick={() => setDataType(dt.value)}
+        >
+          {dt.label}
+        </Button>
+      ))}
+    </div>
+  )
+}
+
+const TimeRangeSelector = ({ className }: { className?: string }) => {
+  const [range, setRange] = useAtom(timeRangeAtom)
+
+  return (
+    <div className="gap-1 ml-auto sm:ml-0 sm:mr-auto">
+      {timeRanges.map((tr) => (
+        <Button
+          key={tr.value}
+          variant="ghost"
+          className={`h-6 px-2 sm:px-3 text-xs sm:text-sm text-white/80 rounded-[60px] ${tr.value === range ? 'bg-muted/20 text-white' : ''}`}
+          onClick={() => setRange(tr.value)}
+        >
+          {tr.label}
+        </Button>
+      ))}
+    </div>
+  )
+}
+
+const Selectors = ({ className }: { className?: string }) => {
+  return (
+    <div
+      className={cn(
+        'flex flex-row-reverse sm:flex-row items-center ',
+        className
+      )}
+    >
+      <TimeRangeSelector />
+      <DataTypeSelector />
+    </div>
+  )
+}
+
 const PriceChart = () => {
   const dtf = useAtomValue(indexDTFAtom)
   const [range, setRange] = useState<Range>('1w')
-  const [dataType, setDataType] = useState<DataType>('price')
+  const dataType = useAtomValue(dataTypeAtom)
 
   const showHourlyInterval = now - (dtf?.timestamp || 0) < 30 * 86_400
   const { data: history } = useIndexDTFPriceHistory({
@@ -121,40 +177,43 @@ const PriceChart = () => {
 
   // h-[500px]
   return (
-    <div className="rounded-2xl rounded-b-none bg-[#021122] w-full p-6 pb-20  color-[#fff] h-[542px]">
-      <div className="flex justify-between">
-        <div className="mb-3">
-          <h4 className="text-card/80 mb-2">{TITLES[dataType]}</h4>
-          <div className="flex items-center gap-1 text-3xl font-bold text-white mb-2">
-            {!history ? (
-              <Skeleton className="min-w-[200px] h-9" />
+    <div className="rounded-2xl rounded-b-none bg-[#021122] w-full p-3 sm:p-6 pb-20  color-[#fff] h-80 sm:h-[542px]">
+      <div className="mb-0 sm:mb-3">
+        <h4 className="text-card/80 mb-2 hidden sm:block">
+          {TITLES[dataType]}
+        </h4>
+        <Selectors className="flex sm:hidden mb-2" />
+        <div className="flex items-end gap-1 text-2xl sm:text-3xl font-semibold sm:font-bold text-white mb-2">
+          {!history ? (
+            <Skeleton className="min-w-[200px] h-9" />
+          ) : (
+            <span>
+              {dataType !== 'totalSupply' ? '$' : ''}
+              {formatCurrency(
+                timeseries[timeseries.length - 1][dataType],
+                // dataType === 'marketCap' ? 2 : 5
+                2
+              )}
+            </span>
+          )}
+          <span className="ml-2 block pb-0.5 text-xs font-normal sm:hidden">
+            {calculatePercentageChange(timeseries, dataType)}
+          </span>
+        </div>
+        <div className="hidden sm:flex items-center gap-1">
+          <span className="text-white/80">{periodLabel[range]} change: </span>
+          <div className="text-base">
+            {history === undefined ? (
+              <Skeleton className="min-w-20 h-[16px]" />
             ) : (
-              <span>
-                {dataType !== 'totalSupply' ? '$' : ''}
-                {formatCurrency(
-                  timeseries[timeseries.length - 1][dataType],
-                  // dataType === 'marketCap' ? 2 : 5
-                  2
-                )}
-              </span>
+              calculatePercentageChange(timeseries, dataType)
             )}
           </div>
-          <div className="flex items-center gap-1">
-            <span className="text-white/80">{periodLabel[range]} change: </span>
-            <div className="text-base">
-              {history === undefined ? (
-                <Skeleton className="min-w-20 h-[16px]" />
-              ) : (
-                calculatePercentageChange(timeseries, dataType)
-              )}
-            </div>
-          </div>
         </div>
-        <div className="flex flex-col gap-2"></div>
       </div>
-      <div className="h-60">
+      <div className="h-32 sm:h-60">
         {history !== undefined && timeseries.length > 0 && (
-          <ChartContainer config={chartConfig} className="h-60 w-full ">
+          <ChartContainer config={chartConfig} className="h-32 sm:h-60 w-full ">
             <LineChart data={timeseries}>
               <YAxis
                 dataKey={dataType}
@@ -175,33 +234,7 @@ const PriceChart = () => {
           </ChartContainer>
         )}
       </div>
-
-      <div className="flex items-center pb-28 mt-8">
-        <div className="gap-1 hidden md:flex mr-auto">
-          {timeRanges.map((tr) => (
-            <Button
-              key={tr.value}
-              variant="ghost"
-              className={`h-7 px-3 text-white/80 rounded-[60px] ${tr.value === range ? 'bg-muted/20 text-white' : ''}`}
-              onClick={() => setRange(tr.value)}
-            >
-              {tr.label}
-            </Button>
-          ))}
-        </div>
-        <div className="gap-1 hidden md:flex">
-          {dataTypes.map((dt) => (
-            <Button
-              key={dt.value}
-              variant="ghost"
-              className={`h-7 px-3 text-white/80  rounded-[60px]  ${dt.value === dataType ? 'bg-muted/20 text-white' : ''}`}
-              onClick={() => setDataType(dt.value)}
-            >
-              {dt.label}
-            </Button>
-          ))}
-        </div>
-      </div>
+      <Selectors className="hidden sm:flex sm:mt-8" />
     </div>
   )
 }

@@ -15,7 +15,7 @@ const Content = () => {
       <PriceChart />
       <div className="flex flex-col gap-1 m-1 -mt-20">
         <IndexTokenOverview />
-        <IndexAboutOverview />
+        {/* <IndexAboutOverview /> */}
         {!!indexDTF?.stToken && <IndexGovernanceOverview />}
         <IndexCreatorNotes />
         <IndexDisclousure />
