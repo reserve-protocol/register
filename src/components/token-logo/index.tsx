@@ -167,7 +167,7 @@ const TokenLogo = React.forwardRef<HTMLImageElement, Props>((props, ref) => {
       src={currentSrc || '/svgs/defaultLogo.svg'}
       height={h}
       width={w}
-      style={{ width: w }}
+      style={{ width: w, height: h }}
       className={cn(
         'flex-shrink-0 object-contain object-center',
         className,
