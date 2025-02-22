@@ -39,7 +39,7 @@ const ForceLightMode = () => {
  */
 const AppHeader = () => (
   <Container>
-    <div className="container flex items-center h-[56px] md:h-[72px] px-2 sm:px-6">
+    <div className="container flex items-center h-[56px] md:h-[72px] px-4 sm:px-6">
       <Brand className="text-primary mr-2 sm:mr-4 cursor-pointer" />
       <AppNavigation />
       {/* 

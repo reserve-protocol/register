@@ -38,7 +38,7 @@ const FEATURED = [
 
 const IndexDTFFeatured = () => {
   return (
-    <div className="grid grid-cols-[285px_285px_285px] lg:grid-cols-3 gap-4 overflow-x-auto">
+    <div className="grid grid-cols-[285px_285px_285px] lg:grid-cols-3 gap-4 overflow-x-auto px-2 md:px-0">
       {FEATURED.map((dtf) => (
         <Link
           to={getFolioRoute(dtf.address, dtf.chainId)}

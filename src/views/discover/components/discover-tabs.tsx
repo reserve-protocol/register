@@ -30,7 +30,7 @@ const tabs: Tab[] = [
 
 const DiscoverTabs = ({ className }: { className: string }) => {
   return (
-    <div className={cn('container pb-6 px-2 md:px-4', className)}>
+    <div className={cn('container pb-6  md:px-4', className)}>
       <TitleContainer title="Select a DTF Category" />
       <Tabs defaultValue="index">
         <DiscoverTabList tabs={tabs} className="mb-4" />
