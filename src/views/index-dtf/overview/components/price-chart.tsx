@@ -57,7 +57,8 @@ const dataTypes = [
 
 const calculatePercentageChange = (
   performance: IndexDTFPerformance['timeseries'],
-  dataType: DataType
+  dataType: DataType,
+  wrap: boolean = false
 ) => {
   if (performance.length === 0) {
     return <span className="text-legend">No data</span>
@@ -77,7 +78,7 @@ const calculatePercentageChange = (
             ? 'text-success'
             : ''
       }
-    >{`${percentageChange > 0 ? '+' : ''}${percentageChange.toFixed(2)}%`}</span>
+    >{`${wrap ? '(' : ''}${percentageChange > 0 ? '+' : ''}${percentageChange.toFixed(2)}%${wrap ? ')' : ''}`}</span>
   )
 }
 
@@ -175,7 +176,6 @@ const PriceChart = () => {
   const timeseries =
     history?.timeseries.filter(({ price }) => Boolean(price)) || []
 
-  // h-[500px]
   return (
     <div className="rounded-2xl rounded-b-none bg-[#021122] w-full p-3 sm:p-6 pb-20  color-[#fff] h-80 sm:h-[542px]">
       <div className="mb-0 sm:mb-3">
@@ -183,7 +183,7 @@ const PriceChart = () => {
           {TITLES[dataType]}
         </h4>
         <Selectors className="flex sm:hidden mb-2" />
-        <div className="flex items-end gap-1 text-2xl sm:text-3xl font-semibold sm:font-bold text-white mb-2">
+        <div className="flex items-center gap-1 text-2xl sm:text-3xl font-semibold sm:font-bold text-white mb-2">
           {!history ? (
             <Skeleton className="min-w-[200px] h-9" />
           ) : (
@@ -196,8 +196,8 @@ const PriceChart = () => {
               )}
             </span>
           )}
-          <span className="ml-2 block pb-0.5 text-xs font-normal sm:hidden">
-            {calculatePercentageChange(timeseries, dataType)}
+          <span className="ml-1 sm:ml-2 block text-xs font-normal sm:hidden">
+            {calculatePercentageChange(timeseries, dataType, true)}
           </span>
         </div>
         <div className="hidden sm:flex items-center gap-1">
@@ -206,7 +206,7 @@ const PriceChart = () => {
             {history === undefined ? (
               <Skeleton className="min-w-20 h-[16px]" />
             ) : (
-              calculatePercentageChange(timeseries, dataType)
+              calculatePercentageChange(timeseries, dataType, false)
             )}
           </div>
         </div>

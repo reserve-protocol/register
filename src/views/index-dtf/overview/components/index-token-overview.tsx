@@ -40,7 +40,7 @@ const TokenAddresses = () => {
   }
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-2 ">
       <ChainLogo chain={chainId} />
       <span>{shortenAddress(address)}</span>
       <div className="p-1 bg-muted rounded-full">
@@ -190,7 +190,7 @@ const IndexTokenOverview = () => {
 
   return (
     <Card className="p-2">
-      <div className="flex items-center p-2 sm:p-4">
+      <div className="flex items-center flex-wrap p-2 sm:p-4">
         <div className="flex items-center mr-auto">
           {!brand ? (
             <Skeleton className="h-8 w-8 rounded-full" />
