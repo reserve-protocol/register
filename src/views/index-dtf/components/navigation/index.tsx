@@ -54,27 +54,27 @@ const NavigationItems = () => {
   const items = useMemo(
     () => [
       {
-        icon: <Globe strokeWidth={1.5} className="h-6 w-6 md:w-3 md:h-3" />,
+        icon: <Globe strokeWidth={1.5} className="h-5 w-5 md:w-3 md:h-3" />,
         label: t`Overview`,
         route: ROUTES.OVERVIEW,
       },
       {
-        icon: <IssuanceIcon className="text-2xl md:text-sm" />,
+        icon: <IssuanceIcon className="text-xl md:text-sm" />,
         label: t`Mint + Redeem`,
         route: ROUTES.ISSUANCE,
       },
       {
-        icon: <GovernanceIcon className="text-2xl md:text-sm" />,
+        icon: <GovernanceIcon className="text-xl md:text-sm" />,
         label: t`Governance`,
         route: ROUTES.GOVERNANCE,
       },
       {
-        icon: <TradeIcon className="text-2xl md:text-sm" />,
+        icon: <TradeIcon className="text-xl md:text-sm" />,
         label: t`Auctions`,
         route: ROUTES.AUCTIONS,
       },
       {
-        icon: <ManagerIcon className="text-2xl md:text-sm" />,
+        icon: <ManagerIcon className="text-xl md:text-sm" />,
         label: t`Details + Roles`,
         route: ROUTES.SETTINGS,
       },
