@@ -1,15 +1,17 @@
 import { Box } from '@/components/ui/box'
 import { Card } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
-import { indexDTFAtom, indexDTFBasketPricesAtom } from '@/state/dtf/atoms'
+import { indexDTFAtom } from '@/state/dtf/atoms'
 import { formatPercentage, getTokenName } from '@/utils'
 import { useAtomValue } from 'jotai'
-import { ArrowUpRight, BrickWall } from 'lucide-react'
+import { ArrowUpRight, BrickWall, ExternalLink } from 'lucide-react'
 
+import DiscordIcon from '@/components/icons/DiscordIcon'
 import Money from '@/components/icons/Money'
+import TelegramIcon from '@/components/icons/TelegramIcon'
+import XIcon from '@/components/icons/XIcon'
 import TokenLogo from '@/components/token-logo'
 import { Button } from '@/components/ui/button'
-import { ScrollArea } from '@/components/ui/scroll-area'
 import { Separator } from '@/components/ui/separator'
 import {
   Table,
@@ -24,17 +26,14 @@ import { chainIdAtom } from '@/state/atoms'
 import {
   indexDTFBasketAtom,
   indexDTFBasketSharesAtom,
+  indexDTFBrandAtom,
   ITokenBasket,
 } from '@/state/dtf/atoms'
 import { Token } from '@/types'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
+import { LinkIcon } from 'lucide-react'
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import DiscordIcon from '@/components/icons/DiscordIcon'
-import TelegramIcon from '@/components/icons/TelegramIcon'
-import { indexDTFBrandAtom } from '@/state/dtf/atoms'
-import { LinkIcon, Twitter } from 'lucide-react'
-import XIcon from '@/components/icons/XIcon'
 
 interface BasketOverviewProps extends React.HTMLAttributes<HTMLDivElement> {
   basket: ITokenBasket
@@ -296,9 +295,21 @@ const Mandate = () => {
           <Skeleton className="w-full h-20" />
         </div>
       ) : (
-        <p className="text-legend">
-          {brandData.dtf?.description || data.mandate}
-        </p>
+        <div className="flex flex-col gap-2">
+          <p className="text-legend">
+            {brandData.dtf?.description || data.mandate}
+          </p>
+          <Link
+            to={brandData.dtf?.prospectus}
+            target="_blank"
+            className="text-primary"
+          >
+            <div className="flex items-center gap-1">
+              {brandData.dtf?.prospectus}
+              <ExternalLink size={12} />
+            </div>
+          </Link>
+        </div>
       )}
     </div>
   )

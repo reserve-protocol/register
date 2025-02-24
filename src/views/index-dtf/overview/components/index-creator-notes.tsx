@@ -44,16 +44,6 @@ const IndexCreatorNotes = () => {
       <div className="flex items-center gap-2 mb-4"></div>
       <h2 className="text-4xl mb-2">Notes from the creator</h2>
       <p className="text-legend">{brandData.dtf?.notesFromCreator}</p>
-      <Link
-        to={brandData.dtf?.prospectus}
-        target="_blank"
-        className="text-primary"
-      >
-        <div className="flex items-center gap-1">
-          See DTF Fact sheet
-          <ArrowUpRight size={14} />
-        </div>
-      </Link>
     </Card>
   )
 }
