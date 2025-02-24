@@ -182,9 +182,7 @@ const RegisterAbout = () => (
       <DashedDivider />
       <About />
       <SocialLinks />
-      <DashedDivider />
       <div className="text-center text-primary flex flex-col items-center gap-2">
-        <Reserve />
         <a
           className="block text-sm"
           target="_blank"

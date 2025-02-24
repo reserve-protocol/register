@@ -109,18 +109,18 @@ const EarnWrapper = () => {
   }, [])
 
   return (
-    <>
-      <Box sx={{ position: 'relative' }}>
+    <div className="container">
+      <Box>
         <HeroBackground />
         <Hero />
         <Info />
         <FeaturedPools />
       </Box>
-      <Box variant="layout.wrapper">
+      <Box>
         <Earn />
         <RegisterAbout />
       </Box>
-    </>
+    </div>
   )
 }
 

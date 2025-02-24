@@ -22,7 +22,7 @@ const PoolsTable = ({ data, compact = false, ...props }: Props) => {
   )
 
   return (
-    <>
+    <div className="bg-secondary p-1 rounded-3xl">
       <Table
         sorting
         sortBy={[{ id: 'apy', desc: true }]}
@@ -31,7 +31,23 @@ const PoolsTable = ({ data, compact = false, ...props }: Props) => {
         columns={columns}
         data={data}
         columnVisibility={visibility}
-        sx={{ borderRadius: '0 0 20px 20px', overflow: 'auto' }}
+        sx={{
+          borderRadius: '0 0 20px 20px',
+          background: 'card',
+          overflow: 'auto',
+          '& tr': {
+            backgroundColor: 'white',
+          },
+          '& th': {
+            paddingTop: 4,
+            '&:first-of-type': {
+              borderTopLeftRadius: '20px',
+            },
+            '&:last-of-type': {
+              borderTopRightRadius: '20px',
+            },
+          },
+        }}
         {...props}
       />
       {!isLoading && !data.length && (
@@ -39,7 +55,7 @@ const PoolsTable = ({ data, compact = false, ...props }: Props) => {
           <Text variant="legend">No yield opportunities found</Text>
         </Box>
       )}
-    </>
+    </div>
   )
 }
 
