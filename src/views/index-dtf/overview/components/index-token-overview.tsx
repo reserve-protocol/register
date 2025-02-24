@@ -96,7 +96,7 @@ const RolesOverview = () => {
 
   return (
     <div className="grid grid-cols-2 border-t px-2 sm:pt-2">
-      <div className="flex items-center border-r gap-2 sm:p-2">
+      <div className="flex items-center sm:border-r gap-2 sm:p-2">
         {brandData?.creator?.icon ? (
           <TokenLogo src={brandData.creator.icon} size="xl" />
         ) : (

@@ -1,6 +1,6 @@
 import { Card } from '@/components/ui/card'
 import { ROUTES } from '@/utils/constants'
-import { Fingerprint, Signature } from 'lucide-react'
+import { Signature } from 'lucide-react'
 
 const IndexDisclousure = () => {
   return (
@@ -51,9 +51,13 @@ const IndexDisclousure = () => {
           interaction with any DTFs is solely at your own risk and the Website
           and DTFs come as is, without any warranty or condition of any kind.
         </p>
-        <p>
+        <p className="text-legend">
           To learn more about the risks associated with DTFs,{' '}
-          <a href={ROUTES.TERMS} target="_blank" className="text-primary">
+          <a
+            href="https://reserve.org/additional_risks/"
+            target="_blank"
+            className="text-primary"
+          >
             please see here.{' '}
           </a>
         </p>
