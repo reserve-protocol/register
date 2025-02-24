@@ -8,7 +8,7 @@ export const manageFormSchema = z.object({
     mobileCover: z.string().optional(),
     description: z.string().optional(),
     notesFromCreator: z.string().optional(),
-    prospectusUrl: z
+    prospectus: z
       .string()
       .url()
       .refine(

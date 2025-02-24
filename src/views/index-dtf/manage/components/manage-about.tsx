@@ -52,7 +52,7 @@ const ManageAbout = () => {
       />
       <FormField
         control={form.control}
-        name="dtf.prospectusUrl"
+        name="dtf.prospectus"
         render={({ field }) => (
           <FormItem>
             <FormLabel>Prospectus Link</FormLabel>
