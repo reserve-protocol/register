@@ -8,6 +8,22 @@ export const manageFormSchema = z.object({
     mobileCover: z.string().optional(),
     description: z.string().optional(),
     notesFromCreator: z.string().optional(),
+    prospectusUrl: z
+      .string()
+      .url()
+      .refine(
+        (url) =>
+          !url ||
+          url.toLowerCase().includes('bbhub.io') ||
+          url.toLowerCase().includes('marketvector.com') ||
+          url.toLowerCase().includes('reserve.org'),
+        {
+          message:
+            'Must be a valid URL from bbhub.io, marketvector.com, or reserve.org',
+        }
+      )
+      .optional()
+      .or(z.literal('')),
     tags: z
       .array(z.object({ value: z.string(), label: z.string() }))
       .optional(),
@@ -26,9 +42,12 @@ export const manageFormSchema = z.object({
     twitter: z
       .string()
       .url()
-      .refine((url) => !url || url.includes('x.com') || url.includes('x.com'), {
-        message: 'Must be a valid Twitter/X URL',
-      })
+      .refine(
+        (url) => !url || url.includes('x.com') || url.includes('twitter.com'),
+        {
+          message: 'Must be a valid Twitter/X URL',
+        }
+      )
       .optional()
       .or(z.literal('')),
     telegram: z
