@@ -10,7 +10,12 @@ import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { Address, erc20Abi } from 'viem'
 import { useSendTransaction, useWaitForTransactionReceipt } from 'wagmi'
-import { currentZapMintTabAtom, zapOngoingTxAtom } from './atom'
+import {
+  currentZapMintTabAtom,
+  zapHighPriceImpactAtom,
+  zapOngoingTxAtom,
+  zapPriceImpactWarningCheckboxAtom,
+} from './atom'
 import ZapErrorMsg, { ZapTxErrorMsg } from './zap-error-msg'
 import {
   useTrackIndexDTFZap,
@@ -18,6 +23,7 @@ import {
 } from '@/views/index-dtf/hooks/useTrackIndexDTFPage'
 import { useLocation } from 'react-router-dom'
 import { ROUTES } from '@/utils/constants'
+import ZapPriceImpactWarningCheckbox from './zap-warning-checkbox'
 
 const LoadingButton = ({
   fetchingZapper,
@@ -53,6 +59,7 @@ const SubmitZapButton = ({
     amountIn,
     tx,
     gas,
+    truePriceImpact,
   },
   chainId,
   buttonLabel,
@@ -71,6 +78,8 @@ const SubmitZapButton = ({
   outputAmount: string
   onSuccess?: () => void
 }) => {
+  const warningAccepted = useAtomValue(zapPriceImpactWarningCheckboxAtom)
+  const highPriceImpact = useAtomValue(zapHighPriceImpactAtom)
   const { pathname } = useLocation()
   const subpage = pathname.includes(ROUTES.ISSUANCE) ? 'mint' : 'overview'
 
@@ -187,12 +196,14 @@ const SubmitZapButton = ({
 
   return (
     <div className="flex flex-col gap-1">
+      <ZapPriceImpactWarningCheckbox priceImpact={truePriceImpact} />
       <TransactionButton
         chain={chainId}
         disabled={
-          approvalNeeded
+          (highPriceImpact && !warningAccepted) ||
+          (approvalNeeded
             ? !approvalReady || confirmingApproval || approving
-            : !readyToSubmit || loadingTx || validatingTx
+            : !readyToSubmit || loadingTx || validatingTx)
         }
         loading={approving || loadingTx || validatingTx || confirmingApproval}
         loadingText={
