@@ -6,7 +6,7 @@ import { Combine, Globe, Palette, Zap } from 'lucide-react'
 const DeployComingSoon = () => {
   return (
     <div className="container flex gap-10 p-6">
-      <div className="flex flex-col flex-grow relative w-full lg:min-w-[420px] ">
+      <div className="flex flex-col flex-grow relative min-w-full lg:min-w-[420px] ">
         <div className="flex items-center gap-4 mb-6">
           <div className="border rounded-full border-foreground p-2 mr-auto">
             <Globe size={14} />

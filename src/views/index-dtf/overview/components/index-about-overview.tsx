@@ -170,7 +170,7 @@ const IndexBasketTokens = ({
                         />
                         <div className="max-w-32 md:max-w-72 lg:max-w-52">
                           <span className="block">{token.name}</span>
-                          <span className="block text-xs text-legend font-normal max-w-20 break-words">
+                          <span className="block text-xs text-legend font-normal max-w-32 md:max-w-72 lg:max-w-52 break-words">
                             ${token.symbol}
                           </span>
                         </div>
