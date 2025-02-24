@@ -23,7 +23,7 @@ const IndexDTFCard = ({ dtf }: { dtf: IndexDTFItem }) => {
         <img
           width={100}
           height={100}
-          className="object-cover h-[100px] w-[100px] rounded-3xl"
+          className="object-cover h-[100px] w-[100px] rounded-xl"
           alt="DTF meme"
           src={dtf.brand.cover}
         />

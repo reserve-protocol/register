@@ -153,7 +153,9 @@ const columns: ColumnDef<IndexDTFItem>[] = [
     cell: ({ row }) => {
       return (
         <div className="flex items-center justify-end">
-          <div className="mr-6">${formatCurrency(row.original.marketCap)}</div>
+          <div className="mr-6">
+            ${formatCurrency(row.original.marketCap, 0)}
+          </div>
         </div>
       )
     },

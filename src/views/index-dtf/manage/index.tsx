@@ -59,10 +59,13 @@ const IndexDTFManage = () => {
       } as unknown as ManageFormValues
 
       if (data?.dtf?.tags) {
-        formData.dtf.tags = data.dtf.tags.map((tag: string) => ({
-          value: tag,
-          label: tag,
-        }))
+        formData.dtf = {
+          ...formData.dtf,
+          tags: data.dtf.tags.map((tag: string) => ({
+            value: tag,
+            label: tag,
+          })),
+        }
       }
 
       form.reset(formData)

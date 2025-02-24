@@ -38,12 +38,12 @@ const FEATURED = [
 
 const IndexDTFFeatured = () => {
   return (
-    <div className="grid grid-cols-[285px_285px_285px] lg:grid-cols-3 gap-4 overflow-x-auto px-2 md:px-0">
+    <div className="grid grid-cols-[350px_350px_350px] xl:grid-cols-3 gap-4 overflow-x-auto px-2 md:px-0">
       {FEATURED.map((dtf) => (
         <Link
           to={getFolioRoute(dtf.address, dtf.chainId)}
           key={dtf.address}
-          className="p-1 bg-muted rounded-4xl flex flex-col min-w-[285px]"
+          className="p-1 bg-muted rounded-4xl flex flex-col min-w-[350px]"
         >
           <img
             alt="featured dtf"
@@ -62,7 +62,7 @@ const IndexDTFFeatured = () => {
               <h4 className="font-semibold">{dtf.name}</h4>
               <span className="text-legend">${dtf.symbol}</span>
             </div>
-            <Button size="icon-rounded">
+            <Button size="icon-rounded" className="hidden xl:block">
               <ArrowRight size={16} />
             </Button>
           </div>
