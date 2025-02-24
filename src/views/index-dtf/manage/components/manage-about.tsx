@@ -6,7 +6,7 @@ import {
   FormItem,
   FormLabel,
 } from '@/components/ui/form'
-
+import { Input } from '@/components/ui/input'
 import { Switch } from '@/components/ui/switch'
 import { Textarea } from '@/components/ui/textarea'
 import { useFormContext } from 'react-hook-form'
@@ -50,7 +50,19 @@ const ManageAbout = () => {
           </FormItem>
         )}
       />
-      <div className="flex items-center gap-6 border rounded-3xl p-3">
+      <FormField
+        control={form.control}
+        name="dtf.prospectusUrl"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Prospectus Link</FormLabel>
+            <FormControl>
+              <Input placeholder="https://..." {...field} />
+            </FormControl>
+          </FormItem>
+        )}
+      />
+      <div className="flex items-center gap-6 border rounded-3xl p-3 mt-1">
         <div>
           <h4 className="font-bold">Hide DTF</h4>
           <p className="text-legend">
