@@ -10,6 +10,8 @@ import { Address } from 'viem'
 import useDebounce from './useDebounce'
 import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
 
+const DUST_REFRESH_THRESHOLD = 0.025
+
 const useZapSwapQuery = ({
   tokenIn,
   tokenOut,
@@ -62,8 +64,8 @@ const useZapSwapQuery = ({
   return useQuery({
     queryKey: ['zapDeploy', endpoint],
     queryFn: async (): Promise<ZapResponse> => {
-      // If dust > 1% of amountOutValue, retry up to 3 times.
-      const maxDustRetries = 3
+      // If dust > 2.5% of amountOutValue, retry once.
+      const maxDustRetries = 1
       let dustAttempt = 0
       let lastData: ZapResponse
 
@@ -121,7 +123,10 @@ const useZapSwapQuery = ({
         ) {
           const amountOut = Number(data.result.amountOutValue)
           const dust = Number(data.result.dustValue)
-          if (dust > 0.01 * amountOut && dustAttempt < maxDustRetries) {
+          if (
+            dust > DUST_REFRESH_THRESHOLD * amountOut &&
+            dustAttempt < maxDustRetries
+          ) {
             dustAttempt++
             continue
           }
