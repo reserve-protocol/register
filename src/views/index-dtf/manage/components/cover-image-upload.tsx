@@ -16,7 +16,7 @@ interface CoverImageUploaderProps {
 }
 
 const CONTAINER_STYLES = {
-  desktop: 'aspect-[6/5]',
+  desktop: 'aspect-[5/5]',
   mobile: 'aspect-[5/1]',
 }
 

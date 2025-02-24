@@ -31,7 +31,7 @@ const FEATURED = [
     name: 'CoinDesk DeFi Select Index',
     address: '0x188D12Eb13a5Eadd0867074ce8354B1AD6f4790b',
     chainId: ChainId.Mainnet,
-    icon: 'https://ipfs.satsuma.xyz/ipfs/QmX1dZeXd4YjYv8kZ5i9Ao2w2iauGKHaGi2hdc1m3kBCAF',
+    icon: 'https://ipfs.satsuma.xyz/ipfs/QmWnKyhHbJzT5vBAycvbEk8gKFoH46VXTT4Q5gEXtYXAtP',
     cover: coindeskCover,
   },
 ]
