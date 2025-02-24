@@ -258,7 +258,7 @@ const SlowLoading = ({ enabled }: { enabled: boolean }) => {
   return (
     <div
       className={cn(
-        "absolute inset-0 flex flex-col items-center justify-center w-full h-full bg-cover bg-center bg-[url('https://storage.reserve.org/degen.gif')] rounded-xl opacity-0",
+        "absolute inset-0 flex flex-col items-center justify-center w-full h-full bg-cover bg-center bg-[url('https://storage.reserve.org/loading5.webp')] rounded-xl opacity-0",
         enabled ? 'animate-fade-in z-10' : '-z-10'
       )}
     >
