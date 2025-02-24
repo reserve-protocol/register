@@ -180,7 +180,7 @@ const AppNavigation = () => {
             <CirclesIcon />
             <span className="hidden md:block">More</span>
           </NavigationMenuTrigger>
-          <NavigationMenuContent className="rounded-3xl">
+          <NavigationMenuContent className="rounded-4xl">
             <div className="bg-secondary w-72 sm:w-96 flex p-1 flex-col gap-1">
               {moreLinks.map((item) => (
                 <NavigationMenuLink

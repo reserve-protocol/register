@@ -6,6 +6,7 @@ import DiscoverYieldDTF from './yield/discover-yield-dtf'
 
 import { Flower, Globe, Scale } from 'lucide-react'
 import TitleContainer from './title-container'
+import IndexDTFFeatured from './index/components/index-dtf-featured'
 
 const tabs: Tab[] = [
   {
@@ -30,8 +31,10 @@ const tabs: Tab[] = [
 
 const DiscoverTabs = ({ className }: { className: string }) => {
   return (
-    <div className={cn('container pb-6  md:px-4', className)}>
-      <TitleContainer title="Select a DTF Category" />
+    <div className={cn('container pb-6 md:px-4', className)}>
+      <TitleContainer title="Featured DTFs" />
+      <IndexDTFFeatured />
+      <TitleContainer title="Select a DTF Category" className="mt-4 md:mt-10" />
       <Tabs defaultValue="index">
         <DiscoverTabList tabs={tabs} className="mb-4" />
 

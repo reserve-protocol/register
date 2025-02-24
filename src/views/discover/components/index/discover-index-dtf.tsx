@@ -3,10 +3,8 @@ import DTFFilters from './components/dtf-filters'
 import IndexDTFCard from './components/index-dtf-card'
 import IndexDTFTable from './components/index-dtf-table'
 import useFilteredDTFIndex from './hooks/use-filtered-dtf-index'
-import TitleContainer from '../title-container'
-import IndexDTFFeatured from './components/index-dtf-featured'
 
-const IndexDTFList = () => {
+const DiscoverIndexDTF = () => {
   const { data, isLoading } = useFilteredDTFIndex()
 
   if (isLoading) {
@@ -25,20 +23,6 @@ const IndexDTFList = () => {
           <IndexDTFCard key={dtf.address} dtf={dtf} />
         ))}
       </div>
-    </div>
-  )
-}
-
-const DiscoverIndexDTF = () => {
-  return (
-    <div className="mt-0 md:mt-6">
-      <TitleContainer title="Release Week DTFs" />
-      <IndexDTFFeatured />
-      <TitleContainer
-        title="All Reserve Index DTFs"
-        className="mt-4 md:mt-10"
-      />
-      <IndexDTFList />
     </div>
   )
 }

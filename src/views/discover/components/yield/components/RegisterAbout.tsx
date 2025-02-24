@@ -182,13 +182,13 @@ const RegisterAbout = () => (
       <DashedDivider />
       <About />
       <SocialLinks />
-      <div className="text-center text-primary flex flex-col items-center gap-2">
+      <div className="text-primary flex flex-col items-center mt-4 gap-2">
         <a
           className="block text-sm"
           target="_blank"
           href="https://www.abclabs.co/"
         >
-          <p>Made by ABC Labs</p>
+          <p className="font-semibold">Made by ABC Labs</p>
         </a>
       </div>
     </div>
