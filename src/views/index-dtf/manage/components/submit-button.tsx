@@ -18,7 +18,10 @@ import { toast } from 'sonner'
 import { createSiweMessage } from 'viem/siwe'
 import { useSignMessage } from 'wagmi'
 import { signatureAtom } from '../atoms'
-import { useTrackIndexDTFClick } from '../../hooks/useTrackIndexDTFPage'
+import {
+  useTrackIndexDTF,
+  useTrackIndexDTFClick,
+} from '../../hooks/useTrackIndexDTFPage'
 
 const NONCE_ENDPOINT = `${RESERVE_API}folio-manager/nonce`
 const SAVE_DTF_DATA = `${RESERVE_API}folio-manager/save`
@@ -135,6 +138,11 @@ const SubmitButton = () => {
   const isBrandManager = useAtomValue(isBrandManagerAtom)
 
   const { trackClick } = useTrackIndexDTFClick('overview', 'brand_manager')
+  const { track } = useTrackIndexDTF(
+    'api_response',
+    'overview',
+    'brand_manager'
+  )
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     trackClick('submit_changes')
@@ -186,9 +194,11 @@ const SubmitButton = () => {
       })
 
       if (!response.ok) {
+        track('submit_failure')
         const body = await response.json()
         throw new Error(body.message)
       }
+      track('submit_successful')
       toast.success('DTF updated successfully', { position: 'bottom-right' })
       updateBrandData(payload as IndexDTFBrand)
       setState('idle')

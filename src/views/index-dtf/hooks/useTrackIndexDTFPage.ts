@@ -1,3 +1,4 @@
+import { trackClick } from '@/hooks/useTrackPage'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { useAtomValue } from 'jotai'
 import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
@@ -21,12 +22,16 @@ const useTrackIndexDTFPage = (subpage: string) => {
   return null
 }
 
-export const useTrackIndexDTFClick = (page: string, subpage?: string) => {
+export const useTrackIndexDTF = (
+  event: string,
+  page: string,
+  subpage?: string
+) => {
   const indexDTF = useAtomValue(indexDTFAtom)
 
-  const trackClick = (ctaLabel: string) => {
+  const track = (ctaLabel: string) => {
     if (!indexDTF) return
-    mixpanel.track('tap', {
+    mixpanel.track(event, {
       page,
       subpage,
       cta: ctaLabel,
@@ -36,7 +41,12 @@ export const useTrackIndexDTFClick = (page: string, subpage?: string) => {
     })
   }
 
-  return { trackClick }
+  return { track }
+}
+
+export const useTrackIndexDTFClick = (page: string, subpage?: string) => {
+  const { track } = useTrackIndexDTF('tap', page, subpage)
+  return { trackClick: track }
 }
 
 export const useTrackIndexDTFZapClick = (page: string, subpage?: string) => {
