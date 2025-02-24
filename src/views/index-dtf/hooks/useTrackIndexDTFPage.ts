@@ -21,4 +21,46 @@ const useTrackIndexDTFPage = (subpage: string) => {
   return null
 }
 
+export const useTrackIndexDTFClick = (page: string, subpage?: string) => {
+  const indexDTF = useAtomValue(indexDTFAtom)
+
+  const trackClick = (ctaLabel: string) => {
+    if (!indexDTF) return
+    mixpanel.track('tap', {
+      page,
+      subpage,
+      cta: ctaLabel,
+      ca: indexDTF.id,
+      ticker: indexDTF.token.symbol,
+      chain: indexDTF.chainId,
+    })
+  }
+
+  return { trackClick }
+}
+
+export const useTrackIndexDTFZapClick = (page: string, subpage?: string) => {
+  const indexDTF = useAtomValue(indexDTFAtom)
+
+  const trackClick = (
+    ctaLabel: string,
+    inputToken: string,
+    outputToken: string
+  ) => {
+    if (!indexDTF) return
+    mixpanel.track('tap', {
+      page,
+      subpage,
+      cta: ctaLabel,
+      ca: indexDTF.id,
+      ticker: indexDTF.token.symbol,
+      chain: indexDTF.chainId,
+      input: inputToken,
+      output: outputToken,
+    })
+  }
+
+  return { trackClick }
+}
+
 export default useTrackIndexDTFPage

@@ -31,7 +31,9 @@ import LockView from './lock'
 import SubmitLockButton from './lock/submit-lock-button'
 import UnlockView from './unlock'
 import SubmitUnlockButton from './unlock/submit-unlock-button copy'
-import useTrackIndexDTFPage from '@/views/index-dtf/hooks/useTrackIndexDTFPage'
+import useTrackIndexDTFPage, {
+  useTrackIndexDTFClick,
+} from '@/views/index-dtf/hooks/useTrackIndexDTFPage'
 
 const TABS = [
   {
@@ -121,6 +123,8 @@ const Staking = ({ children }: { children: ReactNode }) => {
   const setUnlockDelay = useSetAtom(unlockDelayAtom)
   const setCheckbox = useSetAtom(lockCheckboxAtom)
 
+  const { trackClick } = useTrackIndexDTFClick('overview', 'overview')
+
   const { data: priceResponse } = useAssetPrice(
     indexDTF?.stToken?.underlying.address
   )
@@ -171,7 +175,13 @@ const Staking = ({ children }: { children: ReactNode }) => {
         setOpen(false)
       }}
     >
-      <DrawerTrigger asChild onClick={() => setOpen(true)}>
+      <DrawerTrigger
+        asChild
+        onClick={() => {
+          trackClick('lock_govtoken')
+          setOpen(true)
+        }}
+      >
         {children}
       </DrawerTrigger>
       <DrawerContent>

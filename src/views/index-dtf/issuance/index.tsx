@@ -6,7 +6,9 @@ import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { ArrowLeft, Settings } from 'lucide-react'
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import useTrackIndexDTFPage from '../hooks/useTrackIndexDTFPage'
+import useTrackIndexDTFPage, {
+  useTrackIndexDTFClick,
+} from '../hooks/useTrackIndexDTFPage'
 import {
   currentZapMintTabAtom,
   defaultSelectedTokenAtom,
@@ -40,6 +42,7 @@ const IndexDTFIssuance = () => {
   const invalidInput = isNaN(Number(input)) || Number(input) === 0
 
   const { data: balance } = useERC20Balance(indexDTF?.id)
+  const { trackClick } = useTrackIndexDTFClick('overview', 'mint')
 
   useEffect(() => {
     setIndexDTFBalance(balance || 0n)
@@ -125,7 +128,7 @@ const IndexDTFIssuance = () => {
           <p className="text-sm text-muted-foreground mr-auto">
             Having issues {currentTab === 'buy' ? 'minting' : 'redeeming'}?
           </p>
-          <Link to={`./manual`}>
+          <Link to={`./manual`} onClick={() => trackClick('switch_to_manual')}>
             <Button variant="muted" size="xs">
               Switch to manual {currentTab === 'buy' ? 'minting' : 'redeeming'}
             </Button>

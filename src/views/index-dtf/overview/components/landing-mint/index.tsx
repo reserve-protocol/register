@@ -2,20 +2,20 @@ import CoverPlaceholder from '@/components/icons/cover-placeholder'
 import TokenLogo from '@/components/token-logo'
 import StackTokenLogo from '@/components/token-logo/StackTokenLogo'
 import { Button } from '@/components/ui/button'
-import { chainIdAtom } from '@/state/atoms'
+import { Skeleton } from '@/components/ui/skeleton'
 import { indexDTFAtom, indexDTFBrandAtom } from '@/state/dtf/atoms'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { ArrowLeftRight } from 'lucide-react'
 import React from 'react'
 import ZapMint from '../zap-mint'
 import { currentZapMintTabAtom } from '../zap-mint/atom'
-import { Skeleton } from '@/components/ui/skeleton'
+import { useTrackIndexDTFClick } from '@/views/index-dtf/hooks/useTrackIndexDTFPage'
 
 const MintBox = () => {
   const dtf = useAtomValue(indexDTFAtom)
   const brand = useAtomValue(indexDTFBrandAtom)
-  const chainId = useAtomValue(chainIdAtom)
   const setZapMintTab = useSetAtom(currentZapMintTabAtom)
+  const { trackClick } = useTrackIndexDTFClick('overview', 'overview')
 
   return (
     <div className="rounded-3xl bg-card p-2">
@@ -53,14 +53,20 @@ const MintBox = () => {
         >
           <Button
             className="rounded-xl h-12"
-            onClick={() => setZapMintTab('buy')}
+            onClick={() => {
+              trackClick('buy')
+              setZapMintTab('buy')
+            }}
           >
             Buy
           </Button>
           <Button
             className="rounded-xl h-12"
             variant="outline"
-            onClick={() => setZapMintTab('sell')}
+            onClick={() => {
+              trackClick('sell')
+              setZapMintTab('sell')
+            }}
           >
             Sell
           </Button>

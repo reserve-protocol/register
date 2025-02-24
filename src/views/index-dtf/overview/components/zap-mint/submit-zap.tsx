@@ -6,12 +6,14 @@ import { Button } from '@/components/ui/button'
 import useContractWrite from '@/hooks/useContractWrite'
 import useWatchTransaction from '@/hooks/useWatchTransaction'
 import { ZapResult } from '@/views/yield-dtf/issuance/components/zapV2/api'
-import { useSetAtom } from 'jotai'
+import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { Address, erc20Abi } from 'viem'
 import { useSendTransaction, useWaitForTransactionReceipt } from 'wagmi'
-import { zapOngoingTxAtom } from './atom'
+import { currentZapMintTabAtom, zapOngoingTxAtom } from './atom'
 import ZapErrorMsg, { ZapTxErrorMsg } from './zap-error-msg'
+import { useTrackIndexDTFZapClick } from '@/views/index-dtf/hooks/useTrackIndexDTFPage'
+import { useLocation } from 'react-router-dom'
 
 const LoadingButton = ({
   fetchingZapper,
@@ -65,7 +67,12 @@ const SubmitZapButton = ({
   outputAmount: string
   onSuccess?: () => void
 }) => {
+  const { pathname } = useLocation()
+  const subpage = pathname.includes('/issuance') ? 'mint' : 'overview'
+
+  const { trackClick } = useTrackIndexDTFZapClick('overview', subpage)
   const setOngoingTx = useSetAtom(zapOngoingTxAtom)
+  const currentTab = useAtomValue(currentZapMintTabAtom)
   const {
     write: approve,
     isReady: approvalReady,
@@ -189,7 +196,13 @@ const SubmitZapButton = ({
         // gas={readyToSubmit ? (gas ? BigInt(gas) : undefined) : approvalGas}
         onClick={() => {
           setOngoingTx(true)
-          readyToSubmit ? execute() : approve()
+          if (readyToSubmit) {
+            trackClick(`zap_${currentTab}`, inputSymbol, outputSymbol)
+            execute()
+          } else {
+            trackClick('zap-approve', inputSymbol, outputSymbol)
+            approve()
+          }
         }}
         text={
           readyToSubmit
