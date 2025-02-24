@@ -49,28 +49,37 @@ export const useTrackIndexDTFClick = (page: string, subpage?: string) => {
   return { trackClick: track }
 }
 
-export const useTrackIndexDTFZapClick = (page: string, subpage?: string) => {
+export const useTrackIndexDTFZap = (
+  event: string,
+  page: string,
+  subpage?: string
+) => {
   const indexDTF = useAtomValue(indexDTFAtom)
 
-  const trackClick = (
+  const track = (
     ctaLabel: string,
-    inputToken: string,
-    outputToken: string
+    inputSymbol: string,
+    outputSymbol: string
   ) => {
     if (!indexDTF) return
-    mixpanel.track('tap', {
+    mixpanel.track(event, {
       page,
       subpage,
       cta: ctaLabel,
       ca: indexDTF.id,
       ticker: indexDTF.token.symbol,
       chain: indexDTF.chainId,
-      input: inputToken,
-      output: outputToken,
+      input: inputSymbol,
+      output: outputSymbol,
     })
   }
 
-  return { trackClick }
+  return { track }
+}
+
+export const useTrackIndexDTFZapClick = (page: string, subpage?: string) => {
+  const { track } = useTrackIndexDTFZap('tap', page, subpage)
+  return { trackClick: track }
 }
 
 export default useTrackIndexDTFPage

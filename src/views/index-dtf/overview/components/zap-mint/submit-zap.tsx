@@ -12,7 +12,10 @@ import { Address, erc20Abi } from 'viem'
 import { useSendTransaction, useWaitForTransactionReceipt } from 'wagmi'
 import { currentZapMintTabAtom, zapOngoingTxAtom } from './atom'
 import ZapErrorMsg, { ZapTxErrorMsg } from './zap-error-msg'
-import { useTrackIndexDTFZapClick } from '@/views/index-dtf/hooks/useTrackIndexDTFPage'
+import {
+  useTrackIndexDTFZap,
+  useTrackIndexDTFZapClick,
+} from '@/views/index-dtf/hooks/useTrackIndexDTFPage'
 import { useLocation } from 'react-router-dom'
 import { ROUTES } from '@/utils/constants'
 
@@ -72,6 +75,8 @@ const SubmitZapButton = ({
   const subpage = pathname.includes(ROUTES.ISSUANCE) ? 'mint' : 'overview'
 
   const { trackClick } = useTrackIndexDTFZapClick('overview', subpage)
+  const { track } = useTrackIndexDTFZap('alert', 'overview', subpage)
+
   const setOngoingTx = useSetAtom(zapOngoingTxAtom)
   const currentTab = useAtomValue(currentZapMintTabAtom)
   const {
@@ -155,6 +160,7 @@ const SubmitZapButton = ({
 
   useEffect(() => {
     if (receipt) {
+      track('zap_success_notification', inputSymbol, outputSymbol)
       onSuccess?.()
     }
   }, [receipt, onSuccess])
