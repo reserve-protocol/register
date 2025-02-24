@@ -2,7 +2,7 @@ import { Box } from '@/components/ui/box'
 import { Card } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import { indexDTFAtom, indexDTFBasketPricesAtom } from '@/state/dtf/atoms'
-import { formatPercentage } from '@/utils'
+import { formatPercentage, getTokenName } from '@/utils'
 import { useAtomValue } from 'jotai'
 import { ArrowUpRight, BrickWall } from 'lucide-react'
 
@@ -145,7 +145,7 @@ const IndexBasketTokens = ({
                       <Skeleton className="h-3 w-[80px]" />
                     </div>
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="hidden sm:table-cell">
                     <Skeleton className="h-4 w-[100px]" />
                   </TableCell>
                   <TableCell className="text-right">
@@ -168,9 +168,11 @@ const IndexBasketTokens = ({
                           address={token.address}
                           chain={chainId}
                         />
-                        <div className="max-w-32 md:max-w-72 lg:max-w-52">
-                          <span className="block">{token.name}</span>
-                          <span className="block text-xs text-legend font-normal max-w-20 break-words">
+                        <div className="max-w-32 md:max-w-72 lg:max-w-56">
+                          <span className="block">
+                            {getTokenName(token.name)}
+                          </span>
+                          <span className="block text-xs text-legend font-normal max-w-32 md:max-w-72 lg:max-w-52 break-words">
                             ${token.symbol}
                           </span>
                         </div>

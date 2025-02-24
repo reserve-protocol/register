@@ -270,6 +270,11 @@ export const PNGS = new Set([
   'bgb',
   'sttao',
   'bonk',
+  'moomorpho-steakhouse-usdc',
+  'moomorpho-steakhouse-wbtc',
+  'moomorpho-steakhouse-weth',
+  'moomorpho-smokehouse-wsteth',
+  'moomorpho-smokehouse-usdc',
 ])
 
 function getKnownTokenLogo(symbol: string) {

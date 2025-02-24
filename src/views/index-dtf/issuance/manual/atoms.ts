@@ -16,7 +16,7 @@ export const maxRedeemAmountAtom = atom((get) => {
   return balanceMap[indexDTF?.id ?? ''] ?? 0n
 })
 
-export const unlimitedApprovalAtom = atom(false)
+export const unlimitedApprovalAtom = atom(true)
 export const allowanceMapAtom = atom<Record<string, bigint>>({})
 
 export const assetAmountsMapAtom = atom((get) => {

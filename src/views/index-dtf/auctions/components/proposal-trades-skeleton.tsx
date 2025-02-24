@@ -64,7 +64,7 @@ const ProposalTradesSkeleton = ({ loading }: { loading: boolean }) => {
 
   return (
     <div className="flex h-[calc(100vh-180px)] lg:h-[calc(100vh-72px)] w-full">
-      <div className="flex flex-col items-center justify-center m-4 flex-grow  border-dashed border-2 border-foreground/40 rounded-3xl">
+      <div className="flex flex-col items-center justify-center m-4 flex-grow border-none lg:border-dashed border-2 border-foreground/40 rounded-3xl">
         <h1 className="font-bold text-xl mt-2">
           No available/upcoming auctions
         </h1>

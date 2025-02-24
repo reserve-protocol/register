@@ -340,3 +340,11 @@ export const humanizeTimeFromDays = (days: number) => {
     language: 'en',
   })
 }
+
+export const getTokenName = (name: string) => {
+  if (name.startsWith('Moo ')) {
+    return name.replace('Moo ', 'Beefy ')
+  }
+
+  return name
+}
