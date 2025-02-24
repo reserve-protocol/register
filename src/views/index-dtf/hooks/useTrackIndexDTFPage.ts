@@ -6,20 +6,18 @@ import { indexDTFAtom } from '@/state/dtf/atoms'
 
 const useTrackIndexDTFPage = (subpage: string) => {
   const indexDTF = useAtomValue(indexDTFAtom)
-  const account = useAtomValue(walletAtom)
 
   useEffect(() => {
-    if (!account || !indexDTF) return
+    if (!indexDTF) return
 
     mixpanel.track_pageview({
       page: 'overview',
       subpage,
-      wa: account ?? undefined,
       ca: indexDTF.id,
       ticker: indexDTF.token.symbol,
       chain: indexDTF.chainId,
     })
-  }, [account, indexDTF])
+  }, [indexDTF])
 
   return null
 }
