@@ -1,7 +1,7 @@
 import { Separator } from '@/components/ui/separator'
 import { ROUTES } from '@/utils/constants'
-import SocialMediaInput from '@/views/yield-dtf/issuance/components/zapV2/minters-modal/SocialMediaInput'
 import { Combine, Globe, Palette, Zap } from 'lucide-react'
+import SocialMediaInput from './social-media-input'
 
 const DeployComingSoon = () => {
   return (
