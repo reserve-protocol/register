@@ -86,7 +86,6 @@ const PriceChart = (props: BoxProps) => {
                   +priceUSD,
                   rToken?.targetUnits === 'ETH' ? 2 : 3
                 )}`
-
           return {
             value,
             label: dayjs.unix(+timestamp).format('YYYY-M-D HH:mm:ss'),
