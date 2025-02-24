@@ -299,16 +299,18 @@ const Mandate = () => {
           <p className="text-legend">
             {brandData.dtf?.description || data.mandate}
           </p>
-          <Link
-            to={brandData.dtf?.prospectus}
-            target="_blank"
-            className="text-primary"
-          >
-            <div className="flex items-center gap-1">
-              {brandData.dtf?.prospectus}
-              <ExternalLink size={12} />
-            </div>
-          </Link>
+          {brandData.dtf?.prospectus && (
+            <Link
+              to={brandData.dtf?.prospectus}
+              target="_blank"
+              className="text-primary"
+            >
+              <div className="flex items-center gap-1">
+                {brandData.dtf?.prospectus}
+                <ExternalLink size={12} />
+              </div>
+            </Link>
+          )}
         </div>
       )}
     </div>
