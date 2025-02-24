@@ -45,7 +45,11 @@ const IndexDTFFeatured = () => {
           key={dtf.address}
           className="p-1 bg-muted rounded-4xl flex flex-col min-w-[285px]"
         >
-          <img alt="featured dtf" className="w-full" src={dtf.cover} />
+          <img
+            alt="featured dtf"
+            className="w-full rounded-3xl"
+            src={dtf.cover}
+          />
           <div className="flex items-center gap-3 flex-grow rounded-3xl bg-card p-6">
             <div className="relative">
               <TokenLogo src={dtf.icon} size="xl" />

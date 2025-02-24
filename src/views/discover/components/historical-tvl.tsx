@@ -136,6 +136,7 @@ function CustomTooltip({ payload, label, active }: any) {
   )
 }
 
+// TODO: Improve loading revenue state, currently have a hardcoded if
 const Heading = ({ dtfStats }: { dtfStats?: DTFStats }) => {
   const {
     data: { tvl: rTVL, rsrStakerAnnualizedRevenue, rTokenAnnualizedRevenue },
@@ -188,7 +189,7 @@ const Heading = ({ dtfStats }: { dtfStats?: DTFStats }) => {
 
         <div className="flex gap-2 mt-3 text-base sm:text-xl leading-none">
           <span className="font-light">Annualized protocol revenue:</span>
-          {isLoading || !revenue ? (
+          {isLoading || revenue < 1000000 ? (
             <Skeleton className="h-6 w-14" />
           ) : (
             <span className="font-bold">
