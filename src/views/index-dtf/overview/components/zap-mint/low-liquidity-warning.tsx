@@ -11,7 +11,8 @@ const WARNING_PER_DTF: Record<number, Record<string, boolean>> = {
     '0x4e3b170dcbe704b248df5f56d488114ace01b1c5': false,
   },
   [ChainId.Base]: {
-    '0x7f0791302d6c50220b176719b2245e5848e10821': false,
+    '0xebcda5b80f62dd4dd2a96357b42bb6facbf30267': true,
+    '0xb8753941196692e322846cfee9c14c97ac81928a': true,
   },
 }
 
