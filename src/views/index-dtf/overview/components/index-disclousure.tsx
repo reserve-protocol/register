@@ -22,7 +22,7 @@ const IndexDisclousure = () => {
           >
             app.reserve.org
           </a>{' '}
-          (the “Website”), , you expressly acknowledge that you have read and
+          (the “Website”), you expressly acknowledge that you have read and
           understood the{' '}
           <a href={ROUTES.TERMS} target="_blank" className="text-primary">
             Terms and Conditions

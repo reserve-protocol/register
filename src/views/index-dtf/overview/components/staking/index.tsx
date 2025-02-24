@@ -31,6 +31,7 @@ import LockView from './lock'
 import SubmitLockButton from './lock/submit-lock-button'
 import UnlockView from './unlock'
 import SubmitUnlockButton from './unlock/submit-unlock-button copy'
+import useTrackIndexDTFPage from '@/views/index-dtf/hooks/useTrackIndexDTFPage'
 
 const TABS = [
   {
@@ -46,6 +47,7 @@ const TABS = [
 ]
 
 const LockCheckbox = () => {
+  useTrackIndexDTFPage('stake')
   const indexDTF = useAtomValue(indexDTFAtom)
   const delay = useAtomValue(unlockDelayAtom)
   const [checkbox, setCheckbox] = useAtom(lockCheckboxAtom)

@@ -32,6 +32,7 @@ import useDTFHistoricalTVL, {
   DTFStatsSnapshot,
 } from '../hooks/use-dtf-historical-tvl'
 import { useMemo } from 'react'
+import { trackClick } from '@/hooks/useTrackPage'
 
 const COLORS: Record<string, any> = {
   ethereum: {
@@ -204,7 +205,10 @@ const Heading = ({ dtfStats }: { dtfStats?: DTFStats }) => {
         <Button
           variant="outline-primary"
           className="rounded-[50px] p-1 h-8 hover:bg-primary"
-          onClick={() => window.open(DTF_VIDEO, '_blank')}
+          onClick={() => {
+            trackClick('discover', 'video')
+            window.open(DTF_VIDEO, '_blank')
+          }}
         >
           <div className="rounded-full w-6 h-6 bg-primary text-primary flex items-center justify-center">
             <Play size={16} fill="#fff" />
