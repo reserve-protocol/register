@@ -34,6 +34,7 @@ import IndexDTFManage from './views/index-dtf/manage'
 import IndexDTFOverview from './views/index-dtf/overview'
 import IndexDTFSettings from './views/index-dtf/settings'
 import AllYieldDTFList from './views/tokens/Tokens'
+import DeployComingSoon from './views/index-dtf/deploy/components/deploy-coming-soon'
 
 // TODO: Remove terms!
 // TODO: Fix recoll call on yield dtf auction page
@@ -43,7 +44,8 @@ const AppRoutes = () => (
     <Route path={ROUTES.BRIDGE} element={<Bridge />} />
     <Route path={ROUTES.EARN} element={<EarnWrapper />} />
     <Route path={ROUTES.DEPLOY_YIELD} element={<DeployYieldDTF />} />
-    <Route path={ROUTES.DEPLOY_INDEX} element={<DeployIndexDTF />} />
+    <Route path={ROUTES.DEPLOY_INDEX} element={<DeployComingSoon />} />
+    <Route path={'/hidden/deploy'} element={<DeployIndexDTF />} />
     <Route path={ROUTES.TOKENS} element={<AllYieldDTFList />} />
     <Route path={ROUTES.TERMS} element={<Terms />} />
     {/* Yield DTF */}
