@@ -13,9 +13,12 @@ import useERC20Balance from '@/hooks/useERC20Balance'
 import { useWatchReadContract } from '@/hooks/useWatchReadContract'
 import { walletAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
+import { ROUTES } from '@/utils/constants'
+import { useTrackIndexDTFClick } from '@/views/index-dtf/hooks/useTrackIndexDTFPage'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { Asterisk, Minus, OctagonAlert, Plus } from 'lucide-react'
 import { ReactNode, useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 import { useReadContract } from 'wagmi'
 import {
   currentStakingTabAtom,
@@ -31,9 +34,6 @@ import LockView from './lock'
 import SubmitLockButton from './lock/submit-lock-button'
 import UnlockView from './unlock'
 import SubmitUnlockButton from './unlock/submit-unlock-button copy'
-import useTrackIndexDTFPage, {
-  useTrackIndexDTFClick,
-} from '@/views/index-dtf/hooks/useTrackIndexDTFPage'
 
 const TABS = [
   {
@@ -49,7 +49,6 @@ const TABS = [
 ]
 
 const LockCheckbox = () => {
-  useTrackIndexDTFPage('stake')
   const indexDTF = useAtomValue(indexDTFAtom)
   const delay = useAtomValue(unlockDelayAtom)
   const [checkbox, setCheckbox] = useAtom(lockCheckboxAtom)
@@ -123,7 +122,12 @@ const Staking = ({ children }: { children: ReactNode }) => {
   const setUnlockDelay = useSetAtom(unlockDelayAtom)
   const setCheckbox = useSetAtom(lockCheckboxAtom)
 
-  const { trackClick } = useTrackIndexDTFClick('overview', 'overview')
+  const { pathname } = useLocation()
+  const subpage = pathname.includes(ROUTES.GOVERNANCE)
+    ? 'governance'
+    : 'overview'
+
+  const { trackClick } = useTrackIndexDTFClick('overview', subpage)
 
   const { data: priceResponse } = useAssetPrice(
     indexDTF?.stToken?.underlying.address

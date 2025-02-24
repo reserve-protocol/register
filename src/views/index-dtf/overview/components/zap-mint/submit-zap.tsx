@@ -14,6 +14,7 @@ import { currentZapMintTabAtom, zapOngoingTxAtom } from './atom'
 import ZapErrorMsg, { ZapTxErrorMsg } from './zap-error-msg'
 import { useTrackIndexDTFZapClick } from '@/views/index-dtf/hooks/useTrackIndexDTFPage'
 import { useLocation } from 'react-router-dom'
+import { ROUTES } from '@/utils/constants'
 
 const LoadingButton = ({
   fetchingZapper,
@@ -68,7 +69,7 @@ const SubmitZapButton = ({
   onSuccess?: () => void
 }) => {
   const { pathname } = useLocation()
-  const subpage = pathname.includes('/issuance') ? 'mint' : 'overview'
+  const subpage = pathname.includes(ROUTES.ISSUANCE) ? 'mint' : 'overview'
 
   const { trackClick } = useTrackIndexDTFZapClick('overview', subpage)
   const setOngoingTx = useSetAtom(zapOngoingTxAtom)
