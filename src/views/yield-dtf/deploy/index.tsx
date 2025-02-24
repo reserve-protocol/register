@@ -17,8 +17,10 @@ import DeployOverview from './components/DeployOverview'
 import Governance from './components/Governance'
 import NavigationSidebar from './components/NavigationSidebar'
 import RTokenSetup from './components/RTokenSetup'
+import useTrackPage from '@/hooks/useTrackPage'
 
 const Deploy = () => {
+  useTrackPage('create', 'yield_dtf')
   const [governance, setGovernance] = useState(false)
   const chainId = useAtomValue(chainIdAtom)
 
