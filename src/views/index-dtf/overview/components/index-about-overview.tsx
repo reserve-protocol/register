@@ -145,7 +145,7 @@ const IndexBasketTokens = ({
                       <Skeleton className="h-3 w-[80px]" />
                     </div>
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="hidden sm:table-cell">
                     <Skeleton className="h-4 w-[100px]" />
                   </TableCell>
                   <TableCell className="text-right">
