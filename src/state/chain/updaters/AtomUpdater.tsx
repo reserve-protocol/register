@@ -1,4 +1,5 @@
 import '@rainbow-me/rainbowkit/styles.css'
+import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
 import { useEffect } from 'react'
 
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
@@ -53,6 +54,9 @@ const AtomUpdater = () => {
     if (account && account.address) {
       setWallet(account.address)
       setWalletChain(account.chainId)
+      mixpanel.register({
+        wa: account.address,
+      })
     } else {
       setWallet(null)
       setWalletChain(undefined)

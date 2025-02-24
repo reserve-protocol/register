@@ -34,13 +34,14 @@ import Buy from './buy'
 import RefreshQuote from './refresh-quote'
 import Sell from './sell'
 import ZapSettings from './zap-settings'
+import { useTrackIndexDTFZapClick } from '@/views/index-dtf/hooks/useTrackIndexDTFPage'
 
 const ZapMint = ({ children }: { children: ReactNode }) => {
   const [open, setOpen] = useAtom(openZapMintModalAtom)
   const currentTab = useAtomValue(currentZapMintTabAtom)
   const [showSettings, setShowSettings] = useAtom(showZapSettingsAtom)
   const defaultToken = useAtomValue(defaultSelectedTokenAtom)
-  const setSelectedToken = useSetAtom(selectedTokenAtom)
+  const [selectedToken, setSelectedToken] = useAtom(selectedTokenAtom)
   const indexDTF = useAtomValue(indexDTFAtom)
   const zapRefetch = useAtomValue(zapRefetchAtom)
   const zapFetching = useAtomValue(zapFetchingAtom)
@@ -49,6 +50,8 @@ const ZapMint = ({ children }: { children: ReactNode }) => {
   const setIndexDTFBalance = useSetAtom(indexDTFBalanceAtom)
   const invalidInput = isNaN(Number(input)) || Number(input) === 0
   const isDesktop = useMediaQuery('(min-width: 768px)')
+
+  const { trackClick } = useTrackIndexDTFZapClick('overview', 'overview')
 
   const { data: balance } = useERC20Balance(indexDTF?.id)
 
@@ -68,6 +71,11 @@ const ZapMint = ({ children }: { children: ReactNode }) => {
   }, [open, defaultToken, setSelectedToken, setShowSettings])
 
   if (!indexDTF) return null
+
+  const tokenIn =
+    currentTab === 'buy' ? selectedToken || defaultToken : indexDTF.token
+  const tokenOut =
+    currentTab === 'sell' ? indexDTF.token : selectedToken || defaultToken
 
   if (isDesktop) {
     return (
@@ -91,13 +99,19 @@ const ZapMint = ({ children }: { children: ReactNode }) => {
                 <Button
                   variant="outline"
                   className="h-[34px] px-2 rounded-xl"
-                  onClick={() => setShowSettings(true)}
+                  onClick={() => {
+                    trackClick('zap_settings', tokenIn.symbol, tokenOut.symbol)
+                    setShowSettings(true)
+                  }}
                 >
                   <Settings size={16} />
                 </Button>
                 <RefreshQuote
                   small
-                  onClick={zapRefetch.fn}
+                  onClick={() => {
+                    trackClick('zap_refresh', tokenIn.symbol, tokenOut.symbol)
+                    zapRefetch.fn?.()
+                  }}
                   loading={zapFetching}
                   disabled={zapFetching || zapOngoingTx || invalidInput}
                 />

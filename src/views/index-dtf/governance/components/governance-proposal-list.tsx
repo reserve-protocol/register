@@ -7,22 +7,18 @@ import {
   VotingState,
 } from '@/lib/governance'
 import { cn } from '@/lib/utils'
-import {
-  formatPercentage,
-  getCurrentTime,
-  getProposalTitle,
-  parseDuration,
-} from '@/utils'
+import { formatPercentage, getProposalTitle, parseDuration } from '@/utils'
 import { formatConstant, PROPOSAL_STATES, ROUTES } from '@/utils/constants'
-import { useAtom, useAtomValue } from 'jotai'
-import { Circle, PlusSquare, RefreshCcw } from 'lucide-react'
+import { useAtomValue } from 'jotai'
+import { Circle, PlusSquare } from 'lucide-react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { governanceProposalsAtom, refetchTokenAtom } from '../atoms'
-import { useState } from 'react'
-import { useEffect } from 'react'
+import { useTrackIndexDTFClick } from '../../hooks/useTrackIndexDTFPage'
+import { governanceProposalsAtom } from '../atoms'
 
 // The refresh button is a decent? idea but easily abused
 const Header = () => {
+  const { trackClick } = useTrackIndexDTFClick('overview', 'governance')
   // const [refetchTime, setRefetchToken] = useAtom(refetchTokenAtom)
 
   // const handleRefresh = () => {
@@ -42,7 +38,10 @@ const Header = () => {
       {/* <Button variant="ghost" className="mr-auto" onClick={handleRefresh}>
         <RefreshCcw className="w-4 h-4" />
       </Button> */}
-      <Link to={ROUTES.GOVERNANCE_PROPOSE}>
+      <Link
+        to={ROUTES.GOVERNANCE_PROPOSE}
+        onClick={() => trackClick('create_proposal')}
+      >
         <Button
           className="text-primary hover:text-primary gap-1"
           variant="ghost"

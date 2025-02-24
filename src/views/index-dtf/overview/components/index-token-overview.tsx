@@ -23,6 +23,7 @@ import {
 import { Link } from 'react-router-dom'
 import ZapMint from './zap-mint'
 import { currentZapMintTabAtom } from './zap-mint/atom'
+import { useTrackIndexDTFClick } from '../../hooks/useTrackIndexDTFPage'
 
 const TokenNameSkeleton = () => (
   <div className="flex flex-col gap-4">
@@ -188,6 +189,8 @@ const IndexTokenOverview = () => {
   const brand = useAtomValue(indexDTFBrandAtom)
   const isBrandManager = useAtomValue(isBrandManagerAtom)
 
+  const { trackClick } = useTrackIndexDTFClick('overview', 'overview')
+
   return (
     <Card className="p-2">
       <div className="flex items-center flex-wrap p-2 sm:p-4">
@@ -202,7 +205,7 @@ const IndexTokenOverview = () => {
             />
           )}
           {isBrandManager && (
-            <Link to="../manage">
+            <Link to="../manage" onClick={() => trackClick('brand_manager')}>
               <Button
                 variant="outline"
                 size="sm"

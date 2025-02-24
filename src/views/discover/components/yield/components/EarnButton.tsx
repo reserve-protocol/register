@@ -11,6 +11,7 @@ import { Box, BoxProps, Text } from 'theme-ui'
 import { BRIDGED_RTOKENS, ROUTES } from 'utils/constants'
 import { getAddress } from 'viem'
 import VerticalDivider from './VerticalDivider'
+import { trackClick } from '@/hooks/useTrackPage'
 
 interface Props extends BoxProps {
   token: ListedToken
@@ -41,6 +42,7 @@ const EarnButton = ({ token, sx, ...props }: Props) => {
       <Button
         onClick={(e) => {
           e.stopPropagation()
+          trackClick('discover', 'earn', token.id, token.symbol, token.chain)
           handleEarn()
         }}
         variant="hover"

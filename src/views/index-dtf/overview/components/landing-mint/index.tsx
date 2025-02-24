@@ -9,11 +9,13 @@ import { ArrowLeftRight } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import ZapMint from '../zap-mint'
 import { currentZapMintTabAtom } from '../zap-mint/atom'
+import { useTrackIndexDTFClick } from '@/views/index-dtf/hooks/useTrackIndexDTFPage'
 
 const MintBox = () => {
   const dtf = useAtomValue(indexDTFAtom)
   const brand = useAtomValue(indexDTFBrandAtom)
   const setZapMintTab = useSetAtom(currentZapMintTabAtom)
+  const { trackClick } = useTrackIndexDTFClick('overview', 'overview')
 
   return (
     <div className="rounded-3xl bg-card p-2">
@@ -51,14 +53,20 @@ const MintBox = () => {
         >
           <Button
             className="rounded-xl h-12"
-            onClick={() => setZapMintTab('buy')}
+            onClick={() => {
+              trackClick('buy')
+              setZapMintTab('buy')
+            }}
           >
             Buy
           </Button>
           <Button
             className="rounded-xl h-12"
             variant="outline"
-            onClick={() => setZapMintTab('sell')}
+            onClick={() => {
+              trackClick('sell')
+              setZapMintTab('sell')
+            }}
           >
             Sell
           </Button>

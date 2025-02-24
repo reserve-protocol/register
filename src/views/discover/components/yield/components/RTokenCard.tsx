@@ -19,6 +19,7 @@ import usePriceETH from '../hooks/usePriceETH'
 import EarnButton from './EarnButton'
 import MobileCollateralInfo from './MobileCollateralInfo'
 import VerticalDivider from './VerticalDivider'
+import { trackClick } from '@/hooks/useTrackPage'
 
 interface Props extends BoxProps {
   token: ListedToken
@@ -47,6 +48,13 @@ const RTokenCard = ({ token, ...props }: Props) => {
       className="bg-card rounded-[20px] border-b-2 border-transparent hover:md:border-primary min-h-full md:min-h-[316px] cursor-pointer transition-[border-color] duration-300 ease-in-out p-0 md:p-3"
       onClick={(e) => {
         e.stopPropagation()
+        trackClick(
+          'discover',
+          'select_dtf',
+          token.id,
+          token.symbol,
+          token.chain
+        )
         handleNavigate(ROUTES.OVERVIEW)
       }}
       {...props}
@@ -239,6 +247,13 @@ const RTokenCard = ({ token, ...props }: Props) => {
                     medium
                     onClick={(e) => {
                       e.stopPropagation()
+                      trackClick(
+                        'discover',
+                        'mint',
+                        token.id,
+                        token.symbol,
+                        token.chain
+                      )
                       handleNavigate(ROUTES.ISSUANCE)
                     }}
                     sx={{ whiteSpace: 'nowrap' }}
@@ -252,6 +267,13 @@ const RTokenCard = ({ token, ...props }: Props) => {
                   medium
                   onClick={(e) => {
                     e.stopPropagation()
+                    trackClick(
+                      'discover',
+                      'stake',
+                      token.id,
+                      token.symbol,
+                      token.chain
+                    )
                     handleNavigate(ROUTES.STAKING)
                   }}
                   variant="bordered"

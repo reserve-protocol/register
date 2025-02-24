@@ -23,6 +23,7 @@ import {
 } from '../atoms'
 import InputBox from './input-box'
 import ModeSelector from './mode-selector'
+import { useTrackIndexDTFClick } from '@/views/index-dtf/hooks/useTrackIndexDTFPage'
 
 const getErrorMessage = (error: Error) => {
   const messageSplit = error.message.split('\n')
@@ -200,6 +201,7 @@ const SubmitButton = () => {
 
 const IndexManualIssuance = () => {
   const mode = useAtomValue(modeAtom)
+  const { trackClick } = useTrackIndexDTFClick('overview', 'mint')
   return (
     <div>
       <div className="flex flex-col gap-2 border bg-card rounded-3xl p-4 h-fit">
@@ -209,7 +211,10 @@ const IndexManualIssuance = () => {
       </div>
       <div className="mt-4 rounded-3xl border p-4 flex items-center justify-between gap-2">
         <p className="text-sm text-muted-foreground">Having issues minting?</p>
-        <Link to={`../${ROUTES.ISSUANCE}`}>
+        <Link
+          to={`../${ROUTES.ISSUANCE}`}
+          onClick={() => trackClick('switch_to_zap')}
+        >
           <Button variant="muted" size="xs">
             Switch to zap {mode === 'buy' ? 'minting' : 'redeeming'}
           </Button>

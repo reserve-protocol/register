@@ -13,9 +13,12 @@ import useERC20Balance from '@/hooks/useERC20Balance'
 import { useWatchReadContract } from '@/hooks/useWatchReadContract'
 import { walletAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
+import { ROUTES } from '@/utils/constants'
+import { useTrackIndexDTFClick } from '@/views/index-dtf/hooks/useTrackIndexDTFPage'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { Asterisk, Minus, OctagonAlert, Plus } from 'lucide-react'
 import { ReactNode, useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 import { useReadContract } from 'wagmi'
 import {
   currentStakingTabAtom,
@@ -119,6 +122,13 @@ const Staking = ({ children }: { children: ReactNode }) => {
   const setUnlockDelay = useSetAtom(unlockDelayAtom)
   const setCheckbox = useSetAtom(lockCheckboxAtom)
 
+  const { pathname } = useLocation()
+  const subpage = pathname.includes(ROUTES.GOVERNANCE)
+    ? 'governance'
+    : 'overview'
+
+  const { trackClick } = useTrackIndexDTFClick('overview', subpage)
+
   const { data: priceResponse } = useAssetPrice(
     indexDTF?.stToken?.underlying.address
   )
@@ -169,7 +179,13 @@ const Staking = ({ children }: { children: ReactNode }) => {
         setOpen(false)
       }}
     >
-      <DrawerTrigger asChild onClick={() => setOpen(true)}>
+      <DrawerTrigger
+        asChild
+        onClick={() => {
+          trackClick('lock_govtoken')
+          setOpen(true)
+        }}
+      >
         {children}
       </DrawerTrigger>
       <DrawerContent>
