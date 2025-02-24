@@ -13,8 +13,7 @@ export const indexDTFBalanceAtom = atom<bigint>(0n)
 export const selectedTokenAtom = atom<Token | undefined>(undefined)
 export const defaultSelectedTokenAtom = atom<Token>((get) => {
   const chainId = get(chainIdAtom)
-  const currentTab = get(currentZapMintTabAtom)
-  return reducedZappableTokens[chainId][currentTab === 'buy' ? 0 : 1]
+  return reducedZappableTokens[chainId][0]
 })
 export const selectedTokenOrDefaultAtom = atom<Token>((get) => {
   const selectedToken = get(selectedTokenAtom)

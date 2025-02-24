@@ -118,7 +118,7 @@ const Sell = () => {
             </span>
           ) : undefined,
           value: formatUnits(BigInt(valueTo || 0), selectedToken.decimals),
-          tokens: tokens.slice(1),
+          tokens,
           onTokenSelect: setOutputToken,
         }}
         onSwap={changeTab}
