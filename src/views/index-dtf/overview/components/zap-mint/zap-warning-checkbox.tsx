@@ -34,7 +34,7 @@ const ZapPriceImpactWarningCheckbox = ({
           </div>
           <div className="text-sm text-legend">
             The price impact for this trade is very high. You will get
-            significantly less tokens than expected due to slippage.
+            significantly less value than expected.
           </div>
         </div>
         <div className="flex items-center p-[6px] border border-border rounded-lg">
