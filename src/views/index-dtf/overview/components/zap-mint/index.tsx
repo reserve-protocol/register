@@ -35,6 +35,7 @@ import RefreshQuote from './refresh-quote'
 import Sell from './sell'
 import ZapSettings from './zap-settings'
 import { useTrackIndexDTFZapClick } from '@/views/index-dtf/hooks/useTrackIndexDTFPage'
+import LowLiquidityWarning from './low-liquidity-warning'
 
 const ZapMint = ({ children }: { children: ReactNode }) => {
   const [open, setOpen] = useAtom(openZapMintModalAtom)
@@ -125,7 +126,10 @@ const ZapMint = ({ children }: { children: ReactNode }) => {
           </DialogTitle>
           {showSettings && <ZapSettings />}
           <div className={showSettings ? 'hidden' : 'opacity-100'}>
-            {currentTab === 'buy' ? <Buy /> : <Sell />}
+            <div className="flex flex-col gap-2">
+              <LowLiquidityWarning />
+              {currentTab === 'buy' ? <Buy /> : <Sell />}
+            </div>
           </div>
         </DialogContent>
       </Dialog>

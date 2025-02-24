@@ -5,7 +5,7 @@ import { ZapResult } from '@/views/yield-dtf/issuance/components/zapV2/api'
 import Decimal from 'decimal.js-light'
 import { useAtomValue } from 'jotai'
 import { formatUnits } from 'viem'
-import { selectedTokenOrDefaultAtom, slippageAtom } from './atom'
+import { selectedTokenOrDefaultAtom } from './atom'
 
 export const ZapPriceImpact = ({
   data,
@@ -38,7 +38,6 @@ export const ZapPriceImpact = ({
 const ZapDetails = ({ data }: { data: ZapResult }) => {
   const indexDTF = useAtomValue(indexDTFAtom)
   const selectedToken = useAtomValue(selectedTokenOrDefaultAtom)
-  const slippage = useAtomValue(slippageAtom)
   const dtfAsTokenIn =
     data.tokenIn.toLowerCase() !== selectedToken.address.toLowerCase() &&
     data.tokenIn !== '0x4200000000000000000000000000000000000006'
@@ -68,7 +67,6 @@ const ZapDetails = ({ data }: { data: ZapResult }) => {
   const ratio = amountOut.eq(0) ? undefined : amountIn.div(amountOut)
   const ratioText = `${formatCurrency(ratio?.toNumber() || 0)} ${tokenOutSymbol} = 1 ${tokenInSymbol}`
   const mintFeeValue = amountInValue.mul(indexDTF?.mintingFee || 0).toNumber()
-  const maxSlippage = (1 / Number(slippage)) * 100
 
   if (!indexDTF) return null
 
@@ -107,11 +105,6 @@ const ZapDetails = ({ data }: { data: ZapResult }) => {
               },
             ]
           : []),
-        {
-          left: <span className="text-muted-foreground">Max Slippage</span>,
-          right: <span>{formatPercentage(maxSlippage)}</span>,
-          help: 'The maximum amount of slippage you are willing to accept when minting. Higher slippage settings will make the transaction more likely to succeed, but may result in fewer tokens minted.',
-        },
         {
           left: <span className="text-muted-foreground">Price Impact</span>,
           right: <ZapPriceImpact data={data} isDetail />,
