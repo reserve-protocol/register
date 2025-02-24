@@ -55,7 +55,7 @@ const ManageAbout = () => {
         name="dtf.prospectus"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Prospectus Link</FormLabel>
+            <FormLabel>DTF Fact sheet</FormLabel>
             <FormControl>
               <Input placeholder="https://..." {...field} />
             </FormControl>

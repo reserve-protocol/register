@@ -43,6 +43,7 @@ export interface IndexDTFBrand {
     mobileCover: string
     description: string
     notesFromCreator: string
+    prospectus: string
     tags: string[]
   }
   creator: {
