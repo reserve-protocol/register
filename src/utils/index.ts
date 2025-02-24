@@ -15,10 +15,6 @@ export function getAssetURI(key: string) {
   return `${RESERVE_STORAGE}/${key}`
 }
 
-export function getPrice([lowPrice, highPrice]: [bigint, bigint]) {
-  return Number(formatEther((lowPrice + highPrice) / 2n))
-}
-
 export const cutDecimals = (value: string, min = 2, max = 9) => {
   // Extract potential postfix
   const lastChar = value[value.length - 1]
@@ -56,6 +52,10 @@ export function isAddress(value: string) {
   } catch {
     return null
   }
+}
+
+export function getPrice([lowPrice, highPrice]: [bigint, bigint]) {
+  return Number(formatEther((lowPrice + highPrice) / 2n))
 }
 
 export const getTokenRoute = (
