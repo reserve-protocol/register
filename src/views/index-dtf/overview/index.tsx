@@ -1,12 +1,13 @@
+import { indexDTFAtom } from '@/state/dtf/atoms'
 import { useAtomValue } from 'jotai'
+import useTrackIndexDTFPage from '../hooks/useTrackIndexDTFPage'
 import IndexAboutOverview from './components/index-about-overview'
+import IndexCreatorNotes from './components/index-creator-notes'
 import IndexDisclousure from './components/index-disclousure'
 import IndexGovernanceOverview from './components/index-governance-overview'
 import IndexTokenOverview from './components/index-token-overview'
 import LandingMint from './components/landing-mint'
 import PriceChart from './components/price-chart'
-import { indexDTFAtom } from '@/state/dtf/atoms'
-import IndexCreatorNotes from './components/index-creator-notes'
 
 const Content = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
@@ -25,6 +26,7 @@ const Content = () => {
 }
 
 const IndexDTFOverview = () => {
+  useTrackIndexDTFPage('overview')
   return (
     <div className="flex gap-2">
       <Content />

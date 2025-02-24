@@ -12,6 +12,7 @@ import {
   dtfDeployDefaultValues,
 } from './form-fields'
 import Updater from './updater'
+import useTrackPage from '@/hooks/useTrackPage'
 
 const DeployerHeader = () => {
   const navigate = useNavigate()
@@ -40,6 +41,8 @@ const DeployerHeader = () => {
 }
 
 const IndexTokenDeploy = () => {
+  useTrackPage('create', 'index_dtf')
+
   const form = useForm<DeployInputs>({
     resolver: zodResolver(DeployFormSchema),
     defaultValues: dtfDeployDefaultValues,
