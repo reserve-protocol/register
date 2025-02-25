@@ -2,18 +2,16 @@ import InfoBox from '@/components/old/info-box'
 import { Button } from '@/components/ui/button'
 import { ChartConfig, ChartContainer } from '@/components/ui/chart'
 import { Skeleton } from '@/components/ui/skeleton'
+import { cn } from '@/lib/utils'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { formatCurrency } from '@/utils'
 import dayjs from 'dayjs'
 import { atom, useAtom, useAtomValue } from 'jotai'
-import { useState } from 'react'
 import { Line, LineChart, Tooltip, YAxis } from 'recharts'
 import { Card } from 'theme-ui'
-import useIndexDTFCurrentPrice from '../hooks/use-dtf-price'
 import useIndexDTFPriceHistory, {
   IndexDTFPerformance,
 } from '../hooks/use-dtf-price-history'
-import { cn } from '@/lib/utils'
 
 const chartConfig = {
   desktop: {
@@ -182,7 +180,11 @@ const PriceChart = () => {
         <h4 className="text-card/80 mb-2 hidden sm:block">
           {TITLES[dataType]}
         </h4>
-        <Selectors className="flex sm:hidden mb-2" />
+        {/* <Selectors className="flex sm:hidden mb-2" /> */}
+        <div className="sm:hidden items-center gap-1 flex">
+          <span className="text-white/80 text-sm">Price</span>
+          <TimeRangeSelector />
+        </div>
         <div className="flex items-center gap-1 text-2xl sm:text-3xl font-semibold sm:font-bold text-white mb-2">
           {!history ? (
             <Skeleton className="min-w-[200px] h-9" />
@@ -234,7 +236,22 @@ const PriceChart = () => {
           </ChartContainer>
         )}
       </div>
-      <Selectors className="hidden sm:flex sm:mt-8" />
+      <div className="sm:flex mt-8 items-center gap-1 hidden">
+        <TimeRangeSelector />
+
+        <div className="sm:flex items-center gap-1 hidden justify-end">
+          <div className="text-white/80">Market Cap:</div>
+          <div className="text-white">
+            $
+            {formatCurrency(
+              timeseries[timeseries.length - 1]?.marketCap || 0,
+              0
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* <Selectors className="hidden sm:flex sm:mt-8" /> */}
     </div>
   )
 }

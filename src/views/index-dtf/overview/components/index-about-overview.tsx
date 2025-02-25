@@ -4,7 +4,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { formatPercentage, getTokenName } from '@/utils'
 import { useAtomValue } from 'jotai'
-import { ArrowUpRight, BrickWall, ExternalLink } from 'lucide-react'
+import { ArrowUpRight, BrickWall, ExternalLink, FileText } from 'lucide-react'
 
 import DiscordIcon from '@/components/icons/DiscordIcon'
 import Money from '@/components/icons/Money'
@@ -261,6 +261,16 @@ const TokenSocials = () => {
 
   return (
     <div className="flex gap-2 mt-3 flex-wrap">
+      {data.dtf?.prospectus && (
+        <Link
+          to={data.dtf.prospectus}
+          target="_blank"
+          className="flex items-center gap-2 border rounded-full py-1 px-2 text-sm hover:bg-primary/10 hover:text-primary"
+        >
+          <FileText size={14} />
+          Prospectus
+        </Link>
+      )}
       {Object.entries(data?.socials || {}).map(
         ([key, value]) =>
           !!value && (
@@ -299,18 +309,6 @@ const Mandate = () => {
           <p className="text-legend">
             {brandData.dtf?.description || data.mandate}
           </p>
-          {brandData.dtf?.prospectus && (
-            <Link
-              to={brandData.dtf?.prospectus}
-              target="_blank"
-              className="text-primary"
-            >
-              <div className="flex items-center gap-1">
-                {brandData.dtf?.prospectus}
-                <ExternalLink size={12} />
-              </div>
-            </Link>
-          )}
         </div>
       )}
     </div>
