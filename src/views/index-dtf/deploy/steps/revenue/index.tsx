@@ -1,5 +1,5 @@
 import { formatPercentage } from '@/utils'
-import { Asterisk } from 'lucide-react'
+import { Asterisk, Eclipse, TableColumnsSplit } from 'lucide-react'
 import NextButton from '../../components/next-button'
 import ToggleGroupWithCustom from '../../components/toggle-group-with-custom'
 import RevenueDistributionSettings from './revenue-distribution-settings'
@@ -56,7 +56,7 @@ const RevenueDistribution = () => {
     {
       title: 'Annualized TVL Fee',
       description: `A percentage-based fee charged by the DTF based on the total value of the tokens held in the contract. The platform will keep 50% of revenue from this fee. (Min: 0.15%, Max: 10%)`,
-      icon: <Asterisk size={32} strokeWidth={1.5} />,
+      icon: <TableColumnsSplit size={14} strokeWidth={1.5} />,
       options: [0.15, 0.3, 0.5, 1, 2],
       optionsFormatter: (option: number) => formatPercentage(option),
       fieldName: 'folioFee',
@@ -68,7 +68,7 @@ const RevenueDistribution = () => {
     {
       title: 'Mint Fee',
       description: `A one-time fee deducted from the tokens a user receives when they mint the DTF. The platform will keep 50% of revenue from this fee. (Min: 0.15%, Max: 5%)`,
-      icon: <Asterisk size={32} strokeWidth={1.5} />,
+      icon: <Eclipse size={14} strokeWidth={1.5} />,
       options: [0.15, 0.3, 0.5, 1, 2],
       optionsFormatter: (option: number) => formatPercentage(option),
       fieldName: 'mintFee',
