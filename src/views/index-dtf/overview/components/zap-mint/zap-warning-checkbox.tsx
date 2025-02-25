@@ -8,7 +8,7 @@ import {
 } from './atom'
 import { formatPercentage } from '@/utils'
 
-const PRICE_IMPACT_THRESHOLD = 15
+const PRICE_IMPACT_THRESHOLD = 5
 
 const ZapPriceImpactWarningCheckbox = ({
   priceImpact,
