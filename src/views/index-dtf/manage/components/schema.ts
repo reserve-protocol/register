@@ -20,7 +20,7 @@ export const manageFormSchema = z.object({
           url.toLowerCase().includes('coindesk.com'),
         {
           message:
-            'Must be a valid URL from bbhub.io, marketvector.com, reserve.org, or docs.google.com',
+            'Must be a valid URL from bbhub.io, marketvector.com, reserve.org or coindesk.com',
         }
       )
       .optional()
