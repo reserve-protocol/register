@@ -1,6 +1,12 @@
 import { Button } from '@/components/ui/button'
 import { useAtomValue } from 'jotai'
-import { Asterisk } from 'lucide-react'
+import {
+  Asterisk,
+  Landmark,
+  LandPlot,
+  TableColumnsSplit,
+  TrainTrack,
+} from 'lucide-react'
 import { useCallback } from 'react'
 import { useFormContext, useWatch } from 'react-hook-form'
 import { selectedGovernanceOptionAtom } from '../../atoms'
@@ -14,15 +20,18 @@ const SETTINGS = [
     description:
       'Percentage of fee revenue sent to the protocol; cannot be changed by governance.',
     field: 'fixedPlatformFee',
+    icon: <TrainTrack size={14} strokeWidth={1.5} />,
     disabled: true,
   },
   {
     title: 'Creator',
     description: 'Percentage of fee revenue sent to the creator of the DTF.',
+    icon: <Landmark size={14} strokeWidth={1.5} />,
     field: 'deployerShare',
   },
   {
     title: 'Governance',
+    icon: <LandPlot size={14} strokeWidth={1.5} />,
     description:
       'Percentage of fee revenue sent to the vote-lock DAO governing the DTF.',
     field: 'governanceShare',
@@ -151,14 +160,14 @@ const RevenueDistributionSettings = () => {
     <div className="flex flex-col gap-2 mx-2 mb-3">
       <RemainingAllocation />
       <div className="flex flex-col gap-2">
-        {settings.map(({ title, description, field, disabled }) => (
+        {settings.map(({ title, description, field, icon, disabled }) => (
           <div
             className="w-full rounded-xl flex items-center gap-2 justify-between p-4 bg-muted/70"
             key={title}
           >
             <div className="flex items-center gap-2">
-              <div className="bg-muted-foreground/10 rounded-full">
-                <Asterisk size={32} strokeWidth={1.5} />
+              <div className="p-2 border border-foreground rounded-full">
+                {icon}
               </div>
 
               <div className="flex flex-col">

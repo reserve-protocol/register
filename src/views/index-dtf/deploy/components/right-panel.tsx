@@ -4,7 +4,7 @@ import Timeline from '@/components/ui/timeline'
 import ExplorerAddress from '@/components/utils/explorer-address'
 import { chainIdAtom } from '@/state/atoms'
 import { useAtomValue } from 'jotai'
-import { Asterisk } from 'lucide-react'
+import { Asterisk, NotebookTabs } from 'lucide-react'
 import { ReactNode } from 'react'
 import {
   daoCreatedAtom,
@@ -105,7 +105,9 @@ const SocialMediaLink = ({ href, icon, title }: SocialMediaLinkProps) => {
 const HelpText = () => {
   return (
     <div className="w-full rounded-3xl bg-background flex flex-col gap-3 p-6">
-      <Asterisk size={24} strokeWidth={1.5} />
+      <div className="p-2 rounded-full border border-foreground w-fit">
+        <NotebookTabs size={14} strokeWidth={1.5} />
+      </div>
       <div className="flex flex-col gap-1">
         <span className="text-xl font-bold">Need help deploying?</span>
         <span className="text-muted-foreground">
