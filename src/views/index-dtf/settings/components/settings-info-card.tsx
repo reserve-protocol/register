@@ -47,7 +47,7 @@ const InfoCard = ({
       id={id}
       className={cn(
         'rounded-4xl flex flex-col bg-secondary',
-        secondary && 'bg-primary/10'
+        secondary && 'bg-muted'
       )}
     >
       <div className="py-4 px-5 flex items-center gap-2">
