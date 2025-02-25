@@ -4,11 +4,12 @@ import zapper, {
   ZapResponse,
 } from '@/views/yield-dtf/issuance/components/zapV2/api'
 import { useQuery } from '@tanstack/react-query'
-import { useAtomValue, useSetAtom } from 'jotai'
+import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useMemo } from 'react'
-import { Address } from 'viem'
+import { Address, formatEther } from 'viem'
 import useDebounce from './useDebounce'
 import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
+import { indexDTFAtom, indexDTFPriceAtom } from '@/state/dtf/atoms'
 
 const DUST_REFRESH_THRESHOLD = 0.025
 const PRICE_IMPACT_THRESHOLD = 2
@@ -32,6 +33,7 @@ const useZapSwapQuery = ({
   dtfTicker: string
   type: 'buy' | 'sell'
 }) => {
+  const indexDTFPrice = useAtomValue(indexDTFPriceAtom)
   const chainId = useAtomValue(chainIdAtom)
   const account = useAtomValue(walletAtom)
   const setZapSwapEndpoint = useSetAtom(zapSwapEndpointAtom)
@@ -150,6 +152,70 @@ const useZapSwapQuery = ({
           }
         }
         break
+      }
+
+      if (
+        indexDTFPrice &&
+        lastData?.result &&
+        [
+          '0xf91384484f4717314798e8975bcd904a35fc2bf1',
+          '0x4e3b170dcbe704b248df5f56d488114ace01b1c5',
+        ].includes(tokenOut?.toLowerCase() || '')
+      ) {
+        const amountOutValue =
+          indexDTFPrice * Number(formatEther(BigInt(lastData.result.amountOut)))
+        const amountInValue = Number(lastData.result.amountInValue)
+        const dustValue = Number(lastData.result.dustValue) // TODO: calculate from dust
+
+        const diff = Math.abs(amountOutValue + dustValue - amountInValue)
+        const truePriceImpact =
+          amountOutValue + dustValue > amountInValue
+            ? -(diff / amountInValue) * 100
+            : (diff / amountInValue) * 100
+
+        const priceImpact = truePriceImpact < 0 ? 0 : truePriceImpact
+
+        lastData = {
+          ...lastData,
+          result: {
+            ...lastData.result,
+            amountOutValue,
+            truePriceImpact,
+            priceImpact,
+          },
+        }
+      }
+
+      if (
+        indexDTFPrice &&
+        lastData?.result &&
+        [
+          '0xf91384484f4717314798e8975bcd904a35fc2bf1',
+          '0x4e3b170dcbe704b248df5f56d488114ace01b1c5',
+        ].includes(tokenIn?.toLowerCase() || '')
+      ) {
+        const amountOutValue = Number(lastData.result.amountOutValue)
+        const amountInValue =
+          indexDTFPrice * Number(formatEther(BigInt(lastData.result.amountIn)))
+        const dustValue = Number(lastData.result.dustValue) // TODO: calculate from dust
+
+        const diff = Math.abs(amountOutValue + dustValue - amountInValue)
+        const truePriceImpact =
+          amountOutValue + dustValue > amountInValue
+            ? -(diff / amountInValue) * 100
+            : (diff / amountInValue) * 100
+
+        const priceImpact = truePriceImpact < 0 ? 0 : truePriceImpact
+
+        lastData = {
+          ...lastData,
+          result: {
+            ...lastData.result,
+            amountOutValue,
+            truePriceImpact,
+            priceImpact,
+          },
+        }
       }
 
       return lastData

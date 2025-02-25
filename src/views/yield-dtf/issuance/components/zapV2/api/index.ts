@@ -1,6 +1,7 @@
 import { RESERVE_API } from '@/utils/constants'
 import { Address } from 'viem'
 
+const OLD_ZAP_API = 'https://zapper-api.reserve.org'
 const BASE_ZAP_API_URL = RESERVE_API + 'zapper'
 
 export type ZapPayload = {
@@ -51,6 +52,16 @@ export type ZapResponse = {
 export const fetcher = (url: string) => fetch(url).then((res) => res.json())
 
 const zapper = {
+  oldZap: ({
+    chainId,
+    tokenIn,
+    tokenOut,
+    amountIn,
+    slippage,
+    signer,
+    trade = true,
+  }: ZapPayload) =>
+    `${OLD_ZAP_API}/swap?chainId=${chainId}&signer=${signer}&tokenIn=${tokenIn}&amountIn=${amountIn}&tokenOut=${tokenOut}&slippage=${slippage}&trade=${trade}`,
   zap: ({
     chainId,
     tokenIn,

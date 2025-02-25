@@ -50,6 +50,7 @@ const useIndexDTFPriceHistory = ({
       to,
       interval,
       currentPrice,
+      supply,
     ],
     queryFn: async (): Promise<IndexDTFPerformance> => {
       const sp = new URLSearchParams()
@@ -82,7 +83,7 @@ const useIndexDTFPriceHistory = ({
 
       return data
     },
-    enabled: Boolean(address),
+    enabled: Boolean(address && supply && currentPrice),
     refetchInterval: REFRESH_INTERVAL,
     staleTime: REFRESH_INTERVAL,
   })

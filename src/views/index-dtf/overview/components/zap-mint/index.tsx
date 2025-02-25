@@ -36,6 +36,9 @@ import Sell from './sell'
 import ZapSettings from './zap-settings'
 import { useTrackIndexDTFZapClick } from '@/views/index-dtf/hooks/useTrackIndexDTFPage'
 import LowLiquidityWarning from './low-liquidity-warning'
+import { Link } from 'react-router-dom'
+import { getFolioRoute } from '@/utils'
+import { ROUTES } from '@/utils/constants'
 
 const ZapMint = ({ children }: { children: ReactNode }) => {
   const [open, setOpen] = useAtom(openZapMintModalAtom)
@@ -141,7 +144,7 @@ const ZapMint = ({ children }: { children: ReactNode }) => {
       <DrawerTrigger asChild>{children}</DrawerTrigger>
       <DrawerContent
         showClose={false}
-        className="bottom-0 top-auto left-0 right-0 rounded-b-none overflow-hidden"
+        className="bottom-0 top-auto mt-24 left-0 right-0 rounded-b-none overflow-visible"
       >
         <DrawerHeader className="flex justify-between gap-2">
           {showSettings ? (
@@ -175,10 +178,26 @@ const ZapMint = ({ children }: { children: ReactNode }) => {
             </Button>
           </DrawerClose>
         </DrawerHeader>
-        <div className="p-2 ">
+        <div className="p-2 flex flex-col">
           {showSettings && <ZapSettings />}
           <div className={showSettings ? 'hidden' : 'opacity-100'}>
             {currentTab === 'buy' ? <Buy /> : <Sell />}
+          </div>
+          <div className="sm:hidden p-3 rounded-3xl mt-2 text-center text-sm">
+            <span className="font-semibold block">
+              Having issues minting? (Zaps are in beta)
+            </span>
+            <span className="text-legend">Wait and try again or</span>{' '}
+            <Link
+              to={getFolioRoute(
+                indexDTF.id,
+                indexDTF.chainId,
+                ROUTES.ISSUANCE + '/manual'
+              )}
+              className="text-primary underline"
+            >
+              switch to manual {currentTab === 'buy' ? 'minting' : 'redeeming'}
+            </Link>
           </div>
         </div>
       </DrawerContent>

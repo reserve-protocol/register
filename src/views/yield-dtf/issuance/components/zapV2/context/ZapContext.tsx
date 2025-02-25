@@ -300,7 +300,7 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
         return null
       }
 
-      return zapper.zap({
+      return zapper.oldZap({
         chainId,
         tokenIn: tokenIn.symbol === 'ETH' ? zeroAddress : tokenIn.address,
         tokenOut: tokenOut.symbol === 'ETH' ? zeroAddress : tokenOut.address,

@@ -58,7 +58,7 @@ const DeployComingSoon = () => {
           <SocialMediaInput />
         </div>
       </div>
-      <div className="rounded-3xl flex-grow max-h-[940px] h-[calc(100vh-132px)] hidden lg:block">
+      <div className="rounded-3xl flex-grow h-[calc(100vh-132px)] hidden max-w-[50%] max-h-[940px] lg:block">
         <img
           src="https://storage.reserve.org/splash.png"
           className="w-full h-full object-cover object-center rounded-3xl"
