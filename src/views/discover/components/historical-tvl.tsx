@@ -187,7 +187,7 @@ const Heading = ({ dtfStats }: { dtfStats?: DTFStats }) => {
           </div>
         )}
 
-        <div className="flex gap-2 mt-3 text-base sm:text-xl leading-none">
+        <div className="flex gap-2 mt-4 text-base sm:text-xl leading-none">
           <span className="font-light">Annualized protocol revenue:</span>
           {isLoading || revenue < 1000000 ? (
             <Skeleton className="h-6 w-14" />
