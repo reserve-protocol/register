@@ -11,6 +11,7 @@ import useDebounce from './useDebounce'
 import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
 
 const DUST_REFRESH_THRESHOLD = 0.025
+const PRICE_IMPACT_THRESHOLD = 2
 
 const useZapSwapQuery = ({
   tokenIn,
@@ -66,7 +67,10 @@ const useZapSwapQuery = ({
     queryFn: async (): Promise<ZapResponse> => {
       // If dust > 2.5% of amountOutValue, retry once.
       const maxDustRetries = 1
+      // If price impact > 2%, retry 3 times.
+      const maxPriceImpactRetries = 3
       let dustAttempt = 0
+      let priceImpactAttempt = 0
       let lastData: ZapResponse
 
       while (true) {
@@ -123,11 +127,25 @@ const useZapSwapQuery = ({
         ) {
           const amountOut = Number(data.result.amountOutValue)
           const dust = Number(data.result.dustValue)
-          if (
+          const priceImpact = Number(data.result.truePriceImpact)
+          const isDustRetry =
             dust > DUST_REFRESH_THRESHOLD * amountOut &&
             dustAttempt < maxDustRetries
-          ) {
+
+          if (dustAttempt < maxDustRetries && isDustRetry) {
             dustAttempt++
+            continue
+          }
+
+          const isPriceImpactRetry =
+            priceImpact > PRICE_IMPACT_THRESHOLD &&
+            priceImpactAttempt < maxPriceImpactRetries
+
+          if (
+            priceImpactAttempt < maxPriceImpactRetries &&
+            isPriceImpactRetry
+          ) {
+            priceImpactAttempt++
             continue
           }
         }
