@@ -47,11 +47,11 @@ const DiscoverItem = () => {
             <div
               className={cn(
                 navigationMenuTriggerStyle(),
-                (isActive || isDTF) && 'text-primary font-bold'
+                (isActive || isDTF) && 'text-primary'
               )}
             >
               <Binoculars />
-              <span className="hidden md:block">
+              <span className="hidden md:block text-base">
                 <Trans>Discover DTFs</Trans>
               </span>
             </div>
@@ -164,11 +164,13 @@ const AppNavigation = () => {
                   <div
                     className={cn(
                       navigationMenuTriggerStyle(),
-                      isActive && 'text-primary font-bold'
+                      isActive && 'text-primary'
                     )}
                   >
                     {item.icon}
-                    <span className="hidden md:block">{item.label}</span>
+                    <span className="hidden md:block text-base">
+                      {item.label}
+                    </span>
                   </div>
                 )}
               </NavLink>
@@ -177,8 +179,8 @@ const AppNavigation = () => {
         ))}
         <NavigationMenuItem>
           <NavigationMenuTrigger>
-            <CirclesIcon />
-            <span className="hidden md:block">More</span>
+            <CirclesIcon color="currentColor" />
+            <span className="hidden md:block text-base">More</span>
           </NavigationMenuTrigger>
           <NavigationMenuContent className="rounded-4xl">
             <div className="bg-secondary w-72 sm:w-96 flex p-1 flex-col gap-1">

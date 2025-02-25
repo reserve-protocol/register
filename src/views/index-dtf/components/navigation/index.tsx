@@ -41,7 +41,7 @@ const NavigationItem = ({
             {icon}
           </div>
           {/* </div> */}
-          <div className="text-sm hidden md:block">{label}</div>
+          <div className="text-base hidden md:block">{label}</div>
         </div>
       )}
     </NavLink>
@@ -91,7 +91,7 @@ const NavigationItems = () => {
   )
 
   return (
-    <div className="flex lg:flex-col gap-4 justify-evenly lg:justify-start">
+    <div className="flex lg:flex-col gap-5 justify-evenly lg:justify-start">
       {items.map((item) => (
         <NavigationItem key={item.route} {...item} />
       ))}
