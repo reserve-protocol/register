@@ -234,7 +234,9 @@ const IndexTokenOverview = () => {
       </div>
       {dtf?.id?.toLowerCase() ===
       '0xebcda5b80f62dd4dd2a96357b42bb6facbf30267' ? (
-        <UniswapButton />
+        <div className="block xl:hidden w-full">
+          <UniswapButton />
+        </div>
       ) : (
         <ZapBuySellButtons />
       )}
