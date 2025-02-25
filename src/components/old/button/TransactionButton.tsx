@@ -39,7 +39,12 @@ export const ConnectWalletButton = (props: ButtonProps) => {
   const { openConnectModal } = useConnectModal()
 
   return (
-    <Button {...props} onClick={openConnectModal} variant="accentAction">
+    <Button
+      {...props}
+      onClick={openConnectModal}
+      variant="accentAction"
+      style={{ borderRadius: '12px' }}
+    >
       <Text>
         <Trans>Connect Wallet</Trans>
       </Text>
@@ -69,6 +74,7 @@ export const TransactionButtonContainer = ({
     Component = (
       <Button
         variant="accentAction"
+        style={{ borderRadius: '12px' }}
         fullWidth
         onClick={() => {
           switchChain({ chainId: chain || chainId })
@@ -108,6 +114,7 @@ const TransactionButton = ({
       <Button
         {...props}
         disabled={false}
+        style={{ borderRadius: '12px' }}
         onClick={() => {
           if (chain && chain !== chainId) {
             switchChain({ chainId: chain })

@@ -69,7 +69,7 @@ const IndexDTFIssuance = () => {
 
   return (
     <div className="flex flex-col gap-4 sm:w-[560px] mx-auto">
-      <div className="sm:mt-14 bg-card rounded-xl mx-2 p-2 border border-border">
+      <div className="sm:mt-14 bg-card rounded-3xl  p-2 border border-border">
         <Tabs
           value={currentTab}
           className="flex flex-col flex-grow"
@@ -86,7 +86,7 @@ const IndexDTFIssuance = () => {
               </Button>
             ) : (
               <>
-                <TabsList className="h-9">
+                <TabsList className="h-9 px-0.5">
                   <TabsTrigger value="buy">Buy</TabsTrigger>
                   <TabsTrigger value="sell">Sell</TabsTrigger>
                 </TabsList>
@@ -128,7 +128,7 @@ const IndexDTFIssuance = () => {
         </Tabs>
       </div>
       <div className="w-full sm:w-[560px] mx-auto">
-        <div className="rounded-xl sm:border p-4 flex items-center gap-2 mx-0.5">
+        <div className="rounded-2xl sm:border p-4 flex items-center gap-2 mx-0.5">
           <p className="text-sm text-muted-foreground mr-auto">
             Having issues {currentTab === 'buy' ? 'minting' : 'redeeming'}?
           </p>

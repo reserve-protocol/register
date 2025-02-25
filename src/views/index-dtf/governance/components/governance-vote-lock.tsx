@@ -66,7 +66,7 @@ const GovernanceVoteLock = () => {
       </div>
 
       <Staking>
-        <Button variant="outline" className="w-full gap-1">
+        <Button variant="outline" className="rounded-2xl w-full gap-1">
           <TokenLogo
             size="sm"
             symbol={indexDTF.stToken.underlying.symbol}

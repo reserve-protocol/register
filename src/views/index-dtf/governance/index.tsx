@@ -14,7 +14,7 @@ const IndexDTFGovernance = () => {
         <GovernanceProposalList />
         <GovernanceDelegateList />
       </div>
-      <div className="flex flex-col gap-2 p-1 bg-muted rounded-3xl h-fit">
+      <div className="flex flex-col gap-1 p-1 bg-muted rounded-4xl h-fit">
         <GovernanceVoteLock />
         <GovernanceStats />
         <GovernanceGuardians />

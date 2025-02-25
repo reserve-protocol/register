@@ -41,7 +41,7 @@ const NavigationItem = ({
             {icon}
           </div>
           {/* </div> */}
-          <div className="text-sm hidden md:block">{label}</div>
+          <div className="text-base hidden md:block">{label}</div>
         </div>
       )}
     </NavLink>
@@ -54,27 +54,35 @@ const NavigationItems = () => {
   const items = useMemo(
     () => [
       {
-        icon: <Globe strokeWidth={1.5} className="h-5 w-5 md:w-3 md:h-3" />,
+        icon: <Globe strokeWidth={1.5} className="h-5 w-5 md:w-4 md:h-4" />,
         label: t`Overview`,
         route: ROUTES.OVERVIEW,
       },
       {
-        icon: <IssuanceIcon className="text-xl md:text-sm" />,
+        icon: (
+          <IssuanceIcon className="text-xl md:text-sm h-5 w-5 md:w-4 md:h-4" />
+        ),
         label: t`Mint + Redeem`,
         route: ROUTES.ISSUANCE,
       },
       {
-        icon: <GovernanceIcon className="text-xl md:text-sm" />,
+        icon: (
+          <GovernanceIcon className="text-xl md:text-sm h-5 w-5 md:w-4 md:h-4" />
+        ),
         label: t`Governance`,
         route: ROUTES.GOVERNANCE,
       },
       {
-        icon: <TradeIcon className="text-xl md:text-sm" />,
+        icon: (
+          <TradeIcon className="text-xl md:text-sm h-5 w-5 md:w-4 md:h-4" />
+        ),
         label: t`Auctions`,
         route: ROUTES.AUCTIONS,
       },
       {
-        icon: <ManagerIcon className="text-xl md:text-sm" />,
+        icon: (
+          <ManagerIcon className="text-xl md:text-sm h-5 w-5 md:w-4 md:h-4" />
+        ),
         label: t`Details + Roles`,
         route: ROUTES.SETTINGS,
       },
@@ -83,7 +91,7 @@ const NavigationItems = () => {
   )
 
   return (
-    <div className="flex lg:flex-col gap-4 justify-evenly lg:justify-start">
+    <div className="flex lg:flex-col gap-5 justify-evenly lg:justify-start">
       {items.map((item) => (
         <NavigationItem key={item.route} {...item} />
       ))}

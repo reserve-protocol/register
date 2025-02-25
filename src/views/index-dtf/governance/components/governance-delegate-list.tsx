@@ -17,11 +17,11 @@ const GovernanceDelegateList = () => {
   const delegates = useAtomValue(topDelegatesAtom)
 
   return (
-    <div className="rounded-3xl bg-secondary pb-0.5">
+    <div className="rounded-4xl bg-secondary ">
       <div className="p-4">
         <h2 className="font-bold text-xl text-primary">Top voting addresses</h2>
       </div>
-      <div className="bg-card m-1 rounded-3xl">
+      <div className="bg-card m-1 mt-0 rounded-3xl">
         <Table>
           <TableHeader>
             <TableRow className="border-none text-legend">

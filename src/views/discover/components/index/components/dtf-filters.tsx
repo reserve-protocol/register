@@ -29,7 +29,8 @@ const SingleToggleFilter = ({
       value={value}
       onValueChange={onValueChange}
       className={cn(
-        'bg-card rounded-bl-2xl rounded-br-2xl sm:rounded-2xl px-4 py-2',
+        'bg-card rounded-bl-2xl rounded-br-2xl sm:rounded-2xl px-4 py-4',
+
         className
       )}
     >

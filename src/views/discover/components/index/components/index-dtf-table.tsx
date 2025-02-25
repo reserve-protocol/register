@@ -29,7 +29,9 @@ const TableHeader = ({
 const columns: ColumnDef<IndexDTFItem>[] = [
   {
     header: ({ column }) => (
-      <SorteableButton column={column}>Name</SorteableButton>
+      <SorteableButton column={column} className="-ml-4">
+        Name
+      </SorteableButton>
     ),
     accessorKey: 'name',
     cell: ({ row }) => {
