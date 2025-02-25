@@ -1,7 +1,7 @@
 import DecimalDisplay from '@/components/decimal-display'
 import DebankIcon from '@/components/icons/DebankIcon'
 import { Card } from '@/components/ui/card'
-import DataTable from '@/components/ui/data-table'
+import DataTable, { SorteableButton } from '@/components/ui/data-table'
 import { cn } from '@/lib/utils'
 import { chainIdAtom, INDEX_DTF_SUBGRAPH_URL } from '@/state/atoms'
 import { indexDTFAtom, indexDTFPriceAtom } from '@/state/dtf/atoms'
@@ -26,8 +26,9 @@ type Response = {
     hash: string
     amount: string
     timestamp: string
-    to: { id: string }
-    from: { id: string }
+    to?: { id: string }
+    from?: { id: string }
+    type: 'MINT' | 'REDEEM' | 'TRANSFER'
   }[]
 }
 
@@ -38,14 +39,14 @@ type Transaction = {
   amountUSD: number
   timestamp: number
   chain: number
-  to: Address
-  from: Address
+  to?: Address
+  from?: Address
   type: 'Mint' | 'Redeem' | 'Transfer'
 }
 
 const query = `
   query ($dtf: String!) {
-    transferEvents(where: { token: $dtf }) {
+    transferEvents(where: { token: $dtf, type_not: "TRANSFER" }, orderBy: timestamp, orderDirection: desc) {
       id
       hash
       amount
@@ -56,6 +57,7 @@ const query = `
       from {
         id
       }
+      type
     }
   }
 `
@@ -63,46 +65,47 @@ const query = `
 // Columns type/amount/usdAmount/Time/From/Hash
 const columns: ColumnDef<Transaction>[] = [
   {
-    header: 'Type',
+    header: ({ column }) => (
+      <SorteableButton className="text-sm" column={column}>
+        Type
+      </SorteableButton>
+    ),
     accessorKey: 'type',
+    cell: ({ row }) => {
+      return <div className="font-semibold">{row.original.type}</div>
+    },
   },
   {
-    header: 'Amount',
+    header: ({ column }) => (
+      <SorteableButton className="text-sm" column={column}>
+        Amount
+      </SorteableButton>
+    ),
     accessorKey: 'amount',
     cell: ({ row }) => {
       return <DecimalDisplay value={row.original.amount} />
     },
   },
   {
-    header: 'USD',
+    header: ({ column }) => (
+      <SorteableButton className="text-sm" column={column}>
+        USD
+      </SorteableButton>
+    ),
     accessorKey: 'amountUSD',
     cell: ({ row }) => {
       return `$${formatCurrency(row.original.amountUSD)}`
     },
   },
   {
-    header: 'Time',
+    header: ({ column }) => (
+      <SorteableButton className="text-sm" column={column}>
+        Time
+      </SorteableButton>
+    ),
     accessorKey: 'timestamp',
     cell: ({ row }) => {
       return relativeTime(row.original.timestamp, getCurrentTime())
-    },
-  },
-  {
-    header: 'From',
-    accessorKey: 'from',
-    cell: ({ row }) => {
-      return (
-        <div className="flex items-center gap-2">
-          <a
-            href={`https://debank.com/profile/${row.original.from}`}
-            target="_blank"
-            className="text-legend underline"
-          >
-            {shortenAddress(row.original.from)}
-          </a>
-          <DebankIcon />
-        </div>
-      )
     },
   },
   {
@@ -140,8 +143,6 @@ const useTransactions = (dtf: Address, chain: number) => {
         }
       )
 
-      console.log(data)
-
       return data.transferEvents.map((event) => ({
         id: event.id,
         hash: event.hash,
@@ -149,17 +150,15 @@ const useTransactions = (dtf: Address, chain: number) => {
         amountUSD: Number(formatEther(BigInt(event.amount))) * (price || 0),
         timestamp: Number(event.timestamp),
         chain,
-        to: event.to.id,
-        from: event.from.id,
+        to: event.to?.id,
+        from: event.from?.id,
         type:
-          event.to.id === zeroAddress
-            ? 'Redeem'
-            : event.from.id === zeroAddress
-              ? 'Mint'
-              : 'Transfer',
+          event.type.charAt(0).toUpperCase() +
+          event.type.slice(1).toLowerCase(),
       })) as Transaction[]
     },
     enabled: Boolean(dtf && chain && price),
+    refetchInterval: 5 * 60 * 1000, // Refetch every 5 minutes
   })
 }
 
@@ -174,11 +173,7 @@ const TransactionTable = () => {
       data={data ?? []}
       pagination
       className={cn(
-        'hidden lg:block',
-        '[&_table]:bg-card [&_table]:rounded-[20px] [&_table]:text-base',
-        '[&_table_thead_th]:px-6',
-        '[&_table_tbody_td]:px-6',
-        '[&_table_tbody]:rounded-[20px] [&_table_tbody_tr:last-child_td]:rounded-bl-[20px] [&_table_tbody_tr:last-child_td:last-child]:rounded-br-[20px]'
+        '[&_table]:bg-card [&_table]:rounded-[20px] [&_table]:text-sm [&_table_tr]:border-none [&_table_th]:text-legend [&_table_th]:border-b'
       )}
     />
   )
@@ -186,7 +181,7 @@ const TransactionTable = () => {
 
 const IndexTransactionTable = () => {
   return (
-    <Card className="p-6">
+    <Card className="p-6 pb-2">
       <div className="flex items-center gap-1">
         <div className="rounded-full border border-foreground p-2 mr-auto">
           <ArrowDownUp size={14} />
@@ -194,7 +189,7 @@ const IndexTransactionTable = () => {
       </div>
       <div className="flex items-center gap-2 mb-4"></div>
       <h2 className="text-2xl font-semibold mb-2">Transactions</h2>
-      <div className="flex flex-col gap-2 -mx-6">
+      <div className="flex flex-col gap-2 -mx-6 sm:-mx-4 overflow-x-auto max-w-[calc(100vw-10px)]">
         <TransactionTable />
       </div>
     </Card>

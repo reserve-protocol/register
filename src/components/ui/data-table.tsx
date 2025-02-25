@@ -42,14 +42,16 @@ interface DataTableProps<TData, TValue> {
 export const SorteableButton = ({
   column,
   children,
+  className,
 }: {
   column: Column<any, any>
   children: React.ReactNode
+  className?: string
 }) => {
   return (
     <Button
       variant="ghost"
-      className="font-light text-legend text-base"
+      className={cn('font-light text-legend text-base', className)}
       onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
     >
       {children}
