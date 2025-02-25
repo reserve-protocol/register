@@ -46,11 +46,11 @@ const InfoCard = ({
     <Card
       id={id}
       className={cn(
-        'rounded-3xl flex flex-col bg-secondary',
+        'rounded-4xl flex flex-col bg-secondary',
         secondary && 'bg-primary/10'
       )}
     >
-      <div className="p-4 flex items-center gap-2">
+      <div className="py-4 px-5 flex items-center gap-2">
         <h1 className="font-bold text-xl text-primary mr-auto">{title}</h1>
         {action}
       </div>
