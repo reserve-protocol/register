@@ -6,7 +6,6 @@ import { Link } from 'react-router-dom'
 import { getFolioRoute } from '@/utils'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { ROUTES } from '@/utils/constants'
-import { Button } from '@/components/ui/button'
 
 const SWAP_ERROR_MSG =
   'Sorry, we’re having a hard time finding a route that makes sense for you. Please try again in a bit.'
@@ -37,18 +36,21 @@ const GoToManualRedeem = () => {
   if (!isRedeem || !indexDTF) return null
 
   return (
-    <div className="mt-2 hidden sm:block">
-      <Button size="sm" className="w-full" asChild>
-        <Link
-          to={getFolioRoute(
-            indexDTF.id,
-            indexDTF.chainId,
-            `${ROUTES.ISSUANCE}/manual`
-          )}
-        >
-          Try redeeming manually
-        </Link>
-      </Button>
+    <div className="mt-2 hidden sm:block p-3 rounded-3xl text-center text-sm">
+      <span className="font-semibold block">
+        Having issues minting? (Zaps are in beta)
+      </span>
+      <span className="text-legend">Wait and try again or</span>{' '}
+      <Link
+        to={getFolioRoute(
+          indexDTF.id,
+          indexDTF.chainId,
+          ROUTES.ISSUANCE + '/manual'
+        )}
+        className="text-primary underline"
+      >
+        switch to manual redeeming
+      </Link>
     </div>
   )
 }
