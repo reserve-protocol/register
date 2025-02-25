@@ -86,7 +86,7 @@ const IndexDTFIssuance = () => {
               </Button>
             ) : (
               <>
-                <TabsList className="h-9">
+                <TabsList className="h-9 px-0.5">
                   <TabsTrigger value="buy">Buy</TabsTrigger>
                   <TabsTrigger value="sell">Sell</TabsTrigger>
                 </TabsList>
