@@ -10,6 +10,24 @@ import React, { useEffect, useState } from 'react'
 import ZapMint from '../zap-mint'
 import { currentZapMintTabAtom } from '../zap-mint/atom'
 import { useTrackIndexDTFClick } from '@/views/index-dtf/hooks/useTrackIndexDTFPage'
+import { Link } from 'react-router-dom'
+import Uniswap from '@/components/icons/logos/Uniswap'
+
+const UniswapButton = () => {
+  return (
+    <Button asChild className="rounded-xl h-12 w-full">
+      <Link
+        to="https://app.uniswap.org/swap?chain=base&inputCurrency=0x4200000000000000000000000000000000000006&outputCurrency=0xebcda5b80f62dd4dd2a96357b42bb6facbf30267"
+        target="_blank"
+      >
+        <div className="flex items-center gap-2">
+          <Uniswap />
+          Swap on Uniswap
+        </div>
+      </Link>
+    </Button>
+  )
+}
 
 const MintBox = () => {
   const dtf = useAtomValue(indexDTFAtom)
@@ -43,34 +61,39 @@ const MintBox = () => {
         </div>
       </div>
       <ZapMint>
-        <div
-          className="flex flex-col gap-2"
-          onClick={(e) => {
-            if (!(e.target instanceof HTMLButtonElement)) {
-              e.preventDefault()
-            }
-          }}
-        >
-          <Button
-            className="rounded-xl h-12"
-            onClick={() => {
-              trackClick('buy')
-              setZapMintTab('buy')
+        {dtf?.id?.toLowerCase() ===
+        '0xebcda5b80f62dd4dd2a96357b42bb6facbf30267' ? (
+          <UniswapButton />
+        ) : (
+          <div
+            className="flex flex-col gap-2"
+            onClick={(e) => {
+              if (!(e.target instanceof HTMLButtonElement)) {
+                e.preventDefault()
+              }
             }}
           >
-            Buy
-          </Button>
-          <Button
-            className="rounded-xl h-12"
-            variant="outline"
-            onClick={() => {
-              trackClick('sell')
-              setZapMintTab('sell')
-            }}
-          >
-            Sell
-          </Button>
-        </div>
+            <Button
+              className="rounded-xl h-12"
+              onClick={() => {
+                trackClick('buy')
+                setZapMintTab('buy')
+              }}
+            >
+              Buy
+            </Button>
+            <Button
+              className="rounded-xl h-12"
+              variant="outline"
+              onClick={() => {
+                trackClick('sell')
+                setZapMintTab('sell')
+              }}
+            >
+              Sell
+            </Button>
+          </div>
+        )}
       </ZapMint>
     </div>
   )
