@@ -5,9 +5,15 @@ import FusionTokenLogo from '@/components/token-logo/fusion-token-logo'
 import { Button } from '@/components/ui/button'
 import useContractWrite from '@/hooks/useContractWrite'
 import useWatchTransaction from '@/hooks/useWatchTransaction'
+import { ROUTES } from '@/utils/constants'
+import {
+  useTrackIndexDTFZap,
+  useTrackIndexDTFZapClick,
+} from '@/views/index-dtf/hooks/useTrackIndexDTFPage'
 import { ZapResult } from '@/views/yield-dtf/issuance/components/zapV2/api'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 import { Address, erc20Abi } from 'viem'
 import { useSendTransaction, useWaitForTransactionReceipt } from 'wagmi'
 import {
@@ -17,12 +23,6 @@ import {
   zapPriceImpactWarningCheckboxAtom,
 } from './atom'
 import ZapErrorMsg, { ZapTxErrorMsg } from './zap-error-msg'
-import {
-  useTrackIndexDTFZap,
-  useTrackIndexDTFZapClick,
-} from '@/views/index-dtf/hooks/useTrackIndexDTFPage'
-import { useLocation } from 'react-router-dom'
-import { ROUTES } from '@/utils/constants'
 import ZapPriceImpactWarningCheckbox from './zap-warning-checkbox'
 
 const LoadingButton = ({
@@ -168,11 +168,11 @@ const SubmitZapButton = ({
     (txError ? Error(txError) : undefined)
 
   useEffect(() => {
-    if (receipt) {
+    if (receipt?.status === 'success') {
       track('zap_success_notification', inputSymbol, outputSymbol)
       onSuccess?.()
     }
-  }, [receipt, onSuccess])
+  }, [receipt?.status])
 
   useEffect(() => {
     if (
