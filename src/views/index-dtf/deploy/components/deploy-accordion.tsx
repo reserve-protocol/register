@@ -9,11 +9,19 @@ import { cn } from '@/lib/utils'
 import { useAtom, useAtomValue } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
 import {
+  ArrowDownUp,
   Asterisk,
+  Boxes,
+  Braces,
   Check,
   ChevronDownIcon,
   ChevronUpIcon,
+  Coins,
+  Crown,
   Edit2,
+  Landmark,
+  PencilRuler,
+  ReplaceAll,
 } from 'lucide-react'
 import { ReactNode, useEffect } from 'react'
 import { useFormContext } from 'react-hook-form'
@@ -50,56 +58,56 @@ export type DeployStep = {
 export const DEPLOY_STEPS: DeployStep[] = [
   {
     id: 'metadata',
-    icon: <Asterisk size={24} strokeWidth={1.5} />,
+    icon: <Braces size={14} strokeWidth={1.5} />,
     title: 'Metadata',
     titleSecondary: 'Metadata',
     content: <MetadataAndChain />,
   },
   {
     id: 'basket',
-    icon: <BasketCubeIcon fontSize={24} />,
+    icon: <Boxes size={14} strokeWidth={1.5} />,
     title: 'Basket',
     titleSecondary: 'Basket',
     content: <FTokenBasket />,
   },
   {
     id: 'governance',
-    icon: <Asterisk size={24} strokeWidth={1.5} />,
+    icon: <Landmark size={14} strokeWidth={1.5} />,
     title: 'Governance Body',
     titleSecondary: 'Governance Type',
     content: <Governance />,
   },
   {
     id: 'revenue-distribution',
-    icon: <Asterisk size={24} strokeWidth={1.5} />,
+    icon: <Coins size={14} strokeWidth={1.5} />,
     title: 'Fees',
     titleSecondary: 'Fees',
     content: <RevenueDistribution />,
   },
   {
     id: 'roles',
-    icon: <Asterisk size={24} strokeWidth={1.5} />,
+    icon: <Crown size={14} strokeWidth={1.5} />,
     title: 'Roles',
     titleSecondary: 'Roles',
     content: <Roles />,
   },
   {
     id: 'auctions',
-    icon: <Asterisk size={24} strokeWidth={1.5} />,
+    icon: <ArrowDownUp size={14} strokeWidth={1.5} />,
     title: 'Auctions',
     titleSecondary: 'Auctions',
     content: <Auctions />,
   },
   {
     id: 'basket-changes',
-    icon: <Asterisk size={24} strokeWidth={1.5} />,
+    icon: <ReplaceAll size={14} strokeWidth={1.5} />,
     title: 'Basket Governance Settings',
     titleSecondary: 'Basket Governance Settings',
     content: <BasketChanges />,
   },
   {
     id: 'other-changes',
-    icon: <Asterisk size={24} strokeWidth={1.5} />,
+    icon: <PencilRuler size={14} strokeWidth={1.5} />,
     title: 'Non-Basket Governance Settings',
     titleSecondary: 'Non-Basket Governance Settings',
     content: <OtherChanges />,
@@ -131,11 +139,11 @@ const DeployAccordionTrigger = ({
       >
         <div
           className={cn(
-            'rounded-full p-1',
-            isActive ? 'bg-primary/10 text-primary' : 'bg-muted-foreground/10'
+            'rounded-full p-2 border border-foreground',
+            (isActive || validated) && 'border-primary text-primary'
           )}
         >
-          {validated ? <Check /> : icon}
+          {validated ? <Check size={16} /> : icon}
         </div>
         <div
           className={cn(
