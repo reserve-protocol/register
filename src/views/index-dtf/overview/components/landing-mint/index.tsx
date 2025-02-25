@@ -13,21 +13,25 @@ import { useTrackIndexDTFClick } from '@/views/index-dtf/hooks/useTrackIndexDTFP
 import { Link } from 'react-router-dom'
 import Uniswap from '@/components/icons/logos/Uniswap'
 
-const UniswapButton = () => {
-  return (
-    <Button asChild className="rounded-xl h-12 w-full">
-      <Link
-        to="https://app.uniswap.org/swap?chain=base&inputCurrency=0x4200000000000000000000000000000000000006&outputCurrency=0xebcda5b80f62dd4dd2a96357b42bb6facbf30267"
-        target="_blank"
-      >
-        <div className="flex items-center gap-2">
-          <Uniswap />
-          Swap on Uniswap
-        </div>
-      </Link>
-    </Button>
-  )
-}
+export const UniswapButton = React.forwardRef<HTMLAnchorElement>(
+  (props, ref) => {
+    return (
+      <Button asChild className="rounded-xl h-12 w-full">
+        <Link
+          ref={ref}
+          to="https://app.uniswap.org/swap?chain=base&inputCurrency=0x4200000000000000000000000000000000000006&outputCurrency=0xebcda5b80f62dd4dd2a96357b42bb6facbf30267"
+          target="_blank"
+        >
+          <div className="flex items-center gap-2">
+            <Uniswap />
+            Swap on Uniswap
+          </div>
+        </Link>
+      </Button>
+    )
+  }
+)
+UniswapButton.displayName = 'UniswapButton'
 
 const MintBox = () => {
   const dtf = useAtomValue(indexDTFAtom)
