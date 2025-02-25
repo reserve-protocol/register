@@ -37,6 +37,7 @@ const useIndexDTFPriceHistory = ({
     address: address as Address,
     abi: erc20Abi,
     functionName: 'totalSupply',
+    chainId,
     query: {
       enabled: Boolean(address),
     },
