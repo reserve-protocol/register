@@ -1,14 +1,15 @@
-import React, { ReactNode } from 'react'
+import React, { useState } from 'react'
+import { HelpCircle } from 'lucide-react'
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from './tooltip'
-import { HelpCircle } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
 interface HelpProps {
-  content: ReactNode
+  content: React.ReactNode
   size?: number
   side?: 'top' | 'right' | 'bottom' | 'left'
   className?: string
@@ -20,14 +21,34 @@ const Help: React.FC<HelpProps> = ({
   side = 'top',
   className,
 }) => {
+  const [open, setOpen] = useState(false)
+
   return (
-    <TooltipProvider>
-      <Tooltip delayDuration={0}>
-        <TooltipTrigger>
-          <HelpCircle size={size} className={className} />
+    <TooltipProvider delayDuration={0}>
+      <Tooltip open={open}>
+        <TooltipTrigger asChild>
+          <button
+            type="button"
+            className={cn('cursor-pointer', className)}
+            onClick={() => setOpen(!open)}
+            onMouseEnter={() => setOpen(true)}
+            onMouseLeave={() => setOpen(false)}
+            onTouchStart={(e) => {
+              e.preventDefault()
+              setOpen(!open)
+            }}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault()
+                setOpen(!open)
+              }
+            }}
+          >
+            <HelpCircle size={size} />
+          </button>
         </TooltipTrigger>
-        <TooltipContent side={side} className="max-w-xs">
-          {content}
+        <TooltipContent side={side} className={!content ? 'hidden' : ''}>
+          <span className="inline-block max-w-xs">{content}</span>
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>
