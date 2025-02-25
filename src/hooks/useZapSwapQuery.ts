@@ -68,7 +68,7 @@ const useZapSwapQuery = ({
       // If dust > 2.5% of amountOutValue, retry once.
       const maxDustRetries = 1
       // If price impact > 2%, retry 3 times.
-      const maxPriceImpactRetries = 3
+      const maxPriceImpactRetries = 1
       let dustAttempt = 0
       let priceImpactAttempt = 0
       let lastData: ZapResponse
