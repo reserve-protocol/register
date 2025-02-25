@@ -1,4 +1,4 @@
-import { Asterisk } from 'lucide-react'
+import { Asterisk, Image, MousePointerClick, ShieldHalf } from 'lucide-react'
 import InputWithTitle from '../../components/input-with-title'
 
 const FORMS = [
@@ -6,7 +6,7 @@ const FORMS = [
     title: 'Guardian',
     description:
       'A trusted actor that can veto any proposal prior to execution.',
-    icon: <Asterisk size={32} strokeWidth={1.5} />,
+    icon: <ShieldHalf size={14} strokeWidth={1.5} />,
     fieldName: 'guardians',
     buttonLabel: 'Add additional guardian',
     inputLabel: 'Address',
@@ -29,7 +29,7 @@ const FORMS = [
         but no protocol level controls.
       </span>
     ),
-    icon: <Asterisk size={32} strokeWidth={1.5} />,
+    icon: <Image size={14} strokeWidth={1.5} />,
     fieldName: 'brandManagers',
     buttonLabel: 'Add additional brand manager',
     inputLabel: 'Address',
@@ -39,7 +39,7 @@ const FORMS = [
     title: 'Auction launcher',
     description:
       'A trusted actor responsible for launching auctions that are approved by governance.',
-    icon: <Asterisk size={32} strokeWidth={1.5} />,
+    icon: <MousePointerClick size={14} strokeWidth={1.5} />,
     fieldName: 'auctionLaunchers',
     buttonLabel: 'Add additional auction launcher',
     inputLabel: 'Address',

@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils'
 import { useAtom, useSetAtom } from 'jotai'
-import { Asterisk } from 'lucide-react'
+import { Asterisk, GlobeLock, Landmark, SearchCode, Wallet } from 'lucide-react'
 import { ReactNode } from 'react'
 import { useFormContext } from 'react-hook-form'
 import {
@@ -27,7 +27,7 @@ const GOVERNANCE_OPTIONS = [
         govern <Ticker />.
       </span>
     ),
-    icon: <Asterisk size={24} strokeWidth={1.5} />,
+    icon: <Landmark size={14} strokeWidth={1.5} />,
     form: <GovernanceExistingERC20 />,
     resetFields: ['governanceVoteLock', 'governanceWalletAddress'],
   },
@@ -50,7 +50,7 @@ const GOVERNANCE_OPTIONS = [
         .
       </span>
     ),
-    icon: <Asterisk size={24} strokeWidth={1.5} />,
+    icon: <SearchCode size={14} strokeWidth={1.5} />,
     form: <GovernanceExistingVoteLock />,
     resetFields: ['governanceERC20address', 'governanceWalletAddress'],
   },
@@ -64,7 +64,7 @@ const GOVERNANCE_OPTIONS = [
         interact with <Ticker /> on Register.
       </span>
     ),
-    icon: <Asterisk size={24} strokeWidth={1.5} />,
+    icon: <Wallet size={14} strokeWidth={1.5} />,
     form: <GovernanceSpecificWallet />,
     resetFields: [
       'governanceERC20address',
@@ -102,8 +102,8 @@ const GovernanceOption = ({
     <div className="flex items-center gap-2 p-4">
       <div
         className={cn(
-          'rounded-full p-1',
-          selected ? 'bg-primary text-white' : 'bg-muted-foreground/10'
+          'rounded-full p-2 border border-foreground',
+          selected && 'border-primary text-primary'
         )}
       >
         {icon}
