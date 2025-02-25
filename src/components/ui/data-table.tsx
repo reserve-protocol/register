@@ -51,7 +51,7 @@ export const SorteableButton = ({
   return (
     <Button
       variant="ghost"
-      className={cn('font-light text-legend text-base', className)}
+      className={cn('font-light text-legend text-base rounded-2xl', className)}
       onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
     >
       {children}

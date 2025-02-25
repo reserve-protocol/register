@@ -47,10 +47,10 @@ const DeployComingSoon = () => {
           </li>
         </ul>
         <Separator className="my-6" />
-        <h2 className="font-semibold mb-2">
+        <h2 className="font-semibold mb-0.5">
           Want to be first in line to create an Index DTF?
         </h2>
-        <p className="mb-2 max-w-[520px]">
+        <p className="mb-4 max-w-[520px] text-legend">
           Leave your contact details below and ABC Labs will reach out to you
           when permissionless creation is ready!
         </p>
@@ -58,7 +58,7 @@ const DeployComingSoon = () => {
           <SocialMediaInput />
         </div>
       </div>
-      <div className="rounded-3xl flex-grow h-[calc(100vh-132px)] hidden max-w-[50%] lg:block">
+      <div className="rounded-3xl flex-grow h-[calc(100vh-132px)] hidden max-w-[50%] max-h-[940px] lg:block">
         <img
           src="https://storage.reserve.org/splash.png"
           className="w-full h-full object-cover object-center rounded-3xl"

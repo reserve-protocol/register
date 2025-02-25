@@ -115,6 +115,7 @@ const Account = () => {
                         justifyContent: 'center',
                         height: '38px',
                         cursor: 'pointer',
+                        fontSize: '16px',
                       }}
                       p="2"
                       // onClick={() => setVisible(true)}

@@ -20,7 +20,7 @@ const InputWithTitle = ({
     key={title}
   >
     <div className="flex items-center gap-2">
-      <div className="bg-muted-foreground/10 rounded-full">{icon}</div>
+      <div className="p-2 border border-foreground rounded-full">{icon}</div>
 
       <div className="flex flex-col">
         <div className="text-base font-bold">{title}</div>
