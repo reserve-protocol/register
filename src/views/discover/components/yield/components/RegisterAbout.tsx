@@ -175,9 +175,6 @@ const DashedDivider = () => (
 const RegisterAbout = () => (
   <div className="w-full mt-12 pb-6">
     <div className="mt-[28px] md:mt-[32px] px-[16px] md:px-8">
-      <p className="font-bold text-xl text-center text-primary mb-[24px] md:mb-[32px]">
-        <Trans>Not sure what you're looking at?</Trans>
-      </p>
       <Intro />
       <DashedDivider />
       <About />
