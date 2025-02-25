@@ -268,7 +268,7 @@ const TokenSocials = () => {
           className="flex items-center gap-2 border rounded-full py-1 px-2 text-sm hover:bg-primary/10 hover:text-primary"
         >
           <FileText size={14} />
-          Prospectus
+          DTF Factsheet
         </Link>
       )}
       {Object.entries(data?.socials || {}).map(
