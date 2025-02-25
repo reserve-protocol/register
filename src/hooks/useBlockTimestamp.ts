@@ -1,20 +1,21 @@
-import { useState, useEffect } from 'react'
+import { useAtomValue } from 'jotai'
+import { useEffect, useState } from 'react'
+import { chainIdAtom } from 'state/atoms'
+import { wagmiConfig } from 'state/chain'
 import { useBlockNumber } from 'wagmi'
-import { usePublicClient } from 'wagmi'
-import useRToken from './useRToken'
-import { ChainId } from 'utils/chains'
+import { getBlock } from 'wagmi/actions'
 
 function useBlockTimestamp(blockNumber?: number) {
-  const rToken = useRToken()
+  const chainId = useAtomValue(chainIdAtom)
   const [timestamp, setTimestamp] = useState<number | undefined>(undefined)
-  const client = usePublicClient({
-    chainId: rToken?.chainId || ChainId.Mainnet,
-  })
   const { data: currentBlockNumber } = useBlockNumber()
 
   const getBlockTimestampOrUndefined = async (_blockNumber: bigint) => {
     try {
-      const block = await client.getBlock({ blockNumber: _blockNumber })
+      const block = await getBlock(wagmiConfig, {
+        blockNumber: _blockNumber,
+        chainId,
+      })
       return Number(block.timestamp)
     } catch {
       return undefined
@@ -23,11 +24,13 @@ function useBlockTimestamp(blockNumber?: number) {
 
   const getAverageBlockTime = async (blocksToConsider = 100n) => {
     try {
-      const latestBlock = await client.getBlock({
+      const latestBlock = await getBlock(wagmiConfig, {
         blockTag: 'latest',
+        chainId,
       })
-      const pastBlock = await client.getBlock({
+      const pastBlock = await getBlock(wagmiConfig, {
         blockNumber: latestBlock.number - blocksToConsider,
+        chainId,
       })
       const timeDifference = latestBlock.timestamp - pastBlock.timestamp
       return timeDifference / blocksToConsider

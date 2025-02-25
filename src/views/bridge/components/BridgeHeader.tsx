@@ -5,8 +5,8 @@ import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { chainIdAtom, walletChainAtom } from 'state/atoms'
 import { Box, Text } from 'theme-ui'
-import { ChainId } from 'utils/chains'
-import { useSwitchNetwork } from 'wagmi'
+import { AvailableChain, ChainId } from 'utils/chains'
+import { useSwitchChain } from 'wagmi'
 import { bridgeAmountAtom, bridgeL2Atom, isBridgeWrappingAtom } from '../atoms'
 
 const Tab = ({
@@ -41,7 +41,7 @@ const Tab = ({
 )
 
 const BridgeHeader = () => {
-  const { switchNetwork } = useSwitchNetwork()
+  const { switchChain } = useSwitchChain()
   const walletChain = useAtomValue(walletChainAtom)
   const setAmount = useSetAtom(bridgeAmountAtom)
   const [isWrapping, setWrapping] = useAtom(isBridgeWrappingAtom)
@@ -51,20 +51,20 @@ const BridgeHeader = () => {
 
   // Trigger wallet switch for users
   useEffect(() => {
-    if (switchNetwork) {
+    if (switchChain) {
       if (isWrapping && walletChain !== ChainId.Mainnet) {
-        switchNetwork(ChainId.Mainnet)
+        switchChain({ chainId: ChainId.Mainnet })
       }
 
       if (!isWrapping && bridgeL2 && walletChain !== bridgeL2) {
-        switchNetwork(bridgeL2)
+        switchChain({ chainId: bridgeL2 })
       }
     }
 
     if (isWrapping) {
-      setChain(ChainId.Mainnet)
+      setChain(ChainId.Mainnet as AvailableChain)
     } else if (bridgeL2) {
-      setChain(bridgeL2)
+      setChain(bridgeL2 as AvailableChain)
     }
 
     setAmount('')

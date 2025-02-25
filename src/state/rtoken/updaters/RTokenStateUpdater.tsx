@@ -18,8 +18,8 @@ import {
 } from 'state/atoms'
 import { VERSION } from 'utils/constants'
 import { Address, formatEther } from 'viem'
-import { useContractReads } from 'wagmi'
 import { rTokenStateAtom } from '../atoms/rTokenStateAtom'
+import { useWatchReadContracts } from 'hooks/useWatchReadContract'
 
 type StateMulticallResult = {
   data:
@@ -36,7 +36,7 @@ type StateMulticallResult = {
         boolean,
         boolean,
         boolean,
-        boolean | undefined
+        boolean | undefined,
       ]
     | undefined
 }
@@ -143,14 +143,13 @@ const RTokenStateUpdater = () => {
   }, [contracts, chainId])
 
   // Type result manually, data inferring doesn't work with conditional calls
-  const { data: rTokenState }: StateMulticallResult = useContractReads({
+  const { data: rTokenState }: StateMulticallResult = useWatchReadContracts({
     contracts: calls,
-    watch: true,
     allowFailure: false,
   })
 
   const { data: collateralStatus }: { data: (0 | 1 | 2)[] | undefined } =
-    useContractReads({
+    useWatchReadContracts({
       contracts:
         rToken && assets
           ? rToken.collaterals.map((c) => ({
@@ -160,7 +159,6 @@ const RTokenStateUpdater = () => {
               chainId,
             }))
           : [],
-      watch: true,
       allowFailure: false,
     })
 
@@ -209,11 +207,14 @@ const RTokenStateUpdater = () => {
 
   useEffect(() => {
     setCollateralStatus(
-      (collateralStatus || []).reduce((prev, status, index) => {
-        prev[rToken?.collaterals[index]?.address ?? ''] = status
+      (collateralStatus || []).reduce(
+        (prev, status, index) => {
+          prev[rToken?.collaterals[index]?.address ?? ''] = status
 
-        return prev
-      }, {} as { [x: string]: 0 | 1 | 2 })
+          return prev
+        },
+        {} as { [x: string]: 0 | 1 | 2 }
+      )
     )
   }, [collateralStatus])
 

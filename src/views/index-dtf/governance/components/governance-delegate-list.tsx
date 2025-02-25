@@ -1,0 +1,72 @@
+import { formatCurrency, formatPercentage, shortenAddress } from '@/utils'
+
+import {
+  TableCell,
+  Table,
+  TableBody,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
+import { useAtomValue } from 'jotai'
+import { topDelegatesAtom } from '../atoms'
+import { Skeleton } from '@/components/ui/skeleton'
+
+// TODO: Get ENS for address
+const GovernanceDelegateList = () => {
+  const delegates = useAtomValue(topDelegatesAtom)
+
+  return (
+    <div className="rounded-3xl bg-secondary pb-0.5">
+      <div className="p-4">
+        <h2 className="font-bold text-xl text-primary">Top voting addresses</h2>
+      </div>
+      <div className="bg-card m-1 rounded-3xl">
+        <Table>
+          <TableHeader>
+            <TableRow className="border-none text-legend">
+              <TableHead>Address</TableHead>
+              <TableHead>Votes</TableHead>
+              <TableHead>Vote weight</TableHead>
+              <TableHead>Proposals voted</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {delegates === undefined && (
+              <TableRow>
+                <TableCell className="text-center text-legend" colSpan={4}>
+                  <Skeleton className="h-8 w-full" />
+                  <Skeleton className="h-8 mt-2 w-full" />
+                  <Skeleton className="h-8 mt-2 w-full" />
+                  <Skeleton className="h-8 mt-2 w-full" />
+                </TableCell>
+              </TableRow>
+            )}
+            {delegates !== undefined && delegates.length === 0 && (
+              <TableRow>
+                <TableCell className="text-center text-legend" colSpan={4}>
+                  No delegates found
+                </TableCell>
+              </TableRow>
+            )}
+            {delegates &&
+              delegates.map((delegate) => (
+                <TableRow key={delegate.address}>
+                  <TableCell>{shortenAddress(delegate.address)}</TableCell>
+                  <TableCell>
+                    {formatCurrency(delegate.delegatedVotes, 2)}
+                  </TableCell>
+                  <TableCell>
+                    {formatPercentage(delegate.weightedVotes)}
+                  </TableCell>
+                  <TableCell>{delegate.numberVotes}</TableCell>
+                </TableRow>
+              ))}
+          </TableBody>
+        </Table>
+      </div>
+    </div>
+  )
+}
+
+export default GovernanceDelegateList

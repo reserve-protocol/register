@@ -4,9 +4,9 @@ import { useCallback, useEffect, useMemo } from 'react'
 import { chainIdAtom, walletAtom } from 'state/atoms'
 import { Allowance } from 'types'
 import {
-  UsePrepareContractWriteConfig,
-  useContractRead,
-  useWaitForTransaction,
+  useReadContract,
+  UseSimulateContractParameters,
+  useWaitForTransactionReceipt,
 } from 'wagmi'
 import useContractWrite from './useContractWrite'
 import useWatchTransaction from './useWatchTransaction'
@@ -19,8 +19,7 @@ export const useApproval = (allowance: Allowance | undefined) => {
     data,
     isLoading: validatingAllowance,
     error: allowanceError,
-    
-  } = useContractRead(
+  } = useReadContract(
     allowance && account
       ? {
           abi: ERC20,
@@ -53,9 +52,10 @@ export const useApproval = (allowance: Allowance | undefined) => {
       : undefined
   )
   const { status: approvalStatus, isLoading: validatingApproval } =
-    useWaitForTransaction({
+    useWaitForTransactionReceipt({
       hash,
       confirmations: 2,
+      chainId,
     })
 
   const isLoading = approving || validatingApproval
@@ -86,7 +86,7 @@ export const useApproval = (allowance: Allowance | undefined) => {
 }
 
 const useApproveAndExecute = (
-  call: UsePrepareContractWriteConfig | undefined,
+  call: UseSimulateContractParameters | undefined,
   allowance: Allowance | undefined,
   label: string
 ) => {

@@ -1,7 +1,7 @@
 import { Trans } from '@lingui/macro'
 import ExternalArrowIcon from 'components/icons/ExternalArrowIcon'
 import TransactionSignedIcon from 'components/icons/SignedTransactionIcon'
-import Modal from 'components/modal'
+import Modal from '@/components/old/modal'
 import { useAtomValue } from 'jotai'
 import { chainIdAtom } from 'state/atoms'
 import { Flex, Link, Text } from 'theme-ui'

@@ -1,21 +1,39 @@
-import TokenLogo from 'components/icons/TokenLogo'
+import LegacyTokenLogo from 'components/icons/TokenLogo'
+import TokenLogo from '.'
 import React from 'react'
 import { Box, BoxProps } from 'theme-ui'
 
 interface Props extends BoxProps {
-  tokens: { symbol: string; logo: string; address: string }[]
+  tokens: { symbol: string; logo?: string; address: string; chain?: number }[]
   size?: number
+  reverseStack?: boolean
+  overlap?: number
+  outsource?: boolean
 }
 
 const StackTokenLogo = React.memo(
-  ({ tokens, sx = {}, size, ...props }: Props) => {
+  ({
+    tokens,
+    sx = {},
+    size,
+    reverseStack = false,
+    overlap = 0,
+    outsource = false,
+    ...props
+  }: Props) => {
     return (
       <Box
         variant="layout.verticalAlign"
-        sx={{ position: 'relative', ...sx }}
+        sx={{
+          position: 'relative',
+          display: 'flex',
+          flexDirection: reverseStack ? 'row-reverse' : 'row',
+          minWidth: 'max-content',
+          ...sx,
+        }}
         {...props}
       >
-        {tokens.map((token, index) => {
+        {(reverseStack ? tokens.reverse() : tokens).map((token, index) => {
           if (token.symbol === 'FRAXBP') {
             return (
               <Box
@@ -23,7 +41,7 @@ const StackTokenLogo = React.memo(
                 sx={{ width: '28px' }}
                 key={token.address}
               >
-                <TokenLogo
+                <LegacyTokenLogo
                   width={size}
                   sx={{
                     position: 'relative',
@@ -31,7 +49,7 @@ const StackTokenLogo = React.memo(
                   }}
                   symbol={'frax'}
                 />
-                <TokenLogo
+                <LegacyTokenLogo
                   width={size}
                   sx={{
                     position: 'relative',
@@ -43,16 +61,34 @@ const StackTokenLogo = React.memo(
             )
           }
 
+          const gap = -(size ? size / 2 : 6) - overlap
+          const first = reverseStack ? index === tokens.length - 1 : index === 0
+          const m = first ? 0 : gap
+
           return (
             <Box
               key={token.address}
               sx={{
                 position: 'relative',
-                left: index ? `${-(size ? size / 2 : 6)}px` : 0,
-                marginRight: index ? `${-(size ? size / 2 : 6)}px` : 0,
+                left: `${m}px`,
+                marginRight: `${m}px`,
               }}
             >
-              <TokenLogo width={size} symbol={token.symbol} src={token.logo} />
+              {outsource ? (
+                <TokenLogo
+                  width={size}
+                  height={size}
+                  symbol={token.symbol}
+                  chain={token.chain}
+                  address={token.address}
+                />
+              ) : (
+                <LegacyTokenLogo
+                  width={size}
+                  symbol={token.symbol}
+                  src={token.logo}
+                />
+              )}
             </Box>
           )
         })}

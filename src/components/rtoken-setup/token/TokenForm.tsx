@@ -1,5 +1,5 @@
 import { t, Trans } from '@lingui/macro'
-import Button from 'components/button'
+import Button from '@/components/old/button'
 import { FormField } from 'components/field'
 import { Box, BoxProps, Divider, Text } from 'theme-ui'
 import { isAddress } from 'utils'

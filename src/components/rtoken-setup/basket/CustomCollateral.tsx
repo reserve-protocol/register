@@ -2,16 +2,17 @@ import { t, Trans } from '@lingui/macro'
 import CollateralAbi from 'abis/CollateralAbi'
 import ERC20 from 'abis/ERC20'
 import { Input } from 'components'
-import { SmallButton } from 'components/button'
+import { SmallButton } from '@/components/old/button'
 import PluginsIcon from 'components/icons/PluginsIcon'
 import { useAtomValue } from 'jotai'
 import { useState } from 'react'
 import { chainIdAtom } from 'state/atoms'
+import { wagmiConfig } from 'state/chain'
 import { Box, Flex, Text } from 'theme-ui'
 import { CollateralPlugin } from 'types'
 import { isAddress } from 'utils'
 import { Address, hexToString } from 'viem'
-import { readContracts } from 'wagmi'
+import { readContracts } from 'wagmi/actions'
 
 const CustomCollateral = ({
   onAdd,
@@ -32,20 +33,23 @@ const CustomCollateral = ({
         address: address as Address,
       }
 
-      const [isCollateral, targetUnit, erc20] = await readContracts({
-        contracts: [
-          { ...callParams, functionName: 'isCollateral', chainId },
-          { ...callParams, functionName: 'targetName', chainId },
-          { ...callParams, functionName: 'erc20', chainId },
-        ],
-        allowFailure: false,
-      })
+      const [isCollateral, targetUnit, erc20] = await readContracts(
+        wagmiConfig,
+        {
+          contracts: [
+            { ...callParams, functionName: 'isCollateral', chainId },
+            { ...callParams, functionName: 'targetName', chainId },
+            { ...callParams, functionName: 'erc20', chainId },
+          ],
+          allowFailure: false,
+        }
+      )
 
       if (!isCollateral) {
         throw new Error('INVALID COLLATERAL')
       }
 
-      const [symbol, decimals] = await readContracts({
+      const [symbol, decimals] = await readContracts(wagmiConfig, {
         contracts: [
           { abi: ERC20, address: erc20, functionName: 'symbol', chainId },
           { abi: ERC20, address: erc20, functionName: 'decimals', chainId },

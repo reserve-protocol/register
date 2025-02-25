@@ -26,13 +26,13 @@ type ProtocolMetricsResponse = {
   }[]
 }
 
-type DailyTVL = {
+export type DailyTVL = {
   day: number
 } & {
   [K in keyof typeof NETWORKS]: number
 }
 
-const DEFAULT_TVL_BY_CHAIN = Object.keys(NETWORKS).reduce((obj, network) => {
+export const DEFAULT_TVL_BY_CHAIN = Object.keys(NETWORKS).reduce((obj, network) => {
   obj[network] = 0
   return obj
 }, {} as Record<keyof typeof NETWORKS, number>)

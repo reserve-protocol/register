@@ -1,26 +1,33 @@
 import { SVGProps } from 'react'
 
-const GaugeIcon = (props: SVGProps<SVGSVGElement>) => (
+const GaugeIcon = ({
+  width = 16,
+  height = 16,
+  ...props
+}: SVGProps<SVGSVGElement>) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width="1em"
-    height="1em"
+    width={width}
+    height={height}
+    viewBox="0 0 16 16"
     fill="none"
     {...props}
   >
     <path
-      fill="#999"
+      fill="currentColor"
+      opacity={0.4}
       d="M10.66 14.836a.454.454 0 0 1-.64 0l-2.538-2.543a.46.46 0 0 1 0-.65 5.064 5.064 0 0 0 1.116-1.695.116.116 0 0 1 .11-.074h.776a.095.095 0 0 1 .088.123 5.986 5.986 0 0 1-1.127 1.959l1.897 1.897a8.726 8.726 0 0 0 0-11.683L8.445 4.067c.497.575.88 1.24 1.127 1.958a.095.095 0 0 1-.088.123h-.776a.116.116 0 0 1-.11-.074A5.062 5.062 0 0 0 7.482 4.37a.46.46 0 0 1 0-.659l2.544-2.544a.46.46 0 0 1 .65 0 9.663 9.663 0 0 1-.015 13.67Z"
     />
     <path
-      fill="#333"
-      stroke="#333"
+      fill="currentColor"
       d="M12.684 10.38c.19-.747.264-1.223.298-1.869h-.398l-3.128-.009c-.069.571-.184.99-.382 1.6l-.006.016-.006.016a5.564 5.564 0 0 1-1.198 1.834l2.476 2.482a9.165 9.165 0 0 0 2.344-4.07Z"
     />
     <path
-      fill="#666"
+      fill="currentColor"
+      opacity={0.6}
       d="M10.418 8.462H5.337a1.456 1.456 0 1 1 0-.92h5.081a.46.46 0 1 1 0 .92Z"
     />
   </svg>
 )
+
 export default GaugeIcon

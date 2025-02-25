@@ -1,5 +1,5 @@
 import { Card } from 'components'
-import { ArrowDown } from 'react-feather'
+import { ArrowDown } from 'lucide-react'
 import { boxShadow } from 'theme'
 import { Box, Divider } from 'theme-ui'
 import BridgeHeader from './BridgeHeader'

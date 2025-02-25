@@ -4,12 +4,46 @@ import ERC20 from 'abis/ERC20'
 import humanizeDuration from 'humanize-duration'
 import { BigNumberMap } from 'types'
 import { Address, formatEther, getAddress, parseEther, parseUnits } from 'viem'
-import { CHAIN_TO_NETWORK, ROUTES } from './constants'
+import { CHAIN_TO_NETWORK, RESERVE_STORAGE, ROUTES } from './constants'
 import dayjs from 'dayjs'
 
 export const decimalPattern = /^[0-9]*[.]?[0-9]*$/i
 export const numberPattern = /^\d+$/
 export const addressPattern = /^0x[a-fA-F0-9]{40}$/
+
+export function getAssetURI(key: string) {
+  return `${RESERVE_STORAGE}/${key}`
+}
+
+export const cutDecimals = (value: string, min = 2, max = 9) => {
+  // Extract potential postfix
+  const lastChar = value[value.length - 1]
+  const postfix = isNaN(Number(lastChar)) ? lastChar : ''
+  const numberPart = postfix ? value.slice(0, -1) : value
+
+  const [integer, decimals] = numberPart.split('.')
+  if (!decimals) return value
+  if (min === 0) return integer + (postfix || '')
+  if (decimals.length <= min) return value
+
+  // Find first non-zero digit
+  const firstNonZeroIndex = decimals.split('').findIndex((d) => d !== '0')
+
+  let result
+  if (firstNonZeroIndex === -1) {
+    // All zeros after decimal, return min digits
+    result = `${integer}.${decimals.slice(0, min)}`
+  } else if (firstNonZeroIndex >= min) {
+    // For very small numbers (many leading zeros), keep up to the first non-zero + 2 digits
+    result = `${integer}.${decimals.slice(0, Math.min(firstNonZeroIndex + 1, decimals.length))}`
+  } else {
+    // Normal case - return min digits
+    result = `${integer}.${decimals.slice(0, min)}`
+  }
+
+  // Add back postfix if it existed
+  return postfix ? result + postfix : result
+}
 
 // returns the checksummed address if the address is valid, otherwise returns false
 export function isAddress(value: string) {
@@ -30,8 +64,14 @@ export const getTokenRoute = (
   route: string = ROUTES.OVERVIEW
 ) => `/${CHAIN_TO_NETWORK[chainId]}/token/${token.toLowerCase()}/${route}`
 
-// multiplier 150 -> 1.5
-export const getSafeGasLimit = (gas: bigint, multiplier = 150n) =>
+export const getFolioRoute = (
+  token: string,
+  chainId: number,
+  route: string = ROUTES.OVERVIEW
+) => `/${CHAIN_TO_NETWORK[chainId]}/index-dtf/${token.toLowerCase()}/${route}`
+
+// multiplier 200 -> 2
+export const getSafeGasLimit = (gas: bigint, multiplier = 200n) =>
   (gas * multiplier) / 100n
 
 export function getCurrentTime() {
@@ -146,11 +186,28 @@ export function formatCurrency(
   decimals = 2,
   options: Intl.NumberFormatOptions = {}
 ): string {
-  return Intl.NumberFormat('en-US', {
-    maximumFractionDigits: decimals,
-    minimumFractionDigits: Math.min(2, decimals),
-    ...options,
-  }).format(value)
+  return cutDecimals(
+    Intl.NumberFormat('en-US', {
+      maximumFractionDigits: 9,
+      minimumFractionDigits: Math.min(2, decimals),
+      ...options,
+    }).format(value),
+    decimals
+  )
+}
+
+export function formatTokenAmount(value: number) {
+  return value < 1
+    ? formatCurrency(value, 0, {
+        maximumSignificantDigits: 4,
+        notation: 'compact',
+        compactDisplay: 'short',
+      })
+    : formatCurrency(value, 2, {
+        minimumFractionDigits: 0,
+        notation: 'compact',
+        compactDisplay: 'short',
+      })
 }
 
 export const formatPercentage = (value: number, decimals = 2): string =>
@@ -261,4 +318,33 @@ export const formatDate = (timestamp?: string | number) => {
       ? 'ddd MMM DD, hh:mm a'
       : 'ddd MMM DD, YYYY, hh:mm a'
   return date.format(formatString)
+}
+
+export const humanizeMinutes = (minutes: number) => {
+  if (minutes <= 60) {
+    return `${minutes}m`
+  }
+  return humanizeDuration(minutes * 60 * 1000, {
+    language: 'en',
+  })
+}
+
+export const humanizeTimeFromHours = (hours: number) => {
+  return humanizeDuration(hours * 60 * 60 * 1000, {
+    language: 'en',
+  })
+}
+
+export const humanizeTimeFromDays = (days: number) => {
+  return humanizeDuration(days * 24 * 60 * 60 * 1000, {
+    language: 'en',
+  })
+}
+
+export const getTokenName = (name: string) => {
+  if (name.startsWith('Moo ')) {
+    return name.replace('Moo ', 'Beefy ')
+  }
+
+  return name
 }

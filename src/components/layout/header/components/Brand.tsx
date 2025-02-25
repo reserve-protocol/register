@@ -1,9 +1,8 @@
-import Logo from 'components/icons/Logo'
-import RBrand from 'components/icons/RBrand'
+import Reserve from '@/components/icons/Reserve'
+import ReserveSquare from '@/components/icons/ReserveSquare'
 import { useNavigate } from 'react-router-dom'
-import { Box, BoxProps, Flex } from 'theme-ui'
 
-const Brand = (props: BoxProps) => {
+const Brand = ({ className }: { className?: string }) => {
   const navigate = useNavigate()
 
   const handleClick = () => {
@@ -11,38 +10,14 @@ const Brand = (props: BoxProps) => {
   }
 
   return (
-    <Flex
-      onClick={handleClick}
-      sx={{
-        cursor: 'pointer',
-        alignItems: 'center',
-        color: 'accent',
-        display: 'flex',
-      }}
-    >
-      <Box
-        pt="1"
-        sx={{
-          display: ['none', 'none', 'none', 'flex'],
-          alignItems: 'center',
-        }}
-        {...props}
-      >
-        <Logo />
-      </Box>
-      <Box
-        mr={2}
-        sx={{
-          display: ['flex', 'flex', 'flex', 'none'],
-          alignItems: 'center',
-          justifyContent: 'center',
-          fontSize: 4,
-        }}
-        {...props}
-      >
-        <RBrand />
-      </Box>
-    </Flex>
+    <div onClick={handleClick} className={className}>
+      <div className="hidden md:hidden lg:flex items-center">
+        <Reserve />
+      </div>
+      <div className="flex lg:hidden items-center justify-center text-2xl mr-2">
+        <ReserveSquare />
+      </div>
+    </div>
   )
 }
 

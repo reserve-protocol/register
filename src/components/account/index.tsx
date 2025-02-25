@@ -1,26 +1,14 @@
-import styled from '@emotion/styled'
+import Button from '@/components/old/button'
+import { MouseoverTooltipContent } from '@/components/old/tooltip'
+import PortfolioSidebar from '@/views/portfolio/sidebar'
 import { Trans } from '@lingui/macro'
-import Button from 'components/button'
-import MenuIcon from 'components/icons/MenuIcon'
-import { MouseoverTooltipContent } from 'components/tooltip'
-import { txSidebarToggleAtom } from 'components/transactions/manager/atoms'
-import { useAtomValue, useSetAtom } from 'jotai'
-import { ReactNode } from 'react'
-import { AlertCircle, Power } from 'react-feather'
-import { Box, Card, Flex, Spinner, Text } from 'theme-ui'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import ChainLogo from 'components/icons/ChainLogo'
+import { useAtomValue } from 'jotai'
+import { AlertCircle, Menu, Power } from 'lucide-react'
+import { ReactNode } from 'react'
 import { chainIdAtom, selectedRTokenAtom } from 'state/atoms'
-import { isTransactionRunning } from 'state/chain/atoms/transactionAtoms'
-
-const Container = styled(Box)`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 38px;
-  padding: 8px;
-  cursor: pointer;
-`
+import { Box, Card, Flex, Text } from 'theme-ui'
 
 const ErrorWrapper = ({
   chainId,
@@ -69,8 +57,6 @@ const ErrorWrapper = ({
  * Handles wallet interaction
  */
 const Account = () => {
-  const setVisible = useSetAtom(txSidebarToggleAtom)
-  const isProcessing = useAtomValue(isTransactionRunning)
   const chainId = useAtomValue(chainIdAtom)
   const isTokenSelected = !!useAtomValue(selectedRTokenAtom)
 
@@ -122,21 +108,31 @@ const Account = () => {
                   chainId={chain.id}
                   currentChain={chainId}
                 >
-                  <Container onClick={() => setVisible(true)}>
-                    {!invalidChain ? (
-                      <ChainLogo chain={chain.id} />
-                    ) : (
-                      <AlertCircle fill="#FF0000" color="#fff" />
-                    )}
-                    <Text
-                      sx={{ display: ['none', 'inherit', 'inherit'] }}
-                      ml={2}
+                  <PortfolioSidebar>
+                    <Box
+                      variant="layout.verticalAlign"
+                      sx={{
+                        justifyContent: 'center',
+                        height: '38px',
+                        cursor: 'pointer',
+                      }}
+                      p="2"
+                      // onClick={() => setVisible(true)}
                     >
-                      {account.displayName}
-                    </Text>
-                    {isProcessing && <Spinner size={20} marginLeft={10} />}
-                    <MenuIcon style={{ marginLeft: 10 }} />
-                  </Container>
+                      {!invalidChain ? (
+                        <ChainLogo chain={chain.id} />
+                      ) : (
+                        <AlertCircle fill="#FF0000" color="#fff" />
+                      )}
+                      <Text
+                        sx={{ display: ['none', 'inherit', 'inherit'] }}
+                        ml={2}
+                      >
+                        {account.displayName}
+                      </Text>
+                      <Menu className="ml-2" size={16} />
+                    </Box>
+                  </PortfolioSidebar>
                 </ErrorWrapper>
               )
             })()}

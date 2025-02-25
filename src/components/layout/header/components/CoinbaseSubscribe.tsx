@@ -1,7 +1,7 @@
 import { CoinbaseIcon } from 'components/icons/logos'
 import { useAtomValue } from 'jotai'
 import { useEffect, useMemo, useState } from 'react'
-import { Bell, BellOff } from 'react-feather'
+import { Bell, BellOff } from 'lucide-react'
 import { walletAtom } from 'state/atoms'
 import { Box, BoxProps, IconButton } from 'theme-ui'
 import { useAccount } from 'wagmi'

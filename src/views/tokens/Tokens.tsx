@@ -1,10 +1,10 @@
 import { t } from '@lingui/macro'
 import { Container } from 'components'
-import { ContentHead } from 'components/info-box'
+import { ContentHead } from '@/components/old/info-box'
 import ListedTokensTable from 'components/tables/ListedTokensTable'
 import { Divider } from 'theme-ui'
-import DeployHero from 'views/compare/components/DeployHero'
-import RegisterAbout from 'views/compare/components/RegisterAbout'
+import DeployHero from '@/views/discover/components/yield/components/DeployHero'
+import RegisterAbout from '@/views/discover/components/yield/components/RegisterAbout'
 import UnlistedTokensTable from './components/UnlistedTokensTable'
 
 const Tokens = () => {

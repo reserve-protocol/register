@@ -14,7 +14,7 @@ import {
 } from 'theme-ui'
 import { addressPattern } from 'utils'
 import GovernanceParameters from './GovernanceParameters'
-import DocsLink from 'components/docs-link/DocsLink'
+import DocsLink from '@/components/utils/docs-link'
 import RolesSetup from './RoleSetup'
 
 interface Props extends BoxProps {
@@ -42,9 +42,9 @@ const GovernanceSetup = ({ disabled = false, ...props }: Props) => {
           </Text>
           <Text variant="legend">
             <Trans>
-              Choose between our Alexios Governor and anything between one man
-              rule to arbitrary DAO structure under your defined Ethereum
-              address.
+              Choose between our Alexios Governor and anything between
+              one-person rule to arbitrary DAO structure under your defined
+              Ethereum address.
             </Trans>
           </Text>
         </Box>

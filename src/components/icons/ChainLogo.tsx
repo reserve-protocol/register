@@ -3,14 +3,15 @@ import { ChainId } from 'utils/chains'
 import Base from './logos/Base'
 import Ethereum from './logos/Ethereum'
 import Arbitrum from './logos/Arbitrum'
+import Solana from './logos/Solana'
 
 export const chainIcons: Record<number | string, any> = {
   [ChainId.Mainnet]: Ethereum,
   [ChainId.Base]: Base,
   [ChainId.Arbitrum]: Arbitrum,
-  [ChainId.Hardhat]: Ethereum,
   Ethereum: Ethereum,
   Base: Base,
+  Solana: Solana,
 }
 
 interface Props extends SVGProps<SVGSVGElement> {

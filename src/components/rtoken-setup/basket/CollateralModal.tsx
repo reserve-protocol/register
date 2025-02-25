@@ -1,6 +1,6 @@
 import { t, Trans } from '@lingui/macro'
 import { Button, Modal } from 'components'
-import { ModalProps } from 'components/modal'
+import { ModalProps } from '@/components/old/modal'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { useMemo, useState } from 'react'
 import { Box, Divider, Text } from 'theme-ui'
@@ -16,7 +16,7 @@ import CustomCollateral from './CustomCollateral'
 import PluginItem from './PluginItem'
 import collateralPlugins from 'utils/plugins'
 import { chainIdAtom } from 'state/atoms'
-import { SearchInput } from 'components/input'
+import { SearchInput } from '@/components/old/input'
 
 interface Props extends Omit<ModalProps, 'children'> {
   targetUnit?: string // filter by target unit

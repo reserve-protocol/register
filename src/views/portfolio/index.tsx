@@ -1,6 +1,6 @@
 import { Box } from 'theme-ui'
 import Portfolio from './components/Portfolio'
-import RegisterAbout from 'views/compare/components/RegisterAbout'
+import RegisterAbout from '@/views/discover/components/yield/components/RegisterAbout'
 
 const PortfolioWrapper = () => {
   return (

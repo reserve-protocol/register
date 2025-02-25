@@ -9,7 +9,7 @@ import { navigationIndexAtom } from 'components/section-navigation/atoms'
 import useSectionNavigate from 'components/section-navigation/useSectionNavigate'
 import { useAtomValue } from 'jotai'
 import React, { useEffect, useMemo, useState } from 'react'
-import { ChevronDown, ChevronRight } from 'react-feather'
+import { ChevronDown, ChevronRight } from 'lucide-react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { Box, Flex, Text } from 'theme-ui'
 import { ROUTES } from 'utils/constants'
@@ -236,7 +236,6 @@ const TokenNavigation = () => {
     <Box
       sx={{
         width: ['100%', '100%', '220px'],
-        borderRight: ['none', 'none', '1px solid'],
         borderTop: ['1px solid', '1px solid', 'none'],
         borderColor: ['border', 'border', 'border'],
         position: ['fixed', 'fixed', 'relative'],

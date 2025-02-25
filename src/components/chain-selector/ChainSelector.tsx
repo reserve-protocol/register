@@ -1,11 +1,11 @@
-import Button from 'components/button'
+import Button from '@/components/old/button'
 import Base from 'components/icons/logos/Base'
 import Ethereum from 'components/icons/logos/Ethereum'
-import Popup from 'components/popup'
+import Popup from '@/components/old/popup'
 import { useAtomValue } from 'jotai'
-import mixpanel from 'mixpanel-browser'
+import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
 import { useState } from 'react'
-import { Check, ChevronDown, ChevronUp } from 'react-feather'
+import { Check, ChevronDown, ChevronUp } from 'lucide-react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { chainIdAtom, selectedRTokenAtom } from 'state/atoms'
 import { Box, BoxProps, Flex, Text } from 'theme-ui'
@@ -15,17 +15,12 @@ import { ROUTES } from 'utils/constants'
 export const chainIcons = {
   [ChainId.Mainnet]: Ethereum,
   [ChainId.Base]: Base,
-  [ChainId.Hardhat]: Ethereum,
 }
 
 const CHAIN_LIST = [
   { label: 'Ethereum', id: ChainId.Mainnet },
   { label: 'Base', id: ChainId.Base },
 ]
-
-if (import.meta.env.DEV) {
-  CHAIN_LIST.push({ label: 'Hardhat', id: ChainId.Hardhat })
-}
 
 const ChainList = ({ onSelect }: { onSelect(chain: number): void }) => {
   const selected = useAtomValue(chainIdAtom)

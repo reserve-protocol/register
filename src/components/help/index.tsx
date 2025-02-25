@@ -1,10 +1,10 @@
 import { Placement } from '@popperjs/core'
 import HelpIcon from 'components/icons/HelpIcon'
-import { MouseoverTooltip } from 'components/tooltip'
+import { MouseoverTooltip } from '@/components/old/tooltip'
 import { ReactNode } from 'react'
 import { Box, BoxProps } from 'theme-ui'
 
-interface Props extends BoxProps {
+interface Props extends Omit<BoxProps, 'content'> {
   content: ReactNode
   size?: number
   color?: string

@@ -1,4 +1,5 @@
 import '@rainbow-me/rainbowkit/styles.css'
+import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
 import { useEffect } from 'react'
 
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
@@ -11,11 +12,12 @@ import {
   walletAtom,
   walletChainAtom,
 } from 'state/atoms'
-import { useBlockNumber, usePublicClient, useWalletClient } from 'wagmi'
+import { useAccount, useBlockNumber, usePublicClient } from 'wagmi'
 
 // Keep web3 state in sync with atoms
 const AtomUpdater = () => {
-  const account = useWalletClient()
+  const account = useAccount()
+
   // Setters
   const setWallet = useSetAtom(walletAtom)
   const setWalletChain = useSetAtom(walletChainAtom)
@@ -49,14 +51,17 @@ const AtomUpdater = () => {
   }
 
   useEffect(() => {
-    if (account.data) {
-      setWallet(account.data.account.address)
-      setWalletChain(account.data.chain.id)
+    if (account && account.address) {
+      setWallet(account.address)
+      setWalletChain(account.chainId)
+      mixpanel.register({
+        wa: account.address,
+      })
     } else {
       setWallet(null)
       setWalletChain(undefined)
     }
-  }, [account.data?.account.address, account.data?.chain.id])
+  }, [account?.address, account?.chainId])
 
   useEffect(() => {
     fetchTimestamp() // update stored block timestamp

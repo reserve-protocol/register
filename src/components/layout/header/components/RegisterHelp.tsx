@@ -1,10 +1,10 @@
 import { t } from '@lingui/macro'
-import Button from 'components/button'
+import Button from '@/components/old/button'
 import ThemeColorMode from 'components/dark-mode-toggle/ThemeColorMode'
 import ExternalArrowIcon from 'components/icons/ExternalArrowIcon'
-import Popup from 'components/popup'
+import Popup from '@/components/old/popup'
 import { useState } from 'react'
-import { MoreHorizontal } from 'react-feather'
+import { MoreHorizontal } from 'lucide-react'
 import { borderRadius } from 'theme'
 import { Box, BoxProps, Divider, Text } from 'theme-ui'
 import {
@@ -102,7 +102,7 @@ const HelpContent = ({ onClose }: { onClose(): void }) => {
           },
         }}
       >
-        {items.map((item, i) => (
+        {items.map((item) => (
           <HelpItem key={item.href} onClose={onClose} {...item} />
         ))}
       </Box>

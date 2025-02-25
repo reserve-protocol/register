@@ -1,6 +1,6 @@
 import TokenLogo from 'components/icons/TokenLogo'
 import { useMemo } from 'react'
-import { ArrowUpRight, ChevronRight } from 'react-feather'
+import { ArrowUpRight, ChevronRight } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { Box, Grid, Image, Text, useThemeUI } from 'theme-ui'
 import { getTokenRoute } from 'utils'

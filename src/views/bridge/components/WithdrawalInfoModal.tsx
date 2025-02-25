@@ -1,7 +1,7 @@
 import { Trans, t } from '@lingui/macro'
 import { Modal } from 'components'
 import ChainLogo from 'components/icons/ChainLogo'
-import { ArrowRight, Check, Clock } from 'react-feather'
+import { ArrowRight, Check, Clock } from 'lucide-react'
 import { Badge, Box, BoxProps, Divider, Flex, Spinner, Text } from 'theme-ui'
 import { ChainId } from 'utils/chains'
 

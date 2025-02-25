@@ -1,35 +1,39 @@
 import { t } from '@lingui/macro'
-import { useAtomValue, useSetAtom } from 'jotai'
+import { useAtomValue } from 'jotai'
+import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
 import { ReactNode, useEffect } from 'react'
 import { chainIdAtom } from 'state/atoms'
-import {
-  addTransactionAtom,
-  updateTransactionAtom,
-} from 'state/chain/atoms/transactionAtoms'
 import { ChainId } from 'utils/chains'
-import { Hex, TransactionReceipt } from 'viem'
-import { useWaitForTransaction } from 'wagmi'
-import useNotification from './useNotification'
-import mixpanel from 'mixpanel-browser'
 import { CHAIN_TAGS } from 'utils/constants'
+import { Hex, TransactionReceipt } from 'viem'
+import { useWaitForTransactionReceipt } from 'wagmi'
+import useNotification from './useNotification'
 
 interface WatchOptions {
   hash: Hex | undefined
   label: ReactNode
+  successMessage?: {
+    title: string
+    subtitle?: string
+    type?: 'success' | 'error'
+    icon?: ReactNode
+  }
 }
 
 interface WatchResult {
   data?: TransactionReceipt
   isMining?: boolean
-  status: 'success' | 'error' | 'loading' | 'idle'
+  status: 'success' | 'error' | 'pending' | 'idle'
   error?: string
 }
 
 // Watch tx status, send notifications and track history
-const useWatchTransaction = ({ hash, label }: WatchOptions): WatchResult => {
+const useWatchTransaction = ({
+  hash,
+  label,
+  successMessage,
+}: WatchOptions): WatchResult => {
   const notify = useNotification()
-  const addTransaction = useSetAtom(addTransactionAtom)
-  const updateTransaction = useSetAtom(updateTransactionAtom)
   const chainId = useAtomValue(chainIdAtom)
 
   const {
@@ -37,21 +41,20 @@ const useWatchTransaction = ({ hash, label }: WatchOptions): WatchResult => {
     status,
     error,
     isLoading: isMining,
-  } = useWaitForTransaction({
+  } = useWaitForTransactionReceipt({
     hash,
     confirmations: chainId === ChainId.Mainnet ? 1 : 3,
   })
 
   useEffect(() => {
-    if (!hash) return
-    addTransaction([hash, label])
-    if (!data) return
+    if (!hash || !data) return
+
     if (status === 'success') {
-      updateTransaction([hash, 'success', Number(data.blockNumber)])
       notify(
-        t`Transaction confirmed`,
-        `At block ${Number(data.blockNumber)}`,
-        'success'
+        successMessage?.title ?? t`Transaction confirmed`,
+        successMessage?.subtitle ?? `At block ${Number(data.blockNumber)}`,
+        successMessage?.type ?? 'success',
+        successMessage?.icon
       )
       mixpanel.track('transaction', {
         product: label,
@@ -64,7 +67,6 @@ const useWatchTransaction = ({ hash, label }: WatchOptions): WatchResult => {
         },
       })
     } else if (status === 'error') {
-      updateTransaction([hash, 'error'])
       notify(
         t`Transaction reverted`,
         error?.message ?? 'Unknown error',
@@ -81,16 +83,7 @@ const useWatchTransaction = ({ hash, label }: WatchOptions): WatchResult => {
         },
       })
     }
-  }, [
-    hash,
-    label,
-    data,
-    status,
-    error,
-    addTransaction,
-    updateTransaction,
-    notify,
-  ])
+  }, [hash, data, status, error, notify])
 
   return {
     data,

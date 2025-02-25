@@ -1,5 +1,5 @@
 import TokenLogo from 'components/icons/TokenLogo'
-import IconInfo, { IconInfoProps } from 'components/info-icon'
+import IconInfo, { IconInfoProps } from '@/components/old/info-icon'
 import { formatCurrency } from 'utils'
 
 interface Props extends Partial<IconInfoProps> {

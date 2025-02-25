@@ -1,7 +1,5 @@
 import { t, Trans } from '@lingui/macro'
 import NewCollateralAbi from 'abis/NewCollateralAbi'
-import { SmallButton } from 'components/button'
-import DocsLink from 'components/docs-link/DocsLink'
 import Help from 'components/help'
 import EmptyBoxIcon from 'components/icons/EmptyBoxIcon'
 import { useAtomValue, useSetAtom } from 'jotai'
@@ -18,6 +16,9 @@ import { formatEther } from 'viem'
 import { useContractReads } from 'wagmi'
 import { Basket, basketAtom, basketTargetUnitPriceAtom } from '../atoms'
 import UnitBasket from './UnitBasket'
+import { SmallButton } from '@/components/old/button'
+import DocsLink from '@/components/utils/docs-link'
+import { useWatchReadContracts } from '@/hooks/useWatchReadContract'
 
 interface Props extends BoxProps {
   onAdd?(
@@ -91,24 +92,30 @@ const usePricePerTarget = (basket: Basket) => {
     return [units, calls]
   }, [JSON.stringify(basket), chainId])
 
-  const result = useContractReads({
+  const result = useWatchReadContracts({
     contracts: calls,
     allowFailure: false,
-    watch: false,
-    select: (data) => {
-      return units.reduce((acc, unit, index) => {
-        if (unit === 'USD') {
-          acc[unit] = 1
-          return acc
-        }
+    query: {
+      select: (data) => {
+        return units.reduce(
+          (acc, unit, index) => {
+            if (unit === 'USD') {
+              acc[unit] = 1
+              return acc
+            }
 
-        const price = getPrice(data[index * 3] as [bigint, bigint])
-        const refPerTok = Number(formatEther(data[index * 3 + 1] as bigint))
-        const targetPerRef = Number(formatEther(data[index * 3 + 2] as bigint))
-        acc[unit] = price / refPerTok / targetPerRef
+            const price = getPrice(data[index * 3] as [bigint, bigint])
+            const refPerTok = Number(formatEther(data[index * 3 + 1] as bigint))
+            const targetPerRef = Number(
+              formatEther(data[index * 3 + 2] as bigint)
+            )
+            acc[unit] = price / refPerTok / targetPerRef
 
-        return acc
-      }, {} as Record<string, number>)
+            return acc
+          },
+          {} as Record<string, number>
+        )
+      },
     },
   })
 

@@ -2,11 +2,11 @@ import { gql } from 'graphql-request'
 import { useMultichainQuery } from 'hooks/useQuery'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
-import { publicClient } from 'state/chain'
-import { atomWithLoadable } from 'utils/atoms/utils'
+import { ChainId } from 'utils/chains'
 import { supportedChainList } from 'utils/constants'
 import { getAddress } from 'viem'
-import { getProposalState } from 'views/governance/views/proposal-detail/atom'
+import { getProposalState } from '@/views/yield-dtf/governance/views/proposal-detail/atom'
+import { useBlockNumber } from 'wagmi'
 import { filtersAtom } from './atoms'
 
 const explorerProposalsQuery = gql`
@@ -56,21 +56,20 @@ export interface ProposalRecord {
   chain: number
 }
 
-const chainBlocksAtom = atomWithLoadable(async () => {
-  const result = await Promise.all(
-    supportedChainList.map((chain) =>
-      publicClient({ chainId: chain }).getBlockNumber()
-    )
-  )
+const useBlockChains = () => {
+  const { data: mainnet } = useBlockNumber({ chainId: ChainId.Mainnet })
+  const { data: base } = useBlockNumber({ chainId: ChainId.Base })
+  const { data: arbitrum } = useBlockNumber({ chainId: ChainId.Arbitrum })
 
-  return supportedChainList.reduce((acc, chain, index) => {
-    acc[chain] = Number(result[index])
-    return acc
-  }, {} as Record<number, number>)
-})
+  return {
+    [ChainId.Mainnet]: Number(mainnet),
+    [ChainId.Base]: Number(base),
+    [ChainId.Arbitrum]: Number(arbitrum),
+  }
+}
 
 const useProposalsData = () => {
-  const blocks = useAtomValue(chainBlocksAtom)
+  const blocks = useBlockChains()
   const filters = useAtomValue(filtersAtom)
   const { data } = useMultichainQuery(explorerProposalsQuery)
 

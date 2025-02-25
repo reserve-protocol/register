@@ -13,9 +13,18 @@ import MultiselectDropdrown from 'views/explorer/components/MultiselectDropdown'
 type ChainFilterProps = {
   chains: string[]
   onChange: (selected: string[]) => void
+  height?: number
+  rounded?: boolean
+  className?: string
 }
 
-const ChainFilter = ({ chains, onChange }: ChainFilterProps) => {
+const ChainFilter = ({
+  chains,
+  onChange,
+  height,
+  rounded,
+  className,
+}: ChainFilterProps) => {
   const options = useMemo(
     () =>
       Object.keys(NETWORKS).map((chain) => ({
@@ -43,10 +52,12 @@ const ChainFilter = ({ chains, onChange }: ChainFilterProps) => {
         sx={{
           border: '1px solid',
           borderColor: 'border',
-          borderRadius: '8px',
+          borderRadius: rounded ? '16px' : '8px',
           px: '10px',
           py: '6px',
+          height,
         }}
+        className={className}
       >
         {Boolean(chainsLogos.length) && (
           <StackedChainLogo chains={chainsLogos} />

@@ -185,16 +185,16 @@ export const theme: Theme = {
   breakpoints: ['52em', '64em', '72em', '100em'],
   space: [0, 4, 8, 16, 24, 32, 40, 48, 80, 256], // 0-9
   fonts: {
-    body: 'Satoshi, sans-serif, -apple-system, BlinkMacSystemFont',
+    body: 'TWK Lausanne, sans-serif, -apple-system, BlinkMacSystemFont',
     // heading: 'inherit',
     monospace: 'Menlo, monospace',
     fontDisplay: 'swap',
   },
   fontSizes: [12, 14, 16, 20, 24, 32, 48, 56, 96],
   fontWeights: {
-    body: 400,
+    body: 300,
     heading: 500,
-    bold: 600,
+    bold: 700,
   },
   lineHeights: {
     body: 1.5,

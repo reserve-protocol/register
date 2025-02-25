@@ -1,12 +1,12 @@
 import { t, Trans } from '@lingui/macro'
-import { SmallButton } from 'components/button'
+import { SmallButton } from '@/components/old/button'
 import Field, { FieldInput, getErrorMessage } from 'components/field'
 import { atom, useAtom, useAtomValue } from 'jotai'
 import { useSetAtom } from 'jotai'
 import { useEffect } from 'react'
-import { Plus } from 'react-feather'
+import { Plus } from 'lucide-react'
 import { useForm } from 'react-hook-form'
-import DocsLink from 'components/docs-link/DocsLink'
+import DocsLink from '@/components/utils/docs-link'
 import { Box, BoxProps, Card, Divider, Flex, Text, Link } from 'theme-ui'
 import {
   ExternalAddressSplit,

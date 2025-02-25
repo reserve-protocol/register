@@ -2,10 +2,8 @@ import { t, Trans } from '@lingui/macro'
 import { NumericalInput } from 'components'
 import Help from 'components/help'
 import TokenLogo from 'components/icons/TokenLogo'
-import IconInfo from 'components/info-icon'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useMemo } from 'react'
-import { X } from 'react-feather'
 import { Box, CardProps, Divider, Flex, IconButton, Text } from 'theme-ui'
 import { formatCurrency, truncateDecimals } from 'utils'
 import {
@@ -15,6 +13,8 @@ import {
 } from '../atoms'
 import { collateralDisplay } from 'utils/constants'
 import Skeleton from 'react-loading-skeleton'
+import IconInfo from '@/components/old/info-icon'
+import { X } from 'lucide-react'
 
 interface UnitBasketProps extends CardProps {
   data: PrimaryUnitBasket

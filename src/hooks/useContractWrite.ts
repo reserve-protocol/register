@@ -1,47 +1,72 @@
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import {
-  useContractWrite as _useContractWrite,
-  usePrepareContractWrite,
+  useEstimateGas,
+  useSimulateContract,
+  UseSimulateContractParameters,
+  useWriteContract,
 } from 'wagmi'
 import { getSafeGasLimit } from './../utils/index'
-import useGasEstimate from './useGasEstimate'
 import type { Abi } from 'abitype'
-import type { UsePrepareContractWriteConfig } from 'wagmi'
 import { useAtomValue } from 'jotai'
 import { isWalletInvalidAtom } from 'state/atoms'
+import { ContractFunctionName, encodeFunctionData } from 'viem'
 
 // Extends wagmi to include gas estimate and gas limit multiplier
 const useContractWrite = <
   TAbi extends Abi | readonly unknown[],
-  TFunctionName extends string,
-  TChainId extends number
+  TFunctionName extends ContractFunctionName<TAbi, 'nonpayable' | 'payable'>,
 >(
-  call: UsePrepareContractWriteConfig<TAbi, TFunctionName, TChainId> = {} as any
+  call: UseSimulateContractParameters<TAbi, TFunctionName> = {} as any
 ) => {
   const isWalletInvalid = useAtomValue(isWalletInvalidAtom)
-  const { config, isSuccess, error } = usePrepareContractWrite(
-    !isWalletInvalid ? (call as UsePrepareContractWriteConfig) : undefined
+  const { data, error, isLoading, isSuccess } = useSimulateContract(
+    !isWalletInvalid ? (call as UseSimulateContractParameters) : undefined
   )
 
-  const gas = useGasEstimate(isSuccess ? config.request : null)
+  if (call.args) {
+    console.log(
+      'callData',
+      encodeFunctionData({
+        abi: call.abi as any,
+        functionName: call.functionName,
+        args: call.args as any,
+      })
+    )
+  }
 
-  const contractWrite = _useContractWrite({
-    ...config,
-    request: {
-      ...config.request,
-      gas: gas.result ? getSafeGasLimit(gas.result) : undefined,
-    },
-  })
+  const { data: gas } = useEstimateGas(
+    data?.request
+      ? {
+          to: data.request.address,
+          data: encodeFunctionData({
+            abi: call.abi as any,
+            functionName: call.functionName,
+            args: call.args as any,
+          }),
+        }
+      : undefined
+  )
+
+  const contractWrite = useWriteContract()
+  const { writeContract } = contractWrite
+
+  const handleWrite = useCallback(() => {
+    if (data?.request && gas) {
+      writeContract({ ...data.request, gas: getSafeGasLimit(gas) })
+    }
+  }, [data?.request, writeContract, gas])
 
   return useMemo(
     () => ({
       ...contractWrite,
       gas,
       validationError: error,
-      isReady: !!call?.address && !!gas.result && !!contractWrite.write,
-      hash: !contractWrite.isError ? contractWrite.data?.hash : undefined,
+      isReady: !!data?.request && isSuccess,
+      isLoading: contractWrite.isPending,
+      hash: contractWrite.data,
+      write: handleWrite,
     }),
-    [contractWrite]
+    [error, isLoading, contractWrite, gas, handleWrite]
   )
 }
 

@@ -2,7 +2,7 @@ import { Trans } from '@lingui/macro'
 import EmptyBoxIcon from 'components/icons/EmptyBoxIcon'
 import dayjs from 'dayjs'
 import { atom, useAtomValue } from 'jotai'
-import { ArrowUpRight, Check, X } from 'react-feather'
+import { ArrowUpRight, Check, X } from 'lucide-react'
 import { chainIdAtom } from 'state/atoms'
 import {
   TransactionState,
@@ -15,17 +15,20 @@ import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 const txByDateAtom = atom((get) => {
   const txs = get(currentTxHistoryAtom)
 
-  return txs.reduce((txMap, tx) => {
-    const date = dayjs(tx.timestamp).format('MMM D')
+  return txs.reduce(
+    (txMap, tx) => {
+      const date = dayjs(tx.timestamp).format('MMM D')
 
-    if (txMap[date]) {
-      txMap[date].push(tx)
-    } else {
-      txMap[date] = [tx]
-    }
+      if (txMap[date]) {
+        txMap[date].push(tx)
+      } else {
+        txMap[date] = [tx]
+      }
 
-    return txMap
-  }, {} as { [x: string]: TransactionState[] })
+      return txMap
+    },
+    {} as { [x: string]: TransactionState[] }
+  )
 })
 
 const TransactionItem = ({ tx }: { tx: TransactionState }) => {

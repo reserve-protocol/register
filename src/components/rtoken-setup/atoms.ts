@@ -76,14 +76,17 @@ export const getCollateralFromBasket = (basket: Basket | BackupBasket) => {
 }
 // TODO: This may not be needed?
 const getCollateralByTarget = (collaterals: CollateralPlugin[]) => {
-  return collaterals.reduce((acc, collateral) => {
-    acc[collateral.targetName] = [
-      ...(acc[collateral.targetName] ?? []),
-      collateral,
-    ]
+  return collaterals.reduce(
+    (acc, collateral) => {
+      acc[collateral.targetName] = [
+        ...(acc[collateral.targetName] ?? []),
+        collateral,
+      ]
 
-    return acc
-  }, {} as { [x: string]: Collateral[] })
+      return acc
+    },
+    {} as { [x: string]: Collateral[] }
+  )
 }
 
 export const isValidBasketAtom = atom((get): [boolean, string[]] => {

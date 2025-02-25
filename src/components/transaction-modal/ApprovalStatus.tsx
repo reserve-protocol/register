@@ -1,6 +1,6 @@
 import { Trans } from '@lingui/macro'
 import TokenLogo from 'components/icons/TokenLogo'
-import { Check } from 'react-feather'
+import { Check } from 'lucide-react'
 import { Box, Spinner, Text } from 'theme-ui'
 import { Allowance } from 'types'
 import { Hex } from 'viem'

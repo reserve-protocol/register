@@ -14,12 +14,12 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable'
 import { t, Trans } from '@lingui/macro'
-import { SmallButton } from 'components/button'
+import { SmallButton } from '@/components/old/button'
 import Help from 'components/help'
 import SortableItem from 'components/sortable/SortableItem'
 import { useSetAtom } from 'jotai'
 import { useMemo } from 'react'
-import { Move, X } from 'react-feather'
+import { Move, X } from 'lucide-react'
 import {
   Box,
   CardProps,

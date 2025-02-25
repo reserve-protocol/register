@@ -1,14 +1,14 @@
 import { useEffect } from 'react'
 import { Box, Flex, Text, useColorMode } from 'theme-ui'
 import Earn from './components/Earn'
-import RegisterAbout from 'views/compare/components/RegisterAbout'
-import mixpanel from 'mixpanel-browser'
+import RegisterAbout from '@/views/discover/components/yield/components/RegisterAbout'
+import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
 import { Trans, t } from '@lingui/macro'
 import FeaturedPools from './components/FeaturedPools'
 import HelpIcon from 'components/icons/HelpIcon'
-import { Zap } from 'react-feather'
+import { Zap } from 'lucide-react'
 import { colors } from 'theme'
-import { MouseoverTooltip } from 'components/tooltip'
+import { MouseoverTooltip } from '@/components/old/tooltip'
 
 const HeroBackground = () => {
   const [colorMode] = useColorMode()
@@ -58,12 +58,12 @@ const Hero = () => (
           }}
         >
           <Trans>
-            Provide liquidity across DeFi & earn more with your RTokens
+            Provide liquidity across DeFi & earn more with your DTFs
           </Trans>
         </Text>
         <Text as="p" px={[2, 0]} sx={{ fontSize: [2, 3] }} mt={[3, 4]}>
           <Trans>
-            DeFi yield opportunities for RTokens in Convex, Curve, Yearn & Beefy
+            DeFi yield opportunities for DTFs in Convex, Curve, Yearn & Beefy
           </Trans>
         </Text>
       </Box>
@@ -75,7 +75,7 @@ const Info = () => {
   return (
     <Box variant="layout.centered" mt={4} mb={7} pb={[0, 2]}>
       <MouseoverTooltip
-        placement="right"
+        placement="bottom"
         text={t`DeFi protocols oftentimes have incentives for liquidity that are paid in their token or a combination of tokens. By providing liquidity for trading or lending or other activities on these protocols, you can earn rewards that are sometimes quite high! Note that there are always risks (smart contract risks, impermanent loss risks, etc), in providing liquidity on these protocols so please make sure you understand things before blindly diving in.`}
       >
         <Box
@@ -109,18 +109,18 @@ const EarnWrapper = () => {
   }, [])
 
   return (
-    <>
-      <Box sx={{ position: 'relative' }}>
+    <div className="container">
+      <Box>
         <HeroBackground />
         <Hero />
         <Info />
         <FeaturedPools />
       </Box>
-      <Box variant="layout.wrapper">
+      <Box>
         <Earn />
+        <RegisterAbout />
       </Box>
-      <RegisterAbout />
-    </>
+    </div>
   )
 }
 

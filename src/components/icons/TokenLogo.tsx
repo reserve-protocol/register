@@ -13,7 +13,7 @@ interface Props extends BoxProps {
   bordered?: boolean
 }
 
-const SVGS = new Set([
+export const SVGS = new Set([
   'dai',
   'cdai',
   'rsr',

@@ -2,15 +2,15 @@ import L2OutputOracle from 'abis/L2OutputOracle'
 import OptimismPortal from 'abis/OptimismPortal'
 import { useEffect, useMemo, useState } from 'react'
 import { ChainId } from 'utils/chains'
-import { useContractRead, useWaitForTransaction } from 'wagmi'
 import { L2_OUTPUT_ORACLE_PROXY_ADDRESS, OP_PORTAL } from '../utils/constants'
 import { getWithdrawalMessage } from '../utils/getWithdrawalMessage'
 import { hashWithdrawal } from '../utils/hashWithdrawal'
 import { WithdrawalPhase } from '../utils/types'
 import { useL2OutputProposal } from './useL2OutputProposal'
+import { useReadContract, useWaitForTransactionReceipt } from 'wagmi'
 
 export function useBlockNumberOfLatestL2OutputProposal() {
-  const { data: blockNumberOfLatestL2OutputProposal } = useContractRead({
+  const { data: blockNumberOfLatestL2OutputProposal } = useReadContract({
     address: L2_OUTPUT_ORACLE_PROXY_ADDRESS,
     abi: L2OutputOracle,
     functionName: 'latestBlockNumber',
@@ -21,7 +21,7 @@ export function useBlockNumberOfLatestL2OutputProposal() {
 }
 
 export function useHasWithdrawalBeenProven(withdrawalHash: string | null) {
-  const { data: provenWithdrawal } = useContractRead({
+  const { data: provenWithdrawal } = useReadContract({
     address: withdrawalHash ? OP_PORTAL : undefined,
     abi: OptimismPortal,
     functionName: 'provenWithdrawals',
@@ -34,7 +34,7 @@ export function useHasWithdrawalBeenProven(withdrawalHash: string | null) {
 }
 
 export function useHasWithdrawalBeenFinalized(withdrawalHash: string | null) {
-  const { data: isWithdrawalFinalized } = useContractRead({
+  const { data: isWithdrawalFinalized } = useReadContract({
     address: withdrawalHash ? OP_PORTAL : undefined,
     abi: OptimismPortal,
     functionName: 'finalizedWithdrawals',
@@ -46,7 +46,7 @@ export function useHasWithdrawalBeenFinalized(withdrawalHash: string | null) {
 }
 
 export function useProvenWithdrawl(withdrawalHash: string | null) {
-  const { data: provenWithdrawal } = useContractRead({
+  const { data: provenWithdrawal } = useReadContract({
     address: withdrawalHash ? OP_PORTAL : undefined,
     abi: OptimismPortal,
     functionName: 'provenWithdrawals',
@@ -60,7 +60,7 @@ export function useProvenWithdrawl(withdrawalHash: string | null) {
 // reference:
 // https://github.com/ethereum-optimism/optimism/blob/2d04a15ebde0baf885b17760f11496cf54efe55f/packages/contracts-bedrock/contracts/L1/OptimismPortal.sol#L504
 export function useIsFinalizationPeriodElapsed(timestamp: bigint | undefined) {
-  const { data: FINALIZATION_PERIOD_SECONDS } = useContractRead({
+  const { data: FINALIZATION_PERIOD_SECONDS } = useReadContract({
     address: L2_OUTPUT_ORACLE_PROXY_ADDRESS,
     abi: L2OutputOracle,
     functionName: 'FINALIZATION_PERIOD_SECONDS',
@@ -93,7 +93,7 @@ function useWithdrawalStatus({
 } {
   const [withdrawalHash, setWithdrawalHash] = useState<string | null>(null)
 
-  const { data: withdrawalReceipt } = useWaitForTransaction({
+  const { data: withdrawalReceipt } = useWaitForTransactionReceipt({
     hash: initializeTxHash,
     chainId: ChainId.Base,
   })

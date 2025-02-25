@@ -1,4 +1,4 @@
-import ModalAlert from 'components/modal/ModalAlert'
+import ModalAlert from '@/components/old/modal/ModalAlert'
 import { Box, Text } from 'theme-ui'
 
 const TransactionError = ({

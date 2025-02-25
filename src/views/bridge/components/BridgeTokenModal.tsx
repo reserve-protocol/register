@@ -1,10 +1,10 @@
 import { Trans, t } from '@lingui/macro'
 import { Button, Modal } from 'components'
 import TokenLogo from 'components/icons/TokenLogo'
-import { SearchInput } from 'components/input'
+import { SearchInput } from '@/components/old/input'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useCallback, useMemo } from 'react'
-import { Check, X } from 'react-feather'
+import { Check, X } from 'lucide-react'
 import Skeleton from 'react-loading-skeleton'
 import { Box, Card, Flex, Text } from 'theme-ui'
 import {

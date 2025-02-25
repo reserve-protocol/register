@@ -1,23 +1,24 @@
 import { t } from '@lingui/macro'
 import ERC20 from 'abis/ERC20'
-import TransactionButton from 'components/button/TransactionButton'
-import Modal, { ModalProps } from 'components/modal'
+import TransactionButton from '@/components/old/button/TransactionButton'
+import Modal, { ModalProps } from '@/components/old/modal'
 import useContractWrite from 'hooks/useContractWrite'
 import useWatchTransaction from 'hooks/useWatchTransaction'
 import { useAtomValue } from 'jotai'
 import { chainIdAtom, walletAtom } from 'state/atoms'
 import { Divider, Text, Box } from 'theme-ui'
 import { Allowance } from 'types'
-import { useContractRead, type UsePrepareContractWriteConfig } from 'wagmi'
 import TransactionConfirmedModal from './TransactionConfirmedModal'
 import TransactionError from './TransactionError'
 import { useMemo } from 'react'
+import { useWatchReadContract } from 'hooks/useWatchReadContract'
+import { UseSimulateContractParameters } from 'wagmi'
 
 export interface ITransactionModal extends Omit<ModalProps, 'onChange'> {
   title: string
   description: string
   children: React.ReactNode
-  call?: UsePrepareContractWriteConfig
+  call?: UseSimulateContractParameters
   requiredAllowance?: Allowance
   confirmLabel: string
   onClose: () => void
@@ -30,14 +31,12 @@ const Approval = ({
 }: {
   data: Allowance
 }) => {
-  const { write, isLoading, hash, gas } = useContractWrite({
+  const { write, isLoading, isReady, hash, gas } = useContractWrite({
     address: token,
     abi: ERC20,
     functionName: 'approve',
     args: [spender, (amount * 120n) / 100n],
   })
-
-  const checkingAllowance = !gas.isLoading && !gas.estimateUsd
 
   return (
     <>
@@ -46,12 +45,8 @@ const Approval = ({
         loading={isLoading || !!hash}
         loadingText={hash ? 'Waiting for allowance...' : 'Sign in wallet...'}
         onClick={write}
-        disabled={!write || checkingAllowance}
-        text={
-          checkingAllowance
-            ? `Verifying allowance...`
-            : `Allow use of ${symbol}`
-        }
+        disabled={!isReady}
+        text={!isReady ? `Verifying allowance...` : `Allow use of ${symbol}`}
         fullWidth
         gas={gas}
       />
@@ -63,14 +58,13 @@ const useHasAllowance = (allowance: Allowance | undefined) => {
   const account = useAtomValue(walletAtom)
   const chainId = useAtomValue(chainIdAtom)
 
-  const { data } = useContractRead(
+  const { data } = useWatchReadContract(
     allowance && account
       ? {
           abi: ERC20,
           functionName: 'allowance',
           address: allowance.token,
           args: [account, allowance.spender],
-          watch: true,
           chainId,
         }
       : undefined
@@ -136,14 +130,8 @@ const TransactionModal = ({
     return <TransactionConfirmedModal hash={hash} onClose={onClose} />
   }
 
-  const isPreparing =
-    hasAllowance &&
-    call &&
-    !gas.isLoading &&
-    !isReady &&
-    !validationError &&
-    !isIdle &&
-    !disabled
+  const isPreparing = hasAllowance && call && !gas
+  !isReady && !validationError && !isIdle && !disabled
 
   return (
     <Modal title={title} onClose={onClose} {...props}>

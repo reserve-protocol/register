@@ -1,24 +1,24 @@
+import OptimismPortal from 'abis/OptimismPortal'
 import { useEffect, useState } from 'react'
+import { ChainId } from 'utils/chains'
 import {
-  usePrepareContractWrite,
-  usePublicClient,
-  useWaitForTransaction,
-} from 'wagmi'
-import {
-  keccak256,
   encodeAbiParameters,
+  keccak256,
+  pad,
   parseAbiParameters,
   PublicClient,
-  pad,
 } from 'viem'
-import { ChainId } from 'utils/chains'
-import { WithdrawalMessage } from '../utils/types'
-import { getWithdrawalMessage } from '../utils/getWithdrawalMessage'
-import { useWithdrawalL2OutputIndex } from './useWithdrawalL2OutputIndex'
-import { useL2OutputProposal } from './useL2OutputProposal'
+import {
+  usePublicClient,
+  useSimulateContract,
+  useWaitForTransactionReceipt,
+} from 'wagmi'
 import { L2_L1_MESSAGE_PASSER_ADDRESS, OP_PORTAL } from '../utils/constants'
-import OptimismPortal from 'abis/OptimismPortal'
+import { getWithdrawalMessage } from '../utils/getWithdrawalMessage'
 import { hashWithdrawal } from '../utils/hashWithdrawal'
+import { WithdrawalMessage } from '../utils/types'
+import { useL2OutputProposal } from './useL2OutputProposal'
+import { useWithdrawalL2OutputIndex } from './useWithdrawalL2OutputIndex'
 
 async function makeStateTrieProof(
   client: PublicClient,
@@ -65,7 +65,7 @@ export function usePrepareProveWithdrawal(
   const [proofForTx, setProofForTx] =
     useState<BedrockCrossChainMessageProof | null>(null)
 
-  const { data: withdrawalReceipt } = useWaitForTransaction({
+  const { data: withdrawalReceipt } = useWaitForTransactionReceipt({
     hash: withdrawalTx,
     chainId: ChainId.Base,
   })
@@ -79,7 +79,7 @@ export function usePrepareProveWithdrawal(
 
   const shouldPrepare = withdrawalForTx && proofForTx
 
-  const { config } = usePrepareContractWrite({
+  const { data } = useSimulateContract({
     address: shouldPrepare ? OP_PORTAL : undefined,
     abi: OptimismPortal,
     functionName: 'proveWithdrawalTransaction',
@@ -116,6 +116,7 @@ export function usePrepareProveWithdrawal(
         withdrawalReceipt &&
         withdrawalL2OutputIndex &&
         l2OutputProposal &&
+        l2PublicClient &&
         blockNumberOfLatestL2OutputProposal
       ) {
         const withdrawalMessage = getWithdrawalMessage(withdrawalReceipt)
@@ -170,5 +171,5 @@ export function usePrepareProveWithdrawal(
     l2PublicClient,
   ])
 
-  return config
+  return data
 }

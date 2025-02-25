@@ -1,4 +1,4 @@
-import GoTo from 'components/button/GoTo'
+import GoTo from '@/components/old/button/GoTo'
 import AlertIcon from 'components/icons/AlertIcon'
 import CheckCircleIcon from 'components/icons/CheckCircleIcon'
 import ClockIcon from 'components/icons/ClockIcon'

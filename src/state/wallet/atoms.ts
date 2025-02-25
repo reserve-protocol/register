@@ -5,16 +5,17 @@
 import Main from 'abis/Main'
 import StRSRVotes from 'abis/StRSRVotes'
 import { atom } from 'jotai'
-import { AccountPosition, AccountToken } from 'types'
+import { AccountPosition } from 'types'
 import { RSR_ADDRESS } from 'utils/addresses'
 import { atomWithLoadable } from 'utils/atoms/utils'
 import { Address, stringToHex, zeroAddress } from 'viem'
-import { readContracts } from 'wagmi'
+import { readContracts } from 'wagmi/actions'
 import { chainIdAtom, walletAtom } from '../chain/atoms/chainAtoms'
 import rTokenAtom from '../rtoken/atoms/rTokenAtom'
 import rTokenContractsAtom from '../rtoken/atoms/rTokenContractsAtom'
 import { readContract } from 'wagmi/actions'
 import { AccountRTokenPosition } from './updaters/AccountUpdater'
+import { wagmiConfig } from 'state/chain'
 
 const defaultBalance = {
   value: 0n,
@@ -62,7 +63,7 @@ export const rsrBalanceAtom = atom((get) => {
 
 // Store account related rtokens
 export const accountRTokensAtom = atom<
-  { address: string; name: string; symbol: string, chainId: number }[]
+  { address: string; name: string; symbol: string; chainId: number }[]
 >([])
 
 // Store current rToken holdings for an account
@@ -92,35 +93,38 @@ export const accountRoleAtom = atomWithLoadable(async (get) => {
     address: rToken.main,
   }
 
-  const [owner, pauser, shortFreezer, longFreezer] = await readContracts({
-    contracts: [
-      {
-        ...call,
-        args: [stringToHex('OWNER', { size: 32 }), account],
-        functionName: 'hasRole',
-        chainId,
-      },
-      {
-        ...call,
-        args: [stringToHex('PAUSER', { size: 32 }), account],
-        functionName: 'hasRole',
-        chainId,
-      },
-      {
-        ...call,
-        args: [stringToHex('SHORT_FREEZER', { size: 32 }), account],
-        functionName: 'hasRole',
-        chainId,
-      },
-      {
-        ...call,
-        args: [stringToHex('LONG_FREEZER', { size: 32 }), account],
-        functionName: 'hasRole',
-        chainId,
-      },
-    ],
-    allowFailure: false,
-  })
+  const [owner, pauser, shortFreezer, longFreezer] = await readContracts(
+    wagmiConfig,
+    {
+      contracts: [
+        {
+          ...call,
+          args: [stringToHex('OWNER', { size: 32 }), account],
+          functionName: 'hasRole',
+          chainId,
+        },
+        {
+          ...call,
+          args: [stringToHex('PAUSER', { size: 32 }), account],
+          functionName: 'hasRole',
+          chainId,
+        },
+        {
+          ...call,
+          args: [stringToHex('SHORT_FREEZER', { size: 32 }), account],
+          functionName: 'hasRole',
+          chainId,
+        },
+        {
+          ...call,
+          args: [stringToHex('LONG_FREEZER', { size: 32 }), account],
+          functionName: 'hasRole',
+          chainId,
+        },
+      ],
+      allowFailure: false,
+    }
+  )
 
   return {
     owner,
@@ -138,7 +142,7 @@ export const accountDelegateAtom = atomWithLoadable(async (get) => {
     return null
   }
 
-  const delegate = await readContract({
+  const delegate = await readContract(wagmiConfig, {
     address: contracts.stRSR.address,
     abi: StRSRVotes,
     functionName: 'delegates',
@@ -147,5 +151,3 @@ export const accountDelegateAtom = atomWithLoadable(async (get) => {
 
   return delegate !== zeroAddress ? delegate : null
 })
-
-export const isSmartWalletAtom = atom(false)

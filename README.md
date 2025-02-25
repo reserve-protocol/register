@@ -1,14 +1,17 @@
-# Reserve Register
+# Reserve Interface
 
-An open source interface for the [Reserve Protocol](https://github.com/reserve-protocol/protocol)
+An open source interface for the:
+
+- [Reserve Yield Protocol](https://github.com/reserve-protocol/protocol)
+- [Reserve Index Protocol](https://github.com/reserve-protocol/reserve-index-dtf)
 
 Enabling users to:
 
-- Create new RTokens
-- View/use existing RTokens and related metrics
-- Mint/Issue RTokens
-- Stake/Unstake to get yield with an RToken
-- Govern and manage RTokens
+- Create DTFs
+- View/use existing DTFs and related metrics
+- Mint/Issue DTFs
+- Stake/Unstake to get yield with an DTF
+- Govern and manage DTFs
 
 ## Getting started
 
@@ -20,7 +23,7 @@ npm i
 npm start
 ```
 
-## Adding an RToken to the supported list
+## Adding a Yield DTF to the supported list
 
 Please go to [this repository](https://github.com/reserve-protocol/rtokens) and create a pull request with the token you want to add following the instructions of the README.
 
@@ -35,7 +38,10 @@ VITE_MAINNET_URL=
 VITE_SUBGRAPH_URL=
 ```
 
-Related subgraph [here](https://github.com/reserve-protocol/reserve-subgraph)
+Related subgraphs:
+
+- [Reserve Yield Protocol](https://github.com/reserve-protocol/reserve-subgraph)
+- [Reserve Index Protocol](https://github.com/reserve-protocol/dtf-index-subgraph)
 
 ## Contributing
 

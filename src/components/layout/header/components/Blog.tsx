@@ -1,4 +1,4 @@
-import DocsLink from 'components/docs-link/DocsLink'
+import DocsLink from '@/components/utils/docs-link'
 import ExternalArrowIcon from 'components/icons/ExternalArrowIcon'
 import { colors } from 'theme'
 import { Box, Image, Text } from 'theme-ui'

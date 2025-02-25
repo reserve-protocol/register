@@ -1,7 +1,7 @@
 import { Trans, t } from '@lingui/macro'
 import { createColumnHelper } from '@tanstack/react-table'
 import GovernanceIcon from 'components/icons/GovernanceIcon'
-import { Table } from 'components/table'
+import { Table } from '@/components/old/table'
 import TokenItem from 'components/token-item'
 import dayjs from 'dayjs'
 import useRTokenLogo from 'hooks/useRTokenLogo'
@@ -12,7 +12,7 @@ import { getProposalTitle, getTokenRoute } from 'utils'
 import { PROPOSAL_STATES, ROUTES, formatConstant } from 'utils/constants'
 import useProposalsData, { ProposalRecord } from './useProposalsData'
 import Filters from './Filters'
-import { ProposalVotingState } from 'views/governance/components/ProposalList'
+import { ProposalVotingState } from '@/views/yield-dtf/governance/components/ProposalList'
 
 const BADGE_VARIANT: StringMap = {
   [PROPOSAL_STATES.DEFEATED]: 'danger',
