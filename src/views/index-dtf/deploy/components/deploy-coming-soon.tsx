@@ -5,8 +5,8 @@ import SocialMediaInput from './social-media-input'
 
 const DeployComingSoon = () => {
   return (
-    <div className="container flex gap-10 p-6">
-      <div className="flex flex-col flex-grow relative min-w-full lg:min-w-[420px] ">
+    <div className="container flex gap-1 p-1 bg-secondary rounded-4xl">
+      <div className="flex flex-col flex-grow relative min-w-full lg:min-w-[420px] bg-background rounded-3xl p-6">
         <div className="flex items-center gap-4 mb-6">
           <div className="border rounded-full border-foreground p-2 mr-auto">
             <Globe size={14} />
@@ -22,7 +22,8 @@ const DeployComingSoon = () => {
         <h4 className="text-primary mt-auto font-semibold mb-1">
           Coming soon!
         </h4>
-        <h1 className="text-3xl font-semibold mb-4">Create an Index DTF</h1>
+        <h1 className="text-3xl font-semibold ">Create an Index DTF</h1>
+        <Separator className="my-6" />
         <ul>
           <li className="flex items-center gap-2 mb-4">
             <div className="border rounded-full border-foreground p-1.5">
@@ -57,10 +58,10 @@ const DeployComingSoon = () => {
           <SocialMediaInput />
         </div>
       </div>
-      <div className="rounded-3xl h-[calc(100vh-132px)] hidden lg:block">
+      <div className="rounded-3xl flex-grow h-[calc(100vh-132px)] hidden lg:block">
         <img
           src="https://storage.reserve.org/splash.png"
-          className="w-full h-full rounded-3xl "
+          className="w-full h-full object-cover object-center rounded-3xl"
           alt="reserve splash"
         />
       </div>

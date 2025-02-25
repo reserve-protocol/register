@@ -31,21 +31,25 @@ const FEATURED = [
     name: 'CoinDesk DeFi Select Index',
     address: '0x188D12Eb13a5Eadd0867074ce8354B1AD6f4790b',
     chainId: ChainId.Mainnet,
-    icon: 'https://ipfs.satsuma.xyz/ipfs/QmX1dZeXd4YjYv8kZ5i9Ao2w2iauGKHaGi2hdc1m3kBCAF',
+    icon: 'https://ipfs.satsuma.xyz/ipfs/QmWnKyhHbJzT5vBAycvbEk8gKFoH46VXTT4Q5gEXtYXAtP',
     cover: coindeskCover,
   },
 ]
 
 const IndexDTFFeatured = () => {
   return (
-    <div className="grid grid-cols-[285px_285px_285px] lg:grid-cols-3 gap-4 overflow-x-auto px-2 md:px-0">
+    <div className="grid grid-cols-[350px_350px_350px] xl:grid-cols-3 gap-4 overflow-x-auto px-2 md:px-0">
       {FEATURED.map((dtf) => (
         <Link
           to={getFolioRoute(dtf.address, dtf.chainId)}
           key={dtf.address}
-          className="p-1 bg-muted rounded-4xl flex flex-col min-w-[285px]"
+          className="p-1 bg-muted rounded-4xl flex flex-col min-w-[350px]"
         >
-          <img alt="featured dtf" className="w-full" src={dtf.cover} />
+          <img
+            alt="featured dtf"
+            className="w-full rounded-3xl"
+            src={dtf.cover}
+          />
           <div className="flex items-center gap-3 flex-grow rounded-3xl bg-card p-6">
             <div className="relative">
               <TokenLogo src={dtf.icon} size="xl" />
@@ -58,7 +62,7 @@ const IndexDTFFeatured = () => {
               <h4 className="font-semibold">{dtf.name}</h4>
               <span className="text-legend">${dtf.symbol}</span>
             </div>
-            <Button size="icon-rounded">
+            <Button size="icon-rounded" className="hidden xl:block">
               <ArrowRight size={16} />
             </Button>
           </div>
