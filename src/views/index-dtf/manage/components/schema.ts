@@ -16,10 +16,11 @@ export const manageFormSchema = z.object({
           !url ||
           url.toLowerCase().includes('bbhub.io') ||
           url.toLowerCase().includes('marketvector.com') ||
-          url.toLowerCase().includes('reserve.org'),
+          url.toLowerCase().includes('reserve.org') ||
+          url.toLowerCase().includes('coindesk.com'),
         {
           message:
-            'Must be a valid URL from bbhub.io, marketvector.com, or reserve.org',
+            'Must be a valid URL from bbhub.io, marketvector.com, reserve.org, or docs.google.com',
         }
       )
       .optional()
