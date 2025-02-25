@@ -53,7 +53,7 @@ const ChainFilter = ({
           border: '1px solid',
           borderColor: 'border',
           borderRadius: rounded ? '16px' : '8px',
-          px: '10px',
+          px: '20px',
           py: '6px',
           height,
         }}

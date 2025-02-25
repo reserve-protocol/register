@@ -138,7 +138,7 @@ const SearchInput = React.forwardRef<
   return (
     <div className={cn('relative', className)}>
       <Search
-        className="absolute left-3 top-1/2 -translate-y-1/2"
+        className="absolute left-6 top-1/2 -translate-y-1/2"
         size={16}
         strokeWidth={1.2}
       />
@@ -147,7 +147,7 @@ const SearchInput = React.forwardRef<
         className={cn(
           inputVariants({ variant }),
           inputClassName,
-          'pl-10 pr-0 h-12 rounded-xl bg-card'
+          'pl-12 pr-0 h-16 rounded-2xl bg-card'
         )}
         ref={ref}
         {...props}
