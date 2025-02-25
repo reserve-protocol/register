@@ -102,7 +102,7 @@ export const colors = {
   primary: '#2150A9',
   success: '#11BB8D',
   accentAction: '#106D46',
-  accentBG: '#D5DBE7',
+  accentBG: '#E5EDF7',
   accentText: '#00814B',
   secondary: '#E8E8E8',
   secondaryBackground: '#E5E5E5',
@@ -492,10 +492,12 @@ export const theme: Theme = {
       ...baseButton,
       backgroundColor: 'accentBG',
       color: 'accent',
-      fontWeight: 700,
+      fontWeight: 600,
       borderRadius: borderRadius.inner,
       '&:hover': {
-        fontWeight: 700,
+        fontWeight: 600,
+        backgroundColor: 'primary',
+        color: 'invertedText',
       },
     },
     bordered: {

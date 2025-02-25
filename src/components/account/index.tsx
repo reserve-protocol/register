@@ -85,8 +85,15 @@ const Account = () => {
                   <Button
                     variant="accentAction"
                     onClick={openConnectModal}
-                    px={2}
+                    px={3}
                     py={1}
+                    sx={{
+                      borderRadius: '40px',
+                      fontWeight: 400,
+                      '&:hover': {
+                        fontWeight: 400,
+                      },
+                    }}
                   >
                     <Box
                       sx={{ display: ['flex', 'none'] }}
@@ -95,7 +102,7 @@ const Account = () => {
                     >
                       <Power size={16} />
                     </Box>
-                    <Text sx={{ display: ['none', 'block'], fontSize: 1 }}>
+                    <Text sx={{ display: ['none', 'block'], fontSize: 2 }}>
                       <Trans>Connect</Trans>
                     </Text>
                   </Button>
