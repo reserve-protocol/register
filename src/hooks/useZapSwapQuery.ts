@@ -164,14 +164,46 @@ const useZapSwapQuery = ({
       ) {
         const amountOutValue =
           indexDTFPrice * Number(formatEther(BigInt(lastData.result.amountOut)))
-        const amountOutValueIn = Number(lastData.result.amountInValue)
+        const amountInValue = Number(lastData.result.amountInValue)
         const dustValue = Number(lastData.result.dustValue) // TODO: calculate from dust
 
-        const diff = Math.abs(amountOutValue + dustValue - amountOutValueIn)
+        const diff = Math.abs(amountOutValue + dustValue - amountInValue)
         const truePriceImpact =
-          amountOutValue + dustValue > amountOutValueIn
-            ? -(diff / amountOutValueIn) * 100
-            : (diff / amountOutValueIn) * 100
+          amountOutValue + dustValue > amountInValue
+            ? -(diff / amountInValue) * 100
+            : (diff / amountInValue) * 100
+
+        const priceImpact = truePriceImpact < 0 ? 0 : truePriceImpact
+
+        lastData = {
+          ...lastData,
+          result: {
+            ...lastData.result,
+            amountOutValue,
+            truePriceImpact,
+            priceImpact,
+          },
+        }
+      }
+
+      if (
+        indexDTFPrice &&
+        lastData?.result &&
+        [
+          '0xf91384484f4717314798e8975bcd904a35fc2bf1',
+          '0x4e3b170dcbe704b248df5f56d488114ace01b1c5',
+        ].includes(tokenIn?.toLowerCase() || '')
+      ) {
+        const amountOutValue = Number(lastData.result.amountOutValue)
+        const amountInValue =
+          indexDTFPrice * Number(formatEther(BigInt(lastData.result.amountIn)))
+        const dustValue = Number(lastData.result.dustValue) // TODO: calculate from dust
+
+        const diff = Math.abs(amountOutValue + dustValue - amountInValue)
+        const truePriceImpact =
+          amountOutValue + dustValue > amountInValue
+            ? -(diff / amountInValue) * 100
+            : (diff / amountInValue) * 100
 
         const priceImpact = truePriceImpact < 0 ? 0 : truePriceImpact
 
