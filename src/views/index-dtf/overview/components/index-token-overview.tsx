@@ -24,6 +24,7 @@ import { Link } from 'react-router-dom'
 import ZapMint from './zap-mint'
 import { currentZapMintTabAtom } from './zap-mint/atom'
 import { useTrackIndexDTFClick } from '../../hooks/useTrackIndexDTFPage'
+import { UniswapButton } from './landing-mint'
 
 const TokenNameSkeleton = () => (
   <div className="flex flex-col gap-4">
@@ -231,7 +232,14 @@ const IndexTokenOverview = () => {
           </>
         )}
       </div>
-      <ZapBuySellButtons />
+      {dtf?.id?.toLowerCase() ===
+      '0xebcda5b80f62dd4dd2a96357b42bb6facbf30267' ? (
+        <div className="block xl:hidden w-full">
+          <UniswapButton />
+        </div>
+      ) : (
+        <ZapBuySellButtons />
+      )}
 
       <RolesOverview />
     </Card>
