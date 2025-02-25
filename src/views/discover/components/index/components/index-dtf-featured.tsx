@@ -47,7 +47,7 @@ const IndexDTFFeatured = () => {
         >
           <img
             alt="featured dtf"
-            className="w-full rounded-3xl"
+            className="w-full rounded-3xl mb-1"
             src={dtf.cover}
           />
           <div className="flex items-center gap-3 flex-grow rounded-3xl bg-card p-6">
