@@ -31,7 +31,7 @@ const Header = () => {
   // }
 
   return (
-    <div className="p-4 flex items-center gap-2">
+    <div className="py-4 px-5 flex items-center gap-2">
       <h1 className="font-bold text-xl text-primary mr-auto">
         Recent proposals
       </h1>
