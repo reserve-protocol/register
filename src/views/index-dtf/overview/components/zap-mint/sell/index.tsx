@@ -3,7 +3,7 @@ import useZapSwapQuery from '@/hooks/useZapSwapQuery'
 import { indexDTFAtom, indexDTFPriceAtom } from '@/state/dtf/atoms'
 import { formatCurrency } from '@/utils'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
 import { formatEther, formatUnits, parseEther } from 'viem'
 import useLoadingAfterRefetch from '../../hooks/useLoadingAfterRefetch'
 import {
@@ -91,6 +91,11 @@ const Sell = () => {
     setInputAmount('')
   }, [])
 
+  const onSuccess = useCallback(() => {
+    setInputAmount('')
+    setOpen(false)
+  }, [])
+
   if (!indexDTF) return null
 
   return (
@@ -137,10 +142,7 @@ const Sell = () => {
         fetchingZapper={isLoading}
         insufficientBalance={insufficientBalance}
         zapperErrorMessage={zapperErrorMessage}
-        onSuccess={() => {
-          setInputAmount('')
-          setOpen(false)
-        }}
+        onSuccess={onSuccess}
       />
     </div>
   )

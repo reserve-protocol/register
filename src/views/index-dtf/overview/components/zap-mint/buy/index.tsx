@@ -5,7 +5,7 @@ import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { formatCurrency } from '@/utils'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
 import { formatEther, parseUnits } from 'viem'
 import useLoadingAfterRefetch from '../../hooks/useLoadingAfterRefetch'
 import {
@@ -95,6 +95,11 @@ const Buy = () => {
     setInputAmount('')
   }, [])
 
+  const onSuccess = useCallback(() => {
+    setInputAmount('')
+    setOpen(false)
+  }, [])
+
   if (!indexDTF) return null
 
   return (
@@ -141,10 +146,7 @@ const Buy = () => {
         fetchingZapper={isLoading}
         insufficientBalance={insufficientBalance}
         zapperErrorMessage={zapperErrorMessage}
-        onSuccess={() => {
-          setInputAmount('')
-          setOpen(false)
-        }}
+        onSuccess={onSuccess}
       />
     </div>
   )
