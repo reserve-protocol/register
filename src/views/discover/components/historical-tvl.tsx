@@ -202,7 +202,7 @@ const Heading = ({ dtfStats }: { dtfStats?: DTFStats }) => {
           )}
         </div>
       </div>
-      <div className="absolute hidden sm:block top-3 sm:top-8 right-4 2xl:right-2 text-primary">
+      <div className="absolute hidden sm:block top-3 sm:top-8 right-6 2xl:right-0 text-primary">
         <Button
           variant="outline-primary"
           className="rounded-[50px] p-1 h-8 border hover:bg-primary"
