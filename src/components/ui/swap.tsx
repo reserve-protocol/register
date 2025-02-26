@@ -343,7 +343,7 @@ const ArrowSeparator = ({ onSwap }: Pick<SwapProps, 'onSwap'>) => {
   if (onSwap) {
     return (
       <Button
-        className="h-8 px-[6px] rounded-xl w-max mx-auto border-white border-2 -mt-4 -mb-4 z-20 text-foreground bg-muted hover:bg-border"
+        className="h-8 px-[6px] rounded-xl w-max mx-auto border-card border-2 -mt-4 -mb-4 z-20 text-foreground bg-muted hover:bg-border"
         onClick={onSwap}
       >
         <ArrowUpDown size={16} />
