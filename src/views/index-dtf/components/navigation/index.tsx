@@ -1,13 +1,15 @@
-import GovernanceIcon from '@/components/icons/Governance'
-import IssuanceIcon from '@/components/icons/Issuance'
-import ManagerIcon from '@/components/icons/ManagerIcon'
-import TradeIcon from '@/components/icons/Trade'
 import { cn } from '@/lib/utils'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { ROUTES } from '@/utils/constants'
 import { t } from '@lingui/macro'
 import { useAtomValue } from 'jotai'
-import { Globe } from 'lucide-react'
+import {
+  Globe,
+  Blend,
+  Landmark,
+  ArrowLeftRight,
+  Fingerprint,
+} from 'lucide-react'
 import { useMemo } from 'react'
 import { NavLink } from 'react-router-dom'
 
@@ -54,35 +56,27 @@ const NavigationItems = () => {
   const items = useMemo(
     () => [
       {
-        icon: <Globe strokeWidth={1.5} className="h-5 w-5 md:w-4 md:h-4" />,
+        icon: <Globe strokeWidth={1.5} size={16} />,
         label: t`Overview`,
         route: ROUTES.OVERVIEW,
       },
       {
-        icon: (
-          <IssuanceIcon className="text-xl md:text-sm h-5 w-5 md:w-4 md:h-4" />
-        ),
+        icon: <Blend strokeWidth={1.5} size={16} />,
         label: t`Mint + Redeem`,
         route: ROUTES.ISSUANCE,
       },
       {
-        icon: (
-          <GovernanceIcon className="text-xl md:text-sm h-5 w-5 md:w-4 md:h-4" />
-        ),
+        icon: <Landmark strokeWidth={1.5} size={16} />,
         label: t`Governance`,
         route: ROUTES.GOVERNANCE,
       },
       {
-        icon: (
-          <TradeIcon className="text-xl md:text-sm h-5 w-5 md:w-4 md:h-4" />
-        ),
+        icon: <ArrowLeftRight strokeWidth={1.5} size={16} />,
         label: t`Auctions`,
         route: ROUTES.AUCTIONS,
       },
       {
-        icon: (
-          <ManagerIcon className="text-xl md:text-sm h-5 w-5 md:w-4 md:h-4" />
-        ),
+        icon: <Fingerprint strokeWidth={1.5} size={16} />,
         label: t`Details + Roles`,
         route: ROUTES.SETTINGS,
       },
@@ -91,7 +85,7 @@ const NavigationItems = () => {
   )
 
   return (
-    <div className="flex lg:flex-col gap-5 justify-evenly lg:justify-start">
+    <div className="flex lg:flex-col gap-6 justify-evenly lg:justify-start">
       {items.map((item) => (
         <NavigationItem key={item.route} {...item} />
       ))}
