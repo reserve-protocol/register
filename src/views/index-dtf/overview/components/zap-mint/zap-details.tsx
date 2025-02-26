@@ -65,7 +65,13 @@ const ZapDetails = ({ data }: { data: ZapResult }) => {
 
   const amountInValue = new Decimal(data.amountInValue || 0)
   const tokenInPrice = amountIn.eq(0) ? undefined : amountInValue.div(amountIn)
-  const ratio = amountOut.eq(0) ? undefined : amountIn.div(amountOut)
+  const ratio = dtfAsTokenIn
+    ? amountIn.eq(0)
+      ? undefined
+      : amountOut.div(amountIn)
+    : amountOut.eq(0)
+      ? undefined
+      : amountIn.div(amountOut)
   const ratioText = `${formatCurrency(ratio?.toNumber() || 0)} ${tokenOutSymbol} = 1 ${tokenInSymbol}`
   const mintFeeValue = amountInValue.mul(indexDTF?.mintingFee || 0).toNumber()
 
