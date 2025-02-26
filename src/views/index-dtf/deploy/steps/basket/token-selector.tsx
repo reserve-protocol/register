@@ -263,7 +263,8 @@ const UnlistedToken = () => {
 const TokenList = ({ showSelected = false }: TokenListProps) => {
   const search = useAtomValue(searchTokenAtom)
   const extraTokens = useAtomValue(extraTokensAtom)
-  const chainId = useAtomValue(chainIdAtom)
+  const { watch } = useFormContext()
+  const chainId = watch('chain')
 
   const {
     data: tokenList = [],
