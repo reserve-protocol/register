@@ -187,7 +187,7 @@ const Heading = ({ dtfStats }: { dtfStats?: DTFStats }) => {
           </div>
         )}
 
-        <div className="flex gap-2 mt-4 text-base sm:text-xl leading-none">
+        <div className="flex gap-2 mt-5 text-base sm:text-xl leading-none">
           <span className="font-light">Annualized protocol revenue:</span>
           {isLoading || revenue < 1000000 ? (
             <Skeleton className="h-6 w-14" />
@@ -205,7 +205,7 @@ const Heading = ({ dtfStats }: { dtfStats?: DTFStats }) => {
       <div className="absolute hidden sm:block top-3 sm:top-8 right-0 text-primary">
         <Button
           variant="outline-primary"
-          className="rounded-[50px] p-1 h-8 border border-primary-opacity-40 hover:bg-primary"
+          className="rounded-[50px] p-1 h-8 border border-primary hover:bg-primary"
           onClick={() => {
             trackClick('discover', 'video')
             window.open(DTF_VIDEO, '_blank')
