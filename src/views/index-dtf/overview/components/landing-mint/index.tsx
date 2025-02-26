@@ -55,10 +55,10 @@ const MintBox = () => {
           <TokenLogo src={brand?.dtf?.icon || undefined} size="lg" />
         </div>
         <div className="flex flex-col gap-1">
-          <div className="text-xl font-bold text-primary">
+          <div className="text-xl font-semibold ">
             Buy/Sell {dtf?.token.symbol} onchain
           </div>
-          <div className="text-sm">
+          <div className="text-legend text-sm">
             Our Zap-swaps support common assets like ETH, USDC, USDT, and
             others, which makes DTFs easy to enter and exit.
           </div>
