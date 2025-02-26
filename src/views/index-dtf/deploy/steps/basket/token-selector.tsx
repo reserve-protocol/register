@@ -276,7 +276,7 @@ const TokenList = ({ showSelected = false }: TokenListProps) => {
         const url =
           chainId === ChainId.Mainnet
             ? 'https://tokens.coingecko.com/ethereum/all.json'
-            : RESERVE_API + 'zapper/tokens'
+            : RESERVE_API + `zapper/tokens?${Date.now()}`
         const response = await fetch(url)
         if (!response.ok) {
           throw new Error('Failed to fetch token list')
