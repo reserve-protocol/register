@@ -44,7 +44,7 @@ const Container = ({ children }: { children: React.ReactNode }) => {
         </div>
       </div>
       <div>
-        <h2 className="text-2xl font-semibold mb-2 px-2">Basket Governance</h2>
+        <h2 className="text-xl font-semibold px-2">Basket Governance</h2>
         {children}
       </div>
     </Card>

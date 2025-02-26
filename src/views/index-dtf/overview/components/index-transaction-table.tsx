@@ -188,7 +188,7 @@ const IndexTransactionTable = () => {
         </div>
       </div>
       <div className="flex items-center gap-2 mb-4"></div>
-      <h2 className="text-2xl font-semibold mb-2">Transactions</h2>
+      <h2 className="text-xl font-semibold">Transactions</h2>
       <div className="flex flex-col gap-2 -mx-6 sm:-mx-4 overflow-x-auto max-w-[calc(100vw-10px)]">
         <TransactionTable />
       </div>
