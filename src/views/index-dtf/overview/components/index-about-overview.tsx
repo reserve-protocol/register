@@ -260,7 +260,7 @@ const TokenSocials = () => {
   }
 
   return (
-    <div className="flex gap-2 mt-3 flex-wrap">
+    <div className="flex gap-2 mt-4 flex-wrap">
       {data.dtf?.prospectus && (
         <Link
           to={data.dtf.prospectus}
