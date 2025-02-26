@@ -2,6 +2,7 @@ import { SearchInput } from '@/components/ui/input'
 import ChainFilter from 'components/filters/chain/ChainFilter'
 import CirclesIcon from 'components/icons/CirclesIcon'
 import EarnNavIcon from 'components/icons/EarnNavIcon'
+import { LayoutGrid } from 'lucide-react'
 import Ethereum from 'components/icons/logos/Ethereum'
 import { atom, useAtom, useSetAtom } from 'jotai'
 import { useMemo, useState } from 'react'
@@ -24,7 +25,7 @@ const TargetFilter = () => {
     () => [
       {
         text: 'All',
-        icon: <CirclesIcon />,
+        icon: <LayoutGrid />,
         filter: [TARGET_UNITS.ETH, TARGET_UNITS.USD],
       },
       {

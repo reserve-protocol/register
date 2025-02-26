@@ -48,7 +48,7 @@ const columns: ColumnDef<IndexDTFItem>[] = [
             />
           </div>
           <div className="break-words  max-w-[420px]">
-            <h4 className="font-semibold mb-[2px]">{row.original.name}</h4>
+            <h4 className="font-semibold ">{row.original.name}</h4>
             <span className="text-legend">${row.original.symbol}</span>
           </div>
         </Link>
