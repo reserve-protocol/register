@@ -47,7 +47,7 @@ const DiscoverTabList = ({
   return (
     <TabsList
       className={cn(
-        'w-full h-12 gap-1 lg:h-[100px] rounded-xl lg:rounded-4xl bg-[#f2f2f2]',
+        'w-full h-12 gap-1 lg:h-[100px] rounded-xl lg:rounded-4xl',
         className
       )}
     >
