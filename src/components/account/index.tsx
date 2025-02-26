@@ -85,7 +85,7 @@ const Account = () => {
                   <Button
                     variant="accentAction"
                     onClick={openConnectModal}
-                    px={3}
+                    px={'14px'}
                     py={1}
                     sx={{
                       borderRadius: '40px',
