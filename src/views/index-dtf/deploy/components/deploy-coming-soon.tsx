@@ -5,8 +5,8 @@ import SocialMediaInput from './social-media-input'
 
 const DeployComingSoon = () => {
   return (
-    <div className="container flex gap-1 p-1 bg-secondary rounded-4xl">
-      <div className="flex flex-col flex-grow relative min-w-full lg:min-w-[420px] bg-background rounded-3xl p-6">
+    <div className="container flex gap-1 p-1 mt-1 lg:mt-6 bg-secondary rounded-4xl">
+      <div className="flex flex-col flex-grow relative min-w-full lg:min-w-[420px] bg-card rounded-3xl p-3 lg:p-6">
         <div className="flex items-center gap-4 mb-6">
           <div className="border rounded-full border-foreground p-2 mr-auto">
             <Globe size={14} />
@@ -25,7 +25,7 @@ const DeployComingSoon = () => {
         <h1 className="text-3xl font-semibold ">Create an Index DTF</h1>
         <Separator className="my-6" />
         <ul>
-          <li className="flex items-center gap-2 mb-4">
+          <li className="flex items-center gap-2 mb-5">
             <div className="border rounded-full border-foreground p-1.5">
               <Palette size={10} />
             </div>
@@ -33,7 +33,7 @@ const DeployComingSoon = () => {
               Instantly create custom portfolios of any digital assets
             </span>
           </li>
-          <li className="flex items-center gap-2 mb-4">
+          <li className="flex items-center gap-2 mb-5">
             <div className="border rounded-full border-foreground p-1.5">
               <Combine size={10} />
             </div>
