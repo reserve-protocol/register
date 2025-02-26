@@ -19,6 +19,7 @@ import { Link } from 'react-router-dom'
 import IndexRolesOverview from './index-roles-overview'
 import ZapMint from './zap-mint'
 import { currentZapMintTabAtom } from './zap-mint/atom'
+import { useTrackIndexDTFClick } from '../../hooks/useTrackIndexDTFPage'
 
 const TokenNameSkeleton = () => (
   <div className="flex flex-col gap-4">
