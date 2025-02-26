@@ -44,8 +44,8 @@ const AppRoutes = () => (
     <Route path={ROUTES.BRIDGE} element={<Bridge />} />
     <Route path={ROUTES.EARN} element={<EarnWrapper />} />
     <Route path={ROUTES.DEPLOY_YIELD} element={<DeployYieldDTF />} />
-    <Route path={ROUTES.DEPLOY_INDEX} element={<DeployIndexDTF />} />
-    <Route path={'/hidden/deploy'} element={<DeployComingSoon />} />
+    <Route path={ROUTES.DEPLOY_INDEX} element={<DeployComingSoon />} />
+    <Route path={'/hidden-super-secret-asdf/deploy'} element={<DeployIndexDTF />} />
     <Route path={ROUTES.TOKENS} element={<AllYieldDTFList />} />
     <Route path={ROUTES.TERMS} element={<Terms />} />
     {/* Yield DTF */}
