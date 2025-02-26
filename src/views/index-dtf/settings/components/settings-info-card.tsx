@@ -51,7 +51,7 @@ const InfoCard = ({
       )}
     >
       <div className="py-4 px-5 flex items-center gap-2">
-        <h1 className="font-bold text-xl text-primary mr-auto">{title}</h1>
+        <h1 className="font-semibold text-xl text-primary mr-auto">{title}</h1>
         {action}
       </div>
       <div
