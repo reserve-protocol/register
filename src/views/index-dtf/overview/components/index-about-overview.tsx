@@ -4,10 +4,15 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { formatPercentage, getTokenName } from '@/utils'
 import { useAtomValue } from 'jotai'
-import { ArrowUpRight, BrickWall, ExternalLink, FileText } from 'lucide-react'
+import {
+  ArrowUpRight,
+  Grid3x3,
+  ExternalLink,
+  FileText,
+  BadgePercent,
+} from 'lucide-react'
 
 import DiscordIcon from '@/components/icons/DiscordIcon'
-import Money from '@/components/icons/Money'
 import TelegramIcon from '@/components/icons/TelegramIcon'
 import XIcon from '@/components/icons/XIcon'
 import TokenLogo from '@/components/token-logo'
@@ -328,7 +333,7 @@ const Header = () => {
         <Skeleton className="w-60 h-6" />
       ) : (
         <div className="flex gap-1 items-center">
-          <Money />
+          <BadgePercent size={16} strokeWidth={1.5} />
           <span className="text-legend">TVL Fee:</span>
           <span className="font-bold">
             {formatPercentage(data.annualizedTvlFee * 100)}
