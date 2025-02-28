@@ -326,7 +326,7 @@ const Header = () => {
   return (
     <div className="flex items-center gap-2 mb-4">
       <div className="rounded-full border border-foreground p-2 mr-auto">
-        <BrickWall size={14} strokeWidth={1.5} />
+        <Grid3x3 size={16} strokeWidth={1.5} />
       </div>
 
       {!data ? (
