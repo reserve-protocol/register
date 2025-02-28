@@ -61,12 +61,12 @@ const AssetBreakdown = () => {
   const Current = tabComponents[current as keyof typeof tabComponents]
 
   return (
-    <Card px={[2, 4]} pt={[3, 4]}>
-      <Box variant="layout.verticalAlign">
+    <Card px={[1, 1]} pt={[1, 1]}>
+      <Box sx={{ padding: 3 }} variant="layout.verticalAlign">
         <Menu current={current} onChange={handleChange} />
       </Box>
       <Flex
-        mt={3}
+        mt={1}
         sx={{
           flexWrap: ['wrap-reverse', 'wrap-reverse', 'wrap-reverse', 'nowrap'],
         }}
