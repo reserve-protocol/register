@@ -287,14 +287,9 @@ const PortfolioSummary = () => {
   const totalAccountHoldings = useAtomValue(totalAccountHoldingsAtom)
 
   return (
-    <div className="p-6 pt-5 flex flex-col justify-center gap-3 sm:gap-8 text-primary">
-      <WalletOutlineIcon className="h-9 w-9 -ml-[1px] -mt-[1px]" />
-      <div className="flex flex-col justify-center gap-4">
-        <span className="text-base">Total Reserve holdings</span>
-        <span className="text-5xl">
-          ${formatCurrency(totalAccountHoldings)}
-        </span>
-      </div>
+    <div className="flex flex-col justify-center gap-4 p-6 pt-10 text-primary dark:text-foreground">
+      <span className="text-base">Total Reserve holdings</span>
+      <span className="text-5xl">${formatCurrency(totalAccountHoldings)}</span>
     </div>
   )
 }
