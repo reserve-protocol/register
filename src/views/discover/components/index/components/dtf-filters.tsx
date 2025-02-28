@@ -38,7 +38,7 @@ const SingleToggleFilter = ({
         <ToggleGroupItem
           key={text}
           value={index.toString()}
-          className="flex items-center gap-0 h-8 px-2 data-[state=on]:bg-[#f2f2f2] data-[state=on]:text-primary hover:text-primary hover:bg-[#f2f2f2]"
+          className="flex items-center gap-0 h-8 px-2 data-[state=on]:bg-muted data-[state=on]:text-primary hover:text-primary hover:bg-muted"
         >
           {icon}
           <div className="hidden sm:block ml-[6px]">{text}</div>
