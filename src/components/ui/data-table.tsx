@@ -66,12 +66,12 @@ export const SorteableButton = ({
 
 const Pagination = ({ table }: { table: TableType<any> }) => {
   return (
-    <div className="flex items-center justify-between py-4">
-      <div className="text-sm text-muted-foreground ml-6">
+    <div className="flex items-center justify-between p-4 pt-6 border-t mt-2">
+      <div className="text-sm text-muted-foreground">
         Showing {table.getState().pagination.pageSize} out of{' '}
         {table.getFilteredRowModel().rows.length}
       </div>
-      <div className="flex-1 flex items-center justify-center">
+      <div className=" flex items-center justify-center">
         <div className="flex items-center space-x-2">
           <Button
             variant="ghost"
@@ -143,7 +143,6 @@ const Pagination = ({ table }: { table: TableType<any> }) => {
           </Button>
         </div>
       </div>
-      <div className="w-[200px]" /> {/* Spacer to balance the layout */}
     </div>
   )
 }
