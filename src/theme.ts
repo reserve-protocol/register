@@ -462,7 +462,7 @@ export const theme: Theme = {
       backgroundColor: 'contentBackground',
     },
     inner: {
-      borderRadius: borderRadius.inputs,
+      borderRadius: borderRadius.boxes,
       padding: 0,
       width: '100%',
       height: 'fit-content',
