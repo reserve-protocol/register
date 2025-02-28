@@ -85,7 +85,7 @@ const NavigationItems = () => {
   )
 
   return (
-    <div className="flex lg:flex-col gap-6 justify-evenly lg:justify-start">
+    <div className="flex lg:flex-col gap-5 justify-evenly lg:justify-start">
       {items.map((item) => (
         <NavigationItem key={item.route} {...item} />
       ))}
