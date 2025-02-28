@@ -178,7 +178,7 @@ const Heading = ({ dtfStats }: { dtfStats?: DTFStats }) => {
             <Link target="_blank" to={DUNE_DASHBOARD}>
               <Button
                 variant="none"
-                className="ml-3  w-10 h-10 sm:w-[44px] sm:h-[44px] p-0 bg-primary/10 text-primary hover:bg-primary/20"
+                className="ml-3  w-10 h-10 sm:w-[44px] sm:h-[44px] p-0 bg-primary/15 text-primary hover:bg-primary/20"
                 size="icon-rounded"
               >
                 <ArrowRight className="-rotate-45" size={24} />
