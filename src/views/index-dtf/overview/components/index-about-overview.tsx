@@ -214,7 +214,7 @@ const IndexBasketTokens = ({
       {basket && basket.length > MAX_TOKENS && (
         <Button
           variant="outline"
-          className="w-full rounded-2xl"
+          className="w-full rounded-2xl py-5"
           onClick={() => setViewAll(!viewAll)}
         >
           {viewAll ? 'View less' : `View all ${basket.length} assets`}
