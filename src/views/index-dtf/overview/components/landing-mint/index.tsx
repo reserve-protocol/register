@@ -145,7 +145,7 @@ const CoverImage = () => {
   }, [brand])
 
   if (isLoading) {
-    return <Skeleton className="w-[450px] h-[450px] rounded-3xl" />
+    return <Skeleton className="w-[450px] h-[450px] rounded-4xl" />
   }
 
   if (brand?.dtf?.cover) {
@@ -153,7 +153,7 @@ const CoverImage = () => {
       <img
         width={450}
         height={450}
-        className="object-cover h-[450px] w-[450px] rounded-3xl"
+        className="object-cover h-[450px] w-[450px] rounded-4xl"
         alt="DTF meme"
         src={brand.dtf.cover}
       />
