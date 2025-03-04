@@ -33,10 +33,10 @@ const PoolsTable = ({ data, compact = false, ...props }: Props) => {
         columnVisibility={visibility}
         sx={{
           borderRadius: '0 0 20px 20px',
-          background: 'card',
+          backgroundColor: 'cardBackground',
           overflow: 'auto',
           '& tr': {
-            backgroundColor: 'white',
+            backgroundColor: 'cardBackground',
           },
           '& th': {
             paddingTop: 4,
