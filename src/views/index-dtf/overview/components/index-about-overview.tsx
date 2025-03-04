@@ -190,7 +190,7 @@ const IndexBasketTokens = ({
                     <TableCell className="text-primary text-center font-bold">
                       {basketShares[token.address]}%
                     </TableCell>
-                    <TableCell className="flex text-right justify-end py-6 pr-6">
+                    <TableCell className="pr-6">
                       <Link
                         to={getExplorerLink(
                           token.address,
@@ -201,7 +201,7 @@ const IndexBasketTokens = ({
                       >
                         <Box
                           variant="circle"
-                          className="hover:bg-primary/10 hover:text-primary"
+                          className="hover:bg-primary/10 hover:text-primary ml-auto"
                         >
                           <ArrowUpRight className="h-4 w-4" />
                         </Box>
@@ -214,7 +214,7 @@ const IndexBasketTokens = ({
       {basket && basket.length > MAX_TOKENS && (
         <Button
           variant="outline"
-          className="w-full rounded-2xl py-5"
+          className="w-full rounded-2xl py-6"
           onClick={() => setViewAll(!viewAll)}
         >
           {viewAll ? 'View less' : `View all ${basket.length} assets`}
