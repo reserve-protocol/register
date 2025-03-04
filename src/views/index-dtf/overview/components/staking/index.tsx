@@ -33,7 +33,7 @@ import {
 import LockView from './lock'
 import SubmitLockButton from './lock/submit-lock-button'
 import UnlockView from './unlock'
-import SubmitUnlockButton from './unlock/submit-unlock-button copy'
+import SubmitUnlockButton from './unlock/submit-unlock-button'
 
 const TABS = [
   {
