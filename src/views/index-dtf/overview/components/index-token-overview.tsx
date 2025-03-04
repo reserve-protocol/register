@@ -96,7 +96,7 @@ const RolesOverview = () => {
   const chainId = useAtomValue(chainIdAtom)
 
   return (
-    <div className="grid grid-cols-2 border-t px-2 sm:pt-2">
+    <div className="grid grid-cols-2 border-t px-2 pt-2">
       <div className="flex items-center sm:border-r gap-2 sm:p-2">
         {brandData?.creator?.icon ? (
           <TokenLogo src={brandData.creator.icon} size="xl" />
@@ -220,13 +220,13 @@ const IndexTokenOverview = () => {
         </div>
         <TokenAddresses />
       </div>
-      <div className="p-2 sm:px-4 sm:pb-4 pt-0 relative max-w-96 sm:max-w-[620px] break-words">
+      <div className="p-2 pb-4 sm:px-4 pt-2 relative max-w-96 sm:max-w-[620px] break-words">
         {!dtf ? (
           <TokenNameSkeleton />
         ) : (
           <>
             <h4>${dtf.token.symbol}</h4>
-            <h1 className="mt-1 text-2xl md:text-3xl  font-medium w-full break-words">
+            <h1 className="mt-1 text-2xl md:text-3xl font-medium w-full break-words">
               {dtf.token.name}
             </h1>
           </>
