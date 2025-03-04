@@ -190,7 +190,7 @@ const IndexBasketTokens = ({
                     <TableCell className="text-primary text-center font-bold">
                       {basketShares[token.address]}%
                     </TableCell>
-                    <TableCell className="flex text-right justify-end py-6">
+                    <TableCell className="flex text-right justify-end py-6 pr-6">
                       <Link
                         to={getExplorerLink(
                           token.address,
@@ -231,7 +231,7 @@ const IndexBasketPreview = () => {
     <div>
       {/* <IndexBasketVisual basket={basket} /> */}
       <IndexBasketTokens
-        className="flex -mx-4 sm:-mx-5 -mb-4 sm:-mb-5"
+        className="-mx-4 sm:-mx-5 -mb-4 sm:-mb-5"
         basket={basket}
       />
     </div>
