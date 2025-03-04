@@ -73,6 +73,7 @@ interface DecimalDisplayProps {
   currency?: boolean
   compact?: boolean
   trimZeros?: boolean
+  className?: string
 }
 
 export const DecimalDisplay: React.FC<DecimalDisplayProps> = ({
@@ -81,6 +82,7 @@ export const DecimalDisplay: React.FC<DecimalDisplayProps> = ({
   currency = true,
   trimZeros = true,
   compact = false,
+  className,
 }) => {
   const formattedNumber = useNumberFormat(
     value,
@@ -90,7 +92,12 @@ export const DecimalDisplay: React.FC<DecimalDisplayProps> = ({
     trimZeros
   )
 
-  return <span dangerouslySetInnerHTML={{ __html: formattedNumber }} />
+  return (
+    <span
+      className={className}
+      dangerouslySetInnerHTML={{ __html: formattedNumber }}
+    />
+  )
 }
 
 export default DecimalDisplay
