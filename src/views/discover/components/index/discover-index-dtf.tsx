@@ -8,11 +8,11 @@ const DiscoverIndexDTF = () => {
   const { data, isLoading } = useFilteredDTFIndex()
 
   if (isLoading) {
-    return <Skeleton className="h-[500px] rounded-[20px]" />
+    return <Skeleton className="h-[500px] rounded-4xl bg-card" />
   }
 
   return (
-    <div className="flex flex-col gap-1 p-1 rounded-[20px] bg-secondary">
+    <div className="flex flex-col gap-1 p-1 rounded-4xl bg-secondary">
       <DTFFilters />
       <div className="overflow-auto">
         <IndexDTFTable data={data} />
