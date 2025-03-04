@@ -349,7 +349,7 @@ const IndexAboutOverview = () => (
     <Header />
     <Mandate />
     <TokenSocials />
-    <Separator className="mt-4 mb-2 -mx-2" />
+    <Separator className="mt-6 mb-3" />
     <IndexBasketPreview />
   </Card>
 )
