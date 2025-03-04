@@ -66,8 +66,8 @@ export const SorteableButton = ({
 
 const Pagination = ({ table }: { table: TableType<any> }) => {
   return (
-    <div className="flex items-center justify-between py-4">
-      <div className="text-sm text-muted-foreground ml-6">
+    <div className="flex items-center justify-between md:py-4">
+      <div className="text-sm text-muted-foreground ml-6 opacity-0 md:opacity-100 ">
         Showing {table.getState().pagination.pageSize} out of{' '}
         {table.getFilteredRowModel().rows.length}
       </div>
