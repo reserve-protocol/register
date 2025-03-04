@@ -175,7 +175,7 @@ const PriceChart = () => {
     history?.timeseries.filter(({ price }) => Boolean(price)) || []
 
   return (
-    <div className="rounded-4xl rounded-b-none bg-[#000] dark:bg-muted w-full text-[#fff] dark:text-secondary-foreground p-3 sm:p-6 pb-20   h-80 sm:h-[542px]">
+    <div className="lg:rounded-4xl rounded-b-none bg-[#000] dark:bg-background lg:dark:bg-muted w-full text-[#fff] dark:text-secondary-foreground p-3 sm:p-6 pb-20   h-80 sm:h-[542px]">
       <div className="mb-0 sm:mb-3">
         <h4 className=" mb-2 hidden sm:block">{TITLES[dataType]}</h4>
         {/* <Selectors className="flex sm:hidden mb-2" /> */}

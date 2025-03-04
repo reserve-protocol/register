@@ -13,7 +13,7 @@ import IndexTransactionTable from './components/index-transaction-table'
 const Content = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
   return (
-    <div className="rounded-4xl bg-secondary flex-1 lg:mb-4">
+    <div className="rounded-0xl lg:rounded-4xl bg-secondary flex-1 lg:mb-4">
       <PriceChart />
       <div className="flex flex-col gap-1 m-1 -mt-20">
         <IndexTokenOverview />
