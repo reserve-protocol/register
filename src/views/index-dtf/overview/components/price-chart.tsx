@@ -183,7 +183,7 @@ const PriceChart = () => {
           <span className=" text-sm ">Price</span>
           <TimeRangeSelector />
         </div>
-        <div className="flex items-center gap-1 text-2xl sm:text-3xl font-semibold sm:font-bold  mb-2">
+        <div className="flex items-center gap-1 text-2xl sm:text-3xl font-medium sm:font-medium mb-2">
           {!history ? (
             <Skeleton className="min-w-[200px] h-9" />
           ) : (
