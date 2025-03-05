@@ -384,7 +384,7 @@ export const dtfDeployDefaultValues = {
   tokenName: '',
   symbol: '',
   mandate: '',
-  chain: ChainId.Base,
+  chain: undefined,
   initialValue: 1,
   tokensDistribution: [],
   governanceERC20address: undefined,
