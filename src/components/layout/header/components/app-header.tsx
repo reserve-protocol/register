@@ -21,20 +21,6 @@ const Container = ({ children }: { children: ReactNode }) => {
   )
 }
 
-const ForceLightMode = () => {
-  const [colorMode, setColorMode] = useColorMode()
-
-  useEffect(() => {
-    document.documentElement.setAttribute('data-color-mode', 'light')
-    document.documentElement.classList.remove('dark')
-    if (colorMode !== 'light') {
-      setColorMode('light')
-    }
-  }, [])
-
-  return null
-}
-
 /**
  * Application header
  */
@@ -62,7 +48,6 @@ const AppHeader = () => (
       <CoinbaseSubscribe mr="2" sx={{ display: ['none', 'none', 'block'] }} />
       <Account />
     </div>
-    <ForceLightMode />
   </Container>
 )
 
