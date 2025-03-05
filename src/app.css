@@ -76,10 +76,10 @@ body {
 
   .dark {
     /* Core Dark Mode Colors (unchanged) */
-    --background: 212 20% 4%;
-    --card: 212 25% 6%;
-    --secondary: 212 20% 2%;
-    --muted: 210 20% 2%;
+    --background: 212 20% 6%;
+    --card: 212 25% 9%;
+    --secondary: 212 20% 1%;
+    --muted: 210 20% 1%;
 
     /* Foreground & Layering */
     --foreground: 0 0% 95%;
@@ -107,8 +107,8 @@ body {
     --warning: 32 90% 45%;
 
     /* Borders, Inputs & Rings */
-    --border: 220 20% 12%;
-    --border-secondary: 220 18% 18%;
+    --border: 220 20% 16%;
+    --border-secondary: 220 18% 20%;
     --input: 218 25% 14%;
     --ring: 212 99% 35%;
 
