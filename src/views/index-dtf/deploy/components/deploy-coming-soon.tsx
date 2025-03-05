@@ -19,10 +19,12 @@ const DeployComingSoon = () => {
             Looking to create a Yield DTF?
           </a>
         </div>
-        <h4 className="text-primary mt-auto font-semibold mb-1">
+        <h4 className="text-primary mt-auto font-semibold mb-2">
           Coming soon!
         </h4>
-        <h1 className="text-3xl font-semibold ">Create an Index DTF</h1>
+        <h1 className="text-4xl text-primary font-semibold ">
+          Create an Index DTF
+        </h1>
         <Separator className="my-6" />
         <ul>
           <li className="flex items-center gap-2 mb-5">
