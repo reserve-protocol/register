@@ -16,7 +16,12 @@ import { ROUTES } from '@/utils/constants'
 import { useTrackIndexDTFClick } from '@/views/index-dtf/hooks/useTrackIndexDTFPage'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
-import { Asterisk, Minus, OctagonAlert, Plus } from 'lucide-react'
+import {
+  Asterisk,
+  LockKeyhole,
+  LockKeyholeOpen,
+  OctagonAlert,
+} from 'lucide-react'
 import { ReactNode, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import { useReadContract } from 'wagmi'
@@ -41,12 +46,12 @@ const TABS = [
   {
     key: 'lock',
     label: 'Vote lock',
-    icon: <Plus size={16} />,
+    icon: <LockKeyhole size={16} />,
   },
   {
     key: 'unlock',
     label: 'Unlock',
-    icon: <Minus size={16} />,
+    icon: <LockKeyholeOpen size={16} />,
   },
 ]
 
