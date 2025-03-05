@@ -78,7 +78,7 @@ const OpenLockDrawerButton = forwardRef<
       </h4>
       <Box
         variant="circle"
-        className="h-8 w-8 bg-primary text-primary-foreground"
+        className="h-8 w-8 bg-primary dark:bg-primary text-primary-foreground"
       >
         <ArrowRight size={16} />
       </Box>
