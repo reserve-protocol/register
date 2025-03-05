@@ -42,15 +42,16 @@ const TokenAddresses = () => {
   }
 
   return (
-    <div className="flex items-center gap-2 ">
+    <div className="flex items-center gap-1.5 ">
       <ChainLogo chain={chainId} />
       <span>{shortenAddress(address)}</span>
-      <div className="p-1 bg-muted rounded-full">
+      <div className="p-1 bg-muted dark:bg-white/5 rounded-full ">
         <CopyValue value={address} />
       </div>
       <Link
         to={getExplorerLink(address, chainId, ExplorerDataType.TOKEN)}
         target="_blank"
+        className="p-1 bg-muted dark:bg-white/5 rounded-full"
       >
         <ArrowUpRight size={16} />
       </Link>

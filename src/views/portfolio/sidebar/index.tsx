@@ -262,11 +262,11 @@ const PortfolioHeader = () => {
                   {shortenAddress(account.address)}
                 </span>
                 <div className="flex items-center gap-[6px]">
-                  <div className="flex items-center rounded-full bg-muted p-1.5 hover:bg-gray-500/20 transition-colors duration-200">
+                  <div className="flex items-center rounded-full bg-black/5 dark:bg-white/5 p-1.5 hover:bg-gray-500/20 transition-colors duration-200">
                     <Copy value={account.address} size={12} side="bottom" />
                   </div>
                   <div
-                    className="flex items-center rounded-full border p-1 border-red-50 text-red-500 bg-red-50 hover:bg-red-500/20 transition-colors duration-200"
+                    className="flex items-center rounded-full p-1 text-red-500 bg-red-500/10 hover:bg-red-500/20 transition-colors duration-200"
                     role="button"
                     onClick={handleAccountModal}
                   >
