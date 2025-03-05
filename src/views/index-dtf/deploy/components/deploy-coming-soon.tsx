@@ -63,7 +63,7 @@ const DeployComingSoon = () => {
           <SocialMediaInput />
         </div>
       </div>
-      <div className="rounded-3xl flex-grow h-[calc(100vh-132px)] hidden max-w-[50%] max-h-[940px] lg:block">
+      <div className="rounded-3xl flex-grow h-[calc(100vh-132px)] hidden max-w-[50%]  lg:block">
         <img
           src={isDarkMode ? '/imgs/GM-dark.svg' : '/imgs/GM-light.svg'}
           className="w-full h-full object-cover object-center rounded-3xl"
