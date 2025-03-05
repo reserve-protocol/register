@@ -31,7 +31,7 @@ const DeployerHeader = () => {
         role="button"
       >
         <Flower size={16} strokeWidth={2} />
-        <div>Looking for yield DTFs?</div>
+        <div>Looking for Yield DTFs?</div>
         <div className="rounded-full p-0.5 bg-primary text-white">
           <ArrowUpRight size={12} strokeWidth={2} />
         </div>
