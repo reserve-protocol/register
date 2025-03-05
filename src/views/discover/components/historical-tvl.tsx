@@ -1,4 +1,3 @@
-import RootIcon from '@/components/icons/RootIcon'
 import { Skeleton } from '@/components/ui/skeleton'
 import ChainLogo from 'components/icons/ChainLogo'
 import SmallRootIcon from 'components/icons/SmallRootIcon'
@@ -36,19 +35,19 @@ import { trackClick } from '@/hooks/useTrackPage'
 
 const COLORS: Record<string, any> = {
   ethereum: {
-    fill: '#2150A9',
+    fill: 'hsl(var(--primary))',
     // stroke: '#fff',
-    stroke: '#2150A9',
+    stroke: 'hsl(var(--primary))',
   },
   base: {
-    fill: '#2150A9',
+    fill: 'hsl(var(--primary))',
     // stroke: '#fff',
-    stroke: '#2150A9',
+    stroke: 'hsl(var(--primary))',
   },
   arbitrum: {
-    fill: '#2150A9',
+    fill: 'hsl(var(--primary))',
     // stroke: '#fff',
-    stroke: '#2150A9',
+    stroke: 'hsl(var(--primary))',
   },
 }
 
