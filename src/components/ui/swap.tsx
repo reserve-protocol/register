@@ -140,7 +140,7 @@ const TokenSelector = ({
               />
               <span>{symbol}</span>
             </div>
-            <div className="flex items-center rounded-full bg-white dark:bg-primary/40 dark:text-white  p-0.5">
+            <div className="flex items-center rounded-full bg-white dark:bg-primary/20 dark:text-white  p-0.5">
               {open ? (
                 <ChevronUp className="h-5 w-5" />
               ) : (
@@ -193,7 +193,7 @@ const MaxButton = ({ balance, onMax }: Pick<SwapItem, 'balance' | 'onMax'>) => (
     <span className="font-bold">{balance}</span>
     <Button
       variant="ghost"
-      className="h-6 rounded-full ml-1 bg-primary/10 text-primary/80 hover:bg-primary/15 hover:text-primary/80 font-semibold"
+      className="h-6 rounded-full ml-1 bg-primary/15 text-primary/80 hover:bg-primary/15 hover:text-primary/80 font-semibold"
       size="xs"
       onClick={onMax}
     >
