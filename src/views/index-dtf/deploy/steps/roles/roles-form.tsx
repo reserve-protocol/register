@@ -1,5 +1,7 @@
 import { Asterisk, Image, MousePointerClick, ShieldHalf } from 'lucide-react'
 import InputWithTitle from '../../components/input-with-title'
+import { useAtomValue } from 'jotai'
+import { walletAtom } from '@/state/atoms'
 
 const FORMS = [
   {
@@ -48,6 +50,7 @@ const FORMS = [
 ]
 
 const RolesForm = () => {
+  const wallet = useAtomValue(walletAtom)
   return (
     <div className="px-2 mb-2">
       <div className="flex flex-col gap-2">
