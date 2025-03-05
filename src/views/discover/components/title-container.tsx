@@ -18,7 +18,7 @@ const TitleContainer = ({
     >
       <Hash className="flex-shrink-0 hidden sm:block" size={16} />
       <Separator orientation="horizontal" className="flex-1 hidden sm:flex" />
-      <h2 className="flex-shrink-0 text-primary text-base  sm:text-2xl font-semibold whitespace-nowrap">
+      <h2 className="flex-shrink-0 text-primary text-xl sm:text-2xl font-semibold whitespace-nowrap">
         {title}
       </h2>
       <Separator orientation="horizontal" className="flex-1 hidden sm:flex" />

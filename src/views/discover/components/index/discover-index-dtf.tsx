@@ -12,7 +12,7 @@ const DiscoverIndexDTF = () => {
   }
 
   return (
-    <div className="flex flex-col gap-1 p-1 rounded-4xl bg-secondary">
+    <div className="flex flex-col gap-0.5 lg:gap-1 p-1 rounded-4xl bg-secondary">
       <DTFFilters />
       <div className="overflow-auto">
         <IndexDTFTable data={data} />

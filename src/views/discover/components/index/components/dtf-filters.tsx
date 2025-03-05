@@ -29,7 +29,7 @@ const SingleToggleFilter = ({
       value={value}
       onValueChange={onValueChange}
       className={cn(
-        'bg-card rounded-bl-2xl rounded-br-2xl sm:rounded-3xl px-4 py-4',
+        'bg-card rounded-bl-3xl rounded-br-3xl sm:rounded-3xl px-4 py-4',
 
         className
       )}
@@ -95,7 +95,7 @@ export const SearchFilter = () => {
       placeholder="Search by name, ticker, tag or collateral"
       value={search}
       onChange={(e) => setSearch(e.target.value)}
-      className="flex-grow [&_input]:border-none sm:[&_input]:rounded-3xl"
+      className="flex-grow [&_input]:border-none [&_input]:rounded-none [&_input]:rounded-tl-3xl [&_input]:rounded-tr-3xl sm:[&_input]:rounded-3xl"
     />
   )
 }
