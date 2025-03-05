@@ -1,3 +1,4 @@
+import binanceWallet from '@binance/w3w-rainbow-connector-v2'
 import {
   DisclaimerComponent,
   RainbowKitProvider,
@@ -6,7 +7,6 @@ import {
 } from '@rainbow-me/rainbowkit'
 import '@rainbow-me/rainbowkit/styles.css'
 import {
-  binanceWallet,
   bitgetWallet,
   braveWallet,
   coinbaseWallet,
