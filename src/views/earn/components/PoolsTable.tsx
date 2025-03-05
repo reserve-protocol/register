@@ -22,7 +22,7 @@ const PoolsTable = ({ data, compact = false, ...props }: Props) => {
   )
 
   return (
-    <div className="bg-secondary p-1 rounded-4xl">
+    <div className="bg-secondary p-1 rounded-4xl overflow-hidden">
       <Table
         sorting
         sortBy={[{ id: 'apy', desc: true }]}
