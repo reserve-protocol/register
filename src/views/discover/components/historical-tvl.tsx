@@ -35,19 +35,19 @@ import { trackClick } from '@/hooks/useTrackPage'
 
 const COLORS: Record<string, any> = {
   ethereum: {
-    fill: 'hsl(var(--primary))',
+    fill: 'hsl(var(--tvl))',
     // stroke: '#fff',
-    stroke: 'hsl(var(--primary))',
+    stroke: 'hsl(var(--tvl))',
   },
   base: {
-    fill: 'hsl(var(--primary))',
+    fill: 'hsl(var(--tvl))',
     // stroke: '#fff',
-    stroke: 'hsl(var(--primary))',
+    stroke: 'hsl(var(--tvl))',
   },
   arbitrum: {
-    fill: 'hsl(var(--primary))',
+    fill: 'hsl(var(--tvl))',
     // stroke: '#fff',
-    stroke: 'hsl(var(--primary))',
+    stroke: 'hsl(var(--tvl))',
   },
 }
 
@@ -162,7 +162,7 @@ const Heading = ({ dtfStats }: { dtfStats?: DTFStats }) => {
 
   return (
     <>
-      <div className="absolute top-3 sm:top-8 left-0 sm:left-0 right-3 text-primary px-4 sm:px-6 md:px-0 w-auto sm:w-[560px]">
+      <div className="absolute top-3 sm:top-8 left-0 sm:left-0 right-3 text-tvl px-4 sm:px-6 md:px-0 w-auto sm:w-[560px]">
         <img src={tabIndex} className="rounded-full h-6 w-6 sm:h-11 sm:w-11" />
         <h2 className="sm:text-xl text-base mt-6 mb-4 font-light leading-none">
           TVL in Reserve
@@ -177,7 +177,7 @@ const Heading = ({ dtfStats }: { dtfStats?: DTFStats }) => {
             <Link target="_blank" to={DUNE_DASHBOARD}>
               <Button
                 variant="none"
-                className="ml-3  w-10 h-10 sm:w-[44px] sm:h-[44px] p-0 bg-primary/15 text-primary hover:bg-primary/20"
+                className="ml-3  w-10 h-10 sm:w-[44px] sm:h-[44px] p-0 bg-tvl/10 text-tvl hover:bg-primary/20"
                 size="icon-rounded"
               >
                 <ArrowRight className="-rotate-45" size={24} />
