@@ -144,6 +144,10 @@ const Account = () => {
                           border: '1px solid',
                           borderColor: 'border',
                           borderRadius: '12px',
+                          '&:hover': {
+                            borderColor: 'primary',
+                            color: 'primary',
+                          },
                         }}
                       >
                         <Wallet size={16} strokeWidth={1.5} />
