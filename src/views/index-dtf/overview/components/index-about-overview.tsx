@@ -270,7 +270,7 @@ const TokenSocials = () => {
         <Link
           to={data.dtf.prospectus}
           target="_blank"
-          className="flex items-center gap-2 border rounded-full py-1 px-2 text-sm hover:bg-primary/10 hover:text-primary"
+          className="flex items-center gap-1 border rounded-full py-1 px-2.5 text-sm hover:bg-primary/10 hover:text-primary"
         >
           <FileText size={14} />
           DTF Factsheet
@@ -283,7 +283,7 @@ const TokenSocials = () => {
               key={key}
               to={value}
               target="_blank"
-              className="flex items-center gap-2 border rounded-full py-1 px-2 text-sm hover:bg-primary/10 hover:text-primary"
+              className="flex items-center gap-1 border rounded-full py-1.5 px-2.5 text-sm hover:bg-primary/10 hover:text-primary"
             >
               {SOCIAL_MAP[key].icon}
               {SOCIAL_MAP[key].label}
