@@ -20,6 +20,7 @@ export type BasicInputProps = {
   highlightLabel?: boolean
   decimalPlaces?: number
   autoFocus?: boolean
+  inputProps?: React.ComponentProps<typeof Input>,
 }
 
 const BasicInput = ({
@@ -33,6 +34,7 @@ const BasicInput = ({
   highlightLabel = false,
   autoFocus = false,
   decimalPlaces,
+  inputProps,
   ...props
 }: React.HTMLAttributes<HTMLDivElement> & BasicInputProps) => {
   const form = useFormContext()
@@ -85,6 +87,7 @@ const BasicInput = ({
                 endAdornment={labelPosition === 'end' ? adornment : undefined}
                 className="px-1 text-base [&:focus::placeholder]:opacity-0 [&:focus::placeholder]:transition-opacity"
                 {...field}
+                {...inputProps}
                 value={field.value ?? defaultValue}
                 disabled={disabled}
                 onFocus={(e) => e.target.select()}
