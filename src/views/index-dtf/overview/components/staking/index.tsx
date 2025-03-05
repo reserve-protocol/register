@@ -21,12 +21,17 @@ import {
   LockKeyhole,
   LockKeyholeOpen,
   OctagonAlert,
+  Pencil,
+  Undo2,
+  Vote,
 } from 'lucide-react'
-import { ReactNode, useEffect } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { useReadContract } from 'wagmi'
 import {
+  currentDelegateAtom,
   currentStakingTabAtom,
+  delegateAtom,
   lockCheckboxAtom,
   portfolioStTokenAtom,
   stTokenAtom,
@@ -38,9 +43,12 @@ import {
   unlockDelayAtom,
 } from './atoms'
 import LockView from './lock'
-import SubmitLockButton from './lock/submit-lock-button'
+import SubmitLockButton, { DelegateButton } from './lock/submit-lock-button'
 import UnlockView from './unlock'
 import SubmitUnlockButton from './unlock/submit-unlock-button'
+import { shortenAddress } from '@/utils'
+import { isAddress, zeroAddress } from 'viem'
+import { Input } from '@/components/ui/input'
 
 const TABS = [
   {
@@ -63,7 +71,7 @@ const LockCheckbox = () => {
   if (!stToken || !delay) return null
 
   return (
-    <label className="flex flex-col gap-2 p-4 cursor-pointer">
+    <label className="flex flex-col gap-2 px-4 py-6 cursor-pointer">
       <OctagonAlert size={16} className="text-warning" />
       <div className="flex items-end gap-2 justify-between">
         <div className="max-w-sm">
@@ -116,11 +124,95 @@ const UnlockProcess = () => {
   )
 }
 
+const Delegate = () => {
+  const account = useAtomValue(walletAtom)
+  const stToken = useAtomValue(stTokenAtom)
+  const setCurrentDelegate = useSetAtom(currentDelegateAtom)
+  const [delegate, setDelegate] = useAtom(delegateAtom)
+  const [delegateVisible, setDelegateVisible] = useState(false)
+
+  const isValidDelegate = isAddress(delegate, { strict: false })
+
+  const { data: delegates } = useWatchReadContract({
+    abi: dtfIndexStakingVault,
+    functionName: 'delegates',
+    address: stToken?.id,
+    args: [account!],
+    query: { enabled: !!account },
+  })
+
+  useEffect(() => {
+    const delegateOrSelf =
+      delegates && delegates !== zeroAddress ? delegates : (account ?? '')
+    setDelegate(delegateOrSelf)
+    setCurrentDelegate(delegateOrSelf)
+  }, [delegates, account, setDelegate, setCurrentDelegate])
+
+  return (
+    <>
+      <div className="px-2 border-t border-border">
+        <div className="flex gap-2 items-center justify-between px-2 pt-6 pb-4">
+          <div className="flex gap-2 items-center">
+            <div className="rounded-full border border-black p-1 w-max">
+              <Vote size={16} />
+            </div>
+            <div>Voting Power Delegation</div>
+          </div>
+
+          {!delegateVisible ? (
+            <div
+              className={`flex gap-1.5 items-center text-primary ${
+                !account ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
+              }`}
+              role="button"
+              onClick={() => !!account && setDelegateVisible(true)}
+            >
+              <div>
+                {delegates && delegates !== zeroAddress
+                  ? shortenAddress(delegates)
+                  : 'Delegate to self'}
+              </div>
+              <Pencil size={14} />
+            </div>
+          ) : (
+            <div
+              className="flex gap-1.5 items-center text-red-700/70 cursor-pointer"
+              role="button"
+              onClick={() => setDelegateVisible(false)}
+            >
+              Revert
+              <Undo2 size={14} />
+            </div>
+          )}
+        </div>
+      </div>
+      {delegateVisible && (
+        <div>
+          <Input
+            placeholder="Delegate to address"
+            value={delegate}
+            onChange={(e) => setDelegate(e.target.value)}
+            className="rounded-xl bg-card px-4 text-base h-12"
+          />
+          {!isValidDelegate && (
+            <div className="text-red-700/70 text-sm px-4 py-1">
+              Invalid address
+            </div>
+          )}
+        </div>
+      )}
+    </>
+  )
+}
 const Staking = ({ children }: { children?: ReactNode }) => {
   const wallet = useAtomValue(walletAtom)
   const stToken = useAtomValue(stTokenAtom)
   const [currentTab, setCurrentTab] = useAtom(currentStakingTabAtom)
   const [open, setOpen] = useAtom(stakingSidebarOpenAtom)
+  const delegate = useAtomValue(delegateAtom)
+  const currentDelegate = useAtomValue(currentDelegateAtom)
+  const isSelfDelegate = delegate === wallet
+  const triggerDelegateButton = !isSelfDelegate && delegate !== currentDelegate
   const isLock = currentTab === 'lock'
   const setInput = useSetAtom(stakingInputAtom)
   const setUnderlyingPrice = useSetAtom(underlyingStTokenPriceAtom)
@@ -227,8 +319,19 @@ const Staking = ({ children }: { children?: ReactNode }) => {
           </TabsContent>
         </Tabs>
         <DrawerFooter className="flex-grow justify-end mb-2">
-          {isLock ? <LockCheckbox /> : <UnlockProcess />}
-          {isLock ? <SubmitLockButton /> : <SubmitUnlockButton />}
+          <div>
+            {isLock ? <LockCheckbox /> : <UnlockProcess />}
+            {isLock && <Delegate />}
+          </div>
+          {isLock ? (
+            triggerDelegateButton ? (
+              <DelegateButton />
+            ) : (
+              <SubmitLockButton />
+            )
+          ) : (
+            <SubmitUnlockButton />
+          )}
         </DrawerFooter>
       </DrawerContent>
     </Drawer>

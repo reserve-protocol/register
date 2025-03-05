@@ -23,7 +23,10 @@ const useContractWrite = <
     !isWalletInvalid ? (call as UseSimulateContractParameters) : undefined
   )
 
-  if (call.args) {
+  const enabled =
+    call?.query?.enabled !== undefined ? call?.query?.enabled : true
+
+  if (call.args && enabled) {
     console.log(
       'callData',
       encodeFunctionData({
@@ -35,7 +38,7 @@ const useContractWrite = <
   }
 
   const { data: gas } = useEstimateGas(
-    data?.request
+    data?.request && enabled
       ? {
           to: data.request.address,
           data: encodeFunctionData({

@@ -6,15 +6,62 @@ import { portfolioSidebarOpenAtom } from '@/views/portfolio/atoms'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
 import { useEffect } from 'react'
-import { erc20Abi, parseUnits } from 'viem'
+import { Address, erc20Abi, isAddress, parseUnits } from 'viem'
 import { useReadContract, useWaitForTransactionReceipt } from 'wagmi'
 import {
+  currentDelegateAtom,
+  delegateAtom,
   lockCheckboxAtom,
   stakingInputAtom,
   stakingSidebarOpenAtom,
   stTokenAtom,
   underlyingBalanceAtom,
 } from '../atoms'
+
+export const DelegateButton = () => {
+  const account = useAtomValue(walletAtom)
+  const stToken = useAtomValue(stTokenAtom)!
+  const delegate = useAtomValue(delegateAtom)
+  const chainId = useAtomValue(chainIdAtom)
+  const isValidDelegate = isAddress(delegate, { strict: false })
+  const setCurrentDelegate = useSetAtom(currentDelegateAtom)
+
+  const { isReady, gas, hash, validationError, error, isLoading, write } =
+    useContractWrite({
+      abi: dtfIndexStakingVault,
+      functionName: 'delegate',
+      address: stToken.id,
+      args: [delegate as Address],
+      chainId,
+      query: { enabled: !!account && isValidDelegate },
+    })
+
+  const { data: receipt, error: txError } = useWaitForTransactionReceipt({
+    hash,
+    chainId,
+  })
+
+  useEffect(() => {
+    if (receipt?.status === 'success') {
+      setCurrentDelegate(delegate)
+    }
+  }, [receipt, delegate, setCurrentDelegate])
+
+  return (
+    <div>
+      <TransactionButton
+        disabled={!account || !isValidDelegate || !isReady}
+        gas={gas}
+        loading={isLoading || !!hash || (hash && !receipt)}
+        loadingText={!!hash ? 'Confirming tx...' : 'Pending, sign in wallet'}
+        onClick={write}
+        text={`Delegate ${stToken.underlying.symbol}`}
+        fullWidth
+        error={validationError || error || txError}
+      />
+    </div>
+  )
+}
 
 const SubmitLockButton = () => {
   const account = useAtomValue(walletAtom)
@@ -23,10 +70,14 @@ const SubmitLockButton = () => {
   const balance = useAtomValue(underlyingBalanceAtom)
   const amountToLock = parseUnits(input, stToken.underlying.decimals)
   const checkbox = useAtomValue(lockCheckboxAtom)
+  const delegate = useAtomValue(delegateAtom)
   const resetInput = useResetAtom(stakingInputAtom)
   const setPortfolioSidebarOpen = useSetAtom(portfolioSidebarOpenAtom)
   const setStakingSidebarOpen = useSetAtom(stakingSidebarOpenAtom)
   const chainId = useAtomValue(chainIdAtom)
+
+  const isValidDelegate = isAddress(delegate, { strict: false })
+  const isSelfDelegate = delegate === account
 
   const {
     data: allowance,
@@ -38,7 +89,7 @@ const SubmitLockButton = () => {
     address: stToken.underlying.address,
     args: [account!, stToken.id],
     chainId,
-    query: { enabled: !!account },
+    query: { enabled: !!account && isValidDelegate },
   })
 
   const hasAllowance = (allowance || 0n) >= amountToLock
@@ -58,7 +109,11 @@ const SubmitLockButton = () => {
     args: [stToken.id, amountToLock],
     chainId,
     query: {
-      enabled: !hasAllowance && !!balance && amountToLock <= balance,
+      enabled:
+        !hasAllowance &&
+        !!balance &&
+        amountToLock <= balance &&
+        isValidDelegate,
     },
   })
 
@@ -73,11 +128,13 @@ const SubmitLockButton = () => {
   const { isReady, gas, hash, validationError, error, isLoading, write } =
     useContractWrite({
       abi: dtfIndexStakingVault,
-      functionName: 'depositAndDelegate',
+      functionName: isSelfDelegate ? 'depositAndDelegate' : 'deposit',
       address: stToken.id,
-      args: [amountToLock],
-      query: { enabled: readyToSubmit },
+      args: isSelfDelegate
+        ? [amountToLock]
+        : [amountToLock, account as Address],
       chainId,
+      query: { enabled: !!account && readyToSubmit && isValidDelegate },
     })
 
   const { data: receipt, error: txError } = useWaitForTransactionReceipt({
@@ -97,6 +154,7 @@ const SubmitLockButton = () => {
     <div>
       <TransactionButton
         disabled={
+          !isValidDelegate ||
           !checkbox ||
           receipt?.status === 'success' ||
           amountToLock === 0n ||
