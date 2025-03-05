@@ -146,7 +146,7 @@ const Account = () => {
                           borderRadius: '12px',
                         }}
                       >
-                        <Wallet size={16} />
+                        <Wallet size={16} strokeWidth={1.5} />
                       </Box>
                     </Box>
                   </PortfolioSidebar>
