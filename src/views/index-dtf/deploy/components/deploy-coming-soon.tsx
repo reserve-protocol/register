@@ -6,7 +6,7 @@ import SocialMediaInput from './social-media-input'
 const DeployComingSoon = () => {
   return (
     <div className="container flex gap-1 p-1 mt-1 lg:mt-6 bg-secondary rounded-4xl">
-      <div className="flex flex-col flex-grow relative min-w-full lg:min-w-[420px] bg-card rounded-3xl p-3 lg:p-6">
+      <div className="flex flex-col flex-grow relative min-w-full lg:min-w-[420px] bg-card rounded-3xl p-3 lg:p-6 h-[calc(100vh-132px)]">
         <div className="flex items-center gap-4 mb-6">
           <div className="border rounded-full border-foreground p-2 mr-auto">
             <Globe size={14} />
