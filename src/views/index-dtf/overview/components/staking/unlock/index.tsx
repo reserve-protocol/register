@@ -1,11 +1,15 @@
 import Swap from '@/components/ui/swap'
-import { indexDTFAtom } from '@/state/dtf/atoms'
 import { formatCurrency } from '@/utils'
 import { useAtom, useAtomValue } from 'jotai'
-import { inputPriceAtom, stakingInputAtom, unlockBalanceAtom } from '../atoms'
+import {
+  inputPriceAtom,
+  stTokenAtom,
+  stakingInputAtom,
+  unlockBalanceAtom,
+} from '../atoms'
 
 const UnlockView = () => {
-  const indexDTF = useAtomValue(indexDTFAtom)
+  const stToken = useAtomValue(stTokenAtom)
   const [input, onChange] = useAtom(stakingInputAtom)
   const inputPrice = useAtomValue(inputPriceAtom)
   const unlockBalance = useAtomValue(unlockBalanceAtom)
@@ -14,7 +18,7 @@ const UnlockView = () => {
     onChange(unlockBalance)
   }
 
-  if (!indexDTF || !indexDTF.stToken) {
+  if (!stToken) {
     return null
   }
 
@@ -22,8 +26,8 @@ const UnlockView = () => {
     <Swap
       from={{
         title: 'You unlock:',
-        address: indexDTF.stToken.id,
-        symbol: indexDTF.stToken.token.symbol,
+        address: stToken.id,
+        symbol: stToken.token.symbol,
         value: input,
         onChange,
         price: `$${formatCurrency(inputPrice)}`,
@@ -31,8 +35,8 @@ const UnlockView = () => {
         onMax,
       }}
       to={{
-        address: indexDTF.stToken.underlying.address,
-        symbol: indexDTF.stToken.underlying.symbol,
+        address: stToken.underlying.address,
+        symbol: stToken.underlying.symbol,
         price: `$${formatCurrency(inputPrice)}`,
         value: input,
       }}
