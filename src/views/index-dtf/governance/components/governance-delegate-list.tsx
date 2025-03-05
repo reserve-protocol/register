@@ -19,7 +19,7 @@ const GovernanceDelegateList = () => {
   return (
     <div className="rounded-4xl bg-secondary ">
       <div className="py-4 px-5">
-        <h2 className="font-semibold text-xl text-primary">
+        <h2 className="font-semibold text-xl text-primary dark:text-muted-foreground">
           Top voting addresses
         </h2>
       </div>

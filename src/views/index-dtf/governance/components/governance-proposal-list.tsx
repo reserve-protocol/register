@@ -32,7 +32,7 @@ const Header = () => {
 
   return (
     <div className="py-4 px-5 flex items-center gap-2">
-      <h1 className="font-semibold text-xl text-primary mr-auto">
+      <h1 className="font-semibold text-xl text-primary dark:text-muted-foreground mr-auto">
         Recent proposals
       </h1>
       {/* <Button variant="ghost" className="mr-auto" onClick={handleRefresh}>
