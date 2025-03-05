@@ -5,7 +5,7 @@ import { Trans } from '@lingui/macro'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import ChainLogo from 'components/icons/ChainLogo'
 import { useAtomValue } from 'jotai'
-import { AlertCircle, Menu, Power } from 'lucide-react'
+import { AlertCircle, Menu, Wallet, Power } from 'lucide-react'
 import { ReactNode } from 'react'
 import { chainIdAtom, selectedRTokenAtom } from 'state/atoms'
 import { Box, Card, Flex, Text } from 'theme-ui'
@@ -120,11 +120,10 @@ const Account = () => {
                       variant="layout.verticalAlign"
                       sx={{
                         justifyContent: 'center',
-                        height: '38px',
                         cursor: 'pointer',
                         fontSize: '16px',
                       }}
-                      p="2"
+
                       // onClick={() => setVisible(true)}
                     >
                       {!invalidChain ? (
@@ -138,7 +137,17 @@ const Account = () => {
                       >
                         {account.displayName}
                       </Text>
-                      <Menu className="ml-2" size={16} />
+                      <Box
+                        ml={3}
+                        p={2}
+                        sx={{
+                          border: '1px solid',
+                          borderColor: 'border',
+                          borderRadius: '12px',
+                        }}
+                      >
+                        <Wallet size={16} />
+                      </Box>
                     </Box>
                   </PortfolioSidebar>
                 </ErrorWrapper>
