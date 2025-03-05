@@ -165,7 +165,7 @@ const CoverImage = () => {
 
 const LandingMint = (props: React.HTMLAttributes<HTMLDivElement>) => {
   return (
-    <div className="hidden xl:flex xl:flex-col xl:gap-1 relative" {...props}>
+    <div className="hidden xl:flex xl:flex-col xl:gap-2 relative" {...props}>
       <CoverImage />
       <div className="w-[450px] sticky top-0 rounded-4xl bg-muted p-1">
         <MintBox />
