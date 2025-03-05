@@ -89,7 +89,7 @@ function CustomTooltip({ payload, active, dataType }: any) {
     const formattedValue =
       dataType === 'price' ? formatCurrency(value, 5) : formatCurrency(value, 2)
     return (
-      <Card backgroundColor="white">
+      <Card backgroundColor="cardBackground">
         <InfoBox title={'$' + formattedValue} subtitle={subtitle} />
       </Card>
     )
@@ -175,7 +175,7 @@ const PriceChart = () => {
     history?.timeseries.filter(({ price }) => Boolean(price)) || []
 
   return (
-    <div className="lg:rounded-4xl lg:rounded-b-none bg-[#000] dark:bg-background lg:dark:bg-muted w-full text-[#fff] dark:text-secondary-foreground p-3 sm:p-6 pb-20   h-80 sm:h-[542px]">
+    <div className="lg:rounded-4xl lg:rounded-b-none bg-[#000] dark:bg-background lg:dark:bg-muted w-full text-[#fff] dark:text-secondary-foreground p-3 sm:p-6 pb-20 h-80 sm:h-[538px]">
       <div className="mb-0 sm:mb-3">
         <h4 className=" mb-2 hidden sm:block">{TITLES[dataType]}</h4>
         {/* <Selectors className="flex sm:hidden mb-2" /> */}
@@ -234,7 +234,7 @@ const PriceChart = () => {
           </ChartContainer>
         )}
       </div>
-      <div className="sm:flex mt-8 items-center gap-1 hidden">
+      <div className="sm:flex mt-7 items-center gap-1 hidden">
         <TimeRangeSelector />
 
         <div className="sm:flex items-center gap-1 hidden justify-end">
