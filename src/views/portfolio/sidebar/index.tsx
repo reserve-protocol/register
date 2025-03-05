@@ -49,6 +49,7 @@ import {
 import {
   ClaimAllButton,
   IndexDTFAction,
+  ModifyLockAction,
   RewardAction,
   StakeRSRAction,
   UnlockAction,
@@ -313,7 +314,7 @@ const VoteLocked = () => {
       <h2 className="mb-3 text-base font-bold">Vote Locked</h2>
       {stTokens.map((stToken) => (
         <TokenRow
-          key={stToken.address}
+          key={`${stToken.address}-${stToken.chainId}`}
           token={stToken}
           chainId={stToken.chainId}
           amount={stToken.amount}
@@ -324,11 +325,13 @@ const VoteLocked = () => {
               : undefined
           }
         >
-          {!!accountRewards[stToken.address]?.length && (
+          {!!accountRewards[stToken.address]?.length ? (
             <VoteLockAction
               stToken={stToken.address}
               chainId={stToken.chainId}
             />
+          ) : (
+            <ModifyLockAction stToken={stToken} />
           )}
         </TokenRow>
       ))}
@@ -647,10 +650,13 @@ const PortfolioRewardsContent = () => {
               underlying={stToken.underlying}
               className="[&>div]:flex-col [&>div]:items-start p-2 text-xl items-end mb-1.5"
             >
-              <ClaimAllButton
-                stTokenAddress={stToken.address}
-                rewards={stToken.rewards}
-              />
+              <div className="flex items-center gap-1">
+                <ModifyLockAction stToken={stToken} />
+                <ClaimAllButton
+                  stTokenAddress={stToken.address}
+                  rewards={stToken.rewards}
+                />
+              </div>
             </TokenRow>
             {stToken.rewards.map((reward, idx) => (
               <TokenRow

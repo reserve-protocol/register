@@ -12,10 +12,10 @@ import { useAssetPrice } from '@/hooks/useAssetPrices'
 import useERC20Balance from '@/hooks/useERC20Balance'
 import { useWatchReadContract } from '@/hooks/useWatchReadContract'
 import { walletAtom } from '@/state/atoms'
-import { indexDTFAtom } from '@/state/dtf/atoms'
 import { ROUTES } from '@/utils/constants'
 import { useTrackIndexDTFClick } from '@/views/index-dtf/hooks/useTrackIndexDTFPage'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { useResetAtom } from 'jotai/utils'
 import { Asterisk, Minus, OctagonAlert, Plus } from 'lucide-react'
 import { ReactNode, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
@@ -23,6 +23,8 @@ import { useReadContract } from 'wagmi'
 import {
   currentStakingTabAtom,
   lockCheckboxAtom,
+  portfolioStTokenAtom,
+  stTokenAtom,
   stakingInputAtom,
   stakingSidebarOpenAtom,
   underlyingBalanceAtom,
@@ -49,11 +51,11 @@ const TABS = [
 ]
 
 const LockCheckbox = () => {
-  const indexDTF = useAtomValue(indexDTFAtom)
+  const stToken = useAtomValue(stTokenAtom)
   const delay = useAtomValue(unlockDelayAtom)
   const [checkbox, setCheckbox] = useAtom(lockCheckboxAtom)
 
-  if (!indexDTF?.stToken || !delay) return null
+  if (!stToken || !delay) return null
 
   return (
     <label className="flex flex-col gap-2 p-4 cursor-pointer">
@@ -64,8 +66,8 @@ const LockCheckbox = () => {
             I'm aware of the {delay}-day unlock delay
           </div>
           <div className="text-sm text-legend">
-            If you decide to unlock {indexDTF.stToken.underlying.symbol} in the
-            future, you'll need to wait {delay} days until you can complete the
+            If you decide to unlock {stToken.underlying.symbol} in the future,
+            you'll need to wait {delay} days until you can complete the
             withdrawal
           </div>
         </div>
@@ -81,10 +83,10 @@ const LockCheckbox = () => {
 }
 
 const UnlockProcess = () => {
-  const indexDTF = useAtomValue(indexDTFAtom)
+  const stToken = useAtomValue(stTokenAtom)
   const delay = useAtomValue(unlockDelayAtom)
 
-  if (!indexDTF?.stToken || !delay) return null
+  if (!stToken || !delay) return null
 
   return (
     <div className="flex-grow flex flex-col gap-1 items-center justify-center">
@@ -103,15 +105,15 @@ const UnlockProcess = () => {
       <div className="text-primary mt-3">3.</div>
       <div className="text-md max-w-sm text-center -mt-1">
         Come back to your account balance page to withdraw your unlocked{' '}
-        {indexDTF.stToken.underlying.symbol}
+        {stToken.underlying.symbol}
       </div>
     </div>
   )
 }
 
-const Staking = ({ children }: { children: ReactNode }) => {
+const Staking = ({ children }: { children?: ReactNode }) => {
   const wallet = useAtomValue(walletAtom)
-  const indexDTF = useAtomValue(indexDTFAtom)
+  const stToken = useAtomValue(stTokenAtom)
   const [currentTab, setCurrentTab] = useAtom(currentStakingTabAtom)
   const [open, setOpen] = useAtom(stakingSidebarOpenAtom)
   const isLock = currentTab === 'lock'
@@ -121,6 +123,7 @@ const Staking = ({ children }: { children: ReactNode }) => {
   const setUnlockBalanceRaw = useSetAtom(unlockBalanceRawAtom)
   const setUnlockDelay = useSetAtom(unlockDelayAtom)
   const setCheckbox = useSetAtom(lockCheckboxAtom)
+  const resetPortfolioStToken = useResetAtom(portfolioStTokenAtom)
 
   const { pathname } = useLocation()
   const subpage = pathname.includes(ROUTES.GOVERNANCE)
@@ -129,18 +132,14 @@ const Staking = ({ children }: { children: ReactNode }) => {
 
   const { trackClick } = useTrackIndexDTFClick('overview', subpage)
 
-  const { data: priceResponse } = useAssetPrice(
-    indexDTF?.stToken?.underlying.address
-  )
+  const { data: priceResponse } = useAssetPrice(stToken?.underlying.address)
 
-  const { data: balance } = useERC20Balance(
-    indexDTF?.stToken?.underlying.address
-  )
+  const { data: balance } = useERC20Balance(stToken?.underlying.address)
 
   const { data: unlockBalanceRaw } = useWatchReadContract({
     abi: dtfIndexStakingVault,
     functionName: 'maxWithdraw',
-    address: indexDTF?.stToken?.id,
+    address: stToken?.id,
     args: [wallet ?? '0x'],
     query: { enabled: !!wallet },
   })
@@ -148,7 +147,7 @@ const Staking = ({ children }: { children: ReactNode }) => {
   const { data: delay } = useReadContract({
     abi: dtfIndexStakingVault,
     functionName: 'unstakingDelay',
-    address: indexDTF?.stToken?.id,
+    address: stToken?.id,
     args: [],
   })
 
@@ -177,17 +176,20 @@ const Staking = ({ children }: { children: ReactNode }) => {
         setInput('')
         setCheckbox(false)
         setOpen(false)
+        resetPortfolioStToken()
       }}
     >
-      <DrawerTrigger
-        asChild
-        onClick={() => {
-          trackClick('lock_govtoken')
-          setOpen(true)
-        }}
-      >
-        {children}
-      </DrawerTrigger>
+      {!!children && (
+        <DrawerTrigger
+          asChild
+          onClick={() => {
+            trackClick('lock_govtoken')
+            setOpen(true)
+          }}
+        >
+          {children}
+        </DrawerTrigger>
+      )}
       <DrawerContent>
         <Tabs
           value={currentTab}

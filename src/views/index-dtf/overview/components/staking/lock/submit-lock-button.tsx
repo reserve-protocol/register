@@ -2,7 +2,7 @@ import dtfIndexStakingVault from '@/abis/dtf-index-staking-vault'
 import TransactionButton from '@/components/old/button/TransactionButton'
 import useContractWrite from '@/hooks/useContractWrite'
 import { chainIdAtom, walletAtom } from '@/state/atoms'
-import { indexDTFAtom } from '@/state/dtf/atoms'
+import { portfolioSidebarOpenAtom } from '@/views/portfolio/atoms'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
 import { useEffect } from 'react'
@@ -12,13 +12,13 @@ import {
   lockCheckboxAtom,
   stakingInputAtom,
   stakingSidebarOpenAtom,
+  stTokenAtom,
   underlyingBalanceAtom,
 } from '../atoms'
-import { portfolioSidebarOpenAtom } from '@/views/portfolio/atoms'
 
 const SubmitLockButton = () => {
   const account = useAtomValue(walletAtom)
-  const stToken = useAtomValue(indexDTFAtom)!.stToken!
+  const stToken = useAtomValue(stTokenAtom)!
   const input = useAtomValue(stakingInputAtom)
   const balance = useAtomValue(underlyingBalanceAtom)
   const amountToLock = parseUnits(input, stToken.underlying.decimals)

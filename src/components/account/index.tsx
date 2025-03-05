@@ -1,5 +1,6 @@
 import Button from '@/components/old/button'
 import { MouseoverTooltipContent } from '@/components/old/tooltip'
+import Staking from '@/views/index-dtf/overview/components/staking'
 import PortfolioSidebar from '@/views/portfolio/sidebar'
 import { Trans } from '@lingui/macro'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
@@ -134,6 +135,7 @@ const Account = () => {
                       <Menu className="ml-2" size={16} />
                     </Box>
                   </PortfolioSidebar>
+                  <Staking />
                 </ErrorWrapper>
               )
             })()}
