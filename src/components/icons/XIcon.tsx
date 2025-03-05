@@ -3,6 +3,7 @@ import { SVGProps } from 'react'
 const XIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
+    className="fill-current text-black dark:text-white"
     viewBox="0 0 30 30"
     width="30px"
     height="30px"

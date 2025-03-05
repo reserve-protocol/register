@@ -1,4 +1,3 @@
-import RootIcon from '@/components/icons/RootIcon'
 import { Skeleton } from '@/components/ui/skeleton'
 import ChainLogo from 'components/icons/ChainLogo'
 import SmallRootIcon from 'components/icons/SmallRootIcon'
@@ -36,19 +35,19 @@ import { trackClick } from '@/hooks/useTrackPage'
 
 const COLORS: Record<string, any> = {
   ethereum: {
-    fill: '#2150A9',
+    fill: 'hsl(var(--primary))',
     // stroke: '#fff',
-    stroke: '#2150A9',
+    stroke: 'hsl(var(--primary))',
   },
   base: {
-    fill: '#2150A9',
+    fill: 'hsl(var(--primary))',
     // stroke: '#fff',
-    stroke: '#2150A9',
+    stroke: 'hsl(var(--primary))',
   },
   arbitrum: {
-    fill: '#2150A9',
+    fill: 'hsl(var(--primary))',
     // stroke: '#fff',
-    stroke: '#2150A9',
+    stroke: 'hsl(var(--primary))',
   },
 }
 
@@ -163,9 +162,9 @@ const Heading = ({ dtfStats }: { dtfStats?: DTFStats }) => {
 
   return (
     <>
-      <div className="absolute top-3 sm:top-8 left-0 sm:left-0 right-3 text-primary px-4 md:px-6 2xl:px-0 w-auto sm:w-[560px]">
-        <img src={tabIndex} className="rounded-full h-6 w-6 sm:h-8 sm:w-8" />
-        <h2 className="sm:text-2xl text-base mt-6 mb-4 font-light leading-none">
+      <div className="absolute top-3 sm:top-8 left-0 sm:left-0 right-3 text-primary px-4 sm:px-6 md:px-0 w-auto sm:w-[560px]">
+        <img src={tabIndex} className="rounded-full h-6 w-6 sm:h-11 sm:w-11" />
+        <h2 className="sm:text-xl text-base mt-6 mb-4 font-light leading-none">
           TVL in Reserve
         </h2>
         {isLoading ? (
@@ -178,7 +177,7 @@ const Heading = ({ dtfStats }: { dtfStats?: DTFStats }) => {
             <Link target="_blank" to={DUNE_DASHBOARD}>
               <Button
                 variant="none"
-                className="ml-3  w-10 h-10 sm:w-[44px] sm:h-[44px] p-0 bg-primary/10 text-primary hover:bg-primary/20"
+                className="ml-3  w-10 h-10 sm:w-[44px] sm:h-[44px] p-0 bg-primary/15 text-primary hover:bg-primary/20"
                 size="icon-rounded"
               >
                 <ArrowRight className="-rotate-45" size={24} />
@@ -187,7 +186,7 @@ const Heading = ({ dtfStats }: { dtfStats?: DTFStats }) => {
           </div>
         )}
 
-        <div className="flex gap-2 mt-3 text-base sm:text-xl leading-none">
+        <div className="flex gap-2 mt-5 text-base sm:text-xl leading-none">
           <span className="font-light">Annualized protocol revenue:</span>
           {isLoading || revenue < 1000000 ? (
             <Skeleton className="h-6 w-14" />
@@ -202,10 +201,10 @@ const Heading = ({ dtfStats }: { dtfStats?: DTFStats }) => {
           )}
         </div>
       </div>
-      <div className="absolute hidden sm:block top-3 sm:top-8 right-4 2xl:right-2 text-primary">
+      <div className="absolute hidden sm:block top-3 sm:top-8 right-0 text-primary">
         <Button
           variant="outline-primary"
-          className="rounded-[50px] p-1 h-8 hover:bg-primary"
+          className="rounded-[50px] p-1 h-8 border border-primary hover:bg-primary"
           onClick={() => {
             trackClick('discover', 'video')
             window.open(DTF_VIDEO, '_blank')
@@ -214,7 +213,7 @@ const Heading = ({ dtfStats }: { dtfStats?: DTFStats }) => {
           <div className="rounded-full w-6 h-6 bg-primary text-primary flex items-center justify-center">
             <Play size={16} fill="#fff" />
           </div>
-          <span className="ml-1 mr-2">What are DTFs?</span>
+          <span className="ml-2 mr-2">What are DTFs?</span>
         </Button>
       </div>
     </>
@@ -291,7 +290,7 @@ const HistoricalTVLChart = ({ dtfStats }: { dtfStats?: DTFStats }) => {
 const HistoricalTVL = () => {
   const { data: dtfStats } = useDTFHistoricalTVL()
   return (
-    <div className="container px-0 2xl:px-6 h-80 sm:h-[520px]">
+    <div className="container px-0 md:px-6 2xl:px-6 h-80 sm:h-[580px]">
       <div className="relative h-full flex flex-col justify-end ">
         <div className="h-[160px] sm:h-[420px]">
           <HistoricalTVLChart dtfStats={dtfStats} />

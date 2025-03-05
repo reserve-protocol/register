@@ -94,7 +94,7 @@ const SocialMediaInput = () => {
 
   return (
     <div className="relative flex-grow min-w-[360px]">
-      <div className="absolute left-1 top-1/2 -translate-y-1/2 z-10 border-r pr-1">
+      <div className="absolute left-2 top-1/2 -translate-y-1/2 z-10 border-r pr-1">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
@@ -126,7 +126,7 @@ const SocialMediaInput = () => {
 
       <Input
         className={cn(
-          'pl-20 pr-28 h-10 bg-card',
+          'pl-20 pr-28 h-12 bg-card rounded-xl shadow-[0_4px_32px_rgba(0,0,0,0.05)]',
           submitted && 'text-muted-foreground'
         )}
         placeholder={selected.placeholder}

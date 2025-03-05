@@ -52,8 +52,8 @@ const Hero = () => (
           variant="title"
           sx={{
             fontSize: [5, 7],
-            fontWeight: 'bold',
-            color: 'accentInverted',
+            fontWeight: 'heading',
+            color: 'primary',
             lineHeight: ['36px', '62px'],
           }}
         >
@@ -61,7 +61,12 @@ const Hero = () => (
             Provide liquidity across DeFi & earn more with your DTFs
           </Trans>
         </Text>
-        <Text as="p" px={[2, 0]} sx={{ fontSize: [2, 3] }} mt={[3, 4]}>
+        <Text
+          as="p"
+          px={[2, 0]}
+          sx={{ color: 'primary', fontSize: [2, 3] }}
+          mt={[3, 4]}
+        >
           <Trans>
             DeFi yield opportunities for DTFs in Convex, Curve, Yearn & Beefy
           </Trans>

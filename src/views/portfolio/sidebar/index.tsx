@@ -262,11 +262,11 @@ const PortfolioHeader = () => {
                   {shortenAddress(account.address)}
                 </span>
                 <div className="flex items-center gap-[6px]">
-                  <div className="flex items-center rounded-full bg-muted p-1.5 hover:bg-gray-500/20 transition-colors duration-200">
+                  <div className="flex items-center rounded-full bg-black/5 dark:bg-white/5 p-1.5 hover:bg-gray-500/20 transition-colors duration-200">
                     <Copy value={account.address} size={12} side="bottom" />
                   </div>
                   <div
-                    className="flex items-center rounded-full border p-1 border-red-50 text-red-500 bg-red-50 hover:bg-red-500/20 transition-colors duration-200"
+                    className="flex items-center rounded-full p-1 text-red-500 bg-red-500/10 hover:bg-red-500/20 transition-colors duration-200"
                     role="button"
                     onClick={handleAccountModal}
                   >
@@ -287,14 +287,9 @@ const PortfolioSummary = () => {
   const totalAccountHoldings = useAtomValue(totalAccountHoldingsAtom)
 
   return (
-    <div className="p-6 pt-5 flex flex-col justify-center gap-3 sm:gap-8 text-primary">
-      <WalletOutlineIcon className="h-9 w-9 -ml-[1px] -mt-[1px]" />
-      <div className="flex flex-col justify-center gap-4">
-        <span className="text-base">Total Reserve holdings</span>
-        <span className="text-5xl">
-          ${formatCurrency(totalAccountHoldings)}
-        </span>
-      </div>
+    <div className="flex flex-col justify-center gap-4 p-6 pt-10 text-primary dark:text-foreground">
+      <span className="text-base">Total Reserve holdings</span>
+      <span className="text-5xl">${formatCurrency(totalAccountHoldings)}</span>
     </div>
   )
 }

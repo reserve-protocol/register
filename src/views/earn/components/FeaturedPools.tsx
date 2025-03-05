@@ -32,8 +32,8 @@ const FeaturedPools = () => {
           pl: 2,
           pr: 4,
           py: [5, 4],
-          borderRadius: '14px',
-          border: '3px solid',
+          borderRadius: '24px',
+          border: '4px solid',
           borderColor: 'contentBackground',
         }}
         mt={[1, 7]}
