@@ -2,8 +2,11 @@ import { Separator } from '@/components/ui/separator'
 import { ROUTES } from '@/utils/constants'
 import { Combine, Globe, Palette, Zap } from 'lucide-react'
 import SocialMediaInput from './social-media-input'
+import { useColorMode } from 'theme-ui'
 
 const DeployComingSoon = () => {
+  const [colorMode] = useColorMode()
+  const isDarkMode = colorMode === 'dark'
   return (
     <div className="container flex gap-1 p-1 mt-1 lg:mt-6 bg-secondary rounded-4xl">
       <div className="flex flex-col flex-grow relative min-w-full lg:min-w-[420px] bg-card rounded-3xl p-3 lg:p-6 h-[calc(100vh-132px)]">
@@ -62,7 +65,7 @@ const DeployComingSoon = () => {
       </div>
       <div className="rounded-3xl flex-grow h-[calc(100vh-132px)] hidden max-w-[50%] max-h-[940px] lg:block">
         <img
-          src="https://storage.reserve.org/splash.png"
+          src={isDarkMode ? '/imgs/GM-dark.svg' : '/imgs/GM-light.svg'}
           className="w-full h-full object-cover object-center rounded-3xl"
           alt="reserve splash"
         />
