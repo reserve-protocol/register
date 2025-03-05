@@ -50,13 +50,14 @@ const CoinbaseSubscribe = (props: BoxProps) => {
     <Box {...props}>
       <IconButton
         p="1"
+        mr="2"
         sx={{
           cursor: 'pointer',
-          width: '52px',
-          height: '32px',
+          width: '56px',
+          height: '34px',
           border: '1px solid',
           borderColor: 'border',
-          borderRadius: '6px',
+          borderRadius: '12px',
           ':hover': { backgroundColor: 'border' },
         }}
         onClick={handleSubscribe}
@@ -64,9 +65,9 @@ const CoinbaseSubscribe = (props: BoxProps) => {
         <Box variant="layout.verticalAlign">
           <CoinbaseIcon />
           {isSubscribed ? (
-            <Bell style={{ marginLeft: 4 }} size="14px" />
+            <Bell style={{ marginLeft: 6 }} size="14px" />
           ) : (
-            <BellOff style={{ marginLeft: 4 }} size="14px" />
+            <BellOff style={{ marginLeft: 6 }} size="14px" />
           )}
         </Box>
       </IconButton>
