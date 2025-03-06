@@ -209,7 +209,7 @@ const Heading = ({ dtfStats }: { dtfStats?: DTFStats }) => {
       <div className="absolute hidden sm:block top-3 sm:top-8 right-0 text-primary">
         <Button
           variant="outline-primary"
-          className="rounded-[50px] p-1 h-8 border border-primary hover:bg-primary"
+          className="rounded-[50px] p-1 h-8 border border-primary  dark:border-tvl/20 hover:bg-primary"
           onClick={() => {
             trackClick('discover', 'video')
             window.open(DTF_VIDEO, '_blank')
@@ -218,7 +218,7 @@ const Heading = ({ dtfStats }: { dtfStats?: DTFStats }) => {
           <div className="rounded-full w-6 h-6 bg-primary text-primary flex items-center justify-center">
             <Play size={16} fill="#fff" />
           </div>
-          <span className="ml-2 mr-2">What are DTFs?</span>
+          <span className="ml-2 mr-2 dark:text-tvl">What are DTFs?</span>
         </Button>
       </div>
     </>
