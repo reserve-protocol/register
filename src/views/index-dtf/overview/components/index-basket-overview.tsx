@@ -1,10 +1,7 @@
-import { Box } from '@/components/ui/box'
-import { Skeleton } from '@/components/ui/skeleton'
-import { getTokenName } from '@/utils'
-import { useAtomValue } from 'jotai'
-import { ArrowUpRight } from 'lucide-react'
 import TokenLogo from '@/components/token-logo'
+import { Box } from '@/components/ui/box'
 import { Button } from '@/components/ui/button'
+import { Skeleton } from '@/components/ui/skeleton'
 import {
   Table,
   TableBody,
@@ -15,10 +12,23 @@ import {
 } from '@/components/ui/table'
 import { cn } from '@/lib/utils'
 import { chainIdAtom } from '@/state/atoms'
-import { indexDTFBasketAtom, indexDTFBasketSharesAtom } from '@/state/dtf/atoms'
-import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
+import {
+  hasBridgedAssetsAtom,
+  indexDTFBasketAtom,
+  indexDTFBasketSharesAtom,
+} from '@/state/dtf/atoms'
+import { getTokenName } from '@/utils'
+import { capitalize } from '@/utils/constants'
+import {
+  ETHERSCAN_NAMES,
+  ExplorerDataType,
+  getExplorerLink,
+} from '@/utils/getExplorerLink'
+import { useAtomValue } from 'jotai'
+import { ArrowUpRight } from 'lucide-react'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import BridgeLabel from './bridge-label'
 
 const MAX_TOKENS = 10
 
@@ -50,17 +60,24 @@ const IndexBasketOverview = ({ className }: { className?: string }) => {
   const basket = useAtomValue(indexDTFBasketAtom)
   const [viewAll, setViewAll] = useState(false)
   const basketShares = useAtomValue(indexDTFBasketSharesAtom)
+  const hasBridgedAssets = useAtomValue(hasBridgedAssetsAtom)
   const chainId = useAtomValue(chainIdAtom)
 
   return (
-    <div className={cn('relative -mx-4 sm:-mx-5 -mb-4 sm:-mb-5', className)}>
-      <Table className="sm:mx-1">
+    <div
+      className={cn('relative -mx-4 sm:-mx-5 -mb-4 sm:-mb-5 px-1', className)}
+    >
+      <Table>
         <TableHeader>
           <TableRow className="border-none text-legend bg-card sticky top-0 ">
-            <TableHead>Token</TableHead>
+            <TableHead className="text-left">Token</TableHead>
             <TableHead className="hidden sm:table-cell">Ticker</TableHead>
             <TableHead className="text-center">Weight</TableHead>
-            <TableHead className="text-right"></TableHead>
+            <TableHead className="text-right">
+              {`${hasBridgedAssets ? 'Bridge / ' : ''}${capitalize(
+                ETHERSCAN_NAMES[chainId]
+              )}`}
+            </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -98,21 +115,24 @@ const IndexBasketOverview = ({ className }: { className?: string }) => {
                     {basketShares[token.address]}%
                   </TableCell>
                   <TableCell className="text-right">
-                    <Link
-                      to={getExplorerLink(
-                        token.address,
-                        chainId,
-                        ExplorerDataType.TOKEN
-                      )}
-                      target="_blank"
-                    >
-                      <Box
-                        variant="circle"
-                        className="hover:bg-primary/10 hover:text-primary"
+                    <div className="flex items-center justify-end gap-2">
+                      <BridgeLabel address={token.address} />
+                      <Link
+                        to={getExplorerLink(
+                          token.address,
+                          chainId,
+                          ExplorerDataType.TOKEN
+                        )}
+                        target="_blank"
                       >
-                        <ArrowUpRight className="h-4 w-4" />
-                      </Box>
-                    </Link>
+                        <Box
+                          variant="circle"
+                          className="hover:bg-primary/10 hover:text-primary"
+                        >
+                          <ArrowUpRight className="h-4 w-4" />
+                        </Box>
+                      </Link>
+                    </div>
                   </TableCell>
                 </TableRow>
               ))
