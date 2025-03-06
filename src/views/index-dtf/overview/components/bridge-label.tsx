@@ -153,11 +153,11 @@ const UniversalDialog = ({
             </div>
             <div className="flex flex-col gap-1.5">
               <DialogTitle className="text-xl font-bold text-primary">
-                Universal Protocol Asset
+                Bridged using Universal
               </DialogTitle>
               <DialogDescription className="text-base font-normal text-black">
-                Universal Protocol assets are native tokens with these key
-                considerations:
+                Using a bridged asset introduces additional considerations, such
+                as:
               </DialogDescription>
             </div>
           </div>
@@ -166,27 +166,28 @@ const UniversalDialog = ({
         <div className="pt-4 border-t border-gray-200 space-y-2 mt-2 text-sm">
           <div>
             <p className="font-semibold">
-              Decentralized minting{' '}
+              Smart contract risk{' '}
               <span className="font-normal text-muted-foreground">
-                – Universal assets are minted directly on each chain rather than
-                bridged
+                – Tokens are minted and burned using Universal Protocol’s
+                open-source smart contracts that could have vulnerabilities.
               </span>
             </p>
           </div>
           <div>
             <p className="font-semibold">
-              Independent security{' '}
+              Custodial risks{' '}
               <span className="font-normal text-muted-foreground">
-                – Each chain's assets operate independently without cross-chain
-                dependencies
+                – A custodian holds the underlying asset with Coinbase Custody
+                and issues a 1:1-backed token that can be minted or redeemed.
               </span>
             </p>
           </div>
           <div>
             <p className="font-semibold">
-              Native liquidity{' '}
+              Liquidity risks{' '}
               <span className="font-normal text-muted-foreground">
-                – Assets have their own liquidity pools on each blockchain
+                – Redemptions rely on liquidity pools (LPs) or a network of
+                merchants fulfill orders on an as-needed basis.
               </span>
             </p>
           </div>
