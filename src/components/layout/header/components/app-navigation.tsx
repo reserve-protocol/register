@@ -1,8 +1,5 @@
 // import HeaderMenu from './HeaderMenu'
-import Binoculars from '@/components/icons/Binoculars'
-import CirclesIcon from '@/components/icons/CirclesIcon'
 import DiscordIcon from '@/components/icons/DiscordIcon'
-import Money from '@/components/icons/Money'
 import ReserveSquare from '@/components/icons/ReserveSquare'
 import {
   NavigationMenu,
@@ -29,8 +26,11 @@ import {
   Cable,
   Ear,
   Flower,
-  Globe,
   Microscope,
+  BadgePlus,
+  Coins,
+  Binoculars,
+  LayoutGrid,
 } from 'lucide-react'
 import { ReactNode, useMemo } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
@@ -50,7 +50,7 @@ const DiscoverItem = () => {
                 (isActive || isDTF) && 'text-primary'
               )}
             >
-              <Binoculars />
+              <Binoculars strokeWidth={1.5} size={16} />
               <span className="hidden md:block text-base">
                 <Trans>Discover DTFs</Trans>
               </span>
@@ -72,12 +72,12 @@ const AppNavigation = () => {
       [
         {
           label: t`Earn Yield`,
-          icon: <Money />,
+          icon: <Coins strokeWidth={1.5} size={16} />,
           to: ROUTES.EARN,
         },
         {
           label: t`Create New DTF`,
-          icon: <Globe strokeWidth={1.5} size={16} />,
+          icon: <BadgePlus strokeWidth={1.5} size={16} />,
           to: ROUTES.DEPLOY_INDEX,
         },
       ],
@@ -179,7 +179,7 @@ const AppNavigation = () => {
         ))}
         <NavigationMenuItem>
           <NavigationMenuTrigger>
-            <CirclesIcon color="currentColor" />
+            <LayoutGrid strokeWidth={1.5} size={16} />
             <span className="hidden md:block text-base">More</span>
           </NavigationMenuTrigger>
           <NavigationMenuContent className="rounded-4xl">

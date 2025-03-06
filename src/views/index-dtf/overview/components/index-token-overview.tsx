@@ -38,15 +38,16 @@ const TokenAddresses = () => {
   }
 
   return (
-    <div className="flex items-center gap-2 ">
+    <div className="flex items-center gap-1.5 ">
       <ChainLogo chain={chainId} />
       <span>{shortenAddress(address)}</span>
-      <div className="p-1 bg-muted rounded-full">
+      <div className="p-1 bg-muted dark:bg-white/5 rounded-full ">
         <CopyValue value={address} />
       </div>
       <Link
         to={getExplorerLink(address, chainId, ExplorerDataType.TOKEN)}
         target="_blank"
+        className="p-1 bg-muted dark:bg-white/5 rounded-full"
       >
         <ArrowUpRight size={16} />
       </Link>
@@ -121,13 +122,13 @@ const IndexTokenOverview = () => {
         </div>
         <TokenAddresses />
       </div>
-      <div className="p-2 sm:px-4 sm:pb-4 pt-0 relative max-w-96 sm:max-w-[620px] break-words">
+      <div className="p-2 pb-4 sm:px-4 pt-2 relative max-w-96 sm:max-w-[620px] break-words">
         {!dtf ? (
           <TokenNameSkeleton />
         ) : (
           <>
             <h4>${dtf.token.symbol}</h4>
-            <h1 className="mt-1 text-2xl md:text-3xl  font-medium w-full break-words">
+            <h1 className="mt-1 text-2xl md:text-3xl font-medium w-full break-words">
               {dtf.token.name}
             </h1>
           </>

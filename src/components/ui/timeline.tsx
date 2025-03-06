@@ -18,7 +18,7 @@ const Timeline = ({ items }: TimelineProps) => {
   return (
     <div className="relative pl-4">
       {/* Vertical line */}
-      <div className="absolute left-[2px] top-2 h-[calc(100%-16px)] w-px bg-gray-200" />
+      <div className="absolute left-[2px] top-2 h-[calc(100%-16px)] w-px bg-border" />
 
       {/* Timeline items */}
       <div className="space-y-4">
@@ -27,13 +27,13 @@ const Timeline = ({ items }: TimelineProps) => {
             {/* Circle marker */}
             <div
               className={cn(
-                'absolute left-[-24px] h-[22px] w-[22px] rounded-full border-2 border-gray-200 bg-white',
+                'absolute left-[-24px] h-[22px] w-[22px] rounded-full border-2 bg-background',
                 (item.isActive || item.isCompleted) &&
-                  'border-primary/10 bg-[#E4E9EF]'
+                  'border-primary/10 bg-primary'
               )}
             >
               {item.isActive && (
-                <Asterisk className="absolute left-1/2 top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 text-blue-500" />
+                <Asterisk className="absolute left-1/2 top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 text-white" />
               )}
               {item.isCompleted && (
                 <Check className="absolute left-1/2 top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 text-blue-500" />

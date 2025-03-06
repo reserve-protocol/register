@@ -1,7 +1,6 @@
-import Binoculars from '@/components/icons/Binoculars'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent } from '@/components/ui/dialog'
-import { Play, Sparkle } from 'lucide-react'
+import { Play, Sparkle, Binoculars } from 'lucide-react'
 import { SVGProps, useEffect, useState } from 'react'
 import step1 from './imgs/Step=1.png'
 import step2 from './imgs/Step=2.png'
@@ -55,7 +54,7 @@ const Flower = (props: SVGProps<SVGSVGElement>) => (
         strokeLinecap="round"
         strokeLinejoin="round"
       />
-      <circle cx={16.0066} cy={15.9999} r={2} fill="white" />
+      <circle cx={16.0066} cy={15.9999} r={2} fill="currentColor" />
     </g>
     <defs>
       <clipPath id="clip0_18747_1164513">
@@ -113,7 +112,7 @@ const Presentation = ({
       </div>
       <div className="flex flex-col h-auto sm:min-h-[487px]">
         <div className="flex flex-col flex-grow p-6">
-          <Flower className="mb-6 hidden min-[967px]:block" />
+          <Flower className="mb-6 hidden min-[967px]:block text-card" />
           <div className="mt-auto mb-1 flex text-sm text-bold items-center w-fit gap-1 px-2 py-1 rounded-full bg-primary/10 text-primary">
             <Sparkle size={14} strokeWidth={1} />
             New
@@ -124,12 +123,12 @@ const Presentation = ({
           <h2 className="text-[28px] max-[967px]:text-2xl font-semibold">
             Like ETFs, but for crypto.
           </h2>
-          <p className="mt-1 hidden sm:block">
+          <p className="mt-1 hidden sm:block dark:text-legend">
             Get broad crypto exposure and buy into specific narratives with a
             single click. Like ETFs do in TradFi, but in a decentralized
             way. Every Index DTF is
           </p>
-          <ul className="list-disc list-inside ml-3 mt-1 hidden sm:block">
+          <ul className="list-disc list-inside ml-3 mt-2 hidden sm:block dark:text-legend">
             <li>Backed 1:1</li>
             <li>Onchain with transparent custody </li>
             <li>Fully redeemable 24/7 for underlying assets</li>
@@ -138,15 +137,15 @@ const Presentation = ({
         <div className="sm:border-t sm:p-6 px-6 pb-6 flex gap-3 flex-col lg:flex-row">
           <Button
             variant="outline-primary"
-            className="gap-1"
+            className="gap-2 dark:border-border dark:text-foreground"
             size="lg"
             onClick={() => window.open(DTF_VIDEO, '_blank')}
           >
             <Play size={16} />
             Watch our DTF Explainer
           </Button>
-          <Button className="gap-1" size="lg" onClick={onClose}>
-            <Binoculars />
+          <Button className="gap-2" size="lg" onClick={onClose}>
+            <Binoculars size={16} />
             Discover DTFs
           </Button>
         </div>

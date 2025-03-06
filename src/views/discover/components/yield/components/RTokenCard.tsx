@@ -66,7 +66,7 @@ const RTokenCard = ({ token, ...props }: Props) => {
             flexShrink: 0,
             display: ['none', 'block'],
             borderRight: '1px solid',
-            borderColor: 'darkBorder',
+            borderColor: 'border',
           }}
         >
           <CollateralPieChartWrapper token={token} />

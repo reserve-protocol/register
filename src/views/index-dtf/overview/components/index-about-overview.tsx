@@ -43,7 +43,7 @@ const Mandate = () => {
 
   return (
     <div>
-      <h2 className="text-2xl font-semibold mb-2">About this DTF</h2>
+      <h2 className="text-xl font-semibold mb-1">About this DTF</h2>
       {!data ? (
         <div>
           <Skeleton className="w-full h-20" />
@@ -64,7 +64,7 @@ const IndexAboutOverview = () => (
     <Header />
     <Mandate />
     <IndexSocialsOverview />
-    <Separator className="mt-4 mb-2 -mx-2" />
+    <Separator className="mt-6 mb-3" />
     <IndexBasketOverview />
   </Card>
 )

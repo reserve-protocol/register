@@ -29,7 +29,7 @@ const SingleToggleFilter = ({
       value={value}
       onValueChange={onValueChange}
       className={cn(
-        'bg-card rounded-bl-2xl rounded-br-2xl sm:rounded-2xl px-4 py-4',
+        'bg-card rounded-bl-3xl rounded-br-3xl sm:rounded-3xl px-4 py-4',
 
         className
       )}
@@ -38,7 +38,7 @@ const SingleToggleFilter = ({
         <ToggleGroupItem
           key={text}
           value={index.toString()}
-          className="flex items-center gap-0 h-8 px-2 data-[state=on]:bg-[#f2f2f2] data-[state=on]:text-primary hover:text-primary hover:bg-[#f2f2f2]"
+          className="flex items-center gap-0 h-8 px-2 data-[state=on]:bg-muted data-[state=on]:text-primary hover:text-primary hover:bg-muted"
         >
           {icon}
           <div className="hidden sm:block ml-[6px]">{text}</div>
@@ -95,7 +95,7 @@ export const SearchFilter = () => {
       placeholder="Search by name, ticker, tag or collateral"
       value={search}
       onChange={(e) => setSearch(e.target.value)}
-      className="flex-grow [&_input]:border-none sm:[&_input]:rounded-2xl"
+      className="flex-grow [&_input]:border-none [&_input]:rounded-none [&_input]:rounded-tl-3xl [&_input]:rounded-tr-3xl sm:[&_input]:rounded-3xl"
     />
   )
 }
