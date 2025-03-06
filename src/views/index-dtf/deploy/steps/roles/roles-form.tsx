@@ -1,7 +1,5 @@
-import { Asterisk, Image, MousePointerClick, ShieldHalf } from 'lucide-react'
+import { Image, MousePointerClick, ShieldHalf } from 'lucide-react'
 import InputWithTitle from '../../components/input-with-title'
-import { useAtomValue } from 'jotai'
-import { walletAtom } from '@/state/atoms'
 
 const FORMS = [
   {
