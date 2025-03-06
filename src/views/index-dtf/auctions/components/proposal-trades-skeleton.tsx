@@ -17,11 +17,6 @@ const LoadingSkeleton = () => (
       <h2 className="font-semibold">Loading trades...</h2>
     </div>
     <div className="flex flex-col gap-1 rounded-3xl p-1 bg-secondary h-fit">
-      <div className="rounded-3xl bg-background p-2">
-        <Button disabled className="w-full">
-          No trades selected
-        </Button>
-      </div>
       <div className="rounded-3xl bg-background">
         <div className="p-4">
           <span className="font-bold text-primary">Simulated Basket</span>

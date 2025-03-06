@@ -24,6 +24,7 @@ import {
   AssetTrade,
   dtfTradeMapAtom,
   dtfTradeVolatilityAtom,
+  expectedBasketAtom,
   isAuctionLauncherAtom,
   setTradeVolatilityAtom,
   TRADE_STATE,
@@ -260,6 +261,7 @@ const ShareRange = ({
 
 const TradePreview = ({ trade }: { trade: AssetTrade }) => {
   const chainId = useAtomValue(chainIdAtom)
+  const expectedBasket = useAtomValue(expectedBasketAtom)?.basket
 
   return (
     <div className="grid grid-cols-[1fr_auto_1fr] gap-2 items-center w-full sm:w-80 mr-auto">
@@ -272,9 +274,20 @@ const TradePreview = ({ trade }: { trade: AssetTrade }) => {
             chain={chainId}
             size="lg"
           />
-          <Share share={trade.deltaSellShare} />
+          <Share share={expectedBasket?.[trade.sell.address]?.delta} />
         </div>
-        <ShareRange from={trade.currentSellShare} to={trade.sellShare} />
+        <ShareRange
+          from={
+            expectedBasket?.[trade.sell.address]?.currentShares
+              ? Number(expectedBasket?.[trade.sell.address]?.currentShares)
+              : undefined
+          }
+          to={
+            expectedBasket?.[trade.sell.address]?.targetShares
+              ? Number(expectedBasket?.[trade.sell.address]?.targetShares)
+              : undefined
+          }
+        />
       </div>
       <div className="bg-muted rounded-full p-1 text-legend">
         <ArrowRight size={18} />
@@ -282,7 +295,10 @@ const TradePreview = ({ trade }: { trade: AssetTrade }) => {
       <div className="flex flex-col gap-1 items-end">
         <span>Buy ${trade.buy.symbol}</span>
         <div className="flex items-center gap-1">
-          <Share share={trade.deltaBuyShare} prefix="+" />
+          <Share
+            share={expectedBasket?.[trade.buy.address]?.delta}
+            prefix="+"
+          />
           <TokenLogo
             symbol={trade.buy.symbol}
             address={trade.buy.address}
@@ -290,7 +306,18 @@ const TradePreview = ({ trade }: { trade: AssetTrade }) => {
             size="lg"
           />
         </div>
-        <ShareRange from={trade.currentBuyShare} to={trade.buyShare} />
+        <ShareRange
+          from={
+            expectedBasket?.[trade.buy.address]?.currentShares
+              ? Number(expectedBasket?.[trade.buy.address]?.currentShares)
+              : undefined
+          }
+          to={
+            expectedBasket?.[trade.buy.address]?.targetShares
+              ? Number(expectedBasket?.[trade.buy.address]?.targetShares)
+              : undefined
+          }
+        />
       </div>
     </div>
   )
