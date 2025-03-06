@@ -24,6 +24,7 @@ const CustomInput = ({
   ToggleGroupWithCustomProps,
   'fieldName' | 'customLabel' | 'customPlaceholder'
 >) => {
+  const { clearErrors } = useFormContext()
   return (
     <div role="button" className="w-48">
       <BasicInput
@@ -32,6 +33,10 @@ const CustomInput = ({
         label={customLabel}
         placeholder={customPlaceholder}
         decimalPlaces={2}
+        inputProps={{
+          step: 0.05,
+          onKeyDown: () => clearErrors(fieldName),
+        }}
       />
     </div>
   )
@@ -45,7 +50,7 @@ const ToggleGroupSelector = ({
   ToggleGroupWithCustomProps,
   'fieldName' | 'options' | 'optionsFormatter'
 >) => {
-  const { watch, setValue } = useFormContext()
+  const { watch, setValue, clearErrors } = useFormContext()
 
   return (
     <ToggleGroup
@@ -53,6 +58,7 @@ const ToggleGroupSelector = ({
       className="bg-muted-foreground/10 p-1 rounded-xl justify-start w-max"
       value={watch(fieldName).toString()}
       onValueChange={(value) => {
+        clearErrors(fieldName)
         const parsedValue = parseFloat(value)
         if (!isNaN(parsedValue)) {
           setValue(fieldName, parsedValue)
