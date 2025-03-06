@@ -82,8 +82,8 @@ body {
     --muted: 210 20% 1%;
 
     /* Foreground & Layering */
-    --foreground: 0 0% 95%;
-    --card-foreground: 0 0% 90%;
+    --foreground: 216 67% 94%;
+    --card-foreground: 216 67% 94%;
     --container: 218 25% 8%;
     --popover: 218 33% 10%;
     --popover-foreground: 0 0% 90%;
