@@ -64,7 +64,9 @@ const IndexAboutOverview = () => (
     <Header />
     <Mandate />
     <IndexSocialsOverview />
-    <Separator className="mt-4 mb-2 -mx-2" />
+    <div className="mt-4 mb-2 -mx-2">
+      <Separator />
+    </div>
     <IndexBasketOverview />
   </Card>
 )
