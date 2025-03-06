@@ -25,13 +25,14 @@ import useProtocolMetrics from '@/views/home/hooks/useProtocolMetrics'
 import { Button } from '@/components/ui/button'
 import { ArrowRight, Play } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import tabIndex from '../assets/tab_index.jpg'
 import useDTFHistoricalTVL, {
   DTFStats,
   DTFStatsSnapshot,
 } from '../hooks/use-dtf-historical-tvl'
 import { useMemo } from 'react'
 import { trackClick } from '@/hooks/useTrackPage'
+import tvlLight from '../assets/tvllight.svg'
+import tvlDark from '../assets/tvldark.svg'
 
 const COLORS: Record<string, any> = {
   ethereum: {
@@ -163,7 +164,11 @@ const Heading = ({ dtfStats }: { dtfStats?: DTFStats }) => {
   return (
     <>
       <div className="absolute top-3 sm:top-8 left-0 sm:left-0 right-3 text-tvl px-4 sm:px-6 md:px-0 w-auto sm:w-[560px]">
-        <img src={tabIndex} className="rounded-full h-6 w-6 sm:h-11 sm:w-11" />
+        {/* Light Mode Image */}
+        <img src={tvlLight} alt="TVL Light" className="dark:hidden" />
+
+        {/* Dark Mode Image */}
+        <img src={tvlDark} alt="TVL Dark" className="hidden dark:block" />
         <h2 className="sm:text-xl text-base mt-6 mb-4 font-light leading-none">
           TVL in Reserve
         </h2>
