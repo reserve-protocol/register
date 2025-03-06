@@ -42,8 +42,8 @@ const Hero = () => (
         position: 'relative',
         maxWidth: '95em',
       }}
-      pt={[5, 5]}
-      mt={[2, 5]}
+      pt={[4, 4]}
+      mt={[2, 3]}
       pb={0}
       px={[2, 3]}
     >
