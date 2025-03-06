@@ -1,12 +1,12 @@
 import ChainLogo from '@/components/icons/ChainLogo'
+import { FormField } from '@/components/ui/form'
 import { cn } from '@/lib/utils'
-import { useAtom, useAtomValue } from 'jotai'
+import { useAtom } from 'jotai'
 import { CheckIcon } from 'lucide-react'
-import { useEffect } from 'react'
-import { useFormContext } from 'react-hook-form'
-import { chainIdAtom, walletChainAtom } from 'state/atoms'
+import { ControllerFieldState, useFormContext } from 'react-hook-form'
+import { chainIdAtom } from 'state/atoms'
 import { AvailableChain, ChainId } from 'utils/chains'
-import { CHAIN_TAGS, supportedChainList } from 'utils/constants'
+import { CHAIN_TAGS } from 'utils/constants'
 import { useSwitchChain } from 'wagmi'
 
 const SUPPORTED_CHAINS = [ChainId.Mainnet, ChainId.Base]
@@ -36,10 +36,12 @@ const ChainOption = ({
   chainId,
   checked,
   onClick,
+  state,
 }: {
   chainId: number
   checked?: boolean
   onClick?: (newChain: AvailableChain) => void
+  state?: ControllerFieldState
 }) => {
   return (
     <div
@@ -47,7 +49,8 @@ const ChainOption = ({
         'flex flex-1 items-center gap-4 justify-between border rounded-xl p-4 text-base cursor-pointer',
         checked
           ? 'bg-card border-primary text-primary'
-          : 'bg-muted border-muted'
+          : 'bg-muted border-muted',
+        state?.invalid ? 'border-destructive' : ''
       )}
       role="button"
       onClick={() => onClick && onClick(chainId as AvailableChain)}
@@ -64,21 +67,14 @@ const ChainOption = ({
 }
 
 const ChainSelector = () => {
+  const form = useFormContext()
   const [chainId, setChain] = useAtom(chainIdAtom)
-  const walletChainId = useAtomValue(walletChainAtom)
-  const { watch, setValue } = useFormContext()
+  const { watch, setValue, resetField } = useFormContext()
   const { switchChain } = useSwitchChain()
   const formChainId = watch('chain')
 
-  useEffect(() => {
-    if (walletChainId && supportedChainList.includes(walletChainId)) {
-      setChain(walletChainId as AvailableChain)
-    } else {
-      setChain(chainId)
-    }
-  }, [chainId, setChain, walletChainId])
-
   const handleChainChange = (newChain: AvailableChain) => {
+    resetField('chain')
     setValue('chain', newChain)
     if (chainId !== newChain) {
       setChain(newChain)
@@ -86,21 +82,21 @@ const ChainSelector = () => {
     }
   }
 
-  useEffect(() => {
-    if (!SUPPORTED_CHAINS.includes(chainId)) {
-      setChain(formChainId as AvailableChain)
-      switchChain && switchChain({ chainId: formChainId })
-    }
-  }, [setChain, switchChain, chainId, formChainId])
-
   return (
     <div className="flex flex-col lg:flex-row gap-2 p-2 flex-wrap">
       {SUPPORTED_CHAINS.map((chain) => (
-        <ChainOption
-          key={chain}
-          chainId={chain}
-          checked={chain === formChainId}
-          onClick={handleChainChange}
+        <FormField
+          name="chain"
+          control={form.control}
+          render={({ fieldState }) => (
+            <ChainOption
+              key={chain}
+              chainId={chain}
+              checked={chain === formChainId}
+              onClick={handleChainChange}
+              state={fieldState}
+            />
+          )}
         />
       ))}
       <ComingSoonOption network="solana" />

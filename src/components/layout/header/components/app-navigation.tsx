@@ -109,7 +109,7 @@ const AppNavigation = () => {
               <Flower size={16} />
             </IconContainer>
           ),
-          description: t`Make a new overcollateralized yield DTF`,
+          description: t`Create a new overcollateralized Yield DTF`,
           to: ROUTES.DEPLOY_YIELD,
         },
       ],
@@ -127,9 +127,9 @@ const AppNavigation = () => {
           to: RESERVE_BLOG,
         },
         {
-          label: t`Protocol Docs`,
+          label: t`Reserve Docs`,
           icon: <ReserveSquare />,
-          description: t`Understand the Reserve Protocol`,
+          description: t`Understand the project and protocols`,
           to: PROTOCOL_DOCS,
         },
         {

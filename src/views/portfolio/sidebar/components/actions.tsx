@@ -3,9 +3,11 @@ import dtfIndexUnstakingManager from '@/abis/dtf-index-unstaking-manager'
 import StackTokenLogo from '@/components/token-logo/StackTokenLogo'
 import { Button } from '@/components/ui/button'
 import Spinner from '@/components/ui/spinner'
+import { TransactionButtonContainer } from '@/components/ui/transaction'
 import useCurrentTime from '@/hooks/useCurrentTime'
 import { formatCurrency, parseDurationShort } from '@/utils'
-import { useAtomValue } from 'jotai'
+import Staking from '@/views/index-dtf/overview/components/staking'
+import { useAtomValue, useSetAtom } from 'jotai'
 import { ChevronRight } from 'lucide-react'
 import { Address } from 'viem'
 import {
@@ -16,10 +18,15 @@ import {
 import {
   type Lock,
   RewardToken,
+  StakingToken,
   accountRewardsAtom,
   accountTokenPricesAtom,
+  portfolioSidebarOpenAtom,
 } from '../../atoms'
-import { TransactionButtonContainer } from '@/components/ui/transaction'
+import {
+  portfolioStTokenAtom,
+  stakingSidebarOpenAtom,
+} from '@/views/index-dtf/overview/components/staking/atoms'
 
 export const StakeRSRAction = () => {
   return <ChevronRight className="h-4 w-4 text-primary" />
@@ -234,6 +241,45 @@ export const VoteLockAction = ({
       </div>
       <ChevronRight className="h-4 w-4" />
     </div>
+  )
+}
+
+export const ModifyLockAction = ({ stToken }: { stToken: StakingToken }) => {
+  const setStakingSidebarOpen = useSetAtom(stakingSidebarOpenAtom)
+  const setPortfolioSidebarOpen = useSetAtom(portfolioSidebarOpenAtom)
+  const setPortfolioStToken = useSetAtom(portfolioStTokenAtom)
+
+  const stTokenCompatible = {
+    id: stToken.address,
+    token: {
+      name: stToken.name,
+      symbol: stToken.symbol,
+      address: stToken.address,
+      decimals: stToken.decimals,
+      chainId: stToken.chainId,
+      totalSupply: '',
+    },
+    underlying: {
+      name: stToken.underlying.name,
+      symbol: stToken.underlying.symbol,
+      address: stToken.underlying.address,
+      decimals: stToken.underlying.decimals,
+    },
+  }
+
+  return (
+    <Button
+      size="sm"
+      variant="outline"
+      className="rounded-full"
+      onClick={() => {
+        setPortfolioSidebarOpen(false)
+        setStakingSidebarOpen(true)
+        setPortfolioStToken(stTokenCompatible)
+      }}
+    >
+      Modify lock
+    </Button>
   )
 }
 

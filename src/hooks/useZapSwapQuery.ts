@@ -66,17 +66,16 @@ const useZapSwapQuery = ({
     queryKey: ['zapDeploy', endpoint],
     queryFn: async (): Promise<ZapResponse> => {
       // If dust > 2.5% of amountOutValue, retry once.
-      const maxDustRetries = 1
+      const maxDustRetries = 0
       // If price impact > 2%, retry 3 times.
-      const maxPriceImpactRetries = 1
+      const maxPriceImpactRetries = 0
       let dustAttempt = 0
       let priceImpactAttempt = 0
       let lastData: ZapResponse
 
       while (true) {
         // Bypass cache if price impact > threshold
-        const currentEndpoint =
-          priceImpactAttempt > 0 ? getEndpoint(true) : endpoint
+        const currentEndpoint = endpoint
 
         if (!currentEndpoint) throw new Error('No endpoint available')
 
@@ -130,22 +129,19 @@ const useZapSwapQuery = ({
           const dust = Number(data.result.dustValue)
           const priceImpact = Number(data.result.truePriceImpact)
           const isDustRetry =
-            dust > DUST_REFRESH_THRESHOLD * amountOut &&
-            dustAttempt < maxDustRetries
+            dustAttempt < maxDustRetries &&
+            dust > DUST_REFRESH_THRESHOLD * amountOut
 
-          if (dustAttempt < maxDustRetries && isDustRetry) {
+          if (isDustRetry) {
             dustAttempt++
             continue
           }
 
           const isPriceImpactRetry =
-            priceImpact > PRICE_IMPACT_THRESHOLD &&
-            priceImpactAttempt < maxPriceImpactRetries
-          console.log('isPriceImpactRetry', isPriceImpactRetry)
-          if (
             priceImpactAttempt < maxPriceImpactRetries &&
-            isPriceImpactRetry
-          ) {
+            priceImpact > PRICE_IMPACT_THRESHOLD
+
+          if (isPriceImpactRetry) {
             priceImpactAttempt++
             continue
           }

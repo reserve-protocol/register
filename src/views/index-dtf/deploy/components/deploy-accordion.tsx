@@ -74,7 +74,7 @@ export const DEPLOY_STEPS: DeployStep[] = [
     id: 'governance',
     icon: <Landmark size={14} strokeWidth={1.5} />,
     title: 'Governance Body',
-    titleSecondary: 'Governance Type',
+    titleSecondary: 'Governance Body',
     content: <Governance />,
   },
   {

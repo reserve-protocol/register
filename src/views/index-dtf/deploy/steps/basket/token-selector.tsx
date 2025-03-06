@@ -19,7 +19,12 @@ import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { useQuery } from '@tanstack/react-query'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
-import { ArrowUpRightIcon, PlusIcon } from 'lucide-react'
+import {
+  ArrowUpRightIcon,
+  MessageCirclePlus,
+  MessageSquare,
+  PlusIcon,
+} from 'lucide-react'
 import { useCallback, useEffect, useMemo } from 'react'
 import { useFormContext } from 'react-hook-form'
 import AutoSizer from 'react-virtualized-auto-sizer'
@@ -32,7 +37,11 @@ import {
 } from '../../atoms'
 import { useAssetPrice } from '@/hooks/useAssetPrices'
 import useTokensInfo from '@/hooks/useTokensInfo'
-import { RESERVE_API } from '@/utils/constants'
+import {
+  DISCORD_INVITE,
+  REGISTER_FEEDBACK,
+  RESERVE_API,
+} from '@/utils/constants'
 import { ChainId } from '@/utils/chains'
 
 interface TokenButtonProps {
@@ -357,8 +366,33 @@ const TokenList = ({ showSelected = false }: TokenListProps) => {
       ) : isUnlistedToken ? (
         <UnlistedToken />
       ) : filteredTokens.length === 0 ? (
-        <div className="flex items-center justify-center h-full text-muted-foreground">
-          No tokens found
+        <div className="flex flex-col items-center justify-center text-center h-full">
+          <div className="text-muted-foreground">No tokens found</div>
+          <div className="text-primary mt-6">
+            Would you like us to add support for this token?
+          </div>
+          <div className="flex gap-2 mt-4">
+            <Button
+              variant="outline-primary"
+              className="flex items-center gap-2"
+              asChild
+            >
+              <a href={REGISTER_FEEDBACK}>
+                <MessageCirclePlus className="h-4 w-4" />
+                Request on Canny
+              </a>
+            </Button>
+            <Button
+              variant="outline-primary"
+              className="flex items-center gap-2"
+              asChild
+            >
+              <a href={DISCORD_INVITE}>
+                <MessageSquare className="h-4 w-4" />
+                Message us on Discord
+              </a>
+            </Button>
+          </div>
         </div>
       ) : (
         <AutoSizer>

@@ -4,11 +4,11 @@ import { REGISTER_FEEDBACK } from '@/utils/constants'
 
 const FeedbackButton = () => {
   return (
-    <div className="hidden lg:flex fixed bottom-4 left-4 z-50">
+    <div className="z-50">
       <Button
         size="lg"
         variant="fab"
-        className="flex items-center justify-center gap-1.5 rounded-full bg-[#021122] text-gray-50 px-5 py-3"
+        className="flex items-center justify-center gap-1.5 rounded-full bg-[#021122] text-gray-50 px-3 py-1 sm:px-5 sm:py-3 h-9 sm:h-10"
         onClick={() => {
           const referrer = window.location.href
           window.open(
@@ -17,9 +17,9 @@ const FeedbackButton = () => {
           )
         }}
       >
-        <MessageCirclePlus className="w-4 h-4" />
-        <span>Feedback</span>
-        <ArrowUpRightIcon className="w-4 h-4" />
+        <MessageCirclePlus className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+        <span className="text-xs sm:text-sm">Feedback</span>
+        <ArrowUpRightIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
       </Button>
     </div>
   )

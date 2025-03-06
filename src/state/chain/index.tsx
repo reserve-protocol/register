@@ -1,3 +1,4 @@
+import binanceWallet from '@binance/w3w-rainbow-connector-v2'
 import {
   DisclaimerComponent,
   RainbowKitProvider,
