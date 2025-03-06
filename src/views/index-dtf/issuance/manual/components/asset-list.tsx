@@ -19,7 +19,7 @@ import { formatCurrency, shortenAddress } from '@/utils'
 import { BIGINT_MAX } from '@/utils/constants'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { useAtom, useAtomValue } from 'jotai'
-import { CheckCircle2, Wallet } from 'lucide-react'
+import { CheckCircle2, TextCursorInput, Wallet } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { Address, erc20Abi, formatUnits } from 'viem'
 import { useWriteContract } from 'wagmi'
@@ -152,33 +152,33 @@ const AssetBalance = ({ token }: { token: Token }) => {
   const numericRequired = Number(formatUnits(required, token.decimals))
 
   return (
-    <div className="flex flex-col text-sm mr-2">
-      <div className="flex gap-1 justify-end items-center">
+    <div className="flex gap-4 text-sm mr-2">
+      <div className="flex items-center gap-1">
         <Wallet size={16} />
         <span className="font-semibold">
           <DecimalDisplay value={numericBalance} />
         </span>
       </div>
-      {!!numericRequired && (
-        <div>
-          <span className="text-legend">Required:</span>{' '}
-          <span
-            className={cn(
-              'font-semibold',
-              balance >= required ? 'text-success' : 'text-destructive'
-            )}
-          >
-            <DecimalDisplay value={numericRequired} />
-          </span>
-        </div>
-      )}
+      <div className="flex items-center gap-1">
+        <TextCursorInput size={16} />
+        <span className="font-semibold">Required:</span>{' '}
+        <span
+          className={cn(
+            'font-semibold',
+            balance >= required ? 'text-success' : 'text-destructive',
+            required === 0n && 'text-inherit'
+          )}
+        >
+          <DecimalDisplay value={numericRequired ?? 0} />
+        </span>
+      </div>
     </div>
   )
 }
 
 const MintAssetAmount = ({ token }: { token: Token }) => {
   return (
-    <div className="flex items-center gap-2 ml-auto">
+    <div className="flex items-center justify-between gap-2 min-h-[32px]">
       <AssetBalance token={token} />
       <ApproveAsset address={token.address} />
     </div>
@@ -196,27 +196,39 @@ const AssetAmount = ({ token }: { token: Token }) => {
 }
 const AssetItem = ({ token }: { token: Token }) => {
   const chainId = useAtomValue(chainIdAtom)
+  const mode = useAtomValue(modeAtom)
 
   return (
-    <div className="flex items-center flex-wrap gap-2 border-t p-2">
-      <TokenLogo
-        symbol={token.symbol}
-        address={token.address}
-        size="xl"
-        chain={chainId}
-      />
-      <div className="flex flex-col mr-auto">
-        <div className="text-base font-bold">{token.name}</div>
-        <div className="flex items-center gap-1 text-sm text-muted-foreground">
-          <span>{token.symbol}</span>
-          <span>•</span>
-          <Link
-            to={getExplorerLink(token.address, chainId, ExplorerDataType.TOKEN)}
-            target="_blank"
-            className="hover:text-primary hover:underline"
-          >
-            {shortenAddress(token.address)}
-          </Link>
+    <div
+      className={cn(
+        'flex gap-2 border-t p-4',
+        mode === 'buy' ? 'flex-col' : 'justify-between'
+      )}
+    >
+      <div className="flex items-center flex-wrap gap-2">
+        <TokenLogo
+          symbol={token.symbol}
+          address={token.address}
+          size="xl"
+          chain={chainId}
+        />
+        <div className="flex flex-col mr-auto">
+          <div className="text-base font-bold">{token.name}</div>
+          <div className="flex items-center gap-1 text-sm text-muted-foreground">
+            <span>{token.symbol}</span>
+            <span>•</span>
+            <Link
+              to={getExplorerLink(
+                token.address,
+                chainId,
+                ExplorerDataType.TOKEN
+              )}
+              target="_blank"
+              className="hover:text-primary hover:underline"
+            >
+              {shortenAddress(token.address)}
+            </Link>
+          </div>
         </div>
       </div>
       <AssetAmount token={token} />
