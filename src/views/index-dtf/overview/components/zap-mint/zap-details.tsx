@@ -30,6 +30,7 @@ export const ZapPriceImpact = ({
       {isDetail ? '' : '('}
       {priceImpact > 0 ? (isDetail ? '' : '-') : '+'}
       {formatPercentage(Math.abs(priceImpact))}
+      {!isDetail && priceImpact < 0 ? ' 😎' : ''}
       {isDetail ? '' : ')'}
     </span>
   )
