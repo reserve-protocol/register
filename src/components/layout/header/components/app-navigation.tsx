@@ -1,5 +1,4 @@
 // import HeaderMenu from './HeaderMenu'
-import CirclesIcon from '@/components/icons/CirclesIcon'
 import DiscordIcon from '@/components/icons/DiscordIcon'
 import ReserveSquare from '@/components/icons/ReserveSquare'
 import {
@@ -31,6 +30,7 @@ import {
   BadgePlus,
   Coins,
   Binoculars,
+  LayoutGrid,
 } from 'lucide-react'
 import { ReactNode, useMemo } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
@@ -179,7 +179,7 @@ const AppNavigation = () => {
         ))}
         <NavigationMenuItem>
           <NavigationMenuTrigger>
-            <CirclesIcon color="currentColor" />
+            <LayoutGrid strokeWidth={1.5} size={16} />
             <span className="hidden md:block text-base">More</span>
           </NavigationMenuTrigger>
           <NavigationMenuContent className="rounded-4xl">
