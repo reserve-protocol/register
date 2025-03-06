@@ -21,7 +21,7 @@ const DiscoverTabTrigger = ({
     <TabsTrigger
       className={cn(
         'flex items-center justify-center lg:justify-start w-full h-full p-3 lg:p-6 rounded-full lg:rounded-3xl hover:bg-foreground/5',
-        'data-[state=active]:text-primary data-[state=inactive]:text-legend data-[state=inactive]:grayscale',
+        'data-[state=active]:text-primary dark:data-[state=active]:text-foreground data-[state=inactive]:text-muted-foreground/ data-[state=inactive]:grayscale',
         className
       )}
       {...props}
