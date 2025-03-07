@@ -23,7 +23,7 @@ const WormholeDialog = ({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent
-        className="rounded-t-3xl sm:rounded-3xl sm:max-w-md px-6 bg-card border-none"
+        className="rounded-t-2xl sm:rounded-3xl sm:max-w-md px-6 bg-card border-none"
         showClose={false}
       >
         <DialogHeader className="flex flex-row items-start">
@@ -130,7 +130,7 @@ const UniversalDialog = ({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent
-        className="rounded-t-3xl sm:rounded-3xl sm:max-w-md px-6 bg-card border-none"
+        className="rounded-t-2xl sm:rounded-3xl sm:max-w-md px-6 bg-card border-none"
         showClose={false}
       >
         <DialogHeader className="flex flex-row items-start">

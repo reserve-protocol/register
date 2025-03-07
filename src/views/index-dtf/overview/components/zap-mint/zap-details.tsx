@@ -68,7 +68,7 @@ const ZapDetails = ({ data }: { data: ZapResult }) => {
   const tokenInPrice = amountIn.eq(0) ? undefined : amountInValue.div(amountIn)
   const ratio = amountIn.eq(0) ? undefined : amountOut.div(amountIn)
 
-  const ratioText = `${formatCurrency(ratio?.toNumber() || 0)} ${tokenOutSymbol} = 1 ${tokenInSymbol}`
+  const ratioText = `1 ${tokenInSymbol} = ${formatCurrency(ratio?.toNumber() || 0)} ${tokenOutSymbol}`
   const mintFeeValue = amountInValue.mul(indexDTF?.mintingFee || 0).toNumber()
 
   if (!indexDTF) return null
