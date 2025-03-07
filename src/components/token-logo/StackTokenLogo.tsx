@@ -25,6 +25,12 @@ const StackTokenLogo = React.memo(
     borderColor = 'white',
     ...props
   }: Props) => {
+    // Create a copy of the array before reversing it
+    const orderedTokens = React.useMemo(() => {
+      const tokensCopy = [...tokens]
+      return reverseStack ? tokensCopy.reverse() : tokensCopy
+    }, [tokens, reverseStack])
+
     return (
       <Box
         variant="layout.verticalAlign"
@@ -37,7 +43,7 @@ const StackTokenLogo = React.memo(
         }}
         {...props}
       >
-        {(reverseStack ? tokens.reverse() : tokens).map((token, index) => {
+        {orderedTokens.map((token, index) => {
           if (token.symbol === 'FRAXBP') {
             return (
               <Box
