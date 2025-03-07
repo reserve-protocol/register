@@ -65,10 +65,9 @@ const ZapDetails = ({ data }: { data: ZapResult }) => {
   )
 
   const amountInValue = new Decimal(data.amountInValue || 0)
-  const tokenInPrice = amountIn.eq(0) ? undefined : amountInValue.div(amountIn)
   const ratio = amountIn.eq(0) ? undefined : amountOut.div(amountIn)
 
-  const ratioText = `${formatCurrency(ratio?.toNumber() || 0)} ${tokenOutSymbol} = 1 ${tokenInSymbol}`
+  const ratioText = `1 ${tokenInSymbol} = ${formatCurrency(ratio?.toNumber() || 0)} ${tokenOutSymbol}`
   const mintFeeValue = amountInValue.mul(indexDTF?.mintingFee || 0).toNumber()
 
   if (!indexDTF) return null
@@ -76,14 +75,7 @@ const ZapDetails = ({ data }: { data: ZapResult }) => {
   return (
     <SwapDetails
       visible={{
-        left: (
-          <span>
-            {ratioText}{' '}
-            <span className="text-muted-foreground">
-              (${formatCurrency(tokenInPrice?.toNumber() || 0)})
-            </span>
-          </span>
-        ),
+        left: ratioText,
         right: !dtfAsTokenIn ? (
           <span>
             <span className="text-muted-foreground">Fee</span>{' '}

@@ -22,9 +22,12 @@ const WormholeDialog = ({
 }) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="sm:max-w-md px-6 bg-card border-none sm:rounded-3xl [&>button]:hidden">
+      <DialogContent
+        className="rounded-t-2xl sm:rounded-3xl sm:max-w-md px-6 bg-card border-none"
+        showClose={false}
+      >
         <DialogHeader className="flex flex-row items-start">
-          <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-6 w-full">
             <div className="flex items-center gap-2 justify-between">
               <div className="flex items-center">
                 <div className="rounded-full bg-card border border-primary text-primary p-1.5 z-10">
@@ -47,7 +50,7 @@ const WormholeDialog = ({
                 <X className="w-4 h-4" />
               </Button>
             </div>
-            <div className="flex flex-col gap-1.5">
+            <div className="flex flex-col gap-1.5 text-left">
               <DialogTitle className="text-xl font-bold text-primary">
                 Bridged using Wormhole
               </DialogTitle>
@@ -88,7 +91,7 @@ const WormholeDialog = ({
           </div>
         </div>
 
-        <DialogFooter className="flex items-center sm:flex-row gap-4 sm:gap-0 mt-2 -mx-4 -mb-4">
+        <DialogFooter className="flex items-center flex-row gap-2 sm:gap-0 mt-2 -mx-4 -mb-4">
           <Button
             variant="outline"
             className="flex-1 text-base py-6 rounded-xl border-2"
@@ -126,9 +129,12 @@ const UniversalDialog = ({
 }) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="sm:max-w-md px-6 bg-card border-none sm:rounded-3xl [&>button]:hidden">
+      <DialogContent
+        className="rounded-t-2xl sm:rounded-3xl sm:max-w-md px-6 bg-card border-none"
+        showClose={false}
+      >
         <DialogHeader className="flex flex-row items-start">
-          <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-6 w-full">
             <div className="flex items-center gap-2 justify-between">
               <div className="flex items-center">
                 <div className="rounded-full bg-card border border-primary text-primary p-1.5 z-10">
@@ -151,7 +157,7 @@ const UniversalDialog = ({
                 <X className="w-4 h-4" />
               </Button>
             </div>
-            <div className="flex flex-col gap-1.5">
+            <div className="flex flex-col gap-1.5 text-left">
               <DialogTitle className="text-xl font-bold text-primary">
                 Bridged using Universal
               </DialogTitle>
@@ -193,7 +199,7 @@ const UniversalDialog = ({
           </div>
         </div>
 
-        <DialogFooter className="flex items-center sm:flex-row gap-4 sm:gap-0 mt-2 -mx-4 -mb-4">
+        <DialogFooter className="flex items-center flex-row gap-2 sm:gap-0 mt-2 -mx-4 -mb-4">
           <Button
             variant="outline"
             className="flex-1 text-base py-6 rounded-xl border-2"
