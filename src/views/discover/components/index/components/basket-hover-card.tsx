@@ -35,7 +35,7 @@ export function BasketHoverCard({ indexDTF, children }: BasketHoverCardProps) {
         sideOffset={-50}
       >
         <div className="flex flex-col gap-2 items-center justify-center">
-          <div className="m-2 p-2 rounded-xl bg-muted w-fit mr-[13px]">
+          <div className="m-2 p-2 rounded-xl bg-muted w-fit">
             <StackTokenLogo
               tokens={head.map((r) => ({
                 ...r,

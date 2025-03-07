@@ -66,8 +66,8 @@ const columns: ColumnDef<IndexDTFItem>[] = [
 
       // TODO(jg): Logos for basket assets
       return (
-        <BasketHoverCard indexDTF={row.original}>
-          <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2">
+          <BasketHoverCard indexDTF={row.original}>
             <div>
               <StackTokenLogo
                 tokens={head.map((r) => ({
@@ -81,8 +81,8 @@ const columns: ColumnDef<IndexDTFItem>[] = [
                 withBorder
               />
             </div>
-          </div>
-        </BasketHoverCard>
+          </BasketHoverCard>
+        </div>
       )
     },
   },
