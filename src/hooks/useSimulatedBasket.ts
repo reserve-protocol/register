@@ -225,10 +225,13 @@ const useSimulatedBasket = (
     const estimatedBasket = Object.entries(allTokens).reduce(
       (acc, [address, token]) => {
         acc[address.toLowerCase()] = {
-          token,
-          price: allPrices[address],
-          currentShares: shares[address] ?? '0',
-          targetShares: shares[address] ?? '0',
+          token: {
+            ...token,
+            address: token.address.toLowerCase() as Address,
+          },
+          price: allPrices[address.toLowerCase()],
+          currentShares: shares[address.toLowerCase()] ?? '0',
+          targetShares: shares[address.toLowerCase()] ?? '0',
           delta: 0,
         }
         return acc
