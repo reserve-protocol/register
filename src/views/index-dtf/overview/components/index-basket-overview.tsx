@@ -26,9 +26,10 @@ import {
 } from '@/utils/getExplorerLink'
 import { useAtomValue } from 'jotai'
 import { ArrowUpRight } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import BridgeLabel from './bridge-label'
+import useScrollTo from '@/hooks/useScrollTo'
 
 const MAX_TOKENS = 10
 
@@ -63,9 +64,21 @@ const IndexBasketOverview = ({ className }: { className?: string }) => {
   const hasBridgedAssets = useAtomValue(hasBridgedAssetsAtom)
   const chainId = useAtomValue(chainIdAtom)
 
+  const scrollTo = useScrollTo('basket', 80)
+
+  useEffect(() => {
+    const section = window.location.hash.slice(1)
+    if (section === 'basket' && basket?.length) {
+      setTimeout(() => {
+        scrollTo()
+      }, 100)
+    }
+  }, [scrollTo, basket])
+
   return (
     <div
       className={cn('relative -mx-4 sm:-mx-5 -mb-4 sm:-mb-5 px-1', className)}
+      id="basket"
     >
       <Table>
         <TableHeader>
