@@ -152,7 +152,7 @@ const AssetBalance = ({ token }: { token: Token }) => {
   const numericRequired = Number(formatUnits(required, token.decimals))
 
   return (
-    <div className="flex gap-4 text-sm mr-2">
+    <div className="flex items-center gap-4 text-sm">
       <div className="flex items-center gap-1">
         <Wallet size={16} />
         <span className="font-semibold">
