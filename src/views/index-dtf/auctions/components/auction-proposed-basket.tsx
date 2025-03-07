@@ -9,14 +9,13 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { chainIdAtom } from '@/state/atoms'
+import { indexDTFBasketAtom } from '@/state/dtf/atoms'
 import { useAtomValue } from 'jotai'
 import {
-  dtfTradesByProposalAtom,
   expectedBasketAtom,
   proposedBasketAtom,
   selectedProposalAtom,
 } from '../atoms'
-import { indexDTFBasketAtom } from '@/state/dtf/atoms'
 
 const TableContainer = ({ children }: { children: React.ReactNode }) => {
   return (

@@ -114,7 +114,7 @@ export const useAssetPrices = (
   return useQuery({
     queryKey: ['asset-price', tokens, chain, timestamp],
     queryFn: () => getAssetPrices(tokens ?? [], chain ?? 0, timestamp),
-    enabled: Boolean(tokens?.length && chain && timestamp),
+    enabled: Boolean(tokens?.length && chain),
   })
 }
 
@@ -200,14 +200,14 @@ const useSimulatedBasket = (
     const allTokens = {
       ...basket.basket.reduce(
         (acc, token) => {
-          acc[token.address] = { ...token, name: token.symbol }
+          acc[token.address.toLowerCase()] = { ...token, name: token.symbol }
           return acc
         },
         {} as Record<string, Token>
       ),
       ...newAssets.reduce(
         (acc, asset) => {
-          acc[asset.address] = asset
+          acc[asset.address.toLowerCase()] = asset
           return acc
         },
         {} as Record<string, Token>
@@ -215,7 +215,7 @@ const useSimulatedBasket = (
     }
     const shares = basket.basket.reduce(
       (acc, token) => {
-        acc[token.address] = token.weight
+        acc[token.address.toLowerCase()] = token.weight
         return acc
       },
       {} as Record<string, string>
