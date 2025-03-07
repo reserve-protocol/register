@@ -6,11 +6,13 @@ export interface PartialProposal {
   id: string
   description: string
   creationTime: number
+  creationBlock: number
   state: string
   forWeightedVotes: number
   abstainWeightedVotes: number
   againstWeightedVotes: number
   executionETA?: number
+  executionTime?: string
   quorumVotes: number
   voteStart: number
   voteEnd: number
