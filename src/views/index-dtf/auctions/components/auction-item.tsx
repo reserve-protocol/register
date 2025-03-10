@@ -31,6 +31,7 @@ import {
   VOLATILITY_OPTIONS,
   VOLATILITY_VALUES,
 } from '../atoms'
+import { toast } from 'sonner'
 
 const TradeCompletedStatus = ({ className }: { className?: string }) => {
   return (
@@ -98,21 +99,15 @@ export const updateTradeStateAtom = atom(null, (get, set, tradeId: string) => {
 const useProposalDtfSupply = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
-  const selectedProposal = useAtomValue(selectedProposalAtom)
-  const proposal = useAtomValue(dtfTradesByProposalMapAtom)?.[
-    selectedProposal ?? ''
-  ]
-  const blockNumber = proposal?.proposal.creationBlock
 
   const { data: supply } = useReadContract({
     address: indexDTF?.id,
     abi: erc20Abi,
     functionName: 'totalSupply',
     args: [],
-    blockNumber: blockNumber ? BigInt(blockNumber) : undefined,
     chainId,
     query: {
-      enabled: !!indexDTF?.id && !!chainId && !!blockNumber,
+      enabled: !!indexDTF?.id && !!chainId,
     },
   })
 
@@ -128,6 +123,7 @@ const TradeButton = ({
 }) => {
   const chainId = useAtomValue(chainIdAtom)
   const proposedBasket = useAtomValue(proposedBasketAtom)
+  const expectedBasket = useAtomValue(expectedBasketAtom)
   const isAuctionLauncher = useAtomValue(isAuctionLauncherAtom)
   const updateTradeState = useSetAtom(updateTradeStateAtom)
   const { writeContract, isError, isPending, data } = useWriteContract()
@@ -174,7 +170,10 @@ const TradeButton = ({
               acc.tokens.push(asset.token.address)
               acc.decimals.push(BigInt(asset.token.decimals))
               acc.targetBasket.push(parseUnits(asset.targetShares, 16))
-              acc.prices.push(asset.price)
+              acc.prices.push(
+                expectedBasket?.basket?.[asset.token.address]?.price ||
+                  asset.price
+              )
               acc.priceError.push(volatility)
 
               return acc
@@ -193,6 +192,34 @@ const TradeButton = ({
               priceError: number[]
             }
           )
+        // Log auction parameters for debugging
+        console.log('auction params', {
+          auctionParams: {
+            sell: trade.sell.address,
+            buy: trade.buy.address,
+            sellLimit: {
+              spot: trade.sellLimitSpot,
+              low: trade.sellLimitLow,
+              high: trade.sellLimitHigh,
+            },
+            buyLimit: {
+              spot: trade.buyLimitSpot,
+              low: trade.buyLimitLow,
+              high: trade.buyLimitHigh,
+            },
+            prices: {
+              start: trade.startPrice,
+              end: trade.endPrice,
+            },
+          },
+          dtfSupply: dtfSupply.toString(),
+          tokens,
+          decimals: decimals.map((d) => d.toString()),
+          targetBasket: targetBasket.map((tb) => tb.toString()),
+          prices,
+          priceError,
+          dtfPrice: proposedBasket.price,
+        })
 
         const [sellLimit, buyLimit, startPrice, endPrice] = openAuction(
           {
@@ -229,6 +256,7 @@ const TradeButton = ({
           args: [BigInt(tradeId), sellLimit, buyLimit, startPrice, endPrice],
         })
       } catch (e) {
+        toast.error('Error opening auction')
         console.error('error running auction', e)
       }
     } else {
