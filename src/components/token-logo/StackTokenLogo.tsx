@@ -9,8 +9,6 @@ interface Props extends BoxProps {
   reverseStack?: boolean
   overlap?: number
   outsource?: boolean
-  withBorder?: boolean
-  borderColor?: string
 }
 
 const StackTokenLogo = React.memo(
@@ -21,8 +19,6 @@ const StackTokenLogo = React.memo(
     reverseStack = false,
     overlap = 0,
     outsource = false,
-    withBorder = false,
-    borderColor = 'white',
     ...props
   }: Props) => {
     // Create a copy of the array before reversing it
@@ -56,7 +52,6 @@ const StackTokenLogo = React.memo(
                   sx={{
                     position: 'relative',
                     left: index ? `${-6 * index}px` : 0,
-                    border: withBorder ? `1px solid ${borderColor}` : 'none',
                   }}
                   symbol={'frax'}
                 />
@@ -65,7 +60,6 @@ const StackTokenLogo = React.memo(
                   sx={{
                     position: 'relative',
                     left: index ? `${-6 * (index + 1)}px` : 0,
-                    border: withBorder ? `1px solid ${borderColor}` : 'none',
                   }}
                   symbol={'usdc'}
                 />
@@ -93,16 +87,12 @@ const StackTokenLogo = React.memo(
                   symbol={token.symbol}
                   chain={token.chain}
                   address={token.address}
-                  className={withBorder ? `border border-${borderColor}` : ''}
                 />
               ) : (
                 <LegacyTokenLogo
                   width={size}
                   symbol={token.symbol}
                   src={token.logo}
-                  sx={{
-                    border: withBorder ? `1px solid ${borderColor}` : 'none',
-                  }}
                 />
               )}
             </Box>

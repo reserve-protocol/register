@@ -7,7 +7,6 @@ import {
   HoverCardTrigger,
 } from '@/components/ui/hover-card'
 import { type IndexDTFItem } from '@/hooks/useIndexDTFList'
-import { MAKER_ADDRESS } from '@/hooks/useTokensInfo'
 import { getFolioRoute } from '@/utils'
 import { ROUTES } from '@/utils/constants'
 import { ArrowRightIcon } from 'lucide-react'
@@ -45,45 +44,35 @@ export function BasketHoverCard({ indexDTF, children }: BasketHoverCardProps) {
               size={24}
               reverseStack
               outsource
-              withBorder
             />
           </div>
-          <div className="flex flex-col gap-2 px-2 w-full max-h-[210px] overflow-y-hidden">
-            {head
-              // maker to the end, the rest don't order
-              .sort((a, b) =>
-                a.address.toLowerCase() === MAKER_ADDRESS
-                  ? 1
-                  : b.address.toLowerCase() === MAKER_ADDRESS
-                    ? -1
-                    : 0
-              )
-              .map((token) => (
-                <div
-                  key={token.address}
-                  className="flex items-center gap-2 justify-between py-1"
-                >
-                  <div className="flex items-center gap-1.5">
-                    <TokenLogo
-                      address={token.address}
-                      symbol={token.symbol}
-                      chain={indexDTF.chainId}
-                      size="xl"
-                    />
-                    <div className="flex font-bold gap-1">
-                      <span className="text-primary">
-                        {token.weight || '12.3'}%
-                      </span>
-                      <span className="text-ellipsis no-wrap max-w-[100px]">
-                        {token.name}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="text-muted-foreground no-wrap text-ellipsis max-w-[80px]">
-                    ${token.symbol}
+          <div className="flex flex-col gap-2 px-2 w-full max-h-[250px] overflow-y-scroll">
+            {head.map((token) => (
+              <div
+                key={token.address}
+                className="flex items-center gap-2 justify-between py-1"
+              >
+                <div className="flex items-center gap-1.5">
+                  <TokenLogo
+                    address={token.address}
+                    symbol={token.symbol}
+                    chain={indexDTF.chainId}
+                    size="xl"
+                  />
+                  <div className="flex font-bold gap-1">
+                    <span className="text-primary">
+                      {token.weight || '12.3'}%
+                    </span>
+                    <span className="text-ellipsis truncate no-wrap max-w-[120px]">
+                      {token.name}
+                    </span>
                   </div>
                 </div>
-              ))}
+                <div className="text-muted-foreground no-wrap text-ellipsis truncate max-w-[100px]">
+                  ${token.symbol}
+                </div>
+              </div>
+            ))}
           </div>
           <Button
             variant="outline-primary"
