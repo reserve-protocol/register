@@ -51,7 +51,7 @@ const columns: ColumnDef<IndexDTFItem>[] = [
             />
           </div>
           <div className="break-words  max-w-[420px]">
-            <h4 className="font-semibold mb-[2px]">{row.original.name}</h4>
+            <h4 className="font-semibold ">{row.original.name}</h4>
             <span className="text-legend">${row.original.symbol}</span>
           </div>
         </Link>
@@ -126,8 +126,8 @@ const columns: ColumnDef<IndexDTFItem>[] = [
                 <Line
                   type="monotone"
                   dataKey="value"
-                  stroke="#000"
-                  strokeWidth={2}
+                  stroke="currentColor"
+                  strokeWidth={1}
                   dot={false}
                   isAnimationActive={false}
                 />
@@ -153,7 +153,7 @@ const columns: ColumnDef<IndexDTFItem>[] = [
   // },
   {
     header: ({ column }) => (
-      <TableHeader className="text-right">
+      <TableHeader className="text-right -mr-4">
         <SorteableButton column={column}>Market Cap</SorteableButton>
       </TableHeader>
     ),
@@ -161,9 +161,7 @@ const columns: ColumnDef<IndexDTFItem>[] = [
     cell: ({ row }) => {
       return (
         <div className="flex items-center justify-end">
-          <div className="mr-6">
-            ${formatCurrency(row.original.marketCap, 0)}
-          </div>
+          <div>${formatCurrency(row.original.marketCap, 0)}</div>
         </div>
       )
     },

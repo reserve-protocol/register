@@ -51,13 +51,15 @@ const InfoCard = ({
       )}
     >
       <div className="py-4 px-5 flex items-center gap-2">
-        <h1 className="font-bold text-xl text-primary mr-auto">{title}</h1>
+        <h1 className="font-semibold text-xl text-primary dark:text-muted-foreground mr-auto">
+          {title}
+        </h1>
         {action}
       </div>
       <div
         className={cn(
           'bg-card mx-1 mb-1 rounded-3xl',
-          secondary && 'bg-background',
+          secondary && 'bg-background dark:bg-card',
           className
         )}
       >
@@ -103,13 +105,13 @@ const InfoCardItem = ({
       </div>
       {!!address && (
         <div className="flex items-center gap-2">
-          <div className="flex items-center justify-center bg-muted rounded-full p-1.5">
+          <div className="flex items-center justify-center bg-muted dark:bg-white/5 rounded-full p-1.5">
             <Copy value={address} size={10} />
           </div>
           <Link
             to={getExplorerLink(address, chainId, ExplorerDataType.ADDRESS)}
             target="_blank"
-            className="p-1 bg-muted rounded-full"
+            className="p-1 bg-muted dark:bg-white/5 rounded-full"
           >
             <ArrowUpRight size={14} />
           </Link>

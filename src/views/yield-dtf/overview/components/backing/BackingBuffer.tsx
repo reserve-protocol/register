@@ -89,13 +89,6 @@ const BuckingBuffer = ({ ...props }: BoxProps) => {
             <Text sx={{ fontSize: 1 }}>{percentageOfMCap}</Text>
           </Box>
         </Box>
-        <Box variant="layout.verticalAlign" sx={{ gap: 2 }}>
-          <Text variant="contentTitle" sx={{ textAlign: ['left', 'right'] }}>
-            Collateral yield is distributed as revenue when the backing buffer
-            is full
-          </Text>
-          <Help content="The backing buffer is extra collateral held to prevent RSR seizure from trading slippage. When the buffer exceeds 100%, any additional appreciation of collateral is recognized as revenue and sold off in auctions." />
-        </Box>
       </Box>
 
       <Box m={4}>
@@ -120,6 +113,13 @@ const BuckingBuffer = ({ ...props }: BoxProps) => {
         ) : (
           <Skeleton height={36} width="100%" />
         )}
+      </Box>
+      <Box mx="auto" px="4" variant="layout.verticalAlign" sx={{ gap: 2 }}>
+        <Text variant="contentTitle" sx={{ textAlign: ['left', 'right'] }}>
+          Collateral yield is distributed as revenue when the backing buffer is
+          full
+        </Text>
+        <Help content="The backing buffer is extra collateral held to prevent RSR seizure from trading slippage. When the buffer exceeds 100%, any additional appreciation of collateral is recognized as revenue and sold off in auctions." />
       </Box>
     </Box>
   )

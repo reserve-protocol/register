@@ -7,7 +7,7 @@ const boxVariants = cva('', {
     variant: {
       default: '', // TODO?
       circle:
-        'rounded-full bg-black/5 w-6 h-6 flex items-center justify-center',
+        'rounded-full bg-black/5 dark:bg-white/5 w-6 h-6 flex items-center justify-center',
     },
   },
   defaultVariants: {

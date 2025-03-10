@@ -13,7 +13,7 @@ const EarnHeader = () => (
       justifyContent: ['start', 'start', 'space-between'],
       gap: [4, 4, 0],
     }}
-    mb={[5, 7]}
+    mb="5"
   >
     <Box
       variant="layout.verticalAlign"

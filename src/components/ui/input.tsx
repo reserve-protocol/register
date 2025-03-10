@@ -6,7 +6,7 @@ import { Search } from 'lucide-react'
 import { JSX } from 'react'
 
 const inputVariants = cva(
-  'flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
+  'flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50',
   {
     variants: {
       variant: {
@@ -14,7 +14,7 @@ const inputVariants = cva(
         default: '',
         outline: 'bg-transparent border-border',
         transparent:
-          'ring-0 focus-visible:ring-0 focus-visible:ring-offset-0 border-0 bg-transparent py-0 px-0 outline-none moz-appearance-none webkit-appearance-none font-semibold text-3xl',
+          'ring-0 focus-visible:ring-0 focus-visible:ring-offset-0 border-0 bg-transparent py-0 px-0 outline-none moz-appearance-none webkit-appearance-none font-normal text-3xl',
       },
     },
     defaultVariants: {
@@ -147,7 +147,7 @@ const SearchInput = React.forwardRef<
         className={cn(
           inputVariants({ variant }),
           inputClassName,
-          'pl-12 pr-0 h-16 rounded-2xl bg-card'
+          'pl-14 pr-0 h-16 text-md rounded-2xl bg-card '
         )}
         ref={ref}
         {...props}

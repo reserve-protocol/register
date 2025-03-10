@@ -55,10 +55,10 @@ const MintBox = () => {
           <TokenLogo src={brand?.dtf?.icon || undefined} size="lg" />
         </div>
         <div className="flex flex-col gap-1">
-          <div className="text-xl font-bold text-primary">
+          <div className="text-xl font-semibold ">
             Buy/Sell {dtf?.token.symbol} onchain
           </div>
-          <div className="text-sm">
+          <div className="text-legend text-sm">
             Our Zap-swaps support common assets like ETH, USDC, USDT, and
             others, which makes DTFs easy to enter and exit.
           </div>
@@ -145,7 +145,7 @@ const CoverImage = () => {
   }, [brand])
 
   if (isLoading) {
-    return <Skeleton className="w-[450px] h-[450px] rounded-3xl" />
+    return <Skeleton className="w-[450px] h-[450px] rounded-4xl" />
   }
 
   if (brand?.dtf?.cover) {
@@ -153,7 +153,7 @@ const CoverImage = () => {
       <img
         width={450}
         height={450}
-        className="object-cover h-[450px] w-[450px] rounded-3xl"
+        className="object-cover h-[450px] w-[450px] rounded-4xl"
         alt="DTF meme"
         src={brand.dtf.cover}
       />
@@ -165,7 +165,7 @@ const CoverImage = () => {
 
 const LandingMint = (props: React.HTMLAttributes<HTMLDivElement>) => {
   return (
-    <div className="hidden xl:flex xl:flex-col xl:gap-1 relative" {...props}>
+    <div className="hidden xl:flex xl:flex-col xl:gap-2 relative" {...props}>
       <CoverImage />
       <div className="w-[450px] sticky top-0 rounded-4xl bg-muted p-1">
         <MintBox />
