@@ -192,34 +192,43 @@ const TradeButton = ({
               priceError: number[]
             }
           )
+
+        console.log('proposed basket', proposedBasket)
+        console.log('expected basket', expectedBasket)
         // Log auction parameters for debugging
-        console.log('auction params', {
-          auctionParams: {
-            sell: trade.sell.address,
-            buy: trade.buy.address,
-            sellLimit: {
-              spot: trade.sellLimitSpot,
-              low: trade.sellLimitLow,
-              high: trade.sellLimitHigh,
+        console.log(
+          'auction params',
+          JSON.stringify(
+            {
+              auctionParams: {
+                sell: trade.sell.address,
+                buy: trade.buy.address,
+                sellLimit: {
+                  spot: trade.sellLimitSpot,
+                  low: trade.sellLimitLow,
+                  high: trade.sellLimitHigh,
+                },
+                buyLimit: {
+                  spot: trade.buyLimitSpot,
+                  low: trade.buyLimitLow,
+                  high: trade.buyLimitHigh,
+                },
+                prices: {
+                  start: trade.startPrice,
+                  end: trade.endPrice,
+                },
+              },
+              dtfSupply: dtfSupply.toString(),
+              tokens,
+              decimals: decimals.map((d) => d.toString()),
+              targetBasket: targetBasket.map((tb) => tb.toString()),
+              prices,
+              priceError,
+              dtfPrice: proposedBasket.price,
             },
-            buyLimit: {
-              spot: trade.buyLimitSpot,
-              low: trade.buyLimitLow,
-              high: trade.buyLimitHigh,
-            },
-            prices: {
-              start: trade.startPrice,
-              end: trade.endPrice,
-            },
-          },
-          dtfSupply: dtfSupply.toString(),
-          tokens,
-          decimals: decimals.map((d) => d.toString()),
-          targetBasket: targetBasket.map((tb) => tb.toString()),
-          prices,
-          priceError,
-          dtfPrice: proposedBasket.price,
-        })
+            (_, value) => (typeof value === 'bigint' ? value.toString() : value)
+          )
+        )
 
         const [sellLimit, buyLimit, startPrice, endPrice] = openAuction(
           {

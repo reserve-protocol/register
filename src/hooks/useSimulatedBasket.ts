@@ -196,6 +196,7 @@ const useSimulatedBasket = (
         {} as Record<string, number>
       ) ?? {}),
     }
+
     // TODO: Missing name for snapshot basket
     const allTokens = {
       ...basket.basket.reduce(

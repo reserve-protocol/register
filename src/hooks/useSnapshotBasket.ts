@@ -13,6 +13,7 @@ export type SnapshotBasket = {
   }[]
 }
 
+// TODO: remove test=true
 const getSnapshotBasket = async (
   indexDTF: string,
   chainId: number,
@@ -20,7 +21,7 @@ const getSnapshotBasket = async (
 ): Promise<SnapshotBasket> => {
   const route = !!block ? 'snapshot' : 'current'
   const response = await fetch(
-    `${RESERVE_API}${route}/dtf?address=${indexDTF}&chainId=${chainId}&blockNumber=${block}`
+    `${RESERVE_API}${route}/dtf?address=${indexDTF}&chainId=${chainId}&blockNumber=${block}&test=true`
   )
   return response.json()
 }
