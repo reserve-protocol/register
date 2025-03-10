@@ -102,7 +102,7 @@ const TransactionButton = ({
   const chainId = useAtomValue(chainIdAtom)
   const { switchChain } = useSwitchChain()
   const isInvalidWallet = chain
-    ? chain !== chainId || walletChain !== chain
+    ? walletChain !== chain
     : walletChain !== chainId
 
   if (!address) {
