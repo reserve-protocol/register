@@ -164,7 +164,7 @@ const Splash = () => {
   if (isDesktop) {
     return (
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="max-w-[967px] p-0 overflow-hidden sm:rounded-4xl">
+        <DialogContent className="sm:max-w-[967px] p-0 overflow-hidden sm:rounded-4xl">
           <Presentation onClose={() => setOpen(false)} />
         </DialogContent>
       </Dialog>

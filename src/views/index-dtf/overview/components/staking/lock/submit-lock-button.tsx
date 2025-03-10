@@ -1,7 +1,7 @@
 import dtfIndexStakingVault from '@/abis/dtf-index-staking-vault'
 import TransactionButton from '@/components/old/button/TransactionButton'
 import useContractWrite from '@/hooks/useContractWrite'
-import { chainIdAtom, walletAtom } from '@/state/atoms'
+import { walletAtom } from '@/state/atoms'
 import { portfolioSidebarOpenAtom } from '@/views/portfolio/atoms'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
@@ -22,7 +22,7 @@ export const DelegateButton = () => {
   const account = useAtomValue(walletAtom)
   const stToken = useAtomValue(stTokenAtom)!
   const delegate = useAtomValue(delegateAtom)
-  const chainId = useAtomValue(chainIdAtom)
+  const chainId = stToken.chainId
   const isValidDelegate = isAddress(delegate, { strict: false })
   const setCurrentDelegate = useSetAtom(currentDelegateAtom)
 
@@ -50,6 +50,7 @@ export const DelegateButton = () => {
   return (
     <div>
       <TransactionButton
+        chain={chainId}
         disabled={!account || !isValidDelegate || !isReady}
         gas={gas}
         loading={isLoading || !!hash || (hash && !receipt)}
@@ -74,7 +75,7 @@ const SubmitLockButton = () => {
   const resetInput = useResetAtom(stakingInputAtom)
   const setPortfolioSidebarOpen = useSetAtom(portfolioSidebarOpenAtom)
   const setStakingSidebarOpen = useSetAtom(stakingSidebarOpenAtom)
-  const chainId = useAtomValue(chainIdAtom)
+  const chainId = stToken.chainId
 
   const isValidDelegate = isAddress(delegate, { strict: false })
   const isSelfDelegate = delegate === account
@@ -153,6 +154,7 @@ const SubmitLockButton = () => {
   return (
     <div>
       <TransactionButton
+        chain={chainId}
         disabled={
           !isValidDelegate ||
           !checkbox ||

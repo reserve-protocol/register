@@ -10,6 +10,9 @@ import { ColumnDef } from '@tanstack/react-table'
 import { Link, useNavigate } from 'react-router-dom'
 import { Line, LineChart, YAxis } from 'recharts'
 import { calculatePercentageChange } from '../utils'
+import { BasketHoverCard } from './basket-hover-card'
+
+export const LIMIT_ASSETS = 7
 
 const chartConfig = {
   desktop: {
@@ -59,22 +62,25 @@ const columns: ColumnDef<IndexDTFItem>[] = [
     header: () => <TableHeader>Backing</TableHeader>,
     accessorKey: 'basket',
     cell: ({ row }) => {
-      const LIMIT = 7
-
-      const head = row.original.basket.slice(0, LIMIT)
+      const head = row.original.basket.slice(0, LIMIT_ASSETS)
 
       // TODO(jg): Logos for basket assets
       return (
-        <div className="flex items-center gap-2 ">
-          <div>
-            <StackTokenLogo
-              tokens={head.map((r) => ({ ...r, chain: row.original.chainId }))}
-              overlap={2}
-              size={24}
-              reverseStack
-              outsource
-            />
-          </div>
+        <div className="flex items-center gap-2">
+          <BasketHoverCard indexDTF={row.original}>
+            <div>
+              <StackTokenLogo
+                tokens={head.map((r) => ({
+                  ...r,
+                  chain: row.original.chainId,
+                }))}
+                overlap={2}
+                size={24}
+                reverseStack
+                outsource
+              />
+            </div>
+          </BasketHoverCard>
         </div>
       )
     },

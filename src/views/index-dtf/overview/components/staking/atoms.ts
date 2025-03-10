@@ -4,10 +4,13 @@ import { atom } from 'jotai'
 import { atomWithReset } from 'jotai/utils'
 import { formatUnits } from 'viem'
 
+type StTokenExtended = IndexDTF['stToken'] & { chainId: number }
+
 export const stakingSidebarOpenAtom = atom(false)
-export const portfolioStTokenAtom = atomWithReset<
-  IndexDTF['stToken'] | undefined
->(undefined)
+export const portfolioStTokenAtom = atomWithReset<StTokenExtended | undefined>(
+  undefined
+)
+
 export const currentStakingTabAtom = atom<'lock' | 'unlock'>('lock')
 export const stakingInputAtom = atomWithReset<string>('')
 export const underlyingStTokenPriceAtom = atom<number | undefined>(undefined)
@@ -18,9 +21,17 @@ export const lockCheckboxAtom = atom<boolean>(false)
 export const currentDelegateAtom = atom<string>('')
 export const delegateAtom = atom<string>('')
 
-export const stTokenAtom = atom<IndexDTF['stToken'] | undefined>(
-  (get) => get(portfolioStTokenAtom) || get(indexDTFAtom)?.stToken
-)
+export const stTokenAtom = atom<StTokenExtended | undefined>((get) => {
+  const portfolioStToken = get(portfolioStTokenAtom)
+  const indexDTF = get(indexDTFAtom)
+
+  if (portfolioStToken) return portfolioStToken
+  if (indexDTF && indexDTF.stToken) {
+    return { ...indexDTF.stToken, chainId: indexDTF.chainId }
+  }
+
+  return undefined
+})
 
 export const inputPriceAtom = atom<number>((get) => {
   const input = get(stakingInputAtom)

@@ -154,9 +154,66 @@ interface DataTableComponentProps<TData, TValue>
   allowMultipleExpand?: boolean
   pagination?: boolean | { pageSize: number }
   onRowClick?: (data: TData, row: Row<TData>) => void
+  hoverRowComponent?: (props: {
+    row: Row<TData>
+    children: React.ReactNode
+  }) => React.ReactElement
   renderSubComponent?: (props: { row: Row<TData> }) => React.ReactElement
   subComponentClassName?: string
   noResultsClassName?: string
+}
+
+const CustomTableRow = ({
+  row,
+  handleRowClick,
+  renderSubComponent,
+  expandable,
+  onRowClick,
+  expandedRows,
+  index,
+  hoverRowComponent,
+}: {
+  row: Row<any>
+  handleRowClick: (row: Row<any>) => void
+  renderSubComponent?: (props: { row: Row<any> }) => React.ReactElement
+  expandable: boolean
+  onRowClick?: (data: any, row: Row<any>) => void
+  expandedRows: boolean[]
+  index: number
+  hoverRowComponent?: (props: {
+    row: Row<any>
+    children: React.ReactNode
+  }) => React.ReactElement
+}) => {
+  const baseRow = (
+    <TableRow
+      data-state={row.getIsSelected() && 'selected'}
+      onClick={() => handleRowClick(row)}
+      className={cn(
+        (!!renderSubComponent && expandable) || onRowClick
+          ? 'cursor-pointer border-b-[0]'
+          : undefined,
+        row.getIsExpanded() &&
+          'bg-card border border-border rounded-tl-lg rounded-tr-lg',
+        expandedRows[index - 1]
+          ? '!border-t-[0]'
+          : '[&:not(:first-child)]:!border-t-[1px]'
+      )}
+    >
+      {row.getVisibleCells().map((cell) => (
+        <TableCell
+          key={cell.id}
+          className={cell.column.columnDef.meta?.className}
+        >
+          {flexRender(cell.column.columnDef.cell, cell.getContext())}
+        </TableCell>
+      ))}
+    </TableRow>
+  )
+
+  return hoverRowComponent
+    ? hoverRowComponent({ row, children: baseRow })
+    : baseRow
 }
 
 function DataTable<TData, TValue>({
@@ -167,6 +224,7 @@ function DataTable<TData, TValue>({
   allowMultipleExpand = true,
   pagination,
   onRowClick,
+  hoverRowComponent,
   renderSubComponent,
   subComponentClassName,
   noResultsClassName,
@@ -257,32 +315,16 @@ function DataTable<TData, TValue>({
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row, index) => (
               <Fragment key={row.id}>
-                <TableRow
-                  data-state={row.getIsSelected() && 'selected'}
-                  onClick={() => handleRowClick(row)}
-                  className={cn(
-                    (!!renderSubComponent && expandable) || onRowClick
-                      ? 'cursor-pointer border-b-[0]'
-                      : undefined,
-                    row.getIsExpanded() &&
-                      'bg-card border border-border rounded-tl-lg rounded-tr-lg',
-                    expandedRows[index - 1]
-                      ? '!border-t-[0]'
-                      : '[&:not(:first-child)]:!border-t-[1px]'
-                  )}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell
-                      key={cell.id}
-                      className={cell.column.columnDef.meta?.className}
-                    >
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
+                <CustomTableRow
+                  row={row}
+                  handleRowClick={handleRowClick}
+                  renderSubComponent={renderSubComponent}
+                  expandable={expandable}
+                  onRowClick={onRowClick}
+                  expandedRows={expandedRows}
+                  index={index}
+                  hoverRowComponent={hoverRowComponent}
+                />
                 {!!renderSubComponent && row.getIsExpanded() && (
                   <tr
                     className={cn(

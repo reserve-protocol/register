@@ -1,9 +1,17 @@
 import { ChainId } from './chains'
 
+export const ETHERSCAN_NAMES: { [chainId: number]: string } = {
+  [ChainId.Mainnet]: 'etherscan',
+  [ChainId.Base]: 'basescan',
+  [ChainId.Arbitrum]: 'arbiscan',
+}
+
 const ETHERSCAN_PREFIXES: { [chainId: number]: string } = {
-  [ChainId.Mainnet]: import.meta.env.VITE_MAINNET_EXPLORER ?? 'etherscan.io',
-  [ChainId.Base]: 'basescan.org',
-  [ChainId.Arbitrum]: 'arbiscan.io',
+  [ChainId.Mainnet]:
+    import.meta.env.VITE_MAINNET_EXPLORER ??
+    `${ETHERSCAN_NAMES[ChainId.Mainnet]}.io`,
+  [ChainId.Base]: `${ETHERSCAN_NAMES[ChainId.Base]}.org`,
+  [ChainId.Arbitrum]: `${ETHERSCAN_NAMES[ChainId.Arbitrum]}.io`,
 }
 
 export enum ExplorerDataType {
