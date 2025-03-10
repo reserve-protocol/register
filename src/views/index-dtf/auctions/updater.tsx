@@ -15,10 +15,16 @@ import {
   AssetTrade,
   dtfTradeMapAtom,
   dtfTradesAtom,
+  dtfTradesByProposalMapAtom,
+  expectedBasketAtom,
   getTradeState,
+  proposedBasketAtom,
+  selectedProposalAtom,
   selectedTradesAtom,
   TRADE_STATE,
 } from './atoms'
+import useSnapshotBasket from '@/hooks/useSnapshotBasket'
+import useSimulatedBasket from '@/hooks/useSimulatedBasket'
 
 type Response = {
   trades: {
@@ -191,7 +197,7 @@ const updateTradeStateAtom = atom(null, (get, set) => {
     if (trade.state === TRADE_STATE.PENDING) {
       // If the trade is available but not expired
       if (
-        trade.availableAt > currentTime &&
+        currentTime >= trade.availableAt &&
         trade.launchTimeout > currentTime
       ) {
         updatedTrades[trade.id] = {
@@ -218,7 +224,93 @@ const updateTradeStateAtom = atom(null, (get, set) => {
   }
 })
 
-const Updater = () => {
+const selectedProposalValueAtom = atom((get) => {
+  const selectedProposal = get(selectedProposalAtom)
+  const tradesByProposal = get(dtfTradesByProposalMapAtom)
+
+  if (!selectedProposal || !tradesByProposal) return undefined
+
+  return tradesByProposal[selectedProposal]
+})
+
+const tradesFromProposalAtom = atom((get) => {
+  const proposal = get(selectedProposalValueAtom)
+  if (!proposal) return undefined
+
+  return proposal.trades.map((trade) => ({
+    sell: trade.sell.address,
+    buy: trade.buy.address,
+    sellLimit: {
+      spot: trade.sellLimitSpot,
+      low: trade.sellLimitLow,
+      high: trade.sellLimitHigh,
+    },
+    buyLimit: {
+      spot: trade.buyLimitSpot,
+      low: trade.buyLimitLow,
+      high: trade.buyLimitHigh,
+    },
+    prices: {
+      start: trade.startPrice,
+      end: trade.endPrice,
+    },
+    ttl: BigInt(trade.launchTimeout),
+  }))
+})
+
+const ProposalBasketSimulationsUpdater = () => {
+  const indexDTF = useAtomValue(indexDTFAtom)
+  const chainId = useAtomValue(chainIdAtom)
+  const selectedProposal = useAtomValue(selectedProposalValueAtom)
+  const trades = useAtomValue(tradesFromProposalAtom)
+  const setProposedBasket = useSetAtom(proposedBasketAtom)
+  const setExpectedBasket = useSetAtom(expectedBasketAtom)
+  const isCompletedOrExpired =
+    selectedProposal?.status === 'COMPLETED' ||
+    selectedProposal?.status === 'EXPIRED'
+
+  // Get the proposed basket
+  const { data: proposedBasketSnapshot } = useSnapshotBasket(
+    indexDTF?.id,
+    chainId,
+    selectedProposal?.proposal.creationBlock
+  )
+  const proposedBasket = useSimulatedBasket(
+    proposedBasketSnapshot,
+    trades,
+    chainId,
+    selectedProposal?.proposal.creationTime
+  )
+
+  // Get the expected basket
+  const { data: expectedBasketSnapshot } = useSnapshotBasket(
+    indexDTF?.id,
+    chainId,
+    isCompletedOrExpired
+      ? Number(selectedProposal.proposal.executionBlock)
+      : undefined
+  )
+  const expectedBasket = useSimulatedBasket(
+    expectedBasketSnapshot,
+    trades,
+    chainId,
+    isCompletedOrExpired
+      ? Number(selectedProposal.proposal.executionTime)
+      : undefined
+  )
+
+  useEffect(() => {
+    setProposedBasket(proposedBasket)
+  }, [proposedBasket])
+
+  useEffect(() => {
+    setExpectedBasket(expectedBasket)
+  }, [expectedBasket])
+
+  return null
+}
+
+const TradesUpdater = () => {
   const setTrades = useSetAtom(dtfTradeMapAtom)
   const untrackedAssets = useAtomValue(missingTradeTokensAtom)
   const { data: untrackedPrices } = useAssetPrices(untrackedAssets ?? [])
@@ -269,4 +361,12 @@ const Updater = () => {
   return null
 }
 
+const Updater = () => {
+  return (
+    <>
+      <TradesUpdater />
+      <ProposalBasketSimulationsUpdater />
+    </>
+  )
+}
 export default Updater

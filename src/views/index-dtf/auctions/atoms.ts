@@ -10,6 +10,7 @@ import { Token } from '@/types'
 import { getCurrentTime } from '@/utils'
 import { atom } from 'jotai'
 import { governanceProposalsAtom } from '../governance/atoms'
+import { IndexAuctionSimulation } from '@/hooks/useSimulatedBasket'
 
 export const TRADE_STATE = {
   PENDING: 'PENDING', // Only for auction launcher!
@@ -101,8 +102,11 @@ export type TradesByProposal = {
   expiresAt: number
   availableAt: number
   status: string
+  blockNumber: number
 }
 export const allPricesAtom = atom<Record<string, number> | undefined>(undefined)
+
+export const selectedProposalAtom = atom<string | undefined>(undefined)
 
 export const isAuctionLauncherAtom = atom((get) => {
   const wallet = get(walletAtom)
@@ -223,54 +227,71 @@ export const setTradeVolatilityAtom = atom(
 )
 
 // TODO: There are some edge cases with this grouping, worth revisiting
+export const dtfTradesByProposalMapAtom = atom<
+  Record<string, TradesByProposal> | undefined
+>((get) => {
+  const trades = get(dtfTradesWithSharesAtom)
+  const proposals = get(governanceProposalsAtom)
+
+  if (!trades || !proposals) return undefined
+
+  const tradesByProposal: Record<string, TradesByProposal> = {}
+
+  for (const proposal of proposals) {
+    if (proposal.executionBlock) {
+      tradesByProposal[proposal.executionBlock] = {
+        proposal,
+        trades: [],
+        completed: 0,
+        expired: 0,
+        availableAt: 0,
+        expiresAt: 0,
+        blockNumber: Number(proposal.executionBlock),
+        status: 'PENDING',
+      }
+    }
+  }
+
+  for (const trade of trades) {
+    if (trade.approvedBlockNumber in tradesByProposal) {
+      tradesByProposal[trade.approvedBlockNumber].trades.push(trade)
+      tradesByProposal[trade.approvedBlockNumber].completed +=
+        trade.state === TRADE_STATE.COMPLETED ? 1 : 0
+      tradesByProposal[trade.approvedBlockNumber].expired +=
+        trade.state === TRADE_STATE.EXPIRED ? 1 : 0
+      tradesByProposal[trade.approvedBlockNumber].expiresAt =
+        trade.launchTimeout
+      tradesByProposal[trade.approvedBlockNumber].availableAt =
+        trade.availableAt
+
+      // Update status based on trade states
+      const proposal = tradesByProposal[trade.approvedBlockNumber]
+      const totalTrades = proposal.trades.length
+
+      if (proposal.completed === totalTrades) {
+        proposal.status = 'COMPLETED'
+      } else if (proposal.expired === totalTrades) {
+        proposal.status = 'EXPIRED'
+      } else if (trade.state === TRADE_STATE.RUNNING) {
+        proposal.status = 'ONGOING'
+      }
+    }
+  }
+
+  return Object.values(tradesByProposal).reduce(
+    (acc, proposal) => {
+      acc[proposal.proposal.id] = proposal
+      return acc
+    },
+    {} as Record<string, TradesByProposal>
+  )
+})
+
 export const dtfTradesByProposalAtom = atom<TradesByProposal[] | undefined>(
   (get) => {
-    const trades = get(dtfTradesWithSharesAtom)
-    const proposals = get(governanceProposalsAtom)
+    const tradesByProposal = get(dtfTradesByProposalMapAtom)
 
-    if (!trades || !proposals) return undefined
-
-    const tradesByProposal: Record<string, TradesByProposal> = {}
-
-    for (const proposal of proposals) {
-      if (proposal.executionBlock) {
-        tradesByProposal[proposal.executionBlock] = {
-          proposal,
-          trades: [],
-          completed: 0,
-          expired: 0,
-          availableAt: 0,
-          expiresAt: 0,
-          status: 'PENDING',
-        }
-      }
-    }
-
-    for (const trade of trades) {
-      if (trade.approvedBlockNumber in tradesByProposal) {
-        tradesByProposal[trade.approvedBlockNumber].trades.push(trade)
-        tradesByProposal[trade.approvedBlockNumber].completed +=
-          trade.state === TRADE_STATE.COMPLETED ? 1 : 0
-        tradesByProposal[trade.approvedBlockNumber].expired +=
-          trade.state === TRADE_STATE.EXPIRED ? 1 : 0
-        tradesByProposal[trade.approvedBlockNumber].expiresAt =
-          trade.launchTimeout
-        tradesByProposal[trade.approvedBlockNumber].availableAt =
-          trade.availableAt
-
-        // Update status based on trade states
-        const proposal = tradesByProposal[trade.approvedBlockNumber]
-        const totalTrades = proposal.trades.length
-
-        if (proposal.completed === totalTrades) {
-          proposal.status = 'COMPLETED'
-        } else if (proposal.expired === totalTrades) {
-          proposal.status = 'EXPIRED'
-        } else if (trade.state === TRADE_STATE.RUNNING) {
-          proposal.status = 'ONGOING'
-        }
-      }
-    }
+    if (!tradesByProposal) return undefined
 
     return Object.values(tradesByProposal)
       .filter((proposal) => proposal.trades.length > 0)
@@ -279,4 +300,11 @@ export const dtfTradesByProposalAtom = atom<TradesByProposal[] | undefined>(
           Number(b.proposal.executionBlock) - Number(a.proposal.executionBlock)
       )
   }
+)
+
+export const proposedBasketAtom = atom<IndexAuctionSimulation | undefined>(
+  undefined
+)
+export const expectedBasketAtom = atom<IndexAuctionSimulation | undefined>(
+  undefined
 )
