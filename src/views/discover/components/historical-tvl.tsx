@@ -12,24 +12,21 @@ import {
 import { Box, Card, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import {
+  CHAIN_TO_NETWORK,
   DTF_VIDEO,
   DUNE_DASHBOARD,
   NETWORKS,
   capitalize,
 } from 'utils/constants'
-import useHistoricalTVL, {
-  DailyTVL,
-  DEFAULT_TVL_BY_CHAIN,
-} from '@/views/home/hooks/useHistoricalTVL'
-import useProtocolMetrics from '@/views/home/hooks/useProtocolMetrics'
 import { Button } from '@/components/ui/button'
 import { ArrowRight, Play } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import useDTFHistoricalTVL, { DTFStats } from '../hooks/use-dtf-historical-tvl'
-import { useMemo } from 'react'
-import { trackClick } from '@/hooks/useTrackPage'
 import tvlLight from '../assets/tvl-light.svg'
 import tvlDark from '../assets/tvl-dark.svg'
+import { trackClick } from '@/hooks/useTrackPage'
+import useAPIProtocolMetrics, {
+  Metrics,
+} from '../hooks/use-api-protocol-metrics'
 
 const COLORS: Record<string, any> = {
   ethereum: {
@@ -134,30 +131,17 @@ function CustomTooltip({ payload, label, active }: any) {
 }
 
 // TODO: Improve loading revenue state, currently have a hardcoded if
-const Heading = ({ dtfStats }: { dtfStats?: DTFStats }) => {
-  const {
-    data: { tvl: rTVL, rsrStakerAnnualizedRevenue, rTokenAnnualizedRevenue },
-    isLoading,
-  } = useProtocolMetrics()
-
+const Heading = ({
+  data,
+  isLoading,
+}: {
+  data?: Metrics
+  isLoading: boolean
+}) => {
   const revenue =
-    rsrStakerAnnualizedRevenue +
-    rTokenAnnualizedRevenue +
-    Object.keys(NETWORKS).reduce((revenue, chain) => {
-      if (!dtfStats || !dtfStats[chain] || dtfStats[chain].length === 0) {
-        return revenue
-      }
-      return revenue + dtfStats[chain].slice(-1)[0].revenue
-    }, 0)
-  const tvl =
-    rTVL +
-    Object.keys(NETWORKS).reduce((tvl, chain) => {
-      if (!dtfStats || !dtfStats[chain] || dtfStats[chain].length === 0) {
-        return tvl
-      }
-      return tvl + dtfStats[chain].slice(-1)[0].tvl
-    }, 0)
-
+    isLoading || !data
+      ? 0
+      : data.rsrStakerAnnualizedRevenue + data.rTokenAnnualizedRevenue
   return (
     <>
       <div className="absolute top-3 sm:top-8 left-0 sm:left-0 right-3 text-tvl px-4 sm:px-6 md:px-0 w-auto sm:w-[560px]">
@@ -174,7 +158,7 @@ const Heading = ({ dtfStats }: { dtfStats?: DTFStats }) => {
         ) : (
           <div className="flex items-center ">
             <h3 className="text-4xl sm:text-5xl sm:text-[60px] font-semibold leading-none">
-              ${formatCurrency(tvl, 0)}
+              ${formatCurrency(data?.tvl ?? 0, 0)}
             </h3>
             <Link target="_blank" to={DUNE_DASHBOARD}>
               <Button
@@ -222,64 +206,29 @@ const Heading = ({ dtfStats }: { dtfStats?: DTFStats }) => {
   )
 }
 
-const HistoricalTVLChart = ({ dtfStats }: { dtfStats?: DTFStats }) => {
-  const data = useHistoricalTVL()
-
-  const updated = useMemo(() => {
-    if (data.length == 0 || !dtfStats) {
-      return data
-    }
-
-    const lookup: Record<number, DailyTVL> = {}
-
-    for (const key in NETWORKS) {
-      const k = key as keyof typeof NETWORKS
-      if (!dtfStats[k]) {
-        continue
-      }
-      for (const entry of dtfStats[k]) {
-        const { timestamp, tvl } = entry
-        const ts = timestamp * 1_000
-        if (!lookup[timestamp]) {
-          lookup[ts] = { day: ts, ...DEFAULT_TVL_BY_CHAIN }
-        }
-        lookup[ts][k] = (lookup[ts][k] || 0) + tvl
-      }
-    }
-
-    return data.map((entry) => {
-      const updatedValues = lookup[entry.day] || {}
-      const newEntry = { ...entry }
-
-      for (const key in NETWORKS) {
-        newEntry[key] = (entry[key] || 0) + (updatedValues[key] || 0)
-      }
-
-      return newEntry
-    })
-  }, [data, dtfStats])
-
+const HistoricalTVLChart = ({ data }: { data?: Metrics }) => {
   return (
     <ResponsiveContainer width="100%" height="100%">
       <AreaChart
-        data={updated}
+        data={data?.tvlTimeseries ?? []}
         margin={{
           right: 0,
           bottom: -30,
           left: 0,
         }}
       >
-        <XAxis dataKey="day" style={{ display: 'none' }} />
+        <XAxis dataKey="timestamp" style={{ display: 'none' }} />
         <YAxis hide visibility="0" domain={['dataMin', 'dataMax']} />
         <Tooltip wrapperStyle={{ zIndex: 1000 }} content={<CustomTooltip />} />
-        {Object.keys(NETWORKS).map((network) => (
+        {Object.values(NETWORKS).map((network) => (
           <Area
             key={network}
             type="step"
+            name={CHAIN_TO_NETWORK[network]}
             dataKey={network}
             stackId="1"
-            stroke={COLORS[network].stroke}
-            fill={COLORS[network].fill}
+            stroke={COLORS[CHAIN_TO_NETWORK[network]].stroke}
+            fill={COLORS[CHAIN_TO_NETWORK[network]].fill}
             fillOpacity="1"
             activeDot={{ r: 0 }}
           />
@@ -290,14 +239,14 @@ const HistoricalTVLChart = ({ dtfStats }: { dtfStats?: DTFStats }) => {
 }
 
 const HistoricalTVL = () => {
-  const { data: dtfStats } = useDTFHistoricalTVL()
+  const data = useAPIProtocolMetrics()
   return (
     <div className="container px-0 md:px-6 2xl:px-6 h-80 sm:h-[580px]">
       <div className="relative h-full flex flex-col justify-end ">
         <div className="h-[160px] sm:h-[420px]">
-          <HistoricalTVLChart dtfStats={dtfStats} />
+          <HistoricalTVLChart {...data} />
         </div>
-        <Heading dtfStats={dtfStats} />
+        <Heading {...data} />
       </div>
     </div>
   )
