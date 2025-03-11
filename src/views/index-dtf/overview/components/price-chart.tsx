@@ -225,7 +225,7 @@ const PriceChart = () => {
               <Line
                 type="monotone"
                 dataKey={dataType}
-                stroke="#ffffff"
+                stroke="#E5EEFA"
                 strokeWidth={1.5}
                 dot={false}
                 isAnimationActive={false}
