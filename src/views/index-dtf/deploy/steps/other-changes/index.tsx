@@ -1,4 +1,5 @@
 import NextButton from '../../components/next-button'
+import { ToggleGroupPreset } from '../../components/toggle-group-preset'
 import OtherChangesForm from './other-changes-form'
 
 const Description = () => (
@@ -14,6 +15,7 @@ const OtherChanges = () => {
   return (
     <>
       <Description />
+      <ToggleGroupPreset section="governance" />
       <OtherChangesForm />
       <NextButton />
     </>
