@@ -25,14 +25,11 @@ import useProtocolMetrics from '@/views/home/hooks/useProtocolMetrics'
 import { Button } from '@/components/ui/button'
 import { ArrowRight, Play } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import useDTFHistoricalTVL, {
-  DTFStats,
-  DTFStatsSnapshot,
-} from '../hooks/use-dtf-historical-tvl'
+import useDTFHistoricalTVL, { DTFStats } from '../hooks/use-dtf-historical-tvl'
 import { useMemo } from 'react'
 import { trackClick } from '@/hooks/useTrackPage'
-import tvlLight from '../assets/tvllight.svg'
-import tvlDark from '../assets/tvldark.svg'
+import tvlLight from '../assets/tvl-light.svg'
+import tvlDark from '../assets/tvl-dark.svg'
 
 const COLORS: Record<string, any> = {
   ethereum: {
