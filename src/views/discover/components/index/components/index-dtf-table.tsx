@@ -78,7 +78,6 @@ const columns: ColumnDef<IndexDTFItem>[] = [
                 size={24}
                 reverseStack
                 outsource
-                withBorder
               />
             </div>
           </BasketHoverCard>
