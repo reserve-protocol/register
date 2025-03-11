@@ -1,12 +1,14 @@
 import dtfIndexStakingVault from '@/abis/dtf-index-staking-vault'
 import { useDTFPrices } from '@/hooks/usePrices'
+import { wagmiConfig } from '@/state/chain'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { ChainId } from '@/utils/chains'
 import { getAllRewardTokensAbi } from '@/views/portfolio/rewards-updater'
 import { useAtomValue } from 'jotai'
-import { useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { erc20Abi } from 'viem'
 import { useBlockNumber, useReadContract, useReadContracts } from 'wagmi'
+import { readContracts } from 'wagmi/actions'
 
 const PERIOD = 7n // 7 days
 const YEAR = 365n
@@ -42,6 +44,7 @@ type RewardData = {
 }
 
 export const useStakingVaultAPY = () => {
+  const [allSupplies, setAllSupplies] = useState<bigint[]>([])
   const indexDTF = useAtomValue(indexDTFAtom)
   const stToken = indexDTF?.stToken?.id
   const chainId = indexDTF?.chainId
@@ -65,14 +68,7 @@ export const useStakingVaultAPY = () => {
         abi: dtfIndexStakingVault,
         functionName: 'rewardTrackers',
         args: [reward],
-        blockNumber: currentBlockNumber - BLOCKS_PER_DAY[chainId] * PERIOD,
-      },
-      {
-        address: stToken,
-        abi: dtfIndexStakingVault,
-        functionName: 'rewardTrackers',
-        args: [reward],
-        blockNumber: currentBlockNumber,
+        chainId,
       },
     ])
   }, [stToken, chainId, currentBlockNumber, rewards])
@@ -86,15 +82,59 @@ export const useStakingVaultAPY = () => {
         abi: erc20Abi,
         functionName: 'totalSupply',
         blockNumber: currentBlockNumber - BLOCKS_PER_DAY[chainId] * BigInt(i),
+        chainId,
       }))
     )
   }, [stToken, chainId, currentBlockNumber, rewards])
 
-  const { data: results } = useReadContracts({
-    contracts: [...rewardTrackerCalls, ...supplyCalls],
+  const { data: currentRewardTrackerData } = useReadContracts({
+    contracts: rewardTrackerCalls,
     allowFailure: false,
-    query: { enabled: !!rewardTrackerCalls.length || !!supplyCalls.length },
+    blockNumber: currentBlockNumber!,
+    query: {
+      enabled: !!rewardTrackerCalls.length && !!currentBlockNumber,
+    },
   })
+
+  const { data: pastRewardTrackerData } = useReadContracts({
+    contracts: rewardTrackerCalls,
+    allowFailure: false,
+    blockNumber:
+      currentBlockNumber && chainId
+        ? currentBlockNumber! - BLOCKS_PER_DAY[chainId!] * PERIOD
+        : undefined,
+    query: {
+      enabled: !!rewardTrackerCalls.length && !!currentBlockNumber && !!chainId,
+    },
+  })
+
+  useEffect(() => {
+    if (!rewards || !stToken || !chainId || !currentBlockNumber || !chainId) {
+      return
+    }
+
+    const fetchSupply = async (blockNumber: bigint) => {
+      const supply = await readContracts(wagmiConfig, {
+        contracts: rewards.map((reward) => ({
+          address: stToken,
+          abi: erc20Abi,
+          functionName: 'totalSupply',
+          blockNumber: currentBlockNumber!,
+        })),
+        allowFailure: false,
+      })
+
+      return supply as bigint[]
+    }
+
+    Promise.all(
+      Array.from({ length: Number(PERIOD) }, (_, i) =>
+        fetchSupply(currentBlockNumber! - BLOCKS_PER_DAY[chainId!] * BigInt(i))
+      )
+    ).then((supplies) => {
+      setAllSupplies(supplies.flat())
+    })
+  }, [rewards, stToken, chainId, currentBlockNumber])
 
   const { data: rewardsPrices } = useDTFPrices(
     rewards?.map((reward) => reward) || [],
@@ -102,47 +142,54 @@ export const useStakingVaultAPY = () => {
   )
 
   const rewardsData: Record<string, RewardData> = useMemo(() => {
-    if (!results || !rewards) return {}
-    const rewardTrackers = results.slice(
-      0,
-      rewardTrackerCalls.length
-    ) as RewardTrackerData[]
-    const allSupplies = results.slice(rewardTrackerCalls.length) as bigint[]
+    if (
+      !currentRewardTrackerData ||
+      !pastRewardTrackerData ||
+      !rewards ||
+      !allSupplies
+    )
+      return {}
 
     return Object.fromEntries(
-      rewards.map((reward, i) => {
-        const currentRewardTracker = rewardTrackers[i]
-        const pastRewardTracker = rewardTrackers[i + 1]
-        const supplies = allSupplies.slice(
-          i * Number(PERIOD),
-          (i + 1) * Number(PERIOD)
-        )
+      rewards
+        .map((reward, i) => {
+          const currentRewardTracker = currentRewardTrackerData[
+            i
+          ] as RewardTrackerData
+          const pastRewardTracker = pastRewardTrackerData[
+            i
+          ] as RewardTrackerData
+          const supplies = allSupplies.filter(
+            (_, j) => j % rewards.length === i
+          )
 
-        if (!currentRewardTracker || !pastRewardTracker || !supplies) return []
+          if (!currentRewardTracker || !pastRewardTracker || !supplies)
+            return null
 
-        return [
-          reward,
-          {
-            currentRewardTracker: {
-              payoutLastPaid: currentRewardTracker[0],
-              rewardIndex: currentRewardTracker[1],
-              balanceAccounted: currentRewardTracker[2],
-              balanceLastKnown: currentRewardTracker[3],
-              totalClaimed: currentRewardTracker[4],
+          return [
+            reward,
+            {
+              currentRewardTracker: {
+                payoutLastPaid: currentRewardTracker[0],
+                rewardIndex: currentRewardTracker[1],
+                balanceAccounted: currentRewardTracker[2],
+                balanceLastKnown: currentRewardTracker[3],
+                totalClaimed: currentRewardTracker[4],
+              },
+              pastRewardTracker: {
+                payoutLastPaid: pastRewardTracker[0],
+                rewardIndex: pastRewardTracker[1],
+                balanceAccounted: pastRewardTracker[2],
+                balanceLastKnown: pastRewardTracker[3],
+                totalClaimed: pastRewardTracker[4],
+              },
+              supplies,
             },
-            pastRewardTracker: {
-              payoutLastPaid: pastRewardTracker[0],
-              rewardIndex: pastRewardTracker[1],
-              balanceAccounted: pastRewardTracker[2],
-              balanceLastKnown: pastRewardTracker[3],
-              totalClaimed: pastRewardTracker[4],
-            },
-            supplies,
-          },
-        ]
-      })
+          ]
+        })
+        .filter((e) => e !== null)
     )
-  }, [results, rewards, currentBlockNumber, chainId])
+  }, [currentRewardTrackerData, pastRewardTrackerData, rewards, allSupplies])
 
   const apy = useMemo(() => {
     if (!rewardsData) return 0
@@ -158,13 +205,20 @@ export const useStakingVaultAPY = () => {
           const dtfRevenue =
             currentRewardTracker.balanceAccounted -
             pastRewardTracker.balanceAccounted
+
           const totalSupplySum = supplies.reduce(
             (acc, supply) => acc + supply,
             0n
           )
+
+          if (!supplies.length) return 0
           const totalSupplyAvg = totalSupplySum / BigInt(supplies.length)
-          const apy = ((YEAR * (dtfRevenue / totalSupplyAvg)) / PERIOD) * 100n
-          return Number(apy) * price
+          if (totalSupplyAvg === 0n) return 0
+
+          const apy =
+            (Number(dtfRevenue) * price * Number(YEAR) * 100) /
+            (Number(totalSupplyAvg) * Number(PERIOD))
+          return apy
         }
       )
       .reduce((acc, apy) => acc + apy, 0)

@@ -59,6 +59,7 @@ const OpenLockDrawerButton = forwardRef<
   const dtf = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
   const apy = useStakingVaultAPY()
+
   if (!dtf) return
 
   return (
@@ -75,7 +76,8 @@ const OpenLockDrawerButton = forwardRef<
         chain={chainId}
       />
       <h4 className="font-bold mr-auto text-primary">
-        Lock ${dtf.stToken?.underlying.symbol ?? 'Unknown'} to Govern & Earn
+        Lock ${dtf.stToken?.underlying.symbol ?? 'Unknown'} to Govern & Earn{' '}
+        {Number(apy.toFixed(2)) > 0 && `${apy.toFixed(2)}% APY`}
       </h4>
       <Box
         variant="circle"
