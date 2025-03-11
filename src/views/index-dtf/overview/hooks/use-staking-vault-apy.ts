@@ -2,7 +2,7 @@ import dtfIndexStakingVault from '@/abis/dtf-index-staking-vault'
 import { useDTFPrices } from '@/hooks/usePrices'
 import { wagmiConfig } from '@/state/chain'
 import { indexDTFAtom } from '@/state/dtf/atoms'
-import { ChainId } from '@/utils/chains'
+import { AvailableChain, ChainId } from '@/utils/chains'
 import { getAllRewardTokensAbi } from '@/views/portfolio/rewards-updater'
 import { useAtomValue } from 'jotai'
 import { useEffect, useMemo, useState } from 'react'
@@ -116,10 +116,11 @@ export const useStakingVaultAPY = () => {
     const fetchSupply = async (blockNumber: bigint) => {
       const supply = await readContracts(wagmiConfig, {
         contracts: rewards.map((reward) => ({
-          address: stToken,
+          address: reward,
           abi: erc20Abi,
           functionName: 'totalSupply',
-          blockNumber: currentBlockNumber!,
+          blockNumber,
+          chainId: chainId as AvailableChain,
         })),
         allowFailure: false,
       })
