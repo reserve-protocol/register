@@ -1,3 +1,4 @@
+import { AvailableChain } from '@/utils/chains'
 import { RESERVE_API } from '@/utils/constants'
 import { useQuery } from '@tanstack/react-query'
 
@@ -22,12 +23,7 @@ export type Metrics = {
   tvlTimeseries: Series[]
 }
 
-type Series = {
-  '1': number
-  '8453': number
-  '42161': number
-  timestamp: number
-}
+type Series = { [key in AvailableChain]: number } & { timestamp: number }
 
 const useAPIProtocolMetrics = () => {
   return useQuery({
