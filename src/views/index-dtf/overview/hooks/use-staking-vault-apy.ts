@@ -1,4 +1,5 @@
 import dtfIndexStakingVault from '@/abis/dtf-index-staking-vault'
+import { useAssetPrice } from '@/hooks/useAssetPrices'
 import { useDTFPrices } from '@/hooks/usePrices'
 import { wagmiConfig } from '@/state/chain'
 import { indexDTFAtom } from '@/state/dtf/atoms'
@@ -8,9 +9,9 @@ import { useAtomValue } from 'jotai'
 import { useEffect, useMemo, useState } from 'react'
 import { erc20Abi } from 'viem'
 import { useBlockNumber, useReadContract, useReadContracts } from 'wagmi'
-import { readContracts } from 'wagmi/actions'
+import { readContract, readContracts } from 'wagmi/actions'
 
-const PERIOD = 7n // 7 days
+const PERIOD = 27n // 7 days
 const YEAR = 365n
 const BLOCKS_PER_DAY: Record<number, bigint> = {
   [ChainId.Mainnet]: 7200n, // 1 block every 12 seconds
@@ -25,28 +26,24 @@ type RewardTrackerData = [
   bigint, // totalClaimed
 ]
 
+type RewardTracker = {
+  payoutLastPaid: bigint
+  rewardIndex: bigint
+  balanceAccounted: bigint
+  balanceLastKnown: bigint
+  totalClaimed: bigint
+}
+
 type RewardData = {
-  currentRewardTracker: {
-    payoutLastPaid: bigint
-    rewardIndex: bigint
-    balanceAccounted: bigint
-    balanceLastKnown: bigint
-    totalClaimed: bigint
-  }
-  pastRewardTracker: {
-    payoutLastPaid: bigint
-    rewardIndex: bigint
-    balanceAccounted: bigint
-    balanceLastKnown: bigint
-    totalClaimed: bigint
-  }
-  supplies: bigint[]
+  currentRewardTracker: RewardTracker
+  pastRewardTracker: RewardTracker
 }
 
 export const useStakingVaultAPY = () => {
-  const [allSupplies, setAllSupplies] = useState<bigint[]>([])
+  const [supplies, setSupplies] = useState<bigint[]>([])
   const indexDTF = useAtomValue(indexDTFAtom)
   const stToken = indexDTF?.stToken?.id
+  const underlying = indexDTF?.stToken?.underlying.address
   const chainId = indexDTF?.chainId
 
   const { data: currentBlockNumber } = useBlockNumber({ chainId })
@@ -71,20 +68,6 @@ export const useStakingVaultAPY = () => {
         chainId,
       },
     ])
-  }, [stToken, chainId, currentBlockNumber, rewards])
-
-  const supplyCalls = useMemo(() => {
-    if (!rewards || !currentBlockNumber || !chainId) return []
-
-    return rewards.flatMap((reward) =>
-      Array.from({ length: Number(PERIOD) }, (_, i) => ({
-        address: stToken,
-        abi: erc20Abi,
-        functionName: 'totalSupply',
-        blockNumber: currentBlockNumber - BLOCKS_PER_DAY[chainId] * BigInt(i),
-        chainId,
-      }))
-    )
   }, [stToken, chainId, currentBlockNumber, rewards])
 
   const { data: currentRewardTrackerData } = useReadContracts({
@@ -114,18 +97,13 @@ export const useStakingVaultAPY = () => {
     }
 
     const fetchSupply = async (blockNumber: bigint) => {
-      const supply = await readContracts(wagmiConfig, {
-        contracts: rewards.map((reward) => ({
-          address: reward,
-          abi: erc20Abi,
-          functionName: 'totalSupply',
-          blockNumber,
-          chainId: chainId as AvailableChain,
-        })),
-        allowFailure: false,
+      return await readContract(wagmiConfig, {
+        address: stToken,
+        abi: erc20Abi,
+        functionName: 'totalSupply',
+        blockNumber: blockNumber,
+        chainId: chainId as AvailableChain,
       })
-
-      return supply as bigint[]
     }
 
     Promise.all(
@@ -133,7 +111,7 @@ export const useStakingVaultAPY = () => {
         fetchSupply(currentBlockNumber! - BLOCKS_PER_DAY[chainId!] * BigInt(i))
       )
     ).then((supplies) => {
-      setAllSupplies(supplies.flat())
+      setSupplies(supplies.flat())
     })
   }, [rewards, stToken, chainId, currentBlockNumber])
 
@@ -142,88 +120,80 @@ export const useStakingVaultAPY = () => {
     chainId
   )
 
+  const { data: stTokenPrice } = useAssetPrice(underlying, chainId)
+
   const rewardsData: Record<string, RewardData> = useMemo(() => {
-    if (
-      !currentRewardTrackerData ||
-      !pastRewardTrackerData ||
-      !rewards ||
-      !allSupplies
-    )
+    if (!currentRewardTrackerData || !pastRewardTrackerData || !rewards)
       return {}
 
     return Object.fromEntries(
       rewards
         .map((reward, i) => {
-          const currentRewardTracker = currentRewardTrackerData[
-            i
-          ] as RewardTrackerData
-          const pastRewardTracker = pastRewardTrackerData[
-            i
-          ] as RewardTrackerData
-          const supplies = allSupplies.filter(
-            (_, j) => j % rewards.length === i
-          )
+          const currRT = currentRewardTrackerData[i] as RewardTrackerData
+          const pastRT = pastRewardTrackerData[i] as RewardTrackerData
 
-          if (!currentRewardTracker || !pastRewardTracker || !supplies)
-            return null
+          if (!currRT || !pastRT) return null
 
           return [
             reward,
             {
               currentRewardTracker: {
-                payoutLastPaid: currentRewardTracker[0],
-                rewardIndex: currentRewardTracker[1],
-                balanceAccounted: currentRewardTracker[2],
-                balanceLastKnown: currentRewardTracker[3],
-                totalClaimed: currentRewardTracker[4],
+                payoutLastPaid: currRT[0],
+                rewardIndex: currRT[1],
+                balanceAccounted: currRT[2],
+                balanceLastKnown: currRT[3],
+                totalClaimed: currRT[4],
               },
               pastRewardTracker: {
-                payoutLastPaid: pastRewardTracker[0],
-                rewardIndex: pastRewardTracker[1],
-                balanceAccounted: pastRewardTracker[2],
-                balanceLastKnown: pastRewardTracker[3],
-                totalClaimed: pastRewardTracker[4],
+                payoutLastPaid: pastRT[0],
+                rewardIndex: pastRT[1],
+                balanceAccounted: pastRT[2],
+                balanceLastKnown: pastRT[3],
+                totalClaimed: pastRT[4],
               },
-              supplies,
             },
           ]
         })
         .filter((e) => e !== null)
     )
-  }, [currentRewardTrackerData, pastRewardTrackerData, rewards, allSupplies])
+  }, [currentRewardTrackerData, pastRewardTrackerData, rewards])
 
   const apy = useMemo(() => {
-    if (!rewardsData) return 0
+    if (!rewardsData || !supplies.length || !stTokenPrice) return 0
 
-    return Object.entries(rewardsData)
-      .map(
-        ([reward, { currentRewardTracker, pastRewardTracker, supplies }]) => {
-          const price =
-            rewardsPrices?.find(
-              (token) => token.address.toLowerCase() === reward.toLowerCase()
-            )?.price || 0
+    const stTokenPriceValue = stTokenPrice[0]?.price
+    if (!stTokenPriceValue) return 0
 
-          const dtfRevenue =
-            currentRewardTracker.balanceAccounted -
-            pastRewardTracker.balanceAccounted
+    const totalSupplySum = supplies.reduce(
+      (acc, supply) => acc + Number(supply),
+      0
+    )
+    const totalSupplyAvg =
+      (stTokenPriceValue * totalSupplySum) / supplies.length
+    if (totalSupplyAvg === 0) return 0
 
-          const totalSupplySum = supplies.reduce(
-            (acc, supply) => acc + supply,
-            0n
-          )
+    const revenueOfPeriod = Object.entries(rewardsData)
+      .map(([reward, { currentRewardTracker, pastRewardTracker }]) => {
+        const price =
+          rewardsPrices?.find(
+            (token) => token.address.toLowerCase() === reward.toLowerCase()
+          )?.price || 0
 
-          if (!supplies.length) return 0
-          const totalSupplyAvg = totalSupplySum / BigInt(supplies.length)
-          if (totalSupplyAvg === 0n) return 0
+        const dtfRevenue =
+          currentRewardTracker.balanceAccounted -
+          pastRewardTracker.balanceAccounted
 
-          const apy =
-            (Number(dtfRevenue) * price * Number(YEAR) * 100) /
-            (Number(totalSupplyAvg) * Number(PERIOD))
-          return apy
-        }
-      )
-      .reduce((acc, apy) => acc + apy, 0)
-  }, [rewardsData, rewardsPrices])
+        const revenue = Number(dtfRevenue) * price
+        return revenue
+      })
+      .reduce((acc, revenue) => acc + revenue, 0)
+
+    const apy =
+      (revenueOfPeriod * Number(YEAR) * 100) /
+      (Number(totalSupplyAvg) * Number(PERIOD))
+
+    return apy
+  }, [rewardsData, rewardsPrices, supplies, stTokenPrice])
 
   return apy
 }
