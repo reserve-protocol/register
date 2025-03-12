@@ -41,11 +41,15 @@ const CampaignBadge = () => {
   if (!campaignData) return null
 
   return (
-    <div className="flex items-center gap-2 font-semibold rounded-full text-sm bg-[#FFBE45] px-2 py-1">
+    <a
+      className="flex items-center gap-2 font-semibold rounded-full text-sm bg-[#FFBE45] px-2 py-1"
+      target="_blank"
+      href={campaignData.url}
+    >
       <Coins size={16} />
       <span>{campaignData.apr.toFixed(2)}% APR</span>
       <ArrowUpRight size={16} />
-    </div>
+    </a>
   )
 }
 

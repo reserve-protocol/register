@@ -1,4 +1,5 @@
 import { ChainId } from '@/utils/chains'
+import { CHAIN_TAGS } from '@/utils/constants'
 import { useQuery } from '@tanstack/react-query'
 
 const rewardTokens = {
@@ -36,13 +37,18 @@ const useCampaignRewards = () => {
       return data.reduce(
         (acc, curr) => {
           const rewardToken = rewardTokens[curr.chainId]
-          acc[curr.identifier.toLowerCase()] = { ...curr, rewardToken }
+          acc[curr.identifier.toLowerCase()] = {
+            ...curr,
+            rewardToken,
+            url: `https://reserve.merkl.xyz/opportunities/${CHAIN_TAGS[curr.chainId]?.toLowerCase()}/ERC20/${curr.identifier}`,
+          }
           return acc
         },
         {} as Record<
           string,
           Response & {
             rewardToken?: (typeof rewardTokens)[keyof typeof rewardTokens]
+            url: string
           }
         >
       )

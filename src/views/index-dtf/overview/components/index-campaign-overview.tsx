@@ -74,10 +74,7 @@ const IndexCampaignOverview = () => {
           {campaignData.apr.toFixed(2)}%
         </span>
       </div>
-      <Link
-        to={`https://reserve.merkl.xyz/opportunities/${CHAIN_TAGS[chainId]?.toLowerCase()}/ERC20/${getAddress(indexDTF.id)}`}
-        target="_blank"
-      >
+      <Link to={campaignData.url} target="_blank">
         <Button
           size="lg"
           className="gap-1 mt-4 w-full bg-[#FFBE45] hover:bg-[#FFBE45]/90  text-foreground"
