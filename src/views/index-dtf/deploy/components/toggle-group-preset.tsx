@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useMemo, useState } from 'react'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { useFormContext } from 'react-hook-form'
 import { FastForward, SlidersHorizontal, Snail, Zap } from 'lucide-react'
@@ -38,7 +38,8 @@ const makeFields = (section: 'basket' | 'governance') => {
   return fields.map((f) => section + f)
 }
 
-type Preset = (typeof OPTIONS)[number]['value']
+const presetValues = ['slow', 'fast', 'very-fast', 'custom'] as const
+type Preset = (typeof presetValues)[number]
 
 const presets = {
   basket: {
@@ -89,40 +90,49 @@ const presets = {
   },
 } as const
 
+const reverseMap = (section: 'basket' | 'governance') => {
+  const map: Map<string, Preset> = new Map()
+  const values = presets[section]
+  for (const preset of presetValues) {
+    if (preset === 'custom') continue
+    const key: number[] = []
+    for (const field of fields) {
+      const v = values[preset][field]
+      key.push(v)
+    }
+    map.set(key.toString(), preset)
+  }
+
+  return map
+}
+
 type ToggleGroupPresetProps = {
   section: 'basket' | 'governance'
 }
 
 export const ToggleGroupPreset = ({ section }: ToggleGroupPresetProps) => {
-  const [freeze, setFreeze] = useState(false)
-  const [preset, setPreset] = useState<Preset>('slow')
+  const [force, setForce] = useState(false)
   const { watch, setValue, clearErrors } = useFormContext()
 
-  const fields = makeFields(section).map(watch)
-
-  useEffect(() => {
-    if (!freeze) {
-      setPreset('custom')
-    }
-  }, fields)
+  const key = makeFields(section).map(watch)
+  const map = useMemo(() => reverseMap(section), [section])
 
   return (
     <div className="px-2 mb-2">
       <ToggleGroup
         type="single"
         className="bg-muted-foreground/10 p-1 rounded-xl justify-start w-full"
-        value={preset}
+        value={force ? 'custom' : map.get(key.toString()) || 'custom'}
         onValueChange={(value: Preset) => {
-          setPreset(value)
-          setFreeze(true)
-          if (value !== 'custom') {
-            const preset = presets[section][value]
-            for (const [field, value] of Object.entries(preset)) {
-              clearErrors(field)
-              setValue(section + field, value)
-            }
+          setForce(value === 'custom')
+          if (value === 'custom') {
+            return
           }
-          setTimeout(() => setFreeze(false), 1)
+          const preset = presets[section][value]
+          for (const [field, value] of Object.entries(preset)) {
+            clearErrors(field)
+            setValue(section + field, value)
+          }
         }}
       >
         {OPTIONS.map((option) => (
