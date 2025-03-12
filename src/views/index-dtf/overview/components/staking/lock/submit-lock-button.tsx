@@ -6,7 +6,13 @@ import { portfolioSidebarOpenAtom } from '@/views/portfolio/atoms'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
 import { useEffect } from 'react'
-import { Address, erc20Abi, isAddress, parseUnits } from 'viem'
+import {
+  Address,
+  erc20Abi,
+  getAddress,
+  isAddress,
+  parseUnits,
+} from 'viem'
 import { useReadContract, useWaitForTransactionReceipt } from 'wagmi'
 import {
   currentDelegateAtom,
@@ -31,7 +37,7 @@ export const DelegateButton = () => {
       abi: dtfIndexStakingVault,
       functionName: 'delegate',
       address: stToken.id,
-      args: [delegate as Address],
+      args: [isValidDelegate ? getAddress(delegate) : account!],
       chainId,
       query: { enabled: !!account && isValidDelegate },
     })

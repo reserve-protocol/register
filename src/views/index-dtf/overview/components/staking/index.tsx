@@ -165,7 +165,14 @@ const Delegate = () => {
                 !account ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
               }`}
               role="button"
-              onClick={() => !!account && setDelegateVisible(true)}
+              onClick={() => {
+                const delegateOrSelf =
+                  delegates && delegates !== zeroAddress
+                    ? delegates
+                    : (account ?? '')
+                setDelegate(delegateOrSelf)
+                setDelegateVisible(true)
+              }}
             >
               <div>
                 {delegates && delegates !== zeroAddress
