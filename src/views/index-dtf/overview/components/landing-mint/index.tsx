@@ -5,13 +5,14 @@ import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { indexDTFAtom, indexDTFBrandAtom } from '@/state/dtf/atoms'
 import { useAtomValue, useSetAtom } from 'jotai'
-import { ArrowLeftRight } from 'lucide-react'
+import { ArrowLeftRight, ArrowUpRight, BadgePercent, Coins } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import ZapMint from '../zap-mint'
 import { currentZapMintTabAtom } from '../zap-mint/atom'
 import { useTrackIndexDTFClick } from '@/views/index-dtf/hooks/useTrackIndexDTFPage'
 import { Link } from 'react-router-dom'
 import Uniswap from '@/components/icons/logos/Uniswap'
+import { useDTFCampaign } from '../../hooks/use-campaign'
 
 export const UniswapButton = React.forwardRef<HTMLAnchorElement>(
   (props, ref) => {
@@ -33,6 +34,25 @@ export const UniswapButton = React.forwardRef<HTMLAnchorElement>(
 )
 UniswapButton.displayName = 'UniswapButton'
 
+const CampaignBadge = () => {
+  const indexDTF = useAtomValue(indexDTFAtom)
+  const campaignData = useDTFCampaign(indexDTF?.id ?? '')
+
+  if (!campaignData) return null
+
+  return (
+    <a
+      className="flex items-center gap-2 font-semibold rounded-full text-sm bg-[#FFBE45] px-2 py-1"
+      target="_blank"
+      href={campaignData.url}
+    >
+      <Coins size={16} />
+      <span>{campaignData.apr.toFixed(2)}% APR</span>
+      <ArrowUpRight size={16} />
+    </a>
+  )
+}
+
 const MintBox = () => {
   const dtf = useAtomValue(indexDTFAtom)
   const brand = useAtomValue(indexDTFBrandAtom)
@@ -52,7 +72,12 @@ const MintBox = () => {
             size={24}
           />
           <ArrowLeftRight className="w-4 h-4" />
-          <TokenLogo src={brand?.dtf?.icon || undefined} size="lg" />
+          <TokenLogo
+            className="mr-auto"
+            src={brand?.dtf?.icon || undefined}
+            size="lg"
+          />
+          <CampaignBadge />
         </div>
         <div className="flex flex-col gap-1">
           <div className="text-xl font-bold text-primary">
