@@ -9,13 +9,18 @@ import { chainIdAtom } from '@/state/atoms'
 import { getCurrentTime, shortenAddress } from '@/utils'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import humanizeDuration from 'humanize-duration'
-import { useAtomValue } from 'jotai'
+import { useAtomValue, useSetAtom } from 'jotai'
 import { AlarmClockOff, ArrowUpRightIcon, Check, Folder } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { dtfTradesByProposalAtom, TradesByProposal } from '../atoms'
+import {
+  dtfTradesByProposalAtom,
+  selectedProposalAtom,
+  TradesByProposal,
+} from '../atoms'
 import AuctionList from './auction-list'
 import ProposalTradesSkeleton from './proposal-trades-skeleton'
+import AuctionProposedBasket from './auction-proposed-basket'
 
 function getTimerFormat(seconds: number) {
   const timeUnits = {
@@ -175,12 +180,18 @@ const ProposalTradeItem = ({ data }: { data: TradesByProposal }) => {
 
 const ProposalTradesList = () => {
   const tradesByProposal = useAtomValue(dtfTradesByProposalAtom)
+  const setSelectedProposal = useSetAtom(selectedProposalAtom)
+
+  const handleValueChange = (value: string) => {
+    setSelectedProposal(value)
+  }
 
   return (
     <Accordion
       className="bg-secondary rounded-3xl h-fit"
       type="single"
       collapsible
+      onValueChange={handleValueChange}
     >
       {tradesByProposal?.map((value) => (
         <ProposalTradeItem key={value.proposal.id} data={value} />
@@ -196,8 +207,11 @@ const ProposalTrades = () => {
     return <ProposalTradesSkeleton loading={!tradesByProposal} />
 
   return (
-    <div className="flex flex-col gap-2 mr-2 mb-5">
-      <ProposalTradesList />
+    <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-2 ml-2 lg:ml-0 mr-2 mb-5">
+      <div className="flex flex-col gap-2">
+        <ProposalTradesList />
+      </div>
+      <AuctionProposedBasket />
     </div>
   )
 }

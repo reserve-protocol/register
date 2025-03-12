@@ -105,7 +105,6 @@ const App = () => (
         <LanguageProvider>
           <ChainProvider>
             <Updater />
-            <TransactionSidebar />
             <Layout>
               <Toaster />
               <AppRoutes />

@@ -52,6 +52,8 @@ const query = gql`
         voteStart
         voteEnd
         executionBlock
+        executionTime
+        creationBlock
         proposer {
           address
         }
@@ -68,10 +70,12 @@ const query = gql`
         abstainWeightedVotes
         againstWeightedVotes
         executionETA
+        executionTime
         quorumVotes
         voteStart
         voteEnd
         executionBlock
+        creationBlock
         proposer {
           address
         }

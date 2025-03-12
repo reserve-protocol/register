@@ -330,3 +330,23 @@ export type IndexDTF = {
   governanceRevenue: number
   externalRevenue: number
 }
+
+export type IndexAuction = {
+  sell: Address
+  buy: Address
+  sellLimit: {
+    spot: bigint
+    low: bigint
+    high: bigint
+  }
+  buyLimit: {
+    spot: bigint
+    low: bigint
+    high: bigint
+  }
+  prices: {
+    start: bigint
+    end: bigint
+  }
+  ttl: bigint
+}
