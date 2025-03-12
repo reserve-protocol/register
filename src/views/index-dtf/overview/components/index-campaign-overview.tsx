@@ -5,7 +5,7 @@ import { indexDTFAtom } from '@/state/dtf/atoms'
 import { formatCurrency } from '@/utils'
 import { CHAIN_TAGS } from '@/utils/constants'
 import { useAtomValue } from 'jotai'
-import { BadgePercent, CalendarRange, Signature } from 'lucide-react'
+import { BadgePercent, CalendarRange, Coins, Signature } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { getAddress } from 'viem'
 import { useDTFCampaign } from '../hooks/use-campaign'
@@ -43,7 +43,7 @@ const IndexCampaignOverview = () => {
     <Card className="p-6">
       <div className="flex items-center gap-1 mb-4">
         <div className="rounded-full border border-foreground p-2 mr-auto">
-          <Signature size={14} />
+          <Coins size={14} />
         </div>
         <CalendarRange size={14} />
         <span className="text-legend">Campaign ends:</span>
