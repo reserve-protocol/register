@@ -95,7 +95,7 @@ const FORM = [
   },
 ]
 
-const VotingForm = () => {
+const BasketChangesForm = () => {
   return (
     <div className="px-2 mb-2">
       <div className="flex flex-col gap-2">
@@ -107,4 +107,4 @@ const VotingForm = () => {
   )
 }
 
-export default VotingForm
+export default BasketChangesForm
