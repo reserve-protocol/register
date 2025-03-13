@@ -33,7 +33,10 @@ const tabs: Tab[] = [
 const DiscoverTabs = ({ className }: { className: string }) => {
   return (
     <div className={cn('container pb-6 px-1 md:px-4', className)}>
-      <TitleContainer title="Featured DTFs" />
+      <TitleContainer
+        title="Hold & Earn Campaign"
+        className="[&>h2]:text-[#805F23]"
+      />
       <IndexDTFFeatured />
       <TitleContainer title="Select a DTF Category" className="mt-4 md:mt-10" />
       <Tabs

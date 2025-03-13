@@ -68,9 +68,9 @@ const IndexDTFIssuance = () => {
   if (!indexDTF) return null
 
   return (
-    <div className="container flex flex-col items-center sm:justify-start md:justify-center gap-2 bg-secondary h-[calc(100vh-100px)] dark:bg-card rounded-4xl w-full">
-      <div className="flex flex-col bg-secondary w-fit rounded-4xl p-1 ">
-        <div className=" bg-card rounded-3xl sm:w-[420px] p-2 m-auto">
+    <div className="container flex flex-col items-center sm:justify-start md:justify-center gap-2 lg:bg-secondary lg:h-[calc(100vh-100px)] dark:bg-card rounded-4xl w-full">
+      <div className="flex flex-col w-fit rounded-4xl p-1 ">
+        <div className="bg-card rounded-3xl border-2 border-secondary sm:w-[420px] p-2 m-auto">
           <Tabs
             value={currentTab}
             className="flex flex-col flex-grow"

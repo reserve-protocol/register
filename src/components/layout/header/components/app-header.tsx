@@ -31,9 +31,9 @@ const AppHeader = () => (
       <AppNavigation />
       <ThemeColorMode
         sx={{
-          display: ['none', 'flex'],
+          display: 'flex',
           px: 2,
-          mr: 3,
+          mr: [2, 3],
           py: '3px',
           maxWidth: '32px',
           borderRadius: '6px',
@@ -45,7 +45,6 @@ const AppHeader = () => (
         }}
       />
 
-      <CoinbaseSubscribe mr="2" sx={{ display: ['none', 'none', 'block'] }} />
       <Account />
     </div>
   </Container>

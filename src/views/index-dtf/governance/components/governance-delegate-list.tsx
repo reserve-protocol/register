@@ -23,7 +23,7 @@ const GovernanceDelegateList = () => {
           Top voting addresses
         </h2>
       </div>
-      <div className="bg-card m-1 mt-0 rounded-3xl">
+      <div className="bg-card m-1 mt-0 rounded-3xl overflow-auto">
         <Table>
           <TableHeader>
             <TableRow className="border-none text-legend">

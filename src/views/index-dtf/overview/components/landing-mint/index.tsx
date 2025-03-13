@@ -42,7 +42,7 @@ const CampaignBadge = () => {
 
   return (
     <a
-      className="flex items-center gap-2 font-semibold rounded-full text-sm bg-[#FFBE45] px-2 py-1"
+      className="flex items-center gap-2 text-black font-semibold rounded-full text-sm bg-[#FFBE45] px-2 py-1"
       target="_blank"
       href={campaignData.url}
     >

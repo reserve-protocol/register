@@ -1,14 +1,17 @@
 import { ArrowUpRightIcon, MessageCirclePlus } from 'lucide-react'
 import { Button } from '../ui/button'
 import { REGISTER_FEEDBACK } from '@/utils/constants'
+import { cn } from '@/lib/utils'
 
-const FeedbackButton = () => {
+const FeedbackButton = ({ className }: { className?: string }) => {
   return (
     <div className="z-50">
       <Button
         size="lg"
-        variant="fab"
-        className="flex items-center justify-center gap-1.5 rounded-full bg-[#021122] text-gray-50 px-3 py-1 sm:px-5 sm:py-3 h-9 sm:h-10"
+        className={cn(
+          'fixed bottom-[4.5rem] sm:bottom-4 right-3 sm:right-4 shadow-lg flex items-center justify-center gap-1.5 rounded-full bg-[#021122] text-gray-50 px-3 py-1 sm:px-5 sm:py-3 h-9 sm:h-10',
+          className
+        )}
         onClick={() => {
           const referrer = window.location.href
           window.open(
