@@ -96,8 +96,8 @@ const IndexDTFFeatured = () => {
           The campaign includes{' '}
           <a href={CAMPAIGN_URL} className="underline" target="_blank">
             11 additional DTFs
-          </a>
-          1 beyond the featured. You claim rewards in the{' '}
+          </a>{' '}
+          beyond the featured. You claim rewards in the{' '}
           <a href={CAMPAIGN_URL} className="underline" target="_blank">
             Reserve x Merkl UI
           </a>
