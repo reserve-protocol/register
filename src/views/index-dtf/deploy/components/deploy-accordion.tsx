@@ -16,7 +16,7 @@ import {
   Check,
   ChevronDownIcon,
   ChevronUpIcon,
-  Coins,
+  BadgePercent,
   Crown,
   Edit2,
   Landmark,
@@ -79,7 +79,7 @@ export const DEPLOY_STEPS: DeployStep[] = [
   },
   {
     id: 'revenue-distribution',
-    icon: <Coins size={14} strokeWidth={1.5} />,
+    icon: <BadgePercent size={14} strokeWidth={1.5} />,
     title: 'Fees',
     titleSecondary: 'Fees',
     content: <RevenueDistribution />,

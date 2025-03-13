@@ -1,7 +1,7 @@
 import withNavigationGuard from '@/hoc/with-navigation-guard'
 import { ROUTES } from '@/utils/constants'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { ArrowUpRight, Flower, ShipWheel } from 'lucide-react'
+import { ArrowUpRight, Flower, Globe } from 'lucide-react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import DeployAccordion from './components/deploy-accordion'
@@ -18,12 +18,12 @@ const DeployerHeader = () => {
   const navigate = useNavigate()
 
   return (
-    <div className="flex items-center justify-between gap-2 text-primary px-6 py-5">
-      <div className="flex items-center gap-2">
-        <div className="rounded-full p-[6px] border border-primary">
-          <ShipWheel size={20} strokeWidth={1.5} />
+    <div className="flex items-center justify-between gap-2 px-6 py-5 text-primary dark:text-muted-foreground">
+      <div className="flex items-center gap-2 ">
+        <div className="rounded-full p-[6px] border border-primary dark:border-muted-foreground">
+          <Globe size={20} strokeWidth={1.5} />
         </div>
-        <div className="text-xl font-bold">Create New Index DTF</div>
+        <div className="text-xl font-medium">Create New Index DTF</div>
       </div>
       <div
         className="hidden sm:flex items-center gap-2 cursor-pointer"
@@ -32,7 +32,7 @@ const DeployerHeader = () => {
       >
         <Flower size={16} strokeWidth={2} />
         <div>Looking for Yield DTFs?</div>
-        <div className="rounded-full p-0.5 bg-primary text-white">
+        <div className="rounded-full p-1 bg-primary text-white dark:bg-muted-foreground/20">
           <ArrowUpRight size={12} strokeWidth={2} />
         </div>
       </div>

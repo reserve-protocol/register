@@ -20,8 +20,8 @@ const DiscoverTabTrigger = ({
   return (
     <TabsTrigger
       className={cn(
-        'flex items-center justify-center lg:justify-start w-full h-full p-3 lg:p-6 rounded-[10px] sm:rounded-[20px] hover:bg-foreground/5',
-        'data-[state=active]:text-primary data-[state=inactive]:text-legend data-[state=inactive]:grayscale',
+        'flex items-center justify-center lg:justify-start w-full h-full p-3 lg:p-6 rounded-full lg:rounded-3xl hover:bg-foreground/5',
+        'data-[state=active]:text-primary dark:data-[state=active]:text-foreground data-[state=inactive]:text-muted-foreground/ data-[state=inactive]:grayscale',
         className
       )}
       {...props}
@@ -47,7 +47,7 @@ const DiscoverTabList = ({
   return (
     <TabsList
       className={cn(
-        'w-full h-12 gap-1 lg:h-[100px] rounded-xl lg:rounded-4xl bg-[#f2f2f2]',
+        'w-full h-12 gap-1 lg:h-[100px] rounded-full lg:rounded-4xl',
         className
       )}
     >

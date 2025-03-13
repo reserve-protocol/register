@@ -1,5 +1,5 @@
 import ChainLogo from '@/components/icons/ChainLogo'
-import { FormField, FormMessage } from '@/components/ui/form'
+import { FormField } from '@/components/ui/form'
 import { cn } from '@/lib/utils'
 import { useAtom } from 'jotai'
 import { CheckIcon } from 'lucide-react'
@@ -47,7 +47,9 @@ const ChainOption = ({
     <div
       className={cn(
         'flex flex-1 items-center gap-4 justify-between border rounded-xl p-4 text-base cursor-pointer',
-        checked ? 'bg-card border-primary' : 'bg-muted border-muted',
+        checked
+          ? 'bg-card border-primary text-primary'
+          : 'bg-muted border-muted',
         state?.invalid ? 'border-destructive' : ''
       )}
       role="button"

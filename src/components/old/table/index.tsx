@@ -87,11 +87,16 @@ export function Table({
         {...props}
         sx={{
           ...sx,
+          backgroundColor: 'contentBackground',
           maxHeight: ['none', maxHeight],
           borderSpacing: compact ? 0 : undefined,
         }}
       >
-        <Box as="tbody" variant="styles.tbody">
+        <Box
+          as="tbody"
+          variant="styles.tbody"
+          sx={{ backgroundColor: 'contentBackground' }}
+        >
           {table.getHeaderGroups().map((headerGroup) => (
             <Box as="tr" key={headerGroup.id}>
               {headerGroup.headers.map((header, index) => (

@@ -32,6 +32,7 @@ const config = {
         ring: 'hsl(var(--ring))',
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
+        tvl: 'hsl(var(--tvl))',
         container: {
           DEFAULT: 'hsl(var(--container))',
           foreground: 'hsl(var(--container-foreground))',

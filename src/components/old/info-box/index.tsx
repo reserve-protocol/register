@@ -22,8 +22,8 @@ const InfoBox = ({ title, subtitle, light, ...props }: Props) => (
   <Box {...props}>
     <Text
       variant={light ? 'legend' : 'strong'}
-      sx={{ fontSize: 2, display: 'block' }}
-      mb={1}
+      sx={{ fontSize: 2, display: 'block', color: 'text' }}
+      mb={2}
     >
       {title}
     </Text>

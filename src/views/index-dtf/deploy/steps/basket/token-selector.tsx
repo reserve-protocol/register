@@ -162,7 +162,7 @@ const TokenListItem = ({
     <label
       htmlFor={address}
       role="div"
-      className="w-full rounded-xl flex items-center gap-2 justify-between px-4 py-3 bg-muted cursor-pointer hover:bg-muted/80 transition-colors"
+      className="w-full rounded-xl flex items-center gap-2 justify-between px-4 py-3 bg-card cursor-pointer hover:bg-muted/80 transition-colors"
     >
       <div className="flex items-center gap-2">
         <TokenLogo

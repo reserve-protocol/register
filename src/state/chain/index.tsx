@@ -1,4 +1,3 @@
-import binanceWallet from '@binance/w3w-rainbow-connector-v2'
 import {
   DisclaimerComponent,
   RainbowKitProvider,
@@ -18,6 +17,7 @@ import {
   safeWallet,
   walletConnectWallet,
 } from '@rainbow-me/rainbowkit/wallets'
+import binanceWallet from '@binance/w3w-rainbow-connector-v2'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ROUTES } from 'utils/constants'
 import { WagmiProvider, createConfig, fallback, http } from 'wagmi'

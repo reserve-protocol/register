@@ -62,7 +62,7 @@ const YieldDTfList = ({ stablecoins = false }: { stablecoins?: boolean }) => {
   }, [list, chains, targets, search, stablecoins])
 
   return (
-    <div className="flex flex-col gap-1 p-1 rounded-[20px] bg-secondary">
+    <div className="flex flex-col gap-1 p-1 rounded-4xl bg-secondary">
       <CompareFilters />
       {isLoading && !filteredList.length && <CompareSkeleton />}
       {filteredList.map((token) => (

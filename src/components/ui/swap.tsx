@@ -108,7 +108,7 @@ const TokenSelector = ({
   if (!tokens || tokens.length === 0) {
     return (
       <div className="flex flex-col gap-1 justify-between items-end min-w-fit">
-        <div className="flex items-center gap-1 text-2xl font-semibold">
+        <div className="flex items-center gap-1.5 text-2xl font-normal">
           <TokenLogo
             size="lg"
             src={src}
@@ -128,10 +128,10 @@ const TokenSelector = ({
         <DropdownMenuTrigger asChild>
           <Button
             variant="ghost"
-            className="flex items-center text-2xl gap-2 h-auto hover:bg-accent px-1.5 justify-between"
+            className="flex items-center rounded-full text-2xl gap-2 h-auto hover:bg-accent px-1.5 justify-between"
             size="lg"
           >
-            <div className="flex items-center gap-1">
+            <div className="flex font-normal items-center gap-1.5">
               <TokenLogo
                 size="lg"
                 symbol={symbol}
@@ -140,7 +140,7 @@ const TokenSelector = ({
               />
               <span>{symbol}</span>
             </div>
-            <div className="flex items-center rounded-full bg-white p-0.5">
+            <div className="flex items-center rounded-full bg-white dark:bg-primary/20 dark:text-white  p-0.5">
               {open ? (
                 <ChevronUp className="h-5 w-5" />
               ) : (
@@ -182,7 +182,7 @@ const TokenSelector = ({
 }
 
 const PriceValue = ({ price }: Pick<SwapItem, 'price'>) => (
-  <div className="max-w-[300px] overflow-hidden">
+  <div className="max-w-[245px] overflow-hidden">
     <span className="text-legend block truncate">{price || '$0.00'}</span>
   </div>
 )
@@ -193,7 +193,7 @@ const MaxButton = ({ balance, onMax }: Pick<SwapItem, 'balance' | 'onMax'>) => (
     <span className="font-bold">{balance}</span>
     <Button
       variant="ghost"
-      className="h-6 rounded-full ml-1 bg-primary/10 text-primary/80 hover:bg-primary/15 hover:text-primary/80 font-semibold"
+      className="h-6 rounded-full ml-1 bg-primary/15 text-primary/80 hover:bg-primary/15 hover:text-primary/80 font-semibold"
       size="xs"
       onClick={onMax}
     >
@@ -207,7 +207,7 @@ const TokenInputBox = ({ from }: Pick<SwapProps, 'from'>) => {
     <div className="flex flex-col gap-1 p-4 bg-muted rounded-xl">
       <div>
         <h3 className="text-primary">{from?.title || 'You use:'}</h3>
-        <div className="flex gap-2">
+        <div className="flex gap-1">
           <TokenInput {...from} />
           <TokenSelector {...from} />
         </div>
@@ -258,7 +258,7 @@ const SlowLoading = ({ enabled }: { enabled: boolean }) => {
   return (
     <div
       className={cn(
-        "absolute inset-0 flex flex-col items-center justify-center w-full h-full bg-cover bg-center bg-[url('https://storage.reserve.org/loading5.webp')] rounded-xl opacity-0",
+        "absolute inset-0 flex flex-col items-center justify-center w-full h-full rounded-xl bg-cover bg-center dark:bg-card dark:bg-none bg-[url('https://storage.reserve.org/loading5.webp')] opacity-0",
         enabled ? 'animate-fade-in z-10' : '-z-10'
       )}
     >
@@ -343,7 +343,7 @@ const ArrowSeparator = ({ onSwap }: Pick<SwapProps, 'onSwap'>) => {
   if (onSwap) {
     return (
       <Button
-        className="h-8 px-[6px] rounded-xl w-max mx-auto border-white border-2 -mt-4 -mb-4 z-20 text-foreground bg-muted hover:bg-border"
+        className="h-8 px-[6px] rounded-xl w-max mx-auto border-card border-2 -mt-4 -mb-4 z-20 text-foreground bg-muted hover:bg-border"
         onClick={onSwap}
       >
         <ArrowUpDown size={16} />
