@@ -77,7 +77,7 @@ const IndexCampaignOverview = () => {
       <Link to={campaignData.url} target="_blank">
         <Button
           size="lg"
-          className="gap-1 mt-4 w-full bg-[#FFBE45] hover:bg-[#FFBE45]/90  text-foreground"
+          className="gap-1 mt-4 w-full bg-[#FFBE45] hover:bg-[#FFBE45]/90  text-black"
         >
           <MerklSvg />
           <span>View Merkl Campaign</span>
