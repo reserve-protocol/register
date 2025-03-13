@@ -72,6 +72,7 @@ const poolsMap: Record<number, Record<string, string>> = {
     '3c81671f-5607-4f57-b725-a08ec4cea0fa': 'wvamm-weth/cbbtc',
     '1f0c0a53-577c-4dd0-97af-f1791f532f51': 'wvamm-weth/well',
     '0d23d643-1000-48cf-9c57-05a5ddd96dce': 'wvamm-weth/degen',
+    'f388573e-5c0f-4dac-9f70-116a4aabaf17': 'wsuperoethb',
   },
   [ChainId.Arbitrum]: {
     'd9c395b9-00d0-4426-a6b3-572a6dd68e54': 'wcusdcv3',
