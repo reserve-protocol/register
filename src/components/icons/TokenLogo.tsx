@@ -95,6 +95,7 @@ const PNGS = new Set([
   'ethx',
   'wvamm-weth-aero',
   'wvamm-mog-weth',
+  'wsuperoethb',
 ])
 
 // Memoized token image
