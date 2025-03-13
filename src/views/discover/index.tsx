@@ -10,13 +10,13 @@ const Discover = () => {
 
   return (
     <>
-      <FeedbackButton />
       <HistoricalTVL />
       <DiscoverTabs className="mt-6 sm:mt-12" />
       <div className="container">
         <RegisterAbout />
       </div>
       <Splash />
+      <FeedbackButton className="bottom-2" />
     </>
   )
 }

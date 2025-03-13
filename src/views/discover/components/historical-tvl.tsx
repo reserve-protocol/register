@@ -57,7 +57,7 @@ function CustomTooltip({ payload, label, active }: any) {
   return (
     <Card
       sx={{
-        display: 'flex',
+        display: ['none', 'flex'],
         flexDirection: 'column',
         border: '2px solid',
         borderColor: 'reserveBackground',

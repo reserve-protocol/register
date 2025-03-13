@@ -127,28 +127,30 @@ const Account = () => {
 
                       // onClick={() => setVisible(true)}
                     >
-                      {!invalidChain ? (
-                        <ChainLogo chain={chain.id} />
-                      ) : (
-                        <AlertCircle fill="#FF0000" color="#fff" />
-                      )}
-                      <Text
-                        sx={{ display: ['none', 'inherit', 'inherit'] }}
-                        ml={2}
-                      >
-                        {account.displayName}
-                      </Text>
-                      <Box
-                        ml={3}
-                        p={2}
-                        sx={{
-                          border: '1px solid',
-                          borderColor: 'border',
-                          borderRadius: '12px',
-                        }}
-                      >
-                        <Wallet size={16} />
-                      </Box>
+                      <div className="flex items-center relative">
+                        <div className="flex items-center absolute lg:relative -bottom-1 -right-1 lg:bottom-0 lg:right-0">
+                          {!invalidChain ? (
+                            <ChainLogo
+                              chain={chain.id}
+                              className="w-3 h-3 lg:w-4 lg:h-4"
+                            />
+                          ) : (
+                            <AlertCircle
+                              fill="#FF0000"
+                              color="#fff"
+                              className="w-3 h-3 lg:w-4 lg:h-4"
+                            />
+                          )}
+                        </div>
+
+                        <span className="hidden lg:inline ml-2">
+                          {account.displayName}
+                        </span>
+
+                        <div className="lg:ml-3 p-2 border border-border rounded-xl">
+                          <Wallet size={16} />
+                        </div>
+                      </div>
                     </Box>
                   </PortfolioSidebar>
                   <Staking />
