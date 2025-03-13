@@ -16,6 +16,7 @@ import { Link } from 'react-router-dom'
 import { ROUTES } from '@/utils/constants'
 import { getFolioRoute } from '@/utils'
 import { Button } from '@/components/ui/button'
+import { useStakingVaultAPY } from '../hooks/use-staking-vault-apy'
 
 const Container = ({ children }: { children: React.ReactNode }) => {
   const dtf = useAtomValue(indexDTFAtom)
@@ -57,6 +58,7 @@ const OpenLockDrawerButton = forwardRef<
 >(({ onClick }, ref) => {
   const dtf = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
+  const apy = useStakingVaultAPY()
 
   if (!dtf) return
 
@@ -74,7 +76,8 @@ const OpenLockDrawerButton = forwardRef<
         chain={chainId}
       />
       <h4 className="font-bold mr-auto text-primary">
-        Lock ${dtf.stToken?.underlying.symbol ?? 'Unknown'} to to Govern & Earn
+        Lock ${dtf.stToken?.underlying.symbol ?? 'Unknown'} to Govern{' '}
+        {Number(apy.toFixed(2)) > 0 && `& Earn ${apy.toFixed(2)}% APY`}
       </h4>
       <Box
         variant="circle"
