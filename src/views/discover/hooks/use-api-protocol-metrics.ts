@@ -43,6 +43,15 @@ const useAPIProtocolMetrics = () => {
     },
     refetchInterval: REFRESH_INTERVAL,
     staleTime: REFRESH_INTERVAL,
+    select: (data) => {
+      return {
+        ...data,
+        tvlTimeseries: data.tvlTimeseries.map((item) => ({
+          ...item,
+          timestamp: item.timestamp * 1000,
+        })),
+      }
+    },
   })
 }
 

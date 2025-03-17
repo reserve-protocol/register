@@ -212,7 +212,7 @@ const HistoricalTVLChart = ({ data }: { data?: Metrics }) => {
       <AreaChart
         data={data?.tvlTimeseries ?? []}
         margin={{
-          right: 0,
+          right: 1,
           bottom: -30,
           left: 0,
         }}
