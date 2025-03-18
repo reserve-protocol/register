@@ -17,7 +17,7 @@ const proposalTypes = [
     icon: <Boxes strokeWidth={1.5} size={16} />,
     title: 'DTF Basket',
     route: GOVERNANCE_PROPOSAL_TYPES.BASKET,
-    enabled: true,
+    enabled: false,
   },
   {
     icon: <Asterisk size={24} />,
