@@ -86,7 +86,7 @@ const ProposalIndicators = ({ data }: { data: TradesByProposal }) => {
     )
   }
   if (data.status === 'PENDING') {
-    if (!isAvailable && !isExpired) {
+    if (!isAvailable && !isExpired && data.permissionless) {
       return (
         <Container>
           <Spinner />

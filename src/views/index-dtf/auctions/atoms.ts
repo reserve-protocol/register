@@ -104,6 +104,7 @@ export const VOLATILITY_VALUES = {
 export type TradesByProposal = {
   proposal: PartialProposal
   trades: AssetTrade[]
+  permissionless: boolean
   completed: number
   expired: number
   expiresAt: number
@@ -249,6 +250,7 @@ export const dtfTradesByProposalMapAtom = atom<
       tradesByProposal[proposal.executionBlock] = {
         proposal,
         trades: [],
+        permissionless: false,
         completed: 0,
         expired: 0,
         availableAt: 0,
@@ -287,6 +289,9 @@ export const dtfTradesByProposalMapAtom = atom<
 
   return Object.values(tradesByProposal).reduce(
     (acc, proposal) => {
+      proposal.permissionless = proposal.trades.some(
+        (trade) => trade.availableAt < proposal.expiresAt
+      )
       acc[proposal.proposal.id] = proposal
       return acc
     },

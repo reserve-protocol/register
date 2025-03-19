@@ -12,7 +12,7 @@ import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { ArrowRight, Check, LoaderCircle, X } from 'lucide-react'
 import { useEffect } from 'react'
 import { toast } from 'sonner'
-import { Address, erc20Abi, parseUnits } from 'viem'
+import { Address, erc20Abi, formatEther, formatUnits, parseUnits } from 'viem'
 import {
   useReadContract,
   useWaitForTransactionReceipt,
@@ -30,6 +30,7 @@ import {
   VOLATILITY_OPTIONS,
   VOLATILITY_VALUES,
 } from '../atoms'
+import DecimalDisplay from '@/components/decimal-display'
 
 const TradeCompletedStatus = ({ className }: { className?: string }) => {
   return (
@@ -385,11 +386,14 @@ const ShareRange = ({
 const TradePreview = ({ trade }: { trade: AssetTrade }) => {
   const chainId = useAtomValue(chainIdAtom)
   const expectedBasket = useAtomValue(expectedBasketAtom)?.basket
+  const isCompleted = trade.state === TRADE_STATE.COMPLETED
 
   return (
     <div className="grid grid-cols-[1fr_auto_1fr] gap-2 items-center w-full sm:w-80 mr-auto">
       <div className="flex flex-col gap-1">
-        <span>Sell ${trade.sell.symbol}</span>
+        <span>
+          {isCompleted ? 'Sold' : 'Sell'} ${trade.sell.symbol}
+        </span>
         <div className="flex items-center gap-1">
           <TokenLogo
             symbol={trade.sell.symbol}
@@ -397,35 +401,58 @@ const TradePreview = ({ trade }: { trade: AssetTrade }) => {
             chain={chainId}
             size="lg"
           />
-          <Share share={expectedBasket?.[trade.sell.address]?.delta} />
+          {isCompleted ? (
+            <DecimalDisplay
+              value={formatUnits(trade.soldAmount, trade.sell.decimals)}
+              decimals={1}
+              compact
+              className="font-bold text-2xl"
+            />
+          ) : (
+            <Share share={expectedBasket?.[trade.sell.address]?.delta} />
+          )}
         </div>
-        <ShareRange
-          from={
-            expectedBasket?.[trade.sell.address]?.currentShares
-              ? Number(expectedBasket?.[trade.sell.address]?.currentShares)
-              : undefined
-          }
-          to={
-            expectedBasket?.[trade.sell.address]?.targetShares
-              ? Number(expectedBasket?.[trade.sell.address]?.targetShares)
-              : undefined
-          }
-        />
+        {!isCompleted && (
+          <ShareRange
+            from={
+              expectedBasket?.[trade.sell.address]?.currentShares
+                ? Number(expectedBasket?.[trade.sell.address]?.currentShares)
+                : undefined
+            }
+            to={
+              expectedBasket?.[trade.sell.address]?.targetShares
+                ? Number(expectedBasket?.[trade.sell.address]?.targetShares)
+                : undefined
+            }
+          />
+        )}
       </div>
       <div className="bg-muted rounded-full p-1 text-legend">
         <ArrowRight size={18} />
       </div>
       <div className="flex flex-col gap-1 items-end">
-        <span>Buy ${trade.buy.symbol}</span>
+        <span>
+          {isCompleted ? 'Bought' : 'Buy'} ${trade.buy.symbol}
+        </span>
         <div className="flex items-center gap-1">
-          <Share
-            share={
-              expectedBasket?.[trade.buy.address]?.delta !== undefined
-                ? Math.max(expectedBasket[trade.buy.address].delta, 0)
-                : undefined
-            }
-            prefix="+"
-          />
+          {isCompleted ? (
+            <DecimalDisplay
+              value={formatUnits(trade.boughtAmount, trade.buy.decimals)}
+              decimals={1}
+              compact
+              className="font-bold text-2xl"
+            />
+          ) : (
+            <Share
+              share={
+                expectedBasket?.[trade.buy.address]?.delta !== undefined
+                  ? Math.max(expectedBasket[trade.buy.address].delta, 0)
+                  : undefined
+              }
+              prefix="+"
+            />
+          )}
+
           <TokenLogo
             symbol={trade.buy.symbol}
             address={trade.buy.address}
@@ -433,18 +460,20 @@ const TradePreview = ({ trade }: { trade: AssetTrade }) => {
             size="lg"
           />
         </div>
-        <ShareRange
-          from={
-            expectedBasket?.[trade.buy.address]?.currentShares
-              ? Number(expectedBasket?.[trade.buy.address]?.currentShares)
-              : undefined
-          }
-          to={
-            expectedBasket?.[trade.buy.address]?.targetShares
-              ? Number(expectedBasket?.[trade.buy.address]?.targetShares)
-              : undefined
-          }
-        />
+        {!isCompleted && (
+          <ShareRange
+            from={
+              expectedBasket?.[trade.buy.address]?.currentShares
+                ? Number(expectedBasket?.[trade.buy.address]?.currentShares)
+                : undefined
+            }
+            to={
+              expectedBasket?.[trade.buy.address]?.targetShares
+                ? Number(expectedBasket?.[trade.buy.address]?.targetShares)
+                : undefined
+            }
+          />
+        )}
       </div>
     </div>
   )
