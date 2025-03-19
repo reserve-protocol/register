@@ -387,6 +387,9 @@ const ShareRange = ({
 const TradePreview = ({ trade }: { trade: AssetTrade }) => {
   const chainId = useAtomValue(chainIdAtom)
   const expectedBasket = useAtomValue(expectedBasketAtom)?.basket
+  const proposedBasket = useAtomValue(proposedBasketAtom)?.basket
+
+  console.log('expected basket', proposedBasket)
 
   return (
     <div className="grid grid-cols-[1fr_auto_1fr] gap-2 items-center w-full sm:w-80 mr-auto">

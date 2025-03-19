@@ -17,13 +17,13 @@ const proposalTypes = [
     icon: <Boxes strokeWidth={1.5} size={16} />,
     title: 'DTF Basket',
     route: GOVERNANCE_PROPOSAL_TYPES.BASKET,
-    enabled: false,
+    enabled: true,
   },
   {
     icon: <Asterisk size={24} />,
-    title: 'Fees',
-    route: GOVERNANCE_PROPOSAL_TYPES.FEES,
-    enabled: false,
+    title: 'Admin',
+    route: GOVERNANCE_PROPOSAL_TYPES.ADMIN,
+    enabled: true,
   },
   {
     icon: <Crown size={16} />,
