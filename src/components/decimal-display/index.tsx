@@ -20,8 +20,8 @@ export const useNumberFormat = (
 
     const absNum = Math.abs(num)
 
-    // Only use compact formatting if the number is >= 1,000,000 and compact is true
-    if (compact && absNum >= 1000000) {
+    // Use compact formatting if the number is >= 1,000 and compact is true
+    if (compact && absNum >= 1000) {
       const suffixNum = Math.min(4, Math.floor(Math.log10(absNum) / 3))
       const shortValue = absNum / Math.pow(1000, suffixNum)
       const suffix = suffixes[suffixNum]
