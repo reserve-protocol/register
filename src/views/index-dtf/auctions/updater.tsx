@@ -48,9 +48,16 @@ type Response = {
     approvedBlock: string
     approvedTimestamp: string
     launchedTimestamp: string
-    closedTimestamp: string
     approvedBlockNumber: string
-    closedTransactionHash: string
+    bids: {
+      id: string
+      bidder: string
+      sellAmount: string
+      buyAmount: string
+      blockNumber: string
+      timestamp: string
+      transactionHash: string
+    }[]
   }[]
 }
 
@@ -87,8 +94,15 @@ const query = gql`
       approvedBlockNumber
       approvedTimestamp
       launchedTimestamp
-      closedTimestamp
-      closedTransactionHash
+      bids {
+        id
+        bidder
+        sellAmount
+        buyAmount
+        blockNumber
+        timestamp
+        transactionHash
+      }
     }
   }
 `
@@ -130,8 +144,14 @@ const useTrades = () => {
           end: Number(trade.end),
           approvedTimestamp: Number(trade.approvedTimestamp),
           launchedTimestamp: Number(trade.launchedTimestamp),
-          closedTimestamp: Number(trade.closedTimestamp),
           approvedBlockNumber: trade.approvedBlockNumber,
+          bids: trade.bids.map((bid) => ({
+            ...bid,
+            sellAmount: BigInt(bid.sellAmount),
+            buyAmount: BigInt(bid.buyAmount),
+            blockNumber: Number(bid.blockNumber),
+            timestamp: Number(bid.timestamp),
+          })),
           state: 'PENDING',
         }
         parsedTrade.state = getTradeState(parsedTrade)

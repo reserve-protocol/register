@@ -24,7 +24,7 @@ export function getTradeState(trade: AssetTrade) {
   const currentTime = getCurrentTime()
 
   // Lets start with the completed state!
-  if (trade.closedTimestamp) {
+  if (trade.bids.length > 0 && currentTime > trade.end) {
     return TRADE_STATE.COMPLETED
   }
 
@@ -68,7 +68,6 @@ export type AssetTrade = {
   end: number
   approvedTimestamp: number
   launchedTimestamp: number
-  closedTimestamp: number
   approvedBlockNumber: string
   // Calculated after
   currentBuyShare?: number
@@ -77,8 +76,16 @@ export type AssetTrade = {
   sellShare?: number
   deltaBuyShare?: number
   deltaSellShare?: number
-  closedTransactionHash?: string
   state: string
+  bids: {
+    id: string
+    bidder: string
+    sellAmount: bigint
+    buyAmount: bigint
+    blockNumber: number
+    timestamp: number
+    transactionHash: string
+  }[]
 }
 
 export const VOLATILITY_OPTIONS = {
