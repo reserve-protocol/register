@@ -11,6 +11,7 @@ import { formatPercentage, getCurrentTime } from '@/utils'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { ArrowRight, Check, LoaderCircle, X } from 'lucide-react'
 import { useEffect } from 'react'
+import { toast } from 'sonner'
 import { Address, erc20Abi, parseUnits } from 'viem'
 import {
   useReadContract,
@@ -20,18 +21,15 @@ import {
 import {
   AssetTrade,
   dtfTradeMapAtom,
-  dtfTradesByProposalMapAtom,
   dtfTradeVolatilityAtom,
   expectedBasketAtom,
   isAuctionLauncherAtom,
   proposedBasketAtom,
-  selectedProposalAtom,
   setTradeVolatilityAtom,
   TRADE_STATE,
   VOLATILITY_OPTIONS,
   VOLATILITY_VALUES,
 } from '../atoms'
-import { toast } from 'sonner'
 
 const TradeCompletedStatus = ({ className }: { className?: string }) => {
   return (
@@ -357,7 +355,7 @@ const Share = ({
   share: number | undefined
   prefix?: string
 }) => {
-  if (!share) return <Skeleton className="h-8 w-14" />
+  if (share === undefined) return <Skeleton className="h-8 w-14" />
 
   return (
     <h4 className="font-bold text-2xl">
@@ -421,7 +419,11 @@ const TradePreview = ({ trade }: { trade: AssetTrade }) => {
         <span>Buy ${trade.buy.symbol}</span>
         <div className="flex items-center gap-1">
           <Share
-            share={expectedBasket?.[trade.buy.address]?.delta}
+            share={
+              expectedBasket?.[trade.buy.address]?.delta !== undefined
+                ? Math.max(expectedBasket[trade.buy.address].delta, 0)
+                : undefined
+            }
             prefix="+"
           />
           <TokenLogo

@@ -21,7 +21,7 @@ const getSnapshotBasket = async (
 ): Promise<SnapshotBasket> => {
   const route = !!block ? 'snapshot' : 'current'
   const response = await fetch(
-    `${RESERVE_API}${route}/dtf?address=${indexDTF}&chainId=${chainId}&blockNumber=${block}&test=true`
+    `${RESERVE_API}${route}/dtf?address=${indexDTF}&chainId=${chainId}&blockNumber=${block}`
   )
   return response.json()
 }
