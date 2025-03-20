@@ -261,7 +261,13 @@ const TradeButton = ({
           address: dtfAddress as Address,
           abi: dtfIndexAbi,
           functionName: 'openAuction',
-          args: [BigInt(tradeId), sellLimit, buyLimit, startPrice, endPrice],
+          args: [
+            BigInt(tradeId),
+            sellLimit,
+            trade.buyLimitHigh,
+            startPrice,
+            endPrice,
+          ],
         })
       } catch (e) {
         toast.error('Error opening auction')
