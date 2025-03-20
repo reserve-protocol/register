@@ -231,33 +231,33 @@ const TradeButton = ({
           )
         )
 
-        const [sellLimit, buyLimit, startPrice, endPrice] = openAuction(
-          {
-            sell: trade.sell.address,
-            buy: trade.buy.address,
-            sellLimit: {
-              spot: trade.sellLimitSpot,
-              low: trade.sellLimitLow,
-              high: trade.sellLimitHigh,
-            },
-            buyLimit: {
-              spot: trade.buyLimitSpot,
-              low: trade.buyLimitLow,
-              high: trade.buyLimitHigh,
-            },
-            prices: {
-              start: trade.startPrice,
-              end: trade.endPrice,
-            },
-          },
-          dtfSupply,
-          tokens,
-          decimals,
-          targetBasket,
-          prices,
-          priceError,
-          dtfPrice
-        )
+        // const [sellLimit, buyLimit, startPrice, endPrice] = openAuction(
+        //   {
+        //     sell: trade.sell.address,
+        //     buy: trade.buy.address,
+        //     sellLimit: {
+        //       spot: trade.sellLimitSpot,
+        //       low: trade.sellLimitLow,
+        //       high: trade.sellLimitHigh,
+        //     },
+        //     buyLimit: {
+        //       spot: trade.buyLimitSpot,
+        //       low: trade.buyLimitLow,
+        //       high: trade.buyLimitHigh,
+        //     },
+        //     prices: {
+        //       start: trade.startPrice,
+        //       end: trade.endPrice,
+        //     },
+        //   },
+        //   dtfSupply,
+        //   tokens,
+        //   decimals,
+        //   targetBasket,
+        //   prices,
+        //   priceError,
+        //   dtfPrice
+        // )
 
         writeContract({
           address: dtfAddress as Address,
@@ -265,10 +265,10 @@ const TradeButton = ({
           functionName: 'openAuction',
           args: [
             BigInt(tradeId),
-            sellLimit,
+            trade.sellLimitLow,
             trade.buyLimitHigh,
-            startPrice,
-            endPrice,
+            trade.startPrice,
+            trade.endPrice,
           ],
         })
       } catch (e) {
