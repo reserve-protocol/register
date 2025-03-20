@@ -6,7 +6,7 @@ import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { openAuction } from '@/lib/index-rebalance/open-auction'
 import { cn } from '@/lib/utils'
 import { chainIdAtom } from '@/state/atoms'
-import { indexDTFAtom } from '@/state/dtf/atoms'
+import { indexDTFAtom, indexDTFPriceAtom } from '@/state/dtf/atoms'
 import { formatPercentage, getCurrentTime } from '@/utils'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { ArrowRight, Check, LoaderCircle, X } from 'lucide-react'
@@ -127,6 +127,7 @@ const TradeButton = ({
   const updateTradeState = useSetAtom(updateTradeStateAtom)
   const { writeContract, isError, isPending, data } = useWriteContract()
   const tradeVolatility = useAtomValue(dtfTradeVolatilityAtom)
+  const dtfPrice = useAtomValue(indexDTFPriceAtom)
   const { isSuccess } = useWaitForTransactionReceipt({
     hash: data,
     chainId,
@@ -150,7 +151,8 @@ const TradeButton = ({
   }, [isSuccess])
 
   const handleLaunch = () => {
-    if (!canLaunch || getCurrentTime() >= trade.launchTimeout + 5) return
+    if (!dtfPrice || !canLaunch || getCurrentTime() >= trade.launchTimeout + 5)
+      return
 
     // Trade id has the dtfId as prefix
     const [dtfAddress, tradeId] = trade.id.split('-')
@@ -223,7 +225,7 @@ const TradeButton = ({
               targetBasket: targetBasket.map((tb) => tb.toString()),
               prices,
               priceError,
-              dtfPrice: proposedBasket.price,
+              dtfPrice: dtfPrice.toString(),
             },
             (_, value) => (typeof value === 'bigint' ? value.toString() : value)
           )
@@ -254,7 +256,7 @@ const TradeButton = ({
           targetBasket,
           prices,
           priceError,
-          proposedBasket.price
+          dtfPrice
         )
 
         writeContract({
