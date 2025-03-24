@@ -51,18 +51,18 @@ const presets = {
       ExecutionDelay: 48,
     },
     fast: {
-      VotingDelay: 24,
-      VotingPeriod: 24,
+      VotingDelay: 1,
+      VotingPeriod: 23,
       VotingThreshold: 0.1,
       VotingQuorum: 10,
       ExecutionDelay: 24,
     },
     'very-fast': {
-      VotingDelay: 24,
-      VotingPeriod: 24,
+      VotingDelay: 1,
+      VotingPeriod: 1,
       VotingThreshold: 1,
       VotingQuorum: 20,
-      ExecutionDelay: 24,
+      ExecutionDelay: 0.25,
     },
   },
   governance: {
