@@ -248,7 +248,6 @@ const PriceChart = () => {
           </div>
         </div>
       </div>
-
       {/* <Selectors className="hidden sm:flex sm:mt-8" /> */}
     </div>
   )
