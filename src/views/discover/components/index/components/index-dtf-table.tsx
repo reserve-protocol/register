@@ -116,7 +116,7 @@ const columns: ColumnDef<IndexDTFItem>[] = [
           <div className="text-right">
             <span>{percentageChange}</span>
             <span className="block text-legend text-xs mt-0.5">
-              (${formatCurrency(row.original.price)})
+              (${formatCurrency(row.original.price, 5)})
             </span>
           </div>
           {performance.length > 0 && (
