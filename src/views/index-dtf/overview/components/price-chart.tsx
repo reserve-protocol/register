@@ -192,7 +192,7 @@ const PriceChart = () => {
               {formatCurrency(
                 timeseries[timeseries.length - 1][dataType],
                 // dataType === 'marketCap' ? 2 : 5
-                2
+                5
               )}
             </span>
           )}
