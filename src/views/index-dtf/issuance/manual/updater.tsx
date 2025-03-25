@@ -4,7 +4,7 @@ import { chainIdAtom, walletAtom } from '@/state/atoms'
 import { indexDTFAtom, indexDTFBasketAtom } from '@/state/dtf/atoms'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
-import { erc20Abi } from 'viem'
+import { erc20Abi, parseEther } from 'viem'
 import { useReadContract } from 'wagmi'
 import {
   allowanceMapAtom,
@@ -92,7 +92,8 @@ const Updater = () => {
   const { data: assetDistribution } = useReadContract({
     abi: dtfIndexAbi,
     address: indexDTF?.id,
-    functionName: 'folio',
+    functionName: 'toAssets',
+    args: [parseEther('1'), 0],
     chainId,
     query: {
       select: (data) => {
