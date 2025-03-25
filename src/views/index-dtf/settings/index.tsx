@@ -1,5 +1,6 @@
 import useTrackIndexDTFPage from '../hooks/useTrackIndexDTFPage'
 import DistributeFees from './components/distribute-fees'
+import RewardTokens from './components/index-settings-reward-tokens'
 import BasicInfo from './components/index-settings-basic'
 import FeesInfo from './components/index-settings-fees'
 import GovernanceInfo from './components/index-settings-governance'
@@ -13,6 +14,7 @@ const IndexDTFSettings = () => {
       <div className="flex flex-col gap-2">
         <BasicInfo />
         <GovernanceTokenInfo />
+        <RewardTokens />
         <FeesInfo />
         <GovernanceInfo basket />
         <GovernanceInfo />
