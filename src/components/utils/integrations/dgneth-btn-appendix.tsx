@@ -103,6 +103,7 @@ const DgnETHButtonAppendix: FC<Props> = ({
           {apy}
         </Text>
         <Text
+          className="whitespace-nowrap"
           sx={{
             display: [hideLabelOnMobile ? 'none' : 'flex', 'flex'],
             fontSize: [1, 'inherit'],
