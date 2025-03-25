@@ -1,6 +1,6 @@
 import { create } from 'kubo-rpc-client'
 
-const IPFS_GATEWAY = 'https://ipfs.satsuma.xyz/ipfs/'
+export const IPFS_GATEWAY = 'https://ipfs.satsuma.xyz/ipfs/'
 const IPFS_NODE = 'https://ipfs.satsuma.xyz/api/v0/add?pin=true'
 
 export const uploadFileToIpfs = async (file: File | Blob) => {

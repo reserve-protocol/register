@@ -13,6 +13,8 @@ import { useTrackIndexDTFClick } from '@/views/index-dtf/hooks/useTrackIndexDTFP
 import { Link } from 'react-router-dom'
 import Uniswap from '@/components/icons/logos/Uniswap'
 import { useDTFCampaign } from '../../hooks/use-campaign'
+import { tryLoadImage } from '@/lib/image'
+import { resolveIpfsGateway } from '@/lib/ipfs-load'
 
 export const UniswapButton = React.forwardRef<HTMLAnchorElement>(
   (props, ref) => {
@@ -74,6 +76,8 @@ const MintBox = () => {
           <ArrowLeftRight className="w-4 h-4" />
           <TokenLogo
             className="mr-auto"
+            address={dtf?.id}
+            chain={dtf?.chainId}
             src={brand?.dtf?.icon || undefined}
             size="lg"
           />
@@ -131,27 +135,7 @@ const MintBox = () => {
 const CoverImage = () => {
   const brand = useAtomValue(indexDTFBrandAtom)
   const [isLoading, setIsLoading] = useState(true)
-
-  const tryLoadImage = async (url: string): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      const img = new Image()
-      img.src = url
-
-      const timeoutId = setTimeout(() => {
-        reject(new Error('Image load timeout'))
-      }, 5000)
-
-      img.onload = () => {
-        clearTimeout(timeoutId)
-        resolve(url)
-      }
-
-      img.onerror = () => {
-        clearTimeout(timeoutId)
-        reject() // Remove error message to avoid console logging
-      }
-    })
-  }
+  const [src, setSrc] = useState(brand?.dtf?.cover)
 
   useEffect(() => {
     if (brand) {
@@ -159,7 +143,8 @@ const CoverImage = () => {
         setIsLoading(true)
         try {
           if (brand?.dtf?.cover) {
-            await tryLoadImage(brand.dtf.cover)
+            const url = await tryLoadImage(resolveIpfsGateway(brand.dtf.cover))
+            setSrc(url)
           }
         } catch (error) {}
         setIsLoading(false)
@@ -173,14 +158,14 @@ const CoverImage = () => {
     return <Skeleton className="w-[450px] h-[450px] rounded-4xl" />
   }
 
-  if (brand?.dtf?.cover) {
+  if (src) {
     return (
       <img
         width={450}
         height={450}
         className="object-cover h-[450px] w-[450px] rounded-4xl"
         alt="DTF meme"
-        src={brand.dtf.cover}
+        src={src}
       />
     )
   }

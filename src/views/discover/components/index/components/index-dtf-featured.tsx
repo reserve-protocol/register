@@ -61,7 +61,12 @@ const IndexDTFFeatured = () => {
               />
               <div className="flex items-center gap-2 md:gap-3 flex-grow rounded-3xl bg-card p-2 lg:p-4 py-2  lg:py-5">
                 <div className="relative ">
-                  <TokenLogo src={dtf.icon} size="xl" />
+                  <TokenLogo
+                    address={dtf.address}
+                    chain={dtf.chainId}
+                    src={dtf.icon}
+                    size="xl"
+                  />
                   <ChainLogo
                     chain={dtf.chainId}
                     className="absolute -bottom-1 -right-1"
