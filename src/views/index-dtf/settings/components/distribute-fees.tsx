@@ -17,7 +17,7 @@ import { InfoCard } from './settings-info-card'
 const DistributeFees = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
   const price = useAtomValue(indexDTFPriceAtom)
-  const { data: hash, writeContract, isPending, error } = useWriteContract()
+  const { data: hash, writeContract, isPending } = useWriteContract()
   const { data: pendingFees } = useReadContract({
     abi: dtfIndexAbi,
     address: indexDTF?.id,
