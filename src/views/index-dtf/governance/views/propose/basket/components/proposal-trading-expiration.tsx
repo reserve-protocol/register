@@ -12,6 +12,7 @@ import {
   isBasketProposalValidAtom,
   isDeferAvailableAtom,
   isProposalConfirmedAtom,
+  isProposedBasketValidAtom,
   permissionlessLaunchingAtom,
   permissionlessLaunchingWindowAtom,
   stepAtom,
@@ -80,6 +81,14 @@ const PermissionCard = ({ option }: { option: PermissionOption }) => {
 const NextButton = () => {
   const permissionlessLaunching = useAtomValue(permissionlessLaunchingAtom)
   const isValid = useAtomValue(isBasketProposalValidAtom)
+  const isProposeBasketValid = useAtomValue(isProposedBasketValidAtom)
+  const isTradeSettingsValid = !!useAtomValue(tradeRangeOptionAtom)
+  const shouldFinalize = [
+    isValid,
+    isProposeBasketValid,
+    isTradeSettingsValid,
+  ].every((x) => x)
+
   const setStep = useSetAtom(stepAtom)
   const setConfirmation = useSetAtom(isProposalConfirmedAtom)
 
@@ -98,7 +107,7 @@ const NextButton = () => {
       disabled={permissionlessLaunching === undefined}
       onClick={handleClick}
     >
-      Confirm
+      {shouldFinalize ? 'Confirm & Prepare Proposal' : 'Confirm'}
     </Button>
   )
 }
