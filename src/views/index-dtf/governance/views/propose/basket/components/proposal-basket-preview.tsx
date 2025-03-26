@@ -26,7 +26,7 @@ import { Token } from '@/types'
 import { shortenAddress } from '@/utils'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { useAtomValue } from 'jotai'
-import { ArrowUpRightIcon, ChevronsUpDown } from 'lucide-react'
+import { ArrowUpRight, ArrowUpRightIcon, ChevronsUpDown } from 'lucide-react'
 import { useMemo } from 'react'
 import { collapseAllNested, defaultStyles } from 'react-json-view-lite'
 import { JsonView } from 'react-json-view-lite'
@@ -183,7 +183,8 @@ const BasketPreview = ({ basket }: { basket: EstimatedBasket | undefined }) => {
                       {asset.token.symbol}
                     </h4>
                     <p className="text-sm text-legend">
-                      {shortenAddress(asset.token.address)}
+                      {shortenAddress(asset.token.address)}{' '}
+                      <ArrowUpRight size={14} className="inline" />
                     </p>
                   </div>
                 </Link>
