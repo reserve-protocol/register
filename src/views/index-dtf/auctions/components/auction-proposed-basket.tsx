@@ -129,10 +129,10 @@ const ProposalBasketTable = () => {
                 />
               </TableCell>
               <TableCell>
-                {proposedBasket.basket[token].targetShares || '0'}%
+                {proposedBasket.basket[token]?.targetShares || '0'}%
               </TableCell>
               <TableCell className="bg-primary/10 text-primary font-semibold">
-                {expectedBasket.basket[token].targetShares || '0'}%
+                {expectedBasket.basket[token]?.targetShares || '0'}%
               </TableCell>
             </TableRow>
           )
