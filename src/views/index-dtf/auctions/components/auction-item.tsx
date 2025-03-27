@@ -6,7 +6,7 @@ import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { openAuction } from '@/lib/index-rebalance/open-auction'
 import { cn } from '@/lib/utils'
 import { chainIdAtom } from '@/state/atoms'
-import { indexDTFAtom } from '@/state/dtf/atoms'
+import { indexDTFAtom, indexDTFPriceAtom } from '@/state/dtf/atoms'
 import { formatPercentage, getCurrentTime } from '@/utils'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { ArrowRight, Check, LoaderCircle, X } from 'lucide-react'
@@ -132,6 +132,7 @@ const TradeButton = ({
     chainId,
   })
   const dtfSupply = useProposalDtfSupply()
+  const dtfPrice = useAtomValue(indexDTFPriceAtom)
 
   const isLoading = isPending || (!!data && !isSuccess && !isError)
 
@@ -150,7 +151,7 @@ const TradeButton = ({
   }, [isSuccess])
 
   const handleLaunch = () => {
-    if (!canLaunch || getCurrentTime() >= trade.launchTimeout + 5) return
+    if (!dtfPrice || !canLaunch || getCurrentTime() >= trade.launchTimeout + 5) return
 
     // Trade id has the dtfId as prefix
     const [dtfAddress, tradeId] = trade.id.split('-')
