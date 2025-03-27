@@ -324,6 +324,19 @@ export type IndexDTF = {
       address: Address
       decimals: number
     }
+    governance?: {
+      id: Address
+      votingDelay: number
+      votingPeriod: number
+      proposalThreshold: number
+      quorumNumerator: number
+      timelock: {
+        id: Address
+        guardians: Address[]
+        executionDelay: number
+      }
+    }
+    rewardTokens: Token[]
   }
   totalRevenue: number
   protocolRevenue: number

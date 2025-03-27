@@ -35,6 +35,7 @@ import IndexDTFOverview from './views/index-dtf/overview'
 import IndexDTFSettings from './views/index-dtf/settings'
 import AllYieldDTFList from './views/tokens/Tokens'
 import DeployComingSoon from './views/index-dtf/deploy/components/deploy-coming-soon'
+import IndexDTFWhitelistProposal from './views/index-dtf/governance/views/propose/vault'
 
 // TODO: Remove terms!
 // TODO: Fix recoll call on yield dtf auction page
@@ -45,7 +46,10 @@ const AppRoutes = () => (
     <Route path={ROUTES.EARN} element={<EarnWrapper />} />
     <Route path={ROUTES.DEPLOY_YIELD} element={<DeployYieldDTF />} />
     <Route path={ROUTES.DEPLOY_INDEX} element={<DeployComingSoon />} />
-    <Route path={'/hidden-super-secret-asdf/deploy'} element={<DeployIndexDTF />} />
+    <Route
+      path={'/hidden-super-secret-asdf/deploy'}
+      element={<DeployIndexDTF />}
+    />
     <Route path={ROUTES.TOKENS} element={<AllYieldDTFList />} />
     <Route path={ROUTES.TERMS} element={<Terms />} />
     {/* Yield DTF */}
@@ -87,6 +91,10 @@ const AppRoutes = () => (
       <Route
         path={`${ROUTES.GOVERNANCE}/${ROUTES.GOVERNANCE_PROPOSE}/${GOVERNANCE_PROPOSAL_TYPES.BASKET}`}
         element={<IndexDTFBasketProposal />}
+      />
+      <Route
+        path={`${ROUTES.GOVERNANCE}/${ROUTES.GOVERNANCE_PROPOSE}/${GOVERNANCE_PROPOSAL_TYPES.WHITELIST}`}
+        element={<IndexDTFWhitelistProposal />}
       />
       <Route
         path={`${ROUTES.GOVERNANCE_PROPOSAL}/:proposalId`}

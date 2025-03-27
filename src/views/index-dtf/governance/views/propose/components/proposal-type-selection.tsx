@@ -7,6 +7,7 @@ import {
   ArrowRight,
   Asterisk,
   Boxes,
+  Coins,
   Crown,
   LayoutGrid,
 } from 'lucide-react'
@@ -36,6 +37,12 @@ const proposalTypes = [
     title: 'Other',
     route: GOVERNANCE_PROPOSAL_TYPES.OTHER,
     enabled: false,
+  },
+  {
+    icon: <Coins size={16} />,
+    title: 'Whitelist reward',
+    route: GOVERNANCE_PROPOSAL_TYPES.WHITELIST,
+    enabled: true,
   },
 ]
 
