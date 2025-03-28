@@ -73,6 +73,18 @@ export const isProposalValidAtom = atom((get) => {
   return false
 })
 
+export const validAddedRewardTokensAtom = atom<string[]>((get) => {
+  const addedRewardTokens = get(addedRewardTokensAtom)
+
+  return Object.keys(addedRewardTokens).filter((key) => {
+    const token = addedRewardTokens[key]
+
+    if (!token) return false
+
+    return true
+  })
+})
+
 export const isProposalConfirmedAtom = atom(false)
 export const proposedRewardTokensAtom = atom<Token[] | undefined>(undefined)
 export const newRewardTokenAtom = atom<{ id: string; address: string }[]>([])

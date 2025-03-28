@@ -7,6 +7,7 @@ import { useAtom, useAtomValue } from 'jotai'
 import { Link } from 'react-router-dom'
 import { isProposalConfirmedAtom, isProposalValidAtom } from '../atoms'
 import SubmitProposalButton from './submit-proposal-button'
+import VaultProposalChanges from './vault-proposal-changes'
 
 const ConfirmProposalButton = () => {
   const isValid = useAtomValue(isProposalValidAtom)
@@ -80,11 +81,27 @@ const Header = () => {
   )
 }
 
+const VaultProposalChangePreview = () => {
+  const isProposalConfirmed = useAtomValue(isProposalConfirmedAtom)
+
+  if (isProposalConfirmed) return null
+
+  return (
+    <div className="mt-4 border-4 border-secondary rounded-3xl bg-background p-6">
+      <h3 className="font-bold mb-6 text-primary">Proposed changes</h3>
+      <VaultProposalChanges />
+    </div>
+  )
+}
+
 const VaultProposalOverview = () => {
   return (
-    <div className="border-4 overflow-hidden w-full border-secondary rounded-3xl bg-background h-[fit-content] sticky top-0">
-      <Header />
-      <ProposalInstructions />
+    <div className="fit-content overflow-hidden w-full">
+      <div className="border-4 border-secondary rounded-3xl bg-background">
+        <Header />
+        <ProposalInstructions />
+      </div>
+      <VaultProposalChangePreview />
     </div>
   )
 }
