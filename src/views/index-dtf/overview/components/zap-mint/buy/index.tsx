@@ -62,6 +62,7 @@ const Buy = () => {
 
   const { loadingAfterRefetch } = useLoadingAfterRefetch(data)
 
+  const priceFrom = data?.result?.amountInValue
   const priceTo = data?.result?.amountOutValue
   const valueTo = data?.result?.amountOut
   const showTxButton = Boolean(
@@ -106,7 +107,7 @@ const Buy = () => {
     <div className="flex flex-col gap-2 h-full">
       <Swap
         from={{
-          price: `$${formatCurrency(inputPrice)}`,
+          price: `$${formatCurrency(priceFrom ?? inputPrice)}`,
           address: selectedToken.address,
           symbol: selectedToken.symbol,
           balance: `${formatCurrency(Number(selectedTokenBalance?.balance || '0'))}`,

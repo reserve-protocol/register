@@ -7,8 +7,10 @@ import { Address, erc20Abi_bytes32, Hex, trim, hexToString } from 'viem'
 import { erc20Abi } from 'viem'
 import { useReadContracts } from 'wagmi'
 
+export const MAKER_ADDRESS = '0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2'
+
 const ERC20_BYTES32_MAP: Record<number, string[]> = {
-  [ChainId.Mainnet]: ['0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2'],
+  [ChainId.Mainnet]: [MAKER_ADDRESS],
 }
 
 const useTokensInfo = (addresses: string[]) => {

@@ -5,7 +5,11 @@ import Modal from '@/components/old/modal'
 import { useAtomValue } from 'jotai'
 import { chainIdAtom } from 'state/atoms'
 import { Flex, Link, Text } from 'theme-ui'
-import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
+import {
+  ETHERSCAN_NAMES,
+  ExplorerDataType,
+  getExplorerLink,
+} from 'utils/getExplorerLink'
 
 const TransactionConfirmedModal = ({
   hash,
@@ -37,7 +41,8 @@ const TransactionConfirmedModal = ({
           target="_blank"
           sx={{ fontSize: 1, alignItems: 'center', display: 'flex' }}
         >
-          <Trans>View on etherscan </Trans> <ExternalArrowIcon />
+          <Trans>View on</Trans> {ETHERSCAN_NAMES[chainId]}{' '}
+          <ExternalArrowIcon />
         </Link>
       </Flex>
     </Modal>

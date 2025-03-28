@@ -123,7 +123,8 @@ const useInitialBasket = ():
 
   return useMemo(() => {
     // Need to make sure prices/basket/data exists!
-    if (Object.keys(priceMap).length === 0 || !data || !basket) return undefined
+    if (Object.keys(priceMap).length === 0 || !data || !basket?.length)
+      return undefined
 
     const [totalSupply, tradeDelay] = data
 
@@ -140,7 +141,7 @@ const useInitialBasket = ():
     )
 
     return [totalSupply, initialBasket, priceMap, tradeDelay]
-  }, [Object.keys(priceMap).length, !!data, !!basket])
+  }, [Object.keys(priceMap).length, !!data, basket?.length])
 }
 
 const InitialBasketUpdater = () => {

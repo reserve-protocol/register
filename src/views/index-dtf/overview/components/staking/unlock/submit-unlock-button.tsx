@@ -1,8 +1,8 @@
 import dtfIndexStakingVault from '@/abis/dtf-index-staking-vault'
 import TransactionButton from '@/components/old/button/TransactionButton'
 import useContractWrite from '@/hooks/useContractWrite'
-import { chainIdAtom, walletAtom } from '@/state/atoms'
-import { indexDTFAtom } from '@/state/dtf/atoms'
+import { walletAtom } from '@/state/atoms'
+import { portfolioSidebarOpenAtom } from '@/views/portfolio/atoms'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
 import { useEffect } from 'react'
@@ -11,22 +11,22 @@ import { useWaitForTransactionReceipt } from 'wagmi'
 import {
   stakingInputAtom,
   stakingSidebarOpenAtom,
-  underlyingBalanceAtom,
+  stTokenAtom,
+  unlockBalanceRawAtom,
   unlockDelayAtom,
 } from '../atoms'
-import { portfolioSidebarOpenAtom } from '@/views/portfolio/atoms'
 
 const SubmitUnlockButton = () => {
   const account = useAtomValue(walletAtom)
-  const stToken = useAtomValue(indexDTFAtom)!.stToken!
+  const stToken = useAtomValue(stTokenAtom)!
   const input = useAtomValue(stakingInputAtom)
-  const balance = useAtomValue(underlyingBalanceAtom)
+  const balance = useAtomValue(unlockBalanceRawAtom)
   const amountToUnlock = parseUnits(input, stToken.token.decimals)
   const unlockDelay = useAtomValue(unlockDelayAtom)
   const resetInput = useResetAtom(stakingInputAtom)
   const setPortfolioSidebarOpen = useSetAtom(portfolioSidebarOpenAtom)
   const setStakingSidebarOpen = useSetAtom(stakingSidebarOpenAtom)
-  const chainId = useAtomValue(chainIdAtom)
+  const chainId = stToken.chainId
 
   const readyToSubmit =
     !!account && !!balance && amountToUnlock > 0n && amountToUnlock <= balance
@@ -61,6 +61,7 @@ const SubmitUnlockButton = () => {
   return (
     <div>
       <TransactionButton
+        chain={chainId}
         disabled={receipt?.status === 'success' || !readyToSubmit || !isReady}
         gas={gas}
         loading={!receipt && (isLoading || !!hash || (hash && !receipt))}

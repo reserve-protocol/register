@@ -10,7 +10,6 @@ import { useAtom, useAtomValue } from 'jotai'
 import {
   AlignCenterVertical,
   ArrowLeftIcon,
-  Asterisk,
   Boxes,
   CheckIcon,
   ChevronDownIcon,

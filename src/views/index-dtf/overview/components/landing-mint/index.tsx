@@ -5,11 +5,53 @@ import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { indexDTFAtom, indexDTFBrandAtom } from '@/state/dtf/atoms'
 import { useAtomValue, useSetAtom } from 'jotai'
-import { ArrowLeftRight } from 'lucide-react'
+import { ArrowLeftRight, ArrowUpRight, BadgePercent, Coins } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import ZapMint from '../zap-mint'
 import { currentZapMintTabAtom } from '../zap-mint/atom'
 import { useTrackIndexDTFClick } from '@/views/index-dtf/hooks/useTrackIndexDTFPage'
+import { Link } from 'react-router-dom'
+import Uniswap from '@/components/icons/logos/Uniswap'
+import { useDTFCampaign } from '../../hooks/use-campaign'
+
+export const UniswapButton = React.forwardRef<HTMLAnchorElement>(
+  (props, ref) => {
+    return (
+      <Button asChild className="rounded-xl h-12 w-full">
+        <Link
+          ref={ref}
+          to="https://app.uniswap.org/swap?chain=base&inputCurrency=0x4200000000000000000000000000000000000006&outputCurrency=0xebcda5b80f62dd4dd2a96357b42bb6facbf30267"
+          target="_blank"
+        >
+          <div className="flex items-center gap-2">
+            <Uniswap />
+            Swap on Uniswap
+          </div>
+        </Link>
+      </Button>
+    )
+  }
+)
+UniswapButton.displayName = 'UniswapButton'
+
+const CampaignBadge = () => {
+  const indexDTF = useAtomValue(indexDTFAtom)
+  const campaignData = useDTFCampaign(indexDTF?.id ?? '')
+
+  if (!campaignData) return null
+
+  return (
+    <a
+      className="flex items-center gap-2 text-black font-semibold rounded-full text-sm bg-[#FFBE45] px-2 py-1"
+      target="_blank"
+      href={campaignData.url}
+    >
+      <Coins size={16} />
+      <span>{campaignData.apr.toFixed(2)}% APR</span>
+      <ArrowUpRight size={16} />
+    </a>
+  )
+}
 
 const MintBox = () => {
   const dtf = useAtomValue(indexDTFAtom)
@@ -30,13 +72,18 @@ const MintBox = () => {
             size={24}
           />
           <ArrowLeftRight className="w-4 h-4" />
-          <TokenLogo src={brand?.dtf?.icon || undefined} size="lg" />
+          <TokenLogo
+            className="mr-auto"
+            src={brand?.dtf?.icon || undefined}
+            size="lg"
+          />
+          <CampaignBadge />
         </div>
         <div className="flex flex-col gap-1">
-          <div className="text-xl font-bold text-primary">
+          <div className="text-xl font-semibold ">
             Buy/Sell {dtf?.token.symbol} onchain
           </div>
-          <div className="text-sm">
+          <div className="text-legend text-sm">
             Our Zap-swaps support common assets like ETH, USDC, USDT, and
             others, which makes DTFs easy to enter and exit.
           </div>
@@ -118,7 +165,7 @@ const CoverImage = () => {
   }, [brand])
 
   if (isLoading) {
-    return <Skeleton className="w-[450px] h-[450px] rounded-3xl" />
+    return <Skeleton className="w-[450px] h-[450px] rounded-4xl" />
   }
 
   if (brand?.dtf?.cover) {
@@ -126,7 +173,7 @@ const CoverImage = () => {
       <img
         width={450}
         height={450}
-        className="object-cover h-[450px] w-[450px] rounded-3xl"
+        className="object-cover h-[450px] w-[450px] rounded-4xl"
         alt="DTF meme"
         src={brand.dtf.cover}
       />
@@ -138,7 +185,7 @@ const CoverImage = () => {
 
 const LandingMint = (props: React.HTMLAttributes<HTMLDivElement>) => {
   return (
-    <div className="hidden xl:flex xl:flex-col xl:gap-1 relative" {...props}>
+    <div className="hidden xl:flex xl:flex-col xl:gap-2 relative" {...props}>
       <CoverImage />
       <div className="w-[450px] sticky top-0 rounded-4xl bg-muted p-1">
         <MintBox />

@@ -19,7 +19,7 @@ import { Token } from '@/types'
 import { formatPercentage, shortenAddress } from '@/utils'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { PaintBucket } from 'lucide-react'
+import { ArrowUpRight, PaintBucket } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { Address } from 'viem'
 import {
@@ -116,7 +116,8 @@ const AssetCellInfo = ({ asset }: { asset: IndexAssetShares }) => {
             target="_blank"
             className="text-sm text-legend hover:underline hover:text-primary"
           >
-            {shortenAddress(asset.token.address)}
+            {shortenAddress(asset.token.address)}{' '}
+            <ArrowUpRight size={14} className="inline" />
           </Link>
         </div>
 

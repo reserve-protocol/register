@@ -13,7 +13,7 @@ import {
 
 // For some reason, the getAllRewardTokens throws a type
 // error when using the abi directly from the contract
-const getAllRewardTokensAbi = [
+export const getAllRewardTokensAbi = [
   {
     type: 'function',
     name: 'getAllRewardTokens',

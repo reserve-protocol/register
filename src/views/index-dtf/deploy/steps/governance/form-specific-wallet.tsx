@@ -10,8 +10,18 @@ const GovernanceSpecificWallet = () => {
         placeholder="0x..."
       />
       <WarningBanner
-        title="Centralized governance restricts features"
-        description="Mint/redeem zaps as well as the ability to govern/trade will not be available in our interface."
+        title="Centralized governance restricts access to features"
+        description={
+          <ul>
+            <li>
+              Users will not be able to mint / redeem using zaps in the US
+            </li>
+            <li>
+              You will not be able to use the Reserve website to make changes to
+              the DTF
+            </li>
+          </ul>
+        }
       />
     </div>
   )

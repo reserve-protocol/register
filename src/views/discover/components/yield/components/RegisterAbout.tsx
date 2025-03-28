@@ -1,8 +1,7 @@
-import Reserve from '@/components/icons/Reserve'
+import XIcon from '@/components/icons/XIcon'
 import { Trans } from '@lingui/macro'
 import DiscordIcon from 'components/icons/DiscordIcon'
 import GithubIcon from 'components/icons/GithubIcon'
-import { XIcon } from 'lucide-react'
 import { Link as RouterLink } from 'react-router-dom'
 import { Divider } from 'theme-ui'
 import {
@@ -13,27 +12,19 @@ import {
 } from 'utils/constants'
 
 const SocialLinks = () => (
-  <div className="flex items-center mt-8 text-2xl">
-    <RouterLink
-      to={REPOSITORY_URL}
-      target="_blank"
-      className="cursor-pointer mr-5"
-    >
+  <div className="flex items-center gap-3 mt-8 text-2xl">
+    <RouterLink to={REPOSITORY_URL} target="_blank" className="cursor-pointer">
       <GithubIcon />
     </RouterLink>
-    <RouterLink
-      to={DISCORD_INVITE}
-      className="cursor-pointer mr-5"
-      target="_blank"
-    >
+    <RouterLink to={DISCORD_INVITE} className="cursor-pointer" target="_blank">
       <DiscordIcon />
     </RouterLink>
     <RouterLink
       to={RESERVE_X}
       target="_blank"
-      style={{ all: 'unset', cursor: 'pointer' }}
+      style={{ all: 'unset', cursor: 'pointer', marginLeft: '-2px' }}
     >
-      <XIcon height={32} width={32} fill="currentColor" />
+      <XIcon height={30} width={30} />
     </RouterLink>
   </div>
 )

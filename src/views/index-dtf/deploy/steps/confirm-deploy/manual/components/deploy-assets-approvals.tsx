@@ -10,7 +10,7 @@ import { INDEX_DEPLOYER_ADDRESS } from '@/utils/addresses'
 import { BIGINT_MAX } from '@/utils/constants'
 import { basketAtom } from '@/views/index-dtf/deploy/atoms'
 import { useAtomValue, useSetAtom } from 'jotai'
-import { CheckCircle2, Wallet } from 'lucide-react'
+import { CheckCircle2, TextCursorInput, Wallet } from 'lucide-react'
 import { useEffect } from 'react'
 import { Address, erc20Abi, formatUnits, parseUnits } from 'viem'
 import { useReadContract, useWriteContract } from 'wagmi'
@@ -48,8 +48,8 @@ const TokenBalance = ({
   }, [balance, required])
 
   return (
-    <div className="flex flex-col text-sm mr-2 ">
-      <div className="flex gap-1 justify-end items-center">
+    <div className="flex items-center gap-4 text-sm">
+      <div className="flex items-center gap-1">
         <Wallet size={16} />
         <span className="font-semibold">
           {formatCurrency(balance, 1, {
@@ -58,12 +58,14 @@ const TokenBalance = ({
           })}
         </span>
       </div>
-      <div>
-        <span className="text-legend">Required:</span>{' '}
+      <div className="flex items-center gap-1">
+        <TextCursorInput size={16} />
+        <span className="font-semibold">Required:</span>{' '}
         <span
           className={cn(
             'font-semibold',
-            balance >= required ? 'text-success' : 'text-destructive'
+            balance >= required ? 'text-success' : 'text-destructive',
+            required === 0 && 'text-inherit'
           )}
         >
           {formatCurrency(required, 2, {
@@ -136,6 +138,7 @@ const ApproveAsset = ({
         variant="outline-primary"
         className="rounded-full"
         onClick={revoke}
+        size="xs"
         disabled={isPendingRevoke}
       >
         <div className="flex items-center gap-1">
@@ -159,6 +162,7 @@ const ApproveAsset = ({
       variant="outline-primary"
       className="rounded-full "
       onClick={approve}
+      size="xs"
       disabled={isPending || !amount}
     >
       {isPending ? 'Approving...' : 'Approve'}
@@ -174,30 +178,34 @@ const DeployAssetsApproval = () => {
     <div className="flex flex-col mt-2 gap-2">
       <h4 className="font-bold my-2 ml-2">Required approvals</h4>
 
-      {basket.map((token, index) => (
+      {basket.map((token) => (
         <div
-          className={cn('flex items-center flex-wrap gap-2 px-2 border-t pt-2')}
+          className={cn('flex flex-col gap-2 px-2 border-t pt-2')}
           key={token.address}
         >
-          <TokenLogo symbol={token.symbol} src={token.logoURI} size="xl" />
-          <div className="flex flex-col mr-auto">
-            <div className="text-base font-bold">{token.name}</div>
-            <div className="flex items-center gap-1 text-sm text-muted-foreground">
-              <span>{token.symbol}</span>
-              <span>•</span>
-              <span>{shortenAddress(token.address)}</span>
+          <div className="flex items-center flex-wrap gap-2">
+            <TokenLogo symbol={token.symbol} src={token.logoURI} size="xl" />
+            <div className="flex flex-col mr-auto">
+              <div className="text-base font-bold">{token.name}</div>
+              <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                <span>{token.symbol}</span>
+                <span>•</span>
+                <span>{shortenAddress(token.address)}</span>
+              </div>
             </div>
           </div>
-          <TokenBalance
-            required={basketAmountMap[token.address]}
-            address={token.address}
-            decimals={token.decimals}
-          />
-          <ApproveAsset
-            address={token.address}
-            decimals={token.decimals}
-            amount={basketAmountMap[token.address]}
-          />
+          <div className="flex items-center justify-between gap-2 min-h-[32px]">
+            <TokenBalance
+              required={basketAmountMap[token.address]}
+              address={token.address}
+              decimals={token.decimals}
+            />
+            <ApproveAsset
+              address={token.address}
+              decimals={token.decimals}
+              amount={basketAmountMap[token.address]}
+            />
+          </div>
         </div>
       ))}
     </div>

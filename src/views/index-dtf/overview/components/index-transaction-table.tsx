@@ -17,7 +17,7 @@ import { useQuery } from '@tanstack/react-query'
 import { ColumnDef } from '@tanstack/react-table'
 import { request } from 'graphql-request'
 import { useAtomValue } from 'jotai'
-import { ArrowDownUp } from 'lucide-react'
+import { ArrowDownUp, ArrowUpRight } from 'lucide-react'
 import { Address, formatEther, zeroAddress } from 'viem'
 
 type Response = {
@@ -83,20 +83,27 @@ const columns: ColumnDef<Transaction>[] = [
     ),
     accessorKey: 'amount',
     cell: ({ row }) => {
-      return <DecimalDisplay value={row.original.amount} />
+      return (
+        <div>
+          ${formatCurrency(row.original.amountUSD)}{' '}
+          <span className="text-legend text-xs">
+            (<DecimalDisplay value={row.original.amount} />)
+          </span>
+        </div>
+      )
     },
   },
-  {
-    header: ({ column }) => (
-      <SorteableButton className="text-sm" column={column}>
-        USD
-      </SorteableButton>
-    ),
-    accessorKey: 'amountUSD',
-    cell: ({ row }) => {
-      return `$${formatCurrency(row.original.amountUSD)}`
-    },
-  },
+  // {
+  //   header: ({ column }) => (
+  //     <SorteableButton className="text-sm" column={column}>
+  //       USD
+  //     </SorteableButton>
+  //   ),
+  //   accessorKey: 'amountUSD',
+  //   cell: ({ row }) => {
+  //     return `$${formatCurrency(row.original.amountUSD)}`
+  //   },
+  // },
   {
     header: ({ column }) => (
       <SorteableButton className="text-sm" column={column}>
@@ -109,7 +116,7 @@ const columns: ColumnDef<Transaction>[] = [
     },
   },
   {
-    header: 'Hash',
+    header: () => <span className="hidden md:block">Explore</span>,
     accessorKey: 'hash',
     cell: ({ row }) => {
       return (
@@ -119,10 +126,15 @@ const columns: ColumnDef<Transaction>[] = [
             row.original.chain,
             ExplorerDataType.TRANSACTION
           )}
-          className="text-legend underline"
+          className="text-legend underline bg-muted rounded-full w-fit p-1 block md:p-0 md:bg-transparent"
           target="_blank"
         >
-          {shortenString(row.original.hash)}
+          <span className="hidden md:block">
+            {shortenString(row.original.hash)}
+          </span>
+          <span className="block md:hidden">
+            <ArrowUpRight size={14} />
+          </span>
         </a>
       )
     },
@@ -188,7 +200,7 @@ const IndexTransactionTable = () => {
         </div>
       </div>
       <div className="flex items-center gap-2 mb-4"></div>
-      <h2 className="text-2xl font-semibold mb-2">Transactions</h2>
+      <h2 className="text-xl font-semibold">Transactions</h2>
       <div className="flex flex-col gap-2 -mx-6 sm:-mx-4 overflow-x-auto max-w-[calc(100vw-10px)]">
         <TransactionTable />
       </div>

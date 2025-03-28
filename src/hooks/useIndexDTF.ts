@@ -183,6 +183,16 @@ const useIndexDTF = (address: string | undefined, chainId: number) => {
         feeRecipients: parseFeeRecipients(dtf.feeRecipients),
       }
 
+      if (data.ownerGovernance) {
+        data.ownerGovernance.proposalThreshold =
+          data.ownerGovernance.proposalThreshold * 100
+      }
+
+      if (data.tradingGovernance) {
+        data.tradingGovernance.proposalThreshold =
+          data.tradingGovernance.proposalThreshold * 100
+      }
+
       return data
     },
     enabled: !!address,

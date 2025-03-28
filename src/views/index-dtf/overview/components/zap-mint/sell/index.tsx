@@ -58,6 +58,7 @@ const Sell = () => {
 
   const { loadingAfterRefetch } = useLoadingAfterRefetch(data)
 
+  const priceFrom = data?.result?.amountInValue
   const priceTo = data?.result?.amountOutValue
   const valueTo = data?.result?.amountOut
   const showTxButton = Boolean(
@@ -102,7 +103,7 @@ const Sell = () => {
     <div className="flex flex-col gap-2 h-full">
       <Swap
         from={{
-          price: `$${formatCurrency(inputPrice)}`,
+          price: `$${formatCurrency(priceFrom ?? inputPrice)}`,
           address: indexDTF.id,
           symbol: indexDTF.token.symbol,
           balance: `${formatCurrency(Number(indxDTFParsedBalance))}`,

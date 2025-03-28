@@ -17,7 +17,11 @@ import {
 import { chainIdAtom, rTokenGovernanceAtom } from 'state/atoms'
 import { Box, Checkbox, Divider, Flex, Link, Text } from 'theme-ui'
 import { getProposalTitle, shortenAddress } from 'utils'
-import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
+import {
+  ETHERSCAN_NAMES,
+  ExplorerDataType,
+  getExplorerLink,
+} from 'utils/getExplorerLink'
 import { proposalDetailAtom } from '../atom'
 
 export const VOTE_TYPE = {
@@ -72,7 +76,8 @@ const VoteModal = (props: ModalProps) => {
             target="_blank"
             sx={{ fontSize: 1 }}
           >
-            <ExternalLink size={12} /> <Trans>View on etherscan</Trans>
+            <ExternalLink size={12} /> <Trans>View on</Trans>{' '}
+            {ETHERSCAN_NAMES[chainId]}
           </Link>
         </Flex>
       </Modal>

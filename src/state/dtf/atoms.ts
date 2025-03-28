@@ -3,6 +3,7 @@ import { AvailableChain, ChainId } from '@/utils/chains'
 import { atom } from 'jotai'
 import { Address } from 'viem'
 import { walletAtom } from '../atoms'
+import { UNIVERSAL_ASSETS, WORMHOLE_ASSETS } from '@/utils/constants'
 
 // TODO: placeholders
 export interface IToken extends Token {
@@ -128,5 +129,14 @@ export const isAuctionLauncherAtom = atom((get) => {
 
   return !!dtf?.auctionLaunchers.find(
     (launcher) => launcher.toLowerCase() === wallet?.toLowerCase()
+  )
+})
+
+export const hasBridgedAssetsAtom = atom((get) => {
+  const basket = get(indexDTFBasketAtom)
+
+  return basket?.some(
+    (token) =>
+      WORMHOLE_ASSETS.has(token.address) || UNIVERSAL_ASSETS.has(token.address)
   )
 })

@@ -75,7 +75,7 @@ const useIndexDTFPriceHistory = ({
         const numberSupply = +formatEther(supply)
 
         data.timeseries.push({
-          timestamp: Date.now(),
+          timestamp: Math.floor(Date.now() / 1_000),
           price: currentPrice,
           marketCap: currentPrice * numberSupply,
           totalSupply: numberSupply,

@@ -10,6 +10,9 @@ import { ColumnDef } from '@tanstack/react-table'
 import { Link, useNavigate } from 'react-router-dom'
 import { Line, LineChart, YAxis } from 'recharts'
 import { calculatePercentageChange } from '../utils'
+import { BasketHoverCard } from './basket-hover-card'
+
+export const LIMIT_ASSETS = 7
 
 const chartConfig = {
   desktop: {
@@ -48,7 +51,7 @@ const columns: ColumnDef<IndexDTFItem>[] = [
             />
           </div>
           <div className="break-words  max-w-[420px]">
-            <h4 className="font-semibold mb-[2px]">{row.original.name}</h4>
+            <h4 className="font-semibold ">{row.original.name}</h4>
             <span className="text-legend">${row.original.symbol}</span>
           </div>
         </Link>
@@ -59,22 +62,25 @@ const columns: ColumnDef<IndexDTFItem>[] = [
     header: () => <TableHeader>Backing</TableHeader>,
     accessorKey: 'basket',
     cell: ({ row }) => {
-      const LIMIT = 7
-
-      const head = row.original.basket.slice(0, LIMIT)
+      const head = row.original.basket.slice(0, LIMIT_ASSETS)
 
       // TODO(jg): Logos for basket assets
       return (
-        <div className="flex items-center gap-2 ">
-          <div>
-            <StackTokenLogo
-              tokens={head.map((r) => ({ ...r, chain: row.original.chainId }))}
-              overlap={2}
-              size={24}
-              reverseStack
-              outsource
-            />
-          </div>
+        <div className="flex items-center gap-2">
+          <BasketHoverCard indexDTF={row.original}>
+            <div>
+              <StackTokenLogo
+                tokens={head.map((r) => ({
+                  ...r,
+                  chain: row.original.chainId,
+                }))}
+                overlap={2}
+                size={24}
+                reverseStack
+                outsource
+              />
+            </div>
+          </BasketHoverCard>
         </div>
       )
     },
@@ -110,7 +116,7 @@ const columns: ColumnDef<IndexDTFItem>[] = [
           <div className="text-right">
             <span>{percentageChange}</span>
             <span className="block text-legend text-xs mt-0.5">
-              (${formatCurrency(row.original.price)})
+              (${formatCurrency(row.original.price, 5)})
             </span>
           </div>
           {performance.length > 0 && (
@@ -120,8 +126,8 @@ const columns: ColumnDef<IndexDTFItem>[] = [
                 <Line
                   type="monotone"
                   dataKey="value"
-                  stroke="#000"
-                  strokeWidth={2}
+                  stroke="currentColor"
+                  strokeWidth={1}
                   dot={false}
                   isAnimationActive={false}
                 />
@@ -147,7 +153,7 @@ const columns: ColumnDef<IndexDTFItem>[] = [
   // },
   {
     header: ({ column }) => (
-      <TableHeader className="text-right">
+      <TableHeader className="text-right -mr-4">
         <SorteableButton column={column}>Market Cap</SorteableButton>
       </TableHeader>
     ),
@@ -155,9 +161,7 @@ const columns: ColumnDef<IndexDTFItem>[] = [
     cell: ({ row }) => {
       return (
         <div className="flex items-center justify-end">
-          <div className="mr-6">
-            ${formatCurrency(row.original.marketCap, 0)}
-          </div>
+          <div>${formatCurrency(row.original.marketCap, 0)}</div>
         </div>
       )
     },

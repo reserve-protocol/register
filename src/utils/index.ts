@@ -186,14 +186,11 @@ export function formatCurrency(
   decimals = 2,
   options: Intl.NumberFormatOptions = {}
 ): string {
-  return cutDecimals(
-    Intl.NumberFormat('en-US', {
-      maximumFractionDigits: 9,
-      minimumFractionDigits: Math.min(2, decimals),
-      ...options,
-    }).format(value),
-    decimals
-  )
+  return Intl.NumberFormat('en-US', {
+    maximumFractionDigits: decimals,
+    minimumFractionDigits: Math.min(2, decimals),
+    ...options,
+  }).format(value)
 }
 
 export function formatTokenAmount(value: number) {

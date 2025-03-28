@@ -14,16 +14,12 @@ import {
 import { shortenAddress } from '@/utils'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { useAtomValue, useSetAtom } from 'jotai'
-import {
-  ArrowUpRight,
-  ImagePlus,
-  MousePointerClick,
-  ScrollText,
-} from 'lucide-react'
+import { ArrowUpRight, ImagePlus } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { useTrackIndexDTFClick } from '../../hooks/useTrackIndexDTFPage'
+import IndexRolesOverview from './index-roles-overview'
 import ZapMint from './zap-mint'
 import { currentZapMintTabAtom } from './zap-mint/atom'
-import { useTrackIndexDTFClick } from '../../hooks/useTrackIndexDTFPage'
 
 const TokenNameSkeleton = () => (
   <div className="flex flex-col gap-4">
@@ -41,15 +37,16 @@ const TokenAddresses = () => {
   }
 
   return (
-    <div className="flex items-center gap-2 ">
+    <div className="flex items-center gap-1.5 ">
       <ChainLogo chain={chainId} />
       <span>{shortenAddress(address)}</span>
-      <div className="p-1 bg-muted rounded-full">
+      <div className="p-1 bg-muted dark:bg-white/5 rounded-full ">
         <CopyValue value={address} />
       </div>
       <Link
         to={getExplorerLink(address, chainId, ExplorerDataType.TOKEN)}
         target="_blank"
+        className="p-1 bg-muted dark:bg-white/5 rounded-full"
       >
         <ArrowUpRight size={16} />
       </Link>
@@ -89,101 +86,6 @@ const ZapBuySellButtons = () => {
   )
 }
 
-const RolesOverview = () => {
-  const dtf = useAtomValue(indexDTFAtom)
-  const brandData = useAtomValue(indexDTFBrandAtom)
-  const chainId = useAtomValue(chainIdAtom)
-
-  return (
-    <div className="grid grid-cols-2 border-t px-2 sm:pt-2">
-      <div className="flex items-center sm:border-r gap-2 sm:p-2">
-        {brandData?.creator?.icon ? (
-          <TokenLogo src={brandData.creator.icon} size="xl" />
-        ) : (
-          <div className="hidden sm:block p-1.5 border border-foreground rounded-full">
-            <ScrollText size={16} />
-          </div>
-        )}
-
-        <div>
-          <span className="text-legend text-sm">Creator:</span>
-          {dtf?.deployer ? (
-            <div className="flex items-center gap-1">
-              <span className="font-bold">
-                {brandData?.creator?.name || shortenAddress(dtf.deployer)}
-              </span>
-              <Link
-                to={
-                  brandData?.creator?.link ||
-                  getExplorerLink(
-                    dtf.deployer,
-                    chainId,
-                    ExplorerDataType.ADDRESS
-                  )
-                }
-                target="_blank"
-                className="p-1 bg-muted rounded-full"
-              >
-                <ArrowUpRight size={12} />
-              </Link>
-            </div>
-          ) : (
-            <Skeleton className="w-30 h-5" />
-          )}
-        </div>
-      </div>
-      {brandData?.curator?.name ? (
-        <div className="flex items-center gap-2 p-2 pl-4">
-          <TokenLogo src={brandData.curator.icon || undefined} size="xl" />
-
-          <div>
-            <span className="text-legend text-sm">Curator:</span>
-            <Link
-              to={brandData.curator.link}
-              target="_blank"
-              className="flex items-center gap-1"
-            >
-              <span className="font-bold">{brandData.curator.name}</span>
-              <div className="rounded-full p-1 bg-muted">
-                <ArrowUpRight size={12} />
-              </div>
-            </Link>
-          </div>
-        </div>
-      ) : (
-        <div className="flex items-center gap-2 p-2 pl-4">
-          <div className="hidden sm:block p-1.5 border border-foreground rounded-full">
-            <MousePointerClick size={16} />
-          </div>
-          <div>
-            <span className="text-legend text-sm">Auction Launcher:</span>
-            {dtf?.auctionLaunchers.length ? (
-              <div className="flex items-center gap-1">
-                <span className="font-bold">
-                  {shortenAddress(dtf?.auctionLaunchers[0])}
-                </span>
-                <Link
-                  to={getExplorerLink(
-                    dtf.auctionLaunchers[0],
-                    chainId,
-                    ExplorerDataType.ADDRESS
-                  )}
-                  target="_blank"
-                  className="p-1 bg-muted rounded-full"
-                >
-                  <ArrowUpRight size={12} />
-                </Link>
-              </div>
-            ) : (
-              <Skeleton className="w-30 h-5" />
-            )}
-          </div>
-        </div>
-      )}
-    </div>
-  )
-}
-
 const IndexTokenOverview = () => {
   const dtf = useAtomValue(indexDTFAtom)
   const brand = useAtomValue(indexDTFBrandAtom)
@@ -219,13 +121,13 @@ const IndexTokenOverview = () => {
         </div>
         <TokenAddresses />
       </div>
-      <div className="p-2 sm:px-4 sm:pb-4 pt-0 relative max-w-96 sm:max-w-[620px] break-words">
+      <div className="p-2 pb-4 sm:px-4 pt-2 relative max-w-96 sm:max-w-[620px] break-words">
         {!dtf ? (
           <TokenNameSkeleton />
         ) : (
           <>
             <h4>${dtf.token.symbol}</h4>
-            <h1 className="mt-1 text-2xl md:text-3xl  font-medium w-full break-words">
+            <h1 className="mt-1 text-2xl md:text-3xl font-medium w-full break-words">
               {dtf.token.name}
             </h1>
           </>
@@ -233,7 +135,7 @@ const IndexTokenOverview = () => {
       </div>
       <ZapBuySellButtons />
 
-      <RolesOverview />
+      <IndexRolesOverview />
     </Card>
   )
 }

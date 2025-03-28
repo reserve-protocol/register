@@ -17,7 +17,11 @@ import { useState } from 'react'
 import { chainIdAtom } from 'state/atoms'
 import { Box, Checkbox, Divider, Flex, Link, Text } from 'theme-ui'
 import { getProposalTitle, shortenAddress } from 'utils'
-import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
+import {
+  ExplorerDataType,
+  getExplorerLink,
+  ETHERSCAN_NAMES,
+} from 'utils/getExplorerLink'
 import { proposalDetailAtom } from '../atom'
 
 export const VOTE_TYPE = {
@@ -72,7 +76,8 @@ const VoteModal = (props: ModalProps) => {
             target="_blank"
             className="text-sm flex items-center gap-1"
           >
-            <ExternalLink size={12} /> <Trans>View on etherscan</Trans>
+            <ExternalLink size={12} /> <Trans>View on</Trans>{' '}
+            {ETHERSCAN_NAMES[chainId]}
           </Link>
         </Flex>
       </Modal>

@@ -12,7 +12,7 @@ export type IndexDTFItem = {
   price: number
   fee: number
   marketCap: number
-  basket: { address: Address; symbol: string }[]
+  basket: { address: Address; symbol: string; name?: string; weight?: string }[]
   performance: Performance[]
   performancePercent: number
   chainId: number

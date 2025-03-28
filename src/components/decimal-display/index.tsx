@@ -20,8 +20,8 @@ export const useNumberFormat = (
 
     const absNum = Math.abs(num)
 
-    // Only use compact formatting if the number is >= 1,000,000 and compact is true
-    if (compact && absNum >= 1000000) {
+    // Use compact formatting if the number is >= 1,000 and compact is true
+    if (compact && absNum >= 1000) {
       const suffixNum = Math.min(4, Math.floor(Math.log10(absNum) / 3))
       const shortValue = absNum / Math.pow(1000, suffixNum)
       const suffix = suffixes[suffixNum]
@@ -73,6 +73,7 @@ interface DecimalDisplayProps {
   currency?: boolean
   compact?: boolean
   trimZeros?: boolean
+  className?: string
 }
 
 export const DecimalDisplay: React.FC<DecimalDisplayProps> = ({
@@ -81,6 +82,7 @@ export const DecimalDisplay: React.FC<DecimalDisplayProps> = ({
   currency = true,
   trimZeros = true,
   compact = false,
+  className,
 }) => {
   const formattedNumber = useNumberFormat(
     value,
@@ -90,7 +92,12 @@ export const DecimalDisplay: React.FC<DecimalDisplayProps> = ({
     trimZeros
   )
 
-  return <span dangerouslySetInnerHTML={{ __html: formattedNumber }} />
+  return (
+    <span
+      className={className}
+      dangerouslySetInnerHTML={{ __html: formattedNumber }}
+    />
+  )
 }
 
 export default DecimalDisplay

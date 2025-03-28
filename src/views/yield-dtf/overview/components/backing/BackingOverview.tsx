@@ -42,12 +42,12 @@ const BackingOverview = ({ current }: { current: string }) => {
   return (
     <Card
       variant="inner"
-      mr={3}
+      mr={1}
       p={[3, 4]}
       mt={[3, 3, 3, 0]}
       sx={{
         flexDirection: 'column',
-        width: ['100%', '100%', '100%', 256],
+        width: ['100%', '100%', '100%', 280],
         height: 'fit-content',
         flexShrink: '0',
         fontSize: [1, 2],

@@ -39,6 +39,6 @@ export const useAssetPrices = (tokens: string[], chain?: number) => {
   })
 }
 
-export const useAssetPrice = (token: string | undefined) => {
-  return useAssetPrices(token ? [token] : [])
+export const useAssetPrice = (token: string | undefined, chainId?: number) => {
+  return useAssetPrices(token ? [token] : [], chainId)
 }

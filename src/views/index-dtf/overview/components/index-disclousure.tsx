@@ -11,7 +11,7 @@ const IndexDisclousure = () => {
         </div>
       </div>
       <div className="flex items-center gap-2 mb-4"></div>
-      <h2 className="text-2xl font-semibold mb-2">Disclosures</h2>
+      <h2 className="text-xl font-semibold mb-2">Disclosures</h2>
       <div className="flex flex-col gap-2">
         <p className="text-legend">
           By using{' '}

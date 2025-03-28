@@ -13,7 +13,7 @@ const EarnHeader = () => (
       justifyContent: ['start', 'start', 'space-between'],
       gap: [4, 4, 0],
     }}
-    mb={[5, 7]}
+    mb="5"
   >
     <Box
       variant="layout.verticalAlign"
@@ -22,7 +22,7 @@ const EarnHeader = () => (
       <YieldIcon fontSize={60} />
       <Box>
         <Text mb={[0, 1]} sx={{ fontSize: [3, 4] }} variant="strong">
-          DTFs yield opportunities
+          DTF yield opportunities
         </Text>
         <Text variant="legend" sx={{ fontSize: [1, 2] }}>
           Yield opportunities for DTFs across the DeFi landscape.

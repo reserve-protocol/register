@@ -1,5 +1,5 @@
 import { formatPercentage } from '@/utils'
-import { Asterisk, Eclipse, TableColumnsSplit } from 'lucide-react'
+import { Eclipse, TableColumnsSplit } from 'lucide-react'
 import NextButton from '../../components/next-button'
 import ToggleGroupWithCustom from '../../components/toggle-group-with-custom'
 import RevenueDistributionSettings from './revenue-distribution-settings'
@@ -33,10 +33,14 @@ const FeeDistributionDescription = () => (
   </div>
 )
 
-const AnnualizedFeeWarningMessage = () => {
+const AnnualizedFeeWarningMessage = ({
+  fieldName,
+}: {
+  fieldName: 'folioFee' | 'mintFee'
+}) => {
   const { watch } = useFormContext()
-  const folioFee = watch('folioFee')
-  const diff = new Decimal(folioFee).minus(new Decimal(0.15)).toDisplayString()
+  const fee = watch(fieldName)
+  const diff = new Decimal(fee).minus(new Decimal(0.15)).toDisplayString()
 
   return (
     <span>
@@ -50,7 +54,10 @@ const AnnualizedFeeWarningMessage = () => {
 const RevenueDistribution = () => {
   const { watch } = useFormContext()
   const folioFee = watch('folioFee')
-  const showWarning = Number(folioFee) >= 0.15 && Number(folioFee) <= 0.3
+  const mintFee = watch('mintFee')
+  const showWarningFolioFee =
+    Number(folioFee) >= 0.15 && Number(folioFee) <= 0.3
+  const showWarningMintFee = Number(mintFee) >= 0.15 && Number(mintFee) <= 0.3
 
   const toggleForms = [
     {
@@ -62,7 +69,9 @@ const RevenueDistribution = () => {
       fieldName: 'folioFee',
       customLabel: '%',
       customPlaceholder: '0.00',
-      warningMessage: showWarning ? <AnnualizedFeeWarningMessage /> : null,
+      warningMessage: showWarningFolioFee ? (
+        <AnnualizedFeeWarningMessage fieldName="folioFee" />
+      ) : null,
     },
 
     {
@@ -74,6 +83,9 @@ const RevenueDistribution = () => {
       fieldName: 'mintFee',
       customLabel: '%',
       customPlaceholder: '0.00',
+      warningMessage: showWarningMintFee ? (
+        <AnnualizedFeeWarningMessage fieldName="mintFee" />
+      ) : null,
     },
   ]
 

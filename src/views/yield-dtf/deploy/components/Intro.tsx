@@ -16,7 +16,7 @@ const Intro = (props: BoxProps) => (
       <DeployIntroIcon />
     </Box>
     <Text variant="sectionTitle" sx={{ fontWeight: 600 }} mb={2} mt={7}>
-      <Trans>Deploy an RToken</Trans>
+      <Trans>Create a new Yield DTF</Trans>
     </Text>
     <Text as="p" variant="legend" pr={4} sx={{ maxWidth: '580px' }}>
       <Trans>

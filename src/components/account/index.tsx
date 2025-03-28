@@ -1,11 +1,12 @@
 import Button from '@/components/old/button'
 import { MouseoverTooltipContent } from '@/components/old/tooltip'
+import Staking from '@/views/index-dtf/overview/components/staking'
 import PortfolioSidebar from '@/views/portfolio/sidebar'
 import { Trans } from '@lingui/macro'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import ChainLogo from 'components/icons/ChainLogo'
 import { useAtomValue } from 'jotai'
-import { AlertCircle, Menu, Power } from 'lucide-react'
+import { AlertCircle, Menu, Wallet, Power } from 'lucide-react'
 import { ReactNode } from 'react'
 import { chainIdAtom, selectedRTokenAtom } from 'state/atoms'
 import { Box, Card, Flex, Text } from 'theme-ui'
@@ -85,8 +86,15 @@ const Account = () => {
                   <Button
                     variant="accentAction"
                     onClick={openConnectModal}
-                    px={2}
+                    px={'14px'}
                     py={1}
+                    sx={{
+                      borderRadius: '40px',
+                      fontWeight: 400,
+                      '&:hover': {
+                        fontWeight: 400,
+                      },
+                    }}
                   >
                     <Box
                       sx={{ display: ['flex', 'none'] }}
@@ -95,7 +103,7 @@ const Account = () => {
                     >
                       <Power size={16} />
                     </Box>
-                    <Text sx={{ display: ['none', 'block'], fontSize: 1 }}>
+                    <Text sx={{ display: ['none', 'block'], fontSize: 2 }}>
                       <Trans>Connect</Trans>
                     </Text>
                   </Button>
@@ -113,27 +121,39 @@ const Account = () => {
                       variant="layout.verticalAlign"
                       sx={{
                         justifyContent: 'center',
-                        height: '38px',
                         cursor: 'pointer',
                         fontSize: '16px',
                       }}
-                      p="2"
+
                       // onClick={() => setVisible(true)}
                     >
-                      {!invalidChain ? (
-                        <ChainLogo chain={chain.id} />
-                      ) : (
-                        <AlertCircle fill="#FF0000" color="#fff" />
-                      )}
-                      <Text
-                        sx={{ display: ['none', 'inherit', 'inherit'] }}
-                        ml={2}
-                      >
-                        {account.displayName}
-                      </Text>
-                      <Menu className="ml-2" size={16} />
+                      <div className="flex items-center relative">
+                        <div className="flex items-center absolute lg:relative -bottom-1 -right-1 lg:bottom-0 lg:right-0">
+                          {!invalidChain ? (
+                            <ChainLogo
+                              chain={chain.id}
+                              className="w-3 h-3 lg:w-4 lg:h-4"
+                            />
+                          ) : (
+                            <AlertCircle
+                              fill="#FF0000"
+                              color="#fff"
+                              className="w-3 h-3 lg:w-4 lg:h-4"
+                            />
+                          )}
+                        </div>
+
+                        <span className="hidden lg:inline ml-2">
+                          {account.displayName}
+                        </span>
+
+                        <div className="lg:ml-3 p-2 border border-border rounded-xl">
+                          <Wallet size={16} />
+                        </div>
+                      </div>
                     </Box>
                   </PortfolioSidebar>
+                  <Staking />
                 </ErrorWrapper>
               )
             })()}
