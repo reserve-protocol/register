@@ -1,127 +1,118 @@
 import { Button } from '@/components/ui/button'
 import { ArrowLeftIcon, ArrowUpRight, Coins, Trash } from 'lucide-react'
-
 import TokenLogo from '@/components/token-logo'
 import { Input } from '@/components/ui/input'
+import useDebounce from '@/hooks/useDebounce'
 import { chainIdAtom } from '@/state/atoms'
+import { Token } from '@/types'
 import { shortenAddress } from '@/utils'
 import { ROUTES } from '@/utils/constants'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
-import { useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { useEffect, useMemo } from 'react'
+import { useAtom, useAtomValue } from 'jotai'
+import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { erc20Abi, isAddress } from 'viem'
 import { useReadContracts } from 'wagmi'
 import {
-  isProposalValidAtom,
-  newRewardTokenAtom,
-  proposedRewardTokensAtom,
-  tokenValidationStatusAtom,
+  addedRewardTokensAtom,
+  currentRewardTokensAtom,
+  removedRewardTokensAtom,
+  rewardTokenAddressesAtom,
 } from '../atoms'
 
-// Utility function to normalize addresses for consistent comparison
-const normalizeAddress = (address: string): string =>
-  isAddress(address) ? address.toLowerCase() : ''
-
-// Utility function to update token validation status
-const updateTokenValidationStatus = (
-  address: string,
-  isValid: boolean,
-  setTokenValidationStatus: (
-    updater: (prev: Record<string, boolean>) => Record<string, boolean>
-  ) => void
-): void => {
-  if (!isAddress(address)) return
-
-  const addressLower = normalizeAddress(address)
-  setTokenValidationStatus((prev) => ({
-    ...prev,
-    [addressLower]: isValid,
-  }))
-}
-
-// Utility function to clean up token validation status
-const removeTokenValidationStatus = (
-  address: string,
-  setTokenValidationStatus: (
-    updater: (prev: Record<string, boolean>) => Record<string, boolean>
-  ) => void
-): void => {
-  if (!isAddress(address)) return
-
-  const addressLower = normalizeAddress(address)
-  setTokenValidationStatus((prev) => {
-    const newStatus = { ...prev }
-    delete newStatus[addressLower]
-    return newStatus
-  })
-}
-
-const NewRewardToken = ({
-  address,
-  id,
-  onRemove,
-  onChange,
-  existingTokens,
+// TODO: Should use atom family for this one
+const TokenValidationMessage = ({
+  value,
+  isTokenAlreadyExists,
+  isError,
+  tokenData,
 }: {
-  address: string
-  id: string
-  onRemove: (id: string) => void
-  onChange: (id: string, value: string) => void
-  existingTokens: { address: string; id: string }[]
+  value: string
+  isTokenAlreadyExists: boolean
+  isError: boolean
+  tokenData: [string, string] | undefined
 }) => {
-  const setTokenValidationStatus = useSetAtom(tokenValidationStatusAtom)
+  if (!isAddress(value)) return null
+
+  if (isTokenAlreadyExists) {
+    return (
+      <span className="text-destructive">Token already exists in the list</span>
+    )
+  }
+
+  if (isError) {
+    return <span className="text-destructive">Invalid token address</span>
+  }
+
+  if (!tokenData) {
+    return <span className="text-muted-foreground">Loading token data...</span>
+  }
+
+  return (
+    <span className="text-primary">
+      {tokenData[1] ? `${tokenData[1]} (${tokenData[0]})` : 'Loading...'}
+    </span>
+  )
+}
+
+const NewRewardToken = ({ id }: { id: string }) => {
+  const [value, setValue] = useState('')
+  const debouncedValue = useDebounce(value, 500)
+  const [addedRewardTokens, setAddedRewardTokens] = useAtom(
+    addedRewardTokensAtom
+  )
+  const currentRewardTokenAddresses = useAtomValue(rewardTokenAddressesAtom)
   const { data: tokenData, isError } = useReadContracts({
-    contracts: isAddress(address)
+    contracts: isAddress(debouncedValue)
       ? [
           {
-            address: address as `0x${string}`,
+            address: debouncedValue as `0x${string}`,
             abi: erc20Abi,
             functionName: 'symbol',
           },
           {
-            address: address as `0x${string}`,
+            address: debouncedValue as `0x${string}`,
             abi: erc20Abi,
             functionName: 'name',
           },
         ]
       : undefined,
     allowFailure: false,
-    query: { enabled: isAddress(address) },
+    query: { enabled: isAddress(debouncedValue) },
   })
 
-  const isTokenAlreadyExists =
-    isAddress(address) &&
-    existingTokens?.some(
-      (token) =>
-        normalizeAddress(token.address) === normalizeAddress(address) &&
-        token.id !== id // Only show error if another token has the same address
+  const isTokenAlreadyExists = useMemo(() => {
+    if (!value) return false
+    const lowerCaseValue = value.toLowerCase()
+    return (
+      currentRewardTokenAddresses.filter(
+        (address) => address === lowerCaseValue
+      ).length > 1
     )
+  }, [currentRewardTokenAddresses, value])
 
-  // Update validation status whenever we get new results from contract calls
   useEffect(() => {
-    if (isAddress(address)) {
-      const isValid =
-        !isError &&
-        Boolean(tokenData && tokenData[0] && tokenData[1]) &&
-        !isTokenAlreadyExists
-
-      updateTokenValidationStatus(address, isValid, setTokenValidationStatus)
-    }
-  }, [
-    address,
-    tokenData,
-    isError,
-    setTokenValidationStatus,
-    isTokenAlreadyExists,
-  ])
+    setAddedRewardTokens((prev) => ({
+      ...prev,
+      [id]: tokenData?.[0]
+        ? {
+            address: value as `0x${string}`,
+            symbol: tokenData[0],
+            name: tokenData[1],
+            decimals: 18,
+          }
+        : undefined,
+    }))
+  }, [tokenData, setAddedRewardTokens])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onChange(id, e.target.value)
+    setValue(e.target.value)
   }
 
   const handleRemove = () => {
-    onRemove(id)
+    const updatedTokens = { ...addedRewardTokens }
+    delete updatedTokens[id]
+    setAddedRewardTokens(updatedTokens)
   }
 
   return (
@@ -129,7 +120,7 @@ const NewRewardToken = ({
       <div className="flex items-center gap-2">
         <Input
           placeholder="Token address"
-          value={address}
+          value={value}
           onChange={handleChange}
           className="flex-1"
         />
@@ -143,21 +134,14 @@ const NewRewardToken = ({
           <Trash size={16} />
         </Button>
       </div>
-      {isAddress(address) && (
+      {isAddress(value) && (
         <div className="text-xs ml-2">
-          {isTokenAlreadyExists ? (
-            <span className="text-destructive">
-              Token already exists in the list
-            </span>
-          ) : isError ? (
-            <span className="text-destructive">Invalid token address</span>
-          ) : !tokenData ? (
-            <span className="text-muted-foreground">Loading token data...</span>
-          ) : (
-            <span className="text-primary">
-              {tokenData[1]} (${tokenData[0]})
-            </span>
-          )}
+          <TokenValidationMessage
+            value={value}
+            isTokenAlreadyExists={isTokenAlreadyExists}
+            isError={isError}
+            tokenData={tokenData}
+          />
         </div>
       )}
     </div>
@@ -165,16 +149,14 @@ const NewRewardToken = ({
 }
 
 // Existing token with details from the vault
-const ExistingRewardToken = ({
-  token,
-  chainId,
-  onRemove,
-}: {
-  token: { address: string; name: string; symbol: string }
-  chainId: number
-  onRemove: (address: string) => void
-}) => {
-  const handleRemove = () => onRemove(token.address)
+const ExistingRewardToken = ({ token }: { token: Token }) => {
+  const chainId = useAtomValue(chainIdAtom)
+  const [removedRewardTokens, setRemovedRewardTokens] = useAtom(
+    removedRewardTokensAtom
+  )
+
+  const handleRemove = () =>
+    setRemovedRewardTokens([...removedRewardTokens, token])
 
   return (
     <div className="flex items-center gap-2">
@@ -208,92 +190,30 @@ const ExistingRewardToken = ({
 }
 
 const VaultRewardTokens = () => {
-  const chainId = useAtomValue(chainIdAtom)
-  const [rewardTokens, setRewardTokens] = useAtom(proposedRewardTokensAtom)
-  const [newRewardTokens, setNewRewardTokens] = useAtom(newRewardTokenAtom)
-  const [tokenValidationStatus, setTokenValidationStatus] = useAtom(
-    tokenValidationStatusAtom
+  const currentRewardTokens = useAtomValue(currentRewardTokensAtom)
+  const [addedRewardTokens, setAddedRewardTokens] = useAtom(
+    addedRewardTokensAtom
   )
-  const isProposalValid = useAtomValue(isProposalValidAtom)
-
-  const existingTokens = useMemo(() => {
-    // Create array of objects with address and id
-    const existingAddresses =
-      rewardTokens?.map((token) => ({
-        address: token.address,
-        id: token.address, // Use address as id for existing tokens
-      })) || []
-
-    const newTokensWithId = newRewardTokens
-      .filter((token) => isAddress(token.address))
-      .map((token) => ({
-        address: token.address,
-        id: token.id,
-      }))
-
-    return [...existingAddresses, ...newTokensWithId]
-  }, [rewardTokens, newRewardTokens])
 
   const handleAddRewardToken = () => {
     const newId = `new-token-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`
-    setNewRewardTokens([...newRewardTokens, { id: newId, address: '' }])
+    setAddedRewardTokens({
+      ...addedRewardTokens,
+      [newId]: undefined,
+    })
   }
 
-  const handleRemoveRewardToken = (id: string) => {
-    const tokenToRemove = newRewardTokens.find((token) => token.id === id)
-    const updatedTokens = newRewardTokens.filter((token) => token.id !== id)
-    setNewRewardTokens(updatedTokens)
-
-    // Clean up validation status if the token had a valid address
-    if (tokenToRemove && isAddress(tokenToRemove.address)) {
-      removeTokenValidationStatus(
-        tokenToRemove.address,
-        setTokenValidationStatus
-      )
-    }
-  }
-
-  const handleChangeRewardToken = (id: string, value: string) => {
-    const updatedTokens = newRewardTokens.map((token) =>
-      token.id === id ? { ...token, address: value } : token
-    )
-    setNewRewardTokens(updatedTokens)
-  }
-
-  const handleRemoveExistingToken = (addressToRemove: string) => {
-    if (!rewardTokens) return
-    const updatedTokens = rewardTokens.filter(
-      (token) => token.address !== addressToRemove
-    )
-    setRewardTokens(updatedTokens)
-
-    // Clean up validation status
-    removeTokenValidationStatus(addressToRemove, setTokenValidationStatus)
-  }
-
-  if (!rewardTokens)
+  if (!currentRewardTokens)
     return <div className="mt-6 text-center">Loading reward tokens...</div>
 
   return (
     <div className="flex flex-col gap-2 mt-6">
-      {rewardTokens.map((token) => (
-        <ExistingRewardToken
-          key={token.address}
-          token={token}
-          chainId={chainId}
-          onRemove={handleRemoveExistingToken}
-        />
+      {currentRewardTokens.map((token) => (
+        <ExistingRewardToken key={token.address} token={token} />
       ))}
 
-      {newRewardTokens.map((token) => (
-        <NewRewardToken
-          key={token.id}
-          id={token.id}
-          address={token.address}
-          onRemove={handleRemoveRewardToken}
-          onChange={handleChangeRewardToken}
-          existingTokens={existingTokens}
-        />
+      {Object.keys(addedRewardTokens).map((id) => (
+        <NewRewardToken key={id} id={id} />
       ))}
 
       <Button
@@ -309,42 +229,38 @@ const VaultRewardTokens = () => {
   )
 }
 
-const VaultProposalForm = () => {
-  const isProposalValid = useAtomValue(isProposalValidAtom)
-
-  return (
-    <div className="w-full bg-secondary rounded-4xl pb-0.5 h-fit">
-      <div className="p-4 pb-3 flex items-center gap-2">
-        <Link
-          to={`../${ROUTES.GOVERNANCE}/${ROUTES.GOVERNANCE_PROPOSE}`}
-          className="sm:ml-3"
-        >
-          <Button variant="outline" size="icon-rounded">
-            <ArrowLeftIcon size={24} strokeWidth={1.5} />
-          </Button>
-        </Link>
-        <h1 className="font-bold text-xl">Vault change proposal</h1>
-      </div>
-      <div className="rounded-3xl bg-card m-1 border-none">
-        <div className="p-4 sm:p-6 pb-3">
-          <div className="rounded-full w-fit flex-shrink-0 p-2 bg-primary/10 text-primary">
-            <Coins size={16} />
-          </div>
-          <h2 className="text-xl sm:text-2xl font-bold text-primary mt-6 mb-2">
-            Reward whitelist
-          </h2>
-          <p>
-            Enter the updated weights for the tokens in the basket. Remember,
-            the weights represent the proportion of each token relative to the
-            total USD value of basket at the time of the proposal. We will
-            calculate the required auctions needed to adopt the new basket if
-            the proposal passes governance.
-          </p>
-          <VaultRewardTokens />
+const VaultProposalForm = () => (
+  <div className="w-full bg-secondary rounded-4xl pb-0.5 h-fit">
+    <div className="p-4 pb-3 flex items-center gap-2">
+      <Link
+        to={`../${ROUTES.GOVERNANCE}/${ROUTES.GOVERNANCE_PROPOSE}`}
+        className="sm:ml-3"
+      >
+        <Button variant="outline" size="icon-rounded">
+          <ArrowLeftIcon size={24} strokeWidth={1.5} />
+        </Button>
+      </Link>
+      <h1 className="font-bold text-xl">Vault change proposal</h1>
+    </div>
+    <div className="rounded-3xl bg-card m-1 border-none">
+      <div className="p-4 sm:p-6 pb-3">
+        <div className="rounded-full w-fit flex-shrink-0 p-2 bg-primary/10 text-primary">
+          <Coins size={16} />
         </div>
+        <h2 className="text-xl sm:text-2xl font-bold text-primary mt-6 mb-2">
+          Reward whitelist
+        </h2>
+        <p>
+          Enter the updated weights for the tokens in the basket. Remember, the
+          weights represent the proportion of each token relative to the total
+          USD value of basket at the time of the proposal. We will calculate the
+          required auctions needed to adopt the new basket if the proposal
+          passes governance.
+        </p>
+        <VaultRewardTokens />
       </div>
     </div>
-  )
-}
+  </div>
+)
 
 export default VaultProposalForm

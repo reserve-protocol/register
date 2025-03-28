@@ -20,12 +20,6 @@ const isProposalReady = atom((get) => {
   return wallet && description && calldatas?.length && dtf
 })
 
-const govAddressAtom = atom((get) => {
-  const dtfData = get(indexDTFAtom)
-
-  return dtfData?.stToken?.governance?.id
-})
-
 const SubmitProposalButton = () => {
   const navigate = useNavigate()
   const chainId = useAtomValue(chainIdAtom)
