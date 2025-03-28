@@ -4,6 +4,8 @@ import { indexDTFIconsAtom } from '@/views/portfolio/atoms'
 import { useAtom, useAtomValue } from 'jotai'
 import * as React from 'react'
 import { routeCacheAtom } from './atoms'
+import { resolveIpfsGateway } from '@/lib/ipfs-load'
+import { tryLoadImage } from '@/lib/image'
 
 type Sizes = 'sm' | 'md' | 'lg' | 'xl'
 
@@ -41,27 +43,6 @@ const TokenLogo = React.forwardRef<HTMLImageElement, Props>((props, ref) => {
   const [currentSrc, setCurrentSrc] = React.useState('')
   const [isWrapped, setIsWrapped] = React.useState(false)
 
-  const tryLoadImage = async (url: string): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      const img = new Image()
-      img.src = url
-
-      const timeoutId = setTimeout(() => {
-        reject(new Error('Image load timeout'))
-      }, 5000)
-
-      img.onload = () => {
-        clearTimeout(timeoutId)
-        resolve(url)
-      }
-
-      img.onerror = () => {
-        clearTimeout(timeoutId)
-        reject() // Remove error message to avoid console logging
-      }
-    })
-  }
-
   const cacheUrl = (url: string) => {
     if (address && chain) {
       setRouteCache((prev) => ({
@@ -84,7 +65,7 @@ const TokenLogo = React.forwardRef<HTMLImageElement, Props>((props, ref) => {
 
       // If we have a direct src, try to use it first
       if (propsSrc) {
-        const url = await tryLoadImage(propsSrc)
+        const url = await tryLoadImage(resolveIpfsGateway(propsSrc))
         cacheUrl(url)
         setCurrentSrc(url)
         return
@@ -107,7 +88,7 @@ const TokenLogo = React.forwardRef<HTMLImageElement, Props>((props, ref) => {
       const foundIndexDTFIcon =
         address && chain && indexDTFIcons[chain]?.[address.toLowerCase()]
       if (foundIndexDTFIcon) {
-        const imgUrl = await tryLoadImage(foundIndexDTFIcon)
+        const imgUrl = await tryLoadImage(resolveIpfsGateway(foundIndexDTFIcon))
         cacheUrl(imgUrl)
         setCurrentSrc(imgUrl)
         return

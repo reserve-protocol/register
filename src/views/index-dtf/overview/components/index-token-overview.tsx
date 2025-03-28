@@ -102,6 +102,8 @@ const IndexTokenOverview = () => {
             <Skeleton className="h-8 w-8 rounded-full" />
           ) : (
             <TokenLogo
+              address={dtf?.id}
+              chain={dtf?.chainId}
               src={brand?.dtf?.icon || undefined}
               alt={dtf?.token.symbol ?? 'dtf token logo'}
               size="xl"

@@ -17,7 +17,12 @@ const DTFMaxAmount = () => {
   return (
     <div className="flex flex-col gap-2">
       <div className="flex items-center justify-end gap-2">
-        <TokenLogo src={brand?.dtf?.icon || undefined} size="xl" />
+        <TokenLogo
+          address={indexDTF?.id}
+          chain={indexDTF?.chainId}
+          src={brand?.dtf?.icon || undefined}
+          size="xl"
+        />
         <h2 className="text-2xl max-w-52 break-words font-bold">
           {indexDTF?.token.symbol ?? 'DTF'}
         </h2>

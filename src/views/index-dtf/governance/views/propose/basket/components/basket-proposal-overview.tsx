@@ -15,7 +15,12 @@ const Header = () => {
 
   return (
     <div className="flex items-center p-6 gap-2 bg-card rounded-t-3xl">
-      <TokenLogo size="lg" src={brand?.dtf?.icon || undefined} />
+      <TokenLogo
+        size="lg"
+        address={dtf?.id}
+        chain={dtf?.chainId}
+        src={brand?.dtf?.icon || undefined}
+      />
       <h3 className="font-bold mr-auto">${dtf?.token.symbol}</h3>
       <Link to={`../${ROUTES.GOVERNANCE}`}>
         <Button
