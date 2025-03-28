@@ -73,9 +73,18 @@ const useProposalDetailStats = () => {
     useMemo(() => {
       const _quorumNeeded = Number(formatEther(quorum ?? 0n))
 
-      if (!proposal || !_quorumNeeded) return [0, 0, 0, false]
+      if (!proposal) return [0, 0, 0, false]
 
       const _currentQuorum = +forVotes + +abstainVotes
+
+      if (!_quorumNeeded)
+        return [
+          _currentQuorum > _quorumNeeded ? 1 : 0,
+          _currentQuorum,
+          _quorumNeeded,
+          _currentQuorum > _quorumNeeded,
+        ]
+
       const _quorumWeight = _currentQuorum / _quorumNeeded
       const _quorumReached = _quorumWeight > 1
 
