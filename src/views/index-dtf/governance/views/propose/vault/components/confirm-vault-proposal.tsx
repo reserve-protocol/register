@@ -2,6 +2,7 @@ import { useAtomValue, useSetAtom } from 'jotai'
 import { proposalDescriptionAtom, vaultProposalCalldatasAtom } from '../atoms'
 import ProposalDescriptionForm from '@/components/governance/proposal-description-form'
 import { useEffect } from 'react'
+import VaultProposalPreview from './vault-proposal-preview'
 
 const ProposalDescription = () => {
   const setDescription = useSetAtom(proposalDescriptionAtom)
@@ -18,9 +19,7 @@ const ProposalDescription = () => {
 const ProposalPreview = () => {
   const calldatas = useAtomValue(vaultProposalCalldatasAtom)
 
-  console.log('calldatas', calldatas)
-
-  return <div>preview!!!</div>
+  return <VaultProposalPreview calldatas={calldatas} />
 }
 
 const ConfirmVaultProposal = () => {
