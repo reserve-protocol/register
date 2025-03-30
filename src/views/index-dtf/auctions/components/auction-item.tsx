@@ -483,9 +483,10 @@ const TradePreview = ({ trade }: { trade: AssetTrade }) => {
 const AuctionContext = ({ trade }: { trade: AssetTrade }) => {
   const isAuctionLauncher = useAtomValue(isAuctionLauncherAtom)
   // Auction launcher state!
-  if (trade.state === TRADE_STATE.PENDING && isAuctionLauncher) {
-    return <ProposedTradeVolatility tradeId={trade.id} />
-  }
+  // TODO: Currently no setting available
+  // if (trade.state === TRADE_STATE.PENDING && isAuctionLauncher) {
+  //   return <ProposedTradeVolatility tradeId={trade.id} />
+  // }
 
   return null
 }

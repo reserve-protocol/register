@@ -95,9 +95,9 @@ export const VOLATILITY_OPTIONS = {
 }
 
 export const VOLATILITY_VALUES = {
-  [VOLATILITY_OPTIONS.LOW]: 0.01,
-  [VOLATILITY_OPTIONS.MEDIUM]: 0.05,
-  [VOLATILITY_OPTIONS.HIGH]: 0.1,
+  [VOLATILITY_OPTIONS.LOW]: 0.05,
+  [VOLATILITY_OPTIONS.MEDIUM]: 0.1,
+  [VOLATILITY_OPTIONS.HIGH]: 0.2,
 }
 
 // TODO: Expand this? can know if trades expired or are permissionless or are all run or if there is one active etc
