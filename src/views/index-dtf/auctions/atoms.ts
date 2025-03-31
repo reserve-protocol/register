@@ -23,33 +23,24 @@ export const TRADE_STATE = {
 export function getTradeState(trade: AssetTrade) {
   const currentTime = getCurrentTime()
 
-  // Lets start with the completed state!
-  if (trade.bids.length > 0 && currentTime > trade.end) {
-    if (trade.availableRuns > 1) {
-      return TRADE_STATE.AVAILABLE
-    }
-
-    return TRADE_STATE.COMPLETED
-  }
-
-  // Trade has launched, if its not closed then is still running or expired
-  if (trade.start && trade.end) {
-    if (currentTime < trade.end) {
-      return TRADE_STATE.RUNNING
-    }
-
-    if (trade.availableRuns > 1) {
-      return TRADE_STATE.AVAILABLE
-    }
-
-    return TRADE_STATE.EXPIRED
-  }
-
   if (currentTime >= trade.launchTimeout) {
+    if (trade.bids.length > 0) {
+      return TRADE_STATE.COMPLETED
+    }
+
     return TRADE_STATE.EXPIRED
   }
 
-  if (currentTime >= trade.availableAt) {
+  if (currentTime >= trade.start && currentTime < trade.end) {
+    return TRADE_STATE.RUNNING
+  }
+
+  if (
+    currentTime >= trade.end &&
+    trade.availableRuns > 1 &&
+    trade.boughtAmount < trade.buyLimitSpot &&
+    currentTime >= trade.availableAt
+  ) {
     return TRADE_STATE.AVAILABLE
   }
 
