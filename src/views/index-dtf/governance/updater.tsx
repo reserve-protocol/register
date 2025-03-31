@@ -18,6 +18,10 @@ type Response = {
     proposals: PartialProposal[]
     proposalCount: number
   }
+  vaultGovernance?: {
+    proposals: PartialProposal[]
+    proposalCount: number
+  }
   stakingToken?: {
     totalDelegates: number
     token: {
@@ -36,6 +40,7 @@ const query = gql`
   query getGovernanceStats(
     $ownerGovernance: String!
     $tradingGovernance: String!
+    $vaultGovernance: String!
     $stToken: String!
   ) {
     ownerGovernance: governance(id: $ownerGovernance) {
@@ -61,6 +66,28 @@ const query = gql`
       proposalCount
     }
     tradingGovernance: governance(id: $tradingGovernance) {
+      proposals {
+        id
+        description
+        creationTime
+        state
+        forWeightedVotes
+        abstainWeightedVotes
+        againstWeightedVotes
+        executionETA
+        executionTime
+        quorumVotes
+        voteStart
+        voteEnd
+        executionBlock
+        creationBlock
+        proposer {
+          address
+        }
+      }
+      proposalCount
+    }
+    vaultGovernance: governance(id: $vaultGovernance) {
       proposals {
         id
         description
@@ -118,6 +145,7 @@ const Updater = () => {
         {
           ownerGovernance: dtf?.ownerGovernance?.id ?? '',
           tradingGovernance: dtf?.tradingGovernance?.id ?? '',
+          vaultGovernance: dtf?.stToken?.governance?.id ?? '',
           stToken: dtf?.stToken?.id ?? '',
         }
       )
@@ -126,10 +154,12 @@ const Updater = () => {
         proposals: [
           ...(data.ownerGovernance.proposals ?? []),
           ...(data.tradingGovernance?.proposals ?? []),
+          ...(data.vaultGovernance?.proposals ?? []),
         ].sort((a, b) => b.creationTime - a.creationTime),
         proposalCount:
           +data.ownerGovernance.proposalCount +
-          +(data.tradingGovernance?.proposalCount ?? 0),
+          +(data.tradingGovernance?.proposalCount ?? 0) +
+          +(data.vaultGovernance?.proposalCount ?? 0),
         delegates: data.stakingToken?.delegates ?? [],
         delegatesCount: +(data.stakingToken?.totalDelegates ?? 0),
         voteSupply: +formatEther(data.stakingToken?.token.totalSupply ?? 0n),
