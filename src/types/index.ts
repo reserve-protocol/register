@@ -1,4 +1,4 @@
-import { Address } from 'viem'
+import { Address, Hex } from 'viem'
 
 export type RoleKey =
   | 'owners'
@@ -362,4 +362,11 @@ export type IndexAuction = {
     end: bigint
   }
   ttl: bigint
+}
+
+export type DecodedCalldata = {
+  signature: string
+  parameters: string[]
+  callData: Hex
+  data: unknown[]
 }
