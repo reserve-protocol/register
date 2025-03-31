@@ -89,7 +89,7 @@ const useProposalDetailStats = () => {
       const _quorumReached = _quorumWeight > 1
 
       return [_quorumWeight, _currentQuorum, _quorumNeeded, _quorumReached]
-    }, [proposal, quorum])
+    }, [proposal, quorum, againstVotes, forVotes, abstainVotes])
 
   const [majorityWeight, majoritySupport] = useMemo(() => {
     const totalVotes = +forVotes + +againstVotes
