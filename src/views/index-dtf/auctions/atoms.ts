@@ -14,7 +14,7 @@ import { IndexAuctionSimulation } from '@/hooks/useSimulatedBasket'
 
 export const TRADE_STATE = {
   PENDING: 'PENDING', // Only for auction launcher!
-  AVAILABLE: 'AVAILABLE', // Permissionless avalable
+  AVAILABLE: 'AVAILABLE', // Permissionless available
   RUNNING: 'RUNNING', // Auction launched
   COMPLETED: 'COMPLETED', // Auction completed (BIDDED)
   EXPIRED: 'EXPIRED', // Auction expired
@@ -25,6 +25,10 @@ export function getTradeState(trade: AssetTrade) {
 
   // Lets start with the completed state!
   if (trade.bids.length > 0 && currentTime > trade.end) {
+    if (trade.availableRuns > 1) {
+      return TRADE_STATE.AVAILABLE
+    }
+
     return TRADE_STATE.COMPLETED
   }
 
@@ -32,6 +36,10 @@ export function getTradeState(trade: AssetTrade) {
   if (trade.start && trade.end) {
     if (currentTime < trade.end) {
       return TRADE_STATE.RUNNING
+    }
+
+    if (trade.availableRuns > 1) {
+      return TRADE_STATE.AVAILABLE
     }
 
     return TRADE_STATE.EXPIRED
@@ -66,6 +74,7 @@ export type AssetTrade = {
   launchTimeout: number
   start: number
   end: number
+  availableRuns: number
   approvedTimestamp: number
   launchedTimestamp: number
   approvedBlockNumber: string
