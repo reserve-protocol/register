@@ -1,16 +1,9 @@
 import { Skeleton } from '@/components/ui/skeleton'
-import { Tabs, TabsContent, TabsTrigger, TabsList } from '@/components/ui/tabs'
-import { lazy, Suspense } from 'react'
-import { proposalDetailAtom } from '../atom'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useAtomValue } from 'jotai'
-import {
-  indexDTFAtom,
-  indexDTFBasketAtom,
-  indexDTFBasketPricesAtom,
-  indexDTFBasketSharesAtom,
-} from '@/state/dtf/atoms'
-import BasketProposalPreview from '../../propose/basket/components/proposal-basket-preview'
-import { Address } from 'viem'
+import { lazy, Suspense } from 'react'
+import GovernanceProposalPreview from '../../../components/governance-proposal-preview'
+import { proposalDetailAtom } from '../atom'
 
 const TABS = {
   DESCRIPTION: 'description',
@@ -54,26 +47,33 @@ const ProposalDescription = () => {
 // TODO: WRAP INTO ERROR CONTEXT THIS COULD CRASH!!!
 const ProposalChanges = () => {
   const proposal = useAtomValue(proposalDetailAtom)
-  const dtf = useAtomValue(indexDTFAtom)
-  const basket = useAtomValue(indexDTFBasketAtom)
-  const shares = useAtomValue(indexDTFBasketSharesAtom)
-  const prices = useAtomValue(indexDTFBasketPricesAtom)
+  // const dtf = useAtomValue(indexDTFAtom)
+  // const basket = useAtomValue(indexDTFBasketAtom)
+  // const shares = useAtomValue(indexDTFBasketSharesAtom)
+  // const prices = useAtomValue(indexDTFBasketPricesAtom)
 
-  if (!proposal || !dtf) return <Skeleton className="h-80" />
+  // if (!proposal || !dtf) return <Skeleton className="h-80" />
 
-  if (
-    proposal.governor.toLowerCase() !== dtf.tradingGovernance?.id.toLowerCase()
-  ) {
-    return <div className="text-legend text-center py-8">Coming soon...</div>
-  }
+  // if (
+  //   proposal.governor.toLowerCase() !== dtf.tradingGovernance?.id.toLowerCase()
+  // ) {
+  //   return <div className="text-legend text-center py-8">Coming soon...</div>
+  // }
+
+  // return (
+  //   <BasketProposalPreview
+  //     calldatas={proposal.calldatas}
+  //     basket={basket}
+  //     shares={shares}
+  //     prices={prices}
+  //     address={dtf.id.toLowerCase() as Address}
+  //   />
+  // )
 
   return (
-    <BasketProposalPreview
-      calldatas={proposal.calldatas}
-      basket={basket}
-      shares={shares}
-      prices={prices}
-      address={dtf.id.toLowerCase() as Address}
+    <GovernanceProposalPreview
+      targets={proposal?.targets}
+      calldatas={proposal?.calldatas}
     />
   )
 }
