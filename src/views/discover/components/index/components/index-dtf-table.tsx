@@ -11,6 +11,60 @@ import { Link, useNavigate } from 'react-router-dom'
 import { Line, LineChart, YAxis } from 'recharts'
 import { calculatePercentageChange } from '../utils'
 import { BasketHoverCard } from './basket-hover-card'
+import { Skeleton } from '@/components/ui/skeleton'
+
+const Placeholder = () => {
+  return (
+    <div className="p-2 bg-card rounded-4xl">
+      <div className="grid grid-cols-[440px_1fr_1fr_1fr_1fr] text-legend gap-4 px-4 py-4 border-b">
+        <div>Name</div>
+        <div>Backing</div>
+        <div>Tags</div>
+        <div>Performance (Last 7 Days)</div>
+        <div className="text-right">Market Cap</div>
+      </div>
+
+      {/* Table rows */}
+      {Array.from({ length: 15 }).map((_, index) => (
+        <div
+          key={index}
+          className={`grid grid-cols-[440px_1fr_1fr_1fr_1fr] gap-4 py-6 px-4 ${index !== 14 ? 'border-b' : ''}`}
+        >
+          <div className="flex items-center gap-3 ">
+            <Skeleton className="h-10 w-10 flex-shrink-0 rounded-full" />
+            <div className="space-y-2">
+              <Skeleton className="h-4 w-[120px]" />
+              <Skeleton className="h-4 w-[60px]" />
+            </div>
+          </div>
+          <div className="flex items-center">
+            <div className="flex -space-x-2">
+              {Array.from({ length: 4 }).map((_, i) => (
+                <Skeleton
+                  key={i}
+                  className="h-8 w-8 rounded-full border-2 border-background"
+                />
+              ))}
+            </div>
+          </div>
+          <div className="flex items-center">
+            <Skeleton className="h-6 w-[150px]" />
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="space-y-1">
+              <Skeleton className="h-5 w-[80px]" />
+              <Skeleton className="h-4 w-[60px]" />
+            </div>
+            <Skeleton className="h-10 w-[80px]" />
+          </div>
+          <div className="flex justify-end items-center">
+            <Skeleton className="h-6 w-[100px]" />
+          </div>
+        </div>
+      ))}
+    </div>
+  )
+}
 
 export const LIMIT_ASSETS = 7
 
@@ -168,33 +222,45 @@ const columns: ColumnDef<IndexDTFItem>[] = [
   },
 ]
 
-const IndexDTFTable = ({ data }: { data: IndexDTFItem[] }) => {
+const IndexDTFTable = ({
+  data,
+  isLoading,
+}: {
+  data: IndexDTFItem[]
+  isLoading: boolean
+}) => {
   const navigate = useNavigate()
 
   const handleRowClick = (row: IndexDTFItem) => {
     navigate(getFolioRoute(row.address, row.chainId))
   }
 
+  if (isLoading) {
+    return <Placeholder />
+  }
+
   return (
-    <DataTable
-      columns={columns}
-      data={data}
-      pagination={
-        data.length > 20
-          ? {
-              pageSize: 20,
-            }
-          : undefined
-      }
-      onRowClick={handleRowClick}
-      className={cn(
-        'hidden lg:block',
-        '[&_table]:bg-card [&_table]:rounded-[20px] [&_table]:text-base',
-        '[&_table_thead_th]:px-6',
-        '[&_table_tbody_td]:px-6',
-        '[&_table_tbody]:rounded-[20px] [&_table_tbody_tr:last-child_td]:rounded-bl-[20px] [&_table_tbody_tr:last-child_td:last-child]:rounded-br-[20px]'
-      )}
-    />
+    <>
+      <DataTable
+        columns={columns}
+        data={data}
+        pagination={
+          data.length > 20
+            ? {
+                pageSize: 20,
+              }
+            : undefined
+        }
+        onRowClick={handleRowClick}
+        className={cn(
+          'hidden lg:block',
+          '[&_table]:bg-card [&_table]:rounded-[20px] [&_table]:text-base',
+          '[&_table_thead_th]:px-6',
+          '[&_table_tbody_td]:px-6',
+          '[&_table_tbody]:rounded-[20px] [&_table_tbody_tr:last-child_td]:rounded-bl-[20px] [&_table_tbody_tr:last-child_td:last-child]:rounded-br-[20px]'
+        )}
+      />
+    </>
   )
 }
 
