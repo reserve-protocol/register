@@ -73,14 +73,23 @@ const useProposalDetailStats = () => {
     useMemo(() => {
       const _quorumNeeded = Number(formatEther(quorum ?? 0n))
 
-      if (!proposal || !_quorumNeeded) return [0, 0, 0, false]
+      if (!proposal) return [0, 0, 0, false]
 
       const _currentQuorum = +forVotes + +abstainVotes
+
+      if (!_quorumNeeded)
+        return [
+          _currentQuorum > _quorumNeeded ? 1 : 0,
+          _currentQuorum,
+          _quorumNeeded,
+          _currentQuorum > _quorumNeeded,
+        ]
+
       const _quorumWeight = _currentQuorum / _quorumNeeded
       const _quorumReached = _quorumWeight > 1
 
       return [_quorumWeight, _currentQuorum, _quorumNeeded, _quorumReached]
-    }, [proposal, quorum])
+    }, [proposal, quorum, againstVotes, forVotes, abstainVotes])
 
   const [majorityWeight, majoritySupport] = useMemo(() => {
     const totalVotes = +forVotes + +againstVotes
@@ -161,6 +170,14 @@ const MajoritySupportStat = ({
   majorityWeight: number
   majoritySupport: boolean
 }) => {
+  const percentage = formatPercentage(
+    Math.min(
+      (majoritySupport || !majorityWeight
+        ? majorityWeight
+        : 1 - majorityWeight) * 100,
+      100
+    )
+  )
   return (
     <div className="flex flex-col gap-3 p-4">
       <div className="flex items-center justify-between gap-2">
@@ -174,20 +191,13 @@ const MajoritySupportStat = ({
         </div>
         <div className="flex items-center gap-2 text-base sm:text-lg">
           <span
-            className={`font-bold ${majoritySupport ? 'text-accent-inverted' : 'text-red-500'}`}
+            className={`font-bold ${majoritySupport ? 'text-green-500' : 'text-red-500'}`}
           >
             {majoritySupport ? 'Yes' : 'No'}
           </span>
-          <span className="text-legend">
-            {formatPercentage(
-              Math.min(
-                (majoritySupport || !majorityWeight
-                  ? majorityWeight
-                  : 1 - majorityWeight) * 100,
-                100
-              )
-            )}
-          </span>
+          {percentage !== '100%' && (
+            <span className="text-legend">{percentage}</span>
+          )}
         </div>
       </div>
       <div className="w-full h-1 rounded-full bg-gray-200">

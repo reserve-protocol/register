@@ -22,6 +22,7 @@ import {
   useTrackIndexDTF,
   useTrackIndexDTFClick,
 } from '../../hooks/useTrackIndexDTFPage'
+import { uploadFile } from '@/lib/api-upload'
 
 const NONCE_ENDPOINT = `${RESERVE_API}folio-manager/nonce`
 const SAVE_DTF_DATA = `${RESERVE_API}folio-manager/save`
@@ -38,7 +39,7 @@ const currentSignatureAtom = atom((get) => {
   const signature = get(signatureAtom)
   const wallet = get(walletAtom)
 
-  if (!signature || !wallet) return ''
+  if (!signature || !wallet) return undefined
 
   return signature[wallet]
 })
@@ -150,7 +151,7 @@ const SubmitButton = () => {
 
     try {
       const { files, ...payload } = data
-      const pendingFilesKeys = await Object.keys(files).filter(
+      const pendingFilesKeys = Object.keys(files).filter(
         (key) => files[key] instanceof File
       )
       const pendingToUpload = pendingFilesKeys.map((key) => files[key])
@@ -159,15 +160,24 @@ const SubmitButton = () => {
         setState('uploading')
         const fileContents = await processFiles(pendingToUpload)
 
+        if (!signature) throw new Error('Missing signature')
+
         const uploadedFiles = await Promise.all(
-          fileContents.map((file) => uploadFileToIpfs(file as Blob))
+          fileContents.map((file) =>
+            uploadFile({
+              file: file as Blob,
+              folio: dtf.id,
+              message: signature.message,
+              signature: signature.signature,
+            })
+          )
         )
 
         for (const [index, file] of uploadedFiles.entries()) {
           const path = fileToPath[pendingFilesKeys[index]]
           if (path) {
             const [key, value] = path.split('.')
-            payload[key][value] = file.ipfsResolved
+            payload[key][value] = file.url
           }
         }
       }
