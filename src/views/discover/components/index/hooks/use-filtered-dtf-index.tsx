@@ -1,4 +1,4 @@
-import useIndexDTFList from '@/hooks/useIndexDTFList'
+import useIndexDTFList, { IndexDTFItem } from '@/hooks/useIndexDTFList'
 import { chainFilterAtom, searchFilterAtom } from '../atoms'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
@@ -10,7 +10,7 @@ const useFilteredDTFIndex = () => {
 
   return useMemo(() => {
     if (!data) {
-      return { data: [], isLoading }
+      return { data: [] as IndexDTFItem[], isLoading }
     }
 
     const filtered = data.filter((dtf) => {

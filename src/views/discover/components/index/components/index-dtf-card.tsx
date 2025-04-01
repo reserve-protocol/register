@@ -1,4 +1,3 @@
-import DecimalDisplay from '@/components/decimal-display'
 import ChainLogo from '@/components/icons/ChainLogo'
 import CoverPlaceholder from '@/components/icons/cover-placeholder'
 import TokenLogo from '@/components/token-logo'
