@@ -7,11 +7,25 @@ import { Address, decodeFunctionData, getAbiItem } from 'viem'
 import dtfIndexAbi from '@/abis/dtf-index-abi'
 import dtfIndexGovernance from '@/abis/dtf-index-governance'
 import dtfIndexStakingVault from '@/abis/dtf-index-staking-vault'
-import { indexDTFAtom } from '@/state/dtf/atoms'
-import { atom } from 'jotai'
-import { Abi, Hex } from 'viem'
-import { useMemo } from 'react'
+import { Button } from '@/components/ui/button'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { chainIdAtom } from '@/state/atoms'
+import {
+  indexDTFAtom,
+  indexDTFBasketAtom,
+  indexDTFBasketPricesAtom,
+  indexDTFBasketSharesAtom,
+} from '@/state/dtf/atoms'
 import { DecodedCalldata } from '@/types'
+import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
+import { atom } from 'jotai'
+import { ArrowUpRightIcon } from 'lucide-react'
+import { useMemo } from 'react'
+import { Link } from 'react-router-dom'
+import { Abi, Hex } from 'viem'
+import BasketProposalPreview from '../views/propose/basket/components/proposal-basket-preview'
+import RawCallPreview from './proposal-preview/raw-call-preview'
+import TokenRewardPreview from './proposal-preview/token-reward-preview'
 
 const dtfAbiMapppingAtom = atom((get) => {
   const dtf = get(indexDTFAtom)
@@ -116,6 +130,7 @@ const useDecodedCalldatas = (
           },
         ]
       } catch (e) {
+        console.error('ERROR', e)
         // TODO: Should not happen but there could be an error on the ABI while upgrading?
         unknownContracts[target.toLowerCase()] = [
           ...(unknownContracts[target.toLowerCase()] || []),
@@ -130,8 +145,167 @@ const useDecodedCalldatas = (
 
 const ChangesOverviewComponentMap: Record<
   string,
-  React.ComponentType<{ data: DecodedCalldata }>
-> = {}
+  React.ComponentType<{ decodedCalldata: DecodedCalldata }>
+> = {
+  removeRewardToken: TokenRewardPreview,
+  addRewardToken: TokenRewardPreview,
+}
+
+const BasketChanges = ({ calldatas }: { calldatas: DecodedCalldata[] }) => {
+  const dtf = useAtomValue(indexDTFAtom)
+  const basket = useAtomValue(indexDTFBasketAtom)
+  const shares = useAtomValue(indexDTFBasketSharesAtom)
+  const prices = useAtomValue(indexDTFBasketPricesAtom)
+
+  if (!dtf) return <Skeleton className="h-80" />
+
+  return (
+    <BasketProposalPreview
+      calldatas={calldatas.map((calldata) => calldata.callData)}
+      basket={basket}
+      shares={shares}
+      prices={prices}
+      address={dtf.id.toLowerCase() as Address}
+    />
+  )
+}
+
+const TABS = {
+  SUMMARY: 'summary',
+  RAW: 'raw',
+}
+
+const ContractProposalChanges = ({
+  decodedCalldatas,
+  address,
+}: {
+  decodedCalldatas: DecodedCalldata[]
+  address: Address
+}) => {
+  const chainId = useAtomValue(chainIdAtom)
+  const alias =
+    useAtomValue(dtfContractAliasAtom)?.[address.toLowerCase()] ?? 'Unknown'
+
+  return (
+    <Tabs
+      defaultValue={TABS.SUMMARY}
+      className="flex flex-col gap-4 p-2 pt-4 rounded-3xl bg-background"
+    >
+      <div className="mx-4 py-4 flex items-center flex-wrap gap-2 border-b">
+        <h1 className="text-xl font-bold text-primary">{alias}</h1>
+        <Link
+          target="_blank"
+          className="mr-auto"
+          to={getExplorerLink(address, chainId, ExplorerDataType.ADDRESS)}
+        >
+          <Button
+            size="icon-rounded"
+            className="bg-primary/10 text-primary h-6 w-6 p-0 hover:text-white"
+          >
+            <ArrowUpRightIcon size={18} strokeWidth={1.5} />
+          </Button>
+        </Link>
+
+        <TabsList className="h-9">
+          <TabsTrigger value={TABS.SUMMARY} className="w-max h-7">
+            Summary
+          </TabsTrigger>
+
+          <TabsTrigger value={TABS.RAW} className="w-max h-7">
+            Raw
+          </TabsTrigger>
+        </TabsList>
+      </div>
+      <TabsContent className="m-0" value={TABS.SUMMARY}>
+        {decodedCalldatas.map((decodedCalldata: DecodedCalldata, index) => {
+          const Component =
+            ChangesOverviewComponentMap[decodedCalldata.signature]
+
+          if (!Component) {
+            return (
+              <div className="p-4">
+                <h4 className="text-primary text-lg font-semibold mb-2">
+                  {index + 1}/{decodedCalldatas.length}
+                </h4>
+                <RawCallPreview
+                  key={decodedCalldata.callData}
+                  call={decodedCalldata}
+                />
+              </div>
+            )
+          }
+
+          return (
+            <div className="p-4">
+              <h4 className="text-primary text-lg font-semibold mb-2">
+                {index + 1}/{decodedCalldatas.length}
+              </h4>
+              <Component
+                key={decodedCalldata.callData}
+                decodedCalldata={decodedCalldata}
+              />
+            </div>
+          )
+        })}
+      </TabsContent>
+      <TabsContent className="m-0" value={TABS.RAW}>
+        {decodedCalldatas.map((call, index) => (
+          <div className="p-4">
+            <h4 className="text-primary text-lg font-semibold mb-2">
+              {index + 1}/{decodedCalldatas.length}
+            </h4>
+            <RawCallPreview key={call.callData} call={call} />
+          </div>
+        ))}
+      </TabsContent>
+    </Tabs>
+  )
+}
+
+const FolioChangePreview = ({
+  decodedCalldata,
+  address,
+}: {
+  decodedCalldata: DecodedCalldata[]
+  address: Address
+}) => {
+  const { basketChangeCalls, restCalls } = useMemo(() => {
+    return decodedCalldata.reduce(
+      (
+        acc: {
+          basketChangeCalls: DecodedCalldata[]
+          restCalls: DecodedCalldata[]
+        },
+        call
+      ) => {
+        if (call.signature === 'approveAuction') {
+          acc.basketChangeCalls.push(call)
+        } else {
+          acc.restCalls.push(call)
+        }
+        return acc
+      },
+      {
+        basketChangeCalls: [] as DecodedCalldata[],
+        restCalls: [] as DecodedCalldata[],
+      }
+    )
+  }, [decodedCalldata])
+
+  return (
+    <div>
+      {!!basketChangeCalls.length && (
+        <BasketChanges calldatas={basketChangeCalls} />
+      )}
+      {!!restCalls.length && (
+        <ContractProposalChanges
+          decodedCalldatas={restCalls}
+          address={address}
+        />
+      )}
+    </div>
+  )
+}
 
 const GovernanceProposalPreview = ({
   targets,
@@ -140,6 +314,7 @@ const GovernanceProposalPreview = ({
   targets: Address[] | undefined
   calldatas: Hex[] | undefined
 }) => {
+  const alias = useAtomValue(dtfContractAliasAtom)
   const [dataByContract, unknownContracts] = useDecodedCalldatas(
     targets,
     calldatas
@@ -149,35 +324,25 @@ const GovernanceProposalPreview = ({
     return <Skeleton className="h-80" />
   }
 
-  console.log(dataByContract, unknownContracts)
-
-  return <div>GovernanceProposalPreview</div>
+  return (
+    <div>
+      {Object.entries(dataByContract).map(([contract, decodedCalldatas]) =>
+        alias?.[contract] === 'Folio' ? (
+          <FolioChangePreview
+            key="folio"
+            decodedCalldata={decodedCalldatas}
+            address={contract as Address}
+          />
+        ) : (
+          <ContractProposalChanges
+            key={contract}
+            decodedCalldatas={decodedCalldatas}
+            address={contract as Address}
+          />
+        )
+      )}
+    </div>
+  )
 }
 
 export default GovernanceProposalPreview
-
-// const ProposalChanges = () => {
-//   const proposal = useAtomValue(proposalDetailAtom)
-//   const dtf = useAtomValue(indexDTFAtom)
-//   const basket = useAtomValue(indexDTFBasketAtom)
-//   const shares = useAtomValue(indexDTFBasketSharesAtom)
-//   const prices = useAtomValue(indexDTFBasketPricesAtom)
-
-//   if (!proposal || !dtf) return <Skeleton className="h-80" />
-
-//   if (
-//     proposal.governor.toLowerCase() !== dtf.tradingGovernance?.id.toLowerCase()
-//   ) {
-//     return <div className="text-legend text-center py-8">Coming soon...</div>
-//   }
-
-//   return (
-//     <BasketProposalPreview
-//       calldatas={proposal.calldatas}
-//       basket={basket}
-//       shares={shares}
-//       prices={prices}
-//       address={dtf.id.toLowerCase() as Address}
-//     />
-//   )
-// }

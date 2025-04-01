@@ -12,7 +12,7 @@ import {
 } from 'react-json-view-lite'
 
 const RawCallPreview = ({ call }: { call: DecodedCalldata }) => (
-  <div className="p-4 flex flex-col gap-2">
+  <div className="flex flex-col gap-2">
     <div className="flex flex-col gap-2">
       <div>
         <span className="text-legend text-sm block mb-1">Signature</span>

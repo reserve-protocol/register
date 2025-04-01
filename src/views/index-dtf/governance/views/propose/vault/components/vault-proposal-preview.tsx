@@ -17,7 +17,7 @@ import {
 import { useMemo } from 'react'
 import dtfIndexStakingVault from '@/abis/dtf-index-staking-vault'
 import { DecodedCalldata } from '@/types'
-import RawCallPreview from '../../components/raw-call-preview'
+import RawCallPreview from '../../../../components/proposal-preview/raw-call-preview'
 import { useReadContracts } from 'wagmi'
 import TokenLogo from '@/components/token-logo'
 
