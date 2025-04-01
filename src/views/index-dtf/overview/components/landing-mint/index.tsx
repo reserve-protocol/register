@@ -12,7 +12,6 @@ import { currentZapMintTabAtom } from '../zap-mint/atom'
 import { useTrackIndexDTFClick } from '@/views/index-dtf/hooks/useTrackIndexDTFPage'
 import { Link } from 'react-router-dom'
 import Uniswap from '@/components/icons/logos/Uniswap'
-import { useDTFCampaign } from '../../hooks/use-campaign'
 
 export const UniswapButton = React.forwardRef<HTMLAnchorElement>(
   (props, ref) => {
@@ -33,25 +32,6 @@ export const UniswapButton = React.forwardRef<HTMLAnchorElement>(
   }
 )
 UniswapButton.displayName = 'UniswapButton'
-
-const CampaignBadge = () => {
-  const indexDTF = useAtomValue(indexDTFAtom)
-  const campaignData = useDTFCampaign(indexDTF?.id ?? '')
-
-  if (!campaignData) return null
-
-  return (
-    <a
-      className="flex items-center gap-2 text-black font-semibold rounded-full text-sm bg-[#FFBE45] px-2 py-1"
-      target="_blank"
-      href={campaignData.url}
-    >
-      <Coins size={16} />
-      <span>{campaignData.apr.toFixed(2)}% APR</span>
-      <ArrowUpRight size={16} />
-    </a>
-  )
-}
 
 const MintBox = () => {
   const dtf = useAtomValue(indexDTFAtom)
@@ -77,7 +57,6 @@ const MintBox = () => {
             src={brand?.dtf?.icon || undefined}
             size="lg"
           />
-          <CampaignBadge />
         </div>
         <div className="flex flex-col gap-1">
           <div className="text-xl font-semibold ">
