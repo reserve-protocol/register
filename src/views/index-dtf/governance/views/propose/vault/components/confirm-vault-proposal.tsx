@@ -1,5 +1,9 @@
 import { useAtomValue, useSetAtom } from 'jotai'
-import { proposalDescriptionAtom, vaultProposalCalldatasAtom } from '../atoms'
+import {
+  isProposalConfirmedAtom,
+  proposalDescriptionAtom,
+  vaultProposalCalldatasAtom,
+} from '../atoms'
 import ProposalDescriptionForm from '@/components/governance/proposal-description-form'
 import { useEffect } from 'react'
 import VaultProposalPreview from './vault-proposal-preview'
@@ -7,6 +11,7 @@ import { indexDTFAtom } from '@/state/dtf/atoms'
 
 const ProposalDescription = () => {
   const setDescription = useSetAtom(proposalDescriptionAtom)
+  const setConfirmed = useSetAtom(isProposalConfirmedAtom)
 
   useEffect(() => {
     return () => {
@@ -14,7 +19,12 @@ const ProposalDescription = () => {
     }
   }, [])
 
-  return <ProposalDescriptionForm onChange={setDescription} />
+  return (
+    <ProposalDescriptionForm
+      onChange={setDescription}
+      onBack={() => setConfirmed(false)}
+    />
+  )
 }
 
 const ProposalPreview = () => {
