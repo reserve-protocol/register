@@ -54,32 +54,34 @@ const VoteList = ({ votes }: { votes: Vote[] }) => {
 
   return (
     <ScrollArea className="max-h-[420px]">
-      {votes.map((vote) => (
-        <div className="flex items-center gap-2" key={vote.voter}>
-          <BlockiesAvatar address={vote.voter} />
-          {shortenAddress(vote.voter)}
-          <GoTo
-            href={getExplorerLink(
-              vote.voter,
-              chainId,
-              ExplorerDataType.ADDRESS
-            )}
-          />
-          <span
-            className={cn(
-              'ml-auto',
-              vote.choice === 'FOR' && 'text-primary',
-              vote.choice === 'AGAINST' && 'text-destructive',
-              vote.choice === 'ABSTAIN' && 'text-legend'
-            )}
-          >
-            {formatCurrency(+vote.weight, 0, {
-              notation: 'compact',
-              compactDisplay: 'short',
-            })}
-          </span>
-        </div>
-      ))}
+      <div className="flex flex-col gap-2">
+        {votes.map((vote) => (
+          <div className="flex items-center gap-2 mb-1" key={vote.voter}>
+            <BlockiesAvatar address={vote.voter} />
+            {shortenAddress(vote.voter)}
+            <GoTo
+              href={getExplorerLink(
+                vote.voter,
+                chainId,
+                ExplorerDataType.ADDRESS
+              )}
+            />
+            <span
+              className={cn(
+                'ml-auto',
+                vote.choice === 'FOR' && 'text-primary',
+                vote.choice === 'AGAINST' && 'text-destructive',
+                vote.choice === 'ABSTAIN' && 'text-legend'
+              )}
+            >
+              {formatCurrency(+vote.weight, 0, {
+                notation: 'compact',
+                compactDisplay: 'short',
+              })}
+            </span>
+          </div>
+        ))}
+      </div>
     </ScrollArea>
   )
 }
