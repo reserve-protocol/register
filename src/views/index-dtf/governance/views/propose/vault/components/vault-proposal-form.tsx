@@ -19,6 +19,7 @@ import {
   removedRewardTokensAtom,
   rewardTokenAddressesAtom,
 } from '../atoms'
+import { indexDTFAtom } from '@/state/dtf/atoms'
 
 // TODO: Should use atom family for this one
 const TokenValidationMessage = ({
@@ -229,38 +230,40 @@ const VaultRewardTokens = () => {
   )
 }
 
-const VaultProposalForm = () => (
-  <div className="w-full bg-secondary rounded-4xl pb-0.5 h-fit">
-    <div className="p-4 pb-3 flex items-center gap-2">
-      <Link
-        to={`../${ROUTES.GOVERNANCE}/${ROUTES.GOVERNANCE_PROPOSE}`}
-        className="sm:ml-3"
-      >
-        <Button variant="outline" size="icon-rounded">
-          <ArrowLeftIcon size={24} strokeWidth={1.5} />
-        </Button>
-      </Link>
-      <h1 className="font-bold text-xl">Vault change proposal</h1>
-    </div>
-    <div className="rounded-3xl bg-card m-1 border-none">
-      <div className="p-4 sm:p-6 pb-3">
-        <div className="rounded-full w-fit flex-shrink-0 p-2 bg-primary/10 text-primary">
-          <Coins size={16} />
+const VaultProposalForm = () => {
+  const vlToken = useAtomValue(indexDTFAtom)?.stToken?.token.symbol ?? 'vlToken'
+
+  return (
+    <div className="w-full bg-secondary rounded-4xl pb-0.5 h-fit">
+      <div className="p-4 pb-3 flex items-center gap-2">
+        <Link
+          to={`../${ROUTES.GOVERNANCE}/${ROUTES.GOVERNANCE_PROPOSE}`}
+          className="sm:ml-3"
+        >
+          <Button variant="outline" size="icon-rounded">
+            <ArrowLeftIcon size={24} strokeWidth={1.5} />
+          </Button>
+        </Link>
+        <h1 className="font-bold text-xl">Vault change proposal</h1>
+      </div>
+      <div className="rounded-3xl bg-card m-1 border-none">
+        <div className="p-4 sm:p-6 pb-3">
+          <div className="rounded-full w-fit flex-shrink-0 p-2 bg-primary/10 text-primary">
+            <Coins size={16} />
+          </div>
+          <h2 className="text-xl sm:text-2xl font-bold text-primary mt-6 mb-2">
+            Revenue Tokens
+          </h2>
+          <p>
+            Enter the contract address of the token(s) the{' '}
+            <span className="font-semibold">{vlToken} DAO</span> will accept as
+            revenue. A token must be added to this list before it can be
+            distributed to and claimed by vote-lockers.
+          </p>
+          <VaultRewardTokens />
         </div>
-        <h2 className="text-xl sm:text-2xl font-bold text-primary mt-6 mb-2">
-          Reward whitelist
-        </h2>
-        <p>
-          Enter the updated weights for the tokens in the basket. Remember, the
-          weights represent the proportion of each token relative to the total
-          USD value of basket at the time of the proposal. We will calculate the
-          required auctions needed to adopt the new basket if the proposal
-          passes governance.
-        </p>
-        <VaultRewardTokens />
       </div>
     </div>
-  </div>
-)
-
+  )
+}
 export default VaultProposalForm

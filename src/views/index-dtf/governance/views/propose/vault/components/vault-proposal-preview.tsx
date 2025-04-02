@@ -96,7 +96,7 @@ const useDecodedCalldatas = (
 
 const RawPreview = ({ data }: { data: DecodedCalldata[] }) => {
   return (
-    <div>
+    <div className="p-4">
       {data.map((call) => (
         <RawCallPreview key={call.callData} call={call} />
       ))}

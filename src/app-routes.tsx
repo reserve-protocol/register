@@ -93,7 +93,7 @@ const AppRoutes = () => (
         element={<IndexDTFBasketProposal />}
       />
       <Route
-        path={`${ROUTES.GOVERNANCE}/${ROUTES.GOVERNANCE_PROPOSE}/${GOVERNANCE_PROPOSAL_TYPES.WHITELIST}`}
+        path={`${ROUTES.GOVERNANCE}/${ROUTES.GOVERNANCE_PROPOSE}/${GOVERNANCE_PROPOSAL_TYPES.OTHER}`}
         element={<IndexDTFWhitelistProposal />}
       />
       <Route
