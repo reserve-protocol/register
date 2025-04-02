@@ -158,6 +158,30 @@ export const basketProposalCalldatasAtom = atom<Hex[] | undefined>((get) => {
     tradeRangeOption === 'defer' ? deferredTrades : getProposedTrades(get)
 
   return trades.map((trade, i) => {
+    const args = [
+      trade.sell as Address,
+      trade.buy as Address,
+      {
+        spot: trade.sellLimit.spot,
+        low: trade.sellLimit.low,
+        high: trade.sellLimit.high,
+      },
+      {
+        spot: trade.buyLimit.spot,
+        low: trade.buyLimit.low,
+        high: trade.buyLimit.high,
+      },
+      {
+        start: trade.prices.start,
+        end: trade.prices.end,
+      },
+      ttl,
+    ]
+
+    if (version === '2.0.0') {
+      args.push(10n)
+    }
+
     return encodeFunctionData({
       abi:
         version === '2.0.0'
@@ -254,25 +278,7 @@ export const basketProposalCalldatasAtom = atom<Hex[] | undefined>((get) => {
             ]
           : dtfIndexAbi,
       functionName: 'approveAuction',
-      args: [
-        trade.sell as Address,
-        trade.buy as Address,
-        {
-          spot: trade.sellLimit.spot,
-          low: trade.sellLimit.low,
-          high: trade.sellLimit.high,
-        },
-        {
-          spot: trade.buyLimit.spot,
-          low: trade.buyLimit.low,
-          high: trade.buyLimit.high,
-        },
-        {
-          start: trade.prices.start,
-          end: trade.prices.end,
-        },
-        ttl,
-      ],
+      args: args as any,
     })
   })
 })
