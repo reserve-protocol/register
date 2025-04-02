@@ -1,6 +1,7 @@
 import dtfIndexAbi from '@/abis/dtf-index-abi'
 import { chainIdAtom } from '@/state/atoms'
 import {
+  indexDTFAtom,
   indexDTFBasketAtom,
   indexDTFBasketPricesAtom,
   indexDTFBasketSharesAtom,
@@ -10,7 +11,7 @@ import { RESERVE_API } from '@/utils/constants'
 import { useQuery } from '@tanstack/react-query'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useMemo } from 'react'
-import { useReadContracts } from 'wagmi'
+import { useReadContract, useReadContracts } from 'wagmi'
 import {
   dtfSupplyAtom,
   dtfTradeDelay,
@@ -24,6 +25,7 @@ import {
   stepAtom,
   tradeRangeOptionAtom,
   tradeVolatilityAtom,
+  versionAtom,
 } from './atoms'
 import { formatUnits, parseEther } from 'viem'
 
@@ -179,12 +181,22 @@ const useInitialBasket = ():
 
 const InitialBasketUpdater = () => {
   const initialBasket = useInitialBasket()
+  const indexDTF = useAtomValue(indexDTFAtom)
   const setProposedBasket = useSetAtom(proposedIndexBasketAtom)
   const setPriceMap = useSetAtom(priceMapAtom)
   const setSupply = useSetAtom(dtfSupplyAtom)
   const setTradeDelay = useSetAtom(dtfTradeDelay)
   const setProposedShares = useSetAtom(proposedSharesAtom)
   const setProposedUnits = useSetAtom(proposedUnitsAtom)
+  const setVersion = useSetAtom(versionAtom)
+  const chainId = useAtomValue(chainIdAtom)
+  const { data: version } = useReadContract({
+    address: indexDTF?.id ?? '0x',
+    abi: dtfIndexAbi,
+    functionName: 'version',
+    chainId,
+    query: { enabled: !!indexDTF },
+  })
 
   useEffect(() => {
     if (initialBasket) {
@@ -213,6 +225,12 @@ const InitialBasketUpdater = () => {
       )
     }
   }, [!!initialBasket])
+
+  useEffect(() => {
+    if (version) {
+      setVersion(version)
+    }
+  }, [version])
 
   return null
 }
