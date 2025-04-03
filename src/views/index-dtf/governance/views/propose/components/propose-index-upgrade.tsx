@@ -1,4 +1,5 @@
 import dtfAdminAbi from '@/abis/dtf-admin-abi'
+import dtfIndexAbi from '@/abis/dtf-index-abi'
 import DTFIndexGovernance from '@/abis/dtf-index-governance'
 import { Button } from '@/components/ui/button'
 import { chainIdAtom } from '@/state/atoms'
@@ -9,12 +10,43 @@ import { AlertCircle, Loader2 } from 'lucide-react'
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { encodeFunctionData, keccak256, toHex } from 'viem'
-import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
+import {
+  useReadContract,
+  useWaitForTransactionReceipt,
+  useWriteContract,
+} from 'wagmi'
+import { indexGovernanceOverviewAtom } from '../../../atoms'
+import { useVotingPower } from '../../../hooks/use-voting-power'
+
+function compareVersion(x: string, y: string): number {
+  return x.localeCompare(y, undefined, { numeric: true, sensitivity: 'base' })
+}
 
 const ProposeIndexUpgrade = () => {
   const navigate = useNavigate()
   const dtf = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
+  const votingPower = useVotingPower()
+  const governance = useAtomValue(indexGovernanceOverviewAtom)
+  const voteSupply = governance?.voteSupply
+  const proposalThreshold = dtf?.ownerGovernance?.proposalThreshold
+
+  const canPropose =
+    !!voteSupply &&
+    !!proposalThreshold &&
+    votingPower / voteSupply > proposalThreshold / 1e18
+
+  const { data: version } = useReadContract({
+    address: dtf?.id,
+    abi: dtfIndexAbi,
+    functionName: 'version',
+    query: {
+      enabled: !!dtf?.id && canPropose,
+    },
+  })
+
+  const upgrade = !!version && compareVersion(version, '2.0.0') < 0
+
   const { writeContract, data, isPending } = useWriteContract()
   const { isSuccess } = useWaitForTransactionReceipt({
     hash: data,
@@ -53,6 +85,10 @@ const ProposeIndexUpgrade = () => {
       }, 20000) // TODO: who knows if this works well!!! they can just refresh the page
     }
   }, [isSuccess])
+
+  if (!upgrade) {
+    return null
+  }
 
   return (
     <div className="sm:w-[408px] p-4 rounded-3xl bg-primary/10">
