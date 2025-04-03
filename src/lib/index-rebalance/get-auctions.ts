@@ -1,23 +1,24 @@
 import { Decimal } from 'decimal.js-light'
 
 import { Auction } from './types'
-import { D18d, D27d, ONE, TWO, ZERO } from './numbers'
+import { bn, D18d, D27d, ONE, TWO, ZERO } from './numbers'
 import { makeAuction } from './utils'
 
 /**
- * Get auctions from basket
+ * Get the set of auctions required to reach the target basket
  *
  * Warnings:
  *   - Breakup large auctions into smaller auctions in advance of using this algo; a large Folio may have to use this
- *     algo multiple times to rebalance gradually to avoid transacting too much volume in any one auction.
+ *     algo multiple times to rebalance gradually to avoid transacting too much volume in any one auction. Basically,
+ *     not trading too much is a responsibility of the user of this algorithm.
  *
- * @param _supply {share} Ideal basket
+ * @param _supply {share}
  * @param tokens Addresses of tokens in the basket
  * @param decimals Decimals of each token
  * @param _currentBasket D18{1} Current balances
  * @param _targetBasket D18{1} Ideal basket
  * @param _prices {USD/wholeTok} USD prices for each *whole* token
- * @param _priceError {1} Price error, pass 1 to fully defer to price curator / auction launcher
+ * @param _priceError {1} Price error, pass 1 to fully defer to auction launcher
  * @param _dtfPrice {USD/wholeShare} DTF price
  * @param tolerance D18{1} Tolerance for rebalancing to determine when to tolerance auction or not, default 0.1%
  */
@@ -32,6 +33,19 @@ export const getAuctions = (
   _dtfPrice: number,
   _tolerance: bigint = 10n ** 14n // 0.01%
 ): Auction[] => {
+  console.log(
+    'getAuctions()',
+    _supply,
+    tokens,
+    decimals,
+    _currentBasket,
+    _targetBasket,
+    _prices,
+    _priceError,
+    _dtfPrice,
+    _tolerance
+  )
+
   const auctions: Auction[] = []
 
   // convert price number inputs to bigints
@@ -119,6 +133,8 @@ export const getAuctions = (
     const maxAuction = biggestDeficit.lt(biggestSurplus)
       ? biggestDeficit
       : biggestSurplus
+    console.log('biggestSurplus', biggestSurplus)
+    console.log('biggestDeficit', biggestDeficit)
 
     // {1} = {USD} / {USD}
     const backingAuctioned = maxAuction.div(sharesValue)
@@ -153,44 +169,54 @@ export const getAuctions = (
       ? ZERO
       : price.mul(ONE.minus(avgPriceError))
 
+    // D27{tok/share} = {wholeTok/wholeShare} * D27 * {tok/wholeTok} / {share/wholeShare}
+    let bnSellLimit = bn(
+      sellLimit
+        .mul(D27d)
+        .mul(new Decimal(`1e${decimals[x]}`))
+        .div(D18d)
+    )
+
+    // D27{tok/share} = {wholeTok/wholeShare} * D27 * {tok/wholeTok} / {share/wholeShare}
+    let bnBuyLimit = bn(
+      buyLimit
+        .mul(D27d)
+        .mul(new Decimal(`1e${decimals[y]}`))
+        .div(D18d)
+    )
+
+    if (bnSellLimit >= 10n ** 54n || bnBuyLimit == 0n) {
+      throw new Error('invalid limits')
+    }
+    if (bnBuyLimit >= 10n ** 54n) {
+      bnBuyLimit = 10n ** 54n
+    }
+    if (bnSellLimit == 0n && biggestSurplus >= biggestDeficit) {
+      bnBuyLimit = 10n ** 54n
+    }
+
     // add auction into set
     auctions.push(
       makeAuction(
         tokens[x],
         tokens[y],
-        // D27{tok/share} = {wholeTok/wholeShare} * D27 * {tok/wholeTok} / {share/wholeShare}
-        BigInt(
-          sellLimit
-            .mul(D27d)
-            .mul(new Decimal(`1e${decimals[x]}`))
-            .div(D18d)
-            .toFixed(0)
-        ),
-        // D27{tok/share} = {wholeTok/wholeShare} * D27 * {tok/wholeTok} / {share/wholeShare}
-        BigInt(
-          buyLimit
-            .mul(D27d)
-            .mul(new Decimal(`1e${decimals[y]}`))
-            .div(D18d)
-            .toFixed(0)
-        ),
+        bnSellLimit,
+        bnBuyLimit,
         // D27{buyTok/sellTok} = {USD/wholeSellTok} / {USD/wholeBuyTok} * D27 * {buyTok/wholeBuyTok} / {sellTok/wholeSellTok}
-        BigInt(
+        bn(
           startPrice
             .mul(D27d)
             .mul(new Decimal(`1e${decimals[y]}`))
             .div(new Decimal(`1e${decimals[x]}`))
-            .toFixed(0)
         ),
         // D27{buyTok/sellTok} = {USD/wholeSellTok} / {USD/wholeBuyTok} * D27 * {buyTok/wholeBuyTok} / {sellTok/wholeSellTok}
-        BigInt(
+        bn(
           endPrice
             .mul(D27d)
             .mul(new Decimal(`1e${decimals[y]}`))
             .div(new Decimal(`1e${decimals[x]}`))
-            .toFixed(0)
         ),
-        BigInt(avgPriceError.mul(D18d).toFixed(0))
+        bn(avgPriceError.mul(D18d))
       )
     )
 
