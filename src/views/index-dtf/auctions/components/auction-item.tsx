@@ -10,7 +10,7 @@ import { indexDTFAtom } from '@/state/dtf/atoms'
 import { formatPercentage, getCurrentTime } from '@/utils'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { ArrowRight, Check, LoaderCircle, X } from 'lucide-react'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import { Address, erc20Abi, formatEther, formatUnits, parseUnits } from 'viem'
 import {
@@ -31,6 +31,8 @@ import {
   VOLATILITY_VALUES,
 } from '../atoms'
 import DecimalDisplay from '@/components/decimal-display'
+import { Toggle } from '@/components/ui/toggle'
+import { Switch } from '@/components/ui/switch'
 
 const TradeCompletedStatus = ({ className }: { className?: string }) => {
   return (
@@ -134,6 +136,7 @@ const TradeButton = ({
   const dtfSupply = useProposalDtfSupply()
 
   const isLoading = isPending || (!!data && !isSuccess && !isError)
+  const [ef, sef] = useState(false)
 
   const canLaunch =
     trade.state === TRADE_STATE.AVAILABLE ||
@@ -254,7 +257,8 @@ const TradeButton = ({
           targetBasket,
           prices,
           priceError,
-          proposedBasket.price
+          proposedBasket.price,
+          ef
         )
 
         writeContract({
@@ -304,20 +308,23 @@ const TradeButton = ({
   }
 
   return (
-    <Button
-      className={cn('sm:py-6 gap-1', className)}
-      disabled={isLoading || !canLaunch}
-      onClick={handleLaunch}
-    >
-      {isLoading ? (
-        <>
-          <LoaderCircle size={16} className="animate-spin" />
-          <span>Launching...</span>
-        </>
-      ) : (
-        'Launch'
-      )}
-    </Button>
+    <div className={cn('flex items-center gap-2', className)}>
+      <Switch checked={ef} onCheckedChange={sef} />
+      <Button
+        className={cn('sm:py-6 gap-1', className)}
+        disabled={isLoading || !canLaunch}
+        onClick={handleLaunch}
+      >
+        {isLoading ? (
+          <>
+            <LoaderCircle size={16} className="animate-spin" />
+            <span>Launching...</span>
+          </>
+        ) : (
+          'Launch'
+        )}
+      </Button>
+    </div>
   )
 }
 

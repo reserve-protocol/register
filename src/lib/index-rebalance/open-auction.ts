@@ -15,6 +15,7 @@ import { Auction } from './types'
  * @param _prices {USD/wholeTok} USD prices for each *whole* token
  * @param _priceError {1} Price error, cannot exceed 1
  * @param _dtfPrice {USD/wholeShare} DTF price
+ * @param ejectFully If true, will buy as much of the buy token as possible if the sellLimit is also 0
  * @return sellLimit D27{sellTok/share} min amount of sell token in basket
  * @return buyLimit D27{buyTok/share} max amount of buy token in basket
  * @return startPrice D27{buyTok/sellTok}
@@ -28,7 +29,8 @@ export const openAuction = (
   _targetBasket: bigint[],
   _prices: number[],
   _priceError: number[],
-  _dtfPrice: number
+  _dtfPrice: number,
+  ejectFully: boolean = false
 ): [bigint, bigint, bigint, bigint] => {
   console.log(
     'openAuction()',
@@ -148,7 +150,7 @@ export const openAuction = (
   if (buyLimit < auction.buyLimit.low) {
     buyLimit = auction.buyLimit.low
   }
-  if (sellLimit == 0n || buyLimit > auction.buyLimit.high) {
+  if ((sellLimit == 0n && ejectFully) || buyLimit > auction.buyLimit.high) {
     buyLimit = auction.buyLimit.high
   }
 
