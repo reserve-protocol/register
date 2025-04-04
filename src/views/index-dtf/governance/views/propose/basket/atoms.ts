@@ -1,5 +1,5 @@
 import dtfIndexAbi from '@/abis/dtf-index-abi'
-import { getAuctions } from '@/lib/index-rebalance/get-auctions'
+import { getAuctions } from '@/lib/index-rebalance/get-auctionts'
 import { indexDTFAtom, iTokenAddressAtom } from '@/state/dtf/atoms'
 import { Token } from '@/types'
 import { atom, Getter } from 'jotai'
