@@ -1,19 +1,22 @@
 import { Decimal } from 'decimal.js-light'
 
-import { D18d, D27d, ONE, TWO } from './numbers'
+import { bn, D18d, D27d, ONE, TWO } from './numbers'
 import { Auction } from './types'
 
 /**
- * Get the arguments needed to call `openAuction()`
+ * Get the arguments needed to call `openAuction()` by the auction launcher, after prices have already
+ * moved from the initial ones used to approve the auction.
  *
- * @param _supply {share} Ideal basket
+ * @param auction The auction constructed intially by governance
+ * @param _supply {share} Current supply
+ * @param tokens Addresses of tokens in the basket
  * @param decimals Decimals of each token
- * @param _targetBasket D18{1} Ideal basket
+ * @param _targetBasket D18{1} The ideal basket that governance *intended* to target, originally
  * @param _prices {USD/wholeTok} USD prices for each *whole* token
- * @param _priceError {1} Price error, cannot pass 1
+ * @param _priceError {1} Price error, cannot exceed 1
  * @param _dtfPrice {USD/wholeShare} DTF price
- * @return sellLimit D27{sellTok/share} min ratio of sell token to shares allowed, inclusive
- * @return buyLimit D27{buyTok/share} max ratio of buy token to shares allowed, exclusive
+ * @return sellLimit D27{sellTok/share} min amount of sell token in basket
+ * @return buyLimit D27{buyTok/share} max amount of buy token in basket
  * @return startPrice D27{buyTok/sellTok}
  * @return endPrice D27{buyTok/sellTok}
  */
@@ -27,6 +30,18 @@ export const openAuction = (
   _priceError: number[],
   _dtfPrice: number
 ): [bigint, bigint, bigint, bigint] => {
+  console.log(
+    'openAuction()',
+    auction,
+    _supply,
+    tokens,
+    decimals,
+    _targetBasket,
+    _prices,
+    _priceError,
+    _dtfPrice
+  )
+
   // convert price number inputs to bigints
 
   // {USD/wholeTok}
@@ -83,12 +98,8 @@ export const openAuction = (
   }
 
   // D27{buyTok/sellTok} = {buyTok/sellTok} / {1} * D27
-  const idealStartPrice = BigInt(
-    price.div(ONE.minus(avgPriceError)).mul(D27d).toFixed(0)
-  )
-  const idealEndPrice = BigInt(
-    price.mul(ONE.minus(avgPriceError)).mul(D27d).toFixed(0)
-  )
+  const idealStartPrice = bn(price.div(ONE.minus(avgPriceError)).mul(D27d))
+  const idealEndPrice = bn(price.mul(ONE.minus(avgPriceError)).mul(D27d))
 
   if (
     auction.prices.start > 0n &&
@@ -114,44 +125,40 @@ export const openAuction = (
     .div(supply)
 
   // D27{tok/share} = {wholeTok/wholeShare} * D27 * {tok/wholeTok} / {share/wholeShare}
-  const sellLimit = BigInt(
+  let sellLimit = bn(
     wholeSellLimit
       .mul(D27d)
       .mul(new Decimal(`1e${decimals[x]}`))
       .div(D18d)
-      .toFixed(0)
   )
 
-  const buyLimit = BigInt(
+  let buyLimit = bn(
     wholeBuyLimit
       .mul(D27d)
       .mul(new Decimal(`1e${decimals[y]}`))
       .div(D18d)
-      .toFixed(0)
   )
 
-  if (
-    sellLimit > auction.sellLimit.high ||
-    sellLimit < auction.sellLimit.low ||
-    buyLimit > auction.buyLimit.high ||
-    buyLimit < auction.buyLimit.low
-  ) {
-    console.log(
-      'sellLimit',
-      sellLimit,
-      auction.sellLimit.high,
-      auction.sellLimit.low
-    )
-    console.log(
-      'buyLimit',
-      buyLimit,
-      auction.buyLimit.high,
-      auction.buyLimit.low
-    )
-    throw new Error(
-      'sellLimit/buyLimit has deviated too much and is not in range'
-    )
+  if (sellLimit < auction.sellLimit.low) {
+    sellLimit = auction.sellLimit.low
   }
+  if (sellLimit > auction.sellLimit.high) {
+    sellLimit = auction.sellLimit.high
+  }
+  if (buyLimit < auction.buyLimit.low) {
+    buyLimit = auction.buyLimit.low
+  }
+  if (sellLimit == 0n || buyLimit > auction.buyLimit.high) {
+    buyLimit = auction.buyLimit.high
+  }
+
+  console.log(
+    'sellLimit',
+    sellLimit,
+    auction.sellLimit.high,
+    auction.sellLimit.low
+  )
+  console.log('buyLimit', buyLimit, auction.buyLimit.high, auction.buyLimit.low)
 
   return [sellLimit, buyLimit, idealStartPrice, idealEndPrice]
 }
