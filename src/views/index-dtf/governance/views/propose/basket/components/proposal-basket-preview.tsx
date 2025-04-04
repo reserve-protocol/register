@@ -112,7 +112,7 @@ const Header = ({ address }: { address: Address }) => {
 
   return (
     <div className="mx-4 py-4 flex items-center flex-wrap gap-2 border-b">
-      <h1 className="text-xl font-bold text-primary">Folio</h1>
+      <h1 className="text-xl font-bold text-primary">Basket Change</h1>
       <Link
         target="_blank"
         className="mr-auto"

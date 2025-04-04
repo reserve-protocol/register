@@ -4,7 +4,7 @@ import { atom } from 'jotai'
 import { atomWithReset } from 'jotai/utils'
 import { formatUnits } from 'viem'
 
-type StTokenExtended = IndexDTF['stToken'] & { chainId: number }
+export type StTokenExtended = IndexDTF['stToken'] & { chainId: number }
 
 export const stakingSidebarOpenAtom = atom(false)
 export const portfolioStTokenAtom = atomWithReset<StTokenExtended | undefined>(

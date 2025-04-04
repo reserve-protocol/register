@@ -276,7 +276,10 @@ export const ModifyLockAction = ({ stToken }: { stToken: StakingToken }) => {
       onClick={() => {
         setPortfolioSidebarOpen(false)
         setStakingSidebarOpen(true)
-        setPortfolioStToken(stTokenCompatible)
+        setPortfolioStToken({
+          ...stTokenCompatible,
+          rewardTokens: [],
+        })
       }}
     >
       Modify lock
