@@ -45,6 +45,7 @@ type Response = {
     launchTimeout: string
     start: string
     end: string
+    availableRuns: string
     approvedBlock: string
     approvedTimestamp: string
     launchedTimestamp: string
@@ -91,6 +92,7 @@ const query = gql`
       launchTimeout
       start
       end
+      availableRuns
       approvedBlockNumber
       approvedTimestamp
       launchedTimestamp
@@ -142,6 +144,7 @@ const useTrades = () => {
           launchTimeout: Number(trade.launchTimeout),
           start: Number(trade.start),
           end: Number(trade.end),
+          availableRuns: Number(trade.availableRuns),
           approvedTimestamp: Number(trade.approvedTimestamp),
           launchedTimestamp: Number(trade.launchedTimestamp),
           approvedBlockNumber: trade.approvedBlockNumber,
