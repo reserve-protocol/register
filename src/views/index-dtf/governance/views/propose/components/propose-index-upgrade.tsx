@@ -15,8 +15,7 @@ import {
   useWaitForTransactionReceipt,
   useWriteContract,
 } from 'wagmi'
-import { indexGovernanceOverviewAtom } from '../../../atoms'
-import { useVotingPower } from '../../../hooks/use-voting-power'
+import { useIsProposeAllowed } from '../../../hooks/use-is-propose-allowed'
 
 function compareVersion(x: string, y: string): number {
   return x.localeCompare(y, undefined, { numeric: true, sensitivity: 'base' })
@@ -26,22 +25,14 @@ const ProposeIndexUpgrade = () => {
   const navigate = useNavigate()
   const dtf = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
-  const votingPower = useVotingPower()
-  const governance = useAtomValue(indexGovernanceOverviewAtom)
-  const voteSupply = governance?.voteSupply
-  const proposalThreshold = dtf?.ownerGovernance?.proposalThreshold
-
-  const canPropose =
-    !!voteSupply &&
-    !!proposalThreshold &&
-    votingPower / voteSupply > proposalThreshold / 1e18
+  const isProposeAllowed = useIsProposeAllowed()
 
   const { data: version } = useReadContract({
     address: dtf?.id,
     abi: dtfIndexAbi,
     functionName: 'version',
     query: {
-      enabled: !!dtf?.id && canPropose,
+      enabled: !!dtf?.id && isProposeAllowed,
     },
   })
 
