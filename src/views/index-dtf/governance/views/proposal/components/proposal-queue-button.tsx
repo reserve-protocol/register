@@ -10,16 +10,22 @@ const ProposalQueue = () => {
   const governor = useAtomValue(proposalDetailAtom)?.governor
   const txArgs = useAtomValue(proposalTxArgsAtom)
 
-  const { write, isLoading, hash, isReady } = useContractWrite({
-    abi: Governance,
-    address: governor,
-    functionName: 'queue',
-    args: txArgs,
-  })
+  const { write, isLoading, hash, isReady, validationError } = useContractWrite(
+    {
+      abi: Governance,
+      address: governor,
+      functionName: 'queue',
+      args: txArgs,
+    }
+  )
   const { isMining } = useWatchTransaction({
     hash,
     label: 'Queue proposal',
   })
+
+  if (validationError) {
+    console.error('[QUEUE ERROR]', validationError)
+  }
 
   return (
     <TransactionButton

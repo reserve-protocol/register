@@ -57,6 +57,7 @@ const TokenValidationMessage = ({
 }
 
 const NewRewardToken = ({ id }: { id: string }) => {
+  const chainId = useAtomValue(chainIdAtom)
   const [value, setValue] = useState('')
   const debouncedValue = useDebounce(value, 500)
   const [addedRewardTokens, setAddedRewardTokens] = useAtom(
@@ -70,11 +71,13 @@ const NewRewardToken = ({ id }: { id: string }) => {
             address: debouncedValue as `0x${string}`,
             abi: erc20Abi,
             functionName: 'symbol',
+            chainId,
           },
           {
             address: debouncedValue as `0x${string}`,
             abi: erc20Abi,
             functionName: 'name',
+            chainId,
           },
         ]
       : undefined,
