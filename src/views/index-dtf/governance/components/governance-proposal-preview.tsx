@@ -223,38 +223,38 @@ const ContractProposalChanges = ({
 
           if (!Component) {
             return (
-              <div className="p-4">
+              <div
+                className="p-4"
+                key={`summary-${decodedCalldata.callData}-${index}`}
+              >
                 <h4 className="text-primary text-lg font-semibold mb-2">
                   {index + 1}/{decodedCalldatas.length}
                 </h4>
-                <RawCallPreview
-                  key={decodedCalldata.callData}
-                  call={decodedCalldata}
-                />
+                <RawCallPreview call={decodedCalldata} />
               </div>
             )
           }
 
           return (
-            <div className="p-4">
+            <div
+              className="p-4"
+              key={`summary-${decodedCalldata.callData}-${index}`}
+            >
               <h4 className="text-primary text-lg font-semibold mb-2">
                 {index + 1}/{decodedCalldatas.length}
               </h4>
-              <Component
-                key={decodedCalldata.callData}
-                decodedCalldata={decodedCalldata}
-              />
+              <Component decodedCalldata={decodedCalldata} />
             </div>
           )
         })}
       </TabsContent>
       <TabsContent className="m-0" value={TABS.RAW}>
         {decodedCalldatas.map((call, index) => (
-          <div className="p-4">
+          <div className="p-4" key={`raw-${call.callData}-${index}`}>
             <h4 className="text-primary text-lg font-semibold mb-2">
               {index + 1}/{decodedCalldatas.length}
             </h4>
-            <RawCallPreview key={call.callData} call={call} />
+            <RawCallPreview call={call} />
           </div>
         ))}
       </TabsContent>
@@ -329,7 +329,7 @@ const GovernanceProposalPreview = ({
       {Object.entries(dataByContract).map(([contract, decodedCalldatas]) =>
         alias?.[contract] === 'Folio' ? (
           <FolioChangePreview
-            key="folio"
+            key={`folio-${contract}`}
             decodedCalldata={decodedCalldatas}
             address={contract as Address}
           />

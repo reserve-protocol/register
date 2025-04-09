@@ -1,7 +1,6 @@
 import { PartialProposal } from '@/lib/governance'
 import { chainIdAtom, INDEX_DTF_SUBGRAPH_URL } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
-import { ChainId } from '@/utils/chains'
 import { useQuery } from '@tanstack/react-query'
 import request, { gql } from 'graphql-request'
 import { useAtomValue, useSetAtom } from 'jotai'
