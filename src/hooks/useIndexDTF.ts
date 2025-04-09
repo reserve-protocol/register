@@ -240,6 +240,11 @@ const useIndexDTF = (address: string | undefined, chainId: number) => {
           data.tradingGovernance.proposalThreshold * 100
       }
 
+      if (data.stToken?.governance) {
+        data.stToken.governance.proposalThreshold =
+          data.stToken.governance.proposalThreshold * 100
+      }
+
       return data
     },
     enabled: !!address,
