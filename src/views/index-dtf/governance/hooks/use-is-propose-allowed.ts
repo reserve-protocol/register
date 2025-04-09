@@ -14,6 +14,6 @@ export const useIsProposeAllowed = (): boolean | undefined => {
   return (
     !!voteSupply &&
     !!proposalThreshold &&
-    votingPower / voteSupply >= proposalThreshold / 1e18
+    votingPower / voteSupply >= proposalThreshold / 1e20
   )
 }
