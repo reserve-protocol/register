@@ -290,11 +290,6 @@ const TokenList = ({ showSelected = false }: TokenListProps) => {
         }
         const data = await response.json()
 
-        if (chainId === ChainId.Mainnet) {
-          return (data.tokens as Token[])
-            .filter((a) => Boolean(a.name.trim()))
-            .sort((a, b) => a.name.trim().localeCompare(b.name.trim()))
-        }
         return data as Token[]
       } catch (error) {
         console.error('Error fetching token list:', error)
