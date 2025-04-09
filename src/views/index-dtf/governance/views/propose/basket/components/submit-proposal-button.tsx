@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom'
 import { Address } from 'viem'
 import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
 import { basketProposalCalldatasAtom, proposalDescriptionAtom } from '../atoms'
+import { useIsProposeAllowed } from '@/views/index-dtf/governance/hooks/use-is-propose-allowed'
 
 const isProposalReady = atom((get) => {
   const wallet = get(walletAtom)
@@ -34,6 +35,8 @@ const SubmitProposalButton = () => {
   const calldatas = useAtomValue(basketProposalCalldatasAtom)
   const dtf = useAtomValue(iTokenAddressAtom)
   const govAddress = useAtomValue(tradingGovAddress)
+  const isProposeAllowed = useIsProposeAllowed()
+
   const { writeContract, isPending, data } = useWriteContract()
   const { isSuccess } = useWaitForTransactionReceipt({
     hash: data,
@@ -67,6 +70,14 @@ const SubmitProposalButton = () => {
         chainId,
       })
     }
+  }
+
+  if (isReady && !isProposeAllowed) {
+    return (
+      <Button disabled className="w-full" variant="default">
+        Not enough voting power
+      </Button>
+    )
   }
 
   return (

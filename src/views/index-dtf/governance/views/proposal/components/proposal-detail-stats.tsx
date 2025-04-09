@@ -47,13 +47,6 @@ const useProposalDetailStats = () => {
       {
         address: proposal?.governor ?? '0x1',
         abi: dtfIndexGovernance,
-        functionName: 'quorum',
-        args: [BigInt(proposal?.creationTime || '0')],
-        chainId,
-      },
-      {
-        address: proposal?.governor ?? '0x1',
-        abi: dtfIndexGovernance,
         functionName: 'proposalVotes',
         args: [BigInt(proposal?.id || '0')],
         chainId,
@@ -63,7 +56,7 @@ const useProposalDetailStats = () => {
     query: { enabled: !!proposal },
   })
 
-  const [quorum, votes] = data ?? [0n, [0n, 0n, 0n]]
+  const [votes] = data ?? [[0n, 0n, 0n]]
   const [againstVotes, forVotes, abstainVotes] = useMemo(
     () => votes.map((v) => +formatEther(v)),
     [votes]
@@ -71,10 +64,8 @@ const useProposalDetailStats = () => {
 
   const [quorumWeight, currentQuorum, quorumNeeded, quorumReached] =
     useMemo(() => {
-      const _quorumNeeded = Number(formatEther(quorum ?? 0n))
-
       if (!proposal) return [0, 0, 0, false]
-
+      const _quorumNeeded = proposal.quorumVotes
       const _currentQuorum = +forVotes + +abstainVotes
 
       if (!_quorumNeeded)
@@ -89,7 +80,7 @@ const useProposalDetailStats = () => {
       const _quorumReached = _quorumWeight > 1
 
       return [_quorumWeight, _currentQuorum, _quorumNeeded, _quorumReached]
-    }, [proposal, quorum, againstVotes, forVotes, abstainVotes])
+    }, [proposal, againstVotes, forVotes, abstainVotes])
 
   const [majorityWeight, majoritySupport] = useMemo(() => {
     const totalVotes = +forVotes + +againstVotes

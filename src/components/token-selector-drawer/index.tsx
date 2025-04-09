@@ -166,21 +166,14 @@ const TokenList = ({ showSelected = false }: TokenListProps) => {
     queryKey: ['zapper-tokens', chainId],
     queryFn: async () => {
       try {
-        const url =
-          chainId === ChainId.Mainnet
-            ? 'https://tokens.coingecko.com/ethereum/all.json'
-            : RESERVE_API + `zapper/tokens?chainId=${chainId}`
-        const response = await fetch(url)
+        const response = await fetch(
+          RESERVE_API + `zapper/tokens?chainId=${chainId}`
+        )
         if (!response.ok) {
           throw new Error('Failed to fetch token list')
         }
         const data = await response.json()
 
-        if (chainId === ChainId.Mainnet) {
-          return (data.tokens as Token[])
-            .filter((a) => Boolean(a.name.trim()))
-            .sort((a, b) => a.name.trim().localeCompare(b.name.trim()))
-        }
         return data as Token[]
       } catch (error) {
         console.error('Error fetching token list:', error)
