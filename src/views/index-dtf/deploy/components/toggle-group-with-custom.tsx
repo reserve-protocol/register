@@ -2,6 +2,7 @@ import { ReactNode } from 'react'
 import BasicInput from './basic-input'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { useFormContext } from 'react-hook-form'
+import { Input } from '@/components/ui/input'
 import WarningBanner from './warning-banner'
 
 type ToggleGroupWithCustomProps = {
@@ -14,19 +15,21 @@ type ToggleGroupWithCustomProps = {
   customLabel: string
   customPlaceholder: string
   warningMessage?: ReactNode
+  inputProps?: React.ComponentProps<typeof Input>
 }
 
 const CustomInput = ({
   fieldName,
   customLabel,
   customPlaceholder,
+  inputProps,
 }: Pick<
   ToggleGroupWithCustomProps,
-  'fieldName' | 'customLabel' | 'customPlaceholder'
+  'fieldName' | 'customLabel' | 'customPlaceholder' | 'inputProps'
 >) => {
   const { clearErrors } = useFormContext()
   return (
-    <div role="button" className="w-48">
+    <div className="w-48">
       <BasicInput
         type="number"
         fieldName={fieldName}
@@ -34,8 +37,8 @@ const CustomInput = ({
         placeholder={customPlaceholder}
         decimalPlaces={2}
         inputProps={{
-          step: 0.05,
           onKeyDown: () => clearErrors(fieldName),
+          ...inputProps,
         }}
       />
     </div>
@@ -88,6 +91,7 @@ const ToggleGroupWithCustom = ({
   customLabel,
   customPlaceholder,
   warningMessage,
+  inputProps,
 }: ToggleGroupWithCustomProps) => (
   <div
     className="w-full rounded-xl flex flex-col gap-3 justify-between p-4 bg-muted/70"
@@ -113,6 +117,7 @@ const ToggleGroupWithCustom = ({
         fieldName={fieldName}
         customLabel={customLabel}
         customPlaceholder={customPlaceholder}
+        inputProps={inputProps}
       />
     </div>
     {!!warningMessage && (
