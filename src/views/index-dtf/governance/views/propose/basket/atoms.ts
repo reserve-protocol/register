@@ -21,6 +21,7 @@ export const permissionlessLaunchingAtom = atom<number | undefined>(undefined)
 export interface IndexAssetShares {
   token: Token
   currentShares: string
+  currentUnits: string
 }
 
 export const dtfSupplyAtom = atom<bigint>(0n)
@@ -30,6 +31,7 @@ export const customPermissionlessLaunchingWindowAtom = atom('')
 
 // Editable shares
 export const proposedSharesAtom = atom<Record<string, string>>({})
+export const proposedUnitsAtom = atom<Record<string, string>>({})
 
 export const proposedIndexBasketAtom = atom<
   Record<string, IndexAssetShares> | undefined
