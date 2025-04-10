@@ -12,7 +12,7 @@ import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { ArrowRight, Check, LoaderCircle, X } from 'lucide-react'
 import { useEffect } from 'react'
 import { toast } from 'sonner'
-import { Address, erc20Abi, formatEther, formatUnits, parseUnits } from 'viem'
+import { Address, erc20Abi, formatUnits, parseUnits } from 'viem'
 import {
   useReadContract,
   useWaitForTransactionReceipt,
