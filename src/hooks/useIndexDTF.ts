@@ -65,6 +65,26 @@ type DTFQueryResponse = {
         address: Address
         decimals: number
       }
+      governance?: {
+        id: Address
+        votingDelay: number
+        votingPeriod: number
+        proposalThreshold: number
+        quorumNumerator: number
+        timelock: {
+          id: Address
+          guardians: Address[]
+          executionDelay: number
+        }
+      }
+      rewards: {
+        rewardToken: {
+          address: Address
+          name: string
+          symbol: string
+          decimals: number
+        }
+      }[]
     }
     totalRevenue: number
     protocolRevenue: number
@@ -139,6 +159,26 @@ const dtfQuery = gql`
           address
           decimals
         }
+        governance {
+          id
+          votingDelay
+          votingPeriod
+          proposalThreshold
+          quorumNumerator
+          timelock {
+            id
+            guardians
+            executionDelay
+          }
+        }
+        rewards(where: { active: true }) {
+          rewardToken {
+            address
+            name
+            symbol
+            decimals
+          }
+        }
       }
     }
   }
@@ -181,6 +221,13 @@ const useIndexDTF = (address: string | undefined, chainId: number) => {
         auctionDelay: Number(dtf.auctionDelay),
         auctionLength: Number(dtf.auctionLength),
         feeRecipients: parseFeeRecipients(dtf.feeRecipients),
+        stToken: dtf.stToken
+          ? {
+              ...dtf.stToken,
+              rewardTokens:
+                dtf.stToken?.rewards.map((reward) => reward.rewardToken) || [],
+            }
+          : undefined,
       }
 
       if (data.ownerGovernance) {
@@ -191,6 +238,11 @@ const useIndexDTF = (address: string | undefined, chainId: number) => {
       if (data.tradingGovernance) {
         data.tradingGovernance.proposalThreshold =
           data.tradingGovernance.proposalThreshold * 100
+      }
+
+      if (data.stToken?.governance) {
+        data.stToken.governance.proposalThreshold =
+          data.stToken.governance.proposalThreshold * 100
       }
 
       return data

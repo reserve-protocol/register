@@ -170,6 +170,7 @@ export const GOVERNANCE_PROPOSAL_TYPES = {
   FEES: 'fees',
   ROLES: 'roles',
   OTHER: 'other',
+  WHITELIST: 'whitelist',
 }
 
 export const ROUTES = Object.freeze({

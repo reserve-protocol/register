@@ -84,7 +84,7 @@ export const getProposalState = (proposal: PartialProposal): VotingState => {
       const againstVotes = +proposal.againstWeightedVotes
       const quorum = +proposal.quorumVotes
 
-      if (againstVotes > forVotes) {
+      if (againstVotes > forVotes || !forVotes) {
         state.state = PROPOSAL_STATES.DEFEATED
       } else if (forVotes + abstainVotes < quorum) {
         state.state = PROPOSAL_STATES.QUORUM_NOT_REACHED
@@ -100,7 +100,9 @@ export const getProposalState = (proposal: PartialProposal): VotingState => {
     +proposal.forWeightedVotes +
     +proposal.againstWeightedVotes +
     +proposal.abstainWeightedVotes
-  state.quorum = +proposal.forWeightedVotes >= +proposal.quorumVotes
+  state.quorum =
+    !!Number(proposal.forWeightedVotes) &&
+    +proposal.forWeightedVotes >= +proposal.quorumVotes
 
   if (totalVotes) {
     state.for = (+proposal.forWeightedVotes / totalVotes) * 100

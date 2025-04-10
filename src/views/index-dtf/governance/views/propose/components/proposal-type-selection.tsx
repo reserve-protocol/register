@@ -1,6 +1,5 @@
-import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
-import { ROUTES, GOVERNANCE_PROPOSAL_TYPES } from '@/utils/constants'
+import { GOVERNANCE_PROPOSAL_TYPES, ROUTES } from '@/utils/constants'
 import { Trans } from '@lingui/macro'
 import {
   ArrowLeft,
@@ -35,7 +34,7 @@ const proposalTypes = [
     icon: <LayoutGrid size={16} />,
     title: 'Other',
     route: GOVERNANCE_PROPOSAL_TYPES.OTHER,
-    enabled: false,
+    enabled: true,
   },
 ]
 
