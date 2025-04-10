@@ -203,6 +203,47 @@ export default [
   },
   {
     type: 'function',
+    name: 'approveAuction',
+    inputs: [
+      { name: 'sell', type: 'address', internalType: 'contract IERC20' },
+      { name: 'buy', type: 'address', internalType: 'contract IERC20' },
+      {
+        name: 'sellLimit',
+        type: 'tuple',
+        internalType: 'struct IFolio.BasketRange',
+        components: [
+          { name: 'spot', type: 'uint256', internalType: 'uint256' },
+          { name: 'low', type: 'uint256', internalType: 'uint256' },
+          { name: 'high', type: 'uint256', internalType: 'uint256' },
+        ],
+      },
+      {
+        name: 'buyLimit',
+        type: 'tuple',
+        internalType: 'struct IFolio.BasketRange',
+        components: [
+          { name: 'spot', type: 'uint256', internalType: 'uint256' },
+          { name: 'low', type: 'uint256', internalType: 'uint256' },
+          { name: 'high', type: 'uint256', internalType: 'uint256' },
+        ],
+      },
+      {
+        name: 'prices',
+        type: 'tuple',
+        internalType: 'struct IFolio.Prices',
+        components: [
+          { name: 'start', type: 'uint256', internalType: 'uint256' },
+          { name: 'end', type: 'uint256', internalType: 'uint256' },
+        ],
+      },
+      { name: 'ttl', type: 'uint256', internalType: 'uint256' },
+      { name: 'runs', type: 'uint256', internalType: 'uint256' },
+    ],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
     name: 'auctionDelay',
     inputs: [],
     outputs: [
@@ -992,6 +1033,7 @@ export default [
     outputs: [],
     stateMutability: 'nonpayable',
   },
+
   {
     type: 'function',
     name: 'openAuctionPermissionlessly',
