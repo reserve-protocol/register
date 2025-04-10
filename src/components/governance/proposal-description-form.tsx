@@ -1,22 +1,23 @@
+import { ArrowLeftIcon } from 'lucide-react'
 import { lazy, Suspense, useEffect, useState } from 'react'
+import { Button } from '../ui/button'
 import { Input } from '../ui/input'
 import { Skeleton } from '../ui/skeleton'
-import { Button } from '../ui/button'
-import { ArrowLeftIcon } from 'lucide-react'
-import { useSetAtom } from 'jotai'
-import { isProposalConfirmedAtom } from '@/views/index-dtf/governance/views/propose/basket/atoms'
 
 const MDEditor = lazy(() => import('@uiw/react-md-editor'))
 
 interface IProposalDescriptionForm {
   onChange: (description: string) => void // Proposal description
+  onBack: () => void
 }
 
-const ProposalDescriptionForm = ({ onChange }: IProposalDescriptionForm) => {
+const ProposalDescriptionForm = ({
+  onChange,
+  onBack,
+}: IProposalDescriptionForm) => {
   const [title, setTitle] = useState('')
   const [rfc, setRFC] = useState('')
   const [description, setDescription] = useState<string | undefined>('')
-  const setIsConfirmed = useSetAtom(isProposalConfirmedAtom)
 
   useEffect(() => {
     if (!title) return onChange('')
@@ -29,8 +30,8 @@ const ProposalDescriptionForm = ({ onChange }: IProposalDescriptionForm) => {
       <Button
         variant="outline"
         size="icon-rounded"
-        className="mb-[-4px]"
-        onClick={() => setIsConfirmed(false)}
+        className="-mb-1 ml-1"
+        onClick={onBack}
       >
         <ArrowLeftIcon size={24} strokeWidth={1.5} />
       </Button>
