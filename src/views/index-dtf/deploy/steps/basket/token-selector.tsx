@@ -42,7 +42,6 @@ import {
   REGISTER_FEEDBACK,
   RESERVE_API,
 } from '@/utils/constants'
-import { ChainId } from '@/utils/chains'
 
 interface TokenButtonProps {
   variant: 'primary' | 'secondary'
