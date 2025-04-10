@@ -17,6 +17,7 @@ const defaultValues: ManageFormValues = {
     description: '',
     notesFromCreator: '',
     tags: [],
+    basketType: 'percentage-based',
   },
   creator: {
     name: '',

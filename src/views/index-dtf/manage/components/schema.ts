@@ -28,6 +28,10 @@ export const manageFormSchema = z.object({
     tags: z
       .array(z.object({ value: z.string(), label: z.string() }))
       .optional(),
+    basketType: z
+      .enum(['unit-based', 'percentage-based'])
+      .optional()
+      .default('percentage-based'),
   }),
   creator: z.object({
     name: z.string().optional(),
