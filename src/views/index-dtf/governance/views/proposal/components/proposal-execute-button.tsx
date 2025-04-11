@@ -1,13 +1,11 @@
-import { proposalDetailAtom, proposalTxArgsAtom } from '../atom'
 import TransactionButton from '@/components/old/button/TransactionButton'
+import { getCurrentTime } from '@/utils'
 import { t } from '@lingui/macro'
-import Governance from 'abis/Governance'
+import dtfIndexGovernanceAbi from 'abis/dtf-index-governance'
 import useContractWrite from 'hooks/useContractWrite'
 import useWatchTransaction from 'hooks/useWatchTransaction'
 import { atom, useAtomValue } from 'jotai'
-import { rTokenGovernanceAtom } from 'state/atoms'
-import { getCurrentTime } from '@/utils'
-import { Address, Hex, keccak256, toBytes } from 'viem'
+import { proposalDetailAtom, proposalTxArgsAtom } from '../atom'
 
 const canExecuteAtom = atom((get) => {
   const timestamp = getCurrentTime()
@@ -23,13 +21,15 @@ const ProposalExecute = () => {
   const governor = proposal?.governor
   const txArgs = useAtomValue(proposalTxArgsAtom)
 
-  const { write, isLoading, hash, isReady } = useContractWrite({
-    abi: Governance,
-    address: governor && canExecute ? governor : undefined,
-    functionName: 'execute',
-    value: 0n,
-    args: txArgs,
-  })
+  const { write, isLoading, hash, isReady, validationError } = useContractWrite(
+    {
+      abi: dtfIndexGovernanceAbi,
+      address: governor && canExecute ? governor : undefined,
+      functionName: 'execute',
+      value: 0n,
+      args: txArgs,
+    }
+  )
 
   const { isMining, status } = useWatchTransaction({
     hash,

@@ -1,36 +1,46 @@
 import dtfIndexAbi from '@/abis/dtf-index-abi'
+import dtfIndexAbiV2 from '@/abis/dtf-index-abi-v2'
+import DecimalDisplay from '@/components/decimal-display'
 import TokenLogo from '@/components/token-logo'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
+import { getBasketTrackingDTF } from '@/lib/index-rebalance/get-basket-by-trades'
 import { openAuction } from '@/lib/index-rebalance/open-auction'
+import { Auction } from '@/lib/index-rebalance/types'
 import { cn } from '@/lib/utils'
 import { chainIdAtom } from '@/state/atoms'
-import { indexDTFAtom, indexDTFPriceAtom } from '@/state/dtf/atoms'
+import {
+  indexDTFAtom,
+  indexDTFPriceAtom,
+  indexDTFVersionAtom,
+} from '@/state/dtf/atoms'
 import { formatPercentage, getCurrentTime } from '@/utils'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { ArrowRight, Check, LoaderCircle, X } from 'lucide-react'
 import { useEffect } from 'react'
 import { toast } from 'sonner'
-import { Address, erc20Abi, formatEther, formatUnits, parseUnits } from 'viem'
+import { Address, erc20Abi, formatUnits, parseEther, parseUnits } from 'viem'
 import {
   useReadContract,
   useWaitForTransactionReceipt,
   useWriteContract,
 } from 'wagmi'
+import { isUnitBasketAtom } from '../../governance/views/propose/basket/atoms'
 import {
   AssetTrade,
   dtfTradeMapAtom,
+  dtfTradesByProposalMapAtom,
   dtfTradeVolatilityAtom,
   expectedBasketAtom,
   isAuctionLauncherAtom,
   proposedBasketAtom,
+  selectedProposalAtom,
   setTradeVolatilityAtom,
   TRADE_STATE,
   VOLATILITY_OPTIONS,
   VOLATILITY_VALUES,
 } from '../atoms'
-import DecimalDisplay from '@/components/decimal-display'
 
 const TradeCompletedStatus = ({ className }: { className?: string }) => {
   return (
@@ -113,6 +123,32 @@ const useProposalDtfSupply = () => {
   return supply
 }
 
+const currentProposalAuctionsAtom = atom<Auction[] | undefined>((get) => {
+  const proposal = get(selectedProposalAtom)
+  const proposals = get(dtfTradesByProposalMapAtom)
+
+  if (!proposal || !proposals) return undefined
+
+  return proposals[proposal].trades.map((trade) => ({
+    sell: trade.sell.address,
+    buy: trade.buy.address,
+    sellLimit: {
+      spot: trade.sellLimitSpot,
+      low: trade.sellLimitLow,
+      high: trade.sellLimitHigh,
+    },
+    buyLimit: {
+      spot: trade.buyLimitSpot,
+      low: trade.buyLimitLow,
+      high: trade.buyLimitHigh,
+    },
+    prices: {
+      start: trade.startPrice,
+      end: trade.endPrice,
+    },
+  }))
+})
+
 const TradeButton = ({
   trade,
   className,
@@ -120,6 +156,7 @@ const TradeButton = ({
   trade: AssetTrade
   className?: string
 }) => {
+  const indexDTF = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
   const proposedBasket = useAtomValue(proposedBasketAtom)
   const expectedBasket = useAtomValue(expectedBasketAtom)
@@ -131,8 +168,31 @@ const TradeButton = ({
     hash: data,
     chainId,
   })
+  const isUnitBasket = useAtomValue(isUnitBasketAtom)
   const dtfSupply = useProposalDtfSupply()
   const dtfPrice = useAtomValue(indexDTFPriceAtom)
+  const version = useAtomValue(indexDTFVersionAtom)
+  const currentProposalAuctions = useAtomValue(currentProposalAuctionsAtom)
+  const { data: assetDistribution } = useReadContract({
+    abi: dtfIndexAbi,
+    address: indexDTF?.id,
+    functionName: 'toAssets',
+    args: [parseEther('1'), 0],
+    chainId,
+    query: {
+      select: (data) => {
+        const [assets, amounts] = data
+
+        return assets.reduce(
+          (acc, asset, index) => {
+            acc[asset.toLowerCase()] = amounts[index]
+            return acc
+          },
+          {} as Record<string, bigint>
+        )
+      },
+    },
+  })
 
   const isLoading = isPending || (!!data && !isSuccess && !isError)
 
@@ -140,6 +200,8 @@ const TradeButton = ({
     trade.state === TRADE_STATE.AVAILABLE ||
     (isAuctionLauncher &&
       trade.state === TRADE_STATE.PENDING &&
+      trade.availableRuns > 1 &&
+      trade.boughtAmount < trade.buyLimitSpot &&
       proposedBasket &&
       dtfSupply)
 
@@ -151,7 +213,8 @@ const TradeButton = ({
   }, [isSuccess])
 
   const handleLaunch = () => {
-    if (!dtfPrice || !canLaunch || getCurrentTime() >= trade.launchTimeout + 5) return
+    if (!dtfPrice || !canLaunch || getCurrentTime() >= trade.launchTimeout + 5)
+      return
 
     // Trade id has the dtfId as prefix
     const [dtfAddress, tradeId] = trade.id.split('-')
@@ -164,7 +227,7 @@ const TradeButton = ({
       try {
         const volatility =
           VOLATILITY_VALUES[tradeVolatility[trade.id] || VOLATILITY_OPTIONS.LOW]
-        const { tokens, decimals, targetBasket, prices, priceError } =
+        let { tokens, decimals, targetBasket, prices, priceError } =
           Object.values(proposedBasket.basket).reduce(
             (acc, asset) => {
               acc.tokens.push(asset.token.address)
@@ -192,6 +255,21 @@ const TradeButton = ({
               priceError: number[]
             }
           )
+
+        // TODO: This is a temp hack to consider the unit basket case
+        if (isUnitBasket && assetDistribution && currentProposalAuctions) {
+          const amounts = tokens.map(
+            (token) => assetDistribution[token.toLowerCase()] || 0n
+          )
+
+          targetBasket = getBasketTrackingDTF(
+            currentProposalAuctions,
+            tokens,
+            amounts,
+            decimals,
+            prices
+          )
+        }
 
         console.log('proposed basket', proposedBasket)
         console.log('expected basket', expectedBasket)
@@ -249,6 +327,10 @@ const TradeButton = ({
               end: trade.endPrice,
             },
           },
+          {
+            start: trade.approvedStartPrice,
+            end: trade.approvedEndPrice,
+          },
           dtfSupply,
           tokens,
           decimals,
@@ -269,12 +351,21 @@ const TradeButton = ({
         console.error('error running auction', e)
       }
     } else {
-      writeContract({
-        address: dtfAddress as Address,
-        abi: dtfIndexAbi,
-        functionName: 'openAuctionPermissionlessly',
-        args: [BigInt(tradeId)],
-      })
+      if (version === '2.0.0') {
+        writeContract({
+          address: dtfAddress as Address,
+          abi: dtfIndexAbiV2,
+          functionName: 'openAuctionUnrestricted',
+          args: [BigInt(tradeId)],
+        })
+      } else {
+        writeContract({
+          address: dtfAddress as Address,
+          abi: dtfIndexAbi,
+          functionName: 'openAuctionPermissionlessly',
+          args: [BigInt(tradeId)],
+        })
+      }
     }
   }
 
