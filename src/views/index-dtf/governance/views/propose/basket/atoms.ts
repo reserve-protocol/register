@@ -1,14 +1,16 @@
 import dtfIndexAbi from '@/abis/dtf-index-abi'
+import dtfIndexAbiV2 from '@/abis/dtf-index-abi-v2'
 import { getAuctions } from '@/lib/index-rebalance/get-auctionts'
 import { getCurrentBasket } from '@/lib/index-rebalance/utils'
 import {
   indexDTFAtom,
   indexDTFBrandAtom,
+  indexDTFVersionAtom,
   iTokenAddressAtom,
 } from '@/state/dtf/atoms'
 import { Token } from '@/types'
 import { atom, Getter } from 'jotai'
-import { Address, encodeFunctionData, Hex, parseUnits, formatUnits } from 'viem'
+import { Address, encodeFunctionData, formatUnits, Hex, parseUnits } from 'viem'
 
 export type Step = 'basket' | 'prices' | 'expiration' | 'confirmation'
 export type TradeRangeOption = 'defer' | 'include'
@@ -216,13 +218,11 @@ export const ttlATom = atom((get) => {
   return isNaN(window) ? tradeDelay : tradeDelay + BigInt(Math.round(window))
 })
 
-export const versionAtom = atom('1.0.0')
-
 export const basketProposalCalldatasAtom = atom<Hex[] | undefined>((get) => {
   const deferredTrades = get(proposedInxexTradesAtom)
   const tradeRangeOption = get(tradeRangeOptionAtom)
   const isConfirmed = get(isProposalConfirmedAtom)
-  const version = get(versionAtom)
+  const version = get(indexDTFVersionAtom)
   const ttl = get(ttlATom)
 
   if (!deferredTrades?.length || !isConfirmed || !tradeRangeOption)
@@ -257,100 +257,7 @@ export const basketProposalCalldatasAtom = atom<Hex[] | undefined>((get) => {
     }
 
     return encodeFunctionData({
-      abi:
-        version === '2.0.0'
-          ? [
-              {
-                type: 'function',
-                name: 'approveAuction',
-                inputs: [
-                  {
-                    name: 'sell',
-                    type: 'address',
-                    internalType: 'contract IERC20',
-                  },
-                  {
-                    name: 'buy',
-                    type: 'address',
-                    internalType: 'contract IERC20',
-                  },
-                  {
-                    name: 'sellLimit',
-                    type: 'tuple',
-                    internalType: 'struct IFolio.BasketRange',
-                    components: [
-                      {
-                        name: 'spot',
-                        type: 'uint256',
-                        internalType: 'uint256',
-                      },
-                      {
-                        name: 'low',
-                        type: 'uint256',
-                        internalType: 'uint256',
-                      },
-                      {
-                        name: 'high',
-                        type: 'uint256',
-                        internalType: 'uint256',
-                      },
-                    ],
-                  },
-                  {
-                    name: 'buyLimit',
-                    type: 'tuple',
-                    internalType: 'struct IFolio.BasketRange',
-                    components: [
-                      {
-                        name: 'spot',
-                        type: 'uint256',
-                        internalType: 'uint256',
-                      },
-                      {
-                        name: 'low',
-                        type: 'uint256',
-                        internalType: 'uint256',
-                      },
-                      {
-                        name: 'high',
-                        type: 'uint256',
-                        internalType: 'uint256',
-                      },
-                    ],
-                  },
-                  {
-                    name: 'prices',
-                    type: 'tuple',
-                    internalType: 'struct IFolio.Prices',
-                    components: [
-                      {
-                        name: 'start',
-                        type: 'uint256',
-                        internalType: 'uint256',
-                      },
-                      {
-                        name: 'end',
-                        type: 'uint256',
-                        internalType: 'uint256',
-                      },
-                    ],
-                  },
-                  {
-                    name: 'ttl',
-                    type: 'uint256',
-                    internalType: 'uint256',
-                  },
-                  {
-                    name: 'runs',
-                    type: 'uint256',
-                    internalType: 'uint256',
-                  },
-                ],
-                outputs: [],
-                stateMutability: 'nonpayable',
-              },
-            ]
-          : dtfIndexAbi,
+      abi: version === '2.0.0' ? dtfIndexAbiV2 : dtfIndexAbi,
       functionName: 'approveAuction',
       args: args as any,
     })
