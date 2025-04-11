@@ -33,6 +33,8 @@ type Response = {
     buy: Token
     soldAmount: string
     boughtAmount: string
+    approvedStartPrice: string
+    approvedEndPrice: string
     startPrice: string
     endPrice: string
     sellLimitSpot: string
@@ -80,6 +82,8 @@ const query = gql`
       }
       soldAmount
       boughtAmount
+      approvedStartPrice
+      approvedEndPrice
       startPrice
       endPrice
       sellLimitSpot
@@ -134,6 +138,8 @@ const useTrades = () => {
           boughtAmount: BigInt(trade.boughtAmount),
           startPrice: BigInt(trade.startPrice),
           endPrice: BigInt(trade.endPrice),
+          approvedStartPrice: BigInt(trade.approvedStartPrice),
+          approvedEndPrice: BigInt(trade.approvedEndPrice),
           sellLimitSpot: BigInt(trade.sellLimitSpot),
           sellLimitHigh: BigInt(trade.sellLimitHigh),
           sellLimitLow: BigInt(trade.sellLimitLow),
