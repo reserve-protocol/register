@@ -1,5 +1,6 @@
 import dtfIndexAbi from '@/abis/dtf-index-abi'
 import { getAuctions } from '@/lib/index-rebalance/get-auctionts'
+import { getCurrentBasket } from '@/lib/index-rebalance/utils'
 import { indexDTFAtom, iTokenAddressAtom } from '@/state/dtf/atoms'
 import { Token } from '@/types'
 import { atom, Getter } from 'jotai'
@@ -24,6 +25,13 @@ export interface IndexAssetShares {
   currentUnits: string
 }
 
+export const proposedIndexBasketAtom = atom<
+  Record<string, IndexAssetShares> | undefined
+>(undefined)
+
+// Map token address to price
+export const priceMapAtom = atom<Record<string, number>>({})
+
 export const dtfSupplyAtom = atom<bigint>(0n)
 export const dtfTradeDelay = atom<bigint>(0n)
 export const permissionlessLaunchingWindowAtom = atom('24')
@@ -33,12 +41,47 @@ export const customPermissionlessLaunchingWindowAtom = atom('')
 export const proposedSharesAtom = atom<Record<string, string>>({})
 export const proposedUnitsAtom = atom<Record<string, string>>({})
 
-export const proposedIndexBasketAtom = atom<
-  Record<string, IndexAssetShares> | undefined
->(undefined)
+export const derivedProposedSharesAtom = atom((get) => {
+  try {
+    const proposedUnits = get(proposedUnitsAtom)
+    const proposedIndexBasket = get(proposedIndexBasketAtom)
+    const priceMap = get(priceMapAtom)
 
-// Map token address to price
-export const priceMapAtom = atom<Record<string, number>>({})
+    if (!proposedIndexBasket || !priceMap) return undefined
+
+    // Check if any of the proposed units are different than the current units on the basket
+    const isDifferent = Object.keys(proposedUnits).some(
+      (token) =>
+        proposedUnits[token] !== proposedIndexBasket[token].currentUnits
+    )
+
+    if (!isDifferent) return undefined
+
+    const keys = Object.keys(proposedUnits)
+    const bals: bigint[] = []
+    const decimals: bigint[] = []
+    const prices: number[] = []
+
+    for (const asset of keys) {
+      const d = proposedIndexBasket[asset].token.decimals || 18
+      bals.push(parseUnits(proposedUnits[asset], d))
+      decimals.push(BigInt(d))
+      prices.push(priceMap[asset] || 0)
+    }
+
+    const targetBasket = getCurrentBasket(bals, decimals, prices)
+
+    return keys.reduce(
+      (acc, token, index) => {
+        acc[token] = targetBasket[index]
+        return acc
+      },
+      {} as Record<string, bigint>
+    )
+  } catch (e) {
+    return undefined
+  }
+})
 
 export const proposedIndexBasketStateAtom = atom<{
   changed: boolean
