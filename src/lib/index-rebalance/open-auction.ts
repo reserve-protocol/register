@@ -8,6 +8,7 @@ import { Auction } from './types'
  * moved from the initial ones used to approve the auction.
  *
  * @param auction The auction constructed intially by governance
+ * @param initialPrices D27{buyTok/sellTok} The initialPrices field of the AuctionDetails struct
  * @param _supply {share} Current supply
  * @param tokens Addresses of tokens in the basket
  * @param decimals Decimals of each token
@@ -23,6 +24,7 @@ import { Auction } from './types'
  */
 export const openAuction = (
   auction: Auction,
+  initialPrices: { start: bigint; end: bigint },
   _supply: bigint,
   tokens: string[],
   decimals: bigint[],
@@ -103,25 +105,28 @@ export const openAuction = (
   }
 
   // D27{buyTok/sellTok} = {buyTok/sellTok} / {1} * D27
-  const startPrice = bn(price.div(ONE.minus(avgPriceError)).mul(D27d))
+  let startPrice = bn(price.div(ONE.minus(avgPriceError)).mul(D27d))
   let endPrice = bn(price.mul(ONE.minus(avgPriceError)).mul(D27d))
-
-  if (endPrice < auction.prices.end) {
-    endPrice = auction.prices.end
-  }
 
   // check spot price against 50x multiple to keep headroom for price to move more; don't want to lose value
   if (
-    auction.prices.start > 0n &&
-    auction.prices.end > 0n &&
-    (spotPrice > auction.prices.start * 50n ||
-      startPrice > auction.prices.start * 100n ||
-      spotPrice < auction.prices.end)
+    initialPrices.start > 0n &&
+    initialPrices.end > 0n &&
+    (spotPrice > initialPrices.start * 50n ||
+      startPrice > initialPrices.start * 100n ||
+      spotPrice < initialPrices.end)
   ) {
-    console.log('startPrice', startPrice, auction.prices.start)
-    console.log('endPrice', endPrice, auction.prices.end)
+    console.log('startPrice', startPrice, initialPrices.start)
+    console.log('endPrice', endPrice, initialPrices.end)
     console.log('spotPrice', spotPrice)
     throw new Error('spot price has moved outside valid auction price range')
+  }
+
+  if (startPrice < initialPrices.start) {
+    startPrice = initialPrices.start
+  }
+  if (endPrice < initialPrices.end) {
+    endPrice = initialPrices.end
   }
 
   // calculate sellLimit/buyLimit

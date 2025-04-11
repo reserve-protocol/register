@@ -153,7 +153,8 @@ const TradeButton = ({
   }, [isSuccess])
 
   const handleLaunch = () => {
-    if (!dtfPrice || !canLaunch || getCurrentTime() >= trade.launchTimeout + 5) return
+    if (!dtfPrice || !canLaunch || getCurrentTime() >= trade.launchTimeout + 5)
+      return
 
     // Trade id has the dtfId as prefix
     const [dtfAddress, tradeId] = trade.id.split('-')
@@ -250,6 +251,10 @@ const TradeButton = ({
               start: trade.startPrice,
               end: trade.endPrice,
             },
+          },
+          {
+            start: trade.approvedStartPrice,
+            end: trade.approvedEndPrice,
           },
           dtfSupply,
           tokens,

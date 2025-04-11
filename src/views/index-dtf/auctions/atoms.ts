@@ -55,6 +55,8 @@ export type AssetTrade = {
   boughtAmount: bigint
   startPrice: bigint
   endPrice: bigint
+  approvedStartPrice: bigint
+  approvedEndPrice: bigint
   sellLimitSpot: bigint
   sellLimitHigh: bigint
   sellLimitLow: bigint
