@@ -12,6 +12,6 @@ export const ZERO = new Decimal('0')
 export const ONE = new Decimal('1')
 export const TWO = new Decimal('2')
 
-export const bn = (str: string): bigint => {
+export const bn = (str: string | Decimal): bigint => {
   return BigInt(new Decimal(str).toFixed(0))
 }
