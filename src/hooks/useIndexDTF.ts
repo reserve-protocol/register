@@ -7,6 +7,7 @@ import { Address, formatEther } from 'viem'
 type DTFQueryResponse = {
   dtf: {
     id: Address
+    proxyAdmin: Address
     timestamp: number
     deployer: Address
     ownerAddress: Address
@@ -97,6 +98,7 @@ const dtfQuery = gql`
   query getDTF($id: String!) {
     dtf(id: $id) {
       id
+      proxyAdmin
       timestamp
       deployer
       ownerAddress
