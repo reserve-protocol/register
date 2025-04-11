@@ -27,6 +27,7 @@ import {
   derivedProposedSharesAtom,
   IndexAssetShares,
   isProposedBasketValidAtom,
+  isUnitBasketAtom,
   proposedIndexBasketAtom,
   proposedIndexBasketStateAtom,
   proposedSharesAtom,
@@ -41,12 +42,6 @@ const assetsAtom = atom((get) => {
   if (!proposedBasket) return { isLoading: true, assets: [] }
 
   return { isLoading: false, assets: Object.values(proposedBasket) }
-})
-
-const isUnitBasketAtom = atom((get) => {
-  const brandData = get(indexDTFBrandAtom)
-
-  return brandData?.dtf.basketType === 'unit-based'
 })
 
 const NewSharesCell = ({ asset }: { asset: string }) => {
