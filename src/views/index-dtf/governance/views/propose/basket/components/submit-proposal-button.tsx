@@ -5,7 +5,7 @@ import { indexDTFAtom, iTokenAddressAtom } from '@/state/dtf/atoms'
 import { ROUTES } from '@/utils/constants'
 import { atom, useAtomValue } from 'jotai'
 import { Loader2 } from 'lucide-react'
-import { useEffect } from 'react'
+import { memo, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Address } from 'viem'
 import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
@@ -18,13 +18,27 @@ const isProposalReady = atom((get) => {
   const calldatas = get(basketProposalCalldatasAtom)
   const dtf = get(iTokenAddressAtom)
 
-  return wallet && description && calldatas?.length && dtf
+  return Boolean(wallet && description && calldatas?.length && dtf)
 })
 
 const tradingGovAddress = atom((get) => {
   const dtfData = get(indexDTFAtom)
 
   return dtfData?.tradingGovernance?.id
+})
+
+const ProposeGatekeeper = memo(() => {
+  const { isProposeAllowed, isLoading } = useIsProposeAllowed()
+
+  if (!isLoading && !isProposeAllowed) {
+    return (
+      <Button disabled className="w-full" variant="default">
+        Not enough voting power
+      </Button>
+    )
+  }
+
+  return <SubmitProposalButton />
 })
 
 const SubmitProposalButton = () => {
@@ -35,7 +49,6 @@ const SubmitProposalButton = () => {
   const calldatas = useAtomValue(basketProposalCalldatasAtom)
   const dtf = useAtomValue(iTokenAddressAtom)
   const govAddress = useAtomValue(tradingGovAddress)
-  const isProposeAllowed = useIsProposeAllowed()
 
   const { writeContract, isPending, data } = useWriteContract()
   const { isSuccess } = useWaitForTransactionReceipt({
@@ -72,14 +85,6 @@ const SubmitProposalButton = () => {
     }
   }
 
-  if (isReady && !isProposeAllowed) {
-    return (
-      <Button disabled className="w-full" variant="default">
-        Not enough voting power
-      </Button>
-    )
-  }
-
   return (
     <Button
       disabled={!isReady || isPending || !!data || !govAddress}
@@ -97,4 +102,4 @@ const SubmitProposalButton = () => {
   )
 }
 
-export default SubmitProposalButton
+export default ProposeGatekeeper
