@@ -123,17 +123,6 @@ const useProposalDtfSupply = () => {
   return supply
 }
 
-const currentProposalBlockNumberAtom = atom((get) => {
-  const proposal = get(selectedProposalAtom)
-  const proposals = get(dtfTradesByProposalMapAtom)
-
-  if (!proposal || !proposals) return undefined
-
-  return proposals[proposal].proposal.creationBlock
-    ? BigInt(proposals[proposal].proposal.creationBlock)
-    : undefined
-})
-
 const currentProposalAuctionsAtom = atom<Auction[] | undefined>((get) => {
   const proposal = get(selectedProposalAtom)
   const proposals = get(dtfTradesByProposalMapAtom)
@@ -183,7 +172,6 @@ const TradeButton = ({
   const dtfSupply = useProposalDtfSupply()
   const dtfPrice = useAtomValue(indexDTFPriceAtom)
   const version = useAtomValue(indexDTFVersionAtom)
-  const snapshotBlockNumber = useAtomValue(currentProposalBlockNumberAtom)
   const currentProposalAuctions = useAtomValue(currentProposalAuctionsAtom)
   const { data: assetDistribution } = useReadContract({
     abi: dtfIndexAbi,
@@ -191,7 +179,6 @@ const TradeButton = ({
     functionName: 'toAssets',
     args: [parseEther('1'), 0],
     chainId,
-    blockNumber: snapshotBlockNumber,
     query: {
       select: (data) => {
         const [assets, amounts] = data
