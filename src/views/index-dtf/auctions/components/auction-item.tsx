@@ -6,13 +6,17 @@ import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { openAuction } from '@/lib/index-rebalance/open-auction'
 import { cn } from '@/lib/utils'
 import { chainIdAtom } from '@/state/atoms'
-import { indexDTFAtom, indexDTFPriceAtom } from '@/state/dtf/atoms'
+import {
+  indexDTFAtom,
+  indexDTFPriceAtom,
+  indexDTFVersionAtom,
+} from '@/state/dtf/atoms'
 import { formatPercentage, getCurrentTime } from '@/utils'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { ArrowRight, Check, LoaderCircle, X } from 'lucide-react'
 import { useEffect } from 'react'
 import { toast } from 'sonner'
-import { Address, erc20Abi, formatEther, formatUnits, parseUnits } from 'viem'
+import { Address, erc20Abi, formatUnits, parseUnits } from 'viem'
 import {
   useReadContract,
   useWaitForTransactionReceipt,
@@ -31,6 +35,7 @@ import {
   VOLATILITY_VALUES,
 } from '../atoms'
 import DecimalDisplay from '@/components/decimal-display'
+import dtfIndexAbiV2 from '@/abis/dtf-index-abi-v2'
 
 const TradeCompletedStatus = ({ className }: { className?: string }) => {
   return (
@@ -133,6 +138,7 @@ const TradeButton = ({
   })
   const dtfSupply = useProposalDtfSupply()
   const dtfPrice = useAtomValue(indexDTFPriceAtom)
+  const version = useAtomValue(indexDTFVersionAtom)
 
   const isLoading = isPending || (!!data && !isSuccess && !isError)
 
@@ -140,6 +146,8 @@ const TradeButton = ({
     trade.state === TRADE_STATE.AVAILABLE ||
     (isAuctionLauncher &&
       trade.state === TRADE_STATE.PENDING &&
+      trade.availableRuns > 1 &&
+      trade.boughtAmount < trade.buyLimitSpot &&
       proposedBasket &&
       dtfSupply)
 
@@ -151,7 +159,8 @@ const TradeButton = ({
   }, [isSuccess])
 
   const handleLaunch = () => {
-    if (!dtfPrice || !canLaunch || getCurrentTime() >= trade.launchTimeout + 5) return
+    if (!dtfPrice || !canLaunch || getCurrentTime() >= trade.launchTimeout + 5)
+      return
 
     // Trade id has the dtfId as prefix
     const [dtfAddress, tradeId] = trade.id.split('-')
@@ -249,6 +258,10 @@ const TradeButton = ({
               end: trade.endPrice,
             },
           },
+          {
+            start: trade.approvedStartPrice,
+            end: trade.approvedEndPrice,
+          },
           dtfSupply,
           tokens,
           decimals,
@@ -269,12 +282,21 @@ const TradeButton = ({
         console.error('error running auction', e)
       }
     } else {
-      writeContract({
-        address: dtfAddress as Address,
-        abi: dtfIndexAbi,
-        functionName: 'openAuctionPermissionlessly',
-        args: [BigInt(tradeId)],
-      })
+      if (version === '2.0.0') {
+        writeContract({
+          address: dtfAddress as Address,
+          abi: dtfIndexAbiV2,
+          functionName: 'openAuctionUnrestricted',
+          args: [BigInt(tradeId)],
+        })
+      } else {
+        writeContract({
+          address: dtfAddress as Address,
+          abi: dtfIndexAbi,
+          functionName: 'openAuctionPermissionlessly',
+          args: [BigInt(tradeId)],
+        })
+      }
     }
   }
 

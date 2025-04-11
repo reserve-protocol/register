@@ -33,6 +33,8 @@ type Response = {
     buy: Token
     soldAmount: string
     boughtAmount: string
+    approvedStartPrice: string
+    approvedEndPrice: string
     startPrice: string
     endPrice: string
     sellLimitSpot: string
@@ -45,6 +47,7 @@ type Response = {
     launchTimeout: string
     start: string
     end: string
+    availableRuns: string
     approvedBlock: string
     approvedTimestamp: string
     launchedTimestamp: string
@@ -79,6 +82,8 @@ const query = gql`
       }
       soldAmount
       boughtAmount
+      approvedStartPrice
+      approvedEndPrice
       startPrice
       endPrice
       sellLimitSpot
@@ -91,6 +96,7 @@ const query = gql`
       launchTimeout
       start
       end
+      availableRuns
       approvedBlockNumber
       approvedTimestamp
       launchedTimestamp
@@ -132,6 +138,8 @@ const useTrades = () => {
           boughtAmount: BigInt(trade.boughtAmount),
           startPrice: BigInt(trade.startPrice),
           endPrice: BigInt(trade.endPrice),
+          approvedStartPrice: BigInt(trade.approvedStartPrice),
+          approvedEndPrice: BigInt(trade.approvedEndPrice),
           sellLimitSpot: BigInt(trade.sellLimitSpot),
           sellLimitHigh: BigInt(trade.sellLimitHigh),
           sellLimitLow: BigInt(trade.sellLimitLow),
@@ -142,6 +150,7 @@ const useTrades = () => {
           launchTimeout: Number(trade.launchTimeout),
           start: Number(trade.start),
           end: Number(trade.end),
+          availableRuns: Number(trade.availableRuns),
           approvedTimestamp: Number(trade.approvedTimestamp),
           launchedTimestamp: Number(trade.launchedTimestamp),
           approvedBlockNumber: trade.approvedBlockNumber,
