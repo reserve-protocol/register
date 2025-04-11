@@ -22,8 +22,9 @@ import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { ArrowRight, ArrowUpRight, PaintBucket } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import { Address } from 'viem'
+import { Address, formatUnits } from 'viem'
 import {
+  derivedProposedSharesAtom,
   IndexAssetShares,
   isProposedBasketValidAtom,
   proposedIndexBasketAtom,
@@ -326,7 +327,7 @@ const NewUnitsCell = ({ asset }: { asset: string }) => {
   return (
     <TableCell className="bg-primary/10 w-10">
       <NumericalInput
-        placeholder="0%"
+        placeholder={`0`}
         className="w-32 text-center"
         value={newUnits[asset]}
         onChange={(value) => setNewUnits({ ...newUnits, [asset]: value })}
@@ -336,17 +337,26 @@ const NewUnitsCell = ({ asset }: { asset: string }) => {
 }
 
 const DeltaUnitsCell = ({ asset }: { asset: string }) => {
+  const derivedProposedShares = useAtomValue(derivedProposedSharesAtom)
   const currentShares = useAtomValue(proposedIndexBasketAtom)
-  const newShares = useAtomValue(proposedSharesAtom)
+
+  const currentSharesDisplay = formatPercentage(
+    Number(currentShares?.[asset]?.currentShares ?? 0)
+  )
+  let newShareDisplay = currentSharesDisplay
+
+  if (derivedProposedShares?.[asset] !== undefined) {
+    newShareDisplay = formatPercentage(
+      Number(formatUnits(derivedProposedShares?.[asset], 16))
+    )
+  }
 
   return (
     <TableCell className="text-center">
       <div className="flex items-center justify-center gap-1">
-        <span className="text-legend">
-          {formatPercentage(Number(currentShares?.[asset]?.currentShares ?? 0))}
-        </span>
+        <span className="text-legend">{currentSharesDisplay}</span>
         <ArrowRight size={14} />
-        <span>{formatPercentage(Number(newShares[asset] ?? 0))}</span>
+        <span>{newShareDisplay}</span>
       </div>
     </TableCell>
   )
