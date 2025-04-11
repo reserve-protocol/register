@@ -6,11 +6,11 @@ import { indexDTFAtom } from '@/state/dtf/atoms'
 import { getCurrentTime } from '@/utils'
 import { useAtomValue } from 'jotai'
 
-export const useVotingPower = (): number => {
+export const useVotingPower = () => {
   const account = useAtomValue(walletAtom)
   const dtf = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
-  const { data: votes } = useReadContract({
+  const { data: votes, isLoading } = useReadContract({
     address: dtf?.ownerGovernance?.id ?? '0x',
     functionName: 'getVotes',
     abi: dtfIndexGovernance,
@@ -21,5 +21,5 @@ export const useVotingPower = (): number => {
     },
   })
 
-  return votes ? +formatEther(votes) : 0
+  return { votingPower: votes ? +formatEther(votes) : 0, isLoading }
 }
