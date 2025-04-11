@@ -121,8 +121,8 @@ export const DeployFormSchema = z
       .optional(),
     folioFee: z.coerce
       .number()
-      .min(0.15, 'Annualized TVL Fee fee must be 0.15% or greater')
-      .max(10, 'Annualized TVL Fee fee must be 10% or less'),
+      .min(0.15, 'Annualized TVL Fee must be 0.15% or greater')
+      .max(10, 'Annualized TVL Fee must be 10% or less'),
     mintFee: z.coerce
       .number()
       .min(0.15, 'Mint Fee must be 0.15% or greater')
@@ -156,7 +156,10 @@ export const DeployFormSchema = z
         })
       )
       .optional(),
-    auctionLength: z.coerce.number().min(0).max(10080),
+    auctionLength: z.coerce
+      .number()
+      .min(0)
+      .max(45, 'Auction length must not exceed 45 minutes'),
     auctionDelay: z.coerce.number().min(0).max(10080),
     guardians: z.array(
       z
