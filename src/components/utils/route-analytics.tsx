@@ -6,7 +6,7 @@ const RouteAnalytics = () => {
   const location = useLocation()
 
   useEffect(() => {
-    ReactGA.initialize('G-DMSRQ8XLEE')
+    ReactGA.initialize('GTM-WPKVXLPX')
     ReactGA.pageview(location.pathname + location.search)
   }, [location])
 
