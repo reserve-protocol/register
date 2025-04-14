@@ -25,14 +25,14 @@ const ProposeIndexUpgrade = () => {
   const navigate = useNavigate()
   const dtf = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
-  const isProposeAllowed = useIsProposeAllowed()
+  const { isProposeAllowed, isLoading } = useIsProposeAllowed()
 
   const { data: version } = useReadContract({
     address: dtf?.id,
     abi: dtfIndexAbi,
     functionName: 'version',
     query: {
-      enabled: !!dtf?.id && isProposeAllowed,
+      enabled: !!dtf?.id && !isLoading && isProposeAllowed,
     },
   })
 

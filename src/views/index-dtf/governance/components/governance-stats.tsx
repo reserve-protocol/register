@@ -11,7 +11,7 @@ import TokenLogo from '@/components/token-logo'
 import { useVotingPower } from '../hooks/use-voting-power'
 
 const VotingPower = () => {
-  const votingPower = useVotingPower()
+  const { votingPower } = useVotingPower()
   const dtf = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
 
