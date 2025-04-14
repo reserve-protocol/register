@@ -3,7 +3,7 @@ import dtfIndexAbi from '@/abis/dtf-index-abi'
 import DTFIndexGovernance from '@/abis/dtf-index-governance'
 import { Button } from '@/components/ui/button'
 import { chainIdAtom } from '@/state/atoms'
-import { indexDTFAtom } from '@/state/dtf/atoms'
+import { indexDTFAtom, indexDTFVersionAtom } from '@/state/dtf/atoms'
 import { ROUTES } from '@/utils/constants'
 import { useAtomValue } from 'jotai'
 import { AlertCircle, Loader2 } from 'lucide-react'
@@ -26,17 +26,10 @@ const ProposeIndexUpgrade = () => {
   const dtf = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
   const { isProposeAllowed, isLoading } = useIsProposeAllowed()
+  const version = useAtomValue(indexDTFVersionAtom)
 
-  const { data: version } = useReadContract({
-    address: dtf?.id,
-    abi: dtfIndexAbi,
-    functionName: 'version',
-    query: {
-      enabled: !!dtf?.id && !isLoading && isProposeAllowed,
-    },
-  })
-
-  const upgrade = !!version && compareVersion(version, '2.0.0') < 0
+  const upgrade =
+    !isLoading && isProposeAllowed && compareVersion(version, '2.0.0') < 0
 
   const { writeContract, data, isPending } = useWriteContract()
   const { isSuccess } = useWaitForTransactionReceipt({
