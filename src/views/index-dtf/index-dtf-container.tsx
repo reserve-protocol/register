@@ -9,6 +9,7 @@ import {
   indexDTFBasketSharesAtom,
   IndexDTFBrand,
   indexDTFBrandAtom,
+  indexDTFVersionAtom,
   iTokenAddressAtom,
 } from '@/state/dtf/atoms'
 import { isAddress } from '@/utils'
@@ -18,10 +19,11 @@ import { useQuery } from '@tanstack/react-query'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { Outlet, useNavigate, useParams } from 'react-router-dom'
-import { useSwitchChain } from 'wagmi'
+import { useReadContract, useSwitchChain } from 'wagmi'
 import IndexDTFNavigation from './components/navigation'
 import GovernanceUpdater from './governance/updater'
 import FeedbackButton from '@/components/feedback-button'
+import dtfIndexAbi from '@/abis/dtf-index-abi'
 
 const useChainWatch = () => {
   const { switchChain } = useSwitchChain()
@@ -116,9 +118,19 @@ const Updater = () => {
   const { chain, tokenId } = useParams()
   const navigate = useNavigate()
   const setChain = useSetAtom(chainIdAtom)
+  const setIndexDTFVersion = useSetAtom(indexDTFVersionAtom)
   const [currentToken, setTokenAddress] = useAtom(iTokenAddressAtom)
   const resetAtoms = useSetAtom(resetStateAtom)
   const chainId = NETWORKS[chain ?? '']
+  const { data: version } = useReadContract({
+    address: currentToken,
+    abi: dtfIndexAbi,
+    functionName: 'version',
+    chainId,
+    query: {
+      enabled: !!currentToken,
+    },
+  })
 
   useChainWatch()
 
@@ -143,6 +155,12 @@ const Updater = () => {
       setTokenAddress(tokenAddress ?? undefined)
     }
   }, [tokenId, chainId])
+
+  useEffect(() => {
+    if (version) {
+      setIndexDTFVersion(version)
+    }
+  }, [version])
 
   // Reset state on unmount
   useEffect(() => resetState, [])
