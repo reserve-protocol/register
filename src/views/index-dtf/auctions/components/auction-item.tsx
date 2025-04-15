@@ -200,7 +200,7 @@ const TradeButton = ({
     trade.state === TRADE_STATE.AVAILABLE ||
     (isAuctionLauncher &&
       trade.state === TRADE_STATE.PENDING &&
-      trade.availableRuns > 1 &&
+      trade.availableRuns > 0 &&
       trade.boughtAmount < trade.buyLimitSpot &&
       proposedBasket &&
       dtfSupply)
