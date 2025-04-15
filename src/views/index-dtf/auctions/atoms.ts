@@ -37,7 +37,7 @@ export function getTradeState(trade: AssetTrade) {
 
   if (
     currentTime >= trade.end &&
-    trade.availableRuns > 1 &&
+    trade.availableRuns > 0 &&
     trade.boughtAmount < trade.buyLimitSpot &&
     currentTime >= trade.availableAt
   ) {
