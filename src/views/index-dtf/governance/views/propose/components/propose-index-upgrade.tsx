@@ -1,5 +1,4 @@
 import dtfAdminAbi from '@/abis/dtf-admin-abi'
-import dtfIndexAbi from '@/abis/dtf-index-abi'
 import DTFIndexGovernance from '@/abis/dtf-index-governance'
 import { Button } from '@/components/ui/button'
 import { chainIdAtom } from '@/state/atoms'
@@ -10,11 +9,7 @@ import { AlertCircle, Loader2 } from 'lucide-react'
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { encodeFunctionData, keccak256, toHex } from 'viem'
-import {
-  useReadContract,
-  useWaitForTransactionReceipt,
-  useWriteContract,
-} from 'wagmi'
+import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
 import { useIsProposeAllowed } from '../../../hooks/use-is-propose-allowed'
 
 function compareVersion(x: string, y: string): number {
@@ -82,7 +77,11 @@ const ProposeIndexUpgrade = () => {
           <h4 className="font-bold text-primary">Update available</h4>
           <p className="text-sm">
             Version 2.0.0 is now available.{' '}
-            <a href="" className="text-primary">
+            <a
+              href="https://github.com/reserve-protocol/reserve-index-dtf/blob/main/CHANGELOG.md#release-200"
+              className="text-primary"
+              target="_blank"
+            >
               View changelog
             </a>
           </p>
