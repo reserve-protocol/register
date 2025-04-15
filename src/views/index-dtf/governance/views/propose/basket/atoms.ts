@@ -1,6 +1,11 @@
 import dtfIndexAbi from '@/abis/dtf-index-abi'
+import dtfIndexAbiV2 from '@/abis/dtf-index-abi-v2'
 import { getAuctions } from '@/lib/index-rebalance/get-auctionts'
-import { indexDTFAtom, iTokenAddressAtom } from '@/state/dtf/atoms'
+import {
+  indexDTFAtom,
+  indexDTFVersionAtom,
+  iTokenAddressAtom,
+} from '@/state/dtf/atoms'
 import { Token } from '@/types'
 import { atom, Getter } from 'jotai'
 import { Address, encodeFunctionData, Hex, parseUnits } from 'viem'
@@ -146,6 +151,7 @@ export const basketProposalCalldatasAtom = atom<Hex[] | undefined>((get) => {
   const deferredTrades = get(proposedInxexTradesAtom)
   const tradeRangeOption = get(tradeRangeOptionAtom)
   const isConfirmed = get(isProposalConfirmedAtom)
+  const version = get(indexDTFVersionAtom)
   const ttl = get(ttlATom)
 
   if (!deferredTrades?.length || !isConfirmed || !tradeRangeOption)
@@ -155,28 +161,34 @@ export const basketProposalCalldatasAtom = atom<Hex[] | undefined>((get) => {
     tradeRangeOption === 'defer' ? deferredTrades : getProposedTrades(get)
 
   return trades.map((trade, i) => {
+    const args = [
+      trade.sell as Address,
+      trade.buy as Address,
+      {
+        spot: trade.sellLimit.spot,
+        low: trade.sellLimit.low,
+        high: trade.sellLimit.high,
+      },
+      {
+        spot: trade.buyLimit.spot,
+        low: trade.buyLimit.low,
+        high: trade.buyLimit.high,
+      },
+      {
+        start: trade.prices.start,
+        end: trade.prices.end,
+      },
+      ttl,
+    ]
+
+    if (version === '2.0.0') {
+      args.push(10n)
+    }
+
     return encodeFunctionData({
-      abi: dtfIndexAbi,
+      abi: version === '2.0.0' ? dtfIndexAbiV2 : dtfIndexAbi,
       functionName: 'approveAuction',
-      args: [
-        trade.sell as Address,
-        trade.buy as Address,
-        {
-          spot: trade.sellLimit.spot,
-          low: trade.sellLimit.low,
-          high: trade.sellLimit.high,
-        },
-        {
-          spot: trade.buyLimit.spot,
-          low: trade.buyLimit.low,
-          high: trade.buyLimit.high,
-        },
-        {
-          start: trade.prices.start,
-          end: trade.prices.end,
-        },
-        ttl,
-      ],
+      args: args as any,
     })
   })
 })
