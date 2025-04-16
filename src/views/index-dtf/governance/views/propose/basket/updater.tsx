@@ -8,7 +8,7 @@ import {
 } from '@/state/dtf/atoms'
 import { RESERVE_API } from '@/utils/constants'
 import { useQuery } from '@tanstack/react-query'
-import { atom, useAtomValue, useSetAtom } from 'jotai'
+import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useMemo } from 'react'
 import { formatUnits, parseEther } from 'viem'
 import { useReadContracts } from 'wagmi'
@@ -16,6 +16,7 @@ import {
   dtfSupplyAtom,
   dtfTradeDelay,
   IndexAssetShares,
+  isDeferAvailableAtom,
   isProposalConfirmedAtom,
   permissionlessLaunchingAtom,
   priceMapAtom,
@@ -26,6 +27,7 @@ import {
   tradeRangeOptionAtom,
   tradeVolatilityAtom,
 } from './atoms'
+import { PermissionOptionId } from './components/proposal-trading-expiration'
 
 const PRICES_BASE_URL = `${RESERVE_API}current/prices?tokens=`
 
@@ -226,6 +228,17 @@ const AtomStateUpdater = () => {
   const setPermissionlessLaunching = useSetAtom(permissionlessLaunchingAtom)
   const tradeConfirmation = useSetAtom(isProposalConfirmedAtom)
   const setProposedShares = useSetAtom(proposedSharesAtom)
+  const isDeferAvailable = useAtomValue(isDeferAvailableAtom)
+
+  useEffect(() => {
+    const tradeRange = isDeferAvailable ? 'defer' : 'include'
+    setTradeRangeOption(tradeRange)
+    if (tradeRange === 'defer') {
+      setPermissionlessLaunching(PermissionOptionId.NO_PERMISSIONLESS_LAUNCHING)
+    } else if (tradeRange === 'include' && !isDeferAvailable) {
+      setPermissionlessLaunching(PermissionOptionId.PERMISSIONLESS_LAUNCHING)
+    }
+  }, [isDeferAvailable])
 
   useEffect(() => {
     return () => {

@@ -11,17 +11,21 @@ import {
   AlignCenterVertical,
   ArrowLeftIcon,
   Boxes,
-  CheckIcon,
   ChevronDownIcon,
   ChevronUpIcon,
+  PenLineIcon,
   Sunrise,
 } from 'lucide-react'
 import { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
-import { Step, stepAtom, stepStateAtom } from '../atoms'
+import { Step, stepAtom, stepStateAtom, advancedControlsAtom } from '../atoms'
 import ProposalBasketSetup from './proposal-basket-setup'
-import ProposalTradingExpiration from './proposal-trading-expiration'
-import ProposalTradingRanges from './proposal-trading-ranges'
+import ProposalTradingExpiration, {
+  TradingExpirationTriggerLabel,
+} from './proposal-trading-expiration'
+import ProposalTradingRanges, {
+  TradeRangeTriggerLabel,
+} from './proposal-trading-ranges'
 import { ROUTES } from '@/utils/constants'
 
 export type ProposalStep = {
@@ -30,14 +34,15 @@ export type ProposalStep = {
   title: string
   titleSecondary: string
   content: ReactNode
+  triggerLabel?: ReactNode
 }
 
 interface ProposalStepTrigger
   extends Omit<ProposalStep, 'content' | 'titleSecondary'> {
-  index: number
+  advanced?: boolean
 }
 
-export const DEPLOY_STEPS: ProposalStep[] = [
+const PROPOSAL_SETTINGS: ProposalStep[] = [
   {
     id: 'basket',
     icon: <Boxes size={16} strokeWidth={1.5} />,
@@ -45,12 +50,16 @@ export const DEPLOY_STEPS: ProposalStep[] = [
     titleSecondary: 'Basket Composition',
     content: <ProposalBasketSetup />,
   },
+]
+
+const ADVANCED_CONTROLS: ProposalStep[] = [
   {
     id: 'prices',
     icon: <AlignCenterVertical size={16} strokeWidth={1.5} />,
     title: 'Price Settings',
     titleSecondary: 'Price Settings',
     content: <ProposalTradingRanges />,
+    triggerLabel: <TradeRangeTriggerLabel />,
   },
   {
     id: 'expiration',
@@ -58,10 +67,17 @@ export const DEPLOY_STEPS: ProposalStep[] = [
     title: 'Launch Settings',
     titleSecondary: 'Launch Settings',
     content: <ProposalTradingExpiration />,
+    triggerLabel: <TradingExpirationTriggerLabel />,
   },
 ]
 
-const StepTrigger = ({ id, icon, title, index }: ProposalStepTrigger) => {
+const StepTrigger = ({
+  id,
+  icon,
+  title,
+  triggerLabel,
+  advanced,
+}: ProposalStepTrigger) => {
   const selectedSection = useAtomValue(stepAtom)
   const isActive = selectedSection === id
   const isCompleted = useAtomValue(stepStateAtom)[id]
@@ -77,13 +93,13 @@ const StepTrigger = ({ id, icon, title, index }: ProposalStepTrigger) => {
       <div className="flex items-center gap-2">
         <div
           className={cn(
-            'rounded-full flex-shrink-0 p-2',
+            'rounded-full flex-shrink-0 p-2 border',
             isActive || isCompleted
-              ? 'bg-primary/10 text-primary'
-              : 'bg-muted-foreground/10'
+              ? 'text-primary border-primary'
+              : 'text-black border-black'
           )}
         >
-          {isCompleted ? <CheckIcon size={16} strokeWidth={1.5} /> : icon}
+          {icon}
         </div>
         <div
           className={cn(
@@ -95,18 +111,22 @@ const StepTrigger = ({ id, icon, title, index }: ProposalStepTrigger) => {
           {title}
         </div>
       </div>
-      <div className="flex items-center gap-2">
-        {/* <div className="bg-muted-foreground/10 rounded-full p-1" role="button">
-            <ArrowUpRightIcon size={24} strokeWidth={1.5} />
-          </div> */}
-        <span className="text-primary whitespace-nowrap text-xs sm:text-sm">
-          Step {index + 1}/3
-        </span>
-        <div className="bg-muted-foreground/10 rounded-full p-1" role="button">
+      <div className="flex items-center gap-3">
+        {!isActive && triggerLabel}
+        <div
+          className={cn(
+            'w-8 h-8 flex items-center justify-center rounded-full p-1',
+            !advanced && 'bg-muted-foreground/10',
+            advanced && 'border-[1px] border-muted-foreground/20'
+          )}
+          role="button"
+        >
           {isActive ? (
-            <ChevronUpIcon size={24} strokeWidth={1.5} />
+            <ChevronUpIcon size={16} strokeWidth={2} />
+          ) : isCompleted ? (
+            <PenLineIcon size={16} strokeWidth={2} />
           ) : (
-            <ChevronDownIcon size={24} strokeWidth={1.5} />
+            <ChevronDownIcon size={16} strokeWidth={2} />
           )}
         </div>
       </div>
@@ -117,6 +137,7 @@ const StepTrigger = ({ id, icon, title, index }: ProposalStepTrigger) => {
 // TODO: A lot of these components could be shared, don't worry at this point
 const BasketProposalSteps = () => {
   const [step, setStep] = useAtom(stepAtom)
+  const advancedControls = useAtomValue(advancedControlsAtom)
 
   return (
     <Accordion
@@ -137,22 +158,53 @@ const BasketProposalSteps = () => {
         </Link>
         <h1 className="font-bold text-xl">Basket change proposal</h1>
       </div>
-      {DEPLOY_STEPS.map(
-        ({ id, icon, title, titleSecondary, content }, index) => (
-          <AccordionItem
-            key={id}
-            value={id}
-            className="rounded-3xl bg-card m-1 border-none"
-          >
-            <StepTrigger id={id} icon={icon} title={title} index={index} />
-            <AccordionContent className="flex flex-col animate-fade-in">
-              <h2 className="text-xl  sm:text-2xl font-bold text-primary mx-4 sm:mx-6 mb-2">
-                {titleSecondary}
-              </h2>
-              {content}
-            </AccordionContent>
-          </AccordionItem>
-        )
+      {PROPOSAL_SETTINGS.map(({ id, icon, title, titleSecondary, content }) => (
+        <AccordionItem
+          key={id}
+          value={id}
+          className="rounded-3xl bg-card m-1 border-none"
+        >
+          <StepTrigger id={id} icon={icon} title={title} />
+          <AccordionContent className="flex flex-col animate-fade-in">
+            <h2 className="text-xl  sm:text-2xl font-bold text-primary mx-4 sm:mx-6 mb-2">
+              {titleSecondary}
+            </h2>
+            {content}
+          </AccordionContent>
+        </AccordionItem>
+      ))}
+      {advancedControls && (
+        <>
+          <div className="flex justify-center items-center gap-4 py-3 px-3">
+            <div className="flex-grow h-[1px] bg-muted-foreground/10" />
+            <div className="text-base font-bold">Advanced Controls</div>
+            <div className="flex-grow h-[1px] bg-muted-foreground/10" />
+          </div>
+
+          {ADVANCED_CONTROLS.map(
+            ({ id, icon, title, titleSecondary, content, triggerLabel }) => (
+              <AccordionItem
+                key={id}
+                value={id}
+                className="rounded-3xl bg-card m-1 border-none"
+              >
+                <StepTrigger
+                  id={id}
+                  icon={icon}
+                  title={title}
+                  triggerLabel={triggerLabel}
+                  advanced
+                />
+                <AccordionContent className="flex flex-col animate-fade-in">
+                  <h2 className="text-xl  sm:text-2xl font-bold text-primary mx-4 sm:mx-6 mb-2">
+                    {titleSecondary}
+                  </h2>
+                  {content}
+                </AccordionContent>
+              </AccordionItem>
+            )
+          )}
+        </>
       )}
     </Accordion>
   )

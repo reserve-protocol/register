@@ -342,5 +342,7 @@ export const isDeferAvailableAtom = atom((get) => {
 
   if (!dtf) return true
 
-  return dtf?.auctionDelay > 10
+  return dtf.auctionDelay > 10
 })
+
+export const advancedControlsAtom = atom(false);

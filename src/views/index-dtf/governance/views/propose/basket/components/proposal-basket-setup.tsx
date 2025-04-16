@@ -15,17 +15,24 @@ import {
 } from '@/components/ui/table'
 import { cn } from '@/lib/utils'
 import { chainIdAtom } from '@/state/chain/atoms/chainAtoms'
-import { indexDTFBrandAtom } from '@/state/dtf/atoms'
 import { Token } from '@/types'
 import { formatPercentage, shortenAddress } from '@/utils'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { ArrowRight, ArrowUpRight, PaintBucket } from 'lucide-react'
+import {
+  ArrowRight,
+  ArrowUpRight,
+  ChevronDown,
+  ChevronUp,
+  PaintBucket,
+  Settings,
+} from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { Address, formatUnits } from 'viem'
 import {
   derivedProposedSharesAtom,
   IndexAssetShares,
+  isProposalConfirmedAtom,
   isProposedBasketValidAtom,
   isUnitBasketAtom,
   proposedIndexBasketAtom,
@@ -33,6 +40,7 @@ import {
   proposedSharesAtom,
   proposedUnitsAtom,
   stepAtom,
+  advancedControlsAtom,
 } from '../atoms'
 import DecimalDisplay from '@/components/decimal-display'
 
@@ -252,7 +260,7 @@ const TokenSelector = () => {
       selectedTokens={currentProposedBasketTokens}
       onAdd={setNewBasket}
     >
-      <TokenDrawerTrigger className="mr-auto" />
+      <TokenDrawerTrigger />
     </TokenSelectorDrawer>
   )
 }
@@ -296,7 +304,7 @@ const ProposalBasketByShares = ({ assets }: { assets: IndexAssetShares[] }) => (
     ))}
     <TableRow className="hover:bg-card">
       <TableCell colSpan={4}>
-        <div className="flex items-center">
+        <div className="flex justify-between items-center">
           <TokenSelector />
           <div className="flex flex-col gap-2">
             <EvenDistribution />
@@ -369,7 +377,7 @@ const ProposalBasketByUnits = ({ assets }: { assets: IndexAssetShares[] }) => (
     ))}
     <TableRow className="hover:bg-card">
       <TableCell colSpan={4}>
-        <div className="flex items-center">
+        <div className="flex justify-center items-center">
           <TokenSelector />
         </div>
       </TableCell>
@@ -410,10 +418,10 @@ const ProposalBasketTable = () => {
             </TableHead>
           </TableRow>
         </TableHeader>
-        {!isUnitBasket ? (
-          <ProposalBasketByShares assets={assets} />
-        ) : (
+        {isUnitBasket ? (
           <ProposalBasketByUnits assets={assets} />
+        ) : (
+          <ProposalBasketByShares assets={assets} />
         )}
       </Table>
     </div>
@@ -423,19 +431,37 @@ const ProposalBasketTable = () => {
 const NextButton = () => {
   const isValid = useAtomValue(isProposedBasketValidAtom)
   const setStep = useSetAtom(stepAtom)
+  const setIsConfirmed = useSetAtom(isProposalConfirmedAtom)
+  const [AdvancedControls, setAdvancedControls] = useAtom(advancedControlsAtom)
+
   const handleNext = () => {
-    setStep('prices')
+    setStep('confirmation')
+
+    if (isValid) {
+      setIsConfirmed(true)
+    }
   }
 
   return (
-    <Button
-      disabled={!isValid}
-      onClick={handleNext}
-      className="w-full my-2"
-      size="lg"
-    >
-      Next
-    </Button>
+    <div className="flex items-center gap-2">
+      <Button
+        variant="outline"
+        onClick={() => setAdvancedControls((toggle) => !toggle)}
+        className="flex gap-[6px] px-4 py-[20px]"
+        size="lg"
+      >
+        <Settings size={16} />
+        {AdvancedControls ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+      </Button>
+      <Button
+        disabled={!isValid}
+        onClick={handleNext}
+        className="w-full my-2"
+        size="lg"
+      >
+        Confirm & Prepare Proposal
+      </Button>
+    </div>
   )
 }
 

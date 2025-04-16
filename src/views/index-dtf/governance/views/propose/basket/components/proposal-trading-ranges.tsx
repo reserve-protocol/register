@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { cn } from '@/lib/utils'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { Asterisk } from 'lucide-react'
+import { Asterisk, Crown } from 'lucide-react'
 import { useEffect } from 'react'
 import {
   isDeferAvailableAtom,
@@ -65,9 +65,9 @@ const NextButton = () => {
       className="w-full my-2"
       size="lg"
       disabled={!isValid}
-      onClick={() => setStep('expiration')}
+      onClick={() => setStep('confirmation')}
     >
-      Next
+      Confirm Changes
     </Button>
   )
 }
@@ -80,13 +80,26 @@ const TradesSetup = () => {
   return <ProposalTradesSetup />
 }
 
+export const TradeRangeTriggerLabel = () => {
+  const option = useAtomValue(tradeRangeOptionAtom)
+
+  if (!option) return null
+
+  return (
+    <div className="flex items-center gap-2 text-muted-foreground font-light">
+      <Crown size={16}/>
+      <div>
+        {option === 'defer'
+          ? 'Defer to Auction Launcher'
+          : 'Include Price Ranges'}
+      </div>
+    </div>
+  )
+}
+
 const ProposalTradingRanges = () => {
   const isDeferAvailable = useAtomValue(isDeferAvailableAtom)
   const [option, setOption] = useAtom(tradeRangeOptionAtom)
-
-  useEffect(() => {
-    if (!isDeferAvailable) setOption('include')
-  }, [isDeferAvailable])
 
   return (
     <>

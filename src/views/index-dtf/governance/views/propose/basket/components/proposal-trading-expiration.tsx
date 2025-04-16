@@ -4,22 +4,18 @@ import { NumericalInput } from '@/components/ui/input'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { cn } from '@/lib/utils'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { Asterisk } from 'lucide-react'
-import { useEffect, useMemo } from 'react'
+import { Asterisk, Check, X } from 'lucide-react'
+import { useMemo } from 'react'
 import {
   customPermissionlessLaunchingWindowAtom,
-  dtfTradeDelay,
-  isBasketProposalValidAtom,
   isDeferAvailableAtom,
-  isProposalConfirmedAtom,
-  isProposedBasketValidAtom,
   permissionlessLaunchingAtom,
   permissionlessLaunchingWindowAtom,
   stepAtom,
   tradeRangeOptionAtom,
 } from '../atoms'
 
-enum PermissionOptionId {
+export enum PermissionOptionId {
   NO_PERMISSIONLESS_LAUNCHING = 0,
   PERMISSIONLESS_LAUNCHING = 1,
 }
@@ -80,24 +76,10 @@ const PermissionCard = ({ option }: { option: PermissionOption }) => {
 
 const NextButton = () => {
   const permissionlessLaunching = useAtomValue(permissionlessLaunchingAtom)
-  const isValid = useAtomValue(isBasketProposalValidAtom)
-  const isProposeBasketValid = useAtomValue(isProposedBasketValidAtom)
-  const isTradeSettingsValid = !!useAtomValue(tradeRangeOptionAtom)
-  const shouldFinalize = [
-    isValid,
-    isProposeBasketValid,
-    isTradeSettingsValid,
-  ].every((x) => x)
-
   const setStep = useSetAtom(stepAtom)
-  const setConfirmation = useSetAtom(isProposalConfirmedAtom)
 
   const handleClick = () => {
     setStep('confirmation')
-
-    if (isValid) {
-      setConfirmation(true)
-    }
   }
 
   return (
@@ -107,7 +89,7 @@ const NextButton = () => {
       disabled={permissionlessLaunching === undefined}
       onClick={handleClick}
     >
-      {shouldFinalize ? 'Confirm & Prepare Proposal' : 'Confirm'}
+      Confirm Changes
     </Button>
   )
 }
@@ -130,7 +112,13 @@ const PermissionlessWindow = () => {
 
   return (
     <div className="flex flex-col justify-center gap-3 rounded-xl bg-foreground/5 p-4">
-      <h4 className="font-semibold ml-3">Community Launch Window</h4>
+      <div>
+        <h4 className="font-semibold text-primary">Community Launch Window</h4>
+        <div className="">
+          Specify how long community members should be allow to start auctions
+          after the Exclusive Launch Window.
+        </div>
+      </div>
       <div className="flex items-center gap-2">
         <ToggleGroup
           type="single"
@@ -168,11 +156,30 @@ const PermissionlessWindow = () => {
   )
 }
 
+export const TradingExpirationTriggerLabel = () => {
+  const option = useAtomValue(permissionlessLaunchingAtom)
+
+  if (option === undefined) return null
+
+  return (
+    <div className="flex items-center gap-2 text-muted-foreground font-light">
+      {option === PermissionOptionId.NO_PERMISSIONLESS_LAUNCHING ? (
+        <X size={16} />
+      ) : (
+        <Check size={16} />
+      )}
+      <div>
+        {option === PermissionOptionId.NO_PERMISSIONLESS_LAUNCHING
+          ? 'No Permissionless Launching Allowed'
+          : 'Permissionless Launching Allowed'}
+      </div>
+    </div>
+  )
+}
+
 const ProposalTradingExpiration = () => {
-  const tradeDelay = useAtomValue(dtfTradeDelay)
   const priceRangeOption = useAtomValue(tradeRangeOptionAtom)
   const isDeferAvailable = useAtomValue(isDeferAvailableAtom)
-  const setPermissionlessLaunching = useSetAtom(permissionlessLaunchingAtom)
   const permissionOptions: PermissionOption[] = useMemo(
     () => [
       {
@@ -192,16 +199,8 @@ const ProposalTradingExpiration = () => {
         disabled: priceRangeOption === 'defer',
       },
     ],
-    [tradeDelay, isDeferAvailable, priceRangeOption]
+    [isDeferAvailable, priceRangeOption]
   )
-
-  useEffect(() => {
-    if (priceRangeOption === 'defer') {
-      setPermissionlessLaunching(PermissionOptionId.NO_PERMISSIONLESS_LAUNCHING)
-    } else if (priceRangeOption === 'include' && !isDeferAvailable) {
-      setPermissionlessLaunching(PermissionOptionId.PERMISSIONLESS_LAUNCHING)
-    }
-  }, [priceRangeOption, isDeferAvailable])
 
   return (
     <>
