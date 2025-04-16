@@ -2,8 +2,7 @@ import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { cn } from '@/lib/utils'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { Asterisk, Crown } from 'lucide-react'
-import { useEffect } from 'react'
+import { AlignCenterVertical, Crown } from 'lucide-react'
 import {
   isDeferAvailableAtom,
   stepAtom,
@@ -11,10 +10,12 @@ import {
   TradeRangeOption as TradeRangeOptionType,
 } from '../atoms'
 import ProposalTradesSetup from './proposal-trades-setup'
+import { ReactNode } from 'react'
 
 type TradeRangeOptionProps = {
   title: string
   description: string
+  icon: ReactNode
   value: TradeRangeOptionType
   disabled?: boolean
   checked: boolean
@@ -24,7 +25,7 @@ type TradeRangeOptionProps = {
 const TradeRangeOption = ({
   title,
   description,
-  value,
+  icon,
   disabled,
   checked,
   onClick,
@@ -32,19 +33,19 @@ const TradeRangeOption = ({
   <div
     role="button"
     className={cn(
-      'flex items-center gap-2 border rounded-xl p-4 cursor-pointer transition-all duration-200 hover:bg-border',
-      checked && 'bg-border',
+      'flex items-center gap-2 border rounded-xl p-4 cursor-pointer transition-all duration-200 hover:bg-foreground/10',
+      checked && 'bg-foreground/5',
       disabled && 'opacity-50 hover:bg-transparent'
     )}
     onClick={disabled ? undefined : onClick}
   >
     <div
       className={cn(
-        'flex items-center flex-shrink-0 justify-center w-8 h-8 bg-foreground/10 rounded-full',
-        checked && 'bg-primary/10 text-primary'
+        'flex items-center flex-shrink-0 justify-center w-8 h-8 border-[1px] border-current rounded-full',
+        checked && 'border-primary text-primary'
       )}
     >
-      <Asterisk size={24} strokeWidth={1.5} />
+      {icon}
     </div>
     <div className="mr-auto">
       <h4 className={cn('font-bold mb-1 text-base', checked && 'text-primary')}>
@@ -87,7 +88,11 @@ export const TradeRangeTriggerLabel = () => {
 
   return (
     <div className="flex items-center gap-2 text-muted-foreground font-light">
-      <Crown size={16}/>
+      {option === 'defer' ? (
+        <Crown size={16} />
+      ) : (
+        <AlignCenterVertical size={16} />
+      )}
       <div>
         {option === 'defer'
           ? 'Defer to Auction Launcher'
@@ -112,6 +117,7 @@ const ProposalTradingRanges = () => {
         <TradeRangeOption
           title="Defer to Auction Launcher"
           description="Rely solely on the Auction Launcher to provide accurate pricing information when swapping assets. This option increases the amount of damage from mistakes or a rogue Auction Launcher."
+          icon={<Crown size={16} strokeWidth={1.5} />}
           value="defer"
           disabled={!isDeferAvailable}
           onClick={() => setOption('defer')}
@@ -120,6 +126,7 @@ const ProposalTradingRanges = () => {
         <TradeRangeOption
           title="Set Price Range(s)"
           description="Set guardrails for the auction launcher by specifying the expected price volatility (low, medium, or high) for each auction. "
+          icon={<AlignCenterVertical size={16} strokeWidth={1.5} />}
           value="include"
           onClick={() => setOption('include')}
           checked={option === 'include'}

@@ -323,5 +323,3 @@ export const proposedBasketAtom = atom<IndexAuctionSimulation | undefined>(
 export const expectedBasketAtom = atom<IndexAuctionSimulation | undefined>(
   undefined
 )
-
-export const advancedControlsAtom = atom(false);

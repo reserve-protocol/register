@@ -224,7 +224,7 @@ const AtomStateUpdater = () => {
   const setProposedBasket = useSetAtom(proposedIndexBasketAtom)
   const setProposedUnits = useSetAtom(proposedUnitsAtom)
   const setTradeVolatility = useSetAtom(tradeVolatilityAtom)
-  const setTradeRangeOption = useSetAtom(tradeRangeOptionAtom)
+  const [tradeRangeOption, setTradeRangeOption] = useAtom(tradeRangeOptionAtom)
   const setPermissionlessLaunching = useSetAtom(permissionlessLaunchingAtom)
   const tradeConfirmation = useSetAtom(isProposalConfirmedAtom)
   const setProposedShares = useSetAtom(proposedSharesAtom)
@@ -239,6 +239,12 @@ const AtomStateUpdater = () => {
       setPermissionlessLaunching(PermissionOptionId.PERMISSIONLESS_LAUNCHING)
     }
   }, [isDeferAvailable])
+
+  useEffect(() => {
+    if (tradeRangeOption === 'defer') {
+      setPermissionlessLaunching(PermissionOptionId.NO_PERMISSIONLESS_LAUNCHING)
+    }
+  }, [tradeRangeOption])
 
   useEffect(() => {
     return () => {
