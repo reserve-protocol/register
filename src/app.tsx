@@ -1,4 +1,3 @@
-import RouteAnalytics from '@/components/utils/route-analytics'
 import TransactionSidebar from 'components/transactions/manager/TransactionSidebar'
 import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
 import { useEffect } from 'react'
@@ -98,7 +97,6 @@ function FallbackUI({
 const App = () => (
   <ErrorBoundary FallbackComponent={FallbackUI} onError={handleError}>
     <Router>
-      <RouteAnalytics />
       <Redirects />
       <ScrollToTop />
       <ThemeUIProvider theme={theme}>
