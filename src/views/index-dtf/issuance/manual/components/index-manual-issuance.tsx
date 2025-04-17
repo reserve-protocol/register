@@ -6,14 +6,14 @@ import { Button } from '@/components/ui/button'
 import Spinner from '@/components/ui/spinner'
 import { chainIdAtom, walletAtom } from '@/state/atoms'
 import { indexDTFAtom, indexDTFVersionAtom } from '@/state/dtf/atoms'
-import { formatCurrency, safeParseEther } from '@/utils'
+import { formatCurrency, max, safeParseEther } from '@/utils'
 import { ROUTES } from '@/utils/constants'
 import { atom, useAtom, useAtomValue } from 'jotai'
 import { AlertCircle } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { toast } from 'sonner'
-import { Address } from 'viem'
+import { Address, parseEther } from 'viem'
 import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
 import {
   allowanceMapAtom,
@@ -121,13 +121,19 @@ const SubmitButton = () => {
         `${formatCurrency(Number(amount))} ${indexDTF.token.symbol} minted!`
       )
 
+      const shares = safeParseEther(amount)
+
       if (version === '2.0.0') {
+        const mintFee = parseEther(indexDTF.mintingFee.toString() || '0')
+        const min = parseEther('0.0015')
+        const d18 = parseEther('1')
+        const minSharesOut = (shares * (d18 - max(mintFee, min)) - 1n) / d18
+
         writeContract({
           address: indexDTF.id,
           abi: dtfIndexAbiV2,
           functionName: 'mint',
-          // TODO(jg): define minSharesOut
-          args: [safeParseEther(amount), wallet, 0n],
+          args: [shares, wallet, minSharesOut],
           chainId,
         })
       } else {
@@ -135,7 +141,7 @@ const SubmitButton = () => {
           address: indexDTF.id,
           abi: dtfIndexAbi,
           functionName: 'mint',
-          args: [safeParseEther(amount), wallet],
+          args: [shares, wallet],
           chainId,
         })
       }

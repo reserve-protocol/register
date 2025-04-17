@@ -345,3 +345,11 @@ export const getTokenName = (name: string) => {
 
   return name
 }
+
+export const max = (...args: bigint[]): bigint => {
+  if (args.length === 0) {
+    throw new Error('empty arguments')
+  }
+
+  return args.reduce((max, curr) => (curr > max ? curr : max), 0n)
+}
