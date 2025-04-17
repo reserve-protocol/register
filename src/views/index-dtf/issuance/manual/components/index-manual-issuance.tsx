@@ -1,10 +1,11 @@
 import dtfIndexAbi from '@/abis/dtf-index-abi'
+import dtfIndexAbiV2 from '@/abis/dtf-index-abi-v2'
 import { TransactionButtonContainer } from '@/components/old/button/TransactionButton'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import Spinner from '@/components/ui/spinner'
 import { chainIdAtom, walletAtom } from '@/state/atoms'
-import { indexDTFAtom } from '@/state/dtf/atoms'
+import { indexDTFAtom, indexDTFVersionAtom } from '@/state/dtf/atoms'
 import { formatCurrency, safeParseEther } from '@/utils'
 import { ROUTES } from '@/utils/constants'
 import { atom, useAtom, useAtomValue } from 'jotai'
@@ -99,6 +100,7 @@ const SubmitButton = () => {
   const [isValid, validationError] = useAtomValue(isValidAtom)
   const wallet = useAtomValue(walletAtom)
   const indexDTF = useAtomValue(indexDTFAtom)
+  const version = useAtomValue(indexDTFVersionAtom)
 
   useEffect(() => {
     if (isSuccess) {
@@ -118,13 +120,25 @@ const SubmitButton = () => {
       setActionMsg(
         `${formatCurrency(Number(amount))} ${indexDTF.token.symbol} minted!`
       )
-      writeContract({
-        address: indexDTF.id,
-        abi: dtfIndexAbi,
-        functionName: 'mint',
-        args: [safeParseEther(amount), wallet],
-        chainId,
-      })
+
+      if (version === '2.0.0') {
+        writeContract({
+          address: indexDTF.id,
+          abi: dtfIndexAbiV2,
+          functionName: 'mint',
+          // TODO(jg): define minSharesOut
+          args: [safeParseEther(amount), wallet, 0n],
+          chainId,
+        })
+      } else {
+        writeContract({
+          address: indexDTF.id,
+          abi: dtfIndexAbi,
+          functionName: 'mint',
+          args: [safeParseEther(amount), wallet],
+          chainId,
+        })
+      }
     } else {
       const assets: Address[] = []
       const minAmounts: bigint[] = []
