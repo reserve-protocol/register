@@ -123,7 +123,15 @@ const SubmitButton = () => {
 
       const shares = safeParseEther(amount)
 
-      if (version === '2.0.0') {
+      if (version === '1.0.0') {
+        writeContract({
+          address: indexDTF.id,
+          abi: dtfIndexAbi,
+          functionName: 'mint',
+          args: [shares, wallet],
+          chainId,
+        })
+      } else {
         const mintFee = parseEther(indexDTF.mintingFee.toString() || '0')
         const min = parseEther('0.0015')
         const d18 = parseEther('1')
@@ -134,14 +142,6 @@ const SubmitButton = () => {
           abi: dtfIndexAbiV2,
           functionName: 'mint',
           args: [shares, wallet, minSharesOut],
-          chainId,
-        })
-      } else {
-        writeContract({
-          address: indexDTF.id,
-          abi: dtfIndexAbi,
-          functionName: 'mint',
-          args: [shares, wallet],
           chainId,
         })
       }
