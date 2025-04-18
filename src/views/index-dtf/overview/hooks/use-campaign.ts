@@ -17,12 +17,17 @@ const rewardTokens = {
   },
 }
 
+export const CAMPAIGN_URL = 'https://reserve.merkl.xyz/'
+
 type Response = {
   chainId: number
   apr: number
   identifier: string
   status: string
   dailyRewards: number
+  type: string
+  depositUrl: string
+  lastCampaignCreatedAt: string
 }
 
 const useCampaignRewards = () => {
@@ -36,11 +41,21 @@ const useCampaignRewards = () => {
 
       return data.reduce(
         (acc, curr) => {
+          if (curr.status !== 'LIVE') {
+            return acc
+          }
+
+          const match = curr.depositUrl.match(/0x[a-fA-F0-9]{40}/)
+          if (!match || match.length === 0) {
+            return acc
+          }
+
+          const index = match[0].toLowerCase()
           const rewardToken = rewardTokens[curr.chainId]
-          acc[curr.identifier.toLowerCase()] = {
+          acc[index] = {
             ...curr,
             rewardToken,
-            url: `https://reserve.merkl.xyz/opportunities/${CHAIN_TAGS[curr.chainId]?.toLowerCase()}/ERC20/${curr.identifier}`,
+            url: `https://reserve.merkl.xyz/opportunities/${CHAIN_TAGS[curr.chainId]?.toLowerCase()}/${curr.type}/${curr.identifier}`,
           }
           return acc
         },

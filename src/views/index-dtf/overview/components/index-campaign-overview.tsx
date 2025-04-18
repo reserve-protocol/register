@@ -5,9 +5,8 @@ import { indexDTFAtom } from '@/state/dtf/atoms'
 import { formatCurrency } from '@/utils'
 import { CHAIN_TAGS } from '@/utils/constants'
 import { useAtomValue } from 'jotai'
-import { BadgePercent, CalendarRange, Coins, Signature } from 'lucide-react'
+import { BadgePercent, CalendarRange, Coins } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import { getAddress } from 'viem'
 import { useDTFCampaign } from '../hooks/use-campaign'
 
 const MerklSvg = () => (
@@ -34,7 +33,6 @@ const MerklSvg = () => (
 
 const IndexCampaignOverview = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
-  const chainId = useAtomValue(chainIdAtom)
   const campaignData = useDTFCampaign(indexDTF?.id ?? '')
 
   if (!indexDTF || !campaignData || campaignData.status !== 'LIVE') return null
