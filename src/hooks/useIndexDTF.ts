@@ -187,6 +187,9 @@ const dtfQuery = gql`
 `
 
 const parseFeeRecipients = (raw: string) => {
+  if (!raw) {
+    return []
+  }
   const recipients = raw.split(',').map((recipient) => {
     const [address, percentage] = recipient.split(':')
     return {
