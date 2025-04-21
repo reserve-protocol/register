@@ -46,10 +46,12 @@ const useAPIProtocolMetrics = () => {
     select: (data) => {
       return {
         ...data,
-        tvlTimeseries: data.tvlTimeseries.map((item) => ({
-          ...item,
-          timestamp: item.timestamp * 1000,
-        })),
+        tvlTimeseries: data.tvlTimeseries
+          .map((item) => ({
+            ...item,
+            timestamp: item.timestamp * 1000,
+          }))
+          .slice(0, -2), // Temporary fix to remove last two items. TODO: Fix on backend
       }
     },
   })
