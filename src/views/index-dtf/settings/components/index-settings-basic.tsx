@@ -1,4 +1,4 @@
-import { indexDTFAtom } from '@/state/dtf/atoms'
+import { indexDTFAtom, indexDTFVersionAtom } from '@/state/dtf/atoms'
 import { shortenAddress } from '@/utils'
 import { t } from '@lingui/macro'
 import { useAtomValue } from 'jotai'
@@ -7,6 +7,7 @@ import { IconWrapper, InfoCard, InfoCardItem } from './settings-info-card'
 
 const BasicInfo = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
+  const version = useAtomValue(indexDTFVersionAtom)
 
   return (
     <InfoCard title="Basics">
@@ -40,6 +41,11 @@ const BasicInfo = () => {
         value={
           indexDTF?.deployer ? shortenAddress(indexDTF.deployer) : undefined
         }
+      />
+      <InfoCardItem
+        label={t`Version`}
+        icon={<IconWrapper Component={Hash} />}
+        value={version || '1.0.0'}
       />
     </InfoCard>
   )
