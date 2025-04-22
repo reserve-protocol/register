@@ -13,6 +13,7 @@ import { useNavigate } from 'react-router-dom'
 import {
   encodeFunctionData,
   getAddress,
+  isAddressEqual,
   keccak256,
   parseAbi,
   toBytes,
@@ -29,7 +30,7 @@ import { getCurrentTime } from '@/utils'
 import { useQuery } from '@tanstack/react-query'
 import request, { gql } from 'graphql-request'
 import { governanceProposalsAtom, refetchTokenAtom } from '../../../atoms'
-import { PartialProposal } from '@/lib/governance'
+import { getProposalState, PartialProposal } from '@/lib/governance'
 
 const spellAbi = parseAbi([
   'function upgradeStakingVaultGovernance(address stakingVault, address oldGovernor, address[] calldata guardians, bytes32 deploymentNonce) external returns (address newGovernor)',
@@ -87,6 +88,16 @@ const ProposeGovernanceSpell31032025Folio = ({
     if (!dtf.ownerGovernance || !dtf.tradingGovernance || qdOwnerGov !== 100n)
       return
 
+    const oldOwnerGovernor = dtf.ownerGovernance.id
+    const oldTradingGovernor = dtf.tradingGovernance.id
+
+    const ownerGuardians = dtf.ownerGovernance.timelock.guardians.filter(
+      (guardian) => !isAddressEqual(guardian, oldOwnerGovernor)
+    )
+    const tradingGuardians = dtf.ownerGovernance.timelock.guardians.filter(
+      (guardian) => !isAddressEqual(guardian, oldTradingGovernor)
+    )
+
     writeContract({
       address: dtf.ownerGovernance.id,
       abi: DTFIndexGovernance,
@@ -111,10 +122,10 @@ const ProposeGovernanceSpell31032025Folio = ({
             args: [
               dtf.id,
               dtf.proxyAdmin,
-              dtf.ownerGovernance.id,
-              dtf.tradingGovernance.id,
-              dtf.ownerGovernance.timelock.guardians,
-              dtf.tradingGovernance.timelock.guardians,
+              oldOwnerGovernor,
+              oldTradingGovernor,
+              ownerGuardians,
+              tradingGuardians,
               keccak256(toBytes(getCurrentTime())),
             ],
           }),
@@ -198,6 +209,11 @@ const ProposeGovernanceSpell31032025StakingVault = ({
     if (!dtf || !spell) return
     if (!dtf?.stToken?.governance || qdStakingVaultGov !== 100n) return
 
+    const oldGovernor = dtf.stToken.governance.id
+    const guardians = dtf.stToken.governance.timelock.guardians.filter(
+      (guardian) => !isAddressEqual(guardian, oldGovernor)
+    )
+
     writeContract({
       address: dtf.stToken.governance.id,
       abi: DTFIndexGovernance,
@@ -216,8 +232,8 @@ const ProposeGovernanceSpell31032025StakingVault = ({
             functionName: 'upgradeStakingVaultGovernance',
             args: [
               dtf.stToken.id,
-              dtf.stToken.governance.id,
-              dtf.stToken.governance.timelock.guardians,
+              oldGovernor,
+              guardians,
               keccak256(toBytes(getCurrentTime())),
             ],
           }),
@@ -284,9 +300,19 @@ const validProposalExists = (
     PROPOSAL_STATES.QUEUED,
     PROPOSAL_STATES.EXECUTED,
   ]
-  return proposals.some(
-    (p) => p.description == description && states.includes(p.state)
-  )
+  return proposals.some((p) => {
+    if (p.description !== description) {
+      return false
+    }
+
+    const pState = getProposalState(p)
+
+    if (pState.state === PROPOSAL_STATES.EXPIRED) {
+      return false
+    }
+
+    return states.includes(pState.state)
+  })
 }
 
 export default function ProposeGovernanceSpell31032025() {
