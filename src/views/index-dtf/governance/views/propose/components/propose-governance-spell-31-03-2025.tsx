@@ -3,21 +3,20 @@ import dtfAdminAbi from '@/abis/dtf-admin-abi'
 import stakingVaultAbi from '@/abis/dtf-index-staking-vault'
 import DTFIndexGovernance from '@/abis/dtf-index-governance'
 import { Button } from '@/components/ui/button'
-import { chainIdAtom, INDEX_DTF_SUBGRAPH_URL } from '@/state/atoms'
+import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
-import { PROPOSAL_STATES, ROUTES } from '@/utils/constants'
-import { useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { PROPOSAL_STATES } from '@/utils/constants'
+import { useAtomValue, useSetAtom } from 'jotai'
 import { AlertCircle, Loader2 } from 'lucide-react'
 import { useCallback, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
 import {
   encodeFunctionData,
   getAddress,
   isAddressEqual,
   keccak256,
+  pad,
   parseAbi,
   toBytes,
-  toHex,
 } from 'viem'
 import {
   useReadContract,
@@ -27,8 +26,6 @@ import {
 import { useIsProposeAllowed } from '../../../hooks/use-is-propose-allowed'
 import { ChainId } from '@/utils/chains'
 import { getCurrentTime } from '@/utils'
-import { useQuery } from '@tanstack/react-query'
-import request, { gql } from 'graphql-request'
 import { governanceProposalsAtom, refetchTokenAtom } from '../../../atoms'
 import { getProposalState, PartialProposal } from '@/lib/governance'
 
@@ -109,7 +106,7 @@ const ProposeGovernanceSpell31032025Folio = ({
           encodeFunctionData({
             abi: dtfIndexAbi,
             functionName: 'grantRole',
-            args: [toHex('0x00', { size: 32 }), spell],
+            args: [pad('0x0', { size: 32 }), spell],
           }),
           encodeFunctionData({
             abi: dtfAdminAbi,
