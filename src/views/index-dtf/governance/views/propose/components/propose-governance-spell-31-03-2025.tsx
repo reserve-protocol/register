@@ -12,6 +12,7 @@ import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
   encodeFunctionData,
+  getAddress,
   keccak256,
   parseAbi,
   toBytes,
@@ -32,8 +33,8 @@ const spellAbi = parseAbi([
 ])
 
 const spellAddress = {
-  [ChainId.Mainnet]: zeroAddress,
-  [ChainId.Base]: zeroAddress,
+  [ChainId.Mainnet]: getAddress('0x880F6ef00d13bAf60f3B99099451432F502EdA15'),
+  [ChainId.Base]: getAddress('0xE7FAa62c3F71f743F3a2Fc442393182F6B64f156'),
 }
 
 const queryParams = {
