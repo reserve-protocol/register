@@ -94,7 +94,6 @@ const ProposalTypeSelection = () => {
       <div className="flex flex-col gap-4 items-center justify-center m-4 flex-grow border-none sm:border-dashed border-2 border-foreground/40 rounded-3xl">
         <ProposeIndexUpgrade />
         <ProposeGovernanceSpell31032025 />
-
         <div className="bg-secondary rounded-3xl w-full sm:w-[408px]">
           <Header />
           <TypeList />
