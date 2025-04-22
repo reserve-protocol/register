@@ -319,6 +319,7 @@ export const dtfTradesByProposalAtom = atom<TradesByProposal[] | undefined>(
 export const proposedBasketAtom = atom<IndexAuctionSimulation | undefined>(
   undefined
 )
+
 export const expectedBasketAtom = atom<IndexAuctionSimulation | undefined>(
   undefined
 )

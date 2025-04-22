@@ -1,14 +1,16 @@
 import dtfIndexAbi from '@/abis/dtf-index-abi'
 import dtfIndexAbiV2 from '@/abis/dtf-index-abi-v2'
 import { getAuctions } from '@/lib/index-rebalance/get-auctionts'
+import { getCurrentBasket } from '@/lib/index-rebalance/utils'
 import {
   indexDTFAtom,
+  indexDTFBrandAtom,
   indexDTFVersionAtom,
   iTokenAddressAtom,
 } from '@/state/dtf/atoms'
 import { Token } from '@/types'
 import { atom, Getter } from 'jotai'
-import { Address, encodeFunctionData, Hex, parseUnits } from 'viem'
+import { Address, encodeFunctionData, formatUnits, Hex, parseUnits } from 'viem'
 
 export type Step = 'basket' | 'prices' | 'expiration' | 'confirmation'
 export type TradeRangeOption = 'defer' | 'include'
@@ -26,7 +28,15 @@ export const permissionlessLaunchingAtom = atom<number | undefined>(undefined)
 export interface IndexAssetShares {
   token: Token
   currentShares: string
+  currentUnits: string
 }
+
+export const proposedIndexBasketAtom = atom<
+  Record<string, IndexAssetShares> | undefined
+>(undefined)
+
+// Map token address to price
+export const priceMapAtom = atom<Record<string, number>>({})
 
 export const dtfSupplyAtom = atom<bigint>(0n)
 export const dtfTradeDelay = atom<bigint>(0n)
@@ -35,13 +45,49 @@ export const customPermissionlessLaunchingWindowAtom = atom('')
 
 // Editable shares
 export const proposedSharesAtom = atom<Record<string, string>>({})
+export const proposedUnitsAtom = atom<Record<string, string>>({})
 
-export const proposedIndexBasketAtom = atom<
-  Record<string, IndexAssetShares> | undefined
->(undefined)
+export const derivedProposedSharesAtom = atom((get) => {
+  try {
+    const proposedUnits = get(proposedUnitsAtom)
+    const proposedIndexBasket = get(proposedIndexBasketAtom)
+    const priceMap = get(priceMapAtom)
 
-// Map token address to price
-export const priceMapAtom = atom<Record<string, number>>({})
+    if (!proposedIndexBasket || !priceMap) return undefined
+
+    // Check if any of the proposed units are different than the current units on the basket
+    const isDifferent = Object.keys(proposedUnits).some(
+      (token) =>
+        proposedUnits[token] !== proposedIndexBasket[token].currentUnits
+    )
+
+    if (!isDifferent) return undefined
+
+    const keys = Object.keys(proposedUnits)
+    const bals: bigint[] = []
+    const decimals: bigint[] = []
+    const prices: number[] = []
+
+    for (const asset of keys) {
+      const d = proposedIndexBasket[asset].token.decimals || 18
+      bals.push(parseUnits(proposedUnits[asset], d))
+      decimals.push(BigInt(d))
+      prices.push(priceMap[asset] || 0)
+    }
+
+    const targetBasket = getCurrentBasket(bals, decimals, prices)
+
+    return keys.reduce(
+      (acc, token, index) => {
+        acc[token] = targetBasket[index]
+        return acc
+      },
+      {} as Record<string, bigint>
+    )
+  } catch (e) {
+    return undefined
+  }
+})
 
 export const proposedIndexBasketStateAtom = atom<{
   changed: boolean
@@ -96,9 +142,34 @@ export const proposedIndexBasketStateAtom = atom<{
   }
 })
 
+export const isUnitBasketAtom = atom((get) => {
+  const brandData = get(indexDTFBrandAtom)
+
+  return brandData?.dtf.basketType === 'unit-based'
+})
+
+export const isUnitBasketValidAtom = atom((get) => {
+  const derivedProposedShares = get(derivedProposedSharesAtom)
+  const basket = get(proposedIndexBasketAtom)
+
+  if (!derivedProposedShares || !basket) return false
+
+  // Validate that the new percents are different than the old ones
+  const isDifferent = Object.keys(derivedProposedShares).some(
+    (token) =>
+      derivedProposedShares[token] !==
+      parseUnits(basket[token].currentShares, 16)
+  )
+
+  return isDifferent
+})
+
 export const isProposedBasketValidAtom = atom((get) => {
   const { isValid } = get(proposedIndexBasketStateAtom)
-  return isValid
+  const isUnitBasketValid = get(isUnitBasketValidAtom)
+  const isUnitBasket = get(isUnitBasketAtom)
+
+  return isUnitBasket ? isUnitBasketValid : isValid
 })
 
 // Get proposed trades from algo if the target basket is valid
@@ -200,14 +271,23 @@ const VOLATILITY_VALUES = [0.1, 0.2, 0.5]
 function getProposedTrades(get: Getter, deferred = false) {
   const proposedBasket = get(proposedIndexBasketAtom)
   const proposedShares = get(proposedSharesAtom)
+  const derivedProposedShares = get(derivedProposedSharesAtom)
   const priceMap = get(priceMapAtom)
   const isValid = get(isProposedBasketValidAtom)
+  const isUnitBasket = get(isUnitBasketAtom)
   const volatility = get(tradeVolatilityAtom)
   const supply = get(dtfSupplyAtom)
   const dtfAddress = get(iTokenAddressAtom)
   const dtfPrice = priceMap[dtfAddress?.toLowerCase() || '']
 
-  if (!isValid || !proposedBasket || !dtfAddress || !dtfPrice) return []
+  if (
+    !isValid ||
+    !proposedBasket ||
+    !dtfAddress ||
+    !dtfPrice ||
+    (isUnitBasket && !derivedProposedShares)
+  )
+    return []
 
   const tokens: string[] = []
   const decimals: bigint[] = []
@@ -228,8 +308,15 @@ function getProposedTrades(get: Getter, deferred = false) {
     decimalsStr.push(proposedBasket[asset].token.decimals.toString())
     currentBasket.push(parseUnits(proposedBasket[asset].currentShares, 16))
     currentBasketStr.push(proposedBasket[asset].currentShares)
-    targetBasket.push(parseUnits(proposedShares[asset], 16))
-    targetBasketStr.push(proposedShares[asset])
+
+    if (isUnitBasket && derivedProposedShares) {
+      targetBasket.push(derivedProposedShares[asset])
+      targetBasketStr.push(formatUnits(derivedProposedShares[asset], 16))
+    } else {
+      targetBasket.push(parseUnits(proposedShares[asset], 16))
+      targetBasketStr.push(proposedShares[asset])
+    }
+
     prices.push(priceMap[asset])
 
     // TODO: assume trades always have the same order...
@@ -255,5 +342,7 @@ export const isDeferAvailableAtom = atom((get) => {
 
   if (!dtf) return true
 
-  return dtf?.auctionDelay > 10
+  return dtf.auctionDelay > 10
 })
+
+export const advancedControlsAtom = atom(false);
