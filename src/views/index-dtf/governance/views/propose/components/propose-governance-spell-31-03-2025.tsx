@@ -29,12 +29,12 @@ import { getCurrentTime } from '@/utils'
 import { governanceProposalsAtom, refetchTokenAtom } from '../../../atoms'
 import { getProposalState, PartialProposal } from '@/lib/governance'
 
-const spellAbi = parseAbi([
+export const spellAbi = parseAbi([
   'function upgradeStakingVaultGovernance(address stakingVault, address oldGovernor, address[] calldata guardians, bytes32 deploymentNonce) external returns (address newGovernor)',
   'function upgradeFolioGovernance(address folio, address proxyAdmin, address oldOwnerGovernor, address oldTradingGovernor, address[] calldata ownerGuardians, address[] calldata tradingGuardians, bytes32 deploymentNonce) external returns (address newOwnerGovernor, address newTradingGovernor)',
 ])
 
-const spellAddress = {
+export const spellAddress = {
   [ChainId.Mainnet]: getAddress('0x880F6ef00d13bAf60f3B99099451432F502EdA15'),
   [ChainId.Base]: getAddress('0xE7FAa62c3F71f743F3a2Fc442393182F6B64f156'),
 }
@@ -91,7 +91,7 @@ const ProposeGovernanceSpell31032025Folio = ({
     const ownerGuardians = dtf.ownerGovernance.timelock.guardians.filter(
       (guardian) => !isAddressEqual(guardian, oldOwnerGovernor)
     )
-    const tradingGuardians = dtf.ownerGovernance.timelock.guardians.filter(
+    const tradingGuardians = dtf.tradingGovernance.timelock.guardians.filter(
       (guardian) => !isAddressEqual(guardian, oldTradingGovernor)
     )
 

@@ -5,6 +5,7 @@ import { useAtomValue } from 'jotai'
 import { Address, decodeFunctionData, getAbiItem } from 'viem'
 
 import dtfIndexAbi from '@/abis/dtf-index-abi'
+import dtfAdminAbi from '@/abis/dtf-admin-abi'
 import dtfIndexGovernance from '@/abis/dtf-index-governance'
 import dtfIndexStakingVault from '@/abis/dtf-index-staking-vault'
 import { Button } from '@/components/ui/button'
@@ -26,6 +27,10 @@ import { Abi, Hex } from 'viem'
 import BasketProposalPreview from '../views/propose/basket/components/proposal-basket-preview'
 import RawCallPreview from './proposal-preview/raw-call-preview'
 import TokenRewardPreview from './proposal-preview/token-reward-preview'
+import {
+  spellAbi as governanceSpell_31_03_2025Abi,
+  spellAddress as governanceSpell_31_03_2025Address,
+} from '../views/propose/components/propose-governance-spell-31-03-2025'
 
 const dtfAbiMapppingAtom = atom((get) => {
   const dtf = get(indexDTFAtom)
@@ -34,6 +39,7 @@ const dtfAbiMapppingAtom = atom((get) => {
 
   const abiMapping: Record<string, Abi> = {
     [dtf.id.toLowerCase()]: dtfIndexAbi,
+    [dtf.proxyAdmin.toLowerCase()]: dtfAdminAbi,
   }
 
   if (dtf.ownerGovernance) {
@@ -52,6 +58,11 @@ const dtfAbiMapppingAtom = atom((get) => {
     }
   }
 
+  if (governanceSpell_31_03_2025Address[dtf.chainId]) {
+    abiMapping[governanceSpell_31_03_2025Address[dtf.chainId].toLowerCase()] =
+      governanceSpell_31_03_2025Abi
+  }
+
   return abiMapping
 })
 
@@ -62,6 +73,7 @@ const dtfContractAliasAtom = atom((get) => {
 
   const aliasMapping: Record<string, string> = {
     [dtf.id.toLowerCase()]: 'Folio',
+    [dtf.proxyAdmin.toLowerCase()]: 'ProxyAdmin',
   }
 
   if (dtf.ownerGovernance) {
@@ -78,6 +90,11 @@ const dtfContractAliasAtom = atom((get) => {
     if (dtf.stToken.governance) {
       aliasMapping[dtf.stToken.governance.id.toLowerCase()] = 'Lock Governance'
     }
+  }
+
+  if (governanceSpell_31_03_2025Address[dtf.chainId]) {
+    aliasMapping[governanceSpell_31_03_2025Address[dtf.chainId].toLowerCase()] =
+      'GovernanceSpell_31_03_2025'
   }
 
   return aliasMapping
