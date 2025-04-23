@@ -147,6 +147,7 @@ const currentProposalAuctionsAtom = atom<Auction[] | undefined>((get) => {
       start: trade.startPrice,
       end: trade.endPrice,
     },
+    availableRuns: trade.availableRuns || 1n,
   }))
 })
 

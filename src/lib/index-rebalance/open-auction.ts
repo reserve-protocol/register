@@ -180,14 +180,6 @@ export const openAuction = (
 
   console.log(
     'sellLimit',
-    sellLimit,
-    auction.sellLimit.high,
-    auction.sellLimit.low
-  )
-  console.log('buyLimit', buyLimit, auction.buyLimit.high, auction.buyLimit.low)
-
-  console.log(
-    'sellLimit',
     auction.sellLimit.low,
     sellLimit,
     auction.sellLimit.high

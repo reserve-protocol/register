@@ -43,23 +43,21 @@ export const getBasketRatiosFromAuctions = (
   const basketRatios: bigint[] = []
 
   for (let i = 0; i < tokens.length; i++) {
-    // loop through all auctions and fetch basket ratios; must be uniform!
+    // loop through all auctions and fetch basket ratios from highest-run auction
 
     let basketRatio = -1n // -1n means the token isn't present in the auctions period, and therefore this approach doesn't work
+    let runs = -1n
 
     for (let j = 0; j < auctions.length; j++) {
-      if (tokens[i] == auctions[j].sell) {
-        if (basketRatio != -1n && basketRatio != auctions[j].sellLimit.spot) {
-          throw new Error('basket ratios must be uniform! sell side')
-        }
-
+      if (tokens[i] == auctions[j].sell && auctions[j].availableRuns > runs) {
         basketRatio = auctions[j].sellLimit.spot
-      } else if (tokens[i] == auctions[j].buy) {
-        if (basketRatio != -1n && basketRatio != auctions[j].buyLimit.spot) {
-          throw new Error('basket ratios must be uniform! buy side')
-        }
-
+        runs = auctions[j].availableRuns
+      } else if (
+        tokens[i] == auctions[j].buy &&
+        auctions[j].availableRuns > runs
+      ) {
         basketRatio = auctions[j].buyLimit.spot
+        runs = auctions[j].availableRuns
       }
     }
 
