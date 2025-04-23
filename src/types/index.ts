@@ -1,4 +1,4 @@
-import { Address } from 'viem'
+import { Address, Hex } from 'viem'
 
 export type RoleKey =
   | 'owners'
@@ -262,6 +262,7 @@ export type Trader = 'backingManager' | 'rsrTrader' | 'rTokenTrader'
 
 export type IndexDTF = {
   id: Address
+  proxyAdmin: Address
   timestamp: number
   chainId: number
   deployer: Address
@@ -324,6 +325,19 @@ export type IndexDTF = {
       address: Address
       decimals: number
     }
+    governance?: {
+      id: Address
+      votingDelay: number
+      votingPeriod: number
+      proposalThreshold: number
+      quorumNumerator: number
+      timelock: {
+        id: Address
+        guardians: Address[]
+        executionDelay: number
+      }
+    }
+    rewardTokens: Token[]
   }
   totalRevenue: number
   protocolRevenue: number
@@ -349,4 +363,11 @@ export type IndexAuction = {
     end: bigint
   }
   ttl: bigint
+}
+
+export type DecodedCalldata = {
+  signature: string
+  parameters: string[]
+  callData: Hex
+  data: unknown[]
 }

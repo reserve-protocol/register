@@ -8,22 +8,26 @@ import {
 } from '@/state/dtf/atoms'
 import { RESERVE_API } from '@/utils/constants'
 import { useQuery } from '@tanstack/react-query'
-import { atom, useAtomValue, useSetAtom } from 'jotai'
+import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useMemo } from 'react'
+import { formatUnits, parseEther } from 'viem'
 import { useReadContracts } from 'wagmi'
 import {
   dtfSupplyAtom,
   dtfTradeDelay,
   IndexAssetShares,
+  isDeferAvailableAtom,
   isProposalConfirmedAtom,
   permissionlessLaunchingAtom,
   priceMapAtom,
   proposedIndexBasketAtom,
   proposedSharesAtom,
+  proposedUnitsAtom,
   stepAtom,
   tradeRangeOptionAtom,
   tradeVolatilityAtom,
 } from './atoms'
+import { PermissionOptionId } from './components/proposal-trading-expiration'
 
 const PRICES_BASE_URL = `${RESERVE_API}current/prices?tokens=`
 
@@ -116,9 +120,36 @@ const useInitialBasket = ():
         functionName: 'auctionDelay',
         chainId,
       },
+      {
+        abi: dtfIndexAbi,
+        address: dtfAddress,
+        functionName: 'toAssets',
+        args: [parseEther('1'), 0],
+        chainId,
+      },
     ],
     allowFailure: false,
+    query: {
+      select: (data) => {
+        const [totalSupply, tradeDelay, assetDistribution] = data
+        const [assets, amounts] = assetDistribution
+        const distribution = assets.reduce(
+          (acc, asset, index) => {
+            acc[asset.toLowerCase()] = amounts[index]
+            return acc
+          },
+          {} as Record<string, bigint>
+        )
+
+        return [totalSupply, tradeDelay, distribution] as [
+          bigint,
+          bigint,
+          Record<string, bigint>,
+        ]
+      },
+    },
   })
+
   const priceMap = useAtomValue(indexDTFBasketPricesAtom)
 
   return useMemo(() => {
@@ -126,7 +157,7 @@ const useInitialBasket = ():
     if (Object.keys(priceMap).length === 0 || !data || !basket?.length)
       return undefined
 
-    const [totalSupply, tradeDelay] = data
+    const [totalSupply, tradeDelay, distribution] = data
 
     // Create a copy so the value doesn't mutate!
     const initialBasket = basket.reduce(
@@ -134,6 +165,10 @@ const useInitialBasket = ():
         acc[asset.address.toLowerCase()] = {
           token: asset,
           currentShares: shares[asset.address.toLowerCase()] ?? '0',
+          currentUnits: formatUnits(
+            distribution[asset.address.toLowerCase()] ?? 0n,
+            asset.decimals
+          ),
         }
         return acc
       },
@@ -151,6 +186,7 @@ const InitialBasketUpdater = () => {
   const setSupply = useSetAtom(dtfSupplyAtom)
   const setTradeDelay = useSetAtom(dtfTradeDelay)
   const setProposedShares = useSetAtom(proposedSharesAtom)
+  const setProposedUnits = useSetAtom(proposedUnitsAtom)
 
   useEffect(() => {
     if (initialBasket) {
@@ -168,6 +204,15 @@ const InitialBasketUpdater = () => {
       setProposedBasket(basket)
       setSupply(totalSupply)
       setTradeDelay(tradeDelay)
+      setProposedUnits(
+        Object.values(basket).reduce(
+          (acc, asset) => {
+            acc[asset.token.address.toLowerCase()] = asset.currentUnits
+            return acc
+          },
+          {} as Record<string, string>
+        )
+      )
     }
   }, [!!initialBasket])
 
@@ -177,11 +222,29 @@ const InitialBasketUpdater = () => {
 const AtomStateUpdater = () => {
   const setStep = useSetAtom(stepAtom)
   const setProposedBasket = useSetAtom(proposedIndexBasketAtom)
+  const setProposedUnits = useSetAtom(proposedUnitsAtom)
   const setTradeVolatility = useSetAtom(tradeVolatilityAtom)
-  const setTradeRangeOption = useSetAtom(tradeRangeOptionAtom)
+  const [tradeRangeOption, setTradeRangeOption] = useAtom(tradeRangeOptionAtom)
   const setPermissionlessLaunching = useSetAtom(permissionlessLaunchingAtom)
   const tradeConfirmation = useSetAtom(isProposalConfirmedAtom)
   const setProposedShares = useSetAtom(proposedSharesAtom)
+  const isDeferAvailable = useAtomValue(isDeferAvailableAtom)
+
+  useEffect(() => {
+    const tradeRange = isDeferAvailable ? 'defer' : 'include'
+    setTradeRangeOption(tradeRange)
+    if (tradeRange === 'defer') {
+      setPermissionlessLaunching(PermissionOptionId.NO_PERMISSIONLESS_LAUNCHING)
+    } else if (tradeRange === 'include' && !isDeferAvailable) {
+      setPermissionlessLaunching(PermissionOptionId.PERMISSIONLESS_LAUNCHING)
+    }
+  }, [isDeferAvailable])
+
+  useEffect(() => {
+    if (tradeRangeOption === 'defer') {
+      setPermissionlessLaunching(PermissionOptionId.NO_PERMISSIONLESS_LAUNCHING)
+    }
+  }, [tradeRangeOption])
 
   useEffect(() => {
     return () => {
@@ -192,6 +255,7 @@ const AtomStateUpdater = () => {
       setTradeRangeOption(undefined)
       setPermissionlessLaunching(undefined)
       tradeConfirmation(false)
+      setProposedUnits({})
     }
   }, [])
 

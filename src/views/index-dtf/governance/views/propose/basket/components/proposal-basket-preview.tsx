@@ -51,6 +51,7 @@ type Trade = {
     end: bigint
   }
   ttl: bigint
+  runs: bigint | undefined
 }
 
 interface BasketProposalPreviewProps {
@@ -72,7 +73,7 @@ const useDecodedTrades = (calldatas: Hex[] | undefined): Trade[] => {
           data: calldata,
         })
 
-        const [sell, buy, sellLimit, buyLimit, prices, ttl] = args
+        const [sell, buy, sellLimit, buyLimit, prices, ttl, runs] = args
 
         return {
           sell: sell as Address,
@@ -92,6 +93,7 @@ const useDecodedTrades = (calldatas: Hex[] | undefined): Trade[] => {
             end: bigint
           },
           ttl: ttl as bigint,
+          runs: runs,
         }
       })
     } catch (error) {
@@ -112,7 +114,7 @@ const Header = ({ address }: { address: Address }) => {
 
   return (
     <div className="mx-4 py-4 flex items-center flex-wrap gap-2 border-b">
-      <h1 className="text-xl font-bold text-primary">Folio</h1>
+      <h1 className="text-xl font-bold text-primary">Basket Change</h1>
       <Link
         target="_blank"
         className="mr-auto"
@@ -354,7 +356,8 @@ const RawPreview = ({
             <span className="text-legend text-sm block mb-1">Signature</span>
             <span className="font-semibold">
               approveTrade(sell: address, buy: address, sellLimit: IFolio.Range,
-              buyLimit: IFolio.Range, prices: IFolio.Range, ttl: uint256)
+              buyLimit: IFolio.Range, prices: IFolio.Range, ttl: uint256{' '}
+              {trade.runs ? `, runs: uint256` : ''})
             </span>
           </div>
           <div>

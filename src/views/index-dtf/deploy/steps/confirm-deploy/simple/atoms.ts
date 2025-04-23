@@ -126,7 +126,7 @@ export const zapDeployPayloadAtom = atom<
       (formData.governanceVotingPeriod || 0) * 86400
     ).toString(),
     proposalThreshold: parseEther(
-      (formData.governanceVotingThreshold || 0).toString()
+      ((formData.governanceVotingThreshold || 0) / 100).toString()
     ).toString(),
     quorumPercent: Math.floor(formData.governanceVotingQuorum || 0).toString(),
     timelockDelay: Math.floor(
@@ -143,7 +143,7 @@ export const zapDeployPayloadAtom = atom<
       (formData.basketVotingPeriod || 0) * 3600
     ).toString(),
     proposalThreshold: parseEther(
-      (formData.basketVotingThreshold || 0).toString()
+      ((formData.basketVotingThreshold || 0) / 100).toString()
     ).toString(),
     quorumPercent: Math.floor(formData.basketVotingQuorum || 0).toString(),
     timelockDelay: Math.floor(

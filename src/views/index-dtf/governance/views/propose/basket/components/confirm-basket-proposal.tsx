@@ -8,6 +8,7 @@ import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import {
   basketProposalCalldatasAtom,
+  isProposalConfirmedAtom,
   priceMapAtom,
   proposalDescriptionAtom,
 } from '../atoms'
@@ -15,6 +16,7 @@ import BasketProposalPreview from './proposal-basket-preview'
 
 const ProposalDescription = () => {
   const setDescription = useSetAtom(proposalDescriptionAtom)
+  const setConfirmed = useSetAtom(isProposalConfirmedAtom)
 
   useEffect(() => {
     return () => {
@@ -22,7 +24,12 @@ const ProposalDescription = () => {
     }
   }, [])
 
-  return <ProposalDescriptionForm onChange={setDescription} />
+  return (
+    <ProposalDescriptionForm
+      onChange={setDescription}
+      onBack={() => setConfirmed(false)}
+    />
+  )
 }
 
 const ProposalPreview = () => {

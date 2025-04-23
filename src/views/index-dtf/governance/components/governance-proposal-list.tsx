@@ -187,7 +187,7 @@ const ProposalList = () => {
   if (!data) return <Skeleton className="h-[520px] w-full m-1 rounded-3xl" />
 
   return (
-    <ScrollArea className="max-h-[520px] bg-card rounded-3xl m-1 mt-0">
+    <ScrollArea className="md:max-h-[520px] bg-card overflow-y-auto rounded-3xl m-1 mt-0">
       {data.length === 0 && (
         <div className="flex items-center justify-center h-96">
           <p className="text-muted-foreground">No proposals found</p>

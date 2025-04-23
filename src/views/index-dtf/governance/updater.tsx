@@ -1,7 +1,6 @@
 import { PartialProposal } from '@/lib/governance'
 import { chainIdAtom, INDEX_DTF_SUBGRAPH_URL } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
-import { ChainId } from '@/utils/chains'
 import { useQuery } from '@tanstack/react-query'
 import request, { gql } from 'graphql-request'
 import { useAtomValue, useSetAtom } from 'jotai'
@@ -15,6 +14,10 @@ type Response = {
     proposalCount: number
   }
   tradingGovernance?: {
+    proposals: PartialProposal[]
+    proposalCount: number
+  }
+  vaultGovernance?: {
     proposals: PartialProposal[]
     proposalCount: number
   }
@@ -36,6 +39,7 @@ const query = gql`
   query getGovernanceStats(
     $ownerGovernance: String!
     $tradingGovernance: String!
+    $vaultGovernance: String!
     $stToken: String!
   ) {
     ownerGovernance: governance(id: $ownerGovernance) {
@@ -61,6 +65,28 @@ const query = gql`
       proposalCount
     }
     tradingGovernance: governance(id: $tradingGovernance) {
+      proposals {
+        id
+        description
+        creationTime
+        state
+        forWeightedVotes
+        abstainWeightedVotes
+        againstWeightedVotes
+        executionETA
+        executionTime
+        quorumVotes
+        voteStart
+        voteEnd
+        executionBlock
+        creationBlock
+        proposer {
+          address
+        }
+      }
+      proposalCount
+    }
+    vaultGovernance: governance(id: $vaultGovernance) {
       proposals {
         id
         description
@@ -118,6 +144,7 @@ const Updater = () => {
         {
           ownerGovernance: dtf?.ownerGovernance?.id ?? '',
           tradingGovernance: dtf?.tradingGovernance?.id ?? '',
+          vaultGovernance: dtf?.stToken?.governance?.id ?? '',
           stToken: dtf?.stToken?.id ?? '',
         }
       )
@@ -126,10 +153,12 @@ const Updater = () => {
         proposals: [
           ...(data.ownerGovernance.proposals ?? []),
           ...(data.tradingGovernance?.proposals ?? []),
+          ...(data.vaultGovernance?.proposals ?? []),
         ].sort((a, b) => b.creationTime - a.creationTime),
         proposalCount:
           +data.ownerGovernance.proposalCount +
-          +(data.tradingGovernance?.proposalCount ?? 0),
+          +(data.tradingGovernance?.proposalCount ?? 0) +
+          +(data.vaultGovernance?.proposalCount ?? 0),
         delegates: data.stakingToken?.delegates ?? [],
         delegatesCount: +(data.stakingToken?.totalDelegates ?? 0),
         voteSupply: +formatEther(data.stakingToken?.token.totalSupply ?? 0n),

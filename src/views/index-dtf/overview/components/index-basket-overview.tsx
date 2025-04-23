@@ -75,6 +75,10 @@ const IndexBasketOverview = ({ className }: { className?: string }) => {
     }
   }, [scrollTo, basket])
 
+  const filtered = basket?.filter(
+    (token) => basketShares[token.address] !== '0.00'
+  )
+
   return (
     <div
       className={cn('relative -mx-4 sm:-mx-5 -mb-4 sm:-mb-5 px-1', className)}
@@ -94,12 +98,12 @@ const IndexBasketOverview = ({ className }: { className?: string }) => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {!basket?.length ? ( // Loading skeleton rows
+          {!filtered?.length ? ( // Loading skeleton rows
             <BasketSkeleton />
           ) : (
-            basket
-              .slice(0, viewAll ? basket.length : MAX_TOKENS)
-              .map((token, index) => (
+            filtered
+              .slice(0, viewAll ? filtered.length : MAX_TOKENS)
+              .map((token) => (
                 <TableRow key={token.symbol} className="border-none">
                   <TableCell>
                     <div className="flex items-center font-semibold gap-2 break-words">
@@ -152,13 +156,13 @@ const IndexBasketOverview = ({ className }: { className?: string }) => {
           )}
         </TableBody>
       </Table>
-      {basket && basket.length > MAX_TOKENS && (
+      {filtered && filtered.length > MAX_TOKENS && (
         <Button
           variant="outline"
           className="w-full rounded-2xl"
           onClick={() => setViewAll(!viewAll)}
         >
-          {viewAll ? 'View less' : `View all ${basket.length} assets`}
+          {viewAll ? 'View less' : `View all ${filtered.length} assets`}
         </Button>
       )}
     </div>

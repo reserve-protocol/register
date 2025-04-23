@@ -7,11 +7,14 @@ const TOGGLE_FORMS = [
     title: 'Auction length',
     description: `How long dutch auctions will run when swapping tokens out of the basket. Shorter auction lengths benefit from less market volatility affecting the price during the auction. Longer auctions benefit from having more time for discovering the best price when swapping two tokens.`,
     icon: <Hourglass size={14} strokeWidth={1.5} />,
-    options: [15, 30, 60],
+    options: [15, 30, 45],
     optionsFormatter: (option: number) => humanizeMinutes(option),
     fieldName: 'auctionLength',
     customLabel: 'minutes',
     customPlaceholder: 'Enter custom length',
+    inputProps: {
+      max: 45,
+    },
   },
 
   {

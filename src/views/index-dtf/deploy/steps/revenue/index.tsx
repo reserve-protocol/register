@@ -72,6 +72,11 @@ const RevenueDistribution = () => {
       warningMessage: showWarningFolioFee ? (
         <AnnualizedFeeWarningMessage fieldName="folioFee" />
       ) : null,
+      inputProps: {
+        step: 0.05,
+        min: 0.15,
+        max: 10,
+      }
     },
 
     {
@@ -86,6 +91,11 @@ const RevenueDistribution = () => {
       warningMessage: showWarningMintFee ? (
         <AnnualizedFeeWarningMessage fieldName="mintFee" />
       ) : null,
+      inputProps: {
+        step: 0.05,
+        min: 0.15,
+        max: 5,
+      }
     },
   ]
 

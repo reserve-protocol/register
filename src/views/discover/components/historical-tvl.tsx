@@ -19,7 +19,7 @@ import {
   capitalize,
 } from 'utils/constants'
 import { Button } from '@/components/ui/button'
-import { ArrowRight, Play } from 'lucide-react'
+import { ArrowRight, ArrowUpRight, Clapperboard, Gem, Play } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import tvlLight from '../assets/tvl-light.svg'
 import tvlDark from '../assets/tvl-dark.svg'
@@ -27,6 +27,7 @@ import { trackClick } from '@/hooks/useTrackPage'
 import useAPIProtocolMetrics, {
   Metrics,
 } from '../hooks/use-api-protocol-metrics'
+import { CAMPAIGN_URL } from '@/views/index-dtf/overview/hooks/use-campaign'
 
 const COLORS: Record<string, any> = {
   ethereum: {
@@ -186,21 +187,46 @@ const Heading = ({
             </span>
           )}
         </div>
-      </div>
-      <div className="absolute hidden sm:block top-3 sm:top-8 right-0 text-primary">
         <Button
           variant="outline-primary"
-          className="rounded-[50px] p-1 h-8 border border-primary  dark:border-tvl/20 hover:bg-primary"
+          className="flex items-center gap-[6px] rounded-[50px] mt-6 p-1 h-8 border border-primary dark:border-tvl/20 hover:bg-primary"
           onClick={() => {
             trackClick('discover', 'video')
             window.open(DTF_VIDEO, '_blank')
           }}
         >
-          <div className="rounded-full w-6 h-6 bg-primary text-primary flex items-center justify-center">
-            <Play size={16} fill="#fff" />
-          </div>
-          <span className="ml-2 mr-2 dark:text-tvl">What are DTFs?</span>
+          <span className="ml-2">
+            <Clapperboard size={16} />
+          </span>
+          <span className="text-base dark:text-tvl">What are DTFs?</span>
+          <span className="rounded-full w-6 h-6 bg-primary text-primary flex items-center justify-center">
+            <Play size={16} className="text-white" fill="#fff" />
+          </span>
         </Button>
+      </div>
+      <div className="absolute hidden sm:block top-3 sm:top-8 right-2 md:right-0">
+        <div className="flex items-center gap-2 p-4 rounded-full border-[1px] border-neutral/10">
+          <div className="flex justify-center items-center flex-shrink-0 h-8 w-8 rounded-full border-[1px] border-current text-current">
+            <Gem size={16} />
+          </div>
+          <div className="min-w-[237px]">
+            <div className="font-bold leading-[20px]">
+              Trade DTFs & Earn Rewards
+            </div>
+            <div className="mt-1 leading-[17px] text-muted-foreground font-light">
+              $25K in total rewards
+            </div>
+          </div>
+          <Button
+            className="flex items-center gap-1 rounded-full bg-[#FFBE45] hover:bg-[#FFBE45]/90 text-black text-base"
+            asChild
+          >
+            <a href={CAMPAIGN_URL} target="_blank">
+              <span>View</span>
+              <ArrowUpRight size={16} />
+            </a>
+          </Button>
+        </div>
       </div>
     </>
   )

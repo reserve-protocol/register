@@ -14,7 +14,7 @@ import { IndexAuctionSimulation } from '@/hooks/useSimulatedBasket'
 
 export const TRADE_STATE = {
   PENDING: 'PENDING', // Only for auction launcher!
-  AVAILABLE: 'AVAILABLE', // Permissionless avalable
+  AVAILABLE: 'AVAILABLE', // Permissionless available
   RUNNING: 'RUNNING', // Auction launched
   COMPLETED: 'COMPLETED', // Auction completed (BIDDED)
   EXPIRED: 'EXPIRED', // Auction expired
@@ -23,25 +23,24 @@ export const TRADE_STATE = {
 export function getTradeState(trade: AssetTrade) {
   const currentTime = getCurrentTime()
 
-  // Lets start with the completed state!
-  if (trade.bids.length > 0 && currentTime > trade.end) {
-    return TRADE_STATE.COMPLETED
-  }
-
-  // Trade has launched, if its not closed then is still running or expired
-  if (trade.start && trade.end) {
-    if (currentTime < trade.end) {
-      return TRADE_STATE.RUNNING
+  if (currentTime >= trade.launchTimeout) {
+    if (trade.bids.length > 0) {
+      return TRADE_STATE.COMPLETED
     }
 
     return TRADE_STATE.EXPIRED
   }
 
-  if (currentTime >= trade.launchTimeout) {
-    return TRADE_STATE.EXPIRED
+  if (currentTime >= trade.start && currentTime < trade.end) {
+    return TRADE_STATE.RUNNING
   }
 
-  if (currentTime >= trade.availableAt) {
+  if (
+    currentTime >= trade.end &&
+    trade.availableRuns > 0 &&
+    trade.boughtAmount < trade.buyLimitSpot &&
+    currentTime >= trade.availableAt
+  ) {
     return TRADE_STATE.AVAILABLE
   }
 
@@ -56,6 +55,8 @@ export type AssetTrade = {
   boughtAmount: bigint
   startPrice: bigint
   endPrice: bigint
+  approvedStartPrice: bigint
+  approvedEndPrice: bigint
   sellLimitSpot: bigint
   sellLimitHigh: bigint
   sellLimitLow: bigint
@@ -66,6 +67,7 @@ export type AssetTrade = {
   launchTimeout: number
   start: number
   end: number
+  availableRuns: number
   approvedTimestamp: number
   launchedTimestamp: number
   approvedBlockNumber: string
@@ -317,6 +319,7 @@ export const dtfTradesByProposalAtom = atom<TradesByProposal[] | undefined>(
 export const proposedBasketAtom = atom<IndexAuctionSimulation | undefined>(
   undefined
 )
+
 export const expectedBasketAtom = atom<IndexAuctionSimulation | undefined>(
   undefined
 )

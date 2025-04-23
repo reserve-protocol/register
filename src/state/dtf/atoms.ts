@@ -46,6 +46,7 @@ export interface IndexDTFBrand {
     notesFromCreator: string
     prospectus: string
     tags: string[]
+    basketType: 'percentage-based' | 'unit-based'
   }
   creator: {
     name: string
@@ -102,6 +103,8 @@ export const indexDTFPriceAtom = atom((get) => {
 
   return basketPrices[dtf.token.id.toLowerCase()]
 })
+
+export const indexDTFVersionAtom = atom('1.0.0')
 
 // TODO: Retrieve from server, hardcoded for now
 const WHITELISTED_ADDRESSES = [

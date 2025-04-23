@@ -1,18 +1,19 @@
 import dtfIndexAbi from '@/abis/dtf-index-abi'
+import dtfIndexAbiV2 from '@/abis/dtf-index-abi-v2'
 import { TransactionButtonContainer } from '@/components/old/button/TransactionButton'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import Spinner from '@/components/ui/spinner'
 import { chainIdAtom, walletAtom } from '@/state/atoms'
-import { indexDTFAtom } from '@/state/dtf/atoms'
-import { formatCurrency, safeParseEther } from '@/utils'
+import { indexDTFAtom, indexDTFVersionAtom } from '@/state/dtf/atoms'
+import { formatCurrency, max, safeParseEther } from '@/utils'
 import { ROUTES } from '@/utils/constants'
 import { atom, useAtom, useAtomValue } from 'jotai'
 import { AlertCircle } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { toast } from 'sonner'
-import { Address } from 'viem'
+import { Address, parseEther } from 'viem'
 import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
 import {
   allowanceMapAtom,
@@ -99,6 +100,7 @@ const SubmitButton = () => {
   const [isValid, validationError] = useAtomValue(isValidAtom)
   const wallet = useAtomValue(walletAtom)
   const indexDTF = useAtomValue(indexDTFAtom)
+  const version = useAtomValue(indexDTFVersionAtom)
 
   useEffect(() => {
     if (isSuccess) {
@@ -118,13 +120,31 @@ const SubmitButton = () => {
       setActionMsg(
         `${formatCurrency(Number(amount))} ${indexDTF.token.symbol} minted!`
       )
-      writeContract({
-        address: indexDTF.id,
-        abi: dtfIndexAbi,
-        functionName: 'mint',
-        args: [safeParseEther(amount), wallet],
-        chainId,
-      })
+
+      const shares = safeParseEther(amount)
+
+      if (version === '1.0.0') {
+        writeContract({
+          address: indexDTF.id,
+          abi: dtfIndexAbi,
+          functionName: 'mint',
+          args: [shares, wallet],
+          chainId,
+        })
+      } else {
+        const mintFee = parseEther(indexDTF.mintingFee.toString() || '0')
+        const min = parseEther('0.0015')
+        const d18 = parseEther('1')
+        const minSharesOut = (shares * (d18 - max(mintFee, min)) - 1n) / d18
+
+        writeContract({
+          address: indexDTF.id,
+          abi: dtfIndexAbiV2,
+          functionName: 'mint',
+          args: [shares, wallet, minSharesOut],
+          chainId,
+        })
+      }
     } else {
       const assets: Address[] = []
       const minAmounts: bigint[] = []

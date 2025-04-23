@@ -4,22 +4,18 @@ import { NumericalInput } from '@/components/ui/input'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { cn } from '@/lib/utils'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { Asterisk } from 'lucide-react'
-import { useEffect, useMemo } from 'react'
+import { Check, Crown, UsersRound, X } from 'lucide-react'
+import { ReactNode, useMemo } from 'react'
 import {
   customPermissionlessLaunchingWindowAtom,
-  dtfTradeDelay,
-  isBasketProposalValidAtom,
   isDeferAvailableAtom,
-  isProposalConfirmedAtom,
-  isProposedBasketValidAtom,
   permissionlessLaunchingAtom,
   permissionlessLaunchingWindowAtom,
   stepAtom,
   tradeRangeOptionAtom,
 } from '../atoms'
 
-enum PermissionOptionId {
+export enum PermissionOptionId {
   NO_PERMISSIONLESS_LAUNCHING = 0,
   PERMISSIONLESS_LAUNCHING = 1,
 }
@@ -28,7 +24,7 @@ interface PermissionOption {
   id: PermissionOptionId
   title: string
   description: string
-  icon: JSX.Element
+  icon: (props: { active: boolean; disabled?: boolean }) => ReactNode
   disabled?: boolean
 }
 
@@ -37,11 +33,12 @@ const PermissionCard = ({ option }: { option: PermissionOption }) => {
     permissionlessLaunchingAtom
   )
   const isSelected = permissionlessLaunching === option.id
+  const Icon = option.icon
 
   return (
     <div
       className={cn(
-        'flex items-center gap-2 border rounded-xl p-4 cursor-pointer hover:bg-border',
+        'flex items-center gap-2 border rounded-xl p-4 cursor-pointer hover:bg-foreground/10 group',
         isSelected && 'bg-foreground/5',
         option.disabled && 'opacity-50 hover:bg-transparent'
       )}
@@ -51,18 +48,16 @@ const PermissionCard = ({ option }: { option: PermissionOption }) => {
           : () => setPermissionlessLaunching(option.id)
       }
     >
-      <div
-        className={cn(
-          'flex items-center flex-shrink-0 justify-center w-8 h-8 rounded-full',
-          option.id === 0
-            ? 'bg-destructive/10 text-destructive'
-            : 'bg-primary/10 text-primary'
-        )}
-      >
-        {option.icon}
-      </div>
+      <Icon active={isSelected} disabled={option.disabled} />
       <div className="mr-auto">
-        <h4 className="font-bold mb-1 text-base">{option.title}</h4>
+        <h4
+          className={cn(
+            'font-bold mb-1 text-base',
+            isSelected && 'text-primary'
+          )}
+        >
+          {option.title}
+        </h4>
         <p className="text-sm text-legend">{option.description}</p>
       </div>
       <Checkbox
@@ -80,24 +75,10 @@ const PermissionCard = ({ option }: { option: PermissionOption }) => {
 
 const NextButton = () => {
   const permissionlessLaunching = useAtomValue(permissionlessLaunchingAtom)
-  const isValid = useAtomValue(isBasketProposalValidAtom)
-  const isProposeBasketValid = useAtomValue(isProposedBasketValidAtom)
-  const isTradeSettingsValid = !!useAtomValue(tradeRangeOptionAtom)
-  const shouldFinalize = [
-    isValid,
-    isProposeBasketValid,
-    isTradeSettingsValid,
-  ].every((x) => x)
-
   const setStep = useSetAtom(stepAtom)
-  const setConfirmation = useSetAtom(isProposalConfirmedAtom)
 
   const handleClick = () => {
     setStep('confirmation')
-
-    if (isValid) {
-      setConfirmation(true)
-    }
   }
 
   return (
@@ -107,7 +88,7 @@ const NextButton = () => {
       disabled={permissionlessLaunching === undefined}
       onClick={handleClick}
     >
-      {shouldFinalize ? 'Confirm & Prepare Proposal' : 'Confirm'}
+      Confirm Changes
     </Button>
   )
 }
@@ -130,7 +111,13 @@ const PermissionlessWindow = () => {
 
   return (
     <div className="flex flex-col justify-center gap-3 rounded-xl bg-foreground/5 p-4">
-      <h4 className="font-semibold ml-3">Community Launch Window</h4>
+      <div>
+        <h4 className="font-semibold text-primary">Community Launch Window</h4>
+        <div className="">
+          Specify how long community members should be allow to start auctions
+          after the Exclusive Launch Window.
+        </div>
+      </div>
       <div className="flex items-center gap-2">
         <ToggleGroup
           type="single"
@@ -168,11 +155,30 @@ const PermissionlessWindow = () => {
   )
 }
 
+export const TradingExpirationTriggerLabel = () => {
+  const option = useAtomValue(permissionlessLaunchingAtom)
+
+  if (option === undefined) return null
+
+  return (
+    <div className="flex items-center gap-2 text-muted-foreground font-light">
+      {option === PermissionOptionId.NO_PERMISSIONLESS_LAUNCHING ? (
+        <X size={16} />
+      ) : (
+        <Check size={16} />
+      )}
+      <div>
+        {option === PermissionOptionId.NO_PERMISSIONLESS_LAUNCHING
+          ? 'No Permissionless Launching Allowed'
+          : 'Permissionless Launching Allowed'}
+      </div>
+    </div>
+  )
+}
+
 const ProposalTradingExpiration = () => {
-  const tradeDelay = useAtomValue(dtfTradeDelay)
   const priceRangeOption = useAtomValue(tradeRangeOptionAtom)
   const isDeferAvailable = useAtomValue(isDeferAvailableAtom)
-  const setPermissionlessLaunching = useSetAtom(permissionlessLaunchingAtom)
   const permissionOptions: PermissionOption[] = useMemo(
     () => [
       {
@@ -180,7 +186,18 @@ const ProposalTradingExpiration = () => {
         title: 'Auction Launchers',
         description:
           'Only Auction Launchers will be able to start auctions. After the exclusive launch window for Auction Launcher, any remaining auctions to started will expire.',
-        icon: <Asterisk size={24} strokeWidth={1.5} />,
+        icon: ({ active }) => (
+          <div
+            className={cn(
+              'flex items-center flex-shrink-0 justify-center w-8 h-8 border-[1px] rounded-full',
+              active
+                ? 'text-primary border-primary'
+                : 'text-current border-current'
+            )}
+          >
+            <Crown size={16} strokeWidth={1.5} />
+          </div>
+        ),
         disabled: !isDeferAvailable,
       },
       {
@@ -188,20 +205,38 @@ const ProposalTradingExpiration = () => {
         title: 'Auction Launcher + Community',
         description:
           'Both Auction Launchers AND community members can start auctions. Auction Launchers will still have an Exclusive Launch Window, but afterward anyone in the community can start an auction. Please specify how long community members should be allow to start auctions after the Exclusive Launch Window.',
-        icon: <Asterisk size={24} strokeWidth={1.5} />,
+        icon: ({ active, disabled }) => (
+          <div className="flex flex-col space-y-[-16px] flex-shrink-0">
+            <div
+              className={cn(
+                'flex items-center justify-center w-8 h-8 border-[1px] rounded-full',
+                active
+                  ? 'text-primary border-primary'
+                  : 'text-current border-current'
+              )}
+            >
+              <Crown size={16} strokeWidth={1.5} />
+            </div>
+            <div
+              className={cn(
+                'flex items-center justify-center w-8 h-8 border-[1px] rounded-full',
+                !disabled &&
+                  'group-hover:bg-[#e5e6e7] dark:group-hover:bg-[#262d33]',
+                active
+                  ? 'bg-[#f2f2f2] dark:bg-[#1c2229] text-primary border-primary'
+                  : 'bg-white dark:bg-[#11171d] text-current border-current'
+              )}
+            >
+              <UsersRound size={16} strokeWidth={1.5} />
+            </div>
+          </div>
+        ),
+
         disabled: priceRangeOption === 'defer',
       },
     ],
-    [tradeDelay, isDeferAvailable, priceRangeOption]
+    [isDeferAvailable, priceRangeOption]
   )
-
-  useEffect(() => {
-    if (priceRangeOption === 'defer') {
-      setPermissionlessLaunching(PermissionOptionId.NO_PERMISSIONLESS_LAUNCHING)
-    } else if (priceRangeOption === 'include' && !isDeferAvailable) {
-      setPermissionlessLaunching(PermissionOptionId.PERMISSIONLESS_LAUNCHING)
-    }
-  }, [priceRangeOption, isDeferAvailable])
 
   return (
     <>

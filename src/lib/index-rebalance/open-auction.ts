@@ -8,6 +8,7 @@ import { Auction } from './types'
  * moved from the initial ones used to approve the auction.
  *
  * @param auction The auction constructed intially by governance
+ * @param initialPrices D27{buyTok/sellTok} The initialPrices field of the AuctionDetails struct
  * @param _supply {share} Current supply
  * @param tokens Addresses of tokens in the basket
  * @param decimals Decimals of each token
@@ -23,6 +24,7 @@ import { Auction } from './types'
  */
 export const openAuction = (
   auction: Auction,
+  initialPrices: { start: bigint; end: bigint },
   _supply: bigint,
   tokens: string[],
   decimals: bigint[],
@@ -93,25 +95,38 @@ export const openAuction = (
     .mul(new Decimal(`1e${decimals[y]}`))
     .div(new Decimal(`1e${decimals[x]}`))
 
+  // D27{buyTok/sellTok} = {buyTok/sellTok} / {1} * D27
+  const spotPrice = bn(price.mul(D27d))
+
   // {1}
-  let avgPriceError = priceError[x].plus(priceError[y]).div(TWO)
+  const avgPriceError = priceError[x].plus(priceError[y]).div(TWO)
   if (priceError[x].gte(ONE) || priceError[y].gte(ONE)) {
     throw new Error('price error too large')
   }
 
   // D27{buyTok/sellTok} = {buyTok/sellTok} / {1} * D27
-  const idealStartPrice = bn(price.div(ONE.minus(avgPriceError)).mul(D27d))
-  const idealEndPrice = bn(price.mul(ONE.minus(avgPriceError)).mul(D27d))
+  let startPrice = bn(price.div(ONE.minus(avgPriceError)).mul(D27d))
+  let endPrice = bn(price.mul(ONE.minus(avgPriceError)).mul(D27d))
 
+  // check spot price against 50x multiple to keep headroom for price to move more; don't want to lose value
   if (
-    auction.prices.start > 0n &&
-    auction.prices.end > 0n &&
-    (idealStartPrice > auction.prices.start ||
-      idealEndPrice < auction.prices.end)
+    initialPrices.start > 0n &&
+    initialPrices.end > 0n &&
+    (spotPrice > initialPrices.start * 50n ||
+      startPrice > initialPrices.start * 100n ||
+      spotPrice < initialPrices.end)
   ) {
-    console.log('startPrice', auction.prices.start, idealStartPrice)
-    console.log('endPrice', auction.prices.end, idealEndPrice)
-    throw new Error('price has moved outside auction price range')
+    console.log('startPrice', startPrice, initialPrices.start)
+    console.log('endPrice', endPrice, initialPrices.end)
+    console.log('spotPrice', spotPrice)
+    throw new Error('spot price has moved outside valid auction price range')
+  }
+
+  if (startPrice < initialPrices.start) {
+    startPrice = initialPrices.start
+  }
+  if (endPrice < initialPrices.end) {
+    endPrice = initialPrices.end
   }
 
   // calculate sellLimit/buyLimit
@@ -153,6 +168,15 @@ export const openAuction = (
   if ((sellLimit == 0n && ejectFully) || buyLimit > auction.buyLimit.high) {
     buyLimit = auction.buyLimit.high
   }
+  if (sellLimit > auction.sellLimit.high) {
+    sellLimit = auction.sellLimit.high
+  }
+  if (buyLimit < auction.buyLimit.low) {
+    buyLimit = auction.buyLimit.low
+  }
+  if (sellLimit == 0n || buyLimit > auction.buyLimit.high) {
+    buyLimit = auction.buyLimit.high
+  }
 
   console.log(
     'sellLimit',
@@ -162,5 +186,13 @@ export const openAuction = (
   )
   console.log('buyLimit', buyLimit, auction.buyLimit.high, auction.buyLimit.low)
 
-  return [sellLimit, buyLimit, idealStartPrice, idealEndPrice]
+  console.log(
+    'sellLimit',
+    auction.sellLimit.low,
+    sellLimit,
+    auction.sellLimit.high
+  )
+  console.log('buyLimit', auction.buyLimit.low, buyLimit, auction.buyLimit.high)
+
+  return [sellLimit, buyLimit, startPrice, endPrice]
 }
