@@ -49,15 +49,18 @@ export const getBasketRatiosFromAuctions = (
     let runs = -1n
 
     for (let j = 0; j < auctions.length; j++) {
-      if (tokens[i] == auctions[j].sell && auctions[j].availableRuns > runs) {
+      if (
+        tokens[i] == auctions[j].sell &&
+        BigInt(auctions[j].availableRuns || 0n) > runs
+      ) {
         basketRatio = auctions[j].sellLimit.spot
-        runs = auctions[j].availableRuns
+        runs = BigInt(auctions[j].availableRuns || 0n)
       } else if (
         tokens[i] == auctions[j].buy &&
-        auctions[j].availableRuns > runs
+        BigInt(auctions[j].availableRuns || 0n) > runs
       ) {
         basketRatio = auctions[j].buyLimit.spot
-        runs = auctions[j].availableRuns
+        runs = BigInt(auctions[j].availableRuns || 0n)
       }
     }
 

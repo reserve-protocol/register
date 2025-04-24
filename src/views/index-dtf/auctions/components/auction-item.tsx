@@ -130,7 +130,7 @@ const currentProposalAuctionsAtom = atom<Auction[] | undefined>((get) => {
 
   if (!proposal || !proposals) return undefined
 
-  return proposals[proposal].trades.map((trade) => ({
+  return proposals[proposal].trades.map((trade: AssetTrade) => ({
     sell: trade.sell.address,
     buy: trade.buy.address,
     sellLimit: {
@@ -147,7 +147,7 @@ const currentProposalAuctionsAtom = atom<Auction[] | undefined>((get) => {
       start: trade.startPrice,
       end: trade.endPrice,
     },
-    availableRuns: trade.availableRuns || 1n,
+    availableRuns: trade.availableRuns,
   }))
 })
 

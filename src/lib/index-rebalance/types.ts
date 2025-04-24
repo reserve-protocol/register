@@ -16,5 +16,5 @@ export interface Auction {
   sellLimit: BasketRange // D27{sellTok/share} spot est for min ratio of sell token to shares allowed, inclusive
   buyLimit: BasketRange // D27{buyTok/share} spot est for max ratio of buy token to shares allowed, exclusive
   prices: Prices
-  availableRuns: bigint
+  availableRuns?: bigint | number
 }
