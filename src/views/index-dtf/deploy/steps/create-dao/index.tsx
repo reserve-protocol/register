@@ -63,6 +63,7 @@ const CreateDAO = () => {
   const submit = () => {
     const formData = getValues()
 
+    // TODO: This is in days, we should use an standard unit of time
     const votingDelay = (formData.governanceVotingDelay || 0) * 86400
     const votingPeriod = (formData.governanceVotingPeriod || 0) * 86400
     const votingThreshold = (formData.governanceVotingThreshold || 0) / 100
