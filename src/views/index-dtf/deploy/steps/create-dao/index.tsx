@@ -63,11 +63,12 @@ const CreateDAO = () => {
   const submit = () => {
     const formData = getValues()
 
-    const votingDelay = (formData.governanceVotingDelay || 0) * 3600
-    const votingPeriod = (formData.governanceVotingPeriod || 0) * 3600
+    // TODO: This is in days, we should use an standard unit of time
+    const votingDelay = (formData.governanceVotingDelay || 0) * 86400
+    const votingPeriod = (formData.governanceVotingPeriod || 0) * 86400
     const votingThreshold = (formData.governanceVotingThreshold || 0) / 100
     const votingQuorum = formData.governanceVotingQuorum || 0
-    const executionDelay = (formData.governanceExecutionDelay || 0) * 3600
+    const executionDelay = (formData.governanceExecutionDelay || 0) * 86400
     const guardians = formData.guardians.filter(Boolean)
 
     writeContract({
