@@ -168,15 +168,6 @@ export const openAuction = (
   if ((sellLimit == 0n && ejectFully) || buyLimit > auction.buyLimit.high) {
     buyLimit = auction.buyLimit.high
   }
-  if (sellLimit > auction.sellLimit.high) {
-    sellLimit = auction.sellLimit.high
-  }
-  if (buyLimit < auction.buyLimit.low) {
-    buyLimit = auction.buyLimit.low
-  }
-  if (sellLimit == 0n || buyLimit > auction.buyLimit.high) {
-    buyLimit = auction.buyLimit.high
-  }
 
   console.log(
     'sellLimit',
