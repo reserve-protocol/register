@@ -1,6 +1,6 @@
 import dtfIndexAbi from '@/abis/dtf-index-abi'
 import dtfIndexAbiV2 from '@/abis/dtf-index-abi-v2'
-import { getAuctions } from '@/lib/index-rebalance/get-auctionts'
+import { getAuctions } from '@/lib/index-rebalance/get-auctions'
 import { getCurrentBasket } from '@/lib/index-rebalance/utils'
 import {
   indexDTFAtom,
