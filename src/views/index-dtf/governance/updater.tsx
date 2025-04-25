@@ -9,6 +9,10 @@ import { Address, formatEther } from 'viem'
 import { indexGovernanceOverviewAtom, refetchTokenAtom } from './atoms'
 
 type Response = {
+  governances: {
+    proposals: PartialProposal[]
+    proposalCount: number
+  }[]
   ownerGovernance: {
     proposals: PartialProposal[]
     proposalCount: number
@@ -36,57 +40,9 @@ type Response = {
 }
 
 const query = gql`
-  query getGovernanceStats(
-    $ownerGovernance: String!
-    $tradingGovernance: String!
-    $vaultGovernance: String!
-    $stToken: String!
-  ) {
-    ownerGovernance: governance(id: $ownerGovernance) {
-      proposals {
-        id
-        description
-        creationTime
-        state
-        forWeightedVotes
-        abstainWeightedVotes
-        againstWeightedVotes
-        executionETA
-        quorumVotes
-        voteStart
-        voteEnd
-        executionBlock
-        executionTime
-        creationBlock
-        proposer {
-          address
-        }
-      }
-      proposalCount
-    }
-    tradingGovernance: governance(id: $tradingGovernance) {
-      proposals {
-        id
-        description
-        creationTime
-        state
-        forWeightedVotes
-        abstainWeightedVotes
-        againstWeightedVotes
-        executionETA
-        executionTime
-        quorumVotes
-        voteStart
-        voteEnd
-        executionBlock
-        creationBlock
-        proposer {
-          address
-        }
-      }
-      proposalCount
-    }
-    vaultGovernance: governance(id: $vaultGovernance) {
+  query getGovernanceStats($governanceIds: [String!]!, $stToken: String!) {
+    governances(ids: $governanceIds) {
+      id
       proposals {
         id
         description
@@ -109,6 +65,7 @@ const query = gql`
       proposalCount
     }
     stakingToken(id: $stToken) {
+      id
       totalDelegates
       token {
         totalSupply
@@ -142,23 +99,26 @@ const Updater = () => {
         INDEX_DTF_SUBGRAPH_URL[chainId],
         query,
         {
-          ownerGovernance: dtf?.ownerGovernance?.id ?? '',
-          tradingGovernance: dtf?.tradingGovernance?.id ?? '',
-          vaultGovernance: dtf?.stToken?.governance?.id ?? '',
+          governanceIds: [
+            dtf?.ownerGovernance?.id,
+            ...(dtf?.legacyAdmins || []),
+            dtf?.tradingGovernance?.id,
+            ...(dtf?.legacyAuctionApprovers || []),
+            dtf?.stToken?.governance?.id,
+            ...(dtf?.stToken?.legacyGovernance || []),
+          ],
           stToken: dtf?.stToken?.id ?? '',
         }
       )
 
       return {
-        proposals: [
-          ...(data.ownerGovernance.proposals ?? []),
-          ...(data.tradingGovernance?.proposals ?? []),
-          ...(data.vaultGovernance?.proposals ?? []),
-        ].sort((a, b) => b.creationTime - a.creationTime),
-        proposalCount:
-          +data.ownerGovernance.proposalCount +
-          +(data.tradingGovernance?.proposalCount ?? 0) +
-          +(data.vaultGovernance?.proposalCount ?? 0),
+        proposals: data.governances
+          .flatMap((g) => g.proposals)
+          .sort((a, b) => b.creationTime - a.creationTime),
+        proposalCount: data.governances.reduce(
+          (x, y) => x + Number(y.proposalCount),
+          0
+        ),
         delegates: data.stakingToken?.delegates ?? [],
         delegatesCount: +(data.stakingToken?.totalDelegates ?? 0),
         voteSupply: +formatEther(data.stakingToken?.token.totalSupply ?? 0n),
