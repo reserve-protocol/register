@@ -1,4 +1,4 @@
-import { useDTFPrices } from '@/hooks/usePrices'
+import { usePrices } from '@/hooks/usePrices'
 import { walletAtom } from '@/state/atoms'
 import { ChainId } from '@/utils/chains'
 import { useAtomValue, useSetAtom } from 'jotai'
@@ -88,21 +88,26 @@ const RewardsUpdater = () => {
       )
     }, [rewardsData, stTokens])
 
-  const { data: baseRewardsPrices } = useDTFPrices(
-    Object.values(rewardsMap)
-      .filter(({ chainId }) => chainId === ChainId.Base)
-      .map(({ rewards }) => rewards.map((reward) => reward))
-      .flat() || [],
-    ChainId.Base
+  const baseRewards = useMemo(
+    () =>
+      Object.values(rewardsMap)
+        .filter(({ chainId }) => chainId === ChainId.Base)
+        .map(({ rewards }) => rewards)
+        .flat() || [],
+    [rewardsMap]
   )
 
-  const { data: mainnetRewardsPrices } = useDTFPrices(
-    Object.values(rewardsMap)
-      .filter(({ chainId }) => chainId === ChainId.Mainnet)
-      .map(({ rewards }) => rewards.map((reward) => reward))
-      .flat() || [],
-    ChainId.Mainnet
+  const mainnetRewards = useMemo(
+    () =>
+      Object.values(rewardsMap)
+        .filter(({ chainId }) => chainId === ChainId.Mainnet)
+        .map(({ rewards }) => rewards)
+        .flat() || [],
+    [rewardsMap]
   )
+
+  const baseRewardsPrices = usePrices(baseRewards, ChainId.Base)
+  const mainnetRewardsPrices = usePrices(mainnetRewards, ChainId.Mainnet)
 
   const { data: accruedRewards } = useReadContracts({
     contracts: Object.entries(rewardsMap).flatMap(
@@ -160,10 +165,7 @@ const RewardsUpdater = () => {
                 chainId === ChainId.Mainnet
                   ? mainnetRewardsPrices
                   : baseRewardsPrices
-              )?.find(
-                (token) =>
-                  token.address.toLowerCase() === rewardAddress.toLowerCase()
-              )?.price
+              )[rewardAddress]
 
               const accruedUSD =
                 accrued !== undefined && price !== undefined
