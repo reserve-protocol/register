@@ -191,9 +191,6 @@ export const getAuctions = (
     if (bnBuyLimit >= 10n ** 54n) {
       bnBuyLimit = 10n ** 54n
     }
-    if (bnSellLimit == 0n && biggestSurplus >= biggestDeficit) {
-      bnBuyLimit = 10n ** 54n
-    }
 
     // add auction into set
     auctions.push(
