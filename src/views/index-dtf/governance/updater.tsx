@@ -41,7 +41,7 @@ type Response = {
 
 const query = gql`
   query getGovernanceStats($governanceIds: [String!]!, $stToken: String!) {
-    governances(ids: $governanceIds) {
+    governances(where: { id_in: $governanceIds }) {
       id
       proposals {
         id
