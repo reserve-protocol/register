@@ -1,6 +1,6 @@
 import { Decimal } from 'decimal.js-light'
 
-import { D9d, D18n, D27d } from './numbers'
+import { D9d, D18n, D27d, ZERO } from './numbers'
 
 /// Convert array of number to Decimals, throwing on 0
 export const toDecimals = (_arr: number[]): Decimal[] => {
