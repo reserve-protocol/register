@@ -13,6 +13,7 @@ import {
 import { formatEther } from 'viem'
 import { IconWrapper, InfoCard, InfoCardItem } from './settings-info-card'
 import { cn } from '@/lib/utils'
+import Help from '@/components/ui/help'
 
 export const InnerGovernanceInfo = ({
   kind = 'trading',
@@ -105,6 +106,13 @@ const GovernanceInfo = ({
   )
     return null
 
+  const help =
+    kind === 'trading'
+      ? t`Controls changes to the basket of an Index DTF`
+      : kind === 'owner'
+        ? t`Controls fees, voting parameters, and anything other than basket changes for an Index DTF`
+        : t`Controls settings of the vlDAO including vote lock duration and approving revenue tokens`
+
   return (
     <InfoCard
       title={
@@ -120,6 +128,9 @@ const GovernanceInfo = ({
           : kind === 'owner'
             ? 'non-basket-governance'
             : 'dao-governance'
+      }
+      action={
+        <Help size={20} className="p-0" content={help} />
       }
     >
       <InnerGovernanceInfo kind={kind} />
