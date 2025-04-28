@@ -147,7 +147,7 @@ const IndexGovernanceOverview = () => {
         )}
       </div>
       <Separator className="my-6" />
-      <InnerGovernanceInfo basket className="[&>*]:px-0 px-2 -mt-3" />
+      <InnerGovernanceInfo kind="trading" className="[&>*]:px-0 px-2 -mt-3" />
       <ViewNonBasketGovernanceButton />
     </Container>
   )
