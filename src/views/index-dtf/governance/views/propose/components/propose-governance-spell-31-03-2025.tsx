@@ -312,6 +312,7 @@ const validProposalExists = (
   })
 }
 
+// TODO(jg): Enable Staking Vault spell when DAO gov is fixed
 export default function ProposeGovernanceSpell31032025() {
   const { isProposeAllowed } = useIsProposeAllowed()
   const proposals = useAtomValue(governanceProposalsAtom)
@@ -337,7 +338,7 @@ export default function ProposeGovernanceSpell31032025() {
       {!existsFolioUpgrade && (
         <ProposeGovernanceSpell31032025Folio refetch={refetch} />
       )}
-      {!existsFolioDaoUpgrade && (
+      {!existsFolioDaoUpgrade && false && (
         <ProposeGovernanceSpell31032025StakingVault refetch={refetch} />
       )}
     </>
