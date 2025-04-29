@@ -217,4 +217,10 @@ export const TEMP_TOKENS: Token[] = [
     decimals: 18,
     address: '0xe3AE3EE16a89973D67b678aaD2c3bE865Dcc6880',
   },
+  {
+    name: 'Wrapped Klay',
+    symbol: 'WKLAY',
+    decimals: 18,
+    address: '0x41c433c146c47Dc53FC48cDc69e406e365e298E1',
+  },
 ]
