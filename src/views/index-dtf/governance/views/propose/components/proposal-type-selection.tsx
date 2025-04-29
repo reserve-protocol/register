@@ -11,6 +11,7 @@ import {
 } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import ProposeIndexUpgrade from './propose-index-upgrade'
+import ProposeGovernanceSpell31032025 from './propose-governance-spell-31-03-2025'
 
 const proposalTypes = [
   {
@@ -92,7 +93,7 @@ const ProposalTypeSelection = () => {
     <div className="flex h-[calc(100vh-146px)] lg:h-[calc(100vh-72px)] w-full">
       <div className="flex flex-col gap-4 items-center justify-center m-4 flex-grow border-none sm:border-dashed border-2 border-foreground/40 rounded-3xl">
         <ProposeIndexUpgrade />
-
+        <ProposeGovernanceSpell31032025 />
         <div className="bg-secondary rounded-3xl w-full sm:w-[408px]">
           <Header />
           <TypeList />

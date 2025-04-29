@@ -292,6 +292,7 @@ export type IndexDTF = {
       executionDelay: number
     }
   }
+  legacyAdmins: Address[]
   tradingGovernance?: {
     id: Address
     votingDelay: number
@@ -304,6 +305,7 @@ export type IndexDTF = {
       executionDelay: number
     }
   }
+  legacyAuctionApprovers: Address[]
   token: {
     id: Address
     name: string
@@ -337,6 +339,7 @@ export type IndexDTF = {
         executionDelay: number
       }
     }
+    legacyGovernance: Address[]
     rewardTokens: Token[]
   }
   totalRevenue: number

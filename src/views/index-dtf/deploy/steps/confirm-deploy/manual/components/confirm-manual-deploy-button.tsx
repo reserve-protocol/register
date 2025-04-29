@@ -174,9 +174,8 @@ const txAtom = atom<
   const ownerGovernanceConfig: GovernanceConfig = {
     votingDelay: Math.floor((formData.governanceVotingDelay || 0) * 86400),
     votingPeriod: Math.floor((formData.governanceVotingPeriod || 0) * 86400),
-    proposalThreshold: parseEther(
-      (formData.governanceVotingThreshold || 0).toString()
-    ),
+    proposalThreshold:
+      parseEther((formData.governanceVotingThreshold || 0).toString()) / 100n,
     quorumPercent: BigInt(Math.floor(formData.governanceVotingQuorum || 0)),
     timelockDelay: BigInt(
       Math.floor((formData.governanceExecutionDelay || 0) * 86400)
@@ -187,9 +186,8 @@ const txAtom = atom<
   const tradingGovernanceConfig: GovernanceConfig = {
     votingDelay: Math.floor((formData.basketVotingDelay || 0) * 3600),
     votingPeriod: Math.floor((formData.basketVotingPeriod || 0) * 3600),
-    proposalThreshold: parseEther(
-      (formData.basketVotingThreshold || 0).toString()
-    ),
+    proposalThreshold:
+      parseEther((formData.basketVotingThreshold || 0).toString()) / 100n,
     quorumPercent: BigInt(Math.floor(formData.basketVotingQuorum || 0)),
     timelockDelay: BigInt(
       Math.floor((formData.basketExecutionDelay || 0) * 3600)
