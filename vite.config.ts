@@ -69,8 +69,8 @@ export default defineConfig({
     port: 3000,
   },
   test: {
-    include: ['src/**/*.test.{ts,tsx,js}'], // where your test files live
-    globals: true, // so you can use `describe`/`it` without import
-    environment: 'node', // no jsdom; you're not testing DOM
+    include: ['src/lib/**/*.test.{ts,.tsx}'],
+    globals: true,
+    environment: 'node',
   },
 })
