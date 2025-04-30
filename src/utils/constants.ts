@@ -501,4 +501,6 @@ export const WORMHOLE_ASSETS = new Set([
   '0xa76a29923ccfb59e734e907688b659e48a55fd07',
   '0xcb9eec5748aafa41fbcbe0b58465efed11ce176',
   '0x224a0cb0c937018123b441b489a74eaf689da78f',
+  '0xcb9eec5748aaafa41fbcbe0b58465efed11ce176',
+  '0x3992b27da26848c2b19cea6fd25ad5568b68ab98',
 ])
