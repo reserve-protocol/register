@@ -14,6 +14,9 @@ import { getIdealLimitsGivenBounds } from './utils'
  * The frontend should check to see the size of the returned auctions array, and have some stored maximum count allowable per chain, based on gas costs.
  * If the total number of auctions is greater than the max, then the UI should show that the `target` is unreachable and they must aim lower first.
  *
+ * This function does not handle token ejection.
+ * If token ejection is desired, the frontend needs to query folio.getRebalance(), find the right index for the token, and set auction.buyLimit = limits[i].high
+ *
  * @param _supply {share}
  * @param tokens Addresses of tokens in the basket
  * @param rebalanceLimits D27{tok/share} The limit structs in the rebalance
@@ -198,6 +201,30 @@ export const getAuctionsToOpen = (
       })
     }
   }
+
+  // order auctions by size
+  auctions.sort((a, b) => {
+    // {USD/wholeShare}
+    const getDelta = (a: Auction) => {
+      const x = tokens.indexOf(a.sell)
+      const y = tokens.indexOf(a.buy)
+
+      // {wholeSellTok/wholeShare}
+      const surplus = folio[x].sub(spotLimits[x].mul(target))
+
+      // {wholeBuyTok/wholeShare}
+      const deficit = spotLimits[y].mul(target).sub(folio[y])
+
+      // {USD/wholeShare} = {wholeSellTok/wholeShare} * {USD/wholeSellTok}
+      return Math.min(
+        surplus.mul(prices[x]).toNumber(),
+        deficit.mul(prices[y]).toNumber()
+      )
+    }
+
+    // {USD/wholeShare}
+    return getDelta(a) - getDelta(b)
+  })
 
   console.log(auctions.length, auctions)
 

@@ -65,6 +65,8 @@ export const getIdealLimitsGivenBounds = (
   // {tok/wholeTok}
   const decimalScale = _decimals.map((a) => new Decimal(`1e${a}`))
 
+  console.log('dtfPrice', dtfPrice.toString())
+
   // ================================================================
 
   // {wholeTok/wholeShare} = D27{tok/share} * {share/wholeShare} / {tok/wholeTok} / D27
@@ -91,13 +93,17 @@ export const getIdealLimitsGivenBounds = (
         .map((spotLimit: Decimal, i: number) => spotLimit.mul(prices[i]))
         .reduce((a, b) => a.add(b))
 
+      console.log('dtfPriceLockedIn', dtfPriceLockedIn.toString())
       console.log('currentDTFPrice', currentDTFPrice.toString())
 
       // {1} = {USD/wholeShare} / {USD/wholeShare}
       let normalizer = dtfPrice.div(currentDTFPrice)
 
+      console.log('normalizer', normalizer.toString())
+
       if (currentDTFPrice.eq(dtfPrice)) {
-        continue
+        console.log('finished normalizing early')
+        break
       }
       // account for portion of dtf price already tracked, due to being locked in at the lows/highs
       else if (currentDTFPrice.gt(dtfPrice)) {
@@ -130,11 +136,15 @@ export const getIdealLimitsGivenBounds = (
           .div(D27d)
 
         if (idealLimit.lte(lowLimit) && !indicesLockedIn.includes(i)) {
+          console.log('locked in at low limit')
+
           // {USD/wholeShare} = {USD/wholeShare} + {wholeTok/wholeShare} * {USD/wholeTok}
           dtfPriceLockedIn = dtfPriceLockedIn.plus(lowLimit.mul(prices[i]))
           spotLimits[i] = lowLimit
           indicesLockedIn.push(i)
         } else if (idealLimit.gte(highLimit) && !indicesLockedIn.includes(i)) {
+          console.log('locked in at high limit')
+
           // {USD/wholeShare} = {USD/wholeShare} + {wholeTok/wholeShare} * {USD/wholeTok}
           dtfPriceLockedIn = dtfPriceLockedIn.plus(highLimit.mul(prices[i]))
           spotLimits[i] = highLimit

@@ -82,7 +82,7 @@ describe('getStartRebalance() + getAuctionsToOpen()', () => {
     assertPricesEqual(newPrices[1], { low: bn('0.9e9'), high: bn('1.111e9') })
     assertPricesEqual(newPrices[2], { low: bn('0.9e21'), high: bn('1.111e21') })
 
-    // openAuctions() on no change
+    // getAuctionsToOpen() on no change
 
     const auctions = getAuctionsToOpen(
       supply,
@@ -168,24 +168,22 @@ describe('getStartRebalance() + getAuctionsToOpen()', () => {
       true
     )
 
-    console.log('newPrices[1].high', newPrices[1].high)
     assertAuctionsEqual(auctions3, [
       {
         sell: 'USDC',
         buy: 'DAI',
         sellLimit: bn('0'),
         buyLimit: bn('0.45e27'),
-        startPrice: (bn('1e27') * newPrices[0].high) / newPrices[1].low,
-        endPrice: (bn('1e27') * bn('0.81e21')) / newPrices[1].high,
-        // TODO
+        startPrice: (bn('1e27') * newPrices[0].high) / newPrices[1].low, // should use original high sell price
+        endPrice: (bn('1e27') * bn('0.81e21')) / newPrices[1].high, // should use new low sell price
       },
       {
         sell: 'USDC',
         buy: 'USDT',
         sellLimit: bn('0'),
         buyLimit: bn('0.45e15'),
-        startPrice: (bn('1e27') * newPrices[0].high) / newPrices[2].low,
-        endPrice: (bn('1e27') * bn('0.81e21')) / newPrices[2].high,
+        startPrice: (bn('1e27') * newPrices[0].high) / newPrices[2].low, // should use original high sell price
+        endPrice: (bn('1e27') * bn('0.81e21')) / newPrices[2].high, // should use new low sell price
       },
     ])
 
@@ -211,25 +209,28 @@ describe('getStartRebalance() + getAuctionsToOpen()', () => {
         buy: 'DAI',
         sellLimit: bn('0'),
         buyLimit: bn('0.55e27'),
-        startPrice: (bn('1e27') * bn('1.222e21')) / newPrices[1].low,
-        endPrice: (bn('1e27') * bn('0.99e21')) / newPrices[1].high,
+        startPrice: (bn('1e27') * bn('1.222e21')) / newPrices[1].low, // should use new high sell price
+        endPrice: (bn('1e27') * bn('0.99e21')) / newPrices[1].high, // should use new low sell price
       },
       {
         sell: 'USDC',
         buy: 'USDT',
         sellLimit: bn('0'),
         buyLimit: bn('0.55e15'),
-        startPrice: (bn('1e27') * bn('1.222e21')) / newPrices[2].low,
-        endPrice: (bn('1e27') * bn('0.99e21')) / newPrices[2].high,
+        startPrice: (bn('1e27') * bn('1.222e21')) / newPrices[2].low, // should use new high sell price
+        endPrice: (bn('1e27') * bn('0.99e21')) / newPrices[2].high, // should use new low sell price
       },
     ])
   })
   return
-  it('stables: [100%, 0%, 0%]', () => {
+  // TODO
+  it('stables: [0%, 50%, 50%] -> [100%, 0%, 0%]', () => {
     const tokens = ['USDC', 'DAI', 'USDT']
     const decimals = [bn('6'), bn('18'), bn('6')]
     const prices = [1, 1, 1]
     const priceError = [0.1, 0.1, 0.1]
+    const dtfPrice = 1
+    const folio = [bn('0'), bn('0.5e18'), bn('0.5e6')]
     const targetBasket = [bn('1e18'), bn('0'), bn('0')]
     const [newLimits, newPrices] = getStartRebalance(
       supply,
@@ -262,8 +263,148 @@ describe('getStartRebalance() + getAuctionsToOpen()', () => {
     assertPricesEqual(newPrices[0], { low: bn('0.9e21'), high: bn('1.111e21') })
     assertPricesEqual(newPrices[1], { low: bn('0.9e9'), high: bn('1.111e9') })
     assertPricesEqual(newPrices[2], { low: bn('0.9e21'), high: bn('1.111e21') })
-  })
 
+    // getAuctionsToOpen() on no change
+
+    const auctions = getAuctionsToOpen(
+      supply,
+      tokens,
+      newLimits,
+      newPrices,
+      folio,
+      decimals,
+      prices,
+      priceError,
+      dtfPrice,
+      true
+    )
+    assertAuctionsEqual(auctions, [
+      {
+        sell: 'DAI',
+        buy: 'USDC',
+        sellLimit: bn('0'),
+        buyLimit: bn('1e15'),
+        startPrice: (bn('1e27') * newPrices[1].high) / newPrices[0].low,
+        endPrice: (bn('1e27') * newPrices[1].low) / newPrices[0].high,
+      },
+      {
+        sell: 'USDT',
+        buy: 'USDC',
+        sellLimit: bn('0'),
+        buyLimit: bn('1e15'),
+        startPrice: (bn('1e27') * newPrices[2].high) / newPrices[0].low,
+        endPrice: (bn('1e27') * newPrices[2].low) / newPrices[0].high,
+      },
+    ])
+
+    // no change after uniform price appreciation
+
+    const prices2 = [2, 2, 2]
+    const dtfPrice2 = 2
+    const auctions2 = getAuctionsToOpen(
+      supply,
+      tokens,
+      newLimits,
+      newPrices,
+      folio,
+      decimals,
+      prices2,
+      priceError,
+      dtfPrice2,
+      true
+    )
+
+    assertAuctionsEqual(auctions2, [
+      {
+        sell: 'DAI',
+        buy: 'USDC',
+        sellLimit: bn('0'),
+        buyLimit: bn('1e15'),
+        startPrice: (bn('1e27') * newPrices[1].high) / newPrices[0].low,
+        endPrice: (bn('1e27') * newPrices[1].low) / newPrices[0].high,
+      },
+      {
+        sell: 'USDT',
+        buy: 'USDC',
+        sellLimit: bn('0'),
+        buyLimit: bn('1e15'),
+        startPrice: (bn('1e27') * newPrices[2].high) / newPrices[0].low,
+        endPrice: (bn('1e27') * newPrices[2].low) / newPrices[0].high,
+      },
+    ])
+
+    // loss case
+
+    const prices3 = [0.9, 1, 1]
+    const dtfPrice3 = 1
+    const auctions3 = getAuctionsToOpen(
+      supply,
+      tokens,
+      newLimits,
+      newPrices,
+      folio,
+      decimals,
+      prices3,
+      priceError,
+      dtfPrice3,
+      true
+    )
+
+    assertAuctionsEqual(auctions3, [
+      {
+        sell: 'DAI',
+        buy: 'USDC',
+        sellLimit: bn('0'),
+        buyLimit: bn('0.9e18'),
+        startPrice: (bn('1e27') * newPrices[1].high) / newPrices[0].low, // should use original high sell price
+        endPrice: (bn('1e27') * bn('0.81e21')) / newPrices[0].high, // should use new low sell price
+      },
+      {
+        sell: 'USDT',
+        buy: 'USDC',
+        sellLimit: bn('0'),
+        buyLimit: bn('0.9e18'),
+        startPrice: (bn('1e27') * newPrices[2].high) / newPrices[0].low, // should use original high sell price
+        endPrice: (bn('1e27') * bn('0.81e21')) / newPrices[0].high, // should use new low sell price
+      },
+    ])
+
+    // gain case
+
+    const prices4 = [1.1, 1, 1]
+    const dtfPrice4 = 1
+    const auctions4 = getAuctionsToOpen(
+      supply,
+      tokens,
+      newLimits,
+      newPrices,
+      folio,
+      decimals,
+      prices4,
+      priceError,
+      dtfPrice4,
+      true
+    )
+    assertAuctionsEqual(auctions4, [
+      {
+        sell: 'DAI',
+        buy: 'USDC',
+        sellLimit: bn('0'),
+        buyLimit: bn('0.55e15'),
+        startPrice: (bn('1e27') * bn('1.222e21')) / newPrices[0].low, // should use new high sell price
+        endPrice: (bn('1e27') * bn('0.99e21')) / newPrices[0].high, // should use new low sell price
+      },
+      {
+        sell: 'USDT',
+        buy: 'USDC',
+        sellLimit: bn('0'),
+        buyLimit: bn('0.55e15'),
+        startPrice: (bn('1e27') * bn('1.222e21')) / newPrices[0].low, // should use new high sell price
+        endPrice: (bn('1e27') * bn('0.99e21')) / newPrices[0].high, // should use new low sell price
+      },
+    ])
+  })
+  return
   it('volatiles: [75%, 25%]', () => {
     const tokens = ['USDC', 'ETH']
     const decimals = [bn('6'), bn('18')]
