@@ -277,12 +277,31 @@ export const PNGS = new Set([
   'moomorpho-smokehouse-usdc',
 ])
 
+export const EXTERNAL_ASSETS: Record<string, string> = {
+  leo: 'https://assets.coingecko.com/coins/images/8418/standard/leo-token.png?1696508607',
+  okb: 'https://assets.coingecko.com/coins/images/4463/standard/WeChat_Image_20220118095654.png?1696505053',
+  gt: 'https://assets.coingecko.com/coins/images/8183/standard/200X200.png?1735246724',
+  kas: 'https://assets.coingecko.com/coins/images/25751/standard/kaspa-icon-exchanges.png?1696524837',
+  mnt: 'https://assets.coingecko.com/coins/images/30980/standard/Mantle-Logo-mark.png?1739213200',
+  ena: 'https://assets.coingecko.com/coins/images/36530/standard/ethena.png?1711701436',
+  wld: 'https://assets.coingecko.com/coins/images/31069/standard/worldcoin.jpeg?1696529903',
+  jup: 'https://assets.coingecko.com/coins/images/34188/standard/jup.png?1704266489',
+  ray: 'https://assets.coingecko.com/coins/images/13928/standard/PSigc4ie_400x400.jpg?1696513668',
+  paxg: 'https://assets.coingecko.com/coins/images/9519/standard/paxgold.png?1696509604',
+  gala: 'https://assets.coingecko.com/coins/images/12493/standard/GALA_token_image_-_200PNG.png?1709725869',
+  pyth: 'https://assets.coingecko.com/coins/images/31924/standard/pyth.png?1701245725',
+  cake: 'https://assets.coingecko.com/coins/images/12632/standard/pancakeswap-cake-logo_%281%29.png?1696512440',
+}
+
 function getKnownTokenLogo(symbol: string) {
   if (SVGS.has(symbol.toLowerCase())) {
     return `/svgs/${symbol.toLowerCase()}.svg`
   }
   if (PNGS.has(symbol.toLowerCase())) {
     return `/imgs/${symbol.toLowerCase()}.png`
+  }
+  if (EXTERNAL_ASSETS[symbol.toLowerCase()]) {
+    return EXTERNAL_ASSETS[symbol.toLowerCase()]
   }
   return ''
 }
