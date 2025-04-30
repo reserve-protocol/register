@@ -1,10 +1,8 @@
-import { Decimal } from 'decimal.js-light'
+import Decimal from 'decimal.js-light'
 
 import { bn, D18d, D27d, ONE } from './numbers'
 
 import { BasketRange, Prices } from './types'
-
-import { toDecimals } from './utils'
 
 /**
  * Get the arguments needed to call startRebalance
@@ -39,7 +37,7 @@ export const getStartRebalance = (
   const supply = new Decimal(_supply.toString()).div(D18d)
 
   // {USD/wholeTok}
-  const prices = toDecimals(_prices)
+  const prices = _prices.map((a) => new Decimal(a.toString()))
 
   // {USD/wholeShare}
   const dtfPrice = new Decimal(_dtfPrice)
@@ -50,12 +48,12 @@ export const getStartRebalance = (
   )
 
   // {1}
-  const priceError = toDecimals(_priceError)
+  const priceError = _priceError.map((a) => new Decimal(a.toString()))
 
   // {USD} = {USD/wholeShare} * {wholeShare}
   const sharesValue = dtfPrice.mul(supply)
 
-  console.log('sharesValue', sharesValue)
+  console.log('sharesValue', sharesValue.toString())
 
   for (let i = 0; i < tokens.length; i++) {
     // === newLimits ===
@@ -66,12 +64,13 @@ export const getStartRebalance = (
     // {wholeTok/wholeShare} = {1} * {USD/wholeShare} / {USD/wholeTok}
     const spot = targetBasket[i].mul(dtfPrice).div(prices[i])
 
-    console.log('limit.spot', spot)
+    console.log('limit.spot', spot.toString())
 
     // D27{tok/share}{wholeShare/wholeTok} = D27 * {tok/wholeTok} / {share/wholeShare}
     const limitMultiplier = D27d.mul(new Decimal(`1e${decimals[i]}`)).div(D18d)
 
     if (priceError[i].gte(ONE)) {
+      // D27{tok/share} = {wholeTok/wholeShare} * D27{tok/share}{wholeShare/wholeTok}
       newLimits.push({
         spot: bn(spot.mul(limitMultiplier)),
         low: bn('1'),
@@ -82,8 +81,8 @@ export const getStartRebalance = (
       const low = spot.mul(ONE.sub(priceError[i]))
       const high = spot.div(ONE.sub(priceError[i]))
 
-      console.log('limit.low', low)
-      console.log('limit.high', high)
+      console.log('limit.low', low.toString())
+      console.log('limit.high', high.toString())
 
       // D27{tok/share} = {wholeTok/wholeShare} * D27{tok/share}{wholeShare/wholeTok}
       newLimits.push({
@@ -110,8 +109,8 @@ export const getStartRebalance = (
       const lowPrice = prices[i].mul(ONE.sub(priceError[i]))
       const highPrice = prices[i].div(ONE.sub(priceError[i]))
 
-      console.log('price.low', lowPrice)
-      console.log('price.high', highPrice)
+      console.log('price.low', lowPrice.toString())
+      console.log('price.high', highPrice.toString())
 
       // D27{USD/tok} = {USD/wholeTok} * D27{wholeTok/tok}
       newPrices.push({

@@ -1,4 +1,4 @@
-import { Decimal } from 'decimal.js-light'
+import Decimal from 'decimal.js-light'
 
 export const D27n: bigint = 10n ** 27n
 export const D18n: bigint = 10n ** 18n
