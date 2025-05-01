@@ -136,25 +136,27 @@ const currentProposalAuctionsAtom = atom<Auction[] | undefined>((get) => {
 
   if (!proposal || !proposals) return undefined
 
-  return proposals[proposal].trades.map((trade: AssetTrade) => ({
-    sell: trade.sell.address,
-    buy: trade.buy.address,
-    sellLimit: {
-      spot: trade.sellLimitSpot,
-      low: trade.sellLimitLow,
-      high: trade.sellLimitHigh,
-    },
-    buyLimit: {
-      spot: trade.buyLimitSpot,
-      low: trade.buyLimitLow,
-      high: trade.buyLimitHigh,
-    },
-    prices: {
-      start: trade.startPrice,
-      end: trade.endPrice,
-    },
-    availableRuns: trade.availableRuns,
-  }))
+  return (
+    proposals[proposal]?.trades.map((trade: AssetTrade) => ({
+      sell: trade.sell.address,
+      buy: trade.buy.address,
+      sellLimit: {
+        spot: trade.sellLimitSpot,
+        low: trade.sellLimitLow,
+        high: trade.sellLimitHigh,
+      },
+      buyLimit: {
+        spot: trade.buyLimitSpot,
+        low: trade.buyLimitLow,
+        high: trade.buyLimitHigh,
+      },
+      prices: {
+        start: trade.startPrice,
+        end: trade.endPrice,
+      },
+      availableRuns: trade.availableRuns,
+    })) ?? undefined
+  )
 })
 
 const TradeButton = ({
