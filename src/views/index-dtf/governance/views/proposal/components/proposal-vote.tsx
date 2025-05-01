@@ -137,7 +137,7 @@ const ProposalSummary = () => {
       className={cn(
         'flex flex-col h-full rounded-lg ',
         STATES_WITH_ACTIONS.includes(state) && 'border',
-        !FINAL_STATES.includes(state) && 'bg-[#f2f2f2]'
+        !FINAL_STATES.includes(state) && 'bg-[#f2f2f2] dark:bg-input'
       )}
     >
       <ProposalVoteOverview />

@@ -174,7 +174,7 @@ const BasketChanges = ({ calldatas }: { calldatas: DecodedCalldata[] }) => {
   const shares = useAtomValue(indexDTFBasketSharesAtom)
   const prices = useAtomValue(indexDTFBasketPricesAtom)
 
-  if (!dtf) return <Skeleton className="h-80" />
+  if (!dtf || !basket || !prices) return <Skeleton className="h-80" />
 
   return (
     <BasketProposalPreview
