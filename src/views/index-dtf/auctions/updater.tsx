@@ -130,6 +130,8 @@ const useTrades = () => {
         }
       )
 
+      if (!data?.trades) return undefined
+
       // Return an array of trades
       return data.trades.map((trade) => {
         const parsedTrade: AssetTrade = {
