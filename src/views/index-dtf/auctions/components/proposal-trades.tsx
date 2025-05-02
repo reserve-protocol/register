@@ -21,39 +21,7 @@ import {
 import AuctionList from './auction-list'
 import ProposalTradesSkeleton from './proposal-trades-skeleton'
 import AuctionProposedBasket from './auction-proposed-basket'
-
-function getTimerFormat(seconds: number) {
-  const timeUnits = {
-    days: 'd',
-    day: 'd',
-    hours: 'h',
-    hour: 'h',
-    minutes: 'm',
-    minute: 'm',
-    seconds: 's',
-    second: 's',
-  }
-
-  let str = humanizeDuration(seconds * 1000, {
-    units: ['h', 'm', 's'],
-    round: true,
-    spacer: '',
-    delimiter: ' ',
-  })
-
-  // Replace all time unit words with their shortened versions
-  for (const [word, short] of Object.entries(timeUnits)) {
-    str = str.replace(word, short)
-  }
-
-  // Ensure seconds are always shown
-  if (!str.includes('s')) {
-    str += ' 0s'
-  }
-
-  return str
-}
-
+import { getTimerFormat } from '@/utils'
 const Container = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="hidden sm:flex items-center gap-2 text-sm border rounded-full py-2 px-3 font-light mr-4">

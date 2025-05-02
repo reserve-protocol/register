@@ -40,6 +40,7 @@ import AsyncRedeem from '../async-swaps/async-redeem'
 import Collaterals from '../async-swaps/collaterals'
 import OrderStatusUpdater from '../async-swaps/order-status-updater'
 import { cn } from '@/lib/utils'
+import { asyncSwapResponseAtom } from '../async-swaps/atom'
 
 const ZapMint = ({ children }: { children: ReactNode }) => {
   const [open, setOpen] = useAtom(openZapMintModalAtom)
@@ -53,6 +54,7 @@ const ZapMint = ({ children }: { children: ReactNode }) => {
   const zapFetching = useAtomValue(zapFetchingAtom)
   const zapOngoingTx = useAtomValue(zapOngoingTxAtom)
   const input = useAtomValue(zapMintInputAtom)
+  const asyncSwapResponse = useAtomValue(asyncSwapResponseAtom)
   const setIndexDTFBalance = useSetAtom(indexDTFBalanceAtom)
   const invalidInput = isNaN(Number(input)) || Number(input) === 0
 
@@ -88,8 +90,10 @@ const ZapMint = ({ children }: { children: ReactNode }) => {
       <DialogContent
         showClose={false}
         className={cn(
-          'p-2 rounded-t-2xl sm:rounded-3xl border-none flex items-center gap-2',
-          asyncZapMode && 'min-w-[840px]'
+          'p-2 rounded-t-2xl sm:rounded-3xl border-none',
+          asyncZapMode &&
+            asyncSwapResponse &&
+            'flex items-center gap-2 min-w-[840px]'
         )}
       >
         <div>

@@ -353,3 +353,35 @@ export const max = (...args: bigint[]): bigint => {
 
   return args.reduce((max, curr) => (curr > max ? curr : max), 0n)
 }
+
+export function getTimerFormat(seconds: number) {
+  const timeUnits = {
+    days: 'd',
+    day: 'd',
+    hours: 'h',
+    hour: 'h',
+    minutes: 'm',
+    minute: 'm',
+    seconds: 's',
+    second: 's',
+  }
+
+  let str = humanizeDuration(seconds * 1000, {
+    units: ['h', 'm', 's'],
+    round: true,
+    spacer: '',
+    delimiter: ' ',
+  })
+
+  // Replace all time unit words with their shortened versions
+  for (const [word, short] of Object.entries(timeUnits)) {
+    str = str.replace(word, short)
+  }
+
+  // Ensure seconds are always shown
+  if (!str.includes('s')) {
+    str += ' 0s'
+  }
+
+  return str
+}

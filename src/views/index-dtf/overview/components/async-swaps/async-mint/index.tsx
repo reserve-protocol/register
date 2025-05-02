@@ -20,6 +20,8 @@ import {
   zapRefetchAtom,
 } from '../../zap-mint/atom'
 import SubmitAsyncSwap from '../submit-async-swap'
+import { asyncSwapResponseAtom } from '../atom'
+import CollateralAcquisition from '../collateral-acquisition'
 
 const ASYNC_SWAP_BUFFER = 0.005
 
@@ -39,6 +41,7 @@ const AsyncMint = () => {
   const selectedTokenPrice = useChainlinkPrice(chainId, selectedToken.address)
   const inputPrice = (selectedTokenPrice || 0) * Number(inputAmount)
   const onMax = () => setInputAmount(selectedTokenBalance?.balance || '0')
+  const asyncSwapResponse = useAtomValue(asyncSwapResponseAtom)
 
   const insufficientBalance =
     parseUnits(inputAmount, selectedToken.decimals) >
@@ -129,12 +132,15 @@ const AsyncMint = () => {
         loading={isLoading || loadingAfterRefetch}
       />
       {/* {!!data && <ZapDetails data={data.result} />} */}
-      <SubmitAsyncSwap
-        data={data}
-        dtfAddress={indexDTF.id}
-        amountOut={parseEther(amountOut.toString()).toString()}
-        operation="mint"
-      />
+      {!asyncSwapResponse && (
+        <SubmitAsyncSwap
+          data={data}
+          dtfAddress={indexDTF.id}
+          amountOut={parseEther(amountOut.toString()).toString()}
+          operation="mint"
+        />
+      )}
+      {asyncSwapResponse && <CollateralAcquisition dtfAmount={amountOut} />}
     </div>
   )
 }

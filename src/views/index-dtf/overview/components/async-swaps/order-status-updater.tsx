@@ -7,8 +7,7 @@ import { AsyncSwapOrderResponse } from './types'
 
 const OrderStatusUpdater = () => {
   const setAsyncSwapResponse = useSetAtom(asyncSwapResponseAtom)
-  const swapOrderId =
-    useAtomValue(asyncSwapOrderIdAtom) || 'e9fd5ecd-80dd-4c98-9749-d9e12eeccde3'
+  const swapOrderId = useAtomValue(asyncSwapOrderIdAtom)
 
   const { data } = useQuery({
     queryKey: ['async-swap-order', swapOrderId],
@@ -21,7 +20,7 @@ const OrderStatusUpdater = () => {
       return response.json() as Promise<AsyncSwapOrderResponse>
     },
     enabled: !!swapOrderId,
-    refetchInterval: 10000, // Poll every 10 seconds
+    refetchInterval: 2000, // Poll every 2 seconds
     retry: false,
   })
 
