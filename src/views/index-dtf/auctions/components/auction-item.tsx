@@ -4,10 +4,14 @@ import DecimalDisplay from '@/components/decimal-display'
 import TokenLogo from '@/components/token-logo'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
-import { getBasketTrackingDTF } from '@/lib/index-rebalance/get-basket-by-trades'
+import { Switch } from '@/components/ui/switch'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
 import { openAuction } from '@/lib/index-rebalance/open-auction'
-import { Auction } from '@/lib/index-rebalance/types'
 import { cn } from '@/lib/utils'
 import { chainIdAtom } from '@/state/atoms'
 import {
@@ -20,7 +24,7 @@ import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { ArrowRight, Check, Info, LoaderCircle, X } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
-import { Address, erc20Abi, formatUnits, parseEther, parseUnits } from 'viem'
+import { Address, erc20Abi, formatUnits } from 'viem'
 import {
   useReadContract,
   useWaitForTransactionReceipt,
@@ -30,24 +34,12 @@ import { isUnitBasketAtom } from '../../governance/views/propose/basket/atoms'
 import {
   AssetTrade,
   dtfTradeMapAtom,
-  dtfTradesByProposalMapAtom,
-  dtfTradeVolatilityAtom,
   expectedBasketAtom,
   isAuctionLauncherAtom,
   proposedBasketAtom,
-  selectedProposalAtom,
-  setTradeVolatilityAtom,
   TRADE_STATE,
-  VOLATILITY_OPTIONS,
-  VOLATILITY_VALUES,
 } from '../atoms'
-import { Switch } from '@/components/ui/switch'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip'
+import useAuctionLimits from '../hooks/useAuctionLimits'
 
 const TradeCompletedStatus = ({ className }: { className?: string }) => {
   return (
@@ -130,35 +122,6 @@ const useProposalDtfSupply = () => {
   return supply
 }
 
-const currentProposalAuctionsAtom = atom<Auction[] | undefined>((get) => {
-  const proposal = get(selectedProposalAtom)
-  const proposals = get(dtfTradesByProposalMapAtom)
-
-  if (!proposal || !proposals) return undefined
-
-  return (
-    proposals[proposal]?.trades.map((trade: AssetTrade) => ({
-      sell: trade.sell.address,
-      buy: trade.buy.address,
-      sellLimit: {
-        spot: trade.sellLimitSpot,
-        low: trade.sellLimitLow,
-        high: trade.sellLimitHigh,
-      },
-      buyLimit: {
-        spot: trade.buyLimitSpot,
-        low: trade.buyLimitLow,
-        high: trade.buyLimitHigh,
-      },
-      prices: {
-        start: trade.startPrice,
-        end: trade.endPrice,
-      },
-      availableRuns: trade.availableRuns,
-    })) ?? undefined
-  )
-})
-
 const TradeButton = ({
   trade,
   className,
@@ -166,14 +129,11 @@ const TradeButton = ({
   trade: AssetTrade
   className?: string
 }) => {
-  const indexDTF = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
   const proposedBasket = useAtomValue(proposedBasketAtom)
-  const expectedBasket = useAtomValue(expectedBasketAtom)
   const isAuctionLauncher = useAtomValue(isAuctionLauncherAtom)
   const updateTradeState = useSetAtom(updateTradeStateAtom)
   const { writeContract, isError, isPending, data } = useWriteContract()
-  const tradeVolatility = useAtomValue(dtfTradeVolatilityAtom)
   const { isSuccess } = useWaitForTransactionReceipt({
     hash: data,
     chainId,
@@ -182,27 +142,7 @@ const TradeButton = ({
   const dtfSupply = useProposalDtfSupply()
   const dtfPrice = useAtomValue(indexDTFPriceAtom)
   const version = useAtomValue(indexDTFVersionAtom)
-  const currentProposalAuctions = useAtomValue(currentProposalAuctionsAtom)
-  const { data: assetDistribution } = useReadContract({
-    abi: dtfIndexAbi,
-    address: indexDTF?.id,
-    functionName: 'toAssets',
-    args: [parseEther('1'), 0],
-    chainId,
-    query: {
-      select: (data) => {
-        const [assets, amounts] = data
-
-        return assets.reduce(
-          (acc, asset, index) => {
-            acc[asset.toLowerCase()] = amounts[index]
-            return acc
-          },
-          {} as Record<string, bigint>
-        )
-      },
-    },
-  })
+  const auctionLimits = useAuctionLimits()
 
   const isLoading = isPending || (!!data && !isSuccess && !isError)
   const [ejectFully, setEjectFully] = useState(false)
@@ -232,93 +172,11 @@ const TradeButton = ({
 
     // Open trade
     if (isAuctionLauncher) {
-      if (!proposedBasket || !dtfSupply) return
+      if (!proposedBasket || !dtfSupply || !auctionLimits) return
 
       // TODO: run helper to get estimates in case the price is deferred
       try {
-        const volatility =
-          VOLATILITY_VALUES[tradeVolatility[trade.id] || VOLATILITY_OPTIONS.LOW]
-        let { tokens, decimals, targetBasket, prices, priceError } =
-          Object.values(proposedBasket.basket).reduce(
-            (acc, asset) => {
-              acc.tokens.push(asset.token.address)
-              acc.decimals.push(BigInt(asset.token.decimals))
-              acc.targetBasket.push(parseUnits(asset.targetShares, 16))
-              acc.prices.push(
-                expectedBasket?.basket?.[asset.token.address]?.price ||
-                  asset.price
-              )
-              acc.priceError.push(volatility)
-
-              return acc
-            },
-            {
-              tokens: [],
-              decimals: [],
-              targetBasket: [],
-              prices: [],
-              priceError: [],
-            } as {
-              tokens: Address[]
-              decimals: bigint[]
-              targetBasket: bigint[]
-              prices: number[]
-              priceError: number[]
-            }
-          )
-
-        // TODO: This is a temp hack to consider the unit basket case
-        if (isUnitBasket && assetDistribution && currentProposalAuctions) {
-          const amounts = tokens.map(
-            (token) => assetDistribution[token.toLowerCase()] || 0n
-          )
-
-          targetBasket = getBasketTrackingDTF(
-            currentProposalAuctions,
-            tokens,
-            amounts,
-            decimals,
-            prices
-          )
-        }
-
-        console.log('proposed basket', proposedBasket)
-        console.log('expected basket', expectedBasket)
-        // Log auction parameters for debugging
-        console.log(
-          'auction params',
-          JSON.stringify(
-            {
-              auctionParams: {
-                sell: trade.sell.address,
-                buy: trade.buy.address,
-                sellLimit: {
-                  spot: trade.sellLimitSpot,
-                  low: trade.sellLimitLow,
-                  high: trade.sellLimitHigh,
-                },
-                buyLimit: {
-                  spot: trade.buyLimitSpot,
-                  low: trade.buyLimitLow,
-                  high: trade.buyLimitHigh,
-                },
-                prices: {
-                  start: trade.startPrice,
-                  end: trade.endPrice,
-                },
-              },
-              dtfSupply: dtfSupply.toString(),
-              tokens,
-              decimals: decimals.map((d) => d.toString()),
-              targetBasket: targetBasket.map((tb) => tb.toString()),
-              prices,
-              priceError,
-              dtfPrice: proposedBasket.price,
-            },
-            (_, value) => (typeof value === 'bigint' ? value.toString() : value)
-          )
-        )
-
+        const { basketDetails, targetBasket } = auctionLimits
         const [sellLimit, buyLimit, startPrice, endPrice] = openAuction(
           {
             sell: trade.sell.address,
@@ -343,11 +201,11 @@ const TradeButton = ({
             end: trade.approvedEndPrice,
           },
           dtfSupply,
-          tokens,
-          decimals,
-          targetBasket,
-          prices,
-          priceError,
+          basketDetails.tokens,
+          basketDetails.decimals,
+          isUnitBasket ? targetBasket : basketDetails.targetBasket,
+          basketDetails.prices,
+          basketDetails.priceError,
           proposedBasket.price,
           ejectFully
         )
@@ -460,34 +318,6 @@ const TradeButton = ({
   )
 }
 
-const ProposedTradeVolatility = ({ tradeId }: { tradeId: string }) => {
-  const setVolatility = useSetAtom(setTradeVolatilityAtom)
-  const volatility = useAtomValue(dtfTradeVolatilityAtom)
-
-  return (
-    <div className="border rounded-xl p-0 sm:p-1">
-      <ToggleGroup
-        type="single"
-        className="bg-muted-foreground/10 p-1 rounded-xl text-sm"
-        value={volatility[tradeId] || VOLATILITY_OPTIONS.LOW}
-        onValueChange={(value) => {
-          setVolatility([tradeId, value])
-        }}
-      >
-        {Object.values(VOLATILITY_OPTIONS).map((option) => (
-          <ToggleGroupItem
-            key={option}
-            value={option}
-            className="px-1 sm:px-2 h-8 whitespace-nowrap rounded-lg data-[state=on]:bg-card text-secondary-foreground/80 data-[state=on]:text-primary"
-          >
-            {option}
-          </ToggleGroupItem>
-        ))}
-      </ToggleGroup>
-    </div>
-  )
-}
-
 const Share = ({
   share,
   prefix,
@@ -565,7 +395,8 @@ const TradePreview = ({ trade }: { trade: AssetTrade }) => {
             }
             to={
               expectedBasket?.[trade.sell.address]?.targetShares
-                ? Number(expectedBasket?.[trade.sell.address]?.currentShares) - delta
+                ? Number(expectedBasket?.[trade.sell.address]?.currentShares) -
+                  delta
                 : undefined
             }
           />
@@ -606,7 +437,8 @@ const TradePreview = ({ trade }: { trade: AssetTrade }) => {
             }
             to={
               expectedBasket?.[trade.buy.address]?.targetShares
-                ? Number(expectedBasket?.[trade.buy.address]?.currentShares) + delta
+                ? Number(expectedBasket?.[trade.buy.address]?.currentShares) +
+                  delta
                 : undefined
             }
           />
@@ -616,25 +448,12 @@ const TradePreview = ({ trade }: { trade: AssetTrade }) => {
   )
 }
 
-// Display volatility options / hash / or nothing!
-const AuctionContext = ({ trade }: { trade: AssetTrade }) => {
-  const isAuctionLauncher = useAtomValue(isAuctionLauncherAtom)
-  // Auction launcher state!
-  // TODO: Currently no setting available
-  // if (trade.state === TRADE_STATE.PENDING && isAuctionLauncher) {
-  //   return <ProposedTradeVolatility tradeId={trade.id} />
-  // }
-
-  return null
-}
-
 const AuctionItem = ({ trade }: { trade: AssetTrade }) => (
   <>
     <div className="flex items-center gap-3 p-3 rounded-xl border">
       <div className="flex items-center flex-grow flex-wrap gap-2">
         <TradePreview trade={trade} />
         <div className="flex items-center gap-2 w-full md:w-auto">
-          <AuctionContext trade={trade} />
           <TradeButton className="ml-auto flex sm:hidden" trade={trade} />
         </div>
       </div>
