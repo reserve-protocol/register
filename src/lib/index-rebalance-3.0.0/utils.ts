@@ -101,8 +101,8 @@ export const getIdealLimitsGivenBounds = (
 
       console.log('normalizer', normalizer.toString())
 
-      if (currentDTFPrice.eq(dtfPrice)) {
-        console.log('finished normalizing early')
+      if (normalizer.sub(ONE).abs().lte(new Decimal('1e-6'))) {
+        console.log('finished normalizing index', i)
         break
       }
       // account for portion of dtf price already tracked, due to being locked in at the lows/highs
@@ -136,15 +136,11 @@ export const getIdealLimitsGivenBounds = (
           .div(D27d)
 
         if (idealLimit.lte(lowLimit) && !indicesLockedIn.includes(i)) {
-          console.log('locked in at low limit')
-
           // {USD/wholeShare} = {USD/wholeShare} + {wholeTok/wholeShare} * {USD/wholeTok}
           dtfPriceLockedIn = dtfPriceLockedIn.plus(lowLimit.mul(prices[i]))
           spotLimits[i] = lowLimit
           indicesLockedIn.push(i)
         } else if (idealLimit.gte(highLimit) && !indicesLockedIn.includes(i)) {
-          console.log('locked in at high limit')
-
           // {USD/wholeShare} = {USD/wholeShare} + {wholeTok/wholeShare} * {USD/wholeTok}
           dtfPriceLockedIn = dtfPriceLockedIn.plus(highLimit.mul(prices[i]))
           spotLimits[i] = highLimit

@@ -222,8 +222,6 @@ describe('getStartRebalance() + getAuctionsToOpen()', () => {
       },
     ])
   })
-  return
-  // TODO
   it('stables: [0%, 50%, 50%] -> [100%, 0%, 0%]', () => {
     const tokens = ['USDC', 'DAI', 'USDT']
     const decimals = [bn('6'), bn('18'), bn('6')]
@@ -333,7 +331,7 @@ describe('getStartRebalance() + getAuctionsToOpen()', () => {
       },
     ])
 
-    // loss case
+    // gain case
 
     const prices3 = [0.9, 1, 1]
     const dtfPrice3 = 1
@@ -355,21 +353,21 @@ describe('getStartRebalance() + getAuctionsToOpen()', () => {
         sell: 'DAI',
         buy: 'USDC',
         sellLimit: bn('0'),
-        buyLimit: bn('0.9e18'),
-        startPrice: (bn('1e27') * newPrices[1].high) / newPrices[0].low, // should use original high sell price
-        endPrice: (bn('1e27') * bn('0.81e21')) / newPrices[0].high, // should use new low sell price
+        buyLimit: bn('1.111e15'),
+        startPrice: (bn('1e27') * newPrices[1].high) / bn('0.81e21'), // should use new low buy price
+        endPrice: (bn('1e27') * newPrices[1].low) / bn('0.999e21'), // should use new high buy price
       },
       {
         sell: 'USDT',
         buy: 'USDC',
         sellLimit: bn('0'),
-        buyLimit: bn('0.9e18'),
-        startPrice: (bn('1e27') * newPrices[2].high) / newPrices[0].low, // should use original high sell price
-        endPrice: (bn('1e27') * bn('0.81e21')) / newPrices[0].high, // should use new low sell price
+        buyLimit: bn('1.111e15'),
+        startPrice: (bn('1e27') * newPrices[2].high) / bn('0.81e21'), // should use new low buy pricew
+        endPrice: (bn('1e27') * newPrices[2].low) / bn('0.999e21'), // should use new high buy price
       },
     ])
 
-    // gain case
+    // loss case
 
     const prices4 = [1.1, 1, 1]
     const dtfPrice4 = 1
@@ -390,17 +388,17 @@ describe('getStartRebalance() + getAuctionsToOpen()', () => {
         sell: 'DAI',
         buy: 'USDC',
         sellLimit: bn('0'),
-        buyLimit: bn('0.55e15'),
-        startPrice: (bn('1e27') * bn('1.222e21')) / newPrices[0].low, // should use new high sell price
-        endPrice: (bn('1e27') * bn('0.99e21')) / newPrices[0].high, // should use new low sell price
+        buyLimit: bn('0.909e15'),
+        startPrice: (bn('1e27') * newPrices[1].high) / newPrices[0].low, // should use original prices
+        endPrice: (bn('1e27') * newPrices[1].low) / bn('1.222e21'), // should use new high buy price
       },
       {
         sell: 'USDT',
         buy: 'USDC',
         sellLimit: bn('0'),
-        buyLimit: bn('0.55e15'),
-        startPrice: (bn('1e27') * bn('1.222e21')) / newPrices[0].low, // should use new high sell price
-        endPrice: (bn('1e27') * bn('0.99e21')) / newPrices[0].high, // should use new low sell price
+        buyLimit: bn('0.909e15'),
+        startPrice: (bn('1e27') * newPrices[2].high) / bn('1.01e21'), // should use new low buy price
+        endPrice: (bn('1e27') * newPrices[2].low) / bn('1.222e21'), // should use new high buy price
       },
     ])
   })

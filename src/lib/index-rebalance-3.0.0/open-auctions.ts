@@ -162,6 +162,13 @@ export const getAuctionsToOpen = (
       let endPrice = lowSellPrice.div(highBuyPrice)
 
       // {USD/wholeSellTok} = D27{USD/tok} * {tok/wholeSellTok} / D27
+      const lowSellRebalancePrice = new Decimal(
+        rebalancePrices[x].low.toString()
+      )
+        .mul(decimalScale[x])
+        .div(D27d)
+
+      // {USD/wholeSellTok} = D27{USD/tok} * {tok/wholeSellTok} / D27
       const highSellRebalancePrice = new Decimal(
         rebalancePrices[x].high.toString()
       )
@@ -175,8 +182,16 @@ export const getAuctionsToOpen = (
         .mul(decimalScale[y])
         .div(D27d)
 
+      // {USD/wholeBuyTok} = D27{USD/tok} * {tok/wholeBuyTok} / D27
+      const highBuyRebalancePrice = new Decimal(
+        rebalancePrices[y].high.toString()
+      )
+        .mul(decimalScale[y])
+        .div(D27d)
+
       // {wholeBuyTok/wholeSellTok} = {USD/wholeSellTok} / {USD/wholeBuyTok}
       const ceilingPrice = highSellRebalancePrice.div(lowBuyRebalancePrice)
+      const floorPrice = lowSellRebalancePrice.div(highBuyRebalancePrice)
 
       console.log('ceilingPrice', ceilingPrice.toString())
       console.log('startPrice', startPrice.toString())
