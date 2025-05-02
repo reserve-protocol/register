@@ -527,6 +527,9 @@ const TradePreview = ({ trade }: { trade: AssetTrade }) => {
   const expectedBasket = useAtomValue(expectedBasketAtom)?.basket
   const isCompleted = trade.state === TRADE_STATE.COMPLETED
 
+  const sellDelta = expectedBasket?.[trade.sell.address]?.delta || 0
+  const buyDelta = expectedBasket?.[trade.buy.address]?.delta || 0
+
   const delta = Math.min(
     sellDelta < 0 ? Math.abs(sellDelta) : 0,
     buyDelta > 0 ? buyDelta : 0
@@ -565,7 +568,8 @@ const TradePreview = ({ trade }: { trade: AssetTrade }) => {
             }
             to={
               expectedBasket?.[trade.sell.address]?.targetShares
-                ? Number(expectedBasket?.[trade.sell.address]?.currentShares) - delta
+                ? Number(expectedBasket?.[trade.sell.address]?.currentShares) -
+                  delta
                 : undefined
             }
           />
@@ -606,7 +610,8 @@ const TradePreview = ({ trade }: { trade: AssetTrade }) => {
             }
             to={
               expectedBasket?.[trade.buy.address]?.targetShares
-                ? Number(expectedBasket?.[trade.buy.address]?.currentShares) + delta
+                ? Number(expectedBasket?.[trade.buy.address]?.currentShares) +
+                  delta
                 : undefined
             }
           />
