@@ -31,6 +31,7 @@ import {
   spellAbi as governanceSpell_31_03_2025Abi,
   spellAddress as governanceSpell_31_03_2025Address,
 } from '../views/propose/components/propose-governance-spell-31-03-2025'
+import Timelock from '@/abis/Timelock'
 
 const dtfAbiMapppingAtom = atom((get) => {
   const dtf = get(indexDTFAtom)
@@ -44,10 +45,12 @@ const dtfAbiMapppingAtom = atom((get) => {
 
   if (dtf.ownerGovernance) {
     abiMapping[dtf.ownerGovernance.id.toLowerCase()] = dtfIndexGovernance
+    abiMapping[dtf.ownerGovernance.timelock.id.toLowerCase()] = Timelock
   }
 
   if (dtf.tradingGovernance) {
     abiMapping[dtf.tradingGovernance.id.toLowerCase()] = dtfIndexGovernance
+    abiMapping[dtf.tradingGovernance.timelock.id.toLowerCase()] = Timelock
   }
 
   if (dtf.stToken) {
@@ -55,6 +58,7 @@ const dtfAbiMapppingAtom = atom((get) => {
 
     if (dtf.stToken.governance) {
       abiMapping[dtf.stToken.governance.id.toLowerCase()] = dtfIndexGovernance
+      abiMapping[dtf.stToken.governance.timelock.id.toLowerCase()] = Timelock
     }
   }
 
@@ -78,10 +82,14 @@ const dtfContractAliasAtom = atom((get) => {
 
   if (dtf.ownerGovernance) {
     aliasMapping[dtf.ownerGovernance.id.toLowerCase()] = 'Owner Governance'
+    aliasMapping[dtf.ownerGovernance.timelock.id.toLowerCase()] =
+      'Owner Governance Timelock'
   }
 
   if (dtf.tradingGovernance) {
     aliasMapping[dtf.tradingGovernance.id.toLowerCase()] = 'Trading Governance'
+    aliasMapping[dtf.tradingGovernance.timelock.id.toLowerCase()] =
+      'Trading Governance Timelock'
   }
 
   if (dtf.stToken) {
@@ -89,6 +97,8 @@ const dtfContractAliasAtom = atom((get) => {
 
     if (dtf.stToken.governance) {
       aliasMapping[dtf.stToken.governance.id.toLowerCase()] = 'Lock Governance'
+      aliasMapping[dtf.stToken.governance.timelock.id.toLowerCase()] =
+        'Lock Governance Timelock'
     }
   }
 
