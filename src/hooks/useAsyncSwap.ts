@@ -9,7 +9,7 @@ import { Address } from 'viem'
 import useDebounce from './useDebounce'
 import { AsyncSwapResponse } from '@/views/index-dtf/overview/components/async-swaps/types'
 
-const useAsyncZap = ({
+const useAsyncSwap = ({
   dtf,
   amountOut,
   slippage,
@@ -83,10 +83,10 @@ const useAsyncZap = ({
       return data
     },
     enabled: !!endpoint && !disabled,
-    refetchInterval: 120000,
+    refetchInterval: false,
     retry: 3,
     retryDelay: (attempt) => Math.min(1000 * Math.pow(2, attempt), 10000),
   })
 }
 
-export default useAsyncZap
+export default useAsyncSwap

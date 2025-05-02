@@ -38,6 +38,8 @@ import { Switch } from '@/components/ui/switch'
 import AsyncMint from '../async-swaps/async-mint'
 import AsyncRedeem from '../async-swaps/async-redeem'
 import Collaterals from '../async-swaps/collaterals'
+import OrderStatusUpdater from '../async-swaps/order-status-updater'
+import { cn } from '@/lib/utils'
 
 const ZapMint = ({ children }: { children: ReactNode }) => {
   const [open, setOpen] = useAtom(openZapMintModalAtom)
@@ -85,7 +87,10 @@ const ZapMint = ({ children }: { children: ReactNode }) => {
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent
         showClose={false}
-        className="p-2 rounded-t-2xl sm:rounded-3xl border-none flex items-center gap-2 min-w-[840px]"
+        className={cn(
+          'p-2 rounded-t-2xl sm:rounded-3xl border-none flex items-center gap-2',
+          asyncZapMode && 'min-w-[840px]'
+        )}
       >
         <div>
           <DialogTitle className="flex justify-between gap-2 p-2 sm:p-0 mb-2">
@@ -172,9 +177,12 @@ const ZapMint = ({ children }: { children: ReactNode }) => {
             </Link>
           </div>
         </div>
-        <div>
-          <Collaterals />
-        </div>
+        {asyncZapMode && (
+          <div>
+            <OrderStatusUpdater />
+            <Collaterals />
+          </div>
+        )}
       </DialogContent>
     </Dialog>
   )

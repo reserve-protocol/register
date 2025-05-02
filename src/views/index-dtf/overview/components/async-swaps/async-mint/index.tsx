@@ -1,5 +1,5 @@
 import Swap from '@/components/ui/swap'
-import useAsyncZap from '@/hooks/useAsyncZap'
+import useAsyncSwap from '@/hooks/useAsyncSwap'
 import { useChainlinkPrice } from '@/hooks/useChainlinkPrice'
 import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom, indexDTFPriceAtom } from '@/state/dtf/atoms'
@@ -58,7 +58,7 @@ const AsyncMint = () => {
     return (Number(inputAmount) || 0) * ASYNC_SWAP_BUFFER
   }, [inputAmount])
 
-  const { data, isLoading, isFetching, refetch, failureReason } = useAsyncZap({
+  const { data, isLoading, isFetching, refetch, failureReason } = useAsyncSwap({
     dtf: indexDTF?.id,
     amountOut: parseEther(amountOut.toString()).toString(),
     slippage: isFinite(Number(slippage)) ? Number(slippage) : 10000,
@@ -132,7 +132,7 @@ const AsyncMint = () => {
       <SubmitAsyncSwap
         data={data}
         dtfAddress={indexDTF.id}
-        amountOut={amountOut.toString()}
+        amountOut={parseEther(amountOut.toString()).toString()}
         operation="mint"
       />
     </div>

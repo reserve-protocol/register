@@ -1,12 +1,12 @@
 import { Button } from '@/components/ui/button'
-import { AsyncSwapResponse } from './types'
-import { useCallback, useState } from 'react'
-import { useAccount, usePublicClient, useWalletClient } from 'wagmi'
-import { chainIdAtom } from '@/state/atoms'
-import { useAtomValue } from 'jotai'
+import { chainIdAtom, walletAtom } from '@/state/atoms'
 import { RESERVE_API } from '@/utils/constants'
-import { erc20Abi } from 'viem'
-import { Address } from 'viem'
+import { useAtomValue, useSetAtom } from 'jotai'
+import { useCallback, useState } from 'react'
+import { Address, erc20Abi } from 'viem'
+import { useAccount, usePublicClient, useWalletClient } from 'wagmi'
+import { asyncSwapOrderIdAtom } from './atom'
+import { AsyncSwapResponse } from './types'
 
 const COWSWAP_VAULT_RELAYER = '0xC92E8bdf79f0507f65a392b0ab4667716BFE0110'
 const COWSWAP_SETTLEMENT = '0x9008D19f58AAbD9eD0D60971565AA8510560ab41'
@@ -30,8 +30,10 @@ const SubmitAsyncSwap = ({
   const [isApproving, setIsApproving] = useState(false)
   const { address: signerAddress } = useAccount()
   const chainId = useAtomValue(chainIdAtom)
+  const account = useAtomValue(walletAtom)
   const publicClient = usePublicClient()
   const { data: walletClient } = useWalletClient()
+  const setAsyncSwapOrderId = useSetAtom(asyncSwapOrderIdAtom)
 
   const approveVaultRelayer = useCallback(async () => {
     if (!signerAddress || !publicClient || !walletClient) return
@@ -82,7 +84,14 @@ const SubmitAsyncSwap = ({
   }, [signerAddress, publicClient, walletClient])
 
   const handleSubmit = useCallback(async () => {
-    if (!cowswapQuotes?.length || !signerAddress || !chainId) return
+    if (
+      !cowswapQuotes?.length ||
+      !signerAddress ||
+      !chainId ||
+      !walletClient ||
+      !account
+    )
+      return
 
     setIsSigning(true)
     try {
@@ -113,26 +122,34 @@ const SubmitAsyncSwap = ({
               ],
             },
             domain: {
-              name: 'CoW Protocol',
+              name: 'Gnosis Protocol',
               version: 'v2',
-              chainId: Number(chainId),
+              chainId: BigInt(chainId),
               verifyingContract: COWSWAP_SETTLEMENT,
             },
             primaryType: 'Order',
             message: {
               ...quote.quote.quote,
-              feeAmount: '0',
+              sellAmount: BigInt(quote.quote.quote.sellAmount),
+              buyAmount: BigInt(quote.quote.quote.buyAmount),
+              feeAmount: 0n,
             },
-          }
+          } as const
 
-          const signature = await window.ethereum.request({
-            method: 'eth_signTypedData_v4',
-            params: [signerAddress, JSON.stringify(typedData)],
+          const signature = await walletClient.signTypedData({
+            account,
+            domain: typedData.domain,
+            types: typedData.types,
+            primaryType: typedData.primaryType,
+            message: typedData.message,
           })
 
           return {
             quote: quote.quote,
-            orderSigningResult: signature,
+            orderSigningResult: {
+              signature,
+              signingScheme: 'eip712',
+            },
           }
         })
       )
@@ -167,7 +184,11 @@ const SubmitAsyncSwap = ({
         throw new Error(`HTTP error! status: ${response.status}`)
       }
 
-      console.log('Orders submitted successfully:', await response.json())
+      const data = await response.json()
+      setAsyncSwapOrderId(data.swapOrderId)
+      console.log('swapOrderId', data.swapOrderId)
+
+      console.log('Orders submitted successfully:', data)
     } catch (error) {
       console.error('Error processing orders:', error)
     } finally {
