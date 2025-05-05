@@ -6,7 +6,6 @@ import { atomWithReset } from 'jotai/utils'
 
 export const openZapMintModalAtom = atom(false)
 export const currentZapMintTabAtom = atom<'buy' | 'sell'>('buy')
-export const asyncZapModeAtom = atom(false)
 export const showZapSettingsAtom = atom<boolean>(false)
 export const zapMintInputAtom = atomWithReset<string>('')
 export const indexDTFBalanceAtom = atom<bigint>(0n)
@@ -17,15 +16,8 @@ export const defaultSelectedTokenAtom = atom<Token>((get) => {
   return reducedZappableTokens[chainId][0]
 })
 export const selectedTokenOrDefaultAtom = atom<Token>((get) => {
-  const asyncZapMode = get(asyncZapModeAtom)
   const selectedToken = get(selectedTokenAtom)
   const defaultToken = get(defaultSelectedTokenAtom)
-
-  if (asyncZapMode) {
-    const chainId = get(chainIdAtom)
-    return reducedZappableTokens[chainId][2] // USDC
-  }
-
   return selectedToken || defaultToken
 })
 
