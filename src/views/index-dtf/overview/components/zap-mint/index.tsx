@@ -15,7 +15,6 @@ import { ArrowLeft, Settings, X } from 'lucide-react'
 import { ReactNode, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import {
-  asyncZapModeAtom,
   currentZapMintTabAtom,
   defaultSelectedTokenAtom,
   indexDTFBalanceAtom,
@@ -32,20 +31,10 @@ import LowLiquidityWarning from './low-liquidity-warning'
 import RefreshQuote from './refresh-quote'
 import Sell from './sell'
 import ZapSettings from './zap-settings'
-import Help from '@/components/ui/help'
-import { Label } from '@/components/ui/label'
-import { Switch } from '@/components/ui/switch'
-import AsyncMint from '../../../issuance/async-swaps/async-mint'
-import AsyncRedeem from '../../../issuance/async-swaps/async-redeem'
-import Collaterals from '../../../issuance/async-swaps/collaterals'
-import OrderStatusUpdater from '../../../issuance/async-swaps/order-status-updater'
-import { cn } from '@/lib/utils'
-import { asyncSwapResponseAtom } from '../../../issuance/async-swaps/atom'
 
 const ZapMint = ({ children }: { children: ReactNode }) => {
   const [open, setOpen] = useAtom(openZapMintModalAtom)
   const currentTab = useAtomValue(currentZapMintTabAtom)
-  const [asyncZapMode, setAsyncZapMode] = useAtom(asyncZapModeAtom)
   const [showSettings, setShowSettings] = useAtom(showZapSettingsAtom)
   const defaultToken = useAtomValue(defaultSelectedTokenAtom)
   const [selectedToken, setSelectedToken] = useAtom(selectedTokenAtom)
@@ -54,7 +43,6 @@ const ZapMint = ({ children }: { children: ReactNode }) => {
   const zapFetching = useAtomValue(zapFetchingAtom)
   const zapOngoingTx = useAtomValue(zapOngoingTxAtom)
   const input = useAtomValue(zapMintInputAtom)
-  const asyncSwapResponse = useAtomValue(asyncSwapResponseAtom)
   const setIndexDTFBalance = useSetAtom(indexDTFBalanceAtom)
   const invalidInput = isNaN(Number(input)) || Number(input) === 0
 
@@ -89,104 +77,69 @@ const ZapMint = ({ children }: { children: ReactNode }) => {
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent
         showClose={false}
-        className={cn(
-          'p-2 rounded-t-2xl sm:rounded-3xl border-none',
-          asyncZapMode &&
-            asyncSwapResponse &&
-            'flex items-center gap-2 min-w-[840px]'
-        )}
+        className="p-2 rounded-t-2xl sm:rounded-3xl border-none"
       >
-        <div>
-          <DialogTitle className="flex justify-between gap-2 p-2 sm:p-0 mb-2">
-            {showSettings ? (
+        <DialogTitle className="flex justify-between gap-2 p-2 sm:p-0">
+          {showSettings ? (
+            <Button
+              variant="outline"
+              className="h-[34px] px-2 rounded-xl"
+              onClick={() => setShowSettings(false)}
+            >
+              <ArrowLeft size={16} />
+            </Button>
+          ) : (
+            <div className="flex justify-between gap-1">
               <Button
                 variant="outline"
                 className="h-[34px] px-2 rounded-xl"
-                onClick={() => setShowSettings(false)}
+                onClick={() => {
+                  trackClick('zap_settings', tokenIn.symbol, tokenOut.symbol)
+                  setShowSettings(true)
+                }}
               >
-                <ArrowLeft size={16} />
+                <Settings size={16} />
               </Button>
-            ) : (
-              <div className="flex justify-between gap-1">
-                <Button
-                  variant="outline"
-                  className="h-[34px] px-2 rounded-xl"
-                  onClick={() => {
-                    trackClick('zap_settings', tokenIn.symbol, tokenOut.symbol)
-                    setShowSettings(true)
-                  }}
-                >
-                  <Settings size={16} />
-                </Button>
-                <RefreshQuote
-                  small
-                  onClick={() => {
-                    trackClick('zap_refresh', tokenIn.symbol, tokenOut.symbol)
-                    zapRefetch.fn?.()
-                  }}
-                  loading={zapFetching}
-                  disabled={zapFetching || zapOngoingTx || invalidInput}
-                />
-              </div>
-            )}
-            <div className="ml-auto flex items-center gap-1 text-sm font-light">
-              <Label className="flex items-center gap-1 text-sm font-light">
-                Enable Async Zaps
-                <Help
-                  content={
-                    <span className="text-sm text-wrap font-light">
-                      Enable Async Zaps
-                    </span>
-                  }
-                  size={14}
-                  className="text-muted-foreground"
-                />
-              </Label>
-              <Switch
-                id="async-zap-mode"
-                size="xs"
-                checked={asyncZapMode}
-                onCheckedChange={setAsyncZapMode}
+              <RefreshQuote
+                small
+                onClick={() => {
+                  trackClick('zap_refresh', tokenIn.symbol, tokenOut.symbol)
+                  zapRefetch.fn?.()
+                }}
+                loading={zapFetching}
+                disabled={zapFetching || zapOngoingTx || invalidInput}
               />
             </div>
-            <DialogTrigger asChild>
-              <Button variant="outline" className="h-[34px] px-2 rounded-xl">
-                <X size={16} />
-              </Button>
-            </DialogTrigger>
-          </DialogTitle>
-          {showSettings && <ZapSettings />}
-          <div className={showSettings ? 'hidden' : 'opacity-100'}>
-            <div className="flex flex-col gap-2">
-              <LowLiquidityWarning />
-              {!asyncZapMode && (currentTab === 'buy' ? <Buy /> : <Sell />)}
-              {asyncZapMode &&
-                (currentTab === 'buy' ? <AsyncMint /> : <AsyncRedeem />)}
-            </div>
-          </div>
-          <div className="sm:hidden p-3 rounded-3xl mt-2 text-center text-sm">
-            <span className="font-semibold block">
-              Having issues minting? (Zaps are in beta)
-            </span>
-            <span className="text-legend">Wait and try again or</span>{' '}
-            <Link
-              to={getFolioRoute(
-                indexDTF.id,
-                indexDTF.chainId,
-                ROUTES.ISSUANCE + '/manual'
-              )}
-              className="text-primary underline"
-            >
-              switch to manual {currentTab === 'buy' ? 'minting' : 'redeeming'}
-            </Link>
+          )}
+          <DialogTrigger asChild>
+            <Button variant="outline" className="h-[34px] px-2 rounded-xl">
+              <X size={16} />
+            </Button>
+          </DialogTrigger>
+        </DialogTitle>
+        {showSettings && <ZapSettings />}
+        <div className={showSettings ? 'hidden' : 'opacity-100'}>
+          <div className="flex flex-col gap-2">
+            <LowLiquidityWarning />
+            {currentTab === 'buy' ? <Buy /> : <Sell />}
           </div>
         </div>
-        {asyncZapMode && (
-          <div>
-            <OrderStatusUpdater />
-            <Collaterals />
-          </div>
-        )}
+        <div className="sm:hidden p-3 rounded-3xl mt-2 text-center text-sm">
+          <span className="font-semibold block">
+            Having issues minting? (Zaps are in beta)
+          </span>
+          <span className="text-legend">Wait and try again or</span>{' '}
+          <Link
+            to={getFolioRoute(
+              indexDTF.id,
+              indexDTF.chainId,
+              ROUTES.ISSUANCE + '/manual'
+            )}
+            className="text-primary underline"
+          >
+            switch to manual {currentTab === 'buy' ? 'minting' : 'redeeming'}
+          </Link>
+        </div>
       </DialogContent>
     </Dialog>
   )
