@@ -11,42 +11,75 @@ import {
   Fingerprint,
 } from 'lucide-react'
 import { useMemo } from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useLocation } from 'react-router-dom'
 
 const NavigationItem = ({
   icon,
   label,
   route,
+  subItems,
 }: {
   icon: React.ReactNode
   label: string
   route: string
+  subItems?: {
+    label: string
+    route: string
+  }[]
 }) => {
+  const { pathname } = useLocation()
   return (
-    <NavLink to={route}>
-      {({ isActive }) => (
-        <div
-          className={cn(
-            'flex items-center transition-all rounded-full gap-2  hover:text-primary',
-            isActive
-              ? 'text-primary bg-primary/10 md:bg-transparent'
-              : 'text-text'
-          )}
-        >
-          {/* <div
+    <div className="flex flex-col gap-2">
+      <NavLink to={route}>
+        {({ isActive }) => (
+          <div
             className={cn(
-              'flex items-center justify-center rounded-full h-6 w-6 border border-border',
-              isActive ? 'bg-primary/10' : 'bg-border'
+              'flex items-center transition-all rounded-full gap-2 hover:text-primary',
+              isActive
+                ? 'text-primary bg-primary/10 md:bg-transparent'
+                : 'text-text'
             )}
-          > */}
-          <div className="h-10 w-10 md:h-6 md:w-6 flex items-center justify-center">
-            {icon}
+          >
+            <div className="h-10 w-10 md:h-6 md:w-6 flex items-center justify-center">
+              {icon}
+            </div>
+            <div className="text-base hidden md:block">{label}</div>
           </div>
-          {/* </div> */}
-          <div className="text-base hidden md:block">{label}</div>
+        )}
+      </NavLink>
+      {subItems && (
+        <div className="flex flex-col gap-2 mt-1">
+          {subItems.map((item) => {
+            const hasMoreThanOneActiveSubItem =
+              subItems?.filter((item) => pathname.includes(item.route)).length >
+              1
+            return (
+              <NavLink key={item.route} to={item.route}>
+                {({ isActive }) => {
+                  const isLikeMainItem = isActive && route === item.route
+                  const _isActive =
+                    isActive &&
+                    (!isLikeMainItem || !hasMoreThanOneActiveSubItem)
+                  return (
+                    <div
+                      className={cn(
+                        'flex items-center gap-2 text-sm font-light text-muted-foreground pl-8',
+                        _isActive && 'text-primary pl-0.5'
+                      )}
+                    >
+                      {_isActive && (
+                        <div className="h-1.5 w-1.5 bg-primary rounded-full mx-2" />
+                      )}
+                      {item.label}
+                    </div>
+                  )
+                }}
+              </NavLink>
+            )
+          })}
         </div>
       )}
-    </NavLink>
+    </div>
   )
 }
 
@@ -64,6 +97,20 @@ const NavigationItems = () => {
         icon: <Blend strokeWidth={1.5} size={16} />,
         label: t`Mint + Redeem`,
         route: ROUTES.ISSUANCE,
+        subItems: [
+          {
+            label: t`Zap Swap`,
+            route: ROUTES.ISSUANCE,
+          },
+          {
+            label: t`Automated`,
+            route: ROUTES.ISSUANCE + '/automated',
+          },
+          {
+            label: t`BYO Collateral`,
+            route: ROUTES.ISSUANCE + '/manual',
+          },
+        ],
       },
       {
         icon: <Landmark strokeWidth={1.5} size={16} />,

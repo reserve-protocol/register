@@ -5,7 +5,7 @@ import { formatCurrency } from '@/utils'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useCallback, useEffect } from 'react'
 import { formatEther, formatUnits, parseEther } from 'viem'
-import useLoadingAfterRefetch from '../../hooks/useLoadingAfterRefetch'
+import useLoadingAfterRefetch from '../../../overview/components/hooks/useLoadingAfterRefetch'
 import {
   currentZapMintTabAtom,
   forceMintAtom,
@@ -19,9 +19,11 @@ import {
   zapMintInputAtom,
   zapOngoingTxAtom,
   zapRefetchAtom,
-} from '../../zap-mint/atom'
-import SubmitZap from '../../zap-mint/submit-zap'
-import ZapDetails, { ZapPriceImpact } from '../../zap-mint/zap-details'
+} from '../../../overview/components/zap-mint/atom'
+import SubmitZap from '../../../overview/components/zap-mint/submit-zap'
+import ZapDetails, {
+  ZapPriceImpact,
+} from '../../../overview/components/zap-mint/zap-details'
 
 const AsyncRedeem = () => {
   const indexDTF = useAtomValue(indexDTFAtom)

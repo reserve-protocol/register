@@ -36,6 +36,7 @@ import IndexDTFSettings from './views/index-dtf/settings'
 import AllYieldDTFList from './views/tokens/Tokens'
 import DeployComingSoon from './views/index-dtf/deploy/components/deploy-coming-soon'
 import IndexDTFWhitelistProposal from './views/index-dtf/governance/views/propose/vault'
+import AsyncSwaps from './views/index-dtf/issuance/async-swaps'
 
 // TODO: Remove terms!
 // TODO: Fix recoll call on yield dtf auction page
@@ -81,6 +82,7 @@ const AppRoutes = () => (
         path={`${ROUTES.ISSUANCE}/manual`}
         element={<IndexDTFManualIssuance />}
       />
+      <Route path={`${ROUTES.ISSUANCE}/automated`} element={<AsyncSwaps />} />
       <Route path={ROUTES.AUCTIONS} element={<IndexDTFAuctions />} />
       <Route path={ROUTES.SETTINGS} element={<IndexDTFSettings />} />
       <Route path={ROUTES.GOVERNANCE} element={<IndexDTFGovernance />} />

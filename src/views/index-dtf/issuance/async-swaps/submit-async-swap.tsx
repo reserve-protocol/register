@@ -95,7 +95,6 @@ const SubmitAsyncSwap = ({
 
     setIsSigning(true)
     try {
-      // 1. Sign CoWSwap quotes
       const signedCowswapOrders = await Promise.all(
         cowswapQuotes.map(async (quote) => {
           const typedData = {

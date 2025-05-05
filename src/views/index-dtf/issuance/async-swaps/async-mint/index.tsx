@@ -7,7 +7,7 @@ import { formatCurrency } from '@/utils'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useCallback, useEffect, useMemo } from 'react'
 import { parseEther, parseUnits } from 'viem'
-import useLoadingAfterRefetch from '../../hooks/useLoadingAfterRefetch'
+import useLoadingAfterRefetch from '../../../overview/components/hooks/useLoadingAfterRefetch'
 import {
   currentZapMintTabAtom,
   openZapMintModalAtom,
@@ -18,7 +18,7 @@ import {
   zapMintInputAtom,
   zapOngoingTxAtom,
   zapRefetchAtom,
-} from '../../zap-mint/atom'
+} from '../../../overview/components/zap-mint/atom'
 import SubmitAsyncSwap from '../submit-async-swap'
 import { asyncSwapResponseAtom } from '../atom'
 import CollateralAcquisition from '../collateral-acquisition'

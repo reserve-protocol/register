@@ -7,7 +7,7 @@ import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
 import { useEffect, useMemo } from 'react'
 import { Address } from 'viem'
 import useDebounce from './useDebounce'
-import { AsyncSwapResponse } from '@/views/index-dtf/overview/components/async-swaps/types'
+import { AsyncSwapResponse } from '@/views/index-dtf/issuance/async-swaps/types'
 
 const useAsyncSwap = ({
   dtf,

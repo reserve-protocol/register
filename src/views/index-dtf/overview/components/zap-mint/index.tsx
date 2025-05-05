@@ -35,12 +35,12 @@ import ZapSettings from './zap-settings'
 import Help from '@/components/ui/help'
 import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
-import AsyncMint from '../async-swaps/async-mint'
-import AsyncRedeem from '../async-swaps/async-redeem'
-import Collaterals from '../async-swaps/collaterals'
-import OrderStatusUpdater from '../async-swaps/order-status-updater'
+import AsyncMint from '../../../issuance/async-swaps/async-mint'
+import AsyncRedeem from '../../../issuance/async-swaps/async-redeem'
+import Collaterals from '../../../issuance/async-swaps/collaterals'
+import OrderStatusUpdater from '../../../issuance/async-swaps/order-status-updater'
 import { cn } from '@/lib/utils'
-import { asyncSwapResponseAtom } from '../async-swaps/atom'
+import { asyncSwapResponseAtom } from '../../../issuance/async-swaps/atom'
 
 const ZapMint = ({ children }: { children: ReactNode }) => {
   const [open, setOpen] = useAtom(openZapMintModalAtom)
