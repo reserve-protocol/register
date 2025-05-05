@@ -28,27 +28,38 @@ const NavigationItem = ({
   }[]
 }) => {
   const { pathname } = useLocation()
+  const showSubItems = subItems && pathname.includes(route)
+
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col">
       <NavLink to={route}>
-        {({ isActive }) => (
-          <div
-            className={cn(
-              'flex items-center transition-all rounded-full gap-2 hover:text-primary',
-              isActive
-                ? 'text-primary bg-primary/10 md:bg-transparent'
-                : 'text-text'
-            )}
-          >
-            <div className="h-10 w-10 md:h-6 md:w-6 flex items-center justify-center">
-              {icon}
+        {({ isActive }) => {
+          return (
+            <div
+              className={cn(
+                'flex items-center transition-all rounded-full gap-2 hover:text-primary',
+                isActive
+                  ? 'text-primary bg-primary/10 md:bg-transparent'
+                  : 'text-text'
+              )}
+            >
+              <div className="h-10 w-10 md:h-6 md:w-6 flex items-center justify-center">
+                {icon}
+              </div>
+              <div className="text-base hidden md:block">{label}</div>
             </div>
-            <div className="text-base hidden md:block">{label}</div>
-          </div>
-        )}
+          )
+        }}
       </NavLink>
       {subItems && (
-        <div className="flex flex-col gap-2 mt-1">
+        <div
+          className={cn(
+            'flex flex-col gap-2 overflow-hidden transition-all duration-300 ease-in-out',
+            showSubItems
+              ? 'mt-3 max-h-[500px] opacity-100'
+              : 'max-h-0 opacity-0'
+          )}
+        >
           {subItems.map((item) => {
             const hasMoreThanOneActiveSubItem =
               subItems?.filter((item) => pathname.includes(item.route)).length >
@@ -99,7 +110,7 @@ const NavigationItems = () => {
         route: ROUTES.ISSUANCE,
         subItems: [
           {
-            label: t`Zap Swap`,
+            label: t`Zap`,
             route: ROUTES.ISSUANCE,
           },
           {
@@ -107,7 +118,7 @@ const NavigationItems = () => {
             route: ROUTES.ISSUANCE + '/automated',
           },
           {
-            label: t`BYO Collateral`,
+            label: t`Manual`,
             route: ROUTES.ISSUANCE + '/manual',
           },
         ],
