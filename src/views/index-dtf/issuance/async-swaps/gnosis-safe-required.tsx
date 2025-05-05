@@ -1,24 +1,10 @@
 import { Button } from '@/components/ui/button'
 import Help from '@/components/ui/help'
 import { useConnectModal } from '@rainbow-me/rainbowkit'
-import { ArrowUpRightIcon, OctagonAlert } from 'lucide-react'
-import { useDisconnect, useAccount } from 'wagmi'
+import { ExternalLink, OctagonAlert } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import { useAccount, useDisconnect } from 'wagmi'
 
-const GnosisSafeIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="33"
-    height="32"
-    viewBox="0 0 33 32"
-    fill="none"
-  >
-    <path
-      d="M16.8828 0C8.06194 0 0.882812 7.1513 0.882812 16C0.882812 24.8209 8.03412 32 16.8828 32C25.7315 32 32.8828 24.8487 32.8828 16C32.8828 7.17913 25.7037 0 16.8828 0ZM28.5976 16.8626H21.168C20.6672 19.3113 18.3019 20.8974 15.8532 20.3965C13.4046 19.8956 11.8185 17.5304 12.3193 15.0817C12.8202 12.633 15.1854 11.047 17.6341 11.5478C19.4985 11.9096 20.9176 13.4122 21.2237 15.3043H28.5976C29.0428 15.3043 29.3767 15.6661 29.3767 16.0835C29.3767 16.5287 29.015 16.8626 28.5976 16.8626Z"
-      fill="black"
-    />
-  </svg>
-)
 const GnosisSafeRequired = () => {
   const { openConnectModal } = useConnectModal()
   const { disconnect } = useDisconnect()
@@ -93,18 +79,13 @@ const GnosisSafeRequired = () => {
           </span>
         </Button>
         <a
-          className="p-4 flex items-center justify-between cursor-pointer"
+          className="p-4 flex items-center gap-1 text-base font-light text-muted-foreground/80 justify-center"
           href={`https://gnosis-safe.io/`}
           target="_blank"
           rel="noopener noreferrer"
         >
-          <div className="flex items-center gap-1.5">
-            <GnosisSafeIcon />
-            <div className="font-semibold">Deploy new Gnosis Safe</div>
-          </div>
-          <div className="bg-muted-foreground/10 rounded-full p-2 hover:bg-muted-foreground/20 transition-colors">
-            <ArrowUpRightIcon size={16} strokeWidth={1.5} />
-          </div>
+          <span className="underline">Create a new Gnosis Safe</span>
+          <ExternalLink size={16} strokeWidth={1.5} />
         </a>
       </div>
     </div>
