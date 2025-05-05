@@ -9,19 +9,18 @@ import { useCallback, useEffect, useMemo } from 'react'
 import { parseEther, parseUnits } from 'viem'
 import useLoadingAfterRefetch from '../../../overview/components/hooks/useLoadingAfterRefetch'
 import {
-  currentZapMintTabAtom,
-  openZapMintModalAtom,
+  asyncSwapFetchingAtom,
+  asyncSwapInputAtom,
+  asyncSwapOngoingTxAtom,
+  asyncSwapRefetchAtom,
+  asyncSwapResponseAtom,
+  currentAsyncSwapTabAtom,
   selectedTokenBalanceAtom,
   selectedTokenOrDefaultAtom,
   slippageAtom,
-  zapFetchingAtom,
-  zapMintInputAtom,
-  zapOngoingTxAtom,
-  zapRefetchAtom,
-} from '../../../overview/components/zap-mint/atom'
-import SubmitAsyncSwap from '../submit-async-swap'
-import { asyncSwapResponseAtom } from '../atom'
+} from '../atom'
 import CollateralAcquisition from '../collateral-acquisition'
+import SubmitAsyncSwap from '../submit-async-swap'
 
 const ASYNC_SWAP_BUFFER = 0.005
 
@@ -29,15 +28,14 @@ const AsyncMint = () => {
   const chainId = useAtomValue(chainIdAtom)
   const indexDTF = useAtomValue(indexDTFAtom)
   const dtfPrice = useAtomValue(indexDTFPriceAtom)
-  const [inputAmount, setInputAmount] = useAtom(zapMintInputAtom)
+  const [inputAmount, setInputAmount] = useAtom(asyncSwapInputAtom)
   const selectedToken = useAtomValue(selectedTokenOrDefaultAtom)
   const selectedTokenBalance = useAtomValue(selectedTokenBalanceAtom)
   const slippage = useAtomValue(slippageAtom)
-  const [ongoingTx, setOngoingTx] = useAtom(zapOngoingTxAtom)
-  const setZapRefetch = useSetAtom(zapRefetchAtom)
-  const setZapFetching = useSetAtom(zapFetchingAtom)
-  const setCurrentTab = useSetAtom(currentZapMintTabAtom)
-  const setOpen = useSetAtom(openZapMintModalAtom)
+  const [ongoingTx, setOngoingTx] = useAtom(asyncSwapOngoingTxAtom)
+  const setAsyncSwapRefetch = useSetAtom(asyncSwapRefetchAtom)
+  const setAsyncSwapFetching = useSetAtom(asyncSwapFetchingAtom)
+  const setCurrentTab = useSetAtom(currentAsyncSwapTabAtom)
   const selectedTokenPrice = useChainlinkPrice(chainId, selectedToken.address)
   const inputPrice = (selectedTokenPrice || 0) * Number(inputAmount)
   const onMax = () => setInputAmount(selectedTokenBalance?.balance || '0')
@@ -89,12 +87,12 @@ const AsyncMint = () => {
   }
 
   useEffect(() => {
-    setZapRefetch({ fn: refetch })
-  }, [refetch, setZapRefetch])
+    setAsyncSwapRefetch({ fn: refetch })
+  }, [refetch, setAsyncSwapRefetch])
 
   useEffect(() => {
-    setZapFetching(fetchingZapper)
-  }, [fetchingZapper, setZapFetching])
+    setAsyncSwapFetching(fetchingZapper)
+  }, [fetchingZapper, setAsyncSwapFetching])
 
   useEffect(() => {
     setOngoingTx(false)
@@ -103,7 +101,6 @@ const AsyncMint = () => {
 
   const onSuccess = useCallback(() => {
     setInputAmount('')
-    setOpen(false)
   }, [])
 
   if (!indexDTF) return null

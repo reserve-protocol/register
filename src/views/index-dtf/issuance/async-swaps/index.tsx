@@ -5,44 +5,43 @@ import { indexDTFAtom } from '@/state/dtf/atoms'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { ArrowLeft, Settings } from 'lucide-react'
 import { useEffect } from 'react'
-import { Link } from 'react-router-dom'
 import useTrackIndexDTFPage, {
   useTrackIndexDTFClick,
 } from '../../hooks/useTrackIndexDTFPage'
 import {
-  currentZapMintTabAtom,
   defaultSelectedTokenAtom,
   indexDTFBalanceAtom,
   selectedTokenAtom,
-  showZapSettingsAtom,
   tokensAtom,
-  zapFetchingAtom,
-  zapMintInputAtom,
-  zapOngoingTxAtom,
-  zapRefetchAtom,
 } from '../../overview/components/zap-mint/atom'
-import Buy from '../../overview/components/zap-mint/buy'
-import RefreshQuote from '../../overview/components/zap-mint/refresh-quote'
-import Sell from '../../overview/components/zap-mint/sell'
-import ZapSettings from '../../overview/components/zap-mint/zap-settings'
 import LowLiquidityWarning from '../../overview/components/zap-mint/low-liquidity-warning'
-import OrderStatusUpdater from './order-status-updater'
-import Collaterals from './collaterals'
+import RefreshQuote from '../../overview/components/zap-mint/refresh-quote'
+import ZapSettings from '../../overview/components/zap-mint/zap-settings'
 import AsyncMint from './async-mint'
 import AsyncRedeem from './async-redeem'
+import {
+  asyncSwapFetchingAtom,
+  asyncSwapInputAtom,
+  asyncSwapOngoingTxAtom,
+  asyncSwapRefetchAtom,
+  currentAsyncSwapTabAtom,
+  showAsyncSwapSettingsAtom,
+} from './atom'
+import Collaterals from './collaterals'
+import OrderStatusUpdater from './order-status-updater'
 
 const AsyncSwaps = () => {
   useTrackIndexDTFPage('mint')
-  const [currentTab, setCurrentTab] = useAtom(currentZapMintTabAtom)
-  const [showSettings, setShowSettings] = useAtom(showZapSettingsAtom)
+  const [currentTab, setCurrentTab] = useAtom(currentAsyncSwapTabAtom)
+  const [showSettings, setShowSettings] = useAtom(showAsyncSwapSettingsAtom)
   const defaultToken = useAtomValue(defaultSelectedTokenAtom)
   const setSelectedToken = useSetAtom(selectedTokenAtom)
   const tokens = useAtomValue(tokensAtom)
   const indexDTF = useAtomValue(indexDTFAtom)
-  const zapRefetch = useAtomValue(zapRefetchAtom)
-  const zapFetching = useAtomValue(zapFetchingAtom)
-  const zapOngoingTx = useAtomValue(zapOngoingTxAtom)
-  const input = useAtomValue(zapMintInputAtom)
+  const asyncSwapRefetch = useAtomValue(asyncSwapRefetchAtom)
+  const asyncSwapFetching = useAtomValue(asyncSwapFetchingAtom)
+  const asyncSwapOngoingTx = useAtomValue(asyncSwapOngoingTxAtom)
+  const input = useAtomValue(asyncSwapInputAtom)
   const setIndexDTFBalance = useSetAtom(indexDTFBalanceAtom)
   const invalidInput = isNaN(Number(input)) || Number(input) === 0
 
@@ -105,9 +104,11 @@ const AsyncSwaps = () => {
                     </Button>
                     <RefreshQuote
                       small
-                      onClick={zapRefetch.fn}
-                      loading={zapFetching}
-                      disabled={zapFetching || zapOngoingTx || invalidInput}
+                      onClick={asyncSwapRefetch.fn}
+                      loading={asyncSwapFetching}
+                      disabled={
+                        asyncSwapFetching || asyncSwapOngoingTx || invalidInput
+                      }
                     />
                   </div>
                 </>
