@@ -5,9 +5,7 @@ import { indexDTFAtom } from '@/state/dtf/atoms'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { ArrowLeft, Settings } from 'lucide-react'
 import { useEffect } from 'react'
-import useTrackIndexDTFPage, {
-  useTrackIndexDTFClick,
-} from '../../hooks/useTrackIndexDTFPage'
+import useTrackIndexDTFPage from '../../hooks/useTrackIndexDTFPage'
 import {
   defaultSelectedTokenAtom,
   indexDTFBalanceAtom,
@@ -29,9 +27,12 @@ import {
 } from './atom'
 import Collaterals from './collaterals'
 import OrderStatusUpdater from './order-status-updater'
+import { isSafeMultisigAtom } from '@/state/atoms'
+import GnosisSafeRequired from './gnosis-safe-required'
 
 const AsyncSwaps = () => {
-  useTrackIndexDTFPage('mint')
+  useTrackIndexDTFPage('mint-async-swap')
+  const isSafeMultisig = useAtomValue(isSafeMultisigAtom)
   const [currentTab, setCurrentTab] = useAtom(currentAsyncSwapTabAtom)
   const [showSettings, setShowSettings] = useAtom(showAsyncSwapSettingsAtom)
   const defaultToken = useAtomValue(defaultSelectedTokenAtom)
@@ -46,7 +47,6 @@ const AsyncSwaps = () => {
   const invalidInput = isNaN(Number(input)) || Number(input) === 0
 
   const { data: balance } = useERC20Balance(indexDTF?.id)
-  const { trackClick } = useTrackIndexDTFClick('overview', 'mint')
 
   useEffect(() => {
     setIndexDTFBalance(balance || 0n)
@@ -70,10 +70,18 @@ const AsyncSwaps = () => {
 
   if (!indexDTF) return null
 
+  if (!isSafeMultisig) {
+    return (
+      <div className="container flex flex-col items-center sm:justify-start md:justify-center gap-2 lg:border-2 lg:border-secondary lg:bg-secondary/40 lg:h-[calc(100vh-100px)] dark:bg-card rounded-4xl w-full">
+        <GnosisSafeRequired />
+      </div>
+    )
+  }
+
   return (
-    <div className="container flex flex-col items-center sm:justify-start md:justify-center gap-2 lg:bg-secondary lg:h-[calc(100vh-100px)] dark:bg-card rounded-4xl w-full">
+    <div className="container flex flex-col items-center sm:justify-start md:justify-center gap-2 lg:border-2 lg:border-secondary lg:bg-secondary/40 lg:h-[calc(100vh-100px)] dark:bg-card rounded-4xl w-full">
       <div className="flex flex-col w-fit rounded-4xl p-1 ">
-        <div className="bg-card rounded-3xl border-2 border-secondary sm:w-[420px] p-2 m-auto">
+        <div className="bg-card rounded-3xl border-2 border-secondary lg:border-none sm:w-[420px] p-2 m-auto">
           <Tabs
             value={currentTab}
             className="flex flex-col flex-grow"

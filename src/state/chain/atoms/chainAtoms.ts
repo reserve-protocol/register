@@ -18,6 +18,7 @@ export const timestampAtom = atom<number>(getCurrentTime())
 export const debouncedBlockAtom = atom<number | undefined>(undefined)
 
 export const walletAtom = atom<Address | null>(null)
+export const isSafeMultisigAtom = atom<boolean>(false)
 export const walletChainAtom = atom<number | undefined>(undefined)
 export const isWalletInvalidAtom = atom((get) => {
   const chainId = get(chainIdAtom)
