@@ -51,14 +51,21 @@ const CollateralAcquisition = ({ dtfAmount }: { dtfAmount: number }) => {
   }
 
   return (
-    <div className="flex gap-2 items-center justify-between p-4 bg-card rounded-2xl">
-      <div className="flex gap-2 items-center text-primary">
-        <div className="border rounded-full p-1.5">
-          <Loader size={16} strokeWidth={1} className="animate-spin-slow" />
-        </div>
-        <div className="font-semibold">Acquiring collaterals</div>
+    <div>
+      <div className="h-0.5 w-full bg-primary/10 overflow-hidden">
+        <div className="h-full w-full bg-gradient-to-r from-transparent via-primary to-transparent animate-[shimmer_5s_infinite] bg-[length:200%_100%]" />
       </div>
-      <div className="text-muted-foreground">{getTimerFormat(elapsedTime)}</div>
+      <div className="flex gap-2 items-center justify-between p-4 bg-card rounded-b-2xl shadow-md">
+        <div className="flex gap-2 items-center text-primary">
+          <div className="border border-primary/20 rounded-full p-1.5">
+            <Loader size={16} strokeWidth={1.5} className="animate-spin-slow" />
+          </div>
+          <div className="font-semibold">Acquiring Collateral</div>
+        </div>
+        <div className="text-muted-foreground">
+          {getTimerFormat(elapsedTime)}
+        </div>
+      </div>
     </div>
   )
 }

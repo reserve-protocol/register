@@ -31,7 +31,7 @@ const Collaterals = () => {
   const { cowswapOrders } = asyncSwapResponse
 
   return (
-    <div className="flex flex-col px-6 border border-border rounded-2xl overflow-y-auto max-h-[350px] min-w-[400px] min-h-[350px]">
+    <div className="flex flex-col px-6 py-2 rounded-2xl overflow-y-auto max-h-[348px] min-w-[400px] min-h-[348px]">
       {cowswapOrders.map(({ quote, status }) => (
         <div
           className="flex items-center justify-between gap-2 border-b border-border py-4 last:border-b-0"
@@ -77,7 +77,7 @@ const Collaterals = () => {
           </div>
           <div
             className={cn(
-              'text-sm font-light flex items-center gap-1',
+              'text-sm font-light flex items-center gap-2',
               STATUS_MAP[status.type] === 'Not Filled' && 'text-[#D05A67]',
               STATUS_MAP[status.type] === 'Processing' &&
                 'text-muted-foreground',

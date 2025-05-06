@@ -7,6 +7,7 @@ import { Address, erc20Abi } from 'viem'
 import { useAccount, usePublicClient, useWalletClient } from 'wagmi'
 import { asyncSwapOrderIdAtom } from './atom'
 import { AsyncSwapResponse } from './types'
+import { cn } from '@/lib/utils'
 
 const COWSWAP_VAULT_RELAYER = '0xC92E8bdf79f0507f65a392b0ab4667716BFE0110'
 const COWSWAP_SETTLEMENT = '0x9008D19f58AAbD9eD0D60971565AA8510560ab41'
@@ -17,6 +18,7 @@ type SubmitAsyncSwapProps = {
   dtfAddress: string
   amountOut: string
   operation: string
+  loadingQuote?: boolean
 }
 
 const SubmitAsyncSwap = ({
@@ -24,6 +26,7 @@ const SubmitAsyncSwap = ({
   dtfAddress,
   amountOut,
   operation,
+  loadingQuote,
 }: SubmitAsyncSwapProps) => {
   const { cowswapQuotes } = data || {}
   const [isSigning, setIsSigning] = useState(false)
@@ -203,15 +206,32 @@ const SubmitAsyncSwap = ({
     approveVaultRelayer,
   ])
 
+  const isDisabled =
+    !cowswapQuotes?.length || isSigning || isApproving || loadingQuote
+
   return (
     <div>
       <Button
         size="lg"
-        className="w-full rounded-xl"
+        className={cn(
+          'w-full rounded-xl',
+          isDisabled && 'opacity-50 cursor-not-allowed'
+        )}
         onClick={handleSubmit}
-        disabled={!cowswapQuotes?.length || isSigning || isApproving}
+        disabled={isDisabled}
       >
-        {isApproving ? 'Approving...' : isSigning ? 'Signing...' : 'Submit'}
+        {isApproving ? (
+          'Approving...'
+        ) : isSigning ? (
+          'Signing...'
+        ) : loadingQuote ? (
+          'Awaiting Quote'
+        ) : (
+          <span className="flex items-center gap-1">
+            <span className="font-bold">Start Mint</span>
+            <span className="font-light">- Step 1/2</span>
+          </span>
+        )}
       </Button>
     </div>
   )

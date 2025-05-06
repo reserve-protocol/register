@@ -60,11 +60,16 @@ type SwapProps = {
   to: SwapItem
   onSwap?: () => void
   loading?: boolean
+  classNameInput?: string
+  classNameOutput?: string
+  classNameSeparator?: string
+  disabled?: boolean
 }
 const TokenInput = ({
   value = '',
   onChange = () => {},
-}: Pick<SwapItem, 'value' | 'onChange'>) => {
+  disabled = false,
+}: Pick<SwapItem, 'value' | 'onChange'> & { disabled?: boolean }) => {
   const ref = useRef<HTMLInputElement>(null)
   const isDesktop = useMediaQuery('(min-width: 768px)')
 
@@ -86,6 +91,7 @@ const TokenInput = ({
       className="placeholder:text-primary/70 text-primary"
       ref={ref}
       autoFocus={isDesktop}
+      disabled={disabled}
     />
   )
 }
@@ -187,7 +193,11 @@ const PriceValue = ({ price }: Pick<SwapItem, 'price'>) => (
   </div>
 )
 
-const MaxButton = ({ balance, onMax }: Pick<SwapItem, 'balance' | 'onMax'>) => (
+const MaxButton = ({
+  balance,
+  onMax,
+  disabled,
+}: Pick<SwapItem, 'balance' | 'onMax'> & { disabled?: boolean }) => (
   <div className="flex items-center gap-1 text-base">
     <span className="text-legend">Balance</span>
     <span className="font-bold">{balance}</span>
@@ -196,26 +206,43 @@ const MaxButton = ({ balance, onMax }: Pick<SwapItem, 'balance' | 'onMax'>) => (
       className="h-6 rounded-full ml-1 bg-primary/15 text-primary/80 hover:bg-primary/15 hover:text-primary/80 font-semibold"
       size="xs"
       onClick={onMax}
+      disabled={disabled}
     >
       Max
     </Button>
   </div>
 )
 
-const TokenInputBox = ({ from }: Pick<SwapProps, 'from'>) => {
+const TokenInputBox = ({
+  from,
+  classNameInput,
+  disabled,
+}: Pick<SwapProps, 'from'> & {
+  classNameInput?: string
+  disabled?: boolean
+}) => {
   return (
-    <div className="flex flex-col gap-1 p-4 bg-muted rounded-xl">
+    <div
+      className={cn(
+        'flex flex-col gap-1 p-4 bg-muted rounded-xl',
+        classNameInput
+      )}
+    >
       <div>
         <h3 className="text-primary">{from?.title || 'You use:'}</h3>
         <div className="flex gap-1">
-          <TokenInput {...from} />
+          <TokenInput {...from} disabled={disabled} />
           <TokenSelector {...from} />
         </div>
       </div>
       <div>
         <div className="flex items-center gap-2 justify-between">
           <PriceValue price={from.price} />
-          <MaxButton balance={from.balance} onMax={from.onMax} />
+          <MaxButton
+            balance={from.balance}
+            onMax={from.onMax}
+            disabled={disabled}
+          />
         </div>
       </div>
     </div>
@@ -280,7 +307,13 @@ const SlowLoading = ({ enabled }: { enabled: boolean }) => {
   )
 }
 
-const TokenOutputBox = ({ to, loading }: Pick<SwapProps, 'to' | 'loading'>) => {
+const TokenOutputBox = ({
+  to,
+  loading,
+  classNameOutput,
+}: Pick<SwapProps, 'to' | 'loading'> & {
+  classNameOutput?: string
+}) => {
   const [slowLoading, setSlowLoading] = useState(false)
 
   useEffect(() => {
@@ -309,7 +342,12 @@ const TokenOutputBox = ({ to, loading }: Pick<SwapProps, 'to' | 'loading'>) => {
   }, [loading])
 
   return (
-    <div className="relative flex flex-col gap-1 p-4 bg-card rounded-xl border-border border">
+    <div
+      className={cn(
+        'relative flex flex-col gap-1 p-4 bg-card rounded-xl border-border border',
+        classNameOutput
+      )}
+    >
       <SlowLoading enabled={slowLoading} />
       <div>
         <h3>{to.title || 'You receive:'}</h3>
@@ -339,11 +377,17 @@ const TokenOutputBox = ({ to, loading }: Pick<SwapProps, 'to' | 'loading'>) => {
   )
 }
 
-const ArrowSeparator = ({ onSwap }: Pick<SwapProps, 'onSwap'>) => {
+const ArrowSeparator = ({
+  onSwap,
+  classNameSeparator,
+}: Pick<SwapProps, 'onSwap'> & { classNameSeparator?: string }) => {
   if (onSwap) {
     return (
       <Button
-        className="h-8 px-[6px] rounded-xl w-max mx-auto border-card border-2 -mt-4 -mb-4 z-20 text-foreground bg-muted hover:bg-border"
+        className={cn(
+          'h-8 px-[6px] rounded-xl w-max mx-auto border-card border-2 -mt-4 -mb-4 z-20 text-foreground bg-muted hover:bg-border',
+          classNameSeparator
+        )}
         onClick={onSwap}
       >
         <ArrowUpDown size={16} />
@@ -351,7 +395,12 @@ const ArrowSeparator = ({ onSwap }: Pick<SwapProps, 'onSwap'>) => {
     )
   }
   return (
-    <div className="rounded-xl bg-muted w-max p-2 mx-auto border-white border-2 -mt-4 -mb-4 z-20">
+    <div
+      className={cn(
+        'rounded-xl bg-muted w-max p-2 mx-auto border-white border-2 -mt-4 -mb-4 z-20 flex items-center justify-center',
+        classNameSeparator
+      )}
+    >
       <ArrowDown size={16} />
     </div>
   )

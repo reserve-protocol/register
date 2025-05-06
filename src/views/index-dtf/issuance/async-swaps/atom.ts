@@ -8,9 +8,11 @@ import { atomWithReset } from 'jotai/utils'
 export const asyncSwapResponseAtom = atom<AsyncSwapOrderResponse | undefined>(
   undefined
 )
-export const asyncSwapOrderIdAtom = atom<string | undefined>(undefined)
+export const asyncSwapOrderIdAtom = atom<string | undefined>(
+  '5d3b5c96-ea7e-4bb2-bb54-40f082fb318d'
+)
 
-export const currentAsyncSwapTabAtom = atom<'buy' | 'sell'>('buy')
+export const currentAsyncSwapTabAtom = atom<'mint' | 'redeem'>('mint')
 export const showAsyncSwapSettingsAtom = atom<boolean>(false)
 export const asyncSwapInputAtom = atomWithReset<string>('')
 export const indexDTFBalanceAtom = atom<bigint>(0n)

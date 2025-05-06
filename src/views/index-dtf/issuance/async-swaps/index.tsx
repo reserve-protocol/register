@@ -58,8 +58,8 @@ const AsyncSwaps = () => {
   }
 
   const changeTab = (tab: string) => {
-    setCurrentTab(tab as 'buy' | 'sell')
-    setSelectedToken(tab === 'buy' ? tokens[0] : tokens[1])
+    setCurrentTab(tab as 'mint' | 'redeem')
+    setSelectedToken(tab === 'mint' ? tokens[0] : tokens[1])
   }
 
   useEffect(() => {
@@ -70,18 +70,18 @@ const AsyncSwaps = () => {
 
   if (!indexDTF) return null
 
-  if (!isSafeMultisig) {
+  if (isSafeMultisig) {
     return (
-      <div className="container flex flex-col items-center sm:justify-start md:justify-center gap-2 lg:border-2 lg:border-secondary lg:bg-secondary/40 lg:h-[calc(100vh-100px)] dark:bg-card rounded-4xl w-full">
+      <div className="container flex flex-col items-center sm:justify-start md:justify-center gap-2 lg:border-2 lg:border-secondary lg:bg-secondary/30 lg:h-[calc(100vh-100px)] dark:bg-card rounded-4xl w-full">
         <GnosisSafeRequired />
       </div>
     )
   }
 
   return (
-    <div className="container flex flex-col items-center sm:justify-start md:justify-center gap-2 lg:border-2 lg:border-secondary lg:bg-secondary/40 lg:h-[calc(100vh-100px)] dark:bg-card rounded-4xl w-full">
-      <div className="flex flex-col w-fit rounded-4xl p-1 ">
-        <div className="bg-card rounded-3xl border-2 border-secondary lg:border-none sm:w-[420px] p-2 m-auto">
+    <div className="container flex items-center sm:justify-start md:justify-center gap-2 lg:border-2 lg:border-secondary lg:bg-secondary/30 lg:h-[calc(100vh-100px)] dark:bg-card rounded-4xl w-full">
+      <div className="flex flex-col w-fit rounded-4xl p-1">
+        <div className="bg-secondary rounded-3xl border-2 border-secondary lg:border-none sm:min-w-[420px] p-1 m-auto">
           <Tabs
             value={currentTab}
             className="flex flex-col flex-grow"
@@ -98,11 +98,23 @@ const AsyncSwaps = () => {
                 </Button>
               ) : (
                 <>
-                  <TabsList className="h-9 px-0.5">
-                    <TabsTrigger value="buy">Buy</TabsTrigger>
-                    <TabsTrigger value="sell">Sell</TabsTrigger>
-                  </TabsList>
-                  <div className="flex items-center gap-1">
+                  <div className="bg-background p-2 rounded-3xl">
+                    <TabsList className="h-8 px-0.5">
+                      <TabsTrigger
+                        value="mint"
+                        className="px-2 py-1 data-[state=active]:text-primary"
+                      >
+                        Auto Mint
+                      </TabsTrigger>
+                      <TabsTrigger
+                        value="redeem"
+                        className="px-2 py-1 data-[state=active]:text-primary"
+                      >
+                        Auto Redeem
+                      </TabsTrigger>
+                    </TabsList>
+                  </div>
+                  <div className="flex items-center gap-1 bg-background px-2 rounded-3xl">
                     <Button
                       variant="outline"
                       className="h-[34px] px-2 rounded-xl"
@@ -128,23 +140,24 @@ const AsyncSwaps = () => {
               </div>
             )}
 
-            <div className={showSettings ? 'hidden' : 'opacity-100'}>
-              <div className="flex flex-col gap-1">
-                <LowLiquidityWarning className="mt-3" />
-                <TabsContent value="buy">
-                  <AsyncMint />
-                </TabsContent>
-                <TabsContent value="sell">
-                  <AsyncRedeem />
-                </TabsContent>
+            <div className="flex items-end gap-1">
+              <div className={showSettings ? 'hidden' : 'opacity-100'}>
+                <div className="flex flex-col gap-1 sm:w-[420px]">
+                  <TabsContent value="mint" className="mt-1">
+                    <AsyncMint />
+                  </TabsContent>
+                  <TabsContent value="redeem" className="mt-1">
+                    <AsyncRedeem />
+                  </TabsContent>
+                </div>
+              </div>
+              <div className="bg-background rounded-3xl">
+                <OrderStatusUpdater />
+                <Collaterals />
               </div>
             </div>
           </Tabs>
         </div>
-      </div>
-      <div>
-        <OrderStatusUpdater />
-        <Collaterals />
       </div>
     </div>
   )
