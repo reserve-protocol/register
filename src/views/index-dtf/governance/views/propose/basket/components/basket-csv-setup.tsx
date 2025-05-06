@@ -63,8 +63,13 @@ const setNewBasketFromCsvAtom = atom(null, (get, set, csv: string) => {
     }
 
     // Update shares and units
-    newProposedShares[address] = valueStr
-    newProposedUnits[address] = valueStr
+    // Convert scientific notation to decimal string if present
+    const normalizedValue = valueStr.toLowerCase().includes('e')
+      ? Number.parseFloat(valueStr.toString()).toString()
+      : valueStr
+
+    newProposedShares[address] = normalizedValue
+    newProposedUnits[address] = normalizedValue
   })
 
   // Update atoms with new values
