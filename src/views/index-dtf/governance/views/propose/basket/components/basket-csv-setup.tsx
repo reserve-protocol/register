@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
-import { ChevronDown, FilePlus2 } from 'lucide-react'
+import { ChevronDown, Download, DownloadCloud, FilePlus2 } from 'lucide-react'
 import { useCallback, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
 import {
@@ -184,8 +184,8 @@ const BasketCsvSetup = () => {
         className="text-legend font-normal gap-2"
         onClick={handleTemplate}
       >
-        CSV Formatting
-        <ChevronDown size={14} />
+        CSV Template
+        <DownloadCloud size={14} />
       </Button>
     </div>
   )
