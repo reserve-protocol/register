@@ -43,6 +43,7 @@ import {
   advancedControlsAtom,
 } from '../atoms'
 import DecimalDisplay from '@/components/decimal-display'
+import BasketCsvSetup from './basket-csv-setup'
 
 const assetsAtom = atom((get) => {
   const proposedBasket = get(proposedIndexBasketAtom)
@@ -475,6 +476,7 @@ const ProposalBasketSetup = () => (
       governance.
     </p>
     <div className="flex flex-col gap-2 mx-2">
+      <BasketCsvSetup />
       <ProposalBasketTable />
       <NextButton />
     </div>
