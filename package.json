@@ -35,6 +35,7 @@
     "@rainbow-me/rainbowkit": "2.2.3",
     "@react-spring/web": "^9.7.1",
     "@reserve-protocol/rtokens": "^1.1.23",
+    "@sentry/react": "^9.16.0",
     "@tanstack/react-query": "5.61.0",
     "@tanstack/react-table": "8.20.6",
     "@uiw/react-md-editor": "^3.20.5",
