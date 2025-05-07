@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite'
+import { defineConfig } from 'vitest/config'
 import react from '@vitejs/plugin-react'
 import viteTsconfigPaths from 'vite-tsconfig-paths'
 import path from 'path'
@@ -67,5 +67,10 @@ export default defineConfig({
   optimizeDeps: { exclude: ['ts-node'] },
   server: {
     port: 3000,
+  },
+  test: {
+    include: ['src/lib/**/*.test.{ts,.tsx}'],
+    globals: true,
+    environment: 'node',
   },
 })
