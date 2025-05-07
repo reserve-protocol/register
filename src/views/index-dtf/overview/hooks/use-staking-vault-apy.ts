@@ -110,9 +110,13 @@ export const useStakingVaultAPY = () => {
       Array.from({ length: Number(PERIOD) }, (_, i) =>
         fetchSupply(currentBlockNumber! - BLOCKS_PER_DAY[chainId!] * BigInt(i))
       )
-    ).then((supplies) => {
-      setSupplies(supplies.flat())
-    })
+    )
+      .then((supplies) => {
+        setSupplies(supplies.flat())
+      })
+      .catch((e) => {
+        console.error('Error reading rewards')
+      })
   }, [rewards, stToken, chainId, currentBlockNumber])
 
   const rewardsPrices = usePrices((rewards as Address[]) ?? [], chainId)
@@ -154,7 +158,7 @@ export const useStakingVaultAPY = () => {
     )
   }, [currentRewardTrackerData, pastRewardTrackerData, rewards])
 
-  const apy = useMemo(() => {
+  return useMemo(() => {
     if (!rewardsData || !supplies.length || !stTokenPrice) return 0
 
     const stTokenPriceValue = stTokenPrice[0]?.price
@@ -187,6 +191,4 @@ export const useStakingVaultAPY = () => {
 
     return apy
   }, [rewardsData, rewardsPrices, supplies, stTokenPrice])
-
-  return apy
 }
