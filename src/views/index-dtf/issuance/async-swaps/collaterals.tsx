@@ -9,7 +9,8 @@ import { useAtomValue } from 'jotai'
 import { ArrowLeftRight, ArrowUpRight, Check, Loader } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { formatUnits } from 'viem'
-import { asyncSwapResponseAtom } from './atom'
+import { asyncSwapResponseAtom, collateralPanelOpenAtom } from './atom'
+import { useEffect, useState } from 'react'
 
 const STATUS_MAP = {
   open: 'Processing',
@@ -25,14 +26,32 @@ const Collaterals = () => {
   const indexDTFBasket = useAtomValue(indexDTFBasketAtom)
   const chainId = useAtomValue(chainIdAtom)
   const asyncSwapResponse = useAtomValue(asyncSwapResponseAtom)
+  const open = useAtomValue(collateralPanelOpenAtom)
+  const [isVisible, setIsVisible] = useState(false)
+  const [shouldRender, setShouldRender] = useState(false)
 
-  if (!asyncSwapResponse) return null
+  useEffect(() => {
+    if (asyncSwapResponse && open) {
+      setShouldRender(true)
+      setTimeout(() => setIsVisible(true), 0)
+    } else {
+      setIsVisible(false)
+      setTimeout(() => setShouldRender(false), 300)
+    }
+  }, [asyncSwapResponse, open])
 
-  const { cowswapOrders } = asyncSwapResponse
+  if (!shouldRender) return null
+
+  const { cowswapOrders = [] } = asyncSwapResponse || {}
 
   return (
-    <div className="flex flex-col px-6 py-2 rounded-2xl overflow-y-auto max-h-[348px] min-w-[400px] min-h-[348px]">
-      {cowswapOrders.map(({ quote, status }) => (
+    <div
+      className={cn(
+        'flex flex-col px-6 py-2 rounded-2xl overflow-y-auto max-h-[348px] min-h-[348px] border-l-4 border-secondary transition-all duration-300 ease-in-out',
+        isVisible ? 'w-[400px]' : 'w-0'
+      )}
+    >
+      {cowswapOrders.map(({ orderId, quote, status }) => (
         <div
           className="flex items-center justify-between gap-2 border-b border-border py-4 last:border-b-0"
           key={quote.buyToken}
@@ -96,7 +115,7 @@ const Collaterals = () => {
             )}
             {STATUS_MAP[status.type] === 'Filled' && (
               <Link
-                to={getExplorerLink('', chainId, ExplorerDataType.TRANSACTION)}
+                to={`https://explorer.cow.fi/base/orders/${orderId}`}
                 target="_blank"
                 className="p-1 bg-muted dark:bg-white/5 rounded-full text-gray-700 ml-1"
               >

@@ -140,7 +140,7 @@ const AsyncSwaps = () => {
               </div>
             )}
 
-            <div className="flex items-end gap-1">
+            <div className="flex items-end">
               <div className={showSettings ? 'hidden' : 'opacity-100'}>
                 <div className="flex flex-col gap-1 sm:w-[420px]">
                   <TabsContent value="mint" className="mt-1">

@@ -1,16 +1,37 @@
-import { useAtomValue } from 'jotai'
-import { asyncSwapResponseAtom } from './atom'
-import { Loader } from 'lucide-react'
-import humanizeDuration from 'humanize-duration'
-import { useEffect, useState } from 'react'
-import { getFolioRoute, getTimerFormat } from '@/utils'
-import { Link } from 'react-router-dom'
+import StackTokenLogo from '@/components/token-logo/StackTokenLogo'
 import { Button } from '@/components/ui/button'
-import { chainIdAtom } from '@/state/atoms'
-import { ROUTES } from '@/utils/constants'
+import { indexDTFBasketAtom } from '@/state/dtf/atoms'
+import { getTimerFormat } from '@/utils'
+import { useAtom, useAtomValue } from 'jotai'
+import { ArrowLeft, ArrowRight, Check, Loader } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { asyncSwapResponseAtom, collateralPanelOpenAtom } from './atom'
+import MintButton from './mint-button'
 
-const CollateralAcquisition = ({ dtfAmount }: { dtfAmount: number }) => {
-  const chainId = useAtomValue(chainIdAtom)
+const OpenCollateralPanel = () => {
+  const basket = useAtomValue(indexDTFBasketAtom)
+  const [open, setOpen] = useAtom(collateralPanelOpenAtom)
+
+  return (
+    <Button
+      variant="ghost"
+      size="xs"
+      className="flex items-center gap-1 rounded-full bg-muted h-8"
+      onClick={() => setOpen((prev) => !prev)}
+    >
+      {open && <ArrowLeft size={16} />}
+      <StackTokenLogo
+        tokens={(basket || []).slice(0, 5)}
+        size={16}
+        overlap={4}
+        reverseStack
+      />
+      {!open && <ArrowRight size={16} />}
+    </Button>
+  )
+}
+
+const CollateralAcquisition = () => {
   const asyncSwapResponse = useAtomValue(asyncSwapResponseAtom)
   const [elapsedTime, setElapsedTime] = useState(0)
 
@@ -35,29 +56,26 @@ const CollateralAcquisition = ({ dtfAmount }: { dtfAmount: number }) => {
 
   if (hasAllCollaterals) {
     return (
-      <Link
-        to={getFolioRoute(
-          asyncSwapResponse.dtf,
-          chainId,
-          ROUTES.ISSUANCE + '/manual?amountIn=' + dtfAmount
-        )}
-        className="flex gap-2 items-center justify-between bg-card rounded-2xl"
-      >
-        <Button size="lg" className="w-full rounded-xl">
-          Manual Mint
-        </Button>
-      </Link>
+      <div>
+        <div className="flex gap-2 items-center justify-between p-4 border-t border-border">
+          <div className="flex gap-2 items-center text-primary">
+            <div className="border border-primary/80 rounded-full p-1.5">
+              <Check size={16} strokeWidth={1.5} />
+            </div>
+            <div className="font-semibold">Collateral Acquired</div>
+          </div>
+          <OpenCollateralPanel />
+        </div>
+        <MintButton />
+      </div>
     )
   }
 
   return (
-    <div>
-      <div className="h-0.5 w-full bg-primary/10 overflow-hidden">
-        <div className="h-full w-full bg-gradient-to-r from-transparent via-primary to-transparent animate-[shimmer_5s_infinite] bg-[length:200%_100%]" />
-      </div>
-      <div className="flex gap-2 items-center justify-between p-4 bg-card rounded-b-2xl shadow-md">
+    <div className="relative rounded-2xl p-[1px] bg-gradient-to-r from-transparent via-primary to-transparent animate-[shimmer_5s_infinite] bg-[length:200%_100%]">
+      <div className="flex gap-2 items-center justify-between p-4 bg-card rounded-2xl shadow-md">
         <div className="flex gap-2 items-center text-primary">
-          <div className="border border-primary/20 rounded-full p-1.5">
+          <div className="border border-primary/40 rounded-full p-1.5">
             <Loader size={16} strokeWidth={1.5} className="animate-spin-slow" />
           </div>
           <div className="font-semibold">Acquiring Collateral</div>

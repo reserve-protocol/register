@@ -5,7 +5,7 @@ import { useAtomValue, useSetAtom } from 'jotai'
 import { useCallback, useState } from 'react'
 import { Address, erc20Abi } from 'viem'
 import { useAccount, usePublicClient, useWalletClient } from 'wagmi'
-import { asyncSwapOrderIdAtom } from './atom'
+import { asyncSwapOrderIdAtom, collateralPanelOpenAtom } from './atom'
 import { AsyncSwapResponse } from './types'
 import { cn } from '@/lib/utils'
 
@@ -37,6 +37,7 @@ const SubmitAsyncSwap = ({
   const publicClient = usePublicClient()
   const { data: walletClient } = useWalletClient()
   const setAsyncSwapOrderId = useSetAtom(asyncSwapOrderIdAtom)
+  const setCollateralPanelOpen = useSetAtom(collateralPanelOpenAtom)
 
   const approveVaultRelayer = useCallback(async () => {
     if (!signerAddress || !publicClient || !walletClient) return
@@ -188,6 +189,7 @@ const SubmitAsyncSwap = ({
 
       const data = await response.json()
       setAsyncSwapOrderId(data.swapOrderId)
+      setCollateralPanelOpen(true)
       console.log('swapOrderId', data.swapOrderId)
 
       console.log('Orders submitted successfully:', data)
