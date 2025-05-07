@@ -30,7 +30,7 @@ import TokenRewardPreview from './proposal-preview/token-reward-preview'
 import {
   spellAbi as governanceSpell_31_03_2025Abi,
   spellAddress as governanceSpell_31_03_2025Address,
-} from '../views/propose/components/propose-governance-spell-31-03-2025'
+} from '../views/propose/upgrade-banners/propose-governance-spell-31-03-2025'
 import Timelock from '@/abis/Timelock'
 
 const dtfAbiMapppingAtom = atom((get) => {
