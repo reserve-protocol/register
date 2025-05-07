@@ -64,7 +64,7 @@ export const getBasketRatiosFromAuctions = (
       }
     }
 
-    if (basketRatio == -1n) {
+    if (basketRatio == -1n || basketRatio >= 10n ** 54n) {
       console.log(
         'token missing from auctions, using current balance',
         tokens[i]
