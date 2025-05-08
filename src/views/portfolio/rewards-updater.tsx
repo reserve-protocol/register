@@ -1,20 +1,19 @@
+import dtfIndexStakingVault from '@/abis/dtf-index-staking-vault'
 import { usePrices } from '@/hooks/usePrices'
 import { walletAtom } from '@/state/atoms'
+import { wagmiConfig } from '@/state/chain'
 import { AvailableChain, ChainId } from '@/utils/chains'
+import { useQuery } from '@tanstack/react-query'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useMemo } from 'react'
 import { Address, erc20Abi, formatUnits } from 'viem'
-import { useReadContracts, useSimulateContract } from 'wagmi'
+import { useReadContracts } from 'wagmi'
+import { simulateContract } from 'wagmi/actions'
 import {
   accountRewardsAtom,
   accountStakingTokensAtom,
   RewardToken,
 } from './atoms'
-import StakingVault from '@/abis/StakingVault'
-import { useQuery } from '@tanstack/react-query'
-import { simulateContract } from 'wagmi/actions'
-import { wagmiConfig } from '@/state/chain'
-import dtfIndexStakingVault from '@/abis/dtf-index-staking-vault'
 
 // For some reason, the getAllRewardTokens throws a type
 // error when using the abi directly from the contract
