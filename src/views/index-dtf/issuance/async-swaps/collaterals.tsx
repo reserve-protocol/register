@@ -44,7 +44,7 @@ const Collaterals = () => {
   return (
     <div
       className={cn(
-        'flex flex-col px-6 py-2 rounded-2xl overflow-y-auto max-h-[348px] min-h-[348px] border-l-4 border-secondary transition-all duration-300 ease-in-out',
+        'flex flex-col px-6 py-2 rounded-2xl overflow-y-auto flex-1 border-l-4 border-secondary transition-all duration-300 ease-in-out',
         isVisible ? 'w-[400px]' : 'w-0'
       )}
     >

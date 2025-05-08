@@ -31,6 +31,7 @@ import OrderStatusUpdater from './order-status-updater'
 import { isSafeMultisigAtom } from '@/state/atoms'
 import GnosisSafeRequired from './gnosis-safe-required'
 import Success from './success'
+import { cn } from '@/lib/utils'
 
 const AsyncSwaps = () => {
   useTrackIndexDTFPage('mint-async-swap')
@@ -155,9 +156,14 @@ const AsyncSwaps = () => {
               </div>
             )}
 
-            <div className="flex items-end">
-              <div className={showSettings ? 'hidden' : 'opacity-100'}>
-                <div className="flex flex-col gap-1 sm:w-[420px]">
+            <div className="flex flex-1">
+              <div
+                className={cn(
+                  'flex-1',
+                  showSettings ? 'hidden' : 'opacity-100'
+                )}
+              >
+                <div className="flex flex-col gap-1 sm:w-[420px] h-full">
                   <TabsContent value="mint" className="mt-1">
                     <AsyncMint />
                   </TabsContent>
@@ -166,7 +172,7 @@ const AsyncSwaps = () => {
                   </TabsContent>
                 </div>
               </div>
-              <div className="bg-background rounded-3xl">
+              <div className="bg-background rounded-3xl flex-1 flex flex-col mt-1">
                 <OrderStatusUpdater />
                 <Collaterals />
               </div>
