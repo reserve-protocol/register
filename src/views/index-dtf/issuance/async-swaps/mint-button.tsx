@@ -1,15 +1,15 @@
 import dtfIndexAbi from '@/abis/dtf-index-abi'
 import TokenLogo from '@/components/token-logo'
 import { Button } from '@/components/ui/button'
-import { chainIdAtom, walletAtom } from '@/state/atoms'
+import { walletAtom } from '@/state/atoms'
+import { wagmiConfig } from '@/state/chain'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { Loader } from 'lucide-react'
 import { useCallback } from 'react'
-import { erc20Abi, parseEther } from 'viem'
+import { erc20Abi } from 'viem'
 import { usePublicClient, useWalletClient } from 'wagmi'
 import { asyncSwapResponseAtom, isMintingAtom, mintTxHashAtom } from './atom'
-import { wagmiConfig } from '@/state/chain'
 
 const MintButton = () => {
   const indexDTF = useAtomValue(indexDTFAtom)

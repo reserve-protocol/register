@@ -1,30 +1,27 @@
 import TokenLogo from '@/components/token-logo'
 import Help from '@/components/ui/help'
 import { cn } from '@/lib/utils'
-import { chainIdAtom } from '@/state/atoms'
 import { indexDTFBasketAtom } from '@/state/dtf/atoms'
-import { formatCurrency } from '@/utils'
-import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
+import { formatCurrency, formatTokenAmount } from '@/utils'
 import { useAtomValue } from 'jotai'
-import { ArrowLeftRight, ArrowUpRight, Check, Loader } from 'lucide-react'
+import { ArrowUpRight, Check, Loader } from 'lucide-react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { formatUnits } from 'viem'
 import { asyncSwapResponseAtom, collateralPanelOpenAtom } from './atom'
-import { useEffect, useState } from 'react'
 
 const STATUS_MAP = {
   open: 'Processing',
   scheduled: 'Processing',
   active: 'Processing',
-  solved: 'Filled',
+  solved: 'Order Filled',
   executing: 'Processing',
-  traded: 'Filled',
+  traded: 'Order Filled',
   cancelled: 'Not Filled',
 }
 
 const Collaterals = () => {
   const indexDTFBasket = useAtomValue(indexDTFBasketAtom)
-  const chainId = useAtomValue(chainIdAtom)
   const asyncSwapResponse = useAtomValue(asyncSwapResponseAtom)
   const open = useAtomValue(collateralPanelOpenAtom)
   const [isVisible, setIsVisible] = useState(false)
@@ -67,8 +64,16 @@ const Collaterals = () => {
               size="xl"
             />
             <div className="flex flex-col">
-              <span className="text-sm font-medium">
+              <div className="text-sm font-semibold">
+                -
                 {formatCurrency(
+                  Number(formatUnits(BigInt(quote.sellAmount), 6))
+                )}{' '}
+                USDC
+              </div>
+              <div className="text-sm text-primary">
+                +
+                {formatTokenAmount(
                   Number(
                     formatUnits(
                       BigInt(quote.buyAmount),
@@ -76,21 +81,11 @@ const Collaterals = () => {
                         (token) => token.address === quote.buyToken
                       )?.decimals || 18
                     )
-                  ),
-                  6
+                  )
                 )}{' '}
                 {indexDTFBasket?.find(
                   (token) => token.address === quote.buyToken
                 )?.symbol || ''}
-              </span>
-              <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                <ArrowLeftRight size={12} />
-                <span>
-                  {formatCurrency(
-                    Number(formatUnits(BigInt(quote.sellAmount), 6))
-                  )}{' '}
-                  USDC
-                </span>
               </div>
             </div>
           </div>
@@ -100,10 +95,10 @@ const Collaterals = () => {
               STATUS_MAP[status.type] === 'Not Filled' && 'text-[#D05A67]',
               STATUS_MAP[status.type] === 'Processing' &&
                 'text-muted-foreground',
-              STATUS_MAP[status.type] === 'Filled' && 'text-primary'
+              STATUS_MAP[status.type] === 'Order Filled' && 'text-primary'
             )}
           >
-            {STATUS_MAP[status.type] === 'Filled' && (
+            {STATUS_MAP[status.type] === 'Order Filled' && (
               <Check size={16} className="text-primary" />
             )}
             {STATUS_MAP[status.type]}
@@ -113,7 +108,7 @@ const Collaterals = () => {
                 size={16}
               />
             )}
-            {STATUS_MAP[status.type] === 'Filled' && (
+            {STATUS_MAP[status.type] === 'Order Filled' && (
               <Link
                 to={`https://explorer.cow.fi/base/orders/${orderId}`}
                 target="_blank"

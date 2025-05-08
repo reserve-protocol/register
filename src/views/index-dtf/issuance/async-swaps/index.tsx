@@ -23,12 +23,14 @@ import {
   asyncSwapOngoingTxAtom,
   asyncSwapRefetchAtom,
   currentAsyncSwapTabAtom,
+  mintTxHashAtom,
   showAsyncSwapSettingsAtom,
 } from './atom'
 import Collaterals from './collaterals'
 import OrderStatusUpdater from './order-status-updater'
 import { isSafeMultisigAtom } from '@/state/atoms'
 import GnosisSafeRequired from './gnosis-safe-required'
+import Success from './success'
 
 const AsyncSwaps = () => {
   useTrackIndexDTFPage('mint-async-swap')
@@ -44,6 +46,7 @@ const AsyncSwaps = () => {
   const asyncSwapOngoingTx = useAtomValue(asyncSwapOngoingTxAtom)
   const input = useAtomValue(asyncSwapInputAtom)
   const setIndexDTFBalance = useSetAtom(indexDTFBalanceAtom)
+  const mintTxHash = useAtomValue(mintTxHashAtom)
   const invalidInput = isNaN(Number(input)) || Number(input) === 0
 
   const { data: balance } = useERC20Balance(indexDTF?.id)
@@ -74,6 +77,18 @@ const AsyncSwaps = () => {
     return (
       <div className="container flex flex-col items-center sm:justify-start md:justify-center gap-2 lg:border-2 lg:border-secondary lg:bg-secondary/30 lg:h-[calc(100vh-100px)] dark:bg-card rounded-4xl w-full">
         <GnosisSafeRequired />
+      </div>
+    )
+  }
+
+  if (mintTxHash) {
+    return (
+      <div className="container flex items-center sm:justify-start md:justify-center gap-2 lg:border-2 lg:border-secondary lg:bg-secondary/30 lg:h-[calc(100vh-100px)] dark:bg-card rounded-4xl w-full">
+        <div className="flex flex-col w-fit rounded-4xl p-1">
+          <div className="rounded-3xl border-2 border-secondary lg:border-none sm:min-w-[420px] p-1 m-auto">
+            <Success />
+          </div>
+        </div>
       </div>
     )
   }

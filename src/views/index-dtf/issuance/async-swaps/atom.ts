@@ -59,7 +59,10 @@ export const asyncSwapEndpointAtom = atom<string>('')
 export const asyncSwapPriceImpactWarningCheckboxAtom = atom(false)
 export const asyncSwapHighPriceImpactAtom = atom<boolean>(false)
 export const isMintingAtom = atom<boolean>(false)
-export const mintTxHashAtom = atom<string | undefined>(undefined)
+export const mintTxHashAtom = atom<string | undefined>(
+  '0x7dc75b765f28b2875c9b2ae52c2fe06472baf17ba0486f195b5b69212018582e'
+  // undefined
+)
 
 export const mintValueAtom = atom<number>((get) => {
   const inputAmount = get(asyncSwapInputAtom)
