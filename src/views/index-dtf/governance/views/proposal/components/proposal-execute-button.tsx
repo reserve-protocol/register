@@ -47,6 +47,8 @@ const ProposalExecute = () => {
       onClick={write}
       text={t`Execute proposal`}
       sx={{ height: '44px' }}
+      error={validationError}
+      errorWithName={false}
     />
   )
 }
