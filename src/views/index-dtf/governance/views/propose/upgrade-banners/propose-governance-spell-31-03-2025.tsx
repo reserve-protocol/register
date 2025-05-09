@@ -1,10 +1,13 @@
-import dtfIndexAbi from '@/abis/dtf-index-abi'
 import dtfAdminAbi from '@/abis/dtf-admin-abi'
-import stakingVaultAbi from '@/abis/dtf-index-staking-vault'
+import dtfIndexAbi from '@/abis/dtf-index-abi'
 import DTFIndexGovernance from '@/abis/dtf-index-governance'
+import stakingVaultAbi from '@/abis/dtf-index-staking-vault'
 import { Button } from '@/components/ui/button'
+import { getProposalState, PartialProposal } from '@/lib/governance'
 import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
+import { getCurrentTime } from '@/utils'
+import { ChainId } from '@/utils/chains'
 import { PROPOSAL_STATES } from '@/utils/constants'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { AlertCircle, Loader2 } from 'lucide-react'
@@ -15,7 +18,6 @@ import {
   isAddressEqual,
   keccak256,
   pad,
-  parseAbi,
   toBytes,
 } from 'viem'
 import {
@@ -23,20 +25,131 @@ import {
   useWaitForTransactionReceipt,
   useWriteContract,
 } from 'wagmi'
-import { useIsProposeAllowed } from '../../../hooks/use-is-propose-allowed'
-import { ChainId } from '@/utils/chains'
-import { getCurrentTime } from '@/utils'
 import { governanceProposalsAtom, refetchTokenAtom } from '../../../atoms'
-import { getProposalState, PartialProposal } from '@/lib/governance'
+import { useIsProposeAllowed } from '../../../hooks/use-is-propose-allowed'
 
-export const spellAbi = parseAbi([
-  'function upgradeStakingVaultGovernance(address stakingVault, address oldGovernor, address[] calldata guardians, bytes32 deploymentNonce) external returns (address newGovernor)',
-  'function upgradeFolioGovernance(address folio, address proxyAdmin, address oldOwnerGovernor, address oldTradingGovernor, address[] calldata ownerGuardians, address[] calldata tradingGuardians, bytes32 deploymentNonce) external returns (address newOwnerGovernor, address newTradingGovernor)',
-])
+export const spellAbi = [
+  {
+    type: 'constructor',
+    inputs: [
+      {
+        name: '_governanceDeployer',
+        type: 'address',
+        internalType: 'contract GovernanceDeployer',
+      },
+    ],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'exceptions',
+    inputs: [
+      {
+        name: 'stakingVaultGovernor',
+        type: 'address',
+        internalType: 'address',
+      },
+    ],
+    outputs: [
+      {
+        name: 'votingDelayMultiplier',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+      {
+        name: 'votingPeriodMultiplier',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+      {
+        name: 'executionDelayMultiplier',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'governanceDeployer',
+    inputs: [],
+    outputs: [
+      {
+        name: '',
+        type: 'address',
+        internalType: 'contract GovernanceDeployer',
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'upgradeFolioGovernance',
+    inputs: [
+      { name: 'folio', type: 'address', internalType: 'contract Folio' },
+      {
+        name: 'proxyAdmin',
+        type: 'address',
+        internalType: 'contract FolioProxyAdmin',
+      },
+      {
+        name: 'oldOwnerGovernor',
+        type: 'address',
+        internalType: 'contract FolioGovernor',
+      },
+      {
+        name: 'oldTradingGovernor',
+        type: 'address',
+        internalType: 'contract FolioGovernor',
+      },
+      { name: 'ownerGuardians', type: 'address[]', internalType: 'address[]' },
+      {
+        name: 'tradingGuardians',
+        type: 'address[]',
+        internalType: 'address[]',
+      },
+      { name: 'deploymentNonce', type: 'bytes32', internalType: 'bytes32' },
+    ],
+    outputs: [
+      { name: 'newOwnerGovernor', type: 'address', internalType: 'address' },
+      { name: 'newTradingGovernor', type: 'address', internalType: 'address' },
+    ],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'upgradeStakingVaultGovernance',
+    inputs: [
+      {
+        name: 'stakingVault',
+        type: 'address',
+        internalType: 'contract Ownable',
+      },
+      {
+        name: 'oldGovernor',
+        type: 'address',
+        internalType: 'contract FolioGovernor',
+      },
+      { name: 'guardians', type: 'address[]', internalType: 'address[]' },
+      { name: 'deploymentNonce', type: 'bytes32', internalType: 'bytes32' },
+    ],
+    outputs: [
+      { name: 'newGovernor', type: 'address', internalType: 'address' },
+    ],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'version',
+    inputs: [],
+    outputs: [{ name: '', type: 'string', internalType: 'string' }],
+    stateMutability: 'pure',
+  },
+] as const
 
 export const spellAddress = {
-  [ChainId.Mainnet]: getAddress('0x880F6ef00d13bAf60f3B99099451432F502EdA15'),
-  [ChainId.Base]: getAddress('0xE7FAa62c3F71f743F3a2Fc442393182F6B64f156'),
+  [ChainId.Mainnet]: getAddress('0x4491b242f15f8dc9c6dfbb9a08edbbaae2623199'),
+  [ChainId.Base]: getAddress('0x587cefb69473ad467993c6dd3a8f202bf1ef5e2a'),
 }
 
 const UPGRADE_FOLIO_MESSAGE = 'Upgrade Folio Governance'
@@ -316,13 +429,19 @@ const validProposalExists = (
 export default function ProposeGovernanceSpell31032025() {
   const { isProposeAllowed } = useIsProposeAllowed()
   const proposals = useAtomValue(governanceProposalsAtom)
+  const indexDTF = useAtomValue(indexDTFAtom)
   const setRefetchToken = useSetAtom(refetchTokenAtom)
 
   const refetch = useCallback(() => {
     setRefetchToken(getCurrentTime())
   }, [setRefetchToken])
 
-  if (!isProposeAllowed || !proposals) return null
+  if (
+    !isProposeAllowed ||
+    !proposals ||
+    indexDTF?.id === '0x323c03c48660fE31186fa82c289b0766d331Ce21'.toLowerCase()
+  )
+    return null
 
   const existsFolioUpgrade = validProposalExists(
     proposals,
