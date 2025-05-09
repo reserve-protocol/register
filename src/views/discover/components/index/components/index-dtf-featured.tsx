@@ -15,7 +15,7 @@ const FEATURED = [
     name: 'Bloomberg Galaxy Crypto Index',
     address: '0x23418De10d422AD71C9D5713a2B8991a9c586443',
     chainId: ChainId.Base,
-    icon: 'https://ipfs.satsuma.xyz/ipfs/QmX1dZeXd4YjYv8kZ5i9Ao2w2iauGKHaGi2hdc1m3kBCAF',
+    icon: 'https://l5394zf57b.ufs.sh/f/mupND8QUUvXxatO12rMDmcrOHpGTwz5KhD49x3ZgtblqPMsQ',
     cover: bloombergCover,
   },
   {
@@ -23,7 +23,7 @@ const FEATURED = [
     name: 'Virtuals Index',
     address: '0x47686106181b3CEfe4eAf94C4c10b48Ac750370b',
     chainId: ChainId.Base,
-    icon: 'https://ipfs.satsuma.xyz/ipfs/QmUtdB53gH5um1skB29XQYKnWSVWEvbfJuHqcnPCPSdWey',
+    icon: 'https://l5394zf57b.ufs.sh/f/mupND8QUUvXx5AQG85hN1x8WsPzKQYEGuJwIpDVehmXl4fqM',
     cover: virtualsCover,
   },
   {
@@ -31,7 +31,7 @@ const FEATURED = [
     name: 'CoinDesk DeFi Select Index',
     address: '0x188D12Eb13a5Eadd0867074ce8354B1AD6f4790b',
     chainId: ChainId.Mainnet,
-    icon: 'https://ipfs.satsuma.xyz/ipfs/QmWnKyhHbJzT5vBAycvbEk8gKFoH46VXTT4Q5gEXtYXAtP',
+    icon: 'https://l5394zf57b.ufs.sh/f/mupND8QUUvXx5V0tDlhN1x8WsPzKQYEGuJwIpDVehmXl4fqM',
     cover: coindeskCover,
   },
 ]
