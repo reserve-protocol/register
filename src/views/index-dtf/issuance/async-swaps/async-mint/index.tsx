@@ -6,7 +6,7 @@ import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { formatCurrency } from '@/utils'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { useCallback, useEffect, useMemo } from 'react'
+import { useEffect } from 'react'
 import { parseUnits } from 'viem'
 import useLoadingAfterRefetch from '../../../overview/components/hooks/useLoadingAfterRefetch'
 import {
@@ -17,7 +17,6 @@ import {
   asyncSwapResponseAtom,
   bufferValueAtom,
   collateralAcquiredAtom,
-  currentAsyncSwapTabAtom,
   isMintingAtom,
   mintValueAtom,
   mintValueUSDAtom,
@@ -40,7 +39,6 @@ const AsyncMint = () => {
   const [ongoingTx, setOngoingTx] = useAtom(asyncSwapOngoingTxAtom)
   const setAsyncSwapRefetch = useSetAtom(asyncSwapRefetchAtom)
   const setAsyncSwapFetching = useSetAtom(asyncSwapFetchingAtom)
-  const setCurrentTab = useSetAtom(currentAsyncSwapTabAtom)
   const selectedTokenPrice = useChainlinkPrice(chainId, selectedToken.address)
   const inputPrice = (selectedTokenPrice || 0) * Number(inputAmount)
   const onMax = () => setInputAmount(selectedTokenBalance?.balance || '0')
@@ -78,11 +76,6 @@ const AsyncMint = () => {
   // )
   const awaitingQuote = isLoading || isFetching
 
-  const changeTab = () => {
-    setCurrentTab((prev) => (prev === 'mint' ? 'redeem' : 'mint'))
-    setInputAmount('')
-  }
-
   useEffect(() => {
     setAsyncSwapRefetch({ fn: refetch })
   }, [refetch, setAsyncSwapRefetch])
@@ -93,10 +86,6 @@ const AsyncMint = () => {
 
   useEffect(() => {
     setOngoingTx(false)
-    setInputAmount('')
-  }, [])
-
-  const onSuccess = useCallback(() => {
     setInputAmount('')
   }, [])
 

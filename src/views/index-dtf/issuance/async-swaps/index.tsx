@@ -1,18 +1,13 @@
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import useERC20Balance from '@/hooks/useERC20Balance'
+import { cn } from '@/lib/utils'
+import { isSafeMultisigAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { ArrowLeft, Settings } from 'lucide-react'
 import { useEffect } from 'react'
 import useTrackIndexDTFPage from '../../hooks/useTrackIndexDTFPage'
-import {
-  defaultSelectedTokenAtom,
-  indexDTFBalanceAtom,
-  selectedTokenAtom,
-  tokensAtom,
-} from '../../overview/components/zap-mint/atom'
-import LowLiquidityWarning from '../../overview/components/zap-mint/low-liquidity-warning'
 import RefreshQuote from '../../overview/components/zap-mint/refresh-quote'
 import ZapSettings from '../../overview/components/zap-mint/zap-settings'
 import AsyncMint from './async-mint'
@@ -23,15 +18,16 @@ import {
   asyncSwapOngoingTxAtom,
   asyncSwapRefetchAtom,
   currentAsyncSwapTabAtom,
+  defaultSelectedTokenAtom,
+  indexDTFBalanceAtom,
   mintTxHashAtom,
+  selectedTokenAtom,
   showAsyncSwapSettingsAtom,
 } from './atom'
 import Collaterals from './collaterals'
-import OrderStatusUpdater from './order-status-updater'
-import { isSafeMultisigAtom } from '@/state/atoms'
 import GnosisSafeRequired from './gnosis-safe-required'
+import OrderStatusUpdater from './order-status-updater'
 import Success from './success'
-import { cn } from '@/lib/utils'
 
 const AsyncSwaps = () => {
   useTrackIndexDTFPage('mint-async-swap')
@@ -40,7 +36,6 @@ const AsyncSwaps = () => {
   const [showSettings, setShowSettings] = useAtom(showAsyncSwapSettingsAtom)
   const defaultToken = useAtomValue(defaultSelectedTokenAtom)
   const setSelectedToken = useSetAtom(selectedTokenAtom)
-  const tokens = useAtomValue(tokensAtom)
   const indexDTF = useAtomValue(indexDTFAtom)
   const asyncSwapRefetch = useAtomValue(asyncSwapRefetchAtom)
   const asyncSwapFetching = useAtomValue(asyncSwapFetchingAtom)
@@ -63,7 +58,6 @@ const AsyncSwaps = () => {
 
   const changeTab = (tab: string) => {
     setCurrentTab(tab as 'mint' | 'redeem')
-    setSelectedToken(tab === 'mint' ? tokens[0] : tokens[1])
   }
 
   useEffect(() => {

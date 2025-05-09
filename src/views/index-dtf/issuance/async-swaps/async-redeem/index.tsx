@@ -1,111 +1,102 @@
 import Swap from '@/components/ui/swap'
-import useZapSwapQuery from '@/hooks/useZapSwapQuery'
+import useAsyncSwap from '@/hooks/useAsyncSwap'
+import { useChainlinkPrice } from '@/hooks/useChainlinkPrice'
+import { cn } from '@/lib/utils'
+import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom, indexDTFPriceAtom } from '@/state/dtf/atoms'
 import { formatCurrency } from '@/utils'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { useCallback, useEffect } from 'react'
-import { formatEther, formatUnits, parseEther } from 'viem'
+import { useEffect } from 'react'
+import { formatEther, parseUnits } from 'viem'
 import useLoadingAfterRefetch from '../../../overview/components/hooks/useLoadingAfterRefetch'
 import {
-  currentZapMintTabAtom,
-  forceMintAtom,
+  asyncSwapFetchingAtom,
+  asyncSwapInputAtom,
+  asyncSwapOngoingTxAtom,
+  asyncSwapRefetchAtom,
+  asyncSwapResponseAtom,
+  bufferValueAtom,
+  collateralAcquiredAtom,
   indexDTFBalanceAtom,
-  openZapMintModalAtom,
-  selectedTokenAtom,
+  isMintingAtom,
+  mintValueAtom,
+  mintValueUSDAtom,
+  mintValueWeiAtom,
+  selectedTokenBalanceAtom,
   selectedTokenOrDefaultAtom,
   slippageAtom,
-  tokensAtom,
-  zapFetchingAtom,
-  zapMintInputAtom,
-  zapOngoingTxAtom,
-  zapRefetchAtom,
-} from '../../../overview/components/zap-mint/atom'
-import SubmitZap from '../../../overview/components/zap-mint/submit-zap'
-import ZapDetails, {
-  ZapPriceImpact,
-} from '../../../overview/components/zap-mint/zap-details'
+} from '../atom'
+import CollateralAcquisition from '../collateral-acquisition'
+import SubmitAsyncSwap from '../submit-async-swap'
 
 const AsyncRedeem = () => {
+  const chainId = useAtomValue(chainIdAtom)
   const indexDTF = useAtomValue(indexDTFAtom)
-  const indexDTFPrice = useAtomValue(indexDTFPriceAtom)
-  const [inputAmount, setInputAmount] = useAtom(zapMintInputAtom)
+  const [inputAmount, setInputAmount] = useAtom(asyncSwapInputAtom)
   const selectedToken = useAtomValue(selectedTokenOrDefaultAtom)
+  const selectedTokenBalance = useAtomValue(selectedTokenBalanceAtom)
+  const isMinting = useAtomValue(isMintingAtom)
+  const slippage = useAtomValue(slippageAtom)
+  const [ongoingTx, setOngoingTx] = useAtom(asyncSwapOngoingTxAtom)
+  const setAsyncSwapRefetch = useSetAtom(asyncSwapRefetchAtom)
+  const setAsyncSwapFetching = useSetAtom(asyncSwapFetchingAtom)
+  const indexDTFPrice = useAtomValue(indexDTFPriceAtom)
+  const inputPrice = (indexDTFPrice || 0) * Number(inputAmount)
   const indexDTFBalance = useAtomValue(indexDTFBalanceAtom)
   const indxDTFParsedBalance = formatEther(indexDTFBalance)
-  const tokens = useAtomValue(tokensAtom)
-  const slippage = useAtomValue(slippageAtom)
-  const forceMint = useAtomValue(forceMintAtom)
-  const setOutputToken = useSetAtom(selectedTokenAtom)
-  const [ongoingTx, setOngoingTx] = useAtom(zapOngoingTxAtom)
-  const setZapRefetch = useSetAtom(zapRefetchAtom)
-  const setZapFetching = useSetAtom(zapFetchingAtom)
-  const setCurrentTab = useSetAtom(currentZapMintTabAtom)
-  const setOpen = useSetAtom(openZapMintModalAtom)
-  const inputPrice = (indexDTFPrice || 0) * Number(inputAmount)
   const onMax = () => setInputAmount(indxDTFParsedBalance)
+  const asyncSwapResponse = useAtomValue(asyncSwapResponseAtom)
+  const collateralAcquired = useAtomValue(collateralAcquiredAtom)
+  const orderSubmitted = !!asyncSwapResponse
+  const amountOut = useAtomValue(mintValueAtom)
+  const amountOutWei = useAtomValue(mintValueWeiAtom)
+  const amountOutValue = useAtomValue(mintValueUSDAtom)
+  const bufferValue = useAtomValue(bufferValueAtom)
 
-  const insufficientBalance = parseEther(inputAmount) > indexDTFBalance
+  const insufficientBalance =
+    parseUnits(inputAmount, selectedToken.decimals) >
+    (selectedTokenBalance?.value || 0n)
 
-  const { data, isLoading, isFetching, refetch, failureReason } =
-    useZapSwapQuery({
-      tokenIn: indexDTF?.id,
-      tokenOut: selectedToken.address,
-      amountIn: parseEther(inputAmount).toString(),
-      slippage: Number(slippage),
-      disabled: insufficientBalance || ongoingTx,
-      forceMint,
-      dtfTicker: indexDTF?.token.symbol || '',
-      type: 'sell',
-    })
+  const { data, isLoading, isFetching, refetch, failureReason } = useAsyncSwap({
+    dtf: indexDTF?.id,
+    amountOut: amountOutWei.toString(),
+    slippage: isFinite(Number(slippage)) ? Number(slippage) : 10000,
+    disabled: insufficientBalance || ongoingTx,
+    dtfTicker: indexDTF?.token.symbol || '',
+    type: 'mint',
+  })
 
   const { loadingAfterRefetch } = useLoadingAfterRefetch(data)
 
-  const priceFrom = data?.result?.amountInValue
-  const priceTo = data?.result?.amountOutValue
-  const valueTo = data?.result?.amountOut
-  const showTxButton = Boolean(
-    data?.status === 'success' &&
-      data?.result &&
-      !insufficientBalance &&
-      !isLoading
-  )
-  const fetchingZapper = isLoading || isFetching
-  const zapperErrorMessage = isFetching
-    ? ''
-    : data?.error || failureReason?.message || ''
-  const dustValue = data?.result?.dustValue || 0
-
-  const changeTab = () => {
-    setCurrentTab((prev) => (prev === 'sell' ? 'buy' : 'sell'))
-    setOutputToken(tokens[0])
-    setInputAmount('')
-  }
+  // const valueTo = data?.result?.amountOut
+  // const showTxButton = Boolean(
+  //   data?.status === 'success' &&
+  //     data?.result &&
+  //     !insufficientBalance &&
+  //     !isLoading
+  // )
+  const awaitingQuote = isLoading || isFetching
 
   useEffect(() => {
-    setZapRefetch({ fn: refetch })
-  }, [refetch, setZapRefetch])
+    setAsyncSwapRefetch({ fn: refetch })
+  }, [refetch, setAsyncSwapRefetch])
 
   useEffect(() => {
-    setZapFetching(fetchingZapper)
-  }, [fetchingZapper, setZapFetching])
+    setAsyncSwapFetching(awaitingQuote)
+  }, [awaitingQuote, setAsyncSwapFetching])
 
   useEffect(() => {
     setOngoingTx(false)
     setInputAmount('')
   }, [])
 
-  const onSuccess = useCallback(() => {
-    setInputAmount('')
-    setOpen(false)
-  }, [])
-
   if (!indexDTF) return null
 
   return (
-    <div className="flex flex-col gap-2 h-full">
+    <div className="flex flex-col h-full">
       <Swap
         from={{
-          price: `$${formatCurrency(priceFrom ?? inputPrice)}`,
+          price: `$${formatCurrency(inputPrice)}`,
           address: indexDTF.id,
           symbol: indexDTF.token.symbol,
           balance: `${formatCurrency(Number(indxDTFParsedBalance))}`,
@@ -116,37 +107,45 @@ const AsyncRedeem = () => {
         to={{
           address: selectedToken.address,
           symbol: selectedToken.symbol,
-          price: priceTo ? (
-            <span>
-              ${formatCurrency(priceTo)}
-              {dustValue > 0.01
-                ? ` + $${formatCurrency(dustValue)} in dust `
-                : ' '}
-              <ZapPriceImpact data={data?.result} />
-            </span>
+          price: amountOutValue ? (
+            <span>${formatCurrency(amountOutValue)}</span>
           ) : undefined,
-          value: formatUnits(BigInt(valueTo || 0), selectedToken.decimals),
-          tokens,
-          onTokenSelect: setOutputToken,
+          value: amountOut.toString(),
         }}
-        onSwap={changeTab}
         loading={isLoading || loadingAfterRefetch}
+        disabled={orderSubmitted}
+        classNameInput={cn(
+          'rounded-3xl border-8 border-card',
+          orderSubmitted && 'border-background bg-background'
+        )}
+        classNameOutput={cn(
+          'rounded-3xl border-8 border-card rounded-b-none pb-2',
+          orderSubmitted && 'border-background bg-background',
+          collateralAcquired && !isMinting && 'border-card bg-card'
+        )}
+        classNameSeparator={cn(
+          'h-10 px-[8px] w-max mx-auto border-secondary border-4 -mt-[18px] -mb-[18px] z-20 text-foreground rounded-full bg-card hover:bg-card',
+          orderSubmitted && 'bg-background'
+        )}
       />
-      {!!data?.result && <ZapDetails data={data.result} />}
-      <SubmitZap
-        data={data?.result}
-        chainId={indexDTF.chainId}
-        buttonLabel={`Sell ${indexDTF.token.symbol}`}
-        inputSymbol={indexDTF.token.symbol}
-        outputSymbol={selectedToken.symbol}
-        inputAmount={formatCurrency(Number(inputAmount))}
-        outputAmount={formatCurrency(Number(formatEther(BigInt(valueTo || 0))))}
-        showTxButton={showTxButton}
-        fetchingZapper={isLoading}
-        insufficientBalance={insufficientBalance}
-        zapperErrorMessage={zapperErrorMessage}
-        onSuccess={onSuccess}
-      />
+      {/* {!!data && <ZapDetails data={data.result} />} */}
+      <div
+        className={cn(
+          'flex flex-col gap-2 rounded-b-3xl p-2 pt-0',
+          isMinting ? 'bg-background' : 'bg-card'
+        )}
+      >
+        {!orderSubmitted && (
+          <SubmitAsyncSwap
+            data={data}
+            loadingQuote={awaitingQuote}
+            dtfAddress={indexDTF.id}
+            amountOut={amountOutWei.toString()}
+            operation="mint"
+          />
+        )}
+        {orderSubmitted && <CollateralAcquisition />}
+      </div>
     </div>
   )
 }

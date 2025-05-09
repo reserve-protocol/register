@@ -13,8 +13,8 @@ export const asyncSwapResponseAtom = atom<AsyncSwapOrderResponse | undefined>(
   undefined
 )
 export const asyncSwapOrderIdAtom = atom<string | undefined>(
-  '5d3b5c96-ea7e-4bb2-bb54-40f082fb318d'
-  // undefined
+  // '5d3b5c96-ea7e-4bb2-bb54-40f082fb318d'
+  undefined
 )
 
 export const collateralAcquiredAtom = atom<boolean>((get) => {
@@ -60,8 +60,8 @@ export const asyncSwapPriceImpactWarningCheckboxAtom = atom(false)
 export const asyncSwapHighPriceImpactAtom = atom<boolean>(false)
 export const isMintingAtom = atom<boolean>(false)
 export const mintTxHashAtom = atom<string | undefined>(
-  '0x7dc75b765f28b2875c9b2ae52c2fe06472baf17ba0486f195b5b69212018582e'
-  // undefined
+  // '0x7dc75b765f28b2875c9b2ae52c2fe06472baf17ba0486f195b5b69212018582e'
+  undefined
 )
 
 export const mintValueAtom = atom<number>((get) => {
