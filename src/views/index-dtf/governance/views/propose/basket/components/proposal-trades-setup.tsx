@@ -10,7 +10,7 @@ import { atom, useAtom, useAtomValue } from 'jotai'
 import {
   priceMapAtom,
   proposedIndexBasketAtom,
-  proposedInxexTradesAtom,
+  proposedIndexTradesAtom,
   tradeVolatilityAtom,
 } from '../atoms'
 import { iTokenAddressAtom } from '@/state/dtf/atoms'
@@ -38,7 +38,7 @@ type OrganizedTrades = Record<string, IProposedTradeGroup>
 const organizedTradesAtom = atom((get) => {
   const dtf = get(iTokenAddressAtom)
   const basket = get(proposedIndexBasketAtom)
-  const trades = get(proposedInxexTradesAtom)
+  const trades = get(proposedIndexTradesAtom)
   const priceMap = get(priceMapAtom)
   const dtfPrice = priceMap[dtf?.toLowerCase() ?? '']
 

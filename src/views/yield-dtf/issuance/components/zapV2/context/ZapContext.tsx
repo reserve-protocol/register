@@ -179,6 +179,18 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
         .filter((token) => operation === 'mint' || token.symbol !== 'ETH'),
     [chainId, balances, operation]
   )
+
+  const insufficientFunds = useMemo(() => {
+    if (!selectedToken) return false
+
+    return (
+      (operation === 'mint' &&
+        Number(amountIn) > Number(selectedToken.balance)) ||
+      (operation === 'redeem' &&
+        Number(amountIn) > Number(rTokenBalance.balance))
+    )
+  }, [operation, amountIn, selectedToken?.balance, rTokenBalance?.balance])
+
   const tokenPrice = useChainlinkPrice(
     chainId,
     selectedToken?.address as Address
@@ -295,7 +307,8 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
         amountIn === '' ||
         Number(amountIn) === 0 ||
         isEnabled.loading ||
-        !isEnabled.value
+        !isEnabled.value ||
+        insufficientFunds
       ) {
         return null
       }
@@ -309,7 +322,16 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
         signer: account as Address,
         trade: !onlyMint,
       })
-    }, [chainId, account, tokenIn, tokenOut, amountIn, slippage, onlyMint]),
+    }, [
+      chainId,
+      account,
+      tokenIn,
+      tokenOut,
+      amountIn,
+      slippage,
+      onlyMint,
+      insufficientFunds,
+    ]),
     500
   )
 
@@ -461,7 +483,7 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
           endpoint: endpoint,
         },
       })
-    } else if (data?.result && data.result.insufficientFunds) {
+    } else if (insufficientFunds) {
       setError({
         title: 'Insufficient funds',
         message:
@@ -500,6 +522,7 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     rToken,
     chainId,
     account,
+    insufficientFunds,
   ])
 
   const _setZapEnabled = useCallback(

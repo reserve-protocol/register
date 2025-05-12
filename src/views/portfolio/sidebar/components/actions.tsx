@@ -265,6 +265,7 @@ export const ModifyLockAction = ({ stToken }: { stToken: StakingToken }) => {
       address: stToken.underlying.address,
       decimals: stToken.underlying.decimals,
     },
+    legacyGovernance: [],
     chainId: stToken.chainId,
   }
 

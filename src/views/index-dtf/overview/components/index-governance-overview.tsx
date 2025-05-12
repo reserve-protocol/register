@@ -1,22 +1,22 @@
 import GovernanceIcon from '@/components/icons/Governance'
 import TokenLogo from '@/components/token-logo'
 import { Box } from '@/components/ui/box'
+import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { Skeleton } from '@/components/ui/skeleton'
 import { chainIdAtom, walletAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
+import { getFolioRoute } from '@/utils'
+import { ROUTES } from '@/utils/constants'
 import { useConnectModal } from '@rainbow-me/rainbowkit'
 import { useAtomValue } from 'jotai'
 import { ArrowRight } from 'lucide-react'
 import { forwardRef } from 'react'
-import { InnerGovernanceInfo } from '../../settings/components/index-settings-governance'
-import Staking from './staking'
 import { Link } from 'react-router-dom'
-import { ROUTES } from '@/utils/constants'
-import { getFolioRoute } from '@/utils'
-import { Button } from '@/components/ui/button'
+import { InnerGovernanceInfo } from '../../settings/components/index-settings-governance'
 import { useStakingVaultAPY } from '../hooks/use-staking-vault-apy'
+import Staking from './staking'
 
 const Container = ({ children }: { children: React.ReactNode }) => {
   const dtf = useAtomValue(indexDTFAtom)
@@ -67,7 +67,7 @@ const OpenLockDrawerButton = forwardRef<
       ref={ref}
       className="flex items-center gap-2 rounded-xl hover:bg-primary/10 p-4 -m-4 mt-2"
       role="button"
-      onClick={() => onClick?.()}
+      onClick={onClick}
     >
       <TokenLogo
         size="xl"
@@ -147,7 +147,7 @@ const IndexGovernanceOverview = () => {
         )}
       </div>
       <Separator className="my-6" />
-      <InnerGovernanceInfo basket className="[&>*]:px-0 px-2 -mt-3" />
+      <InnerGovernanceInfo kind="trading" className="[&>*]:px-0 px-2 -mt-3" />
       <ViewNonBasketGovernanceButton />
     </Container>
   )

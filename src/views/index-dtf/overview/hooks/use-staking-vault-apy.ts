@@ -1,15 +1,15 @@
 import dtfIndexStakingVault from '@/abis/dtf-index-staking-vault'
 import { useAssetPrice } from '@/hooks/useAssetPrices'
-import { useDTFPrices } from '@/hooks/usePrices'
+import { usePrices } from '@/hooks/usePrices'
 import { wagmiConfig } from '@/state/chain'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { AvailableChain, ChainId } from '@/utils/chains'
 import { getAllRewardTokensAbi } from '@/views/portfolio/rewards-updater'
 import { useAtomValue } from 'jotai'
 import { useEffect, useMemo, useState } from 'react'
-import { erc20Abi } from 'viem'
+import { Address, erc20Abi } from 'viem'
 import { useBlockNumber, useReadContract, useReadContracts } from 'wagmi'
-import { readContract, readContracts } from 'wagmi/actions'
+import { readContract } from 'wagmi/actions'
 
 const PERIOD = 7n // 7 days
 const YEAR = 365n
@@ -110,16 +110,16 @@ export const useStakingVaultAPY = () => {
       Array.from({ length: Number(PERIOD) }, (_, i) =>
         fetchSupply(currentBlockNumber! - BLOCKS_PER_DAY[chainId!] * BigInt(i))
       )
-    ).then((supplies) => {
-      setSupplies(supplies.flat())
-    })
+    )
+      .then((supplies) => {
+        setSupplies(supplies.flat())
+      })
+      .catch((e) => {
+        console.error('Error reading rewards')
+      })
   }, [rewards, stToken, chainId, currentBlockNumber])
 
-  const { data: rewardsPrices } = useDTFPrices(
-    rewards?.map((reward) => reward) || [],
-    chainId
-  )
-
+  const rewardsPrices = usePrices((rewards as Address[]) ?? [], chainId)
   const { data: stTokenPrice } = useAssetPrice(underlying, chainId)
 
   const rewardsData: Record<string, RewardData> = useMemo(() => {
@@ -158,7 +158,7 @@ export const useStakingVaultAPY = () => {
     )
   }, [currentRewardTrackerData, pastRewardTrackerData, rewards])
 
-  const apy = useMemo(() => {
+  return useMemo(() => {
     if (!rewardsData || !supplies.length || !stTokenPrice) return 0
 
     const stTokenPriceValue = stTokenPrice[0]?.price
@@ -174,16 +174,13 @@ export const useStakingVaultAPY = () => {
 
     const revenueOfPeriod = Object.entries(rewardsData)
       .map(([reward, { currentRewardTracker, pastRewardTracker }]) => {
-        const price =
-          rewardsPrices?.find(
-            (token) => token.address.toLowerCase() === reward.toLowerCase()
-          )?.price || 0
+        const rewardPrice = rewardsPrices[reward as Address] || 0
 
         const dtfRevenue =
           currentRewardTracker.balanceAccounted -
           pastRewardTracker.balanceAccounted
 
-        const revenue = Number(dtfRevenue) * price
+        const revenue = Number(dtfRevenue) * rewardPrice
         return revenue
       })
       .reduce((acc, revenue) => acc + revenue, 0)
@@ -194,6 +191,4 @@ export const useStakingVaultAPY = () => {
 
     return apy
   }, [rewardsData, rewardsPrices, supplies, stTokenPrice])
-
-  return apy
 }

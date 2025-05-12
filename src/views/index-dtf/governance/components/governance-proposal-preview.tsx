@@ -5,6 +5,7 @@ import { useAtomValue } from 'jotai'
 import { Address, decodeFunctionData, getAbiItem } from 'viem'
 
 import dtfIndexAbi from '@/abis/dtf-index-abi'
+import dtfAdminAbi from '@/abis/dtf-admin-abi'
 import dtfIndexGovernance from '@/abis/dtf-index-governance'
 import dtfIndexStakingVault from '@/abis/dtf-index-staking-vault'
 import { Button } from '@/components/ui/button'
@@ -26,6 +27,11 @@ import { Abi, Hex } from 'viem'
 import BasketProposalPreview from '../views/propose/basket/components/proposal-basket-preview'
 import RawCallPreview from './proposal-preview/raw-call-preview'
 import TokenRewardPreview from './proposal-preview/token-reward-preview'
+import {
+  spellAbi as governanceSpell_31_03_2025Abi,
+  spellAddress as governanceSpell_31_03_2025Address,
+} from '../views/propose/components/propose-governance-spell-31-03-2025'
+import Timelock from '@/abis/Timelock'
 
 const dtfAbiMapppingAtom = atom((get) => {
   const dtf = get(indexDTFAtom)
@@ -34,14 +40,17 @@ const dtfAbiMapppingAtom = atom((get) => {
 
   const abiMapping: Record<string, Abi> = {
     [dtf.id.toLowerCase()]: dtfIndexAbi,
+    [dtf.proxyAdmin.toLowerCase()]: dtfAdminAbi,
   }
 
   if (dtf.ownerGovernance) {
     abiMapping[dtf.ownerGovernance.id.toLowerCase()] = dtfIndexGovernance
+    abiMapping[dtf.ownerGovernance.timelock.id.toLowerCase()] = Timelock
   }
 
   if (dtf.tradingGovernance) {
     abiMapping[dtf.tradingGovernance.id.toLowerCase()] = dtfIndexGovernance
+    abiMapping[dtf.tradingGovernance.timelock.id.toLowerCase()] = Timelock
   }
 
   if (dtf.stToken) {
@@ -49,7 +58,13 @@ const dtfAbiMapppingAtom = atom((get) => {
 
     if (dtf.stToken.governance) {
       abiMapping[dtf.stToken.governance.id.toLowerCase()] = dtfIndexGovernance
+      abiMapping[dtf.stToken.governance.timelock.id.toLowerCase()] = Timelock
     }
+  }
+
+  if (governanceSpell_31_03_2025Address[dtf.chainId]) {
+    abiMapping[governanceSpell_31_03_2025Address[dtf.chainId].toLowerCase()] =
+      governanceSpell_31_03_2025Abi
   }
 
   return abiMapping
@@ -62,14 +77,19 @@ const dtfContractAliasAtom = atom((get) => {
 
   const aliasMapping: Record<string, string> = {
     [dtf.id.toLowerCase()]: 'Folio',
+    [dtf.proxyAdmin.toLowerCase()]: 'ProxyAdmin',
   }
 
   if (dtf.ownerGovernance) {
     aliasMapping[dtf.ownerGovernance.id.toLowerCase()] = 'Owner Governance'
+    aliasMapping[dtf.ownerGovernance.timelock.id.toLowerCase()] =
+      'Owner Governance Timelock'
   }
 
   if (dtf.tradingGovernance) {
     aliasMapping[dtf.tradingGovernance.id.toLowerCase()] = 'Trading Governance'
+    aliasMapping[dtf.tradingGovernance.timelock.id.toLowerCase()] =
+      'Trading Governance Timelock'
   }
 
   if (dtf.stToken) {
@@ -77,7 +97,14 @@ const dtfContractAliasAtom = atom((get) => {
 
     if (dtf.stToken.governance) {
       aliasMapping[dtf.stToken.governance.id.toLowerCase()] = 'Lock Governance'
+      aliasMapping[dtf.stToken.governance.timelock.id.toLowerCase()] =
+        'Lock Governance Timelock'
     }
+  }
+
+  if (governanceSpell_31_03_2025Address[dtf.chainId]) {
+    aliasMapping[governanceSpell_31_03_2025Address[dtf.chainId].toLowerCase()] =
+      'GovernanceSpell_31_03_2025'
   }
 
   return aliasMapping
@@ -157,7 +184,7 @@ const BasketChanges = ({ calldatas }: { calldatas: DecodedCalldata[] }) => {
   const shares = useAtomValue(indexDTFBasketSharesAtom)
   const prices = useAtomValue(indexDTFBasketPricesAtom)
 
-  if (!dtf) return <Skeleton className="h-80" />
+  if (!dtf || !basket || !prices) return <Skeleton className="h-80" />
 
   return (
     <BasketProposalPreview

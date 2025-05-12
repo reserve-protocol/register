@@ -1,7 +1,5 @@
-import TransactionSidebar from 'components/transactions/manager/TransactionSidebar'
 import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
 import { useEffect } from 'react'
-import { ErrorBoundary } from 'react-error-boundary'
 import {
   BrowserRouter as Router,
   useLocation,
@@ -16,6 +14,7 @@ import Layout from './components/layout'
 import { Toaster } from './components/ui/sonner'
 import LanguageProvider from './i18n'
 import { theme } from './theme'
+import * as Sentry from '@sentry/react'
 
 mixpanel.init(import.meta.env.VITE_MIXPANEL_KEY || 'mixpanel_key', {
   track_pageview: true,
@@ -95,7 +94,11 @@ function FallbackUI({
  * @returns {JSX.Element}
  */
 const App = () => (
-  <ErrorBoundary FallbackComponent={FallbackUI} onError={handleError}>
+  <Sentry.ErrorBoundary
+    fallback={({ error, resetError }) => (
+      <FallbackUI error={error as Error} resetErrorBoundary={resetError} />
+    )}
+  >
     <Router>
       <Redirects />
       <ScrollToTop />
@@ -111,7 +114,7 @@ const App = () => (
         </LanguageProvider>
       </ThemeUIProvider>
     </Router>
-  </ErrorBoundary>
+  </Sentry.ErrorBoundary>
 )
 
 export default App

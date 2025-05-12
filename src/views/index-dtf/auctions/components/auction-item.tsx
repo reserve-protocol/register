@@ -17,8 +17,8 @@ import {
 } from '@/state/dtf/atoms'
 import { formatPercentage, getCurrentTime } from '@/utils'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
-import { ArrowRight, Check, LoaderCircle, X } from 'lucide-react'
-import { useEffect } from 'react'
+import { ArrowRight, Check, Info, LoaderCircle, X } from 'lucide-react'
+import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import { Address, erc20Abi, formatUnits, parseEther, parseUnits } from 'viem'
 import {
@@ -41,6 +41,13 @@ import {
   VOLATILITY_OPTIONS,
   VOLATILITY_VALUES,
 } from '../atoms'
+import { Switch } from '@/components/ui/switch'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
 
 const TradeCompletedStatus = ({ className }: { className?: string }) => {
   return (
@@ -129,24 +136,27 @@ const currentProposalAuctionsAtom = atom<Auction[] | undefined>((get) => {
 
   if (!proposal || !proposals) return undefined
 
-  return proposals[proposal].trades.map((trade) => ({
-    sell: trade.sell.address,
-    buy: trade.buy.address,
-    sellLimit: {
-      spot: trade.sellLimitSpot,
-      low: trade.sellLimitLow,
-      high: trade.sellLimitHigh,
-    },
-    buyLimit: {
-      spot: trade.buyLimitSpot,
-      low: trade.buyLimitLow,
-      high: trade.buyLimitHigh,
-    },
-    prices: {
-      start: trade.startPrice,
-      end: trade.endPrice,
-    },
-  }))
+  return (
+    proposals[proposal]?.trades.map((trade: AssetTrade) => ({
+      sell: trade.sell.address,
+      buy: trade.buy.address,
+      sellLimit: {
+        spot: trade.sellLimitSpot,
+        low: trade.sellLimitLow,
+        high: trade.sellLimitHigh,
+      },
+      buyLimit: {
+        spot: trade.buyLimitSpot,
+        low: trade.buyLimitLow,
+        high: trade.buyLimitHigh,
+      },
+      prices: {
+        start: trade.startPrice,
+        end: trade.endPrice,
+      },
+      availableRuns: trade.availableRuns,
+    })) ?? undefined
+  )
 })
 
 const TradeButton = ({
@@ -195,6 +205,7 @@ const TradeButton = ({
   })
 
   const isLoading = isPending || (!!data && !isSuccess && !isError)
+  const [ejectFully, setEjectFully] = useState(false)
 
   const canLaunch =
     trade.state === TRADE_STATE.AVAILABLE ||
@@ -337,7 +348,8 @@ const TradeButton = ({
           targetBasket,
           prices,
           priceError,
-          proposedBasket.price
+          proposedBasket.price,
+          ejectFully
         )
 
         writeContract({
@@ -351,18 +363,18 @@ const TradeButton = ({
         console.error('error running auction', e)
       }
     } else {
-      if (version === '2.0.0') {
+      if (version === '1.0.0') {
         writeContract({
           address: dtfAddress as Address,
-          abi: dtfIndexAbiV2,
-          functionName: 'openAuctionUnrestricted',
+          abi: dtfIndexAbi,
+          functionName: 'openAuctionPermissionlessly',
           args: [BigInt(tradeId)],
         })
       } else {
         writeContract({
           address: dtfAddress as Address,
-          abi: dtfIndexAbi,
-          functionName: 'openAuctionPermissionlessly',
+          abi: dtfIndexAbiV2,
+          functionName: 'openAuctionUnrestricted',
           args: [BigInt(tradeId)],
         })
       }
@@ -395,21 +407,56 @@ const TradeButton = ({
     )
   }
 
+  const ejectFullyAvailable = Boolean(
+    trade.currentSellShare &&
+      trade.deltaSellShare &&
+      trade.currentSellShare + trade.deltaSellShare === 0
+  )
+
   return (
-    <Button
-      className={cn('sm:py-6 gap-1', className)}
-      disabled={isLoading || !canLaunch}
-      onClick={handleLaunch}
-    >
-      {isLoading ? (
-        <>
-          <LoaderCircle size={16} className="animate-spin" />
-          <span>Launching...</span>
-        </>
-      ) : (
-        'Launch'
+    <div className={cn('flex items-center gap-2', className)}>
+      {ejectFullyAvailable && (
+        <div className="flex items-center">
+          <label>Eject Dust</label>
+          <TooltipProvider>
+            <Tooltip delayDuration={0}>
+              <TooltipTrigger>
+                <Info size={16} className="ml-1 inline text-muted-foreground" />
+              </TooltipTrigger>
+              <TooltipContent side="top" className="max-w-xs">
+                The Reserve Index Protocol aims to make precise trades on
+                quantities of tokens as a function of historical prices. If
+                prices move in a favorable direction over the course of an
+                auction, this can result in dust being left behind. Turn on this
+                toggle to force a full ejection of the sell token regardless of
+                price movement.
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <Switch
+            className="ml-2 data-[state=checked]:bg-black"
+            variant="small"
+            checked={ejectFully}
+            onCheckedChange={setEjectFully}
+            disabled={isLoading || !canLaunch}
+          />
+        </div>
       )}
-    </Button>
+      <Button
+        className={cn('sm:py-6 gap-1', className)}
+        disabled={isLoading || !canLaunch}
+        onClick={handleLaunch}
+      >
+        {isLoading ? (
+          <>
+            <LoaderCircle size={16} className="animate-spin" />
+            <span>Launching...</span>
+          </>
+        ) : (
+          'Launch'
+        )}
+      </Button>
+    </div>
   )
 }
 
@@ -480,6 +527,11 @@ const TradePreview = ({ trade }: { trade: AssetTrade }) => {
   const expectedBasket = useAtomValue(expectedBasketAtom)?.basket
   const isCompleted = trade.state === TRADE_STATE.COMPLETED
 
+  const delta = Math.min(
+    Math.abs(expectedBasket?.[trade.sell.address]?.delta || 0),
+    Math.abs(Math.max(expectedBasket?.[trade.buy.address]?.delta || 0, 0))
+  )
+
   return (
     <div className="grid grid-cols-[1fr_auto_1fr] gap-2 items-center w-full sm:w-80 mr-auto">
       <div className="flex flex-col gap-1">
@@ -501,7 +553,7 @@ const TradePreview = ({ trade }: { trade: AssetTrade }) => {
               className="font-bold text-2xl"
             />
           ) : (
-            <Share share={expectedBasket?.[trade.sell.address]?.delta} />
+            <Share share={-delta} />
           )}
         </div>
         {!isCompleted && (
@@ -513,7 +565,7 @@ const TradePreview = ({ trade }: { trade: AssetTrade }) => {
             }
             to={
               expectedBasket?.[trade.sell.address]?.targetShares
-                ? Number(expectedBasket?.[trade.sell.address]?.targetShares)
+                ? Number(expectedBasket?.[trade.sell.address]?.currentShares) - delta
                 : undefined
             }
           />
@@ -535,14 +587,7 @@ const TradePreview = ({ trade }: { trade: AssetTrade }) => {
               className="font-bold text-2xl"
             />
           ) : (
-            <Share
-              share={
-                expectedBasket?.[trade.buy.address]?.delta !== undefined
-                  ? Math.max(expectedBasket[trade.buy.address].delta, 0)
-                  : undefined
-              }
-              prefix="+"
-            />
+            <Share share={delta} prefix="+" />
           )}
 
           <TokenLogo
@@ -561,7 +606,7 @@ const TradePreview = ({ trade }: { trade: AssetTrade }) => {
             }
             to={
               expectedBasket?.[trade.buy.address]?.targetShares
-                ? Number(expectedBasket?.[trade.buy.address]?.targetShares)
+                ? Number(expectedBasket?.[trade.buy.address]?.currentShares) + delta
                 : undefined
             }
           />

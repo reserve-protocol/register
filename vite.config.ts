@@ -1,4 +1,5 @@
-import { defineConfig } from 'vitest/config'
+import { sentryVitePlugin } from '@sentry/vite-plugin'
+import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import viteTsconfigPaths from 'vite-tsconfig-paths'
 import path from 'path'
@@ -52,9 +53,14 @@ export default defineConfig({
         })
       },
     },
+    sentryVitePlugin({
+      org: 'abc-labs-0g',
+      project: 'register',
+    }),
   ],
   build: {
     outDir: 'build',
+    sourcemap: true,
   },
   resolve: {
     alias: {

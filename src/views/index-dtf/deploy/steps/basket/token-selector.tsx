@@ -42,6 +42,8 @@ import {
   REGISTER_FEEDBACK,
   RESERVE_API,
 } from '@/utils/constants'
+import { ChainId } from '@/utils/chains'
+import { TEMP_TOKENS } from './temp-tokens'
 
 interface TokenButtonProps {
   variant: 'primary' | 'secondary'
@@ -287,9 +289,13 @@ const TokenList = ({ showSelected = false }: TokenListProps) => {
         if (!response.ok) {
           throw new Error('Failed to fetch token list')
         }
-        const data = await response.json()
+        const data: Token[] = await response.json()
 
-        return data as Token[]
+        if (chainId === ChainId.Base) {
+          data.push(...TEMP_TOKENS)
+        }
+
+        return data
       } catch (error) {
         console.error('Error fetching token list:', error)
         throw error

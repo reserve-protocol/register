@@ -1,6 +1,6 @@
 import dtfIndexAbi from '@/abis/dtf-index-abi'
 import dtfIndexAbiV2 from '@/abis/dtf-index-abi-v2'
-import { getAuctions } from '@/lib/index-rebalance/get-auctionts'
+import { getAuctions } from '@/lib/index-rebalance/get-auctions'
 import { getCurrentBasket } from '@/lib/index-rebalance/utils'
 import {
   indexDTFAtom,
@@ -173,7 +173,7 @@ export const isProposedBasketValidAtom = atom((get) => {
 })
 
 // Get proposed trades from algo if the target basket is valid
-export const proposedInxexTradesAtom = atom((get) => {
+export const proposedIndexTradesAtom = atom((get) => {
   return getProposedTrades(get, true)
 })
 
@@ -219,7 +219,7 @@ export const ttlATom = atom((get) => {
 })
 
 export const basketProposalCalldatasAtom = atom<Hex[] | undefined>((get) => {
-  const deferredTrades = get(proposedInxexTradesAtom)
+  const deferredTrades = get(proposedIndexTradesAtom)
   const tradeRangeOption = get(tradeRangeOptionAtom)
   const isConfirmed = get(isProposalConfirmedAtom)
   const version = get(indexDTFVersionAtom)
@@ -252,12 +252,12 @@ export const basketProposalCalldatasAtom = atom<Hex[] | undefined>((get) => {
       ttl,
     ]
 
-    if (version === '2.0.0') {
+    if (version !== '1.0.0') {
       args.push(10n)
     }
 
     return encodeFunctionData({
-      abi: version === '2.0.0' ? dtfIndexAbiV2 : dtfIndexAbi,
+      abi: version === '1.0.0' ? dtfIndexAbi : dtfIndexAbiV2,
       functionName: 'approveAuction',
       args: args as any,
     })
@@ -317,7 +317,7 @@ function getProposedTrades(get: Getter, deferred = false) {
       targetBasketStr.push(proposedShares[asset])
     }
 
-    prices.push(priceMap[asset])
+    prices.push(priceMap[asset] ?? 0)
 
     // TODO: assume trades always have the same order...
     error.push(deferred ? 1 : VOLATILITY_VALUES[volatility[index] || 0] || 0.1)
@@ -345,4 +345,4 @@ export const isDeferAvailableAtom = atom((get) => {
   return dtf.auctionDelay > 10
 })
 
-export const advancedControlsAtom = atom(false);
+export const advancedControlsAtom = atom(false)

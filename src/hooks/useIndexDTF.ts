@@ -33,6 +33,7 @@ type DTFQueryResponse = {
         executionDelay: number
       }
     }
+    legacyAdmins: Address[]
     tradingGovernance?: {
       id: Address
       votingDelay: number
@@ -45,6 +46,7 @@ type DTFQueryResponse = {
         executionDelay: number
       }
     }
+    legacyAuctionApprovers: Address[]
     token: {
       id: Address
       name: string
@@ -78,6 +80,7 @@ type DTFQueryResponse = {
           executionDelay: number
         }
       }
+      legacyGovernance: Address[]
       rewards: {
         rewardToken: {
           address: Address
@@ -128,6 +131,7 @@ const dtfQuery = gql`
           executionDelay
         }
       }
+      legacyAdmins
       tradingGovernance {
         id
         votingDelay
@@ -140,6 +144,7 @@ const dtfQuery = gql`
           executionDelay
         }
       }
+      legacyAuctionApprovers
       token {
         id
         name
@@ -173,6 +178,7 @@ const dtfQuery = gql`
             executionDelay
           }
         }
+        legacyGovernance
         rewards(where: { active: true }) {
           rewardToken {
             address
