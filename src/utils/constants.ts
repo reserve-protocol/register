@@ -11,8 +11,14 @@ import rtokens from '@reserve-protocol/rtokens'
 import RSV from './rsv'
 import { Address } from 'viem'
 
-export const VERSION = '3.0.0'
+const isStaging =
+  window.location.hostname.includes('staging') &&
+  import.meta.env.VITE_STAGING_API
 
+export const RESERVE_API = isStaging
+  ? import.meta.env.VITE_STAGING_API
+  : 'https://api.reserve.org/'
+export const VERSION = '3.0.0'
 export const DISCORD_INVITE = 'https://discord.gg/reserveprotocol'
 export const PROTOCOL_DOCS = 'https://reserve.org/protocol/'
 export const INDEX_PROTOCOL_DOCS = 'https://reserve.org/protocol/index_dtfs/'
@@ -22,7 +28,6 @@ export const RESERVE_FORUM = 'https://forum.reserve.org/'
 export const REGISTER_BUGS =
   'https://reserve.canny.io/defi-surfaces-bug-reporting'
 export const RESERVE_STORAGE = 'https://storage.reserve.org/'
-export const RESERVE_API = 'https://api.reserve.org/'
 export const DUNE_DASHBOARD =
   'https://dune.com/reserve-protocol/reserve-protocol-overview'
 export const REPOSITORY_URL = 'https://github.com/reserve-protocol/register'
