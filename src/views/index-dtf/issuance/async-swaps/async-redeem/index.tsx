@@ -1,4 +1,8 @@
-import Swap from '@/components/ui/swap'
+import Swap, {
+  ArrowSeparator,
+  TokenInputBox,
+  TokenOutputBox,
+} from '@/components/ui/swap'
 import useAsyncSwap from '@/hooks/useAsyncSwap'
 import { cn } from '@/lib/utils'
 import { chainIdAtom } from '@/state/atoms'
@@ -34,6 +38,42 @@ import CollateralAcquisition from '../collateral-acquisition'
 import SubmitRedeem from './submit-redeem'
 import TokenLogo from '@/components/token-logo'
 import StackTokenLogo from '@/components/token-logo/StackTokenLogo'
+
+const CustomInputBox = () => {
+  const indexDTF = useAtomValue(indexDTFAtom)
+  const inputAmount = useAtomValue(asyncSwapInputAtom)
+  const basket = useAtomValue(indexDTFBasketAtom)
+
+  if (!indexDTF) return null
+
+  return (
+    <div className="flex flex-col gap-4 p-4 rounded-3xl border-8 border-background bg-background">
+      <TokenLogo
+        address={indexDTF.id}
+        symbol={indexDTF.token.symbol}
+        size="xl"
+      />
+      <div className="flex flex-col gap-1">
+        <span className="text-primary">You Redeemed:</span>
+        <span className="text-3xl">
+          <span className="text-primary font-semibold">
+            {inputAmount || 10000}{' '}
+          </span>
+          <span>VTF</span>
+        </span>
+        <span>for {basket?.length} underlying collateral tokens</span>
+      </div>
+      <div className="h-[1px] w-full bg-border" />
+      <div className="flex justify-start">
+        <StackTokenLogo
+          tokens={(basket || []).slice(0, 20)}
+          size={24}
+          reverseStack
+        />
+      </div>
+    </div>
+  )
+}
 
 const AsyncRedeem = () => {
   const chainId = useAtomValue(chainIdAtom)
@@ -100,73 +140,56 @@ const AsyncRedeem = () => {
 
   if (!indexDTF) return null
 
+  const disableInputBox = Object.keys(redeemAssets).length > 0
+
   return (
     <div className="flex flex-col h-full">
-      <Swap
-        from={{
-          title: 'You Redeem:',
-          price: `$${formatCurrency(inputPrice)}`,
-          address: indexDTF.id,
-          symbol: indexDTF.token.symbol,
-          balance: `${formatCurrency(Number(indxDTFParsedBalance))}`,
-          value: inputAmount,
-          onChange: setInputAmount,
-          onMax,
-        }}
-        customInput={
-          Object.keys(redeemAssets).length > 0 ? (
-            <div className="flex flex-col gap-4 p-4 rounded-3xl border-8 border-background bg-background">
-              <TokenLogo
-                address={indexDTF.id}
-                symbol={indexDTF.token.symbol}
-                size="xl"
-              />
-              <div className="flex flex-col gap-1">
-                <span className="text-primary">You Redeemed:</span>
-                <span className="text-3xl">
-                  <span className="text-primary font-semibold">
-                    {inputAmount || 10000}{' '}
-                  </span>
-                  <span>VTF</span>
-                </span>
-                <span>for {basket?.length} underlying collateral tokens</span>
-              </div>
-              <div className="h-[1px] w-full bg-border" />
-              <div className="flex justify-start">
-                <StackTokenLogo
-                  tokens={(basket || []).slice(0, 20)}
-                  size={24}
-                  reverseStack
-                />
-              </div>
-            </div>
-          ) : undefined
-        }
-        to={{
-          title: 'Estimated Out:',
-          address: selectedToken.address,
-          symbol: selectedToken.symbol,
-          price: amountOutValue ? (
-            <span>${formatCurrency(amountOutValue)}</span>
-          ) : undefined,
-          value: amountOut.toString(),
-        }}
-        loading={isLoading || loadingAfterRefetch}
-        disabled={orderSubmitted}
-        classNameInput={cn(
-          'rounded-3xl border-8 border-card',
-          orderSubmitted && 'border-background bg-background'
+      <div className="flex flex-col">
+        {disableInputBox ? (
+          <CustomInputBox />
+        ) : (
+          <TokenInputBox
+            from={{
+              title: 'You Redeem:',
+              price: `$${formatCurrency(inputPrice)}`,
+              address: indexDTF.id,
+              symbol: indexDTF.token.symbol,
+              balance: `${formatCurrency(Number(indxDTFParsedBalance))}`,
+              value: inputAmount,
+              onChange: setInputAmount,
+              onMax,
+              disabled: orderSubmitted,
+              className: cn(
+                'rounded-3xl border-8 border-card',
+                orderSubmitted && 'border-background bg-background'
+              ),
+            }}
+          />
         )}
-        classNameOutput={cn(
-          'rounded-3xl border-8 border-card rounded-b-none pb-2',
-          orderSubmitted && 'border-background bg-background',
-          collateralAcquired && !isMinting && 'border-card bg-card'
-        )}
-        classNameSeparator={cn(
-          'h-10 px-[8px] w-max mx-auto border-secondary border-4 -mt-[18px] -mb-[18px] z-20 text-foreground rounded-full bg-card hover:bg-card',
-          orderSubmitted && 'bg-background'
-        )}
-      />
+        <ArrowSeparator
+          className={cn(
+            'h-10 px-[8px] w-max mx-auto border-secondary border-4 -mt-[18px] -mb-[18px] z-20 text-foreground rounded-full bg-card hover:bg-card',
+            orderSubmitted && 'bg-background'
+          )}
+        />
+        <TokenOutputBox
+          to={{
+            title: 'Estimated Out:',
+            address: selectedToken.address,
+            symbol: selectedToken.symbol,
+            price: amountOutValue ? (
+              <span>${formatCurrency(amountOutValue)}</span>
+            ) : undefined,
+            value: amountOut.toString(),
+            className: cn(
+              'rounded-3xl border-8 border-card rounded-b-none pb-2',
+              orderSubmitted && 'border-background bg-background',
+              collateralAcquired && !isMinting && 'border-card bg-card'
+            ),
+          }}
+          loading={isLoading || loadingAfterRefetch}
+        />
+      </div>
       {/* {!!data && <ZapDetails data={data.result} />} */}
       <div
         className={cn(

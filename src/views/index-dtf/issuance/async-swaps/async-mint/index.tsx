@@ -1,4 +1,8 @@
-import Swap from '@/components/ui/swap'
+import Swap, {
+  ArrowSeparator,
+  TokenInputBox,
+  TokenOutputBox,
+} from '@/components/ui/swap'
 import useAsyncSwap from '@/hooks/useAsyncSwap'
 import { useChainlinkPrice } from '@/hooks/useChainlinkPrice'
 import { cn } from '@/lib/utils'
@@ -93,7 +97,7 @@ const AsyncMint = () => {
 
   return (
     <div className="flex flex-col h-full">
-      <Swap
+      <TokenInputBox
         from={{
           price: `$${formatCurrency(priceFrom ?? inputPrice)}`,
           address: selectedToken.address,
@@ -102,7 +106,20 @@ const AsyncMint = () => {
           value: inputAmount,
           onChange: setInputAmount,
           onMax,
+          disabled: orderSubmitted,
+          className: cn(
+            'rounded-3xl border-8 border-card',
+            orderSubmitted && 'border-background bg-background'
+          ),
         }}
+      />
+      <ArrowSeparator
+        className={cn(
+          'h-10 px-[8px] w-max mx-auto border-secondary border-4 -mt-[18px] -mb-[18px] z-20 text-foreground rounded-full bg-card hover:bg-card',
+          orderSubmitted && 'bg-background'
+        )}
+      />
+      <TokenOutputBox
         to={{
           address: indexDTF.id,
           symbol: indexDTF.token.symbol,
@@ -110,22 +127,13 @@ const AsyncMint = () => {
             <span>${formatCurrency(amountOutValue)}</span>
           ) : undefined,
           value: amountOut.toString(),
+          className: cn(
+            'rounded-3xl border-8 border-card rounded-b-none pb-2',
+            orderSubmitted && 'border-background bg-background',
+            collateralAcquired && !isMinting && 'border-card bg-card'
+          ),
         }}
         loading={isLoading || loadingAfterRefetch}
-        disabled={orderSubmitted}
-        classNameInput={cn(
-          'rounded-3xl border-8 border-card',
-          orderSubmitted && 'border-background bg-background'
-        )}
-        classNameOutput={cn(
-          'rounded-3xl border-8 border-card rounded-b-none pb-2',
-          orderSubmitted && 'border-background bg-background',
-          collateralAcquired && !isMinting && 'border-card bg-card'
-        )}
-        classNameSeparator={cn(
-          'h-10 px-[8px] w-max mx-auto border-secondary border-4 -mt-[18px] -mb-[18px] z-20 text-foreground rounded-full bg-card hover:bg-card',
-          orderSubmitted && 'bg-background'
-        )}
       />
       {/* {!!data && <ZapDetails data={data.result} />} */}
       <div

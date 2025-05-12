@@ -7,8 +7,10 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Input, NumericalInput } from '@/components/ui/input'
+import useMediaQuery from '@/hooks/useMediaQuery'
 import { cn } from '@/lib/utils'
 import { chainIdAtom } from '@/state/atoms'
+import { indexDTFAtom, indexDTFBrandAtom } from '@/state/dtf/atoms'
 import { Token } from '@/types'
 import { formatCurrency } from '@/utils'
 import { useAtomValue } from 'jotai'
@@ -27,18 +29,16 @@ import React, {
   useState,
 } from 'react'
 import GaugeIcon from '../icons/GaugeIcon'
-import { ToggleGroup, ToggleGroupItem } from './toggle-group'
-import { Skeleton } from './skeleton'
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from './accordion'
-import { Separator } from './separator'
 import Help from './help'
-import { indexDTFAtom, indexDTFBrandAtom } from '@/state/dtf/atoms'
-import useMediaQuery from '@/hooks/useMediaQuery'
+import { Separator } from './separator'
+import { Skeleton } from './skeleton'
+import { ToggleGroup, ToggleGroupItem } from './toggle-group'
 
 type TokenWithBalance = Token & { balance?: string }
 
@@ -53,6 +53,8 @@ type SwapItem = {
   onChange?: (value: string) => void
   tokens?: TokenWithBalance[]
   onTokenSelect?: (token: Token) => void
+  disabled?: boolean
+  className?: string
 }
 
 type SwapProps = {
@@ -60,12 +62,8 @@ type SwapProps = {
   to: SwapItem
   onSwap?: () => void
   loading?: boolean
-  classNameInput?: string
-  classNameOutput?: string
-  classNameSeparator?: string
-  disabled?: boolean
-  customInput?: ReactNode
 }
+
 const TokenInput = ({
   value = '',
   onChange = () => {},
@@ -214,25 +212,18 @@ const MaxButton = ({
   </div>
 )
 
-const TokenInputBox = ({
-  from,
-  classNameInput,
-  disabled,
-}: Pick<SwapProps, 'from'> & {
-  classNameInput?: string
-  disabled?: boolean
-}) => {
+export const TokenInputBox = ({ from }: Pick<SwapProps, 'from'>) => {
   return (
     <div
       className={cn(
         'flex flex-col gap-1 p-4 bg-muted rounded-xl',
-        classNameInput
+        from.className
       )}
     >
       <div>
         <h3 className="text-primary">{from?.title || 'You use:'}</h3>
         <div className="flex gap-1">
-          <TokenInput {...from} disabled={disabled} />
+          <TokenInput {...from} disabled={from.disabled} />
           <TokenSelector {...from} />
         </div>
       </div>
@@ -242,7 +233,7 @@ const TokenInputBox = ({
           <MaxButton
             balance={from.balance}
             onMax={from.onMax}
-            disabled={disabled}
+            disabled={from.disabled}
           />
         </div>
       </div>
@@ -308,13 +299,10 @@ const SlowLoading = ({ enabled }: { enabled: boolean }) => {
   )
 }
 
-const TokenOutputBox = ({
+export const TokenOutputBox = ({
   to,
   loading,
-  classNameOutput,
-}: Pick<SwapProps, 'to' | 'loading'> & {
-  classNameOutput?: string
-}) => {
+}: Pick<SwapProps, 'to' | 'loading'>) => {
   const [slowLoading, setSlowLoading] = useState(false)
 
   useEffect(() => {
@@ -346,7 +334,7 @@ const TokenOutputBox = ({
     <div
       className={cn(
         'relative flex flex-col gap-1 p-4 bg-card rounded-xl border-border border',
-        classNameOutput
+        to.className
       )}
     >
       <SlowLoading enabled={slowLoading} />
@@ -378,16 +366,16 @@ const TokenOutputBox = ({
   )
 }
 
-const ArrowSeparator = ({
+export const ArrowSeparator = ({
   onSwap,
-  classNameSeparator,
-}: Pick<SwapProps, 'onSwap'> & { classNameSeparator?: string }) => {
+  className,
+}: Pick<SwapProps, 'onSwap'> & { className?: string }) => {
   if (onSwap) {
     return (
       <Button
         className={cn(
           'h-8 px-[6px] rounded-xl w-max mx-auto border-card border-2 -mt-4 -mb-4 z-20 text-foreground bg-muted hover:bg-border',
-          classNameSeparator
+          className
         )}
         onClick={onSwap}
       >
@@ -399,7 +387,7 @@ const ArrowSeparator = ({
     <div
       className={cn(
         'rounded-xl bg-muted w-max p-2 mx-auto border-white border-2 -mt-4 -mb-4 z-20 flex items-center justify-center',
-        classNameSeparator
+        className
       )}
     >
       <ArrowDown size={16} />
@@ -565,7 +553,7 @@ export const SwapDetails = ({ visible, details }: SwapDetailsProps) => {
 const Swap = (props: SwapProps) => {
   return (
     <div className={cn('flex flex-col', props.onSwap ? 'gap-0.5' : 'gap-0')}>
-      {!!props.customInput ? props.customInput : <TokenInputBox {...props} />}
+      <TokenInputBox {...props} />
       <ArrowSeparator {...props} />
       <TokenOutputBox {...props} />
     </div>
