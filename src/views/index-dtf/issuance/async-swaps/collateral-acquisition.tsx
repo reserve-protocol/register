@@ -5,7 +5,11 @@ import { getTimerFormat } from '@/utils'
 import { useAtom, useAtomValue } from 'jotai'
 import { ArrowLeft, ArrowRight, Check, Loader } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { asyncSwapResponseAtom, collateralPanelOpenAtom } from './atom'
+import {
+  asyncSwapResponseAtom,
+  collateralPanelOpenAtom,
+  currentAsyncSwapTabAtom,
+} from './atom'
 import MintButton from './mint-button'
 
 const OpenCollateralPanel = () => {
@@ -32,6 +36,7 @@ const OpenCollateralPanel = () => {
 }
 
 const CollateralAcquisition = () => {
+  const tab = useAtomValue(currentAsyncSwapTabAtom)
   const asyncSwapResponse = useAtomValue(asyncSwapResponseAtom)
   const [elapsedTime, setElapsedTime] = useState(0)
 
@@ -78,7 +83,11 @@ const CollateralAcquisition = () => {
           <div className="border border-primary/40 rounded-full p-1.5">
             <Loader size={16} strokeWidth={1.5} className="animate-spin-slow" />
           </div>
-          <div className="font-semibold">Acquiring Collateral</div>
+          <div className="font-semibold">
+            {tab === 'mint'
+              ? 'Acquiring Collateral'
+              : 'Selling collateral for USDC'}
+          </div>
         </div>
         <div className="text-muted-foreground">
           {getTimerFormat(elapsedTime)}

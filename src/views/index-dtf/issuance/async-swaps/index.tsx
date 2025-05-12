@@ -28,6 +28,7 @@ import Collaterals from './collaterals'
 import GnosisSafeRequired from './gnosis-safe-required'
 import OrderStatusUpdater from './order-status-updater'
 import Success from './success'
+import Updater from '../manual/updater'
 
 const AsyncSwaps = () => {
   useTrackIndexDTFPage('mint-async-swap')
@@ -91,6 +92,7 @@ const AsyncSwaps = () => {
   return (
     <div className="container flex items-center sm:justify-start md:justify-center gap-2 lg:border-2 lg:border-secondary lg:bg-secondary/30 lg:h-[calc(100vh-100px)] dark:bg-card rounded-4xl w-full">
       <div className="flex flex-col w-fit rounded-4xl p-1">
+        <Updater />
         <div className="bg-secondary rounded-3xl border-2 border-secondary lg:border-none sm:min-w-[420px] p-1 m-auto">
           <Tabs
             value={currentTab}

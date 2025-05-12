@@ -5,15 +5,15 @@ import { useAtomValue, useSetAtom } from 'jotai'
 import { useCallback, useState } from 'react'
 import { Address, erc20Abi } from 'viem'
 import { useAccount, usePublicClient, useWalletClient } from 'wagmi'
-import { asyncSwapOrderIdAtom, collateralPanelOpenAtom } from './atom'
-import { AsyncSwapResponse } from './types'
+import { asyncSwapOrderIdAtom, collateralPanelOpenAtom } from '../atom'
+import { AsyncSwapResponse } from '../types'
 import { cn } from '@/lib/utils'
 
 const COWSWAP_VAULT_RELAYER = '0xC92E8bdf79f0507f65a392b0ab4667716BFE0110'
 const COWSWAP_SETTLEMENT = '0x9008D19f58AAbD9eD0D60971565AA8510560ab41'
 const USDC_ADDRESS = '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913'
 
-type SubmitAsyncSwapProps = {
+type SubmitMintProps = {
   data?: AsyncSwapResponse
   dtfAddress: string
   amountOut: string
@@ -21,13 +21,13 @@ type SubmitAsyncSwapProps = {
   loadingQuote?: boolean
 }
 
-const SubmitAsyncSwap = ({
+const SubmitMint = ({
   data,
   dtfAddress,
   amountOut,
   operation,
   loadingQuote,
-}: SubmitAsyncSwapProps) => {
+}: SubmitMintProps) => {
   const { cowswapQuotes } = data || {}
   const [isSigning, setIsSigning] = useState(false)
   const [isApproving, setIsApproving] = useState(false)
@@ -239,4 +239,4 @@ const SubmitAsyncSwap = ({
   )
 }
 
-export default SubmitAsyncSwap
+export default SubmitMint

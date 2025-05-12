@@ -1,9 +1,12 @@
 import Swap from '@/components/ui/swap'
 import useAsyncSwap from '@/hooks/useAsyncSwap'
-import { useChainlinkPrice } from '@/hooks/useChainlinkPrice'
 import { cn } from '@/lib/utils'
 import { chainIdAtom } from '@/state/atoms'
-import { indexDTFAtom, indexDTFPriceAtom } from '@/state/dtf/atoms'
+import {
+  indexDTFAtom,
+  indexDTFBasketAtom,
+  indexDTFPriceAtom,
+} from '@/state/dtf/atoms'
 import { formatCurrency } from '@/utils'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
@@ -22,12 +25,15 @@ import {
   mintValueAtom,
   mintValueUSDAtom,
   mintValueWeiAtom,
+  redeemAssetsAtom,
   selectedTokenBalanceAtom,
   selectedTokenOrDefaultAtom,
   slippageAtom,
 } from '../atom'
 import CollateralAcquisition from '../collateral-acquisition'
-import SubmitAsyncSwap from '../submit-async-swap'
+import SubmitRedeem from './submit-redeem'
+import TokenLogo from '@/components/token-logo'
+import StackTokenLogo from '@/components/token-logo/StackTokenLogo'
 
 const AsyncRedeem = () => {
   const chainId = useAtomValue(chainIdAtom)
@@ -52,6 +58,8 @@ const AsyncRedeem = () => {
   const amountOutWei = useAtomValue(mintValueWeiAtom)
   const amountOutValue = useAtomValue(mintValueUSDAtom)
   const bufferValue = useAtomValue(bufferValueAtom)
+  const redeemAssets = useAtomValue(redeemAssetsAtom)
+  const basket = useAtomValue(indexDTFBasketAtom)
 
   const insufficientBalance =
     parseUnits(inputAmount, selectedToken.decimals) >
@@ -96,6 +104,7 @@ const AsyncRedeem = () => {
     <div className="flex flex-col h-full">
       <Swap
         from={{
+          title: 'You Redeem:',
           price: `$${formatCurrency(inputPrice)}`,
           address: indexDTF.id,
           symbol: indexDTF.token.symbol,
@@ -104,7 +113,37 @@ const AsyncRedeem = () => {
           onChange: setInputAmount,
           onMax,
         }}
+        customInput={
+          Object.keys(redeemAssets).length > 0 ? (
+            <div className="flex flex-col gap-4 p-4 rounded-3xl border-8 border-background bg-background">
+              <TokenLogo
+                address={indexDTF.id}
+                symbol={indexDTF.token.symbol}
+                size="xl"
+              />
+              <div className="flex flex-col gap-1">
+                <span className="text-primary">You Redeemed:</span>
+                <span className="text-3xl">
+                  <span className="text-primary font-semibold">
+                    {inputAmount || 10000}{' '}
+                  </span>
+                  <span>VTF</span>
+                </span>
+                <span>for {basket?.length} underlying collateral tokens</span>
+              </div>
+              <div className="h-[1px] w-full bg-border" />
+              <div className="flex justify-start">
+                <StackTokenLogo
+                  tokens={(basket || []).slice(0, 20)}
+                  size={24}
+                  reverseStack
+                />
+              </div>
+            </div>
+          ) : undefined
+        }
         to={{
+          title: 'Estimated Out:',
           address: selectedToken.address,
           symbol: selectedToken.symbol,
           price: amountOutValue ? (
@@ -135,15 +174,7 @@ const AsyncRedeem = () => {
           isMinting ? 'bg-background' : 'bg-card'
         )}
       >
-        {!orderSubmitted && (
-          <SubmitAsyncSwap
-            data={data}
-            loadingQuote={awaitingQuote}
-            dtfAddress={indexDTF.id}
-            amountOut={amountOutWei.toString()}
-            operation="mint"
-          />
-        )}
+        {!orderSubmitted && <SubmitRedeem />}
         {orderSubmitted && <CollateralAcquisition />}
       </div>
     </div>

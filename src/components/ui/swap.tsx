@@ -64,6 +64,7 @@ type SwapProps = {
   classNameOutput?: string
   classNameSeparator?: string
   disabled?: boolean
+  customInput?: ReactNode
 }
 const TokenInput = ({
   value = '',
@@ -564,7 +565,7 @@ export const SwapDetails = ({ visible, details }: SwapDetailsProps) => {
 const Swap = (props: SwapProps) => {
   return (
     <div className={cn('flex flex-col', props.onSwap ? 'gap-0.5' : 'gap-0')}>
-      <TokenInputBox {...props} />
+      {!!props.customInput ? props.customInput : <TokenInputBox {...props} />}
       <ArrowSeparator {...props} />
       <TokenOutputBox {...props} />
     </div>

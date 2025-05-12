@@ -8,7 +8,11 @@ import { ArrowUpRight, Check, Loader } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { formatUnits } from 'viem'
-import { asyncSwapResponseAtom, collateralPanelOpenAtom } from './atom'
+import {
+  asyncSwapResponseAtom,
+  collateralPanelOpenAtom,
+  currentAsyncSwapTabAtom,
+} from './atom'
 
 const STATUS_MAP = {
   open: 'Processing',
@@ -21,6 +25,7 @@ const STATUS_MAP = {
 }
 
 const Collaterals = () => {
+  const tab = useAtomValue(currentAsyncSwapTabAtom)
   const indexDTFBasket = useAtomValue(indexDTFBasketAtom)
   const asyncSwapResponse = useAtomValue(asyncSwapResponseAtom)
   const open = useAtomValue(collateralPanelOpenAtom)
@@ -65,14 +70,14 @@ const Collaterals = () => {
             />
             <div className="flex flex-col">
               <div className="text-sm font-semibold">
-                -
+                {tab === 'mint' ? '-' : '+'}{' '}
                 {formatCurrency(
                   Number(formatUnits(BigInt(quote.sellAmount), 6))
                 )}{' '}
                 USDC
               </div>
               <div className="text-sm text-primary">
-                +
+                {tab === 'mint' ? '+' : '-'}{' '}
                 {formatTokenAmount(
                   Number(
                     formatUnits(

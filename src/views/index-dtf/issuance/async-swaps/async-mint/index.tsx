@@ -26,7 +26,7 @@ import {
   slippageAtom,
 } from '../atom'
 import CollateralAcquisition from '../collateral-acquisition'
-import SubmitAsyncSwap from '../submit-async-swap'
+import SubmitMint from './submit-mint-orders'
 
 const AsyncMint = () => {
   const chainId = useAtomValue(chainIdAtom)
@@ -135,7 +135,7 @@ const AsyncMint = () => {
         )}
       >
         {!orderSubmitted && (
-          <SubmitAsyncSwap
+          <SubmitMint
             data={data}
             loadingQuote={awaitingQuote}
             dtfAddress={indexDTF.id}

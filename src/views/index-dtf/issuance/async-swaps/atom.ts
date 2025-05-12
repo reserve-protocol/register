@@ -4,7 +4,7 @@ import { Token } from '@/types'
 import { reducedZappableTokens } from '@/views/yield-dtf/issuance/components/zapV2/constants'
 import { atom } from 'jotai'
 import { atomWithReset } from 'jotai/utils'
-import { parseEther } from 'viem'
+import { Address, parseEther } from 'viem'
 import { AsyncSwapOrderResponse } from './types'
 
 const ASYNC_SWAP_BUFFER = 0.005
@@ -86,3 +86,5 @@ export const mintValueWeiAtom = atom<bigint>((get) => {
   const amountOut = get(mintValueAtom)
   return parseEther(amountOut.toString())
 })
+
+export const redeemAssetsAtom = atom<Record<Address, bigint>>({})
