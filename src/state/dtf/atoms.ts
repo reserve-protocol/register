@@ -110,6 +110,8 @@ export const indexDTFVersionAtom = atom('1.0.0')
 const WHITELISTED_ADDRESSES = [
   '0x2dc04Aeae96e2f2b642b066e981e80Fe57abb5b2',
   '0x8e0507C16435Caca6CB71a7Fb0e0636fd3891df4',
+  '0x03d03A026E71979BE3b08D44B01eAe4C5FF9da99',
+  '0xD84E0c72dc2F8363B46d4ADfC58BfD82E49222D9',
 ]
 
 export const isBrandManagerAtom = atom((get) => {
