@@ -52,6 +52,8 @@ type Response = {
     approvedTimestamp: string
     launchedTimestamp: string
     approvedBlockNumber: string
+    approvedSellLimitSpot: string
+    approvedBuyLimitSpot: string
     bids: {
       id: string
       bidder: string
@@ -97,6 +99,8 @@ const query = gql`
       start
       end
       availableRuns
+      approvedSellLimitSpot
+      approvedBuyLimitSpot
       approvedBlockNumber
       approvedTimestamp
       launchedTimestamp
@@ -156,6 +160,8 @@ const useTrades = () => {
           approvedTimestamp: Number(trade.approvedTimestamp),
           launchedTimestamp: Number(trade.launchedTimestamp),
           approvedBlockNumber: trade.approvedBlockNumber,
+          approvedSellLimitSpot: BigInt(trade.approvedSellLimitSpot),
+          approvedBuyLimitSpot: BigInt(trade.approvedBuyLimitSpot),
           bids: trade.bids.map((bid) => ({
             ...bid,
             sellAmount: BigInt(bid.sellAmount),

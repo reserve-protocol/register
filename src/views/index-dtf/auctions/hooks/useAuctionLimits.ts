@@ -31,12 +31,12 @@ const currentProposalAuctionsAtom = atom<Auction[] | undefined>((get) => {
       sell: trade.sell.address,
       buy: trade.buy.address,
       sellLimit: {
-        spot: trade.sellLimitSpot,
+        spot: trade.approvedSellLimitSpot,
         low: trade.sellLimitLow,
         high: trade.sellLimitHigh,
       },
       buyLimit: {
-        spot: trade.buyLimitSpot,
+        spot: trade.approvedBuyLimitSpot,
         low: trade.buyLimitLow,
         high: trade.buyLimitHigh,
       },
@@ -201,7 +201,17 @@ const useAuctionLimits = (trade: AssetTrade, ejectFully: boolean) => {
       console.error('ERROR FETCHING TRADE LIMITS', e)
       return undefined
     }
-  }, [trade])
+  }, [
+    trade,
+    ejectFully,
+    isUnitBasket,
+    assetDistribution,
+    currentProposalAuctions,
+    proposedBasket,
+    expectedBasket,
+    dtfSupply,
+    dtfPrice,
+  ])
 }
 
 export default useAuctionLimits
