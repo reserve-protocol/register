@@ -187,6 +187,7 @@ export default TokenLogo
 export const TRANSPARENT_TOKENS = new Set(['altt', 'emp'])
 
 export const SVGS = new Set([
+  'aave',
   'dai',
   'cdai',
   'rsr',
