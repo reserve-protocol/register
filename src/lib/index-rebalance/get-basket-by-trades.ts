@@ -3,7 +3,7 @@ import { getCurrentBasket } from './utils'
 import { D9n } from './numbers'
 
 /**
- * Get target basket for a tracking DTF based on prepared auctions and current balances
+ * Get target basket for a tracking DTF based on original spot limits and current balances
  *
  * @param auctions Auctions
  * @param tokens Addresses of tokens in the basket
