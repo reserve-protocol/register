@@ -66,6 +66,15 @@ function FallbackUI({
   error: Error
   resetErrorBoundary: () => void
 }) {
+  useEffect(() => {
+    if (
+      error.message.includes('Failed to fetch dynamically imported module') ||
+      error.message.includes('Importing a module script failed')
+    ) {
+      window.location.reload()
+    }
+  }, [error])
+
   return (
     <div className="bg-secondary flex flex-col gap-4 justify-center items-center">
       <div className="bg-card container rounded-3xl p-4">
