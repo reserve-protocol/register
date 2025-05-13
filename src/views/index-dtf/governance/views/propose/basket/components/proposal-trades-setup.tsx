@@ -108,7 +108,7 @@ const ProposedTradeVolatility = ({ index }: { index: number }) => {
     <ToggleGroup
       type="single"
       className="bg-muted-foreground/10 p-1 rounded-xl text-sm"
-      value={volatility[index]?.toString() || '0'}
+      value={volatility[index]?.toString() || '1'}
       onValueChange={(value) => {
         setVolatility((prev) => {
           const newVolatility = [...prev]
