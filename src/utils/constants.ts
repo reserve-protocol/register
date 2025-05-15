@@ -108,6 +108,10 @@ export const LP_PROJECTS: { [x: string]: { name: string; site: string } } = {
     name: 'Stader',
     site: 'https://www.staderlabs.com/',
   },
+  'sky-lending': {
+    name: 'Sky',
+    site: 'https://sky.money/',
+  },
 }
 
 // List of supported networks with label
@@ -387,6 +391,7 @@ export const collateralDisplay: Record<string, string> = {
   'stkcvxeth+eth-f': 'Convex ETH+/ETH',
   apxeth: 'Autocompounding Pirex ETH',
   susde: 'Ethena Staked USDe',
+  susds: 'Sky Savings USDS',
   ethx: 'Stader ETHx',
   pyusd: 'PayPal USD',
   'wsamm-eusd/usdc': 'Aerodrome eUSD/USDC LP',

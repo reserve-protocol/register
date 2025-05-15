@@ -28,6 +28,7 @@ import { colors } from 'theme'
 import { Box, Image, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { CHAIN_TAGS, LP_PROJECTS, NETWORKS } from 'utils/constants'
+import Sky from '@/components/icons/logos/Sky'
 
 export const columnVisibility = []
 
@@ -60,6 +61,7 @@ export const PROJECT_ICONS: Record<string, React.ReactElement> = {
   ethena: <Ethena />,
   'dinero-(pirex-eth)': <Dinero />,
   stader: <Stader />,
+  sky: <Sky />,
 }
 
 const useEarnTableColumns = (compact: boolean) => {

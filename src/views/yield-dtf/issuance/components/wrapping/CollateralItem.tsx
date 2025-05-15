@@ -245,6 +245,7 @@ const CollateralItem = ({ collateral, wrapping, ...props }: Props) => {
         }
       case 'MORPHO':
       case 'SDR':
+      case 'SKY':
       case 'USDM':
       case 'PXETH':
         return {

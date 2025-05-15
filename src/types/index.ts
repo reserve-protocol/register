@@ -22,6 +22,7 @@ export type ProtocolKey =
   | 'USDM'
   | 'PXETH'
   | 'AERODROME'
+  | 'SKY'
 
 export type AddressMap = { [chainId: number]: Address }
 

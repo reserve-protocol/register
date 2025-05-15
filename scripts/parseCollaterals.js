@@ -86,6 +86,10 @@ const protocols = {
     underlying: 'underlying',
     rewardTokens: ['AERO'],
   },
+  SKY: {
+    key: 'SKY',
+    underlying: 'asset',
+  },
 }
 
 const wrappedTokenMap = {
@@ -136,6 +140,7 @@ const wrappedTokenMap = {
   aeroWETHcbBTC: protocols.AERODROME,
   aeroWETHWELL: protocols.AERODROME,
   aeroWETHDEGEN: protocols.AERODROME,
+  sUSDS: protocols.SKY,
 }
 
 // Default: run all collateral chains - you can comment which chain you want to run
