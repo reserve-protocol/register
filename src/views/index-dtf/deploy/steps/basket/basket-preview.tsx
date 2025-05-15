@@ -10,7 +10,6 @@ import { useFormContext } from 'react-hook-form'
 import { basketAtom } from '../../atoms'
 import BasicInput from '../../components/basic-input'
 import { Decimal } from '../../utils/decimals'
-import BasketCsvSetup from './basket-csv-setup'
 
 const RemoveTokenButton = ({
   tokenIndex,
