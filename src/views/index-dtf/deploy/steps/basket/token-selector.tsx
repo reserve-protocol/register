@@ -11,12 +11,15 @@ import {
 import { SearchInput } from '@/components/ui/input'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import useTokenList from '@/hooks/use-token-list'
+import { useAssetPrice } from '@/hooks/useAssetPrices'
+import useTokensInfo from '@/hooks/useTokensInfo'
 import { cn } from '@/lib/utils'
 import { chainIdAtom } from '@/state/atoms'
 import { Token } from '@/types'
 import { isAddress, shortenAddress } from '@/utils'
+import { DISCORD_INVITE, REGISTER_FEEDBACK } from '@/utils/constants'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
-import { useQuery } from '@tanstack/react-query'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
 import {
@@ -35,16 +38,6 @@ import {
   searchTokenAtom,
   selectedTokensAtom,
 } from '../../atoms'
-import { useAssetPrice } from '@/hooks/useAssetPrices'
-import useTokensInfo from '@/hooks/useTokensInfo'
-import {
-  DISCORD_INVITE,
-  REGISTER_FEEDBACK,
-  RESERVE_API,
-} from '@/utils/constants'
-import { ChainId } from '@/utils/chains'
-import { TEMP_TOKENS } from './temp-tokens'
-import useTokenList from '@/hooks/useTokenList'
 
 interface TokenButtonProps {
   variant: 'primary' | 'secondary'
