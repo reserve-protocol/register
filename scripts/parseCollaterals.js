@@ -1,7 +1,15 @@
-const chains = require('viem/chains')
-const fs = require('fs')
-const { createPublicClient, http, formatEther, hexToString } = require('viem')
-const collateralAbi = require('./data/collateral-abi.json')
+import { mainnet, base, arbitrum } from 'viem/chains'
+import fs from 'fs'
+import path from 'path'
+import { createPublicClient, http, formatEther, hexToString } from 'viem'
+import { fileURLToPath } from 'url'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
+const collateralAbi = JSON.parse(
+  fs.readFileSync(path.join(__dirname, 'data/collateral-abi.json'), 'utf8')
+)
 
 // Source of the collaterals json, this comes from the protocol deployment files
 const OUTPUT_PATH = './src/utils/plugins/data/'
@@ -135,29 +143,44 @@ const chainsMap = [
   {
     prefix: 'mainnet',
     chain: {
-      ...chains.mainnet,
+      ...mainnet,
       rpcUrls: {
         public: { http: ['https://eth.llamarpc.com'] },
         default: { http: ['https://eth.llamarpc.com'] },
       },
     },
-    collaterals: require('./data/mainnet-collaterals.json'),
+    collaterals: JSON.parse(
+      fs.readFileSync(
+        path.join(__dirname, 'data/mainnet-collaterals.json'),
+        'utf8'
+      )
+    ),
   },
   {
     prefix: 'base',
     chain: {
-      ...chains.base,
+      ...base,
       rpcUrls: {
         public: { http: ['https://base.llamarpc.com'] },
         default: { http: ['https://base.llamarpc.com'] },
       },
     },
-    collaterals: require('./data/base-collaterals.json'),
+    collaterals: JSON.parse(
+      fs.readFileSync(
+        path.join(__dirname, 'data/base-collaterals.json'),
+        'utf8'
+      )
+    ),
   },
   {
     prefix: 'arbitrum',
-    chain: chains.arbitrum,
-    collaterals: require('./data/arbitrum-collaterals.json'),
+    chain: arbitrum,
+    collaterals: JSON.parse(
+      fs.readFileSync(
+        path.join(__dirname, 'data/arbitrum-collaterals.json'),
+        'utf8'
+      )
+    ),
   },
 ]
 
