@@ -112,6 +112,10 @@ export const LP_PROJECTS: { [x: string]: { name: string; site: string } } = {
     name: 'Sky',
     site: 'https://sky.money/',
   },
+  'origin-ether': {
+    name: 'Origin',
+    site: 'https://www.originprotocol.com/',
+  },
 }
 
 // List of supported networks with label
@@ -394,6 +398,7 @@ export const collateralDisplay: Record<string, string> = {
   susds: 'Sky Savings USDS',
   ethx: 'Stader ETHx',
   pyusd: 'PayPal USD',
+  woeth: 'Origin Wrapped OETH',
   'wsamm-eusd/usdc': 'Aerodrome eUSD/USDC LP',
   'wvamm-weth/degen': 'Aerodrome WETH/DEGEN LP',
   'wvamm-weth/well': 'Aerodrome WETH/WELL LP',

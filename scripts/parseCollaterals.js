@@ -90,6 +90,10 @@ const protocols = {
     key: 'SKY',
     underlying: 'asset',
   },
+  ORIGIN: {
+    key: 'ORIGIN',
+    underlying: 'asset',
+  },
 }
 
 const wrappedTokenMap = {
@@ -141,6 +145,7 @@ const wrappedTokenMap = {
   aeroWETHWELL: protocols.AERODROME,
   aeroWETHDEGEN: protocols.AERODROME,
   sUSDS: protocols.SKY,
+  wOETH: protocols.ORIGIN,
 }
 
 // Default: run all collateral chains - you can comment which chain you want to run

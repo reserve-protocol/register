@@ -68,7 +68,7 @@ export default [
     stateMutability: 'nonpayable',
     type: 'function',
   },
-  // MORPHO / SDR / SKY
+  // MORPHO / SDR / SKY / ORIGIN
   {
     inputs: [
       {

@@ -16,6 +16,7 @@ const protocolLabels: StringMap = {
   STARGATE: 'Stargate Tokens',
   USDM: 'Mountain Protocol',
   SKY: 'Sky Protocol',
+  ORIGIN: 'Origin Protocol',
 }
 
 // TODO: Remove when this collaterals are swapped from current listed RTokens
