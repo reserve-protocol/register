@@ -44,6 +44,7 @@ import {
 } from '@/utils/constants'
 import { ChainId } from '@/utils/chains'
 import { TEMP_TOKENS } from './temp-tokens'
+import useTokenList from '@/hooks/useTokenList'
 
 interface TokenButtonProps {
   variant: 'primary' | 'secondary'
@@ -274,36 +275,7 @@ const TokenList = ({ showSelected = false }: TokenListProps) => {
   const search = useAtomValue(searchTokenAtom)
   const extraTokens = useAtomValue(extraTokensAtom)
   const chainId = useAtomValue(chainIdAtom)
-
-  const {
-    data: tokenList = [],
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: ['zapper-tokens', chainId],
-    queryFn: async () => {
-      try {
-        const response = await fetch(
-          `${RESERVE_API}zapper/tokens?chainId=${chainId}`
-        )
-        if (!response.ok) {
-          throw new Error('Failed to fetch token list')
-        }
-        const data: Token[] = await response.json()
-
-        if (chainId === ChainId.Base) {
-          data.push(...TEMP_TOKENS)
-        }
-
-        return data
-      } catch (error) {
-        console.error('Error fetching token list:', error)
-        throw error
-      }
-    },
-    staleTime: 5 * 60 * 1000, // Cache for 5 minutes
-    retry: 2,
-  })
+  const { data: tokenList = [], isLoading, error } = useTokenList(chainId)
 
   const filteredTokens = useMemo(() => {
     const fullTokenList = [...extraTokens, ...tokenList]
