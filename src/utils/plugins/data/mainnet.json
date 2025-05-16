@@ -815,22 +815,6 @@
     "decimals": 6
   },
   {
-    "address":"0xaFf578165bEA370D16d8AC61A4C8c6D435785d58",
-    "rewardTokens":[],
-    "protocol":"SKY",
-    "erc20":"0xa3931d71877C0E7a3148CB7Eb4463524FEc27fbD",
-    "chainlinkFeed":"0xfF30586cD0F29eD462364C7e81375FC0C71219b1",
-    "delayUntilDefault":"86400",
-    "maxTradeVolume":"1000000",
-    "oracleTimeout":86400,
-    "targetName":"USD",
-    "version":"4.0.0",
-    "symbol":"sUSDS",
-    "decimals":18,
-    "underlyingAddress":"0xdC035D45d973E3EC169d2276DDab16f1e407384F",
-    "underlyingToken":"USDS"
-  },
-  {
     "address":"0xD9Ee6fEb2a277E5948B6Fd6B93d125B3225339aA",
     "rewardTokens":[],
     "protocol":"ORIGIN",
