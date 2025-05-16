@@ -106,6 +106,10 @@ const BasketCsvSetup = () => {
 
           setBasket(newBasket)
           setValue('tokensDistribution', newShares)
+
+          if (newBasket.length === 0) {
+            setError('No valid tokens found in the CSV file.')
+          }
         } catch (err) {
           console.error('Error parsing CSV:', err)
           setError('Failed to parse CSV file. Please check the format.')
