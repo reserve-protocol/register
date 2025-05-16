@@ -28,14 +28,12 @@ const useAsyncSwap = ({
   const account = useAtomValue(walletAtom)
   const setAsyncSwapEndpoint = useSetAtom(asyncSwapEndpointAtom)
 
-  const getEndpoint = () =>
-    !dtf || isNaN(Number(amountOut)) || Number(amountOut) === 0
-      ? null
-      : `${RESERVE_API}async-swap/quote?dtf=${dtf}&chainId=${chainId}&amountOut=${amountOut}&operation=${type}&signer=${account}`
-
   const endpoint = useDebounce(
     useMemo(
-      () => getEndpoint(),
+      () =>
+        !!dtf && !isNaN(Number(amountOut)) && Number(amountOut) !== 0 && account
+          ? `${RESERVE_API}async-swap/quote?dtf=${dtf}&chainId=${chainId}&amountOut=${amountOut}&operation=${type}&signer=${account}`
+          : null,
       [chainId, account, dtf, amountOut, type, slippage]
     ),
     500
