@@ -30,7 +30,7 @@ export interface OpenAuctionArgs {
  * @param _decimals Decimals of each token
  * @param _prices {USD/wholeTok} USD prices for each *whole* token
  * @param _priceError {1} Price error to use for each token during auction pricing; should be smaller than price error during startRebalance
- * @param finalStageAt {1} The % rebalanced to determine when is the final stage of the rebalance
+ * @param _finalStageAt {1} The % rebalanced to determine when is the final stage of the rebalance
  */
 export const getOpenAuction = (
   rebalance: Rebalance,
@@ -39,7 +39,7 @@ export const getOpenAuction = (
   _decimals: bigint[],
   _prices: number[],
   _priceError: number[],
-  finalStageAt: number = 0.95
+  _finalStageAt: number = 0.95
 ): OpenAuctionArgs => {
   console.log('getOpenAuction')
 
@@ -53,7 +53,7 @@ export const getOpenAuction = (
     throw new Error('length mismatch')
   }
 
-  if (finalStageAt >= 1) {
+  if (_finalStageAt >= 1) {
     throw new Error('finalStageAt must be less than 1')
   }
 
@@ -101,6 +101,8 @@ export const getOpenAuction = (
       }
     }
   )
+
+  const finalStageAt = new Decimal(_finalStageAt.toString())
 
   // ================================================================
 
@@ -158,8 +160,9 @@ export const getOpenAuction = (
     if (buyTarget.gt(ONE)) {
       buyTarget = ONE
     }
-  } else if (progression.lt(new Decimal(finalStageAt.toString()))) {
-    buyTarget = new Decimal(finalStageAt.toString())
+  } else if (progression.lt(finalStageAt.sub(0.01))) {
+    // wiggle room to prevent having to re-run an auction at the same stage after price movement
+    buyTarget = finalStageAt
   }
 
   // ================================================================
