@@ -35,10 +35,12 @@ const Collaterals = () => {
   useEffect(() => {
     if (asyncSwapResponse && open) {
       setShouldRender(true)
-      setTimeout(() => setIsVisible(true), 0)
+      const timer = setTimeout(() => setIsVisible(true), 0)
+      return () => clearTimeout(timer)
     } else {
       setIsVisible(false)
-      setTimeout(() => setShouldRender(false), 300)
+      const timer = setTimeout(() => setShouldRender(false), 300)
+      return () => clearTimeout(timer)
     }
   }, [asyncSwapResponse, open])
 
