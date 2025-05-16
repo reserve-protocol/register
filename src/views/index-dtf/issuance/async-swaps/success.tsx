@@ -42,9 +42,9 @@ const CloseButton = () => {
 
   const handleClose = () => {
     setMintTxHash(undefined)
-    // setAsyncSwapResponse(undefined)
-    // setAsyncSwapOrderId(undefined)
-    // setAsyncSwapInput('')
+    setAsyncSwapResponse(undefined)
+    setAsyncSwapOrderId(undefined)
+    setAsyncSwapInput('')
   }
 
   return (
@@ -56,6 +56,152 @@ const CloseButton = () => {
     >
       <X />
     </Button>
+  )
+}
+
+const SuccessHeader = () => {
+  const chainId = useAtomValue(chainIdAtom)
+  const indexDTF = useAtomValue(indexDTFAtom)
+  const basket = useAtomValue(indexDTFBasketAtom)
+  const setViewTransactions = useSetAtom(viewTransactionsAtom)
+
+  return (
+    <div className="flex items-center justify-between">
+      <Link
+        to={getExplorerLink(
+          indexDTF?.id || '',
+          chainId,
+          ExplorerDataType.TOKEN
+        )}
+        target="_blank"
+      >
+        <Button
+          variant="ghost"
+          size="xs"
+          className="flex items-center gap-1 rounded-full bg-background h-9 pl-0.5"
+          onClick={() => setViewTransactions(true)}
+        >
+          <div className="p-2 bg-primary rounded-full text-white">
+            <Check size={16} />
+          </div>
+          <span className="font-light">
+            {shortenAddress(indexDTF?.id || '')}
+          </span>
+          <ArrowUpRight size={16} className="text-muted-foreground" />
+        </Button>
+      </Link>
+      <div className="flex items-center gap-1.5">
+        <Button
+          variant="ghost"
+          size="xs"
+          className="flex items-center gap-1 rounded-full bg-background h-9"
+          onClick={() => setViewTransactions(true)}
+        >
+          <StackTokenLogo
+            tokens={(basket || []).slice(0, 5)}
+            size={16}
+            overlap={4}
+            reverseStack
+          />
+          <span className="font-light">All Txs</span>
+          <ChevronRight size={16} />
+        </Button>
+        <CloseButton />
+      </div>
+    </div>
+  )
+}
+
+const MintedAmount = () => {
+  const chainId = useAtomValue(chainIdAtom)
+  const indexDTF = useAtomValue(indexDTFAtom)
+  const indexDTFPrice = useAtomValue(indexDTFPriceAtom)
+  const inputAmountUSD = useAtomValue(mintValueUSDAtom)
+  const orders = useAtomValue(asyncSwapResponseAtom)
+
+  const sharesMinted = Number(formatEther(BigInt(orders?.amountOut || 0)))
+  const valueMinted = (indexDTFPrice || 0) * sharesMinted
+  const priceImpact = inputAmountUSD
+    ? ((valueMinted * 100) / inputAmountUSD - 100).toFixed(2)
+    : 0
+
+  return (
+    <div className="p-6 min-h-[100px] rounded-3xl bg-background -mt-14 flex flex-col gap-1.5">
+      <div className="text-primary">You Minted:</div>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-1 text-2xl">
+          <div className="text-primary font-semibold">
+            {formatTokenAmount(sharesMinted)}
+          </div>
+          <div>VTF</div>
+        </div>
+        <TokenLogo
+          symbol={indexDTF?.token.symbol || ''}
+          address={indexDTF?.id || ''}
+          chain={chainId}
+          size="xl"
+          className="rounded-full"
+        />
+      </div>
+      <div>
+        ${formatCurrency(valueMinted)}{' '}
+        <span className="text-muted-foreground">({priceImpact}%)</span>
+      </div>
+    </div>
+  )
+}
+
+const UsedAmount = () => {
+  const inputAmount = useAtomValue(asyncSwapInputAtom)
+  const inputAmountUSD = useAtomValue(mintValueUSDAtom)
+
+  return (
+    <div className="p-6 min-h-[100px] rounded-3xl bg-background flex flex-col gap-2">
+      <div className="text-primary">You Used:</div>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-1 text-2xl">
+          <div className="text-primary font-semibold">
+            {formatCurrency(inputAmountUSD)}
+          </div>
+          <div>USDC</div>
+        </div>
+        <div className="flex items-center gap-1">
+          <span className="text-muted-foreground line-through text-base">
+            {formatCurrency(Number(inputAmount))} USDC
+          </span>
+          <TokenLogo symbol={'USDC'} size="xl" className="rounded-full" />
+        </div>
+      </div>
+      <div>
+        ${formatCurrency(inputAmountUSD)}{' '}
+        <span className="text-muted-foreground line-through">
+          ${formatCurrency(Number(inputAmount))}
+        </span>
+      </div>
+      <BufferInfo />
+    </div>
+  )
+}
+
+const BufferInfo = () => {
+  const buffer = useAtomValue(bufferValueAtom)
+
+  return (
+    <div className="flex items-center gap-1 justify-between px-4 py-3 bg-muted rounded-full -mx-4 mt-2">
+      <div className="flex items-center gap-1">
+        <HandCoins size={16} strokeWidth={1.5} />
+        <div className="pl-1">You Saved:</div>
+        <Help
+          content={'Buffer'}
+          size={16}
+          className="text-muted-foreground"
+        />{' '}
+      </div>
+      <div className="flex items-center gap-1 text-primary">
+        <TokenLogo symbol={'USDC'} size="sm" className="rounded-full" />$
+        {formatCurrency(buffer)}
+      </div>
+    </div>
   )
 }
 
@@ -180,22 +326,8 @@ const Transactions = () => {
 }
 
 const Success = () => {
-  const chainId = useAtomValue(chainIdAtom)
   const [viewTransactions, setViewTransactions] = useAtom(viewTransactionsAtom)
-  const indexDTF = useAtomValue(indexDTFAtom)
-  const indexDTFPrice = useAtomValue(indexDTFPriceAtom)
-  const basket = useAtomValue(indexDTFBasketAtom)
-  const inputAmount = useAtomValue(asyncSwapInputAtom)
-  const inputAmountUSD = useAtomValue(mintValueUSDAtom)
-  const buffer = useAtomValue(bufferValueAtom)
-  const orders = useAtomValue(asyncSwapResponseAtom)
   const [showConfetti, setShowConfetti] = useState(true)
-
-  const sharesMinted = Number(formatEther(BigInt(orders?.amountOut || 0)))
-  const valueMinted = (indexDTFPrice || 0) * sharesMinted
-  const priceImpact = inputAmountUSD
-    ? ((valueMinted * 100) / inputAmountUSD - 100).toFixed(2)
-    : 0
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -230,111 +362,11 @@ const Success = () => {
       )}
       <div className="relative z-10">
         <div className="bg-[url('https://storage.reserve.org/tree.png')] bg-cover bg-center bg-no-repeat min-h-[140px] rounded-t-3xl p-6">
-          <div className="flex items-center justify-between">
-            <Link
-              to={getExplorerLink(
-                indexDTF?.id || '',
-                chainId,
-                ExplorerDataType.TOKEN
-              )}
-              target="_blank"
-            >
-              <Button
-                variant="ghost"
-                size="xs"
-                className="flex items-center gap-1 rounded-full bg-background h-9 pl-0.5"
-                onClick={() => setViewTransactions(true)}
-              >
-                <div className="p-2 bg-primary rounded-full text-white">
-                  <Check size={16} />
-                </div>
-                <span className="font-light">
-                  {shortenAddress(indexDTF?.id || '')}
-                </span>
-                <ArrowUpRight size={16} className="text-muted-foreground" />
-              </Button>
-            </Link>
-            <div className="flex items-center gap-1.5">
-              <Button
-                variant="ghost"
-                size="xs"
-                className="flex items-center gap-1 rounded-full bg-background h-9"
-                onClick={() => setViewTransactions((prev) => !prev)}
-              >
-                <StackTokenLogo
-                  tokens={(basket || []).slice(0, 5)}
-                  size={16}
-                  overlap={4}
-                  reverseStack
-                />
-                <span className="font-light">All Txs</span>
-                <ChevronRight size={16} />
-              </Button>
-              <CloseButton />
-            </div>
-          </div>
+          <SuccessHeader />
         </div>
         <div className="flex flex-col gap-1 p-1">
-          <div className="p-6 min-h-[100px] rounded-3xl bg-background -mt-14 flex flex-col gap-1.5">
-            <div className="text-primary">You Minted:</div>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-1 text-2xl">
-                <div className="text-primary font-semibold">
-                  {formatTokenAmount(sharesMinted)}
-                </div>
-                <div>VTF</div>
-              </div>
-              <TokenLogo
-                symbol={indexDTF?.token.symbol || ''}
-                address={indexDTF?.id || ''}
-                chain={chainId}
-                size="xl"
-                className="rounded-full"
-              />
-            </div>
-            <div>
-              ${formatCurrency(valueMinted)}{' '}
-              <span className="text-muted-foreground">({priceImpact}%)</span>
-            </div>
-          </div>
-          <div className="p-6 min-h-[100px] rounded-3xl bg-background flex flex-col gap-2">
-            <div className="text-primary">You Used:</div>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-1 text-2xl">
-                <div className="text-primary font-semibold">
-                  {formatCurrency(inputAmountUSD)}
-                </div>
-                <div>USDC</div>
-              </div>
-              <div className="flex items-center gap-1">
-                <span className="text-muted-foreground line-through text-base">
-                  {formatCurrency(Number(inputAmount))} USDC
-                </span>
-                <TokenLogo symbol={'USDC'} size="xl" className="rounded-full" />
-              </div>
-            </div>
-            <div>
-              ${formatCurrency(inputAmountUSD)}{' '}
-              <span className="text-muted-foreground line-through">
-                ${formatCurrency(Number(inputAmount))}
-              </span>
-            </div>
-            <div className="flex items-center gap-1 justify-between px-4 py-3 bg-muted rounded-full -mx-4 mt-2">
-              <div className="flex items-center gap-1">
-                <HandCoins size={16} strokeWidth={1.5} />
-                <div className="pl-1">You Saved:</div>
-                <Help
-                  content={'Buffer'}
-                  size={16}
-                  className="text-muted-foreground"
-                />{' '}
-              </div>
-              <div className="flex items-center gap-1 text-primary">
-                <TokenLogo symbol={'USDC'} size="sm" className="rounded-full" />
-                ${formatCurrency(buffer)}
-              </div>
-            </div>
-          </div>
+          <MintedAmount />
+          <UsedAmount />
         </div>
       </div>
     </div>
