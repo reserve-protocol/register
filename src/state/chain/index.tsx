@@ -91,8 +91,9 @@ const queryClient = new QueryClient({
 const Disclaimer: DisclaimerComponent = ({ Text, Link }) => (
   <div>
     By connecting a wallet, you agree to ABC Labs{' '}
-    <a href={ROUTES.TERMS}>Terms of Service</a> and consent to its{' '}
-    <a href={`${ROUTES.TERMS}?target=privacy`}>Privacy Policy</a>
+    <a href="https://reserve.org/terms_and_conditions/">
+      Terms of Service and consent to its Privacy Policy
+    </a>
   </div>
 )
 
