@@ -74,9 +74,11 @@ export const SVGS = new Set([
   'saarbusdcn',
   'sfrxeth',
   'usd+',
+  'usds',
   'pxeth',
   'apxeth',
   'susde',
+  'susds',
   'sdt',
   'wusdm',
   'eth+',
@@ -84,6 +86,8 @@ export const SVGS = new Set([
   'wvamm-weth-degen',
   'wvamm-weth-well',
   'wvamm-weth-cbbtc',
+  'oeth',
+  'woeth',
 ])
 
 const PNGS = new Set([

@@ -813,5 +813,21 @@
     "version": "3.4.0",
     "symbol": "PYUSD",
     "decimals": 6
+  },
+  {
+    "address":"0xD9Ee6fEb2a277E5948B6Fd6B93d125B3225339aA",
+    "rewardTokens":[],
+    "protocol":"ORIGIN",
+    "erc20":"0xDcEe70654261AF21C44c093C300eD3Bb97b78192",
+    "chainlinkFeed":"0x703118C4CbccCBF2AB31913e0f8075fbbb15f563",
+    "delayUntilDefault":"86400",
+    "maxTradeVolume":"1000000",
+    "oracleTimeout":86400,
+    "targetName":"ETH",
+    "version":"4.0.0",
+    "symbol":"wOETH",
+    "decimals":18,
+    "underlyingAddress":"0x856c4Efb76C1D1AE02e20CEB03A2A6a08b0b8dC3",
+    "underlyingToken":"OETH"
   }
 ]
