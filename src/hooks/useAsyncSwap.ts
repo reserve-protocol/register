@@ -1,11 +1,10 @@
 import { chainIdAtom, walletAtom } from '@/state/atoms'
 import { RESERVE_API } from '@/utils/constants'
-import { asyncSwapEndpointAtom } from '@/views/index-dtf/issuance/async-swaps/atom'
 import { AsyncSwapResponse } from '@/views/index-dtf/issuance/async-swaps/types'
 import { useQuery } from '@tanstack/react-query'
-import { useAtomValue, useSetAtom } from 'jotai'
+import { useAtomValue } from 'jotai'
 import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
-import { useEffect, useMemo } from 'react'
+import { useMemo } from 'react'
 import { Address } from 'viem'
 import useDebounce from './useDebounce'
 
@@ -26,7 +25,6 @@ const useAsyncSwap = ({
 }) => {
   const chainId = useAtomValue(chainIdAtom)
   const account = useAtomValue(walletAtom)
-  const setAsyncSwapEndpoint = useSetAtom(asyncSwapEndpointAtom)
 
   const endpoint = useDebounce(
     useMemo(
@@ -38,10 +36,6 @@ const useAsyncSwap = ({
     ),
     500
   )
-
-  useEffect(() => {
-    setAsyncSwapEndpoint(endpoint ?? '')
-  }, [endpoint])
 
   return useQuery({
     queryKey: ['async-zap', endpoint],
