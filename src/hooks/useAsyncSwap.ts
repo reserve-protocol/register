@@ -37,20 +37,25 @@ const useAsyncSwap = ({
     500
   )
 
+  const commonAnalytics = {
+    wa: account,
+    dtf: dtf,
+    ticker: dtfTicker,
+    chainId,
+    type,
+  } as const
+
   return useQuery({
     queryKey: ['async-zap', endpoint],
     queryFn: async (): Promise<AsyncSwapResponse> => {
       if (!endpoint) throw new Error('No endpoint available')
       const response = await fetch(endpoint)
+
       if (!response.ok) {
         const error = response.status
         mixpanel.track('async-zap', {
           event: 'async-zap',
-          wa: account,
-          dtf: dtf,
-          ticker: dtfTicker,
-          chainId,
-          type,
+          ...commonAnalytics,
           endpoint,
           status: 'error',
           error,
@@ -62,11 +67,7 @@ const useAsyncSwap = ({
       if (data) {
         mixpanel.track('async-zap', {
           event: 'async-zap',
-          wa: account,
-          dtf: dtf,
-          ticker: dtfTicker,
-          chainId,
-          type,
+          ...commonAnalytics,
           endpoint,
           status: 'success',
         })
