@@ -155,8 +155,8 @@ export const getOpenAuction = (
     .div(shareValue)
 
   // make it an eject auction if there is 1 bps or more of value to eject
-  if (portionBeingEjected.gte(new Decimal('1e-4'))) {
-    buyTarget = progression.add(portionBeingEjected.mul(1.5)) // set buyTarget to 50% more than needed, to ensure ejection completes
+  if (portionBeingEjected.gte(1e-4)) {
+    buyTarget = progression.add(portionBeingEjected.mul(1.2)) // set buyTarget to 20% more than needed, to ensure ejection completes
     if (buyTarget.gt(ONE)) {
       buyTarget = ONE
     }
