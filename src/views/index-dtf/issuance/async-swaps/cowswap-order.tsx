@@ -20,6 +20,45 @@ const STATUS_MAP = {
   cancelled: 'Not Filled',
 }
 
+const OrderStatus = ({
+  status,
+  orderId,
+}: {
+  orderId: AsyncSwapOrder['orderId']
+  status: AsyncSwapOrder['status']
+}) => {
+  return (
+    <div
+      className={cn(
+        'text-sm font-light flex items-center gap-2',
+        STATUS_MAP[status.type] === 'Not Filled' && 'text-[#D05A67]',
+        STATUS_MAP[status.type] === 'Processing' && 'text-muted-foreground',
+        STATUS_MAP[status.type] === 'Order Filled' && 'text-primary'
+      )}
+    >
+      {STATUS_MAP[status.type] === 'Order Filled' && (
+        <Check size={16} className="text-primary" />
+      )}
+      {STATUS_MAP[status.type]}
+      {STATUS_MAP[status.type] === 'Not Filled' && (
+        <Help content="The order failed to fill. Please try again." size={16} />
+      )}
+      {STATUS_MAP[status.type] === 'Order Filled' && (
+        <Link
+          to={`https://explorer.cow.fi/base/orders/${orderId}`}
+          target="_blank"
+          className="p-1 bg-muted dark:bg-white/5 rounded-full text-gray-700 ml-1"
+        >
+          <ArrowUpRight size={16} />
+        </Link>
+      )}
+      {STATUS_MAP[status.type] === 'Processing' && (
+        <Loader size={16} className="animate-spin-slow" />
+      )}
+    </div>
+  )
+}
+
 const CowSwapOrder = ({
   order: { orderId, quote, status },
 }: {
@@ -65,37 +104,7 @@ const CowSwapOrder = ({
           </div>
         </div>
       </div>
-      <div
-        className={cn(
-          'text-sm font-light flex items-center gap-2',
-          STATUS_MAP[status.type] === 'Not Filled' && 'text-[#D05A67]',
-          STATUS_MAP[status.type] === 'Processing' && 'text-muted-foreground',
-          STATUS_MAP[status.type] === 'Order Filled' && 'text-primary'
-        )}
-      >
-        {STATUS_MAP[status.type] === 'Order Filled' && (
-          <Check size={16} className="text-primary" />
-        )}
-        {STATUS_MAP[status.type]}
-        {STATUS_MAP[status.type] === 'Not Filled' && (
-          <Help
-            content="The order failed to fill. Please try again."
-            size={16}
-          />
-        )}
-        {STATUS_MAP[status.type] === 'Order Filled' && (
-          <Link
-            to={`https://explorer.cow.fi/base/orders/${orderId}`}
-            target="_blank"
-            className="p-1 bg-muted dark:bg-white/5 rounded-full text-gray-700 ml-1"
-          >
-            <ArrowUpRight size={16} />
-          </Link>
-        )}
-        {STATUS_MAP[status.type] === 'Processing' && (
-          <Loader size={16} className="animate-spin-slow" />
-        )}
-      </div>
+      <OrderStatus status={status} orderId={orderId} />
     </div>
   )
 }
