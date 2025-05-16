@@ -85,6 +85,7 @@ type ZapContextType = {
   tokenOut: ZapToken
 
   amountOut?: string
+  minAmountOut?: string
   zapDustUSD?: number
   gasCost?: number
   priceImpact?: number
@@ -366,51 +367,57 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     refreshInterval: openSubmitModal ? 0 : REFRESH_INTERVAL,
   })
 
-  const [amountOut, priceImpact, zapDustUSD, gasCost, spender] = useMemo(() => {
-    if (!data || !data.result) {
-      return ['0', 0, 0, 0, undefined]
-    }
+  const [amountOut, minAmountOut, priceImpact, zapDustUSD, gasCost, spender] =
+    useMemo(() => {
+      if (!data || !data.result) {
+        return ['0', undefined, 0, 0, 0, undefined]
+      }
 
-    const _amountIn = formatUnits(
-      BigInt(data.result.amountIn),
-      tokenIn.decimals
-    )
+      const _amountIn = formatUnits(
+        BigInt(data.result.amountIn),
+        tokenIn.decimals
+      )
 
-    const _amountOut = formatUnits(
-      BigInt(data.result.amountOut),
-      tokenOut.decimals
-    )
+      const _amountOut = formatUnits(
+        BigInt(data.result.amountOut),
+        tokenOut.decimals
+      )
 
-    const estimatedGasCost = gas?.formatted?.gasPrice
-      ? (+(data.result.gas ?? 0) * +gas?.formatted?.gasPrice * ethPrice) / 1e9
-      : 0
+      const _minAmountOut = data.result?.minAmountOut
+        ? formatUnits(BigInt(data.result.minAmountOut), tokenOut.decimals)
+        : undefined
 
-    const inputPriceValue = (tokenIn?.price || 0) * Number(_amountIn) || 1
-    const outputPriceValue = (tokenOut?.price || 0) * Number(_amountOut)
-    const _priceImpact =
-      tokenIn?.price && tokenOut?.price
-        ? ((inputPriceValue -
-            (outputPriceValue + (data.result.dustValue ?? 0))) /
-            inputPriceValue) *
-          100
+      const estimatedGasCost = gas?.formatted?.gasPrice
+        ? (+(data.result.gas ?? 0) * +gas?.formatted?.gasPrice * ethPrice) / 1e9
         : 0
 
-    return [
-      _amountOut,
-      Math.max(0, _priceImpact),
-      data.result.dustValue ?? 0,
-      estimatedGasCost,
-      data.result.approvalAddress,
-    ]
-  }, [
-    data,
-    tokenIn.decimals,
-    tokenIn?.price,
-    tokenOut.decimals,
-    tokenOut?.price,
-    gas?.formatted?.gasPrice,
-    ethPrice,
-  ])
+      const inputPriceValue = (tokenIn?.price || 0) * Number(_amountIn) || 1
+      const outputPriceValue = (tokenOut?.price || 0) * Number(_amountOut)
+      const _priceImpact =
+        tokenIn?.price && tokenOut?.price
+          ? ((inputPriceValue -
+              (outputPriceValue + (data.result.dustValue ?? 0))) /
+              inputPriceValue) *
+            100
+          : 0
+
+      return [
+        _amountOut,
+        _minAmountOut,
+        Math.max(0, _priceImpact),
+        data.result.dustValue ?? 0,
+        estimatedGasCost,
+        data.result.approvalAddress,
+      ]
+    }, [
+      data,
+      tokenIn.decimals,
+      tokenIn?.price,
+      tokenOut.decimals,
+      tokenOut?.price,
+      gas?.formatted?.gasPrice,
+      ethPrice,
+    ])
 
   useEffect(() => {
     if (endpoint) {
@@ -617,6 +624,7 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
         tokenOut,
         error,
         amountOut,
+        minAmountOut,
         zapDustUSD,
         gasCost,
         priceImpact,

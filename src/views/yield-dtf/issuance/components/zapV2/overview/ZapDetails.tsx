@@ -1,17 +1,17 @@
+import Skeleton from 'react-loading-skeleton'
 import { Box, BoxProps, Text } from 'theme-ui'
+import { PRICE_IMPACT_THRESHOLD } from '../constants'
 import { useZap } from '../context/ZapContext'
 import { formatNumber, formatSlippage } from '../utils'
 import ZapGasCost from './ZapGasCost'
 import ZapRate from './ZapRate'
-import { PRICE_IMPACT_THRESHOLD } from '../constants'
-import Skeleton from 'react-loading-skeleton'
 
 interface Props extends BoxProps {
   hideGasCost?: boolean
 }
 
 const ZapDetails = ({ hideGasCost, ...props }: Props) => {
-  const { priceImpact, slippage, loadingZap } = useZap()
+  const { priceImpact, slippage, loadingZap, minAmountOut, tokenOut } = useZap()
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }} {...props}>
@@ -44,6 +44,17 @@ const ZapDetails = ({ hideGasCost, ...props }: Props) => {
           {formatSlippage(slippage)}
         </Text>
       </Box>
+      {minAmountOut && (
+        <Box
+          variant="layout.verticalAlign"
+          sx={{ justifyContent: 'space-between' }}
+        >
+          <Text sx={{ fontSize: 14 }}>Min. amount out</Text>
+          <Text sx={{ fontSize: 14, fontWeight: 500 }}>
+            {minAmountOut} {tokenOut?.symbol}
+          </Text>
+        </Box>
+      )}
       <Box
         variant="layout.verticalAlign"
         sx={{ justifyContent: 'space-between' }}

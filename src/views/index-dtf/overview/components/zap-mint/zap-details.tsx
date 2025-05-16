@@ -1,6 +1,6 @@
 import { SwapDetails } from '@/components/ui/swap'
 import { indexDTFAtom } from '@/state/dtf/atoms'
-import { formatCurrency, formatPercentage } from '@/utils'
+import { formatCurrency, formatPercentage, formatTokenAmount } from '@/utils'
 import { ZapResult } from '@/views/yield-dtf/issuance/components/zapV2/api'
 import Decimal from 'decimal.js-light'
 import { useAtomValue } from 'jotai'
@@ -64,6 +64,13 @@ const ZapDetails = ({ data }: { data: ZapResult }) => {
     )
   )
 
+  const minAmountOut = data.minAmountOut
+    ? formatUnits(
+        BigInt(data.minAmountOut),
+        dtfAsTokenIn ? selectedToken.decimals : 18
+      )
+    : undefined
+
   const amountInValue = new Decimal(data.amountInValue || 0)
   const ratio = amountIn.eq(0) ? undefined : amountOut.div(amountIn)
 
@@ -105,6 +112,21 @@ const ZapDetails = ({ data }: { data: ZapResult }) => {
           right: <ZapPriceImpact data={data} isDetail />,
           help: 'The impact your trade has on the market price.',
         },
+        ...(minAmountOut
+          ? [
+              {
+                left: (
+                  <span className="text-muted-foreground">Min Amount Out</span>
+                ),
+                right: (
+                  <span>
+                    {formatTokenAmount(Number(minAmountOut))} {tokenOutSymbol}
+                  </span>
+                ),
+                help: 'The minimum amount of tokens you will receive.',
+              },
+            ]
+          : []),
       ]}
     />
   )
