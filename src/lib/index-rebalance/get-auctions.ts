@@ -18,9 +18,10 @@ import { makeAuction } from './utils'
  * @param _currentBasket D18{1} Current balances
  * @param _targetBasket D18{1} Ideal basket
  * @param _prices {USD/wholeTok} USD prices for each *whole* token
- * @param _priceError {1} Price error, pass 1 to fully defer to auction launcher
+ * @param _priceError {1} Price error to apply to price and limit ranges, must be <1
  * @param _dtfPrice {USD/wholeShare} DTF price
- * @param tolerance D18{1} Tolerance for rebalancing to determine when to tolerance auction or not, default 0.1%
+ * @param tolerance D18{1} Tolerance for rebalancing to determine when to include an auction or not, default 3 bps
+ * @param _deferPrices If true, defer prices fully to auction launcher
  */
 export const getAuctions = (
   _supply: bigint,
@@ -31,7 +32,8 @@ export const getAuctions = (
   _prices: number[],
   _priceError: number[],
   _dtfPrice: number,
-  _tolerance: bigint = 10n ** 14n // 0.01%
+  _tolerance: bigint = 3n * 10n ** 14n, // 3 bps
+  _deferPrices: boolean = false
 ): Auction[] => {
   console.log(
     'getAuctions()',
@@ -147,7 +149,11 @@ export const getAuctions = (
 
     // {1}
     let avgPriceError = priceError[x].plus(priceError[y]).div(TWO)
-    if (priceError[x].gt(ONE) || priceError[y].gt(ONE)) {
+    if (
+      priceError[x].gte(ONE) ||
+      priceError[y].gte(ONE) ||
+      avgPriceError.gte(ONE)
+    ) {
       throw new Error('price error too large')
     }
 
@@ -162,12 +168,8 @@ export const getAuctions = (
     const price = prices[x].div(prices[y])
 
     // {wholeBuyTok/wholeSellTok} = {wholeBuyTok/wholeSellTok} / {1}
-    const startPrice = avgPriceError.eq(ONE)
-      ? ZERO
-      : price.div(ONE.minus(avgPriceError))
-    const endPrice = avgPriceError.eq(ONE)
-      ? ZERO
-      : price.mul(ONE.minus(avgPriceError))
+    const startPrice = _deferPrices ? ZERO : price.div(ONE.minus(avgPriceError))
+    const endPrice = _deferPrices ? ZERO : price.mul(ONE.minus(avgPriceError))
 
     // D27{tok/share} = {wholeTok/wholeShare} * D27 * {tok/wholeTok} / {share/wholeShare}
     let bnSellLimit = bn(
