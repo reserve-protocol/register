@@ -2,12 +2,7 @@ import Decimal from 'decimal.js-light'
 
 import { bn, D18d, D27d, ONE } from './numbers'
 
-import {
-  WeightControl,
-  PriceRange,
-  RebalanceLimits,
-  WeightRange,
-} from './types'
+import { PriceRange, RebalanceLimits, WeightRange } from './types'
 
 // Partial set of the args needed to call `startRebalance()`
 export interface StartRebalanceArgsPartial {
@@ -41,7 +36,7 @@ export const getStartRebalance = (
   _prices: number[],
   _priceError: number[],
   _dtfPrice: number,
-  weightControl: WeightControl
+  weightControl: boolean
 ): StartRebalanceArgsPartial => {
   // convert price number inputs to bigints
 
@@ -97,7 +92,7 @@ export const getStartRebalance = (
     // D27{tok/share}{wholeShare/wholeTok} = D27 * {tok/wholeTok} / {share/wholeShare}
     const limitMultiplier = D27d.mul(new Decimal(`1e${decimals[i]}`)).div(D18d)
 
-    if (weightControl == WeightControl.NONE) {
+    if (!weightControl) {
       // D27{tok/BU} = {wholeTok/wholeShare} * D27{tok/share}{wholeShare/wholeTok} / {BU/share}
       newWeights.push({
         low: bn(spotWeight.mul(limitMultiplier)),
@@ -142,7 +137,7 @@ export const getStartRebalance = (
   }
 
   // update low/high for tracking DTFs
-  if (weightControl == WeightControl.NONE) {
+  if (!weightControl) {
     // sum of dot product of targetBasket and priceError
     const totalPortion = targetBasket
       .map((portion: Decimal, i: number) => portion.mul(priceError[i]))

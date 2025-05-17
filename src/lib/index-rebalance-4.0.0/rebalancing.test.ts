@@ -1,12 +1,5 @@
 import { bn } from './numbers'
-import {
-  WeightRange,
-  PriceRange,
-  RebalanceLimits,
-  Rebalance,
-  PriceControl,
-  WeightControl,
-} from './types'
+import { WeightRange, PriceRange, RebalanceLimits, Rebalance } from './types'
 import { getBasketDistribution } from './utils'
 import { OpenAuctionArgs, getOpenAuction } from './open-auction'
 import { getStartRebalance } from './start-rebalance'
@@ -100,7 +93,7 @@ describe('NATIVE DTFs', () => {
       initialMarketPrices,
       priceErrorStartRebalance,
       dtfPrice,
-      WeightControl.SOME
+      true // weightControl: true for NATIVE-style weights and limits
     )
 
     expect(initialWeights.length).toBe(3)
@@ -151,14 +144,14 @@ describe('NATIVE DTFs', () => {
       startedAt: 0n,
       restrictedUntil: 0n,
       availableUntil: 0n,
-      priceControl: PriceControl.NONE, // For "no change" scenario, expect newPrices = initialPrices
+      priceControl: false, // For "no change" scenario, expect newPrices = initialPrices
     }
 
     const openAuctionArgs = getOpenAuction(
       mockRebalance,
-      folio, // _initialFolio is same as _folio for this test structure
+      folio, // _initialFolio
       targetBasket,
-      folio,
+      folio, // current _folio
       decimals,
       initialMarketPrices,
       auctionPriceError,
@@ -169,13 +162,13 @@ describe('NATIVE DTFs', () => {
       rebalanceNonce: 1n,
       tokens: tokens,
       newWeights: [bn('0'), bn('5e26'), bn('5e14')], // Because eject case
-      newPrices: initialPrices, // Because PriceControl.NONE
+      newPrices: initialPrices, // Because false
       newLimits: { low: bn('1e18'), spot: bn('1e18'), high: bn('1e18') },
     })
 
     // --- no change after uniform price appreciation ---
     const prices2 = [2, 2, 2]
-    // mockRebalance remains PriceControl.NONE
+    // mockRebalance remains false
     const openAuctionArgs2 = getOpenAuction(
       mockRebalance,
       folio, // _initialFolio
@@ -187,7 +180,7 @@ describe('NATIVE DTFs', () => {
       0.95
     )
     // newWeights and newLimits should be robust to uniform price scaling
-    // newPrices in OpenAuctionArgs will be initialPrices due to PriceControl.NONE
+    // newPrices in OpenAuctionArgs will be initialPrices due to false
     assertOpenAuctionArgsEqual(openAuctionArgs2, {
       rebalanceNonce: 1n,
       tokens: tokens,
@@ -198,7 +191,7 @@ describe('NATIVE DTFs', () => {
 
     // --- loss case ---
     const prices3 = [0.9, 1, 1]
-    mockRebalance.priceControl = PriceControl.SOME // Now allow prices to adjust
+    mockRebalance.priceControl = true // Now allow prices to adjust
 
     const openAuctionArgs3 = getOpenAuction(
       mockRebalance,
@@ -211,7 +204,7 @@ describe('NATIVE DTFs', () => {
       0.95
     )
 
-    // Expected newPrices with PriceControl.SOME and prices3
+    // Expected newPrices with priceControl=true and prices3
     // USDC (price 0.9, dec 6, err 0.01): low(0.9*0.99), high(0.9/0.99) -> D27 scale
     // initialPrices[0]: { low: 0.9e21, high: 1.111e21 }
     // current based: low(0.891e21), high(0.90909e21)
@@ -252,7 +245,7 @@ describe('NATIVE DTFs', () => {
 
     // --- gain case ---
     const prices4 = [1.1, 1, 1]
-    // mockRebalance.priceControl is still PriceControl.SOME
+    // mockRebalance.priceControl is still true
     const openAuctionArgs4 = getOpenAuction(
       mockRebalance,
       folio, // _initialFolio
@@ -264,7 +257,7 @@ describe('NATIVE DTFs', () => {
       0.95
     )
 
-    // Expected newPrices with PriceControl.SOME and prices4
+    // Expected newPrices with priceControl=true and prices4
     // USDC (price 1.1, dec 6, err 0.01): low(1.1*0.99=1.089), high(1.1/0.99=1.11111)
     // initialPrices[0]: { low: 0.9e21, high: 1.111111e21 }
     // constrained: low=max(1.089e21,0.9e21)=1.089e21. high=min(1.1111111e21,1.1111111e21)=1.1111111e21
@@ -312,7 +305,7 @@ describe('NATIVE DTFs', () => {
       initialMarketPrices,
       priceErrorStartRebalance,
       dtfPrice,
-      WeightControl.SOME
+      true // weightControl: true
     )
 
     expect(initialWeights.length).toBe(3)
@@ -365,7 +358,7 @@ describe('NATIVE DTFs', () => {
       startedAt: 0n,
       restrictedUntil: 0n,
       availableUntil: 0n,
-      priceControl: PriceControl.NONE,
+      priceControl: false,
     }
 
     const openAuctionArgs = getOpenAuction(
@@ -393,7 +386,7 @@ describe('NATIVE DTFs', () => {
 
     // --- no change after uniform price appreciation ---
     const prices2 = [2, 2, 2]
-    // mockRebalance.priceControl is PriceControl.NONE
+    // mockRebalance.priceControl is false
     const openAuctionArgs2 = getOpenAuction(
       mockRebalance,
       folio, // _initialFolio
@@ -413,14 +406,14 @@ describe('NATIVE DTFs', () => {
         bn('0'),
         bn('0'),
       ],
-      newPrices: initialPrices, // Due to PriceControl.NONE
+      newPrices: initialPrices, // Due to false
       newLimits: { low: bn('1e18'), spot: bn('1e18'), high: bn('1e18') },
     })
 
     // --- gain case (for USDC, the asset we are buying) ---
     // Current prices: USDC price drops (0.9), making it cheaper to buy
     const prices3 = [0.9, 1, 1] // USDC price drops, good for us as we target USDC
-    mockRebalance.priceControl = PriceControl.SOME
+    mockRebalance.priceControl = true
 
     const openAuctionArgs3 = getOpenAuction(
       mockRebalance,
@@ -473,7 +466,7 @@ describe('NATIVE DTFs', () => {
     // --- loss case (for USDC, the asset we are buying) ---
     // Current prices: USDC price rises (1.1), making it more expensive
     const prices4 = [1.1, 1, 1] // USDC price rises
-    // mockRebalance.priceControl is PriceControl.SOME
+    // mockRebalance.priceControl is true
     const openAuctionArgs4 = getOpenAuction(
       mockRebalance,
       folio, // _initialFolio
@@ -532,7 +525,7 @@ describe('NATIVE DTFs', () => {
       prices,
       priceError,
       1, // dtfPrice
-      WeightControl.SOME
+      true // weightControl: true
     )
     expect(newWeights.length).toBe(2)
     expect(newPricesResult.length).toBe(2)
@@ -608,7 +601,7 @@ describe('NATIVE DTFs', () => {
         prices,
         priceError,
         prices[0] || 1, // dtfPrice, use first token's price or 1
-        WeightControl.SOME
+        true // weightControl: true
       )
       expect(newWeights.length).toBe(currentTokens.length)
       expect(newPricesResult.length).toBe(currentTokens.length)
@@ -643,7 +636,7 @@ describe('TRACKING DTF Rebalance: USDC -> DAI/USDT Sequence', () => {
     initialMarketPrices,
     priceErrorStartRebalance,
     dtfPrice,
-    WeightControl.NONE
+    false // weightControl: false for TRACKING-style weights and limits
   )
 
   it('Step 0: Verifies initial setup from getStartRebalance (TRACKING)', () => {
@@ -705,7 +698,7 @@ describe('TRACKING DTF Rebalance: USDC -> DAI/USDT Sequence', () => {
     const currentMarketPrices1 = [1, 1, 1]
     const mockRebalance1: Rebalance = {
       ...mockRebalanceBase,
-      priceControl: PriceControl.SOME,
+      priceControl: true,
     }
 
     const openAuctionArgs1 = getOpenAuction(
@@ -754,7 +747,7 @@ describe('TRACKING DTF Rebalance: USDC -> DAI/USDT Sequence', () => {
     const currentMarketPrices2 = [1, 1, 1]
     const mockRebalance2: Rebalance = {
       ...mockRebalanceBase,
-      priceControl: PriceControl.SOME,
+      priceControl: true,
     }
 
     const openAuctionArgs2 = getOpenAuction(
@@ -807,7 +800,7 @@ describe('TRACKING DTF Rebalance: USDC -> DAI/USDT Sequence', () => {
     const currentMarketPrices3 = [1, 1, 1]
     const mockRebalance3: Rebalance = {
       ...mockRebalanceBase,
-      priceControl: PriceControl.SOME,
+      priceControl: true,
     }
 
     const openAuctionArgs3 = getOpenAuction(
@@ -893,7 +886,7 @@ describe('Hybrid Rebalance Scenario (Manually Constructed Rebalance Object)', ()
     // For this scenario, _initialFolio is _folio. relativeProgression = 0.
     const mockRebalanceHybrid: Rebalance = {
       ...mockRebalanceHybridBase,
-      priceControl: PriceControl.SOME,
+      priceControl: true,
     }
 
     const openAuctionArgs = getOpenAuction(
@@ -950,7 +943,7 @@ describe('Hybrid Rebalance Scenario (Manually Constructed Rebalance Object)', ()
     // For this scenario, _initialFolio is _folio. relativeProgression = 0.
     const mockRebalanceHybrid: Rebalance = {
       ...mockRebalanceHybridBase,
-      priceControl: PriceControl.SOME,
+      priceControl: true,
     }
 
     const openAuctionArgs = getOpenAuction(
@@ -1000,7 +993,7 @@ describe('Hybrid Rebalance Scenario (Manually Constructed Rebalance Object)', ()
     const finalStageAtCustom = 0.8
     const mockRebalanceHybridCustom: Rebalance = {
       ...mockRebalanceHybridBase,
-      priceControl: PriceControl.SOME,
+      priceControl: true,
     }
 
     // --- Round 1: Progression (0.7) < finalStageAtCustom - 0.02 (0.78) ---
@@ -1124,7 +1117,6 @@ describe('Price Clamping Edge Cases in getOpenAuction', () => {
       nonce: 4n,
       tokens: tokens,
       weights: [
-        // Non-zero weights needed for buValue calculation, but exact values less critical here
         { low: bn('4.5e14'), spot: bn('5e14'), high: bn('5.5e14') },
         { low: bn('4.5e26'), spot: bn('5e26'), high: bn('5.5e26') },
       ],
@@ -1134,7 +1126,7 @@ describe('Price Clamping Edge Cases in getOpenAuction', () => {
       startedAt: 0n,
       restrictedUntil: 0n,
       availableUntil: 0n,
-      priceControl: PriceControl.SOME,
+      priceControl: true,
     }
 
     // Current USDC market price is $1.0, auction error 0.01

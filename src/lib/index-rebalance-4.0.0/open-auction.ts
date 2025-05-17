@@ -2,13 +2,7 @@ import Decimal from 'decimal.js-light'
 
 import { bn, D18d, D18n, D27d, ONE, ZERO } from './numbers'
 
-import {
-  PriceControl,
-  PriceRange,
-  Rebalance,
-  RebalanceLimits,
-  WeightRange,
-} from './types'
+import { PriceRange, Rebalance, RebalanceLimits, WeightRange } from './types'
 
 // All the args needed to call `folio.openAuction()`
 export interface OpenAuctionArgs {
@@ -270,7 +264,7 @@ export const getOpenAuction = (
 
   // D27{USD/tok}
   const newPrices = rebalance.initialPrices.map((initialPrice, i) => {
-    if (rebalance.priceControl == PriceControl.NONE) {
+    if (!rebalance.priceControl) {
       return initialPrice
     }
 
