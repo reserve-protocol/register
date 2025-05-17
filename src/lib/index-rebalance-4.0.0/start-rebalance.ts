@@ -2,7 +2,12 @@ import Decimal from 'decimal.js-light'
 
 import { bn, D18d, D27d, ONE } from './numbers'
 
-import { DTFType, PriceRange, RebalanceLimits, WeightRange } from './types'
+import {
+  WeightControl,
+  PriceRange,
+  RebalanceLimits,
+  WeightRange,
+} from './types'
 
 // Partial set of the args needed to call `startRebalance()`
 export interface StartRebalanceArgsPartial {
@@ -26,7 +31,7 @@ export interface StartRebalanceArgsPartial {
  * @param _prices {USD/wholeTok} USD prices for each *whole* token
  * @param _priceError {1} Price error per token to use in the rebalanc; should be larger than price error during openAuction
  * @param _dtfPrice {USD/wholeShare} DTF price
- * @param dtfType DTFType.TRACKING or DTFType.NATIVE
+ * @param weightControl WeightControl.NONE or WeightControl.SOME
  */
 export const getStartRebalance = (
   _supply: bigint,
@@ -36,7 +41,7 @@ export const getStartRebalance = (
   _prices: number[],
   _priceError: number[],
   _dtfPrice: number,
-  dtfType: DTFType
+  weightControl: WeightControl
 ): StartRebalanceArgsPartial => {
   // convert price number inputs to bigints
 
@@ -92,7 +97,7 @@ export const getStartRebalance = (
     // D27{tok/share}{wholeShare/wholeTok} = D27 * {tok/wholeTok} / {share/wholeShare}
     const limitMultiplier = D27d.mul(new Decimal(`1e${decimals[i]}`)).div(D18d)
 
-    if (dtfType == DTFType.TRACKING) {
+    if (weightControl == WeightControl.NONE) {
       // D27{tok/BU} = {wholeTok/wholeShare} * D27{tok/share}{wholeShare/wholeTok} / {BU/share}
       newWeights.push({
         low: bn(spotWeight.mul(limitMultiplier)),
@@ -137,7 +142,7 @@ export const getStartRebalance = (
   }
 
   // update low/high for tracking DTFs
-  if (dtfType == DTFType.TRACKING) {
+  if (weightControl == WeightControl.NONE) {
     // sum of dot product of targetBasket and priceError
     const totalPortion = targetBasket
       .map((portion: Decimal, i: number) => portion.mul(priceError[i]))

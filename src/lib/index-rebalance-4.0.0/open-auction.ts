@@ -255,22 +255,24 @@ export const getOpenAuction = (
       ),
     }
 
-    if (rebalance.priceControl == PriceControl.PARTIAL) {
-      // low
-      if (pricesD27.low < initialPrice.low) {
-        pricesD27.low = initialPrice.low
-      }
-      if (pricesD27.low > initialPrice.high) {
-        pricesD27.low = initialPrice.high
-      }
+    // low
+    if (pricesD27.low < initialPrice.low) {
+      pricesD27.low = initialPrice.low
+    }
+    if (pricesD27.low > initialPrice.high) {
+      pricesD27.low = initialPrice.high
+    }
 
-      // high
-      if (pricesD27.high < initialPrice.low) {
-        pricesD27.high = initialPrice.low
-      }
-      if (pricesD27.high > initialPrice.high) {
-        pricesD27.high = initialPrice.high
-      }
+    // high
+    if (pricesD27.high < initialPrice.low) {
+      pricesD27.high = initialPrice.low
+    }
+    if (pricesD27.high > initialPrice.high) {
+      pricesD27.high = initialPrice.high
+    }
+
+    if (pricesD27.low == pricesD27.high) {
+      throw new Error('no price range')
     }
 
     return pricesD27

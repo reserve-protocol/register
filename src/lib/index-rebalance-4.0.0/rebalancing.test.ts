@@ -5,7 +5,7 @@ import {
   RebalanceLimits,
   Rebalance,
   PriceControl,
-  DTFType,
+  WeightControl,
 } from './types'
 import { getBasketDistribution } from './utils'
 import { OpenAuctionArgs, getOpenAuction } from './open-auction'
@@ -100,7 +100,7 @@ describe('NATIVE DTFs', () => {
       initialMarketPrices,
       priceErrorStartRebalance,
       dtfPrice,
-      DTFType.NATIVE
+      WeightControl.SOME
     )
 
     expect(initialWeights.length).toBe(3)
@@ -196,7 +196,7 @@ describe('NATIVE DTFs', () => {
 
     // --- loss case ---
     const prices3 = [0.9, 1, 1]
-    mockRebalance.priceControl = PriceControl.PARTIAL // Now allow prices to adjust
+    mockRebalance.priceControl = PriceControl.SOME // Now allow prices to adjust
 
     const openAuctionArgs3 = getOpenAuction(
       mockRebalance,
@@ -208,7 +208,7 @@ describe('NATIVE DTFs', () => {
       0.95
     )
 
-    // Expected newPrices with PriceControl.PARTIAL and prices3
+    // Expected newPrices with PriceControl.SOME and prices3
     // USDC (price 0.9, dec 6, err 0.01): low(0.9*0.99), high(0.9/0.99) -> D27 scale
     // initialPrices[0]: { low: 0.9e21, high: 1.111e21 }
     // current based: low(0.891e21), high(0.90909e21)
@@ -249,7 +249,7 @@ describe('NATIVE DTFs', () => {
 
     // --- gain case ---
     const prices4 = [1.1, 1, 1]
-    // mockRebalance.priceControl is still PriceControl.PARTIAL
+    // mockRebalance.priceControl is still PriceControl.SOME
     const openAuctionArgs4 = getOpenAuction(
       mockRebalance,
       targetBasket,
@@ -260,7 +260,7 @@ describe('NATIVE DTFs', () => {
       0.95
     )
 
-    // Expected newPrices with PriceControl.PARTIAL and prices4
+    // Expected newPrices with PriceControl.SOME and prices4
     // USDC (price 1.1, dec 6, err 0.01): low(1.1*0.99=1.089), high(1.1/0.99=1.11111)
     // initialPrices[0]: { low: 0.9e21, high: 1.111111e21 }
     // constrained: low=max(1.089e21,0.9e21)=1.089e21. high=min(1.1111111e21,1.1111111e21)=1.1111111e21
@@ -308,7 +308,7 @@ describe('NATIVE DTFs', () => {
       initialMarketPrices,
       priceErrorStartRebalance,
       dtfPrice,
-      DTFType.NATIVE
+      WeightControl.SOME
     )
 
     expect(initialWeights.length).toBe(3)
@@ -414,7 +414,7 @@ describe('NATIVE DTFs', () => {
     // --- gain case (for USDC, the asset we are buying) ---
     // Current prices: USDC price drops (0.9), making it cheaper to buy
     const prices3 = [0.9, 1, 1] // USDC price drops, good for us as we target USDC
-    mockRebalance.priceControl = PriceControl.PARTIAL
+    mockRebalance.priceControl = PriceControl.SOME
 
     const openAuctionArgs3 = getOpenAuction(
       mockRebalance,
@@ -466,7 +466,7 @@ describe('NATIVE DTFs', () => {
     // --- loss case (for USDC, the asset we are buying) ---
     // Current prices: USDC price rises (1.1), making it more expensive
     const prices4 = [1.1, 1, 1] // USDC price rises
-    // mockRebalance.priceControl is PriceControl.PARTIAL
+    // mockRebalance.priceControl is PriceControl.SOME
     const openAuctionArgs4 = getOpenAuction(
       mockRebalance,
       targetBasket,
@@ -524,7 +524,7 @@ describe('NATIVE DTFs', () => {
       prices,
       priceError,
       1, // dtfPrice
-      DTFType.NATIVE
+      WeightControl.SOME
     )
     expect(newWeights.length).toBe(2)
     expect(newPricesResult.length).toBe(2)
@@ -600,7 +600,7 @@ describe('NATIVE DTFs', () => {
         prices,
         priceError,
         prices[0] || 1, // dtfPrice, use first token's price or 1
-        DTFType.NATIVE
+        WeightControl.SOME
       )
       expect(newWeights.length).toBe(currentTokens.length)
       expect(newPricesResult.length).toBe(currentTokens.length)
@@ -633,7 +633,7 @@ describe('TRACKING DTF Rebalance: USDC -> DAI/USDT Sequence', () => {
     initialMarketPrices,
     priceErrorStartRebalance,
     dtfPrice,
-    DTFType.TRACKING
+    WeightControl.NONE
   )
 
   it('Step 0: Verifies initial setup from getStartRebalance (TRACKING)', () => {
@@ -695,7 +695,7 @@ describe('TRACKING DTF Rebalance: USDC -> DAI/USDT Sequence', () => {
     const currentMarketPrices1 = [1, 1, 1]
     const mockRebalance1: Rebalance = {
       ...mockRebalanceBase,
-      priceControl: PriceControl.PARTIAL,
+      priceControl: PriceControl.SOME,
     }
 
     const openAuctionArgs1 = getOpenAuction(
@@ -741,7 +741,7 @@ describe('TRACKING DTF Rebalance: USDC -> DAI/USDT Sequence', () => {
     const currentMarketPrices2 = [1, 1, 1]
     const mockRebalance2: Rebalance = {
       ...mockRebalanceBase,
-      priceControl: PriceControl.PARTIAL,
+      priceControl: PriceControl.SOME,
     }
 
     const openAuctionArgs2 = getOpenAuction(
@@ -792,7 +792,7 @@ describe('TRACKING DTF Rebalance: USDC -> DAI/USDT Sequence', () => {
     const currentMarketPrices3 = [1, 1, 1]
     const mockRebalance3: Rebalance = {
       ...mockRebalanceBase,
-      priceControl: PriceControl.PARTIAL,
+      priceControl: PriceControl.SOME,
     }
 
     const openAuctionArgs3 = getOpenAuction(
@@ -877,7 +877,7 @@ describe('Hybrid Rebalance Scenario (Manually Constructed Rebalance Object)', ()
     const _folio = [bn('0'), bn('3e17'), bn('7e5')]
     const mockRebalanceHybrid: Rebalance = {
       ...mockRebalanceHybridBase,
-      priceControl: PriceControl.PARTIAL,
+      priceControl: PriceControl.SOME,
     }
 
     const openAuctionArgs = getOpenAuction(
@@ -934,7 +934,7 @@ describe('Hybrid Rebalance Scenario (Manually Constructed Rebalance Object)', ()
     const _folio = [bn('0'), bn('4.8e17'), bn('5.2e5')]
     const mockRebalanceHybrid: Rebalance = {
       ...mockRebalanceHybridBase,
-      priceControl: PriceControl.PARTIAL,
+      priceControl: PriceControl.SOME,
     }
 
     const openAuctionArgs = getOpenAuction(
@@ -984,7 +984,7 @@ describe('Hybrid Rebalance Scenario (Manually Constructed Rebalance Object)', ()
     const finalStageAtCustom = 0.8
     const mockRebalanceHybridCustom: Rebalance = {
       ...mockRebalanceHybridBase,
-      priceControl: PriceControl.PARTIAL,
+      priceControl: PriceControl.SOME,
     }
 
     // --- Round 1: Progression (0.7) < finalStageAtCustom - 0.01 (0.79) ---

@@ -1,12 +1,11 @@
-export enum DTFType {
-  TRACKING = 0,
-  NATIVE = 1,
+export enum WeightControl {
+  NONE = 0,
+  SOME = 1,
 }
 
 export enum PriceControl {
   NONE = 0,
-  PARTIAL = 1,
-  FULL = 2,
+  SOME = 1,
 }
 
 export interface RebalanceLimits {
