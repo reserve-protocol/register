@@ -1,6 +1,6 @@
 import Decimal from 'decimal.js-light'
 
-import { bn, D18d, D18n, D27d, ONE } from './numbers'
+import { bn, D18d, D18n, D27d, ONE, ZERO } from './numbers'
 
 import {
   PriceControl,
@@ -25,21 +25,23 @@ export interface OpenAuctionArgs {
  * Non-AUCTION_LAUNCHERs should use `folio.openAuctionUnrestricted()`
  *
  * @param rebalance The result of calling folio.getRebalance()
+ * @param _initialFolio D18{tok/share} Initial balances per share, e.g result of folio.toAssets(1e18, 0) at time rebalance was first proposed
  * @param _targetBasket D18{1} The target basket to rebalance into
  * @param _folio D18{tok/share} Current ratio of token per share, e.g result of folio.toAssets(1e18, 0)
  * @param _decimals Decimals of each token
  * @param _prices {USD/wholeTok} USD prices for each *whole* token
  * @param _priceError {1} Price error to use for each token during auction pricing; should be smaller than price error during startRebalance
- * @param _finalStageAt {1} The % rebalanced to determine when is the final stage of the rebalance
+ * @param _finalStageAt {1} The % rebalanced from the initial Folio to determine when is the final stage of the rebalance
  */
 export const getOpenAuction = (
   rebalance: Rebalance,
+  _initialFolio: bigint[] = [],
   _targetBasket: bigint[] = [],
   _folio: bigint[],
   _decimals: bigint[],
   _prices: number[],
   _priceError: number[],
-  _finalStageAt: number = 0.95
+  _finalStageAt: number = 0.9
 ): OpenAuctionArgs => {
   console.log('getOpenAuction')
 
@@ -76,6 +78,11 @@ export const getOpenAuction = (
 
   // {tok/wholeTok}
   const decimalScale = _decimals.map((a) => new Decimal(`1e${a}`))
+
+  // {wholeTok/wholeShare} = D18{tok/share} * {share/wholeShare} / {tok/wholeTok} / D18
+  const initialFolio = _initialFolio.map((c: bigint, i: number) =>
+    new Decimal(c.toString()).div(decimalScale[i])
+  )
 
   // {wholeTok/wholeShare} = D18{tok/share} * {share/wholeShare} / {tok/wholeTok} / D18
   const folio = _folio.map((c: bigint, i: number) =>
@@ -134,7 +141,7 @@ export const getOpenAuction = (
   // {1} = {wholeTok/wholeShare} * {USD/wholeTok} / {USD/wholeShare}
   const portionBeingEjected = ejectionIndices
     .map((i) => folio[i].mul(prices[i]))
-    .reduce((a, b) => a.add(b))
+    .reduce((a, b) => a.add(b), ZERO)
     .div(shareValue)
 
   // {1} = {USD/wholeShare} / {USD/wholeShare}
@@ -154,13 +161,35 @@ export const getOpenAuction = (
     .reduce((a, b) => a.add(b))
     .div(shareValue)
 
+  // {1} = {USD/wholeShare} / {USD/wholeShare}
+  const initialProgression = initialFolio
+    .map((initialBalance, i) => {
+      // {wholeTok/wholeShare} = {USD/wholeShare} * {1} / {USD/wholeTok}
+      const balanceExpected = shareValue.mul(targetBasket[i]).div(prices[i])
+
+      // {wholeTok/wholeShare} = {wholeTok/wholeBU} * {wholeBU/wholeShare}
+      const balanceInBU = balanceExpected.gt(initialBalance)
+        ? initialBalance
+        : balanceExpected
+
+      // {USD/wholeShare} = {wholeTok/wholeShare} * {USD/wholeTok}
+      return balanceInBU.mul(prices[i])
+    })
+    .reduce((a, b) => a.add(b))
+    .div(shareValue)
+
+  // {1} = {1} / {1}
+  const relativeProgression = progression
+    .sub(initialProgression)
+    .div(ONE.sub(initialProgression))
+
   // make it an eject auction if there is 1 bps or more of value to eject
   if (portionBeingEjected.gte(1e-4)) {
     buyTarget = progression.add(portionBeingEjected.mul(1.5)) // set buyTarget to 50% more than needed, to ensure ejection completes
     if (buyTarget.gt(ONE)) {
       buyTarget = ONE
     }
-  } else if (progression.lt(finalStageAt.sub(0.01))) {
+  } else if (relativeProgression.lt(finalStageAt.sub(0.02))) {
     // wiggle room to prevent having to re-run an auction at the same stage after price movement
     buyTarget = finalStageAt
   }
