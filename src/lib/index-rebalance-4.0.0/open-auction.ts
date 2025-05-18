@@ -8,7 +8,7 @@ import { PriceRange, Rebalance, RebalanceLimits, WeightRange } from './types'
 export interface OpenAuctionArgs {
   rebalanceNonce: bigint
   tokens: string[]
-  newWeights: bigint[]
+  newWeights: WeightRange[]
   newPrices: PriceRange[]
   newLimits: RebalanceLimits
 }
@@ -121,9 +121,7 @@ export const getOpenAuction = (
 
   // ================================================================
 
-  // calculate buyTarget
-
-  let buyTarget = ONE
+  // calculate rebalanceTarget
 
   const ejectionIndices: number[] = []
   for (let i = 0; i < rebalance.weights.length; i++) {
@@ -139,7 +137,7 @@ export const getOpenAuction = (
     .div(shareValue)
 
   // {1} = {USD/wholeShare} / {USD/wholeShare}
-  const progression = folio
+  let progression = folio
     .map((actualBalance, i) => {
       // {wholeTok/wholeShare} = {USD/wholeShare} * {1} / {USD/wholeTok}
       const balanceExpected = shareValue.mul(targetBasket[i]).div(prices[i])
@@ -172,37 +170,43 @@ export const getOpenAuction = (
     .reduce((a, b) => a.add(b))
     .div(shareValue)
 
+  if (progression < initialProgression) {
+    progression = initialProgression // don't go backwards
+  }
+
   // {1} = {1} / {1}
-  const relativeProgression = progression
-    .sub(initialProgression)
-    .div(ONE.sub(initialProgression))
+  const relativeProgression = initialProgression.eq(ONE)
+    ? ONE
+    : progression.sub(initialProgression).div(ONE.sub(initialProgression))
+
+  let rebalanceTarget = ONE
 
   // make it an eject auction if there is 1 bps or more of value to eject
   if (portionBeingEjected.gte(1e-4)) {
-    buyTarget = progression.add(portionBeingEjected.mul(1.5)) // set buyTarget to 50% more than needed, to ensure ejection completes
-    if (buyTarget.gt(ONE)) {
-      buyTarget = ONE
+    rebalanceTarget = progression.add(portionBeingEjected.mul(1.5)) // set rebalanceTarget to 50% more than needed, to ensure ejection completes
+    if (rebalanceTarget.gt(ONE)) {
+      rebalanceTarget = ONE
     }
   } else if (relativeProgression.lt(finalStageAt.sub(0.02))) {
     // wiggle room to prevent having to re-run an auction at the same stage after price movement
-    buyTarget = finalStageAt
+    rebalanceTarget = finalStageAt
   }
+
+  // {1}
+  const delta = ONE.sub(rebalanceTarget)
 
   // ================================================================
 
   // get new limits, constrained by extremes
 
   // {wholeBU/wholeShare} = {USD/wholeShare} / {USD/wholeBU}
-  const idealSpotLimit = shareValue.div(buValue)
-
-  // {BU/share} = {wholeBU/wholeShare} * {1}
-  const limitDelta = idealSpotLimit.mul(ONE.sub(buyTarget))
+  const spotLimit = shareValue.div(buValue)
 
   // D18{BU/share} = {wholeBU/wholeShare} * D18 * {1}
   const newLimits = {
-    low: bn(idealSpotLimit.sub(limitDelta).mul(D18d)),
-    spot: bn(idealSpotLimit.mul(D18d)),
-    high: bn(idealSpotLimit.add(limitDelta).mul(D18d)),
+    low: bn(spotLimit.sub(spotLimit.mul(delta)).mul(D18d)),
+    spot: bn(spotLimit.mul(D18d)),
+    high: bn(spotLimit.add(spotLimit.mul(delta)).mul(D18d)),
   }
 
   // low
@@ -234,28 +238,58 @@ export const getOpenAuction = (
   // get new weights, constrained by extremes
 
   // {wholeBU/wholeShare} = D18{BU/share} / D18
-  const actualSpotLimit = new Decimal(newLimits.spot.toString()).div(D18d)
+  const actualLimits = {
+    low: new Decimal(newLimits.low.toString()).div(D18d),
+    spot: new Decimal(newLimits.spot.toString()).div(D18d),
+    high: new Decimal(newLimits.high.toString()).div(D18d),
+  }
 
   // D27{tok/BU}
   const newWeights = rebalance.weights.map((weightRange, i) => {
     // {wholeTok/wholeBU} = {USD/wholeShare} * {1} / {wholeBU/wholeShare} / {USD/wholeTok}
-    const idealSpotWeight = shareValue
+    const idealWeight = shareValue
       .mul(targetBasket[i])
-      .div(actualSpotLimit)
+      .div(actualLimits.spot)
       .div(prices[i])
 
     // D27{tok/BU} = {wholeTok/wholeBU} * D27 * {tok/wholeTok} / {BU/wholeBU}
-    let idealSpotWeightD27 = bn(
-      idealSpotWeight.mul(D27d).mul(decimalScale[i]).div(D18d)
-    )
-
-    if (idealSpotWeightD27 < weightRange.low) {
-      idealSpotWeightD27 = weightRange.low
-    } else if (idealSpotWeightD27 > weightRange.high) {
-      idealSpotWeightD27 = weightRange.high
+    const newWeightsD27 = {
+      low: bn(
+        idealWeight
+          .mul(rebalanceTarget.div(actualLimits.low.div(actualLimits.spot))) // add remaining delta into weight
+          .mul(D27d)
+          .mul(decimalScale[i])
+          .div(D18d)
+      ),
+      spot: bn(idealWeight.mul(D27d).mul(decimalScale[i]).div(D18d)),
+      high: bn(
+        idealWeight
+          .mul(ONE.add(delta).div(actualLimits.high.div(actualLimits.spot))) // add remaining delta into weight
+          .mul(D27d)
+          .mul(decimalScale[i])
+          .div(D18d)
+      ),
     }
 
-    return idealSpotWeightD27
+    if (newWeightsD27.low < weightRange.low) {
+      newWeightsD27.low = weightRange.low
+    } else if (newWeightsD27.low > weightRange.high) {
+      newWeightsD27.low = weightRange.high
+    }
+
+    if (newWeightsD27.spot < weightRange.low) {
+      newWeightsD27.spot = weightRange.low
+    } else if (newWeightsD27.spot > weightRange.high) {
+      newWeightsD27.spot = weightRange.high
+    }
+
+    if (newWeightsD27.high < weightRange.low) {
+      newWeightsD27.high = weightRange.low
+    } else if (newWeightsD27.high > weightRange.high) {
+      newWeightsD27.high = weightRange.high
+    }
+
+    return newWeightsD27
   })
 
   // ================================================================

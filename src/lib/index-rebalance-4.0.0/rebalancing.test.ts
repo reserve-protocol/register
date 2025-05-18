@@ -4,7 +4,7 @@ import { getBasketDistribution } from './utils'
 import { OpenAuctionArgs, getOpenAuction } from './open-auction'
 import { getStartRebalance } from './start-rebalance'
 
-const PRECISION = bn('1e3') // 1-part-in-1000 only
+const PRECISION = bn('1e3') // 1-part-in-1000
 
 const assertApproxEq = (
   a: bigint,
@@ -25,7 +25,7 @@ const assertApproxEq = (
   }
 }
 
-const assertBasketRangesEqual = (a: WeightRange, b: WeightRange) => {
+const assertRangesEqual = (a: WeightRange, b: WeightRange) => {
   assertApproxEq(a.low, b.low)
   assertApproxEq(a.spot, b.spot)
   assertApproxEq(a.high, b.high)
@@ -56,7 +56,7 @@ const assertOpenAuctionArgsEqual = (
 
   expect(a.newWeights.length).toBe(b.newWeights.length)
   for (let i = 0; i < a.newWeights.length; i++) {
-    assertApproxEq(a.newWeights[i], b.newWeights[i], precision)
+    assertRangesEqual(a.newWeights[i], b.newWeights[i])
   }
 
   expect(a.newPrices.length).toBe(b.newPrices.length)
@@ -71,439 +71,642 @@ const assertOpenAuctionArgsEqual = (
 describe('NATIVE DTFs', () => {
   const supply = bn('1e21') // 1000 supply
   const auctionPriceError = [0.01, 0.01, 0.01] // Smaller price error for getOpenAuction
+  const finalStageAtForTest = 0.95 // Standard finalStageAt
 
-  it('stables: [100%, 0%, 0%] -> [0%, 50%, 50%]', () => {
+  // Common expected prices for tokens [USDC (6dec), DAI (18dec), USDT (6dec)]
+  // when market prices are [1,1,1], auctionPriceError is [0.01,0.01,0.01], and priceControl=true,
+  // and initialPrices allow this range.
+  const defaultExpectedPrices_USDC_DAI_USDT: PriceRange[] = [
+    { low: bn('9.9e20'), high: bn('1.01010e21') }, // USDC (D27 from $1, 6dec)
+    { low: bn('9.9e8'), high: bn('1.01010e9') }, // DAI (D27 from $1, 18dec)
+    { low: bn('9.9e20'), high: bn('1.01010e21') }, // USDT (D27 from $1, 6dec)
+  ]
+
+  describe('Rebalancing from 100% USDC to 0% USDC, 50% DAI, 50% USDT', () => {
     const tokens = ['USDC', 'DAI', 'USDT']
-    const decimals = [bn('6'), bn('18'), bn('6')]
-    const initialMarketPrices = [1, 1, 1]
-    const priceErrorStartRebalance = [0.1, 0.1, 0.1]
-    const dtfPrice = 1
-    const folio = [bn('1e6'), bn('0'), bn('0')] // USDC heavy
-    const targetBasket = [bn('0'), bn('0.5e18'), bn('0.5e18')]
-
-    const {
-      weights: initialWeights,
-      prices: initialPrices,
-      limits: initialLimits,
-    } = getStartRebalance(
-      supply,
-      tokens,
-      decimals,
-      targetBasket,
-      initialMarketPrices,
-      priceErrorStartRebalance,
-      dtfPrice,
-      true // weightControl: true for NATIVE-style weights and limits
-    )
-
-    expect(initialWeights.length).toBe(3)
-    expect(initialPrices.length).toBe(3)
-
-    assertBasketRangesEqual(initialWeights[0], {
-      low: bn('0'),
-      spot: bn('0'),
-      high: bn('0'),
-    })
-    assertBasketRangesEqual(initialWeights[1], {
-      low: bn('4.5e26'),
-      spot: bn('5e26'),
-      high: bn('5.55556e26'), // Approximation of 0.5 / 0.9
-    })
-    assertBasketRangesEqual(initialWeights[2], {
-      low: bn('4.5e14'),
-      spot: bn('5e14'),
-      high: bn('5.55556e14'), // Approximation of 0.5 / 0.9
-    })
-
-    assertPricesEqual(initialPrices[0], {
-      low: bn('9e20'),
-      high: bn('1.11111e21'), // Approximation of 1 / 0.9
-    })
-    assertPricesEqual(initialPrices[1], {
-      low: bn('9e8'),
-      high: bn('1.11111e9'),
-    })
-    assertPricesEqual(initialPrices[2], {
-      low: bn('9e20'),
-      high: bn('1.11111e21'),
-    })
-    assertRebalanceLimitsEqual(initialLimits, {
-      low: bn('1e18'),
-      spot: bn('1e18'),
-      high: bn('1e18'),
-    })
-
-    // --- getOpenAuction() on no change ---
-    let mockRebalance: Rebalance = {
-      nonce: 1n,
-      tokens: tokens,
-      weights: initialWeights,
-      initialPrices: initialPrices,
-      inRebalance: tokens.map(() => true),
-      limits: initialLimits,
-      startedAt: 0n,
-      restrictedUntil: 0n,
-      availableUntil: 0n,
-      priceControl: false, // For "no change" scenario, expect newPrices = initialPrices
-    }
-
-    const openAuctionArgs = getOpenAuction(
-      mockRebalance,
-      folio, // _initialFolio
-      targetBasket,
-      folio, // current _folio
-      decimals,
-      initialMarketPrices,
-      auctionPriceError,
-      0.95
-    )
-
-    assertOpenAuctionArgsEqual(openAuctionArgs, {
-      rebalanceNonce: 1n,
-      tokens: tokens,
-      newWeights: [bn('0'), bn('5e26'), bn('5e14')], // Because eject case
-      newPrices: initialPrices, // Because false
-      newLimits: { low: bn('1e18'), spot: bn('1e18'), high: bn('1e18') },
-    })
-
-    // --- no change after uniform price appreciation ---
-    const prices2 = [2, 2, 2]
-    // mockRebalance remains false
-    const openAuctionArgs2 = getOpenAuction(
-      mockRebalance,
-      folio, // _initialFolio
-      targetBasket,
-      folio,
-      decimals,
-      prices2,
-      auctionPriceError,
-      0.95
-    )
-    // newWeights and newLimits should be robust to uniform price scaling
-    // newPrices in OpenAuctionArgs will be initialPrices due to false
-    assertOpenAuctionArgsEqual(openAuctionArgs2, {
-      rebalanceNonce: 1n,
-      tokens: tokens,
-      newWeights: [bn('0'), bn('5e26'), bn('5e14')],
-      newPrices: initialPrices, // Expected to be initialPrices
-      newLimits: { low: bn('1e18'), spot: bn('1e18'), high: bn('1e18') },
-    })
-
-    // --- loss case ---
-    const prices3 = [0.9, 1, 1]
-    mockRebalance.priceControl = true // Now allow prices to adjust
-
-    const openAuctionArgs3 = getOpenAuction(
-      mockRebalance,
-      folio, // _initialFolio
-      targetBasket,
-      folio,
-      decimals,
-      prices3,
-      auctionPriceError,
-      0.95
-    )
-
-    // Expected newPrices with priceControl=true and prices3
-    // USDC (price 0.9, dec 6, err 0.01): low(0.9*0.99), high(0.9/0.99) -> D27 scale
-    // initialPrices[0]: { low: 0.9e21, high: 1.111e21 }
-    // current based: low(0.891e21), high(0.90909e21)
-    // constrained: low = max(0.891e21, 0.9e21)=0.9e21. high = min(0.90909e21, 1.111e21)=0.90909e21
-    const expectedNewPricesLoss: PriceRange[] = [
-      {
-        low: bn('9e20'),
-        high: bn('9.09091e20'),
-      },
-      {
-        // DAI (price 1, dec 18, err 0.01) -> low(0.99e9), high(1.0101e9)
-        // initialPrices[1]: { low: 0.9e9, high: 1.111e9 }
-        // constrained: low=max(0.99e9,0.9e9)=0.99e9, high=min(1.0101e9,1.111e9)=1.0101e9
-        low: bn('9.9e8'),
-        high: bn('1.01010e9'),
-      },
-      {
-        // USDT (price 1, dec 6, err 0.01) -> low(0.99e21), high(1.0101e21)
-        // initialPrices[2]: { low: 0.9e21, high: 1.111e21 }
-        // constrained: low=max(0.99e21,0.9e21)=0.99e21, high=min(1.0101e21,1.111e21)=1.0101e21
-        low: bn('9.9e20'),
-        high: bn('1.01010e21'),
-      },
+    const decimalsS1 = [bn('6'), bn('18'), bn('6')]
+    const initialMarketPricesS1 = [1, 1, 1]
+    const priceErrorStartRebalanceS1 = [0.1, 0.1, 0.1]
+    const dtfPriceS1 = 1
+    const initialFolioS1 = [bn('1e6'), bn('0'), bn('0')] // Represents 1 USDC, 0 DAI, 0 USDT per share (approx value)
+    const targetBasketS1 = [bn('0'), bn('0.5e18'), bn('0.5e18')]
+    // Folio representing mid-progress for ejection tests: ~20% USDC, ~40% DAI, ~40% USDT by value
+    const folioMidProgressS1 = [bn('0.2e6'), bn('0.4e18'), bn('0.4e6')]
+    // Folio representing near completion for ejection tests: ~1% USDC, ~49.5% DAI, ~49.5% USDT by value
+    const folioNearCompletionS1 = [bn('0.01e6'), bn('0.495e18'), bn('0.495e6')]
+    // Folio for Step 6 (negligible ejection, high relative progression): USDC almost gone, DAI/USDT balanced
+    const folioTrueMidS1_ActuallyHighProg = [
+      bn('0.00001e6'),
+      bn('0.2e18'),
+      bn('0.2e6'),
+    ]
+    // Folio for Step 7: shareValue ~1.0. USDC negligible. DAI 0.8 val, USDT 0.2 val.
+    // InitialProg=0. Progression for this folio = (min(0.8,0.5)+min(0.2,0.5))/1.0 = (0.5+0.2)/1.0 = 0.7.
+    // relativeProgression = 0.7 < 0.93 -> delta=0.05.
+    const folioStep7S1_varied_weights = [
+      bn('0.00001e6'),
+      bn('0.8e18'),
+      bn('0.2e6'),
     ]
 
-    assertOpenAuctionArgsEqual(openAuctionArgs3, {
-      rebalanceNonce: 1n,
-      tokens: tokens,
-      newWeights: [
-        // Scaled by approx 0.9 due to USDC price drop
-        bn('0'),
-        bn('4.5e26'), // 0.5e27 * 0.9
-        bn('4.5e14'), // 0.5e15 * 0.9
-      ],
-      newPrices: expectedNewPricesLoss,
-      newLimits: { low: bn('1e18'), spot: bn('1e18'), high: bn('1e18') }, // Still constrained by initialLimits
+    let mockRebalanceBaseS1: Omit<Rebalance, 'priceControl'>
+    let initialWeightsS1: WeightRange[],
+      initialPricesS1: PriceRange[],
+      initialLimitsS1: RebalanceLimits
+
+    beforeAll(() => {
+      const { weights, prices, limits } = getStartRebalance(
+        supply,
+        tokens,
+        decimalsS1,
+        targetBasketS1,
+        initialMarketPricesS1,
+        priceErrorStartRebalanceS1,
+        dtfPriceS1,
+        true // weightControl: true for NATIVE-style
+      )
+      initialWeightsS1 = weights
+      initialPricesS1 = prices
+      initialLimitsS1 = limits
+      mockRebalanceBaseS1 = {
+        nonce: 1n,
+        tokens: tokens,
+        weights: initialWeightsS1, // These are the NATIVE rebalance.weights used for clamping
+        initialPrices: initialPricesS1,
+        inRebalance: tokens.map(() => true),
+        limits: initialLimitsS1, // NATIVE limits are {1e18, 1e18, 1e18}, crucial for newLimits clamping
+        startedAt: 0n,
+        restrictedUntil: 0n,
+        availableUntil: 0n,
+      }
     })
 
-    // --- gain case ---
-    const prices4 = [1.1, 1, 1]
-    // mockRebalance.priceControl is still true
-    const openAuctionArgs4 = getOpenAuction(
-      mockRebalance,
-      folio, // _initialFolio
-      targetBasket,
-      folio,
-      decimals,
-      prices4,
-      auctionPriceError,
-      0.95
-    )
+    it('Step 0: Verifies initial setup from getStartRebalance', () => {
+      expect(initialWeightsS1.length).toBe(3)
+      expect(initialPricesS1.length).toBe(3)
+      assertRangesEqual(initialWeightsS1[0], {
+        low: bn('0'),
+        spot: bn('0'),
+        high: bn('0'),
+      }) // USDC
+      assertRangesEqual(initialWeightsS1[1], {
+        low: bn('4.5e26'),
+        spot: bn('5e26'),
+        high: bn('5.55556e26'),
+      }) // DAI
+      assertRangesEqual(initialWeightsS1[2], {
+        low: bn('4.5e14'),
+        spot: bn('5e14'),
+        high: bn('5.55556e14'),
+      }) // USDT
+      assertRebalanceLimitsEqual(initialLimitsS1, {
+        low: bn('1e18'),
+        spot: bn('1e18'),
+        high: bn('1e18'),
+      })
+    })
 
-    // Expected newPrices with priceControl=true and prices4
-    // USDC (price 1.1, dec 6, err 0.01): low(1.1*0.99=1.089), high(1.1/0.99=1.11111)
-    // initialPrices[0]: { low: 0.9e21, high: 1.111111e21 }
-    // constrained: low=max(1.089e21,0.9e21)=1.089e21. high=min(1.1111111e21,1.1111111e21)=1.1111111e21
-    const expectedNewPricesGain: PriceRange[] = [
-      {
-        low: bn('1.089e21'),
-        high: bn('1.11111e21'),
-      },
-      expectedNewPricesLoss[1], // DAI unchanged
-      expectedNewPricesLoss[2], // USDT unchanged
-    ]
+    it('Step 1: Ejection Phase (initial folio, priceControl=true, prices=[1,1,1])', () => {
+      const mockRebalance: Rebalance = {
+        ...mockRebalanceBaseS1,
+        priceControl: true,
+      }
+      const openAuctionArgs = getOpenAuction(
+        mockRebalance,
+        initialFolioS1,
+        targetBasketS1,
+        initialFolioS1,
+        decimalsS1,
+        initialMarketPricesS1,
+        auctionPriceError,
+        finalStageAtForTest
+      )
+      assertOpenAuctionArgsEqual(openAuctionArgs, {
+        rebalanceNonce: 1n,
+        tokens: tokens,
+        newWeights: [
+          initialWeightsS1[0],
+          {
+            low: initialWeightsS1[1].spot,
+            spot: initialWeightsS1[1].spot,
+            high: initialWeightsS1[1].spot,
+          },
+          {
+            low: initialWeightsS1[2].spot,
+            spot: initialWeightsS1[2].spot,
+            high: initialWeightsS1[2].spot,
+          },
+        ],
+        newPrices: defaultExpectedPrices_USDC_DAI_USDT,
+        newLimits: initialLimitsS1,
+      })
+    })
 
-    assertOpenAuctionArgsEqual(openAuctionArgs4, {
-      rebalanceNonce: 1n,
-      tokens: tokens,
-      newWeights: [
-        // Scaled by approx 1.1 due to USDC price rise
-        bn('0'),
-        bn('5.5e26'), // 0.5e27 * 1.1
-        bn('5.5e14'), // 0.5e15 * 1.1
-      ],
-      newPrices: expectedNewPricesGain,
-      newLimits: { low: bn('1e18'), spot: bn('1e18'), high: bn('1e18') }, // Still constrained
+    it('Step 2: Ejection Phase (mid-progress folio with USDC to eject)', () => {
+      const mockRebalance: Rebalance = {
+        ...mockRebalanceBaseS1,
+        priceControl: true,
+      }
+      const openAuctionArgs = getOpenAuction(
+        mockRebalance,
+        initialFolioS1,
+        targetBasketS1,
+        folioMidProgressS1,
+        decimalsS1,
+        initialMarketPricesS1,
+        auctionPriceError,
+        finalStageAtForTest
+      )
+      assertOpenAuctionArgsEqual(openAuctionArgs, {
+        rebalanceNonce: 1n,
+        tokens: tokens,
+        newWeights: [
+          initialWeightsS1[0],
+          {
+            low: initialWeightsS1[1].spot,
+            spot: initialWeightsS1[1].spot,
+            high: initialWeightsS1[1].spot,
+          },
+          {
+            low: initialWeightsS1[2].spot,
+            spot: initialWeightsS1[2].spot,
+            high: initialWeightsS1[2].spot,
+          },
+        ],
+        newPrices: defaultExpectedPrices_USDC_DAI_USDT,
+        newLimits: initialLimitsS1,
+      })
+    })
+
+    it('Step 3: Ejection Phase (near-completion folio with USDC to eject)', () => {
+      const mockRebalance: Rebalance = {
+        ...mockRebalanceBaseS1,
+        priceControl: true,
+      }
+      const openAuctionArgs = getOpenAuction(
+        mockRebalance,
+        initialFolioS1,
+        targetBasketS1,
+        folioNearCompletionS1,
+        decimalsS1,
+        initialMarketPricesS1,
+        auctionPriceError,
+        finalStageAtForTest
+      )
+      assertOpenAuctionArgsEqual(openAuctionArgs, {
+        rebalanceNonce: 1n,
+        tokens: tokens,
+        newWeights: [
+          initialWeightsS1[0],
+          {
+            low: initialWeightsS1[1].spot,
+            spot: initialWeightsS1[1].spot,
+            high: initialWeightsS1[1].spot,
+          },
+          {
+            low: initialWeightsS1[2].spot,
+            spot: initialWeightsS1[2].spot,
+            high: initialWeightsS1[2].spot,
+          },
+        ],
+        newPrices: defaultExpectedPrices_USDC_DAI_USDT,
+        newLimits: initialLimitsS1,
+      })
+    })
+
+    it('Step 4: Ejection Phase (initial folio, priceControl=false, prices=[1,1,1])', () => {
+      const mockRebalance: Rebalance = {
+        ...mockRebalanceBaseS1,
+        priceControl: false,
+      }
+      const openAuctionArgs = getOpenAuction(
+        mockRebalance,
+        initialFolioS1,
+        targetBasketS1,
+        initialFolioS1,
+        decimalsS1,
+        initialMarketPricesS1,
+        auctionPriceError,
+        finalStageAtForTest
+      )
+      assertOpenAuctionArgsEqual(openAuctionArgs, {
+        rebalanceNonce: 1n,
+        tokens: tokens,
+        newWeights: [
+          initialWeightsS1[0],
+          {
+            low: initialWeightsS1[1].spot,
+            spot: initialWeightsS1[1].spot,
+            high: initialWeightsS1[1].spot,
+          },
+          {
+            low: initialWeightsS1[2].spot,
+            spot: initialWeightsS1[2].spot,
+            high: initialWeightsS1[2].spot,
+          },
+        ],
+        newPrices: initialPricesS1, // from mockRebalance due to priceControl=false
+        newLimits: initialLimitsS1,
+      })
+    })
+
+    it('Step 5: Ejection Phase (initial folio, USDC Price Loss 0.9, priceControl=true)', () => {
+      const mockRebalance: Rebalance = {
+        ...mockRebalanceBaseS1,
+        priceControl: true,
+      }
+      const pricesS1_loss = [0.9, 1, 1]
+      const openAuctionArgs = getOpenAuction(
+        mockRebalance,
+        initialFolioS1,
+        targetBasketS1,
+        initialFolioS1,
+        decimalsS1,
+        pricesS1_loss,
+        auctionPriceError,
+        finalStageAtForTest
+      )
+      const expectedNewPricesLoss: PriceRange[] = [
+        { low: bn('9e20'), high: bn('9.09091e20') },
+        { low: bn('9.9e8'), high: bn('1.01010e9') },
+        { low: bn('9.9e20'), high: bn('1.01010e21') },
+      ]
+      // Ideal spots for DAI/USDT scaled by 0.9 (due to USDC price drop impacting shareValue for idealWeight calc)
+      // DAI idealSpot was 5e26, now 5e26*0.9 = 4.5e26. USDT idealSpot was 5e14, now 5e14*0.9 = 4.5e14.
+      // Delta is 0 (ejection). So newWeights low/spot/high are these new ideal spots, clamped by rebalance.weights.
+      // The new ideal spots (4.5e26, 4.5e14) are exactly the .low of their respective rebalance.weights, so clamping to .low results in this value.
+      assertOpenAuctionArgsEqual(openAuctionArgs, {
+        rebalanceNonce: 1n,
+        tokens: tokens,
+        newWeights: [
+          initialWeightsS1[0], // USDC target 0
+          { low: bn('4.5e26'), spot: bn('4.5e26'), high: bn('4.5e26') },
+          { low: bn('4.5e14'), spot: bn('4.5e14'), high: bn('4.5e14') },
+        ],
+        newPrices: expectedNewPricesLoss,
+        newLimits: initialLimitsS1,
+      })
+    })
+
+    it('Step 6: Test Case: Negligible Ejection, High Relative Progression -> Delta=0', () => {
+      const mockRebalance: Rebalance = {
+        ...mockRebalanceBaseS1,
+        priceControl: true,
+      }
+      const openAuctionArgs = getOpenAuction(
+        mockRebalance,
+        initialFolioS1,
+        targetBasketS1,
+        folioTrueMidS1_ActuallyHighProg,
+        decimalsS1,
+        initialMarketPricesS1,
+        auctionPriceError,
+        finalStageAtForTest
+      )
+      assertOpenAuctionArgsEqual(openAuctionArgs, {
+        rebalanceNonce: 1n,
+        tokens: tokens,
+        newWeights: [
+          initialWeightsS1[0],
+          {
+            low: initialWeightsS1[1].low,
+            spot: initialWeightsS1[1].low,
+            high: initialWeightsS1[1].low,
+          },
+          {
+            low: initialWeightsS1[2].low,
+            spot: initialWeightsS1[2].low,
+            high: initialWeightsS1[2].low,
+          },
+        ],
+        newPrices: defaultExpectedPrices_USDC_DAI_USDT,
+        newLimits: initialLimitsS1,
+      })
+    })
+
+    it('Step 7: NATIVE Mid-Rebalance (Multi-Asset Target, Negligible Ejection, Low Relative Progression -> Varied Weights)', () => {
+      const mockRebalance: Rebalance = {
+        ...mockRebalanceBaseS1,
+        priceControl: true,
+      }
+      // Using folioStep7S1_varied_weights: shareValue ~1.0, relativeProgression ~0.7 -> delta=0.05.
+      // ideal_DAI/USDT_whole_spot ~0.5 (since shareValue*0.5 = 0.5).
+      // This ideal_spot is same as initialWeightsS1[i].spot_whole.
+      const openAuctionArgs = getOpenAuction(
+        mockRebalance,
+        initialFolioS1,
+        targetBasketS1,
+        folioStep7S1_varied_weights,
+        decimalsS1,
+        initialMarketPricesS1,
+        auctionPriceError,
+        finalStageAtForTest
+      )
+      assertOpenAuctionArgsEqual(openAuctionArgs, {
+        rebalanceNonce: 1n,
+        tokens: tokens,
+        newWeights: [
+          initialWeightsS1[0], // USDC target 0
+          // DAI: ideal_whole=0.5. calc_low=0.475, calc_spot=0.5, calc_high=0.525.
+          // initialWeight_DAI (whole): low=0.45, spot=0.5, high=~0.555. All calculated values are within this range.
+          { low: bn('4.75e26'), spot: bn('5e26'), high: bn('5.25e26') },
+          // USDT: ideal_whole=0.5. calc_low=0.475, calc_spot=0.5, calc_high=0.525.
+          // initialWeight_USDT (whole): low=0.45, spot=0.5, high=~0.555. All calculated values are within this range.
+          { low: bn('4.75e14'), spot: bn('5e14'), high: bn('5.25e14') },
+        ],
+        newPrices: defaultExpectedPrices_USDC_DAI_USDT,
+        newLimits: initialLimitsS1, // newLimits will be clamped to initial flat NATIVE limits
+      })
     })
   })
 
-  it('stables: [0%, 50%, 50%] -> [100%, 0%, 0%]', () => {
+  describe('Rebalancing from 0% USDC, 50% DAI, 50% USDT to 100% USDC', () => {
     const tokens = ['USDC', 'DAI', 'USDT']
-    const decimals = [bn('6'), bn('18'), bn('6')]
-    const initialMarketPrices = [1, 1, 1]
-    const priceErrorStartRebalance = [0.1, 0.1, 0.1]
-    const dtfPrice = 1
-    const folio = [bn('0'), bn('5e17'), bn('5e5')] // DAI, USDT heavy
-    const targetBasket = [bn('1e18'), bn('0'), bn('0')] // Target 100% USDC
+    const decimalsS2 = [bn('6'), bn('18'), bn('6')]
+    const initialMarketPricesS2 = [1, 1, 1]
+    const priceErrorStartRebalanceS2 = [0.1, 0.1, 0.1]
+    const dtfPriceS2 = 1
+    // initialFolioS2: approx 0 USDC, 0.5 DAI val, 0.5 USDT val (total val 1 USD for 1 share)
+    const initialFolioS2 = [bn('0'), bn('0.5e18'), bn('0.5e6')]
+    const targetBasketS2 = [bn('1e18'), bn('0'), bn('0')] // Target 100% USDC
+    // Folio for mid-progress ejection tests: ~40% USDC, ~30% DAI, ~30% USDT by value
+    const folioMidProgressS2 = [bn('0.4e6'), bn('0.3e18'), bn('0.3e6')]
+    // Folio for near completion ejection tests: ~98% USDC, ~1% DAI, ~1% USDT by value
+    const folioTrulyNearCompletionS2 = [
+      bn('0.98e6'),
+      bn('0.01e18'),
+      bn('0.01e6'),
+    ]
+    // Folio for Step 6 (negligible ejection, high relative progression): DAI/USDT almost gone
+    const folioTrueMidS2_ActuallyHighProg = [
+      bn('0.4e6'),
+      bn('0.00001e18'),
+      bn('0.00001e6'),
+    ]
 
-    const {
-      weights: initialWeights,
-      prices: initialPrices,
-      limits: initialLimits,
-    } = getStartRebalance(
-      supply,
-      tokens,
-      decimals,
-      targetBasket,
-      initialMarketPrices,
-      priceErrorStartRebalance,
-      dtfPrice,
-      true // weightControl: true
-    )
+    let mockRebalanceBaseS2: Omit<Rebalance, 'priceControl'>
+    let initialWeightsS2: WeightRange[],
+      initialPricesS2: PriceRange[],
+      initialLimitsS2: RebalanceLimits
 
-    expect(initialWeights.length).toBe(3)
-    expect(initialPrices.length).toBe(3)
+    beforeAll(() => {
+      const { weights, prices, limits } = getStartRebalance(
+        supply,
+        tokens,
+        decimalsS2,
+        targetBasketS2,
+        initialMarketPricesS2,
+        priceErrorStartRebalanceS2,
+        dtfPriceS2,
+        true
+      )
+      initialWeightsS2 = weights
+      initialPricesS2 = prices
+      initialLimitsS2 = limits
+      mockRebalanceBaseS2 = {
+        nonce: 2n, // Different nonce for this scenario suite
+        tokens: tokens,
+        weights: initialWeightsS2,
+        initialPrices: initialPricesS2,
+        inRebalance: tokens.map(() => true),
+        limits: initialLimitsS2,
+        startedAt: 0n,
+        restrictedUntil: 0n,
+        availableUntil: 0n,
+      }
+    })
 
-    assertBasketRangesEqual(initialWeights[0], {
+    it('Step 0: Verifies initial setup from getStartRebalance', () => {
+      expect(initialWeightsS2.length).toBe(3)
       // USDC target 100%
-      low: bn('9e14'),
-      spot: bn('1e15'), // 1.0 * 1e15
-      high: bn('1.11111e15'),
-    })
-    assertBasketRangesEqual(initialWeights[1], {
-      low: bn('0'),
-      spot: bn('0'),
-      high: bn('0'),
-    })
-    assertBasketRangesEqual(initialWeights[2], {
-      low: bn('0'),
-      spot: bn('0'),
-      high: bn('0'),
-    })
-
-    // initialPrices are the same as the previous major test case
-    assertPricesEqual(initialPrices[0], {
-      low: bn('9e20'),
-      high: bn('1.11111e21'),
-    })
-    assertPricesEqual(initialPrices[1], {
-      low: bn('9e8'),
-      high: bn('1.11111e9'),
-    })
-    assertPricesEqual(initialPrices[2], {
-      low: bn('9e20'),
-      high: bn('1.11111e21'),
-    })
-    assertRebalanceLimitsEqual(initialLimits, {
-      low: bn('1e18'),
-      spot: bn('1e18'),
-      high: bn('1e18'),
+      assertRangesEqual(initialWeightsS2[0], {
+        low: bn('9e14'),
+        spot: bn('1e15'),
+        high: bn('1.11111e15'),
+      })
+      assertRangesEqual(initialWeightsS2[1], {
+        low: bn('0'),
+        spot: bn('0'),
+        high: bn('0'),
+      }) // DAI target 0%
+      assertRangesEqual(initialWeightsS2[2], {
+        low: bn('0'),
+        spot: bn('0'),
+        high: bn('0'),
+      }) // USDT target 0%
+      assertRebalanceLimitsEqual(initialLimitsS2, {
+        low: bn('1e18'),
+        spot: bn('1e18'),
+        high: bn('1e18'),
+      })
     })
 
-    // --- getOpenAuction() on no change ---
-    let mockRebalance: Rebalance = {
-      nonce: 1n,
-      tokens: tokens,
-      weights: initialWeights,
-      initialPrices: initialPrices,
-      inRebalance: tokens.map(() => true),
-      limits: initialLimits,
-      startedAt: 0n,
-      restrictedUntil: 0n,
-      availableUntil: 0n,
-      priceControl: false,
-    }
-
-    const openAuctionArgs = getOpenAuction(
-      mockRebalance,
-      folio, // _initialFolio
-      targetBasket,
-      folio,
-      decimals,
-      initialMarketPrices,
-      auctionPriceError,
-      0.95
-    )
-
-    assertOpenAuctionArgsEqual(openAuctionArgs, {
-      rebalanceNonce: 1n,
-      tokens: tokens,
-      newWeights: [
-        bn('1e15'), // Target 100% USDC
-        bn('0'),
-        bn('0'),
-      ],
-      newPrices: initialPrices,
-      newLimits: { low: bn('1e18'), spot: bn('1e18'), high: bn('1e18') },
+    it('Step 1: Ejection Phase (initial folio, priceControl=true, prices=[1,1,1])', () => {
+      const mockRebalance: Rebalance = {
+        ...mockRebalanceBaseS2,
+        priceControl: true,
+      }
+      const openAuctionArgs = getOpenAuction(
+        mockRebalance,
+        initialFolioS2,
+        targetBasketS2,
+        initialFolioS2,
+        decimalsS2,
+        initialMarketPricesS2,
+        auctionPriceError,
+        finalStageAtForTest
+      )
+      assertOpenAuctionArgsEqual(openAuctionArgs, {
+        rebalanceNonce: 2n,
+        tokens: tokens,
+        newWeights: [
+          {
+            low: initialWeightsS2[0].spot,
+            spot: initialWeightsS2[0].spot,
+            high: initialWeightsS2[0].spot,
+          },
+          initialWeightsS2[1],
+          initialWeightsS2[2],
+        ],
+        newPrices: defaultExpectedPrices_USDC_DAI_USDT,
+        newLimits: initialLimitsS2,
+      })
     })
 
-    // --- no change after uniform price appreciation ---
-    const prices2 = [2, 2, 2]
-    // mockRebalance.priceControl is false
-    const openAuctionArgs2 = getOpenAuction(
-      mockRebalance,
-      folio, // _initialFolio
-      targetBasket,
-      folio,
-      decimals,
-      prices2,
-      auctionPriceError,
-      0.95
-    )
-    assertOpenAuctionArgsEqual(openAuctionArgs2, {
-      rebalanceNonce: 1n,
-      tokens: tokens,
-      newWeights: [
-        // Should be stable to uniform price scaling
-        bn('1e15'),
-        bn('0'),
-        bn('0'),
-      ],
-      newPrices: initialPrices, // Due to false
-      newLimits: { low: bn('1e18'), spot: bn('1e18'), high: bn('1e18') },
+    it('Step 2: Ejection Phase (mid-progress folio with DAI/USDT to eject)', () => {
+      const mockRebalance: Rebalance = {
+        ...mockRebalanceBaseS2,
+        priceControl: true,
+      }
+      const openAuctionArgs = getOpenAuction(
+        mockRebalance,
+        initialFolioS2,
+        targetBasketS2,
+        folioMidProgressS2,
+        decimalsS2,
+        initialMarketPricesS2,
+        auctionPriceError,
+        finalStageAtForTest
+      )
+      assertOpenAuctionArgsEqual(openAuctionArgs, {
+        rebalanceNonce: 2n,
+        tokens: tokens,
+        newWeights: [
+          {
+            low: initialWeightsS2[0].spot,
+            spot: initialWeightsS2[0].spot,
+            high: initialWeightsS2[0].spot,
+          },
+          initialWeightsS2[1],
+          initialWeightsS2[2],
+        ],
+        newPrices: defaultExpectedPrices_USDC_DAI_USDT,
+        newLimits: initialLimitsS2,
+      })
     })
 
-    // --- gain case (for USDC, the asset we are buying) ---
-    // Current prices: USDC price drops (0.9), making it cheaper to buy
-    const prices3 = [0.9, 1, 1] // USDC price drops, good for us as we target USDC
-    mockRebalance.priceControl = true
-
-    const openAuctionArgs3 = getOpenAuction(
-      mockRebalance,
-      folio, // _initialFolio
-      targetBasket,
-      folio,
-      decimals,
-      prices3,
-      auctionPriceError,
-      0.95
-    )
-    // shareValue (folio value) = 0.5*1 + 0.5*1 = 1 (DAI, USDT at price 1)
-    // buValue (target value using initialWeights spot) = 1(USDC weight) * 0.9 (USDC price) = 0.9
-    // idealSpotLimit = 1 / 0.9 = 1.111...
-    // newLimits.spot clamped by initialLimits.high (1e18) -> 1e18
-    // newWeights: actualSpotLimit = 1. shareValue=1. targetBasket[0]=1 (USDC). prices3[0]=0.9.
-    // idealSpotWeight_USDC = 1 * 1 / 1 / 0.9 = 1.111...
-    // idealSpotWeightD27_USDC = 1.111... * 1e15. Constrained by initialWeights[0].high (1.111...e15) -> 1.111...e15
-
-    const expectedNewPricesGainUSDC: PriceRange[] = [
-      {
-        // USDC (price 0.9)
-        low: bn('9e20'), // From loss case calculation for USDC
-        high: bn('9.09091e20'),
-      },
-      {
-        // DAI (price 1)
-        low: bn('9.9e8'),
-        high: bn('1.01010e9'),
-      },
-      {
-        // USDT (price 1)
-        low: bn('9.9e20'),
-        high: bn('1.01010e21'),
-      },
-    ]
-
-    assertOpenAuctionArgsEqual(openAuctionArgs3, {
-      rebalanceNonce: 1n,
-      tokens: tokens,
-      newWeights: [
-        bn('1.11111e15'), // Buying more USDC as it's cheaper
-        bn('0'),
-        bn('0'),
-      ],
-      newPrices: expectedNewPricesGainUSDC,
-      newLimits: { low: bn('1e18'), spot: bn('1e18'), high: bn('1e18') }, // Clamped
+    it('Step 3: Ejection Phase (near-completion folio with DAI/USDT to eject)', () => {
+      const mockRebalance: Rebalance = {
+        ...mockRebalanceBaseS2,
+        priceControl: true,
+      }
+      const openAuctionArgs = getOpenAuction(
+        mockRebalance,
+        initialFolioS2,
+        targetBasketS2,
+        folioTrulyNearCompletionS2,
+        decimalsS2,
+        initialMarketPricesS2,
+        auctionPriceError,
+        finalStageAtForTest
+      )
+      assertOpenAuctionArgsEqual(openAuctionArgs, {
+        rebalanceNonce: 2n,
+        tokens: tokens,
+        newWeights: [
+          {
+            low: initialWeightsS2[0].spot,
+            spot: initialWeightsS2[0].spot,
+            high: initialWeightsS2[0].spot,
+          },
+          initialWeightsS2[1],
+          initialWeightsS2[2],
+        ],
+        newPrices: defaultExpectedPrices_USDC_DAI_USDT,
+        newLimits: initialLimitsS2,
+      })
     })
 
-    // --- loss case (for USDC, the asset we are buying) ---
-    // Current prices: USDC price rises (1.1), making it more expensive
-    const prices4 = [1.1, 1, 1] // USDC price rises
-    // mockRebalance.priceControl is true
-    const openAuctionArgs4 = getOpenAuction(
-      mockRebalance,
-      folio, // _initialFolio
-      targetBasket,
-      folio,
-      decimals,
-      prices4,
-      auctionPriceError,
-      0.95
-    )
-    // shareValue = 1.
-    // buValue (target value) = 1 (USDC weight) * 1.1 (USDC price) = 1.1
-    // idealSpotLimit = 1 / 1.1 = 0.9090...
-    // newLimits.spot clamped by initialLimits.low (1e18) -> 1e18.
-    // newWeights: actualSpotLimit = 1. shareValue=1. targetBasket[0]=1. prices4[0]=1.1.
-    // idealSpotWeight_USDC = 1 * 1 / 1 / 1.1 = 0.9090...
-    // idealSpotWeightD27_USDC = 0.9090... * 1e15. Constrained by initialWeights[0].low (0.9e15) -> 0.9090...e15
+    it('Step 4: Ejection Phase (initial folio, USDC Price Drop 0.9 - Gain for Buyer, priceControl=true)', () => {
+      const mockRebalance: Rebalance = {
+        ...mockRebalanceBaseS2,
+        priceControl: true,
+      }
+      const pricesS2_USDCdrop = [0.9, 1, 1] // USDC price drops, good for us as we target USDC
+      const openAuctionArgs = getOpenAuction(
+        mockRebalance,
+        initialFolioS2,
+        targetBasketS2,
+        initialFolioS2,
+        decimalsS2,
+        pricesS2_USDCdrop,
+        auctionPriceError,
+        finalStageAtForTest
+      )
+      // Expected: rebalanceTarget=1, delta=0. idealWeight for USDC changes due to its price drop.
+      // shareValue (of initialFolioS2) = 0.5*1 (DAI) + 0.5*1 (USDT) = 1 (approx, using scaled folio values)
+      // idealSpotWeight_USDC = shareValue * targetBasket_USDC[0] / actualLimits.spot / prices_USDC[0.9]
+      // idealSpot_USDC_D27 was 1e15 at price 1. At price 0.9, idealSpot_D27 becomes 1e15 / 0.9 = 1.111...e15.
+      const expectedNewPricesGainUSDC: PriceRange[] = [
+        { low: bn('9e20'), high: bn('9.09091e20') },
+        { low: bn('9.9e8'), high: bn('1.01010e9') },
+        { low: bn('9.9e20'), high: bn('1.01010e21') },
+      ]
+      // This new ideal spot (1.111...e15) is clamped by initialWeightsS2[0].high (1.11111e15).
+      assertOpenAuctionArgsEqual(openAuctionArgs, {
+        rebalanceNonce: 2n,
+        tokens: tokens,
+        newWeights: [
+          {
+            low: bn('1.11111e15'),
+            spot: bn('1.11111e15'),
+            high: bn('1.11111e15'),
+          },
+          initialWeightsS2[1],
+          initialWeightsS2[2],
+        ],
+        newPrices: expectedNewPricesGainUSDC,
+        newLimits: initialLimitsS2,
+      })
+    })
 
-    const expectedNewPricesLossUSDC: PriceRange[] = [
-      {
-        // USDC (price 1.1)
-        low: bn('1.089e21'), // From gain case calculation for USDC in previous test section
-        high: bn('1.11111e21'),
-      },
-      expectedNewPricesGainUSDC[1], // DAI unchanged
-      expectedNewPricesGainUSDC[2], // USDT unchanged
-    ]
-    assertOpenAuctionArgsEqual(openAuctionArgs4, {
-      rebalanceNonce: 1n,
-      tokens: tokens,
-      newWeights: [
-        bn('9.09091e14'), // Buying less USDC as it's more expensive
-        bn('0'),
-        bn('0'),
-      ],
-      newPrices: expectedNewPricesLossUSDC,
-      newLimits: { low: bn('1e18'), spot: bn('1e18'), high: bn('1e18') }, // Clamped
+    it('Step 5: Ejection Phase (initial folio, USDC Price Rise 1.1 - Loss for Buyer, priceControl=true)', () => {
+      const mockRebalance: Rebalance = {
+        ...mockRebalanceBaseS2,
+        priceControl: true,
+      }
+      const pricesS2_USDCrise = [1.1, 1, 1]
+      const openAuctionArgs = getOpenAuction(
+        mockRebalance,
+        initialFolioS2,
+        targetBasketS2,
+        initialFolioS2,
+        decimalsS2,
+        pricesS2_USDCrise,
+        auctionPriceError,
+        finalStageAtForTest
+      )
+      // Expected: rebalanceTarget=1, delta=0. idealWeight for USDC changes.
+      // idealSpot_USDC_D27 was 1e15 at price 1. At price 1.1, idealSpot_D27 becomes 1e15 / 1.1 = 9.09091e14.
+      const expectedNewPricesLossUSDC: PriceRange[] = [
+        { low: bn('1.089e21'), high: bn('1.11111e21') },
+        { low: bn('9.9e8'), high: bn('1.01010e9') },
+        { low: bn('9.9e20'), high: bn('1.01010e21') },
+      ]
+      // This new ideal spot (9.09091e14) is clamped by initialWeightsS2[0].low (9e14), so becomes 9.09091e14.
+      assertOpenAuctionArgsEqual(openAuctionArgs, {
+        rebalanceNonce: 2n,
+        tokens: tokens,
+        newWeights: [
+          {
+            low: bn('9.09091e14'),
+            spot: bn('9.09091e14'),
+            high: bn('9.09091e14'),
+          },
+          initialWeightsS2[1],
+          initialWeightsS2[2],
+        ],
+        newPrices: expectedNewPricesLossUSDC,
+        newLimits: initialLimitsS2,
+      })
+    })
+
+    it('Step 6: Test Case: Negligible Ejection, High Relative Progression (Single Target Asset) -> Delta=0', () => {
+      const mockRebalance: Rebalance = {
+        ...mockRebalanceBaseS2,
+        priceControl: true,
+      }
+      const openAuctionArgs = getOpenAuction(
+        mockRebalance,
+        initialFolioS2,
+        targetBasketS2,
+        folioTrueMidS2_ActuallyHighProg,
+        decimalsS2,
+        initialMarketPricesS2,
+        auctionPriceError,
+        finalStageAtForTest
+      )
+      assertOpenAuctionArgsEqual(openAuctionArgs, {
+        rebalanceNonce: 2n,
+        tokens: tokens,
+        newWeights: [
+          { low: bn('9e14'), spot: bn('9e14'), high: bn('9e14') },
+          initialWeightsS2[1],
+          initialWeightsS2[2],
+        ],
+        newPrices: defaultExpectedPrices_USDC_DAI_USDT,
+        newLimits: initialLimitsS2,
+      })
     })
   })
 
@@ -530,13 +733,13 @@ describe('NATIVE DTFs', () => {
     expect(newWeights.length).toBe(2)
     expect(newPricesResult.length).toBe(2)
 
-    assertBasketRangesEqual(newWeights[0], {
+    assertRangesEqual(newWeights[0], {
       // USDC
       low: bn('6.75e14'),
       spot: bn('7.5e14'),
       high: bn('8.33333e14'),
     })
-    assertBasketRangesEqual(newWeights[1], {
+    assertRangesEqual(newWeights[1], {
       // ETH
       low: bn('7.5e22'), // spot * 0.9
       spot: bn('8.33333e22'), // 0.25/3000 * 1e27
@@ -650,17 +853,17 @@ describe('TRACKING DTF Rebalance: USDC -> DAI/USDT Sequence', () => {
     })
 
     // For TRACKING, weights low/spot/high are identical
-    assertBasketRangesEqual(initialWeightsTracking[0], {
+    assertRangesEqual(initialWeightsTracking[0], {
       low: bn('0'),
       spot: bn('0'),
       high: bn('0'),
     }) // USDC
-    assertBasketRangesEqual(initialWeightsTracking[1], {
+    assertRangesEqual(initialWeightsTracking[1], {
       low: bn('5e26'),
       spot: bn('5e26'),
       high: bn('5e26'),
     }) // DAI
-    assertBasketRangesEqual(initialWeightsTracking[2], {
+    assertRangesEqual(initialWeightsTracking[2], {
       low: bn('5e14'),
       spot: bn('5e14'),
       high: bn('5e14'),
@@ -720,9 +923,9 @@ describe('TRACKING DTF Rebalance: USDC -> DAI/USDT Sequence', () => {
     })
     // For TRACKING, newWeights from getOpenAuction are clamped to initialWeightsTracking.spot values
     expect(openAuctionArgs1.newWeights).toEqual([
-      bn('0'),
-      bn('5e26'),
-      bn('5e14'),
+      { low: bn('0'), spot: bn('0'), high: bn('0') },
+      { low: bn('5e26'), spot: bn('5e26'), high: bn('5e26') },
+      { low: bn('5e14'), spot: bn('5e14'), high: bn('5e14') },
     ])
 
     const expectedNewPrices1: PriceRange[] = [
@@ -771,9 +974,9 @@ describe('TRACKING DTF Rebalance: USDC -> DAI/USDT Sequence', () => {
       high: bn('1.05e18'),
     })
     expect(openAuctionArgs2.newWeights).toEqual([
-      bn('0'),
-      bn('5e26'),
-      bn('5e14'),
+      { low: bn('0'), spot: bn('0'), high: bn('0') },
+      { low: bn('5e26'), spot: bn('5e26'), high: bn('5e26') },
+      { low: bn('5e14'), spot: bn('5e14'), high: bn('5e14') },
     ])
     // Prices same as step 1 if market prices didn't change
     assertPricesEqual(openAuctionArgs2.newPrices[0], {
@@ -823,9 +1026,9 @@ describe('TRACKING DTF Rebalance: USDC -> DAI/USDT Sequence', () => {
       high: bn('1e18'),
     })
     expect(openAuctionArgs3.newWeights).toEqual([
-      bn('0'),
-      bn('5e26'),
-      bn('5e14'),
+      { low: bn('0'), spot: bn('0'), high: bn('0') },
+      { low: bn('5e26'), spot: bn('5e26'), high: bn('5e26') },
+      { low: bn('5e14'), spot: bn('5e14'), high: bn('5e14') },
     ])
     // Prices same as step 1 if market prices didn't change
     assertPricesEqual(openAuctionArgs3.newPrices[0], {
@@ -848,254 +1051,267 @@ describe('Hybrid Rebalance Scenario (Manually Constructed Rebalance Object)', ()
   const decimals = [bn('6'), bn('18'), bn('6')]
   const auctionPriceErrorSmall = [0.01, 0.01, 0.01]
   const finalStageAtForTest = 0.95
-  const currentMarketPrices = [1, 1, 1] // For simplicity in hybrid tests
-  const targetBasketHybrid = [bn('0'), bn('5e17'), bn('5e17')] // 0% USDC, 50% DAI, 50% USDT
-
-  // Manually defined hybrid Rebalance object parts
+  const targetBasketHybrid = [bn('0'), bn('5e17'), bn('5e17')]
   const hybridWeights: WeightRange[] = [
-    { low: bn('0'), spot: bn('0'), high: bn('0') }, // USDC
-    { low: bn('4.5e26'), spot: bn('5e26'), high: bn('5.55556e26') }, // DAI (like NATIVE)
-    { low: bn('4.5e14'), spot: bn('5e14'), high: bn('5.55556e14') }, // USDT (like NATIVE)
+    { low: bn('0'), spot: bn('0'), high: bn('0') },
+    { low: bn('4.5e26'), spot: bn('5e26'), high: bn('5.55556e26') },
+    { low: bn('4.5e14'), spot: bn('5e14'), high: bn('5.55556e14') },
   ]
   const hybridInitialPrices: PriceRange[] = [
-    { low: bn('9e20'), high: bn('1.11111e21') }, // USDC
-    { low: bn('9e8'), high: bn('1.11111e9') }, // DAI
-    { low: bn('9e20'), high: bn('1.11111e21') }, // USDT
+    { low: bn('9e20'), high: bn('1.11111e21') },
+    { low: bn('9e8'), high: bn('1.11111e9') },
+    { low: bn('9e20'), high: bn('1.11111e21') },
   ]
-  const hybridLimits: RebalanceLimits = {
-    low: bn('1'), // Widest possible reasonable low limit
-    spot: bn('1e18'), // Neutral spot
-    high: bn('1e36'), // Widest possible reasonable high limit
+  const hybridLimits_veryWide: RebalanceLimits = {
+    low: bn('1'),
+    spot: bn('1e18'),
+    high: bn('1e36'),
   }
-
   const mockRebalanceHybridBase: Omit<Rebalance, 'priceControl'> = {
-    nonce: 3n, // New nonce
+    nonce: 3n,
     tokens: tokens,
     weights: hybridWeights,
     initialPrices: hybridInitialPrices,
+    limits: hybridLimits_veryWide,
     inRebalance: tokens.map(() => true),
-    limits: hybridLimits,
     startedAt: 0n,
     restrictedUntil: 0n,
     availableUntil: 0n,
   }
+  const currentMarketPrices_Hybrid = [1, 1, 1] // Defined for this scope
+
+  const defaultPricesHybridScope: PriceRange[] = [
+    { low: bn('9.9e20'), high: bn('1.01010e21') }, // USDC
+    { low: bn('9.9e8'), high: bn('1.01010e9') }, // DAI
+    { low: bn('9.9e20'), high: bn('1.01010e21') }, // USDT
+  ]
 
   it('Hybrid Scenario 1: Mid-Rebalance (progression < finalStageAt)', () => {
-    // Folio: 0 USDC, 0.3 DAI (whole), 0.7 USDT (whole). shareValue = 1. progression = 0.8.
     const _folio = [bn('0'), bn('3e17'), bn('7e5')]
-    // For this scenario, _initialFolio is _folio. relativeProgression = 0.
     const mockRebalanceHybrid: Rebalance = {
       ...mockRebalanceHybridBase,
       priceControl: true,
     }
-
     const openAuctionArgs = getOpenAuction(
       mockRebalanceHybrid,
-      _folio, // _initialFolio
+      _folio,
       targetBasketHybrid,
-      _folio, // current _folio
+      _folio,
       decimals,
-      currentMarketPrices,
+      currentMarketPrices_Hybrid,
       auctionPriceErrorSmall,
       finalStageAtForTest
     )
-
-    // Calculations for newLimits:
-    // shareValue = 1, buValue = 1. idealSpotLimit = 1.
-    // initialProgression = 0.8, progression = 0.8. relativeProgression = 0.
-    // buyTarget = 0.95 (0 < 0.95 - 0.02 = 0.93).
-    // limitDelta = 1 * (1 - 0.95) = 0.05.
-    // preClamp newLimits: low=0.95e18, spot=1e18, high=1.05e18.
-    // Clamped by wide hybridLimits (1, 1e18, 1e36) -> effectively no change from pre-clamp values.
     assertRebalanceLimitsEqual(openAuctionArgs.newLimits, {
       low: bn('9.5e17'),
       spot: bn('1e18'),
       high: bn('1.05e18'),
     })
-
-    // Calculations for newWeights:
-    // actualSpotLimit = newLimits.spot / 1e18 = 1.
-    // USDC: idealSpotWeight = 0. idealSpotWeightD27 = 0. Clamped by hybridWeights[0] -> 0.
-    // DAI: idealSpotWeight = 1 * 0.5 / 1 / 1 = 0.5. idealSpotWeightD27 = 5e26. Clamped by hybridWeights[1] -> 5e26.
-    // USDT: idealSpotWeight = 1 * 0.5 / 1 / 1 = 0.5. idealSpotWeightD27 = 5e14. Clamped by hybridWeights[2] -> 5e14.
     expect(openAuctionArgs.newWeights).toEqual([
-      bn('0'),
-      bn('5e26'),
-      bn('5e14'),
+      { low: bn('0'), spot: bn('0'), high: bn('0') },
+      { low: bn('5e26'), spot: bn('5e26'), high: bn('5e26') },
+      { low: bn('5e14'), spot: bn('5e14'), high: bn('5e14') },
     ])
-
-    // Prices (assuming currentMarketPrices=[1,1,1] and auctionPriceErrorSmall=[0.01,0.01,0.01])
-    // These will be current prices adjusted by error, clamped by hybridInitialPrices.
-    // Example: USDC low: max(1*0.99 * 1e21, 9e20) = 9.9e20. high: min(1/0.99 * 1e21, 1.11111e21) = 1.01010e21
-    const expectedHybridPrices1: PriceRange[] = [
-      { low: bn('9.9e20'), high: bn('1.01010e21') }, // USDC
-      { low: bn('9.9e8'), high: bn('1.01010e9') }, // DAI
-      { low: bn('9.9e20'), high: bn('1.01010e21') }, // USDT
-    ]
-    assertPricesEqual(openAuctionArgs.newPrices[0], expectedHybridPrices1[0])
-    assertPricesEqual(openAuctionArgs.newPrices[1], expectedHybridPrices1[1])
-    assertPricesEqual(openAuctionArgs.newPrices[2], expectedHybridPrices1[2])
+    assertPricesEqual(openAuctionArgs.newPrices[0], defaultPricesHybridScope[0])
+    assertPricesEqual(openAuctionArgs.newPrices[1], defaultPricesHybridScope[1])
+    assertPricesEqual(openAuctionArgs.newPrices[2], defaultPricesHybridScope[2])
   })
 
   it('Hybrid Scenario 2: Near Completion (progression >= finalStageAt)', () => {
-    // Folio: 0 USDC, 0.48 DAI (whole), 0.52 USDT (whole). shareValue = 1. progression = 0.98.
     const _folio = [bn('0'), bn('4.8e17'), bn('5.2e5')]
-    // For this scenario, _initialFolio is _folio. relativeProgression = 0.
     const mockRebalanceHybrid: Rebalance = {
       ...mockRebalanceHybridBase,
       priceControl: true,
     }
-
     const openAuctionArgs = getOpenAuction(
       mockRebalanceHybrid,
-      _folio, // _initialFolio
+      _folio,
       targetBasketHybrid,
-      _folio, // current _folio
+      _folio,
       decimals,
-      currentMarketPrices,
+      currentMarketPrices_Hybrid,
       auctionPriceErrorSmall,
       finalStageAtForTest
     )
-
-    // Calculations for newLimits:
-    // shareValue = 1, buValue = 1. idealSpotLimit = 1.
-    // initialProgression = 0.98, progression = 0.98. relativeProgression = 0.
-    // buyTarget = 0.95 (0 < 0.95 - 0.02 = 0.93).
-    // limitDelta = 1 * (1 - 0.95) = 0.05.
-    // preClamp newLimits: low=0.95e18, spot=1e18, high=1.05e18.
-    // Clamped by wide hybridLimits (1, 1e18, 1e36) -> effectively no change.
     assertRebalanceLimitsEqual(openAuctionArgs.newLimits, {
       low: bn('9.5e17'),
       spot: bn('1e18'),
       high: bn('1.05e18'),
     })
-
-    // Calculations for newWeights (actualSpotLimit = 1):
-    // Should still be the target weights, clamped by hybridWeights.
     expect(openAuctionArgs.newWeights).toEqual([
-      bn('0'),
-      bn('5e26'),
-      bn('5e14'),
+      { low: bn('0'), spot: bn('0'), high: bn('0') },
+      { low: bn('5e26'), spot: bn('5e26'), high: bn('5e26') },
+      { low: bn('5e14'), spot: bn('5e14'), high: bn('5e14') },
     ])
-
-    // Prices expected to be the same as Hybrid Scenario 1, as market conditions are the same.
-    const expectedHybridPrices2: PriceRange[] = [
-      { low: bn('9.9e20'), high: bn('1.01010e21') },
-      { low: bn('9.9e8'), high: bn('1.01010e9') },
-      { low: bn('9.9e20'), high: bn('1.01010e21') },
-    ]
-    assertPricesEqual(openAuctionArgs.newPrices[0], expectedHybridPrices2[0])
-    assertPricesEqual(openAuctionArgs.newPrices[1], expectedHybridPrices2[1])
-    assertPricesEqual(openAuctionArgs.newPrices[2], expectedHybridPrices2[2])
+    assertPricesEqual(openAuctionArgs.newPrices[0], defaultPricesHybridScope[0])
+    assertPricesEqual(openAuctionArgs.newPrices[1], defaultPricesHybridScope[1])
+    assertPricesEqual(openAuctionArgs.newPrices[2], defaultPricesHybridScope[2])
   })
 
-  it('Hybrid Scenario 3: Custom finalStageAt (0.8) - Round 1 (progression < thresh) & Round 2 (progression >= thresh)', () => {
+  it('Hybrid Scenario 3: Custom finalStageAt (0.8) - Round 1 & Round 2', () => {
     const finalStageAtCustom = 0.8
     const mockRebalanceHybridCustom: Rebalance = {
       ...mockRebalanceHybridBase,
       priceControl: true,
     }
-
-    // --- Round 1: Progression (0.7) < finalStageAtCustom - 0.02 (0.78) ---
-    // Folio: 0 USDC, 0.2 DAI (whole), 0.8 USDT (whole). shareValue = 1. progression = 0.7.
-    const _folioRound1 = [bn('0'), bn('2e17'), bn('8e5')] // 0.2 DAI (18dec), 0.8 USDT (6dec)
-    // For this round, _initialFolio is _folioRound1. relativeProgression = 0.
-
+    const _folioRound1 = [bn('0'), bn('2e17'), bn('8e5')]
     const openAuctionArgsCustomRound1 = getOpenAuction(
       mockRebalanceHybridCustom,
-      _folioRound1, // _initialFolio
-      targetBasketHybrid, // Target 0 USDC, 0.5 DAI, 0.5 USDT
-      _folioRound1, // current _folio
+      _folioRound1,
+      targetBasketHybrid,
+      _folioRound1,
       decimals,
-      currentMarketPrices, // [1,1,1]
-      auctionPriceErrorSmall, // [0.01,0.01,0.01]
-      finalStageAtCustom // 0.8
+      currentMarketPrices_Hybrid,
+      auctionPriceErrorSmall,
+      finalStageAtCustom
     )
-
-    // Expected for Round 1: buyTarget = 0.8 (finalStageAtCustom)
-    // shareValue = 1, buValue = 1. idealSpotLimit = 1.
-    // initialProgression = 0.7, progression = 0.7. relativeProgression = 0.
-    // 0 < 0.8 - 0.02 (0.78) is TRUE.
-    // limitDelta = 1 * (1 - 0.8) = 0.2.
-    // preClamp newLimits: low=0.8e18, spot=1e18, high=1.2e18.
-    // Clamped by hybridLimits (1, 1e18, 1e36) -> no change from pre-clamp.
     assertRebalanceLimitsEqual(openAuctionArgsCustomRound1.newLimits, {
       low: bn('8e17'),
       spot: bn('1e18'),
       high: bn('1.2e18'),
     })
-    // actualSpotLimit = 1. idealWeights are target. Clamped by hybridWeights.
     expect(openAuctionArgsCustomRound1.newWeights).toEqual([
-      bn('0'),
-      bn('5e26'),
-      bn('5e14'),
+      { low: bn('0'), spot: bn('0'), high: bn('0') },
+      { low: bn('5e26'), spot: bn('5e26'), high: bn('5e26') },
+      { low: bn('5e14'), spot: bn('5e14'), high: bn('5e14') },
     ])
-    const expectedHybridPricesRound1: PriceRange[] = [
-      { low: bn('9.9e20'), high: bn('1.01010e21') },
-      { low: bn('9.9e8'), high: bn('1.01010e9') },
-      { low: bn('9.9e20'), high: bn('1.01010e21') },
-    ]
     assertPricesEqual(
       openAuctionArgsCustomRound1.newPrices[0],
-      expectedHybridPricesRound1[0]
+      defaultPricesHybridScope[0]
     )
     assertPricesEqual(
       openAuctionArgsCustomRound1.newPrices[1],
-      expectedHybridPricesRound1[1]
+      defaultPricesHybridScope[1]
     )
     assertPricesEqual(
       openAuctionArgsCustomRound1.newPrices[2],
-      expectedHybridPricesRound1[2]
+      defaultPricesHybridScope[2]
     )
 
-    // --- Round 2: relativeProgression < finalStageAtCustom - 0.02 ---
-    // Folio: 0 USDC, 0.4 DAI (whole), 0.6 USDT (whole). shareValue = 1. progression = 0.9.
     const _folioRound2 = [bn('0'), bn('4e17'), bn('6e5')]
-    // _initialFolio is _folioRound1. initialProgression = 0.7.
-    // relativeProgression = (0.9 - 0.7) / (1 - 0.7) = 0.2 / 0.3 = 0.666...
-    // finalStageAtCustom = 0.8. threshold = 0.8 - 0.02 = 0.78.
-    // 0.666... < 0.78 is TRUE.
-
     const openAuctionArgsCustomRound2 = getOpenAuction(
-      mockRebalanceHybridCustom, // Same rebalance params
-      _folioRound1, // _initialFolio from Round 1
+      mockRebalanceHybridCustom,
+      _folioRound1,
       targetBasketHybrid,
-      _folioRound2, // current _folio
+      _folioRound2,
       decimals,
-      currentMarketPrices,
+      currentMarketPrices_Hybrid,
       auctionPriceErrorSmall,
-      finalStageAtCustom // Still 0.8
+      finalStageAtCustom
     )
-
-    // Expected for Round 2: buyTarget = 0.8 (finalStageAtCustom)
-    // shareValue = 1, buValue = 1. idealSpotLimit = 1.
-    // limitDelta = 1 * (1 - 0.8) = 0.2.
-    // preClamp newLimits: low=0.8e18, spot=1e18, high=1.2e18.
-    // Clamped by hybridLimits (1, 1e18, 1e36) -> no change.
     assertRebalanceLimitsEqual(openAuctionArgsCustomRound2.newLimits, {
       low: bn('8e17'),
       spot: bn('1e18'),
       high: bn('1.2e18'),
     })
-    // actualSpotLimit = 1. idealWeights are target. Clamped by hybridWeights.
     expect(openAuctionArgsCustomRound2.newWeights).toEqual([
-      bn('0'),
-      bn('5e26'),
-      bn('5e14'),
+      { low: bn('0'), spot: bn('0'), high: bn('0') },
+      { low: bn('5e26'), spot: bn('5e26'), high: bn('5e26') },
+      { low: bn('5e14'), spot: bn('5e14'), high: bn('5e14') },
     ])
-    // Prices expected to be the same as Round 1, as market conditions are the same.
     assertPricesEqual(
       openAuctionArgsCustomRound2.newPrices[0],
-      expectedHybridPricesRound1[0]
+      defaultPricesHybridScope[0]
     )
     assertPricesEqual(
       openAuctionArgsCustomRound2.newPrices[1],
-      expectedHybridPricesRound1[1]
+      defaultPricesHybridScope[1]
     )
     assertPricesEqual(
       openAuctionArgsCustomRound2.newPrices[2],
-      expectedHybridPricesRound1[2]
+      defaultPricesHybridScope[2]
     )
+  })
+
+  it('Hybrid Scenario 4: Delta split between Limits and Weights', () => {
+    const _folioForS4 = [bn('0'), bn('2e17'), bn('8e5')] // 0 USDC, 0.2 DAI val, 0.8 USDT val; shareVal=1.0
+    const scenario4Limits: RebalanceLimits = {
+      low: bn('0.98e18'),
+      spot: bn('1e18'),
+      high: bn('1.02e18'),
+    }
+    const mockRebalanceHybrid4: Rebalance = {
+      ...mockRebalanceHybridBase,
+      nonce: 4n,
+      limits: scenario4Limits,
+      priceControl: true,
+    }
+    const openAuctionArgs = getOpenAuction(
+      mockRebalanceHybrid4,
+      _folioForS4,
+      targetBasketHybrid,
+      _folioForS4,
+      decimals,
+      currentMarketPrices_Hybrid,
+      auctionPriceErrorSmall,
+      finalStageAtForTest
+    )
+
+    assertRebalanceLimitsEqual(openAuctionArgs.newLimits, scenario4Limits)
+    assertPricesEqual(openAuctionArgs.newPrices[0], defaultPricesHybridScope[0])
+    assertPricesEqual(openAuctionArgs.newPrices[1], defaultPricesHybridScope[1])
+    assertPricesEqual(openAuctionArgs.newPrices[2], defaultPricesHybridScope[2])
+
+    const spotDAI_D27 = hybridWeights[1].spot // bn('5e26')
+    const spotUSDT_D27 = hybridWeights[2].spot // bn('5e14')
+
+    expect(openAuctionArgs.newWeights.length).toBe(3)
+    assertRangesEqual(openAuctionArgs.newWeights[0], hybridWeights[0])
+    assertRangesEqual(openAuctionArgs.newWeights[1], {
+      low: bn('4.847e26'),
+      spot: spotDAI_D27,
+      high: bn('5.147e26'),
+    })
+    assertRangesEqual(openAuctionArgs.newWeights[2], {
+      low: bn('4.847e14'),
+      spot: spotUSDT_D27,
+      high: bn('5.147e14'),
+    })
+  })
+
+  it('Hybrid Scenario 5: Already Balanced Folio (rebalanceTarget=1, delta=0)', () => {
+    const _folioAlreadyBalancedAndShareValue1 = [bn('0'), bn('5e17'), bn('5e5')]
+    const mockRebalanceHybrid5: Rebalance = {
+      ...mockRebalanceHybridBase,
+      nonce: 5n,
+      priceControl: true,
+    }
+    const openAuctionArgs = getOpenAuction(
+      mockRebalanceHybrid5,
+      _folioAlreadyBalancedAndShareValue1,
+      targetBasketHybrid,
+      _folioAlreadyBalancedAndShareValue1,
+      decimals,
+      currentMarketPrices_Hybrid,
+      auctionPriceErrorSmall,
+      finalStageAtForTest
+    )
+
+    assertRebalanceLimitsEqual(openAuctionArgs.newLimits, {
+      low: bn('1e18'),
+      spot: bn('1e18'),
+      high: bn('1e18'),
+    })
+
+    assertPricesEqual(openAuctionArgs.newPrices[0], defaultPricesHybridScope[0])
+    assertPricesEqual(openAuctionArgs.newPrices[1], defaultPricesHybridScope[1])
+    assertPricesEqual(openAuctionArgs.newPrices[2], defaultPricesHybridScope[2])
+
+    // For USDT (index 2), hybridWeights[2].spot is bn('5e14').
+    // As deduced, all components of openAuctionArgs.newWeights[2] should also be bn('5e14').
+    // Making the assertion explicit with hardcoded values to test exactness.
+    expect(openAuctionArgs.newWeights.length).toBe(3)
+    assertRangesEqual(openAuctionArgs.newWeights[0], hybridWeights[0]) // USDC {0,0,0}
+    assertRangesEqual(openAuctionArgs.newWeights[1], {
+      low: hybridWeights[1].spot,
+      spot: hybridWeights[1].spot,
+      high: hybridWeights[1].spot,
+    })
+    assertRangesEqual(openAuctionArgs.newWeights[2], {
+      low: bn('5e14'),
+      spot: bn('5e14'),
+      high: bn('5e14'),
+    })
   })
 })
 
