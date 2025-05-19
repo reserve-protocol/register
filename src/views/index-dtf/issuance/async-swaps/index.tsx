@@ -10,6 +10,7 @@ import { useEffect } from 'react'
 import useTrackIndexDTFPage from '../../hooks/useTrackIndexDTFPage'
 import RefreshQuote from '../../overview/components/zap-mint/refresh-quote'
 import ZapSettings from '../../overview/components/zap-mint/zap-settings'
+import Updater from '../manual/updater'
 import AsyncMint from './async-mint'
 import AsyncRedeem from './async-redeem'
 import {
@@ -24,11 +25,43 @@ import {
   selectedTokenAtom,
   showAsyncSwapSettingsAtom,
 } from './atom'
-import Collaterals from './collaterals'
+import Collaterals, { showCollateralsAtom } from './collaterals'
 import GnosisSafeRequired from './gnosis-safe-required'
 import OrderStatusUpdater from './order-status-updater'
 import Success from './success'
-import Updater from '../manual/updater'
+
+function Content() {
+  const showSettings = useAtomValue(showAsyncSwapSettingsAtom)
+  const showCollaterals = useAtomValue(showCollateralsAtom)
+
+  return (
+    <div id="parent" className="flex flex-1">
+      <div
+        id="child-1"
+        className={cn('flex-1', showSettings ? 'hidden' : 'opacity-100')}
+      >
+        <div className="flex flex-col gap-1 sm:w-[420px] h-full">
+          <TabsContent value="mint" className="mt-1">
+            <AsyncMint />
+          </TabsContent>
+          <TabsContent value="redeem" className="mt-1">
+            <AsyncRedeem />
+          </TabsContent>
+        </div>
+      </div>
+      <div
+        id="child-2"
+        className={cn(
+          'bg-background rounded-3xl flex-1 flex flex-col mt-1 border-secondary',
+          showCollaterals && 'border-l-4'
+        )}
+      >
+        <OrderStatusUpdater />
+        <Collaterals />
+      </div>
+    </div>
+  )
+}
 
 const AsyncSwaps = () => {
   useTrackIndexDTFPage('mint-async-swap')
@@ -152,27 +185,7 @@ const AsyncSwaps = () => {
               </div>
             )}
 
-            <div className="flex flex-1">
-              <div
-                className={cn(
-                  'flex-1',
-                  showSettings ? 'hidden' : 'opacity-100'
-                )}
-              >
-                <div className="flex flex-col gap-1 sm:w-[420px] h-full">
-                  <TabsContent value="mint" className="mt-1">
-                    <AsyncMint />
-                  </TabsContent>
-                  <TabsContent value="redeem" className="mt-1">
-                    <AsyncRedeem />
-                  </TabsContent>
-                </div>
-              </div>
-              <div className="bg-background rounded-3xl flex-1 flex flex-col mt-1">
-                <OrderStatusUpdater />
-                <Collaterals />
-              </div>
-            </div>
+            <Content />
           </Tabs>
         </div>
       </div>
