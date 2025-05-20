@@ -1,3 +1,9 @@
+export enum PriceControl {
+  NONE = 0,
+  PARTIAL = 1,
+  ATOMIC_SWAP = 2,
+}
+
 export interface RebalanceLimits {
   low: bigint // D18{BU/share}
   spot: bigint // D18{BU/share}
@@ -25,5 +31,5 @@ export interface Rebalance {
   startedAt: bigint
   restrictedUntil: bigint
   availableUntil: bigint
-  priceControl: boolean
+  priceControl: PriceControl
 }

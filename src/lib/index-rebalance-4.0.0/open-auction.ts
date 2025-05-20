@@ -2,7 +2,13 @@ import Decimal from 'decimal.js-light'
 
 import { bn, D18d, D27d, ONE, ZERO } from './numbers'
 
-import { PriceRange, Rebalance, RebalanceLimits, WeightRange } from './types'
+import {
+  PriceControl,
+  PriceRange,
+  Rebalance,
+  RebalanceLimits,
+  WeightRange,
+} from './types'
 
 // Call `getOpenAuction()` to get the current auction round
 export enum AuctionRound {
@@ -51,13 +57,13 @@ export interface OpenAuctionArgs {
  *
  * @param _initialWeights D27{tok/BU} The initial historical weights emitted in the RebalanceStarted event
  * @param _prices {USD/wholeTok} either CURRENT or HISTORICAL prices
- * @returns {1} The target basket
+ * @returns D18{1} The target basket
  */
 const getTargetBasket = (
   _initialWeights: WeightRange[],
   _prices: number[],
   _decimals: bigint[]
-): Decimal[] => {
+): bigint[] => {
   if (_initialWeights.length != _prices.length) {
     throw new Error('length mismatch')
   }
@@ -77,7 +83,7 @@ const getTargetBasket = (
   const totalValue = vals.reduce((a, b) => a.add(b))
 
   // {1} = {USD/wholeBU} / {USD/wholeBU}
-  return vals.map((val) => val.div(totalValue))
+  return vals.map((val) => bn(val.div(totalValue).mul(D18d)))
 }
 
 /**
@@ -88,7 +94,7 @@ const getTargetBasket = (
  * @param rebalance The result of calling folio.getRebalance()
  * @param _supply {share} The totalSupply() of the basket, today
  * @param _initialFolio D18{tok/share} Initial balances per share, e.g result of folio.toAssets(1e18, 0) at time rebalance was first proposed
- * @param targetBasket {1} Result of calling `getTargetBasket()`
+ * @param _targetBasket D18{1} Result of calling `getTargetBasket()`
  * @param _folio D18{tok/share} Current ratio of token per share, e.g result of folio.toAssets(1e18, 0)
  * @param _decimals Decimals of each token
  * @param _prices {USD/wholeTok} USD prices for each *whole* token
@@ -124,7 +130,13 @@ export const getOpenAuction = (
 
   // ================================================================
 
+  // {wholeShare} = {share} / {share/wholeShare}
   const supply = new Decimal(_supply.toString()).div(D18d)
+
+  // {1} = D18{1} / D18
+  const targetBasket = _targetBasket.map((a) =>
+    new Decimal(a.toString()).div(D18d)
+  )
 
   // {USD/wholeTok}
   const prices = _prices.map((a) => new Decimal(a))
@@ -363,7 +375,7 @@ export const getOpenAuction = (
 
   // D27{USD/tok}
   const newPrices = rebalance.initialPrices.map((initialPrice, i) => {
-    if (!rebalance.priceControl) {
+    if (rebalance.priceControl == PriceControl.NONE) {
       return initialPrice
     }
 

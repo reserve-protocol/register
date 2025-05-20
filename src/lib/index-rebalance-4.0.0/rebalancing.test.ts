@@ -1,5 +1,11 @@
 import { bn } from './numbers'
-import { WeightRange, PriceRange, RebalanceLimits, Rebalance } from './types'
+import {
+  PriceControl,
+  PriceRange,
+  RebalanceLimits,
+  Rebalance,
+  WeightRange,
+} from './types'
 import { getBasketDistribution } from './utils'
 import { OpenAuctionArgs, getOpenAuction } from './open-auction'
 import { getStartRebalance } from './start-rebalance'
@@ -169,7 +175,7 @@ describe('NATIVE DTFs', () => {
     it('Step 1: Ejection Phase (initial folio, priceControl=true, prices=[1,1,1])', () => {
       const mockRebalance: Rebalance = {
         ...mockRebalanceBaseS1,
-        priceControl: true,
+        priceControl: PriceControl.PARTIAL,
       }
       const [openAuctionArgs] = getOpenAuction(
         mockRebalance,
@@ -206,7 +212,7 @@ describe('NATIVE DTFs', () => {
     it('Step 2: Ejection Phase (mid-progress folio with USDC to eject)', () => {
       const mockRebalance: Rebalance = {
         ...mockRebalanceBaseS1,
-        priceControl: true,
+        priceControl: PriceControl.PARTIAL,
       }
       const [openAuctionArgs] = getOpenAuction(
         mockRebalance,
@@ -243,7 +249,7 @@ describe('NATIVE DTFs', () => {
     it('Step 3: Ejection Phase (near-completion folio with USDC to eject)', () => {
       const mockRebalance: Rebalance = {
         ...mockRebalanceBaseS1,
-        priceControl: true,
+        priceControl: PriceControl.PARTIAL,
       }
       const [openAuctionArgs] = getOpenAuction(
         mockRebalance,
@@ -280,7 +286,7 @@ describe('NATIVE DTFs', () => {
     it('Step 4: Ejection Phase (initial folio, priceControl=false, prices=[1,1,1])', () => {
       const mockRebalance: Rebalance = {
         ...mockRebalanceBaseS1,
-        priceControl: false,
+        priceControl: PriceControl.NONE,
       }
       const [openAuctionArgs] = getOpenAuction(
         mockRebalance,
@@ -317,7 +323,7 @@ describe('NATIVE DTFs', () => {
     it('Step 5: Ejection Phase (initial folio, USDC Price Loss 0.9, priceControl=true)', () => {
       const mockRebalance: Rebalance = {
         ...mockRebalanceBaseS1,
-        priceControl: true,
+        priceControl: PriceControl.PARTIAL,
       }
       const pricesS1_loss = [0.9, 1, 1]
       const [openAuctionArgs] = getOpenAuction(
@@ -356,7 +362,7 @@ describe('NATIVE DTFs', () => {
     it('Step 6: Test Case: Negligible Ejection, High Relative Progression -> Delta=0', () => {
       const mockRebalance: Rebalance = {
         ...mockRebalanceBaseS1,
-        priceControl: true,
+        priceControl: PriceControl.PARTIAL,
       }
       const [openAuctionArgs] = getOpenAuction(
         mockRebalance,
@@ -393,7 +399,7 @@ describe('NATIVE DTFs', () => {
     it('Step 7: NATIVE Mid-Rebalance (Multi-Asset Target, Negligible Ejection, Low Relative Progression -> Varied Weights)', () => {
       const mockRebalance: Rebalance = {
         ...mockRebalanceBaseS1,
-        priceControl: true,
+        priceControl: PriceControl.PARTIAL,
       }
       // Using folioStep7S1_varied_weights: shareValue ~1.0, relativeProgression ~0.7 -> delta=0.05.
       // ideal_DAI/USDT_whole_spot ~0.5 (since shareValue*0.5 = 0.5).
@@ -511,7 +517,7 @@ describe('NATIVE DTFs', () => {
     it('Step 1: Ejection Phase (initial folio, priceControl=true, prices=[1,1,1])', () => {
       const mockRebalance: Rebalance = {
         ...mockRebalanceBaseS2,
-        priceControl: true,
+        priceControl: PriceControl.PARTIAL,
       }
       const [openAuctionArgs] = getOpenAuction(
         mockRebalance,
@@ -544,7 +550,7 @@ describe('NATIVE DTFs', () => {
     it('Step 2: Ejection Phase (mid-progress folio with DAI/USDT to eject)', () => {
       const mockRebalance: Rebalance = {
         ...mockRebalanceBaseS2,
-        priceControl: true,
+        priceControl: PriceControl.PARTIAL,
       }
       const [openAuctionArgs] = getOpenAuction(
         mockRebalance,
@@ -577,7 +583,7 @@ describe('NATIVE DTFs', () => {
     it('Step 3: Ejection Phase (near-completion folio with DAI/USDT to eject)', () => {
       const mockRebalance: Rebalance = {
         ...mockRebalanceBaseS2,
-        priceControl: true,
+        priceControl: PriceControl.PARTIAL,
       }
       const [openAuctionArgs] = getOpenAuction(
         mockRebalance,
@@ -610,7 +616,7 @@ describe('NATIVE DTFs', () => {
     it('Step 4: Ejection Phase (initial folio, USDC Price Drop 0.9 - Gain for Buyer, priceControl=true)', () => {
       const mockRebalance: Rebalance = {
         ...mockRebalanceBaseS2,
-        priceControl: true,
+        priceControl: PriceControl.PARTIAL,
       }
       const pricesS2_USDCdrop = [0.9, 1, 1] // USDC price drops, good for us as we target USDC
       const [openAuctionArgs] = getOpenAuction(
@@ -654,7 +660,7 @@ describe('NATIVE DTFs', () => {
     it('Step 5: Ejection Phase (initial folio, USDC Price Rise 1.1 - Loss for Buyer, priceControl=true)', () => {
       const mockRebalance: Rebalance = {
         ...mockRebalanceBaseS2,
-        priceControl: true,
+        priceControl: PriceControl.PARTIAL,
       }
       const pricesS2_USDCrise = [1.1, 1, 1]
       const [openAuctionArgs] = getOpenAuction(
@@ -696,7 +702,7 @@ describe('NATIVE DTFs', () => {
     it('Step 6: Test Case: Negligible Ejection, High Relative Progression (Single Target Asset) -> Delta=0', () => {
       const mockRebalance: Rebalance = {
         ...mockRebalanceBaseS2,
-        priceControl: true,
+        priceControl: PriceControl.PARTIAL,
       }
       const [openAuctionArgs] = getOpenAuction(
         mockRebalance,
@@ -914,7 +920,7 @@ describe('TRACKING DTF Rebalance: USDC -> DAI/USDT Sequence', () => {
     const currentMarketPrices1 = [1, 1, 1]
     const mockRebalance1: Rebalance = {
       ...mockRebalanceBase,
-      priceControl: true,
+      priceControl: PriceControl.PARTIAL,
     }
 
     const [openAuctionArgs1] = getOpenAuction(
@@ -964,7 +970,7 @@ describe('TRACKING DTF Rebalance: USDC -> DAI/USDT Sequence', () => {
     const currentMarketPrices2 = [1, 1, 1]
     const mockRebalance2: Rebalance = {
       ...mockRebalanceBase,
-      priceControl: true,
+      priceControl: PriceControl.PARTIAL,
     }
 
     const [openAuctionArgs2] = getOpenAuction(
@@ -1018,7 +1024,7 @@ describe('TRACKING DTF Rebalance: USDC -> DAI/USDT Sequence', () => {
     const currentMarketPrices3 = [1, 1, 1]
     const mockRebalance3: Rebalance = {
       ...mockRebalanceBase,
-      priceControl: true,
+      priceControl: PriceControl.PARTIAL,
     }
 
     const [openAuctionArgs3] = getOpenAuction(
@@ -1107,7 +1113,7 @@ describe('Hybrid Rebalance Scenario (Manually Constructed Rebalance Object)', ()
     const _folio = [bn('0'), bn('3e17'), bn('7e5')]
     const mockRebalanceHybrid: Rebalance = {
       ...mockRebalanceHybridBase,
-      priceControl: true,
+      priceControl: PriceControl.PARTIAL,
     }
     const [openAuctionArgs] = getOpenAuction(
       mockRebalanceHybrid,
@@ -1139,7 +1145,7 @@ describe('Hybrid Rebalance Scenario (Manually Constructed Rebalance Object)', ()
     const _folio = [bn('0'), bn('4.8e17'), bn('5.2e5')]
     const mockRebalanceHybrid: Rebalance = {
       ...mockRebalanceHybridBase,
-      priceControl: true,
+      priceControl: PriceControl.PARTIAL,
     }
     const [openAuctionArgs] = getOpenAuction(
       mockRebalanceHybrid,
@@ -1171,7 +1177,7 @@ describe('Hybrid Rebalance Scenario (Manually Constructed Rebalance Object)', ()
     const finalStageAtCustom = 0.8
     const mockRebalanceHybridCustom: Rebalance = {
       ...mockRebalanceHybridBase,
-      priceControl: true,
+      priceControl: PriceControl.PARTIAL,
     }
     const _folioRound1 = [bn('0'), bn('2e17'), bn('8e5')]
     const [openAuctionArgsCustomRound1] = getOpenAuction(
@@ -1255,7 +1261,7 @@ describe('Hybrid Rebalance Scenario (Manually Constructed Rebalance Object)', ()
       ...mockRebalanceHybridBase,
       nonce: 4n,
       limits: scenario4Limits,
-      priceControl: true,
+      priceControl: PriceControl.PARTIAL,
     }
     const [openAuctionArgs] = getOpenAuction(
       mockRebalanceHybrid4,
@@ -1296,7 +1302,7 @@ describe('Hybrid Rebalance Scenario (Manually Constructed Rebalance Object)', ()
     const mockRebalanceHybrid5: Rebalance = {
       ...mockRebalanceHybridBase,
       nonce: 5n,
-      priceControl: true,
+      priceControl: PriceControl.PARTIAL,
     }
     const [openAuctionArgs] = getOpenAuction(
       mockRebalanceHybrid5,
@@ -1366,7 +1372,7 @@ describe('Price Clamping Edge Cases in getOpenAuction', () => {
       startedAt: 0n,
       restrictedUntil: 0n,
       availableUntil: 0n,
-      priceControl: true,
+      priceControl: PriceControl.PARTIAL,
     }
 
     // Current USDC market price is $1.0, auction error 0.01
