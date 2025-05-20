@@ -17,7 +17,7 @@ const rewardTokens = {
   },
 }
 
-export const CAMPAIGN_URL = 'https://reserve.merkl.xyz/'
+export const CAMPAIGN_URL = 'https://reserve.merkl.xyz/users/'
 
 type Response = {
   chainId: number
