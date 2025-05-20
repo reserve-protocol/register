@@ -1,9 +1,10 @@
 import Decimal from 'decimal.js-light'
 
-import { bn, D18d, D18n, D27d, ONE, ZERO } from './numbers'
+import { bn, D18d, D27d, ONE, ZERO } from './numbers'
 
 import { PriceRange, Rebalance, RebalanceLimits, WeightRange } from './types'
 
+// Call `getOpenAuction()` to get the current auction round
 export enum AuctionRound {
   EJECT = 0,
   PROGRESS = 1,
@@ -42,6 +43,44 @@ export interface OpenAuctionArgs {
 }
 
 /**
+ * Generator for the `targetBasket` parameter
+ *
+ * Depending on the usecase, pass either:
+ * - TRACKING: CURRENT prices
+ * - NATIVE: HISTORICAL prices
+ *
+ * @param _initialWeights D27{tok/BU} The initial historical weights emitted in the RebalanceStarted event
+ * @param _prices {USD/wholeTok} either CURRENT or HISTORICAL prices
+ * @returns {1} The target basket
+ */
+const getTargetBasket = (
+  _initialWeights: WeightRange[],
+  _prices: number[],
+  _decimals: bigint[]
+): Decimal[] => {
+  if (_initialWeights.length != _prices.length) {
+    throw new Error('length mismatch')
+  }
+
+  const vals = _initialWeights.map((initialWeight: WeightRange, i: number) => {
+    const price = new Decimal(_prices[i])
+    const decimalScale = new Decimal(`1e${_decimals[i]}`)
+
+    // {USD/wholeBU} = D27{tok/BU} * {BU/wholeBU} / {tok/wholeTok} / D27 * {USD/wholeTok}
+    return new Decimal(initialWeight.spot.toString())
+      .mul(D18d)
+      .div(decimalScale)
+      .div(D27d)
+      .mul(price)
+  })
+
+  const totalValue = vals.reduce((a, b) => a.add(b))
+
+  // {1} = {USD/wholeBU} / {USD/wholeBU}
+  return vals.map((val) => val.div(totalValue))
+}
+
+/**
  * Get the values needed to call `folio.openAuction()` as the AUCTION_LAUNCHER
  *
  * Non-AUCTION_LAUNCHERs should use `folio.openAuctionUnrestricted()`
@@ -49,7 +88,7 @@ export interface OpenAuctionArgs {
  * @param rebalance The result of calling folio.getRebalance()
  * @param _supply {share} The totalSupply() of the basket, today
  * @param _initialFolio D18{tok/share} Initial balances per share, e.g result of folio.toAssets(1e18, 0) at time rebalance was first proposed
- * @param _targetBasket D18{1} The target basket to rebalance into
+ * @param targetBasket {1} Result of calling `getTargetBasket()`
  * @param _folio D18{tok/share} Current ratio of token per share, e.g result of folio.toAssets(1e18, 0)
  * @param _decimals Decimals of each token
  * @param _prices {USD/wholeTok} USD prices for each *whole* token
@@ -60,7 +99,7 @@ export const getOpenAuction = (
   rebalance: Rebalance,
   _supply: bigint,
   _initialFolio: bigint[] = [],
-  _targetBasket: bigint[] = [],
+  targetBasket: Decimal[] = [],
   _folio: bigint[],
   _decimals: bigint[],
   _prices: number[],
@@ -70,8 +109,8 @@ export const getOpenAuction = (
   console.log('getOpenAuction')
 
   if (
-    rebalance.tokens.length != _targetBasket.length ||
-    _targetBasket.length != _folio.length ||
+    rebalance.tokens.length != targetBasket.length ||
+    targetBasket.length != _folio.length ||
     _folio.length != _decimals.length ||
     _decimals.length != _prices.length ||
     _prices.length != _priceError.length
@@ -86,15 +125,6 @@ export const getOpenAuction = (
   // ================================================================
 
   const supply = new Decimal(_supply.toString()).div(D18d)
-
-  if (_targetBasket.reduce((a, b) => a + b) != D18n) {
-    throw new Error('_targetBasket does not sum to 1e18')
-  }
-
-  // {1} = D18{1} / D18
-  const targetBasket = _targetBasket.map((a) =>
-    new Decimal(a.toString()).div(D18d)
-  )
 
   // {USD/wholeTok}
   const prices = _prices.map((a) => new Decimal(a))
