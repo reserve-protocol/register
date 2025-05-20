@@ -4,6 +4,34 @@ import { bn, D18d, D18n, D27d, ONE, ZERO } from './numbers'
 
 import { PriceRange, Rebalance, RebalanceLimits, WeightRange } from './types'
 
+export enum AuctionRound {
+  EJECT = 0,
+  PROGRESS = 1,
+  FINAL = 2,
+}
+
+/**
+ * Useful metrics to use to visualize things
+ *
+ * @param initialProgression {1} The progression the Folio had when the auction was first proposed
+ * @param absoluteProgression {1} The progression of the auction on an absolute scale
+ * @param relativeProgression {1} The relative progression of the auction
+ * @param target {1} The target of the auction on an absolute scale
+ * @param auctionSize {USD} The total value on sale in the auction
+ * @param surplusTokens The list of tokens in surplus
+ * @param deficitTokens The list of tokens in deficit
+ */
+export interface AuctionMetrics {
+  round: AuctionRound
+  initialProgression: number
+  absoluteProgression: number
+  relativeProgression: number
+  target: number
+  auctionSize: number
+  surplusTokens: string[]
+  deficitTokens: string[]
+}
+
 // All the args needed to call `folio.openAuction()`
 export interface OpenAuctionArgs {
   rebalanceNonce: bigint
@@ -19,6 +47,7 @@ export interface OpenAuctionArgs {
  * Non-AUCTION_LAUNCHERs should use `folio.openAuctionUnrestricted()`
  *
  * @param rebalance The result of calling folio.getRebalance()
+ * @param _supply {share} The totalSupply() of the basket, today
  * @param _initialFolio D18{tok/share} Initial balances per share, e.g result of folio.toAssets(1e18, 0) at time rebalance was first proposed
  * @param _targetBasket D18{1} The target basket to rebalance into
  * @param _folio D18{tok/share} Current ratio of token per share, e.g result of folio.toAssets(1e18, 0)
@@ -29,6 +58,7 @@ export interface OpenAuctionArgs {
  */
 export const getOpenAuction = (
   rebalance: Rebalance,
+  _supply: bigint,
   _initialFolio: bigint[] = [],
   _targetBasket: bigint[] = [],
   _folio: bigint[],
@@ -36,7 +66,7 @@ export const getOpenAuction = (
   _prices: number[],
   _priceError: number[],
   _finalStageAt: number = 0.9
-): OpenAuctionArgs => {
+): [OpenAuctionArgs, AuctionMetrics] => {
   console.log('getOpenAuction')
 
   if (
@@ -54,6 +84,8 @@ export const getOpenAuction = (
   }
 
   // ================================================================
+
+  const supply = new Decimal(_supply.toString()).div(D18d)
 
   if (_targetBasket.reduce((a, b) => a + b) != D18n) {
     throw new Error('_targetBasket does not sum to 1e18')
@@ -84,24 +116,22 @@ export const getOpenAuction = (
   )
 
   // {wholeTok/wholeBU} = D27{tok/BU} * {BU/wholeBU} / {tok/wholeTok} / D27
-  const weightRanges = rebalance.weights.map(
-    (range: WeightRange, i: number) => {
-      return {
-        low: new Decimal(range.low.toString())
-          .mul(D18d)
-          .div(decimalScale[i])
-          .div(D27d),
-        spot: new Decimal(range.spot.toString())
-          .mul(D18d)
-          .div(decimalScale[i])
-          .div(D27d),
-        high: new Decimal(range.high.toString())
-          .mul(D18d)
-          .div(decimalScale[i])
-          .div(D27d),
-      }
+  let weightRanges = rebalance.weights.map((range: WeightRange, i: number) => {
+    return {
+      low: new Decimal(range.low.toString())
+        .mul(D18d)
+        .div(decimalScale[i])
+        .div(D27d),
+      spot: new Decimal(range.spot.toString())
+        .mul(D18d)
+        .div(decimalScale[i])
+        .div(D27d),
+      high: new Decimal(range.high.toString())
+        .mul(D18d)
+        .div(decimalScale[i])
+        .div(D27d),
     }
-  )
+  })
 
   const finalStageAt = new Decimal(_finalStageAt.toString())
 
@@ -180,15 +210,20 @@ export const getOpenAuction = (
     : progression.sub(initialProgression).div(ONE.sub(initialProgression))
 
   let rebalanceTarget = ONE
+  let round: AuctionRound = AuctionRound.FINAL
 
   // make it an eject auction if there is 1 bps or more of value to eject
   if (portionBeingEjected.gte(1e-4)) {
+    round = AuctionRound.EJECT
+
     rebalanceTarget = progression.add(portionBeingEjected.mul(1.5)) // set rebalanceTarget to 50% more than needed, to ensure ejection completes
     if (rebalanceTarget.gt(ONE)) {
       rebalanceTarget = ONE
     }
   } else if (relativeProgression.lt(finalStageAt.sub(0.02))) {
     // wiggle room to prevent having to re-run an auction at the same stage after price movement
+    round = AuctionRound.PROGRESS
+
     rebalanceTarget = finalStageAt
   }
 
@@ -337,11 +372,65 @@ export const getOpenAuction = (
 
   // ================================================================
 
-  return {
-    rebalanceNonce: rebalance.nonce,
-    tokens: rebalance.tokens, // full set of tokens, not pruned to the active buy/sells
-    newWeights: newWeights,
-    newPrices: newPrices,
-    newLimits: newLimits,
-  }
+  // calculate metrics
+
+  // {USD} = {1} * {USD/wholeShare} * {wholeShare}
+  const valueBeingTraded = rebalanceTarget
+    .sub(progression)
+    .mul(shareValue)
+    .mul(supply)
+
+  const surplusTokens: string[] = []
+  const deficitTokens: string[] = []
+
+  // update Decimal weightRanges
+  // {wholeTok/wholeBU} = D27{tok/BU} * {BU/wholeBU} / {tok/wholeTok} / D27
+  weightRanges = newWeights.map((range, i) => {
+    return {
+      low: new Decimal(range.low.toString())
+        .mul(D18d)
+        .div(decimalScale[i])
+        .div(D27d),
+      spot: new Decimal(range.spot.toString())
+        .mul(D18d)
+        .div(decimalScale[i])
+        .div(D27d),
+      high: new Decimal(range.high.toString())
+        .mul(D18d)
+        .div(decimalScale[i])
+        .div(D27d),
+    }
+  })
+
+  rebalance.tokens.forEach((token, i) => {
+    // {wholeTok/wholeShare} = {wholeTok/wholeBU} * {wholeBU/wholeShare}
+    const buyUpTo = weightRanges[i].low.mul(actualLimits.low)
+    const sellDownTo = weightRanges[i].high.mul(actualLimits.high)
+
+    if (folio[i].lt(buyUpTo)) {
+      deficitTokens.push(token)
+    } else if (folio[i].gt(sellDownTo)) {
+      surplusTokens.push(token)
+    }
+  })
+
+  return [
+    {
+      rebalanceNonce: rebalance.nonce,
+      tokens: rebalance.tokens, // full set of tokens, not pruned to the active buy/sells
+      newWeights: newWeights,
+      newPrices: newPrices,
+      newLimits: newLimits,
+    },
+    {
+      round: round,
+      initialProgression: initialProgression.toNumber(),
+      absoluteProgression: progression.toNumber(),
+      relativeProgression: relativeProgression.toNumber(),
+      target: rebalanceTarget.toNumber(),
+      auctionSize: valueBeingTraded.toNumber(),
+      surplusTokens: surplusTokens,
+      deficitTokens: deficitTokens,
+    },
+  ]
 }
