@@ -82,7 +82,7 @@ const getTargetBasket = (
 
   const totalValue = vals.reduce((a, b) => a.add(b))
 
-  // {1} = {USD/wholeBU} / {USD/wholeBU}
+  // D18{1} = {USD/wholeBU} / {USD/wholeBU} * D18
   return vals.map((val) => bn(val.div(totalValue).mul(D18d)))
 }
 
