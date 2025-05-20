@@ -211,7 +211,7 @@ const Heading = ({
           </div>
           <div className="min-w-[237px]">
             <div className="font-bold leading-[20px]">
-              Trade DTFs & Earn Rewards
+              Claim trading rewards here
             </div>
             <div className="mt-1 leading-[17px] text-muted-foreground font-light">
               $25K in total rewards
@@ -222,7 +222,7 @@ const Heading = ({
             asChild
           >
             <a href={CAMPAIGN_URL} target="_blank">
-              <span>View</span>
+              <span>Claim</span>
               <ArrowUpRight size={16} />
             </a>
           </Button>
