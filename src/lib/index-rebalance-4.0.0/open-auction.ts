@@ -105,7 +105,7 @@ export const getOpenAuction = (
   rebalance: Rebalance,
   _supply: bigint,
   _initialFolio: bigint[] = [],
-  targetBasket: Decimal[] = [],
+  _targetBasket: bigint[] = [],
   _folio: bigint[],
   _decimals: bigint[],
   _prices: number[],
@@ -115,8 +115,8 @@ export const getOpenAuction = (
   console.log('getOpenAuction')
 
   if (
-    rebalance.tokens.length != targetBasket.length ||
-    targetBasket.length != _folio.length ||
+    rebalance.tokens.length != _targetBasket.length ||
+    _targetBasket.length != _folio.length ||
     _folio.length != _decimals.length ||
     _decimals.length != _prices.length ||
     _prices.length != _priceError.length
