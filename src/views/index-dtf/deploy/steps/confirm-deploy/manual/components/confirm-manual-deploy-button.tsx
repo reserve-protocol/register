@@ -25,6 +25,7 @@ import {
   toBytes,
 } from 'viem'
 
+import { useFormContext } from 'react-hook-form'
 import { useWaitForTransactionReceipt } from 'wagmi'
 import { indexDeployFormDataAtom } from '../../atoms'
 import {
@@ -33,7 +34,6 @@ import {
   hasBalanceAtom,
   initialTokensAtom,
 } from '../atoms'
-import { useFormContext } from 'react-hook-form'
 
 type FolioParams = {
   name: string
@@ -49,7 +49,6 @@ export type FeeRecipient = {
 }
 
 type FolioConfig = {
-  auctionDelay: bigint
   auctionLength: bigint
   feeRecipients: FeeRecipient[]
   tvlFee: bigint
@@ -57,17 +56,25 @@ type FolioConfig = {
   mandate: string
 }
 
+type FolioFlags = {
+  trustedFillerEnabled: boolean
+  rebalanceControl: {
+    weightControl: boolean
+    priceControl: boolean
+  }
+}
+
 type GovernanceConfig = {
   votingDelay: number
   votingPeriod: number
   proposalThreshold: bigint
-  quorumPercent: bigint
+  quorumThreshold: bigint
   timelockDelay: bigint
   guardians: Address[]
 }
 
 type GovernanceRoles = {
-  existingAuctionApprovers: Address[]
+  existingBasketManagers: Address[]
   auctionLaunchers: Address[]
   brandManagers: Address[]
 }
@@ -76,6 +83,7 @@ type DeployParams = [
   Address,
   FolioParams,
   FolioConfig,
+  FolioFlags,
   GovernanceConfig,
   GovernanceConfig,
   GovernanceRoles,
@@ -85,6 +93,7 @@ type DeployParams = [
 type DeployParamsUngoverned = [
   FolioParams,
   FolioConfig,
+  FolioFlags,
   Address,
   Address[],
   Address[],
@@ -133,12 +142,19 @@ const txAtom = atom<
   }
 
   const folioConfig: FolioConfig = {
-    auctionDelay: BigInt(Math.floor((formData.auctionDelay || 0) * 3600)),
     auctionLength: BigInt(Math.floor((formData.auctionLength || 0) * 60)),
     feeRecipients: calculateRevenueDistribution(formData, wallet, stToken),
     tvlFee: parseEther(((formData.folioFee || 0) / 100).toString()),
     mintFee: parseEther(((formData.mintFee || 0) / 100).toString()),
     mandate: formData.mandate || '',
+  }
+
+  const folioFlags: FolioFlags = {
+    trustedFillerEnabled: true,
+    rebalanceControl: {
+      weightControl: true,
+      priceControl: true,
+    },
   }
 
   const guardians = formData.guardians.filter(Boolean) as Address[]
@@ -156,8 +172,9 @@ const txAtom = atom<
     const args: DeployParamsUngoverned = [
       folioParams,
       folioConfig,
+      folioFlags,
       owner,
-      [],
+      [], // existingBasketManagers
       [...auctionLaunchers],
       [...brandManagers],
       keccak256(toBytes(getCurrentTime())),
@@ -176,7 +193,8 @@ const txAtom = atom<
     votingPeriod: Math.floor((formData.governanceVotingPeriod || 0) * 86400),
     proposalThreshold:
       parseEther((formData.governanceVotingThreshold || 0).toString()) / 100n,
-    quorumPercent: BigInt(Math.floor(formData.governanceVotingQuorum || 0)),
+    quorumThreshold:
+      parseEther((formData.governanceVotingQuorum || 0).toString()) / 100n,
     timelockDelay: BigInt(
       Math.floor((formData.governanceExecutionDelay || 0) * 86400)
     ),
@@ -188,7 +206,8 @@ const txAtom = atom<
     votingPeriod: Math.floor((formData.basketVotingPeriod || 0) * 3600),
     proposalThreshold:
       parseEther((formData.basketVotingThreshold || 0).toString()) / 100n,
-    quorumPercent: BigInt(Math.floor(formData.basketVotingQuorum || 0)),
+    quorumThreshold:
+      parseEther((formData.basketVotingQuorum || 0).toString()) / 100n,
     timelockDelay: BigInt(
       Math.floor((formData.basketExecutionDelay || 0) * 3600)
     ),
@@ -199,10 +218,11 @@ const txAtom = atom<
     stToken,
     folioParams,
     folioConfig,
+    folioFlags,
     ownerGovernanceConfig,
     tradingGovernanceConfig,
     {
-      existingAuctionApprovers: [],
+      existingBasketManagers: [],
       auctionLaunchers,
       brandManagers,
     },
