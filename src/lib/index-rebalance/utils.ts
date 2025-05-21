@@ -131,35 +131,28 @@ export const makeAuction = (
   if (startPrice >= 10n ** 54n || endPrice >= 10n ** 54n) {
     throw new Error(`price outside 1e54 range [${startPrice}, ${endPrice}]`)
   }
+  if (avgPriceError >= D18n) {
+    throw new Error('avgPriceError outside range')
+  }
 
   return {
     sell: sell,
     buy: buy,
     sellLimit: {
       spot: sellLimit,
-      low:
-        avgPriceError >= D18n
-          ? 0n
-          : (sellLimit * (D18n - avgPriceError)) / D18n,
+      low: (sellLimit * (D18n - avgPriceError)) / D18n,
       high:
-        avgPriceError >= D18n
-          ? 10n ** 54n
-          : (sellLimit * D18n + D18n - avgPriceError - 1n) /
-            (D18n - avgPriceError),
+        (sellLimit * D18n + D18n - avgPriceError - 1n) / (D18n - avgPriceError),
     },
     buyLimit: {
       spot: buyLimit,
-      low:
-        avgPriceError >= D18n ? 1n : (buyLimit * (D18n - avgPriceError)) / D18n,
+      low: (buyLimit * (D18n - avgPriceError)) / D18n,
       high:
-        avgPriceError >= D18n
-          ? 10n ** 54n
-          : (buyLimit * D18n + D18n - avgPriceError - 1n) /
-            (D18n - avgPriceError),
+        (buyLimit * D18n + D18n - avgPriceError - 1n) / (D18n - avgPriceError),
     },
     prices: {
-      start: avgPriceError == D18n ? 0n : startPrice,
-      end: avgPriceError == D18n ? 0n : endPrice,
+      start: startPrice,
+      end: endPrice,
     },
   }
 }

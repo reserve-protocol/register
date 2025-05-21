@@ -74,4 +74,9 @@ export default defineConfig({
   server: {
     port: 3000,
   },
+  test: {
+    include: ['src/lib/**/*.test.{ts,.tsx}'],
+    globals: true,
+    environment: 'node',
+  },
 })

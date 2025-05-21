@@ -89,6 +89,7 @@
     "analyze": "vite-bundle-visualizer 'build/static/js/*.js'",
     "test": "vite test",
     "test:e2e": "npx playwright test",
+    "test:lib": "npx vitest run",
     "translations": "lingui extract --clean && lingui compile",
     "forknet": "anvil --fork-url https://eth.llamarpc.com --chain-id 1 --balance 10000000",
     "parse-collaterals": "node scripts/parseCollaterals"
@@ -135,6 +136,7 @@
     "vite": "5.4.8",
     "vite-bundle-visualizer": "1.2.1",
     "vite-plugin-static-copy": "^2.1.0",
-    "vite-tsconfig-paths": "^4.2.0"
+    "vite-tsconfig-paths": "^4.2.0",
+    "vitest": "^3.1.2"
   }
 }
