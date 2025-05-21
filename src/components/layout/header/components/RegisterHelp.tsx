@@ -13,7 +13,6 @@ import {
   REGISTER_FEEDBACK,
   RESERVE_FORUM,
 } from 'utils/constants'
-import CoinbaseSubscribe from './CoinbaseSubscribe'
 
 interface HelpItemProps extends BoxProps {
   title: string
@@ -109,7 +108,6 @@ const HelpContent = ({ onClose }: { onClose(): void }) => {
       <Box sx={{ display: ['block', 'none'] }}>
         <Divider mt={3} mb={0} />
         <Box p={3} variant="layout.verticalAlign">
-          <CoinbaseSubscribe />
           <ThemeColorMode ml="auto" />
         </Box>
       </Box>
