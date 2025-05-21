@@ -14,9 +14,7 @@ import { formatUnits, parseEther } from 'viem'
 import { useReadContracts } from 'wagmi'
 import {
   dtfSupplyAtom,
-  dtfTradeDelay,
   IndexAssetShares,
-  isDeferAvailableAtom,
   isProposalConfirmedAtom,
   permissionlessLaunchingAtom,
   priceMapAtom,
@@ -25,9 +23,13 @@ import {
   proposedUnitsAtom,
   stepAtom,
   tradeRangeOptionAtom,
-  tradeVolatilityAtom,
 } from './atoms'
-import { PermissionOptionId } from './components/proposal-trading-expiration'
+import { PermissionOptionId } from './components/proposal-rebalance-launch-settings'
+import {
+  dtfTradeDelay,
+  isDeferAvailableAtom,
+  tradeVolatilityAtom,
+} from './legacy-atoms'
 
 const PRICES_BASE_URL = `${RESERVE_API}current/prices?tokens=`
 
@@ -252,7 +254,7 @@ const AtomStateUpdater = () => {
       setProposedShares({})
       setProposedBasket(undefined)
       setTradeVolatility([])
-      setTradeRangeOption(undefined)
+      setTradeRangeOption('defer')
       setPermissionlessLaunching(undefined)
       tradeConfirmation(false)
       setProposedUnits({})

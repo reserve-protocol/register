@@ -1,18 +1,19 @@
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { cn } from '@/lib/utils'
+import { indexDTFVersionAtom } from '@/state/dtf/atoms'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { AlignCenterVertical, Crown } from 'lucide-react'
+import { ReactNode } from 'react'
 import {
-  isDeferAvailableAtom,
   stepAtom,
   tradeRangeOptionAtom,
   TradeRangeOption as TradeRangeOptionType,
 } from '../atoms'
-import ProposalTradesSetup from './proposal-trades-setup'
-import { ReactNode } from 'react'
+import { isDeferAvailableAtom } from '../legacy-atoms'
+import LegacyProposalAuctionPriceRanges from './legacy-proposal-auction-price-ranges'
 
-type TradeRangeOptionProps = {
+type PriceSettingsOptionProps = {
   title: string
   description: string
   icon: ReactNode
@@ -22,14 +23,14 @@ type TradeRangeOptionProps = {
   onClick: () => void
 }
 
-const TradeRangeOption = ({
+const PriceSettingsOption = ({
   title,
   description,
   icon,
   disabled,
   checked,
   onClick,
-}: TradeRangeOptionProps) => (
+}: PriceSettingsOptionProps) => (
   <div
     role="button"
     className={cn(
@@ -73,14 +74,6 @@ const NextButton = () => {
   )
 }
 
-const TradesSetup = () => {
-  const option = useAtomValue(tradeRangeOptionAtom)
-
-  if (option !== 'include') return null
-
-  return <ProposalTradesSetup />
-}
-
 export const TradeRangeTriggerLabel = () => {
   const option = useAtomValue(tradeRangeOptionAtom)
 
@@ -102,7 +95,17 @@ export const TradeRangeTriggerLabel = () => {
   )
 }
 
-const ProposalTradingRanges = () => {
+const RebalancePriceSettings = () => {
+  const option = useAtomValue(tradeRangeOptionAtom)
+  const version = useAtomValue(indexDTFVersionAtom)
+
+  if (option !== 'include') return null
+  if (version !== '4.0.0') return <LegacyProposalAuctionPriceRanges />
+
+  return <div></div>
+}
+
+const ProposalPriceRanges = () => {
   const isDeferAvailable = useAtomValue(isDeferAvailableAtom)
   const [option, setOption] = useAtom(tradeRangeOptionAtom)
 
@@ -114,7 +117,7 @@ const ProposalTradingRanges = () => {
         bounds.
       </p>
       <div className="flex flex-col gap-2 mx-2">
-        <TradeRangeOption
+        <PriceSettingsOption
           title="Defer to Auction Launcher"
           description="Rely solely on the Auction Launcher to provide accurate pricing information when swapping assets. This option increases the amount of damage from mistakes or a rogue Auction Launcher."
           icon={<Crown size={16} strokeWidth={1.5} />}
@@ -123,19 +126,19 @@ const ProposalTradingRanges = () => {
           onClick={() => setOption('defer')}
           checked={option === 'defer'}
         />
-        <TradeRangeOption
+        <PriceSettingsOption
           title="Set Price Range(s)"
-          description="Set guardrails for the auction launcher by specifying the expected price volatility (low, medium, or high) for each auction. "
+          description="Set guardrails for the auction launcher by specifying the expected price volatility (low, medium, or high)"
           icon={<AlignCenterVertical size={16} strokeWidth={1.5} />}
           value="include"
           onClick={() => setOption('include')}
           checked={option === 'include'}
         />
-        <TradesSetup />
+        <RebalancePriceSettings />
         <NextButton />
       </div>
     </>
   )
 }
 
-export default ProposalTradingRanges
+export default ProposalPriceRanges

@@ -152,7 +152,7 @@ const txAtom = atom<
   const folioFlags: FolioFlags = {
     trustedFillerEnabled: true,
     rebalanceControl: {
-      weightControl: true,
+      weightControl: false,
       priceControl: true,
     },
   }

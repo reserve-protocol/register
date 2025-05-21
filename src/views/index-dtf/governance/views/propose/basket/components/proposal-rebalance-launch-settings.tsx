@@ -8,12 +8,12 @@ import { Check, Crown, UsersRound, X } from 'lucide-react'
 import { ReactNode, useMemo } from 'react'
 import {
   customPermissionlessLaunchingWindowAtom,
-  isDeferAvailableAtom,
   permissionlessLaunchingAtom,
   permissionlessLaunchingWindowAtom,
   stepAtom,
   tradeRangeOptionAtom,
 } from '../atoms'
+import { isDeferAvailableAtom } from '../legacy-atoms'
 
 export enum PermissionOptionId {
   NO_PERMISSIONLESS_LAUNCHING = 0,
@@ -176,7 +176,7 @@ export const TradingExpirationTriggerLabel = () => {
   )
 }
 
-const ProposalTradingExpiration = () => {
+const ProposalRebalanceLaunchSettings = () => {
   const priceRangeOption = useAtomValue(tradeRangeOptionAtom)
   const isDeferAvailable = useAtomValue(isDeferAvailableAtom)
   const permissionOptions: PermissionOption[] = useMemo(
@@ -255,4 +255,4 @@ const ProposalTradingExpiration = () => {
   )
 }
 
-export default ProposalTradingExpiration
+export default ProposalRebalanceLaunchSettings
