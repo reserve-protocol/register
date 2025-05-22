@@ -7,12 +7,12 @@ import {
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import {
-  basketProposalCalldatasAtom,
   isProposalConfirmedAtom,
   priceMapAtom,
   proposalDescriptionAtom,
 } from '../atoms'
 import BasketProposalPreview from './proposal-basket-preview'
+import { basketProposalCalldatasAtom } from '../legacy-atoms'
 
 const ProposalDescription = () => {
   const setDescription = useSetAtom(proposalDescriptionAtom)

@@ -7,13 +7,9 @@ import { chainIdAtom } from '@/state/atoms'
 import { Token } from '@/types'
 import { formatPercentage } from '@/utils'
 import { atom, useAtom, useAtomValue } from 'jotai'
-import {
-  priceMapAtom,
-  proposedIndexBasketAtom,
-  proposedIndexTradesAtom,
-  tradeVolatilityAtom,
-} from '../atoms'
+import { priceMapAtom, proposedIndexBasketAtom } from '../atoms'
 import { iTokenAddressAtom } from '@/state/dtf/atoms'
+import { proposedIndexTradesAtom, tradeVolatilityAtom } from '../legacy-atoms'
 
 type ProposedTradeWithMeta = Auction & {
   index: number
@@ -233,7 +229,7 @@ const OrganizedTrades = () => {
   )
 }
 
-const ProposalTradesSetup = () => {
+const LegacyProposalAuctionPriceRanges = () => {
   return (
     <div className="flex flex-col gap-2 overflow-auto">
       <Row>
@@ -248,4 +244,4 @@ const ProposalTradesSetup = () => {
   )
 }
 
-export default ProposalTradesSetup
+export default LegacyProposalAuctionPriceRanges
