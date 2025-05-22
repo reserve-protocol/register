@@ -6,12 +6,15 @@ import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { AlignCenterVertical, Crown } from 'lucide-react'
 import { ReactNode } from 'react'
 import {
+  isSingletonRebalanceAtom,
+  priceVolatilityAtom,
   stepAtom,
   tradeRangeOptionAtom,
   TradeRangeOption as TradeRangeOptionType,
 } from '../atoms'
 import { isDeferAvailableAtom } from '../legacy-atoms'
 import LegacyProposalAuctionPriceRanges from './legacy-proposal-auction-price-ranges'
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 
 type PriceSettingsOptionProps = {
   title: string
@@ -95,14 +98,51 @@ export const TradeRangeTriggerLabel = () => {
   )
 }
 
+const VOLATILITY_OPTIONS = ['Low', 'Medium', 'High']
+
+const RebalancePriceVolatility = () => {
+  const [priceVolatility, setPriceVolatility] = useAtom(priceVolatilityAtom)
+
+  return (
+    <div className="flex flex-col justify-center gap-3 rounded-xl bg-foreground/5 p-4">
+      <div>
+        <h4 className="font-semibold text-primary">Auction Price Volatility</h4>
+        <div className="">
+          Specify the expected price volatility for the auction. This will be
+          used to set the price range for the auction.
+        </div>
+      </div>
+      <div className="flex items-center gap-2">
+        <ToggleGroup
+          type="single"
+          className="bg-muted-foreground/10 p-1 rounded-xl justify-start flex-grow"
+          value={priceVolatility}
+          onValueChange={setPriceVolatility}
+        >
+          {VOLATILITY_OPTIONS.map((option) => (
+            <ToggleGroupItem
+              key={option}
+              value={option}
+              className="px-5 h-8 whitespace-nowrap rounded-lg data-[state=on]:bg-card text-secondary-foreground/80 data-[state=on]:text-primary flex-grow"
+            >
+              {option}
+            </ToggleGroupItem>
+          ))}
+        </ToggleGroup>
+      </div>
+    </div>
+  )
+}
+
 const RebalancePriceSettings = () => {
   const option = useAtomValue(tradeRangeOptionAtom)
   const version = useAtomValue(indexDTFVersionAtom)
+  const isSingletonRebalance = useAtomValue(isSingletonRebalanceAtom)
 
   if (option !== 'include') return null
-  if (version !== '4.0.0') return <LegacyProposalAuctionPriceRanges />
+  if (!isSingletonRebalance) return <LegacyProposalAuctionPriceRanges />
 
-  return <div></div>
+  return <RebalancePriceVolatility />
 }
 
 const ProposalPriceRanges = () => {

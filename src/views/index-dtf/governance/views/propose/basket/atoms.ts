@@ -1,7 +1,6 @@
 import { getCurrentBasket } from '@/lib/index-rebalance/utils'
 import { indexDTFBrandAtom, indexDTFVersionAtom } from '@/state/dtf/atoms'
 import { Token } from '@/types'
-import { checkVersion } from '@/utils'
 import { atom } from 'jotai'
 import { parseUnits } from 'viem'
 
@@ -50,6 +49,9 @@ export const customPermissionlessLaunchingWindowAtom = atom('')
 // Auction launcher window (advanced controls) 4.0 only
 export const auctionLauncherWindowAtom = atom('24')
 export const customAuctionLauncherWindowAtom = atom('')
+
+// Price volatility
+export const priceVolatilityAtom = atom('Medium')
 
 // Proposed basket
 export const proposedIndexBasketAtom = atom<
