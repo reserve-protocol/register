@@ -30,6 +30,7 @@ export type AsyncSwapOrderResponse = {
   chainId: number
   signer: Address
   dtf: Address
+  inputAmount: string
   amountOut: string
   universalOrders: any[] // TODO: review it
   cowswapOrders: (EnrichedOrder & { orderId: string })[]

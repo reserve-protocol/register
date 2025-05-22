@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom'
 import { formatUnits } from 'viem'
 import { currentAsyncSwapTabAtom } from './atom'
 import { useOrderStatus } from './hooks/useOrderStatus'
+import { Skeleton } from '@/components/ui/skeleton'
 
 const STATUS_MAP: Record<CowSwapOrderStatus, string> = {
   [CowSwapOrderStatus.PRESIGNATURE_PENDING]: 'Processing',
@@ -63,46 +64,56 @@ const CowSwapOrder = ({ orderId }: { orderId: string }) => {
   const tab = useAtomValue(currentAsyncSwapTabAtom)
   const indexDTFBasket = useAtomValue(indexDTFBasketAtom)
 
-  if (!data) return null // TODO: Add a loading state
-
   return (
     <div
       className="flex items-center justify-between gap-2 border-b border-border py-4 last:border-b-0"
-      key={data.buyToken}
+      key={orderId}
     >
       <div className="flex items-center gap-2">
         <TokenLogo
-          address={data.buyToken}
+          address={data?.buyToken}
           symbol={
-            indexDTFBasket?.find((token) => token.address === data.buyToken)
+            indexDTFBasket?.find((token) => token.address === data?.buyToken)
               ?.symbol || ''
           }
           size="xl"
         />
         <div className="flex flex-col">
-          <div className="text-sm font-semibold">
-            {tab === 'mint' ? '-' : '+'}{' '}
-            {formatCurrency(Number(formatUnits(BigInt(data.sellAmount), 6)))}{' '}
-            USDC
-          </div>
-          <div className="text-sm text-primary">
-            {tab === 'mint' ? '+' : '-'}{' '}
-            {formatTokenAmount(
-              Number(
-                formatUnits(
-                  BigInt(data.buyAmount),
-                  indexDTFBasket?.find(
-                    (token) => token.address === data.buyToken
-                  )?.decimals || 18
+          {data?.sellAmount ? (
+            <div className="text-sm font-semibold">
+              {tab === 'mint' ? '-' : '+'}{' '}
+              {formatCurrency(Number(formatUnits(BigInt(data.sellAmount), 6)))}{' '}
+              USDC
+            </div>
+          ) : (
+            <Skeleton className="w-24 h-3 mb-1" />
+          )}
+          {data?.buyAmount ? (
+            <div className="text-sm text-primary">
+              {tab === 'mint' ? '+' : '-'}{' '}
+              {formatTokenAmount(
+                Number(
+                  formatUnits(
+                    BigInt(data.buyAmount),
+                    indexDTFBasket?.find(
+                      (token) => token.address === data.buyToken
+                    )?.decimals || 18
+                  )
                 )
-              )
-            )}{' '}
-            {indexDTFBasket?.find((token) => token.address === data.buyToken)
-              ?.symbol || ''}
-          </div>
+              )}{' '}
+              {indexDTFBasket?.find((token) => token.address === data.buyToken)
+                ?.symbol || ''}
+            </div>
+          ) : (
+            <Skeleton className="w-24 h-3" />
+          )}
         </div>
       </div>
-      <OrderStatus status={data.status} orderId={orderId} />
+      {data?.status ? (
+        <OrderStatus status={data.status} orderId={orderId} />
+      ) : (
+        <Skeleton className="w-28 h-4" />
+      )}
     </div>
   )
 }

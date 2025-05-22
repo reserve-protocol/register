@@ -67,9 +67,11 @@ export const mintTxHashAtom = atom<string | undefined>(
 export const mintValueAtom = atom<number>((get) => {
   const inputAmount = get(asyncSwapInputAtom)
   const dtfPrice = get(indexDTFPriceAtom)
-  return (
+  const result =
     ((Number(inputAmount) || 0) / (dtfPrice ?? 1)) * (1 - ASYNC_SWAP_BUFFER)
-  )
+
+  // 0.000001 is the minimum to avoid exponential notation when converting to string
+  return result > 0 && result < 0.000001 ? 0.000001 : result
 })
 
 export const mintValueUSDAtom = atom<number>((get) => {

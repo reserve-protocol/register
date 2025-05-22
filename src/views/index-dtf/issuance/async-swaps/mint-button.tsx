@@ -1,104 +1,136 @@
 import dtfIndexAbi from '@/abis/dtf-index-abi'
+import dtfIndexAbiV2 from '@/abis/dtf-index-abi-v2'
 import TokenLogo from '@/components/token-logo'
 import { Button } from '@/components/ui/button'
-import { walletAtom } from '@/state/atoms'
-import { wagmiConfig } from '@/state/chain'
-import { indexDTFAtom } from '@/state/dtf/atoms'
+import { useERC20Balances } from '@/hooks/useERC20Balance'
+import { chainIdAtom, walletAtom } from '@/state/atoms'
+import { indexDTFAtom, indexDTFVersionAtom } from '@/state/dtf/atoms'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { Loader } from 'lucide-react'
-import { useCallback } from 'react'
-import { erc20Abi } from 'viem'
-import { usePublicClient, useWalletClient } from 'wagmi'
-import { asyncSwapResponseAtom, isMintingAtom, mintTxHashAtom } from './atom'
+import { useEffect, useMemo } from 'react'
+import { encodeFunctionData, erc20Abi, maxUint256, parseEther } from 'viem'
+import { useCallsStatus, useSendCalls } from 'wagmi'
+import { isMintingAtom, mintTxHashAtom, mintValueAtom } from './atom'
+import { useFolioDetails } from './hooks/useFolioDetails'
 
 const MintButton = () => {
-  const indexDTF = useAtomValue(indexDTFAtom)
-  const orders = useAtomValue(asyncSwapResponseAtom)
-  const [isMinting, setIsMinting] = useAtom(isMintingAtom)
-  const setMintTxHash = useSetAtom(mintTxHashAtom)
-  const { data: walletClient } = useWalletClient({ config: wagmiConfig })
-  const publicClient = usePublicClient({ config: wagmiConfig })
   const account = useAtomValue(walletAtom)
+  const indexDTF = useAtomValue(indexDTFAtom)
+  const mintAmount = useAtomValue(mintValueAtom)
+  const folioAmount = parseEther(mintAmount.toString())
+  const chainId = useAtomValue(chainIdAtom)
+  const indexDTFVersion = useAtomValue(indexDTFVersionAtom)
+  const setMintTxHash = useSetAtom(mintTxHashAtom)
 
-  const handleMint = useCallback(async () => {
-    if (
-      !indexDTF ||
-      !walletClient ||
-      !publicClient ||
-      !orders?.cowswapOrders?.length ||
-      !account
+  const [isMinting, setIsMinting] = useAtom(isMintingAtom)
+  const { data: folioDetails } = useFolioDetails({ shares: folioAmount })
+  const { data, sendCalls, isPending, isError } = useSendCalls()
+
+  const { data: callsStatus } = useCallsStatus({
+    id: data?.id || '',
+  })
+  console.log('data', data)
+  console.log('callsStatus', callsStatus)
+  const { data: balanceData, isFetching: isFetchingBalanceData } =
+    useERC20Balances(
+      folioDetails?.assets.map((address) => ({
+        address,
+        chainId,
+      })) || []
     )
-      return
 
-    setIsMinting(true)
-    try {
-      // Approve each token with a 10% buffer
-      for (const order of orders.cowswapOrders) {
-        const buyAmount = BigInt(order.quote.buyAmount)
-        const amountWithBuffer = (buyAmount * 150n) / 100n // 50% buffer
+  const maxMintableAmount = useMemo(() => {
+    if (!folioDetails?.mintValues || !balanceData || !balanceData.length) {
+      return 0n
+    }
 
-        // Check current allowance
-        const currentAllowance = await publicClient.readContract({
-          address: order.quote.buyToken,
-          abi: erc20Abi,
-          functionName: 'allowance',
-          args: [account, indexDTF.id],
-        })
+    // For each token, calculate how many folio tokens we can mint based on available balance
+    const mintableAmounts = folioDetails.mintValues.map((mintValue, index) => {
+      if (mintValue === 0n) {
+        return 0n
+      }
+      const balance = balanceData[index] as bigint
+      return (balance * folioAmount) / mintValue
+    })
 
-        // Only approve if current allowance is insufficient
-        if (currentAllowance < amountWithBuffer) {
-          // Simulate approval
-          const { request } = await publicClient.simulateContract({
-            address: order.quote.buyToken,
-            abi: erc20Abi,
-            functionName: 'approve',
-            args: [indexDTF.id, amountWithBuffer],
-            account,
-          })
-
-          // Send approval
-          const hash = await walletClient.writeContract(request)
-          const receipt = await publicClient.waitForTransactionReceipt({ hash })
-
-          // Verify the approval was successful
-          if (receipt.status !== 'success') {
-            throw new Error('Approval transaction failed')
-          }
-
-          // Double check the new allowance
-          const newAllowance = await publicClient.readContract({
-            address: order.quote.buyToken,
-            abi: erc20Abi,
-            functionName: 'allowance',
-            args: [account, indexDTF.id],
-          })
-
-          if (newAllowance < amountWithBuffer) {
-            throw new Error('Approval amount is still insufficient')
-          }
-        }
+    // Return the minimum amount (as we need all tokens to mint)
+    return mintableAmounts.reduce((min, amount) => {
+      if (amount === 0n) {
+        return min
       }
 
-      // Perform minting
-      const shares = BigInt(orders.amountOut)
+      return amount < min ? amount : min
+    }, mintableAmounts[0] || 0n)
+  }, [folioDetails?.mintValues, balanceData, folioAmount])
 
-      const { request } = await publicClient.simulateContract({
-        address: indexDTF.id,
-        abi: dtfIndexAbi,
-        functionName: 'mint',
-        args: [shares, account],
-        account,
-      })
+  const handleMaxMint = () => {
+    if (!account || !folioDetails || !indexDTF) {
+      return
+    }
 
-      const hash = await walletClient.writeContract(request)
-      const receipt = await publicClient.waitForTransactionReceipt({ hash })
-      setMintTxHash(receipt.transactionHash)
-    } catch (error) {
-      console.error('Error during mint process:', error)
-    } finally {
+    setIsMinting(true)
+
+    sendCalls({
+      calls: [
+        ...folioDetails.assets.map((e) => ({
+          to: e,
+          value: 0n,
+          data: encodeFunctionData({
+            abi: erc20Abi,
+            functionName: 'approve',
+            args: [indexDTF.id, maxUint256],
+          }),
+        })),
+        {
+          to: indexDTF.id,
+          data:
+            indexDTFVersion === '2.0.0'
+              ? encodeFunctionData({
+                  abi: dtfIndexAbiV2,
+                  functionName: 'mint',
+                  args: [
+                    maxMintableAmount,
+                    account,
+                    (maxMintableAmount * 99n) / 100n,
+                  ],
+                })
+              : encodeFunctionData({
+                  abi: dtfIndexAbi,
+                  functionName: 'mint',
+                  args: [maxMintableAmount, account],
+                }),
+          value: 0n,
+        },
+      ],
+      forceAtomic: true,
+    })
+  }
+
+  useEffect(() => {
+    const receipts = callsStatus?.receipts
+    const success =
+      !!receipts &&
+      receipts.length > 0 &&
+      receipts.every((r) => r.status === 'success')
+
+    if (success) {
+      let mintTxHash = receipts.slice(-1)[0]?.transactionHash || 'tx'
+      setMintTxHash(mintTxHash)
       setIsMinting(false)
     }
-  }, [indexDTF, walletClient, publicClient, orders, setMintTxHash, account])
+
+    const failure = callsStatus?.status === 'failure'
+
+    if (failure) {
+      setIsMinting(false)
+    }
+  }, [callsStatus?.receipts])
+
+  useEffect(() => {
+    if (isError) {
+      setIsMinting(false)
+    }
+  }, [isError])
 
   if (!indexDTF) return null
 
@@ -124,7 +156,12 @@ const MintButton = () => {
   }
 
   return (
-    <Button size="lg" className="w-full rounded-xl" onClick={handleMint}>
+    <Button
+      size="lg"
+      className="w-full rounded-xl"
+      onClick={handleMaxMint}
+      disabled={isFetchingBalanceData || isPending}
+    >
       <span className="flex items-center gap-1">
         <span className="font-bold">Approve & Mint</span>
         <span className="font-light">- Step 2/2</span>

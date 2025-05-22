@@ -1,9 +1,7 @@
 import { useERC20Balances } from '@/hooks/useERC20Balance'
 import useTokensInfo from '@/hooks/useTokensInfo'
 import { chainIdAtom, walletAtom } from '@/state/atoms'
-import { indexDTFAtom } from '@/state/dtf/atoms'
 import { Token } from '@/types'
-import { safeParseEther } from '@/utils'
 import {
   OrderBookApi,
   OrderQuoteSideKindBuy,
@@ -12,14 +10,9 @@ import {
   SigningScheme,
 } from '@cowprotocol/cow-sdk'
 import { useQuery } from '@tanstack/react-query'
-import { useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { Address, zeroAddress } from 'viem'
-import {
-  asyncSwapInputAtom,
-  currentAsyncSwapTabAtom,
-  quotesAtom,
-  selectedTokenOrDefaultAtom,
-} from '../atom'
+import { useAtom, useAtomValue } from 'jotai'
+import { Address, parseEther, zeroAddress } from 'viem'
+import { mintValueAtom, quotesAtom, selectedTokenOrDefaultAtom } from '../atom'
 import { useGlobalProtocolKit } from '../providers/GlobalProtocolKitProvider'
 import { QuoteProvider } from '../types'
 import { useFolioDetails } from './useFolioDetails'
@@ -155,9 +148,9 @@ async function getQuote({
 
 export const useQuotesForMint = () => {
   const chainId = useAtomValue(chainIdAtom)
-  const inputAmount = useAtomValue(asyncSwapInputAtom)
   const selectedToken = useAtomValue(selectedTokenOrDefaultAtom)
-  const folioAmount = safeParseEther(inputAmount)
+  const mintValue = useAtomValue(mintValueAtom)
+  const folioAmount = parseEther(mintValue.toString())
   const address = useAtomValue(walletAtom)
   const [quotes, setQuotes] = useAtom(quotesAtom)
   const { orderBookApi } = useGlobalProtocolKit()
@@ -248,10 +241,6 @@ export const useQuotesForMint = () => {
 
       return quotes
     },
-    enabled:
-      !!folioDetails?.mintValues &&
-      !!tokensInfo &&
-      !!inputAmount &&
-      !isNaN(Number(inputAmount)),
+    enabled: !!folioDetails?.mintValues && !!tokensInfo && !!folioAmount,
   })
 }

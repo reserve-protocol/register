@@ -8,11 +8,20 @@ import {
 } from '@cowprotocol/cow-sdk'
 import { useMutation } from '@tanstack/react-query'
 import { useAtomValue, useSetAtom } from 'jotai'
-import { Address, encodeFunctionData, erc20Abi, Hex, maxUint256 } from 'viem'
+import {
+  Address,
+  encodeFunctionData,
+  erc20Abi,
+  Hex,
+  maxUint256,
+  parseEther,
+} from 'viem'
 import { useSendCalls } from 'wagmi'
 import {
+  asyncSwapInputAtom,
   asyncSwapResponseAtom,
   currentAsyncSwapTabAtom,
+  mintValueAtom,
   orderIdsAtom,
   quotesAtom,
   selectedTokenOrDefaultAtom,
@@ -30,6 +39,8 @@ export function useQuoteSignatures() {
   const chainId = useAtomValue(chainIdAtom)
   const address = useAtomValue(walletAtom)
   const zapDirection = useAtomValue(currentAsyncSwapTabAtom)
+  const mintValue = useAtomValue(mintValueAtom)
+  const inputAmount = useAtomValue(asyncSwapInputAtom)
   const quoteToken = useAtomValue(selectedTokenOrDefaultAtom).address
   const quotes = Object.values(useAtomValue(quotesAtom))
   const setOrderIDs = useSetAtom(orderIdsAtom)
@@ -202,7 +213,8 @@ export function useQuoteSignatures() {
         chainId,
         signer: address,
         dtf: indexDTF.id,
-        amountOut: '0',
+        inputAmount,
+        amountOut: parseEther(mintValue.toString()).toString(),
         createdAt: new Date().toISOString(),
         universalOrders: [],
         cowswapOrders: [],
