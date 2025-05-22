@@ -7,13 +7,18 @@ import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { Check, Crown, UsersRound, X } from 'lucide-react'
 import { ReactNode, useMemo } from 'react'
 import {
+  auctionLauncherWindowAtom,
+  customAuctionLauncherWindowAtom,
   customPermissionlessLaunchingWindowAtom,
+  isSingletonRebalanceAtom,
   permissionlessLaunchingAtom,
   permissionlessLaunchingWindowAtom,
   stepAtom,
   tradeRangeOptionAtom,
 } from '../atoms'
 import { isDeferAvailableAtom } from '../legacy-atoms'
+import { indexDTFVersionAtom } from '@/state/dtf/atoms'
+import { checkVersion } from '@/utils'
 
 export enum PermissionOptionId {
   NO_PERMISSIONLESS_LAUNCHING = 0,
@@ -155,6 +160,61 @@ const PermissionlessWindow = () => {
   )
 }
 
+const AuctionLauncherWindow = () => {
+  const isSingletonRebalance = useAtomValue(isSingletonRebalanceAtom)
+  const [auctionLauncherWindow, setAuctionLauncherWindow] = useAtom(
+    auctionLauncherWindowAtom
+  )
+  const [customAuctionLauncherWindow, setCustomAuctionLauncherWindow] = useAtom(
+    customAuctionLauncherWindowAtom
+  )
+
+  if (!isSingletonRebalance) return null
+
+  return (
+    <div className="flex flex-col justify-center gap-3 rounded-xl bg-foreground/5 p-4">
+      <div>
+        <h4 className="font-semibold text-primary">
+          Exclusive Auction Launcher Window
+        </h4>
+        <div className="">
+          Specify how long only the Auction Launchers should be allow to start
+          auctions.
+        </div>
+      </div>
+      <div className="flex items-center gap-2">
+        <ToggleGroup
+          type="single"
+          className="bg-muted-foreground/10 p-1 rounded-xl justify-start flex-grow"
+          value={customAuctionLauncherWindow ? 'custom' : auctionLauncherWindow}
+          onValueChange={(value) => {
+            if (value) {
+              setAuctionLauncherWindow(value)
+              setCustomAuctionLauncherWindow('')
+            }
+          }}
+        >
+          {WINDOW_OPTIONS.map((option) => (
+            <ToggleGroupItem
+              key={option}
+              value={option.toString()}
+              className="px-5 h-8 whitespace-nowrap rounded-lg data-[state=on]:bg-card text-secondary-foreground/80 data-[state=on]:text-primary flex-grow"
+            >
+              {option} hours
+            </ToggleGroupItem>
+          ))}
+        </ToggleGroup>
+        <NumericalInput
+          className="hidden sm:block w-40"
+          placeholder="Enter custom hours"
+          value={customAuctionLauncherWindow}
+          onChange={(value) => setCustomAuctionLauncherWindow(value)}
+        />
+      </div>
+    </div>
+  )
+}
+
 export const TradingExpirationTriggerLabel = () => {
   const option = useAtomValue(permissionlessLaunchingAtom)
 
@@ -179,6 +239,7 @@ export const TradingExpirationTriggerLabel = () => {
 const ProposalRebalanceLaunchSettings = () => {
   const priceRangeOption = useAtomValue(tradeRangeOptionAtom)
   const isDeferAvailable = useAtomValue(isDeferAvailableAtom)
+
   const permissionOptions: PermissionOption[] = useMemo(
     () => [
       {
@@ -231,8 +292,7 @@ const ProposalRebalanceLaunchSettings = () => {
             </div>
           </div>
         ),
-
-        disabled: priceRangeOption === 'defer',
+        disabled: false,
       },
     ],
     [isDeferAvailable, priceRangeOption]
@@ -248,6 +308,7 @@ const ProposalRebalanceLaunchSettings = () => {
         {permissionOptions.map((option) => (
           <PermissionCard key={option.id} option={option} />
         ))}
+        <AuctionLauncherWindow />
         <PermissionlessWindow />
         <NextButton />
       </div>

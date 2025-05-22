@@ -1,6 +1,7 @@
 import { getCurrentBasket } from '@/lib/index-rebalance/utils'
-import { indexDTFBrandAtom } from '@/state/dtf/atoms'
+import { indexDTFBrandAtom, indexDTFVersionAtom } from '@/state/dtf/atoms'
 import { Token } from '@/types'
+import { checkVersion } from '@/utils'
 import { atom } from 'jotai'
 import { parseUnits } from 'viem'
 
@@ -23,6 +24,12 @@ export const dtfSupplyAtom = atom<bigint>(0n)
 // ############################################################
 export const isProposalConfirmedAtom = atom(false)
 export const proposalDescriptionAtom = atom<string | undefined>(undefined)
+// TODO: Move back
+export const isSingletonRebalanceAtom = atom((get) => {
+  const version = get(indexDTFVersionAtom)
+  // return checkVersion('4.0.0', version)
+  return true
+})
 
 // ############################################################
 // Proposal basket setup
@@ -157,9 +164,61 @@ export const derivedProposedSharesAtom = atom((get) => {
   }
 })
 
+// If it returns 0, it means the rebalance is not valid
+export const rebalanceTTLAtom = atom((get) => {
+  const permissionlessLaunching = get(permissionlessLaunchingAtom)
+  const permissionlessLaunchingWindow = get(permissionlessLaunchingWindowAtom)
+  const customPermissionlessLaunchingWindow = get(
+    customPermissionlessLaunchingWindowAtom
+  )
+  const auctionLauncherSelectWindow = get(auctionLauncherWindowAtom)
+  const customAuctionLauncherWindow = get(customAuctionLauncherWindowAtom)
+
+  // Convert hours to seconds
+  const getWindowInSeconds = (
+    customValue: string,
+    defaultValue: string | number
+  ) => {
+    const hours = customValue ? Number(customValue) : Number(defaultValue)
+    return isNaN(hours) ? 0 : hours * 60 * 60
+  }
+
+  const permissionlessWindow = getWindowInSeconds(
+    customPermissionlessLaunchingWindow,
+    permissionlessLaunchingWindow
+  )
+
+  const auctionLauncherWindow = getWindowInSeconds(
+    customAuctionLauncherWindow,
+    auctionLauncherSelectWindow
+  )
+
+  if (!permissionlessLaunching) {
+    return auctionLauncherWindow
+  }
+
+  // If either window is invalid, return 0
+  if (permissionlessWindow === 0 || auctionLauncherWindow === 0) return 0
+
+  // Return the sum of both windows
+  return permissionlessWindow + auctionLauncherWindow
+})
+
 // ############################################################
 // Basket validation
 // ############################################################
+const isTTLValidAtom = atom((get) => {
+  const isDefined = get(permissionlessLaunchingAtom) !== undefined
+  const isSingleton = get(isSingletonRebalanceAtom)
+  const ttl = get(rebalanceTTLAtom)
+
+  if (isSingleton) {
+    return ttl > 0
+  }
+
+  return isDefined
+})
+
 export const isUnitBasketValidAtom = atom((get) => {
   const derivedProposedShares = get(derivedProposedSharesAtom)
   const basket = get(proposedIndexBasketAtom)
@@ -187,7 +246,7 @@ export const isProposedBasketValidAtom = atom((get) => {
 export const stepStateAtom = atom<Record<Step, boolean>>((get) => ({
   basket: get(isProposedBasketValidAtom),
   prices: get(tradeRangeOptionAtom) !== undefined,
-  expiration: get(permissionlessLaunchingAtom) !== undefined,
+  expiration: get(isTTLValidAtom),
   confirmation: true,
 }))
 
