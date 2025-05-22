@@ -265,7 +265,7 @@ const Transactions = () => {
           </div>
         </div>
         <div className="flex flex-col gap-1 bg-background rounded-3xl px-4 py-2">
-          {cowswapOrders.map(({ orderId, quote }) => (
+          {cowswapOrders.map(({ orderId, ...quote }) => (
             <div
               className="flex items-center justify-between gap-2 border-b border-border py-4 last:border-b-0"
               key={quote.buyToken}
