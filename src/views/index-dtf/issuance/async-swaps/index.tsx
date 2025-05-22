@@ -28,6 +28,7 @@ import {
 import Collaterals, { showCollateralsAtom } from './collaterals'
 import GnosisSafeRequired from './gnosis-safe-required'
 import OrderStatusUpdater from './order-status-updater'
+import { GlobalProtocolKitProvider } from './providers/GlobalProtocolKitProvider'
 import Success from './success'
 
 function Content() {
@@ -63,6 +64,63 @@ function Content() {
   )
 }
 
+const Header = () => {
+  const [showSettings, setShowSettings] = useAtom(showAsyncSwapSettingsAtom)
+  const asyncSwapRefetch = useAtomValue(asyncSwapRefetchAtom)
+  const asyncSwapFetching = useAtomValue(asyncSwapFetchingAtom)
+  const asyncSwapOngoingTx = useAtomValue(asyncSwapOngoingTxAtom)
+  const input = useAtomValue(asyncSwapInputAtom)
+  const invalidInput = isNaN(Number(input)) || Number(input) === 0
+
+  return (
+    <div className="flex justify-between gap-2">
+      {showSettings ? (
+        <Button
+          variant="outline"
+          className="h-[34px] px-2 rounded-xl"
+          onClick={() => setShowSettings(false)}
+        >
+          <ArrowLeft size={16} />
+        </Button>
+      ) : (
+        <>
+          <div className="bg-background p-2 rounded-3xl">
+            <TabsList className="h-8 px-0.5">
+              <TabsTrigger
+                value="mint"
+                className="px-2 py-1 data-[state=active]:text-primary"
+              >
+                Auto Mint
+              </TabsTrigger>
+              <TabsTrigger
+                value="redeem"
+                className="px-2 py-1 data-[state=active]:text-primary"
+              >
+                Auto Redeem
+              </TabsTrigger>
+            </TabsList>
+          </div>
+          <div className="flex items-center gap-1 bg-background px-2 rounded-3xl">
+            <Button
+              variant="outline"
+              className="h-[34px] px-2 rounded-xl"
+              onClick={() => setShowSettings(true)}
+            >
+              <Settings size={16} />
+            </Button>
+            <RefreshQuote
+              small
+              onClick={asyncSwapRefetch.fn}
+              loading={asyncSwapFetching}
+              disabled={asyncSwapFetching || asyncSwapOngoingTx || invalidInput}
+            />
+          </div>
+        </>
+      )}
+    </div>
+  )
+}
+
 const AsyncSwaps = () => {
   useTrackIndexDTFPage('mint-async-swap')
   const isSafeMultisig = useAtomValue(isSafeMultisigAtom)
@@ -71,13 +129,8 @@ const AsyncSwaps = () => {
   const defaultToken = useAtomValue(defaultSelectedTokenAtom)
   const setSelectedToken = useSetAtom(selectedTokenAtom)
   const indexDTF = useAtomValue(indexDTFAtom)
-  const asyncSwapRefetch = useAtomValue(asyncSwapRefetchAtom)
-  const asyncSwapFetching = useAtomValue(asyncSwapFetchingAtom)
-  const asyncSwapOngoingTx = useAtomValue(asyncSwapOngoingTxAtom)
-  const input = useAtomValue(asyncSwapInputAtom)
   const setIndexDTFBalance = useSetAtom(indexDTFBalanceAtom)
   const mintTxHash = useAtomValue(mintTxHashAtom)
-  const invalidInput = isNaN(Number(input)) || Number(input) === 0
 
   const { data: balance } = useERC20Balance(indexDTF?.id)
 
@@ -132,53 +185,8 @@ const AsyncSwaps = () => {
             className="flex flex-col flex-grow"
             onValueChange={changeTab}
           >
-            <div className="flex justify-between gap-2">
-              {showSettings ? (
-                <Button
-                  variant="outline"
-                  className="h-[34px] px-2 rounded-xl"
-                  onClick={() => setShowSettings(false)}
-                >
-                  <ArrowLeft size={16} />
-                </Button>
-              ) : (
-                <>
-                  <div className="bg-background p-2 rounded-3xl">
-                    <TabsList className="h-8 px-0.5">
-                      <TabsTrigger
-                        value="mint"
-                        className="px-2 py-1 data-[state=active]:text-primary"
-                      >
-                        Auto Mint
-                      </TabsTrigger>
-                      <TabsTrigger
-                        value="redeem"
-                        className="px-2 py-1 data-[state=active]:text-primary"
-                      >
-                        Auto Redeem
-                      </TabsTrigger>
-                    </TabsList>
-                  </div>
-                  <div className="flex items-center gap-1 bg-background px-2 rounded-3xl">
-                    <Button
-                      variant="outline"
-                      className="h-[34px] px-2 rounded-xl"
-                      onClick={() => setShowSettings(true)}
-                    >
-                      <Settings size={16} />
-                    </Button>
-                    <RefreshQuote
-                      small
-                      onClick={asyncSwapRefetch.fn}
-                      loading={asyncSwapFetching}
-                      disabled={
-                        asyncSwapFetching || asyncSwapOngoingTx || invalidInput
-                      }
-                    />
-                  </div>
-                </>
-              )}
-            </div>
+            <Header />
+
             {showSettings && (
               <div className="mt-2">
                 <ZapSettings />
@@ -193,4 +201,12 @@ const AsyncSwaps = () => {
   )
 }
 
-export default AsyncSwaps
+const AsyncSwapsWithProvider = () => {
+  return (
+    <GlobalProtocolKitProvider>
+      <AsyncSwaps />
+    </GlobalProtocolKitProvider>
+  )
+}
+
+export default AsyncSwapsWithProvider

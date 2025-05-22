@@ -1,9 +1,8 @@
-import Swap, {
+import {
   ArrowSeparator,
   TokenInputBox,
   TokenOutputBox,
 } from '@/components/ui/swap'
-import useAsyncSwap from '@/hooks/useAsyncSwap'
 import { useChainlinkPrice } from '@/hooks/useChainlinkPrice'
 import { cn } from '@/lib/utils'
 import { chainIdAtom } from '@/state/atoms'
@@ -30,6 +29,7 @@ import {
   slippageAtom,
 } from '../atom'
 import CollateralAcquisition from '../collateral-acquisition'
+import { useQuotesForMint } from '../hooks/useQuote'
 import SubmitMint from './submit-mint-orders'
 
 const AsyncMint = () => {
@@ -58,14 +58,8 @@ const AsyncMint = () => {
     parseUnits(inputAmount, selectedToken.decimals) >
     (selectedTokenBalance?.value || 0n)
 
-  const { data, isLoading, isFetching, refetch, failureReason } = useAsyncSwap({
-    dtf: indexDTF?.id,
-    amountOut: amountOutWei.toString(),
-    slippage: isFinite(Number(slippage)) ? Number(slippage) : 10000,
-    disabled: insufficientBalance || ongoingTx,
-    dtfTicker: indexDTF?.token.symbol || '',
-    type: 'mint',
-  })
+  const { data, isLoading, isFetching, refetch, failureReason } =
+    useQuotesForMint()
 
   const { loadingAfterRefetch } = useLoadingAfterRefetch(data)
 
@@ -142,15 +136,7 @@ const AsyncMint = () => {
           isMinting ? 'bg-background' : 'bg-card'
         )}
       >
-        {!orderSubmitted && (
-          <SubmitMint
-            data={data}
-            loadingQuote={awaitingQuote}
-            dtfAddress={indexDTF.id}
-            amountOut={amountOutWei.toString()}
-            operation="mint"
-          />
-        )}
+        {!orderSubmitted && <SubmitMint loadingQuote={awaitingQuote} />}
         {orderSubmitted && <CollateralAcquisition />}
       </div>
     </div>

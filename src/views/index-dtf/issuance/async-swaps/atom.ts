@@ -2,10 +2,11 @@ import { balancesAtom, chainIdAtom, TokenBalance } from '@/state/atoms'
 import { indexDTFPriceAtom } from '@/state/dtf/atoms'
 import { Token } from '@/types'
 import { reducedZappableTokens } from '@/views/yield-dtf/issuance/components/zapV2/constants'
+import { EnrichedOrder } from '@cowprotocol/cow-sdk'
 import { atom } from 'jotai'
 import { atomWithReset } from 'jotai/utils'
 import { Address, parseEther } from 'viem'
-import { AsyncSwapOrderResponse } from './types'
+import { AsyncSwapOrderResponse, QuoteAggregated } from './types'
 
 const ASYNC_SWAP_BUFFER = 0.005
 
@@ -88,3 +89,6 @@ export const mintValueWeiAtom = atom<bigint>((get) => {
 })
 
 export const redeemAssetsAtom = atom<Record<Address, bigint>>({})
+
+export const quotesAtom = atom<Record<Address, QuoteAggregated>>({})
+export const ordersAtom = atom<string[] | EnrichedOrder[]>([])
