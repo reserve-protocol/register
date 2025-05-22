@@ -29,7 +29,6 @@ export function useQuoteSignatures() {
   const quoteToken = useAtomValue(selectedTokenOrDefaultAtom).address
   const quotes = Object.values(useAtomValue(quotesAtom))
   const setOrders = useSetAtom(ordersAtom)
-
   const { orderBookApi } = useGlobalProtocolKit()
   const { sendCallsAsync } = useSendCalls()
 

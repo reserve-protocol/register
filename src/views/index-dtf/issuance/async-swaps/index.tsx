@@ -155,7 +155,7 @@ const AsyncSwaps = () => {
 
   if (!indexDTF) return null
 
-  if (isSafeMultisig) {
+  if (!isSafeMultisig) {
     return (
       <div className="container flex flex-col items-center sm:justify-start md:justify-center gap-2 lg:border-2 lg:border-secondary lg:bg-secondary/30 lg:h-[calc(100vh-100px)] dark:bg-card rounded-4xl w-full">
         <GnosisSafeRequired />
