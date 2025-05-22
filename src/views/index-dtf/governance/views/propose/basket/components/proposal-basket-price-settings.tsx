@@ -117,7 +117,11 @@ const RebalancePriceVolatility = () => {
           type="single"
           className="bg-muted-foreground/10 p-1 rounded-xl justify-start flex-grow"
           value={priceVolatility}
-          onValueChange={setPriceVolatility}
+          onValueChange={(value) => {
+            if (value) {
+              setPriceVolatility(value)
+            }
+          }}
         >
           {VOLATILITY_OPTIONS.map((option) => (
             <ToggleGroupItem
@@ -136,7 +140,6 @@ const RebalancePriceVolatility = () => {
 
 const RebalancePriceSettings = () => {
   const option = useAtomValue(tradeRangeOptionAtom)
-  const version = useAtomValue(indexDTFVersionAtom)
   const isSingletonRebalance = useAtomValue(isSingletonRebalanceAtom)
 
   if (option !== 'include') return null
