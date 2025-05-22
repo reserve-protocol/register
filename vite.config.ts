@@ -4,6 +4,7 @@ import viteTsconfigPaths from 'vite-tsconfig-paths'
 import path from 'path'
 import { lingui } from '@lingui/vite-plugin'
 import { viteStaticCopy } from 'vite-plugin-static-copy'
+import { nodePolyfills } from 'vite-plugin-node-polyfills'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -52,6 +53,10 @@ export default defineConfig({
         })
       },
     },
+    // Polyfills for node modules - @cowprotocol/cow-sdk needs it
+    nodePolyfills({
+      protocolImports: true,
+    }),
   ],
   build: {
     outDir: 'build',
