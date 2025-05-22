@@ -27,7 +27,7 @@ const AtomUpdater = () => {
   const setBlockNumber = useSetAtom(blockAtom)
   const chainId = useAtomValue(chainIdAtom)
   const { data: blockNumber } = useBlockNumber({ watch: true, chainId })
-  const client = usePublicClient({ chainId })
+  const client = usePublicClient({ chainId: account?.chainId })
   const setBlockTimestamp = useSetAtom(blockTimestampAtom)
   const [timestamp, setTimestamp] = useAtom(timestampAtom)
   const [debouncedBlock, setDebouncedBlock] = useAtom(debouncedBlockAtom)
@@ -85,7 +85,7 @@ const AtomUpdater = () => {
       setWalletChain(undefined)
       setIsSafeMultisig(false)
     }
-  }, [account?.address, account?.chainId])
+  }, [account?.address, account?.chainId, client?.chain?.id])
 
   useEffect(() => {
     fetchTimestamp() // update stored block timestamp

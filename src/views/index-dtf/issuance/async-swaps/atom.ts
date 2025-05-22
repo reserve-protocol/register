@@ -2,7 +2,7 @@ import { balancesAtom, chainIdAtom, TokenBalance } from '@/state/atoms'
 import { indexDTFPriceAtom } from '@/state/dtf/atoms'
 import { Token } from '@/types'
 import { reducedZappableTokens } from '@/views/yield-dtf/issuance/components/zapV2/constants'
-import { EnrichedOrder } from '@cowprotocol/cow-sdk'
+import { EnrichedOrder, OrderStatus } from '@cowprotocol/cow-sdk'
 import { atom } from 'jotai'
 import { atomWithReset } from 'jotai/utils'
 import { Address, parseEther } from 'viem'
@@ -23,8 +23,7 @@ export const collateralAcquiredAtom = atom<boolean>((get) => {
   const asyncSwapResponse = get(asyncSwapResponseAtom)
   return Boolean(
     asyncSwapResponse?.cowswapOrders.every(
-      (order) =>
-        order.status.type === 'traded' || order.status.type === 'solved'
+      (order) => order.status === OrderStatus.FULFILLED
     )
   )
 })
@@ -91,4 +90,5 @@ export const mintValueWeiAtom = atom<bigint>((get) => {
 export const redeemAssetsAtom = atom<Record<Address, bigint>>({})
 
 export const quotesAtom = atom<Record<Address, QuoteAggregated>>({})
-export const ordersAtom = atom<string[] | EnrichedOrder[]>([])
+export const orderIdsAtom = atom<string[]>([])
+export const ordersAtom = atom<Record<string, EnrichedOrder>>({})

@@ -3,7 +3,6 @@ import Swap, {
   TokenInputBox,
   TokenOutputBox,
 } from '@/components/ui/swap'
-import useAsyncSwap from '@/hooks/useAsyncSwap'
 import { cn } from '@/lib/utils'
 import { chainIdAtom } from '@/state/atoms'
 import {
@@ -105,16 +104,16 @@ const AsyncRedeem = () => {
     parseUnits(inputAmount, selectedToken.decimals) >
     (selectedTokenBalance?.value || 0n)
 
-  const { data, isLoading, isFetching, refetch, failureReason } = useAsyncSwap({
-    dtf: indexDTF?.id,
-    amountOut: amountOutWei.toString(),
-    slippage: isFinite(Number(slippage)) ? Number(slippage) : 10000,
-    disabled: insufficientBalance || ongoingTx,
-    dtfTicker: indexDTF?.token.symbol || '',
-    type: 'mint',
-  })
+  // const { data, isLoading, isFetching, refetch, failureReason } = useAsyncSwap({
+  //   dtf: indexDTF?.id,
+  //   amountOut: amountOutWei.toString(),
+  //   slippage: isFinite(Number(slippage)) ? Number(slippage) : 10000,
+  //   disabled: insufficientBalance || ongoingTx,
+  //   dtfTicker: indexDTF?.token.symbol || '',
+  //   type: 'mint',
+  // })
 
-  const { loadingAfterRefetch } = useLoadingAfterRefetch(data)
+  // const { loadingAfterRefetch } = useLoadingAfterRefetch(data)
 
   // const valueTo = data?.result?.amountOut
   // const showTxButton = Boolean(
@@ -123,20 +122,20 @@ const AsyncRedeem = () => {
   //     !insufficientBalance &&
   //     !isLoading
   // )
-  const awaitingQuote = isLoading || isFetching
+  // const awaitingQuote = isLoading || isFetching
 
-  useEffect(() => {
-    setAsyncSwapRefetch({ fn: refetch })
-  }, [refetch, setAsyncSwapRefetch])
+  // useEffect(() => {
+  //   setAsyncSwapRefetch({ fn: refetch })
+  // }, [refetch, setAsyncSwapRefetch])
 
-  useEffect(() => {
-    setAsyncSwapFetching(awaitingQuote)
-  }, [awaitingQuote, setAsyncSwapFetching])
+  // useEffect(() => {
+  //   setAsyncSwapFetching(awaitingQuote)
+  // }, [awaitingQuote, setAsyncSwapFetching])
 
-  useEffect(() => {
-    setOngoingTx(false)
-    setInputAmount('')
-  }, [])
+  // useEffect(() => {
+  //   setOngoingTx(false)
+  //   setInputAmount('')
+  // }, [])
 
   if (!indexDTF) return null
 
@@ -187,7 +186,7 @@ const AsyncRedeem = () => {
               collateralAcquired && !isMinting && 'border-card bg-card'
             ),
           }}
-          loading={isLoading || loadingAfterRefetch}
+          // loading={isLoading || loadingAfterRefetch}
         />
       </div>
       {/* {!!data && <ZapDetails data={data.result} />} */}

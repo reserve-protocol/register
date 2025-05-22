@@ -1,18 +1,20 @@
 import { cn } from '@/lib/utils'
-import { useAtom, useAtomValue } from 'jotai'
-import { atom } from 'jotai'
+import { atom, useAtom, useAtomValue } from 'jotai'
 import { useEffect, useMemo } from 'react'
-import { asyncSwapResponseAtom, collateralPanelOpenAtom } from './atom'
+import {
+  asyncSwapResponseAtom,
+  collateralPanelOpenAtom,
+  orderIdsAtom,
+} from './atom'
 import CowSwapOrder from './cowswap-order'
+import { OrderStatus } from '@cowprotocol/cow-sdk'
 
-const STATUS_ORDER_MAP = {
-  open: 1,
-  scheduled: 1,
-  active: 1,
-  solved: 2,
-  executing: 1,
-  traded: 2,
+const STATUS_PRIORITY: Record<OrderStatus, number> = {
   cancelled: 0,
+  expired: 0,
+  presignaturePending: 1,
+  open: 1,
+  fulfilled: 2,
 }
 
 const isVisibleAtom = atom(false)
@@ -24,6 +26,7 @@ export const showCollateralsAtom = atom((get) => {
 })
 
 const Collaterals = () => {
+  const orderIDs = useAtomValue(orderIdsAtom)
   const asyncSwapResponse = useAtomValue(asyncSwapResponseAtom)
   const open = useAtomValue(collateralPanelOpenAtom)
   const [isVisible, setIsVisible] = useAtom(isVisibleAtom)
@@ -43,12 +46,19 @@ const Collaterals = () => {
 
   const { cowswapOrders = [] } = asyncSwapResponse || {}
 
-  const sortedOrders = useMemo(
+  const sortedOrderIds = useMemo(
     () =>
-      cowswapOrders.sort(
-        (a, b) =>
-          STATUS_ORDER_MAP[a.status.type] - STATUS_ORDER_MAP[b.status.type]
-      ),
+      orderIDs.sort((a, b) => {
+        const orderA = cowswapOrders.find((o) => o.orderId === a)
+        const orderB = cowswapOrders.find((o) => o.orderId === b)
+
+        if (!orderA?.status || !orderB?.status) return 0
+
+        return (
+          (STATUS_PRIORITY[orderA.status] ?? 0) -
+          (STATUS_PRIORITY[orderB.status] ?? 0)
+        )
+      }),
     [cowswapOrders]
   )
 
@@ -61,8 +71,8 @@ const Collaterals = () => {
         isVisible ? 'w-[400px]' : 'w-0'
       )}
     >
-      {sortedOrders.map((order) => (
-        <CowSwapOrder key={order.orderId} order={order} />
+      {sortedOrderIds.map((orderId) => (
+        <CowSwapOrder key={orderId} orderId={orderId} />
       ))}
     </div>
   )

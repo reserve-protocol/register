@@ -1,3 +1,4 @@
+import CowswapSettlement from '@/abis/CowSwapSettlement'
 import { chainIdAtom, walletAtom } from '@/state/atoms'
 import { OrderBalance } from '@cowprotocol/contracts'
 import {
@@ -10,31 +11,35 @@ import { useAtomValue, useSetAtom } from 'jotai'
 import { Address, encodeFunctionData, erc20Abi, Hex, maxUint256 } from 'viem'
 import { useSendCalls } from 'wagmi'
 import {
+  asyncSwapResponseAtom,
   currentAsyncSwapTabAtom,
-  ordersAtom,
+  orderIdsAtom,
   quotesAtom,
   selectedTokenOrDefaultAtom,
 } from '../atom'
 import { useGlobalProtocolKit } from '../providers/GlobalProtocolKitProvider'
 import { QuoteProvider } from '../types'
-import CowswapSettlement from '@/abis/CowSwapSettlement'
+import { uuidv4 } from '@/utils'
+import { indexDTFAtom } from '@/state/dtf/atoms'
 
 const COWSWAP_SETTLEMENT = '0x9008D19f58AAbD9eD0D60971565AA8510560ab41' as const
 const COWSWAP_VAULT = '0xC92E8bdf79f0507f65a392b0ab4667716BFE0110' as const
 
 export function useQuoteSignatures() {
+  const indexDTF = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
   const address = useAtomValue(walletAtom)
   const zapDirection = useAtomValue(currentAsyncSwapTabAtom)
   const quoteToken = useAtomValue(selectedTokenOrDefaultAtom).address
   const quotes = Object.values(useAtomValue(quotesAtom))
-  const setOrders = useSetAtom(ordersAtom)
+  const setOrderIDs = useSetAtom(orderIdsAtom)
+  const setAsyncSwapResponse = useSetAtom(asyncSwapResponseAtom)
   const { orderBookApi } = useGlobalProtocolKit()
   const { sendCallsAsync } = useSendCalls()
 
   return useMutation({
     mutationFn: async () => {
-      if (!address || !orderBookApi || !chainId) {
+      if (!address || !orderBookApi || !chainId || !indexDTF) {
         console.error('No global kit')
         return {
           orders: [],
@@ -191,7 +196,17 @@ export function useQuoteSignatures() {
           })
       )
 
-      setOrders(validOrderData.map(({ data }) => data.orderId))
+      setOrderIDs(validOrderData.map(({ data }) => data.orderId))
+      setAsyncSwapResponse({
+        swapOrderId: uuidv4(),
+        chainId,
+        signer: address,
+        dtf: indexDTF.id,
+        amountOut: '0',
+        createdAt: new Date().toISOString(),
+        universalOrders: [],
+        cowswapOrders: [],
+      })
 
       return {
         orders: validOrderData.map(({ data }) => data.orderId),

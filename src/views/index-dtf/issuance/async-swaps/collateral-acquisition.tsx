@@ -11,6 +11,7 @@ import {
   currentAsyncSwapTabAtom,
 } from './atom'
 import MintButton from './mint-button'
+import { OrderStatus } from '@cowprotocol/cow-sdk'
 
 const OpenCollateralPanel = () => {
   const basket = useAtomValue(indexDTFBasketAtom)
@@ -56,7 +57,7 @@ const CollateralAcquisition = () => {
   if (!asyncSwapResponse) return null
 
   const hasAllCollaterals = asyncSwapResponse.cowswapOrders.every(
-    (order) => order.status.type === 'traded' || order.status.type === 'solved'
+    (order) => order.status === OrderStatus.FULFILLED
   )
 
   if (hasAllCollaterals) {

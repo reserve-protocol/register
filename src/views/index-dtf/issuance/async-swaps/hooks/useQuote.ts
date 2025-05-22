@@ -88,70 +88,70 @@ async function getQuote({
   return quote
 }
 
-export function useQuote({ sellToken, buyToken, amount }: UseQuoteParams) {
-  const indexDTF = useAtomValue(indexDTFAtom)
-  const folioAddress = indexDTF?.id
-  const zapDirection = useAtomValue(currentAsyncSwapTabAtom)
-  const chainId = useAtomValue(chainIdAtom)
-  const address = useAtomValue(walletAtom)
-  const setQuotes = useSetAtom(quotesAtom)
-  const { orderBookApi } = useGlobalProtocolKit()
+// export function useQuote({ sellToken, buyToken, amount }: UseQuoteParams) {
+//   const indexDTF = useAtomValue(indexDTFAtom)
+//   const folioAddress = indexDTF?.id
+//   const zapDirection = useAtomValue(currentAsyncSwapTabAtom)
+//   const chainId = useAtomValue(chainIdAtom)
+//   const address = useAtomValue(walletAtom)
+//   const setQuotes = useSetAtom(quotesAtom)
+//   const { orderBookApi } = useGlobalProtocolKit()
 
-  return useQuery({
-    queryKey: ['quote/single', sellToken, buyToken, amount, address],
-    enabled:
-      !!chainId && !!address && !!sellToken && !!buyToken && !!orderBookApi,
-    queryFn: async ({ signal }) => {
-      if (!orderBookApi) {
-        throw new Error('orderBookApi is not available')
-      }
+//   return useQuery({
+//     queryKey: ['quote/single', sellToken, buyToken, amount, address],
+//     enabled:
+//       !!chainId && !!address && !!sellToken && !!buyToken && !!orderBookApi,
+//     queryFn: async ({ signal }) => {
+//       if (!orderBookApi) {
+//         throw new Error('orderBookApi is not available')
+//       }
 
-      try {
-        const quote = await getQuote({
-          sellToken,
-          buyToken,
-          amount,
-          address: address as Address,
-          orderBookApi,
-          zapDirection,
-        })
+//       try {
+//         const quote = await getQuote({
+//           sellToken,
+//           buyToken,
+//           amount,
+//           address: address as Address,
+//           orderBookApi,
+//           zapDirection,
+//         })
 
-        if (!signal.aborted) {
-          setQuotes((prev) => ({
-            ...prev,
-            [folioAddress as string]: {
-              success: true,
-              type: QuoteProvider.CowSwap,
-              data: quote,
-            },
-          }))
-        }
+//         if (!signal.aborted) {
+//           setQuotes((prev) => ({
+//             ...prev,
+//             [folioAddress as string]: {
+//               success: true,
+//               type: QuoteProvider.CowSwap,
+//               data: quote,
+//             },
+//           }))
+//         }
 
-        return {
-          token: zapDirection ? buyToken : sellToken,
-          success: true,
-          source: QuoteProvider.CowSwap,
-          quote,
-        }
-      } catch {
-        if (!signal.aborted) {
-          setQuotes((prev) => ({
-            ...prev,
-            [folioAddress as string]: {
-              success: false,
-            },
-          }))
-        }
+//         return {
+//           token: zapDirection ? buyToken : sellToken,
+//           success: true,
+//           source: QuoteProvider.CowSwap,
+//           quote,
+//         }
+//       } catch {
+//         if (!signal.aborted) {
+//           setQuotes((prev) => ({
+//             ...prev,
+//             [folioAddress as string]: {
+//               success: false,
+//             },
+//           }))
+//         }
 
-        return {
-          success: false,
-        }
-      }
-    },
-    retry: false,
-    staleTime: Infinity,
-  })
-}
+//         return {
+//           success: false,
+//         }
+//       }
+//     },
+//     retry: false,
+//     staleTime: Infinity,
+//   })
+// }
 
 export const useQuotesForMint = () => {
   const chainId = useAtomValue(chainIdAtom)
@@ -217,7 +217,7 @@ export const useQuotesForMint = () => {
             setQuotes((prev) => ({
               ...prev,
               [token.address as string]: {
-                success: true,
+                success: !!quote,
                 type: QuoteProvider.CowSwap,
                 data: quote,
               },

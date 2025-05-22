@@ -1,5 +1,7 @@
 import { OrderStatus } from '@cowprotocol/cow-sdk'
 import { useQuery } from '@tanstack/react-query'
+import { useSetAtom } from 'jotai'
+import { asyncSwapResponseAtom } from '../atom'
 import { useGlobalProtocolKit } from '../providers/GlobalProtocolKitProvider'
 
 interface UseOrderStatusParams {
@@ -8,6 +10,7 @@ interface UseOrderStatusParams {
 
 export function useOrderStatus({ orderId }: UseOrderStatusParams) {
   const { orderBookApi } = useGlobalProtocolKit()
+  const setAsyncSwapResponse = useSetAtom(asyncSwapResponseAtom)
 
   return useQuery({
     queryKey: ['order/status', orderId],
@@ -18,6 +21,19 @@ export function useOrderStatus({ orderId }: UseOrderStatusParams) {
       }
 
       const order = await orderBookApi.getOrder(orderId)
+      setAsyncSwapResponse((prev) => {
+        if (!prev) {
+          return undefined
+        }
+
+        return {
+          ...prev,
+          cowswapOrders: [
+            ...(prev?.cowswapOrders.filter((o) => o.orderId !== orderId) || []),
+            { ...order, orderId },
+          ],
+        }
+      })
 
       return order
     },

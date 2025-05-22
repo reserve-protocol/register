@@ -1,13 +1,19 @@
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { useQuoteSignatures } from '../hooks/useQuoteSignatures'
+import { asyncSwapInputAtom } from '../atom'
+import { useAtomValue } from 'jotai'
 
 type SubmitMintProps = {
   loadingQuote?: boolean
 }
 
 const SubmitMint = ({ loadingQuote }: SubmitMintProps) => {
-  const { mutate, data: orderData, isPending } = useQuoteSignatures()
+  const inputAmount = useAtomValue(asyncSwapInputAtom)
+  const { mutate, isPending } = useQuoteSignatures()
+
+  const disabled =
+    isPending || loadingQuote || !inputAmount || isNaN(Number(inputAmount))
 
   return (
     <div>
@@ -18,7 +24,7 @@ const SubmitMint = ({ loadingQuote }: SubmitMintProps) => {
           isPending && 'opacity-50 cursor-not-allowed'
         )}
         onClick={() => mutate()}
-        disabled={isPending}
+        disabled={disabled}
       >
         {isPending ? (
           'Signing...'

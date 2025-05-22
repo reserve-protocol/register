@@ -18,6 +18,7 @@ import {
   asyncSwapInputAtom,
   asyncSwapOngoingTxAtom,
   asyncSwapRefetchAtom,
+  asyncSwapResponseAtom,
   currentAsyncSwapTabAtom,
   defaultSelectedTokenAtom,
   indexDTFBalanceAtom,
@@ -27,7 +28,6 @@ import {
 } from './atom'
 import Collaterals, { showCollateralsAtom } from './collaterals'
 import GnosisSafeRequired from './gnosis-safe-required'
-import OrderStatusUpdater from './order-status-updater'
 import { GlobalProtocolKitProvider } from './providers/GlobalProtocolKitProvider'
 import Success from './success'
 
@@ -57,7 +57,6 @@ function Content() {
           showCollaterals && 'border-l-4'
         )}
       >
-        <OrderStatusUpdater />
         <Collaterals />
       </div>
     </div>
@@ -71,6 +70,7 @@ const Header = () => {
   const asyncSwapOngoingTx = useAtomValue(asyncSwapOngoingTxAtom)
   const input = useAtomValue(asyncSwapInputAtom)
   const invalidInput = isNaN(Number(input)) || Number(input) === 0
+  const disableActions = !!useAtomValue(asyncSwapResponseAtom)
 
   return (
     <div className="flex justify-between gap-2">
@@ -89,12 +89,14 @@ const Header = () => {
               <TabsTrigger
                 value="mint"
                 className="px-2 py-1 data-[state=active]:text-primary"
+                disabled={disableActions}
               >
                 Auto Mint
               </TabsTrigger>
               <TabsTrigger
                 value="redeem"
                 className="px-2 py-1 data-[state=active]:text-primary"
+                disabled={disableActions}
               >
                 Auto Redeem
               </TabsTrigger>
@@ -105,6 +107,7 @@ const Header = () => {
               variant="outline"
               className="h-[34px] px-2 rounded-xl"
               onClick={() => setShowSettings(true)}
+              disabled={disableActions}
             >
               <Settings size={16} />
             </Button>
@@ -112,7 +115,12 @@ const Header = () => {
               small
               onClick={asyncSwapRefetch.fn}
               loading={asyncSwapFetching}
-              disabled={asyncSwapFetching || asyncSwapOngoingTx || invalidInput}
+              disabled={
+                asyncSwapFetching ||
+                asyncSwapOngoingTx ||
+                invalidInput ||
+                disableActions
+              }
             />
           </div>
         </>
