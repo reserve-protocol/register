@@ -9,8 +9,13 @@ import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { Loader } from 'lucide-react'
 import { useEffect, useMemo } from 'react'
 import { encodeFunctionData, erc20Abi, maxUint256, parseEther } from 'viem'
-import { useCallsStatus, useSendCalls } from 'wagmi'
-import { isMintingAtom, mintTxHashAtom, mintValueAtom } from './atom'
+import { useSendCalls, useWaitForCallsStatus } from 'wagmi'
+import {
+  isMintingAtom,
+  mintTxHashAtom,
+  mintValueAtom,
+  successAtom,
+} from './atom'
 import { useFolioDetails } from './hooks/useFolioDetails'
 
 const MintButton = () => {
@@ -21,16 +26,16 @@ const MintButton = () => {
   const chainId = useAtomValue(chainIdAtom)
   const indexDTFVersion = useAtomValue(indexDTFVersionAtom)
   const setMintTxHash = useSetAtom(mintTxHashAtom)
+  const setSuccess = useSetAtom(successAtom)
 
   const [isMinting, setIsMinting] = useAtom(isMintingAtom)
   const { data: folioDetails } = useFolioDetails({ shares: folioAmount })
   const { data, sendCalls, isPending, isError } = useSendCalls()
 
-  const { data: callsStatus } = useCallsStatus({
+  const { data: callsStatus } = useWaitForCallsStatus({
     id: data?.id || '',
   })
-  console.log('data', data)
-  console.log('callsStatus', callsStatus)
+
   const { data: balanceData, isFetching: isFetchingBalanceData } =
     useERC20Balances(
       folioDetails?.assets.map((address) => ({
@@ -107,24 +112,21 @@ const MintButton = () => {
   }
 
   useEffect(() => {
-    const receipts = callsStatus?.receipts
-    const success =
-      !!receipts &&
-      receipts.length > 0 &&
-      receipts.every((r) => r.status === 'success')
+    const isSuccess = callsStatus?.status === 'success'
+    const isFailure = callsStatus?.status === 'failure'
 
-    if (success) {
+    if (isSuccess) {
+      const receipts = callsStatus?.receipts ?? []
       let mintTxHash = receipts.slice(-1)[0]?.transactionHash || 'tx'
       setMintTxHash(mintTxHash)
+      setSuccess(true)
       setIsMinting(false)
     }
 
-    const failure = callsStatus?.status === 'failure'
-
-    if (failure) {
+    if (isFailure) {
       setIsMinting(false)
     }
-  }, [callsStatus?.receipts])
+  }, [callsStatus?.receipts, callsStatus?.status])
 
   useEffect(() => {
     if (isError) {

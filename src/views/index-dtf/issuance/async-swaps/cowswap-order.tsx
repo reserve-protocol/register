@@ -61,7 +61,7 @@ const OrderStatus = ({
 
 const CowSwapOrder = ({ orderId }: { orderId: string }) => {
   const { data } = useOrderStatus({ orderId })
-  const tab = useAtomValue(currentAsyncSwapTabAtom)
+  const zapDirection = useAtomValue(currentAsyncSwapTabAtom)
   const indexDTFBasket = useAtomValue(indexDTFBasketAtom)
 
   return (
@@ -81,8 +81,17 @@ const CowSwapOrder = ({ orderId }: { orderId: string }) => {
         <div className="flex flex-col">
           {data?.sellAmount ? (
             <div className="text-sm font-semibold">
-              {tab === 'mint' ? '-' : '+'}{' '}
-              {formatCurrency(Number(formatUnits(BigInt(data.sellAmount), 6)))}{' '}
+              {zapDirection === 'mint' ? '-' : '+'}{' '}
+              {formatCurrency(
+                Number(
+                  formatUnits(
+                    BigInt(
+                      zapDirection === 'mint' ? data.sellAmount : data.buyAmount
+                    ),
+                    6
+                  )
+                )
+              )}{' '}
               USDC
             </div>
           ) : (
@@ -90,19 +99,28 @@ const CowSwapOrder = ({ orderId }: { orderId: string }) => {
           )}
           {data?.buyAmount ? (
             <div className="text-sm text-primary">
-              {tab === 'mint' ? '+' : '-'}{' '}
+              {zapDirection === 'mint' ? '+' : '-'}{' '}
               {formatTokenAmount(
                 Number(
                   formatUnits(
-                    BigInt(data.buyAmount),
+                    BigInt(
+                      zapDirection === 'mint' ? data.buyAmount : data.sellAmount
+                    ),
                     indexDTFBasket?.find(
-                      (token) => token.address === data.buyToken
+                      (token) =>
+                        token.address ===
+                        (zapDirection === 'mint'
+                          ? data.buyToken
+                          : data.sellToken)
                     )?.decimals || 18
                   )
                 )
               )}{' '}
-              {indexDTFBasket?.find((token) => token.address === data.buyToken)
-                ?.symbol || ''}
+              {indexDTFBasket?.find(
+                (token) =>
+                  token.address ===
+                  (zapDirection === 'mint' ? data.buyToken : data.sellToken)
+              )?.symbol || ''}
             </div>
           ) : (
             <Skeleton className="w-24 h-3" />

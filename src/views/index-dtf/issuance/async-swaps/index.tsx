@@ -22,9 +22,10 @@ import {
   currentAsyncSwapTabAtom,
   defaultSelectedTokenAtom,
   indexDTFBalanceAtom,
-  mintTxHashAtom,
+  redeemAssetsAtom,
   selectedTokenAtom,
   showAsyncSwapSettingsAtom,
+  successAtom,
 } from './atom'
 import Collaterals, { showCollateralsAtom } from './collaterals'
 import GnosisSafeRequired from './gnosis-safe-required'
@@ -70,7 +71,10 @@ const Header = () => {
   const asyncSwapOngoingTx = useAtomValue(asyncSwapOngoingTxAtom)
   const input = useAtomValue(asyncSwapInputAtom)
   const invalidInput = isNaN(Number(input)) || Number(input) === 0
-  const disableActions = !!useAtomValue(asyncSwapResponseAtom)
+  const asyncSwapResponse = useAtomValue(asyncSwapResponseAtom)
+  const redeemAssets = useAtomValue(redeemAssetsAtom)
+  const disableActions =
+    !!asyncSwapResponse || Object.keys(redeemAssets).length > 0
 
   return (
     <div className="flex justify-between gap-2">
@@ -138,7 +142,7 @@ const AsyncSwaps = () => {
   const setSelectedToken = useSetAtom(selectedTokenAtom)
   const indexDTF = useAtomValue(indexDTFAtom)
   const setIndexDTFBalance = useSetAtom(indexDTFBalanceAtom)
-  const mintTxHash = useAtomValue(mintTxHashAtom)
+  const success = useAtomValue(successAtom)
 
   const { data: balance } = useERC20Balance(indexDTF?.id)
 
@@ -171,7 +175,7 @@ const AsyncSwaps = () => {
     )
   }
 
-  if (mintTxHash) {
+  if (success) {
     return (
       <div className="container flex items-center sm:justify-start md:justify-center gap-2 lg:border-2 lg:border-secondary lg:bg-secondary/30 lg:h-[calc(100vh-100px)] dark:bg-card rounded-4xl w-full">
         <div className="flex flex-col w-fit rounded-4xl p-1">

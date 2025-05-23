@@ -22,29 +22,37 @@ import {
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { formatEther, formatUnits } from 'viem'
+import { formatEther } from 'viem'
 import {
   asyncSwapInputAtom,
   asyncSwapOrderIdAtom,
   asyncSwapResponseAtom,
   bufferValueAtom,
+  currentAsyncSwapTabAtom,
   mintTxHashAtom,
   mintValueUSDAtom,
+  redeemAssetsAtom,
+  successAtom,
 } from './atom'
+import CowSwapOrder from './cowswap-order'
 
 const viewTransactionsAtom = atom<boolean>(false)
 
 const CloseButton = () => {
   const setMintTxHash = useSetAtom(mintTxHashAtom)
+  const setSuccess = useSetAtom(successAtom)
   const setAsyncSwapResponse = useSetAtom(asyncSwapResponseAtom)
   const setAsyncSwapOrderId = useSetAtom(asyncSwapOrderIdAtom)
   const setAsyncSwapInput = useSetAtom(asyncSwapInputAtom)
+  const setRedeemAssets = useSetAtom(redeemAssetsAtom)
 
   const handleClose = () => {
     setMintTxHash(undefined)
+    setSuccess(false)
     setAsyncSwapResponse(undefined)
     setAsyncSwapOrderId(undefined)
     setAsyncSwapInput('')
+    setRedeemAssets({})
   }
 
   return (
@@ -112,12 +120,13 @@ const SuccessHeader = () => {
   )
 }
 
-const MintedAmount = () => {
+const DTFAmount = () => {
   const chainId = useAtomValue(chainIdAtom)
   const indexDTF = useAtomValue(indexDTFAtom)
   const indexDTFPrice = useAtomValue(indexDTFPriceAtom)
   const inputAmountUSD = useAtomValue(mintValueUSDAtom)
   const orders = useAtomValue(asyncSwapResponseAtom)
+  const zapDirection = useAtomValue(currentAsyncSwapTabAtom)
 
   const sharesMinted = Number(formatEther(BigInt(orders?.amountOut || 0)))
   const valueMinted = (indexDTFPrice || 0) * sharesMinted
@@ -127,13 +136,15 @@ const MintedAmount = () => {
 
   return (
     <div className="p-6 min-h-[100px] rounded-3xl bg-background -mt-14 flex flex-col gap-1.5">
-      <div className="text-primary">You Minted:</div>
+      <div className="text-primary">
+        {zapDirection === 'mint' ? 'You Minted:' : 'You Redeemed:'}
+      </div>
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-1 text-2xl">
           <div className="text-primary font-semibold">
             {formatTokenAmount(sharesMinted)}
           </div>
-          <div>VTF</div>
+          <div>{indexDTF?.token.symbol || ''}</div>
         </div>
         <TokenLogo
           symbol={indexDTF?.token.symbol || ''}
@@ -143,21 +154,26 @@ const MintedAmount = () => {
           className="rounded-full"
         />
       </div>
-      <div>
-        ${formatCurrency(valueMinted)}{' '}
-        <span className="text-muted-foreground">({priceImpact}%)</span>
-      </div>
+      {zapDirection === 'mint' && (
+        <div>
+          ${formatCurrency(valueMinted)}{' '}
+          <span className="text-muted-foreground">({priceImpact}%)</span>
+        </div>
+      )}
     </div>
   )
 }
 
-const UsedAmount = () => {
+const USDCAmount = () => {
   const inputAmount = useAtomValue(asyncSwapInputAtom)
   const inputAmountUSD = useAtomValue(mintValueUSDAtom)
+  const zapDirection = useAtomValue(currentAsyncSwapTabAtom)
 
   return (
     <div className="p-6 min-h-[100px] rounded-3xl bg-background flex flex-col gap-2">
-      <div className="text-primary">You Used:</div>
+      <div className="text-primary">
+        {zapDirection === 'mint' ? 'You Used:' : 'You Received:'}
+      </div>
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-1 text-2xl">
           <div className="text-primary font-semibold">
@@ -165,20 +181,24 @@ const UsedAmount = () => {
           </div>
           <div>USDC</div>
         </div>
-        <div className="flex items-center gap-1">
-          <span className="text-muted-foreground line-through text-base">
-            {formatCurrency(Number(inputAmount))} USDC
-          </span>
-          <TokenLogo symbol={'USDC'} size="xl" className="rounded-full" />
-        </div>
+        {zapDirection === 'mint' && (
+          <div className="flex items-center gap-1">
+            <span className="text-muted-foreground line-through text-base">
+              {formatCurrency(Number(inputAmount))} USDC
+            </span>
+            <TokenLogo symbol={'USDC'} size="xl" className="rounded-full" />
+          </div>
+        )}
       </div>
       <div>
         ${formatCurrency(inputAmountUSD)}{' '}
-        <span className="text-muted-foreground line-through">
-          ${formatCurrency(Number(inputAmount))}
-        </span>
+        {zapDirection === 'mint' && (
+          <span className="text-muted-foreground line-through">
+            ${formatCurrency(Number(inputAmount))}
+          </span>
+        )}
       </div>
-      <BufferInfo />
+      {zapDirection === 'mint' && <BufferInfo />}
     </div>
   )
 }
@@ -205,13 +225,53 @@ const BufferInfo = () => {
   )
 }
 
+const MainTransaction = () => {
+  const indexDTF = useAtomValue(indexDTFAtom)
+  const mintTxHash = useAtomValue(mintTxHashAtom)
+  const zapDirection = useAtomValue(currentAsyncSwapTabAtom)
+
+  return (
+    <div className="flex items-center justify-between gap-2 bg-background rounded-3xl p-4">
+      <div className="flex items-center gap-2">
+        <TokenLogo
+          address={indexDTF?.id}
+          symbol={indexDTF?.token.symbol}
+          size="xl"
+        />
+        <div className="flex flex-col">
+          <span className="text-sm font-medium">
+            {zapDirection === 'mint'
+              ? `${indexDTF?.token.symbol} Minted`
+              : `${indexDTF?.token.symbol} Redeemed`}
+          </span>
+          <div className="text-sm text-muted-foreground">
+            {shortenAddress(indexDTF?.id || '')}
+          </div>
+        </div>
+      </div>
+      <div className="text-sm font-light flex items-center gap-1 text-primary">
+        <div className="flex items-center justify-center p-1.5 bg-muted dark:bg-white/5 rounded-full text-gray-700">
+          <Copy value={mintTxHash || ''} />
+        </div>
+        <Link
+          to={getExplorerLink(
+            mintTxHash || '',
+            indexDTF?.chainId || 1,
+            ExplorerDataType.TRANSACTION
+          )}
+          target="_blank"
+          className="p-1 bg-muted dark:bg-white/5 rounded-full text-gray-700"
+        >
+          <ArrowUpRight size={16} />
+        </Link>
+      </div>
+    </div>
+  )
+}
+
 const Transactions = () => {
   const setViewTransactions = useSetAtom(viewTransactionsAtom)
-  const indexDTF = useAtomValue(indexDTFAtom)
-  const indexDTFBasket = useAtomValue(indexDTFBasketAtom)
-  const mintTxHash = useAtomValue(mintTxHashAtom)
   const orders = useAtomValue(asyncSwapResponseAtom)
-
   const { cowswapOrders = [] } = orders || {}
 
   return (
@@ -231,93 +291,10 @@ const Transactions = () => {
         <CloseButton />
       </div>
       <div className="flex flex-col gap-1">
-        <div className="flex items-center justify-between gap-2 bg-background rounded-3xl p-4">
-          <div className="flex items-center gap-2">
-            <TokenLogo
-              address={indexDTF?.id}
-              symbol={indexDTF?.token.symbol}
-              size="xl"
-            />
-            <div className="flex flex-col">
-              <span className="text-sm font-medium">
-                {indexDTF?.token.symbol} Minted
-              </span>
-              <div className="text-sm text-muted-foreground">
-                {shortenAddress(indexDTF?.id || '')}
-              </div>
-            </div>
-          </div>
-          <div className="text-sm font-light flex items-center gap-1 text-primary">
-            <div className="flex items-center justify-center p-1.5 bg-muted dark:bg-white/5 rounded-full text-gray-700">
-              <Copy value={mintTxHash || ''} />
-            </div>
-            <Link
-              to={getExplorerLink(
-                mintTxHash || '',
-                indexDTF?.chainId || 1,
-                ExplorerDataType.TRANSACTION
-              )}
-              target="_blank"
-              className="p-1 bg-muted dark:bg-white/5 rounded-full text-gray-700"
-            >
-              <ArrowUpRight size={16} />
-            </Link>
-          </div>
-        </div>
+        <MainTransaction />
         <div className="flex flex-col gap-1 bg-background rounded-3xl px-4 py-2">
-          {cowswapOrders.map(({ orderId, ...quote }) => (
-            <div
-              className="flex items-center justify-between gap-2 border-b border-border py-4 last:border-b-0"
-              key={quote.buyToken}
-            >
-              <div className="flex items-center gap-2">
-                <TokenLogo
-                  address={quote.buyToken}
-                  symbol={
-                    indexDTFBasket?.find(
-                      (token) => token.address === quote.buyToken
-                    )?.symbol || ''
-                  }
-                  size="xl"
-                />
-                <div className="flex flex-col">
-                  <div className="text-sm font-semibold">
-                    -
-                    {formatCurrency(
-                      Number(formatUnits(BigInt(quote.sellAmount), 6))
-                    )}{' '}
-                    USDC
-                  </div>
-                  <div className="text-sm text-primary">
-                    +
-                    {formatTokenAmount(
-                      Number(
-                        formatUnits(
-                          BigInt(quote.buyAmount),
-                          indexDTFBasket?.find(
-                            (token) => token.address === quote.buyToken
-                          )?.decimals || 18
-                        )
-                      )
-                    )}{' '}
-                    {indexDTFBasket?.find(
-                      (token) => token.address === quote.buyToken
-                    )?.symbol || ''}
-                  </div>
-                </div>
-              </div>
-              <div className="text-sm font-light flex items-center gap-2 text-primary">
-                <Check size={16} className="text-primary" />
-                Order Filled
-                <Link
-                  to={`https://explorer.cow.fi/base/orders/${orderId}`}
-                  target="_blank"
-                  className="p-1 bg-muted dark:bg-white/5 rounded-full text-gray-700 ml-1"
-                >
-                  <ArrowUpRight size={16} />
-                </Link>
-              </div>
-            </div>
+          {cowswapOrders.map(({ orderId }) => (
+            <CowSwapOrder key={orderId} orderId={orderId} />
           ))}
         </div>
       </div>
@@ -365,8 +342,8 @@ const Success = () => {
           <SuccessHeader />
         </div>
         <div className="flex flex-col gap-1 p-1">
-          <MintedAmount />
-          <UsedAmount />
+          <DTFAmount />
+          <USDCAmount />
         </div>
       </div>
     </div>

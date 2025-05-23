@@ -12,7 +12,12 @@ import {
 import { useQuery } from '@tanstack/react-query'
 import { useAtom, useAtomValue } from 'jotai'
 import { Address, parseEther, zeroAddress } from 'viem'
-import { mintValueAtom, quotesAtom, selectedTokenOrDefaultAtom } from '../atom'
+import {
+  mintValueAtom,
+  quotesAtom,
+  redeemAssetsAtom,
+  selectedTokenOrDefaultAtom,
+} from '../atom'
 import { useGlobalProtocolKit } from '../providers/GlobalProtocolKitProvider'
 import { QuoteProvider } from '../types'
 import { useFolioDetails } from './useFolioDetails'
@@ -242,5 +247,96 @@ export const useQuotesForMint = () => {
       return quotes
     },
     enabled: !!folioDetails?.mintValues && !!tokensInfo && !!folioAmount,
+  })
+}
+
+export const useQuotesForRedeem = () => {
+  const selectedToken = useAtomValue(selectedTokenOrDefaultAtom)
+  const redeemAssets = useAtomValue(redeemAssetsAtom)
+  const address = useAtomValue(walletAtom)
+  const [quotes, setQuotes] = useAtom(quotesAtom)
+  const { orderBookApi } = useGlobalProtocolKit()
+
+  const assets = Object.keys(redeemAssets)
+
+  const { data: tokensInfo } = useTokensInfo(
+    assets.map((address) => address as Address)
+  )
+
+  return useQuery({
+    queryKey: ['quotes/redeem', assets, redeemAssets],
+    queryFn: async ({ signal }) => {
+      if (
+        !redeemAssets ||
+        !assets ||
+        !assets.length ||
+        !tokensInfo ||
+        !orderBookApi
+      ) {
+        return {}
+      }
+
+      const quotePromises =
+        assets.map(async (asset) => {
+          const token = tokensInfo[asset.toLowerCase()]
+          const amount = redeemAssets[asset as Address]
+
+          try {
+            return await getQuote({
+              sellToken: token,
+              buyToken: selectedToken,
+              amount,
+              address: address as Address,
+              orderBookApi,
+              zapDirection: 'redeem',
+            })
+          } catch (error) {
+            console.error(`Error getting quote for ${asset}:`, error)
+            return null
+          }
+        }) || []
+
+      const results = await Promise.all(quotePromises)
+
+      assets.forEach((asset, i) => {
+        const token = tokensInfo[asset.toLowerCase()]
+        const quote = results[i]
+        try {
+          if (!signal.aborted) {
+            setQuotes((prev) => ({
+              ...prev,
+              [token.address as string]: {
+                success: !!quote,
+                type: QuoteProvider.CowSwap,
+                data: quote,
+              },
+            }))
+          }
+
+          return {
+            token: token,
+            success: true,
+            source: QuoteProvider.CowSwap,
+            quote,
+          }
+        } catch {
+          if (!signal.aborted) {
+            setQuotes((prev) => ({
+              ...prev,
+              [token.address as string]: {
+                success: false,
+              },
+            }))
+          }
+
+          return {
+            success: false,
+          }
+        }
+      })
+
+      return quotes
+    },
+    enabled: !!assets && !!tokensInfo && !!redeemAssets && assets.length > 0,
   })
 }

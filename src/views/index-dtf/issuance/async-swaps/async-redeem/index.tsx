@@ -37,6 +37,8 @@ import CollateralAcquisition from '../collateral-acquisition'
 import SubmitRedeem from './submit-redeem'
 import TokenLogo from '@/components/token-logo'
 import StackTokenLogo from '@/components/token-logo/StackTokenLogo'
+import { useQuotesForRedeem } from '../hooks/useQuote'
+import SubmitRedeemOrders from './submit-redeem-orders'
 
 const CustomInputBox = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
@@ -55,10 +57,8 @@ const CustomInputBox = () => {
       <div className="flex flex-col gap-1">
         <span className="text-primary">You Redeemed:</span>
         <span className="text-3xl">
-          <span className="text-primary font-semibold">
-            {inputAmount || 10000}{' '}
-          </span>
-          <span>VTF</span>
+          <span className="text-primary font-semibold">{inputAmount} </span>
+          <span>{indexDTF.token.symbol}</span>
         </span>
         <span>for {basket?.length} underlying collateral tokens</span>
       </div>
@@ -104,16 +104,10 @@ const AsyncRedeem = () => {
     parseUnits(inputAmount, selectedToken.decimals) >
     (selectedTokenBalance?.value || 0n)
 
-  // const { data, isLoading, isFetching, refetch, failureReason } = useAsyncSwap({
-  //   dtf: indexDTF?.id,
-  //   amountOut: amountOutWei.toString(),
-  //   slippage: isFinite(Number(slippage)) ? Number(slippage) : 10000,
-  //   disabled: insufficientBalance || ongoingTx,
-  //   dtfTicker: indexDTF?.token.symbol || '',
-  //   type: 'mint',
-  // })
+  const { data, isLoading, isFetching, refetch, failureReason } =
+    useQuotesForRedeem()
 
-  // const { loadingAfterRefetch } = useLoadingAfterRefetch(data)
+  const { loadingAfterRefetch } = useLoadingAfterRefetch(data)
 
   // const valueTo = data?.result?.amountOut
   // const showTxButton = Boolean(
@@ -122,29 +116,29 @@ const AsyncRedeem = () => {
   //     !insufficientBalance &&
   //     !isLoading
   // )
-  // const awaitingQuote = isLoading || isFetching
+  const awaitingQuote = isLoading || isFetching
 
-  // useEffect(() => {
-  //   setAsyncSwapRefetch({ fn: refetch })
-  // }, [refetch, setAsyncSwapRefetch])
+  useEffect(() => {
+    setAsyncSwapRefetch({ fn: refetch })
+  }, [refetch, setAsyncSwapRefetch])
 
-  // useEffect(() => {
-  //   setAsyncSwapFetching(awaitingQuote)
-  // }, [awaitingQuote, setAsyncSwapFetching])
+  useEffect(() => {
+    setAsyncSwapFetching(awaitingQuote)
+  }, [awaitingQuote, setAsyncSwapFetching])
 
-  // useEffect(() => {
-  //   setOngoingTx(false)
-  //   setInputAmount('')
-  // }, [])
+  useEffect(() => {
+    setOngoingTx(false)
+    setInputAmount('')
+  }, [])
 
   if (!indexDTF) return null
 
-  const disableInputBox = Object.keys(redeemAssets).length > 0
+  const assetsRedeemed = Object.keys(redeemAssets).length > 0
 
   return (
     <div className="flex flex-col h-full">
       <div className="flex flex-col">
-        {disableInputBox ? (
+        {assetsRedeemed ? (
           <CustomInputBox />
         ) : (
           <TokenInputBox
@@ -186,7 +180,7 @@ const AsyncRedeem = () => {
               collateralAcquired && !isMinting && 'border-card bg-card'
             ),
           }}
-          // loading={isLoading || loadingAfterRefetch}
+          loading={isLoading || loadingAfterRefetch}
         />
       </div>
       {/* {!!data && <ZapDetails data={data.result} />} */}
@@ -196,7 +190,8 @@ const AsyncRedeem = () => {
           isMinting ? 'bg-background' : 'bg-card'
         )}
       >
-        {!orderSubmitted && <SubmitRedeem />}
+        {!assetsRedeemed && <SubmitRedeem />}
+        {assetsRedeemed && !orderSubmitted && <SubmitRedeemOrders />}
         {orderSubmitted && <CollateralAcquisition />}
       </div>
     </div>

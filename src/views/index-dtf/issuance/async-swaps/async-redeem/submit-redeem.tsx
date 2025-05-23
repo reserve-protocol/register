@@ -8,43 +8,43 @@ import { useAtomValue, useSetAtom } from 'jotai'
 import { useCallback, useEffect } from 'react'
 import { Address, parseEventLogs } from 'viem'
 import {
+  useSendCalls,
+  useWaitForCallsStatus,
   useWaitForTransactionReceipt,
   useWalletClient,
   useWriteContract,
 } from 'wagmi'
-import { assetDistributionAtom } from '../../manual/atoms'
-import { asyncSwapInputAtom, redeemAssetsAtom } from '../atom'
+import { asyncSwapInputAtom, mintTxHashAtom, redeemAssetsAtom } from '../atom'
+import { useFolioDetails } from '../hooks/useFolioDetails'
 
 const SubmitRedeem = () => {
   const chainId = useAtomValue(chainIdAtom)
   const account = useAtomValue(walletAtom)
   const indexDTF = useAtomValue(indexDTFAtom)
-  const assetDistribution = useAtomValue(assetDistributionAtom)
   const amount = useAtomValue(asyncSwapInputAtom)
   const setRedeemAssets = useSetAtom(redeemAssetsAtom)
+  const setRedeemTxHash = useSetAtom(mintTxHashAtom)
 
+  const sharesToRedeem = safeParseEther(amount)
   const { data: walletClient } = useWalletClient()
-  const {
-    data,
-    isPending,
-    error: signError,
-    writeContract,
-  } = useWriteContract()
+  const { data: folioDetails } = useFolioDetails({ shares: sharesToRedeem })
 
-  const {
-    data: receipt,
-    isLoading: isReceiptLoading,
-    error: txError,
-  } = useWaitForTransactionReceipt({
-    hash: data,
-    chainId,
-  })
+  const { data, sendCalls, isPending } = useSendCalls()
+
+  const { data: callsStatus, isLoading: isReceiptLoading } =
+    useWaitForCallsStatus({
+      id: data?.id || '',
+    })
 
   useEffect(() => {
-    if (receipt?.status === 'success') {
+    if (callsStatus?.status === 'success') {
+      const receipt = callsStatus.receipts?.[0]
+
+      setRedeemTxHash(receipt?.transactionHash || 'tx-hash-not-found')
+
       const events = parseEventLogs({
         abi: dtfIndexAbi,
-        logs: receipt.logs,
+        logs: receipt?.logs as any,
         eventName: 'Transfer',
       })
 
@@ -59,49 +59,39 @@ const SubmitRedeem = () => {
           }))
         })
     }
-  }, [receipt])
+  }, [callsStatus])
 
-  const handleSubmit = useCallback(async () => {
-    if (!chainId || !walletClient || !account || !indexDTF || !amount) return
+  const handleSubmit = useCallback(() => {
+    if (
+      !chainId ||
+      !walletClient ||
+      !account ||
+      !indexDTF ||
+      !amount ||
+      !folioDetails
+    )
+      return
 
     try {
-      const assets: Address[] = []
-      const minAmounts: bigint[] = []
-      const sharesToRedeem = safeParseEther(amount)
-
-      const requiredAmounts = Object.keys(assetDistribution).reduce(
-        (acc, asset) => {
-          acc[asset] =
-            (assetDistribution[asset] * sharesToRedeem) / safeParseEther('1')
-          return acc
-        },
-        {} as Record<string, bigint>
-      )
-
-      for (const asset of Object.keys(requiredAmounts)) {
-        assets.push(asset as Address)
-        // 5% slippage
-        // TODO: This is worst case scenario, but it maybe too much?
-        minAmounts.push((requiredAmounts[asset] * 95n) / 100n)
-      }
-
-      const hash = writeContract({
-        address: indexDTF.id,
-        abi: dtfIndexAbi,
-        functionName: 'redeem',
-        args: [
-          sharesToRedeem,
-          account,
-          assets as `0x${string}`[],
-          minAmounts as bigint[],
+      sendCalls({
+        calls: [
+          {
+            to: indexDTF.id,
+            abi: dtfIndexAbi,
+            functionName: 'redeem',
+            args: [
+              sharesToRedeem,
+              account,
+              folioDetails.assets ?? [],
+              folioDetails.redeemValues.map((e) => (e * 95n) / 100n),
+            ],
+          },
         ],
       })
-
-      console.log('Redeem transaction sent:', hash)
     } catch (error) {
       console.error('Error processing orders:', error)
     }
-  }, [chainId, walletClient, account, indexDTF, amount])
+  }, [chainId, walletClient, account, indexDTF, amount, folioDetails])
 
   const disabled = isPending || isReceiptLoading || !amount
 

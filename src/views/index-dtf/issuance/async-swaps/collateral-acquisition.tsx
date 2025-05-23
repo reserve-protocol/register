@@ -2,13 +2,14 @@ import StackTokenLogo from '@/components/token-logo/StackTokenLogo'
 import { Button } from '@/components/ui/button'
 import { indexDTFBasketAtom } from '@/state/dtf/atoms'
 import { getTimerFormat } from '@/utils'
-import { useAtom, useAtomValue } from 'jotai'
+import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { ArrowLeft, ArrowRight, Check, Loader } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import {
   asyncSwapResponseAtom,
   collateralPanelOpenAtom,
   currentAsyncSwapTabAtom,
+  successAtom,
 } from './atom'
 import MintButton from './mint-button'
 import { OrderStatus } from '@cowprotocol/cow-sdk'
@@ -37,9 +38,10 @@ const OpenCollateralPanel = () => {
 }
 
 const CollateralAcquisition = () => {
-  const tab = useAtomValue(currentAsyncSwapTabAtom)
+  const zapDirection = useAtomValue(currentAsyncSwapTabAtom)
   const asyncSwapResponse = useAtomValue(asyncSwapResponseAtom)
   const [elapsedTime, setElapsedTime] = useState(0)
+  const setSuccess = useSetAtom(successAtom)
 
   useEffect(() => {
     if (!asyncSwapResponse?.createdAt) return
@@ -56,11 +58,22 @@ const CollateralAcquisition = () => {
 
   if (!asyncSwapResponse) return null
 
-  const hasAllCollaterals = asyncSwapResponse.cowswapOrders.every(
-    (order) => order.status === OrderStatus.FULFILLED
+  const hasAllCollaterals = useMemo(
+    () =>
+      asyncSwapResponse.cowswapOrders.length > 0 &&
+      asyncSwapResponse.cowswapOrders.every(
+        (order) => order.status === OrderStatus.FULFILLED
+      ),
+    [asyncSwapResponse.cowswapOrders]
   )
 
-  if (hasAllCollaterals) {
+  useEffect(() => {
+    if (hasAllCollaterals && zapDirection === 'redeem') {
+      setSuccess(true)
+    }
+  }, [hasAllCollaterals, setSuccess, zapDirection])
+
+  if (hasAllCollaterals && zapDirection === 'mint') {
     return (
       <div>
         <div className="flex gap-2 items-center justify-between p-4 border-t border-border">
@@ -85,7 +98,7 @@ const CollateralAcquisition = () => {
             <Loader size={16} strokeWidth={1.5} className="animate-spin-slow" />
           </div>
           <div className="font-semibold">
-            {tab === 'mint'
+            {zapDirection === 'mint'
               ? 'Acquiring Collateral'
               : 'Selling collateral for USDC'}
           </div>

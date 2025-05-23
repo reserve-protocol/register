@@ -64,6 +64,8 @@ export const mintTxHashAtom = atom<string | undefined>(
   undefined
 )
 
+export const successAtom = atom<boolean>(false)
+
 export const mintValueAtom = atom<number>((get) => {
   const inputAmount = get(asyncSwapInputAtom)
   const dtfPrice = get(indexDTFPriceAtom)
