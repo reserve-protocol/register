@@ -193,6 +193,13 @@ export function formatCurrency(
   }).format(value)
 }
 
+export function formatCurrencyCompact(value: number, decimals = 2) {
+  return formatCurrency(value, decimals, {
+    notation: 'compact',
+    compactDisplay: 'short',
+  })
+}
+
 export function formatTokenAmount(value: number) {
   return value < 1
     ? formatCurrency(value, 0, {

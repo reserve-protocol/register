@@ -15,6 +15,7 @@ import { useEffect } from 'react'
 import { Address, parseEther, zeroAddress } from 'viem'
 import {
   fetchingQuotesAtom,
+  insufficientBalanceAtom,
   mintValueAtom,
   quotesAtom,
   redeemAssetsAtom,
@@ -160,6 +161,7 @@ export const useQuotesForMint = () => {
   const mintValue = useAtomValue(mintValueAtom)
   const folioAmount = parseEther(mintValue.toString())
   const address = useAtomValue(walletAtom)
+  const insufficientBalance = useAtomValue(insufficientBalanceAtom)
   const [quotes, setQuotes] = useAtom(quotesAtom)
   const setRefetchQuotes = useSetAtom(refetchQuotesAtom)
   const setFetchingQuotes = useSetAtom(fetchingQuotesAtom)
@@ -252,7 +254,11 @@ export const useQuotesForMint = () => {
 
       return quotes
     },
-    enabled: !!folioDetails?.mintValues && !!tokensInfo && !!folioAmount,
+    enabled:
+      !insufficientBalance &&
+      !!folioDetails?.mintValues &&
+      !!tokensInfo &&
+      !!folioAmount,
   })
 
   useEffect(() => {

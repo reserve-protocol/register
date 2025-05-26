@@ -7,18 +7,16 @@ import { useChainlinkPrice } from '@/hooks/useChainlinkPrice'
 import { cn } from '@/lib/utils'
 import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
-import { formatCurrency } from '@/utils'
+import { formatCurrencyCompact } from '@/utils'
 import { useAtom, useAtomValue } from 'jotai'
 import { parseUnits } from 'viem'
 import useLoadingAfterRefetch from '../../../overview/components/hooks/useLoadingAfterRefetch'
 import {
   asyncSwapResponseAtom,
-  bufferValueAtom,
   collateralAcquiredAtom,
   isMintingAtom,
   mintValueAtom,
   mintValueUSDAtom,
-  mintValueWeiAtom,
   selectedTokenAtom,
   selectedTokenBalanceAtom,
   userInputAtom,
@@ -35,33 +33,18 @@ const AsyncMint = () => {
   const selectedTokenBalance = useAtomValue(selectedTokenBalanceAtom)
   const isMinting = useAtomValue(isMintingAtom)
   const selectedTokenPrice = useChainlinkPrice(chainId, selectedToken.address)
-  const inputPrice = (selectedTokenPrice || 0) * Number(inputAmount)
+  const inputValueUSD = (selectedTokenPrice || 0) * Number(inputAmount)
   const onMax = () => setInputAmount(selectedTokenBalance?.balance || '0')
   const asyncSwapResponse = useAtomValue(asyncSwapResponseAtom)
   const collateralAcquired = useAtomValue(collateralAcquiredAtom)
   const orderSubmitted = !!asyncSwapResponse
   const amountOut = useAtomValue(mintValueAtom)
-  const amountOutWei = useAtomValue(mintValueWeiAtom)
   const amountOutValue = useAtomValue(mintValueUSDAtom)
-  const bufferValue = useAtomValue(bufferValueAtom)
-
-  const insufficientBalance =
-    parseUnits(inputAmount, selectedToken.decimals) >
-    (selectedTokenBalance?.value || 0n)
 
   const { data, isLoading, isFetching, failureReason } = useQuotesForMint()
 
   const { loadingAfterRefetch } = useLoadingAfterRefetch(data)
 
-  const priceFrom = 0
-
-  // const valueTo = data?.result?.amountOut
-  // const showTxButton = Boolean(
-  //   data?.status === 'success' &&
-  //     data?.result &&
-  //     !insufficientBalance &&
-  //     !isLoading
-  // )
   const awaitingQuote = isLoading || isFetching
 
   if (!indexDTF) return null
@@ -70,10 +53,12 @@ const AsyncMint = () => {
     <div className="flex flex-col h-full">
       <TokenInputBox
         from={{
-          price: `$${formatCurrency(priceFrom ?? inputPrice)}`,
+          price: `$${formatCurrencyCompact(inputValueUSD)}`,
           address: selectedToken.address,
           symbol: selectedToken.symbol,
-          balance: `${formatCurrency(Number(selectedTokenBalance?.balance || '0'))}`,
+          balance: `${formatCurrencyCompact(
+            Number(selectedTokenBalance?.balance || '0')
+          )}`,
           value: inputAmount,
           onChange: setInputAmount,
           onMax,
@@ -95,7 +80,7 @@ const AsyncMint = () => {
           address: indexDTF.id,
           symbol: indexDTF.token.symbol,
           price: amountOutValue ? (
-            <span>${formatCurrency(amountOutValue)}</span>
+            <span>${formatCurrencyCompact(amountOutValue)}</span>
           ) : undefined,
           value: amountOut.toString(),
           className: cn(
@@ -106,7 +91,6 @@ const AsyncMint = () => {
         }}
         loading={isLoading || loadingAfterRefetch}
       />
-      {/* {!!data && <ZapDetails data={data.result} />} */}
       <div
         className={cn(
           'flex flex-col gap-2 rounded-b-3xl p-2 pt-0',

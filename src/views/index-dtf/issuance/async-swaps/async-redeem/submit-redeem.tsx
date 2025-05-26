@@ -8,7 +8,12 @@ import { useAtomValue, useSetAtom } from 'jotai'
 import { useCallback, useEffect } from 'react'
 import { Address, parseEventLogs } from 'viem'
 import { useSendCalls, useWaitForCallsStatus, useWalletClient } from 'wagmi'
-import { txHashAtom, redeemAssetsAtom, userInputAtom } from '../atom'
+import {
+  txHashAtom,
+  redeemAssetsAtom,
+  userInputAtom,
+  insufficientBalanceAtom,
+} from '../atom'
 import { useFolioDetails } from '../hooks/useFolioDetails'
 
 const SubmitRedeem = () => {
@@ -16,6 +21,7 @@ const SubmitRedeem = () => {
   const account = useAtomValue(walletAtom)
   const indexDTF = useAtomValue(indexDTFAtom)
   const inputAmount = useAtomValue(userInputAtom)
+  const insufficientBalance = useAtomValue(insufficientBalanceAtom)
   const setRedeemAssets = useSetAtom(redeemAssetsAtom)
   const setRedeemTxHash = useSetAtom(txHashAtom)
 
@@ -87,7 +93,8 @@ const SubmitRedeem = () => {
     }
   }, [chainId, walletClient, account, indexDTF, inputAmount, folioDetails])
 
-  const disabled = isPending || isReceiptLoading || !inputAmount
+  const disabled =
+    isPending || isReceiptLoading || !inputAmount || insufficientBalance
 
   return (
     <div>
@@ -100,7 +107,9 @@ const SubmitRedeem = () => {
         onClick={handleSubmit}
         disabled={disabled}
       >
-        {isPending || isReceiptLoading ? (
+        {insufficientBalance ? (
+          'Insufficient Balance'
+        ) : isPending || isReceiptLoading ? (
           'Submitting...'
         ) : (
           <span className="flex items-center gap-1">

@@ -11,22 +11,19 @@ import {
   indexDTFBasketAtom,
   indexDTFPriceAtom,
 } from '@/state/dtf/atoms'
-import { formatCurrency } from '@/utils'
+import { formatCurrencyCompact } from '@/utils'
 import { useAtom, useAtomValue } from 'jotai'
-import { formatEther, parseUnits } from 'viem'
+import { formatEther } from 'viem'
 import useLoadingAfterRefetch from '../../../overview/components/hooks/useLoadingAfterRefetch'
 import {
   asyncSwapResponseAtom,
-  bufferValueAtom,
   collateralAcquiredAtom,
   indexDTFBalanceAtom,
   isMintingAtom,
   mintValueAtom,
   mintValueUSDAtom,
-  mintValueWeiAtom,
   redeemAssetsAtom,
   selectedTokenAtom,
-  selectedTokenBalanceAtom,
   userInputAtom,
 } from '../atom'
 import CollateralAcquisition from '../collateral-acquisition'
@@ -72,7 +69,6 @@ const AsyncRedeem = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
   const [inputAmount, setInputAmount] = useAtom(userInputAtom)
   const selectedToken = useAtomValue(selectedTokenAtom)
-  const selectedTokenBalance = useAtomValue(selectedTokenBalanceAtom)
   const isMinting = useAtomValue(isMintingAtom)
   const indexDTFPrice = useAtomValue(indexDTFPriceAtom)
   const inputPrice = (indexDTFPrice || 0) * Number(inputAmount)
@@ -83,26 +79,13 @@ const AsyncRedeem = () => {
   const collateralAcquired = useAtomValue(collateralAcquiredAtom)
   const orderSubmitted = !!asyncSwapResponse
   const amountOut = useAtomValue(mintValueAtom)
-  const amountOutWei = useAtomValue(mintValueWeiAtom)
   const amountOutValue = useAtomValue(mintValueUSDAtom)
-  const bufferValue = useAtomValue(bufferValueAtom)
   const redeemAssets = useAtomValue(redeemAssetsAtom)
-
-  const insufficientBalance =
-    parseUnits(inputAmount, selectedToken.decimals) >
-    (selectedTokenBalance?.value || 0n)
 
   const { data, isLoading, isFetching, failureReason } = useQuotesForRedeem()
 
   const { loadingAfterRefetch } = useLoadingAfterRefetch(data)
 
-  // const valueTo = data?.result?.amountOut
-  // const showTxButton = Boolean(
-  //   data?.status === 'success' &&
-  //     data?.result &&
-  //     !insufficientBalance &&
-  //     !isLoading
-  // )
   const awaitingQuote = isLoading || isFetching
 
   if (!indexDTF) return null
@@ -118,10 +101,10 @@ const AsyncRedeem = () => {
           <TokenInputBox
             from={{
               title: 'You Redeem:',
-              price: `$${formatCurrency(inputPrice)}`,
+              price: `$${formatCurrencyCompact(inputPrice)}`,
               address: indexDTF.id,
               symbol: indexDTF.token.symbol,
-              balance: `${formatCurrency(Number(indxDTFParsedBalance))}`,
+              balance: `${formatCurrencyCompact(Number(indxDTFParsedBalance))}`,
               value: inputAmount,
               onChange: setInputAmount,
               onMax,
@@ -145,7 +128,7 @@ const AsyncRedeem = () => {
             address: selectedToken.address,
             symbol: selectedToken.symbol,
             price: amountOutValue ? (
-              <span>${formatCurrency(amountOutValue)}</span>
+              <span>${formatCurrencyCompact(amountOutValue)}</span>
             ) : undefined,
             value: amountOut.toString(),
             className: cn(
@@ -157,7 +140,6 @@ const AsyncRedeem = () => {
           loading={isLoading || loadingAfterRefetch}
         />
       </div>
-      {/* {!!data && <ZapDetails data={data.result} />} */}
       <div
         className={cn(
           'flex flex-col gap-2 rounded-b-3xl p-2 pt-0',

@@ -1,19 +1,25 @@
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { useQuoteSignatures } from '../hooks/useQuoteSignatures'
-import { userInputAtom } from '../atom'
+import { insufficientBalanceAtom, userInputAtom } from '../atom'
 import { useAtomValue } from 'jotai'
 
 type SubmitMintProps = {
   loadingQuote?: boolean
+  insufficientBalance?: boolean
 }
 
 const SubmitMint = ({ loadingQuote }: SubmitMintProps) => {
   const inputAmount = useAtomValue(userInputAtom)
+  const insufficientBalance = useAtomValue(insufficientBalanceAtom)
   const { mutate, isPending } = useQuoteSignatures()
 
   const disabled =
-    isPending || loadingQuote || !inputAmount || isNaN(Number(inputAmount))
+    isPending ||
+    loadingQuote ||
+    !inputAmount ||
+    isNaN(Number(inputAmount)) ||
+    insufficientBalance
 
   return (
     <div>
@@ -26,7 +32,9 @@ const SubmitMint = ({ loadingQuote }: SubmitMintProps) => {
         onClick={() => mutate()}
         disabled={disabled}
       >
-        {isPending ? (
+        {insufficientBalance ? (
+          'Insufficient Balance'
+        ) : isPending ? (
           'Signing...'
         ) : loadingQuote ? (
           'Awaiting Quote'

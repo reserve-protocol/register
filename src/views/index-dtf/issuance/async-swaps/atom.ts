@@ -5,7 +5,7 @@ import { reducedZappableTokens } from '@/views/yield-dtf/issuance/components/zap
 import { EnrichedOrder, OrderStatus } from '@cowprotocol/cow-sdk'
 import { atom } from 'jotai'
 import { atomWithReset } from 'jotai/utils'
-import { Address, parseEther } from 'viem'
+import { Address, parseEther, parseUnits } from 'viem'
 import { AsyncSwapOrderResponse, QuoteAggregated } from './types'
 
 const ASYNC_SWAP_BUFFER = 0.005
@@ -46,6 +46,18 @@ export const selectedTokenBalanceAtom = atom<TokenBalance | undefined>(
     return balances[token.address]
   }
 )
+
+export const insufficientBalanceAtom = atom<boolean>((get) => {
+  const inputAmount = get(userInputAtom)
+  const operation = get(operationAtom)
+  const selectedToken = get(selectedTokenAtom)
+  const selectedTokenBalance = get(selectedTokenBalanceAtom)
+  const indexDTFParsedBalance = get(indexDTFBalanceAtom)
+  return operation === 'mint'
+    ? parseUnits(inputAmount, selectedToken.decimals) >
+        (selectedTokenBalance?.value || 0n)
+    : parseEther(inputAmount) > indexDTFParsedBalance
+})
 
 export const collateralAcquiredAtom = atom<boolean>((get) => {
   const asyncSwapResponse = get(asyncSwapResponseAtom)
