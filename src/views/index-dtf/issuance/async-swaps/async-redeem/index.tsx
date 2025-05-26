@@ -14,7 +14,6 @@ import {
 import { formatCurrencyCompact } from '@/utils'
 import { useAtom, useAtomValue } from 'jotai'
 import { formatEther } from 'viem'
-import useLoadingAfterRefetch from '../../../overview/components/hooks/useLoadingAfterRefetch'
 import {
   asyncSwapResponseAtom,
   collateralAcquiredAtom,
@@ -30,6 +29,7 @@ import CollateralAcquisition from '../collateral-acquisition'
 import { useQuotesForRedeem } from '../hooks/useQuote'
 import SubmitRedeem from './submit-redeem'
 import SubmitRedeemOrders from './submit-redeem-orders'
+import { useMemo } from 'react'
 
 const CustomInputBox = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
@@ -82,15 +82,16 @@ const AsyncRedeem = () => {
   const amountOutValue = useAtomValue(mintValueUSDAtom)
   const redeemAssets = useAtomValue(redeemAssetsAtom)
 
-  const { data, isLoading, isFetching, failureReason } = useQuotesForRedeem()
-
-  const { loadingAfterRefetch } = useLoadingAfterRefetch(data)
+  const { isLoading, isFetching } = useQuotesForRedeem()
 
   const awaitingQuote = isLoading || isFetching
 
   if (!indexDTF) return null
 
-  const assetsRedeemed = Object.keys(redeemAssets).length > 0
+  const assetsRedeemed = useMemo(
+    () => Object.keys(redeemAssets).length > 0,
+    [redeemAssets]
+  )
 
   return (
     <div className="flex flex-col h-full">
@@ -137,7 +138,7 @@ const AsyncRedeem = () => {
               collateralAcquired && !isMinting && 'border-card bg-card'
             ),
           }}
-          loading={isLoading || loadingAfterRefetch}
+          loading={isLoading}
         />
       </div>
       <div
@@ -147,7 +148,9 @@ const AsyncRedeem = () => {
         )}
       >
         {!assetsRedeemed && <SubmitRedeem />}
-        {assetsRedeemed && !orderSubmitted && <SubmitRedeemOrders />}
+        {assetsRedeemed && !orderSubmitted && (
+          <SubmitRedeemOrders loadingQuote={awaitingQuote} />
+        )}
         {orderSubmitted && <CollateralAcquisition />}
       </div>
     </div>

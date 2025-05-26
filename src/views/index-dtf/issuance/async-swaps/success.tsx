@@ -22,7 +22,7 @@ import {
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { formatEther } from 'viem'
+import { formatEther, formatUnits, parseUnits } from 'viem'
 import {
   userInputAtom,
   asyncSwapResponseAtom,
@@ -32,6 +32,7 @@ import {
   mintValueUSDAtom,
   redeemAssetsAtom,
   successAtom,
+  selectedTokenAtom,
 } from './atom'
 import CowSwapOrder from './cowswap-order'
 
@@ -124,6 +125,7 @@ const DTFAmount = () => {
   const inputAmountUSD = useAtomValue(mintValueUSDAtom)
   const orders = useAtomValue(asyncSwapResponseAtom)
   const operation = useAtomValue(operationAtom)
+  const sharesRedeemed = useAtomValue(userInputAtom)
 
   const sharesMinted = Number(formatEther(BigInt(orders?.amountOut || 0)))
   const valueMinted = (indexDTFPrice || 0) * sharesMinted
@@ -139,7 +141,9 @@ const DTFAmount = () => {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-1 text-2xl">
           <div className="text-primary font-semibold">
-            {formatTokenAmount(sharesMinted)}
+            {operation === 'mint'
+              ? formatTokenAmount(sharesMinted)
+              : formatTokenAmount(Number(sharesRedeemed))}
           </div>
           <div>{indexDTF?.token.symbol || ''}</div>
         </div>
@@ -161,6 +165,20 @@ const DTFAmount = () => {
   )
 }
 
+const USDCReceivedOnRedeem = () => {
+  const asyncSwapResponse = useAtomValue(asyncSwapResponseAtom)
+  const selectedToken = useAtomValue(selectedTokenAtom)
+  const { cowswapOrders = [] } = asyncSwapResponse || {}
+
+  const amountOut = cowswapOrders.reduce(
+    (acc, order) =>
+      acc +
+      Number(formatUnits(BigInt(order.buyAmount), selectedToken.decimals)),
+    0
+  )
+  return <span>{formatCurrency(amountOut)}</span>
+}
+
 const USDCAmount = () => {
   const inputAmount = useAtomValue(userInputAtom)
   const inputAmountUSD = useAtomValue(mintValueUSDAtom)
@@ -174,7 +192,11 @@ const USDCAmount = () => {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-1 text-2xl">
           <div className="text-primary font-semibold">
-            {formatCurrency(inputAmountUSD)}
+            {operation === 'mint' ? (
+              formatCurrency(inputAmountUSD)
+            ) : (
+              <USDCReceivedOnRedeem />
+            )}
           </div>
           <div>USDC</div>
         </div>
@@ -188,7 +210,13 @@ const USDCAmount = () => {
         )}
       </div>
       <div>
-        ${formatCurrency(inputAmountUSD)}{' '}
+        {operation === 'mint' ? (
+          <span>${formatCurrency(inputAmountUSD)}</span>
+        ) : (
+          <span>
+            $<USDCReceivedOnRedeem />
+          </span>
+        )}
         {operation === 'mint' && (
           <span className="text-muted-foreground line-through">
             ${formatCurrency(Number(inputAmount))}

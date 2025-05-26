@@ -9,8 +9,6 @@ import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { formatCurrencyCompact } from '@/utils'
 import { useAtom, useAtomValue } from 'jotai'
-import { parseUnits } from 'viem'
-import useLoadingAfterRefetch from '../../../overview/components/hooks/useLoadingAfterRefetch'
 import {
   asyncSwapResponseAtom,
   collateralAcquiredAtom,
@@ -41,9 +39,7 @@ const AsyncMint = () => {
   const amountOut = useAtomValue(mintValueAtom)
   const amountOutValue = useAtomValue(mintValueUSDAtom)
 
-  const { data, isLoading, isFetching, failureReason } = useQuotesForMint()
-
-  const { loadingAfterRefetch } = useLoadingAfterRefetch(data)
+  const { isLoading, isFetching } = useQuotesForMint()
 
   const awaitingQuote = isLoading || isFetching
 
@@ -89,7 +85,7 @@ const AsyncMint = () => {
             collateralAcquired && !isMinting && 'border-card bg-card'
           ),
         }}
-        loading={isLoading || loadingAfterRefetch}
+        loading={isLoading}
       />
       <div
         className={cn(

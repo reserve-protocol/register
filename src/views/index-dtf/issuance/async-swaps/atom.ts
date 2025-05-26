@@ -14,14 +14,14 @@ const ASYNC_SWAP_BUFFER = 0.005
 export const operationAtom = atom<'mint' | 'redeem'>('mint')
 export const userInputAtom = atomWithReset<string>('')
 export const indexDTFBalanceAtom = atom<bigint>(0n)
-export const asyncSwapResponseAtom = atom<AsyncSwapOrderResponse | undefined>(
-  undefined
-)
 export const txHashAtom = atom<string | undefined>(undefined) // tx hash for minting or redeeming
 export const redeemAssetsAtom = atom<Record<Address, bigint>>({})
 export const quotesAtom = atom<Record<Address, QuoteAggregated>>({})
 export const orderIdsAtom = atom<string[]>([])
-export const ordersAtom = atom<Record<string, EnrichedOrder>>({})
+export const asyncSwapResponseAtom = atom<AsyncSwapOrderResponse | undefined>(
+  undefined
+)
+// export const ordersAtom = atom<Record<string, EnrichedOrder>>({})
 
 export const refetchQuotesAtom = atom<{ fn: () => void }>({ fn: () => {} })
 export const fetchingQuotesAtom = atom<boolean>(false)
