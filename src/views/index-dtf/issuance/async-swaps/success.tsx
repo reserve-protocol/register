@@ -33,6 +33,8 @@ import {
   redeemAssetsAtom,
   successAtom,
   selectedTokenAtom,
+  orderIdsAtom,
+  quotesAtom,
 } from './atom'
 import CowSwapOrder from './cowswap-order'
 
@@ -44,6 +46,8 @@ const CloseButton = () => {
   const setAsyncSwapResponse = useSetAtom(asyncSwapResponseAtom)
   const setUserInputAtom = useSetAtom(userInputAtom)
   const setRedeemAssets = useSetAtom(redeemAssetsAtom)
+  const setOrderIdsAtom = useSetAtom(orderIdsAtom)
+  const setQuotesAtom = useSetAtom(quotesAtom)
 
   const handleClose = () => {
     setTxHashAtom(undefined)
@@ -51,6 +55,8 @@ const CloseButton = () => {
     setAsyncSwapResponse(undefined)
     setUserInputAtom('')
     setRedeemAssets({})
+    setQuotesAtom({})
+    setOrderIdsAtom([])
   }
 
   return (
