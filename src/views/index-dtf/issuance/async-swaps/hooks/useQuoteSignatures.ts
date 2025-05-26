@@ -18,13 +18,13 @@ import {
 } from 'viem'
 import { useSendCalls } from 'wagmi'
 import {
-  asyncSwapInputAtom,
+  userInputAtom,
   asyncSwapResponseAtom,
-  currentAsyncSwapTabAtom,
+  operationAtom,
   mintValueAtom,
   orderIdsAtom,
   quotesAtom,
-  selectedTokenOrDefaultAtom,
+  selectedTokenAtom,
 } from '../atom'
 import { useGlobalProtocolKit } from '../providers/GlobalProtocolKitProvider'
 import { QuoteProvider } from '../types'
@@ -38,10 +38,10 @@ export function useQuoteSignatures() {
   const indexDTF = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
   const address = useAtomValue(walletAtom)
-  const zapDirection = useAtomValue(currentAsyncSwapTabAtom)
+  const operation = useAtomValue(operationAtom)
   const mintValue = useAtomValue(mintValueAtom)
-  const inputAmount = useAtomValue(asyncSwapInputAtom)
-  const quoteToken = useAtomValue(selectedTokenOrDefaultAtom).address
+  const inputAmount = useAtomValue(userInputAtom)
+  const quoteToken = useAtomValue(selectedTokenAtom).address
   const quotes = Object.values(useAtomValue(quotesAtom))
   const setOrderIDs = useSetAtom(orderIdsAtom)
   const setAsyncSwapResponse = useSetAtom(asyncSwapResponseAtom)
@@ -79,14 +79,14 @@ export function useQuoteSignatures() {
               ...quote.data.quote,
               feeAmount: '0',
               buyAmount:
-                zapDirection === 'mint'
+                operation === 'mint'
                   ? quote.data.quote.buyAmount
                   : (
                       (BigInt(quote.data.quote.buyAmount) * 98n) /
                       100n
                     ).toString(),
               sellAmount:
-                zapDirection === 'mint'
+                operation === 'mint'
                   ? (
                       (BigInt(quote.data.quote.sellAmount) * 101n) /
                       100n
@@ -138,7 +138,7 @@ export function useQuoteSignatures() {
         .map(({ type, data }) => {
           if (type === QuoteProvider.CowSwap) {
             return [
-              zapDirection === 'redeem'
+              operation === 'redeem'
                 ? {
                     to: data.sellToken as Address,
                     data: encodeFunctionData({
@@ -162,7 +162,7 @@ export function useQuoteSignatures() {
         .filter((data) => data !== null)
         .flat()
 
-      if (zapDirection === 'mint') {
+      if (operation === 'mint') {
         txData.unshift({
           to: quoteToken,
           data: encodeFunctionData({

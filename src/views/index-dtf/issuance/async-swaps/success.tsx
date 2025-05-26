@@ -24,12 +24,11 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { formatEther } from 'viem'
 import {
-  asyncSwapInputAtom,
-  asyncSwapOrderIdAtom,
+  userInputAtom,
   asyncSwapResponseAtom,
   bufferValueAtom,
-  currentAsyncSwapTabAtom,
-  mintTxHashAtom,
+  operationAtom,
+  txHashAtom,
   mintValueUSDAtom,
   redeemAssetsAtom,
   successAtom,
@@ -39,19 +38,17 @@ import CowSwapOrder from './cowswap-order'
 const viewTransactionsAtom = atom<boolean>(false)
 
 const CloseButton = () => {
-  const setMintTxHash = useSetAtom(mintTxHashAtom)
+  const setTxHashAtom = useSetAtom(txHashAtom)
   const setSuccess = useSetAtom(successAtom)
   const setAsyncSwapResponse = useSetAtom(asyncSwapResponseAtom)
-  const setAsyncSwapOrderId = useSetAtom(asyncSwapOrderIdAtom)
-  const setAsyncSwapInput = useSetAtom(asyncSwapInputAtom)
+  const setUserInputAtom = useSetAtom(userInputAtom)
   const setRedeemAssets = useSetAtom(redeemAssetsAtom)
 
   const handleClose = () => {
-    setMintTxHash(undefined)
+    setTxHashAtom(undefined)
     setSuccess(false)
     setAsyncSwapResponse(undefined)
-    setAsyncSwapOrderId(undefined)
-    setAsyncSwapInput('')
+    setUserInputAtom('')
     setRedeemAssets({})
   }
 
@@ -126,7 +123,7 @@ const DTFAmount = () => {
   const indexDTFPrice = useAtomValue(indexDTFPriceAtom)
   const inputAmountUSD = useAtomValue(mintValueUSDAtom)
   const orders = useAtomValue(asyncSwapResponseAtom)
-  const zapDirection = useAtomValue(currentAsyncSwapTabAtom)
+  const operation = useAtomValue(operationAtom)
 
   const sharesMinted = Number(formatEther(BigInt(orders?.amountOut || 0)))
   const valueMinted = (indexDTFPrice || 0) * sharesMinted
@@ -137,7 +134,7 @@ const DTFAmount = () => {
   return (
     <div className="p-6 min-h-[100px] rounded-3xl bg-background -mt-14 flex flex-col gap-1.5">
       <div className="text-primary">
-        {zapDirection === 'mint' ? 'You Minted:' : 'You Redeemed:'}
+        {operation === 'mint' ? 'You Minted:' : 'You Redeemed:'}
       </div>
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-1 text-2xl">
@@ -154,7 +151,7 @@ const DTFAmount = () => {
           className="rounded-full"
         />
       </div>
-      {zapDirection === 'mint' && (
+      {operation === 'mint' && (
         <div>
           ${formatCurrency(valueMinted)}{' '}
           <span className="text-muted-foreground">({priceImpact}%)</span>
@@ -165,14 +162,14 @@ const DTFAmount = () => {
 }
 
 const USDCAmount = () => {
-  const inputAmount = useAtomValue(asyncSwapInputAtom)
+  const inputAmount = useAtomValue(userInputAtom)
   const inputAmountUSD = useAtomValue(mintValueUSDAtom)
-  const zapDirection = useAtomValue(currentAsyncSwapTabAtom)
+  const operation = useAtomValue(operationAtom)
 
   return (
     <div className="p-6 min-h-[100px] rounded-3xl bg-background flex flex-col gap-2">
       <div className="text-primary">
-        {zapDirection === 'mint' ? 'You Used:' : 'You Received:'}
+        {operation === 'mint' ? 'You Used:' : 'You Received:'}
       </div>
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-1 text-2xl">
@@ -181,7 +178,7 @@ const USDCAmount = () => {
           </div>
           <div>USDC</div>
         </div>
-        {zapDirection === 'mint' && (
+        {operation === 'mint' && (
           <div className="flex items-center gap-1">
             <span className="text-muted-foreground line-through text-base">
               {formatCurrency(Number(inputAmount))} USDC
@@ -192,13 +189,13 @@ const USDCAmount = () => {
       </div>
       <div>
         ${formatCurrency(inputAmountUSD)}{' '}
-        {zapDirection === 'mint' && (
+        {operation === 'mint' && (
           <span className="text-muted-foreground line-through">
             ${formatCurrency(Number(inputAmount))}
           </span>
         )}
       </div>
-      {zapDirection === 'mint' && <BufferInfo />}
+      {operation === 'mint' && <BufferInfo />}
     </div>
   )
 }
@@ -227,8 +224,8 @@ const BufferInfo = () => {
 
 const MainTransaction = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
-  const mintTxHash = useAtomValue(mintTxHashAtom)
-  const zapDirection = useAtomValue(currentAsyncSwapTabAtom)
+  const txHash = useAtomValue(txHashAtom)
+  const operation = useAtomValue(operationAtom)
 
   return (
     <div className="flex items-center justify-between gap-2 bg-background rounded-3xl p-4">
@@ -240,7 +237,7 @@ const MainTransaction = () => {
         />
         <div className="flex flex-col">
           <span className="text-sm font-medium">
-            {zapDirection === 'mint'
+            {operation === 'mint'
               ? `${indexDTF?.token.symbol} Minted`
               : `${indexDTF?.token.symbol} Redeemed`}
           </span>
@@ -251,11 +248,11 @@ const MainTransaction = () => {
       </div>
       <div className="text-sm font-light flex items-center gap-1 text-primary">
         <div className="flex items-center justify-center p-1.5 bg-muted dark:bg-white/5 rounded-full text-gray-700">
-          <Copy value={mintTxHash || ''} />
+          <Copy value={txHash || ''} />
         </div>
         <Link
           to={getExplorerLink(
-            mintTxHash || '',
+            txHash || '',
             indexDTF?.chainId || 1,
             ExplorerDataType.TRANSACTION
           )}

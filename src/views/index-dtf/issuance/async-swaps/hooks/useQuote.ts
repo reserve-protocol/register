@@ -10,13 +10,16 @@ import {
   SigningScheme,
 } from '@cowprotocol/cow-sdk'
 import { useQuery } from '@tanstack/react-query'
-import { useAtom, useAtomValue } from 'jotai'
+import { useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { useEffect } from 'react'
 import { Address, parseEther, zeroAddress } from 'viem'
 import {
+  fetchingQuotesAtom,
   mintValueAtom,
   quotesAtom,
   redeemAssetsAtom,
-  selectedTokenOrDefaultAtom,
+  refetchQuotesAtom,
+  selectedTokenAtom,
 } from '../atom'
 import { useGlobalProtocolKit } from '../providers/GlobalProtocolKitProvider'
 import { QuoteProvider } from '../types'
@@ -34,14 +37,14 @@ async function getQuote({
   amount,
   address,
   orderBookApi,
-  zapDirection,
+  operation,
 }: {
   sellToken: Token
   buyToken: Token
   amount: bigint
   address: Address
   orderBookApi: OrderBookApi
-  zapDirection: 'redeem' | 'mint'
+  operation: 'redeem' | 'mint'
 }) {
   if (
     !address ||
@@ -64,7 +67,7 @@ async function getQuote({
     receiver: address,
     validFor: 60 * 15, // 15 minutes
     priceQuality: PriceQuality.VERIFIED,
-    ...(zapDirection === 'redeem'
+    ...(operation === 'redeem'
       ? {
           kind: OrderQuoteSideKindSell.SELL,
           sellAmountBeforeFee: amount.toString(),
@@ -77,7 +80,7 @@ async function getQuote({
   })
 
   // CowSwap orders sometimes return every so slightly different amounts than requested.
-  if (zapDirection === 'redeem') {
+  if (operation === 'redeem') {
     quote.quote.sellAmount = amount.toString()
   } else {
     quote.quote.buyAmount = amount.toString()
@@ -89,7 +92,7 @@ async function getQuote({
 // export function useQuote({ sellToken, buyToken, amount }: UseQuoteParams) {
 //   const indexDTF = useAtomValue(indexDTFAtom)
 //   const folioAddress = indexDTF?.id
-//   const zapDirection = useAtomValue(currentAsyncSwapTabAtom)
+//   const operation = useAtomValue(operationAtom)
 //   const chainId = useAtomValue(chainIdAtom)
 //   const address = useAtomValue(walletAtom)
 //   const setQuotes = useSetAtom(quotesAtom)
@@ -111,7 +114,7 @@ async function getQuote({
 //           amount,
 //           address: address as Address,
 //           orderBookApi,
-//           zapDirection,
+//           operation,
 //         })
 
 //         if (!signal.aborted) {
@@ -126,7 +129,7 @@ async function getQuote({
 //         }
 
 //         return {
-//           token: zapDirection ? buyToken : sellToken,
+//           token: operation ? buyToken : sellToken,
 //           success: true,
 //           source: QuoteProvider.CowSwap,
 //           quote,
@@ -153,11 +156,14 @@ async function getQuote({
 
 export const useQuotesForMint = () => {
   const chainId = useAtomValue(chainIdAtom)
-  const selectedToken = useAtomValue(selectedTokenOrDefaultAtom)
+  const selectedToken = useAtomValue(selectedTokenAtom)
   const mintValue = useAtomValue(mintValueAtom)
   const folioAmount = parseEther(mintValue.toString())
   const address = useAtomValue(walletAtom)
   const [quotes, setQuotes] = useAtom(quotesAtom)
+  const setRefetchQuotes = useSetAtom(refetchQuotesAtom)
+  const setFetchingQuotes = useSetAtom(fetchingQuotesAtom)
+
   const { orderBookApi } = useGlobalProtocolKit()
   const { data: folioDetails } = useFolioDetails({ shares: folioAmount })
   const { data: balances } = useERC20Balances(
@@ -171,7 +177,7 @@ export const useQuotesForMint = () => {
     folioDetails?.assets.map((address) => address as Address) || []
   )
 
-  return useQuery({
+  const query = useQuery({
     queryKey: ['quotes/mint', folioDetails?.assets, folioDetails?.mintValues],
     queryFn: async ({ signal }) => {
       if (!folioDetails || !tokensInfo || !orderBookApi) {
@@ -197,7 +203,7 @@ export const useQuotesForMint = () => {
               amount,
               address: address as Address,
               orderBookApi,
-              zapDirection: 'mint',
+              operation: 'mint',
             })
           } catch (error) {
             console.error(`Error getting quote for ${asset}:`, error)
@@ -248,13 +254,23 @@ export const useQuotesForMint = () => {
     },
     enabled: !!folioDetails?.mintValues && !!tokensInfo && !!folioAmount,
   })
+
+  useEffect(() => {
+    setRefetchQuotes({ fn: query.refetch })
+    setFetchingQuotes(query.isFetching)
+  }, [query.refetch, query.isFetching, setRefetchQuotes, setFetchingQuotes])
+
+  return query
 }
 
 export const useQuotesForRedeem = () => {
-  const selectedToken = useAtomValue(selectedTokenOrDefaultAtom)
+  const selectedToken = useAtomValue(selectedTokenAtom)
   const redeemAssets = useAtomValue(redeemAssetsAtom)
   const address = useAtomValue(walletAtom)
   const [quotes, setQuotes] = useAtom(quotesAtom)
+  const setRefetchQuotes = useSetAtom(refetchQuotesAtom)
+  const setFetchingQuotes = useSetAtom(fetchingQuotesAtom)
+
   const { orderBookApi } = useGlobalProtocolKit()
 
   const assets = Object.keys(redeemAssets)
@@ -263,7 +279,7 @@ export const useQuotesForRedeem = () => {
     assets.map((address) => address as Address)
   )
 
-  return useQuery({
+  const query = useQuery({
     queryKey: ['quotes/redeem', assets, redeemAssets],
     queryFn: async ({ signal }) => {
       if (
@@ -288,7 +304,7 @@ export const useQuotesForRedeem = () => {
               amount,
               address: address as Address,
               orderBookApi,
-              zapDirection: 'redeem',
+              operation: 'redeem',
             })
           } catch (error) {
             console.error(`Error getting quote for ${asset}:`, error)
@@ -339,4 +355,11 @@ export const useQuotesForRedeem = () => {
     },
     enabled: !!assets && !!tokensInfo && !!redeemAssets && assets.length > 0,
   })
+
+  useEffect(() => {
+    setRefetchQuotes({ fn: query.refetch })
+    setFetchingQuotes(query.isFetching)
+  }, [query.refetch, query.isFetching, setRefetchQuotes, setFetchingQuotes])
+
+  return query
 }

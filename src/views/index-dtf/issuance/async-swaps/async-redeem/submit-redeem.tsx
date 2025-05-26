@@ -7,25 +7,19 @@ import { safeParseEther } from '@/utils'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useCallback, useEffect } from 'react'
 import { Address, parseEventLogs } from 'viem'
-import {
-  useSendCalls,
-  useWaitForCallsStatus,
-  useWaitForTransactionReceipt,
-  useWalletClient,
-  useWriteContract,
-} from 'wagmi'
-import { asyncSwapInputAtom, mintTxHashAtom, redeemAssetsAtom } from '../atom'
+import { useSendCalls, useWaitForCallsStatus, useWalletClient } from 'wagmi'
+import { txHashAtom, redeemAssetsAtom, userInputAtom } from '../atom'
 import { useFolioDetails } from '../hooks/useFolioDetails'
 
 const SubmitRedeem = () => {
   const chainId = useAtomValue(chainIdAtom)
   const account = useAtomValue(walletAtom)
   const indexDTF = useAtomValue(indexDTFAtom)
-  const amount = useAtomValue(asyncSwapInputAtom)
+  const inputAmount = useAtomValue(userInputAtom)
   const setRedeemAssets = useSetAtom(redeemAssetsAtom)
-  const setRedeemTxHash = useSetAtom(mintTxHashAtom)
+  const setRedeemTxHash = useSetAtom(txHashAtom)
 
-  const sharesToRedeem = safeParseEther(amount)
+  const sharesToRedeem = safeParseEther(inputAmount)
   const { data: walletClient } = useWalletClient()
   const { data: folioDetails } = useFolioDetails({ shares: sharesToRedeem })
 
@@ -67,7 +61,7 @@ const SubmitRedeem = () => {
       !walletClient ||
       !account ||
       !indexDTF ||
-      !amount ||
+      !inputAmount ||
       !folioDetails
     )
       return
@@ -91,9 +85,9 @@ const SubmitRedeem = () => {
     } catch (error) {
       console.error('Error processing orders:', error)
     }
-  }, [chainId, walletClient, account, indexDTF, amount, folioDetails])
+  }, [chainId, walletClient, account, indexDTF, inputAmount, folioDetails])
 
-  const disabled = isPending || isReceiptLoading || !amount
+  const disabled = isPending || isReceiptLoading || !inputAmount
 
   return (
     <div>

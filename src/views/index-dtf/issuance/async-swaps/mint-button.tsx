@@ -10,12 +10,7 @@ import { Loader } from 'lucide-react'
 import { useEffect, useMemo } from 'react'
 import { encodeFunctionData, erc20Abi, maxUint256, parseEther } from 'viem'
 import { useSendCalls, useWaitForCallsStatus } from 'wagmi'
-import {
-  isMintingAtom,
-  mintTxHashAtom,
-  mintValueAtom,
-  successAtom,
-} from './atom'
+import { isMintingAtom, txHashAtom, mintValueAtom, successAtom } from './atom'
 import { useFolioDetails } from './hooks/useFolioDetails'
 
 const MintButton = () => {
@@ -25,7 +20,7 @@ const MintButton = () => {
   const folioAmount = parseEther(mintAmount.toString())
   const chainId = useAtomValue(chainIdAtom)
   const indexDTFVersion = useAtomValue(indexDTFVersionAtom)
-  const setMintTxHash = useSetAtom(mintTxHashAtom)
+  const setMintTxHash = useSetAtom(txHashAtom)
   const setSuccess = useSetAtom(successAtom)
 
   const [isMinting, setIsMinting] = useAtom(isMintingAtom)

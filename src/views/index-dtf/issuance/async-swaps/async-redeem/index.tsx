@@ -1,25 +1,21 @@
-import Swap, {
+import TokenLogo from '@/components/token-logo'
+import StackTokenLogo from '@/components/token-logo/StackTokenLogo'
+import {
   ArrowSeparator,
   TokenInputBox,
   TokenOutputBox,
 } from '@/components/ui/swap'
 import { cn } from '@/lib/utils'
-import { chainIdAtom } from '@/state/atoms'
 import {
   indexDTFAtom,
   indexDTFBasketAtom,
   indexDTFPriceAtom,
 } from '@/state/dtf/atoms'
 import { formatCurrency } from '@/utils'
-import { useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { useEffect } from 'react'
+import { useAtom, useAtomValue } from 'jotai'
 import { formatEther, parseUnits } from 'viem'
 import useLoadingAfterRefetch from '../../../overview/components/hooks/useLoadingAfterRefetch'
 import {
-  asyncSwapFetchingAtom,
-  asyncSwapInputAtom,
-  asyncSwapOngoingTxAtom,
-  asyncSwapRefetchAtom,
   asyncSwapResponseAtom,
   bufferValueAtom,
   collateralAcquiredAtom,
@@ -29,20 +25,18 @@ import {
   mintValueUSDAtom,
   mintValueWeiAtom,
   redeemAssetsAtom,
+  selectedTokenAtom,
   selectedTokenBalanceAtom,
-  selectedTokenOrDefaultAtom,
-  slippageAtom,
+  userInputAtom,
 } from '../atom'
 import CollateralAcquisition from '../collateral-acquisition'
-import SubmitRedeem from './submit-redeem'
-import TokenLogo from '@/components/token-logo'
-import StackTokenLogo from '@/components/token-logo/StackTokenLogo'
 import { useQuotesForRedeem } from '../hooks/useQuote'
+import SubmitRedeem from './submit-redeem'
 import SubmitRedeemOrders from './submit-redeem-orders'
 
 const CustomInputBox = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
-  const inputAmount = useAtomValue(asyncSwapInputAtom)
+  const inputAmount = useAtomValue(userInputAtom)
   const basket = useAtomValue(indexDTFBasketAtom)
 
   if (!indexDTF) return null
@@ -75,16 +69,11 @@ const CustomInputBox = () => {
 }
 
 const AsyncRedeem = () => {
-  const chainId = useAtomValue(chainIdAtom)
   const indexDTF = useAtomValue(indexDTFAtom)
-  const [inputAmount, setInputAmount] = useAtom(asyncSwapInputAtom)
-  const selectedToken = useAtomValue(selectedTokenOrDefaultAtom)
+  const [inputAmount, setInputAmount] = useAtom(userInputAtom)
+  const selectedToken = useAtomValue(selectedTokenAtom)
   const selectedTokenBalance = useAtomValue(selectedTokenBalanceAtom)
   const isMinting = useAtomValue(isMintingAtom)
-  const slippage = useAtomValue(slippageAtom)
-  const [ongoingTx, setOngoingTx] = useAtom(asyncSwapOngoingTxAtom)
-  const setAsyncSwapRefetch = useSetAtom(asyncSwapRefetchAtom)
-  const setAsyncSwapFetching = useSetAtom(asyncSwapFetchingAtom)
   const indexDTFPrice = useAtomValue(indexDTFPriceAtom)
   const inputPrice = (indexDTFPrice || 0) * Number(inputAmount)
   const indexDTFBalance = useAtomValue(indexDTFBalanceAtom)
@@ -98,14 +87,12 @@ const AsyncRedeem = () => {
   const amountOutValue = useAtomValue(mintValueUSDAtom)
   const bufferValue = useAtomValue(bufferValueAtom)
   const redeemAssets = useAtomValue(redeemAssetsAtom)
-  const basket = useAtomValue(indexDTFBasketAtom)
 
   const insufficientBalance =
     parseUnits(inputAmount, selectedToken.decimals) >
     (selectedTokenBalance?.value || 0n)
 
-  const { data, isLoading, isFetching, refetch, failureReason } =
-    useQuotesForRedeem()
+  const { data, isLoading, isFetching, failureReason } = useQuotesForRedeem()
 
   const { loadingAfterRefetch } = useLoadingAfterRefetch(data)
 
@@ -117,19 +104,6 @@ const AsyncRedeem = () => {
   //     !isLoading
   // )
   const awaitingQuote = isLoading || isFetching
-
-  useEffect(() => {
-    setAsyncSwapRefetch({ fn: refetch })
-  }, [refetch, setAsyncSwapRefetch])
-
-  useEffect(() => {
-    setAsyncSwapFetching(awaitingQuote)
-  }, [awaitingQuote, setAsyncSwapFetching])
-
-  useEffect(() => {
-    setOngoingTx(false)
-    setInputAmount('')
-  }, [])
 
   if (!indexDTF) return null
 

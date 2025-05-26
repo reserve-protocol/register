@@ -3,7 +3,7 @@ import { atom, useAtom, useAtomValue } from 'jotai'
 import { useEffect, useMemo } from 'react'
 import {
   asyncSwapResponseAtom,
-  collateralPanelOpenAtom,
+  openCollateralPanelAtom,
   orderIdsAtom,
 } from './atom'
 import CowSwapOrder from './cowswap-order'
@@ -21,14 +21,14 @@ const isVisibleAtom = atom(false)
 const shouldRenderAtom = atom(false)
 export const showCollateralsAtom = atom((get) => {
   const asyncSwapResponse = get(asyncSwapResponseAtom)
-  const open = get(collateralPanelOpenAtom)
+  const open = get(openCollateralPanelAtom)
   return asyncSwapResponse && open
 })
 
 const Collaterals = () => {
   const orderIDs = useAtomValue(orderIdsAtom)
   const asyncSwapResponse = useAtomValue(asyncSwapResponseAtom)
-  const open = useAtomValue(collateralPanelOpenAtom)
+  const open = useAtomValue(openCollateralPanelAtom)
   const [isVisible, setIsVisible] = useAtom(isVisibleAtom)
   const [shouldRender, setShouldRender] = useAtom(shouldRenderAtom)
 

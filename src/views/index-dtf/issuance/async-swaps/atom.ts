@@ -10,13 +10,41 @@ import { AsyncSwapOrderResponse, QuoteAggregated } from './types'
 
 const ASYNC_SWAP_BUFFER = 0.005
 
+// Main Atoms
+export const operationAtom = atom<'mint' | 'redeem'>('mint')
+export const userInputAtom = atomWithReset<string>('')
+export const indexDTFBalanceAtom = atom<bigint>(0n)
 export const asyncSwapResponseAtom = atom<AsyncSwapOrderResponse | undefined>(
   undefined
 )
-export const asyncSwapOrderIdAtom = atom<string | undefined>(
-  // '5d3b5c96-ea7e-4bb2-bb54-40f082fb318d'
-  // 'fb4f234d-5b66-4436-a5d7-9748db2965de'
-  undefined
+export const txHashAtom = atom<string | undefined>(undefined) // tx hash for minting or redeeming
+export const redeemAssetsAtom = atom<Record<Address, bigint>>({})
+export const quotesAtom = atom<Record<Address, QuoteAggregated>>({})
+export const orderIdsAtom = atom<string[]>([])
+export const ordersAtom = atom<Record<string, EnrichedOrder>>({})
+
+export const refetchQuotesAtom = atom<{ fn: () => void }>({ fn: () => {} })
+export const fetchingQuotesAtom = atom<boolean>(false)
+
+export const isMintingAtom = atom<boolean>(false)
+export const successAtom = atom<boolean>(false)
+
+// Render Atoms
+export const openCollateralPanelAtom = atom<boolean>(true)
+export const showSettingsAtom = atom<boolean>(false)
+
+// Computed Atoms
+export const selectedTokenAtom = atom<Token>((get) => {
+  const chainId = get(chainIdAtom)
+  return reducedZappableTokens[chainId][2] // USDC
+})
+
+export const selectedTokenBalanceAtom = atom<TokenBalance | undefined>(
+  (get) => {
+    const balances = get(balancesAtom)
+    const token = get(selectedTokenAtom)
+    return balances[token.address]
+  }
 )
 
 export const collateralAcquiredAtom = atom<boolean>((get) => {
@@ -27,47 +55,9 @@ export const collateralAcquiredAtom = atom<boolean>((get) => {
     )
   )
 })
-export const collateralPanelOpenAtom = atom<boolean>(true)
-export const currentAsyncSwapTabAtom = atom<'mint' | 'redeem'>('mint')
-export const showAsyncSwapSettingsAtom = atom<boolean>(false)
-export const asyncSwapInputAtom = atomWithReset<string>('')
-export const indexDTFBalanceAtom = atom<bigint>(0n)
-
-export const selectedTokenAtom = atom<Token | undefined>(undefined)
-export const defaultSelectedTokenAtom = atom<Token>((get) => {
-  const chainId = get(chainIdAtom)
-  return reducedZappableTokens[chainId][2] // USDC
-})
-export const selectedTokenOrDefaultAtom = atom<Token>((get) => {
-  const chainId = get(chainIdAtom)
-  return reducedZappableTokens[chainId][2] // USDC
-})
-
-export const selectedTokenBalanceAtom = atom<TokenBalance | undefined>(
-  (get) => {
-    const balances = get(balancesAtom)
-    const token = get(selectedTokenOrDefaultAtom)
-    return balances[token.address]
-  }
-)
-
-export const slippageAtom = atomWithReset<string>('100')
-export const forceMintAtom = atomWithReset<boolean>(false)
-export const asyncSwapRefetchAtom = atom<{ fn: () => void }>({ fn: () => {} })
-export const asyncSwapFetchingAtom = atom<boolean>(false)
-export const asyncSwapOngoingTxAtom = atom<boolean>(false)
-export const asyncSwapPriceImpactWarningCheckboxAtom = atom(false)
-export const asyncSwapHighPriceImpactAtom = atom<boolean>(false)
-export const isMintingAtom = atom<boolean>(false)
-export const mintTxHashAtom = atom<string | undefined>(
-  // '0x7dc75b765f28b2875c9b2ae52c2fe06472baf17ba0486f195b5b69212018582e'
-  undefined
-)
-
-export const successAtom = atom<boolean>(false)
 
 export const mintValueAtom = atom<number>((get) => {
-  const inputAmount = get(asyncSwapInputAtom)
+  const inputAmount = get(userInputAtom)
   const dtfPrice = get(indexDTFPriceAtom)
   const result =
     ((Number(inputAmount) || 0) / (dtfPrice ?? 1)) * (1 - ASYNC_SWAP_BUFFER)
@@ -77,12 +67,12 @@ export const mintValueAtom = atom<number>((get) => {
 })
 
 export const mintValueUSDAtom = atom<number>((get) => {
-  const inputAmount = get(asyncSwapInputAtom)
+  const inputAmount = get(userInputAtom)
   return (Number(inputAmount) || 0) * (1 - ASYNC_SWAP_BUFFER)
 })
 
 export const bufferValueAtom = atom<number>((get) => {
-  const inputAmount = get(asyncSwapInputAtom)
+  const inputAmount = get(userInputAtom)
   return (Number(inputAmount) || 0) * ASYNC_SWAP_BUFFER
 })
 
@@ -90,9 +80,3 @@ export const mintValueWeiAtom = atom<bigint>((get) => {
   const amountOut = get(mintValueAtom)
   return parseEther(amountOut.toString())
 })
-
-export const redeemAssetsAtom = atom<Record<Address, bigint>>({})
-
-export const quotesAtom = atom<Record<Address, QuoteAggregated>>({})
-export const orderIdsAtom = atom<string[]>([])
-export const ordersAtom = atom<Record<string, EnrichedOrder>>({})

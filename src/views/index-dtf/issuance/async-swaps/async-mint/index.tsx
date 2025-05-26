@@ -8,15 +8,10 @@ import { cn } from '@/lib/utils'
 import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { formatCurrency } from '@/utils'
-import { useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { useEffect } from 'react'
+import { useAtom, useAtomValue } from 'jotai'
 import { parseUnits } from 'viem'
 import useLoadingAfterRefetch from '../../../overview/components/hooks/useLoadingAfterRefetch'
 import {
-  asyncSwapFetchingAtom,
-  asyncSwapInputAtom,
-  asyncSwapOngoingTxAtom,
-  asyncSwapRefetchAtom,
   asyncSwapResponseAtom,
   bufferValueAtom,
   collateralAcquiredAtom,
@@ -24,9 +19,9 @@ import {
   mintValueAtom,
   mintValueUSDAtom,
   mintValueWeiAtom,
+  selectedTokenAtom,
   selectedTokenBalanceAtom,
-  selectedTokenOrDefaultAtom,
-  slippageAtom,
+  userInputAtom,
 } from '../atom'
 import CollateralAcquisition from '../collateral-acquisition'
 import { useQuotesForMint } from '../hooks/useQuote'
@@ -35,14 +30,10 @@ import SubmitMint from './submit-mint-orders'
 const AsyncMint = () => {
   const chainId = useAtomValue(chainIdAtom)
   const indexDTF = useAtomValue(indexDTFAtom)
-  const [inputAmount, setInputAmount] = useAtom(asyncSwapInputAtom)
-  const selectedToken = useAtomValue(selectedTokenOrDefaultAtom)
+  const [inputAmount, setInputAmount] = useAtom(userInputAtom)
+  const selectedToken = useAtomValue(selectedTokenAtom)
   const selectedTokenBalance = useAtomValue(selectedTokenBalanceAtom)
   const isMinting = useAtomValue(isMintingAtom)
-  const slippage = useAtomValue(slippageAtom)
-  const [ongoingTx, setOngoingTx] = useAtom(asyncSwapOngoingTxAtom)
-  const setAsyncSwapRefetch = useSetAtom(asyncSwapRefetchAtom)
-  const setAsyncSwapFetching = useSetAtom(asyncSwapFetchingAtom)
   const selectedTokenPrice = useChainlinkPrice(chainId, selectedToken.address)
   const inputPrice = (selectedTokenPrice || 0) * Number(inputAmount)
   const onMax = () => setInputAmount(selectedTokenBalance?.balance || '0')
@@ -58,8 +49,7 @@ const AsyncMint = () => {
     parseUnits(inputAmount, selectedToken.decimals) >
     (selectedTokenBalance?.value || 0n)
 
-  const { data, isLoading, isFetching, refetch, failureReason } =
-    useQuotesForMint()
+  const { data, isLoading, isFetching, failureReason } = useQuotesForMint()
 
   const { loadingAfterRefetch } = useLoadingAfterRefetch(data)
 
@@ -73,19 +63,6 @@ const AsyncMint = () => {
   //     !isLoading
   // )
   const awaitingQuote = isLoading || isFetching
-
-  useEffect(() => {
-    setAsyncSwapRefetch({ fn: refetch })
-  }, [refetch, setAsyncSwapRefetch])
-
-  useEffect(() => {
-    setAsyncSwapFetching(awaitingQuote)
-  }, [awaitingQuote, setAsyncSwapFetching])
-
-  useEffect(() => {
-    setOngoingTx(false)
-    setInputAmount('')
-  }, [])
 
   if (!indexDTF) return null
 

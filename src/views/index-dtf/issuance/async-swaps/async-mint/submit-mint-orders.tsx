@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { useQuoteSignatures } from '../hooks/useQuoteSignatures'
-import { asyncSwapInputAtom } from '../atom'
+import { userInputAtom } from '../atom'
 import { useAtomValue } from 'jotai'
 
 type SubmitMintProps = {
@@ -9,7 +9,7 @@ type SubmitMintProps = {
 }
 
 const SubmitMint = ({ loadingQuote }: SubmitMintProps) => {
-  const inputAmount = useAtomValue(asyncSwapInputAtom)
+  const inputAmount = useAtomValue(userInputAtom)
   const { mutate, isPending } = useQuoteSignatures()
 
   const disabled =

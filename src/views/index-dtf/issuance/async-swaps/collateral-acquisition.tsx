@@ -7,8 +7,8 @@ import { ArrowLeft, ArrowRight, Check, Loader } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
 import {
   asyncSwapResponseAtom,
-  collateralPanelOpenAtom,
-  currentAsyncSwapTabAtom,
+  openCollateralPanelAtom,
+  operationAtom,
   successAtom,
 } from './atom'
 import MintButton from './mint-button'
@@ -16,7 +16,7 @@ import { OrderStatus } from '@cowprotocol/cow-sdk'
 
 const OpenCollateralPanel = () => {
   const basket = useAtomValue(indexDTFBasketAtom)
-  const [open, setOpen] = useAtom(collateralPanelOpenAtom)
+  const [open, setOpen] = useAtom(openCollateralPanelAtom)
 
   return (
     <Button
@@ -38,7 +38,7 @@ const OpenCollateralPanel = () => {
 }
 
 const CollateralAcquisition = () => {
-  const zapDirection = useAtomValue(currentAsyncSwapTabAtom)
+  const operation = useAtomValue(operationAtom)
   const asyncSwapResponse = useAtomValue(asyncSwapResponseAtom)
   const [elapsedTime, setElapsedTime] = useState(0)
   const setSuccess = useSetAtom(successAtom)
@@ -68,12 +68,12 @@ const CollateralAcquisition = () => {
   )
 
   useEffect(() => {
-    if (hasAllCollaterals && zapDirection === 'redeem') {
+    if (hasAllCollaterals && operation === 'redeem') {
       setSuccess(true)
     }
-  }, [hasAllCollaterals, setSuccess, zapDirection])
+  }, [hasAllCollaterals, setSuccess, operation])
 
-  if (hasAllCollaterals && zapDirection === 'mint') {
+  if (hasAllCollaterals && operation === 'mint') {
     return (
       <div>
         <div className="flex gap-2 items-center justify-between p-4 border-t border-border">
@@ -98,7 +98,7 @@ const CollateralAcquisition = () => {
             <Loader size={16} strokeWidth={1.5} className="animate-spin-slow" />
           </div>
           <div className="font-semibold">
-            {zapDirection === 'mint'
+            {operation === 'mint'
               ? 'Acquiring Collateral'
               : 'Selling collateral for USDC'}
           </div>

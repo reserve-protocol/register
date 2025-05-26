@@ -14,18 +14,15 @@ import Updater from '../manual/updater'
 import AsyncMint from './async-mint'
 import AsyncRedeem from './async-redeem'
 import {
-  asyncSwapFetchingAtom,
-  asyncSwapInputAtom,
-  asyncSwapOngoingTxAtom,
-  asyncSwapRefetchAtom,
   asyncSwapResponseAtom,
-  currentAsyncSwapTabAtom,
-  defaultSelectedTokenAtom,
+  fetchingQuotesAtom,
   indexDTFBalanceAtom,
+  operationAtom,
   redeemAssetsAtom,
-  selectedTokenAtom,
-  showAsyncSwapSettingsAtom,
+  refetchQuotesAtom,
+  showSettingsAtom,
   successAtom,
+  userInputAtom,
 } from './atom'
 import Collaterals, { showCollateralsAtom } from './collaterals'
 import GnosisSafeRequired from './gnosis-safe-required'
@@ -33,7 +30,7 @@ import { GlobalProtocolKitProvider } from './providers/GlobalProtocolKitProvider
 import Success from './success'
 
 function Content() {
-  const showSettings = useAtomValue(showAsyncSwapSettingsAtom)
+  const showSettings = useAtomValue(showSettingsAtom)
   const showCollaterals = useAtomValue(showCollateralsAtom)
 
   return (
@@ -65,11 +62,10 @@ function Content() {
 }
 
 const Header = () => {
-  const [showSettings, setShowSettings] = useAtom(showAsyncSwapSettingsAtom)
-  const asyncSwapRefetch = useAtomValue(asyncSwapRefetchAtom)
-  const asyncSwapFetching = useAtomValue(asyncSwapFetchingAtom)
-  const asyncSwapOngoingTx = useAtomValue(asyncSwapOngoingTxAtom)
-  const input = useAtomValue(asyncSwapInputAtom)
+  const [showSettings, setShowSettings] = useAtom(showSettingsAtom)
+  const refetchQuote = useAtomValue(refetchQuotesAtom)
+  const fetchingQuotes = useAtomValue(fetchingQuotesAtom)
+  const input = useAtomValue(userInputAtom)
   const invalidInput = isNaN(Number(input)) || Number(input) === 0
   const asyncSwapResponse = useAtomValue(asyncSwapResponseAtom)
   const redeemAssets = useAtomValue(redeemAssetsAtom)
@@ -117,14 +113,9 @@ const Header = () => {
             </Button>
             <RefreshQuote
               small
-              onClick={asyncSwapRefetch.fn}
-              loading={asyncSwapFetching}
-              disabled={
-                asyncSwapFetching ||
-                asyncSwapOngoingTx ||
-                invalidInput ||
-                disableActions
-              }
+              onClick={refetchQuote.fn}
+              loading={fetchingQuotes}
+              disabled={fetchingQuotes || invalidInput || disableActions}
             />
           </div>
         </>
@@ -136,10 +127,8 @@ const Header = () => {
 const AsyncSwaps = () => {
   useTrackIndexDTFPage('mint-async-swap')
   const isSafeMultisig = useAtomValue(isSafeMultisigAtom)
-  const [currentTab, setCurrentTab] = useAtom(currentAsyncSwapTabAtom)
-  const [showSettings, setShowSettings] = useAtom(showAsyncSwapSettingsAtom)
-  const defaultToken = useAtomValue(defaultSelectedTokenAtom)
-  const setSelectedToken = useSetAtom(selectedTokenAtom)
+  const [currentTab, setCurrentTab] = useAtom(operationAtom)
+  const [showSettings, setShowSettings] = useAtom(showSettingsAtom)
   const indexDTF = useAtomValue(indexDTFAtom)
   const setIndexDTFBalance = useSetAtom(indexDTFBalanceAtom)
   const success = useAtomValue(successAtom)
@@ -152,7 +141,6 @@ const AsyncSwaps = () => {
 
   const reset = () => {
     setShowSettings(false)
-    setSelectedToken(defaultToken)
   }
 
   const changeTab = (tab: string) => {

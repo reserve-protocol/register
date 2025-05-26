@@ -8,7 +8,7 @@ import { useAtomValue } from 'jotai'
 import { ArrowUpRight, Check, Loader } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { formatUnits } from 'viem'
-import { currentAsyncSwapTabAtom } from './atom'
+import { operationAtom } from './atom'
 import { useOrderStatus } from './hooks/useOrderStatus'
 import { Skeleton } from '@/components/ui/skeleton'
 
@@ -61,7 +61,7 @@ const OrderStatus = ({
 
 const CowSwapOrder = ({ orderId }: { orderId: string }) => {
   const { data } = useOrderStatus({ orderId })
-  const zapDirection = useAtomValue(currentAsyncSwapTabAtom)
+  const operation = useAtomValue(operationAtom)
   const indexDTFBasket = useAtomValue(indexDTFBasketAtom)
 
   return (
@@ -81,12 +81,12 @@ const CowSwapOrder = ({ orderId }: { orderId: string }) => {
         <div className="flex flex-col">
           {data?.sellAmount ? (
             <div className="text-sm font-semibold">
-              {zapDirection === 'mint' ? '-' : '+'}{' '}
+              {operation === 'mint' ? '-' : '+'}{' '}
               {formatCurrency(
                 Number(
                   formatUnits(
                     BigInt(
-                      zapDirection === 'mint' ? data.sellAmount : data.buyAmount
+                      operation === 'mint' ? data.sellAmount : data.buyAmount
                     ),
                     6
                   )
@@ -99,19 +99,17 @@ const CowSwapOrder = ({ orderId }: { orderId: string }) => {
           )}
           {data?.buyAmount ? (
             <div className="text-sm text-primary">
-              {zapDirection === 'mint' ? '+' : '-'}{' '}
+              {operation === 'mint' ? '+' : '-'}{' '}
               {formatTokenAmount(
                 Number(
                   formatUnits(
                     BigInt(
-                      zapDirection === 'mint' ? data.buyAmount : data.sellAmount
+                      operation === 'mint' ? data.buyAmount : data.sellAmount
                     ),
                     indexDTFBasket?.find(
                       (token) =>
                         token.address ===
-                        (zapDirection === 'mint'
-                          ? data.buyToken
-                          : data.sellToken)
+                        (operation === 'mint' ? data.buyToken : data.sellToken)
                     )?.decimals || 18
                   )
                 )
@@ -119,7 +117,7 @@ const CowSwapOrder = ({ orderId }: { orderId: string }) => {
               {indexDTFBasket?.find(
                 (token) =>
                   token.address ===
-                  (zapDirection === 'mint' ? data.buyToken : data.sellToken)
+                  (operation === 'mint' ? data.buyToken : data.sellToken)
               )?.symbol || ''}
             </div>
           ) : (
