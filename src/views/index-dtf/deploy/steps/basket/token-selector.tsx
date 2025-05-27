@@ -11,12 +11,15 @@ import {
 import { SearchInput } from '@/components/ui/input'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import useTokenList from '@/hooks/use-token-list'
+import { useAssetPrice } from '@/hooks/useAssetPrices'
+import useTokensInfo from '@/hooks/useTokensInfo'
 import { cn } from '@/lib/utils'
 import { chainIdAtom } from '@/state/atoms'
 import { Token } from '@/types'
 import { isAddress, shortenAddress } from '@/utils'
+import { DISCORD_INVITE, REGISTER_FEEDBACK } from '@/utils/constants'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
-import { useQuery } from '@tanstack/react-query'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
 import {
@@ -35,15 +38,6 @@ import {
   searchTokenAtom,
   selectedTokensAtom,
 } from '../../atoms'
-import { useAssetPrice } from '@/hooks/useAssetPrices'
-import useTokensInfo from '@/hooks/useTokensInfo'
-import {
-  DISCORD_INVITE,
-  REGISTER_FEEDBACK,
-  RESERVE_API,
-} from '@/utils/constants'
-import { ChainId } from '@/utils/chains'
-import { TEMP_TOKENS } from './temp-tokens'
 
 interface TokenButtonProps {
   variant: 'primary' | 'secondary'
@@ -274,36 +268,7 @@ const TokenList = ({ showSelected = false }: TokenListProps) => {
   const search = useAtomValue(searchTokenAtom)
   const extraTokens = useAtomValue(extraTokensAtom)
   const chainId = useAtomValue(chainIdAtom)
-
-  const {
-    data: tokenList = [],
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: ['zapper-tokens', chainId],
-    queryFn: async () => {
-      try {
-        const response = await fetch(
-          `${RESERVE_API}zapper/tokens?chainId=${chainId}`
-        )
-        if (!response.ok) {
-          throw new Error('Failed to fetch token list')
-        }
-        const data: Token[] = await response.json()
-
-        if (chainId === ChainId.Base) {
-          data.push(...TEMP_TOKENS)
-        }
-
-        return data
-      } catch (error) {
-        console.error('Error fetching token list:', error)
-        throw error
-      }
-    },
-    staleTime: 5 * 60 * 1000, // Cache for 5 minutes
-    retry: 2,
-  })
+  const { data: tokenList = [], isLoading, error } = useTokenList(chainId)
 
   const filteredTokens = useMemo(() => {
     const fullTokenList = [...extraTokens, ...tokenList]

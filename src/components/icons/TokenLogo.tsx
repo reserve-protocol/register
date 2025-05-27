@@ -88,6 +88,7 @@ export const SVGS = new Set([
   'wvamm-weth-cbbtc',
   'oeth',
   'woeth',
+  'saethusdt',
 ])
 
 const PNGS = new Set([

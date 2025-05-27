@@ -24,7 +24,11 @@ const IndexDisclousure = () => {
           </a>{' '}
           (the “Website”), you expressly acknowledge that you have read and
           understood the{' '}
-          <a href={ROUTES.TERMS} target="_blank" className="text-primary">
+          <a
+            href="https://reserve.org/terms_and_conditions/"
+            target="_blank"
+            className="text-primary"
+          >
             Terms and Conditions
           </a>{' '}
           and agree to the terms therein. ABC Labs, LLC ("ABC Labs") created the

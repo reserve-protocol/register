@@ -829,5 +829,23 @@
     "decimals":18,
     "underlyingAddress":"0x856c4Efb76C1D1AE02e20CEB03A2A6a08b0b8dC3",
     "underlyingToken":"OETH"
+  },
+  {
+    "address":"0x18A8D9088433aE749cE6c33070b2Fe95e8a263d9",
+    "rewardTokens":[],
+    "protocol":"AAVEv3",
+    "erc20":"0x7133EbCb1a23e3d8Be7Ff09362b02b2A2e4c3dA4",
+    "chainlinkFeed":"0x3E7d1eAB13ad0104d2750B8863b489D65364e32D",
+    "delayUntilDefault":"86400",
+    "maxTradeVolume":"1000000",
+    "oracleTimeout":86400,
+    "targetName":"USD",
+    "version":"4.0.0",
+    "symbol":"saEthUSDT",
+    "decimals":6,
+    "underlyingAddress":"0xdAC17F958D2ee523a2206206994597C13D831ec7",
+    "underlyingToken":"USDT",
+    "collateralAddress":"0x23878914EFE38d27C4D67Ab83ed1b93A74D4086a",
+    "collateralToken":"aEthUSDT"
   }
 ]

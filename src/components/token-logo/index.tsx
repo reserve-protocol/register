@@ -255,6 +255,10 @@ export const SVGS = new Set([
   'wusdm',
   'eth+',
   'wsamm-eusd/usdc',
+  'oeth',
+  'woeth',
+  'susds',
+  'saethusdt',
 ])
 
 export const PNGS = new Set([

@@ -11,13 +11,12 @@ import {
 import { SearchInput } from '@/components/ui/input'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import useTokenList from '@/hooks/use-token-list'
 import { cn } from '@/lib/utils'
 import { chainIdAtom } from '@/state/atoms'
 import { Token } from '@/types'
 import { shortenAddress } from '@/utils'
-import { RESERVE_API } from '@/utils/constants'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
-import { useQuery } from '@tanstack/react-query'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { ArrowUpRightIcon, PlusIcon } from 'lucide-react'
 import { useCallback, useEffect, useMemo } from 'react'
@@ -157,31 +156,7 @@ interface TokenListProps {
 const TokenList = ({ showSelected = false }: TokenListProps) => {
   const search = useAtomValue(searchTokenAtom)
   const chainId = useAtomValue(chainIdAtom)
-  const {
-    data: tokenList = [],
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: ['zapper-tokens', chainId],
-    queryFn: async () => {
-      try {
-        const response = await fetch(
-          RESERVE_API + `zapper/tokens?chainId=${chainId}`
-        )
-        if (!response.ok) {
-          throw new Error('Failed to fetch token list')
-        }
-        const data = await response.json()
-
-        return data as Token[]
-      } catch (error) {
-        console.error('Error fetching token list:', error)
-        throw error
-      }
-    },
-    staleTime: 5 * 60 * 1000, // Cache for 5 minutes
-    retry: 2,
-  })
+  const { data: tokenList = [], isLoading, error } = useTokenList(chainId)
 
   const filteredTokens = useMemo(() => {
     if (!tokenList.length) return []
