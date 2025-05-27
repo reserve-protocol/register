@@ -60,7 +60,7 @@ type FolioFlags = {
   trustedFillerEnabled: boolean
   rebalanceControl: {
     weightControl: boolean
-    priceControl: boolean
+    priceControl: number
   }
 }
 
@@ -153,7 +153,7 @@ const txAtom = atom<
     trustedFillerEnabled: true,
     rebalanceControl: {
       weightControl: false,
-      priceControl: true,
+      priceControl: 1,
     },
   }
 
