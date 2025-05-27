@@ -17,8 +17,6 @@ import {
   tradeRangeOptionAtom,
 } from '../atoms'
 import { isDeferAvailableAtom } from '../legacy-atoms'
-import { indexDTFVersionAtom } from '@/state/dtf/atoms'
-import { checkVersion } from '@/utils'
 
 export enum PermissionOptionId {
   NO_PERMISSIONLESS_LAUNCHING = 0,
@@ -292,7 +290,7 @@ const ProposalRebalanceLaunchSettings = () => {
             </div>
           </div>
         ),
-        disabled: false,
+        disabled: priceRangeOption === 'defer',
       },
     ],
     [isDeferAvailable, priceRangeOption]
