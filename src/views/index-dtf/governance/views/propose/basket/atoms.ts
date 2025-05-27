@@ -264,7 +264,7 @@ export const basketProposalCalldatasAtom = atom<Hex[] | undefined>((get) => {
   })
 })
 
-const VOLATILITY_VALUES = [0.1, 0.2, 0.5]
+const VOLATILITY_VALUES = [0.15, 0.4, 0.8]
 
 // TODO: This re-run when volatility changes which is not optimal
 // TODO: Decouple into an external function so its called only when needed!
@@ -320,7 +320,11 @@ function getProposedTrades(get: Getter, deferred = false) {
     prices.push(priceMap[asset] ?? 0)
 
     // TODO: assume trades always have the same order...
-    error.push(deferred ? 1 : VOLATILITY_VALUES[volatility[index] || 0] || 0.1)
+    error.push(
+      deferred
+        ? VOLATILITY_VALUES[2]
+        : VOLATILITY_VALUES[volatility[index] || 1] || 0.15
+    )
 
     index++
   }
@@ -333,7 +337,9 @@ function getProposedTrades(get: Getter, deferred = false) {
     targetBasket,
     prices,
     error,
-    dtfPrice
+    dtfPrice,
+    3n * 10n ** 14n,
+    deferred
   )
 }
 
