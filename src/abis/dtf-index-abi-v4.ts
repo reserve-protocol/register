@@ -1,2472 +1,1404 @@
 export default [
+  { inputs: [], stateMutability: 'nonpayable', type: 'constructor' },
+  { inputs: [], name: 'AccessControlBadConfirmation', type: 'error' },
   {
-    type: 'constructor',
+    inputs: [
+      { internalType: 'address', name: 'account', type: 'address' },
+      { internalType: 'bytes32', name: 'neededRole', type: 'bytes32' },
+    ],
+    name: 'AccessControlUnauthorizedAccount',
+    type: 'error',
+  },
+  {
+    inputs: [
+      { internalType: 'address', name: 'spender', type: 'address' },
+      { internalType: 'uint256', name: 'allowance', type: 'uint256' },
+      { internalType: 'uint256', name: 'needed', type: 'uint256' },
+    ],
+    name: 'ERC20InsufficientAllowance',
+    type: 'error',
+  },
+  {
+    inputs: [
+      { internalType: 'address', name: 'sender', type: 'address' },
+      { internalType: 'uint256', name: 'balance', type: 'uint256' },
+      { internalType: 'uint256', name: 'needed', type: 'uint256' },
+    ],
+    name: 'ERC20InsufficientBalance',
+    type: 'error',
+  },
+  {
+    inputs: [{ internalType: 'address', name: 'approver', type: 'address' }],
+    name: 'ERC20InvalidApprover',
+    type: 'error',
+  },
+  {
+    inputs: [{ internalType: 'address', name: 'receiver', type: 'address' }],
+    name: 'ERC20InvalidReceiver',
+    type: 'error',
+  },
+  {
+    inputs: [{ internalType: 'address', name: 'sender', type: 'address' }],
+    name: 'ERC20InvalidSender',
+    type: 'error',
+  },
+  {
+    inputs: [{ internalType: 'address', name: 'spender', type: 'address' }],
+    name: 'ERC20InvalidSpender',
+    type: 'error',
+  },
+  {
     inputs: [],
-    stateMutability: 'nonpayable',
+    name: 'Folio__AuctionCannotBeOpenedWithoutRestriction',
+    type: 'error',
+  },
+  { inputs: [], name: 'Folio__AuctionNotOngoing', type: 'error' },
+  { inputs: [], name: 'Folio__BadFeeTotal', type: 'error' },
+  { inputs: [], name: 'Folio__BalanceNotRemovable', type: 'error' },
+  { inputs: [], name: 'Folio__BasketModificationFailed', type: 'error' },
+  { inputs: [], name: 'Folio__DuplicateAsset', type: 'error' },
+  { inputs: [], name: 'Folio__EmptyAssets', type: 'error' },
+  { inputs: [], name: 'Folio__EmptyAuction', type: 'error' },
+  { inputs: [], name: 'Folio__FeeRecipientInvalidAddress', type: 'error' },
+  { inputs: [], name: 'Folio__FeeRecipientInvalidFeeShare', type: 'error' },
+  { inputs: [], name: 'Folio__FolioDeprecated', type: 'error' },
+  { inputs: [], name: 'Folio__InsufficientBid', type: 'error' },
+  { inputs: [], name: 'Folio__InsufficientBuyAvailable', type: 'error' },
+  { inputs: [], name: 'Folio__InsufficientSellAvailable', type: 'error' },
+  { inputs: [], name: 'Folio__InsufficientSharesOut', type: 'error' },
+  { inputs: [], name: 'Folio__InvalidArrayLengths', type: 'error' },
+  { inputs: [], name: 'Folio__InvalidAsset', type: 'error' },
+  {
+    inputs: [{ internalType: 'address', name: 'asset', type: 'address' }],
+    name: 'Folio__InvalidAssetAmount',
+    type: 'error',
+  },
+  { inputs: [], name: 'Folio__InvalidAuctionLength', type: 'error' },
+  { inputs: [], name: 'Folio__InvalidLimits', type: 'error' },
+  { inputs: [], name: 'Folio__InvalidPrices', type: 'error' },
+  { inputs: [], name: 'Folio__InvalidRegistry', type: 'error' },
+  { inputs: [], name: 'Folio__InvalidTTL', type: 'error' },
+  { inputs: [], name: 'Folio__InvalidTransferToSelf', type: 'error' },
+  { inputs: [], name: 'Folio__InvalidWeights', type: 'error' },
+  { inputs: [], name: 'Folio__MintFeeTooHigh', type: 'error' },
+  { inputs: [], name: 'Folio__MixedAtomicSwaps', type: 'error' },
+  { inputs: [], name: 'Folio__NotRebalancing', type: 'error' },
+  { inputs: [], name: 'Folio__SlippageExceeded', type: 'error' },
+  { inputs: [], name: 'Folio__TVLFeeTooHigh', type: 'error' },
+  { inputs: [], name: 'Folio__TVLFeeTooLow', type: 'error' },
+  { inputs: [], name: 'Folio__TooManyFeeRecipients', type: 'error' },
+  { inputs: [], name: 'Folio__TrustedFillerRegistryAlreadySet', type: 'error' },
+  { inputs: [], name: 'Folio__TrustedFillerRegistryNotEnabled', type: 'error' },
+  { inputs: [], name: 'Folio__Unauthorized', type: 'error' },
+  { inputs: [], name: 'Folio__ZeroInitialShares', type: 'error' },
+  { inputs: [], name: 'InvalidInitialization', type: 'error' },
+  { inputs: [], name: 'NotInitializing', type: 'error' },
+  { inputs: [], name: 'ReentrancyGuardReentrantCall', type: 'error' },
+  {
+    inputs: [{ internalType: 'address', name: 'token', type: 'address' }],
+    name: 'SafeERC20FailedOperation',
+    type: 'error',
   },
   {
-    type: 'function',
-    name: 'DEFAULT_ADMIN_ROLE',
-    inputs: [],
-    outputs: [
-      {
-        name: '',
-        type: 'bytes32',
-        internalType: 'bytes32',
-      },
-    ],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    name: 'addToBasket',
-    inputs: [
-      {
-        name: 'token',
-        type: 'address',
-        internalType: 'contract IERC20',
-      },
-    ],
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    name: 'allowance',
-    inputs: [
-      {
-        name: 'owner',
-        type: 'address',
-        internalType: 'address',
-      },
-      {
-        name: 'spender',
-        type: 'address',
-        internalType: 'address',
-      },
-    ],
-    outputs: [
-      {
-        name: '',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-    ],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    name: 'approve',
-    inputs: [
-      {
-        name: 'spender',
-        type: 'address',
-        internalType: 'address',
-      },
-      {
-        name: 'value',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-    ],
-    outputs: [
-      {
-        name: '',
-        type: 'bool',
-        internalType: 'bool',
-      },
-    ],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    name: 'auctionLength',
-    inputs: [],
-    outputs: [
-      {
-        name: '',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-    ],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    name: 'auctions',
-    inputs: [
-      {
-        name: 'id',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-    ],
-    outputs: [
-      {
-        name: 'rebalanceNonce',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-      {
-        name: 'startTime',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-      {
-        name: 'endTime',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-    ],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    name: 'balanceOf',
-    inputs: [
-      {
-        name: 'account',
-        type: 'address',
-        internalType: 'address',
-      },
-    ],
-    outputs: [
-      {
-        name: '',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-    ],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    name: 'bid',
-    inputs: [
-      {
-        name: 'auctionId',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-      {
-        name: 'sellToken',
-        type: 'address',
-        internalType: 'contract IERC20',
-      },
-      {
-        name: 'buyToken',
-        type: 'address',
-        internalType: 'contract IERC20',
-      },
-      {
-        name: 'sellAmount',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-      {
-        name: 'maxBuyAmount',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-      {
-        name: 'withCallback',
-        type: 'bool',
-        internalType: 'bool',
-      },
-      {
-        name: 'data',
-        type: 'bytes',
-        internalType: 'bytes',
-      },
-    ],
-    outputs: [
-      {
-        name: 'boughtAmt',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-    ],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    name: 'closeAuction',
-    inputs: [
-      {
-        name: 'auctionId',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-    ],
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    name: 'createTrustedFill',
-    inputs: [
-      {
-        name: 'auctionId',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-      {
-        name: 'sellToken',
-        type: 'address',
-        internalType: 'contract IERC20',
-      },
-      {
-        name: 'buyToken',
-        type: 'address',
-        internalType: 'contract IERC20',
-      },
-      {
-        name: 'targetFiller',
-        type: 'address',
-        internalType: 'address',
-      },
-      {
-        name: 'deploymentSalt',
-        type: 'bytes32',
-        internalType: 'bytes32',
-      },
-    ],
-    outputs: [
-      {
-        name: 'filler',
-        type: 'address',
-        internalType: 'contract IBaseTrustedFiller',
-      },
-    ],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    name: 'daoFeeRegistry',
-    inputs: [],
-    outputs: [
-      {
-        name: '',
-        type: 'address',
-        internalType: 'contract IFolioDAOFeeRegistry',
-      },
-    ],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    name: 'daoPendingFeeShares',
-    inputs: [],
-    outputs: [
-      {
-        name: '',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-    ],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    name: 'decimals',
-    inputs: [],
-    outputs: [
-      {
-        name: '',
-        type: 'uint8',
-        internalType: 'uint8',
-      },
-    ],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    name: 'deprecateFolio',
-    inputs: [],
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    name: 'distributeFees',
-    inputs: [],
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    name: 'endRebalance',
-    inputs: [],
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    name: 'feeRecipients',
-    inputs: [
-      {
-        name: '',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-    ],
-    outputs: [
-      {
-        name: 'recipient',
-        type: 'address',
-        internalType: 'address',
-      },
-      {
-        name: 'portion',
-        type: 'uint96',
-        internalType: 'uint96',
-      },
-    ],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    name: 'feeRecipientsPendingFeeShares',
-    inputs: [],
-    outputs: [
-      {
-        name: '',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-    ],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    name: 'getBid',
-    inputs: [
-      {
-        name: 'auctionId',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-      {
-        name: 'sellToken',
-        type: 'address',
-        internalType: 'contract IERC20',
-      },
-      {
-        name: 'buyToken',
-        type: 'address',
-        internalType: 'contract IERC20',
-      },
-      {
-        name: 'timestamp',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-      {
-        name: 'maxSellAmount',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-    ],
-    outputs: [
-      {
-        name: 'sellAmount',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-      {
-        name: 'bidAmount',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-      {
-        name: 'price',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-    ],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    name: 'getPendingFeeShares',
-    inputs: [],
-    outputs: [
-      {
-        name: '',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-    ],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    name: 'getRebalance',
-    inputs: [],
-    outputs: [
-      {
-        name: 'nonce',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-      {
-        name: 'tokens',
-        type: 'address[]',
-        internalType: 'address[]',
-      },
-      {
-        name: 'weights',
-        type: 'tuple[]',
-        internalType: 'struct IFolio.WeightRange[]',
-        components: [
-          {
-            name: 'low',
-            type: 'uint256',
-            internalType: 'uint256',
-          },
-          {
-            name: 'spot',
-            type: 'uint256',
-            internalType: 'uint256',
-          },
-          {
-            name: 'high',
-            type: 'uint256',
-            internalType: 'uint256',
-          },
-        ],
-      },
-      {
-        name: 'initialPrices',
-        type: 'tuple[]',
-        internalType: 'struct IFolio.PriceRange[]',
-        components: [
-          {
-            name: 'low',
-            type: 'uint256',
-            internalType: 'uint256',
-          },
-          {
-            name: 'high',
-            type: 'uint256',
-            internalType: 'uint256',
-          },
-        ],
-      },
-      {
-        name: 'inRebalance',
-        type: 'bool[]',
-        internalType: 'bool[]',
-      },
-      {
-        name: 'limits',
-        type: 'tuple',
-        internalType: 'struct IFolio.RebalanceLimits',
-        components: [
-          {
-            name: 'low',
-            type: 'uint256',
-            internalType: 'uint256',
-          },
-          {
-            name: 'spot',
-            type: 'uint256',
-            internalType: 'uint256',
-          },
-          {
-            name: 'high',
-            type: 'uint256',
-            internalType: 'uint256',
-          },
-        ],
-      },
-      {
-        name: 'startedAt',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-      {
-        name: 'restrictedUntil',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-      {
-        name: 'availableUntil',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-      {
-        name: 'priceControl',
-        type: 'bool',
-        internalType: 'bool',
-      },
-    ],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    name: 'getRoleAdmin',
-    inputs: [
-      {
-        name: 'role',
-        type: 'bytes32',
-        internalType: 'bytes32',
-      },
-    ],
-    outputs: [
-      {
-        name: '',
-        type: 'bytes32',
-        internalType: 'bytes32',
-      },
-    ],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    name: 'getRoleMember',
-    inputs: [
-      {
-        name: 'role',
-        type: 'bytes32',
-        internalType: 'bytes32',
-      },
-      {
-        name: 'index',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-    ],
-    outputs: [
-      {
-        name: '',
-        type: 'address',
-        internalType: 'address',
-      },
-    ],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    name: 'getRoleMemberCount',
-    inputs: [
-      {
-        name: 'role',
-        type: 'bytes32',
-        internalType: 'bytes32',
-      },
-    ],
-    outputs: [
-      {
-        name: '',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-    ],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    name: 'getRoleMembers',
-    inputs: [
-      {
-        name: 'role',
-        type: 'bytes32',
-        internalType: 'bytes32',
-      },
-    ],
-    outputs: [
-      {
-        name: '',
-        type: 'address[]',
-        internalType: 'address[]',
-      },
-    ],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    name: 'grantRole',
-    inputs: [
-      {
-        name: 'role',
-        type: 'bytes32',
-        internalType: 'bytes32',
-      },
-      {
-        name: 'account',
-        type: 'address',
-        internalType: 'address',
-      },
-    ],
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    name: 'hasRole',
-    inputs: [
-      {
-        name: 'role',
-        type: 'bytes32',
-        internalType: 'bytes32',
-      },
-      {
-        name: 'account',
-        type: 'address',
-        internalType: 'address',
-      },
-    ],
-    outputs: [
-      {
-        name: '',
-        type: 'bool',
-        internalType: 'bool',
-      },
-    ],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    name: 'initialize',
-    inputs: [
-      {
-        name: '_basicDetails',
-        type: 'tuple',
-        internalType: 'struct IFolio.FolioBasicDetails',
-        components: [
-          {
-            name: 'name',
-            type: 'string',
-            internalType: 'string',
-          },
-          {
-            name: 'symbol',
-            type: 'string',
-            internalType: 'string',
-          },
-          {
-            name: 'assets',
-            type: 'address[]',
-            internalType: 'address[]',
-          },
-          {
-            name: 'amounts',
-            type: 'uint256[]',
-            internalType: 'uint256[]',
-          },
-          {
-            name: 'initialShares',
-            type: 'uint256',
-            internalType: 'uint256',
-          },
-        ],
-      },
-      {
-        name: '_additionalDetails',
-        type: 'tuple',
-        internalType: 'struct IFolio.FolioAdditionalDetails',
-        components: [
-          {
-            name: 'auctionLength',
-            type: 'uint256',
-            internalType: 'uint256',
-          },
-          {
-            name: 'feeRecipients',
-            type: 'tuple[]',
-            internalType: 'struct IFolio.FeeRecipient[]',
-            components: [
-              {
-                name: 'recipient',
-                type: 'address',
-                internalType: 'address',
-              },
-              {
-                name: 'portion',
-                type: 'uint96',
-                internalType: 'uint96',
-              },
-            ],
-          },
-          {
-            name: 'tvlFee',
-            type: 'uint256',
-            internalType: 'uint256',
-          },
-          {
-            name: 'mintFee',
-            type: 'uint256',
-            internalType: 'uint256',
-          },
-          {
-            name: 'mandate',
-            type: 'string',
-            internalType: 'string',
-          },
-        ],
-      },
-      {
-        name: '_folioRegistries',
-        type: 'tuple',
-        internalType: 'struct IFolio.FolioRegistryIndex',
-        components: [
-          {
-            name: 'daoFeeRegistry',
-            type: 'address',
-            internalType: 'address',
-          },
-          {
-            name: 'trustedFillerRegistry',
-            type: 'address',
-            internalType: 'address',
-          },
-        ],
-      },
-      {
-        name: '_folioFlags',
-        type: 'tuple',
-        internalType: 'struct IFolio.FolioFlags',
-        components: [
-          {
-            name: 'trustedFillerEnabled',
-            type: 'bool',
-            internalType: 'bool',
-          },
-          {
-            name: 'rebalanceControl',
-            type: 'tuple',
-            internalType: 'struct IFolio.RebalanceControl',
-            components: [
-              {
-                name: 'weightControl',
-                type: 'bool',
-                internalType: 'bool',
-              },
-              {
-                name: 'priceControl',
-                type: 'bool',
-                internalType: 'bool',
-              },
-            ],
-          },
-        ],
-      },
-      {
-        name: '_creator',
-        type: 'address',
-        internalType: 'address',
-      },
-    ],
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    name: 'isDeprecated',
-    inputs: [],
-    outputs: [
-      {
-        name: '',
-        type: 'bool',
-        internalType: 'bool',
-      },
-    ],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    name: 'lastPoke',
-    inputs: [],
-    outputs: [
-      {
-        name: '',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-    ],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    name: 'mandate',
-    inputs: [],
-    outputs: [
-      {
-        name: '',
-        type: 'string',
-        internalType: 'string',
-      },
-    ],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    name: 'mint',
-    inputs: [
-      {
-        name: 'shares',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-      {
-        name: 'receiver',
-        type: 'address',
-        internalType: 'address',
-      },
-      {
-        name: 'minSharesOut',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-    ],
-    outputs: [
-      {
-        name: '_assets',
-        type: 'address[]',
-        internalType: 'address[]',
-      },
-      {
-        name: '_amounts',
-        type: 'uint256[]',
-        internalType: 'uint256[]',
-      },
-    ],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    name: 'mintFee',
-    inputs: [],
-    outputs: [
-      {
-        name: '',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-    ],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    name: 'name',
-    inputs: [],
-    outputs: [
-      {
-        name: '',
-        type: 'string',
-        internalType: 'string',
-      },
-    ],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    name: 'nextAuctionId',
-    inputs: [],
-    outputs: [
-      {
-        name: '',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-    ],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    name: 'openAuction',
-    inputs: [
-      {
-        name: 'rebalanceNonce',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-      {
-        name: 'tokens',
-        type: 'address[]',
-        internalType: 'address[]',
-      },
-      {
-        name: 'newWeights',
-        type: 'tuple[]',
-        internalType: 'struct IFolio.WeightRange[]',
-        components: [
-          {
-            name: 'low',
-            type: 'uint256',
-            internalType: 'uint256',
-          },
-          {
-            name: 'spot',
-            type: 'uint256',
-            internalType: 'uint256',
-          },
-          {
-            name: 'high',
-            type: 'uint256',
-            internalType: 'uint256',
-          },
-        ],
-      },
-      {
-        name: 'newPrices',
-        type: 'tuple[]',
-        internalType: 'struct IFolio.PriceRange[]',
-        components: [
-          {
-            name: 'low',
-            type: 'uint256',
-            internalType: 'uint256',
-          },
-          {
-            name: 'high',
-            type: 'uint256',
-            internalType: 'uint256',
-          },
-        ],
-      },
-      {
-        name: 'newLimits',
-        type: 'tuple',
-        internalType: 'struct IFolio.RebalanceLimits',
-        components: [
-          {
-            name: 'low',
-            type: 'uint256',
-            internalType: 'uint256',
-          },
-          {
-            name: 'spot',
-            type: 'uint256',
-            internalType: 'uint256',
-          },
-          {
-            name: 'high',
-            type: 'uint256',
-            internalType: 'uint256',
-          },
-        ],
-      },
-    ],
-    outputs: [
-      {
-        name: 'auctionId',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-    ],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    name: 'openAuctionUnrestricted',
-    inputs: [
-      {
-        name: 'rebalanceNonce',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-    ],
-    outputs: [
-      {
-        name: 'auctionId',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-    ],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    name: 'poke',
-    inputs: [],
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    name: 'rebalanceControl',
-    inputs: [],
-    outputs: [
-      {
-        name: 'weightControl',
-        type: 'bool',
-        internalType: 'bool',
-      },
-      {
-        name: 'priceControl',
-        type: 'bool',
-        internalType: 'bool',
-      },
-    ],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    name: 'redeem',
-    inputs: [
-      {
-        name: 'shares',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-      {
-        name: 'receiver',
-        type: 'address',
-        internalType: 'address',
-      },
-      {
-        name: 'assets',
-        type: 'address[]',
-        internalType: 'address[]',
-      },
-      {
-        name: 'minAmountsOut',
-        type: 'uint256[]',
-        internalType: 'uint256[]',
-      },
-    ],
-    outputs: [
-      {
-        name: '_amounts',
-        type: 'uint256[]',
-        internalType: 'uint256[]',
-      },
-    ],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    name: 'removeFromBasket',
-    inputs: [
-      {
-        name: 'token',
-        type: 'address',
-        internalType: 'contract IERC20',
-      },
-    ],
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    name: 'renounceRole',
-    inputs: [
-      {
-        name: 'role',
-        type: 'bytes32',
-        internalType: 'bytes32',
-      },
-      {
-        name: 'callerConfirmation',
-        type: 'address',
-        internalType: 'address',
-      },
-    ],
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    name: 'revokeRole',
-    inputs: [
-      {
-        name: 'role',
-        type: 'bytes32',
-        internalType: 'bytes32',
-      },
-      {
-        name: 'account',
-        type: 'address',
-        internalType: 'address',
-      },
-    ],
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    name: 'setAuctionLength',
-    inputs: [
-      {
-        name: '_newLength',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-    ],
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    name: 'setFeeRecipients',
-    inputs: [
-      {
-        name: '_newRecipients',
-        type: 'tuple[]',
-        internalType: 'struct IFolio.FeeRecipient[]',
-        components: [
-          {
-            name: 'recipient',
-            type: 'address',
-            internalType: 'address',
-          },
-          {
-            name: 'portion',
-            type: 'uint96',
-            internalType: 'uint96',
-          },
-        ],
-      },
-    ],
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    name: 'setMandate',
-    inputs: [
-      {
-        name: '_newMandate',
-        type: 'string',
-        internalType: 'string',
-      },
-    ],
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    name: 'setMintFee',
-    inputs: [
-      {
-        name: '_newFee',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-    ],
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    name: 'setRebalanceControl',
-    inputs: [
-      {
-        name: '_rebalanceControl',
-        type: 'tuple',
-        internalType: 'struct IFolio.RebalanceControl',
-        components: [
-          {
-            name: 'weightControl',
-            type: 'bool',
-            internalType: 'bool',
-          },
-          {
-            name: 'priceControl',
-            type: 'bool',
-            internalType: 'bool',
-          },
-        ],
-      },
-    ],
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    name: 'setTVLFee',
-    inputs: [
-      {
-        name: '_newFee',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-    ],
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    name: 'setTrustedFillerRegistry',
-    inputs: [
-      {
-        name: '_newFillerRegistry',
-        type: 'address',
-        internalType: 'address',
-      },
-      {
-        name: '_enabled',
-        type: 'bool',
-        internalType: 'bool',
-      },
-    ],
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    name: 'startRebalance',
-    inputs: [
-      {
-        name: 'tokens',
-        type: 'address[]',
-        internalType: 'address[]',
-      },
-      {
-        name: 'weights',
-        type: 'tuple[]',
-        internalType: 'struct IFolio.WeightRange[]',
-        components: [
-          {
-            name: 'low',
-            type: 'uint256',
-            internalType: 'uint256',
-          },
-          {
-            name: 'spot',
-            type: 'uint256',
-            internalType: 'uint256',
-          },
-          {
-            name: 'high',
-            type: 'uint256',
-            internalType: 'uint256',
-          },
-        ],
-      },
-      {
-        name: 'prices',
-        type: 'tuple[]',
-        internalType: 'struct IFolio.PriceRange[]',
-        components: [
-          {
-            name: 'low',
-            type: 'uint256',
-            internalType: 'uint256',
-          },
-          {
-            name: 'high',
-            type: 'uint256',
-            internalType: 'uint256',
-          },
-        ],
-      },
-      {
-        name: 'limits',
-        type: 'tuple',
-        internalType: 'struct IFolio.RebalanceLimits',
-        components: [
-          {
-            name: 'low',
-            type: 'uint256',
-            internalType: 'uint256',
-          },
-          {
-            name: 'spot',
-            type: 'uint256',
-            internalType: 'uint256',
-          },
-          {
-            name: 'high',
-            type: 'uint256',
-            internalType: 'uint256',
-          },
-        ],
-      },
-      {
-        name: 'auctionLauncherWindow',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-      {
-        name: 'ttl',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-    ],
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    name: 'stateChangeActive',
-    inputs: [],
-    outputs: [
-      {
-        name: 'syncStateChangeActive',
-        type: 'bool',
-        internalType: 'bool',
-      },
-      {
-        name: 'asyncStateChangeActive',
-        type: 'bool',
-        internalType: 'bool',
-      },
-    ],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    name: 'supportsInterface',
-    inputs: [
-      {
-        name: 'interfaceId',
-        type: 'bytes4',
-        internalType: 'bytes4',
-      },
-    ],
-    outputs: [
-      {
-        name: '',
-        type: 'bool',
-        internalType: 'bool',
-      },
-    ],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    name: 'symbol',
-    inputs: [],
-    outputs: [
-      {
-        name: '',
-        type: 'string',
-        internalType: 'string',
-      },
-    ],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    name: 'toAssets',
-    inputs: [
-      {
-        name: 'shares',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-      {
-        name: 'rounding',
-        type: 'uint8',
-        internalType: 'enum Math.Rounding',
-      },
-    ],
-    outputs: [
-      {
-        name: '_assets',
-        type: 'address[]',
-        internalType: 'address[]',
-      },
-      {
-        name: '_amounts',
-        type: 'uint256[]',
-        internalType: 'uint256[]',
-      },
-    ],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    name: 'totalAssets',
-    inputs: [],
-    outputs: [
-      {
-        name: '_assets',
-        type: 'address[]',
-        internalType: 'address[]',
-      },
-      {
-        name: '_amounts',
-        type: 'uint256[]',
-        internalType: 'uint256[]',
-      },
-    ],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    name: 'totalSupply',
-    inputs: [],
-    outputs: [
-      {
-        name: '',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-    ],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    name: 'transfer',
-    inputs: [
-      {
-        name: 'to',
-        type: 'address',
-        internalType: 'address',
-      },
-      {
-        name: 'value',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-    ],
-    outputs: [
-      {
-        name: '',
-        type: 'bool',
-        internalType: 'bool',
-      },
-    ],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    name: 'transferFrom',
-    inputs: [
-      {
-        name: 'from',
-        type: 'address',
-        internalType: 'address',
-      },
-      {
-        name: 'to',
-        type: 'address',
-        internalType: 'address',
-      },
-      {
-        name: 'value',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-    ],
-    outputs: [
-      {
-        name: '',
-        type: 'bool',
-        internalType: 'bool',
-      },
-    ],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    name: 'trustedFillerEnabled',
-    inputs: [],
-    outputs: [
-      {
-        name: '',
-        type: 'bool',
-        internalType: 'bool',
-      },
-    ],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    name: 'trustedFillerRegistry',
-    inputs: [],
-    outputs: [
-      {
-        name: '',
-        type: 'address',
-        internalType: 'contract ITrustedFillerRegistry',
-      },
-    ],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    name: 'tvlFee',
-    inputs: [],
-    outputs: [
-      {
-        name: '',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-    ],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    name: 'version',
-    inputs: [],
-    outputs: [
-      {
-        name: '',
-        type: 'string',
-        internalType: 'string',
-      },
-    ],
-    stateMutability: 'pure',
-  },
-  {
-    type: 'event',
-    name: 'Approval',
-    inputs: [
-      {
-        name: 'owner',
-        type: 'address',
-        indexed: true,
-        internalType: 'address',
-      },
-      {
-        name: 'spender',
-        type: 'address',
-        indexed: true,
-        internalType: 'address',
-      },
-      {
-        name: 'value',
-        type: 'uint256',
-        indexed: false,
-        internalType: 'uint256',
-      },
-    ],
     anonymous: false,
-  },
-  {
-    type: 'event',
-    name: 'AuctionBid',
     inputs: [
       {
-        name: 'auctionId',
-        type: 'uint256',
-        indexed: true,
-        internalType: 'uint256',
-      },
-      {
-        name: 'sellToken',
-        type: 'address',
         indexed: true,
         internalType: 'address',
+        name: 'owner',
+        type: 'address',
       },
       {
-        name: 'buyToken',
-        type: 'address',
         indexed: true,
         internalType: 'address',
+        name: 'spender',
+        type: 'address',
       },
       {
-        name: 'sellAmount',
-        type: 'uint256',
         indexed: false,
         internalType: 'uint256',
+        name: 'value',
+        type: 'uint256',
+      },
+    ],
+    name: 'Approval',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'uint256',
+        name: 'auctionId',
+        type: 'uint256',
       },
       {
+        indexed: true,
+        internalType: 'address',
+        name: 'sellToken',
+        type: 'address',
+      },
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'buyToken',
+        type: 'address',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'sellAmount',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
         name: 'buyAmount',
         type: 'uint256',
-        indexed: false,
-        internalType: 'uint256',
       },
     ],
-    anonymous: false,
+    name: 'AuctionBid',
+    type: 'event',
   },
   {
-    type: 'event',
-    name: 'AuctionClosed',
+    anonymous: false,
     inputs: [
       {
-        name: 'auctionId',
-        type: 'uint256',
         indexed: true,
         internalType: 'uint256',
+        name: 'auctionId',
+        type: 'uint256',
       },
     ],
-    anonymous: false,
+    name: 'AuctionClosed',
+    type: 'event',
   },
   {
-    type: 'event',
-    name: 'AuctionDelaySet',
+    anonymous: false,
     inputs: [
       {
+        indexed: false,
+        internalType: 'uint256',
         name: 'newAuctionDelay',
         type: 'uint256',
-        indexed: false,
-        internalType: 'uint256',
       },
     ],
-    anonymous: false,
+    name: 'AuctionDelaySet',
+    type: 'event',
   },
   {
-    type: 'event',
-    name: 'AuctionLengthSet',
+    anonymous: false,
     inputs: [
       {
+        indexed: false,
+        internalType: 'uint256',
         name: 'newAuctionLength',
         type: 'uint256',
-        indexed: false,
-        internalType: 'uint256',
       },
     ],
-    anonymous: false,
+    name: 'AuctionLengthSet',
+    type: 'event',
   },
   {
-    type: 'event',
-    name: 'AuctionOpened',
+    anonymous: false,
     inputs: [
       {
+        indexed: true,
+        internalType: 'uint256',
         name: 'rebalanceNonce',
         type: 'uint256',
-        indexed: true,
-        internalType: 'uint256',
       },
       {
+        indexed: true,
+        internalType: 'uint256',
         name: 'auctionId',
         type: 'uint256',
-        indexed: true,
-        internalType: 'uint256',
       },
       {
-        name: 'tokens',
-        type: 'address[]',
         indexed: false,
         internalType: 'address[]',
+        name: 'tokens',
+        type: 'address[]',
       },
       {
-        name: 'weights',
-        type: 'tuple[]',
+        components: [
+          { internalType: 'uint256', name: 'low', type: 'uint256' },
+          { internalType: 'uint256', name: 'spot', type: 'uint256' },
+          { internalType: 'uint256', name: 'high', type: 'uint256' },
+        ],
         indexed: false,
         internalType: 'struct IFolio.WeightRange[]',
-        components: [
-          {
-            name: 'low',
-            type: 'uint256',
-            internalType: 'uint256',
-          },
-          {
-            name: 'spot',
-            type: 'uint256',
-            internalType: 'uint256',
-          },
-          {
-            name: 'high',
-            type: 'uint256',
-            internalType: 'uint256',
-          },
-        ],
+        name: 'weights',
+        type: 'tuple[]',
       },
       {
-        name: 'prices',
-        type: 'tuple[]',
+        components: [
+          { internalType: 'uint256', name: 'low', type: 'uint256' },
+          { internalType: 'uint256', name: 'high', type: 'uint256' },
+        ],
         indexed: false,
         internalType: 'struct IFolio.PriceRange[]',
-        components: [
-          {
-            name: 'low',
-            type: 'uint256',
-            internalType: 'uint256',
-          },
-          {
-            name: 'high',
-            type: 'uint256',
-            internalType: 'uint256',
-          },
-        ],
+        name: 'prices',
+        type: 'tuple[]',
       },
       {
-        name: 'limits',
-        type: 'tuple',
+        components: [
+          { internalType: 'uint256', name: 'low', type: 'uint256' },
+          { internalType: 'uint256', name: 'spot', type: 'uint256' },
+          { internalType: 'uint256', name: 'high', type: 'uint256' },
+        ],
         indexed: false,
         internalType: 'struct IFolio.RebalanceLimits',
-        components: [
-          {
-            name: 'low',
-            type: 'uint256',
-            internalType: 'uint256',
-          },
-          {
-            name: 'spot',
-            type: 'uint256',
-            internalType: 'uint256',
-          },
-          {
-            name: 'high',
-            type: 'uint256',
-            internalType: 'uint256',
-          },
-        ],
+        name: 'limits',
+        type: 'tuple',
       },
       {
+        indexed: false,
+        internalType: 'uint256',
         name: 'startTime',
         type: 'uint256',
-        indexed: false,
-        internalType: 'uint256',
       },
       {
+        indexed: false,
+        internalType: 'uint256',
         name: 'endTime',
         type: 'uint256',
-        indexed: false,
-        internalType: 'uint256',
       },
     ],
-    anonymous: false,
+    name: 'AuctionOpened',
+    type: 'event',
   },
   {
-    type: 'event',
-    name: 'AuctionTrustedFillCreated',
+    anonymous: false,
     inputs: [
       {
+        indexed: true,
+        internalType: 'uint256',
         name: 'auctionId',
         type: 'uint256',
-        indexed: true,
-        internalType: 'uint256',
       },
       {
+        indexed: false,
+        internalType: 'address',
         name: 'filler',
         type: 'address',
-        indexed: false,
-        internalType: 'address',
       },
     ],
-    anonymous: false,
+    name: 'AuctionTrustedFillCreated',
+    type: 'event',
   },
   {
-    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'token',
+        type: 'address',
+      },
+    ],
     name: 'BasketTokenAdded',
-    inputs: [
-      {
-        name: 'token',
-        type: 'address',
-        indexed: true,
-        internalType: 'address',
-      },
-    ],
-    anonymous: false,
+    type: 'event',
   },
   {
-    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'token',
+        type: 'address',
+      },
+    ],
     name: 'BasketTokenRemoved',
-    inputs: [
-      {
-        name: 'token',
-        type: 'address',
-        indexed: true,
-        internalType: 'address',
-      },
-    ],
-    anonymous: false,
+    type: 'event',
   },
   {
-    type: 'event',
-    name: 'DustAmountSet',
+    anonymous: false,
     inputs: [
       {
-        name: 'token',
-        type: 'address',
         indexed: false,
         internalType: 'address',
+        name: 'token',
+        type: 'address',
       },
       {
+        indexed: false,
+        internalType: 'uint256',
         name: 'newDustAmount',
         type: 'uint256',
-        indexed: false,
-        internalType: 'uint256',
       },
     ],
-    anonymous: false,
+    name: 'DustAmountSet',
+    type: 'event',
   },
   {
-    type: 'event',
-    name: 'FeeRecipientsSet',
+    anonymous: false,
     inputs: [
       {
-        name: 'recipients',
-        type: 'tuple[]',
+        components: [
+          { internalType: 'address', name: 'recipient', type: 'address' },
+          { internalType: 'uint96', name: 'portion', type: 'uint96' },
+        ],
         indexed: false,
         internalType: 'struct IFolio.FeeRecipient[]',
-        components: [
-          {
-            name: 'recipient',
-            type: 'address',
-            internalType: 'address',
-          },
-          {
-            name: 'portion',
-            type: 'uint96',
-            internalType: 'uint96',
-          },
-        ],
+        name: 'recipients',
+        type: 'tuple[]',
       },
     ],
-    anonymous: false,
-  },
-  {
+    name: 'FeeRecipientsSet',
     type: 'event',
-    name: 'FolioDeprecated',
-    inputs: [],
-    anonymous: false,
   },
+  { anonymous: false, inputs: [], name: 'FolioDeprecated', type: 'event' },
   {
-    type: 'event',
-    name: 'FolioFeePaid',
+    anonymous: false,
     inputs: [
       {
-        name: 'recipient',
-        type: 'address',
         indexed: true,
         internalType: 'address',
+        name: 'recipient',
+        type: 'address',
       },
       {
-        name: 'amount',
-        type: 'uint256',
         indexed: false,
         internalType: 'uint256',
+        name: 'amount',
+        type: 'uint256',
       },
     ],
-    anonymous: false,
+    name: 'FolioFeePaid',
+    type: 'event',
   },
   {
-    type: 'event',
-    name: 'Initialized',
+    anonymous: false,
     inputs: [
       {
-        name: 'version',
-        type: 'uint64',
         indexed: false,
         internalType: 'uint64',
+        name: 'version',
+        type: 'uint64',
       },
     ],
-    anonymous: false,
+    name: 'Initialized',
+    type: 'event',
   },
   {
-    type: 'event',
-    name: 'MandateSet',
+    anonymous: false,
     inputs: [
       {
-        name: 'newMandate',
-        type: 'string',
         indexed: false,
         internalType: 'string',
+        name: 'newMandate',
+        type: 'string',
       },
     ],
-    anonymous: false,
+    name: 'MandateSet',
+    type: 'event',
   },
   {
-    type: 'event',
-    name: 'MintFeeSet',
+    anonymous: false,
     inputs: [
       {
-        name: 'newFee',
-        type: 'uint256',
         indexed: false,
         internalType: 'uint256',
+        name: 'newFee',
+        type: 'uint256',
       },
     ],
-    anonymous: false,
+    name: 'MintFeeSet',
+    type: 'event',
   },
   {
-    type: 'event',
-    name: 'ProtocolFeePaid',
+    anonymous: false,
     inputs: [
       {
+        indexed: true,
+        internalType: 'address',
         name: 'recipient',
         type: 'address',
-        indexed: true,
-        internalType: 'address',
       },
       {
+        indexed: false,
+        internalType: 'uint256',
         name: 'amount',
         type: 'uint256',
-        indexed: false,
-        internalType: 'uint256',
       },
     ],
-    anonymous: false,
+    name: 'ProtocolFeePaid',
+    type: 'event',
   },
   {
-    type: 'event',
-    name: 'RebalanceControlSet',
+    anonymous: false,
     inputs: [
       {
-        name: 'newControl',
-        type: 'tuple',
+        components: [
+          { internalType: 'bool', name: 'weightControl', type: 'bool' },
+          {
+            internalType: 'enum IFolio.PriceControl',
+            name: 'priceControl',
+            type: 'uint8',
+          },
+        ],
         indexed: false,
         internalType: 'struct IFolio.RebalanceControl',
-        components: [
-          {
-            name: 'weightControl',
-            type: 'bool',
-            internalType: 'bool',
-          },
-          {
-            name: 'priceControl',
-            type: 'bool',
-            internalType: 'bool',
-          },
-        ],
+        name: 'newControl',
+        type: 'tuple',
       },
     ],
-    anonymous: false,
+    name: 'RebalanceControlSet',
+    type: 'event',
   },
   {
-    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'nonce',
+        type: 'uint256',
+      },
+    ],
     name: 'RebalanceEnded',
-    inputs: [
-      {
-        name: 'nonce',
-        type: 'uint256',
-        indexed: false,
-        internalType: 'uint256',
-      },
-    ],
-    anonymous: false,
+    type: 'event',
   },
   {
-    type: 'event',
-    name: 'RebalanceStarted',
+    anonymous: false,
     inputs: [
       {
-        name: 'nonce',
-        type: 'uint256',
         indexed: false,
         internalType: 'uint256',
+        name: 'nonce',
+        type: 'uint256',
       },
       {
-        name: 'priceControl',
-        type: 'bool',
         indexed: false,
-        internalType: 'bool',
+        internalType: 'enum IFolio.PriceControl',
+        name: 'priceControl',
+        type: 'uint8',
       },
       {
-        name: 'tokens',
-        type: 'address[]',
         indexed: false,
         internalType: 'address[]',
+        name: 'tokens',
+        type: 'address[]',
       },
       {
-        name: 'weights',
-        type: 'tuple[]',
+        components: [
+          { internalType: 'uint256', name: 'low', type: 'uint256' },
+          { internalType: 'uint256', name: 'spot', type: 'uint256' },
+          { internalType: 'uint256', name: 'high', type: 'uint256' },
+        ],
         indexed: false,
         internalType: 'struct IFolio.WeightRange[]',
-        components: [
-          {
-            name: 'low',
-            type: 'uint256',
-            internalType: 'uint256',
-          },
-          {
-            name: 'spot',
-            type: 'uint256',
-            internalType: 'uint256',
-          },
-          {
-            name: 'high',
-            type: 'uint256',
-            internalType: 'uint256',
-          },
-        ],
+        name: 'weights',
+        type: 'tuple[]',
       },
       {
-        name: 'prices',
-        type: 'tuple[]',
+        components: [
+          { internalType: 'uint256', name: 'low', type: 'uint256' },
+          { internalType: 'uint256', name: 'high', type: 'uint256' },
+        ],
         indexed: false,
         internalType: 'struct IFolio.PriceRange[]',
-        components: [
-          {
-            name: 'low',
-            type: 'uint256',
-            internalType: 'uint256',
-          },
-          {
-            name: 'high',
-            type: 'uint256',
-            internalType: 'uint256',
-          },
-        ],
+        name: 'prices',
+        type: 'tuple[]',
       },
       {
-        name: 'limits',
-        type: 'tuple',
+        components: [
+          { internalType: 'uint256', name: 'low', type: 'uint256' },
+          { internalType: 'uint256', name: 'spot', type: 'uint256' },
+          { internalType: 'uint256', name: 'high', type: 'uint256' },
+        ],
         indexed: false,
         internalType: 'struct IFolio.RebalanceLimits',
-        components: [
-          {
-            name: 'low',
-            type: 'uint256',
-            internalType: 'uint256',
-          },
-          {
-            name: 'spot',
-            type: 'uint256',
-            internalType: 'uint256',
-          },
-          {
-            name: 'high',
-            type: 'uint256',
-            internalType: 'uint256',
-          },
-        ],
+        name: 'limits',
+        type: 'tuple',
       },
       {
+        indexed: false,
+        internalType: 'uint256',
         name: 'restrictedUntil',
         type: 'uint256',
-        indexed: false,
-        internalType: 'uint256',
       },
       {
+        indexed: false,
+        internalType: 'uint256',
         name: 'availableUntil',
         type: 'uint256',
-        indexed: false,
-        internalType: 'uint256',
       },
     ],
-    anonymous: false,
+    name: 'RebalanceStarted',
+    type: 'event',
   },
   {
-    type: 'event',
-    name: 'RoleAdminChanged',
+    anonymous: false,
     inputs: [
+      { indexed: true, internalType: 'bytes32', name: 'role', type: 'bytes32' },
       {
-        name: 'role',
-        type: 'bytes32',
         indexed: true,
         internalType: 'bytes32',
-      },
-      {
         name: 'previousAdminRole',
         type: 'bytes32',
-        indexed: true,
-        internalType: 'bytes32',
       },
       {
+        indexed: true,
+        internalType: 'bytes32',
         name: 'newAdminRole',
         type: 'bytes32',
-        indexed: true,
-        internalType: 'bytes32',
       },
     ],
-    anonymous: false,
+    name: 'RoleAdminChanged',
+    type: 'event',
   },
   {
-    type: 'event',
+    anonymous: false,
+    inputs: [
+      { indexed: true, internalType: 'bytes32', name: 'role', type: 'bytes32' },
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'account',
+        type: 'address',
+      },
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'sender',
+        type: 'address',
+      },
+    ],
     name: 'RoleGranted',
-    inputs: [
-      {
-        name: 'role',
-        type: 'bytes32',
-        indexed: true,
-        internalType: 'bytes32',
-      },
-      {
-        name: 'account',
-        type: 'address',
-        indexed: true,
-        internalType: 'address',
-      },
-      {
-        name: 'sender',
-        type: 'address',
-        indexed: true,
-        internalType: 'address',
-      },
-    ],
-    anonymous: false,
+    type: 'event',
   },
   {
-    type: 'event',
+    anonymous: false,
+    inputs: [
+      { indexed: true, internalType: 'bytes32', name: 'role', type: 'bytes32' },
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'account',
+        type: 'address',
+      },
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'sender',
+        type: 'address',
+      },
+    ],
     name: 'RoleRevoked',
-    inputs: [
-      {
-        name: 'role',
-        type: 'bytes32',
-        indexed: true,
-        internalType: 'bytes32',
-      },
-      {
-        name: 'account',
-        type: 'address',
-        indexed: true,
-        internalType: 'address',
-      },
-      {
-        name: 'sender',
-        type: 'address',
-        indexed: true,
-        internalType: 'address',
-      },
-    ],
-    anonymous: false,
+    type: 'event',
   },
   {
-    type: 'event',
-    name: 'TVLFeeSet',
+    anonymous: false,
     inputs: [
       {
+        indexed: false,
+        internalType: 'uint256',
         name: 'newFee',
         type: 'uint256',
-        indexed: false,
-        internalType: 'uint256',
       },
       {
+        indexed: false,
+        internalType: 'uint256',
         name: 'feeAnnually',
         type: 'uint256',
-        indexed: false,
-        internalType: 'uint256',
       },
     ],
-    anonymous: false,
+    name: 'TVLFeeSet',
+    type: 'event',
   },
   {
-    type: 'event',
-    name: 'Transfer',
+    anonymous: false,
     inputs: [
+      { indexed: true, internalType: 'address', name: 'from', type: 'address' },
+      { indexed: true, internalType: 'address', name: 'to', type: 'address' },
       {
-        name: 'from',
-        type: 'address',
-        indexed: true,
-        internalType: 'address',
-      },
-      {
-        name: 'to',
-        type: 'address',
-        indexed: true,
-        internalType: 'address',
-      },
-      {
+        indexed: false,
+        internalType: 'uint256',
         name: 'value',
         type: 'uint256',
-        indexed: false,
-        internalType: 'uint256',
       },
     ],
-    anonymous: false,
+    name: 'Transfer',
+    type: 'event',
   },
   {
-    type: 'event',
-    name: 'TrustedFillerRegistrySet',
+    anonymous: false,
     inputs: [
       {
+        indexed: false,
+        internalType: 'address',
         name: 'trustedFillerRegistry',
         type: 'address',
-        indexed: false,
-        internalType: 'address',
       },
-      {
-        name: 'isEnabled',
-        type: 'bool',
-        indexed: false,
-        internalType: 'bool',
-      },
+      { indexed: false, internalType: 'bool', name: 'isEnabled', type: 'bool' },
     ],
-    anonymous: false,
+    name: 'TrustedFillerRegistrySet',
+    type: 'event',
   },
   {
-    type: 'error',
-    name: 'AccessControlBadConfirmation',
     inputs: [],
+    name: 'DEFAULT_ADMIN_ROLE',
+    outputs: [{ internalType: 'bytes32', name: '', type: 'bytes32' }],
+    stateMutability: 'view',
+    type: 'function',
   },
   {
-    type: 'error',
-    name: 'AccessControlUnauthorizedAccount',
     inputs: [
+      { internalType: 'contract IERC20', name: 'token', type: 'address' },
+    ],
+    name: 'addToBasket',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'address', name: 'owner', type: 'address' },
+      { internalType: 'address', name: 'spender', type: 'address' },
+    ],
+    name: 'allowance',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'address', name: 'spender', type: 'address' },
+      { internalType: 'uint256', name: 'value', type: 'uint256' },
+    ],
+    name: 'approve',
+    outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'auctionLength',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'uint256', name: 'id', type: 'uint256' }],
+    name: 'auctions',
+    outputs: [
+      { internalType: 'uint256', name: 'rebalanceNonce', type: 'uint256' },
+      { internalType: 'uint256', name: 'startTime', type: 'uint256' },
+      { internalType: 'uint256', name: 'endTime', type: 'uint256' },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'address', name: 'account', type: 'address' }],
+    name: 'balanceOf',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'uint256', name: 'auctionId', type: 'uint256' },
+      { internalType: 'contract IERC20', name: 'sellToken', type: 'address' },
+      { internalType: 'contract IERC20', name: 'buyToken', type: 'address' },
+      { internalType: 'uint256', name: 'sellAmount', type: 'uint256' },
+      { internalType: 'uint256', name: 'maxBuyAmount', type: 'uint256' },
+      { internalType: 'bool', name: 'withCallback', type: 'bool' },
+      { internalType: 'bytes', name: 'data', type: 'bytes' },
+    ],
+    name: 'bid',
+    outputs: [{ internalType: 'uint256', name: 'boughtAmt', type: 'uint256' }],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'uint256', name: 'auctionId', type: 'uint256' }],
+    name: 'closeAuction',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'uint256', name: 'auctionId', type: 'uint256' },
+      { internalType: 'contract IERC20', name: 'sellToken', type: 'address' },
+      { internalType: 'contract IERC20', name: 'buyToken', type: 'address' },
+      { internalType: 'address', name: 'targetFiller', type: 'address' },
+      { internalType: 'bytes32', name: 'deploymentSalt', type: 'bytes32' },
+    ],
+    name: 'createTrustedFill',
+    outputs: [
       {
-        name: 'account',
+        internalType: 'contract IBaseTrustedFiller',
+        name: 'filler',
         type: 'address',
-        internalType: 'address',
-      },
-      {
-        name: 'neededRole',
-        type: 'bytes32',
-        internalType: 'bytes32',
       },
     ],
+    stateMutability: 'nonpayable',
+    type: 'function',
   },
   {
-    type: 'error',
-    name: 'ERC20InsufficientAllowance',
-    inputs: [
+    inputs: [],
+    name: 'daoFeeRegistry',
+    outputs: [
       {
-        name: 'spender',
+        internalType: 'contract IFolioDAOFeeRegistry',
+        name: '',
         type: 'address',
-        internalType: 'address',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'daoPendingFeeShares',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'decimals',
+    outputs: [{ internalType: 'uint8', name: '', type: 'uint8' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'deprecateFolio',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'distributeFees',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'endRebalance',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    name: 'feeRecipients',
+    outputs: [
+      { internalType: 'address', name: 'recipient', type: 'address' },
+      { internalType: 'uint96', name: 'portion', type: 'uint96' },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'feeRecipientsPendingFeeShares',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'uint256', name: 'auctionId', type: 'uint256' },
+      { internalType: 'contract IERC20', name: 'sellToken', type: 'address' },
+      { internalType: 'contract IERC20', name: 'buyToken', type: 'address' },
+      { internalType: 'uint256', name: 'timestamp', type: 'uint256' },
+      { internalType: 'uint256', name: 'maxSellAmount', type: 'uint256' },
+    ],
+    name: 'getBid',
+    outputs: [
+      { internalType: 'uint256', name: 'sellAmount', type: 'uint256' },
+      { internalType: 'uint256', name: 'bidAmount', type: 'uint256' },
+      { internalType: 'uint256', name: 'price', type: 'uint256' },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'getPendingFeeShares',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'getRebalance',
+    outputs: [
+      { internalType: 'uint256', name: 'nonce', type: 'uint256' },
+      { internalType: 'address[]', name: 'tokens', type: 'address[]' },
+      {
+        components: [
+          { internalType: 'uint256', name: 'low', type: 'uint256' },
+          { internalType: 'uint256', name: 'spot', type: 'uint256' },
+          { internalType: 'uint256', name: 'high', type: 'uint256' },
+        ],
+        internalType: 'struct IFolio.WeightRange[]',
+        name: 'weights',
+        type: 'tuple[]',
       },
       {
-        name: 'allowance',
-        type: 'uint256',
+        components: [
+          { internalType: 'uint256', name: 'low', type: 'uint256' },
+          { internalType: 'uint256', name: 'high', type: 'uint256' },
+        ],
+        internalType: 'struct IFolio.PriceRange[]',
+        name: 'initialPrices',
+        type: 'tuple[]',
+      },
+      { internalType: 'bool[]', name: 'inRebalance', type: 'bool[]' },
+      {
+        components: [
+          { internalType: 'uint256', name: 'low', type: 'uint256' },
+          { internalType: 'uint256', name: 'spot', type: 'uint256' },
+          { internalType: 'uint256', name: 'high', type: 'uint256' },
+        ],
+        internalType: 'struct IFolio.RebalanceLimits',
+        name: 'limits',
+        type: 'tuple',
+      },
+      { internalType: 'uint256', name: 'startedAt', type: 'uint256' },
+      { internalType: 'uint256', name: 'restrictedUntil', type: 'uint256' },
+      { internalType: 'uint256', name: 'availableUntil', type: 'uint256' },
+      {
+        internalType: 'enum IFolio.PriceControl',
+        name: 'priceControl',
+        type: 'uint8',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'bytes32', name: 'role', type: 'bytes32' }],
+    name: 'getRoleAdmin',
+    outputs: [{ internalType: 'bytes32', name: '', type: 'bytes32' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'bytes32', name: 'role', type: 'bytes32' },
+      { internalType: 'uint256', name: 'index', type: 'uint256' },
+    ],
+    name: 'getRoleMember',
+    outputs: [{ internalType: 'address', name: '', type: 'address' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'bytes32', name: 'role', type: 'bytes32' }],
+    name: 'getRoleMemberCount',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'bytes32', name: 'role', type: 'bytes32' }],
+    name: 'getRoleMembers',
+    outputs: [{ internalType: 'address[]', name: '', type: 'address[]' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'bytes32', name: 'role', type: 'bytes32' },
+      { internalType: 'address', name: 'account', type: 'address' },
+    ],
+    name: 'grantRole',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'bytes32', name: 'role', type: 'bytes32' },
+      { internalType: 'address', name: 'account', type: 'address' },
+    ],
+    name: 'hasRole',
+    outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        components: [
+          { internalType: 'string', name: 'name', type: 'string' },
+          { internalType: 'string', name: 'symbol', type: 'string' },
+          { internalType: 'address[]', name: 'assets', type: 'address[]' },
+          { internalType: 'uint256[]', name: 'amounts', type: 'uint256[]' },
+          { internalType: 'uint256', name: 'initialShares', type: 'uint256' },
+        ],
+        internalType: 'struct IFolio.FolioBasicDetails',
+        name: '_basicDetails',
+        type: 'tuple',
+      },
+      {
+        components: [
+          { internalType: 'uint256', name: 'auctionLength', type: 'uint256' },
+          {
+            components: [
+              { internalType: 'address', name: 'recipient', type: 'address' },
+              { internalType: 'uint96', name: 'portion', type: 'uint96' },
+            ],
+            internalType: 'struct IFolio.FeeRecipient[]',
+            name: 'feeRecipients',
+            type: 'tuple[]',
+          },
+          { internalType: 'uint256', name: 'tvlFee', type: 'uint256' },
+          { internalType: 'uint256', name: 'mintFee', type: 'uint256' },
+          { internalType: 'string', name: 'mandate', type: 'string' },
+        ],
+        internalType: 'struct IFolio.FolioAdditionalDetails',
+        name: '_additionalDetails',
+        type: 'tuple',
+      },
+      {
+        components: [
+          { internalType: 'address', name: 'daoFeeRegistry', type: 'address' },
+          {
+            internalType: 'address',
+            name: 'trustedFillerRegistry',
+            type: 'address',
+          },
+        ],
+        internalType: 'struct IFolio.FolioRegistryIndex',
+        name: '_folioRegistries',
+        type: 'tuple',
+      },
+      {
+        components: [
+          { internalType: 'bool', name: 'trustedFillerEnabled', type: 'bool' },
+          {
+            components: [
+              { internalType: 'bool', name: 'weightControl', type: 'bool' },
+              {
+                internalType: 'enum IFolio.PriceControl',
+                name: 'priceControl',
+                type: 'uint8',
+              },
+            ],
+            internalType: 'struct IFolio.RebalanceControl',
+            name: 'rebalanceControl',
+            type: 'tuple',
+          },
+        ],
+        internalType: 'struct IFolio.FolioFlags',
+        name: '_folioFlags',
+        type: 'tuple',
+      },
+      { internalType: 'address', name: '_creator', type: 'address' },
+    ],
+    name: 'initialize',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'isDeprecated',
+    outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'lastPoke',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'mandate',
+    outputs: [{ internalType: 'string', name: '', type: 'string' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'uint256', name: 'shares', type: 'uint256' },
+      { internalType: 'address', name: 'receiver', type: 'address' },
+      { internalType: 'uint256', name: 'minSharesOut', type: 'uint256' },
+    ],
+    name: 'mint',
+    outputs: [
+      { internalType: 'address[]', name: '_assets', type: 'address[]' },
+      { internalType: 'uint256[]', name: '_amounts', type: 'uint256[]' },
+    ],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'mintFee',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'name',
+    outputs: [{ internalType: 'string', name: '', type: 'string' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'nextAuctionId',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'uint256', name: 'rebalanceNonce', type: 'uint256' },
+      { internalType: 'address[]', name: 'tokens', type: 'address[]' },
+      {
+        components: [
+          { internalType: 'uint256', name: 'low', type: 'uint256' },
+          { internalType: 'uint256', name: 'spot', type: 'uint256' },
+          { internalType: 'uint256', name: 'high', type: 'uint256' },
+        ],
+        internalType: 'struct IFolio.WeightRange[]',
+        name: 'newWeights',
+        type: 'tuple[]',
+      },
+      {
+        components: [
+          { internalType: 'uint256', name: 'low', type: 'uint256' },
+          { internalType: 'uint256', name: 'high', type: 'uint256' },
+        ],
+        internalType: 'struct IFolio.PriceRange[]',
+        name: 'newPrices',
+        type: 'tuple[]',
+      },
+      {
+        components: [
+          { internalType: 'uint256', name: 'low', type: 'uint256' },
+          { internalType: 'uint256', name: 'spot', type: 'uint256' },
+          { internalType: 'uint256', name: 'high', type: 'uint256' },
+        ],
+        internalType: 'struct IFolio.RebalanceLimits',
+        name: 'newLimits',
+        type: 'tuple',
+      },
+    ],
+    name: 'openAuction',
+    outputs: [{ internalType: 'uint256', name: 'auctionId', type: 'uint256' }],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'uint256', name: 'rebalanceNonce', type: 'uint256' },
+    ],
+    name: 'openAuctionUnrestricted',
+    outputs: [{ internalType: 'uint256', name: 'auctionId', type: 'uint256' }],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'poke',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'rebalanceControl',
+    outputs: [
+      { internalType: 'bool', name: 'weightControl', type: 'bool' },
+      {
+        internalType: 'enum IFolio.PriceControl',
+        name: 'priceControl',
+        type: 'uint8',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'uint256', name: 'shares', type: 'uint256' },
+      { internalType: 'address', name: 'receiver', type: 'address' },
+      { internalType: 'address[]', name: 'assets', type: 'address[]' },
+      { internalType: 'uint256[]', name: 'minAmountsOut', type: 'uint256[]' },
+    ],
+    name: 'redeem',
+    outputs: [
+      { internalType: 'uint256[]', name: '_amounts', type: 'uint256[]' },
+    ],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'contract IERC20', name: 'token', type: 'address' },
+    ],
+    name: 'removeFromBasket',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'bytes32', name: 'role', type: 'bytes32' },
+      { internalType: 'address', name: 'callerConfirmation', type: 'address' },
+    ],
+    name: 'renounceRole',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'bytes32', name: 'role', type: 'bytes32' },
+      { internalType: 'address', name: 'account', type: 'address' },
+    ],
+    name: 'revokeRole',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'uint256', name: '_newLength', type: 'uint256' }],
+    name: 'setAuctionLength',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        components: [
+          { internalType: 'address', name: 'recipient', type: 'address' },
+          { internalType: 'uint96', name: 'portion', type: 'uint96' },
+        ],
+        internalType: 'struct IFolio.FeeRecipient[]',
+        name: '_newRecipients',
+        type: 'tuple[]',
+      },
+    ],
+    name: 'setFeeRecipients',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'string', name: '_newMandate', type: 'string' }],
+    name: 'setMandate',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'uint256', name: '_newFee', type: 'uint256' }],
+    name: 'setMintFee',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        components: [
+          { internalType: 'bool', name: 'weightControl', type: 'bool' },
+          {
+            internalType: 'enum IFolio.PriceControl',
+            name: 'priceControl',
+            type: 'uint8',
+          },
+        ],
+        internalType: 'struct IFolio.RebalanceControl',
+        name: '_rebalanceControl',
+        type: 'tuple',
+      },
+    ],
+    name: 'setRebalanceControl',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'uint256', name: '_newFee', type: 'uint256' }],
+    name: 'setTVLFee',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'address', name: '_newFillerRegistry', type: 'address' },
+      { internalType: 'bool', name: '_enabled', type: 'bool' },
+    ],
+    name: 'setTrustedFillerRegistry',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'address[]', name: 'tokens', type: 'address[]' },
+      {
+        components: [
+          { internalType: 'uint256', name: 'low', type: 'uint256' },
+          { internalType: 'uint256', name: 'spot', type: 'uint256' },
+          { internalType: 'uint256', name: 'high', type: 'uint256' },
+        ],
+        internalType: 'struct IFolio.WeightRange[]',
+        name: 'weights',
+        type: 'tuple[]',
+      },
+      {
+        components: [
+          { internalType: 'uint256', name: 'low', type: 'uint256' },
+          { internalType: 'uint256', name: 'high', type: 'uint256' },
+        ],
+        internalType: 'struct IFolio.PriceRange[]',
+        name: 'prices',
+        type: 'tuple[]',
+      },
+      {
+        components: [
+          { internalType: 'uint256', name: 'low', type: 'uint256' },
+          { internalType: 'uint256', name: 'spot', type: 'uint256' },
+          { internalType: 'uint256', name: 'high', type: 'uint256' },
+        ],
+        internalType: 'struct IFolio.RebalanceLimits',
+        name: 'limits',
+        type: 'tuple',
+      },
+      {
         internalType: 'uint256',
-      },
-      {
-        name: 'needed',
+        name: 'auctionLauncherWindow',
         type: 'uint256',
-        internalType: 'uint256',
       },
+      { internalType: 'uint256', name: 'ttl', type: 'uint256' },
     ],
+    name: 'startRebalance',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
   },
   {
-    type: 'error',
-    name: 'ERC20InsufficientBalance',
+    inputs: [],
+    name: 'stateChangeActive',
+    outputs: [
+      { internalType: 'bool', name: 'syncStateChangeActive', type: 'bool' },
+      { internalType: 'bool', name: 'asyncStateChangeActive', type: 'bool' },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'bytes4', name: 'interfaceId', type: 'bytes4' }],
+    name: 'supportsInterface',
+    outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'symbol',
+    outputs: [{ internalType: 'string', name: '', type: 'string' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
     inputs: [
-      {
-        name: 'sender',
-        type: 'address',
-        internalType: 'address',
-      },
-      {
-        name: 'balance',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-      {
-        name: 'needed',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
+      { internalType: 'uint256', name: 'shares', type: 'uint256' },
+      { internalType: 'enum Math.Rounding', name: 'rounding', type: 'uint8' },
     ],
+    name: 'toAssets',
+    outputs: [
+      { internalType: 'address[]', name: '_assets', type: 'address[]' },
+      { internalType: 'uint256[]', name: '_amounts', type: 'uint256[]' },
+    ],
+    stateMutability: 'view',
+    type: 'function',
   },
   {
-    type: 'error',
-    name: 'ERC20InvalidApprover',
+    inputs: [],
+    name: 'totalAssets',
+    outputs: [
+      { internalType: 'address[]', name: '_assets', type: 'address[]' },
+      { internalType: 'uint256[]', name: '_amounts', type: 'uint256[]' },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'totalSupply',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
     inputs: [
-      {
-        name: 'approver',
-        type: 'address',
-        internalType: 'address',
-      },
+      { internalType: 'address', name: 'to', type: 'address' },
+      { internalType: 'uint256', name: 'value', type: 'uint256' },
     ],
+    name: 'transfer',
+    outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
+    stateMutability: 'nonpayable',
+    type: 'function',
   },
   {
-    type: 'error',
-    name: 'ERC20InvalidReceiver',
     inputs: [
+      { internalType: 'address', name: 'from', type: 'address' },
+      { internalType: 'address', name: 'to', type: 'address' },
+      { internalType: 'uint256', name: 'value', type: 'uint256' },
+    ],
+    name: 'transferFrom',
+    outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'trustedFillerEnabled',
+    outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'trustedFillerRegistry',
+    outputs: [
       {
-        name: 'receiver',
+        internalType: 'contract ITrustedFillerRegistry',
+        name: '',
         type: 'address',
-        internalType: 'address',
       },
     ],
+    stateMutability: 'view',
+    type: 'function',
   },
   {
-    type: 'error',
-    name: 'ERC20InvalidSender',
-    inputs: [
-      {
-        name: 'sender',
-        type: 'address',
-        internalType: 'address',
-      },
-    ],
-  },
-  {
-    type: 'error',
-    name: 'ERC20InvalidSpender',
-    inputs: [
-      {
-        name: 'spender',
-        type: 'address',
-        internalType: 'address',
-      },
-    ],
-  },
-  {
-    type: 'error',
-    name: 'Folio__AuctionCannotBeOpenedWithoutRestriction',
     inputs: [],
+    name: 'tvlFee',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
   },
   {
-    type: 'error',
-    name: 'Folio__AuctionNotOngoing',
     inputs: [],
-  },
-  {
-    type: 'error',
-    name: 'Folio__BadFeeTotal',
-    inputs: [],
-  },
-  {
-    type: 'error',
-    name: 'Folio__BalanceNotRemovable',
-    inputs: [],
-  },
-  {
-    type: 'error',
-    name: 'Folio__BasketModificationFailed',
-    inputs: [],
-  },
-  {
-    type: 'error',
-    name: 'Folio__DuplicateAsset',
-    inputs: [],
-  },
-  {
-    type: 'error',
-    name: 'Folio__EmptyAssets',
-    inputs: [],
-  },
-  {
-    type: 'error',
-    name: 'Folio__EmptyAuction',
-    inputs: [],
-  },
-  {
-    type: 'error',
-    name: 'Folio__FeeRecipientInvalidAddress',
-    inputs: [],
-  },
-  {
-    type: 'error',
-    name: 'Folio__FeeRecipientInvalidFeeShare',
-    inputs: [],
-  },
-  {
-    type: 'error',
-    name: 'Folio__FolioDeprecated',
-    inputs: [],
-  },
-  {
-    type: 'error',
-    name: 'Folio__InsufficientBid',
-    inputs: [],
-  },
-  {
-    type: 'error',
-    name: 'Folio__InsufficientBuyAvailable',
-    inputs: [],
-  },
-  {
-    type: 'error',
-    name: 'Folio__InsufficientSellAvailable',
-    inputs: [],
-  },
-  {
-    type: 'error',
-    name: 'Folio__InsufficientSharesOut',
-    inputs: [],
-  },
-  {
-    type: 'error',
-    name: 'Folio__InvalidArrayLengths',
-    inputs: [],
-  },
-  {
-    type: 'error',
-    name: 'Folio__InvalidAsset',
-    inputs: [],
-  },
-  {
-    type: 'error',
-    name: 'Folio__InvalidAssetAmount',
-    inputs: [
-      {
-        name: 'asset',
-        type: 'address',
-        internalType: 'address',
-      },
-    ],
-  },
-  {
-    type: 'error',
-    name: 'Folio__InvalidAuctionLength',
-    inputs: [],
-  },
-  {
-    type: 'error',
-    name: 'Folio__InvalidLimits',
-    inputs: [],
-  },
-  {
-    type: 'error',
-    name: 'Folio__InvalidPrices',
-    inputs: [],
-  },
-  {
-    type: 'error',
-    name: 'Folio__InvalidRegistry',
-    inputs: [],
-  },
-  {
-    type: 'error',
-    name: 'Folio__InvalidTTL',
-    inputs: [],
-  },
-  {
-    type: 'error',
-    name: 'Folio__InvalidTransferToSelf',
-    inputs: [],
-  },
-  {
-    type: 'error',
-    name: 'Folio__InvalidWeights',
-    inputs: [],
-  },
-  {
-    type: 'error',
-    name: 'Folio__MintFeeTooHigh',
-    inputs: [],
-  },
-  {
-    type: 'error',
-    name: 'Folio__NotRebalancing',
-    inputs: [],
-  },
-  {
-    type: 'error',
-    name: 'Folio__SlippageExceeded',
-    inputs: [],
-  },
-  {
-    type: 'error',
-    name: 'Folio__TVLFeeTooHigh',
-    inputs: [],
-  },
-  {
-    type: 'error',
-    name: 'Folio__TVLFeeTooLow',
-    inputs: [],
-  },
-  {
-    type: 'error',
-    name: 'Folio__TooManyFeeRecipients',
-    inputs: [],
-  },
-  {
-    type: 'error',
-    name: 'Folio__TrustedFillerRegistryAlreadySet',
-    inputs: [],
-  },
-  {
-    type: 'error',
-    name: 'Folio__TrustedFillerRegistryNotEnabled',
-    inputs: [],
-  },
-  {
-    type: 'error',
-    name: 'Folio__Unauthorized',
-    inputs: [],
-  },
-  {
-    type: 'error',
-    name: 'Folio__ZeroInitialShares',
-    inputs: [],
-  },
-  {
-    type: 'error',
-    name: 'InvalidInitialization',
-    inputs: [],
-  },
-  {
-    type: 'error',
-    name: 'NotInitializing',
-    inputs: [],
-  },
-  {
-    type: 'error',
-    name: 'ReentrancyGuardReentrantCall',
-    inputs: [],
-  },
-  {
-    type: 'error',
-    name: 'SafeERC20FailedOperation',
-    inputs: [
-      {
-        name: 'token',
-        type: 'address',
-        internalType: 'address',
-      },
-    ],
+    name: 'version',
+    outputs: [{ internalType: 'string', name: '', type: 'string' }],
+    stateMutability: 'pure',
+    type: 'function',
   },
 ] as const

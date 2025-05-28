@@ -4,7 +4,7 @@ import { Address, Hex } from 'viem'
 import { dtfContractAliasAtom } from './proposal-preview/atoms'
 import ContractProposalChanges from './proposal-preview/contract-proposal-changes'
 import FolioChangePreview from './proposal-preview/folio-change-preview'
-import useDecodedCalldatas from './proposal-preview/use-decoded-call-datas'
+import useDecodedCalldatas from '../../../../hooks/use-decoded-call-datas'
 import UnknownContractPreview from './proposal-preview/unknown-contract-preview'
 
 /**

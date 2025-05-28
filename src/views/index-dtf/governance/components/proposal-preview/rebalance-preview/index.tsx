@@ -1,21 +1,21 @@
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import useRebalanceBasketPreview from '@/hooks/use-rebalance-basket-preview'
 import { chainIdAtom } from '@/state/atoms'
 import {
   indexDTFAtom,
   indexDTFBasketAtom,
   indexDTFBasketPricesAtom,
   indexDTFBasketSharesAtom,
-  indexDTFVersionAtom,
+  isSingletonRebalanceAtom,
 } from '@/state/dtf/atoms'
-import { DecodedCalldata } from '@/types'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
-import { atom, useAtomValue } from 'jotai'
+import { useAtomValue } from 'jotai'
 import { ArrowUpRightIcon } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { Address, Hex } from 'viem'
-import RawCallPreview from '../raw-call-preview'
+import { RawCallsPreview } from '../raw-call-preview'
 import BasketProposalPreview from './legacy-basket-proposal-preview'
 
 const TABS = {
@@ -55,36 +55,18 @@ const Header = ({ address }: { address: Address }) => {
   )
 }
 
-export const isSingletonRebalanceAtom = atom((get) => {
-  const version = get(indexDTFVersionAtom)
-  // return checkVersion('4.0.0', version)
-  return true
-})
-
-// Rebalance proposal preview for 4.0 indexes
-const RebalancePreview = ({ calldatas }: { calldatas: Hex[] | undefined }) => {
+const RebalancePreview = ({
+  calldatas,
+  timestamp,
+}: {
+  calldatas: Hex[] | undefined
+  timestamp?: number
+}) => {
   const dtf = useAtomValue(indexDTFAtom)
-  const basket = useAtomValue(indexDTFBasketAtom)
-  const shares = useAtomValue(indexDTFBasketSharesAtom)
-  const prices = useAtomValue(indexDTFBasketPricesAtom)
-  const isSingletonRebalance = useAtomValue(isSingletonRebalanceAtom)
+  const rebalanceBasketPreview = useRebalanceBasketPreview(calldatas, timestamp)
 
   // TODO: Better loading skeleton!
-  if (!dtf || !basket || !prices || !calldatas?.length)
-    return <Skeleton className="h-80" />
-
-  // @deprecated - old rebalance flow
-  if (!isSingletonRebalance) {
-    return (
-      <BasketProposalPreview
-        calldatas={calldatas}
-        basket={basket}
-        shares={shares}
-        prices={prices}
-        address={dtf.id.toLowerCase() as Address}
-      />
-    )
-  }
+  if (!dtf || !rebalanceBasketPreview) return <Skeleton className="h-80" />
 
   return (
     <Tabs
@@ -96,13 +78,48 @@ const RebalancePreview = ({ calldatas }: { calldatas: Hex[] | undefined }) => {
         summary
       </TabsContent>
       <TabsContent className="m-0" value={TABS.RAW}>
-        {/* <div className="p-4">
-          <h4 className="text-primary text-lg font-semibold mb-2">1/1</h4>
-          <RawCallPreview call={calldatas[0]} />
-        </div> */}
+        <RawCallsPreview calls={[rebalanceBasketPreview.decodedCalldata]} />
       </TabsContent>
     </Tabs>
   )
 }
 
-export default RebalancePreview
+const LegacyRebalancePreview = ({
+  calldatas,
+}: {
+  calldatas: Hex[] | undefined
+}) => {
+  const dtf = useAtomValue(indexDTFAtom)
+  const basket = useAtomValue(indexDTFBasketAtom)
+  const shares = useAtomValue(indexDTFBasketSharesAtom)
+  const prices = useAtomValue(indexDTFBasketPricesAtom)
+
+  if (!dtf || !basket || !prices || !calldatas?.length)
+    return <Skeleton className="h-80" />
+
+  return (
+    <BasketProposalPreview
+      calldatas={calldatas}
+      basket={basket}
+      shares={shares}
+      prices={prices}
+      address={dtf.id.toLowerCase() as Address}
+    />
+  )
+}
+
+export default ({
+  calldatas,
+  timestamp,
+}: {
+  calldatas: Hex[] | undefined
+  timestamp?: number
+}) => {
+  const isSingletonRebalance = useAtomValue(isSingletonRebalanceAtom)
+
+  if (!isSingletonRebalance) {
+    return <LegacyRebalancePreview calldatas={calldatas} />
+  }
+
+  return <RebalancePreview calldatas={calldatas} timestamp={timestamp} />
+}

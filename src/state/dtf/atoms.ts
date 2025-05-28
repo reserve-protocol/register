@@ -4,6 +4,7 @@ import { atom } from 'jotai'
 import { Address } from 'viem'
 import { walletAtom } from '../atoms'
 import { UNIVERSAL_ASSETS, WORMHOLE_ASSETS } from '@/utils/constants'
+import { checkVersion } from '@/utils'
 
 // TODO: placeholders
 export interface IToken extends Token {
@@ -95,6 +96,10 @@ export const indexDTFBrandAtom = atom<IndexDTFBrand | undefined>(undefined)
 
 export const indexDTFFeeAtom = atom<number | undefined>(undefined)
 
+export const indexDTFRebalanceControlAtom = atom<
+  { weightControl: boolean; priceControl: number } | undefined
+>(undefined)
+
 export const indexDTFPriceAtom = atom((get) => {
   const dtf = get(indexDTFAtom)
   const basketPrices = get(indexDTFBasketPricesAtom)
@@ -144,4 +149,10 @@ export const hasBridgedAssetsAtom = atom((get) => {
     (token) =>
       WORMHOLE_ASSETS.has(token.address) || UNIVERSAL_ASSETS.has(token.address)
   )
+})
+
+export const isSingletonRebalanceAtom = atom((get) => {
+  const version = get(indexDTFVersionAtom)
+
+  return checkVersion('4.0.0', version)
 })

@@ -9,6 +9,7 @@ import {
   indexDTFBasketSharesAtom,
   IndexDTFBrand,
   indexDTFBrandAtom,
+  indexDTFRebalanceControlAtom,
   indexDTFVersionAtom,
   iTokenAddressAtom,
 } from '@/state/dtf/atoms'
@@ -24,6 +25,7 @@ import IndexDTFNavigation from './components/navigation'
 import GovernanceUpdater from './governance/updater'
 import FeedbackButton from '@/components/feedback-button'
 import dtfIndexAbi from '@/abis/dtf-index-abi'
+import dtfIndexAbiV4 from '@/abis/dtf-index-abi-v4'
 
 const useChainWatch = () => {
   const { switchChain } = useSwitchChain()
@@ -84,8 +86,16 @@ const IndexDTFBasketUpdater = () => {
   const setBasketPrices = useSetAtom(indexDTFBasketPricesAtom)
   const setBasketAmounts = useSetAtom(indexDTFBasketAmountsAtom)
   const setBasketShares = useSetAtom(indexDTFBasketSharesAtom)
+  const setRebalanceControl = useSetAtom(indexDTFRebalanceControlAtom)
 
   const { data } = useIndexBasket(token, chainId)
+  // 4.0 onwards
+  const { data: rebalanceControl } = useReadContract({
+    abi: dtfIndexAbiV4,
+    address: token,
+    functionName: 'rebalanceControl',
+    chainId,
+  })
 
   useEffect(() => {
     if (data) {
@@ -101,6 +111,15 @@ const IndexDTFBasketUpdater = () => {
     }
   }, [data])
 
+  useEffect(() => {
+    if (rebalanceControl) {
+      setRebalanceControl({
+        weightControl: rebalanceControl[0],
+        priceControl: rebalanceControl[1],
+      })
+    }
+  }, [rebalanceControl])
+
   return null
 }
 
@@ -111,6 +130,7 @@ const resetStateAtom = atom(null, (get, set) => {
   set(indexDTFBasketSharesAtom, {})
   set(indexDTFAtom, undefined)
   set(indexDTFBrandAtom, undefined)
+  set(indexDTFRebalanceControlAtom, undefined)
 })
 
 // TODO: Hook currently re-renders a lot because of a wagmi bug, different component to avoid tree re-renders

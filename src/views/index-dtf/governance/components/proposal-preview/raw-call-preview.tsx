@@ -43,4 +43,17 @@ const RawCallPreview = ({ call }: { call: DecodedCalldata }) => (
   </div>
 )
 
+export const RawCallsPreview = ({ calls }: { calls: DecodedCalldata[] }) => (
+  <>
+    {calls.map((call, index) => (
+      <div className="p-4" key={`raw-${call.callData}-${index}`}>
+        <h4 className="text-primary text-lg font-semibold mb-2">
+          {index + 1}/{calls.length}
+        </h4>
+        <RawCallPreview call={call} />
+      </div>
+    ))}
+  </>
+)
+
 export default RawCallPreview

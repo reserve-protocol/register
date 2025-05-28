@@ -59,7 +59,7 @@ export interface OpenAuctionArgs {
  * @param _prices {USD/wholeTok} either CURRENT or HISTORICAL prices
  * @returns D18{1} The target basket
  */
-const getTargetBasket = (
+export const getTargetBasket = (
   _initialWeights: WeightRange[],
   _prices: number[],
   _decimals: bigint[]
