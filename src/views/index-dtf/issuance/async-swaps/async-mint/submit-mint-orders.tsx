@@ -12,7 +12,7 @@ type SubmitMintProps = {
 const SubmitMint = ({ loadingQuote }: SubmitMintProps) => {
   const inputAmount = useAtomValue(userInputAtom)
   const insufficientBalance = useAtomValue(insufficientBalanceAtom)
-  const { mutate, isPending } = useQuoteSignatures()
+  const { data, mutate, isPending } = useQuoteSignatures()
 
   const disabled =
     isPending ||

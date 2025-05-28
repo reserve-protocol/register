@@ -14,9 +14,11 @@ import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { Address, parseEther, zeroAddress } from 'viem'
 import {
+  failedOrdersAtom,
   fetchingQuotesAtom,
   insufficientBalanceAtom,
   mintValueAtom,
+  operationAtom,
   quotesAtom,
   redeemAssetsAtom,
   refetchQuotesAtom,
@@ -40,8 +42,8 @@ async function getQuote({
   orderBookApi,
   operation,
 }: {
-  sellToken: Token
-  buyToken: Token
+  sellToken: Address
+  buyToken: Address
   amount: bigint
   address: Address
   orderBookApi: OrderBookApi
@@ -50,8 +52,8 @@ async function getQuote({
   if (
     !address ||
     address == zeroAddress ||
-    buyToken.address == zeroAddress ||
-    sellToken.address == zeroAddress ||
+    buyToken == zeroAddress ||
+    sellToken == zeroAddress ||
     !orderBookApi
   ) {
     throw new Error('getQuote: Invalid params')
@@ -62,11 +64,11 @@ async function getQuote({
   }
 
   const quote = await orderBookApi.getQuote({
-    sellToken: sellToken.address,
-    buyToken: buyToken.address,
+    sellToken,
+    buyToken,
     from: address,
     receiver: address,
-    validFor: 60 * 15, // 15 minutes
+    validFor: 60 * 5, // 10 minutes
     priceQuality: PriceQuality.VERIFIED,
     ...(operation === 'redeem'
       ? {
@@ -89,71 +91,6 @@ async function getQuote({
 
   return quote
 }
-
-// export function useQuote({ sellToken, buyToken, amount }: UseQuoteParams) {
-//   const indexDTF = useAtomValue(indexDTFAtom)
-//   const folioAddress = indexDTF?.id
-//   const operation = useAtomValue(operationAtom)
-//   const chainId = useAtomValue(chainIdAtom)
-//   const address = useAtomValue(walletAtom)
-//   const setQuotes = useSetAtom(quotesAtom)
-//   const { orderBookApi } = useGlobalProtocolKit()
-
-//   return useQuery({
-//     queryKey: ['quote/single', sellToken, buyToken, amount, address],
-//     enabled:
-//       !!chainId && !!address && !!sellToken && !!buyToken && !!orderBookApi,
-//     queryFn: async ({ signal }) => {
-//       if (!orderBookApi) {
-//         throw new Error('orderBookApi is not available')
-//       }
-
-//       try {
-//         const quote = await getQuote({
-//           sellToken,
-//           buyToken,
-//           amount,
-//           address: address as Address,
-//           orderBookApi,
-//           operation,
-//         })
-
-//         if (!signal.aborted) {
-//           setQuotes((prev) => ({
-//             ...prev,
-//             [folioAddress as string]: {
-//               success: true,
-//               type: QuoteProvider.CowSwap,
-//               data: quote,
-//             },
-//           }))
-//         }
-
-//         return {
-//           token: operation ? buyToken : sellToken,
-//           success: true,
-//           source: QuoteProvider.CowSwap,
-//           quote,
-//         }
-//       } catch {
-//         if (!signal.aborted) {
-//           setQuotes((prev) => ({
-//             ...prev,
-//             [folioAddress as string]: {
-//               success: false,
-//             },
-//           }))
-//         }
-
-//         return {
-//           success: false,
-//         }
-//       }
-//     },
-//     retry: false,
-//     staleTime: Infinity,
-//   })
-// }
 
 export const useQuotesForMint = () => {
   const chainId = useAtomValue(chainIdAtom)
@@ -200,8 +137,8 @@ export const useQuotesForMint = () => {
 
           try {
             return await getQuote({
-              sellToken: selectedToken,
-              buyToken: token,
+              sellToken: selectedToken.address,
+              buyToken: token.address,
               amount,
               address: address as Address,
               orderBookApi,
@@ -305,8 +242,8 @@ export const useQuotesForRedeem = () => {
 
           try {
             return await getQuote({
-              sellToken: token,
-              buyToken: selectedToken,
+              sellToken: token.address,
+              buyToken: selectedToken.address,
               amount,
               address: address as Address,
               orderBookApi,
@@ -366,6 +303,53 @@ export const useQuotesForRedeem = () => {
     setRefetchQuotes({ fn: query.refetch })
     setFetchingQuotes(query.isFetching)
   }, [query.refetch, query.isFetching, setRefetchQuotes, setFetchingQuotes])
+
+  return query
+}
+
+export const useRefreshQuotes = () => {
+  const address = useAtomValue(walletAtom)
+  const { orderBookApi } = useGlobalProtocolKit()
+  const [quotes, setQuotes] = useAtom(quotesAtom)
+  const operation = useAtomValue(operationAtom)
+  const failedOrders = useAtomValue(failedOrdersAtom)
+
+  const query = useQuery({
+    queryKey: ['refresh-quotes', failedOrders],
+    queryFn: async () => {
+      if (!failedOrders || !orderBookApi || !address) {
+        return
+      }
+
+      const quotePromises = failedOrders.map(async (order) => {
+        return await getQuote({
+          sellToken: order.sellToken as Address,
+          buyToken: order.buyToken as Address,
+          amount: BigInt(
+            operation === 'redeem' ? order.sellAmount : order.buyAmount
+          ),
+          address: address as Address,
+          orderBookApi,
+          operation,
+        })
+      })
+
+      const results = await Promise.all(quotePromises)
+
+      failedOrders.forEach((order, i) => {
+        setQuotes((prev) => ({
+          ...prev,
+          [operation === 'redeem' ? order.sellToken : order.buyToken]: {
+            success: !!results[i],
+            type: QuoteProvider.CowSwap,
+            data: results[i],
+          },
+        }))
+      })
+
+      return quotes
+    },
+  })
 
   return query
 }

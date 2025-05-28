@@ -3,16 +3,20 @@ import { Button } from '@/components/ui/button'
 import { indexDTFBasketAtom } from '@/state/dtf/atoms'
 import { getTimerFormat } from '@/utils'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { ArrowLeft, ArrowRight, Check, Loader } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Check, Loader, RefreshCw } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
 import {
   asyncSwapResponseAtom,
+  failedOrdersAtom,
   openCollateralPanelAtom,
   operationAtom,
+  pendingOrdersAtom,
   successAtom,
 } from './atom'
 import MintButton from './mint-button'
 import { OrderStatus } from '@cowprotocol/cow-sdk'
+import { useRefreshQuotes } from './hooks/useQuote'
+import { useQuoteSignatures } from './hooks/useQuoteSignatures'
 
 const OpenCollateralPanel = () => {
   const basket = useAtomValue(indexDTFBasketAtom)
@@ -37,11 +41,50 @@ const OpenCollateralPanel = () => {
   )
 }
 
+const RequoteFailedOrders = () => {
+  const { isFetching } = useRefreshQuotes()
+  const failedOrdersQty = useAtomValue(failedOrdersAtom).length
+  const { mutate: signQuotes, isPending: isSigning } = useQuoteSignatures(true)
+
+  return (
+    <div className="border-t border-border">
+      <div className="flex gap-2 items-center justify-between p-4">
+        <div className="flex gap-2 items-center text-primary">
+          <div className="border border-primary/40 rounded-full p-1.5">
+            <RefreshCw size={16} strokeWidth={1.5} />
+          </div>
+          <div>
+            <div className="font-semibold">Prices have moved</div>
+            <div className="font-light text-muted-foreground text-sm">
+              Accept the new quotes for {failedOrdersQty} tokens.
+            </div>
+          </div>
+        </div>
+        {/* <OpenCollateralPanel /> */}
+      </div>
+      <Button
+        size="lg"
+        className="w-full rounded-xl bg-black text-white"
+        disabled={isFetching || isSigning}
+        onClick={() => signQuotes()}
+      >
+        {isFetching
+          ? 'Awaiting Quotes'
+          : isSigning
+            ? 'Signing...'
+            : 'Accept New Quotes'}
+      </Button>
+    </div>
+  )
+}
+
 const CollateralAcquisition = () => {
   const operation = useAtomValue(operationAtom)
   const asyncSwapResponse = useAtomValue(asyncSwapResponseAtom)
   const [elapsedTime, setElapsedTime] = useState(0)
   const setSuccess = useSetAtom(successAtom)
+  const failedOrders = useAtomValue(failedOrdersAtom)
+  const pendingOrders = useAtomValue(pendingOrdersAtom)
 
   useEffect(() => {
     if (!asyncSwapResponse?.createdAt) return
@@ -57,6 +100,11 @@ const CollateralAcquisition = () => {
   }, [asyncSwapResponse?.createdAt])
 
   if (!asyncSwapResponse) return null
+
+  const refreshQuotes = useMemo(
+    () => failedOrders.length > 0 && pendingOrders.length === 0,
+    [failedOrders, pendingOrders]
+  )
 
   const hasAllCollaterals = useMemo(
     () =>
@@ -89,6 +137,8 @@ const CollateralAcquisition = () => {
       </div>
     )
   }
+
+  if (refreshQuotes) return <RequoteFailedOrders />
 
   return (
     <div className="relative rounded-2xl p-[1px] bg-gradient-to-r from-transparent via-primary to-transparent animate-[shimmer_5s_infinite] bg-[length:200%_100%]">

@@ -2,7 +2,7 @@ import { balancesAtom, chainIdAtom, TokenBalance } from '@/state/atoms'
 import { indexDTFPriceAtom } from '@/state/dtf/atoms'
 import { Token } from '@/types'
 import { reducedZappableTokens } from '@/views/yield-dtf/issuance/components/zapV2/constants'
-import { EnrichedOrder, OrderStatus } from '@cowprotocol/cow-sdk'
+import { OrderStatus } from '@cowprotocol/cow-sdk'
 import { atom } from 'jotai'
 import { atomWithReset } from 'jotai/utils'
 import { Address, parseEther, parseUnits } from 'viem'
@@ -92,3 +92,27 @@ export const mintValueWeiAtom = atom<bigint>((get) => {
   const amountOut = get(mintValueAtom)
   return parseEther(amountOut.toString())
 })
+
+export const failedOrdersAtom = atom<AsyncSwapOrderResponse['cowswapOrders']>(
+  (get) => {
+    const asyncSwapResponse = get(asyncSwapResponseAtom)
+    return (
+      asyncSwapResponse?.cowswapOrders.filter((order) =>
+        [OrderStatus.CANCELLED, OrderStatus.EXPIRED].includes(order.status)
+      ) || []
+    )
+  }
+)
+
+export const pendingOrdersAtom = atom<AsyncSwapOrderResponse['cowswapOrders']>(
+  (get) => {
+    const asyncSwapResponse = get(asyncSwapResponseAtom)
+    return (
+      asyncSwapResponse?.cowswapOrders.filter((order) =>
+        [OrderStatus.OPEN, OrderStatus.PRESIGNATURE_PENDING].includes(
+          order.status
+        )
+      ) || []
+    )
+  }
+)

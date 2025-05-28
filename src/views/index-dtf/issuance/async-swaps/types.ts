@@ -1,6 +1,6 @@
 import { Token } from '@/types'
 import { EnrichedOrder, OrderQuoteResponse } from '@cowprotocol/cow-sdk'
-import { Address, Hex } from 'viem'
+import { Address } from 'viem'
 
 export enum QuoteProvider {
   CowSwap = 'CowSwap',

@@ -7,7 +7,7 @@ import {
   SigningScheme,
 } from '@cowprotocol/cow-sdk'
 import { useMutation } from '@tanstack/react-query'
-import { useAtomValue, useSetAtom } from 'jotai'
+import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import {
   Address,
   encodeFunctionData,
@@ -25,6 +25,7 @@ import {
   orderIdsAtom,
   quotesAtom,
   selectedTokenAtom,
+  failedOrdersAtom,
 } from '../atom'
 import { useGlobalProtocolKit } from '../providers/GlobalProtocolKitProvider'
 import { QuoteProvider } from '../types'
@@ -34,7 +35,7 @@ import { indexDTFAtom } from '@/state/dtf/atoms'
 const COWSWAP_SETTLEMENT = '0x9008D19f58AAbD9eD0D60971565AA8510560ab41' as const
 const COWSWAP_VAULT = '0xC92E8bdf79f0507f65a392b0ab4667716BFE0110' as const
 
-export function useQuoteSignatures() {
+export function useQuoteSignatures(refresh = false) {
   const indexDTF = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
   const address = useAtomValue(walletAtom)
@@ -42,11 +43,12 @@ export function useQuoteSignatures() {
   const mintValue = useAtomValue(mintValueAtom)
   const inputAmount = useAtomValue(userInputAtom)
   const quoteToken = useAtomValue(selectedTokenAtom).address
-  const quotes = Object.values(useAtomValue(quotesAtom))
+  const [quotes, setQuotes] = useAtom(quotesAtom)
   const setOrderIDs = useSetAtom(orderIdsAtom)
   const setAsyncSwapResponse = useSetAtom(asyncSwapResponseAtom)
   const { orderBookApi } = useGlobalProtocolKit()
   const { sendCallsAsync } = useSendCalls()
+  const failedOrders = useAtomValue(failedOrdersAtom)
 
   return useMutation({
     mutationFn: async () => {
@@ -57,7 +59,9 @@ export function useQuoteSignatures() {
         }
       }
 
-      const successfulQuotes = quotes.filter((quote) => quote.success)
+      const successfulQuotes = Object.values(quotes).filter(
+        (quote) => quote.success
+      )
 
       console.log({ successfulQuotes })
 
@@ -207,18 +211,39 @@ export function useQuoteSignatures() {
           })
       )
 
-      setOrderIDs(validOrderData.map(({ data }) => data.orderId))
-      setAsyncSwapResponse({
-        swapOrderId: uuidv4(),
-        chainId,
-        signer: address,
-        dtf: indexDTF.id,
-        inputAmount,
-        amountOut: parseEther(mintValue.toString()).toString(),
-        createdAt: new Date().toISOString(),
-        universalOrders: [],
-        cowswapOrders: [],
-      })
+      if (refresh) {
+        // replace failed orders with new ones
+        setOrderIDs((prev) => [
+          ...prev.filter(
+            (id) => !failedOrders.map((o) => o.orderId).includes(id)
+          ),
+          ...validOrderData.map(({ data }) => data.orderId),
+        ])
+        setAsyncSwapResponse((prev) => {
+          if (!prev) return undefined
+          return {
+            ...prev,
+            cowswapOrders: prev?.cowswapOrders.filter(
+              (o) => !failedOrders.map((fo) => fo.orderId).includes(o.orderId)
+            ),
+            createdAt: new Date().toISOString(),
+          }
+        })
+      } else {
+        setOrderIDs(validOrderData.map(({ data }) => data.orderId))
+        setAsyncSwapResponse({
+          swapOrderId: uuidv4(),
+          chainId,
+          signer: address,
+          dtf: indexDTF.id,
+          inputAmount,
+          amountOut: parseEther(mintValue.toString()).toString(),
+          createdAt: new Date().toISOString(),
+          universalOrders: [],
+          cowswapOrders: [],
+        })
+      }
+      setQuotes({})
 
       return {
         orders: validOrderData.map(({ data }) => data.orderId),
