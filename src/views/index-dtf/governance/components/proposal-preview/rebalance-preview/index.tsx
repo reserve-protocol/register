@@ -14,7 +14,7 @@ import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { atom, useAtomValue } from 'jotai'
 import { ArrowUpRightIcon } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import { Address } from 'viem'
+import { Address, Hex } from 'viem'
 import RawCallPreview from '../raw-call-preview'
 import BasketProposalPreview from './legacy-basket-proposal-preview'
 
@@ -62,7 +62,7 @@ export const isSingletonRebalanceAtom = atom((get) => {
 })
 
 // Rebalance proposal preview for 4.0 indexes
-const RebalancePreview = ({ calldatas }: { calldatas: DecodedCalldata[] }) => {
+const RebalancePreview = ({ calldatas }: { calldatas: Hex[] | undefined }) => {
   const dtf = useAtomValue(indexDTFAtom)
   const basket = useAtomValue(indexDTFBasketAtom)
   const shares = useAtomValue(indexDTFBasketSharesAtom)
@@ -70,14 +70,14 @@ const RebalancePreview = ({ calldatas }: { calldatas: DecodedCalldata[] }) => {
   const isSingletonRebalance = useAtomValue(isSingletonRebalanceAtom)
 
   // TODO: Better loading skeleton!
-  if (!dtf || !basket || !prices || !calldatas.length)
+  if (!dtf || !basket || !prices || !calldatas?.length)
     return <Skeleton className="h-80" />
 
   // @deprecated - old rebalance flow
   if (!isSingletonRebalance) {
     return (
       <BasketProposalPreview
-        calldatas={calldatas.map((calldata) => calldata.callData)}
+        calldatas={calldatas}
         basket={basket}
         shares={shares}
         prices={prices}
@@ -96,10 +96,10 @@ const RebalancePreview = ({ calldatas }: { calldatas: DecodedCalldata[] }) => {
         summary
       </TabsContent>
       <TabsContent className="m-0" value={TABS.RAW}>
-        <div className="p-4">
+        {/* <div className="p-4">
           <h4 className="text-primary text-lg font-semibold mb-2">1/1</h4>
           <RawCallPreview call={calldatas[0]} />
-        </div>
+        </div> */}
       </TabsContent>
     </Tabs>
   )

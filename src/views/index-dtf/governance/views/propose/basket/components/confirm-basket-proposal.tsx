@@ -11,8 +11,8 @@ import {
   priceMapAtom,
   proposalDescriptionAtom,
 } from '../atoms'
-import BasketProposalPreview from './proposal-basket-preview'
 import { basketProposalCalldatasAtom } from '../legacy-atoms'
+import RebalancePreview from '@/views/index-dtf/governance/components/proposal-preview/rebalance-preview'
 
 const ProposalDescription = () => {
   const setDescription = useSetAtom(proposalDescriptionAtom)
@@ -32,29 +32,13 @@ const ProposalDescription = () => {
   )
 }
 
-const ProposalPreview = () => {
-  const calldatas = useAtomValue(basketProposalCalldatasAtom)
-  const basket = useAtomValue(indexDTFBasketAtom)
-  const shares = useAtomValue(indexDTFBasketSharesAtom)
-  const prices = useAtomValue(priceMapAtom)
-  const address = useAtomValue(iTokenAddressAtom)
-
-  return (
-    <BasketProposalPreview
-      calldatas={calldatas}
-      basket={basket}
-      shares={shares}
-      prices={prices}
-      address={address}
-    />
-  )
-}
-
 const ConfirmBasketProposal = () => {
+  const calldatas = useAtomValue(basketProposalCalldatasAtom)
+
   return (
     <div className="flex flex-col gap-1 bg-secondary rounded-3xl p-1">
       <ProposalDescription />
-      <ProposalPreview />
+      <RebalancePreview calldatas={calldatas} />
     </div>
   )
 }

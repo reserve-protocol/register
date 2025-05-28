@@ -42,7 +42,9 @@ const FolioChangePreview = ({
   return (
     <div>
       {!!basketChangeCalls.length && (
-        <RebalancePreview calldatas={basketChangeCalls} />
+        <RebalancePreview
+          calldatas={basketChangeCalls.map((call) => call.callData)}
+        />
       )}
       {!!restCalls.length && (
         <ContractProposalChanges
