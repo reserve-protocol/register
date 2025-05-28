@@ -1,7 +1,6 @@
 import { useERC20Balances } from '@/hooks/useERC20Balance'
 import useTokensInfo from '@/hooks/useTokensInfo'
 import { chainIdAtom, walletAtom } from '@/state/atoms'
-import { Token } from '@/types'
 import {
   OrderBookApi,
   OrderQuoteSideKindBuy,
@@ -27,12 +26,6 @@ import {
 import { useGlobalProtocolKit } from '../providers/GlobalProtocolKitProvider'
 import { QuoteProvider } from '../types'
 import { useFolioDetails } from './useFolioDetails'
-
-interface UseQuoteParams {
-  sellToken: Token
-  buyToken: Token
-  amount: bigint
-}
 
 async function getQuote({
   sellToken,
@@ -68,7 +61,7 @@ async function getQuote({
     buyToken,
     from: address,
     receiver: address,
-    validFor: 60 * 5, // 10 minutes
+    validFor: 60 * 10, // 10 minutes
     priceQuality: PriceQuality.VERIFIED,
     ...(operation === 'redeem'
       ? {
