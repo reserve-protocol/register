@@ -156,7 +156,9 @@ const PriceChart = (props: BoxProps) => {
             headers={[
               { key: 'timestamp', label: 'Timestamp' },
               { key: 'priceUSD', label: 'Price USD' },
-              { key: 'basketRate', label: 'Price ETH' },
+              ...(rToken?.targetUnits === 'ETH'
+                ? [{ key: 'basketRate', label: 'Price ETH' }]
+                : []),
             ]}
             rows={data?.token?.snapshots || []}
             filename={`${rToken?.symbol}-historical-price-${current}.csv`}
