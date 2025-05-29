@@ -149,8 +149,8 @@ const AreaChart = ({
       )}
       <Box
         variant="layout.verticalAlign"
-        mt={3}
-        sx={{ justifyContent: 'space-between' }}
+        mt={2}
+        sx={{ justifyContent: 'space-between', px: '1' }}
       >
         {!!options && currentRange && onRangeChange && (
           <TabMenu

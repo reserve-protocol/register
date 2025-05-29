@@ -15,6 +15,7 @@ import { formatPercentage, getUTCStartOfDay } from 'utils'
 import { ChainId } from 'utils/chains'
 import { TIME_RANGES } from 'utils/constants'
 import { formatEther } from 'viem'
+import ExportCSVButton from './ExportCSVButton'
 
 const historicalBasketsQuery = gql`
   query getHistoricalBaskets($id: String!) {
@@ -183,13 +184,16 @@ const APYChart = (props: BoxProps) => {
           }
         })
       })
-      .reduce((acc, curr) => {
-        if (!acc[curr.time]) {
-          acc[curr.time] = {}
-        }
-        acc[curr.time][curr.collateral as string] = curr.apy
-        return acc
-      }, {} as Record<string, Record<string, number>>)
+      .reduce(
+        (acc, curr) => {
+          if (!acc[curr.time]) {
+            acc[curr.time] = {}
+          }
+          acc[curr.time][curr.collateral as string] = curr.apy
+          return acc
+        },
+        {} as Record<string, Record<string, number>>
+      )
 
     const historicalBasketAPY = Object.entries(historicalAPYByDate)
       .map(([time, values]) => {
@@ -268,6 +272,17 @@ const APYChart = (props: BoxProps) => {
     [rows, fromTime, selectedOption]
   )
 
+  const csvFilteredRows = useMemo(
+    () =>
+      rows
+        .filter((e) => e.time / 1000 >= fromTime)
+        .map((e) => ({
+          timestamp: e.time,
+          apy: e[selectedOption],
+        })),
+    [rows, fromTime, selectedOption]
+  )
+
   const currentValue = useMemo(
     () =>
       filteredRows && filteredRows.length
@@ -289,15 +304,29 @@ const APYChart = (props: BoxProps) => {
       }}
       currentRange={current}
       onRangeChange={handleChange}
-      // moreActions={
-      //   <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
-      //     <TabMenu
-      //       items={APY_OPTIONS}
-      //       active={selectedOption}
-      //       onMenuChange={(key) => setSelectedOption(key as APYOptions)}
-      //     />
-      //   </Box>
-      // }
+      sx={{
+        backgroundColor: 'backgroundNested',
+        borderRadius: '16px',
+        border: '12px solid',
+        borderColor: 'backgroundNested',
+      }}
+      moreActions={
+        // <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
+        //   <TabMenu
+        //     items={APY_OPTIONS}
+        //     active={selectedOption}
+        //     onMenuChange={(key) => setSelectedOption(key as APYOptions)}
+        //   />
+        // </Box>
+        <ExportCSVButton
+          headers={[
+            { key: 'timestamp', label: 'Timestamp' },
+            { key: 'apy', label: 'APY' },
+          ]}
+          rows={csvFilteredRows || []}
+          filename={`${rToken?.symbol}-historical-apy-${current}.csv`}
+        />
+      }
       {...props}
     />
   )

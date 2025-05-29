@@ -12,6 +12,7 @@ import { rTokenPriceAtom } from 'state/atoms'
 import { Box, BoxProps } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { TIME_RANGES } from 'utils/constants'
+import ExportCSVButton from './ExportCSVButton'
 
 const hourlyPriceQuery = gql`
   query getTokenHourlyPrice($id: String!, $fromTime: Int!) {
@@ -136,16 +137,33 @@ const PriceChart = (props: BoxProps) => {
       domain={['auto', 'auto']}
       currentRange={current}
       onRangeChange={handleChange}
+      sx={{
+        backgroundColor: 'backgroundNested',
+        borderRadius: '16px',
+        border: '12px solid',
+        borderColor: 'backgroundNested',
+      }}
       moreActions={
-        rToken?.targetUnits === 'ETH' && (
-          <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
+        <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
+          {rToken?.targetUnits === 'ETH' && (
             <TabMenu
               items={PRICE_OPTIONS}
               active={currentPrice}
               onMenuChange={(key) => setCurrentPrice(key as 'ETH' | 'USD')}
             />
-          </Box>
-        )
+          )}
+          <ExportCSVButton
+            headers={[
+              { key: 'timestamp', label: 'Timestamp' },
+              { key: 'priceUSD', label: 'Price USD' },
+              ...(rToken?.targetUnits === 'ETH'
+                ? [{ key: 'basketRate', label: 'Price ETH' }]
+                : []),
+            ]}
+            rows={data?.token?.snapshots || []}
+            filename={`${rToken?.symbol}-historical-price-${current}.csv`}
+          />
+        </Box>
       }
       {...props}
     />
