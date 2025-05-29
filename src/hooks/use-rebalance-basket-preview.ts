@@ -104,7 +104,7 @@ export const useDecodedRebalanceCalldata = (
     try {
       const decodedCalldata = getDecodedCalldata(dtfIndexAbiV4, calldata[0])
 
-      if (decodedCalldata.signature !== 'rebalance') return undefined
+      if (decodedCalldata.signature !== 'startRebalance') return undefined
 
       const data = decodedCalldata.data as unknown as [
         Address[],
@@ -172,7 +172,7 @@ const useTokenPrices = (tokens: string[] | undefined, timestamp?: number) => {
   const chain = useAtomValue(chainIdAtom)
 
   return useQuery({
-    queryKey: ['asset-price-with-snapshot', tokens, chain, timestamp],
+    queryKey: ['asset-price-with-snapshot', tokens, chain, timestamp ?? ''],
     queryFn: async () => {
       if (!tokens) return {}
 
@@ -219,9 +219,9 @@ const useTokenPrices = (tokens: string[] | undefined, timestamp?: number) => {
               result[priceResult.address.toLowerCase()].currentPrice,
           }
         }
-
-        return result
       }
+
+      return result
     },
     enabled: Boolean(tokens?.length && chain),
   })
@@ -299,7 +299,7 @@ const useRebalanceBasketPreview = (
           snapshotPrice: prices[token].snapshotPrice,
           currentPrice: prices[token].currentPrice,
           currentWeight: currentWeights[token],
-          targetWeight,
+          targetWeight: Number(targetWeight).toFixed(2),
           targetWeightRaw: targetBasket[index],
           deltaWeight: Number(targetWeight) - Number(currentWeights[token]),
         }

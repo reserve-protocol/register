@@ -7,31 +7,26 @@ import {
   CollapsibleTrigger,
 } from '@/components/ui/collapsible'
 import { Skeleton } from '@/components/ui/skeleton'
-import {
-  Table,
-  TableRow,
-  TableHeader,
-  TableHead,
-  TableBody,
-  TableCell,
-} from '@/components/ui/table'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useAssetPrices } from '@/hooks/useAssetPrices'
 import useTokensInfo from '@/hooks/useTokensInfo'
 import { getBasketPortion } from '@/lib/index-rebalance/utils'
 import { cn } from '@/lib/utils'
-import { formatPercentage } from '@/utils'
 import { chainIdAtom } from '@/state/atoms'
 import { Token } from '@/types'
-import { shortenAddress } from '@/utils'
+import { formatPercentage } from '@/utils'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { useAtomValue } from 'jotai'
-import { ArrowUpRight, ArrowUpRightIcon, ChevronsUpDown } from 'lucide-react'
+import { ArrowUpRightIcon, ChevronsUpDown } from 'lucide-react'
 import { useMemo } from 'react'
-import { collapseAllNested, defaultStyles } from 'react-json-view-lite'
-import { JsonView } from 'react-json-view-lite'
+import {
+  collapseAllNested,
+  defaultStyles,
+  JsonView,
+} from 'react-json-view-lite'
 import { Link } from 'react-router-dom'
 import { Address, decodeFunctionData, Hex } from 'viem'
+import RebalanceBasketPreview from './rebalance-basket-preview'
 
 type Trade = {
   sell: Address
@@ -139,78 +134,6 @@ const Header = ({ address }: { address: Address }) => {
           Raw
         </TabsTrigger>
       </TabsList>
-    </div>
-  )
-}
-
-const BasketPreview = ({ basket }: { basket: EstimatedBasket | undefined }) => {
-  const chainId = useAtomValue(chainIdAtom)
-
-  if (!basket) return <Skeleton className="h-[200px]" />
-
-  return (
-    <div className="rounded-3xl bg-card overflow-auto">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="border-r">Token</TableHead>
-            <TableHead className="w-24 text-center">Current</TableHead>
-            <TableHead className="bg-primary/10 text-primary text-center font-bold w-24">
-              Expected
-            </TableHead>
-            <TableHead className="w-24 text-center">Delta</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {Object.entries(basket).map(([address, asset]) => (
-            <TableRow key={address}>
-              <TableCell className="border-r min-w-48">
-                <Link
-                  target="_blank"
-                  to={getExplorerLink(
-                    asset.token.address,
-                    chainId,
-                    ExplorerDataType.TOKEN
-                  )}
-                  className="flex items-center gap-2 cursor-pointer group"
-                >
-                  <TokenLogo
-                    size="xl"
-                    symbol={asset.token.symbol}
-                    address={asset.token.address}
-                    chain={chainId}
-                  />
-                  <div className="mr-auto">
-                    <h4 className="font-bold mb-1 group-hover:text-primary">
-                      {asset.token.symbol}
-                    </h4>
-                    <p className="text-sm text-legend">
-                      {shortenAddress(asset.token.address)}{' '}
-                      <ArrowUpRight size={14} className="inline" />
-                    </p>
-                  </div>
-                </Link>
-              </TableCell>
-              <TableCell className="text-center ">
-                {asset.currentShares}%
-              </TableCell>
-              <TableCell className="text-center bg-primary/10 text-primary font-bold">
-                {asset.targetShares}%
-              </TableCell>
-              <TableCell
-                className={cn('text-center', {
-                  'text-green-500': asset.delta > 0,
-                  'text-red-500': asset.delta < 0,
-                  'text-gray-500': asset.delta === 0,
-                })}
-              >
-                {asset.delta > 0 && '+'}
-                {formatPercentage(asset.delta)}
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
     </div>
   )
 }
@@ -604,7 +527,7 @@ const BasketProposalPreview = ({
     >
       <Header address={address ?? '0x'} />
       <TabsContent className="m-0" value={TABS.BASKET}>
-        <BasketPreview basket={basketProposalContext?.[0]} />
+        <RebalanceBasketPreview basket={basketProposalContext?.[0]} />
       </TabsContent>
       <TabsContent className="m-0" value={TABS.TRADES}>
         <TradesPreview trades={basketProposalContext?.[1]} />

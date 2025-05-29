@@ -17,6 +17,10 @@ import { Link } from 'react-router-dom'
 import { Address, Hex } from 'viem'
 import { RawCallsPreview } from '../raw-call-preview'
 import BasketProposalPreview from './legacy-basket-proposal-preview'
+import { useMemo } from 'react'
+import RebalanceBasketPreview, {
+  EstimatedBasket,
+} from './rebalance-basket-preview'
 
 const TABS = {
   SUMMARY: 'summary',
@@ -64,18 +68,31 @@ const RebalancePreview = ({
 }) => {
   const dtf = useAtomValue(indexDTFAtom)
   const rebalanceBasketPreview = useRebalanceBasketPreview(calldatas, timestamp)
+  const basket = useMemo(() => {
+    if (!rebalanceBasketPreview) return {}
+
+    return Object.values(rebalanceBasketPreview.basket).reduce((acc, asset) => {
+      acc[asset.token.address] = {
+        token: asset.token,
+        currentShares: asset.currentWeight,
+        targetShares: asset.targetWeight,
+        delta: asset.deltaWeight,
+      }
+      return acc
+    }, {} as EstimatedBasket)
+  }, [rebalanceBasketPreview])
 
   // TODO: Better loading skeleton!
   if (!dtf || !rebalanceBasketPreview) return <Skeleton className="h-80" />
 
   return (
     <Tabs
-      defaultValue="basket"
+      defaultValue={TABS.SUMMARY}
       className="flex flex-col gap-4 p-2 pt-4 rounded-3xl bg-background"
     >
       <Header address={dtf.id.toLowerCase() as Address} />
       <TabsContent className="m-0" value={TABS.SUMMARY}>
-        summary
+        <RebalanceBasketPreview basket={basket} />
       </TabsContent>
       <TabsContent className="m-0" value={TABS.RAW}>
         <RawCallsPreview calls={[rebalanceBasketPreview.decodedCalldata]} />

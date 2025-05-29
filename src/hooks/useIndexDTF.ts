@@ -27,6 +27,7 @@ type DTFQueryResponse = {
       votingPeriod: number
       proposalThreshold: number
       quorumNumerator: number
+      quorumDenominator: number
       timelock: {
         id: Address
         guardians: Address[]
@@ -40,6 +41,7 @@ type DTFQueryResponse = {
       votingPeriod: number
       proposalThreshold: number
       quorumNumerator: number
+      quorumDenominator: number
       timelock: {
         id: Address
         guardians: Address[]
@@ -74,6 +76,7 @@ type DTFQueryResponse = {
         votingPeriod: number
         proposalThreshold: number
         quorumNumerator: number
+        quorumDenominator: number
         timelock: {
           id: Address
           guardians: Address[]
@@ -125,6 +128,7 @@ const dtfQuery = gql`
         votingPeriod
         proposalThreshold
         quorumNumerator
+        quorumDenominator
         timelock {
           id
           guardians
@@ -138,6 +142,7 @@ const dtfQuery = gql`
         votingPeriod
         proposalThreshold
         quorumNumerator
+        quorumDenominator
         timelock {
           id
           guardians
@@ -172,6 +177,7 @@ const dtfQuery = gql`
           votingPeriod
           proposalThreshold
           quorumNumerator
+          quorumDenominator
           timelock {
             id
             guardians
@@ -232,11 +238,38 @@ const useIndexDTF = (address: string | undefined, chainId: number) => {
         auctionDelay: Number(dtf.auctionDelay),
         auctionLength: Number(dtf.auctionLength),
         feeRecipients: parseFeeRecipients(dtf.feeRecipients),
+        ownerGovernance: dtf.ownerGovernance
+          ? {
+              ...dtf.ownerGovernance,
+              quorum:
+                (dtf.ownerGovernance.quorumNumerator /
+                  dtf.ownerGovernance.quorumDenominator) *
+                100,
+            }
+          : undefined,
+        tradingGovernance: dtf.tradingGovernance
+          ? {
+              ...dtf.tradingGovernance,
+              quorum:
+                (dtf.tradingGovernance.quorumNumerator /
+                  dtf.tradingGovernance.quorumDenominator) *
+                100,
+            }
+          : undefined,
         stToken: dtf.stToken
           ? {
               ...dtf.stToken,
               rewardTokens:
                 dtf.stToken?.rewards.map((reward) => reward.rewardToken) || [],
+              governance: dtf.stToken.governance
+                ? {
+                    ...dtf.stToken.governance,
+                    quorum:
+                      (dtf.stToken.governance.quorumNumerator /
+                        dtf.stToken.governance.quorumDenominator) *
+                      100,
+                  }
+                : undefined,
             }
           : undefined,
       }
@@ -244,16 +277,28 @@ const useIndexDTF = (address: string | undefined, chainId: number) => {
       if (data.ownerGovernance) {
         data.ownerGovernance.proposalThreshold =
           data.ownerGovernance.proposalThreshold * 100
+        data.ownerGovernance.quorum =
+          (data.ownerGovernance.quorumNumerator /
+            data.ownerGovernance.quorumDenominator) *
+          100
       }
 
       if (data.tradingGovernance) {
         data.tradingGovernance.proposalThreshold =
           data.tradingGovernance.proposalThreshold * 100
+        data.tradingGovernance.quorum =
+          (data.tradingGovernance.quorumNumerator /
+            data.tradingGovernance.quorumDenominator) *
+          100
       }
 
       if (data.stToken?.governance) {
         data.stToken.governance.proposalThreshold =
           data.stToken.governance.proposalThreshold * 100
+        data.stToken.governance.quorum =
+          (data.stToken.governance.quorumNumerator /
+            data.stToken.governance.quorumDenominator) *
+          100
       }
 
       return data
