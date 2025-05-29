@@ -3,7 +3,7 @@ import Help from '@/components/ui/help'
 import { SlippageSelector } from '@/components/ui/swap'
 import { useAtom } from 'jotai'
 import { Wallet } from 'lucide-react'
-import { slippageAtom, useWalletBalanceAtom } from './atom'
+import { slippageAtom, applyWalletBalanceAtom } from './atom'
 
 const SettingsRowTitle = ({ title, help }: { title: string; help: string }) => (
   <div className="flex items-center gap-2 justify-between px-3">
@@ -14,7 +14,9 @@ const SettingsRowTitle = ({ title, help }: { title: string; help: string }) => (
 
 const Settings = () => {
   const [slippage, setSlippage] = useAtom(slippageAtom)
-  const [useWalletBalance, setUseWalletBalance] = useAtom(useWalletBalanceAtom)
+  const [applyWalletBalance, setApplyWalletBalance] = useAtom(
+    applyWalletBalanceAtom
+  )
 
   return (
     <div className="bg-background min-h-[306px] border-t border-border px-2 py-4 flex flex-col gap-4 rounded-b-2xl">
@@ -29,9 +31,11 @@ const Settings = () => {
             <div>Use wallet balance</div>
           </div>
           <Checkbox
-            checked={useWalletBalance}
+            checked={applyWalletBalance}
             onCheckedChange={(checked) =>
-              setUseWalletBalance(checked === 'indeterminate' ? true : checked)
+              setApplyWalletBalance(
+                checked === 'indeterminate' ? true : checked
+              )
             }
           />
         </div>

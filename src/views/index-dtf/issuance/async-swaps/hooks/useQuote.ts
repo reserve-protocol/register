@@ -22,6 +22,7 @@ import {
   redeemAssetsAtom,
   refetchQuotesAtom,
   selectedTokenAtom,
+  applyWalletBalanceAtom,
 } from '../atom'
 import { useGlobalProtocolKit } from '../providers/GlobalProtocolKitProvider'
 import { QuoteProvider } from '../types'
@@ -92,6 +93,7 @@ export const useQuotesForMint = () => {
   const folioAmount = parseEther(mintValue.toString())
   const address = useAtomValue(walletAtom)
   const insufficientBalance = useAtomValue(insufficientBalanceAtom)
+  const applyWalletBalance = useAtomValue(applyWalletBalanceAtom)
   const [quotes, setQuotes] = useAtom(quotesAtom)
   const setRefetchQuotes = useSetAtom(refetchQuotesAtom)
   const setFetchingQuotes = useSetAtom(fetchingQuotesAtom)
@@ -120,7 +122,9 @@ export const useQuotesForMint = () => {
         folioDetails?.assets.map(async (asset, i) => {
           const token = tokensInfo[asset.toLowerCase()]
           const mintValue = folioDetails?.mintValues[i]
-          const walletValue = (balances?.[i] as bigint) ?? 0n
+          const walletValue = applyWalletBalance
+            ? ((balances?.[i] as bigint) ?? 0n)
+            : 0n
           const amount = mintValue - walletValue
 
           if (amount <= 0n || token.address === selectedToken.address) {

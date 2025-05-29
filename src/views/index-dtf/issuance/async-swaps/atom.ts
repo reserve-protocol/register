@@ -22,7 +22,7 @@ export const asyncSwapResponseAtom = atom<AsyncSwapOrderResponse | undefined>(
   undefined
 )
 export const slippageAtom = atom<string>('100')
-export const useWalletBalanceAtom = atom<boolean>(true)
+export const applyWalletBalanceAtom = atom<boolean>(true)
 // export const ordersAtom = atom<Record<string, EnrichedOrder>>({})
 
 export const refetchQuotesAtom = atom<{ fn: () => void }>({ fn: () => {} })
