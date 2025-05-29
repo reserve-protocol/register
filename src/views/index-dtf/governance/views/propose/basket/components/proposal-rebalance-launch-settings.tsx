@@ -10,13 +10,13 @@ import {
   auctionLauncherWindowAtom,
   customAuctionLauncherWindowAtom,
   customPermissionlessLaunchingWindowAtom,
-  isSingletonRebalanceAtom,
   permissionlessLaunchingAtom,
   permissionlessLaunchingWindowAtom,
   stepAtom,
   tradeRangeOptionAtom,
+  isDeferAvailableAtom,
 } from '../atoms'
-import { isDeferAvailableAtom } from '../legacy-atoms'
+import { isSingletonRebalanceAtom } from '@/state/dtf/atoms'
 
 export enum PermissionOptionId {
   NO_PERMISSIONLESS_LAUNCHING = 0,

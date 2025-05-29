@@ -1,18 +1,12 @@
 import ProposalDescriptionForm from '@/components/governance/proposal-description-form'
-import {
-  indexDTFBasketAtom,
-  indexDTFBasketSharesAtom,
-  iTokenAddressAtom,
-} from '@/state/dtf/atoms'
+import RebalancePreview from '@/views/index-dtf/governance/components/proposal-preview/rebalance-preview'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import {
   isProposalConfirmedAtom,
-  priceMapAtom,
   proposalDescriptionAtom,
+  basketProposalCalldatasAtom,
 } from '../atoms'
-import { basketProposalCalldatasAtom } from '../legacy-atoms'
-import RebalancePreview from '@/views/index-dtf/governance/components/proposal-preview/rebalance-preview'
 
 const ProposalDescription = () => {
   const setDescription = useSetAtom(proposalDescriptionAtom)

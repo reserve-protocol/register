@@ -7,9 +7,13 @@ import { chainIdAtom } from '@/state/atoms'
 import { Token } from '@/types'
 import { formatPercentage } from '@/utils'
 import { atom, useAtom, useAtomValue } from 'jotai'
-import { priceMapAtom, proposedIndexBasketAtom } from '../atoms'
+import {
+  priceMapAtom,
+  proposedIndexBasketAtom,
+  proposedIndexTradesAtom,
+  tradeVolatilityAtom,
+} from '../atoms'
 import { iTokenAddressAtom } from '@/state/dtf/atoms'
-import { proposedIndexTradesAtom, tradeVolatilityAtom } from '../legacy-atoms'
 
 type ProposedTradeWithMeta = Auction & {
   index: number

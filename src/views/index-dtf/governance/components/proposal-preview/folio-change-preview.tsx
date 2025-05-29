@@ -7,9 +7,11 @@ import RebalancePreview from './rebalance-preview'
 const FolioChangePreview = ({
   decodedCalldata,
   address,
+  timestamp,
 }: {
   decodedCalldata: DecodedCalldata[]
   address: Address
+  timestamp?: number
 }) => {
   const { basketChangeCalls, restCalls } = useMemo(() => {
     return decodedCalldata.reduce(
@@ -44,6 +46,7 @@ const FolioChangePreview = ({
       {!!basketChangeCalls.length && (
         <RebalancePreview
           calldatas={basketChangeCalls.map((call) => call.callData)}
+          timestamp={timestamp}
         />
       )}
       {!!restCalls.length && (

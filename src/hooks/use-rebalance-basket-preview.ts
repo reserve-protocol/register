@@ -2,6 +2,7 @@ import dtfIndexAbiV4 from '@/abis/dtf-index-abi-v4'
 import { getTargetBasket } from '@/lib/index-rebalance-4.0.0/open-auction'
 import { chainIdAtom } from '@/state/atoms'
 import {
+  indexDTFAtom,
   indexDTFBasketAtom,
   indexDTFBasketSharesAtom,
   indexDTFRebalanceControlAtom,
@@ -223,6 +224,29 @@ const useTokenPrices = (tokens: string[] | undefined, timestamp?: number) => {
       }
     },
     enabled: Boolean(tokens?.length && chain),
+  })
+}
+
+const useDTFBasketWeights = (timestamp?: number) => {
+  const dtf = useAtomValue(indexDTFAtom)
+  const chainId = useAtomValue(chainIdAtom)
+  const currentWeights = useAtomValue(indexDTFBasketSharesAtom)
+
+  return useQuery({
+    queryKey: ['dtf-basket-weights', dtf, chainId, timestamp, currentWeights],
+    queryFn: async () => {
+      if (!dtf) return {}
+
+      const from = Number(timestamp) - 1 * 60 * 60
+      const to = Number(timestamp) + 1 * 60 * 60
+      const historical = `${RESERVE_API}historical/dtf?chainId=${chainId}&address=${dtf}&from=${from}&to=${to}&interval=1h`
+      const response = await fetch(historical).then((res) => res.json())
+
+      console.log('response', response)
+
+      return response
+    },
+    enabled: Boolean(dtf && Object.keys(currentWeights).length),
   })
 }
 

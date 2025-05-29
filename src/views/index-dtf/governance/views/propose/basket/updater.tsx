@@ -11,7 +11,7 @@ import { useQuery } from '@tanstack/react-query'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useMemo } from 'react'
 import { formatUnits, parseEther } from 'viem'
-import { useReadContracts } from 'wagmi'
+import { useReadContract, useReadContracts } from 'wagmi'
 import {
   dtfSupplyAtom,
   IndexAssetShares,
@@ -23,13 +23,11 @@ import {
   proposedUnitsAtom,
   stepAtom,
   tradeRangeOptionAtom,
-} from './atoms'
-import { PermissionOptionId } from './components/proposal-rebalance-launch-settings'
-import {
   dtfTradeDelay,
   isDeferAvailableAtom,
   tradeVolatilityAtom,
-} from './legacy-atoms'
+} from './atoms'
+import { PermissionOptionId } from './components/proposal-rebalance-launch-settings'
 
 const PRICES_BASE_URL = `${RESERVE_API}current/prices?tokens=`
 
@@ -102,24 +100,29 @@ const BasketPriceUpdater = () => {
 }
 
 const useInitialBasket = ():
-  | [bigint, Record<string, IndexAssetShares>, Record<string, number>, bigint]
+  | [
+      bigint,
+      Record<string, IndexAssetShares>,
+      Record<string, number>,
+      bigint | undefined,
+    ]
   | undefined => {
   const dtfAddress = useAtomValue(iTokenAddressAtom)
   const basket = useAtomValue(indexDTFBasketAtom)
   const shares = useAtomValue(indexDTFBasketSharesAtom)
   const chainId = useAtomValue(chainIdAtom)
+  const { data: tradeDelay } = useReadContract({
+    address: dtfAddress,
+    abi: dtfIndexAbi,
+    functionName: 'auctionDelay',
+    chainId,
+  })
   const { data } = useReadContracts({
     contracts: [
       {
         address: dtfAddress,
         abi: dtfIndexAbi,
         functionName: 'totalSupply',
-        chainId,
-      },
-      {
-        address: dtfAddress,
-        abi: dtfIndexAbi,
-        functionName: 'auctionDelay',
         chainId,
       },
       {
@@ -133,7 +136,7 @@ const useInitialBasket = ():
     allowFailure: false,
     query: {
       select: (data) => {
-        const [totalSupply, tradeDelay, assetDistribution] = data
+        const [totalSupply, assetDistribution] = data
         const [assets, amounts] = assetDistribution
         const distribution = assets.reduce(
           (acc, asset, index) => {
@@ -143,11 +146,7 @@ const useInitialBasket = ():
           {} as Record<string, bigint>
         )
 
-        return [totalSupply, tradeDelay, distribution] as [
-          bigint,
-          bigint,
-          Record<string, bigint>,
-        ]
+        return [totalSupply, distribution] as [bigint, Record<string, bigint>]
       },
     },
   })
@@ -159,7 +158,7 @@ const useInitialBasket = ():
     if (Object.keys(priceMap).length === 0 || !data || !basket?.length)
       return undefined
 
-    const [totalSupply, tradeDelay, distribution] = data
+    const [totalSupply, distribution] = data
 
     // Create a copy so the value doesn't mutate!
     const initialBasket = basket.reduce(
@@ -178,7 +177,7 @@ const useInitialBasket = ():
     )
 
     return [totalSupply, initialBasket, priceMap, tradeDelay]
-  }, [Object.keys(priceMap).length, !!data, basket?.length])
+  }, [Object.keys(priceMap).length, !!data, basket?.length, tradeDelay])
 }
 
 const InitialBasketUpdater = () => {
@@ -205,7 +204,7 @@ const InitialBasketUpdater = () => {
       )
       setProposedBasket(basket)
       setSupply(totalSupply)
-      setTradeDelay(tradeDelay)
+
       setProposedUnits(
         Object.values(basket).reduce(
           (acc, asset) => {
@@ -215,6 +214,11 @@ const InitialBasketUpdater = () => {
           {} as Record<string, string>
         )
       )
+
+      // @deprecated - only required for 1.0/2.0 rebalance flow
+      if (tradeDelay) {
+        setTradeDelay(tradeDelay)
+      }
     }
   }, [!!initialBasket])
 

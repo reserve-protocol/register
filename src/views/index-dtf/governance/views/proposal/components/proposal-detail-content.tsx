@@ -1,5 +1,4 @@
 import { Skeleton } from '@/components/ui/skeleton'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useAtomValue } from 'jotai'
 import { lazy, Suspense } from 'react'
 import GovernanceProposalPreview from '../../../components/governance-proposal-preview'
@@ -54,6 +53,7 @@ const ProposalChanges = () => {
       <GovernanceProposalPreview
         targets={proposal?.targets}
         calldatas={proposal?.calldatas}
+        timestamp={proposal?.creationTime}
       />
     </div>
   )

@@ -1,20 +1,19 @@
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { cn } from '@/lib/utils'
-import { indexDTFVersionAtom } from '@/state/dtf/atoms'
+import { isSingletonRebalanceAtom } from '@/state/dtf/atoms'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { AlignCenterVertical, Crown } from 'lucide-react'
 import { ReactNode } from 'react'
 import {
-  isSingletonRebalanceAtom,
+  isDeferAvailableAtom,
   priceVolatilityAtom,
   stepAtom,
   tradeRangeOptionAtom,
   TradeRangeOption as TradeRangeOptionType,
 } from '../atoms'
-import { isDeferAvailableAtom } from '../legacy-atoms'
 import LegacyProposalAuctionPriceRanges from './legacy-proposal-auction-price-ranges'
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 
 type PriceSettingsOptionProps = {
   title: string

@@ -9,9 +9,8 @@ import { memo, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Address } from 'viem'
 import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
-import { proposalDescriptionAtom } from '../atoms'
+import { proposalDescriptionAtom, basketProposalCalldatasAtom } from '../atoms'
 import { useIsProposeAllowed } from '@/views/index-dtf/governance/hooks/use-is-propose-allowed'
-import { basketProposalCalldatasAtom } from '../legacy-atoms'
 
 const isProposalReady = atom((get) => {
   const wallet = get(walletAtom)
