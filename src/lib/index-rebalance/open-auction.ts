@@ -1,6 +1,6 @@
 import { Decimal } from 'decimal.js-light'
 
-import { bn, D18d, D27d, ONE, TWO } from './numbers'
+import { bn, D27d, ONE, TWO } from './numbers'
 import { Auction } from './types'
 
 /**
@@ -53,17 +53,6 @@ export const openAuction = (
 
   // {1}
   const priceError = _priceError.map((a) => new Decimal(a))
-
-  // {wholeShare}
-  const supply = new Decimal(_supply.toString()).div(D18d)
-
-  // {1} = D18{1} / D18
-  const targetBasket = _targetBasket.map((a) =>
-    new Decimal(a.toString()).div(D18d)
-  )
-
-  // {USD} = {USD/wholeShare} * {wholeShare}
-  const sharesValue = new Decimal(_dtfPrice).mul(supply)
 
   // ====
 
@@ -129,53 +118,13 @@ export const openAuction = (
     endPrice = initialPrices.end
   }
 
-  // calculate sellLimit/buyLimit
+  // pass-through original sellLimit/buyLimits
 
-  // {wholeTok/wholeShare} = {1} * {USD} / {USD/wholeTok} / {wholeShare}
-  const wholeSellLimit = targetBasket[x]
-    .mul(sharesValue)
-    .div(prices[x])
-    .div(supply)
-  const wholeBuyLimit = targetBasket[y]
-    .mul(sharesValue)
-    .div(prices[y])
-    .div(supply)
+  const sellLimit = auction.sellLimit.spot
+  const buyLimit = ejectFully ? auction.buyLimit.high : auction.buyLimit.spot
 
-  // D27{tok/share} = {wholeTok/wholeShare} * D27 * {tok/wholeTok} / {share/wholeShare}
-  let sellLimit = bn(
-    wholeSellLimit
-      .mul(D27d)
-      .mul(new Decimal(`1e${decimals[x]}`))
-      .div(D18d)
-  )
-
-  let buyLimit = bn(
-    wholeBuyLimit
-      .mul(D27d)
-      .mul(new Decimal(`1e${decimals[y]}`))
-      .div(D18d)
-  )
-
-  if (sellLimit < auction.sellLimit.low) {
-    sellLimit = auction.sellLimit.low
-  }
-  if (sellLimit > auction.sellLimit.high) {
-    sellLimit = auction.sellLimit.high
-  }
-  if (buyLimit < auction.buyLimit.low) {
-    buyLimit = auction.buyLimit.low
-  }
-  if ((sellLimit == 0n && ejectFully) || buyLimit > auction.buyLimit.high) {
-    buyLimit = auction.buyLimit.high
-  }
-
-  console.log(
-    'sellLimit',
-    auction.sellLimit.low,
-    sellLimit,
-    auction.sellLimit.high
-  )
-  console.log('buyLimit', auction.buyLimit.low, buyLimit, auction.buyLimit.high)
+  console.log('sellLimit', sellLimit)
+  console.log('buyLimit', buyLimit)
 
   return [sellLimit, buyLimit, startPrice, endPrice]
 }
