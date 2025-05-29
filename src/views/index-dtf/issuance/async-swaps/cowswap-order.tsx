@@ -39,22 +39,20 @@ const OrderStatus = ({
       {STATUS_MAP[status] === 'Order Filled' && (
         <Check size={16} className="text-primary" />
       )}
+      {STATUS_MAP[status] === 'Processing' && (
+        <Loader size={16} className="animate-spin-slow" />
+      )}
       {STATUS_MAP[status]}
       {STATUS_MAP[status] === 'Not Filled' && (
         <Help content="The order failed to fill. Please try again." size={16} />
       )}
-      {STATUS_MAP[status] === 'Order Filled' && (
-        <Link
-          to={`https://explorer.cow.fi/base/orders/${orderId}`}
-          target="_blank"
-          className="p-1 bg-muted dark:bg-white/5 rounded-full text-gray-700 ml-1"
-        >
-          <ArrowUpRight size={16} />
-        </Link>
-      )}
-      {STATUS_MAP[status] === 'Processing' && (
-        <Loader size={16} className="animate-spin-slow" />
-      )}
+      <Link
+        to={`https://explorer.cow.fi/base/orders/${orderId}`}
+        target="_blank"
+        className="p-1 bg-muted dark:bg-white/5 rounded-full text-gray-700 ml-1"
+      >
+        <ArrowUpRight size={16} />
+      </Link>
     </div>
   )
 }
