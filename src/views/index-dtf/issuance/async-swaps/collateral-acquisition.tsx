@@ -8,6 +8,7 @@ import { useEffect, useMemo, useState } from 'react'
 import {
   asyncSwapResponseAtom,
   failedOrdersAtom,
+  hasAllCollateralsAtom,
   openCollateralPanelAtom,
   operationAtom,
   pendingOrdersAtom,
@@ -85,6 +86,12 @@ const CollateralAcquisition = () => {
   const setSuccess = useSetAtom(successAtom)
   const failedOrders = useAtomValue(failedOrdersAtom)
   const pendingOrders = useAtomValue(pendingOrdersAtom)
+  const hasAllCollaterals = useAtomValue(hasAllCollateralsAtom)
+
+  const refreshQuotes = useMemo(
+    () => failedOrders.length > 0 && pendingOrders.length === 0,
+    [failedOrders, pendingOrders]
+  )
 
   useEffect(() => {
     if (!asyncSwapResponse?.createdAt) return
@@ -99,27 +106,13 @@ const CollateralAcquisition = () => {
     return () => clearInterval(interval)
   }, [asyncSwapResponse?.createdAt])
 
-  if (!asyncSwapResponse) return null
-
-  const refreshQuotes = useMemo(
-    () => failedOrders.length > 0 && pendingOrders.length === 0,
-    [failedOrders, pendingOrders]
-  )
-
-  const hasAllCollaterals = useMemo(
-    () =>
-      asyncSwapResponse.cowswapOrders.length > 0 &&
-      asyncSwapResponse.cowswapOrders.every(
-        (order) => order.status === OrderStatus.FULFILLED
-      ),
-    [asyncSwapResponse.cowswapOrders]
-  )
-
   useEffect(() => {
     if (hasAllCollaterals && operation === 'redeem') {
       setSuccess(true)
     }
   }, [hasAllCollaterals, setSuccess, operation])
+
+  if (!asyncSwapResponse) return null
 
   if (hasAllCollaterals && operation === 'mint') {
     return (

@@ -12,6 +12,7 @@ import { useAtom, useAtomValue } from 'jotai'
 import {
   asyncSwapResponseAtom,
   collateralAcquiredAtom,
+  hasAllCollateralsAtom,
   isMintingAtom,
   mintValueAtom,
   mintValueUSDAtom,
@@ -22,6 +23,7 @@ import {
 import CollateralAcquisition from '../collateral-acquisition'
 import { useQuotesForMint } from '../hooks/useQuote'
 import SubmitMint from './submit-mint-orders'
+import Details from '../details'
 
 const AsyncMint = () => {
   const chainId = useAtomValue(chainIdAtom)
@@ -38,6 +40,7 @@ const AsyncMint = () => {
   const orderSubmitted = !!asyncSwapResponse
   const amountOut = useAtomValue(mintValueAtom)
   const amountOutValue = useAtomValue(mintValueUSDAtom)
+  const hasAllCollaterals = useAtomValue(hasAllCollateralsAtom)
 
   const { isLoading, isFetching } = useQuotesForMint()
 
@@ -95,6 +98,7 @@ const AsyncMint = () => {
       >
         {!orderSubmitted && <SubmitMint loadingQuote={awaitingQuote} />}
         {orderSubmitted && <CollateralAcquisition />}
+        {!hasAllCollaterals && <Details />}
       </div>
     </div>
   )

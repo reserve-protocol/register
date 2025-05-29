@@ -37,6 +37,7 @@ import {
   quotesAtom,
 } from './atom'
 import CowSwapOrder from './cowswap-order'
+import Details from './details'
 
 const viewTransactionsAtom = atom<boolean>(false)
 
@@ -240,7 +241,12 @@ const USDCAmount = () => {
           </span>
         )}
       </div>
-      {operation === 'mint' && <BufferInfo />}
+      {operation === 'mint' && (
+        <div>
+          <BufferInfo />
+          <Details />
+        </div>
+      )}
     </div>
   )
 }

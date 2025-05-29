@@ -118,3 +118,14 @@ export const pendingOrdersAtom = atom<AsyncSwapOrderResponse['cowswapOrders']>(
     )
   }
 )
+
+export const hasAllCollateralsAtom = atom<boolean>((get) => {
+  const asyncSwapResponse = get(asyncSwapResponseAtom)
+  if (!asyncSwapResponse) return false
+  return (
+    asyncSwapResponse?.cowswapOrders.length > 0 &&
+    asyncSwapResponse?.cowswapOrders.every(
+      (order) => order.status === OrderStatus.FULFILLED
+    )
+  )
+})
