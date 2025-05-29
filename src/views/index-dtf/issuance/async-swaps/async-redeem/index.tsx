@@ -78,8 +78,8 @@ const AsyncRedeem = () => {
   const asyncSwapResponse = useAtomValue(asyncSwapResponseAtom)
   const collateralAcquired = useAtomValue(collateralAcquiredAtom)
   const orderSubmitted = !!asyncSwapResponse
-  const amountOut = useAtomValue(mintValueAtom)
-  const amountOutValue = useAtomValue(mintValueUSDAtom)
+  const amountOut = inputPrice
+  const amountOutValue = inputPrice
   const redeemAssets = useAtomValue(redeemAssetsAtom)
 
   const { isLoading, isFetching } = useQuotesForRedeem()

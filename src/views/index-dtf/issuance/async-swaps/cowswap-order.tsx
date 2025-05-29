@@ -11,6 +11,7 @@ import { formatUnits } from 'viem'
 import { operationAtom } from './atom'
 import { useOrderStatus } from './hooks/useOrderStatus'
 import { Skeleton } from '@/components/ui/skeleton'
+import { useMemo } from 'react'
 
 const STATUS_MAP: Record<CowSwapOrderStatus, string> = {
   [CowSwapOrderStatus.PRESIGNATURE_PENDING]: 'Processing',
@@ -62,6 +63,20 @@ const CowSwapOrder = ({ orderId }: { orderId: string }) => {
   const operation = useAtomValue(operationAtom)
   const indexDTFBasket = useAtomValue(indexDTFBasketAtom)
 
+  const { token, firstAmount, secondAmount } = useMemo(() => {
+    return operation === 'redeem'
+      ? {
+          token: data?.sellToken,
+          firstAmount: data?.sellAmount,
+          secondAmount: data?.buyAmount,
+        }
+      : {
+          token: data?.buyToken,
+          firstAmount: data?.buyAmount,
+          secondAmount: data?.sellAmount,
+        }
+  }, [data, operation])
+
   return (
     <div
       className="flex items-center justify-between gap-2 border-b border-border py-4 last:border-b-0"
@@ -69,54 +84,35 @@ const CowSwapOrder = ({ orderId }: { orderId: string }) => {
     >
       <div className="flex items-center gap-2">
         <TokenLogo
-          address={data?.buyToken}
+          address={token}
           symbol={
-            indexDTFBasket?.find((token) => token.address === data?.buyToken)
-              ?.symbol || ''
+            indexDTFBasket?.find((t) => t.address === token)?.symbol || ''
           }
           size="xl"
         />
         <div className="flex flex-col">
-          {data?.sellAmount ? (
+          {secondAmount ? (
             <div className="text-sm font-semibold">
               {operation === 'mint' ? '-' : '+'}{' '}
-              {formatCurrency(
-                Number(
-                  formatUnits(
-                    BigInt(
-                      operation === 'mint' ? data.sellAmount : data.buyAmount
-                    ),
-                    6
-                  )
-                )
-              )}{' '}
+              {formatCurrency(Number(formatUnits(BigInt(secondAmount), 6)))}{' '}
               USDC
             </div>
           ) : (
             <Skeleton className="w-24 h-3 mb-1" />
           )}
-          {data?.buyAmount ? (
+          {firstAmount ? (
             <div className="text-sm text-primary">
               {operation === 'mint' ? '+' : '-'}{' '}
               {formatTokenAmount(
                 Number(
                   formatUnits(
-                    BigInt(
-                      operation === 'mint' ? data.buyAmount : data.sellAmount
-                    ),
-                    indexDTFBasket?.find(
-                      (token) =>
-                        token.address ===
-                        (operation === 'mint' ? data.buyToken : data.sellToken)
-                    )?.decimals || 18
+                    BigInt(firstAmount),
+                    indexDTFBasket?.find((t) => t.address === token)
+                      ?.decimals || 18
                   )
                 )
               )}{' '}
-              {indexDTFBasket?.find(
-                (token) =>
-                  token.address ===
-                  (operation === 'mint' ? data.buyToken : data.sellToken)
-              )?.symbol || ''}
+              {indexDTFBasket?.find((t) => t.address === token)?.symbol || ''}
             </div>
           ) : (
             <Skeleton className="w-24 h-3" />
