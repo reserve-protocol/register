@@ -174,14 +174,25 @@ const DTFAmount = () => {
 const USDCReceivedOnRedeem = () => {
   const asyncSwapResponse = useAtomValue(asyncSwapResponseAtom)
   const selectedToken = useAtomValue(selectedTokenAtom)
+  const assetsRedeemed = useAtomValue(redeemAssetsAtom)
   const { cowswapOrders = [] } = asyncSwapResponse || {}
 
-  const amountOut = cowswapOrders.reduce(
-    (acc, order) =>
-      acc +
-      Number(formatUnits(BigInt(order.buyAmount), selectedToken.decimals)),
-    0
-  )
+  const notSwappedAssets =
+    Number(
+      formatUnits(
+        assetsRedeemed[selectedToken.address] || 0n,
+        selectedToken.decimals
+      )
+    ) || 0
+
+  const amountOut =
+    notSwappedAssets +
+    cowswapOrders.reduce(
+      (acc, order) =>
+        acc +
+        Number(formatUnits(BigInt(order.buyAmount), selectedToken.decimals)),
+      0
+    )
   return <span>{formatCurrency(amountOut)}</span>
 }
 
@@ -224,7 +235,7 @@ const USDCAmount = () => {
           </span>
         )}
         {operation === 'mint' && (
-          <span className="text-muted-foreground line-through">
+          <span className="text-muted-foreground line-through ml-1">
             ${formatCurrency(Number(inputAmount))}
           </span>
         )}

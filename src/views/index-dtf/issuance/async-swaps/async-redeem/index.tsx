@@ -13,14 +13,13 @@ import {
 } from '@/state/dtf/atoms'
 import { formatCurrencyCompact } from '@/utils'
 import { useAtom, useAtomValue } from 'jotai'
+import { useMemo } from 'react'
 import { formatEther } from 'viem'
 import {
   asyncSwapResponseAtom,
   collateralAcquiredAtom,
   indexDTFBalanceAtom,
   isMintingAtom,
-  mintValueAtom,
-  mintValueUSDAtom,
   redeemAssetsAtom,
   selectedTokenAtom,
   userInputAtom,
@@ -29,7 +28,6 @@ import CollateralAcquisition from '../collateral-acquisition'
 import { useQuotesForRedeem } from '../hooks/useQuote'
 import SubmitRedeem from './submit-redeem'
 import SubmitRedeemOrders from './submit-redeem-orders'
-import { useMemo } from 'react'
 
 const CustomInputBox = () => {
   const indexDTF = useAtomValue(indexDTFAtom)

@@ -123,7 +123,7 @@ export const useQuotesForMint = () => {
           const walletValue = (balances?.[i] as bigint) ?? 0n
           const amount = mintValue - walletValue
 
-          if (amount <= 0n) {
+          if (amount <= 0n || token.address === selectedToken.address) {
             console.log(asset, 'already has enough balance')
             return null
           }
@@ -232,6 +232,11 @@ export const useQuotesForRedeem = () => {
         assets.map(async (asset) => {
           const token = tokensInfo[asset.toLowerCase()]
           const amount = redeemAssets[asset as Address]
+
+          if (token.address === selectedToken.address) {
+            console.log(asset, 'no need to redeem')
+            return null
+          }
 
           try {
             return await getQuote({
