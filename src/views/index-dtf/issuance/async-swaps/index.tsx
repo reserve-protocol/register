@@ -9,7 +9,6 @@ import { ArrowLeft, Settings } from 'lucide-react'
 import { useEffect } from 'react'
 import useTrackIndexDTFPage from '../../hooks/useTrackIndexDTFPage'
 import RefreshQuote from '../../overview/components/zap-mint/refresh-quote'
-import ZapSettings from '../../overview/components/zap-mint/zap-settings'
 import Updater from '../manual/updater'
 import AsyncMint from './async-mint'
 import AsyncRedeem from './async-redeem'
@@ -28,17 +27,18 @@ import Collaterals, { showCollateralsAtom } from './collaterals'
 import GnosisSafeRequired from './gnosis-safe-required'
 import { GlobalProtocolKitProvider } from './providers/GlobalProtocolKitProvider'
 import Success from './success'
+import Config from './settings'
 
 function Content() {
   const showSettings = useAtomValue(showSettingsAtom)
   const showCollaterals = useAtomValue(showCollateralsAtom)
 
   return (
-    <div id="parent" className="flex flex-1">
-      <div
-        id="child-1"
-        className={cn('flex-1', showSettings ? 'hidden' : 'opacity-100')}
-      >
+    <div
+      id="parent"
+      className={cn('flex flex-1', showSettings ? 'hidden' : 'opacity-100')}
+    >
+      <div id="child-1">
         <div className="flex flex-col gap-1 sm:w-[420px] h-full">
           <TabsContent value="mint" className="mt-1">
             <AsyncMint />
@@ -75,13 +75,15 @@ const Header = () => {
   return (
     <div className="flex justify-between gap-2">
       {showSettings ? (
-        <Button
-          variant="outline"
-          className="h-[34px] px-2 rounded-xl"
-          onClick={() => setShowSettings(false)}
-        >
-          <ArrowLeft size={16} />
-        </Button>
+        <div className="bg-background p-1.5 rounded-2xl">
+          <Button
+            variant="outline"
+            className="h-[34px] px-2 rounded-xl"
+            onClick={() => setShowSettings(false)}
+          >
+            <ArrowLeft size={16} />
+          </Button>
+        </div>
       ) : (
         <>
           <div className="bg-background p-2 rounded-3xl">
@@ -188,8 +190,8 @@ const AsyncSwaps = () => {
             <Header />
 
             {showSettings && (
-              <div className="mt-2">
-                <ZapSettings />
+              <div className="mt-1">
+                <Config />
               </div>
             )}
 
