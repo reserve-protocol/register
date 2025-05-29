@@ -192,7 +192,7 @@ const TransactionsTable = () => {
       pagination
       sorting
       columns={columns}
-      sx={{ borderRadius: '0 0 20px 20px' }}
+      sx={{ borderRadius: '20px 20px 20px 20px', pt: '20px' }}
       data={data?.entries || []}
     />
   )

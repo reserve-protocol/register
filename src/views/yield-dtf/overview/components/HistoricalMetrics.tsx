@@ -20,7 +20,7 @@ const HistoricalMetrics = () => (
         <Trans>Historical metrics</Trans>
       </Text>
     </Box>
-    <Card mt="5">
+    <Card mt="5" p="1">
       <Suspense fallback={<Skeleton count={3} height={160} />}>
         <Charts />
       </Suspense>
