@@ -11,6 +11,7 @@ import { Address } from 'viem'
 import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
 import { basketProposalCalldatasAtom, proposalDescriptionAtom } from '../atoms'
 import { useIsProposeAllowed } from '@/views/index-dtf/governance/hooks/use-is-propose-allowed'
+import { indexDTFRefreshFnAtom } from '@/views/index-dtf/index-dtf-container'
 
 const isProposalReady = atom((get) => {
   const wallet = get(walletAtom)
@@ -49,6 +50,7 @@ const SubmitProposalButton = () => {
   const calldatas = useAtomValue(basketProposalCalldatasAtom)
   const dtf = useAtomValue(iTokenAddressAtom)
   const govAddress = useAtomValue(tradingGovAddress)
+  const refreshFn = useAtomValue(indexDTFRefreshFnAtom)
 
   const { writeContract, isPending, data } = useWriteContract()
   const { isSuccess } = useWaitForTransactionReceipt({
@@ -60,6 +62,7 @@ const SubmitProposalButton = () => {
     if (isSuccess) {
       // Give some time for the proposal to be created on the subgraph
       setTimeout(() => {
+        refreshFn?.()
         navigate(`../${ROUTES.GOVERNANCE}`)
       }, 10000) // TODO: who knows if this works well!!! they can just refresh the page
     }

@@ -152,7 +152,7 @@ const SubmitLockButton = () => {
         setStakingSidebarOpen(false)
         setPortfolioSidebarOpen(true)
         setIsProcessing(false)
-      }, 5000) // 5 seconds delay
+      }, 10000) // 10 seconds delay
 
       return () => clearTimeout(timer)
     }
