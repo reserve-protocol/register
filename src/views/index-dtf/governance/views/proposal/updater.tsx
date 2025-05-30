@@ -1,5 +1,5 @@
-import { useAtom, useSetAtom } from 'jotai'
-import { useEffect } from 'react'
+import { atom, useAtom, useSetAtom } from 'jotai'
+import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { accountVotesAtom, proposalDetailAtom } from './atom'
 import useProposalDetail from './hooks/use-proposal-detail'
@@ -15,7 +15,9 @@ const FINALIZED_PROPOSAL_STATES = [
   PROPOSAL_STATES.QUORUM_NOT_REACHED,
 ]
 
-const Updater = () => {
+export const proposalRefreshFnAtom = atom<(() => void) | null>(null)
+
+const ProposalUpdater = () => {
   const { proposalId } = useParams()
   const { data: proposalDetail, error } = useProposalDetail(proposalId)
   const accountVotes = useVoterState()
@@ -60,6 +62,25 @@ const Updater = () => {
   }, [proposal?.state])
 
   return null
+}
+
+const Updater = () => {
+  const [key, setKey] = useState(0)
+  const setRefreshFn = useSetAtom(proposalRefreshFnAtom)
+
+  const refreshProposal = () => {
+    setKey((k) => k + 1)
+  }
+
+  useEffect(() => {
+    setRefreshFn(() => refreshProposal)
+  }, [])
+
+  return (
+    <div key={key}>
+      <ProposalUpdater />
+    </div>
+  )
 }
 
 export default Updater

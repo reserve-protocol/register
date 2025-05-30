@@ -61,10 +61,12 @@ const SubmitProposalButton = () => {
   useEffect(() => {
     if (isSuccess) {
       // Give some time for the proposal to be created on the subgraph
-      setTimeout(() => {
+      const timer = setTimeout(() => {
         refreshFn?.()
         navigate(`../${ROUTES.GOVERNANCE}`)
       }, 10000) // TODO: who knows if this works well!!! they can just refresh the page
+
+      return () => clearTimeout(timer)
     }
   }, [isSuccess])
 
