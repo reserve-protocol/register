@@ -5,7 +5,7 @@ import { walletAtom } from '@/state/atoms'
 import { portfolioSidebarOpenAtom } from '@/views/portfolio/atoms'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { parseUnits } from 'viem'
 import { useWaitForTransactionReceipt } from 'wagmi'
 import {
@@ -21,12 +21,13 @@ const SubmitUnlockButton = () => {
   const stToken = useAtomValue(stTokenAtom)!
   const input = useAtomValue(stakingInputAtom)
   const balance = useAtomValue(unlockBalanceRawAtom)
-  const amountToUnlock = parseUnits(input, stToken.token.decimals)
+  const amountToUnlock = parseUnits(input, stToken?.token.decimals)
   const unlockDelay = useAtomValue(unlockDelayAtom)
   const resetInput = useResetAtom(stakingInputAtom)
   const setPortfolioSidebarOpen = useSetAtom(portfolioSidebarOpenAtom)
   const setStakingSidebarOpen = useSetAtom(stakingSidebarOpenAtom)
-  const chainId = stToken.chainId
+  const chainId = stToken?.chainId
+  const [isProcessing, setIsProcessing] = useState(false)
 
   const readyToSubmit =
     !!account && !!balance && amountToUnlock > 0n && amountToUnlock <= balance
@@ -37,7 +38,7 @@ const SubmitUnlockButton = () => {
         ? {
             abi: dtfIndexStakingVault,
             functionName: 'withdraw',
-            address: stToken.id,
+            address: stToken?.id,
             args: [amountToUnlock, account, account],
             query: { enabled: readyToSubmit },
             chainId,
@@ -52,11 +53,17 @@ const SubmitUnlockButton = () => {
 
   useEffect(() => {
     if (receipt?.status === 'success') {
-      resetInput()
-      setStakingSidebarOpen(false)
-      setPortfolioSidebarOpen(true)
+      setIsProcessing(true)
+      const timer = setTimeout(() => {
+        resetInput()
+        setStakingSidebarOpen(false)
+        setPortfolioSidebarOpen(true)
+        setIsProcessing(false)
+      }, 5000) // 5 seconds delay
+
+      return () => clearTimeout(timer)
     }
-  }, [receipt])
+  }, [receipt, resetInput, setStakingSidebarOpen, setPortfolioSidebarOpen])
 
   return (
     <div>
@@ -64,8 +71,17 @@ const SubmitUnlockButton = () => {
         chain={chainId}
         disabled={receipt?.status === 'success' || !readyToSubmit || !isReady}
         gas={gas}
-        loading={!receipt && (isLoading || !!hash || (hash && !receipt))}
-        loadingText={!!hash ? 'Confirming tx...' : 'Pending, sign in wallet'}
+        loading={
+          isProcessing ||
+          (!receipt && (isLoading || !!hash || (hash && !receipt)))
+        }
+        loadingText={
+          isProcessing
+            ? 'Processing transaction...'
+            : !!hash
+              ? 'Confirming tx...'
+              : 'Pending, sign in wallet'
+        }
         onClick={write}
         text={
           receipt?.status === 'success'
