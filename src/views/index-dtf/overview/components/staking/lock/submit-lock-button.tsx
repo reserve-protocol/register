@@ -5,14 +5,8 @@ import { walletAtom } from '@/state/atoms'
 import { portfolioSidebarOpenAtom } from '@/views/portfolio/atoms'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
-import { useEffect } from 'react'
-import {
-  Address,
-  erc20Abi,
-  getAddress,
-  isAddress,
-  parseUnits,
-} from 'viem'
+import { useEffect, useState } from 'react'
+import { Address, erc20Abi, getAddress, isAddress, parseUnits } from 'viem'
 import { useReadContract, useWaitForTransactionReceipt } from 'wagmi'
 import {
   currentDelegateAtom,
@@ -28,7 +22,7 @@ export const DelegateButton = () => {
   const account = useAtomValue(walletAtom)
   const stToken = useAtomValue(stTokenAtom)!
   const delegate = useAtomValue(delegateAtom)
-  const chainId = stToken.chainId
+  const chainId = stToken?.chainId
   const isValidDelegate = isAddress(delegate, { strict: false })
   const setCurrentDelegate = useSetAtom(currentDelegateAtom)
 
@@ -36,7 +30,7 @@ export const DelegateButton = () => {
     useContractWrite({
       abi: dtfIndexStakingVault,
       functionName: 'delegate',
-      address: stToken.id,
+      address: stToken?.id,
       args: [isValidDelegate ? getAddress(delegate) : account!],
       chainId,
       query: { enabled: !!account && isValidDelegate },
@@ -62,7 +56,7 @@ export const DelegateButton = () => {
         loading={isLoading || !!hash || (hash && !receipt)}
         loadingText={!!hash ? 'Confirming tx...' : 'Pending, sign in wallet'}
         onClick={write}
-        text={`Delegate ${stToken.underlying.symbol}`}
+        text={`Delegate ${stToken?.underlying.symbol}`}
         fullWidth
         error={validationError || error || txError}
       />
@@ -75,13 +69,14 @@ const SubmitLockButton = () => {
   const stToken = useAtomValue(stTokenAtom)!
   const input = useAtomValue(stakingInputAtom)
   const balance = useAtomValue(underlyingBalanceAtom)
-  const amountToLock = parseUnits(input, stToken.underlying.decimals)
+  const amountToLock = parseUnits(input, stToken?.underlying.decimals)
   const checkbox = useAtomValue(lockCheckboxAtom)
   const delegate = useAtomValue(delegateAtom)
   const resetInput = useResetAtom(stakingInputAtom)
   const setPortfolioSidebarOpen = useSetAtom(portfolioSidebarOpenAtom)
   const setStakingSidebarOpen = useSetAtom(stakingSidebarOpenAtom)
-  const chainId = stToken.chainId
+  const chainId = stToken?.chainId
+  const [isProcessing, setIsProcessing] = useState(false)
 
   const isValidDelegate = isAddress(delegate, { strict: false })
   const isSelfDelegate = delegate === account
@@ -93,8 +88,8 @@ const SubmitLockButton = () => {
   } = useReadContract({
     abi: erc20Abi,
     functionName: 'allowance',
-    address: stToken.underlying.address,
-    args: [account!, stToken.id],
+    address: stToken?.underlying.address,
+    args: [account!, stToken?.id],
     chainId,
     query: { enabled: !!account && isValidDelegate },
   })
@@ -111,9 +106,9 @@ const SubmitLockButton = () => {
     validationError: approvalValidationError,
   } = useContractWrite({
     abi: erc20Abi,
-    address: stToken.underlying.address,
+    address: stToken?.underlying.address,
     functionName: 'approve',
-    args: [stToken.id, amountToLock],
+    args: [stToken?.id, amountToLock],
     chainId,
     query: {
       enabled:
@@ -136,7 +131,7 @@ const SubmitLockButton = () => {
     useContractWrite({
       abi: dtfIndexStakingVault,
       functionName: isSelfDelegate ? 'depositAndDelegate' : 'deposit',
-      address: stToken.id,
+      address: stToken?.id,
       args: isSelfDelegate
         ? [amountToLock]
         : [amountToLock, account as Address],
@@ -151,11 +146,17 @@ const SubmitLockButton = () => {
 
   useEffect(() => {
     if (receipt?.status === 'success') {
-      resetInput()
-      setStakingSidebarOpen(false)
-      setPortfolioSidebarOpen(true)
+      setIsProcessing(true)
+      const timer = setTimeout(() => {
+        resetInput()
+        setStakingSidebarOpen(false)
+        setPortfolioSidebarOpen(true)
+        setIsProcessing(false)
+      }, 5000) // 5 seconds delay
+
+      return () => clearTimeout(timer)
     }
-  }, [receipt])
+  }, [receipt, resetInput, setStakingSidebarOpen, setPortfolioSidebarOpen])
 
   return (
     <div>
@@ -170,22 +171,29 @@ const SubmitLockButton = () => {
         }
         gas={readyToSubmit ? gas : approvalGas}
         loading={
-          !receipt &&
-          (readyToSubmit
-            ? isLoading || !!hash || (hash && !receipt)
-            : approving ||
-              !!approvalHash ||
-              validatingAllowance ||
-              (approvalHash && !approvalReceipt))
+          isProcessing ||
+          (!receipt &&
+            (readyToSubmit
+              ? isLoading || !!hash || (hash && !receipt)
+              : approving ||
+                !!approvalHash ||
+                validatingAllowance ||
+                (approvalHash && !approvalReceipt)))
         }
-        loadingText={!!hash ? 'Confirming tx...' : 'Pending, sign in wallet'}
+        loadingText={
+          isProcessing
+            ? 'Processing transaction...'
+            : !!hash
+              ? 'Confirming tx...'
+              : 'Pending, sign in wallet'
+        }
         onClick={readyToSubmit ? write : approve}
         text={
           receipt?.status === 'success'
             ? 'Transaction confirmed'
             : readyToSubmit
-              ? `Vote lock ${stToken.underlying.symbol}`
-              : `Approve use of ${stToken.underlying.symbol}`
+              ? `Vote lock ${stToken?.underlying.symbol}`
+              : `Approve use of ${stToken?.underlying.symbol}`
         }
         fullWidth
         error={
