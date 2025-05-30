@@ -4,6 +4,7 @@ import Timelock from 'abis/Timelock'
 import useContractWrite from 'hooks/useContractWrite'
 import useWatchTransaction from 'hooks/useWatchTransaction'
 import { atom, useAtomValue } from 'jotai'
+import { useEffect, useState } from 'react'
 import { rTokenGovernanceAtom, walletAtom } from 'state/atoms'
 import {
   encodeAbiParameters,
@@ -13,6 +14,7 @@ import {
 } from 'viem'
 import { useReadContract } from 'wagmi'
 import { proposalDetailAtom } from '../atom'
+import { proposalRefreshFnAtom } from '../updater'
 
 const timelockIdAtom = atom((get) => {
   const proposal = get(proposalDetailAtom)
@@ -39,6 +41,8 @@ const ProposalCancel = () => {
   const account = useAtomValue(walletAtom)
   const proposal = useAtomValue(proposalDetailAtom)
   const deadline = proposal?.votingState.deadline
+  const refreshFn = useAtomValue(proposalRefreshFnAtom)
+  const [isProcessing, setIsProcessing] = useState(false)
 
   const { data: canCancel } = useReadContract({
     address: governance.timelock,
@@ -60,17 +64,29 @@ const ProposalCancel = () => {
     label: 'Proposal canceled',
   })
 
+  useEffect(() => {
+    if (status === 'success') {
+      setIsProcessing(true)
+      const timer = setTimeout(() => {
+        refreshFn?.()
+        setIsProcessing(false)
+      }, 10000)
+
+      return () => clearTimeout(timer)
+    }
+  }, [status])
+
   if (!deadline || deadline <= 0) return null
 
   return (
     <TransactionButton
       variant="danger"
       small
-      loading={isMining || isLoading}
+      loading={isProcessing || isMining || isLoading}
       mining={isMining}
       disabled={!isReady || !canCancel || status === 'success'}
       onClick={write}
-      text={t`Cancel proposal`}
+      text={isProcessing ? 'Processing...' : t`Cancel proposal`}
       sx={{
         height: '44px',
         bg: 'transparent',

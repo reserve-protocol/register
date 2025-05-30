@@ -184,7 +184,7 @@ const ProposalListItem = ({ proposal }: { proposal: PartialProposal }) => {
 const ProposalList = () => {
   const data = useAtomValue(governanceProposalsAtom)
 
-  if (!data) return <Skeleton className="h-[520px] w-full m-1 rounded-3xl" />
+  if (!data) return <Skeleton className="h-[520px] m-1 rounded-3xl" />
 
   return (
     <ScrollArea className="md:max-h-[520px] bg-card overflow-y-auto rounded-3xl m-1 mt-0">
