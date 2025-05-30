@@ -4,7 +4,7 @@ import { Address, Hex } from 'viem'
 import { dtfContractAliasAtom } from './proposal-preview/atoms'
 import ContractProposalChanges from './proposal-preview/contract-proposal-changes'
 import FolioChangePreview from './proposal-preview/folio-change-preview'
-import useDecodedCalldatas from './proposal-preview/use-decoded-call-datas'
+import useDecodedCalldatas from '../../../../hooks/use-decoded-call-datas'
 import UnknownContractPreview from './proposal-preview/unknown-contract-preview'
 
 /**
@@ -16,6 +16,7 @@ import UnknownContractPreview from './proposal-preview/unknown-contract-preview'
  * 2. Known contract interactions (displayed with ContractProposalChanges)
  * 3. Unknown contract interactions (displayed with UnknownContractPreview)
  *
+ * @param timestamp - the timestamp when the proposal was created, undefined if is proposal preview
  * The component uses decoded calldata to present a human-readable representation of the
  * on-chain actions that would be executed if the proposal passes.
  */
@@ -23,9 +24,11 @@ import UnknownContractPreview from './proposal-preview/unknown-contract-preview'
 const GovernanceProposalPreview = ({
   targets,
   calldatas,
+  timestamp,
 }: {
   targets: Address[] | undefined
   calldatas: Hex[] | undefined
+  timestamp?: number
 }) => {
   const alias = useAtomValue(dtfContractAliasAtom)
   const [dataByContract, unknownContracts] = useDecodedCalldatas(
@@ -45,6 +48,7 @@ const GovernanceProposalPreview = ({
             key={`folio-${contract}`}
             decodedCalldata={decodedCalldatas}
             address={contract as Address}
+            timestamp={timestamp}
           />
         ) : (
           <ContractProposalChanges

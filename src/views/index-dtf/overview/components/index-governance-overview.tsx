@@ -71,8 +71,8 @@ const OpenLockDrawerButton = forwardRef<
     >
       <TokenLogo
         size="xl"
-        symbol={dtf.stToken?.underlying.symbol}
-        address={dtf.stToken?.underlying.address ?? 'Unknown'}
+        symbol={dtf.stToken?.underlying?.symbol ?? ''}
+        address={dtf.stToken?.underlying?.address ?? 'Unknown'}
         chain={chainId}
       />
       <h4 className="font-bold mr-auto text-primary">
@@ -131,8 +131,8 @@ const IndexGovernanceOverview = () => {
       <div className="p-2 pb-0">
         <p className="text-legend">
           ${dtf.token.symbol} is governed by the $
-          {dtf.stToken?.underlying.symbol} token.{' '}
-          {dtf.stToken?.underlying.symbol} holders must vote-lock their tokens
+          {dtf.stToken?.underlying?.symbol} token.{' '}
+          {dtf.stToken?.underlying?.symbol} holders must vote-lock their tokens
           to become a governor of the ${dtf.token.symbol}. Governors can propose
           changes to the basket and vote on proposal by other governors. In
           exchange for locking their tokens and participating in governance,

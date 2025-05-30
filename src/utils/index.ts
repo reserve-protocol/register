@@ -353,3 +353,30 @@ export const max = (...args: bigint[]): bigint => {
 
   return args.reduce((max, curr) => (curr > max ? curr : max), 0n)
 }
+
+// Check if the current version is greater than or equal to the required version
+export const checkVersion = (
+  requiredVersion: string,
+  currentVersion: string
+): boolean => {
+  const requiredVersionParts = requiredVersion.split('.').map(Number)
+  const currentVersionParts = currentVersion.split('.').map(Number)
+
+  for (
+    let i = 0;
+    i < Math.max(requiredVersionParts.length, currentVersionParts.length);
+    i++
+  ) {
+    const required = requiredVersionParts[i] || 0
+    const current = currentVersionParts[i] || 0
+
+    if (required > current) {
+      return false
+    }
+    if (current > required) {
+      return true
+    }
+  }
+
+  return true
+}

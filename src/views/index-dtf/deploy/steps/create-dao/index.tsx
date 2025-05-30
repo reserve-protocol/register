@@ -67,7 +67,7 @@ const CreateDAO = () => {
     const votingDelay = (formData.governanceVotingDelay || 0) * 86400
     const votingPeriod = (formData.governanceVotingPeriod || 0) * 86400
     const votingThreshold = (formData.governanceVotingThreshold || 0) / 100
-    const votingQuorum = formData.governanceVotingQuorum || 0
+    const quorumThreshold = (formData.governanceVotingQuorum || 0) / 100
     const executionDelay = (formData.governanceExecutionDelay || 0) * 86400
     const guardians = formData.guardians.filter(Boolean)
 
@@ -83,7 +83,7 @@ const CreateDAO = () => {
           votingDelay: votingDelay,
           votingPeriod: votingPeriod,
           proposalThreshold: parseEther(votingThreshold.toString()),
-          quorumPercent: BigInt(Math.floor(votingQuorum)),
+          quorumThreshold: parseEther(quorumThreshold.toString()),
           timelockDelay: BigInt(Math.floor(executionDelay)),
           guardians,
         },

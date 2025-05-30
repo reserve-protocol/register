@@ -1,18 +1,21 @@
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { cn } from '@/lib/utils'
+import { isSingletonRebalanceAtom } from '@/state/dtf/atoms'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { AlignCenterVertical, Crown } from 'lucide-react'
+import { ReactNode } from 'react'
 import {
   isDeferAvailableAtom,
+  priceVolatilityAtom,
   stepAtom,
   tradeRangeOptionAtom,
   TradeRangeOption as TradeRangeOptionType,
 } from '../atoms'
-import ProposalTradesSetup from './proposal-trades-setup'
-import { ReactNode } from 'react'
+import LegacyProposalAuctionPriceRanges from './legacy-proposal-auction-price-ranges'
 
-type TradeRangeOptionProps = {
+type PriceSettingsOptionProps = {
   title: string
   description: string
   icon: ReactNode
@@ -22,14 +25,14 @@ type TradeRangeOptionProps = {
   onClick: () => void
 }
 
-const TradeRangeOption = ({
+const PriceSettingsOption = ({
   title,
   description,
   icon,
   disabled,
   checked,
   onClick,
-}: TradeRangeOptionProps) => (
+}: PriceSettingsOptionProps) => (
   <div
     role="button"
     className={cn(
@@ -73,14 +76,6 @@ const NextButton = () => {
   )
 }
 
-const TradesSetup = () => {
-  const option = useAtomValue(tradeRangeOptionAtom)
-
-  if (option !== 'include') return null
-
-  return <ProposalTradesSetup />
-}
-
 export const TradeRangeTriggerLabel = () => {
   const option = useAtomValue(tradeRangeOptionAtom)
 
@@ -102,7 +97,57 @@ export const TradeRangeTriggerLabel = () => {
   )
 }
 
-const ProposalTradingRanges = () => {
+const VOLATILITY_OPTIONS = ['Low', 'Medium', 'High']
+
+const RebalancePriceVolatility = () => {
+  const [priceVolatility, setPriceVolatility] = useAtom(priceVolatilityAtom)
+
+  return (
+    <div className="flex flex-col justify-center gap-3 rounded-xl bg-foreground/5 p-4">
+      <div>
+        <h4 className="font-semibold text-primary">Auction Price Volatility</h4>
+        <div className="">
+          Specify the expected price volatility for the auction. This will be
+          used to set the price range for the auction.
+        </div>
+      </div>
+      <div className="flex items-center gap-2">
+        <ToggleGroup
+          type="single"
+          className="bg-muted-foreground/10 p-1 rounded-xl justify-start flex-grow"
+          value={priceVolatility}
+          onValueChange={(value) => {
+            if (value) {
+              setPriceVolatility(value)
+            }
+          }}
+        >
+          {VOLATILITY_OPTIONS.map((option) => (
+            <ToggleGroupItem
+              key={option}
+              value={option}
+              className="px-5 h-8 whitespace-nowrap rounded-lg data-[state=on]:bg-card text-secondary-foreground/80 data-[state=on]:text-primary flex-grow"
+            >
+              {option}
+            </ToggleGroupItem>
+          ))}
+        </ToggleGroup>
+      </div>
+    </div>
+  )
+}
+
+const RebalancePriceSettings = () => {
+  const option = useAtomValue(tradeRangeOptionAtom)
+  const isSingletonRebalance = useAtomValue(isSingletonRebalanceAtom)
+
+  if (option !== 'include') return null
+  if (!isSingletonRebalance) return <LegacyProposalAuctionPriceRanges />
+
+  return <RebalancePriceVolatility />
+}
+
+const ProposalPriceRanges = () => {
   const isDeferAvailable = useAtomValue(isDeferAvailableAtom)
   const [option, setOption] = useAtom(tradeRangeOptionAtom)
 
@@ -114,7 +159,7 @@ const ProposalTradingRanges = () => {
         bounds.
       </p>
       <div className="flex flex-col gap-2 mx-2">
-        <TradeRangeOption
+        <PriceSettingsOption
           title="Defer to Auction Launcher"
           description="Rely solely on the Auction Launcher to provide accurate pricing information when swapping assets. This option increases the amount of damage from mistakes or a rogue Auction Launcher."
           icon={<Crown size={16} strokeWidth={1.5} />}
@@ -123,19 +168,19 @@ const ProposalTradingRanges = () => {
           onClick={() => setOption('defer')}
           checked={option === 'defer'}
         />
-        <TradeRangeOption
+        <PriceSettingsOption
           title="Set Price Range(s)"
-          description="Set guardrails for the auction launcher by specifying the expected price volatility (low, medium, or high) for each auction. "
+          description="Set guardrails for the auction launcher by specifying the expected price volatility (low, medium, or high)"
           icon={<AlignCenterVertical size={16} strokeWidth={1.5} />}
           value="include"
           onClick={() => setOption('include')}
           checked={option === 'include'}
         />
-        <TradesSetup />
+        <RebalancePriceSettings />
         <NextButton />
       </div>
     </>
   )
 }
 
-export default ProposalTradingRanges
+export default ProposalPriceRanges
