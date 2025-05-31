@@ -1,6 +1,6 @@
 import { Decimal } from 'decimal.js-light'
 
-import { bn, D27d, ONE, TWO } from './numbers'
+import { bn, D18d, D27d, ONE, TWO } from './numbers'
 import { Auction } from './types'
 
 /**
@@ -53,6 +53,17 @@ export const openAuction = (
 
   // {1}
   const priceError = _priceError.map((a) => new Decimal(a))
+
+  // {wholeShare}
+  const supply = new Decimal(_supply.toString()).div(D18d)
+
+  // {1} = D18{1} / D18
+  const targetBasket = _targetBasket.map((a) =>
+    new Decimal(a.toString()).div(D18d)
+  )
+
+  // {USD} = {USD/wholeShare} * {wholeShare}
+  const sharesValue = new Decimal(_dtfPrice).mul(supply)
 
   // ====
 
@@ -118,10 +129,31 @@ export const openAuction = (
     endPrice = initialPrices.end
   }
 
-  // pass-through original sellLimit/buyLimits
+  // calculate sellLimit/buyLimit
+
+  // {wholeTok/wholeShare} = {1} * {USD} / {USD/wholeTok} / {wholeShare}
+  const wholeBuyLimit = targetBasket[y]
+    .mul(sharesValue)
+    .div(prices[y])
+    .div(supply)
+
+  // D27{tok/share} = {wholeTok/wholeShare} * D27 * {tok/wholeTok} / {share/wholeShare}
+  let buyLimit = bn(
+    wholeBuyLimit
+      .mul(D27d)
+      .mul(new Decimal(`1e${decimals[y]}`))
+      .div(D18d)
+  )
+
+  if (buyLimit < auction.buyLimit.low) {
+    buyLimit = auction.buyLimit.low
+  } else if (buyLimit > auction.buyLimit.spot) {
+    buyLimit = auction.buyLimit.spot
+  } else if (ejectFully) {
+    buyLimit = auction.buyLimit.high
+  }
 
   const sellLimit = auction.sellLimit.spot
-  const buyLimit = ejectFully ? auction.buyLimit.high : auction.buyLimit.spot
 
   console.log('sellLimit', sellLimit)
   console.log('buyLimit', buyLimit)
