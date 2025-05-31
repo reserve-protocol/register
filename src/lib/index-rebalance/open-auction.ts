@@ -147,9 +147,8 @@ export const openAuction = (
 
   if (buyLimit < auction.buyLimit.low) {
     buyLimit = auction.buyLimit.low
-  } else if (buyLimit > auction.buyLimit.spot) {
-    buyLimit = auction.buyLimit.spot
-  } else if (ejectFully) {
+  }
+  if (ejectFully || buyLimit > auction.buyLimit.high) {
     buyLimit = auction.buyLimit.high
   }
 
