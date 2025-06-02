@@ -20,12 +20,12 @@ import { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { Step, stepAtom, stepStateAtom, advancedControlsAtom } from '../atoms'
 import ProposalBasketSetup from './proposal-basket-setup'
-import ProposalTradingExpiration, {
+import ProposalRebalanceLaunchSettings, {
   TradingExpirationTriggerLabel,
-} from './proposal-trading-expiration'
+} from './proposal-rebalance-launch-settings'
 import ProposalTradingRanges, {
   TradeRangeTriggerLabel,
-} from './proposal-trading-ranges'
+} from './proposal-basket-price-settings'
 import { ROUTES } from '@/utils/constants'
 
 export type ProposalStep = {
@@ -36,40 +36,6 @@ export type ProposalStep = {
   content: ReactNode
   triggerLabel?: ReactNode
 }
-
-interface ProposalStepTrigger
-  extends Omit<ProposalStep, 'content' | 'titleSecondary'> {
-  advanced?: boolean
-}
-
-const PROPOSAL_SETTINGS: ProposalStep[] = [
-  {
-    id: 'basket',
-    icon: <Boxes size={16} strokeWidth={1.5} />,
-    title: 'Set basket composition',
-    titleSecondary: 'Basket Composition',
-    content: <ProposalBasketSetup />,
-  },
-]
-
-const ADVANCED_CONTROLS: ProposalStep[] = [
-  {
-    id: 'prices',
-    icon: <AlignCenterVertical size={16} strokeWidth={1.5} />,
-    title: 'Price Settings',
-    titleSecondary: 'Price Settings',
-    content: <ProposalTradingRanges />,
-    triggerLabel: <TradeRangeTriggerLabel />,
-  },
-  {
-    id: 'expiration',
-    icon: <Sunrise size={16} strokeWidth={1.5} />,
-    title: 'Launch Settings',
-    titleSecondary: 'Launch Settings',
-    content: <ProposalTradingExpiration />,
-    triggerLabel: <TradingExpirationTriggerLabel />,
-  },
-]
 
 const StepTrigger = ({
   id,
@@ -134,10 +100,83 @@ const StepTrigger = ({
   )
 }
 
-// TODO: A lot of these components could be shared, don't worry at this point
-const BasketProposalSteps = () => {
-  const [step, setStep] = useAtom(stepAtom)
+const ADVANCED_CONTROLS: ProposalStep[] = [
+  {
+    id: 'prices',
+    icon: <AlignCenterVertical size={16} strokeWidth={1.5} />,
+    title: 'Price Settings',
+    titleSecondary: 'Price Settings',
+    content: <ProposalTradingRanges />,
+    triggerLabel: <TradeRangeTriggerLabel />,
+  },
+  {
+    id: 'expiration',
+    icon: <Sunrise size={16} strokeWidth={1.5} />,
+    title: 'Launch Settings',
+    titleSecondary: 'Launch Settings',
+    content: <ProposalRebalanceLaunchSettings />,
+    triggerLabel: <TradingExpirationTriggerLabel />,
+  },
+]
+
+const AdvancedControls = () => {
   const advancedControls = useAtomValue(advancedControlsAtom)
+
+  if (!advancedControls) return null
+
+  return (
+    <div>
+      <div className="flex justify-center items-center gap-4 py-3 px-3">
+        <div className="flex-grow h-[1px] bg-muted-foreground/10" />
+        <div className="text-base font-bold">Advanced Controls</div>
+        <div className="flex-grow h-[1px] bg-muted-foreground/10" />
+      </div>
+
+      {ADVANCED_CONTROLS.map(
+        ({ id, icon, title, titleSecondary, content, triggerLabel }) => (
+          <AccordionItem
+            key={id}
+            value={id}
+            className="rounded-3xl bg-card m-1 border-none"
+          >
+            <StepTrigger
+              id={id}
+              icon={icon}
+              title={title}
+              triggerLabel={triggerLabel}
+              advanced
+            />
+            <AccordionContent className="flex flex-col animate-fade-in">
+              <h2 className="text-xl  sm:text-2xl font-bold text-primary mx-4 sm:mx-6 mb-2">
+                {titleSecondary}
+              </h2>
+              {content}
+            </AccordionContent>
+          </AccordionItem>
+        )
+      )}
+    </div>
+  )
+}
+
+interface ProposalStepTrigger
+  extends Omit<ProposalStep, 'content' | 'titleSecondary'> {
+  advanced?: boolean
+}
+
+const PROPOSAL_SETTINGS: ProposalStep[] = [
+  {
+    id: 'basket',
+    icon: <Boxes size={16} strokeWidth={1.5} />,
+    title: 'Set basket composition',
+    titleSecondary: 'Basket Composition',
+    content: <ProposalBasketSetup />,
+  },
+]
+
+// TODO: A lot of these components could be shared, don't worry at this point
+const BasketProposal = () => {
+  const [step, setStep] = useAtom(stepAtom)
 
   return (
     <Accordion
@@ -173,41 +212,9 @@ const BasketProposalSteps = () => {
           </AccordionContent>
         </AccordionItem>
       ))}
-      {advancedControls && (
-        <>
-          <div className="flex justify-center items-center gap-4 py-3 px-3">
-            <div className="flex-grow h-[1px] bg-muted-foreground/10" />
-            <div className="text-base font-bold">Advanced Controls</div>
-            <div className="flex-grow h-[1px] bg-muted-foreground/10" />
-          </div>
-
-          {ADVANCED_CONTROLS.map(
-            ({ id, icon, title, titleSecondary, content, triggerLabel }) => (
-              <AccordionItem
-                key={id}
-                value={id}
-                className="rounded-3xl bg-card m-1 border-none"
-              >
-                <StepTrigger
-                  id={id}
-                  icon={icon}
-                  title={title}
-                  triggerLabel={triggerLabel}
-                  advanced
-                />
-                <AccordionContent className="flex flex-col animate-fade-in">
-                  <h2 className="text-xl  sm:text-2xl font-bold text-primary mx-4 sm:mx-6 mb-2">
-                    {titleSecondary}
-                  </h2>
-                  {content}
-                </AccordionContent>
-              </AccordionItem>
-            )
-          )}
-        </>
-      )}
+      <AdvancedControls />
     </Accordion>
   )
 }
 
-export default BasketProposalSteps
+export default BasketProposal
