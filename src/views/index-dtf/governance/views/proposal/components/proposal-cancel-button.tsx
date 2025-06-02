@@ -3,8 +3,8 @@ import { t } from '@lingui/macro'
 import Timelock from 'abis/Timelock'
 import useContractWrite from 'hooks/useContractWrite'
 import useWatchTransaction from 'hooks/useWatchTransaction'
-import { atom, useAtomValue } from 'jotai'
-import { useEffect, useState } from 'react'
+import { atom, useAtom, useAtomValue } from 'jotai'
+import { useEffect } from 'react'
 import { rTokenGovernanceAtom, walletAtom } from 'state/atoms'
 import {
   encodeAbiParameters,
@@ -14,7 +14,7 @@ import {
 } from 'viem'
 import { useReadContract } from 'wagmi'
 import { proposalDetailAtom } from '../atom'
-import { proposalRefreshFnAtom } from '../updater'
+import { PROPOSAL_STATES } from '@/utils/constants'
 
 const timelockIdAtom = atom((get) => {
   const proposal = get(proposalDetailAtom)
@@ -39,10 +39,8 @@ const ProposalCancel = () => {
   const governance = useAtomValue(rTokenGovernanceAtom)
   const timelockId = useAtomValue(timelockIdAtom)
   const account = useAtomValue(walletAtom)
-  const proposal = useAtomValue(proposalDetailAtom)
+  const [proposal, setProposal] = useAtom(proposalDetailAtom)
   const deadline = proposal?.votingState.deadline
-  const refreshFn = useAtomValue(proposalRefreshFnAtom)
-  const [isProcessing, setIsProcessing] = useState(false)
 
   const { data: canCancel } = useReadContract({
     address: governance.timelock,
@@ -66,13 +64,19 @@ const ProposalCancel = () => {
 
   useEffect(() => {
     if (status === 'success') {
-      setIsProcessing(true)
-      const timer = setTimeout(() => {
-        refreshFn?.()
-        setIsProcessing(false)
-      }, 10000)
-
-      return () => clearTimeout(timer)
+      setProposal((prev) =>
+        prev
+          ? {
+              ...prev,
+              votingState: {
+                ...prev.votingState,
+                state: PROPOSAL_STATES.CANCELED,
+              },
+              state: PROPOSAL_STATES.CANCELED,
+              cancellationTime: Math.floor(Date.now() / 1000).toString(),
+            }
+          : undefined
+      )
     }
   }, [status])
 
@@ -82,11 +86,11 @@ const ProposalCancel = () => {
     <TransactionButton
       variant="danger"
       small
-      loading={isProcessing || isMining || isLoading}
+      loading={isMining || isLoading}
       mining={isMining}
       disabled={!isReady || !canCancel || status === 'success'}
       onClick={write}
-      text={isProcessing ? 'Processing...' : t`Cancel proposal`}
+      text={t`Cancel proposal`}
       sx={{
         height: '44px',
         bg: 'transparent',
