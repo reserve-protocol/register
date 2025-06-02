@@ -6,7 +6,7 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip'
 import { Info } from 'lucide-react'
-import { AssetTrade } from '../atoms'
+import { AssetTrade } from '../legacy/atoms'
 
 const AuctionEjectSwitch = ({
   trade,
