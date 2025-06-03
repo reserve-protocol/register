@@ -1,12 +1,11 @@
 import dtfIndexAbiV4 from '@/abis/dtf-index-abi-v4'
 import { Button } from '@/components/ui/button'
-import {
-  getOpenAuction,
-  getTargetBasket,
-} from '@/lib/index-rebalance-4.0.0/open-auction'
+import { TokenPriceWithSnapshot } from '@/hooks/use-asset-prices-with-snapshot'
+import { getTargetBasket } from '@/lib/index-rebalance-4.0.0/open-auction'
 import { Rebalance as RebalanceHelperType } from '@/lib/index-rebalance-4.0.0/types'
 import { indexDTFAtom, indexDTFRebalanceControlAtom } from '@/state/dtf/atoms'
 import { Token } from '@/types'
+import { getOpenAuction } from '@reserve-protocol/dtf-rebalance-lib'
 import { useAtomValue } from 'jotai'
 import { LoaderCircle } from 'lucide-react'
 import { useState } from 'react'
@@ -15,7 +14,6 @@ import { useWriteContract } from 'wagmi'
 import { currentRebalanceAtom, Rebalance } from '../../../atoms'
 import { rebalancePercentAtom } from '../atoms'
 import useRebalanceParams from '../hooks/use-rebalance-params'
-import { TokenPriceWithSnapshot } from '@/hooks/use-asset-prices-with-snapshot'
 
 const LaunchAuctionsButton = () => {
   const dtf = useAtomValue(indexDTFAtom)
