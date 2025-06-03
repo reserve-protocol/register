@@ -6,12 +6,11 @@ import { indexDTFAtom } from '@/state/dtf/atoms'
 import request, { gql } from 'graphql-request'
 import { INDEX_DTF_SUBGRAPH_URL } from '@/state/atoms'
 import { useEffect } from 'react'
-
 const query = gql`
   query getGovernanceStats($dtf: String!) {
-    rebalances(where: { dtf: $dtf, orderBy: timestamp, orderDirection: desc }) {
+    rebalances(where: { dtf: $dtf }, orderBy: timestamp, orderDirection: desc) {
       id
-      tokens: {
+      tokens {
         address
         name
         symbol
@@ -26,7 +25,7 @@ const query = gql`
       rebalanceHighLimit
       priceLowLimit
       priceHighLimit
-      auctionLauncherWindow
+      restrictedUntil
       availableUntil
       transactionHash
       blockNumber
@@ -51,9 +50,7 @@ const useRebalances = () => {
         }
       )
 
-      if (!response?.rebalances) return undefined
-
-      return response.rebalances
+      return response.rebalances ?? []
     },
     enabled: !!dtf?.id,
   })

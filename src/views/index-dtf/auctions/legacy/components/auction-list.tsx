@@ -1,7 +1,7 @@
 import { ROUTES } from '@/utils/constants'
 import { ArrowUpRightIcon, ScrollText } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import { AssetTrade } from '../legacy/atoms'
+import { AssetTrade } from '../atoms'
 import AuctionItem from './auction-item'
 
 const TradesHeader = ({ proposalId }: { proposalId: string }) => {

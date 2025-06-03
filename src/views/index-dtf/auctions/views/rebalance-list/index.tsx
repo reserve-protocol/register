@@ -1,5 +1,5 @@
 import { useAtomValue } from 'jotai'
-import { RebalanceByProposal, rebalancesByProposalListAtom } from '../atoms'
+import { RebalanceByProposal, rebalancesByProposalListAtom } from '../../atoms'
 import { getCurrentTime, getProposalTitle } from '@/utils'
 import { Link } from 'react-router-dom'
 
@@ -11,9 +11,9 @@ const RebalanceListItem = ({
   const isActive = +rebalance.rebalance.availableUntil > getCurrentTime()
 
   return (
-    <div
+    <Link
+      to={`rebalance/${rebalance.proposal.id}`}
       className="p-4 bg-background rounded-3xl flex items-center gap-2"
-      role="button"
     >
       <div>
         <Link
@@ -30,7 +30,7 @@ const RebalanceListItem = ({
           <span className="text-red-500">Inactive</span>
         )}
       </div>
-    </div>
+    </Link>
   )
 }
 

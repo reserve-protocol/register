@@ -13,6 +13,7 @@ import { useQuery } from '@tanstack/react-query'
 import { atom, useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { Address, formatUnits, Hex } from 'viem'
+import useAssetPricesWithSnapshot from './use-asset-prices-with-snapshot'
 import { getDecodedCalldata } from './use-decoded-call-datas'
 import useTokensInfo from './useTokensInfo'
 
@@ -47,51 +48,6 @@ type Range = {
   low: bigint
   spot: bigint
   high: bigint
-}
-
-type HistoricalPriceResponse = {
-  address: string
-  timeseries: {
-    price: number
-    timestamp: number
-  }[]
-}
-
-type TokenPriceResult = Record<
-  string,
-  { currentPrice: number; snapshotPrice: number }
->
-
-export const useAssetPrices = (
-  tokens?: string[],
-  chain?: number,
-  timestamp?: number
-) => {
-  return useQuery({
-    queryKey: ['asset-price', tokens, chain, timestamp],
-    queryFn: async () => {
-      if (!tokens?.length) {
-        throw new Error('No tokens provided')
-      }
-
-      const url = `${RESERVE_API}current/prices?chainId=${chain}&tokens=${tokens.join(',')}`
-      const response = await fetch(url)
-      const data = await response.json()
-      return (
-        data as {
-          address: Address
-          price: number
-        }[]
-      ).reduce(
-        (acc, token) => {
-          acc[token.address] = token.price ?? 0
-          return acc
-        },
-        {} as Record<string, number>
-      )
-    },
-    enabled: Boolean(tokens?.length && chain),
-  })
 }
 
 export const useDecodedRebalanceCalldata = (
@@ -167,66 +123,6 @@ const useTokens = (tokens: string[]): Record<string, Token> | undefined => {
   }, [currentBasketMap, missingTokensInfo, JSON.stringify(missingTokens)])
 }
 
-// Fetch current and snapshot prices for the related rebalance tokens
-const useTokenPrices = (tokens: string[] | undefined, timestamp?: number) => {
-  const chain = useAtomValue(chainIdAtom)
-
-  return useQuery({
-    queryKey: ['asset-price-with-snapshot', tokens, chain, timestamp ?? ''],
-    queryFn: async () => {
-      if (!tokens) return {}
-
-      const currentPricesUrl = `${RESERVE_API}current/prices?chainId=${chain}&tokens=${tokens.join(',')}`
-      const currentPrices: {
-        address: Address
-        price?: number
-      }[] = await fetch(currentPricesUrl).then((res) => res.json())
-
-      const result = currentPrices.reduce((acc, token) => {
-        const price = token.price ?? 0
-        acc[token.address.toLowerCase()] = {
-          currentPrice: price,
-          snapshotPrice: price,
-        }
-        return acc
-      }, {} as TokenPriceResult)
-
-      // Fetch snapshot prices if timestamp is provided
-      if (timestamp) {
-        // from is timestamp - 1 hour
-        const from = Number(timestamp) - 1 * 60 * 60
-        const to = Number(timestamp) + 1 * 60 * 60
-        const baseUrl = `${RESERVE_API}historical/prices?chainId=${chain}&from=${from}&to=${to}&interval=1h&address=`
-        const calls = tokens.map((token) =>
-          fetch(`${baseUrl}${token}`).then((res) => res.json())
-        )
-
-        const response = await (<Promise<HistoricalPriceResponse[]>>(
-          Promise.all(calls)
-        ))
-
-        for (const priceResult of response) {
-          const price =
-            priceResult.timeseries.length === 0
-              ? 0
-              : priceResult.timeseries[
-                  Math.floor(priceResult.timeseries.length / 2)
-                ].price
-
-          result[priceResult.address.toLowerCase()] = {
-            snapshotPrice: price,
-            currentPrice:
-              result[priceResult.address.toLowerCase()].currentPrice,
-          }
-        }
-      }
-
-      return result
-    },
-    enabled: Boolean(tokens?.length && chain),
-  })
-}
-
 const useDTFBasketWeights = (timestamp?: number) => {
   const dtf = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
@@ -264,7 +160,7 @@ const useRebalanceBasketPreview = (
   const currentWeights = useAtomValue(indexDTFBasketSharesAtom)
   const tokens = useTokens(rebalance?.data.tokens ?? [])
   const rebalanceControl = useAtomValue(indexDTFRebalanceControlAtom)
-  const { data: prices } = useTokenPrices(
+  const { data: prices } = useAssetPricesWithSnapshot(
     tokens ? Object.keys(tokens) : undefined,
     timestamp
   )
