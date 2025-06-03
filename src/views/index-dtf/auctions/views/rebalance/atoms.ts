@@ -1,4 +1,7 @@
+import { TokenPriceWithSnapshot } from '@/hooks/use-asset-prices-with-snapshot'
+import { AuctionMetrics } from '@/lib/index-rebalance-4.0.0/open-auction'
 import { Token } from '@/types'
+import { Rebalance } from '@reserve-protocol/dtf-rebalance-lib'
 import { atom } from 'jotai'
 
 export type Auction = {
@@ -30,5 +33,18 @@ export type Auction = {
   }[]
 }
 
+export type RebalanceState = {
+  rebalance: Rebalance
+  supply: bigint
+  currentFolio: Record<string, bigint>
+  initialFolio: Record<string, bigint>
+  prices: TokenPriceWithSnapshot
+  isTrackingDTF: boolean
+}
+
+export const rebalanceMetricsAtom = atom<AuctionMetrics>(undefined)
+
 export const rebalancePercentAtom = atom(0)
 export const rebalanceAuctionsAtom = atom<Auction[]>([])
+
+export const rebalanceStateAtom = atom<RebalanceState | undefined>(undefined)

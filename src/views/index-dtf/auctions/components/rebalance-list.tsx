@@ -40,9 +40,14 @@ const RebalanceList = () => {
   return (
     <div className="rounded-3xl bg-secondary p-1 max-w-full w-[480px]">
       <h1 className="text-xl font-semibold p-2">Rebalances</h1>
-      {rebalances.map((rebalance) => (
-        <RebalanceListItem key={rebalance.proposal.id} rebalance={rebalance} />
-      ))}
+      <div>
+        {rebalances.map((rebalance) => (
+          <RebalanceListItem
+            key={rebalance.proposal.id}
+            rebalance={rebalance}
+          />
+        ))}
+      </div>
     </div>
   )
 }

@@ -1,11 +1,14 @@
 import { Slider } from '@/components/ui/slider'
 import { useAtom, useAtomValue } from 'jotai'
 import { currentRebalanceAtom } from '../../../atoms'
-import { rebalancePercentAtom } from '../atoms'
+import { rebalanceMetricsAtom, rebalancePercentAtom } from '../atoms'
 
 const RebalanceSetup = () => {
   const rebalance = useAtomValue(currentRebalanceAtom)
   const [rebalancePercent, setRebalancePercent] = useAtom(rebalancePercentAtom)
+  const metrics = useAtomValue(rebalanceMetricsAtom)
+
+  console.log('metrics', metrics)
 
   return (
     <div className="p-4">

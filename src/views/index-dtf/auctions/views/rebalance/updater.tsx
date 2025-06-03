@@ -1,97 +1,51 @@
-import { INDEX_DTF_SUBGRAPH_URL } from '@/state/chain/atoms/chainAtoms'
-import { chainIdAtom } from '@/state/atoms'
-import { indexDTFAtom } from '@/state/dtf/atoms'
 import { useAtomValue, useSetAtom } from 'jotai'
-import { currentRebalanceAtom } from '../../atoms'
-import { useQuery } from '@tanstack/react-query'
-import request, { gql } from 'graphql-request'
 import { useEffect } from 'react'
-import { Auction, rebalanceAuctionsAtom } from './atoms'
+import { currentRebalanceAtom } from '../../atoms'
+import { rebalanceAuctionsAtom, rebalanceMetricsAtom } from './atoms'
+import useRebalanceAuctions from './hooks/use-rebalance-auctions'
+import useRebalanceParams from './hooks/use-rebalance-params'
+import getRebalanceOpenAuction from './utils/get-rebalance-open-auction'
 
-type Response = {
-  auctions: Auction[]
-}
+const RebalanceMetricsUpdater = () => {
+  const setRebalanceMetrics = useSetAtom(rebalanceMetricsAtom)
+  const rebalanceParams = useRebalanceParams()
+  const currentRebalance = useAtomValue(currentRebalanceAtom)
 
-const query = gql`
-  query getGovernanceStats($rebalanceId: String!) {
-    auctions(where: { rebalance: $rebalanceId }) {
-      id
-      tokens {
-        address
-        name
-        symbol
-        decimals
-      }
-      weightLowLimit
-      weightSpotLimit
-      weightHighLimit
-      rebalanceLowLimit
-      rebalanceSpotLimit
-      rebalanceHighLimit
-      priceLowLimit
-      priceHighLimit
-      startTime
-      endTime
-      blockNumber
-      timestamp
-      transactionHash
-      bids {
-        id
-        bidder
-        sellToken {
-          address
-          name
-          symbol
-          decimals
-        }
-        buyToken {
-          address
-          name
-          symbol
-          decimals
-        }
-        sellAmount
-        buyAmount
-        blockNumber
-        timestamp
-        transactionHash
+  useEffect(() => {
+    if (rebalanceParams && currentRebalance) {
+      try {
+        const {
+          supply,
+          rebalance,
+          currentFolio,
+          initialFolio,
+          prices,
+          isTrackingDTF,
+        } = rebalanceParams
+
+        const [, rebalanceMetrics] = getRebalanceOpenAuction(
+          currentRebalance.rebalance.tokens,
+          rebalance,
+          supply,
+          currentFolio,
+          initialFolio,
+          prices,
+          isTrackingDTF
+        )
+
+        setRebalanceMetrics(rebalanceMetrics)
+      } catch (e) {
+        console.error('Error getting rebalance metrics', e)
       }
     }
-  }
-`
+  }, [rebalanceParams, currentRebalance])
 
-const useAuctions = () => {
-  const dtf = useAtomValue(indexDTFAtom)
-  const rebalance = useAtomValue(currentRebalanceAtom)
-  const chainId = useAtomValue(chainIdAtom)
-
-  return useQuery({
-    queryKey: ['auctions', rebalance?.rebalance.id],
-    queryFn: async () => {
-      if (!rebalance?.rebalance.id) throw new Error('No rebalance id')
-
-      try {
-        const data = await request<Response>(
-          INDEX_DTF_SUBGRAPH_URL[chainId],
-          query,
-          {
-            rebalanceId: rebalance?.rebalance.id,
-          }
-        )
-        return data.auctions
-      } catch (e) {
-        console.error('error fetching', e)
-        return []
-      }
-    },
-    enabled: !!rebalance?.rebalance.id,
-    refetchInterval: 1000 * 60, // every minute!
-  })
+  return null
 }
 
 // Fetch current rebalance auctions!
 const Updater = () => {
-  const { data } = useAuctions()
+  const { data } = useRebalanceAuctions()
   const setRebalanceAuctions = useSetAtom(rebalanceAuctionsAtom)
 
   useEffect(() => {
@@ -100,7 +54,11 @@ const Updater = () => {
     }
   }, [data, setRebalanceAuctions])
 
-  return null
+  return (
+    <>
+      <RebalanceMetricsUpdater />
+    </>
+  )
 }
 
 export default Updater

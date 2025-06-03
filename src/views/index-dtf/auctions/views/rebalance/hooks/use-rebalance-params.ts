@@ -1,6 +1,11 @@
 import dtfIndexAbiV4 from '@/abis/dtf-index-abi-v4'
 import useAssetPricesWithSnapshot from '@/hooks/use-asset-prices-with-snapshot'
-import { indexDTFAtom, indexDTFBasketAtom } from '@/state/dtf/atoms'
+import {
+  indexDTFAtom,
+  indexDTFBasketAtom,
+  indexDTFRebalanceControlAtom,
+} from '@/state/dtf/atoms'
+import { Rebalance } from '@reserve-protocol/dtf-rebalance-lib/dist/types'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { parseEther } from 'viem'
@@ -24,6 +29,7 @@ const useRebalanceParams = () => {
   const dtf = useAtomValue(indexDTFAtom)
   const basket = useAtomValue(indexDTFBasketAtom)
   const rebalance = useAtomValue(currentRebalanceAtom)
+  const rebalanceControl = useAtomValue(indexDTFRebalanceControlAtom)
 
   const rebalanceTokens = useMemo(() => {
     if (!rebalance || !basket) return []
@@ -48,6 +54,7 @@ const useRebalanceParams = () => {
   const { data: dtfData } = useReadContracts({
     contracts: [
       { abi: dtfIndexAbiV4, address: dtf?.id, functionName: 'totalSupply' },
+      { abi: dtfIndexAbiV4, address: dtf?.id, functionName: 'getRebalance' },
       {
         abi: dtfIndexAbiV4,
         address: dtf?.id,
@@ -59,10 +66,11 @@ const useRebalanceParams = () => {
     query: {
       enabled: !!dtf?.id,
       select: (data) => {
-        const [supply, [assets, amounts]] = data
+        const [supply, rebalance, [assets, amounts]] = data
 
         return {
           supply,
+          rebalance,
           currentFolio: mapToAssets(assets, amounts),
         }
       },
@@ -84,15 +92,30 @@ const useRebalanceParams = () => {
     },
   })
 
-  return useMemo(
-    () => ({
-      isReady: !!dtfData && !!initialFolio && !!prices,
-      dtfData,
+  return useMemo(() => {
+    if (!dtfData || !initialFolio || !prices || !rebalanceControl)
+      return undefined
+
+    return {
+      supply: dtfData.supply,
+      rebalance: {
+        nonce: dtfData.rebalance[0],
+        tokens: dtfData.rebalance[1],
+        weights: dtfData.rebalance[2],
+        initialPrices: dtfData.rebalance[3],
+        inRebalance: dtfData.rebalance[4],
+        limits: dtfData.rebalance[5],
+        startedAt: dtfData.rebalance[6],
+        restrictedUntil: dtfData.rebalance[7],
+        availableUntil: dtfData.rebalance[8],
+        priceControl: dtfData.rebalance[9],
+      } as Rebalance,
+      currentFolio: dtfData.currentFolio,
       initialFolio,
       prices,
-    }),
-    [dtfData, initialFolio, prices]
-  )
+      isTrackingDTF: rebalanceControl.weightControl,
+    }
+  }, [dtfData, initialFolio, prices, rebalanceControl])
 }
 
 export default useRebalanceParams

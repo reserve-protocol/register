@@ -84,6 +84,6 @@ export const rebalancesByProposalListAtom = atom<
 
   return Object.values(rebalancesByProposal).sort(
     (a, b) =>
-      Number(a.proposal.executionBlock) - Number(b.proposal.executionBlock)
+      Number(b.proposal.executionBlock) - Number(a.proposal.executionBlock)
   )
 })
