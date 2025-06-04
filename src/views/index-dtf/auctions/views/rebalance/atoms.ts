@@ -1,5 +1,5 @@
 import { TokenPriceWithSnapshot } from '@/hooks/use-asset-prices-with-snapshot'
-import { AuctionMetrics } from '@/lib/index-rebalance-4.0.0/open-auction'
+import { AuctionMetrics } from '@reserve-protocol/dtf-rebalance-lib'
 import { Token } from '@/types'
 import { Rebalance } from '@reserve-protocol/dtf-rebalance-lib'
 import { atom } from 'jotai'

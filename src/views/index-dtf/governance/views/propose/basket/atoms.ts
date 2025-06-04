@@ -1,7 +1,7 @@
 import dtfIndexAbi from '@/abis/dtf-index-abi'
 import dtfIndexAbiV2 from '@/abis/dtf-index-abi-v2'
 import dtfIndexAbiV4 from '@/abis/dtf-index-abi-v4'
-import { getStartRebalance } from '@/lib/index-rebalance-4.0.0/start-rebalance'
+import { getStartRebalance } from '@reserve-protocol/dtf-rebalance-lib'
 import { getAuctions } from '@/lib/index-rebalance/get-auctions'
 import { getCurrentBasket } from '@/lib/index-rebalance/utils'
 import {

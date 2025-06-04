@@ -1,5 +1,4 @@
 import dtfIndexAbiV4 from '@/abis/dtf-index-abi-v4'
-import { getTargetBasket } from '@/lib/index-rebalance-4.0.0/open-auction'
 import { chainIdAtom } from '@/state/atoms'
 import {
   indexDTFAtom,
@@ -9,6 +8,7 @@ import {
 } from '@/state/dtf/atoms'
 import { DecodedCalldata, Token } from '@/types'
 import { RESERVE_API } from '@/utils/constants'
+import { getTargetBasket } from '@reserve-protocol/dtf-rebalance-lib'
 import { useQuery } from '@tanstack/react-query'
 import { atom, useAtomValue } from 'jotai'
 import { useMemo } from 'react'
