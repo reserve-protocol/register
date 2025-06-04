@@ -1,7 +1,10 @@
 import { TokenPriceWithSnapshot } from '@/hooks/use-asset-prices-with-snapshot'
-import { getTargetBasket } from '@reserve-protocol/dtf-rebalance-lib'
 import { Token } from '@/types'
-import { getOpenAuction, Rebalance } from '@reserve-protocol/dtf-rebalance-lib'
+import {
+  getOpenAuction,
+  getTargetBasket,
+  Rebalance,
+} from '@reserve-protocol/dtf-rebalance-lib'
 
 function getRebalanceOpenAuction(
   tokens: Token[],
