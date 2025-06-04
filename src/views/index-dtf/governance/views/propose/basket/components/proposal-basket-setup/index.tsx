@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button'
+import { isSingletonRebalanceAtom } from '@/state/dtf/atoms'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { ChevronDown, ChevronUp, Settings } from 'lucide-react'
 import {
@@ -15,6 +16,8 @@ const NextButton = () => {
   const setStep = useSetAtom(stepAtom)
   const setIsConfirmed = useSetAtom(isProposalConfirmedAtom)
   const [AdvancedControls, setAdvancedControls] = useAtom(advancedControlsAtom)
+  // TODO: remove check when all folios are 4.0
+  const isSingletonRebalance = useAtomValue(isSingletonRebalanceAtom)
 
   const handleNext = () => {
     setStep('confirmation')
@@ -26,15 +29,22 @@ const NextButton = () => {
 
   return (
     <div className="flex items-center gap-2">
-      <Button
-        variant="outline"
-        onClick={() => setAdvancedControls((toggle) => !toggle)}
-        className="flex gap-[6px] px-4 py-[20px]"
-        size="lg"
-      >
-        <Settings size={16} />
-        {AdvancedControls ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-      </Button>
+      {!isSingletonRebalance && (
+        <Button
+          variant="outline"
+          onClick={() => setAdvancedControls((toggle) => !toggle)}
+          className="flex gap-[6px] px-4 py-[20px]"
+          size="lg"
+        >
+          <Settings size={16} />
+          {AdvancedControls ? (
+            <ChevronUp size={16} />
+          ) : (
+            <ChevronDown size={16} />
+          )}
+        </Button>
+      )}
+
       <Button
         disabled={!isValid}
         onClick={handleNext}

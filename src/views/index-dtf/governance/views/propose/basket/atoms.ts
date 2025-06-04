@@ -17,7 +17,12 @@ import { Token } from '@/types'
 import { atom, Getter } from 'jotai'
 import { Address, encodeFunctionData, Hex, parseUnits } from 'viem'
 
-export type Step = 'basket' | 'prices' | 'expiration' | 'confirmation'
+export type Step =
+  | 'basket'
+  | 'prices'
+  | 'expiration'
+  | 'confirmation'
+  | 'advance'
 export type TradeRangeOption = 'defer' | 'include'
 export interface IndexAssetShares {
   token: Token
@@ -126,6 +131,12 @@ export const proposedIndexBasketStateAtom = atom<{
 // TODO: This comes from the DTF on 4.0 not from the brand manager
 export const isUnitBasketAtom = atom((get) => {
   const brandData = get(indexDTFBrandAtom)
+  const isSingleton = get(isSingletonRebalanceAtom)
+  const dtfRebalanceControl = get(indexDTFRebalanceControlAtom)
+
+  if (isSingleton) {
+    return !dtfRebalanceControl?.weightControl
+  }
 
   return brandData?.dtf.basketType === 'unit-based'
 })
@@ -274,6 +285,7 @@ export const stepStateAtom = atom<Record<Step, boolean>>((get) => ({
   prices: get(tradeRangeOptionAtom) !== undefined,
   expiration: get(isTTLValidAtom),
   confirmation: true,
+  advance: get(isTTLValidAtom),
 }))
 
 export const isBasketProposalValidAtom = atom((get) =>
