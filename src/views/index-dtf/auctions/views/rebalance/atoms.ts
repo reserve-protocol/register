@@ -42,7 +42,7 @@ export type RebalanceState = {
   isTrackingDTF: boolean
 }
 
-export const rebalanceMetricsAtom = atom<AuctionMetrics>(undefined)
+export const rebalanceMetricsAtom = atom<AuctionMetrics | undefined>(undefined)
 
 export const rebalancePercentAtom = atom(0)
 export const rebalanceAuctionsAtom = atom<Auction[]>([])

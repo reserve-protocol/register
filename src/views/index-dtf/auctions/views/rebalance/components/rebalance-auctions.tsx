@@ -4,8 +4,6 @@ import { rebalanceAuctionsAtom } from '../atoms'
 const RebalanceAuctions = () => {
   const auctions = useAtomValue(rebalanceAuctionsAtom)
 
-  console.log(auctions)
-
   return (
     <div className="bg-background p-4 rounded-3xl">
       <div className="flex ">
