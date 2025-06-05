@@ -80,7 +80,7 @@ export const zapDeployPayloadAtom = atom<
   }
 
   const additionalDetails = {
-    tradeDelay: Math.floor((formData.auctionDelay || 0) * 3600).toString(),
+    tradeDelay: 0, // TODO: remove when 4.0 is live
     auctionLength: Math.floor((formData.auctionLength || 0) * 60).toString(),
     feeRecipients: calculateRevenueDistribution(formData, wallet, stToken).map(
       ({ recipient, portion }) => ({ recipient, portion: portion.toString() })
