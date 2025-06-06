@@ -23,6 +23,7 @@ import { usePublicClient } from 'wagmi'
 import ConfirmIssuance from './ConfirmIssuance'
 import IssueInput from './IssueInput'
 import { isRTokenMintEnabled } from 'state/geolocation/atoms'
+import { ChainId } from '@/utils/chains'
 
 const useMaxIssuable = async () => {
   const rToken = useAtomValue(rTokenAtom)
@@ -64,6 +65,7 @@ const useMaxIssuable = async () => {
  * Issuance
  */
 const Issue = () => {
+  const chainId = useAtomValue(chainIdAtom)
   const [amount, setAmount] = useAtom(issueAmountAtom)
   const isValid = useAtomValue(isValidIssuableAmountAtom)
   const [issuing, setIssuing] = useState(false)
@@ -100,13 +102,16 @@ const Issue = () => {
             issuancePaused ||
             frozen ||
             !isEnabled.value ||
-            isEnabled.loading
+            isEnabled.loading ||
+            chainId === ChainId.Arbitrum
           }
           variant={missingCollateral ? 'error' : 'primary'}
           mt={3}
           onClick={handleIssue}
         >
-          {missingCollateral ? (
+          {chainId === ChainId.Arbitrum ? (
+            <Trans>Mint disabled</Trans>
+          ) : missingCollateral ? (
             <Trans>Missing collateral</Trans>
           ) : (
             <Trans>+ Mint {rToken?.symbol ?? ''}</Trans>
