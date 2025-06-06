@@ -180,7 +180,7 @@ export const TIME_RANGE_VALUE: { [x: string]: number } = {
 
 export const GOVERNANCE_PROPOSAL_TYPES = {
   BASKET: 'basket',
-  FEES: 'fees',
+  DTF: 'dtf',
   ROLES: 'roles',
   OTHER: 'other',
   WHITELIST: 'whitelist',
