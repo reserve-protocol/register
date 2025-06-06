@@ -46,17 +46,17 @@ const SubmitProposalButton = () => {
   }, [isSuccess])
 
   const handleSubmit = () => {
-    if (calldatas && description && dtf?.stToken?.governance?.id) {
+    if (calldatas && description && dtf?.ownerGovernance?.id) {
       const targets: Address[] = []
       const values: bigint[] = []
 
       for (let i = 0; i < calldatas.length; i++) {
-        targets.push(dtf.stToken.id)
+        targets.push(dtf.id)
         values.push(0n)
       }
 
       writeContract({
-        address: dtf.stToken?.governance?.id,
+        address: dtf.ownerGovernance?.id,
         abi: DTFIndexGovernance,
         functionName: 'propose',
         args: [targets, values, calldatas, description],
