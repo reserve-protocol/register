@@ -4,13 +4,25 @@ import { Box } from 'theme-ui'
 import { useZap } from './context/ZapContext'
 import ZapSettings from './settings/ZapSettings'
 import ZapRefreshButton from './refresh/ZapRefreshButton'
+import { ChainId } from '@/utils/chains'
+import { useEffect, useMemo } from 'react'
 
 const ZapTabs = () => {
-  const { operation, setOperation } = useZap()
-  const backingOptions = [
-    { key: 'mint', label: 'Mint', icon: <Plus size={16} /> },
-    { key: 'redeem', label: 'Redeem', icon: <Minus size={16} /> },
-  ]
+  const { chainId, operation, setOperation } = useZap()
+  const backingOptions = useMemo(() => {
+    return [
+      ...(chainId !== ChainId.Arbitrum
+        ? [{ key: 'mint', label: 'Mint', icon: <Plus size={16} /> }]
+        : []),
+      { key: 'redeem', label: 'Redeem', icon: <Minus size={16} /> },
+    ]
+  }, [chainId])
+
+  useEffect(() => {
+    if (chainId === ChainId.Arbitrum) {
+      setOperation('redeem')
+    }
+  }, [chainId])
 
   return (
     <Box
