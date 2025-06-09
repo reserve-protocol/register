@@ -54,6 +54,7 @@ const CHAINLINK_FEED: Record<number, Record<string, Address>> = {
     '0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f':
       '0xd0C7101eACbB49F3deCcCc166d238410D6D46d57', // WBTC / USD
   },
+  [ChainId.BSC]: {},
 }
 
 export const useChainlinkPrices = (
