@@ -58,9 +58,6 @@ export default defineConfig({
       project: 'register',
     }),
   ],
-  define: {
-    'process.env.GIT_SHA': JSON.stringify(process.env.GIT_SHA || 'development'),
-  },
   build: {
     outDir: 'build',
     sourcemap: true,

@@ -179,7 +179,7 @@ const RegisterAbout = () => (
           <p className="font-semibold">Made by ABC Labs</p>
         </a>
         <p className="text-xs text-legend">
-          Version: {process.env.GIT_SHA?.slice(0, 7) || 'development'}
+          Version: {import.meta.env.VITE_GIT_SHA?.slice(0, 7) || 'development'}
         </p>
       </div>
     </div>
