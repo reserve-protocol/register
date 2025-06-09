@@ -20,17 +20,34 @@ import EarnButton from './EarnButton'
 import MobileCollateralInfo from './MobileCollateralInfo'
 import VerticalDivider from './VerticalDivider'
 import { trackClick } from '@/hooks/useTrackPage'
+import { ChainId } from '@/utils/chains'
+import Help from '@/components/ui/help'
 
 interface Props extends BoxProps {
   token: ListedToken
 }
 
 const ChainBadge = ({ chain }: { chain: number }) => (
-  <div className="hidden md:flex items-center bg-[rgba(0,82,255,0.06)] border border-[rgba(0,82,255,0.20)] rounded-[50px] px-2 py-1 gap-1">
+  <div
+    className={`hidden md:flex items-center rounded-[50px] px-2 py-1 gap-1 ${
+      chain === ChainId.Arbitrum
+        ? 'bg-[rgba(255,171,0,0.06)] border border-[rgba(255,171,0,0.20)]'
+        : 'bg-[rgba(0,82,255,0.06)] border border-[rgba(0,82,255,0.20)]'
+    }`}
+  >
     <ChainLogo chain={chain} fontSize={12} />
-    <span className="text-xs text-primary">
+    <span
+      className={`text-xs ${chain === ChainId.Arbitrum ? 'text-[#FFAB00]' : 'text-primary'}`}
+    >
       {CHAIN_TAGS[chain] + ' Native'}
     </span>
+    {chain === ChainId.Arbitrum && (
+      <Help
+        content={
+          'Due to low usage, the Reserve DApp is discontinuing mints on Arbitrum. You can still redeem your tokens at any time, as they remain fully backed by their underlying assets.'
+        }
+      />
+    )}
   </div>
 )
 
@@ -237,32 +254,34 @@ const RTokenCard = ({ token, ...props }: Props) => {
                 sx={{ flexWrap: 'wrap', gap: [2, '12px'] }}
                 mt={[0, 1]}
               >
-                <DgnETHButtonAppendix
-                  rTokenSymbol={token.symbol}
-                  basketAPY={token.basketApy}
-                  borderColor="white"
-                  hideLabelOnMobile
-                >
-                  <Button
-                    medium
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      trackClick(
-                        'discover',
-                        'mint',
-                        token.id,
-                        token.symbol,
-                        token.chain
-                      )
-                      handleNavigate(ROUTES.ISSUANCE)
-                    }}
-                    sx={{ whiteSpace: 'nowrap' }}
+                {token.chain !== ChainId.Arbitrum && (
+                  <DgnETHButtonAppendix
+                    rTokenSymbol={token.symbol}
+                    basketAPY={token.basketApy}
+                    borderColor="white"
+                    hideLabelOnMobile
                   >
-                    {token.tokenApy
-                      ? `Mint ${token.tokenApy.toFixed(1)}% Est. APY`
-                      : 'Mint'}
-                  </Button>
-                </DgnETHButtonAppendix>
+                    <Button
+                      medium
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        trackClick(
+                          'discover',
+                          'mint',
+                          token.id,
+                          token.symbol,
+                          token.chain
+                        )
+                        handleNavigate(ROUTES.ISSUANCE)
+                      }}
+                      sx={{ whiteSpace: 'nowrap' }}
+                    >
+                      {token.tokenApy
+                        ? `Mint ${token.tokenApy.toFixed(1)}% Est. APY`
+                        : 'Mint'}
+                    </Button>
+                  </DgnETHButtonAppendix>
+                )}
                 <Button
                   medium
                   onClick={(e) => {
