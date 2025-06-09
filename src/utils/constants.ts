@@ -270,6 +270,7 @@ export const CHAIN_TAGS = {
   [ChainId.Mainnet]: 'Ethereum',
   [ChainId.Base]: 'Base',
   [ChainId.Arbitrum]: 'Arbitrum One',
+  [ChainId.BSC]: 'BNB Smart Chain',
 }
 
 export const LISTED_RTOKEN_ADDRESSES: { [x: number]: string[] } = {
