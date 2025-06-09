@@ -55,8 +55,8 @@ const Intro = () => (
         </p>
         <p className="mt-2 text-sm text-legend">
           <Trans>
-            DTFs live on blockchain networks including Ethereum, Base, and
-            (soon) Solana, enabling worldwide transactions within seconds. Each
+            DTFs live on blockchain networks including Ethereum, Base, Binance
+            Smart Chain, enabling worldwide transactions within seconds. Each
             DTF is 100% backed by other assets on the same blockchain. Users can
             redeem their DTF tokens for the underlying backing assets at any
             time without anyone else’s involvement.
@@ -178,6 +178,9 @@ const RegisterAbout = () => (
         >
           <p className="font-semibold">Made by ABC Labs</p>
         </a>
+        <p className="text-xs text-legend">
+          Version: {process.env.GIT_SHA?.slice(0, 7) || 'development'}
+        </p>
       </div>
     </div>
   </div>

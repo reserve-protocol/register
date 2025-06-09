@@ -84,7 +84,7 @@
   },
   "scripts": {
     "start": "vite",
-    "build": "tsc && vite build",
+    "build": "GIT_SHA=$(git rev-parse HEAD) tsc && vite build",
     "serve": "vite preview",
     "analyze": "vite-bundle-visualizer 'build/static/js/*.js'",
     "test": "vite test",
