@@ -4,6 +4,7 @@ export const ETHERSCAN_NAMES: { [chainId: number]: string } = {
   [ChainId.Mainnet]: 'etherscan',
   [ChainId.Base]: 'basescan',
   [ChainId.Arbitrum]: 'arbiscan',
+  [ChainId.BSC]: 'bscscan',
 }
 
 const ETHERSCAN_PREFIXES: { [chainId: number]: string } = {
@@ -12,6 +13,7 @@ const ETHERSCAN_PREFIXES: { [chainId: number]: string } = {
     `${ETHERSCAN_NAMES[ChainId.Mainnet]}.io`,
   [ChainId.Base]: `${ETHERSCAN_NAMES[ChainId.Base]}.org`,
   [ChainId.Arbitrum]: `${ETHERSCAN_NAMES[ChainId.Arbitrum]}.io`,
+  [ChainId.BSC]: `${ETHERSCAN_NAMES[ChainId.BSC]}.com`,
 }
 
 export enum ExplorerDataType {

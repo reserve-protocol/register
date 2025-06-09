@@ -1,9 +1,16 @@
-export type AvailableChain = 1 | 8453 | 42161
+import { mainnet, base, arbitrum, bsc } from 'viem/chains'
 
-export const ChainId = {
-  Mainnet: 1,
-  Base: 8453,
-  Arbitrum: 42161,
+export type AvailableChain =
+  | typeof mainnet.id
+  | typeof base.id
+  | typeof arbitrum.id
+  | typeof bsc.id
+
+export const ChainId: Record<string, number> = {
+  Mainnet: mainnet.id,
+  Base: base.id,
+  Arbitrum: arbitrum.id,
+  BSC: bsc.id,
 }
 
 export const supportedChains = new Set(Object.values(ChainId))

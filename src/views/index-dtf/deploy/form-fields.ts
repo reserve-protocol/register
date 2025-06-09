@@ -92,9 +92,15 @@ export const DeployFormSchema = z
     mandate: z.string().optional(),
     chain: z
       .number()
-      .refine((value) => value === ChainId.Mainnet || value === ChainId.Base, {
-        message: 'Chain must be either Mainnet or Base',
-      }),
+      .refine(
+        (value) =>
+          value === ChainId.Mainnet ||
+          value === ChainId.Base ||
+          value === ChainId.BSC,
+        {
+          message: 'Chain must be either Mainnet, Base or Binance Smart Chain',
+        }
+      ),
     initialValue: z.coerce.number().positive('Initial value must be positive'),
     tokensDistribution: z.array(
       z.object({

@@ -110,8 +110,17 @@ const RewardsUpdater = () => {
     [rewardsMap]
   )
 
+  const bscRewards = useMemo(
+    () =>
+      Object.values(rewardsMap)
+        .filter(({ chainId }) => chainId === ChainId.BSC)
+        .map(({ rewards }) => rewards)
+        .flat() || [],
+    [rewardsMap]
+  )
   const baseRewardsPrices = usePrices(baseRewards, ChainId.Base)
   const mainnetRewardsPrices = usePrices(mainnetRewards, ChainId.Mainnet)
+  const bscRewardsPrices = usePrices(bscRewards, ChainId.BSC)
 
   const { data: accruedRewards } = useReadContracts({
     contracts: Object.entries(rewardsMap).flatMap(
@@ -194,7 +203,9 @@ const RewardsUpdater = () => {
               const price = (
                 chainId === ChainId.Mainnet
                   ? mainnetRewardsPrices
-                  : baseRewardsPrices
+                  : chainId === ChainId.BSC
+                    ? bscRewardsPrices
+                    : baseRewardsPrices
               )[rewardAddress]
 
               const accruedUSD =
@@ -229,6 +240,7 @@ const RewardsUpdater = () => {
     rewardsMap,
     mainnetRewardsPrices,
     baseRewardsPrices,
+    bscRewardsPrices,
     rewardsAmount,
   ])
 

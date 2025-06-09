@@ -2,8 +2,9 @@ import TokenLogo from 'components/icons/TokenLogo'
 import Arbitrum from 'components/icons/logos/Arbitrum'
 import Base from 'components/icons/logos/Base'
 import Ethereum from 'components/icons/logos/Ethereum'
-import { Text, BoxProps, Box, Flex } from 'theme-ui'
+import { Box, BoxProps, Flex, Text } from 'theme-ui'
 import { ChainId } from 'utils/chains'
+import BSC from '../icons/logos/BSC'
 
 interface Props extends BoxProps {
   symbol: string
@@ -30,6 +31,7 @@ const TokenItem = ({ symbol, logo, width = 24, chainId, ...props }: Props) => (
       {chainId === ChainId.Mainnet && <Ethereum />}
       {chainId === ChainId.Base && <Base />}
       {chainId === ChainId.Arbitrum && <Arbitrum />}
+      {chainId === ChainId.BSC && <BSC />}
     </Box>
   </Box>
 )
