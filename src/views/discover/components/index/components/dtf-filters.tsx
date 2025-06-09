@@ -59,7 +59,7 @@ const ChainFilter = () => {
     {
       icon: <LayoutGrid />,
       text: 'All chains',
-      filter: [ChainId.Base, ChainId.Mainnet],
+      filter: [ChainId.Base, ChainId.Mainnet, ChainId.BSC],
     },
     {
       icon: <ChainLogo chain={ChainId.Mainnet} />,
@@ -70,6 +70,11 @@ const ChainFilter = () => {
       icon: <ChainLogo chain={ChainId.Base} />,
       text: 'Base',
       filter: [ChainId.Base],
+    },
+    {
+      icon: <ChainLogo chain={ChainId.BSC} />,
+      text: 'Binance',
+      filter: [ChainId.BSC],
     },
   ]
 
