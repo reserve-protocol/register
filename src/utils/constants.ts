@@ -17,7 +17,8 @@ const isStaging =
 
 export const RESERVE_API = isStaging
   ? import.meta.env.VITE_STAGING_API
-  : 'https://api.reserve.org/'
+  : // : 'https://api.reserve.org/'
+    'http://localhost:3000/'
 export const VERSION = '3.0.0'
 export const DISCORD_INVITE = 'https://discord.gg/reserveprotocol'
 export const PROTOCOL_DOCS = 'https://reserve.org/protocol/'
