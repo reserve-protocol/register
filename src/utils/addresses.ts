@@ -36,12 +36,14 @@ export const INDEX_DEPLOYER_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0xaafb13a3df7cE70c140E40c959D58Fd5Cc443Cba', // TODO: still 2.0
   [ChainId.Base]: '0xBE3B47587cEeff7D48008A0114f51cD571beC63A', // 4,0
   [ChainId.Arbitrum]: '0x',
+  [ChainId.BSC]: '0x3F83AA355AE31eCBb4d8378F0AA671614dFa4941',
 }
 
 export const INDEX_GOVERNANCE_DEPLOYER_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0xE926577a152fFD5f5036f88BF7E8E8D3652B558C',
   [ChainId.Base]: '0x5Bed18AcA50E6057E6658Fe8498004092EedCDcF', // 4.0
   [ChainId.Arbitrum]: '0x',
+  [ChainId.BSC]: '0x2f616b82022874519cB4BB795B8b931D65564825',
 }
 
 /**
@@ -51,6 +53,7 @@ export const RSR_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0x320623b8E4fF03373931769A31Fc52A4E78B5d70',
   [ChainId.Base]: '0xaB36452DbAC151bE02b16Ca17d8919826072f64a',
   [ChainId.Arbitrum]: '0xCa5Ca9083702c56b481D1eec86F1776FDbd2e594',
+  [ChainId.BSC]: '0x', // TODO (BSC): add
 }
 
 export const EUSD_ADDRESS: AddressMap = {
@@ -82,6 +85,7 @@ export const ENS_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0x3671aE578E63FdF66ad4F3E12CC0c0d71Ac7510C',
   [ChainId.Base]: zeroAddress, // TODO: Pending
   [ChainId.Arbitrum]: zeroAddress, // TODO: Pending
+  [ChainId.BSC]: zeroAddress, // TODO: Pending
 }
 
 /**
