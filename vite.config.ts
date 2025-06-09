@@ -58,6 +58,11 @@ export default defineConfig({
       project: 'register',
     }),
   ],
+  define: {
+    'import.meta.env.VITE_GIT_SHA': JSON.stringify(
+      process.env.CF_PAGES_COMMIT_SHA
+    ),
+  },
   build: {
     outDir: 'build',
     sourcemap: true,
