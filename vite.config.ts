@@ -59,7 +59,9 @@ export default defineConfig({
     }),
   ],
   define: {
-    'import.meta.env.VITE_GIT_SHA': JSON.stringify(process.env.GIT_SHA),
+    'import.meta.env.VITE_GIT_SHA': JSON.stringify(
+      process.env.CF_PAGES_COMMIT_SHA
+    ),
   },
   build: {
     outDir: 'build',
