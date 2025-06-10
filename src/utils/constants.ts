@@ -12,7 +12,8 @@ import RSV from './rsv'
 import { Address } from 'viem'
 
 const isStaging =
-  window.location.hostname.includes('staging') &&
+  (window.location.hostname.includes('staging') ||
+    import.meta.env.VITE_USE_STAGING) &&
   import.meta.env.VITE_STAGING_API
 
 export const RESERVE_API = isStaging
