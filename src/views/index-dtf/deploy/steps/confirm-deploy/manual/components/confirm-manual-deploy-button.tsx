@@ -34,6 +34,7 @@ import {
   hasBalanceAtom,
   initialTokensAtom,
 } from '../atoms'
+import { PriceControl } from '@reserve-protocol/dtf-rebalance-lib'
 
 type FolioParams = {
   name: string
@@ -153,7 +154,7 @@ const txAtom = atom<
     trustedFillerEnabled: true,
     rebalanceControl: {
       weightControl: formData.weightControl, // false -> tracking / true -> native
-      priceControl: 1,
+      priceControl: PriceControl.PARTIAL,
     },
   }
 

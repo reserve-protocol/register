@@ -17,6 +17,7 @@ import { basketAtom, daoTokenAddressAtom } from '../../../atoms'
 import { calculateRevenueDistribution } from '../../../utils'
 import { indexDeployFormDataAtom } from '../atoms'
 import { basketRequiredAmountsAtom } from '../manual/atoms'
+import { PriceControl } from '@reserve-protocol/dtf-rebalance-lib'
 
 export const inputTokenAtom = atom<Token | undefined>(undefined)
 export const inputAmountAtom = atomWithReset<string>('')
@@ -80,17 +81,12 @@ export const zapDeployPayloadAtom = atom<
   }
 
   const additionalDetails = {
-    tradeDelay: '0', // TODO: remove when 4.0 is live
     auctionLength: Math.floor((formData.auctionLength || 0) * 60).toString(),
     feeRecipients: calculateRevenueDistribution(formData, wallet, stToken).map(
       ({ recipient, portion }) => ({ recipient, portion: portion.toString() })
     ),
-    folioFee: parseEther(
-      ((formData.folioFee || 0) / 100).toString()
-    ).toString(),
-    mintingFee: parseEther(
-      ((formData.mintFee || 0) / 100).toString()
-    ).toString(),
+    tvlFee: parseEther(((formData.folioFee || 0) / 100).toString()).toString(),
+    mintFee: parseEther(((formData.mintFee || 0) / 100).toString()).toString(),
     mandate: formData.mandate || '',
   }
 
@@ -99,7 +95,15 @@ export const zapDeployPayloadAtom = atom<
   const auctionLaunchers = formData.auctionLaunchers.filter(
     Boolean
   ) as Address[]
-  const existingTradeProposers = [] as Address[]
+  const basketManagers = [] as Address[]
+
+  const folioFlags = {
+    trustedFillerEnabled: true,
+    rebalanceControl: {
+      weightControl: formData.weightControl, // false -> tracking / true -> native
+      priceControl: PriceControl.PARTIAL,
+    },
+  }
 
   // Ungoverned DTF
   if (!stToken) {
@@ -111,9 +115,10 @@ export const zapDeployPayloadAtom = atom<
       owner,
       basicDetails,
       additionalDetails,
-      existingTradeProposers,
-      tradeLaunchers: auctionLaunchers,
-      vibesOfficers: brandManagers,
+      folioFlags,
+      basketManagers,
+      auctionLaunchers,
+      brandManagers,
     }
   }
 
@@ -128,7 +133,9 @@ export const zapDeployPayloadAtom = atom<
     proposalThreshold: parseEther(
       ((formData.governanceVotingThreshold || 0) / 100).toString()
     ).toString(),
-    quorumPercent: Math.floor(formData.governanceVotingQuorum || 0).toString(),
+    quorumThreshold: parseEther(
+      ((formData.governanceVotingQuorum || 0) / 100).toString()
+    ).toString(),
     timelockDelay: Math.floor(
       (formData.governanceExecutionDelay || 0) * 86400
     ).toString(),
@@ -145,7 +152,9 @@ export const zapDeployPayloadAtom = atom<
     proposalThreshold: parseEther(
       ((formData.basketVotingThreshold || 0) / 100).toString()
     ).toString(),
-    quorumPercent: Math.floor(formData.basketVotingQuorum || 0).toString(),
+    quorumThreshold: parseEther(
+      ((formData.basketVotingQuorum || 0) / 100).toString()
+    ).toString(),
     timelockDelay: Math.floor(
       (formData.basketExecutionDelay || 0) * 3600
     ).toString(),
@@ -157,10 +166,11 @@ export const zapDeployPayloadAtom = atom<
     stToken,
     basicDetails,
     additionalDetails,
+    folioFlags,
     ownerGovParams,
     tradingGovParams,
-    existingTradeProposers,
-    tradeLaunchers: auctionLaunchers,
-    vibesOfficers: brandManagers,
+    basketManagers,
+    auctionLaunchers,
+    brandManagers,
   }
 })
