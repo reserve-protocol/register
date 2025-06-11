@@ -124,6 +124,7 @@ export const NETWORKS: Record<string, number> = {
   ethereum: ChainId.Mainnet,
   base: ChainId.Base,
   arbitrum: ChainId.Arbitrum,
+  bsc: ChainId.BSC,
 }
 
 export const CHAIN_TO_NETWORK = Object.entries(NETWORKS).reduce(
