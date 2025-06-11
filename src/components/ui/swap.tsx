@@ -182,7 +182,7 @@ const TokenSelector = ({
 }
 
 const PriceValue = ({ price }: Pick<SwapItem, 'price'>) => (
-  <div className="max-w-[245px] overflow-hidden">
+  <div className="overflow-hidden">
     <span className="text-legend block truncate">{price || '$0.00'}</span>
   </div>
 )
@@ -214,7 +214,9 @@ const TokenInputBox = ({ from }: Pick<SwapProps, 'from'>) => {
       </div>
       <div>
         <div className="flex items-center gap-2 justify-between">
-          <PriceValue price={from.price} />
+          <div className="max-w-[220px]">
+            <PriceValue price={from.price} />
+          </div>
           <MaxButton balance={from.balance} onMax={from.onMax} />
         </div>
       </div>
@@ -333,7 +335,9 @@ const TokenOutputBox = ({ to, loading }: Pick<SwapProps, 'to' | 'loading'>) => {
       {loading ? (
         <Skeleton className="w-[60%] h-[24px]" />
       ) : (
-        <PriceValue price={to.price} />
+        <div className="max-w-[350px]">
+          <PriceValue price={to.price} />
+        </div>
       )}
     </div>
   )

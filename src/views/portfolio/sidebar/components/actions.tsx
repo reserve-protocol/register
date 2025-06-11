@@ -27,6 +27,7 @@ import {
   portfolioStTokenAtom,
   stakingSidebarOpenAtom,
 } from '@/views/index-dtf/overview/components/staking/atoms'
+import { useEffect } from 'react'
 
 export const StakeRSRAction = () => {
   return <ChevronRight className="h-4 w-4 text-primary" />
@@ -297,6 +298,7 @@ export const RewardAction = ({
 }) => {
   const chainId = reward.chainId
   const { writeContract, data: hash, isPending } = useWriteContract()
+  const setAccountRewards = useSetAtom(accountRewardsAtom)
 
   const write = () => {
     writeContract({
@@ -312,6 +314,28 @@ export const RewardAction = ({
     hash,
     chainId,
   })
+
+  useEffect(() => {
+    if (receipt?.status === 'success') {
+      const timeout = setTimeout(() => {
+        setAccountRewards((prev) => {
+          const newValue = prev[stTokenAddress].filter(
+            (r) => r.address !== reward.address
+          )
+
+          if (newValue.length === 0) {
+            const newRewards = { ...prev }
+            delete newRewards[stTokenAddress]
+            return newRewards
+          }
+
+          return prev
+        })
+      }, 1000)
+
+      return () => clearTimeout(timeout)
+    }
+  }, [receipt])
 
   const loading = !receipt && (isPending || !!hash || (hash && !receipt))
 
@@ -357,6 +381,7 @@ export const ClaimAllButton = ({
 }) => {
   const chainId = rewards[0]?.chainId
   const { writeContract, data: hash, isPending } = useWriteContract()
+  const setAccountRewards = useSetAtom(accountRewardsAtom)
 
   const write = () => {
     writeContract({
@@ -372,6 +397,20 @@ export const ClaimAllButton = ({
     hash,
     chainId,
   })
+
+  useEffect(() => {
+    if (receipt?.status === 'success') {
+      const timeout = setTimeout(() => {
+        setAccountRewards((prev) => {
+          const newRewards = { ...prev }
+          delete newRewards[stTokenAddress]
+          return newRewards
+        })
+      }, 1000)
+
+      return () => clearTimeout(timeout)
+    }
+  }, [receipt])
 
   const loading = !receipt && (isPending || !!hash || (hash && !receipt))
 
