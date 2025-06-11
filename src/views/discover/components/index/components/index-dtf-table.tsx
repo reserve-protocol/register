@@ -117,8 +117,6 @@ const columns: ColumnDef<IndexDTFItem>[] = [
     accessorKey: 'basket',
     cell: ({ row }) => {
       const head = row.original.basket.slice(0, LIMIT_ASSETS)
-
-      // TODO(jg): Logos for basket assets
       return (
         <div className="flex items-center gap-2">
           <BasketHoverCard indexDTF={row.original}>

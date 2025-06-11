@@ -45,6 +45,11 @@ const COLORS: Record<string, any> = {
     // stroke: '#fff',
     stroke: 'hsl(var(--tvl))',
   },
+  bsc: {
+    fill: 'hsl(var(--tvl))',
+    // stroke: '#fff',
+    stroke: 'hsl(var(--tvl))',
+  },
 }
 
 function CustomTooltip({ payload, label, active }: any) {
