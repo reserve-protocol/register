@@ -16,10 +16,3 @@ const IndexDTFAuctions = () => {
 }
 
 export default IndexDTFAuctions
-
-{
-  /* <div className="flex items-center justify-center lg:min-h-[calc(100vh-72px)] bg-secondary">
-<div className="w-10 h-[1000px]">other thing</div>
-container
-</div> */
-}

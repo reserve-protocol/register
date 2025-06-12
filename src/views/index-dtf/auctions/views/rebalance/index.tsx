@@ -16,7 +16,7 @@ const RebalanceHeader = () => {
 
   return (
     <div className="flex items-center gap-4 p-4 border-b">
-      <Link to={`/auctions`}>
+      <Link to={`../`}>
         <Button variant="muted" size="icon-rounded">
           <ArrowLeft />
         </Button>
