@@ -35,6 +35,7 @@ import IndexDTFSettings from './views/index-dtf/settings'
 import AllYieldDTFList from './views/tokens/Tokens'
 import DeployComingSoon from './views/index-dtf/deploy/components/deploy-coming-soon'
 import IndexDTFWhitelistProposal from './views/index-dtf/governance/views/propose/vault'
+import ProposeDTFSettings from './views/index-dtf/governance/views/propose/views/propose-dtf-settings'
 
 // TODO: Fix recoll call on yield dtf auction page
 const AppRoutes = () => (
@@ -88,6 +89,10 @@ const AppRoutes = () => (
       <Route
         path={`${ROUTES.GOVERNANCE}/${ROUTES.GOVERNANCE_PROPOSE}/${GOVERNANCE_PROPOSAL_TYPES.BASKET}`}
         element={<IndexDTFBasketProposal />}
+      />
+      <Route
+        path={`${ROUTES.GOVERNANCE}/${ROUTES.GOVERNANCE_PROPOSE}/${GOVERNANCE_PROPOSAL_TYPES.DTF}`}
+        element={<ProposeDTFSettings />}
       />
       <Route
         path={`${ROUTES.GOVERNANCE}/${ROUTES.GOVERNANCE_PROPOSE}/${GOVERNANCE_PROPOSAL_TYPES.OTHER}`}

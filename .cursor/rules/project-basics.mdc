@@ -1,0 +1,76 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+#### 1. General Principles
+
+* **Clarity and Readability:** Code must be self-explanatory. Use meaningful and descriptive names for variables, functions, and components.
+* **Simplicity (KISS):** Prioritize simple, straightforward solutions. Avoid over-engineering. If a piece of logic is complex, it must be well-documented.
+* **Don't Repeat Yourself (DRY):** All reusable logic must be abstracted into custom hooks or utility functions as specified in the rules below.
+
+---
+
+#### 2. Component Architecture & UI
+
+* **`shadcn/ui` is the Standard:**
+    * All **new** UI components must be built by composing components from **`shadcn/ui`** and styled with **Tailwind CSS**.
+    * If you are modifying an existing RToken component that uses the deprecated **`theme-ui`**, the primary goal is to **refactor it to use `shadcn/ui`**. This is a critical rule for unifying the codebase.
+* **Best Practice Reference:** For examples of our current best practices, refer to the components and structure within the **`src/views/index-dtf/`** directory.
+* **File Naming Convention:** All new files and directories must use **`kebab-case`**.
+    * Component Example: `src/components/my-new-component/my-new-component.tsx`
+    * Hook Example: `src/hooks/use-contract-test.ts`
+* **Component Granularity:** Components should adhere to the **Single Responsibility Principle**. Create small, focused components that do one thing well.
+
+---
+
+#### 3. State Management (Jotai)
+
+* **Direct Atom Usage:** Components are encouraged to interact with Jotai atoms directly using hooks like `useAtom` for simple state reads and writes.
+* **Custom Hooks for Reusability:** Create a custom state hook **only** when that specific logic (e.g., derived atoms, complex update functions) is being reused in **two or more** places in the codebase. This prevents premature abstraction.
+* **Atom Granularity:** Keep atoms small and focused on a single piece of state. Avoid large, monolithic state objects.
+* **File Organization:** State management files must be placed in `src/state` and named with **`kebab-case`** (e.g., `bridge-state.ts`).
+
+---
+
+#### 4. Styling (Tailwind CSS)
+
+* **Utility-First:** All styling must be done with **Tailwind's utility classes**. Do not write custom CSS files.
+* **Conditional Classes:** Use the `cn` utility function (from `src/utils/cn`) for conditionally applying classes.
+* **Component Variants:** For components with multiple styles (variants), use `cva` (class-variance-authority).
+
+---
+
+#### 5. Blockchain Interaction (wagmi & viem)
+
+* **Custom Hooks are Mandatory:** All blockchain interactions (reads and writes) must be wrapped in **custom hooks**.
+* **Hook Naming and Location:** Hooks must be named with **`kebab-case`** (e.g., `use-rtoken-balance.ts`) and placed in the `src/hooks` directory.
+* **Hook Responsibilities:** These hooks are responsible for:
+    * Fetching data from the blockchain using `wagmi` and `viem`.
+    * Handling all **loading** and **error** states.
+    * Formatting data for the UI (e.g., converting `BigInt` to a formatted string).
+    * Returning a simple, consistent API to the components.
+* **Robust Error Handling:** Implement comprehensive error handling within the hooks. Catch potential blockchain errors and format them into user-friendly messages.
+
+---
+
+#### 6. TypeScript Usage
+
+* **Strict Mode:** The project is in TypeScript **strict mode**, and this must be respected.
+* **`any` is Forbidden:** The `any` type is strictly forbidden. Use `unknown` for values of unknown type and perform type checking before using them.
+* **Type Inference:** Leverage TypeScript's type inference as much as possible. Only add explicit types when defining public APIs (e.g., component props, hook return types).
+
+---
+
+#### 7. UI Component Generation & Styling
+
+* **Primary Goal:** When generating or modifying UI components, your primary goal is to maintain absolute visual consistency with the existing application. The visual "look and feel" is strictly defined by the existing code.
+
+* **The Code is the Source of Truth:** Your primary source for all styling, layout, and visual appearance is the project's existing implementation of **`shadcn/ui`** and **Tailwind CSS**. New components **must** be composed from existing UI components found in `src/components/ui/`. You must adhere to the project's theme defined in `tailwind.config.ts`.
+
+* **Follow Component References:** User prompts will often reference "gold standard" components using the `@` syntax (e.g., `@src/views/index-dtf/dtf-details/components/dtf-buy-sell.tsx`). You **must** treat these referenced components as the definitive guide for the style, structure, and layout of any new components.
+
+* **How to Use Visual Information (Screenshots):**
+    * If a screenshot is provided in a prompt, you **must** treat it as a **visual supplement only**, not as the primary design specification.
+    * Your task is to replicate the layout or structure shown in the image by **using the existing code components**. Do not attempt to replicate visuals by writing custom CSS, inline styles, or arbitrary values.
+    * The user's prompt will always contain text that connects the visual elements in the screenshot to the specific code components that should be used. You **must** follow those textual instructions to bridge the gap between the visual and the code.
