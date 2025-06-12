@@ -53,7 +53,7 @@ export const RSR_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0x320623b8E4fF03373931769A31Fc52A4E78B5d70',
   [ChainId.Base]: '0xaB36452DbAC151bE02b16Ca17d8919826072f64a',
   [ChainId.Arbitrum]: '0xCa5Ca9083702c56b481D1eec86F1776FDbd2e594',
-  [ChainId.BSC]: '0x', // TODO (BSC): add
+  [ChainId.BSC]: '0x25d887ce7a35172c62febfd67a1856f20faebb00', // TODO (BSC): add
 }
 
 export const EUSD_ADDRESS: AddressMap = {
