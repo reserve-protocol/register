@@ -54,7 +54,7 @@ const Buy = () => {
       tokenOut: indexDTF?.id,
       amountIn: parseUnits(inputAmount, selectedToken.decimals).toString(),
       slippage: isFinite(Number(slippage)) ? Number(slippage) : 10000,
-      disabled: insufficientBalance || ongoingTx,
+      disabled: ongoingTx,
       forceMint,
       dtfTicker: indexDTF?.token.symbol || '',
       type: 'buy',
