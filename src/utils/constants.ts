@@ -12,7 +12,8 @@ import RSV from './rsv'
 import { Address } from 'viem'
 
 const isStaging =
-  window.location.hostname.includes('staging') &&
+  (window.location.hostname.includes('staging') ||
+    import.meta.env.VITE_USE_STAGING) &&
   import.meta.env.VITE_STAGING_API
 
 export const RESERVE_API = isStaging
@@ -123,6 +124,7 @@ export const NETWORKS: Record<string, number> = {
   ethereum: ChainId.Mainnet,
   base: ChainId.Base,
   arbitrum: ChainId.Arbitrum,
+  bsc: ChainId.BSC,
 }
 
 export const CHAIN_TO_NETWORK = Object.entries(NETWORKS).reduce(
@@ -269,6 +271,7 @@ export const CHAIN_TAGS = {
   [ChainId.Mainnet]: 'Ethereum',
   [ChainId.Base]: 'Base',
   [ChainId.Arbitrum]: 'Arbitrum One',
+  [ChainId.BSC]: 'BNB Smart Chain',
 }
 
 export const LISTED_RTOKEN_ADDRESSES: { [x: number]: string[] } = {
