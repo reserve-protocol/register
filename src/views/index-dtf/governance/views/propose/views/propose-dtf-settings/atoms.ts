@@ -3,10 +3,15 @@ import {
   indexDTFAtom,
   indexDTFBasketAtom,
   indexDTFBasketSharesAtom,
+  indexDTFVersionAtom,
 } from '@/state/dtf/atoms'
 import { Token } from '@/types'
 import { atom } from 'jotai'
 import { encodeFunctionData, Hex } from 'viem'
+
+export const dustTokenBalancesAtom = atom<Record<string, bigint> | undefined>(
+  undefined
+)
 
 export const removedBasketTokensAtom = atom<Token[]>([])
 
@@ -47,6 +52,8 @@ export const dtfSettingsProposalCalldatasAtom = atom<Hex[] | undefined>(
   (get) => {
     const isConfirmed = get(isProposalConfirmedAtom)
     const indexDTF = get(indexDTFAtom)
+    const version = get(indexDTFVersionAtom)
+    const dustTokenBalances = get(dustTokenBalancesAtom)
     const removedBasketTokens = get(removedBasketTokensAtom)
 
     if (!isConfirmed || !indexDTF || !removedBasketTokens.length)
@@ -54,7 +61,26 @@ export const dtfSettingsProposalCalldatasAtom = atom<Hex[] | undefined>(
 
     const calldatas: Hex[] = []
 
+    // For 2.0 tokens we need to do an extra pre-requisite call to remove a token
+    const isV2 = version === '2.0.0'
+
+    if (isV2 && !dustTokenBalances) return undefined
+
     for (const token of removedBasketTokens) {
+      if (isV2) {
+        console.log('dust tokens', dustTokenBalances)
+        calldatas.push(
+          encodeFunctionData({
+            abi: dtfIndexAbiV2,
+            functionName: 'setDustAmount',
+            args: [
+              token.address,
+              dustTokenBalances![token.address.toLowerCase()] * 3n, // we set the dust amount to 3x the balance
+            ],
+          })
+        )
+      }
+
       calldatas.push(
         encodeFunctionData({
           abi: dtfIndexAbiV2,

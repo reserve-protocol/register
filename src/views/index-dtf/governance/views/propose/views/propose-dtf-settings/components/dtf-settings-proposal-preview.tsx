@@ -95,7 +95,7 @@ const useDecodedCalldatas = (
 
 const RawPreview = ({ data }: { data: DecodedCalldata[] }) => {
   return (
-    <div className="p-4">
+    <div className="p-4 flex flex-col gap-4">
       {data.map((call) => (
         <RawCallPreview key={call.callData} call={call} />
       ))}
@@ -158,7 +158,11 @@ const TokenRemovalPreview = ({
   )
 }
 
-const UnknownPreview = () => {
+const UnknownPreview = ({ signature }: { signature: string }) => {
+  if (signature === 'setDustAmount') {
+    return null
+  }
+
   return <div>Preview not available</div>
 }
 
@@ -178,7 +182,7 @@ const OverviewPreview = ({ data }: { data: DecodedCalldata[] }) => {
             data={call.data}
           />
         ) : (
-          <UnknownPreview />
+          <UnknownPreview signature={call.signature} />
         )
       })}
     </div>
