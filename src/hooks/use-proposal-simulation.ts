@@ -1,17 +1,15 @@
-import { useAtom, useAtomValue } from 'jotai'
-import { useCallback } from 'react'
-import { chainIdAtom, rTokenGovernanceAtom, rTokenStateAtom } from 'state/atoms'
+import { SimulationConfig } from '@/types'
+import { useCallback, useMemo, useState } from 'react'
 import {
-  SimulationConfig,
   StorageEncodingResponse,
   TenderlyPayload,
   TenderlySimulation,
 } from 'types'
-import useProposalTx from './useProposalTx'
+import { Address } from 'viem'
+import { useBlock, useReadContract } from 'wagmi'
 
+import ERC20 from '@/abis/ERC20'
 import Governance from 'abis/Governance'
-import { wagmiConfig } from 'state/chain'
-import { AvailableChain } from 'utils/chains'
 import {
   BLOCK_GAS_LIMIT,
   DEFAULT_FROM,
@@ -21,22 +19,30 @@ import {
   TENDERLY_SIM_URL,
 } from 'utils/constants'
 import {
-  Address,
   encodeAbiParameters,
   encodeFunctionData,
   keccak256,
   parseAbiParameters,
-  parseEther,
   stringToBytes,
   toHex,
 } from 'viem'
-import { isTimeunitGovernance } from '@/views/yield-dtf/governance/utils'
-import { useBlock } from 'wagmi'
-import { readContract } from 'wagmi/actions'
-import { simulationStateAtom } from '../../proposal-detail/atom'
 
 // Maximum delay (in ms) before aborting the exponential back-off
 const MAX_BACKOFF_DELAY = 8_000
+
+const getFetchOptions = (payload: any) => {
+  const TENDERLY_FETCH_OPTIONS = {
+    headers: {
+      'X-Access-Key': TENDERLY_ACCESS_TOKEN,
+      'Content-Type': 'application/json',
+    },
+  }
+  return {
+    method: 'POST',
+    body: JSON.stringify(payload),
+    ...TENDERLY_FETCH_OPTIONS,
+  }
+}
 
 /**
  * @notice Encode state overrides
@@ -92,42 +98,21 @@ const sendSimulation = async (
   }
 }
 
-const getFetchOptions = (payload: any) => {
-  const TENDERLY_FETCH_OPTIONS = {
-    headers: {
-      'X-Access-Key': TENDERLY_ACCESS_TOKEN,
-      'Content-Type': 'application/json',
-    },
-  }
-  return {
-    method: 'POST',
-    body: JSON.stringify(payload),
-    ...TENDERLY_FETCH_OPTIONS,
-  }
-}
-
 const sleep = (delay: number) =>
   new Promise((resolve) => setTimeout(resolve, delay)) // delay in milliseconds
 
 const simulateNew = async (
   config: SimulationConfig,
-  votingTokenSupply: number,
-  isTimeUnitGovernance: boolean,
-  chainId: AvailableChain,
+  voteTokenSupply: bigint,
+  chainId: number,
   blockNumber: number,
   blockTimestamp: bigint,
-  governorAddress: Address
+  governorAddress: Address,
+  timelockAddress: Address
 ): Promise<TenderlySimulation> => {
   const { targets, values, calldatas, description } = config
 
   const blockNumberToUse = blockNumber - 20 // ensure tenderly has the block
-
-  const timelockAddr = await readContract(wagmiConfig, {
-    address: governorAddress,
-    abi: Governance,
-    chainId,
-    functionName: 'timelock',
-  })
   const descriptionHash = keccak256(stringToBytes(description))
 
   const proposalId = BigInt(
@@ -168,24 +153,11 @@ const simulateNew = async (
   const proposalCoreKey = `_proposals[${proposalId.toString()}]`
   const proposalVotesKey = `_proposalVotes[${proposalId.toString()}]`
   governorStateOverrides = {
-    ...(isTimeUnitGovernance
-      ? {
-          [`${proposalCoreKey}.voteEnd`]: (simTimestamp - 100n).toString(),
-          [`${proposalCoreKey}.voteStart`]: (simTimestamp - 100n).toString(),
-        }
-      : {
-          [`${proposalCoreKey}.voteEnd._deadline`]: (
-            BigInt(blockNumberToUse) - 1n
-          ).toString(),
-          [`${proposalCoreKey}.voteStart._deadline`]: (
-            BigInt(blockNumberToUse) - 1n
-          ).toString(),
-        }),
+    [`${proposalCoreKey}.voteEnd`]: (simTimestamp - 100n).toString(),
+    [`${proposalCoreKey}.voteStart`]: (simTimestamp - 100n).toString(),
     [`${proposalCoreKey}.executed`]: 'false',
     [`${proposalCoreKey}.canceled`]: 'false',
-    [`${proposalVotesKey}.forVotes`]: parseEther(
-      votingTokenSupply.toString()
-    ).toString(),
+    [`${proposalVotesKey}.forVotes`]: voteTokenSupply.toString(),
     [`${proposalVotesKey}.againstVotes`]: '0',
     [`${proposalVotesKey}.abstainVotes`]: '0',
   }
@@ -193,7 +165,7 @@ const simulateNew = async (
   const stateOverrides = {
     networkID: chainId.toString(),
     stateOverrides: {
-      [timelockAddr]: {
+      [timelockAddress]: {
         value: timelockStorageObj,
       },
       [governorAddress]: {
@@ -211,6 +183,7 @@ const simulateNew = async (
     readonly `0x${string}`[],
     `0x${string}`,
   ] = [targets, values, calldatas, descriptionHash]
+
   const simulationPayload: TenderlyPayload = {
     network_id: chainId,
     block_number: blockNumber,
@@ -234,8 +207,8 @@ const simulateNew = async (
     state_objects: {
       [DEFAULT_FROM]: { balance: '0' },
       // Ensure transactions are queued in the timelock
-      [timelockAddr]: {
-        storage: storageObj.stateOverrides[timelockAddr.toLowerCase()].value,
+      [timelockAddress]: {
+        storage: storageObj.stateOverrides[timelockAddress.toLowerCase()].value,
       },
       // Ensure governor storage is properly configured so `state(proposalId)` returns `Queued`
       [governorAddress]: {
@@ -253,48 +226,66 @@ const simulateNew = async (
   }
 }
 
-const useProposalSimulation = () => {
-  const chainId = useAtomValue(chainIdAtom)
+const useProposalSimulation = (
+  governorAddress: Address,
+  timelockAddress: Address,
+  voteTokenAddress: Address,
+  chainId: number
+) => {
   const { data: block } = useBlock({ chainId })
-  const { stTokenSupply: votingTokenSupply } = useAtomValue(rTokenStateAtom)
-  const governance = useAtomValue(rTokenGovernanceAtom)
-  const [simState, setSimState] = useAtom(simulationStateAtom)
-  const isTimeUnitGovernance = isTimeunitGovernance(governance.name)
-  const tx = useProposalTx()
+  const { data: voteTokenSupply } = useReadContract({
+    address: voteTokenAddress,
+    abi: ERC20,
+    chainId,
+    functionName: 'totalSupply',
+  })
+  const [simState, setSimState] = useState({
+    data: undefined as TenderlySimulation | undefined,
+    loading: false,
+    error: undefined,
+  })
 
-  const [targets, values, calldatas, description] = tx?.args!
+  const handleSimulation = useCallback(
+    async (config: SimulationConfig) => {
+      // fn not ready
+      if (!block?.number || !voteTokenSupply) {
+        return
+      }
 
-  const config: SimulationConfig = {
-    targets,
-    values,
-    calldatas,
-    description,
-  }
+      setSimState((prev) => ({ ...prev, loading: true }))
+      try {
+        const result = await simulateNew(
+          config,
+          voteTokenSupply,
+          chainId,
+          Number(block.number),
+          block.timestamp,
+          governorAddress,
+          timelockAddress
+        )
+        setSimState({ data: result, loading: false, error: undefined })
+      } catch (err: any) {
+        setSimState({ data: undefined, loading: false, error: err })
+      }
+    },
+    [
+      governorAddress,
+      voteTokenSupply,
+      timelockAddress,
+      block,
+      setSimState,
+      chainId,
+    ]
+  )
 
-  const handleSimulation = useCallback(async () => {
-    setSimState((prev) => ({ ...prev, loading: true }))
-    try {
-      const result = await simulateNew(
-        config,
-        votingTokenSupply,
-        isTimeUnitGovernance,
-        chainId,
-        Number(block?.number ?? 0n),
-        block?.timestamp ?? 0n,
-        governance.governor as Address
-      )
-      setSimState({ data: result, loading: false, error: null })
-    } catch (err: any) {
-      setSimState({ data: null, loading: false, error: err })
-    }
-  }, [config, votingTokenSupply, governance])
-
-  return {
-    sim: simState.data,
-    isLoading: simState.loading,
-    error: simState.error,
-    handleSimulation,
-  }
+  return useMemo(
+    () => ({
+      ...simState,
+      isReady: !!block?.number && !!voteTokenSupply,
+      handleSimulation,
+    }),
+    [handleSimulation, simState, block?.number, voteTokenSupply]
+  )
 }
 
 export default useProposalSimulation

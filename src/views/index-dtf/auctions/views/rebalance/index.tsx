@@ -10,6 +10,7 @@ import RebalanceAction from './components/rebalance-action'
 import RebalanceSetup from './components/rebalance-setup'
 import Updater from './updater'
 import RebalanceAuctions from './components/rebalance-auctions'
+import { useTransactionReceipt } from 'wagmi'
 
 const RebalanceHeader = () => {
   const rebalance = useAtomValue(currentRebalanceAtom)
@@ -41,7 +42,17 @@ const RebalanceHeader = () => {
 const Rebalance = () => {
   const { proposalId } = useParams()
   const setCurrentProposalId = useSetAtom(currentProposalIdAtom)
-
+  const result = useTransactionReceipt({
+    hash: '0x59418defdaea6afdfd24447c4e1c64b55608c0b0f7feb408e60db6d721af10eb',
+  })
+  console.log(
+    'RESULT',
+    JSON.stringify(
+      result,
+      (key, value) => (typeof value === 'bigint' ? value.toString() : value),
+      2
+    )
+  )
   useEffect(() => {
     if (proposalId) {
       setCurrentProposalId(proposalId)
