@@ -1,6 +1,7 @@
 import { useERC20Balances } from '@/hooks/useERC20Balance'
 import useTokensInfo from '@/hooks/useTokensInfo'
 import { chainIdAtom, walletAtom } from '@/state/atoms'
+import { Token } from '@/types'
 import {
   OrderBookApi,
   OrderQuoteSideKindBuy,
@@ -13,18 +14,24 @@ import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { Address, parseEther, zeroAddress } from 'viem'
 import {
+  applyWalletBalanceAtom,
   failedOrdersAtom,
   fetchingQuotesAtom,
-  insufficientBalanceAtom,
   mintValueAtom,
   operationAtom,
   quotesAtom,
   redeemAssetsAtom,
   refetchQuotesAtom,
   selectedTokenAtom,
-  applyWalletBalanceAtom,
 } from '../atom'
-import { useGlobalProtocolKit } from '../providers/GlobalProtocolKitProvider'
+import {
+  UniversalRelayerWithRateLimiter,
+  useGlobalProtocolKit,
+} from '../providers/GlobalProtocolKitProvider'
+import {
+  CustomUniversalQuote,
+  getUniversalTokenName,
+} from '../providers/universal'
 import { QuoteProvider } from '../types'
 import { useFolioDetails } from './useFolioDetails'
 
@@ -33,15 +40,17 @@ async function getQuote({
   buyToken,
   amount,
   address,
-  orderBookApi,
   operation,
+  orderBookApi,
+  universalSdk,
 }: {
   sellToken: Address
   buyToken: Address
   amount: bigint
   address: Address
-  orderBookApi: OrderBookApi
   operation: 'redeem' | 'mint'
+  orderBookApi: OrderBookApi
+  universalSdk: UniversalRelayerWithRateLimiter
 }) {
   if (
     !address ||
@@ -57,6 +66,40 @@ async function getQuote({
     throw new Error('getQuote: Amount is 0')
   }
 
+  // Try Universal first if available
+  if (universalSdk) {
+    const universalAsset = getUniversalTokenName(buyToken)
+    if (universalAsset) {
+      try {
+        const universalQuote = await universalSdk.getQuote({
+          type: 'BUY',
+          blockchain: 'BASE',
+          token: universalAsset,
+          pair_token: 'USDC',
+          user_address: address,
+          slippage_bips: 100,
+          token_amount: amount.toString(),
+        })
+
+        const customQuote: CustomUniversalQuote = {
+          _originalQuote: universalQuote,
+          buyToken,
+          sellToken,
+          type: 'BUY',
+          userAddress: address,
+          sellAmount: BigInt(universalQuote.pair_token_amount ?? '0'),
+          buyAmount: amount,
+          validTo: Number(universalQuote.deadline ?? 0),
+        }
+        return customQuote
+      } catch (error) {
+        console.error(`Error getting universal quote:`, error)
+        // If Universal fails, continue with CowSwap
+      }
+    }
+  }
+
+  // If no Universal or it failed, use CowSwap
   const quote = await orderBookApi.getQuote({
     sellToken,
     buyToken,
@@ -92,13 +135,12 @@ export const useQuotesForMint = () => {
   const mintValue = useAtomValue(mintValueAtom)
   const folioAmount = parseEther(mintValue.toString())
   const address = useAtomValue(walletAtom)
-  const insufficientBalance = useAtomValue(insufficientBalanceAtom)
   const applyWalletBalance = useAtomValue(applyWalletBalanceAtom)
   const [quotes, setQuotes] = useAtom(quotesAtom)
   const setRefetchQuotes = useSetAtom(refetchQuotesAtom)
   const setFetchingQuotes = useSetAtom(fetchingQuotesAtom)
 
-  const { orderBookApi } = useGlobalProtocolKit()
+  const { orderBookApi, universalSdk } = useGlobalProtocolKit()
   const { data: folioDetails } = useFolioDetails({ shares: folioAmount })
   const { data: balances } = useERC20Balances(
     (folioDetails?.assets || []).map((address) => ({
@@ -114,7 +156,7 @@ export const useQuotesForMint = () => {
   const query = useQuery({
     queryKey: ['quotes/mint', folioDetails?.assets, folioDetails?.mintValues],
     queryFn: async ({ signal }) => {
-      if (!folioDetails || !tokensInfo || !orderBookApi) {
+      if (!folioDetails || !tokensInfo || !orderBookApi || !universalSdk) {
         return {}
       }
 
@@ -138,8 +180,9 @@ export const useQuotesForMint = () => {
               buyToken: token.address,
               amount,
               address: address as Address,
-              orderBookApi,
               operation: 'mint',
+              orderBookApi,
+              universalSdk,
             })
           } catch (error) {
             console.error(`Error getting quote for ${asset}:`, error)
@@ -152,13 +195,18 @@ export const useQuotesForMint = () => {
       folioDetails.assets.forEach((asset, i) => {
         const token = tokensInfo[asset.toLowerCase()]
         const quote = results[i]
+        const type =
+          quote && '_originalQuote' in quote
+            ? QuoteProvider.Universal
+            : QuoteProvider.CowSwap
+
         try {
           if (!signal.aborted) {
             setQuotes((prev) => ({
               ...prev,
               [token.address as string]: {
                 success: !!quote,
-                type: QuoteProvider.CowSwap,
+                type,
                 data: quote,
               },
             }))
@@ -167,7 +215,7 @@ export const useQuotesForMint = () => {
           return {
             token: token,
             success: true,
-            source: QuoteProvider.CowSwap,
+            type,
             quote,
           }
         } catch {
@@ -188,11 +236,7 @@ export const useQuotesForMint = () => {
 
       return quotes
     },
-    enabled:
-      !insufficientBalance &&
-      !!folioDetails?.mintValues &&
-      !!tokensInfo &&
-      !!folioAmount,
+    enabled: !!folioDetails?.mintValues && !!tokensInfo && !!folioAmount,
   })
 
   useEffect(() => {
@@ -210,8 +254,7 @@ export const useQuotesForRedeem = () => {
   const [quotes, setQuotes] = useAtom(quotesAtom)
   const setRefetchQuotes = useSetAtom(refetchQuotesAtom)
   const setFetchingQuotes = useSetAtom(fetchingQuotesAtom)
-
-  const { orderBookApi } = useGlobalProtocolKit()
+  const { orderBookApi, universalSdk } = useGlobalProtocolKit()
 
   const assets = Object.keys(redeemAssets)
 
@@ -227,7 +270,8 @@ export const useQuotesForRedeem = () => {
         !assets ||
         !assets.length ||
         !tokensInfo ||
-        !orderBookApi
+        !orderBookApi ||
+        !universalSdk
       ) {
         return {}
       }
@@ -248,8 +292,9 @@ export const useQuotesForRedeem = () => {
               buyToken: selectedToken.address,
               amount,
               address: address as Address,
-              orderBookApi,
               operation: 'redeem',
+              orderBookApi,
+              universalSdk,
             })
           } catch (error) {
             console.error(`Error getting quote for ${asset}:`, error)
@@ -311,7 +356,7 @@ export const useQuotesForRedeem = () => {
 
 export const useRefreshQuotes = () => {
   const address = useAtomValue(walletAtom)
-  const { orderBookApi } = useGlobalProtocolKit()
+  const { orderBookApi, universalSdk } = useGlobalProtocolKit()
   const [quotes, setQuotes] = useAtom(quotesAtom)
   const operation = useAtomValue(operationAtom)
   const failedOrders = useAtomValue(failedOrdersAtom)
@@ -319,7 +364,7 @@ export const useRefreshQuotes = () => {
   const query = useQuery({
     queryKey: ['refresh-quotes', failedOrders],
     queryFn: async () => {
-      if (!failedOrders || !orderBookApi || !address) {
+      if (!failedOrders || !orderBookApi || !address || !universalSdk) {
         return
       }
 
@@ -331,8 +376,9 @@ export const useRefreshQuotes = () => {
             operation === 'redeem' ? order.sellAmount : order.buyAmount
           ),
           address: address as Address,
-          orderBookApi,
           operation,
+          orderBookApi,
+          universalSdk,
         })
       })
 

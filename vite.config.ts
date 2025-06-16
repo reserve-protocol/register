@@ -67,9 +67,16 @@ export default defineConfig({
       types: path.resolve('src/types/'),
       utils: path.resolve('src/utils/'),
       '@': path.resolve(__dirname, './src'),
+      '@uniswap/uniswapx-sdk': path.resolve(
+        __dirname,
+        'node_modules/@uniswap/uniswapx-sdk/dist/src/index.js'
+      ),
     },
   },
-  optimizeDeps: { exclude: ['ts-node'] },
+  optimizeDeps: {
+    exclude: ['ts-node'],
+    include: ['@uniswap/uniswapx-sdk'],
+  },
   server: {
     port: 3000,
   },

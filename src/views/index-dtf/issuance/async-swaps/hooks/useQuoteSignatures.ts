@@ -16,7 +16,7 @@ import {
   maxUint256,
   parseEther,
 } from 'viem'
-import { useSendCalls } from 'wagmi'
+import { useSendCalls, useSignTypedData } from 'wagmi'
 import {
   userInputAtom,
   asyncSwapResponseAtom,
@@ -31,11 +31,14 @@ import { useGlobalProtocolKit } from '../providers/GlobalProtocolKitProvider'
 import { QuoteProvider } from '../types'
 import { uuidv4 } from '@/utils'
 import { indexDTFAtom } from '@/state/dtf/atoms'
+import { generateTypedData } from 'universal-sdk'
+import { CustomUniversalQuote } from '../providers/universal'
 
 const COWSWAP_SETTLEMENT = '0x9008D19f58AAbD9eD0D60971565AA8510560ab41' as const
 const COWSWAP_VAULT = '0xC92E8bdf79f0507f65a392b0ab4667716BFE0110' as const
 
 export function useQuoteSignatures(refresh = false) {
+  const { data: signature, signTypedData } = useSignTypedData()
   const indexDTF = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
   const address = useAtomValue(walletAtom)
@@ -46,13 +49,13 @@ export function useQuoteSignatures(refresh = false) {
   const [quotes, setQuotes] = useAtom(quotesAtom)
   const setOrderIDs = useSetAtom(orderIdsAtom)
   const setAsyncSwapResponse = useSetAtom(asyncSwapResponseAtom)
-  const { orderBookApi } = useGlobalProtocolKit()
+  const { orderBookApi, universalSdk } = useGlobalProtocolKit()
   const { sendCallsAsync } = useSendCalls()
   const failedOrders = useAtomValue(failedOrdersAtom)
 
   return useMutation({
     mutationFn: async () => {
-      if (!address || !orderBookApi || !chainId || !indexDTF) {
+      if (!address || !orderBookApi || !chainId || !indexDTF || !universalSdk) {
         console.error('No global kit')
         return {
           orders: [],
@@ -130,6 +133,25 @@ export function useQuoteSignatures(refresh = false) {
                 amount: modifiedQuote.sellAmount,
               },
             }
+          }
+
+          if (quote.success && quote.type === QuoteProvider.Universal) {
+            const uq = quote.data as CustomUniversalQuote
+            const { typedData } = await generateTypedData(uq._originalQuote)
+
+            await signTypedData(typedData)
+
+            // const universalOrder = await universalSdk.submitOrder({
+            //   ...uq._originalQuote,
+            //   signature: signature!,
+            // })
+
+            // return {
+            //   type: quote.type,
+            //   data: universalOrder,
+            // }
+            console.log({ signature })
+            return null
           }
 
           return null

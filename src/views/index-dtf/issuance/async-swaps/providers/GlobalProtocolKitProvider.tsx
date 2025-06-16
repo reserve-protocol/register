@@ -8,13 +8,21 @@ import {
   useEffect,
   useState,
 } from 'react'
+import { createUniversalSdkWrapper } from './universal'
+import { ChainId } from '@/utils/chains'
+
+export type UniversalRelayerWithRateLimiter = ReturnType<
+  typeof createUniversalSdkWrapper
+>
 
 type GlobalProtocolKitContextType = {
   orderBookApi: OrderBookApi | null
+  universalSdk: UniversalRelayerWithRateLimiter | null
 }
 
 const GlobalProtocolKitContext = createContext<GlobalProtocolKitContextType>({
   orderBookApi: null,
+  universalSdk: null,
 })
 
 export const useGlobalProtocolKit = () => useContext(GlobalProtocolKitContext)
@@ -29,12 +37,31 @@ export function GlobalProtocolKitProvider({
   const chainId = useAtomValue(chainIdAtom)
 
   const [orderBookApi, setOrderBookApi] = useState<OrderBookApi | null>(null)
+  const [universalSdk, setUniversalSdk] = useState<ReturnType<
+    typeof createUniversalSdkWrapper
+  > | null>(null)
 
   useEffect(() => {
     if (chainId) {
+      setUniversalSdk(createUniversalSdkWrapper())
       setOrderBookApi(
         new OrderBookApi({
-          chainId: chainId,
+          chainId,
+          limiterOpts: {
+            tokensPerInterval: 4,
+            interval: 'second',
+          },
+          backoffOpts: {
+            numOfAttempts: 3,
+            maxDelay: Infinity,
+            jitter: 'full',
+          },
+        })
+      )
+    } else {
+      setOrderBookApi(
+        new OrderBookApi({
+          chainId: ChainId.Base,
           limiterOpts: {
             tokensPerInterval: 4,
             interval: 'second',
@@ -53,6 +80,7 @@ export function GlobalProtocolKitProvider({
     <GlobalProtocolKitContext.Provider
       value={{
         orderBookApi,
+        universalSdk,
       }}
     >
       {children}

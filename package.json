@@ -76,6 +76,7 @@
     "tailwind-merge": "^2.5.5",
     "tailwindcss-animate": "^1.0.7",
     "theme-ui": "0.17.1",
+    "universal-sdk": "^0.1.34",
     "vaul": "^1.1.1",
     "viem": "^2.30.0",
     "wagmi": "^2.15.4",
