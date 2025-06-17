@@ -21,7 +21,7 @@ import binanceWallet from '@binance/w3w-rainbow-connector-v2'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ROUTES } from 'utils/constants'
 import { WagmiProvider, createConfig, fallback, http } from 'wagmi'
-import { arbitrum, base, mainnet } from 'wagmi/chains'
+import { arbitrum, base, mainnet, bsc } from 'wagmi/chains'
 import { hashFn, structuralSharing } from 'wagmi/query'
 import AtomUpdater from './updaters/AtomUpdater'
 
@@ -51,7 +51,7 @@ const connectors = connectorsForWallets(
 )
 
 export const wagmiConfig = createConfig({
-  chains: [mainnet, base, arbitrum],
+  chains: [mainnet, base, arbitrum, bsc],
   connectors,
   transports: {
     [mainnet.id]: import.meta.env.VITE_MAINNET_URL
@@ -75,6 +75,13 @@ export const wagmiConfig = createConfig({
         `https://arbitrum-mainnet.infura.io/v3/${import.meta.env.VITE_INFURA}`
       ),
       http(`https://rpc.ankr.com/arbitrum/${import.meta.env.VITE_ANKR}`),
+    ]),
+    [bsc.id]: fallback([
+      http(`https://bsc-mainnet.infura.io/v3/${import.meta.env.VITE_INFURA}`),
+      http(`https://rpc.ankr.com/bsc/${import.meta.env.VITE_ANKR}`),
+      http(
+        `https://bsc-mainnet.g.alchemy.com/v2/${import.meta.env.VITE_ALCHEMY}`
+      ),
     ]),
   },
 })

@@ -1,10 +1,11 @@
 import { Address } from 'viem'
+import { PriceControl } from '@reserve-protocol/dtf-rebalance-lib'
 
 export type GovParamsJson = {
   votingDelay: string
   votingPeriod: string
   proposalThreshold: string
-  quorumPercent: string
+  quorumThreshold: string
   timelockDelay: string
   guardians: Address[]
 }
@@ -26,20 +27,27 @@ interface BaseZapDeployBody {
   }
 
   additionalDetails: {
-    tradeDelay: string
     auctionLength: string
     feeRecipients: {
       recipient: Address
       portion: string
     }[]
-    folioFee: string
-    mintingFee: string
+    tvlFee: string
+    mintFee: string
     mandate: string
   }
+  folioFlags: FolioFlags
+  basketManagers: Address[]
+  auctionLaunchers: Address[]
+  brandManagers: Address[]
+}
 
-  tradeLaunchers: Address[]
-  vibesOfficers: Address[]
-  existingTradeProposers: Address[]
+export interface FolioFlags {
+  trustedFillerEnabled: boolean
+  rebalanceControl: {
+    weightControl: boolean
+    priceControl: PriceControl
+  }
 }
 
 export interface ZapDeployBody extends BaseZapDeployBody {

@@ -9,28 +9,7 @@ import { AvailableChain, ChainId } from 'utils/chains'
 import { CHAIN_TAGS } from 'utils/constants'
 import { useSwitchChain } from 'wagmi'
 
-const SUPPORTED_CHAINS = [ChainId.Mainnet, ChainId.Base]
-
-const ComingSoonOption = ({ network }: { network: 'mainnet' | 'solana' }) => {
-  return (
-    <div className="flex flex-1 items-center justify-between gap-2 border rounded-xl p-4 text-base bg-muted border-muted cursor-not-allowed">
-      {network === 'mainnet' ? (
-        <div className="flex items-center gap-2 font-bold">
-          <ChainLogo chain={ChainId.Mainnet} width={20} height={20} />
-          {CHAIN_TAGS[ChainId.Mainnet]}
-        </div>
-      ) : (
-        <div className="flex items-center gap-2 font-bold">
-          <ChainLogo chain="Solana" width={20} height={20} />
-          Solana
-        </div>
-      )}
-      <div className="text-nowrap text-legend text-xs border rounded-full px-2 py-1 bg-card">
-        Coming soon
-      </div>
-    </div>
-  )
-}
+const SUPPORTED_CHAINS = [ChainId.Mainnet, ChainId.Base, ChainId.BSC]
 
 const ChainOption = ({
   chainId,
@@ -99,7 +78,6 @@ const ChainSelector = () => {
           )}
         />
       ))}
-      <ComingSoonOption network="solana" />
     </div>
   )
 }
