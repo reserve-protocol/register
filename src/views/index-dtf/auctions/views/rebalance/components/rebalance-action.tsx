@@ -1,38 +1,77 @@
-import { useAtomValue } from 'jotai'
-import { ArrowRight } from 'lucide-react'
-import { rebalanceMetricsAtom, rebalancePercentAtom } from '../atoms'
+import { AuctionRound } from '@reserve-protocol/dtf-rebalance-lib'
+import { atom, useAtomValue } from 'jotai'
+import { ArrowRight, MousePointerClick } from 'lucide-react'
+import {
+  rebalanceMetricsAtom,
+  rebalancePercentAtom,
+  rebalanceTokenMapAtom,
+} from '../atoms'
 import LaunchAuctionsButton from './launch-auctions-button'
 
-const RebalanceAction = () => {
-  const rebalancePercent = useAtomValue(rebalancePercentAtom)
+const ROUND_TITLE = {
+  [AuctionRound.EJECT]: 'Remove Tokens',
+  [AuctionRound.PROGRESS]: 'Progressing',
+  [AuctionRound.FINAL]: 'Precision Rebalancing',
+}
+
+const rebalanceDescriptionAtom = atom((get) => {
+  const metrics = get(rebalanceMetricsAtom)
+  const tokenMap = get(rebalanceTokenMapAtom)
+
+  if (!metrics || !Object.keys(tokenMap).length) return ''
+
+  const formatTokens = (tokens: string[]) => {
+    const symbols = tokens.map(
+      (token) => tokenMap[token.toLowerCase()]?.symbol || ''
+    )
+    if (symbols.length <= 3) return symbols.join(', ')
+    return `${symbols.slice(0, 3).join(', ')}, +${symbols.length - 3}`
+  }
+
+  return `${metrics.round === 0 ? 'Remove' : 'Trade'} ${formatTokens(metrics.deficitTokens)} for ${formatTokens(metrics.surplusTokens)}`
+})
+
+const RoundDescription = () => {
+  const description = useAtomValue(rebalanceDescriptionAtom)
   const metrics = useAtomValue(rebalanceMetricsAtom)
 
   return (
-    <div className="bg-background p-4 rounded-3xl">
-      <div className="flex ">
-        <div>
-          <h1 className="text-2xl">Round {metrics?.round ?? 1}</h1>
-          <h4 className="text-legend">Do stuff</h4>
-        </div>
-        <div className="ml-auto flex items-center flex-shrink-0 gap-1">
-          <span className="text-legend">
-            {metrics?.absoluteProgression.toFixed(2)}%
-          </span>
-          <ArrowRight className="w-4 h-4 text-primary" />
-          <span className="text-primary">{rebalancePercent.toFixed(2)}%</span>
-        </div>
-      </div>
-      <details className="mt-3">
-        <summary className="text-sm text-legend cursor-pointer hover:text-foreground transition-colors">
-          Metrics (helper output)
-        </summary>
-        <pre className="mt-2 p-3 bg-background rounded-lg text-xs overflow-auto max-h-64 text-foreground">
-          {JSON.stringify(metrics, null, 2)}
-        </pre>
-      </details>
-      <LaunchAuctionsButton />
+    <div className="mt-6">
+      <h1 className="text-2xl">{ROUND_TITLE[metrics?.round ?? 0]}</h1>
+      <p className="text-legend">{description}</p>
     </div>
   )
 }
+
+const Header = () => {
+  const metrics = useAtomValue(rebalanceMetricsAtom)
+  const rebalancePercent = useAtomValue(rebalancePercentAtom)
+
+  return (
+    <div className="flex">
+      <div>
+        <h4 className="text-primary flex items-center gap-1">
+          <MousePointerClick className="w-4 h-4 text-primary" />
+          Round {metrics?.round ?? 0 + 1}
+        </h4>
+      </div>
+      <div className="ml-auto flex items-center flex-shrink-0 gap-1">
+        <span className="text-legend">
+          {metrics?.absoluteProgression.toFixed(2)}%
+        </span>
+        <ArrowRight className="w-4 h-4 text-primary" />
+        <span className="text-primary">{rebalancePercent.toFixed(2)}%</span>
+      </div>
+    </div>
+  )
+}
+
+const RebalanceAction = () => (
+  <div className="bg-background p-4 rounded-3xl">
+    <Header />
+    <RoundDescription />
+    <LaunchAuctionsButton />
+  </div>
+)
 
 export default RebalanceAction

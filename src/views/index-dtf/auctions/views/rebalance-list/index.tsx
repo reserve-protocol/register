@@ -5,6 +5,7 @@ import { useAtomValue } from 'jotai'
 import { ChevronRight, Folder } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { RebalanceByProposal, rebalancesByProposalListAtom } from '../../atoms'
+import { ROUTES } from '@/utils/constants'
 
 const RebalanceListItem = ({
   rebalance,
@@ -24,15 +25,19 @@ const RebalanceListItem = ({
           isActive ? 'bg-primary text-primary-foreground' : 'bg-muted'
         )}
       >
-        {isActive ? <Spinner /> : <Folder size={16} />}
+        {isActive ? <Spinner size={16} /> : <Folder size={16} />}
       </div>
       <div>
         <Link
-          to={`/proposal/${rebalance.proposal.id}`}
+          target="_blank"
+          to={`../${ROUTES.GOVERNANCE_PROPOSAL}/${rebalance.proposal.id}`}
           className={cn(
             'underline hover:text-primary',
             isActive && 'text-primary'
           )}
+          onClick={(e) => {
+            e.stopPropagation()
+          }}
         >
           {getProposalTitle(rebalance.proposal.description)}
         </Link>

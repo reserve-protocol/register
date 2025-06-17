@@ -2,21 +2,17 @@ import { Slider } from '@/components/ui/slider'
 import { useAtom, useAtomValue } from 'jotai'
 import { currentRebalanceAtom } from '../../../atoms'
 import { rebalanceMetricsAtom, rebalancePercentAtom } from '../atoms'
-import { useEffect } from 'react'
+import { AuctionRound } from '@reserve-protocol/dtf-rebalance-lib'
+
+const ESTIMATED_ROUNDS = {
+  [AuctionRound.EJECT]: '2-3',
+  [AuctionRound.PROGRESS]: '1-2',
+  [AuctionRound.FINAL]: '0',
+}
 
 const RebalanceSetup = () => {
-  const rebalance = useAtomValue(currentRebalanceAtom)
   const [rebalancePercent, setRebalancePercent] = useAtom(rebalancePercentAtom)
   const metrics = useAtomValue(rebalanceMetricsAtom)
-
-  useEffect(() => {
-    if (
-      metrics?.absoluteProgression &&
-      rebalancePercent < metrics.absoluteProgression
-    ) {
-      setRebalancePercent(metrics.absoluteProgression)
-    }
-  }, [metrics?.absoluteProgression, rebalancePercent])
 
   return (
     <div className="p-4">
@@ -28,29 +24,20 @@ const RebalanceSetup = () => {
           </h1>
         </div>
         <div className="ml-auto text-right">
-          <h4 className="text-legend text-sm">Expires on</h4>
-          <span className="text-sm">
-            {rebalance?.rebalance.availableUntil
-              ? new Date(+rebalance.rebalance.availableUntil * 1000)
-                  .toLocaleString('en-CA', {
-                    year: 'numeric',
-                    month: '2-digit',
-                    day: '2-digit',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    hour12: false,
-                  })
-                  .replace(',', '')
-              : ''}
-          </span>
+          <h4 className="text-legend text-sm">Est. Upcoming rounds</h4>
+          <h1 className="text-2xl">{ESTIMATED_ROUNDS[metrics?.round ?? 1]}</h1>
         </div>
       </div>
       <Slider
         className="mb-2"
-        min={metrics?.absoluteProgression ?? 0}
+        min={0}
         max={100}
         value={[rebalancePercent]}
-        onValueChange={(value) => setRebalancePercent(value[0])}
+        onValueChange={(value) => {
+          if (value[0] > (metrics?.absoluteProgression ?? 0)) {
+            setRebalancePercent(value[0])
+          }
+        }}
       />
     </div>
   )

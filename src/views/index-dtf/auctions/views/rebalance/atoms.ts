@@ -3,6 +3,7 @@ import { AuctionMetrics } from '@reserve-protocol/dtf-rebalance-lib'
 import { Token } from '@/types'
 import { Rebalance } from '@reserve-protocol/dtf-rebalance-lib'
 import { atom } from 'jotai'
+import { currentRebalanceAtom } from '../../atoms'
 
 export type Auction = {
   id: string
@@ -48,3 +49,17 @@ export const rebalancePercentAtom = atom(0)
 export const rebalanceAuctionsAtom = atom<Auction[]>([])
 
 export const rebalanceStateAtom = atom<RebalanceState | undefined>(undefined)
+
+export const rebalanceTokenMapAtom = atom<Record<string, Token>>((get) => {
+  const rebalance = get(currentRebalanceAtom)
+
+  if (!rebalance) return {}
+
+  return rebalance.rebalance.tokens.reduce(
+    (acc, token) => {
+      acc[token.address.toLowerCase()] = token
+      return acc
+    },
+    {} as Record<string, Token>
+  )
+})
