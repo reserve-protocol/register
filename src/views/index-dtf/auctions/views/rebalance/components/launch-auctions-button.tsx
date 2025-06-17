@@ -1,13 +1,13 @@
 import dtfIndexAbiV4 from '@/abis/dtf-index-abi-v4'
 import { Button } from '@/components/ui/button'
-import { indexDTFAtom, indexDTFRebalanceControlAtom } from '@/state/dtf/atoms'
+import { indexDTFAtom } from '@/state/dtf/atoms'
 import { useAtomValue } from 'jotai'
 import { LoaderCircle } from 'lucide-react'
 import { useState } from 'react'
 import { Address } from 'viem'
 import { useWriteContract } from 'wagmi'
 import { currentRebalanceAtom } from '../../../atoms'
-import { rebalancePercentAtom, rebalanceStateAtom } from '../atoms'
+import { rebalancePercentAtom } from '../atoms'
 import useRebalanceParams from '../hooks/use-rebalance-params'
 import getRebalanceOpenAuction from '../utils/get-rebalance-open-auction'
 
@@ -57,7 +57,7 @@ const LaunchAuctionsButton = () => {
   return (
     <div className="flex flex-col gap-2">
       <Button
-        className="mt-4 w-full"
+        className="mt-4 w-full gap-2"
         disabled={!isValid || isPending}
         onClick={handleStartAuctions}
       >

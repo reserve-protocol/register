@@ -1,24 +1,35 @@
-import { useAtomValue, useSetAtom } from 'jotai'
-import { useEffect } from 'react'
-import { currentProposalIdAtom, currentRebalanceAtom } from '../../atoms'
+import { useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { useCallback, useEffect } from 'react'
+import {
+  currentProposalIdAtom,
+  currentRebalanceAtom,
+  RebalanceByProposal,
+} from '../../atoms'
 import {
   rebalanceAuctionsAtom,
   rebalanceMetricsAtom,
   rebalancePercentAtom,
 } from './atoms'
 import useRebalanceAuctions from './hooks/use-rebalance-auctions'
-import useRebalanceParams from './hooks/use-rebalance-params'
+import useRebalanceParams, {
+  RebalanceParams,
+} from './hooks/use-rebalance-params'
 import getRebalanceOpenAuction from './utils/get-rebalance-open-auction'
 import { useParams } from 'react-router-dom'
 
 const RebalanceMetricsUpdater = () => {
-  const setRebalanceMetrics = useSetAtom(rebalanceMetricsAtom)
+  const [metrics, setRebalanceMetrics] = useAtom(rebalanceMetricsAtom)
   const setRebalancePercent = useSetAtom(rebalancePercentAtom)
+  const rebalancePercent = useAtomValue(rebalancePercentAtom)
   const rebalanceParams = useRebalanceParams()
   const currentRebalance = useAtomValue(currentRebalanceAtom)
 
-  useEffect(() => {
-    if (rebalanceParams && currentRebalance) {
+  const updateMetrics = useCallback(
+    (
+      params: RebalanceParams,
+      currentRebalance: RebalanceByProposal,
+      rebalancePercent: number
+    ) => {
       try {
         const {
           supply,
@@ -27,7 +38,7 @@ const RebalanceMetricsUpdater = () => {
           initialFolio,
           prices,
           isTrackingDTF,
-        } = rebalanceParams
+        } = params
 
         const [, rebalanceMetrics] = getRebalanceOpenAuction(
           currentRebalance.rebalance.tokens,
@@ -36,7 +47,8 @@ const RebalanceMetricsUpdater = () => {
           currentFolio,
           initialFolio,
           prices,
-          isTrackingDTF
+          isTrackingDTF,
+          rebalancePercent
         )
 
         setRebalanceMetrics({
@@ -45,12 +57,30 @@ const RebalanceMetricsUpdater = () => {
           relativeProgression: rebalanceMetrics.relativeProgression * 100,
           initialProgression: rebalanceMetrics.initialProgression * 100,
         })
-        setRebalancePercent(rebalanceMetrics.absoluteProgression * 100)
       } catch (e) {
         console.error('Error getting rebalance metrics', e)
       }
+    },
+    [setRebalanceMetrics]
+  )
+
+  useEffect(() => {
+    if (rebalanceParams && currentRebalance) {
+      if (!metrics) {
+        updateMetrics(rebalanceParams, currentRebalance, 1)
+      } else if (metrics.absoluteProgression > rebalancePercent) {
+        setRebalancePercent(metrics.absoluteProgression)
+      } else if (rebalancePercent > metrics.absoluteProgression) {
+        updateMetrics(rebalanceParams, currentRebalance, rebalancePercent)
+      }
     }
-  }, [rebalanceParams, currentRebalance])
+  }, [
+    rebalanceParams,
+    currentRebalance,
+    metrics,
+    rebalancePercent,
+    updateMetrics,
+  ])
 
   return null
 }

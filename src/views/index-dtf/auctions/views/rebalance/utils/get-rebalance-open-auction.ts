@@ -58,7 +58,7 @@ function getRebalanceOpenAuction(
     decimals,
     currentPrices,
     priceError,
-    rebalancePercent ? rebalancePercent / 100 : undefined
+    rebalancePercent ? rebalancePercent / 100 : 1
   )
 }
 

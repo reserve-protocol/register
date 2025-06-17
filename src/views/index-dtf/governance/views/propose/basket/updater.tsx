@@ -26,6 +26,7 @@ import {
   dtfTradeDelay,
   isDeferAvailableAtom,
   tradeVolatilityAtom,
+  dtfDistributionAtom,
 } from './atoms'
 import { PermissionOptionId } from './components/proposal-rebalance-launch-settings'
 
@@ -105,6 +106,7 @@ const useInitialBasket = ():
       Record<string, IndexAssetShares>,
       Record<string, number>,
       bigint | undefined,
+      Record<string, bigint> | undefined,
     ]
   | undefined => {
   const dtfAddress = useAtomValue(iTokenAddressAtom)
@@ -176,7 +178,7 @@ const useInitialBasket = ():
       {} as Record<string, IndexAssetShares>
     )
 
-    return [totalSupply, initialBasket, priceMap, tradeDelay]
+    return [totalSupply, initialBasket, priceMap, tradeDelay, distribution]
   }, [Object.keys(priceMap).length, !!data, basket?.length, tradeDelay])
 }
 
@@ -188,10 +190,12 @@ const InitialBasketUpdater = () => {
   const setTradeDelay = useSetAtom(dtfTradeDelay)
   const setProposedShares = useSetAtom(proposedSharesAtom)
   const setProposedUnits = useSetAtom(proposedUnitsAtom)
+  const setDtfDistribution = useSetAtom(dtfDistributionAtom)
 
   useEffect(() => {
     if (initialBasket) {
-      const [totalSupply, basket, priceMap, tradeDelay] = initialBasket
+      const [totalSupply, basket, priceMap, tradeDelay, distribution] =
+        initialBasket
       setPriceMap(priceMap)
       setProposedShares(
         Object.values(basket).reduce(
@@ -204,7 +208,7 @@ const InitialBasketUpdater = () => {
       )
       setProposedBasket(basket)
       setSupply(totalSupply)
-
+      setDtfDistribution(distribution)
       setProposedUnits(
         Object.values(basket).reduce(
           (acc, asset) => {

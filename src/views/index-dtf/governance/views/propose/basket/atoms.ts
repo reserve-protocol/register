@@ -35,6 +35,9 @@ export interface IndexAssetShares {
 // ############################################################
 export const priceMapAtom = atom<Record<string, number>>({})
 export const dtfSupplyAtom = atom<bigint>(0n)
+export const dtfDistributionAtom = atom<Record<string, bigint> | undefined>(
+  undefined
+)
 
 // ############################################################
 // Proposal state
@@ -481,6 +484,7 @@ export const basketProposalCalldatasAtom = atom<Hex[] | undefined>((get) => {
   const derivedProposedShares = get(derivedProposedSharesAtom)
   const rebalanceControl = get(indexDTFRebalanceControlAtom)
   const dtfPrice = get(indexDTFPriceAtom)
+  const dtfDistribution = get(dtfDistributionAtom)
   const ttl = get(rebalanceTTLAtom)
   const supply = get(dtfSupplyAtom)
   const proposedShares = get(proposedSharesAtom)
@@ -496,6 +500,7 @@ export const basketProposalCalldatasAtom = atom<Hex[] | undefined>((get) => {
     !proposedBasket ||
     !rebalanceControl ||
     !dtfPrice ||
+    !dtfDistribution ||
     (isUnitBasket && !derivedProposedShares)
   )
     return undefined
@@ -506,6 +511,7 @@ export const basketProposalCalldatasAtom = atom<Hex[] | undefined>((get) => {
   const targetBasket: bigint[] = []
   const _prices: number[] = []
   const error: number[] = []
+  const folio: bigint[] = []
 
   let index = 0
 
@@ -513,6 +519,7 @@ export const basketProposalCalldatasAtom = atom<Hex[] | undefined>((get) => {
     tokens.push(asset as Address)
     decimals.push(BigInt(proposedBasket[asset].token.decimals))
     currentBasket.push(parseUnits(proposedBasket[asset].currentShares, 16))
+    folio.push(dtfDistribution[asset])
 
     if (isUnitBasket && derivedProposedShares) {
       targetBasket.push(derivedProposedShares[asset])
@@ -530,11 +537,11 @@ export const basketProposalCalldatasAtom = atom<Hex[] | undefined>((get) => {
     const { weights, prices, limits } = getStartRebalance(
       supply,
       tokens,
+      folio,
       decimals,
       targetBasket,
       _prices,
       error,
-      dtfPrice,
       rebalanceControl?.weightControl
     )
 

@@ -1,5 +1,7 @@
 import dtfIndexAbiV4 from '@/abis/dtf-index-abi-v4'
-import useAssetPricesWithSnapshot from '@/hooks/use-asset-prices-with-snapshot'
+import useAssetPricesWithSnapshot, {
+  TokenPriceWithSnapshot,
+} from '@/hooks/use-asset-prices-with-snapshot'
 import {
   indexDTFAtom,
   indexDTFBasketAtom,
@@ -11,6 +13,15 @@ import { useMemo } from 'react'
 import { parseEther } from 'viem'
 import { useReadContract, useReadContracts } from 'wagmi'
 import { currentRebalanceAtom } from '../../../atoms'
+
+export type RebalanceParams = {
+  supply: bigint
+  rebalance: Rebalance
+  currentFolio: Record<string, bigint>
+  initialFolio: Record<string, bigint>
+  prices: TokenPriceWithSnapshot
+  isTrackingDTF: boolean
+}
 
 const mapToAssets = (
   assets: readonly `0x${string}`[],
@@ -114,7 +125,7 @@ const useRebalanceParams = () => {
       initialFolio,
       prices,
       isTrackingDTF: rebalanceControl.weightControl,
-    }
+    } as RebalanceParams
   }, [dtfData, initialFolio, prices, rebalanceControl])
 }
 
