@@ -85,7 +85,7 @@ const useRebalanceAuctions = () => {
       }
     },
     enabled: !!rebalance?.rebalance.id,
-    refetchInterval: 1000 * 60, // every 30s!
+    refetchInterval: 1000 * 30, // every 30s!
   })
 }
 

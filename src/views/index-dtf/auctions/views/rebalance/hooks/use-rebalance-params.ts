@@ -9,10 +9,11 @@ import {
 } from '@/state/dtf/atoms'
 import { Rebalance } from '@reserve-protocol/dtf-rebalance-lib/dist/types'
 import { useAtomValue } from 'jotai'
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { parseEther } from 'viem'
 import { useReadContract, useReadContracts } from 'wagmi'
 import { currentRebalanceAtom } from '../../../atoms'
+import { isAuctionOngoingAtom } from '../atoms'
 
 export type RebalanceParams = {
   supply: bigint
@@ -41,6 +42,7 @@ const useRebalanceParams = () => {
   const basket = useAtomValue(indexDTFBasketAtom)
   const rebalance = useAtomValue(currentRebalanceAtom)
   const rebalanceControl = useAtomValue(indexDTFRebalanceControlAtom)
+  const isAuctionOngoing = useAtomValue(isAuctionOngoingAtom)
 
   const rebalanceTokens = useMemo(() => {
     if (!rebalance || !basket) return []
@@ -62,7 +64,7 @@ const useRebalanceParams = () => {
     rebalanceTokens,
     Number(rebalance?.proposal.creationTime)
   )
-  const { data: dtfData } = useReadContracts({
+  const { data: dtfData, refetch: refetchDtfData } = useReadContracts({
     contracts: [
       { abi: dtfIndexAbiV4, address: dtf?.id, functionName: 'totalSupply' },
       { abi: dtfIndexAbiV4, address: dtf?.id, functionName: 'getRebalance' },
@@ -102,6 +104,16 @@ const useRebalanceParams = () => {
       },
     },
   })
+
+  useEffect(() => {
+    if (isAuctionOngoing) {
+      const interval = setInterval(() => {
+        refetchDtfData()
+      }, 30000) // 30 seconds
+
+      return () => clearInterval(interval)
+    }
+  }, [isAuctionOngoing, refetchDtfData])
 
   return useMemo(() => {
     if (!dtfData || !initialFolio || !prices || !rebalanceControl)

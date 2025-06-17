@@ -1,8 +1,11 @@
 import { Slider } from '@/components/ui/slider'
-import { useAtom, useAtomValue } from 'jotai'
-import { currentRebalanceAtom } from '../../../atoms'
-import { rebalanceMetricsAtom, rebalancePercentAtom } from '../atoms'
 import { AuctionRound } from '@reserve-protocol/dtf-rebalance-lib'
+import { useAtom, useAtomValue } from 'jotai'
+import {
+  isAuctionOngoingAtom,
+  rebalanceMetricsAtom,
+  rebalancePercentAtom,
+} from '../atoms'
 
 const ESTIMATED_ROUNDS = {
   [AuctionRound.EJECT]: '2-3',
@@ -12,6 +15,7 @@ const ESTIMATED_ROUNDS = {
 
 const RebalanceSetup = () => {
   const [rebalancePercent, setRebalancePercent] = useAtom(rebalancePercentAtom)
+  const rebalanceOngoing = useAtomValue(isAuctionOngoingAtom)
   const metrics = useAtomValue(rebalanceMetricsAtom)
 
   return (
@@ -32,6 +36,7 @@ const RebalanceSetup = () => {
         className="mb-2"
         min={0}
         max={100}
+        disabled={rebalanceOngoing}
         value={[rebalancePercent]}
         onValueChange={(value) => {
           if (value[0] > (metrics?.absoluteProgression ?? 0)) {

@@ -1,13 +1,17 @@
 import dtfIndexAbiV4 from '@/abis/dtf-index-abi-v4'
 import { Button } from '@/components/ui/button'
 import { indexDTFAtom } from '@/state/dtf/atoms'
-import { useAtomValue } from 'jotai'
+import { useAtom, useAtomValue } from 'jotai'
 import { LoaderCircle } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Address } from 'viem'
 import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
 import { currentRebalanceAtom } from '../../../atoms'
-import { isAuctionOngoingAtom, rebalancePercentAtom } from '../atoms'
+import {
+  isAuctionOngoingAtom,
+  rebalancePercentAtom,
+  refreshNonceAtom,
+} from '../atoms'
 import useRebalanceParams from '../hooks/use-rebalance-params'
 import getRebalanceOpenAuction from '../utils/get-rebalance-open-auction'
 
@@ -16,6 +20,8 @@ const LaunchAuctionsButton = () => {
   const rebalance = useAtomValue(currentRebalanceAtom)
   const rebalancePercent = useAtomValue(rebalancePercentAtom)
   const rebalanceParams = useRebalanceParams()
+  const [refreshNonce, setRefreshNonce] = useAtom(refreshNonceAtom)
+  const [isLaunching, setIsLaunching] = useState(false)
   const { writeContract, isError, isPending, data } = useWriteContract()
   const { isSuccess } = useWaitForTransactionReceipt({
     hash: data,
@@ -27,6 +33,19 @@ const LaunchAuctionsButton = () => {
   useEffect(() => {
     if (isSuccess) {
       setError(null)
+      // Refresh nonce after 10s
+      let timeout = setTimeout(() => {
+        setRefreshNonce(refreshNonce + 1)
+      }, 1000 * 10)
+      // Remove loading after 15s
+      let launchTimeout = setTimeout(() => {
+        setIsLaunching(false)
+      }, 1000 * 15)
+
+      return () => {
+        clearTimeout(timeout)
+        clearTimeout(launchTimeout)
+      }
     }
   }, [isSuccess])
 
@@ -34,6 +53,8 @@ const LaunchAuctionsButton = () => {
     if (!isValid || !rebalanceParams) return
 
     try {
+      setIsLaunching(true)
+      setError(null)
       const [openAuctionArgs] = getRebalanceOpenAuction(
         rebalance.rebalance.tokens,
         rebalanceParams.rebalance,
@@ -59,6 +80,7 @@ const LaunchAuctionsButton = () => {
       })
     } catch (e) {
       console.error('Error opening auction', e)
+      setIsLaunching(false)
       setError('Error opening auctions')
     }
   }
@@ -67,10 +89,10 @@ const LaunchAuctionsButton = () => {
     <div className="flex flex-col gap-2">
       <Button
         className="mt-4 w-full gap-2"
-        disabled={!isValid || isPending || isAuctionOngoing}
+        disabled={!isValid || isPending || isAuctionOngoing || isLaunching}
         onClick={handleStartAuctions}
       >
-        {isPending || isAuctionOngoing ? (
+        {isPending || isAuctionOngoing || isLaunching ? (
           <>
             <LoaderCircle size={16} className="animate-spin" />
             <span>

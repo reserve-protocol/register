@@ -66,21 +66,16 @@ const RebalanceMetricsUpdater = () => {
 
   useEffect(() => {
     if (rebalanceParams && currentRebalance) {
-      if (!metrics) {
-        updateMetrics(rebalanceParams, currentRebalance, 0.95)
-      } else if (metrics.absoluteProgression > rebalancePercent) {
-        setRebalancePercent(metrics.relativeTarget * 100)
-      } else if (rebalancePercent > metrics.absoluteProgression) {
-        updateMetrics(rebalanceParams, currentRebalance, rebalancePercent)
-      }
+      updateMetrics(
+        rebalanceParams,
+        currentRebalance,
+        metrics?.relativeProgression &&
+          rebalancePercent > metrics.relativeProgression
+          ? rebalancePercent
+          : 0.95
+      )
     }
-  }, [
-    rebalanceParams,
-    currentRebalance,
-    metrics,
-    rebalancePercent,
-    updateMetrics,
-  ])
+  }, [rebalanceParams, currentRebalance, rebalancePercent, updateMetrics])
 
   return null
 }

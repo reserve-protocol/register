@@ -28,7 +28,7 @@ const rebalanceDescriptionAtom = atom((get) => {
     return `${symbols.slice(0, 3).join(', ')}, +${symbols.length - 3}`
   }
 
-  return `${metrics.round === 0 ? 'Remove' : 'Trade'} ${formatTokens(metrics.deficitTokens)} for ${formatTokens(metrics.surplusTokens)}`
+  return `Trade ${formatTokens(metrics.surplusTokens)} for ${formatTokens(metrics.deficitTokens)}`
 })
 
 const RoundDescription = () => {
