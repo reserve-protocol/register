@@ -11,9 +11,11 @@ import { cn } from '@/lib/utils'
 import { chainIdAtom } from '@/state/atoms'
 import { getCurrentTime } from '@/utils'
 import { useAtomValue } from 'jotai'
-import { ArrowRight, ReceiptText, ScrollText } from 'lucide-react'
+import { ArrowRight, ArrowUpRight, ReceiptText, ScrollText } from 'lucide-react'
 import { formatUnits } from 'viem'
 import { Auction, rebalanceAuctionsAtom } from '../atoms'
+import { Link } from 'react-router-dom'
+import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 
 const AuctionBids = ({ auction }: { auction: Auction }) => {
   const chainId = useAtomValue(chainIdAtom)
@@ -24,12 +26,12 @@ const AuctionBids = ({ auction }: { auction: Auction }) => {
     <div className="mb-4">
       <span className="text-sm text-legend">Bids ({auction.bids.length})</span>
       <div className="mt-2 space-y-2">
-        {auction.bids.slice(0, 3).map((bid) => (
+        {auction.bids.map((bid) => (
           <div
             key={bid.id}
             className="bg-background p-2 rounded-lg text-sm border border-border"
           >
-            <div className="flex gap-2 items-center">
+            <div className="flex gap-2 items-center justify-between">
               <div className="flex items-center gap-1">
                 <DecimalDisplay
                   className="text-destructive"
@@ -66,18 +68,23 @@ const AuctionBids = ({ auction }: { auction: Auction }) => {
                 {bid.buyToken.symbol}
               </div>
             </div>
-            <div className="flex items-center gap-1">
-              <span className="text-legend">
+            <div className="flex items-center gap-1 mt-1">
+              <Link
+                to={getExplorerLink(
+                  bid.transactionHash,
+                  chainId,
+                  ExplorerDataType.TRANSACTION
+                )}
+                className="flex items-center gap-1 text-legend"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 {bid.bidder.slice(0, 6)}...{bid.bidder.slice(-4)}
-              </span>
+                <ArrowUpRight size={12} />
+              </Link>
             </div>
           </div>
         ))}
-        {auction.bids.length > 3 && (
-          <div className="text-center text-sm text-legend">
-            +{auction.bids.length - 3} more bids
-          </div>
-        )}
       </div>
     </div>
   )

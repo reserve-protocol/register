@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query'
 import request, { gql } from 'graphql-request'
 import { useAtomValue } from 'jotai'
 import { currentRebalanceAtom } from '../../../atoms'
-import { Auction } from '../atoms'
+import { Auction, refreshNonceAtom } from '../atoms'
 
 type Response = {
   auctions: Auction[]
@@ -61,9 +61,10 @@ const query = gql`
 const useRebalanceAuctions = () => {
   const rebalance = useAtomValue(currentRebalanceAtom)
   const chainId = useAtomValue(chainIdAtom)
+  const refreshNonce = useAtomValue(refreshNonceAtom)
 
   return useQuery({
-    queryKey: ['auctions', rebalance?.rebalance.id],
+    queryKey: ['auctions', rebalance?.rebalance.id, refreshNonce],
     queryFn: async () => {
       if (!rebalance?.rebalance.id) throw new Error('No rebalance id')
 
@@ -84,7 +85,7 @@ const useRebalanceAuctions = () => {
       }
     },
     enabled: !!rebalance?.rebalance.id,
-    refetchInterval: 1000 * 60, // every minute!
+    refetchInterval: 1000 * 60, // every 30s!
   })
 }
 

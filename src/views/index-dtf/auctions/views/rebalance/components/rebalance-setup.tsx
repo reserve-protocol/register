@@ -20,7 +20,7 @@ const RebalanceSetup = () => {
         <div>
           <h4 className="text-sm text-legend">Percent rebalanced</h4>
           <h1 className="text-2xl">
-            {metrics?.absoluteProgression.toFixed(2) ?? 0}%
+            {metrics?.relativeProgression.toFixed(2) ?? 0}%
           </h1>
         </div>
         <div className="ml-auto text-right">

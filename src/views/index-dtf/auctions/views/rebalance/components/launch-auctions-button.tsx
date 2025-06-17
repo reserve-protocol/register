@@ -3,11 +3,11 @@ import { Button } from '@/components/ui/button'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { useAtomValue } from 'jotai'
 import { LoaderCircle } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Address } from 'viem'
-import { useWriteContract } from 'wagmi'
+import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
 import { currentRebalanceAtom } from '../../../atoms'
-import { rebalancePercentAtom } from '../atoms'
+import { isAuctionOngoingAtom, rebalancePercentAtom } from '../atoms'
 import useRebalanceParams from '../hooks/use-rebalance-params'
 import getRebalanceOpenAuction from '../utils/get-rebalance-open-auction'
 
@@ -17,9 +17,18 @@ const LaunchAuctionsButton = () => {
   const rebalancePercent = useAtomValue(rebalancePercentAtom)
   const rebalanceParams = useRebalanceParams()
   const { writeContract, isError, isPending, data } = useWriteContract()
+  const { isSuccess } = useWaitForTransactionReceipt({
+    hash: data,
+  })
   const [error, setError] = useState<string | null>(null)
-
+  const isAuctionOngoing = useAtomValue(isAuctionOngoingAtom)
   const isValid = !!rebalanceParams && rebalancePercent > 0 && rebalance && dtf
+
+  useEffect(() => {
+    if (isSuccess) {
+      setError(null)
+    }
+  }, [isSuccess])
 
   const handleStartAuctions = () => {
     if (!isValid || !rebalanceParams) return
@@ -58,13 +67,15 @@ const LaunchAuctionsButton = () => {
     <div className="flex flex-col gap-2">
       <Button
         className="mt-4 w-full gap-2"
-        disabled={!isValid || isPending}
+        disabled={!isValid || isPending || isAuctionOngoing}
         onClick={handleStartAuctions}
       >
-        {isPending ? (
+        {isPending || isAuctionOngoing ? (
           <>
             <LoaderCircle size={16} className="animate-spin" />
-            <span>Launching...</span>
+            <span>
+              {isAuctionOngoing ? 'Rebalance ongoing' : 'Launching...'}
+            </span>
           </>
         ) : (
           'Start auctions'

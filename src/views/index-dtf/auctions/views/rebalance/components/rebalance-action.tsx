@@ -57,7 +57,7 @@ const Header = () => {
       </div>
       <div className="ml-auto flex items-center flex-shrink-0 gap-1">
         <span className="text-legend">
-          {metrics?.absoluteProgression.toFixed(2)}%
+          {metrics?.relativeProgression.toFixed(2)}%
         </span>
         <ArrowRight className="w-4 h-4 text-primary" />
         <span className="text-primary">{rebalancePercent.toFixed(2)}%</span>

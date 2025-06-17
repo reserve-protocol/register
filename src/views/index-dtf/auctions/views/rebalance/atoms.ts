@@ -63,3 +63,13 @@ export const rebalanceTokenMapAtom = atom<Record<string, Token>>((get) => {
     {} as Record<string, Token>
   )
 })
+
+export const refreshNonceAtom = atom(0)
+
+export const isAuctionOngoingAtom = atom((get) => {
+  const auctions = get(rebalanceAuctionsAtom)
+
+  return auctions.some((auction) => {
+    return new Date(parseInt(auction.endTime) * 1000) > new Date()
+  })
+})
