@@ -1,7 +1,10 @@
-import { useAtomValue } from 'jotai'
-import { RebalanceByProposal, rebalancesByProposalListAtom } from '../../atoms'
+import Spinner from '@/components/ui/spinner'
+import { cn } from '@/lib/utils'
 import { getCurrentTime, getProposalTitle } from '@/utils'
+import { useAtomValue } from 'jotai'
+import { ChevronRight, Folder } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { RebalanceByProposal, rebalancesByProposalListAtom } from '../../atoms'
 
 const RebalanceListItem = ({
   rebalance,
@@ -13,22 +16,34 @@ const RebalanceListItem = ({
   return (
     <Link
       to={`rebalance/${rebalance.proposal.id}`}
-      className="p-4 bg-background rounded-3xl flex items-center gap-2"
+      className={cn('p-4 flex items-center gap-2 border-b last:border-b-0')}
     >
+      <div
+        className={cn(
+          'h-8 w-8 flex items-center justify-center rounded-full',
+          isActive ? 'bg-primary text-primary-foreground' : 'bg-muted'
+        )}
+      >
+        {isActive ? <Spinner /> : <Folder size={16} />}
+      </div>
       <div>
         <Link
           to={`/proposal/${rebalance.proposal.id}`}
-          className="underline hover:text-primary"
+          className={cn(
+            'underline hover:text-primary',
+            isActive && 'text-primary'
+          )}
         >
           {getProposalTitle(rebalance.proposal.description)}
         </Link>
       </div>
-      <div className="ml-auto border rounded-4xl px-2 py-1">
-        {isActive ? (
-          <span className="text-green-500">Active</span>
-        ) : (
-          <span className="text-red-500">Inactive</span>
+      <div
+        className={cn(
+          'ml-auto bg-muted rounded-full border border-transparent p-2 text-legend',
+          isActive && 'border-primary bg-transparent text-primary'
         )}
+      >
+        <ChevronRight size={16} />
       </div>
     </Link>
   )
@@ -39,14 +54,16 @@ const RebalanceList = () => {
 
   return (
     <div className="rounded-3xl bg-secondary p-1 max-w-full w-[480px]">
-      <h1 className="text-xl font-semibold p-2">Rebalances</h1>
-      <div className="flex flex-col gap-1">
-        {rebalances.map((rebalance) => (
-          <RebalanceListItem
-            key={rebalance.proposal.id}
-            rebalance={rebalance}
-          />
-        ))}
+      <div className="bg-background rounded-2xl">
+        <h1 className="text-xl font-semibold p-2 ml-2 pt-5">Rebalances</h1>
+        <div className="flex flex-col gap-1">
+          {rebalances.map((rebalance) => (
+            <RebalanceListItem
+              key={rebalance.proposal.id}
+              rebalance={rebalance}
+            />
+          ))}
+        </div>
       </div>
     </div>
   )
