@@ -5,6 +5,12 @@ import { Rebalance } from '@reserve-protocol/dtf-rebalance-lib'
 import { atom } from 'jotai'
 import { currentRebalanceAtom } from '../../atoms'
 
+export const PRICE_VOLATILITY: Record<string, number> = {
+  LOW: 0.05,
+  MEDIUM: 0.1,
+  HIGH: 0.5,
+}
+
 export type Auction = {
   id: string
   tokens: Token[]
@@ -73,3 +79,5 @@ export const isAuctionOngoingAtom = atom((get) => {
     return new Date(parseInt(auction.endTime) * 1000) > new Date()
   })
 })
+
+export const priceVolatilityAtom = atom<keyof typeof PRICE_VOLATILITY>('MEDIUM')

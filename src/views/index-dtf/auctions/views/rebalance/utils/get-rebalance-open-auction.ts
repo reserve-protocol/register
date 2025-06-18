@@ -5,6 +5,7 @@ import {
   getTargetBasket,
   Rebalance,
 } from '@reserve-protocol/dtf-rebalance-lib'
+import { PRICE_VOLATILITY } from '../atoms'
 
 function getRebalanceOpenAuction(
   tokens: Token[],
@@ -14,7 +15,8 @@ function getRebalanceOpenAuction(
   initialFolio: Record<string, bigint>,
   prices: TokenPriceWithSnapshot,
   isTrackingDTF: boolean,
-  rebalancePercent?: number
+  rebalancePercent = 95,
+  priceVolatility = PRICE_VOLATILITY.MEDIUM
 ) {
   const tokenMap = tokens.reduce(
     (acc, token) => {
@@ -38,8 +40,7 @@ function getRebalanceOpenAuction(
     decimals.push(BigInt(tokenMap[lowercasedAddress].decimals))
     currentPrices.push(prices[lowercasedAddress].currentPrice)
     snapshotPrices.push(prices[lowercasedAddress].snapshotPrice)
-    // TODO: Extra high volatility for price error
-    priceError.push(0.1)
+    priceError.push(priceVolatility)
     initialFolioShares.push(initialFolio[lowercasedAddress] || 0n)
     currentFolioShares.push(currentFolio[lowercasedAddress] || 0n)
   })
@@ -59,7 +60,7 @@ function getRebalanceOpenAuction(
     decimals,
     currentPrices,
     priceError,
-    rebalancePercent ? rebalancePercent / 100 : 1
+    rebalancePercent / 100
   )
 }
 

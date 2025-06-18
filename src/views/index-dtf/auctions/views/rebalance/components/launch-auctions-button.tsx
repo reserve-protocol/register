@@ -9,6 +9,8 @@ import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
 import { currentRebalanceAtom } from '../../../atoms'
 import {
   isAuctionOngoingAtom,
+  PRICE_VOLATILITY,
+  priceVolatilityAtom,
   rebalancePercentAtom,
   refreshNonceAtom,
 } from '../atoms'
@@ -19,6 +21,7 @@ const LaunchAuctionsButton = () => {
   const dtf = useAtomValue(indexDTFAtom)
   const rebalance = useAtomValue(currentRebalanceAtom)
   const rebalancePercent = useAtomValue(rebalancePercentAtom)
+  const priceVolatility = useAtomValue(priceVolatilityAtom)
   const rebalanceParams = useRebalanceParams()
   const [refreshNonce, setRefreshNonce] = useAtom(refreshNonceAtom)
   const [isLaunching, setIsLaunching] = useState(false)
@@ -63,7 +66,8 @@ const LaunchAuctionsButton = () => {
         rebalanceParams.initialFolio,
         rebalanceParams.prices,
         rebalanceParams.isTrackingDTF,
-        rebalancePercent
+        rebalancePercent,
+        PRICE_VOLATILITY[priceVolatility]
       )
 
       writeContract({

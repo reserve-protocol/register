@@ -336,7 +336,7 @@ export const ttlATom = atom((get) => {
   return isNaN(window) ? tradeDelay : tradeDelay + BigInt(Math.round(window))
 })
 
-const VOLATILITY_VALUES = [0.15, 0.4, 0.8]
+const VOLATILITY_VALUES = [0.2, 0.5, 0.8]
 
 function getProposedTrades(get: Getter, deferred = false) {
   const proposedBasket = get(proposedIndexBasketAtom)

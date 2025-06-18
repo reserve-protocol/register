@@ -14,6 +14,7 @@ import { parseEther } from 'viem'
 import { useReadContract, useReadContracts } from 'wagmi'
 import { currentRebalanceAtom } from '../../../atoms'
 import { isAuctionOngoingAtom } from '../atoms'
+import { chainIdAtom } from '@/state/atoms'
 
 export type RebalanceParams = {
   supply: bigint
@@ -43,6 +44,7 @@ const useRebalanceParams = () => {
   const rebalance = useAtomValue(currentRebalanceAtom)
   const rebalanceControl = useAtomValue(indexDTFRebalanceControlAtom)
   const isAuctionOngoing = useAtomValue(isAuctionOngoingAtom)
+  const chainId = useAtomValue(chainIdAtom)
 
   const rebalanceTokens = useMemo(() => {
     if (!rebalance || !basket) return []
@@ -66,13 +68,24 @@ const useRebalanceParams = () => {
   )
   const { data: dtfData, refetch: refetchDtfData } = useReadContracts({
     contracts: [
-      { abi: dtfIndexAbiV4, address: dtf?.id, functionName: 'totalSupply' },
-      { abi: dtfIndexAbiV4, address: dtf?.id, functionName: 'getRebalance' },
+      {
+        abi: dtfIndexAbiV4,
+        address: dtf?.id,
+        functionName: 'totalSupply',
+        chainId,
+      },
+      {
+        abi: dtfIndexAbiV4,
+        address: dtf?.id,
+        functionName: 'getRebalance',
+        chainId,
+      },
       {
         abi: dtfIndexAbiV4,
         address: dtf?.id,
         functionName: 'toAssets',
         args: [parseEther('1'), 0],
+        chainId,
       },
     ],
     allowFailure: false,
@@ -93,6 +106,7 @@ const useRebalanceParams = () => {
     abi: dtfIndexAbiV4,
     address: dtf?.id,
     functionName: 'toAssets',
+    chainId,
     args: [parseEther('1'), 0],
     blockNumber: BigInt(rebalance?.proposal.creationBlock ?? '0'),
     query: {

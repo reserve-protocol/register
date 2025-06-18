@@ -19,7 +19,6 @@ import { useParams } from 'react-router-dom'
 
 const RebalanceMetricsUpdater = () => {
   const [metrics, setRebalanceMetrics] = useAtom(rebalanceMetricsAtom)
-  const setRebalancePercent = useSetAtom(rebalancePercentAtom)
   const rebalancePercent = useAtomValue(rebalancePercentAtom)
   const rebalanceParams = useRebalanceParams()
   const currentRebalance = useAtomValue(currentRebalanceAtom)
