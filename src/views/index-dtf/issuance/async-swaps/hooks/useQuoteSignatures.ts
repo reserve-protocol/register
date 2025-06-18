@@ -18,8 +18,9 @@ import {
   Hex,
   maxUint256,
   parseEther,
+  parseUnits,
 } from 'viem'
-import { useSendCalls, useSignTypedData } from 'wagmi'
+import { usePublicClient, useSendCalls, useSignTypedData } from 'wagmi'
 import {
   asyncSwapResponseAtom,
   failedOrdersAtom,
@@ -46,19 +47,26 @@ export function useQuoteSignatures(refresh = false) {
   const operation = useAtomValue(operationAtom)
   const mintValue = useAtomValue(mintValueAtom)
   const inputAmount = useAtomValue(userInputAtom)
-  const quoteToken = useAtomValue(selectedTokenAtom).address
+  const quoteToken = useAtomValue(selectedTokenAtom)
   const [quotes, setQuotes] = useAtom(quotesAtom)
   const setOrderIDs = useSetAtom(orderIdsAtom)
   const setAsyncSwapResponse = useSetAtom(asyncSwapResponseAtom)
   const { orderBookApi, universalSdk } = useGlobalProtocolKit()
   const { sendCallsAsync } = useSendCalls()
   const failedOrders = useAtomValue(failedOrdersAtom)
-
   const { signTypedDataAsync } = useSignTypedData()
+  const publicClient = usePublicClient()
 
   return useMutation({
     mutationFn: async () => {
-      if (!address || !orderBookApi || !chainId || !indexDTF || !universalSdk) {
+      if (
+        !address ||
+        !orderBookApi ||
+        !chainId ||
+        !indexDTF ||
+        !universalSdk ||
+        !publicClient
+      ) {
         console.error('No global kit')
         return {
           orders: [],
@@ -179,8 +187,8 @@ export function useQuoteSignatures(refresh = false) {
             ].filter((e) => e !== null)
           }
 
+          // TODO: redeem
           // if (type === QuoteProvider.Universal) {
-          //   // Solo approve → Permit2
           //   return [
           //     {
           //       to: data.sellToken as Address,
@@ -199,25 +207,49 @@ export function useQuoteSignatures(refresh = false) {
         .filter((data) => data !== null)
         .flat()
 
+      let needsApproveVault = false
+      let needsApprovePermit2 = false
       if (operation === 'mint') {
-        txData.unshift({
-          to: quoteToken,
-          data: encodeFunctionData({
+        const requiredAmount = parseUnits(inputAmount, quoteToken.decimals)
+        // Consultar allowance para ambos spenders
+        const [allowanceVault, allowancePermit2] = await Promise.all([
+          publicClient.readContract({
+            address: quoteToken.address,
             abi: erc20Abi,
-            functionName: 'approve',
-            args: [COWSWAP_VAULT, maxUint256],
+            functionName: 'allowance',
+            args: [address, COWSWAP_VAULT],
           }),
-          value: 0n,
-        })
-        txData.unshift({
-          to: quoteToken,
-          data: encodeFunctionData({
+          publicClient.readContract({
+            address: quoteToken.address,
             abi: erc20Abi,
-            functionName: 'approve',
-            args: [UNIVERSAL_PERMIT2, maxUint256],
+            functionName: 'allowance',
+            args: [address, UNIVERSAL_PERMIT2],
           }),
-          value: 0n,
-        })
+        ])
+        needsApproveVault = allowanceVault < requiredAmount
+        needsApprovePermit2 = allowancePermit2 < requiredAmount
+        if (needsApproveVault) {
+          txData.unshift({
+            to: quoteToken.address,
+            data: encodeFunctionData({
+              abi: erc20Abi,
+              functionName: 'approve',
+              args: [COWSWAP_VAULT, maxUint256],
+            }),
+            value: 0n,
+          })
+        }
+        if (needsApprovePermit2) {
+          txData.unshift({
+            to: quoteToken.address,
+            data: encodeFunctionData({
+              abi: erc20Abi,
+              functionName: 'approve',
+              args: [UNIVERSAL_PERMIT2, maxUint256],
+            }),
+            value: 0n,
+          })
+        }
       }
 
       // TODO: tx confirmation checks
@@ -227,7 +259,7 @@ export function useQuoteSignatures(refresh = false) {
         forceAtomic: true,
       })
 
-      // console.log({ txBundle })
+      console.log({ txBundle })
 
       // TODO: Wait here until Safe tx is onchain
       // I wonder if this is better suited for a different hook tbh
