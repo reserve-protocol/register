@@ -117,12 +117,14 @@ const TokenRemovalPreview = ({
       {
         abi: erc20Abi,
         address: tokenAddress as Address,
+        chainId,
         functionName: 'name',
         args: [],
       },
       {
         abi: erc20Abi,
         address: tokenAddress as Address,
+        chainId,
         functionName: 'symbol',
         args: [],
       },
