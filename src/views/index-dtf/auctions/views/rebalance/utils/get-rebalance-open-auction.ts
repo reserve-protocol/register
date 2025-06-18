@@ -38,7 +38,8 @@ function getRebalanceOpenAuction(
     decimals.push(BigInt(tokenMap[lowercasedAddress].decimals))
     currentPrices.push(prices[lowercasedAddress].currentPrice)
     snapshotPrices.push(prices[lowercasedAddress].snapshotPrice)
-    priceError.push(0.03)
+    // TODO: Extra high volatility for price error
+    priceError.push(0.1)
     initialFolioShares.push(initialFolio[lowercasedAddress] || 0n)
     currentFolioShares.push(currentFolio[lowercasedAddress] || 0n)
   })
