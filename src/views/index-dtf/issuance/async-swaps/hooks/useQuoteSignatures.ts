@@ -1,5 +1,7 @@
 import CowswapSettlement from '@/abis/CowSwapSettlement'
 import { chainIdAtom, walletAtom } from '@/state/atoms'
+import { indexDTFAtom } from '@/state/dtf/atoms'
+import { uuidv4 } from '@/utils'
 import { OrderBalance } from '@cowprotocol/contracts'
 import {
   OrderCreation,
@@ -8,6 +10,7 @@ import {
 } from '@cowprotocol/cow-sdk'
 import { useMutation } from '@tanstack/react-query'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { generateTypedData, OrderRequest } from 'universal-sdk'
 import {
   Address,
   encodeFunctionData,
@@ -18,27 +21,25 @@ import {
 } from 'viem'
 import { useSendCalls, useSignTypedData } from 'wagmi'
 import {
-  userInputAtom,
   asyncSwapResponseAtom,
-  operationAtom,
+  failedOrdersAtom,
   mintValueAtom,
+  operationAtom,
   orderIdsAtom,
   quotesAtom,
   selectedTokenAtom,
-  failedOrdersAtom,
+  userInputAtom,
 } from '../atom'
 import { useGlobalProtocolKit } from '../providers/GlobalProtocolKitProvider'
-import { QuoteProvider } from '../types'
-import { uuidv4 } from '@/utils'
-import { indexDTFAtom } from '@/state/dtf/atoms'
-import { generateTypedData } from 'universal-sdk'
 import { CustomUniversalQuote } from '../providers/universal'
+import { QuoteProvider } from '../types'
+import { convertTypeDataToBigInt } from './utils'
 
 const COWSWAP_SETTLEMENT = '0x9008D19f58AAbD9eD0D60971565AA8510560ab41' as const
 const COWSWAP_VAULT = '0xC92E8bdf79f0507f65a392b0ab4667716BFE0110' as const
+const UNIVERSAL_PERMIT2 = '0x000000000022D473030F116dDEE9F6B43aC78BA3' as const
 
 export function useQuoteSignatures(refresh = false) {
-  const { data: signature, signTypedData } = useSignTypedData()
   const indexDTF = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
   const address = useAtomValue(walletAtom)
@@ -52,6 +53,8 @@ export function useQuoteSignatures(refresh = false) {
   const { orderBookApi, universalSdk } = useGlobalProtocolKit()
   const { sendCallsAsync } = useSendCalls()
   const failedOrders = useAtomValue(failedOrdersAtom)
+
+  const { signTypedDataAsync } = useSignTypedData()
 
   return useMutation({
     mutationFn: async () => {
@@ -137,21 +140,14 @@ export function useQuoteSignatures(refresh = false) {
 
           if (quote.success && quote.type === QuoteProvider.Universal) {
             const uq = quote.data as CustomUniversalQuote
-            const { typedData } = await generateTypedData(uq._originalQuote)
 
-            await signTypedData(typedData)
-
-            // const universalOrder = await universalSdk.submitOrder({
-            //   ...uq._originalQuote,
-            //   signature: signature!,
-            // })
-
-            // return {
-            //   type: quote.type,
-            //   data: universalOrder,
-            // }
-            console.log({ signature })
-            return null
+            return {
+              type: QuoteProvider.Universal,
+              data: {
+                ...uq,
+                quote: uq._originalQuote,
+              },
+            }
           }
 
           return null
@@ -170,7 +166,7 @@ export function useQuoteSignatures(refresh = false) {
                     data: encodeFunctionData({
                       abi: erc20Abi,
                       functionName: 'approve',
-                      args: [COWSWAP_VAULT, BigInt(data.amount)],
+                      args: [COWSWAP_VAULT, BigInt(data.amount as string)],
                     }),
                     value: 0n,
                   }
@@ -182,6 +178,21 @@ export function useQuoteSignatures(refresh = false) {
               },
             ].filter((e) => e !== null)
           }
+
+          // if (type === QuoteProvider.Universal) {
+          //   // Solo approve → Permit2
+          //   return [
+          //     {
+          //       to: data.sellToken as Address,
+          //       data: encodeFunctionData({
+          //         abi: erc20Abi,
+          //         functionName: 'approve',
+          //         args: [UNIVERSAL_PERMIT2, maxUint256],
+          //       }),
+          //       value: 0n,
+          //     },
+          //   ]
+          // }
 
           return null
         })
@@ -198,6 +209,15 @@ export function useQuoteSignatures(refresh = false) {
           }),
           value: 0n,
         })
+        txData.unshift({
+          to: quoteToken,
+          data: encodeFunctionData({
+            abi: erc20Abi,
+            functionName: 'approve',
+            args: [UNIVERSAL_PERMIT2, maxUint256],
+          }),
+          value: 0n,
+        })
       }
 
       // TODO: tx confirmation checks
@@ -207,29 +227,47 @@ export function useQuoteSignatures(refresh = false) {
         forceAtomic: true,
       })
 
-      // TODO: Turns out this is buggy
-      // const receipt = await walletClient.waitForCallsStatus({
-      //   id: txBundle.id,
-      // });
-
-      console.log({ txBundle })
+      // console.log({ txBundle })
 
       // TODO: Wait here until Safe tx is onchain
       // I wonder if this is better suited for a different hook tbh
 
       // TODO: Create an order Index which is independently managed
-      await Promise.all(
-        orderData
+      const orderIds = await Promise.all(
+        validOrderData
           .filter((e) => e != null)
-          .map(async ({ data }) => {
-            const e = await orderBookApi.sendOrder({
-              ...data.quote,
-              from: address,
-              signature: address,
-              signingScheme: SigningScheme.PRESIGN,
-            })
-            console.log(data, e)
-            return e
+          .map(async ({ type, data }) => {
+            if (type === QuoteProvider.CowSwap) {
+              const order = data.quote as OrderCreation
+              const e = await orderBookApi.sendOrder({
+                ...order,
+                from: address,
+                signature: address,
+                signingScheme: SigningScheme.PRESIGN,
+              })
+              console.log(data, e)
+              return e
+            } else {
+              if (type === QuoteProvider.Universal) {
+                const quote = data.quote as OrderRequest
+                const { typedData } = await generateTypedData(quote)
+
+                // Prompt Safe for signature
+                console.log({ typedData })
+                const _typedData = convertTypeDataToBigInt(typedData)
+
+                console.log({ _typedData })
+                const signature = await signTypedDataAsync(_typedData)
+                console.log({ signature })
+                // Submit order with signature
+                const universalOrder = await universalSdk.submitOrder({
+                  ...quote,
+                  signature,
+                })
+                console.log(data, universalOrder)
+                return universalOrder.order_id
+              }
+            }
           })
       )
 
@@ -239,7 +277,7 @@ export function useQuoteSignatures(refresh = false) {
           ...prev.filter(
             (id) => !failedOrders.map((o) => o.orderId).includes(id)
           ),
-          ...validOrderData.map(({ data }) => data.orderId),
+          ...orderIds.filter((id) => id !== undefined),
         ])
         setAsyncSwapResponse((prev) => {
           if (!prev) return undefined
@@ -252,7 +290,7 @@ export function useQuoteSignatures(refresh = false) {
           }
         })
       } else {
-        setOrderIDs(validOrderData.map(({ data }) => data.orderId))
+        setOrderIDs(orderIds.filter((id) => id !== undefined))
         setAsyncSwapResponse({
           swapOrderId: uuidv4(),
           chainId,
@@ -268,7 +306,7 @@ export function useQuoteSignatures(refresh = false) {
       setQuotes({})
 
       return {
-        orders: validOrderData.map(({ data }) => data.orderId),
+        orders: orderIds.filter((id) => id !== undefined),
       }
     },
     onError(error) {

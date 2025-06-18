@@ -1,7 +1,6 @@
 import { useERC20Balances } from '@/hooks/useERC20Balance'
 import useTokensInfo from '@/hooks/useTokensInfo'
 import { chainIdAtom, walletAtom } from '@/state/atoms'
-import { Token } from '@/types'
 import {
   OrderBookApi,
   OrderQuoteSideKindBuy,
@@ -78,7 +77,10 @@ async function getQuote({
           pair_token: 'USDC',
           user_address: address,
           slippage_bips: 100,
-          token_amount: amount.toString(),
+          token_amount:
+            universalAsset === 'SOL'
+              ? ((amount * 200n) / 100n).toString()
+              : amount.toString(),
         })
 
         const customQuote: CustomUniversalQuote = {
