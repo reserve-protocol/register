@@ -1,3 +1,15 @@
+import { wagmiConfig } from '@/state/chain'
+import { AvailableChain } from '@/utils/chains'
+import {
+  erc20Abi,
+  encodeFunctionData,
+  maxUint256,
+  parseUnits,
+  Address,
+  Hex,
+} from 'viem'
+import { getPublicClient } from 'wagmi/actions'
+
 export function convertTypeDataToBigInt(obj: any, isInDomain = false): any {
   if (Array.isArray(obj)) {
     return obj.map((item) => convertTypeDataToBigInt(item, isInDomain))
@@ -28,4 +40,38 @@ export function convertTypeDataToBigInt(obj: any, isInDomain = false): any {
   }
 
   return obj
+}
+
+export async function getApprovalCallIfNeeded({
+  chainId,
+  address,
+  token,
+  requiredAmount,
+  spender,
+}: {
+  chainId: AvailableChain
+  address: Address
+  token: Address
+  requiredAmount: bigint
+  spender: Address
+}): Promise<{ to: Address; data: Hex; value: bigint } | null> {
+  const publicClient = getPublicClient(wagmiConfig, { chainId })
+  const allowance = await publicClient.readContract({
+    address: token,
+    abi: erc20Abi,
+    functionName: 'allowance',
+    args: [address, spender],
+  })
+  if (allowance < requiredAmount) {
+    return {
+      to: token,
+      data: encodeFunctionData({
+        abi: erc20Abi,
+        functionName: 'approve',
+        args: [spender, maxUint256],
+      }),
+      value: 0n,
+    }
+  }
+  return null
 }

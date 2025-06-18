@@ -34,7 +34,7 @@ import {
 import { useGlobalProtocolKit } from '../providers/GlobalProtocolKitProvider'
 import { CustomUniversalQuote } from '../providers/universal'
 import { QuoteProvider } from '../types'
-import { convertTypeDataToBigInt } from './utils'
+import { convertTypeDataToBigInt, getApprovalCallIfNeeded } from './utils'
 
 const COWSWAP_SETTLEMENT = '0x9008D19f58AAbD9eD0D60971565AA8510560ab41' as const
 const COWSWAP_VAULT = '0xC92E8bdf79f0507f65a392b0ab4667716BFE0110' as const
@@ -55,18 +55,10 @@ export function useQuoteSignatures(refresh = false) {
   const { sendCallsAsync } = useSendCalls()
   const failedOrders = useAtomValue(failedOrdersAtom)
   const { signTypedDataAsync } = useSignTypedData()
-  const publicClient = usePublicClient()
 
   return useMutation({
     mutationFn: async () => {
-      if (
-        !address ||
-        !orderBookApi ||
-        !chainId ||
-        !indexDTF ||
-        !universalSdk ||
-        !publicClient
-      ) {
+      if (!address || !orderBookApi || !chainId || !indexDTF || !universalSdk) {
         console.error('No global kit')
         return {
           orders: [],
@@ -207,48 +199,17 @@ export function useQuoteSignatures(refresh = false) {
         .filter((data) => data !== null)
         .flat()
 
-      let needsApproveVault = false
-      let needsApprovePermit2 = false
       if (operation === 'mint') {
         const requiredAmount = parseUnits(inputAmount, quoteToken.decimals)
-        // Consultar allowance para ambos spenders
-        const [allowanceVault, allowancePermit2] = await Promise.all([
-          publicClient.readContract({
-            address: quoteToken.address,
-            abi: erc20Abi,
-            functionName: 'allowance',
-            args: [address, COWSWAP_VAULT],
-          }),
-          publicClient.readContract({
-            address: quoteToken.address,
-            abi: erc20Abi,
-            functionName: 'allowance',
-            args: [address, UNIVERSAL_PERMIT2],
-          }),
-        ])
-        needsApproveVault = allowanceVault < requiredAmount
-        needsApprovePermit2 = allowancePermit2 < requiredAmount
-        if (needsApproveVault) {
-          txData.unshift({
-            to: quoteToken.address,
-            data: encodeFunctionData({
-              abi: erc20Abi,
-              functionName: 'approve',
-              args: [COWSWAP_VAULT, maxUint256],
-            }),
-            value: 0n,
+        for (const spender of [COWSWAP_VAULT, UNIVERSAL_PERMIT2]) {
+          const approvalCall = await getApprovalCallIfNeeded({
+            chainId,
+            address: address as Address,
+            token: quoteToken.address as Address,
+            requiredAmount,
+            spender,
           })
-        }
-        if (needsApprovePermit2) {
-          txData.unshift({
-            to: quoteToken.address,
-            data: encodeFunctionData({
-              abi: erc20Abi,
-              functionName: 'approve',
-              args: [UNIVERSAL_PERMIT2, maxUint256],
-            }),
-            value: 0n,
-          })
+          if (approvalCall) txData.unshift(approvalCall)
         }
       }
 
