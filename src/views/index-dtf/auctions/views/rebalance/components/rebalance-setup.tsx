@@ -20,12 +20,10 @@ const RebalanceSetup = () => {
   const metrics = useAtomValue(rebalanceMetricsAtom)
 
   useEffect(() => {
-    console.log('tests')
-
-    if (metrics) {
-      setRebalancePercent(metrics.relativeProgression)
+    if (metrics && !rebalanceOngoing) {
+      setRebalancePercent(metrics.relativeTarget * 100)
     }
-  }, [!!metrics])
+  }, [metrics?.relativeTarget, rebalanceOngoing])
 
   return (
     <div className="p-4">
