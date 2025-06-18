@@ -6,6 +6,7 @@ import {
   rebalanceMetricsAtom,
   rebalancePercentAtom,
 } from '../atoms'
+import { useEffect } from 'react'
 
 const ESTIMATED_ROUNDS = {
   [AuctionRound.EJECT]: '2-3',
@@ -17,6 +18,14 @@ const RebalanceSetup = () => {
   const [rebalancePercent, setRebalancePercent] = useAtom(rebalancePercentAtom)
   const rebalanceOngoing = useAtomValue(isAuctionOngoingAtom)
   const metrics = useAtomValue(rebalanceMetricsAtom)
+
+  useEffect(() => {
+    console.log('tests')
+
+    if (metrics) {
+      setRebalancePercent(metrics.relativeProgression)
+    }
+  }, [!!metrics])
 
   return (
     <div className="p-4">
@@ -39,7 +48,7 @@ const RebalanceSetup = () => {
         disabled={rebalanceOngoing}
         value={[rebalancePercent]}
         onValueChange={(value) => {
-          if (value[0] > (metrics?.absoluteProgression ?? 0)) {
+          if (value[0] > (metrics?.relativeProgression ?? 0)) {
             setRebalancePercent(value[0])
           }
         }}
