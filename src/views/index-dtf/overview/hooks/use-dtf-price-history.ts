@@ -13,6 +13,11 @@ export type IndexDTFPerformance = {
     price: number
     marketCap: number
     totalSupply: number
+    basket: {
+      address: string
+      price: number
+      amount: number
+    }
   }[]
 }
 

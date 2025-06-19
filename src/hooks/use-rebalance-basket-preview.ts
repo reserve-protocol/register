@@ -16,6 +16,7 @@ import { Address, formatUnits, Hex } from 'viem'
 import useAssetPricesWithSnapshot from './use-asset-prices-with-snapshot'
 import { getDecodedCalldata } from './use-decoded-call-datas'
 import useTokensInfo from './useTokensInfo'
+import { IndexDTFPerformance } from '@/views/index-dtf/overview/hooks/use-dtf-price-history'
 
 // current/initial/snapshot will be the same at proposal time
 type BasketAsset = {
@@ -133,14 +134,33 @@ const useDTFBasketWeights = (timestamp?: number) => {
     queryFn: async () => {
       if (!dtf) return {}
 
+      if (!timestamp) return currentWeights
+
       const from = Number(timestamp) - 1 * 60 * 60
       const to = Number(timestamp) + 1 * 60 * 60
-      const historical = `${RESERVE_API}historical/dtf?chainId=${chainId}&address=${dtf}&from=${from}&to=${to}&interval=1h`
-      const response = await fetch(historical).then((res) => res.json())
+      const historical = `${RESERVE_API}historical/dtf?chainId=${chainId}&address=${dtf.id}&from=${from}&to=${to}&interval=1h`
+      const response = (await fetch(historical).then((res) =>
+        res.json()
+      )) as IndexDTFPerformance
 
-      console.log('response', response)
+      // Grab the basket of the middle point of the timeseries
+      const middlePoint = Math.floor(response.timeseries.length / 2)
+      const basket = response.timeseries[middlePoint].basket
+      const dtfPrice = response.timeseries[middlePoint].price
 
-      return response
+      // Now with the basket of that snapshot, we calculate the weights using the token amounts and pricing
+      const weights = basket.reduce(
+        (acc, token) => {
+          const price = token.price
+          const amount = token.amount
+          const weight = ((price * amount) / dtfPrice) * 100
+          acc[token.address.toLowerCase()] = weight.toFixed(2)
+          return acc
+        },
+        {} as Record<string, string>
+      )
+
+      return weights
     },
     enabled: Boolean(dtf && Object.keys(currentWeights).length),
   })
@@ -157,7 +177,7 @@ const useRebalanceBasketPreview = (
   timestamp?: number
 ): RebalanceBasketPreview | undefined => {
   const rebalance = useDecodedRebalanceCalldata(calldata)
-  const currentWeights = useAtomValue(indexDTFBasketSharesAtom)
+  const { data: currentWeights } = useDTFBasketWeights(timestamp)
   const tokens = useTokens(rebalance?.data.tokens ?? [])
   const rebalanceControl = useAtomValue(indexDTFRebalanceControlAtom)
   const { data: prices } = useAssetPricesWithSnapshot(
@@ -166,7 +186,14 @@ const useRebalanceBasketPreview = (
   )
 
   return useMemo(() => {
-    if (!rebalance || !prices || !tokens || !rebalanceControl) return undefined
+    if (
+      !rebalance ||
+      !prices ||
+      !tokens ||
+      !rebalanceControl ||
+      !currentWeights
+    )
+      return undefined
 
     // keep track of the token order for the target basket
     const tokenList = Object.keys(tokens)
