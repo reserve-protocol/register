@@ -36,7 +36,7 @@ export const currentBasketTokensAtom = atom((get) => {
     (token) =>
       !removedMap[token.address.toLowerCase()] &&
       shares[token.address] &&
-      Number(shares[token.address]) <= 0.1
+      shares[token.address] === '0.00'
   )
 })
 
