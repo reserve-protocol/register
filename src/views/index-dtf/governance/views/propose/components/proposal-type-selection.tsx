@@ -8,6 +8,7 @@ import {
   Boxes,
   Crown,
   LayoutGrid,
+  Settings,
 } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import ProposeGovernanceSpell31032025 from '../upgrade-banners/propose-governance-spell-31-03-2025'
@@ -20,19 +21,19 @@ const proposalTypes = [
     enabled: window.location.hostname !== 'app.reserve.org',
   },
   {
-    icon: <Asterisk size={24} />,
-    title: 'Fees',
-    route: GOVERNANCE_PROPOSAL_TYPES.FEES,
-    enabled: false,
+    icon: <Settings size={16} strokeWidth={1.5} />,
+    title: 'DTF Settings',
+    route: GOVERNANCE_PROPOSAL_TYPES.DTF,
+    enabled: true,
   },
   {
-    icon: <Crown size={16} />,
+    icon: <Crown size={16} strokeWidth={1.5} />,
     title: 'Roles',
     route: GOVERNANCE_PROPOSAL_TYPES.ROLES,
     enabled: false,
   },
   {
-    icon: <LayoutGrid size={16} />,
+    icon: <LayoutGrid size={16} strokeWidth={1.5} />,
     title: 'Other',
     route: GOVERNANCE_PROPOSAL_TYPES.OTHER,
     enabled: true,
@@ -60,12 +61,12 @@ const TypeList = () => (
         key={title}
         to={enabled ? route : ''}
         className={cn(
-          'flex flex-row items-center p-6 gap-4 hover:text-primary',
+          'flex flex-row items-center p-6 gap-4 hover:text-primary group',
           index !== proposalTypes.length - 1 ? 'border-b border-border' : '',
           !enabled && 'cursor-not-allowed hover:text-muted-foreground'
         )}
       >
-        <div className="rounded-full h-8 w-8 border border-foreground flex items-center justify-center">
+        <div className="rounded-full h-8 w-8 border border-foreground flex items-center justify-center group-hover:border-primary">
           {icon}
         </div>
         <h4 className="bg-card m-1 mr-auto font-bold">{title}</h4>

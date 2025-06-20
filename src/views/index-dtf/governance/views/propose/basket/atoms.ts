@@ -145,7 +145,7 @@ export const proposedIndexBasketStateAtom = atom<{
 export const isUnitBasketAtom = atom((get) => {
   const brandData = get(indexDTFBrandAtom)
 
-  return brandData?.dtf.basketType === 'unit-based'
+  return brandData?.dtf?.basketType === 'unit-based'
 })
 
 export const isUnitBasketValidAtom = atom((get) => {
