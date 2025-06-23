@@ -54,26 +54,24 @@ const Collaterals = () => {
 
   const sortedOrderIds = useMemo(
     () =>
-      orderIDs
-        .filter((o) => o.provider === QuoteProvider.CowSwap)
-        .sort((a, b) => {
-          const orderA =
-            cowswapOrders.find((o) => o.orderId === a.id) ||
-            universalOrders.find((o) => o.id === a.id)
-          const orderB =
-            cowswapOrders.find((o) => o.orderId === b.id) ||
-            universalOrders.find((o) => o.id === b.id)
+      orderIDs.sort((a, b) => {
+        const orderA =
+          cowswapOrders.find((o) => o.orderId === a.id) ||
+          universalOrders.find((o) => o.id === a.id)
+        const orderB =
+          cowswapOrders.find((o) => o.orderId === b.id) ||
+          universalOrders.find((o) => o.id === b.id)
 
-          if (!orderA?.status || !orderB?.status) return 0
+        if (!orderA?.status || !orderB?.status) return 0
 
-          const orderAPriority =
-            STATUS_PRIORITY[orderA.status as OrderStatus | UniversalOrderStatus]
-          const orderBPriority =
-            STATUS_PRIORITY[orderB.status as OrderStatus | UniversalOrderStatus]
+        const orderAPriority =
+          STATUS_PRIORITY[orderA.status as OrderStatus | UniversalOrderStatus]
+        const orderBPriority =
+          STATUS_PRIORITY[orderB.status as OrderStatus | UniversalOrderStatus]
 
-          return orderAPriority - orderBPriority
-        }),
-    [cowswapOrders]
+        return orderAPriority - orderBPriority
+      }),
+    [cowswapOrders, universalOrders]
   )
 
   if (!shouldRender) return null

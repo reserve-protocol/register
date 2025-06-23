@@ -1,5 +1,6 @@
 import { wagmiConfig } from '@/state/chain'
 import { AvailableChain } from '@/utils/chains'
+import { RESERVE_API } from '@/utils/constants'
 import { Address, encodeFunctionData, erc20Abi, Hex } from 'viem'
 import { getPublicClient } from 'wagmi/actions'
 
@@ -69,4 +70,22 @@ export async function getApprovalCallIfNeeded({
     }
   }
   return null
+}
+
+type TokenPrice = {
+  address: Address
+  price: number
+  timestamp: number
+  source: string
+}
+
+export async function getAssetPrice(
+  chainId: number,
+  token: Address
+): Promise<TokenPrice | undefined> {
+  const response = await fetch(
+    `${RESERVE_API}current/prices?tokens=${token}&chainId=${chainId}`
+  )
+  const data = (await response.json()) as TokenPrice[]
+  return data[0]
 }

@@ -29,6 +29,7 @@ import {
   orderIdsAtom,
   quotesAtom,
   selectedTokenAtom,
+  universalFailedSubmittedQuotesAtom,
   userInputAtom,
 } from '../atom'
 import { useGlobalProtocolKit } from '../providers/GlobalProtocolKitProvider'
@@ -51,6 +52,9 @@ export function useQuoteSignatures(refresh = false) {
   const [quotes, setQuotes] = useAtom(quotesAtom)
   const setOrderIDs = useSetAtom(orderIdsAtom)
   const setAsyncSwapResponse = useSetAtom(asyncSwapResponseAtom)
+  const setUniversalFailedSubmittedQuotes = useSetAtom(
+    universalFailedSubmittedQuotesAtom
+  )
   const { orderBookApi, universalSdk } = useGlobalProtocolKit()
   const { sendCallsAsync } = useSendCalls()
   const failedOrders = useAtomValue(failedOrdersAtom)
@@ -210,13 +214,15 @@ export function useQuoteSignatures(refresh = false) {
       }
 
       // TODO: tx confirmation checks
-      const txBundle = await sendCallsAsync({
-        calls: txData,
-        account: address,
-        forceAtomic: true,
-      })
+      if (txData.length > 0) {
+        const txBundle = await sendCallsAsync({
+          calls: txData,
+          account: address,
+          forceAtomic: true,
+        })
 
-      console.log({ txBundle })
+        console.log({ txBundle })
+      }
 
       // TODO: Wait here until Safe tx is onchain
       // I wonder if this is better suited for a different hook tbh
@@ -257,7 +263,10 @@ export function useQuoteSignatures(refresh = false) {
                       }
                     } catch (error) {
                       console.error(error)
-                      // TODO: handle this
+                      setUniversalFailedSubmittedQuotes((prev) => [
+                        ...prev,
+                        quote,
+                      ])
                       return undefined
                     }
                   }

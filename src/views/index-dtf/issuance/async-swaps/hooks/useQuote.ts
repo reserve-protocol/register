@@ -11,7 +11,7 @@ import {
 import { useQuery } from '@tanstack/react-query'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
-import { Address, parseEther, zeroAddress } from 'viem'
+import { Address, formatUnits, parseEther, zeroAddress } from 'viem'
 import {
   applyWalletBalanceAtom,
   failedOrdersAtom,
@@ -33,6 +33,22 @@ import {
 } from '../providers/universal'
 import { QuoteProvider } from '../types'
 import { useFolioDetails } from './useFolioDetails'
+import { getAssetPrice } from './utils'
+
+const MIN_UNIVERSAL_QUOTE_VALUE_USD = 2
+
+async function getQuoteValue(
+  chainId: number,
+  buyToken: Address,
+  amount: bigint,
+  decimals: number
+) {
+  const assetPrice = await getAssetPrice(chainId, buyToken)
+  if (!assetPrice) {
+    return undefined
+  }
+  return Number(formatUnits(amount, decimals)) * assetPrice.price || undefined
+}
 
 async function getQuote({
   sellToken,
@@ -42,6 +58,7 @@ async function getQuote({
   operation,
   orderBookApi,
   universalSdk,
+  quoteValue,
 }: {
   sellToken: Address
   buyToken: Address
@@ -50,6 +67,7 @@ async function getQuote({
   operation: 'redeem' | 'mint'
   orderBookApi: OrderBookApi
   universalSdk: UniversalRelayerWithRateLimiter
+  quoteValue?: number
 }) {
   if (
     !address ||
@@ -68,7 +86,8 @@ async function getQuote({
   // Try Universal first if available
   if (universalSdk) {
     const universalAsset = getUniversalTokenName(buyToken)
-    if (universalAsset) {
+    const hasMinValue = quoteValue && quoteValue > MIN_UNIVERSAL_QUOTE_VALUE_USD
+    if (universalAsset && hasMinValue) {
       try {
         const universalQuote = await universalSdk.getQuote({
           type: 'BUY',
@@ -177,6 +196,12 @@ export const useQuotesForMint = () => {
           }
 
           try {
+            const quoteValue = await getQuoteValue(
+              chainId,
+              token.address,
+              amount,
+              token.decimals
+            )
             return await getQuote({
               sellToken: selectedToken.address,
               buyToken: token.address,
@@ -185,6 +210,7 @@ export const useQuotesForMint = () => {
               operation: 'mint',
               orderBookApi,
               universalSdk,
+              quoteValue,
             })
           } catch (error) {
             console.error(`Error getting quote for ${asset}:`, error)
@@ -250,6 +276,7 @@ export const useQuotesForMint = () => {
 }
 
 export const useQuotesForRedeem = () => {
+  const chainId = useAtomValue(chainIdAtom)
   const selectedToken = useAtomValue(selectedTokenAtom)
   const redeemAssets = useAtomValue(redeemAssetsAtom)
   const address = useAtomValue(walletAtom)
@@ -289,6 +316,12 @@ export const useQuotesForRedeem = () => {
           }
 
           try {
+            const quoteValue = await getQuoteValue(
+              chainId,
+              token.address,
+              amount,
+              token.decimals
+            )
             return await getQuote({
               sellToken: token.address,
               buyToken: selectedToken.address,
@@ -297,6 +330,7 @@ export const useQuotesForRedeem = () => {
               operation: 'redeem',
               orderBookApi,
               universalSdk,
+              quoteValue,
             })
           } catch (error) {
             console.error(`Error getting quote for ${asset}:`, error)
@@ -371,6 +405,7 @@ export const useRefreshQuotes = () => {
       }
 
       const quotePromises = failedOrders.map(async (order) => {
+        // TODO: get quote value (?)
         return await getQuote({
           sellToken: order.sellToken as Address,
           buyToken: order.buyToken as Address,

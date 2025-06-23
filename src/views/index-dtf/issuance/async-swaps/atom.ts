@@ -7,6 +7,7 @@ import { atom } from 'jotai'
 import { atomWithReset } from 'jotai/utils'
 import { Address, parseEther, parseUnits } from 'viem'
 import { AsyncSwapOrderResponse, QuoteAggregated, QuoteProvider } from './types'
+import { Quote } from 'universal-sdk'
 
 const ASYNC_SWAP_BUFFER = 0.005
 
@@ -129,3 +130,5 @@ export const hasAllCollateralsAtom = atom<boolean>((get) => {
     )
   )
 })
+
+export const universalFailedSubmittedQuotesAtom = atom<Quote[]>([])
