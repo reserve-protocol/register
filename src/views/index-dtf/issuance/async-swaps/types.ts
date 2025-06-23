@@ -1,6 +1,6 @@
 import { Token } from '@/types'
 import { EnrichedOrder, OrderQuoteResponse } from '@cowprotocol/cow-sdk'
-import { Order as UniversalOrder } from 'universal-sdk'
+import { Quote } from 'universal-sdk'
 import { Address } from 'viem'
 
 export enum QuoteProvider {
@@ -26,6 +26,11 @@ export type QuoteAggregated =
       data: unknown // TODO: Type Universal Quote Response
     }
 
+export type UniversalOrder = Quote & {
+  orderId: string
+  transactionHash: string
+}
+
 export type AsyncSwapOrderResponse = {
   swapOrderId: string
   chainId: number
@@ -33,7 +38,6 @@ export type AsyncSwapOrderResponse = {
   dtf: Address
   inputAmount: string
   amountOut: string
-  universalOrders: UniversalOrder[]
   cowswapOrders: (EnrichedOrder & { orderId: string })[]
   createdAt: string
 }

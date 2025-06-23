@@ -6,21 +6,20 @@ import {
   asyncSwapResponseAtom,
   openCollateralPanelAtom,
   orderIdsAtom,
+  universalFailedOrdersAtom,
+  universalSuccessOrdersAtom,
 } from './atom'
 import CowSwapOrder from './cowswap-order'
-import { UniversalOrderStatus } from './hooks/useUniversalOrder'
 import { QuoteProvider } from './types'
+import UniversalFailedOrder from './universal-failed-order'
 import UniversalOrder from './universal-order'
 
-const STATUS_PRIORITY: Record<UniversalOrderStatus | OrderStatus, number> = {
+const STATUS_PRIORITY: Record<OrderStatus, number> = {
   [OrderStatus.CANCELLED]: 0,
   [OrderStatus.EXPIRED]: 0,
   [OrderStatus.PRESIGNATURE_PENDING]: 1,
   [OrderStatus.OPEN]: 1,
   [OrderStatus.FULFILLED]: 2,
-  [UniversalOrderStatus.FAILED]: 0,
-  [UniversalOrderStatus.PENDING]: 1,
-  [UniversalOrderStatus.SUCCESS]: 2,
 }
 
 const isVisibleAtom = atom(false)
@@ -34,6 +33,8 @@ export const showCollateralsAtom = atom((get) => {
 const Collaterals = () => {
   const orderIDs = useAtomValue(orderIdsAtom)
   const asyncSwapResponse = useAtomValue(asyncSwapResponseAtom)
+  const universalSuccessOrders = useAtomValue(universalSuccessOrdersAtom)
+  const universalFailedOrders = useAtomValue(universalFailedOrdersAtom)
   const open = useAtomValue(openCollateralPanelAtom)
   const [isVisible, setIsVisible] = useAtom(isVisibleAtom)
   const [shouldRender, setShouldRender] = useAtom(shouldRenderAtom)
@@ -50,28 +51,24 @@ const Collaterals = () => {
     }
   }, [asyncSwapResponse, open, setIsVisible, setShouldRender])
 
-  const { cowswapOrders = [], universalOrders = [] } = asyncSwapResponse || {}
+  const { cowswapOrders = [] } = asyncSwapResponse || {}
 
   const sortedOrderIds = useMemo(
     () =>
-      orderIDs.sort((a, b) => {
-        const orderA =
-          cowswapOrders.find((o) => o.orderId === a.id) ||
-          universalOrders.find((o) => o.id === a.id)
-        const orderB =
-          cowswapOrders.find((o) => o.orderId === b.id) ||
-          universalOrders.find((o) => o.id === b.id)
+      orderIDs
+        .filter((o) => o.provider === QuoteProvider.CowSwap)
+        .sort((a, b) => {
+          const orderA = cowswapOrders.find((o) => o.orderId === a.id)
+          const orderB = cowswapOrders.find((o) => o.orderId === b.id)
 
-        if (!orderA?.status || !orderB?.status) return 0
+          if (!orderA?.status || !orderB?.status) return 0
 
-        const orderAPriority =
-          STATUS_PRIORITY[orderA.status as OrderStatus | UniversalOrderStatus]
-        const orderBPriority =
-          STATUS_PRIORITY[orderB.status as OrderStatus | UniversalOrderStatus]
+          const orderAPriority = STATUS_PRIORITY[orderA.status as OrderStatus]
+          const orderBPriority = STATUS_PRIORITY[orderB.status as OrderStatus]
 
-        return orderAPriority - orderBPriority
-      }),
-    [cowswapOrders, universalOrders]
+          return orderAPriority - orderBPriority
+        }),
+    [cowswapOrders]
   )
 
   if (!shouldRender) return null
@@ -83,13 +80,15 @@ const Collaterals = () => {
         isVisible ? 'w-[400px]' : 'w-0'
       )}
     >
-      {sortedOrderIds.map((order) =>
-        order.provider === QuoteProvider.CowSwap ? (
-          <CowSwapOrder key={order.id} orderId={order.id} />
-        ) : order.provider === QuoteProvider.Universal ? (
-          <UniversalOrder key={order.id} orderId={order.id} />
-        ) : null
-      )}
+      {sortedOrderIds.map((order) => (
+        <CowSwapOrder key={order.id} orderId={order.id} />
+      ))}
+      {universalSuccessOrders.map((order) => (
+        <UniversalOrder key={order.id} order={order} />
+      ))}
+      {universalFailedOrders.map((quote) => (
+        <UniversalFailedOrder key={quote.id} quote={quote} />
+      ))}
     </div>
   )
 }

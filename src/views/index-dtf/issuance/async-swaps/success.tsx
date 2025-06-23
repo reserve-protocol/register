@@ -35,6 +35,7 @@ import {
   selectedTokenAtom,
   orderIdsAtom,
   quotesAtom,
+  universalSuccessOrdersAtom,
 } from './atom'
 import CowSwapOrder from './cowswap-order'
 import Details from './details'
@@ -321,7 +322,8 @@ const MainTransaction = () => {
 const Transactions = () => {
   const setViewTransactions = useSetAtom(viewTransactionsAtom)
   const orders = useAtomValue(asyncSwapResponseAtom)
-  const { cowswapOrders = [], universalOrders = [] } = orders || {}
+  const universalSuccessOrders = useAtomValue(universalSuccessOrdersAtom)
+  const { cowswapOrders = [] } = orders || {}
 
   return (
     <div className="bg-secondary rounded-3xl h-[444px] p-1">
@@ -345,8 +347,8 @@ const Transactions = () => {
           {cowswapOrders.map(({ orderId }) => (
             <CowSwapOrder key={orderId} orderId={orderId} />
           ))}
-          {universalOrders.map(({ id }) => (
-            <UniversalOrder key={id} orderId={id} />
+          {universalSuccessOrders.map((order) => (
+            <UniversalOrder key={order.id} order={order} />
           ))}
         </div>
       </div>

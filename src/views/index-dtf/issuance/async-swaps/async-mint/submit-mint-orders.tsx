@@ -9,43 +9,55 @@ type SubmitMintProps = {
   insufficientBalance?: boolean
 }
 
-const SubmitMint = ({ loadingQuote }: SubmitMintProps) => {
-  const inputAmount = useAtomValue(userInputAtom)
+const SubmitMintButton = ({
+  mutate,
+  isPending,
+  loadingQuote,
+}: {
+  mutate: () => void
+  isPending: boolean
+  loadingQuote?: boolean
+}) => {
   const insufficientBalance = useAtomValue(insufficientBalanceAtom)
-  const { data, mutate, isPending } = useQuoteSignatures()
-
+  const inputAmount = useAtomValue(userInputAtom)
   const disabled =
-    isPending ||
-    loadingQuote ||
-    !inputAmount ||
-    isNaN(Number(inputAmount)) ||
-    insufficientBalance
+    isPending || loadingQuote || !inputAmount || isNaN(Number(inputAmount))
 
   return (
-    <div>
-      <Button
-        size="lg"
-        className={cn(
-          'w-full rounded-xl',
-          isPending && 'opacity-50 cursor-not-allowed'
-        )}
-        onClick={() => mutate()}
-        disabled={disabled}
-      >
-        {insufficientBalance ? (
-          'Insufficient Balance'
-        ) : isPending ? (
-          'Signing...'
-        ) : loadingQuote ? (
-          'Awaiting Quote'
-        ) : (
-          <span className="flex items-center gap-1">
-            <span className="font-bold">Start Mint</span>
-            <span className="font-light">- Step 1/2</span>
-          </span>
-        )}
-      </Button>
-    </div>
+    <Button
+      size="lg"
+      className={cn(
+        'w-full rounded-xl',
+        isPending && 'opacity-50 cursor-not-allowed'
+      )}
+      onClick={() => mutate()}
+      disabled={disabled}
+    >
+      {insufficientBalance ? (
+        'Insufficient Balance'
+      ) : isPending ? (
+        'Signing...'
+      ) : loadingQuote ? (
+        'Awaiting Quote'
+      ) : (
+        <span className="flex items-center gap-1">
+          <span className="font-bold">Start Mint</span>
+          <span className="font-light">- Step 1/2</span>
+        </span>
+      )}
+    </Button>
+  )
+}
+
+const SubmitMint = ({ loadingQuote }: SubmitMintProps) => {
+  const { mutate, isPending } = useQuoteSignatures()
+
+  return (
+    <SubmitMintButton
+      mutate={mutate}
+      isPending={isPending}
+      loadingQuote={loadingQuote}
+    />
   )
 }
 

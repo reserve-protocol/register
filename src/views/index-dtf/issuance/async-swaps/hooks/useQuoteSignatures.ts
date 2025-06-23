@@ -29,7 +29,8 @@ import {
   orderIdsAtom,
   quotesAtom,
   selectedTokenAtom,
-  universalFailedSubmittedQuotesAtom,
+  universalFailedOrdersAtom,
+  universalSuccessOrdersAtom,
   userInputAtom,
 } from '../atom'
 import { useGlobalProtocolKit } from '../providers/GlobalProtocolKitProvider'
@@ -52,9 +53,8 @@ export function useQuoteSignatures(refresh = false) {
   const [quotes, setQuotes] = useAtom(quotesAtom)
   const setOrderIDs = useSetAtom(orderIdsAtom)
   const setAsyncSwapResponse = useSetAtom(asyncSwapResponseAtom)
-  const setUniversalFailedSubmittedQuotes = useSetAtom(
-    universalFailedSubmittedQuotesAtom
-  )
+  const setUniversalFailedOrders = useSetAtom(universalFailedOrdersAtom)
+  const setUniversalSuccessOrders = useSetAtom(universalSuccessOrdersAtom)
   const { orderBookApi, universalSdk } = useGlobalProtocolKit()
   const { sendCallsAsync } = useSendCalls()
   const failedOrders = useAtomValue(failedOrdersAtom)
@@ -257,16 +257,22 @@ export function useQuoteSignatures(refresh = false) {
                         ...quote,
                         signature,
                       })
-                      return {
-                        id: universalOrder.order_id,
-                        provider: QuoteProvider.Universal,
-                      }
+
+                      setUniversalSuccessOrders((prev) => {
+                        return [
+                          ...prev,
+                          {
+                            ...quote,
+                            orderId: universalOrder.order_id,
+                            transactionHash: universalOrder.transaction_hash,
+                          },
+                        ]
+                      })
+
+                      return undefined
                     } catch (error) {
                       console.error(error)
-                      setUniversalFailedSubmittedQuotes((prev) => [
-                        ...prev,
-                        quote,
-                      ])
+                      setUniversalFailedOrders((prev) => [...prev, quote])
                       return undefined
                     }
                   }
@@ -296,7 +302,7 @@ export function useQuoteSignatures(refresh = false) {
         })
       } else {
         setOrderIDs(orderIds)
-        setAsyncSwapResponse({
+        setAsyncSwapResponse((prev) => ({
           swapOrderId: uuidv4(),
           chainId,
           signer: address,
@@ -304,9 +310,8 @@ export function useQuoteSignatures(refresh = false) {
           inputAmount,
           amountOut: parseEther(mintValue.toString()).toString(),
           createdAt: new Date().toISOString(),
-          universalOrders: [],
-          cowswapOrders: [],
-        })
+          cowswapOrders: prev?.cowswapOrders || [],
+        }))
       }
       setQuotes({})
 

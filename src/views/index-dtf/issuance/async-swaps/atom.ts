@@ -6,7 +6,12 @@ import { OrderStatus } from '@cowprotocol/cow-sdk'
 import { atom } from 'jotai'
 import { atomWithReset } from 'jotai/utils'
 import { Address, parseEther, parseUnits } from 'viem'
-import { AsyncSwapOrderResponse, QuoteAggregated, QuoteProvider } from './types'
+import {
+  AsyncSwapOrderResponse,
+  QuoteAggregated,
+  QuoteProvider,
+  UniversalOrder,
+} from './types'
 import { Quote } from 'universal-sdk'
 
 const ASYNC_SWAP_BUFFER = 0.005
@@ -131,4 +136,5 @@ export const hasAllCollateralsAtom = atom<boolean>((get) => {
   )
 })
 
-export const universalFailedSubmittedQuotesAtom = atom<Quote[]>([])
+export const universalSuccessOrdersAtom = atom<UniversalOrder[]>([])
+export const universalFailedOrdersAtom = atom<Quote[]>([])

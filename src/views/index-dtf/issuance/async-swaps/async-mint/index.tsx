@@ -21,9 +21,9 @@ import {
   userInputAtom,
 } from '../atom'
 import CollateralAcquisition from '../collateral-acquisition'
+import Details from '../details'
 import { useQuotesForMint } from '../hooks/useQuote'
 import SubmitMint from './submit-mint-orders'
-import Details from '../details'
 
 const AsyncMint = () => {
   const chainId = useAtomValue(chainIdAtom)
