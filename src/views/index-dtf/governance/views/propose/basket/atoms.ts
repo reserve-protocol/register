@@ -141,7 +141,7 @@ export const isUnitBasketAtom = atom((get) => {
     return !dtfRebalanceControl?.weightControl
   }
 
-  return brandData?.dtf.basketType === 'unit-based'
+  return brandData?.dtf?.basketType === 'unit-based'
 })
 
 // For 2.0 unit basket requires moving to shares for the proposal, no longer required for 4.00

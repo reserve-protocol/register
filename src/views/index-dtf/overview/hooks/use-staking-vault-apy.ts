@@ -83,11 +83,15 @@ export const useStakingVaultAPY = () => {
     contracts: rewardTrackerCalls,
     allowFailure: false,
     blockNumber:
-      currentBlockNumber && chainId
-        ? currentBlockNumber! - BLOCKS_PER_DAY[chainId!] * PERIOD
+      currentBlockNumber && chainId && BLOCKS_PER_DAY[chainId]
+        ? currentBlockNumber - BLOCKS_PER_DAY[chainId] * PERIOD
         : undefined,
     query: {
-      enabled: !!rewardTrackerCalls.length && !!currentBlockNumber && !!chainId,
+      enabled:
+        !!rewardTrackerCalls.length &&
+        !!currentBlockNumber &&
+        !!chainId &&
+        !!BLOCKS_PER_DAY[chainId],
     },
   })
 

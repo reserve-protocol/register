@@ -1,6 +1,7 @@
 import GoTo from '@/components/old/button/GoTo'
 import TransactionButton from '@/components/old/button/TransactionButton'
 import { ModalProps } from '@/components/old/modal'
+import useWatchTransaction from '@/hooks/useWatchTransaction'
 import { t, Trans } from '@lingui/macro'
 import Governance from 'abis/Governance'
 import { Modal } from 'components'
@@ -13,16 +14,17 @@ import {
   ThumbsDown,
   ThumbsUp,
 } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { chainIdAtom } from 'state/atoms'
 import { Box, Checkbox, Divider, Flex, Link, Text } from 'theme-ui'
 import { getProposalTitle, shortenAddress } from 'utils'
 import {
+  ETHERSCAN_NAMES,
   ExplorerDataType,
   getExplorerLink,
-  ETHERSCAN_NAMES,
 } from 'utils/getExplorerLink'
 import { proposalDetailAtom } from '../atom'
+import { proposalRefreshFnAtom } from '../updater'
 
 export const VOTE_TYPE = {
   AGAINST: 0,
@@ -36,6 +38,7 @@ const VoteModal = (props: ModalProps) => {
   const [vote, setVote] = useState(-1)
   const proposal = useAtomValue(proposalDetailAtom)
   const isValid = proposal?.id && vote !== -1
+  const refreshFn = useAtomValue(proposalRefreshFnAtom)
 
   const { hash, isLoading, isReady, write } = useContractWrite(
     isValid
@@ -54,9 +57,20 @@ const VoteModal = (props: ModalProps) => {
     { label: t`Abstain`, value: VOTE_TYPE.ABSTAIN },
   ]
 
+  const { status, isMining } = useWatchTransaction({
+    hash,
+    label: t`Vote`,
+  })
+
+  useEffect(() => {
+    if (status === 'success') {
+      refreshFn?.()
+    }
+  }, [status])
+
   // TODO: Signed modal should be its own component
   // TODO: reused on other modals
-  if (hash) {
+  if (hash && status === 'success') {
     return (
       <Modal {...props}>
         <Flex
@@ -69,7 +83,7 @@ const VoteModal = (props: ModalProps) => {
         >
           <CheckCircle size={36} />
           <br />
-          <Text>Transactions signed!</Text>
+          <Text>Transaction successful!</Text>
           <br />
           <Link
             href={getExplorerLink(hash, chainId, ExplorerDataType.TRANSACTION)}
@@ -127,6 +141,7 @@ const VoteModal = (props: ModalProps) => {
             <Checkbox
               checked={vote === option.value}
               onChange={() => setVote(option.value)}
+              disabled={isLoading || isMining}
             />
           </label>
         </Box>
@@ -134,12 +149,13 @@ const VoteModal = (props: ModalProps) => {
 
       <Divider sx={{ borderColor: 'darkBorder' }} my={4} mx={-4} />
       <TransactionButton
-        loading={isLoading}
+        loading={isLoading || isMining}
         variant={!!hash ? 'accentAction' : 'primary'}
         text={t`Vote`}
+        loadingText={isMining ? t`Confirming...` : undefined}
         fullWidth
         onClick={write}
-        disabled={!isReady}
+        disabled={!isReady || isLoading || isMining}
       />
     </Modal>
   )

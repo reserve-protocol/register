@@ -12,6 +12,7 @@ import { rTokenMetaAtom } from 'state/rtoken/atoms/rTokenAtom'
 import { Box, Card, Link } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { ROUTES } from 'utils/constants'
+import { ChainId } from '@/utils/chains'
 
 interface Socials {
   label: string
@@ -127,19 +128,21 @@ const OverviewActions = () => {
         gap: [2, 3],
       }}
     >
-      <DgnETHButtonAppendix rTokenSymbol={rToken?.symbol} basketAPY={basket}>
-        <Button
-          variant="accent"
-          onClick={() => navigate(`../${ROUTES.ISSUANCE}`)}
-          sx={{ whiteSpace: 'nowrap' }}
-        >
-          <Trans>
-            {!!holders
-              ? `Mint ${formatCurrency(holders, 1)}% Est. APY`
-              : 'Mint'}
-          </Trans>
-        </Button>
-      </DgnETHButtonAppendix>
+      {rToken?.chainId !== ChainId.Arbitrum && (
+        <DgnETHButtonAppendix rTokenSymbol={rToken?.symbol} basketAPY={basket}>
+          <Button
+            variant="accent"
+            onClick={() => navigate(`../${ROUTES.ISSUANCE}`)}
+            sx={{ whiteSpace: 'nowrap' }}
+          >
+            <Trans>
+              {!!holders
+                ? `Mint ${formatCurrency(holders, 1)}% Est. APY`
+                : 'Mint'}
+            </Trans>
+          </Button>
+        </DgnETHButtonAppendix>
+      )}
       <Button
         variant="bordered"
         onClick={() => navigate(`../${ROUTES.STAKING}`)}

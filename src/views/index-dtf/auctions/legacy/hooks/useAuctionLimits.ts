@@ -124,7 +124,7 @@ const useAuctionLimits = (trade: AssetTrade, ejectFully: boolean) => {
               expectedBasket?.basket?.[asset.token.address]?.price ||
                 asset.price
             )
-            acc.priceError.push(VOLATILITY_VALUES[VOLATILITY_OPTIONS.LOW])
+            acc.priceError.push(VOLATILITY_VALUES[VOLATILITY_OPTIONS.MEDIUM])
 
             return acc
           },

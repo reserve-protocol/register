@@ -37,6 +37,7 @@ import DeployComingSoon from './views/index-dtf/deploy/components/deploy-coming-
 import IndexDTFWhitelistProposal from './views/index-dtf/governance/views/propose/vault'
 import RebalanceList from './views/index-dtf/auctions/views/rebalance-list'
 import Rebalance from './views/index-dtf/auctions/views/rebalance'
+import ProposeDTFSettings from './views/index-dtf/governance/views/propose/views/propose-dtf-settings'
 
 // TODO: Fix recoll call on yield dtf auction page
 const AppRoutes = () => (
@@ -90,6 +91,10 @@ const AppRoutes = () => (
       <Route
         path={`${ROUTES.GOVERNANCE}/${ROUTES.GOVERNANCE_PROPOSE}/${GOVERNANCE_PROPOSAL_TYPES.BASKET}`}
         element={<IndexDTFBasketProposal />}
+      />
+      <Route
+        path={`${ROUTES.GOVERNANCE}/${ROUTES.GOVERNANCE_PROPOSE}/${GOVERNANCE_PROPOSAL_TYPES.DTF}`}
+        element={<ProposeDTFSettings />}
       />
       <Route
         path={`${ROUTES.GOVERNANCE}/${ROUTES.GOVERNANCE_PROPOSE}/${GOVERNANCE_PROPOSAL_TYPES.OTHER}`}

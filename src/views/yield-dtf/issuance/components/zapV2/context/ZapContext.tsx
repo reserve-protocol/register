@@ -308,8 +308,7 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
         amountIn === '' ||
         Number(amountIn) === 0 ||
         isEnabled.loading ||
-        !isEnabled.value ||
-        insufficientFunds
+        !isEnabled.value
       ) {
         return null
       }

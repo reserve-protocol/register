@@ -12,6 +12,7 @@ import { BoxProps } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { TIME_RANGES } from 'utils/constants'
 import { formatEther } from 'viem'
+import ExportCSVButton from './ExportCSVButton'
 
 const hourlyPriceQuery = gql`
   query getTokenHourlyPrice($id: String!, $fromTime: Int!) {
@@ -69,6 +70,23 @@ const StakingChart = (props: BoxProps) => {
     }
   }, [data, rsrPrice])
 
+  const csvRows = useMemo(() => {
+    return (
+      data?.rtoken?.snapshots.map(
+        ({
+          timestamp,
+          rsrStaked,
+        }: {
+          timestamp: string
+          rsrStaked: bigint
+        }) => ({
+          timestamp: timestamp,
+          rsrStaked: +formatEther(rsrStaked) * rsrPrice,
+        })
+      ) || []
+    )
+  }, [data, rsrPrice])
+
   const currentValue = rows && rows.length ? rows[rows.length - 1].value : 0
 
   const handleChange = (range: string) => {
@@ -83,6 +101,22 @@ const StakingChart = (props: BoxProps) => {
       timeRange={TIME_RANGES}
       currentRange={current}
       onRangeChange={handleChange}
+      sx={{
+        backgroundColor: 'backgroundNested',
+        borderRadius: '16px',
+        border: '12px solid',
+        borderColor: 'backgroundNested',
+      }}
+      moreActions={
+        <ExportCSVButton
+          headers={[
+            { key: 'timestamp', label: 'Timestamp' },
+            { key: 'rsrStaked', label: 'RSR Staked (USD)' },
+          ]}
+          rows={csvRows || []}
+          filename={`${rToken?.symbol}-historical-staking-${current}.csv`}
+        />
+      }
       {...props}
     />
   )

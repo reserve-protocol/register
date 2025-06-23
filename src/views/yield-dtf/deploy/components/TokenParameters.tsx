@@ -70,8 +70,12 @@ const ChainSelector = () => {
   const { setValue } = useFormContext()
   const { switchChain } = useSwitchChain()
 
+  const filteredSupportedChainList = supportedChainList.filter(
+    (chain) => chain !== ChainId.Arbitrum
+  )
+
   useEffect(() => {
-    if (walletChainId && supportedChainList.includes(walletChainId)) {
+    if (walletChainId && filteredSupportedChainList.includes(walletChainId)) {
       setChain(walletChainId as AvailableChain)
     }
   }, [])
@@ -110,7 +114,7 @@ const ChainSelector = () => {
           },
         }}
       >
-        {supportedChainList.map((chain) => (
+        {filteredSupportedChainList.map((chain) => (
           <ChainOption
             key={chain}
             chainId={chain}
