@@ -1,3 +1,5 @@
+import dtfIndexAbiV4 from '@/abis/dtf-index-abi-v4'
+import dtfIndexAbiV2 from '@/abis/dtf-index-abi-v2'
 import dtfAdminAbi from '@/abis/dtf-admin-abi'
 import dtfIndexGovernance from '@/abis/dtf-index-governance'
 import dtfIndexStakingVault from '@/abis/dtf-index-staking-vault'
@@ -9,7 +11,6 @@ import {
   spellAbi as governanceSpell_31_03_2025Abi,
   spellAddress as governanceSpell_31_03_2025Address,
 } from '../../views/propose/upgrade-banners/propose-governance-spell-31-03-2025'
-import dtfIndexAbiV2 from '@/abis/dtf-index-abi-v2'
 
 export const dtfAbiMapppingAtom = atom((get) => {
   const dtf = get(indexDTFAtom)
@@ -17,7 +18,7 @@ export const dtfAbiMapppingAtom = atom((get) => {
   if (!dtf) return undefined
 
   const abiMapping: Record<string, Abi> = {
-    [dtf.id.toLowerCase()]: dtfIndexAbiV2,
+    [dtf.id.toLowerCase()]: dtfIndexAbiV4,
     [dtf.proxyAdmin.toLowerCase()]: dtfAdminAbi,
   }
 

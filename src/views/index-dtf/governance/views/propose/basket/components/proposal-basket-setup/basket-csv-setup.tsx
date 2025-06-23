@@ -1,8 +1,9 @@
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { indexDTFAtom } from '@/state/dtf/atoms'
+import { isAddress } from '@/utils'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
-import { ChevronDown, Download, DownloadCloud, FilePlus2 } from 'lucide-react'
+import { DownloadCloud, FilePlus2 } from 'lucide-react'
 import { useCallback, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
 import {
@@ -10,8 +11,7 @@ import {
   proposedIndexBasketAtom,
   proposedSharesAtom,
   proposedUnitsAtom,
-} from '../atoms'
-import { isAddress } from '@/utils'
+} from '../../atoms'
 
 const MAX_FILE_SIZE = 1024 * 1024 // 1MB
 

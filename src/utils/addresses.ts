@@ -33,14 +33,14 @@ export const FACADE_WRITE_ADDRESS: AddressMap = {
 }
 
 export const INDEX_DEPLOYER_ADDRESS: AddressMap = {
-  [ChainId.Mainnet]: '0xaafb13a3df7cE70c140E40c959D58Fd5Cc443Cba',
-  [ChainId.Base]: '0xb8469986840bc9b7Bb101C274950c02842755911',
+  [ChainId.Mainnet]: '0xaafb13a3df7cE70c140E40c959D58Fd5Cc443Cba', // TODO: still 2.0
+  [ChainId.Base]: '0xBE3B47587cEeff7D48008A0114f51cD571beC63A', // 4,0
   [ChainId.Arbitrum]: '0x',
 }
 
 export const INDEX_GOVERNANCE_DEPLOYER_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0xE926577a152fFD5f5036f88BF7E8E8D3652B558C',
-  [ChainId.Base]: '0x6a66E6E209C7120819cC033d9397E5022C22C872',
+  [ChainId.Base]: '0x5Bed18AcA50E6057E6658Fe8498004092EedCDcF', // 4.0
   [ChainId.Arbitrum]: '0x',
 }
 

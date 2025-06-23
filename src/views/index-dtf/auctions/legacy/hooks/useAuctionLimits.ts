@@ -9,7 +9,7 @@ import { atom, useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { Address, erc20Abi, parseEther, parseUnits } from 'viem'
 import { useReadContract } from 'wagmi'
-import { isUnitBasketAtom } from '../../governance/views/propose/basket/atoms'
+import { isUnitBasketAtom } from '../../../governance/views/propose/basket/atoms'
 import {
   AssetTrade,
   dtfTradesByProposalMapAtom,

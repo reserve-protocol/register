@@ -11,7 +11,7 @@ const Brand = ({ className }: { className?: string }) => {
 
   return (
     <div onClick={handleClick} className={className}>
-      <div className="hidden md:hidden lg:flex items-center dark:text-foreground">
+      <div className="hidden md:hidden lg:flex items-center cursor-pointer dark:text-foreground">
         <Reserve />
       </div>
       <div className="flex lg:hidden items-center justify-center text-2xl mr-2">

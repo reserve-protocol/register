@@ -34,6 +34,7 @@
     "@radix-ui/react-tooltip": "^1.1.8",
     "@rainbow-me/rainbowkit": "2.2.3",
     "@react-spring/web": "^9.7.1",
+    "@reserve-protocol/dtf-rebalance-lib": "^0.2.4",
     "@reserve-protocol/rtokens": "^1.1.23",
     "@sentry/react": "^9.16.0",
     "@sentry/vite-plugin": "^3.4.0",
@@ -137,6 +138,6 @@
     "vite-bundle-visualizer": "1.2.1",
     "vite-plugin-static-copy": "^2.1.0",
     "vite-tsconfig-paths": "^4.2.0",
-    "vitest": "^3.1.2"
+    "vitest": "^3.1.3"
   }
 }

@@ -45,7 +45,7 @@ export const dtfDeploySteps: Record<DeployStepId, { fields: string[] }> = {
     ],
   },
   auctions: {
-    fields: ['auctionLength', 'auctionDelay'],
+    fields: ['auctionLength', 'weightControl'],
   },
   roles: {
     fields: ['guardians', 'brandManagers', 'auctionLaunchers'],
@@ -160,7 +160,7 @@ export const DeployFormSchema = z
       .number()
       .min(0)
       .max(45, 'Auction length must not exceed 45 minutes'),
-    auctionDelay: z.coerce.number().min(0).max(10080),
+    weightControl: z.boolean(),
     guardians: z.array(
       z
         .string()
@@ -400,7 +400,7 @@ export const dtfDeployDefaultValues = {
   fixedPlatformFee: 50,
   additionalRevenueRecipients: [],
   auctionLength: 30,
-  auctionDelay: 12,
+  weightControl: true,
   guardians: [],
   brandManagers: [],
   auctionLaunchers: [],

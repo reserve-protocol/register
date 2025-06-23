@@ -35,6 +35,8 @@ import IndexDTFSettings from './views/index-dtf/settings'
 import AllYieldDTFList from './views/tokens/Tokens'
 import DeployComingSoon from './views/index-dtf/deploy/components/deploy-coming-soon'
 import IndexDTFWhitelistProposal from './views/index-dtf/governance/views/propose/vault'
+import RebalanceList from './views/index-dtf/auctions/views/rebalance-list'
+import Rebalance from './views/index-dtf/auctions/views/rebalance'
 import ProposeDTFSettings from './views/index-dtf/governance/views/propose/views/propose-dtf-settings'
 
 // TODO: Fix recoll call on yield dtf auction page
@@ -45,10 +47,7 @@ const AppRoutes = () => (
     <Route path={ROUTES.EARN} element={<EarnWrapper />} />
     <Route path={ROUTES.DEPLOY_YIELD} element={<DeployYieldDTF />} />
     <Route path={ROUTES.DEPLOY_INDEX} element={<DeployComingSoon />} />
-    <Route
-      path={'/hidden-super-secret-asdf/deploy'}
-      element={<DeployIndexDTF />}
-    />
+    <Route path={'/hidden/deploy'} element={<DeployIndexDTF />} />
     <Route path={ROUTES.TOKENS} element={<AllYieldDTFList />} />
     {/* Yield DTF */}
     <Route path={`/:chain/token/:tokenId`} element={<RTokenContainer />}>
@@ -79,7 +78,10 @@ const AppRoutes = () => (
         path={`${ROUTES.ISSUANCE}/manual`}
         element={<IndexDTFManualIssuance />}
       />
-      <Route path={ROUTES.AUCTIONS} element={<IndexDTFAuctions />} />
+      <Route path={ROUTES.AUCTIONS} element={<IndexDTFAuctions />}>
+        <Route index element={<RebalanceList />} />
+        <Route path={'rebalance/:proposalId'} element={<Rebalance />} />
+      </Route>
       <Route path={ROUTES.SETTINGS} element={<IndexDTFSettings />} />
       <Route path={ROUTES.GOVERNANCE} element={<IndexDTFGovernance />} />
       <Route

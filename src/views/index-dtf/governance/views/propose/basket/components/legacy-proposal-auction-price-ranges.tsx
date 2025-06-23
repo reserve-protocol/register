@@ -233,7 +233,7 @@ const OrganizedTrades = () => {
   )
 }
 
-const ProposalTradesSetup = () => {
+const LegacyProposalAuctionPriceRanges = () => {
   return (
     <div className="flex flex-col gap-2 overflow-auto">
       <Row>
@@ -248,4 +248,4 @@ const ProposalTradesSetup = () => {
   )
 }
 
-export default ProposalTradesSetup
+export default LegacyProposalAuctionPriceRanges

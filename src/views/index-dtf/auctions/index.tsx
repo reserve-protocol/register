@@ -1,13 +1,16 @@
+import { Outlet } from 'react-router-dom'
 import useTrackIndexDTFPage from '../hooks/useTrackIndexDTFPage'
-import ProposalTrades from './components/proposal-trades'
 import Updater from './updater'
 
 const IndexDTFAuctions = () => {
   useTrackIndexDTFPage('auctions')
+
   return (
-    <div>
-      <ProposalTrades />
-      <Updater />
+    <div className="container">
+      <div className="flex flex-col items-center sm:justify-start md:justify-center gap-2 lg:bg-secondary/70 lg:border-2 border-secondary lg:min-h-[calc(100vh-80px)] dark:bg-card rounded-4xl sm:mr-2 py-4">
+        <Outlet />
+        <Updater />
+      </div>
     </div>
   )
 }

@@ -1,8 +1,33 @@
 import { DecodedCalldata } from '@/types'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
-import { Address, decodeFunctionData, getAbiItem, Hex } from 'viem'
-import { dtfAbiMapppingAtom, dtfContractAliasAtom } from './atoms'
+import { Abi, Address, decodeFunctionData, getAbiItem, Hex } from 'viem'
+import {
+  dtfAbiMapppingAtom,
+  dtfContractAliasAtom,
+} from '../views/index-dtf/governance/components/proposal-preview/atoms'
+
+export const getDecodedCalldata = (abi: Abi, calldata: Hex) => {
+  const { functionName, args } = decodeFunctionData({
+    abi,
+    data: calldata,
+  })
+
+  const result = getAbiItem({
+    abi,
+    name: functionName as string,
+  })
+
+  return {
+    signature: functionName,
+    parameters:
+      result && 'inputs' in result
+        ? result.inputs.map((input) => `${input.name}: ${input.type}`)
+        : [],
+    callData: calldata,
+    data: (args ?? []) as unknown as unknown[] as string[],
+  }
+}
 
 const useDecodedCalldatas = (
   targets: Address[] | undefined,
@@ -28,27 +53,9 @@ const useDecodedCalldatas = (
           throw new Error('No ABI found')
         }
 
-        const { functionName, args } = decodeFunctionData({
-          abi,
-          data: calldata,
-        })
-
-        const result = getAbiItem({
-          abi,
-          name: functionName as string,
-        })
-
         dataByContract[target.toLowerCase()] = [
           ...(dataByContract[target.toLowerCase()] || []),
-          {
-            signature: functionName,
-            parameters:
-              result && 'inputs' in result
-                ? result.inputs.map((input) => `${input.name}: ${input.type}`)
-                : [],
-            callData: calldata,
-            data: (args ?? []) as unknown as unknown[] as string[],
-          },
+          getDecodedCalldata(abi, calldata),
         ]
       } catch (e) {
         console.error('ERROR', e)
