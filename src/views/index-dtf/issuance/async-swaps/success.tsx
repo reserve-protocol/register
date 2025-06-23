@@ -38,6 +38,7 @@ import {
 } from './atom'
 import CowSwapOrder from './cowswap-order'
 import Details from './details'
+import UniversalOrder from './universal-order'
 
 const viewTransactionsAtom = atom<boolean>(false)
 
@@ -320,7 +321,7 @@ const MainTransaction = () => {
 const Transactions = () => {
   const setViewTransactions = useSetAtom(viewTransactionsAtom)
   const orders = useAtomValue(asyncSwapResponseAtom)
-  const { cowswapOrders = [] } = orders || {}
+  const { cowswapOrders = [], universalOrders = [] } = orders || {}
 
   return (
     <div className="bg-secondary rounded-3xl h-[444px] p-1">
@@ -343,6 +344,9 @@ const Transactions = () => {
         <div className="flex flex-col gap-1 bg-background rounded-3xl px-4 py-2">
           {cowswapOrders.map(({ orderId }) => (
             <CowSwapOrder key={orderId} orderId={orderId} />
+          ))}
+          {universalOrders.map(({ id }) => (
+            <UniversalOrder key={id} orderId={id} />
           ))}
         </div>
       </div>

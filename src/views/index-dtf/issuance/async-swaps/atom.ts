@@ -6,7 +6,7 @@ import { OrderStatus } from '@cowprotocol/cow-sdk'
 import { atom } from 'jotai'
 import { atomWithReset } from 'jotai/utils'
 import { Address, parseEther, parseUnits } from 'viem'
-import { AsyncSwapOrderResponse, QuoteAggregated } from './types'
+import { AsyncSwapOrderResponse, QuoteAggregated, QuoteProvider } from './types'
 
 const ASYNC_SWAP_BUFFER = 0.005
 
@@ -17,7 +17,7 @@ export const indexDTFBalanceAtom = atom<bigint>(0n)
 export const txHashAtom = atom<string | undefined>(undefined) // tx hash for minting or redeeming
 export const redeemAssetsAtom = atom<Record<Address, bigint>>({})
 export const quotesAtom = atom<Record<Address, QuoteAggregated>>({})
-export const orderIdsAtom = atom<string[]>([])
+export const orderIdsAtom = atom<{ id: string; provider: QuoteProvider }[]>([])
 export const asyncSwapResponseAtom = atom<AsyncSwapOrderResponse | undefined>(
   undefined
 )

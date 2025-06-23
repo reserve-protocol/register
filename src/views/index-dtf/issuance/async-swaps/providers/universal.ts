@@ -1,4 +1,3 @@
-import { Token } from '@/types'
 import { RateLimiter } from 'limiter'
 import { Quote, TokenName, UniversalRelayerSDK } from 'universal-sdk'
 import { TokenAddresses } from 'universal-sdk/dist/config'

@@ -1,4 +1,5 @@
 import { cn } from '@/lib/utils'
+import { OrderStatus } from '@cowprotocol/cow-sdk'
 import { atom, useAtom, useAtomValue } from 'jotai'
 import { useEffect, useMemo } from 'react'
 import {
@@ -7,14 +8,19 @@ import {
   orderIdsAtom,
 } from './atom'
 import CowSwapOrder from './cowswap-order'
-import { OrderStatus } from '@cowprotocol/cow-sdk'
+import { UniversalOrderStatus } from './hooks/useUniversalOrder'
+import { QuoteProvider } from './types'
+import UniversalOrder from './universal-order'
 
-const STATUS_PRIORITY: Record<OrderStatus, number> = {
-  cancelled: 0,
-  expired: 0,
-  presignaturePending: 1,
-  open: 1,
-  fulfilled: 2,
+const STATUS_PRIORITY: Record<UniversalOrderStatus | OrderStatus, number> = {
+  [OrderStatus.CANCELLED]: 0,
+  [OrderStatus.EXPIRED]: 0,
+  [OrderStatus.PRESIGNATURE_PENDING]: 1,
+  [OrderStatus.OPEN]: 1,
+  [OrderStatus.FULFILLED]: 2,
+  [UniversalOrderStatus.FAILED]: 0,
+  [UniversalOrderStatus.PENDING]: 1,
+  [UniversalOrderStatus.SUCCESS]: 2,
 }
 
 const isVisibleAtom = atom(false)
@@ -44,21 +50,29 @@ const Collaterals = () => {
     }
   }, [asyncSwapResponse, open, setIsVisible, setShouldRender])
 
-  const { cowswapOrders = [] } = asyncSwapResponse || {}
+  const { cowswapOrders = [], universalOrders = [] } = asyncSwapResponse || {}
 
   const sortedOrderIds = useMemo(
     () =>
-      orderIDs.sort((a, b) => {
-        const orderA = cowswapOrders.find((o) => o.orderId === a)
-        const orderB = cowswapOrders.find((o) => o.orderId === b)
+      orderIDs
+        .filter((o) => o.provider === QuoteProvider.CowSwap)
+        .sort((a, b) => {
+          const orderA =
+            cowswapOrders.find((o) => o.orderId === a.id) ||
+            universalOrders.find((o) => o.id === a.id)
+          const orderB =
+            cowswapOrders.find((o) => o.orderId === b.id) ||
+            universalOrders.find((o) => o.id === b.id)
 
-        if (!orderA?.status || !orderB?.status) return 0
+          if (!orderA?.status || !orderB?.status) return 0
 
-        return (
-          (STATUS_PRIORITY[orderA.status] ?? 0) -
-          (STATUS_PRIORITY[orderB.status] ?? 0)
-        )
-      }),
+          const orderAPriority =
+            STATUS_PRIORITY[orderA.status as OrderStatus | UniversalOrderStatus]
+          const orderBPriority =
+            STATUS_PRIORITY[orderB.status as OrderStatus | UniversalOrderStatus]
+
+          return orderAPriority - orderBPriority
+        }),
     [cowswapOrders]
   )
 
@@ -71,9 +85,13 @@ const Collaterals = () => {
         isVisible ? 'w-[400px]' : 'w-0'
       )}
     >
-      {sortedOrderIds.map((orderId) => (
-        <CowSwapOrder key={orderId} orderId={orderId} />
-      ))}
+      {sortedOrderIds.map((order) =>
+        order.provider === QuoteProvider.CowSwap ? (
+          <CowSwapOrder key={order.id} orderId={order.id} />
+        ) : order.provider === QuoteProvider.Universal ? (
+          <UniversalOrder key={order.id} orderId={order.id} />
+        ) : null
+      )}
     </div>
   )
 }
