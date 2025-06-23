@@ -6,6 +6,7 @@ import { indexDTFAtom } from '@/state/dtf/atoms'
 import request, { gql } from 'graphql-request'
 import { INDEX_DTF_SUBGRAPH_URL } from '@/state/atoms'
 import { useEffect } from 'react'
+
 const query = gql`
   query getGovernanceStats($dtf: String!) {
     rebalances(where: { dtf: $dtf }, orderBy: timestamp, orderDirection: desc) {
