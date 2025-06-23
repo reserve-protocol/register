@@ -1,5 +1,7 @@
+import TokenLogo from '@/components/token-logo'
+import { Separator } from '@/components/ui/separator'
 import { cn } from '@/lib/utils'
-import { indexDTFAtom } from '@/state/dtf/atoms'
+import { indexDTFAtom, indexDTFBrandAtom } from '@/state/dtf/atoms'
 import { ROUTES } from '@/utils/constants'
 import { t } from '@lingui/macro'
 import { useAtomValue } from 'jotai'
@@ -50,6 +52,24 @@ const NavigationItem = ({
   )
 }
 
+const NavigationHeader = () => {
+  const indexDTF = useAtomValue(indexDTFAtom)
+  const brand = useAtomValue(indexDTFBrandAtom)
+
+  return (
+    <div className="flex items-center gap-2">
+      <TokenLogo
+        src={brand?.dtf?.icon || undefined}
+        alt={indexDTF?.token.symbol ?? 'dtf token logo'}
+        size="lg"
+      />
+      <div className="text-base font-semibold truncate">
+        {indexDTF?.token.symbol}
+      </div>
+    </div>
+  )
+}
+
 const NavigationItems = () => {
   const dtf = useAtomValue(indexDTFAtom)
 
@@ -97,6 +117,8 @@ const IndexDTFNavigation = () => {
   return (
     <div className="w-full lg:sticky lg:top-0 p-3 md:p-6 fixed bottom-0 border-t lg:border-t-0 lg:w-56 flex-shrink-0 bg-background z-[1] h-16 lg:h-full">
       <div className="sticky top-6">
+        <NavigationHeader />
+        <Separator className="my-4" />
         <NavigationItems />
       </div>
     </div>

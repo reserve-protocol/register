@@ -8,6 +8,7 @@ import ThemeColorMode from '@/components/dark-mode-toggle/ThemeColorMode'
 import { Button } from '@/components/ui/button'
 import { ArrowUpRight, Gem } from 'lucide-react'
 import { CAMPAIGN_URL } from '@/views/index-dtf/overview/hooks/use-campaign'
+import CommandMenu from '@/components/command-menu'
 
 const Container = ({ children }: { children: ReactNode }) => {
   // Check if the route is a "index-dtf" route
@@ -30,7 +31,8 @@ const AppHeader = () => (
     <div className="container flex items-center h-[56px] md:h-[72px] px-4 sm:px-6">
       <Brand className="text-primary mr-2 sm:mr-4 cursor-pointer md:-mt-1" />
       <AppNavigation />
-      <div className="flex items-center">
+      <CommandMenu />
+      <div className="flex ml-1 items-center">
         <ThemeColorMode
           sx={{
             display: 'flex',
