@@ -1,5 +1,8 @@
+import TokenLogo from '@/components/token-logo'
+import { Button } from '@/components/ui/button'
+import { Separator } from '@/components/ui/separator'
 import { cn } from '@/lib/utils'
-import { indexDTFAtom } from '@/state/dtf/atoms'
+import { indexDTFAtom, indexDTFBrandAtom } from '@/state/dtf/atoms'
 import { ROUTES } from '@/utils/constants'
 import { t } from '@lingui/macro'
 import { useAtomValue } from 'jotai'
@@ -9,9 +12,15 @@ import {
   Landmark,
   ArrowLeftRight,
   Fingerprint,
+  ChevronDown,
+  Wallet,
+  Wallet2,
+  CirclePlus,
 } from 'lucide-react'
 import { useMemo } from 'react'
 import { NavLink } from 'react-router-dom'
+import { Address } from 'viem'
+import { useAccount, useWatchAsset } from 'wagmi'
 
 const NavigationItem = ({
   icon,
@@ -47,6 +56,54 @@ const NavigationItem = ({
         </div>
       )}
     </NavLink>
+  )
+}
+
+const NavigationHeader = () => {
+  const indexDTF = useAtomValue(indexDTFAtom)
+  const brand = useAtomValue(indexDTFBrandAtom)
+  const { address: walletAddress, chainId } = useAccount()
+  const { watchAsset } = useWatchAsset()
+
+  const handleWatchAsset = () => {
+    if (!indexDTF || !walletAddress) return
+
+    watchAsset({
+      type: 'ERC20',
+      options: {
+        address: indexDTF.id as Address,
+        symbol: indexDTF.token.symbol,
+        decimals: indexDTF.token.decimals,
+      },
+    })
+  }
+
+  return (
+    <div className="items-center gap-2 hidden md:flex">
+      <TokenLogo
+        src={brand?.dtf?.icon || undefined}
+        alt={indexDTF?.token.symbol ?? 'dtf token logo'}
+        size="lg"
+      />
+      <div className="text-base font-semibold truncate">
+        {indexDTF?.token.symbol}
+      </div>
+      {!!walletAddress && !!indexDTF && chainId === indexDTF.chainId && (
+        <Button
+          variant="ghost"
+          size="icon"
+          className="ml-auto relative"
+          onClick={handleWatchAsset}
+        >
+          <Wallet2 strokeWidth={1.5} size={16} />
+          <CirclePlus
+            strokeWidth={1.5}
+            size={12}
+            className="absolute bottom-2 right-1 bg-background"
+          />
+        </Button>
+      )}
+    </div>
   )
 }
 
@@ -97,6 +154,8 @@ const IndexDTFNavigation = () => {
   return (
     <div className="w-full lg:sticky lg:top-0 p-3 md:p-6 fixed bottom-0 border-t lg:border-t-0 lg:w-56 flex-shrink-0 bg-background z-[1] h-16 lg:h-full">
       <div className="sticky top-6">
+        <NavigationHeader />
+        <Separator className="my-4 hidden md:block" />
         <NavigationItems />
       </div>
     </div>
