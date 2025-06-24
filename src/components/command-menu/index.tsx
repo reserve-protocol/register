@@ -43,6 +43,7 @@ const useAllDTFs = () => {
         chain: dtf.chainId,
         address: dtf.address,
         icon: dtf.brand?.icon,
+        keywords: [dtf.address, dtf.symbol, dtf.name],
       })),
       yield: yieldDTFs.map((dtf) => ({
         symbol: dtf.symbol,
@@ -50,6 +51,7 @@ const useAllDTFs = () => {
         chain: dtf.chain,
         address: dtf.id,
         icon: dtf.logo,
+        keywords: [dtf.id, dtf.symbol, dtf.name],
       })),
     } as Record<string, DTF[]>
   }, [indexDTFs, yieldDTFs])
