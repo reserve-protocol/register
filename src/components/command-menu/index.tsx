@@ -103,7 +103,7 @@ const CommandMenu = () => {
             <Skeleton className="h-14 w-full" />
           </div>
         ) : (
-          <CommandList ref={listRef}>
+          <CommandList ref={listRef} className="h-[420px]">
             <CommandEmpty>No results found.</CommandEmpty>
             {SECTIONS.map((section) => (
               <CommandGroup key={section} heading={SECTION_TITLES[section]}>
