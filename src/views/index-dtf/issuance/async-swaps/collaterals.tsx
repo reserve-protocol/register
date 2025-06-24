@@ -80,14 +80,14 @@ const Collaterals = () => {
         isVisible ? 'w-[400px]' : 'w-0'
       )}
     >
+      {universalFailedOrders.map((quote, index) => (
+        <UniversalFailedOrder key={`${quote.id}-${index}`} quote={quote} />
+      ))}
       {sortedOrderIds.map((order) => (
         <CowSwapOrder key={order.id} orderId={order.id} />
       ))}
-      {universalSuccessOrders.map((order) => (
-        <UniversalOrder key={order.id} order={order} />
-      ))}
-      {universalFailedOrders.map((quote) => (
-        <UniversalFailedOrder key={quote.id} quote={quote} />
+      {universalSuccessOrders.map((order, index) => (
+        <UniversalOrder key={`${order.id}-${index}`} order={order} />
       ))}
     </div>
   )

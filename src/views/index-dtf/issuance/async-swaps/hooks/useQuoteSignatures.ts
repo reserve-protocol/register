@@ -63,6 +63,15 @@ export function useQuoteSignatures(refresh = false) {
   const limiter = pLimit(1)
 
   return useMutation({
+    mutationKey: [
+      'quote-signatures',
+      chainId,
+      address,
+      operation,
+      JSON.stringify(quotes, (_, value) =>
+        typeof value === 'bigint' ? value.toString() : value
+      ),
+    ],
     mutationFn: async () => {
       if (!address || !orderBookApi || !chainId || !indexDTF || !universalSdk) {
         console.error('No global kit')

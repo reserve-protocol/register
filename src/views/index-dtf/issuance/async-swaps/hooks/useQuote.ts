@@ -22,6 +22,7 @@ import {
   redeemAssetsAtom,
   refetchQuotesAtom,
   selectedTokenAtom,
+  universalFailedOrdersAtom,
 } from '../atom'
 import {
   UniversalRelayerWithRateLimiter,
@@ -50,15 +51,13 @@ async function getQuoteValue(
   return Number(formatUnits(amount, decimals)) * assetPrice.price || undefined
 }
 
-async function getQuote({
+async function getCowswapQuote({
   sellToken,
   buyToken,
   amount,
   address,
   operation,
   orderBookApi,
-  universalSdk,
-  quoteValue,
 }: {
   sellToken: Address
   buyToken: Address
@@ -66,61 +65,7 @@ async function getQuote({
   address: Address
   operation: 'redeem' | 'mint'
   orderBookApi: OrderBookApi
-  universalSdk: UniversalRelayerWithRateLimiter
-  quoteValue?: number
 }) {
-  if (
-    !address ||
-    address == zeroAddress ||
-    buyToken == zeroAddress ||
-    sellToken == zeroAddress ||
-    !orderBookApi
-  ) {
-    throw new Error('getQuote: Invalid params')
-  }
-
-  if (amount <= 0n) {
-    throw new Error('getQuote: Amount is 0')
-  }
-
-  // Try Universal first if available
-  if (universalSdk) {
-    const universalAsset = getUniversalTokenName(buyToken)
-    const hasMinValue = quoteValue && quoteValue > MIN_UNIVERSAL_QUOTE_VALUE_USD
-    if (universalAsset && hasMinValue) {
-      try {
-        const universalQuote = await universalSdk.getQuote({
-          type: 'BUY',
-          blockchain: 'BASE',
-          token: universalAsset,
-          pair_token: 'USDC',
-          user_address: address,
-          slippage_bips: 100,
-          token_amount:
-            universalAsset === 'SOL'
-              ? ((amount * 200n) / 100n).toString()
-              : amount.toString(),
-        })
-
-        const customQuote: CustomUniversalQuote = {
-          _originalQuote: universalQuote,
-          buyToken,
-          sellToken,
-          type: 'BUY',
-          userAddress: address,
-          sellAmount: BigInt(universalQuote.pair_token_amount ?? '0'),
-          buyAmount: amount,
-          validTo: Number(universalQuote.deadline ?? 0),
-        }
-        return customQuote
-      } catch (error) {
-        console.error(`Error getting universal quote:`, error)
-        // If Universal fails, continue with CowSwap
-      }
-    }
-  }
-
-  // If no Universal or it failed, use CowSwap
   const quote = await orderBookApi.getQuote({
     sellToken,
     buyToken,
@@ -148,6 +93,117 @@ async function getQuote({
   }
 
   return quote
+}
+
+async function getUniversalQuote({
+  sellToken,
+  buyToken,
+  amount,
+  address,
+  operation,
+  universalSdk,
+}: {
+  sellToken: Address
+  buyToken: Address
+  amount: bigint
+  address: Address
+  operation: 'redeem' | 'mint'
+  universalSdk: UniversalRelayerWithRateLimiter
+}) {
+  try {
+    const universalAsset = getUniversalTokenName(buyToken)
+    const universalQuote = await universalSdk.getQuote({
+      type: 'BUY',
+      blockchain: 'BASE',
+      token: universalAsset,
+      pair_token: 'USDC',
+      user_address: address,
+      slippage_bips: 100,
+      token_amount:
+        universalAsset === 'SOL'
+          ? ((amount * 200n) / 100n).toString()
+          : amount.toString(),
+    })
+
+    const customQuote: CustomUniversalQuote = {
+      _originalQuote: universalQuote,
+      buyToken,
+      sellToken,
+      type: 'BUY',
+      userAddress: address,
+      sellAmount: BigInt(universalQuote.pair_token_amount ?? '0'),
+      buyAmount: amount,
+      validTo: Number(universalQuote.deadline ?? 0),
+    }
+    return customQuote
+  } catch (error) {
+    console.error(`Error getting universal quote:`, error)
+    return null
+  }
+}
+
+async function getQuote({
+  sellToken,
+  buyToken,
+  amount,
+  address,
+  operation,
+  orderBookApi,
+  universalSdk,
+  quoteValue,
+}: {
+  sellToken: Address
+  buyToken: Address
+  amount: bigint
+  address: Address
+  operation: 'redeem' | 'mint'
+  orderBookApi: OrderBookApi
+  universalSdk: UniversalRelayerWithRateLimiter
+  quoteValue?: number
+}) {
+  if (
+    !address ||
+    address == zeroAddress ||
+    buyToken == zeroAddress ||
+    sellToken == zeroAddress ||
+    !orderBookApi ||
+    !universalSdk
+  ) {
+    throw new Error('getQuote: Invalid params')
+  }
+
+  if (amount <= 0n) {
+    throw new Error('getQuote: Amount is 0')
+  }
+
+  // Try Universal first if available
+  const universalAsset = getUniversalTokenName(buyToken)
+  const hasMinValue = quoteValue && quoteValue > MIN_UNIVERSAL_QUOTE_VALUE_USD
+  if (universalAsset && hasMinValue) {
+    const universalQuote = await getUniversalQuote({
+      sellToken,
+      buyToken,
+      amount,
+      address,
+      operation,
+      universalSdk,
+    })
+
+    // If Universal fails, continue with CowSwap
+    if (universalQuote) {
+      return universalQuote
+    }
+  }
+
+  // If no Universal or it failed, use CowSwap
+  return await getCowswapQuote({
+    sellToken,
+    buyToken,
+    amount,
+    address,
+    operation,
+    orderBookApi,
+  })
 }
 
 export const useQuotesForMint = () => {
@@ -396,6 +452,9 @@ export const useRefreshQuotes = () => {
   const [quotes, setQuotes] = useAtom(quotesAtom)
   const operation = useAtomValue(operationAtom)
   const failedOrders = useAtomValue(failedOrdersAtom)
+  const failedUniversalOrders = useAtomValue(universalFailedOrdersAtom)
+  const selectedToken = useAtomValue(selectedTokenAtom)
+  const setUniversalFailedOrders = useSetAtom(universalFailedOrdersAtom)
 
   const query = useQuery({
     queryKey: ['refresh-quotes', failedOrders],
@@ -404,9 +463,9 @@ export const useRefreshQuotes = () => {
         return
       }
 
+      // Failed Cowswap quotes
       const quotePromises = failedOrders.map(async (order) => {
-        // TODO: get quote value (?)
-        return await getQuote({
+        return await getCowswapQuote({
           sellToken: order.sellToken as Address,
           buyToken: order.buyToken as Address,
           amount: BigInt(
@@ -415,11 +474,36 @@ export const useRefreshQuotes = () => {
           address: address as Address,
           operation,
           orderBookApi,
-          universalSdk,
         })
       })
 
-      const results = await Promise.all(quotePromises)
+      // Failed Universal orders are retried through CowSwap as fallback
+      const universalQuotePromises = failedUniversalOrders.map(
+        async (order) => {
+          const token = getUniversalTokenName(order.token as Address)
+          const sellToken =
+            operation === 'redeem' ? token : selectedToken.address
+          const buyToken =
+            operation === 'redeem' ? selectedToken.address : token
+          const amount =
+            operation === 'redeem'
+              ? BigInt(order.token_amount ?? '0')
+              : BigInt(order.pair_token_amount ?? '0')
+          return await getCowswapQuote({
+            sellToken: sellToken as Address,
+            buyToken: buyToken as Address,
+            amount,
+            address: address as Address,
+            operation,
+            orderBookApi,
+          })
+        }
+      )
+
+      const results = await Promise.all([
+        ...quotePromises,
+        ...universalQuotePromises,
+      ])
 
       failedOrders.forEach((order, i) => {
         setQuotes((prev) => ({
@@ -431,6 +515,8 @@ export const useRefreshQuotes = () => {
           },
         }))
       })
+
+      setUniversalFailedOrders([])
 
       return quotes
     },

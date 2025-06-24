@@ -8,6 +8,7 @@ import { useMemo } from 'react'
 import { Quote } from 'universal-sdk'
 import { formatUnits } from 'viem'
 import { operationAtom } from './atom'
+import { getUniversalTokenAddress } from './providers/universal'
 
 const UniversalFailedOrder = ({ quote }: { quote: Quote }) => {
   const operation = useAtomValue(operationAtom)
@@ -16,14 +17,14 @@ const UniversalFailedOrder = ({ quote }: { quote: Quote }) => {
   const { token, firstAmount, secondAmount } = useMemo(() => {
     return operation === 'redeem'
       ? {
-          token: quote.token,
-          firstAmount: quote.token_amount,
-          secondAmount: quote.pair_token_amount,
+          token: quote?.pair_token,
+          firstAmount: quote?.token_amount,
+          secondAmount: quote?.pair_token_amount,
         }
       : {
-          token: quote.pair_token,
-          firstAmount: quote.pair_token_amount,
-          secondAmount: quote.token_amount,
+          token: getUniversalTokenAddress(quote?.token),
+          firstAmount: quote?.token_amount,
+          secondAmount: quote?.pair_token_amount,
         }
   }, [quote, operation])
 

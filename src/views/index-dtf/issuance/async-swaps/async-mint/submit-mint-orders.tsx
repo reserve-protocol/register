@@ -3,6 +3,7 @@ import { cn } from '@/lib/utils'
 import { useQuoteSignatures } from '../hooks/useQuoteSignatures'
 import { insufficientBalanceAtom, userInputAtom } from '../atom'
 import { useAtomValue } from 'jotai'
+import { useMemo } from 'react'
 
 type SubmitMintProps = {
   loadingQuote?: boolean
@@ -20,8 +21,30 @@ const SubmitMintButton = ({
 }) => {
   const insufficientBalance = useAtomValue(insufficientBalanceAtom)
   const inputAmount = useAtomValue(userInputAtom)
-  const disabled =
-    isPending || loadingQuote || !inputAmount || isNaN(Number(inputAmount))
+
+  const disabled = useMemo(
+    () =>
+      isPending || loadingQuote || !inputAmount || isNaN(Number(inputAmount)),
+    [isPending, loadingQuote, inputAmount]
+  )
+
+  const buttonText = useMemo(() => {
+    if (loadingQuote) {
+      return 'Awaiting Quote'
+    }
+    if (isPending) {
+      return 'Signing...'
+    }
+    if (insufficientBalance) {
+      return 'Insufficient Balance'
+    }
+    return (
+      <span className="flex items-center gap-1">
+        <span className="font-bold">Start Mint</span>
+        <span className="font-light">- Step 1/2</span>
+      </span>
+    )
+  }, [insufficientBalance, isPending, loadingQuote])
 
   return (
     <Button
@@ -33,18 +56,7 @@ const SubmitMintButton = ({
       onClick={() => mutate()}
       disabled={disabled}
     >
-      {insufficientBalance ? (
-        'Insufficient Balance'
-      ) : isPending ? (
-        'Signing...'
-      ) : loadingQuote ? (
-        'Awaiting Quote'
-      ) : (
-        <span className="flex items-center gap-1">
-          <span className="font-bold">Start Mint</span>
-          <span className="font-light">- Step 1/2</span>
-        </span>
-      )}
+      {buttonText}
     </Button>
   )
 }
