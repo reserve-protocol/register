@@ -13,10 +13,10 @@ import Updater from '../manual/updater'
 import AsyncMint from './async-mint'
 import AsyncRedeem from './async-redeem'
 import {
-  asyncSwapResponseAtom,
   fetchingQuotesAtom,
   indexDTFBalanceAtom,
   operationAtom,
+  ordersSubmittedAtom,
   redeemAssetsAtom,
   refetchQuotesAtom,
   showSettingsAtom,
@@ -26,8 +26,8 @@ import {
 import Collaterals, { showCollateralsAtom } from './collaterals'
 import GnosisSafeRequired from './gnosis-safe-required'
 import { GlobalProtocolKitProvider } from './providers/GlobalProtocolKitProvider'
-import Success from './success'
 import Config from './settings'
+import Success from './success'
 
 function Content() {
   const showSettings = useAtomValue(showSettingsAtom)
@@ -67,10 +67,10 @@ const Header = () => {
   const fetchingQuotes = useAtomValue(fetchingQuotesAtom)
   const input = useAtomValue(userInputAtom)
   const invalidInput = isNaN(Number(input)) || Number(input) === 0
-  const asyncSwapResponse = useAtomValue(asyncSwapResponseAtom)
+  const ordersSubmitted = useAtomValue(ordersSubmittedAtom)
   const redeemAssets = useAtomValue(redeemAssetsAtom)
   const disableActions =
-    !!asyncSwapResponse || Object.keys(redeemAssets).length > 0
+    !!ordersSubmitted || Object.keys(redeemAssets).length > 0
 
   return (
     <div className="flex justify-between gap-2">

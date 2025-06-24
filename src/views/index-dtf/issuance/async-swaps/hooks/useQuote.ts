@@ -455,7 +455,6 @@ export const useRefreshQuotes = () => {
   const failedOrders = useAtomValue(failedOrdersAtom)
   const failedUniversalOrders = useAtomValue(universalFailedOrdersAtom)
   const selectedToken = useAtomValue(selectedTokenAtom)
-  const setUniversalFailedOrders = useSetAtom(universalFailedOrdersAtom)
 
   const query = useQuery({
     queryKey: ['refresh-quotes', failedOrders],
@@ -490,6 +489,7 @@ export const useRefreshQuotes = () => {
             operation === 'redeem'
               ? BigInt(order.pair_token_amount ?? '0')
               : BigInt(order.token_amount ?? '0')
+
           return await getCowswapQuote({
             sellToken: sellToken as Address,
             buyToken: buyToken as Address,
@@ -505,7 +505,7 @@ export const useRefreshQuotes = () => {
         ...quotePromises,
         ...universalQuotePromises,
       ])
-      console.log(results)
+
       failedOrders.forEach((order, i) => {
         setQuotes((prev) => ({
           ...prev,
@@ -516,8 +516,6 @@ export const useRefreshQuotes = () => {
           },
         }))
       })
-
-      setUniversalFailedOrders([])
 
       return quotes
     },

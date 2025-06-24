@@ -6,18 +6,17 @@ import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { ArrowLeft, ArrowRight, Check, Loader, RefreshCw } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
 import {
-  asyncSwapResponseAtom,
+  collateralAcquiredAtom,
+  cowswapOrdersCreatedAtAtom,
   failedOrdersAtom,
-  hasAllCollateralsAtom,
   openCollateralPanelAtom,
   operationAtom,
   pendingOrdersAtom,
   successAtom,
 } from './atom'
-import MintButton from './mint-button'
-import { OrderStatus } from '@cowprotocol/cow-sdk'
 import { useRefreshQuotes } from './hooks/useQuote'
 import { useQuoteSignatures } from './hooks/useQuoteSignatures'
+import MintButton from './mint-button'
 
 const OpenCollateralPanel = () => {
   const basket = useAtomValue(indexDTFBasketAtom)
@@ -81,12 +80,12 @@ const RequoteFailedOrders = () => {
 
 const CollateralAcquisition = () => {
   const operation = useAtomValue(operationAtom)
-  const asyncSwapResponse = useAtomValue(asyncSwapResponseAtom)
+  const cowswapOrdersCreatedAt = useAtomValue(cowswapOrdersCreatedAtAtom)
   const [elapsedTime, setElapsedTime] = useState(0)
   const setSuccess = useSetAtom(successAtom)
   const failedOrders = useAtomValue(failedOrdersAtom)
   const pendingOrders = useAtomValue(pendingOrdersAtom)
-  const hasAllCollaterals = useAtomValue(hasAllCollateralsAtom)
+  const collateralAcquired = useAtomValue(collateralAcquiredAtom)
 
   const refreshQuotes = useMemo(
     () => failedOrders.length > 0 && pendingOrders.length === 0,
@@ -94,27 +93,27 @@ const CollateralAcquisition = () => {
   )
 
   useEffect(() => {
-    if (!asyncSwapResponse?.createdAt) return
+    if (!cowswapOrdersCreatedAt) return
 
     const interval = setInterval(() => {
       const now = new Date()
-      const createdAt = new Date(asyncSwapResponse.createdAt)
+      const createdAt = new Date(cowswapOrdersCreatedAt)
       const elapsed = now.getTime() - createdAt.getTime()
       setElapsedTime(elapsed / 1000)
     }, 1000)
 
     return () => clearInterval(interval)
-  }, [asyncSwapResponse?.createdAt])
+  }, [cowswapOrdersCreatedAt])
 
   useEffect(() => {
-    if (hasAllCollaterals && operation === 'redeem') {
+    if (collateralAcquired && operation === 'redeem') {
       setSuccess(true)
     }
-  }, [hasAllCollaterals, setSuccess, operation])
+  }, [collateralAcquired, setSuccess, operation])
 
-  if (!asyncSwapResponse) return null
+  if (!cowswapOrdersCreatedAt) return null
 
-  if (hasAllCollaterals && operation === 'mint') {
+  if (collateralAcquired && operation === 'mint') {
     return (
       <div>
         <div className="flex gap-2 items-center justify-between p-4 border-t border-border">

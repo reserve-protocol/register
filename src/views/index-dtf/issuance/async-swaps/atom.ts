@@ -2,17 +2,16 @@ import { balancesAtom, chainIdAtom, TokenBalance } from '@/state/atoms'
 import { indexDTFPriceAtom } from '@/state/dtf/atoms'
 import { Token } from '@/types'
 import { reducedZappableTokens } from '@/views/yield-dtf/issuance/components/zapV2/constants'
-import { OrderStatus } from '@cowprotocol/cow-sdk'
+import { EnrichedOrder, OrderStatus } from '@cowprotocol/cow-sdk'
 import { atom } from 'jotai'
 import { atomWithReset } from 'jotai/utils'
+import { Quote } from 'universal-sdk'
 import { Address, parseEther, parseUnits } from 'viem'
 import {
   AsyncSwapOrderResponse,
   QuoteAggregated,
-  QuoteProvider,
   UniversalOrder,
 } from './types'
-import { Quote } from 'universal-sdk'
 
 const ASYNC_SWAP_BUFFER = 0.005
 
@@ -23,19 +22,23 @@ export const indexDTFBalanceAtom = atom<bigint>(0n)
 export const txHashAtom = atom<string | undefined>(undefined) // tx hash for minting or redeeming
 export const redeemAssetsAtom = atom<Record<Address, bigint>>({})
 export const quotesAtom = atom<Record<Address, QuoteAggregated>>({})
-export const orderIdsAtom = atom<{ id: string; provider: QuoteProvider }[]>([])
-export const asyncSwapResponseAtom = atom<AsyncSwapOrderResponse | undefined>(
-  undefined
+export const cowswapOrderIdsAtom = atom<string[]>([])
+export const cowswapOrdersCreatedAtAtom = atom<string | undefined>(undefined)
+export const cowswapOrdersAtom = atom<(EnrichedOrder & { orderId: string })[]>(
+  []
 )
+
 export const slippageAtom = atom<string>('100')
 export const applyWalletBalanceAtom = atom<boolean>(true)
-// export const ordersAtom = atom<Record<string, EnrichedOrder>>({})
 
 export const refetchQuotesAtom = atom<{ fn: () => void }>({ fn: () => {} })
 export const fetchingQuotesAtom = atom<boolean>(false)
 
 export const isMintingAtom = atom<boolean>(false)
 export const successAtom = atom<boolean>(false)
+
+export const universalSuccessOrdersAtom = atom<UniversalOrder[]>([])
+export const universalFailedOrdersAtom = atom<Quote[]>([])
 
 // Render Atoms
 export const openCollateralPanelAtom = atom<boolean>(true)
@@ -68,11 +71,12 @@ export const insufficientBalanceAtom = atom<boolean>((get) => {
 })
 
 export const collateralAcquiredAtom = atom<boolean>((get) => {
-  const asyncSwapResponse = get(asyncSwapResponseAtom)
-  return Boolean(
-    asyncSwapResponse?.cowswapOrders.every(
-      (order) => order.status === OrderStatus.FULFILLED
-    )
+  const cowswapOrders = get(cowswapOrdersAtom)
+  const universalFailedOrders = get(universalFailedOrdersAtom)
+  return (
+    cowswapOrders.length > 0 &&
+    cowswapOrders.every((order) => order.status === OrderStatus.FULFILLED) &&
+    universalFailedOrders.length === 0
   )
 })
 
@@ -101,22 +105,24 @@ export const mintValueWeiAtom = atom<bigint>((get) => {
   return parseEther(amountOut.toString())
 })
 
+// Only Cowswap Orders
 export const failedOrdersAtom = atom<AsyncSwapOrderResponse['cowswapOrders']>(
   (get) => {
-    const asyncSwapResponse = get(asyncSwapResponseAtom)
+    const cowswapOrders = get(cowswapOrdersAtom)
     return (
-      asyncSwapResponse?.cowswapOrders.filter((order) =>
+      cowswapOrders.filter((order) =>
         [OrderStatus.CANCELLED, OrderStatus.EXPIRED].includes(order.status)
       ) || []
     )
   }
 )
 
+// Only Cowswap Orders
 export const pendingOrdersAtom = atom<AsyncSwapOrderResponse['cowswapOrders']>(
   (get) => {
-    const asyncSwapResponse = get(asyncSwapResponseAtom)
+    const cowswapOrders = get(cowswapOrdersAtom)
     return (
-      asyncSwapResponse?.cowswapOrders.filter((order) =>
+      cowswapOrders.filter((order) =>
         [OrderStatus.OPEN, OrderStatus.PRESIGNATURE_PENDING].includes(
           order.status
         )
@@ -125,16 +131,7 @@ export const pendingOrdersAtom = atom<AsyncSwapOrderResponse['cowswapOrders']>(
   }
 )
 
-export const hasAllCollateralsAtom = atom<boolean>((get) => {
-  const asyncSwapResponse = get(asyncSwapResponseAtom)
-  if (!asyncSwapResponse) return false
-  return (
-    asyncSwapResponse?.cowswapOrders.length > 0 &&
-    asyncSwapResponse?.cowswapOrders.every(
-      (order) => order.status === OrderStatus.FULFILLED
-    )
-  )
+export const ordersSubmittedAtom = atom<boolean>((get) => {
+  const cowswapOrdersCreatedAt = get(cowswapOrdersCreatedAtAtom)
+  return Boolean(cowswapOrdersCreatedAt)
 })
-
-export const universalSuccessOrdersAtom = atom<UniversalOrder[]>([])
-export const universalFailedOrdersAtom = atom<Quote[]>([])

@@ -3,14 +3,14 @@ import { OrderStatus } from '@cowprotocol/cow-sdk'
 import { atom, useAtom, useAtomValue } from 'jotai'
 import { useEffect, useMemo } from 'react'
 import {
-  asyncSwapResponseAtom,
+  cowswapOrderIdsAtom,
+  cowswapOrdersAtom,
   openCollateralPanelAtom,
-  orderIdsAtom,
+  ordersSubmittedAtom,
   universalFailedOrdersAtom,
   universalSuccessOrdersAtom,
 } from './atom'
 import CowSwapOrder from './cowswap-order'
-import { QuoteProvider } from './types'
 import UniversalFailedOrder from './universal-failed-order'
 import UniversalOrder from './universal-order'
 
@@ -25,14 +25,15 @@ const STATUS_PRIORITY: Record<OrderStatus, number> = {
 const isVisibleAtom = atom(false)
 const shouldRenderAtom = atom(false)
 export const showCollateralsAtom = atom((get) => {
-  const asyncSwapResponse = get(asyncSwapResponseAtom)
+  const ordersSubmitted = get(ordersSubmittedAtom)
   const open = get(openCollateralPanelAtom)
-  return asyncSwapResponse && open
+  return ordersSubmitted && open
 })
 
 const Collaterals = () => {
-  const orderIDs = useAtomValue(orderIdsAtom)
-  const asyncSwapResponse = useAtomValue(asyncSwapResponseAtom)
+  const cowswapOrderIds = useAtomValue(cowswapOrderIdsAtom)
+  const cowswapOrders = useAtomValue(cowswapOrdersAtom)
+  const ordersSubmitted = useAtomValue(ordersSubmittedAtom)
   const universalSuccessOrders = useAtomValue(universalSuccessOrdersAtom)
   const universalFailedOrders = useAtomValue(universalFailedOrdersAtom)
   const open = useAtomValue(openCollateralPanelAtom)
@@ -40,7 +41,7 @@ const Collaterals = () => {
   const [shouldRender, setShouldRender] = useAtom(shouldRenderAtom)
 
   useEffect(() => {
-    if (asyncSwapResponse && open) {
+    if (ordersSubmitted && open) {
       setShouldRender(true)
       const timer = setTimeout(() => setIsVisible(true), 0)
       return () => clearTimeout(timer)
@@ -49,26 +50,22 @@ const Collaterals = () => {
       const timer = setTimeout(() => setShouldRender(false), 300)
       return () => clearTimeout(timer)
     }
-  }, [asyncSwapResponse, open, setIsVisible, setShouldRender])
+  }, [ordersSubmitted, open, setIsVisible, setShouldRender])
 
-  const { cowswapOrders = [] } = asyncSwapResponse || {}
-
-  const sortedOrderIds = useMemo(
+  const sortedCowswapOrderIds = useMemo(
     () =>
-      orderIDs
-        .filter((o) => o.provider === QuoteProvider.CowSwap)
-        .sort((a, b) => {
-          const orderA = cowswapOrders.find((o) => o.orderId === a.id)
-          const orderB = cowswapOrders.find((o) => o.orderId === b.id)
+      cowswapOrderIds.sort((a, b) => {
+        const orderA = cowswapOrders.find((o) => o.orderId === a)
+        const orderB = cowswapOrders.find((o) => o.orderId === b)
 
-          if (!orderA?.status || !orderB?.status) return 0
+        if (!orderA?.status || !orderB?.status) return 0
 
-          const orderAPriority = STATUS_PRIORITY[orderA.status as OrderStatus]
-          const orderBPriority = STATUS_PRIORITY[orderB.status as OrderStatus]
+        const orderAPriority = STATUS_PRIORITY[orderA.status]
+        const orderBPriority = STATUS_PRIORITY[orderB.status]
 
-          return orderAPriority - orderBPriority
-        }),
-    [cowswapOrders]
+        return orderAPriority - orderBPriority
+      }),
+    [cowswapOrders, cowswapOrderIds]
   )
 
   if (!shouldRender) return null
@@ -83,8 +80,8 @@ const Collaterals = () => {
       {universalFailedOrders.map((quote, index) => (
         <UniversalFailedOrder key={`${quote.id}-${index}`} quote={quote} />
       ))}
-      {sortedOrderIds.map((order) => (
-        <CowSwapOrder key={order.id} orderId={order.id} />
+      {sortedCowswapOrderIds.map((orderId) => (
+        <CowSwapOrder key={orderId} orderId={orderId} />
       ))}
       {universalSuccessOrders.map((order, index) => (
         <UniversalOrder key={`${order.id}-${index}`} order={order} />

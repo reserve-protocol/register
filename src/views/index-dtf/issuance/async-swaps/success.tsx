@@ -22,20 +22,23 @@ import {
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { formatEther, formatUnits, parseUnits } from 'viem'
+import { formatUnits } from 'viem'
 import {
-  userInputAtom,
-  asyncSwapResponseAtom,
   bufferValueAtom,
-  operationAtom,
-  txHashAtom,
+  cowswapOrderIdsAtom,
+  cowswapOrdersAtom,
+  cowswapOrdersCreatedAtAtom,
+  mintValueAtom,
   mintValueUSDAtom,
-  redeemAssetsAtom,
-  successAtom,
-  selectedTokenAtom,
-  orderIdsAtom,
+  operationAtom,
   quotesAtom,
+  redeemAssetsAtom,
+  selectedTokenAtom,
+  successAtom,
+  txHashAtom,
+  universalFailedOrdersAtom,
   universalSuccessOrdersAtom,
+  userInputAtom,
 } from './atom'
 import CowSwapOrder from './cowswap-order'
 import Details from './details'
@@ -46,20 +49,26 @@ const viewTransactionsAtom = atom<boolean>(false)
 const CloseButton = () => {
   const setTxHashAtom = useSetAtom(txHashAtom)
   const setSuccess = useSetAtom(successAtom)
-  const setAsyncSwapResponse = useSetAtom(asyncSwapResponseAtom)
   const setUserInputAtom = useSetAtom(userInputAtom)
   const setRedeemAssets = useSetAtom(redeemAssetsAtom)
-  const setOrderIdsAtom = useSetAtom(orderIdsAtom)
+  const setCowswapOrderIdsAtom = useSetAtom(cowswapOrderIdsAtom)
+  const setCowswapOrdersCreatedAtAtom = useSetAtom(cowswapOrdersCreatedAtAtom)
+  const setCowswapOrdersAtom = useSetAtom(cowswapOrdersAtom)
   const setQuotesAtom = useSetAtom(quotesAtom)
+  const setUniversalSuccessOrdersAtom = useSetAtom(universalSuccessOrdersAtom)
+  const setUniversalFailedOrdersAtom = useSetAtom(universalFailedOrdersAtom)
 
   const handleClose = () => {
     setTxHashAtom(undefined)
     setSuccess(false)
-    setAsyncSwapResponse(undefined)
     setUserInputAtom('')
     setRedeemAssets({})
     setQuotesAtom({})
-    setOrderIdsAtom([])
+    setCowswapOrderIdsAtom([])
+    setCowswapOrdersCreatedAtAtom(undefined)
+    setCowswapOrdersAtom([])
+    setUniversalSuccessOrdersAtom([])
+    setUniversalFailedOrdersAtom([])
   }
 
   return (
@@ -132,12 +141,11 @@ const DTFAmount = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
   const indexDTFPrice = useAtomValue(indexDTFPriceAtom)
   const inputAmountUSD = useAtomValue(mintValueUSDAtom)
-  const orders = useAtomValue(asyncSwapResponseAtom)
   const operation = useAtomValue(operationAtom)
   const sharesRedeemed = useAtomValue(userInputAtom)
+  const mintValue = useAtomValue(mintValueAtom)
 
-  const sharesMinted = Number(formatEther(BigInt(orders?.amountOut || 0)))
-  const valueMinted = (indexDTFPrice || 0) * sharesMinted
+  const valueMinted = (indexDTFPrice || 0) * mintValue
   const priceImpact = inputAmountUSD
     ? ((valueMinted * 100) / inputAmountUSD - 100).toFixed(2)
     : 0
@@ -151,7 +159,7 @@ const DTFAmount = () => {
         <div className="flex items-center gap-1 text-2xl">
           <div className="text-primary font-semibold">
             {operation === 'mint'
-              ? formatTokenAmount(sharesMinted)
+              ? formatTokenAmount(mintValue)
               : formatTokenAmount(Number(sharesRedeemed))}
           </div>
           <div>{indexDTF?.token.symbol || ''}</div>
@@ -175,10 +183,9 @@ const DTFAmount = () => {
 }
 
 const USDCReceivedOnRedeem = () => {
-  const asyncSwapResponse = useAtomValue(asyncSwapResponseAtom)
+  const cowswapOrders = useAtomValue(cowswapOrdersAtom)
   const selectedToken = useAtomValue(selectedTokenAtom)
   const assetsRedeemed = useAtomValue(redeemAssetsAtom)
-  const { cowswapOrders = [] } = asyncSwapResponse || {}
 
   const notSwappedAssets =
     Number(
@@ -321,9 +328,8 @@ const MainTransaction = () => {
 
 const Transactions = () => {
   const setViewTransactions = useSetAtom(viewTransactionsAtom)
-  const orders = useAtomValue(asyncSwapResponseAtom)
+  const cowswapOrders = useAtomValue(cowswapOrdersAtom)
   const universalSuccessOrders = useAtomValue(universalSuccessOrdersAtom)
-  const { cowswapOrders = [] } = orders || {}
 
   return (
     <div className="bg-secondary rounded-3xl h-[444px] p-1">

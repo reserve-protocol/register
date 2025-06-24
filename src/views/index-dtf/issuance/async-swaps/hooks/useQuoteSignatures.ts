@@ -1,7 +1,6 @@
 import CowswapSettlement from '@/abis/CowSwapSettlement'
 import { chainIdAtom, walletAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
-import { uuidv4 } from '@/utils'
 import { OrderBalance } from '@cowprotocol/contracts'
 import {
   OrderCreation,
@@ -12,21 +11,14 @@ import { useMutation } from '@tanstack/react-query'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import pLimit from 'p-limit'
 import { generateTypedData, OrderRequest } from 'universal-sdk'
-import {
-  Address,
-  encodeFunctionData,
-  Hex,
-  maxUint256,
-  parseEther,
-  parseUnits,
-} from 'viem'
+import { Address, encodeFunctionData, Hex, maxUint256, parseUnits } from 'viem'
 import { useSendCalls, useSignTypedData } from 'wagmi'
 import {
-  asyncSwapResponseAtom,
+  cowswapOrderIdsAtom,
+  cowswapOrdersAtom,
+  cowswapOrdersCreatedAtAtom,
   failedOrdersAtom,
-  mintValueAtom,
   operationAtom,
-  orderIdsAtom,
   quotesAtom,
   selectedTokenAtom,
   universalFailedOrdersAtom,
@@ -47,14 +39,14 @@ export function useQuoteSignatures(refresh = false) {
   const chainId = useAtomValue(chainIdAtom)
   const address = useAtomValue(walletAtom)
   const operation = useAtomValue(operationAtom)
-  const mintValue = useAtomValue(mintValueAtom)
   const inputAmount = useAtomValue(userInputAtom)
   const quoteToken = useAtomValue(selectedTokenAtom)
   const [quotes, setQuotes] = useAtom(quotesAtom)
-  const setOrderIDs = useSetAtom(orderIdsAtom)
-  const setAsyncSwapResponse = useSetAtom(asyncSwapResponseAtom)
+  const setCowswapOrderIds = useSetAtom(cowswapOrderIdsAtom)
+  const setCowswapOrders = useSetAtom(cowswapOrdersAtom)
   const setUniversalFailedOrders = useSetAtom(universalFailedOrdersAtom)
   const setUniversalSuccessOrders = useSetAtom(universalSuccessOrdersAtom)
+  const setCowswapOrdersCreatedAt = useSetAtom(cowswapOrdersCreatedAtAtom)
   const { orderBookApi, universalSdk } = useGlobalProtocolKit()
   const { sendCallsAsync } = useSendCalls()
   const failedOrders = useAtomValue(failedOrdersAtom)
@@ -222,7 +214,6 @@ export function useQuoteSignatures(refresh = false) {
         }
       }
 
-      // TODO: tx confirmation checks
       if (txData.length > 0) {
         const txBundle = await sendCallsAsync({
           calls: txData,
@@ -233,95 +224,100 @@ export function useQuoteSignatures(refresh = false) {
         console.log({ txBundle })
       }
 
-      // TODO: Wait here until Safe tx is onchain
-      // I wonder if this is better suited for a different hook tbh
+      // Separate signature generation from order submission to optimize performance
+      const universalQuotes = validOrderData.filter(
+        ({ type }) => type === QuoteProvider.Universal
+      )
 
-      // TODO: Create an order Index which is independently managed
-      const orderIds = (
-        await Promise.all(
-          validOrderData
-            .filter((e) => e != null)
-            .map(({ type, data }) =>
-              limiter(async () => {
-                if (type === QuoteProvider.CowSwap) {
-                  const order = data.quote as OrderCreation
-                  const e = await orderBookApi.sendOrder({
-                    ...order,
-                    from: address,
-                    signature: address,
-                    signingScheme: SigningScheme.PRESIGN,
-                  })
-                  return {
-                    id: e,
-                    provider: QuoteProvider.CowSwap,
-                  }
-                } else {
-                  if (type === QuoteProvider.Universal) {
-                    const quote = data.quote as OrderRequest
-                    const { typedData } = await generateTypedData(quote)
-                    const _typedData = convertTypeDataToBigInt(typedData)
-                    const signature = await signTypedDataAsync(_typedData)
-                    try {
-                      const universalOrder = await universalSdk.submitOrder({
-                        ...quote,
-                        signature,
-                      })
+      // Step 1: Generate all signatures in parallel
+      const signedQuotes = await Promise.all(
+        universalQuotes.map(({ data }) =>
+          limiter(async () => {
+            const quote = data.quote as OrderRequest
+            const { typedData } = await generateTypedData(quote)
+            const _typedData = convertTypeDataToBigInt(typedData)
+            const signature = await signTypedDataAsync(_typedData)
 
-                      setUniversalSuccessOrders((prev) => {
-                        return [
-                          ...prev,
-                          {
-                            ...quote,
-                            orderId: universalOrder.order_id,
-                            transactionHash: universalOrder.transaction_hash,
-                          },
-                        ]
-                      })
-
-                      return undefined
-                    } catch (error) {
-                      console.error(error)
-                      setUniversalFailedOrders((prev) => [...prev, quote])
-                      return undefined
-                    }
-                  }
-                }
-              })
-            )
+            return { quote, signature }
+          })
         )
-      ).filter((order) => order !== undefined)
+      )
+
+      // Step 2: Submit all orders in parallel
+      const universalOrderResults = await Promise.all(
+        signedQuotes.map(async ({ quote, signature }) => {
+          try {
+            const universalOrder = await universalSdk.submitOrder({
+              ...quote,
+              signature,
+            })
+
+            setUniversalSuccessOrders((prev) => {
+              return [
+                ...prev,
+                {
+                  ...quote,
+                  orderId: universalOrder.order_id,
+                  transactionHash: universalOrder.transaction_hash,
+                },
+              ]
+            })
+
+            return { success: true, quote, order: universalOrder }
+          } catch (error) {
+            console.error(error)
+            setUniversalFailedOrders((prev) => [...prev, quote])
+            return { success: false, quote, error }
+          }
+        })
+      )
+
+      // Log results for debugging
+      const successfulOrders = universalOrderResults.filter(
+        (result) => result.success
+      )
+      const failedUniversalOrders = universalOrderResults.filter(
+        (result) => !result.success
+      )
+
+      console.log(
+        `Universal orders completed: ${successfulOrders.length} successful, ${failedUniversalOrders.length} failed`
+      )
+
+      const orderIds = await Promise.all(
+        validOrderData
+          .filter(({ type }) => type === QuoteProvider.CowSwap)
+          .map(async ({ data }) => {
+            const order = data.quote as OrderCreation
+            const orderId = await orderBookApi.sendOrder({
+              ...order,
+              from: address,
+              signature: address,
+              signingScheme: SigningScheme.PRESIGN,
+            })
+            return orderId
+          })
+      )
 
       if (refresh) {
+        // Reset universal failed orders
+        setUniversalFailedOrders([])
         // replace failed orders with new ones
-        setOrderIDs((prev) => [
+        setCowswapOrderIds((prev) => [
           ...prev.filter(
-            (order) => !failedOrders.map((o) => o.orderId).includes(order.id)
+            (orderId) => !failedOrders.map((o) => o.orderId).includes(orderId)
           ),
           ...orderIds,
         ])
-        setAsyncSwapResponse((prev) => {
-          if (!prev) return undefined
-          return {
-            ...prev,
-            cowswapOrders: prev?.cowswapOrders.filter(
-              (o) => !failedOrders.map((fo) => fo.orderId).includes(o.orderId)
-            ),
-            createdAt: new Date().toISOString(),
-          }
-        })
-      } else {
-        setOrderIDs(orderIds)
-        setAsyncSwapResponse((prev) => ({
-          swapOrderId: uuidv4(),
-          chainId,
-          signer: address,
-          dtf: indexDTF.id,
-          inputAmount,
-          amountOut: parseEther(mintValue.toString()).toString(),
-          createdAt: new Date().toISOString(),
-          cowswapOrders: prev?.cowswapOrders || [],
+        setCowswapOrders((prev) => ({
+          ...prev.filter(
+            (o) => !failedOrders.map((fo) => fo.orderId).includes(o.orderId)
+          ),
         }))
+      } else {
+        setCowswapOrderIds(orderIds)
       }
+      setCowswapOrdersCreatedAt(new Date().toISOString())
       setQuotes({})
 
       return {

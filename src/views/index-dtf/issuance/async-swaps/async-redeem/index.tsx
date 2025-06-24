@@ -16,10 +16,10 @@ import { useAtom, useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { formatEther } from 'viem'
 import {
-  asyncSwapResponseAtom,
   collateralAcquiredAtom,
   indexDTFBalanceAtom,
   isMintingAtom,
+  ordersSubmittedAtom,
   redeemAssetsAtom,
   selectedTokenAtom,
   userInputAtom,
@@ -73,9 +73,8 @@ const AsyncRedeem = () => {
   const indexDTFBalance = useAtomValue(indexDTFBalanceAtom)
   const indxDTFParsedBalance = formatEther(indexDTFBalance)
   const onMax = () => setInputAmount(indxDTFParsedBalance)
-  const asyncSwapResponse = useAtomValue(asyncSwapResponseAtom)
+  const ordersSubmitted = useAtomValue(ordersSubmittedAtom)
   const collateralAcquired = useAtomValue(collateralAcquiredAtom)
-  const orderSubmitted = !!asyncSwapResponse
   const amountOut = inputPrice
   const amountOutValue = inputPrice
   const redeemAssets = useAtomValue(redeemAssetsAtom)
@@ -107,10 +106,10 @@ const AsyncRedeem = () => {
               value: inputAmount,
               onChange: setInputAmount,
               onMax,
-              disabled: orderSubmitted,
+              disabled: ordersSubmitted,
               className: cn(
                 'rounded-3xl border-8 border-card',
-                orderSubmitted && 'border-background bg-background'
+                ordersSubmitted && 'border-background bg-background'
               ),
             }}
           />
@@ -118,7 +117,7 @@ const AsyncRedeem = () => {
         <ArrowSeparator
           className={cn(
             'h-10 px-[8px] w-max mx-auto border-secondary border-4 -mt-[18px] -mb-[18px] z-20 text-foreground rounded-full bg-card hover:bg-card',
-            orderSubmitted && 'bg-background'
+            ordersSubmitted && 'bg-background'
           )}
         />
         <TokenOutputBox
@@ -132,7 +131,7 @@ const AsyncRedeem = () => {
             value: amountOut.toString(),
             className: cn(
               'rounded-3xl border-8 border-card rounded-b-none pb-2',
-              orderSubmitted && 'border-background bg-background',
+              ordersSubmitted && 'border-background bg-background',
               collateralAcquired && !isMinting && 'border-card bg-card'
             ),
           }}
@@ -146,10 +145,10 @@ const AsyncRedeem = () => {
         )}
       >
         {!assetsRedeemed && <SubmitRedeem />}
-        {assetsRedeemed && !orderSubmitted && (
+        {assetsRedeemed && !ordersSubmitted && (
           <SubmitRedeemOrders loadingQuote={awaitingQuote} />
         )}
-        {orderSubmitted && <CollateralAcquisition />}
+        {ordersSubmitted && <CollateralAcquisition />}
       </div>
     </div>
   )

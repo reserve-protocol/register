@@ -10,12 +10,11 @@ import { indexDTFAtom } from '@/state/dtf/atoms'
 import { formatCurrencyCompact } from '@/utils'
 import { useAtom, useAtomValue } from 'jotai'
 import {
-  asyncSwapResponseAtom,
   collateralAcquiredAtom,
-  hasAllCollateralsAtom,
   isMintingAtom,
   mintValueAtom,
   mintValueUSDAtom,
+  ordersSubmittedAtom,
   selectedTokenAtom,
   selectedTokenBalanceAtom,
   userInputAtom,
@@ -35,12 +34,10 @@ const AsyncMint = () => {
   const selectedTokenPrice = useChainlinkPrice(chainId, selectedToken.address)
   const inputValueUSD = (selectedTokenPrice || 0) * Number(inputAmount)
   const onMax = () => setInputAmount(selectedTokenBalance?.balance || '0')
-  const asyncSwapResponse = useAtomValue(asyncSwapResponseAtom)
+  const ordersSubmitted = useAtomValue(ordersSubmittedAtom)
   const collateralAcquired = useAtomValue(collateralAcquiredAtom)
-  const orderSubmitted = !!asyncSwapResponse
   const amountOut = useAtomValue(mintValueAtom)
   const amountOutValue = useAtomValue(mintValueUSDAtom)
-  const hasAllCollaterals = useAtomValue(hasAllCollateralsAtom)
 
   const { isLoading, isFetching } = useQuotesForMint()
 
@@ -61,17 +58,17 @@ const AsyncMint = () => {
           value: inputAmount,
           onChange: setInputAmount,
           onMax,
-          disabled: orderSubmitted,
+          disabled: ordersSubmitted,
           className: cn(
             'rounded-3xl border-8 border-card',
-            orderSubmitted && 'border-background bg-background'
+            ordersSubmitted && 'border-background bg-background'
           ),
         }}
       />
       <ArrowSeparator
         className={cn(
           'h-10 px-[8px] w-max mx-auto border-secondary border-4 -mt-[18px] -mb-[18px] z-20 text-foreground rounded-full bg-card hover:bg-card',
-          orderSubmitted && 'bg-background'
+          ordersSubmitted && 'bg-background'
         )}
       />
       <TokenOutputBox
@@ -84,7 +81,7 @@ const AsyncMint = () => {
           value: amountOut.toString(),
           className: cn(
             'rounded-3xl border-8 border-card rounded-b-none pb-2',
-            orderSubmitted && 'border-background bg-background',
+            ordersSubmitted && 'border-background bg-background',
             collateralAcquired && !isMinting && 'border-card bg-card'
           ),
         }}
@@ -96,9 +93,9 @@ const AsyncMint = () => {
           isMinting ? 'bg-background' : 'bg-card'
         )}
       >
-        {!orderSubmitted && <SubmitMint loadingQuote={awaitingQuote} />}
-        {orderSubmitted && <CollateralAcquisition />}
-        {!hasAllCollaterals && <Details />}
+        {!ordersSubmitted && <SubmitMint loadingQuote={awaitingQuote} />}
+        {ordersSubmitted && <CollateralAcquisition />}
+        {!collateralAcquired && <Details />}
       </div>
     </div>
   )
