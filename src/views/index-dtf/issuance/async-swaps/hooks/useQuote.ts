@@ -30,6 +30,7 @@ import {
 } from '../providers/GlobalProtocolKitProvider'
 import {
   CustomUniversalQuote,
+  getUniversalTokenAddress,
   getUniversalTokenName,
 } from '../providers/universal'
 import { QuoteProvider } from '../types'
@@ -480,15 +481,15 @@ export const useRefreshQuotes = () => {
       // Failed Universal orders are retried through CowSwap as fallback
       const universalQuotePromises = failedUniversalOrders.map(
         async (order) => {
-          const token = getUniversalTokenName(order.token as Address)
+          const token = getUniversalTokenAddress(order.token)
           const sellToken =
             operation === 'redeem' ? token : selectedToken.address
           const buyToken =
             operation === 'redeem' ? selectedToken.address : token
           const amount =
             operation === 'redeem'
-              ? BigInt(order.token_amount ?? '0')
-              : BigInt(order.pair_token_amount ?? '0')
+              ? BigInt(order.pair_token_amount ?? '0')
+              : BigInt(order.token_amount ?? '0')
           return await getCowswapQuote({
             sellToken: sellToken as Address,
             buyToken: buyToken as Address,
@@ -504,7 +505,7 @@ export const useRefreshQuotes = () => {
         ...quotePromises,
         ...universalQuotePromises,
       ])
-
+      console.log(results)
       failedOrders.forEach((order, i) => {
         setQuotes((prev) => ({
           ...prev,
