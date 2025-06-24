@@ -62,7 +62,7 @@ const NavigationItem = ({
 const NavigationHeader = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
   const brand = useAtomValue(indexDTFBrandAtom)
-  const { address: walletAddress } = useAccount()
+  const { address: walletAddress, chainId } = useAccount()
   const { watchAsset } = useWatchAsset()
 
   const handleWatchAsset = () => {
@@ -88,7 +88,7 @@ const NavigationHeader = () => {
       <div className="text-base font-semibold truncate">
         {indexDTF?.token.symbol}
       </div>
-      {!!walletAddress && !!indexDTF && (
+      {!!walletAddress && !!indexDTF && chainId === indexDTF.chainId && (
         <Button
           variant="ghost"
           size="icon"
