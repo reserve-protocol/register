@@ -489,8 +489,6 @@ export const useRefreshQuotes = () => {
   const [quotes, setQuotes] = useAtom(quotesAtom)
   const operation = useAtomValue(operationAtom)
   const failedOrders = useAtomValue(failedOrdersAtom)
-  const failedUniversalOrders = useAtomValue(universalFailedOrdersAtom)
-  const selectedToken = useAtomValue(selectedTokenAtom)
 
   const query = useQuery({
     queryKey: ['refresh-quotes', failedOrders],
@@ -513,34 +511,7 @@ export const useRefreshQuotes = () => {
         })
       })
 
-      // Failed Universal orders are retried through CowSwap as fallback
-      const universalQuotePromises = failedUniversalOrders.map(
-        async (order) => {
-          const token = getUniversalTokenAddress(order.token)
-          const sellToken =
-            operation === 'redeem' ? token : selectedToken.address
-          const buyToken =
-            operation === 'redeem' ? selectedToken.address : token
-          const amount =
-            operation === 'redeem'
-              ? BigInt(order.pair_token_amount ?? '0')
-              : BigInt(order.token_amount ?? '0')
-
-          return await getCowswapQuote({
-            sellToken: sellToken as Address,
-            buyToken: buyToken as Address,
-            amount,
-            address: address as Address,
-            operation,
-            orderBookApi,
-          })
-        }
-      )
-
-      const results = await Promise.all([
-        ...quotePromises,
-        ...universalQuotePromises,
-      ])
+      const results = await Promise.all(quotePromises)
 
       failedOrders.forEach((order, i) => {
         setQuotes((prev) => ({
