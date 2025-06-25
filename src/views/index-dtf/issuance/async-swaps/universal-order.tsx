@@ -18,14 +18,15 @@ const UniversalOrder = ({ order }: { order: UniversalOrderType }) => {
   const indexDTFBasket = useAtomValue(indexDTFBasketAtom)
   const chainId = useAtomValue(chainIdAtom)
   const { token, firstAmount, secondAmount } = useMemo(() => {
+    const token = getUniversalTokenAddress(order?.token)
     return operation === 'redeem'
       ? {
-          token: order?.pair_token,
+          token,
           firstAmount: order?.token_amount,
           secondAmount: order?.pair_token_amount,
         }
       : {
-          token: getUniversalTokenAddress(order?.token),
+          token,
           firstAmount: order?.token_amount,
           secondAmount: order?.pair_token_amount,
         }

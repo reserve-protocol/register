@@ -23,7 +23,6 @@ import {
   redeemAssetsAtom,
   refetchQuotesAtom,
   selectedTokenAtom,
-  universalFailedOrdersAtom,
 } from '../atom'
 import {
   UniversalRelayerWithRateLimiter,
@@ -31,7 +30,6 @@ import {
 } from '../providers/GlobalProtocolKitProvider'
 import {
   CustomUniversalQuote,
-  getUniversalTokenAddress,
   getUniversalTokenName,
 } from '../providers/universal'
 import { QuoteProvider } from '../types'
@@ -118,7 +116,9 @@ async function getUniversalQuote({
   universalSdk: UniversalRelayerWithRateLimiter
 }) {
   try {
-    const universalAsset = getUniversalTokenName(buyToken)
+    const universalAsset = getUniversalTokenName(
+      operation === 'redeem' ? sellToken : buyToken
+    )
     const universalQuote = await universalSdk.getQuote({
       type: operation === 'redeem' ? 'SELL' : 'BUY',
       blockchain: 'BASE',
@@ -133,10 +133,16 @@ async function getUniversalQuote({
       _originalQuote: universalQuote,
       buyToken,
       sellToken,
-      type: 'BUY',
+      type: operation === 'redeem' ? 'SELL' : 'BUY',
       userAddress: address,
-      sellAmount: BigInt(universalQuote.pair_token_amount ?? '0'),
-      buyAmount: amount,
+      sellAmount:
+        operation === 'redeem'
+          ? amount
+          : BigInt(universalQuote.pair_token_amount ?? '0'),
+      buyAmount:
+        operation === 'redeem'
+          ? BigInt(universalQuote.pair_token_amount ?? '0')
+          : amount,
       validTo: Number(universalQuote.deadline ?? 0),
     }
     return customQuote
@@ -181,7 +187,9 @@ async function getQuote({
   }
 
   // Try Universal first if available
-  const universalAsset = getUniversalTokenName(buyToken)
+  const universalAsset = getUniversalTokenName(
+    operation === 'redeem' ? sellToken : buyToken
+  )
   const hasMinValue = quoteValue && quoteValue > MIN_UNIVERSAL_QUOTE_VALUE_USD
   let universalQuote: CustomUniversalQuote | null = null
 

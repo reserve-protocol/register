@@ -77,11 +77,9 @@ export const insufficientBalanceAtom = atom<boolean>((get) => {
 
 export const collateralAcquiredAtom = atom<boolean>((get) => {
   const cowswapOrders = get(cowswapOrdersAtom)
-  const universalFailedOrders = get(universalFailedOrdersAtom)
   return (
     cowswapOrders.length > 0 &&
-    cowswapOrders.every((order) => order.status === OrderStatus.FULFILLED) &&
-    universalFailedOrders.length === 0
+    cowswapOrders.every((order) => order.status === OrderStatus.FULFILLED)
   )
 })
 

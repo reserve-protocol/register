@@ -41,10 +41,26 @@ const OpenCollateralPanel = () => {
   )
 }
 
-const RequoteFailedOrders = () => {
-  const { isFetching } = useRefreshQuotes()
+const RequoteFailedOrdersButton = ({
+  mutate,
+  isPending,
+  isFetching,
+}: {
+  mutate: () => void
+  isPending: boolean
+  isFetching: boolean
+}) => {
   const failedOrdersQty = useAtomValue(failedOrdersAtom).length
-  const { mutate: signQuotes, isPending: isSigning } = useQuoteSignatures(true)
+
+  const buttonText = useMemo(() => {
+    if (isFetching) {
+      return 'Awaiting Quotes'
+    }
+    if (isPending) {
+      return 'Signing...'
+    }
+    return 'Accept New Quotes'
+  }, [isFetching, isPending])
 
   return (
     <div className="border-t border-border">
@@ -65,16 +81,25 @@ const RequoteFailedOrders = () => {
       <Button
         size="lg"
         className="w-full rounded-xl bg-black text-white"
-        disabled={isFetching || isSigning}
-        onClick={() => signQuotes()}
+        disabled={isFetching || isPending}
+        onClick={() => mutate()}
       >
-        {isFetching
-          ? 'Awaiting Quotes'
-          : isSigning
-            ? 'Signing...'
-            : 'Accept New Quotes'}
+        {buttonText}
       </Button>
     </div>
+  )
+}
+
+const RequoteFailedOrders = () => {
+  const { isFetching } = useRefreshQuotes()
+  const { mutate: signQuotes, isPending: isSigning } = useQuoteSignatures(true)
+
+  return (
+    <RequoteFailedOrdersButton
+      mutate={signQuotes}
+      isPending={isSigning}
+      isFetching={isFetching}
+    />
   )
 }
 
