@@ -32,7 +32,7 @@ import {
   CustomUniversalQuote,
   getUniversalTokenAddress,
 } from '../providers/universal'
-import { CowswapQuote, QuoteProvider } from '../types'
+import { QuoteProvider } from '../types'
 import { convertTypeDataToBigInt, getApprovalCallIfNeeded } from './utils'
 
 const COWSWAP_SETTLEMENT = '0x9008D19f58AAbD9eD0D60971565AA8510560ab41' as const

@@ -6,6 +6,7 @@ import {
   cowswapOrderIdsAtom,
   cowswapOrdersAtom,
   openCollateralPanelAtom,
+  operationAtom,
   ordersSubmittedAtom,
   universalSuccessOrdersAtom,
 } from './atom'
@@ -29,6 +30,7 @@ export const showCollateralsAtom = atom((get) => {
 })
 
 const Collaterals = () => {
+  const operation = useAtomValue(operationAtom)
   const cowswapOrderIds = useAtomValue(cowswapOrderIdsAtom)
   const cowswapOrders = useAtomValue(cowswapOrdersAtom)
   const ordersSubmitted = useAtomValue(ordersSubmittedAtom)
@@ -71,7 +73,8 @@ const Collaterals = () => {
     <div
       className={cn(
         'flex flex-col px-6 py-2 overflow-y-auto flex-1 transition-all duration-300 ease-in-out max-h-[340px]',
-        isVisible ? 'w-[400px]' : 'w-0'
+        isVisible ? 'w-[400px]' : 'w-0',
+        operation === 'redeem' ? 'max-h-[450px]' : 'max-h-[390px]'
       )}
     >
       {sortedCowswapOrderIds.map((orderId) => (
