@@ -28,6 +28,7 @@ import {
 } from './atom'
 import Buy from './buy'
 import LowLiquidityWarning from './low-liquidity-warning'
+import ZapHealthcheck from './zap-healthcheck'
 import RefreshQuote from './refresh-quote'
 import Sell from './sell'
 import ZapSettings from './zap-settings'
@@ -121,6 +122,7 @@ const ZapMint = ({ children }: { children: ReactNode }) => {
         <div className={showSettings ? 'hidden' : 'opacity-100'}>
           <div className="flex flex-col gap-2">
             <LowLiquidityWarning />
+            <ZapHealthcheck />
             {currentTab === 'buy' ? <Buy /> : <Sell />}
           </div>
         </div>
