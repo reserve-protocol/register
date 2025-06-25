@@ -89,3 +89,93 @@ export async function getAssetPrice(
   const data = (await response.json()) as TokenPrice[]
   return data[0]
 }
+
+// Function to handle sendCallsAsync with retry logic for user rejections
+export const sendCallsWithRetry = async (
+  sendCallsAsync: any,
+  calls: any[],
+  account: Address,
+  maxRetries: number = 2
+) => {
+  let lastError: Error | null = null
+
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    try {
+      const txBundle = await sendCallsAsync({
+        calls,
+        account,
+        forceAtomic: true,
+      })
+      console.log({ txBundle })
+      return txBundle
+    } catch (error) {
+      lastError = error as Error
+
+      // Check if it's a user rejection error
+      if (
+        error instanceof Error &&
+        error.message.includes('User rejected transaction')
+      ) {
+        console.log(
+          `User rejected transaction (attempt ${attempt + 1}/${maxRetries + 1})`
+        )
+
+        // If this was the last attempt, throw the error
+        if (attempt === maxRetries) {
+          throw new Error('USER_CANCELLED_TX')
+        }
+
+        // Otherwise, continue to next attempt
+        continue
+      }
+
+      // For other errors, throw immediately
+      throw error
+    }
+  }
+
+  // This should never be reached, but just in case
+  throw lastError || new Error('Unknown error in sendCallsWithRetry')
+}
+
+// Function to handle signTypedDataAsync with retry logic for user rejections
+export const signTypedDataWithRetry = async (
+  signTypedDataAsync: any,
+  typedData: any,
+  maxRetries: number = 2
+) => {
+  let lastError: Error | null = null
+
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    try {
+      const signature = await signTypedDataAsync(typedData)
+      return signature
+    } catch (error) {
+      lastError = error as Error
+
+      // Check if it's a user rejection error
+      if (
+        error instanceof Error &&
+        error.message.includes('User rejected signature')
+      ) {
+        console.log(
+          `User rejected signature (attempt ${attempt + 1}/${maxRetries + 1})`
+        )
+
+        // If this was the last attempt, throw the error
+        if (attempt === maxRetries) {
+          throw new Error('USER_CANCELLED_SIGNATURE')
+        }
+
+        // Otherwise, continue to next attempt
+        continue
+      }
+
+      // For other errors, throw immediately
+      throw error
+    }
+  }
+
+  // This should never be reached, but just in case
+  throw lastError || new Error('Unknown error in signTypedDataWithRetry')
+}

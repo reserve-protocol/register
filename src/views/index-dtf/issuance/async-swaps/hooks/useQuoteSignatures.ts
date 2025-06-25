@@ -34,7 +34,12 @@ import {
   getUniversalTokenAddress,
 } from '../providers/universal'
 import { QuoteProvider } from '../types'
-import { convertTypeDataToBigInt, getApprovalCallIfNeeded } from './utils'
+import {
+  convertTypeDataToBigInt,
+  getApprovalCallIfNeeded,
+  sendCallsWithRetry,
+  signTypedDataWithRetry,
+} from './utils'
 
 const COWSWAP_SETTLEMENT = '0x9008D19f58AAbD9eD0D60971565AA8510560ab41' as const
 const COWSWAP_VAULT = '0xC92E8bdf79f0507f65a392b0ab4667716BFE0110' as const
@@ -255,13 +260,11 @@ export function useQuoteSignatures(refresh = false) {
       }
 
       if (txData.length > 0) {
-        const txBundle = await sendCallsAsync({
-          calls: txData,
-          account: address,
-          forceAtomic: true,
-        })
-
-        console.log({ txBundle })
+        try {
+          await sendCallsWithRetry(sendCallsAsync, txData, address)
+        } catch (error) {
+          console.error('sendCallsAsync', error)
+        }
       }
 
       // Separate signature generation from order submission to optimize performance
@@ -277,7 +280,12 @@ export function useQuoteSignatures(refresh = false) {
             try {
               const { typedData } = await generateTypedData(quote)
               const _typedData = convertTypeDataToBigInt(typedData)
-              const signature = await signTypedDataAsync(_typedData)
+
+              const signature = await signTypedDataWithRetry(
+                signTypedDataAsync,
+                _typedData
+              )
+
               const universalOrder = await universalSdk.submitOrder({
                 ...quote,
                 signature,
@@ -296,7 +304,7 @@ export function useQuoteSignatures(refresh = false) {
 
               return { success: true, quote, order: universalOrder }
             } catch (error) {
-              console.error(error)
+              console.error('universalOrder', error)
               setUniversalFailedOrders((prev) => [...prev, quote])
               return { success: false, quote, error }
             }
@@ -362,13 +370,11 @@ export function useQuoteSignatures(refresh = false) {
       ).then((results) => results.filter((data) => data !== null).flat())
 
       if (fallbackTxData.length > 0) {
-        const txBundle = await sendCallsAsync({
-          calls: fallbackTxData,
-          account: address,
-          forceAtomic: true,
-        })
-
-        console.log({ txBundle })
+        try {
+          await sendCallsWithRetry(sendCallsAsync, fallbackTxData, address)
+        } catch (error) {
+          console.error('sendCallsAsync', error)
+        }
       }
 
       const orderIds = await Promise.all(

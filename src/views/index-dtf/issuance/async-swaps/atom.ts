@@ -138,18 +138,3 @@ export const ordersSubmittedAtom = atom<boolean>((get) => {
   const cowswapOrdersCreatedAt = get(cowswapOrdersCreatedAtAtom)
   return Boolean(cowswapOrdersCreatedAt)
 })
-
-// Global processing state atoms to persist progress across re-renders
-export const processingStateAtom = atom<{
-  isProcessing: boolean
-  step: 'preparing' | 'signing' | 'submitting' | 'complete' | 'error'
-  progress: number
-  message: string
-}>({
-  isProcessing: false,
-  step: 'preparing',
-  progress: 0,
-  message: '',
-})
-
-export const processingErrorAtom = atom<string | null>(null)
