@@ -19,6 +19,7 @@ const ProposalStage = () => {
 const ProposeDTFSettings = () => {
   const form = useForm<ProposeSettings>({
     resolver: zodResolver(ProposeSettingsSchema),
+    mode: 'onChange', // Enable validation on every change
   })
 
   return (
