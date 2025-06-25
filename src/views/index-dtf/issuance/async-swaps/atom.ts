@@ -2,7 +2,11 @@ import { balancesAtom, chainIdAtom, TokenBalance } from '@/state/atoms'
 import { indexDTFPriceAtom } from '@/state/dtf/atoms'
 import { Token } from '@/types'
 import { reducedZappableTokens } from '@/views/yield-dtf/issuance/components/zapV2/constants'
-import { EnrichedOrder, OrderStatus } from '@cowprotocol/cow-sdk'
+import {
+  EnrichedOrder,
+  OrderQuoteResponse,
+  OrderStatus,
+} from '@cowprotocol/cow-sdk'
 import { atom } from 'jotai'
 import { atomWithReset } from 'jotai/utils'
 import { Quote } from 'universal-sdk'
@@ -22,6 +26,7 @@ export const indexDTFBalanceAtom = atom<bigint>(0n)
 export const txHashAtom = atom<string | undefined>(undefined) // tx hash for minting or redeeming
 export const redeemAssetsAtom = atom<Record<Address, bigint>>({})
 export const quotesAtom = atom<Record<Address, QuoteAggregated>>({})
+export const fallbackQuotesAtom = atom<Record<Address, OrderQuoteResponse>>({})
 export const cowswapOrderIdsAtom = atom<string[]>([])
 export const cowswapOrdersCreatedAtAtom = atom<string | undefined>(undefined)
 export const cowswapOrdersAtom = atom<(EnrichedOrder & { orderId: string })[]>(

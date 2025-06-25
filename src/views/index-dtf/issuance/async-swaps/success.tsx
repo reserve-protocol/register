@@ -28,6 +28,7 @@ import {
   cowswapOrderIdsAtom,
   cowswapOrdersAtom,
   cowswapOrdersCreatedAtAtom,
+  fallbackQuotesAtom,
   mintValueAtom,
   mintValueUSDAtom,
   operationAtom,
@@ -57,6 +58,7 @@ const CloseButton = () => {
   const setQuotesAtom = useSetAtom(quotesAtom)
   const setUniversalSuccessOrdersAtom = useSetAtom(universalSuccessOrdersAtom)
   const setUniversalFailedOrdersAtom = useSetAtom(universalFailedOrdersAtom)
+  const setFallbackQuotesAtom = useSetAtom(fallbackQuotesAtom)
 
   const handleClose = () => {
     setTxHashAtom(undefined)
@@ -69,6 +71,7 @@ const CloseButton = () => {
     setCowswapOrdersAtom([])
     setUniversalSuccessOrdersAtom([])
     setUniversalFailedOrdersAtom([])
+    setFallbackQuotesAtom({})
   }
 
   return (

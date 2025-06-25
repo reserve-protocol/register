@@ -4,13 +4,14 @@ import { indexDTFAtom } from '@/state/dtf/atoms'
 import { OrderBalance } from '@cowprotocol/contracts'
 import {
   OrderCreation,
+  OrderQuoteResponse,
   OrderSigningUtils,
   SigningScheme,
 } from '@cowprotocol/cow-sdk'
 import { useMutation } from '@tanstack/react-query'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import pLimit from 'p-limit'
-import { generateTypedData, OrderRequest } from 'universal-sdk'
+import { generateTypedData, OrderRequest, Quote } from 'universal-sdk'
 import { Address, encodeFunctionData, Hex, maxUint256, parseUnits } from 'viem'
 import { useSendCalls, useSignTypedData } from 'wagmi'
 import {
@@ -18,6 +19,7 @@ import {
   cowswapOrdersAtom,
   cowswapOrdersCreatedAtAtom,
   failedOrdersAtom,
+  fallbackQuotesAtom,
   operationAtom,
   quotesAtom,
   selectedTokenAtom,
@@ -26,13 +28,96 @@ import {
   userInputAtom,
 } from '../atom'
 import { useGlobalProtocolKit } from '../providers/GlobalProtocolKitProvider'
-import { CustomUniversalQuote } from '../providers/universal'
-import { QuoteProvider } from '../types'
+import {
+  CustomUniversalQuote,
+  getUniversalTokenAddress,
+} from '../providers/universal'
+import { CowswapQuote, QuoteProvider } from '../types'
 import { convertTypeDataToBigInt, getApprovalCallIfNeeded } from './utils'
 
 const COWSWAP_SETTLEMENT = '0x9008D19f58AAbD9eD0D60971565AA8510560ab41' as const
 const COWSWAP_VAULT = '0xC92E8bdf79f0507f65a392b0ab4667716BFE0110' as const
 const UNIVERSAL_PERMIT2 = '0x000000000022D473030F116dDEE9F6B43aC78BA3' as const
+
+type CowswapPreSignTx = {
+  type: QuoteProvider.CowSwap
+  data: {
+    orderId: string
+    quote: OrderCreation
+    preSignTx: Hex
+    sellToken: string
+    amount: string
+  }
+}
+
+type UniversalQuote = {
+  type: QuoteProvider.Universal
+  data: CustomUniversalQuote & {
+    quote: Quote
+  }
+}
+
+const getCowswapPreSignTx = async ({
+  chainId,
+  orderQuote,
+  operation,
+  address,
+}: {
+  chainId: number
+  orderQuote: OrderQuoteResponse
+  operation: string
+  address: Address
+}): Promise<CowswapPreSignTx | undefined> => {
+  if (orderQuote.quote.sellAmount === '0') {
+    return undefined
+  }
+
+  const modifiedQuote = {
+    ...orderQuote.quote,
+    feeAmount: '0',
+    buyAmount:
+      operation === 'mint'
+        ? orderQuote.quote.buyAmount
+        : ((BigInt(orderQuote.quote.buyAmount) * 98n) / 100n).toString(),
+    sellAmount:
+      operation === 'mint'
+        ? ((BigInt(orderQuote.quote.sellAmount) * 101n) / 100n).toString()
+        : orderQuote.quote.sellAmount,
+    from: address,
+    receiver: address!,
+    signature: address!,
+    signingScheme: SigningScheme.PRESIGN,
+  } as const satisfies OrderCreation
+
+  const orderId = await OrderSigningUtils.generateOrderId(
+    chainId,
+    {
+      ...modifiedQuote,
+      sellTokenBalance: OrderBalance.ERC20,
+      buyTokenBalance: OrderBalance.ERC20,
+    },
+    {
+      owner: address,
+    }
+  )
+
+  const encodedPreSignTx = encodeFunctionData({
+    abi: CowswapSettlement,
+    functionName: 'setPreSignature',
+    args: [orderId.orderId as Hex, true],
+  })
+
+  return {
+    type: QuoteProvider.CowSwap,
+    data: {
+      orderId: orderId.orderId,
+      quote: modifiedQuote,
+      preSignTx: encodedPreSignTx,
+      sellToken: modifiedQuote.sellToken,
+      amount: modifiedQuote.sellAmount,
+    },
+  }
+}
 
 export function useQuoteSignatures(refresh = false) {
   const indexDTF = useAtomValue(indexDTFAtom)
@@ -42,6 +127,7 @@ export function useQuoteSignatures(refresh = false) {
   const inputAmount = useAtomValue(userInputAtom)
   const quoteToken = useAtomValue(selectedTokenAtom)
   const [quotes, setQuotes] = useAtom(quotesAtom)
+  const fallbackQuotes = useAtomValue(fallbackQuotesAtom)
   const setCowswapOrderIds = useSetAtom(cowswapOrderIdsAtom)
   const setCowswapOrders = useSetAtom(cowswapOrdersAtom)
   const setUniversalFailedOrders = useSetAtom(universalFailedOrdersAtom)
@@ -86,79 +172,31 @@ export function useQuoteSignatures(refresh = false) {
       }
 
       // Generate order IDs and hashed messages for all quotes
-      const orderData = await Promise.all(
-        successfulQuotes.map(async (quote) => {
-          if (quote.type === QuoteProvider.CowSwap) {
-            if (quote.data.quote.sellAmount === '0') {
-              return null
+      const orderData: (CowswapPreSignTx | UniversalQuote | undefined)[] =
+        await Promise.all(
+          successfulQuotes.map(async (quote) => {
+            if (quote.type === QuoteProvider.CowSwap) {
+              return getCowswapPreSignTx({
+                chainId,
+                orderQuote: quote.data,
+                operation,
+                address,
+              })
             }
 
-            const modifiedQuote = {
-              ...quote.data.quote,
-              feeAmount: '0',
-              buyAmount:
-                operation === 'mint'
-                  ? quote.data.quote.buyAmount
-                  : (
-                      (BigInt(quote.data.quote.buyAmount) * 98n) /
-                      100n
-                    ).toString(),
-              sellAmount:
-                operation === 'mint'
-                  ? (
-                      (BigInt(quote.data.quote.sellAmount) * 101n) /
-                      100n
-                    ).toString()
-                  : quote.data.quote.sellAmount,
-              from: address,
-              receiver: address!,
-              signature: address!,
-              signingScheme: SigningScheme.PRESIGN,
-            } as const satisfies OrderCreation
+            if (quote.type === QuoteProvider.Universal) {
+              const uq = quote.data as CustomUniversalQuote
 
-            const orderId = await OrderSigningUtils.generateOrderId(
-              chainId,
-              {
-                ...modifiedQuote,
-                sellTokenBalance: OrderBalance.ERC20,
-                buyTokenBalance: OrderBalance.ERC20,
-              },
-              {
-                owner: address,
+              return {
+                type: QuoteProvider.Universal,
+                data: {
+                  ...uq,
+                  quote: uq._originalQuote,
+                },
               }
-            )
-
-            const encodedPreSignTx = encodeFunctionData({
-              abi: CowswapSettlement,
-              functionName: 'setPreSignature',
-              args: [orderId.orderId as Hex, true],
-            })
-
-            return {
-              type: QuoteProvider.CowSwap,
-              data: {
-                orderId: orderId.orderId,
-                quote: modifiedQuote,
-                preSignTx: encodedPreSignTx,
-                sellToken: modifiedQuote.sellToken,
-                amount: modifiedQuote.sellAmount,
-              },
             }
-          }
-
-          if (quote.type === QuoteProvider.Universal) {
-            const uq = quote.data as CustomUniversalQuote
-
-            return {
-              type: QuoteProvider.Universal,
-              data: {
-                ...uq,
-                quote: uq._originalQuote,
-              },
-            }
-          }
-        })
-      )
+          })
+        )
 
       const validOrderData = orderData.filter((data) => !!data)
 
@@ -189,7 +227,7 @@ export function useQuoteSignatures(refresh = false) {
                 chainId,
                 address: address,
                 token: data.sellToken as Address,
-                requiredAmount: BigInt(data.amount as string),
+                requiredAmount: data.sellAmount,
                 spender: UNIVERSAL_PERMIT2,
               }),
             ].filter((e) => e !== null)
@@ -229,8 +267,7 @@ export function useQuoteSignatures(refresh = false) {
         ({ type }) => type === QuoteProvider.Universal
       )
 
-      // Step 1: Generate all signatures in parallel
-      const signedQuotes = await Promise.all(
+      const universalOrderResults = await Promise.all(
         universalQuotes.map(({ data }) =>
           limiter(async () => {
             const quote = data.quote as OrderRequest
@@ -238,38 +275,31 @@ export function useQuoteSignatures(refresh = false) {
             const _typedData = convertTypeDataToBigInt(typedData)
             const signature = await signTypedDataAsync(_typedData)
 
-            return { quote, signature }
+            try {
+              const universalOrder = await universalSdk.submitOrder({
+                ...quote,
+                signature,
+              })
+
+              setUniversalSuccessOrders((prev) => {
+                return [
+                  ...prev,
+                  {
+                    ...quote,
+                    orderId: universalOrder.order_id,
+                    transactionHash: universalOrder.transaction_hash,
+                  },
+                ]
+              })
+
+              return { success: true, quote, order: universalOrder }
+            } catch (error) {
+              console.error(error)
+              setUniversalFailedOrders((prev) => [...prev, quote])
+              return { success: false, quote, error }
+            }
           })
         )
-      )
-
-      // Step 2: Submit all orders in parallel
-      const universalOrderResults = await Promise.all(
-        signedQuotes.map(async ({ quote, signature }) => {
-          try {
-            const universalOrder = await universalSdk.submitOrder({
-              ...quote,
-              signature,
-            })
-
-            setUniversalSuccessOrders((prev) => {
-              return [
-                ...prev,
-                {
-                  ...quote,
-                  orderId: universalOrder.order_id,
-                  transactionHash: universalOrder.transaction_hash,
-                },
-              ]
-            })
-
-            return { success: true, quote, order: universalOrder }
-          } catch (error) {
-            console.error(error)
-            setUniversalFailedOrders((prev) => [...prev, quote])
-            return { success: false, quote, error }
-          }
-        })
       )
 
       // Log results for debugging
@@ -284,8 +314,63 @@ export function useQuoteSignatures(refresh = false) {
         `Universal orders completed: ${successfulOrders.length} successful, ${failedUniversalOrders.length} failed`
       )
 
+      // For failed universal orders, use fallback quotes
+      const fallbackOrderData = (
+        await Promise.all(
+          failedUniversalOrders.map(async ({ quote }) => {
+            const token = getUniversalTokenAddress(quote.token)
+            const fallbackQuote = fallbackQuotes[token]
+            console.log({ fallbackQuote })
+            if (!fallbackQuote) {
+              return null
+            }
+
+            return await getCowswapPreSignTx({
+              chainId,
+              orderQuote: fallbackQuote,
+              operation,
+              address,
+            })
+          })
+        )
+      ).filter((data) => !!data)
+
+      const fallbackTxData = await Promise.all(
+        fallbackOrderData.map(async ({ type, data }) => {
+          if (type === QuoteProvider.CowSwap) {
+            return [
+              operation === 'redeem'
+                ? await getApprovalCallIfNeeded({
+                    chainId,
+                    address: address,
+                    token: data.sellToken as Address,
+                    requiredAmount: BigInt(data.amount as string),
+                    spender: COWSWAP_VAULT,
+                  })
+                : null,
+              {
+                to: COWSWAP_SETTLEMENT,
+                data: data.preSignTx,
+                value: 0n,
+              },
+            ].filter((e) => e !== null)
+          }
+          return null
+        })
+      ).then((results) => results.filter((data) => data !== null).flat())
+
+      if (fallbackTxData.length > 0) {
+        const txBundle = await sendCallsAsync({
+          calls: fallbackTxData,
+          account: address,
+          forceAtomic: true,
+        })
+
+        console.log({ txBundle })
+      }
+
       const orderIds = await Promise.all(
-        validOrderData
+        [...validOrderData, ...fallbackOrderData]
           .filter(({ type }) => type === QuoteProvider.CowSwap)
           .map(async ({ data }) => {
             const order = data.quote as OrderCreation

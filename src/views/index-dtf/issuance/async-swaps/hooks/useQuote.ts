@@ -15,6 +15,7 @@ import { Address, formatUnits, parseEther, zeroAddress } from 'viem'
 import {
   applyWalletBalanceAtom,
   failedOrdersAtom,
+  fallbackQuotesAtom,
   fetchingQuotesAtom,
   mintValueAtom,
   operationAtom,
@@ -67,33 +68,38 @@ async function getCowswapQuote({
   operation: 'redeem' | 'mint'
   orderBookApi: OrderBookApi
 }) {
-  const quote = await orderBookApi.getQuote({
-    sellToken,
-    buyToken,
-    from: address,
-    receiver: address,
-    validFor: 60 * 10, // 10 minutes
-    priceQuality: PriceQuality.VERIFIED,
-    ...(operation === 'redeem'
-      ? {
-          kind: OrderQuoteSideKindSell.SELL,
-          sellAmountBeforeFee: amount.toString(),
-        }
-      : {
-          kind: OrderQuoteSideKindBuy.BUY,
-          buyAmountAfterFee: amount.toString(),
-        }),
-    signingScheme: SigningScheme.PRESIGN,
-  })
+  try {
+    const quote = await orderBookApi.getQuote({
+      sellToken,
+      buyToken,
+      from: address,
+      receiver: address,
+      validFor: 60 * 10, // 10 minutes
+      priceQuality: PriceQuality.VERIFIED,
+      ...(operation === 'redeem'
+        ? {
+            kind: OrderQuoteSideKindSell.SELL,
+            sellAmountBeforeFee: amount.toString(),
+          }
+        : {
+            kind: OrderQuoteSideKindBuy.BUY,
+            buyAmountAfterFee: amount.toString(),
+          }),
+      signingScheme: SigningScheme.PRESIGN,
+    })
 
-  // CowSwap orders sometimes return every so slightly different amounts than requested.
-  if (operation === 'redeem') {
-    quote.quote.sellAmount = amount.toString()
-  } else {
-    quote.quote.buyAmount = amount.toString()
+    // CowSwap orders sometimes return every so slightly different amounts than requested.
+    if (operation === 'redeem') {
+      quote.quote.sellAmount = amount.toString()
+    } else {
+      quote.quote.buyAmount = amount.toString()
+    }
+
+    return quote
+  } catch (error) {
+    console.error(`Error getting cowswap quote:`, error)
+    return null
   }
-
-  return quote
 }
 
 async function getUniversalQuote({
@@ -114,16 +120,13 @@ async function getUniversalQuote({
   try {
     const universalAsset = getUniversalTokenName(buyToken)
     const universalQuote = await universalSdk.getQuote({
-      type: 'BUY',
+      type: operation === 'redeem' ? 'SELL' : 'BUY',
       blockchain: 'BASE',
       token: universalAsset,
       pair_token: 'USDC',
       user_address: address,
       slippage_bips: 100,
-      token_amount:
-        universalAsset === 'SOL'
-          ? ((amount * 200n) / 100n).toString()
-          : amount.toString(),
+      token_amount: amount.toString(),
     })
 
     const customQuote: CustomUniversalQuote = {
@@ -180,8 +183,10 @@ async function getQuote({
   // Try Universal first if available
   const universalAsset = getUniversalTokenName(buyToken)
   const hasMinValue = quoteValue && quoteValue > MIN_UNIVERSAL_QUOTE_VALUE_USD
+  let universalQuote: CustomUniversalQuote | null = null
+
   if (universalAsset && hasMinValue) {
-    const universalQuote = await getUniversalQuote({
+    universalQuote = await getUniversalQuote({
       sellToken,
       buyToken,
       amount,
@@ -189,15 +194,9 @@ async function getQuote({
       operation,
       universalSdk,
     })
-
-    // If Universal fails, continue with CowSwap
-    if (universalQuote) {
-      return universalQuote
-    }
   }
 
-  // If no Universal or it failed, use CowSwap
-  return await getCowswapQuote({
+  const cowswapQuote = await getCowswapQuote({
     sellToken,
     buyToken,
     amount,
@@ -205,6 +204,13 @@ async function getQuote({
     operation,
     orderBookApi,
   })
+
+  // TODO: if universalQuote is worse than cowswapQuote, use cowswapQuote (set universalQuote to null)
+
+  return {
+    universalQuote,
+    cowswapQuote,
+  }
 }
 
 export const useQuotesForMint = () => {
@@ -217,6 +223,7 @@ export const useQuotesForMint = () => {
   const [quotes, setQuotes] = useAtom(quotesAtom)
   const setRefetchQuotes = useSetAtom(refetchQuotesAtom)
   const setFetchingQuotes = useSetAtom(fetchingQuotesAtom)
+  const setFallbackQuotes = useSetAtom(fallbackQuotesAtom)
 
   const { orderBookApi, universalSdk } = useGlobalProtocolKit()
   const { data: folioDetails } = useFolioDetails({ shares: folioAmount })
@@ -259,7 +266,7 @@ export const useQuotesForMint = () => {
               amount,
               token.decimals
             )
-            return await getQuote({
+            const { universalQuote, cowswapQuote } = await getQuote({
               sellToken: selectedToken.address,
               buyToken: token.address,
               amount,
@@ -269,6 +276,15 @@ export const useQuotesForMint = () => {
               universalSdk,
               quoteValue,
             })
+
+            if (cowswapQuote) {
+              setFallbackQuotes((prev) => ({
+                ...prev,
+                [token.address]: cowswapQuote,
+              }))
+            }
+
+            return universalQuote || cowswapQuote
           } catch (error) {
             console.error(`Error getting quote for ${asset}:`, error)
             return null
@@ -298,7 +314,7 @@ export const useQuotesForMint = () => {
           }
 
           return {
-            token: token,
+            token,
             success: true,
             type,
             quote,
@@ -308,12 +324,14 @@ export const useQuotesForMint = () => {
             setQuotes((prev) => ({
               ...prev,
               [token.address as string]: {
+                token,
                 success: false,
               },
             }))
           }
 
           return {
+            token,
             success: false,
           }
         }
@@ -340,6 +358,8 @@ export const useQuotesForRedeem = () => {
   const [quotes, setQuotes] = useAtom(quotesAtom)
   const setRefetchQuotes = useSetAtom(refetchQuotesAtom)
   const setFetchingQuotes = useSetAtom(fetchingQuotesAtom)
+  const setFallbackQuotes = useSetAtom(fallbackQuotesAtom)
+
   const { orderBookApi, universalSdk } = useGlobalProtocolKit()
 
   const assets = Object.keys(redeemAssets)
@@ -379,7 +399,7 @@ export const useQuotesForRedeem = () => {
               amount,
               token.decimals
             )
-            return await getQuote({
+            const { universalQuote, cowswapQuote } = await getQuote({
               sellToken: token.address,
               buyToken: selectedToken.address,
               amount,
@@ -389,6 +409,15 @@ export const useQuotesForRedeem = () => {
               universalSdk,
               quoteValue,
             })
+
+            if (cowswapQuote) {
+              setFallbackQuotes((prev) => ({
+                ...prev,
+                [token.address]: cowswapQuote,
+              }))
+            }
+
+            return universalQuote || cowswapQuote
           } catch (error) {
             console.error(`Error getting quote for ${asset}:`, error)
             return null
@@ -400,22 +429,27 @@ export const useQuotesForRedeem = () => {
       assets.forEach((asset, i) => {
         const token = tokensInfo[asset.toLowerCase()]
         const quote = results[i]
+        const type =
+          quote && '_originalQuote' in quote
+            ? QuoteProvider.Universal
+            : QuoteProvider.CowSwap
+
         try {
           if (!signal.aborted) {
             setQuotes((prev) => ({
               ...prev,
               [token.address as string]: {
                 success: !!quote,
-                type: QuoteProvider.CowSwap,
+                type,
                 data: quote,
               },
             }))
           }
 
           return {
-            token: token,
+            token,
             success: true,
-            source: QuoteProvider.CowSwap,
+            type,
             quote,
           }
         } catch {
@@ -423,12 +457,14 @@ export const useQuotesForRedeem = () => {
             setQuotes((prev) => ({
               ...prev,
               [token.address as string]: {
+                token,
                 success: false,
               },
             }))
           }
 
           return {
+            token,
             success: false,
           }
         }
