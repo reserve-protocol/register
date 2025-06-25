@@ -1,9 +1,9 @@
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { useAtomValue } from 'jotai'
-import { redeemAssetsAtom } from '../atom'
-import { useQuoteSignatures } from '../hooks/useQuoteSignatures'
 import { useMemo } from 'react'
+import { redeemAssetsAtom } from '../atom'
+import { useStableQuoteSignatures } from '../hooks/useQuoteSignatures'
 
 type SubmitRedeemOrdersProps = {
   loadingQuote?: boolean
@@ -60,7 +60,7 @@ const SubmitRedeemButton = ({
 }
 
 const SubmitRedeemOrders = ({ loadingQuote }: SubmitRedeemOrdersProps) => {
-  const { mutate, isPending } = useQuoteSignatures()
+  const { mutate, isPending } = useStableQuoteSignatures()
 
   return (
     <SubmitRedeemButton

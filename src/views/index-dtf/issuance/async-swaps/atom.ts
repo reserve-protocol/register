@@ -23,7 +23,7 @@ const ASYNC_SWAP_BUFFER = 0.005
 export const operationAtom = atom<'mint' | 'redeem'>('mint')
 export const userInputAtom = atomWithReset<string>('')
 export const indexDTFBalanceAtom = atom<bigint>(0n)
-export const txHashAtom = atom<string | undefined>(undefined) // tx hash for minting or redeeming
+export const txHashAtom = atom<string | undefined>('') // tx hash for minting or redeeming
 export const redeemAssetsAtom = atom<Record<Address, bigint>>({})
 export const quotesAtom = atom<Record<Address, QuoteAggregated>>({})
 export const fallbackQuotesAtom = atom<Record<Address, OrderQuoteResponse>>({})
@@ -138,3 +138,18 @@ export const ordersSubmittedAtom = atom<boolean>((get) => {
   const cowswapOrdersCreatedAt = get(cowswapOrdersCreatedAtAtom)
   return Boolean(cowswapOrdersCreatedAt)
 })
+
+// Global processing state atoms to persist progress across re-renders
+export const processingStateAtom = atom<{
+  isProcessing: boolean
+  step: 'preparing' | 'signing' | 'submitting' | 'complete' | 'error'
+  progress: number
+  message: string
+}>({
+  isProcessing: false,
+  step: 'preparing',
+  progress: 0,
+  message: '',
+})
+
+export const processingErrorAtom = atom<string | null>(null)

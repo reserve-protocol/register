@@ -1,9 +1,9 @@
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
-import { useQuoteSignatures } from '../hooks/useQuoteSignatures'
-import { insufficientBalanceAtom, userInputAtom } from '../atom'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
+import { insufficientBalanceAtom, userInputAtom } from '../atom'
+import { useStableQuoteSignatures } from '../hooks/useQuoteSignatures'
 
 type SubmitMintProps = {
   loadingQuote?: boolean
@@ -62,7 +62,7 @@ const SubmitMintButton = ({
 }
 
 const SubmitMint = ({ loadingQuote }: SubmitMintProps) => {
-  const { mutate, isPending } = useQuoteSignatures()
+  const { mutate, isPending } = useStableQuoteSignatures()
 
   return (
     <SubmitMintButton

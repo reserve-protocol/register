@@ -377,7 +377,7 @@ export const useQuotesForRedeem = () => {
   )
 
   const query = useQuery({
-    queryKey: ['quotes/redeem', assets, redeemAssets],
+    queryKey: ['quotes/redeem', assets],
     queryFn: async ({ signal }) => {
       if (
         !redeemAssets ||

@@ -54,9 +54,14 @@ const CustomInputBox = () => {
       <div className="h-[1px] w-full bg-border" />
       <div className="flex justify-start">
         <StackTokenLogo
-          tokens={(basket || []).slice(0, 20)}
+          tokens={(basket || []).slice(0, 20).map((r) => ({
+            ...r,
+            chain: indexDTF.chainId,
+          }))}
           size={24}
+          overlap={-2}
           reverseStack
+          outsource
         />
       </div>
     </div>

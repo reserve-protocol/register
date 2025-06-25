@@ -11,6 +11,7 @@ import {
 import { useMutation } from '@tanstack/react-query'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import pLimit from 'p-limit'
+import { useCallback, useRef } from 'react'
 import { generateTypedData, OrderRequest, Quote } from 'universal-sdk'
 import { Address, encodeFunctionData, Hex, maxUint256, parseUnits } from 'viem'
 import { useSendCalls, useSignTypedData } from 'wagmi'
@@ -149,6 +150,7 @@ export function useQuoteSignatures(refresh = false) {
       JSON.stringify(quotes, (_, value) =>
         typeof value === 'bigint' ? value.toString() : value
       ),
+      refresh,
     ],
     mutationFn: async () => {
       if (!address || !orderBookApi || !chainId || !indexDTF || !universalSdk) {
@@ -394,11 +396,11 @@ export function useQuoteSignatures(refresh = false) {
           ),
           ...orderIds,
         ])
-        setCowswapOrders((prev) => ({
+        setCowswapOrders((prev) => [
           ...prev.filter(
             (o) => !failedOrders.map((fo) => fo.orderId).includes(o.orderId)
           ),
-        }))
+        ])
       } else {
         setCowswapOrderIds(orderIds)
       }
@@ -412,5 +414,26 @@ export function useQuoteSignatures(refresh = false) {
     onError(error) {
       console.error(error)
     },
+    retry: false,
+    retryDelay: 0,
+    gcTime: 5 * 60 * 1000,
   })
+}
+
+// Custom hook to stabilize dependencies
+export const useStableQuoteSignatures = (refresh = false) => {
+  const { mutate, isPending } = useQuoteSignatures(refresh)
+
+  // Use useRef to maintain a stable reference to mutate
+  const mutateRef = useRef(mutate)
+  mutateRef.current = mutate
+
+  const stableMutate = useCallback(() => {
+    mutateRef.current()
+  }, [])
+
+  return {
+    mutate: stableMutate,
+    isPending,
+  }
 }

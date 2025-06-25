@@ -15,7 +15,7 @@ import {
   successAtom,
 } from './atom'
 import { useRefreshQuotes } from './hooks/useQuote'
-import { useQuoteSignatures } from './hooks/useQuoteSignatures'
+import { useStableQuoteSignatures } from './hooks/useQuoteSignatures'
 import MintButton from './mint-button'
 
 const OpenCollateralPanel = () => {
@@ -92,7 +92,8 @@ const RequoteFailedOrdersButton = ({
 
 const RequoteFailedOrders = () => {
   const { isFetching } = useRefreshQuotes()
-  const { mutate: signQuotes, isPending: isSigning } = useQuoteSignatures(true)
+  const { mutate: signQuotes, isPending: isSigning } =
+    useStableQuoteSignatures(true)
 
   return (
     <RequoteFailedOrdersButton
