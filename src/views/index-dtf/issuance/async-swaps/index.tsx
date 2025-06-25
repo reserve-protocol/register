@@ -169,7 +169,7 @@ const AsyncSwaps = () => {
     return (
       <div className="container flex items-center sm:justify-start md:justify-center gap-2 lg:border-2 lg:border-secondary lg:bg-secondary/30 lg:h-[calc(100vh-100px)] dark:bg-card rounded-4xl w-full">
         <div className="flex flex-col w-fit rounded-4xl p-1">
-          <div className="rounded-3xl border-2 border-secondary lg:border-none sm:min-w-[420px] p-1 m-auto">
+          <div className="rounded-4xl border-2 border-secondary lg:border-none sm:min-w-[420px] p-0 m-auto">
             <Success />
           </div>
         </div>
