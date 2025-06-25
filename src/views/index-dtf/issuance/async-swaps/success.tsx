@@ -125,10 +125,14 @@ const SuccessHeader = () => {
           onClick={() => setViewTransactions(true)}
         >
           <StackTokenLogo
-            tokens={(basket || []).slice(0, 5)}
+            tokens={(basket || []).slice(0, 5).map((token) => ({
+              ...token,
+              chain: indexDTF?.chainId,
+            }))}
             size={16}
             overlap={4}
             reverseStack
+            outsource
           />
           <span className="font-light">All Txs</span>
           <ChevronRight size={16} />

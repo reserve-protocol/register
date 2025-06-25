@@ -12,6 +12,7 @@ import { encodeFunctionData, erc20Abi, maxUint256, parseEther } from 'viem'
 import { useSendCalls, useWaitForCallsStatus } from 'wagmi'
 import { isMintingAtom, txHashAtom, mintValueAtom, successAtom } from './atom'
 import { useFolioDetails } from './hooks/useFolioDetails'
+import { useGetMintTx } from './hooks/useGetMintTx'
 
 const MintButton = () => {
   const account = useAtomValue(walletAtom)
@@ -30,6 +31,9 @@ const MintButton = () => {
   const { data: callsStatus } = useWaitForCallsStatus({
     id: data?.id || '',
   })
+
+  // New hook to detect mint events from Transfer logs
+  const { mintTxHash: eventMintTxHash } = useGetMintTx()
 
   const { data: balanceData, isFetching: isFetchingBalanceData } =
     useERC20Balances(
@@ -122,6 +126,15 @@ const MintButton = () => {
       setIsMinting(false)
     }
   }, [callsStatus?.receipts, callsStatus?.status])
+
+  // New effect to handle mint detection from Transfer events
+  useEffect(() => {
+    if (eventMintTxHash && isMinting) {
+      setMintTxHash(eventMintTxHash)
+      setSuccess(true)
+      setIsMinting(false)
+    }
+  }, [eventMintTxHash, isMinting, setMintTxHash, setSuccess, setIsMinting])
 
   useEffect(() => {
     if (isError) {

@@ -25,8 +25,8 @@ export const useGetMintTx = () => {
         // Get the latest block number
         const latestBlock = await publicClient.getBlockNumber()
 
-        // Look back 100 blocks for Transfer events
-        const fromBlock = latestBlock - 100n
+        // Look back 10 blocks for Transfer events
+        const fromBlock = latestBlock - 10n
 
         const logs = await publicClient.getLogs({
           address: indexDTF.id as Address,
@@ -74,8 +74,8 @@ export const useGetMintTx = () => {
     // Check immediately
     checkForMintEvents()
 
-    // Set up polling every 5 seconds
-    const interval = setInterval(checkForMintEvents, 5000)
+    // Set up polling every 2 seconds
+    const interval = setInterval(checkForMintEvents, 2000)
 
     return () => {
       clearInterval(interval)
