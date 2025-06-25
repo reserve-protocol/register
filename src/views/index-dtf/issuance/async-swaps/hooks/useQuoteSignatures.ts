@@ -273,11 +273,11 @@ export function useQuoteSignatures(refresh = false) {
         universalQuotes.map(({ data }) =>
           limiter(async () => {
             const quote = data.quote as OrderRequest
-            const { typedData } = await generateTypedData(quote)
-            const _typedData = convertTypeDataToBigInt(typedData)
-            const signature = await signTypedDataAsync(_typedData)
 
             try {
+              const { typedData } = await generateTypedData(quote)
+              const _typedData = convertTypeDataToBigInt(typedData)
+              const signature = await signTypedDataAsync(_typedData)
               const universalOrder = await universalSdk.submitOrder({
                 ...quote,
                 signature,

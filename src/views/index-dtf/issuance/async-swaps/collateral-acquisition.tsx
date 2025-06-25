@@ -1,6 +1,6 @@
 import StackTokenLogo from '@/components/token-logo/StackTokenLogo'
 import { Button } from '@/components/ui/button'
-import { indexDTFBasketAtom } from '@/state/dtf/atoms'
+import { indexDTFAtom, indexDTFBasketAtom } from '@/state/dtf/atoms'
 import { getTimerFormat } from '@/utils'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { ArrowLeft, ArrowRight, Check, Loader, RefreshCw } from 'lucide-react'
@@ -19,6 +19,7 @@ import { useStableQuoteSignatures } from './hooks/useQuoteSignatures'
 import MintButton from './mint-button'
 
 const OpenCollateralPanel = () => {
+  const indexDTF = useAtomValue(indexDTFAtom)
   const basket = useAtomValue(indexDTFBasketAtom)
   const [open, setOpen] = useAtom(openCollateralPanelAtom)
 
@@ -31,10 +32,14 @@ const OpenCollateralPanel = () => {
     >
       {open && <ArrowLeft size={16} />}
       <StackTokenLogo
-        tokens={(basket || []).slice(0, 5)}
+        tokens={(basket || []).slice(0, 5).map((token) => ({
+          ...token,
+          chain: indexDTF?.chainId,
+        }))}
         size={16}
         overlap={4}
         reverseStack
+        outsource
       />
       {!open && <ArrowRight size={16} />}
     </Button>
