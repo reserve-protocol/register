@@ -1,59 +1,53 @@
-import dtfIndexAbiV2 from '@/abis/dtf-index-abi-v2'
-import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
+import { FIXED_PLATFORM_FEE } from '@/utils/constants'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
-import { useReadContract } from 'wagmi'
+import { useFormContext } from 'react-hook-form'
 import {
-  dustTokenBalancesAtom,
+  feeRecipientsAtom,
   isProposalConfirmedAtom,
   proposalDescriptionAtom,
   removedBasketTokensAtom,
+  selectedSectionAtom,
 } from './atoms'
 
 const resetAtom = atom(null, (get, set) => {
   set(removedBasketTokensAtom, [])
+  set(selectedSectionAtom, [])
   set(isProposalConfirmedAtom, false)
   set(proposalDescriptionAtom, undefined)
 })
 
-const DustTokenBalancesUpdater = () => {
+const Updater = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
-  const chainId = useAtomValue(chainIdAtom)
-  const setTokenBalances = useSetAtom(dustTokenBalancesAtom)
-
-  const { data: balances } = useReadContract({
-    address: indexDTF?.id,
-    abi: dtfIndexAbiV2,
-    functionName: 'totalAssets',
-    chainId,
-    args: [],
-    query: {
-      select: (data) => {
-        const [tokens, balances] = data
-
-        return tokens.reduce(
-          (acc, token, index) => {
-            acc[token.toLowerCase()] = balances[index]
-            return acc
-          },
-          {} as Record<string, bigint>
-        )
-      },
-    },
-  })
+  const feeRecipients = useAtomValue(feeRecipientsAtom)
+  const reset = useSetAtom(resetAtom)
+  const { reset: resetForm } = useFormContext()
 
   useEffect(() => {
-    if (balances) {
-      setTokenBalances(balances)
+    if (indexDTF && indexDTF.ownerGovernance && feeRecipients) {
+      resetForm({
+        mandate: indexDTF.mandate,
+        governanceVoteLock: indexDTF.stToken?.id,
+        mintFee: indexDTF.mintingFee * 100,
+        folioFee: indexDTF.annualizedTvlFee * 100,
+        governanceShare: feeRecipients.governanceShare,
+        deployerShare: feeRecipients.deployerShare,
+        additionalRevenueRecipients: feeRecipients.externalRecipients,
+        fixedPlatformFee: FIXED_PLATFORM_FEE,
+        auctionLength: indexDTF.auctionLength / 60,
+        governanceVotingDelay: indexDTF.ownerGovernance.votingDelay,
+        governanceVotingPeriod: indexDTF.ownerGovernance.votingPeriod,
+        governanceVotingQuorum: indexDTF.ownerGovernance.quorumNumerator,
+        governanceVotingThreshold: indexDTF.ownerGovernance.proposalThreshold,
+        governanceExecutionDelay:
+          indexDTF.ownerGovernance.timelock.executionDelay,
+        guardians: indexDTF.ownerGovernance.timelock.guardians,
+        brandManagers: indexDTF.brandManagers,
+        auctionLaunchers: indexDTF.auctionLaunchers,
+      })
     }
-  }, [balances])
-
-  return null
-}
-
-const Updater = () => {
-  const reset = useSetAtom(resetAtom)
+  }, [indexDTF?.id, !!feeRecipients])
 
   useEffect(() => {
     return () => {
@@ -61,11 +55,7 @@ const Updater = () => {
     }
   }, [reset])
 
-  return (
-    <>
-      <DustTokenBalancesUpdater />
-    </>
-  )
+  return null
 }
 
 export default Updater

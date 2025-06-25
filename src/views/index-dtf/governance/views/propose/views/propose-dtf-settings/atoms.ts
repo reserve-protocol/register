@@ -6,16 +6,15 @@ import {
   indexDTFVersionAtom,
 } from '@/state/dtf/atoms'
 import { Token } from '@/types'
-import { BIGINT_MAX } from '@/utils/constants'
+import { BIGINT_MAX, FIXED_PLATFORM_FEE } from '@/utils/constants'
 import { atom } from 'jotai'
 import { encodeFunctionData, Hex } from 'viem'
 
-export const dustTokenBalancesAtom = atom<Record<string, bigint> | undefined>(
-  undefined
-)
+// UI
+export const selectedSectionAtom = atom<string[]>([])
 
+// remove-dust-tokens
 export const removedBasketTokensAtom = atom<Token[]>([])
-
 export const currentBasketTokensAtom = atom((get) => {
   const indexDTF = get(indexDTFAtom)
   const basket = get(indexDTFBasketAtom)
@@ -90,3 +89,36 @@ export const dtfSettingsProposalCalldatasAtom = atom<Hex[] | undefined>(
     return calldatas
   }
 )
+
+export const feeRecipientsAtom = atom((get) => {
+  const indexDTF = get(indexDTFAtom)
+
+  if (!indexDTF) return undefined
+
+  const externalRecipients: { address: string; share: number }[] = []
+  let deployerShare = 0
+  let governanceShare = 0
+  const PERCENT_ADJUST = 100 / FIXED_PLATFORM_FEE
+
+  for (const recipient of indexDTF.feeRecipients) {
+    // Deployer share
+    if (recipient.address.toLowerCase() === indexDTF.deployer.toLowerCase()) {
+      deployerShare = Number(recipient.percentage) / PERCENT_ADJUST
+    } else if (
+      recipient.address.toLowerCase() === indexDTF.stToken?.id.toLowerCase()
+    ) {
+      governanceShare = Number(recipient.percentage) / PERCENT_ADJUST
+    } else {
+      externalRecipients.push({
+        address: recipient.address,
+        share: Number(recipient.percentage) / PERCENT_ADJUST,
+      })
+    }
+  }
+
+  return {
+    deployerShare,
+    governanceShare,
+    externalRecipients,
+  }
+})
