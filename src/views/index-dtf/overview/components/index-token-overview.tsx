@@ -18,7 +18,6 @@ import { ArrowUpRight, ImagePlus } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useTrackIndexDTFClick } from '../../hooks/useTrackIndexDTFPage'
 import IndexRolesOverview from './index-roles-overview'
-import { UniswapButton } from './landing-mint'
 import ZapMint from './zap-mint'
 import { currentZapMintTabAtom } from './zap-mint/atom'
 
@@ -134,14 +133,7 @@ const IndexTokenOverview = () => {
           </>
         )}
       </div>
-      {dtf?.id?.toLowerCase() ===
-      '0xebcda5b80f62dd4dd2a96357b42bb6facbf30267' ? (
-        <div className="block xl:hidden w-full">
-          <UniswapButton />
-        </div>
-      ) : (
-        <ZapBuySellButtons />
-      )}
+      <ZapBuySellButtons />
 
       <IndexRolesOverview />
     </Card>
