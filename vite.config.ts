@@ -5,7 +5,6 @@ import viteTsconfigPaths from 'vite-tsconfig-paths'
 import path from 'path'
 import { lingui } from '@lingui/vite-plugin'
 import { viteStaticCopy } from 'vite-plugin-static-copy'
-import { nodePolyfills } from 'vite-plugin-node-polyfills'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -54,10 +53,6 @@ export default defineConfig({
         })
       },
     },
-    // Polyfills for node modules - @cowprotocol/cow-sdk needs it
-    nodePolyfills({
-      protocolImports: true,
-    }),
     sentryVitePlugin({
       org: 'abc-labs-0g',
       project: 'register',
@@ -82,6 +77,8 @@ export default defineConfig({
         __dirname,
         'node_modules/@uniswap/uniswapx-sdk/dist/src/index.js'
       ),
+      // Polyfills for node modules - @cowprotocol/cow-sdk needs it
+      'node-fetch': 'cross-fetch',
     },
   },
   optimizeDeps: {
