@@ -71,6 +71,8 @@ export type AssetTrade = {
   approvedTimestamp: number
   launchedTimestamp: number
   approvedBlockNumber: string
+  approvedSellLimitSpot: bigint
+  approvedBuyLimitSpot: bigint
   // Calculated after
   currentBuyShare?: number
   currentSellShare?: number

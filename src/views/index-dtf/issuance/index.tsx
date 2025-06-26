@@ -26,6 +26,7 @@ import RefreshQuote from '../overview/components/zap-mint/refresh-quote'
 import Sell from '../overview/components/zap-mint/sell'
 import ZapSettings from '../overview/components/zap-mint/zap-settings'
 import LowLiquidityWarning from '../overview/components/zap-mint/low-liquidity-warning'
+import ZapHealthcheck from '../overview/components/zap-mint/zap-healthcheck'
 
 const IndexDTFIssuance = () => {
   useTrackIndexDTFPage('mint')
@@ -116,8 +117,9 @@ const IndexDTFIssuance = () => {
             )}
 
             <div className={showSettings ? 'hidden' : 'opacity-100'}>
-              <div className="flex flex-col gap-1">
-                <LowLiquidityWarning className="mt-3" />
+              <div className="flex flex-col">
+                <LowLiquidityWarning className="mt-2" />
+                <ZapHealthcheck className="mt-2" />
                 <TabsContent value="buy">
                   <Buy />
                 </TabsContent>

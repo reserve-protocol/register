@@ -46,17 +46,10 @@ const useAPIProtocolMetrics = () => {
     select: (data) => {
       return {
         ...data,
-        tvl: Object.values(
-          data.tvlTimeseries
-            .map((e) => ({ ...e, timestamp: 0 }))
-            ?.slice(-3, -2)[0]
-        ).reduce((a, b) => a + b, 0), // Temporary fix to get the latest TVL. TODO: Fix on backend
-        tvlTimeseries: data.tvlTimeseries
-          .map((item) => ({
-            ...item,
-            timestamp: item.timestamp * 1000,
-          }))
-          .slice(0, -2), // Temporary fix to remove last two items. TODO: Fix on backend
+        tvlTimeseries: data.tvlTimeseries.map((item) => ({
+          ...item,
+          timestamp: item.timestamp * 1000,
+        })),
       }
     },
   })

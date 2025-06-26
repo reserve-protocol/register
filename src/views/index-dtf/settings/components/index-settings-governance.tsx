@@ -13,24 +13,32 @@ import {
 import { formatEther } from 'viem'
 import { IconWrapper, InfoCard, InfoCardItem } from './settings-info-card'
 import { cn } from '@/lib/utils'
+import Help from '@/components/ui/help'
 
 export const InnerGovernanceInfo = ({
-  basket,
+  kind = 'trading',
   className,
 }: {
-  basket?: boolean
+  kind?: 'trading' | 'owner' | 'dao'
   className?: string
 }) => {
   const indexDTF = useAtomValue(indexDTFAtom)
 
+  if (!indexDTF) return null
+
   if (
-    indexDTF &&
-    ((basket && !indexDTF.tradingGovernance) ||
-      (!basket && !indexDTF.ownerGovernance))
+    (kind === 'trading' && !indexDTF.tradingGovernance) ||
+    (kind === 'owner' && !indexDTF.ownerGovernance) ||
+    (kind === 'dao' && !indexDTF.stToken?.governance)
   )
     return null
 
-  const data = basket ? indexDTF?.tradingGovernance : indexDTF?.ownerGovernance
+  const data =
+    kind === 'trading'
+      ? indexDTF.tradingGovernance
+      : kind === 'owner'
+        ? indexDTF.ownerGovernance
+        : indexDTF.stToken?.governance
 
   return (
     <div className={cn(className)}>
@@ -82,22 +90,50 @@ export const InnerGovernanceInfo = ({
   )
 }
 
-const GovernanceInfo = ({ basket }: { basket?: boolean }) => {
+const GovernanceInfo = ({
+  kind = 'trading',
+}: {
+  kind?: 'trading' | 'owner' | 'dao'
+}) => {
   const indexDTF = useAtomValue(indexDTFAtom)
 
+  if (!indexDTF) return null
+
   if (
-    indexDTF &&
-    ((basket && !indexDTF.tradingGovernance) ||
-      (!basket && !indexDTF.ownerGovernance))
+    (kind === 'trading' && !indexDTF.tradingGovernance) ||
+    (kind === 'owner' && !indexDTF.ownerGovernance) ||
+    (kind === 'dao' && !indexDTF.stToken?.governance)
   )
     return null
 
+  const help =
+    kind === 'trading'
+      ? t`Controls changes to the basket of an Index DTF`
+      : kind === 'owner'
+        ? t`Controls fees, voting parameters, and anything other than basket changes for an Index DTF`
+        : t`Controls settings of the vlDAO including vote lock duration and approving revenue tokens`
+
   return (
     <InfoCard
-      title={basket ? t`Basket Governance` : t`Non-Basket Governance`}
-      id={basket ? 'basket-governance' : 'non-basket-governance'}
+      title={
+        kind === 'trading'
+          ? t`Basket Governance`
+          : kind === 'owner'
+            ? t`Non-Basket Governance`
+            : t`DAO Governance`
+      }
+      id={
+        kind === 'trading'
+          ? 'basket-governance'
+          : kind === 'owner'
+            ? 'non-basket-governance'
+            : 'dao-governance'
+      }
+      action={
+        <Help size={20} className="p-0" content={help} />
+      }
     >
-      <InnerGovernanceInfo basket={basket} />
+      <InnerGovernanceInfo kind={kind} />
     </InfoCard>
   )
 }

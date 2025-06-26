@@ -20,7 +20,6 @@ import ExploreGovernance from 'views/explorer/components/governance'
 import AvailableRevenue from 'views/explorer/components/revenue'
 import ExploreTokens from 'views/explorer/components/tokens'
 import ExploreTransactions from 'views/explorer/components/transactions'
-import Terms from 'views/terms'
 import Discover from './views/discover'
 import IndexDTFAuctions from './views/index-dtf/auctions'
 import IndexDTFGovernance from './views/index-dtf/governance'
@@ -37,8 +36,8 @@ import AllYieldDTFList from './views/tokens/Tokens'
 import DeployComingSoon from './views/index-dtf/deploy/components/deploy-coming-soon'
 import IndexDTFWhitelistProposal from './views/index-dtf/governance/views/propose/vault'
 import AsyncSwaps from './views/index-dtf/issuance/async-swaps'
+import ProposeDTFSettings from './views/index-dtf/governance/views/propose/views/propose-dtf-settings'
 
-// TODO: Remove terms!
 // TODO: Fix recoll call on yield dtf auction page
 const AppRoutes = () => (
   <Routes>
@@ -52,7 +51,6 @@ const AppRoutes = () => (
       element={<DeployIndexDTF />}
     />
     <Route path={ROUTES.TOKENS} element={<AllYieldDTFList />} />
-    <Route path={ROUTES.TERMS} element={<Terms />} />
     {/* Yield DTF */}
     <Route path={`/:chain/token/:tokenId`} element={<RTokenContainer />}>
       <Route index element={<Navigate replace to={ROUTES.OVERVIEW} />} />
@@ -93,6 +91,10 @@ const AppRoutes = () => (
       <Route
         path={`${ROUTES.GOVERNANCE}/${ROUTES.GOVERNANCE_PROPOSE}/${GOVERNANCE_PROPOSAL_TYPES.BASKET}`}
         element={<IndexDTFBasketProposal />}
+      />
+      <Route
+        path={`${ROUTES.GOVERNANCE}/${ROUTES.GOVERNANCE_PROPOSE}/${GOVERNANCE_PROPOSAL_TYPES.DTF}`}
+        element={<ProposeDTFSettings />}
       />
       <Route
         path={`${ROUTES.GOVERNANCE}/${ROUTES.GOVERNANCE_PROPOSE}/${GOVERNANCE_PROPOSAL_TYPES.OTHER}`}

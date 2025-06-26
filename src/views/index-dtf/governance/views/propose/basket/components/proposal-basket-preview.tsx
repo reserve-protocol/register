@@ -458,111 +458,117 @@ const useBasketProposalContext = (
     )
       return undefined
 
-    const allPrices = {
-      ...prices,
-      ...(newPrices?.reduce(
-        (acc, price) => {
-          acc[price.address.toLowerCase()] = price.price ?? 0
-          return acc
-        },
-        {} as Record<string, number>
-      ) ?? {}),
-    }
-    const allTokens = {
-      ...basket.reduce(
-        (acc, token) => {
-          acc[token.address] = token
-          return acc
-        },
-        {} as Record<string, Token>
-      ),
-      ...newTokensInfo,
-    }
-
-    const dtfPrice = allPrices[dtf?.toLowerCase() ?? ''] ?? 0
-    // Create initial estimated basket
-    const estimatedBasket = Object.entries(allTokens).reduce(
-      (acc, [address, token]) => {
-        acc[address] = {
-          token,
-          currentShares: shares[address] ?? '0',
-          targetShares: shares[address] ?? '0',
-          delta: 0,
-        }
-        return acc
-      },
-      {} as EstimatedBasket
-    )
-
-    // Track already substracted tokens "up to" shares
-    const substractedMap = new Set<string>()
-
-    // Create organized trades by sell token
-    // Group trades by sell token
-    const organizedTrades = trades.reduce((acc, trade, index) => {
-      const sellAddress = trade.sell.toLowerCase()
-      const buyAddress = trade.buy.toLowerCase()
-
-      if (!acc[sellAddress]) {
-        acc[sellAddress] = {
-          trades: [],
-          sell: {
-            token: estimatedBasket[sellAddress].token,
-            amount: 0n,
-            percent: 0,
-            shares: estimatedBasket[sellAddress].currentShares,
+    // TODO: There is a race condition error reading a token, this code requires a refresh
+    try {
+      const allPrices = {
+        ...prices,
+        ...(newPrices?.reduce(
+          (acc, price) => {
+            acc[price.address.toLowerCase()] = price.price ?? 0
+            return acc
           },
+          {} as Record<string, number>
+        ) ?? {}),
+      }
+      const allTokens = {
+        ...basket.reduce(
+          (acc, token) => {
+            acc[token.address] = token
+            return acc
+          },
+          {} as Record<string, Token>
+        ),
+        ...newTokensInfo,
+      }
+
+      const dtfPrice = allPrices[dtf?.toLowerCase() ?? ''] ?? 0
+      // Create initial estimated basket
+      const estimatedBasket = Object.entries(allTokens).reduce(
+        (acc, [address, token]) => {
+          acc[address] = {
+            token,
+            currentShares: shares[address] ?? '0',
+            targetShares: shares[address] ?? '0',
+            delta: 0,
+          }
+          return acc
+        },
+        {} as EstimatedBasket
+      )
+
+      // Track already substracted tokens "up to" shares
+      const substractedMap = new Set<string>()
+
+      // Create organized trades by sell token
+      // Group trades by sell token
+      const organizedTrades = trades.reduce((acc, trade, index) => {
+        const sellAddress = trade.sell.toLowerCase()
+        const buyAddress = trade.buy.toLowerCase()
+
+        if (!acc[sellAddress]) {
+          acc[sellAddress] = {
+            trades: [],
+            sell: {
+              token: estimatedBasket[sellAddress].token,
+              amount: 0n,
+              percent: 0,
+              shares: estimatedBasket[sellAddress].currentShares,
+            },
+          }
         }
-      }
 
-      const sellTokenShares =
-        getBasketPortion(
-          trade.sellLimit.spot,
-          BigInt(estimatedBasket[sellAddress].token.decimals),
-          allPrices[sellAddress],
-          dtfPrice
-        )[0] * 100
-      const buyTokenShares =
-        getBasketPortion(
-          trade.buyLimit.spot,
-          BigInt(estimatedBasket[buyAddress].token.decimals),
-          allPrices[buyAddress],
-          dtfPrice
-        )[0] * 100
+        const sellTokenShares =
+          getBasketPortion(
+            trade.sellLimit.spot,
+            BigInt(estimatedBasket[sellAddress].token.decimals),
+            allPrices[sellAddress],
+            dtfPrice
+          )[0] * 100
+        const buyTokenShares =
+          getBasketPortion(
+            trade.buyLimit.spot,
+            BigInt(estimatedBasket[buyAddress].token.decimals),
+            allPrices[buyAddress],
+            dtfPrice
+          )[0] * 100
 
-      acc[sellAddress].trades.push({
-        ...trade,
-        index,
-        token: estimatedBasket[buyAddress].token,
-        shares:
-          buyTokenShares - Number(estimatedBasket[buyAddress].currentShares),
-      })
-      acc[sellAddress].sell.amount += trade.sellLimit.spot
-      acc[sellAddress].sell.percent = sellTokenShares
+        acc[sellAddress].trades.push({
+          ...trade,
+          index,
+          token: estimatedBasket[buyAddress].token,
+          shares:
+            buyTokenShares - Number(estimatedBasket[buyAddress].currentShares),
+        })
+        acc[sellAddress].sell.amount += trade.sellLimit.spot
+        acc[sellAddress].sell.percent = sellTokenShares
 
-      if (!substractedMap.has(sellAddress)) {
-        estimatedBasket[sellAddress].targetShares = sellTokenShares.toFixed(2)
-        estimatedBasket[sellAddress].delta =
-          Number(estimatedBasket[sellAddress].targetShares) -
-          Number(estimatedBasket[sellAddress].currentShares)
-        substractedMap.add(sellAddress)
-      }
+        if (!substractedMap.has(sellAddress)) {
+          estimatedBasket[sellAddress].targetShares = sellTokenShares.toFixed(2)
+          estimatedBasket[sellAddress].delta =
+            Number(estimatedBasket[sellAddress].targetShares) -
+            Number(estimatedBasket[sellAddress].currentShares)
+          substractedMap.add(sellAddress)
+        }
 
-      if (!substractedMap.has(buyAddress)) {
-        estimatedBasket[buyAddress].targetShares = buyTokenShares.toFixed(2)
-        estimatedBasket[buyAddress].delta =
-          Number(estimatedBasket[buyAddress].targetShares) -
-          Number(estimatedBasket[buyAddress].currentShares)
-        substractedMap.add(buyAddress)
-      }
+        if (!substractedMap.has(buyAddress)) {
+          estimatedBasket[buyAddress].targetShares = buyTokenShares.toFixed(2)
+          estimatedBasket[buyAddress].delta =
+            Number(estimatedBasket[buyAddress].targetShares) -
+            Number(estimatedBasket[buyAddress].currentShares)
+          substractedMap.add(buyAddress)
+        }
 
-      return acc
-    }, {} as OrganizedTrades)
+        return acc
+      }, {} as OrganizedTrades)
 
-    return [estimatedBasket, organizedTrades] as [
-      EstimatedBasket,
-      OrganizedTrades,
-    ]
+      return [estimatedBasket, organizedTrades] as [
+        EstimatedBasket,
+        OrganizedTrades,
+      ]
+    } catch (e) {
+      console.error('ERROR FETCHING BASKET CONTEXT', e)
+      return undefined
+    }
   }, [
     newPrices,
     newTokensInfo,

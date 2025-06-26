@@ -1,5 +1,6 @@
 import TokenLogo from '@/components/token-logo'
 import { Skeleton } from '@/components/ui/skeleton'
+import { cn } from '@/lib/utils'
 import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom, indexDTFBrandAtom } from '@/state/dtf/atoms'
 import { shortenAddress } from '@/utils'
@@ -21,7 +22,14 @@ const BrandCurator = ({
     <TokenLogo src={icon || undefined} size="xl" />
     <div>
       <span className="text-legend text-xs md:text-sm">Curator:</span>
-      <Link to={link ?? ''} target="_blank" className="flex items-center gap-1">
+      <Link
+        to={link ?? ''}
+        target="_blank"
+        className={cn(
+          'flex items-center gap-1',
+          !link && 'cursor-default pointer-events-none'
+        )}
+      >
         <span className="font-bold">{name}</span>
         <div className="rounded-full p-1 bg-muted">
           <ArrowUpRight size={12} />

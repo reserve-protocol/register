@@ -1,3 +1,4 @@
+import { sentryVitePlugin } from '@sentry/vite-plugin'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import viteTsconfigPaths from 'vite-tsconfig-paths'
@@ -57,9 +58,19 @@ export default defineConfig({
     nodePolyfills({
       protocolImports: true,
     }),
+    sentryVitePlugin({
+      org: 'abc-labs-0g',
+      project: 'register',
+    }),
   ],
+  define: {
+    'import.meta.env.VITE_GIT_SHA': JSON.stringify(
+      process.env.CF_PAGES_COMMIT_SHA
+    ),
+  },
   build: {
     outDir: 'build',
+    sourcemap: true,
   },
   resolve: {
     alias: {
@@ -79,5 +90,10 @@ export default defineConfig({
   },
   server: {
     port: 3000,
+  },
+  test: {
+    include: ['src/lib/**/*.test.{ts,.tsx}'],
+    globals: true,
+    environment: 'node',
   },
 })

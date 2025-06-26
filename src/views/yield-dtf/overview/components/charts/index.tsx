@@ -5,12 +5,12 @@ import SupplyChart from './SupplyChart'
 
 const HistoricalCharts = () => {
   return (
-    <>
+    <div className="flex flex-col gap-1">
       <PriceChart />
-      <APYChart mt="5" />
-      <SupplyChart mt="5" />
-      <StakingChart mt="5" />
-    </>
+      <APYChart />
+      <SupplyChart />
+      <StakingChart />
+    </div>
   )
 }
 

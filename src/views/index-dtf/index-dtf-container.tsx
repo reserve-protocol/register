@@ -17,7 +17,7 @@ import { AvailableChain, supportedChains } from '@/utils/chains'
 import { NETWORKS, RESERVE_API, ROUTES } from '@/utils/constants'
 import { useQuery } from '@tanstack/react-query'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Outlet, useNavigate, useParams } from 'react-router-dom'
 import { useReadContract, useSwitchChain } from 'wagmi'
 import IndexDTFNavigation from './components/navigation'
@@ -113,6 +113,8 @@ const resetStateAtom = atom(null, (get, set) => {
   set(indexDTFBrandAtom, undefined)
 })
 
+export const indexDTFRefreshFnAtom = atom<(() => void) | null>(null)
+
 // TODO: Hook currently re-renders a lot because of a wagmi bug, different component to avoid tree re-renders
 const Updater = () => {
   const { chain, tokenId } = useParams()
@@ -121,7 +123,10 @@ const Updater = () => {
   const setIndexDTFVersion = useSetAtom(indexDTFVersionAtom)
   const [currentToken, setTokenAddress] = useAtom(iTokenAddressAtom)
   const resetAtoms = useSetAtom(resetStateAtom)
+  const setRefreshFn = useSetAtom(indexDTFRefreshFnAtom)
   const chainId = NETWORKS[chain ?? '']
+  const [key, setKey] = useState(0)
+
   const { data: version } = useReadContract({
     address: currentToken,
     abi: dtfIndexAbi,
@@ -138,6 +143,14 @@ const Updater = () => {
     // Remove duplicates
     resetAtoms()
   }
+
+  const refreshIndexDTF = () => {
+    setKey((k) => k + 1)
+  }
+
+  useEffect(() => {
+    setRefreshFn(() => refreshIndexDTF)
+  }, [])
 
   // Handle token change
   useEffect(() => {
@@ -166,11 +179,11 @@ const Updater = () => {
   useEffect(() => resetState, [])
 
   return (
-    <>
+    <div key={key}>
       <IndexDTFMetadataUpdater />
       <IndexDTFBasketUpdater />
       <GovernanceUpdater />
-    </>
+    </div>
   )
 }
 

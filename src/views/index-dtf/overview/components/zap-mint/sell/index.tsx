@@ -50,7 +50,7 @@ const Sell = () => {
       tokenOut: selectedToken.address,
       amountIn: parseEther(inputAmount).toString(),
       slippage: Number(slippage),
-      disabled: insufficientBalance || ongoingTx,
+      disabled: ongoingTx,
       forceMint,
       dtfTicker: indexDTF?.token.symbol || '',
       type: 'sell',

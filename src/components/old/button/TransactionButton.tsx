@@ -20,6 +20,7 @@ interface TransactionButtonProps extends LoadingButtonProps {
   mining?: boolean
   error?: Error | null
   chain?: number
+  errorWithName?: boolean
 }
 
 export const GasEstimateLabel = ({ gas, ...props }: { gas: bigint }) => {
@@ -95,6 +96,7 @@ const TransactionButton = ({
   loading,
   chain,
   loadingText,
+  errorWithName = true,
   ...props
 }: TransactionButtonProps) => {
   const address = useAtomValue(walletAtom)
@@ -137,7 +139,12 @@ const TransactionButton = ({
       <LoadingButton loading={loading} loadingText={loadingText} {...props} />
       {!!gas && <GasEstimateLabel gas={gas} />}
       {!!error && (
-        <TransactionError sx={{ textAlign: 'center' }} mt={3} error={error} />
+        <TransactionError
+          sx={{ textAlign: 'center' }}
+          mt={3}
+          error={error}
+          withName={errorWithName}
+        />
       )}
     </>
   )

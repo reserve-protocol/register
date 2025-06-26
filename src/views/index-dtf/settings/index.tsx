@@ -16,8 +16,9 @@ const IndexDTFSettings = () => {
         <GovernanceTokenInfo />
         <RewardTokens />
         <FeesInfo />
-        <GovernanceInfo basket />
-        <GovernanceInfo />
+        <GovernanceInfo kind="trading" />
+        <GovernanceInfo kind="owner"/>
+        <GovernanceInfo kind="dao"/>
       </div>
       <div className="flex flex-col gap-2">
         <RolesInfo />

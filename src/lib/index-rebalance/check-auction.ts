@@ -1,10 +1,10 @@
 import { Decimal } from 'decimal.js-light'
 
-import { D27d } from './numbers'
+import { bn, D27d } from './numbers'
 import { Auction } from './types'
 
 /**
- * Check if a auction contains the current market price of the tokens in the auction, without accounting for slippage
+ * Check if a auction's price range contains the current market price, without accounting for slippage
  *
  * @param auction Auction
  * @param tokens Addresses of tokens in the basket, must match prices
@@ -53,7 +53,7 @@ export const checkAuction = (
     .div(new Decimal(`1e${decimals[x]}`))
 
   // D27{buyTok/sellTok} = D27 * {buyTok/sellTok}
-  const priceD27 = BigInt(price.mul(D27d).toFixed(0))
+  const priceD27 = bn(price.mul(D27d))
 
   return priceD27 >= auction.prices.end && priceD27 <= auction.prices.start
 }
