@@ -111,6 +111,7 @@ const CommandMenu = () => {
               <CommandGroup key={section} heading={SECTION_TITLES[section]}>
                 {dtfs[section].map((dtf) => (
                   <Link
+                    key={dtf.address}
                     to={
                       section === 'index'
                         ? getFolioRoute(dtf.address, dtf.chain)
