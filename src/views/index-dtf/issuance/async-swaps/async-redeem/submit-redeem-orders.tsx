@@ -1,8 +1,13 @@
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
-import { useAtomValue } from 'jotai'
-import { useMemo } from 'react'
-import { infoMessageAtom, redeemAssetsAtom } from '../atom'
+import { useAtomValue, useSetAtom } from 'jotai'
+import { useCallback, useMemo } from 'react'
+import {
+  balanceAfterSwapAtom,
+  infoMessageAtom,
+  redeemAssetsAtom,
+  selectedTokenBalanceAtom,
+} from '../atom'
 import { useStableQuoteSignatures } from '../hooks/useQuoteSignatures'
 
 type SubmitRedeemOrdersProps = {
@@ -18,8 +23,15 @@ const SubmitRedeemButton = ({
   isPending: boolean
   loadingQuote?: boolean
 }) => {
+  const selectedTokenBalance = useAtomValue(selectedTokenBalanceAtom)
   const redeemAssets = useAtomValue(redeemAssetsAtom)
   const infoMessage = useAtomValue(infoMessageAtom)
+  const setBalanceAfterSwap = useSetAtom(balanceAfterSwapAtom)
+
+  const handleSubmit = useCallback(() => {
+    setBalanceAfterSwap(selectedTokenBalance?.value || 0n)
+    mutate()
+  }, [mutate, selectedTokenBalance?.value, setBalanceAfterSwap])
 
   const disabled = useMemo(
     () =>
@@ -55,7 +67,7 @@ const SubmitRedeemButton = ({
         'w-full rounded-xl',
         isPending && 'opacity-50 cursor-not-allowed'
       )}
-      onClick={() => mutate()}
+      onClick={handleSubmit}
       disabled={disabled}
     >
       {buttonText}

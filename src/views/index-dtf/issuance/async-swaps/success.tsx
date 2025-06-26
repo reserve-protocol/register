@@ -9,7 +9,12 @@ import {
   indexDTFBasketAtom,
   indexDTFPriceAtom,
 } from '@/state/dtf/atoms'
-import { formatCurrency, formatTokenAmount, shortenAddress } from '@/utils'
+import {
+  formatCurrency,
+  formatPercentage,
+  formatTokenAmount,
+  shortenAddress,
+} from '@/utils'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import {
@@ -24,7 +29,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { formatUnits } from 'viem'
 import {
-  bufferValueAtom,
+  balanceDifferenceAtom,
   cowswapOrderIdsAtom,
   cowswapOrdersAtom,
   cowswapOrdersCreatedAtAtom,
@@ -34,6 +39,7 @@ import {
   operationAtom,
   quotesAtom,
   redeemAssetsAtom,
+  savedAmountAtom,
   selectedTokenAtom,
   successAtom,
   txHashAtom,
@@ -144,14 +150,15 @@ const DTFAmount = () => {
   const chainId = useAtomValue(chainIdAtom)
   const indexDTF = useAtomValue(indexDTFAtom)
   const indexDTFPrice = useAtomValue(indexDTFPriceAtom)
-  const inputAmountUSD = useAtomValue(mintValueUSDAtom)
+  const balanceDifference = useAtomValue(balanceDifferenceAtom)
   const operation = useAtomValue(operationAtom)
   const sharesRedeemed = useAtomValue(userInputAtom)
   const mintValue = useAtomValue(mintValueAtom)
-
   const valueMinted = (indexDTFPrice || 0) * mintValue
-  const priceImpact = inputAmountUSD
-    ? ((valueMinted * 100) / inputAmountUSD - 100).toFixed(2)
+  const valueRedeemed = (indexDTFPrice || 0) * Number(sharesRedeemed)
+
+  const priceImpact = balanceDifference
+    ? (valueMinted * 100) / balanceDifference - 100
     : 0
 
   return (
@@ -176,44 +183,27 @@ const DTFAmount = () => {
           className="rounded-full"
         />
       </div>
-      {operation === 'mint' && (
-        <div>
-          ${formatCurrency(valueMinted)}{' '}
-          <span className="text-muted-foreground">({priceImpact}%)</span>
-        </div>
-      )}
+      <div>
+        ${formatCurrency(operation === 'mint' ? valueMinted : valueRedeemed)}{' '}
+        {operation === 'mint' && (
+          <span className="text-muted-foreground">
+            ({formatPercentage(priceImpact)})
+          </span>
+        )}
+      </div>
     </div>
   )
 }
 
-const USDCReceivedOnRedeem = () => {
-  const cowswapOrders = useAtomValue(cowswapOrdersAtom)
-  const selectedToken = useAtomValue(selectedTokenAtom)
-  const assetsRedeemed = useAtomValue(redeemAssetsAtom)
-
-  const notSwappedAssets =
-    Number(
-      formatUnits(
-        assetsRedeemed[selectedToken.address] || 0n,
-        selectedToken.decimals
-      )
-    ) || 0
-
-  const amountOut =
-    notSwappedAssets +
-    cowswapOrders.reduce(
-      (acc, order) =>
-        acc +
-        Number(formatUnits(BigInt(order.buyAmount), selectedToken.decimals)),
-      0
-    )
-  return <span>{formatCurrency(amountOut)}</span>
-}
-
 const USDCAmount = () => {
   const inputAmount = useAtomValue(userInputAtom)
-  const inputAmountUSD = useAtomValue(mintValueUSDAtom)
   const operation = useAtomValue(operationAtom)
+  const balanceDifference = useAtomValue(balanceDifferenceAtom)
+  const indexDTFPrice = useAtomValue(indexDTFPriceAtom)
+  const valueRedeemed = (indexDTFPrice || 0) * Number(inputAmount)
+  const priceImpact = valueRedeemed
+    ? (balanceDifference * 100) / valueRedeemed - 100
+    : 0
 
   return (
     <div className="p-6 min-h-[100px] rounded-3xl bg-background flex flex-col gap-2">
@@ -223,11 +213,7 @@ const USDCAmount = () => {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-1 text-2xl">
           <div className="text-primary font-semibold">
-            {operation === 'mint' ? (
-              formatCurrency(inputAmountUSD)
-            ) : (
-              <USDCReceivedOnRedeem />
-            )}
+            {formatCurrency(balanceDifference)}
           </div>
           <div>USDC</div>
         </div>
@@ -241,16 +227,16 @@ const USDCAmount = () => {
         )}
       </div>
       <div>
-        {operation === 'mint' ? (
-          <span>${formatCurrency(inputAmountUSD)}</span>
-        ) : (
-          <span>
-            $<USDCReceivedOnRedeem />
-          </span>
-        )}
+        <span>${formatCurrency(balanceDifference)}</span>
         {operation === 'mint' && (
           <span className="text-muted-foreground line-through ml-1">
             ${formatCurrency(Number(inputAmount))}
+          </span>
+        )}
+        {operation === 'redeem' && (
+          <span className="text-muted-foreground ml-1">
+            ({priceImpact > 0 ? '+' : ''}
+            {formatPercentage(priceImpact)})
           </span>
         )}
       </div>
@@ -265,7 +251,7 @@ const USDCAmount = () => {
 }
 
 const BufferInfo = () => {
-  const buffer = useAtomValue(bufferValueAtom)
+  const savedAmount = useAtomValue(savedAmountAtom)
 
   return (
     <div className="flex items-center gap-1 justify-between px-4 py-3 bg-muted rounded-full -mx-4 mt-2">
@@ -280,7 +266,7 @@ const BufferInfo = () => {
       </div>
       <div className="flex items-center gap-1 text-primary">
         <TokenLogo symbol={'USDC'} size="sm" className="rounded-full" />$
-        {formatCurrency(buffer)}
+        {formatCurrency(savedAmount)}
       </div>
     </div>
   )

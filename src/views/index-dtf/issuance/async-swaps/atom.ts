@@ -10,7 +10,7 @@ import {
 import { atom } from 'jotai'
 import { atomWithReset } from 'jotai/utils'
 import { Quote } from 'universal-sdk'
-import { Address, parseEther, parseUnits } from 'viem'
+import { Address, formatUnits, parseEther, parseUnits } from 'viem'
 import {
   AsyncSwapOrderResponse,
   QuoteAggregated,
@@ -45,6 +45,8 @@ export const successAtom = atom<boolean>(false)
 export const universalSuccessOrdersAtom = atom<UniversalOrder[]>([])
 
 export const infoMessageAtom = atom<string | undefined>(undefined)
+
+export const balanceAfterSwapAtom = atom<bigint>(0n)
 
 // Render Atoms
 export const openCollateralPanelAtom = atom<boolean>(true)
@@ -99,9 +101,10 @@ export const mintValueUSDAtom = atom<number>((get) => {
   return (Number(inputAmount) || 0) * (1 - ASYNC_SWAP_BUFFER)
 })
 
-export const bufferValueAtom = atom<number>((get) => {
+export const savedAmountAtom = atom<number>((get) => {
   const inputAmount = get(userInputAtom)
-  return (Number(inputAmount) || 0) * ASYNC_SWAP_BUFFER
+  const balanceDifference = get(balanceDifferenceAtom)
+  return (Number(inputAmount) || 0) - balanceDifference
 })
 
 export const mintValueWeiAtom = atom<bigint>((get) => {
@@ -138,4 +141,16 @@ export const pendingOrdersAtom = atom<AsyncSwapOrderResponse['cowswapOrders']>(
 export const ordersSubmittedAtom = atom<boolean>((get) => {
   const cowswapOrdersCreatedAt = get(cowswapOrdersCreatedAtAtom)
   return Boolean(cowswapOrdersCreatedAt)
+})
+
+export const balanceDifferenceAtom = atom<number>((get) => {
+  const selectedToken = get(selectedTokenAtom)
+  const balanceAfterSwap = get(balanceAfterSwapAtom)
+  const selectedTokenBalance = get(selectedTokenBalanceAtom)
+  const operation = get(operationAtom)
+  const result =
+    operation === 'mint'
+      ? balanceAfterSwap - (selectedTokenBalance?.value || 0n)
+      : selectedTokenBalance?.value || 0n - balanceAfterSwap
+  return Number(formatUnits(result, selectedToken.decimals))
 })

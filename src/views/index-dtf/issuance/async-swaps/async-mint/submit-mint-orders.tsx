@@ -1,10 +1,12 @@
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
-import { useAtomValue } from 'jotai'
-import { useMemo } from 'react'
+import { useAtomValue, useSetAtom } from 'jotai'
+import { useCallback, useMemo } from 'react'
 import {
+  balanceAfterSwapAtom,
   infoMessageAtom,
   insufficientBalanceAtom,
+  selectedTokenBalanceAtom,
   userInputAtom,
 } from '../atom'
 import { useStableQuoteSignatures } from '../hooks/useQuoteSignatures'
@@ -24,8 +26,15 @@ const SubmitMintButton = ({
   loadingQuote?: boolean
 }) => {
   const insufficientBalance = useAtomValue(insufficientBalanceAtom)
+  const selectedTokenBalance = useAtomValue(selectedTokenBalanceAtom)
   const inputAmount = useAtomValue(userInputAtom)
   const infoMessage = useAtomValue(infoMessageAtom)
+  const setBalanceAfterSwap = useSetAtom(balanceAfterSwapAtom)
+
+  const handleSubmit = useCallback(() => {
+    setBalanceAfterSwap(selectedTokenBalance?.value || 0n)
+    mutate()
+  }, [mutate, selectedTokenBalance?.value, setBalanceAfterSwap])
 
   const disabled = useMemo(
     () =>
@@ -61,7 +70,7 @@ const SubmitMintButton = ({
         'w-full rounded-xl',
         isPending && 'opacity-50 cursor-not-allowed'
       )}
-      onClick={() => mutate()}
+      onClick={handleSubmit}
       disabled={disabled}
     >
       {buttonText}
