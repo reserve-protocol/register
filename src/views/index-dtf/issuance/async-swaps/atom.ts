@@ -45,6 +45,8 @@ export const successAtom = atom<boolean>(false)
 export const universalSuccessOrdersAtom = atom<UniversalOrder[]>([])
 export const universalFailedOrdersAtom = atom<Quote[]>([])
 
+export const infoMessageAtom = atom<string | undefined>(undefined)
+
 // Render Atoms
 export const openCollateralPanelAtom = atom<boolean>(true)
 export const showSettingsAtom = atom<boolean>(false)

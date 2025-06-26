@@ -21,6 +21,7 @@ import {
   cowswapOrdersCreatedAtAtom,
   failedOrdersAtom,
   fallbackQuotesAtom,
+  infoMessageAtom,
   operationAtom,
   quotesAtom,
   selectedTokenAtom,
@@ -37,11 +38,16 @@ import { QuoteProvider } from '../types'
 import {
   convertTypeDataToBigInt,
   getApprovalCallIfNeeded,
+  getCowswapOrdersInfoMessage,
+  getTransactionInfoMessage,
+  getUniversalTokenInfoMessage,
   sendCallsWithRetry,
   signTypedDataWithRetry,
 } from './utils'
+import { notifyError } from '@/hooks/useNotification'
 
-const COWSWAP_SETTLEMENT = '0x9008D19f58AAbD9eD0D60971565AA8510560ab41' as const
+export const COWSWAP_SETTLEMENT =
+  '0x9008D19f58AAbD9eD0D60971565AA8510560ab41' as const
 const COWSWAP_VAULT = '0xC92E8bdf79f0507f65a392b0ab4667716BFE0110' as const
 const UNIVERSAL_PERMIT2 = '0x000000000022D473030F116dDEE9F6B43aC78BA3' as const
 
@@ -139,6 +145,7 @@ export function useQuoteSignatures(refresh = false) {
   const setUniversalFailedOrders = useSetAtom(universalFailedOrdersAtom)
   const setUniversalSuccessOrders = useSetAtom(universalSuccessOrdersAtom)
   const setCowswapOrdersCreatedAt = useSetAtom(cowswapOrdersCreatedAtAtom)
+  const setInfoMessage = useSetAtom(infoMessageAtom)
   const { orderBookApi, universalSdk } = useGlobalProtocolKit()
   const { sendCallsAsync } = useSendCalls()
   const failedOrders = useAtomValue(failedOrdersAtom)
@@ -261,9 +268,13 @@ export function useQuoteSignatures(refresh = false) {
 
       if (txData.length > 0) {
         try {
+          const infoMessage = getTransactionInfoMessage(txData)
+          setInfoMessage((prev) => infoMessage || prev)
+
           await sendCallsWithRetry(sendCallsAsync, txData, address)
         } catch (error) {
           console.error('sendCallsAsync', error)
+          notifyError('Transaction failed', 'Please try again')
         }
       }
 
@@ -281,10 +292,22 @@ export function useQuoteSignatures(refresh = false) {
               const { typedData } = await generateTypedData(quote)
               const _typedData = convertTypeDataToBigInt(typedData)
 
+              const signingMessage = getUniversalTokenInfoMessage(
+                quote.token as Address,
+                'signing'
+              )
+              setInfoMessage((prev) => signingMessage || prev)
+
               const signature = await signTypedDataWithRetry(
                 signTypedDataAsync,
                 _typedData
               )
+
+              const submittingMessage = getUniversalTokenInfoMessage(
+                quote.token as Address,
+                'submitting'
+              )
+              setInfoMessage((prev) => submittingMessage || prev)
 
               const universalOrder = await universalSdk.submitOrder({
                 ...quote,
@@ -305,6 +328,10 @@ export function useQuoteSignatures(refresh = false) {
               return { success: true, quote, order: universalOrder }
             } catch (error) {
               console.error('universalOrder', error)
+              notifyError(
+                'Universal order failed',
+                'No worries - continuing with Cowswap fallback after all Universal orders'
+              )
               setUniversalFailedOrders((prev) => [...prev, quote])
               return { success: false, quote, error }
             }
@@ -330,7 +357,7 @@ export function useQuoteSignatures(refresh = false) {
           failedUniversalOrders.map(async ({ quote }) => {
             const token = getUniversalTokenAddress(quote.token)
             const fallbackQuote = fallbackQuotes[token]
-            console.log({ fallbackQuote })
+
             if (!fallbackQuote) {
               return null
             }
@@ -371,26 +398,49 @@ export function useQuoteSignatures(refresh = false) {
 
       if (fallbackTxData.length > 0) {
         try {
+          const fallbackInfoMessage = getTransactionInfoMessage(
+            fallbackTxData,
+            true
+          )
+          setInfoMessage((prev) => fallbackInfoMessage || prev)
+
           await sendCallsWithRetry(sendCallsAsync, fallbackTxData, address)
         } catch (error) {
           console.error('sendCallsAsync', error)
+          notifyError('Transaction failed', 'Please try again')
         }
       }
 
-      const orderIds = await Promise.all(
-        [...validOrderData, ...fallbackOrderData]
-          .filter(({ type }) => type === QuoteProvider.CowSwap)
-          .map(async ({ data }) => {
-            const order = data.quote as OrderCreation
-            const orderId = await orderBookApi.sendOrder({
-              ...order,
-              from: address,
-              signature: address,
-              signingScheme: SigningScheme.PRESIGN,
-            })
-            return orderId
-          })
+      const cowswapOrders = [...validOrderData, ...fallbackOrderData].filter(
+        ({ type }) => type === QuoteProvider.CowSwap
       )
+
+      const cowswapInfoMessage = getCowswapOrdersInfoMessage(cowswapOrders)
+      setInfoMessage((prev) => cowswapInfoMessage || prev)
+
+      const orderIds = (
+        await Promise.all(
+          cowswapOrders.map(async ({ data }) => {
+            const order = data.quote as OrderCreation
+            try {
+              const orderId = await orderBookApi.sendOrder({
+                ...order,
+                from: address,
+                signature: address,
+                signingScheme: SigningScheme.PRESIGN,
+              })
+              return orderId
+            } catch (error) {
+              console.error('orderBookApi.sendOrder', error)
+              notifyError(
+                'Cowswap order failed',
+                `Failed to submit Cowswap order`
+              )
+              return undefined
+            }
+          })
+        )
+      ).filter((orderId) => orderId !== undefined)
 
       if (refresh) {
         // Reset universal failed orders
@@ -412,6 +462,7 @@ export function useQuoteSignatures(refresh = false) {
       }
       setCowswapOrdersCreatedAt(new Date().toISOString())
       setQuotes({})
+      setInfoMessage(undefined)
 
       return {
         orders: orderIds,

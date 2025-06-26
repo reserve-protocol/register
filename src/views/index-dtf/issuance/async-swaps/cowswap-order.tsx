@@ -43,7 +43,7 @@ const OrderStatus = ({
       {STATUS_MAP[status] === 'Processing' && (
         <Loader size={16} className="animate-spin-slow" />
       )}
-      {STATUS_MAP[status]}
+      <div className="flex flex-col items-end">{STATUS_MAP[status]}</div>
       {STATUS_MAP[status] === 'Not Filled' && (
         <Help content="The order failed to fill. Please try again." size={16} />
       )}

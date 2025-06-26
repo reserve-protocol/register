@@ -3,6 +3,9 @@ import { AvailableChain } from '@/utils/chains'
 import { RESERVE_API } from '@/utils/constants'
 import { Address, encodeFunctionData, erc20Abi, Hex } from 'viem'
 import { getPublicClient } from 'wagmi/actions'
+import { getUniversalTokenName } from '../providers/universal'
+import { COWSWAP_SETTLEMENT } from './useQuoteSignatures'
+import { notifyError } from '@/hooks/useNotification'
 
 export function convertTypeDataToBigInt(obj: any, isInDomain = false): any {
   if (Array.isArray(obj)) {
@@ -116,7 +119,8 @@ export const sendCallsWithRetry = async (
         error instanceof Error &&
         error.message.includes('User rejected transaction')
       ) {
-        console.log(
+        notifyError(
+          'Transaction rejected',
           `User rejected transaction (attempt ${attempt + 1}/${maxRetries + 1})`
         )
 
@@ -158,7 +162,8 @@ export const signTypedDataWithRetry = async (
         error instanceof Error &&
         error.message.includes('User rejected signature')
       ) {
-        console.log(
+        notifyError(
+          'Signature rejected',
           `User rejected signature (attempt ${attempt + 1}/${maxRetries + 1})`
         )
 
@@ -178,4 +183,56 @@ export const signTypedDataWithRetry = async (
 
   // This should never be reached, but just in case
   throw lastError || new Error('Unknown error in signTypedDataWithRetry')
+}
+
+// Helper functions for info messages
+export const getTransactionInfoMessage = (
+  txData: any[],
+  isFallback = false
+): string | undefined => {
+  const approvals = txData.filter(
+    (tx) => tx.to !== COWSWAP_SETTLEMENT && tx.data?.includes('0xa9059cbb') // approve function signature
+  ).length
+  const cowswapSwaps = txData.filter(
+    (tx) => tx.to === COWSWAP_SETTLEMENT
+  ).length
+
+  if (approvals === 0 && cowswapSwaps === 0) {
+    return undefined
+  }
+
+  let message = ''
+
+  if (approvals > 0) {
+    message += `Signing ${approvals} approval${approvals !== 1 ? 's' : ''}`
+  }
+
+  if (cowswapSwaps > 0) {
+    message += approvals > 0 ? ' and ' : 'Signing '
+    const fallbackText = isFallback
+      ? ` (fallback${cowswapSwaps !== 1 ? 's' : ''})`
+      : ''
+    message += `${cowswapSwaps} swap${cowswapSwaps !== 1 ? 's' : ''} via Cowswap${fallbackText}`
+  }
+
+  message += `...`
+
+  return message
+}
+
+export const getCowswapOrdersInfoMessage = (
+  cowswapOrders: any[]
+): string | undefined => {
+  if (cowswapOrders.length > 0) {
+    return `Sending ${cowswapOrders.length} swap${cowswapOrders.length !== 1 ? 's' : ''} via Cowswap...`
+  }
+  return undefined
+}
+
+export const getUniversalTokenInfoMessage = (
+  tokenName: string,
+  action: 'signing' | 'submitting'
+): string => {
+  const actionText = action === 'signing' ? 'Signing swap' : 'Submitting order'
+  return `${actionText} via Universal for u${tokenName}...`
 }
