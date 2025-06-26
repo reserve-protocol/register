@@ -43,7 +43,6 @@ export const isMintingAtom = atom<boolean>(false)
 export const successAtom = atom<boolean>(false)
 
 export const universalSuccessOrdersAtom = atom<UniversalOrder[]>([])
-export const universalFailedOrdersAtom = atom<Quote[]>([])
 
 export const infoMessageAtom = atom<string | undefined>(undefined)
 

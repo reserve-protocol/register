@@ -25,7 +25,6 @@ import {
   operationAtom,
   quotesAtom,
   selectedTokenAtom,
-  universalFailedOrdersAtom,
   universalSuccessOrdersAtom,
   userInputAtom,
 } from '../atom'
@@ -142,7 +141,6 @@ export function useQuoteSignatures(refresh = false) {
   const fallbackQuotes = useAtomValue(fallbackQuotesAtom)
   const setCowswapOrderIds = useSetAtom(cowswapOrderIdsAtom)
   const setCowswapOrders = useSetAtom(cowswapOrdersAtom)
-  const setUniversalFailedOrders = useSetAtom(universalFailedOrdersAtom)
   const setUniversalSuccessOrders = useSetAtom(universalSuccessOrdersAtom)
   const setCowswapOrdersCreatedAt = useSetAtom(cowswapOrdersCreatedAtAtom)
   const setInfoMessage = useSetAtom(infoMessageAtom)
@@ -332,7 +330,6 @@ export function useQuoteSignatures(refresh = false) {
                 'Universal order failed',
                 'No worries - continuing with Cowswap fallback after all Universal orders'
               )
-              setUniversalFailedOrders((prev) => [...prev, quote])
               return { success: false, quote, error }
             }
           })
@@ -443,8 +440,6 @@ export function useQuoteSignatures(refresh = false) {
       ).filter((orderId) => orderId !== undefined)
 
       if (refresh) {
-        // Reset universal failed orders
-        setUniversalFailedOrders([])
         // replace failed orders with new ones
         setCowswapOrderIds((prev) => [
           ...prev.filter(

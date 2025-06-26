@@ -213,7 +213,34 @@ async function getQuote({
     orderBookApi,
   })
 
-  // TODO: if universalQuote is worse than cowswapQuote, use cowswapQuote (set universalQuote to null)
+  // Pick the best quote
+  if (universalQuote && cowswapQuote) {
+    const universalValue = universalQuote._originalQuote.pair_token_amount
+    const cowswapValue =
+      operation === 'redeem'
+        ? cowswapQuote.quote.buyAmount
+        : cowswapQuote.quote.sellAmount
+
+    console.log({ universalValue, cowswapValue })
+
+    if (
+      universalValue &&
+      cowswapValue &&
+      universalValue < cowswapValue &&
+      operation === 'redeem'
+    ) {
+      universalQuote = null
+    }
+
+    if (
+      universalValue &&
+      cowswapValue &&
+      universalValue > cowswapValue &&
+      operation === 'mint'
+    ) {
+      universalQuote = null
+    }
+  }
 
   return {
     universalQuote,

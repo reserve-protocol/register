@@ -37,7 +37,6 @@ import {
   selectedTokenAtom,
   successAtom,
   txHashAtom,
-  universalFailedOrdersAtom,
   universalSuccessOrdersAtom,
   userInputAtom,
 } from './atom'
@@ -57,7 +56,6 @@ const CloseButton = () => {
   const setCowswapOrdersAtom = useSetAtom(cowswapOrdersAtom)
   const setQuotesAtom = useSetAtom(quotesAtom)
   const setUniversalSuccessOrdersAtom = useSetAtom(universalSuccessOrdersAtom)
-  const setUniversalFailedOrdersAtom = useSetAtom(universalFailedOrdersAtom)
   const setFallbackQuotesAtom = useSetAtom(fallbackQuotesAtom)
 
   const handleClose = () => {
@@ -70,7 +68,6 @@ const CloseButton = () => {
     setCowswapOrdersCreatedAtAtom(undefined)
     setCowswapOrdersAtom([])
     setUniversalSuccessOrdersAtom([])
-    setUniversalFailedOrdersAtom([])
     setFallbackQuotesAtom({})
   }
 
