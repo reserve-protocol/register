@@ -10,7 +10,7 @@ const MandateChanges = () => {
   const [mandateChange, setMandateChange] = useAtom(mandateChangeAtom)
   const hasMandateChange = useAtomValue(hasMandateChangeAtom)
   const { setValue } = useFormContext()
-  
+
   if (!hasMandateChange || !indexDTF || !mandateChange) return null
 
   const handleRevert = () => {
@@ -20,7 +20,7 @@ const MandateChanges = () => {
 
   return (
     <ChangeSection title="Mandate Update" icon={<FileText size={16} />}>
-      <div className="p-4 rounded-lg bg-primary/5 border border-primary/20 space-y-3">
+      <div className="p-4 rounded-lg bg-muted/70 border  space-y-3">
         <div className="space-y-2">
           <div className="text-xs text-muted-foreground">Current mandate:</div>
           <p className="text-sm text-muted-foreground">

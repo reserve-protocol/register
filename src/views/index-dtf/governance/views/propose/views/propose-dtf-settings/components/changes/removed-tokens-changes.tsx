@@ -8,8 +8,10 @@ import { ChangeSection } from './shared'
 
 const RemovedTokensChanges = () => {
   const chainId = useAtomValue(chainIdAtom)
-  const [removedBasketTokens, setRemovedBasketTokens] = useAtom(removedBasketTokensAtom)
-  
+  const [removedBasketTokens, setRemovedBasketTokens] = useAtom(
+    removedBasketTokensAtom
+  )
+
   if (removedBasketTokens.length === 0) return null
 
   const handleRevertToken = (address: string) => {
@@ -19,7 +21,7 @@ const RemovedTokensChanges = () => {
   }
 
   return (
-    <ChangeSection title="Remove Dust Tokens" icon={<Trash size={16} className="text-destructive" />}>
+    <ChangeSection title="Remove Dust Tokens" icon={<Trash size={16} />}>
       <div className="space-y-2">
         {removedBasketTokens.map((token, index) => (
           <div
@@ -34,7 +36,9 @@ const RemovedTokensChanges = () => {
               <span className="text-sm font-medium text-destructive">
                 {token.name}
               </span>
-              <span className="text-xs text-destructive/70">{token.symbol}</span>
+              <span className="text-xs text-destructive/70">
+                {token.symbol}
+              </span>
             </div>
             <Button
               variant="outline"

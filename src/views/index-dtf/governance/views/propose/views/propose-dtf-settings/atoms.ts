@@ -44,12 +44,20 @@ export const hasMandateChangeAtom = atom((get) => {
 
 export const hasRolesChangesAtom = atom((get) => {
   const changes = get(rolesChangesAtom)
-  return !!(changes.guardians || changes.brandManagers || changes.auctionLaunchers)
+  return !!(
+    changes.guardians ||
+    changes.brandManagers ||
+    changes.auctionLaunchers
+  )
 })
 
 export const hasRevenueDistributionChangesAtom = atom((get) => {
   const changes = get(revenueDistributionChangesAtom)
-  return !!(changes.governanceShare !== undefined || changes.deployerShare !== undefined || changes.additionalRecipients)
+  return !!(
+    changes.governanceShare !== undefined ||
+    changes.deployerShare !== undefined ||
+    changes.additionalRecipients
+  )
 })
 
 export const hasDtfRevenueChangesAtom = atom((get) => {
@@ -99,14 +107,15 @@ export const isProposalValidAtom = atom((get) => {
   const hasDtfRevenueChanges = get(hasDtfRevenueChangesAtom)
   const hasAuctionLengthChange = get(hasAuctionLengthChangeAtom)
   const isFormValid = get(isFormValidAtom)
-  
-  const hasChanges = removedBasketTokens.length > 0 || 
-    hasMandateChange || 
-    hasRolesChanges || 
-    hasRevenueDistributionChanges || 
-    hasDtfRevenueChanges || 
+
+  const hasChanges =
+    removedBasketTokens.length > 0 ||
+    hasMandateChange ||
+    hasRolesChanges ||
+    hasRevenueDistributionChanges ||
+    hasDtfRevenueChanges ||
     hasAuctionLengthChange
-    
+
   return hasChanges && isFormValid
 })
 
@@ -115,9 +124,12 @@ export const isProposalConfirmedAtom = atom(false)
 export const proposalDescriptionAtom = atom<string | undefined>(undefined)
 
 // Role constants from the DTF contract
-const GUARDIAN_ROLE = '0x45e7131d776dddc137e30bdd490b431c7144677e97bf9369f629ed8d3fb7dd6f' as const
-const BRAND_MANAGER_ROLE = '0x2ce3265b96c4537dd7b86b7554c85e8071574b43342b4b4cbfe186cf4b2bc883' as const
-const AUCTION_LAUNCHER_ROLE = '0xecec33ab7f1be86026025e66df4d1b28cd50e7eb59269b6b6c5e8096d4a4aed4' as const
+const GUARDIAN_ROLE =
+  '0x45e7131d776dddc137e30bdd490b431c7144677e97bf9369f629ed8d3fb7dd6f' as const
+const BRAND_MANAGER_ROLE =
+  '0x2ce3265b96c4537dd7b86b7554c85e8071574b43342b4b4cbfe186cf4b2bc883' as const
+const AUCTION_LAUNCHER_ROLE =
+  '0xecec33ab7f1be86026025e66df4d1b28cd50e7eb59269b6b6c5e8096d4a4aed4' as const
 
 export const dtfSettingsProposalCalldatasAtom = atom<Hex[] | undefined>(
   (get) => {
@@ -172,12 +184,16 @@ export const dtfSettingsProposalCalldatasAtom = atom<Hex[] | undefined>(
 
     // 3. Handle role changes
     if (rolesChanges.guardians) {
-      const currentGuardians = indexDTF.ownerGovernance?.timelock?.guardians || []
+      const currentGuardians =
+        indexDTF.ownerGovernance?.timelock?.guardians || []
       const newGuardians = rolesChanges.guardians
-      
+
       // Revoke removed guardians
-      const removedGuardians = currentGuardians.filter(addr => 
-        !newGuardians.some(newAddr => newAddr.toLowerCase() === addr.toLowerCase())
+      const removedGuardians = currentGuardians.filter(
+        (addr) =>
+          !newGuardians.some(
+            (newAddr) => newAddr.toLowerCase() === addr.toLowerCase()
+          )
       )
       for (const guardian of removedGuardians) {
         calldatas.push(
@@ -188,10 +204,13 @@ export const dtfSettingsProposalCalldatasAtom = atom<Hex[] | undefined>(
           })
         )
       }
-      
+
       // Grant new guardians
-      const addedGuardians = newGuardians.filter(addr => 
-        !currentGuardians.some(currAddr => currAddr.toLowerCase() === addr.toLowerCase())
+      const addedGuardians = newGuardians.filter(
+        (addr) =>
+          !currentGuardians.some(
+            (currAddr) => currAddr.toLowerCase() === addr.toLowerCase()
+          )
       )
       for (const guardian of addedGuardians) {
         calldatas.push(
@@ -207,10 +226,13 @@ export const dtfSettingsProposalCalldatasAtom = atom<Hex[] | undefined>(
     if (rolesChanges.brandManagers) {
       const currentBrandManagers = indexDTF.brandManagers || []
       const newBrandManagers = rolesChanges.brandManagers
-      
+
       // Revoke removed brand managers
-      const removedBrandManagers = currentBrandManagers.filter(addr => 
-        !newBrandManagers.some(newAddr => newAddr.toLowerCase() === addr.toLowerCase())
+      const removedBrandManagers = currentBrandManagers.filter(
+        (addr) =>
+          !newBrandManagers.some(
+            (newAddr) => newAddr.toLowerCase() === addr.toLowerCase()
+          )
       )
       for (const brandManager of removedBrandManagers) {
         calldatas.push(
@@ -221,10 +243,13 @@ export const dtfSettingsProposalCalldatasAtom = atom<Hex[] | undefined>(
           })
         )
       }
-      
+
       // Grant new brand managers
-      const addedBrandManagers = newBrandManagers.filter(addr => 
-        !currentBrandManagers.some(currAddr => currAddr.toLowerCase() === addr.toLowerCase())
+      const addedBrandManagers = newBrandManagers.filter(
+        (addr) =>
+          !currentBrandManagers.some(
+            (currAddr) => currAddr.toLowerCase() === addr.toLowerCase()
+          )
       )
       for (const brandManager of addedBrandManagers) {
         calldatas.push(
@@ -240,10 +265,13 @@ export const dtfSettingsProposalCalldatasAtom = atom<Hex[] | undefined>(
     if (rolesChanges.auctionLaunchers) {
       const currentAuctionLaunchers = indexDTF.auctionLaunchers || []
       const newAuctionLaunchers = rolesChanges.auctionLaunchers
-      
+
       // Revoke removed auction launchers
-      const removedAuctionLaunchers = currentAuctionLaunchers.filter(addr => 
-        !newAuctionLaunchers.some(newAddr => newAddr.toLowerCase() === addr.toLowerCase())
+      const removedAuctionLaunchers = currentAuctionLaunchers.filter(
+        (addr) =>
+          !newAuctionLaunchers.some(
+            (newAddr) => newAddr.toLowerCase() === addr.toLowerCase()
+          )
       )
       for (const auctionLauncher of removedAuctionLaunchers) {
         calldatas.push(
@@ -254,10 +282,13 @@ export const dtfSettingsProposalCalldatasAtom = atom<Hex[] | undefined>(
           })
         )
       }
-      
+
       // Grant new auction launchers
-      const addedAuctionLaunchers = newAuctionLaunchers.filter(addr => 
-        !currentAuctionLaunchers.some(currAddr => currAddr.toLowerCase() === addr.toLowerCase())
+      const addedAuctionLaunchers = newAuctionLaunchers.filter(
+        (addr) =>
+          !currentAuctionLaunchers.some(
+            (currAddr) => currAddr.toLowerCase() === addr.toLowerCase()
+          )
       )
       for (const auctionLauncher of addedAuctionLaunchers) {
         calldatas.push(
@@ -293,51 +324,57 @@ export const dtfSettingsProposalCalldatasAtom = atom<Hex[] | undefined>(
     }
 
     // 6. Set fee recipients
-    if (revenueDistributionChanges.governanceShare !== undefined || 
-        revenueDistributionChanges.deployerShare !== undefined ||
-        revenueDistributionChanges.additionalRecipients !== undefined) {
-      
+    if (
+      revenueDistributionChanges.governanceShare !== undefined ||
+      revenueDistributionChanges.deployerShare !== undefined ||
+      revenueDistributionChanges.additionalRecipients !== undefined
+    ) {
       if (!feeRecipients) return undefined
-      
+
       // Calculate new fee recipients array
-      const newFeeRecipients: { address: Address; portion: bigint }[] = []
+      const newFeeRecipients: { recipient: Address; portion: bigint }[] = []
       const platformAddress = '0x0000000000000000000000000000000000000000' // Platform address
-      
+
       // Platform fee is always fixed
       newFeeRecipients.push({
-        address: platformAddress,
+        recipient: platformAddress,
         portion: BigInt(FIXED_PLATFORM_FEE * 100), // 20% = 2000 basis points
       })
-      
+
       // Governance share
-      const governanceShare = revenueDistributionChanges.governanceShare ?? feeRecipients.governanceShare
+      const governanceShare =
+        revenueDistributionChanges.governanceShare ??
+        feeRecipients.governanceShare
       if (governanceShare > 0 && indexDTF.stToken) {
         newFeeRecipients.push({
-          address: indexDTF.stToken.id as Address,
+          recipient: indexDTF.stToken.id as Address,
           portion: BigInt(Math.floor(governanceShare * 100)),
         })
       }
-      
+
       // Deployer share
-      const deployerShare = revenueDistributionChanges.deployerShare ?? feeRecipients.deployerShare
+      const deployerShare =
+        revenueDistributionChanges.deployerShare ?? feeRecipients.deployerShare
       if (deployerShare > 0) {
         newFeeRecipients.push({
-          address: indexDTF.deployer as Address,
+          recipient: indexDTF.deployer as Address,
           portion: BigInt(Math.floor(deployerShare * 100)),
         })
       }
-      
+
       // Additional recipients
-      const additionalRecipients = revenueDistributionChanges.additionalRecipients ?? feeRecipients.externalRecipients
+      const additionalRecipients =
+        revenueDistributionChanges.additionalRecipients ??
+        feeRecipients.externalRecipients
       if (additionalRecipients && additionalRecipients.length > 0) {
         for (const recipient of additionalRecipients) {
           newFeeRecipients.push({
-            address: recipient.address as Address,
+            recipient: recipient.address as Address,
             portion: BigInt(Math.floor(recipient.share * 100)),
           })
         }
       }
-      
+
       calldatas.push(
         encodeFunctionData({
           abi: dtfIndexAbi,

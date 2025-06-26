@@ -17,12 +17,18 @@ const DTFSettingsProposalChanges = () => {
   const removedBasketTokens = useAtomValue(removedBasketTokensAtom)
   const hasMandateChange = useAtomValue(hasMandateChangeAtom)
   const hasRolesChanges = useAtomValue(hasRolesChangesAtom)
-  const hasRevenueDistributionChanges = useAtomValue(hasRevenueDistributionChangesAtom)
+  const hasRevenueDistributionChanges = useAtomValue(
+    hasRevenueDistributionChangesAtom
+  )
   const hasDtfRevenueChanges = useAtomValue(hasDtfRevenueChangesAtom)
   const hasAuctionLengthChange = useAtomValue(hasAuctionLengthChangeAtom)
-  
-  const hasAnyChanges = removedBasketTokens.length > 0 || hasMandateChange || 
-    hasRolesChanges || hasRevenueDistributionChanges || hasDtfRevenueChanges || 
+
+  const hasAnyChanges =
+    removedBasketTokens.length > 0 ||
+    hasMandateChange ||
+    hasRolesChanges ||
+    hasRevenueDistributionChanges ||
+    hasDtfRevenueChanges ||
     hasAuctionLengthChange
 
   if (!hasAnyChanges) {
@@ -30,12 +36,12 @@ const DTFSettingsProposalChanges = () => {
   }
 
   return (
-    <div className="space-y-6">
-      <RemovedTokensChanges />
+    <div className="space-y-4">
       <MandateChanges />
       <RoleChanges />
       <RevenueChanges />
       <AuctionSettingsChanges />
+      <RemovedTokensChanges />
     </div>
   )
 }

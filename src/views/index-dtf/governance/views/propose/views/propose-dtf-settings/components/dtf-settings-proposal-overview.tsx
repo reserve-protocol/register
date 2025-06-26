@@ -87,8 +87,10 @@ const VaultProposalChangePreview = () => {
   if (isProposalConfirmed) return null
 
   return (
-    <div className="mt-2 border-4 border-secondary rounded-3xl bg-background p-6">
-      <h3 className="font-bold mb-6 text-primary">Proposed changes</h3>
+    <div className="mt-2 border-4 border-secondary rounded-3xl bg-background p-2">
+      <h3 className="font-bold mb-6 text-primary px-4 pt-4">
+        Proposed changes
+      </h3>
       <DTFSettingsProposalChanges />
     </div>
   )
