@@ -95,9 +95,7 @@ const ProposeSectionTrigger = ({
   title,
 }: Omit<DTF_SETTING, 'content' | 'titleSecondary'>) => {
   const selectedSection = useAtomValue(selectedSectionAtom)
-  const isActive = Array.isArray(selectedSection)
-    ? selectedSection.includes(id)
-    : selectedSection === id
+  const isActive = selectedSection === id
 
   return (
     <AccordionTrigger
@@ -107,7 +105,7 @@ const ProposeSectionTrigger = ({
         isActive ? 'pb-3' : ''
       )}
     >
-      <div className={cn('flex items-center gap-2')}>
+      <div className="flex items-center gap-2">
         <div
           className={cn(
             'rounded-full p-2 border border-foreground',
@@ -155,19 +153,16 @@ const Header = () => (
 const DTFSettingsProposalSections = () => {
   const [section, setSection] = useAtom(selectedSectionAtom)
 
-  // Convert atom value for single mode
-  const singleValue = Array.isArray(section) ? section[0] : section
-
   return (
     <div className="w-full bg-secondary rounded-4xl h-fit">
       <Header />
       <Accordion
         type="single"
         collapsible
-        value={singleValue}
+        value={section}
         className="p-1"
-        onValueChange={(value: string) => {
-          setSection(value ? [value] : [])
+        onValueChange={(value: string | undefined) => {
+          setSection(value)
           if (value) {
             scrollToSection(value)
           }

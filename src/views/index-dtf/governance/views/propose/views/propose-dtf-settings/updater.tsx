@@ -19,7 +19,7 @@ import {
 
 const resetAtom = atom(null, (get, set) => {
   set(removedBasketTokensAtom, [])
-  set(selectedSectionAtom, [])
+  set(selectedSectionAtom, undefined)
   set(isProposalConfirmedAtom, false)
   set(proposalDescriptionAtom, undefined)
   set(mandateChangeAtom, undefined)

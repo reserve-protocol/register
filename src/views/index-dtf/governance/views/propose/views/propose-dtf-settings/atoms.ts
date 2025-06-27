@@ -20,7 +20,7 @@ import {
 } from 'viem'
 
 // UI
-export const selectedSectionAtom = atom<string[]>([])
+export const selectedSectionAtom = atom<string | undefined>(undefined)
 
 // Change detection atoms
 export const mandateChangeAtom = atom<string | undefined>(undefined)

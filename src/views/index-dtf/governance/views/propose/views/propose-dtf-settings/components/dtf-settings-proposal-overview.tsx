@@ -118,12 +118,22 @@ const VaultProposalChangePreview = () => {
   )
 }
 
-const DTFSettingsProposalOverview = () => {
+const ProposalOverview = () => {
   return (
-    <div className="fit-content overflow-hidden w-full">
-      <div className="border-4 border-secondary rounded-3xl bg-background">
-        <Header />
-        <ProposalInstructions />
+    <div className="border-4 border-secondary rounded-3xl bg-background">
+      <Header />
+      <ProposalInstructions />
+    </div>
+  )
+}
+
+const DTFSettingsProposalOverview = () => {
+  const isProposalConfirmed = useAtomValue(isProposalConfirmedAtom)
+
+  return (
+    <div className="flex flex-col gap-2 relative">
+      <div className={!isProposalConfirmed ? "sticky top-0" : ""}>
+        <ProposalOverview />
       </div>
       <VaultProposalChangePreview />
     </div>
