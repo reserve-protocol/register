@@ -59,7 +59,7 @@ const ToggleGroupSelector = ({
     <ToggleGroup
       type="single"
       className="bg-muted-foreground/10 p-1 rounded-xl justify-start w-max"
-      value={watch(fieldName).toString()}
+      value={watch(fieldName)?.toString() || ''}
       onValueChange={(value) => {
         clearErrors(fieldName)
         const parsedValue = parseFloat(value)

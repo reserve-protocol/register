@@ -10,6 +10,17 @@ import { Address } from 'viem'
 import { dtfContractAliasAtom } from './atoms'
 import RawCallPreview from './raw-call-preview'
 import TokenRewardPreview from './token-reward-preview'
+import {
+  SetMandatePreview,
+  RemoveFromBasketPreview,
+  GrantRolePreview,
+  RevokeRolePreview,
+  SetFeeRecipientsPreview,
+  SetMintFeePreview,
+  SetTVLFeePreview,
+  SetAuctionLengthPreview,
+  SetDustAmountPreview,
+} from './dtf-settings-preview'
 
 const ChangesOverviewComponentMap: Record<
   string,
@@ -17,6 +28,16 @@ const ChangesOverviewComponentMap: Record<
 > = {
   removeRewardToken: TokenRewardPreview,
   addRewardToken: TokenRewardPreview,
+  // DTF Settings functions
+  setMandate: SetMandatePreview,
+  removeFromBasket: RemoveFromBasketPreview,
+  grantRole: GrantRolePreview,
+  revokeRole: RevokeRolePreview,
+  setFeeRecipients: SetFeeRecipientsPreview,
+  setMintFee: SetMintFeePreview,
+  setTVLFee: SetTVLFeePreview,
+  setAuctionLength: SetAuctionLengthPreview,
+  setDustAmount: SetDustAmountPreview,
 }
 
 const TABS = {

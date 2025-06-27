@@ -1,13 +1,12 @@
 import { useAtomValue, useSetAtom } from 'jotai'
 import {
-  dtfSettingsProposalCalldatasAtom,
+  dtfSettingsProposalDataAtom,
   isProposalConfirmedAtom,
   proposalDescriptionAtom,
 } from '../atoms'
 import ProposalDescriptionForm from '@/components/governance/proposal-description-form'
 import { useEffect } from 'react'
-import { indexDTFAtom } from '@/state/dtf/atoms'
-import DTFSettingsProposalPreview from './dtf-settings-proposal-preview'
+import GovernanceProposalPreview from '@/views/index-dtf/governance/components/governance-proposal-preview'
 
 const ProposalDescription = () => {
   const setDescription = useSetAtom(proposalDescriptionAtom)
@@ -28,15 +27,13 @@ const ProposalDescription = () => {
 }
 
 const ProposalPreview = () => {
-  const calldatas = useAtomValue(dtfSettingsProposalCalldatasAtom)
-  // Should always be set at this stage
-  const vaultAddress = useAtomValue(indexDTFAtom)?.stToken?.id ?? '0x'
+  const proposalData = useAtomValue(dtfSettingsProposalDataAtom)
 
   return (
-    <div className="bg-background rounded-4xl">
-      <DTFSettingsProposalPreview
-        calldatas={calldatas}
-        address={vaultAddress}
+    <div className="flex flex-col gap-4">
+      <GovernanceProposalPreview
+        targets={proposalData?.targets}
+        calldatas={proposalData?.calldatas}
       />
     </div>
   )
