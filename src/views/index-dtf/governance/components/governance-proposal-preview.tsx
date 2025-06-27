@@ -38,7 +38,7 @@ const GovernanceProposalPreview = ({
   }
 
   return (
-    <>
+    <div className="flex flex-col gap-1">
       {Object.entries(dataByContract).map(([contract, decodedCalldatas]) =>
         alias?.[contract] === 'Folio' ? (
           <FolioChangePreview
@@ -61,7 +61,7 @@ const GovernanceProposalPreview = ({
           calls={(unknownContracts?.[contract] ?? []) as Hex[]}
         />
       ))}
-    </>
+    </div>
   )
 }
 

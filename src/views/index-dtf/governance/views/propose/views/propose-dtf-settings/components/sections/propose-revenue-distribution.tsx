@@ -135,7 +135,10 @@ const useFormValues = () => {
 }
 
 const RemainingAllocation = () => {
-  const { watch, formState: { errors } } = useFormContext()
+  const {
+    watch,
+    formState: { errors },
+  } = useFormContext()
 
   // Hack to update nested values
   useFormValues()
@@ -174,16 +177,18 @@ const RemainingAllocation = () => {
     <div className="flex flex-col gap-2">
       <div className="text-base ml-auto px-4">
         <span className="text-muted-foreground">Remaining allocation:</span>{' '}
-        <span className={cn(
-          hasError ? 'text-destructive' : 'text-success',
-          'font-medium'
-        )}>
+        <span
+          className={cn(
+            hasError ? 'text-destructive' : 'text-success',
+            'font-medium'
+          )}
+        >
           {isNegative ? `-${displayValue}` : displayValue}%
         </span>
       </div>
       {errors['revenue-distribution'] && (
         <div className="text-sm text-destructive px-4 text-right">
-          {errors['revenue-distribution'].message}
+          {errors['revenue-distribution'].message as string}
         </div>
       )}
     </div>

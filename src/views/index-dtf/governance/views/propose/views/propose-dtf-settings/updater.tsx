@@ -35,9 +35,6 @@ const Updater = () => {
   const reset = useSetAtom(resetAtom)
   const { reset: resetForm, watch, formState, control } = useFormContext()
 
-  console.log('formState', formState)
-  console.log('formState.errors', formState.errors)
-
   // Set atoms for changes
   const setMandateChange = useSetAtom(mandateChangeAtom)
   const setRolesChanges = useSetAtom(rolesChangesAtom)
