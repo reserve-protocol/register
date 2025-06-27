@@ -85,8 +85,8 @@ const AdditionalRevenueRecipients = ({ children }: { children: ReactNode }) => {
 
   return (
     <div className="flex flex-col gap-2">
-      {recipients?.map(({ address, share }, index) => (
-        <div className="flex flex-col gap-2" key={`${index}${address}${share}`}>
+      {recipients?.map((recipient, index) => (
+        <div className="flex flex-col gap-2" key={`recipient-${index}`}>
           <AdditionalRevenueRecipient index={index} />
         </div>
       ))}

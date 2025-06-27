@@ -9,7 +9,14 @@ import {
 import { Token } from '@/types'
 import { BIGINT_MAX, FIXED_PLATFORM_FEE } from '@/utils/constants'
 import { atom } from 'jotai'
-import { Address, encodeFunctionData, Hex, keccak256, toBytes, parseEther } from 'viem'
+import {
+  Address,
+  encodeFunctionData,
+  Hex,
+  keccak256,
+  toBytes,
+  parseEther,
+} from 'viem'
 
 // UI
 export const selectedSectionAtom = atom<string[]>([])
@@ -116,23 +123,9 @@ export const isProposalValidAtom = atom((get) => {
     hasDtfRevenueChanges ||
     hasAuctionLengthChange
 
-  // For non-revenue distribution changes, just check if there are changes
-  // Revenue distribution validation will be checked separately since it's more complex
-  const hasNonRevenueChanges = 
-    removedBasketTokens.length > 0 ||
-    hasMandateChange ||
-    hasRolesChanges ||
-    hasDtfRevenueChanges ||
-    hasAuctionLengthChange
+  console.log('has changes', hasChanges)
 
-  // If there are non-revenue changes, allow proposal even if form is temporarily invalid
-  // This allows users to make changes that temporarily break the 100% rule
-  if (hasNonRevenueChanges) {
-    return true
-  }
-
-  // For revenue-only changes, ensure form is valid
-  return hasChanges && isFormValid
+  return hasChanges
 })
 
 export const isProposalConfirmedAtom = atom(false)
@@ -360,10 +353,10 @@ export const dtfSettingsProposalCalldatasAtom = atom<Hex[] | undefined>(
 
       // Calculate new fee recipients array similar to deploy logic
       const newFeeRecipients: { recipient: Address; portion: bigint }[] = []
-      
+
       // Calculate using the same logic as calculateRevenueDistribution
       const totalSharesDenominator = (100 - FIXED_PLATFORM_FEE) / 100
-      
+
       const calculateShare = (sharePercentage: number) => {
         const share = sharePercentage / 100
         if (totalSharesDenominator > 0) {
@@ -385,18 +378,20 @@ export const dtfSettingsProposalCalldatasAtom = atom<Hex[] | undefined>(
 
       // Build recipients array (excluding last one for now)
       const tempRecipients: { recipient: Address; portion: bigint }[] = []
-      
+
       // Additional recipients
       if (additionalRecipients && additionalRecipients.length > 0) {
         for (const recipient of additionalRecipients) {
-          tempRecipients.push({
-            recipient: recipient.address as Address,
-            portion: calculateShare(recipient.share),
-          })
+          if (recipient.share > 0 && recipient.address) {
+            tempRecipients.push({
+              recipient: recipient.address as Address,
+              portion: calculateShare(recipient.share),
+            })
+          }
         }
       }
 
-      // Deployer share (if not the last one)
+      // Deployer share
       if (deployerShare > 0) {
         tempRecipients.push({
           recipient: indexDTF.deployer as Address,
@@ -404,7 +399,7 @@ export const dtfSettingsProposalCalldatasAtom = atom<Hex[] | undefined>(
         })
       }
 
-      // Governance share (if not the last one)
+      // Governance share
       if (governanceShare > 0 && indexDTF.stToken) {
         tempRecipients.push({
           recipient: indexDTF.stToken.id as Address,
@@ -431,13 +426,16 @@ export const dtfSettingsProposalCalldatasAtom = atom<Hex[] | undefined>(
         newFeeRecipients.push(...tempRecipients)
       }
 
-      calldatas.push(
-        encodeFunctionData({
-          abi: dtfIndexAbi,
-          functionName: 'setFeeRecipients',
-          args: [newFeeRecipients],
-        })
-      )
+      // Only add the calldata if we have recipients
+      if (newFeeRecipients.length > 0) {
+        calldatas.push(
+          encodeFunctionData({
+            abi: dtfIndexAbi,
+            functionName: 'setFeeRecipients',
+            args: [newFeeRecipients],
+          })
+        )
+      }
     }
 
     return calldatas.length > 0 ? calldatas : undefined

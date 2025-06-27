@@ -2,7 +2,7 @@ import { indexDTFAtom } from '@/state/dtf/atoms'
 import { FIXED_PLATFORM_FEE } from '@/utils/constants'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
-import { useFormContext } from 'react-hook-form'
+import { useFormContext, useWatch } from 'react-hook-form'
 import {
   feeRecipientsAtom,
   isProposalConfirmedAtom,
@@ -33,16 +33,21 @@ const Updater = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
   const feeRecipients = useAtomValue(feeRecipientsAtom)
   const reset = useSetAtom(resetAtom)
-  const { reset: resetForm, watch, formState } = useFormContext()
-  
+  const { reset: resetForm, watch, formState, control } = useFormContext()
+
+  console.log('formState', formState)
+  console.log('formState.errors', formState.errors)
+
   // Set atoms for changes
   const setMandateChange = useSetAtom(mandateChangeAtom)
   const setRolesChanges = useSetAtom(rolesChangesAtom)
-  const setRevenueDistributionChanges = useSetAtom(revenueDistributionChangesAtom)
+  const setRevenueDistributionChanges = useSetAtom(
+    revenueDistributionChangesAtom
+  )
   const setDtfRevenueChanges = useSetAtom(dtfRevenueChangesAtom)
   const setAuctionLengthChange = useSetAtom(auctionLengthChangeAtom)
   const setIsFormValid = useSetAtom(isFormValidAtom)
-  
+
   // Watch form fields
   const mandate = watch('mandate')
   const guardians = watch('guardians')
@@ -52,8 +57,13 @@ const Updater = () => {
   const folioFee = watch('folioFee')
   const governanceShare = watch('governanceShare')
   const deployerShare = watch('deployerShare')
-  const additionalRevenueRecipients = watch('additionalRevenueRecipients')
   const auctionLength = watch('auctionLength')
+
+  // Use useWatch for nested array to ensure updates are captured
+  const additionalRevenueRecipients = useWatch({
+    name: 'additionalRevenueRecipients',
+    control,
+  })
 
   useEffect(() => {
     if (indexDTF && indexDTF.ownerGovernance && feeRecipients) {
@@ -90,79 +100,147 @@ const Updater = () => {
       }
     }
   }, [mandate, indexDTF?.mandate])
-  
+
   // Watch for role changes
   useEffect(() => {
     if (indexDTF && indexDTF.ownerGovernance) {
       const changes: any = {}
-      
+
       // Check guardians
-      if (guardians && JSON.stringify(guardians.filter(Boolean).sort()) !== 
-          JSON.stringify((indexDTF.ownerGovernance.timelock.guardians || []).sort())) {
+      if (
+        guardians &&
+        JSON.stringify(guardians.filter(Boolean).sort()) !==
+          JSON.stringify(
+            (indexDTF.ownerGovernance.timelock.guardians || []).sort()
+          )
+      ) {
         changes.guardians = guardians.filter(Boolean)
       }
-      
+
       // Check brand managers
-      if (brandManagers && JSON.stringify(brandManagers.filter(Boolean).sort()) !== 
-          JSON.stringify((indexDTF.brandManagers || []).sort())) {
+      if (
+        brandManagers &&
+        JSON.stringify(brandManagers.filter(Boolean).sort()) !==
+          JSON.stringify((indexDTF.brandManagers || []).sort())
+      ) {
         changes.brandManagers = brandManagers.filter(Boolean)
       }
-      
+
       // Check auction launchers
-      if (auctionLaunchers && JSON.stringify(auctionLaunchers.filter(Boolean).sort()) !== 
-          JSON.stringify((indexDTF.auctionLaunchers || []).sort())) {
+      if (
+        auctionLaunchers &&
+        JSON.stringify(auctionLaunchers.filter(Boolean).sort()) !==
+          JSON.stringify((indexDTF.auctionLaunchers || []).sort())
+      ) {
         changes.auctionLaunchers = auctionLaunchers.filter(Boolean)
       }
-      
+
       setRolesChanges(changes)
     }
   }, [guardians, brandManagers, auctionLaunchers, indexDTF?.id])
-  
+
   // Watch for fee changes
   useEffect(() => {
     if (indexDTF) {
       setDtfRevenueChanges((prevChanges) => {
         const changes = { ...prevChanges }
-        
+
         if (mintFee !== undefined && mintFee !== indexDTF.mintingFee * 100) {
           changes.mintFee = mintFee
         } else {
           delete changes.mintFee
         }
-        
-        if (folioFee !== undefined && folioFee !== indexDTF.annualizedTvlFee * 100) {
+
+        if (
+          folioFee !== undefined &&
+          folioFee !== indexDTF.annualizedTvlFee * 100
+        ) {
           changes.tvlFee = folioFee
         } else {
           delete changes.tvlFee
         }
-        
+
         return changes
       })
     }
   }, [mintFee, folioFee, indexDTF?.mintingFee, indexDTF?.annualizedTvlFee])
-  
+
   // Watch for revenue distribution changes
   useEffect(() => {
     if (feeRecipients) {
-      const changes: any = {}
-      
-      if (governanceShare !== undefined && governanceShare !== feeRecipients.governanceShare) {
-        changes.governanceShare = governanceShare
+      // Update governance share
+      if (governanceShare !== undefined) {
+        // Compare as numbers, handling edge cases
+        const current = Number(feeRecipients.governanceShare)
+        const newVal = Number(governanceShare)
+
+        if (!isNaN(current) && !isNaN(newVal) && current !== newVal) {
+          setRevenueDistributionChanges((prev) => ({
+            ...prev,
+            governanceShare: newVal,
+          }))
+        } else if (governanceShare !== feeRecipients.governanceShare) {
+          // Fallback to direct comparison if number conversion fails
+          setRevenueDistributionChanges((prev) => ({
+            ...prev,
+            governanceShare,
+          }))
+        } else {
+          setRevenueDistributionChanges((prev) => {
+            const { governanceShare, ...rest } = prev
+            return rest
+          })
+        }
       }
-      
-      if (deployerShare !== undefined && deployerShare !== feeRecipients.deployerShare) {
-        changes.deployerShare = deployerShare
+
+      // Update deployer share
+      if (deployerShare !== undefined) {
+        // Compare as numbers, handling edge cases
+        const current = Number(feeRecipients.deployerShare)
+        const newVal = Number(deployerShare)
+
+        if (!isNaN(current) && !isNaN(newVal) && current !== newVal) {
+          setRevenueDistributionChanges((prev) => ({
+            ...prev,
+            deployerShare: newVal,
+          }))
+        } else if (deployerShare !== feeRecipients.deployerShare) {
+          // Fallback to direct comparison if number conversion fails
+          setRevenueDistributionChanges((prev) => ({ ...prev, deployerShare }))
+        } else {
+          setRevenueDistributionChanges((prev) => {
+            const { deployerShare, ...rest } = prev
+            return rest
+          })
+        }
       }
-      
-      if (additionalRevenueRecipients && 
-          JSON.stringify(additionalRevenueRecipients) !== JSON.stringify(feeRecipients.externalRecipients)) {
-        changes.additionalRecipients = additionalRevenueRecipients
+
+      // Update additional recipients
+      if (additionalRevenueRecipients !== undefined) {
+        const hasChanged =
+          JSON.stringify(additionalRevenueRecipients) !==
+          JSON.stringify(feeRecipients.externalRecipients)
+        if (hasChanged) {
+          setRevenueDistributionChanges((prev) => ({
+            ...prev,
+            additionalRecipients: additionalRevenueRecipients,
+          }))
+        } else {
+          setRevenueDistributionChanges((prev) => {
+            const { additionalRecipients, ...rest } = prev
+            return rest
+          })
+        }
       }
-      
-      setRevenueDistributionChanges(changes)
     }
-  }, [governanceShare, deployerShare, additionalRevenueRecipients, feeRecipients])
-  
+  }, [
+    governanceShare,
+    deployerShare,
+    additionalRevenueRecipients,
+    feeRecipients,
+    setRevenueDistributionChanges,
+  ])
+
   // Watch for auction length changes
   useEffect(() => {
     if (indexDTF && auctionLength !== undefined) {
@@ -176,6 +254,7 @@ const Updater = () => {
 
   // Track form validation state
   useEffect(() => {
+    console.log('formState.isValid', formState.errors)
     setIsFormValid(formState.isValid)
   }, [formState.isValid, setIsFormValid])
 

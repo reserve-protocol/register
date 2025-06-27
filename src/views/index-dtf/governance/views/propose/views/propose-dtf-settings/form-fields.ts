@@ -55,11 +55,11 @@ export const ProposeSettingsSchema = z
       .number()
       .min(0)
       .max(45, 'Auction length must not exceed 45 minutes'),
-    governanceVotingDelay: z.coerce.number().min(0),
-    governanceVotingPeriod: z.coerce.number().min(0),
-    governanceVotingQuorum: z.coerce.number().min(0).max(100),
-    governanceVotingThreshold: z.coerce.number().min(0).max(100),
-    governanceExecutionDelay: z.coerce.number().min(0),
+    // governanceVotingDelay: z.coerce.number().min(0),
+    // governanceVotingPeriod: z.coerce.number().min(0),
+    // governanceVotingQuorum: z.coerce.number().min(0).max(100),
+    // governanceVotingThreshold: z.coerce.number().min(0).max(100),
+    // governanceExecutionDelay: z.coerce.number().min(0),
     guardians: z.array(
       z
         .string()

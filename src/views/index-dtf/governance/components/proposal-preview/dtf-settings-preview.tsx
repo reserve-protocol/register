@@ -91,7 +91,7 @@ export const RevokeRolePreview = ({ decodedCalldata }: { decodedCalldata: Decode
 
 // Preview component for setFeeRecipients function
 export const SetFeeRecipientsPreview = ({ decodedCalldata }: { decodedCalldata: DecodedCalldata }) => {
-  const recipients = decodedCalldata.data[0] as Array<{ address: string; portion: bigint }>
+  const recipients = decodedCalldata.data[0] as Array<{ recipient: string; portion: bigint }>
   
   return (
     <div className="space-y-2">
@@ -100,12 +100,13 @@ export const SetFeeRecipientsPreview = ({ decodedCalldata }: { decodedCalldata: 
         <span>Update Fee Recipients</span>
       </div>
       <div className="p-3 rounded-lg bg-muted/50 text-sm space-y-2">
-        {recipients.map((recipient, idx) => {
-          // Convert basis points to percentage (portion is in basis points, e.g., 2000 = 20%)
-          const percentage = Number(recipient.portion) / 100
+        {recipients && recipients.map((recipient, idx) => {
+          // Convert from parseEther format to percentage
+          // portion is in ether format (1e18 = 100%)
+          const percentage = (Number(recipient.portion) / 1e18) * 100
           return (
             <div key={idx} className="flex justify-between">
-              <span>{shortenAddress(recipient.address)}</span>
+              <span>{recipient.recipient ? shortenAddress(recipient.recipient) : 'Unknown'}</span>
               <span className="font-medium">{percentage.toFixed(2)}%</span>
             </div>
           )

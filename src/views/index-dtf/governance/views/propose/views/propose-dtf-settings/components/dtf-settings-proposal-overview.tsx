@@ -5,22 +5,41 @@ import { indexDTFAtom, indexDTFBrandAtom } from '@/state/dtf/atoms'
 import { ROUTES } from '@/utils/constants'
 import { useAtom, useAtomValue } from 'jotai'
 import { Link } from 'react-router-dom'
-import { isProposalConfirmedAtom, isProposalValidAtom } from '../atoms'
+import {
+  isProposalConfirmedAtom,
+  isProposalValidAtom,
+  isFormValidAtom,
+} from '../atoms'
 import DTFSettingsProposalChanges from './dtf-settings-proposal-changes'
 import SubmitProposalButton from './submit-proposal-button'
 
 const ConfirmProposalButton = () => {
   const isValid = useAtomValue(isProposalValidAtom)
+  const isFormValid = useAtomValue(isFormValidAtom)
   const [isProposalConfirmed, setIsProposalConfirmed] = useAtom(
     isProposalConfirmedAtom
   )
 
+  const handleConfirm = () => {
+    if (!isProposalConfirmed) {
+      // When confirming, check if form is valid
+      if (!isFormValid) {
+        // The form will show validation errors
+        return
+      }
+    }
+    setIsProposalConfirmed(!isProposalConfirmed)
+  }
+
+  // Enable button only if there are changes AND form is valid
+  const isButtonEnabled = isValid && isFormValid
+
   return (
     <Button
       className="w-full"
-      disabled={!isValid}
+      disabled={!isButtonEnabled}
       variant={isProposalConfirmed ? 'outline' : 'default'}
-      onClick={() => setIsProposalConfirmed(!isProposalConfirmed)}
+      onClick={handleConfirm}
     >
       {isProposalConfirmed ? 'Edit proposal' : 'Confirm & prepare proposal'}
     </Button>
@@ -29,18 +48,22 @@ const ConfirmProposalButton = () => {
 
 const ProposalInstructions = () => {
   const isValid = useAtomValue(isProposalValidAtom)
+  const isFormValid = useAtomValue(isFormValidAtom)
   const confirmed = useAtomValue(isProposalConfirmedAtom)
+
+  console.log('is valid', { isValid, isFormValid })
+  const canProceed = isValid && isFormValid
 
   const timelineItems = [
     {
       title: 'Configure proposal',
-      isActive: !isValid,
-      isCompleted: isValid,
+      isActive: !canProceed,
+      isCompleted: canProceed,
     },
     {
       title: 'Finalize basket proposal',
       children: <ConfirmProposalButton />,
-      isActive: isValid && !confirmed,
+      isActive: canProceed && !confirmed,
       isCompleted: confirmed,
     },
     {
