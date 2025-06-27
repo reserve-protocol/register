@@ -10,17 +10,17 @@ import { useNavigate } from 'react-router-dom'
 import { Address } from 'viem'
 import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
 import {
-  dtfSettingsProposalCalldatasAtom,
+  dtfSettingsProposalDataAtom,
   proposalDescriptionAtom,
 } from '../atoms'
 
 const isProposalReady = atom((get) => {
   const wallet = get(walletAtom)
   const description = get(proposalDescriptionAtom)
-  const calldatas = get(dtfSettingsProposalCalldatasAtom)
+  const proposalData = get(dtfSettingsProposalDataAtom)
   const dtf = get(iTokenAddressAtom)
 
-  return wallet && description && calldatas?.length && dtf
+  return wallet && description && proposalData?.calldatas?.length && dtf
 })
 
 const SubmitProposalButton = () => {
@@ -28,7 +28,7 @@ const SubmitProposalButton = () => {
   const chainId = useAtomValue(chainIdAtom)
   const isReady = useAtomValue(isProposalReady)
   const description = useAtomValue(proposalDescriptionAtom)
-  const calldatas = useAtomValue(dtfSettingsProposalCalldatasAtom)
+  const proposalData = useAtomValue(dtfSettingsProposalDataAtom)
   const dtf = useAtomValue(indexDTFAtom)
   const { writeContract, isPending, data } = useWriteContract()
   const { isSuccess } = useWaitForTransactionReceipt({
@@ -46,20 +46,14 @@ const SubmitProposalButton = () => {
   }, [isSuccess])
 
   const handleSubmit = () => {
-    if (calldatas && description && dtf?.ownerGovernance?.id) {
-      const targets: Address[] = []
-      const values: bigint[] = []
-
-      for (let i = 0; i < calldatas.length; i++) {
-        targets.push(dtf.id)
-        values.push(0n)
-      }
+    if (proposalData && description && dtf?.ownerGovernance?.id) {
+      const values: bigint[] = new Array(proposalData.calldatas.length).fill(0n)
 
       writeContract({
         address: dtf.ownerGovernance?.id,
         abi: DTFIndexGovernance,
         functionName: 'propose',
-        args: [targets, values, calldatas, description],
+        args: [proposalData.targets, values, proposalData.calldatas, description],
         chainId,
       })
     }

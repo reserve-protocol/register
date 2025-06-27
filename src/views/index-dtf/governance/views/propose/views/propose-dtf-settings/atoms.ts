@@ -1,5 +1,6 @@
 import dtfIndexAbiV2 from '@/abis/dtf-index-abi-v2'
 import dtfIndexAbi from '@/abis/dtf-index-abi'
+import timelockAbi from '@/abis/Timelock'
 import {
   indexDTFAtom,
   indexDTFBasketAtom,
@@ -140,7 +141,7 @@ const BRAND_MANAGER_ROLE =
 const AUCTION_LAUNCHER_ROLE =
   '0xecec33ab7f1be86026025e66df4d1b28cd50e7eb59269b6b6c5e8096d4a4aed4' as const
 
-export const dtfSettingsProposalCalldatasAtom = atom<Hex[] | undefined>(
+export const dtfSettingsProposalDataAtom = atom<{ calldatas: Hex[]; targets: Address[] } | undefined>(
   (get) => {
     const isConfirmed = get(isProposalConfirmedAtom)
     const indexDTF = get(indexDTFAtom)
@@ -156,6 +157,7 @@ export const dtfSettingsProposalCalldatasAtom = atom<Hex[] | undefined>(
     if (!isConfirmed || !indexDTF) return undefined
 
     const calldatas: Hex[] = []
+    const targets: Address[] = []
 
     // 1. Remove dust tokens
     if (removedBasketTokens.length > 0) {
@@ -169,6 +171,7 @@ export const dtfSettingsProposalCalldatasAtom = atom<Hex[] | undefined>(
               args: [token.address, BIGINT_MAX],
             })
           )
+          targets.push(indexDTF.id as Address)
         }
         calldatas.push(
           encodeFunctionData({
@@ -177,6 +180,7 @@ export const dtfSettingsProposalCalldatasAtom = atom<Hex[] | undefined>(
             args: [token.address],
           })
         )
+        targets.push(indexDTF.id as Address)
       }
     }
 
@@ -189,10 +193,53 @@ export const dtfSettingsProposalCalldatasAtom = atom<Hex[] | undefined>(
           args: [mandateChange],
         })
       )
+      targets.push(indexDTF.id as Address)
     }
 
     // 3. Handle role changes
-    if (rolesChanges.guardians) {
+    if (rolesChanges.guardians && indexDTF.ownerGovernance?.timelock?.id) {
+      const currentGuardians =
+        indexDTF.ownerGovernance?.timelock?.guardians || []
+      const newGuardians = rolesChanges.guardians
+      const timelockAddress = indexDTF.ownerGovernance.timelock.id as Address
+
+      // Revoke removed guardians
+      const removedGuardians = currentGuardians.filter(
+        (addr) =>
+          !newGuardians.some(
+            (newAddr) => newAddr.toLowerCase() === addr.toLowerCase()
+          )
+      )
+      for (const guardian of removedGuardians) {
+        calldatas.push(
+          encodeFunctionData({
+            abi: timelockAbi,
+            functionName: 'revokeRole',
+            args: [GUARDIAN_ROLE, guardian],
+          })
+        )
+        targets.push(timelockAddress)
+      }
+
+      // Grant new guardians
+      const addedGuardians = newGuardians.filter(
+        (addr) =>
+          !currentGuardians.some(
+            (currAddr) => currAddr.toLowerCase() === addr.toLowerCase()
+          )
+      )
+      for (const guardian of addedGuardians) {
+        calldatas.push(
+          encodeFunctionData({
+            abi: timelockAbi,
+            functionName: 'grantRole',
+            args: [GUARDIAN_ROLE, guardian],
+          })
+        )
+        targets.push(timelockAddress)
+      }
+    } else if (rolesChanges.guardians) {
+      // Fallback to DTF contract if timelock not available
       const currentGuardians =
         indexDTF.ownerGovernance?.timelock?.guardians || []
       const newGuardians = rolesChanges.guardians
@@ -212,6 +259,7 @@ export const dtfSettingsProposalCalldatasAtom = atom<Hex[] | undefined>(
             args: [GUARDIAN_ROLE, guardian],
           })
         )
+        targets.push(indexDTF.id as Address)
       }
 
       // Grant new guardians
@@ -229,6 +277,7 @@ export const dtfSettingsProposalCalldatasAtom = atom<Hex[] | undefined>(
             args: [GUARDIAN_ROLE, guardian],
           })
         )
+        targets.push(indexDTF.id as Address)
       }
     }
 
@@ -251,6 +300,7 @@ export const dtfSettingsProposalCalldatasAtom = atom<Hex[] | undefined>(
             args: [BRAND_MANAGER_ROLE, brandManager],
           })
         )
+        targets.push(indexDTF.id as Address)
       }
 
       // Grant new brand managers
@@ -268,6 +318,7 @@ export const dtfSettingsProposalCalldatasAtom = atom<Hex[] | undefined>(
             args: [BRAND_MANAGER_ROLE, brandManager],
           })
         )
+        targets.push(indexDTF.id as Address)
       }
     }
 
@@ -290,6 +341,7 @@ export const dtfSettingsProposalCalldatasAtom = atom<Hex[] | undefined>(
             args: [AUCTION_LAUNCHER_ROLE, auctionLauncher],
           })
         )
+        targets.push(indexDTF.id as Address)
       }
 
       // Grant new auction launchers
@@ -307,6 +359,7 @@ export const dtfSettingsProposalCalldatasAtom = atom<Hex[] | undefined>(
             args: [AUCTION_LAUNCHER_ROLE, auctionLauncher],
           })
         )
+        targets.push(indexDTF.id as Address)
       }
     }
 
@@ -319,6 +372,7 @@ export const dtfSettingsProposalCalldatasAtom = atom<Hex[] | undefined>(
           args: [BigInt(Math.floor(dtfRevenueChanges.mintFee * 100))], // Convert percentage to basis points
         })
       )
+      targets.push(indexDTF.id as Address)
     }
 
     // 4b. Set TVL fee
@@ -330,6 +384,7 @@ export const dtfSettingsProposalCalldatasAtom = atom<Hex[] | undefined>(
           args: [parseEther((dtfRevenueChanges.tvlFee / 100).toString())], // Convert percentage to decimal
         })
       )
+      targets.push(indexDTF.id as Address)
     }
 
     // 5. Set auction length
@@ -341,6 +396,7 @@ export const dtfSettingsProposalCalldatasAtom = atom<Hex[] | undefined>(
           args: [BigInt(auctionLengthChange * 60)], // Convert minutes to seconds
         })
       )
+      targets.push(indexDTF.id as Address)
     }
 
     // 6. Set fee recipients
@@ -435,12 +491,19 @@ export const dtfSettingsProposalCalldatasAtom = atom<Hex[] | undefined>(
             args: [newFeeRecipients],
           })
         )
+        targets.push(indexDTF.id as Address)
       }
     }
 
-    return calldatas.length > 0 ? calldatas : undefined
+    return calldatas.length > 0 ? { calldatas, targets } : undefined
   }
 )
+
+// Backwards compatibility atom
+export const dtfSettingsProposalCalldatasAtom = atom<Hex[] | undefined>((get) => {
+  const proposalData = get(dtfSettingsProposalDataAtom)
+  return proposalData?.calldatas
+})
 
 export const feeRecipientsAtom = atom((get) => {
   const indexDTF = get(indexDTFAtom)
