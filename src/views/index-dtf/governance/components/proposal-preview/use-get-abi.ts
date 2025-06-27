@@ -4,12 +4,12 @@ import { useEffect, useState } from 'react'
 import { Abi, Address } from 'viem'
 import { dtfAbiMapppingAtom, explorerContractAliasAtom } from './atoms'
 
+const API_KEY = import.meta.env.VITE_ETHERSCAN_API_KEY
+
 const fetchContractMetadata = async (
   contractAddress: string,
   chainId: number
 ): Promise<{ abi: Abi; contractName: string } | null> => {
-  const API_KEY = import.meta.env.VITE_ETHERSCAN_API_KEY
-
   if (!API_KEY) {
     console.warn('Missing Etherscan API key')
     return null
