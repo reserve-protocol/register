@@ -9,7 +9,7 @@ import {
 import { Token } from '@/types'
 import { BIGINT_MAX, FIXED_PLATFORM_FEE } from '@/utils/constants'
 import { atom } from 'jotai'
-import { Address, encodeFunctionData, Hex, keccak256, toBytes } from 'viem'
+import { Address, encodeFunctionData, Hex, keccak256, toBytes, parseEther } from 'viem'
 
 // UI
 export const selectedSectionAtom = atom<string[]>([])
@@ -331,48 +331,77 @@ export const dtfSettingsProposalCalldatasAtom = atom<Hex[] | undefined>(
     ) {
       if (!feeRecipients) return undefined
 
-      // Calculate new fee recipients array
+      // Calculate new fee recipients array similar to deploy logic
       const newFeeRecipients: { recipient: Address; portion: bigint }[] = []
-      const platformAddress = '0x0000000000000000000000000000000000000000' // Platform address
+      
+      // Calculate using the same logic as calculateRevenueDistribution
+      const totalSharesDenominator = (100 - FIXED_PLATFORM_FEE) / 100
+      
+      const calculateShare = (sharePercentage: number) => {
+        const share = sharePercentage / 100
+        if (totalSharesDenominator > 0) {
+          const shareNumerator = share / totalSharesDenominator
+          return parseEther(shareNumerator.toString())
+        }
+        return parseEther(share.toString())
+      }
 
-      // Platform fee is always fixed
-      newFeeRecipients.push({
-        recipient: platformAddress,
-        portion: BigInt(FIXED_PLATFORM_FEE * 100), // 20% = 2000 basis points
-      })
-
-      // Governance share
+      // Get current values
       const governanceShare =
         revenueDistributionChanges.governanceShare ??
         feeRecipients.governanceShare
-      if (governanceShare > 0 && indexDTF.stToken) {
-        newFeeRecipients.push({
-          recipient: indexDTF.stToken.id as Address,
-          portion: BigInt(Math.floor(governanceShare * 100)),
-        })
-      }
-
-      // Deployer share
       const deployerShare =
         revenueDistributionChanges.deployerShare ?? feeRecipients.deployerShare
-      if (deployerShare > 0) {
-        newFeeRecipients.push({
-          recipient: indexDTF.deployer as Address,
-          portion: BigInt(Math.floor(deployerShare * 100)),
-        })
-      }
-
-      // Additional recipients
       const additionalRecipients =
         revenueDistributionChanges.additionalRecipients ??
         feeRecipients.externalRecipients
+
+      // Build recipients array (excluding last one for now)
+      const tempRecipients: { recipient: Address; portion: bigint }[] = []
+      
+      // Additional recipients
       if (additionalRecipients && additionalRecipients.length > 0) {
         for (const recipient of additionalRecipients) {
-          newFeeRecipients.push({
+          tempRecipients.push({
             recipient: recipient.address as Address,
-            portion: BigInt(Math.floor(recipient.share * 100)),
+            portion: calculateShare(recipient.share),
           })
         }
+      }
+
+      // Deployer share (if not the last one)
+      if (deployerShare > 0) {
+        tempRecipients.push({
+          recipient: indexDTF.deployer as Address,
+          portion: calculateShare(deployerShare),
+        })
+      }
+
+      // Governance share (if not the last one)
+      if (governanceShare > 0 && indexDTF.stToken) {
+        tempRecipients.push({
+          recipient: indexDTF.stToken.id as Address,
+          portion: calculateShare(governanceShare),
+        })
+      }
+
+      // Calculate sum and adjust last recipient to avoid rounding errors
+      if (tempRecipients.length > 0) {
+        const currentSum = tempRecipients
+          .slice(0, -1)
+          .reduce((sum, item) => sum + item.portion, 0n)
+
+        if (tempRecipients.length > 1) {
+          tempRecipients[tempRecipients.length - 1].portion =
+            parseEther('1') - currentSum
+        }
+
+        // Sort by address
+        tempRecipients.sort((a, b) =>
+          a.recipient.toLowerCase().localeCompare(b.recipient.toLowerCase())
+        )
+
+        newFeeRecipients.push(...tempRecipients)
       }
 
       calldatas.push(

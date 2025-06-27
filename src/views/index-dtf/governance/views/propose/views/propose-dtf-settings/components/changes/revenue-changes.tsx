@@ -4,15 +4,27 @@ import { FIXED_PLATFORM_FEE } from '@/utils/constants'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { useAtom, useAtomValue } from 'jotai'
 import { useFormContext } from 'react-hook-form'
-import { DollarSign, ArrowRight, Undo } from 'lucide-react'
-import { 
+import {
+  DollarSign,
+  ArrowRight,
+  Undo,
+  PlusCircle,
+  MinusCircle,
+  ArrowUpRight,
+  Edit2,
+} from 'lucide-react'
+import {
   revenueDistributionChangesAtom,
   dtfRevenueChangesAtom,
   feeRecipientsAtom,
   hasRevenueDistributionChangesAtom,
-  hasDtfRevenueChangesAtom
+  hasDtfRevenueChangesAtom,
 } from '../../atoms'
 import { ChangeSection, RevertButton } from './shared'
+import { Link } from 'react-router-dom'
+import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
+import { chainIdAtom } from '@/state/atoms'
+import { cn } from '@/lib/utils'
 
 interface FeeChangeProps {
   title: string
@@ -22,18 +34,28 @@ interface FeeChangeProps {
 }
 
 const FeeChange = ({ title, currentFee, newFee, onRevert }: FeeChangeProps) => (
-  <div className="p-4 rounded-lg bg-secondary border space-y-2">
-    <div className="text-sm font-medium">{title}</div>
-    <div className="flex items-center gap-3 text-sm">
-      <span className="text-muted-foreground">
-        {formatPercentage(currentFee)}
-      </span>
-      <ArrowRight size={16} className="text-primary" />
-      <span className="text-primary font-medium">
-        {formatPercentage(newFee)}
-      </span>
+  <div className="flex items-center gap-2 p-4 rounded-2xl bg-muted/70 border">
+    <Edit2 size={16} className="text-primary" />
+    <div className="mr-auto">
+      <div className="text-sm font-medium">{title}</div>
+      <div className="flex items-center gap-3 text-sm">
+        <span className="text-muted-foreground">
+          {formatPercentage(currentFee)}
+        </span>
+        <ArrowRight size={16} className="text-primary" />
+        <span className="text-primary font-medium">
+          {formatPercentage(newFee)}
+        </span>
+      </div>
     </div>
-    <RevertButton onClick={onRevert} />
+    <Button
+      variant="outline"
+      size="xs"
+      className="rounded-full"
+      onClick={onRevert}
+    >
+      <Undo size={12} />
+    </Button>
   </div>
 )
 
@@ -44,7 +66,9 @@ interface RevenueDistributionChangeProps {
   currentAdditionalRecipients: { address: string; share: number }[]
   onRevertGovernance: () => void
   onRevertDeployer: () => void
-  onRevertAdditionalRecipients: (recipients: { address: string; share: number }[]) => void
+  onRevertAdditionalRecipients: (
+    recipients: { address: string; share: number }[]
+  ) => void
   onRevertAll: () => void
 }
 
@@ -56,62 +80,65 @@ const RevenueDistributionChange = ({
   onRevertGovernance,
   onRevertDeployer,
   onRevertAdditionalRecipients,
-  onRevertAll
+  onRevertAll,
 }: RevenueDistributionChangeProps) => (
-  <div className="p-4 rounded-lg bg-secondary border space-y-3">
-    <div className="text-sm font-medium">Revenue Distribution</div>
+  <div className="p-2 rounded-lg bg-muted/70 border space-y-3">
+    <div className="flex items-center justify-between p-2 pb-0">
+      <div className="text-sm font-medium">Revenue Distribution</div>
+      <RevertButton onClick={onRevertAll} label="Revert All" />
+    </div>
     <div className="space-y-2">
       {governanceShareChange && (
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3 text-sm">
-            <span className="text-muted-foreground w-24">Governance:</span>
-            <span className="text-muted-foreground">
-              {formatPercentage(governanceShareChange.current)}
-            </span>
-            <ArrowRight size={14} className="text-primary" />
-            <span className="text-primary font-medium">
-              {formatPercentage(governanceShareChange.new)}
-            </span>
+        <div className="flex items-center gap-2 border rounded-2xl p-2">
+          <Edit2 size={16} className="text-primary" />
+          <div className="flex flex-col gap-1 mr-auto">
+            <h4 className="text-sm text-primary">Governance Share</h4>
+            <div className="flex items-center gap-3 text-sm">
+              <span className="text-muted-foreground">
+                {formatPercentage(governanceShareChange.current)}
+              </span>
+              <ArrowRight size={12} className="text-primary" />
+              <span className="text-primary font-medium">
+                {formatPercentage(governanceShareChange.new)}
+              </span>
+            </div>
           </div>
           <Button
             variant="outline"
-            size="icon-rounded"
+            size="xs"
+            className="rounded-full"
             onClick={onRevertGovernance}
-            className="h-6 w-6 hover:bg-destructive/10 hover:text-destructive hover:border-destructive/20"
           >
-            <Undo size={14} />
+            <Undo size={12} />
           </Button>
         </div>
       )}
       {deployerShareChange && (
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3 text-sm">
-            <span className="text-muted-foreground w-24">Creator:</span>
-            <span className="text-muted-foreground">
-              {formatPercentage(deployerShareChange.current)}
-            </span>
-            <ArrowRight size={14} className="text-primary" />
-            <span className="text-primary font-medium">
-              {formatPercentage(deployerShareChange.new)}
-            </span>
+        <div className="flex items-center gap-2 border rounded-2xl p-2">
+          <Edit2 size={16} className="text-primary" />
+          <div className="flex flex-col gap-1 mr-auto">
+            <h4 className="text-sm text-primary">Creator Share</h4>
+            <div className="flex items-center gap-3 text-sm">
+              <span className="text-muted-foreground">
+                {formatPercentage(deployerShareChange.current)}
+              </span>
+              <ArrowRight size={12} className="text-primary" />
+              <span className="text-primary font-medium">
+                {formatPercentage(deployerShareChange.new)}
+              </span>
+            </div>
           </div>
           <Button
             variant="outline"
-            size="icon-rounded"
+            size="xs"
+            className="rounded-full"
             onClick={onRevertDeployer}
-            className="h-6 w-6 hover:bg-destructive/10 hover:text-destructive hover:border-destructive/20"
           >
-            <Undo size={14} />
+            <Undo size={12} />
           </Button>
         </div>
       )}
-      <div className="flex items-center gap-3 text-sm">
-        <span className="text-muted-foreground w-24">Platform:</span>
-        <span className="text-muted-foreground">
-          {FIXED_PLATFORM_FEE}% (fixed)
-        </span>
-      </div>
-      
+
       {additionalRecipients !== undefined && (
         <div className="mt-3 space-y-2">
           <div className="text-xs font-medium">Additional Recipients:</div>
@@ -123,66 +150,79 @@ const RevenueDistributionChange = ({
         </div>
       )}
     </div>
-    <RevertButton onClick={onRevertAll} label="Revert All" />
   </div>
 )
 
 // Helper component for additional recipients changes
-const AdditionalRecipientsChanges = ({ 
-  current, 
-  proposed, 
-  onRevert 
-}: { 
+const AdditionalRecipientsChanges = ({
+  current,
+  proposed,
+  onRevert,
+}: {
   current: { address: string; share: number }[]
   proposed: { address: string; share: number }[]
   onRevert: (recipients: { address: string; share: number }[]) => void
 }) => {
+  const chainId = useAtomValue(chainIdAtom)
   // Find added recipients
-  const added = proposed.filter(propRecipient => 
-    !current.some(currRecipient => 
-      currRecipient.address.toLowerCase() === propRecipient.address.toLowerCase()
-    )
+  const added = proposed.filter(
+    (propRecipient) =>
+      !current.some(
+        (currRecipient) =>
+          currRecipient.address.toLowerCase() ===
+          propRecipient.address.toLowerCase()
+      )
   )
-  
+
   // Find removed recipients
-  const removed = current.filter(currRecipient => 
-    !proposed.some(propRecipient => 
-      propRecipient.address.toLowerCase() === currRecipient.address.toLowerCase()
-    )
+  const removed = current.filter(
+    (currRecipient) =>
+      !proposed.some(
+        (propRecipient) =>
+          propRecipient.address.toLowerCase() ===
+          currRecipient.address.toLowerCase()
+      )
   )
-  
+
   // Find modified recipients (same address, different share)
-  const modified = proposed.filter(propRecipient => {
-    const currentRecipient = current.find(curr => 
-      curr.address.toLowerCase() === propRecipient.address.toLowerCase()
-    )
-    return currentRecipient && currentRecipient.share !== propRecipient.share
-  }).map(propRecipient => {
-    const currentRecipient = current.find(curr => 
-      curr.address.toLowerCase() === propRecipient.address.toLowerCase()
-    )!
-    return {
-      address: propRecipient.address,
-      currentShare: currentRecipient.share,
-      newShare: propRecipient.share
-    }
-  })
+  const modified = proposed
+    .filter((propRecipient) => {
+      const currentRecipient = current.find(
+        (curr) =>
+          curr.address.toLowerCase() === propRecipient.address.toLowerCase()
+      )
+      return currentRecipient && currentRecipient.share !== propRecipient.share
+    })
+    .map((propRecipient) => {
+      const currentRecipient = current.find(
+        (curr) =>
+          curr.address.toLowerCase() === propRecipient.address.toLowerCase()
+      )!
+      return {
+        address: propRecipient.address,
+        currentShare: currentRecipient.share,
+        newShare: propRecipient.share,
+      }
+    })
 
   const handleRevertAdd = (address: string) => {
-    const newProposed = proposed.filter(r => 
-      r.address.toLowerCase() !== address.toLowerCase()
+    const newProposed = proposed.filter(
+      (r) => r.address.toLowerCase() !== address.toLowerCase()
     )
     onRevert(newProposed)
   }
 
-  const handleRevertRemove = (recipient: { address: string; share: number }) => {
+  const handleRevertRemove = (recipient: {
+    address: string
+    share: number
+  }) => {
     const newProposed = [...proposed, recipient]
     onRevert(newProposed)
   }
 
   const handleRevertModify = (address: string, originalShare: number) => {
-    const newProposed = proposed.map(r => 
-      r.address.toLowerCase() === address.toLowerCase() 
+    const newProposed = proposed.map((r) =>
+      r.address.toLowerCase() === address.toLowerCase()
         ? { ...r, share: originalShare }
         : r
     )
@@ -190,72 +230,125 @@ const AdditionalRecipientsChanges = ({
   }
 
   return (
-    <div className="space-y-2">
-      {added.length > 0 && (
-        <div>
-          <div className="text-xs text-success mb-1">Added ({added.length}):</div>
-          {added.map(recipient => (
-            <div key={recipient.address} className="flex items-center justify-between gap-2">
-              <div className="text-sm text-success">
-                + {shortenAddress(recipient.address)} ({recipient.share}%)
-              </div>
-              <Button
-                variant="outline"
-                size="icon-rounded"
-                onClick={() => handleRevertAdd(recipient.address)}
-                className="h-6 w-6 hover:bg-destructive/10 hover:text-destructive hover:border-destructive/20"
+    <div className="flex flex-col gap-2">
+      {added.map((recipient) => (
+        <div
+          key={recipient.address}
+          className="flex items-center gap-2 border rounded-2xl p-2"
+        >
+          <PlusCircle className="text-success" size={16} />
+          <div className="flex flex-col gap-1 mr-auto">
+            <h4 className="text-sm text-success">Added</h4>
+            <div className="flex items-center gap-2">
+              <Link
+                className="text-sm text-legend flex items-center gap-1"
+                to={getExplorerLink(
+                  recipient.address,
+                  chainId,
+                  ExplorerDataType.ADDRESS
+                )}
+                target="_blank"
               >
-                <Undo size={14} />
-              </Button>
+                {shortenAddress(recipient.address)}
+                <ArrowUpRight size={12} />
+              </Link>
+              <span className="text-sm text-muted-foreground">
+                ({recipient.share}%)
+              </span>
             </div>
-          ))}
+          </div>
+          <Button
+            variant="outline"
+            size="xs"
+            className="rounded-full"
+            onClick={() => handleRevertAdd(recipient.address)}
+          >
+            <Undo size={12} />
+          </Button>
         </div>
-      )}
-      
-      {removed.length > 0 && (
-        <div>
-          <div className="text-xs text-destructive mb-1">Removed ({removed.length}):</div>
-          {removed.map(recipient => (
-            <div key={recipient.address} className="flex items-center justify-between gap-2">
-              <div className="text-sm text-destructive">
-                - {shortenAddress(recipient.address)} ({recipient.share}%)
-              </div>
-              <Button
-                variant="outline"
-                size="icon-rounded"
-                onClick={() => handleRevertRemove(recipient)}
-                className="h-6 w-6 hover:bg-success/10 hover:text-success hover:border-success/20"
+      ))}
+
+      {removed.map((recipient) => (
+        <div
+          key={recipient.address}
+          className="flex items-center gap-2 border rounded-2xl p-2"
+        >
+          <MinusCircle className="text-destructive" size={16} />
+          <div className="flex flex-col gap-1 mr-auto">
+            <h4 className="text-sm text-destructive">Removed</h4>
+            <div className="flex items-center gap-2">
+              <Link
+                className="text-sm text-legend flex items-center gap-1"
+                to={getExplorerLink(
+                  recipient.address,
+                  chainId,
+                  ExplorerDataType.ADDRESS
+                )}
+                target="_blank"
               >
-                <Undo size={14} />
-              </Button>
+                {shortenAddress(recipient.address)}
+                <ArrowUpRight size={12} />
+              </Link>
+              <span className="text-sm text-muted-foreground">
+                ({recipient.share}%)
+              </span>
             </div>
-          ))}
+          </div>
+          <Button
+            variant="outline"
+            size="xs"
+            className="rounded-full"
+            onClick={() => handleRevertRemove(recipient)}
+          >
+            <Undo size={12} />
+          </Button>
         </div>
-      )}
-      
-      {modified.length > 0 && (
-        <div>
-          <div className="text-xs text-primary mb-1">Modified ({modified.length}):</div>
-          {modified.map(recipient => (
-            <div key={recipient.address} className="flex items-center justify-between gap-2">
-              <div className="text-sm">
-                <span className="text-muted-foreground">{shortenAddress(recipient.address)}</span>
-                <span className="text-muted-foreground mx-2">{recipient.currentShare}%</span>
-                <ArrowRight size={12} className="inline text-primary" />
-                <span className="text-primary font-medium mx-2">{recipient.newShare}%</span>
-              </div>
-              <Button
-                variant="outline"
-                size="icon-rounded"
-                onClick={() => handleRevertModify(recipient.address, recipient.currentShare)}
-                className="h-6 w-6 hover:bg-destructive/10 hover:text-destructive hover:border-destructive/20"
+      ))}
+
+      {modified.map((recipient) => (
+        <div
+          key={recipient.address}
+          className="flex items-center gap-2 border rounded-2xl p-2"
+        >
+          <Edit2 className="text-primary" size={16} />
+          <div className="flex flex-col gap-1 mr-auto">
+            <h4 className="text-sm text-primary">Modified</h4>
+            <div className="flex items-center gap-2">
+              <Link
+                className="text-sm text-legend flex items-center gap-1"
+                to={getExplorerLink(
+                  recipient.address,
+                  chainId,
+                  ExplorerDataType.ADDRESS
+                )}
+                target="_blank"
               >
-                <Undo size={14} />
-              </Button>
+                {shortenAddress(recipient.address)}
+                <ArrowUpRight size={12} />
+              </Link>
+              <div className="flex items-center gap-2 text-sm">
+                <span className="text-muted-foreground">
+                  {recipient.currentShare}%
+                </span>
+                <ArrowRight size={12} className="text-primary" />
+                <span className="text-primary font-medium">
+                  {recipient.newShare}%
+                </span>
+              </div>
             </div>
-          ))}
+          </div>
+          <Button
+            variant="outline"
+            size="xs"
+            className="rounded-full"
+            onClick={() =>
+              handleRevertModify(recipient.address, recipient.currentShare)
+            }
+          >
+            <Undo size={12} />
+          </Button>
         </div>
-      )}
+      ))}
     </div>
   )
 }
@@ -263,56 +356,64 @@ const AdditionalRecipientsChanges = ({
 const RevenueChanges = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
   const feeRecipients = useAtomValue(feeRecipientsAtom)
-  const [dtfRevenueChanges, setDtfRevenueChanges] = useAtom(dtfRevenueChangesAtom)
-  const [revenueDistributionChanges, setRevenueDistributionChanges] = useAtom(revenueDistributionChangesAtom)
-  const hasRevenueDistributionChanges = useAtomValue(hasRevenueDistributionChangesAtom)
+  const [dtfRevenueChanges, setDtfRevenueChanges] = useAtom(
+    dtfRevenueChangesAtom
+  )
+  const [revenueDistributionChanges, setRevenueDistributionChanges] = useAtom(
+    revenueDistributionChangesAtom
+  )
+  const hasRevenueDistributionChanges = useAtomValue(
+    hasRevenueDistributionChangesAtom
+  )
   const hasDtfRevenueChanges = useAtomValue(hasDtfRevenueChangesAtom)
   const { setValue } = useFormContext()
-  
+
   const hasChanges = hasDtfRevenueChanges || hasRevenueDistributionChanges
-    
+
   if (!hasChanges || !indexDTF || !feeRecipients) return null
-  
+
   const currentMintFee = indexDTF.mintingFee * 100
   const currentTvlFee = indexDTF.annualizedTvlFee * 100
   const currentGovernanceShare = feeRecipients.governanceShare
   const currentDeployerShare = feeRecipients.deployerShare
   const currentAdditionalRecipients = feeRecipients.externalRecipients
-  
+
   const onRevertMintFee = () => {
     setDtfRevenueChanges({ ...dtfRevenueChanges, mintFee: undefined })
     setValue('mintFee', currentMintFee)
   }
-  
+
   const onRevertTvlFee = () => {
     setDtfRevenueChanges({ ...dtfRevenueChanges, tvlFee: undefined })
     setValue('folioFee', currentTvlFee)
   }
-  
+
   const onRevertGovernance = () => {
-    setRevenueDistributionChanges({ 
-      ...revenueDistributionChanges, 
-      governanceShare: undefined 
+    setRevenueDistributionChanges({
+      ...revenueDistributionChanges,
+      governanceShare: undefined,
     })
     setValue('governanceShare', currentGovernanceShare)
   }
-  
+
   const onRevertDeployer = () => {
-    setRevenueDistributionChanges({ 
-      ...revenueDistributionChanges, 
-      deployerShare: undefined 
+    setRevenueDistributionChanges({
+      ...revenueDistributionChanges,
+      deployerShare: undefined,
     })
     setValue('deployerShare', currentDeployerShare)
   }
-  
-  const onRevertAdditionalRecipients = (recipients: { address: string; share: number }[]) => {
-    setRevenueDistributionChanges({ 
-      ...revenueDistributionChanges, 
-      additionalRecipients: recipients.length > 0 ? recipients : undefined
+
+  const onRevertAdditionalRecipients = (
+    recipients: { address: string; share: number }[]
+  ) => {
+    setRevenueDistributionChanges({
+      ...revenueDistributionChanges,
+      additionalRecipients: recipients.length > 0 ? recipients : undefined,
     })
     setValue('additionalRevenueRecipients', recipients)
   }
-  
+
   const onRevertAllDistribution = () => {
     setRevenueDistributionChanges({})
     setValue('governanceShare', currentGovernanceShare)
@@ -331,7 +432,7 @@ const RevenueChanges = () => {
             onRevert={onRevertMintFee}
           />
         )}
-        
+
         {dtfRevenueChanges.tvlFee !== undefined && (
           <FeeChange
             title="Annualized TVL Fee"
@@ -340,22 +441,30 @@ const RevenueChanges = () => {
             onRevert={onRevertTvlFee}
           />
         )}
-        
-        {(revenueDistributionChanges.governanceShare !== undefined || 
+
+        {(revenueDistributionChanges.governanceShare !== undefined ||
           revenueDistributionChanges.deployerShare !== undefined ||
           revenueDistributionChanges.additionalRecipients !== undefined) && (
           <RevenueDistributionChange
             governanceShareChange={
               revenueDistributionChanges.governanceShare !== undefined
-                ? { current: currentGovernanceShare, new: revenueDistributionChanges.governanceShare }
+                ? {
+                    current: currentGovernanceShare,
+                    new: revenueDistributionChanges.governanceShare,
+                  }
                 : undefined
             }
             deployerShareChange={
               revenueDistributionChanges.deployerShare !== undefined
-                ? { current: currentDeployerShare, new: revenueDistributionChanges.deployerShare }
+                ? {
+                    current: currentDeployerShare,
+                    new: revenueDistributionChanges.deployerShare,
+                  }
                 : undefined
             }
-            additionalRecipients={revenueDistributionChanges.additionalRecipients}
+            additionalRecipients={
+              revenueDistributionChanges.additionalRecipients
+            }
             currentAdditionalRecipients={currentAdditionalRecipients}
             onRevertGovernance={onRevertGovernance}
             onRevertDeployer={onRevertDeployer}
