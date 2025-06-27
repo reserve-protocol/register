@@ -51,7 +51,6 @@ const ProposalInstructions = () => {
   const isFormValid = useAtomValue(isFormValidAtom)
   const confirmed = useAtomValue(isProposalConfirmedAtom)
 
-  console.log('is valid', { isValid, isFormValid })
   const canProceed = isValid && isFormValid
 
   const timelineItems = [

@@ -18,7 +18,7 @@ import {
   Crown,
   Scale,
 } from 'lucide-react'
-import { ReactNode } from 'react'
+import { ReactNode, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { selectedSectionAtom } from '../atoms'
 import ProposeAuctionSettings from './sections/propose-auction-settings'
@@ -28,6 +28,20 @@ import ProposeMetadata from './sections/propose-metadata'
 import RemoveDustTokens from './sections/remove-dust-tokens'
 
 type DTF_SETTINGS_ID = 'mandate' | 'fees' | 'auction' | 'tokens' | 'roles'
+
+// Scroll utility function adapted from deploy
+const scrollToSection = (sectionId: string) => {
+  setTimeout(() => {
+    const element = document.getElementById(`propose-section-${sectionId}`)
+    if (element) {
+      const wrapper = document.getElementById('app-container')
+      if (wrapper) {
+        const count = element.offsetTop - wrapper.scrollTop
+        wrapper.scrollBy({ top: count, left: 0, behavior: 'smooth' })
+      }
+    }
+  }, 250)
+}
 
 export type DTF_SETTING = {
   id: DTF_SETTINGS_ID
@@ -81,7 +95,9 @@ const ProposeSectionTrigger = ({
   title,
 }: Omit<DTF_SETTING, 'content' | 'titleSecondary'>) => {
   const selectedSection = useAtomValue(selectedSectionAtom)
-  const isActive = selectedSection.includes(id)
+  const isActive = Array.isArray(selectedSection)
+    ? selectedSection.includes(id)
+    : selectedSection === id
 
   return (
     <AccordionTrigger
@@ -139,22 +155,29 @@ const Header = () => (
 const DTFSettingsProposalSections = () => {
   const [section, setSection] = useAtom(selectedSectionAtom)
 
+  // Convert atom value for single mode
+  const singleValue = Array.isArray(section) ? section[0] : section
+
   return (
     <div className="w-full bg-secondary rounded-4xl h-fit">
       <Header />
       <Accordion
-        type="multiple"
-        value={section}
+        type="single"
+        collapsible
+        value={singleValue}
         className="p-1"
-        onValueChange={(value: string[]) => {
-          setSection(value)
+        onValueChange={(value: string) => {
+          setSection(value ? [value] : [])
+          if (value) {
+            scrollToSection(value)
+          }
         }}
       >
         {DTF_SETTINGS.map(({ id, icon, title, titleSecondary, content }) => (
           <AccordionItem
             key={id}
             value={id}
-            id={`deploy-section-${id}`}
+            id={`propose-section-${id}`}
             className="[&:not(:last-child)]:border-b-4 [&:not(:first-child)]:border-t border-secondary rounded-[1.25rem] bg-card"
           >
             <ProposeSectionTrigger id={id} icon={icon} title={title} />
