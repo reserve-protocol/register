@@ -116,6 +116,22 @@ export const isProposalValidAtom = atom((get) => {
     hasDtfRevenueChanges ||
     hasAuctionLengthChange
 
+  // For non-revenue distribution changes, just check if there are changes
+  // Revenue distribution validation will be checked separately since it's more complex
+  const hasNonRevenueChanges = 
+    removedBasketTokens.length > 0 ||
+    hasMandateChange ||
+    hasRolesChanges ||
+    hasDtfRevenueChanges ||
+    hasAuctionLengthChange
+
+  // If there are non-revenue changes, allow proposal even if form is temporarily invalid
+  // This allows users to make changes that temporarily break the 100% rule
+  if (hasNonRevenueChanges) {
+    return true
+  }
+
+  // For revenue-only changes, ensure form is valid
   return hasChanges && isFormValid
 })
 
@@ -308,6 +324,17 @@ export const dtfSettingsProposalCalldatasAtom = atom<Hex[] | undefined>(
           abi: dtfIndexAbi,
           functionName: 'setMintFee',
           args: [BigInt(Math.floor(dtfRevenueChanges.mintFee * 100))], // Convert percentage to basis points
+        })
+      )
+    }
+
+    // 4b. Set TVL fee
+    if (dtfRevenueChanges.tvlFee !== undefined) {
+      calldatas.push(
+        encodeFunctionData({
+          abi: dtfIndexAbi,
+          functionName: 'setTVLFee',
+          args: [parseEther((dtfRevenueChanges.tvlFee / 100).toString())], // Convert percentage to decimal
         })
       )
     }

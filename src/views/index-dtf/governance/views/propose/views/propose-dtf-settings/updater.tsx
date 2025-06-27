@@ -121,17 +121,23 @@ const Updater = () => {
   // Watch for fee changes
   useEffect(() => {
     if (indexDTF) {
-      const changes: any = {}
-      
-      if (mintFee !== undefined && mintFee !== indexDTF.mintingFee * 100) {
-        changes.mintFee = mintFee
-      }
-      
-      if (folioFee !== undefined && folioFee !== indexDTF.annualizedTvlFee * 100) {
-        changes.tvlFee = folioFee
-      }
-      
-      setDtfRevenueChanges(changes)
+      setDtfRevenueChanges((prevChanges) => {
+        const changes = { ...prevChanges }
+        
+        if (mintFee !== undefined && mintFee !== indexDTF.mintingFee * 100) {
+          changes.mintFee = mintFee
+        } else {
+          delete changes.mintFee
+        }
+        
+        if (folioFee !== undefined && folioFee !== indexDTF.annualizedTvlFee * 100) {
+          changes.tvlFee = folioFee
+        } else {
+          delete changes.tvlFee
+        }
+        
+        return changes
+      })
     }
   }, [mintFee, folioFee, indexDTF?.mintingFee, indexDTF?.annualizedTvlFee])
   

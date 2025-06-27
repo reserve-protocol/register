@@ -13,6 +13,7 @@ import {
   RevokeRolePreview,
   SetFeeRecipientsPreview,
   SetMintFeePreview,
+  SetTVLFeePreview,
   SetAuctionLengthPreview,
   SetDustAmountPreview,
 } from '@/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview'
@@ -152,6 +153,7 @@ const dtfSettingsPreviewComponents: Record<string, React.ComponentType<any>> = {
   // Settings updates
   setMandate: SetMandatePreview,
   setMintFee: SetMintFeePreview,
+  setTVLFee: SetTVLFeePreview,
   setAuctionLength: SetAuctionLengthPreview,
   setFeeRecipients: SetFeeRecipientsPreview,
   

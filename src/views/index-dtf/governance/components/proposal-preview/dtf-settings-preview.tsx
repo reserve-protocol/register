@@ -134,6 +134,25 @@ export const SetMintFeePreview = ({ decodedCalldata }: { decodedCalldata: Decode
   )
 }
 
+// Preview component for setTVLFee function
+export const SetTVLFeePreview = ({ decodedCalldata }: { decodedCalldata: DecodedCalldata }) => {
+  const fee = decodedCalldata.data[0] as bigint
+  // Convert from parseEther to percentage (e.g., 0.015 ether = 1.5%)
+  const percentage = Number(fee) / 1e16 // divide by 1e16 to get percentage
+  
+  return (
+    <div className="space-y-2">
+      <div className="flex items-center gap-2 text-sm font-medium">
+        <DollarSign size={16} />
+        <span>Update TVL Fee</span>
+      </div>
+      <div className="p-3 rounded-lg bg-muted/50 text-sm">
+        <span className="font-medium">{percentage.toFixed(2)}%</span>
+      </div>
+    </div>
+  )
+}
+
 
 // Preview component for setAuctionLength function
 export const SetAuctionLengthPreview = ({ decodedCalldata }: { decodedCalldata: DecodedCalldata }) => {
