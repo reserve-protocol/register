@@ -137,10 +137,10 @@ const IndexDTFIssuance = () => {
           className="mx-auto"
           onClick={() => trackClick('switch_to_manual')}
         >
-          <a target="_blank" className="text-legend underline text-md ">
+          <span className="text-legend underline text-md ">
             Having issues? Switch to manual{' '}
             {currentTab === 'buy' ? 'minting' : 'redeeming'}
-          </a>
+          </span>
         </Link>
       </div>
     </div>
