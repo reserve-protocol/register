@@ -39,10 +39,11 @@ const Updater = () => {
   const governanceChanges = useAtomValue(governanceChangesAtom)
   const mandateChange = useAtomValue(mandateChangeAtom)
   const rolesChanges = useAtomValue(rolesChangesAtom)
-  const revenueDistributionChanges = useAtomValue(revenueDistributionChangesAtom)
+  const revenueDistributionChanges = useAtomValue(
+    revenueDistributionChangesAtom
+  )
   const dtfRevenueChanges = useAtomValue(dtfRevenueChangesAtom)
   const auctionLengthChange = useAtomValue(auctionLengthChangeAtom)
-  const isProposalConfirmed = useAtomValue(isProposalConfirmedAtom)
   const isResettingForm = useRef(false)
 
   // Set atoms for changes
@@ -81,57 +82,82 @@ const Updater = () => {
   useEffect(() => {
     if (indexDTF && indexDTF.ownerGovernance && feeRecipients) {
       isResettingForm.current = true
-      
+
       // Get current governance values
-      const currentVotingDelay = Number(indexDTF.ownerGovernance.votingDelay) / 86400
-      const currentVotingPeriod = Number(indexDTF.ownerGovernance.votingPeriod) / 86400
+      const currentVotingDelay =
+        Number(indexDTF.ownerGovernance.votingDelay) / 86400
+      const currentVotingPeriod =
+        Number(indexDTF.ownerGovernance.votingPeriod) / 86400
       const currentQuorum = Number(indexDTF.ownerGovernance.quorumNumerator)
-      const currentThreshold = Number(indexDTF.ownerGovernance.proposalThreshold) / 1e16
-      const currentExecutionDelay = Number(indexDTF.ownerGovernance.timelock.executionDelay) / 86400
+      // proposalThreshold is stored as percentage * 1e18 (e.g., 1% = 1e18)
+      const currentThreshold =
+        Number(indexDTF.ownerGovernance.proposalThreshold) / 1e18
+      const currentExecutionDelay =
+        Number(indexDTF.ownerGovernance.timelock.executionDelay) / 86400
 
       resetForm({
         mandate: mandateChange !== undefined ? mandateChange : indexDTF.mandate,
         governanceVoteLock: indexDTF.stToken?.id,
-        mintFee: dtfRevenueChanges.mintFee !== undefined ? dtfRevenueChanges.mintFee : indexDTF.mintingFee * 100,
-        folioFee: dtfRevenueChanges.tvlFee !== undefined ? dtfRevenueChanges.tvlFee : indexDTF.annualizedTvlFee * 100,
-        governanceShare: revenueDistributionChanges.governanceShare !== undefined 
-          ? revenueDistributionChanges.governanceShare 
-          : feeRecipients.governanceShare,
-        deployerShare: revenueDistributionChanges.deployerShare !== undefined 
-          ? revenueDistributionChanges.deployerShare 
-          : feeRecipients.deployerShare,
-        additionalRevenueRecipients: revenueDistributionChanges.additionalRecipients !== undefined 
-          ? revenueDistributionChanges.additionalRecipients 
-          : feeRecipients.externalRecipients,
+        mintFee:
+          dtfRevenueChanges.mintFee !== undefined
+            ? dtfRevenueChanges.mintFee
+            : indexDTF.mintingFee * 100,
+        folioFee:
+          dtfRevenueChanges.tvlFee !== undefined
+            ? dtfRevenueChanges.tvlFee
+            : indexDTF.annualizedTvlFee * 100,
+        governanceShare:
+          revenueDistributionChanges.governanceShare !== undefined
+            ? revenueDistributionChanges.governanceShare
+            : feeRecipients.governanceShare,
+        deployerShare:
+          revenueDistributionChanges.deployerShare !== undefined
+            ? revenueDistributionChanges.deployerShare
+            : feeRecipients.deployerShare,
+        additionalRevenueRecipients:
+          revenueDistributionChanges.additionalRecipients !== undefined
+            ? revenueDistributionChanges.additionalRecipients
+            : feeRecipients.externalRecipients,
         fixedPlatformFee: FIXED_PLATFORM_FEE,
-        auctionLength: auctionLengthChange !== undefined ? auctionLengthChange : indexDTF.auctionLength / 60,
+        auctionLength:
+          auctionLengthChange !== undefined
+            ? auctionLengthChange
+            : indexDTF.auctionLength / 60,
         // Apply governance changes if they exist, otherwise use current values
-        governanceVotingDelay: governanceChanges.votingDelay !== undefined 
-          ? governanceChanges.votingDelay / 86400 
-          : currentVotingDelay,
-        governanceVotingPeriod: governanceChanges.votingPeriod !== undefined 
-          ? governanceChanges.votingPeriod / 86400 
-          : currentVotingPeriod,
-        governanceVotingQuorum: governanceChanges.quorumPercent !== undefined 
-          ? governanceChanges.quorumPercent 
-          : currentQuorum,
-        governanceVotingThreshold: governanceChanges.proposalThreshold !== undefined 
-          ? governanceChanges.proposalThreshold 
-          : currentThreshold,
-        governanceExecutionDelay: governanceChanges.executionDelay !== undefined 
-          ? governanceChanges.executionDelay / 86400 
-          : currentExecutionDelay,
-        guardians: rolesChanges.guardians !== undefined 
-          ? rolesChanges.guardians 
-          : indexDTF.ownerGovernance.timelock.guardians,
-        brandManagers: rolesChanges.brandManagers !== undefined 
-          ? rolesChanges.brandManagers 
-          : indexDTF.brandManagers,
-        auctionLaunchers: rolesChanges.auctionLaunchers !== undefined 
-          ? rolesChanges.auctionLaunchers 
-          : indexDTF.auctionLaunchers,
+        governanceVotingDelay:
+          governanceChanges.votingDelay !== undefined
+            ? governanceChanges.votingDelay / 86400
+            : currentVotingDelay,
+        governanceVotingPeriod:
+          governanceChanges.votingPeriod !== undefined
+            ? governanceChanges.votingPeriod / 86400
+            : currentVotingPeriod,
+        governanceVotingQuorum:
+          governanceChanges.quorumPercent !== undefined
+            ? governanceChanges.quorumPercent
+            : currentQuorum,
+        governanceVotingThreshold:
+          governanceChanges.proposalThreshold !== undefined
+            ? governanceChanges.proposalThreshold
+            : currentThreshold,
+        governanceExecutionDelay:
+          governanceChanges.executionDelay !== undefined
+            ? governanceChanges.executionDelay / 86400
+            : currentExecutionDelay,
+        guardians:
+          rolesChanges.guardians !== undefined
+            ? rolesChanges.guardians
+            : indexDTF.ownerGovernance.timelock.guardians,
+        brandManagers:
+          rolesChanges.brandManagers !== undefined
+            ? rolesChanges.brandManagers
+            : indexDTF.brandManagers,
+        auctionLaunchers:
+          rolesChanges.auctionLaunchers !== undefined
+            ? rolesChanges.auctionLaunchers
+            : indexDTF.auctionLaunchers,
       })
-      
+
       // Reset the flag after form reset
       setTimeout(() => {
         isResettingForm.current = false
@@ -305,7 +331,7 @@ const Updater = () => {
   useEffect(() => {
     if (indexDTF && indexDTF.ownerGovernance) {
       const governance = indexDTF.ownerGovernance
-      
+
       setGovernanceChanges((prevChanges) => {
         const changes = { ...prevChanges }
 
@@ -331,7 +357,7 @@ const Updater = () => {
 
         // Check proposal threshold (convert to percentage for comparison)
         if (governanceVotingThreshold !== undefined) {
-          const currentThreshold = Number(governance.proposalThreshold) / 1e16
+          const currentThreshold = Number(governance.proposalThreshold) / 1e18
           if (governanceVotingThreshold !== currentThreshold) {
             changes.proposalThreshold = governanceVotingThreshold
           } else {
@@ -351,8 +377,10 @@ const Updater = () => {
         // Check execution delay (convert from days to seconds for comparison)
         if (governanceExecutionDelay !== undefined) {
           const newValueInSeconds = governanceExecutionDelay * 86400
-          if (governance.timelock?.executionDelay !== undefined && 
-              newValueInSeconds !== Number(governance.timelock.executionDelay)) {
+          if (
+            governance.timelock?.executionDelay !== undefined &&
+            newValueInSeconds !== Number(governance.timelock.executionDelay)
+          ) {
             changes.executionDelay = newValueInSeconds
           } else {
             delete changes.executionDelay

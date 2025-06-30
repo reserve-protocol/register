@@ -28,13 +28,13 @@ const proposalTypes = [
   },
   {
     icon: <Crown size={16} strokeWidth={1.5} />,
-    title: 'Roles',
+    title: 'Basket settings',
     route: GOVERNANCE_PROPOSAL_TYPES.ROLES,
-    enabled: false,
+    enabled: true,
   },
   {
     icon: <LayoutGrid size={16} strokeWidth={1.5} />,
-    title: 'Other',
+    title: 'DAO',
     route: GOVERNANCE_PROPOSAL_TYPES.OTHER,
     enabled: true,
   },
