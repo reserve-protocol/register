@@ -1,6 +1,7 @@
 import dtfIndexAbiV2 from '@/abis/dtf-index-abi-v2'
 import dtfIndexAbi from '@/abis/dtf-index-abi'
 import timelockAbi from '@/abis/Timelock'
+import dtfGovernanceAbi from '@/abis/dtf-index-governance'
 import {
   indexDTFAtom,
   indexDTFBasketAtom,
@@ -44,6 +45,14 @@ export const dtfRevenueChangesAtom = atom<{
 
 export const auctionLengthChangeAtom = atom<number | undefined>(undefined)
 
+export const governanceChangesAtom = atom<{
+  votingDelay?: number
+  votingPeriod?: number
+  proposalThreshold?: number
+  quorumPercent?: number
+  executionDelay?: number
+}>({})
+
 // Has changes atoms for easy checking
 export const hasMandateChangeAtom = atom((get) => {
   const change = get(mandateChangeAtom)
@@ -76,6 +85,17 @@ export const hasDtfRevenueChangesAtom = atom((get) => {
 export const hasAuctionLengthChangeAtom = atom((get) => {
   const change = get(auctionLengthChangeAtom)
   return change !== undefined
+})
+
+export const hasGovernanceChangesAtom = atom((get) => {
+  const changes = get(governanceChangesAtom)
+  return !!(
+    changes.votingDelay !== undefined ||
+    changes.votingPeriod !== undefined ||
+    changes.proposalThreshold !== undefined ||
+    changes.quorumPercent !== undefined ||
+    changes.executionDelay !== undefined
+  )
 })
 
 // remove-dust-tokens
@@ -114,6 +134,7 @@ export const isProposalValidAtom = atom((get) => {
   const hasRevenueDistributionChanges = get(hasRevenueDistributionChangesAtom)
   const hasDtfRevenueChanges = get(hasDtfRevenueChangesAtom)
   const hasAuctionLengthChange = get(hasAuctionLengthChangeAtom)
+  const hasGovernanceChanges = get(hasGovernanceChangesAtom)
   const isFormValid = get(isFormValidAtom)
 
   const hasChanges =
@@ -122,7 +143,8 @@ export const isProposalValidAtom = atom((get) => {
     hasRolesChanges ||
     hasRevenueDistributionChanges ||
     hasDtfRevenueChanges ||
-    hasAuctionLengthChange
+    hasAuctionLengthChange ||
+    hasGovernanceChanges
 
   console.log('has changes', hasChanges)
 
@@ -152,6 +174,7 @@ export const dtfSettingsProposalDataAtom = atom<{ calldatas: Hex[]; targets: Add
     const revenueDistributionChanges = get(revenueDistributionChangesAtom)
     const dtfRevenueChanges = get(dtfRevenueChangesAtom)
     const auctionLengthChange = get(auctionLengthChangeAtom)
+    const governanceChanges = get(governanceChangesAtom)
     const feeRecipients = get(feeRecipientsAtom)
 
     if (!isConfirmed || !indexDTF) return undefined
@@ -492,6 +515,72 @@ export const dtfSettingsProposalDataAtom = atom<{ calldatas: Hex[]; targets: Add
           })
         )
         targets.push(indexDTF.id as Address)
+      }
+    }
+
+    // 7. Handle governance parameter changes
+    if (indexDTF.ownerGovernance && Object.keys(governanceChanges).length > 0) {
+      const governanceAddress = indexDTF.ownerGovernance.id as Address
+      const timelockAddress = indexDTF.ownerGovernance.timelock?.id as Address
+
+      // Set voting delay
+      if (governanceChanges.votingDelay !== undefined) {
+        calldatas.push(
+          encodeFunctionData({
+            abi: dtfGovernanceAbi,
+            functionName: 'setVotingDelay',
+            args: [BigInt(governanceChanges.votingDelay)],
+          })
+        )
+        targets.push(governanceAddress)
+      }
+
+      // Set voting period
+      if (governanceChanges.votingPeriod !== undefined) {
+        calldatas.push(
+          encodeFunctionData({
+            abi: dtfGovernanceAbi,
+            functionName: 'setVotingPeriod',
+            args: [BigInt(governanceChanges.votingPeriod)],
+          })
+        )
+        targets.push(governanceAddress)
+      }
+
+      // Set proposal threshold
+      if (governanceChanges.proposalThreshold !== undefined) {
+        calldatas.push(
+          encodeFunctionData({
+            abi: dtfGovernanceAbi,
+            functionName: 'setProposalThreshold',
+            args: [parseEther((governanceChanges.proposalThreshold / 100).toString())],
+          })
+        )
+        targets.push(governanceAddress)
+      }
+
+      // Set quorum votes
+      if (governanceChanges.quorumPercent !== undefined) {
+        calldatas.push(
+          encodeFunctionData({
+            abi: dtfGovernanceAbi,
+            functionName: 'updateQuorumNumerator',
+            args: [BigInt(governanceChanges.quorumPercent)],
+          })
+        )
+        targets.push(governanceAddress)
+      }
+
+      // Set execution delay (timelock)
+      if (governanceChanges.executionDelay !== undefined && timelockAddress) {
+        calldatas.push(
+          encodeFunctionData({
+            abi: timelockAbi,
+            functionName: 'updateDelay',
+            args: [BigInt(governanceChanges.executionDelay)],
+          })
+        )
+        targets.push(timelockAddress)
       }
     }
 

@@ -6,12 +6,14 @@ import {
   hasRevenueDistributionChangesAtom,
   hasDtfRevenueChangesAtom,
   hasAuctionLengthChangeAtom,
+  hasGovernanceChangesAtom,
 } from '../atoms'
 import RemovedTokensChanges from './changes/removed-tokens-changes'
 import MandateChanges from './changes/mandate-changes'
 import RoleChanges from './changes/role-changes'
 import RevenueChanges from './changes/revenue-changes'
 import AuctionSettingsChanges from './changes/auction-settings-changes'
+import GovernanceChanges from './changes/governance-changes'
 
 const DTFSettingsProposalChanges = () => {
   const removedBasketTokens = useAtomValue(removedBasketTokensAtom)
@@ -22,6 +24,7 @@ const DTFSettingsProposalChanges = () => {
   )
   const hasDtfRevenueChanges = useAtomValue(hasDtfRevenueChangesAtom)
   const hasAuctionLengthChange = useAtomValue(hasAuctionLengthChangeAtom)
+  const hasGovernanceChanges = useAtomValue(hasGovernanceChangesAtom)
 
   const hasAnyChanges =
     removedBasketTokens.length > 0 ||
@@ -29,7 +32,8 @@ const DTFSettingsProposalChanges = () => {
     hasRolesChanges ||
     hasRevenueDistributionChanges ||
     hasDtfRevenueChanges ||
-    hasAuctionLengthChange
+    hasAuctionLengthChange ||
+    hasGovernanceChanges
 
   if (!hasAnyChanges) {
     return <div className="p-6 text-center text-legend">No changes</div>
@@ -41,6 +45,7 @@ const DTFSettingsProposalChanges = () => {
       <RoleChanges />
       <RevenueChanges />
       <AuctionSettingsChanges />
+      <GovernanceChanges />
       <RemovedTokensChanges />
     </div>
   )

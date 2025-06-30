@@ -1,7 +1,7 @@
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { FIXED_PLATFORM_FEE } from '@/utils/constants'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { useFormContext, useWatch } from 'react-hook-form'
 import {
   feeRecipientsAtom,
@@ -14,6 +14,7 @@ import {
   revenueDistributionChangesAtom,
   dtfRevenueChangesAtom,
   auctionLengthChangeAtom,
+  governanceChangesAtom,
   isFormValidAtom,
 } from './atoms'
 
@@ -27,6 +28,7 @@ const resetAtom = atom(null, (get, set) => {
   set(revenueDistributionChangesAtom, {})
   set(dtfRevenueChangesAtom, {})
   set(auctionLengthChangeAtom, undefined)
+  set(governanceChangesAtom, {})
 })
 
 const Updater = () => {
@@ -34,6 +36,14 @@ const Updater = () => {
   const feeRecipients = useAtomValue(feeRecipientsAtom)
   const reset = useSetAtom(resetAtom)
   const { reset: resetForm, watch, formState, control } = useFormContext()
+  const governanceChanges = useAtomValue(governanceChangesAtom)
+  const mandateChange = useAtomValue(mandateChangeAtom)
+  const rolesChanges = useAtomValue(rolesChangesAtom)
+  const revenueDistributionChanges = useAtomValue(revenueDistributionChangesAtom)
+  const dtfRevenueChanges = useAtomValue(dtfRevenueChangesAtom)
+  const auctionLengthChange = useAtomValue(auctionLengthChangeAtom)
+  const isProposalConfirmed = useAtomValue(isProposalConfirmedAtom)
+  const isResettingForm = useRef(false)
 
   // Set atoms for changes
   const setMandateChange = useSetAtom(mandateChangeAtom)
@@ -43,6 +53,7 @@ const Updater = () => {
   )
   const setDtfRevenueChanges = useSetAtom(dtfRevenueChangesAtom)
   const setAuctionLengthChange = useSetAtom(auctionLengthChangeAtom)
+  const setGovernanceChanges = useSetAtom(governanceChangesAtom)
   const setIsFormValid = useSetAtom(isFormValidAtom)
 
   // Watch form fields
@@ -55,6 +66,11 @@ const Updater = () => {
   const governanceShare = watch('governanceShare')
   const deployerShare = watch('deployerShare')
   const auctionLength = watch('auctionLength')
+  const governanceVotingDelay = watch('governanceVotingDelay')
+  const governanceVotingPeriod = watch('governanceVotingPeriod')
+  const governanceVotingThreshold = watch('governanceVotingThreshold')
+  const governanceVotingQuorum = watch('governanceVotingQuorum')
+  const governanceExecutionDelay = watch('governanceExecutionDelay')
 
   // Use useWatch for nested array to ensure updates are captured
   const additionalRevenueRecipients = useWatch({
@@ -64,26 +80,62 @@ const Updater = () => {
 
   useEffect(() => {
     if (indexDTF && indexDTF.ownerGovernance && feeRecipients) {
+      isResettingForm.current = true
+      
+      // Get current governance values
+      const currentVotingDelay = Number(indexDTF.ownerGovernance.votingDelay) / 86400
+      const currentVotingPeriod = Number(indexDTF.ownerGovernance.votingPeriod) / 86400
+      const currentQuorum = Number(indexDTF.ownerGovernance.quorumNumerator)
+      const currentThreshold = Number(indexDTF.ownerGovernance.proposalThreshold) / 1e16
+      const currentExecutionDelay = Number(indexDTF.ownerGovernance.timelock.executionDelay) / 86400
+
       resetForm({
-        mandate: indexDTF.mandate,
+        mandate: mandateChange !== undefined ? mandateChange : indexDTF.mandate,
         governanceVoteLock: indexDTF.stToken?.id,
-        mintFee: indexDTF.mintingFee * 100,
-        folioFee: indexDTF.annualizedTvlFee * 100,
-        governanceShare: feeRecipients.governanceShare,
-        deployerShare: feeRecipients.deployerShare,
-        additionalRevenueRecipients: feeRecipients.externalRecipients,
+        mintFee: dtfRevenueChanges.mintFee !== undefined ? dtfRevenueChanges.mintFee : indexDTF.mintingFee * 100,
+        folioFee: dtfRevenueChanges.tvlFee !== undefined ? dtfRevenueChanges.tvlFee : indexDTF.annualizedTvlFee * 100,
+        governanceShare: revenueDistributionChanges.governanceShare !== undefined 
+          ? revenueDistributionChanges.governanceShare 
+          : feeRecipients.governanceShare,
+        deployerShare: revenueDistributionChanges.deployerShare !== undefined 
+          ? revenueDistributionChanges.deployerShare 
+          : feeRecipients.deployerShare,
+        additionalRevenueRecipients: revenueDistributionChanges.additionalRecipients !== undefined 
+          ? revenueDistributionChanges.additionalRecipients 
+          : feeRecipients.externalRecipients,
         fixedPlatformFee: FIXED_PLATFORM_FEE,
-        auctionLength: indexDTF.auctionLength / 60,
-        governanceVotingDelay: indexDTF.ownerGovernance.votingDelay,
-        governanceVotingPeriod: indexDTF.ownerGovernance.votingPeriod,
-        governanceVotingQuorum: indexDTF.ownerGovernance.quorumNumerator,
-        governanceVotingThreshold: indexDTF.ownerGovernance.proposalThreshold,
-        governanceExecutionDelay:
-          indexDTF.ownerGovernance.timelock.executionDelay,
-        guardians: indexDTF.ownerGovernance.timelock.guardians,
-        brandManagers: indexDTF.brandManagers,
-        auctionLaunchers: indexDTF.auctionLaunchers,
+        auctionLength: auctionLengthChange !== undefined ? auctionLengthChange : indexDTF.auctionLength / 60,
+        // Apply governance changes if they exist, otherwise use current values
+        governanceVotingDelay: governanceChanges.votingDelay !== undefined 
+          ? governanceChanges.votingDelay / 86400 
+          : currentVotingDelay,
+        governanceVotingPeriod: governanceChanges.votingPeriod !== undefined 
+          ? governanceChanges.votingPeriod / 86400 
+          : currentVotingPeriod,
+        governanceVotingQuorum: governanceChanges.quorumPercent !== undefined 
+          ? governanceChanges.quorumPercent 
+          : currentQuorum,
+        governanceVotingThreshold: governanceChanges.proposalThreshold !== undefined 
+          ? governanceChanges.proposalThreshold 
+          : currentThreshold,
+        governanceExecutionDelay: governanceChanges.executionDelay !== undefined 
+          ? governanceChanges.executionDelay / 86400 
+          : currentExecutionDelay,
+        guardians: rolesChanges.guardians !== undefined 
+          ? rolesChanges.guardians 
+          : indexDTF.ownerGovernance.timelock.guardians,
+        brandManagers: rolesChanges.brandManagers !== undefined 
+          ? rolesChanges.brandManagers 
+          : indexDTF.brandManagers,
+        auctionLaunchers: rolesChanges.auctionLaunchers !== undefined 
+          ? rolesChanges.auctionLaunchers 
+          : indexDTF.auctionLaunchers,
       })
+      
+      // Reset the flag after form reset
+      setTimeout(() => {
+        isResettingForm.current = false
+      }, 100)
     }
   }, [indexDTF?.id, !!feeRecipients])
 
@@ -248,6 +300,77 @@ const Updater = () => {
       }
     }
   }, [auctionLength, indexDTF?.auctionLength])
+
+  // Watch for governance changes
+  useEffect(() => {
+    if (indexDTF && indexDTF.ownerGovernance) {
+      const governance = indexDTF.ownerGovernance
+      
+      setGovernanceChanges((prevChanges) => {
+        const changes = { ...prevChanges }
+
+        // Check voting delay (convert from days to seconds for comparison)
+        if (governanceVotingDelay !== undefined) {
+          const newValueInSeconds = governanceVotingDelay * 86400
+          if (newValueInSeconds !== Number(governance.votingDelay)) {
+            changes.votingDelay = newValueInSeconds
+          } else {
+            delete changes.votingDelay
+          }
+        }
+
+        // Check voting period (convert from days to seconds for comparison)
+        if (governanceVotingPeriod !== undefined) {
+          const newValueInSeconds = governanceVotingPeriod * 86400
+          if (newValueInSeconds !== Number(governance.votingPeriod)) {
+            changes.votingPeriod = newValueInSeconds
+          } else {
+            delete changes.votingPeriod
+          }
+        }
+
+        // Check proposal threshold (convert to percentage for comparison)
+        if (governanceVotingThreshold !== undefined) {
+          const currentThreshold = Number(governance.proposalThreshold) / 1e16
+          if (governanceVotingThreshold !== currentThreshold) {
+            changes.proposalThreshold = governanceVotingThreshold
+          } else {
+            delete changes.proposalThreshold
+          }
+        }
+
+        // Check voting quorum
+        if (governanceVotingQuorum !== undefined) {
+          if (governanceVotingQuorum !== Number(governance.quorumNumerator)) {
+            changes.quorumPercent = governanceVotingQuorum
+          } else {
+            delete changes.quorumPercent
+          }
+        }
+
+        // Check execution delay (convert from days to seconds for comparison)
+        if (governanceExecutionDelay !== undefined) {
+          const newValueInSeconds = governanceExecutionDelay * 86400
+          if (governance.timelock?.executionDelay !== undefined && 
+              newValueInSeconds !== Number(governance.timelock.executionDelay)) {
+            changes.executionDelay = newValueInSeconds
+          } else {
+            delete changes.executionDelay
+          }
+        }
+
+        return changes
+      })
+    }
+  }, [
+    governanceVotingDelay,
+    governanceVotingPeriod,
+    governanceVotingThreshold,
+    governanceVotingQuorum,
+    governanceExecutionDelay,
+    indexDTF?.ownerGovernance,
+    setGovernanceChanges,
+  ])
 
   // Track form validation state
   useEffect(() => {

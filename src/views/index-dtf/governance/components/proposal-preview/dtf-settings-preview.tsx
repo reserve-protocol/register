@@ -342,3 +342,132 @@ export const SetDustAmountPreview = ({ decodedCalldata }: { decodedCalldata: Dec
     </div>
   )
 }
+
+// Preview component for setVotingDelay function
+export const SetVotingDelayPreview = ({ decodedCalldata }: { decodedCalldata: DecodedCalldata }) => {
+  const delayInSeconds = Number(decodedCalldata.data[0])
+  const delayInDays = delayInSeconds / 86400
+  const displayValue = delayInDays < 1 
+    ? `${delayInSeconds / 3600} hour${delayInSeconds / 3600 !== 1 ? 's' : ''}`
+    : `${delayInDays} day${delayInDays !== 1 ? 's' : ''}`
+  
+  return (
+    <div className="rounded-2xl border bg-muted/70 p-4 space-y-3">
+      <div className="flex items-center gap-2">
+        <Edit2 size={16} className="text-primary" />
+        <div className="text-sm font-medium">Update Voting Delay</div>
+      </div>
+      <div className="p-3 rounded-xl bg-primary/5 border border-primary/20">
+        <div className="flex items-center justify-between">
+          <span className="text-sm text-muted-foreground">New voting delay:</span>
+          <div className="flex items-center gap-2">
+            <Clock size={14} className="text-primary" />
+            <span className="text-sm font-medium text-primary">{displayValue}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// Preview component for setVotingPeriod function
+export const SetVotingPeriodPreview = ({ decodedCalldata }: { decodedCalldata: DecodedCalldata }) => {
+  const periodInSeconds = Number(decodedCalldata.data[0])
+  const periodInDays = periodInSeconds / 86400
+  const displayValue = periodInDays < 1 
+    ? `${periodInSeconds / 3600} hour${periodInSeconds / 3600 !== 1 ? 's' : ''}`
+    : `${periodInDays} day${periodInDays !== 1 ? 's' : ''}`
+  
+  return (
+    <div className="rounded-2xl border bg-muted/70 p-4 space-y-3">
+      <div className="flex items-center gap-2">
+        <Edit2 size={16} className="text-primary" />
+        <div className="text-sm font-medium">Update Voting Period</div>
+      </div>
+      <div className="p-3 rounded-xl bg-primary/5 border border-primary/20">
+        <div className="flex items-center justify-between">
+          <span className="text-sm text-muted-foreground">New voting period:</span>
+          <div className="flex items-center gap-2">
+            <Clock size={14} className="text-primary" />
+            <span className="text-sm font-medium text-primary">{displayValue}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// Preview component for setProposalThreshold function
+export const SetProposalThresholdPreview = ({ decodedCalldata }: { decodedCalldata: DecodedCalldata }) => {
+  const threshold = decodedCalldata.data[0] as bigint
+  // Convert from parseEther to percentage
+  const percentage = (Number(threshold) / 1e18) * 100
+  
+  return (
+    <div className="rounded-2xl border bg-muted/70 p-4 space-y-3">
+      <div className="flex items-center gap-2">
+        <Edit2 size={16} className="text-primary" />
+        <div className="text-sm font-medium">Update Proposal Threshold</div>
+      </div>
+      <div className="p-3 rounded-xl bg-primary/5 border border-primary/20">
+        <div className="flex items-center justify-between">
+          <span className="text-sm text-muted-foreground">New proposal threshold:</span>
+          <div className="flex items-center gap-2">
+            <Shield size={14} className="text-primary" />
+            <span className="text-sm font-medium text-primary">{percentage.toFixed(2)}%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// Preview component for updateQuorumNumerator function
+export const UpdateQuorumNumeratorPreview = ({ decodedCalldata }: { decodedCalldata: DecodedCalldata }) => {
+  const quorum = Number(decodedCalldata.data[0])
+  
+  return (
+    <div className="rounded-2xl border bg-muted/70 p-4 space-y-3">
+      <div className="flex items-center gap-2">
+        <Edit2 size={16} className="text-primary" />
+        <div className="text-sm font-medium">Update Voting Quorum</div>
+      </div>
+      <div className="p-3 rounded-xl bg-primary/5 border border-primary/20">
+        <div className="flex items-center justify-between">
+          <span className="text-sm text-muted-foreground">New voting quorum:</span>
+          <div className="flex items-center gap-2">
+            <Shield size={14} className="text-primary" />
+            <span className="text-sm font-medium text-primary">{quorum}%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// Preview component for updateDelay function (timelock)
+export const UpdateDelayPreview = ({ decodedCalldata }: { decodedCalldata: DecodedCalldata }) => {
+  const delayInSeconds = Number(decodedCalldata.data[0])
+  const delayInDays = delayInSeconds / 86400
+  const displayValue = delayInDays < 1 
+    ? `${delayInSeconds / 3600} hour${delayInSeconds / 3600 !== 1 ? 's' : ''}`
+    : `${delayInDays} day${delayInDays !== 1 ? 's' : ''}`
+  
+  return (
+    <div className="rounded-2xl border bg-muted/70 p-4 space-y-3">
+      <div className="flex items-center gap-2">
+        <Edit2 size={16} className="text-primary" />
+        <div className="text-sm font-medium">Update Execution Delay</div>
+      </div>
+      <div className="p-3 rounded-xl bg-primary/5 border border-primary/20">
+        <div className="flex items-center justify-between">
+          <span className="text-sm text-muted-foreground">New execution delay:</span>
+          <div className="flex items-center gap-2">
+            <Clock size={14} className="text-primary" />
+            <span className="text-sm font-medium text-primary">{displayValue}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}

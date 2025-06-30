@@ -17,6 +17,7 @@ import {
   Coins,
   Crown,
   Scale,
+  Landmark,
 } from 'lucide-react'
 import { ReactNode, useEffect } from 'react'
 import { Link } from 'react-router-dom'
@@ -26,8 +27,9 @@ import ProposeDTFRevenue from './sections/propose-dtf-revenue'
 import ProposeDTFRoles from './sections/propose-dtf-roles'
 import ProposeMetadata from './sections/propose-metadata'
 import RemoveDustTokens from './sections/remove-dust-tokens'
+import ProposeGovernanceSettings from './sections/propose-governance-settings'
 
-type DTF_SETTINGS_ID = 'mandate' | 'fees' | 'auction' | 'tokens' | 'roles'
+type DTF_SETTINGS_ID = 'mandate' | 'fees' | 'auction' | 'tokens' | 'roles' | 'governance'
 
 // Scroll utility function adapted from deploy
 const scrollToSection = (sectionId: string) => {
@@ -86,6 +88,13 @@ const DTF_SETTINGS: DTF_SETTING[] = [
     title: 'Remove Dust Tokens',
     titleSecondary: 'Remove tokens from basket',
     content: <RemoveDustTokens />,
+  },
+  {
+    id: 'governance',
+    icon: <Landmark size={14} strokeWidth={1.5} />,
+    title: 'Governance',
+    titleSecondary: 'Governance Parameters',
+    content: <ProposeGovernanceSettings />,
   },
 ]
 
