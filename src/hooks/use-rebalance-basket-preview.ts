@@ -221,10 +221,11 @@ const useRebalanceBasketPreview = (
           token: tokens[token],
           snapshotPrice: prices[token].snapshotPrice,
           currentPrice: prices[token].currentPrice,
-          currentWeight: currentWeights[token],
+          currentWeight: currentWeights[token] || '0',
           targetWeight: Number(targetWeight).toFixed(2),
           targetWeightRaw: targetBasket[index],
-          deltaWeight: Number(targetWeight) - Number(currentWeights[token]),
+          deltaWeight:
+            Number(targetWeight) - Number(currentWeights[token] || '0'),
         }
         return acc
       },

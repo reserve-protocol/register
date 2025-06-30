@@ -519,7 +519,7 @@ export const basketProposalCalldatasAtom = atom<Hex[] | undefined>((get) => {
     tokens.push(asset as Address)
     decimals.push(BigInt(proposedBasket[asset].token.decimals))
     currentBasket.push(parseUnits(proposedBasket[asset].currentShares, 16))
-    folio.push(dtfDistribution[asset])
+    folio.push(dtfDistribution[asset] || 0n)
 
     if (isUnitBasket && derivedProposedShares) {
       targetBasket.push(derivedProposedShares[asset])
