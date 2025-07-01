@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Index-DTF Governance System enables decentralized management of DTF (Decentralized Trading Fund) parameters through on-chain proposals. This system handles three distinct governance contexts, each with its own set of configurable parameters and voting mechanisms.
+The Index-DTF Governance System enables decentralized management of DTF (Decentralized Token Folio) parameters through on-chain proposals. DTFs are like ETFs but on the blockchain, providing diversified token portfolios. This system handles three distinct governance contexts, each with its own set of configurable parameters and voting mechanisms.
 
 ## System Architecture
 

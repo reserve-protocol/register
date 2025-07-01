@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-Register is a React/TypeScript DeFi interface for the Reserve Yield Protocol and Reserve Index Protocol, enabling users to create and manage DTFs (Decentralized Token Funds).
+Register is a React/TypeScript DeFi interface for the Reserve Yield Protocol and Reserve Index Protocol, enabling users to create and manage DTFs (Decentralized Token Folios). DTFs are like ETFs but on the blockchain, providing diversified token portfolios.
 
 ## Development Commands
 
@@ -50,7 +50,7 @@ npm run analyze
 - **Internationalization**: Lingui (en, es locales)
 
 ### Code Organization
-- `src/abis/` - Smart contract ABIs for DTF interactions
+- `src/abis/` - Smart contract ABIs for DTF (Decentralized Token Folio) interactions
 - `src/components/` - Reusable React components using Radix UI
 - `src/hooks/` - Custom React hooks for business logic
 - `src/state/` - Jotai atoms for global state management
