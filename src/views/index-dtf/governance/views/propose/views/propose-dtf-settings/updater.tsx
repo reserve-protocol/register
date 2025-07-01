@@ -60,9 +60,6 @@ const Updater = () => {
 
   // Watch form fields
   const mandate = watch('mandate')
-  const guardians = watch('guardians')
-  const brandManagers = watch('brandManagers')
-  const auctionLaunchers = watch('auctionLaunchers')
   const mintFee = watch('mintFee')
   const folioFee = watch('folioFee')
   const governanceShare = watch('governanceShare')
@@ -74,7 +71,19 @@ const Updater = () => {
   const governanceVotingQuorum = watch('governanceVotingQuorum')
   const governanceExecutionDelay = watch('governanceExecutionDelay')
 
-  // Use useWatch for nested array to ensure updates are captured
+  // Use useWatch for arrays to ensure updates are captured immediately
+  const guardians = useWatch({
+    name: 'guardians',
+    control,
+  })
+  const brandManagers = useWatch({
+    name: 'brandManagers',
+    control,
+  })
+  const auctionLaunchers = useWatch({
+    name: 'auctionLaunchers',
+    control,
+  })
   const additionalRevenueRecipients = useWatch({
     name: 'additionalRevenueRecipients',
     control,
