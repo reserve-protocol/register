@@ -28,7 +28,7 @@ const proposalTypes = [
   {
     icon: <Crown size={16} strokeWidth={1.5} />,
     title: 'Basket settings',
-    route: GOVERNANCE_PROPOSAL_TYPES.ROLES,
+    route: GOVERNANCE_PROPOSAL_TYPES.BASKET_SETTINGS,
     enabled: true,
   },
   {
