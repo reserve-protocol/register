@@ -1,6 +1,5 @@
 import dtfIndexAbi from '@/abis/dtf-index-abi'
 import dtfIndexAbiV2 from '@/abis/dtf-index-abi-v2'
-import dtfGovernanceAbi from '@/abis/dtf-index-governance'
 import timelockAbi from '@/abis/Timelock'
 import {
   indexDTFAtom,
@@ -12,6 +11,18 @@ import { Token } from '@/types'
 import { BIGINT_MAX, FIXED_PLATFORM_FEE } from '@/utils/constants'
 import { atom } from 'jotai'
 import { Address, encodeFunctionData, Hex, parseEther } from 'viem'
+import {
+  GovernanceChanges,
+  ProposalData,
+  GovernanceChangeDisplay,
+  encodeVotingDelay,
+  encodeVotingPeriod,
+  encodeProposalThreshold,
+  encodeQuorum,
+  encodeExecutionDelay,
+  humanizeTimeFromSeconds,
+  proposalThresholdToPercentage,
+} from '../../shared'
 
 // UI
 export const selectedSectionAtom = atom<string | undefined>(undefined)
@@ -38,13 +49,7 @@ export const dtfRevenueChangesAtom = atom<{
 
 export const auctionLengthChangeAtom = atom<number | undefined>(undefined)
 
-export const governanceChangesAtom = atom<{
-  votingDelay?: number
-  votingPeriod?: number
-  proposalThreshold?: number
-  quorumPercent?: number
-  executionDelay?: number
-}>({})
+export const governanceChangesAtom = atom<GovernanceChanges>({})
 
 // Has changes atoms for easy checking
 export const hasMandateChangeAtom = atom((get) => {
@@ -156,9 +161,7 @@ const BRAND_MANAGER_ROLE =
 const AUCTION_LAUNCHER_ROLE =
   '0xecec33ab7f1be86026025e66df4d1b28cd50e7eb59269b6b6c5e8096d4a4aed4' as const
 
-export const dtfSettingsProposalDataAtom = atom<
-  { calldatas: Hex[]; targets: Address[] } | undefined
->((get) => {
+export const dtfSettingsProposalDataAtom = atom<ProposalData | undefined>((get) => {
   const isConfirmed = get(isProposalConfirmedAtom)
   const indexDTF = get(indexDTFAtom)
   const version = get(indexDTFVersionAtom)
@@ -517,68 +520,96 @@ export const dtfSettingsProposalDataAtom = atom<
 
     // Set voting delay
     if (governanceChanges.votingDelay !== undefined) {
-      calldatas.push(
-        encodeFunctionData({
-          abi: dtfGovernanceAbi,
-          functionName: 'setVotingDelay',
-          args: [governanceChanges.votingDelay],
-        })
-      )
+      calldatas.push(encodeVotingDelay(governanceChanges.votingDelay))
       targets.push(governanceAddress)
     }
 
     // Set voting period
     if (governanceChanges.votingPeriod !== undefined) {
-      calldatas.push(
-        encodeFunctionData({
-          abi: dtfGovernanceAbi,
-          functionName: 'setVotingPeriod',
-          args: [governanceChanges.votingPeriod],
-        })
-      )
+      calldatas.push(encodeVotingPeriod(governanceChanges.votingPeriod))
       targets.push(governanceAddress)
     }
 
     // Set proposal threshold
     if (governanceChanges.proposalThreshold !== undefined) {
-      calldatas.push(
-        encodeFunctionData({
-          abi: dtfGovernanceAbi,
-          functionName: 'setProposalThreshold',
-          args: [
-            parseEther((governanceChanges.proposalThreshold / 100).toString()),
-          ],
-        })
-      )
+      calldatas.push(encodeProposalThreshold(governanceChanges.proposalThreshold))
       targets.push(governanceAddress)
     }
 
     // Set quorum votes
     if (governanceChanges.quorumPercent !== undefined) {
-      calldatas.push(
-        encodeFunctionData({
-          abi: dtfGovernanceAbi,
-          functionName: 'updateQuorumNumerator',
-          args: [BigInt(governanceChanges.quorumPercent)],
-        })
-      )
+      calldatas.push(encodeQuorum(governanceChanges.quorumPercent))
       targets.push(governanceAddress)
     }
 
     // Set execution delay (timelock)
     if (governanceChanges.executionDelay !== undefined && timelockAddress) {
-      calldatas.push(
-        encodeFunctionData({
-          abi: timelockAbi,
-          functionName: 'updateDelay',
-          args: [BigInt(governanceChanges.executionDelay)],
-        })
-      )
+      calldatas.push(encodeExecutionDelay(governanceChanges.executionDelay))
       targets.push(timelockAddress)
     }
   }
 
   return calldatas.length > 0 ? { calldatas, targets } : undefined
+})
+
+// Atom for formatted governance changes for display
+export const dtfGovernanceChangesDisplayAtom = atom<GovernanceChangeDisplay[]>((get) => {
+  const governanceChanges = get(governanceChangesAtom)
+  const dtf = get(indexDTFAtom)
+
+  if (!dtf?.ownerGovernance) return []
+
+  const governance = dtf.ownerGovernance
+  const changes = []
+
+  if (governanceChanges.votingDelay !== undefined) {
+    changes.push({
+      key: 'votingDelay' as keyof GovernanceChanges,
+      title: 'Voting Delay',
+      current: humanizeTimeFromSeconds(Number(governance.votingDelay)),
+      new: humanizeTimeFromSeconds(governanceChanges.votingDelay),
+    })
+  }
+
+  if (governanceChanges.votingPeriod !== undefined) {
+    changes.push({
+      key: 'votingPeriod' as keyof GovernanceChanges,
+      title: 'Voting Period',
+      current: humanizeTimeFromSeconds(Number(governance.votingPeriod)),
+      new: humanizeTimeFromSeconds(governanceChanges.votingPeriod),
+    })
+  }
+
+  if (governanceChanges.proposalThreshold !== undefined) {
+    changes.push({
+      key: 'proposalThreshold' as keyof GovernanceChanges,
+      title: 'Proposal Threshold',
+      current: `${proposalThresholdToPercentage(governance.proposalThreshold).toFixed(2)}%`,
+      new: `${governanceChanges.proposalThreshold.toFixed(2)}%`,
+    })
+  }
+
+  if (governanceChanges.quorumPercent !== undefined) {
+    changes.push({
+      key: 'quorumPercent' as keyof GovernanceChanges,
+      title: 'Voting Quorum',
+      current: `${Number(governance.quorumNumerator)}%`,
+      new: `${governanceChanges.quorumPercent}%`,
+    })
+  }
+
+  if (governanceChanges.executionDelay !== undefined) {
+    changes.push({
+      key: 'executionDelay' as keyof GovernanceChanges,
+      title: 'Execution Delay',
+      current: humanizeTimeFromSeconds(
+        Number(governance.timelock?.executionDelay || 0)
+      ),
+      new: humanizeTimeFromSeconds(governanceChanges.executionDelay),
+    })
+  }
+
+  return changes
 })
 
 // Backwards compatibility atom

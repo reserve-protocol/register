@@ -17,6 +17,7 @@ import {
   governanceChangesAtom,
   isFormValidAtom,
 } from './atoms'
+import { proposalThresholdToPercentage, secondsToDays } from '../../shared'
 
 const resetAtom = atom(null, (get, set) => {
   set(removedBasketTokensAtom, [])
@@ -84,16 +85,19 @@ const Updater = () => {
       isResettingForm.current = true
 
       // Get current governance values
-      const currentVotingDelay =
-        Number(indexDTF.ownerGovernance.votingDelay) / 86400
-      const currentVotingPeriod =
-        Number(indexDTF.ownerGovernance.votingPeriod) / 86400
+      const currentVotingDelay = secondsToDays(
+        Number(indexDTF.ownerGovernance.votingDelay)
+      )
+      const currentVotingPeriod = secondsToDays(
+        Number(indexDTF.ownerGovernance.votingPeriod)
+      )
       const currentQuorum = Number(indexDTF.ownerGovernance.quorumNumerator)
-      // proposalThreshold is stored as percentage * 1e18 (e.g., 1% = 1e18)
-      const currentThreshold =
-        Number(indexDTF.ownerGovernance.proposalThreshold) / 1e18
-      const currentExecutionDelay =
-        Number(indexDTF.ownerGovernance.timelock.executionDelay) / 86400
+      const currentThreshold = proposalThresholdToPercentage(
+        indexDTF.ownerGovernance.proposalThreshold
+      )
+      const currentExecutionDelay = secondsToDays(
+        Number(indexDTF.ownerGovernance.timelock.executionDelay)
+      )
 
       resetForm({
         mandate: mandateChange !== undefined ? mandateChange : indexDTF.mandate,
@@ -357,7 +361,9 @@ const Updater = () => {
 
         // Check proposal threshold (convert to percentage for comparison)
         if (governanceVotingThreshold !== undefined) {
-          const currentThreshold = Number(governance.proposalThreshold) / 1e18
+          const currentThreshold = proposalThresholdToPercentage(
+            governance.proposalThreshold
+          )
           if (governanceVotingThreshold !== currentThreshold) {
             changes.proposalThreshold = governanceVotingThreshold
           } else {

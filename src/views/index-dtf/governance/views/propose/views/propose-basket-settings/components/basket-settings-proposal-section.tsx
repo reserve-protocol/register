@@ -3,30 +3,14 @@ import { formatPercentage } from '@/utils'
 import ToggleGroupWithCustom from '@/views/index-dtf/deploy/components/toggle-group-with-custom'
 import { useAtomValue } from 'jotai'
 import {
-  Pause,
   CalendarRange,
-  FileLock2,
-  ShieldCheck,
   Clock,
+  FileLock2,
   Landmark,
+  Pause,
+  ShieldCheck,
 } from 'lucide-react'
-import { useFormContext } from 'react-hook-form'
-
-// Convert seconds to days for display
-const secondsToDays = (seconds: number) => seconds / 86400
-
-// Convert days to seconds for storage
-const daysToSeconds = (days: number) => days * 86400
-
-// Humanize time from seconds
-const humanizeTimeFromSeconds = (seconds: number) => {
-  const days = secondsToDays(seconds)
-  if (days < 1) {
-    const hours = seconds / 3600
-    return `${hours} hour${hours !== 1 ? 's' : ''}`
-  }
-  return `${days} day${days !== 1 ? 's' : ''}`
-}
+import { daysToSeconds, humanizeTimeFromSeconds } from '../../../shared'
 
 const Description = () => (
   <div className="px-6 pb-6 text-base">
@@ -37,7 +21,6 @@ const Description = () => (
 )
 
 const BasketSettingsProposalSection = () => {
-  const { setValue, watch } = useFormContext()
   const indexDTF = useAtomValue(indexDTFAtom)
   const governance = indexDTF?.tradingGovernance
 

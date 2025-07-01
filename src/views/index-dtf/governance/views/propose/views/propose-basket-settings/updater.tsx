@@ -8,6 +8,7 @@ import {
   isFormValidAtom,
   isProposalConfirmedAtom,
 } from './atoms'
+import { proposalThresholdToPercentage, secondsToDays } from '../../shared'
 
 const Updater = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
@@ -31,36 +32,44 @@ const Updater = () => {
   useEffect(() => {
     if (indexDTF && indexDTF.tradingGovernance) {
       isResettingForm.current = true
-      
+
       const governance = indexDTF.tradingGovernance
-      
+
       // Get current governance values
-      const currentVotingDelay = Number(governance.votingDelay) / 86400
-      const currentVotingPeriod = Number(governance.votingPeriod) / 86400
+      const currentVotingDelay = secondsToDays(Number(governance.votingDelay))
+      const currentVotingPeriod = secondsToDays(Number(governance.votingPeriod))
       const currentQuorum = Number(governance.quorumNumerator)
-      // proposalThreshold is stored as percentage * 1e18 (e.g., 1% = 1e18)
-      const currentThreshold = Number(governance.proposalThreshold) / 1e18
-      const currentExecutionDelay = Number(governance.timelock.executionDelay) / 86400
+      const currentThreshold = proposalThresholdToPercentage(
+        governance.proposalThreshold
+      )
+      const currentExecutionDelay = secondsToDays(
+        Number(governance.timelock.executionDelay)
+      )
 
       resetForm({
         // Apply governance changes if they exist, otherwise use current values
-        basketVotingDelay: governanceChanges.votingDelay !== undefined 
-          ? governanceChanges.votingDelay / 86400 
-          : currentVotingDelay,
-        basketVotingPeriod: governanceChanges.votingPeriod !== undefined 
-          ? governanceChanges.votingPeriod / 86400 
-          : currentVotingPeriod,
-        basketVotingQuorum: governanceChanges.quorumPercent !== undefined 
-          ? governanceChanges.quorumPercent 
-          : currentQuorum,
-        basketVotingThreshold: governanceChanges.proposalThreshold !== undefined 
-          ? governanceChanges.proposalThreshold 
-          : currentThreshold,
-        basketExecutionDelay: governanceChanges.executionDelay !== undefined 
-          ? governanceChanges.executionDelay / 86400 
-          : currentExecutionDelay,
+        basketVotingDelay:
+          governanceChanges.votingDelay !== undefined
+            ? governanceChanges.votingDelay / 86400
+            : currentVotingDelay,
+        basketVotingPeriod:
+          governanceChanges.votingPeriod !== undefined
+            ? governanceChanges.votingPeriod / 86400
+            : currentVotingPeriod,
+        basketVotingQuorum:
+          governanceChanges.quorumPercent !== undefined
+            ? governanceChanges.quorumPercent
+            : currentQuorum,
+        basketVotingThreshold:
+          governanceChanges.proposalThreshold !== undefined
+            ? governanceChanges.proposalThreshold
+            : currentThreshold,
+        basketExecutionDelay:
+          governanceChanges.executionDelay !== undefined
+            ? governanceChanges.executionDelay / 86400
+            : currentExecutionDelay,
       })
-      
+
       // Reset the flag after form reset
       setTimeout(() => {
         isResettingForm.current = false
@@ -72,7 +81,7 @@ const Updater = () => {
   useEffect(() => {
     if (indexDTF && indexDTF.tradingGovernance) {
       const governance = indexDTF.tradingGovernance
-      
+
       setGovernanceChanges((prevChanges) => {
         const changes = { ...prevChanges }
 

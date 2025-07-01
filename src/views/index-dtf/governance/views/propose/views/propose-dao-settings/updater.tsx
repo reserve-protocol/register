@@ -1,13 +1,14 @@
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useRef } from 'react'
-import { useFormContext, useFormState } from 'react-hook-form'
+import { useFormContext } from 'react-hook-form'
 import {
   resetAtom,
   daoGovernanceChangesAtom,
   isFormValidAtom,
   isProposalConfirmedAtom,
 } from './atoms'
+import { proposalThresholdToPercentage, secondsToDays } from '../../shared'
 
 const Updater = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
@@ -31,36 +32,44 @@ const Updater = () => {
   useEffect(() => {
     if (indexDTF && indexDTF.stToken?.governance) {
       isResettingForm.current = true
-      
+
       const governance = indexDTF.stToken.governance
-      
+
       // Get current governance values
-      const currentVotingDelay = Number(governance.votingDelay) / 86400
-      const currentVotingPeriod = Number(governance.votingPeriod) / 86400
+      const currentVotingDelay = secondsToDays(Number(governance.votingDelay))
+      const currentVotingPeriod = secondsToDays(Number(governance.votingPeriod))
       const currentQuorum = Number(governance.quorumNumerator)
-      // proposalThreshold is stored as percentage * 1e18 (e.g., 1% = 1e18)
-      const currentThreshold = Number(governance.proposalThreshold) / 1e18
-      const currentExecutionDelay = Number(governance.timelock.executionDelay) / 86400
+      const currentThreshold = proposalThresholdToPercentage(
+        governance.proposalThreshold
+      )
+      const currentExecutionDelay = secondsToDays(
+        Number(governance.timelock.executionDelay)
+      )
 
       resetForm({
         // Apply governance changes if they exist, otherwise use current values
-        daoVotingDelay: governanceChanges.votingDelay !== undefined 
-          ? governanceChanges.votingDelay / 86400 
-          : currentVotingDelay,
-        daoVotingPeriod: governanceChanges.votingPeriod !== undefined 
-          ? governanceChanges.votingPeriod / 86400 
-          : currentVotingPeriod,
-        daoVotingQuorum: governanceChanges.quorumPercent !== undefined 
-          ? governanceChanges.quorumPercent 
-          : currentQuorum,
-        daoVotingThreshold: governanceChanges.proposalThreshold !== undefined 
-          ? governanceChanges.proposalThreshold 
-          : currentThreshold,
-        daoExecutionDelay: governanceChanges.executionDelay !== undefined 
-          ? governanceChanges.executionDelay / 86400 
-          : currentExecutionDelay,
+        daoVotingDelay:
+          governanceChanges.votingDelay !== undefined
+            ? governanceChanges.votingDelay / 86400
+            : currentVotingDelay,
+        daoVotingPeriod:
+          governanceChanges.votingPeriod !== undefined
+            ? governanceChanges.votingPeriod / 86400
+            : currentVotingPeriod,
+        daoVotingQuorum:
+          governanceChanges.quorumPercent !== undefined
+            ? governanceChanges.quorumPercent
+            : currentQuorum,
+        daoVotingThreshold:
+          governanceChanges.proposalThreshold !== undefined
+            ? governanceChanges.proposalThreshold
+            : currentThreshold,
+        daoExecutionDelay:
+          governanceChanges.executionDelay !== undefined
+            ? governanceChanges.executionDelay / 86400
+            : currentExecutionDelay,
       })
-      
+
       // Reset the flag after form reset
       setTimeout(() => {
         isResettingForm.current = false
@@ -72,7 +81,7 @@ const Updater = () => {
   useEffect(() => {
     if (indexDTF && indexDTF.stToken?.governance) {
       const governance = indexDTF.stToken.governance
-      
+
       setGovernanceChanges((prevChanges) => {
         const changes = { ...prevChanges }
 
@@ -98,7 +107,9 @@ const Updater = () => {
 
         // Check proposal threshold (convert to percentage for comparison)
         if (daoVotingThreshold !== undefined) {
-          const currentThreshold = Number(governance.proposalThreshold) / 1e18
+          const currentThreshold = proposalThresholdToPercentage(
+            governance.proposalThreshold
+          )
           if (daoVotingThreshold !== currentThreshold) {
             changes.proposalThreshold = daoVotingThreshold
           } else {

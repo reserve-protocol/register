@@ -3,40 +3,23 @@ import { formatPercentage } from '@/utils'
 import ToggleGroupWithCustom from '@/views/index-dtf/deploy/components/toggle-group-with-custom'
 import { useAtomValue } from 'jotai'
 import {
-  Pause,
   CalendarRange,
-  FileLock2,
-  ShieldCheck,
   Clock,
+  FileLock2,
+  Pause,
+  ShieldCheck,
 } from 'lucide-react'
-import { useFormContext } from 'react-hook-form'
-
-// Convert seconds to days for display
-const secondsToDays = (seconds: number) => seconds / 86400
-
-// Convert days to seconds for storage
-const daysToSeconds = (days: number) => days * 86400
-
-// Humanize time from seconds
-const humanizeTimeFromSeconds = (seconds: number) => {
-  const days = secondsToDays(seconds)
-  if (days < 1) {
-    const hours = seconds / 3600
-    return `${hours} hour${hours !== 1 ? 's' : ''}`
-  }
-  return `${days} day${days !== 1 ? 's' : ''}`
-}
+import { daysToSeconds, humanizeTimeFromSeconds } from '../../../../shared'
 
 const Description = () => (
   <div className="px-6 pb-6 text-base">
     Configure the governance parameters that control how proposals are created,
-    voted on, and executed. These settings apply to all governance actions except
-    basket changes, which have their own separate parameters.
+    voted on, and executed. These settings apply to all governance actions
+    except basket changes, which have their own separate parameters.
   </div>
 )
 
 const ProposeGovernanceSettings = () => {
-  const { setValue, watch } = useFormContext()
   const indexDTF = useAtomValue(indexDTFAtom)
   const governance = indexDTF?.ownerGovernance
 
@@ -45,7 +28,8 @@ const ProposeGovernanceSettings = () => {
       title: 'Voting Delay',
       icon: <Pause size={14} strokeWidth={1.5} />,
       options: [0.5, 1, 1.5, 2],
-      optionsFormatter: (option: number) => humanizeTimeFromSeconds(daysToSeconds(option)),
+      optionsFormatter: (option: number) =>
+        humanizeTimeFromSeconds(daysToSeconds(option)),
       customLabel: 'days',
       customPlaceholder: 'Enter custom delay',
       description:
@@ -57,7 +41,8 @@ const ProposeGovernanceSettings = () => {
       title: 'Voting Period',
       icon: <CalendarRange size={14} strokeWidth={1.5} />,
       options: [1, 2, 3, 4],
-      optionsFormatter: (option: number) => humanizeTimeFromSeconds(daysToSeconds(option)),
+      optionsFormatter: (option: number) =>
+        humanizeTimeFromSeconds(daysToSeconds(option)),
       customLabel: 'days',
       customPlaceholder: 'Enter custom period',
       description:
@@ -88,10 +73,10 @@ const ProposeGovernanceSettings = () => {
         <span>
           The minimum percentage of votes that must be cast as{' '}
           <span className="font-bold">yes</span> or{' '}
-          <span className="font-bold">abstain</span> in order for the proposal to be
-          eligible to pass (<span className="font-bold">yes</span> votes still must
-          outnumber <span className="font-bold">no</span> votes in order to pass the
-          proposal).
+          <span className="font-bold">abstain</span> in order for the proposal
+          to be eligible to pass (<span className="font-bold">yes</span> votes
+          still must outnumber <span className="font-bold">no</span> votes in
+          order to pass the proposal).
         </span>
       ),
       fieldName: 'governanceVotingQuorum',
@@ -101,7 +86,8 @@ const ProposeGovernanceSettings = () => {
       title: 'Execution Delay',
       icon: <Clock size={14} strokeWidth={1.5} />,
       options: [0.5, 1, 1.5, 2],
-      optionsFormatter: (option: number) => humanizeTimeFromSeconds(daysToSeconds(option)),
+      optionsFormatter: (option: number) =>
+        humanizeTimeFromSeconds(daysToSeconds(option)),
       customLabel: 'days',
       customPlaceholder: 'Enter custom delay',
       description:
