@@ -1,0 +1,287 @@
+import React, { ReactNode, useEffect } from 'react'
+import { useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { ArrowLeft, Settings, X } from 'lucide-react'
+import { Button } from './ui/button'
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from './ui/dialog'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs'
+import { Toaster } from './ui/sonner'
+import { ZapperProps } from '../types'
+import { setCustomApiUrl } from '../types/api'
+import { cn } from '../utils/cn'
+import { chainIdAtom, indexDTFAtom } from '../state/atoms'
+import {
+  currentZapMintTabAtom,
+  defaultSelectedTokenAtom,
+  openZapMintModalAtom,
+  selectedTokenAtom,
+  showZapSettingsAtom,
+  zapFetchingAtom,
+  zapMintInputAtom,
+  zapOngoingTxAtom,
+  zapRefetchAtom,
+} from './zap-mint/atom'
+import Buy from './zap-mint/buy'
+import Sell from './zap-mint/sell'
+import LowLiquidityWarning from './zap-mint/low-liquidity-warning'
+import ZapHealthcheck from './zap-mint/zap-healthcheck'
+import RefreshQuote from './zap-mint/refresh-quote'
+import ZapSettings from './zap-mint/zap-settings'
+import {
+  trackTabSwitch,
+  trackSettings,
+  trackQuoteRefresh,
+} from '../utils/tracking'
+
+interface ZapperContentProps {
+  mode: 'modal' | 'inline'
+  onClose?: () => void
+  className?: string
+}
+
+const ZapperContent: React.FC<ZapperContentProps> = ({
+  mode,
+  onClose,
+  className,
+}) => {
+  const [currentTab, setCurrentTab] = useAtom(currentZapMintTabAtom)
+  const [showSettings, setShowSettings] = useAtom(showZapSettingsAtom)
+  const defaultToken = useAtomValue(defaultSelectedTokenAtom)
+  const [selectedToken, setSelectedToken] = useAtom(selectedTokenAtom)
+  const chainId = useAtomValue(chainIdAtom)
+  const indexDTF = useAtomValue(indexDTFAtom)
+  const zapRefetch = useAtomValue(zapRefetchAtom)
+  const zapFetching = useAtomValue(zapFetchingAtom)
+  const zapOngoingTx = useAtomValue(zapOngoingTxAtom)
+  const input = useAtomValue(zapMintInputAtom)
+  const invalidInput = isNaN(Number(input)) || Number(input) === 0
+
+  useEffect(() => {
+    setShowSettings(false)
+    setSelectedToken(defaultToken)
+    return () => {
+      setShowSettings(false)
+      setSelectedToken(defaultToken)
+    }
+  }, [defaultToken, setSelectedToken, setShowSettings])
+
+  const tokenIn = currentTab === 'buy' ? selectedToken || defaultToken : null
+  const tokenOut = currentTab === 'sell' ? null : selectedToken || defaultToken
+
+  const handleSettingsClick = () => {
+    setShowSettings(true)
+    trackSettings(
+      'open',
+      undefined,
+      undefined,
+      indexDTF?.token.symbol,
+      indexDTF?.id,
+      chainId
+    )
+  }
+
+  const handleRefreshClick = () => {
+    zapRefetch.fn?.()
+    trackQuoteRefresh('manual', indexDTF?.token.symbol, indexDTF?.id, chainId, {
+      amount: input,
+      tab: currentTab,
+    })
+  }
+
+  const handleTabChange = (value: string) => {
+    const newTab = value as 'buy' | 'sell'
+    setCurrentTab(newTab)
+    trackTabSwitch(newTab, indexDTF?.token.symbol, indexDTF?.id, chainId)
+  }
+
+  if (mode === 'inline') {
+    return (
+      <div className={cn('w-full max-w-md mx-auto', className)}>
+        {showSettings ? (
+          <div className="space-y-4">
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setShowSettings(false)}
+              >
+                <ArrowLeft size={16} />
+                Back
+              </Button>
+              <h3 className="font-semibold">Settings</h3>
+            </div>
+            <ZapSettings />
+          </div>
+        ) : (
+          <div className="space-y-4">
+            <div className="flex justify-between items-center">
+              <h2 className="text-xl font-semibold">Zap</h2>
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleSettingsClick}
+                >
+                  <Settings size={16} />
+                </Button>
+                <RefreshQuote
+                  small
+                  onClick={handleRefreshClick}
+                  loading={zapFetching}
+                  disabled={zapFetching || zapOngoingTx || invalidInput}
+                />
+              </div>
+            </div>
+
+            <Tabs value={currentTab} onValueChange={handleTabChange}>
+              <TabsList className="grid w-full grid-cols-2">
+                <TabsTrigger value="buy">Buy</TabsTrigger>
+                <TabsTrigger value="sell">Sell</TabsTrigger>
+              </TabsList>
+
+              <div className="mt-4 space-y-4">
+                <LowLiquidityWarning />
+                <ZapHealthcheck />
+
+                <TabsContent value="buy" className="mt-0">
+                  <Buy />
+                </TabsContent>
+                <TabsContent value="sell" className="mt-0">
+                  <Sell />
+                </TabsContent>
+              </div>
+            </Tabs>
+          </div>
+        )}
+      </div>
+    )
+  }
+
+  // Modal mode content
+  return (
+    <>
+      <DialogTitle className="flex justify-between gap-2 p-2 sm:p-0">
+        {showSettings ? (
+          <Button
+            variant="outline"
+            className="h-[34px] px-2 rounded-xl"
+            onClick={() => setShowSettings(false)}
+          >
+            <ArrowLeft size={16} />
+          </Button>
+        ) : (
+          <div className="flex justify-between gap-1">
+            <Button
+              variant="outline"
+              className="h-[34px] px-2 rounded-xl"
+              onClick={handleSettingsClick}
+            >
+              <Settings size={16} />
+            </Button>
+            <RefreshQuote
+              small
+              onClick={handleRefreshClick}
+              loading={zapFetching}
+              disabled={zapFetching || zapOngoingTx || invalidInput}
+            />
+          </div>
+        )}
+        {onClose && (
+          <Button
+            variant="outline"
+            className="h-[34px] px-2 rounded-xl"
+            onClick={onClose}
+          >
+            <X size={16} />
+          </Button>
+        )}
+      </DialogTitle>
+
+      {showSettings && <ZapSettings />}
+
+      <div className={showSettings ? 'hidden' : 'opacity-100'}>
+        <div className="flex flex-col gap-2">
+          <LowLiquidityWarning />
+          <ZapHealthcheck />
+          {currentTab === 'buy' ? <Buy /> : <Sell />}
+        </div>
+      </div>
+    </>
+  )
+}
+
+export const Zapper: React.FC<ZapperProps> = ({
+  config,
+  mode = 'modal',
+  theme,
+  isOpen,
+  onOpenChange,
+  className,
+  children,
+}) => {
+  const [open, setOpen] = useAtom(openZapMintModalAtom)
+
+  // Sync internal modal state with external prop
+  useEffect(() => {
+    if (isOpen !== undefined) {
+      setOpen(isOpen)
+    }
+  }, [isOpen, setOpen])
+
+  const handleOpenChange = (newOpen: boolean) => {
+    setOpen(newOpen)
+    onOpenChange?.(newOpen)
+  }
+
+  const handleClose = () => {
+    handleOpenChange(false)
+  }
+
+  // Set custom API URL if provided
+  useEffect(() => {
+    if (config.apiUrl) {
+      setCustomApiUrl(config.apiUrl)
+    }
+  }, [config.apiUrl])
+
+  // Apply custom theme via CSS variables
+  useEffect(() => {
+    if (theme) {
+      const root = document.documentElement
+      Object.entries(theme).forEach(([key, value]) => {
+        if (value) {
+          root.style.setProperty(`--zapper-${key}`, value)
+        }
+      })
+    }
+  }, [theme])
+
+  if (mode === 'inline') {
+    return (
+      <>
+        <ZapperContent mode="inline" className={className} />
+        <Toaster />
+      </>
+    )
+  }
+
+  // Modal mode
+  return (
+    <>
+      <Dialog open={open} onOpenChange={handleOpenChange}>
+        {children && <DialogTrigger asChild>{children}</DialogTrigger>}
+        <DialogContent
+          showClose={false}
+          className={cn(
+            'p-2 rounded-t-2xl sm:rounded-3xl border-none',
+            className
+          )}
+        >
+          <ZapperContent mode="modal" onClose={handleClose} />
+        </DialogContent>
+      </Dialog>
+      <Toaster />
+    </>
+  )
+}
+
+export default Zapper
