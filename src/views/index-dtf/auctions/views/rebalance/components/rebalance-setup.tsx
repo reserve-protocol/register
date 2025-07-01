@@ -6,7 +6,6 @@ import {
   rebalanceMetricsAtom,
   rebalancePercentAtom,
 } from '../atoms'
-import { useEffect } from 'react'
 
 const ESTIMATED_ROUNDS = {
   [AuctionRound.EJECT]: '2-3',
@@ -18,12 +17,6 @@ const RebalanceSetup = () => {
   const [rebalancePercent, setRebalancePercent] = useAtom(rebalancePercentAtom)
   const rebalanceOngoing = useAtomValue(isAuctionOngoingAtom)
   const metrics = useAtomValue(rebalanceMetricsAtom)
-
-  useEffect(() => {
-    if (metrics && !rebalanceOngoing) {
-      setRebalancePercent(metrics.relativeTarget * 100)
-    }
-  }, [metrics?.relativeTarget, rebalanceOngoing])
 
   return (
     <div className="p-4">

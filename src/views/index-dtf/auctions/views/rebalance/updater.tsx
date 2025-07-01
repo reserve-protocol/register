@@ -19,7 +19,7 @@ import { useParams } from 'react-router-dom'
 
 const RebalanceMetricsUpdater = () => {
   const [metrics, setRebalanceMetrics] = useAtom(rebalanceMetricsAtom)
-  const rebalancePercent = useAtomValue(rebalancePercentAtom)
+  const [rebalancePercent, setRebalancePercent] = useAtom(rebalancePercentAtom)
   const rebalanceParams = useRebalanceParams()
   const currentRebalance = useAtomValue(currentRebalanceAtom)
 
@@ -64,17 +64,10 @@ const RebalanceMetricsUpdater = () => {
   )
 
   useEffect(() => {
-    if (rebalanceParams && currentRebalance) {
-      updateMetrics(
-        rebalanceParams,
-        currentRebalance,
-        metrics?.relativeProgression &&
-          rebalancePercent > metrics.relativeProgression
-          ? rebalancePercent
-          : 0.95
-      )
+    if (rebalanceParams && currentRebalance && rebalancePercent) {
+      updateMetrics(rebalanceParams, currentRebalance, rebalancePercent)
     }
-  }, [rebalanceParams, currentRebalance, rebalancePercent, updateMetrics])
+  }, [rebalanceParams, currentRebalance, updateMetrics, rebalancePercent])
 
   return null
 }
@@ -95,7 +88,7 @@ const Updater = () => {
 
   useEffect(() => {
     return () => {
-      setRebalancePercent(0)
+      setRebalancePercent(100)
     }
   }, [])
 
