@@ -62,7 +62,7 @@ const SubmitProposalButton = () => {
   return (
     <Button
       disabled={
-        !isReady || isPending || !!data || !dtf?.stToken?.governance?.id
+        !isReady || isPending || !!data || !dtf?.ownerGovernance?.id
       }
       onClick={handleSubmit}
       className="w-full"

@@ -52,7 +52,7 @@ export const basketSettingsProposalDataAtom = atom<
         encodeFunctionData({
           abi: dtfGovernanceAbi,
           functionName: 'setVotingDelay',
-          args: [BigInt(governanceChanges.votingDelay)],
+          args: [governanceChanges.votingDelay],
         })
       )
       targets.push(governanceAddress)
@@ -64,7 +64,7 @@ export const basketSettingsProposalDataAtom = atom<
         encodeFunctionData({
           abi: dtfGovernanceAbi,
           functionName: 'setVotingPeriod',
-          args: [BigInt(governanceChanges.votingPeriod)],
+          args: [governanceChanges.votingPeriod],
         })
       )
       targets.push(governanceAddress)
@@ -129,12 +129,12 @@ const humanizeTimeFromSeconds = (seconds: number) => {
 export const basketGovernanceChangesDisplayAtom = atom((get) => {
   const governanceChanges = get(basketGovernanceChangesAtom)
   const dtf = get(indexDTFAtom)
-  
+
   if (!dtf?.tradingGovernance) return []
-  
+
   const governance = dtf.tradingGovernance
   const changes = []
-  
+
   if (governanceChanges.votingDelay !== undefined) {
     changes.push({
       key: 'votingDelay',
@@ -143,7 +143,7 @@ export const basketGovernanceChangesDisplayAtom = atom((get) => {
       new: humanizeTimeFromSeconds(governanceChanges.votingDelay),
     })
   }
-  
+
   if (governanceChanges.votingPeriod !== undefined) {
     changes.push({
       key: 'votingPeriod',
@@ -152,7 +152,7 @@ export const basketGovernanceChangesDisplayAtom = atom((get) => {
       new: humanizeTimeFromSeconds(governanceChanges.votingPeriod),
     })
   }
-  
+
   if (governanceChanges.proposalThreshold !== undefined) {
     changes.push({
       key: 'proposalThreshold',
@@ -161,7 +161,7 @@ export const basketGovernanceChangesDisplayAtom = atom((get) => {
       new: `${governanceChanges.proposalThreshold.toFixed(2)}%`,
     })
   }
-  
+
   if (governanceChanges.quorumPercent !== undefined) {
     changes.push({
       key: 'quorumPercent',
@@ -170,16 +170,18 @@ export const basketGovernanceChangesDisplayAtom = atom((get) => {
       new: `${governanceChanges.quorumPercent}%`,
     })
   }
-  
+
   if (governanceChanges.executionDelay !== undefined) {
     changes.push({
       key: 'executionDelay',
       title: 'Execution Delay',
-      current: humanizeTimeFromSeconds(Number(governance.timelock?.executionDelay || 0)),
+      current: humanizeTimeFromSeconds(
+        Number(governance.timelock?.executionDelay || 0)
+      ),
       new: humanizeTimeFromSeconds(governanceChanges.executionDelay),
     })
   }
-  
+
   return changes
 })
 
