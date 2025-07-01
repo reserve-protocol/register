@@ -61,9 +61,9 @@ export const GrantRolePreview = ({ decodedCalldata }: { decodedCalldata: Decoded
   
   // Map role hashes to readable names
   const roleNames: Record<string, string> = {
-    '0x45e7131d776dddc137e30bdd490b431c7144677e97bf9369f629ed8d3fb7dd6f': 'Guardian',
-    '0x2ce3265b96c4537dd7b86b7554c85e8071574b43342b4b4cbfe186cf4b2bc883': 'Brand Manager',
-    '0xecec33ab7f1be86026025e66df4d1b28cd50e7eb59269b6b6c5e8096d4a4aed4': 'Auction Launcher',
+    '0xfd643c72710c63c0180259aba6b2d05451e3591a24e58b62239378085726f783': 'Guardian',
+    '0x2d8e650da9bd8c373ab2450d770f2ed39549bfc28d3630025cecc51511bcd374': 'Brand Manager',
+    '0x13ff1b2625181b311f257c723b5e6d366eb318b212d9dd694c48fcf227659df5': 'Auction Launcher',
   }
   
   const roleName = roleNames[roleHash] || 'Unknown Role'
@@ -99,9 +99,9 @@ export const RevokeRolePreview = ({ decodedCalldata }: { decodedCalldata: Decode
   const [roleHash, account] = decodedCalldata.data as [string, string]
   
   const roleNames: Record<string, string> = {
-    '0x45e7131d776dddc137e30bdd490b431c7144677e97bf9369f629ed8d3fb7dd6f': 'Guardian',
-    '0x2ce3265b96c4537dd7b86b7554c85e8071574b43342b4b4cbfe186cf4b2bc883': 'Brand Manager',
-    '0xecec33ab7f1be86026025e66df4d1b28cd50e7eb59269b6b6c5e8096d4a4aed4': 'Auction Launcher',
+    '0xfd643c72710c63c0180259aba6b2d05451e3591a24e58b62239378085726f783': 'Guardian',
+    '0x2d8e650da9bd8c373ab2450d770f2ed39549bfc28d3630025cecc51511bcd374': 'Brand Manager',
+    '0x13ff1b2625181b311f257c723b5e6d366eb318b212d9dd694c48fcf227659df5': 'Auction Launcher',
   }
   
   const roleName = roleNames[roleHash] || 'Unknown Role'
@@ -242,8 +242,9 @@ export const SetFeeRecipientsPreview = ({ decodedCalldata }: { decodedCalldata: 
 // Preview component for setMintFee function
 export const SetMintFeePreview = ({ decodedCalldata }: { decodedCalldata: DecodedCalldata }) => {
   const fee = decodedCalldata.data[0] as bigint
-  // Convert basis points to percentage (e.g., 150 = 1.5%)
-  const percentage = Number(fee) / 100
+  // Convert from parseEther (18 decimals) to percentage
+  // The fee is stored as dtfRevenueChanges.mintFee / 100 in parseEther format
+  const percentage = (Number(fee) / 1e18) * 100
   
   return (
     <div className="rounded-2xl border bg-muted/70 p-4 space-y-3">
