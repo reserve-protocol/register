@@ -4,7 +4,6 @@ import { Trans } from '@lingui/macro'
 import {
   ArrowLeft,
   ArrowRight,
-  Asterisk,
   Boxes,
   Crown,
   LayoutGrid,

@@ -20,6 +20,11 @@ import {
   SetTVLFeePreview,
   SetAuctionLengthPreview,
   SetDustAmountPreview,
+  SetVotingDelayPreview,
+  SetVotingPeriodPreview,
+  SetProposalThresholdPreview,
+  UpdateQuorumNumeratorPreview,
+  UpdateDelayPreview,
 } from './dtf-settings-preview'
 
 const ChangesOverviewComponentMap: Record<
@@ -38,6 +43,13 @@ const ChangesOverviewComponentMap: Record<
   setTVLFee: SetTVLFeePreview,
   setAuctionLength: SetAuctionLengthPreview,
   setDustAmount: SetDustAmountPreview,
+  // Governance functions
+  setVotingDelay: SetVotingDelayPreview,
+  setVotingPeriod: SetVotingPeriodPreview,
+  setProposalThreshold: SetProposalThresholdPreview,
+  updateQuorumNumerator: UpdateQuorumNumeratorPreview,
+  // Timelock functions
+  updateDelay: UpdateDelayPreview,
 }
 
 const TABS = {

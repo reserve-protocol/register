@@ -34,7 +34,7 @@ import IndexDTFOverview from './views/index-dtf/overview'
 import IndexDTFSettings from './views/index-dtf/settings'
 import AllYieldDTFList from './views/tokens/Tokens'
 import DeployComingSoon from './views/index-dtf/deploy/components/deploy-coming-soon'
-import IndexDTFWhitelistProposal from './views/index-dtf/governance/views/propose/views/vault'
+import IndexDTFWhitelistProposal from './views/index-dtf/governance/views/propose/views/propose-dao-settings'
 import ProposeDTFSettings from './views/index-dtf/governance/views/propose/views/propose-dtf-settings'
 
 // TODO: Fix recoll call on yield dtf auction page

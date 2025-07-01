@@ -2,12 +2,11 @@ import { useAtomValue, useSetAtom } from 'jotai'
 import {
   isProposalConfirmedAtom,
   proposalDescriptionAtom,
-  vaultProposalCalldatasAtom,
+  daoSettingsProposalDataAtom,
 } from '../atoms'
 import ProposalDescriptionForm from '@/components/governance/proposal-description-form'
 import { useEffect } from 'react'
-import VaultProposalPreview from './vault-proposal-preview'
-import { indexDTFAtom } from '@/state/dtf/atoms'
+import GovernanceProposalPreview from '@/views/index-dtf/governance/components/governance-proposal-preview'
 
 const ProposalDescription = () => {
   const setDescription = useSetAtom(proposalDescriptionAtom)
@@ -28,18 +27,19 @@ const ProposalDescription = () => {
 }
 
 const ProposalPreview = () => {
-  const calldatas = useAtomValue(vaultProposalCalldatasAtom)
-  // Should always be set at this stage
-  const vaultAddress = useAtomValue(indexDTFAtom)?.stToken?.id ?? '0x'
+  const proposalData = useAtomValue(daoSettingsProposalDataAtom)
 
   return (
-    <div className="bg-background rounded-4xl">
-      <VaultProposalPreview calldatas={calldatas} address={vaultAddress} />
+    <div className="flex flex-col gap-4">
+      <GovernanceProposalPreview
+        targets={proposalData?.targets}
+        calldatas={proposalData?.calldatas}
+      />
     </div>
   )
 }
 
-const ConfirmVaultProposal = () => {
+const ConfirmDaoSettingsProposal = () => {
   return (
     <div className="flex flex-col gap-1 bg-secondary rounded-3xl p-1">
       <ProposalDescription />
@@ -48,4 +48,4 @@ const ConfirmVaultProposal = () => {
   )
 }
 
-export default ConfirmVaultProposal
+export default ConfirmDaoSettingsProposal
