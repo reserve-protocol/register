@@ -155,11 +155,11 @@ export const proposalDescriptionAtom = atom<string | undefined>(undefined)
 
 // Role constants from the DTF contract
 const GUARDIAN_ROLE =
-  '0x45e7131d776dddc137e30bdd490b431c7144677e97bf9369f629ed8d3fb7dd6f' as const
+  '0xfd643c72710c63c0180259aba6b2d05451e3591a24e58b62239378085726f783' as const
 const BRAND_MANAGER_ROLE =
-  '0x2ce3265b96c4537dd7b86b7554c85e8071574b43342b4b4cbfe186cf4b2bc883' as const
+  '0x2d8e650da9bd8c373ab2450d770f2ed39549bfc28d3630025cecc51511bcd374' as const
 const AUCTION_LAUNCHER_ROLE =
-  '0xecec33ab7f1be86026025e66df4d1b28cd50e7eb59269b6b6c5e8096d4a4aed4' as const
+  '0x13ff1b2625181b311f257c723b5e6d366eb318b212d9dd694c48fcf227659df5' as const
 
 export const dtfSettingsProposalDataAtom = atom<ProposalData | undefined>((get) => {
   const isConfirmed = get(isProposalConfirmedAtom)
@@ -387,7 +387,7 @@ export const dtfSettingsProposalDataAtom = atom<ProposalData | undefined>((get) 
       encodeFunctionData({
         abi: dtfIndexAbi,
         functionName: 'setMintFee',
-        args: [BigInt(Math.floor(dtfRevenueChanges.mintFee * 100))], // Convert percentage to basis points
+        args: [parseEther((dtfRevenueChanges.mintFee / 100).toString())], // Convert percentage to 18 decimal precision
       })
     )
     targets.push(indexDTF.id as Address)
