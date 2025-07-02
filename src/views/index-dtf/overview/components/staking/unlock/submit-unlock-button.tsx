@@ -42,6 +42,7 @@ const SubmitUnlockButton = () => {
             args: [amountToUnlock, account, account],
             query: { enabled: readyToSubmit },
             chainId,
+            bypassWalletCheck: true,
           }
         : undefined
     )

@@ -34,6 +34,7 @@ export const DelegateButton = () => {
       args: [isValidDelegate ? getAddress(delegate) : account!],
       chainId,
       query: { enabled: !!account && isValidDelegate },
+      bypassWalletCheck: true,
     })
 
   const { data: receipt, error: txError } = useWaitForTransactionReceipt({
@@ -117,6 +118,7 @@ const SubmitLockButton = () => {
         amountToLock <= balance &&
         isValidDelegate,
     },
+    bypassWalletCheck: true,
   })
 
   const { data: approvalReceipt, error: approvalTxError } =
@@ -137,6 +139,7 @@ const SubmitLockButton = () => {
         : [amountToLock, account as Address],
       chainId,
       query: { enabled: !!account && readyToSubmit && isValidDelegate },
+      bypassWalletCheck: true,
     })
 
   const { data: receipt, error: txError } = useWaitForTransactionReceipt({
