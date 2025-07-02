@@ -41,6 +41,17 @@ const RebalanceMetricsUpdater = () => {
 
         const initialPrices = currentRebalance.rebalance.tokens.reduce(
           (acc, curr, index) => {
+            console.log('get initial prices SYMBOL', curr.symbol)
+            console.log('get initial prices DECIMALS', curr.decimals)
+            console.log(
+              'get initial prices PRICE LOW LIMIT',
+              currentRebalance.rebalance.priceLowLimit[index]
+            )
+            console.log(
+              'get initial prices PRICE HIGH LIMIT',
+              currentRebalance.rebalance.priceHighLimit[index]
+            )
+
             acc[curr.address.toLowerCase()] = {
               low: BigInt(currentRebalance.rebalance.priceLowLimit[index]),
               high: BigInt(currentRebalance.rebalance.priceHighLimit[index]),
@@ -49,6 +60,8 @@ const RebalanceMetricsUpdater = () => {
           },
           {} as Record<string, { low: bigint; high: bigint }>
         )
+
+        console.log('isTrackingDTF', isTrackingDTF)
 
         const [, rebalanceMetrics] = getRebalanceOpenAuction(
           currentRebalance.rebalance.tokens,

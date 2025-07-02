@@ -150,7 +150,7 @@ const useRebalanceParams = () => {
       currentFolio: dtfData.currentFolio,
       initialFolio,
       prices,
-      isTrackingDTF: rebalanceControl.weightControl,
+      isTrackingDTF: !rebalanceControl.weightControl,
     } as RebalanceParams
   }, [dtfData, initialFolio, prices, rebalanceControl])
 }
