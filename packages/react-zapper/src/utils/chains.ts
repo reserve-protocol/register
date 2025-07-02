@@ -9,3 +9,9 @@ export const ChainId: Record<string, number> = {
   Base: base.id,
   Arbitrum: arbitrum.id,
 } as const
+
+export const CHAIN_TAGS = {
+  [ChainId.Mainnet]: 'Ethereum',
+  [ChainId.Base]: 'Base',
+  [ChainId.Arbitrum]: 'Arbitrum One',
+} as const

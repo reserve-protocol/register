@@ -3,13 +3,20 @@ import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { Address, erc20Abi, formatUnits } from 'viem'
 import { useBalance } from 'wagmi'
-import { balancesAtom, chainIdAtom, walletAtom } from '../../state/atoms'
+import {
+  balancesAtom,
+  chainIdAtom,
+  indexDTFAtom,
+  walletAtom,
+} from '../../state/atoms'
 import { TokenBalance } from '../../types'
 import { reducedZappableTokens } from '../../utils/constants'
+import { indexDTFBalanceAtom } from '../zap-mint/atom'
 
 const balancesCallAtom = atom((get) => {
   const wallet = get(walletAtom)
   const chainId = get(chainIdAtom)
+  const indexDTF = get(indexDTFAtom)
 
   if (!wallet) {
     return undefined
@@ -18,6 +25,10 @@ const balancesCallAtom = atom((get) => {
   const tokens: [Address, number][] = reducedZappableTokens[chainId]
     .slice(1)
     .map((token) => [token.address, token.decimals])
+
+  if (indexDTF) {
+    tokens.unshift([indexDTF.id, indexDTF.token.decimals])
+  }
 
   return {
     tokens: tokens ?? [],
@@ -31,9 +42,14 @@ const balancesCallAtom = atom((get) => {
   }
 })
 
-export const TokenBalancesUpdater = () => {
+export const TokenBalancesUpdater = ({
+  dtfAddress,
+}: {
+  dtfAddress: string
+}) => {
   const { tokens, calls } = useAtomValue(balancesCallAtom) ?? {}
   const setBalances = useSetAtom(balancesAtom)
+  const setIndexDTFBalance = useSetAtom(indexDTFBalanceAtom)
   const wallet = useAtomValue(walletAtom)
 
   const { data }: { data: bigint[] | undefined } = useWatchReadContracts({
@@ -67,8 +83,9 @@ export const TokenBalancesUpdater = () => {
       }
 
       setBalances(balances)
+      setIndexDTFBalance(balances[dtfAddress]?.value || 0n)
     }
-  }, [data, balance])
+  }, [data, balance, dtfAddress, setBalances, setIndexDTFBalance])
 
   return null
 }

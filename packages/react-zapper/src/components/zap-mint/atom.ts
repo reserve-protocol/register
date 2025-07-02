@@ -5,7 +5,7 @@ import { Token, TokenBalance } from '../../types'
 import { reducedZappableTokens } from '@/utils/constants'
 
 export const openZapMintModalAtom = atom(false)
-export const currentZapMintTabAtom = atom<'buy' | 'sell'>('buy')
+export const zapperCurrentTabAtom = atom<'buy' | 'sell'>('buy')
 export const showZapSettingsAtom = atom<boolean>(false)
 export const zapMintInputAtom = atomWithReset<string>('')
 export const indexDTFBalanceAtom = atom<bigint>(0n)

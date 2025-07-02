@@ -9,7 +9,13 @@ interface TransactionButtonProps {
   loading?: boolean
   onClick?: () => void
   className?: string
-  variant?: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link'
+  variant?:
+    | 'default'
+    | 'destructive'
+    | 'outline'
+    | 'secondary'
+    | 'ghost'
+    | 'link'
   size?: 'default' | 'sm' | 'lg' | 'icon' | 'xs'
 }
 
@@ -23,7 +29,7 @@ export function TransactionButton({
   onClick,
   className,
   variant = 'default',
-  size = 'default'
+  size = 'lg',
 }: TransactionButtonProps) {
   return (
     <Button
@@ -43,7 +49,11 @@ export function TransactionButton({
   )
 }
 
-export function TransactionButtonContainer({ children }: { children: React.ReactNode }) {
+export function TransactionButtonContainer({
+  children,
+}: {
+  children: React.ReactNode
+}) {
   return <div className="space-y-2">{children}</div>
 }
 

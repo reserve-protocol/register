@@ -9,7 +9,7 @@ import { formatCurrency } from '../../../utils'
 import { Token } from '../../../types'
 import Swap from '../../ui/swap'
 import {
-  currentZapMintTabAtom,
+  zapperCurrentTabAtom,
   forceMintAtom,
   openZapMintModalAtom,
   selectedTokenAtom,
@@ -39,7 +39,7 @@ const Buy = () => {
   const [ongoingTx, setOngoingTx] = useAtom(zapOngoingTxAtom)
   const setZapRefetch = useSetAtom(zapRefetchAtom)
   const setZapFetching = useSetAtom(zapFetchingAtom)
-  const setCurrentTab = useSetAtom(currentZapMintTabAtom)
+  const setCurrentTab = useSetAtom(zapperCurrentTabAtom)
   const setOpen = useSetAtom(openZapMintModalAtom)
   const selectedTokenPrice = useChainlinkPrice(chainId, selectedToken.address)
   const inputPrice = (selectedTokenPrice || 0) * Number(inputAmount)
@@ -47,7 +47,13 @@ const Buy = () => {
 
   const handleTokenSelect = (token: Token) => {
     setInputToken(token)
-    trackTokenSelection(token.symbol, 'input', indexDTF?.token.symbol, indexDTF?.id, chainId)
+    trackTokenSelection(
+      token.symbol,
+      'input',
+      indexDTF?.token.symbol,
+      indexDTF?.id,
+      chainId
+    )
   }
 
   const insufficientBalance =

@@ -11,12 +11,11 @@ import {
   trackTabSwitch,
 } from '../utils/tracking'
 import { Button } from './ui/button'
-import { Dialog, DialogContent, DialogTitle, DialogTrigger } from './ui/dialog'
+import { Dialog, DialogContent, DialogTitle } from './ui/dialog'
 import { Toaster } from './ui/sonner'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs'
 import Updaters from './updaters'
 import {
-  currentZapMintTabAtom,
   defaultSelectedTokenAtom,
   openZapMintModalAtom,
   selectedTokenAtom,
@@ -24,6 +23,7 @@ import {
   zapFetchingAtom,
   zapMintInputAtom,
   zapOngoingTxAtom,
+  zapperCurrentTabAtom,
   zapRefetchAtom,
 } from './zap-mint/atom'
 import Buy from './zap-mint/buy'
@@ -44,10 +44,10 @@ const ZapperContent: React.FC<ZapperContentProps> = ({
   onClose,
   className,
 }) => {
-  const [currentTab, setCurrentTab] = useAtom(currentZapMintTabAtom)
+  const [currentTab, setCurrentTab] = useAtom(zapperCurrentTabAtom)
   const [showSettings, setShowSettings] = useAtom(showZapSettingsAtom)
   const defaultToken = useAtomValue(defaultSelectedTokenAtom)
-  const [selectedToken, setSelectedToken] = useAtom(selectedTokenAtom)
+  const setSelectedToken = useSetAtom(selectedTokenAtom)
   const chainId = useAtomValue(chainIdAtom)
   const indexDTF = useAtomValue(indexDTFAtom)
   const zapRefetch = useAtomValue(zapRefetchAtom)
@@ -64,9 +64,6 @@ const ZapperContent: React.FC<ZapperContentProps> = ({
       setSelectedToken(defaultToken)
     }
   }, [defaultToken, setSelectedToken, setShowSettings])
-
-  const tokenIn = currentTab === 'buy' ? selectedToken || defaultToken : null
-  const tokenOut = currentTab === 'sell' ? null : selectedToken || defaultToken
 
   const handleSettingsClick = () => {
     setShowSettings(true)

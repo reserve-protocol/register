@@ -156,7 +156,7 @@ const Updaters: React.FC<UpdatersProps> = ({ dtfAddress, chainId }) => {
       <IndexDTFMetadataUpdater dtfAddress={dtfAddress} />
       <IndexDTFBasketUpdater dtfAddress={dtfAddress} />
       <IndexDTFIconsUpdater />
-      <TokenBalancesUpdater />
+      <TokenBalancesUpdater dtfAddress={dtfAddress} />
     </>
   )
 }

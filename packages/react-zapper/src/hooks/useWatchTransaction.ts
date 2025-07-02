@@ -1,8 +1,11 @@
+import { useAtomValue } from 'jotai'
+import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
 import { ReactNode, useEffect } from 'react'
+import { chainIdAtom } from '../state/atoms'
+import { ChainId, CHAIN_TAGS } from '../utils/chains'
 import { Hex, TransactionReceipt } from 'viem'
 import { useWaitForTransactionReceipt } from 'wagmi'
-import { MIXPANEL_TOKEN } from '../utils/constants'
-import { toast } from 'sonner'
+import useNotification from './use-notification'
 
 interface WatchOptions {
   hash: Hex | undefined
@@ -13,7 +16,6 @@ interface WatchOptions {
     type?: 'success' | 'error'
     icon?: ReactNode
   }
-  chainId?: number
 }
 
 interface WatchResult {
@@ -21,20 +23,17 @@ interface WatchResult {
   isMining?: boolean
   status: 'success' | 'error' | 'pending' | 'idle'
   error?: string
-  isLoading?: boolean
-  isSuccess?: boolean
 }
 
-/**
- * Hook to watch transaction status and send notifications
- * Monitors transaction confirmations and tracks analytics
- */
+// Watch tx status, send notifications and track history
 const useWatchTransaction = ({
   hash,
   label,
   successMessage,
-  chainId = 1,
 }: WatchOptions): WatchResult => {
+  const notify = useNotification()
+  const chainId = useAtomValue(chainIdAtom)
+
   const {
     data,
     status,
@@ -42,60 +41,49 @@ const useWatchTransaction = ({
     isLoading: isMining,
   } = useWaitForTransactionReceipt({
     hash,
-    confirmations: chainId === 1 ? 1 : 3, // Mainnet uses 1, others use 3
+    confirmations: chainId === ChainId.Mainnet ? 1 : 3,
   })
 
   useEffect(() => {
     if (!hash || !data) return
 
     if (status === 'success') {
-      toast.success(successMessage?.title ?? 'Transaction confirmed', {
-        description:
-          successMessage?.subtitle ?? `At block ${Number(data.blockNumber)}`,
-        icon: successMessage?.icon,
+      notify(
+        successMessage?.title ?? `Transaction confirmed`,
+        successMessage?.subtitle ?? `At block ${Number(data.blockNumber)}`,
+        successMessage?.type ?? 'success',
+        successMessage?.icon
+      )
+      mixpanel.track('transaction', {
+        product: label,
+        action: 'transaction_succeeded',
+        payload: {
+          type: label,
+          chain: CHAIN_TAGS[chainId],
+          hash: hash,
+          blocknumber: Number(data.blockNumber),
+        },
       })
-
-      // Track with Mixpanel if available
-      if (typeof window !== 'undefined' && (window as any).mixpanel) {
-        ;(window as any).mixpanel.track('transaction', {
-          product: label,
-          action: 'transaction_succeeded',
-          payload: {
-            type: label,
-            chain: chainId,
-            hash: hash,
-            blocknumber: Number(data.blockNumber),
-          },
-        })
-      }
     } else if (status === 'error') {
-      toast.error('Transaction reverted', {
-        description: error?.message ?? 'Unknown error',
+      notify(`Transaction reverted`, error?.message ?? 'Unknown error', 'error')
+      mixpanel.track('transaction', {
+        product: label,
+        action: 'transaction_reverted',
+        payload: {
+          type: label,
+          chain: CHAIN_TAGS[chainId],
+          hash: hash,
+          error: error?.message,
+        },
       })
-
-      // Track with Mixpanel if available
-      if (typeof window !== 'undefined' && (window as any).mixpanel) {
-        ;(window as any).mixpanel.track('transaction', {
-          product: label,
-          action: 'transaction_reverted',
-          payload: {
-            type: label,
-            chain: chainId,
-            hash: hash,
-            error: error?.message,
-          },
-        })
-      }
     }
-  }, [hash, data, status, error, successMessage, label, chainId])
+  }, [hash, data, status, error, notify])
 
   return {
     data,
     isMining,
     status,
     error: error?.message,
-    isLoading: isMining,
-    isSuccess: status === 'success',
   }
 }
 

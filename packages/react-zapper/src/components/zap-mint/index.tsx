@@ -2,15 +2,10 @@ import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { ArrowLeft, Settings, X } from 'lucide-react'
 import { ReactNode, useEffect } from 'react'
 import { Button } from '../ui/button'
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  DialogTrigger,
-} from '../ui/dialog'
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '../ui/dialog'
 import { indexDTFAtom, chainIdAtom } from '../../state/atoms'
 import {
-  currentZapMintTabAtom,
+  zapperCurrentTabAtom,
   defaultSelectedTokenAtom,
   openZapMintModalAtom,
   selectedTokenAtom,
@@ -26,11 +21,15 @@ import ZapHealthcheck from './zap-healthcheck'
 import RefreshQuote from './refresh-quote'
 import Sell from './sell'
 import ZapSettings from './zap-settings'
-import { trackZapperModal, trackSettings, trackQuoteRefresh } from '../../utils/tracking'
+import {
+  trackZapperModal,
+  trackSettings,
+  trackQuoteRefresh,
+} from '../../utils/tracking'
 
 const ZapMint = ({ children }: { children: ReactNode }) => {
   const [open, setOpen] = useAtom(openZapMintModalAtom)
-  const currentTab = useAtomValue(currentZapMintTabAtom)
+  const currentTab = useAtomValue(zapperCurrentTabAtom)
   const [showSettings, setShowSettings] = useAtom(showZapSettingsAtom)
   const defaultToken = useAtomValue(defaultSelectedTokenAtom)
   const [selectedToken, setSelectedToken] = useAtom(selectedTokenAtom)
@@ -65,12 +64,26 @@ const ZapMint = ({ children }: { children: ReactNode }) => {
 
   const handleSettingsOpen = () => {
     setShowSettings(true)
-    trackSettings('open', undefined, undefined, indexDTF?.token.symbol, indexDTF?.id, chainId)
+    trackSettings(
+      'open',
+      undefined,
+      undefined,
+      indexDTF?.token.symbol,
+      indexDTF?.id,
+      chainId
+    )
   }
 
   const handleSettingsClose = () => {
     setShowSettings(false)
-    trackSettings('close', undefined, undefined, indexDTF?.token.symbol, indexDTF?.id, chainId)
+    trackSettings(
+      'close',
+      undefined,
+      undefined,
+      indexDTF?.token.symbol,
+      indexDTF?.id,
+      chainId
+    )
   }
 
   const handleQuoteRefresh = () => {
@@ -132,7 +145,9 @@ const ZapMint = ({ children }: { children: ReactNode }) => {
           <span className="font-semibold block">
             Having issues? (Zaps are in beta)
           </span>
-          <span className="text-legend">Wait and try again or consider using manual mode</span>
+          <span className="text-legend">
+            Wait and try again or consider using manual mode
+          </span>
         </div>
       </DialogContent>
     </Dialog>

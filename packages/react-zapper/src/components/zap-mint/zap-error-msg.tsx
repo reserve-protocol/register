@@ -1,6 +1,6 @@
 import TransactionError from '../transaction-error'
 import { useAtomValue } from 'jotai'
-import { currentZapMintTabAtom, zapSwapEndpointAtom } from './atom'
+import { zapperCurrentTabAtom, zapSwapEndpointAtom } from './atom'
 import Copy from '../ui/copy'
 // import { Link } from 'react-router-dom' // Removed router dependency
 // import { getFolioRoute } from '../../utils' // Removed routing
@@ -30,7 +30,7 @@ const CopySwapButton = () => {
 
 const GoToManualRedeem = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
-  const currentTab = useAtomValue(currentZapMintTabAtom)
+  const currentTab = useAtomValue(zapperCurrentTabAtom)
   const isRedeem = currentTab === 'sell'
 
   if (!isRedeem || !indexDTF) return null
@@ -40,7 +40,9 @@ const GoToManualRedeem = () => {
       <span className="font-semibold block">
         Having issues minting? (Zaps are in beta)
       </span>
-      <span className="text-legend">Wait and try again or consider using manual mode</span>
+      <span className="text-legend">
+        Wait and try again or consider using manual mode
+      </span>
     </div>
   )
 }

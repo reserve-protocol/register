@@ -12,7 +12,7 @@ import { Address, erc20Abi } from 'viem'
 import { useSendTransaction, useWaitForTransactionReceipt } from 'wagmi'
 import { chainIdAtom, indexDTFAtom } from '../../state/atoms'
 import {
-  currentZapMintTabAtom,
+  zapperCurrentTabAtom,
   zapHighPriceImpactAtom,
   zapOngoingTxAtom,
   zapPriceImpactWarningCheckboxAtom,
@@ -25,6 +25,8 @@ import {
   trackTransactionError,
   trackClick,
 } from '../../utils/tracking'
+import { formatCurrency } from '@/utils/format'
+import FusionTokenLogo from '../fusion-token-logo'
 
 const LoadingButton = ({
   fetchingZapper,
@@ -84,7 +86,7 @@ const SubmitZapButton = ({
   const indexDTF = useAtomValue(indexDTFAtom)
 
   const setOngoingTx = useSetAtom(zapOngoingTxAtom)
-  const currentTab = useAtomValue(currentZapMintTabAtom)
+  const currentTab = useAtomValue(zapperCurrentTabAtom)
   const {
     write: approve,
     isReady: approvalReady,
@@ -134,12 +136,12 @@ const SubmitZapButton = ({
     label: `Swapped ${inputSymbol} for ${outputSymbol}`,
     successMessage: {
       title: `Swapped`,
-      subtitle: `${inputAmount} ${inputSymbol} for ${outputAmount} ${outputSymbol}`,
+      subtitle: `${formatCurrency(Number(inputAmount))} ${inputSymbol} for ${formatCurrency(Number(outputAmount))} ${outputSymbol}`,
       type: 'success',
       icon: (
-        <TokenLogo
-          symbol={inputSymbol}
-          address={tokenIn}
+        <FusionTokenLogo
+          left={{ symbol: inputSymbol, chainId, address: tokenIn }}
+          right={{ symbol: outputSymbol, chainId, address: tokenOut }}
         />
       ),
     },
