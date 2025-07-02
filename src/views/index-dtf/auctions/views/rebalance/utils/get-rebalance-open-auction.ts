@@ -1,5 +1,6 @@
 import { TokenPriceWithSnapshot } from '@/hooks/use-asset-prices-with-snapshot'
 import { Token } from '@/types'
+import { calculatePriceFromRange } from '@/utils'
 import {
   getOpenAuction,
   getTargetBasket,
@@ -36,13 +37,24 @@ function getRebalanceOpenAuction(
 
   rebalance.tokens.forEach((token, index) => {
     const lowercasedAddress = token.toLowerCase()
+    const tokenDecimals = tokenMap[lowercasedAddress].decimals
 
-    decimals.push(BigInt(tokenMap[lowercasedAddress].decimals))
+    decimals.push(BigInt(tokenDecimals))
     currentPrices.push(prices[lowercasedAddress].currentPrice)
-    snapshotPrices.push(prices[lowercasedAddress].snapshotPrice)
+
+    // Calculate snapshot price from initialPrices
+    const priceRange = rebalance.initialPrices[index]
+    const avgPriceAsWhole = calculatePriceFromRange(priceRange, tokenDecimals)
+    
+    snapshotPrices.push(avgPriceAsWhole)
     priceError.push(priceVolatility)
     initialFolioShares.push(initialFolio[lowercasedAddress] || 0n)
     currentFolioShares.push(currentFolio[lowercasedAddress] || 0n)
+  })
+
+  console.log('rebalance params', {
+    rebalance: rebalance.weights,
+    prices: isTrackingDTF ? currentPrices : snapshotPrices,
   })
 
   const targetBasket = getTargetBasket(

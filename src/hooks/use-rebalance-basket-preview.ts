@@ -7,6 +7,7 @@ import {
   indexDTFRebalanceControlAtom,
 } from '@/state/dtf/atoms'
 import { DecodedCalldata, Token } from '@/types'
+import { calculatePriceFromRange } from '@/utils'
 import { RESERVE_API } from '@/utils/constants'
 import { getTargetBasket } from '@reserve-protocol/dtf-rebalance-lib'
 import { useQuery } from '@tanstack/react-query'
@@ -198,11 +199,15 @@ const useRebalanceBasketPreview = (
     // keep track of the token order for the target basket
     const tokenList = Object.keys(tokens)
     // if weight control is true (tracking dtf), use current price, otherwise use snapshot price
-    const priceList = tokenList.map((token) =>
-      rebalanceControl.weightControl
-        ? prices[token].currentPrice
-        : prices[token].snapshotPrice
-    )
+    const priceList = tokenList.map((token, index) => {
+      if (rebalanceControl.weightControl) {
+        return prices[token].currentPrice
+      } else {
+        // Calculate from rebalance initial prices
+        const priceRange = rebalance.data.prices[index]
+        return calculatePriceFromRange(priceRange, tokens[token].decimals)
+      }
+    })
     const decimals = tokenList.map((token) => BigInt(tokens[token].decimals))
 
     // sum up to D18{1}
