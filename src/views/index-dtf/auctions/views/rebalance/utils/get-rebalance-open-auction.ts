@@ -11,6 +11,7 @@ import { PRICE_VOLATILITY } from '../atoms'
 function getRebalanceOpenAuction(
   tokens: Token[],
   rebalance: Rebalance,
+  initialPrices: Record<string, { low: bigint; high: bigint }>,
   supply: bigint,
   currentFolio: Record<string, bigint>,
   initialFolio: Record<string, bigint>,
@@ -35,7 +36,7 @@ function getRebalanceOpenAuction(
   const initialFolioShares: bigint[] = []
   const currentFolioShares: bigint[] = []
 
-  rebalance.tokens.forEach((token, index) => {
+  rebalance.tokens.forEach((token) => {
     const lowercasedAddress = token.toLowerCase()
     const tokenDecimals = tokenMap[lowercasedAddress].decimals
 
@@ -43,9 +44,9 @@ function getRebalanceOpenAuction(
     currentPrices.push(prices[lowercasedAddress].currentPrice)
 
     // Calculate snapshot price from initialPrices
-    const priceRange = rebalance.initialPrices[index]
+    const priceRange = initialPrices[lowercasedAddress]
     const avgPriceAsWhole = calculatePriceFromRange(priceRange, tokenDecimals)
-    
+
     snapshotPrices.push(avgPriceAsWhole)
     priceError.push(priceVolatility)
     initialFolioShares.push(initialFolio[lowercasedAddress] || 0n)

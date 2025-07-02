@@ -39,9 +39,21 @@ const RebalanceMetricsUpdater = () => {
           isTrackingDTF,
         } = params
 
+        const initialPrices = currentRebalance.rebalance.tokens.reduce(
+          (acc, curr, index) => {
+            acc[curr.address.toLowerCase()] = {
+              low: BigInt(currentRebalance.rebalance.priceLowLimit[index]),
+              high: BigInt(currentRebalance.rebalance.priceHighLimit[index]),
+            }
+            return acc
+          },
+          {} as Record<string, { low: bigint; high: bigint }>
+        )
+
         const [, rebalanceMetrics] = getRebalanceOpenAuction(
           currentRebalance.rebalance.tokens,
           rebalance,
+          initialPrices,
           supply,
           currentFolio,
           initialFolio,

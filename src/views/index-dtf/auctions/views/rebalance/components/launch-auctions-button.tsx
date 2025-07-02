@@ -58,9 +58,21 @@ const LaunchAuctionsButton = () => {
     try {
       setIsLaunching(true)
       setError(null)
+      const initialPrices = rebalance.rebalance.tokens.reduce(
+        (acc, curr, index) => {
+          acc[curr.address.toLowerCase()] = {
+            low: BigInt(rebalance.rebalance.priceLowLimit[index]),
+            high: BigInt(rebalance.rebalance.priceHighLimit[index]),
+          }
+          return acc
+        },
+        {} as Record<string, { low: bigint; high: bigint }>
+      )
+
       const [openAuctionArgs] = getRebalanceOpenAuction(
         rebalance.rebalance.tokens,
         rebalanceParams.rebalance,
+        initialPrices,
         rebalanceParams.supply,
         rebalanceParams.currentFolio,
         rebalanceParams.initialFolio,
