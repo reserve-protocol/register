@@ -236,8 +236,10 @@ const Staking = ({ children }: { children?: ReactNode }) => {
 
   const { trackClick } = useTrackIndexDTFClick('overview', subpage)
 
-  const { data: priceResponse } = useAssetPrice(stToken?.underlying.address)
-
+  const { data: priceResponse } = useAssetPrice(
+    stToken?.underlying.address,
+    stToken?.chainId
+  )
   const { data: balance } = useERC20Balance(stToken?.underlying.address)
 
   const { data: unlockBalanceRaw } = useWatchReadContract({
