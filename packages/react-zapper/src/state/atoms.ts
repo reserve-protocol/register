@@ -22,9 +22,17 @@ export const balancesAtom = atom<Record<string, TokenBalance>>({})
  */
 export const indexDTFAtom = atom<{
   id: Address
-  token: Token
   chainId: number
-  mintingFee?: number
+  mintingFee: number
+  tvlFee: number
+  annualizedTvlFee: number
+  token: {
+    id: Address
+    name: string
+    symbol: string
+    decimals: number
+    totalSupply: string
+  }
 } | null>(null)
 
 /**
@@ -37,6 +45,25 @@ export const indexDTFBrandAtom = atom<{
 } | null>(null)
 
 /**
- * Index DTF price atom - current price of the DTF token
+ * Index DTF basket atoms - basket information
  */
-export const indexDTFPriceAtom = atom<number | null>(null)
+export const indexDTFBasketAtom = atom<Token[] | undefined>(undefined)
+export const indexDTFBasketPricesAtom = atom<Record<string, number>>({})
+export const indexDTFBasketAmountsAtom = atom<Record<string, number>>({})
+export const indexDTFBasketSharesAtom = atom<Record<string, string>>({})
+
+/**
+ * Index DTF price atom - derived from basket prices
+ */
+export const indexDTFPriceAtom = atom((get) => {
+  const dtf = get(indexDTFAtom)
+  const basketPrices = get(indexDTFBasketPricesAtom)
+
+  if (!dtf || !basketPrices) return undefined
+
+  return basketPrices[dtf.token.id.toLowerCase()]
+})
+
+export const indexDTFIconsAtom = atom<Record<number, Record<string, string>>>(
+  {}
+)

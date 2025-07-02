@@ -1,38 +1,24 @@
-import { Zapper, ZapperConfig } from '@reserve-protocol/react-zapper'
-import { indexDTFAtom, indexDTFBrandAtom } from '@/state/dtf/atoms'
 import { chainIdAtom } from '@/state/atoms'
+import { indexDTFAtom } from '@/state/dtf/atoms'
 import { getFolioRoute } from '@/utils'
 import { ROUTES } from '@/utils/constants'
+import { Zapper, useZapperModal } from '@reserve-protocol/react-zapper'
 import { useAtomValue } from 'jotai'
 import { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
-import { wagmiConfig } from '@/state/chain'
-import { Config } from 'wagmi'
 
 const ZapMint = ({ children }: { children: ReactNode }) => {
   const indexDTF = useAtomValue(indexDTFAtom)
-  const brand = useAtomValue(indexDTFBrandAtom)
   const chainId = useAtomValue(chainIdAtom)
+  const { open } = useZapperModal()
 
   if (!indexDTF) return null
 
-  const zapperConfig: ZapperConfig = {
-    wagmiConfig: wagmiConfig as Config,
-    chainId,
-    dtf: {
-      address: indexDTF.id as `0x${string}`,
-      symbol: indexDTF.token.symbol,
-      name: indexDTF.token.name,
-      decimals: indexDTF.token.decimals,
-      logoUri: brand?.dtf?.icon,
-    },
-  }
-
   return (
     <div className="relative">
-      <Zapper config={zapperConfig} mode="modal">
-        {children}
-      </Zapper>
+      <Zapper chain={chainId} dtfAddress={indexDTF.id} />
+
+      <div onClick={open}>{children}</div>
 
       {/* Manual fallback link - shown within the modal */}
       <div className="sm:hidden p-3 rounded-3xl mt-2 text-center text-sm">

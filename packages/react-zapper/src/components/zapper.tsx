@@ -1,14 +1,20 @@
-import React, { ReactNode, useEffect } from 'react'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { ArrowLeft, Settings, X } from 'lucide-react'
-import { Button } from './ui/button'
-import { Dialog, DialogContent, DialogTitle, DialogTrigger } from './ui/dialog'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs'
-import { Toaster } from './ui/sonner'
+import React, { useEffect } from 'react'
+import { chainIdAtom, indexDTFAtom } from '../state/atoms'
 import { ZapperProps } from '../types'
 import { setCustomApiUrl } from '../types/api'
 import { cn } from '../utils/cn'
-import { chainIdAtom, indexDTFAtom } from '../state/atoms'
+import {
+  trackQuoteRefresh,
+  trackSettings,
+  trackTabSwitch,
+} from '../utils/tracking'
+import { Button } from './ui/button'
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from './ui/dialog'
+import { Toaster } from './ui/sonner'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs'
+import Updaters from './updaters'
 import {
   currentZapMintTabAtom,
   defaultSelectedTokenAtom,
@@ -21,16 +27,11 @@ import {
   zapRefetchAtom,
 } from './zap-mint/atom'
 import Buy from './zap-mint/buy'
-import Sell from './zap-mint/sell'
 import LowLiquidityWarning from './zap-mint/low-liquidity-warning'
-import ZapHealthcheck from './zap-mint/zap-healthcheck'
 import RefreshQuote from './zap-mint/refresh-quote'
+import Sell from './zap-mint/sell'
+import ZapHealthcheck from './zap-mint/zap-healthcheck'
 import ZapSettings from './zap-mint/zap-settings'
-import {
-  trackTabSwitch,
-  trackSettings,
-  trackQuoteRefresh,
-} from '../utils/tracking'
 
 interface ZapperContentProps {
   mode: 'modal' | 'inline'
@@ -159,7 +160,7 @@ const ZapperContent: React.FC<ZapperContentProps> = ({
   // Modal mode content
   return (
     <>
-      <DialogTitle className="flex justify-between gap-2 p-2 sm:p-0">
+      <DialogTitle className="flex justify-between gap-2 sm:p-0">
         {showSettings ? (
           <Button
             variant="outline"
@@ -209,27 +210,26 @@ const ZapperContent: React.FC<ZapperContentProps> = ({
   )
 }
 
+// Hook to open the zapper modal
+export const useZapperModal = () => {
+  const setOpen = useSetAtom(openZapMintModalAtom)
+
+  return {
+    open: () => setOpen(true),
+    close: () => setOpen(false),
+  }
+}
+
 export const Zapper: React.FC<ZapperProps> = ({
-  config,
   mode = 'modal',
-  theme,
-  isOpen,
-  onOpenChange,
-  className,
-  children,
+  chain,
+  dtfAddress,
+  apiUrl,
 }) => {
   const [open, setOpen] = useAtom(openZapMintModalAtom)
 
-  // Sync internal modal state with external prop
-  useEffect(() => {
-    if (isOpen !== undefined) {
-      setOpen(isOpen)
-    }
-  }, [isOpen, setOpen])
-
   const handleOpenChange = (newOpen: boolean) => {
     setOpen(newOpen)
-    onOpenChange?.(newOpen)
   }
 
   const handleClose = () => {
@@ -238,45 +238,21 @@ export const Zapper: React.FC<ZapperProps> = ({
 
   // Set custom API URL if provided
   useEffect(() => {
-    if (config.apiUrl) {
-      setCustomApiUrl(config.apiUrl)
+    if (apiUrl) {
+      setCustomApiUrl(apiUrl)
     }
-  }, [config.apiUrl])
+  }, [apiUrl])
 
-  // Apply custom theme via CSS variables
-  useEffect(() => {
-    if (theme) {
-      const root = document.documentElement
-      Object.entries(theme).forEach(([key, value]) => {
-        if (value) {
-          root.style.setProperty(`--zapper-${key}`, value)
-        }
-      })
-    }
-  }, [theme])
-
-  if (mode === 'inline') {
-    return (
-      <>
-        <ZapperContent mode="inline" className={className} />
-        <Toaster />
-      </>
-    )
-  }
-
-  // Modal mode
+  // Modal mode only - as per original implementation
   return (
     <>
+      <Updaters dtfAddress={dtfAddress} chainId={chain} />
       <Dialog open={open} onOpenChange={handleOpenChange}>
-        {children && <DialogTrigger asChild>{children}</DialogTrigger>}
         <DialogContent
           showClose={false}
-          className={cn(
-            'p-2 rounded-t-2xl sm:rounded-3xl border-none',
-            className
-          )}
+          className="p-2 rounded-t-2xl sm:rounded-3xl border-none"
         >
-          <ZapperContent mode="modal" onClose={handleClose} />
+          <ZapperContent mode={mode} onClose={handleClose} />
         </DialogContent>
       </Dialog>
       <Toaster />

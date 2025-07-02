@@ -17,36 +17,11 @@ export interface TokenBalance {
   balanceUSD?: string
 }
 
-export interface ZapperConfig {
-  wagmiConfig: Config
-  chainId: number
-  dtf: {
-    address: Address
-    symbol: string
-    name: string
-    decimals: number
-    logoUri?: string
-  }
-  apiUrl?: string
-}
-
-export interface ZapperTheme {
-  primaryColor?: string
-  secondaryColor?: string
-  backgroundColor?: string
-  textColor?: string
-  borderColor?: string
-  borderRadius?: string
-}
-
 export interface ZapperProps {
-  config: ZapperConfig
   mode?: 'modal' | 'inline'
-  theme?: ZapperTheme
-  isOpen?: boolean
-  onOpenChange?: (open: boolean) => void
-  className?: string
-  children?: ReactNode
+  chain: number
+  dtfAddress: Address
+  apiUrl?: string
 }
 
 export interface UseZapperModalReturn {

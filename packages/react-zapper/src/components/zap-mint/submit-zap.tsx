@@ -140,8 +140,6 @@ const SubmitZapButton = ({
         <TokenLogo
           symbol={inputSymbol}
           address={tokenIn}
-          chain={chainId}
-          size="lg"
         />
       ),
     },
@@ -182,7 +180,7 @@ const SubmitZapButton = ({
     (txError ? Error(txError) : undefined)
 
   useEffect(() => {
-    if (receipt?.status === 'success' && data) {
+    if (receipt && data) {
       // Track transaction success
       trackTransactionSuccess(
         currentTab,
@@ -200,7 +198,7 @@ const SubmitZapButton = ({
       )
       onSuccess?.()
     }
-  }, [receipt?.status, data])
+  }, [receipt, data])
 
   useEffect(() => {
     if (
