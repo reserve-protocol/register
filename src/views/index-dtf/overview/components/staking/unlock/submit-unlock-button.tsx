@@ -1,13 +1,12 @@
 import dtfIndexStakingVault from '@/abis/dtf-index-staking-vault'
 import TransactionButton from '@/components/old/button/TransactionButton'
-import useContractWrite from '@/hooks/useContractWrite'
 import { walletAtom } from '@/state/atoms'
 import { portfolioSidebarOpenAtom } from '@/views/portfolio/atoms'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
 import { useEffect, useState } from 'react'
 import { parseUnits } from 'viem'
-import { useWaitForTransactionReceipt } from 'wagmi'
+import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
 import {
   stakingInputAtom,
   stakingSidebarOpenAtom,
@@ -32,20 +31,24 @@ const SubmitUnlockButton = () => {
   const readyToSubmit =
     !!account && !!balance && amountToUnlock > 0n && amountToUnlock <= balance
 
-  const { isReady, gas, hash, validationError, error, isLoading, write } =
-    useContractWrite(
-      account
-        ? {
-            abi: dtfIndexStakingVault,
-            functionName: 'withdraw',
-            address: stToken?.id,
-            args: [amountToUnlock, account, account],
-            query: { enabled: readyToSubmit },
-            chainId,
-            bypassWalletCheck: true,
-          }
-        : undefined
-    )
+  const {
+    writeContract,
+    data: hash,
+    isPending: isLoading,
+    error,
+  } = useWriteContract()
+
+  const write = () => {
+    if (!account || !readyToSubmit || !stToken?.id) return
+
+    writeContract({
+      abi: dtfIndexStakingVault,
+      functionName: 'withdraw',
+      address: stToken?.id,
+      args: [amountToUnlock, account, account],
+      chainId,
+    })
+  }
 
   const { data: receipt, error: txError } = useWaitForTransactionReceipt({
     hash,
@@ -70,8 +73,7 @@ const SubmitUnlockButton = () => {
     <div>
       <TransactionButton
         chain={chainId}
-        disabled={receipt?.status === 'success' || !readyToSubmit || !isReady}
-        gas={gas}
+        disabled={receipt?.status === 'success' || !readyToSubmit}
         loading={
           isProcessing ||
           (!receipt && (isLoading || !!hash || (hash && !receipt)))
@@ -90,7 +92,7 @@ const SubmitUnlockButton = () => {
             : `Begin ${unlockDelay ? `${unlockDelay}-day` : ''} unlock delay`
         }
         fullWidth
-        error={validationError || error || txError}
+        error={error || txError}
       />
     </div>
   )

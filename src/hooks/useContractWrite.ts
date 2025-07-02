@@ -16,12 +16,9 @@ const useContractWrite = <
   TAbi extends Abi | readonly unknown[],
   TFunctionName extends ContractFunctionName<TAbi, 'nonpayable' | 'payable'>,
 >(
-  call: UseSimulateContractParameters<TAbi, TFunctionName> & {
-    bypassWalletCheck?: boolean
-  } = {} as any
+  call: UseSimulateContractParameters<TAbi, TFunctionName> = {} as any
 ) => {
-  const isWalletInvalid =
-    useAtomValue(isWalletInvalidAtom) && !call.bypassWalletCheck
+  const isWalletInvalid = useAtomValue(isWalletInvalidAtom)
   const { data, error, isLoading, isSuccess } = useSimulateContract(
     !isWalletInvalid ? (call as UseSimulateContractParameters) : undefined
   )
