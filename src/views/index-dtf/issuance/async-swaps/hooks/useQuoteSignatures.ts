@@ -1,8 +1,11 @@
 import CowswapSettlement from '@/abis/CowSwapSettlement'
+import { notifyError } from '@/hooks/useNotification'
 import { chainIdAtom, walletAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
+import { MetadataApi } from '@cowprotocol/app-data'
 import { OrderBalance } from '@cowprotocol/contracts'
 import {
+  AppDataHash,
   OrderCreation,
   OrderQuoteResponse,
   OrderSigningUtils,
@@ -43,7 +46,6 @@ import {
   sendCallsWithRetry,
   signTypedDataWithRetry,
 } from './utils'
-import { notifyError } from '@/hooks/useNotification'
 
 export const COWSWAP_SETTLEMENT =
   '0x9008D19f58AAbD9eD0D60971565AA8510560ab41' as const
@@ -73,11 +75,13 @@ const getCowswapPreSignTx = async ({
   orderQuote,
   operation,
   address,
+  appDataHex,
 }: {
   chainId: number
   orderQuote: OrderQuoteResponse
   operation: string
   address: Address
+  appDataHex: AppDataHash
 }): Promise<CowswapPreSignTx | undefined> => {
   if (orderQuote.quote.sellAmount === '0') {
     return undefined
@@ -106,6 +110,7 @@ const getCowswapPreSignTx = async ({
       ...modifiedQuote,
       sellTokenBalance: OrderBalance.ERC20,
       buyTokenBalance: OrderBalance.ERC20,
+      appData: appDataHex,
     },
     {
       owner: address,
@@ -170,6 +175,15 @@ export function useQuoteSignatures(refresh = false) {
         }
       }
 
+      const metadataApi = new MetadataApi()
+
+      const appDataDoc = await metadataApi.generateAppDataDoc({
+        appCode: 'Reserve Protocol',
+        environment: 'production',
+      })
+      const { appDataContent, appDataHex } =
+        await metadataApi.getAppDataInfo(appDataDoc)
+
       const successfulQuotes = Object.values(quotes).filter(
         (quote) => quote.success
       )
@@ -193,6 +207,7 @@ export function useQuoteSignatures(refresh = false) {
                 orderQuote: quote.data,
                 operation,
                 address,
+                appDataHex,
               })
             }
 
@@ -364,6 +379,7 @@ export function useQuoteSignatures(refresh = false) {
               orderQuote: fallbackQuote,
               operation,
               address,
+              appDataHex,
             })
           })
         )
@@ -425,6 +441,7 @@ export function useQuoteSignatures(refresh = false) {
                 from: address,
                 signature: address,
                 signingScheme: SigningScheme.PRESIGN,
+                appData: appDataContent,
               })
               return orderId
             } catch (error) {
