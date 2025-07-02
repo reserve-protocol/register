@@ -1,12 +1,15 @@
+import { ChainId } from '@/utils/chains'
 import { useQuery } from '@tanstack/react-query'
 import request, { gql } from 'graphql-request'
 import { Address, formatEther } from 'viem'
 
 const INDEX_DTF_SUBGRAPH_URL = {
-  1: 'https://subgraph.satsuma-prod.com/327d6f1d3de6/reserve/dtf-index-mainnet/api',
-  8453: 'https://subgraph.satsuma-prod.com/327d6f1d3de6/reserve/dtf-index-base/api',
-  42161:
-    'https://subgraph.satsuma-prod.com/327d6f1d3de6/reserve/dtf-index-base/api', // TODO: maybe never
+  [ChainId.Mainnet]:
+    'https://subgraph.satsuma-prod.com/327d6f1d3de6/reserve/dtf-index-mainnet/api',
+  [ChainId.Base]:
+    'https://subgraph.satsuma-prod.com/327d6f1d3de6/reserve/dtf-index-base/api',
+  [ChainId.Arbitrum]:
+    'https://subgraph.satsuma-prod.com/327d6f1d3de6/reserve/dtf-index-arbitrum/api',
 }
 
 type DTFQueryResponse = {
@@ -14,7 +17,6 @@ type DTFQueryResponse = {
     id: Address
     mintingFee: string // bigint D18
     tvlFee: string // bigint D18
-    annualizedTvlFee: string // bigint D18
     token: {
       id: Address
       name: string
@@ -31,7 +33,6 @@ const dtfQuery = gql`
       id
       mintingFee
       tvlFee
-      annualizedTvlFee
       token {
         id
         name
@@ -64,7 +65,6 @@ export const useIndexDTF = (address: string | undefined, chainId: number) => {
         chainId,
         mintingFee: +formatEther(BigInt(dtf.mintingFee)),
         tvlFee: +formatEther(BigInt(dtf.tvlFee)),
-        annualizedTvlFee: +formatEther(BigInt(dtf.annualizedTvlFee)),
       }
     },
     enabled: !!address,

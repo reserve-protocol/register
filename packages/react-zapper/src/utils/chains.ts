@@ -4,11 +4,8 @@ export type AvailableChain =
   | typeof base.id
   | typeof arbitrum.id
 
-export const ChainId = {
+export const ChainId: Record<string, number> = {
   Mainnet: mainnet.id,
   Base: base.id,
   Arbitrum: arbitrum.id,
 } as const
-
-// Supported chains set - kept for future chain validation
-// export const supportedChains = new Set(Object.values(ChainId))

@@ -8,13 +8,13 @@ export interface Token {
   name: string
   decimals: number
   logoURI?: string
-  chainId: number
+  price?: number
 }
 
 export interface TokenBalance {
-  token: Token
-  balance: string
-  balanceUSD?: string
+  value: bigint
+  balance: string // formatted balance
+  decimals: number
 }
 
 export interface ZapperProps {

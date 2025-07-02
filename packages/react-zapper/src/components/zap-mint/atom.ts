@@ -2,7 +2,7 @@ import { atom } from 'jotai'
 import { atomWithReset } from 'jotai/utils'
 import { balancesAtom, chainIdAtom } from '../../state/atoms'
 import { Token, TokenBalance } from '../../types'
-import { reducedZappableTokens } from '../../utils/zap-constants'
+import { reducedZappableTokens } from '@/utils/constants'
 
 export const openZapMintModalAtom = atom(false)
 export const currentZapMintTabAtom = atom<'buy' | 'sell'>('buy')

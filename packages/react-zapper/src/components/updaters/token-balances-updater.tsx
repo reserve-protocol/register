@@ -1,95 +1,74 @@
+import { useWatchReadContracts } from '@/hooks/use-watch-read-contracts'
+import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
-import { useSetAtom } from 'jotai'
-import { useAccount, useBalance, useReadContracts } from 'wagmi'
-import { Address, erc20Abi } from 'viem'
-import { balancesAtom } from '../../state/atoms'
+import { Address, erc20Abi, formatUnits } from 'viem'
+import { useBalance } from 'wagmi'
+import { balancesAtom, chainIdAtom, walletAtom } from '../../state/atoms'
+import { TokenBalance } from '../../types'
 import { reducedZappableTokens } from '../../utils/constants'
-import { Token, TokenBalance } from '../../types'
 
-interface TokenBalancesUpdaterProps {
-  chainId: number
-}
+const balancesCallAtom = atom((get) => {
+  const wallet = get(walletAtom)
+  const chainId = get(chainIdAtom)
 
-export const TokenBalancesUpdater: React.FC<TokenBalancesUpdaterProps> = ({
-  chainId,
-}) => {
-  const { address } = useAccount()
+  if (!wallet) {
+    return undefined
+  }
+
+  const tokens: [Address, number][] = reducedZappableTokens[chainId]
+    .slice(1)
+    .map((token) => [token.address, token.decimals])
+
+  return {
+    tokens: tokens ?? [],
+    calls: (tokens ?? []).map(([address]) => ({
+      address,
+      abi: erc20Abi,
+      functionName: 'balanceOf',
+      args: [wallet],
+      chainId,
+    })),
+  }
+})
+
+export const TokenBalancesUpdater = () => {
+  const { tokens, calls } = useAtomValue(balancesCallAtom) ?? {}
   const setBalances = useSetAtom(balancesAtom)
+  const wallet = useAtomValue(walletAtom)
 
-  // Get tokens for the current chain
-  const chainTokens = reducedZappableTokens[chainId as keyof typeof reducedZappableTokens] || []
-
-  // Get ETH balance
-  const { data: ethBalance } = useBalance({
-    address,
-    chainId,
+  const { data }: { data: bigint[] | undefined } = useWatchReadContracts({
+    contracts: calls,
+    allowFailure: false,
   })
-
-  // Get ERC20 token balances
-  const { data: tokenBalances } = useReadContracts({
-    contracts: chainTokens
-      .filter(token => token.address !== '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE')
-      .map(token => ({
-        address: token.address as Address,
-        abi: erc20Abi,
-        functionName: 'balanceOf',
-        args: [address!],
-        chainId,
-      })),
-    query: {
-      enabled: !!address,
-      refetchInterval: 30000, // Refetch every 30 seconds
-    },
+  const { data: balance } = useBalance({
+    address: wallet || undefined,
   })
 
   useEffect(() => {
-    if (!address) {
-      setBalances({})
-      return
-    }
-
-    const newBalances: Record<string, TokenBalance> = {}
-
-    // Add ETH balance
-    const ethToken = chainTokens.find(
-      token => token.address === '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'
-    )
-    if (ethToken && ethBalance) {
-      newBalances[ethToken.address.toLowerCase()] = {
-        token: {
-          address: ethToken.address as Address,
-          symbol: ethToken.symbol,
-          name: ethToken.name,
-          decimals: ethToken.decimals,
-          chainId,
-        },
-        balance: ethBalance.value.toString(),
-      }
-    }
-
-    // Add ERC20 token balances
-    if (tokenBalances) {
-      chainTokens
-        .filter(token => token.address !== '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE')
-        .forEach((token, index) => {
-          const balance = tokenBalances[index]
-          if (balance.status === 'success' && balance.result) {
-            newBalances[token.address.toLowerCase()] = {
-              token: {
-                address: token.address as Address,
-                symbol: token.symbol,
-                name: token.name,
-                decimals: token.decimals,
-                chainId,
-              },
-              balance: (balance.result as bigint).toString(),
-            }
+    if (data && tokens) {
+      const balances = data.reduce(
+        (prev, value, index) => {
+          const [address, decimals] = tokens[index]
+          prev[address] = {
+            balance: formatUnits(value, decimals),
+            value,
+            decimals,
           }
-        })
-    }
 
-    setBalances(newBalances)
-  }, [address, ethBalance, tokenBalances, chainId, chainTokens, setBalances])
+          return prev
+        },
+        {} as Record<string, TokenBalance>
+      )
+
+      balances['0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'] = {
+        balance: balance ? balance.formatted : '0',
+        value: balance ? balance.value : 0n,
+        decimals: 18,
+      }
+
+      setBalances(balances)
+    }
+  }, [data, balance])
 
   return null
 }

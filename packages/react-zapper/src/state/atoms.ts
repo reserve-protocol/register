@@ -1,11 +1,12 @@
 import { atom } from 'jotai'
 import { Address } from 'viem'
 import { Token, TokenBalance } from '../types'
+import { ChainId } from '@/utils/chains'
 
 /**
  * Chain ID atom - configurable chain ID for the zapper
  */
-export const chainIdAtom = atom<number>(1) // Default to mainnet
+export const chainIdAtom = atom<number>(ChainId.Mainnet)
 
 /**
  * Wallet/Account atom - current connected wallet address
@@ -25,7 +26,6 @@ export const indexDTFAtom = atom<{
   chainId: number
   mintingFee: number
   tvlFee: number
-  annualizedTvlFee: number
   token: {
     id: Address
     name: string

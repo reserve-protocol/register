@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { useSetAtom } from 'jotai'
+import { useAtomValue, useSetAtom } from 'jotai'
 import React, { useEffect } from 'react'
 import { useIndexBasket } from '../hooks/use-index-basket'
 import { useIndexDTF } from '../hooks/use-index-dtf'
@@ -12,8 +12,10 @@ import {
   indexDTFBasketSharesAtom,
   indexDTFBrandAtom,
   indexDTFIconsAtom,
+  walletAtom,
 } from '../state/atoms'
 import TokenBalancesUpdater from './updaters/token-balances-updater'
+import { useAccount } from 'wagmi'
 
 const RESERVE_API = 'https://api.reserve.org/'
 
@@ -30,8 +32,8 @@ interface UpdatersProps {
 
 const IndexDTFMetadataUpdater: React.FC<{
   dtfAddress: string
-  chainId: number
-}> = ({ dtfAddress, chainId }) => {
+}> = ({ dtfAddress }) => {
+  const chainId = useAtomValue(chainIdAtom)
   const setIndexDTF = useSetAtom(indexDTFAtom)
   const setIndexDTFBrand = useSetAtom(indexDTFBrandAtom)
   const { data } = useIndexDTF(dtfAddress, chainId)
@@ -72,8 +74,8 @@ const IndexDTFMetadataUpdater: React.FC<{
 
 const IndexDTFBasketUpdater: React.FC<{
   dtfAddress: string
-  chainId: number
-}> = ({ dtfAddress, chainId }) => {
+}> = ({ dtfAddress }) => {
+  const chainId = useAtomValue(chainIdAtom)
   const setBasket = useSetAtom(indexDTFBasketAtom)
   const setBasketPrices = useSetAtom(indexDTFBasketPricesAtom)
   const setBasketAmounts = useSetAtom(indexDTFBasketAmountsAtom)
@@ -115,6 +117,17 @@ const ChainIdUpdater: React.FC<{ chainId: number }> = ({ chainId }) => {
   return null
 }
 
+const WalletUpdater = () => {
+  const setWallet = useSetAtom(walletAtom)
+  const { address } = useAccount()
+
+  useEffect(() => {
+    setWallet(address)
+  }, [address, setWallet])
+
+  return null
+}
+
 const IndexDTFIconsUpdater = () => {
   const setIcons = useSetAtom(indexDTFIconsAtom)
 
@@ -138,11 +151,12 @@ const IndexDTFIconsUpdater = () => {
 const Updaters: React.FC<UpdatersProps> = ({ dtfAddress, chainId }) => {
   return (
     <>
+      <WalletUpdater />
       <ChainIdUpdater chainId={chainId} />
-      <IndexDTFMetadataUpdater dtfAddress={dtfAddress} chainId={chainId} />
-      <IndexDTFBasketUpdater dtfAddress={dtfAddress} chainId={chainId} />
+      <IndexDTFMetadataUpdater dtfAddress={dtfAddress} />
+      <IndexDTFBasketUpdater dtfAddress={dtfAddress} />
       <IndexDTFIconsUpdater />
-      <TokenBalancesUpdater chainId={chainId} />
+      <TokenBalancesUpdater />
     </>
   )
 }
