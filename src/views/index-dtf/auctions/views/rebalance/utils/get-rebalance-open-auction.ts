@@ -50,11 +50,6 @@ function getRebalanceOpenAuction(
     currentFolioShares.push(currentFolio[lowercasedAddress] || 0n)
   })
 
-  console.log('rebalance params', {
-    rebalance: rebalance.weights,
-    prices: isTrackingDTF ? currentPrices : snapshotPrices,
-  })
-
   const targetBasket = getTargetBasket(
     rebalance.weights,
     isTrackingDTF ? currentPrices : snapshotPrices,
