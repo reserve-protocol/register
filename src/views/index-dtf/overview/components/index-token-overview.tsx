@@ -13,14 +13,13 @@ import {
 } from '@/state/dtf/atoms'
 import { shortenAddress } from '@/utils'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
-import { useAtomValue, useSetAtom } from 'jotai'
+import { useZapperModal } from '@reserve-protocol/react-zapper'
+import { useAtomValue } from 'jotai'
 import { ArrowUpRight, ImagePlus } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useTrackIndexDTFClick } from '../../hooks/useTrackIndexDTFPage'
 import IndexRolesOverview from './index-roles-overview'
 import ZapMint from './zap-mint'
-import { currentZapMintTabAtom } from './zap-mint/atom'
-import { useZapperModal } from '@reserve-protocol/react-zapper'
 
 const TokenNameSkeleton = () => (
   <div className="flex flex-col gap-4">

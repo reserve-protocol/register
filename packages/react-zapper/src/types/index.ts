@@ -30,6 +30,7 @@ export interface UseZapperModalReturn {
   close: () => void
   toggle: () => void
   setTab: (tab: 'buy' | 'sell') => void
+  currentTab: 'buy' | 'sell'
 }
 
 export * from './api'

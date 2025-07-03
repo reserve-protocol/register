@@ -8,7 +8,7 @@ import { UseZapperModalReturn } from '../types'
 
 export function useZapperModal(): UseZapperModalReturn {
   const [isOpen, setOpen] = useAtom(openZapMintModalAtom)
-  const setZapperTab = useSetAtom(zapperCurrentTabAtom)
+  const [currentTab, setZapperTab] = useAtom(zapperCurrentTabAtom)
 
   const open = useCallback(() => setOpen(true), [])
   const close = useCallback(() => setOpen(false), [])
@@ -27,5 +27,6 @@ export function useZapperModal(): UseZapperModalReturn {
     close,
     toggle,
     setTab,
+    currentTab,
   }
 }

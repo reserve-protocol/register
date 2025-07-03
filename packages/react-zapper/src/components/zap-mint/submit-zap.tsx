@@ -1,32 +1,31 @@
-import TransactionButton, {
-  TransactionButtonContainer,
-} from '../transaction-button'
-import TokenLogo from '../token-logo'
-import { Button } from '../ui/button'
-import useContractWrite from '../../hooks/useContractWrite'
-import useWatchTransaction from '../../hooks/useWatchTransaction'
-import { ZapResult } from '../../types/api'
+import { formatCurrency } from '@/utils/format'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { Address, erc20Abi } from 'viem'
 import { useSendTransaction, useWaitForTransactionReceipt } from 'wagmi'
-import { chainIdAtom, indexDTFAtom } from '../../state/atoms'
+import useContractWrite from '../../hooks/useContractWrite'
+import useWatchTransaction from '../../hooks/useWatchTransaction'
+import { indexDTFAtom } from '../../state/atoms'
+import { ZapResult } from '../../types/api'
 import {
-  zapperCurrentTabAtom,
+  trackClick,
+  trackTransactionError,
+  trackTransactionSubmit,
+  trackTransactionSuccess,
+} from '../../utils/tracking'
+import FusionTokenLogo from '../fusion-token-logo'
+import TransactionButton, {
+  TransactionButtonContainer,
+} from '../transaction-button'
+import { Button } from '../ui/button'
+import {
   zapHighPriceImpactAtom,
   zapOngoingTxAtom,
+  zapperCurrentTabAtom,
   zapPriceImpactWarningCheckboxAtom,
 } from './atom'
 import ZapErrorMsg, { ZapTxErrorMsg } from './zap-error-msg'
 import ZapPriceImpactWarningCheckbox from './zap-warning-checkbox'
-import {
-  trackTransactionSubmit,
-  trackTransactionSuccess,
-  trackTransactionError,
-  trackClick,
-} from '../../utils/tracking'
-import { formatCurrency } from '@/utils/format'
-import FusionTokenLogo from '../fusion-token-logo'
 
 const LoadingButton = ({
   fetchingZapper,

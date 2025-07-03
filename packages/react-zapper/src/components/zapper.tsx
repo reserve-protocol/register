@@ -4,7 +4,6 @@ import React, { useEffect } from 'react'
 import { chainIdAtom, indexDTFAtom } from '../state/atoms'
 import { ZapperProps } from '../types'
 import { setCustomApiUrl } from '../types/api'
-import { cn } from '../utils/cn'
 import {
   trackQuoteRefresh,
   trackSettings,
@@ -39,11 +38,8 @@ interface ZapperContentProps {
   className?: string
 }
 
-const ZapperContent: React.FC<ZapperContentProps> = ({
-  mode,
-  onClose,
-  className,
-}) => {
+const ZapperContent: React.FC<ZapperContentProps> = ({ mode, className }) => {
+  const [open, setOpen] = useAtom(openZapMintModalAtom)
   const [currentTab, setCurrentTab] = useAtom(zapperCurrentTabAtom)
   const [showSettings, setShowSettings] = useAtom(showZapSettingsAtom)
   const defaultToken = useAtomValue(defaultSelectedTokenAtom)
@@ -55,6 +51,14 @@ const ZapperContent: React.FC<ZapperContentProps> = ({
   const zapOngoingTx = useAtomValue(zapOngoingTxAtom)
   const input = useAtomValue(zapMintInputAtom)
   const invalidInput = isNaN(Number(input)) || Number(input) === 0
+
+  const handleOpenChange = (newOpen: boolean) => {
+    setOpen(newOpen)
+  }
+
+  const handleClose = () => {
+    handleOpenChange(false)
+  }
 
   useEffect(() => {
     setShowSettings(false)
@@ -93,117 +97,119 @@ const ZapperContent: React.FC<ZapperContentProps> = ({
 
   if (mode === 'inline') {
     return (
-      <div className={cn('w-full max-w-md mx-auto', className)}>
-        {showSettings ? (
-          <div className="space-y-4">
-            <div className="flex items-center gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setShowSettings(false)}
-              >
-                <ArrowLeft size={16} />
-                Back
-              </Button>
-              <h3 className="font-semibold">Settings</h3>
-            </div>
-            <ZapSettings />
-          </div>
-        ) : (
-          <div className="space-y-4">
-            <div className="flex justify-between items-center">
-              <h2 className="text-xl font-semibold">Zap</h2>
-              <div className="flex gap-2">
+      <Tabs
+        value={currentTab}
+        className="flex flex-col flex-grow"
+        onValueChange={handleTabChange}
+      >
+        <div className="flex justify-between gap-2">
+          {showSettings ? (
+            <Button
+              variant="outline"
+              className="h-[34px] px-2 rounded-xl"
+              onClick={() => setShowSettings(false)}
+            >
+              <ArrowLeft size={16} />
+            </Button>
+          ) : (
+            <>
+              <TabsList className="h-9 px-0.5">
+                <TabsTrigger value="buy">Buy</TabsTrigger>
+                <TabsTrigger value="sell">Sell</TabsTrigger>
+              </TabsList>
+              <div className="flex items-center gap-1">
                 <Button
                   variant="outline"
-                  size="sm"
-                  onClick={handleSettingsClick}
+                  className="h-[34px] px-2 rounded-xl"
+                  onClick={() => setShowSettings(true)}
                 >
                   <Settings size={16} />
                 </Button>
                 <RefreshQuote
                   small
-                  onClick={handleRefreshClick}
+                  onClick={zapRefetch.fn}
                   loading={zapFetching}
                   disabled={zapFetching || zapOngoingTx || invalidInput}
                 />
               </div>
-            </div>
-
-            <Tabs value={currentTab} onValueChange={handleTabChange}>
-              <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="buy">Buy</TabsTrigger>
-                <TabsTrigger value="sell">Sell</TabsTrigger>
-              </TabsList>
-
-              <div className="mt-4 space-y-4">
-                <LowLiquidityWarning />
-                <ZapHealthcheck />
-
-                <TabsContent value="buy" className="mt-0">
-                  <Buy />
-                </TabsContent>
-                <TabsContent value="sell" className="mt-0">
-                  <Sell />
-                </TabsContent>
-              </div>
-            </Tabs>
+            </>
+          )}
+        </div>
+        {showSettings && (
+          <div className="mt-2">
+            <ZapSettings />
           </div>
         )}
-      </div>
+
+        <div className={showSettings ? 'hidden' : 'opacity-100'}>
+          <div className="flex flex-col">
+            <LowLiquidityWarning className="mt-2" />
+            <ZapHealthcheck className="mt-2" />
+            <TabsContent value="buy">
+              <Buy />
+            </TabsContent>
+            <TabsContent value="sell">
+              <Sell />
+            </TabsContent>
+          </div>
+        </div>
+      </Tabs>
     )
   }
 
   // Modal mode content
   return (
-    <>
-      <DialogTitle className="flex justify-between gap-2 sm:p-0">
-        {showSettings ? (
-          <Button
-            variant="outline"
-            className="h-[34px] px-2 rounded-xl"
-            onClick={() => setShowSettings(false)}
-          >
-            <ArrowLeft size={16} />
-          </Button>
-        ) : (
-          <div className="flex justify-between gap-1">
+    <Dialog open={open} onOpenChange={handleOpenChange}>
+      <DialogContent
+        showClose={false}
+        className="p-2 rounded-t-2xl sm:rounded-3xl border-none"
+      >
+        <DialogTitle className="flex justify-between gap-2 sm:p-0">
+          {showSettings ? (
             <Button
               variant="outline"
               className="h-[34px] px-2 rounded-xl"
-              onClick={handleSettingsClick}
+              onClick={() => setShowSettings(false)}
             >
-              <Settings size={16} />
+              <ArrowLeft size={16} />
             </Button>
-            <RefreshQuote
-              small
-              onClick={handleRefreshClick}
-              loading={zapFetching}
-              disabled={zapFetching || zapOngoingTx || invalidInput}
-            />
-          </div>
-        )}
-        {onClose && (
+          ) : (
+            <div className="flex justify-between gap-1">
+              <Button
+                variant="outline"
+                className="h-[34px] px-2 rounded-xl"
+                onClick={handleSettingsClick}
+              >
+                <Settings size={16} />
+              </Button>
+              <RefreshQuote
+                small
+                onClick={handleRefreshClick}
+                loading={zapFetching}
+                disabled={zapFetching || zapOngoingTx || invalidInput}
+              />
+            </div>
+          )}
           <Button
             variant="outline"
             className="h-[34px] px-2 rounded-xl"
-            onClick={onClose}
+            onClick={handleClose}
           >
             <X size={16} />
           </Button>
-        )}
-      </DialogTitle>
+        </DialogTitle>
 
-      {showSettings && <ZapSettings />}
+        {showSettings && <ZapSettings />}
 
-      <div className={showSettings ? 'hidden' : 'opacity-100'}>
-        <div className="flex flex-col gap-2">
-          <LowLiquidityWarning />
-          <ZapHealthcheck />
-          {currentTab === 'buy' ? <Buy /> : <Sell />}
+        <div className={showSettings ? 'hidden' : 'opacity-100'}>
+          <div className="flex flex-col gap-2">
+            <LowLiquidityWarning />
+            <ZapHealthcheck />
+            {currentTab === 'buy' ? <Buy /> : <Sell />}
+          </div>
         </div>
-      </div>
-    </>
+      </DialogContent>
+    </Dialog>
   )
 }
 
@@ -213,35 +219,16 @@ export const Zapper: React.FC<ZapperProps> = ({
   dtfAddress,
   apiUrl,
 }) => {
-  const [open, setOpen] = useAtom(openZapMintModalAtom)
-
-  const handleOpenChange = (newOpen: boolean) => {
-    setOpen(newOpen)
-  }
-
-  const handleClose = () => {
-    handleOpenChange(false)
-  }
-
-  // Set custom API URL if provided
   useEffect(() => {
     if (apiUrl) {
       setCustomApiUrl(apiUrl)
     }
   }, [apiUrl])
 
-  // Modal mode only - as per original implementation
   return (
     <>
       <Updaters dtfAddress={dtfAddress} chainId={chain} />
-      <Dialog open={open} onOpenChange={handleOpenChange}>
-        <DialogContent
-          showClose={false}
-          className="p-2 rounded-t-2xl sm:rounded-3xl border-none"
-        >
-          <ZapperContent mode={mode} onClose={handleClose} />
-        </DialogContent>
-      </Dialog>
+      <ZapperContent mode={mode} />
       <Toaster />
     </>
   )
