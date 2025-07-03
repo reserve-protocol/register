@@ -11,7 +11,6 @@ import {
 } from '../utils/tracking'
 import { Button } from './ui/button'
 import { Dialog, DialogContent, DialogTitle } from './ui/dialog'
-import { Toaster } from './ui/sonner'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs'
 import Updaters from './updaters'
 import {
@@ -31,6 +30,7 @@ import RefreshQuote from './zap-mint/refresh-quote'
 import Sell from './zap-mint/sell'
 import ZapHealthcheck from './zap-mint/zap-healthcheck'
 import ZapSettings from './zap-mint/zap-settings'
+import useNotification from '../hooks/use-notification'
 
 interface ZapperContentProps {
   mode: 'modal' | 'inline'
@@ -229,7 +229,6 @@ export const Zapper: React.FC<ZapperProps> = ({
     <>
       <Updaters dtfAddress={dtfAddress} chainId={chain} />
       <ZapperContent mode={mode} />
-      <Toaster />
     </>
   )
 }

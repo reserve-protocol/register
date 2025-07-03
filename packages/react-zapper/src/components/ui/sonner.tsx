@@ -1,6 +1,6 @@
-import useMediaQuery from '../../hooks/useMediaQuery'
 import { useTheme } from 'next-themes'
 import { Toaster as Sonner } from 'sonner'
+import useMediaQuery from '../../hooks/useMediaQuery'
 
 type ToasterProps = React.ComponentProps<typeof Sonner>
 
