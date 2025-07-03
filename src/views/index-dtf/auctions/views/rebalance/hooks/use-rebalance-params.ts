@@ -15,12 +15,15 @@ import { useReadContract, useReadContracts } from 'wagmi'
 import { currentRebalanceAtom } from '../../../atoms'
 import { isAuctionOngoingAtom } from '../atoms'
 import { chainIdAtom } from '@/state/atoms'
+import { Token } from '@/types'
+import { calculatePriceFromRange } from '@/utils'
 
 export type RebalanceParams = {
   supply: bigint
   rebalance: Rebalance
   currentFolio: Record<string, bigint>
   initialFolio: Record<string, bigint>
+  initialPrices: Record<string, number>
   prices: TokenPriceWithSnapshot
   isTrackingDTF: boolean
 }
@@ -118,6 +121,14 @@ const useRebalanceParams = () => {
       },
     },
   })
+  const { data: initialRebalance } = useReadContract({
+    abi: dtfIndexAbiV4,
+    address: dtf?.id,
+    functionName: 'getRebalance',
+    chainId,
+    args: [],
+    blockNumber: BigInt(rebalance?.rebalance.blockNumber ?? '0'),
+  })
 
   useEffect(() => {
     if (isAuctionOngoing) {
@@ -130,8 +141,37 @@ const useRebalanceParams = () => {
   }, [isAuctionOngoing, refetchDtfData])
 
   return useMemo(() => {
-    if (!dtfData || !initialFolio || !prices || !rebalanceControl)
+    if (
+      !dtfData ||
+      !initialFolio ||
+      !prices ||
+      !rebalanceControl ||
+      !initialRebalance ||
+      !rebalance
+    )
       return undefined
+
+    const tokenMap = rebalance.rebalance.tokens.reduce(
+      (acc, token) => {
+        acc[token.address.toLowerCase()] = token
+        return acc
+      },
+      {} as Record<string, Token>
+    )
+    const initialPrices: Record<string, number> = {}
+
+    for (let i = 0; i < initialRebalance[1].length; i++) {
+      const token = initialRebalance[1][i].toLowerCase()
+      const decimals = tokenMap[token].decimals
+
+      initialPrices[token] = calculatePriceFromRange(
+        {
+          low: initialRebalance[3][i].low,
+          high: initialRebalance[3][i].high,
+        },
+        decimals
+      )
+    }
 
     return {
       supply: dtfData.supply,
@@ -148,11 +188,12 @@ const useRebalanceParams = () => {
         priceControl: dtfData.rebalance[9],
       } as Rebalance,
       currentFolio: dtfData.currentFolio,
+      initialPrices,
       initialFolio,
       prices,
       isTrackingDTF: !rebalanceControl.weightControl,
     } as RebalanceParams
-  }, [dtfData, initialFolio, prices, rebalanceControl])
+  }, [dtfData, initialFolio, prices, rebalanceControl, initialRebalance])
 }
 
 export default useRebalanceParams

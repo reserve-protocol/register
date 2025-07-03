@@ -18,8 +18,8 @@ import getRebalanceOpenAuction from './utils/get-rebalance-open-auction'
 import { useParams } from 'react-router-dom'
 
 const RebalanceMetricsUpdater = () => {
-  const [metrics, setRebalanceMetrics] = useAtom(rebalanceMetricsAtom)
-  const [rebalancePercent, setRebalancePercent] = useAtom(rebalancePercentAtom)
+  const setRebalanceMetrics = useSetAtom(rebalanceMetricsAtom)
+  const rebalancePercent = useAtomValue(rebalancePercentAtom)
   const rebalanceParams = useRebalanceParams()
   const currentRebalance = useAtomValue(currentRebalanceAtom)
 
@@ -35,41 +35,18 @@ const RebalanceMetricsUpdater = () => {
           rebalance,
           currentFolio,
           initialFolio,
+          initialPrices,
           prices,
           isTrackingDTF,
         } = params
 
-        const initialPrices = currentRebalance.rebalance.tokens.reduce(
-          (acc, curr, index) => {
-            console.log('get initial prices SYMBOL', curr.symbol)
-            console.log('get initial prices DECIMALS', curr.decimals)
-            console.log(
-              'get initial prices PRICE LOW LIMIT',
-              currentRebalance.rebalance.priceLowLimit[index]
-            )
-            console.log(
-              'get initial prices PRICE HIGH LIMIT',
-              currentRebalance.rebalance.priceHighLimit[index]
-            )
-
-            acc[curr.address.toLowerCase()] = {
-              low: BigInt(currentRebalance.rebalance.priceLowLimit[index]),
-              high: BigInt(currentRebalance.rebalance.priceHighLimit[index]),
-            }
-            return acc
-          },
-          {} as Record<string, { low: bigint; high: bigint }>
-        )
-
-        console.log('isTrackingDTF', isTrackingDTF)
-
         const [, rebalanceMetrics] = getRebalanceOpenAuction(
           currentRebalance.rebalance.tokens,
           rebalance,
-          initialPrices,
           supply,
           currentFolio,
           initialFolio,
+          initialPrices,
           prices,
           isTrackingDTF,
           rebalancePercent
