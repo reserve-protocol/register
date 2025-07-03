@@ -60,71 +60,532 @@ Register is the official web interface for the Reserve Protocol, enabling users 
 ### State Management (Jotai)
 ```typescript
 // ✅ DO: Small, focused atoms
-export const sourceChainAtom = atom<ChainId>(ChainId.ETHEREUM)
 export const amountAtom = atom<string>('')
+export const tokenAtom = atom<Token | null>(null)
 
-// ✅ DO: Derived atoms instead of useEffect
-export const isBridgeActiveAtom = atom((get) => {
-  const source = get(sourceChainAtom)
-  const dest = get(destinationChainAtom)
-  return source !== dest
+// ✅ DO: Derived atoms for computed values
+export const isValidAmountAtom = atom((get) => {
+  const amount = get(amountAtom)
+  return !isNaN(Number(amount)) && Number(amount) > 0
 })
 
-// ✅ DO: Action atoms for complex logic
-export const swapChainsAtom = atom(null, (get, set) => {
-  const source = get(sourceChainAtom)
-  const dest = get(destinationChainAtom)
-  set(sourceChainAtom, dest)
-  set(destinationChainAtom, source)
+// ✅ DO: Action atoms for complex operations
+export const resetFormAtom = atom(null, (get, set) => {
+  set(amountAtom, '')
+  set(tokenAtom, null)
+  set(errorAtom, null)
 })
 
-// ❌ DON'T: Large monolithic atoms or useEffect for syncing
+// ✅ DO: Atom families for dynamic instances
+export const tokenBalanceAtomFamily = atomFamily((tokenId: string) =>
+  atom<bigint>(0n)
+)
+
+// ❌ DON'T: Large monolithic state atoms
+// ❌ DON'T: Use useEffect to sync between atoms
 ```
 
-### Blockchain Interaction Pattern
-```typescript
-// Components → Custom Hooks → wagmi/viem → Blockchain
+### Data Fetching Patterns
 
-// ✅ DO: Encapsulate in custom hooks
-const useDTFDetails = (tokenId: string) => {
+#### Pattern 1: Updater Components
+```typescript
+// Used for syncing blockchain state with atoms
+const Updater = () => {
+  const chainId = useAtomValue(chainIdAtom)
+  const setData = useSetAtom(dataAtom)
+  
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const result = await readContract({
+          address: CONTRACT_ADDRESS,
+          abi: contractAbi,
+          functionName: 'getData',
+          chainId
+        })
+        setData(result)
+      } catch (error) {
+        console.error('Failed to fetch', error)
+      }
+    }
+    
+    fetchData()
+  }, [chainId])
+  
+  return null
+}
+```
+
+#### Pattern 2: Custom Hooks
+```typescript
+// Encapsulates data fetching logic
+export const useTokenBalance = (tokenAddress: Address) => {
+  const wallet = useAtomValue(walletAtom)
+  
   const { data, isLoading, error } = useReadContract({
-    address: dtfAddress,
-    abi: dtfAbi,
-    functionName: 'getDetails',
-    args: [tokenId]
+    address: tokenAddress,
+    abi: erc20Abi,
+    functionName: 'balanceOf',
+    args: [wallet],
+    enabled: !!wallet
   })
   
   return {
-    data: formatDTFData(data),
+    balance: data || 0n,
     isLoading,
     error
   }
 }
-
-// ❌ DON'T: Use wagmi directly in components
 ```
 
-### Component Architecture
+### Component Patterns
+
+#### Feature Entry Pattern
 ```typescript
-// ✅ DO: Compose with shadcn/ui + TailwindCSS
-import { Card, CardHeader, CardContent } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { cn } from '@/lib/utils'
+// index.tsx - Main feature component
+const FeatureName = () => {
+  useTrackPage('feature', 'view')  // Analytics
+  
+  return (
+    <div className="container py-6">
+      <Header />
+      <MainContent />
+      <Updater />  // Optional state sync
+    </div>
+  )
+}
 
-const MyComponent = ({ isActive }: Props) => (
-  <Card className={cn("p-4", isActive && "border-primary")}>
-    <CardHeader>
-      <h2 className="text-lg font-semibold">Title</h2>
-    </CardHeader>
-    <CardContent>
-      <Button variant="outline" size="sm">
-        Action
-      </Button>
-    </CardContent>
-  </Card>
-)
+export default withNavigationGuard(FeatureName)
+```
 
-// ❌ DON'T: Custom CSS files or style prop
+#### Form Pattern (react-hook-form + zod)
+```typescript
+// Form schema
+const FormSchema = z.object({
+  name: z.string().min(1, 'Required'),
+  amount: z.string().refine(val => !isNaN(Number(val)), 'Invalid amount')
+})
+
+// Form component
+const MyForm = () => {
+  const form = useForm<z.infer<typeof FormSchema>>({
+    resolver: zodResolver(FormSchema),
+    defaultValues: { name: '', amount: '0' },
+    mode: 'onChange'
+  })
+  
+  return (
+    <FormProvider {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)}>
+        <FormField
+          control={form.control}
+          name="amount"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Amount</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      </form>
+    </FormProvider>
+  )
+}
+```
+
+#### Transaction Button Pattern
+```typescript
+const TransactionButton = () => {
+  const [isValid] = useAtomValue(isValidAtom)
+  const { writeContract, isPending, data } = useWriteContract()
+  const { isSuccess, error } = useWaitForTransactionReceipt({ hash: data })
+  
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success('Transaction successful')
+      // Reset form or update state
+    }
+  }, [isSuccess])
+  
+  const label = isPending ? 'Please sign...' : data ? 'Confirming...' : 'Submit'
+  
+  return (
+    <Button 
+      disabled={!isValid || isPending || !!data}
+      onClick={() => writeContract({...})}
+    >
+      {(isPending || data) && <Spinner />}
+      {label}
+    </Button>
+  )
+}
+```
+
+### UI Component Patterns
+
+#### Dialog/Modal Pattern
+```typescript
+// Using shadcn/ui dialog with controlled state
+const MyModal = () => {
+  const [open, setOpen] = useAtom(modalOpenAtom)
+  
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button>Open Modal</Button>
+      </DialogTrigger>
+      <DialogContent className="rounded-3xl">
+        <DialogTitle>Title</DialogTitle>
+        <DialogDescription>Description</DialogDescription>
+        {/* Content */}
+      </DialogContent>
+    </Dialog>
+  )
+}
+```
+
+#### List/Table Pattern
+```typescript
+// Consistent list rendering with loading and empty states
+const ItemList = () => {
+  const items = useAtomValue(itemsAtom)
+  const isLoading = useAtomValue(loadingAtom)
+  
+  if (isLoading) {
+    return <Skeleton className="h-96" />
+  }
+  
+  if (!items.length) {
+    return (
+      <div className="flex items-center justify-center h-96">
+        <p className="text-muted-foreground">No items found</p>
+      </div>
+    )
+  }
+  
+  return (
+    <ScrollArea className="h-96">
+      {items.map((item) => (
+        <ItemRow key={item.id} item={item} />
+      ))}
+    </ScrollArea>
+  )
+}
+```
+
+### Error Handling Patterns
+
+#### Transaction Error Pattern
+```typescript
+// Consistent error display for blockchain transactions
+const TransactionError = ({ error }: { error: Error }) => {
+  const message = error.message.split('\n')[0] // Clean error message
+  
+  return (
+    <Alert variant="destructive">
+      <AlertTitle>Transaction Failed</AlertTitle>
+      <AlertDescription>{message}</AlertDescription>
+    </Alert>
+  )
+}
+```
+
+#### Try-Catch Pattern
+```typescript
+// API calls with error handling
+const fetchData = async () => {
+  try {
+    setLoading(true)
+    const result = await apiCall()
+    setData(result)
+  } catch (error) {
+    console.error('Failed to fetch data:', error)
+    toast.error('Failed to load data')
+  } finally {
+    setLoading(false)
+  }
+}
+```
+
+### Navigation Patterns
+
+#### Route-based Code Splitting
+```typescript
+// Lazy loading for better performance
+const Governance = lazy(() => import('./views/governance'))
+const Auctions = lazy(() => import('./views/auctions'))
+
+// Route configuration
+const routes = [
+  {
+    path: 'governance/*',
+    element: <Governance />
+  },
+  {
+    path: 'auctions/*',
+    element: <Auctions />
+  }
+]
+```
+
+#### Navigation Guards
+```typescript
+// HOC pattern for route protection
+const withNavigationGuard = (Component: React.FC) => {
+  return (props: any) => {
+    const wallet = useAtomValue(walletAtom)
+    const navigate = useNavigate()
+    
+    useEffect(() => {
+      if (!wallet) {
+        navigate('/')
+      }
+    }, [wallet, navigate])
+    
+    return wallet ? <Component {...props} /> : null
+  }
+}
+```
+
+## Common Anti-Patterns & Analysis
+
+### 1. Direct wagmi Usage in Components
+**Status**: ❌ NOT an anti-pattern (per user preference)
+- **Q**: Should wagmi hooks be wrapped in custom hooks?
+- **A**: No, direct usage is acceptable and often clearer for simple cases
+
+### 2. Mixed UI Libraries (theme-ui + Tailwind)
+**Status**: ⚠️ Technical debt, not anti-pattern
+- **Q**: Is this intentional?
+- **A**: Yes, gradual migration from theme-ui to Tailwind/shadcn
+- **Impact**: Increased bundle size, inconsistent styling
+- **Solution**: Complete migration when time permits
+
+### 3. Console Logging in Production
+**Status**: ❌ Anti-pattern
+- **Q**: Are these debug logs or intentional?
+- **A**: Most are debug logs that should be removed
+- **Impact**: Information leakage, performance
+- **Solution**: Use proper logging service or remove
+
+### 4. Large Component Files (150+ lines)
+**Status**: ⚠️ Code smell, not hard rule
+- **Q**: What's the threshold?
+- **A**: Prefer under 150 lines, but readability > arbitrary limits
+- **Solution**: Extract sub-components when it improves clarity
+
+### 5. Inconsistent Async Patterns
+**Status**: ❌ Anti-pattern
+```typescript
+// ❌ Mixing patterns
+fetchData().then(setData)  // Sometimes this
+await fetchData()          // Sometimes this
+
+// ✅ Pick one pattern
+const data = await fetchData()
+setData(data)
+```
+
+### 6. Missing Loading States
+**Status**: ❌ Anti-pattern
+- **Q**: Should every async operation have loading state?
+- **A**: Yes, for better UX
+- **Solution**: Use consistent loading pattern
+
+### 7. Hardcoded Values
+**Status**: ⚠️ Context-dependent
+```typescript
+// ❌ Bad: Magic numbers without context
+const MIN_AMOUNT = 0.0015
+
+// ✅ Good: Named constants with context
+const MIN_MINTING_FEE = parseEther('0.0015') // 0.15% minimum fee
+```
+
+### 8. useEffect for Derived State
+**Status**: ❌ Anti-pattern with Jotai
+```typescript
+// ❌ Don't sync atoms with useEffect
+useEffect(() => {
+  setDerivedAtom(baseValue * 2)
+}, [baseValue])
+
+// ✅ Use derived atoms
+const derivedAtom = atom((get) => get(baseAtom) * 2)
+```
+
+## Common Implementation Patterns
+
+### Token Selection Pattern
+```typescript
+// Atom for selected token
+export const selectedTokenAtom = atom<Token | null>(null)
+
+// Component with token selector
+const TokenSelector = () => {
+  const [selectedToken, setSelectedToken] = useAtom(selectedTokenAtom)
+  const tokens = useAtomValue(availableTokensAtom)
+  
+  return (
+    <Select
+      value={selectedToken?.address}
+      onValueChange={(address) => {
+        const token = tokens.find(t => t.address === address)
+        setSelectedToken(token || null)
+      }}
+    >
+      <SelectTrigger>
+        <SelectValue placeholder="Select token" />
+      </SelectTrigger>
+      <SelectContent>
+        {tokens.map((token) => (
+          <SelectItem key={token.address} value={token.address}>
+            <div className="flex items-center gap-2">
+              <TokenIcon token={token} />
+              <span>{token.symbol}</span>
+            </div>
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
+  )
+}
+```
+
+### Amount Input Pattern
+```typescript
+// Validation atom
+export const isValidAmountAtom = atom((get) => {
+  const amount = get(amountAtom)
+  const balance = get(balanceAtom)
+  return !isNaN(Number(amount)) && Number(amount) > 0 && parseEther(amount) <= balance
+})
+
+// Amount input component
+const AmountInput = () => {
+  const [amount, setAmount] = useAtom(amountAtom)
+  const balance = useAtomValue(balanceAtom)
+  const isValid = useAtomValue(isValidAmountAtom)
+  
+  return (
+    <div className="space-y-2">
+      <div className="flex justify-between text-sm">
+        <label>Amount</label>
+        <button
+          onClick={() => setAmount(formatUnits(balance, 18))}
+          className="text-primary hover:underline"
+        >
+          Max: {formatCurrency(Number(formatUnits(balance, 18)))}
+        </button>
+      </div>
+      <Input
+        type="text"
+        value={amount}
+        onChange={(e) => setAmount(e.target.value)}
+        placeholder="0.0"
+        className={cn(!isValid && amount && "border-destructive")}
+      />
+    </div>
+  )
+}
+```
+
+### Accordion/Collapsible Pattern
+```typescript
+// Using radix-ui accordion
+const FeatureAccordion = () => {
+  return (
+    <Accordion type="single" collapsible className="w-full">
+      <AccordionItem value="item-1" className="border-b">
+        <AccordionTrigger className="hover:no-underline">
+          <div className="flex items-center gap-2">
+            <Icon />
+            <span>Section Title</span>
+          </div>
+        </AccordionTrigger>
+        <AccordionContent>
+          <div className="pt-4">
+            {/* Content */}
+          </div>
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
+  )
+}
+```
+
+### Data Table Pattern
+```typescript
+// With sorting and filtering
+const DataTable = () => {
+  const data = useAtomValue(tableDataAtom)
+  const [sortConfig, setSortConfig] = useState<SortConfig>()
+  const [filter, setFilter] = useState('')
+  
+  const sortedData = useMemo(() => {
+    if (!sortConfig) return data
+    return [...data].sort((a, b) => {
+      // Sorting logic
+    })
+  }, [data, sortConfig])
+  
+  const filteredData = useMemo(() => {
+    return sortedData.filter(item => 
+      item.name.toLowerCase().includes(filter.toLowerCase())
+    )
+  }, [sortedData, filter])
+  
+  return (
+    <div>
+      <Input
+        placeholder="Filter..."
+        value={filter}
+        onChange={(e) => setFilter(e.target.value)}
+        className="mb-4"
+      />
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead onClick={() => handleSort('name')}>
+              Name
+            </TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {filteredData.map((item) => (
+            <TableRow key={item.id}>
+              <TableCell>{item.name}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
+  )
+}
+```
+
+### Toast Notification Pattern
+```typescript
+// Success/Error notifications
+const handleTransaction = async () => {
+  try {
+    const tx = await writeContract({...})
+    toast.success('Transaction submitted', {
+      description: `View on explorer`,
+      action: {
+        label: 'View',
+        onClick: () => window.open(getExplorerUrl(tx.hash))
+      }
+    })
+  } catch (error) {
+    toast.error('Transaction failed', {
+      description: getErrorMessage(error)
+    })
+  }
+}
 ```
 
 ## Project Structure
@@ -279,21 +740,72 @@ npm run format      # Format code
 ## Best Practices
 
 ### Do's ✅
-- Use Jotai atoms for state (small, focused)
-- Encapsulate blockchain logic in custom hooks
-- Compose UI with shadcn/ui components
-- Style with TailwindCSS utilities only
-- Use `cn()` for conditional classes
-- Follow kebab-case naming
-- Create derived atoms instead of useEffect
+- **State Management**
+  - Create small, focused atoms (single responsibility)
+  - Use derived atoms for computed values
+  - Use atom families for dynamic instances
+  - Prefer `useAtomValue` for read-only, `useSetAtom` for write-only
+  
+- **Component Architecture**
+  - Keep components under 150 lines (soft limit)
+  - Extract reusable logic into custom hooks
+  - Use composition over inheritance
+  - Implement loading and error states consistently
+  
+- **Styling**
+  - Use TailwindCSS utilities exclusively
+  - Use `cn()` helper for conditional classes
+  - Follow shadcn/ui component patterns
+  - Use semantic color variables (primary, destructive, etc.)
+  
+- **Forms**
+  - Always use react-hook-form with zod validation
+  - Use FormProvider for complex forms
+  - Implement proper error messages
+  - Show validation state in real-time (mode: 'onChange')
+  
+- **Blockchain Interactions**
+  - Handle transaction states (pending, confirming, success, error)
+  - Show clear error messages to users
+  - Use wagmi hooks directly when simple (not an anti-pattern)
+  - Implement proper loading states for all async operations
+  
+- **Code Organization**
+  - Follow feature-based folder structure
+  - Use kebab-case for all files and folders
+  - Place shared utilities in `/utils`
+  - Keep atoms close to their usage (feature-specific)
 
 ### Don'ts ❌
-- Import wagmi/viem directly in components
-- Create large monolithic atoms
-- Use custom CSS files
-- Use inline style prop for styling
-- Sync state with useEffect
-- Create files without reading existing patterns
+- **State Management**
+  - Create large monolithic atoms
+  - Use useEffect to sync between atoms
+  - Store derived state in atoms
+  - Mix state management patterns
+  
+- **Component Architecture**
+  - Create "god components" that do everything
+  - Mix presentation and business logic
+  - Ignore loading/error states
+  - Use index as key in dynamic lists
+  
+- **Styling**
+  - Create custom CSS files
+  - Use inline style prop
+  - Mix theme-ui with new components
+  - Hard-code colors instead of using theme
+  
+- **Performance**
+  - Fetch data in render phase
+  - Create functions inside render (use useCallback)
+  - Skip React.memo for expensive components
+  - Ignore bundle size impact
+  
+- **Code Quality**
+  - Leave console.log statements
+  - Ignore TypeScript errors
+  - Copy-paste without understanding patterns
+  - Create new patterns without team discussion
 
 ## Security Considerations
 
