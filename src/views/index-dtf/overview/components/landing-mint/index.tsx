@@ -5,17 +5,17 @@ import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { indexDTFAtom, indexDTFBrandAtom } from '@/state/dtf/atoms'
 import { useTrackIndexDTFClick } from '@/views/index-dtf/hooks/useTrackIndexDTFPage'
-import { useAtomValue, useSetAtom } from 'jotai'
+import { useZapperModal } from '@reserve-protocol/react-zapper'
+import { useAtomValue } from 'jotai'
 import { ArrowLeftRight } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import ZapMint from '../zap-mint'
-import { currentZapMintTabAtom } from '../zap-mint/atom'
 
 const MintBox = () => {
   const dtf = useAtomValue(indexDTFAtom)
   const brand = useAtomValue(indexDTFBrandAtom)
-  const setZapMintTab = useSetAtom(currentZapMintTabAtom)
   const { trackClick } = useTrackIndexDTFClick('overview', 'overview')
+  const { open, setTab } = useZapperModal()
 
   return (
     <div className="rounded-3xl bg-card p-2">
@@ -59,7 +59,8 @@ const MintBox = () => {
             className="rounded-xl h-12"
             onClick={() => {
               trackClick('buy')
-              setZapMintTab('buy')
+              setTab('buy')
+              open()
             }}
           >
             Buy
@@ -69,7 +70,8 @@ const MintBox = () => {
             variant="outline"
             onClick={() => {
               trackClick('sell')
-              setZapMintTab('sell')
+              setTab('sell')
+              open()
             }}
           >
             Sell

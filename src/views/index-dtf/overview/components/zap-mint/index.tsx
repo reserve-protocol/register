@@ -2,7 +2,7 @@ import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { getFolioRoute } from '@/utils'
 import { ROUTES } from '@/utils/constants'
-import { Zapper, useZapperModal } from '@reserve-protocol/react-zapper'
+import { Zapper } from '@reserve-protocol/react-zapper'
 import { useAtomValue } from 'jotai'
 import { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
@@ -10,7 +10,6 @@ import { Link } from 'react-router-dom'
 const ZapMint = ({ children }: { children: ReactNode }) => {
   const indexDTF = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
-  const { open } = useZapperModal()
 
   if (!indexDTF) return null
 
@@ -18,7 +17,7 @@ const ZapMint = ({ children }: { children: ReactNode }) => {
     <div className="relative">
       <Zapper chain={chainId} dtfAddress={indexDTF.id} />
 
-      <div onClick={open}>{children}</div>
+      <div>{children}</div>
 
       {/* Manual fallback link - shown within the modal */}
       <div className="sm:hidden p-3 rounded-3xl mt-2 text-center text-sm">

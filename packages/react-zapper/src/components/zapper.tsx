@@ -207,16 +207,6 @@ const ZapperContent: React.FC<ZapperContentProps> = ({
   )
 }
 
-// Hook to open the zapper modal
-export const useZapperModal = () => {
-  const setOpen = useSetAtom(openZapMintModalAtom)
-
-  return {
-    open: () => setOpen(true),
-    close: () => setOpen(false),
-  }
-}
-
 export const Zapper: React.FC<ZapperProps> = ({
   mode = 'modal',
   chain,

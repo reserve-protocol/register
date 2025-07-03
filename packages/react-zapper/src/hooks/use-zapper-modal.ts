@@ -1,17 +1,31 @@
-import { useState, useCallback } from 'react'
+import {
+  openZapMintModalAtom,
+  zapperCurrentTabAtom,
+} from '@/components/zap-mint/atom'
+import { useAtom, useSetAtom } from 'jotai'
+import { useCallback } from 'react'
 import { UseZapperModalReturn } from '../types'
 
-export function useZapperModal(initialOpen = false): UseZapperModalReturn {
-  const [isOpen, setIsOpen] = useState(initialOpen)
+export function useZapperModal(): UseZapperModalReturn {
+  const [isOpen, setOpen] = useAtom(openZapMintModalAtom)
+  const setZapperTab = useSetAtom(zapperCurrentTabAtom)
 
-  const open = useCallback(() => setIsOpen(true), [])
-  const close = useCallback(() => setIsOpen(false), [])
-  const toggle = useCallback(() => setIsOpen(prev => !prev), [])
+  const open = useCallback(() => setOpen(true), [])
+  const close = useCallback(() => setOpen(false), [])
+  const toggle = useCallback(() => setOpen((prev) => !prev), [])
+
+  const setTab = useCallback(
+    (tab: 'buy' | 'sell') => {
+      setZapperTab(tab)
+    },
+    [setZapperTab]
+  )
 
   return {
     isOpen,
     open,
     close,
     toggle,
+    setTab,
   }
 }

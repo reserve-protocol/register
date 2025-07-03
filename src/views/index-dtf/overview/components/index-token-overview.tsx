@@ -20,6 +20,7 @@ import { useTrackIndexDTFClick } from '../../hooks/useTrackIndexDTFPage'
 import IndexRolesOverview from './index-roles-overview'
 import ZapMint from './zap-mint'
 import { currentZapMintTabAtom } from './zap-mint/atom'
+import { useZapperModal } from '@reserve-protocol/react-zapper'
 
 const TokenNameSkeleton = () => (
   <div className="flex flex-col gap-4">
@@ -55,7 +56,7 @@ const TokenAddresses = () => {
 }
 
 const ZapBuySellButtons = () => {
-  const setZapMintTab = useSetAtom(currentZapMintTabAtom)
+  const { open, setTab } = useZapperModal()
   return (
     <div className="block xl:hidden w-full mb-3 mt-2">
       <ZapMint>
@@ -69,14 +70,20 @@ const ZapBuySellButtons = () => {
         >
           <Button
             className="rounded-xl h-12 w-full"
-            onClick={() => setZapMintTab('buy')}
+            onClick={() => {
+              setTab('buy')
+              open()
+            }}
           >
             Buy
           </Button>
           <Button
             className="rounded-xl h-12 w-full"
             variant="outline"
-            onClick={() => setZapMintTab('sell')}
+            onClick={() => {
+              setTab('sell')
+              open()
+            }}
           >
             Sell
           </Button>
