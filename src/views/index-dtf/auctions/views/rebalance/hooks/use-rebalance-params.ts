@@ -132,6 +132,9 @@ const useRebalanceParams = () => {
     chainId,
     args: [],
     blockNumber: BigInt(rebalance?.rebalance.blockNumber ?? '0'),
+    query: {
+      enabled: !!rebalance?.rebalance.blockNumber && !!dtf?.id,
+    },
   })
 
   useEffect(() => {
@@ -200,6 +203,7 @@ const useRebalanceParams = () => {
       } as Rebalance,
       currentFolio: dtfData.currentFolio,
       initialPrices,
+      initialWeights,
       initialFolio,
       prices,
       isTrackingDTF: !rebalanceControl.weightControl,

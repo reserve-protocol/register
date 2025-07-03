@@ -38,8 +38,8 @@ function getRebalanceOpenAuction(
   const currentFolioShares: bigint[] = []
   const weights: WeightRange[] = []
 
-  tokens.forEach((token) => {
-    const lowercasedAddress = token.address.toLowerCase()
+  rebalance.tokens.forEach((token) => {
+    const lowercasedAddress = token.toLowerCase()
     const tokenDecimals = tokenMap[lowercasedAddress].decimals
 
     decimals.push(BigInt(tokenDecimals))
