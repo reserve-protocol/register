@@ -1,6 +1,7 @@
 # Index DTF Rebalance v4 Specification
 
 ## Table of Contents
+
 1. [Overview](#overview)
 2. [Key Terminology](#key-terminology)
 3. [Rebalance Architecture](#rebalance-architecture)
@@ -17,6 +18,7 @@
 The Index DTF Rebalance v4 is a governance-driven mechanism for adjusting token basket compositions in a decentralized manner. It streamlines the rebalancing process from v2's multi-transaction approach to a single atomic execution, while introducing enhanced controls for market conditions and execution timing.
 
 ### Core Design Principles
+
 - **Single-transaction execution**: One governance proposal executes the entire rebalance
 - **Dual-window system**: Exclusive launcher period followed by permissionless access
 - **Price volatility controls**: Configurable tolerance for different asset types
@@ -25,23 +27,29 @@ The Index DTF Rebalance v4 is a governance-driven mechanism for adjusting token 
 ## Key Terminology
 
 ### DTF Types
+
 - **Tracking DTFs** (`weightControl = false`): Maintain fixed token units regardless of price changes
 - **Native DTFs** (`weightControl = true`): Maintain percentage allocations, adjusting units as prices change
 
 ### Rebalance States
+
 - **Initial Folio**: Basket composition at proposal creation time
 - **Current Folio**: Present basket composition
 - **Target Basket**: Desired composition after rebalancing
 
 ### Progression Metrics
-- **Absolute Progression**: Mathematical distance from current to target state
-- **Relative Progression**: User-visible progress (0% at start, 100% at completion)
-- **Rebalance Percent**: User-selected target for how much of the gap to close (0-100%)
+
+- **Initial Progression**: Starting position of the rebalance on an absolute scale (>0% at start)
+- **Absolute Progression**: Mathematical distance on an absolute scale from 0% (no value in correct tokens) to 100% (all value in correct tokens)
+- **Relative Progression**: User-visible progress from initial progression to current state (0% at start of rebalance, 100% at completion)
+- **Relative target**: User-selected target for how much of the gap to close (0-100%)
+- **Target**: User-selected target on an absolute scale
 
 ### Price Formats
+
 - **D27 Format**: BigInt prices with 27 decimal places for precision
-- **Geometric Mean**: Method for calculating fair price from low/high ranges
-- **Price Volatility**: Acceptable price deviation during execution (LOW: 5%, MEDIUM: 10%, HIGH: 50%)
+- **Geometric Mean**: Method for calculating fair price from low/high ranges by taking the square root of the product
+- **Price Volatility**: Acceptable price deviation during execution (LOW/MEDIUM/HIGH/DEGEN)
 
 ## Rebalance Architecture
 
@@ -53,25 +61,25 @@ graph TB
         QUEUE[Timelock Queue]
         EXEC[Execution]
     end
-    
+
     subgraph "Rebalance Configuration"
         START[startRebalance]
         CONFIG[Set Parameters]
         WINDOW[Launch Windows]
     end
-    
+
     subgraph "Auction Execution"
         LAUNCH[Launch Auction]
         CALC[Calculate Targets]
         OPEN[openAuction]
     end
-    
+
     subgraph "Trading Layer"
         BOTS[Trading Bots]
         COW[CoWSwap]
         SETTLE[Settlement]
     end
-    
+
     PROP --> VOTE --> QUEUE --> EXEC
     EXEC --> START --> CONFIG --> WINDOW
     WINDOW --> LAUNCH --> CALC --> OPEN
@@ -93,10 +101,10 @@ function startRebalance(
 
 function openAuction(
     uint256 rebalanceNonce,
-    address[] tokens,
-    Range[] newWeights,
-    PriceRange[] newPrices,
-    Range newLimits
+    address[] tokens,             // Auction tokens, subset of tokens in the rebalance
+    Range[] newWeights,           // New weight ranges for auction tokens, subset of weights in the rebalance
+    PriceRange[] newPrices,       // New price ranges for auction tokens, either exactly equal to initial prices or a subset, depending on priceControl
+    Range newLimits               // New rebalance limits for auction tokens, subset of initial limits in the rebalance
 ) external;
 ```
 
@@ -126,6 +134,7 @@ Users create a basket change proposal containing:
 ### 3. Execution
 
 After timelock period, anyone can execute the proposal, which:
+
 - Validates no active rebalance exists
 - Sets rebalance parameters in contract
 - Starts the auction launcher window
@@ -136,33 +145,37 @@ After timelock period, anyone can execute the proposal, which:
 
 ```typescript
 interface RebalanceConfig {
-  nonce: bigint                 // Unique identifier
-  tokens: Address[]             // Basket tokens
-  weights: {                    // Target allocations
+  nonce: bigint // Unique identifier
+  tokens: Address[] // Basket tokens
+  weights: {
+    // Target allocations
     low: bigint
-    spot: bigint                // Estimate (unused in calculations)
+    spot: bigint // Estimate (unused in calculations)
     high: bigint
   }[]
-  initialPrices: {              // Price snapshot at proposal
-    low: bigint                 // D27 format
-    high: bigint                // D27 format
+  initialPrices: {
+    // Price snapshot at proposal
+    low: bigint // D27 format
+    high: bigint // D27 format
   }[]
-  limits: {                     // Overall bounds
+  limits: {
+    // Overall bounds
     low: bigint
     spot: bigint
     high: bigint
   }
-  inRebalance: boolean          // Active flag
-  startedAt: bigint            // Start timestamp
-  restrictedUntil: bigint      // End of launcher window
-  availableUntil: bigint       // Expiration
-  priceControl: bigint         // 0=fixed prices, 1=adjustable
+  inRebalance: boolean // Active flag
+  startedAt: bigint // Start timestamp
+  restrictedUntil: bigint // End of launcher window
+  availableUntil: bigint // Expiration
+  priceControl: bigint // 0=fixed prices, 1=adjustable
 }
 ```
 
 ### Phase 2: Launch Windows
 
 1. **Auction Launcher Window** (`startedAt` to `restrictedUntil`)
+
    - Only designated auction launchers can start auctions
    - Allows professional market makers to optimize execution
    - Duration set in proposal (e.g., 24-48 hours)
@@ -171,29 +184,29 @@ interface RebalanceConfig {
    - Any user can launch auctions
    - Ensures decentralization if launchers fail to act
    - Can be disabled by setting to 0
+   - Does not allow manipulation of weights or prices
 
 ### Phase 3: Auction Rounds
 
-Auctions typically proceed through rounds based on rebalance complexity:
+Auctions typically proceed through rounds based on rebalance complexity. Rounds are not formally defined within the onchain protocol, and rounds can repeat any number of times.
 
 ```typescript
 enum AuctionRound {
-  EJECT = 0,    // Priority: Remove tokens from basket
-  PROGRESS = 1, // Priority: Rebalance continuing tokens  
-  FINAL = 2     // Priority: Fine-tune to exact targets
+  EJECT = 0, // Priority: Remove tokens from basket
+  PROGRESS = 1, // Priority: Rebalance continuing tokens
+  FINAL = 2, // Priority: Fine-tune to exact targets
 }
 ```
 
-- **EJECT**: Used when tokens are being removed (2-3 rounds typical)
-- **PROGRESS**: Standard rebalancing (1-2 rounds typical)
-- **FINAL**: Minor adjustments (0-1 rounds)
+- **EJECT**: Used when tokens are being removed
+- **PROGRESS**: Standard rebalancing
+- **FINAL**: Minor adjustments
 
 ### Phase 4: Trade Execution
 
 1. **Auction Opening**: Launcher calls `openAuction` with calculated parameters
-2. **Bid Collection**: Trading bots and CoWSwap solvers submit bids
-3. **Settlement**: Trades execute within price bounds
-4. **State Update**: Basket composition updates on-chain
+2. **Bidding**: Trading bots and CoWSwap solvers submit bids
+3. **State Update**: Basket composition updates on-chain
 
 ## Auction Mechanism
 
@@ -202,8 +215,8 @@ enum AuctionRound {
 The system calculates target baskets differently based on DTF type:
 
 ```typescript
-// For Tracking DTFs: Use current prices to maintain units
-// For Native DTFs: Use snapshot prices to maintain percentages
+// For Tracking DTFs: Use current prices to maintain constant units
+// For Native DTFs: Use snapshot prices to maintain constant percentages
 const targetBasket = getTargetBasket(
   rebalance.weights,
   isTrackingDTF ? currentPrices : snapshotPrices,
@@ -214,19 +227,21 @@ const targetBasket = getTargetBasket(
 ### Rebalance Percent Slider
 
 The UI provides a slider (0-100%) that controls:
-- **0%**: No rebalancing performed
-- **50%**: Move halfway from current to target
-- **100%**: Full rebalance to target composition
 
-This enables gradual rebalancing to minimize market impact.
+- **0%**: No rebalancing performed
+- **50%**: Move halfway from `initialProgression` to `target`
+- **100%**: Full rebalance to `target`
+
+This enables gradual rebalancing to minimize market impact. Typically the 90% (relative) point is targeted, though this can be varied by the slider.
 
 ### Price Volatility Settings
 
 ```typescript
 const PRICE_VOLATILITY = {
-  LOW: 0.05,    // 5% - For stablecoins and pegged assets
-  MEDIUM: 0.1,  // 10% - For major cryptocurrencies
-  HIGH: 0.5     // 50% - For volatile/small-cap tokens
+  LOW: 0.025, // 2.5% - For stablecoins and pegged assets
+  MEDIUM: 0.075, // 7.5% - For major cryptocurrencies
+  HIGH: 0.25, // 25% - For volatile/small-cap tokens
+  DEGEN: 0.6, // 60% - For degen tokens
 }
 ```
 
@@ -246,10 +261,10 @@ function calculatePriceFromRange(
   // Convert D27 BigInt to decimal with precision
   const lowPrice = Number(formatUnits(priceRange.low, 27))
   const highPrice = Number(formatUnits(priceRange.high, 27))
-  
+
   // Geometric mean for fair average
   const avgPricePerToken = Math.sqrt(lowPrice * highPrice)
-  
+
   // Convert to whole token price
   return avgPricePerToken * Math.pow(10, tokenDecimals)
 }
@@ -259,6 +274,7 @@ function calculatePriceFromRange(
 
 - **priceControl = 0**: Prices fixed at proposal values
 - **priceControl = 1**: `getOpenAuction()` can narrow price ranges based on current market conditions
+- **priceControl = 2**: Atomic swap case, permitted to set startPrice == endPrice. Currently unused.
 
 ## Technical Implementation
 
@@ -283,16 +299,16 @@ function calculatePriceFromRange(
 
 ```typescript
 // Core atoms for rebalance state
-rebalancePercentAtom         // Target percent (0-100)
-rebalanceMetricsAtom        // Calculated progress
-rebalanceAuctionsAtom       // Active auction list
-currentRebalanceAtom        // Active rebalance data
-isAuctionOngoingAtom        // Auction status
-priceVolatilityAtom         // Selected volatility
+rebalancePercentAtom // Target percent (0-100)
+rebalanceMetricsAtom // Calculated progress
+rebalanceAuctionsAtom // Active auction list
+currentRebalanceAtom // Active rebalance data
+isAuctionOngoingAtom // Auction status
+priceVolatilityAtom // Selected volatility
 
 // Derived atoms
-rebalancesByProposalAtom    // Map proposals to rebalances
-rebalanceTokenMapAtom       // Token address lookups
+rebalancesByProposalAtom // Map proposals to rebalances
+rebalanceTokenMapAtom // Token address lookups
 ```
 
 ### Data Flow
@@ -307,7 +323,7 @@ rebalanceTokenMapAtom       // Token address lookups
 ### Access Control
 
 1. **Rebalance Initiation**: Only through governance proposals
-2. **Auction Launching**: 
+2. **Auction Launching**:
    - Restricted period: Only designated launchers
    - Permissionless period: Anyone can launch
 3. **Single Active Rebalance**: Mutex prevents concurrent rebalances
@@ -342,57 +358,60 @@ rebalanceTokenMapAtom       // Token address lookups
 
 ### Execution Model
 
-| Aspect | v2 | v4 |
-|--------|----|----|
-| Proposal Type | Multiple `approveAuction` calls | Single `startRebalance` call |
-| Transaction Count | Multiple (one per auction) | Single atomic execution |
-| Complexity | High - coordinate multiple txs | Low - one governance action |
+| Aspect            | v2                              | v4                           |
+| ----------------- | ------------------------------- | ---------------------------- |
+| Proposal Type     | Multiple `approveAuction` calls | Single `startRebalance` call |
+| Transaction Count | Multiple (one per auction)      | Single atomic execution      |
+| Complexity        | High - coordinate multiple txs  | Low - one governance action  |
 
 ### Auction Control
 
-| Feature | v2 | v4 |
-|---------|----|----|
-| Launch Windows | Single TTL parameter | Dual-window system |
-| Price Volatility | Not configurable | LOW/MEDIUM/HIGH presets |
-| Price Updates | Static from proposal | Optional with priceControl |
-| Partial Rebalancing | Not supported | Rebalance percent slider |
+| Feature             | v2                   | v4                         |
+| ------------------- | -------------------- | -------------------------- |
+| Launch Windows      | Single TTL parameter | Dual-window system         |
+| Price Volatility    | Not configurable     | LOW/MEDIUM/HIGH presets    |
+| Price Updates       | Static from proposal | Optional with priceControl |
+| Partial Rebalancing | Not supported        | Rebalance percent slider   |
 
 ### User Experience
 
-| Feature | v2 | v4 |
-|---------|----|----|
-| Interface | Multi-step process | Unified single view |
-| Progress Tracking | Basic | Real-time metrics (absolute/relative) |
-| Auction Visibility | Limited | Full bid and settlement tracking |
-| Auction Rounds | Not categorized | EJECT/PROGRESS/FINAL strategy |
+| Feature            | v2                 | v4                                    |
+| ------------------ | ------------------ | ------------------------------------- |
+| Interface          | Multi-step process | Unified single view                   |
+| Progress Tracking  | Basic              | Real-time metrics (absolute/relative) |
+| Auction Visibility | Limited            | Full bid and settlement tracking      |
+| Auction Rounds     | Not categorized    | EJECT/PROGRESS/FINAL strategy         |
 
 ### Technical Improvements
 
-| Feature | v2 | v4 |
-|---------|----|----|
-| State Management | Scattered | Centralized with Jotai atoms |
-| Price Calculations | Inline | Extracted utility function |
-| Data Fetching | Direct contract calls | Optimized with React Query |
-| Error Handling | Basic | Comprehensive with recovery |
+| Feature            | v2                    | v4                           |
+| ------------------ | --------------------- | ---------------------------- |
+| State Management   | Scattered             | Centralized with Jotai atoms |
+| Price Calculations | Inline                | Extracted utility function   |
+| Data Fetching      | Direct contract calls | Optimized with React Query   |
+| Error Handling     | Basic                 | Comprehensive with recovery  |
 
 ## Integration Points
 
 ### CoWSwap Protocol
+
 - Decentralized solver competition
-- Batch auction settlement  
+- Batch auction settlement
 - Optimal price discovery
 - MEV protection
 
 ### Price Oracles
+
 - Initial prices from proposal creation
 - Current prices from live feeds
 - Sanity checks prevent manipulation
 
 ### Subgraph Indexing
+
 - Real-time auction data
 - Historical bid information
 - Progress analytics
 
 ---
 
-*This specification documents the Index DTF Rebalance v4 system as implemented in the Register platform, focusing specifically on the rebalance flow from governance proposal to execution.*
+_This specification documents the Index DTF Rebalance v4 system as implemented in the Register platform, focusing specifically on the rebalance flow from governance proposal to execution._
