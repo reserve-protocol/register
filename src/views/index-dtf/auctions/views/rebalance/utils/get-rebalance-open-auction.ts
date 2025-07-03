@@ -18,7 +18,7 @@ function getRebalanceOpenAuction(
   initialWeights: Record<string, WeightRange>,
   prices: TokenPriceWithSnapshot,
   isTrackingDTF: boolean,
-  rebalancePercent = 95,
+  rebalancePercent = 90,
   priceVolatility = PRICE_VOLATILITY.MEDIUM
 ) {
   const tokenMap = tokens.reduce(
