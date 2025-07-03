@@ -251,16 +251,16 @@ These settings account for potential price movements between proposal creation a
 
 ### Initial Price Calculation
 
-Prices are calculated from the proposal's price ranges using geometric mean:
+Prices are calculated from the proposal's price ranges using geometric mean, and assuming nanoUSD prices:
 
 ```typescript
 function calculatePriceFromRange(
   priceRange: { low: bigint; high: bigint },
   tokenDecimals: number
 ): number {
-  // Convert D27 BigInt to decimal with precision
-  const lowPrice = Number(formatUnits(priceRange.low, 27))
-  const highPrice = Number(formatUnits(priceRange.high, 27))
+  // Convert nanoUSD D27 BigInt to decimal with precision
+  const lowPrice = Number(formatUnits(priceRange.low, 36))
+  const highPrice = Number(formatUnits(priceRange.high, 36))
 
   // Geometric mean for fair average
   const avgPricePerToken = Math.sqrt(lowPrice * highPrice)
