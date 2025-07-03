@@ -1,5 +1,5 @@
-import { chainIdAtom } from '@/state/atoms'
-import { ChainId } from '@/utils/chains'
+import { chainIdAtom } from '../state/atoms'
+import { ChainId } from '../utils/chains'
 import { useAtomValue } from 'jotai'
 import { useEffect } from 'react'
 import { Abi, ContractFunctionArgs, ContractFunctionName } from 'viem'

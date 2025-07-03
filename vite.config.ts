@@ -79,6 +79,10 @@ export default defineConfig({
       ),
       // Polyfills for node modules - @cowprotocol/cow-sdk needs it
       'node-fetch': 'cross-fetch',
+      '@reserve-protocol/react-zapper': path.resolve(
+        __dirname,
+        'packages/react-zapper/src'
+      ),
     },
   },
   optimizeDeps: {

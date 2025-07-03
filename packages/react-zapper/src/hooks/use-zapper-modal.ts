@@ -1,7 +1,7 @@
 import {
   openZapMintModalAtom,
   zapperCurrentTabAtom,
-} from '@/components/zap-mint/atom'
+} from '../components/zap-mint/atom'
 import { useAtom, useSetAtom } from 'jotai'
 import { useCallback } from 'react'
 import { UseZapperModalReturn } from '../types'

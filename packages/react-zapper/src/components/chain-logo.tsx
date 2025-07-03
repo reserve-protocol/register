@@ -1,8 +1,8 @@
 import React, { ReactNode, SVGProps } from 'react'
-import { ChainId } from '@/utils/chains'
-import Base from '@/components/icons/Base'
-import Ethereum from '@/components/icons/Ethereum'
-import Arbitrum from '@/components/icons/Arbitrum'
+import { ChainId } from '../utils/chains'
+import Base from './icons/Base'
+import Ethereum from './icons/Ethereum'
+import Arbitrum from './icons/Arbitrum'
 
 export const chainIcons: Record<number | string, any> = {
   [ChainId.Mainnet]: Ethereum,

@@ -1,4 +1,4 @@
-import useMediaQuery from '@/hooks/useMediaQuery'
+import useMediaQuery from '../../hooks/useMediaQuery'
 import { useTheme } from 'next-themes'
 import { Toaster as Sonner } from 'sonner'
 

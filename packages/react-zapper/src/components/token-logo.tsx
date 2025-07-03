@@ -1,4 +1,4 @@
-import { indexDTFIconsAtom } from '@/state/atoms'
+import { indexDTFIconsAtom } from '../state/atoms'
 import { cn } from '../utils/cn'
 import { UNIVERSAL_ASSETS } from '../utils/universal'
 import { atom, useAtom, useAtomValue } from 'jotai'

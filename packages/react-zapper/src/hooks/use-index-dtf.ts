@@ -1,4 +1,4 @@
-import { ChainId } from '@/utils/chains'
+import { ChainId } from '../utils/chains'
 import { useQuery } from '@tanstack/react-query'
 import request, { gql } from 'graphql-request'
 import { Address, formatEther } from 'viem'

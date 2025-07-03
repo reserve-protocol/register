@@ -1,4 +1,4 @@
-import { useWatchReadContracts } from '@/hooks/use-watch-read-contracts'
+import { useWatchReadContracts } from '../../hooks/use-watch-read-contracts'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { Address, erc20Abi, formatUnits } from 'viem'

@@ -1,7 +1,7 @@
 import { atom } from 'jotai'
 import { Address } from 'viem'
 import { Token, TokenBalance } from '../types'
-import { ChainId } from '@/utils/chains'
+import { ChainId } from '../utils/chains'
 
 /**
  * Chain ID atom - configurable chain ID for the zapper

@@ -1,4 +1,4 @@
-import { formatCurrency } from '@/utils/format'
+import { formatCurrency } from '../../utils/format'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { Address, erc20Abi } from 'viem'

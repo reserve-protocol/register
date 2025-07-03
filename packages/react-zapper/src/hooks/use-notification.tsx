@@ -1,4 +1,4 @@
-import Notification from '@/components/notification'
+import Notification from '../components/notification'
 import { AlertCircle, Check } from 'lucide-react'
 import { ReactNode, useCallback } from 'react'
 import { toast } from 'sonner'
