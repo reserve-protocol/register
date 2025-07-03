@@ -1,6 +1,5 @@
 import { TokenPriceWithSnapshot } from '@/hooks/use-asset-prices-with-snapshot'
 import { Token } from '@/types'
-import { calculatePriceFromRange } from '@/utils'
 import {
   getOpenAuction,
   getTargetBasket,
@@ -39,8 +38,8 @@ function getRebalanceOpenAuction(
   const currentFolioShares: bigint[] = []
   const weights: WeightRange[] = []
 
-  rebalance.tokens.forEach((token) => {
-    const lowercasedAddress = token.toLowerCase()
+  tokens.forEach((token) => {
+    const lowercasedAddress = token.address.toLowerCase()
     const tokenDecimals = tokenMap[lowercasedAddress].decimals
 
     decimals.push(BigInt(tokenDecimals))
