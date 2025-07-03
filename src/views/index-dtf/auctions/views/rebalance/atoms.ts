@@ -9,7 +9,7 @@ export const PRICE_VOLATILITY: Record<string, number> = {
   LOW: 0.025,
   MEDIUM: 0.075,
   HIGH: 0.25,
-  DEGEN: 0.8,
+  DEGEN: 0.6, // not used yet
 }
 
 export type Auction = {
