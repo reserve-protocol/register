@@ -36,6 +36,7 @@ const RebalanceMetricsUpdater = () => {
           currentFolio,
           initialFolio,
           initialPrices,
+          initialWeights,
           prices,
           isTrackingDTF,
         } = params
@@ -47,6 +48,7 @@ const RebalanceMetricsUpdater = () => {
           currentFolio,
           initialFolio,
           initialPrices,
+          initialWeights,
           prices,
           isTrackingDTF,
           rebalancePercent

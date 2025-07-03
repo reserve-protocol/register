@@ -7,7 +7,10 @@ import {
   indexDTFBasketAtom,
   indexDTFRebalanceControlAtom,
 } from '@/state/dtf/atoms'
-import { Rebalance } from '@reserve-protocol/dtf-rebalance-lib/dist/types'
+import {
+  Rebalance,
+  WeightRange,
+} from '@reserve-protocol/dtf-rebalance-lib/dist/types'
 import { useAtomValue } from 'jotai'
 import { useEffect, useMemo } from 'react'
 import { parseEther } from 'viem'
@@ -24,6 +27,7 @@ export type RebalanceParams = {
   currentFolio: Record<string, bigint>
   initialFolio: Record<string, bigint>
   initialPrices: Record<string, number>
+  initialWeights: Record<string, WeightRange>
   prices: TokenPriceWithSnapshot
   isTrackingDTF: boolean
 }
@@ -159,6 +163,7 @@ const useRebalanceParams = () => {
       {} as Record<string, Token>
     )
     const initialPrices: Record<string, number> = {}
+    const initialWeights: Record<string, WeightRange> = {}
 
     for (let i = 0; i < initialRebalance[1].length; i++) {
       const token = initialRebalance[1][i].toLowerCase()
@@ -171,6 +176,12 @@ const useRebalanceParams = () => {
         },
         decimals
       )
+
+      initialWeights[token] = {
+        low: initialRebalance[2][i].low,
+        spot: initialRebalance[2][i].spot,
+        high: initialRebalance[2][i].high,
+      }
     }
 
     return {

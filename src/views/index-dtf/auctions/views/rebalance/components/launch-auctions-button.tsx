@@ -66,6 +66,7 @@ const LaunchAuctionsButton = () => {
         rebalanceParams.currentFolio,
         rebalanceParams.initialFolio,
         rebalanceParams.initialPrices,
+        rebalanceParams.initialWeights,
         rebalanceParams.prices,
         rebalanceParams.isTrackingDTF,
         rebalancePercent,

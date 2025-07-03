@@ -5,6 +5,7 @@ import {
   getOpenAuction,
   getTargetBasket,
   Rebalance,
+  WeightRange,
 } from '@reserve-protocol/dtf-rebalance-lib'
 import { PRICE_VOLATILITY } from '../atoms'
 
@@ -15,6 +16,7 @@ function getRebalanceOpenAuction(
   currentFolio: Record<string, bigint>,
   initialFolio: Record<string, bigint>,
   initialPrices: Record<string, number>,
+  initialWeights: Record<string, WeightRange>,
   prices: TokenPriceWithSnapshot,
   isTrackingDTF: boolean,
   rebalancePercent = 95,
@@ -35,6 +37,7 @@ function getRebalanceOpenAuction(
   const priceError: number[] = []
   const initialFolioShares: bigint[] = []
   const currentFolioShares: bigint[] = []
+  const weights: WeightRange[] = []
 
   rebalance.tokens.forEach((token) => {
     const lowercasedAddress = token.toLowerCase()
@@ -48,10 +51,11 @@ function getRebalanceOpenAuction(
     priceError.push(priceVolatility)
     initialFolioShares.push(initialFolio[lowercasedAddress] || 0n)
     currentFolioShares.push(currentFolio[lowercasedAddress] || 0n)
+    weights.push(initialWeights[lowercasedAddress])
   })
 
   const targetBasket = getTargetBasket(
-    rebalance.weights,
+    weights,
     isTrackingDTF ? currentPrices : snapshotPrices,
     decimals
   )
