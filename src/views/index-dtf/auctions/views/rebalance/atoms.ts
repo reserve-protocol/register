@@ -6,9 +6,9 @@ import { atom } from 'jotai'
 import { currentRebalanceAtom } from '../../atoms'
 
 export const PRICE_VOLATILITY: Record<string, number> = {
-  LOW: 0.05,
-  MEDIUM: 0.1,
-  HIGH: 0.5,
+  LOW: 0.025,
+  MEDIUM: 0.075,
+  HIGH: 0.25,
 }
 
 export type Auction = {
