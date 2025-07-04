@@ -36,6 +36,8 @@ import AllYieldDTFList from './views/tokens/Tokens'
 import DeployComingSoon from './views/index-dtf/deploy/components/deploy-coming-soon'
 import IndexDTFWhitelistProposal from './views/index-dtf/governance/views/propose/vault'
 import ProposeDTFSettings from './views/index-dtf/governance/views/propose/views/propose-dtf-settings'
+import { lazy, Suspense } from 'react'
+const AsyncSwaps = lazy(() => import('./views/index-dtf/issuance/async-swaps'))
 
 // TODO: Fix recoll call on yield dtf auction page
 const AppRoutes = () => (
@@ -78,6 +80,20 @@ const AppRoutes = () => (
       <Route
         path={`${ROUTES.ISSUANCE}/manual`}
         element={<IndexDTFManualIssuance />}
+      />
+      <Route
+        path={`${ROUTES.ISSUANCE}/automated`}
+        element={
+          <Suspense
+            fallback={
+              <div className="h-screen w-100% flex items-center justify-center">
+                Loading...
+              </div>
+            }
+          >
+            <AsyncSwaps />
+          </Suspense>
+        }
       />
       <Route path={ROUTES.AUCTIONS} element={<IndexDTFAuctions />} />
       <Route path={ROUTES.SETTINGS} element={<IndexDTFSettings />} />
