@@ -4,7 +4,6 @@ import { Trans } from '@lingui/macro'
 import {
   ArrowLeft,
   ArrowRight,
-  Asterisk,
   Boxes,
   Crown,
   LayoutGrid,
@@ -28,13 +27,13 @@ const proposalTypes = [
   },
   {
     icon: <Crown size={16} strokeWidth={1.5} />,
-    title: 'Roles',
-    route: GOVERNANCE_PROPOSAL_TYPES.ROLES,
-    enabled: false,
+    title: 'Basket settings',
+    route: GOVERNANCE_PROPOSAL_TYPES.BASKET_SETTINGS,
+    enabled: true,
   },
   {
     icon: <LayoutGrid size={16} strokeWidth={1.5} />,
-    title: 'Other',
+    title: 'DAO',
     route: GOVERNANCE_PROPOSAL_TYPES.OTHER,
     enabled: true,
   },

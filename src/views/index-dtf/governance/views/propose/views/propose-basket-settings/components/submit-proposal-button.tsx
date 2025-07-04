@@ -9,15 +9,12 @@ import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Address } from 'viem'
 import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
-import {
-  dtfSettingsProposalDataAtom,
-  proposalDescriptionAtom,
-} from '../atoms'
+import { proposalDescriptionAtom, basketSettingsProposalDataAtom } from '../atoms'
 
 const isProposalReady = atom((get) => {
   const wallet = get(walletAtom)
   const description = get(proposalDescriptionAtom)
-  const proposalData = get(dtfSettingsProposalDataAtom)
+  const proposalData = get(basketSettingsProposalDataAtom)
   const dtf = get(iTokenAddressAtom)
 
   return wallet && description && proposalData?.calldatas?.length && dtf
@@ -28,7 +25,7 @@ const SubmitProposalButton = () => {
   const chainId = useAtomValue(chainIdAtom)
   const isReady = useAtomValue(isProposalReady)
   const description = useAtomValue(proposalDescriptionAtom)
-  const proposalData = useAtomValue(dtfSettingsProposalDataAtom)
+  const proposalData = useAtomValue(basketSettingsProposalDataAtom)
   const dtf = useAtomValue(indexDTFAtom)
   const { writeContract, isPending, data } = useWriteContract()
   const { isSuccess } = useWaitForTransactionReceipt({
@@ -46,14 +43,23 @@ const SubmitProposalButton = () => {
   }, [isSuccess])
 
   const handleSubmit = () => {
-    if (proposalData && description && dtf?.ownerGovernance?.id) {
-      const values: bigint[] = new Array(proposalData.calldatas.length).fill(0n)
+    if (proposalData && description && dtf?.tradingGovernance?.id) {
+      const { targets, calldatas } = proposalData
+      const values = targets.map(() => 0n)
 
-      writeContract({
-        address: dtf.ownerGovernance?.id,
+      console.log('proposal', {
+        address: dtf.tradingGovernance.id,
         abi: DTFIndexGovernance,
         functionName: 'propose',
-        args: [proposalData.targets, values, proposalData.calldatas, description],
+        args: [targets, values, calldatas, description],
+        chainId,
+      })
+
+      writeContract({
+        address: dtf.tradingGovernance.id,
+        abi: DTFIndexGovernance,
+        functionName: 'propose',
+        args: [targets, values, calldatas, description],
         chainId,
       })
     }
@@ -62,7 +68,7 @@ const SubmitProposalButton = () => {
   return (
     <Button
       disabled={
-        !isReady || isPending || !!data || !dtf?.ownerGovernance?.id
+        !isReady || isPending || !!data || !dtf?.tradingGovernance?.id
       }
       onClick={handleSubmit}
       className="w-full"

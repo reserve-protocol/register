@@ -1,8 +1,8 @@
 import { useAtomValue, useSetAtom } from 'jotai'
 import {
-  dtfSettingsProposalDataAtom,
   isProposalConfirmedAtom,
   proposalDescriptionAtom,
+  daoSettingsProposalDataAtom,
 } from '../atoms'
 import ProposalDescriptionForm from '@/components/governance/proposal-description-form'
 import { useEffect } from 'react'
@@ -27,7 +27,7 @@ const ProposalDescription = () => {
 }
 
 const ProposalPreview = () => {
-  const proposalData = useAtomValue(dtfSettingsProposalDataAtom)
+  const proposalData = useAtomValue(daoSettingsProposalDataAtom)
 
   return (
     <div className="flex flex-col gap-4">
@@ -39,7 +39,7 @@ const ProposalPreview = () => {
   )
 }
 
-const ConfirmDTFSettingsProposal = () => {
+const ConfirmDaoSettingsProposal = () => {
   return (
     <div className="flex flex-col gap-1 bg-secondary rounded-3xl p-1">
       <ProposalDescription />
@@ -48,4 +48,4 @@ const ConfirmDTFSettingsProposal = () => {
   )
 }
 
-export default ConfirmDTFSettingsProposal
+export default ConfirmDaoSettingsProposal
