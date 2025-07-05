@@ -1,13 +1,12 @@
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
-import { getCurrentTime, getProposalTitle } from '@/utils'
-import { atom, useAtomValue } from 'jotai'
+import useTimeRemaining from '@/hooks/use-time-remaining'
+import { getProposalTitle } from '@/utils'
+import { ROUTES } from '@/utils/constants'
+import { useAtomValue } from 'jotai'
 import { ArrowLeft, Clock } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { currentRebalanceAtom } from '../../../atoms'
-import { ROUTES } from '@/utils/constants'
-import useTimeRemaining from '@/hooks/use-time-remaining'
-import { rebalanceMetricsAtom, rebalanceTokenMapAtom } from '../atoms'
 
 const TimeRemaining = () => {
   const rebalance = useAtomValue(currentRebalanceAtom)

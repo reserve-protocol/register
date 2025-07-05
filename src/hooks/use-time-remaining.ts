@@ -32,7 +32,12 @@ const useTimeRemaining = (targetTimestamp?: number): string => {
       if (days) parts.push(`${days}d`)
       if (hours || days) parts.push(`${hours}h`)
       if (minutes || hours || days) parts.push(`${minutes}m`)
-      parts.push(`${seconds}s`)
+
+      // Only show seconds if less than 1 hour remaining
+      const totalHours = days * 24 + hours
+      if (totalHours < 1) {
+        parts.push(`${seconds}s`)
+      }
 
       setTimeLeft(parts.join(' '))
     }

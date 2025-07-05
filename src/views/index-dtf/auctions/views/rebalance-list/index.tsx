@@ -1,75 +1,80 @@
-import Spinner from '@/components/ui/spinner'
-import { cn } from '@/lib/utils'
-import { getCurrentTime, getProposalTitle } from '@/utils'
+import { getCurrentTime } from '@/utils'
 import { useAtomValue } from 'jotai'
-import { ChevronRight, Folder } from 'lucide-react'
-import { Link } from 'react-router-dom'
-import { RebalanceByProposal, rebalancesByProposalListAtom } from '../../atoms'
-import { ROUTES } from '@/utils/constants'
-
-const RebalanceListItem = ({
-  rebalance,
-}: {
-  rebalance: RebalanceByProposal
-}) => {
-  const isActive = +rebalance.rebalance.availableUntil > getCurrentTime()
-
-  return (
-    <Link
-      to={`rebalance/${rebalance.proposal.id}`}
-      className={cn('p-4 flex items-center gap-2 border-b last:border-b-0')}
-    >
-      <div
-        className={cn(
-          'h-8 w-8 flex items-center justify-center rounded-full',
-          isActive ? 'bg-primary text-primary-foreground' : 'bg-muted'
-        )}
-      >
-        {isActive ? <Spinner size={16} /> : <Folder size={16} />}
-      </div>
-      <div>
-        <Link
-          target="_blank"
-          to={`../${ROUTES.GOVERNANCE_PROPOSAL}/${rebalance.proposal.id}`}
-          className={cn(
-            'underline hover:text-primary',
-            isActive && 'text-primary'
-          )}
-          onClick={(e) => {
-            e.stopPropagation()
-          }}
-        >
-          {getProposalTitle(rebalance.proposal.description)}
-        </Link>
-      </div>
-      <div
-        className={cn(
-          'ml-auto bg-muted rounded-full border border-transparent p-2 text-legend',
-          isActive && 'border-primary bg-transparent text-primary'
-        )}
-      >
-        <ChevronRight size={16} />
-      </div>
-    </Link>
-  )
-}
+import { rebalancesByProposalListAtom } from '../../atoms'
+import {
+  ActiveRebalanceItem,
+  HistoricalRebalanceItem,
+  SectionHeader,
+  EmptyState,
+  LoadingState,
+} from './components'
 
 const RebalanceList = () => {
-  const rebalances = useAtomValue(rebalancesByProposalListAtom) ?? []
+  const rebalances = useAtomValue(rebalancesByProposalListAtom)
+
+  // Show loading state if data hasn't been fetched yet
+  if (rebalances === undefined) {
+    return <LoadingState />
+  }
+
+  // Separate active and historical rebalances
+  const activeRebalances = rebalances.filter(
+    (r) => +r.rebalance.availableUntil > getCurrentTime()
+  )
+  const historicalRebalances = rebalances.filter(
+    (r) => +r.rebalance.availableUntil <= getCurrentTime()
+  )
+
+  // Show empty state if no rebalances
+  if (rebalances.length === 0) {
+    return (
+      <div className="max-w-5xl mx-auto">
+        <EmptyState />
+      </div>
+    )
+  }
 
   return (
-    <div className="rounded-3xl bg-secondary p-1 max-w-full w-[480px]">
-      <div className="bg-background rounded-2xl">
-        <h1 className="text-xl font-semibold p-2 ml-2 pt-5">Rebalances</h1>
-        <div className="flex flex-col gap-1">
-          {rebalances.map((rebalance) => (
-            <RebalanceListItem
-              key={rebalance.proposal.id}
-              rebalance={rebalance}
-            />
-          ))}
-        </div>
-      </div>
+    <div className="max-w-5xl mx-auto space-y-8 px-4 md:px-0">
+      {/* Active Rebalances Section */}
+      {activeRebalances.length > 0 && (
+        <section>
+          <SectionHeader
+            color="primary"
+            title="Active Rebalances"
+            count={activeRebalances.length}
+          />
+
+          <div className="space-y-4">
+            {activeRebalances.map((rebalance, index) => (
+              <ActiveRebalanceItem
+                key={rebalance.proposal.id}
+                rebalance={rebalance}
+                index={index}
+              />
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Historical Rebalances Section */}
+      {historicalRebalances.length > 0 && (
+        <section>
+          <SectionHeader
+            title="Historical Rebalances"
+            count={historicalRebalances.length}
+          />
+
+          <div className="space-y-4">
+            {historicalRebalances.map((rebalance) => (
+              <HistoricalRebalanceItem
+                key={rebalance.proposal.id}
+                rebalance={rebalance}
+              />
+            ))}
+          </div>
+        </section>
+      )}
     </div>
   )
 }
