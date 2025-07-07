@@ -390,7 +390,7 @@ export const checkVersion = (
 
 /**
  * Calculate the average price from a price range using geometric mean
- * @param priceRange - Object with low and high BigInt prices in D27 format
+ * @param priceRange - Object with low and high BigInt nanoUSD prices in D27 format
  * @param tokenDecimals - Number of decimals for the token
  * @returns Price per whole token in decimal format
  */
@@ -398,13 +398,13 @@ export function calculatePriceFromRange(
   priceRange: { low: bigint; high: bigint },
   tokenDecimals: number
 ): number {
-  // Convert D27 BigInt prices to decimal numbers with proper precision
-  const lowPrice = Number(formatUnits(priceRange.low, 27))
-  const highPrice = Number(formatUnits(priceRange.high, 27))
+  // Convert nanoUSD D27 BigInt prices to decimal numbers with proper precision
+  const lowPrice = Number(formatUnits(priceRange.low, 36))
+  const highPrice = Number(formatUnits(priceRange.high, 36))
 
-  // Calculate average price as geometric mean (already in UoA/tok format)
+  // Calculate average price as geometric mean (already in USD/tok format)
   const avgPricePerToken = Math.sqrt(lowPrice * highPrice)
 
-  // Convert to whole token price (UoA/wholeTok)
+  // Convert to whole token price (USD/wholeTok)
   return avgPricePerToken * Math.pow(10, tokenDecimals)
 }
