@@ -50,7 +50,6 @@ const RebalanceList = () => {
               <ActiveRebalanceItem
                 key={rebalance.proposal.id}
                 rebalance={rebalance}
-                index={index}
               />
             ))}
           </div>
