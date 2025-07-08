@@ -2,13 +2,33 @@ import Spinner from '@/components/ui/spinner'
 import useTimeRemaining from '@/hooks/use-time-remaining'
 import { cn } from '@/lib/utils'
 import { getCurrentTime } from '@/utils'
-import { useAtomValue } from 'jotai'
+import { atom, useAtomValue } from 'jotai'
 import { Clock } from 'lucide-react'
 import { useMemo } from 'react'
 import { formatUnits } from 'viem'
 import { Auction, rebalanceAuctionsAtom } from '../atoms'
 import useRebalanceParams from '../hooks/use-rebalance-params'
 import AuctionBidsChart from './auction-bids-chart'
+
+// Derived atom that returns the current active auction with its index or null
+export const activeAuctionAtom = atom<{ auction: Auction; index: number } | null>((get) => {
+  const auctions = get(rebalanceAuctionsAtom)
+  const currentTime = getCurrentTime()
+
+  // Find the first auction that is still active (endTime > currentTime)
+  const activeAuctionIndex = auctions.findIndex(
+    (auction) => parseInt(auction.endTime) > currentTime
+  )
+
+  if (activeAuctionIndex === -1) {
+    return null
+  }
+
+  return {
+    auction: auctions[activeAuctionIndex],
+    index: activeAuctionIndex + 1 // 1-based index for display
+  }
+})
 
 const AuctionBids = ({ auction }: { auction: Auction }) => {
   const rebalanceParams = useRebalanceParams()
@@ -140,15 +160,13 @@ const AuctionItem = ({
 }
 
 const RebalanceAuctions = () => {
-  const auctions = useAtomValue(rebalanceAuctionsAtom)
+  const activeAuctionData = useAtomValue(activeAuctionAtom)
 
-  if (auctions.length === 0) return null
+  if (!activeAuctionData) return null
 
   return (
     <div className="bg-background p-2 rounded-3xl flex flex-col gap-2">
-      {auctions.map((auction, index) => (
-        <AuctionItem key={auction.id} auction={auction} index={index} />
-      ))}
+      <AuctionItem auction={activeAuctionData.auction} index={activeAuctionData.index - 1} />
     </div>
   )
 }
