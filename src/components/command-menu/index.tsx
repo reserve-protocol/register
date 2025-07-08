@@ -117,9 +117,9 @@ const CommandMenu = () => {
                         : getTokenRoute(dtf.address, dtf.chain)
                     }
                     onClick={() => setOpen(false)}
+                    key={dtf.address}
                   >
                     <CommandItem
-                      key={dtf.address}
                       keywords={dtf.keywords}
                       value={`${dtf.name} ${dtf.symbol}`}
                       className="gap-3 cursor-pointer"
