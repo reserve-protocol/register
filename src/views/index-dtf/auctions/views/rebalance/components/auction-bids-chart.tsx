@@ -77,7 +77,7 @@ export default function AuctionBidsChart({
   }, [endTime])
 
   // Generate logarithmic price curve data
-  const allData = useMemo(() => {
+  const chartData = useMemo(() => {
     const points = 200
     const data = []
 
@@ -91,11 +91,14 @@ export default function AuctionBidsChart({
       data.push({
         timestamp,
         price: Math.max(price, 0.5), // Lower minimum to reach bottom
+        pastPrice: timestamp <= currentTimeState ? Math.max(price, 0.5) : null,
+        futurePrice:
+          timestamp >= currentTimeState ? Math.max(price, 0.5) : null,
       })
     }
 
     return data
-  }, [startTime, endTime])
+  }, [startTime, endTime, currentTimeState])
 
   // Process bids - position them exactly on the curve
   const bidData = useMemo(() => {
@@ -142,8 +145,8 @@ export default function AuctionBidsChart({
       >
         <ResponsiveContainer width="100%" height="100%">
           <LineChart
-            data={allData}
-            margin={{ top: 0, right: 0, left: -36, bottom: -8 }}
+            data={chartData}
+            margin={{ top: 0, right: 0, left: -32, bottom: 0 }}
           >
             {/* Y-axis */}
             <YAxis
@@ -184,15 +187,27 @@ export default function AuctionBidsChart({
               }}
             />
 
-            {/* Price curve line */}
+            {/* Past price line (blue) */}
             <Line
               type="monotone"
-              dataKey="price"
+              dataKey="pastPrice"
               stroke="#0151AF"
               strokeWidth={2}
               dot={false}
               activeDot={false}
-              connectNulls={false}
+              connectNulls={true}
+              isAnimationActive={false}
+            />
+
+            {/* Future price line (black) */}
+            <Line
+              type="monotone"
+              dataKey="futurePrice"
+              stroke="#000000"
+              strokeWidth={2}
+              dot={false}
+              activeDot={false}
+              connectNulls={true}
               isAnimationActive={false}
             />
 
