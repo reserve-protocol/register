@@ -11,11 +11,64 @@ import useRebalanceParams from '../hooks/use-rebalance-params'
 import AuctionBidsChart from './auction-bids-chart'
 
 // Derived atom that returns the current active auction with its index or null
-export const activeAuctionAtom = atom<{ auction: Auction; index: number } | null>((get) => {
+export const activeAuctionAtom = atom<{
+  auction: Auction
+  index: number
+} | null>((get) => {
   const auctions = get(rebalanceAuctionsAtom)
   const currentTime = getCurrentTime()
 
-  // Find the first auction that is still active (endTime > currentTime)
+  // MOCK: For testing - find an auction with more than 2 bids and make it active
+  // If no auction with > 2 bids, take the first auction with any bids
+  let auctionWithBidsIndex = auctions.findIndex(
+    (auction) => auction.bids.length > 2
+  )
+
+  if (auctionWithBidsIndex === -1) {
+    // Fallback: find any auction with bids
+    auctionWithBidsIndex = auctions.findIndex(
+      (auction) => auction.bids.length > 0
+    )
+  }
+
+  // If still no auction with bids, just take the first auction
+  if (auctionWithBidsIndex === -1 && auctions.length > 0) {
+    auctionWithBidsIndex = 0
+  }
+
+  if (auctionWithBidsIndex !== -1) {
+    const originalAuction = auctions[auctionWithBidsIndex]
+    const mockAuction = {
+      ...originalAuction,
+      bids: [...originalAuction.bids], // Deep copy bids array
+    }
+
+    // Set auction to be active: started 20 minutes ago, ends in 10 minutes
+    const mockStartTime = currentTime - 20 * 60 // 20 minutes ago
+    const mockEndTime = currentTime + 10 * 60 // 10 minutes from now
+
+    mockAuction.startTime = mockStartTime.toString()
+    mockAuction.endTime = mockEndTime.toString()
+
+    // Update bid timestamps to be within the auction time range
+    if (mockAuction.bids.length > 0) {
+      const auctionDuration = mockEndTime - mockStartTime
+      mockAuction.bids = mockAuction.bids.map((bid, index) => ({
+        ...bid,
+        timestamp: Math.floor(
+          mockStartTime +
+            (auctionDuration * (index + 1)) / (mockAuction.bids.length + 1)
+        ).toString(),
+      }))
+    }
+
+    return {
+      auction: mockAuction,
+      index: auctionWithBidsIndex + 1,
+    }
+  }
+
+  // Original logic - find actually active auction
   const activeAuctionIndex = auctions.findIndex(
     (auction) => parseInt(auction.endTime) > currentTime
   )
@@ -26,7 +79,7 @@ export const activeAuctionAtom = atom<{ auction: Auction; index: number } | null
 
   return {
     auction: auctions[activeAuctionIndex],
-    index: activeAuctionIndex + 1 // 1-based index for display
+    index: activeAuctionIndex + 1, // 1-based index for display
   }
 })
 
@@ -80,6 +133,7 @@ const AuctionBids = ({ auction }: { auction: Auction }) => {
         price,
         amount: sellAmountUSD, // Use USD value for amount
         bidder: bid.bidder,
+        transactionHash: bid.transactionHash,
         sellToken: bid.sellToken,
         buyToken: bid.buyToken,
         sellAmount,
@@ -162,11 +216,16 @@ const AuctionItem = ({
 const RebalanceAuctions = () => {
   const activeAuctionData = useAtomValue(activeAuctionAtom)
 
-  if (!activeAuctionData) return null
+  if (!activeAuctionData) {
+    return null
+  }
 
   return (
     <div className="bg-background p-2 rounded-3xl flex flex-col gap-2">
-      <AuctionItem auction={activeAuctionData.auction} index={activeAuctionData.index - 1} />
+      <AuctionItem
+        auction={activeAuctionData.auction}
+        index={activeAuctionData.index - 1}
+      />
     </div>
   )
 }

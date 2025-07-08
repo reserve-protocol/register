@@ -1,11 +1,4 @@
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
-import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
@@ -20,6 +13,11 @@ import {
   XAxis,
   YAxis,
 } from 'recharts'
+import { ArrowDown, ArrowUpRight } from 'lucide-react'
+import TokenLogo from '@/components/token-logo'
+import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
+import { useAtomValue } from 'jotai'
+import { chainIdAtom } from '@/state/atoms'
 
 interface Bid {
   id: string
@@ -27,6 +25,7 @@ interface Bid {
   price: number
   amount: number // USD value
   bidder: string
+  transactionHash?: string
   sellToken?: {
     address: string
     symbol: string
@@ -64,6 +63,7 @@ export default function AuctionBidsChart({
 }: AuctionBidsChartProps) {
   const [selectedBid, setSelectedBid] = useState<Bid | null>(null)
   const [currentTimeState, setCurrentTimeState] = useState(currentTime)
+  const chainId = useAtomValue(chainIdAtom)
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -239,63 +239,146 @@ export default function AuctionBidsChart({
 
       {/* Selected bid information */}
       {selectedBid && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-lg">
-              Bid Information
-              <div className="text-legend text-xs">#{selectedBid.id}</div>
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-2 gap-4 text-sm">
-              <div className="col-span-2">
-                <p className="font-medium text-gray-600">Bidder</p>
-                <p className="font-semibold text-xs">
+        <div className="bg-background rounded-2xl p-4">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-base text-primary font-semibold">
+              Bid #{bids.findIndex((b) => b.id === selectedBid.id) + 1}
+            </h3>
+            {selectedBid.transactionHash && (
+              <a
+                href={getExplorerLink(
+                  selectedBid.transactionHash,
+                  chainId,
+                  ExplorerDataType.TRANSACTION
+                )}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1 text-sm text-muted-foreground hover:text-primary transition-colors"
+              >
+                {selectedBid.transactionHash.slice(0, 6)}...
+                {selectedBid.transactionHash.slice(-4)}
+                <ArrowUpRight size={12} />
+              </a>
+            )}
+          </div>
+
+          <div className="space-y-3">
+            {/* Bidder and Time on same line */}
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-xs text-muted-foreground mb-1">Bidder</p>
+                <a
+                  href={getExplorerLink(
+                    selectedBid.bidder,
+                    chainId,
+                    ExplorerDataType.ADDRESS
+                  )}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1 text-sm hover:text-primary transition-colors"
+                >
                   {selectedBid.bidder.slice(0, 6)}...
                   {selectedBid.bidder.slice(-4)}
-                </p>
+                  <ArrowUpRight size={12} />
+                </a>
               </div>
-              {selectedBid.sellToken && selectedBid.buyToken && (
-                <>
-                  <div>
-                    <p className="font-medium text-gray-600">Selling</p>
-                    <p className="font-semibold">
-                      {selectedBid.sellAmount?.toFixed(4)}{' '}
-                      {selectedBid.sellToken.symbol}
-                    </p>
-                    {selectedBid.sellAmountUSD && (
-                      <p className="text-xs text-muted-foreground">
-                        ${selectedBid.sellAmountUSD.toFixed(2)} USD
-                      </p>
-                    )}
-                  </div>
-                  <div>
-                    <p className="font-medium text-gray-600">Buying</p>
-                    <p className="font-semibold">
-                      {selectedBid.buyAmount?.toFixed(4)}{' '}
-                      {selectedBid.buyToken.symbol}
-                    </p>
-                    {selectedBid.buyAmountUSD && (
-                      <p className="text-xs text-muted-foreground">
-                        ${selectedBid.buyAmountUSD.toFixed(2)} USD
-                      </p>
-                    )}
-                  </div>
-                </>
-              )}
-              <div>
-                <p className="font-medium text-gray-600">Exchange Rate</p>
-                <p className="font-semibold">{selectedBid.price.toFixed(2)}%</p>
-              </div>
-              <div>
-                <p className="font-medium text-gray-600">Time</p>
-                <p className="font-semibold">
-                  {formatTime(selectedBid.timestamp)}
-                </p>
+              <div className="text-right">
+                <p className="text-xs text-muted-foreground mb-1">Time</p>
+                <p className="text-sm">{formatTime(selectedBid.timestamp)}</p>
               </div>
             </div>
-          </CardContent>
-        </Card>
+
+            {/* Token Exchange */}
+            {selectedBid.sellToken && selectedBid.buyToken && (
+              <div className="bg-muted/50 rounded-xl p-3 space-y-2">
+                {/* Selling */}
+                <div>
+                  <p className="text-xs text-muted-foreground mb-1">Selling</p>
+                  <div className="flex items-center gap-2">
+                    <TokenLogo
+                      chain={chainId}
+                      address={selectedBid.sellToken.address}
+                      symbol={selectedBid.sellToken.symbol}
+                      className="w-6 h-6"
+                    />
+                    <div className="flex-1">
+                      <div className="flex items-center gap-1">
+                        <span className="font-medium">
+                          {selectedBid.sellAmount?.toFixed(4)}
+                        </span>
+                        <a
+                          href={getExplorerLink(
+                            selectedBid.sellToken.address,
+                            chainId,
+                            ExplorerDataType.TOKEN
+                          )}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-sm text-legend hover:text-primary transition-colors flex items-center gap-0.5"
+                        >
+                          {selectedBid.sellToken.symbol}
+                          <ArrowUpRight size={10} />
+                        </a>
+                      </div>
+                      {selectedBid.sellAmountUSD &&
+                        selectedBid.sellAmountUSD > 0 && (
+                          <p className="text-xs text-muted-foreground">
+                            ${selectedBid.sellAmountUSD.toFixed(2)}
+                          </p>
+                        )}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Arrow */}
+                <div className="flex justify-center py-1">
+                  <div className="p-1 bg-background rounded-full">
+                    <ArrowDown size={14} className="text-muted-foreground" />
+                  </div>
+                </div>
+
+                {/* Buying */}
+                <div>
+                  <p className="text-xs text-muted-foreground mb-1">Buying</p>
+                  <div className="flex items-center gap-2">
+                    <TokenLogo
+                      chain={chainId}
+                      address={selectedBid.buyToken.address}
+                      symbol={selectedBid.buyToken.symbol}
+                      className="w-6 h-6"
+                    />
+                    <div className="flex-1">
+                      <div className="flex items-center gap-1">
+                        <span className="font-medium">
+                          {selectedBid.buyAmount?.toFixed(4)}
+                        </span>
+                        <a
+                          href={getExplorerLink(
+                            selectedBid.buyToken.address,
+                            chainId,
+                            ExplorerDataType.TOKEN
+                          )}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-sm text-legend hover:text-primary transition-colors flex items-center gap-0.5"
+                        >
+                          {selectedBid.buyToken.symbol}
+                          <ArrowUpRight size={10} />
+                        </a>
+                      </div>
+                      {selectedBid.buyAmountUSD &&
+                        selectedBid.buyAmountUSD > 0 && (
+                          <p className="text-xs text-muted-foreground">
+                            ${selectedBid.buyAmountUSD.toFixed(2)}
+                          </p>
+                        )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
       )}
     </div>
   )
