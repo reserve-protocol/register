@@ -77,7 +77,7 @@ const useRebalanceAuctions = () => {
           }
         )
         return data.auctions.sort((a, b) => {
-          return +b.endTime - +a.endTime
+          return +a.endTime - +b.endTime
         })
       } catch (e) {
         console.error('error fetching', e)

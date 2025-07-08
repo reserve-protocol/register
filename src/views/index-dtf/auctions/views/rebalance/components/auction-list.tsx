@@ -93,32 +93,33 @@ const AuctionBids = ({ auction }: { auction: Auction }) => {
 const AuctionItem = ({
   auction,
   index,
-  totalAuctions,
 }: {
   auction: Auction
   index: number
-  totalAuctions: number
 }) => {
   const isActive = +auction.endTime > getCurrentTime()
 
   return (
     <AccordionItem
       value={auction.id}
-      className="border-b-0 bg-muted/30 shadow-md rounded-2xl px-4"
+      className="border-b-0 bg-muted rounded-xl px-4"
     >
       <AccordionTrigger>
         <div className="flex items-center gap-2">
           <div
             className={cn(
-              'h-8 w-8 flex items-center justify-center rounded-full',
-              isActive ? 'bg-primary text-primary-foreground' : 'bg-muted'
+              'h-8 w-8 flex items-center justify-center rounded-full border border-primary',
+              isActive ? 'text-primary' : 'bg-primary text-primary-foreground'
             )}
           >
             {isActive ? <Spinner size={16} /> : <ReceiptText size={16} />}
           </div>
-          <h4 className={cn(isActive && 'text-primary')}>
-            Auction #{totalAuctions - index}
-          </h4>
+          <div className="text-left">
+            <h4 className="text-primary">Auction {index + 1}</h4>
+            <p className="text-legend font-normal text-xs">
+              {isActive ? 'Bidding is ongoing...' : 'Executed N trades'}
+            </p>
+          </div>
         </div>
       </AccordionTrigger>
       <AccordionContent>
@@ -160,38 +161,15 @@ const AuctionItem = ({
 const AuctionList = () => {
   const auctions = useAtomValue(rebalanceAuctionsAtom)
 
+  if (auctions.length === 0) return null
+
   return (
-    <Accordion type="single" collapsible className="flex flex-col gap-4 mt-4">
+    <Accordion type="single" collapsible className="flex flex-col gap-2 mt-4">
       {auctions.map((auction, index) => (
-        <AuctionItem
-          key={auction.id}
-          auction={auction}
-          index={index}
-          totalAuctions={auctions.length}
-        />
+        <AuctionItem key={auction.id} auction={auction} index={index} />
       ))}
     </Accordion>
   )
 }
 
-const RebalanceAuctions = () => {
-  const auctions = useAtomValue(rebalanceAuctionsAtom)
-
-  if (auctions.length === 0) return null
-
-  return (
-    <div className="bg-background p-4 rounded-3xl">
-      <div className="flex ">
-        <div>
-          <h4 className="text-primary flex items-center gap-1">
-            <ScrollText className="w-4 h-4 text-primary" />
-            Auctions
-          </h4>
-        </div>
-      </div>
-      <AuctionList />
-    </div>
-  )
-}
-
-export default RebalanceAuctions
+export default AuctionList
