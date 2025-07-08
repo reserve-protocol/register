@@ -1,12 +1,13 @@
 import { AuctionRound } from '@reserve-protocol/dtf-rebalance-lib'
 import { atom, useAtomValue } from 'jotai'
-import { ArrowRight, MousePointerClick } from 'lucide-react'
+import { ArrowLeftRight, ArrowRight, MousePointerClick } from 'lucide-react'
 import {
   rebalanceMetricsAtom,
   rebalancePercentAtom,
   rebalanceTokenMapAtom,
 } from '../atoms'
 import LaunchAuctionsButton from './launch-auctions-button'
+import DecimalDisplay from '@/components/decimal-display'
 
 const ROUND_TITLE = {
   [AuctionRound.EJECT]: 'Remove Tokens',
@@ -36,7 +37,7 @@ const RoundDescription = () => {
   const metrics = useAtomValue(rebalanceMetricsAtom)
 
   return (
-    <div className="mt-6">
+    <div className="p-4 md:p-6">
       <h1 className="text-2xl">{ROUND_TITLE[metrics?.round ?? 0]}</h1>
       <p className="text-legend">{description}</p>
     </div>
@@ -48,25 +49,26 @@ const Header = () => {
   const rebalancePercent = useAtomValue(rebalancePercentAtom)
 
   return (
-    <div className="flex">
-      <div>
-        <h4 className="text-primary flex items-center gap-1">
-          {!metrics?.round ? 'First up' : 'Next up'}
-        </h4>
+    <div className="flex p-4 md:p-6 pb-0 md:pb-2">
+      <div
+        className={
+          'h-8 w-8 flex items-center justify-center rounded-full bg-primary text-primary-foreground'
+        }
+      >
+        <ArrowLeftRight className="w-4 h-4" />
       </div>
       <div className="ml-auto flex items-center flex-shrink-0 gap-1">
-        <span className="text-legend">
-          {metrics?.relativeProgression.toFixed(2)}%
+        <span className="text-legend text-sm">To trade:</span>
+        <span>
+          $<DecimalDisplay value={metrics?.auctionSize ?? 0} decimals={0} />
         </span>
-        <ArrowRight className="w-4 h-4 text-primary" />
-        <span className="text-primary">{rebalancePercent.toFixed(2)}%</span>
       </div>
     </div>
   )
 }
 
 const RebalanceAction = () => (
-  <div className="bg-background p-4 rounded-3xl">
+  <div className="bg-background p-2 rounded-3xl">
     <Header />
     <RoundDescription />
     <LaunchAuctionsButton />

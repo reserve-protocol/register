@@ -31,7 +31,7 @@ const RebalanceHeader = () => {
   const rebalance = useAtomValue(currentRebalanceAtom)
 
   return (
-    <div className="flex items-center gap-4 p-4 border-b">
+    <div className="flex items-center gap-4 p-4 md:p-6 border-b border-secondary">
       <Link to={`../`}>
         <Button variant="muted" size="icon-rounded">
           <ArrowLeft />

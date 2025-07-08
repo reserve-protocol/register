@@ -95,7 +95,7 @@ const LaunchAuctionsButton = () => {
   return (
     <div className="flex flex-col gap-2">
       <Button
-        className="mt-4 w-full gap-2"
+        className="rounded-xl w-full gap-2"
         disabled={!isValid || isPending || isAuctionOngoing || isLaunching}
         onClick={handleStartAuctions}
       >
@@ -107,7 +107,7 @@ const LaunchAuctionsButton = () => {
             </span>
           </>
         ) : (
-          'Start auctions'
+          'Start auction'
         )}
       </Button>
       {error && <div className="text-red-500">{error}</div>}
