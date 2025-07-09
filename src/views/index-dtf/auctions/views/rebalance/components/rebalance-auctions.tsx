@@ -2,136 +2,76 @@ import Spinner from '@/components/ui/spinner'
 import useTimeRemaining from '@/hooks/use-time-remaining'
 import { cn } from '@/lib/utils'
 import { getCurrentTime } from '@/utils'
-import { atom, useAtomValue } from 'jotai'
+import { useAtomValue } from 'jotai'
 import { Clock } from 'lucide-react'
 import { useMemo } from 'react'
 import { formatUnits } from 'viem'
-import { Auction, rebalanceAuctionsAtom } from '../atoms'
+import { Auction, activeAuctionAtom } from '../atoms'
 import useRebalanceParams from '../hooks/use-rebalance-params'
 import AuctionBidsChart from './auction-bids-chart'
 
-// Derived atom that returns the current active auction with its index or null
-export const activeAuctionAtom = atom<{
-  auction: Auction
-  index: number
-} | null>((get) => {
-  const auctions = get(rebalanceAuctionsAtom)
-  const currentTime = getCurrentTime()
+// Constants
+const SPINNER_SIZE = 16
+const CLOCK_ICON_SIZE = 4
 
-  // MOCK: For testing - find an auction with more than 2 bids and make it active
-  // If no auction with > 2 bids, take the first auction with any bids
-  let auctionWithBidsIndex = auctions.findIndex(
-    (auction) => auction.bids.length > 2
-  )
+// Helper functions
+const formatTokenAmount = (amount: string, decimals: number): number =>
+  parseFloat(formatUnits(BigInt(amount), decimals))
 
-  if (auctionWithBidsIndex === -1) {
-    // Fallback: find any auction with bids
-    auctionWithBidsIndex = auctions.findIndex(
-      (auction) => auction.bids.length > 0
-    )
-  }
+const getTokenPrice = (prices: any, tokenAddress: string): number =>
+  prices?.[tokenAddress.toLowerCase()]?.currentPrice || 0
 
-  // If still no auction with bids, just take the first auction
-  if (auctionWithBidsIndex === -1 && auctions.length > 0) {
-    auctionWithBidsIndex = 0
-  }
-
-  if (auctionWithBidsIndex !== -1) {
-    const originalAuction = auctions[auctionWithBidsIndex]
-    const mockAuction = {
-      ...originalAuction,
-      bids: [...originalAuction.bids], // Deep copy bids array
-    }
-
-    // Set auction to be active: started 20 minutes ago, ends in 10 minutes
-    const mockStartTime = currentTime - 20 * 60 // 20 minutes ago
-    const mockEndTime = currentTime + 10 * 60 // 10 minutes from now
-
-    mockAuction.startTime = mockStartTime.toString()
-    mockAuction.endTime = mockEndTime.toString()
-
-    // Update bid timestamps to be within the auction time range
-    if (mockAuction.bids.length > 0) {
-      const auctionDuration = mockEndTime - mockStartTime
-      mockAuction.bids = mockAuction.bids.map((bid, index) => ({
-        ...bid,
-        timestamp: Math.floor(
-          mockStartTime +
-            (auctionDuration * (index + 1)) / (mockAuction.bids.length + 1)
-        ).toString(),
-      }))
-    }
-
-    return {
-      auction: mockAuction,
-      index: auctionWithBidsIndex + 1,
-    }
-  }
-
-  // Original logic - find actually active auction
-  const activeAuctionIndex = auctions.findIndex(
-    (auction) => parseInt(auction.endTime) > currentTime
-  )
-
-  if (activeAuctionIndex === -1) {
-    return null
-  }
-
-  return {
-    auction: auctions[activeAuctionIndex],
-    index: activeAuctionIndex + 1, // 1-based index for display
-  }
-})
+const calculateOptimalTime = (startTime: number, endTime: number): number =>
+  startTime + (endTime - startTime) / 2
 
 const AuctionBids = ({ auction }: { auction: Auction }) => {
   const rebalanceParams = useRebalanceParams()
 
-  // Transform bid data for the chart
   const chartData = useMemo(() => {
+    const startTime = parseInt(auction.startTime)
+    const endTime = parseInt(auction.endTime)
+
     if (!auction.bids.length) {
       return {
         bids: [],
-        startTime: parseInt(auction.startTime),
-        endTime: parseInt(auction.endTime),
-        optimalTime:
-          parseInt(auction.startTime) +
-          (parseInt(auction.endTime) - parseInt(auction.startTime)) / 2,
+        startTime,
+        endTime,
+        optimalTime: calculateOptimalTime(startTime, endTime),
         currentTime: getCurrentTime(),
       }
     }
 
     const transformedBids = auction.bids.map((bid) => {
-      // Calculate the effective exchange rate
-      const sellAmount = parseFloat(
-        formatUnits(BigInt(bid.sellAmount), bid.sellToken.decimals)
+      // Parse token amounts
+      const sellAmount = formatTokenAmount(
+        bid.sellAmount,
+        bid.sellToken.decimals
       )
-      const buyAmount = parseFloat(
-        formatUnits(BigInt(bid.buyAmount), bid.buyToken.decimals)
+      const buyAmount = formatTokenAmount(bid.buyAmount, bid.buyToken.decimals)
+
+      // Get USD prices
+      const sellTokenPrice = getTokenPrice(
+        rebalanceParams?.prices,
+        bid.sellToken.address
       )
-
-      // Get USD prices for tokens - check if prices exist and use currentPrice
-      const sellTokenData =
-        rebalanceParams?.prices?.[bid.sellToken.address.toLowerCase()]
-      const buyTokenData =
-        rebalanceParams?.prices?.[bid.buyToken.address.toLowerCase()]
-
-      const sellTokenPrice = sellTokenData?.currentPrice || 0
-      const buyTokenPrice = buyTokenData?.currentPrice || 0
+      const buyTokenPrice = getTokenPrice(
+        rebalanceParams?.prices,
+        bid.buyToken.address
+      )
 
       // Calculate USD values
       const sellAmountUSD = sellAmount * sellTokenPrice
       const buyAmountUSD = buyAmount * buyTokenPrice
 
-      // Calculate price as a percentage (0-100) - this is a simplified calculation
-      // In a real implementation, you might want to use the auction's price limits
-      const effectiveRate = buyAmount / sellAmount
-      const price = Math.min(100, Math.max(0, effectiveRate * 10)) // Simplified price calculation
+      // Calculate exchange rate as percentage
+      const exchangeRate = buyAmount / sellAmount
+      const price = Math.min(100, Math.max(0, exchangeRate * 10))
 
       return {
         id: bid.id,
         timestamp: parseInt(bid.timestamp),
         price,
-        amount: sellAmountUSD, // Use USD value for amount
+        amount: sellAmountUSD,
         bidder: bid.bidder,
         transactionHash: bid.transactionHash,
         sellToken: bid.sellToken,
@@ -145,11 +85,9 @@ const AuctionBids = ({ auction }: { auction: Auction }) => {
 
     return {
       bids: transformedBids,
-      startTime: parseInt(auction.startTime),
-      endTime: parseInt(auction.endTime),
-      optimalTime:
-        parseInt(auction.startTime) +
-        (parseInt(auction.endTime) - parseInt(auction.startTime)) / 2,
+      startTime,
+      endTime,
+      optimalTime: calculateOptimalTime(startTime, endTime),
       currentTime: getCurrentTime(),
     }
   }, [auction, rebalanceParams])
@@ -176,8 +114,8 @@ const TimeRemaining = ({ auction }: { auction: Auction }) => {
 
   return (
     <div className="ml-auto flex items-center bg-primary text-primary-foreground gap-1 p-2 rounded-full">
-      <Clock className="w-4 h-4" />
-      <span className="  text-xs ">{timeRemaining}</span>
+      <Clock className={`w-${CLOCK_ICON_SIZE} h-${CLOCK_ICON_SIZE}`} />
+      <span className="text-xs">{timeRemaining}</span>
     </div>
   )
 }
@@ -192,12 +130,8 @@ const AuctionItem = ({
   return (
     <div className="border-b-0 rounded-xl">
       <div className="flex items-center gap-2 p-4">
-        <div
-          className={cn(
-            'h-8 w-8 flex items-center justify-center rounded-full bg-primary text-primary-foreground'
-          )}
-        >
-          <Spinner size={16} />
+        <div className="h-8 w-8 flex items-center justify-center rounded-full bg-primary text-primary-foreground">
+          <Spinner size={SPINNER_SIZE} />
         </div>
         <div className="text-left">
           <h4 className="text-primary">Auction {index + 1}</h4>

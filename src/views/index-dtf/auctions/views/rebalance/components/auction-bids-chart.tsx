@@ -19,6 +19,41 @@ import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { useAtomValue } from 'jotai'
 import { chainIdAtom } from '@/state/atoms'
 
+// Chart constants
+const CHART_HEIGHT = 200
+const CURVE_STEEPNESS = -3.5
+const MIN_PRICE = 0.5
+const MAX_PRICE = 100
+const CHART_POINTS = 200
+const UPDATE_INTERVAL = 60000 // 1 minute
+const CHART_MARGINS = { top: 0, right: 0, left: -32, bottom: 0 }
+
+// UI constants
+const TOKEN_LOGO_SIZE = "w-6 h-6"
+const ARROW_ICON_SIZE = 12
+const ARROW_ICON_SIZE_SMALL = 10
+const ARROW_DOWN_ICON_SIZE = 14
+
+// Color constants
+const COLORS = {
+  PAST_PRICE: '#0151AF',
+  FUTURE_PRICE: '#000000',
+  BID_DOT: '#0151AF',
+  BID_DOT_STROKE: '#ffffff',
+}
+
+// Utility functions
+const formatAddress = (address: string): string => 
+  `${address.slice(0, 6)}...${address.slice(-4)}`
+
+const formatUsdAmount = (amount: number): string => 
+  `$${amount.toFixed(2)}`
+
+const formatTime = (timestamp: number): string => {
+  const date = new Date(timestamp * 1000)
+  return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+}
+
 interface Bid {
   id: string
   timestamp: number
@@ -69,31 +104,29 @@ export default function AuctionBidsChart({
     const interval = setInterval(() => {
       setCurrentTimeState((prev) => {
         const newTime = prev + 60 // Add 60 seconds (1 minute)
-        return newTime <= endTime ? newTime : endTime // Don't go past endTime
+        return newTime <= endTime ? newTime : endTime
       })
-    }, 60000) // Update every minute
+    }, UPDATE_INTERVAL)
 
     return () => clearInterval(interval)
   }, [endTime])
 
   // Generate logarithmic price curve data
   const chartData = useMemo(() => {
-    const points = 200
     const data = []
 
-    for (let i = 0; i <= points; i++) {
-      const timeProgress = i / points
+    for (let i = 0; i <= CHART_POINTS; i++) {
+      const timeProgress = i / CHART_POINTS
       const timestamp = startTime + (endTime - startTime) * timeProgress
 
-      // Logarithmic decay curve - make sure it goes to near 0
-      const price = 100 * Math.exp(-3.5 * timeProgress) // Steeper curve
+      // Logarithmic decay curve
+      const price = MAX_PRICE * Math.exp(CURVE_STEEPNESS * timeProgress)
 
       data.push({
         timestamp,
-        price: Math.max(price, 0.5), // Lower minimum to reach bottom
-        pastPrice: timestamp <= currentTimeState ? Math.max(price, 0.5) : null,
-        futurePrice:
-          timestamp >= currentTimeState ? Math.max(price, 0.5) : null,
+        price: Math.max(price, MIN_PRICE),
+        pastPrice: timestamp <= currentTimeState ? Math.max(price, MIN_PRICE) : null,
+        futurePrice: timestamp >= currentTimeState ? Math.max(price, MIN_PRICE) : null,
       })
     }
 
@@ -104,32 +137,28 @@ export default function AuctionBidsChart({
   const bidData = useMemo(() => {
     return bids.map((bid) => {
       const timeProgress = (bid.timestamp - startTime) / (endTime - startTime)
-      const curvePrice = 100 * Math.exp(-3.5 * timeProgress)
+      const curvePrice = MAX_PRICE * Math.exp(CURVE_STEEPNESS * timeProgress)
 
       return {
         ...bid,
-        curvePrice: Math.max(curvePrice, 0.5),
+        curvePrice: Math.max(curvePrice, MIN_PRICE),
       }
     })
   }, [bids, startTime, endTime])
 
-  const formatTime = (timestamp: number) => {
-    const date = new Date(timestamp * 1000)
-    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-  }
 
   const chartConfig = {
     pastPrice: {
       label: 'Past Price',
-      color: '#2563eb', // Blue
+      color: COLORS.PAST_PRICE,
     },
     futurePrice: {
       label: 'Future Price',
-      color: '#000000', // Black
+      color: COLORS.FUTURE_PRICE,
     },
     bids: {
       label: 'Bids',
-      color: '#2563eb', // Blue for bid dots
+      color: COLORS.BID_DOT,
     },
   }
 
@@ -141,17 +170,17 @@ export default function AuctionBidsChart({
     <div className="w-full space-y-4">
       <ChartContainer
         config={chartConfig}
-        className="w-full h-[200px] [&>div]:!w-full"
+        className="w-full h-[200px] [&>div]:!w-full text-foreground"
       >
         <ResponsiveContainer width="100%" height="100%">
           <LineChart
             data={chartData}
-            margin={{ top: 0, right: 0, left: -32, bottom: 0 }}
+            margin={CHART_MARGINS}
           >
             {/* Y-axis */}
             <YAxis
               domain={[0, 100]}
-              axisLine={true}
+              axisLine={{ stroke: 'currentColor' }}
               tickLine={false}
               tick={false}
               label={{
@@ -162,7 +191,7 @@ export default function AuctionBidsChart({
                 style: {
                   textAnchor: 'middle',
                   fontSize: '12px',
-                  fill: '#333',
+                  fill: 'currentColor',
                 },
               }}
             />
@@ -172,7 +201,7 @@ export default function AuctionBidsChart({
               type="number"
               dataKey="timestamp"
               domain={[startTime, endTime]}
-              axisLine={true}
+              axisLine={{ stroke: 'currentColor' }}
               tickLine={false}
               tick={false}
               label={{
@@ -182,7 +211,7 @@ export default function AuctionBidsChart({
                 style: {
                   textAnchor: 'middle',
                   fontSize: '12px',
-                  fill: '#333',
+                  fill: 'currentColor',
                 },
               }}
             />
@@ -191,7 +220,7 @@ export default function AuctionBidsChart({
             <Line
               type="monotone"
               dataKey="pastPrice"
-              stroke="#0151AF"
+              stroke={COLORS.PAST_PRICE}
               strokeWidth={2}
               dot={false}
               activeDot={false}
@@ -203,7 +232,7 @@ export default function AuctionBidsChart({
             <Line
               type="monotone"
               dataKey="futurePrice"
-              stroke="#000000"
+              stroke={COLORS.FUTURE_PRICE}
               strokeWidth={2}
               dot={false}
               activeDot={false}
@@ -214,7 +243,7 @@ export default function AuctionBidsChart({
             {/* Optimal time reference line */}
             <ReferenceLine
               x={optimalTime}
-              stroke="#0151AF"
+              stroke={COLORS.PAST_PRICE}
               strokeDasharray="4 4"
               strokeWidth={1.5}
             />
@@ -226,8 +255,8 @@ export default function AuctionBidsChart({
                 x={bid.timestamp}
                 y={bid.curvePrice}
                 r={4}
-                fill="#0151AF"
-                stroke="#ffffff"
+                fill={COLORS.BID_DOT}
+                stroke={COLORS.BID_DOT_STROKE}
                 strokeWidth={2}
                 style={{ cursor: 'pointer' }}
                 onClick={() => handleBidClick(bid)}
@@ -255,9 +284,8 @@ export default function AuctionBidsChart({
                 rel="noopener noreferrer"
                 className="flex items-center gap-1 text-sm text-muted-foreground hover:text-primary transition-colors"
               >
-                {selectedBid.transactionHash.slice(0, 6)}...
-                {selectedBid.transactionHash.slice(-4)}
-                <ArrowUpRight size={12} />
+                {formatAddress(selectedBid.transactionHash)}
+                <ArrowUpRight size={ARROW_ICON_SIZE} />
               </a>
             )}
           </div>
@@ -277,9 +305,8 @@ export default function AuctionBidsChart({
                   rel="noopener noreferrer"
                   className="flex items-center gap-1 text-sm hover:text-primary transition-colors"
                 >
-                  {selectedBid.bidder.slice(0, 6)}...
-                  {selectedBid.bidder.slice(-4)}
-                  <ArrowUpRight size={12} />
+                  {formatAddress(selectedBid.bidder)}
+                  <ArrowUpRight size={ARROW_ICON_SIZE} />
                 </a>
               </div>
               <div className="text-right">
@@ -299,7 +326,7 @@ export default function AuctionBidsChart({
                       chain={chainId}
                       address={selectedBid.sellToken.address}
                       symbol={selectedBid.sellToken.symbol}
-                      className="w-6 h-6"
+                      className={TOKEN_LOGO_SIZE}
                     />
                     <div className="flex-1">
                       <div className="flex items-center gap-1">
@@ -317,13 +344,13 @@ export default function AuctionBidsChart({
                           className="text-sm text-legend hover:text-primary transition-colors flex items-center gap-0.5"
                         >
                           {selectedBid.sellToken.symbol}
-                          <ArrowUpRight size={10} />
+                          <ArrowUpRight size={ARROW_ICON_SIZE_SMALL} />
                         </a>
                       </div>
                       {selectedBid.sellAmountUSD &&
                         selectedBid.sellAmountUSD > 0 && (
                           <p className="text-xs text-muted-foreground">
-                            ${selectedBid.sellAmountUSD.toFixed(2)}
+                            {formatUsdAmount(selectedBid.sellAmountUSD)}
                           </p>
                         )}
                     </div>
@@ -333,7 +360,7 @@ export default function AuctionBidsChart({
                 {/* Arrow */}
                 <div className="flex justify-center py-1">
                   <div className="p-1 bg-background rounded-full">
-                    <ArrowDown size={14} className="text-muted-foreground" />
+                    <ArrowDown size={ARROW_DOWN_ICON_SIZE} className="text-muted-foreground" />
                   </div>
                 </div>
 
@@ -345,7 +372,7 @@ export default function AuctionBidsChart({
                       chain={chainId}
                       address={selectedBid.buyToken.address}
                       symbol={selectedBid.buyToken.symbol}
-                      className="w-6 h-6"
+                      className={TOKEN_LOGO_SIZE}
                     />
                     <div className="flex-1">
                       <div className="flex items-center gap-1">
@@ -363,13 +390,13 @@ export default function AuctionBidsChart({
                           className="text-sm text-legend hover:text-primary transition-colors flex items-center gap-0.5"
                         >
                           {selectedBid.buyToken.symbol}
-                          <ArrowUpRight size={10} />
+                          <ArrowUpRight size={ARROW_ICON_SIZE_SMALL} />
                         </a>
                       </div>
                       {selectedBid.buyAmountUSD &&
                         selectedBid.buyAmountUSD > 0 && (
                           <p className="text-xs text-muted-foreground">
-                            ${selectedBid.buyAmountUSD.toFixed(2)}
+                            {formatUsdAmount(selectedBid.buyAmountUSD)}
                           </p>
                         )}
                     </div>

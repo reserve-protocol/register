@@ -82,3 +82,25 @@ export const isAuctionOngoingAtom = atom((get) => {
 })
 
 export const priceVolatilityAtom = atom<keyof typeof PRICE_VOLATILITY>('MEDIUM')
+
+// Derived atom that returns the current active auction with its index or null
+export const activeAuctionAtom = atom<{
+  auction: Auction
+  index: number
+} | null>((get) => {
+  const auctions = get(rebalanceAuctionsAtom)
+  const currentTime = Math.floor(Date.now() / 1000)
+
+  const activeAuctionIndex = auctions.findIndex(
+    (auction) => parseInt(auction.endTime) > currentTime
+  )
+
+  if (activeAuctionIndex === -1) {
+    return null
+  }
+
+  return {
+    auction: auctions[activeAuctionIndex],
+    index: activeAuctionIndex + 1, // 1-based index for display
+  }
+})

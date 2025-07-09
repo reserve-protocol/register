@@ -2,6 +2,7 @@ import { AuctionRound } from '@reserve-protocol/dtf-rebalance-lib'
 import { atom, useAtomValue } from 'jotai'
 import { ArrowLeftRight, ArrowRight, MousePointerClick } from 'lucide-react'
 import {
+  activeAuctionAtom,
   rebalanceMetricsAtom,
   rebalancePercentAtom,
   rebalanceTokenMapAtom,
@@ -37,7 +38,7 @@ const RoundDescription = () => {
   const metrics = useAtomValue(rebalanceMetricsAtom)
 
   return (
-    <div className="p-4 md:p-6">
+    <div className="p-2 md:p-4">
       <h1 className="text-2xl">{ROUND_TITLE[metrics?.round ?? 0]}</h1>
       <p className="text-legend">{description}</p>
     </div>
@@ -46,10 +47,9 @@ const RoundDescription = () => {
 
 const Header = () => {
   const metrics = useAtomValue(rebalanceMetricsAtom)
-  const rebalancePercent = useAtomValue(rebalancePercentAtom)
 
   return (
-    <div className="flex p-4 md:p-6 pb-0 md:pb-2">
+    <div className="flex p-2 md:p-4 pb-0 md:pb-2">
       <div
         className={
           'h-8 w-8 flex items-center justify-center rounded-full bg-primary text-primary-foreground'
@@ -67,12 +67,21 @@ const Header = () => {
   )
 }
 
-const RebalanceAction = () => (
-  <div className="bg-background p-2 rounded-3xl">
-    <Header />
-    <RoundDescription />
-    <LaunchAuctionsButton />
-  </div>
-)
+const RebalanceAction = () => {
+  const activeAuction = useAtomValue(activeAuctionAtom)
+
+  // Don't show the action component if there's an active auction
+  if (activeAuction) {
+    return null
+  }
+
+  return (
+    <div className="bg-background p-2 rounded-3xl">
+      <Header />
+      <RoundDescription />
+      <LaunchAuctionsButton />
+    </div>
+  )
+}
 
 export default RebalanceAction
