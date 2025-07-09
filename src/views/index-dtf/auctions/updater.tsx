@@ -11,6 +11,7 @@ const query = gql`
   query getGovernanceStats($dtf: String!) {
     rebalances(where: { dtf: $dtf }, orderBy: timestamp, orderDirection: desc) {
       id
+      nonce
       tokens {
         address
         name

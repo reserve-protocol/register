@@ -1,42 +1,125 @@
-import { useEffect, useState } from 'react'
+import { chainIdAtom } from '@/state/atoms'
+import { iTokenAddressAtom, indexDTFRebalanceControlAtom } from '@/state/dtf/atoms'
+import { useQuery } from '@tanstack/react-query'
+import { useAtomValue } from 'jotai'
+import { rebalancesByProposalAtom } from '../../../atoms'
 
 export interface RebalanceMetrics {
   auctionsRun: number
+  totalRebalancedUsd: number // total dollar amount traded
   priceImpact: number // percentage
   rebalanceAccuracy: number // percentage
   deviationFromTarget: number // percentage
 }
 
+// API Response Types
+interface RebalanceApiToken {
+  address: string
+  name: string
+  decimals: number
+}
+
+interface RebalanceApiBid {
+  id: string
+  bidder: string
+  sellToken: RebalanceApiToken
+  buyToken: RebalanceApiToken
+  sellAmount: string
+  buyAmount: string
+  transactionHash: string
+  blockNumber: number
+  timestamp: number
+  sellTokenPrice: number
+  buyTokenPrice: number
+  sellAmountUsd: number
+  buyAmountUsd: number
+  priceImpactUsd: number
+  priceImpactPercent: number
+  price: number
+}
+
+interface RebalanceApiAuction {
+  id: string
+  startTime: number
+  endTime: number
+  bids: RebalanceApiBid[]
+  totalSellAmountUsd: number
+  totalBuyAmountUsd: number
+  totalPriceImpactUsd: number
+  avgPriceImpactPercent: number
+}
+
+interface RebalanceApiResponse {
+  id: string
+  nonce: number
+  timestamp: number
+  availableUntil: number
+  blockNumber: number
+  tokens: RebalanceApiToken[]
+  auctions: RebalanceApiAuction[]
+  // Analytics fields are optional (not present when no auctions)
+  totalSellAmountUsd?: number
+  totalBuyAmountUsd?: number
+  totalPriceImpactUsd?: number
+  avgPriceImpactPercent?: number
+  rebalanceGainLossUsd?: number
+  rebalanceGainLossPercent?: number
+  totalRebalancedUsd?: number
+  totalBidsCount?: number
+  marketCapAtStart?: number
+  trackingBasketDeviation?: number
+  nativeBasketDeviation?: number
+}
+
 /**
- * Mock hook to simulate fetching rebalance metrics
- * In production, this would fetch from an API or subgraph
+ * Hook to fetch rebalance metrics from the API
  */
 export const useRebalanceMetrics = (proposalId: string) => {
-  const [loading, setLoading] = useState(true)
-  const [metrics, setMetrics] = useState<RebalanceMetrics | null>(null)
+  const chainId = useAtomValue(chainIdAtom)
+  const dtfAddress = useAtomValue(iTokenAddressAtom)
+  const rebalancesByProposal = useAtomValue(rebalancesByProposalAtom)
+  const isTrackingDTF = useAtomValue(indexDTFRebalanceControlAtom) === 'tracking'
 
-  useEffect(() => {
-    // Reset state when proposalId changes
-    setLoading(true)
-    setMetrics(null)
+  const rebalanceData = rebalancesByProposal?.[proposalId]
 
-    // Simulate API call with random delay between 1-2 seconds
-    const delay = 1000 + Math.random() * 1000
-    const timeout = setTimeout(() => {
-      // Generate mock metrics with some randomness for realism
-      const mockMetrics: RebalanceMetrics = {
-        auctionsRun: Math.floor(Math.random() * 8) + 1, // 1-8 auctions
-        priceImpact: Number((Math.random() * 2).toFixed(2)), // 0-2%
-        rebalanceAccuracy: Number((95 + Math.random() * 4.9).toFixed(1)), // 95-99.9%
-        deviationFromTarget: Number((Math.random() * 1.5).toFixed(2)), // 0-1.5%
+  const { data: apiResponse, isLoading } = useQuery({
+    queryKey: ['rebalance-metrics', chainId, dtfAddress, rebalanceData?.rebalance.nonce],
+    queryFn: async () => {
+      if (!rebalanceData?.rebalance.nonce) {
+        throw new Error('Nonce not found for rebalance')
       }
 
-      setMetrics(mockMetrics)
-      setLoading(false)
-    }, delay)
+      const response = await fetch(
+        `https://api-staging.reserve.org/dtf/rebalance?chainId=${chainId}&address=${dtfAddress}&nonce=${rebalanceData.rebalance.nonce}`
+      )
 
-    return () => clearTimeout(timeout)
-  }, [proposalId])
+      if (!response.ok) {
+        throw new Error('Failed to fetch rebalance metrics')
+      }
 
-  return { loading, metrics }
+      const data: RebalanceApiResponse[] = await response.json()
+      
+      // The API returns an array, we want the first item
+      return data[0] || null
+    },
+    enabled: !!chainId && !!dtfAddress && !!rebalanceData?.rebalance.nonce,
+  })
+
+  const metrics: RebalanceMetrics | null = apiResponse
+    ? {
+        auctionsRun: apiResponse.auctions.length,
+        totalRebalancedUsd: apiResponse.totalRebalancedUsd ?? 0,
+        priceImpact: Math.abs(apiResponse.avgPriceImpactPercent ?? 0),
+        rebalanceAccuracy: apiResponse.auctions.length === 0 
+          ? 0 
+          : 100 - Math.abs(apiResponse.avgPriceImpactPercent ?? 0),
+        deviationFromTarget: Math.abs(
+          isTrackingDTF 
+            ? (apiResponse.trackingBasketDeviation ?? 0)
+            : (apiResponse.nativeBasketDeviation ?? 0)
+        ),
+      }
+    : null
+
+  return { loading: isLoading, metrics }
 }

@@ -1,5 +1,6 @@
 import { Slider } from '@/components/ui/slider'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
+import { devModeAtom } from '@/state/atoms'
 import { useAtom, useAtomValue } from 'jotai'
 import {
   isAuctionOngoingAtom,
@@ -76,6 +77,13 @@ const ExpectedPriceVolatility = () => {
 }
 
 const RebalanceDebug = () => {
+  const isDevMode = useAtomValue(devModeAtom)
+
+  // Don't show debug UI if not in dev mode
+  if (!isDevMode) {
+    return null
+  }
+
   return (
     <div className="bg-background p-4 rounded-3xl">
       <div className="flex">

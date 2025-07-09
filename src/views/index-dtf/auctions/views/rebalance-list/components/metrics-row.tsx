@@ -1,4 +1,6 @@
+import DecimalDisplay from '@/components/decimal-display'
 import { Skeleton } from '@/components/ui/skeleton'
+import { formatPercentage } from '@/utils'
 import { Activity, TrendingUp, BarChart3, Target } from 'lucide-react'
 import { useRebalanceMetrics } from '../hooks/use-rebalance-metrics'
 
@@ -14,8 +16,8 @@ export const MetricsRow = ({ proposalId }: { proposalId: string }) => {
           {!metrics ? (
             <Skeleton className="h-5 w-20" />
           ) : (
-            <p className="text-xs md:text-sm font-medium">
-              {metrics.rebalanceAccuracy}%
+            <p className="text-xs md:text-sm">
+              {formatPercentage(metrics.rebalanceAccuracy)}
             </p>
           )}
         </div>
@@ -24,12 +26,14 @@ export const MetricsRow = ({ proposalId }: { proposalId: string }) => {
       <div className="flex flex-col justify-center gap-3 p-4 md:p-6 border-r border-secondary">
         <Activity className="h-4 w-4 shrink-0" />
         <div className="min-w-0">
-          <p className="text-xs text-legend mb-1">Auctions run</p>
+          <p className="text-xs text-legend mb-1">
+            {metrics ? `${metrics.auctionsRun} Auction${metrics.auctionsRun !== 1 ? 's' : ''} run` : 'Auctions run'}
+          </p>
           {!metrics ? (
             <Skeleton className="h-5 w-20" />
           ) : (
-            <p className="text-xs md:text-sm font-medium truncate">
-              ${metrics?.auctionsRun}.34k Traded
+            <p className="text-xs md:text-sm truncate">
+              $<DecimalDisplay value={metrics.totalRebalancedUsd} decimals={0} /> Traded
             </p>
           )}
         </div>
@@ -42,9 +46,8 @@ export const MetricsRow = ({ proposalId }: { proposalId: string }) => {
           {!metrics ? (
             <Skeleton className="h-5 w-20" />
           ) : (
-            <p className="text-xs md:text-sm font-medium text-destructive truncate">
-              -{metrics?.priceImpact}% ($
-              {(metrics?.priceImpact * 5.5).toFixed(2)}k)
+            <p className="text-xs md:text-sm text-destructive truncate">
+              {metrics.priceImpact > 0 ? '-' : ''}{formatPercentage(metrics.priceImpact)}
             </p>
           )}
         </div>

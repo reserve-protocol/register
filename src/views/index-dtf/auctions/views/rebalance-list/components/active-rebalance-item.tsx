@@ -62,7 +62,7 @@ const ActiveRebalanceItem = ({ rebalance }: ActiveRebalanceItemProps) => {
 
   return (
     <div
-      className="bg-card rounded-3xl shadow-sm hover:shadow-md transition-shadow duration-300 md:w-[706px]"
+      className="bg-card rounded-3xl shadow-sm hover:shadow-md transition-shadow duration-300 md:w-[706px] cursor-pointer"
       role="button"
       onClick={() => navigate(`rebalance/${rebalance.proposal.id}`)}
     >

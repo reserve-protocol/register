@@ -5,6 +5,7 @@ import { governanceProposalsAtom } from '../governance/atoms'
 
 export type Rebalance = {
   id: string
+  nonce: string
   tokens: Token[]
   priceControl: string
   weightLowLimit: string[]
