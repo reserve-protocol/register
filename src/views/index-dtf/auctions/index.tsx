@@ -7,7 +7,7 @@ const IndexDTFAuctions = () => {
 
   return (
     <div className="container">
-      <div className="flex flex-col items-center sm:justify-start md:justify-center gap-2 bg-secondary/30 border-2 border-secondary min-h-[calc(100vh-80px)] dark:bg-card rounded-4xl lg:mr-2 py-4">
+      <div className="flex flex-col items-center sm:justify-start md:justify-center gap-2 bg-secondary  min-h-[calc(100vh-80px)] rounded-4xl lg:mr-2 py-4">
         <Outlet />
         <Updater />
       </div>

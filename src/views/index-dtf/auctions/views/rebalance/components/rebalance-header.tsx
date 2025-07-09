@@ -37,20 +37,17 @@ const RebalanceHeader = () => {
           <ArrowLeft />
         </Button>
       </Link>
-      <div>
-        <h4 className="text-legend text-sm">Rebalance proposal</h4>
-        {!!rebalance ? (
-          <Link
-            to={`../../${ROUTES.GOVERNANCE_PROPOSAL}/${rebalance?.proposal.id}`}
-            target="_blank"
-            className="underline"
-          >
-            {getProposalTitle(rebalance.proposal.description)}
-          </Link>
-        ) : (
-          <Skeleton className="w-24 h-6" />
-        )}
-      </div>
+      {!!rebalance ? (
+        <Link
+          to={`../../${ROUTES.GOVERNANCE_PROPOSAL}/${rebalance?.proposal.id}`}
+          target="_blank"
+          className="underline"
+        >
+          {getProposalTitle(rebalance.proposal.description)}
+        </Link>
+      ) : (
+        <Skeleton className="w-24 h-6" />
+      )}
       <TimeRemaining />
     </div>
   )

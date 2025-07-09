@@ -93,7 +93,7 @@ const LaunchAuctionsButton = () => {
   }
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 p-2">
       <Button
         className="rounded-xl w-full gap-2"
         disabled={!isValid || isPending || isAuctionOngoing || isLaunching}

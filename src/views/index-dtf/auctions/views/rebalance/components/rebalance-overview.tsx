@@ -1,12 +1,12 @@
-import { ArrowLeftRight, ArrowRight, Target } from 'lucide-react'
-import { rebalanceAuctionsAtom, rebalanceMetricsAtom } from '../atoms'
-import { atom, useAtomValue } from 'jotai'
-import { formatCurrency, formatPercentage } from '@/utils'
+import DecimalDisplay from '@/components/decimal-display'
 import { Skeleton } from '@/components/ui/skeleton'
-import useRebalanceParams from '../hooks/use-rebalance-params'
+import { formatPercentage } from '@/utils'
+import { atom, useAtomValue } from 'jotai'
+import { ArrowLeftRight, Target } from 'lucide-react'
 import { useMemo } from 'react'
 import { formatUnits } from 'viem'
-import DecimalDisplay from '@/components/decimal-display'
+import { rebalanceAuctionsAtom, rebalanceMetricsAtom } from '../atoms'
+import useRebalanceParams from '../hooks/use-rebalance-params'
 
 const trackingErrorAtom = atom((get) => {
   const metrics = get(rebalanceMetricsAtom)
@@ -50,29 +50,27 @@ const RebalanceOverview = () => {
   const totalValueTraded = useTotalValueTraded()
 
   return (
-    <div className="grid grid-cols-2 border-t border-secondary">
-      <div className="flex flex-col p-4 md:p-6 border-r border-secondary">
-        <div className="flex items-center mb-4 md:mb-6">
-          <Target className="h-4 w-4" />
-          <ArrowRight className="h-4 w-4 ml-auto" />
+    <div className="border-t border-secondary p-4 md:p-6">
+      <div className="flex items-center gap-2 flex-wrap">
+        <div className="flex items-center gap-2 mr-auto text-legend">
+          <ArrowLeftRight className="h-4 w-4" />
+          <span>Total value traded:</span>
         </div>
-        <h4 className="text-legend text-sm">Tracking error</h4>
+        <span>
+          $
+          <DecimalDisplay value={totalValueTraded} />
+        </span>
+      </div>
+      <div className="flex items-center gap-2 mt-4 flex-wrap">
+        <div className="flex items-center gap-2 mr-auto text-legend">
+          <Target className="h-4 w-4" />
+          <span>Current basket deviation:</span>
+        </div>
         {trackingError ? (
           <span>-{formatPercentage(trackingError)}</span>
         ) : (
           <Skeleton className="w-16 h-4" />
         )}
-      </div>
-      <div className="flex flex-col p-4 md:p-6">
-        <div className="flex items-center mb-4 md:mb-6">
-          <ArrowLeftRight className="h-4 w-4" />
-          <ArrowRight className="h-4 w-4 ml-auto" />
-        </div>
-        <h4 className="text-legend text-sm">Total value traded</h4>
-        <span>
-          $
-          <DecimalDisplay value={totalValueTraded} />
-        </span>
       </div>
     </div>
   )

@@ -8,7 +8,7 @@ import Updater from './updater'
 
 const Rebalance = () => (
   <>
-    <div className="bg-secondary p-1 rounded-4xl w-[480px] flex flex-col gap-1 border-2 border-background">
+    <div className="w-[480px] flex flex-col gap-1 ">
       <div className="bg-background rounded-3xl">
         <RebalanceHeader />
         <RebalanceProgress />

@@ -1,14 +1,12 @@
 import { AuctionRound } from '@reserve-protocol/dtf-rebalance-lib'
 import { atom, useAtomValue } from 'jotai'
-import { ArrowLeftRight, ArrowRight, MousePointerClick } from 'lucide-react'
 import {
   activeAuctionAtom,
   rebalanceMetricsAtom,
-  rebalancePercentAtom,
   rebalanceTokenMapAtom,
 } from '../atoms'
 import LaunchAuctionsButton from './launch-auctions-button'
-import DecimalDisplay from '@/components/decimal-display'
+import RebalanceActionOverview from './rebalance-action-overview'
 
 const ROUND_TITLE = {
   [AuctionRound.EJECT]: 'Remove Tokens',
@@ -38,31 +36,11 @@ const RoundDescription = () => {
   const metrics = useAtomValue(rebalanceMetricsAtom)
 
   return (
-    <div className="p-2 md:p-4">
-      <h1 className="text-2xl">{ROUND_TITLE[metrics?.round ?? 0]}</h1>
+    <div className="p-4 md:p-6">
+      <h1 className="text-2xl text-primary">
+        {ROUND_TITLE[metrics?.round ?? 0]}
+      </h1>
       <p className="text-legend">{description}</p>
-    </div>
-  )
-}
-
-const Header = () => {
-  const metrics = useAtomValue(rebalanceMetricsAtom)
-
-  return (
-    <div className="flex p-2 md:p-4 pb-0 md:pb-2">
-      <div
-        className={
-          'h-8 w-8 flex items-center justify-center rounded-full bg-primary text-primary-foreground'
-        }
-      >
-        <ArrowLeftRight className="w-4 h-4" />
-      </div>
-      <div className="ml-auto flex items-center flex-shrink-0 gap-1">
-        <span className="text-legend text-sm">To trade:</span>
-        <span>
-          $<DecimalDisplay value={metrics?.auctionSize ?? 0} decimals={0} />
-        </span>
-      </div>
     </div>
   )
 }
@@ -76,9 +54,9 @@ const RebalanceAction = () => {
   }
 
   return (
-    <div className="bg-background p-2 rounded-3xl">
-      <Header />
+    <div className="bg-background rounded-3xl">
       <RoundDescription />
+      <RebalanceActionOverview />
       <LaunchAuctionsButton />
     </div>
   )
