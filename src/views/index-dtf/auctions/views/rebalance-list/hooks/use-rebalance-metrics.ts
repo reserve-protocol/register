@@ -1,5 +1,8 @@
 import { chainIdAtom } from '@/state/atoms'
-import { iTokenAddressAtom, indexDTFRebalanceControlAtom } from '@/state/dtf/atoms'
+import {
+  iTokenAddressAtom,
+  indexDTFRebalanceControlAtom,
+} from '@/state/dtf/atoms'
 import { useQuery } from '@tanstack/react-query'
 import { useAtomValue } from 'jotai'
 import { rebalancesByProposalAtom } from '../../../atoms'
@@ -78,12 +81,18 @@ export const useRebalanceMetrics = (proposalId: string) => {
   const chainId = useAtomValue(chainIdAtom)
   const dtfAddress = useAtomValue(iTokenAddressAtom)
   const rebalancesByProposal = useAtomValue(rebalancesByProposalAtom)
-  const isTrackingDTF = useAtomValue(indexDTFRebalanceControlAtom) === 'tracking'
+  const rebalanceControl = useAtomValue(indexDTFRebalanceControlAtom)
+  const isTrackingDTF = !rebalanceControl?.weightControl
 
   const rebalanceData = rebalancesByProposal?.[proposalId]
 
   const { data: apiResponse, isLoading } = useQuery({
-    queryKey: ['rebalance-metrics', chainId, dtfAddress, rebalanceData?.rebalance.nonce],
+    queryKey: [
+      'rebalance-metrics',
+      chainId,
+      dtfAddress,
+      rebalanceData?.rebalance.nonce,
+    ],
     queryFn: async () => {
       if (!rebalanceData?.rebalance.nonce) {
         throw new Error('Nonce not found for rebalance')
@@ -98,7 +107,7 @@ export const useRebalanceMetrics = (proposalId: string) => {
       }
 
       const data: RebalanceApiResponse[] = await response.json()
-      
+
       // The API returns an array, we want the first item
       return data[0] || null
     },
@@ -110,11 +119,12 @@ export const useRebalanceMetrics = (proposalId: string) => {
         auctionsRun: apiResponse.auctions.length,
         totalRebalancedUsd: apiResponse.totalRebalancedUsd ?? 0,
         priceImpact: Math.abs(apiResponse.avgPriceImpactPercent ?? 0),
-        rebalanceAccuracy: apiResponse.auctions.length === 0 
-          ? 0 
-          : 100 - Math.abs(apiResponse.avgPriceImpactPercent ?? 0),
+        rebalanceAccuracy:
+          apiResponse.auctions.length === 0
+            ? 0
+            : 100 - Math.abs(apiResponse.avgPriceImpactPercent ?? 0),
         deviationFromTarget: Math.abs(
-          isTrackingDTF 
+          isTrackingDTF
             ? (apiResponse.trackingBasketDeviation ?? 0)
             : (apiResponse.nativeBasketDeviation ?? 0)
         ),
