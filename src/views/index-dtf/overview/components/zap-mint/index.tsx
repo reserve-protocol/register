@@ -3,7 +3,7 @@ import { wagmiConfig } from '@/state/chain'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { getFolioRoute } from '@/utils'
 import { ROUTES } from '@/utils/constants'
-import { Zapper } from '@reserve-protocol/react-zapper'
+import ZapperWrapper from '@/views/index-dtf/components/zapper/zapper-wrapper'
 import { useAtomValue } from 'jotai'
 import { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
@@ -16,7 +16,7 @@ const ZapMint = ({ children }: { children: ReactNode }) => {
 
   return (
     <div className="relative">
-      <Zapper
+      <ZapperWrapper
         wagmiConfig={wagmiConfig}
         chain={chainId}
         dtfAddress={indexDTF.id}
