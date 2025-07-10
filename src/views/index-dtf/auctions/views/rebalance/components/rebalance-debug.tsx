@@ -9,6 +9,9 @@ import {
   rebalanceMetricsAtom,
   rebalancePercentAtom,
 } from '../atoms'
+import { formatPercentage } from '@/utils'
+import useRebalanceParams from '../hooks/use-rebalance-params'
+import { JsonView } from 'react-json-view-lite'
 
 const RebalanceSlider = () => {
   const [rebalancePercent, setRebalancePercent] = useAtom(rebalancePercentAtom)
@@ -16,18 +19,23 @@ const RebalanceSlider = () => {
   const metrics = useAtomValue(rebalanceMetricsAtom)
 
   return (
-    <Slider
-      className="mb-2"
-      min={0}
-      max={100}
-      disabled={rebalanceOngoing}
-      value={[rebalancePercent]}
-      onValueChange={(value) => {
-        if (value[0] > (metrics?.relativeProgression ?? 0)) {
-          setRebalancePercent(value[0])
-        }
-      }}
-    />
+    <div className="flex flex-col gap-1 mt-2">
+      <h4 className="text-primary text-xl mb-2">
+        Rebalance Percent: {rebalancePercent}%
+      </h4>
+      <Slider
+        className="mb-2"
+        min={0}
+        max={100}
+        disabled={rebalanceOngoing}
+        value={[rebalancePercent]}
+        onValueChange={(value) => {
+          if (value[0] > (metrics?.relativeProgression ?? 0)) {
+            setRebalancePercent(value[0])
+          }
+        }}
+      />
+    </div>
   )
 }
 
@@ -35,9 +43,12 @@ const RebalanceMetrics = () => {
   const metrics = useAtomValue(rebalanceMetricsAtom)
 
   return (
-    <pre className="mt-2 p-3 bg-background rounded-lg text-xs overflow-auto text-foreground">
-      {JSON.stringify(metrics, null, 2)}
-    </pre>
+    <div className="flex flex-col gap-1 mt-2">
+      <h4 className="text-primary text-xl">Metrics</h4>
+      <pre className="mt-2 bg-background rounded-lg text-xs overflow-auto text-foreground">
+        <JsonView data={metrics ?? {}} shouldExpandNode={(data) => !data} />
+      </pre>
+    </div>
   )
 }
 
@@ -46,8 +57,9 @@ const ExpectedPriceVolatility = () => {
 
   return (
     <div className="flex flex-col gap-1 mt-2">
-      <label htmlFor="price-volatility" className="text-legend text-sm">
-        Expected Price Volatility
+      <label htmlFor="price-volatility" className="text-primary text-xl mb-2">
+        Expected Price Volatility:{' '}
+        {formatPercentage(PRICE_VOLATILITY[priceVolatility] * 100)}
       </label>
       <ToggleGroup
         type="single"
@@ -69,9 +81,19 @@ const ExpectedPriceVolatility = () => {
           </ToggleGroupItem>
         ))}
       </ToggleGroup>
-      <span className="text-legend text-sm">
-        Value: {PRICE_VOLATILITY[priceVolatility]}
-      </span>
+    </div>
+  )
+}
+
+const RebalanceParameters = () => {
+  const params = useRebalanceParams()
+
+  return (
+    <div className="flex flex-col gap-1 mt-2">
+      <h4 className="text-primary text-xl">Parameters</h4>
+      <pre className="mt-2 bg-background rounded-lg text-xs overflow-auto text-foreground">
+        <JsonView data={params ?? {}} shouldExpandNode={(data) => !data} />
+      </pre>
     </div>
   )
 }
@@ -85,17 +107,11 @@ const RebalanceDebug = () => {
   }
 
   return (
-    <div className="bg-background p-4 rounded-3xl">
-      <div className="flex">
-        <div className="w-full">
-          <h1 className="text-2xl mb-4 border-b border-secondary pb-2">
-            Debug
-          </h1>
-          <RebalanceSlider />
-          <ExpectedPriceVolatility />
-          <RebalanceMetrics />
-        </div>
-      </div>
+    <div className="flex flex-col gap-2 bg-background p-4 rounded-3xl">
+      <RebalanceSlider />
+      <ExpectedPriceVolatility />
+      <RebalanceMetrics />
+      <RebalanceParameters />
     </div>
   )
 }

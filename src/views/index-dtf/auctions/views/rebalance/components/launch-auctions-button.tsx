@@ -1,7 +1,8 @@
 import dtfIndexAbiV4 from '@/abis/dtf-index-abi-v4'
 import { Button } from '@/components/ui/button'
 import { indexDTFAtom } from '@/state/dtf/atoms'
-import { useAtom, useAtomValue } from 'jotai'
+import { parseDuration } from '@/utils'
+import { atom, useAtom, useAtomValue } from 'jotai'
 import { LoaderCircle } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Address } from 'viem'
@@ -11,11 +12,17 @@ import {
   isAuctionOngoingAtom,
   PRICE_VOLATILITY,
   priceVolatilityAtom,
+  rebalanceAuctionsAtom,
   rebalancePercentAtom,
   refreshNonceAtom,
 } from '../atoms'
 import useRebalanceParams from '../hooks/use-rebalance-params'
 import getRebalanceOpenAuction from '../utils/get-rebalance-open-auction'
+
+const auctionNumberAtom = atom((get) => {
+  const auctions = get(rebalanceAuctionsAtom)
+  return auctions.length + 1
+})
 
 const LaunchAuctionsButton = () => {
   const dtf = useAtomValue(indexDTFAtom)
@@ -24,6 +31,7 @@ const LaunchAuctionsButton = () => {
   const priceVolatility = useAtomValue(priceVolatilityAtom)
   const rebalanceParams = useRebalanceParams()
   const [refreshNonce, setRefreshNonce] = useAtom(refreshNonceAtom)
+  const auctionNumber = useAtomValue(auctionNumberAtom)
   const [isLaunching, setIsLaunching] = useState(false)
   const { writeContract, isError, isPending, data } = useWriteContract()
   const { isSuccess } = useWaitForTransactionReceipt({
@@ -95,7 +103,7 @@ const LaunchAuctionsButton = () => {
   return (
     <div className="flex flex-col gap-2 p-2">
       <Button
-        className="rounded-xl w-full gap-2"
+        className="rounded-xl w-full py-6 gap-2"
         disabled={!isValid || isPending || isAuctionOngoing || isLaunching}
         onClick={handleStartAuctions}
       >
@@ -107,7 +115,12 @@ const LaunchAuctionsButton = () => {
             </span>
           </>
         ) : (
-          'Start auction'
+          <>
+            <span>Start auction {auctionNumber}</span>
+            <span className="font-light">
+              ({parseDuration(dtf?.auctionLength ?? 0, { round: true })})
+            </span>
+          </>
         )}
       </Button>
       {error && <div className="text-red-500">{error}</div>}

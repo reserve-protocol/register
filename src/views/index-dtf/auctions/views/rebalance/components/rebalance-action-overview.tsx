@@ -39,7 +39,7 @@ export function BasketHoverCard({
               outsource
             />
           </div>
-          <ScrollArea className="flex flex-col gap-2 px-2 w-full max-h-[250px] overflow-auto">
+          <ScrollArea className="flex flex-col gap-2 px-2 w-full max-h-[250px] overflow-auto scrollbar-hide">
             {tokens.map((token) => (
               <div
                 key={token.address}

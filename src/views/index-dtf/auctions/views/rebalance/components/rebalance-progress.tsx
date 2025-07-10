@@ -1,14 +1,7 @@
-import { AuctionRound } from '@reserve-protocol/dtf-rebalance-lib'
+import { formatPercentage } from '@/utils'
 import { useAtomValue } from 'jotai'
 import { rebalanceMetricsAtom } from '../atoms'
 import ProgressBar from './progress-bar'
-import { formatPercentage } from '@/utils'
-
-const ESTIMATED_ROUNDS = {
-  [AuctionRound.EJECT]: '2-3',
-  [AuctionRound.PROGRESS]: '1-2',
-  [AuctionRound.FINAL]: '0',
-}
 
 const RebalanceProgressOverview = () => {
   const metrics = useAtomValue(rebalanceMetricsAtom)
@@ -16,14 +9,14 @@ const RebalanceProgressOverview = () => {
   return (
     <div className="p-4 md:p-6">
       <div className="flex mb-1">
-        <div>
-          <h4 className="text-sm text-legend">Execution progress</h4>
+        <div className="text-primary">
+          <h4 className="text-sm">Execution progress</h4>
           <h1 className="text-2xl">
             {formatPercentage(metrics?.relativeProgression ?? 0)}
           </h1>
         </div>
         <div className="ml-auto text-right">
-          <h4 className="text-legend text-sm">Next auction target</h4>
+          <h4 className="text-sm">Next auction target</h4>
           <h1 className="text-2xl">
             {formatPercentage((metrics?.relativeTarget ?? 0) * 100)}
           </h1>

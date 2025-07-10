@@ -7,6 +7,9 @@ import {
 } from '../atoms'
 import LaunchAuctionsButton from './launch-auctions-button'
 import RebalanceActionOverview from './rebalance-action-overview'
+import { currentRebalanceAtom } from '../../../atoms'
+import useRebalanceParams from '../hooks/use-rebalance-params'
+import { useMemo } from 'react'
 
 const ROUND_TITLE = {
   [AuctionRound.EJECT]: 'Remove Tokens',
@@ -14,30 +17,55 @@ const ROUND_TITLE = {
   [AuctionRound.FINAL]: 'Precision Rebalancing',
 }
 
-const rebalanceDescriptionAtom = atom((get) => {
-  const metrics = get(rebalanceMetricsAtom)
-  const tokenMap = get(rebalanceTokenMapAtom)
+// const rebalanceDescriptionAtom = atom((get) => {
+//   const metrics = get(rebalanceMetricsAtom)
+//   const tokenMap = get(rebalanceTokenMapAtom)
 
-  if (!metrics || !Object.keys(tokenMap).length) return ''
+//   if (!metrics || !Object.keys(tokenMap).length) return ''
 
-  const formatTokens = (tokens: string[]) => {
-    const symbols = tokens.map(
-      (token) => tokenMap[token.toLowerCase()]?.symbol || ''
-    )
-    if (symbols.length <= 3) return symbols.join(', ')
-    return `${symbols.slice(0, 3).join(', ')}, +${symbols.length - 3}`
-  }
+//   const formatTokens = (tokens: string[]) => {
+//     const symbols = tokens.map(
+//       (token) => tokenMap[token.toLowerCase()]?.symbol || ''
+//     )
+//     if (symbols.length <= 3) return symbols.join(', ')
+//     return `${symbols.slice(0, 3).join(', ')}, +${symbols.length - 3}`
+//   }
 
-  return `Trade ${formatTokens(metrics.surplusTokens)} for ${formatTokens(metrics.deficitTokens)}`
-})
+//   return `Trade ${formatTokens(metrics.surplusTokens)} for ${formatTokens(metrics.deficitTokens)}`
+// })
 
 const RoundDescription = () => {
-  const description = useAtomValue(rebalanceDescriptionAtom)
+  // const description = useAtomValue(rebalanceDescriptionAtom)
   const metrics = useAtomValue(rebalanceMetricsAtom)
+  const params = useRebalanceParams()
+  const tokenMap = useAtomValue(rebalanceTokenMapAtom)
+  const description = useMemo(() => {
+    const removal =
+      metrics?.round === AuctionRound.EJECT &&
+      !!params &&
+      params?.rebalance.weights.find((w) => w.spot === 0n)
+
+    if (!removal) return 'Buy/sell tokens to move closer to proposed weights.'
+
+    const tokens: string[] = []
+
+    for (const [token, weight] of Object.entries(params.initialWeights)) {
+      if (weight.spot === 0n) {
+        tokens.push(tokenMap[token.toLowerCase()]?.symbol || '')
+      }
+    }
+
+    const formattedTokens =
+      tokens.length > 1
+        ? `${tokens.slice(0, -1).join(', ')} and ${tokens[tokens.length - 1]}`
+        : tokens[0]
+
+    return `Remove ${formattedTokens} from the basket`
+  }, [params, metrics, tokenMap])
 
   return (
     <div className="p-4 md:p-6">
-      <h1 className="text-2xl text-primary">
+      <h1 className="text-2xl text-primary font-semibold">
         {ROUND_TITLE[metrics?.round ?? 0]}
       </h1>
       <p className="text-legend">{description}</p>
