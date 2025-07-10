@@ -1,7 +1,15 @@
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from '@/components/ui/collapsible'
 import { Slider } from '@/components/ui/slider'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { devModeAtom } from '@/state/atoms'
+import { formatPercentage } from '@/utils'
 import { useAtom, useAtomValue } from 'jotai'
+import { ChevronsUpDown } from 'lucide-react'
+import { JsonView } from 'react-json-view-lite'
 import {
   isAuctionOngoingAtom,
   PRICE_VOLATILITY,
@@ -9,9 +17,7 @@ import {
   rebalanceMetricsAtom,
   rebalancePercentAtom,
 } from '../atoms'
-import { formatPercentage } from '@/utils'
 import useRebalanceParams from '../hooks/use-rebalance-params'
-import { JsonView } from 'react-json-view-lite'
 
 const RebalanceSlider = () => {
   const [rebalancePercent, setRebalancePercent] = useAtom(rebalancePercentAtom)
@@ -44,10 +50,19 @@ const RebalanceMetrics = () => {
 
   return (
     <div className="flex flex-col gap-1 mt-2">
-      <h4 className="text-primary text-xl">Metrics</h4>
-      <pre className="mt-2 bg-background rounded-lg text-xs overflow-auto text-foreground">
-        <JsonView data={metrics ?? {}} shouldExpandNode={(data) => !data} />
-      </pre>
+      <Collapsible>
+        <CollapsibleTrigger asChild>
+          <div className="flex items-center gap-2 cursor-pointer hover:text-primary/80 transition-colors">
+            <h4 className="text-primary text-xl">Metrics</h4>
+            <ChevronsUpDown className="h-4 w-4 text-primary transition-transform duration-200 data-[state=open]:rotate-180" />
+          </div>
+        </CollapsibleTrigger>
+        <CollapsibleContent>
+          <pre className="mt-2 bg-background rounded-lg text-xs overflow-auto text-foreground">
+            <JsonView data={metrics ?? {}} shouldExpandNode={(data) => !data} />
+          </pre>
+        </CollapsibleContent>
+      </Collapsible>
     </div>
   )
 }
@@ -90,10 +105,17 @@ const RebalanceParameters = () => {
 
   return (
     <div className="flex flex-col gap-1 mt-2">
-      <h4 className="text-primary text-xl">Parameters</h4>
-      <pre className="mt-2 bg-background rounded-lg text-xs overflow-auto text-foreground">
-        <JsonView data={params ?? {}} shouldExpandNode={(data) => !data} />
-      </pre>
+      <Collapsible>
+        <CollapsibleTrigger className="flex items-center gap-2 w-full">
+          <h4 className="text-primary text-xl">Parameters</h4>
+          <ChevronsUpDown className="h-4 w-4 text-primary transition-transform duration-200 data-[state=open]:rotate-180" />
+        </CollapsibleTrigger>
+        <CollapsibleContent>
+          <pre className="mt-2 bg-background rounded-lg text-xs overflow-auto text-foreground">
+            <JsonView data={params ?? {}} shouldExpandNode={(data) => !data} />
+          </pre>
+        </CollapsibleContent>
+      </Collapsible>
     </div>
   )
 }
