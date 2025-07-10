@@ -180,7 +180,12 @@ const CollateralPieChartTooltip: FC<CollateralPieChartTooltipProps> = ({
         </Box>
         <Grid columns={[1, 2]} gap={2} sx={{ width: '100%' }}>
           {collateralItems.map((item) => (
-            <Item {...item} />
+            <Item
+              key={item.name}
+              name={item.name}
+              logo={item.logo}
+              value={item.value}
+            />
           ))}
         </Grid>
       </Box>
@@ -199,7 +204,12 @@ const CollateralPieChartTooltip: FC<CollateralPieChartTooltipProps> = ({
         </Box>
         <Grid columns={[1, 2]} gap={2} sx={{ width: '100%' }}>
           {tokenItems.map((item) => (
-            <Item {...item} />
+            <Item
+              key={item.name}
+              name={item.name}
+              logo={item.logo}
+              value={item.value}
+            />
           ))}
         </Grid>
       </Box>
@@ -213,7 +223,12 @@ const CollateralPieChartTooltip: FC<CollateralPieChartTooltipProps> = ({
         </Box>
         <Grid columns={[1, 2]} gap={2} sx={{ width: '100%' }}>
           {platformItems.map((item) => (
-            <Item {...item} />
+            <Item
+              key={item.name}
+              name={item.name}
+              logo={item.logo}
+              value={item.value}
+            />
           ))}
         </Grid>
       </Box>
