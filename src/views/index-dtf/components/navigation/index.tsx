@@ -7,15 +7,13 @@ import { ROUTES } from '@/utils/constants'
 import { t } from '@lingui/macro'
 import { useAtomValue } from 'jotai'
 import {
-  Globe,
-  Blend,
-  Landmark,
   ArrowLeftRight,
-  Fingerprint,
-  ChevronDown,
-  Wallet,
-  Wallet2,
+  Blend,
   CirclePlus,
+  Fingerprint,
+  Globe,
+  Landmark,
+  Wallet2,
 } from 'lucide-react'
 import { useMemo } from 'react'
 import { NavLink } from 'react-router-dom'
@@ -79,7 +77,7 @@ const NavigationHeader = () => {
   }
 
   return (
-    <div className="items-center gap-2 hidden md:flex">
+    <div className="items-center gap-2 hidden lg:flex">
       <TokenLogo
         src={brand?.dtf?.icon || undefined}
         alt={indexDTF?.token.symbol ?? 'dtf token logo'}
@@ -155,7 +153,7 @@ const IndexDTFNavigation = () => {
     <div className="w-full lg:sticky lg:top-0 p-3 md:p-6 fixed bottom-0 border-t lg:border-t-0 lg:w-56 flex-shrink-0 bg-background z-[1] h-16 lg:h-full">
       <div className="sticky top-6">
         <NavigationHeader />
-        <Separator className="my-4 hidden md:block" />
+        <Separator className="my-4 hidden lg:block" />
         <NavigationItems />
       </div>
     </div>

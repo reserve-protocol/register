@@ -7,11 +7,13 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from '@/components/ui/drawer'
+import { Input } from '@/components/ui/input'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useAssetPrice } from '@/hooks/useAssetPrices'
 import useERC20Balance from '@/hooks/useERC20Balance'
 import { useWatchReadContract } from '@/hooks/useWatchReadContract'
 import { walletAtom } from '@/state/atoms'
+import { shortenAddress } from '@/utils'
 import { ROUTES } from '@/utils/constants'
 import { useTrackIndexDTFClick } from '@/views/index-dtf/hooks/useTrackIndexDTFPage'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
@@ -27,6 +29,7 @@ import {
 } from 'lucide-react'
 import { ReactNode, useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
+import { isAddress, zeroAddress } from 'viem'
 import { useReadContract } from 'wagmi'
 import {
   currentDelegateAtom,
@@ -46,9 +49,6 @@ import LockView from './lock'
 import SubmitLockButton, { DelegateButton } from './lock/submit-lock-button'
 import UnlockView from './unlock'
 import SubmitUnlockButton from './unlock/submit-unlock-button'
-import { shortenAddress } from '@/utils'
-import { isAddress, zeroAddress } from 'viem'
-import { Input } from '@/components/ui/input'
 
 const TABS = [
   {
@@ -236,9 +236,11 @@ const Staking = ({ children }: { children?: ReactNode }) => {
 
   const { trackClick } = useTrackIndexDTFClick('overview', subpage)
 
-  const { data: priceResponse } = useAssetPrice(stToken?.underlying?.address)
-
-  const { data: balance } = useERC20Balance(stToken?.underlying?.address)
+  const { data: priceResponse } = useAssetPrice(
+    stToken?.underlying.address,
+    stToken?.chainId
+  )
+  const { data: balance } = useERC20Balance(stToken?.underlying.address)
 
   const { data: unlockBalanceRaw } = useWatchReadContract({
     abi: dtfIndexStakingVault,

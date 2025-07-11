@@ -46,7 +46,10 @@ const useAllDTFs = () => {
         keywords: [dtf.address, dtf.symbol, dtf.name],
       })),
       yield: yieldDTFs.map((dtf) => ({
-        symbol: dtf.symbol,
+        symbol:
+          dtf.symbol.toLowerCase() === 'hyusd'
+            ? `${dtf.symbol} (${CHAIN_TAGS[dtf.chain]})`
+            : dtf.symbol,
         name: dtf.name,
         chain: dtf.chain,
         address: dtf.id,
@@ -111,13 +114,13 @@ const CommandMenu = () => {
               <CommandGroup key={section} heading={SECTION_TITLES[section]}>
                 {dtfs[section].map((dtf) => (
                   <Link
+                    key={dtf.address}
                     to={
                       section === 'index'
                         ? getFolioRoute(dtf.address, dtf.chain)
                         : getTokenRoute(dtf.address, dtf.chain)
                     }
                     onClick={() => setOpen(false)}
-                    key={dtf.address}
                   >
                     <CommandItem
                       keywords={dtf.keywords}

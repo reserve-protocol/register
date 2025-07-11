@@ -49,12 +49,15 @@ export const dtfAbiMapppingAtom = atom((get) => {
   return abiMapping
 })
 
+export const explorerContractAliasAtom = atom<Record<string, string>>({})
 export const dtfContractAliasAtom = atom((get) => {
   const dtf = get(indexDTFAtom)
+  const explorerContractAlias = get(explorerContractAliasAtom)
 
   if (!dtf) return undefined
 
   const aliasMapping: Record<string, string> = {
+    ...explorerContractAlias,
     [dtf.id.toLowerCase()]: 'Folio',
     [dtf.proxyAdmin.toLowerCase()]: 'ProxyAdmin',
   }

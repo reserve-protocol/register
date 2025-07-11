@@ -144,91 +144,65 @@ const Heading = ({
       ? 0
       : data.rsrStakerAnnualizedRevenue + data.rTokenAnnualizedRevenue
   return (
-    <>
-      <div className="absolute top-3 sm:top-8 left-0 sm:left-0 right-3 text-tvl px-4 sm:px-6 md:px-0 w-auto sm:w-[560px]">
-        {/* Light Mode Image */}
-        <img src={tvlLight} alt="TVL Light" className="dark:hidden" />
+    <div className="absolute top-3 sm:top-8 left-0 sm:left-0 right-3 text-tvl px-4 sm:px-6 md:px-0 w-auto sm:w-[560px]">
+      {/* Light Mode Image */}
+      <img src={tvlLight} alt="TVL Light" className="dark:hidden" />
 
-        {/* Dark Mode Image */}
-        <img src={tvlDark} alt="TVL Dark" className="hidden dark:block" />
-        <h2 className="sm:text-xl text-base mt-6 mb-4 font-light leading-none">
-          TVL in Reserve
-        </h2>
-        {isLoading ? (
-          <Skeleton className="w-[320px] h-[60px]" />
+      {/* Dark Mode Image */}
+      <img src={tvlDark} alt="TVL Dark" className="hidden dark:block" />
+      <h2 className="sm:text-xl text-base mt-6 mb-4 font-light leading-none">
+        TVL in Reserve
+      </h2>
+      {isLoading ? (
+        <Skeleton className="w-[320px] h-[60px]" />
+      ) : (
+        <div className="flex items-center ">
+          <h3 className="text-4xl sm:text-5xl sm:text-[60px] font-semibold leading-none">
+            ${formatCurrency(data?.tvl ?? 0, 0)}
+          </h3>
+          <Link target="_blank" to={DUNE_DASHBOARD}>
+            <Button
+              variant="none"
+              className="ml-3  w-10 h-10 sm:w-[44px] sm:h-[44px] p-0 bg-tvl/10 text-tvl hover:bg-primary/20"
+              size="icon-rounded"
+            >
+              <ArrowRight className="-rotate-45" size={24} />
+            </Button>
+          </Link>
+        </div>
+      )}
+
+      <div className="flex gap-2 mt-5 text-base sm:text-xl leading-none">
+        <span className="font-light">Annualized protocol revenue:</span>
+        {isLoading || revenue < 1000000 ? (
+          <Skeleton className="h-6 w-14" />
         ) : (
-          <div className="flex items-center ">
-            <h3 className="text-4xl sm:text-5xl sm:text-[60px] font-semibold leading-none">
-              ${formatCurrency(data?.tvl ?? 0, 0)}
-            </h3>
-            <Link target="_blank" to={DUNE_DASHBOARD}>
-              <Button
-                variant="none"
-                className="ml-3  w-10 h-10 sm:w-[44px] sm:h-[44px] p-0 bg-tvl/10 text-tvl hover:bg-primary/20"
-                size="icon-rounded"
-              >
-                <ArrowRight className="-rotate-45" size={24} />
-              </Button>
-            </Link>
-          </div>
+          <span className="font-bold">
+            $
+            {formatCurrency(revenue, 1, {
+              notation: 'compact',
+              compactDisplay: 'short',
+            })}
+          </span>
         )}
-
-        <div className="flex gap-2 mt-5 text-base sm:text-xl leading-none">
-          <span className="font-light">Annualized protocol revenue:</span>
-          {isLoading || revenue < 1000000 ? (
-            <Skeleton className="h-6 w-14" />
-          ) : (
-            <span className="font-bold">
-              $
-              {formatCurrency(revenue, 1, {
-                notation: 'compact',
-                compactDisplay: 'short',
-              })}
-            </span>
-          )}
-        </div>
-        <Button
-          variant="outline-primary"
-          className="flex items-center gap-[6px] rounded-[50px] mt-6 p-1 h-8 border border-primary dark:border-tvl/20 hover:bg-primary"
-          onClick={() => {
-            trackClick('discover', 'video')
-            window.open(DTF_VIDEO, '_blank')
-          }}
-        >
-          <span className="ml-2">
-            <Clapperboard size={16} />
-          </span>
-          <span className="text-base dark:text-tvl">What are DTFs?</span>
-          <span className="rounded-full w-6 h-6 bg-primary text-primary flex items-center justify-center">
-            <Play size={16} className="text-white" fill="#fff" />
-          </span>
-        </Button>
       </div>
-      <div className="absolute hidden sm:block top-3 sm:top-8 right-2 md:right-0">
-        <div className="flex items-center gap-2 p-4 rounded-full border-[1px] border-neutral/10">
-          <div className="flex justify-center items-center flex-shrink-0 h-8 w-8 rounded-full border-[1px] border-current text-current">
-            <Gem size={16} />
-          </div>
-          <div className="min-w-[237px]">
-            <div className="font-bold leading-[20px]">
-              Claim trading rewards here
-            </div>
-            <div className="mt-1 leading-[17px] text-muted-foreground font-light">
-              $25K in total rewards
-            </div>
-          </div>
-          <Button
-            className="flex items-center gap-1 rounded-full bg-[#FFBE45] hover:bg-[#FFBE45]/90 text-black text-base"
-            asChild
-          >
-            <a href={CAMPAIGN_URL} target="_blank">
-              <span>Claim</span>
-              <ArrowUpRight size={16} />
-            </a>
-          </Button>
-        </div>
-      </div>
-    </>
+      <Button
+        variant="outline-primary"
+        className="flex items-center gap-[6px] rounded-[50px] mt-6 p-1 h-8 border border-primary dark:border-tvl/20 hover:bg-primary"
+        onClick={() => {
+          trackClick('discover', 'video')
+          window.open(DTF_VIDEO, '_blank')
+        }}
+      >
+        <span className="ml-2">
+          <Clapperboard size={16} />
+        </span>
+        <span className="text-base dark:text-tvl">What are DTFs?</span>
+        <span className="rounded-full w-6 h-6 bg-primary text-primary flex items-center justify-center">
+          <Play size={16} className="text-white" fill="#fff" />
+        </span>
+      </Button>
+    </div>
   )
 }
 

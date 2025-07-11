@@ -2,10 +2,8 @@ import { DecodedCalldata } from '@/types'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { Abi, Address, decodeFunctionData, getAbiItem, Hex } from 'viem'
-import {
-  dtfAbiMapppingAtom,
-  dtfContractAliasAtom,
-} from '../views/index-dtf/governance/components/proposal-preview/atoms'
+import { dtfContractAliasAtom } from '../views/index-dtf/governance/components/proposal-preview/atoms'
+import useGetAbi from '../views/index-dtf/governance/components/proposal-preview/use-get-abi'
 
 export const getDecodedCalldata = (abi: Abi, calldata: Hex) => {
   const { functionName, args } = decodeFunctionData({
@@ -33,11 +31,11 @@ const useDecodedCalldatas = (
   targets: Address[] | undefined,
   calldatas: Hex[] | undefined
 ) => {
-  const dtfAbiMapping = useAtomValue(dtfAbiMapppingAtom)
   const dtfContractAlias = useAtomValue(dtfContractAliasAtom)
+  const abis = useGetAbi(targets)
 
   return useMemo(() => {
-    if (!dtfAbiMapping || !targets || !calldatas) return [undefined, undefined]
+    if (!abis || !targets || !calldatas) return [undefined, undefined]
 
     // TODO: In theory, call order is important, but most likely proposals will be contract independent
     const dataByContract: Record<string, DecodedCalldata[]> = {}
@@ -46,7 +44,7 @@ const useDecodedCalldatas = (
     for (let i = 0; i < targets.length; i++) {
       const target = targets[i]
       const calldata = calldatas[i]
-      const abi = dtfAbiMapping[target.toLowerCase()]
+      const abi = abis[target.toLowerCase() as Address]
 
       try {
         if (!abi) {
@@ -67,7 +65,7 @@ const useDecodedCalldatas = (
     }
 
     return [dataByContract, unknownContracts]
-  }, [dtfAbiMapping, dtfContractAlias, targets, calldatas])
+  }, [abis, dtfContractAlias, targets, calldatas])
 }
 
 export default useDecodedCalldatas
