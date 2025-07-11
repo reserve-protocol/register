@@ -5,22 +5,41 @@ import { indexDTFAtom, indexDTFBrandAtom } from '@/state/dtf/atoms'
 import { ROUTES } from '@/utils/constants'
 import { useAtom, useAtomValue } from 'jotai'
 import { Link } from 'react-router-dom'
-import { isProposalConfirmedAtom, isProposalValidAtom } from '../atoms'
+import {
+  isProposalConfirmedAtom,
+  isProposalValidAtom,
+  isFormValidAtom,
+} from '../atoms'
 import SubmitProposalButton from './submit-proposal-button'
-import VaultProposalChanges from './vault-proposal-changes'
+import BasketSettingsProposalChanges from './basket-settings-proposal-changes'
 
 const ConfirmProposalButton = () => {
   const isValid = useAtomValue(isProposalValidAtom)
+  const isFormValid = useAtomValue(isFormValidAtom)
   const [isProposalConfirmed, setIsProposalConfirmed] = useAtom(
     isProposalConfirmedAtom
   )
 
+  const handleConfirm = () => {
+    if (!isProposalConfirmed) {
+      // When confirming, check if form is valid
+      if (!isFormValid) {
+        // The form will show validation errors
+        return
+      }
+    }
+    setIsProposalConfirmed(!isProposalConfirmed)
+  }
+
+  // Enable button only if there are changes AND form is valid
+  const isButtonEnabled = isValid && isFormValid
+
   return (
     <Button
       className="w-full"
-      disabled={!isValid}
+      disabled={!isButtonEnabled}
       variant={isProposalConfirmed ? 'outline' : 'default'}
-      onClick={() => setIsProposalConfirmed(!isProposalConfirmed)}
+      onClick={handleConfirm}
     >
       {isProposalConfirmed ? 'Edit proposal' : 'Confirm & prepare proposal'}
     </Button>
@@ -29,18 +48,21 @@ const ConfirmProposalButton = () => {
 
 const ProposalInstructions = () => {
   const isValid = useAtomValue(isProposalValidAtom)
+  const isFormValid = useAtomValue(isFormValidAtom)
   const confirmed = useAtomValue(isProposalConfirmedAtom)
+
+  const canProceed = isValid && isFormValid
 
   const timelineItems = [
     {
       title: 'Configure proposal',
-      isActive: !isValid,
-      isCompleted: isValid,
+      isActive: !canProceed,
+      isCompleted: canProceed,
     },
     {
       title: 'Finalize basket proposal',
       children: <ConfirmProposalButton />,
-      isActive: isValid && !confirmed,
+      isActive: canProceed && !confirmed,
       isCompleted: confirmed,
     },
     {
@@ -81,29 +103,42 @@ const Header = () => {
   )
 }
 
-const VaultProposalChangePreview = () => {
+
+const BasketProposalChangePreview = () => {
   const isProposalConfirmed = useAtomValue(isProposalConfirmedAtom)
 
   if (isProposalConfirmed) return null
 
   return (
-    <div className="mt-2 border-4 border-secondary rounded-3xl bg-background p-6">
-      <h3 className="font-bold mb-6 text-primary">Proposed changes</h3>
-      <VaultProposalChanges />
+    <div className="mt-2 border-4 border-secondary rounded-3xl bg-background p-2">
+      <h3 className="font-bold mb-6 text-primary px-4 pt-4">
+        Proposed changes
+      </h3>
+      <BasketSettingsProposalChanges />
     </div>
   )
 }
 
-const VaultProposalOverview = () => {
+const ProposalOverview = () => {
   return (
-    <div className="fit-content overflow-hidden w-full">
-      <div className="border-4 border-secondary rounded-3xl bg-background">
-        <Header />
-        <ProposalInstructions />
-      </div>
-      <VaultProposalChangePreview />
+    <div className="border-4 border-secondary rounded-3xl bg-background">
+      <Header />
+      <ProposalInstructions />
     </div>
   )
 }
 
-export default VaultProposalOverview
+const BasketSettingsProposalOverview = () => {
+  const isProposalConfirmed = useAtomValue(isProposalConfirmedAtom)
+
+  return (
+    <div className="flex flex-col gap-2 relative">
+      <div className={!isProposalConfirmed ? 'sticky top-0' : ''}>
+        <ProposalOverview />
+      </div>
+      <BasketProposalChangePreview />
+    </div>
+  )
+}
+
+export default BasketSettingsProposalOverview

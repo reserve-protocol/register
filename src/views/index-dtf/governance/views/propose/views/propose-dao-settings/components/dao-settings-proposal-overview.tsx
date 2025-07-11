@@ -5,13 +5,9 @@ import { indexDTFAtom, indexDTFBrandAtom } from '@/state/dtf/atoms'
 import { ROUTES } from '@/utils/constants'
 import { useAtom, useAtomValue } from 'jotai'
 import { Link } from 'react-router-dom'
-import {
-  isProposalConfirmedAtom,
-  isProposalValidAtom,
-  isFormValidAtom,
-} from '../atoms'
-import DTFSettingsProposalChanges from './dtf-settings-proposal-changes'
+import { isProposalConfirmedAtom, isProposalValidAtom, isFormValidAtom } from '../atoms'
 import SubmitProposalButton from './submit-proposal-button'
+import DaoSettingsProposalChanges from './dao-settings-proposal-changes'
 
 const ConfirmProposalButton = () => {
   const isValid = useAtomValue(isProposalValidAtom)
@@ -60,7 +56,7 @@ const ProposalInstructions = () => {
       isCompleted: canProceed,
     },
     {
-      title: 'Finalize basket proposal',
+      title: 'Finalize DAO proposal',
       children: <ConfirmProposalButton />,
       isActive: canProceed && !confirmed,
       isCompleted: confirmed,
@@ -103,7 +99,7 @@ const Header = () => {
   )
 }
 
-const VaultProposalChangePreview = () => {
+const DaoProposalChangePreview = () => {
   const isProposalConfirmed = useAtomValue(isProposalConfirmedAtom)
 
   if (isProposalConfirmed) return null
@@ -113,7 +109,7 @@ const VaultProposalChangePreview = () => {
       <h3 className="font-bold mb-6 text-primary px-4 pt-4">
         Proposed changes
       </h3>
-      <DTFSettingsProposalChanges />
+      <DaoSettingsProposalChanges />
     </div>
   )
 }
@@ -127,7 +123,7 @@ const ProposalOverview = () => {
   )
 }
 
-const DTFSettingsProposalOverview = () => {
+const DaoSettingsProposalOverview = () => {
   const isProposalConfirmed = useAtomValue(isProposalConfirmedAtom)
 
   return (
@@ -135,9 +131,9 @@ const DTFSettingsProposalOverview = () => {
       <div className={!isProposalConfirmed ? "sticky top-0" : ""}>
         <ProposalOverview />
       </div>
-      <VaultProposalChangePreview />
+      <DaoProposalChangePreview />
     </div>
   )
 }
 
-export default DTFSettingsProposalOverview
+export default DaoSettingsProposalOverview

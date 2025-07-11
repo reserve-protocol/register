@@ -74,7 +74,7 @@ export const InnerGovernanceInfo = ({
                 Number(formatEther(BigInt(data.proposalThreshold)))
               )
             : undefined
-        }
+      }
       />
       <InfoCardItem
         icon={<IconWrapper Component={ShieldCheck} />}

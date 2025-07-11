@@ -10,6 +10,22 @@ import { Address } from 'viem'
 import { dtfContractAliasAtom } from './atoms'
 import RawCallPreview from './raw-call-preview'
 import TokenRewardPreview from './token-reward-preview'
+import {
+  SetMandatePreview,
+  RemoveFromBasketPreview,
+  GrantRolePreview,
+  RevokeRolePreview,
+  SetFeeRecipientsPreview,
+  SetMintFeePreview,
+  SetTVLFeePreview,
+  SetAuctionLengthPreview,
+  SetDustAmountPreview,
+  SetVotingDelayPreview,
+  SetVotingPeriodPreview,
+  SetProposalThresholdPreview,
+  UpdateQuorumNumeratorPreview,
+  UpdateDelayPreview,
+} from './dtf-settings-preview'
 
 const ChangesOverviewComponentMap: Record<
   string,
@@ -17,6 +33,23 @@ const ChangesOverviewComponentMap: Record<
 > = {
   removeRewardToken: TokenRewardPreview,
   addRewardToken: TokenRewardPreview,
+  // DTF Settings functions
+  setMandate: SetMandatePreview,
+  removeFromBasket: RemoveFromBasketPreview,
+  grantRole: GrantRolePreview,
+  revokeRole: RevokeRolePreview,
+  setFeeRecipients: SetFeeRecipientsPreview,
+  setMintFee: SetMintFeePreview,
+  setTVLFee: SetTVLFeePreview,
+  setAuctionLength: SetAuctionLengthPreview,
+  setDustAmount: SetDustAmountPreview,
+  // Governance functions
+  setVotingDelay: SetVotingDelayPreview,
+  setVotingPeriod: SetVotingPeriodPreview,
+  setProposalThreshold: SetProposalThresholdPreview,
+  updateQuorumNumerator: UpdateQuorumNumeratorPreview,
+  // Timelock functions
+  updateDelay: UpdateDelayPreview,
 }
 
 const TABS = {
