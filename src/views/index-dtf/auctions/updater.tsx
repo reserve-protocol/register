@@ -274,25 +274,48 @@ const tradesFromProposalAtom = atom((get) => {
   const proposal = get(selectedProposalValueAtom)
   if (!proposal) return undefined
 
-  return proposal.trades.map((trade) => ({
-    sell: trade.sell.address,
-    buy: trade.buy.address,
-    sellLimit: {
-      spot: trade.sellLimitSpot,
-      low: trade.sellLimitLow,
-      high: trade.sellLimitHigh,
-    },
-    buyLimit: {
-      spot: trade.buyLimitSpot,
-      low: trade.buyLimitLow,
-      high: trade.buyLimitHigh,
-    },
-    prices: {
-      start: trade.startPrice,
-      end: trade.endPrice,
-    },
-    ttl: BigInt(trade.launchTimeout),
-  }))
+  return {
+    // For proposed basket, use approved values from creation time
+    proposed: proposal.trades.map((trade) => ({
+      sell: trade.sell.address,
+      buy: trade.buy.address,
+      sellLimit: {
+        spot: trade.approvedSellLimitSpot,  // Use approved values
+        low: trade.sellLimitLow,
+        high: trade.sellLimitHigh,
+      },
+      buyLimit: {
+        spot: trade.approvedBuyLimitSpot,   // Use approved values
+        low: trade.buyLimitLow,
+        high: trade.buyLimitHigh,
+      },
+      prices: {
+        start: trade.approvedStartPrice,     // Use approved prices
+        end: trade.approvedEndPrice,
+      },
+      ttl: BigInt(trade.launchTimeout),
+    })),
+    // For expected basket, use current/executed values
+    expected: proposal.trades.map((trade) => ({
+      sell: trade.sell.address,
+      buy: trade.buy.address,
+      sellLimit: {
+        spot: trade.sellLimitSpot,
+        low: trade.sellLimitLow,
+        high: trade.sellLimitHigh,
+      },
+      buyLimit: {
+        spot: trade.buyLimitSpot,
+        low: trade.buyLimitLow,
+        high: trade.buyLimitHigh,
+      },
+      prices: {
+        start: trade.startPrice,
+        end: trade.endPrice,
+      },
+      ttl: BigInt(trade.launchTimeout),
+    }))
+  }
 })
 
 const ProposalBasketSimulationsUpdater = () => {
@@ -312,9 +335,10 @@ const ProposalBasketSimulationsUpdater = () => {
     chainId,
     selectedProposal?.proposal.creationBlock
   )
+
   const proposedBasket = useSimulatedBasket(
     proposedBasketSnapshot,
-    trades,
+    trades?.proposed,  // Use approved trade values
     chainId,
     selectedProposal?.proposal.creationTime
   )
@@ -329,7 +353,7 @@ const ProposalBasketSimulationsUpdater = () => {
   )
   const expectedBasket = useSimulatedBasket(
     expectedBasketSnapshot,
-    trades,
+    trades?.expected,  // Use current/executed trade values
     chainId,
     isCompletedOrExpired
       ? Number(selectedProposal.proposal.executionTime)
