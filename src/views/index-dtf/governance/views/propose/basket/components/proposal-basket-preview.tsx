@@ -481,6 +481,8 @@ const useBasketProposalContext = (
         ...newTokensInfo,
       }
 
+      console.log('allPrices', allPrices)
+
       const dtfPrice = allPrices[dtf?.toLowerCase() ?? ''] ?? 0
       // Create initial estimated basket
       const estimatedBasket = Object.entries(allTokens).reduce(

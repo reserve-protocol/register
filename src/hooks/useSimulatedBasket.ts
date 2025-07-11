@@ -160,7 +160,7 @@ const useNewAssets = (
     // Default case missing tokens but no prices or new tokens info
     if (!missingTokens || !prices || !newTokensInfo) return undefined
 
-    return missingTokens.map((token) => ({
+    return Object.keys(newTokensInfo).map((token) => ({
       ...newTokensInfo[token],
       price: prices[token],
     }))
@@ -214,6 +214,7 @@ const useSimulatedBasket = (
         {} as Record<string, Token>
       ),
     }
+
     const shares = basket.basket.reduce(
       (acc, token) => {
         acc[token.address.toLowerCase()] = token.weight
@@ -308,75 +309,75 @@ const useSimulatedBasket = (
     return {
       price: dtfPrice,
       basket: (() => {
-        // Calculate the sum of all targetShares
-        const targetSharesSum = Object.values(estimatedBasket).reduce(
-          (sum, item) =>
-            sum + (item.targetShares ? Number(item.targetShares) : 0),
-          0
-        )
+        // // Calculate the sum of all targetShares
+        // const targetSharesSum = Object.values(estimatedBasket).reduce(
+        //   (sum, item) =>
+        //     sum + (item.targetShares ? Number(item.targetShares) : 0),
+        //   0
+        // )
 
-        // Calculate the difference from 100%
-        const diff = 100 - targetSharesSum
+        // // Calculate the difference from 100%
+        // const diff = 100 - targetSharesSum
 
-        if (Math.abs(diff) > 0.01) {
-          // Only adjust if difference is significant
-          // Find all items with changed delta
-          const changedItems = Object.entries(estimatedBasket).filter(
-            ([_, item]) => item.delta !== 0 && item.targetShares
-          )
+        // if (Math.abs(diff) > 0.01) {
+        //   // Only adjust if difference is significant
+        //   // Find all items with changed delta
+        //   const changedItems = Object.entries(estimatedBasket).filter(
+        //     ([_, item]) => item.delta !== 0 && item.targetShares
+        //   )
 
-          if (changedItems.length > 0) {
-            // Sort by targetShares in descending order
-            changedItems.sort(
-              (a, b) => Number(b[1].targetShares) - Number(a[1].targetShares)
-            )
+        //   if (changedItems.length > 0) {
+        //     // Sort by targetShares in descending order
+        //     changedItems.sort(
+        //       (a, b) => Number(b[1].targetShares) - Number(a[1].targetShares)
+        //     )
 
-            // Find the item with the largest targetShare that can absorb the adjustment
-            let adjustedItem = changedItems[0]
+        //     // Find the item with the largest targetShare that can absorb the adjustment
+        //     let adjustedItem = changedItems[0]
 
-            for (const [address, item] of changedItems) {
-              const currentTarget = Number(item.targetShares)
-              // Ensure we don't make any share negative
-              if ((diff < 0 && currentTarget > Math.abs(diff)) || diff > 0) {
-                adjustedItem = [address, item]
-                break
-              }
-            }
+        //     for (const [address, item] of changedItems) {
+        //       const currentTarget = Number(item.targetShares)
+        //       // Ensure we don't make any share negative
+        //       if ((diff < 0 && currentTarget > Math.abs(diff)) || diff > 0) {
+        //         adjustedItem = [address, item]
+        //         break
+        //       }
+        //     }
 
-            const [adjustAddress, adjustItem] = adjustedItem
-            const newTargetValue = Number(adjustItem.targetShares) + diff
+        //     const [adjustAddress, adjustItem] = adjustedItem
+        //     const newTargetValue = Number(adjustItem.targetShares) + diff
 
-            // Ensure we don't go below zero
-            const finalTargetValue = Math.max(0, newTargetValue)
+        //     // Ensure we don't go below zero
+        //     const finalTargetValue = Math.max(0, newTargetValue)
 
-            // If we couldn't adjust fully with one item, distribute among others
-            const remainingDiff =
-              newTargetValue < 0 ? Math.abs(newTargetValue) : 0
+        //     // If we couldn't adjust fully with one item, distribute among others
+        //     const remainingDiff =
+        //       newTargetValue < 0 ? Math.abs(newTargetValue) : 0
 
-            // Update the adjusted item
-            estimatedBasket[adjustAddress].targetShares =
-              finalTargetValue.toFixed(2)
-            estimatedBasket[adjustAddress].delta =
-              finalTargetValue -
-              Number(estimatedBasket[adjustAddress].currentShares)
+        //     // Update the adjusted item
+        //     estimatedBasket[adjustAddress].targetShares =
+        //       finalTargetValue.toFixed(2)
+        //     estimatedBasket[adjustAddress].delta =
+        //       finalTargetValue -
+        //       Number(estimatedBasket[adjustAddress].currentShares)
 
-            // Distribute any remaining difference if needed
-            if (remainingDiff > 0) {
-              const otherItems = changedItems.filter(
-                ([addr]) => addr !== adjustAddress
-              )
-              if (otherItems.length > 0) {
-                const adjustPerItem = remainingDiff / otherItems.length
-                for (const [addr, item] of otherItems) {
-                  const newValue = Number(item.targetShares) - adjustPerItem
-                  estimatedBasket[addr].targetShares = newValue.toFixed(2)
-                  estimatedBasket[addr].delta =
-                    newValue - Number(estimatedBasket[addr].currentShares)
-                }
-              }
-            }
-          }
-        }
+        //     // Distribute any remaining difference if needed
+        //     if (remainingDiff > 0) {
+        //       const otherItems = changedItems.filter(
+        //         ([addr]) => addr !== adjustAddress
+        //       )
+        //       if (otherItems.length > 0) {
+        //         const adjustPerItem = remainingDiff / otherItems.length
+        //         for (const [addr, item] of otherItems) {
+        //           const newValue = Number(item.targetShares) - adjustPerItem
+        //           estimatedBasket[addr].targetShares = newValue.toFixed(2)
+        //           estimatedBasket[addr].delta =
+        //             newValue - Number(estimatedBasket[addr].currentShares)
+        //         }
+        //       }
+        //     }
+        //   }
+        // }
 
         return estimatedBasket
       })(),
