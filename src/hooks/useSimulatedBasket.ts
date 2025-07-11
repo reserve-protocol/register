@@ -309,75 +309,58 @@ const useSimulatedBasket = (
     return {
       price: dtfPrice,
       basket: (() => {
-        // // Calculate the sum of all targetShares
-        // const targetSharesSum = Object.values(estimatedBasket).reduce(
-        //   (sum, item) =>
-        //     sum + (item.targetShares ? Number(item.targetShares) : 0),
-        //   0
-        // )
+        // Calculate the sum of all targetShares
+        const targetSharesSum = Object.values(estimatedBasket).reduce(
+          (sum, item) =>
+            sum + (item.targetShares ? Number(item.targetShares) : 0),
+          0
+        )
 
-        // // Calculate the difference from 100%
-        // const diff = 100 - targetSharesSum
+        // Only normalize if total exceeds 100%
+        if (targetSharesSum > 100.01) {
+          // Calculate how much we need to reduce
+          const excess = targetSharesSum - 100
 
-        // if (Math.abs(diff) > 0.01) {
-        //   // Only adjust if difference is significant
-        //   // Find all items with changed delta
-        //   const changedItems = Object.entries(estimatedBasket).filter(
-        //     ([_, item]) => item.delta !== 0 && item.targetShares
-        //   )
+          // Find all items with positive delta (appreciated assets)
+          const appreciatedItems = Object.entries(estimatedBasket)
+            .filter(([_, item]) => item.delta > 0)
+            .sort((a, b) => b[1].delta - a[1].delta) // Sort by delta descending
 
-        //   if (changedItems.length > 0) {
-        //     // Sort by targetShares in descending order
-        //     changedItems.sort(
-        //       (a, b) => Number(b[1].targetShares) - Number(a[1].targetShares)
-        //     )
+          if (appreciatedItems.length > 0) {
+            // Remove excess from the most appreciated asset
+            const [adjustAddress, adjustItem] = appreciatedItems[0]
+            const currentTarget = Number(adjustItem.targetShares)
+            
+            // Ensure we don't make the share negative
+            const newTargetValue = Math.max(0, currentTarget - excess)
+            
+            // Update the adjusted item
+            estimatedBasket[adjustAddress].targetShares = newTargetValue.toFixed(2)
+            estimatedBasket[adjustAddress].delta =
+              newTargetValue - Number(estimatedBasket[adjustAddress].currentShares)
 
-        //     // Find the item with the largest targetShare that can absorb the adjustment
-        //     let adjustedItem = changedItems[0]
-
-        //     for (const [address, item] of changedItems) {
-        //       const currentTarget = Number(item.targetShares)
-        //       // Ensure we don't make any share negative
-        //       if ((diff < 0 && currentTarget > Math.abs(diff)) || diff > 0) {
-        //         adjustedItem = [address, item]
-        //         break
-        //       }
-        //     }
-
-        //     const [adjustAddress, adjustItem] = adjustedItem
-        //     const newTargetValue = Number(adjustItem.targetShares) + diff
-
-        //     // Ensure we don't go below zero
-        //     const finalTargetValue = Math.max(0, newTargetValue)
-
-        //     // If we couldn't adjust fully with one item, distribute among others
-        //     const remainingDiff =
-        //       newTargetValue < 0 ? Math.abs(newTargetValue) : 0
-
-        //     // Update the adjusted item
-        //     estimatedBasket[adjustAddress].targetShares =
-        //       finalTargetValue.toFixed(2)
-        //     estimatedBasket[adjustAddress].delta =
-        //       finalTargetValue -
-        //       Number(estimatedBasket[adjustAddress].currentShares)
-
-        //     // Distribute any remaining difference if needed
-        //     if (remainingDiff > 0) {
-        //       const otherItems = changedItems.filter(
-        //         ([addr]) => addr !== adjustAddress
-        //       )
-        //       if (otherItems.length > 0) {
-        //         const adjustPerItem = remainingDiff / otherItems.length
-        //         for (const [addr, item] of otherItems) {
-        //           const newValue = Number(item.targetShares) - adjustPerItem
-        //           estimatedBasket[addr].targetShares = newValue.toFixed(2)
-        //           estimatedBasket[addr].delta =
-        //             newValue - Number(estimatedBasket[addr].currentShares)
-        //         }
-        //       }
-        //     }
-        //   }
-        // }
+            // If we couldn't remove all excess from one item, distribute to others
+            const remainingExcess = excess - (currentTarget - newTargetValue)
+            
+            if (remainingExcess > 0 && appreciatedItems.length > 1) {
+              // Remove remaining excess from other appreciated assets
+              let excessToDistribute = remainingExcess
+              
+              for (let i = 1; i < appreciatedItems.length && excessToDistribute > 0; i++) {
+                const [addr, item] = appreciatedItems[i]
+                const itemTarget = Number(item.targetShares)
+                const reduction = Math.min(excessToDistribute, itemTarget)
+                
+                estimatedBasket[addr].targetShares = (itemTarget - reduction).toFixed(2)
+                estimatedBasket[addr].delta =
+                  Number(estimatedBasket[addr].targetShares) - 
+                  Number(estimatedBasket[addr].currentShares)
+                
+                excessToDistribute -= reduction
+              }
+            }
+          }
+        }
 
         return estimatedBasket
       })(),
