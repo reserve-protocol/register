@@ -7,13 +7,15 @@ import { ROUTES } from '@/utils/constants'
 import { t } from '@lingui/macro'
 import { useAtomValue } from 'jotai'
 import {
-  ArrowLeftRight,
-  Blend,
-  CirclePlus,
-  Fingerprint,
   Globe,
+  Blend,
   Landmark,
+  ArrowLeftRight,
+  Fingerprint,
+  ChevronDown,
+  Wallet,
   Wallet2,
+  CirclePlus,
 } from 'lucide-react'
 import { useMemo } from 'react'
 import { NavLink } from 'react-router-dom'
