@@ -2374,4 +2374,48 @@ export default [
       },
     ],
   },
+  {
+    inputs: [
+      { internalType: 'address[]', name: 'tokens', type: 'address[]' },
+      {
+        components: [
+          { internalType: 'uint256', name: 'low', type: 'uint256' },
+          { internalType: 'uint256', name: 'spot', type: 'uint256' },
+          { internalType: 'uint256', name: 'high', type: 'uint256' },
+        ],
+        internalType: 'struct IFolio.WeightRange[]',
+        name: 'weights',
+        type: 'tuple[]',
+      },
+      {
+        components: [
+          { internalType: 'uint256', name: 'low', type: 'uint256' },
+          { internalType: 'uint256', name: 'high', type: 'uint256' },
+        ],
+        internalType: 'struct IFolio.PriceRange[]',
+        name: 'prices',
+        type: 'tuple[]',
+      },
+      {
+        components: [
+          { internalType: 'uint256', name: 'low', type: 'uint256' },
+          { internalType: 'uint256', name: 'spot', type: 'uint256' },
+          { internalType: 'uint256', name: 'high', type: 'uint256' },
+        ],
+        internalType: 'struct IFolio.RebalanceLimits',
+        name: 'limits',
+        type: 'tuple',
+      },
+      {
+        internalType: 'uint256',
+        name: 'auctionLauncherWindow',
+        type: 'uint256',
+      },
+      { internalType: 'uint256', name: 'ttl', type: 'uint256' },
+    ],
+    name: 'startRebalance',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
 ] as const

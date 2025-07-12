@@ -13,6 +13,7 @@ import { useEffect, useState } from 'react'
 import CMSUpdater from './cms'
 import RTokenUpdater from './rtoken/updater'
 import CollateralYieldUpdater from './updaters/CollateralYieldUpdater'
+import DevModeUpdater from './updaters/DevModeUpdater'
 import PricesUpdater from './updaters/PriceUpdater'
 import AccountUpdater from './wallet/updaters/AccountUpdater'
 import { TokenBalancesUpdater } from './wallet/updaters/TokenBalancesUpdater'
@@ -52,6 +53,7 @@ export const PortfolioUpdater = () => {
 const Updater = () => {
   return (
     <>
+      <DevModeUpdater />
       <CMSUpdater />
       <PricesUpdater />
       <RTokenUpdater />

@@ -1,5 +1,7 @@
+import { Switch } from '@/components/ui/switch'
 import { humanizeMinutes } from '@/utils'
-import { GalleryHorizontal, Hourglass } from 'lucide-react'
+import { Hourglass, LandPlot } from 'lucide-react'
+import { Controller, useFormContext } from 'react-hook-form'
 import ToggleGroupWithCustom from '../../components/toggle-group-with-custom'
 
 const TOGGLE_FORMS = [
@@ -16,28 +18,46 @@ const TOGGLE_FORMS = [
       max: 45,
     },
   },
-
-  {
-    title: 'Exclusive Launch Window',
-    description: `How long the exclusive launch window should be. During the exclusive launch window, auction launchers are the only people who can start a new auction. The exclusive launch window begins after a basket change is approved and the basket change’s execution delay is completed.`,
-    icon: <GalleryHorizontal size={14} strokeWidth={1.5} />,
-    options: [0, 12, 24, 48],
-    optionsFormatter: (option: number) =>
-      option === 0 ? 'None' : `${option}h`,
-    fieldName: 'auctionDelay',
-    customLabel: 'hours',
-    customPlaceholder: 'Enter custom length',
-  },
 ]
 
-const AuctionsForm = () => {
+const WeightControl = () => {
+  const { control } = useFormContext()
+
   return (
-    <div className="flex flex-col gap-2 px-2 mb-2">
-      {TOGGLE_FORMS.map((form) => (
-        <ToggleGroupWithCustom key={form.fieldName} {...form} />
-      ))}
+    <div className="w-full rounded-xl flex flex-col gap-3 justify-between p-4 bg-muted/70">
+      <div className="flex items-center gap-2">
+        <div className="p-2 border border-foreground rounded-full">
+          <LandPlot size={14} strokeWidth={1.5} />
+        </div>
+
+        <div className="flex flex-col">
+          <div className="text-base font-bold">Weight control</div>
+          <div className="flex items-center gap-1 text-sm text-muted-foreground">
+            Allowing the weight control will allow the rebalance to adjust the
+            weights of the tokens in the basket, turning this off is recommended
+            for tracking DTFs.
+          </div>
+        </div>
+
+        <Controller
+          name="weightControl"
+          control={control}
+          render={({ field: { onChange, value } }) => (
+            <Switch checked={value} onCheckedChange={onChange} />
+          )}
+        />
+      </div>
     </div>
   )
 }
+
+const AuctionsForm = () => (
+  <div className="flex flex-col gap-2 px-2 mb-2">
+    {TOGGLE_FORMS.map((form) => (
+      <ToggleGroupWithCustom key={form.fieldName} {...form} />
+    ))}
+    <WeightControl />
+  </div>
+)
 
 export default AuctionsForm
