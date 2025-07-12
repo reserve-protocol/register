@@ -24,7 +24,10 @@ const RawCallPreview = ({ call }: { call: DecodedCalldata }) => (
         <span className="text-legend text-sm block mb-1">Parameters</span>
         <JsonView
           shouldExpandNode={collapseAllNested}
-          style={defaultStyles}
+          style={{
+            ...defaultStyles,
+            container: 'bg-[#FBF2E8] dark:bg-[#ccc] rounded-2xl p-2',
+          }}
           data={call.data}
         />
       </div>
@@ -35,7 +38,7 @@ const RawCallPreview = ({ call }: { call: DecodedCalldata }) => (
             <ChevronsUpDown className="h-4 w-4" />
           </CollapsibleTrigger>
           <CollapsibleContent className="mt-4 p-2 bg-foreground/5 rounded-3xl">
-            <code className="w-full  text-wrap break-all">{call.callData}</code>
+            <code className="w-full text-wrap break-all">{call.callData}</code>
           </CollapsibleContent>
         </Collapsible>
       </div>
