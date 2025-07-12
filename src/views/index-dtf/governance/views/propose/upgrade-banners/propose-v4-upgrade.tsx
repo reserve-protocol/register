@@ -20,6 +20,7 @@ import {
 import { governanceProposalsAtom, refetchTokenAtom } from '../../../atoms'
 import { useIsProposeAllowed } from '../../../hooks/use-is-propose-allowed'
 import { toast } from 'sonner'
+import dtfIndexAbiV4 from '@/abis/dtf-index-abi-v4'
 
 export const spellAbi = [
   { inputs: [], stateMutability: 'nonpayable', type: 'constructor' },
@@ -42,6 +43,11 @@ export const spellAbi = [
 export const spellAddress = {
   [ChainId.Mainnet]: getAddress('0x7498c6aB0669A09DE7B9185ba72A98fa3Ca39cC9'),
   [ChainId.Base]: getAddress('0x4720dbCAEEF5834AEf590781F93d70fD1e3AcADB'),
+}
+
+const fillerRegistryMapping = {
+  [ChainId.Mainnet]: getAddress('0x279ccF56441fC74f1aAC39E7faC165Dec5A88B3A'),
+  [ChainId.Base]: getAddress('0x08424d7C52bf9edd4070701591Ea3FE6dca6449B'),
 }
 
 const UPGRADE_FOLIO_MESSAGE = 'DTF V4 Upgrade'
@@ -107,6 +113,11 @@ const ProposeBanner = ({ refetch }: SpellUpgradeProps) => {
             abi: spellAbi,
             functionName: 'cast',
             args: [dtf.id, dtf.proxyAdmin],
+          }),
+          encodeFunctionData({
+            abi: dtfIndexAbiV4,
+            functionName: 'setTrustedFillerRegistry',
+            args: [fillerRegistryMapping[chainId], true],
           }),
         ],
         UPGRADE_FOLIO_MESSAGE,
