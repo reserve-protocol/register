@@ -47,7 +47,7 @@ export const spellAddress = {
 
 const fillerRegistryMapping = {
   [ChainId.Mainnet]: getAddress('0x279ccF56441fC74f1aAC39E7faC165Dec5A88B3A'),
-  [ChainId.Base]: getAddress('0x08424d7C52bf9edd4070701591Ea3FE6dca6449B'),
+  [ChainId.Base]: getAddress('0x72DB5f49D0599C314E2f2FEDf6Fe33E1bA6C7A18'),
 }
 
 const UPGRADE_FOLIO_MESSAGE = 'DTF V4 Upgrade'
