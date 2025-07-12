@@ -1,9 +1,17 @@
+import { indexDTFVersionAtom } from '@/state/dtf/atoms'
+import { useAtomValue } from 'jotai'
 import { Outlet } from 'react-router-dom'
 import useTrackIndexDTFPage from '../hooks/useTrackIndexDTFPage'
+import IndexDTFAuctionsLegacy from './legacy'
 import Updater from './updater'
 
 const IndexDTFAuctions = () => {
+  const isV2 = useAtomValue(indexDTFVersionAtom) === '2.0.0'
   useTrackIndexDTFPage('auctions')
+
+  if (isV2) {
+    return <IndexDTFAuctionsLegacy />
+  }
 
   return (
     <div className="container">

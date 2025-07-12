@@ -8,6 +8,8 @@ import {
   EmptyState,
   LoadingState,
 } from './components'
+import { indexDTFVersionAtom } from '@/state/dtf/atoms'
+import IndexDTFAuctionsLegacy from '../../legacy'
 
 const RebalanceList = () => {
   const rebalances = useAtomValue(rebalancesByProposalListAtom)

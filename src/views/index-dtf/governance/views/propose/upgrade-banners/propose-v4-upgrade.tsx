@@ -96,8 +96,8 @@ const ProposeBanner = ({ refetch }: SpellUpgradeProps) => {
       abi: DTFIndexGovernance,
       functionName: 'propose',
       args: [
-        [dtf.id, dtf.proxyAdmin, spell],
-        [0n, 0n, 0n],
+        [dtf.id, dtf.proxyAdmin, spell, dtf.id],
+        [0n, 0n, 0n, 0n],
         [
           encodeFunctionData({
             abi: dtfIndexAbi,

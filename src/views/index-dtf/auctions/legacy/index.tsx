@@ -1,5 +1,13 @@
+import ProposalTrades from './components/proposal-trades'
+import Updater from './updater'
+
 const IndexDTFAuctionsLegacy = () => {
-  return <div>IndexDTFAuctionsLegacy</div>
+  return (
+    <div>
+      <ProposalTrades />
+      <Updater />
+    </div>
+  )
 }
 
 export default IndexDTFAuctionsLegacy
