@@ -96,19 +96,26 @@ export default function AuctionBidsChart({
   description = 'Price vs Time',
 }: AuctionBidsChartProps) {
   const [selectedBid, setSelectedBid] = useState<Bid | null>(null)
-  const [currentTimeState, setCurrentTimeState] = useState(currentTime)
+  const [tick, setTick] = useState(0)
   const chainId = useAtomValue(chainIdAtom)
 
+  // Always use real current time, clamped to auction bounds
+  const currentTimeState = useMemo(() => {
+    const realTime = Math.floor(Date.now() / 1000)
+    // Ensure we're within auction time bounds
+    if (realTime < startTime) return startTime
+    if (realTime > endTime) return endTime
+    return realTime
+  }, [startTime, endTime, tick]) // tick forces recalculation
+
+  // Update every second to trigger re-render
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentTimeState((prev) => {
-        const newTime = prev + 1 // Add 1 second
-        return newTime <= endTime ? newTime : endTime
-      })
+      setTick(t => t + 1)
     }, UPDATE_INTERVAL)
 
     return () => clearInterval(interval)
-  }, [endTime])
+  }, [])
 
   // Generate logarithmic price curve data
   const chartData = useMemo(() => {

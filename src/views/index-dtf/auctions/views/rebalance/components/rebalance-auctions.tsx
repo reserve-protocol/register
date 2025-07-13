@@ -2,11 +2,11 @@ import Spinner from '@/components/ui/spinner'
 import useTimeRemaining from '@/hooks/use-time-remaining'
 import { cn } from '@/lib/utils'
 import { getCurrentTime } from '@/utils'
-import { useAtomValue } from 'jotai'
+import { useAtomValue, useSetAtom } from 'jotai'
 import { Clock } from 'lucide-react'
-import { useMemo } from 'react'
+import { useMemo, useEffect, useState } from 'react'
 import { formatUnits } from 'viem'
-import { Auction, activeAuctionAtom } from '../atoms'
+import { Auction, activeAuctionAtom, refreshNonceAtom } from '../atoms'
 import useRebalanceParams from '../hooks/use-rebalance-params'
 import AuctionBidsChart from './auction-bids-chart'
 
@@ -120,6 +120,30 @@ const TimeRemaining = ({ auction }: { auction: Auction }) => {
   )
 }
 
+// Component that monitors auction end and triggers refresh
+const AuctionEndMonitor = ({ endTime }: { endTime: string }) => {
+  const setRefreshNonce = useSetAtom(refreshNonceAtom)
+
+  useEffect(() => {
+    const checkAuctionEnd = () => {
+      const currentTime = Math.floor(Date.now() / 1000)
+      const auctionEndTime = parseInt(endTime)
+      
+      if (currentTime > auctionEndTime) {
+        // Increment nonce to trigger data refresh
+        setRefreshNonce((prev) => prev + 1)
+      }
+    }
+
+    // Check every second
+    const interval = setInterval(checkAuctionEnd, 1000)
+
+    return () => clearInterval(interval)
+  }, [endTime, setRefreshNonce])
+
+  return null
+}
+
 const AuctionItem = ({
   auction,
   index,
@@ -156,6 +180,7 @@ const RebalanceAuctions = () => {
 
   return (
     <div className="bg-background p-2 rounded-3xl flex flex-col gap-2">
+      <AuctionEndMonitor endTime={activeAuctionData.auction.endTime} />
       <AuctionItem
         auction={activeAuctionData.auction}
         index={activeAuctionData.index - 1}
