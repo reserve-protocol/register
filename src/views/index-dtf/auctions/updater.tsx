@@ -57,7 +57,7 @@ const useRebalances = () => {
     enabled: !!dtf?.id,
   })
 }
-const Updater = () => {
+const RebalancesUpdater = () => {
   const setRebalances = useSetAtom(rebalancesAtom)
   const { data } = useRebalances()
 
@@ -74,4 +74,9 @@ const Updater = () => {
   return null
 }
 
-export default Updater
+export default () => (
+  <>
+    <RebalancesUpdater />
+    <LegacyUpdater />
+  </>
+)

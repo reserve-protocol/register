@@ -109,7 +109,7 @@ export const indexDTFPriceAtom = atom((get) => {
   return basketPrices[dtf.token.id.toLowerCase()]
 })
 
-export const indexDTFVersionAtom = atom('2.0.0')
+export const indexDTFVersionAtom = atom('4.0.0')
 
 // TODO: Retrieve from server, hardcoded for now
 const WHITELISTED_ADDRESSES = [

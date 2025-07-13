@@ -7,6 +7,9 @@ import {
   HistoricalRebalanceItem,
   SectionHeader,
 } from './components'
+import { dtfTradesAtom } from '../../legacy/atoms'
+import { Button } from '@/components/ui/button'
+import { Link } from 'react-router-dom'
 
 const rebalanceListAtom = atom((get) => {
   const rebalances = get(rebalancesByProposalListAtom)
@@ -22,7 +25,7 @@ const rebalanceListAtom = atom((get) => {
     (r) => +r.rebalance.availableUntil <= getCurrentTime()
   )
 
-  return { activeRebalances, historicalRebalances, isLoading: true }
+  return { activeRebalances, historicalRebalances, isLoading: false }
 })
 
 const EmptyState = () => {
@@ -37,6 +40,22 @@ const EmptyState = () => {
 
 const LoadingState = () => {
   return <Skeleton className="h-52 bg-background rounded-3xl " />
+}
+
+const LegacyTradesButton = () => {
+  const legacyTrades = useAtomValue(dtfTradesAtom)
+
+  if (legacyTrades?.length === 0) return null
+
+  return (
+    <div className="flex justify-center">
+      <Link to="./legacy">
+        <Button variant="outline-primary" size="lg" className="rounded-full">
+          View older auctions
+        </Button>
+      </Link>
+    </div>
+  )
 }
 
 const RebalanceList = () => {
@@ -85,6 +104,7 @@ const RebalanceList = () => {
           ))}
         </div>
       </section>
+      <LegacyTradesButton />
     </div>
   )
 }
