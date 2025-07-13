@@ -25,11 +25,11 @@ const CURVE_STEEPNESS = -3.5
 const MIN_PRICE = 0.5
 const MAX_PRICE = 100
 const CHART_POINTS = 200
-const UPDATE_INTERVAL = 60000 // 1 minute
+const UPDATE_INTERVAL = 1000 // 1 second
 const CHART_MARGINS = { top: 0, right: 0, left: -32, bottom: 0 }
 
 // UI constants
-const TOKEN_LOGO_SIZE = "w-6 h-6"
+const TOKEN_LOGO_SIZE = 'w-6 h-6'
 const ARROW_ICON_SIZE = 12
 const ARROW_ICON_SIZE_SMALL = 10
 const ARROW_DOWN_ICON_SIZE = 14
@@ -43,11 +43,10 @@ const COLORS = {
 }
 
 // Utility functions
-const formatAddress = (address: string): string => 
+const formatAddress = (address: string): string =>
   `${address.slice(0, 6)}...${address.slice(-4)}`
 
-const formatUsdAmount = (amount: number): string => 
-  `$${amount.toFixed(2)}`
+const formatUsdAmount = (amount: number): string => `$${amount.toFixed(2)}`
 
 const formatTime = (timestamp: number): string => {
   const date = new Date(timestamp * 1000)
@@ -103,7 +102,7 @@ export default function AuctionBidsChart({
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentTimeState((prev) => {
-        const newTime = prev + 60 // Add 60 seconds (1 minute)
+        const newTime = prev + 1 // Add 1 second
         return newTime <= endTime ? newTime : endTime
       })
     }, UPDATE_INTERVAL)
@@ -124,9 +123,9 @@ export default function AuctionBidsChart({
 
       data.push({
         timestamp,
-        price: Math.max(price, MIN_PRICE),
-        pastPrice: timestamp <= currentTimeState ? Math.max(price, MIN_PRICE) : null,
-        futurePrice: timestamp >= currentTimeState ? Math.max(price, MIN_PRICE) : null,
+        price: Math.max(price, MIN_PRICE), // Full curve in black
+        pastPrice:
+          timestamp <= currentTimeState ? Math.max(price, MIN_PRICE) : null, // Blue overlay
       })
     }
 
@@ -146,15 +145,14 @@ export default function AuctionBidsChart({
     })
   }, [bids, startTime, endTime])
 
-
   const chartConfig = {
+    price: {
+      label: 'Price',
+      color: COLORS.FUTURE_PRICE,
+    },
     pastPrice: {
       label: 'Past Price',
       color: COLORS.PAST_PRICE,
-    },
-    futurePrice: {
-      label: 'Future Price',
-      color: COLORS.FUTURE_PRICE,
     },
     bids: {
       label: 'Bids',
@@ -173,10 +171,7 @@ export default function AuctionBidsChart({
         className="w-full h-[200px] [&>div]:!w-full text-foreground"
       >
         <ResponsiveContainer width="100%" height="100%">
-          <LineChart
-            data={chartData}
-            margin={CHART_MARGINS}
-          >
+          <LineChart data={chartData} margin={CHART_MARGINS}>
             {/* Y-axis */}
             <YAxis
               domain={[0, 100]}
@@ -216,7 +211,18 @@ export default function AuctionBidsChart({
               }}
             />
 
-            {/* Past price line (blue) */}
+            {/* Full price curve (black) - drawn first */}
+            <Line
+              type="monotone"
+              dataKey="price"
+              stroke={COLORS.FUTURE_PRICE}
+              strokeWidth={2}
+              dot={false}
+              activeDot={false}
+              isAnimationActive={false}
+            />
+
+            {/* Past price overlay (blue) - drawn on top */}
             <Line
               type="monotone"
               dataKey="pastPrice"
@@ -224,19 +230,7 @@ export default function AuctionBidsChart({
               strokeWidth={2}
               dot={false}
               activeDot={false}
-              connectNulls={true}
-              isAnimationActive={false}
-            />
-
-            {/* Future price line (black) */}
-            <Line
-              type="monotone"
-              dataKey="futurePrice"
-              stroke={COLORS.FUTURE_PRICE}
-              strokeWidth={2}
-              dot={false}
-              activeDot={false}
-              connectNulls={true}
+              connectNulls={false}
               isAnimationActive={false}
             />
 
@@ -360,7 +354,10 @@ export default function AuctionBidsChart({
                 {/* Arrow */}
                 <div className="flex justify-center py-1">
                   <div className="p-1 bg-background rounded-full">
-                    <ArrowDown size={ARROW_DOWN_ICON_SIZE} className="text-muted-foreground" />
+                    <ArrowDown
+                      size={ARROW_DOWN_ICON_SIZE}
+                      className="text-muted-foreground"
+                    />
                   </div>
                 </div>
 
