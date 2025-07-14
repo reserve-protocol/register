@@ -196,8 +196,22 @@ const useRebalanceBasketPreview = (
     )
       return undefined
 
+    const initialPrices: Record<string, number> = {}
+    for (let i = 0; i < rebalance.data.weights.length; i++) {
+      const token = rebalance.data.tokens[i].toLowerCase()
+      const decimals = tokens[token].decimals
+
+      initialPrices[token] = calculatePriceFromRange(
+        {
+          low: rebalance.data.prices[i].low,
+          high: rebalance.data.prices[i].high,
+        },
+        decimals
+      )
+    }
+
     // keep track of the token order for the target basket
-    const tokenList = Object.keys(tokens)
+    const tokenList = rebalance.data.tokens.map((token) => token.toLowerCase())
     // if weight control is true (tracking dtf), use current price, otherwise use snapshot price
     const priceList = tokenList.map((token, index) => {
       if (rebalanceControl.weightControl) {
@@ -224,7 +238,7 @@ const useRebalanceBasketPreview = (
 
         acc[token] = {
           token: tokens[token],
-          snapshotPrice: prices[token].snapshotPrice,
+          snapshotPrice: initialPrices[token],
           currentPrice: prices[token].currentPrice,
           currentWeight: currentWeights[token] || '0',
           targetWeight: Number(targetWeight).toFixed(2),
