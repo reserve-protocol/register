@@ -1,6 +1,7 @@
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useCallback, useEffect } from 'react'
 import {
+  apiRebalanceMetricsAtom,
   currentProposalIdAtom,
   currentRebalanceAtom,
   RebalanceByProposal,
@@ -16,6 +17,7 @@ import useRebalanceParams, {
 } from './hooks/use-rebalance-params'
 import getRebalanceOpenAuction from './utils/get-rebalance-open-auction'
 import { useParams } from 'react-router-dom'
+import { useRebalanceMetrics } from '../rebalance-list/hooks/use-rebalance-metrics'
 
 const RebalanceMetricsUpdater = () => {
   const setRebalanceMetrics = useSetAtom(rebalanceMetricsAtom)
@@ -76,6 +78,20 @@ const RebalanceMetricsUpdater = () => {
   return null
 }
 
+const ApiRebalanceMetricsUpdater = () => {
+  const rebalance = useAtomValue(currentRebalanceAtom)
+  const { metrics } = useRebalanceMetrics(rebalance?.proposal.id || '')
+  const setApiRebalanceMetrics = useSetAtom(apiRebalanceMetricsAtom)
+
+  useEffect(() => {
+    if (metrics) {
+      setApiRebalanceMetrics(metrics)
+    }
+  }, [metrics, setApiRebalanceMetrics])
+
+  return null
+}
+
 // Fetch current rebalance auctions!
 const Updater = () => {
   const { data } = useRebalanceAuctions()
@@ -109,6 +125,7 @@ const Updater = () => {
   return (
     <>
       <RebalanceMetricsUpdater />
+      <ApiRebalanceMetricsUpdater />
     </>
   )
 }

@@ -2,6 +2,8 @@ import { PartialProposal } from '@/lib/governance'
 import { Token } from '@/types'
 import { atom } from 'jotai'
 import { governanceProposalsAtom } from '../governance/atoms'
+import { rebalanceMetricsAtom } from './views/rebalance/atoms'
+import { RebalanceMetrics } from './views/rebalance-list/hooks/use-rebalance-metrics'
 
 export type Rebalance = {
   id: string
@@ -87,4 +89,38 @@ export const rebalancesByProposalListAtom = atom<
     (a, b) =>
       Number(b.proposal.executionBlock) - Number(a.proposal.executionBlock)
   )
+})
+
+export const apiRebalanceMetricsAtom = atom<RebalanceMetrics | undefined>(
+  undefined
+)
+
+const MIN_ACCURACY = 0.975
+
+export const isExpiredAtom = atom<boolean>((get) => {
+  const rebalance = get(currentRebalanceAtom)
+  const apiMetrics = get(apiRebalanceMetricsAtom)
+
+  if (!rebalance || !apiMetrics) return false
+
+  const isAvailable = rebalance.rebalance.availableUntil
+    ? Number(rebalance.rebalance.availableUntil) > Math.floor(Date.now() / 1000)
+    : true
+
+  const hasEnoughAccuracy = apiMetrics.rebalanceAccuracy >= MIN_ACCURACY
+  const hasZeroRebalanceUSD = apiMetrics.totalRebalancedUsd === 0
+
+  return !isAvailable && (!hasEnoughAccuracy || hasZeroRebalanceUSD)
+})
+
+export const isSuccessAtom = atom<boolean>((get) => {
+  const rebalance = get(currentRebalanceAtom)
+  const apiMetrics = get(apiRebalanceMetricsAtom)
+
+  if (!rebalance || !apiMetrics) return false
+
+  const hasEnoughAccuracy = apiMetrics.rebalanceAccuracy >= MIN_ACCURACY
+  const hasZeroRebalanceUSD = apiMetrics.totalRebalancedUsd === 0
+
+  return hasEnoughAccuracy && !hasZeroRebalanceUSD
 })
