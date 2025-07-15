@@ -1,15 +1,16 @@
+import { isAuctionLauncherAtom } from '@/state/dtf/atoms'
 import { AuctionRound } from '@reserve-protocol/dtf-rebalance-lib'
-import { atom, useAtomValue } from 'jotai'
+import { useAtomValue } from 'jotai'
+import { useMemo } from 'react'
 import {
   activeAuctionAtom,
   rebalanceMetricsAtom,
   rebalanceTokenMapAtom,
 } from '../atoms'
+import useRebalanceParams from '../hooks/use-rebalance-params'
+import CommunityLaunchAuctionsButton from './community-launch-auctions-button'
 import LaunchAuctionsButton from './launch-auctions-button'
 import RebalanceActionOverview from './rebalance-action-overview'
-import { currentRebalanceAtom } from '../../../atoms'
-import useRebalanceParams from '../hooks/use-rebalance-params'
-import { useMemo } from 'react'
 
 const ROUND_TITLE = {
   [AuctionRound.EJECT]: 'Remove Tokens',
@@ -75,6 +76,7 @@ const RoundDescription = () => {
 
 const RebalanceAction = () => {
   const activeAuction = useAtomValue(activeAuctionAtom)
+  const isAuctionLauncher = useAtomValue(isAuctionLauncherAtom)
 
   // Don't show the action component if there's an active auction
   if (activeAuction) {
@@ -85,7 +87,11 @@ const RebalanceAction = () => {
     <div className="bg-background rounded-3xl">
       <RoundDescription />
       <RebalanceActionOverview />
-      <LaunchAuctionsButton />
+      {isAuctionLauncher ? (
+        <LaunchAuctionsButton />
+      ) : (
+        <CommunityLaunchAuctionsButton />
+      )}
     </div>
   )
 }
