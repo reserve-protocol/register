@@ -1,42 +1,17 @@
-import { Skeleton } from '@/components/ui/skeleton'
-import {
-  indexDTFAtom,
-  indexDTFBasketAtom,
-  indexDTFBasketPricesAtom,
-  indexDTFBasketSharesAtom,
-} from '@/state/dtf/atoms'
 import { DecodedCalldata } from '@/types'
-import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { Address } from 'viem'
-import BasketProposalPreview from '../../views/propose/basket/components/proposal-basket-preview'
 import ContractProposalChanges from './contract-proposal-changes'
-
-const BasketChanges = ({ calldatas }: { calldatas: DecodedCalldata[] }) => {
-  const dtf = useAtomValue(indexDTFAtom)
-  const basket = useAtomValue(indexDTFBasketAtom)
-  const shares = useAtomValue(indexDTFBasketSharesAtom)
-  const prices = useAtomValue(indexDTFBasketPricesAtom)
-
-  if (!dtf || !basket || !prices) return <Skeleton className="h-80" />
-
-  return (
-    <BasketProposalPreview
-      calldatas={calldatas.map((calldata) => calldata.callData)}
-      basket={basket}
-      shares={shares}
-      prices={prices}
-      address={dtf.id.toLowerCase() as Address}
-    />
-  )
-}
+import RebalancePreview from './rebalance-preview'
 
 const FolioChangePreview = ({
   decodedCalldata,
   address,
+  timestamp,
 }: {
   decodedCalldata: DecodedCalldata[]
   address: Address
+  timestamp?: number
 }) => {
   const { basketChangeCalls, restCalls } = useMemo(() => {
     return decodedCalldata.reduce(
@@ -47,7 +22,12 @@ const FolioChangePreview = ({
         },
         call
       ) => {
-        if (call.signature === 'approveAuction') {
+        // approveAuction => 1.0 / 2.0 rebalance flows, maintenance support
+        // startRebalance => 4.0 rebalance flows
+        if (
+          call.signature === 'approveAuction' ||
+          call.signature === 'startRebalance'
+        ) {
           acc.basketChangeCalls.push(call)
         } else {
           acc.restCalls.push(call)
@@ -64,7 +44,10 @@ const FolioChangePreview = ({
   return (
     <div>
       {!!basketChangeCalls.length && (
-        <BasketChanges calldatas={basketChangeCalls} />
+        <RebalancePreview
+          calldatas={basketChangeCalls.map((call) => call.callData)}
+          timestamp={timestamp}
+        />
       )}
       {!!restCalls.length && (
         <ContractProposalChanges

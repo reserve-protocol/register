@@ -122,3 +122,10 @@ export const gqlClientAtom = atom(
 )
 
 export const contentfulClientAtom = atom(() => GRAPH_CLIENTS['CONTENTFUL'])
+
+/**
+ * #########################
+ * Dev mode related atoms
+ * #########################
+ */
+export const devModeAtom = atom(false)

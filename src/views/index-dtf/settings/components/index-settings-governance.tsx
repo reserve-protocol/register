@@ -79,7 +79,7 @@ export const InnerGovernanceInfo = ({
       <InfoCardItem
         icon={<IconWrapper Component={ShieldCheck} />}
         label={t`Voting Quorum`}
-        value={data ? formatPercentage(data.quorumNumerator) : undefined}
+        value={data ? formatPercentage(data.quorum) : undefined}
       />
       <InfoCardItem
         icon={<IconWrapper Component={MousePointerBan} />}
@@ -129,9 +129,7 @@ const GovernanceInfo = ({
             ? 'non-basket-governance'
             : 'dao-governance'
       }
-      action={
-        <Help size={20} className="p-0" content={help} />
-      }
+      action={<Help size={20} className="p-0" content={help} />}
     >
       <InnerGovernanceInfo kind={kind} />
     </InfoCard>

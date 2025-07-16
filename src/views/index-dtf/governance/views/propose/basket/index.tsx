@@ -1,7 +1,7 @@
 import { useAtomValue } from 'jotai'
 import { isProposalConfirmedAtom } from './atoms'
 import BasketProposalOverview from './components/basket-proposal-overview'
-import BasketProposalSteps from './components/basket-proposal-steps'
+import BasketProposal from './components/basket-proposal'
 import ConfirmBasketProposal from './components/confirm-basket-proposal'
 import Updater from './updater'
 
@@ -10,7 +10,7 @@ const ProposalStage = () => {
 
   if (isConfirmed) return <ConfirmBasketProposal />
 
-  return <BasketProposalSteps />
+  return <BasketProposal />
 }
 
 const IndexDTFBasketProposal = () => (
