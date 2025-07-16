@@ -1,10 +1,10 @@
-import dtfIndexAbiV4 from '@/abis/dtf-index-abi-v4'
-import dtfIndexAbiV2 from '@/abis/dtf-index-abi-v2'
 import dtfAdminAbi from '@/abis/dtf-admin-abi'
+import dtfIndexAbiV2 from '@/abis/dtf-index-abi-v2'
+import dtfIndexAbiV4 from '@/abis/dtf-index-abi-v4'
 import dtfIndexGovernance from '@/abis/dtf-index-governance'
 import dtfIndexStakingVault from '@/abis/dtf-index-staking-vault'
 import Timelock from '@/abis/Timelock'
-import { indexDTFAtom, indexDTFVersionAtom } from '@/state/dtf/atoms'
+import { indexDTFAtom } from '@/state/dtf/atoms'
 import { atom } from 'jotai'
 import { Abi } from 'viem'
 import {
@@ -18,9 +18,8 @@ import {
 
 export const dtfAbiMapppingAtom = atom((get) => {
   const dtf = get(indexDTFAtom)
-  const version = get(indexDTFVersionAtom)
 
-  const dtfAbi = version === '2.0.0' ? dtfIndexAbiV2 : dtfIndexAbiV4
+  const dtfAbi = [...dtfIndexAbiV4, ...dtfIndexAbiV2]
 
   if (!dtf) return undefined
 
