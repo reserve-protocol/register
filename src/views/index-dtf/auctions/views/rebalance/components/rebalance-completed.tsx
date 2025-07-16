@@ -14,10 +14,12 @@ import {
 } from 'lucide-react'
 import { ReactNode, useMemo } from 'react'
 import { Link } from 'react-router-dom'
-import { apiRebalanceMetricsAtom, isSuccessAtom } from '../../../atoms'
+import { apiRebalanceMetricsAtom } from '../../../atoms'
 import { cn } from '@/lib/utils'
 
-const ExpiredProgressBar = ({ accuracy }: { accuracy?: number }) => {
+const MIN_ACCURACY = 99
+
+const IncompleteProgressBar = ({ accuracy }: { accuracy?: number }) => {
   return (
     <div className="flex items-center gap-0.5">
       {/* Accuracy bar */}
@@ -35,7 +37,7 @@ const ExpiredProgressBar = ({ accuracy }: { accuracy?: number }) => {
       >
         <div
           className={cn(
-            'flex items-center justify-center w-full h-3 px-0.5 border-[#D05A67]',
+            'flex items-center justify-center w-full h-3 border-[#D05A67]',
             accuracy === undefined || accuracy === 100
               ? 'border-l-none border-r-none'
               : 'border-l-2 border-r-2'
@@ -49,8 +51,12 @@ const ExpiredProgressBar = ({ accuracy }: { accuracy?: number }) => {
 }
 
 const RebalanceCompleted = () => {
-  const isSuccess = useAtomValue(isSuccessAtom)
   const apiRebalanceMetrics = useAtomValue(apiRebalanceMetricsAtom)
+
+  const hasMinAccuracy = useMemo(() => {
+    if (apiRebalanceMetrics?.rebalanceAccuracy === undefined) return true
+    return apiRebalanceMetrics.rebalanceAccuracy >= MIN_ACCURACY
+  }, [apiRebalanceMetrics?.rebalanceAccuracy])
 
   const title = useMemo(() => {
     const msg = 'Rebalance'
@@ -94,17 +100,8 @@ const RebalanceCompleted = () => {
           {/* Success card */}
           <div>
             <div className="flex flex-col justify-between p-6 min-h-[210px]">
-              <div
-                className={cn(
-                  'flex items-center justify-center rounded-full p-2 w-max',
-                  isSuccess ? 'bg-primary' : 'bg-[#D05A67]'
-                )}
-              >
-                {isSuccess ? (
-                  <Check className="h-4 w-4 text-white" strokeWidth={1.5} />
-                ) : (
-                  <EqualNot className="h-4 w-4 text-white" strokeWidth={1.5} />
-                )}
+              <div className="flex items-center justify-center rounded-full p-2 w-max bg-primary">
+                <Check className="h-4 w-4 text-white" strokeWidth={1.5} />
               </div>
 
               <div className="flex flex-col gap-5">
@@ -113,23 +110,16 @@ const RebalanceCompleted = () => {
                   <div className="text-base font-light text-muted-foreground">
                     Rebalance progress
                   </div>
-                  <h2
-                    className={cn(
-                      'text-2xl text-[26px] font-light text-primary',
-                      !isSuccess && 'text-[#D05A67]'
-                    )}
-                  >
-                    {isSuccess
-                      ? 'Rebalanced Successfully'
-                      : 'Rebalance Expired'}
+                  <h2 className="text-2xl text-[26px] font-light text-primary">
+                    Rebalance Finished
                   </h2>
                 </div>
 
                 {/* Progress bar */}
-                {isSuccess ? (
+                {hasMinAccuracy ? (
                   <div className="w-full bg-primary h-3" />
                 ) : (
-                  <ExpiredProgressBar
+                  <IncompleteProgressBar
                     accuracy={apiRebalanceMetrics?.rebalanceAccuracy}
                   />
                 )}
@@ -199,11 +189,21 @@ const RebalanceCompleted = () => {
                   label="Tracking error"
                   // tooltip="Tracking error shows the basket deviation of the target basket compared to the original basket."
                   value={
-                    apiRebalanceMetrics?.deviationFromTarget !== undefined
-                      ? `${apiRebalanceMetrics.deviationFromTarget > 0 ? '-' : ''}${formatPercentage(
+                    apiRebalanceMetrics?.deviationFromTarget !== undefined ? (
+                      <span
+                        className={cn(
+                          apiRebalanceMetrics?.deviationFromTarget < 0 &&
+                            'text-green-500',
+
+                          apiRebalanceMetrics?.deviationFromTarget > 0 &&
+                            'text-red-500'
+                        )}
+                      >
+                        {`${apiRebalanceMetrics.deviationFromTarget > 0 ? '-' : ''}${formatPercentage(
                           apiRebalanceMetrics.deviationFromTarget
-                        )}`
-                      : undefined
+                        )}`}
+                      </span>
+                    ) : undefined
                   }
                 />
               </div>
