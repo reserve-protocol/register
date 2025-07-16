@@ -17,7 +17,7 @@ import { Link } from 'react-router-dom'
 import { apiRebalanceMetricsAtom } from '../../../atoms'
 import { cn } from '@/lib/utils'
 
-const MIN_ACCURACY = 99
+const MIN_ACCURACY = 99.7
 
 const IncompleteProgressBar = ({ accuracy }: { accuracy?: number }) => {
   return (
@@ -129,24 +129,25 @@ const RebalanceCompleted = () => {
 
           <div className="mt-2 border-t border-secondary">
             <div className="grid grid-cols-2">
-              {/* Rebalance accuracy - top left */}
-              <div className="bg-background">
+              {/* Total value traded */}
+              <div className="bg-background border-r border-secondary">
                 <MetricCard
-                  icon={<Scale className="h-5 w-5" strokeWidth={1.2} />}
-                  label="Rebalance accuracy"
-                  tooltip="Rebalance accuracy is the percentage of the total value traded that was rebalanced."
+                  icon={
+                    <ArrowLeftRight className="h-5 w-5" strokeWidth={1.2} />
+                  }
+                  label="Total value traded"
                   value={
-                    apiRebalanceMetrics?.rebalanceAccuracy !== undefined
-                      ? `${formatPercentage(
-                          apiRebalanceMetrics?.rebalanceAccuracy
+                    apiRebalanceMetrics?.totalRebalancedUsd !== undefined
+                      ? `$${formatCurrency(
+                          apiRebalanceMetrics?.totalRebalancedUsd
                         )}`
                       : undefined
                   }
                 />
               </div>
 
-              {/* Total price impact - top right */}
-              <div className="bg-background border-l border-secondary">
+              {/* Total price impact */}
+              <div className="bg-background border-secondary">
                 <MetricCard
                   icon={
                     <AlignVerticalSpaceAround
@@ -162,12 +163,11 @@ const RebalanceCompleted = () => {
                           className={cn(
                             apiRebalanceMetrics?.priceImpact < 0 &&
                               'text-green-500',
-
                             apiRebalanceMetrics?.priceImpact > 0 &&
                               'text-red-500'
                           )}
                         >
-                          {`${apiRebalanceMetrics.priceImpact > 0 ? '-' : ''}${formatPercentage(Math.abs(apiRebalanceMetrics.priceImpact))}`}
+                          {`${apiRebalanceMetrics.priceImpact > 0 ? '-' : apiRebalanceMetrics.priceImpact < 0 ? '+' : ''}${formatPercentage(Math.abs(apiRebalanceMetrics.priceImpact))}`}
                         </span>
                         <span className="text-muted-foreground">
                           {apiRebalanceMetrics.priceImpact !== 0
@@ -182,45 +182,41 @@ const RebalanceCompleted = () => {
                 />
               </div>
 
-              {/* Tracking error - bottom left */}
-              <div className="bg-background border-t border-secondary rounded-bl-3xl">
+              {/* Rebalance accuracy */}
+              <div className="bg-background border-r border-t border-secondary rounded-bl-3xl">
                 <MetricCard
-                  icon={<Target className="h-5 w-5" strokeWidth={1.2} />}
-                  label="Tracking error"
-                  // tooltip="Tracking error shows the basket deviation of the target basket compared to the original basket."
+                  icon={<Scale className="h-5 w-5" strokeWidth={1.2} />}
+                  label="Rebalance accuracy"
+                  tooltip="Rebalance accuracy is the percentage of the total value traded that was rebalanced."
                   value={
-                    apiRebalanceMetrics?.deviationFromTarget !== undefined ? (
-                      <span
-                        className={cn(
-                          apiRebalanceMetrics?.deviationFromTarget < 0 &&
-                            'text-green-500',
-
-                          apiRebalanceMetrics?.deviationFromTarget > 0 &&
-                            'text-red-500'
-                        )}
-                      >
-                        {`${apiRebalanceMetrics.deviationFromTarget > 0 ? '-' : ''}${formatPercentage(
-                          apiRebalanceMetrics.deviationFromTarget
-                        )}`}
-                      </span>
-                    ) : undefined
+                    apiRebalanceMetrics?.rebalanceAccuracy !== undefined
+                      ? `${formatPercentage(
+                          apiRebalanceMetrics?.rebalanceAccuracy
+                        )}`
+                      : undefined
                   }
                 />
               </div>
 
-              {/* Total value traded - bottom right */}
-              <div className="bg-background border-t border-l border-secondary rounded-br-3xl">
+              {/* Tracking error  */}
+              <div className="bg-background border-t border-secondary rounded-br-3xl">
                 <MetricCard
-                  icon={
-                    <ArrowLeftRight className="h-5 w-5" strokeWidth={1.2} />
-                  }
-                  label="Total value traded"
+                  icon={<Target className="h-5 w-5" strokeWidth={1.2} />}
+                  label="Tracking error"
+                  tooltip="A measure of how closely the new basket rebalanced compared to the proposed basket."
                   value={
-                    apiRebalanceMetrics?.totalRebalancedUsd !== undefined
-                      ? `$${formatCurrency(
-                          apiRebalanceMetrics?.totalRebalancedUsd
-                        )}`
-                      : undefined
+                    apiRebalanceMetrics?.rebalanceAccuracy !== undefined ? (
+                      <span
+                        className={cn(
+                          apiRebalanceMetrics.rebalanceAccuracy <= 99.99 &&
+                            'text-red-500'
+                        )}
+                      >
+                        {`${apiRebalanceMetrics.rebalanceAccuracy <= 99.99 ? '-' : ''}${formatPercentage(
+                          100 - apiRebalanceMetrics.rebalanceAccuracy
+                        )}`}
+                      </span>
+                    ) : undefined
                   }
                 />
               </div>

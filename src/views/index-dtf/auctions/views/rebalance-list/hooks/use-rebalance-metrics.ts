@@ -74,6 +74,7 @@ interface RebalanceApiResponse {
   marketCapAtStart?: number
   trackingBasketDeviation?: number
   nativeBasketDeviation?: number
+  rebalanceAccuracy?: number
 }
 
 /**
@@ -121,12 +122,9 @@ export const useRebalanceMetrics = (proposalId: string) => {
         timestamp: apiResponse.timestamp,
         auctionsRun: apiResponse.auctions.length,
         totalRebalancedUsd: apiResponse.totalRebalancedUsd ?? 0,
-        priceImpact: Math.abs(apiResponse.avgPriceImpactPercent ?? 0),
+        priceImpact: apiResponse.avgPriceImpactPercent ?? 0,
         totalPriceImpactUsd: apiResponse.totalPriceImpactUsd ?? 0,
-        rebalanceAccuracy:
-          apiResponse.auctions.length === 0
-            ? 0
-            : 100 - Math.abs(apiResponse.avgPriceImpactPercent ?? 0),
+        rebalanceAccuracy: Math.min(100, apiResponse.rebalanceAccuracy ?? 0),
         deviationFromTarget: Math.abs(
           isTrackingDTF
             ? (apiResponse.trackingBasketDeviation ?? 0)
