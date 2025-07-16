@@ -4,7 +4,7 @@ import dtfAdminAbi from '@/abis/dtf-admin-abi'
 import dtfIndexGovernance from '@/abis/dtf-index-governance'
 import dtfIndexStakingVault from '@/abis/dtf-index-staking-vault'
 import Timelock from '@/abis/Timelock'
-import { indexDTFAtom } from '@/state/dtf/atoms'
+import { indexDTFAtom, indexDTFVersionAtom } from '@/state/dtf/atoms'
 import { atom } from 'jotai'
 import { Abi } from 'viem'
 import {
@@ -18,11 +18,14 @@ import {
 
 export const dtfAbiMapppingAtom = atom((get) => {
   const dtf = get(indexDTFAtom)
+  const version = get(indexDTFVersionAtom)
+
+  const dtfAbi = version === '2.0.0' ? dtfIndexAbiV2 : dtfIndexAbiV4
 
   if (!dtf) return undefined
 
   const abiMapping: Record<string, Abi> = {
-    [dtf.id.toLowerCase()]: dtfIndexAbiV4,
+    [dtf.id.toLowerCase()]: dtfAbi,
     [dtf.proxyAdmin.toLowerCase()]: dtfAdminAbi,
   }
 
