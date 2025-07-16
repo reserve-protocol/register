@@ -177,7 +177,7 @@ const RebalanceCompleted = () => {
                               'text-red-500'
                           )}
                         >
-                          {`${formatPercentage(apiRebalanceMetrics?.priceImpact)}`}
+                          {`${apiRebalanceMetrics.priceImpact > 0 ? '-' : ''}${formatPercentage(Math.abs(apiRebalanceMetrics.priceImpact))}`}
                         </span>
                         <span className="text-muted-foreground">
                           {apiRebalanceMetrics.priceImpact !== 0
@@ -197,11 +197,11 @@ const RebalanceCompleted = () => {
                 <MetricCard
                   icon={<Target className="h-5 w-5" strokeWidth={1.2} />}
                   label="Tracking error"
-                  tooltip="Tracking error is the difference between the actual price and the expected price."
+                  // tooltip="Tracking error shows the basket deviation of the target basket compared to the original basket."
                   value={
                     apiRebalanceMetrics?.deviationFromTarget !== undefined
-                      ? `${formatPercentage(
-                          apiRebalanceMetrics?.deviationFromTarget
+                      ? `${apiRebalanceMetrics.deviationFromTarget > 0 ? '-' : ''}${formatPercentage(
+                          apiRebalanceMetrics.deviationFromTarget
                         )}`
                       : undefined
                   }
