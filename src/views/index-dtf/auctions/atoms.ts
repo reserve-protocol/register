@@ -2,6 +2,7 @@ import { PartialProposal } from '@/lib/governance'
 import { Token } from '@/types'
 import { atom } from 'jotai'
 import { governanceProposalsAtom } from '../governance/atoms'
+import { RebalanceMetrics } from './views/rebalance-list/hooks/use-rebalance-metrics'
 
 export type Rebalance = {
   id: string
@@ -86,5 +87,19 @@ export const rebalancesByProposalListAtom = atom<
   return Object.values(rebalancesByProposal).sort(
     (a, b) =>
       Number(b.proposal.executionBlock) - Number(a.proposal.executionBlock)
+  )
+})
+
+export const apiRebalanceMetricsAtom = atom<RebalanceMetrics | undefined>(
+  undefined
+)
+
+export const isCompletedAtom = atom<boolean>((get) => {
+  const rebalance = get(currentRebalanceAtom)
+
+  if (!rebalance) return false
+
+  return (
+    Number(rebalance.rebalance.availableUntil) < Math.floor(Date.now() / 1000)
   )
 })
