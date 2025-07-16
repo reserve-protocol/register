@@ -95,32 +95,25 @@ export const apiRebalanceMetricsAtom = atom<RebalanceMetrics | undefined>(
   undefined
 )
 
-const MIN_ACCURACY = 0.975
-
-export const isExpiredAtom = atom<boolean>((get) => {
+export const isCompletedAtom = atom<boolean>((get) => {
   const rebalance = get(currentRebalanceAtom)
-  const apiMetrics = get(apiRebalanceMetricsAtom)
 
-  if (!rebalance || !apiMetrics) return false
+  if (!rebalance) return false
 
-  const isAvailable = rebalance.rebalance.availableUntil
-    ? Number(rebalance.rebalance.availableUntil) > Math.floor(Date.now() / 1000)
-    : true
-
-  const hasEnoughAccuracy = apiMetrics.rebalanceAccuracy >= MIN_ACCURACY
-  const hasZeroRebalanceUSD = apiMetrics.totalRebalancedUsd === 0
-
-  return !isAvailable && (!hasEnoughAccuracy || hasZeroRebalanceUSD)
+  return (
+    Number(rebalance.rebalance.availableUntil) < Math.floor(Date.now() / 1000)
+  )
 })
 
+const MIN_ACCURACY = 99.75
 export const isSuccessAtom = atom<boolean>((get) => {
-  const rebalance = get(currentRebalanceAtom)
+  const isCompleted = get(isCompletedAtom)
   const apiMetrics = get(apiRebalanceMetricsAtom)
 
-  if (!rebalance || !apiMetrics) return false
+  if (!apiMetrics) return false
 
   const hasEnoughAccuracy = apiMetrics.rebalanceAccuracy >= MIN_ACCURACY
   const hasZeroRebalanceUSD = apiMetrics.totalRebalancedUsd === 0
 
-  return hasEnoughAccuracy && !hasZeroRebalanceUSD
+  return isCompleted && hasEnoughAccuracy && !hasZeroRebalanceUSD
 })

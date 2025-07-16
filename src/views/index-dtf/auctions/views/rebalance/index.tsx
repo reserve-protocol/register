@@ -1,24 +1,19 @@
 import { useAtomValue } from 'jotai'
-import { isExpiredAtom, isSuccessAtom } from '../../atoms'
 import RebalanceAction from './components/rebalance-action'
 import RebalanceAuctions from './components/rebalance-auctions'
+import RebalanceCompleted from './components/rebalance-completed'
 import RebalanceDebug from './components/rebalance-debug'
 import RebalanceHeader from './components/rebalance-header'
 import RebalanceOverview from './components/rebalance-overview'
 import RebalanceProgress from './components/rebalance-progress'
 import Updater from './updater'
-import RebalanceExpired from './components/rebalance-expired'
-import RebalanceSuccess from './components/rebalance-success'
+import { isCompletedAtom } from '../../atoms'
 
 const RebalanceContent = () => {
-  const isExpired = useAtomValue(isExpiredAtom)
-  const isSuccess = useAtomValue(isSuccessAtom)
+  const isCompleted = useAtomValue(isCompletedAtom)
 
-  if (isSuccess) {
-    return <RebalanceSuccess />
-  }
-  if (isExpired) {
-    return <RebalanceExpired />
+  if (isCompleted) {
+    return <RebalanceCompleted />
   }
 
   return (

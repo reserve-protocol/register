@@ -8,14 +8,48 @@ import {
   ArrowLeft,
   ArrowLeftRight,
   Check,
+  EqualNot,
   Scale,
   Target,
 } from 'lucide-react'
 import { ReactNode, useMemo } from 'react'
 import { Link } from 'react-router-dom'
-import { apiRebalanceMetricsAtom } from '../../../atoms'
+import { apiRebalanceMetricsAtom, isSuccessAtom } from '../../../atoms'
+import { cn } from '@/lib/utils'
 
-const RebalanceSuccess = () => {
+const ExpiredProgressBar = ({ accuracy }: { accuracy?: number }) => {
+  return (
+    <div className="flex items-center gap-0.5">
+      {/* Accuracy bar */}
+      <div
+        className="bg-foreground h-3"
+        style={{
+          width: `${accuracy !== undefined ? accuracy : 100}%`,
+        }}
+      />
+      {/* Incomplete bar */}
+      <div
+        style={{
+          width: `${accuracy !== undefined ? 100 - accuracy : 0}%`,
+        }}
+      >
+        <div
+          className={cn(
+            'flex items-center justify-center w-full h-3 px-0.5 border-[#D05A67]',
+            accuracy === undefined || accuracy === 100
+              ? 'border-l-none border-r-none'
+              : 'border-l-2 border-r-2'
+          )}
+        >
+          <div className="w-full bg-[#D05A67] h-0.5" />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+const RebalanceCompleted = () => {
+  const isSuccess = useAtomValue(isSuccessAtom)
   const apiRebalanceMetrics = useAtomValue(apiRebalanceMetricsAtom)
 
   const title = useMemo(() => {
@@ -37,44 +71,68 @@ const RebalanceSuccess = () => {
       <div className="h-56 bg-gradient-to-b from-primary to-primary/70 rounded-3xl relative w-full">
         {/* Back button and title */}
         <div className="absolute top-0 left-0 right-0 py-6 px-7 z-20">
-          <div className="flex items-center gap-4 text-white">
+          <div className="flex items-center gap-4 text-background">
             <Link to={`../`}>
               <Button
                 variant="ghost"
                 size="icon-rounded"
-                className="bg-white text-black hover:bg-white/90"
+                className="bg-background text-foreground hover:bg-background/90"
               >
                 <ArrowLeft className="h-4 w-4" />
               </Button>
             </Link>
-            <h1 className="text-base font-semibold underline">{title}</h1>
+            <h1 className="text-base text-white font-semibold underline">
+              {title}
+            </h1>
           </div>
         </div>
       </div>
 
       {/* Metrics section - overlaps with higher z-index */}
       <div className="-mt-36 px-1 rounded-b-3xl w-full">
-        <div className="bg-white backdrop-blur-sm rounded-b-3xl">
+        <div className="bg-background backdrop-blur-sm rounded-b-3xl">
           {/* Success card */}
           <div>
             <div className="flex flex-col justify-between p-6 min-h-[210px]">
-              <div className="flex items-center justify-center bg-primary rounded-full p-2 w-max">
-                <Check className="h-4 w-4 text-white" strokeWidth={1.5} />
+              <div
+                className={cn(
+                  'flex items-center justify-center rounded-full p-2 w-max',
+                  isSuccess ? 'bg-primary' : 'bg-[#D05A67]'
+                )}
+              >
+                {isSuccess ? (
+                  <Check className="h-4 w-4 text-white" strokeWidth={1.5} />
+                ) : (
+                  <EqualNot className="h-4 w-4 text-white" strokeWidth={1.5} />
+                )}
               </div>
 
               <div className="flex flex-col gap-5">
                 {/* Success message */}
                 <div className="flex flex-col gap-1">
-                  <p className="text-base font-light text-muted-foreground">
+                  <div className="text-base font-light text-muted-foreground">
                     Rebalance progress
-                  </p>
-                  <h2 className="text-2xl text-[26px] font-light text-primary">
-                    Rebalanced Successfully
+                  </div>
+                  <h2
+                    className={cn(
+                      'text-2xl text-[26px] font-light text-primary',
+                      !isSuccess && 'text-[#D05A67]'
+                    )}
+                  >
+                    {isSuccess
+                      ? 'Rebalanced Successfully'
+                      : 'Expired Incomplete'}
                   </h2>
                 </div>
 
                 {/* Progress bar */}
-                <div className="w-full bg-primary h-3 rounded-full" />
+                {isSuccess ? (
+                  <div className="w-full bg-primary h-3" />
+                ) : (
+                  <ExpiredProgressBar
+                    accuracy={apiRebalanceMetrics?.rebalanceAccuracy}
+                  />
+                )}
               </div>
             </div>
           </div>
@@ -82,13 +140,13 @@ const RebalanceSuccess = () => {
           <div className="mt-2 border-t border-secondary">
             <div className="grid grid-cols-2">
               {/* Rebalance accuracy - top left */}
-              <div className="bg-white">
+              <div className="bg-background">
                 <MetricCard
                   icon={<Scale className="h-5 w-5" strokeWidth={1.2} />}
                   label="Rebalance accuracy"
                   tooltip="Rebalance accuracy is the percentage of the total value traded that was rebalanced."
                   value={
-                    apiRebalanceMetrics?.rebalanceAccuracy
+                    apiRebalanceMetrics?.rebalanceAccuracy !== undefined
                       ? `${formatPercentage(
                           apiRebalanceMetrics?.rebalanceAccuracy
                         )}`
@@ -98,7 +156,7 @@ const RebalanceSuccess = () => {
               </div>
 
               {/* Total price impact - top right */}
-              <div className="bg-white border-l border-secondary">
+              <div className="bg-background border-l border-secondary">
                 <MetricCard
                   icon={
                     <AlignVerticalSpaceAround
@@ -108,31 +166,40 @@ const RebalanceSuccess = () => {
                   }
                   label="Total price impact"
                   value={
-                    <div className="flex items-center gap-1">
-                      <span className="text-red-500">
-                        {apiRebalanceMetrics?.priceImpact
-                          ? `${formatPercentage(apiRebalanceMetrics?.priceImpact)}`
-                          : undefined}
-                      </span>
-                      <span className="text-muted-foreground">
-                        {apiRebalanceMetrics?.totalPriceImpactUsd &&
-                          ` ($${formatCurrency(
-                            apiRebalanceMetrics?.totalPriceImpactUsd
-                          )})`}
-                      </span>
-                    </div>
+                    apiRebalanceMetrics?.priceImpact !== undefined ? (
+                      <div className="flex items-center gap-1">
+                        <span
+                          className={cn(
+                            apiRebalanceMetrics?.priceImpact < 0 &&
+                              'text-green-500',
+
+                            apiRebalanceMetrics?.priceImpact > 0 &&
+                              'text-red-500'
+                          )}
+                        >
+                          {`${formatPercentage(apiRebalanceMetrics?.priceImpact)}`}
+                        </span>
+                        <span className="text-muted-foreground">
+                          {apiRebalanceMetrics.priceImpact !== 0
+                            ? ` ($${formatCurrency(
+                                apiRebalanceMetrics?.totalPriceImpactUsd
+                              )})`
+                            : ''}
+                        </span>
+                      </div>
+                    ) : undefined
                   }
                 />
               </div>
 
               {/* Tracking error - bottom left */}
-              <div className="bg-white border-t border-secondary rounded-bl-3xl">
+              <div className="bg-background border-t border-secondary rounded-bl-3xl">
                 <MetricCard
                   icon={<Target className="h-5 w-5" strokeWidth={1.2} />}
                   label="Tracking error"
                   tooltip="Tracking error is the difference between the actual price and the expected price."
                   value={
-                    apiRebalanceMetrics?.deviationFromTarget
+                    apiRebalanceMetrics?.deviationFromTarget !== undefined
                       ? `${formatPercentage(
                           apiRebalanceMetrics?.deviationFromTarget
                         )}`
@@ -142,17 +209,17 @@ const RebalanceSuccess = () => {
               </div>
 
               {/* Total value traded - bottom right */}
-              <div className="bg-white border-t border-l border-secondary rounded-br-3xl">
+              <div className="bg-background border-t border-l border-secondary rounded-br-3xl">
                 <MetricCard
                   icon={
                     <ArrowLeftRight className="h-5 w-5" strokeWidth={1.2} />
                   }
                   label="Total value traded"
                   value={
-                    apiRebalanceMetrics?.totalRebalancedUsd
+                    apiRebalanceMetrics?.totalRebalancedUsd !== undefined
                       ? `$${formatCurrency(
                           apiRebalanceMetrics?.totalRebalancedUsd
-                        )}K`
+                        )}`
                       : undefined
                   }
                 />
@@ -183,7 +250,7 @@ const MetricCard = ({ icon, label, value, tooltip }: MetricCardProps) => {
             {tooltip && <Help content={tooltip} />}
           </div>
           {value ? (
-            <p className="text-lg font-semibold">{value}</p>
+            <div className="text-lg font-semibold">{value}</div>
           ) : (
             <Skeleton className="h-5 w-24 mt-1" />
           )}
@@ -193,4 +260,4 @@ const MetricCard = ({ icon, label, value, tooltip }: MetricCardProps) => {
   )
 }
 
-export default RebalanceSuccess
+export default RebalanceCompleted
