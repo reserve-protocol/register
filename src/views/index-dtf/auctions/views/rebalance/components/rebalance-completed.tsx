@@ -121,7 +121,7 @@ const RebalanceCompleted = () => {
                   >
                     {isSuccess
                       ? 'Rebalanced Successfully'
-                      : 'Expired Incomplete'}
+                      : 'Rebalance Expired'}
                   </h2>
                 </div>
 
