@@ -15,6 +15,7 @@ export interface RebalanceMetrics {
   totalPriceImpactUsd: number // total dollar amount of price impact
   rebalanceAccuracy: number // percentage
   deviationFromTarget: number // percentage
+  marketCapRebalanceImpact: number // percentage
 }
 
 // API Response Types
@@ -75,6 +76,7 @@ interface RebalanceApiResponse {
   trackingBasketDeviation?: number
   nativeBasketDeviation?: number
   rebalanceAccuracy?: number
+  marketCapRebalanceImpact?: number
 }
 
 /**
@@ -130,6 +132,7 @@ export const useRebalanceMetrics = (proposalId: string) => {
             ? (apiResponse.trackingBasketDeviation ?? 0)
             : (apiResponse.nativeBasketDeviation ?? 0)
         ),
+        marketCapRebalanceImpact: apiResponse.marketCapRebalanceImpact ?? 0,
       }
     : null
 

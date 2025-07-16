@@ -1,21 +1,20 @@
 import { Button } from '@/components/ui/button'
 import Help from '@/components/ui/help'
 import { Skeleton } from '@/components/ui/skeleton'
+import { cn } from '@/lib/utils'
 import { formatCurrency, formatPercentage } from '@/utils'
 import { useAtomValue } from 'jotai'
 import {
   AlignVerticalSpaceAround,
   ArrowLeft,
   ArrowLeftRight,
+  ChartCandlestick,
   Check,
-  EqualNot,
   Scale,
-  Target,
 } from 'lucide-react'
 import { ReactNode, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { apiRebalanceMetricsAtom } from '../../../atoms'
-import { cn } from '@/lib/utils'
 
 const MIN_ACCURACY = 99.7
 
@@ -187,7 +186,7 @@ const RebalanceCompleted = () => {
                 <MetricCard
                   icon={<Scale className="h-5 w-5" strokeWidth={1.2} />}
                   label="Rebalance accuracy"
-                  tooltip="Rebalance accuracy is the percentage of the total value traded that was rebalanced."
+                  tooltip="A measure of how closely the new basket rebalanced compared to the proposed basket"
                   value={
                     apiRebalanceMetrics?.rebalanceAccuracy !== undefined
                       ? `${formatPercentage(
@@ -201,20 +200,23 @@ const RebalanceCompleted = () => {
               {/* Tracking error  */}
               <div className="bg-background border-t border-secondary rounded-br-3xl">
                 <MetricCard
-                  icon={<Target className="h-5 w-5" strokeWidth={1.2} />}
-                  label="Tracking error"
-                  tooltip="A measure of how closely the new basket rebalanced compared to the proposed basket."
+                  icon={
+                    <ChartCandlestick className="h-5 w-5" strokeWidth={1.2} />
+                  }
+                  label="NAV Change"
+                  tooltip="How much the value of the DTF basket changed due to the latest rebalance"
                   value={
-                    apiRebalanceMetrics?.rebalanceAccuracy !== undefined ? (
+                    apiRebalanceMetrics?.marketCapRebalanceImpact !==
+                    undefined ? (
                       <span
                         className={cn(
-                          apiRebalanceMetrics.rebalanceAccuracy <= 99.99 &&
-                            'text-red-500'
+                          apiRebalanceMetrics.marketCapRebalanceImpact < 0 &&
+                            'text-red-500',
+                          apiRebalanceMetrics.marketCapRebalanceImpact > 0 &&
+                            'text-green-500'
                         )}
                       >
-                        {`${apiRebalanceMetrics.rebalanceAccuracy <= 99.99 ? '-' : ''}${formatPercentage(
-                          100 - apiRebalanceMetrics.rebalanceAccuracy
-                        )}`}
+                        {`${apiRebalanceMetrics.marketCapRebalanceImpact > 0 ? '+' : ''}${formatPercentage(apiRebalanceMetrics.marketCapRebalanceImpact)}`}
                       </span>
                     ) : undefined
                   }
