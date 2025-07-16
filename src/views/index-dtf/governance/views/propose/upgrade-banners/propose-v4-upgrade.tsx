@@ -149,10 +149,11 @@ const ProposeBanner = ({ refetch }: SpellUpgradeProps) => {
         <div>
           <h4 className="font-bold text-primary">New version available</h4>
           <p className="text-sm">
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Doloremque
-            sunt, nemo id blanditiis totam vel aut modi in deleniti ipsam ab
-            molestias voluptatum tempora placeat soluta magni accusamus eveniet
-            recusandae.
+            Release 4.0.0 improves the the way in which DTFs are rebalanced. At
+            a high level, the new rebalance mechanism is able to consider the
+            entire basket at once instead of requiring individual 2-token
+            auctions to be proposed in advance and performed in isolation. See
+            docs.reserve.org for more details.
           </p>
         </div>
       </div>
