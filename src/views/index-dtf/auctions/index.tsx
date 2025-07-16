@@ -10,7 +10,12 @@ const IndexDTFAuctions = () => {
   useTrackIndexDTFPage('auctions')
 
   if (isV2) {
-    return <IndexDTFAuctionsLegacy />
+    return (
+      <>
+        <IndexDTFAuctionsLegacy />
+        <Updater />
+      </>
+    )
   }
 
   return (

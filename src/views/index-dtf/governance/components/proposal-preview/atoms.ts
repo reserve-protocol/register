@@ -1,6 +1,6 @@
-import dtfIndexAbiV4 from '@/abis/dtf-index-abi-v4'
-import dtfIndexAbiV2 from '@/abis/dtf-index-abi-v2'
 import dtfAdminAbi from '@/abis/dtf-admin-abi'
+import dtfIndexAbiV2 from '@/abis/dtf-index-abi-v2'
+import dtfIndexAbiV4 from '@/abis/dtf-index-abi-v4'
 import dtfIndexGovernance from '@/abis/dtf-index-governance'
 import dtfIndexStakingVault from '@/abis/dtf-index-staking-vault'
 import Timelock from '@/abis/Timelock'
@@ -19,10 +19,12 @@ import {
 export const dtfAbiMapppingAtom = atom((get) => {
   const dtf = get(indexDTFAtom)
 
+  const dtfAbi = [...dtfIndexAbiV4, ...dtfIndexAbiV2]
+
   if (!dtf) return undefined
 
   const abiMapping: Record<string, Abi> = {
-    [dtf.id.toLowerCase()]: dtfIndexAbiV4,
+    [dtf.id.toLowerCase()]: dtfAbi,
     [dtf.proxyAdmin.toLowerCase()]: dtfAdminAbi,
   }
 
