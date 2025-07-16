@@ -31,38 +31,38 @@ const GovernanceProposalPreview = ({
   timestamp?: number
 }) => {
   const alias = useAtomValue(dtfContractAliasAtom)
-  const [dataByContract, unknownContracts] = useDecodedCalldatas(
+  const { dataByContract, unknownContracts } = useDecodedCalldatas(
     targets,
     calldatas
   )
 
-  if (!dataByContract) {
+  if (!dataByContract.length && !unknownContracts.length) {
     return <Skeleton className="h-80" />
   }
 
   return (
     <>
-      {Object.entries(dataByContract).map(([contract, decodedCalldatas]) =>
+      {dataByContract.map(([contract, decodedCalldatas], index) =>
         alias?.[contract] === 'Folio' ? (
           <FolioChangePreview
-            key={`folio-${contract}`}
+            key={`folio-${contract}-${index}`}
             decodedCalldata={decodedCalldatas}
             address={contract as Address}
             timestamp={timestamp}
           />
         ) : (
           <ContractProposalChanges
-            key={contract}
+            key={`contract-${contract}-${index}`}
             decodedCalldatas={decodedCalldatas}
             address={contract as Address}
           />
         )
       )}
-      {Object.keys(unknownContracts ?? {}).map((contract) => (
+      {unknownContracts.map(([contract, calls], index) => (
         <UnknownContractPreview
-          key={contract}
+          key={`unknown-${contract}-${index}`}
           contract={contract}
-          calls={(unknownContracts?.[contract] ?? []) as Hex[]}
+          calls={calls}
         />
       ))}
     </>

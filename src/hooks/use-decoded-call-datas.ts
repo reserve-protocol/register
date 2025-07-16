@@ -5,7 +5,10 @@ import { Abi, Address, decodeFunctionData, getAbiItem, Hex } from 'viem'
 import { dtfContractAliasAtom } from '../views/index-dtf/governance/components/proposal-preview/atoms'
 import useGetAbi from '../views/index-dtf/governance/components/proposal-preview/use-get-abi'
 
-export const getDecodedCalldata = (abi: Abi, calldata: Hex) => {
+export const getDecodedCalldata = (
+  abi: Abi,
+  calldata: Hex
+): DecodedCalldata => {
   const { functionName, args } = decodeFunctionData({
     abi,
     data: calldata,
@@ -35,11 +38,11 @@ const useDecodedCalldatas = (
   const abis = useGetAbi(targets)
 
   return useMemo(() => {
-    if (!abis || !targets || !calldatas) return [undefined, undefined]
+    const dataByContract: [string, DecodedCalldata[]][] = []
+    const unknownContracts: [string, Hex[]][] = []
 
-    // TODO: In theory, call order is important, but most likely proposals will be contract independent
-    const dataByContract: Record<string, DecodedCalldata[]> = {}
-    const unknownContracts: Record<string, Hex[]> = {}
+    if (!abis || !targets || !calldatas)
+      return { dataByContract, unknownContracts }
 
     for (let i = 0; i < targets.length; i++) {
       const target = targets[i]
@@ -51,20 +54,29 @@ const useDecodedCalldatas = (
           throw new Error('No ABI found')
         }
 
-        dataByContract[target.toLowerCase()] = [
-          ...(dataByContract[target.toLowerCase()] || []),
-          getDecodedCalldata(abi, calldata),
-        ]
+        const targetLower = target.toLowerCase()
+        const decodedCalldata = getDecodedCalldata(abi, calldata)
+
+        const lastEntry = dataByContract[dataByContract.length - 1]
+        if (lastEntry && lastEntry[0] === targetLower) {
+          lastEntry[1].push(decodedCalldata)
+        } else {
+          dataByContract.push([targetLower, [decodedCalldata]])
+        }
       } catch (e) {
         console.error('ERROR', e)
-        unknownContracts[target.toLowerCase()] = [
-          ...(unknownContracts[target.toLowerCase()] || []),
-          calldata,
-        ]
+
+        const targetLower = target.toLowerCase()
+        const lastUnknownEntry = unknownContracts[unknownContracts.length - 1]
+        if (lastUnknownEntry && lastUnknownEntry[0] === targetLower) {
+          lastUnknownEntry[1].push(calldata)
+        } else {
+          unknownContracts.push([targetLower, [calldata]])
+        }
       }
     }
 
-    return [dataByContract, unknownContracts]
+    return { dataByContract, unknownContracts }
   }, [abis, dtfContractAlias, targets, calldatas])
 }
 
