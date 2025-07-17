@@ -1,14 +1,8 @@
 import { Skeleton } from '@/components/ui/skeleton'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useAtomValue } from 'jotai'
 import { lazy, Suspense } from 'react'
 import GovernanceProposalPreview from '../../../components/governance-proposal-preview'
 import { proposalDetailAtom } from '../atom'
-
-const TABS = {
-  DESCRIPTION: 'description',
-  CHANGES: 'changes',
-}
 
 const DescriptionMarkdown = lazy(() => import('./proposal-md-description'))
 
@@ -44,8 +38,6 @@ const ProposalDescription = () => {
   )
 }
 
-// TODO: Currently only supports basket changes!!!
-// TODO: WRAP INTO ERROR CONTEXT THIS COULD CRASH!!!
 const ProposalChanges = () => {
   const proposal = useAtomValue(proposalDetailAtom)
 
@@ -54,6 +46,7 @@ const ProposalChanges = () => {
       <GovernanceProposalPreview
         targets={proposal?.targets}
         calldatas={proposal?.calldatas}
+        timestamp={proposal?.creationTime}
       />
     </div>
   )

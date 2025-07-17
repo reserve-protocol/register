@@ -32,8 +32,10 @@
     "@radix-ui/react-toggle": "^1.1.1",
     "@radix-ui/react-toggle-group": "^1.1.1",
     "@radix-ui/react-tooltip": "^1.1.8",
-    "@rainbow-me/rainbowkit": "2.2.3",
+    "@rainbow-me/rainbowkit": "2.2.5",
     "@react-spring/web": "^9.7.1",
+    "@reserve-protocol/dtf-rebalance-lib": "^0.3.0",
+    "@reserve-protocol/react-zapper": "^1.0.7",
     "@reserve-protocol/rtokens": "^1.1.23",
     "@sentry/react": "^9.16.0",
     "@sentry/vite-plugin": "^3.4.0",
@@ -79,8 +81,8 @@
     "tailwindcss-animate": "^1.0.7",
     "theme-ui": "0.17.1",
     "vaul": "^1.1.1",
-    "viem": "2.23.0",
-    "wagmi": "2.14.11",
+    "viem": "2.30.0",
+    "wagmi": "^2.15.6",
     "zod": "^3.23.8"
   },
   "scripts": {
@@ -138,6 +140,6 @@
     "vite-bundle-visualizer": "1.2.1",
     "vite-plugin-static-copy": "^2.1.0",
     "vite-tsconfig-paths": "^4.2.0",
-    "vitest": "^3.1.2"
+    "vitest": "^3.1.3"
   }
 }

@@ -7,7 +7,7 @@ import {
 import { chainIdAtom } from '@/state/atoms'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { useAtomValue } from 'jotai'
-import { ArrowUpRightIcon, ChevronsUpDown } from 'lucide-react'
+import { ArrowUpRightIcon, ChevronsUpDown, AlertTriangle } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { Hex } from 'viem'
 
@@ -37,6 +37,21 @@ const UnknownContractPreview = ({
           </Button>
         </Link>
       </div>
+
+      <div className="mx-4 p-4 bg-red-50 border border-red-200 rounded-lg">
+        <div className="flex items-start gap-3">
+          <AlertTriangle className="h-5 w-5 text-red-600 mt-0.5 flex-shrink-0" />
+          <div className="text-sm text-red-800">
+            <p className="font-medium mb-1">Unable to parse contract data</p>
+            <p>
+              We couldn’t retrieve the contract’s ABI from Etherscan. This
+              usually means the contract is not verified. Without its interface,
+              we’re unable to decode any function calls or parameters.
+            </p>
+          </div>
+        </div>
+      </div>
+
       <div className="flex flex-col gap-2">
         {calls.map((call, index) => (
           <div className="p-4" key={`unknown-${call}-${index}`}>

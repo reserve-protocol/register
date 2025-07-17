@@ -1,14 +1,11 @@
-import Account from 'components/account'
-import Brand from './Brand'
+import CommandMenu from '@/components/command-menu'
+import ThemeColorMode from '@/components/dark-mode-toggle/ThemeColorMode'
 import { cn } from '@/lib/utils'
+import Account from 'components/account'
 import { ReactNode } from 'react'
 import { useLocation } from 'react-router-dom'
 import AppNavigation from './app-navigation'
-import ThemeColorMode from '@/components/dark-mode-toggle/ThemeColorMode'
-import { Button } from '@/components/ui/button'
-import { ArrowUpRight, Gem } from 'lucide-react'
-import { CAMPAIGN_URL } from '@/views/index-dtf/overview/hooks/use-campaign'
-import CommandMenu from '@/components/command-menu'
+import Brand from './Brand'
 
 const Container = ({ children }: { children: ReactNode }) => {
   // Check if the route is a "index-dtf" route

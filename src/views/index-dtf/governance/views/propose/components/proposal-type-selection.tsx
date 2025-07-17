@@ -17,7 +17,7 @@ const proposalTypes = [
     icon: <Boxes strokeWidth={1.5} size={16} />,
     title: 'DTF Basket',
     route: GOVERNANCE_PROPOSAL_TYPES.BASKET,
-    enabled: window.location.hostname !== 'app.reserve.org',
+    enabled: true,
   },
   {
     icon: <Settings size={16} strokeWidth={1.5} />,

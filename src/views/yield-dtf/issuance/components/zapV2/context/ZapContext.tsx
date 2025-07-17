@@ -184,13 +184,24 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
   const insufficientFunds = useMemo(() => {
     if (!selectedToken) return false
 
+    const selectedTokenBalance =
+      balances[selectedToken.address as Address]?.balance ||
+      selectedToken?.balance
+
     return (
       (operation === 'mint' &&
-        Number(amountIn) > Number(selectedToken.balance)) ||
+        Number(amountIn) > Number(selectedTokenBalance)) ||
       (operation === 'redeem' &&
         Number(amountIn) > Number(rTokenBalance.balance))
     )
-  }, [operation, amountIn, selectedToken?.balance, rTokenBalance?.balance])
+  }, [
+    operation,
+    amountIn,
+    balances,
+    selectedToken?.balance,
+    selectedToken?.address,
+    rTokenBalance.balance,
+  ])
 
   const tokenPrice = useChainlinkPrice(
     chainId,

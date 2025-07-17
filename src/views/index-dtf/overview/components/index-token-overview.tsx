@@ -13,14 +13,13 @@ import {
 } from '@/state/dtf/atoms'
 import { shortenAddress } from '@/utils'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
-import { useAtomValue, useSetAtom } from 'jotai'
+import { useZapperModal } from '@reserve-protocol/react-zapper'
+import { useAtomValue } from 'jotai'
 import { ArrowUpRight, ImagePlus } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useTrackIndexDTFClick } from '../../hooks/useTrackIndexDTFPage'
 import IndexRolesOverview from './index-roles-overview'
-import { UniswapButton } from './landing-mint'
 import ZapMint from './zap-mint'
-import { currentZapMintTabAtom } from './zap-mint/atom'
 
 const TokenNameSkeleton = () => (
   <div className="flex flex-col gap-4">
@@ -56,7 +55,7 @@ const TokenAddresses = () => {
 }
 
 const ZapBuySellButtons = () => {
-  const setZapMintTab = useSetAtom(currentZapMintTabAtom)
+  const { open, setTab } = useZapperModal()
   return (
     <div className="block xl:hidden w-full mb-3 mt-2">
       <ZapMint>
@@ -70,14 +69,20 @@ const ZapBuySellButtons = () => {
         >
           <Button
             className="rounded-xl h-12 w-full"
-            onClick={() => setZapMintTab('buy')}
+            onClick={() => {
+              setTab('buy')
+              open()
+            }}
           >
             Buy
           </Button>
           <Button
             className="rounded-xl h-12 w-full"
             variant="outline"
-            onClick={() => setZapMintTab('sell')}
+            onClick={() => {
+              setTab('sell')
+              open()
+            }}
           >
             Sell
           </Button>
@@ -134,14 +139,7 @@ const IndexTokenOverview = () => {
           </>
         )}
       </div>
-      {dtf?.id?.toLowerCase() ===
-      '0xebcda5b80f62dd4dd2a96357b42bb6facbf30267' ? (
-        <div className="block xl:hidden w-full">
-          <UniswapButton />
-        </div>
-      ) : (
-        <ZapBuySellButtons />
-      )}
+      <ZapBuySellButtons />
 
       <IndexRolesOverview />
     </Card>

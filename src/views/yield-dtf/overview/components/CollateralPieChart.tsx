@@ -1,6 +1,6 @@
 import TokenLogo from 'components/icons/TokenLogo'
 import React, { FC, ReactNode, useMemo } from 'react'
-import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts'
+import { Cell, Pie, PieChart, Tooltip } from 'recharts'
 import { colors } from 'theme'
 import { Box, BoxProps } from 'theme-ui'
 import { formatPercentage } from 'utils'
@@ -77,8 +77,8 @@ const CollateralChart: FC<ChartProps> = ({
         >
           <TokenLogo width={20} src={logo} />
         </Box>
-        <ResponsiveContainer height={180} width={180}>
-          <PieChart style={{ cursor: 'pointer' }}>
+        <Box sx={{ width: 180, height: 180 }}>
+          <PieChart width={180} height={180} style={{ cursor: 'pointer' }}>
             <defs>
               <linearGradient
                 id="stkcvxeusd3crv-f"
@@ -186,7 +186,7 @@ const CollateralChart: FC<ChartProps> = ({
               {...getAngles(staked)}
             />
           </PieChart>
-        </ResponsiveContainer>
+        </Box>
       </Box>
       {bottomInformation}
     </Box>

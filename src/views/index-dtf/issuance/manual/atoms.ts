@@ -63,8 +63,11 @@ export const maxMintAmountAtom = atom((get) => {
     // Calculate possible mint amount for this asset
     // currentBalance / requiredAmountPerToken = possible index tokens that can be minted
     const requiredAmountPerToken = assetDistribution[asset] // Amount needed per 1 index token
-    const currentBalance = balanceMap[asset]
+    if (requiredAmountPerToken === 0n) {
+      continue
+    }
 
+    const currentBalance = balanceMap[asset]
     const possibleAmount =
       (currentBalance * parseEther('1')) / requiredAmountPerToken
 

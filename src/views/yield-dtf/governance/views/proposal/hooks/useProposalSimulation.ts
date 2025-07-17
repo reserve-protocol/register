@@ -35,6 +35,9 @@ import { useBlock } from 'wagmi'
 import { readContract } from 'wagmi/actions'
 import { simulationStateAtom } from '../../proposal-detail/atom'
 
+// Maximum delay (in ms) before aborting the exponential back-off
+const MAX_BACKOFF_DELAY = 8_000
+
 /**
  * @notice Encode state overrides
  * @param payload State overrides to send
@@ -75,10 +78,16 @@ const sendSimulation = async (
     return await sim.json()
   } catch (err) {
     console.log('err in sendSimulation: ', JSON.stringify(err))
+    // Stop trying after the maximum delay threshold is reached
+    if (delay > MAX_BACKOFF_DELAY) {
+      throw err
+    }
     console.warn(
       `Simulation request failed with the above error, retrying in ~${delay} milliseconds. See request payload below`
     )
-    await sleep(delay + 500)
+    // Add a small jitter to avoid thundering-herd
+    const jitter = Math.floor(Math.random() * 500)
+    await sleep(delay + jitter)
     return await sendSimulation(payload, delay * 2)
   }
 }
