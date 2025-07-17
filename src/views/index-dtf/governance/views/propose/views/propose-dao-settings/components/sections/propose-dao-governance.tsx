@@ -38,6 +38,7 @@ const ProposeDaoGovernance = () => {
         'The time between a proposal being submitted and when governors can cast their votes.',
       fieldName: 'daoVotingDelay',
       inputProps: { step: 0.1, min: 0 },
+      decimalPlaces: 4,
     },
     {
       title: 'Voting Period',
@@ -51,6 +52,7 @@ const ProposeDaoGovernance = () => {
         'How long governors have to cast their votes on a proposal after the voting delay.',
       fieldName: 'daoVotingPeriod',
       inputProps: { step: 0.1, min: 0 },
+      decimalPlaces: 4,
     },
     {
       title: 'Proposal Threshold',
@@ -96,6 +98,7 @@ const ProposeDaoGovernance = () => {
         'The time period between when a proposal is approved and when it can be executed.',
       fieldName: 'daoExecutionDelay',
       inputProps: { step: 0.1, min: 0 },
+      decimalPlaces: 4,
     },
   ]
 

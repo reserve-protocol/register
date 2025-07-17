@@ -125,7 +125,7 @@ const ContractProposalChanges = ({
               <h4 className="text-primary text-lg font-semibold mb-2">
                 {index + 1}/{decodedCalldatas.length}
               </h4>
-              <Component decodedCalldata={decodedCalldata} />
+              <Component decodedCalldata={decodedCalldata} targetAddress={address} />
             </div>
           )
         })}

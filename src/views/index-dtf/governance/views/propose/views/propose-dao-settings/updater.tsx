@@ -7,6 +7,7 @@ import {
   daoGovernanceChangesAtom,
   isFormValidAtom,
   isProposalConfirmedAtom,
+  currentQuorumPercentageAtom,
 } from './atoms'
 import { proposalThresholdToPercentage, secondsToDays } from '../../shared'
 
@@ -16,6 +17,7 @@ const Updater = () => {
   const { reset: resetForm, watch, formState } = useFormContext()
   const governanceChanges = useAtomValue(daoGovernanceChangesAtom)
   const isProposalConfirmed = useAtomValue(isProposalConfirmedAtom)
+  const currentQuorumPercentage = useAtomValue(currentQuorumPercentageAtom)
   const isResettingForm = useRef(false)
 
   // Set atoms for changes
@@ -38,7 +40,6 @@ const Updater = () => {
       // Get current governance values
       const currentVotingDelay = secondsToDays(Number(governance.votingDelay))
       const currentVotingPeriod = secondsToDays(Number(governance.votingPeriod))
-      const currentQuorum = Number(governance.quorumNumerator)
       const currentThreshold = proposalThresholdToPercentage(
         governance.proposalThreshold
       )
@@ -59,7 +60,7 @@ const Updater = () => {
         daoVotingQuorum:
           governanceChanges.quorumPercent !== undefined
             ? governanceChanges.quorumPercent
-            : currentQuorum,
+            : currentQuorumPercentage,
         daoVotingThreshold:
           governanceChanges.proposalThreshold !== undefined
             ? governanceChanges.proposalThreshold
@@ -87,7 +88,7 @@ const Updater = () => {
 
         // Check voting delay (convert from days to seconds for comparison)
         if (daoVotingDelay !== undefined) {
-          const newValueInSeconds = daoVotingDelay * 86400
+          const newValueInSeconds = Math.round(daoVotingDelay * 86400)
           if (newValueInSeconds !== Number(governance.votingDelay)) {
             changes.votingDelay = newValueInSeconds
           } else {
@@ -97,7 +98,7 @@ const Updater = () => {
 
         // Check voting period (convert from days to seconds for comparison)
         if (daoVotingPeriod !== undefined) {
-          const newValueInSeconds = daoVotingPeriod * 86400
+          const newValueInSeconds = Math.round(daoVotingPeriod * 86400)
           if (newValueInSeconds !== Number(governance.votingPeriod)) {
             changes.votingPeriod = newValueInSeconds
           } else {
@@ -119,7 +120,7 @@ const Updater = () => {
 
         // Check voting quorum
         if (daoVotingQuorum !== undefined) {
-          if (daoVotingQuorum !== Number(governance.quorumNumerator)) {
+          if (daoVotingQuorum !== currentQuorumPercentage) {
             changes.quorumPercent = daoVotingQuorum
           } else {
             delete changes.quorumPercent
@@ -128,7 +129,7 @@ const Updater = () => {
 
         // Check execution delay (convert from days to seconds for comparison)
         if (daoExecutionDelay !== undefined) {
-          const newValueInSeconds = daoExecutionDelay * 86400
+          const newValueInSeconds = Math.round(daoExecutionDelay * 86400)
           if (
             governance.timelock?.executionDelay !== undefined &&
             newValueInSeconds !== Number(governance.timelock.executionDelay)
@@ -150,6 +151,7 @@ const Updater = () => {
     daoExecutionDelay,
     indexDTF?.stToken?.governance,
     setGovernanceChanges,
+    currentQuorumPercentage,
   ])
 
   // Track form validation state

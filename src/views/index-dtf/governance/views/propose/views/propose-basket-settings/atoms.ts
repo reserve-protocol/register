@@ -19,6 +19,15 @@ export const isProposalConfirmedAtom = atom(false)
 export const proposalDescriptionAtom = atom<string | undefined>(undefined)
 export const isFormValidAtom = atom(false)
 
+// Calculated quorum percentage atom
+export const currentQuorumPercentageAtom = atom((get) => {
+  const dtf = get(indexDTFAtom)
+  if (!dtf?.tradingGovernance) return 0
+  
+  const { quorumNumerator, quorumDenominator } = dtf.tradingGovernance
+  return (Number(quorumNumerator) / Number(quorumDenominator)) * 100
+})
+
 // Governance changes atom
 export const basketGovernanceChangesAtom = atom<GovernanceChanges>({})
 
@@ -41,48 +50,57 @@ export const basketSettingsProposalDataAtom = atom<ProposalData | undefined>(
 
     if (!dtf || !dtf.tradingGovernance) return undefined
 
-    const calldatas: Hex[] = []
-    const targets: Address[] = []
+    try {
+      const calldatas: Hex[] = []
+      const targets: Address[] = []
 
-    const governanceAddress = dtf.tradingGovernance.id
-    const timelockAddress = dtf.tradingGovernance.timelock?.id
+      const governanceAddress = dtf.tradingGovernance.id
+      const timelockAddress = dtf.tradingGovernance.timelock?.id
 
-    // Add governance parameter changes
-    if (Object.keys(governanceChanges).length > 0) {
-      // Set voting delay
-      if (governanceChanges.votingDelay !== undefined) {
-        calldatas.push(encodeVotingDelay(governanceChanges.votingDelay))
-        targets.push(governanceAddress)
+      // Add governance parameter changes
+      if (Object.keys(governanceChanges).length > 0) {
+        // Set voting delay
+        if (governanceChanges.votingDelay !== undefined) {
+          calldatas.push(encodeVotingDelay(governanceChanges.votingDelay))
+          targets.push(governanceAddress)
+        }
+
+        // Set voting period
+        if (governanceChanges.votingPeriod !== undefined) {
+          calldatas.push(encodeVotingPeriod(governanceChanges.votingPeriod))
+          targets.push(governanceAddress)
+        }
+
+        // Set proposal threshold
+        if (governanceChanges.proposalThreshold !== undefined) {
+          calldatas.push(
+            encodeProposalThreshold(governanceChanges.proposalThreshold)
+          )
+          targets.push(governanceAddress)
+        }
+
+        // Set quorum votes
+        if (governanceChanges.quorumPercent !== undefined) {
+          calldatas.push(encodeQuorum(
+            governanceChanges.quorumPercent,
+            dtf.tradingGovernance.quorumDenominator
+          ))
+          targets.push(governanceAddress)
+        }
+
+        // Set execution delay (timelock)
+        if (governanceChanges.executionDelay !== undefined && timelockAddress) {
+          calldatas.push(encodeExecutionDelay(governanceChanges.executionDelay))
+          targets.push(timelockAddress)
+        }
       }
 
-      // Set voting period
-      if (governanceChanges.votingPeriod !== undefined) {
-        calldatas.push(encodeVotingPeriod(governanceChanges.votingPeriod))
-        targets.push(governanceAddress)
-      }
-
-      // Set proposal threshold
-      if (governanceChanges.proposalThreshold !== undefined) {
-        calldatas.push(
-          encodeProposalThreshold(governanceChanges.proposalThreshold)
-        )
-        targets.push(governanceAddress)
-      }
-
-      // Set quorum votes
-      if (governanceChanges.quorumPercent !== undefined) {
-        calldatas.push(encodeQuorum(governanceChanges.quorumPercent))
-        targets.push(governanceAddress)
-      }
-
-      // Set execution delay (timelock)
-      if (governanceChanges.executionDelay !== undefined && timelockAddress) {
-        calldatas.push(encodeExecutionDelay(governanceChanges.executionDelay))
-        targets.push(timelockAddress)
-      }
+      return calldatas.length > 0 ? { calldatas, targets } : undefined
+    } catch (error) {
+      // Return undefined if encoding fails (e.g., during typing)
+      console.error('Failed to encode proposal data:', error)
+      return undefined
     }
-
-    return calldatas.length > 0 ? { calldatas, targets } : undefined
   }
 )
 
@@ -121,15 +139,18 @@ export const basketGovernanceChangesDisplayAtom = atom<
       key: 'proposalThreshold' as keyof GovernanceChanges,
       title: 'Proposal Threshold',
       current: `${proposalThresholdToPercentage(governance.proposalThreshold).toFixed(2)}%`,
-      new: `${governanceChanges.proposalThreshold.toFixed(2)}%`,
+      new: `${Number(governanceChanges.proposalThreshold).toFixed(2)}%`,
     })
   }
 
   if (governanceChanges.quorumPercent !== undefined) {
+    const quorumNumerator = Number(governance.quorumNumerator)
+    const quorumDenominator = Number(governance.quorumDenominator)
+    const currentQuorum = quorumDenominator > 0 ? (quorumNumerator / quorumDenominator) * 100 : 0
     changes.push({
       key: 'quorumPercent' as keyof GovernanceChanges,
       title: 'Voting Quorum',
-      current: `${Number(governance.quorumNumerator)}%`,
+      current: `${currentQuorum.toFixed(2)}%`,
       new: `${governanceChanges.quorumPercent}%`,
     })
   }

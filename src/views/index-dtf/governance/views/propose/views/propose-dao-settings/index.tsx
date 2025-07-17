@@ -6,7 +6,9 @@ import DaoSettingsProposalSections from './components/dao-settings-proposal-sect
 import DaoSettingsProposalOverview from './components/dao-settings-proposal-overview'
 import Updater from './updater'
 import ConfirmDaoSettingsProposal from './components/confirm-dao-settings-proposal'
-import { ProposeDaoSettingsSchema, ProposeDaoSettings } from './form-fields'
+import { createProposeDaoSettingsSchema, ProposeDaoSettings } from './form-fields'
+import { indexDTFAtom } from '@/state/dtf/atoms'
+import { useMemo } from 'react'
 
 const ProposalStage = () => {
   const isConfirmed = useAtomValue(isProposalConfirmedAtom)
@@ -17,10 +19,17 @@ const ProposalStage = () => {
 }
 
 const IndexDTFDaoSettingsProposal = () => {
+  const indexDTF = useAtomValue(indexDTFAtom)
+  const quorumDenominator = indexDTF?.stToken?.governance?.quorumDenominator
+
+  const schema = useMemo(() => {
+    return createProposeDaoSettingsSchema(Number(quorumDenominator))
+  }, [quorumDenominator])
+
   const methods = useForm<ProposeDaoSettings>({
     mode: 'onTouched',
     reValidateMode: 'onChange',
-    resolver: zodResolver(ProposeDaoSettingsSchema),
+    resolver: zodResolver(schema),
   })
 
   return (

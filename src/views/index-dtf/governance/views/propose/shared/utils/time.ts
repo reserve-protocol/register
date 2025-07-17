@@ -1,4 +1,5 @@
 import { TIME_CONSTANTS } from '../types'
+import { parseDuration } from '@/utils'
 
 /**
  * Convert seconds to days
@@ -20,19 +21,16 @@ export const daysToSeconds = (days: number): number => {
  * @returns Human-readable string (e.g., "2 days", "12 hours", "30 minutes")
  */
 export const humanizeTimeFromSeconds = (seconds: number): string => {
-  const days = secondsToDays(seconds)
+  // Round to nearest second to avoid floating point precision issues
+  const roundedSeconds = Math.round(seconds)
   
-  if (days >= 1) {
-    return `${days} day${days !== 1 ? 's' : ''}`
-  }
-  
-  const hours = seconds / TIME_CONSTANTS.SECONDS_PER_HOUR
-  if (hours >= 1) {
-    return `${hours} hour${hours !== 1 ? 's' : ''}`
-  }
-  
-  const minutes = seconds / TIME_CONSTANTS.SECONDS_PER_MINUTE
-  return `${minutes} minute${minutes !== 1 ? 's' : ''}`
+  // Use parseDuration for better handling of time formatting
+  return parseDuration(roundedSeconds, {
+    largest: 2,
+    units: ['d', 'h', 'm', 's'],
+    delimiter: ' ',
+    spacer: ' ',
+  })
 }
 
 /**

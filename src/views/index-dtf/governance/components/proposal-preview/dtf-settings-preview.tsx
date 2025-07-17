@@ -7,6 +7,7 @@ import { useAtomValue } from 'jotai'
 import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { FIXED_PLATFORM_FEE } from '@/utils/constants'
+import { Address } from 'viem'
 
 // Preview component for setMandate function
 export const SetMandatePreview = ({ decodedCalldata }: { decodedCalldata: DecodedCalldata }) => {
@@ -424,8 +425,35 @@ export const SetProposalThresholdPreview = ({ decodedCalldata }: { decodedCallda
 }
 
 // Preview component for updateQuorumNumerator function
-export const UpdateQuorumNumeratorPreview = ({ decodedCalldata }: { decodedCalldata: DecodedCalldata }) => {
-  const quorum = Number(decodedCalldata.data[0])
+export const UpdateQuorumNumeratorPreview = ({ 
+  decodedCalldata, 
+  targetAddress 
+}: { 
+  decodedCalldata: DecodedCalldata
+  targetAddress?: Address 
+}) => {
+  const indexDTF = useAtomValue(indexDTFAtom)
+  const quorumNumerator = decodedCalldata.data[0] as bigint
+  
+  // Determine which governance this is for based on the target address
+  let quorumDenominator = 0
+  
+  if (targetAddress) {
+    const target = targetAddress.toLowerCase()
+    
+    if (target === indexDTF?.ownerGovernance?.id?.toLowerCase()) {
+      quorumDenominator = Number(indexDTF.ownerGovernance.quorumDenominator)
+    } else if (target === indexDTF?.tradingGovernance?.id?.toLowerCase()) {
+      quorumDenominator = Number(indexDTF.tradingGovernance.quorumDenominator)
+    } else if (target === indexDTF?.stToken?.governance?.id?.toLowerCase()) {
+      quorumDenominator = Number(indexDTF.stToken.governance.quorumDenominator)
+    }
+  }
+  
+  // Calculate percentage
+  const percentage = quorumDenominator > 0 
+    ? (Number(quorumNumerator) / quorumDenominator) * 100
+    : 0
   
   return (
     <div className="rounded-2xl border bg-muted/70 p-4 space-y-3">
@@ -438,7 +466,7 @@ export const UpdateQuorumNumeratorPreview = ({ decodedCalldata }: { decodedCalld
           <span className="text-sm text-muted-foreground">New voting quorum:</span>
           <div className="flex items-center gap-2">
             <Shield size={14} className="text-primary" />
-            <span className="text-sm font-medium text-primary">{quorum}%</span>
+            <span className="text-sm font-medium text-primary">{percentage.toFixed(2)}%</span>
           </div>
         </div>
       </div>

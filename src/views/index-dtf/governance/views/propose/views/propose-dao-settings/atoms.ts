@@ -147,15 +147,16 @@ export const daoGovernanceChangesDisplayAtom = atom<GovernanceChangeDisplay[]>((
       key: 'proposalThreshold' as keyof GovernanceChanges,
       title: 'Proposal Threshold',
       current: `${proposalThresholdToPercentage(governance.proposalThreshold).toFixed(2)}%`,
-      new: `${governanceChanges.proposalThreshold.toFixed(2)}%`,
+      new: `${Number(governanceChanges.proposalThreshold).toFixed(2)}%`,
     })
   }
 
   if (governanceChanges.quorumPercent !== undefined) {
+    const currentQuorum = get(currentQuorumPercentageAtom)
     changes.push({
       key: 'quorumPercent' as keyof GovernanceChanges,
       title: 'Voting Quorum',
-      current: `${Number(governance.quorumNumerator)}%`,
+      current: `${currentQuorum.toFixed(2)}%`,
       new: `${governanceChanges.quorumPercent}%`,
     })
   }
@@ -176,6 +177,15 @@ export const daoGovernanceChangesDisplayAtom = atom<GovernanceChangeDisplay[]>((
 
 // Form validation atom
 export const isFormValidAtom = atom(false)
+
+// Calculated quorum percentage atom
+export const currentQuorumPercentageAtom = atom((get) => {
+  const dtf = get(indexDTFAtom)
+  if (!dtf?.stToken?.governance) return 0
+  
+  const { quorumNumerator, quorumDenominator } = dtf.stToken.governance
+  return (Number(quorumNumerator) / Number(quorumDenominator)) * 100
+})
 
 export const daoSettingsProposalDataAtom = atom<ProposalData | undefined>((get) => {
   const isConfirmed = get(isProposalConfirmedAtom)
@@ -239,7 +249,10 @@ export const daoSettingsProposalDataAtom = atom<ProposalData | undefined>((get) 
 
     // Set quorum votes
     if (governanceChanges.quorumPercent !== undefined) {
-      calldatas.push(encodeQuorum(governanceChanges.quorumPercent))
+      calldatas.push(encodeQuorum(
+        governanceChanges.quorumPercent,
+        indexDTF.stToken.governance.quorumDenominator
+      ))
       targets.push(governanceAddress)
     }
 
@@ -253,11 +266,6 @@ export const daoSettingsProposalDataAtom = atom<ProposalData | undefined>((get) 
   return calldatas.length > 0 ? { calldatas, targets } : undefined
 })
 
-// Backwards compatibility atom
-export const vaultProposalCalldatasAtom = atom<Hex[] | undefined>((get) => {
-  const proposalData = get(daoSettingsProposalDataAtom)
-  return proposalData?.calldatas
-})
 
 // Reset atom for clearing all state
 export const resetAtom = atom(null, (get, set) => {

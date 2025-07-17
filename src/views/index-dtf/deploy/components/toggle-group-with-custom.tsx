@@ -16,6 +16,7 @@ type ToggleGroupWithCustomProps = {
   customPlaceholder: string
   warningMessage?: ReactNode
   inputProps?: React.ComponentProps<typeof Input>
+  decimalPlaces?: number
 }
 
 const CustomInput = ({
@@ -23,9 +24,10 @@ const CustomInput = ({
   customLabel,
   customPlaceholder,
   inputProps,
+  decimalPlaces = 2,
 }: Pick<
   ToggleGroupWithCustomProps,
-  'fieldName' | 'customLabel' | 'customPlaceholder' | 'inputProps'
+  'fieldName' | 'customLabel' | 'customPlaceholder' | 'inputProps' | 'decimalPlaces'
 >) => {
   const { clearErrors } = useFormContext()
   return (
@@ -35,7 +37,7 @@ const CustomInput = ({
         fieldName={fieldName}
         label={customLabel}
         placeholder={customPlaceholder}
-        decimalPlaces={2}
+        decimalPlaces={decimalPlaces}
         inputProps={{
           onKeyDown: () => clearErrors(fieldName),
           ...inputProps,
@@ -92,6 +94,7 @@ const ToggleGroupWithCustom = ({
   customPlaceholder,
   warningMessage,
   inputProps,
+  decimalPlaces,
 }: ToggleGroupWithCustomProps) => (
   <div
     className="w-full rounded-xl flex flex-col gap-3 justify-between p-4 bg-muted/70"
@@ -118,6 +121,7 @@ const ToggleGroupWithCustom = ({
         customLabel={customLabel}
         customPlaceholder={customPlaceholder}
         inputProps={inputProps}
+        decimalPlaces={decimalPlaces}
       />
     </div>
     {!!warningMessage && (

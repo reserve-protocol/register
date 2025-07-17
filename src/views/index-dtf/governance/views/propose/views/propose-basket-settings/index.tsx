@@ -6,11 +6,13 @@ import BasketSettingsProposalSection from './components/basket-settings-proposal
 import BasketSettingsProposalOverview from './components/basket-settings-proposal-overview'
 import Updater from './updater'
 import ConfirmBasketSettingsProposal from './components/confirm-basket-settings-proposal'
-import { ProposeBasketSettingsSchema, ProposeBasketSettings } from './form-fields'
+import { createProposeBasketSettingsSchema, ProposeBasketSettings } from './form-fields'
 import { Link } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import { ArrowLeftIcon } from 'lucide-react'
 import { ROUTES } from '@/utils/constants'
+import { indexDTFAtom } from '@/state/dtf/atoms'
+import { useMemo } from 'react'
 
 const Header = () => (
   <div className="p-4 pb-3 flex items-center gap-2">
@@ -40,10 +42,17 @@ const ProposalStage = () => {
 }
 
 const IndexDTFBasketSettingsProposal = () => {
+  const indexDTF = useAtomValue(indexDTFAtom)
+  const quorumDenominator = indexDTF?.tradingGovernance?.quorumDenominator
+
+  const schema = useMemo(() => {
+    return createProposeBasketSettingsSchema(Number(quorumDenominator))
+  }, [quorumDenominator])
+
   const methods = useForm<ProposeBasketSettings>({
     mode: 'onTouched',
     reValidateMode: 'onChange',
-    resolver: zodResolver(ProposeBasketSettingsSchema),
+    resolver: zodResolver(schema),
   })
 
   return (

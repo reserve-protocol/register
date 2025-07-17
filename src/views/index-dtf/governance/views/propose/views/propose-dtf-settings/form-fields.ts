@@ -2,7 +2,7 @@ import { isAddressNotStrict } from '@/views/index-dtf/deploy/utils'
 import { Decimal } from '@/views/index-dtf/deploy/utils/decimals'
 import { z } from 'zod'
 
-export const ProposeSettingsSchema = z
+export const createProposeSettingsSchema = (quorumDenominator?: number) => z
   .object({
     mandate: z.string(),
     governanceVoteLock: z
@@ -53,11 +53,21 @@ export const ProposeSettingsSchema = z
       .optional(),
     auctionLength: z.coerce
       .number()
-      .min(0)
-      .max(45, 'Auction length must not exceed 45 minutes'),
+      .min(15, 'Auction length must be at least 15 minutes')
+      .max(1440, 'Auction length must not exceed 1440 minutes (24 hours)'),
     governanceVotingDelay: z.coerce.number().min(0).optional(),
     governanceVotingPeriod: z.coerce.number().min(0).optional(),
-    governanceVotingQuorum: z.coerce.number().min(0).max(100).optional(),
+    governanceVotingQuorum: z.coerce.number().min(0).max(100).optional()
+      .refine(
+        (val) => {
+          // Only validate if we have a denominator and a value
+          if (quorumDenominator === 100 && val !== undefined) {
+            return Number.isInteger(val)
+          }
+          return true
+        },
+        'Only whole numbers are allowed'
+      ),
     governanceVotingThreshold: z.coerce.number().min(0).max(100).optional(),
     governanceExecutionDelay: z.coerce.number().min(0).optional(),
     guardians: z.array(
@@ -182,5 +192,8 @@ export const ProposeSettingsSchema = z
       path: ['revenue-distribution'],
     }
   )
+
+// Default schema for backward compatibility
+export const ProposeSettingsSchema = createProposeSettingsSchema()
 
 export type ProposeSettings = z.infer<typeof ProposeSettingsSchema>

@@ -36,6 +36,7 @@ const ProposeGovernanceSettings = () => {
         'The time between a proposal being submitted and when governors can cast their votes.',
       fieldName: 'governanceVotingDelay',
       inputProps: { step: 0.1, min: 0 },
+      decimalPlaces: 4,
     },
     {
       title: 'Voting Period',
@@ -49,6 +50,7 @@ const ProposeGovernanceSettings = () => {
         'How long governors have to cast their votes on a proposal after the voting delay.',
       fieldName: 'governanceVotingPeriod',
       inputProps: { step: 0.1, min: 0 },
+      decimalPlaces: 4,
     },
     {
       title: 'Proposal Threshold',
@@ -94,6 +96,7 @@ const ProposeGovernanceSettings = () => {
         'The time period between when a proposal is approved and when it can be executed.',
       fieldName: 'governanceExecutionDelay',
       inputProps: { step: 0.1, min: 0 },
+      decimalPlaces: 4,
     },
   ]
 

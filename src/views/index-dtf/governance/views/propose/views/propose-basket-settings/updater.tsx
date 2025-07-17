@@ -7,6 +7,7 @@ import {
   basketGovernanceChangesAtom,
   isFormValidAtom,
   isProposalConfirmedAtom,
+  currentQuorumPercentageAtom,
 } from './atoms'
 import { proposalThresholdToPercentage, secondsToDays } from '../../shared'
 
@@ -16,6 +17,7 @@ const Updater = () => {
   const { reset: resetForm, watch, formState } = useFormContext()
   const governanceChanges = useAtomValue(basketGovernanceChangesAtom)
   const isProposalConfirmed = useAtomValue(isProposalConfirmedAtom)
+  const currentQuorumPercentage = useAtomValue(currentQuorumPercentageAtom)
   const isResettingForm = useRef(false)
 
   // Set atoms for changes
@@ -38,7 +40,6 @@ const Updater = () => {
       // Get current governance values
       const currentVotingDelay = secondsToDays(Number(governance.votingDelay))
       const currentVotingPeriod = secondsToDays(Number(governance.votingPeriod))
-      const currentQuorum = Number(governance.quorumNumerator)
       const currentThreshold = proposalThresholdToPercentage(
         governance.proposalThreshold
       )
@@ -59,7 +60,7 @@ const Updater = () => {
         basketVotingQuorum:
           governanceChanges.quorumPercent !== undefined
             ? governanceChanges.quorumPercent
-            : currentQuorum,
+            : currentQuorumPercentage,
         basketVotingThreshold:
           governanceChanges.proposalThreshold !== undefined
             ? governanceChanges.proposalThreshold
@@ -86,47 +87,59 @@ const Updater = () => {
         const changes = { ...prevChanges }
 
         // Check voting delay (convert from days to seconds for comparison)
-        if (basketVotingDelay !== undefined) {
-          const newValueInSeconds = basketVotingDelay * 86400
+        if (basketVotingDelay !== undefined && basketVotingDelay !== '') {
+          const newValueInSeconds = Math.round(basketVotingDelay * 86400)
           if (newValueInSeconds !== Number(governance.votingDelay)) {
             changes.votingDelay = newValueInSeconds
           } else {
             delete changes.votingDelay
           }
+        } else {
+          // If the field is empty/undefined, remove any existing change
+          delete changes.votingDelay
         }
 
         // Check voting period (convert from days to seconds for comparison)
-        if (basketVotingPeriod !== undefined) {
-          const newValueInSeconds = basketVotingPeriod * 86400
+        if (basketVotingPeriod !== undefined && basketVotingPeriod !== '') {
+          const newValueInSeconds = Math.round(basketVotingPeriod * 86400)
           if (newValueInSeconds !== Number(governance.votingPeriod)) {
             changes.votingPeriod = newValueInSeconds
           } else {
             delete changes.votingPeriod
           }
+        } else {
+          // If the field is empty/undefined, remove any existing change
+          delete changes.votingPeriod
         }
 
         // Check proposal threshold (convert to percentage for comparison)
-        if (basketVotingThreshold !== undefined) {
+        if (basketVotingThreshold !== undefined && basketVotingThreshold !== '') {
           const currentThreshold = Number(governance.proposalThreshold) / 1e18
           if (basketVotingThreshold !== currentThreshold) {
             changes.proposalThreshold = basketVotingThreshold
           } else {
             delete changes.proposalThreshold
           }
+        } else {
+          // If the field is empty/undefined, remove any existing change
+          delete changes.proposalThreshold
         }
 
         // Check voting quorum
-        if (basketVotingQuorum !== undefined) {
-          if (basketVotingQuorum !== Number(governance.quorumNumerator)) {
+        if (basketVotingQuorum !== undefined && basketVotingQuorum !== '') {
+          if (basketVotingQuorum !== currentQuorumPercentage) {
             changes.quorumPercent = basketVotingQuorum
           } else {
             delete changes.quorumPercent
           }
+        } else {
+          // If the field is empty/undefined, remove any existing change
+          delete changes.quorumPercent
         }
 
         // Check execution delay (convert from days to seconds for comparison)
-        if (basketExecutionDelay !== undefined) {
-          const newValueInSeconds = basketExecutionDelay * 86400
+        if (basketExecutionDelay !== undefined && basketExecutionDelay !== '') {
+          const newValueInSeconds = Math.round(basketExecutionDelay * 86400)
           if (
             governance.timelock?.executionDelay !== undefined &&
             newValueInSeconds !== Number(governance.timelock.executionDelay)
@@ -135,6 +148,9 @@ const Updater = () => {
           } else {
             delete changes.executionDelay
           }
+        } else {
+          // If the field is empty/undefined, remove any existing change
+          delete changes.executionDelay
         }
 
         return changes
@@ -148,6 +164,7 @@ const Updater = () => {
     basketExecutionDelay,
     indexDTF?.tradingGovernance,
     setGovernanceChanges,
+    currentQuorumPercentage,
   ])
 
   // Track form validation state

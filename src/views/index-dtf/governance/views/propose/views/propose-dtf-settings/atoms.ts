@@ -153,6 +153,15 @@ export const isProposalConfirmedAtom = atom(false)
 
 export const proposalDescriptionAtom = atom<string | undefined>(undefined)
 
+// Calculated quorum percentage atom
+export const currentQuorumPercentageAtom = atom((get) => {
+  const dtf = get(indexDTFAtom)
+  if (!dtf?.ownerGovernance) return 0
+  
+  const { quorumNumerator, quorumDenominator } = dtf.ownerGovernance
+  return (Number(quorumNumerator) / Number(quorumDenominator)) * 100
+})
+
 // Role constants from the DTF contract
 const GUARDIAN_ROLE =
   '0xfd643c72710c63c0180259aba6b2d05451e3591a24e58b62239378085726f783' as const
@@ -538,7 +547,10 @@ export const dtfSettingsProposalDataAtom = atom<ProposalData | undefined>((get) 
 
     // Set quorum votes
     if (governanceChanges.quorumPercent !== undefined) {
-      calldatas.push(encodeQuorum(governanceChanges.quorumPercent))
+      calldatas.push(encodeQuorum(
+        governanceChanges.quorumPercent,
+        indexDTF.ownerGovernance.quorumDenominator
+      ))
       targets.push(governanceAddress)
     }
 
@@ -585,15 +597,16 @@ export const dtfGovernanceChangesDisplayAtom = atom<GovernanceChangeDisplay[]>((
       key: 'proposalThreshold' as keyof GovernanceChanges,
       title: 'Proposal Threshold',
       current: `${proposalThresholdToPercentage(governance.proposalThreshold).toFixed(2)}%`,
-      new: `${governanceChanges.proposalThreshold.toFixed(2)}%`,
+      new: `${Number(governanceChanges.proposalThreshold).toFixed(2)}%`,
     })
   }
 
   if (governanceChanges.quorumPercent !== undefined) {
+    const currentQuorum = get(currentQuorumPercentageAtom)
     changes.push({
       key: 'quorumPercent' as keyof GovernanceChanges,
       title: 'Voting Quorum',
-      current: `${Number(governance.quorumNumerator)}%`,
+      current: `${currentQuorum.toFixed(2)}%`,
       new: `${governanceChanges.quorumPercent}%`,
     })
   }

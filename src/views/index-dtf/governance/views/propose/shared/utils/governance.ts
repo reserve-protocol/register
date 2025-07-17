@@ -30,22 +30,36 @@ export const encodeVotingPeriod = (seconds: number) => {
  * @param percentage - Percentage value (0-100)
  */
 export const encodeProposalThreshold = (percentage: number) => {
+  // Convert percentage to decimal (0-1) and ensure proper string formatting
+  const decimal = percentage / 100
+  // Use toFixed to ensure proper decimal formatting and avoid scientific notation
+  const formattedDecimal = decimal.toFixed(18)
+  
   return encodeFunctionData({
     abi: dtfGovernanceAbi,
     functionName: 'setProposalThreshold',
-    args: [parseEther((percentage / 100).toString())],
+    args: [parseEther(formattedDecimal)],
   })
 }
 
 /**
  * Encode quorum change
  * @param percentage - Percentage value (0-100)
+ * @param quorumDenominator - Current quorum denominator from governance (with 18 decimals)
  */
-export const encodeQuorum = (percentage: number) => {
+export const encodeQuorum = (percentage: number, quorumDenominator: number) => {
+  // Convert percentage to basis points (multiply by 100 to avoid decimals)
+  // Example: 0.01% becomes 1, 1% becomes 100, 50.5% becomes 5050
+  const percentageInBasisPoints = Math.round(percentage * 100)
+  
+  // Calculate new numerator: (percentage * denominator) / 100
+  // Using basis points: (percentageInBasisPoints * denominator) / 10000
+  const newQuorumNumerator = (BigInt(percentageInBasisPoints) * BigInt(quorumDenominator)) / 10000n
+  
   return encodeFunctionData({
     abi: dtfGovernanceAbi,
     functionName: 'updateQuorumNumerator',
-    args: [BigInt(percentage)],
+    args: [newQuorumNumerator],
   })
 }
 

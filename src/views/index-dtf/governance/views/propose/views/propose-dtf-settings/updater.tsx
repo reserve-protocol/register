@@ -16,6 +16,7 @@ import {
   auctionLengthChangeAtom,
   governanceChangesAtom,
   isFormValidAtom,
+  currentQuorumPercentageAtom,
 } from './atoms'
 import { proposalThresholdToPercentage, secondsToDays } from '../../shared'
 
@@ -45,6 +46,7 @@ const Updater = () => {
   )
   const dtfRevenueChanges = useAtomValue(dtfRevenueChangesAtom)
   const auctionLengthChange = useAtomValue(auctionLengthChangeAtom)
+  const currentQuorumPercentage = useAtomValue(currentQuorumPercentageAtom)
   const isResettingForm = useRef(false)
 
   // Set atoms for changes
@@ -100,7 +102,6 @@ const Updater = () => {
       const currentVotingPeriod = secondsToDays(
         Number(indexDTF.ownerGovernance.votingPeriod)
       )
-      const currentQuorum = Number(indexDTF.ownerGovernance.quorumNumerator)
       const currentThreshold = proposalThresholdToPercentage(
         indexDTF.ownerGovernance.proposalThreshold
       )
@@ -148,7 +149,7 @@ const Updater = () => {
         governanceVotingQuorum:
           governanceChanges.quorumPercent !== undefined
             ? governanceChanges.quorumPercent
-            : currentQuorum,
+            : currentQuorumPercentage,
         governanceVotingThreshold:
           governanceChanges.proposalThreshold !== undefined
             ? governanceChanges.proposalThreshold
@@ -350,7 +351,7 @@ const Updater = () => {
 
         // Check voting delay (convert from days to seconds for comparison)
         if (governanceVotingDelay !== undefined) {
-          const newValueInSeconds = governanceVotingDelay * 86400
+          const newValueInSeconds = Math.round(governanceVotingDelay * 86400)
           if (newValueInSeconds !== Number(governance.votingDelay)) {
             changes.votingDelay = newValueInSeconds
           } else {
@@ -360,7 +361,7 @@ const Updater = () => {
 
         // Check voting period (convert from days to seconds for comparison)
         if (governanceVotingPeriod !== undefined) {
-          const newValueInSeconds = governanceVotingPeriod * 86400
+          const newValueInSeconds = Math.round(governanceVotingPeriod * 86400)
           if (newValueInSeconds !== Number(governance.votingPeriod)) {
             changes.votingPeriod = newValueInSeconds
           } else {
@@ -382,7 +383,7 @@ const Updater = () => {
 
         // Check voting quorum
         if (governanceVotingQuorum !== undefined) {
-          if (governanceVotingQuorum !== Number(governance.quorumNumerator)) {
+          if (governanceVotingQuorum !== currentQuorumPercentage) {
             changes.quorumPercent = governanceVotingQuorum
           } else {
             delete changes.quorumPercent
@@ -391,7 +392,7 @@ const Updater = () => {
 
         // Check execution delay (convert from days to seconds for comparison)
         if (governanceExecutionDelay !== undefined) {
-          const newValueInSeconds = governanceExecutionDelay * 86400
+          const newValueInSeconds = Math.round(governanceExecutionDelay * 86400)
           if (
             governance.timelock?.executionDelay !== undefined &&
             newValueInSeconds !== Number(governance.timelock.executionDelay)
@@ -413,6 +414,7 @@ const Updater = () => {
     governanceExecutionDelay,
     indexDTF?.ownerGovernance,
     setGovernanceChanges,
+    currentQuorumPercentage,
   ])
 
   // Track form validation state

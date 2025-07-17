@@ -37,6 +37,7 @@ const BasketSettingsProposalSection = () => {
         'The time between a basket proposal being submitted and when governors can cast their votes.',
       fieldName: 'basketVotingDelay',
       inputProps: { step: 0.1, min: 0 },
+      decimalPlaces: 4,
     },
     {
       title: 'Voting Period',
@@ -50,6 +51,7 @@ const BasketSettingsProposalSection = () => {
         'How long governors have to cast their votes on a basket proposal after the voting delay.',
       fieldName: 'basketVotingPeriod',
       inputProps: { step: 0.1, min: 0 },
+      decimalPlaces: 4,
     },
     {
       title: 'Proposal Threshold',
@@ -96,6 +98,7 @@ const BasketSettingsProposalSection = () => {
         'The time period between when a basket proposal is approved and when it can be executed.',
       fieldName: 'basketExecutionDelay',
       inputProps: { step: 0.1, min: 0 },
+      decimalPlaces: 4,
     },
   ]
 
