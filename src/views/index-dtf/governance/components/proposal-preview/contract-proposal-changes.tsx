@@ -29,7 +29,7 @@ import {
 
 const ChangesOverviewComponentMap: Record<
   string,
-  React.ComponentType<{ decodedCalldata: DecodedCalldata }>
+  React.ComponentType<{ decodedCalldata: DecodedCalldata; targetAddress?: Address }>
 > = {
   removeRewardToken: TokenRewardPreview,
   addRewardToken: TokenRewardPreview,
