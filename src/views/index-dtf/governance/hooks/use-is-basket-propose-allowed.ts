@@ -1,16 +1,16 @@
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { useAtomValue } from 'jotai'
-import { useDAOVotingPower } from './use-dao-voting-power'
+import { useBasketVotingPower } from './use-basket-voting-power'
 import { indexGovernanceOverviewAtom } from '../atoms'
 
-export const useIsDAOProposeAllowed = () => {
+export const useIsBasketProposeAllowed = () => {
   const dtf = useAtomValue(indexDTFAtom)
   const governance = useAtomValue(indexGovernanceOverviewAtom)
-  const { votingPower, isLoading } = useDAOVotingPower()
+  const { votingPower, isLoading } = useBasketVotingPower()
 
-  // For DAO governance, we need to check the stToken governance parameters
+  // For basket governance, we need to check the tradingGovernance parameters
   const voteSupply = governance?.voteSupply
-  const proposalThreshold = dtf?.stToken?.governance?.proposalThreshold
+  const proposalThreshold = dtf?.tradingGovernance?.proposalThreshold
 
   return {
     isProposeAllowed:
