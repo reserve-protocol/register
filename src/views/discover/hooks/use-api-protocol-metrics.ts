@@ -44,21 +44,12 @@ const useAPIProtocolMetrics = () => {
     refetchInterval: REFRESH_INTERVAL,
     staleTime: REFRESH_INTERVAL,
     select: (data) => {
-      const lastTvl = Object.entries(
-        data.tvlTimeseries[data.tvlTimeseries.length - 3]
-      )
-        .map(([key, value]) => (key === 'timestamp' ? 0 : value))
-        .reduce((acc, curr) => acc + curr, 0)
-
       return {
         ...data,
-        tvl: lastTvl,
-        tvlTimeseries: data.tvlTimeseries
-          .map((item) => ({
-            ...item,
-            timestamp: item.timestamp * 1000,
-          }))
-          .slice(0, -2),
+        tvlTimeseries: data.tvlTimeseries.map((item) => ({
+          ...item,
+          timestamp: item.timestamp * 1000,
+        })),
       }
     },
   })
