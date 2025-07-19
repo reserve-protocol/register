@@ -1,8 +1,9 @@
-import {
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from '@/components/ui/chart'
+import TokenLogo from '@/components/token-logo'
+import { ChartContainer } from '@/components/ui/chart'
+import { chainIdAtom } from '@/state/atoms'
+import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
+import { useAtomValue } from 'jotai'
+import { ArrowDown, ArrowUpRight } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
 import {
   Line,
@@ -13,11 +14,6 @@ import {
   XAxis,
   YAxis,
 } from 'recharts'
-import { ArrowDown, ArrowUpRight } from 'lucide-react'
-import TokenLogo from '@/components/token-logo'
-import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
-import { useAtomValue } from 'jotai'
-import { chainIdAtom } from '@/state/atoms'
 
 // Chart constants
 const CHART_HEIGHT = 200
@@ -111,7 +107,7 @@ export default function AuctionBidsChart({
   // Update every second to trigger re-render
   useEffect(() => {
     const interval = setInterval(() => {
-      setTick(t => t + 1)
+      setTick((t) => t + 1)
     }, UPDATE_INTERVAL)
 
     return () => clearInterval(interval)

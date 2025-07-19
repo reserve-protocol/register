@@ -79,9 +79,9 @@ export const dtfContractAliasAtom = atom((get) => {
   }
 
   if (dtf.tradingGovernance) {
-    aliasMapping[dtf.tradingGovernance.id.toLowerCase()] = 'Trading Governance'
+    aliasMapping[dtf.tradingGovernance.id.toLowerCase()] = 'Basket Governance'
     aliasMapping[dtf.tradingGovernance.timelock.id.toLowerCase()] =
-      'Trading Governance Timelock'
+      'Basket Governance Timelock'
   }
 
   if (dtf.stToken) {

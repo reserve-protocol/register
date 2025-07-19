@@ -30,7 +30,8 @@ import IndexDTFGovernance from './views/index-dtf/governance'
 import IndexProposal from './views/index-dtf/governance/views/proposal'
 import IndexDTFPropose from './views/index-dtf/governance/views/propose'
 import IndexDTFBasketProposal from './views/index-dtf/governance/views/propose/basket'
-import IndexDTFWhitelistProposal from './views/index-dtf/governance/views/propose/vault'
+import IndexDTFBasketSettingsProposal from './views/index-dtf/governance/views/propose/views/propose-basket-settings'
+import IndexDTFDaoSettingsProposal from './views/index-dtf/governance/views/propose/views/propose-dao-settings'
 import ProposeDTFSettings from './views/index-dtf/governance/views/propose/views/propose-dtf-settings'
 import IndexDTFContainer from './views/index-dtf/index-dtf-container'
 import IndexDTFIssuance from './views/index-dtf/issuance'
@@ -104,7 +105,11 @@ const AppRoutes = () => (
       />
       <Route
         path={`${ROUTES.GOVERNANCE}/${ROUTES.GOVERNANCE_PROPOSE}/${GOVERNANCE_PROPOSAL_TYPES.OTHER}`}
-        element={<IndexDTFWhitelistProposal />}
+        element={<IndexDTFDaoSettingsProposal />}
+      />
+      <Route
+        path={`${ROUTES.GOVERNANCE}/${ROUTES.GOVERNANCE_PROPOSE}/${GOVERNANCE_PROPOSAL_TYPES.BASKET_SETTINGS}`}
+        element={<IndexDTFBasketSettingsProposal />}
       />
       <Route
         path={`${ROUTES.GOVERNANCE_PROPOSAL}/:proposalId`}

@@ -16,6 +16,7 @@ type ToggleGroupWithCustomProps = {
   customPlaceholder: string
   warningMessage?: ReactNode
   inputProps?: React.ComponentProps<typeof Input>
+  decimalPlaces?: number
 }
 
 const CustomInput = ({
@@ -23,19 +24,20 @@ const CustomInput = ({
   customLabel,
   customPlaceholder,
   inputProps,
+  decimalPlaces = 2,
 }: Pick<
   ToggleGroupWithCustomProps,
-  'fieldName' | 'customLabel' | 'customPlaceholder' | 'inputProps'
+  'fieldName' | 'customLabel' | 'customPlaceholder' | 'inputProps' | 'decimalPlaces'
 >) => {
   const { clearErrors } = useFormContext()
   return (
-    <div className="w-48">
+    <div className="w-full max-w-48">
       <BasicInput
         type="number"
         fieldName={fieldName}
         label={customLabel}
         placeholder={customPlaceholder}
-        decimalPlaces={2}
+        decimalPlaces={decimalPlaces}
         inputProps={{
           onKeyDown: () => clearErrors(fieldName),
           ...inputProps,
@@ -58,8 +60,8 @@ const ToggleGroupSelector = ({
   return (
     <ToggleGroup
       type="single"
-      className="bg-muted-foreground/10 p-1 rounded-xl justify-start w-max"
-      value={watch(fieldName).toString()}
+      className="bg-muted-foreground/10 p-1 rounded-xl justify-start w-fit max-w-full overflow-x-auto"
+      value={watch(fieldName)?.toString() || ''}
       onValueChange={(value) => {
         clearErrors(fieldName)
         const parsedValue = parseFloat(value)
@@ -92,6 +94,7 @@ const ToggleGroupWithCustom = ({
   customPlaceholder,
   warningMessage,
   inputProps,
+  decimalPlaces,
 }: ToggleGroupWithCustomProps) => (
   <div
     className="w-full rounded-xl flex flex-col gap-3 justify-between p-4 bg-muted/70"
@@ -107,7 +110,7 @@ const ToggleGroupWithCustom = ({
         </div>
       </div>
     </div>
-    <div className="flex items-center justify-between gap-2">
+    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
       <ToggleGroupSelector
         fieldName={fieldName}
         options={options}
@@ -118,6 +121,7 @@ const ToggleGroupWithCustom = ({
         customLabel={customLabel}
         customPlaceholder={customPlaceholder}
         inputProps={inputProps}
+        decimalPlaces={decimalPlaces}
       />
     </div>
     {!!warningMessage && (
