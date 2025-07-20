@@ -86,7 +86,7 @@ const useAuctions = () => {
   return useContractWrite(tx)
 }
 
-// TODO: maybe unnecesary
+// TODO: maybe unnecessary
 const ConfirmAuction = () => {
   const { isReady, write, hash, gas, validationError, isLoading } =
     useAuctions()
