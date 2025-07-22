@@ -10,13 +10,46 @@ import { Address } from 'viem'
 import { dtfContractAliasAtom } from './atoms'
 import RawCallPreview from './raw-call-preview'
 import TokenRewardPreview from './token-reward-preview'
+import {
+  SetMandatePreview,
+  RemoveFromBasketPreview,
+  GrantRolePreview,
+  RevokeRolePreview,
+  SetFeeRecipientsPreview,
+  SetMintFeePreview,
+  SetTVLFeePreview,
+  SetAuctionLengthPreview,
+  SetDustAmountPreview,
+  SetVotingDelayPreview,
+  SetVotingPeriodPreview,
+  SetProposalThresholdPreview,
+  UpdateQuorumNumeratorPreview,
+  UpdateDelayPreview,
+} from './dtf-settings-preview'
 
 const ChangesOverviewComponentMap: Record<
   string,
-  React.ComponentType<{ decodedCalldata: DecodedCalldata }>
+  React.ComponentType<{ decodedCalldata: DecodedCalldata; targetAddress?: Address }>
 > = {
   removeRewardToken: TokenRewardPreview,
   addRewardToken: TokenRewardPreview,
+  // DTF Settings functions
+  setMandate: SetMandatePreview,
+  removeFromBasket: RemoveFromBasketPreview,
+  grantRole: GrantRolePreview,
+  revokeRole: RevokeRolePreview,
+  setFeeRecipients: SetFeeRecipientsPreview,
+  setMintFee: SetMintFeePreview,
+  setTVLFee: SetTVLFeePreview,
+  setAuctionLength: SetAuctionLengthPreview,
+  setDustAmount: SetDustAmountPreview,
+  // Governance functions
+  setVotingDelay: SetVotingDelayPreview,
+  setVotingPeriod: SetVotingPeriodPreview,
+  setProposalThreshold: SetProposalThresholdPreview,
+  updateQuorumNumerator: UpdateQuorumNumeratorPreview,
+  // Timelock functions
+  updateDelay: UpdateDelayPreview,
 }
 
 const TABS = {
@@ -92,7 +125,7 @@ const ContractProposalChanges = ({
               <h4 className="text-primary text-lg font-semibold mb-2">
                 {index + 1}/{decodedCalldatas.length}
               </h4>
-              <Component decodedCalldata={decodedCalldata} />
+              <Component decodedCalldata={decodedCalldata} targetAddress={address} />
             </div>
           )
         })}

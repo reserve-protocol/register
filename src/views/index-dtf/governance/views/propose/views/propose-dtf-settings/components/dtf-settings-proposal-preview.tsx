@@ -1,11 +1,22 @@
 import dtfIndexAbiV2 from '@/abis/dtf-index-abi-v2'
-import TokenLogo from '@/components/token-logo'
+import dtfIndexAbi from '@/abis/dtf-index-abi'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { chainIdAtom } from '@/state/atoms'
 import { DecodedCalldata } from '@/types'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import RawCallPreview from '@/views/index-dtf/governance/components/proposal-preview/raw-call-preview'
+import {
+  SetMandatePreview,
+  RemoveFromBasketPreview,
+  GrantRolePreview,
+  RevokeRolePreview,
+  SetFeeRecipientsPreview,
+  SetMintFeePreview,
+  SetTVLFeePreview,
+  SetAuctionLengthPreview,
+  SetDustAmountPreview,
+} from '@/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview'
 import { useAtomValue } from 'jotai'
 import { ArrowUpRightIcon } from 'lucide-react'
 import { useMemo } from 'react'
@@ -14,11 +25,9 @@ import {
   Abi,
   Address,
   decodeFunctionData,
-  erc20Abi,
   getAbiItem,
   Hex,
 } from 'viem'
-import { useReadContracts } from 'wagmi'
 
 const TABS = {
   SUMMARY: 'overview',
@@ -57,39 +66,67 @@ const Header = ({ address }: { address: Address }) => {
   )
 }
 
-// TODO: Create a more generic hook for all contracts
 const useDecodedCalldatas = (
   calldatas: Hex[] | undefined
 ): DecodedCalldata[] => {
   return useMemo(() => {
     if (!calldatas) return []
 
-    try {
-      return calldatas.map((calldata) => {
-        const { functionName, args } = decodeFunctionData({
-          abi: dtfIndexAbiV2,
-          data: calldata,
-        })
+    return calldatas.map((calldata) => {
+      try {
+        // Try decoding with dtfIndexAbi first
+        try {
+          const { functionName, args } = decodeFunctionData({
+            abi: dtfIndexAbi,
+            data: calldata,
+          })
 
-        const result = getAbiItem({
-          abi: dtfIndexAbiV2 as Abi,
-          name: functionName as string,
-        })
+          const result = getAbiItem({
+            abi: dtfIndexAbi as Abi,
+            name: functionName as string,
+          })
 
-        return {
-          signature: functionName,
-          parameters:
-            result && 'inputs' in result
-              ? result.inputs.map((input) => `${input.name}: ${input.type}`)
-              : [],
-          callData: calldata,
-          data: (args ?? []) as unknown as unknown[] as string[],
+          return {
+            signature: functionName,
+            parameters:
+              result && 'inputs' in result
+                ? result.inputs.map((input) => `${input.name}: ${input.type}`)
+                : [],
+            callData: calldata,
+            data: (args ?? []) as unknown as unknown[] as string[],
+          }
+        } catch {
+          // If that fails, try with dtfIndexAbiV2
+          const { functionName, args } = decodeFunctionData({
+            abi: dtfIndexAbiV2,
+            data: calldata,
+          })
+
+          const result = getAbiItem({
+            abi: dtfIndexAbiV2 as Abi,
+            name: functionName as string,
+          })
+
+          return {
+            signature: functionName,
+            parameters:
+              result && 'inputs' in result
+                ? result.inputs.map((input) => `${input.name}: ${input.type}`)
+                : [],
+            callData: calldata,
+            data: (args ?? []) as unknown as unknown[] as string[],
+          }
         }
-      })
-    } catch (error) {
-      console.error(error)
-      return []
-    }
+      } catch (error) {
+        console.error('Failed to decode calldata:', error)
+        return {
+          signature: 'unknown',
+          parameters: [],
+          callData: calldata,
+          data: [],
+        }
+      }
+    })
   }, [calldatas])
 }
 
@@ -103,88 +140,40 @@ const RawPreview = ({ data }: { data: DecodedCalldata[] }) => {
   )
 }
 
-const TokenRemovalPreview = ({
-  signature,
-  data,
-}: {
-  signature: string
-  data: string[]
-}) => {
-  const tokenAddress = data[0] ?? ''
-  const chainId = useAtomValue(chainIdAtom)
-  const { data: token } = useReadContracts({
-    contracts: [
-      {
-        abi: erc20Abi,
-        address: tokenAddress as Address,
-        chainId,
-        functionName: 'name',
-        args: [],
-      },
-      {
-        abi: erc20Abi,
-        address: tokenAddress as Address,
-        chainId,
-        functionName: 'symbol',
-        args: [],
-      },
-    ],
-    allowFailure: false,
-    query: {
-      enabled: !!tokenAddress,
-      select: (data) => ({
-        name: data[0],
-        symbol: data[1],
-        decimals: 18,
-        address: tokenAddress,
-      }),
-    },
-  })
-
-  return (
-    <div className="flex items-center gap-2">
-      <TokenLogo size="lg" chain={chainId} address={tokenAddress} />
-      <div className="flex flex-col mr-auto">
-        <h4 className={`text-xs text-destructive`}>Removed token</h4>
-        <a
-          className="text-sm text-legend flex items-center gap-1"
-          target="_blank"
-          href={getExplorerLink(tokenAddress, chainId, ExplorerDataType.TOKEN)}
-          tabIndex={0}
-          aria-label={`View ${token?.symbol} on block explorer`}
-        >
-          {token?.name ?? 'Loading...'} (${token?.symbol ?? 'Loading...'})
-        </a>
-      </div>
-    </div>
-  )
-}
 
 const UnknownPreview = ({ signature }: { signature: string }) => {
-  if (signature === 'setDustAmount') {
-    return null
-  }
-
-  return <div>Preview not available</div>
+  return <div className="text-sm text-muted-foreground">Preview not available for: {signature}</div>
 }
 
 const dtfSettingsPreviewComponents: Record<string, React.ComponentType<any>> = {
-  removeFromBasket: TokenRemovalPreview,
+  // Token management
+  removeFromBasket: RemoveFromBasketPreview,
+  setDustAmount: SetDustAmountPreview,
+  
+  // Settings updates
+  setMandate: SetMandatePreview,
+  setMintFee: SetMintFeePreview,
+  setTVLFee: SetTVLFeePreview,
+  setAuctionLength: SetAuctionLengthPreview,
+  setFeeRecipients: SetFeeRecipientsPreview,
+  
+  // Role management
+  grantRole: GrantRolePreview,
+  revokeRole: RevokeRolePreview,
 }
 
 const OverviewPreview = ({ data }: { data: DecodedCalldata[] }) => {
   return (
-    <div className="flex flex-col gap-2 p-4">
+    <div className="flex flex-col gap-3 p-4">
       {data.map((call) => {
         const Component = dtfSettingsPreviewComponents[call.signature]
         return Component ? (
           <Component
             key={call.callData}
-            signature={call.signature}
-            data={call.data}
+            decodedCalldata={call}
           />
         ) : (
-          <UnknownPreview signature={call.signature} />
+          <UnknownPreview key={call.callData} signature={call.signature} />
         )
       })}
     </div>
