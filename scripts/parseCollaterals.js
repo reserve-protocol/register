@@ -147,6 +147,7 @@ const wrappedTokenMap = {
   sUSDS: protocols.SKY,
   wOETH: protocols.ORIGIN,
   saEthUSDT: protocols.AAVEv3,
+  wsuperOETHb: protocols.ORIGIN,
 }
 
 // Default: run all collateral chains - you can comment which chain you want to run
