@@ -50,7 +50,7 @@ const fillerRegistryMapping = {
   [ChainId.Base]: getAddress('0x72DB5f49D0599C314E2f2FEDf6Fe33E1bA6C7A18'),
 }
 
-const UPGRADE_FOLIO_MESSAGE = 'DTF V4 Upgrade'
+const UPGRADE_FOLIO_MESSAGE = 'Release 4.0.0 upgrade'
 
 const queryParams = {
   staleTime: 5 * 60 * 1000,
