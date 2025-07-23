@@ -10,6 +10,7 @@ import {
   indexDTFPriceAtom,
   indexDTFRebalanceControlAtom,
   indexDTFVersionAtom,
+  isHybridDTFAtom,
   isSingletonRebalanceAtom,
   iTokenAddressAtom,
 } from '@/state/dtf/atoms'
@@ -478,6 +479,7 @@ export const basketProposalCalldatasAtom = atom<Hex[] | undefined>((get) => {
     return get(legacyBasketProposalCalldatasAtom)
   }
 
+  const isHybridDTF = get(isHybridDTFAtom)
   const isConfirmed = get(isProposalConfirmedAtom)
   const proposedBasket = get(proposedIndexBasketAtom)
   const isUnitBasket = get(isUnitBasketAtom)
@@ -542,7 +544,8 @@ export const basketProposalCalldatasAtom = atom<Hex[] | undefined>((get) => {
       targetBasket,
       _prices,
       error,
-      rebalanceControl?.weightControl
+      rebalanceControl?.weightControl,
+      isHybridDTF
     )
 
     return [

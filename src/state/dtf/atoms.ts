@@ -156,3 +156,10 @@ export const isSingletonRebalanceAtom = atom((get) => {
 
   return checkVersion('4.0.0', version)
 })
+
+// ! Exclusive case for CFB DTF
+export const isHybridDTFAtom = atom((get) => {
+  const dtf = get(indexDTFAtom)
+
+  return dtf?.id.toLowerCase() === '0x7a37a2e2c15c3e4ec5f1a934c4231a8dbcf2bed4'
+})
