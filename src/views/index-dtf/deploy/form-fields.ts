@@ -72,6 +72,7 @@ export const dtfDeploySteps: Record<DeployStepId, { fields: string[] }> = {
 
 export const DeployFormSchema = z
   .object({
+    inputType: z.enum(['share', 'unit']),
     tokenName: z
       .string()
       .min(1, 'Token name is required')
@@ -234,6 +235,13 @@ export const DeployFormSchema = z
   )
   .refine(
     (data) => {
+      if (data.inputType === 'unit') {
+        return data.tokensDistribution.every(
+          (token) =>
+            !isNaN(Number(token.percentage)) && Number(token.percentage) > 0
+        )
+      }
+
       const total = data.tokensDistribution?.reduce(
         (sum, { percentage }) => sum.plus(new Decimal(percentage)),
         new Decimal(0)
@@ -241,6 +249,13 @@ export const DeployFormSchema = z
       return total.eq(new Decimal(100))
     },
     (data) => {
+      if (data.inputType === 'unit') {
+        return {
+          message: `Invalid basket configuration`,
+          path: ['basket'],
+        }
+      }
+
       const total =
         data.tokensDistribution?.reduce(
           (sum, { percentage }) => sum.plus(new Decimal(percentage)),
@@ -389,6 +404,7 @@ export const dtfDeployDefaultValues = {
   mandate: '',
   chain: undefined,
   initialValue: 1,
+  inputType: 'share',
   tokensDistribution: [],
   governanceERC20address: undefined,
   governanceVoteLock: undefined,
