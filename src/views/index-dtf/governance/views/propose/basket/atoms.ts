@@ -17,6 +17,7 @@ import {
 import { Token } from '@/types'
 import { atom, Getter } from 'jotai'
 import { Address, encodeFunctionData, Hex, parseUnits } from 'viem'
+import { BasketInputType } from '@/views/index-dtf/deploy/atoms'
 
 export type Step =
   | 'basket'
@@ -73,6 +74,8 @@ export const priceVolatilityAtom = atom('Medium')
 export const proposedIndexBasketAtom = atom<
   Record<string, IndexAssetShares> | undefined
 >(undefined)
+
+export const basketInputTypeAtom = atom<BasketInputType>('share')
 
 // Basket form controls
 export const proposedSharesAtom = atom<Record<string, string>>({})
@@ -278,10 +281,13 @@ export const isUnitBasketValidAtom = atom((get) => {
 
 export const isProposedBasketValidAtom = atom((get) => {
   const { isValid } = get(proposedIndexBasketStateAtom)
+  const basketInputType = get(basketInputTypeAtom)
   const isUnitBasketValid = get(isUnitBasketValidAtom)
   const isUnitBasket = get(isUnitBasketAtom)
 
-  return isUnitBasket ? isUnitBasketValid : isValid
+  return isUnitBasket || basketInputType === 'unit'
+    ? isUnitBasketValid
+    : isValid
 })
 
 export const stepStateAtom = atom<Record<Step, boolean>>((get) => ({
