@@ -16,6 +16,7 @@ import {
 import BasicInput from '../../components/basic-input'
 import { Decimal } from '../../utils/decimals'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
+import { cn } from '@/lib/utils'
 
 const RemoveTokenButton = ({
   tokenIndex,
@@ -51,12 +52,12 @@ const TokenDistribution = ({ tokenIndex }: { tokenIndex: number }) => {
   return (
     <BasicInput
       type="number"
-      className="max-w-32"
+      className={cn('max-w-32', basketInputType === 'unit' && 'max-w-40')}
       fieldName={`tokensDistribution.${tokenIndex}.percentage`}
       label={basketInputType === 'unit' ? 'Units' : '%'}
       placeholder="0"
       defaultValue={0}
-      decimalPlaces={basketInputType === 'unit' ? 5 : 2}
+      decimalPlaces={basketInputType === 'unit' ? 18 : 2}
     />
   )
 }

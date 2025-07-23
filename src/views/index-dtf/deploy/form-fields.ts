@@ -104,7 +104,7 @@ export const DeployFormSchema = z
           .refine(isAddressNotStrict, { message: 'Invalid Address' }),
         percentage: z.coerce
           .number()
-          .multipleOf(0.01, 'Max precision is 0.01%')
+          // .multipleOf(0.01, 'Max precision is 0.01%')
           .positive('Token distribution must be positive'),
       })
     ),
