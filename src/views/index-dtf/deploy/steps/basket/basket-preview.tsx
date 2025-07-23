@@ -158,6 +158,9 @@ const TokenPreview = ({
 const RemainingAllocation = () => {
   const form = useFormContext()
   const tokenDistribution = form.watch(`tokensDistribution`)
+  const basketInputType = useAtomValue(basketInputTypeAtom)
+
+  if (basketInputType === 'unit') return null
 
   const remaining = new Decimal(100).minus(
     tokenDistribution.reduce(

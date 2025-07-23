@@ -72,7 +72,7 @@ export const dtfDeploySteps: Record<DeployStepId, { fields: string[] }> = {
 
 export const DeployFormSchema = z
   .object({
-    inputType: z.enum(['share', 'unit']),
+    inputType: z.string(),
     tokenName: z
       .string()
       .min(1, 'Token name is required')
@@ -251,7 +251,7 @@ export const DeployFormSchema = z
     (data) => {
       if (data.inputType === 'unit') {
         return {
-          message: `Invalid basket configuration`,
+          message: `All token units must be valid positive numbers`,
           path: ['basket'],
         }
       }
