@@ -19,6 +19,7 @@ import UnitBasket from './UnitBasket'
 import { SmallButton } from '@/components/old/button'
 import DocsLink from '@/components/utils/docs-link'
 import { useWatchReadContracts } from '@/hooks/useWatchReadContract'
+import { PROTOCOL_DOCS } from '@/utils/constants'
 
 interface Props extends BoxProps {
   onAdd?(
@@ -201,7 +202,9 @@ const PrimaryBasket = ({
         <Text variant="title">
           <Trans>Primary Basket</Trans>
         </Text>
-        <DocsLink link="https://reserve.org/protocol/rtoken-deployment-guide/#step-3-configure-rtoken-basket" />
+        <DocsLink
+          link={`${PROTOCOL_DOCS}yield_dtfs/deployment_guide/ui_walkthrough/#step-3-configure-basket`}
+        />
         {!readOnly && (
           <SmallButton
             onClick={() => onAdd({ basket: 'primary' })}
