@@ -15,8 +15,10 @@ const FeaturedPools = () => {
 
   const selectedPools = useMemo(() => {
     const handPickedPools = pools
-      .filter(({ id }) => FEATURED_POOLS.includes(id))
+      // .filter(({ id }) => FEATURED_POOLS.includes(id))
       .sort((a, b) => b.apy - a.apy)
+      .slice(0, 3)
+
     return handPickedPools.length === 3
       ? handPickedPools
       : [undefined, undefined, undefined]
