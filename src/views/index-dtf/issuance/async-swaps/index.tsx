@@ -1,12 +1,12 @@
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import useERC20Balance from '@/hooks/useERC20Balance'
 import { cn } from '@/lib/utils'
-import { isSafeMultisigAtom } from '@/state/atoms'
+import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
-import { useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { useAtom, useAtomValue } from 'jotai'
 import { ArrowLeft, Settings } from 'lucide-react'
 import { useEffect } from 'react'
+import { useCapabilities } from 'wagmi'
 import useTrackIndexDTFPage from '../../hooks/useTrackIndexDTFPage'
 import RefreshQuote from '../../overview/components/zap-mint/refresh-quote'
 import Updater from '../manual/updater'
@@ -14,7 +14,6 @@ import AsyncMint from './async-mint'
 import AsyncRedeem from './async-redeem'
 import {
   fetchingQuotesAtom,
-  indexDTFBalanceAtom,
   operationAtom,
   ordersSubmittedAtom,
   redeemAssetsAtom,
@@ -24,7 +23,7 @@ import {
   userInputAtom,
 } from './atom'
 import Collaterals, { showCollateralsAtom } from './collaterals'
-import GnosisSafeRequired from './gnosis-safe-required'
+import AtomicBatchRequired from './atomic-batch-required'
 import { GlobalProtocolKitProvider } from './providers/GlobalProtocolKitProvider'
 import Config from './settings'
 import Success from './success'
@@ -128,11 +127,12 @@ const Header = () => {
 
 const AsyncSwaps = () => {
   useTrackIndexDTFPage('mint-async-swap')
-  const isSafeMultisig = useAtomValue(isSafeMultisigAtom)
+  const chainId = useAtomValue(chainIdAtom)
   const [currentTab, setCurrentTab] = useAtom(operationAtom)
   const [showSettings, setShowSettings] = useAtom(showSettingsAtom)
   const indexDTF = useAtomValue(indexDTFAtom)
   const success = useAtomValue(successAtom)
+  const { data } = useCapabilities()
 
   const reset = () => {
     setShowSettings(false)
@@ -150,10 +150,10 @@ const AsyncSwaps = () => {
 
   if (!indexDTF) return null
 
-  if (!isSafeMultisig) {
+  if (!data?.[chainId]?.atomicBatch?.supported) {
     return (
       <div className="container flex flex-col items-center sm:justify-start md:justify-center gap-2 lg:border-2 lg:border-secondary lg:bg-secondary/30 lg:min-h-[calc(100vh-100px)] dark:bg-card rounded-4xl w-full">
-        <GnosisSafeRequired />
+        <AtomicBatchRequired />
       </div>
     )
   }

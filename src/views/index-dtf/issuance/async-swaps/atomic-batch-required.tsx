@@ -5,7 +5,7 @@ import { ExternalLink, OctagonAlert } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useAccount, useDisconnect } from 'wagmi'
 
-const GnosisSafeRequired = () => {
+const AtomicBatchRequired = () => {
   const { openConnectModal } = useConnectModal()
   const { disconnect } = useDisconnect()
   const { isConnected } = useAccount()
@@ -46,10 +46,10 @@ const GnosisSafeRequired = () => {
           </div>
           <div className="p-1 px-3 border border-muted-foreground/20 rounded-full flex items-center gap-1 text-sm font-light">
             <OctagonAlert size={16} strokeWidth={1.5} />
-            <div className="text-sm">Gnosis Safe Required</div>
+            <div className="text-sm">Atomic Batch Required</div>
             <Help
               size={16}
-              content="Gnosis Safe Required"
+              content="This feature uses atomic batch transactions. Please connect a wallet that supports atomic batching."
               className="text-muted-foreground/80"
             />
           </div>
@@ -75,7 +75,7 @@ const GnosisSafeRequired = () => {
           {isConnected ? 'Switch Wallets' : 'Connect Wallet'}
           <span className="pl-1 opacity-50 font-light">
             {' '}
-            - Gnosis Safe Required
+            - Atomic Batch Required
           </span>
         </Button>
         <a
@@ -92,4 +92,4 @@ const GnosisSafeRequired = () => {
   )
 }
 
-export default GnosisSafeRequired
+export default AtomicBatchRequired
