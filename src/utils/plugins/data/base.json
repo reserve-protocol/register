@@ -242,5 +242,21 @@
     "decimals": 18,
     "underlyingAddress": "0x2C4909355b0C036840819484c3A882A95659aBf3",
     "underlyingToken": "vAMM-WETH/DEGEN"
+  },
+  {
+    "address":"0xC6b12e2cED3520c228704d256da1CBce04365605",
+    "rewardTokens":[],
+    "protocol":"ORIGIN",
+    "erc20":"0x7FcD174E80f264448ebeE8c88a7C4476AAF58Ea6",
+    "chainlinkFeed":"0x71041dddad3595F9CEd3DcCFBe3D1F4b0a16Bb70",
+    "delayUntilDefault":"86400",
+    "maxTradeVolume":"1000000",
+    "oracleTimeout":1,
+    "targetName":"ETH",
+    "version":"4.0.0",
+    "symbol":"wsuperOETHb",
+    "decimals":18,
+    "underlyingAddress":"0xDBFeFD2e8460a6Ee4955A68582F85708BAEA60A3",
+    "underlyingToken":"superOETHb"
   }
 ]

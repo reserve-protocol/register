@@ -3,7 +3,14 @@ import { CellContext } from '@tanstack/react-table'
 import ERC20 from 'abis/ERC20'
 import humanizeDuration from 'humanize-duration'
 import { BigNumberMap } from 'types'
-import { Address, formatEther, getAddress, parseEther, parseUnits } from 'viem'
+import {
+  Address,
+  formatEther,
+  formatUnits,
+  getAddress,
+  parseEther,
+  parseUnits,
+} from 'viem'
 import { CHAIN_TO_NETWORK, RESERVE_STORAGE, ROUTES } from './constants'
 import dayjs from 'dayjs'
 
@@ -399,4 +406,52 @@ export const uuidv4 = () => {
       v = c == 'x' ? r : (r & 0x3) | 0x8
     return v.toString(16)
   })
+}
+
+// Check if the current version is greater than or equal to the required version
+export const checkVersion = (
+  requiredVersion: string,
+  currentVersion: string
+): boolean => {
+  const requiredVersionParts = requiredVersion.split('.').map(Number)
+  const currentVersionParts = currentVersion.split('.').map(Number)
+
+  for (
+    let i = 0;
+    i < Math.max(requiredVersionParts.length, currentVersionParts.length);
+    i++
+  ) {
+    const required = requiredVersionParts[i] || 0
+    const current = currentVersionParts[i] || 0
+
+    if (required > current) {
+      return false
+    }
+    if (current > required) {
+      return true
+    }
+  }
+
+  return true
+}
+
+/**
+ * Calculate the average price from a price range using geometric mean
+ * @param priceRange - Object with low and high BigInt nanoUSD prices in D27 format
+ * @param tokenDecimals - Number of decimals for the token
+ * @returns Price per whole token in decimal format
+ */
+export function calculatePriceFromRange(
+  priceRange: { low: bigint; high: bigint },
+  tokenDecimals: number
+): number {
+  // Convert nanoUSD D27 BigInt prices to decimal numbers with proper precision
+  const lowPrice = Number(formatUnits(priceRange.low, 36))
+  const highPrice = Number(formatUnits(priceRange.high, 36))
+
+  // Calculate average price as geometric mean (already in USD/tok format)
+  const avgPricePerToken = Math.sqrt(lowPrice * highPrice)
+
+  // Convert to whole token price (USD/wholeTok)
+  return avgPricePerToken * Math.pow(10, tokenDecimals)
 }

@@ -42,7 +42,9 @@ const ConfirmUnstakeButton = () => {
     unstakeTransactionAtom
   )
   const delay = useAtomValue(unstakeDelayAtom)
-  const { write, isReady, isLoading, hash, error } = useContractWrite(tx)
+  const { write, isReady, isLoading, hash, error, validationError } =
+    useContractWrite(tx)
+
   const { status } = useWatchTransaction({
     hash,
     label: 'Unstake',
@@ -50,6 +52,13 @@ const ConfirmUnstakeButton = () => {
 
   const errorMsg = useMemo(() => {
     let errorText = null
+
+    if (validationError) {
+      errorText =
+        (validationError.cause as any)?.shortMessage ||
+        validationError.message ||
+        'Simulation failed'
+    }
 
     if (error?.message.includes('User rejected the request')) {
       errorText = 'Transaction rejected'
@@ -60,7 +69,7 @@ const ConfirmUnstakeButton = () => {
     }
 
     return errorText
-  }, [error, status])
+  }, [error, status, validationError])
 
   if (!errorMsg && (isLoading || hash)) {
     return (

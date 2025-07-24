@@ -1,4 +1,6 @@
 import dtfAdminAbi from '@/abis/dtf-admin-abi'
+import dtfIndexAbiV2 from '@/abis/dtf-index-abi-v2'
+import dtfIndexAbiV4 from '@/abis/dtf-index-abi-v4'
 import dtfIndexGovernance from '@/abis/dtf-index-governance'
 import dtfIndexStakingVault from '@/abis/dtf-index-staking-vault'
 import Timelock from '@/abis/Timelock'
@@ -9,15 +11,20 @@ import {
   spellAbi as governanceSpell_31_03_2025Abi,
   spellAddress as governanceSpell_31_03_2025Address,
 } from '../../views/propose/upgrade-banners/propose-governance-spell-31-03-2025'
-import dtfIndexAbiV2 from '@/abis/dtf-index-abi-v2'
+import {
+  spellAbi as v4SpellAbi,
+  spellAddress as v4SpellAddress,
+} from '../../views/propose/upgrade-banners/propose-v4-upgrade'
 
 export const dtfAbiMapppingAtom = atom((get) => {
   const dtf = get(indexDTFAtom)
 
+  const dtfAbi = [...dtfIndexAbiV4, ...dtfIndexAbiV2]
+
   if (!dtf) return undefined
 
   const abiMapping: Record<string, Abi> = {
-    [dtf.id.toLowerCase()]: dtfIndexAbiV2,
+    [dtf.id.toLowerCase()]: dtfAbi,
     [dtf.proxyAdmin.toLowerCase()]: dtfAdminAbi,
   }
 
@@ -45,15 +52,22 @@ export const dtfAbiMapppingAtom = atom((get) => {
       governanceSpell_31_03_2025Abi
   }
 
+  if (v4SpellAddress[dtf.chainId]) {
+    abiMapping[v4SpellAddress[dtf.chainId].toLowerCase()] = v4SpellAbi
+  }
+
   return abiMapping
 })
 
+export const explorerContractAliasAtom = atom<Record<string, string>>({})
 export const dtfContractAliasAtom = atom((get) => {
   const dtf = get(indexDTFAtom)
+  const explorerContractAlias = get(explorerContractAliasAtom)
 
   if (!dtf) return undefined
 
   const aliasMapping: Record<string, string> = {
+    ...explorerContractAlias,
     [dtf.id.toLowerCase()]: 'Folio',
     [dtf.proxyAdmin.toLowerCase()]: 'ProxyAdmin',
   }
@@ -65,9 +79,9 @@ export const dtfContractAliasAtom = atom((get) => {
   }
 
   if (dtf.tradingGovernance) {
-    aliasMapping[dtf.tradingGovernance.id.toLowerCase()] = 'Trading Governance'
+    aliasMapping[dtf.tradingGovernance.id.toLowerCase()] = 'Basket Governance'
     aliasMapping[dtf.tradingGovernance.timelock.id.toLowerCase()] =
-      'Trading Governance Timelock'
+      'Basket Governance Timelock'
   }
 
   if (dtf.stToken) {
@@ -83,6 +97,10 @@ export const dtfContractAliasAtom = atom((get) => {
   if (governanceSpell_31_03_2025Address[dtf.chainId]) {
     aliasMapping[governanceSpell_31_03_2025Address[dtf.chainId].toLowerCase()] =
       'GovernanceSpell_31_03_2025'
+  }
+
+  if (v4SpellAddress[dtf.chainId]) {
+    aliasMapping[v4SpellAddress[dtf.chainId].toLowerCase()] = 'V4 Upgrade Spell'
   }
 
   return aliasMapping

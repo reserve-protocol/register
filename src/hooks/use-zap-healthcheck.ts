@@ -11,7 +11,7 @@ const useZapHealthcheck = (chainId: AvailableChain) => {
   const { data } = useQuery({
     queryKey: ['zapper-healthcheck', chainId],
     queryFn: async (): Promise<ZapperStatus[]> => {
-      const response = await fetch(`${RESERVE_API}/zapper/healthcheck`)
+      const response = await fetch(`${RESERVE_API}zapper/healthcheck`)
 
       if (!response.ok) {
         throw new Error(`Error: ${response.status}`)

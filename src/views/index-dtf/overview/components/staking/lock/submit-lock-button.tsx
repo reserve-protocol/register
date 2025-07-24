@@ -1,13 +1,16 @@
 import dtfIndexStakingVault from '@/abis/dtf-index-staking-vault'
 import TransactionButton from '@/components/old/button/TransactionButton'
-import useContractWrite from '@/hooks/useContractWrite'
 import { walletAtom } from '@/state/atoms'
 import { portfolioSidebarOpenAtom } from '@/views/portfolio/atoms'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
 import { useEffect, useState } from 'react'
 import { Address, erc20Abi, getAddress, isAddress, parseUnits } from 'viem'
-import { useReadContract, useWaitForTransactionReceipt } from 'wagmi'
+import {
+  useReadContract,
+  useWaitForTransactionReceipt,
+  useWriteContract,
+} from 'wagmi'
 import {
   currentDelegateAtom,
   delegateAtom,
@@ -26,15 +29,19 @@ export const DelegateButton = () => {
   const isValidDelegate = isAddress(delegate, { strict: false })
   const setCurrentDelegate = useSetAtom(currentDelegateAtom)
 
-  const { isReady, gas, hash, validationError, error, isLoading, write } =
-    useContractWrite({
+  const { writeContract, data: hash, isPending, error } = useWriteContract()
+
+  const write = () => {
+    if (!account || !isValidDelegate || !stToken?.id) return
+
+    writeContract({
       abi: dtfIndexStakingVault,
       functionName: 'delegate',
       address: stToken?.id,
-      args: [isValidDelegate ? getAddress(delegate) : account!],
+      args: [isValidDelegate ? getAddress(delegate) : account],
       chainId,
-      query: { enabled: !!account && isValidDelegate },
     })
+  }
 
   const { data: receipt, error: txError } = useWaitForTransactionReceipt({
     hash,
@@ -51,14 +58,13 @@ export const DelegateButton = () => {
     <div>
       <TransactionButton
         chain={chainId}
-        disabled={!account || !isValidDelegate || !isReady}
-        gas={gas}
-        loading={isLoading || !!hash || (hash && !receipt)}
+        disabled={!account || !isValidDelegate}
+        loading={isPending || !!hash || (hash && !receipt)}
         loadingText={!!hash ? 'Confirming tx...' : 'Pending, sign in wallet'}
         onClick={write}
         text={`Delegate ${stToken?.underlying.symbol}`}
         fullWidth
-        error={validationError || error || txError}
+        error={error || txError}
       />
     </div>
   )
@@ -97,27 +103,29 @@ const SubmitLockButton = () => {
   const hasAllowance = (allowance || 0n) >= amountToLock
 
   const {
-    write: approve,
-    isReady: approvalReady,
-    gas: approvalGas,
-    isLoading: approving,
-    hash: approvalHash,
+    writeContract: writeApprove,
+    data: approvalHash,
+    isPending: approving,
     error: approvalError,
-    validationError: approvalValidationError,
-  } = useContractWrite({
-    abi: erc20Abi,
-    address: stToken?.underlying.address,
-    functionName: 'approve',
-    args: [stToken?.id, amountToLock],
-    chainId,
-    query: {
-      enabled:
-        !hasAllowance &&
-        !!balance &&
-        amountToLock <= balance &&
-        isValidDelegate,
-    },
-  })
+  } = useWriteContract()
+
+  const approve = () => {
+    if (
+      !stToken?.underlying.address ||
+      !stToken?.id ||
+      hasAllowance ||
+      !balance
+    )
+      return
+
+    writeApprove({
+      abi: erc20Abi,
+      address: stToken?.underlying.address,
+      functionName: 'approve',
+      args: [stToken?.id, amountToLock],
+      chainId,
+    })
+  }
 
   const { data: approvalReceipt, error: approvalTxError } =
     useWaitForTransactionReceipt({
@@ -127,8 +135,17 @@ const SubmitLockButton = () => {
 
   const readyToSubmit = hasAllowance || approvalReceipt?.status === 'success'
 
-  const { isReady, gas, hash, validationError, error, isLoading, write } =
-    useContractWrite({
+  const {
+    writeContract,
+    data: hash,
+    isPending: isLoading,
+    error,
+  } = useWriteContract()
+
+  const write = () => {
+    if (!account || !readyToSubmit || !isValidDelegate || !stToken?.id) return
+
+    writeContract({
       abi: dtfIndexStakingVault,
       functionName: isSelfDelegate ? 'depositAndDelegate' : 'deposit',
       address: stToken?.id,
@@ -136,8 +153,8 @@ const SubmitLockButton = () => {
         ? [amountToLock]
         : [amountToLock, account as Address],
       chainId,
-      query: { enabled: !!account && readyToSubmit && isValidDelegate },
     })
+  }
 
   const { data: receipt, error: txError } = useWaitForTransactionReceipt({
     hash,
@@ -166,10 +183,8 @@ const SubmitLockButton = () => {
           !isValidDelegate ||
           !checkbox ||
           receipt?.status === 'success' ||
-          amountToLock === 0n ||
-          (readyToSubmit ? !isReady : !approvalReady)
+          amountToLock === 0n
         }
-        gas={readyToSubmit ? gas : approvalGas}
         loading={
           isProcessing ||
           (!receipt &&
@@ -198,11 +213,8 @@ const SubmitLockButton = () => {
         fullWidth
         error={
           readyToSubmit
-            ? validationError || error || txError
-            : approvalError ||
-              approvalValidationError ||
-              approvalTxError ||
-              allowanceError
+            ? error || txError
+            : approvalError || approvalTxError || allowanceError
         }
       />
     </div>

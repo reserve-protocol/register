@@ -46,7 +46,10 @@ const useAllDTFs = () => {
         keywords: [dtf.address, dtf.symbol, dtf.name],
       })),
       yield: yieldDTFs.map((dtf) => ({
-        symbol: dtf.symbol,
+        symbol:
+          dtf.symbol.toLowerCase() === 'hyusd'
+            ? `${dtf.symbol} (${CHAIN_TAGS[dtf.chain]})`
+            : dtf.symbol,
         name: dtf.name,
         chain: dtf.chain,
         address: dtf.id,
@@ -120,7 +123,6 @@ const CommandMenu = () => {
                     onClick={() => setOpen(false)}
                   >
                     <CommandItem
-                      key={dtf.address}
                       keywords={dtf.keywords}
                       value={`${dtf.name} ${dtf.symbol}`}
                       className="gap-3 cursor-pointer"

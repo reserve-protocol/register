@@ -103,7 +103,7 @@ const BasicInputWithAdditional = ({
         defaultValue={defaultValue}
       />
 
-      {items.length >= 1 &&
+      {items?.length >= 1 &&
         items.slice(1).map((item, index) => (
           <div className="flex flex-col gap-2" key={`${index + 1}${item}`}>
             <InputWithAdditional

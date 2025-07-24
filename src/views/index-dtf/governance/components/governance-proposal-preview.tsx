@@ -4,7 +4,7 @@ import { Address, Hex } from 'viem'
 import { dtfContractAliasAtom } from './proposal-preview/atoms'
 import ContractProposalChanges from './proposal-preview/contract-proposal-changes'
 import FolioChangePreview from './proposal-preview/folio-change-preview'
-import useDecodedCalldatas from './proposal-preview/use-decoded-call-datas'
+import useDecodedCalldatas from '../../../../hooks/use-decoded-call-datas'
 import UnknownContractPreview from './proposal-preview/unknown-contract-preview'
 
 /**
@@ -16,6 +16,7 @@ import UnknownContractPreview from './proposal-preview/unknown-contract-preview'
  * 2. Known contract interactions (displayed with ContractProposalChanges)
  * 3. Unknown contract interactions (displayed with UnknownContractPreview)
  *
+ * @param timestamp - the timestamp when the proposal was created, undefined if is proposal preview
  * The component uses decoded calldata to present a human-readable representation of the
  * on-chain actions that would be executed if the proposal passes.
  */
@@ -23,42 +24,45 @@ import UnknownContractPreview from './proposal-preview/unknown-contract-preview'
 const GovernanceProposalPreview = ({
   targets,
   calldatas,
+  timestamp,
 }: {
   targets: Address[] | undefined
   calldatas: Hex[] | undefined
+  timestamp?: number
 }) => {
   const alias = useAtomValue(dtfContractAliasAtom)
-  const [dataByContract, unknownContracts] = useDecodedCalldatas(
+  const { dataByContract, unknownContracts } = useDecodedCalldatas(
     targets,
     calldatas
   )
 
-  if (!dataByContract) {
+  if (!dataByContract.length && !unknownContracts.length) {
     return <Skeleton className="h-80" />
   }
 
   return (
     <>
-      {Object.entries(dataByContract).map(([contract, decodedCalldatas]) =>
+      {dataByContract.map(([contract, decodedCalldatas], index) =>
         alias?.[contract] === 'Folio' ? (
           <FolioChangePreview
-            key={`folio-${contract}`}
+            key={`folio-${contract}-${index}`}
             decodedCalldata={decodedCalldatas}
             address={contract as Address}
+            timestamp={timestamp}
           />
         ) : (
           <ContractProposalChanges
-            key={contract}
+            key={`contract-${contract}-${index}`}
             decodedCalldatas={decodedCalldatas}
             address={contract as Address}
           />
         )
       )}
-      {Object.keys(unknownContracts ?? {}).map((contract) => (
+      {unknownContracts.map(([contract, calls], index) => (
         <UnknownContractPreview
-          key={contract}
+          key={`unknown-${contract}-${index}`}
           contract={contract}
-          calls={(unknownContracts?.[contract] ?? []) as Hex[]}
+          calls={calls}
         />
       ))}
     </>
