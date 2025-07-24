@@ -337,11 +337,15 @@ const Transactions = () => {
       <div className="flex flex-col gap-1">
         <MainTransaction />
         <div className="flex flex-col gap-1 bg-background rounded-3xl px-4 py-2">
-          {cowswapOrders.map(({ orderId }) => (
-            <CowSwapOrder key={orderId} orderId={orderId} />
+          {cowswapOrders.map(({ orderId }, index) => (
+            <CowSwapOrder
+              key={`${orderId}-${index}`}
+              orderId={orderId}
+              disableFetch
+            />
           ))}
-          {universalSuccessOrders.map((order) => (
-            <UniversalOrder key={order.id} order={order} />
+          {universalSuccessOrders.map((order, index) => (
+            <UniversalOrder key={`${order.id}-${index}`} order={order} />
           ))}
         </div>
       </div>

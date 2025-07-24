@@ -58,8 +58,14 @@ const OrderStatus = ({
   )
 }
 
-const CowSwapOrder = ({ orderId }: { orderId: string }) => {
-  const { data } = useOrderStatus({ orderId })
+const CowSwapOrder = ({
+  orderId,
+  disableFetch,
+}: {
+  orderId: string
+  disableFetch?: boolean
+}) => {
+  const { data } = useOrderStatus({ orderId, disabled: disableFetch })
   const operation = useAtomValue(operationAtom)
   const indexDTFBasket = useAtomValue(indexDTFBasketAtom)
 

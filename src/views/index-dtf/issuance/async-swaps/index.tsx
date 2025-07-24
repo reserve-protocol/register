@@ -132,14 +132,7 @@ const AsyncSwaps = () => {
   const [currentTab, setCurrentTab] = useAtom(operationAtom)
   const [showSettings, setShowSettings] = useAtom(showSettingsAtom)
   const indexDTF = useAtomValue(indexDTFAtom)
-  const setIndexDTFBalance = useSetAtom(indexDTFBalanceAtom)
   const success = useAtomValue(successAtom)
-
-  const { data: balance } = useERC20Balance(indexDTF?.id)
-
-  useEffect(() => {
-    setIndexDTFBalance(balance || 0n)
-  }, [balance, setIndexDTFBalance])
 
   const reset = () => {
     setShowSettings(false)

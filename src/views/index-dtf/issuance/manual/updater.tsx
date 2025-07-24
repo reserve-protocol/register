@@ -11,6 +11,8 @@ import {
   assetDistributionAtom,
   balanceMapAtom,
 } from './atoms'
+import useERC20Balance from '@/hooks/useERC20Balance'
+import { indexDTFBalanceAtom } from '../async-swaps/atom'
 
 const balanceCallsAtom = atom((get) => {
   const wallet = get(walletAtom)
@@ -57,6 +59,9 @@ const Updater = () => {
   const setAssetDistribution = useSetAtom(assetDistributionAtom)
   const setAllowances = useSetAtom(allowanceMapAtom)
   const chainId = useAtomValue(chainIdAtom)
+  const setIndexDTFBalance = useSetAtom(indexDTFBalanceAtom)
+
+  const { data: balance } = useERC20Balance(indexDTF?.id)
 
   const { data } = useWatchReadContracts({
     contracts: calls,
@@ -109,6 +114,10 @@ const Updater = () => {
       },
     },
   })
+
+  useEffect(() => {
+    setIndexDTFBalance(balance || 0n)
+  }, [balance, setIndexDTFBalance])
 
   useEffect(() => {
     if (data) {

@@ -6,15 +6,24 @@ import { useGlobalProtocolKit } from '../providers/GlobalProtocolKitProvider'
 
 interface UseOrderStatusParams {
   orderId: string
+  disabled?: boolean
 }
 
-export function useOrderStatus({ orderId }: UseOrderStatusParams) {
+const isOrderCompleted = (status: OrderStatus) => {
+  return [
+    OrderStatus.FULFILLED,
+    OrderStatus.EXPIRED,
+    OrderStatus.CANCELLED,
+  ].includes(status)
+}
+
+export function useOrderStatus({ orderId, disabled }: UseOrderStatusParams) {
   const { orderBookApi } = useGlobalProtocolKit()
   const setCowswapOrders = useSetAtom(cowswapOrdersAtom)
 
   return useQuery({
     queryKey: ['order/status', orderId],
-    enabled: !!orderId && !!orderBookApi,
+    enabled: !!orderId && !!orderBookApi && !disabled,
     queryFn: async () => {
       if (!orderBookApi) {
         throw new Error('OrderBookApi not initialized')
@@ -29,16 +38,8 @@ export function useOrderStatus({ orderId }: UseOrderStatusParams) {
       return order
     },
     refetchInterval(query) {
-      if (query.state.data) {
-        if (
-          [
-            OrderStatus.FULFILLED,
-            OrderStatus.EXPIRED,
-            OrderStatus.CANCELLED,
-          ].includes(query.state.data.status)
-        ) {
-          return false
-        }
+      if (query.state.data && isOrderCompleted(query.state.data.status)) {
+        return false
       }
 
       return 3_000
