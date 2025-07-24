@@ -1,12 +1,11 @@
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import useAtomicBatch from '@/hooks/use-atomic-batch'
 import { cn } from '@/lib/utils'
-import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { useAtom, useAtomValue } from 'jotai'
 import { ArrowLeft, Settings } from 'lucide-react'
 import { useEffect } from 'react'
-import { useCapabilities } from 'wagmi'
 import useTrackIndexDTFPage from '../../hooks/useTrackIndexDTFPage'
 import RefreshQuote from '../../overview/components/zap-mint/refresh-quote'
 import Updater from '../manual/updater'
@@ -22,8 +21,8 @@ import {
   successAtom,
   userInputAtom,
 } from './atom'
-import Collaterals, { showCollateralsAtom } from './collaterals'
 import AtomicBatchRequired from './atomic-batch-required'
+import Collaterals, { showCollateralsAtom } from './collaterals'
 import { GlobalProtocolKitProvider } from './providers/GlobalProtocolKitProvider'
 import Config from './settings'
 import Success from './success'
@@ -127,12 +126,11 @@ const Header = () => {
 
 const AsyncSwaps = () => {
   useTrackIndexDTFPage('mint-async-swap')
-  const chainId = useAtomValue(chainIdAtom)
   const [currentTab, setCurrentTab] = useAtom(operationAtom)
   const [showSettings, setShowSettings] = useAtom(showSettingsAtom)
   const indexDTF = useAtomValue(indexDTFAtom)
   const success = useAtomValue(successAtom)
-  const { data } = useCapabilities()
+  const { atomicSupported } = useAtomicBatch()
 
   const reset = () => {
     setShowSettings(false)
@@ -150,7 +148,7 @@ const AsyncSwaps = () => {
 
   if (!indexDTF) return null
 
-  if (!data?.[chainId]?.atomicBatch?.supported) {
+  if (!atomicSupported) {
     return (
       <div className="container flex flex-col items-center sm:justify-start md:justify-center gap-2 lg:border-2 lg:border-secondary lg:bg-secondary/30 lg:min-h-[calc(100vh-100px)] dark:bg-card rounded-4xl w-full">
         <AtomicBatchRequired />
