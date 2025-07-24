@@ -1,7 +1,14 @@
 import { RateLimiter } from 'limiter'
-import { Quote, TokenName, UniversalRelayerSDK } from 'universal-sdk'
-import { TokenAddresses } from 'universal-sdk/dist/config'
+import {
+  OrderRequest,
+  OrdersParams,
+  Quote,
+  QuoteRequest,
+  TokenName,
+} from 'universal-sdk'
+import { BlockchainConfigs, TokenAddresses } from 'universal-sdk/dist/config'
 import { Address } from 'viem'
+import { universal } from './universal-api'
 
 export type CustomUniversalQuote = {
   userAddress: Address
@@ -31,7 +38,7 @@ export const getUniversalTokenName = (token: Address) => {
 export const getUniversalTokenAddress = (token: TokenName) => {
   // @ts-expect-error - USDC is not in the universalTokenMap but we need it for the universal SDK
   if (token === 'USDC') {
-    return '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913'
+    return BlockchainConfigs.BASE.usdcAddress
   }
 
   return Object.keys(universalTokenMap).find(
@@ -44,22 +51,19 @@ export const createUniversalSdkWrapper = () => {
     tokensPerInterval: 1,
     interval: 750,
   })
-  const sdk = new UniversalRelayerSDK()
 
   return {
-    getQuote: async (quote: Parameters<typeof sdk.getQuote>[0]) => {
+    getQuote: async (quote: QuoteRequest) => {
       await limiter.removeTokens(1)
-
-      return sdk.getQuote(quote)
+      return await universal.getQuote(quote)
     },
-    getOrders: async (orders: Parameters<typeof sdk.getOrders>[0]) => {
+    getOrders: async (orders: OrdersParams) => {
       await limiter.removeTokens(1)
-      return sdk.getOrders(orders)
+      return await universal.getOrders(orders)
     },
-    submitOrder: async (order: Parameters<typeof sdk.submitOrder>[0]) => {
+    submitOrder: async (order: OrderRequest) => {
       await limiter.removeTokens(1)
-
-      return sdk.submitOrder(order)
+      return await universal.submitOrder(order)
     },
   }
 }
