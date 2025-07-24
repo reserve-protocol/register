@@ -1,3 +1,4 @@
+import { PROTOCOL_DOCS } from '@/utils/constants'
 import { Trans, t } from '@lingui/macro'
 import AsteriskIcon from 'components/icons/AsteriskIcon'
 import RBrand from 'components/icons/RBrand'
@@ -55,7 +56,7 @@ const Risks = () => {
             Accordingly, the protocol’s contracts undergo{' '}
             <Link
               target="_blank"
-              href="https://reserve.org/protocol/security/#smart-contract-security-audits"
+              href={`${PROTOCOL_DOCS}yield_dtfs/security#smart-contract-security-audits`}
             >
               regular and rigorous security audits.
             </Link>
@@ -67,10 +68,7 @@ const Risks = () => {
         description: (
           <Text as="p">
             There are a{' '}
-            <Link
-              target="_blank"
-              href="https://reserve.org/protocol/security/#collateral-asset-risks"
-            >
+            <Link target="_blank" href={`${PROTOCOL_DOCS}risks`}>
               handful of risks
             </Link>{' '}
             associated with any given RToken’s collateral assets, including
@@ -89,7 +87,7 @@ const Risks = () => {
             staking their RSR on the RToken, the possibility of “governance
             attacks” exists. While{' '}
             <Link
-              href="https://reserve.org/protocol/security/#reserve-protocol-risks"
+              href={`${PROTOCOL_DOCS}risks#governance-risks`}
               target="_blank"
             >
               undesirable governance outcomes
@@ -126,7 +124,7 @@ const Risks = () => {
         <Text ml="2" variant="legend">
           This list is not intended to be conclusive.{' '}
           <Link
-            href="https://reserve.org/protocol/security/"
+            href={`${PROTOCOL_DOCS}risks`}
             target="_blank"
             sx={{ textDecoration: 'underline' }}
           >

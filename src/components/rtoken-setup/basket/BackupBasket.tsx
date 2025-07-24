@@ -6,6 +6,7 @@ import { useCallback } from 'react'
 import { Box, BoxProps, Flex, Text } from 'theme-ui'
 import { backupCollateralAtom, basketAtom } from '../atoms'
 import EmergencyCollateral from './EmergencyCollateral'
+import { PROTOCOL_DOCS } from '@/utils/constants'
 
 interface Props extends BoxProps {
   onAdd?(
@@ -73,7 +74,9 @@ const BackupBasket = ({
     <Box {...props}>
       <Flex variant="layout.verticalAlign">
         <Text variant="title">Emergency Collateral</Text>
-        <DocsLink link="https://reserve.org/protocol/rtoken-deployment-guide/#step-4-configure-backup-basket" />
+        <DocsLink
+          link={`${PROTOCOL_DOCS}yield_dtfs/deployment_guide/ui_walkthrough/#step-4-configure-backup-basket`}
+        />
       </Flex>
       {targetUnits.map((targetUnit) =>
         readOnly && !backupBasket[targetUnit]?.collaterals.length ? (

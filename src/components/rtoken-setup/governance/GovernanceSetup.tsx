@@ -16,6 +16,7 @@ import { addressPattern } from 'utils'
 import GovernanceParameters from './GovernanceParameters'
 import DocsLink from '@/components/utils/docs-link'
 import RolesSetup from './RoleSetup'
+import { PROTOCOL_DOCS } from '@/utils/constants'
 
 interface Props extends BoxProps {
   disabled?: boolean
@@ -32,7 +33,9 @@ const GovernanceSetup = ({ disabled = false, ...props }: Props) => {
         <Text variant="title">
           <Trans>Governance</Trans>
         </Text>
-        <DocsLink link="https://reserve.org/protocol/reserve_rights_rsr/#reserve-rights-governance" />
+        <DocsLink
+          link={`${PROTOCOL_DOCS}yield_dtfs/deployment_guide/ui_walkthrough/#step-5-configure-governance`}
+        />
       </Box>
       <Divider my={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />
       <Box mb={5}>
@@ -60,7 +63,9 @@ const GovernanceSetup = ({ disabled = false, ...props }: Props) => {
         <Text variant="title">
           <Trans>Roles</Trans>
         </Text>
-        <DocsLink link="https://reserve.org/protocol/system_states_roles/" />
+        <DocsLink
+          link={`${PROTOCOL_DOCS}yield_dtfs/smart_contracts/#governance-roles`}
+        />
       </Flex>
       {!defaultGovernance ? (
         <FormField
@@ -111,7 +116,9 @@ const GovernanceSetup = ({ disabled = false, ...props }: Props) => {
         <Text variant="title">
           <Trans>Initial RToken state after deployment</Trans>
         </Text>
-        <DocsLink link="https://reserve.org/protocol/reserve_rights_rsr/#reserve-governor-alexios" />
+        <DocsLink
+          link={`${PROTOCOL_DOCS}yield_dtfs/deployment_guide/ui_walkthrough/#step-6-configure-initial-state`}
+        />
       </Flex>
       <Field label={t`Pause status`}>
         <Select {...register('unpause')}>
