@@ -161,5 +161,8 @@ export const isSingletonRebalanceAtom = atom((get) => {
 export const isHybridDTFAtom = atom((get) => {
   const dtf = get(indexDTFAtom)
 
-  return dtf?.id.toLowerCase() === '0x7a37a2e2c15c3e4ec5f1a934c4231a8dbcf2bed4'
+  return (
+    dtf?.id.toLowerCase() === '0x7a37a2e2c15c3e4ec5f1a934c4231a8dbcf2bed4' ||
+    dtf?.id.toLowerCase() === '0xcbce079c31f7f0ed9c00b882f57961d2a82ffd15'
+  )
 })
