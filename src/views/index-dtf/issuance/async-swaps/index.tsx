@@ -159,7 +159,7 @@ const AsyncSwaps = () => {
 
   if (!isSafeMultisig) {
     return (
-      <div className="container flex flex-col items-center sm:justify-start md:justify-center gap-2 lg:border-2 lg:border-secondary lg:bg-secondary/30 lg:h-[calc(100vh-100px)] dark:bg-card rounded-4xl w-full">
+      <div className="container flex flex-col items-center sm:justify-start md:justify-center gap-2 lg:border-2 lg:border-secondary lg:bg-secondary/30 lg:min-h-[calc(100vh-100px)] dark:bg-card rounded-4xl w-full">
         <GnosisSafeRequired />
       </div>
     )
@@ -167,7 +167,7 @@ const AsyncSwaps = () => {
 
   if (success) {
     return (
-      <div className="container flex items-center sm:justify-start md:justify-center gap-2 lg:border-2 lg:border-secondary lg:bg-secondary/30 lg:h-[calc(100vh-100px)] dark:bg-card rounded-4xl w-full">
+      <div className="container flex items-center sm:justify-start md:justify-center gap-2 lg:border-2 lg:border-secondary lg:bg-secondary/30 lg:min-h-[calc(100vh-100px)] dark:bg-card rounded-4xl w-full">
         <div className="flex flex-col w-fit rounded-4xl p-1">
           <div className="rounded-4xl border-2 border-secondary lg:border-none sm:min-w-[420px] p-0 m-auto">
             <Success />
@@ -178,7 +178,7 @@ const AsyncSwaps = () => {
   }
 
   return (
-    <div className="container flex items-center sm:justify-start md:justify-center gap-2 lg:border-2 lg:border-secondary lg:bg-secondary/30 lg:h-[calc(100vh-100px)] dark:bg-card rounded-4xl w-full">
+    <div className="container flex items-center sm:justify-start md:justify-center gap-2 lg:border-2 lg:border-secondary lg:bg-secondary/30 lg:min-h-[calc(100vh-100px)] dark:bg-card rounded-4xl w-full">
       <div className="flex flex-col w-fit rounded-4xl p-1">
         <Updater />
         <div className="bg-secondary rounded-3xl border-2 border-secondary lg:border-none sm:min-w-[420px] p-1 m-auto">

@@ -16,7 +16,7 @@ import {
   shortenAddress,
 } from '@/utils'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
-import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { atom, useAtomValue, useSetAtom } from 'jotai'
 import {
   ArrowLeft,
   ArrowUpRight,
@@ -27,7 +27,6 @@ import {
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { formatUnits } from 'viem'
 import {
   balanceDifferenceAtom,
   cowswapOrderIdsAtom,
@@ -35,12 +34,10 @@ import {
   cowswapOrdersCreatedAtAtom,
   fallbackQuotesAtom,
   mintValueAtom,
-  mintValueUSDAtom,
   operationAtom,
   quotesAtom,
   redeemAssetsAtom,
   savedAmountAtom,
-  selectedTokenAtom,
   successAtom,
   txHashAtom,
   universalSuccessOrdersAtom,
@@ -322,7 +319,7 @@ const Transactions = () => {
   const universalSuccessOrders = useAtomValue(universalSuccessOrdersAtom)
 
   return (
-    <div className="bg-secondary rounded-3xl h-[444px] p-1">
+    <div className="bg-secondary rounded-3xl min-h-[444px] p-1">
       <div className="p-4 flex items-center justify-between">
         <Button
           variant="ghost"
@@ -353,7 +350,7 @@ const Transactions = () => {
 }
 
 const Success = () => {
-  const [viewTransactions, setViewTransactions] = useAtom(viewTransactionsAtom)
+  const viewTransactions = useAtomValue(viewTransactionsAtom)
   const [showConfetti, setShowConfetti] = useState(true)
 
   useEffect(() => {
