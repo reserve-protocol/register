@@ -9,7 +9,6 @@ import {
 } from '@cowprotocol/cow-sdk'
 import { atom } from 'jotai'
 import { atomWithReset } from 'jotai/utils'
-import { Quote } from 'universal-sdk'
 import { Address, formatUnits, parseEther, parseUnits } from 'viem'
 import {
   AsyncSwapOrderResponse,
