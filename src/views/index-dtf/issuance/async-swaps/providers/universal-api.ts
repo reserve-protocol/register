@@ -8,9 +8,6 @@ import type {
   QuoteRequest,
 } from 'universal-sdk'
 
-// const API_BASE_URL = RESERVE_API
-const API_BASE_URL = 'http://localhost:3000/'
-
 const getQuote = async (quote: QuoteRequest): Promise<Quote> => {
   const queryParams = new URLSearchParams({
     type: quote.type,
@@ -27,15 +24,12 @@ const getQuote = async (quote: QuoteRequest): Promise<Quote> => {
     }),
   })
 
-  const response = await fetch(
-    `${API_BASE_URL}universal/quote?${queryParams}`,
-    {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }
-  )
+  const response = await fetch(`${RESERVE_API}universal/quote?${queryParams}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
 
   if (!response.ok) {
     const error = await response.json()
@@ -46,7 +40,7 @@ const getQuote = async (quote: QuoteRequest): Promise<Quote> => {
 }
 
 const submitOrder = async (order: OrderRequest): Promise<OrderResponse> => {
-  const response = await fetch(`${API_BASE_URL}universal/order`, {
+  const response = await fetch(`${RESERVE_API}universal/order`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -74,8 +68,8 @@ const getOrders = async (params?: OrdersParams): Promise<OrdersResponse> => {
   }
 
   const url = queryParams.toString()
-    ? `${API_BASE_URL}universal/orders?${queryParams}`
-    : `${API_BASE_URL}universal/orders`
+    ? `${RESERVE_API}universal/orders?${queryParams}`
+    : `${RESERVE_API}universal/orders`
 
   const response = await fetch(url, {
     method: 'GET',
