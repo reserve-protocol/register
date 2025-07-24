@@ -529,7 +529,7 @@ export const basketProposalCalldatasAtom = atom<Hex[] | undefined>((get) => {
     currentBasket.push(parseUnits(proposedBasket[asset].currentShares, 16))
     folio.push(dtfDistribution[asset] || 0n)
 
-    if (isUnitBasket && derivedProposedShares) {
+    if ((isUnitBasket || isHybridDTF) && derivedProposedShares) {
       targetBasket.push(derivedProposedShares[asset])
     } else {
       targetBasket.push(parseUnits(proposedShares[asset], 16))
