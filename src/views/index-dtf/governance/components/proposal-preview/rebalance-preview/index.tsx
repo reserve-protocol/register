@@ -68,6 +68,7 @@ const RebalancePreview = ({
 }) => {
   const dtf = useAtomValue(indexDTFAtom)
   const rebalanceBasketPreview = useRebalanceBasketPreview(calldatas, timestamp)
+
   const basket = useMemo(() => {
     if (!rebalanceBasketPreview) return {}
 
