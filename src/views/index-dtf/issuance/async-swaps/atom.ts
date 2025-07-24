@@ -17,7 +17,7 @@ import {
   UniversalOrder,
 } from './types'
 
-const ASYNC_SWAP_BUFFER = 0.005
+const ASYNC_MINT_BUFFER = 0.01
 
 // Main Atoms
 export const operationAtom = atom<'mint' | 'redeem'>('mint')
@@ -90,7 +90,7 @@ export const mintValueAtom = atom<number>((get) => {
   const inputAmount = get(userInputAtom)
   const dtfPrice = get(indexDTFPriceAtom)
   const result =
-    ((Number(inputAmount) || 0) / (dtfPrice ?? 1)) * (1 - ASYNC_SWAP_BUFFER)
+    ((Number(inputAmount) || 0) / (dtfPrice ?? 1)) * (1 - ASYNC_MINT_BUFFER)
 
   // 0.000001 is the minimum to avoid exponential notation when converting to string
   return result > 0 && result < 0.000001 ? 0.000001 : result
@@ -98,7 +98,7 @@ export const mintValueAtom = atom<number>((get) => {
 
 export const mintValueUSDAtom = atom<number>((get) => {
   const inputAmount = get(userInputAtom)
-  return (Number(inputAmount) || 0) * (1 - ASYNC_SWAP_BUFFER)
+  return (Number(inputAmount) || 0) * (1 - ASYNC_MINT_BUFFER)
 })
 
 export const savedAmountAtom = atom<number>((get) => {
