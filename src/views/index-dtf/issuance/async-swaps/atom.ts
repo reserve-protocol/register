@@ -1,0 +1,155 @@
+import { balancesAtom, chainIdAtom, TokenBalance } from '@/state/atoms'
+import { indexDTFPriceAtom } from '@/state/dtf/atoms'
+import { Token } from '@/types'
+import { reducedZappableTokens } from '@/views/yield-dtf/issuance/components/zapV2/constants'
+import {
+  EnrichedOrder,
+  OrderQuoteResponse,
+  OrderStatus,
+} from '@cowprotocol/cow-sdk'
+import { atom } from 'jotai'
+import { atomWithReset } from 'jotai/utils'
+import { Address, formatUnits, parseEther, parseUnits } from 'viem'
+import {
+  AsyncSwapOrderResponse,
+  QuoteAggregated,
+  UniversalOrder,
+} from './types'
+
+const ASYNC_MINT_BUFFER = 0.01
+
+// Main Atoms
+export const operationAtom = atom<'mint' | 'redeem'>('mint')
+export const userInputAtom = atomWithReset<string>('')
+export const indexDTFBalanceAtom = atom<bigint>(0n)
+export const txHashAtom = atom<string | undefined>('') // tx hash for minting or redeeming
+export const redeemAssetsAtom = atom<Record<Address, bigint>>({})
+export const quotesAtom = atom<Record<Address, QuoteAggregated>>({})
+export const fallbackQuotesAtom = atom<Record<Address, OrderQuoteResponse>>({})
+export const cowswapOrderIdsAtom = atom<string[]>([])
+export const cowswapOrdersCreatedAtAtom = atom<string | undefined>(undefined)
+export const cowswapOrdersAtom = atom<(EnrichedOrder & { orderId: string })[]>(
+  []
+)
+
+export const slippageAtom = atom<string>('100')
+export const applyWalletBalanceAtom = atom<boolean>(true)
+
+export const refetchQuotesAtom = atom<{ fn: () => void }>({ fn: () => {} })
+export const fetchingQuotesAtom = atom<boolean>(false)
+
+export const isMintingAtom = atom<boolean>(false)
+export const successAtom = atom<boolean>(false)
+
+export const universalSuccessOrdersAtom = atom<UniversalOrder[]>([])
+
+export const infoMessageAtom = atom<string | undefined>(undefined)
+
+export const balanceAfterSwapAtom = atom<bigint>(0n)
+
+// Render Atoms
+export const openCollateralPanelAtom = atom<boolean>(true)
+export const showSettingsAtom = atom<boolean>(false)
+
+// Computed Atoms
+export const selectedTokenAtom = atom<Token>((get) => {
+  const chainId = get(chainIdAtom)
+  return reducedZappableTokens[chainId][2] // USDC
+})
+
+export const selectedTokenBalanceAtom = atom<TokenBalance | undefined>(
+  (get) => {
+    const balances = get(balancesAtom)
+    const token = get(selectedTokenAtom)
+    return balances[token.address]
+  }
+)
+
+export const insufficientBalanceAtom = atom<boolean>((get) => {
+  const inputAmount = get(userInputAtom)
+  const operation = get(operationAtom)
+  const selectedToken = get(selectedTokenAtom)
+  const selectedTokenBalance = get(selectedTokenBalanceAtom)
+  const indexDTFParsedBalance = get(indexDTFBalanceAtom)
+  return operation === 'mint'
+    ? parseUnits(inputAmount, selectedToken.decimals) >
+        (selectedTokenBalance?.value || 0n)
+    : parseEther(inputAmount) > indexDTFParsedBalance
+})
+
+export const collateralAcquiredAtom = atom<boolean>((get) => {
+  const cowswapOrders = get(cowswapOrdersAtom)
+  return (
+    cowswapOrders.length > 0 &&
+    cowswapOrders.every((order) => order.status === OrderStatus.FULFILLED)
+  )
+})
+
+export const mintValueAtom = atom<number>((get) => {
+  const inputAmount = get(userInputAtom)
+  const dtfPrice = get(indexDTFPriceAtom)
+  const result =
+    ((Number(inputAmount) || 0) / (dtfPrice ?? 1)) * (1 - ASYNC_MINT_BUFFER)
+
+  // 0.000001 is the minimum to avoid exponential notation when converting to string
+  return result > 0 && result < 0.000001 ? 0.000001 : result
+})
+
+export const mintValueUSDAtom = atom<number>((get) => {
+  const inputAmount = get(userInputAtom)
+  return (Number(inputAmount) || 0) * (1 - ASYNC_MINT_BUFFER)
+})
+
+export const savedAmountAtom = atom<number>((get) => {
+  const inputAmount = get(userInputAtom)
+  const balanceDifference = get(balanceDifferenceAtom)
+  return (Number(inputAmount) || 0) - balanceDifference
+})
+
+export const mintValueWeiAtom = atom<bigint>((get) => {
+  const amountOut = get(mintValueAtom)
+  return parseEther(amountOut.toString())
+})
+
+// Only Cowswap Orders
+export const failedOrdersAtom = atom<AsyncSwapOrderResponse['cowswapOrders']>(
+  (get) => {
+    const cowswapOrders = get(cowswapOrdersAtom)
+    return (
+      cowswapOrders.filter((order) =>
+        [OrderStatus.CANCELLED, OrderStatus.EXPIRED].includes(order.status)
+      ) || []
+    )
+  }
+)
+
+// Only Cowswap Orders
+export const pendingOrdersAtom = atom<AsyncSwapOrderResponse['cowswapOrders']>(
+  (get) => {
+    const cowswapOrders = get(cowswapOrdersAtom)
+    return (
+      cowswapOrders.filter((order) =>
+        [OrderStatus.OPEN, OrderStatus.PRESIGNATURE_PENDING].includes(
+          order.status
+        )
+      ) || []
+    )
+  }
+)
+
+export const ordersSubmittedAtom = atom<boolean>((get) => {
+  const cowswapOrdersCreatedAt = get(cowswapOrdersCreatedAtAtom)
+  return Boolean(cowswapOrdersCreatedAt)
+})
+
+export const balanceDifferenceAtom = atom<number>((get) => {
+  const selectedToken = get(selectedTokenAtom)
+  const balanceAfterSwap = get(balanceAfterSwapAtom)
+  const selectedTokenBalance = get(selectedTokenBalanceAtom)
+  const operation = get(operationAtom)
+  const result =
+    operation === 'mint'
+      ? balanceAfterSwap - (selectedTokenBalance?.value || 0n)
+      : selectedTokenBalance?.value || 0n - balanceAfterSwap
+  return Number(formatUnits(result, selectedToken.decimals))
+})
