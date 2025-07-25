@@ -19,7 +19,8 @@ function getRebalanceOpenAuction(
   prices: TokenPriceWithSnapshot,
   isTrackingDTF: boolean,
   rebalancePercent = 90,
-  priceVolatility = PRICE_VOLATILITY.MEDIUM
+  priceVolatility = PRICE_VOLATILITY.MEDIUM,
+  isHybridDTF = false
 ) {
   const tokenMap = tokens.reduce(
     (acc, token) => {
@@ -55,7 +56,7 @@ function getRebalanceOpenAuction(
 
   const targetBasket = getTargetBasket(
     weights,
-    isTrackingDTF ? currentPrices : snapshotPrices,
+    isTrackingDTF || isHybridDTF ? currentPrices : snapshotPrices,
     decimals
   )
 

@@ -144,6 +144,8 @@ const useDTFBasketWeights = (timestamp?: number) => {
         res.json()
       )) as IndexDTFPerformance
 
+      if (!response.timeseries.length) return currentWeights
+
       // Grab the basket of the middle point of the timeseries
       const middlePoint = Math.floor(response.timeseries.length / 2)
       const basket = response.timeseries[middlePoint].basket

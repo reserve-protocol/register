@@ -10,12 +10,14 @@ import {
   indexDTFPriceAtom,
   indexDTFRebalanceControlAtom,
   indexDTFVersionAtom,
+  isHybridDTFAtom,
   isSingletonRebalanceAtom,
   iTokenAddressAtom,
 } from '@/state/dtf/atoms'
 import { Token } from '@/types'
 import { atom, Getter } from 'jotai'
 import { Address, encodeFunctionData, Hex, parseUnits } from 'viem'
+import { BasketInputType } from '@/views/index-dtf/deploy/atoms'
 
 export type Step =
   | 'basket'
@@ -72,6 +74,8 @@ export const priceVolatilityAtom = atom('Medium')
 export const proposedIndexBasketAtom = atom<
   Record<string, IndexAssetShares> | undefined
 >(undefined)
+
+export const basketInputTypeAtom = atom<BasketInputType>('share')
 
 // Basket form controls
 export const proposedSharesAtom = atom<Record<string, string>>({})
@@ -277,10 +281,13 @@ export const isUnitBasketValidAtom = atom((get) => {
 
 export const isProposedBasketValidAtom = atom((get) => {
   const { isValid } = get(proposedIndexBasketStateAtom)
+  const basketInputType = get(basketInputTypeAtom)
   const isUnitBasketValid = get(isUnitBasketValidAtom)
   const isUnitBasket = get(isUnitBasketAtom)
 
-  return isUnitBasket ? isUnitBasketValid : isValid
+  return isUnitBasket || basketInputType === 'unit'
+    ? isUnitBasketValid
+    : isValid
 })
 
 export const stepStateAtom = atom<Record<Step, boolean>>((get) => ({
@@ -478,6 +485,7 @@ export const basketProposalCalldatasAtom = atom<Hex[] | undefined>((get) => {
     return get(legacyBasketProposalCalldatasAtom)
   }
 
+  const isHybridDTF = get(isHybridDTFAtom)
   const isConfirmed = get(isProposalConfirmedAtom)
   const proposedBasket = get(proposedIndexBasketAtom)
   const isUnitBasket = get(isUnitBasketAtom)
@@ -521,7 +529,7 @@ export const basketProposalCalldatasAtom = atom<Hex[] | undefined>((get) => {
     currentBasket.push(parseUnits(proposedBasket[asset].currentShares, 16))
     folio.push(dtfDistribution[asset] || 0n)
 
-    if (isUnitBasket && derivedProposedShares) {
+    if ((isUnitBasket || isHybridDTF) && derivedProposedShares) {
       targetBasket.push(derivedProposedShares[asset])
     } else {
       targetBasket.push(parseUnits(proposedShares[asset], 16))
@@ -542,7 +550,8 @@ export const basketProposalCalldatasAtom = atom<Hex[] | undefined>((get) => {
       targetBasket,
       _prices,
       error,
-      rebalanceControl?.weightControl
+      rebalanceControl?.weightControl,
+      isHybridDTF
     )
 
     return [

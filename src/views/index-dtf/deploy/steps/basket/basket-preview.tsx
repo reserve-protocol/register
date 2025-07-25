@@ -2,14 +2,21 @@ import TokenLogo from '@/components/token-logo'
 import ExplorerAddress from '@/components/utils/explorer-address'
 import { chainIdAtom } from '@/state/atoms'
 import { Token } from '@/types'
-import { formatCurrency } from '@/utils'
+import { formatCurrency, formatPercentage } from '@/utils'
 import { ExplorerDataType } from '@/utils/getExplorerLink'
-import { useAtomValue, useSetAtom } from 'jotai'
+import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { CircleAlert, XIcon } from 'lucide-react'
 import { useFormContext } from 'react-hook-form'
-import { basketAtom } from '../../atoms'
+import {
+  basketAtom,
+  basketDerivedSharesAtom,
+  BasketInputType,
+  basketInputTypeAtom,
+} from '../../atoms'
 import BasicInput from '../../components/basic-input'
 import { Decimal } from '../../utils/decimals'
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
+import { cn } from '@/lib/utils'
 
 const RemoveTokenButton = ({
   tokenIndex,
@@ -40,15 +47,17 @@ const RemoveTokenButton = ({
 }
 
 const TokenDistribution = ({ tokenIndex }: { tokenIndex: number }) => {
+  const basketInputType = useAtomValue(basketInputTypeAtom)
+
   return (
     <BasicInput
       type="number"
-      className="max-w-32"
+      className={cn('max-w-32', basketInputType === 'unit' && 'max-w-40')}
       fieldName={`tokensDistribution.${tokenIndex}.percentage`}
-      label="%"
+      label={basketInputType === 'unit' ? 'Units' : '%'}
       placeholder="0"
       defaultValue={0}
-      decimalPlaces={2}
+      decimalPlaces={basketInputType === 'unit' ? 18 : 2}
     />
   )
 }
@@ -63,16 +72,22 @@ const TokenPreview = ({
 }: Token & { index: number }) => {
   const chainId = useAtomValue(chainIdAtom)
   const form = useFormContext()
+  const basketInputType = useAtomValue(basketInputTypeAtom)
+  const basketDerivedShares = useAtomValue(basketDerivedSharesAtom)
 
   const [initialValue, tokenDistribution] = form.watch([
     `initialValue`,
     `tokensDistribution.${index}.percentage`,
   ])
 
-  const tokenQty =
-    price && price > 0
-      ? (initialValue * (tokenDistribution / 100)) / price
-      : undefined
+  const shares =
+    basketInputType === 'unit'
+      ? Number(basketDerivedShares?.[address] ?? 0)
+      : tokenDistribution
+
+  let tokenQty =
+    price && price > 0 ? (initialValue * (shares / 100)) / price : undefined
+
   const tokenUSD =
     tokenQty !== undefined && price ? tokenQty * price : undefined
 
@@ -93,7 +108,9 @@ const TokenPreview = ({
         <div className="flex flex-col">
           <div className="text-base font-bold">{name}</div>
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            {tokenQty !== undefined ? (
+            {basketInputType === 'unit' ? (
+              <span className="text-primary">{formatPercentage(shares)}</span>
+            ) : tokenQty !== undefined ? (
               <span className="text-primary">
                 {tokenQty < 1
                   ? formatCurrency(tokenQty, 0, {
@@ -107,6 +124,7 @@ const TokenPreview = ({
             ) : (
               <span className="text-muted-foreground">{symbol}</span>
             )}
+
             <span className="text-foreground text-[8px]">•</span>
             {tokenUSD !== undefined ? (
               <span className="text-foreground">
@@ -141,6 +159,9 @@ const TokenPreview = ({
 const RemainingAllocation = () => {
   const form = useFormContext()
   const tokenDistribution = form.watch(`tokensDistribution`)
+  const basketInputType = useAtomValue(basketInputTypeAtom)
+
+  if (basketInputType === 'unit') return null
 
   const remaining = new Decimal(100).minus(
     tokenDistribution.reduce(
@@ -164,6 +185,39 @@ const RemainingAllocation = () => {
   )
 }
 
+const BasketSetting = () => {
+  const [basketInputType, setBasketInputType] = useAtom(basketInputTypeAtom)
+  const { setValue } = useFormContext()
+
+  return (
+    <div className="flex items-center">
+      <ToggleGroup
+        type="single"
+        className="ml-3 bg-muted-foreground/10 p-1 rounded-lg justify-start w-max"
+        value={basketInputType}
+        onValueChange={(value) => {
+          setBasketInputType(value as BasketInputType)
+          setValue('inputType', value as BasketInputType)
+        }}
+      >
+        <ToggleGroupItem
+          className="px-3 rounded-md data-[state=on]:bg-card text-secondary-foreground/80 data-[state=on]:text-primary"
+          value="unit"
+        >
+          Unit
+        </ToggleGroupItem>
+        <ToggleGroupItem
+          className="px-3 rounded-md data-[state=on]:bg-card text-secondary-foreground/80 data-[state=on]:text-primary"
+          value="share"
+        >
+          Share
+        </ToggleGroupItem>
+      </ToggleGroup>
+      <RemainingAllocation />
+    </div>
+  )
+}
+
 const BasketPreview = () => {
   const basket = useAtomValue(basketAtom)
 
@@ -171,7 +225,7 @@ const BasketPreview = () => {
 
   return (
     <div className="flex flex-col gap-2">
-      <RemainingAllocation />
+      <BasketSetting />
       <div className="flex flex-col mb-2 mx-2 rounded-xl bg-muted/70">
         {basket.map((token, index) => (
           <TokenPreview key={token.address} {...token} index={index} />

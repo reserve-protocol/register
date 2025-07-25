@@ -10,6 +10,7 @@ const TokenRewardPreview = ({
   decodedCalldata,
 }: {
   decodedCalldata: DecodedCalldata
+  targetAddress?: Address
 }) => {
   const { signature, data } = decodedCalldata
   const tokenAddress = (data[0] as string) ?? ''

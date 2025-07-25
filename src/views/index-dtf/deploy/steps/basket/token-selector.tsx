@@ -34,6 +34,7 @@ import AutoSizer from 'react-virtualized-auto-sizer'
 import { FixedSizeList as List } from 'react-window'
 import {
   basketAtom,
+  basketInputTypeAtom,
   extraTokensAtom,
   searchTokenAtom,
   selectedTokensAtom,
@@ -70,6 +71,7 @@ const OpenButton = () => (
 const EvenDistributionButton = () => {
   const { setValue } = useFormContext()
   const basket = useAtomValue(basketAtom)
+  const inputType = useAtomValue(basketInputTypeAtom)
 
   const onEvenDistribution = useCallback(() => {
     if (!basket.length) return
@@ -87,6 +89,8 @@ const EvenDistributionButton = () => {
       }))
     )
   }, [basket, setValue])
+
+  if (inputType === 'unit') return null
 
   return (
     <Button
