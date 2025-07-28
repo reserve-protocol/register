@@ -75,7 +75,15 @@ export const proposedIndexBasketAtom = atom<
   Record<string, IndexAssetShares> | undefined
 >(undefined)
 
-export const basketInputTypeAtom = atom<BasketInputType>('share')
+export const _basketInputTypeAtom = atom<BasketInputType>('share')
+
+export const basketInputTypeAtom = atom((get) => {
+  const isHybridDTF = get(isHybridDTFAtom)
+  const isUnitBasket = get(isUnitBasketAtom)
+  const basketInputType = get(_basketInputTypeAtom)
+
+  return isHybridDTF || isUnitBasket ? 'unit' : basketInputType
+})
 
 // Basket form controls
 export const proposedSharesAtom = atom<Record<string, string>>({})
@@ -283,11 +291,8 @@ export const isProposedBasketValidAtom = atom((get) => {
   const { isValid } = get(proposedIndexBasketStateAtom)
   const basketInputType = get(basketInputTypeAtom)
   const isUnitBasketValid = get(isUnitBasketValidAtom)
-  const isUnitBasket = get(isUnitBasketAtom)
 
-  return isUnitBasket || basketInputType === 'unit'
-    ? isUnitBasketValid
-    : isValid
+  return basketInputType === 'unit' ? isUnitBasketValid : isValid
 })
 
 export const stepStateAtom = atom<Record<Step, boolean>>((get) => ({
@@ -351,18 +356,18 @@ function getProposedTrades(get: Getter, deferred = false) {
   const derivedProposedShares = get(derivedProposedSharesAtom)
   const priceMap = get(priceMapAtom)
   const isValid = get(isProposedBasketValidAtom)
-  const isUnitBasket = get(isUnitBasketAtom)
   const volatility = get(tradeVolatilityAtom)
   const supply = get(dtfSupplyAtom)
   const dtfAddress = get(iTokenAddressAtom)
   const dtfPrice = priceMap[dtfAddress?.toLowerCase() || '']
+  const basketInputType = get(basketInputTypeAtom)
 
   if (
     !isValid ||
     !proposedBasket ||
     !dtfAddress ||
     !dtfPrice ||
-    (isUnitBasket && !derivedProposedShares)
+    (basketInputType === 'unit' && !derivedProposedShares)
   )
     return []
 
@@ -380,7 +385,7 @@ function getProposedTrades(get: Getter, deferred = false) {
     decimals.push(BigInt(proposedBasket[asset].token.decimals))
     currentBasket.push(parseUnits(proposedBasket[asset].currentShares, 16))
 
-    if (isUnitBasket && derivedProposedShares) {
+    if (basketInputType === 'unit' && derivedProposedShares) {
       targetBasket.push(derivedProposedShares[asset])
     } else {
       targetBasket.push(parseUnits(proposedShares[asset], 16))

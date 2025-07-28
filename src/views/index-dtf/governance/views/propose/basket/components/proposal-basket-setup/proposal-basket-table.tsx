@@ -1,8 +1,12 @@
 import { Skeleton } from '@/components/ui/skeleton'
 import { Table, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { cn } from '@/lib/utils'
+import { isHybridDTFAtom } from '@/state/dtf/atoms'
+import { BasketInputType } from '@/views/index-dtf/deploy/atoms'
 import { atom, useAtom, useAtomValue } from 'jotai'
 import {
+  _basketInputTypeAtom,
   basketInputTypeAtom,
   IndexAssetShares,
   isUnitBasketAtom,
@@ -10,8 +14,6 @@ import {
 } from '../../atoms'
 import SetupNativeDTFBasket from './setup-native-dtf-basket'
 import SetupTrackingDTFBasket from './setup-tracking-dtf-basket'
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
-import { BasketInputType } from '@/views/index-dtf/deploy/atoms'
 
 const assetsAtom = atom((get) => {
   const proposedBasket = get(proposedIndexBasketAtom)
@@ -21,8 +23,10 @@ const assetsAtom = atom((get) => {
   return { isLoading: false, assets: Object.values(proposedBasket) }
 })
 
-const Header = ({ isUnitBasket }: { isUnitBasket: boolean }) => {
-  const [basketInputType, setBasketInputType] = useAtom(basketInputTypeAtom)
+const Header = () => {
+  const isUnitBasket = useAtomValue(isUnitBasketAtom)
+  const isHybridDTF = useAtomValue(isHybridDTFAtom)
+  const [basketInputType, setBasketInputType] = useAtom(_basketInputTypeAtom)
 
   return (
     <TableHeader>
@@ -31,11 +35,11 @@ const Header = ({ isUnitBasket }: { isUnitBasket: boolean }) => {
         <TableHead
           className={cn(isUnitBasket ? 'text-right w-36' : 'w-16 text-center')}
         >
-          {isUnitBasket ? 'Old Tokens / DTF' : 'Current'}
+          {isUnitBasket ? 'Old units' : 'Current'}
         </TableHead>
         <TableHead className="bg-primary/10 text-primary text-center font-bold">
-          {isUnitBasket ? (
-            'New Tokens / DTF'
+          {isUnitBasket || isHybridDTF ? (
+            'New units'
           ) : (
             <ToggleGroup
               type="single"
@@ -70,16 +74,10 @@ const Header = ({ isUnitBasket }: { isUnitBasket: boolean }) => {
   )
 }
 
-const Body = ({
-  assets,
-  isUnitBasket,
-}: {
-  assets: IndexAssetShares[]
-  isUnitBasket: boolean
-}) => {
-  const [basketInputType] = useAtom(basketInputTypeAtom)
+const Body = ({ assets }: { assets: IndexAssetShares[] }) => {
+  const basketInputType = useAtomValue(basketInputTypeAtom)
 
-  if (isUnitBasket || basketInputType === 'unit') {
+  if (basketInputType === 'unit') {
     return <SetupTrackingDTFBasket assets={assets} />
   }
 
@@ -88,7 +86,6 @@ const Body = ({
 
 const ProposalBasketTable = () => {
   const { assets, isLoading } = useAtomValue(assetsAtom)
-  const isUnitBasket = useAtomValue(isUnitBasketAtom)
 
   if (isLoading) {
     return <Skeleton className="h-[200px]" />
@@ -97,8 +94,8 @@ const ProposalBasketTable = () => {
   return (
     <div className="border rounded-xl overflow-auto">
       <Table>
-        <Header isUnitBasket={isUnitBasket} />
-        <Body assets={assets} isUnitBasket={isUnitBasket} />
+        <Header />
+        <Body assets={assets} />
       </Table>
     </div>
   )
