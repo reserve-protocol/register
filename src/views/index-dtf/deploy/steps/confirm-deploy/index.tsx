@@ -55,20 +55,22 @@ const ConfirmIndexDeploy = ({ isActive }: { isActive: boolean }) => {
   const inputType = useAtomValue(basketInputTypeAtom)
 
   const processForm: SubmitHandler<DeployInputs> = (data) => {
+    // Apply unit basket transformation regardless of DAO type
+    const processedData = {
+      ...data,
+      tokensDistribution:
+        inputType === 'unit' && derivedShares
+          ? Object.keys(derivedShares).map((address) => ({
+              address: address as Address,
+              percentage: Number(derivedShares[address]),
+            }))
+          : data.tokensDistribution,
+    }
+    
+    setFormData(processedData)
+    
     if (data.governanceVoteLock) {
-      setFormData({
-        ...data,
-        tokensDistribution:
-          inputType === 'unit' && derivedShares
-            ? Object.keys(derivedShares).map((address) => ({
-                address: address as Address,
-                percentage: Number(derivedShares[address]),
-              }))
-            : data.tokensDistribution,
-      })
       setStTokenAddress(data.governanceVoteLock)
-    } else {
-      setFormData({ ...data })
     }
   }
 
