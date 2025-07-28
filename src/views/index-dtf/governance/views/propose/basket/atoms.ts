@@ -494,6 +494,7 @@ export const basketProposalCalldatasAtom = atom<Hex[] | undefined>((get) => {
   const dtfPrice = get(indexDTFPriceAtom)
   const dtfDistribution = get(dtfDistributionAtom)
   const ttl = get(rebalanceTTLAtom)
+  const basketInputType = get(basketInputTypeAtom)
   const supply = get(dtfSupplyAtom)
   const proposedShares = get(proposedSharesAtom)
   const priceMap = get(priceMapAtom)
@@ -529,7 +530,10 @@ export const basketProposalCalldatasAtom = atom<Hex[] | undefined>((get) => {
     currentBasket.push(parseUnits(proposedBasket[asset].currentShares, 16))
     folio.push(dtfDistribution[asset] || 0n)
 
-    if ((isUnitBasket || isHybridDTF) && derivedProposedShares) {
+    if (
+      (isUnitBasket || basketInputType === 'unit' || isHybridDTF) &&
+      derivedProposedShares
+    ) {
       targetBasket.push(derivedProposedShares[asset])
     } else {
       targetBasket.push(parseUnits(proposedShares[asset], 16))
