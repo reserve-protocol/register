@@ -1,6 +1,6 @@
 import dtfIndexAbiV4 from '@/abis/dtf-index-abi-v4'
 import { Button } from '@/components/ui/button'
-import { indexDTFAtom } from '@/state/dtf/atoms'
+import { indexDTFAtom, isHybridDTFAtom } from '@/state/dtf/atoms'
 import { parseDuration } from '@/utils'
 import { atom, useAtom, useAtomValue } from 'jotai'
 import { LoaderCircle } from 'lucide-react'
@@ -39,6 +39,7 @@ const LaunchAuctionsButton = () => {
   })
   const [error, setError] = useState<string | null>(null)
   const isAuctionOngoing = useAtomValue(isAuctionOngoingAtom)
+  const isHybridDTF = useAtomValue(isHybridDTFAtom)
   const isValid = !!rebalanceParams && rebalancePercent > 0 && rebalance && dtf
 
   useEffect(() => {
@@ -78,7 +79,8 @@ const LaunchAuctionsButton = () => {
         rebalanceParams.prices,
         rebalanceParams.isTrackingDTF,
         rebalancePercent,
-        PRICE_VOLATILITY[priceVolatility]
+        PRICE_VOLATILITY[priceVolatility],
+        isHybridDTF
       )
 
       writeContract({

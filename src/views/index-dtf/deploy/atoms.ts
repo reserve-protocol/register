@@ -5,6 +5,8 @@ import { atomWithReset } from 'jotai/utils'
 import { Address } from 'viem'
 import { GovernanceTypes } from './steps/governance/governance-options'
 
+export type BasketInputType = 'unit' | 'share'
+
 export const deployStepAtom = atom<DeployStepId | undefined>(undefined)
 
 export const selectedTokensAtom = atomWithReset<Token[]>([])
@@ -12,7 +14,12 @@ export const extraTokensAtom = atomWithReset<Token[]>([])
 export const searchTokenAtom = atomWithReset<string>('')
 export const daoCreatedAtom = atomWithReset<boolean>(false)
 
+// TODO: Moved to a shared component
 export const basketAtom = atomWithReset<Token[]>([])
+export const basketInputTypeAtom = atom<BasketInputType>('share')
+export const basketDerivedSharesAtom = atom<Record<string, string> | undefined>(
+  undefined
+)
 
 export const daoTokenAddressAtom = atomWithReset<Address | undefined>(undefined)
 export const daoTokenSymbolAtom = atomWithReset<string>('')

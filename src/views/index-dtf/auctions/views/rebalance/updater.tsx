@@ -1,12 +1,16 @@
-import { useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { isHybridDTFAtom } from '@/state/dtf/atoms'
+import { useAtomValue, useSetAtom } from 'jotai'
 import { useCallback, useEffect } from 'react'
+import { useParams } from 'react-router-dom'
 import {
   apiRebalanceMetricsAtom,
   currentProposalIdAtom,
   currentRebalanceAtom,
   RebalanceByProposal,
 } from '../../atoms'
+import { useRebalanceMetrics } from '../rebalance-list/hooks/use-rebalance-metrics'
 import {
+  PRICE_VOLATILITY,
   rebalanceAuctionsAtom,
   rebalanceMetricsAtom,
   rebalancePercentAtom,
@@ -16,14 +20,13 @@ import useRebalanceParams, {
   RebalanceParams,
 } from './hooks/use-rebalance-params'
 import getRebalanceOpenAuction from './utils/get-rebalance-open-auction'
-import { useParams } from 'react-router-dom'
-import { useRebalanceMetrics } from '../rebalance-list/hooks/use-rebalance-metrics'
 
 const RebalanceMetricsUpdater = () => {
   const setRebalanceMetrics = useSetAtom(rebalanceMetricsAtom)
   const rebalancePercent = useAtomValue(rebalancePercentAtom)
   const rebalanceParams = useRebalanceParams()
   const currentRebalance = useAtomValue(currentRebalanceAtom)
+  const isHybridDTF = useAtomValue(isHybridDTFAtom)
 
   const updateMetrics = useCallback(
     (
@@ -53,7 +56,9 @@ const RebalanceMetricsUpdater = () => {
           initialWeights,
           prices,
           isTrackingDTF,
-          rebalancePercent
+          rebalancePercent,
+          PRICE_VOLATILITY.MEDIUM,
+          isHybridDTF
         )
 
         setRebalanceMetrics({
@@ -66,7 +71,7 @@ const RebalanceMetricsUpdater = () => {
         console.error('Error getting rebalance metrics', e)
       }
     },
-    [setRebalanceMetrics]
+    [setRebalanceMetrics, isHybridDTF]
   )
 
   useEffect(() => {

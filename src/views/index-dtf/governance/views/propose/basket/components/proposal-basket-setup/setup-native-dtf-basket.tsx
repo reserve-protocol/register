@@ -20,7 +20,7 @@ const NewSharesCell = ({ asset }: { asset: string }) => {
     <TableCell className="bg-primary/10 w-10">
       <NumericalInput
         placeholder="0%"
-        className="w-24 text-center"
+        className="min-w-24 w-full text-center"
         value={newShares[asset]}
         onChange={(value) => setNewShares({ ...newShares, [asset]: value })}
       />
