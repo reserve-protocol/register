@@ -36,14 +36,14 @@ export const INDEX_DEPLOYER_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0xBE3B47587cEeff7D48008A0114f51cD571beC63A',
   [ChainId.Base]: '0xA203AA351723cf943f91684e9F5eFcA7175Ae7EA',
   [ChainId.Arbitrum]: '0x',
-  [ChainId.BSC]: '0x3F83AA355AE31eCBb4d8378F0AA671614dFa4941',
+  [ChainId.BSC]: '0x100e0efdd7a4f67825e1be5f0493f8d2aeac00bb',
 }
 
 export const INDEX_GOVERNANCE_DEPLOYER_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0x5Bed18AcA50E6057E6658Fe8498004092EedCDcF',
-  [ChainId.Base]: '0x1A7D043c84fe781b6df046fEfCf673F71110208D', // 4.0
+  [ChainId.Base]: '0x1A7D043c84fe781b6df046fEfCf673F71110208D',
   [ChainId.Arbitrum]: '0x',
-  [ChainId.BSC]: '0x2f616b82022874519cB4BB795B8b931D65564825',
+  [ChainId.BSC]: '0xbd49ceac629d7131b8a975b582acdaeb5c049bad',
 }
 
 /**
