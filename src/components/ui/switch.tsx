@@ -24,8 +24,10 @@ const thumbVariants = cva(
   {
     variants: {
       variant: {
-        default: 'h-5 w-5 data-[state=checked]:translate-x-5 data-[state=unchecked]:translate-x-0',
-        small: 'h-3 w-3 data-[state=checked]:translate-x-3 data-[state=unchecked]:translate-x-0',
+        default:
+          'h-5 w-5 data-[state=checked]:translate-x-5 data-[state=unchecked]:translate-x-0',
+        small:
+          'h-3 w-3 data-[state=checked]:translate-x-3 data-[state=unchecked]:translate-x-0',
       },
     },
     defaultVariants: {
@@ -34,7 +36,9 @@ const thumbVariants = cva(
   }
 )
 
-type SwitchProps = React.ComponentPropsWithoutRef<typeof SwitchPrimitives.Root> &
+type SwitchProps = React.ComponentPropsWithoutRef<
+  typeof SwitchPrimitives.Root
+> &
   VariantProps<typeof switchRootVariants>
 
 const Switch = React.forwardRef<

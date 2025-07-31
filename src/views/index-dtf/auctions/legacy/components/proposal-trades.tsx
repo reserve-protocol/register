@@ -7,9 +7,8 @@ import {
 import { Button } from '@/components/ui/button'
 import Spinner from '@/components/ui/spinner'
 import { chainIdAtom } from '@/state/atoms'
-import { getCurrentTime, shortenAddress } from '@/utils'
+import { getCurrentTime, getTimerFormat, shortenAddress } from '@/utils'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
-import humanizeDuration from 'humanize-duration'
 import { useAtomValue, useSetAtom } from 'jotai'
 import {
   AlarmClockOff,
@@ -28,39 +27,6 @@ import {
 import AuctionList from './auction-list'
 import AuctionProposedBasket from './auction-proposed-basket'
 import ProposalTradesSkeleton from './proposal-trades-skeleton'
-
-function getTimerFormat(seconds: number) {
-  const timeUnits = {
-    days: 'd',
-    day: 'd',
-    hours: 'h',
-    hour: 'h',
-    minutes: 'm',
-    minute: 'm',
-    seconds: 's',
-    second: 's',
-  }
-
-  let str = humanizeDuration(seconds * 1000, {
-    units: ['h', 'm', 's'],
-    round: true,
-    spacer: '',
-    delimiter: ' ',
-  })
-
-  // Replace all time unit words with their shortened versions
-  for (const [word, short] of Object.entries(timeUnits)) {
-    str = str.replace(word, short)
-  }
-
-  // Ensure seconds are always shown
-  if (!str.includes('s')) {
-    str += ' 0s'
-  }
-
-  return str
-}
-
 const Container = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="hidden sm:flex items-center gap-2 text-sm border rounded-full py-2 px-3 font-light mr-4">
