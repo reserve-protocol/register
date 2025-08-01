@@ -39,6 +39,7 @@ export const PortfolioUpdater = () => {
       <TokenBalancesUpdater />
       <IndexDTFUpdater chainId={ChainId.Mainnet} />
       <IndexDTFUpdater chainId={ChainId.Base} />
+      <IndexDTFUpdater chainId={ChainId.BSC} />
       <IndexDTFPricesUpdater />
       <RSRBalancesUpdater />
       <RewardsUpdater />

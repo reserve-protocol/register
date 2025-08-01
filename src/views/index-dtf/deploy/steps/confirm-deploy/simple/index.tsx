@@ -87,7 +87,7 @@ const SimpleIndexDeploy = () => {
     : false
 
   const { data, isLoading, isFetching, refetch, failureReason } =
-    useZapDeployQuery(url, requestBody, insufficientBalance || ongoingTx)
+    useZapDeployQuery(url, requestBody, ongoingTx)
 
   const priceTo = data?.result?.amountOutValue
   const valueTo = data?.result?.amountOut
