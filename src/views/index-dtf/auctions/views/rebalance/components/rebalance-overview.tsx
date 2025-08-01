@@ -1,11 +1,16 @@
 import DecimalDisplay from '@/components/decimal-display'
 import { Skeleton } from '@/components/ui/skeleton'
+import { isHybridDTFAtom } from '@/state/dtf/atoms'
 import { formatPercentage } from '@/utils'
 import { atom, useAtomValue } from 'jotai'
-import { ArrowLeftRight, Target } from 'lucide-react'
+import { ArrowLeftRight, Check, CheckCircle2, Target, X } from 'lucide-react'
 import { useMemo } from 'react'
 import { formatUnits } from 'viem'
-import { rebalanceAuctionsAtom, rebalanceMetricsAtom } from '../atoms'
+import {
+  areWeightsFinalizedAtom,
+  rebalanceAuctionsAtom,
+  rebalanceMetricsAtom,
+} from '../atoms'
 import useRebalanceParams from '../hooks/use-rebalance-params'
 
 const trackingErrorAtom = atom((get) => {
@@ -45,12 +50,39 @@ const useTotalValueTraded = () => {
   }, [rebalanceParams, auctions])
 }
 
+const FinalizedWeights = () => {
+  const areWeightsFinalized = useAtomValue(areWeightsFinalizedAtom)
+  const isHybridDTF = useAtomValue(isHybridDTFAtom)
+
+  if (!isHybridDTF) return null
+
+  return (
+    <div className="flex items-center gap-2 flex-wrap mb-4">
+      <div className="flex items-center gap-2 mr-auto text-legend">
+        <CheckCircle2 className="h-4 w-4" />
+        <span>Finalized weights:</span>
+      </div>
+      {areWeightsFinalized ? (
+        <Check className="h-4 w-4 text-primary" />
+      ) : (
+        <X className="h-4 w-4 text-destructive" />
+      )}
+      <span
+        className={areWeightsFinalized ? 'text-primary' : 'text-destructive'}
+      >
+        {areWeightsFinalized ? 'Yes' : 'No'}
+      </span>
+    </div>
+  )
+}
+
 const RebalanceOverview = () => {
   const trackingError = useAtomValue(trackingErrorAtom)
   const totalValueTraded = useTotalValueTraded()
 
   return (
     <div className="border-t border-secondary p-4 md:p-6">
+      <FinalizedWeights />
       <div className="flex items-center gap-2 flex-wrap">
         <div className="flex items-center gap-2 mr-auto text-legend">
           <ArrowLeftRight className="h-4 w-4" />

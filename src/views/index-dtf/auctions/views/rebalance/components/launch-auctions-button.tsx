@@ -15,9 +15,12 @@ import {
   rebalanceAuctionsAtom,
   rebalancePercentAtom,
   refreshNonceAtom,
+  finalizedWeightsAtom,
+  areWeightsFinalizedAtom,
 } from '../atoms'
 import useRebalanceParams from '../hooks/use-rebalance-params'
 import getRebalanceOpenAuction from '../utils/get-rebalance-open-auction'
+import { WeightRange } from '@reserve-protocol/dtf-rebalance-lib'
 
 const auctionNumberAtom = atom((get) => {
   const auctions = get(rebalanceAuctionsAtom)
@@ -40,6 +43,9 @@ const LaunchAuctionsButton = () => {
   const [error, setError] = useState<string | null>(null)
   const isAuctionOngoing = useAtomValue(isAuctionOngoingAtom)
   const isHybridDTF = useAtomValue(isHybridDTFAtom)
+  const finalizedWeights = useAtomValue(finalizedWeightsAtom)
+  const areWeightsFinalized = useAtomValue(areWeightsFinalizedAtom)
+  const auctions = useAtomValue(rebalanceAuctionsAtom)
   const isValid = !!rebalanceParams && rebalancePercent > 0 && rebalance && dtf
 
   useEffect(() => {
@@ -68,6 +74,15 @@ const LaunchAuctionsButton = () => {
       setIsLaunching(true)
       setError(null)
 
+      // Use finalized weights for hybrid DTFs on first auction
+      const weightsToUse =
+        isHybridDTF &&
+        areWeightsFinalized &&
+        finalizedWeights &&
+        auctions.length === 0
+          ? finalizedWeights
+          : rebalanceParams.initialWeights
+
       const [openAuctionArgs] = getRebalanceOpenAuction(
         rebalance.rebalance.tokens,
         rebalanceParams.rebalance,
@@ -75,7 +90,7 @@ const LaunchAuctionsButton = () => {
         rebalanceParams.currentFolio,
         rebalanceParams.initialFolio,
         rebalanceParams.initialPrices,
-        rebalanceParams.initialWeights,
+        weightsToUse,
         rebalanceParams.prices,
         rebalanceParams.isTrackingDTF,
         rebalancePercent,
@@ -105,7 +120,7 @@ const LaunchAuctionsButton = () => {
   return (
     <div className="flex flex-col gap-2 p-2">
       <Button
-        className="rounded-xl w-full py-6 gap-2"
+        className="rounded-xl py-6  w-full gap-2"
         disabled={!isValid || isPending || isAuctionOngoing || isLaunching}
         onClick={handleStartAuctions}
       >

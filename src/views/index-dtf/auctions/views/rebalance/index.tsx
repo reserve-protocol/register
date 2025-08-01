@@ -6,14 +6,21 @@ import RebalanceDebug from './components/rebalance-debug'
 import RebalanceHeader from './components/rebalance-header'
 import RebalanceOverview from './components/rebalance-overview'
 import RebalanceProgress from './components/rebalance-progress'
+import FinalizeWeightsView from './components/finalize-weights-view'
 import Updater from './updater'
 import { isCompletedAtom } from '../../atoms'
+import { showFinalizeWeightsViewAtom } from './atoms'
 
 const RebalanceContent = () => {
   const isCompleted = useAtomValue(isCompletedAtom)
+  const showFinalizeWeights = useAtomValue(showFinalizeWeightsViewAtom)
 
   if (isCompleted) {
     return <RebalanceCompleted />
+  }
+
+  if (showFinalizeWeights) {
+    return <FinalizeWeightsView />
   }
 
   return (

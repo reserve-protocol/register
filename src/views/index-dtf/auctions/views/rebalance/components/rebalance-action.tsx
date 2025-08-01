@@ -1,16 +1,21 @@
-import { isAuctionLauncherAtom } from '@/state/dtf/atoms'
+import { isAuctionLauncherAtom, isHybridDTFAtom } from '@/state/dtf/atoms'
 import { AuctionRound } from '@reserve-protocol/dtf-rebalance-lib'
-import { useAtomValue } from 'jotai'
+import { useAtomValue, useSetAtom } from 'jotai'
 import { useMemo } from 'react'
 import {
   activeAuctionAtom,
   rebalanceMetricsAtom,
   rebalanceTokenMapAtom,
+  areWeightsFinalizedAtom,
+  rebalanceAuctionsAtom,
+  showFinalizeWeightsViewAtom,
 } from '../atoms'
 import useRebalanceParams from '../hooks/use-rebalance-params'
 import CommunityLaunchAuctionsButton from './community-launch-auctions-button'
 import LaunchAuctionsButton from './launch-auctions-button'
 import RebalanceActionOverview from './rebalance-action-overview'
+import { Button } from '@/components/ui/button'
+import { PencilRuler } from 'lucide-react'
 
 const ROUND_TITLE = {
   [AuctionRound.EJECT]: 'Remove Tokens',
@@ -18,28 +23,11 @@ const ROUND_TITLE = {
   [AuctionRound.FINAL]: 'Precision Rebalancing',
 }
 
-// const rebalanceDescriptionAtom = atom((get) => {
-//   const metrics = get(rebalanceMetricsAtom)
-//   const tokenMap = get(rebalanceTokenMapAtom)
-
-//   if (!metrics || !Object.keys(tokenMap).length) return ''
-
-//   const formatTokens = (tokens: string[]) => {
-//     const symbols = tokens.map(
-//       (token) => tokenMap[token.toLowerCase()]?.symbol || ''
-//     )
-//     if (symbols.length <= 3) return symbols.join(', ')
-//     return `${symbols.slice(0, 3).join(', ')}, +${symbols.length - 3}`
-//   }
-
-//   return `Trade ${formatTokens(metrics.surplusTokens)} for ${formatTokens(metrics.deficitTokens)}`
-// })
-
 const RoundDescription = () => {
-  // const description = useAtomValue(rebalanceDescriptionAtom)
   const metrics = useAtomValue(rebalanceMetricsAtom)
   const params = useRebalanceParams()
   const tokenMap = useAtomValue(rebalanceTokenMapAtom)
+
   const description = useMemo(() => {
     const removal =
       metrics?.round === AuctionRound.EJECT &&
@@ -74,19 +62,62 @@ const RoundDescription = () => {
   )
 }
 
+const FinalizeWeights = () => {
+  const setShowFinalizeWeights = useSetAtom(showFinalizeWeightsViewAtom)
+
+  return (
+    <div className="bg-background rounded-3xl">
+      <div className="p-4 md:p-6">
+        <div className="rounded-full border w-8 h-8 border-primary text-primary flex items-center justify-center">
+          <PencilRuler className="w-4 h-4" />
+        </div>
+        <h1 className="text-xl text-primary mt-3">
+          Specify Exact Basket Weights
+        </h1>
+        <p className="text-legend">
+          Set exact basket weights before launching the rebalance auctions
+        </p>
+      </div>
+      <div className="p-2 pt-0 ">
+        <Button
+          variant="outline-primary"
+          className="w-full rounded-xl text-base py-6"
+          onClick={() => setShowFinalizeWeights(true)}
+        >
+          Modify / Finalize Weights
+        </Button>
+      </div>
+    </div>
+  )
+}
+
 const RebalanceAction = () => {
   const activeAuction = useAtomValue(activeAuctionAtom)
   const isAuctionLauncher = useAtomValue(isAuctionLauncherAtom)
+  const isHybridDTF = useAtomValue(isHybridDTFAtom)
+  const areWeightsFinalized = useAtomValue(areWeightsFinalizedAtom)
+  const auctions = useAtomValue(rebalanceAuctionsAtom)
+
+  const canFinalizeWeights =
+    isAuctionLauncher &&
+    isHybridDTF &&
+    auctions.length === 0 &&
+    !areWeightsFinalized
 
   // Don't show the action component if there's an active auction
   if (activeAuction) {
     return null
   }
 
+  if (canFinalizeWeights) {
+    return <FinalizeWeights />
+  }
+
   return (
     <div className="bg-background rounded-3xl">
       <RoundDescription />
       <RebalanceActionOverview />
+
       {isAuctionLauncher ? (
         <LaunchAuctionsButton />
       ) : (

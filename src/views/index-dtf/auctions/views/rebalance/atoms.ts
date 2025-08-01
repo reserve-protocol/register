@@ -1,5 +1,5 @@
 import { TokenPriceWithSnapshot } from '@/hooks/use-asset-prices-with-snapshot'
-import { AuctionMetrics } from '@reserve-protocol/dtf-rebalance-lib'
+import { AuctionMetrics, WeightRange } from '@reserve-protocol/dtf-rebalance-lib'
 import { Token } from '@/types'
 import { Rebalance } from '@reserve-protocol/dtf-rebalance-lib'
 import { atom } from 'jotai'
@@ -41,21 +41,12 @@ export type Auction = {
   }[]
 }
 
-export type RebalanceState = {
-  rebalance: Rebalance
-  supply: bigint
-  currentFolio: Record<string, bigint>
-  initialFolio: Record<string, bigint>
-  prices: TokenPriceWithSnapshot
-  isTrackingDTF: boolean
-}
 
 export const rebalanceMetricsAtom = atom<AuctionMetrics | undefined>(undefined)
 
 export const rebalancePercentAtom = atom(90)
 export const rebalanceAuctionsAtom = atom<Auction[]>([])
 
-export const rebalanceStateAtom = atom<RebalanceState | undefined>(undefined)
 
 export const rebalanceTokenMapAtom = atom<Record<string, Token>>((get) => {
   const rebalance = get(currentRebalanceAtom)
@@ -82,6 +73,21 @@ export const isAuctionOngoingAtom = atom((get) => {
 })
 
 export const priceVolatilityAtom = atom<keyof typeof PRICE_VOLATILITY>('MEDIUM')
+
+// Advanced rebalance atoms for hybrid DTFs
+export const finalizedWeightsAtom = atom<Record<string, WeightRange> | undefined>(undefined)
+export const areWeightsFinalizedAtom = atom<boolean>(false)
+export const showFinalizeWeightsViewAtom = atom<boolean>(false)
+export const finalizeProposedUnitsAtom = atom<Record<string, string>>({})
+export const originalRebalanceWeightsAtom = atom<Record<string, WeightRange> | undefined>(undefined)
+
+// Similar to proposedIndexBasketAtom but for finalize weights
+export interface IndexAssetShares {
+  token: Token
+  currentShares: string
+  currentUnits: string
+}
+export const finalizeProposedBasketAtom = atom<Record<string, IndexAssetShares> | undefined>(undefined)
 
 // Derived atom that returns the current active auction with its index or null
 export const activeAuctionAtom = atom<{
