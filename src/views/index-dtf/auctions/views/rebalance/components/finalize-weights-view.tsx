@@ -8,93 +8,106 @@ import {
   getStartRebalance,
   WeightRange,
 } from '@reserve-protocol/dtf-rebalance-lib'
+import { getCurrentBasket } from '@/lib/index-rebalance/utils'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { ArrowLeft, PencilRuler } from 'lucide-react'
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { Address, formatUnits, parseUnits } from 'viem'
 import { currentRebalanceAtom } from '../../../atoms'
 import {
   areWeightsFinalizedAtom,
   finalizedWeightsAtom,
-  finalizeProposedBasketAtom,
-  finalizeProposedUnitsAtom,
-  IndexAssetShares,
   PRICE_VOLATILITY,
   rebalanceTokenMapAtom,
   showFinalizeWeightsViewAtom,
 } from '../atoms'
 import useRebalanceParams from '../hooks/use-rebalance-params'
-import FinalizeWeightsCsvSetup from './finalize-weights-csv-setup'
-import FinalizeWeightsTable from './finalize-weights-table'
+import {
+  BasketSetupProvider,
+  CsvImport,
+  BasketTable,
+  BasketItem,
+  useBasketSetup,
+} from '@/components/index-basket-setup'
 
-const FinalizeWeightsView = () => {
-  const [showView, setShowView] = useAtom(showFinalizeWeightsViewAtom)
+const FinalizeWeightsContent = () => {
   const rebalanceParams = useRebalanceParams()
   const tokenMap = useAtomValue(rebalanceTokenMapAtom)
-  const currentRebalance = useAtomValue(currentRebalanceAtom)
-  const [proposedUnits, setProposedUnits] = useAtom(finalizeProposedUnitsAtom)
-  const [proposedBasket, setProposedBasket] = useAtom(
-    finalizeProposedBasketAtom
-  )
   const setFinalizedWeights = useSetAtom(finalizedWeightsAtom)
   const setAreWeightsFinalized = useSetAtom(areWeightsFinalizedAtom)
   const rebalanceControl = useAtomValue(indexDTFRebalanceControlAtom)
   const isHybridDTF = useAtomValue(isHybridDTFAtom)
+  const setShowView = useSetAtom(showFinalizeWeightsViewAtom)
+  const { basketItems, proposedUnits, validation } = useBasketSetup()
 
-  // Initialize proposed basket from rebalance targets
-  useEffect(() => {
-    if (rebalanceParams && !proposedBasket) {
-      const basket: Record<string, IndexAssetShares> = {}
-      const initialUnits: Record<string, string> = {}
+  // Convert rebalance data to basket setup format
+  const initialBasket = useMemo(() => {
+    if (!rebalanceParams) return undefined
 
-      rebalanceParams.rebalance.tokens.forEach((tokenAddress) => {
-        const token = tokenMap[tokenAddress.toLowerCase()]
-        const currentFolio =
-          rebalanceParams.currentFolio[tokenAddress.toLowerCase()]
-        const targetWeight =
-          rebalanceParams.initialWeights[tokenAddress.toLowerCase()]
+    const basket: Record<string, BasketItem> = {}
 
-        if (token && targetWeight) {
-          // Calculate current units from folio
-          const currentUnits = formatUnits(currentFolio || 0n, token.decimals)
+    // First, calculate the actual current share percentages from current folio
+    const currentShares: Record<string, string> = {}
+    const addresses: string[] = []
+    const bals: bigint[] = []
+    const decimals: bigint[] = []
+    const prices: number[] = []
 
-          basket[tokenAddress.toLowerCase()] = {
-            token,
-            currentShares: formatUnits(targetWeight.spot, 16), // Convert to percentage
-            currentUnits,
-          }
-
-          // Initialize proposed units if not set
-          if (!proposedUnits[tokenAddress.toLowerCase()]) {
-            // Calculate target units based on target weight and DTF supply
-            const targetUnits = calculateTargetUnits(
-              targetWeight.spot,
-              token,
-              rebalanceParams.prices[tokenAddress.toLowerCase()].currentPrice,
-              rebalanceParams.supply,
-              rebalanceParams.prices
-            )
-            initialUnits[tokenAddress.toLowerCase()] = targetUnits
-          }
-        }
-      })
-
-      setProposedBasket(basket)
-      if (Object.keys(proposedUnits).length === 0) {
-        setProposedUnits(initialUnits)
+    rebalanceParams.rebalance.tokens.forEach((tokenAddress) => {
+      const token = tokenMap[tokenAddress.toLowerCase()]
+      const currentFolio = rebalanceParams.currentFolio[tokenAddress.toLowerCase()]
+      
+      if (token && currentFolio !== undefined) {
+        addresses.push(tokenAddress.toLowerCase())
+        bals.push(currentFolio)
+        decimals.push(BigInt(token.decimals))
+        prices.push(rebalanceParams.prices[tokenAddress.toLowerCase()]?.currentPrice || 0)
       }
+    })
+
+    // Calculate current share percentages
+    try {
+      const shares = getCurrentBasket(bals, decimals, prices)
+      addresses.forEach((address, index) => {
+        currentShares[address] = formatUnits(shares[index], 16)
+      })
+    } catch (e) {
+      console.error('Error calculating current shares:', e)
     }
-  }, [
-    rebalanceParams,
-    tokenMap,
-    proposedBasket,
-    proposedUnits,
-    setProposedBasket,
-    setProposedUnits,
-  ])
+
+    // Now build the basket items
+    rebalanceParams.rebalance.tokens.forEach((tokenAddress) => {
+      const token = tokenMap[tokenAddress.toLowerCase()]
+      const currentFolio = rebalanceParams.currentFolio[tokenAddress.toLowerCase()]
+
+      if (token) {
+        const currentUnits = formatUnits(currentFolio || 0n, token.decimals)
+        const currentSharePercent = currentShares[tokenAddress.toLowerCase()] || '0'
+        
+        basket[tokenAddress.toLowerCase()] = {
+          token,
+          currentValue: currentUnits, // For units mode, this is the current units
+          currentShares: currentSharePercent, // Actual current share percentage
+          currentUnits: currentUnits, // Also store in currentUnits for clarity
+        }
+      }
+    })
+
+    return basket
+  }, [rebalanceParams, tokenMap])
+
+  const priceMap = useMemo(() => {
+    if (!rebalanceParams) return {}
+    
+    const prices: Record<string, number> = {}
+    Object.entries(rebalanceParams.prices).forEach(([address, priceData]) => {
+      prices[address] = priceData.currentPrice
+    })
+    return prices
+  }, [rebalanceParams])
 
   const handleFinalize = () => {
-    if (!proposedBasket || !rebalanceParams || !rebalanceControl) return
+    if (!rebalanceParams || !rebalanceControl || !validation.isValid) return
 
     try {
       // Prepare data for getStartRebalance
@@ -166,34 +179,19 @@ const FinalizeWeightsView = () => {
     }
   }
 
-  const isValidConfiguration = Object.values(proposedUnits).every((unit) => {
-    const num = Number(unit)
-    return unit && !isNaN(num) && num > 0
-  })
-
-  if (!showView || !proposedBasket) return null
-
-  const rebalanceTitle = currentRebalance?.proposal?.description || 'Rebalance'
-
   return (
     <div className="bg-background rounded-3xl">
       <Header />
       <Hero />
 
       <div className="p-4 md:p-6 space-y-4">
-        {/* CSV Upload */}
-        <FinalizeWeightsCsvSetup />
-
-        {/* Basket Configuration Table */}
-        <FinalizeWeightsTable
-          assets={Object.values(proposedBasket)}
-          proposedUnits={proposedUnits}
-          onUnitsChange={(address, value) => {
-            setProposedUnits((prev) => ({
-              ...prev,
-              [address.toLowerCase()]: value,
-            }))
-          }}
+        <CsvImport />
+        <BasketTable
+          mode="units"
+          columns={['token', 'current', 'input', 'allocation']}
+          showToggle={false}
+          showAddToken={false}
+          readOnly={false}
         />
       </div>
 
@@ -201,12 +199,85 @@ const FinalizeWeightsView = () => {
         <Button
           className="w-full"
           onClick={handleFinalize}
-          disabled={!isValidConfiguration}
+          disabled={!validation.isValid}
         >
           Finalize Weights
         </Button>
       </div>
     </div>
+  )
+}
+
+const FinalizeWeightsView = () => {
+  const [showView] = useAtom(showFinalizeWeightsViewAtom)
+  const rebalanceParams = useRebalanceParams()
+  const tokenMap = useAtomValue(rebalanceTokenMapAtom)
+
+  if (!showView || !rebalanceParams) return null
+
+  // Convert rebalance data to basket setup format
+  const initialBasket: Record<string, BasketItem> = {}
+  const priceMap: Record<string, number> = {}
+
+  // First, calculate the actual current share percentages from current folio
+  const currentShares: Record<string, string> = {}
+  const addresses: string[] = []
+  const bals: bigint[] = []
+  const decimals: bigint[] = []
+  const prices: number[] = []
+
+  rebalanceParams.rebalance.tokens.forEach((tokenAddress) => {
+    const token = tokenMap[tokenAddress.toLowerCase()]
+    const currentFolio = rebalanceParams.currentFolio[tokenAddress.toLowerCase()]
+    
+    if (token && currentFolio !== undefined) {
+      addresses.push(tokenAddress.toLowerCase())
+      bals.push(currentFolio)
+      decimals.push(BigInt(token.decimals))
+      prices.push(rebalanceParams.prices[tokenAddress.toLowerCase()]?.currentPrice || 0)
+    }
+  })
+
+  // Calculate current share percentages
+  try {
+    const shares = getCurrentBasket(bals, decimals, prices)
+    addresses.forEach((address, index) => {
+      currentShares[address] = formatUnits(shares[index], 16)
+    })
+  } catch (e) {
+    console.error('Error calculating current shares:', e)
+  }
+
+  // Now build the basket items
+  rebalanceParams.rebalance.tokens.forEach((tokenAddress) => {
+    const token = tokenMap[tokenAddress.toLowerCase()]
+    const currentFolio = rebalanceParams.currentFolio[tokenAddress.toLowerCase()]
+
+    if (token) {
+      const currentUnits = formatUnits(currentFolio || 0n, token.decimals)
+      const currentSharePercent = currentShares[tokenAddress.toLowerCase()] || '0'
+      
+      initialBasket[tokenAddress.toLowerCase()] = {
+        token,
+        currentValue: currentUnits,
+        currentShares: currentSharePercent,
+        currentUnits: currentUnits,
+      }
+      
+      priceMap[tokenAddress.toLowerCase()] = rebalanceParams.prices[tokenAddress.toLowerCase()]?.currentPrice || 0
+    }
+  })
+
+  return (
+    <BasketSetupProvider
+      config={{
+        mode: 'units',
+        initialBasket,
+        priceMap,
+      }}
+    >
+      <FinalizeWeightsContent />
+    </BasketSetupProvider>
   )
 }
 
