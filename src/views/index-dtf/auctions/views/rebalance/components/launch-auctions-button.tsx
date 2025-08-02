@@ -74,7 +74,7 @@ const LaunchAuctionsButton = () => {
       setIsLaunching(true)
       setError(null)
 
-      // Use saved weights for hybrid DTFs on first auction
+      // Use saved weights for hybrid DTFs on first auction if available
       const weightsToUse =
         isHybridDTF &&
         areWeightsSaved &&

@@ -27,10 +27,11 @@ export const UnitInputRow = ({
   const address = item.token.address.toLowerCase()
   const currentUnits = item.currentValue
   const originalUnits = item.currentUnits || currentUnits
+  const initialProposedUnits = item.proposedValue || originalUnits
   const proposedUnit = proposedUnits[address] || currentUnits || '0'
   const calculatedShare = calculatedShares[address] || '0'
   const chainId = useAtomValue(chainIdAtom)
-  const hasBeenEdited = proposedUnit !== originalUnits
+  const hasBeenEdited = proposedUnit !== initialProposedUnits
 
   const renderCell = (column: ColumnType) => {
     switch (column) {

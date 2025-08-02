@@ -39,8 +39,9 @@ const ManageWeightsContent = () => {
   if (!rebalanceParams || !rebalanceControl) return null
 
   const editedRows = Object.entries(basketItems).filter(([address, item]) => {
-    const proposedUnit = proposedUnits[address]
-    return proposedUnit && proposedUnit !== item.currentUnits
+    const proposedUnit = proposedUnits[address] || item.currentValue
+    const initialProposedUnit = item.proposedValue || item.currentUnits || item.currentValue
+    return proposedUnit !== initialProposedUnit
   }).length
   const totalRows = Object.keys(basketItems).length
 
@@ -78,19 +79,31 @@ const ManageWeightsContent = () => {
         isHybridDTF
       )
 
-      const weightsMap = rebalanceData.tokens.reduce(
-        (acc, address, index) => {
-          acc[address.toLowerCase()] = weights[index]
-          return acc
-        },
-        {} as Record<string, WeightRange>
-      )
+      // Create weights map ensuring correct token order
+      const weightsMap: Record<string, WeightRange> = {}
+      rebalanceParams.rebalance.tokens.forEach((tokenAddress, index) => {
+        const address = tokenAddress.toLowerCase()
+        weightsMap[address] = weights[index]
+        
+        // Debug logging
+        console.log(`Token ${index}: ${tokenAddress}`, {
+          weight: weights[index],
+          proposedUnit: proposedUnits[address],
+          targetShare: targetShares[index],
+        })
+      })
+
+      // Validate weights distribution
+      const totalWeight = weights.reduce((sum, w) => sum + Number(w.spot), 0)
+      console.log('Total weight (should be close to 1):', totalWeight)
 
       setSavedWeights(weightsMap)
       setAreWeightsSaved(true)
       setManagedWeightUnits(proposedUnits)
       setShowView(false)
-    } catch {}
+    } catch (error) {
+      console.error('Error saving weights:', error)
+    }
   }
 
   return (

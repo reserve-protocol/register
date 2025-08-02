@@ -14,6 +14,8 @@ import {
   rebalanceAuctionsAtom,
   rebalanceMetricsAtom,
   rebalancePercentAtom,
+  savedWeightsAtom,
+  areWeightsSavedAtom,
 } from './atoms'
 import useRebalanceAuctions from './hooks/use-rebalance-auctions'
 import useRebalanceParams, {
@@ -27,6 +29,9 @@ const RebalanceMetricsUpdater = () => {
   const rebalanceParams = useRebalanceParams()
   const currentRebalance = useAtomValue(currentRebalanceAtom)
   const isHybridDTF = useAtomValue(isHybridDTFAtom)
+  const savedWeights = useAtomValue(savedWeightsAtom)
+  const areWeightsSaved = useAtomValue(areWeightsSavedAtom)
+  const auctions = useAtomValue(rebalanceAuctionsAtom)
 
   const updateMetrics = useCallback(
     (
@@ -46,6 +51,15 @@ const RebalanceMetricsUpdater = () => {
           isTrackingDTF,
         } = params
 
+        // Use saved weights for hybrid DTFs on first auction if available
+        const weightsToUse =
+          isHybridDTF &&
+          areWeightsSaved &&
+          savedWeights &&
+          auctions.length === 0
+            ? savedWeights
+            : initialWeights
+
         const [, rebalanceMetrics] = getRebalanceOpenAuction(
           currentRebalance.rebalance.tokens,
           rebalance,
@@ -53,7 +67,7 @@ const RebalanceMetricsUpdater = () => {
           currentFolio,
           initialFolio,
           initialPrices,
-          initialWeights,
+          weightsToUse,
           prices,
           isTrackingDTF,
           rebalancePercent,
@@ -71,7 +85,7 @@ const RebalanceMetricsUpdater = () => {
         console.error('Error getting rebalance metrics', e)
       }
     },
-    [setRebalanceMetrics, isHybridDTF]
+    [setRebalanceMetrics, isHybridDTF, savedWeights, areWeightsSaved, auctions]
   )
 
   useEffect(() => {

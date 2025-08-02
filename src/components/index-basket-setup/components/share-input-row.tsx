@@ -26,9 +26,10 @@ export const ShareInputRow = ({
     useBasketSetup()
   const address = item.token.address.toLowerCase()
   const currentShare = item.currentValue
+  const initialProposedShare = item.proposedValue || currentShare
   const proposedShare = proposedShares[address] || currentShare || '0'
   const allocation = allocations[address] || proposedShare
-  const hasBeenEdited = proposedShare !== currentShare
+  const hasBeenEdited = proposedShare !== initialProposedShare
 
   const renderCell = (column: ColumnType) => {
     switch (column) {
