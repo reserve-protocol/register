@@ -21,6 +21,7 @@ import {
 import useRebalanceParams from '../hooks/use-rebalance-params'
 import getRebalanceOpenAuction from '../utils/get-rebalance-open-auction'
 import { WeightRange } from '@reserve-protocol/dtf-rebalance-lib'
+import { toast } from 'sonner'
 
 const auctionNumberAtom = atom((get) => {
   const auctions = get(rebalanceAuctionsAtom)
@@ -40,7 +41,6 @@ const LaunchAuctionsButton = () => {
   const { isSuccess } = useWaitForTransactionReceipt({
     hash: data,
   })
-  const [error, setError] = useState<string | null>(null)
   const isAuctionOngoing = useAtomValue(isAuctionOngoingAtom)
   const isHybridDTF = useAtomValue(isHybridDTFAtom)
   const savedWeights = useAtomValue(savedWeightsAtom)
@@ -50,7 +50,7 @@ const LaunchAuctionsButton = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      setError(null)
+      toast.success('Auction launched successfully')
       // Refresh nonce after 10s
       let timeout = setTimeout(() => {
         setRefreshNonce(refreshNonce + 1)
@@ -67,12 +67,18 @@ const LaunchAuctionsButton = () => {
     }
   }, [isSuccess])
 
+  useEffect(() => {
+    if (isError) {
+      setIsLaunching(false)
+      toast.error('Transaction rejected or failed')
+    }
+  }, [isError])
+
   const handleStartAuctions = () => {
     if (!isValid || !rebalanceParams) return
 
     try {
       setIsLaunching(true)
-      setError(null)
 
       // Use saved weights for hybrid DTFs on first auction if available
       const weightsToUse =
@@ -113,14 +119,14 @@ const LaunchAuctionsButton = () => {
     } catch (e) {
       console.error('Error opening auction', e)
       setIsLaunching(false)
-      setError('Error opening auctions')
+      toast.error('Error opening auctions')
     }
   }
 
   return (
-    <div className="flex flex-col gap-2 p-2">
+    <div className="p-2">
       <Button
-        className="rounded-xl py-6  w-full gap-2"
+        className="rounded-xl py-6 w-full gap-2"
         disabled={!isValid || isPending || isAuctionOngoing || isLaunching}
         onClick={handleStartAuctions}
       >
@@ -140,7 +146,6 @@ const LaunchAuctionsButton = () => {
           </>
         )}
       </Button>
-      {error && <div className="text-red-500">{error}</div>}
     </div>
   )
 }

@@ -31,9 +31,9 @@ const ManageWeightsView = () => {
       return { initialBasket: basket, priceMap: prices }
     }
 
-    // Calculate proposed units from rebalance weights
+    // Always calculate proposed units from rebalance weights for comparison
     let proposedUnitsFromWeights: Record<string, string> = {}
-    if (Object.keys(savedProposedUnits).length === 0 && rebalanceParams.rebalance.weights) {
+    if (rebalanceParams.rebalance.weights) {
       // Weights are in D27 format (tok/BU - tokens per basket unit)
       // For a DTF with 1 basket unit = 1 DTF token (typical case),
       // the weight directly represents tokens per DTF token in D27 format
@@ -95,7 +95,7 @@ const ManageWeightsView = () => {
           currentValue: savedProposedUnits[address] || proposedValue,
           currentShares: formatUnits(currentShares[index] || 0n, 16),
           currentUnits: folioValue,
-          proposedValue: proposedValue, // Store initial proposed value for comparison
+          proposedValue: proposedValue, // This is the original proposed value for comparison
         }
         prices[address] = rebalanceParams.prices[address]?.currentPrice || 0
       }
