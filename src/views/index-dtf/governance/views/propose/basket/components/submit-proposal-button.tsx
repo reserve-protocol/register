@@ -12,6 +12,7 @@ import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
 import { proposalDescriptionAtom, basketProposalCalldatasAtom } from '../atoms'
 import { useIsProposeAllowed } from '@/views/index-dtf/governance/hooks/use-is-propose-allowed'
 import { indexDTFRefreshFnAtom } from '@/views/index-dtf/index-dtf-container'
+import { TransactionButtonContainer } from '@/components/ui/transaction'
 
 const isProposalReady = atom((get) => {
   const wallet = get(walletAtom)
@@ -52,7 +53,7 @@ const SubmitProposalButton = () => {
   const govAddress = useAtomValue(tradingGovAddress)
   const refreshFn = useAtomValue(indexDTFRefreshFnAtom)
 
-  const { writeContract, isPending, data } = useWriteContract()
+  const { writeContract, isPending, data, error } = useWriteContract()
   const { isSuccess } = useWaitForTransactionReceipt({
     hash: data,
     chainId,
@@ -91,19 +92,24 @@ const SubmitProposalButton = () => {
   }
 
   return (
-    <Button
-      disabled={!isReady || isPending || !!data || !govAddress}
-      onClick={handleSubmit}
-      className="w-full"
-      variant="default"
+    <TransactionButtonContainer
+      connectButtonClassName="w-full"
+      switchChainButtonClassName="w-full"
     >
-      {(isPending || !!data) && (
-        <Loader2 className="w-4 h-4 animate-spin mr-2" />
-      )}
-      {isPending && 'Pending, sign in wallet...'}
-      {!isPending && !!data && 'Waiting for confirmation...'}
-      {!isPending && !data && 'Submit proposal onchain'}
-    </Button>
+      <Button
+        disabled={!isReady || isPending || !!data || !govAddress}
+        onClick={handleSubmit}
+        className="w-full"
+        variant="default"
+      >
+        {(isPending || !!data) && (
+          <Loader2 className="w-4 h-4 animate-spin mr-2" />
+        )}
+        {isPending && 'Pending, sign in wallet...'}
+        {!isPending && !!data && 'Waiting for confirmation...'}
+        {!isPending && !data && 'Submit proposal onchain'}
+      </Button>
+    </TransactionButtonContainer>
   )
 }
 

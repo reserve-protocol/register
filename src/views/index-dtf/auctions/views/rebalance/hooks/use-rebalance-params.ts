@@ -6,17 +6,18 @@ import {
   indexDTFAtom,
   indexDTFBasketAtom,
   indexDTFRebalanceControlAtom,
+  isHybridDTFAtom,
 } from '@/state/dtf/atoms'
 import {
   Rebalance,
   WeightRange,
 } from '@reserve-protocol/dtf-rebalance-lib/dist/types'
-import { useAtomValue } from 'jotai'
+import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useMemo } from 'react'
 import { parseEther } from 'viem'
 import { useReadContract, useReadContracts } from 'wagmi'
 import { currentRebalanceAtom } from '../../../atoms'
-import { isAuctionOngoingAtom } from '../atoms'
+import { isAuctionOngoingAtom, rebalanceAuctionsAtom, originalRebalanceWeightsAtom } from '../atoms'
 import { chainIdAtom } from '@/state/atoms'
 import { Token } from '@/types'
 import { calculatePriceFromRange } from '@/utils'
@@ -52,6 +53,10 @@ const useRebalanceParams = () => {
   const rebalanceControl = useAtomValue(indexDTFRebalanceControlAtom)
   const isAuctionOngoing = useAtomValue(isAuctionOngoingAtom)
   const chainId = useAtomValue(chainIdAtom)
+  const isHybridDTF = useAtomValue(isHybridDTFAtom)
+  const auctions = useAtomValue(rebalanceAuctionsAtom)
+  const setOriginalWeights = useSetAtom(originalRebalanceWeightsAtom)
+  const originalWeights = useAtomValue(originalRebalanceWeightsAtom)
 
   const rebalanceTokens = useMemo(() => {
     if (!rebalance || !basket) return []
@@ -137,6 +142,19 @@ const useRebalanceParams = () => {
     },
   })
 
+  // Query for historical weights at first auction block for hybrid DTFs
+  const { data: historicalRebalance } = useReadContract({
+    abi: dtfIndexAbiV4,
+    address: dtf?.id,
+    functionName: 'getRebalance',
+    chainId,
+    args: [],
+    blockNumber: auctions[0]?.blockNumber ? BigInt(auctions[0].blockNumber) : undefined,
+    query: {
+      enabled: isHybridDTF && auctions.length > 0 && !!auctions[0]?.blockNumber && !!dtf?.id,
+    },
+  })
+
   useEffect(() => {
     if (isAuctionOngoing) {
       const interval = setInterval(() => {
@@ -146,6 +164,22 @@ const useRebalanceParams = () => {
       return () => clearInterval(interval)
     }
   }, [isAuctionOngoing, refetchDtfData])
+
+  // Store historical weights for hybrid DTFs
+  useEffect(() => {
+    if (historicalRebalance && isHybridDTF) {
+      const weights: Record<string, WeightRange> = {}
+      for (let i = 0; i < historicalRebalance[1].length; i++) {
+        const token = historicalRebalance[1][i].toLowerCase()
+        weights[token] = {
+          low: historicalRebalance[2][i].low,
+          spot: historicalRebalance[2][i].spot,
+          high: historicalRebalance[2][i].high,
+        }
+      }
+      setOriginalWeights(weights)
+    }
+  }, [historicalRebalance, isHybridDTF, setOriginalWeights])
 
   return useMemo(() => {
     if (
@@ -166,7 +200,7 @@ const useRebalanceParams = () => {
       {} as Record<string, Token>
     )
     const initialPrices: Record<string, number> = {}
-    const initialWeights: Record<string, WeightRange> = {}
+    let initialWeights: Record<string, WeightRange> = {}
 
     for (let i = 0; i < initialRebalance[1].length; i++) {
       const token = initialRebalance[1][i].toLowerCase()
@@ -185,6 +219,11 @@ const useRebalanceParams = () => {
         spot: initialRebalance[2][i].spot,
         high: initialRebalance[2][i].high,
       }
+    }
+
+    // Use historical weights for subsequent auctions in hybrid DTFs
+    if (isHybridDTF && auctions.length > 0 && originalWeights) {
+      initialWeights = originalWeights
     }
 
     return {
@@ -208,7 +247,7 @@ const useRebalanceParams = () => {
       prices,
       isTrackingDTF: !rebalanceControl.weightControl,
     } as RebalanceParams
-  }, [dtfData, initialFolio, prices, rebalanceControl, initialRebalance])
+  }, [dtfData, initialFolio, prices, rebalanceControl, initialRebalance, isHybridDTF, auctions.length, originalWeights])
 }
 
 export default useRebalanceParams
