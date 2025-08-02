@@ -6,6 +6,9 @@ import { XIcon } from 'lucide-react'
 import { BasketItem } from '../atoms'
 import { ColumnType } from '../basket-table'
 import { useBasketSetup } from '../hooks/use-basket-setup'
+import { useAtomValue } from 'jotai'
+import { chainIdAtom } from '@/state/chain/atoms/chainAtoms'
+import { cn } from '@/lib/utils'
 
 interface ShareInputRowProps {
   item: BasketItem
@@ -13,12 +16,19 @@ interface ShareInputRowProps {
   readOnly?: boolean
 }
 
-export const ShareInputRow = ({ item, columns, readOnly }: ShareInputRowProps) => {
-  const { proposedShares, updateProposedValue, removeToken, allocations } = useBasketSetup()
+export const ShareInputRow = ({
+  item,
+  columns,
+  readOnly,
+}: ShareInputRowProps) => {
+  const chainId = useAtomValue(chainIdAtom)
+  const { proposedShares, updateProposedValue, removeToken, allocations } =
+    useBasketSetup()
   const address = item.token.address.toLowerCase()
   const currentShare = item.currentValue
   const proposedShare = proposedShares[address] || currentShare || '0'
   const allocation = allocations[address] || proposedShare
+  const hasBeenEdited = proposedShare !== currentShare
 
   const renderCell = (column: ColumnType) => {
     switch (column) {
@@ -26,9 +36,10 @@ export const ShareInputRow = ({ item, columns, readOnly }: ShareInputRowProps) =
         return (
           <TableCell className="border-r">
             <div className="flex items-center gap-2">
-              <TokenLogo 
+              <TokenLogo
                 size="xl"
-                symbol={item.token.symbol} 
+                chain={chainId}
+                symbol={item.token.symbol}
                 address={item.token.address}
               />
               <div>
@@ -38,44 +49,52 @@ export const ShareInputRow = ({ item, columns, readOnly }: ShareInputRowProps) =
             </div>
           </TableCell>
         )
-      
+
       case 'current':
         return (
           <TableCell className="text-center">
             {formatPercentage(Number(currentShare))}
           </TableCell>
         )
-      
+
       case 'input':
         return (
           <TableCell className="bg-primary/10 w-10">
             <NumericalInput
               placeholder="0%"
-              className="min-w-24 w-full text-center"
+              className={cn(
+                "min-w-24 w-full text-center",
+                hasBeenEdited && "text-primary"
+              )}
               value={proposedShare}
               onChange={(value) => updateProposedValue(address, value)}
               disabled={readOnly}
             />
           </TableCell>
         )
-      
+
       case 'delta':
         const delta = Number(proposedShare) - Number(currentShare)
         return (
           <TableCell className="text-center">
-            <span className={delta > 0 ? 'text-green-500' : delta < 0 ? 'text-red-500' : ''}>
-              {delta > 0 ? '+' : ''}{formatPercentage(delta)}
+            <span
+              className={
+                delta > 0 ? 'text-green-500' : delta < 0 ? 'text-red-500' : ''
+              }
+            >
+              {delta > 0 ? '+' : ''}
+              {formatPercentage(delta)}
             </span>
           </TableCell>
         )
-      
+
       case 'allocation':
         return (
           <TableCell className="text-center">
             {formatPercentage(Number(allocation))}
           </TableCell>
         )
-      
+
       case 'remove':
         return (
           <TableCell>
@@ -89,14 +108,14 @@ export const ShareInputRow = ({ item, columns, readOnly }: ShareInputRowProps) =
             )}
           </TableCell>
         )
-      
+
       default:
         return null
     }
   }
 
   return (
-    <TableRow>
+    <TableRow className={cn(hasBeenEdited && "border-l-4 border-l-primary")}>
       {columns.map((column) => renderCell(column))}
     </TableRow>
   )

@@ -75,19 +75,19 @@ export const isAuctionOngoingAtom = atom((get) => {
 export const priceVolatilityAtom = atom<keyof typeof PRICE_VOLATILITY>('MEDIUM')
 
 // Advanced rebalance atoms for hybrid DTFs
-export const finalizedWeightsAtom = atom<Record<string, WeightRange> | undefined>(undefined)
-export const areWeightsFinalizedAtom = atom<boolean>(false)
-export const showFinalizeWeightsViewAtom = atom<boolean>(false)
-export const finalizeProposedUnitsAtom = atom<Record<string, string>>({})
+export const savedWeightsAtom = atom<Record<string, WeightRange> | undefined>(undefined)
+export const areWeightsSavedAtom = atom<boolean>(false)
+export const showManageWeightsViewAtom = atom<boolean>(false)
+export const managedWeightUnitsAtom = atom<Record<string, string>>({})
 export const originalRebalanceWeightsAtom = atom<Record<string, WeightRange> | undefined>(undefined)
 
-// Similar to proposedIndexBasketAtom but for finalize weights
+// Similar to proposedIndexBasketAtom but for manage weights
 export interface IndexAssetShares {
   token: Token
   currentShares: string
   currentUnits: string
 }
-export const finalizeProposedBasketAtom = atom<Record<string, IndexAssetShares> | undefined>(undefined)
+export const managedBasketAtom = atom<Record<string, IndexAssetShares> | undefined>(undefined)
 
 // Derived atom that returns the current active auction with its index or null
 export const activeAuctionAtom = atom<{

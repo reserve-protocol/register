@@ -1,5 +1,5 @@
 // Provider
-export { BasketSetupProvider, useBasketSetupContext } from './provider'
+export { BasketSetupProvider } from './provider'
 
 // Components
 export { CsvImport } from './csv-import'

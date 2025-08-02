@@ -1,4 +1,11 @@
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
@@ -18,7 +25,13 @@ import { UnitInputRow } from './components/unit-input-row'
 import { TokenSelector } from './token-selector'
 import { formatPercentage } from '@/utils'
 
-export type ColumnType = 'token' | 'current' | 'input' | 'delta' | 'allocation' | 'remove'
+export type ColumnType =
+  | 'token'
+  | 'current'
+  | 'input'
+  | 'delta'
+  | 'allocation'
+  | 'remove'
 
 interface BasketTableProps {
   mode?: 'shares' | 'units' | 'both'
@@ -29,9 +42,18 @@ interface BasketTableProps {
   className?: string
 }
 
-const defaultColumns: ColumnType[] = ['token', 'current', 'input', 'allocation', 'remove']
+const defaultColumns: ColumnType[] = [
+  'token',
+  'current',
+  'input',
+  'allocation',
+  'remove',
+]
 
-const getColumnLabel = (column: ColumnType, inputType: 'shares' | 'units'): string => {
+const getColumnLabel = (
+  column: ColumnType,
+  inputType: 'shares' | 'units'
+): string => {
   switch (column) {
     case 'token':
       return 'Token'
@@ -55,7 +77,11 @@ const InputToggle = () => {
   const basketMode = useAtomValue(basketModeAtom)
 
   if (basketMode === 'shares' || basketMode === 'units') {
-    return <span className="font-bold">{basketMode === 'shares' ? 'Share %' : 'Units'}</span>
+    return (
+      <span className="font-bold">
+        {basketMode === 'shares' ? 'Share %' : 'Units'}
+      </span>
+    )
   }
 
   return (
@@ -144,7 +170,12 @@ export const BasketTable = ({
 
   // Override mode if specified
   const effectiveMode = mode || basketMode
-  const effectiveInputType = effectiveMode === 'both' ? currentInputType : effectiveMode === 'units' ? 'units' : 'shares'
+  const effectiveInputType =
+    effectiveMode === 'both'
+      ? currentInputType
+      : effectiveMode === 'units'
+        ? 'units'
+        : 'shares'
 
   const items = Object.values(basketItems)
 
@@ -160,7 +191,7 @@ export const BasketTable = ({
   }
 
   return (
-    <div className={cn("border rounded-xl overflow-auto", className)}>
+    <div className={cn('overflow-auto', className)}>
       <Table>
         <TableHeader>
           <TableRow>
@@ -169,16 +200,27 @@ export const BasketTable = ({
                 key={column}
                 className={cn(
                   column === 'token' && 'border-r min-w-48',
-                  column === 'current' && effectiveInputType === 'units' && 'text-right w-36',
-                  column === 'current' && effectiveInputType === 'shares' && 'w-16 text-center',
-                  column === 'input' && 'bg-primary/10 text-primary text-center font-bold',
+                  column === 'current' &&
+                    effectiveInputType === 'units' &&
+                    'text-right w-36',
+                  column === 'current' &&
+                    effectiveInputType === 'shares' &&
+                    'w-16 text-center',
+                  column === 'input' &&
+                    'bg-primary/10 text-primary text-center font-bold',
                   column === 'delta' && 'text-center',
-                  column === 'allocation' && effectiveInputType === 'units' && 'text-center',
-                  column === 'allocation' && effectiveInputType === 'shares' && 'w-16 text-center',
+                  column === 'allocation' &&
+                    effectiveInputType === 'units' &&
+                    'text-center',
+                  column === 'allocation' &&
+                    effectiveInputType === 'shares' &&
+                    'w-16 text-center',
                   column === 'remove' && 'w-12'
                 )}
               >
-                {column === 'input' && showToggle && effectiveMode === 'both' ? (
+                {column === 'input' &&
+                showToggle &&
+                effectiveMode === 'both' ? (
                   <InputToggle />
                 ) : (
                   getColumnLabel(column, effectiveInputType)
@@ -189,7 +231,8 @@ export const BasketTable = ({
         </TableHeader>
         <TableBody>
           {items.map((item) => {
-            const RowComponent = effectiveInputType === 'units' ? UnitInputRow : ShareInputRow
+            const RowComponent =
+              effectiveInputType === 'units' ? UnitInputRow : ShareInputRow
             return (
               <RowComponent
                 key={item.token.address}

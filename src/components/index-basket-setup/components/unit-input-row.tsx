@@ -7,6 +7,9 @@ import { BasketItem } from '../atoms'
 import { ColumnType } from '../basket-table'
 import { useBasketSetup } from '../hooks/use-basket-setup'
 import DecimalDisplay from '@/components/decimal-display'
+import { useAtomValue } from 'jotai'
+import { chainIdAtom } from '@/state/chain/atoms/chainAtoms'
+import { cn } from '@/lib/utils'
 
 interface UnitInputRowProps {
   item: BasketItem
@@ -14,12 +17,20 @@ interface UnitInputRowProps {
   readOnly?: boolean
 }
 
-export const UnitInputRow = ({ item, columns, readOnly }: UnitInputRowProps) => {
-  const { proposedUnits, updateProposedValue, removeToken, calculatedShares } = useBasketSetup()
+export const UnitInputRow = ({
+  item,
+  columns,
+  readOnly,
+}: UnitInputRowProps) => {
+  const { proposedUnits, updateProposedValue, removeToken, calculatedShares } =
+    useBasketSetup()
   const address = item.token.address.toLowerCase()
   const currentUnits = item.currentValue
+  const originalUnits = item.currentUnits || currentUnits
   const proposedUnit = proposedUnits[address] || currentUnits || '0'
   const calculatedShare = calculatedShares[address] || '0'
+  const chainId = useAtomValue(chainIdAtom)
+  const hasBeenEdited = proposedUnit !== originalUnits
 
   const renderCell = (column: ColumnType) => {
     switch (column) {
@@ -27,9 +38,10 @@ export const UnitInputRow = ({ item, columns, readOnly }: UnitInputRowProps) => 
         return (
           <TableCell className="border-r">
             <div className="flex items-center gap-2">
-              <TokenLogo 
+              <TokenLogo
                 size="xl"
-                symbol={item.token.symbol} 
+                chain={chainId}
+                symbol={item.token.symbol}
                 address={item.token.address}
               />
               <div>
@@ -39,53 +51,60 @@ export const UnitInputRow = ({ item, columns, readOnly }: UnitInputRowProps) => 
             </div>
           </TableCell>
         )
-      
+
       case 'current':
         return (
           <TableCell className="text-right">
-            <DecimalDisplay value={currentUnits} />
+            <DecimalDisplay value={originalUnits} />
           </TableCell>
         )
-      
+
       case 'input':
         return (
           <TableCell className="bg-primary/10">
             <NumericalInput
               placeholder="0"
-              className="w-32 text-center mx-auto"
+              className={cn(
+                "w-32 text-center mx-auto",
+                hasBeenEdited && "text-primary"
+              )}
               value={proposedUnit}
               onChange={(value) => updateProposedValue(address, value)}
               disabled={readOnly}
             />
           </TableCell>
         )
-      
+
       case 'delta':
         // For units, show the share percentage change
         const currentShareValue = item.proposedValue || '0' // This would need to be calculated
         return (
           <TableCell className="text-center">
             <div className="flex items-center justify-center gap-1">
-              <span className="text-legend">{formatPercentage(Number(currentShareValue))}</span>
+              <span className="text-legend">
+                {formatPercentage(Number(currentShareValue))}
+              </span>
               <ArrowRight size={14} />
               <span>{formatPercentage(Number(calculatedShare))}</span>
             </div>
           </TableCell>
         )
-      
+
       case 'allocation':
         // For units mode, show current % -> new % like in basket proposal
         const currentSharePercent = item.currentShares || '0'
         return (
           <TableCell className="text-center">
             <div className="flex items-center justify-center gap-1">
-              <span className="text-legend">{formatPercentage(Number(currentSharePercent))}</span>
+              <span className="text-legend">
+                {formatPercentage(Number(currentSharePercent))}
+              </span>
               <ArrowRight size={14} />
               <span>{formatPercentage(Number(calculatedShare))}</span>
             </div>
           </TableCell>
         )
-      
+
       case 'remove':
         return (
           <TableCell>
@@ -99,14 +118,14 @@ export const UnitInputRow = ({ item, columns, readOnly }: UnitInputRowProps) => 
             )}
           </TableCell>
         )
-      
+
       default:
         return null
     }
   }
 
   return (
-    <TableRow>
+    <TableRow className={cn(hasBeenEdited && "border-l-4 border-l-primary")}>
       {columns.map((column) => renderCell(column))}
     </TableRow>
   )

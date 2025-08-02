@@ -7,27 +7,23 @@ export type BasketInputMode = 'shares' | 'units' | 'both'
 
 export interface BasketItem {
   token: Token
-  currentValue: string // Current shares or units depending on mode
-  currentShares?: string // Current share percentage (for units mode display)
-  currentUnits?: string // Current units (for shares mode display)
-  proposedValue?: string // User input value
+  currentValue: string
+  currentShares?: string
+  currentUnits?: string
+  proposedValue?: string
 }
 
-// Core state atoms
 export const basketItemsAtom = atom<Record<string, BasketItem>>({})
 export const basketPriceMapAtom = atom<Record<string, number>>({})
 export const basketModeAtom = atom<BasketInputMode>('both')
 export const currentInputTypeAtom = atom<'shares' | 'units'>('shares')
 
-// UI state atoms
 export const showTokenSelectorAtom = atom(false)
 export const csvImportErrorAtom = atom<string | null>(null)
 
-// Proposed values atoms (user inputs)
 export const proposedSharesAtom = atom<Record<string, string>>({})
 export const proposedUnitsAtom = atom<Record<string, string>>({})
 
-// Get the active proposed values based on current input type
 export const activeProposedValuesAtom = atom(
   (get) => {
     const inputType = get(currentInputTypeAtom)
@@ -43,7 +39,6 @@ export const activeProposedValuesAtom = atom(
   }
 )
 
-// Calculate shares from units
 export const calculatedSharesFromUnitsAtom = atom((get) => {
   const proposedUnits = get(proposedUnitsAtom)
   const basketItems = get(basketItemsAtom)
@@ -85,7 +80,6 @@ export const calculatedSharesFromUnitsAtom = atom((get) => {
   }
 })
 
-// Calculate allocation percentages
 export const allocationPercentagesAtom = atom((get) => {
   const inputType = get(currentInputTypeAtom)
   const proposedShares = get(proposedSharesAtom)
@@ -98,7 +92,6 @@ export const allocationPercentagesAtom = atom((get) => {
   }
 })
 
-// Validation atoms
 export const totalAllocationAtom = atom((get) => {
   const allocations = get(allocationPercentagesAtom)
   return Object.values(allocations).reduce((sum, value) => {
@@ -132,16 +125,18 @@ export const basketValidationAtom = atom((get) => {
   const hasValidPrices = get(hasValidPricesAtom)
   const basketItems = get(basketItemsAtom)
   const hasItems = Object.keys(basketItems).length > 0
+  const mode = get(basketModeAtom)
+  const currentInputType = get(currentInputTypeAtom)
+  const shouldValidateAllocation = mode === 'shares' || (mode === 'both' && currentInputType === 'shares')
   
   return {
-    isValid: hasItems && isValidAllocation && hasValidPrices,
+    isValid: hasItems && (!shouldValidateAllocation || isValidAllocation) && hasValidPrices,
     hasItems,
     isValidAllocation,
     hasValidPrices
   }
 })
 
-// Reset function atom
 export const resetBasketAtomsAtom = atom(null, (get, set) => {
   set(basketItemsAtom, {})
   set(proposedSharesAtom, {})
@@ -152,7 +147,6 @@ export const resetBasketAtomsAtom = atom(null, (get, set) => {
   set(csvImportErrorAtom, null)
 })
 
-// Helpers for converting between different data formats
 export const updateBasketFromTokensAtom = atom(
   null,
   (get, set, tokens: Token[]) => {
@@ -162,7 +156,6 @@ export const updateBasketFromTokensAtom = atom(
     
     const newBasket: Record<string, BasketItem> = {}
     
-    // Keep existing tokens that are still in the list
     tokens.forEach(token => {
       const address = token.address.toLowerCase()
       const existing = currentBasket[address]
@@ -176,7 +169,6 @@ export const updateBasketFromTokensAtom = atom(
     
     set(basketItemsAtom, newBasket)
     
-    // Clean up proposed values for removed tokens
     const tokenAddresses = new Set(tokens.map(t => t.address.toLowerCase()))
     
     const cleanedShares = Object.entries(proposedShares).reduce((acc, [addr, value]) => {

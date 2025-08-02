@@ -1,4 +1,5 @@
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { useCallback } from 'react'
 import {
   activeProposedValuesAtom,
   allocationPercentagesAtom,
@@ -31,32 +32,31 @@ export const useBasketSetup = () => {
   const updateBasketFromTokens = useSetAtom(updateBasketFromTokensAtom)
   const resetBasket = useSetAtom(resetBasketAtomsAtom)
 
-  const updateProposedValue = (address: string, value: string) => {
+  const updateProposedValue = useCallback((address: string, value: string) => {
     if (currentInputType === 'shares') {
       setProposedShares(prev => ({ ...prev, [address]: value }))
     } else {
       setProposedUnits(prev => ({ ...prev, [address]: value }))
     }
-  }
+  }, [currentInputType, setProposedShares, setProposedUnits])
 
-  const removeToken = (address: string) => {
+  const removeToken = useCallback((address: string) => {
     const tokens = Object.values(basketItems)
       .map(item => item.token)
       .filter(token => token.address.toLowerCase() !== address.toLowerCase())
     updateBasketFromTokens(tokens)
-  }
+  }, [basketItems, updateBasketFromTokens])
 
-  const addTokens = (tokens: Token[]) => {
+  const addTokens = useCallback((tokens: Token[]) => {
     const existingTokens = Object.values(basketItems).map(item => item.token)
     const allTokens = [...existingTokens, ...tokens]
     
-    // Remove duplicates
     const uniqueTokens = allTokens.filter((token, index, self) =>
       index === self.findIndex(t => t.address.toLowerCase() === token.address.toLowerCase())
     )
     
     updateBasketFromTokens(uniqueTokens)
-  }
+  }, [basketItems, updateBasketFromTokens])
 
   return {
     // State

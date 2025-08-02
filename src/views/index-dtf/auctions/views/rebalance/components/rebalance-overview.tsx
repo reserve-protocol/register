@@ -1,15 +1,16 @@
 import DecimalDisplay from '@/components/decimal-display'
 import { Skeleton } from '@/components/ui/skeleton'
-import { isHybridDTFAtom } from '@/state/dtf/atoms'
+import { isAuctionLauncherAtom, isHybridDTFAtom } from '@/state/dtf/atoms'
 import { formatPercentage } from '@/utils'
-import { atom, useAtomValue } from 'jotai'
-import { ArrowLeftRight, Check, CheckCircle2, Target, X } from 'lucide-react'
+import { atom, useAtomValue, useSetAtom } from 'jotai'
+import { ArrowLeftRight, Check, CheckCircle2, ChevronRight, Target, X } from 'lucide-react'
 import { useMemo } from 'react'
 import { formatUnits } from 'viem'
 import {
-  areWeightsFinalizedAtom,
+  areWeightsSavedAtom,
   rebalanceAuctionsAtom,
   rebalanceMetricsAtom,
+  showManageWeightsViewAtom,
 } from '../atoms'
 import useRebalanceParams from '../hooks/use-rebalance-params'
 
@@ -50,28 +51,46 @@ const useTotalValueTraded = () => {
   }, [rebalanceParams, auctions])
 }
 
-const FinalizedWeights = () => {
-  const areWeightsFinalized = useAtomValue(areWeightsFinalizedAtom)
+const SavedWeights = () => {
+  const areWeightsSaved = useAtomValue(areWeightsSavedAtom)
   const isHybridDTF = useAtomValue(isHybridDTFAtom)
+  const isAuctionLauncher = useAtomValue(isAuctionLauncherAtom)
+  const auctions = useAtomValue(rebalanceAuctionsAtom)
+  const setShowManageWeights = useSetAtom(showManageWeightsViewAtom)
 
   if (!isHybridDTF) return null
+
+  const canEditWeights = isAuctionLauncher && areWeightsSaved && auctions.length === 0
 
   return (
     <div className="flex items-center gap-2 flex-wrap mb-4">
       <div className="flex items-center gap-2 mr-auto text-legend">
         <CheckCircle2 className="h-4 w-4" />
-        <span>Finalized weights:</span>
+        <span>Weights saved:</span>
       </div>
-      {areWeightsFinalized ? (
-        <Check className="h-4 w-4 text-primary" />
+      {canEditWeights ? (
+        <button
+          className="flex items-center gap-1 hover:opacity-80 transition-opacity"
+          onClick={() => setShowManageWeights(true)}
+        >
+          <Check className="h-4 w-4 text-primary" />
+          <span className="text-primary">Yes</span>
+          <ChevronRight className="h-4 w-4 text-primary" />
+        </button>
       ) : (
-        <X className="h-4 w-4 text-destructive" />
+        <>
+          {areWeightsSaved ? (
+            <Check className="h-4 w-4 text-primary" />
+          ) : (
+            <X className="h-4 w-4 text-destructive" />
+          )}
+          <span
+            className={areWeightsSaved ? 'text-primary' : 'text-destructive'}
+          >
+            {areWeightsSaved ? 'Yes' : 'No'}
+          </span>
+        </>
       )}
-      <span
-        className={areWeightsFinalized ? 'text-primary' : 'text-destructive'}
-      >
-        {areWeightsFinalized ? 'Yes' : 'No'}
-      </span>
     </div>
   )
 }
@@ -82,7 +101,7 @@ const RebalanceOverview = () => {
 
   return (
     <div className="border-t border-secondary p-4 md:p-6">
-      <FinalizedWeights />
+      <SavedWeights />
       <div className="flex items-center gap-2 flex-wrap">
         <div className="flex items-center gap-2 mr-auto text-legend">
           <ArrowLeftRight className="h-4 w-4" />

@@ -15,8 +15,8 @@ import {
   rebalanceAuctionsAtom,
   rebalancePercentAtom,
   refreshNonceAtom,
-  finalizedWeightsAtom,
-  areWeightsFinalizedAtom,
+  savedWeightsAtom,
+  areWeightsSavedAtom,
 } from '../atoms'
 import useRebalanceParams from '../hooks/use-rebalance-params'
 import getRebalanceOpenAuction from '../utils/get-rebalance-open-auction'
@@ -43,8 +43,8 @@ const LaunchAuctionsButton = () => {
   const [error, setError] = useState<string | null>(null)
   const isAuctionOngoing = useAtomValue(isAuctionOngoingAtom)
   const isHybridDTF = useAtomValue(isHybridDTFAtom)
-  const finalizedWeights = useAtomValue(finalizedWeightsAtom)
-  const areWeightsFinalized = useAtomValue(areWeightsFinalizedAtom)
+  const savedWeights = useAtomValue(savedWeightsAtom)
+  const areWeightsSaved = useAtomValue(areWeightsSavedAtom)
   const auctions = useAtomValue(rebalanceAuctionsAtom)
   const isValid = !!rebalanceParams && rebalancePercent > 0 && rebalance && dtf
 
@@ -74,13 +74,13 @@ const LaunchAuctionsButton = () => {
       setIsLaunching(true)
       setError(null)
 
-      // Use finalized weights for hybrid DTFs on first auction
+      // Use saved weights for hybrid DTFs on first auction
       const weightsToUse =
         isHybridDTF &&
-        areWeightsFinalized &&
-        finalizedWeights &&
+        areWeightsSaved &&
+        savedWeights &&
         auctions.length === 0
-          ? finalizedWeights
+          ? savedWeights
           : rebalanceParams.initialWeights
 
       const [openAuctionArgs] = getRebalanceOpenAuction(

@@ -6,9 +6,9 @@ import {
   activeAuctionAtom,
   rebalanceMetricsAtom,
   rebalanceTokenMapAtom,
-  areWeightsFinalizedAtom,
+  areWeightsSavedAtom,
   rebalanceAuctionsAtom,
-  showFinalizeWeightsViewAtom,
+  showManageWeightsViewAtom,
 } from '../atoms'
 import useRebalanceParams from '../hooks/use-rebalance-params'
 import CommunityLaunchAuctionsButton from './community-launch-auctions-button'
@@ -62,8 +62,8 @@ const RoundDescription = () => {
   )
 }
 
-const FinalizeWeights = () => {
-  const setShowFinalizeWeights = useSetAtom(showFinalizeWeightsViewAtom)
+const ManageWeights = () => {
+  const setShowManageWeights = useSetAtom(showManageWeightsViewAtom)
 
   return (
     <div className="bg-background rounded-3xl">
@@ -82,9 +82,9 @@ const FinalizeWeights = () => {
         <Button
           variant="outline-primary"
           className="w-full rounded-xl text-base py-6"
-          onClick={() => setShowFinalizeWeights(true)}
+          onClick={() => setShowManageWeights(true)}
         >
-          Modify / Finalize Weights
+          Manage Weights
         </Button>
       </div>
     </div>
@@ -95,22 +95,22 @@ const RebalanceAction = () => {
   const activeAuction = useAtomValue(activeAuctionAtom)
   const isAuctionLauncher = useAtomValue(isAuctionLauncherAtom)
   const isHybridDTF = useAtomValue(isHybridDTFAtom)
-  const areWeightsFinalized = useAtomValue(areWeightsFinalizedAtom)
+  const areWeightsSaved = useAtomValue(areWeightsSavedAtom)
   const auctions = useAtomValue(rebalanceAuctionsAtom)
 
-  const canFinalizeWeights =
+  const canManageWeights =
     isAuctionLauncher &&
     isHybridDTF &&
     auctions.length === 0 &&
-    !areWeightsFinalized
+    !areWeightsSaved
 
   // Don't show the action component if there's an active auction
   if (activeAuction) {
     return null
   }
 
-  if (canFinalizeWeights) {
-    return <FinalizeWeights />
+  if (canManageWeights) {
+    return <ManageWeights />
   }
 
   return (

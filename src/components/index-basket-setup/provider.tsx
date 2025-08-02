@@ -1,5 +1,5 @@
-import { Provider, useSetAtom } from 'jotai'
-import React, { createContext, useContext, useEffect } from 'react'
+import { useSetAtom } from 'jotai'
+import React, { useEffect } from 'react'
 import {
   BasketInputMode,
   BasketItem,
@@ -16,21 +16,6 @@ export interface BasketSetupConfig {
   mode?: BasketInputMode
   initialBasket?: Record<string, BasketItem>
   priceMap?: Record<string, number>
-  onBasketChange?: (basket: Record<string, BasketItem>) => void
-}
-
-interface BasketSetupContextValue {
-  config: BasketSetupConfig
-}
-
-const BasketSetupContext = createContext<BasketSetupContextValue | null>(null)
-
-export const useBasketSetupContext = () => {
-  const context = useContext(BasketSetupContext)
-  if (!context) {
-    throw new Error('useBasketSetupContext must be used within BasketSetupProvider')
-  }
-  return context
 }
 
 interface BasketSetupProviderProps {
@@ -38,7 +23,7 @@ interface BasketSetupProviderProps {
   children: React.ReactNode
 }
 
-const InnerProvider = ({ config, children }: BasketSetupProviderProps) => {
+export const BasketSetupProvider = ({ config, children }: BasketSetupProviderProps) => {
   const setBasketItems = useSetAtom(basketItemsAtom)
   const setBasketMode = useSetAtom(basketModeAtom)
   const setBasketPriceMap = useSetAtom(basketPriceMapAtom)
@@ -47,17 +32,14 @@ const InnerProvider = ({ config, children }: BasketSetupProviderProps) => {
   const setProposedUnits = useSetAtom(proposedUnitsAtom)
   const resetBasket = useSetAtom(resetBasketAtomsAtom)
 
-  // Initialize from config
   useEffect(() => {
     if (config?.initialBasket) {
       setBasketItems(config.initialBasket)
       
-      // Initialize proposed values from initial basket
       const shares: Record<string, string> = {}
       const units: Record<string, string> = {}
       
       Object.entries(config.initialBasket).forEach(([address, item]) => {
-        // Assume currentValue is in the format we're currently using
         if (config.mode === 'shares' || config.mode === 'both') {
           shares[address] = item.currentValue
         }
@@ -76,7 +58,6 @@ const InnerProvider = ({ config, children }: BasketSetupProviderProps) => {
 
     if (config?.mode) {
       setBasketMode(config.mode)
-      // Set initial input type based on mode
       if (config.mode === 'units') {
         setCurrentInputType('units')
       } else if (config.mode === 'shares') {
@@ -85,30 +66,12 @@ const InnerProvider = ({ config, children }: BasketSetupProviderProps) => {
     }
   }, [config])
 
-  // Reset on unmount
   useEffect(() => {
     return () => {
       resetBasket()
     }
   }, [resetBasket])
 
-  const contextValue: BasketSetupContextValue = {
-    config: config || {}
-  }
-
-  return (
-    <BasketSetupContext.Provider value={contextValue}>
-      {children}
-    </BasketSetupContext.Provider>
-  )
+  return <>{children}</>
 }
 
-export const BasketSetupProvider = ({ config, children }: BasketSetupProviderProps) => {
-  return (
-    <Provider>
-      <InnerProvider config={config}>
-        {children}
-      </InnerProvider>
-    </Provider>
-  )
-}
