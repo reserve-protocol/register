@@ -7,6 +7,7 @@ import ZapperWrapper from '../components/zapper/zapper-wrapper'
 import useTrackIndexDTFPage, {
   useTrackIndexDTFClick,
 } from '../hooks/useTrackIndexDTFPage'
+import { RESERVE_API } from '@/utils/constants'
 
 const IndexDTFIssuance = () => {
   useTrackIndexDTFPage('mint')
@@ -25,6 +26,7 @@ const IndexDTFIssuance = () => {
             chain={indexDTF.chainId}
             dtfAddress={indexDTF.id}
             mode="inline"
+            apiUrl={RESERVE_API}
           />
         </div>
       </div>
