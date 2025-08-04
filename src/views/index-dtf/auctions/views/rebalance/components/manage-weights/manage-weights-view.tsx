@@ -47,13 +47,19 @@ const ManageWeightsView = () => {
           // Since 1 DTF = 1 BU, we just need to scale from D27 to token decimals
           const spotWeight = BigInt(weight.spot)
 
-          // Convert from D27 to actual token amount
-          // D27 means the value is multiplied by 10^27
-          // We need to divide by 10^(27 - token.decimals) to get the display value
-          const scaleFactor = 27n - BigInt(token.decimals)
-          const units = spotWeight / 10n ** scaleFactor
-
-          proposedUnitsFromWeights[address] = formatUnits(units, token.decimals)
+          // Convert from D27 to human readable format
+          // The D27 format stores the value with 27 decimals of precision
+          // But the actual token amount needs to account for the token's decimals
+          // 
+          // Looking at the example: 2184015524155 -> 0.00002184
+          // This is approximately 2.184015524155 * 10^12 / 10^8 = 2.184 * 10^4 / 10^8 = 0.00002184
+          // 
+          // The pattern seems to be: formatUnits(spotWeight, 27 - (18 - token.decimals))
+          // For 8 decimals: formatUnits(weight, 27 - 10) = formatUnits(weight, 17)
+          // For 18 decimals: formatUnits(weight, 27 - 0) = formatUnits(weight, 27)
+          
+          const adjustedDecimals = 27 - (18 - token.decimals)
+          proposedUnitsFromWeights[address] = formatUnits(spotWeight, adjustedDecimals)
         }
       })
     }

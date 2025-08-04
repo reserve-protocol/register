@@ -3,11 +3,19 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { isAuctionLauncherAtom, isHybridDTFAtom } from '@/state/dtf/atoms'
 import { formatPercentage } from '@/utils'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
-import { ArrowLeftRight, Check, CheckCircle2, ChevronRight, Target, X } from 'lucide-react'
+import {
+  ArrowLeftRight,
+  Check,
+  CheckCircle2,
+  ChevronRight,
+  Target,
+  X,
+} from 'lucide-react'
 import { useMemo } from 'react'
 import { formatUnits } from 'viem'
 import {
   areWeightsSavedAtom,
+  areWeightsSettledAtom,
   rebalanceAuctionsAtom,
   rebalanceMetricsAtom,
   showManageWeightsViewAtom,
@@ -52,15 +60,16 @@ const useTotalValueTraded = () => {
 }
 
 const SavedWeights = () => {
-  const areWeightsSaved = useAtomValue(areWeightsSavedAtom)
+  const areWeightsSettled = useAtomValue(areWeightsSettledAtom)
+  const auctions = useAtomValue(rebalanceAuctionsAtom)
   const isHybridDTF = useAtomValue(isHybridDTFAtom)
   const isAuctionLauncher = useAtomValue(isAuctionLauncherAtom)
-  const auctions = useAtomValue(rebalanceAuctionsAtom)
   const setShowManageWeights = useSetAtom(showManageWeightsViewAtom)
 
   if (!isHybridDTF) return null
 
-  const canEditWeights = isAuctionLauncher && areWeightsSaved && auctions.length === 0
+  const canEditWeights =
+    isAuctionLauncher && areWeightsSettled && auctions.length === 0
 
   return (
     <div className="flex items-center gap-2 flex-wrap mb-4">
@@ -79,15 +88,15 @@ const SavedWeights = () => {
         </button>
       ) : (
         <>
-          {areWeightsSaved ? (
+          {areWeightsSettled ? (
             <Check className="h-4 w-4 text-primary" />
           ) : (
             <X className="h-4 w-4 text-destructive" />
           )}
           <span
-            className={areWeightsSaved ? 'text-primary' : 'text-destructive'}
+            className={areWeightsSettled ? 'text-primary' : 'text-destructive'}
           >
-            {areWeightsSaved ? 'Yes' : 'No'}
+            {areWeightsSettled ? 'Yes' : 'No'}
           </span>
         </>
       )}

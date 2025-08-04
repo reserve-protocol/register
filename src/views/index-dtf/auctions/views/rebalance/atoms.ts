@@ -1,5 +1,8 @@
 import { TokenPriceWithSnapshot } from '@/hooks/use-asset-prices-with-snapshot'
-import { AuctionMetrics, WeightRange } from '@reserve-protocol/dtf-rebalance-lib'
+import {
+  AuctionMetrics,
+  WeightRange,
+} from '@reserve-protocol/dtf-rebalance-lib'
 import { Token } from '@/types'
 import { Rebalance } from '@reserve-protocol/dtf-rebalance-lib'
 import { atom } from 'jotai'
@@ -41,12 +44,10 @@ export type Auction = {
   }[]
 }
 
-
 export const rebalanceMetricsAtom = atom<AuctionMetrics | undefined>(undefined)
 
 export const rebalancePercentAtom = atom(90)
 export const rebalanceAuctionsAtom = atom<Auction[]>([])
-
 
 export const rebalanceTokenMapAtom = atom<Record<string, Token>>((get) => {
   const rebalance = get(currentRebalanceAtom)
@@ -75,11 +76,21 @@ export const isAuctionOngoingAtom = atom((get) => {
 export const priceVolatilityAtom = atom<keyof typeof PRICE_VOLATILITY>('MEDIUM')
 
 // Advanced rebalance atoms for hybrid DTFs
-export const savedWeightsAtom = atom<Record<string, WeightRange> | undefined>(undefined)
+export const savedWeightsAtom = atom<Record<string, WeightRange> | undefined>(
+  undefined
+)
 export const areWeightsSavedAtom = atom<boolean>(false)
+export const areWeightsSettledAtom = atom<boolean>((get) => {
+  const auctions = get(rebalanceAuctionsAtom)
+  const areWeightsSaved = get(areWeightsSavedAtom)
+
+  return auctions.length > 0 || areWeightsSaved
+})
 export const showManageWeightsViewAtom = atom<boolean>(false)
 export const managedWeightUnitsAtom = atom<Record<string, string>>({})
-export const originalRebalanceWeightsAtom = atom<Record<string, WeightRange> | undefined>(undefined)
+export const originalRebalanceWeightsAtom = atom<
+  Record<string, WeightRange> | undefined
+>(undefined)
 
 // Similar to proposedIndexBasketAtom but for manage weights
 export interface IndexAssetShares {
@@ -87,7 +98,9 @@ export interface IndexAssetShares {
   currentShares: string
   currentUnits: string
 }
-export const managedBasketAtom = atom<Record<string, IndexAssetShares> | undefined>(undefined)
+export const managedBasketAtom = atom<
+  Record<string, IndexAssetShares> | undefined
+>(undefined)
 
 // Derived atom that returns the current active auction with its index or null
 export const activeAuctionAtom = atom<{
