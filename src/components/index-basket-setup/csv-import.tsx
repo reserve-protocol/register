@@ -1,19 +1,17 @@
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
+import { indexDTFAtom } from '@/state/dtf/atoms'
 import { isAddress } from '@/utils'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { DownloadCloud, FilePlus2 } from 'lucide-react'
 import React, { useCallback, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
-import { indexDTFAtom } from '@/state/dtf/atoms'
 import {
   basketItemsAtom,
-  csvImportErrorAtom,
   currentInputTypeAtom,
   proposedSharesAtom,
   proposedUnitsAtom,
 } from './atoms'
-import { useBasketSetupContext } from './provider'
 
 const MAX_FILE_SIZE = 1024 * 1024 // 1MB
 
@@ -25,7 +23,7 @@ interface CsvImportProps {
 }
 
 export const CsvImport = ({
-  title = "Replace Basket with CSV",
+  title = 'Replace Basket with CSV',
   description,
   templateFilename,
   onImportComplete,
@@ -39,87 +37,104 @@ export const CsvImport = ({
   const setProposedUnits = useSetAtom(proposedUnitsAtom)
   const [error, setError] = useState<string | null>(null)
 
-  const processCsvData = useCallback((csvText: string) => {
-    try {
-      const rows = csvText.split('\n')
-      const newShares: Record<string, string> = {}
-      const newUnits: Record<string, string> = {}
+  const processCsvData = useCallback(
+    (csvText: string) => {
+      try {
+        const rows = csvText.split('\n')
+        const newShares: Record<string, string> = {}
+        const newUnits: Record<string, string> = {}
 
-      // Skip header row and process each data row
-      rows.slice(1).forEach((row) => {
-        if (!row.trim()) return // Skip empty rows
+        // Skip header row and process each data row
+        rows.slice(1).forEach((row) => {
+          if (!row.trim()) return // Skip empty rows
 
-        const values = row.split(',')
-        if (values.length < 3) return // Ensure we have enough columns
+          const values = row.split(',')
+          if (values.length < 3) return // Ensure we have enough columns
 
-        const symbol = values[0].trim()
-        const address = values[1].trim().toLowerCase()
-        const valueStr = values[2].trim() || '0'
+          const symbol = values[0].trim()
+          const address = values[1].trim().toLowerCase()
+          const valueStr = values[2].trim() || '0'
 
-        // Validate data
-        if (!address || !isAddress(address) || !valueStr || isNaN(Number(valueStr))) {
-          return
-        }
-
-        // Only update values for tokens that exist in the basket
-        if (basketItems[address]) {
-          // Convert scientific notation to decimal string if present
-          const normalizedValue = valueStr.toLowerCase().includes('e')
-            ? Number.parseFloat(valueStr).toString()
-            : valueStr
-
-          if (currentInputType === 'shares') {
-            newShares[address] = normalizedValue
-          } else {
-            newUnits[address] = normalizedValue
+          // Validate data
+          if (
+            !address ||
+            !isAddress(address) ||
+            !valueStr ||
+            isNaN(Number(valueStr))
+          ) {
+            return
           }
+
+          // Only update values for tokens that exist in the basket
+          if (basketItems[address]) {
+            // Convert scientific notation to decimal string if present
+            const normalizedValue = valueStr.toLowerCase().includes('e')
+              ? Number.parseFloat(valueStr).toString()
+              : valueStr
+
+            if (currentInputType === 'shares') {
+              newShares[address] = normalizedValue
+            } else {
+              newUnits[address] = normalizedValue
+            }
+          }
+        })
+
+        // Update the appropriate atom based on current input type
+        if (currentInputType === 'shares') {
+          setProposedShares((prev) => ({ ...prev, ...newShares }))
+        } else {
+          setProposedUnits((prev) => ({ ...prev, ...newUnits }))
         }
-      })
 
-      // Update the appropriate atom based on current input type
-      if (currentInputType === 'shares') {
-        setProposedShares(prev => ({ ...prev, ...newShares }))
-      } else {
-        setProposedUnits(prev => ({ ...prev, ...newUnits }))
+        setError(null)
+        onImportComplete?.()
+      } catch (err) {
+        console.error('Error processing CSV:', err)
+        setError('Failed to process CSV file. Please check the format.')
       }
+    },
+    [
+      basketItems,
+      currentInputType,
+      setProposedShares,
+      setProposedUnits,
+      onImportComplete,
+    ]
+  )
 
+  const onDrop = useCallback(
+    (acceptedFiles: File[], rejectedFiles: any[]) => {
       setError(null)
-      onImportComplete?.()
-    } catch (err) {
-      console.error('Error processing CSV:', err)
-      setError('Failed to process CSV file. Please check the format.')
-    }
-  }, [basketItems, currentInputType, setProposedShares, setProposedUnits, onImportComplete])
 
-  const onDrop = useCallback((acceptedFiles: File[], rejectedFiles: any[]) => {
-    setError(null)
-
-    if (rejectedFiles.length > 0) {
-      setError('Please upload a CSV file less than 1MB.')
-      return
-    }
-
-    if (acceptedFiles.length === 0) return
-
-    const file = acceptedFiles[0]
-
-    const reader = new FileReader()
-    reader.onload = (event) => {
-      const csvText = event.target?.result as string
-      if (!csvText) {
-        setError('Failed to read CSV file')
+      if (rejectedFiles.length > 0) {
+        setError('Please upload a CSV file less than 1MB.')
         return
       }
 
-      processCsvData(csvText)
-    }
+      if (acceptedFiles.length === 0) return
 
-    reader.onerror = () => {
-      setError('Error reading the file')
-    }
+      const file = acceptedFiles[0]
 
-    reader.readAsText(file)
-  }, [processCsvData])
+      const reader = new FileReader()
+      reader.onload = (event) => {
+        const csvText = event.target?.result as string
+        if (!csvText) {
+          setError('Failed to read CSV file')
+          return
+        }
+
+        processCsvData(csvText)
+      }
+
+      reader.onerror = () => {
+        setError('Error reading the file')
+      }
+
+      reader.readAsText(file)
+    },
+    [processCsvData]
+  )
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
@@ -138,9 +153,10 @@ export const CsvImport = ({
       template += `\n${Object.values(basketItems)
         .map((item) => {
           const address = item.token.address.toLowerCase()
-          const value = currentInputType === 'shares' 
-            ? (proposedShares[address] || item.currentValue || '0')
-            : (proposedUnits[address] || item.currentValue || '0')
+          const value =
+            currentInputType === 'shares'
+              ? proposedShares[address] || item.currentValue || '0'
+              : proposedUnits[address] || item.currentValue || '0'
           return `${item.token.symbol},${item.token.address},${value}`
         })
         .join('\n')}`
@@ -152,7 +168,8 @@ export const CsvImport = ({
     // Create a temporary anchor element to download the file
     const a = document.createElement('a')
     a.href = url
-    a.download = templateFilename || `${dtf?.token.symbol || 'basket'}_template.csv`
+    a.download =
+      templateFilename || `${dtf?.token.symbol || 'basket'}_template.csv`
     document.body.appendChild(a)
     a.click()
 

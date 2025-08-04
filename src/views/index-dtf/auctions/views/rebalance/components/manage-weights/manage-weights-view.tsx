@@ -14,7 +14,6 @@ import {
   BasketItem,
 } from '@/components/index-basket-setup'
 import ManageWeightsContent from './manage-weights-content'
-import { getTargetBasket, WeightRange } from '@reserve-protocol/dtf-rebalance-lib'
 
 const ManageWeightsView = () => {
   const [showView] = useAtom(showManageWeightsViewAtom)
@@ -37,23 +36,23 @@ const ManageWeightsView = () => {
       // Weights are in D27 format (tok/BU - tokens per basket unit)
       // For a DTF with 1 basket unit = 1 DTF token (typical case),
       // the weight directly represents tokens per DTF token in D27 format
-      
+
       rebalanceParams.rebalance.tokens.forEach((tokenAddress, index) => {
         const address = tokenAddress.toLowerCase()
         const token = tokenMap[address]
         const weight = rebalanceParams.rebalance.weights[index]
-        
+
         if (token && weight) {
           // The spot weight in D27 represents tokens per basket unit
           // Since 1 DTF = 1 BU, we just need to scale from D27 to token decimals
           const spotWeight = BigInt(weight.spot)
-          
+
           // Convert from D27 to actual token amount
           // D27 means the value is multiplied by 10^27
           // We need to divide by 10^(27 - token.decimals) to get the display value
           const scaleFactor = 27n - BigInt(token.decimals)
-          const units = spotWeight / (10n ** scaleFactor)
-          
+          const units = spotWeight / 10n ** scaleFactor
+
           proposedUnitsFromWeights[address] = formatUnits(units, token.decimals)
         }
       })
@@ -80,7 +79,6 @@ const ManageWeightsView = () => {
       tokenData.map((d) => d.decimals),
       tokenData.map((d) => d.price)
     )
-
 
     rebalanceParams.rebalance.tokens.forEach((tokenAddress, index) => {
       const address = tokenAddress.toLowerCase()

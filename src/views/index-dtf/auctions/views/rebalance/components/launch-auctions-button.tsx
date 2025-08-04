@@ -20,7 +20,6 @@ import {
 } from '../atoms'
 import useRebalanceParams from '../hooks/use-rebalance-params'
 import getRebalanceOpenAuction from '../utils/get-rebalance-open-auction'
-import { WeightRange } from '@reserve-protocol/dtf-rebalance-lib'
 import { toast } from 'sonner'
 
 const auctionNumberAtom = atom((get) => {
@@ -82,10 +81,7 @@ const LaunchAuctionsButton = () => {
 
       // Use saved weights for hybrid DTFs on first auction if available
       const weightsToUse =
-        isHybridDTF &&
-        areWeightsSaved &&
-        savedWeights &&
-        auctions.length === 0
+        isHybridDTF && areWeightsSaved && savedWeights && auctions.length === 0
           ? savedWeights
           : rebalanceParams.initialWeights
 
