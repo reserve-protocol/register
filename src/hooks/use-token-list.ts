@@ -4,14 +4,15 @@ import { RESERVE_API } from '@/utils/constants'
 import { TEMP_TOKENS } from '@/views/index-dtf/deploy/steps/basket/temp-tokens'
 import { useQuery } from '@tanstack/react-query'
 
-const TOKENS_API = `${RESERVE_API}zapper/tokens?chainId=`
+const getTokensApi = (chain: number) =>
+  `${RESERVE_API}api/zapper/${chain}/tokens?chainId=${chain}` // nb(jg): duplicated chain is intentional
 
 const useTokenList = (chainId: number) =>
   useQuery({
     queryKey: ['token-list', chainId],
     queryFn: async () => {
       try {
-        const response = await fetch(`${TOKENS_API}${chainId}`)
+        const response = await fetch(getTokensApi(chainId))
         if (!response.ok) {
           throw new Error('Failed to fetch token list')
         }
