@@ -18,6 +18,7 @@ import {
   rebalancePercentAtom,
 } from '../atoms'
 import useRebalanceParams from '../hooks/use-rebalance-params'
+import RebalancePriceImpact from './rebalance-price-impact'
 
 const RebalanceSlider = () => {
   const [rebalancePercent, setRebalancePercent] = useAtom(rebalancePercentAtom)
@@ -132,6 +133,7 @@ const RebalanceDebug = () => {
     <div className="flex flex-col gap-2 bg-background p-4 rounded-3xl">
       <RebalanceSlider />
       <ExpectedPriceVolatility />
+      <RebalancePriceImpact />
       <RebalanceMetrics />
       <RebalanceParameters />
     </div>
