@@ -48,18 +48,12 @@ const ManageWeightsView = () => {
           const spotWeight = BigInt(weight.spot)
 
           // Convert from D27 to human readable format
-          // The D27 format stores the value with 27 decimals of precision
-          // But the actual token amount needs to account for the token's decimals
-          // 
-          // Looking at the example: 2184015524155 -> 0.00002184
-          // This is approximately 2.184015524155 * 10^12 / 10^8 = 2.184 * 10^4 / 10^8 = 0.00002184
-          // 
-          // The pattern seems to be: formatUnits(spotWeight, 27 - (18 - token.decimals))
-          // For 8 decimals: formatUnits(weight, 27 - 10) = formatUnits(weight, 17)
-          // For 18 decimals: formatUnits(weight, 27 - 0) = formatUnits(weight, 27)
+          // Equation: {wholeTok/wholeBU} = D27{tok/BU} * {BU/wholeBU} / {tok/wholeTok} / D27
+          // Since BU = 1, this simplifies to:
+          // whole token units = weight / 10^decimals / 10^9
+          // Which is equivalent to: formatUnits(weight, decimals + 9)
           
-          const adjustedDecimals = 27 - (18 - token.decimals)
-          proposedUnitsFromWeights[address] = formatUnits(spotWeight, adjustedDecimals)
+          proposedUnitsFromWeights[address] = formatUnits(spotWeight, token.decimals + 9)
         }
       })
     }
