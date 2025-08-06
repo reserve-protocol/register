@@ -10,7 +10,7 @@ import { RESERVE_API } from '@/utils/constants'
 import { useQuery } from '@tanstack/react-query'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useMemo } from 'react'
-import { formatUnits, parseEther } from 'viem'
+import { formatUnits } from 'viem'
 import { useReadContract, useReadContracts } from 'wagmi'
 import {
   dtfSupplyAtom,
