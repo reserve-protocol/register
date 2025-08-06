@@ -124,7 +124,7 @@ const RebalancePriceImpact = () => {
         bypassCache: 'false',
       })
 
-      const url = `${DEFAULT_API_URL}zapper/swap?${params.toString()}`
+      const url = `${DEFAULT_API_URL}api/zapper/${chainId}/swap?${params.toString()}`
 
       console.log('Fetching price impact:', {
         url,
