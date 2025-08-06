@@ -90,8 +90,8 @@ const useRebalanceParams = () => {
       {
         abi: dtfIndexAbiV4,
         address: dtf?.id,
-        functionName: 'toAssets',
-        args: [parseEther('1'), 0],
+        functionName: 'totalAssets',
+        args: [],
         chainId,
       },
     ],
@@ -112,9 +112,9 @@ const useRebalanceParams = () => {
   const { data: initialFolio } = useReadContract({
     abi: dtfIndexAbiV4,
     address: dtf?.id,
-    functionName: 'toAssets',
+    functionName: 'totalAssets',
     chainId,
-    args: [parseEther('1'), 0],
+    args: [],
     blockNumber: BigInt(rebalance?.proposal.creationBlock ?? '0'),
     query: {
       enabled: !!rebalance?.proposal.creationBlock && !!dtf?.id,

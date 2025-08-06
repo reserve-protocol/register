@@ -130,8 +130,8 @@ const useInitialBasket = ():
       {
         abi: dtfIndexAbi,
         address: dtfAddress,
-        functionName: 'toAssets',
-        args: [parseEther('1'), 0],
+        functionName: 'totalAssets',
+        args: [],
         chainId,
       },
     ],
