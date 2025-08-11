@@ -54,23 +54,23 @@ const ManageWeightsContent = () => {
         tokenMap,
         proposedUnits,
         basketItems,
-        rebalanceParams.currentFolio,
+        rebalanceParams.currentAssets,
         rebalanceParams.prices
       )
-      
+
       const rebalanceData = prepareRebalanceData(
         targetShares,
         rebalanceParams.rebalance.tokens,
         tokenMap,
         basketItems,
-        rebalanceParams.currentFolio,
+        rebalanceParams.currentAssets,
         rebalanceParams.prices
       )
 
       const { weights } = getStartRebalance(
         rebalanceParams.supply,
         rebalanceData.tokens,
-        rebalanceData.folio,
+        rebalanceData.assets,
         rebalanceData.decimals,
         rebalanceData.targetBasket,
         rebalanceData.prices,
@@ -84,7 +84,7 @@ const ManageWeightsContent = () => {
       rebalanceParams.rebalance.tokens.forEach((tokenAddress, index) => {
         const address = tokenAddress.toLowerCase()
         weightsMap[address] = weights[index]
-        
+
         // Debug logging
         console.log(`Token ${index}: ${tokenAddress}`, {
           weight: weights[index],

@@ -7,7 +7,7 @@ export const calculateTargetShares = (
   tokenMap: Record<string, any>,
   proposedUnits: Record<string, string>,
   basketItems: Record<string, BasketItem>,
-  currentFolio: Record<string, bigint>,
+  currentAssets: Record<string, bigint>,
   prices: Record<string, { currentPrice: number }>
 ) => {
   const tokenData = rebalanceTokens.map((tokenAddress) => {
@@ -21,7 +21,7 @@ export const calculateTargetShares = (
     try {
       bal = parseUnits(proposedUnit, decimals)
     } catch {
-      bal = currentFolio[address] || 0n
+      bal = currentAssets[address] || 0n
     }
 
     return {
@@ -44,7 +44,7 @@ export const prepareRebalanceData = (
   rebalanceTokens: string[],
   tokenMap: Record<string, any>,
   basketItems: Record<string, BasketItem>,
-  currentFolio: Record<string, bigint>,
+  currentAssets: Record<string, bigint>,
   prices: Record<string, { currentPrice: number }>
 ) => {
   const tokens: Address[] = []
@@ -53,7 +53,7 @@ export const prepareRebalanceData = (
   const targetBasket: bigint[] = []
   const priceArray: number[] = []
   const error: number[] = []
-  const folio: bigint[] = []
+  const assets: bigint[] = []
 
   rebalanceTokens.forEach((tokenAddress, index) => {
     const address = tokenAddress.toLowerCase()
@@ -65,7 +65,7 @@ export const prepareRebalanceData = (
       parseUnits(basketItems[address]?.currentShares || '0', 16)
     )
     targetBasket.push(targetShares[index])
-    folio.push(currentFolio[address] || 0n)
+    assets.push(currentAssets[address] || 0n)
     priceArray.push(prices[address]?.currentPrice || 0)
     error.push(0.8)
   })
@@ -77,6 +77,6 @@ export const prepareRebalanceData = (
     targetBasket,
     prices: priceArray,
     error,
-    folio,
+    assets,
   }
 }

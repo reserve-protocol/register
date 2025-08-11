@@ -52,7 +52,7 @@ const ManageWeightsView = () => {
           // Since BU = 1, this simplifies to:
           // whole token units = weight / 10^decimals / 10^9
           // Which is equivalent to: formatUnits(weight, decimals + 9)
-          
+
           proposedUnitsFromWeights[address] = formatUnits(spotWeight, token.decimals + 9)
         }
       })
@@ -62,20 +62,20 @@ const ManageWeightsView = () => {
       .map((tokenAddress) => {
         const address = tokenAddress.toLowerCase()
         const token = tokenMap[address]
-        const folio = rebalanceParams.currentFolio[address] || 0n
+        const assets = rebalanceParams.currentAssets[address] || 0n
 
         return {
           address,
           token,
-          folio,
+          assets,
           decimals: BigInt(token.decimals),
           price: rebalanceParams.prices[address]?.currentPrice || 0,
         }
       })
-      .filter((d) => d.token && d.folio !== undefined)
+      .filter((d) => d.token && d.assets !== undefined)
 
     const currentShares = getCurrentBasket(
-      tokenData.map((d) => d.folio),
+      tokenData.map((d) => d.assets),
       tokenData.map((d) => d.decimals),
       tokenData.map((d) => d.price)
     )
@@ -83,7 +83,10 @@ const ManageWeightsView = () => {
     rebalanceParams.rebalance.tokens.forEach((tokenAddress, index) => {
       const address = tokenAddress.toLowerCase()
       const token = tokenMap[address]
-      const folio = rebalanceParams.currentFolio[address] || 0n
+      const assets = rebalanceParams.currentAssets[address] || 0n
+      
+      // TODO @audit
+      const folio = assets * 10n ** 18n / rebalanceParams.supply
 
       if (token) {
         const folioValue = formatUnits(folio, token.decimals)
