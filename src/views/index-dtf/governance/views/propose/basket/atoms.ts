@@ -525,7 +525,7 @@ export const basketProposalCalldatasAtom = atom<Hex[] | undefined>((get) => {
   const targetBasket: bigint[] = []
   const _prices: number[] = []
   const error: number[] = []
-  const assets: bigint[] = []
+  const folio: bigint[] = []
 
   let index = 0
 
@@ -533,7 +533,7 @@ export const basketProposalCalldatasAtom = atom<Hex[] | undefined>((get) => {
     tokens.push(asset as Address)
     decimals.push(BigInt(proposedBasket[asset].token.decimals))
     currentBasket.push(parseUnits(proposedBasket[asset].currentShares, 16))
-    assets.push(dtfDistribution[asset] || 0n)
+    folio.push(dtfDistribution[asset] || 0n)
 
     if (
       (isUnitBasket || basketInputType === 'unit' || isHybridDTF) &&
@@ -554,7 +554,7 @@ export const basketProposalCalldatasAtom = atom<Hex[] | undefined>((get) => {
     const { weights, prices, limits } = getStartRebalance(
       supply,
       tokens,
-      assets,
+      folio,
       decimals,
       targetBasket,
       _prices,
