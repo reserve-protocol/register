@@ -10,7 +10,7 @@ import { RESERVE_API } from '@/utils/constants'
 import { useQuery } from '@tanstack/react-query'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useMemo } from 'react'
-import { formatUnits, parseEther } from 'viem'
+import { formatUnits } from 'viem'
 import { useReadContract, useReadContracts } from 'wagmi'
 import {
   dtfSupplyAtom,
@@ -26,7 +26,7 @@ import {
   dtfTradeDelay,
   isDeferAvailableAtom,
   tradeVolatilityAtom,
-  dtfDistributionAtom,
+  dtfBalancesAtom,
 } from './atoms'
 import { PermissionOptionId } from './components/proposal-rebalance-launch-settings'
 
@@ -191,7 +191,7 @@ const InitialBasketUpdater = () => {
   const setTradeDelay = useSetAtom(dtfTradeDelay)
   const setProposedShares = useSetAtom(proposedSharesAtom)
   const setProposedUnits = useSetAtom(proposedUnitsAtom)
-  const setDtfDistribution = useSetAtom(dtfDistributionAtom)
+  const setBalances = useSetAtom(dtfBalancesAtom)
 
   useEffect(() => {
     if (initialBasket) {
@@ -209,7 +209,7 @@ const InitialBasketUpdater = () => {
       )
       setProposedBasket(basket)
       setSupply(totalSupply)
-      setDtfDistribution(balances)
+      setBalances(balances)
       setProposedUnits(
         Object.values(basket).reduce(
           (acc, asset) => {
