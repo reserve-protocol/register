@@ -74,4 +74,3 @@ export const BasketSetupProvider = ({ config, children }: BasketSetupProviderPro
 
   return <>{children}</>
 }
-
