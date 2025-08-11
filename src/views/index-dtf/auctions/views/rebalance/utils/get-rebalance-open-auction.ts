@@ -12,8 +12,9 @@ function getRebalanceOpenAuction(
   tokens: Token[],
   rebalance: Rebalance,
   supply: bigint,
-  currentFolio: Record<string, bigint>,
-  initialFolio: Record<string, bigint>,
+  initialSupply: bigint,
+  currentAssets: Record<string, bigint>,
+  initialAssets: Record<string, bigint>,
   initialPrices: Record<string, number>,
   initialWeights: Record<string, WeightRange>,
   prices: TokenPriceWithSnapshot,
@@ -35,8 +36,8 @@ function getRebalanceOpenAuction(
   const currentPrices: number[] = []
   const snapshotPrices: number[] = []
   const priceError: number[] = []
-  const initialFolioShares: bigint[] = []
-  const currentFolioShares: bigint[] = []
+  const initialFolioAssets: bigint[] = []
+  const currentFolioAssets: bigint[] = []
   const weights: WeightRange[] = []
 
   rebalance.tokens.forEach((token) => {
@@ -49,8 +50,8 @@ function getRebalanceOpenAuction(
     // Calculate snapshot price from initialPrices
     snapshotPrices.push(initialPrices[lowercasedAddress])
     priceError.push(priceVolatility)
-    initialFolioShares.push(initialFolio[lowercasedAddress] || 0n)
-    currentFolioShares.push(currentFolio[lowercasedAddress] || 0n)
+    initialFolioAssets.push(initialAssets[lowercasedAddress] || 0n)
+    currentFolioAssets.push(currentAssets[lowercasedAddress] || 0n)
     weights.push(initialWeights[lowercasedAddress])
   })
 
@@ -63,9 +64,10 @@ function getRebalanceOpenAuction(
   return getOpenAuction(
     rebalance,
     supply,
-    initialFolioShares,
+    initialSupply,
+    initialFolioAssets,
     targetBasket,
-    currentFolioShares,
+    currentFolioAssets,
     decimals,
     currentPrices,
     priceError,

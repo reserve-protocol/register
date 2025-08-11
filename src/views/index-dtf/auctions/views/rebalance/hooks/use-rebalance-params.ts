@@ -13,7 +13,6 @@ import {
 } from '@reserve-protocol/dtf-rebalance-lib/dist/types'
 import { useAtomValue } from 'jotai'
 import { useEffect, useMemo } from 'react'
-import { parseEther } from 'viem'
 import { useReadContract, useReadContracts } from 'wagmi'
 import { currentRebalanceAtom } from '../../../atoms'
 import { isAuctionOngoingAtom } from '../atoms'
@@ -23,9 +22,10 @@ import { calculatePriceFromRange } from '@/utils'
 
 export type RebalanceParams = {
   supply: bigint
+  initialSupply: bigint
   rebalance: Rebalance
-  currentFolio: Record<string, bigint>
-  initialFolio: Record<string, bigint>
+  currentAssets: Record<string, bigint>
+  initialAssets: Record<string, bigint>
   initialPrices: Record<string, number>
   initialWeights: Record<string, WeightRange>
   prices: TokenPriceWithSnapshot
@@ -90,8 +90,8 @@ const useRebalanceParams = () => {
       {
         abi: dtfIndexAbiV4,
         address: dtf?.id,
-        functionName: 'toAssets',
-        args: [parseEther('1'), 0],
+        functionName: 'totalAssets',
+        args: [],
         chainId,
       },
     ],
@@ -109,12 +109,23 @@ const useRebalanceParams = () => {
       },
     },
   })
+  const { data: initialSupply } = useReadContract({
+    abi: dtfIndexAbiV4,
+    address: dtf?.id,
+    functionName: 'totalSupply',
+    chainId,
+    args: [],
+    blockNumber: BigInt(rebalance?.proposal.creationBlock ?? '0'),
+    query: {
+      enabled: !!rebalance?.proposal.creationBlock && !!dtf?.id,
+    },
+  })
   const { data: initialFolio } = useReadContract({
     abi: dtfIndexAbiV4,
     address: dtf?.id,
-    functionName: 'toAssets',
+    functionName: 'totalAssets',
     chainId,
-    args: [parseEther('1'), 0],
+    args: [],
     blockNumber: BigInt(rebalance?.proposal.creationBlock ?? '0'),
     query: {
       enabled: !!rebalance?.proposal.creationBlock && !!dtf?.id,
@@ -150,6 +161,7 @@ const useRebalanceParams = () => {
   return useMemo(() => {
     if (
       !dtfData ||
+      !initialSupply ||
       !initialFolio ||
       !prices ||
       !rebalanceControl ||
@@ -189,6 +201,7 @@ const useRebalanceParams = () => {
 
     return {
       supply: dtfData.supply,
+      initialSupply: initialSupply,
       rebalance: {
         nonce: dtfData.rebalance[0],
         tokens: dtfData.rebalance[1],
@@ -201,14 +214,21 @@ const useRebalanceParams = () => {
         availableUntil: dtfData.rebalance[8],
         priceControl: dtfData.rebalance[9],
       } as Rebalance,
-      currentFolio: dtfData.currentFolio,
+      currentAssets: dtfData.currentFolio,
       initialPrices,
       initialWeights,
-      initialFolio,
+      initialAssets: initialFolio,
       prices,
       isTrackingDTF: !rebalanceControl.weightControl,
     } as RebalanceParams
-  }, [dtfData, initialFolio, prices, rebalanceControl, initialRebalance])
+  }, [
+    dtfData,
+    initialSupply,
+    initialFolio,
+    prices,
+    rebalanceControl,
+    initialRebalance,
+  ])
 }
 
 export default useRebalanceParams
