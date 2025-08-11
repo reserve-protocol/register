@@ -5,7 +5,7 @@ import { TEMP_TOKENS } from '@/views/index-dtf/deploy/steps/basket/temp-tokens'
 import { useQuery } from '@tanstack/react-query'
 
 const getTokensApi = (chain: number) =>
-  `${RESERVE_API}api/zapper/${chain}/tokens?chainId=${chain}` // nb(jg): duplicated chain is intentional
+  `${RESERVE_API}zapper/tokens?chainId=${chain}`
 
 const useTokenList = (chainId: number) =>
   useQuery({
