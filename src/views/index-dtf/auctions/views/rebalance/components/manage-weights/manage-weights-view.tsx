@@ -84,9 +84,13 @@ const ManageWeightsView = () => {
       const address = tokenAddress.toLowerCase()
       const token = tokenMap[address]
       const assets = rebalanceParams.currentAssets[address] || 0n
+      const totalSupply = rebalanceParams.supply || 1n
+
+      // TODO @audit
+      const folio = assets * 10n ** 18n / totalSupply
 
       if (token) {
-        const folioValue = formatUnits(assets, token.decimals)
+        const folioValue = formatUnits(folio, token.decimals)
         const proposedValue = proposedUnitsFromWeights[address] || folioValue
         basket[address] = {
           token,

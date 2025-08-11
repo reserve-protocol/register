@@ -14,6 +14,7 @@ import {
 } from '@reserve-protocol/dtf-rebalance-lib/dist/types'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useMemo } from 'react'
+import { parseEther } from 'viem'
 import { useReadContract, useReadContracts } from 'wagmi'
 import { currentRebalanceAtom } from '../../../atoms'
 import {
@@ -108,12 +109,12 @@ const useRebalanceParams = () => {
     query: {
       enabled: !!dtf?.id,
       select: (data) => {
-        const [supply, rebalance, [assets, amounts]] = data
+        const [supply, rebalance, [assets, balances]] = data
 
         return {
           supply,
           rebalance,
-          currentFolio: mapToAssets(assets, amounts),
+          currentAssets: mapToAssets(assets, balances),
         }
       },
     },
@@ -129,7 +130,7 @@ const useRebalanceParams = () => {
       enabled: !!rebalance?.proposal.creationBlock && !!dtf?.id,
     },
   })
-  const { data: initialFolio } = useReadContract({
+  const { data: initialAssets } = useReadContract({
     abi: dtfIndexAbiV4,
     address: dtf?.id,
     functionName: 'totalAssets',
@@ -206,7 +207,7 @@ const useRebalanceParams = () => {
     if (
       !dtfData ||
       !initialSupply ||
-      !initialFolio ||
+      !initialAssets ||
       !prices ||
       !rebalanceControl ||
       !initialRebalance ||
@@ -263,17 +264,17 @@ const useRebalanceParams = () => {
         availableUntil: dtfData.rebalance[8],
         priceControl: dtfData.rebalance[9],
       } as Rebalance,
-      currentAssets: dtfData.currentFolio,
+      currentAssets: dtfData.currentAssets,
       initialPrices,
       initialWeights,
-      initialAssets: initialFolio,
+      initialAssets: initialAssets,
       prices,
       isTrackingDTF: !rebalanceControl.weightControl,
     } as RebalanceParams
   }, [
     dtfData,
     initialSupply,
-    initialFolio,
+    initialAssets,
     prices,
     rebalanceControl,
     initialRebalance,
