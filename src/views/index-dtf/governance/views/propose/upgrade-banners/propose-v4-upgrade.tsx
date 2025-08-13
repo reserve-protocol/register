@@ -66,14 +66,6 @@ const ProposeBanner = ({ refetch }: SpellUpgradeProps) => {
   const chainId = useAtomValue(chainIdAtom)
   const spell = spellAddress[chainId]
 
-  const { data: qdOwnerGov } = useReadContract({
-    abi: DTFIndexGovernance,
-    address: dtf?.ownerGovernance?.id,
-    functionName: 'quorumDenominator',
-    chainId,
-    query: queryParams,
-  })
-
   const { writeContract, data, isPending } = useWriteContract()
 
   const { isSuccess } = useWaitForTransactionReceipt({
@@ -86,10 +78,10 @@ const ProposeBanner = ({ refetch }: SpellUpgradeProps) => {
     dtf?.proxyAdmin &&
     dtf?.ownerGovernance?.id &&
     dtf?.tradingGovernance?.id
-  const proposalAvailable = !!spell && qdOwnerGov === 100n
+  const proposalAvailable = !!spell
 
   const handlePropose = () => {
-    if (!dtf || !spell || !dtf.ownerGovernance || qdOwnerGov !== 100n) return
+    if (!dtf || !spell || !dtf.ownerGovernance) return
 
     writeContract({
       address: dtf.ownerGovernance.id,
@@ -199,7 +191,6 @@ const validProposalExists = (
   })
 }
 
-// TODO(jg): Enable Staking Vault spell when DAO gov is fixed
 export default function ProposeBanners() {
   const { isProposeAllowed } = useIsProposeAllowed()
   const proposals = useAtomValue(governanceProposalsAtom)
