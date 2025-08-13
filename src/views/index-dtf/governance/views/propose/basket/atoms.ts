@@ -37,7 +37,7 @@ export interface IndexAssetShares {
 // ############################################################
 export const priceMapAtom = atom<Record<string, number>>({})
 export const dtfSupplyAtom = atom<bigint>(0n)
-export const dtfDistributionAtom = atom<Record<string, bigint> | undefined>(
+export const dtfBalancesAtom = atom<Record<string, bigint> | undefined>(
   undefined
 )
 
@@ -440,7 +440,7 @@ export const legacyBasketProposalCalldatasAtom = atom<Hex[] | undefined>(
     const trades =
       tradeRangeOption === 'defer' ? deferredTrades : getProposedTrades(get)
 
-    return trades.map((trade, i) => {
+    return trades.map((trade) => {
       const args = [
         trade.sell as Address,
         trade.buy as Address,
@@ -497,7 +497,7 @@ export const basketProposalCalldatasAtom = atom<Hex[] | undefined>((get) => {
   const derivedProposedShares = get(derivedProposedSharesAtom)
   const rebalanceControl = get(indexDTFRebalanceControlAtom)
   const dtfPrice = get(indexDTFPriceAtom)
-  const dtfDistribution = get(dtfDistributionAtom)
+  const dtfBalances = get(dtfBalancesAtom)
   const ttl = get(rebalanceTTLAtom)
   const basketInputType = get(basketInputTypeAtom)
   const supply = get(dtfSupplyAtom)
@@ -514,7 +514,7 @@ export const basketProposalCalldatasAtom = atom<Hex[] | undefined>((get) => {
     !proposedBasket ||
     !rebalanceControl ||
     !dtfPrice ||
-    !dtfDistribution ||
+    !dtfBalances ||
     (isUnitBasket && !derivedProposedShares)
   )
     return undefined
@@ -525,7 +525,7 @@ export const basketProposalCalldatasAtom = atom<Hex[] | undefined>((get) => {
   const targetBasket: bigint[] = []
   const _prices: number[] = []
   const error: number[] = []
-  const folio: bigint[] = []
+  const balances: bigint[] = []
 
   let index = 0
 
@@ -533,7 +533,7 @@ export const basketProposalCalldatasAtom = atom<Hex[] | undefined>((get) => {
     tokens.push(asset as Address)
     decimals.push(BigInt(proposedBasket[asset].token.decimals))
     currentBasket.push(parseUnits(proposedBasket[asset].currentShares, 16))
-    folio.push(dtfDistribution[asset] || 0n)
+    balances.push(dtfBalances[asset] || 0n)
 
     if (
       (isUnitBasket || basketInputType === 'unit' || isHybridDTF) &&
@@ -554,7 +554,7 @@ export const basketProposalCalldatasAtom = atom<Hex[] | undefined>((get) => {
     const { weights, prices, limits } = getStartRebalance(
       supply,
       tokens,
-      folio,
+      balances,
       decimals,
       targetBasket,
       _prices,
