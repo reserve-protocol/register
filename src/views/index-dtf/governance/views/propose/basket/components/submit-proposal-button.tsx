@@ -32,6 +32,8 @@ const tradingGovAddress = atom((get) => {
 const ProposeGatekeeper = memo(() => {
   const { isProposeAllowed, isLoading } = useIsProposeAllowed()
 
+  console.log('isProposeAllowed', isProposeAllowed)
+
   if (!isLoading && !isProposeAllowed) {
     return (
       <Button disabled className="w-full" variant="default">

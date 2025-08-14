@@ -7,7 +7,8 @@ import { getCurrentTime } from '@/utils'
 import { useAtomValue } from 'jotai'
 
 export const useVotingPower = () => {
-  const account = useAtomValue(walletAtom)
+  // const account = useAtomValue(walletAtom)
+  const account = '0xF3625990a799361e8B63811bcA33998522229868'
   const dtf = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
   const { data: votes, isLoading } = useReadContract({

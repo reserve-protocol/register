@@ -2,6 +2,7 @@ import { indexDTFAtom } from '@/state/dtf/atoms'
 import { useAtomValue } from 'jotai'
 import { useBasketVotingPower } from './use-basket-voting-power'
 import { indexGovernanceOverviewAtom } from '../atoms'
+import { formatEther } from 'viem'
 
 export const useIsBasketProposeAllowed = () => {
   const dtf = useAtomValue(indexDTFAtom)
@@ -11,9 +12,9 @@ export const useIsBasketProposeAllowed = () => {
   // For basket governance, we need to check the tradingGovernance parameters
   const voteSupply = governance?.voteSupply
   const proposalThreshold =
-    (dtf?.tradingGovernance?.proposalThreshold || 0) /
-    (dtf?.tradingGovernance?.quorumDenominator || 1) /
-    100
+    Number(
+      formatEther(BigInt(dtf?.tradingGovernance?.proposalThreshold || 0))
+    ) / 100
 
   return {
     isProposeAllowed:

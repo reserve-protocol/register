@@ -2,6 +2,7 @@ import { indexDTFAtom } from '@/state/dtf/atoms'
 import { useAtomValue } from 'jotai'
 import { useDAOVotingPower } from './use-dao-voting-power'
 import { indexGovernanceOverviewAtom } from '../atoms'
+import { formatEther } from 'viem'
 
 export const useIsDAOProposeAllowed = () => {
   const dtf = useAtomValue(indexDTFAtom)
@@ -11,9 +12,9 @@ export const useIsDAOProposeAllowed = () => {
   // For DAO governance, we need to check the stToken governance parameters
   const voteSupply = governance?.voteSupply
   const proposalThreshold =
-    (dtf?.stToken?.governance?.proposalThreshold || 0) /
-    (dtf?.stToken?.governance?.quorumDenominator || 1) /
-    100
+    Number(
+      formatEther(BigInt(dtf?.stToken?.governance?.proposalThreshold || 0))
+    ) / 100
 
   return {
     isProposeAllowed:
