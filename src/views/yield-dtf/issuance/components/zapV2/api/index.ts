@@ -76,10 +76,10 @@ const zapper = {
     `${getBaseZapApiUrl(chainId)}/swap?chainId=${chainId}&signer=${signer}&tokenIn=${tokenIn}&amountIn=${amountIn}&tokenOut=${tokenOut}&slippage=${slippage}&trade=${trade}&bypassCache=${bypassCache}`,
 
   zapDeploy: (chainId: number) =>
-    `${getBaseZapApiUrl(chainId)}/deploy-zap?chainId=${chainId}`,
+    `${getBaseZapApiUrl(chainId)}/deploy?chainId=${chainId}`,
 
   zapDeployUngoverned: (chainId: number) =>
-    `${getBaseZapApiUrl(chainId)}/deploy-ungoverned-zap?chainId=${chainId}`,
+    `${getBaseZapApiUrl(chainId)}/deploy-ungoverned?chainId=${chainId}`,
 }
 
 export default zapper
