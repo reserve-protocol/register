@@ -9,13 +9,14 @@ import RebalanceProgress from './components/rebalance-progress'
 import ManageWeightsView from './components/manage-weights/manage-weights-view'
 import Updater from './updater'
 import { isCompletedAtom } from '../../atoms'
-import { showManageWeightsViewAtom } from './atoms'
+import { rebalanceMetricsAtom, showManageWeightsViewAtom } from './atoms'
 
 const RebalanceContent = () => {
   const isCompleted = useAtomValue(isCompletedAtom)
   const showManageWeights = useAtomValue(showManageWeightsViewAtom)
+  const metrics = useAtomValue(rebalanceMetricsAtom)
 
-  if (isCompleted) {
+  if (isCompleted || (metrics?.relativeProgression ?? 0 > 99.7)) {
     return <RebalanceCompleted />
   }
 
