@@ -15,7 +15,8 @@ const PERIOD = 7n // 7 days
 const YEAR = 365n
 const BLOCKS_PER_DAY: Record<number, bigint> = {
   [ChainId.Mainnet]: 7200n, // 1 block every 12 seconds
-  [ChainId.Base]: 43200n, // 1 block every 2 seconds
+  [ChainId.Base]: 43_200n, // 1 block every 2 seconds
+  [ChainId.BSC]: 115_200n, // 1 block every 0.75 seconds
 }
 
 type RewardTrackerData = [

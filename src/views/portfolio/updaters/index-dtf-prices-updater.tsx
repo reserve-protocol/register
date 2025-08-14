@@ -41,6 +41,17 @@ const IndexDTFPricesUpdater = () => {
     ]),
   ]
 
+  const bscAssetAddresses = [
+    ...new Set([
+      ...stakingTokens
+        .filter(({ chainId }) => chainId === ChainId.BSC)
+        .map((token) => token.underlying.address),
+      ...unclaimedLocks
+        .filter(({ chainId }) => chainId === ChainId.BSC)
+        .map((token) => token.underlying.address),
+    ]),
+  ]
+
   const { data: mainnetDTFPrices } = useDTFPrices(
     indexTokens
       .filter(({ chainId }) => chainId === ChainId.Mainnet)
@@ -55,6 +66,13 @@ const IndexDTFPricesUpdater = () => {
     ChainId.Base
   )
 
+  const { data: bscDTFPrices } = useDTFPrices(
+    indexTokens
+      .filter(({ chainId }) => chainId === ChainId.BSC)
+      .map((token) => token.address),
+    ChainId.BSC
+  )
+
   const { data: mainnetAssetPrices } = useAssetPrices(
     mainnetAssetAddresses,
     ChainId.Mainnet
@@ -63,19 +81,28 @@ const IndexDTFPricesUpdater = () => {
     baseAssetAddresses,
     ChainId.Base
   )
+  const { data: bscAssetPrices } = useAssetPrices(
+    bscAssetAddresses,
+    ChainId.BSC
+  )
 
   useEffect(() => {
     const finalPrices: Record<Address, number> = {
       [RSR_ADDRESS[ChainId.Mainnet]]: rsrPrice,
       [RSR_ADDRESS[ChainId.Base]]: rsrPrice,
+      [RSR_ADDRESS[ChainId.BSC]]: rsrPrice,
     }
 
     mainnetDTFPrices?.forEach((dtf) => (finalPrices[dtf.address] = dtf.price))
     baseDTFPrices?.forEach((dtf) => (finalPrices[dtf.address] = dtf.price))
+    bscDTFPrices?.forEach((dtf) => (finalPrices[dtf.address] = dtf.price))
     mainnetAssetPrices?.forEach(
       (asset) => (finalPrices[asset.address] = asset.price)
     )
     baseAssetPrices?.forEach(
+      (asset) => (finalPrices[asset.address] = asset.price)
+    )
+    bscAssetPrices?.forEach(
       (asset) => (finalPrices[asset.address] = asset.price)
     )
 
@@ -83,8 +110,10 @@ const IndexDTFPricesUpdater = () => {
   }, [
     mainnetDTFPrices,
     baseDTFPrices,
+    bscDTFPrices,
     mainnetAssetPrices,
     baseAssetPrices,
+    bscAssetPrices,
     indexTokens,
     stakingTokens,
     rsrPrice,

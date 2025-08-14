@@ -1,17 +1,19 @@
-import React, { ReactNode, SVGProps } from 'react'
+import React, { SVGProps } from 'react'
 import { ChainId } from 'utils/chains'
-import Base from './logos/Base'
-import Ethereum from './logos/Ethereum'
 import Arbitrum from './logos/Arbitrum'
-import Solana from './logos/Solana'
+import Base from './logos/Base'
+import BSC from './logos/BSC'
+import Ethereum from './logos/Ethereum'
 
 export const chainIcons: Record<number | string, any> = {
   [ChainId.Mainnet]: Ethereum,
   [ChainId.Base]: Base,
   [ChainId.Arbitrum]: Arbitrum,
+  [ChainId.BSC]: BSC,
   Ethereum: Ethereum,
   Base: Base,
-  Solana: Solana,
+  Arbitrum: Arbitrum,
+  BSC: BSC,
 }
 
 interface Props extends SVGProps<SVGSVGElement> {
