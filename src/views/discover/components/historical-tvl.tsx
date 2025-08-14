@@ -28,6 +28,9 @@ import useAPIProtocolMetrics, {
   Metrics,
 } from '../hooks/use-api-protocol-metrics'
 import { CAMPAIGN_URL } from '@/views/index-dtf/overview/hooks/use-campaign'
+import {useAtomValue} from 'jotai'
+import {devModeAtom} from '@/state/atoms'
+import {ChainId} from '@/utils/chains'
 
 const COLORS: Record<string, any> = {
   ethereum: {
@@ -213,6 +216,9 @@ const Heading = ({
 }
 
 const HistoricalTVLChart = ({ data }: { data?: Metrics }) => {
+  const isDevMode = useAtomValue(devModeAtom);
+  const networks = Object.values(NETWORKS).filter(n => isDevMode || n !== ChainId.BSC);
+
   return (
     <ResponsiveContainer width="100%" height="100%">
       <AreaChart
@@ -226,7 +232,7 @@ const HistoricalTVLChart = ({ data }: { data?: Metrics }) => {
         <XAxis dataKey="timestamp" style={{ display: 'none' }} />
         <YAxis hide visibility="0" domain={['dataMin', 'dataMax']} />
         <Tooltip wrapperStyle={{ zIndex: 1000 }} content={<CustomTooltip />} />
-        {Object.values(NETWORKS).map((network) => (
+        {networks.map((network) => (
           <Area
             key={network}
             type="step"

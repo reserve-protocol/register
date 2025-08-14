@@ -1,5 +1,8 @@
+import { devModeAtom } from '@/state/atoms'
+import { ChainId } from '@/utils/chains'
 import ChainLogo from 'components/icons/ChainLogo'
 import StackedChainLogo from 'components/icons/StackedChainLogo'
+import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { Box, Text } from 'theme-ui'
 import {
@@ -25,14 +28,17 @@ const ChainFilter = ({
   rounded,
   className,
 }: ChainFilterProps) => {
+  const isDevMode = useAtomValue(devModeAtom)
+  const networks = Object.keys(NETWORKS).filter((n) => isDevMode || n !== 'bsc')
+
   const options = useMemo(
     () =>
-      Object.keys(NETWORKS).map((chain) => ({
+      networks.map((chain) => ({
         label: capitalize(chain),
         value: NETWORKS[chain].toString(),
         icon: <ChainLogo chain={NETWORKS[chain]} />,
       })),
-    []
+    [networks]
   )
 
   const chainsLogos = useMemo(
