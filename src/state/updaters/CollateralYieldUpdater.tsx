@@ -6,9 +6,10 @@ import { ChainId } from 'utils/chains'
 import { supportedChainList } from 'utils/constants'
 
 const chainIds: Record<string, number> = {
-  Ethereum: 1,
-  Base: 8453,
-  Arbitrum: 42161,
+  Ethereum: ChainId.Mainnet,
+  Base: ChainId.Base,
+  Arbitrum: ChainId.Arbitrum,
+  BSC: ChainId.BSC,
 }
 
 const poolsMap: Record<number, Record<string, string>> = {

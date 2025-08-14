@@ -2,7 +2,7 @@ import { chainIdAtom } from '@/state/atoms'
 import { wagmiConfig } from '@/state/chain'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { getFolioRoute } from '@/utils'
-import { ROUTES } from '@/utils/constants'
+import { RESERVE_API, ROUTES } from '@/utils/constants'
 import ZapperWrapper from '@/views/index-dtf/components/zapper/zapper-wrapper'
 import { useAtomValue } from 'jotai'
 import { ReactNode } from 'react'
@@ -20,6 +20,7 @@ const ZapMint = ({ children }: { children: ReactNode }) => {
         wagmiConfig={wagmiConfig}
         chain={chainId}
         dtfAddress={indexDTF.id}
+        apiUrl={RESERVE_API}
       />
 
       <div>{children}</div>

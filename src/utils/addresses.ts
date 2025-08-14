@@ -36,12 +36,14 @@ export const INDEX_DEPLOYER_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0xBE3B47587cEeff7D48008A0114f51cD571beC63A',
   [ChainId.Base]: '0xA203AA351723cf943f91684e9F5eFcA7175Ae7EA',
   [ChainId.Arbitrum]: '0x',
+  [ChainId.BSC]: '0x100e0efdd7a4f67825e1be5f0493f8d2aeac00bb',
 }
 
 export const INDEX_GOVERNANCE_DEPLOYER_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0x5Bed18AcA50E6057E6658Fe8498004092EedCDcF',
-  [ChainId.Base]: '0x1A7D043c84fe781b6df046fEfCf673F71110208D', // 4.0
+  [ChainId.Base]: '0x1A7D043c84fe781b6df046fEfCf673F71110208D',
   [ChainId.Arbitrum]: '0x',
+  [ChainId.BSC]: '0xbd49ceac629d7131b8a975b582acdaeb5c049bad',
 }
 
 /**
@@ -51,6 +53,7 @@ export const RSR_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0x320623b8E4fF03373931769A31Fc52A4E78B5d70',
   [ChainId.Base]: '0xaB36452DbAC151bE02b16Ca17d8919826072f64a',
   [ChainId.Arbitrum]: '0xCa5Ca9083702c56b481D1eec86F1776FDbd2e594',
+  [ChainId.BSC]: '0x23f72a3Db61D6CB8aBE5d9AF1Ac4B6c99327bFee',
 }
 
 export const EUSD_ADDRESS: AddressMap = {
@@ -82,6 +85,7 @@ export const ENS_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0x3671aE578E63FdF66ad4F3E12CC0c0d71Ac7510C',
   [ChainId.Base]: zeroAddress, // TODO: Pending
   [ChainId.Arbitrum]: zeroAddress, // TODO: Pending
+  [ChainId.BSC]: zeroAddress, // TODO: Pending
 }
 
 /**

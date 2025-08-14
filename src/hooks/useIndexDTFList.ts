@@ -66,7 +66,7 @@ const useIndexDTFList = () => {
       }
 
       const responses = await Promise.all(
-        [ChainId.Base, ChainId.Mainnet].map(f)
+        [ChainId.Base, ChainId.Mainnet, ChainId.BSC].map(f)
       )
 
       return responses.flat().sort((x, y) => y.marketCap - x.marketCap)

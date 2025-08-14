@@ -6,6 +6,7 @@ import {
 import { useQuery } from '@tanstack/react-query'
 import { useAtomValue } from 'jotai'
 import { rebalancesByProposalAtom } from '../../../atoms'
+import { RESERVE_API } from '@/utils/constants'
 
 export interface RebalanceMetrics {
   timestamp: number
@@ -104,7 +105,7 @@ export const useRebalanceMetrics = (proposalId: string) => {
       }
 
       const response = await fetch(
-        `https://api-staging.reserve.org/dtf/rebalance?chainId=${chainId}&address=${dtfAddress}&nonce=${rebalanceData.rebalance.nonce}`
+        `${RESERVE_API}dtf/rebalance?chainId=${chainId}&address=${dtfAddress}&nonce=${rebalanceData.rebalance.nonce}`
       )
 
       if (!response.ok) {
@@ -129,8 +130,8 @@ export const useRebalanceMetrics = (proposalId: string) => {
         rebalanceAccuracy: Math.min(100, apiResponse.rebalanceAccuracy ?? 0),
         deviationFromTarget: Math.abs(
           isTrackingDTF
-            ? (apiResponse.trackingBasketDeviation ?? 0)
-            : (apiResponse.nativeBasketDeviation ?? 0)
+            ? apiResponse.trackingBasketDeviation ?? 0
+            : apiResponse.nativeBasketDeviation ?? 0
         ),
         marketCapRebalanceImpact: apiResponse.marketCapRebalanceImpact ?? 0,
       }
