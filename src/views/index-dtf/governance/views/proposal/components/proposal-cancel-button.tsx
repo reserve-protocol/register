@@ -4,8 +4,8 @@ import Timelock from 'abis/Timelock'
 import useContractWrite from 'hooks/useContractWrite'
 import useWatchTransaction from 'hooks/useWatchTransaction'
 import { atom, useAtom, useAtomValue } from 'jotai'
-import { useEffect } from 'react'
-import { rTokenGovernanceAtom, walletAtom } from 'state/atoms'
+import { useEffect, useMemo } from 'react'
+import { chainIdAtom, rTokenGovernanceAtom, walletAtom } from 'state/atoms'
 import {
   encodeAbiParameters,
   keccak256,
@@ -15,6 +15,7 @@ import {
 import { useReadContract } from 'wagmi'
 import { proposalDetailAtom } from '../atom'
 import { PROPOSAL_STATES } from '@/utils/constants'
+import { indexDTFAtom } from '@/state/dtf/atoms'
 
 const timelockIdAtom = atom((get) => {
   const proposal = get(proposalDetailAtom)
@@ -36,22 +37,46 @@ const timelockIdAtom = atom((get) => {
 })
 
 const ProposalCancel = () => {
-  const governance = useAtomValue(rTokenGovernanceAtom)
+  const indexDTF = useAtomValue(indexDTFAtom)
   const timelockId = useAtomValue(timelockIdAtom)
   const account = useAtomValue(walletAtom)
   const [proposal, setProposal] = useAtom(proposalDetailAtom)
   const deadline = proposal?.votingState.deadline
+  const chainId = useAtomValue(chainIdAtom)
+  const timelockAddress = useMemo(() => {
+    if (!indexDTF || !proposal) return undefined
+
+    if (
+      indexDTF.ownerGovernance?.id.toLowerCase() ===
+      proposal.governor.toLowerCase()
+    ) {
+      return indexDTF.ownerGovernance.timelock.id
+    }
+
+    if (
+      indexDTF.tradingGovernance?.id.toLowerCase() ===
+      proposal.governor.toLowerCase()
+    ) {
+      return indexDTF.tradingGovernance.timelock.id
+    }
+
+    return indexDTF.stToken?.governance?.timelock?.id
+  }, [indexDTF, proposal])
 
   const { data: canCancel } = useReadContract({
-    address: governance.timelock,
+    address: timelockAddress,
     abi: Timelock,
     functionName: 'hasRole',
     args: account ? [keccak256(toBytes('CANCELLER_ROLE')), account] : undefined,
+    chainId,
+    query: {
+      enabled: !!timelockAddress && !!account,
+    },
   })
 
   const { write, isLoading, hash, isReady } = useContractWrite({
     abi: Timelock,
-    address: governance?.timelock,
+    address: timelockAddress,
     functionName: 'cancel',
     args: timelockId ? [timelockId] : undefined,
     query: { enabled: canCancel },
