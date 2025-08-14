@@ -26,7 +26,7 @@ import {
   dtfTradeDelay,
   isDeferAvailableAtom,
   tradeVolatilityAtom,
-  dtfDistributionAtom,
+  dtfBalancesAtom,
 } from './atoms'
 import { PermissionOptionId } from './components/proposal-rebalance-launch-settings'
 
@@ -140,7 +140,7 @@ const useInitialBasket = ():
       select: (data) => {
         const [totalSupply, assetDistribution] = data
         const [assets, amounts] = assetDistribution
-        const distribution = assets.reduce(
+        const balances = assets.reduce(
           (acc, asset, index) => {
             acc[asset.toLowerCase()] = amounts[index]
             return acc
@@ -148,7 +148,7 @@ const useInitialBasket = ():
           {} as Record<string, bigint>
         )
 
-        return [totalSupply, distribution] as [bigint, Record<string, bigint>]
+        return [totalSupply, balances] as [bigint, Record<string, bigint>]
       },
     },
   })
@@ -160,7 +160,8 @@ const useInitialBasket = ():
     if (Object.keys(priceMap).length === 0 || !data || !basket?.length)
       return undefined
 
-    const [totalSupply, distribution] = data
+    const [totalSupply, balances] = data
+    if (!totalSupply) return undefined
 
     // Create a copy so the value doesn't mutate!
     const initialBasket = basket.reduce(
@@ -169,7 +170,7 @@ const useInitialBasket = ():
           token: asset,
           currentShares: shares[asset.address.toLowerCase()] ?? '0',
           currentUnits: formatUnits(
-            distribution[asset.address.toLowerCase()] ?? 0n,
+            (balances[asset.address.toLowerCase()] ?? 0n) * 10n ** 18n / totalSupply,
             asset.decimals
           ),
         }
@@ -178,7 +179,7 @@ const useInitialBasket = ():
       {} as Record<string, IndexAssetShares>
     )
 
-    return [totalSupply, initialBasket, priceMap, tradeDelay, distribution]
+    return [totalSupply, initialBasket, priceMap, tradeDelay, balances]
   }, [Object.keys(priceMap).length, !!data, basket?.length, tradeDelay])
 }
 
@@ -190,11 +191,11 @@ const InitialBasketUpdater = () => {
   const setTradeDelay = useSetAtom(dtfTradeDelay)
   const setProposedShares = useSetAtom(proposedSharesAtom)
   const setProposedUnits = useSetAtom(proposedUnitsAtom)
-  const setDtfDistribution = useSetAtom(dtfDistributionAtom)
+  const setBalances = useSetAtom(dtfBalancesAtom)
 
   useEffect(() => {
     if (initialBasket) {
-      const [totalSupply, basket, priceMap, tradeDelay, distribution] =
+      const [totalSupply, basket, priceMap, tradeDelay, balances] =
         initialBasket
       setPriceMap(priceMap)
       setProposedShares(
@@ -208,7 +209,7 @@ const InitialBasketUpdater = () => {
       )
       setProposedBasket(basket)
       setSupply(totalSupply)
-      setDtfDistribution(distribution)
+      setBalances(balances)
       setProposedUnits(
         Object.values(basket).reduce(
           (acc, asset) => {

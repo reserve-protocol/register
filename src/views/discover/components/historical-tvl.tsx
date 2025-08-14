@@ -144,6 +144,7 @@ const Heading = ({
   data?: Metrics
   isLoading: boolean
 }) => {
+  console.log('data', data)
   const revenue =
     isLoading || !data
       ? 0

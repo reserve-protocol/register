@@ -1,116 +1,187 @@
 import { getCurrentBasket } from '@/lib/index-rebalance/utils'
 import { Token } from '@/types'
 import { atom } from 'jotai'
-import { parseUnits } from 'viem'
+import { formatUnits, parseUnits } from 'viem'
 
-export interface IndexAssetShares {
+export type BasketInputMode = 'shares' | 'units' | 'both'
+
+export interface BasketItem {
   token: Token
-  currentShares: string
-  currentUnits: string
+  currentValue: string
+  currentShares?: string
+  currentUnits?: string
+  proposedValue?: string
 }
 
+export const basketItemsAtom = atom<Record<string, BasketItem>>({})
 export const basketPriceMapAtom = atom<Record<string, number>>({})
+export const basketModeAtom = atom<BasketInputMode>('both')
+export const currentInputTypeAtom = atom<'shares' | 'units'>('shares')
 
-export const indexBasketAtom = atom<
-  Record<string, IndexAssetShares> | undefined
->(undefined)
+export const showTokenSelectorAtom = atom(false)
+export const csvImportErrorAtom = atom<string | null>(null)
 
-// Basket form controls
 export const proposedSharesAtom = atom<Record<string, string>>({})
 export const proposedUnitsAtom = atom<Record<string, string>>({})
 
-// Computed state for proposed basket
-export const proposedIndexBasketStateAtom = atom<{
-  changed: boolean
-  remainingAllocation: number
-  isValid: boolean
-}>((get) => {
-  const proposedBasket = get(indexBasketAtom)
-  const proposedShares = get(proposedSharesAtom)
+export const activeProposedValuesAtom = atom(
+  (get) => {
+    const inputType = get(currentInputTypeAtom)
+    return inputType === 'shares' ? get(proposedSharesAtom) : get(proposedUnitsAtom)
+  },
+  (get, set, values: Record<string, string>) => {
+    const inputType = get(currentInputTypeAtom)
+    if (inputType === 'shares') {
+      set(proposedSharesAtom, values)
+    } else {
+      set(proposedUnitsAtom, values)
+    }
+  }
+)
+
+export const calculatedSharesFromUnitsAtom = atom((get) => {
+  const proposedUnits = get(proposedUnitsAtom)
+  const basketItems = get(basketItemsAtom)
   const priceMap = get(basketPriceMapAtom)
-  const defaultState = {
-    changed: false,
-    remainingAllocation: 0,
-    isValid: false,
+
+  if (!Object.keys(proposedUnits).length || !Object.keys(basketItems).length) {
+    return {}
   }
 
-  // Return default state if no basket
-  if (!proposedBasket) return defaultState
-
-  // Calculate total allocation and check for changes
-  const initialState = {
-    changed: false,
-    currentAllocation: 0,
-  }
-
-  // Move to true if any asset don't have a price
-  let invalidAsset = false
-
-  const { changed, currentAllocation } = Object.values(proposedBasket).reduce(
-    (acc, token) => {
-      if (!priceMap[token.token.address.toLowerCase()]) {
-        invalidAsset = true
-      }
-      return {
-        changed:
-          acc.changed ||
-          token.currentShares !== proposedShares[token.token.address],
-        currentAllocation:
-          acc.currentAllocation + Number(proposedShares[token.token.address]),
-      }
-    },
-    initialState
-  )
-
-  // Return early if no changes
-  if (!changed) return defaultState
-
-  // Calculate remaining allocation and validity
-  return {
-    changed,
-    remainingAllocation: 100 - currentAllocation,
-    isValid: Math.abs(currentAllocation - 100) <= 0.001 && !invalidAsset,
-  }
-})
-
-export const derivedProposedSharesAtom = atom((get) => {
   try {
-    const proposedUnits = get(proposedUnitsAtom)
-    const proposedIndexBasket = get(indexBasketAtom)
-    const priceMap = get(basketPriceMapAtom)
-
-    if (!proposedIndexBasket || !priceMap) return undefined
-
-    // Check if any of the proposed units are different than the current units on the basket
-    const isDifferent = Object.keys(proposedUnits).some(
-      (token) =>
-        proposedUnits[token] !== proposedIndexBasket[token].currentUnits
-    )
-
-    if (!isDifferent) return undefined
-
-    const keys = Object.keys(proposedUnits)
+    const addresses = Object.keys(basketItems)
     const bals: bigint[] = []
     const decimals: bigint[] = []
     const prices: number[] = []
 
-    for (const asset of keys) {
-      const d = proposedIndexBasket[asset].token.decimals || 18
-      bals.push(parseUnits(proposedUnits[asset], d))
+    for (const address of addresses) {
+      const item = basketItems[address]
+      const units = proposedUnits[address] || item.currentValue || '0'
+      const d = item.token.decimals || 18
+      
+      try {
+        bals.push(parseUnits(units, d))
+      } catch {
+        bals.push(0n)
+      }
       decimals.push(BigInt(d))
-      prices.push(priceMap[asset] || 0)
+      prices.push(priceMap[address.toLowerCase()] || 0)
     }
 
-    const targetBasket = getCurrentBasket(bals, decimals, prices)
-
-    return keys.reduce(
-      (acc, token, index) => {
-        acc[token] = targetBasket[index]
-        return acc
-      },
-      {} as Record<string, bigint>
-    )
+    const shares = getCurrentBasket(bals, decimals, prices)
+    
+    return addresses.reduce((acc, address, index) => {
+      acc[address] = formatUnits(shares[index], 16)
+      return acc
+    }, {} as Record<string, string>)
   } catch (e) {
-    return undefined
+    console.error('Error calculating shares from units:', e)
+    return {}
   }
 })
+
+export const allocationPercentagesAtom = atom((get) => {
+  const inputType = get(currentInputTypeAtom)
+  const proposedShares = get(proposedSharesAtom)
+  const calculatedShares = get(calculatedSharesFromUnitsAtom)
+  
+  if (inputType === 'shares') {
+    return proposedShares
+  } else {
+    return calculatedShares
+  }
+})
+
+export const totalAllocationAtom = atom((get) => {
+  const allocations = get(allocationPercentagesAtom)
+  return Object.values(allocations).reduce((sum, value) => {
+    const num = parseFloat(value) || 0
+    return sum + num
+  }, 0)
+})
+
+export const remainingAllocationAtom = atom((get) => {
+  const total = get(totalAllocationAtom)
+  return 100 - total
+})
+
+export const isValidAllocationAtom = atom((get) => {
+  const remaining = get(remainingAllocationAtom)
+  return Math.abs(remaining) <= 0.001
+})
+
+export const hasValidPricesAtom = atom((get) => {
+  const basketItems = get(basketItemsAtom)
+  const priceMap = get(basketPriceMapAtom)
+  
+  return Object.values(basketItems).every(item => {
+    const price = priceMap[item.token.address.toLowerCase()]
+    return price !== undefined && price > 0
+  })
+})
+
+export const basketValidationAtom = atom((get) => {
+  const isValidAllocation = get(isValidAllocationAtom)
+  const hasValidPrices = get(hasValidPricesAtom)
+  const basketItems = get(basketItemsAtom)
+  const hasItems = Object.keys(basketItems).length > 0
+  const mode = get(basketModeAtom)
+  const currentInputType = get(currentInputTypeAtom)
+  const shouldValidateAllocation = mode === 'shares' || (mode === 'both' && currentInputType === 'shares')
+  
+  return {
+    isValid: hasItems && (!shouldValidateAllocation || isValidAllocation) && hasValidPrices,
+    hasItems,
+    isValidAllocation,
+    hasValidPrices
+  }
+})
+
+export const resetBasketAtomsAtom = atom(null, (get, set) => {
+  set(basketItemsAtom, {})
+  set(proposedSharesAtom, {})
+  set(proposedUnitsAtom, {})
+  set(basketPriceMapAtom, {})
+  set(currentInputTypeAtom, 'shares')
+  set(showTokenSelectorAtom, false)
+  set(csvImportErrorAtom, null)
+})
+
+export const updateBasketFromTokensAtom = atom(
+  null,
+  (get, set, tokens: Token[]) => {
+    const currentBasket = get(basketItemsAtom)
+    const proposedShares = get(proposedSharesAtom)
+    const proposedUnits = get(proposedUnitsAtom)
+    
+    const newBasket: Record<string, BasketItem> = {}
+    
+    tokens.forEach(token => {
+      const address = token.address.toLowerCase()
+      const existing = currentBasket[address]
+      
+      newBasket[address] = {
+        token,
+        currentValue: existing?.currentValue || '0',
+        proposedValue: existing?.proposedValue
+      }
+    })
+    
+    set(basketItemsAtom, newBasket)
+    
+    const tokenAddresses = new Set(tokens.map(t => t.address.toLowerCase()))
+    
+    const cleanedShares = Object.entries(proposedShares).reduce((acc, [addr, value]) => {
+      if (tokenAddresses.has(addr)) acc[addr] = value
+      return acc
+    }, {} as Record<string, string>)
+    
+    const cleanedUnits = Object.entries(proposedUnits).reduce((acc, [addr, value]) => {
+      if (tokenAddresses.has(addr)) acc[addr] = value
+      return acc
+    }, {} as Record<string, string>)
+    
+    set(proposedSharesAtom, cleanedShares)
+    set(proposedUnitsAtom, cleanedUnits)
+  }
+)
