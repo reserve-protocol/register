@@ -17,6 +17,7 @@ export const marketCapsAtom = atom<{ [key: string]: number }>({}) // key is `${c
 export const isGovernorFilterAtom = atom(false)
 export const isGuardianFilterAtom = atom(false) 
 export const isCreatorFilterAtom = atom(false)
+export const hasBalanceFilterAtom = atom(false)
 export const dateFilterAtom = atom<'all' | '24h' | '7d' | '15d' | '30d'>('all')
 export const chainFilterAtom = atom<'all' | number>('all')
 
@@ -73,6 +74,7 @@ export const filteredDtfListAtom = atom((get) => {
   const isGovernorFilter = get(isGovernorFilterAtom)
   const isGuardianFilter = get(isGuardianFilterAtom)
   const isCreatorFilter = get(isCreatorFilterAtom)
+  const hasBalanceFilter = get(hasBalanceFilterAtom)
   const dateFilter = get(dateFilterAtom)
   const chainFilter = get(chainFilterAtom)
   
@@ -85,6 +87,11 @@ export const filteredDtfListAtom = atom((get) => {
   
   // Apply date filter
   filtered = filtered.filter(dtf => filterByDate(dtf, dateFilter))
+  
+  // Apply balance filter
+  if (hasBalanceFilter) {
+    filtered = filtered.filter(dtf => dtf.hasBalance === true)
+  }
   
   // Apply wallet filters if wallet is connected
   if (wallet && (isGovernorFilter || isGuardianFilter || isCreatorFilter)) {
@@ -117,6 +124,7 @@ export const resetFiltersAtom = atom(null, (get, set) => {
   set(isGovernorFilterAtom, false)
   set(isGuardianFilterAtom, false)
   set(isCreatorFilterAtom, false)
+  set(hasBalanceFilterAtom, false)
   set(dateFilterAtom, 'all')
   set(chainFilterAtom, 'all')
   set(currentPageAtom, 0)

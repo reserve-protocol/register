@@ -14,6 +14,9 @@ export type InternalDTF = {
     symbol: string
     decimals: number
     totalSupply: string
+    holders?: {
+      balance: string
+    }[]
   }
   ownerGovernance?: {
     votingDelay: number
@@ -39,6 +42,7 @@ export type InternalDTF = {
     }
   }
   marketCap?: number // Will be fetched separately from API
+  hasBalance?: boolean // Computed field
 }
 
 const dtfsQuery = gql`

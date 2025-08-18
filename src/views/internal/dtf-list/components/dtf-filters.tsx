@@ -3,6 +3,7 @@ import {
   isGovernorFilterAtom,
   isGuardianFilterAtom,
   isCreatorFilterAtom,
+  hasBalanceFilterAtom,
   currentPageAtom,
   dateFilterAtom,
   chainFilterAtom
@@ -17,11 +18,12 @@ const DTFFilters = () => {
   const [isGovernorFilter, setIsGovernorFilter] = useAtom(isGovernorFilterAtom)
   const [isGuardianFilter, setIsGuardianFilter] = useAtom(isGuardianFilterAtom)
   const [isCreatorFilter, setIsCreatorFilter] = useAtom(isCreatorFilterAtom)
+  const [hasBalanceFilter, setHasBalanceFilter] = useAtom(hasBalanceFilterAtom)
   const setCurrentPage = useSetAtom(currentPageAtom)
   const setDateFilter = useSetAtom(dateFilterAtom)
   const setChainFilter = useSetAtom(chainFilterAtom)
   
-  const hasActiveFilters = isGovernorFilter || isGuardianFilter || isCreatorFilter
+  const hasActiveFilters = isGovernorFilter || isGuardianFilter || isCreatorFilter || hasBalanceFilter
   
   const handleFilterChange = (
     setter: (value: boolean) => void
@@ -34,6 +36,7 @@ const DTFFilters = () => {
     setIsGovernorFilter(false)
     setIsGuardianFilter(false)
     setIsCreatorFilter(false)
+    setHasBalanceFilter(false)
     setCurrentPage(0)
   }
   
@@ -94,6 +97,20 @@ const DTFFilters = () => {
             className="text-sm font-normal cursor-pointer"
           >
             DTFs I created
+          </Label>
+        </div>
+        
+        <div className="flex items-center space-x-2">
+          <Switch
+            id="balance-filter"
+            checked={hasBalanceFilter}
+            onCheckedChange={handleFilterChange(setHasBalanceFilter)}
+          />
+          <Label
+            htmlFor="balance-filter"
+            className="text-sm font-normal cursor-pointer"
+          >
+            DTFs where I have balance
           </Label>
         </div>
       </div>
