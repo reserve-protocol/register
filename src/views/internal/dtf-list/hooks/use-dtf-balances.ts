@@ -11,14 +11,16 @@ export const useDTFBalances = (dtfs: InternalDTF[]) => {
   const contracts = dtfs.map(dtf => ({
     address: dtf.id as Address,
     abi: erc20Abi,
-    functionName: 'balanceOf',
+    functionName: 'balanceOf' as const,
     args: [wallet as Address],
     chainId: dtf.chainId,
   }))
   
   const { data, isLoading } = useReadContracts({
     contracts,
-    enabled: !!wallet && dtfs.length > 0,
+    query: {
+      enabled: !!wallet && dtfs.length > 0,
+    }
   })
   
   // Create a map of DTF address to balance
