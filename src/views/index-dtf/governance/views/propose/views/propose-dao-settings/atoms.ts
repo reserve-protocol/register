@@ -1,8 +1,9 @@
 import dtfIndexStakingVaultAbi from '@/abis/dtf-index-staking-vault'
+import timelockAbi from '@/abis/Timelock'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { Token } from '@/types'
 import { atom } from 'jotai'
-import { Address, encodeFunctionData, Hex } from 'viem'
+import { Address, encodeFunctionData, Hex, keccak256, toBytes } from 'viem'
 import {
   GovernanceChanges,
   ProposalData,
@@ -74,6 +75,7 @@ export const isProposalValidAtom = atom((get) => {
   const isAddedRewardsTokenValid = get(isAddedRewardsTokenValidAtom)
   const removedRewardTokens = get(removedRewardTokensAtom)
   const hasDaoGovernanceChanges = get(hasDaoGovernanceChangesAtom)
+  const hasRolesChanges = get(hasRolesChangesAtom)
   const isFormValid = get(isFormValidAtom)
 
   // Check if there are any changes
@@ -81,7 +83,7 @@ export const isProposalValidAtom = atom((get) => {
     (addedRewardTokens.length && isAddedRewardsTokenValid) || 
     removedRewardTokens.length > 0
 
-  const hasAnyChanges = hasRevenueTokenChanges || hasDaoGovernanceChanges
+  const hasAnyChanges = hasRevenueTokenChanges || hasDaoGovernanceChanges || hasRolesChanges
 
   // Proposal is valid if there are changes AND form is valid
   return hasAnyChanges && isFormValid
@@ -112,6 +114,16 @@ export const daoGovernanceChangesAtom = atom<GovernanceChanges>({})
 export const hasDaoGovernanceChangesAtom = atom((get) => {
   const changes = get(daoGovernanceChangesAtom)
   return Object.keys(changes).length > 0
+})
+
+// Role changes atoms
+export const rolesChangesAtom = atom<{
+  guardians?: Address[]
+}>({})
+
+export const hasRolesChangesAtom = atom((get) => {
+  const changes = get(rolesChangesAtom)
+  return changes.guardians !== undefined
 })
 
 // Atom for formatted governance changes for display
@@ -187,12 +199,16 @@ export const currentQuorumPercentageAtom = atom((get) => {
   return (Number(quorumNumerator) / Number(quorumDenominator)) * 100
 })
 
+// CANCELLER_ROLE for timelock guardian
+const CANCELLER_ROLE = keccak256(toBytes('CANCELLER_ROLE'))
+
 export const daoSettingsProposalDataAtom = atom<ProposalData | undefined>((get) => {
   const isConfirmed = get(isProposalConfirmedAtom)
   const indexDTF = get(indexDTFAtom)
   const addedRewardTokens = get(addedRewardTokensAtom)
   const removedRewardTokens = get(removedRewardTokensAtom)
   const governanceChanges = get(daoGovernanceChangesAtom)
+  const rolesChanges = get(rolesChangesAtom)
 
   if (!isConfirmed || !indexDTF || !indexDTF.stToken) return undefined
 
@@ -263,6 +279,45 @@ export const daoSettingsProposalDataAtom = atom<ProposalData | undefined>((get) 
     }
   }
 
+  // 3. Handle guardian role changes
+  if (rolesChanges.guardians && indexDTF.stToken.governance?.timelock?.id) {
+    const timelockAddress = indexDTF.stToken.governance.timelock.id as Address
+    const currentGuardians = indexDTF.stToken.governance.timelock.guardians || []
+    const newGuardians = rolesChanges.guardians
+
+    // Revoke removed guardians
+    for (const guardian of currentGuardians) {
+      if (!newGuardians.some(newGuardian => 
+        newGuardian.toLowerCase() === guardian.toLowerCase()
+      )) {
+        calldatas.push(
+          encodeFunctionData({
+            abi: timelockAbi,
+            functionName: 'revokeRole',
+            args: [CANCELLER_ROLE, guardian as Address],
+          })
+        )
+        targets.push(timelockAddress)
+      }
+    }
+
+    // Grant new guardians
+    for (const guardian of newGuardians) {
+      if (!currentGuardians.some(currentGuardian => 
+        currentGuardian.toLowerCase() === guardian.toLowerCase()
+      )) {
+        calldatas.push(
+          encodeFunctionData({
+            abi: timelockAbi,
+            functionName: 'grantRole',
+            args: [CANCELLER_ROLE, guardian],
+          })
+        )
+        targets.push(timelockAddress)
+      }
+    }
+  }
+
   return calldatas.length > 0 ? { calldatas, targets } : undefined
 })
 
@@ -275,5 +330,6 @@ export const resetAtom = atom(null, (get, set) => {
   set(isProposalConfirmedAtom, false)
   set(proposalDescriptionAtom, undefined)
   set(daoGovernanceChangesAtom, {})
+  set(rolesChangesAtom, {})
   set(isFormValidAtom, false)
 })

@@ -14,14 +14,16 @@ import {
   ChevronUpIcon,
   Coins,
   Landmark,
+  Shield,
 } from 'lucide-react'
 import { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { selectedSectionAtom } from '../atoms'
 import ProposeRevenueTokens from './sections/propose-revenue-tokens'
 import ProposeDaoGovernance from './sections/propose-dao-governance'
+import ProposeDaoRoles from './sections/propose-dao-roles'
 
-type DAO_SETTINGS_ID = 'revenue-tokens' | 'governance'
+type DAO_SETTINGS_ID = 'revenue-tokens' | 'governance' | 'roles'
 
 // Scroll utility function adapted from deploy
 const scrollToSection = (sectionId: string) => {
@@ -59,6 +61,13 @@ const DAO_SETTINGS: DAO_SETTING[] = [
     title: 'Governance',
     titleSecondary: 'Governance Parameters',
     content: <ProposeDaoGovernance />,
+  },
+  {
+    id: 'roles',
+    icon: <Shield size={14} strokeWidth={1.5} />,
+    title: 'Roles',
+    titleSecondary: 'Role Management',
+    content: <ProposeDaoRoles />,
   },
 ]
 
