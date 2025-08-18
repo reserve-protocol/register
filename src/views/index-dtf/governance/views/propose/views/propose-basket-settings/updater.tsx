@@ -2,9 +2,11 @@ import { indexDTFAtom } from '@/state/dtf/atoms'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useRef } from 'react'
 import { useFormContext } from 'react-hook-form'
+import { Address } from 'viem'
 import {
   resetAtom,
   basketGovernanceChangesAtom,
+  rolesChangesAtom,
   isFormValidAtom,
   isProposalConfirmedAtom,
   currentQuorumPercentageAtom,
@@ -16,12 +18,14 @@ const Updater = () => {
   const reset = useSetAtom(resetAtom)
   const { reset: resetForm, watch, formState } = useFormContext()
   const governanceChanges = useAtomValue(basketGovernanceChangesAtom)
+  const rolesChanges = useAtomValue(rolesChangesAtom)
   const isProposalConfirmed = useAtomValue(isProposalConfirmedAtom)
   const currentQuorumPercentage = useAtomValue(currentQuorumPercentageAtom)
   const isResettingForm = useRef(false)
 
   // Set atoms for changes
   const setGovernanceChanges = useSetAtom(basketGovernanceChangesAtom)
+  const setRolesChanges = useSetAtom(rolesChangesAtom)
   const setIsFormValid = useSetAtom(isFormValidAtom)
 
   // Watch form fields
@@ -30,6 +34,7 @@ const Updater = () => {
   const basketVotingThreshold = watch('basketVotingThreshold')
   const basketVotingQuorum = watch('basketVotingQuorum')
   const basketExecutionDelay = watch('basketExecutionDelay')
+  const guardians = watch('guardians')
 
   useEffect(() => {
     if (indexDTF && indexDTF.tradingGovernance) {
@@ -46,6 +51,9 @@ const Updater = () => {
       const currentExecutionDelay = secondsToDays(
         Number(governance.timelock.executionDelay)
       )
+
+      // Get current guardians
+      const currentGuardians = governance.timelock?.guardians || []
 
       resetForm({
         // Apply governance changes if they exist, otherwise use current values
@@ -69,6 +77,9 @@ const Updater = () => {
           governanceChanges.executionDelay !== undefined
             ? governanceChanges.executionDelay / 86400
             : currentExecutionDelay,
+        guardians: rolesChanges.guardians !== undefined 
+          ? rolesChanges.guardians 
+          : currentGuardians,
       })
 
       // Reset the flag after form reset
@@ -166,6 +177,45 @@ const Updater = () => {
     setGovernanceChanges,
     currentQuorumPercentage,
   ])
+
+  // Watch for guardian role changes
+  useEffect(() => {
+    if (indexDTF && indexDTF.tradingGovernance?.timelock) {
+      const currentGuardians = indexDTF.tradingGovernance.timelock.guardians || []
+      
+      // Filter out empty strings and convert to addresses
+      const formGuardians = (guardians || [])
+        .filter((g: string) => g && g.trim() !== '')
+        .map((g: string) => g as Address)
+      
+      // Check if guardians have changed
+      const hasChanged = (() => {
+        if (formGuardians.length !== currentGuardians.length) return true
+        
+        const formSet = new Set(formGuardians.map((g: string) => g.toLowerCase()))
+        const currentSet = new Set(currentGuardians.map((g: string) => g.toLowerCase()))
+        
+        for (const guardian of formGuardians) {
+          if (!currentSet.has(guardian.toLowerCase())) return true
+        }
+        
+        for (const guardian of currentGuardians) {
+          if (!formSet.has(guardian.toLowerCase())) return true
+        }
+        
+        return false
+      })()
+      
+      setRolesChanges((prevChanges) => {
+        if (hasChanged) {
+          return { ...prevChanges, guardians: formGuardians }
+        } else {
+          const { guardians: _, ...rest } = prevChanges
+          return rest
+        }
+      })
+    }
+  }, [guardians, indexDTF?.tradingGovernance?.timelock, setRolesChanges])
 
   // Track form validation state
   useEffect(() => {
