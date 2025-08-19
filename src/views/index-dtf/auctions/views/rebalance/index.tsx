@@ -16,7 +16,7 @@ const RebalanceContent = () => {
   const showManageWeights = useAtomValue(showManageWeightsViewAtom)
   const metrics = useAtomValue(rebalanceMetricsAtom)
 
-  if (isCompleted || (metrics?.relativeProgression ?? 0 > 99.7)) {
+  if (isCompleted || (metrics?.relativeProgression ?? 0) > 99.7) {
     return <RebalanceCompleted />
   }
 
