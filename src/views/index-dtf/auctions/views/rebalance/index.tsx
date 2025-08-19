@@ -16,9 +16,12 @@ const RebalanceContent = () => {
   const showManageWeights = useAtomValue(showManageWeightsViewAtom)
   const metrics = useAtomValue(rebalanceMetricsAtom)
 
+  // TOOD: Needs more work, if the rebalance is still ongoing we need to use the current helpers for the metrics
+  // If we use the API while rebalance is ongoing then we would get wrong metricsq
   // if (isCompleted || (metrics?.relativeProgression ?? 0) > 99.7) {
-  //   return <RebalanceCompleted />
-  // }
+  if (isCompleted) {
+    return <RebalanceCompleted />
+  }
 
   if (showManageWeights) {
     return <ManageWeightsView />
