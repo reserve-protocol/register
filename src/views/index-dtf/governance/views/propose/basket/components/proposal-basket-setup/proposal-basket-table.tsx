@@ -14,6 +14,8 @@ import {
 } from '../../atoms'
 import SetupNativeDTFBasket from './setup-native-dtf-basket'
 import SetupTrackingDTFBasket from './setup-tracking-dtf-basket'
+import Help from '@/components/help'
+import { UNITS_DISCLAIMER } from '@/utils/constants'
 
 const assetsAtom = atom((get) => {
   const proposedBasket = get(proposedIndexBasketAtom)
@@ -22,6 +24,15 @@ const assetsAtom = atom((get) => {
 
   return { isLoading: false, assets: Object.values(proposedBasket) }
 })
+
+const UnitsHeader = () => {
+  return (
+    <div className="flex items-center justify-center gap-1">
+      <span>New units</span>
+      <Help content={UNITS_DISCLAIMER} />
+    </div>
+  )
+}
 
 const Header = () => {
   const isUnitBasket = useAtomValue(isUnitBasketAtom)
@@ -39,7 +50,7 @@ const Header = () => {
         </TableHead>
         <TableHead className="bg-primary/10 text-primary text-center font-bold">
           {isUnitBasket || isHybridDTF ? (
-            'New units'
+            <UnitsHeader />
           ) : (
             <ToggleGroup
               type="single"
