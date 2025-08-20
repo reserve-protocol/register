@@ -396,7 +396,7 @@ export const collateralDisplay: Record<string, string> = {
   steakusdc: 'Morpho Steakhouse USDC',
   saarbusdcn: 'AAVE USDC V3',
   saarbusdt: 'AAVE USDT V3',
-  'stkcvxeth+eth-f': 'Convex ETH+/ETH',
+  'stkcvxeth+eth': 'Convex ETH+/ETH',
   apxeth: 'Autocompounding Pirex ETH',
   susde: 'Ethena Staked USDe',
   susds: 'Sky Savings USDS',
