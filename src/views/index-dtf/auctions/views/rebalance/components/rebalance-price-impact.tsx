@@ -1,6 +1,7 @@
 import { useAtomValue } from 'jotai'
 import { useEffect, useState, useRef, useMemo } from 'react'
 import { Address, parseUnits } from 'viem'
+import { useQuery } from '@tanstack/react-query'
 import { chainIdAtom } from '@/state/atoms'
 import { ethPriceAtom } from '@/state/chain/atoms/chainAtoms'
 import { formatCurrency } from '@/utils'
@@ -60,15 +61,7 @@ const RebalancePriceImpact = () => {
   const ethPrice = useAtomValue(ethPriceAtom)
   const rebalanceParams = useRebalanceParams()
 
-  // State for results
-  const [priceImpacts, setPriceImpacts] = useState<
-    Record<
-      string,
-      { usdSize: number; priceImpact: number | null; error?: string }
-    >
-  >({})
-  const [loading, setLoading] = useState(false)
-  const [hasInitialData, setHasInitialData] = useState(false)
+  // No additional state needed - everything managed by React Query
 
   // Debouncing logic
   const [debouncedMetrics, setDebouncedMetrics] = useState(metrics)
@@ -205,52 +198,65 @@ const RebalancePriceImpact = () => {
     }
   }
 
-  // Calculate all price impacts
-  useEffect(() => {
-    const calculateAllPriceImpacts = async () => {
-      if (!stableTokenData || !tokenMap || !rebalanceParams || !chainId) return
+  // Calculate all price impacts using React Query with parallel fetching
+  const { data: priceImpacts = {}, isLoading: loading, isFetching } = useQuery({
+    queryKey: ['price-impacts', stableTokenData, chainId, rebalanceParams?.prices],
+    queryFn: async () => {
+      if (!stableTokenData || !tokenMap || !rebalanceParams || !chainId) {
+        return {}
+      }
 
       const wethAddress = WETH_ADDRESSES[chainId]
-      if (!wethAddress) return
+      if (!wethAddress) {
+        return {}
+      }
 
-      setLoading(true)
       const results: Record<
         string,
         { usdSize: number; priceImpact: number | null; error?: string }
       > = {}
 
+      // Prepare all fetch promises
+      const fetchPromises: Promise<void>[] = []
+
       // Process surplus tokens (selling for WETH)
-      for (let i = 0; i < stableTokenData.surplusTokens.length; i++) {
-        const tokenAddress = stableTokenData.surplusTokens[i].toLowerCase()
+      stableTokenData.surplusTokens.forEach((tokenAddress, i) => {
+        const tokenAddr = tokenAddress.toLowerCase()
         const usdSize = stableTokenData.surplusTokenSizes[i]
 
-        if (usdSize === 0) continue
+        if (usdSize === 0) return
 
-        const tokenUnits = convertUsdToTokenUnits(usdSize, tokenAddress)
+        const tokenUnits = convertUsdToTokenUnits(usdSize, tokenAddr)
         if (tokenUnits === '0') {
-          results[tokenAddress] = {
+          results[tokenAddr] = {
             usdSize,
             priceImpact: null,
             error: 'No price data',
           }
-          continue
+          return
         }
 
-        const priceImpact = await fetchPriceImpact(
-          tokenAddress as Address,
-          wethAddress,
-          tokenUnits
+        // Add to parallel fetch promises
+        fetchPromises.push(
+          fetchPriceImpact(
+            tokenAddr as Address,
+            wethAddress,
+            tokenUnits
+          ).then(priceImpact => {
+            results[tokenAddr] = { usdSize, priceImpact }
+          }).catch(error => {
+            console.error(`Error fetching price impact for ${tokenAddr}:`, error)
+            results[tokenAddr] = { usdSize, priceImpact: null, error: 'Failed to fetch' }
+          })
         )
-
-        results[tokenAddress] = { usdSize, priceImpact }
-      }
+      })
 
       // Process deficit tokens (buying with WETH)
-      for (let i = 0; i < stableTokenData.deficitTokens.length; i++) {
-        const tokenAddress = stableTokenData.deficitTokens[i].toLowerCase()
+      stableTokenData.deficitTokens.forEach((tokenAddress, i) => {
+        const tokenAddr = tokenAddress.toLowerCase()
         const usdSize = stableTokenData.deficitTokenSizes[i]
 
-        if (usdSize === 0) continue
+        if (usdSize === 0) return
 
         // For deficit tokens, we need to calculate WETH amount needed
         // WETH always has 18 decimals
@@ -260,36 +266,39 @@ const RebalancePriceImpact = () => {
           18
         )
         if (wethUnits === '0') {
-          results[tokenAddress] = {
+          results[tokenAddr] = {
             usdSize,
             priceImpact: null,
             error: 'Failed to calculate WETH amount',
           }
-          continue
+          return
         }
 
-        const priceImpact = await fetchPriceImpact(
-          wethAddress,
-          tokenAddress as Address,
-          wethUnits
+        // Add to parallel fetch promises
+        fetchPromises.push(
+          fetchPriceImpact(
+            wethAddress,
+            tokenAddr as Address,
+            wethUnits
+          ).then(priceImpact => {
+            results[tokenAddr] = { usdSize, priceImpact }
+          }).catch(error => {
+            console.error(`Error fetching price impact for ${tokenAddr}:`, error)
+            results[tokenAddr] = { usdSize, priceImpact: null, error: 'Failed to fetch' }
+          })
         )
+      })
 
-        results[tokenAddress] = { usdSize, priceImpact }
-      }
+      // Execute all fetches in parallel
+      await Promise.all(fetchPromises)
 
-      setPriceImpacts(results)
-      setLoading(false)
-    }
+      return results
+    },
+    enabled: !!stableTokenData && !!tokenMap && !!rebalanceParams && !!chainId,
+    staleTime: 60000, // 1 minute
+    refetchInterval: false, // Don't auto-refetch, we control it via debouncing
+  })
 
-    calculateAllPriceImpacts()
-  }, [stableTokenData, tokenMap, chainId, rebalanceParams])
-
-  // Track when we have initial data
-  useEffect(() => {
-    if (priceImpacts && Object.keys(priceImpacts).length > 0) {
-      setHasInitialData(true)
-    }
-  }, [priceImpacts])
 
   if (
     !metrics ||
@@ -302,7 +311,7 @@ const RebalancePriceImpact = () => {
     <div className="flex flex-col gap-1 mt-2">
       <h4 className="text-primary text-xl mb-2">Price Impact</h4>
 
-      {loading && !hasInitialData ? (
+      {!tokenMap || Object.keys(tokenMap).length === 0 ? (
         <div className="space-y-2">
           <Skeleton className="h-4 w-full" />
           <Skeleton className="h-4 w-full" />
@@ -319,30 +328,40 @@ const RebalancePriceImpact = () => {
                   const token = tokenMap[tokenAddress.toLowerCase()]
                   const impact = priceImpacts[tokenAddress.toLowerCase()]
 
-                  if (!token || !impact || impact.usdSize === 0) return null
+                  if (!token) return null
+                  
+                  // Show token with size from metrics even if impact not loaded yet
+                  const usdSize = metrics.surplusTokenSizes[index]
+                  if (usdSize === 0) return null
 
                   return (
                     <div key={tokenAddress} className="flex items-center gap-2">
                       <span>{token.symbol}</span>
                       <span>-</span>
-                      <span>${formatCurrency(impact.usdSize)}</span>
-                      {impact.priceImpact !== null && (
-                        <span
-                          className={
-                            impact.priceImpact > 0
-                              ? 'text-destructive'
-                              : 'text-primary'
-                          }
-                        >
-                          ({impact.priceImpact > 0 ? '-' : '+'}
-                          {Math.abs(impact.priceImpact).toFixed(2)}%)
-                        </span>
-                      )}
-                      {impact.error && (
-                        <span className="text-muted-foreground text-xs">
-                          ({impact.error})
-                        </span>
-                      )}
+                      <span>${formatCurrency(usdSize)}</span>
+                      {(loading || isFetching) && !impact ? (
+                        <Skeleton className="h-4 w-16 inline-block" />
+                      ) : impact ? (
+                        <>
+                          {impact.priceImpact !== null && (
+                            <span
+                              className={
+                                impact.priceImpact > 0
+                                  ? 'text-destructive'
+                                  : 'text-primary'
+                              }
+                            >
+                              ({impact.priceImpact > 0 ? '-' : '+'}
+                              {Math.abs(impact.priceImpact).toFixed(2)}%)
+                            </span>
+                          )}
+                          {impact.error && (
+                            <span className="text-muted-foreground text-xs">
+                              ({impact.error})
+                            </span>
+                          )}
+                        </>
+                      ) : null}
                     </div>
                   )
                 })}
@@ -359,30 +378,40 @@ const RebalancePriceImpact = () => {
                   const token = tokenMap[tokenAddress.toLowerCase()]
                   const impact = priceImpacts[tokenAddress.toLowerCase()]
 
-                  if (!token || !impact || impact.usdSize === 0) return null
+                  if (!token) return null
+                  
+                  // Show token with size from metrics even if impact not loaded yet
+                  const usdSize = metrics.deficitTokenSizes[index]
+                  if (usdSize === 0) return null
 
                   return (
                     <div key={tokenAddress} className="flex items-center gap-2">
                       <span>{token.symbol}</span>
                       <span>-</span>
-                      <span>${formatCurrency(impact.usdSize)}</span>
-                      {impact.priceImpact !== null && (
-                        <span
-                          className={
-                            impact.priceImpact > 0
-                              ? 'text-destructive'
-                              : 'text-primary'
-                          }
-                        >
-                          ({impact.priceImpact > 0 ? '-' : '+'}
-                          {Math.abs(impact.priceImpact).toFixed(2)}%)
-                        </span>
-                      )}
-                      {impact.error && (
-                        <span className="text-muted-foreground text-xs">
-                          ({impact.error})
-                        </span>
-                      )}
+                      <span>${formatCurrency(usdSize)}</span>
+                      {(loading || isFetching) && !impact ? (
+                        <Skeleton className="h-4 w-16 inline-block" />
+                      ) : impact ? (
+                        <>
+                          {impact.priceImpact !== null && (
+                            <span
+                              className={
+                                impact.priceImpact > 0
+                                  ? 'text-destructive'
+                                  : 'text-primary'
+                              }
+                            >
+                              ({impact.priceImpact > 0 ? '-' : '+'}
+                              {Math.abs(impact.priceImpact).toFixed(2)}%)
+                            </span>
+                          )}
+                          {impact.error && (
+                            <span className="text-muted-foreground text-xs">
+                              ({impact.error})
+                            </span>
+                          )}
+                        </>
+                      ) : null}
                     </div>
                   )
                 })}

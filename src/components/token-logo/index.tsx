@@ -115,7 +115,7 @@ const TokenLogo = React.forwardRef<HTMLImageElement, Props>((props, ref) => {
 
       if (address && symbol && UNIVERSAL_ASSETS.has(address.toLowerCase())) {
         try {
-          const universalUrl = `https://www.universal.xyz/wrapped-tokens/UA-${symbol.toUpperCase().substring(1)}.svg`
+          const universalUrl = `https://app.universal.xyz/wrapped-tokens/UA-${symbol.toUpperCase().substring(1)}.svg`
           const url = await tryLoadImage(universalUrl)
           // cacheUrl(url) // don't cache universal logos because of the wrapper... solve later
           setCurrentSrc(url)
