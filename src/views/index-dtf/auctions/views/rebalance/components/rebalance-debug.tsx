@@ -19,6 +19,7 @@ import {
 } from '../atoms'
 import useRebalanceParams from '../hooks/use-rebalance-params'
 import RebalancePriceImpact from './rebalance-price-impact'
+import RebalanceBidsList from './rebalance-bids-list'
 
 const RebalanceSlider = () => {
   const [rebalancePercent, setRebalancePercent] = useAtom(rebalancePercentAtom)
@@ -136,6 +137,7 @@ const RebalanceDebug = () => {
       <RebalancePriceImpact />
       <RebalanceMetrics />
       <RebalanceParameters />
+      <RebalanceBidsList />
     </div>
   )
 }

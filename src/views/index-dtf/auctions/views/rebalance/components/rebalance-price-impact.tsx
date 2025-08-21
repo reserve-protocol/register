@@ -1,6 +1,7 @@
 import { useAtomValue } from 'jotai'
 import { useEffect, useState, useRef, useMemo, useCallback } from 'react'
 import { Address, parseUnits } from 'viem'
+import { useQuery } from '@tanstack/react-query'
 import { chainIdAtom } from '@/state/atoms'
 import { ethPriceAtom } from '@/state/chain/atoms/chainAtoms'
 import { formatCurrency } from '@/utils'
@@ -75,7 +76,7 @@ const convertUsdToTokenUnits = (
   if (!decimals || !price || price === 0) return '0'
 
   const tokenAmount = usdAmount / price
-  
+
   try {
     return parseUnits(tokenAmount.toFixed(6), decimals).toString()
   } catch (error) {
@@ -216,20 +217,14 @@ const TokenImpactRow = ({ token }: { token: TokenPriceImpact }) => (
     <span>${formatCurrency(token.usdSize)}</span>
     {token.priceImpact !== null && (
       <span
-        className={
-          token.priceImpact > 0
-            ? 'text-destructive'
-            : 'text-primary'
-        }
+        className={token.priceImpact > 0 ? 'text-destructive' : 'text-primary'}
       >
         ({token.priceImpact > 0 ? '-' : '+'}
         {Math.abs(token.priceImpact).toFixed(2)}%)
       </span>
     )}
     {token.error && (
-      <span className="text-muted-foreground text-xs">
-        ({token.error})
-      </span>
+      <span className="text-muted-foreground text-xs">({token.error})</span>
     )}
   </div>
 )
@@ -310,18 +305,17 @@ const usePriceImpactCalculation = () => {
 
       // Get price for the token
       let price = rebalanceParams.prices[token.tokenAddress]?.currentPrice
-      
+
       // If no price and it's WETH, use the ETH price from the global atom
-      if (!price && token.tokenAddress.toLowerCase() === wethAddress.toLowerCase()) {
+      if (
+        !price &&
+        token.tokenAddress.toLowerCase() === wethAddress.toLowerCase()
+      ) {
         price = ethPrice
       }
 
       // Calculate WETH amount for the swap (all swaps are WETH -> token)
-      const wethUnits = convertUsdToTokenUnits(
-        token.usdSize,
-        ethPrice,
-        18
-      )
+      const wethUnits = convertUsdToTokenUnits(token.usdSize, ethPrice, 18)
 
       if (wethUnits === '0') {
         updatedTokens.push({
