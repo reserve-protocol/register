@@ -523,3 +523,6 @@ export const WORMHOLE_ASSETS = new Set([
   '0xcb9eec5748aaafa41fbcbe0b58465efed11ce176',
   '0x3992b27da26848c2b19cea6fd25ad5568b68ab98',
 ])
+
+export const UNITS_DISCLAIMER =
+  "The units inputted (from csv or manually) are scaled so the portfolio value matches the DTF's NAV. Example: If the DTF trades at 100× NAV and you input 1,000 units, all units are scaled down by 100× to keep the NAV unchanged"
