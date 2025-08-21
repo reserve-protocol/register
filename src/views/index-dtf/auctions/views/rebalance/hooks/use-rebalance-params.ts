@@ -1,7 +1,9 @@
+import dtfIndexAbiV4 from '@/abis/dtf-index-abi-v4'
 import useAssetPricesWithSnapshot, {
   TokenPriceWithSnapshot,
 } from '@/hooks/use-asset-prices-with-snapshot'
 import {
+  indexDTFAtom,
   indexDTFBasketAtom,
   indexDTFRebalanceControlAtom,
   isHybridDTFAtom,
@@ -14,6 +16,7 @@ import {
 } from '@reserve-protocol/dtf-rebalance-lib/dist/types'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
+import { useReadContract } from 'wagmi'
 import { currentRebalanceAtom } from '../../../atoms'
 import { originalRebalanceWeightsAtom, rebalanceAuctionsAtom } from '../atoms'
 import useRebalanceCurrentData from './use-rebalance-current-data'
@@ -32,6 +35,7 @@ export type RebalanceParams = {
 }
 
 const useRebalanceParams = () => {
+  const dtf = useAtomValue(indexDTFAtom)
   const basket = useAtomValue(indexDTFBasketAtom)
   const rebalance = useAtomValue(currentRebalanceAtom)
   const rebalanceControl = useAtomValue(indexDTFRebalanceControlAtom)
@@ -58,6 +62,17 @@ const useRebalanceParams = () => {
   const { data: prices } = useAssetPricesWithSnapshot(rebalanceTokens)
   const { data: currentRebalanceData } = useRebalanceCurrentData()
   const { data: initialRebalanceData } = useRebalanceInitialData()
+  const { data: initialRebalance } = useReadContract({
+    abi: dtfIndexAbiV4,
+    address: dtf?.id,
+    functionName: 'getRebalance',
+    chainId: dtf?.chainId,
+    args: [],
+    blockNumber: BigInt(rebalance?.rebalance.blockNumber ?? '0'),
+    query: {
+      enabled: !!rebalance?.rebalance.blockNumber && !!dtf?.id,
+    },
+  })
 
   return useMemo(() => {
     if (
@@ -65,15 +80,12 @@ const useRebalanceParams = () => {
       !initialRebalanceData ||
       !prices ||
       !rebalanceControl ||
-      !rebalance
+      !rebalance ||
+      !initialRebalance
     )
       return undefined
 
-    const {
-      supply: initialSupply,
-      rebalance: initialRebalance,
-      initialAssets,
-    } = initialRebalanceData
+    const { supply: initialSupply, initialAssets } = initialRebalanceData
     const tokenMap = rebalance.rebalance.tokens.reduce(
       (acc, token) => {
         acc[token.address.toLowerCase()] = token
@@ -133,6 +145,7 @@ const useRebalanceParams = () => {
   }, [
     currentRebalanceData,
     initialRebalanceData,
+    initialRebalance,
     prices,
     rebalance,
     rebalanceControl,

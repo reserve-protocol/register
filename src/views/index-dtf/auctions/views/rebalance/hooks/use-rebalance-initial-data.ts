@@ -18,13 +18,7 @@ const useRebalanceInitialData = () => {
         chainId: dtf?.chainId,
         args: [],
       },
-      {
-        abi: dtfIndexAbiV4,
-        address: dtf?.id,
-        functionName: 'getRebalance',
-        chainId: dtf?.chainId,
-        args: [],
-      },
+
       {
         abi: dtfIndexAbiV4,
         address: dtf?.id,
@@ -38,11 +32,10 @@ const useRebalanceInitialData = () => {
     query: {
       enabled: !!rebalance?.proposal.creationBlock && !!dtf?.id,
       select: (data) => {
-        const [supply, rebalance, [assets, balances]] = data
+        const [supply, [assets, balances]] = data
 
         return {
           supply,
-          rebalance,
           initialAssets: mapToAssets(assets, balances),
         }
       },
