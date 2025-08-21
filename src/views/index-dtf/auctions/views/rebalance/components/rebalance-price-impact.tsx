@@ -1,5 +1,5 @@
 import { useAtomValue } from 'jotai'
-import { useEffect, useState, useRef, useMemo, useCallback } from 'react'
+import { useEffect, useState, useRef, useMemo } from 'react'
 import { Address, parseUnits } from 'viem'
 import { useQuery } from '@tanstack/react-query'
 import { chainIdAtom } from '@/state/atoms'
@@ -54,12 +54,10 @@ type ZapResponse = {
   error?: string
 }
 
-type TokenPriceImpact = {
+type TokenInfo = {
   tokenAddress: string
   tokenSymbol: string
   usdSize: number
-  priceImpact: number | null
-  error?: string
   type: 'surplus' | 'deficit'
 }
 
@@ -151,15 +149,15 @@ const fetchPriceImpact = async (
 }
 
 /**
- * Combine surplus and deficit tokens into a single list
+ * Get all tokens with their sizes
  */
 const getAllTokensWithSizes = (
   metrics: any,
   tokenMap: Record<string, any>
-): TokenPriceImpact[] => {
+): TokenInfo[] => {
   if (!metrics) return []
 
-  const tokens: TokenPriceImpact[] = []
+  const tokens: TokenInfo[] = []
 
   // Add surplus tokens
   for (let i = 0; i < metrics.surplusTokens.length; i++) {
@@ -170,7 +168,6 @@ const getAllTokensWithSizes = (
         tokenAddress,
         tokenSymbol: token.symbol,
         usdSize: metrics.surplusTokenSizes[i],
-        priceImpact: null,
         type: 'surplus',
       })
     }
@@ -185,7 +182,6 @@ const getAllTokensWithSizes = (
         tokenAddress,
         tokenSymbol: token.symbol,
         usdSize: metrics.deficitTokenSizes[i],
-        priceImpact: null,
         type: 'deficit',
       })
     }
@@ -197,53 +193,38 @@ const getAllTokensWithSizes = (
 // ==================== SUB-COMPONENTS ====================
 
 /**
- * Loading skeleton component
+ * Individual token impact row with inline skeleton
  */
-const PriceImpactSkeleton = () => (
-  <div className="space-y-2">
-    <Skeleton className="h-4 w-full" />
-    <Skeleton className="h-4 w-full" />
-    <Skeleton className="h-4 w-full" />
-  </div>
-)
-
-/**
- * Individual token impact row
- */
-const TokenImpactRow = ({ token }: { token: TokenPriceImpact }) => (
+const TokenImpactRow = ({ 
+  token,
+  priceImpact,
+  isLoading 
+}: { 
+  token: TokenInfo
+  priceImpact: number | null | undefined
+  isLoading: boolean
+}) => (
   <div className="flex items-center gap-2">
     <span>{token.tokenSymbol}</span>
     <span>-</span>
     <span>${formatCurrency(token.usdSize)}</span>
-    {token.priceImpact !== null && (
+    {isLoading ? (
+      <Skeleton className="h-4 w-16" />
+    ) : priceImpact !== null && priceImpact !== undefined ? (
       <span
-        className={token.priceImpact > 0 ? 'text-destructive' : 'text-primary'}
+        className={priceImpact > 0 ? 'text-destructive' : 'text-primary'}
       >
-        ({token.priceImpact > 0 ? '-' : '+'}
-        {Math.abs(token.priceImpact).toFixed(2)}%)
+        ({priceImpact > 0 ? '-' : '+'}
+        {Math.abs(priceImpact).toFixed(2)}%)
       </span>
-    )}
-    {token.error && (
-      <span className="text-muted-foreground text-xs">({token.error})</span>
-    )}
-  </div>
-)
-
-/**
- * List of all tokens with price impacts
- */
-const PriceImpactList = ({ tokens }: { tokens: TokenPriceImpact[] }) => (
-  <div className="space-y-1 pl-2">
-    {tokens.map((token) => (
-      <TokenImpactRow key={token.tokenAddress} token={token} />
-    ))}
+    ) : null}
   </div>
 )
 
 // ==================== CUSTOM HOOK ====================
 
 /**
- * Custom hook to handle price impact calculations
+ * Custom hook to handle price impact calculations with React Query
  */
 const usePriceImpactCalculation = () => {
   const metrics = useAtomValue(rebalanceMetricsAtom)
@@ -251,10 +232,6 @@ const usePriceImpactCalculation = () => {
   const chainId = useAtomValue(chainIdAtom)
   const ethPrice = useAtomValue(ethPriceAtom)
   const rebalanceParams = useRebalanceParams()
-
-  const [tokens, setTokens] = useState<TokenPriceImpact[]>([])
-  const [loading, setLoading] = useState(false)
-  const [hasInitialData, setHasInitialData] = useState(false)
 
   // Debouncing logic
   const [debouncedMetrics, setDebouncedMetrics] = useState(metrics)
@@ -278,87 +255,72 @@ const usePriceImpactCalculation = () => {
   }, [metrics])
 
   // Get all tokens with their sizes
-  const tokensWithSizes = useMemo(
+  const stableTokenData = useMemo(
     () => getAllTokensWithSizes(debouncedMetrics, tokenMap),
     [debouncedMetrics, tokenMap]
   )
 
-  // Calculate all price impacts
-  const calculateAllPriceImpacts = useCallback(async () => {
-    if (!tokensWithSizes.length || !rebalanceParams || !chainId) return
-
-    const wethAddress = WETH_ADDRESSES[chainId]
-    if (!wethAddress) return
-
-    setLoading(true)
-    const updatedTokens: TokenPriceImpact[] = []
-
-    for (const token of tokensWithSizes) {
-      // Skip API call if target token is WETH (WETH -> WETH)
-      if (token.tokenAddress.toLowerCase() === wethAddress.toLowerCase()) {
-        updatedTokens.push({
-          ...token,
-          priceImpact: 0,
-        })
-        continue
+  // Use React Query for fetching price impacts
+  const { data: priceImpacts = {}, isLoading, isFetching } = useQuery({
+    queryKey: ['price-impacts', stableTokenData, chainId, rebalanceParams?.prices, ethPrice],
+    queryFn: async () => {
+      if (!stableTokenData.length || !rebalanceParams || !chainId) {
+        return {}
       }
 
-      // Get price for the token
-      let price = rebalanceParams.prices[token.tokenAddress]?.currentPrice
+      const wethAddress = WETH_ADDRESSES[chainId]
+      if (!wethAddress) return {}
 
-      // If no price and it's WETH, use the ETH price from the global atom
-      if (
-        !price &&
-        token.tokenAddress.toLowerCase() === wethAddress.toLowerCase()
-      ) {
-        price = ethPrice
-      }
+      // Create all fetch promises
+      const fetchPromises = stableTokenData.map(async (token) => {
+        // Skip API call if target token is WETH (WETH -> WETH)
+        if (token.tokenAddress.toLowerCase() === wethAddress.toLowerCase()) {
+          return { tokenAddress: token.tokenAddress, priceImpact: 0 }
+        }
 
-      // Calculate WETH amount for the swap (all swaps are WETH -> token)
-      const wethUnits = convertUsdToTokenUnits(token.usdSize, ethPrice, 18)
+        // Calculate WETH amount for the swap (all swaps are WETH -> token)
+        const wethUnits = convertUsdToTokenUnits(token.usdSize, ethPrice, 18)
 
-      if (wethUnits === '0') {
-        updatedTokens.push({
-          ...token,
-          priceImpact: null,
-          error: 'Failed to calculate WETH amount',
-        })
-        continue
-      }
+        if (wethUnits === '0') {
+          return { tokenAddress: token.tokenAddress, priceImpact: null }
+        }
 
-      const priceImpact = await fetchPriceImpact(
-        wethAddress,
-        token.tokenAddress as Address,
-        wethUnits,
-        chainId
-      )
+        const priceImpact = await fetchPriceImpact(
+          wethAddress,
+          token.tokenAddress as Address,
+          wethUnits,
+          chainId
+        )
 
-      updatedTokens.push({
-        ...token,
-        priceImpact,
+        return { tokenAddress: token.tokenAddress, priceImpact }
       })
-    }
 
-    setTokens(updatedTokens)
-    setLoading(false)
-    setHasInitialData(true)
-  }, [tokensWithSizes, rebalanceParams, chainId, ethPrice])
+      // Execute all fetches in parallel
+      const results = await Promise.all(fetchPromises)
 
-  useEffect(() => {
-    calculateAllPriceImpacts()
-  }, [calculateAllPriceImpacts])
+      // Convert array to object for easy lookup
+      return results.reduce((acc, result) => {
+        acc[result.tokenAddress] = result.priceImpact
+        return acc
+      }, {} as Record<string, number | null>)
+    },
+    enabled: !!stableTokenData.length && !!rebalanceParams && !!chainId && !!ethPrice,
+    staleTime: 30000, // Consider data stale after 30 seconds
+    refetchInterval: 30000, // Refetch every 30 seconds
+  })
 
   return {
-    tokens,
-    loading,
-    hasInitialData,
+    tokens: stableTokenData,
+    priceImpacts,
+    isLoading,
+    isFetching,
   }
 }
 
 // ==================== MAIN COMPONENT ====================
 
 const RebalancePriceImpact = () => {
-  const { tokens, loading, hasInitialData } = usePriceImpactCalculation()
+  const { tokens, priceImpacts, isLoading, isFetching } = usePriceImpactCalculation()
 
   if (!tokens.length) {
     return null
@@ -366,15 +328,23 @@ const RebalancePriceImpact = () => {
 
   return (
     <div className="flex flex-col gap-1 mt-2">
-      <h4 className="text-primary text-xl mb-2">Price Impact</h4>
+      <div className="flex items-center gap-2">
+        <h4 className="text-primary text-xl">Price Impact</h4>
+        {isFetching && !isLoading && (
+          <div className="animate-spin h-4 w-4 border-2 border-primary border-t-transparent rounded-full" />
+        )}
+      </div>
 
-      {loading && !hasInitialData ? (
-        <PriceImpactSkeleton />
-      ) : (
-        <div className="text-sm">
-          <PriceImpactList tokens={tokens} />
-        </div>
-      )}
+      <div className="text-sm space-y-1 pl-2">
+        {tokens.map((token) => (
+          <TokenImpactRow
+            key={token.tokenAddress}
+            token={token}
+            priceImpact={priceImpacts[token.tokenAddress]}
+            isLoading={isLoading || (isFetching && priceImpacts[token.tokenAddress] === undefined)}
+          />
+        ))}
+      </div>
     </div>
   )
 }

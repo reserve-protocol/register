@@ -9,17 +9,22 @@ import RebalanceProgress from './components/rebalance-progress'
 import ManageWeightsView from './components/manage-weights/manage-weights-view'
 import Updater from './updater'
 import { isCompletedAtom } from '../../atoms'
-import { rebalanceMetricsAtom, showManageWeightsViewAtom } from './atoms'
+import {
+  activeAuctionAtom,
+  rebalanceMetricsAtom,
+  showManageWeightsViewAtom,
+} from './atoms'
 
 const RebalanceContent = () => {
   const isCompleted = useAtomValue(isCompletedAtom)
   const showManageWeights = useAtomValue(showManageWeightsViewAtom)
   const metrics = useAtomValue(rebalanceMetricsAtom)
+  const activeAuction = useAtomValue(activeAuctionAtom)
 
-  // TOOD: Needs more work, if the rebalance is still ongoing we need to use the current helpers for the metrics
-  // If we use the API while rebalance is ongoing then we would get wrong metricsq
-  // if (isCompleted || (metrics?.relativeProgression ?? 0) > 99.7) {
-  if (isCompleted) {
+  if (
+    !activeAuction &&
+    (isCompleted || (metrics?.relativeProgression ?? 0) > 99.7)
+  ) {
     return <RebalanceCompleted />
   }
 

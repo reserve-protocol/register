@@ -14,7 +14,8 @@ import {
 } from 'lucide-react'
 import { ReactNode, useMemo } from 'react'
 import { Link } from 'react-router-dom'
-import { apiRebalanceMetricsAtom } from '../../../atoms'
+import { isCompletedAtom } from '../../../atoms'
+import { useRebalanceCompletedMetrics } from '../hooks/use-rebalance-completed-metrics'
 
 const MIN_ACCURACY = 99.7
 
@@ -50,25 +51,26 @@ const IncompleteProgressBar = ({ accuracy }: { accuracy?: number }) => {
 }
 
 const RebalanceCompleted = () => {
-  const apiRebalanceMetrics = useAtomValue(apiRebalanceMetricsAtom)
+  const metrics = useRebalanceCompletedMetrics()
+  const isCompleted = useAtomValue(isCompletedAtom)
 
   const hasMinAccuracy = useMemo(() => {
-    if (apiRebalanceMetrics?.rebalanceAccuracy === undefined) return true
-    return apiRebalanceMetrics.rebalanceAccuracy >= MIN_ACCURACY
-  }, [apiRebalanceMetrics?.rebalanceAccuracy])
+    if (metrics?.rebalanceAccuracy === undefined) return true
+    return metrics.rebalanceAccuracy >= MIN_ACCURACY
+  }, [metrics?.rebalanceAccuracy])
 
   const title = useMemo(() => {
     const msg = 'Rebalance'
-    if (!apiRebalanceMetrics?.timestamp) {
+    if (!metrics?.timestamp) {
       return msg
     }
 
-    const date = new Date(apiRebalanceMetrics?.timestamp * 1000)
+    const date = new Date(metrics?.timestamp * 1000)
     return `${msg} - ${date.toLocaleString('default', {
       month: 'long',
       year: 'numeric',
     })}`
-  }, [apiRebalanceMetrics?.timestamp])
+  }, [metrics?.timestamp])
 
   return (
     <div className="bg-secondary rounded-3xl min-w-[350px] sm:min-w-[420px]">
@@ -119,7 +121,7 @@ const RebalanceCompleted = () => {
                   <div className="w-full bg-primary h-3" />
                 ) : (
                   <IncompleteProgressBar
-                    accuracy={apiRebalanceMetrics?.rebalanceAccuracy}
+                    accuracy={metrics?.rebalanceAccuracy}
                   />
                 )}
               </div>
@@ -136,9 +138,9 @@ const RebalanceCompleted = () => {
                   }
                   label="Total value traded"
                   value={
-                    apiRebalanceMetrics?.totalRebalancedUsd !== undefined
+                    metrics?.totalRebalancedUsd !== undefined
                       ? `$${formatCurrency(
-                          apiRebalanceMetrics?.totalRebalancedUsd
+                          metrics?.totalRebalancedUsd
                         )}`
                       : undefined
                   }
@@ -155,23 +157,29 @@ const RebalanceCompleted = () => {
                     />
                   }
                   label="Total price impact"
+                  tooltip={!isCompleted ? "Available after rebalance completion" : undefined}
                   value={
-                    apiRebalanceMetrics?.priceImpact !== undefined ? (
+                    !isCompleted ? (
+                      <div className="flex items-center gap-1 text-muted-foreground">
+                        <span>Not available</span>
+                        <Help content="This metric will be available once the rebalance is completed" />
+                      </div>
+                    ) : metrics?.priceImpact !== undefined ? (
                       <div className="flex items-center gap-1">
                         <span
                           className={cn(
-                            apiRebalanceMetrics?.priceImpact < 0 &&
+                            metrics?.priceImpact < 0 &&
                               'text-green-500',
-                            apiRebalanceMetrics?.priceImpact > 0 &&
+                            metrics?.priceImpact > 0 &&
                               'text-red-500'
                           )}
                         >
-                          {`${apiRebalanceMetrics.priceImpact > 0 ? '-' : apiRebalanceMetrics.priceImpact < 0 ? '+' : ''}${formatPercentage(Math.abs(apiRebalanceMetrics.priceImpact))}`}
+                          {`${metrics.priceImpact > 0 ? '-' : metrics.priceImpact < 0 ? '+' : ''}${formatPercentage(Math.abs(metrics.priceImpact))}`}
                         </span>
                         <span className="text-muted-foreground">
-                          {apiRebalanceMetrics.priceImpact !== 0
+                          {metrics.priceImpact !== 0
                             ? ` ($${formatCurrency(
-                                apiRebalanceMetrics?.totalPriceImpactUsd
+                                metrics?.totalPriceImpactUsd
                               )})`
                             : ''}
                         </span>
@@ -188,9 +196,9 @@ const RebalanceCompleted = () => {
                   label="Rebalance accuracy"
                   tooltip="A measure of how closely the new basket rebalanced compared to the proposed basket"
                   value={
-                    apiRebalanceMetrics?.rebalanceAccuracy !== undefined
+                    metrics?.rebalanceAccuracy !== undefined
                       ? `${formatPercentage(
-                          apiRebalanceMetrics?.rebalanceAccuracy
+                          metrics?.rebalanceAccuracy
                         )}`
                       : undefined
                   }
@@ -204,19 +212,23 @@ const RebalanceCompleted = () => {
                     <ChartCandlestick className="h-5 w-5" strokeWidth={1.2} />
                   }
                   label="NAV Change"
-                  tooltip="How much the value of the DTF basket changed due to the latest rebalance"
+                  tooltip={!isCompleted ? "Available after rebalance completion" : "How much the value of the DTF basket changed due to the latest rebalance"}
                   value={
-                    apiRebalanceMetrics?.marketCapRebalanceImpact !==
-                    undefined ? (
+                    !isCompleted ? (
+                      <div className="flex items-center gap-1 text-muted-foreground">
+                        <span>Not available</span>
+                        <Help content="This metric will be available once the rebalance is completed" />
+                      </div>
+                    ) : metrics?.marketCapRebalanceImpact !== undefined ? (
                       <span
                         className={cn(
-                          apiRebalanceMetrics.marketCapRebalanceImpact < 0 &&
+                          metrics.marketCapRebalanceImpact < 0 &&
                             'text-red-500',
-                          apiRebalanceMetrics.marketCapRebalanceImpact > 0 &&
+                          metrics.marketCapRebalanceImpact > 0 &&
                             'text-green-500'
                         )}
                       >
-                        {`${apiRebalanceMetrics.marketCapRebalanceImpact > 0 ? '+' : ''}${formatPercentage(apiRebalanceMetrics.marketCapRebalanceImpact)}`}
+                        {`${metrics.marketCapRebalanceImpact > 0 ? '+' : ''}${formatPercentage(metrics.marketCapRebalanceImpact)}`}
                       </span>
                     ) : undefined
                   }
