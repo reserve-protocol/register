@@ -11,8 +11,6 @@ import {
   Target,
   X,
 } from 'lucide-react'
-import { useMemo } from 'react'
-import { formatUnits } from 'viem'
 import {
   areWeightsSavedAtom,
   areWeightsSettledAtom,
@@ -21,6 +19,7 @@ import {
   showManageWeightsViewAtom,
 } from '../atoms'
 import useRebalanceParams from '../hooks/use-rebalance-params'
+import { useTotalValueTraded } from '../hooks/use-total-value-traded'
 
 const trackingErrorAtom = atom((get) => {
   const metrics = get(rebalanceMetricsAtom)
@@ -29,35 +28,6 @@ const trackingErrorAtom = atom((get) => {
 
   return 100 - metrics.absoluteProgression
 })
-
-const useTotalValueTraded = () => {
-  const rebalanceParams = useRebalanceParams()
-  const auctions = useAtomValue(rebalanceAuctionsAtom)
-
-  return useMemo(() => {
-    if (!rebalanceParams || auctions.length === 0) return 0
-
-    const { prices } = rebalanceParams
-
-    const totalValueTraded = auctions.reduce((acc, auction) => {
-      return (
-        acc +
-        auction.bids.reduce((acc, bid) => {
-          const price = prices[bid.sellToken.address]
-          const sellAmount = Number(
-            formatUnits(BigInt(bid.sellAmount), bid.sellToken.decimals)
-          )
-
-          if (!price || sellAmount === 0) return acc
-
-          return acc + price.currentPrice * sellAmount
-        }, 0)
-      )
-    }, 0)
-
-    return totalValueTraded
-  }, [rebalanceParams, auctions])
-}
 
 const SavedWeights = () => {
   const areWeightsSettled = useAtomValue(areWeightsSettledAtom)
