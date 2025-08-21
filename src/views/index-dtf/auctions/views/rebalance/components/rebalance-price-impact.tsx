@@ -1,5 +1,5 @@
 import { useAtomValue } from 'jotai'
-import { useEffect, useState, useRef, useMemo } from 'react'
+import { useEffect, useState, useRef, useMemo, useCallback } from 'react'
 import { Address, parseUnits } from 'viem'
 import { chainIdAtom } from '@/state/atoms'
 import { ethPriceAtom } from '@/state/chain/atoms/chainAtoms'
@@ -8,6 +8,19 @@ import { rebalanceMetricsAtom, rebalanceTokenMapAtom } from '../atoms'
 import useRebalanceParams from '../hooks/use-rebalance-params'
 import { Skeleton } from '@/components/ui/skeleton'
 
+// ==================== CONSTANTS ====================
+const DEFAULT_API_URL = 'https://api.reserve.org/'
+const DEBOUNCE_DELAY = 1000
+const DUMMY_SIGNER = '0x0000000000000000000000000000000000000001' as Address
+
+const WETH_ADDRESSES: Record<number, Address> = {
+  1: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2', // Ethereum
+  8453: '0x4200000000000000000000000000000000000006', // Base
+  56: '0x2170Ed0880ac9A755fd29B2688956BD959F933F8', // BSC
+  42161: '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1', // Arbitrum
+}
+
+// ==================== TYPES ====================
 type ZapResult = {
   tokenIn: Address
   amountIn: string
@@ -40,33 +53,211 @@ type ZapResponse = {
   error?: string
 }
 
-// Debounce delay in milliseconds
-const DEBOUNCE_DELAY = 1000
+type TokenPriceImpact = {
+  tokenAddress: string
+  tokenSymbol: string
+  usdSize: number
+  priceImpact: number | null
+  error?: string
+  type: 'surplus' | 'deficit'
+}
 
-const RebalancePriceImpact = () => {
-  // Constants
-  const DEFAULT_API_URL = 'https://api.reserve.org/'
-  const WETH_ADDRESSES: Record<number, Address> = {
-    1: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2', // Ethereum
-    8453: '0x4200000000000000000000000000000000000006', // Base
-    42161: '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1', // Arbitrum
+// ==================== HELPER FUNCTIONS ====================
+
+/**
+ * Convert USD amount to token units
+ */
+const convertUsdToTokenUnits = (
+  usdAmount: number,
+  price: number | undefined,
+  decimals: number | undefined
+): string => {
+  if (!decimals || !price || price === 0) return '0'
+
+  const tokenAmount = usdAmount / price
+  
+  try {
+    return parseUnits(tokenAmount.toFixed(6), decimals).toString()
+  } catch (error) {
+    console.error('Error parsing units:', error, {
+      tokenAmount,
+      decimals,
+    })
+    return '0'
   }
-  const DUMMY_SIGNER = '0x0000000000000000000000000000000000000001' as Address
+}
 
-  // Hooks for data
+/**
+ * Fetch price impact from API
+ */
+const fetchPriceImpact = async (
+  tokenIn: Address,
+  tokenOut: Address,
+  amountIn: string,
+  chainId: number
+): Promise<number | null> => {
+  try {
+    const params = new URLSearchParams({
+      chainId: chainId.toString(),
+      signer: DUMMY_SIGNER,
+      tokenIn,
+      amountIn,
+      tokenOut,
+      slippage: '100', // 1% = 100 basis points
+      trade: 'true',
+      bypassCache: 'false',
+    })
+
+    const url = `${DEFAULT_API_URL}api/zapper/${chainId}/swap?${params.toString()}`
+
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+
+    if (!response.ok) {
+      console.error(
+        'API response not ok:',
+        response.status,
+        response.statusText
+      )
+      return null
+    }
+
+    const data: ZapResponse = await response.json()
+
+    if (data.status === 'success' && data.result) {
+      // Use truePriceImpact if available, otherwise fall back to priceImpact
+      const impact =
+        data.result.truePriceImpact !== undefined
+          ? data.result.truePriceImpact
+          : data.result.priceImpact
+
+      return impact
+    }
+
+    if (data.error) {
+      console.error('API error:', data.error)
+    }
+
+    return null
+  } catch (error) {
+    console.error('Error fetching price impact:', error)
+    return null
+  }
+}
+
+/**
+ * Combine surplus and deficit tokens into a single list
+ */
+const getAllTokensWithSizes = (
+  metrics: any,
+  tokenMap: Record<string, any>
+): TokenPriceImpact[] => {
+  if (!metrics) return []
+
+  const tokens: TokenPriceImpact[] = []
+
+  // Add surplus tokens
+  for (let i = 0; i < metrics.surplusTokens.length; i++) {
+    const tokenAddress = metrics.surplusTokens[i].toLowerCase()
+    const token = tokenMap[tokenAddress]
+    if (token && metrics.surplusTokenSizes[i] > 0) {
+      tokens.push({
+        tokenAddress,
+        tokenSymbol: token.symbol,
+        usdSize: metrics.surplusTokenSizes[i],
+        priceImpact: null,
+        type: 'surplus',
+      })
+    }
+  }
+
+  // Add deficit tokens
+  for (let i = 0; i < metrics.deficitTokens.length; i++) {
+    const tokenAddress = metrics.deficitTokens[i].toLowerCase()
+    const token = tokenMap[tokenAddress]
+    if (token && metrics.deficitTokenSizes[i] > 0) {
+      tokens.push({
+        tokenAddress,
+        tokenSymbol: token.symbol,
+        usdSize: metrics.deficitTokenSizes[i],
+        priceImpact: null,
+        type: 'deficit',
+      })
+    }
+  }
+
+  return tokens
+}
+
+// ==================== SUB-COMPONENTS ====================
+
+/**
+ * Loading skeleton component
+ */
+const PriceImpactSkeleton = () => (
+  <div className="space-y-2">
+    <Skeleton className="h-4 w-full" />
+    <Skeleton className="h-4 w-full" />
+    <Skeleton className="h-4 w-full" />
+  </div>
+)
+
+/**
+ * Individual token impact row
+ */
+const TokenImpactRow = ({ token }: { token: TokenPriceImpact }) => (
+  <div className="flex items-center gap-2">
+    <span>{token.tokenSymbol}</span>
+    <span>-</span>
+    <span>${formatCurrency(token.usdSize)}</span>
+    {token.priceImpact !== null && (
+      <span
+        className={
+          token.priceImpact > 0
+            ? 'text-destructive'
+            : 'text-primary'
+        }
+      >
+        ({token.priceImpact > 0 ? '-' : '+'}
+        {Math.abs(token.priceImpact).toFixed(2)}%)
+      </span>
+    )}
+    {token.error && (
+      <span className="text-muted-foreground text-xs">
+        ({token.error})
+      </span>
+    )}
+  </div>
+)
+
+/**
+ * List of all tokens with price impacts
+ */
+const PriceImpactList = ({ tokens }: { tokens: TokenPriceImpact[] }) => (
+  <div className="space-y-1 pl-2">
+    {tokens.map((token) => (
+      <TokenImpactRow key={token.tokenAddress} token={token} />
+    ))}
+  </div>
+)
+
+// ==================== CUSTOM HOOK ====================
+
+/**
+ * Custom hook to handle price impact calculations
+ */
+const usePriceImpactCalculation = () => {
   const metrics = useAtomValue(rebalanceMetricsAtom)
   const tokenMap = useAtomValue(rebalanceTokenMapAtom)
   const chainId = useAtomValue(chainIdAtom)
   const ethPrice = useAtomValue(ethPriceAtom)
   const rebalanceParams = useRebalanceParams()
 
-  // State for results
-  const [priceImpacts, setPriceImpacts] = useState<
-    Record<
-      string,
-      { usdSize: number; priceImpact: number | null; error?: string }
-    >
-  >({})
+  const [tokens, setTokens] = useState<TokenPriceImpact[]>([])
   const [loading, setLoading] = useState(false)
   const [hasInitialData, setHasInitialData] = useState(false)
 
@@ -91,210 +282,91 @@ const RebalancePriceImpact = () => {
     }
   }, [metrics])
 
-  // Create stable references for token data
-  const stableTokenData = useMemo(() => {
-    if (!debouncedMetrics) return null
-
-    return {
-      surplusTokens: debouncedMetrics.surplusTokens,
-      surplusTokenSizes: debouncedMetrics.surplusTokenSizes,
-      deficitTokens: debouncedMetrics.deficitTokens,
-      deficitTokenSizes: debouncedMetrics.deficitTokenSizes,
-    }
-  }, [debouncedMetrics])
-
-  // Helper function to convert USD to token units
-  const convertUsdToTokenUnits = (
-    usdAmount: number,
-    tokenAddress: string,
-    decimals?: number
-  ): string => {
-    // For WETH, use hardcoded decimals since it might not be in tokenMap
-    const token = tokenMap[tokenAddress]
-    const tokenDecimals = decimals ?? token?.decimals
-
-    if (!tokenDecimals) return '0'
-
-    // Get price - for WETH use ethPrice from global atom
-    let price = rebalanceParams?.prices[tokenAddress]?.currentPrice
-
-    // If no price and it's WETH, use the ETH price from the global atom
-    const wethAddress = WETH_ADDRESSES[chainId]
-    if (
-      !price &&
-      wethAddress &&
-      tokenAddress.toLowerCase() === wethAddress.toLowerCase()
-    ) {
-      price = ethPrice
-    }
-
-    if (!price || price === 0) return '0'
-
-    // Calculate token amount: USD / price
-    const tokenAmount = usdAmount / price
-
-    // Convert to smallest unit
-    try {
-      return parseUnits(tokenAmount.toFixed(6), tokenDecimals).toString()
-    } catch (error) {
-      console.error('Error parsing units:', error, {
-        tokenAmount,
-        tokenDecimals,
-      })
-      return '0'
-    }
-  }
-
-  // Fetch price impact for a single token
-  const fetchPriceImpact = async (
-    tokenIn: Address,
-    tokenOut: Address,
-    amountIn: string
-  ): Promise<number | null> => {
-    try {
-      // Build query parameters
-      const params = new URLSearchParams({
-        chainId: chainId.toString(),
-        signer: DUMMY_SIGNER,
-        tokenIn,
-        amountIn,
-        tokenOut,
-        slippage: '100', // 1% = 100 basis points
-        trade: 'true',
-        bypassCache: 'false',
-      })
-
-      const url = `${DEFAULT_API_URL}api/zapper/${chainId}/swap?${params.toString()}`
-
-      const response = await fetch(url, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-
-      if (!response.ok) {
-        console.error(
-          'API response not ok:',
-          response.status,
-          response.statusText
-        )
-        return null
-      }
-
-      const data: ZapResponse = await response.json()
-
-      if (data.status === 'success' && data.result) {
-        // Use truePriceImpact if available, otherwise fall back to priceImpact
-        const impact =
-          data.result.truePriceImpact !== undefined
-            ? data.result.truePriceImpact
-            : data.result.priceImpact
-
-        return impact
-      }
-
-      if (data.error) {
-        console.error('API error:', data.error)
-      }
-
-      return null
-    } catch (error) {
-      console.error('Error fetching price impact:', error)
-      return null
-    }
-  }
+  // Get all tokens with their sizes
+  const tokensWithSizes = useMemo(
+    () => getAllTokensWithSizes(debouncedMetrics, tokenMap),
+    [debouncedMetrics, tokenMap]
+  )
 
   // Calculate all price impacts
-  useEffect(() => {
-    const calculateAllPriceImpacts = async () => {
-      if (!stableTokenData || !tokenMap || !rebalanceParams || !chainId) return
+  const calculateAllPriceImpacts = useCallback(async () => {
+    if (!tokensWithSizes.length || !rebalanceParams || !chainId) return
 
-      const wethAddress = WETH_ADDRESSES[chainId]
-      if (!wethAddress) return
+    const wethAddress = WETH_ADDRESSES[chainId]
+    if (!wethAddress) return
 
-      setLoading(true)
-      const results: Record<
-        string,
-        { usdSize: number; priceImpact: number | null; error?: string }
-      > = {}
+    setLoading(true)
+    const updatedTokens: TokenPriceImpact[] = []
 
-      // Process surplus tokens (selling for WETH)
-      for (let i = 0; i < stableTokenData.surplusTokens.length; i++) {
-        const tokenAddress = stableTokenData.surplusTokens[i].toLowerCase()
-        const usdSize = stableTokenData.surplusTokenSizes[i]
-
-        if (usdSize === 0) continue
-
-        const tokenUnits = convertUsdToTokenUnits(usdSize, tokenAddress)
-        if (tokenUnits === '0') {
-          results[tokenAddress] = {
-            usdSize,
-            priceImpact: null,
-            error: 'No price data',
-          }
-          continue
-        }
-
-        const priceImpact = await fetchPriceImpact(
-          tokenAddress as Address,
-          wethAddress,
-          tokenUnits
-        )
-
-        results[tokenAddress] = { usdSize, priceImpact }
+    for (const token of tokensWithSizes) {
+      // Skip API call if target token is WETH (WETH -> WETH)
+      if (token.tokenAddress.toLowerCase() === wethAddress.toLowerCase()) {
+        updatedTokens.push({
+          ...token,
+          priceImpact: 0,
+        })
+        continue
       }
 
-      // Process deficit tokens (buying with WETH)
-      for (let i = 0; i < stableTokenData.deficitTokens.length; i++) {
-        const tokenAddress = stableTokenData.deficitTokens[i].toLowerCase()
-        const usdSize = stableTokenData.deficitTokenSizes[i]
-
-        if (usdSize === 0) continue
-
-        // For deficit tokens, we need to calculate WETH amount needed
-        // WETH always has 18 decimals
-        const wethUnits = convertUsdToTokenUnits(
-          usdSize,
-          wethAddress.toLowerCase(),
-          18
-        )
-        if (wethUnits === '0') {
-          results[tokenAddress] = {
-            usdSize,
-            priceImpact: null,
-            error: 'Failed to calculate WETH amount',
-          }
-          continue
-        }
-
-        const priceImpact = await fetchPriceImpact(
-          wethAddress,
-          tokenAddress as Address,
-          wethUnits
-        )
-
-        results[tokenAddress] = { usdSize, priceImpact }
+      // Get price for the token
+      let price = rebalanceParams.prices[token.tokenAddress]?.currentPrice
+      
+      // If no price and it's WETH, use the ETH price from the global atom
+      if (!price && token.tokenAddress.toLowerCase() === wethAddress.toLowerCase()) {
+        price = ethPrice
       }
 
-      setPriceImpacts(results)
-      setLoading(false)
+      // Calculate WETH amount for the swap (all swaps are WETH -> token)
+      const wethUnits = convertUsdToTokenUnits(
+        token.usdSize,
+        ethPrice,
+        18
+      )
+
+      if (wethUnits === '0') {
+        updatedTokens.push({
+          ...token,
+          priceImpact: null,
+          error: 'Failed to calculate WETH amount',
+        })
+        continue
+      }
+
+      const priceImpact = await fetchPriceImpact(
+        wethAddress,
+        token.tokenAddress as Address,
+        wethUnits,
+        chainId
+      )
+
+      updatedTokens.push({
+        ...token,
+        priceImpact,
+      })
     }
 
+    setTokens(updatedTokens)
+    setLoading(false)
+    setHasInitialData(true)
+  }, [tokensWithSizes, rebalanceParams, chainId, ethPrice])
+
+  useEffect(() => {
     calculateAllPriceImpacts()
-  }, [stableTokenData, tokenMap, chainId, rebalanceParams])
+  }, [calculateAllPriceImpacts])
 
-  // Track when we have initial data
-  useEffect(() => {
-    if (priceImpacts && Object.keys(priceImpacts).length > 0) {
-      setHasInitialData(true)
-    }
-  }, [priceImpacts])
+  return {
+    tokens,
+    loading,
+    hasInitialData,
+  }
+}
 
-  if (
-    !metrics ||
-    (metrics.surplusTokens.length === 0 && metrics.deficitTokens.length === 0)
-  ) {
+// ==================== MAIN COMPONENT ====================
+
+const RebalancePriceImpact = () => {
+  const { tokens, loading, hasInitialData } = usePriceImpactCalculation()
+
+  if (!tokens.length) {
     return null
   }
 
@@ -303,92 +375,10 @@ const RebalancePriceImpact = () => {
       <h4 className="text-primary text-xl mb-2">Price Impact</h4>
 
       {loading && !hasInitialData ? (
-        <div className="space-y-2">
-          <Skeleton className="h-4 w-full" />
-          <Skeleton className="h-4 w-full" />
-          <Skeleton className="h-4 w-full" />
-        </div>
+        <PriceImpactSkeleton />
       ) : (
-        <div className="space-y-3 text-sm">
-          {/* Surplus tokens */}
-          {metrics.surplusTokens.length > 0 && (
-            <div>
-              <p className="text-muted-foreground mb-1">Selling (Surplus):</p>
-              <div className="space-y-1 pl-2">
-                {metrics.surplusTokens.map((tokenAddress, index) => {
-                  const token = tokenMap[tokenAddress.toLowerCase()]
-                  const impact = priceImpacts[tokenAddress.toLowerCase()]
-
-                  if (!token || !impact || impact.usdSize === 0) return null
-
-                  return (
-                    <div key={tokenAddress} className="flex items-center gap-2">
-                      <span>{token.symbol}</span>
-                      <span>-</span>
-                      <span>${formatCurrency(impact.usdSize)}</span>
-                      {impact.priceImpact !== null && (
-                        <span
-                          className={
-                            impact.priceImpact > 0
-                              ? 'text-destructive'
-                              : 'text-primary'
-                          }
-                        >
-                          ({impact.priceImpact > 0 ? '-' : '+'}
-                          {Math.abs(impact.priceImpact).toFixed(2)}%)
-                        </span>
-                      )}
-                      {impact.error && (
-                        <span className="text-muted-foreground text-xs">
-                          ({impact.error})
-                        </span>
-                      )}
-                    </div>
-                  )
-                })}
-              </div>
-            </div>
-          )}
-
-          {/* Deficit tokens */}
-          {metrics.deficitTokens.length > 0 && (
-            <div>
-              <p className="text-muted-foreground mb-1">Buying (Deficit):</p>
-              <div className="space-y-1 pl-2">
-                {metrics.deficitTokens.map((tokenAddress, index) => {
-                  const token = tokenMap[tokenAddress.toLowerCase()]
-                  const impact = priceImpacts[tokenAddress.toLowerCase()]
-
-                  if (!token || !impact || impact.usdSize === 0) return null
-
-                  return (
-                    <div key={tokenAddress} className="flex items-center gap-2">
-                      <span>{token.symbol}</span>
-                      <span>-</span>
-                      <span>${formatCurrency(impact.usdSize)}</span>
-                      {impact.priceImpact !== null && (
-                        <span
-                          className={
-                            impact.priceImpact > 0
-                              ? 'text-destructive'
-                              : 'text-primary'
-                          }
-                        >
-                          ({impact.priceImpact > 0 ? '-' : '+'}
-                          {Math.abs(impact.priceImpact).toFixed(2)}%)
-                        </span>
-                      )}
-                      {impact.error && (
-                        <span className="text-muted-foreground text-xs">
-                          ({impact.error})
-                        </span>
-                      )}
-                    </div>
-                  )
-                })}
-              </div>
-            </div>
-          )}
+        <div className="text-sm">
+          <PriceImpactList tokens={tokens} />
         </div>
       )}
     </div>
