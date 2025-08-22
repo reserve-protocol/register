@@ -12,7 +12,7 @@ import { ChevronsUpDown } from 'lucide-react'
 import { JsonView } from 'react-json-view-lite'
 import {
   isAuctionOngoingAtom,
-  PRICE_VOLATILITY,
+  AUCTION_PRICE_VOLATILITY,
   priceVolatilityAtom,
   rebalanceMetricsAtom,
   rebalancePercentAtom,
@@ -76,7 +76,7 @@ const ExpectedPriceVolatility = () => {
     <div className="flex flex-col gap-1 mt-2">
       <label htmlFor="price-volatility" className="text-primary text-xl mb-2">
         Expected Price Volatility:{' '}
-        {formatPercentage(PRICE_VOLATILITY[priceVolatility] * 100)}
+        {formatPercentage(AUCTION_PRICE_VOLATILITY[priceVolatility] * 100)}
       </label>
       <ToggleGroup
         type="single"
@@ -88,7 +88,7 @@ const ExpectedPriceVolatility = () => {
           }
         }}
       >
-        {Object.keys(PRICE_VOLATILITY).map((option) => (
+        {Object.keys(AUCTION_PRICE_VOLATILITY).map((option) => (
           <ToggleGroupItem
             key={option}
             value={option}

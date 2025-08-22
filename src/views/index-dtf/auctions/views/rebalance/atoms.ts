@@ -8,11 +8,11 @@ import { Rebalance } from '@reserve-protocol/dtf-rebalance-lib'
 import { atom } from 'jotai'
 import { currentRebalanceAtom } from '../../atoms'
 
-export const PRICE_VOLATILITY: Record<string, number> = {
-  LOW: 0.025,
-  MEDIUM: 0.075,
-  HIGH: 0.25,
-  DEGEN: 0.6, // not used yet
+export const AUCTION_PRICE_VOLATILITY: Record<string, number> = {
+  LOW: 0.02,
+  MEDIUM: 0.05,
+  HIGH: 0.15,
+  DEGEN: 0.5,
 }
 
 export type Auction = {
@@ -73,7 +73,8 @@ export const isAuctionOngoingAtom = atom((get) => {
   })
 })
 
-export const priceVolatilityAtom = atom<keyof typeof PRICE_VOLATILITY>('MEDIUM')
+export const priceVolatilityAtom =
+  atom<keyof typeof AUCTION_PRICE_VOLATILITY>('MEDIUM')
 
 // Advanced rebalance atoms for hybrid DTFs
 export const savedWeightsAtom = atom<Record<string, WeightRange> | undefined>(
