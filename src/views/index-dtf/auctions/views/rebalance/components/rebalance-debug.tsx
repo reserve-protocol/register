@@ -38,7 +38,7 @@ const RebalanceSlider = () => {
         disabled={rebalanceOngoing}
         value={[rebalancePercent]}
         onValueChange={(value) => {
-          if (value[0] > (metrics?.relativeProgression ?? 0)) {
+          if (value[0] > (metrics?.relativeProgression ?? 0) + 2) {
             setRebalancePercent(value[0])
           }
         }}
