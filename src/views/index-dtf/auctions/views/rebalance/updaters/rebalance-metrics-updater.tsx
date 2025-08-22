@@ -4,7 +4,7 @@ import { useCallback, useEffect } from 'react'
 import { currentRebalanceAtom, RebalanceByProposal } from '../../../atoms'
 import {
   areWeightsSavedAtom,
-  PRICE_VOLATILITY,
+  AUCTION_PRICE_VOLATILITY,
   rebalanceAuctionsAtom,
   rebalanceMetricsAtom,
   rebalancePercentAtom,
@@ -65,7 +65,7 @@ const RebalanceMetricsUpdater = () => {
           prices,
           isTrackingDTF,
           rebalancePercent,
-          PRICE_VOLATILITY.MEDIUM,
+          AUCTION_PRICE_VOLATILITY.MEDIUM,
           isHybridDTF
         )
 

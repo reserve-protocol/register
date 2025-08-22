@@ -6,7 +6,7 @@ import {
   Rebalance,
   WeightRange,
 } from '@reserve-protocol/dtf-rebalance-lib'
-import { PRICE_VOLATILITY } from '../atoms'
+import { AUCTION_PRICE_VOLATILITY } from '../atoms'
 
 function getRebalanceOpenAuction(
   tokens: Token[],
@@ -20,7 +20,7 @@ function getRebalanceOpenAuction(
   prices: TokenPriceWithSnapshot,
   isTrackingDTF: boolean,
   rebalancePercent = 90,
-  priceVolatility = PRICE_VOLATILITY.MEDIUM,
+  priceVolatility = AUCTION_PRICE_VOLATILITY.MEDIUM,
   isHybridDTF = false
 ) {
   const tokenMap = tokens.reduce(
