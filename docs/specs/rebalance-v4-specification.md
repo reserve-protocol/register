@@ -240,7 +240,7 @@ This enables gradual rebalancing to minimize market impact. Typically the 90% (r
 const AUCTION_PRICE_VOLATILITY = {
   LOW: 0.02, // 2% - For stablecoins and pegged assets
   MEDIUM: 0.05, // 5% - For major cryptocurrencies
-  HIGH: 0.15, // 15% - For volatile/small-cap tokens
+  HIGH: 0.1, // 10% - For volatile/small-cap tokens
   DEGEN: 0.5, // 50% - For degen tokens
 }
 ```

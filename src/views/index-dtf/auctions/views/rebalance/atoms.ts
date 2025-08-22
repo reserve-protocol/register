@@ -11,7 +11,7 @@ import { currentRebalanceAtom } from '../../atoms'
 export const AUCTION_PRICE_VOLATILITY: Record<string, number> = {
   LOW: 0.02,
   MEDIUM: 0.05,
-  HIGH: 0.15,
+  HIGH: 0.1,
   DEGEN: 0.5,
 }
 
