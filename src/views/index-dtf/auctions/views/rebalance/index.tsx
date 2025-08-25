@@ -41,7 +41,7 @@ const RebalanceContent = () => {
       </div>
       <RebalanceAuctions />
       <RebalanceAction />
-      {/* <RebalanceDebug /> */}
+      <RebalanceDebug />
     </div>
   )
 }
