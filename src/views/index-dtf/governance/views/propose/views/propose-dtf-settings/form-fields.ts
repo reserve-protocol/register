@@ -55,6 +55,7 @@ export const createProposeSettingsSchema = (quorumDenominator?: number) => z
       .number()
       .min(15, 'Auction length must be at least 15 minutes')
       .max(1440, 'Auction length must not exceed 1440 minutes (24 hours)'),
+    weightControl: z.boolean(),
     governanceVotingDelay: z.coerce.number().min(0).optional(),
     governanceVotingPeriod: z.coerce.number().min(0).optional(),
     governanceVotingQuorum: z.coerce.number().min(0).max(100).optional()
