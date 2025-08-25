@@ -9,6 +9,8 @@ interface ActiveRebalanceItemProps {
   rebalance: RebalanceByProposal
 }
 
+// {!isPermissionless && availableUntil > restrictedUntil && (
+
 const Header = ({
   restrictedUntil,
   availableUntil,
@@ -28,7 +30,7 @@ const Header = ({
       </div>
 
       {!isPermissionless && (
-        <div className="flex items-center gap-1 text-sm  border-r pr-4">
+        <div className="sm:flex items-center gap-1 text-sm  border-r pr-4 hidden">
           <MousePointerClick className="h-4 w-4 text-base" strokeWidth={1.5} />
           <span className="text-legend">Permissionless in:</span>
           <span>{permissionlessTimeRemaining}</span>
@@ -62,7 +64,7 @@ const ActiveRebalanceItem = ({ rebalance }: ActiveRebalanceItemProps) => {
 
   return (
     <div
-      className="bg-card rounded-3xl shadow-sm hover:shadow-md transition-shadow duration-300 md:w-[706px] cursor-pointer"
+      className="bg-card rounded-3xl cursor-pointer"
       role="button"
       onClick={() => navigate(`rebalance/${rebalance.proposal.id}`)}
     >

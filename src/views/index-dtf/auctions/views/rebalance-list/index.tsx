@@ -48,9 +48,9 @@ const LegacyTradesButton = () => {
   if (legacyTrades?.length === 0) return null
 
   return (
-    <div className="flex justify-center">
+    <div className="flex justify-center my-6">
       <Link to="./legacy">
-        <Button variant="outline-primary" size="lg" className="rounded-full">
+        <Button variant="outline-primary" className="rounded-full">
           View older auctions
         </Button>
       </Link>
@@ -63,8 +63,8 @@ const RebalanceList = () => {
     useAtomValue(rebalanceListAtom)
 
   return (
-    <div className="max-w-5xl mx-auto space-y-8 px-4 md:px-0 md:w-[706px]">
-      <section>
+    <div className="w-full space-y-6 md:space-y-8 px-0 sm:px-2 lg:px-4 md:px-0 md:w-[706px]">
+      <section className="pt-6">
         <SectionHeader
           color="primary"
           title="Active Rebalances"
@@ -72,10 +72,10 @@ const RebalanceList = () => {
           isLoading={isLoading}
         />
 
-        {isLoading && <LoadingState />}
-        {!isLoading && activeRebalances.length === 0 && <EmptyState />}
+        <div className="space-y-1 lg:space-y-4 bg-secondary p-1 rounded-3xl">
+          {isLoading && <LoadingState />}
+          {!isLoading && activeRebalances.length === 0 && <EmptyState />}
 
-        <div className="space-y-4">
           {activeRebalances.map((rebalance, index) => (
             <ActiveRebalanceItem
               key={rebalance.proposal.id}
@@ -92,10 +92,10 @@ const RebalanceList = () => {
           isLoading={isLoading}
         />
 
-        {isLoading && <LoadingState />}
-        {!isLoading && historicalRebalances.length === 0 && <EmptyState />}
+        <div className="space-y-1 lg:space-y-4 bg-secondary p-1 rounded-3xl">
+          {isLoading && <LoadingState />}
+          {!isLoading && historicalRebalances.length === 0 && <EmptyState />}
 
-        <div className="space-y-4">
           {historicalRebalances.map((rebalance) => (
             <HistoricalRebalanceItem
               key={rebalance.proposal.id}
@@ -103,8 +103,8 @@ const RebalanceList = () => {
             />
           ))}
         </div>
+        <LegacyTradesButton />
       </section>
-      <LegacyTradesButton />
     </div>
   )
 }

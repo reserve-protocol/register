@@ -105,7 +105,7 @@ const CommunityLaunchAuctionsButton = () => {
 
   if (isNotCommunityLaunch) {
     return (
-      <div className="flex gap-2 items-center justify-center p-2 text-center">
+      <div className="flex gap-2 items-center justify-center p-6 text-center">
         <div className="text-sm text-muted-foreground">
           Community launch is not available for this rebalance
         </div>

@@ -9,7 +9,7 @@ export const MetricsRow = ({ proposalId }: { proposalId: string }) => {
   const { metrics } = useRebalanceMetrics(proposalId)
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+    <div className="grid grid-cols-3">
       <div className="flex flex-col justify-center gap-3 p-4 md:p-6 border-r border-secondary">
         <BarChart3 className="h-4 w-4 shrink-0" />
         <div className="min-w-0">
@@ -24,7 +24,7 @@ export const MetricsRow = ({ proposalId }: { proposalId: string }) => {
         </div>
       </div>
 
-      <div className="flex flex-col justify-center gap-3 p-4 md:p-6 border-r border-secondary">
+      <div className="flex flex-col justify-bottom gap-3 p-4 md:p-6 border-r border-secondary">
         <Activity className="h-4 w-4 shrink-0" />
         <div className="min-w-0">
           <p className="text-xs text-legend mb-1">
