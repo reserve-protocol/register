@@ -54,7 +54,14 @@ const CHAINLINK_FEED: Record<number, Record<string, Address>> = {
     '0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f':
       '0xd0C7101eACbB49F3deCcCc166d238410D6D46d57', // WBTC / USD
   },
-  [ChainId.BSC]: {},
+  [ChainId.BSC]: {
+    '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE':
+      '0x0567F2323251f0Aab15c8dFb1967E4e8A7D42aeE', // BNB / USD
+    '0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d':
+      '0x51597f405303C4377E36123cBc172b13269EA163', // USDC / USD
+    '0x55d398326f99059fF775485246999027B3197955':
+      '0xB97Ad0E74fa7d920791E90258A6E2085088b4320', // USDT / USD
+  },
 }
 
 export const useChainlinkPrices = (
