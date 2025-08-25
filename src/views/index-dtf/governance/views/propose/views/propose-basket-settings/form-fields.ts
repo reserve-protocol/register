@@ -1,3 +1,4 @@
+import { isAddressNotStrict } from '@/views/index-dtf/deploy/utils'
 import { z } from 'zod'
 
 export const createProposeBasketSettingsSchema = (quorumDenominator?: number) => z.object({
@@ -66,7 +67,25 @@ export const createProposeBasketSettingsSchema = (quorumDenominator?: number) =>
       (val) => val === undefined || val >= 0,
       'Must be 0 or greater'
     ),
+  // Role fields
+  guardians: z.array(
+    z
+      .string()
+      .refine((value) => !value || isAddressNotStrict(value), {
+        message: 'Invalid Address',
+      })
+      .optional()
+  ),
 })
+.refine(
+  (data) =>
+    new Set(data.guardians?.map((item) => item?.toLowerCase() || item))
+      .size === data.guardians.length,
+  {
+    message: 'Duplicated guardians',
+    path: ['roles'],
+  }
+)
 
 // Default schema for backward compatibility
 export const ProposeBasketSettingsSchema = createProposeBasketSettingsSchema()

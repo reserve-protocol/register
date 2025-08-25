@@ -12,18 +12,16 @@ import {
   ArrowLeftIcon,
   ChevronDownIcon,
   ChevronUpIcon,
-  Coins,
   Landmark,
   Shield,
 } from 'lucide-react'
 import { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { selectedSectionAtom } from '../atoms'
-import ProposeRevenueTokens from './sections/propose-revenue-tokens'
-import ProposeDaoGovernance from './sections/propose-dao-governance'
-import ProposeDaoRoles from './sections/propose-dao-roles'
+import ProposeBasketGovernance from './sections/propose-basket-governance'
+import ProposeBasketRoles from './sections/propose-basket-roles'
 
-type DAO_SETTINGS_ID = 'revenue-tokens' | 'governance' | 'roles'
+type BASKET_SETTINGS_ID = 'governance' | 'roles'
 
 // Scroll utility function adapted from deploy
 const scrollToSection = (sectionId: string) => {
@@ -39,35 +37,28 @@ const scrollToSection = (sectionId: string) => {
   }, 250)
 }
 
-export type DAO_SETTING = {
-  id: DAO_SETTINGS_ID
+export type BASKET_SETTING = {
+  id: BASKET_SETTINGS_ID
   icon: ReactNode
   title: string
   titleSecondary: string
   content: ReactNode
 }
 
-const DAO_SETTINGS: DAO_SETTING[] = [
-  {
-    id: 'revenue-tokens',
-    icon: <Coins size={14} strokeWidth={1.5} />,
-    title: 'Revenue Tokens',
-    titleSecondary: 'Revenue Tokens',
-    content: <ProposeRevenueTokens />,
-  },
+const BASKET_SETTINGS: BASKET_SETTING[] = [
   {
     id: 'governance',
     icon: <Landmark size={14} strokeWidth={1.5} />,
     title: 'Governance',
     titleSecondary: 'Governance Parameters',
-    content: <ProposeDaoGovernance />,
+    content: <ProposeBasketGovernance />,
   },
   {
     id: 'roles',
     icon: <Shield size={14} strokeWidth={1.5} />,
     title: 'Roles',
     titleSecondary: 'Role Management',
-    content: <ProposeDaoRoles />,
+    content: <ProposeBasketRoles />,
   },
 ]
 
@@ -75,7 +66,7 @@ const ProposeSectionTrigger = ({
   id,
   icon,
   title,
-}: Omit<DAO_SETTING, 'content' | 'titleSecondary'>) => {
+}: Omit<BASKET_SETTING, 'content' | 'titleSecondary'>) => {
   const selectedSection = useAtomValue(selectedSectionAtom)
   const isActive = selectedSection === id
 
@@ -128,11 +119,11 @@ const Header = () => (
         <ArrowLeftIcon size={24} strokeWidth={1.5} />
       </Button>
     </Link>
-    <h1 className="font-bold text-xl">DAO settings proposal</h1>
+    <h1 className="font-bold text-xl">Basket settings proposal</h1>
   </div>
 )
 
-const DaoSettingsProposalSections = () => {
+const BasketSettingsProposalSections = () => {
   const [section, setSection] = useAtom(selectedSectionAtom)
 
   return (
@@ -150,7 +141,7 @@ const DaoSettingsProposalSections = () => {
           }
         }}
       >
-        {DAO_SETTINGS.map(({ id, icon, title, titleSecondary, content }) => (
+        {BASKET_SETTINGS.map(({ id, icon, title, titleSecondary, content }) => (
           <AccordionItem
             key={id}
             value={id}
@@ -171,4 +162,4 @@ const DaoSettingsProposalSections = () => {
   )
 }
 
-export default DaoSettingsProposalSections
+export default BasketSettingsProposalSections
