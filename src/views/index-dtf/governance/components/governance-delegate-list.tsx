@@ -11,17 +11,19 @@ import {
 import { useAtomValue } from 'jotai'
 import { topDelegatesAtom } from '../atoms'
 import { Skeleton } from '@/components/ui/skeleton'
+import { Link } from 'react-router-dom'
+import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
+import { chainIdAtom } from '@/state/atoms'
 
 // TODO: Get ENS for address
 const GovernanceDelegateList = () => {
+  const chainId = useAtomValue(chainIdAtom)
   const delegates = useAtomValue(topDelegatesAtom)
 
   return (
-    <div className="rounded-4xl bg-secondary ">
+    <div className="rounded-4xl bg-background ">
       <div className="py-4 px-5">
-        <h2 className="font-semibold text-xl text-primary dark:text-muted-foreground">
-          Top voting addresses
-        </h2>
+        <h2 className="font-semibold text-xl ">Top voting addresses</h2>
       </div>
       <div className="bg-card m-1 mt-0 rounded-3xl overflow-auto">
         <Table>
@@ -30,7 +32,7 @@ const GovernanceDelegateList = () => {
               <TableHead>Address</TableHead>
               <TableHead>Votes</TableHead>
               <TableHead>Vote weight</TableHead>
-              <TableHead>Proposals voted</TableHead>
+              {/* <TableHead>Proposals voted</TableHead> */}
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -54,14 +56,26 @@ const GovernanceDelegateList = () => {
             {delegates &&
               delegates.map((delegate) => (
                 <TableRow key={delegate.address}>
-                  <TableCell>{shortenAddress(delegate.address)}</TableCell>
+                  <TableCell>
+                    <Link
+                      target="_blank"
+                      className="text-legend underline"
+                      to={getExplorerLink(
+                        delegate.address,
+                        chainId,
+                        ExplorerDataType.ADDRESS
+                      )}
+                    >
+                      {shortenAddress(delegate.address)}
+                    </Link>
+                  </TableCell>
                   <TableCell>
                     {formatCurrency(delegate.delegatedVotes, 2)}
                   </TableCell>
                   <TableCell>
                     {formatPercentage(delegate.weightedVotes)}
                   </TableCell>
-                  <TableCell>{delegate.numberVotes}</TableCell>
+                  {/* <TableCell>{delegate.numberVotes}</TableCell> */}
                 </TableRow>
               ))}
           </TableBody>

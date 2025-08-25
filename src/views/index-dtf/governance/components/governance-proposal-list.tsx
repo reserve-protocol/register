@@ -9,7 +9,7 @@ import {
 import { cn } from '@/lib/utils'
 import { formatPercentage, getProposalTitle, parseDuration } from '@/utils'
 import { formatConstant, PROPOSAL_STATES, ROUTES } from '@/utils/constants'
-import { useAtomValue } from 'jotai'
+import { atom, useAtomValue } from 'jotai'
 import { Circle, PlusSquare } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
@@ -158,6 +158,8 @@ const ProposalListItem = ({ proposal }: { proposal: PartialProposal }) => {
     }
   }, [proposalState.state])
 
+  const stateText = formatConstant(proposalState.state)
+
   return (
     <Link
       to={`proposal/${proposal.id}`}
@@ -175,19 +177,27 @@ const ProposalListItem = ({ proposal }: { proposal: PartialProposal }) => {
           `text-${BADGE_VARIANT[proposalState.state]}`
         )}
       >
-        {formatConstant(proposalState.state)}
+        {stateText.includes('reached') ? 'Quorum' : stateText}
       </div>
     </Link>
   )
 }
 
+const recentProposalsAtom = atom<PartialProposal[] | undefined>((get) => {
+  const proposals = get(governanceProposalsAtom)
+
+  if (!proposals) return undefined
+
+  return proposals.sort((a, b) => b.creationTime - a.creationTime).slice(0, 20)
+})
+
 const ProposalList = () => {
-  const data = useAtomValue(governanceProposalsAtom)
+  const data = useAtomValue(recentProposalsAtom)
 
   if (!data) return <Skeleton className="h-[520px] m-1 rounded-3xl" />
 
   return (
-    <ScrollArea className="md:max-h-[520px] bg-card overflow-y-auto rounded-3xl m-1 mt-0">
+    <ScrollArea className="bg-card overflow-y-auto rounded-3xl m-1 mt-0">
       {data.length === 0 && (
         <div className="flex items-center justify-center h-96">
           <p className="text-muted-foreground">No proposals found</p>
@@ -202,7 +212,7 @@ const ProposalList = () => {
 
 const GovernanceProposalList = () => {
   return (
-    <div className="rounded-4xl bg-secondary">
+    <div className="rounded-4xl bg-secondary h-fit">
       <Header />
       <ProposalList />
     </div>
