@@ -1,39 +1,57 @@
 import TransactionButton from '@/components/old/button/TransactionButton'
+import { indexDTFAtom } from '@/state/dtf/atoms'
+import { PROPOSAL_STATES } from '@/utils/constants'
 import { t } from '@lingui/macro'
 import Timelock from 'abis/Timelock'
 import useContractWrite from 'hooks/useContractWrite'
 import useWatchTransaction from 'hooks/useWatchTransaction'
 import { atom, useAtom, useAtomValue } from 'jotai'
 import { useEffect, useMemo } from 'react'
-import { chainIdAtom, rTokenGovernanceAtom, walletAtom } from 'state/atoms'
+import { chainIdAtom, walletAtom } from 'state/atoms'
 import {
   encodeAbiParameters,
   keccak256,
+  pad,
   parseAbiParameters,
+  stringToBytes,
   toBytes,
 } from 'viem'
 import { useReadContract } from 'wagmi'
 import { proposalDetailAtom } from '../atom'
-import { PROPOSAL_STATES } from '@/utils/constants'
-import { indexDTFAtom } from '@/state/dtf/atoms'
 
 const timelockIdAtom = atom((get) => {
   const proposal = get(proposalDetailAtom)
 
-  const encodedParams = proposal
-    ? encodeAbiParameters(
-        parseAbiParameters('address[], uint256[], bytes[], bytes32, bytes32'),
-        [
-          proposal.targets,
-          [0n],
-          proposal.calldatas,
-          '0x0000000000000000000000000000000000000000000000000000000000000000',
-          keccak256(toBytes(proposal.description)),
-        ]
-      )
-    : undefined
+  if (!proposal) return undefined
 
-  return encodedParams ? keccak256(encodedParams) : undefined
+  const governorAddress = proposal.governor.toLowerCase() as `0x${string}`
+  const descriptionHash = keccak256(stringToBytes(proposal.description))
+
+  const governorBytes32 = pad(governorAddress, { size: 32, dir: 'right' })
+
+  // XOR by byte
+  const governorBuffer = Buffer.from(governorBytes32.slice(2), 'hex')
+  const descHashBuffer = Buffer.from(descriptionHash.slice(2), 'hex')
+
+  const saltBuffer = Buffer.alloc(32)
+  for (let i = 0; i < 32; i++) {
+    saltBuffer[i] = governorBuffer[i] ^ descHashBuffer[i]
+  }
+
+  const timelockSalt = `0x${saltBuffer.toString('hex')}` as `0x${string}`
+
+  const encodedParams = encodeAbiParameters(
+    parseAbiParameters('address[], uint256[], bytes[], bytes32, bytes32'),
+    [
+      proposal.targets,
+      [0n],
+      proposal.calldatas,
+      '0x0000000000000000000000000000000000000000000000000000000000000000',
+      timelockSalt,
+    ]
+  )
+
+  return keccak256(encodedParams)
 })
 
 const ProposalCancel = () => {
@@ -41,7 +59,6 @@ const ProposalCancel = () => {
   const timelockId = useAtomValue(timelockIdAtom)
   const account = useAtomValue(walletAtom)
   const [proposal, setProposal] = useAtom(proposalDetailAtom)
-  const deadline = proposal?.votingState.deadline
   const chainId = useAtomValue(chainIdAtom)
   const timelockAddress = useMemo(() => {
     if (!indexDTF || !proposal) return undefined
@@ -104,8 +121,6 @@ const ProposalCancel = () => {
       )
     }
   }, [status])
-
-  if (!deadline || deadline <= 0) return null
 
   return (
     <TransactionButton
