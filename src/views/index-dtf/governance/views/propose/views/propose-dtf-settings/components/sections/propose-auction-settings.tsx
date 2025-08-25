@@ -1,6 +1,7 @@
 import { humanizeMinutes } from '@/utils'
 import ToggleGroupWithCustom from '@/views/index-dtf/deploy/components/toggle-group-with-custom'
 import { Hourglass } from 'lucide-react'
+import ProposeWeightControl from './propose-weight-control'
 
 const TOGGLE_FORMS = [
   {
@@ -20,8 +21,9 @@ const TOGGLE_FORMS = [
 
 const ProposeAuctionSettings = () => {
   return (
-    <div className="px-2 mb-2">
+    <div className="px-2 mb-2 flex flex-col gap-2">
       <ToggleGroupWithCustom {...TOGGLE_FORMS[0]} />
+      <ProposeWeightControl />
     </div>
   )
 }

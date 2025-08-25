@@ -16,7 +16,7 @@ export const daoCreatedAtom = atomWithReset<boolean>(false)
 
 // TODO: Moved to a shared component
 export const basketAtom = atomWithReset<Token[]>([])
-export const basketInputTypeAtom = atom<BasketInputType>('share')
+export const basketInputTypeAtom = atom<BasketInputType>('unit')
 export const basketDerivedSharesAtom = atom<Record<string, string> | undefined>(
   undefined
 )

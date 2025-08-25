@@ -1,10 +1,12 @@
 import dtfIndexAbi from '@/abis/dtf-index-abi'
 import dtfIndexAbiV2 from '@/abis/dtf-index-abi-v2'
+import dtfIndexAbiV4 from '@/abis/dtf-index-abi-v4'
 import timelockAbi from '@/abis/Timelock'
 import {
   indexDTFAtom,
   indexDTFBasketAtom,
   indexDTFBasketSharesAtom,
+  indexDTFRebalanceControlAtom,
   indexDTFVersionAtom,
 } from '@/state/dtf/atoms'
 import { Token } from '@/types'
@@ -49,6 +51,8 @@ export const dtfRevenueChangesAtom = atom<{
 
 export const auctionLengthChangeAtom = atom<number | undefined>(undefined)
 
+export const weightControlChangeAtom = atom<boolean | undefined>(undefined)
+
 export const governanceChangesAtom = atom<GovernanceChanges>({})
 
 // Has changes atoms for easy checking
@@ -82,6 +86,11 @@ export const hasDtfRevenueChangesAtom = atom((get) => {
 
 export const hasAuctionLengthChangeAtom = atom((get) => {
   const change = get(auctionLengthChangeAtom)
+  return change !== undefined
+})
+
+export const hasWeightControlChangeAtom = atom((get) => {
+  const change = get(weightControlChangeAtom)
   return change !== undefined
 })
 
@@ -132,6 +141,7 @@ export const isProposalValidAtom = atom((get) => {
   const hasRevenueDistributionChanges = get(hasRevenueDistributionChangesAtom)
   const hasDtfRevenueChanges = get(hasDtfRevenueChangesAtom)
   const hasAuctionLengthChange = get(hasAuctionLengthChangeAtom)
+  const hasWeightControlChange = get(hasWeightControlChangeAtom)
   const hasGovernanceChanges = get(hasGovernanceChangesAtom)
   const isFormValid = get(isFormValidAtom)
 
@@ -142,6 +152,7 @@ export const isProposalValidAtom = atom((get) => {
     hasRevenueDistributionChanges ||
     hasDtfRevenueChanges ||
     hasAuctionLengthChange ||
+    hasWeightControlChange ||
     hasGovernanceChanges
 
   console.log('has changes', hasChanges)
@@ -180,6 +191,8 @@ export const dtfSettingsProposalDataAtom = atom<ProposalData | undefined>((get) 
   const revenueDistributionChanges = get(revenueDistributionChangesAtom)
   const dtfRevenueChanges = get(dtfRevenueChangesAtom)
   const auctionLengthChange = get(auctionLengthChangeAtom)
+  const weightControlChange = get(weightControlChangeAtom)
+  const rebalanceControl = get(indexDTFRebalanceControlAtom)
   const governanceChanges = get(governanceChangesAtom)
   const feeRecipients = get(feeRecipientsAtom)
 
@@ -421,6 +434,22 @@ export const dtfSettingsProposalDataAtom = atom<ProposalData | undefined>((get) 
         abi: dtfIndexAbi,
         functionName: 'setAuctionLength',
         args: [BigInt(auctionLengthChange * 60)], // Convert minutes to seconds
+      })
+    )
+    targets.push(indexDTF.id as Address)
+  }
+
+  // 5b. Set rebalance control (weight control)
+  if (weightControlChange !== undefined && rebalanceControl) {
+    // Keep the current priceControl value, only change weightControl
+    calldatas.push(
+      encodeFunctionData({
+        abi: dtfIndexAbiV4,
+        functionName: 'setRebalanceControl',
+        args: [{
+          weightControl: weightControlChange,
+          priceControl: rebalanceControl.priceControl
+        }],
       })
     )
     targets.push(indexDTF.id as Address)
