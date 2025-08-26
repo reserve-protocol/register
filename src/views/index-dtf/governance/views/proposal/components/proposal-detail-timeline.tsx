@@ -62,7 +62,7 @@ const TimelineItem = ({
             color: 'primary',
             backgroundColor: 'lightgray',
             height: 2,
-            zIndex: 1,
+            zIndex: 0,
           }}
         />
       )}
