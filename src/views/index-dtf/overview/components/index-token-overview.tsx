@@ -57,7 +57,7 @@ const TokenAddresses = () => {
 const ZapBuySellButtons = () => {
   const { open, setTab } = useZapperModal()
   return (
-    <div className="block xl:hidden w-full mb-3 mt-2">
+    <div className="block xl:hidden w-full mb-3 sm:mt-2">
       <ZapMint>
         <div
           className="flex gap-2"
@@ -132,8 +132,8 @@ const IndexTokenOverview = () => {
           <TokenNameSkeleton />
         ) : (
           <>
-            <h4>${dtf.token.symbol}</h4>
-            <h1 className="mt-1 text-2xl md:text-3xl font-medium w-full break-words">
+            <h4 className="text-sm sm:text-base">${dtf.token.symbol}</h4>
+            <h1 className="mt-1 text-xl sm:text-2xl md:text-3xl font-medium w-full break-words">
               {dtf.token.name}
             </h1>
           </>

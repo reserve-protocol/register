@@ -70,7 +70,7 @@ const VoteStateHeader = ({ data }: { data: VotingState }) => {
 export const ProposalVotingState = ({ data }: { data: VotingState }) => {
   if (data.state === PROPOSAL_STATES.PENDING && data.deadline) {
     return (
-      <div className="flex items-center mt-2 text-sm">
+      <div className="flex items-center mt-2 text-xs sm:text-sm">
         <span className="text-legend block mr-1">Voting starts in:</span>
         <span className="font-semibold">
           {parseDuration(data.deadline, {
@@ -85,7 +85,7 @@ export const ProposalVotingState = ({ data }: { data: VotingState }) => {
   return (
     <>
       <VoteStateHeader data={data} />
-      <div className="flex items-center mt-2 gap-2 text-sm">
+      <div className="flex items-center mt-2 gap-2 text-xs sm:text-sm">
         <div>
           <span className="text-legend">Quorum?:</span>{' '}
           <span
@@ -152,14 +152,14 @@ const ProposalListItem = ({ proposal }: { proposal: PartialProposal }) => {
       className="flex items-center gap-2 p-4 [&:not(:last-child)]:border-b cursor-pointer transition-all hover:bg-border/50"
     >
       <div className="mr-auto">
-        <h2 className="font-semibold">
+        <h2 className="font-semibold text-sm sm:text-base">
           {getProposalTitle(proposal.description)}
         </h2>
         <ProposalVotingState data={proposalState} />
       </div>
       <div
         className={cn(
-          'rounded-full text-sm font-semibold py-2 border px-3',
+          'rounded-full text-xs sm:text-sm font-semibold py-2 border px-3',
           `text-${BADGE_VARIANT[proposalState.state]}`
         )}
       >
