@@ -167,7 +167,6 @@ export const isHybridDTFAtom = atom((get) => {
     dtf?.id.toLowerCase() === '0xccdc603a336270d63962dad04f3bd8b81143f81a' ||
     dtf?.id.toLowerCase() === '0x1532536c22366dde6b5174ebe519578bccc6b5a3' ||
     dtf?.id.toLowerCase() === '0x045dc337c12a9a5d2c790d01554913b1a9e1044a' ||
-    dtf?.id.toLowerCase() === '0x2033dee0a3eb1a94b4c0950c8edab3b600badf9c' ||
     dtf?.id.toLowerCase() === '0xdb35c98b919053f77356e7d89b11069cf9185764'
   )
 })

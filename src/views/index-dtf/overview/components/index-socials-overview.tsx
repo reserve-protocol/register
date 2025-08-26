@@ -32,7 +32,7 @@ const IndexSocialsOverview = () => {
   const data = useAtomValue(indexDTFBrandAtom)
 
   if (!data) {
-    return <Skeleton className="w-60 h-6" />
+    return <Skeleton className="w-60 h-6 mt-4" />
   }
 
   return (
