@@ -1,5 +1,4 @@
 import { Button } from '@/components/ui/button'
-import { Skeleton } from '@/components/ui/skeleton'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import useRebalanceBasketPreview from '@/hooks/use-rebalance-basket-preview'
 import { chainIdAtom } from '@/state/atoms'
@@ -13,11 +12,12 @@ import {
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { useAtomValue } from 'jotai'
 import { ArrowUpRightIcon } from 'lucide-react'
+import { useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { Address, Hex } from 'viem'
+import GovernanceProposalPreviewSkeleton from '../governance-proposal-preview-skeleton'
 import { RawCallsPreview } from '../raw-call-preview'
 import BasketProposalPreview from './legacy-basket-proposal-preview'
-import { useMemo } from 'react'
 import RebalanceBasketPreview, {
   EstimatedBasket,
 } from './rebalance-basket-preview'
@@ -83,8 +83,8 @@ const RebalancePreview = ({
     }, {} as EstimatedBasket)
   }, [rebalanceBasketPreview])
 
-  // TODO: Better loading skeleton!
-  if (!dtf || !rebalanceBasketPreview) return <Skeleton className="h-80" />
+  if (!dtf || !rebalanceBasketPreview)
+    return <GovernanceProposalPreviewSkeleton />
 
   return (
     <Tabs
@@ -113,7 +113,7 @@ const LegacyRebalancePreview = ({
   const prices = useAtomValue(indexDTFBasketPricesAtom)
 
   if (!dtf || !basket || !prices || !calldatas?.length)
-    return <Skeleton className="h-80" />
+    return <GovernanceProposalPreviewSkeleton />
 
   return (
     <BasketProposalPreview

@@ -6,10 +6,19 @@ import { proposalDetailAtom } from '../atom'
 
 const DescriptionMarkdown = lazy(() => import('./proposal-md-description'))
 
+const ProposalDescriptionSkeleton = () => (
+  <div className="px-6 pt-4 pb-2">
+    <h1 className="text-primary text-xl font-bold mb-2">Description</h1>
+    <Skeleton className="h-6" />
+    <Skeleton className="h-6 mt-1" />
+    <Skeleton className="h-6 mt-1" />
+  </div>
+)
+
 const ProposalDescription = () => {
   const proposal = useAtomValue(proposalDetailAtom)
 
-  if (!proposal?.description) return <Skeleton className="h-80" />
+  if (!proposal?.description) return <ProposalDescriptionSkeleton />
 
   let description = ''
   if (proposal?.description) {
@@ -29,12 +38,12 @@ const ProposalDescription = () => {
   }
 
   return (
-    <div className="px-6 pt-4 pb-2">
-      <h1 className="text-primary text-xl font-bold mb-2">Description</h1>
-      <Suspense fallback={<Skeleton className="h-80" />}>
+    <Suspense fallback={<ProposalDescriptionSkeleton />}>
+      <div className="px-6 pt-4 pb-2">
+        <h1 className="text-primary text-xl font-bold mb-2">Description</h1>
         <DescriptionMarkdown description={description} />
-      </Suspense>
-    </div>
+      </div>
+    </Suspense>
   )
 }
 
