@@ -10,7 +10,7 @@ const GovernanceProposalPreviewSkeleton = () => (
     <Skeleton className="h-10 mt-2" />
     <Skeleton className="h-10 mt-2" />
     <Skeleton className="h-10 mt-2" />
-    <Skeleton className="h-10 mt-2 " />
+    <Skeleton className="h-10 mt-2" />
   </div>
 )
 
