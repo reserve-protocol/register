@@ -20,7 +20,7 @@ const IndexDTFIssuance = () => {
   return (
     <div className="container">
       <div className="flex flex-col items-center justify-start sm:justify-center gap-2 lg:bg-secondary sm:min-h-[calc(100vh-136px)] lg:min-h-[calc(100vh-80px)] rounded-4xl lg:mr-2 ">
-        <div className="flex flex-col w-fit rounded-4xl p-1 ">
+        <div className="flex flex-col w-fit rounded-4xl">
           <div className="bg-card rounded-3xl border-2 border-secondary sm:w-[420px] p-2 m-auto">
             <ZapperWrapper
               wagmiConfig={wagmiConfig}

@@ -21,7 +21,7 @@ const FeedbackButton = ({ className }: { className?: string }) => {
         }}
       >
         <MessageCirclePlus className="w-4 h-4" />
-        <span className="text-xs lg:text-sm hidden lg:block">Feedback</span>
+        <span className="text-xs lg:text-sm ">Feedback</span>
         <ArrowUpRightIcon className="w-3.5 h-3.5 lg:w-4 sm:h-4 hidden lg:block" />
       </Button>
     </div>
