@@ -16,28 +16,14 @@ import { Link } from 'react-router-dom'
 import { useTrackIndexDTFClick } from '../../hooks/useTrackIndexDTFPage'
 import { governanceProposalsAtom } from '../atoms'
 
-// The refresh button is a decent? idea but easily abused
 const Header = () => {
   const { trackClick } = useTrackIndexDTFClick('overview', 'governance')
-  // const [refetchTime, setRefetchToken] = useAtom(refetchTokenAtom)
-
-  // const handleRefresh = () => {
-  //   const currentTime = getCurrentTime()
-
-  //   // Prevents button spamming
-  //   if (refetchTime + 1 < currentTime) {
-  //     setRefetchToken(currentTime)
-  //   }
-  // }
 
   return (
     <div className="py-4 px-5 flex items-center gap-2">
       <h1 className="font-semibold text-xl text-primary dark:text-muted-foreground mr-auto">
         Recent proposals
       </h1>
-      {/* <Button variant="ghost" className="mr-auto" onClick={handleRefresh}>
-        <RefreshCcw className="w-4 h-4" />
-      </Button> */}
       <Link
         to={ROUTES.GOVERNANCE_PROPOSE}
         onClick={() => trackClick('create_proposal')}
@@ -210,13 +196,11 @@ const ProposalList = () => {
   )
 }
 
-const GovernanceProposalList = () => {
-  return (
-    <div className="rounded-4xl bg-secondary h-fit">
-      <Header />
-      <ProposalList />
-    </div>
-  )
-}
+const GovernanceProposalList = () => (
+  <div className="rounded-4xl bg-secondary h-fit">
+    <Header />
+    <ProposalList />
+  </div>
+)
 
 export default GovernanceProposalList
