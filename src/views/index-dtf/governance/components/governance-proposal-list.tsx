@@ -9,7 +9,7 @@ import {
 import { cn } from '@/lib/utils'
 import { formatPercentage, getProposalTitle, parseDuration } from '@/utils'
 import { formatConstant, PROPOSAL_STATES, ROUTES } from '@/utils/constants'
-import { atom, useAtomValue } from 'jotai'
+import { useAtomValue } from 'jotai'
 import { Circle, PlusSquare } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
@@ -169,30 +169,46 @@ const ProposalListItem = ({ proposal }: { proposal: PartialProposal }) => {
   )
 }
 
-const recentProposalsAtom = atom<PartialProposal[] | undefined>((get) => {
-  const proposals = get(governanceProposalsAtom)
-
-  if (!proposals) return undefined
-
-  return proposals.sort((a, b) => b.creationTime - a.creationTime).slice(0, 20)
-})
-
 const ProposalList = () => {
-  const data = useAtomValue(recentProposalsAtom)
+  const [showAll, setShowAll] = useState(false)
+  const allProposals = useAtomValue(governanceProposalsAtom)
 
-  if (!data) return <Skeleton className="h-[520px] m-1 rounded-3xl" />
+  if (!allProposals) return <Skeleton className="h-[520px] m-1 rounded-3xl" />
+
+  const sortedProposals = allProposals.sort(
+    (a, b) => b.creationTime - a.creationTime
+  )
+
+  const displayedProposals = showAll
+    ? sortedProposals
+    : sortedProposals.slice(0, 10)
+
+  const hasMoreProposals = sortedProposals.length > 10
 
   return (
-    <ScrollArea className="bg-card overflow-y-auto rounded-3xl m-1 mt-0">
-      {data.length === 0 && (
-        <div className="flex items-center justify-center h-96">
-          <p className="text-muted-foreground">No proposals found</p>
+    <div className="bg-card rounded-3xl m-1 mt-0">
+      <ScrollArea className="overflow-y-auto">
+        {sortedProposals.length === 0 && (
+          <div className="flex items-center justify-center h-96">
+            <p className="text-muted-foreground">No proposals found</p>
+          </div>
+        )}
+        {displayedProposals.map((proposal) => (
+          <ProposalListItem key={proposal.id} proposal={proposal} />
+        ))}
+      </ScrollArea>
+      {hasMoreProposals && (
+        <div className="flex justify-center p-4 border-t">
+          <Button
+            variant="outline-primary"
+            onClick={() => setShowAll(!showAll)}
+            className="gap-2"
+          >
+            {showAll ? 'Show less' : `Show all `}
+          </Button>
         </div>
       )}
-      {data.map((proposal) => (
-        <ProposalListItem key={proposal.id} proposal={proposal} />
-      ))}
-    </ScrollArea>
+    </div>
   )
 }
 
