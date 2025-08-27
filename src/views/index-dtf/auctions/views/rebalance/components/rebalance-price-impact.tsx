@@ -15,10 +15,10 @@ const DEBOUNCE_DELAY = 1000
 const DUMMY_SIGNER = '0x0000000000000000000000000000000000000001' as Address
 
 const WETH_ADDRESSES: Record<number, Address> = {
-  1: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2', // Ethereum
-  8453: '0x4200000000000000000000000000000000000006', // Base
-  56: '0x2170Ed0880ac9A755fd29B2688956BD959F933F8', // BSC
-  42161: '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1', // Arbitrum
+  1: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE', // Ethereum
+  8453: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE', // Base
+  56: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE', // BSC
+  42161: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE', // Arbitrum
 }
 
 // ==================== TYPES ====================
@@ -195,11 +195,11 @@ const getAllTokensWithSizes = (
 /**
  * Individual token impact row with inline skeleton
  */
-const TokenImpactRow = ({ 
+const TokenImpactRow = ({
   token,
   priceImpact,
-  isLoading 
-}: { 
+  isLoading,
+}: {
   token: TokenInfo
   priceImpact: number | null | undefined
   isLoading: boolean
@@ -211,9 +211,7 @@ const TokenImpactRow = ({
     {isLoading ? (
       <Skeleton className="h-4 w-16" />
     ) : priceImpact !== null && priceImpact !== undefined ? (
-      <span
-        className={priceImpact > 0 ? 'text-destructive' : 'text-primary'}
-      >
+      <span className={priceImpact > 0 ? 'text-destructive' : 'text-primary'}>
         ({priceImpact > 0 ? '-' : '+'}
         {Math.abs(priceImpact).toFixed(2)}%)
       </span>
@@ -261,8 +259,18 @@ const usePriceImpactCalculation = () => {
   )
 
   // Use React Query for fetching price impacts
-  const { data: priceImpacts = {}, isLoading, isFetching } = useQuery({
-    queryKey: ['price-impacts', stableTokenData, chainId, rebalanceParams?.prices, ethPrice],
+  const {
+    data: priceImpacts = {},
+    isLoading,
+    isFetching,
+  } = useQuery({
+    queryKey: [
+      'price-impacts',
+      stableTokenData,
+      chainId,
+      rebalanceParams?.prices,
+      ethPrice,
+    ],
     queryFn: async () => {
       if (!stableTokenData.length || !rebalanceParams || !chainId) {
         return {}
@@ -299,12 +307,16 @@ const usePriceImpactCalculation = () => {
       const results = await Promise.all(fetchPromises)
 
       // Convert array to object for easy lookup
-      return results.reduce((acc, result) => {
-        acc[result.tokenAddress] = result.priceImpact
-        return acc
-      }, {} as Record<string, number | null>)
+      return results.reduce(
+        (acc, result) => {
+          acc[result.tokenAddress] = result.priceImpact
+          return acc
+        },
+        {} as Record<string, number | null>
+      )
     },
-    enabled: !!stableTokenData.length && !!rebalanceParams && !!chainId && !!ethPrice,
+    enabled:
+      !!stableTokenData.length && !!rebalanceParams && !!chainId && !!ethPrice,
     staleTime: 30000, // Consider data stale after 30 seconds
     refetchInterval: 30000, // Refetch every 30 seconds
   })
@@ -320,7 +332,8 @@ const usePriceImpactCalculation = () => {
 // ==================== MAIN COMPONENT ====================
 
 const RebalancePriceImpact = () => {
-  const { tokens, priceImpacts, isLoading, isFetching } = usePriceImpactCalculation()
+  const { tokens, priceImpacts, isLoading, isFetching } =
+    usePriceImpactCalculation()
 
   if (!tokens.length) {
     return null
@@ -341,7 +354,10 @@ const RebalancePriceImpact = () => {
             key={token.tokenAddress}
             token={token}
             priceImpact={priceImpacts[token.tokenAddress]}
-            isLoading={isLoading || (isFetching && priceImpacts[token.tokenAddress] === undefined)}
+            isLoading={
+              isLoading ||
+              (isFetching && priceImpacts[token.tokenAddress] === undefined)
+            }
           />
         ))}
       </div>
