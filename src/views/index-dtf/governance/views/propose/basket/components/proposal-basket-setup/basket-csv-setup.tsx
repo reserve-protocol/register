@@ -1,7 +1,10 @@
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { indexDTFAtom } from '@/state/dtf/atoms'
+import { chainIdAtom } from '@/state/atoms'
 import { isAddress } from '@/utils'
+import useTokenList from '@/hooks/use-token-list'
+import { Token } from '@/types'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { DownloadCloud, FilePlus2 } from 'lucide-react'
 import { useCallback, useState } from 'react'
@@ -15,110 +18,144 @@ import {
 
 const MAX_FILE_SIZE = 1024 * 1024 // 1MB
 
-const setNewBasketFromCsvAtom = atom(null, (get, set, csv: string) => {
-  const proposedSharesMap = get(proposedSharesAtom)
-  const proposedUnitsMap = get(proposedUnitsAtom)
-  const proposedIndexBasket = get(proposedIndexBasketAtom)
+const setNewBasketFromCsvAtom = atom(
+  null,
+  (
+    get,
+    set,
+    {
+      csv,
+      tokenListMap,
+    }: { csv: string; tokenListMap: Record<string, Token> | null }
+  ) => {
+    const proposedSharesMap = get(proposedSharesAtom)
+    const proposedUnitsMap = get(proposedUnitsAtom)
+    const proposedIndexBasket = get(proposedIndexBasketAtom)
 
-  if (!proposedIndexBasket) return
+    if (!proposedIndexBasket) return
 
-  const rows = csv.split('\n')
-  const newProposedIndexBasket = { ...proposedIndexBasket }
-  const newProposedShares = { ...proposedSharesMap }
-  const newProposedUnits = { ...proposedUnitsMap }
+    const rows = csv.split('\n')
+    const newProposedIndexBasket = { ...proposedIndexBasket }
+    const newProposedShares = { ...proposedSharesMap }
+    const newProposedUnits = { ...proposedUnitsMap }
 
-  // Skip header row and process each data row
-  rows.slice(1).forEach((row) => {
-    if (!row.trim()) return // Skip empty rows
+    // Skip header row and process each data row
+    rows.slice(1).forEach((row) => {
+      if (!row.trim()) return // Skip empty rows
 
-    const values = row.split(',')
-    if (values.length < 3) return // Ensure we have enough columns
+      const values = row.split(',')
+      if (values.length < 3) return // Ensure we have enough columns
 
-    const symbol = values[0].trim()
-    const address = values[1].trim().toLowerCase()
-    const valueStr = values[2].trim() || '0'
+      const symbol = values[0].trim()
+      const address = values[1].trim().toLowerCase()
+      const valueStr = values[2].trim() || '0'
 
-    // Validate data
-    if (
-      !address ||
-      !isAddress(address) ||
-      !valueStr ||
-      isNaN(Number(valueStr))
-    ) {
-      return
-    }
-
-    // Add token to basket if it doesn't exist
-    if (!newProposedIndexBasket[address]) {
-      newProposedIndexBasket[address] = {
-        token: {
-          address: address as `0x${string}`,
-          symbol,
-          decimals: 18,
-          name: symbol,
-        },
-        currentShares: '0',
-        currentUnits: '0',
+      // Validate data
+      if (
+        !address ||
+        !isAddress(address) ||
+        !valueStr ||
+        isNaN(Number(valueStr))
+      ) {
+        return
       }
-    }
 
-    // Update shares and units
-    // Convert scientific notation to decimal string if present
-    const normalizedValue = valueStr.toLowerCase().includes('e')
-      ? Number.parseFloat(valueStr.toString()).toString()
-      : valueStr
+      // Skip token if not found in tokenList
+      const tokenData = tokenListMap?.[address]
+      if (!tokenData) {
+        console.warn(
+          `Token ${symbol} (${address}) not found in token list, skipping`
+        )
+        return
+      }
 
-    newProposedShares[address] = normalizedValue
-    newProposedUnits[address] = normalizedValue
-  })
+      // Add token to basket if it doesn't exist
+      if (!newProposedIndexBasket[address]) {
+        newProposedIndexBasket[address] = {
+          token: tokenData,
+          currentShares: '0',
+          currentUnits: '0',
+        }
+      }
 
-  // Update atoms with new values
-  set(proposedIndexBasketAtom, newProposedIndexBasket)
-  set(proposedSharesAtom, newProposedShares)
-  set(proposedUnitsAtom, newProposedUnits)
-})
+      // Update shares and units
+      // Convert scientific notation to decimal string if present
+      const normalizedValue = valueStr.toLowerCase().includes('e')
+        ? Number.parseFloat(valueStr.toString()).toString()
+        : valueStr
+
+      newProposedShares[address] = normalizedValue
+      newProposedUnits[address] = normalizedValue
+    })
+
+    // Update atoms with new values
+    set(proposedIndexBasketAtom, newProposedIndexBasket)
+    set(proposedSharesAtom, newProposedShares)
+    set(proposedUnitsAtom, newProposedUnits)
+  }
+)
 
 const BasketCsvSetup = () => {
   const dtf = useAtomValue(indexDTFAtom)
   const isUnitBasket = useAtomValue(isUnitBasketAtom)
   const assets = useAtomValue(proposedIndexBasketAtom)
+  const chainId = useAtomValue(chainIdAtom)
+  const { data: tokenList } = useTokenList(chainId)
   const setNewBasketFromCsv = useSetAtom(setNewBasketFromCsvAtom)
   const [error, setError] = useState<string | null>(null)
-  const onDrop = useCallback((acceptedFiles: File[], rejectedFiles: any[]) => {
-    setError(null)
 
-    if (rejectedFiles.length > 0) {
-      setError('Please upload a CSV file less than 1MB.')
-      return
-    }
+  const onDrop = useCallback(
+    (acceptedFiles: File[], rejectedFiles: any[]) => {
+      setError(null)
 
-    if (acceptedFiles.length === 0) return
-
-    const file = acceptedFiles[0]
-
-    const reader = new FileReader()
-    reader.onload = (event) => {
-      try {
-        const csvText = event.target?.result as string
-        if (!csvText) {
-          setError('Failed to read CSV file')
-          return
-        }
-
-        // Update the basket state
-        setNewBasketFromCsv(csvText)
-      } catch (err) {
-        console.error('Error parsing CSV:', err)
-        setError('Failed to parse CSV file. Please check the format.')
+      if (!tokenList) {
+        setError('Loading token list... please try again')
+        return
       }
-    }
 
-    reader.onerror = () => {
-      setError('Error reading the file')
-    }
+      if (rejectedFiles.length > 0) {
+        setError('Please upload a CSV file less than 1MB.')
+        return
+      }
 
-    reader.readAsText(file)
-  }, [])
+      if (acceptedFiles.length === 0) return
+
+      const file = acceptedFiles[0]
+
+      const reader = new FileReader()
+      reader.onload = (event) => {
+        try {
+          const csvText = event.target?.result as string
+          if (!csvText) {
+            setError('Failed to read CSV file')
+            return
+          }
+
+          // Create token map from tokenList
+          const tokenListMap = tokenList.reduce(
+            (acc, token) => {
+              acc[token.address.toLowerCase()] = token
+              return acc
+            },
+            {} as Record<string, Token>
+          )
+
+          // Update the basket state with proper token data
+          setNewBasketFromCsv({ csv: csvText, tokenListMap })
+        } catch (err) {
+          console.error('Error parsing CSV:', err)
+          setError('Failed to parse CSV file. Please check the format.')
+        }
+      }
+
+      reader.onerror = () => {
+        setError('Error reading the file')
+      }
+
+      reader.readAsText(file)
+    },
+    [tokenList, setNewBasketFromCsv]
+  )
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,

@@ -32,7 +32,7 @@ const BasicInfo = () => {
         label={t`Mandate`}
         icon={<IconWrapper Component={Signature} />}
         bold={false}
-        value={indexDTF?.mandate}
+        value={indexDTF?.mandate === '' ? 'Unknown' : indexDTF?.mandate}
       />
       <InfoCardItem
         label={t`Deployer`}
