@@ -397,6 +397,7 @@ export const collateralDisplay: Record<string, string> = {
   saarbusdcn: 'AAVE USDC V3',
   saarbusdt: 'AAVE USDT V3',
   'stkcvxeth+eth': 'Convex ETH+/ETH',
+  'stkcvxeth+eth-f': 'Convex ETH+/ETH-f',
   apxeth: 'Autocompounding Pirex ETH',
   susde: 'Ethena Staked USDe',
   susds: 'Sky Savings USDS',
