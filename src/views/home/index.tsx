@@ -34,7 +34,16 @@ const Hero = () => {
 
 const Cover = () => {
   return (
-    <div className="cloudy-pattern-bg absolute left-0 right-0 top-0 h-[800px] z-0" />
+    <div className="cloud-cover absolute left-0 right-0 top-0 h-[800px] z-0 overflow-hidden">
+      {/* Layer 1: Main cloud bank */}
+      <div className="cloud-layer-main" />
+
+      {/* Layer 2: Secondary clouds */}
+      <div className="cloud-layer-secondary" />
+
+      {/* Layer 3: Larger bottom clouds */}
+      <div className="cloud-layer-bottom" />
+    </div>
   )
 }
 
