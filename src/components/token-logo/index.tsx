@@ -227,6 +227,7 @@ export const SVGS = new Set([
   'stkcvxcrv3crypto',
   'stkcvxeusd3crv-f',
   'stkcvxeth+eth',
+  'stkcvxeth+eth-f',
   'stkcvxmim-3lp3crv-f',
   'sdai',
   'mrp-ausdt',
