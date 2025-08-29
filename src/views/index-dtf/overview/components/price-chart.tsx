@@ -234,10 +234,12 @@ const PriceChart = () => {
           </ChartContainer>
         )}
       </div>
-      <div className="sm:flex mt-7 items-center gap-1 hidden">
-        <TimeRangeSelector />
+      <div className="flex sm:mt-7 items-center gap-1 sm:justify-between justify-end">
+        <div className="hidden sm:flex">
+          <TimeRangeSelector />
+        </div>
 
-        <div className="sm:flex items-center gap-1 hidden justify-end">
+        <div className="flex items-center gap-1 justify-end">
           <div className="text-white/80">Market Cap:</div>
           <div className="text-white">
             $
