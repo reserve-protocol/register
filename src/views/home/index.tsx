@@ -1,3 +1,10 @@
+import { useEffect, useState } from 'react'
+import RegisterAbout from '../discover/components/yield/components/RegisterAbout'
+import DTFCard from './components/dtf-card'
+import HomeHeader from './components/home-header'
+import useFilteredDTFIndex from '../discover/components/index/hooks/use-filtered-dtf-index'
+import DTFHomeCard from './components/dtf-home-card'
+
 const DTFs = () => (
   <div className="flex flex-col flex-shrink-0 pt-1">
     <div className="rounded-full border border-primary-foreground w-8 h-8 flex items-center justify-center">
@@ -16,13 +23,50 @@ const DTFs = () => (
 )
 
 const Hero = () => {
+  const [fadeStyle, setFadeStyle] = useState<React.CSSProperties>({})
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition =
+        document.getElementById('app-container')?.scrollTop || 0
+      const fadeStart = 0
+      const fadeEnd = 300
+
+      if (scrollPosition <= fadeStart) {
+        setFadeStyle({ opacity: 1, filter: 'blur(0px)' })
+      } else if (scrollPosition >= fadeEnd) {
+        setFadeStyle({ opacity: 0, filter: 'blur(10px)' })
+      } else {
+        const progress = (scrollPosition - fadeStart) / (fadeEnd - fadeStart)
+        const opacity = 1 - progress
+        const blur = progress * 10
+        setFadeStyle({
+          opacity,
+          filter: `blur(${blur}px)`,
+          transition: 'none', // Disable transition for smooth real-time updates
+        })
+      }
+    }
+
+    const container = document.getElementById('app-container')
+    container?.addEventListener('scroll', handleScroll)
+    handleScroll()
+
+    return () => {
+      container?.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
+
   return (
-    <div className="flex gap-6 text-primary-foreground mt-28">
+    <div
+      className="flex gap-6 text-primary-foreground mt-28 mb-12 mx-6"
+      style={fadeStyle}
+    >
       <DTFs />
       <h1 className="text-5xl leading-[1.3] max-w-[640px]">
         Decentralized Token Folios Like ETFs, but for crypto
       </h1>
-      <div className="ml-auto w-80">
+      <div className="ml-auto w-96">
         <p className="text-xl">
           Crypto markets, sectors and strategies packaged into one-click
           indexes–transparent & decentralized on the blockchain.
@@ -34,27 +78,51 @@ const Hero = () => {
 
 const Cover = () => {
   return (
-    <div className="cloud-cover absolute left-0 right-0 top-0 h-[800px] z-0 overflow-hidden">
-      {/* Layer 1: Main cloud bank */}
+    <div className="cloud-cover">
+      {/* Layer 1: Main cloud bank - duplicate for seamless loop */}
       <div className="cloud-layer-main" />
+      <div className="cloud-layer-main" style={{ left: '100%' }} />
 
-      {/* Layer 2: Secondary clouds */}
+      {/* Layer 2: Secondary clouds - duplicate for seamless loop */}
       <div className="cloud-layer-secondary" />
+      <div className="cloud-layer-secondary" style={{ left: '100%' }} />
 
-      {/* Layer 3: Larger bottom clouds */}
+      {/* Layer 3: Larger bottom clouds - duplicate for seamless loop */}
       <div className="cloud-layer-bottom" />
+      <div className="cloud-layer-bottom" style={{ left: '100%' }} />
+    </div>
+  )
+}
+
+const DTFCards = () => {
+  const { data, isLoading } = useFilteredDTFIndex()
+
+  return (
+    <div className="flex flex-col gap-2">
+      {data.map((dtf) => (
+        <DTFHomeCard dtf={dtf} />
+      ))}
     </div>
   )
 }
 
 const Home = () => {
   return (
-    <div className="bg-secondary -mt-20 ">
-      <Cover />
-      <div className="container pt-20 relative z-10 px-4">
-        <Hero />
+    <>
+      <HomeHeader />
+      <div className="bg-secondary relative min-h-screen">
+        <Cover />
+        <div className="container pt-20 relative px-4">
+          <Hero />
+        </div>
+        <div className="contairner relative z-20 px-4">
+          <DTFCards />
+        </div>
+        <div className="container pt-20 relative z-20 px-4">
+          <RegisterAbout />
+        </div>
       </div>
-    </div>
+    </>
   )
 }
 

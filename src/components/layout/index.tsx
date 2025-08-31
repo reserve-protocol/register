@@ -1,4 +1,5 @@
 import { ReactNode } from 'react'
+import { useLocation } from 'react-router-dom'
 import Header from './header'
 
 /**
@@ -7,12 +8,17 @@ import Header from './header'
  * @param children - required
  * @returns {JSX.Element}
  */
-const Layout = ({ children }: { children: ReactNode }) => (
-  <div className="flex flex-col h-full overflow-hidden relative">
-    <Header />
-    <div id="app-container" className="overflow-auto  flex-grow">
-      {children}
+const Layout = ({ children }: { children: ReactNode }) => {
+  const { pathname } = useLocation()
+  const isHome = pathname === '/home'
+  
+  return (
+    <div className="flex flex-col h-full overflow-hidden relative">
+      {!isHome && <Header />}
+      <div id="app-container" className="overflow-auto flex-grow">
+        {children}
+      </div>
     </div>
-  </div>
-)
+  )
+}
 export default Layout

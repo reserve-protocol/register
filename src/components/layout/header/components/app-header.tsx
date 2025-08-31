@@ -11,10 +11,18 @@ const Container = ({ children }: { children: ReactNode }) => {
   // Check if the route is a "index-dtf" route
   const { pathname } = useLocation()
 
+  const isHome = pathname === '/home'
   const border = !pathname.includes('index-dtf') || pathname.includes('deploy')
 
   return (
-    <div className={cn('w-full flex-shrink-0', border && 'border-b')}>
+    <div 
+      className={cn(
+        'w-full flex-shrink-0 relative z-10',
+        border && !isHome && 'border-b',
+        !isHome && 'bg-background'
+      )}
+      style={isHome ? { backgroundColor: 'transparent' } : undefined}
+    >
       {children}
     </div>
   )
@@ -23,32 +31,46 @@ const Container = ({ children }: { children: ReactNode }) => {
 /**
  * Application header
  */
-const AppHeader = () => (
-  <Container>
-    <div className="container flex items-center h-[56px] md:h-[72px] px-4 sm:px-6">
-      <Brand className="text-primary mr-2 sm:mr-4 cursor-pointer md:-mt-1" />
-      <AppNavigation />
-      <CommandMenu />
-      <div className="flex ml-1 items-center">
-        <ThemeColorMode
-          sx={{
-            display: 'flex',
-            px: 2,
-            mr: [2, 3],
-            py: '3px',
-            maxWidth: '32px',
-            borderRadius: '6px',
-            ml: 'auto',
-            cursor: 'pointer',
-            ':hover': {
-              backgroundColor: 'secondaryBackground',
-            },
-          }}
-        />
-        <Account />
+const AppHeader = () => {
+  const { pathname } = useLocation()
+  const isHome = pathname === '/home'
+  
+  return (
+    <Container>
+      <div 
+        className={cn(
+          "container flex items-center h-[56px] md:h-[72px] px-4 sm:px-6",
+          isHome && "text-white"
+        )}
+        style={isHome ? { backgroundColor: 'transparent' } : undefined}
+      >
+        <Brand className={cn(
+          "mr-2 sm:mr-4 cursor-pointer md:-mt-1",
+          isHome ? "text-white" : "text-primary"
+        )} />
+        <AppNavigation />
+        <CommandMenu />
+        <div className="flex ml-1 items-center">
+          <ThemeColorMode
+            sx={{
+              display: 'flex',
+              px: 2,
+              mr: [2, 3],
+              py: '3px',
+              maxWidth: '32px',
+              borderRadius: '6px',
+              ml: 'auto',
+              cursor: 'pointer',
+              ':hover': {
+                backgroundColor: isHome ? 'rgba(255,255,255,0.1)' : 'secondaryBackground',
+              },
+            }}
+          />
+          <Account />
+        </div>
       </div>
-    </div>
-  </Container>
-)
+    </Container>
+  )
+}
 
 export default AppHeader

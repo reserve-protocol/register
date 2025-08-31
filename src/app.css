@@ -166,17 +166,19 @@ body {
   top: 0;
   left: 0;
   right: 0;
-  height: 800px;
+  height: 100vh;
   z-index: 0;
   overflow: hidden;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
 }
 
 /* Base cloud layer styles */
 .cloud-layer-main,
 .cloud-layer-secondary,
-.cloud-layer-accent {
+.cloud-layer-bottom {
   position: absolute;
-  width: 200%;
+  width: 100%;
   height: 100%;
   top: 0;
   left: 0;
@@ -189,66 +191,223 @@ body {
 .cloud-layer-main {
   background-image: 
     /* Dense top cloud clusters - organic distribution */
-    radial-gradient(circle at 7% 17%, rgba(255, 255, 255, 0.08) 0%, transparent 8%),
-    radial-gradient(circle at 13% 20%, rgba(255, 255, 255, 0.06) 0%, transparent 6%),
-    radial-gradient(circle at 5% 22%, rgba(255, 255, 255, 0.07) 0%, transparent 7%),
-    
-    radial-gradient(circle at 23% 18%, rgba(255, 255, 255, 0.07) 0%, transparent 7%),
-    radial-gradient(circle at 19% 21%, rgba(255, 255, 255, 0.05) 0%, transparent 5%),
-    radial-gradient(circle at 26% 19%, rgba(255, 255, 255, 0.06) 0%, transparent 6%),
-    
-    radial-gradient(circle at 34% 17%, rgba(255, 255, 255, 0.08) 0%, transparent 8%),
-    radial-gradient(circle at 37% 22%, rgba(255, 255, 255, 0.06) 0%, transparent 6%),
-    radial-gradient(circle at 31% 20%, rgba(255, 255, 255, 0.05) 0%, transparent 5%),
-    
-    radial-gradient(circle at 43% 19%, rgba(255, 255, 255, 0.07) 0%, transparent 7%),
-    radial-gradient(circle at 46% 17%, rgba(255, 255, 255, 0.06) 0%, transparent 6%),
-    radial-gradient(circle at 41% 21%, rgba(255, 255, 255, 0.05) 0%, transparent 5%),
-    
-    radial-gradient(circle at 53% 18%, rgba(255, 255, 255, 0.08) 0%, transparent 8%),
-    radial-gradient(circle at 56% 20%, rgba(255, 255, 255, 0.06) 0%, transparent 6%),
-    radial-gradient(circle at 51% 17%, rgba(255, 255, 255, 0.07) 0%, transparent 7%),
-    
-    radial-gradient(circle at 64% 21%, rgba(255, 255, 255, 0.07) 0%, transparent 7%),
-    radial-gradient(circle at 67% 18%, rgba(255, 255, 255, 0.05) 0%, transparent 5%),
-    radial-gradient(circle at 61% 19%, rgba(255, 255, 255, 0.06) 0%, transparent 6%),
-    
-    radial-gradient(circle at 74% 17%, rgba(255, 255, 255, 0.08) 0%, transparent 8%),
-    radial-gradient(circle at 76% 22%, rgba(255, 255, 255, 0.06) 0%, transparent 6%),
-    radial-gradient(circle at 71% 20%, rgba(255, 255, 255, 0.05) 0%, transparent 5%),
-    
-    radial-gradient(circle at 83% 18%, rgba(255, 255, 255, 0.07) 0%, transparent 7%),
-    radial-gradient(circle at 86% 21%, rgba(255, 255, 255, 0.06) 0%, transparent 6%),
-    radial-gradient(circle at 81% 19%, rgba(255, 255, 255, 0.05) 0%, transparent 5%),
-    
-    radial-gradient(circle at 93% 20%, rgba(255, 255, 255, 0.08) 0%, transparent 8%),
-    radial-gradient(circle at 96% 17%, rgba(255, 255, 255, 0.06) 0%, transparent 6%),
-    radial-gradient(circle at 91% 22%, rgba(255, 255, 255, 0.07) 0%, transparent 7%),
-    
+    radial-gradient(
+      circle at 7% 17%,
+      rgba(255, 255, 255, 0.08) 0%,
+      transparent 8%
+    ),
+    radial-gradient(
+      circle at 13% 20%,
+      rgba(255, 255, 255, 0.06) 0%,
+      transparent 6%
+    ),
+    radial-gradient(
+      circle at 5% 22%,
+      rgba(255, 255, 255, 0.07) 0%,
+      transparent 7%
+    ),
+    radial-gradient(
+      circle at 23% 18%,
+      rgba(255, 255, 255, 0.07) 0%,
+      transparent 7%
+    ),
+    radial-gradient(
+      circle at 19% 21%,
+      rgba(255, 255, 255, 0.05) 0%,
+      transparent 5%
+    ),
+    radial-gradient(
+      circle at 26% 19%,
+      rgba(255, 255, 255, 0.06) 0%,
+      transparent 6%
+    ),
+    radial-gradient(
+      circle at 34% 17%,
+      rgba(255, 255, 255, 0.08) 0%,
+      transparent 8%
+    ),
+    radial-gradient(
+      circle at 37% 22%,
+      rgba(255, 255, 255, 0.06) 0%,
+      transparent 6%
+    ),
+    radial-gradient(
+      circle at 31% 20%,
+      rgba(255, 255, 255, 0.05) 0%,
+      transparent 5%
+    ),
+    radial-gradient(
+      circle at 43% 19%,
+      rgba(255, 255, 255, 0.07) 0%,
+      transparent 7%
+    ),
+    radial-gradient(
+      circle at 46% 17%,
+      rgba(255, 255, 255, 0.06) 0%,
+      transparent 6%
+    ),
+    radial-gradient(
+      circle at 41% 21%,
+      rgba(255, 255, 255, 0.05) 0%,
+      transparent 5%
+    ),
+    radial-gradient(
+      circle at 53% 18%,
+      rgba(255, 255, 255, 0.08) 0%,
+      transparent 8%
+    ),
+    radial-gradient(
+      circle at 56% 20%,
+      rgba(255, 255, 255, 0.06) 0%,
+      transparent 6%
+    ),
+    radial-gradient(
+      circle at 51% 17%,
+      rgba(255, 255, 255, 0.07) 0%,
+      transparent 7%
+    ),
+    radial-gradient(
+      circle at 64% 21%,
+      rgba(255, 255, 255, 0.07) 0%,
+      transparent 7%
+    ),
+    radial-gradient(
+      circle at 67% 18%,
+      rgba(255, 255, 255, 0.05) 0%,
+      transparent 5%
+    ),
+    radial-gradient(
+      circle at 61% 19%,
+      rgba(255, 255, 255, 0.06) 0%,
+      transparent 6%
+    ),
+    radial-gradient(
+      circle at 74% 17%,
+      rgba(255, 255, 255, 0.08) 0%,
+      transparent 8%
+    ),
+    radial-gradient(
+      circle at 76% 22%,
+      rgba(255, 255, 255, 0.06) 0%,
+      transparent 6%
+    ),
+    radial-gradient(
+      circle at 71% 20%,
+      rgba(255, 255, 255, 0.05) 0%,
+      transparent 5%
+    ),
+    radial-gradient(
+      circle at 83% 18%,
+      rgba(255, 255, 255, 0.07) 0%,
+      transparent 7%
+    ),
+    radial-gradient(
+      circle at 86% 21%,
+      rgba(255, 255, 255, 0.06) 0%,
+      transparent 6%
+    ),
+    radial-gradient(
+      circle at 81% 19%,
+      rgba(255, 255, 255, 0.05) 0%,
+      transparent 5%
+    ),
+    radial-gradient(
+      circle at 93% 20%,
+      rgba(255, 255, 255, 0.08) 0%,
+      transparent 8%
+    ),
+    radial-gradient(
+      circle at 96% 17%,
+      rgba(255, 255, 255, 0.06) 0%,
+      transparent 6%
+    ),
+    radial-gradient(
+      circle at 91% 22%,
+      rgba(255, 255, 255, 0.07) 0%,
+      transparent 7%
+    ),
     /* Mid-level clouds - organic spread */
-    radial-gradient(circle at 17% 27%, rgba(255, 255, 255, 0.05) 0%, transparent 5%),
-    radial-gradient(circle at 39% 31%, rgba(255, 255, 255, 0.06) 0%, transparent 6%),
-    radial-gradient(circle at 58% 28%, rgba(255, 255, 255, 0.05) 0%, transparent 5%),
-    radial-gradient(circle at 72% 30%, rgba(255, 255, 255, 0.06) 0%, transparent 6%),
-    radial-gradient(circle at 87% 29%, rgba(255, 255, 255, 0.05) 0%, transparent 5%);
+      radial-gradient(
+        circle at 17% 27%,
+        rgba(255, 255, 255, 0.05) 0%,
+        transparent 5%
+      ),
+    radial-gradient(
+      circle at 39% 31%,
+      rgba(255, 255, 255, 0.06) 0%,
+      transparent 6%
+    ),
+    radial-gradient(
+      circle at 58% 28%,
+      rgba(255, 255, 255, 0.05) 0%,
+      transparent 5%
+    ),
+    radial-gradient(
+      circle at 72% 30%,
+      rgba(255, 255, 255, 0.06) 0%,
+      transparent 6%
+    ),
+    radial-gradient(
+      circle at 87% 29%,
+      rgba(255, 255, 255, 0.05) 0%,
+      transparent 5%
+    );
   animation: cloudDriftMain 240s linear infinite;
   contain: layout style paint;
 }
 
 /* Secondary cloud layer */
 .cloud-layer-secondary {
-  background-image:
-    radial-gradient(circle at 5% 30%, rgba(255, 255, 255, 0.04) 0%, transparent 4%),
-    radial-gradient(circle at 25% 32%, rgba(255, 255, 255, 0.05) 0%, transparent 5%),
-    radial-gradient(circle at 45% 31%, rgba(255, 255, 255, 0.04) 0%, transparent 4%),
-    radial-gradient(circle at 65% 33%, rgba(255, 255, 255, 0.05) 0%, transparent 5%),
-    radial-gradient(circle at 85% 30%, rgba(255, 255, 255, 0.04) 0%, transparent 4%),
-    
-    radial-gradient(circle at 15% 45%, rgba(255, 255, 255, 0.03) 0%, transparent 3%),
-    radial-gradient(circle at 35% 47%, rgba(255, 255, 255, 0.04) 0%, transparent 4%),
-    radial-gradient(circle at 55% 46%, rgba(255, 255, 255, 0.03) 0%, transparent 3%),
-    radial-gradient(circle at 75% 48%, rgba(255, 255, 255, 0.04) 0%, transparent 4%),
-    radial-gradient(circle at 95% 45%, rgba(255, 255, 255, 0.03) 0%, transparent 3%);
+  background-image: radial-gradient(
+      circle at 5% 30%,
+      rgba(255, 255, 255, 0.04) 0%,
+      transparent 4%
+    ),
+    radial-gradient(
+      circle at 25% 32%,
+      rgba(255, 255, 255, 0.05) 0%,
+      transparent 5%
+    ),
+    radial-gradient(
+      circle at 45% 31%,
+      rgba(255, 255, 255, 0.04) 0%,
+      transparent 4%
+    ),
+    radial-gradient(
+      circle at 65% 33%,
+      rgba(255, 255, 255, 0.05) 0%,
+      transparent 5%
+    ),
+    radial-gradient(
+      circle at 85% 30%,
+      rgba(255, 255, 255, 0.04) 0%,
+      transparent 4%
+    ),
+    radial-gradient(
+      circle at 15% 45%,
+      rgba(255, 255, 255, 0.03) 0%,
+      transparent 3%
+    ),
+    radial-gradient(
+      circle at 35% 47%,
+      rgba(255, 255, 255, 0.04) 0%,
+      transparent 4%
+    ),
+    radial-gradient(
+      circle at 55% 46%,
+      rgba(255, 255, 255, 0.03) 0%,
+      transparent 3%
+    ),
+    radial-gradient(
+      circle at 75% 48%,
+      rgba(255, 255, 255, 0.04) 0%,
+      transparent 4%
+    ),
+    radial-gradient(
+      circle at 95% 45%,
+      rgba(255, 255, 255, 0.03) 0%,
+      transparent 3%
+    );
   animation: cloudDriftSecondary 180s linear infinite reverse;
   opacity: 0.7;
   contain: layout style paint;
@@ -258,35 +417,112 @@ body {
 .cloud-layer-bottom {
   background-image:
     /* Bigger cloud formations at bottom */
-    radial-gradient(circle at 15% 50%, rgba(255, 255, 255, 0.06) 0%, transparent 10%),
-    radial-gradient(circle at 17% 52%, rgba(255, 255, 255, 0.04) 0%, transparent 8%),
-    radial-gradient(circle at 13% 51%, rgba(255, 255, 255, 0.05) 0%, transparent 9%),
-    
-    radial-gradient(circle at 35% 55%, rgba(255, 255, 255, 0.05) 0%, transparent 11%),
-    radial-gradient(circle at 37% 57%, rgba(255, 255, 255, 0.03) 0%, transparent 9%),
-    radial-gradient(circle at 33% 56%, rgba(255, 255, 255, 0.04) 0%, transparent 10%),
-    
-    radial-gradient(circle at 55% 52%, rgba(255, 255, 255, 0.06) 0%, transparent 10%),
-    radial-gradient(circle at 57% 54%, rgba(255, 255, 255, 0.04) 0%, transparent 8%),
-    radial-gradient(circle at 53% 53%, rgba(255, 255, 255, 0.05) 0%, transparent 9%),
-    
-    radial-gradient(circle at 75% 56%, rgba(255, 255, 255, 0.05) 0%, transparent 11%),
-    radial-gradient(circle at 77% 58%, rgba(255, 255, 255, 0.03) 0%, transparent 9%),
-    radial-gradient(circle at 73% 57%, rgba(255, 255, 255, 0.04) 0%, transparent 10%),
-    
-    radial-gradient(circle at 90% 53%, rgba(255, 255, 255, 0.06) 0%, transparent 10%),
-    radial-gradient(circle at 92% 55%, rgba(255, 255, 255, 0.04) 0%, transparent 8%),
-    radial-gradient(circle at 88% 54%, rgba(255, 255, 255, 0.05) 0%, transparent 9%),
-    
+    radial-gradient(
+      circle at 15% 50%,
+      rgba(255, 255, 255, 0.06) 0%,
+      transparent 10%
+    ),
+    radial-gradient(
+      circle at 17% 52%,
+      rgba(255, 255, 255, 0.04) 0%,
+      transparent 8%
+    ),
+    radial-gradient(
+      circle at 13% 51%,
+      rgba(255, 255, 255, 0.05) 0%,
+      transparent 9%
+    ),
+    radial-gradient(
+      circle at 35% 55%,
+      rgba(255, 255, 255, 0.05) 0%,
+      transparent 11%
+    ),
+    radial-gradient(
+      circle at 37% 57%,
+      rgba(255, 255, 255, 0.03) 0%,
+      transparent 9%
+    ),
+    radial-gradient(
+      circle at 33% 56%,
+      rgba(255, 255, 255, 0.04) 0%,
+      transparent 10%
+    ),
+    radial-gradient(
+      circle at 55% 52%,
+      rgba(255, 255, 255, 0.06) 0%,
+      transparent 10%
+    ),
+    radial-gradient(
+      circle at 57% 54%,
+      rgba(255, 255, 255, 0.04) 0%,
+      transparent 8%
+    ),
+    radial-gradient(
+      circle at 53% 53%,
+      rgba(255, 255, 255, 0.05) 0%,
+      transparent 9%
+    ),
+    radial-gradient(
+      circle at 75% 56%,
+      rgba(255, 255, 255, 0.05) 0%,
+      transparent 11%
+    ),
+    radial-gradient(
+      circle at 77% 58%,
+      rgba(255, 255, 255, 0.03) 0%,
+      transparent 9%
+    ),
+    radial-gradient(
+      circle at 73% 57%,
+      rgba(255, 255, 255, 0.04) 0%,
+      transparent 10%
+    ),
+    radial-gradient(
+      circle at 90% 53%,
+      rgba(255, 255, 255, 0.06) 0%,
+      transparent 10%
+    ),
+    radial-gradient(
+      circle at 92% 55%,
+      rgba(255, 255, 255, 0.04) 0%,
+      transparent 8%
+    ),
+    radial-gradient(
+      circle at 88% 54%,
+      rgba(255, 255, 255, 0.05) 0%,
+      transparent 9%
+    ),
     /* Lower bigger clouds */
-    radial-gradient(circle at 25% 65%, rgba(255, 255, 255, 0.04) 0%, transparent 12%),
-    radial-gradient(circle at 27% 67%, rgba(255, 255, 255, 0.03) 0%, transparent 10%),
-    
-    radial-gradient(circle at 50% 68%, rgba(255, 255, 255, 0.05) 0%, transparent 13%),
-    radial-gradient(circle at 52% 70%, rgba(255, 255, 255, 0.03) 0%, transparent 11%),
-    
-    radial-gradient(circle at 75% 66%, rgba(255, 255, 255, 0.04) 0%, transparent 12%),
-    radial-gradient(circle at 77% 68%, rgba(255, 255, 255, 0.03) 0%, transparent 10%);
+      radial-gradient(
+        circle at 25% 65%,
+        rgba(255, 255, 255, 0.04) 0%,
+        transparent 12%
+      ),
+    radial-gradient(
+      circle at 27% 67%,
+      rgba(255, 255, 255, 0.03) 0%,
+      transparent 10%
+    ),
+    radial-gradient(
+      circle at 50% 68%,
+      rgba(255, 255, 255, 0.05) 0%,
+      transparent 13%
+    ),
+    radial-gradient(
+      circle at 52% 70%,
+      rgba(255, 255, 255, 0.03) 0%,
+      transparent 11%
+    ),
+    radial-gradient(
+      circle at 75% 66%,
+      rgba(255, 255, 255, 0.04) 0%,
+      transparent 12%
+    ),
+    radial-gradient(
+      circle at 77% 68%,
+      rgba(255, 255, 255, 0.03) 0%,
+      transparent 10%
+    );
   animation: cloudDriftBottom 200s linear infinite;
   opacity: 0.6;
   contain: layout style paint;
@@ -297,46 +533,76 @@ body {
   .cloud-layer-bottom {
     display: none; /* Hide bottom layer on mobile for performance */
   }
-  
+
   .cloud-layer-main {
     background-image: 
-      /* Reduced clouds for mobile */
-      radial-gradient(circle at 15% 25%, rgba(255, 255, 255, 0.07) 0%, transparent 7%),
-      radial-gradient(circle at 35% 27%, rgba(255, 255, 255, 0.06) 0%, transparent 6%),
-      radial-gradient(circle at 55% 26%, rgba(255, 255, 255, 0.07) 0%, transparent 7%),
-      radial-gradient(circle at 75% 28%, rgba(255, 255, 255, 0.06) 0%, transparent 6%),
-      radial-gradient(circle at 90% 25%, rgba(255, 255, 255, 0.05) 0%, transparent 5%),
-      
-      radial-gradient(circle at 25% 35%, rgba(255, 255, 255, 0.05) 0%, transparent 5%),
-      radial-gradient(circle at 50% 37%, rgba(255, 255, 255, 0.04) 0%, transparent 4%),
-      radial-gradient(circle at 75% 36%, rgba(255, 255, 255, 0.05) 0%, transparent 5%);
+      /* Reduced clouds for mobile */ radial-gradient(
+        circle at 15% 25%,
+        rgba(255, 255, 255, 0.07) 0%,
+        transparent 7%
+      ),
+      radial-gradient(
+        circle at 35% 27%,
+        rgba(255, 255, 255, 0.06) 0%,
+        transparent 6%
+      ),
+      radial-gradient(
+        circle at 55% 26%,
+        rgba(255, 255, 255, 0.07) 0%,
+        transparent 7%
+      ),
+      radial-gradient(
+        circle at 75% 28%,
+        rgba(255, 255, 255, 0.06) 0%,
+        transparent 6%
+      ),
+      radial-gradient(
+        circle at 90% 25%,
+        rgba(255, 255, 255, 0.05) 0%,
+        transparent 5%
+      ),
+      radial-gradient(
+        circle at 25% 35%,
+        rgba(255, 255, 255, 0.05) 0%,
+        transparent 5%
+      ),
+      radial-gradient(
+        circle at 50% 37%,
+        rgba(255, 255, 255, 0.04) 0%,
+        transparent 4%
+      ),
+      radial-gradient(
+        circle at 75% 36%,
+        rgba(255, 255, 255, 0.05) 0%,
+        transparent 5%
+      );
   }
 }
 
 /* Optimized cloud animations - GPU accelerated */
 @keyframes cloudDriftMain {
   0% {
-    transform: translateX(0) translateZ(0);
+    transform: translate3d(0, 0, 0);
   }
   100% {
-    transform: translateX(-50%) translateZ(0);
+    transform: translate3d(-100%, 0, 0);
   }
 }
 
 @keyframes cloudDriftSecondary {
   0% {
-    transform: translateX(0) translateZ(0);
+    transform: translate3d(0, 0, 0);
   }
   100% {
-    transform: translateX(-50%) translateZ(0);
+    transform: translate3d(-100%, 0, 0);
   }
 }
 
 @keyframes cloudDriftBottom {
   0% {
-    transform: translateX(0) translateZ(0);
+    transform: translate3d(0, 0, 0);
   }
   100% {
-    transform: translateX(-50%) translateZ(0);
+    transform: translate3d(-100%, 0, 0);
   }
 }
