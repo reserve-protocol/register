@@ -769,6 +769,8 @@ npm run lint        # Run linter
 npm run format      # Format code
 ```
 
+**IMPORTANT**: Never run npm scripts automatically without explicit user request.
+
 ### Testing
 
 - **Current**: Manual testing on Base network
