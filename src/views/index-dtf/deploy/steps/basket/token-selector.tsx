@@ -167,6 +167,7 @@ const TokenListItem = ({
         <TokenLogo
           src={logoURI?.replace('thumb', 'small')}
           address={address}
+          symbol={symbol}
           chain={chainId}
           size="xl"
         />

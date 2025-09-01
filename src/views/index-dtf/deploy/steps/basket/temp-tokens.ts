@@ -217,4 +217,22 @@ export const TEMP_TOKENS: Token[] = [
     decimals: 18,
     address: '0xe3AE3EE16a89973D67b678aaD2c3bE865Dcc6880',
   },
+  {
+    name: 'OKB',
+    symbol: 'OKB',
+    decimals: 18,
+    address: '0x781F50ea0Dad22aEe73e94bCeD1003f4Cbd2bB5E',
+  },
+  {
+    name: 'RETAKE.TV',
+    symbol: 'RETAKE',
+    decimals: 18,
+    address: '0x5eeB2662615782b58251b6f0c3E107571ae1AB07',
+  },
+  {
+    name: 'ArAIstotle by Virtuals',
+    symbol: 'FACY',
+    decimals: 18,
+    address: '0xFAC77f01957ed1B3DD1cbEa992199B8f85B6E886',
+  },
 ]
