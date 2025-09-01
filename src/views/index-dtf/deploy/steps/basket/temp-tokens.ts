@@ -1,4 +1,5 @@
 import { Token } from '@/types'
+import { Address } from 'viem'
 
 export const TEMP_TOKENS: Token[] = [
   {
@@ -235,4 +236,7 @@ export const TEMP_TOKENS: Token[] = [
     decimals: 18,
     address: '0xFAC77f01957ed1B3DD1cbEa992199B8f85B6E886',
   },
-]
+].map((token) => ({
+  ...token,
+  address: token.address.toLowerCase() as Address,
+}))

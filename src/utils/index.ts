@@ -408,3 +408,41 @@ export function calculatePriceFromRange(
   // Convert to whole token price (USD/wholeTok)
   return avgPricePerToken * Math.pow(10, tokenDecimals)
 }
+
+/**
+ * Converts scientific notation numbers to standard decimal format
+ * @param value - Number or string in scientific notation (e.g., "3.55e-8")
+ * @returns String representation in standard decimal format (e.g., "0.0000000355")
+ */
+export function formatScientificNotation(value: number | string): string {
+  const str = String(value)
+  if (!/e/i.test(str)) return str
+
+  const [mantissa, expStr] = str.toLowerCase().split('e')
+  const exponent = parseInt(expStr, 10)
+
+  const sign = mantissa.startsWith('-') ? '-' : ''
+  const [intPart, fracPart = ''] = mantissa.replace(/^[+-]/, '').split('.')
+  const digits = intPart + fracPart
+
+  if (exponent >= 0) {
+    // Positive exponent: move decimal point to the right
+    if (exponent >= fracPart.length) {
+      return sign + digits + '0'.repeat(exponent - fracPart.length)
+    }
+    return (
+      sign +
+      digits.slice(0, intPart.length + exponent) +
+      '.' +
+      digits.slice(intPart.length + exponent)
+    )
+  } else {
+    // Negative exponent: move decimal point to the left
+    const zeros = '0'.repeat(-exponent - intPart.length)
+    if (-exponent >= intPart.length) {
+      return sign + '0.' + zeros + digits
+    }
+    const cut = intPart.length + exponent
+    return sign + intPart.slice(0, cut) + '.' + intPart.slice(cut) + fracPart
+  }
+}
