@@ -19,7 +19,15 @@ const useTokenList = (chainId: number) =>
         const data: Token[] = await response.json()
 
         if (chainId === ChainId.Base) {
-          data.push(...TEMP_TOKENS)
+          const existingAddresses = new Set(
+            data.map((token) => token.address.toLowerCase())
+          )
+
+          const uniqueTempTokens = TEMP_TOKENS.filter(
+            (token) => !existingAddresses.has(token.address.toLowerCase())
+          )
+
+          data.push(...uniqueTempTokens)
         }
 
         return data
