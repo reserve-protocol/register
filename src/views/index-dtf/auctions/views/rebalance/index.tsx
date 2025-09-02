@@ -14,14 +14,17 @@ import {
   rebalanceMetricsAtom,
   showManageWeightsViewAtom,
 } from './atoms'
+import { devModeAtom } from '@/state/atoms'
 
 const RebalanceContent = () => {
   const isCompleted = useAtomValue(isCompletedAtom)
   const showManageWeights = useAtomValue(showManageWeightsViewAtom)
   const metrics = useAtomValue(rebalanceMetricsAtom)
   const activeAuction = useAtomValue(activeAuctionAtom)
+  const isDebug = useAtomValue(devModeAtom)
 
   if (
+    !isDebug &&
     !activeAuction &&
     (isCompleted || (metrics?.relativeProgression ?? 0) > 99.7)
   ) {
