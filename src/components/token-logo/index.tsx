@@ -186,6 +186,7 @@ export default TokenLogo
 
 export const TRANSPARENT_TOKENS = new Set(['altt', 'emp'])
 
+// TODO: Maybe we can build this list at build time? we just need to list all the svgs in the public/svgs folder
 export const SVGS = new Set([
   'aave',
   'dai',
@@ -260,6 +261,11 @@ export const SVGS = new Set([
   'woeth',
   'susds',
   'saethusdt',
+  'cro',
+  'xlm',
+  'hbar',
+  'hype',
+  'sui',
 ])
 
 export const PNGS = new Set([

@@ -18,6 +18,7 @@ import { Token } from '@/types'
 import { atom, Getter } from 'jotai'
 import { Address, encodeFunctionData, Hex, parseUnits } from 'viem'
 import { BasketInputType } from '@/views/index-dtf/deploy/atoms'
+import { formatScientificNotation } from '@/utils'
 
 export type Step =
   | 'basket'
@@ -180,7 +181,7 @@ export const derivedProposedSharesAtom = atom((get) => {
 
     for (const asset of keys) {
       const d = proposedIndexBasket[asset].token.decimals || 18
-      bals.push(parseUnits(proposedUnits[asset], d))
+      bals.push(parseUnits(formatScientificNotation(proposedUnits[asset]), d))
       decimals.push(BigInt(d))
       prices.push(priceMap[asset] || 0)
     }
@@ -195,6 +196,7 @@ export const derivedProposedSharesAtom = atom((get) => {
       {} as Record<string, bigint>
     )
   } catch (e) {
+    console.error('Error calculating derived proposed shares:', e)
     return undefined
   }
 })
