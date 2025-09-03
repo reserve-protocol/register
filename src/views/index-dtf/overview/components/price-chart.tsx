@@ -3,15 +3,16 @@ import { Button } from '@/components/ui/button'
 import { ChartConfig, ChartContainer } from '@/components/ui/chart'
 import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
-import { indexDTFAtom } from '@/state/dtf/atoms'
+import { indexDTF7dChangeAtom, indexDTFAtom } from '@/state/dtf/atoms'
 import { formatCurrency } from '@/utils'
 import dayjs from 'dayjs'
-import { atom, useAtom, useAtomValue } from 'jotai'
+import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { Line, LineChart, Tooltip, YAxis } from 'recharts'
 import { Card } from 'theme-ui'
 import useIndexDTFPriceHistory, {
   IndexDTFPerformance,
 } from '../hooks/use-dtf-price-history'
+import { useEffect } from 'react'
 
 const chartConfig = {
   desktop: {
@@ -159,10 +160,12 @@ const Selectors = ({ className }: { className?: string }) => {
   )
 }
 
+// TODO: Storing 7day change here, probably not the best place
 const PriceChart = () => {
   const dtf = useAtomValue(indexDTFAtom)
   const range = useAtomValue(timeRangeAtom)
   const dataType = useAtomValue(dataTypeAtom)
+  const set7dChange = useSetAtom(indexDTF7dChangeAtom)
 
   const showHourlyInterval = now - (dtf?.timestamp || 0) < 30 * 86_400
   const { data: history } = useIndexDTFPriceHistory({
@@ -173,6 +176,17 @@ const PriceChart = () => {
 
   const timeseries =
     history?.timeseries.filter(({ price }) => Boolean(price)) || []
+
+  useEffect(() => {
+    if (timeseries.length > 0 && range === '1w') {
+      const firstValue = timeseries[0].price
+      const lastValue = timeseries[timeseries.length - 1].price
+
+      const percentageChange =
+        firstValue === 0 ? undefined : (lastValue - firstValue) / firstValue
+      set7dChange(percentageChange)
+    }
+  }, [timeseries, range, set7dChange])
 
   return (
     <div className="lg:rounded-4xl lg:rounded-b-none bg-[#000] dark:bg-background lg:dark:bg-muted w-full text-[#fff] dark:text-foreground p-3 sm:p-6 pb-20 h-[340px] sm:h-[538px]">
