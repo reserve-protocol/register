@@ -43,23 +43,31 @@ const useRebalanceParams = () => {
   const auctions = useAtomValue(rebalanceAuctionsAtom)
   const originalWeights = useAtomValue(originalRebalanceWeightsAtom)
 
-  const rebalanceTokens = useMemo(() => {
-    if (!rebalance || !basket) return []
+  // Memoize tokenMap separately from tokenList
+  const tokenMap = useMemo(() => {
+    if (!rebalance || !basket) return undefined
 
-    const tokens = new Set<string>()
+    const map: Record<string, Token> = {}
 
+    // Add rebalance tokens to map
     rebalance.rebalance.tokens.forEach((token) => {
-      tokens.add(token.address.toLowerCase())
+      map[token.address.toLowerCase()] = token
     })
 
+    // Add basket tokens to map (may override with more complete data)
     basket.forEach((token) => {
-      tokens.add(token.address.toLowerCase())
+      map[token.address.toLowerCase()] = token
     })
 
-    return Array.from(tokens)
+    return map
   }, [basket, rebalance])
 
-  const { data: prices } = useAssetPricesWithSnapshot(rebalanceTokens)
+  // Extract tokenList from tokenMap
+  const tokenList = useMemo(() => {
+    return tokenMap ? Object.keys(tokenMap) : []
+  }, [tokenMap])
+
+  const { data: prices } = useAssetPricesWithSnapshot(tokenList)
   const { data: currentRebalanceData } = useRebalanceCurrentData()
   const { data: initialRebalanceData } = useRebalanceInitialData()
   const { data: initialRebalance } = useReadContract({
@@ -74,33 +82,20 @@ const useRebalanceParams = () => {
     },
   })
 
-  return useMemo(() => {
-    if (
-      !currentRebalanceData ||
-      !initialRebalanceData ||
-      !prices ||
-      !rebalanceControl ||
-      !rebalance ||
-      !initialRebalance
-    )
-      return undefined
+  // Extract initial prices and weights calculation
+  const { initialPrices, calculatedInitialWeights } = useMemo(() => {
+    if (!initialRebalance || !tokenMap) {
+      return { initialPrices: {}, calculatedInitialWeights: {} }
+    }
 
-    const { supply: initialSupply, initialAssets } = initialRebalanceData
-    const tokenMap = rebalance.rebalance.tokens.reduce(
-      (acc, token) => {
-        acc[token.address.toLowerCase()] = token
-        return acc
-      },
-      {} as Record<string, Token>
-    )
-    const initialPrices: Record<string, number> = {}
-    let initialWeights: Record<string, WeightRange> = {}
+    const prices: Record<string, number> = {}
+    const weights: Record<string, WeightRange> = {}
 
     for (let i = 0; i < initialRebalance[1].length; i++) {
       const token = initialRebalance[1][i].toLowerCase()
       const decimals = tokenMap[token].decimals
 
-      initialPrices[token] = calculatePriceFromRange(
+      prices[token] = calculatePriceFromRange(
         {
           low: initialRebalance[3][i].low,
           high: initialRebalance[3][i].high,
@@ -108,50 +103,77 @@ const useRebalanceParams = () => {
         decimals
       )
 
-      initialWeights[token] = {
+      weights[token] = {
         low: initialRebalance[2][i].low,
         spot: initialRebalance[2][i].spot,
         high: initialRebalance[2][i].high,
       }
     }
 
+    return { initialPrices: prices, calculatedInitialWeights: weights }
+  }, [initialRebalance, tokenMap])
+
+  // Determine final initial weights
+  const initialWeights = useMemo(() => {
     // Use historical weights for subsequent auctions in hybrid DTFs
     if (isHybridDTF && auctions.length > 0 && originalWeights) {
-      initialWeights = originalWeights
+      return originalWeights
     }
+    return calculatedInitialWeights
+  }, [isHybridDTF, auctions.length, originalWeights, calculatedInitialWeights])
+
+  // Build rebalance object separately
+  const rebalanceObject = useMemo(() => {
+    if (!currentRebalanceData) return undefined
 
     return {
-      initialSupply: initialSupply,
+      nonce: currentRebalanceData.rebalance[0],
+      tokens: currentRebalanceData.rebalance[1],
+      weights: currentRebalanceData.rebalance[2],
+      initialPrices: currentRebalanceData.rebalance[3],
+      inRebalance: currentRebalanceData.rebalance[4],
+      limits: currentRebalanceData.rebalance[5],
+      startedAt: currentRebalanceData.rebalance[6],
+      restrictedUntil: currentRebalanceData.rebalance[7],
+      availableUntil: currentRebalanceData.rebalance[8],
+      priceControl: currentRebalanceData.rebalance[9],
+    } as Rebalance
+  }, [currentRebalanceData])
+
+  // Final result composition
+  return useMemo(() => {
+    if (
+      !currentRebalanceData ||
+      !initialRebalanceData ||
+      !prices ||
+      !rebalanceControl ||
+      !rebalance ||
+      !rebalanceObject ||
+      !tokenMap
+    )
+      return undefined
+
+    return {
+      initialSupply: initialRebalanceData.supply,
       initialPrices,
       initialWeights,
-      initialAssets,
+      initialAssets: initialRebalanceData.initialAssets,
       currentAssets: currentRebalanceData.currentAssets,
       supply: currentRebalanceData.supply,
       prices,
       isTrackingDTF: !rebalanceControl.weightControl,
-      rebalance: {
-        nonce: currentRebalanceData.rebalance[0],
-        tokens: currentRebalanceData.rebalance[1],
-        weights: currentRebalanceData.rebalance[2],
-        initialPrices: currentRebalanceData.rebalance[3],
-        inRebalance: currentRebalanceData.rebalance[4],
-        limits: currentRebalanceData.rebalance[5],
-        startedAt: currentRebalanceData.rebalance[6],
-        restrictedUntil: currentRebalanceData.rebalance[7],
-        availableUntil: currentRebalanceData.rebalance[8],
-        priceControl: currentRebalanceData.rebalance[9],
-      } as Rebalance,
+      rebalance: rebalanceObject,
     } as RebalanceParams
   }, [
     currentRebalanceData,
     initialRebalanceData,
-    initialRebalance,
     prices,
-    rebalance,
     rebalanceControl,
-    isHybridDTF,
-    auctions.length,
-    originalWeights,
+    rebalance,
+    rebalanceObject,
+    initialPrices,
+    initialWeights,
+    tokenMap,
   ])
 }
 
