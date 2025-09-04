@@ -25,7 +25,7 @@ const AmountsPreview = () => {
   const usdAmount = useAtomValue(stakeAmountUsdAtom)
   const stAmount = useAtomValue(stakeOutputAtom)
   const ticker = useAtomValue(stRsrTickerAtom)
-  // Sometimes stAmount change as soon as the stake is successfull, and thats not the intended display
+  // Sometimes stAmount change as soon as the stake is successful, and thats not the intended display
   const stAmountMemo = useMemo(() => stAmount, [!!stAmount])
 
   return (
