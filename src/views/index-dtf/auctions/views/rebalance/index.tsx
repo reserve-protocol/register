@@ -25,14 +25,15 @@ const RebalanceContent = () => {
   const isDebug = useAtomValue(devModeAtom)
 
   // Check if rebalance is successfully completed (FINAL round with < $1 auction size)
-  const isSuccessfullyCompleted = 
-    metrics?.round === AuctionRound.FINAL && 
-    (metrics?.auctionSize ?? 0) < 1
+  const isSuccessfullyCompleted =
+    metrics?.round === AuctionRound.FINAL && (metrics?.auctionSize ?? 0) < 1
 
   if (
     !isDebug &&
     !activeAuction &&
-    (isCompleted || (metrics?.relativeProgression ?? 0) > 99.7 || isSuccessfullyCompleted)
+    (isCompleted ||
+      (metrics?.relativeProgression ?? 0) > 99.7 ||
+      isSuccessfullyCompleted)
   ) {
     return <RebalanceCompleted />
   }

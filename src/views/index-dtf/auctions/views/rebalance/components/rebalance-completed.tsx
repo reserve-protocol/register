@@ -139,9 +139,7 @@ const RebalanceCompleted = () => {
                   label="Total value traded"
                   value={
                     metrics?.totalRebalancedUsd !== undefined
-                      ? `$${formatCurrency(
-                          metrics?.totalRebalancedUsd
-                        )}`
+                      ? `$${formatCurrency(metrics?.totalRebalancedUsd)}`
                       : undefined
                   }
                 />
@@ -157,21 +155,18 @@ const RebalanceCompleted = () => {
                     />
                   }
                   label="Total price impact"
-                  tooltip={!isCompleted ? "Available after rebalance completion" : undefined}
+                  tooltip={
+                    !isCompleted
+                      ? 'Available after rebalance completion'
+                      : undefined
+                  }
                   value={
-                    !isCompleted ? (
-                      <div className="flex items-center gap-1 text-muted-foreground">
-                        <span>Not available</span>
-                        <Help content="This metric will be available once the rebalance is completed" />
-                      </div>
-                    ) : metrics?.priceImpact !== undefined ? (
+                    metrics?.priceImpact !== undefined ? (
                       <div className="flex items-center gap-1">
                         <span
                           className={cn(
-                            metrics?.priceImpact < 0 &&
-                              'text-green-500',
-                            metrics?.priceImpact > 0 &&
-                              'text-red-500'
+                            metrics?.priceImpact < 0 && 'text-green-500',
+                            metrics?.priceImpact > 0 && 'text-red-500'
                           )}
                         >
                           {`${metrics.priceImpact > 0 ? '-' : metrics.priceImpact < 0 ? '+' : ''}${formatPercentage(Math.abs(metrics.priceImpact))}`}
@@ -197,9 +192,7 @@ const RebalanceCompleted = () => {
                   tooltip="A measure of how closely the new basket rebalanced compared to the proposed basket"
                   value={
                     metrics?.rebalanceAccuracy !== undefined
-                      ? `${formatPercentage(
-                          metrics?.rebalanceAccuracy
-                        )}`
+                      ? `${formatPercentage(metrics?.rebalanceAccuracy)}`
                       : undefined
                   }
                 />
@@ -212,14 +205,13 @@ const RebalanceCompleted = () => {
                     <ChartCandlestick className="h-5 w-5" strokeWidth={1.2} />
                   }
                   label="NAV Change"
-                  tooltip={!isCompleted ? "Available after rebalance completion" : "How much the value of the DTF basket changed due to the latest rebalance"}
+                  tooltip={
+                    !isCompleted
+                      ? 'Available after rebalance completion'
+                      : 'How much the value of the DTF basket changed due to the latest rebalance'
+                  }
                   value={
-                    !isCompleted ? (
-                      <div className="flex items-center gap-1 text-muted-foreground">
-                        <span>Not available</span>
-                        <Help content="This metric will be available once the rebalance is completed" />
-                      </div>
-                    ) : metrics?.marketCapRebalanceImpact !== undefined ? (
+                    metrics?.marketCapRebalanceImpact !== undefined ? (
                       <span
                         className={cn(
                           metrics.marketCapRebalanceImpact < 0 &&
