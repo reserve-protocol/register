@@ -76,9 +76,9 @@ const RebalanceMetricsUpdater = () => {
 
         // Determine if auction is small based on chain
         const isSmallAuction = (auctionSize: number) => {
-          if (chainId === ChainId.BSC) return auctionSize < 100 // BSC: $100
+          if (chainId === ChainId.BSC || chainId === ChainId.Base) return auctionSize < 100 // BSC & Base: $100
           if (chainId === ChainId.Mainnet) return auctionSize < 1000 // Mainnet: $1000
-          return false // Base and others: no adjustment
+          return false // Other chains: no adjustment
         }
 
         // Override percent to 100 if auction is small (non-dev mode only)
