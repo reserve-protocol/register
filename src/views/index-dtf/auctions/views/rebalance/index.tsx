@@ -1,4 +1,5 @@
 import { useAtomValue } from 'jotai'
+import { AuctionRound } from '@reserve-protocol/dtf-rebalance-lib'
 import RebalanceAction from './components/rebalance-action'
 import RebalanceAuctions from './components/rebalance-auctions'
 import RebalanceCompleted from './components/rebalance-completed'
@@ -23,10 +24,15 @@ const RebalanceContent = () => {
   const activeAuction = useAtomValue(activeAuctionAtom)
   const isDebug = useAtomValue(devModeAtom)
 
+  // Check if rebalance is successfully completed (FINAL round with < $1 auction size)
+  const isSuccessfullyCompleted = 
+    metrics?.round === AuctionRound.FINAL && 
+    (metrics?.auctionSize ?? 0) < 1
+
   if (
     !isDebug &&
     !activeAuction &&
-    (isCompleted || (metrics?.relativeProgression ?? 0) > 99.7)
+    (isCompleted || (metrics?.relativeProgression ?? 0) > 99.7 || isSuccessfullyCompleted)
   ) {
     return <RebalanceCompleted />
   }
