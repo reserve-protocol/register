@@ -11,7 +11,9 @@ import { useTotalValueTraded } from './use-total-value-traded'
  * - Falls back to local calculated metrics when API unavailable
  * - Maps local metrics to API format for consistent interface
  */
-export const useRebalanceCompletedMetrics = (): RebalanceMetrics | undefined => {
+export const useRebalanceCompletedMetrics = ():
+  | RebalanceMetrics
+  | undefined => {
   const apiMetrics = useAtomValue(apiRebalanceMetricsAtom)
   const localMetrics = useAtomValue(rebalanceMetricsAtom)
   const isCompleted = useAtomValue(isCompletedAtom)
@@ -19,7 +21,7 @@ export const useRebalanceCompletedMetrics = (): RebalanceMetrics | undefined => 
 
   return useMemo(() => {
     // If we have API metrics and rebalance is completed, use them
-    if (apiMetrics && isCompleted) {
+    if (apiMetrics) {
       return apiMetrics
     }
 
