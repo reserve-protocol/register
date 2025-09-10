@@ -675,10 +675,10 @@ export const feeRecipientsAtom = atom((get) => {
   let governanceShare = 0
   const chainId = get(chainIdAtom)
   const platformFee = getPlatformFee(chainId)
-  const PERCENT_ADJUST = 100 / platformFee
+  const PERCENT_ADJUST = 100 / (100 - platformFee)
 
   for (const recipient of indexDTF.feeRecipients) {
-    // Deployer share
+    // Deployer share - adjust from contract percentage to actual percentage
     if (recipient.address.toLowerCase() === indexDTF.deployer.toLowerCase()) {
       deployerShare = Number(recipient.percentage) / PERCENT_ADJUST
     } else if (

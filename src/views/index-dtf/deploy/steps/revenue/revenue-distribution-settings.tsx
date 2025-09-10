@@ -1,10 +1,8 @@
 import { Button } from '@/components/ui/button'
 import { useAtomValue } from 'jotai'
 import {
-  Asterisk,
   Landmark,
   LandPlot,
-  TableColumnsSplit,
   TrainTrack,
 } from 'lucide-react'
 import { useCallback, useEffect } from 'react'
