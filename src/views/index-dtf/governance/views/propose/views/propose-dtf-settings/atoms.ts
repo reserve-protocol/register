@@ -470,15 +470,16 @@ export const dtfSettingsProposalDataAtom = atom<ProposalData | undefined>((get) 
     // Calculate using the same logic as calculateRevenueDistribution
     const chainId = get(chainIdAtom)
     const platformFee = getPlatformFee(chainId)
-    const totalSharesDenominator = (100 - platformFee) / 100
-
+    
+    // Convert from actual percentage (including platform fee) to contract percentage (excluding platform fee)
+    // User input: actual % of total revenue -> Contract needs: % of non-platform portion
+    // Example BSC: User inputs 67% -> Contract needs 100% (67% is 100% of the 67% non-platform portion)
     const calculateShare = (sharePercentage: number) => {
-      const share = sharePercentage / 100
-      if (totalSharesDenominator > 0) {
-        const shareNumerator = share / totalSharesDenominator
-        return parseEther(shareNumerator.toString())
-      }
-      return parseEther(share.toString())
+      // Convert actual percentage to fraction of non-platform portion
+      const actualFraction = sharePercentage / 100
+      const nonPlatformFraction = (100 - platformFee) / 100
+      const contractFraction = actualFraction / nonPlatformFraction
+      return parseEther(contractFraction.toString())
     }
 
     // Get current values
