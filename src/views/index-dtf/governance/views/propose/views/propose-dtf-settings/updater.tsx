@@ -1,6 +1,7 @@
 import { indexDTFAtom, indexDTFRebalanceControlAtom } from '@/state/dtf/atoms'
-import { FIXED_PLATFORM_FEE } from '@/utils/constants'
+import { getPlatformFee } from '@/utils/constants'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
+import { chainIdAtom } from '@/state/atoms'
 import { useEffect, useRef } from 'react'
 import { useFormContext, useWatch } from 'react-hook-form'
 import {
@@ -39,6 +40,7 @@ const Updater = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
   const feeRecipients = useAtomValue(feeRecipientsAtom)
   const rebalanceControl = useAtomValue(indexDTFRebalanceControlAtom)
+  const chainId = useAtomValue(chainIdAtom)
   const reset = useSetAtom(resetAtom)
   const { reset: resetForm, watch, formState, control } = useFormContext()
   const governanceChanges = useAtomValue(governanceChangesAtom)
@@ -138,7 +140,7 @@ const Updater = () => {
           revenueDistributionChanges.additionalRecipients !== undefined
             ? revenueDistributionChanges.additionalRecipients
             : feeRecipients.externalRecipients,
-        fixedPlatformFee: FIXED_PLATFORM_FEE,
+        fixedPlatformFee: getPlatformFee(chainId),
         auctionLength:
           auctionLengthChange !== undefined
             ? auctionLengthChange

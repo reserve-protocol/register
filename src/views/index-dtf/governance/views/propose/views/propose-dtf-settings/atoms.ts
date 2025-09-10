@@ -10,8 +10,9 @@ import {
   indexDTFVersionAtom,
 } from '@/state/dtf/atoms'
 import { Token } from '@/types'
-import { BIGINT_MAX, FIXED_PLATFORM_FEE } from '@/utils/constants'
+import { BIGINT_MAX, getPlatformFee } from '@/utils/constants'
 import { atom } from 'jotai'
+import { chainIdAtom } from '@/state/atoms'
 import { Address, encodeFunctionData, Hex, parseEther } from 'viem'
 import {
   GovernanceChanges,
@@ -467,7 +468,9 @@ export const dtfSettingsProposalDataAtom = atom<ProposalData | undefined>((get) 
     const newFeeRecipients: { recipient: Address; portion: bigint }[] = []
 
     // Calculate using the same logic as calculateRevenueDistribution
-    const totalSharesDenominator = (100 - FIXED_PLATFORM_FEE) / 100
+    const chainId = get(chainIdAtom)
+    const platformFee = getPlatformFee(chainId)
+    const totalSharesDenominator = (100 - platformFee) / 100
 
     const calculateShare = (sharePercentage: number) => {
       const share = sharePercentage / 100
@@ -670,7 +673,9 @@ export const feeRecipientsAtom = atom((get) => {
   const externalRecipients: { address: string; share: number }[] = []
   let deployerShare = 0
   let governanceShare = 0
-  const PERCENT_ADJUST = 100 / FIXED_PLATFORM_FEE
+  const chainId = get(chainIdAtom)
+  const platformFee = getPlatformFee(chainId)
+  const PERCENT_ADJUST = 100 / platformFee
 
   for (const recipient of indexDTF.feeRecipients) {
     // Deployer share

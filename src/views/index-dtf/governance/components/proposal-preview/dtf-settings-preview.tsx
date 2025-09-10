@@ -18,7 +18,7 @@ import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { useAtomValue } from 'jotai'
 import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
-import { FIXED_PLATFORM_FEE } from '@/utils/constants'
+import { getPlatformFee } from '@/utils/constants'
 import { Address } from 'viem'
 
 // Preview component for setMandate function
@@ -185,6 +185,7 @@ export const SetFeeRecipientsPreview = ({
 }) => {
   const chainId = useAtomValue(chainIdAtom)
   const indexDTF = useAtomValue(indexDTFAtom)
+  const platformFee = getPlatformFee(chainId)
   const recipients = decodedCalldata.data[0] as Array<{
     recipient: string
     portion: bigint
@@ -215,9 +216,9 @@ export const SetFeeRecipientsPreview = ({
   })
 
   // The percentages from the calldata are scaled to sum to 100%
-  // But for display, we need to show the original user values that sum to (100 - FIXED_PLATFORM_FEE)
-  // So we scale them down by multiplying by (100 - FIXED_PLATFORM_FEE) / 100
-  const scaleFactor = (100 - FIXED_PLATFORM_FEE) / 100
+  // But for display, we need to show the original user values that sum to (100 - platformFee)
+  // So we scale them down by multiplying by (100 - platformFee) / 100
+  const scaleFactor = (100 - platformFee) / 100
   const adjustedDeployerShare = deployerShare * scaleFactor
   const adjustedGovernanceShare = governanceShare * scaleFactor
   const adjustedExternalRecipients = externalRecipients.map((r) => ({
@@ -240,7 +241,7 @@ export const SetFeeRecipientsPreview = ({
             </span>
             <div className="flex items-center gap-2">
               <DollarSign size={14} className="text-muted-foreground" />
-              <span className="text-sm font-medium">{FIXED_PLATFORM_FEE}%</span>
+              <span className="text-sm font-medium">{platformFee}%</span>
             </div>
           </div>
         </div>
