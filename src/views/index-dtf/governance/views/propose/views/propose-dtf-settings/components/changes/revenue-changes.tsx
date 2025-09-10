@@ -1,6 +1,5 @@
 import { Button } from '@/components/ui/button'
 import { formatPercentage, shortenAddress } from '@/utils'
-import { FIXED_PLATFORM_FEE } from '@/utils/constants'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { useAtom, useAtomValue } from 'jotai'
 import { useFormContext } from 'react-hook-form'

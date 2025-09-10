@@ -249,6 +249,18 @@ export const supportedChainList = [
   ChainId.Arbitrum,
 ]
 
+// Platform fees by chain
+export const PLATFORM_FEES: Record<number, number> = {
+  [ChainId.Mainnet]: 50,
+  [ChainId.Base]: 50,
+  [ChainId.BSC]: 33,
+}
+
+export const getPlatformFee = (chainId: number): number => {
+  return PLATFORM_FEES[chainId] || 50
+}
+
+// Legacy constant for backwards compatibility
 export const FIXED_PLATFORM_FEE = 50
 // Load environment variables.
 export const TENDERLY_ACCESS_TOKEN: string = import.meta.env
