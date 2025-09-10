@@ -1,8 +1,6 @@
 import { DecodedCalldata } from '@/types'
 import { shortenAddress } from '@/utils'
 import {
-  ArrowRight,
-  FileText,
   Shield,
   Users,
   DollarSign,
@@ -215,15 +213,15 @@ export const SetFeeRecipientsPreview = ({
     }
   })
 
-  // The percentages from the calldata are scaled to sum to 100%
-  // But for display, we need to show the original user values that sum to (100 - platformFee)
-  // So we scale them down by multiplying by (100 - platformFee) / 100
-  const scaleFactor = (100 - platformFee) / 100
-  const adjustedDeployerShare = deployerShare * scaleFactor
-  const adjustedGovernanceShare = governanceShare * scaleFactor
+  // The percentages from the calldata sum to 100% (excluding platform fee)
+  // For display, we show the actual percentage of total revenue
+  // So we divide by PERCENT_ADJUST = 100 / (100 - platformFee)
+  const PERCENT_ADJUST = 100 / (100 - platformFee)
+  const adjustedDeployerShare = deployerShare / PERCENT_ADJUST
+  const adjustedGovernanceShare = governanceShare / PERCENT_ADJUST
   const adjustedExternalRecipients = externalRecipients.map((r) => ({
     ...r,
-    percentage: r.percentage * scaleFactor,
+    percentage: r.percentage / PERCENT_ADJUST,
   }))
 
   return (
