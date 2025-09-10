@@ -45,10 +45,10 @@ const feeRecipientsAtom = atom((get) => {
     icon: <IconWrapper Component={Landmark} />,
   }
   const externalRecipients: Recipient[] = []
-  const PERCENT_ADJUST = 100 / platformFee
+  const PERCENT_ADJUST = 100 / (100 - platformFee)
 
   for (const recipient of indexDTF.feeRecipients) {
-    // Deployer share
+    // Deployer share - adjust from contract percentage to actual percentage
     if (recipient.address.toLowerCase() === indexDTF.deployer.toLowerCase()) {
       deployerShare.value = formatPercentage(
         Number(recipient.percentage) / PERCENT_ADJUST
