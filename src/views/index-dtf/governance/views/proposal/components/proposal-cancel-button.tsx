@@ -10,6 +10,7 @@ import { useEffect, useMemo } from 'react'
 import { chainIdAtom, walletAtom } from 'state/atoms'
 import {
   encodeAbiParameters,
+  Hex,
   keccak256,
   pad,
   parseAbiParameters,
@@ -23,8 +24,9 @@ const timelockIdAtom = atom((get) => {
   const proposal = get(proposalDetailAtom)
 
   if (!proposal) return undefined
+  if (proposal?.timelockId) return proposal.timelockId as Hex
 
-  const governorAddress = proposal.governor.toLowerCase() as `0x${string}`
+  const governorAddress = proposal.governor.toLowerCase() as Hex
   const descriptionHash = keccak256(stringToBytes(proposal.description))
 
   const governorBytes32 = pad(governorAddress, { size: 32, dir: 'right' })
@@ -38,7 +40,7 @@ const timelockIdAtom = atom((get) => {
     saltBuffer[i] = governorBuffer[i] ^ descHashBuffer[i]
   }
 
-  const timelockSalt = `0x${saltBuffer.toString('hex')}` as `0x${string}`
+  const timelockSalt = `0x${saltBuffer.toString('hex')}` as Hex
 
   const encodedParams = encodeAbiParameters(
     parseAbiParameters('address[], uint256[], bytes[], bytes32, bytes32'),
