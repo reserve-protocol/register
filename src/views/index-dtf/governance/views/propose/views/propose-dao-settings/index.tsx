@@ -27,7 +27,7 @@ const IndexDTFDaoSettingsProposal = () => {
   }, [quorumDenominator])
 
   const methods = useForm<ProposeDaoSettings>({
-    mode: 'onTouched',
+    mode: 'onChange',
     reValidateMode: 'onChange',
     resolver: zodResolver(schema),
   })
