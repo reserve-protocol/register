@@ -1,0 +1,378 @@
+[
+  {
+    "id": "oeth",
+    "tokenTicker": "OETH",
+    "name": "Origin Ether",
+    "addresses": {
+      "1": "0x856c4Efb76C1D1AE02e20CEB03A2A6a08b0b8dC3"
+    },
+    "color": "#3290f3",
+    "rating": null,
+    "website": "https://www.originprotocol.com/oeth",
+    "description": "Origin Ether (OETH) is a pure LST fully backed by reserves of ETH. OETH’s meticulous design and strong peg make it an ideal building block for rewarding yield strategies across DeFi. Thanks to rebasing, OETH holders earn yield directly in their wallets while retaining full capital control. Developed by the professionals at Origin Protocol.",
+    "logo": {
+      "url": "https://storage-logos.reserve.org/logos/b61e7ea0a5e4--oeth.svg"
+    }
+  },
+  {
+    "id": "usds",
+    "tokenTicker": "USDS",
+    "name": "USDS Stablecoin",
+    "addresses": {
+      "1": "0xdC035D45d973E3EC169d2276DDab16f1e407384F"
+    },
+    "color": "#FE9E51",
+    "rating": null,
+    "website": "https://sky.money/",
+    "description": "USDS is a stablecoin that is the upgraded version of DAI, providing new ways for users to have more rewarding crypto experiences. It is the native currency of the decentralized Sky Protocol and powers the open Sky ecosystem.",
+    "logo": {
+      "url": "https://storage-logos.reserve.org/logos/f7a1faf3064f--usds.svg"
+    }
+  },
+  {
+    "id": "aero",
+    "tokenTicker": "AERO",
+    "name": "Aerodrome",
+    "addresses": {
+      "8453": "0x940181a94A35A4569E4529A3CDfB74e38FD98631"
+    },
+    "color": null,
+    "rating": null,
+    "website": "https://aerodrome.finance/",
+    "description": "AERO is the native token of the Aerodrome Finance. It is primarily distributed to liquidity providers as emissions for contributing to the platform's liquidity pools.",
+    "logo": {
+      "url": "https://storage-logos.reserve.org/logos/094165e7e436--token.png"
+    }
+  },
+  {
+    "id": "mog",
+    "tokenTicker": "MOG",
+    "name": "MOG Coin",
+    "addresses": {
+      "8453": "0x2Da56AcB9Ea78330f947bD57C54119Debda7AF71"
+    },
+    "color": null,
+    "rating": null,
+    "website": null,
+    "description": "Mog Coin (MOG) is a meme coin built on the Ethereum blockchain, following the ERC-20 standard. It was launched in July 2023 as a joke but quickly gained traction, known for its humorous approach to finance and its potential for growth. MOG is characterized by its unique branding, fast transaction speeds, and user-friendly features, aiming to bring fun and humor to the cryptocurrency space.",
+    "logo": {
+      "url": "https://storage-logos.reserve.org/logos/6c57eef6b651--18724-1717376885547.png"
+    }
+  },
+  {
+    "id": "well",
+    "tokenTicker": "WELL",
+    "name": "WELL",
+    "addresses": {
+      "8453": "0xA88594D404727625A9437C3f886C7643872296AE"
+    },
+    "color": null,
+    "rating": null,
+    "website": "https://moonwell.fi/",
+    "description": "WELL is a governance token for the Moonwell protocol.\n\nMoonwell is an open lending and borrowing app built on Base, Optimism, Moonbeam, and Moonriver, bringing the world onchain with easy-to-use financial tools. Moonwell's intuitive design ensures a seamless experience, enabling everyone to do more with their digital assets. ",
+    "logo": {
+      "url": "https://storage-logos.reserve.org/logos/593dbd772140--WELL.webp"
+    }
+  },
+  {
+    "id": "degen",
+    "tokenTicker": "Degen",
+    "name": "DEGEN",
+    "addresses": {
+      "8453": "0x4ed4E862860beD51a9570b96d89aF5E1B0Efefed"
+    },
+    "color": null,
+    "rating": null,
+    "website": "https://www.degen.tips/",
+    "description": "DEGEN is a reward token for Farcaster users, born from meme culture. It uses a unique tipping system that empowers the community to reward quality content creators. It also powers the Degen chain, one of the pioneering L3s launched on Base, offering a platform for building and using Degen apps, often referred to as the “Las Vegas of blockchains.”",
+    "logo": {
+      "url": "https://storage-logos.reserve.org/logos/dcae6ed1ff45--degen-base-degen-logo.png"
+    }
+  },
+  {
+    "id": "cbbtc",
+    "tokenTicker": "cbBTC",
+    "name": "Coinbase BTC",
+    "addresses": {
+      "8453": "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf"
+    },
+    "color": "#0051FF",
+    "rating": null,
+    "website": "https://www.coinbase.com/",
+    "description": "Coinbase Wrapped Bitcoin (cbBTC) is a wrapped version of Bitcoin (BTC) that's backed 1:1 by BTC held in custody by Coinbase.",
+    "logo": {
+      "url": "https://storage-logos.reserve.org/logos/763e4c9c8c28--cbbtc_32.png"
+    }
+  },
+  {
+    "id": "Morpho eUSD",
+    "tokenTicker": "meUSD",
+    "name": null,
+    "addresses": {
+      "8453": "0xbb819D845b573B5D7C538F5b85057160cfb5f313"
+    },
+    "color": null,
+    "rating": null,
+    "website": "https://app.morpho.org/vault?vault=0xbb819D845b573B5D7C538F5b85057160cfb5f313&network=base&morphoPrice=0.65",
+    "description": "The Morpho eUSD vault supplies eUSD to various collateral markets with a focus on the Reserve Protocol ecosystem. Learn more about RE7 Labs curations in the forum.",
+    "logo": {
+      "url": "https://storage-logos.reserve.org/logos/b5f6398f0622--eUSD__1_.svg"
+    }
+  },
+  {
+    "id": "PYUSD",
+    "tokenTicker": "PYUSD",
+    "name": null,
+    "addresses": {
+      "1": "0x6c3ea9036406852006290770BEdFcAbA0e23A0e8"
+    },
+    "color": "#006FE0",
+    "rating": "A-",
+    "website": "https://www.paypal.com/us/digital-wallet/manage-money/crypto/pyusd",
+    "description": "PayPal USD is a stablecoin that's fully backed by US dollar deposits, US treasuries, and similar cash equivalents. You can buy and sell 1 PYUSD for 1 USD on PayPal. The collateral backing, minting, and redeeming are handled by their whitelabel service provider, Paxos.",
+    "logo": {
+      "url": "https://storage-logos.reserve.org/logos/158550f3dee1--pyusd.svg"
+    }
+  },
+  {
+    "id": "ethx",
+    "tokenTicker": "ETHx",
+    "name": null,
+    "addresses": {
+      "1": "0xA35b1B31Ce002FBF2058D22F30f95D405200A15b"
+    },
+    "color": "#474847",
+    "rating": null,
+    "website": "https://www.staderlabs.com/eth/",
+    "description": "ETHx allows users to benefit from Ethereum staking while maintaining liquidity for their assets",
+    "logo": {
+      "url": "https://storage-logos.reserve.org/logos/f282a494d65c--ethx.png"
+    }
+  },
+  {
+    "id": "susde",
+    "tokenTicker": "sUSDe",
+    "name": null,
+    "addresses": {
+      "1": "0x9D39A5DE30e57443BfF2A8307A4256c8797A3497"
+    },
+    "color": "#f3f3f3",
+    "rating": null,
+    "website": "https://ethena.fi/",
+    "description": "Ethena Staked USDe (sUSDe) is a reward-bearing token that users can obtain by staking their USDe.",
+    "logo": {
+      "url": "https://storage-logos.reserve.org/logos/9533f2bca339--susde.webp"
+    }
+  },
+  {
+    "id": "pxeth",
+    "tokenTicker": "pxETH",
+    "name": null,
+    "addresses": {
+      "1": "0x04C154b66CB340F3Ae24111CC767e0184Ed00Cc6"
+    },
+    "color": "#96A6AF",
+    "rating": null,
+    "website": "https://dinero.xyz/",
+    "description": "pxETH is for those prioritizing liquidity over staking yield. Holding pxETH means holding an ETH-pegged asset that can be used across DeFi for providing liquidity, participating in lending protocols, and more.",
+    "logo": {
+      "url": "https://storage-logos.reserve.org/logos/2442937d45dd--pxETH.webp"
+    }
+  },
+  {
+    "id": "usdm",
+    "tokenTicker": "USDM",
+    "name": null,
+    "addresses": {
+      "42161": "0x59D9356E565Ab3A36dD77763Fc0d87fEaf85508C"
+    },
+    "color": "#000",
+    "rating": null,
+    "website": "https://mountainprotocol.com/usdm",
+    "description": "USDM is an ERC20 stablecoin issued by Mountain Protocol, a licensed financial institution in Bermuda, regulated by the Bermuda Monetary Authority (BMA). It caters to non-US individuals and adheres to the SEC’s Regulation S.",
+    "logo": {
+      "url": "https://storage-logos.reserve.org/logos/9aceab4057b3--usdm__1_.svg"
+    }
+  },
+  {
+    "id": "eth+",
+    "tokenTicker": "ETH+",
+    "name": null,
+    "addresses": {
+      "1": "0xE72B141DF173b999AE7c1aDcbF60Cc9833Ce56a8",
+      "42161": "0x18c14c2d707b2212e17d1579789fc06010cfca23"
+    },
+    "color": "627EEA",
+    "rating": null,
+    "website": "https://ethereum.org/",
+    "description": "Ethereum is a decentralized blockchain network powered by the Ether (ETH) token that enables users to make trustless financial transactions corresponding to logic encoded in smart contracts.",
+    "logo": {
+      "url": "https://storage-logos.reserve.org/logos/883a559c59f2--ethplus.svg"
+    }
+  },
+  {
+    "id": "usdc",
+    "tokenTicker": "USDC",
+    "name": null,
+    "addresses": {
+      "1": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+      "8453": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+      "42161": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831"
+    },
+    "color": null,
+    "rating": "B+",
+    "website": "https://www.circle.com/en/usdc",
+    "description": "USD Coin is a digital stablecoin that is pegged to the United States dollar. USD Coin is managed by a consortium called Centre, which was founded by Circle and includes members from the cryptocurrency exchange Coinbase and Bitcoin mining company Bitmain, an investor in Circle.",
+    "logo": {
+      "url": "https://storage-logos.reserve.org/logos/9aceab4057b3--usdm__1_.svg"
+    }
+  },
+  {
+    "id": "crvUSD",
+    "tokenTicker": "crvUSD",
+    "name": null,
+    "addresses": {
+      "1": "0xf939E0A03FB07F59A73314E73794Be0E57ac1b4E"
+    },
+    "color": "#408149",
+    "rating": null,
+    "website": "https://resources.curve.fi/crvusd/understanding-crvusd/",
+    "description": "Curve Stablecoin infrastructure enables users to mint crvUSD using a variety of crypto collaterals.\n\nPositions are managed passively: if the price of the collateral decreases, the loan automatically enters a soft-liquidation mode, wherein some of the collateral is converted to crvUSD. Conversely, if the collateral's price increases, the system reclaims the collateral by converting crvUSD back to the collateral token.",
+    "logo": {
+      "url": "https://storage-logos.reserve.org/logos/13522cf991d5--0xf939e0a03fb07f59a73314e73794be0e57ac1b4e.png"
+    }
+  },
+  {
+    "id": "frax",
+    "tokenTicker": "FRAX",
+    "name": null,
+    "addresses": {
+      "1": "0x853d955acef822db058eb8505911ed77f175b99e"
+    },
+    "color": "#7F7F7F",
+    "rating": "D",
+    "website": "https://frax.finance/",
+    "description": "FRAX a stablecoin with parts of its supply backed by collateral and parts of the supply algorithmic, backed by the governance token FXS. The ratio of collateralized and algorithmic depends on the market's pricing of the FRAX stablecoin.",
+    "logo": {
+      "url": "https://storage-logos.reserve.org/logos/c4112218d151--frax.svg"
+    }
+  },
+  {
+    "id": "USDbC",
+    "tokenTicker": "USDbC",
+    "name": null,
+    "addresses": {
+      "8453": "0x6490D66B17A1E9a460Ab54131165C8F921aCcDeB"
+    },
+    "color": "#2775CA",
+    "rating": null,
+    "website": "https://help.coinbase.com/en/coinbase/getting-started/crypto-education/usd-base-coin",
+    "description": "USD Coin is a digital stablecoin that is pegged to the United States dollar. USD Coin is managed by a consortium called Centre, which was founded by Circle and includes members from the cryptocurrency exchange Coinbase and Bitcoin mining company Bitmain, an investor in Circle. USDbC is the bridged form of USDC on Base",
+    "logo": {
+      "url": "https://storage-logos.reserve.org/logos/9aceab4057b3--usdm__1_.svg"
+    }
+  },
+  {
+    "id": "steth",
+    "tokenTicker": "stETH",
+    "name": null,
+    "addresses": {
+      "1": "0xae7ab96520de3a18e5e111b5eaab095312d7fe84"
+    },
+    "color": "#627EEA",
+    "rating": null,
+    "website": "https://lido.fi/",
+    "description": "stETH is Lido's liquid variant of staked ETH on the Beacon Chain. stETH is a token that represents staked ether in Lido, combining the value of initial deposit + staking rewards",
+    "logo": {
+      "url": "https://storage-logos.reserve.org/logos/29686fcdd982--steth-steth-logo.svg"
+    }
+  },
+  {
+    "id": "usdp",
+    "tokenTicker": "USDP",
+    "name": null,
+    "addresses": {
+      "1": "0x8e870d67f660d95d5be530380d0ec0bd388289e1"
+    },
+    "color": "#005F32",
+    "rating": "A-",
+    "website": "https://paxos.com/usdp/",
+    "description": "Pax Dollar (USDP) is a fiat-collateralized stablecoin. USDP tokens are issued as ERC-20 tokens on the Ethereum blockchain and are collateralized 1:1 through the USD held in Paxos-owned US bank accounts.",
+    "logo": {
+      "url": "https://storage-logos.reserve.org/logos/7a55bcda9629--usdp.svg"
+    }
+  },
+  {
+    "id": "usdt",
+    "tokenTicker": "USDT",
+    "name": null,
+    "addresses": {
+      "1": "0xdac17f958d2ee523a2206206994597c13d831ec7"
+    },
+    "color": "#53AE94",
+    "rating": "D",
+    "website": "https://tether.to/",
+    "description": "Tether (USDT) is a cryptocurrency stablecoin pegged to the U.S. dollar. Tether is owned by iFinex, the Hong Kong-registered company that also owns the crypto exchange BitFinex.",
+    "logo": {
+      "url": "https://storage-logos.reserve.org/logos/c8e63ed383a3--usdt.svg"
+    }
+  },
+  {
+    "id": "eth",
+    "tokenTicker": "ETH",
+    "name": null,
+    "addresses": null,
+    "color": "627EEA",
+    "rating": null,
+    "website": "https://ethereum.org/",
+    "description": "Ethereum is a decentralized blockchain network powered by the Ether (ETH) token that enables users to make trustless financial transactions corresponding to logic encoded in smart contracts.",
+    "logo": {
+      "url": "https://storage-logos.reserve.org/logos/7a0e09632dd7--eth.svg"
+    }
+  },
+  {
+    "id": "mim",
+    "tokenTicker": "MIM",
+    "name": null,
+    "addresses": {
+      "1": "0x99d8a9c45b2eca8864373a26d1459e3dff1e17f3"
+    },
+    "color": "9695F8",
+    "rating": null,
+    "website": "https://abracadabra.money/",
+    "description": "MIM is a collateral-backed USD stablecoin created by Abracadbra. MIM is minted when users borrow against locked collateral and burned when debt is repaid.",
+    "logo": {
+      "url": "https://storage-logos.reserve.org/logos/a014def1f433--MIM_Logo_PNG.png"
+    }
+  },
+  {
+    "id": "dai",
+    "tokenTicker": "DAI",
+    "name": null,
+    "addresses": {
+      "1": "0x6b175474e89094c44da98b954eedeac495271d0f"
+    },
+    "color": "#F5AC37",
+    "rating": "B+",
+    "website": "https://makerdao.com/",
+    "description": "DAI is a debt-collateralized stablecoin issued by MakerDAO, an Ethereum-based protocol, that seeks to maintain an exact ratio of one-to-one with the U.S. dollar. It is primarily used as a means of lending and borrowing crypto assets without the need for an intermediary",
+    "logo": {
+      "url": "https://storage-logos.reserve.org/logos/fcee1f1e9068--dai.svg"
+    }
+  },
+  {
+    "id": "eusd",
+    "tokenTicker": "eUSD",
+    "name": null,
+    "addresses": {
+      "1": "0xA0d69E286B938e21CBf7E51D71F6A4c8918f482F"
+    },
+    "color": "#000000",
+    "rating": null,
+    "website": null,
+    "description": "The Electronic Dollar (eUSD) is a decentralized 1:1 asset-backed stablecoin built with Reserve Protocol, available on the Ethereum and MobileCoin blockchains. It sets itself apart from other stablecoins due to its decentralized, community-governed, and censorship-resistant nature.\n\n",
+    "logo": {
+      "url": "https://storage-logos.reserve.org/logos/b5f6398f0622--eUSD__1_.svg"
+    }
+  }
+]

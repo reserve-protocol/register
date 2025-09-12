@@ -1,0 +1,1376 @@
+[
+  {
+    "name": "Aave V3 USDT",
+    "id": "saethusdt",
+    "displaySymbol": "Aave V3 USDT",
+    "addresses": {
+      "1": "0x18A8D9088433aE749cE6c33070b2Fe95e8a263d9"
+    },
+    "color": "#009393",
+    "llamaId": "f981a304-bb6c-45b8-b0c5-fd2f515ad23a",
+    "tokenDistribution": [
+      {
+        "token": "USDT",
+        "distribution": 1
+      }
+    ],
+    "description": "USDT (Tether) deposited and lent out in V3 of Aave. This variable yield is generated from borrower yield and a share of flash loan fees and driven by borrower demand levels.",
+    "protocol": "aavev3",
+    "underlyings": [
+      "usdt"
+    ]
+  },
+  {
+    "name": "wOETH",
+    "id": "woeth",
+    "displaySymbol": "Wrapped OETH",
+    "addresses": {
+      "1": "0xdcee70654261af21c44c093c300ed3bb97b78192"
+    },
+    "color": "#3290F3",
+    "llamaId": "423681e3-4787-40ce-ae43-e9f67c5269b3",
+    "tokenDistribution": [
+      {
+        "token": "OETH",
+        "distribution": 1
+      }
+    ],
+    "description": "Wrapped OETH provides a non-rebasing version of OETH that still earns yield. As an ERC-4626 tokenized vault, wOETH simplifies DeFi integrations and may provide tax benefits in some jurisdictions.",
+    "protocol": "origin",
+    "underlyings": [
+      "oeth"
+    ]
+  },
+  {
+    "name": "sUSDS",
+    "id": "susds",
+    "displaySymbol": "Savings USDS",
+    "addresses": {
+      "1": "0xa3931d71877c0e7a3148cb7eb4463524fec27fbd"
+    },
+    "color": "#23C698",
+    "llamaId": "d8c4eff5-c8a9-46fc-a888-057c4c668e72",
+    "tokenDistribution": [
+      {
+        "token": "USDS",
+        "distribution": 1
+      }
+    ],
+    "description": "sUSDS is the new version of sDAI, offered by Sky which offers a higher yield. sUSDS represents USDS deposited into and earning the Sky Savings Rate.",
+    "protocol": "sky",
+    "underlyings": [
+      "usds"
+    ]
+  },
+  {
+    "name": "Wrapped Super OETH",
+    "id": "wsuperoethb",
+    "displaySymbol": "Wrapped Super OETH",
+    "addresses": {
+      "8453": "0x7FcD174E80f264448ebeE8c88a7C4476AAF58Ea6"
+    },
+    "color": "#405DFA",
+    "llamaId": "f388573e-5c0f-4dac-9f70-116a4aabaf17",
+    "tokenDistribution": [
+      {
+        "token": "ETH",
+        "distribution": 1
+      }
+    ],
+    "description": "Wrapped Super OETH (wsuperOETHb) - non-rebasing version of superOETHb, a transferable liquid-staking token representing a share of the total ETH staked on Origin Protocol’s superOETHb. This variable yield is derived from staking through SSV distributed validators (DVT) and an Aerodrome AMO (net of fees).",
+    "protocol": "originprotocol",
+    "underlyings": [
+      "eth"
+    ]
+  },
+  {
+    "name": "Aerodrome WETH/CBBTC",
+    "id": "wvamm-weth/cbbtc",
+    "displaySymbol": "Aerodrome WETH/CBBTC LP",
+    "addresses": {
+      "8453": "0x5ABe1A8b04A2428589bAeF9486d12688d482D061"
+    },
+    "color": "#F7931A",
+    "llamaId": "3c81671f-5607-4f57-b725-a08ec4cea0fa",
+    "tokenDistribution": [
+      {
+        "token": "cbBTC",
+        "distribution": 0.5
+      },
+      {
+        "token": "ETH",
+        "distribution": 0.5
+      }
+    ],
+    "description": "Aerodrome WETH/cbBTC - token obtained by providing liquidity to the WETH/cbBTC liquidity pool on Aerodrome Finance.",
+    "protocol": "aerodrome-v1",
+    "underlyings": [
+      "eth",
+      "cbbtc"
+    ]
+  },
+  {
+    "name": "Aerodrome MOG/WETH LP",
+    "id": "wvamm-mog/weth",
+    "displaySymbol": "Aerodrome MOG/WETH LP",
+    "addresses": {
+      "8453": "0xfAa0cfc986041a3aF69207C6fCF35316D58fEA6a"
+    },
+    "color": "#FAE05D",
+    "llamaId": "029c10b3-8399-4a89-818a-935a4cb3e1da",
+    "tokenDistribution": [
+      {
+        "token": "MOG",
+        "distribution": 0.5
+      },
+      {
+        "token": "ETH",
+        "distribution": 0.5
+      }
+    ],
+    "description": "Aerodrome WETH/MOG - token obtained by providing liquidity to the WETH/MOG liquidity pool on Aerodrome Finance.",
+    "protocol": "aerodrome-v1",
+    "underlyings": [
+      "eth",
+      "mog"
+    ]
+  },
+  {
+    "name": "Aerodrome WETH/AERO",
+    "id": "wvamm-weth/aero",
+    "displaySymbol": "Aerodrome WETH/AERO LP",
+    "addresses": {
+      "8453": "0xaC23df4289e2FeaFb2851e63958C2AAF41DB4833"
+    },
+    "color": "#2151F5",
+    "llamaId": "1b52ab3b-98d5-4951-92d8-97dfca06e62f",
+    "tokenDistribution": [
+      {
+        "token": "AERO",
+        "distribution": 0.5
+      },
+      {
+        "token": "ETH",
+        "distribution": 0.5
+      }
+    ],
+    "description": "Aerodrome WETH/AERO - token obtained by providing liquidity to the WETH/AERO liquidity pool on Aerodrome Finance.",
+    "protocol": "aerodrome-v1",
+    "underlyings": [
+      "eth",
+      "aero"
+    ]
+  },
+  {
+    "name": "Aerodrome WETH/WELL LP",
+    "id": "wvamm-weth/well",
+    "displaySymbol": "Aerodrome WETH/WELL LP",
+    "addresses": {
+      "8453": "0x7df3541FFeDAA956aE6136E64253f3749b055Be6"
+    },
+    "color": "#2474DA",
+    "llamaId": "1f0c0a53-577c-4dd0-97af-f1791f532f51",
+    "tokenDistribution": [
+      {
+        "token": "WELL",
+        "distribution": 0.5
+      },
+      {
+        "token": "ETH",
+        "distribution": 0.5
+      }
+    ],
+    "description": "Aerodrome WETH/WELL - token obtained by providing liquidity to the WETH/WELL liquidity pool on Aerodrome Finance.",
+    "protocol": "aerodrome-v1",
+    "underlyings": [
+      "eth",
+      "well"
+    ]
+  },
+  {
+    "name": "Aerodrome WETH/DEGEN LP",
+    "id": "wvamm-weth/degen",
+    "displaySymbol": "Aerodrome WETH/DEGEN LP",
+    "addresses": {
+      "8453": "0xc8E72288f717Da55b7231365daE17AcD91b59705"
+    },
+    "color": "#A36EFD",
+    "llamaId": "0d23d643-1000-48cf-9c57-05a5ddd96dce",
+    "tokenDistribution": [
+      {
+        "token": "Degen",
+        "distribution": 0.5
+      },
+      {
+        "token": "ETH",
+        "distribution": 0.5
+      }
+    ],
+    "description": "Aerodrome WETH/DEGEN - token obtained by providing liquidity to the WETH/DEGEN liquidity pool on Aerodrome Finance.",
+    "protocol": "aerodrome-v1",
+    "underlyings": [
+      "degen",
+      "eth"
+    ]
+  },
+  {
+    "name": "Aerodrome eUSD/USDC",
+    "id": "wsamm-eusd/usdc",
+    "displaySymbol": "Aerodrome eUSD/USDC",
+    "addresses": {
+      "1": "0x9216CD5cA133aBBd23cc6F873bB4a95A78032db0"
+    },
+    "color": "#EBE8E1",
+    "llamaId": "212375c8-694c-4fa5-8b36-05f50c8e61b2",
+    "tokenDistribution": [
+      {
+        "token": "eUSD",
+        "distribution": 0.5
+      },
+      {
+        "token": "USDC",
+        "distribution": 0.5
+      }
+    ],
+    "description": "Aerodrome eUSD/USDC - token obtained by providing liquidity to the eUSD/USDC liquidity pool on Aerodrome Finance.",
+    "protocol": "aerodrome-v1",
+    "underlyings": [
+      "eusd",
+      "usdc"
+    ]
+  },
+  {
+    "name": "Morpho eUSD",
+    "id": "meusd",
+    "displaySymbol": "Morpho eUSD",
+    "addresses": {
+      "8453": "0x0f1e10871e6a2D3A5Aa696b85b39d61a22A9e8C3"
+    },
+    "color": "#404040",
+    "llamaId": "b90eba2e-ed29-414e-b16d-82f9c3eae707",
+    "tokenDistribution": [
+      {
+        "token": "meUSD",
+        "distribution": 1
+      }
+    ],
+    "description": "The Morpho eUSD vault supplies eUSD to various collateral markets with a focus on the Reserve Protocol ecosystem. Learn more about RE7 Labs curations in the forum.",
+    "protocol": "morphoblue",
+    "underlyings": [
+      "Morpho eUSD"
+    ]
+  },
+  {
+    "name": "Compound V3 USDT",
+    "id": "wcusdtv3",
+    "displaySymbol": "Compound V3 USDT",
+    "addresses": {
+      "1": "0x753142cc768C05Ea66A1b92622aFE148Ad44Cb30",
+      "42161": "0xF8660F3dd5076F4071e5E4C4D34E60A67d88657D"
+    },
+    "color": "#26A17B",
+    "llamaId": "85247b13-8180-44e7-b38c-4d324cc68a92",
+    "tokenDistribution": [
+      {
+        "token": "USDT",
+        "distribution": 1
+      }
+    ],
+    "description": "Tether (USDT) is a cryptocurrency stablecoin pegged to the U.S. dollar. Tether is owned by iFinex, the Hong Kong-registered company that also owns the crypto exchange BitFinex.",
+    "protocol": "compound-v3",
+    "underlyings": [
+      "usdt"
+    ]
+  },
+  {
+    "name": "Compound V3 USDC",
+    "id": "wcusdcv3",
+    "displaySymbol": "Compound V3 USDC",
+    "addresses": {
+      "1": "0x33Ba1BC07b0fafb4BBC1520B330081b91ca6bdf0",
+      "8453": "0xf7a9D27c3B60c78c6F6e2c2d6ED6E8B94b352461",
+      "42161": "0x8a5DfEa5cdA35AB374ac558951A3dF1437A6FcA6"
+    },
+    "color": "#2775CA",
+    "llamaId": "7da72d09-56ca-4ec5-a45f-59114353e487",
+    "tokenDistribution": [
+      {
+        "token": "USDC",
+        "distribution": 1
+      }
+    ],
+    "description": "USDC (Circle) deposited and lent out in V3 of Compound Finance. This variable yield is generated from the interest rate paid by borrowers and driven by borrower demand levels.",
+    "protocol": "compound-v3",
+    "underlyings": [
+      "usdc"
+    ]
+  },
+  {
+    "name": "PYUSD",
+    "id": "pyusd",
+    "displaySymbol": "PayPal USD",
+    "addresses": {
+      "1": "0x6c3ea9036406852006290770bedfcaba0e23a0e8"
+    },
+    "color": "#006FE0",
+    "llamaId": null,
+    "tokenDistribution": [
+      {
+        "token": "PYUSD",
+        "distribution": 1
+      }
+    ],
+    "description": "PayPal USD is a stablecoin that's fully backed by US dollar deposits, US treasuries, and similar cash equivalents. You can buy and sell 1 PYUSD for 1 USD on PayPal. The collateral backing, minting, and redeeming are handled by their whitelabel service provider, Paxos.",
+    "protocol": "pyusd",
+    "underlyings": [
+      "PYUSD"
+    ]
+  },
+  {
+    "name": "ETHx",
+    "id": "ethx",
+    "displaySymbol": "Stader ETHx",
+    "addresses": {
+      "1": "0xA35b1B31Ce002FBF2058D22F30f95D405200A15b"
+    },
+    "color": "#474847",
+    "llamaId": "90bfb3c2-5d35-4959-a275-ba5085b08aa3",
+    "tokenDistribution": [
+      {
+        "token": "ETH",
+        "distribution": 1
+      }
+    ],
+    "description": "ETHx allows users to benefit from Ethereum staking while maintaining liquidity for their assets",
+    "protocol": "stader",
+    "underlyings": [
+      "eth"
+    ]
+  },
+  {
+    "name": "Morpho USDT (BB)",
+    "id": "bbusdt",
+    "displaySymbol": "Morpho USDT",
+    "addresses": {
+      "1": "0x2C25f6C25770fFEC5959D34B94Bf898865e5D6b1"
+    },
+    "color": "#2775CA",
+    "llamaId": "d387cc7a-7d48-49f3-a244-9a263fca26c0",
+    "tokenDistribution": [
+      {
+        "token": "USDT",
+        "distribution": 1
+      }
+    ],
+    "description": "Morpho - \"bbUSDT\" - USDT lent to a vault which supplies deposited assets to Morpho markets whitelisted by the vault Curator. The Curator can set supply caps of each market. If the supply cap is reached, deposited assets will be supplied to another whitelisted market. This vault is curated by B.Protocol and Block Analitica and is intended to optimize risk-adjusted interest earned from blue-chip collateral markets.",
+    "protocol": "morphoblue",
+    "underlyings": [
+      "usdt"
+    ]
+  },
+  {
+    "name": "Morpho ETH",
+    "id": "re7weth",
+    "displaySymbol": "Morpho ETH",
+    "addresses": {
+      "1": "0x78Fc2c2eD1A4cDb5402365934aE5648aDAd094d0"
+    },
+    "color": "#2775CA",
+    "llamaId": "2ebf1030-f200-4318-ac72-08668265b0f0",
+    "tokenDistribution": [
+      {
+        "token": "ETH",
+        "distribution": 1
+      }
+    ],
+    "description": "Morpho ETH (Re7) - ETH lent to a vault which supplies deposited assets to Morpho markets whitelisted by the vault Curator. The Curator can set supply caps of each market. If the supply cap is reached, deposited assets will be supplied to another whitelisted market. This vault is curated by Re7 and aims to outperform staked ETH yields by lending WETH against a diverse set of Liquid Staking and Liquid Restaking Token collateral markets.",
+    "protocol": "morphoblue",
+    "underlyings": [
+      "eth"
+    ]
+  },
+  {
+    "name": "Morpho USDC (Steakhouse)",
+    "id": "steakusdc",
+    "displaySymbol": "Morpho USDC",
+    "addresses": {
+      "1": "0xBEEF01735c132Ada46AA9aA4c54623cAA92A64CB"
+    },
+    "color": "#2775CA",
+    "llamaId": "94f9e0b3-2102-4297-babc-aa608bd8bb77",
+    "tokenDistribution": [
+      {
+        "token": "USDC",
+        "distribution": 1
+      }
+    ],
+    "description": "Morpho - \"steakUSDC\": USDC lent to a vault which supplies deposited assets to Morpho markets whitelisted by the vault Curator. The Curator can set supply caps of each market. If the supply cap is reached, deposited assets will be supplied to another whitelisted market. This vault is curated by Steakhouse Finance and aims to optimize yields by lending USDC against blue chip crypto and real world asset (RWA) collateral markets, depending on market conditions. Steakhouse calls this the “dual engine.”",
+    "protocol": "morphoblue",
+    "underlyings": [
+      "usdc"
+    ]
+  },
+  {
+    "name": "Morpho pyUSD (Steakhouse)",
+    "id": "steakpyusd",
+    "displaySymbol": "Morpho pyUSD",
+    "addresses": {
+      "1": "0xbEEF02e5E13584ab96848af90261f0C8Ee04722a"
+    },
+    "color": "#2775CA",
+    "llamaId": "9c492ad8-ed45-4d8a-a033-0fa44506bf16",
+    "tokenDistribution": [
+      {
+        "token": "pyUSD",
+        "distribution": 1
+      }
+    ],
+    "description": "Morpho pyUSD (Steakhouse): pyUSD lent to a vault which supplies deposited assets to Morpho markets whitelisted by the vault Curator. The Curator can set supply caps of each market. If the supply cap is reached, deposited assets will be supplied to another whitelisted market. This vault is curated by Steakhouse Finance and aims to optimize yields by lending pyUSD against blue chip crypto and real world asset (RWA) collateral markets, depending on market conditions. Steakhouse calls this the “dual engine.”",
+    "protocol": "morphoblue",
+    "underlyings": [
+      "PYUSD"
+    ]
+  },
+  {
+    "name": "sUSDe",
+    "id": "susde",
+    "displaySymbol": "Staked USDe",
+    "addresses": {
+      "1": "0x9D39A5DE30e57443BfF2A8307A4256c8797A3497"
+    },
+    "color": "#f3f3f3",
+    "llamaId": "66985a81-9c51-46ca-9977-42b4fe7bc6df",
+    "tokenDistribution": [
+      {
+        "token": "sUSDe",
+        "distribution": 1
+      }
+    ],
+    "description": "Ethena Staked USDe (sUSDe) is a reward-bearing token that users can obtain by staking their USDe.",
+    "protocol": "ethena",
+    "underlyings": [
+      "susde"
+    ]
+  },
+  {
+    "name": "apxETH",
+    "id": "apxeth",
+    "displaySymbol": "Autocompounding Pirex ETH",
+    "addresses": {
+      "1": "0x9ba021b0a9b958b5e75ce9f6dff97c7ee52cb3e6"
+    },
+    "color": "#B7AF8F",
+    "llamaId": "acee1e4d-a73c-4e20-98f7-e87c13d446e4",
+    "tokenDistribution": [
+      {
+        "token": "pxETH",
+        "distribution": 1
+      }
+    ],
+    "description": "apxETH is for users focused on maximizing staking yields. After minting pxETH, users can deposit it into Dinero's auto-compounding rewards vault to enjoy boosted staking yields without managing their own validators.",
+    "protocol": "apxeth",
+    "underlyings": [
+      "pxeth"
+    ]
+  },
+  {
+    "name": "Savings DAI",
+    "id": "sdai",
+    "displaySymbol": "Savings DAI",
+    "addresses": {
+      "1": "0xDe0e2F0c9792617D3908D92A024cAa846354CEa2"
+    },
+    "color": "#76BF21",
+    "llamaId": "c8a24fee-ec00-4f38-86c0-9f6daebc4225",
+    "tokenDistribution": [
+      {
+        "token": "DAI",
+        "distribution": 1
+      }
+    ],
+    "description": "Savings DAI (sDAI) - DAI (MakerDAO) deposited on Spark Finance to earn yield via the DAI Savings Rate (DSR). DAI is a decentralized, overcollateralized stablecoin backed by a mix of collateral and reserves. The DSR is a fixed rate of return set by MakerDAO governance which rewards the portion of DAI deposited in a vault. The yield paid out is a share of revenue earned from DAI’s backing assets, either through interest charged on loans, or from deploying reserves.",
+    "protocol": "makerdao",
+    "underlyings": [
+      "dai"
+    ]
+  },
+  {
+    "name": "USDM",
+    "id": "wusdm",
+    "displaySymbol": "Wrapped USDM",
+    "addresses": {
+      "42161": "0x59D9356E565Ab3A36dD77763Fc0d87fEaf85508C"
+    },
+    "color": "#000",
+    "llamaId": null,
+    "tokenDistribution": [
+      {
+        "token": "USDM",
+        "distribution": 1
+      }
+    ],
+    "description": "The USDM token is a rebasing ERC20 token, redeemable at a pegged 1:1 USD value by primary users. USDM is a fully backed stablecoin, backed by \"USDM Reserves\", which are held under custody with regulated financial institutions in bankruptcy-remote accounts, segregated from the Company's operating accounts, on behalf of, and for the benefit of, Users.\n\nUSDM rebases daily, allowing users to receive rewards. These rewards are generated by the interest paid by the US Treasuries held in the USDM Reserves.",
+    "protocol": "usdm",
+    "underlyings": [
+      "usdm"
+    ]
+  },
+  {
+    "name": "Convex ETH+/ETH",
+    "id": "stkcvxeth+eth-f",
+    "displaySymbol": "Convex ETH+/ETH",
+    "addresses": {
+      "1": "0xc4a5Fb266E8081D605D87f0b1290F54B0a5Dc221"
+    },
+    "color": "#627EEA",
+    "llamaId": "74346f6f-c7ee-4506-a204-baf48e13decb",
+    "tokenDistribution": [
+      {
+        "token": "ETH",
+        "distribution": 0.5
+      },
+      {
+        "token": "ETH+",
+        "distribution": 0.5
+      }
+    ],
+    "description": "Convex ETH+/ETH - token obtained by providing liquidity to the ETH+-ETH liquidity pool on Curve Finance and staking the LP token on Convex Finance. This variable yield is generated from a combination of native asset yield, CVX rewards, and boosted CRV rewards leveraging Convex’s veCRV power. ",
+    "protocol": "convex-finance",
+    "underlyings": [
+      "eth",
+      "eth+"
+    ]
+  },
+  {
+    "name": "Arbitrum Aave V3 USDC",
+    "id": "saarbusdcn",
+    "displaySymbol": "Aave V3 USDC",
+    "addresses": {
+      "42161": "0x7be9Bc50734820516693A376238Cc6Bf029BA682"
+    },
+    "color": "#2775CA",
+    "llamaId": "d9fa8e14-0447-4207-9ae8-7810199dfa1f",
+    "tokenDistribution": [
+      {
+        "token": "USDC",
+        "distribution": 1
+      }
+    ],
+    "description": "USDC (Circle) deposited and lent out in V3 of Aave. This variable yield is generated from borrower yield and a share of flash loan fees and driven by borrower demand levels.",
+    "protocol": "aavev3",
+    "underlyings": [
+      "usdc"
+    ]
+  },
+  {
+    "name": "Convex crvUSD/USDC",
+    "id": "stkcvxcrvusdusdc-f",
+    "displaySymbol": "Convex crvUSD/USDC",
+    "addresses": {
+      "1": "0x6ad24C0B8fD4B594C6009A7F7F48450d9F56c6b8"
+    },
+    "color": null,
+    "llamaId": "a3ffd3fe-b21c-44eb-94d5-22c80057a600",
+    "tokenDistribution": [
+      {
+        "token": "crvUSD",
+        "distribution": 0.5
+      },
+      {
+        "token": "USDC",
+        "distribution": 0.5
+      }
+    ],
+    "description": "Convex crvUSD/USDC - token obtained by providing liquidity to the crvUSD-USDC liquidity pool on Curve Finance and staking the LP token on Convex Finance. This variable yield is generated from a combination of native asset yield, CVX rewards, and boosted CRV rewards leveraging Convex’s veCRV power. ",
+    "protocol": "convex-finance",
+    "underlyings": [
+      "crvUSD",
+      "usdc"
+    ]
+  },
+  {
+    "name": "Convex crvUSD/USDT",
+    "id": "stkcvxcrvusdusdt-f",
+    "displaySymbol": "Convex crvUSD/USDT",
+    "addresses": {
+      "1": "0x5d1B749bA7f689ef9f260EDC54326C48919cA88b"
+    },
+    "color": null,
+    "llamaId": "a3ffd3fe-b21c-44eb-94d5-22c80057a600",
+    "tokenDistribution": [
+      {
+        "token": "crvUSD",
+        "distribution": 0.5
+      },
+      {
+        "token": "USDT",
+        "distribution": 0.5
+      }
+    ],
+    "description": "Convex crvUSD/USDT - token obtained by providing liquidity to the crvUSD-USDT liquidity pool on Curve Finance and staking the LP token on Convex Finance. This variable yield is generated from a combination of native asset yield, CVX rewards, and boosted CRV rewards leveraging Convex’s veCRV power. ",
+    "protocol": "convex-finance",
+    "underlyings": [
+      "usdt",
+      "crvUSD"
+    ]
+  },
+  {
+    "name": "Staked Frax ETH",
+    "id": "sfrxeth",
+    "displaySymbol": "Staked Frax ETH",
+    "addresses": {
+      "1": "0xac3E018457B222d93114458476f3E3416Abbe38F"
+    },
+    "color": "#2775CA",
+    "llamaId": "77020688-e1f9-443c-9388-e51ace15cc32",
+    "tokenDistribution": [
+      {
+        "token": "ETH",
+        "distribution": 1
+      }
+    ],
+    "description": "Staked Frax ETH (sfraxETH) - acts as a stablecoin loosely pegged to ETH, so that 1 frxETH always represents 1 ETH and the amount of frxETH in circulation matches the amount of ETH in the Frax ETH system. sfrxETH is a ERC-4626 vault designed to accrue the staking yield of the Frax ETH validators. At any time, frxETH can be exchanged for sfrxETH by depositing it into the sfrxETH vault, which allows users to earn staking yield on their frxETH. Over time, as validators accrue staking yield, an equivalent amount of frxETH is minted and added to the vault, allowing users to redeem their sfrxETH for a greater amount of frxETH than they deposited",
+    "protocol": "fraxeth",
+    "underlyings": [
+      "eth"
+    ]
+  },
+  {
+    "name": "Aave V3 USDC",
+    "id": "sabasusdc",
+    "displaySymbol": "Aave V3 USDC",
+    "addresses": {
+      "8453": "0x6AfFDe0bA2D1f8fde8da8f296e7EfC991D807515"
+    },
+    "color": "#2775CA",
+    "llamaId": "aa70268e-4b52-42bf-a116-608b370f9501",
+    "tokenDistribution": [
+      {
+        "token": "USDC",
+        "distribution": 1
+      }
+    ],
+    "description": "USDC (Circle) deposited and lent out in V3 of Aave. This variable yield is generated from borrower yield and a share of flash loan fees and driven by borrower demand levels.",
+    "protocol": "aavev3",
+    "underlyings": [
+      "usdc"
+    ]
+  },
+  {
+    "name": "Aave V3 USDC",
+    "id": "saethusdc",
+    "displaySymbol": "Aave V3 USDC",
+    "addresses": {
+      "1": "0x093cB4f405924a0C468b43209d5E466F1dd0aC7d"
+    },
+    "color": "#2775CA",
+    "llamaId": "aa70268e-4b52-42bf-a116-608b370f9501",
+    "tokenDistribution": [
+      {
+        "token": "USDC",
+        "distribution": 1
+      }
+    ],
+    "description": "USDC (Circle) deposited and lent out in V3 of Aave. This variable yield is generated from borrower yield and a share of flash loan fees and driven by borrower demand levels.",
+    "protocol": "aavev3",
+    "underlyings": [
+      "usdc"
+    ]
+  },
+  {
+    "name": "Aave V3 PyUSD",
+    "id": "saethpyusd",
+    "displaySymbol": "Aave PyUSD V3 ",
+    "addresses": {
+      "1": "0x8d6E0402A3E3aD1b43575b05905F9468447013cF"
+    },
+    "color": "#006FE0",
+    "llamaId": "01146cce-9140-4e03-9a2e-82c99ccc42f1",
+    "tokenDistribution": [
+      {
+        "token": "PyUSD",
+        "distribution": 1
+      }
+    ],
+    "description": "saEthPyUSD (AAVE PYUSD V3), pyUSD (Paypal USD) deposited and lent out on V3 of Aave on Ethereum. This variable yield is generated from the interest rate paid by borrowers and driven by borrower demand levels.",
+    "protocol": "aavev3",
+    "underlyings": [
+      "PYUSD"
+    ]
+  },
+  {
+    "name": "Compound V3 USDbC",
+    "id": "wcusdbcv3",
+    "displaySymbol": "Compound V3 USDbC",
+    "addresses": {
+      "8453": "0xd3025304C6487FC5c39010bEA0B46cc0690ab229"
+    },
+    "color": "#2775CA",
+    "llamaId": "7da72d09-56ca-4ec5-a45f-59114353e487",
+    "tokenDistribution": [
+      {
+        "token": "USDbC",
+        "distribution": 1
+      }
+    ],
+    "description": "Compound USDbC V3 (cUSDbCv3) - USDbC (Circle) deposited and lent out in V3 of Compound Finance. This variable yield is generated from the interest rate paid by borrowers and driven by borrower demand levels.",
+    "protocol": "compound-v3",
+    "underlyings": [
+      "USDbC"
+    ]
+  },
+  {
+    "name": "Coinbase Staked ETH",
+    "id": "cbeth",
+    "displaySymbol": null,
+    "addresses": {
+      "1": "0x3962695aCce0Efce11cFf997890f3D1D7467ec40"
+    },
+    "color": "#627EEA",
+    "llamaId": "0f45d730-b279-4629-8e11-ccb5cc3038b4",
+    "tokenDistribution": [
+      {
+        "token": "ETH",
+        "distribution": 1
+      }
+    ],
+    "description": "Coinbase Staked ETH (cbETH) - liquid-staked ETH through Coinbase. This variable yield is derived from native ETH yield earned by Coinbase validators (net of fees).",
+    "protocol": "coinbase",
+    "underlyings": [
+      "eth"
+    ]
+  },
+  {
+    "name": "Static Aave Base USDbC",
+    "id": "sabasusdbc",
+    "displaySymbol": "Static Aave Base USDbC",
+    "addresses": {
+      "8453": "0x1DdB7dfdC5D26FE1f2aD02d9972f12481346Ae9b"
+    },
+    "color": "#2775CA",
+    "llamaId": null,
+    "tokenDistribution": [
+      {
+        "token": "USDbC",
+        "distribution": 1
+      }
+    ],
+    "description": "Aave Base USDC (aBasUSDbC) - Bridged USDC (Circle) deposited and lent out in V3 of Aave on Base. This variable yield is generated from from the interest rate paid by borrowers and driven by borrower demand levels.",
+    "protocol": "aave",
+    "underlyings": [
+      "USDbC"
+    ]
+  },
+  {
+    "name": "Aave USDT",
+    "id": "sausdt",
+    "displaySymbol": "Static Aave interest bearing USDT",
+    "addresses": {
+      "1": "0xE39188Ddd4eb27d1D25f5f58cC6A5fD9228EEdeF"
+    },
+    "color": "#53AE94",
+    "llamaId": "60d657c9-5f63-4771-a85b-2cf8d507ec00",
+    "tokenDistribution": [
+      {
+        "token": "USDT",
+        "distribution": 1
+      }
+    ],
+    "description": "USDT (Tether) deposited and lent out in V2 of Aave. This variable yield is generated from borrower yield and a share of flash loan fees and driven by borrower demand levels.",
+    "protocol": "aave",
+    "underlyings": [
+      "usdt"
+    ]
+  },
+  {
+    "name": "Rocket Pool ETH",
+    "id": "reth",
+    "displaySymbol": "Rocket Pool ETH",
+    "addresses": {
+      "1": "0x0E6D6cBdA4629Fb2D82b4b4Af0D5c887f21F3BC7"
+    },
+    "color": "#627EEA",
+    "llamaId": "d4b3c522-6127-4b89-bedf-83641cdcd2eb",
+    "tokenDistribution": [
+      {
+        "token": "ETH",
+        "distribution": 1
+      }
+    ],
+    "description": "Rocket Pool ETH (rETH) - liquid-staked ETH on Rocket Pool. This variable yield is derived from native ETH yield earned by Rocket Pool validator network (net of fees).",
+    "protocol": "rocket-pool",
+    "underlyings": [
+      "eth"
+    ]
+  },
+  {
+    "name": "Aave USDP",
+    "id": "sausdp",
+    "displaySymbol": "Aave USDP",
+    "addresses": {
+      "1": "0x0d61Ce1801A460eB683b5ed1b6C7965d31b769Fd"
+    },
+    "color": "#005F32",
+    "llamaId": "1d53fa29-b918-4d74-9508-8fcf8173ca51",
+    "tokenDistribution": [
+      {
+        "token": "USDP",
+        "distribution": 1
+      }
+    ],
+    "description": null,
+    "protocol": "aave",
+    "underlyings": [
+      "usdp"
+    ]
+  },
+  {
+    "name": "Compound DAI",
+    "id": "cdai",
+    "displaySymbol": "Compound DAI",
+    "addresses": {
+      "1": "0x33A8d92B2BE84755441C2b6e39715c4b8938242c"
+    },
+    "color": "#F5AC37",
+    "llamaId": "cc110152-36c2-4e10-9c12-c5b4eb662143",
+    "tokenDistribution": [
+      {
+        "token": "DAI",
+        "distribution": 1
+      }
+    ],
+    "description": null,
+    "protocol": "compound-v2",
+    "underlyings": [
+      "dai"
+    ]
+  },
+  {
+    "name": "Compound WBTC",
+    "id": "cwbtc",
+    "displaySymbol": "Compound WBTC",
+    "addresses": {
+      "1": "0xa570BF93FC51406809dBf52aB898913541C91C20"
+    },
+    "color": "#F09242",
+    "llamaId": "1d876729-4445-4623-8b6b-c5290db5d100",
+    "tokenDistribution": [
+      {
+        "token": "WBTC",
+        "distribution": 1
+      }
+    ],
+    "description": null,
+    "protocol": "compound-v2",
+    "underlyings": [
+      "cbbtc"
+    ]
+  },
+  {
+    "name": "Compound USDP",
+    "id": "cusdp",
+    "displaySymbol": "Compound USDP",
+    "addresses": {
+      "1": "0xA7eCF508CdF5a88ae93b899DE4fcACcB43112Ce8"
+    },
+    "color": "#005F32",
+    "llamaId": "6c2b7a5c-6c4f-49ea-a08c-0366b772f2c2",
+    "tokenDistribution": [
+      {
+        "token": "USDP",
+        "distribution": 1
+      }
+    ],
+    "description": null,
+    "protocol": "compound-v2",
+    "underlyings": [
+      "usdp"
+    ]
+  },
+  {
+    "name": "Compound ETH",
+    "id": "ceth",
+    "displaySymbol": "Compound ETH",
+    "addresses": {
+      "1": "0xeC12e8412a7AE4598d754f4016D487c269719856"
+    },
+    "color": "#627EEA",
+    "llamaId": "1e5da7c6-59bb-49bd-9f97-4f4fceeffad4",
+    "tokenDistribution": [
+      {
+        "token": "ETH",
+        "distribution": 1
+      }
+    ],
+    "description": null,
+    "protocol": "compound-v2",
+    "underlyings": [
+      "eth"
+    ]
+  },
+  {
+    "name": "Morpho Aave stETH",
+    "id": "mrp-asteth",
+    "displaySymbol": "Morpho Aave stETH",
+    "addresses": {
+      "1": "0x33E840e5711549358f6d4D11F9Ab2896B36E9822"
+    },
+    "color": "#627EEA",
+    "llamaId": "eab8d63d-8a8f-48cb-8027-583508831d24",
+    "tokenDistribution": [
+      {
+        "token": "stETH",
+        "distribution": 1
+      }
+    ],
+    "description": null,
+    "protocol": "morpho-aave",
+    "underlyings": [
+      "steth"
+    ]
+  },
+  {
+    "name": "Flux DAI",
+    "id": "fdai",
+    "displaySymbol": "Flux DAI",
+    "addresses": {
+      "1": "0x33C1665Eb1b3673213Daa5f068ae1026fC8D5875"
+    },
+    "color": "#F5AC37",
+    "llamaId": "ed227286-abb0-4a34-ada5-39f7ebd81afb",
+    "tokenDistribution": [
+      {
+        "token": "DAI",
+        "distribution": 1
+      }
+    ],
+    "description": null,
+    "protocol": "flux-finance",
+    "underlyings": [
+      "dai"
+    ]
+  },
+  {
+    "name": "Flux USDT",
+    "id": "fusdt",
+    "displaySymbol": "Flux USDT",
+    "addresses": {
+      "1": "0xbe6Fb2b2908D85179e34ee0D996e32fa2BF4410A"
+    },
+    "color": "#53AE94",
+    "llamaId": "6600934f-6323-447d-8a7d-67fbede8529d",
+    "tokenDistribution": [
+      {
+        "token": "USDT",
+        "distribution": 1
+      }
+    ],
+    "description": null,
+    "protocol": "flux-finance",
+    "underlyings": [
+      "usdt"
+    ]
+  },
+  {
+    "name": "Morpho Aave WBTC",
+    "id": "mrp-awbtc",
+    "displaySymbol": "Morpho Aave WBTC",
+    "addresses": {
+      "1": "0x49A44d50d3B1E098DAC9402c4aF8D0C0E499F250"
+    },
+    "color": "#F09242",
+    "llamaId": "ff61171d-d7b0-4989-816c-b9bf02a15f00",
+    "tokenDistribution": [
+      {
+        "token": "WBTC",
+        "distribution": 1
+      }
+    ],
+    "description": null,
+    "protocol": "morpho-aave",
+    "underlyings": [
+      "cbbtc"
+    ]
+  },
+  {
+    "name": "Morpho Aave ETH",
+    "id": "mrp-aweth",
+    "displaySymbol": "Morpho Aave ETH",
+    "addresses": {
+      "1": "0x878b995bDD2D9900BEE896Bd78ADd877672e1637"
+    },
+    "color": "#627EEA",
+    "llamaId": "7be52986-18c2-450f-b74b-d65fb1205bbf",
+    "tokenDistribution": [
+      {
+        "token": "ETH",
+        "distribution": 1
+      }
+    ],
+    "description": null,
+    "protocol": "morpho-aave",
+    "underlyings": [
+      "eth"
+    ]
+  },
+  {
+    "name": "Morpho Aave DAI",
+    "id": "mrp-adai",
+    "displaySymbol": "Morpho Aave DAI",
+    "addresses": {
+      "1": "0x9d38BFF9Af50738DF92a54Ceab2a2C2322BB1FAB"
+    },
+    "color": "#F5AC37",
+    "llamaId": "b8bcdf8e-96ed-40ca-a7aa-aa048b9874e5",
+    "tokenDistribution": [
+      {
+        "token": "DAI",
+        "distribution": 1
+      }
+    ],
+    "description": null,
+    "protocol": "morpho-aave",
+    "underlyings": [
+      "dai"
+    ]
+  },
+  {
+    "name": "Stargate USDbC",
+    "id": "wsgusdbc",
+    "displaySymbol": "Stargate USDbC",
+    "addresses": {
+      "8453": "0x15395aCCbF8c6b28671fe41624D599624709a2D6"
+    },
+    "color": "#999999",
+    "llamaId": "9d09b0be-f6c2-463a-ad2c-4552b3e12bd9",
+    "tokenDistribution": [
+      {
+        "token": "USDbC",
+        "distribution": 1
+      }
+    ],
+    "description": "Stargate Base USDC (sgUSDbC) - Bridged USDC (Circle) deposited on Stargate’s USDC pool and staked to earn yield. This variable yield is generated by a share of bridge fees and distributed as STG rewards.",
+    "protocol": "stargate",
+    "underlyings": [
+      "USDbC"
+    ]
+  },
+  {
+    "name": "Stargate Base USDC",
+    "id": "sgusdbc",
+    "displaySymbol": "Stargate Base USDC",
+    "addresses": {
+      "1": "0x073F98792ef4c00bB5f11B1F64f13cB25Cde0d8D"
+    },
+    "color": null,
+    "llamaId": null,
+    "tokenDistribution": [
+      {
+        "token": "USDbC",
+        "distribution": 1
+      }
+    ],
+    "description": "Stargate Base USDC (sgUSDbC) - Bridged USDC (Circle) deposited on Stargate’s USDC pool and staked to earn yield. This variable yield is generated by a share of bridge fees and distributed as STG rewards.",
+    "protocol": "stargate",
+    "underlyings": [
+      "USDbC"
+    ]
+  },
+  {
+    "name": "Morpho Aave USDC",
+    "id": "mrp-ausdc",
+    "displaySymbol": "Morpho Aave USDC",
+    "addresses": {
+      "1": "0x2304E98cD1E2F0fd3b4E30A1Bc6E9594dE2ea9b7"
+    },
+    "color": "#2775CA",
+    "llamaId": "325ad2d6-70b1-48d7-a557-c2c99a036f87",
+    "tokenDistribution": [
+      {
+        "token": "USDC",
+        "distribution": 1
+      }
+    ],
+    "description": "Morpho AAVE USDC (maUSDC) - USDC (Circle) supplied on Morpho Aave V2 optimizer. The supplied USDC is lent out on Aave V2 and matched P2P with a borrower to maximize the utilization ratio and, by extension, the yield. This variable yield is generated by a combination of Morpho’s P2P yield optimization and MORPHO token rewards. ",
+    "protocol": "morpho-aave",
+    "underlyings": [
+      "usdc"
+    ]
+  },
+  {
+    "name": "Flux USDC",
+    "id": "fusdc",
+    "displaySymbol": "Flux USDC",
+    "addresses": {
+      "1": "0x3C0a9143063Fc306F7D3cBB923ff4879d70Cf1EA"
+    },
+    "color": "#2C2C2C",
+    "llamaId": "fa4d7ee4-0001-4133-9e8d-cf7d5d194a91",
+    "tokenDistribution": [
+      {
+        "token": "USDC",
+        "distribution": 1
+      }
+    ],
+    "description": "Flux USDC (fUSDC) - USDC (Circle) deposited and lent out on Flux Finance (a fork of Compound V2 built by the Ondo Finance team). This variable yield is generated from the interest rate paid by borrowers  and driven by borrower demand levels.",
+    "protocol": "flux-finance",
+    "underlyings": [
+      "usdc"
+    ]
+  },
+  {
+    "name": "Morpho Aave USDT",
+    "id": "mrp-ausdt",
+    "displaySymbol": "Morpho Aave USDT",
+    "addresses": {
+      "1": "0xd000a79BD2a07EB6D2e02ECAd73437De40E52d69"
+    },
+    "color": "#53AE94",
+    "llamaId": "1343a280-7812-4bc3-8f98-d1c37e11d271",
+    "tokenDistribution": [
+      {
+        "token": "USDT",
+        "distribution": 1
+      }
+    ],
+    "description": "Morpho AAVE USDT (maUSDT)  - USDT (Tether) supplied on Morpho Aave V2 optimizer. The supplied USDT is lent out on Aave V2 and matched P2P with a borrower to maximize the utilization ratio and, by extension, the yield. This variable yield is generated by a combination of Morpho’s P2P yield optimization and MORPHO token rewards. ",
+    "protocol": "morpho-aave",
+    "underlyings": [
+      "usdt"
+    ]
+  },
+  {
+    "name": "Convex eUSD-FRAXBP",
+    "id": "stkcvxeusd3crv-f",
+    "displaySymbol": "Convex eUSD-FRAXBP",
+    "addresses": {
+      "1": "0x890FAa00C16EAD6AA76F18A1A7fe9C40838F9122"
+    },
+    "color": "url(#stkcvxeusd3crv-f)",
+    "llamaId": "c04005c9-7e34-41a6-91c4-295834ed8ac0",
+    "tokenDistribution": [
+      {
+        "token": "eUSD",
+        "distribution": 0.5
+      },
+      {
+        "token": "FRAX",
+        "distribution": 0.25
+      },
+      {
+        "token": "USDC",
+        "distribution": 0.25
+      }
+    ],
+    "description": "Staked Convex eUSD-FRAXBP LP (stkcvxeUSD3CRV-f) - token obtained by providing liquidity to the eUSD-FRAXBP (FRAX-USDC Base Pool) liquidity pool on Curve Finance and staking the LP token on Convex Finance. This variable yield is generated from a combination of native asset yield, CVX rewards, and boosted CRV rewards leveraging Convex’s veCRV power. ",
+    "protocol": "convex-finance",
+    "underlyings": [
+      "frax",
+      "usdc",
+      "eusd"
+    ]
+  },
+  {
+    "name": "Wrapped Staked ETH",
+    "id": "wsteth",
+    "displaySymbol": "Wrapped Staked ETH",
+    "addresses": {
+      "1": "0xC1E16AD7844Da1AEFFa6c3932AD02b823DE12d3F"
+    },
+    "color": "#627EEA",
+    "llamaId": "747c1d2a-c668-4682-b9f9-296708a3dd90",
+    "tokenDistribution": [
+      {
+        "token": "ETH",
+        "distribution": 1
+      }
+    ],
+    "description": "Wrapped Staked ETH (wstETH) - non-rebasing version of stETH, a transferable liquid-staking token representing a share of the total ETH staked on Lido Finance. This variable yield is derived from native ETH yield earned by Lido validator network (net of fees).",
+    "protocol": "lido",
+    "underlyings": [
+      "eth"
+    ]
+  },
+  {
+    "name": "Aave USDC",
+    "id": "sausdc",
+    "displaySymbol": "Static Aave interest bearing USDC",
+    "addresses": {
+      "1": "0x7CD9CA6401f743b38B3B16eA314BbaB8e9c1aC51"
+    },
+    "color": "#2775CA",
+    "llamaId": "a349fea4-d780-4e16-973e-70ca9b606db2",
+    "tokenDistribution": [
+      {
+        "token": "USDC",
+        "distribution": 1
+      }
+    ],
+    "description": "USDC (Circle) deposited and lent out in V2 of Aave. This variable yield is generated from from the interest rate paid by borrowers and driven by borrower demand levels.",
+    "protocol": "aave",
+    "underlyings": [
+      "usdc"
+    ]
+  },
+  {
+    "name": "Compound USDC",
+    "id": "cusdc",
+    "displaySymbol": "Compound USD Coin Vault",
+    "addresses": {
+      "1": "0x073F98792ef4c00bB5f11B1F64f13cB25Cde0d8D"
+    },
+    "color": "#2775CA",
+    "llamaId": "cefa9bb8-c230-459a-a855-3b94e96acd8c",
+    "tokenDistribution": [
+      {
+        "token": "USDC",
+        "distribution": 1
+      }
+    ],
+    "description": "USDC (Circle) deposited and lent out in V2 of Compound Finance. This variable yield is generated from the interest rate paid by borrowers and driven by borrower demand levels.",
+    "protocol": "compound-v2",
+    "underlyings": [
+      "usdc"
+    ]
+  },
+  {
+    "name": "Compound USDT",
+    "id": "cusdt",
+    "displaySymbol": "Compound USDT Vault",
+    "addresses": {
+      "1": "0x4Be33630F92661afD646081BC29079A38b879aA0"
+    },
+    "color": "#53AE94",
+    "llamaId": "57647093-2868-4e65-97ab-9cae8ec74e7d",
+    "tokenDistribution": [
+      {
+        "token": "USDT",
+        "distribution": 1
+      }
+    ],
+    "description": "USDT (Tether) deposited and lent out in V2 of Compound Finance. This variable yield is generated from the interest rate paid by borrowers and driven by borrower demand levels.",
+    "protocol": "compound-v2",
+    "underlyings": [
+      "usdt"
+    ]
+  },
+  {
+    "name": "Convex 3CRV",
+    "id": "stkcvx3crv",
+    "displaySymbol": "Convex 3CRV",
+    "addresses": {
+      "1": "0x62C394620f674e85768a7618a6C202baE7fB8Dd1"
+    },
+    "color": null,
+    "llamaId": "7394f1bc-840a-4ff0-9e87-5e0ef932943a",
+    "tokenDistribution": [
+      {
+        "token": "DAI",
+        "distribution": 0.5
+      },
+      {
+        "token": "USDC",
+        "distribution": 0.25
+      },
+      {
+        "token": "USDT",
+        "distribution": 0.25
+      }
+    ],
+    "description": null,
+    "protocol": "convex-finance",
+    "underlyings": [
+      "dai",
+      "usdc",
+      "usdt"
+    ]
+  },
+  {
+    "name": "Convex MIM3CRV",
+    "id": "stkcvxmim-3lp3crv-f",
+    "displaySymbol": "Convex MIM3CRV",
+    "addresses": {
+      "1": "0xCBE084C44e7A2223F76362Dcc4EbDacA5Fb1cbA7"
+    },
+    "color": null,
+    "llamaId": "8a20c472-142c-4442-b724-40f2183c073e",
+    "tokenDistribution": [
+      {
+        "token": "MIM",
+        "distribution": 0.88
+      },
+      {
+        "token": "USDT",
+        "distribution": 0.02
+      },
+      {
+        "token": "DAI",
+        "distribution": 0.05
+      },
+      {
+        "token": "USDC",
+        "distribution": 0.05
+      }
+    ],
+    "description": null,
+    "protocol": "convex-finance",
+    "underlyings": [
+      "mim",
+      "usdt",
+      "dai",
+      "usdc"
+    ]
+  },
+  {
+    "name": "Convex Tricrypto",
+    "id": "stkcvxcrv3crypto",
+    "displaySymbol": "Convex Tricrypto",
+    "addresses": {
+      "1": "0x62C394620f674e85768a7618a6C202baE7fB8Dd1"
+    },
+    "color": null,
+    "llamaId": "ad3d7253-fb8f-402f-a6f8-821bc0a055cb",
+    "tokenDistribution": [
+      {
+        "token": "USDT",
+        "distribution": 0.33
+      },
+      {
+        "token": "ETH",
+        "distribution": 0.33
+      },
+      {
+        "token": "WBTC",
+        "distribution": 0.34
+      }
+    ],
+    "description": null,
+    "protocol": "convex-finance",
+    "underlyings": [
+      "usdt",
+      "eth",
+      "cbbtc"
+    ]
+  },
+  {
+    "name": "Aave DAI",
+    "id": "sadai",
+    "displaySymbol": "Aave DAI",
+    "addresses": {
+      "1": "0x256b89658bD831CC40283F42e85B1fa8973Db0c9"
+    },
+    "color": null,
+    "llamaId": "405d8dad-5c99-4c91-90d3-82813ade1ff1",
+    "tokenDistribution": [
+      {
+        "token": "DAI",
+        "distribution": 1
+      }
+    ],
+    "description": null,
+    "protocol": "aave",
+    "underlyings": [
+      "dai"
+    ]
+  }
+]
