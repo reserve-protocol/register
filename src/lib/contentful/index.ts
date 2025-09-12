@@ -1,10 +1,10 @@
 export type ComponentToken = {
-  id?: string
+  id: string
   tokenTicker: string
   name?: string
   addresses?: Record<string, any>
   color?: string
-  logo?: { url: string }
+  logo: { url: string }
   rating?: string
   website?: string
   description: string
@@ -13,39 +13,39 @@ export type ComponentToken = {
 export type Protocol = {
   id: string
   protocolName: string
-  protocolDescription?: string
+  protocolDescription: string
   protocolSocials?: string[]
-  website?: string
+  website: string
   docs?: string
-  logo?: { url: string }
+  logo: { url: string }
   color?: string
 }
 
 export type CollateralAsset = {
-  name?: string
+  name: string
   id: string
-  displaySymbol?: string
-  addresses?: Record<string, any>
-  protocol?: Protocol
+  displaySymbol: string
+  addresses: Record<string, any>
+  protocol: Protocol
   color?: string
   llamaId?: string
-  tokenDistribution?: Record<string, any>
+  tokenDistribution: { token: string; distribution: number }[]
   description?: string
-  tokensCollection?: { items: ComponentToken[] }
+  tokensCollection: { items: ComponentToken[] }
 }
 
 export type EarnPool = {
   description: string
   llamaId: string
   url: string
-  underlyingTokens: string[]
+  underlyingTokens: string[] | null
   symbol: string
 }
 
-import collateralJson from './collateral-assets.json' assert { type: 'json' }
-import tokensJson from './component-tokens.json' assert { type: 'json' }
-import protocolsJson from './protocols.json' assert { type: 'json' }
-import earnPoolsJson from './earn-pools.json' assert { type: 'json' }
+import collateralJson from './collateral-assets.json' with { type: 'json' }
+import tokensJson from './component-tokens.json' with { type: 'json' }
+import protocolsJson from './protocols.json' with { type: 'json' }
+import earnPoolsJson from './earn-pools.json' with { type: 'json' }
 
 export function getCollaterals(): CollateralAsset[] {
   return collateralJson as unknown as CollateralAsset[]

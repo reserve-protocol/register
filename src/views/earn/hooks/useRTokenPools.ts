@@ -1,5 +1,4 @@
 import rtokens from '@reserve-protocol/rtokens'
-import { gql } from 'graphql-request'
 import { useAtom } from 'jotai'
 import { useEffect } from 'react'
 import { Pool, poolsAtom } from 'state/pools/atoms'
@@ -67,20 +66,6 @@ listedRTokens[RSR_ADDRESS[ChainId.Base].toLowerCase()] = RSR
 // Bridged RTokens
 listedRTokens['0xcfa3ef56d303ae4faaba0592388f19d7c3399fb4'] =
   listedRTokens[EUSD_ADDRESS[ChainId.Mainnet].toLowerCase()]
-
-const earnPoolQuery = gql`
-  query {
-    earnPoolsCollection(limit: 1000) {
-      items {
-        llamaId
-        url
-        underlyingTokens
-        symbol
-      }
-    }
-  }
-`
-
 const filterPools = (
   data: DefillamaPool[],
   ids?: string[]
