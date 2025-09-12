@@ -54,6 +54,10 @@ export const LP_PROJECTS: { [x: string]: { name: string; site: string } } = {
     name: 'StakeDAO',
     site: 'https://www.stakedao.org/yield',
   },
+  'stake-dao': {
+    name: 'StakeDAO',
+    site: 'https://www.stakedao.org/yield',
+  },
   'uniswap-v3': {
     name: 'Uniswap',
     site: 'https://app.uniswap.org/',
