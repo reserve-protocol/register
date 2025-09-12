@@ -15,41 +15,10 @@
       }
     ],
     "description": "USDT (Tether) deposited and lent out in V3 of Aave. This variable yield is generated from borrower yield and a share of flash loan fees and driven by borrower demand levels.",
-    "protocol": {
-      "id": "aavev3",
-      "protocolName": "Aave V3",
-      "protocolDescription": "Aave is a decentralized non-custodial liquidity protocol where users can participate as depositors or borrowers. Depositors provide liquidity to the market to earn a passive income, while borrowers are able to borrow in an overcollateralized fashion",
-      "protocolSocials": [
-        "https://app.aave.com/",
-        "https://twitter.com/AaveAave",
-        "aave.com/discord"
-      ],
-      "website": "https://aave.com/",
-      "docs": "https://docs.aave.com/hub/",
-      "color": "#a75ca3",
-      "logo": {
-        "url": "https://storage-logos.reserve.org/logos/88dc6b2ed57b--aave.png"
-      }
-    },
-    "tokensCollection": {
-      "items": [
-        {
-          "id": "usdt",
-          "tokenTicker": "USDT",
-          "name": null,
-          "addresses": {
-            "1": "0xdac17f958d2ee523a2206206994597c13d831ec7"
-          },
-          "color": "#53AE94",
-          "rating": "D",
-          "website": "https://tether.to/",
-          "description": "Tether (USDT) is a cryptocurrency stablecoin pegged to the U.S. dollar. Tether is owned by iFinex, the Hong Kong-registered company that also owns the crypto exchange BitFinex.",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/c8e63ed383a3--usdt.svg"
-          }
-        }
-      ]
-    }
+    "protocol": "aavev3",
+    "underlyings": [
+      "usdt"
+    ]
   },
   {
     "name": "wOETH",
@@ -67,37 +36,10 @@
       }
     ],
     "description": "Wrapped OETH provides a non-rebasing version of OETH that still earns yield. As an ERC-4626 tokenized vault, wOETH simplifies DeFi integrations and may provide tax benefits in some jurisdictions.",
-    "protocol": {
-      "id": "origin",
-      "protocolName": "Origin",
-      "protocolDescription": "Origin Protocol is a suite of complimentary DeFi products designed to increase economic opportunity for all. These permissionless and composable smart contracts provide superior user experiences across DeFi in a groundbreaking multichain yield ecosystem.",
-      "protocolSocials": null,
-      "website": "https://www.originprotocol.com/",
-      "docs": "https://docs.originprotocol.com/",
-      "color": "#097AF8",
-      "logo": {
-        "url": "https://storage-logos.reserve.org/logos/43eb1dbbe674--origin.svg"
-      }
-    },
-    "tokensCollection": {
-      "items": [
-        {
-          "id": "oeth",
-          "tokenTicker": "OETH",
-          "name": "Origin Ether",
-          "addresses": {
-            "1": "0x856c4Efb76C1D1AE02e20CEB03A2A6a08b0b8dC3"
-          },
-          "color": "#3290f3",
-          "rating": null,
-          "website": "https://www.originprotocol.com/oeth",
-          "description": "Origin Ether (OETH) is a pure LST fully backed by reserves of ETH. OETH’s meticulous design and strong peg make it an ideal building block for rewarding yield strategies across DeFi. Thanks to rebasing, OETH holders earn yield directly in their wallets while retaining full capital control. Developed by the professionals at Origin Protocol.",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/b61e7ea0a5e4--oeth.svg"
-          }
-        }
-      ]
-    }
+    "protocol": "origin",
+    "underlyings": [
+      "oeth"
+    ]
   },
   {
     "name": "sUSDS",
@@ -115,37 +57,10 @@
       }
     ],
     "description": "sUSDS is the new version of sDAI, offered by Sky which offers a higher yield. sUSDS represents USDS deposited into and earning the Sky Savings Rate.",
-    "protocol": {
-      "id": "sky",
-      "protocolName": "Sky",
-      "protocolDescription": "Sky.money is one of the many non-custodial gateways to the permissionless Sky Protocol, a decentralised protocol developed around the USDS stablecoin.",
-      "protocolSocials": null,
-      "website": "https://sky.money/",
-      "docs": "https://developers.sky.money/",
-      "color": "#2A197D",
-      "logo": {
-        "url": "https://storage-logos.reserve.org/logos/abf9b67f6f5b--sky.svg"
-      }
-    },
-    "tokensCollection": {
-      "items": [
-        {
-          "id": "usds",
-          "tokenTicker": "USDS",
-          "name": "USDS Stablecoin",
-          "addresses": {
-            "1": "0xdC035D45d973E3EC169d2276DDab16f1e407384F"
-          },
-          "color": "#FE9E51",
-          "rating": null,
-          "website": "https://sky.money/",
-          "description": "USDS is a stablecoin that is the upgraded version of DAI, providing new ways for users to have more rewarding crypto experiences. It is the native currency of the decentralized Sky Protocol and powers the open Sky ecosystem.",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/f7a1faf3064f--usds.svg"
-          }
-        }
-      ]
-    }
+    "protocol": "sky",
+    "underlyings": [
+      "usds"
+    ]
   },
   {
     "name": "Wrapped Super OETH",
@@ -163,35 +78,10 @@
       }
     ],
     "description": "Wrapped Super OETH (wsuperOETHb) - non-rebasing version of superOETHb, a transferable liquid-staking token representing a share of the total ETH staked on Origin Protocol’s superOETHb. This variable yield is derived from staking through SSV distributed validators (DVT) and an Aerodrome AMO (net of fees).",
-    "protocol": {
-      "id": "originprotocol",
-      "protocolName": "Origin Protocol",
-      "protocolDescription": "Origin Protocol is a collection of complimentary DeFi products designed in a set-and-forget fashion to increase economic opportunity for all. Origin’s permissionless and composable smart contracts provide superior user experiences across DeFi in a groundbreaking multichain yield ecosystem.",
-      "protocolSocials": null,
-      "website": "https://www.originprotocol.com/",
-      "docs": "https://docs.originprotocol.com/",
-      "color": "#0074F0",
-      "logo": {
-        "url": "https://storage-logos.reserve.org/logos/cf0f14ed4496--origin.png"
-      }
-    },
-    "tokensCollection": {
-      "items": [
-        {
-          "id": "eth",
-          "tokenTicker": "ETH",
-          "name": null,
-          "addresses": null,
-          "color": "627EEA",
-          "rating": null,
-          "website": "https://ethereum.org/",
-          "description": "Ethereum is a decentralized blockchain network powered by the Ether (ETH) token that enables users to make trustless financial transactions corresponding to logic encoded in smart contracts.",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/7a0e09632dd7--eth.svg"
-          }
-        }
-      ]
-    }
+    "protocol": "originprotocol",
+    "underlyings": [
+      "eth"
+    ]
   },
   {
     "name": "Aerodrome WETH/CBBTC",
@@ -213,50 +103,11 @@
       }
     ],
     "description": "Aerodrome WETH/cbBTC - token obtained by providing liquidity to the WETH/cbBTC liquidity pool on Aerodrome Finance.",
-    "protocol": {
-      "id": "aerodrome-v1",
-      "protocolName": "Aerodrome",
-      "protocolDescription": "Aerodrome Finance is a next-generation AMM designed to serve as Base's central liquidity hub, combining a powerful liquidity incentive engine, vote-lock governance model, and friendly user experience. Aerodrome inherits the latest features from Velodrome V2. Aerodrome NFTs vote to distribute token emissions and receive incentives and fees generated by the protocol.",
-      "protocolSocials": null,
-      "website": "https://aerodrome.finance/",
-      "docs": "https://aerodrome.finance/docs",
-      "color": "#2151F5",
-      "logo": {
-        "url": "https://storage-logos.reserve.org/logos/f58a594e0241--token.png"
-      }
-    },
-    "tokensCollection": {
-      "items": [
-        {
-          "id": "eth",
-          "tokenTicker": "ETH",
-          "name": null,
-          "addresses": null,
-          "color": "627EEA",
-          "rating": null,
-          "website": "https://ethereum.org/",
-          "description": "Ethereum is a decentralized blockchain network powered by the Ether (ETH) token that enables users to make trustless financial transactions corresponding to logic encoded in smart contracts.",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/7a0e09632dd7--eth.svg"
-          }
-        },
-        {
-          "id": "cbbtc",
-          "tokenTicker": "cbBTC",
-          "name": "Coinbase BTC",
-          "addresses": {
-            "8453": "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf"
-          },
-          "color": "#0051FF",
-          "rating": null,
-          "website": "https://www.coinbase.com/",
-          "description": "Coinbase Wrapped Bitcoin (cbBTC) is a wrapped version of Bitcoin (BTC) that's backed 1:1 by BTC held in custody by Coinbase.",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/763e4c9c8c28--cbbtc_32.png"
-          }
-        }
-      ]
-    }
+    "protocol": "aerodrome-v1",
+    "underlyings": [
+      "eth",
+      "cbbtc"
+    ]
   },
   {
     "name": "Aerodrome MOG/WETH LP",
@@ -278,50 +129,11 @@
       }
     ],
     "description": "Aerodrome WETH/MOG - token obtained by providing liquidity to the WETH/MOG liquidity pool on Aerodrome Finance.",
-    "protocol": {
-      "id": "aerodrome-v1",
-      "protocolName": "Aerodrome",
-      "protocolDescription": "Aerodrome Finance is a next-generation AMM designed to serve as Base's central liquidity hub, combining a powerful liquidity incentive engine, vote-lock governance model, and friendly user experience. Aerodrome inherits the latest features from Velodrome V2. Aerodrome NFTs vote to distribute token emissions and receive incentives and fees generated by the protocol.",
-      "protocolSocials": null,
-      "website": "https://aerodrome.finance/",
-      "docs": "https://aerodrome.finance/docs",
-      "color": "#2151F5",
-      "logo": {
-        "url": "https://storage-logos.reserve.org/logos/f58a594e0241--token.png"
-      }
-    },
-    "tokensCollection": {
-      "items": [
-        {
-          "id": "eth",
-          "tokenTicker": "ETH",
-          "name": null,
-          "addresses": null,
-          "color": "627EEA",
-          "rating": null,
-          "website": "https://ethereum.org/",
-          "description": "Ethereum is a decentralized blockchain network powered by the Ether (ETH) token that enables users to make trustless financial transactions corresponding to logic encoded in smart contracts.",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/7a0e09632dd7--eth.svg"
-          }
-        },
-        {
-          "id": "mog",
-          "tokenTicker": "MOG",
-          "name": "MOG Coin",
-          "addresses": {
-            "8453": "0x2Da56AcB9Ea78330f947bD57C54119Debda7AF71"
-          },
-          "color": null,
-          "rating": null,
-          "website": null,
-          "description": "Mog Coin (MOG) is a meme coin built on the Ethereum blockchain, following the ERC-20 standard. It was launched in July 2023 as a joke but quickly gained traction, known for its humorous approach to finance and its potential for growth. MOG is characterized by its unique branding, fast transaction speeds, and user-friendly features, aiming to bring fun and humor to the cryptocurrency space.",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/6c57eef6b651--18724-1717376885547.png"
-          }
-        }
-      ]
-    }
+    "protocol": "aerodrome-v1",
+    "underlyings": [
+      "eth",
+      "mog"
+    ]
   },
   {
     "name": "Aerodrome WETH/AERO",
@@ -343,50 +155,11 @@
       }
     ],
     "description": "Aerodrome WETH/AERO - token obtained by providing liquidity to the WETH/AERO liquidity pool on Aerodrome Finance.",
-    "protocol": {
-      "id": "aerodrome-v1",
-      "protocolName": "Aerodrome",
-      "protocolDescription": "Aerodrome Finance is a next-generation AMM designed to serve as Base's central liquidity hub, combining a powerful liquidity incentive engine, vote-lock governance model, and friendly user experience. Aerodrome inherits the latest features from Velodrome V2. Aerodrome NFTs vote to distribute token emissions and receive incentives and fees generated by the protocol.",
-      "protocolSocials": null,
-      "website": "https://aerodrome.finance/",
-      "docs": "https://aerodrome.finance/docs",
-      "color": "#2151F5",
-      "logo": {
-        "url": "https://storage-logos.reserve.org/logos/f58a594e0241--token.png"
-      }
-    },
-    "tokensCollection": {
-      "items": [
-        {
-          "id": "eth",
-          "tokenTicker": "ETH",
-          "name": null,
-          "addresses": null,
-          "color": "627EEA",
-          "rating": null,
-          "website": "https://ethereum.org/",
-          "description": "Ethereum is a decentralized blockchain network powered by the Ether (ETH) token that enables users to make trustless financial transactions corresponding to logic encoded in smart contracts.",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/7a0e09632dd7--eth.svg"
-          }
-        },
-        {
-          "id": "aero",
-          "tokenTicker": "AERO",
-          "name": "Aerodrome",
-          "addresses": {
-            "8453": "0x940181a94A35A4569E4529A3CDfB74e38FD98631"
-          },
-          "color": null,
-          "rating": null,
-          "website": "https://aerodrome.finance/",
-          "description": "AERO is the native token of the Aerodrome Finance. It is primarily distributed to liquidity providers as emissions for contributing to the platform's liquidity pools.",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/094165e7e436--token.png"
-          }
-        }
-      ]
-    }
+    "protocol": "aerodrome-v1",
+    "underlyings": [
+      "eth",
+      "aero"
+    ]
   },
   {
     "name": "Aerodrome WETH/WELL LP",
@@ -408,50 +181,11 @@
       }
     ],
     "description": "Aerodrome WETH/WELL - token obtained by providing liquidity to the WETH/WELL liquidity pool on Aerodrome Finance.",
-    "protocol": {
-      "id": "aerodrome-v1",
-      "protocolName": "Aerodrome",
-      "protocolDescription": "Aerodrome Finance is a next-generation AMM designed to serve as Base's central liquidity hub, combining a powerful liquidity incentive engine, vote-lock governance model, and friendly user experience. Aerodrome inherits the latest features from Velodrome V2. Aerodrome NFTs vote to distribute token emissions and receive incentives and fees generated by the protocol.",
-      "protocolSocials": null,
-      "website": "https://aerodrome.finance/",
-      "docs": "https://aerodrome.finance/docs",
-      "color": "#2151F5",
-      "logo": {
-        "url": "https://storage-logos.reserve.org/logos/f58a594e0241--token.png"
-      }
-    },
-    "tokensCollection": {
-      "items": [
-        {
-          "id": "eth",
-          "tokenTicker": "ETH",
-          "name": null,
-          "addresses": null,
-          "color": "627EEA",
-          "rating": null,
-          "website": "https://ethereum.org/",
-          "description": "Ethereum is a decentralized blockchain network powered by the Ether (ETH) token that enables users to make trustless financial transactions corresponding to logic encoded in smart contracts.",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/7a0e09632dd7--eth.svg"
-          }
-        },
-        {
-          "id": "well",
-          "tokenTicker": "WELL",
-          "name": "WELL",
-          "addresses": {
-            "8453": "0xA88594D404727625A9437C3f886C7643872296AE"
-          },
-          "color": null,
-          "rating": null,
-          "website": "https://moonwell.fi/",
-          "description": "WELL is a governance token for the Moonwell protocol.\n\nMoonwell is an open lending and borrowing app built on Base, Optimism, Moonbeam, and Moonriver, bringing the world onchain with easy-to-use financial tools. Moonwell's intuitive design ensures a seamless experience, enabling everyone to do more with their digital assets. ",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/593dbd772140--WELL.webp"
-          }
-        }
-      ]
-    }
+    "protocol": "aerodrome-v1",
+    "underlyings": [
+      "eth",
+      "well"
+    ]
   },
   {
     "name": "Aerodrome WETH/DEGEN LP",
@@ -473,50 +207,11 @@
       }
     ],
     "description": "Aerodrome WETH/DEGEN - token obtained by providing liquidity to the WETH/DEGEN liquidity pool on Aerodrome Finance.",
-    "protocol": {
-      "id": "aerodrome-v1",
-      "protocolName": "Aerodrome",
-      "protocolDescription": "Aerodrome Finance is a next-generation AMM designed to serve as Base's central liquidity hub, combining a powerful liquidity incentive engine, vote-lock governance model, and friendly user experience. Aerodrome inherits the latest features from Velodrome V2. Aerodrome NFTs vote to distribute token emissions and receive incentives and fees generated by the protocol.",
-      "protocolSocials": null,
-      "website": "https://aerodrome.finance/",
-      "docs": "https://aerodrome.finance/docs",
-      "color": "#2151F5",
-      "logo": {
-        "url": "https://storage-logos.reserve.org/logos/f58a594e0241--token.png"
-      }
-    },
-    "tokensCollection": {
-      "items": [
-        {
-          "id": "degen",
-          "tokenTicker": "Degen",
-          "name": "DEGEN",
-          "addresses": {
-            "8453": "0x4ed4E862860beD51a9570b96d89aF5E1B0Efefed"
-          },
-          "color": null,
-          "rating": null,
-          "website": "https://www.degen.tips/",
-          "description": "DEGEN is a reward token for Farcaster users, born from meme culture. It uses a unique tipping system that empowers the community to reward quality content creators. It also powers the Degen chain, one of the pioneering L3s launched on Base, offering a platform for building and using Degen apps, often referred to as the “Las Vegas of blockchains.”",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/dcae6ed1ff45--degen-base-degen-logo.png"
-          }
-        },
-        {
-          "id": "eth",
-          "tokenTicker": "ETH",
-          "name": null,
-          "addresses": null,
-          "color": "627EEA",
-          "rating": null,
-          "website": "https://ethereum.org/",
-          "description": "Ethereum is a decentralized blockchain network powered by the Ether (ETH) token that enables users to make trustless financial transactions corresponding to logic encoded in smart contracts.",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/7a0e09632dd7--eth.svg"
-          }
-        }
-      ]
-    }
+    "protocol": "aerodrome-v1",
+    "underlyings": [
+      "degen",
+      "eth"
+    ]
   },
   {
     "name": "Aerodrome eUSD/USDC",
@@ -538,54 +233,11 @@
       }
     ],
     "description": "Aerodrome eUSD/USDC - token obtained by providing liquidity to the eUSD/USDC liquidity pool on Aerodrome Finance.",
-    "protocol": {
-      "id": "aerodrome-v1",
-      "protocolName": "Aerodrome",
-      "protocolDescription": "Aerodrome Finance is a next-generation AMM designed to serve as Base's central liquidity hub, combining a powerful liquidity incentive engine, vote-lock governance model, and friendly user experience. Aerodrome inherits the latest features from Velodrome V2. Aerodrome NFTs vote to distribute token emissions and receive incentives and fees generated by the protocol.",
-      "protocolSocials": null,
-      "website": "https://aerodrome.finance/",
-      "docs": "https://aerodrome.finance/docs",
-      "color": "#2151F5",
-      "logo": {
-        "url": "https://storage-logos.reserve.org/logos/f58a594e0241--token.png"
-      }
-    },
-    "tokensCollection": {
-      "items": [
-        {
-          "id": "eusd",
-          "tokenTicker": "eUSD",
-          "name": null,
-          "addresses": {
-            "1": "0xA0d69E286B938e21CBf7E51D71F6A4c8918f482F"
-          },
-          "color": "#000000",
-          "rating": null,
-          "website": null,
-          "description": "The Electronic Dollar (eUSD) is a decentralized 1:1 asset-backed stablecoin built with Reserve Protocol, available on the Ethereum and MobileCoin blockchains. It sets itself apart from other stablecoins due to its decentralized, community-governed, and censorship-resistant nature.\n\n",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/b5f6398f0622--eUSD__1_.svg"
-          }
-        },
-        {
-          "id": "usdc",
-          "tokenTicker": "USDC",
-          "name": null,
-          "addresses": {
-            "1": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
-            "8453": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
-            "42161": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831"
-          },
-          "color": null,
-          "rating": "B+",
-          "website": "https://www.circle.com/en/usdc",
-          "description": "USD Coin is a digital stablecoin that is pegged to the United States dollar. USD Coin is managed by a consortium called Centre, which was founded by Circle and includes members from the cryptocurrency exchange Coinbase and Bitcoin mining company Bitmain, an investor in Circle.",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/9aceab4057b3--usdm__1_.svg"
-          }
-        }
-      ]
-    }
+    "protocol": "aerodrome-v1",
+    "underlyings": [
+      "eusd",
+      "usdc"
+    ]
   },
   {
     "name": "Morpho eUSD",
@@ -603,37 +255,10 @@
       }
     ],
     "description": "The Morpho eUSD vault supplies eUSD to various collateral markets with a focus on the Reserve Protocol ecosystem. Learn more about RE7 Labs curations in the forum.",
-    "protocol": {
-      "id": "morphoblue",
-      "protocolName": "Morpho",
-      "protocolDescription": "Lenders deposit a single asset into a noncustodial vault to be supplied on Morpho markets and receive shares of the ERC-4626 vault in return. The Vault then allocates deposits to underlying Morpho markets whitelisted by the Curator. The curator can set supply caps of each market. If the supply cap is reached, deposited assets will be supplied to another whitelisted market. The deposited assets earn yield from interest paid by borrowers and additional liquidity mining incentives.",
-      "protocolSocials": null,
-      "website": "https://app.morpho.org/",
-      "docs": "https://docs.morpho.org/",
-      "color": "#2E4DFF",
-      "logo": {
-        "url": "https://storage-logos.reserve.org/logos/d3ebe60eefce--morpho.svg"
-      }
-    },
-    "tokensCollection": {
-      "items": [
-        {
-          "id": "Morpho eUSD",
-          "tokenTicker": "meUSD",
-          "name": null,
-          "addresses": {
-            "8453": "0xbb819D845b573B5D7C538F5b85057160cfb5f313"
-          },
-          "color": null,
-          "rating": null,
-          "website": "https://app.morpho.org/vault?vault=0xbb819D845b573B5D7C538F5b85057160cfb5f313&network=base&morphoPrice=0.65",
-          "description": "The Morpho eUSD vault supplies eUSD to various collateral markets with a focus on the Reserve Protocol ecosystem. Learn more about RE7 Labs curations in the forum.",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/b5f6398f0622--eUSD__1_.svg"
-          }
-        }
-      ]
-    }
+    "protocol": "morphoblue",
+    "underlyings": [
+      "Morpho eUSD"
+    ]
   },
   {
     "name": "Compound V3 USDT",
@@ -652,37 +277,10 @@
       }
     ],
     "description": "Tether (USDT) is a cryptocurrency stablecoin pegged to the U.S. dollar. Tether is owned by iFinex, the Hong Kong-registered company that also owns the crypto exchange BitFinex.",
-    "protocol": {
-      "id": "compound-v3",
-      "protocolName": "Compound V3",
-      "protocolDescription": "Compound v3 is an EVM compatible protocol that enables supplying of crypto assets as collateral in order to borrow the base asset. Accounts can also earn interest by supplying the base asset to the protocol.",
-      "protocolSocials": null,
-      "website": "https://compound.finance/",
-      "docs": "https://docs.compound.finance/",
-      "color": "#39c7b1",
-      "logo": {
-        "url": "https://storage-logos.reserve.org/logos/9359b584436d--compound.png"
-      }
-    },
-    "tokensCollection": {
-      "items": [
-        {
-          "id": "usdt",
-          "tokenTicker": "USDT",
-          "name": null,
-          "addresses": {
-            "1": "0xdac17f958d2ee523a2206206994597c13d831ec7"
-          },
-          "color": "#53AE94",
-          "rating": "D",
-          "website": "https://tether.to/",
-          "description": "Tether (USDT) is a cryptocurrency stablecoin pegged to the U.S. dollar. Tether is owned by iFinex, the Hong Kong-registered company that also owns the crypto exchange BitFinex.",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/c8e63ed383a3--usdt.svg"
-          }
-        }
-      ]
-    }
+    "protocol": "compound-v3",
+    "underlyings": [
+      "usdt"
+    ]
   },
   {
     "name": "Compound V3 USDC",
@@ -702,39 +300,10 @@
       }
     ],
     "description": "USDC (Circle) deposited and lent out in V3 of Compound Finance. This variable yield is generated from the interest rate paid by borrowers and driven by borrower demand levels.",
-    "protocol": {
-      "id": "compound-v3",
-      "protocolName": "Compound V3",
-      "protocolDescription": "Compound v3 is an EVM compatible protocol that enables supplying of crypto assets as collateral in order to borrow the base asset. Accounts can also earn interest by supplying the base asset to the protocol.",
-      "protocolSocials": null,
-      "website": "https://compound.finance/",
-      "docs": "https://docs.compound.finance/",
-      "color": "#39c7b1",
-      "logo": {
-        "url": "https://storage-logos.reserve.org/logos/9359b584436d--compound.png"
-      }
-    },
-    "tokensCollection": {
-      "items": [
-        {
-          "id": "usdc",
-          "tokenTicker": "USDC",
-          "name": null,
-          "addresses": {
-            "1": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
-            "8453": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
-            "42161": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831"
-          },
-          "color": null,
-          "rating": "B+",
-          "website": "https://www.circle.com/en/usdc",
-          "description": "USD Coin is a digital stablecoin that is pegged to the United States dollar. USD Coin is managed by a consortium called Centre, which was founded by Circle and includes members from the cryptocurrency exchange Coinbase and Bitcoin mining company Bitmain, an investor in Circle.",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/9aceab4057b3--usdm__1_.svg"
-          }
-        }
-      ]
-    }
+    "protocol": "compound-v3",
+    "underlyings": [
+      "usdc"
+    ]
   },
   {
     "name": "PYUSD",
@@ -752,37 +321,10 @@
       }
     ],
     "description": "PayPal USD is a stablecoin that's fully backed by US dollar deposits, US treasuries, and similar cash equivalents. You can buy and sell 1 PYUSD for 1 USD on PayPal. The collateral backing, minting, and redeeming are handled by their whitelabel service provider, Paxos.",
-    "protocol": {
-      "id": "pyusd",
-      "protocolName": "PayPal",
-      "protocolDescription": "PayPal USD is a stablecoin that's fully backed by US dollar deposits, US treasuries, and similar cash equivalents. You can buy and sell 1 PYUSD for 1 USD on PayPal. The collateral backing, minting, and redeeming are handled by their whitelabel service provider, Paxos.",
-      "protocolSocials": null,
-      "website": "https://www.paypal.com/us/digital-wallet/manage-money/crypto/pyusd",
-      "docs": "https://docs.paxos.com/stablecoin/pyusd",
-      "color": "#006FE0",
-      "logo": {
-        "url": "https://storage-logos.reserve.org/logos/158550f3dee1--pyusd.svg"
-      }
-    },
-    "tokensCollection": {
-      "items": [
-        {
-          "id": "PYUSD",
-          "tokenTicker": "PYUSD",
-          "name": null,
-          "addresses": {
-            "1": "0x6c3ea9036406852006290770BEdFcAbA0e23A0e8"
-          },
-          "color": "#006FE0",
-          "rating": "A-",
-          "website": "https://www.paypal.com/us/digital-wallet/manage-money/crypto/pyusd",
-          "description": "PayPal USD is a stablecoin that's fully backed by US dollar deposits, US treasuries, and similar cash equivalents. You can buy and sell 1 PYUSD for 1 USD on PayPal. The collateral backing, minting, and redeeming are handled by their whitelabel service provider, Paxos.",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/158550f3dee1--pyusd.svg"
-          }
-        }
-      ]
-    }
+    "protocol": "pyusd",
+    "underlyings": [
+      "PYUSD"
+    ]
   },
   {
     "name": "ETHx",
@@ -800,35 +342,10 @@
       }
     ],
     "description": "ETHx allows users to benefit from Ethereum staking while maintaining liquidity for their assets",
-    "protocol": {
-      "id": "stader",
-      "protocolName": "Stader",
-      "protocolDescription": "Stader is a non-custodial smart contract-based liquid staking platform that helps you earn staking rewards while also access DeFi opportunities conveniently.",
-      "protocolSocials": null,
-      "website": "https://www.staderlabs.com/",
-      "docs": "https://www.staderlabs.com/docs/",
-      "color": "#0BC166",
-      "logo": {
-        "url": "https://storage-logos.reserve.org/logos/66a9f1586b11--stader.svg"
-      }
-    },
-    "tokensCollection": {
-      "items": [
-        {
-          "id": "eth",
-          "tokenTicker": "ETH",
-          "name": null,
-          "addresses": null,
-          "color": "627EEA",
-          "rating": null,
-          "website": "https://ethereum.org/",
-          "description": "Ethereum is a decentralized blockchain network powered by the Ether (ETH) token that enables users to make trustless financial transactions corresponding to logic encoded in smart contracts.",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/7a0e09632dd7--eth.svg"
-          }
-        }
-      ]
-    }
+    "protocol": "stader",
+    "underlyings": [
+      "eth"
+    ]
   },
   {
     "name": "Morpho USDT (BB)",
@@ -846,37 +363,10 @@
       }
     ],
     "description": "Morpho - \"bbUSDT\" - USDT lent to a vault which supplies deposited assets to Morpho markets whitelisted by the vault Curator. The Curator can set supply caps of each market. If the supply cap is reached, deposited assets will be supplied to another whitelisted market. This vault is curated by B.Protocol and Block Analitica and is intended to optimize risk-adjusted interest earned from blue-chip collateral markets.",
-    "protocol": {
-      "id": "morphoblue",
-      "protocolName": "Morpho",
-      "protocolDescription": "Lenders deposit a single asset into a noncustodial vault to be supplied on Morpho markets and receive shares of the ERC-4626 vault in return. The Vault then allocates deposits to underlying Morpho markets whitelisted by the Curator. The curator can set supply caps of each market. If the supply cap is reached, deposited assets will be supplied to another whitelisted market. The deposited assets earn yield from interest paid by borrowers and additional liquidity mining incentives.",
-      "protocolSocials": null,
-      "website": "https://app.morpho.org/",
-      "docs": "https://docs.morpho.org/",
-      "color": "#2E4DFF",
-      "logo": {
-        "url": "https://storage-logos.reserve.org/logos/d3ebe60eefce--morpho.svg"
-      }
-    },
-    "tokensCollection": {
-      "items": [
-        {
-          "id": "usdt",
-          "tokenTicker": "USDT",
-          "name": null,
-          "addresses": {
-            "1": "0xdac17f958d2ee523a2206206994597c13d831ec7"
-          },
-          "color": "#53AE94",
-          "rating": "D",
-          "website": "https://tether.to/",
-          "description": "Tether (USDT) is a cryptocurrency stablecoin pegged to the U.S. dollar. Tether is owned by iFinex, the Hong Kong-registered company that also owns the crypto exchange BitFinex.",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/c8e63ed383a3--usdt.svg"
-          }
-        }
-      ]
-    }
+    "protocol": "morphoblue",
+    "underlyings": [
+      "usdt"
+    ]
   },
   {
     "name": "Morpho ETH",
@@ -894,35 +384,10 @@
       }
     ],
     "description": "Morpho ETH (Re7) - ETH lent to a vault which supplies deposited assets to Morpho markets whitelisted by the vault Curator. The Curator can set supply caps of each market. If the supply cap is reached, deposited assets will be supplied to another whitelisted market. This vault is curated by Re7 and aims to outperform staked ETH yields by lending WETH against a diverse set of Liquid Staking and Liquid Restaking Token collateral markets.",
-    "protocol": {
-      "id": "morphoblue",
-      "protocolName": "Morpho",
-      "protocolDescription": "Lenders deposit a single asset into a noncustodial vault to be supplied on Morpho markets and receive shares of the ERC-4626 vault in return. The Vault then allocates deposits to underlying Morpho markets whitelisted by the Curator. The curator can set supply caps of each market. If the supply cap is reached, deposited assets will be supplied to another whitelisted market. The deposited assets earn yield from interest paid by borrowers and additional liquidity mining incentives.",
-      "protocolSocials": null,
-      "website": "https://app.morpho.org/",
-      "docs": "https://docs.morpho.org/",
-      "color": "#2E4DFF",
-      "logo": {
-        "url": "https://storage-logos.reserve.org/logos/d3ebe60eefce--morpho.svg"
-      }
-    },
-    "tokensCollection": {
-      "items": [
-        {
-          "id": "eth",
-          "tokenTicker": "ETH",
-          "name": null,
-          "addresses": null,
-          "color": "627EEA",
-          "rating": null,
-          "website": "https://ethereum.org/",
-          "description": "Ethereum is a decentralized blockchain network powered by the Ether (ETH) token that enables users to make trustless financial transactions corresponding to logic encoded in smart contracts.",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/7a0e09632dd7--eth.svg"
-          }
-        }
-      ]
-    }
+    "protocol": "morphoblue",
+    "underlyings": [
+      "eth"
+    ]
   },
   {
     "name": "Morpho USDC (Steakhouse)",
@@ -940,39 +405,10 @@
       }
     ],
     "description": "Morpho - \"steakUSDC\": USDC lent to a vault which supplies deposited assets to Morpho markets whitelisted by the vault Curator. The Curator can set supply caps of each market. If the supply cap is reached, deposited assets will be supplied to another whitelisted market. This vault is curated by Steakhouse Finance and aims to optimize yields by lending USDC against blue chip crypto and real world asset (RWA) collateral markets, depending on market conditions. Steakhouse calls this the “dual engine.”",
-    "protocol": {
-      "id": "morphoblue",
-      "protocolName": "Morpho",
-      "protocolDescription": "Lenders deposit a single asset into a noncustodial vault to be supplied on Morpho markets and receive shares of the ERC-4626 vault in return. The Vault then allocates deposits to underlying Morpho markets whitelisted by the Curator. The curator can set supply caps of each market. If the supply cap is reached, deposited assets will be supplied to another whitelisted market. The deposited assets earn yield from interest paid by borrowers and additional liquidity mining incentives.",
-      "protocolSocials": null,
-      "website": "https://app.morpho.org/",
-      "docs": "https://docs.morpho.org/",
-      "color": "#2E4DFF",
-      "logo": {
-        "url": "https://storage-logos.reserve.org/logos/d3ebe60eefce--morpho.svg"
-      }
-    },
-    "tokensCollection": {
-      "items": [
-        {
-          "id": "usdc",
-          "tokenTicker": "USDC",
-          "name": null,
-          "addresses": {
-            "1": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
-            "8453": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
-            "42161": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831"
-          },
-          "color": null,
-          "rating": "B+",
-          "website": "https://www.circle.com/en/usdc",
-          "description": "USD Coin is a digital stablecoin that is pegged to the United States dollar. USD Coin is managed by a consortium called Centre, which was founded by Circle and includes members from the cryptocurrency exchange Coinbase and Bitcoin mining company Bitmain, an investor in Circle.",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/9aceab4057b3--usdm__1_.svg"
-          }
-        }
-      ]
-    }
+    "protocol": "morphoblue",
+    "underlyings": [
+      "usdc"
+    ]
   },
   {
     "name": "Morpho pyUSD (Steakhouse)",
@@ -990,37 +426,10 @@
       }
     ],
     "description": "Morpho pyUSD (Steakhouse): pyUSD lent to a vault which supplies deposited assets to Morpho markets whitelisted by the vault Curator. The Curator can set supply caps of each market. If the supply cap is reached, deposited assets will be supplied to another whitelisted market. This vault is curated by Steakhouse Finance and aims to optimize yields by lending pyUSD against blue chip crypto and real world asset (RWA) collateral markets, depending on market conditions. Steakhouse calls this the “dual engine.”",
-    "protocol": {
-      "id": "morphoblue",
-      "protocolName": "Morpho",
-      "protocolDescription": "Lenders deposit a single asset into a noncustodial vault to be supplied on Morpho markets and receive shares of the ERC-4626 vault in return. The Vault then allocates deposits to underlying Morpho markets whitelisted by the Curator. The curator can set supply caps of each market. If the supply cap is reached, deposited assets will be supplied to another whitelisted market. The deposited assets earn yield from interest paid by borrowers and additional liquidity mining incentives.",
-      "protocolSocials": null,
-      "website": "https://app.morpho.org/",
-      "docs": "https://docs.morpho.org/",
-      "color": "#2E4DFF",
-      "logo": {
-        "url": "https://storage-logos.reserve.org/logos/d3ebe60eefce--morpho.svg"
-      }
-    },
-    "tokensCollection": {
-      "items": [
-        {
-          "id": "PYUSD",
-          "tokenTicker": "PYUSD",
-          "name": null,
-          "addresses": {
-            "1": "0x6c3ea9036406852006290770BEdFcAbA0e23A0e8"
-          },
-          "color": "#006FE0",
-          "rating": "A-",
-          "website": "https://www.paypal.com/us/digital-wallet/manage-money/crypto/pyusd",
-          "description": "PayPal USD is a stablecoin that's fully backed by US dollar deposits, US treasuries, and similar cash equivalents. You can buy and sell 1 PYUSD for 1 USD on PayPal. The collateral backing, minting, and redeeming are handled by their whitelabel service provider, Paxos.",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/158550f3dee1--pyusd.svg"
-          }
-        }
-      ]
-    }
+    "protocol": "morphoblue",
+    "underlyings": [
+      "PYUSD"
+    ]
   },
   {
     "name": "sUSDe",
@@ -1038,37 +447,10 @@
       }
     ],
     "description": "Ethena Staked USDe (sUSDe) is a reward-bearing token that users can obtain by staking their USDe.",
-    "protocol": {
-      "id": "ethena",
-      "protocolName": "Ethena",
-      "protocolDescription": "Ethena is a synthetic dollar protocol built on Ethereum.",
-      "protocolSocials": null,
-      "website": "https://ethena.fi/",
-      "docs": "https://ethena-labs.gitbook.io/ethena-labs",
-      "color": "#e9eaf2",
-      "logo": {
-        "url": "https://storage-logos.reserve.org/logos/3a5c89d7a3f4--ethena.svg"
-      }
-    },
-    "tokensCollection": {
-      "items": [
-        {
-          "id": "susde",
-          "tokenTicker": "sUSDe",
-          "name": null,
-          "addresses": {
-            "1": "0x9D39A5DE30e57443BfF2A8307A4256c8797A3497"
-          },
-          "color": "#f3f3f3",
-          "rating": null,
-          "website": "https://ethena.fi/",
-          "description": "Ethena Staked USDe (sUSDe) is a reward-bearing token that users can obtain by staking their USDe.",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/9533f2bca339--susde.webp"
-          }
-        }
-      ]
-    }
+    "protocol": "ethena",
+    "underlyings": [
+      "susde"
+    ]
   },
   {
     "name": "apxETH",
@@ -1086,37 +468,10 @@
       }
     ],
     "description": "apxETH is for users focused on maximizing staking yields. After minting pxETH, users can deposit it into Dinero's auto-compounding rewards vault to enjoy boosted staking yields without managing their own validators.",
-    "protocol": {
-      "id": "apxeth",
-      "protocolName": "Dinero",
-      "protocolDescription": "Dinero is a suite of products that scale yield for protocols and users. pxETH is DeFi’s highest yielding Ethereum liquid staking solution.",
-      "protocolSocials": null,
-      "website": "https://dinero.xyz/",
-      "docs": "https://dinero.xyz/docs",
-      "color": "#0E566D",
-      "logo": {
-        "url": "https://storage-logos.reserve.org/logos/4ed1419ba77b--dinero.png"
-      }
-    },
-    "tokensCollection": {
-      "items": [
-        {
-          "id": "pxeth",
-          "tokenTicker": "pxETH",
-          "name": null,
-          "addresses": {
-            "1": "0x04C154b66CB340F3Ae24111CC767e0184Ed00Cc6"
-          },
-          "color": "#96A6AF",
-          "rating": null,
-          "website": "https://dinero.xyz/",
-          "description": "pxETH is for those prioritizing liquidity over staking yield. Holding pxETH means holding an ETH-pegged asset that can be used across DeFi for providing liquidity, participating in lending protocols, and more.",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/2442937d45dd--pxETH.webp"
-          }
-        }
-      ]
-    }
+    "protocol": "apxeth",
+    "underlyings": [
+      "pxeth"
+    ]
   },
   {
     "name": "Savings DAI",
@@ -1134,37 +489,10 @@
       }
     ],
     "description": "Savings DAI (sDAI) - DAI (MakerDAO) deposited on Spark Finance to earn yield via the DAI Savings Rate (DSR). DAI is a decentralized, overcollateralized stablecoin backed by a mix of collateral and reserves. The DSR is a fixed rate of return set by MakerDAO governance which rewards the portion of DAI deposited in a vault. The yield paid out is a share of revenue earned from DAI’s backing assets, either through interest charged on loans, or from deploying reserves.",
-    "protocol": {
-      "id": "makerdao",
-      "protocolName": "Maker",
-      "protocolDescription": "The Maker Protocol is the platform through which anyone, anywhere can generate the Dai stablecoin against crypto collateral assets. Maker is unlocking the power of decentralized finance for everyone by creating an inclusive platform for economic empowerment; enabling everyone with equal access to the global financial marketplace.",
-      "protocolSocials": null,
-      "website": "https://makerdao.com/",
-      "docs": "https://docs.makerdao.com/",
-      "color": "#2AAE9F",
-      "logo": {
-        "url": "https://storage-logos.reserve.org/logos/4bfd558eeaa0--Mark_Maker_2x.png"
-      }
-    },
-    "tokensCollection": {
-      "items": [
-        {
-          "id": "dai",
-          "tokenTicker": "DAI",
-          "name": null,
-          "addresses": {
-            "1": "0x6b175474e89094c44da98b954eedeac495271d0f"
-          },
-          "color": "#F5AC37",
-          "rating": "B+",
-          "website": "https://makerdao.com/",
-          "description": "DAI is a debt-collateralized stablecoin issued by MakerDAO, an Ethereum-based protocol, that seeks to maintain an exact ratio of one-to-one with the U.S. dollar. It is primarily used as a means of lending and borrowing crypto assets without the need for an intermediary",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/fcee1f1e9068--dai.svg"
-          }
-        }
-      ]
-    }
+    "protocol": "makerdao",
+    "underlyings": [
+      "dai"
+    ]
   },
   {
     "name": "USDM",
@@ -1182,37 +510,10 @@
       }
     ],
     "description": "The USDM token is a rebasing ERC20 token, redeemable at a pegged 1:1 USD value by primary users. USDM is a fully backed stablecoin, backed by \"USDM Reserves\", which are held under custody with regulated financial institutions in bankruptcy-remote accounts, segregated from the Company's operating accounts, on behalf of, and for the benefit of, Users.\n\nUSDM rebases daily, allowing users to receive rewards. These rewards are generated by the interest paid by the US Treasuries held in the USDM Reserves.",
-    "protocol": {
-      "id": "usdm",
-      "protocolName": "Mountain Protocol",
-      "protocolDescription": "\nMountain Protocol is a digital asset issuer regulated by the Bermuda Monetary Authority (https://bma.bm) USDM is the first yield-bearing, nationally regulated USD stablecoin. Backed by US Treasuries.",
-      "protocolSocials": null,
-      "website": "https://mountainprotocol.com/",
-      "docs": "https://docs.mountainprotocol.com/",
-      "color": "#000",
-      "logo": {
-        "url": "https://storage-logos.reserve.org/logos/fe6abbc3991e--usdm__1_.svg"
-      }
-    },
-    "tokensCollection": {
-      "items": [
-        {
-          "id": "usdm",
-          "tokenTicker": "USDM",
-          "name": null,
-          "addresses": {
-            "42161": "0x59D9356E565Ab3A36dD77763Fc0d87fEaf85508C"
-          },
-          "color": "#000",
-          "rating": null,
-          "website": "https://mountainprotocol.com/usdm",
-          "description": "USDM is an ERC20 stablecoin issued by Mountain Protocol, a licensed financial institution in Bermuda, regulated by the Bermuda Monetary Authority (BMA). It caters to non-US individuals and adheres to the SEC’s Regulation S.",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/9aceab4057b3--usdm__1_.svg"
-          }
-        }
-      ]
-    }
+    "protocol": "usdm",
+    "underlyings": [
+      "usdm"
+    ]
   },
   {
     "name": "Convex ETH+/ETH",
@@ -1234,53 +535,11 @@
       }
     ],
     "description": "Convex ETH+/ETH - token obtained by providing liquidity to the ETH+-ETH liquidity pool on Curve Finance and staking the LP token on Convex Finance. This variable yield is generated from a combination of native asset yield, CVX rewards, and boosted CRV rewards leveraging Convex’s veCRV power. ",
-    "protocol": {
-      "id": "convex-finance",
-      "protocolName": "Convex Finance",
-      "protocolDescription": "Convex is a platform that boosts rewards for CRV stakers and liquidity providers alike, all in a simple and easy to use interface.",
-      "protocolSocials": [
-        "https://twitter.com/ConvexFinance"
-      ],
-      "website": "https://www.convexfinance.com/",
-      "docs": "https://docs.convexfinance.com/convexfinance/",
-      "color": "#16280B",
-      "logo": {
-        "url": "https://storage-logos.reserve.org/logos/3713ff4f6025--convex.svg"
-      }
-    },
-    "tokensCollection": {
-      "items": [
-        {
-          "id": "eth",
-          "tokenTicker": "ETH",
-          "name": null,
-          "addresses": null,
-          "color": "627EEA",
-          "rating": null,
-          "website": "https://ethereum.org/",
-          "description": "Ethereum is a decentralized blockchain network powered by the Ether (ETH) token that enables users to make trustless financial transactions corresponding to logic encoded in smart contracts.",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/7a0e09632dd7--eth.svg"
-          }
-        },
-        {
-          "id": "eth+",
-          "tokenTicker": "ETH+",
-          "name": null,
-          "addresses": {
-            "1": "0xE72B141DF173b999AE7c1aDcbF60Cc9833Ce56a8",
-            "42161": "0x18c14c2d707b2212e17d1579789fc06010cfca23"
-          },
-          "color": "627EEA",
-          "rating": null,
-          "website": "https://ethereum.org/",
-          "description": "Ethereum is a decentralized blockchain network powered by the Ether (ETH) token that enables users to make trustless financial transactions corresponding to logic encoded in smart contracts.",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/883a559c59f2--ethplus.svg"
-          }
-        }
-      ]
-    }
+    "protocol": "convex-finance",
+    "underlyings": [
+      "eth",
+      "eth+"
+    ]
   },
   {
     "name": "Arbitrum Aave V3 USDC",
@@ -1298,43 +557,10 @@
       }
     ],
     "description": "USDC (Circle) deposited and lent out in V3 of Aave. This variable yield is generated from borrower yield and a share of flash loan fees and driven by borrower demand levels.",
-    "protocol": {
-      "id": "aavev3",
-      "protocolName": "Aave V3",
-      "protocolDescription": "Aave is a decentralized non-custodial liquidity protocol where users can participate as depositors or borrowers. Depositors provide liquidity to the market to earn a passive income, while borrowers are able to borrow in an overcollateralized fashion",
-      "protocolSocials": [
-        "https://app.aave.com/",
-        "https://twitter.com/AaveAave",
-        "aave.com/discord"
-      ],
-      "website": "https://aave.com/",
-      "docs": "https://docs.aave.com/hub/",
-      "color": "#a75ca3",
-      "logo": {
-        "url": "https://storage-logos.reserve.org/logos/88dc6b2ed57b--aave.png"
-      }
-    },
-    "tokensCollection": {
-      "items": [
-        {
-          "id": "usdc",
-          "tokenTicker": "USDC",
-          "name": null,
-          "addresses": {
-            "1": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
-            "8453": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
-            "42161": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831"
-          },
-          "color": null,
-          "rating": "B+",
-          "website": "https://www.circle.com/en/usdc",
-          "description": "USD Coin is a digital stablecoin that is pegged to the United States dollar. USD Coin is managed by a consortium called Centre, which was founded by Circle and includes members from the cryptocurrency exchange Coinbase and Bitcoin mining company Bitmain, an investor in Circle.",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/9aceab4057b3--usdm__1_.svg"
-          }
-        }
-      ]
-    }
+    "protocol": "aavev3",
+    "underlyings": [
+      "usdc"
+    ]
   },
   {
     "name": "Convex crvUSD/USDC",
@@ -1356,56 +582,11 @@
       }
     ],
     "description": "Convex crvUSD/USDC - token obtained by providing liquidity to the crvUSD-USDC liquidity pool on Curve Finance and staking the LP token on Convex Finance. This variable yield is generated from a combination of native asset yield, CVX rewards, and boosted CRV rewards leveraging Convex’s veCRV power. ",
-    "protocol": {
-      "id": "convex-finance",
-      "protocolName": "Convex Finance",
-      "protocolDescription": "Convex is a platform that boosts rewards for CRV stakers and liquidity providers alike, all in a simple and easy to use interface.",
-      "protocolSocials": [
-        "https://twitter.com/ConvexFinance"
-      ],
-      "website": "https://www.convexfinance.com/",
-      "docs": "https://docs.convexfinance.com/convexfinance/",
-      "color": "#16280B",
-      "logo": {
-        "url": "https://storage-logos.reserve.org/logos/3713ff4f6025--convex.svg"
-      }
-    },
-    "tokensCollection": {
-      "items": [
-        {
-          "id": "crvUSD",
-          "tokenTicker": "crvUSD",
-          "name": null,
-          "addresses": {
-            "1": "0xf939E0A03FB07F59A73314E73794Be0E57ac1b4E"
-          },
-          "color": "#408149",
-          "rating": null,
-          "website": "https://resources.curve.fi/crvusd/understanding-crvusd/",
-          "description": "Curve Stablecoin infrastructure enables users to mint crvUSD using a variety of crypto collaterals.\n\nPositions are managed passively: if the price of the collateral decreases, the loan automatically enters a soft-liquidation mode, wherein some of the collateral is converted to crvUSD. Conversely, if the collateral's price increases, the system reclaims the collateral by converting crvUSD back to the collateral token.",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/13522cf991d5--0xf939e0a03fb07f59a73314e73794be0e57ac1b4e.png"
-          }
-        },
-        {
-          "id": "usdc",
-          "tokenTicker": "USDC",
-          "name": null,
-          "addresses": {
-            "1": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
-            "8453": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
-            "42161": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831"
-          },
-          "color": null,
-          "rating": "B+",
-          "website": "https://www.circle.com/en/usdc",
-          "description": "USD Coin is a digital stablecoin that is pegged to the United States dollar. USD Coin is managed by a consortium called Centre, which was founded by Circle and includes members from the cryptocurrency exchange Coinbase and Bitcoin mining company Bitmain, an investor in Circle.",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/9aceab4057b3--usdm__1_.svg"
-          }
-        }
-      ]
-    }
+    "protocol": "convex-finance",
+    "underlyings": [
+      "crvUSD",
+      "usdc"
+    ]
   },
   {
     "name": "Convex crvUSD/USDT",
@@ -1427,54 +608,11 @@
       }
     ],
     "description": "Convex crvUSD/USDT - token obtained by providing liquidity to the crvUSD-USDT liquidity pool on Curve Finance and staking the LP token on Convex Finance. This variable yield is generated from a combination of native asset yield, CVX rewards, and boosted CRV rewards leveraging Convex’s veCRV power. ",
-    "protocol": {
-      "id": "convex-finance",
-      "protocolName": "Convex Finance",
-      "protocolDescription": "Convex is a platform that boosts rewards for CRV stakers and liquidity providers alike, all in a simple and easy to use interface.",
-      "protocolSocials": [
-        "https://twitter.com/ConvexFinance"
-      ],
-      "website": "https://www.convexfinance.com/",
-      "docs": "https://docs.convexfinance.com/convexfinance/",
-      "color": "#16280B",
-      "logo": {
-        "url": "https://storage-logos.reserve.org/logos/3713ff4f6025--convex.svg"
-      }
-    },
-    "tokensCollection": {
-      "items": [
-        {
-          "id": "usdt",
-          "tokenTicker": "USDT",
-          "name": null,
-          "addresses": {
-            "1": "0xdac17f958d2ee523a2206206994597c13d831ec7"
-          },
-          "color": "#53AE94",
-          "rating": "D",
-          "website": "https://tether.to/",
-          "description": "Tether (USDT) is a cryptocurrency stablecoin pegged to the U.S. dollar. Tether is owned by iFinex, the Hong Kong-registered company that also owns the crypto exchange BitFinex.",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/c8e63ed383a3--usdt.svg"
-          }
-        },
-        {
-          "id": "crvUSD",
-          "tokenTicker": "crvUSD",
-          "name": null,
-          "addresses": {
-            "1": "0xf939E0A03FB07F59A73314E73794Be0E57ac1b4E"
-          },
-          "color": "#408149",
-          "rating": null,
-          "website": "https://resources.curve.fi/crvusd/understanding-crvusd/",
-          "description": "Curve Stablecoin infrastructure enables users to mint crvUSD using a variety of crypto collaterals.\n\nPositions are managed passively: if the price of the collateral decreases, the loan automatically enters a soft-liquidation mode, wherein some of the collateral is converted to crvUSD. Conversely, if the collateral's price increases, the system reclaims the collateral by converting crvUSD back to the collateral token.",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/13522cf991d5--0xf939e0a03fb07f59a73314e73794be0e57ac1b4e.png"
-          }
-        }
-      ]
-    }
+    "protocol": "convex-finance",
+    "underlyings": [
+      "usdt",
+      "crvUSD"
+    ]
   },
   {
     "name": "Staked Frax ETH",
@@ -1492,35 +630,10 @@
       }
     ],
     "description": "Staked Frax ETH (sfraxETH) - acts as a stablecoin loosely pegged to ETH, so that 1 frxETH always represents 1 ETH and the amount of frxETH in circulation matches the amount of ETH in the Frax ETH system. sfrxETH is a ERC-4626 vault designed to accrue the staking yield of the Frax ETH validators. At any time, frxETH can be exchanged for sfrxETH by depositing it into the sfrxETH vault, which allows users to earn staking yield on their frxETH. Over time, as validators accrue staking yield, an equivalent amount of frxETH is minted and added to the vault, allowing users to redeem their sfrxETH for a greater amount of frxETH than they deposited",
-    "protocol": {
-      "id": "fraxeth",
-      "protocolName": "Eth FRAX",
-      "protocolDescription": "Frax Ether is a liquid ETH staking derivative designed to uniquely leverage the Frax Finance ecosystem to maximize staking yield and smoothen the Ethereum staking process for a simplified, secure, and DeFi-native way to earn interest on ETH.",
-      "protocolSocials": null,
-      "website": "https://frax.finance/",
-      "docs": "https://docs.frax.finance/frax-ether/frxeth-and-sfrxeth",
-      "color": null,
-      "logo": {
-        "url": "https://storage-logos.reserve.org/logos/331c84a92eea--JjqQ9ROz_400x400.jpeg"
-      }
-    },
-    "tokensCollection": {
-      "items": [
-        {
-          "id": "eth",
-          "tokenTicker": "ETH",
-          "name": null,
-          "addresses": null,
-          "color": "627EEA",
-          "rating": null,
-          "website": "https://ethereum.org/",
-          "description": "Ethereum is a decentralized blockchain network powered by the Ether (ETH) token that enables users to make trustless financial transactions corresponding to logic encoded in smart contracts.",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/7a0e09632dd7--eth.svg"
-          }
-        }
-      ]
-    }
+    "protocol": "fraxeth",
+    "underlyings": [
+      "eth"
+    ]
   },
   {
     "name": "Aave V3 USDC",
@@ -1538,43 +651,10 @@
       }
     ],
     "description": "USDC (Circle) deposited and lent out in V3 of Aave. This variable yield is generated from borrower yield and a share of flash loan fees and driven by borrower demand levels.",
-    "protocol": {
-      "id": "aavev3",
-      "protocolName": "Aave V3",
-      "protocolDescription": "Aave is a decentralized non-custodial liquidity protocol where users can participate as depositors or borrowers. Depositors provide liquidity to the market to earn a passive income, while borrowers are able to borrow in an overcollateralized fashion",
-      "protocolSocials": [
-        "https://app.aave.com/",
-        "https://twitter.com/AaveAave",
-        "aave.com/discord"
-      ],
-      "website": "https://aave.com/",
-      "docs": "https://docs.aave.com/hub/",
-      "color": "#a75ca3",
-      "logo": {
-        "url": "https://storage-logos.reserve.org/logos/88dc6b2ed57b--aave.png"
-      }
-    },
-    "tokensCollection": {
-      "items": [
-        {
-          "id": "usdc",
-          "tokenTicker": "USDC",
-          "name": null,
-          "addresses": {
-            "1": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
-            "8453": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
-            "42161": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831"
-          },
-          "color": null,
-          "rating": "B+",
-          "website": "https://www.circle.com/en/usdc",
-          "description": "USD Coin is a digital stablecoin that is pegged to the United States dollar. USD Coin is managed by a consortium called Centre, which was founded by Circle and includes members from the cryptocurrency exchange Coinbase and Bitcoin mining company Bitmain, an investor in Circle.",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/9aceab4057b3--usdm__1_.svg"
-          }
-        }
-      ]
-    }
+    "protocol": "aavev3",
+    "underlyings": [
+      "usdc"
+    ]
   },
   {
     "name": "Aave V3 USDC",
@@ -1592,43 +672,10 @@
       }
     ],
     "description": "USDC (Circle) deposited and lent out in V3 of Aave. This variable yield is generated from borrower yield and a share of flash loan fees and driven by borrower demand levels.",
-    "protocol": {
-      "id": "aavev3",
-      "protocolName": "Aave V3",
-      "protocolDescription": "Aave is a decentralized non-custodial liquidity protocol where users can participate as depositors or borrowers. Depositors provide liquidity to the market to earn a passive income, while borrowers are able to borrow in an overcollateralized fashion",
-      "protocolSocials": [
-        "https://app.aave.com/",
-        "https://twitter.com/AaveAave",
-        "aave.com/discord"
-      ],
-      "website": "https://aave.com/",
-      "docs": "https://docs.aave.com/hub/",
-      "color": "#a75ca3",
-      "logo": {
-        "url": "https://storage-logos.reserve.org/logos/88dc6b2ed57b--aave.png"
-      }
-    },
-    "tokensCollection": {
-      "items": [
-        {
-          "id": "usdc",
-          "tokenTicker": "USDC",
-          "name": null,
-          "addresses": {
-            "1": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
-            "8453": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
-            "42161": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831"
-          },
-          "color": null,
-          "rating": "B+",
-          "website": "https://www.circle.com/en/usdc",
-          "description": "USD Coin is a digital stablecoin that is pegged to the United States dollar. USD Coin is managed by a consortium called Centre, which was founded by Circle and includes members from the cryptocurrency exchange Coinbase and Bitcoin mining company Bitmain, an investor in Circle.",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/9aceab4057b3--usdm__1_.svg"
-          }
-        }
-      ]
-    }
+    "protocol": "aavev3",
+    "underlyings": [
+      "usdc"
+    ]
   },
   {
     "name": "Aave V3 PyUSD",
@@ -1646,41 +693,10 @@
       }
     ],
     "description": "saEthPyUSD (AAVE PYUSD V3), pyUSD (Paypal USD) deposited and lent out on V3 of Aave on Ethereum. This variable yield is generated from the interest rate paid by borrowers and driven by borrower demand levels.",
-    "protocol": {
-      "id": "aavev3",
-      "protocolName": "Aave V3",
-      "protocolDescription": "Aave is a decentralized non-custodial liquidity protocol where users can participate as depositors or borrowers. Depositors provide liquidity to the market to earn a passive income, while borrowers are able to borrow in an overcollateralized fashion",
-      "protocolSocials": [
-        "https://app.aave.com/",
-        "https://twitter.com/AaveAave",
-        "aave.com/discord"
-      ],
-      "website": "https://aave.com/",
-      "docs": "https://docs.aave.com/hub/",
-      "color": "#a75ca3",
-      "logo": {
-        "url": "https://storage-logos.reserve.org/logos/88dc6b2ed57b--aave.png"
-      }
-    },
-    "tokensCollection": {
-      "items": [
-        {
-          "id": "PYUSD",
-          "tokenTicker": "PYUSD",
-          "name": null,
-          "addresses": {
-            "1": "0x6c3ea9036406852006290770BEdFcAbA0e23A0e8"
-          },
-          "color": "#006FE0",
-          "rating": "A-",
-          "website": "https://www.paypal.com/us/digital-wallet/manage-money/crypto/pyusd",
-          "description": "PayPal USD is a stablecoin that's fully backed by US dollar deposits, US treasuries, and similar cash equivalents. You can buy and sell 1 PYUSD for 1 USD on PayPal. The collateral backing, minting, and redeeming are handled by their whitelabel service provider, Paxos.",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/158550f3dee1--pyusd.svg"
-          }
-        }
-      ]
-    }
+    "protocol": "aavev3",
+    "underlyings": [
+      "PYUSD"
+    ]
   },
   {
     "name": "Compound V3 USDbC",
@@ -1698,37 +714,10 @@
       }
     ],
     "description": "Compound USDbC V3 (cUSDbCv3) - USDbC (Circle) deposited and lent out in V3 of Compound Finance. This variable yield is generated from the interest rate paid by borrowers and driven by borrower demand levels.",
-    "protocol": {
-      "id": "compound-v3",
-      "protocolName": "Compound V3",
-      "protocolDescription": "Compound v3 is an EVM compatible protocol that enables supplying of crypto assets as collateral in order to borrow the base asset. Accounts can also earn interest by supplying the base asset to the protocol.",
-      "protocolSocials": null,
-      "website": "https://compound.finance/",
-      "docs": "https://docs.compound.finance/",
-      "color": "#39c7b1",
-      "logo": {
-        "url": "https://storage-logos.reserve.org/logos/9359b584436d--compound.png"
-      }
-    },
-    "tokensCollection": {
-      "items": [
-        {
-          "id": "USDbC",
-          "tokenTicker": "USDbC",
-          "name": null,
-          "addresses": {
-            "8453": "0x6490D66B17A1E9a460Ab54131165C8F921aCcDeB"
-          },
-          "color": "#2775CA",
-          "rating": null,
-          "website": "https://help.coinbase.com/en/coinbase/getting-started/crypto-education/usd-base-coin",
-          "description": "USD Coin is a digital stablecoin that is pegged to the United States dollar. USD Coin is managed by a consortium called Centre, which was founded by Circle and includes members from the cryptocurrency exchange Coinbase and Bitcoin mining company Bitmain, an investor in Circle. USDbC is the bridged form of USDC on Base",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/9aceab4057b3--usdm__1_.svg"
-          }
-        }
-      ]
-    }
+    "protocol": "compound-v3",
+    "underlyings": [
+      "USDbC"
+    ]
   },
   {
     "name": "Coinbase Staked ETH",
@@ -1746,39 +735,10 @@
       }
     ],
     "description": "Coinbase Staked ETH (cbETH) - liquid-staked ETH through Coinbase. This variable yield is derived from native ETH yield earned by Coinbase validators (net of fees).",
-    "protocol": {
-      "id": "coinbase",
-      "protocolName": "Coinbase",
-      "protocolDescription": "Coinbase is a secure online platform for buying, selling, transferring, and storing cryptocurrency (crypto).",
-      "protocolSocials": [
-        "https://www.coinbase.com/blog",
-        "https://twitter.com/coinbase",
-        "https://www.facebook.com/Coinbase"
-      ],
-      "website": "https://www.coinbase.com/",
-      "docs": null,
-      "color": "#0052FF",
-      "logo": {
-        "url": "https://storage-logos.reserve.org/logos/598a54dcc631--coinbase.svg"
-      }
-    },
-    "tokensCollection": {
-      "items": [
-        {
-          "id": "eth",
-          "tokenTicker": "ETH",
-          "name": null,
-          "addresses": null,
-          "color": "627EEA",
-          "rating": null,
-          "website": "https://ethereum.org/",
-          "description": "Ethereum is a decentralized blockchain network powered by the Ether (ETH) token that enables users to make trustless financial transactions corresponding to logic encoded in smart contracts.",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/7a0e09632dd7--eth.svg"
-          }
-        }
-      ]
-    }
+    "protocol": "coinbase",
+    "underlyings": [
+      "eth"
+    ]
   },
   {
     "name": "Static Aave Base USDbC",
@@ -1796,41 +756,10 @@
       }
     ],
     "description": "Aave Base USDC (aBasUSDbC) - Bridged USDC (Circle) deposited and lent out in V3 of Aave on Base. This variable yield is generated from from the interest rate paid by borrowers and driven by borrower demand levels.",
-    "protocol": {
-      "id": "aave",
-      "protocolName": "Aave V2",
-      "protocolDescription": "Aave is a decentralized non-custodial liquidity protocol where users can participate as depositors or borrowers. Depositors provide liquidity to the market to earn a passive income, while borrowers are able to borrow in an overcollateralized fashion",
-      "protocolSocials": [
-        "https://app.aave.com/",
-        "https://twitter.com/AaveAave",
-        "aave.com/discord"
-      ],
-      "website": "https://aave.com/",
-      "docs": "https://docs.aave.com/hub/",
-      "color": "#a75ca3",
-      "logo": {
-        "url": "https://storage-logos.reserve.org/logos/88dc6b2ed57b--aave.png"
-      }
-    },
-    "tokensCollection": {
-      "items": [
-        {
-          "id": "USDbC",
-          "tokenTicker": "USDbC",
-          "name": null,
-          "addresses": {
-            "8453": "0x6490D66B17A1E9a460Ab54131165C8F921aCcDeB"
-          },
-          "color": "#2775CA",
-          "rating": null,
-          "website": "https://help.coinbase.com/en/coinbase/getting-started/crypto-education/usd-base-coin",
-          "description": "USD Coin is a digital stablecoin that is pegged to the United States dollar. USD Coin is managed by a consortium called Centre, which was founded by Circle and includes members from the cryptocurrency exchange Coinbase and Bitcoin mining company Bitmain, an investor in Circle. USDbC is the bridged form of USDC on Base",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/9aceab4057b3--usdm__1_.svg"
-          }
-        }
-      ]
-    }
+    "protocol": "aave",
+    "underlyings": [
+      "USDbC"
+    ]
   },
   {
     "name": "Aave USDT",
@@ -1848,41 +777,10 @@
       }
     ],
     "description": "USDT (Tether) deposited and lent out in V2 of Aave. This variable yield is generated from borrower yield and a share of flash loan fees and driven by borrower demand levels.",
-    "protocol": {
-      "id": "aave",
-      "protocolName": "Aave V2",
-      "protocolDescription": "Aave is a decentralized non-custodial liquidity protocol where users can participate as depositors or borrowers. Depositors provide liquidity to the market to earn a passive income, while borrowers are able to borrow in an overcollateralized fashion",
-      "protocolSocials": [
-        "https://app.aave.com/",
-        "https://twitter.com/AaveAave",
-        "aave.com/discord"
-      ],
-      "website": "https://aave.com/",
-      "docs": "https://docs.aave.com/hub/",
-      "color": "#a75ca3",
-      "logo": {
-        "url": "https://storage-logos.reserve.org/logos/88dc6b2ed57b--aave.png"
-      }
-    },
-    "tokensCollection": {
-      "items": [
-        {
-          "id": "usdt",
-          "tokenTicker": "USDT",
-          "name": null,
-          "addresses": {
-            "1": "0xdac17f958d2ee523a2206206994597c13d831ec7"
-          },
-          "color": "#53AE94",
-          "rating": "D",
-          "website": "https://tether.to/",
-          "description": "Tether (USDT) is a cryptocurrency stablecoin pegged to the U.S. dollar. Tether is owned by iFinex, the Hong Kong-registered company that also owns the crypto exchange BitFinex.",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/c8e63ed383a3--usdt.svg"
-          }
-        }
-      ]
-    }
+    "protocol": "aave",
+    "underlyings": [
+      "usdt"
+    ]
   },
   {
     "name": "Rocket Pool ETH",
@@ -1900,35 +798,10 @@
       }
     ],
     "description": "Rocket Pool ETH (rETH) - liquid-staked ETH on Rocket Pool. This variable yield is derived from native ETH yield earned by Rocket Pool validator network (net of fees).",
-    "protocol": {
-      "id": "rocket-pool",
-      "protocolName": "Rocket Pool",
-      "protocolDescription": "Rocket Pool ETH (rETH) - liquid-staked ETH on Rocket Pool. This variable yield is derived from native ETH yield earned by Rocket Pool validator network (net of fees). ",
-      "protocolSocials": null,
-      "website": "https://rocketpool.net/",
-      "docs": null,
-      "color": "#FFD27E",
-      "logo": {
-        "url": "https://storage-logos.reserve.org/logos/f3043ddd8b62--rocket-pool-logo.webp"
-      }
-    },
-    "tokensCollection": {
-      "items": [
-        {
-          "id": "eth",
-          "tokenTicker": "ETH",
-          "name": null,
-          "addresses": null,
-          "color": "627EEA",
-          "rating": null,
-          "website": "https://ethereum.org/",
-          "description": "Ethereum is a decentralized blockchain network powered by the Ether (ETH) token that enables users to make trustless financial transactions corresponding to logic encoded in smart contracts.",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/7a0e09632dd7--eth.svg"
-          }
-        }
-      ]
-    }
+    "protocol": "rocket-pool",
+    "underlyings": [
+      "eth"
+    ]
   },
   {
     "name": "Aave USDP",
@@ -1946,41 +819,10 @@
       }
     ],
     "description": null,
-    "protocol": {
-      "id": "aave",
-      "protocolName": "Aave V2",
-      "protocolDescription": "Aave is a decentralized non-custodial liquidity protocol where users can participate as depositors or borrowers. Depositors provide liquidity to the market to earn a passive income, while borrowers are able to borrow in an overcollateralized fashion",
-      "protocolSocials": [
-        "https://app.aave.com/",
-        "https://twitter.com/AaveAave",
-        "aave.com/discord"
-      ],
-      "website": "https://aave.com/",
-      "docs": "https://docs.aave.com/hub/",
-      "color": "#a75ca3",
-      "logo": {
-        "url": "https://storage-logos.reserve.org/logos/88dc6b2ed57b--aave.png"
-      }
-    },
-    "tokensCollection": {
-      "items": [
-        {
-          "id": "usdp",
-          "tokenTicker": "USDP",
-          "name": null,
-          "addresses": {
-            "1": "0x8e870d67f660d95d5be530380d0ec0bd388289e1"
-          },
-          "color": "#005F32",
-          "rating": "A-",
-          "website": "https://paxos.com/usdp/",
-          "description": "Pax Dollar (USDP) is a fiat-collateralized stablecoin. USDP tokens are issued as ERC-20 tokens on the Ethereum blockchain and are collateralized 1:1 through the USD held in Paxos-owned US bank accounts.",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/7a55bcda9629--usdp.svg"
-          }
-        }
-      ]
-    }
+    "protocol": "aave",
+    "underlyings": [
+      "usdp"
+    ]
   },
   {
     "name": "Compound DAI",
@@ -1998,39 +840,10 @@
       }
     ],
     "description": null,
-    "protocol": {
-      "id": "compound-v2",
-      "protocolName": "Compound V2",
-      "protocolDescription": "Compound is an algorithmic, autonomous interest rate protocol built for developers, to unlock a universe of open financial applications.",
-      "protocolSocials": [
-        "https://twitter.com/compoundfinance"
-      ],
-      "website": "https://compound.finance/",
-      "docs": "https://docs.compound.finance/v2/",
-      "color": "#39c7b1",
-      "logo": {
-        "url": "https://storage-logos.reserve.org/logos/9359b584436d--compound.png"
-      }
-    },
-    "tokensCollection": {
-      "items": [
-        {
-          "id": "dai",
-          "tokenTicker": "DAI",
-          "name": null,
-          "addresses": {
-            "1": "0x6b175474e89094c44da98b954eedeac495271d0f"
-          },
-          "color": "#F5AC37",
-          "rating": "B+",
-          "website": "https://makerdao.com/",
-          "description": "DAI is a debt-collateralized stablecoin issued by MakerDAO, an Ethereum-based protocol, that seeks to maintain an exact ratio of one-to-one with the U.S. dollar. It is primarily used as a means of lending and borrowing crypto assets without the need for an intermediary",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/fcee1f1e9068--dai.svg"
-          }
-        }
-      ]
-    }
+    "protocol": "compound-v2",
+    "underlyings": [
+      "dai"
+    ]
   },
   {
     "name": "Compound WBTC",
@@ -2048,39 +861,10 @@
       }
     ],
     "description": null,
-    "protocol": {
-      "id": "compound-v2",
-      "protocolName": "Compound V2",
-      "protocolDescription": "Compound is an algorithmic, autonomous interest rate protocol built for developers, to unlock a universe of open financial applications.",
-      "protocolSocials": [
-        "https://twitter.com/compoundfinance"
-      ],
-      "website": "https://compound.finance/",
-      "docs": "https://docs.compound.finance/v2/",
-      "color": "#39c7b1",
-      "logo": {
-        "url": "https://storage-logos.reserve.org/logos/9359b584436d--compound.png"
-      }
-    },
-    "tokensCollection": {
-      "items": [
-        {
-          "id": "cbbtc",
-          "tokenTicker": "cbBTC",
-          "name": "Coinbase BTC",
-          "addresses": {
-            "8453": "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf"
-          },
-          "color": "#0051FF",
-          "rating": null,
-          "website": "https://www.coinbase.com/",
-          "description": "Coinbase Wrapped Bitcoin (cbBTC) is a wrapped version of Bitcoin (BTC) that's backed 1:1 by BTC held in custody by Coinbase.",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/763e4c9c8c28--cbbtc_32.png"
-          }
-        }
-      ]
-    }
+    "protocol": "compound-v2",
+    "underlyings": [
+      "cbbtc"
+    ]
   },
   {
     "name": "Compound USDP",
@@ -2098,39 +882,10 @@
       }
     ],
     "description": null,
-    "protocol": {
-      "id": "compound-v2",
-      "protocolName": "Compound V2",
-      "protocolDescription": "Compound is an algorithmic, autonomous interest rate protocol built for developers, to unlock a universe of open financial applications.",
-      "protocolSocials": [
-        "https://twitter.com/compoundfinance"
-      ],
-      "website": "https://compound.finance/",
-      "docs": "https://docs.compound.finance/v2/",
-      "color": "#39c7b1",
-      "logo": {
-        "url": "https://storage-logos.reserve.org/logos/9359b584436d--compound.png"
-      }
-    },
-    "tokensCollection": {
-      "items": [
-        {
-          "id": "usdp",
-          "tokenTicker": "USDP",
-          "name": null,
-          "addresses": {
-            "1": "0x8e870d67f660d95d5be530380d0ec0bd388289e1"
-          },
-          "color": "#005F32",
-          "rating": "A-",
-          "website": "https://paxos.com/usdp/",
-          "description": "Pax Dollar (USDP) is a fiat-collateralized stablecoin. USDP tokens are issued as ERC-20 tokens on the Ethereum blockchain and are collateralized 1:1 through the USD held in Paxos-owned US bank accounts.",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/7a55bcda9629--usdp.svg"
-          }
-        }
-      ]
-    }
+    "protocol": "compound-v2",
+    "underlyings": [
+      "usdp"
+    ]
   },
   {
     "name": "Compound ETH",
@@ -2148,37 +903,10 @@
       }
     ],
     "description": null,
-    "protocol": {
-      "id": "compound-v2",
-      "protocolName": "Compound V2",
-      "protocolDescription": "Compound is an algorithmic, autonomous interest rate protocol built for developers, to unlock a universe of open financial applications.",
-      "protocolSocials": [
-        "https://twitter.com/compoundfinance"
-      ],
-      "website": "https://compound.finance/",
-      "docs": "https://docs.compound.finance/v2/",
-      "color": "#39c7b1",
-      "logo": {
-        "url": "https://storage-logos.reserve.org/logos/9359b584436d--compound.png"
-      }
-    },
-    "tokensCollection": {
-      "items": [
-        {
-          "id": "eth",
-          "tokenTicker": "ETH",
-          "name": null,
-          "addresses": null,
-          "color": "627EEA",
-          "rating": null,
-          "website": "https://ethereum.org/",
-          "description": "Ethereum is a decentralized blockchain network powered by the Ether (ETH) token that enables users to make trustless financial transactions corresponding to logic encoded in smart contracts.",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/7a0e09632dd7--eth.svg"
-          }
-        }
-      ]
-    }
+    "protocol": "compound-v2",
+    "underlyings": [
+      "eth"
+    ]
   },
   {
     "name": "Morpho Aave stETH",
@@ -2196,40 +924,10 @@
       }
     ],
     "description": null,
-    "protocol": {
-      "id": "morpho-aave",
-      "protocolName": "Morpho",
-      "protocolDescription": "Morpho is a decentralized lending protocol with different entities and individuals contributing to its development and adoption.",
-      "protocolSocials": [
-        "https://twitter.com/MorphoLabs",
-        "https://www.linkedin.com/company/morpho-labs/"
-      ],
-      "website": "https://morpho.org/",
-      "docs": "https://docs.morpho.org/",
-      "color": "#0059FF",
-      "logo": {
-        "url": "https://storage-logos.reserve.org/logos/0fd41d54950b--Morpho.svg"
-      }
-    },
-    "tokensCollection": {
-      "items": [
-        {
-          "id": "steth",
-          "tokenTicker": "stETH",
-          "name": null,
-          "addresses": {
-            "1": "0xae7ab96520de3a18e5e111b5eaab095312d7fe84"
-          },
-          "color": "#627EEA",
-          "rating": null,
-          "website": "https://lido.fi/",
-          "description": "stETH is Lido's liquid variant of staked ETH on the Beacon Chain. stETH is a token that represents staked ether in Lido, combining the value of initial deposit + staking rewards",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/29686fcdd982--steth-steth-logo.svg"
-          }
-        }
-      ]
-    }
+    "protocol": "morpho-aave",
+    "underlyings": [
+      "steth"
+    ]
   },
   {
     "name": "Flux DAI",
@@ -2247,39 +945,10 @@
       }
     ],
     "description": null,
-    "protocol": {
-      "id": "flux-finance",
-      "protocolName": "Flux Finance",
-      "protocolDescription": "Flux Finance is a decentralized lending protocol, it is a fork of Compound V2 with additional functionality to support both permissionless (e.g. USDC) and permissioned (e.g. OUSG) tokens. Permissions are enforced on a per-asset basis. For example, a USDC lender won't have any restrictions, but a USDC borrower using OUSG as collateral will need to satisfy OUSG's permissions.",
-      "protocolSocials": [
-        "https://twitter.com/FluxDeFi"
-      ],
-      "website": "https://fluxfinance.com/",
-      "docs": "https://docs.fluxfinance.com/",
-      "color": "#000000",
-      "logo": {
-        "url": "https://storage-logos.reserve.org/logos/f8c65d54c574--Flux.svg"
-      }
-    },
-    "tokensCollection": {
-      "items": [
-        {
-          "id": "dai",
-          "tokenTicker": "DAI",
-          "name": null,
-          "addresses": {
-            "1": "0x6b175474e89094c44da98b954eedeac495271d0f"
-          },
-          "color": "#F5AC37",
-          "rating": "B+",
-          "website": "https://makerdao.com/",
-          "description": "DAI is a debt-collateralized stablecoin issued by MakerDAO, an Ethereum-based protocol, that seeks to maintain an exact ratio of one-to-one with the U.S. dollar. It is primarily used as a means of lending and borrowing crypto assets without the need for an intermediary",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/fcee1f1e9068--dai.svg"
-          }
-        }
-      ]
-    }
+    "protocol": "flux-finance",
+    "underlyings": [
+      "dai"
+    ]
   },
   {
     "name": "Flux USDT",
@@ -2297,39 +966,10 @@
       }
     ],
     "description": null,
-    "protocol": {
-      "id": "flux-finance",
-      "protocolName": "Flux Finance",
-      "protocolDescription": "Flux Finance is a decentralized lending protocol, it is a fork of Compound V2 with additional functionality to support both permissionless (e.g. USDC) and permissioned (e.g. OUSG) tokens. Permissions are enforced on a per-asset basis. For example, a USDC lender won't have any restrictions, but a USDC borrower using OUSG as collateral will need to satisfy OUSG's permissions.",
-      "protocolSocials": [
-        "https://twitter.com/FluxDeFi"
-      ],
-      "website": "https://fluxfinance.com/",
-      "docs": "https://docs.fluxfinance.com/",
-      "color": "#000000",
-      "logo": {
-        "url": "https://storage-logos.reserve.org/logos/f8c65d54c574--Flux.svg"
-      }
-    },
-    "tokensCollection": {
-      "items": [
-        {
-          "id": "usdt",
-          "tokenTicker": "USDT",
-          "name": null,
-          "addresses": {
-            "1": "0xdac17f958d2ee523a2206206994597c13d831ec7"
-          },
-          "color": "#53AE94",
-          "rating": "D",
-          "website": "https://tether.to/",
-          "description": "Tether (USDT) is a cryptocurrency stablecoin pegged to the U.S. dollar. Tether is owned by iFinex, the Hong Kong-registered company that also owns the crypto exchange BitFinex.",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/c8e63ed383a3--usdt.svg"
-          }
-        }
-      ]
-    }
+    "protocol": "flux-finance",
+    "underlyings": [
+      "usdt"
+    ]
   },
   {
     "name": "Morpho Aave WBTC",
@@ -2347,40 +987,10 @@
       }
     ],
     "description": null,
-    "protocol": {
-      "id": "morpho-aave",
-      "protocolName": "Morpho",
-      "protocolDescription": "Morpho is a decentralized lending protocol with different entities and individuals contributing to its development and adoption.",
-      "protocolSocials": [
-        "https://twitter.com/MorphoLabs",
-        "https://www.linkedin.com/company/morpho-labs/"
-      ],
-      "website": "https://morpho.org/",
-      "docs": "https://docs.morpho.org/",
-      "color": "#0059FF",
-      "logo": {
-        "url": "https://storage-logos.reserve.org/logos/0fd41d54950b--Morpho.svg"
-      }
-    },
-    "tokensCollection": {
-      "items": [
-        {
-          "id": "cbbtc",
-          "tokenTicker": "cbBTC",
-          "name": "Coinbase BTC",
-          "addresses": {
-            "8453": "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf"
-          },
-          "color": "#0051FF",
-          "rating": null,
-          "website": "https://www.coinbase.com/",
-          "description": "Coinbase Wrapped Bitcoin (cbBTC) is a wrapped version of Bitcoin (BTC) that's backed 1:1 by BTC held in custody by Coinbase.",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/763e4c9c8c28--cbbtc_32.png"
-          }
-        }
-      ]
-    }
+    "protocol": "morpho-aave",
+    "underlyings": [
+      "cbbtc"
+    ]
   },
   {
     "name": "Morpho Aave ETH",
@@ -2398,38 +1008,10 @@
       }
     ],
     "description": null,
-    "protocol": {
-      "id": "morpho-aave",
-      "protocolName": "Morpho",
-      "protocolDescription": "Morpho is a decentralized lending protocol with different entities and individuals contributing to its development and adoption.",
-      "protocolSocials": [
-        "https://twitter.com/MorphoLabs",
-        "https://www.linkedin.com/company/morpho-labs/"
-      ],
-      "website": "https://morpho.org/",
-      "docs": "https://docs.morpho.org/",
-      "color": "#0059FF",
-      "logo": {
-        "url": "https://storage-logos.reserve.org/logos/0fd41d54950b--Morpho.svg"
-      }
-    },
-    "tokensCollection": {
-      "items": [
-        {
-          "id": "eth",
-          "tokenTicker": "ETH",
-          "name": null,
-          "addresses": null,
-          "color": "627EEA",
-          "rating": null,
-          "website": "https://ethereum.org/",
-          "description": "Ethereum is a decentralized blockchain network powered by the Ether (ETH) token that enables users to make trustless financial transactions corresponding to logic encoded in smart contracts.",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/7a0e09632dd7--eth.svg"
-          }
-        }
-      ]
-    }
+    "protocol": "morpho-aave",
+    "underlyings": [
+      "eth"
+    ]
   },
   {
     "name": "Morpho Aave DAI",
@@ -2447,40 +1029,10 @@
       }
     ],
     "description": null,
-    "protocol": {
-      "id": "morpho-aave",
-      "protocolName": "Morpho",
-      "protocolDescription": "Morpho is a decentralized lending protocol with different entities and individuals contributing to its development and adoption.",
-      "protocolSocials": [
-        "https://twitter.com/MorphoLabs",
-        "https://www.linkedin.com/company/morpho-labs/"
-      ],
-      "website": "https://morpho.org/",
-      "docs": "https://docs.morpho.org/",
-      "color": "#0059FF",
-      "logo": {
-        "url": "https://storage-logos.reserve.org/logos/0fd41d54950b--Morpho.svg"
-      }
-    },
-    "tokensCollection": {
-      "items": [
-        {
-          "id": "dai",
-          "tokenTicker": "DAI",
-          "name": null,
-          "addresses": {
-            "1": "0x6b175474e89094c44da98b954eedeac495271d0f"
-          },
-          "color": "#F5AC37",
-          "rating": "B+",
-          "website": "https://makerdao.com/",
-          "description": "DAI is a debt-collateralized stablecoin issued by MakerDAO, an Ethereum-based protocol, that seeks to maintain an exact ratio of one-to-one with the U.S. dollar. It is primarily used as a means of lending and borrowing crypto assets without the need for an intermediary",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/fcee1f1e9068--dai.svg"
-          }
-        }
-      ]
-    }
+    "protocol": "morpho-aave",
+    "underlyings": [
+      "dai"
+    ]
   },
   {
     "name": "Stargate USDbC",
@@ -2498,39 +1050,10 @@
       }
     ],
     "description": "Stargate Base USDC (sgUSDbC) - Bridged USDC (Circle) deposited on Stargate’s USDC pool and staked to earn yield. This variable yield is generated by a share of bridge fees and distributed as STG rewards.",
-    "protocol": {
-      "id": "stargate",
-      "protocolName": "Stargate",
-      "protocolDescription": "Stargate is a fully composable liquidity transport protocol that lives at the heart of Omnichain DeFi. With Stargate, users & dApps can transfer native assets cross-chain while accessing the protocol’s unified liquidity pools with instant guaranteed finality.",
-      "protocolSocials": [
-        "https://twitter.com/stargatefinance"
-      ],
-      "website": "https://stargate.finance/",
-      "docs": "https://stargateprotocol.gitbook.io/stargate/",
-      "color": "#666666",
-      "logo": {
-        "url": "https://storage-logos.reserve.org/logos/07c0ad1d12cd--stargate.jpeg"
-      }
-    },
-    "tokensCollection": {
-      "items": [
-        {
-          "id": "USDbC",
-          "tokenTicker": "USDbC",
-          "name": null,
-          "addresses": {
-            "8453": "0x6490D66B17A1E9a460Ab54131165C8F921aCcDeB"
-          },
-          "color": "#2775CA",
-          "rating": null,
-          "website": "https://help.coinbase.com/en/coinbase/getting-started/crypto-education/usd-base-coin",
-          "description": "USD Coin is a digital stablecoin that is pegged to the United States dollar. USD Coin is managed by a consortium called Centre, which was founded by Circle and includes members from the cryptocurrency exchange Coinbase and Bitcoin mining company Bitmain, an investor in Circle. USDbC is the bridged form of USDC on Base",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/9aceab4057b3--usdm__1_.svg"
-          }
-        }
-      ]
-    }
+    "protocol": "stargate",
+    "underlyings": [
+      "USDbC"
+    ]
   },
   {
     "name": "Stargate Base USDC",
@@ -2548,39 +1071,10 @@
       }
     ],
     "description": "Stargate Base USDC (sgUSDbC) - Bridged USDC (Circle) deposited on Stargate’s USDC pool and staked to earn yield. This variable yield is generated by a share of bridge fees and distributed as STG rewards.",
-    "protocol": {
-      "id": "stargate",
-      "protocolName": "Stargate",
-      "protocolDescription": "Stargate is a fully composable liquidity transport protocol that lives at the heart of Omnichain DeFi. With Stargate, users & dApps can transfer native assets cross-chain while accessing the protocol’s unified liquidity pools with instant guaranteed finality.",
-      "protocolSocials": [
-        "https://twitter.com/stargatefinance"
-      ],
-      "website": "https://stargate.finance/",
-      "docs": "https://stargateprotocol.gitbook.io/stargate/",
-      "color": "#666666",
-      "logo": {
-        "url": "https://storage-logos.reserve.org/logos/07c0ad1d12cd--stargate.jpeg"
-      }
-    },
-    "tokensCollection": {
-      "items": [
-        {
-          "id": "USDbC",
-          "tokenTicker": "USDbC",
-          "name": null,
-          "addresses": {
-            "8453": "0x6490D66B17A1E9a460Ab54131165C8F921aCcDeB"
-          },
-          "color": "#2775CA",
-          "rating": null,
-          "website": "https://help.coinbase.com/en/coinbase/getting-started/crypto-education/usd-base-coin",
-          "description": "USD Coin is a digital stablecoin that is pegged to the United States dollar. USD Coin is managed by a consortium called Centre, which was founded by Circle and includes members from the cryptocurrency exchange Coinbase and Bitcoin mining company Bitmain, an investor in Circle. USDbC is the bridged form of USDC on Base",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/9aceab4057b3--usdm__1_.svg"
-          }
-        }
-      ]
-    }
+    "protocol": "stargate",
+    "underlyings": [
+      "USDbC"
+    ]
   },
   {
     "name": "Morpho Aave USDC",
@@ -2598,42 +1092,10 @@
       }
     ],
     "description": "Morpho AAVE USDC (maUSDC) - USDC (Circle) supplied on Morpho Aave V2 optimizer. The supplied USDC is lent out on Aave V2 and matched P2P with a borrower to maximize the utilization ratio and, by extension, the yield. This variable yield is generated by a combination of Morpho’s P2P yield optimization and MORPHO token rewards. ",
-    "protocol": {
-      "id": "morpho-aave",
-      "protocolName": "Morpho",
-      "protocolDescription": "Morpho is a decentralized lending protocol with different entities and individuals contributing to its development and adoption.",
-      "protocolSocials": [
-        "https://twitter.com/MorphoLabs",
-        "https://www.linkedin.com/company/morpho-labs/"
-      ],
-      "website": "https://morpho.org/",
-      "docs": "https://docs.morpho.org/",
-      "color": "#0059FF",
-      "logo": {
-        "url": "https://storage-logos.reserve.org/logos/0fd41d54950b--Morpho.svg"
-      }
-    },
-    "tokensCollection": {
-      "items": [
-        {
-          "id": "usdc",
-          "tokenTicker": "USDC",
-          "name": null,
-          "addresses": {
-            "1": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
-            "8453": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
-            "42161": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831"
-          },
-          "color": null,
-          "rating": "B+",
-          "website": "https://www.circle.com/en/usdc",
-          "description": "USD Coin is a digital stablecoin that is pegged to the United States dollar. USD Coin is managed by a consortium called Centre, which was founded by Circle and includes members from the cryptocurrency exchange Coinbase and Bitcoin mining company Bitmain, an investor in Circle.",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/9aceab4057b3--usdm__1_.svg"
-          }
-        }
-      ]
-    }
+    "protocol": "morpho-aave",
+    "underlyings": [
+      "usdc"
+    ]
   },
   {
     "name": "Flux USDC",
@@ -2651,41 +1113,10 @@
       }
     ],
     "description": "Flux USDC (fUSDC) - USDC (Circle) deposited and lent out on Flux Finance (a fork of Compound V2 built by the Ondo Finance team). This variable yield is generated from the interest rate paid by borrowers  and driven by borrower demand levels.",
-    "protocol": {
-      "id": "flux-finance",
-      "protocolName": "Flux Finance",
-      "protocolDescription": "Flux Finance is a decentralized lending protocol, it is a fork of Compound V2 with additional functionality to support both permissionless (e.g. USDC) and permissioned (e.g. OUSG) tokens. Permissions are enforced on a per-asset basis. For example, a USDC lender won't have any restrictions, but a USDC borrower using OUSG as collateral will need to satisfy OUSG's permissions.",
-      "protocolSocials": [
-        "https://twitter.com/FluxDeFi"
-      ],
-      "website": "https://fluxfinance.com/",
-      "docs": "https://docs.fluxfinance.com/",
-      "color": "#000000",
-      "logo": {
-        "url": "https://storage-logos.reserve.org/logos/f8c65d54c574--Flux.svg"
-      }
-    },
-    "tokensCollection": {
-      "items": [
-        {
-          "id": "usdc",
-          "tokenTicker": "USDC",
-          "name": null,
-          "addresses": {
-            "1": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
-            "8453": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
-            "42161": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831"
-          },
-          "color": null,
-          "rating": "B+",
-          "website": "https://www.circle.com/en/usdc",
-          "description": "USD Coin is a digital stablecoin that is pegged to the United States dollar. USD Coin is managed by a consortium called Centre, which was founded by Circle and includes members from the cryptocurrency exchange Coinbase and Bitcoin mining company Bitmain, an investor in Circle.",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/9aceab4057b3--usdm__1_.svg"
-          }
-        }
-      ]
-    }
+    "protocol": "flux-finance",
+    "underlyings": [
+      "usdc"
+    ]
   },
   {
     "name": "Morpho Aave USDT",
@@ -2703,40 +1134,10 @@
       }
     ],
     "description": "Morpho AAVE USDT (maUSDT)  - USDT (Tether) supplied on Morpho Aave V2 optimizer. The supplied USDT is lent out on Aave V2 and matched P2P with a borrower to maximize the utilization ratio and, by extension, the yield. This variable yield is generated by a combination of Morpho’s P2P yield optimization and MORPHO token rewards. ",
-    "protocol": {
-      "id": "morpho-aave",
-      "protocolName": "Morpho",
-      "protocolDescription": "Morpho is a decentralized lending protocol with different entities and individuals contributing to its development and adoption.",
-      "protocolSocials": [
-        "https://twitter.com/MorphoLabs",
-        "https://www.linkedin.com/company/morpho-labs/"
-      ],
-      "website": "https://morpho.org/",
-      "docs": "https://docs.morpho.org/",
-      "color": "#0059FF",
-      "logo": {
-        "url": "https://storage-logos.reserve.org/logos/0fd41d54950b--Morpho.svg"
-      }
-    },
-    "tokensCollection": {
-      "items": [
-        {
-          "id": "usdt",
-          "tokenTicker": "USDT",
-          "name": null,
-          "addresses": {
-            "1": "0xdac17f958d2ee523a2206206994597c13d831ec7"
-          },
-          "color": "#53AE94",
-          "rating": "D",
-          "website": "https://tether.to/",
-          "description": "Tether (USDT) is a cryptocurrency stablecoin pegged to the U.S. dollar. Tether is owned by iFinex, the Hong Kong-registered company that also owns the crypto exchange BitFinex.",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/c8e63ed383a3--usdt.svg"
-          }
-        }
-      ]
-    }
+    "protocol": "morpho-aave",
+    "underlyings": [
+      "usdt"
+    ]
   },
   {
     "name": "Convex eUSD-FRAXBP",
@@ -2762,71 +1163,12 @@
       }
     ],
     "description": "Staked Convex eUSD-FRAXBP LP (stkcvxeUSD3CRV-f) - token obtained by providing liquidity to the eUSD-FRAXBP (FRAX-USDC Base Pool) liquidity pool on Curve Finance and staking the LP token on Convex Finance. This variable yield is generated from a combination of native asset yield, CVX rewards, and boosted CRV rewards leveraging Convex’s veCRV power. ",
-    "protocol": {
-      "id": "convex-finance",
-      "protocolName": "Convex Finance",
-      "protocolDescription": "Convex is a platform that boosts rewards for CRV stakers and liquidity providers alike, all in a simple and easy to use interface.",
-      "protocolSocials": [
-        "https://twitter.com/ConvexFinance"
-      ],
-      "website": "https://www.convexfinance.com/",
-      "docs": "https://docs.convexfinance.com/convexfinance/",
-      "color": "#16280B",
-      "logo": {
-        "url": "https://storage-logos.reserve.org/logos/3713ff4f6025--convex.svg"
-      }
-    },
-    "tokensCollection": {
-      "items": [
-        {
-          "id": "frax",
-          "tokenTicker": "FRAX",
-          "name": null,
-          "addresses": {
-            "1": "0x853d955acef822db058eb8505911ed77f175b99e"
-          },
-          "color": "#7F7F7F",
-          "rating": "D",
-          "website": "https://frax.finance/",
-          "description": "FRAX a stablecoin with parts of its supply backed by collateral and parts of the supply algorithmic, backed by the governance token FXS. The ratio of collateralized and algorithmic depends on the market's pricing of the FRAX stablecoin.",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/c4112218d151--frax.svg"
-          }
-        },
-        {
-          "id": "usdc",
-          "tokenTicker": "USDC",
-          "name": null,
-          "addresses": {
-            "1": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
-            "8453": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
-            "42161": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831"
-          },
-          "color": null,
-          "rating": "B+",
-          "website": "https://www.circle.com/en/usdc",
-          "description": "USD Coin is a digital stablecoin that is pegged to the United States dollar. USD Coin is managed by a consortium called Centre, which was founded by Circle and includes members from the cryptocurrency exchange Coinbase and Bitcoin mining company Bitmain, an investor in Circle.",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/9aceab4057b3--usdm__1_.svg"
-          }
-        },
-        {
-          "id": "eusd",
-          "tokenTicker": "eUSD",
-          "name": null,
-          "addresses": {
-            "1": "0xA0d69E286B938e21CBf7E51D71F6A4c8918f482F"
-          },
-          "color": "#000000",
-          "rating": null,
-          "website": null,
-          "description": "The Electronic Dollar (eUSD) is a decentralized 1:1 asset-backed stablecoin built with Reserve Protocol, available on the Ethereum and MobileCoin blockchains. It sets itself apart from other stablecoins due to its decentralized, community-governed, and censorship-resistant nature.\n\n",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/b5f6398f0622--eUSD__1_.svg"
-          }
-        }
-      ]
-    }
+    "protocol": "convex-finance",
+    "underlyings": [
+      "frax",
+      "usdc",
+      "eusd"
+    ]
   },
   {
     "name": "Wrapped Staked ETH",
@@ -2844,37 +1186,10 @@
       }
     ],
     "description": "Wrapped Staked ETH (wstETH) - non-rebasing version of stETH, a transferable liquid-staking token representing a share of the total ETH staked on Lido Finance. This variable yield is derived from native ETH yield earned by Lido validator network (net of fees).",
-    "protocol": {
-      "id": "lido",
-      "protocolName": "Lido",
-      "protocolDescription": "Lido is a liquid staking solution - providing a simple way to get rewards on your digital tokens. By staking with Lido your tokens remain liquid and can be used across a range of DeFi applications, getting extra rewards.",
-      "protocolSocials": [
-        "https://twitter.com/lidofinance"
-      ],
-      "website": "https://lido.fi/",
-      "docs": "https://docs.lido.fi/",
-      "color": "#00A3FF",
-      "logo": {
-        "url": "https://storage-logos.reserve.org/logos/e6136f41e2dc--lido.png"
-      }
-    },
-    "tokensCollection": {
-      "items": [
-        {
-          "id": "eth",
-          "tokenTicker": "ETH",
-          "name": null,
-          "addresses": null,
-          "color": "627EEA",
-          "rating": null,
-          "website": "https://ethereum.org/",
-          "description": "Ethereum is a decentralized blockchain network powered by the Ether (ETH) token that enables users to make trustless financial transactions corresponding to logic encoded in smart contracts.",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/7a0e09632dd7--eth.svg"
-          }
-        }
-      ]
-    }
+    "protocol": "lido",
+    "underlyings": [
+      "eth"
+    ]
   },
   {
     "name": "Aave USDC",
@@ -2892,43 +1207,10 @@
       }
     ],
     "description": "USDC (Circle) deposited and lent out in V2 of Aave. This variable yield is generated from from the interest rate paid by borrowers and driven by borrower demand levels.",
-    "protocol": {
-      "id": "aave",
-      "protocolName": "Aave V2",
-      "protocolDescription": "Aave is a decentralized non-custodial liquidity protocol where users can participate as depositors or borrowers. Depositors provide liquidity to the market to earn a passive income, while borrowers are able to borrow in an overcollateralized fashion",
-      "protocolSocials": [
-        "https://app.aave.com/",
-        "https://twitter.com/AaveAave",
-        "aave.com/discord"
-      ],
-      "website": "https://aave.com/",
-      "docs": "https://docs.aave.com/hub/",
-      "color": "#a75ca3",
-      "logo": {
-        "url": "https://storage-logos.reserve.org/logos/88dc6b2ed57b--aave.png"
-      }
-    },
-    "tokensCollection": {
-      "items": [
-        {
-          "id": "usdc",
-          "tokenTicker": "USDC",
-          "name": null,
-          "addresses": {
-            "1": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
-            "8453": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
-            "42161": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831"
-          },
-          "color": null,
-          "rating": "B+",
-          "website": "https://www.circle.com/en/usdc",
-          "description": "USD Coin is a digital stablecoin that is pegged to the United States dollar. USD Coin is managed by a consortium called Centre, which was founded by Circle and includes members from the cryptocurrency exchange Coinbase and Bitcoin mining company Bitmain, an investor in Circle.",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/9aceab4057b3--usdm__1_.svg"
-          }
-        }
-      ]
-    }
+    "protocol": "aave",
+    "underlyings": [
+      "usdc"
+    ]
   },
   {
     "name": "Compound USDC",
@@ -2946,41 +1228,10 @@
       }
     ],
     "description": "USDC (Circle) deposited and lent out in V2 of Compound Finance. This variable yield is generated from the interest rate paid by borrowers and driven by borrower demand levels.",
-    "protocol": {
-      "id": "compound-v2",
-      "protocolName": "Compound V2",
-      "protocolDescription": "Compound is an algorithmic, autonomous interest rate protocol built for developers, to unlock a universe of open financial applications.",
-      "protocolSocials": [
-        "https://twitter.com/compoundfinance"
-      ],
-      "website": "https://compound.finance/",
-      "docs": "https://docs.compound.finance/v2/",
-      "color": "#39c7b1",
-      "logo": {
-        "url": "https://storage-logos.reserve.org/logos/9359b584436d--compound.png"
-      }
-    },
-    "tokensCollection": {
-      "items": [
-        {
-          "id": "usdc",
-          "tokenTicker": "USDC",
-          "name": null,
-          "addresses": {
-            "1": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
-            "8453": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
-            "42161": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831"
-          },
-          "color": null,
-          "rating": "B+",
-          "website": "https://www.circle.com/en/usdc",
-          "description": "USD Coin is a digital stablecoin that is pegged to the United States dollar. USD Coin is managed by a consortium called Centre, which was founded by Circle and includes members from the cryptocurrency exchange Coinbase and Bitcoin mining company Bitmain, an investor in Circle.",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/9aceab4057b3--usdm__1_.svg"
-          }
-        }
-      ]
-    }
+    "protocol": "compound-v2",
+    "underlyings": [
+      "usdc"
+    ]
   },
   {
     "name": "Compound USDT",
@@ -2998,39 +1249,10 @@
       }
     ],
     "description": "USDT (Tether) deposited and lent out in V2 of Compound Finance. This variable yield is generated from the interest rate paid by borrowers and driven by borrower demand levels.",
-    "protocol": {
-      "id": "compound-v2",
-      "protocolName": "Compound V2",
-      "protocolDescription": "Compound is an algorithmic, autonomous interest rate protocol built for developers, to unlock a universe of open financial applications.",
-      "protocolSocials": [
-        "https://twitter.com/compoundfinance"
-      ],
-      "website": "https://compound.finance/",
-      "docs": "https://docs.compound.finance/v2/",
-      "color": "#39c7b1",
-      "logo": {
-        "url": "https://storage-logos.reserve.org/logos/9359b584436d--compound.png"
-      }
-    },
-    "tokensCollection": {
-      "items": [
-        {
-          "id": "usdt",
-          "tokenTicker": "USDT",
-          "name": null,
-          "addresses": {
-            "1": "0xdac17f958d2ee523a2206206994597c13d831ec7"
-          },
-          "color": "#53AE94",
-          "rating": "D",
-          "website": "https://tether.to/",
-          "description": "Tether (USDT) is a cryptocurrency stablecoin pegged to the U.S. dollar. Tether is owned by iFinex, the Hong Kong-registered company that also owns the crypto exchange BitFinex.",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/c8e63ed383a3--usdt.svg"
-          }
-        }
-      ]
-    }
+    "protocol": "compound-v2",
+    "underlyings": [
+      "usdt"
+    ]
   },
   {
     "name": "Convex 3CRV",
@@ -3056,71 +1278,12 @@
       }
     ],
     "description": null,
-    "protocol": {
-      "id": "convex-finance",
-      "protocolName": "Convex Finance",
-      "protocolDescription": "Convex is a platform that boosts rewards for CRV stakers and liquidity providers alike, all in a simple and easy to use interface.",
-      "protocolSocials": [
-        "https://twitter.com/ConvexFinance"
-      ],
-      "website": "https://www.convexfinance.com/",
-      "docs": "https://docs.convexfinance.com/convexfinance/",
-      "color": "#16280B",
-      "logo": {
-        "url": "https://storage-logos.reserve.org/logos/3713ff4f6025--convex.svg"
-      }
-    },
-    "tokensCollection": {
-      "items": [
-        {
-          "id": "dai",
-          "tokenTicker": "DAI",
-          "name": null,
-          "addresses": {
-            "1": "0x6b175474e89094c44da98b954eedeac495271d0f"
-          },
-          "color": "#F5AC37",
-          "rating": "B+",
-          "website": "https://makerdao.com/",
-          "description": "DAI is a debt-collateralized stablecoin issued by MakerDAO, an Ethereum-based protocol, that seeks to maintain an exact ratio of one-to-one with the U.S. dollar. It is primarily used as a means of lending and borrowing crypto assets without the need for an intermediary",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/fcee1f1e9068--dai.svg"
-          }
-        },
-        {
-          "id": "usdc",
-          "tokenTicker": "USDC",
-          "name": null,
-          "addresses": {
-            "1": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
-            "8453": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
-            "42161": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831"
-          },
-          "color": null,
-          "rating": "B+",
-          "website": "https://www.circle.com/en/usdc",
-          "description": "USD Coin is a digital stablecoin that is pegged to the United States dollar. USD Coin is managed by a consortium called Centre, which was founded by Circle and includes members from the cryptocurrency exchange Coinbase and Bitcoin mining company Bitmain, an investor in Circle.",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/9aceab4057b3--usdm__1_.svg"
-          }
-        },
-        {
-          "id": "usdt",
-          "tokenTicker": "USDT",
-          "name": null,
-          "addresses": {
-            "1": "0xdac17f958d2ee523a2206206994597c13d831ec7"
-          },
-          "color": "#53AE94",
-          "rating": "D",
-          "website": "https://tether.to/",
-          "description": "Tether (USDT) is a cryptocurrency stablecoin pegged to the U.S. dollar. Tether is owned by iFinex, the Hong Kong-registered company that also owns the crypto exchange BitFinex.",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/c8e63ed383a3--usdt.svg"
-          }
-        }
-      ]
-    }
+    "protocol": "convex-finance",
+    "underlyings": [
+      "dai",
+      "usdc",
+      "usdt"
+    ]
   },
   {
     "name": "Convex MIM3CRV",
@@ -3150,86 +1313,13 @@
       }
     ],
     "description": null,
-    "protocol": {
-      "id": "convex-finance",
-      "protocolName": "Convex Finance",
-      "protocolDescription": "Convex is a platform that boosts rewards for CRV stakers and liquidity providers alike, all in a simple and easy to use interface.",
-      "protocolSocials": [
-        "https://twitter.com/ConvexFinance"
-      ],
-      "website": "https://www.convexfinance.com/",
-      "docs": "https://docs.convexfinance.com/convexfinance/",
-      "color": "#16280B",
-      "logo": {
-        "url": "https://storage-logos.reserve.org/logos/3713ff4f6025--convex.svg"
-      }
-    },
-    "tokensCollection": {
-      "items": [
-        {
-          "id": "mim",
-          "tokenTicker": "MIM",
-          "name": null,
-          "addresses": {
-            "1": "0x99d8a9c45b2eca8864373a26d1459e3dff1e17f3"
-          },
-          "color": "9695F8",
-          "rating": null,
-          "website": "https://abracadabra.money/",
-          "description": "MIM is a collateral-backed USD stablecoin created by Abracadbra. MIM is minted when users borrow against locked collateral and burned when debt is repaid.",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/a014def1f433--MIM_Logo_PNG.png"
-          }
-        },
-        {
-          "id": "usdt",
-          "tokenTicker": "USDT",
-          "name": null,
-          "addresses": {
-            "1": "0xdac17f958d2ee523a2206206994597c13d831ec7"
-          },
-          "color": "#53AE94",
-          "rating": "D",
-          "website": "https://tether.to/",
-          "description": "Tether (USDT) is a cryptocurrency stablecoin pegged to the U.S. dollar. Tether is owned by iFinex, the Hong Kong-registered company that also owns the crypto exchange BitFinex.",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/c8e63ed383a3--usdt.svg"
-          }
-        },
-        {
-          "id": "dai",
-          "tokenTicker": "DAI",
-          "name": null,
-          "addresses": {
-            "1": "0x6b175474e89094c44da98b954eedeac495271d0f"
-          },
-          "color": "#F5AC37",
-          "rating": "B+",
-          "website": "https://makerdao.com/",
-          "description": "DAI is a debt-collateralized stablecoin issued by MakerDAO, an Ethereum-based protocol, that seeks to maintain an exact ratio of one-to-one with the U.S. dollar. It is primarily used as a means of lending and borrowing crypto assets without the need for an intermediary",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/fcee1f1e9068--dai.svg"
-          }
-        },
-        {
-          "id": "usdc",
-          "tokenTicker": "USDC",
-          "name": null,
-          "addresses": {
-            "1": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
-            "8453": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
-            "42161": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831"
-          },
-          "color": null,
-          "rating": "B+",
-          "website": "https://www.circle.com/en/usdc",
-          "description": "USD Coin is a digital stablecoin that is pegged to the United States dollar. USD Coin is managed by a consortium called Centre, which was founded by Circle and includes members from the cryptocurrency exchange Coinbase and Bitcoin mining company Bitmain, an investor in Circle.",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/9aceab4057b3--usdm__1_.svg"
-          }
-        }
-      ]
-    }
+    "protocol": "convex-finance",
+    "underlyings": [
+      "mim",
+      "usdt",
+      "dai",
+      "usdc"
+    ]
   },
   {
     "name": "Convex Tricrypto",
@@ -3255,67 +1345,12 @@
       }
     ],
     "description": null,
-    "protocol": {
-      "id": "convex-finance",
-      "protocolName": "Convex Finance",
-      "protocolDescription": "Convex is a platform that boosts rewards for CRV stakers and liquidity providers alike, all in a simple and easy to use interface.",
-      "protocolSocials": [
-        "https://twitter.com/ConvexFinance"
-      ],
-      "website": "https://www.convexfinance.com/",
-      "docs": "https://docs.convexfinance.com/convexfinance/",
-      "color": "#16280B",
-      "logo": {
-        "url": "https://storage-logos.reserve.org/logos/3713ff4f6025--convex.svg"
-      }
-    },
-    "tokensCollection": {
-      "items": [
-        {
-          "id": "usdt",
-          "tokenTicker": "USDT",
-          "name": null,
-          "addresses": {
-            "1": "0xdac17f958d2ee523a2206206994597c13d831ec7"
-          },
-          "color": "#53AE94",
-          "rating": "D",
-          "website": "https://tether.to/",
-          "description": "Tether (USDT) is a cryptocurrency stablecoin pegged to the U.S. dollar. Tether is owned by iFinex, the Hong Kong-registered company that also owns the crypto exchange BitFinex.",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/c8e63ed383a3--usdt.svg"
-          }
-        },
-        {
-          "id": "eth",
-          "tokenTicker": "ETH",
-          "name": null,
-          "addresses": null,
-          "color": "627EEA",
-          "rating": null,
-          "website": "https://ethereum.org/",
-          "description": "Ethereum is a decentralized blockchain network powered by the Ether (ETH) token that enables users to make trustless financial transactions corresponding to logic encoded in smart contracts.",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/7a0e09632dd7--eth.svg"
-          }
-        },
-        {
-          "id": "cbbtc",
-          "tokenTicker": "cbBTC",
-          "name": "Coinbase BTC",
-          "addresses": {
-            "8453": "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf"
-          },
-          "color": "#0051FF",
-          "rating": null,
-          "website": "https://www.coinbase.com/",
-          "description": "Coinbase Wrapped Bitcoin (cbBTC) is a wrapped version of Bitcoin (BTC) that's backed 1:1 by BTC held in custody by Coinbase.",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/763e4c9c8c28--cbbtc_32.png"
-          }
-        }
-      ]
-    }
+    "protocol": "convex-finance",
+    "underlyings": [
+      "usdt",
+      "eth",
+      "cbbtc"
+    ]
   },
   {
     "name": "Aave DAI",
@@ -3333,40 +1368,9 @@
       }
     ],
     "description": null,
-    "protocol": {
-      "id": "aave",
-      "protocolName": "Aave V2",
-      "protocolDescription": "Aave is a decentralized non-custodial liquidity protocol where users can participate as depositors or borrowers. Depositors provide liquidity to the market to earn a passive income, while borrowers are able to borrow in an overcollateralized fashion",
-      "protocolSocials": [
-        "https://app.aave.com/",
-        "https://twitter.com/AaveAave",
-        "aave.com/discord"
-      ],
-      "website": "https://aave.com/",
-      "docs": "https://docs.aave.com/hub/",
-      "color": "#a75ca3",
-      "logo": {
-        "url": "https://storage-logos.reserve.org/logos/88dc6b2ed57b--aave.png"
-      }
-    },
-    "tokensCollection": {
-      "items": [
-        {
-          "id": "dai",
-          "tokenTicker": "DAI",
-          "name": null,
-          "addresses": {
-            "1": "0x6b175474e89094c44da98b954eedeac495271d0f"
-          },
-          "color": "#F5AC37",
-          "rating": "B+",
-          "website": "https://makerdao.com/",
-          "description": "DAI is a debt-collateralized stablecoin issued by MakerDAO, an Ethereum-based protocol, that seeks to maintain an exact ratio of one-to-one with the U.S. dollar. It is primarily used as a means of lending and borrowing crypto assets without the need for an intermediary",
-          "logo": {
-            "url": "https://storage-logos.reserve.org/logos/fcee1f1e9068--dai.svg"
-          }
-        }
-      ]
-    }
+    "protocol": "aave",
+    "underlyings": [
+      "dai"
+    ]
   }
 ]

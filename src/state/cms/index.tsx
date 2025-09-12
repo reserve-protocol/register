@@ -17,7 +17,7 @@ const setCollateralsMetadataAtom = atom(
 
     for (const item of collaterals) {
       const underlying =
-        item.tokensCollection.items.reduce((acc, token) => {
+        item.underlyings.reduce((acc, token) => {
           acc[token.tokenTicker] = {
             symbol: token.tokenTicker,
             addresses: token.addresses ?? {},
