@@ -31,11 +31,7 @@ export interface CollateralMetadata {
   protocol: ProjectMetadata
 }
 
-// isLoading = null
-// TODO: Terrible memory efficiency, data should be normalized and then provide a getter atom that returns the collection
 export const collateralsMetadataAtom = atom<Record<
   string,
   CollateralMetadata
 > | null>(null)
-
-// TODO: Add earn cms related data here

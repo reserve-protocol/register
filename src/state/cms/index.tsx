@@ -8,8 +8,6 @@ import {
 import { stringToHex } from 'viem'
 import { getCollaterals } from '@/lib/meta'
 
-// TODO: refactor in favor for normalized data~
-// TODO: rushing this, but CollateralAssets / TokenCollection / Protocols should be separate atoms
 const setCollateralsMetadataAtom = atom(
   null,
   (get, set, collaterals: ReturnType<typeof getCollaterals>) => {
