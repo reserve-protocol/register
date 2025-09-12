@@ -6,7 +6,7 @@ import {
   collateralsMetadataAtom,
 } from './atoms'
 import { stringToHex } from 'viem'
-import { getCollaterals } from 'lib/contentful'
+import { getCollaterals } from '@/lib/meta'
 
 // TODO: refactor in favor for normalized data~
 // TODO: rushing this, but CollateralAssets / TokenCollection / Protocols should be separate atoms
@@ -16,8 +16,8 @@ const setCollateralsMetadataAtom = atom(
     const collateralData: Record<string, CollateralMetadata> = {}
 
     for (const item of collaterals) {
-      const underlying =
-        item.underlyings.reduce((acc, token) => {
+      const underlying = item.underlyings.reduce(
+        (acc, token) => {
           acc[token.tokenTicker] = {
             symbol: token.tokenTicker,
             addresses: token.addresses ?? {},
@@ -28,7 +28,9 @@ const setCollateralsMetadataAtom = atom(
           }
 
           return acc
-        }, {} as Record<string, UnderlyingMetadata>)
+        },
+        {} as Record<string, UnderlyingMetadata>
+      )
 
       collateralData[item.id] = {
         id: item.id,

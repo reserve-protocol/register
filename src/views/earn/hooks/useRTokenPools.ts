@@ -17,7 +17,7 @@ import {
   EXTRA_POOLS_BY_UNDERLYING_TOKEN,
   OTHER_POOL_TOKENS,
 } from '../utils/constants'
-import { EarnPool, getEarnPools } from '@/lib/contentful'
+import { EarnPool, getEarnPools } from '@/lib/meta'
 
 // Only map what I care about the response...
 interface DefillamaPool {
