@@ -1,6 +1,5 @@
 import rtokens from '@reserve-protocol/rtokens'
 import { gql } from 'graphql-request'
-import { useCMSQuery } from 'hooks/useQuery'
 import { useAtom } from 'jotai'
 import { useEffect } from 'react'
 import { Pool, poolsAtom } from 'state/pools/atoms'
@@ -19,6 +18,7 @@ import {
   EXTRA_POOLS_BY_UNDERLYING_TOKEN,
   OTHER_POOL_TOKENS,
 } from '../utils/constants'
+import { EarnPool, getEarnPools } from '@/lib/contentful'
 
 // Only map what I care about the response...
 interface DefillamaPool {
@@ -34,13 +34,6 @@ interface DefillamaPool {
   tvlUsd: number
   underlyingTokens: string[]
   rewardTokens: string[]
-}
-
-interface EarnPool {
-  llamaId: string
-  url: string
-  underlyingTokens: string[]
-  symbol: string
 }
 
 const listedRTokens = Object.values(rtokens).reduce((acc, curr) => {
@@ -230,16 +223,13 @@ const mapPools = (data: DefillamaPool[], earnPools: EarnPool[]) => {
 // TODO: May use a central Updater component for defillama data, currently being traversed twice for APYs and this
 const useRTokenPools = () => {
   const { data, isLoading } = useSWRImmutable('https://yields.llama.fi/pools')
-  const { data: earnPools } = useCMSQuery(earnPoolQuery)
+  const earnPools = getEarnPools()
 
   const [poolsCache, setPools] = useAtom(poolsAtom)
 
   useEffect(() => {
-    if (data && earnPools?.earnPoolsCollection?.items) {
-      const pools = mapPools(
-        data.data as DefillamaPool[],
-        earnPools.earnPoolsCollection.items
-      )
+    if (data) {
+      const pools = mapPools(data.data as DefillamaPool[], earnPools)
       setPools(pools)
     }
   }, [data, earnPools, setPools])
