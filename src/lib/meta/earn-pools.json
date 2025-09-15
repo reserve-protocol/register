@@ -1,0 +1,1055 @@
+[
+  {
+    "description": "Curve eUSD/USDC",
+    "llamaId": "d6408603-9035-4783-9255-0a83536e6767",
+    "url": "https://curve.finance/#/arbitrum/pools/factory-stable-ng-62/deposit",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Curve USDC+/ETH+/SDT",
+    "llamaId": "d62b82b1-c4c8-41e0-99f9-69102f552e45",
+    "url": "https://curve.finance/#/ethereum/pools/factory-tricrypto-25/deposit",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Curve rgUSD/DOLA",
+    "llamaId": "1eca321c-fb8b-4c92-9203-7a503270923d",
+    "url": "https://curve.finance/#/ethereum/pools/factory-stable-ng-126/deposit",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Curve eUSD/mkUSD",
+    "llamaId": "5b7ebb06-8b32-4448-bf84-563f12ad0ab8",
+    "url": "https://curve.finance/#/ethereum/pools/factory-stable-ng-60/deposit",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Curve RSR/FRAXBP",
+    "llamaId": "4af07af7-4b66-4772-bfcc-395dfb5ef10e",
+    "url": "https://curve.finance/#/ethereum/pools/factory-crypto-136/deposit",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Curve KNOX/rgUSD",
+    "llamaId": "6af4438d-6b9f-4c14-9976-c808c2ff2d4f",
+    "url": "https://curve.finance/#/arbitrum/pools/factory-stable-ng-56/deposit",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Curve eUSD/crvUSD (Base)",
+    "llamaId": "da53450c-14b1-47e3-bca5-7856f27bb928",
+    "url": "https://curve.finance/#/base/pools/factory-v2-12/deposit",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Curve rgUSD/eUSD",
+    "llamaId": "783d0632-88df-4add-b840-38d3543a9d33",
+    "url": "https://curve.finance/#/ethereum/pools/factory-stable-ng-119/deposit",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Curve USDC+/USDC",
+    "llamaId": "d99d9bb0-8865-44ca-bdcc-1c2047e8b5a6",
+    "url": "https://curve.finance/#/ethereum/pools/factory-crypto-252/deposit",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Curve eUSD/crvUSD",
+    "llamaId": "0a756d56-466a-478f-bca9-242e3d0ecf69",
+    "url": "https://curve.finance/#/arbitrum/pools/factory-stable-ng-61/deposit",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Curve hyUSD/eUSD (Base)",
+    "llamaId": "3c76e848-3c17-4bc9-8d41-8c36b27368cd",
+    "url": "https://curve.finance/#/base/pools/factory-crypto-14/deposit",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Curve eUSD+FRAXBP",
+    "llamaId": "817329d2-07cb-4cbd-82ac-eb9bc0add450",
+    "url": "https://curve.finance/#/ethereum/pools/factory-v2-277/deposit",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Curve USD3/USDM",
+    "llamaId": "293393fe-0405-4d21-b82b-9448f19768d5",
+    "url": "https://curve.finance/#/ethereum/pools/factory-stable-ng-232/deposit",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Curve dgnETH/ETH+",
+    "llamaId": "e3189532-eced-4e95-8c38-4a9fa04e4879",
+    "url": "https://curve.finance/#/ethereum/pools/factory-stable-ng-224/deposit",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Curve KNOX/eUSD",
+    "llamaId": "7599c1f2-7608-4238-b9c9-ae1462ca4b3c",
+    "url": "https://curve.finance/#/arbitrum/pools/factory-stable-ng-63/deposit",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Curve TriRSR",
+    "llamaId": "28c0ad15-ecaf-4b14-8ad6-06ded47566b1",
+    "url": "https://curve.finance/#/ethereum/pools/factory-tricrypto-21/deposit",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Curve USD3/rgUSD",
+    "llamaId": "099f0d93-153c-4bcf-b44d-d5f95b47f54b",
+    "url": "https://curve.finance/#/ethereum/pools/factory-twocrypto-27/deposit",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Curve KNOX/eUSD",
+    "llamaId": "eb9878e4-158c-4b3f-a9e9-c0fff1cf74c2",
+    "url": "https://curve.finance/#/arbitrum/pools/factory-twocrypto-19/deposit",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Curve rgUSD/USDC",
+    "llamaId": "0df24b2b-c99e-4742-b18d-16041f986632",
+    "url": "https://curve.finance/#/arbitrum/pools/factory-stable-ng-53/deposit",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Curve dgnETH/ETH+",
+    "llamaId": "8863fc80-3449-4308-9892-a58febb8e956",
+    "url": "https://curve.finance/#/ethereum/pools/factory-stable-ng-174",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Curve USD3/sUSDe",
+    "llamaId": "a3d66deb-a5e6-49cb-834f-8ccd454deca2",
+    "url": "https://curve.finance/#/ethereum/pools/factory-stable-ng-231/deposit",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Curve rgUSD/fxUSD",
+    "llamaId": "1e5b3c31-cdf1-48f0-b59b-b4786176aef4",
+    "url": "https://curve.finance/#/ethereum/pools/factory-stable-ng-127/deposit",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Curve eUSD/crvUSD",
+    "llamaId": "0a69ba38-007b-4748-8ff1-13ccae9397c9",
+    "url": "https://curve.finance/#/ethereum/pools/factory-stable-ng-65/deposit",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Curve ETH+/pxETH",
+    "llamaId": "d7267cd0-0d73-4c34-8cf2-ec4adfb665cf",
+    "url": "https://curve.finance/#/ethereum/pools/factory-crypto-361/deposit",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Curve eUSD/fxUSD",
+    "llamaId": "f9d05e26-6a5e-40f9-8587-90a896d3ff4f",
+    "url": "https://curve.finance/#/ethereum/pools/factory-stable-ng-114/deposit",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Curve eUSD/rgUSD",
+    "llamaId": "53870b67-a503-4b1d-b212-f029832d3a9c",
+    "url": "https://curve.finance/#/arbitrum/pools/factory-stable-ng-55/deposit",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Curve USD3/eUSD",
+    "llamaId": "283d1751-d9b2-4a39-8b88-cf499a4eca18",
+    "url": "https://curve.finance/#/ethereum/pools/factory-stable-ng-170/deposit",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Curve ETH+/eUSD/RSR",
+    "llamaId": "6d6a2ac9-9922-4122-b32b-57808c67a113",
+    "url": "https://curve.finance/#/arbitrum/pools/factory-tricrypto-22/deposit",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Curve hyUSD/eUSD",
+    "llamaId": "2faacc5b-7e32-46f3-84e2-061aed8f7f21",
+    "url": "https://curve.finance/#/ethereum/pools/factory-crypto-252/deposit",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Curve ETH+/WETH",
+    "llamaId": "b752b4c8-beaf-45b8-b461-6dddef592c10",
+    "url": "https://curve.finance/#/arbitrum/pools/factory-stable-ng-57/deposit",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Curve ETH+/ETH",
+    "llamaId": "5a046093-29fc-4ecb-b90e-daccda151b5b",
+    "url": "https://curve.finance/#/ethereum/pools/factory-crypto-256/deposit",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Curve ETH+/WETH",
+    "llamaId": "6cd5c507-ff67-40ff-b37d-96cdf0985e78",
+    "url": "https://curve.finance/#/arbitrum/pools/factory-twocrypto-18/deposit",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Curve USD3/sDAI",
+    "llamaId": "b390cb64-3eb5-454a-818b-de8215c49e5e",
+    "url": "https://curve.finance/#/ethereum/pools/factory-stable-ng-228/deposit",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Curve rgUSD/alUSD",
+    "llamaId": "ba917e45-5815-4cae-9ba2-b931c66e0830",
+    "url": "https://curve.finance/#/ethereum/pools/factory-stable-ng-122/deposit",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Curve eUSD/USDC",
+    "llamaId": "3e4081dd-324d-4a46-8aba-01320ac68fa2",
+    "url": "https://curve.finance/#/ethereum/pools/factory-stable-ng-167/deposit",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Yearn eUSD/USDC",
+    "llamaId": "b636821a-7fbb-4f29-b896-098e80ad2299",
+    "url": "https://yearn.fi/vaults/1/0xBfBC4acAE2ceC91A5bC80eCA1C9290F92959f7c3",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Beefy CL eUSD/USDC",
+    "llamaId": "5b3335ea-44e3-4ddf-ba30-51006e075561",
+    "url": "https://app.beefy.finance/vault/aero-cow-usdc-eusd-vault",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Morpho hyUSD/eUSD",
+    "llamaId": "d5dbab56-465c-4063-bb6a-7caa87b9abb3",
+    "url": "https://app.morpho.org/market?id=0x3a5bdf0be8d820c1303654b078b14f8fc6d715efaeca56cec150b934bdcbff31&network=base&morphoPrice=0.7",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Morpho wstETH/eUSD (Base)",
+    "llamaId": "2a70b1b3-ba1f-4f0e-a472-8b973d4e0188",
+    "url": "https://app.morpho.org/market?id=0xce89aeb081d719cd35cb1aafb31239c4dfd9c017b2fec26fc2e9a443461e9aea&network=base&morphoPrice=0.7",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Morpho cbETH/eUSD",
+    "llamaId": "b4312e34-e144-486e-b0f0-76bd446d7b5a",
+    "url": "https://app.morpho.org/market?id=0xb5d424e4af49244b074790f1f2dc9c20df948ce291fc6bcc6b59149ecf91196d&network=base&morphoPrice=0.7",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Morpho bsdETH/eUSD",
+    "llamaId": "5b8bbe28-78fe-4c17-b4dc-18161dc59b2d",
+    "url": "https://app.morpho.org/market?id=0xf9ed1dba3b6ba1ede10e2115a9554e9c52091c9f1b1af21f9e0fecc855ee74bf&network=base&morphoPrice=0.7",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Morpho WBTC/eUSD",
+    "llamaId": "7cf408f7-3983-4d12-98d0-95ba5c1a19a0",
+    "url": "https://app.morpho.org/market?id=0x461da96754b33fec844fc5e5718bf24298a2c832d8216c5ffd17a5230548f01f&network=mainnet&morphoPrice=0.7",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Morpho ETH+/eUSD",
+    "llamaId": "c15dcd67-3148-4e30-bfb8-3a9bc217b959",
+    "url": "https://app.morpho.org/market?id=0x3f4d007982a480dd99052c05d811cf6838ce61b2a2be8dc52fca107f783d1f15&network=mainnet&morphoPrice=0.7",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Morpho USD3/eUSD",
+    "llamaId": "f69f0bbf-546d-47db-a99c-b48e03f82a06",
+    "url": "https://app.morpho.org/market?id=0xf6422731a8f84d9ab7e8b6da15ab9ecc243e12a78200dfb7fd1cdf2391e38068&network=mainnet&morphoPrice=0.7",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Morpho wstETH/eUSD",
+    "llamaId": "cf3a91e1-a5cb-4cbc-94dd-f5d89685d0e2",
+    "url": "https://app.morpho.org/market?id=0x6029eea874791e01e2f3ce361f2e08839cd18b1e26eea6243fa3e43fe8f6fa23&network=mainnet&morphoPrice=0.7",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Convex USD3/rgUSD",
+    "llamaId": "50e2ed38-4639-4301-b138-179af0c2a8a5",
+    "url": "https://curve.convexfinance.com/stake/ethereum/352",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Convex eUSD/USDC",
+    "llamaId": "e41e49e0-f4a5-4959-a653-9eab6b65d05f",
+    "url": "https://curve.convexfinance.com/stake/ethereum/369",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Yearn dgnETH/ETH+",
+    "llamaId": "8f9f8a30-1841-4578-aac2-e3174168588d",
+    "url": "https://yearn.fi/vaults/1/0x961Ad224fedDFa468c81acB3A9Cc2cC4731809f4",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Uniswap ETH+/WETH",
+    "llamaId": "4de19405-e109-44de-bd0b-9697fcb3464d",
+    "url": "https://app.uniswap.org/explore/pools/arbitrum/0xd6B4CcE96Ddf8aAb2E5750983AF9A901F17Fbc36",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Beefy KNOX/eUSD (CL)",
+    "llamaId": "618d7e7a-8d21-4f51-940b-8fd5d3a6c8b5",
+    "url": "https://app.beefy.finance/vault/uniswap-cow-arb-eusd-knox-vault",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Beefy eUSD/USDC (CL)",
+    "llamaId": "d103649c-4830-4868-85d9-dec5a9d4efdf",
+    "url": "https://app.beefy.finance/vault/uniswap-cow-arb-eusd-usdc-rp",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Beefy eUSD/USDC (CL)",
+    "llamaId": "bc206209-1321-40c4-b109-10bc3b18329a",
+    "url": "https://app.beefy.finance/vault/uniswap-cow-arb-eusd-usdc-vault",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Beefy bsdETH/WETH",
+    "llamaId": "fbbcbea4-247e-408a-9a8f-a695cab5866e",
+    "url": "https://app.beefy.finance/vault/aero-cow-bsdeth-weth-vault",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Beefy bsdETH/WETH (CL)",
+    "llamaId": "4d8f4646-80b0-44ee-8b87-752e8a93d6e5",
+    "url": "https://app.beefy.finance/vault/aero-cow-bsdeth-weth-rp",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Beefy eUSD/USDC (CL)",
+    "llamaId": "3451afaf-494c-4910-b097-74ad7314910e",
+    "url": "https://app.beefy.finance/vault/aero-cow-usdc-eusd-rp",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Beefy eUSD/crvUSD",
+    "llamaId": "f04b55ad-0a82-4539-ae00-f5a93122e041",
+    "url": "https://app.beefy.finance/vault/curve-arb-eusd-crvusd",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Beefy ETH+/WETH (CL)",
+    "llamaId": "ad2b084f-cb1a-43b0-8939-e05751ec8893",
+    "url": "https://app.beefy.finance/vault/uniswap-cow-arb-eth+-weth-rp",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Beefy ETH+/WETH (CL)",
+    "llamaId": "519691bc-d3f6-4725-8477-ecadcce0cf81",
+    "url": "https://app.beefy.finance/vault/uniswap-cow-arb-eth+-weth-vault",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Beefy ETH+/WETH",
+    "llamaId": "3c7985c1-ccf8-4e78-895b-0b6aeb772baf",
+    "url": "https://app.beefy.finance/vault/curve-arb-eth+-eth-v2",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Beefy eUSD/​USDC (Arbitrum)",
+    "llamaId": "5a763f02-1bad-4412-956a-39989902a2b5",
+    "url": "https://app.beefy.finance/vault/curve-arb-eusd-usdc",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Beefy KNOX/eUSD",
+    "llamaId": "8d2020df-9a95-4e0c-aca0-0d300b907896",
+    "url": "https://app.beefy.finance/vault/curve-arb-knox-eusd-v2",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Beefy eUSD/USDC",
+    "llamaId": "f9142e8f-56f0-45fe-861c-87b8930eae10",
+    "url": "https://app.beefy.finance/vault/curve-eusd-usdc",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Beefy eUSD/fxUSD",
+    "llamaId": "76e4e000-1de6-4997-baf5-c7da2d8d41da",
+    "url": "https://app.beefy.finance/vault/fx-eusd-fxusd",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "StakeDAO rgUSD/FRAX",
+    "llamaId": "74828d37-472d-47d1-8136-0322f8bdd1db",
+    "url": "https://stakedao.org/yield?search=0x85Ce5eBeEbd253adbc21ab9289FDA8E2387BCcA2",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "StakeDAO ETH+/dgnETH",
+    "llamaId": "7b932399-aa96-435b-822b-1227b8273901",
+    "url": "https://stakedao.org/yield?search=0x856DBb19e0ce8368ab242f96FD424CE63060Cab0",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "StakeDAO ETH+/WETH",
+    "llamaId": "30d38900-3d6a-40fb-afd7-c25e66725b18",
+    "url": "https://stakedao.org/yield?search=0x298bf7b80a6343214634aF16EB41Bb5B9fC6A1F1",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "StakeDAO eUSD/USDC",
+    "llamaId": "85ecffb3-d5ef-445d-859e-e10380bb0fb7",
+    "url": "https://stakedao.org/yield?search=0x87F791090B09069b3F9c64E3be3cBBc0b45Fc9b6",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Aerodrome DOLA/rgUSD",
+    "llamaId": "e074bdd7-4922-4c1a-9174-648a59dd219c",
+    "url": "https://aerodrome.finance/deposit?token0=0x4621b7A9c75199271F773Ebd9A499dbd165c3191&token1=0x8E5E9DF4F0EA39aE5270e79bbABFCc34203A3470&type=0",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Aerodrome COMP/RSR",
+    "llamaId": "0a00a9ab-53fa-458c-833f-747077c9aed7",
+    "url": "https://aerodrome.finance/deposit?token0=0x9e1028F5F1D5eDE59748FFceE5532509976840E0&token1=0xaB36452DbAC151bE02b16Ca17d8919826072f64a&type=-1",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Aerodrome Slipstream WETH/bsdETH",
+    "llamaId": "c62e76de-a567-4e41-833d-0d6b0487f727",
+    "url": "https://aerodrome.finance/deposit?token0=0x4200000000000000000000000000000000000006&token1=0xCb327b99fF831bF8223cCEd12B1338FF3aA322Ff&type=1",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Convex USD3/eUSD",
+    "llamaId": "39ea7436-361d-4b39-84a7-754a97e47c1a",
+    "url": "https://curve.convexfinance.com/stake/ethereum/366",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Convex dgnETH/ETH+",
+    "llamaId": "d3f24e3d-03ab-454a-ab6c-a353590d1f84",
+    "url": "https://curve.convexfinance.com/stake/ethereum/387",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Morpho RE7WETH (ETH+)",
+    "llamaId": "bf3815bb-1059-4f24-90a3-14998e8493fa",
+    "url": "https://app.morpho.org/vault?vault=0x78Fc2c2eD1A4cDb5402365934aE5648aDAd094d0&network=mainnet",
+    "underlyingTokens": [
+      "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+      "0xE72B141DF173b999AE7c1aDcbF60Cc9833Ce56a8"
+    ],
+    "symbol": ""
+  },
+  {
+    "description": "Morpho ETH+/WETH",
+    "llamaId": "cbd1a811-fb39-46bb-b71e-21797f34f002",
+    "url": "https://app.morpho.org/market?id=0x9ec52d7195bafeba7137fa4d707a0f674a04a6d658c9066bcdbebc6d81eb0011&network=mainnet",
+    "underlyingTokens": [
+      "0xE72B141DF173b999AE7c1aDcbF60Cc9833Ce56a8",
+      "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
+    ],
+    "symbol": ""
+  },
+  {
+    "description": "Beefy dgnETH/ETH+",
+    "llamaId": "fbe267af-c5e8-43fe-94c1-a4075b24961e",
+    "url": "https://app.beefy.com/vault/convex-dgneth-eth+",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Morpho Re7 eUSD Vault",
+    "llamaId": "b90eba2e-ed29-414e-b16d-82f9c3eae707",
+    "url": "https://app.morpho.org/vault?vault=0xbb819D845b573B5D7C538F5b85057160cfb5f313&network=base",
+    "underlyingTokens": null,
+    "symbol": "Morpho Re7 eUSD Vault"
+  },
+  {
+    "description": "Morpho Gauntlet eUSD Core Vault",
+    "llamaId": "456f5bec-a81b-4862-926b-e9e00c97e7c7",
+    "url": "https://app.morpho.org/vault?vault=0xc080f56504e0278828A403269DB945F6c6D6E014&network=mainnet",
+    "underlyingTokens": null,
+    "symbol": "Morpho Gauntlet eUSD Core Vault"
+  },
+  {
+    "description": "Yearn dgnETH/ETH+",
+    "llamaId": "d4edbce8-e61e-4f05-a1b1-28e1d49053cc",
+    "url": "https://yearn.fi/vaults/1/0x98b72deBe9BEdCc11aF3f1f5BFAc6994aac43786",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Convex dgnETH/ETH+",
+    "llamaId": "8ff77995-65bf-4f88-bdba-a1daddf61a6c",
+    "url": "https://curve.convexfinance.com/stake/ethereum/368",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Merkl eUSD/USDC",
+    "llamaId": "f47e9291-bcbb-4925-b77d-f074c51abcfa",
+    "url": "https://merkl.angle.money/arbitrum/pool/0xA56959b5d633Ee8e3dD9997902C09445C5d7cc40",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Merkl ETH+/WETH",
+    "llamaId": "f3da1b11-2c8b-4a55-9ae5-33a0707a9086",
+    "url": "https://merkl.angle.money/arbitrum/pool/0xd6B4CcE96Ddf8aAb2E5750983AF9A901F17Fbc36",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Merkl KNOX/eUSD",
+    "llamaId": "697cc840-cfd1-4946-bd49-c5da0ad78be5",
+    "url": "https://merkl.angle.money/arbitrum/pool/0x5D88c26Ba4067292Dac647BC849216699120AAA1",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Beefy ETH+/ETH",
+    "llamaId": "c62f410d-e3f9-4441-8dfc-572413901f77",
+    "url": "https://app.beefy.finance/vault/curve-arb-eth+-eth",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Aerodrome WETH/bsdETH",
+    "llamaId": "57d5dc30-8ade-4f40-87d2-6065297d0705",
+    "url": "https://aerodrome.finance/deposit?token0=0x4200000000000000000000000000000000000006&token1=0xCb327b99fF831bF8223cCEd12B1338FF3aA322Ff&type=-1",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Convex eUSD/fxUSD",
+    "llamaId": "51916b88-38f9-45b1-b839-2e27c0f31d0b",
+    "url": "https://curve.convexfinance.com/stake/ethereum/339",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Aerodrome USDC/rgUSD",
+    "llamaId": "fadef1f2-7684-4a0b-be5b-57849ee83e43",
+    "url": "https://aerodrome.finance/deposit?token0=0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913&token1=0x8E5E9DF4F0EA39aE5270e79bbABFCc34203A3470&type=-1",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Convex rgUSD/alUSD",
+    "llamaId": "68d386cb-6e15-49d5-86de-669762242307",
+    "url": "https://curve.convexfinance.com/stake/ethereum/342",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Convex rgUSD/fxUSD",
+    "llamaId": "0cd3786e-e000-4514-942e-8818c8c6f087",
+    "url": "https://curve.convexfinance.com/stake/ethereum/341",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Convex rgUSD/DOLA",
+    "llamaId": "c6864e78-083d-4ac8-a221-f085ddac69d4",
+    "url": "https://curve.convexfinance.com/stake/ethereum/340",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Aerodrome USDC/rgUSD",
+    "llamaId": "49d0af7c-4eec-44c6-9c0f-217622ffd299",
+    "url": null,
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Uniswap RSR/USDC",
+    "llamaId": "eaa4aaa4-5548-4eba-8a58-5bb313c455d9",
+    "url": "https://info.uniswap.org/#/pools/0x167a3874664561b1c4f8f99c40cfb268df1a5a21",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Beefy rgUSD/USDC",
+    "llamaId": "40f9cd7b-dbde-4c00-a168-74835df59c5c",
+    "url": "https://app.beefy.com/vault/aerodrome-usdc-rgusd",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Camelot ETH+/WETH",
+    "llamaId": "87b15161-eb21-47ca-a27c-811ac07340b2",
+    "url": "https://app.camelot.exchange/pools/0x8DD043B553F96Fb8f30d6B97aCAD12A940A9c384",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Camelot rgUSD/USDC",
+    "llamaId": "be4f491c-e53f-4dc3-81af-8e59120b576e",
+    "url": "https://app.camelot.exchange/pools/0x8359f9ABC3164ffd59964d3dac7052a40418A8a2",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Beefy bsdETH/hyUSD",
+    "llamaId": "fa8f1dff-33b3-49bc-992c-5fa35713f08b",
+    "url": "https://app.beefy.com/vault/aerodrome-bsdeth-hyusd",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Uniswap RSR/ETH Base",
+    "llamaId": "ab2f432a-f8d7-4a7c-8b2a-d466e5d0f748",
+    "url": "https://app.uniswap.org/add/0x4200000000000000000000000000000000000006/0xab36452dbac151be02b16ca17d8919826072f64a/10000?chain=base",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Concentrator ETH+/ETH",
+    "llamaId": "8e2423b4-b7a2-4e6f-a714-1bc0407f02e9",
+    "url": "https://concentrator.aladdin.club/",
+    "underlyingTokens": [
+      "0xE72B141DF173b999AE7c1aDcbF60Cc9833Ce56a8",
+      "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+    ],
+    "symbol": ""
+  },
+  {
+    "description": "Aerodrome rgUSD/hyUSD",
+    "llamaId": "4c019071-82ff-4f41-85a0-25978f735fb2",
+    "url": "https://aerodrome.finance/deposit?token0=0x8E5E9DF4F0EA39aE5270e79bbABFCc34203A3470&token1=0xCc7FF230365bD730eE4B352cC2492CEdAC49383e&type=-1",
+    "underlyingTokens": [
+      "0x8E5E9DF4F0EA39aE5270e79bbABFCc34203A3470",
+      "0xCc7FF230365bD730eE4B352cC2492CEdAC49383e"
+    ],
+    "symbol": ""
+  },
+  {
+    "description": "Aerodrome rgUSD/eUSD",
+    "llamaId": "3120c1e7-514f-463e-8bce-136a2eda2e85",
+    "url": "https://aerodrome.finance/deposit?token0=0x8E5E9DF4F0EA39aE5270e79bbABFCc34203A3470&token1=0xCfA3Ef56d303AE4fAabA0592388F19d7C3399FB4&type=0",
+    "underlyingTokens": [
+      "0x8E5E9DF4F0EA39aE5270e79bbABFCc34203A3470",
+      "0xCfA3Ef56d303AE4fAabA0592388F19d7C3399FB4"
+    ],
+    "symbol": ""
+  },
+  {
+    "description": "Aerodrome eUSD/USDbC",
+    "llamaId": "e4e952f8-d8f8-48d1-a09f-6fa59ecdc2bc",
+    "url": "https://aerodrome.finance/deposit?token0=0xCfA3Ef56d303AE4fAabA0592388F19d7C3399FB4&token1=0xd9aAEc86B65D86f6A7B5B1b0c42FFA531710b6CA&type=0",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Beefy USD+/eUSD",
+    "llamaId": "2faabad4-e5c9-4363-af50-449222a45762",
+    "url": "https://app.beefy.com/vault/aerodrome-usd+-eusd",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Aerodrome USD+/eUSD",
+    "llamaId": "a2824df7-b142-4af4-8d34-083a8256da5e",
+    "url": "https://aerodrome.finance/deposit?token0=0xB79DD08EA68A908A97220C76d19A6aA9cBDE4376&token1=0xCfA3Ef56d303AE4fAabA0592388F19d7C3399FB4&type=0",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Aerodrome hyUSD/eUSD",
+    "llamaId": "219a3ece-18a6-43e7-8917-e1124498ebe8",
+    "url": "https://aerodrome.finance/deposit?token0=0xCc7FF230365bD730eE4B352cC2492CEdAC49383e&token1=0xCfA3Ef56d303AE4fAabA0592388F19d7C3399FB4&type=-1",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Aerodrome hyUSD/eUSD",
+    "llamaId": "d435b310-4b7e-4fa7-81fb-7f509300a0c6",
+    "url": "https://aerodrome.finance/deposit?token0=0xcc7ff230365bd730ee4b352cc2492cedac49383e&token1=0xcfa3ef56d303ae4faaba0592388f19d7c3399fb4&stable=false",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Dyson Vault: hyUSD/eUSD",
+    "llamaId": "5b0696bf-4a37-45b7-8319-49ffbbbf5a16",
+    "url": "https://app.dyson.money/all?id=dyson-base-aerodrome-hyusd-eusd",
+    "underlyingTokens": [
+      "0xCc7FF230365bD730eE4B352cC2492CEdAC49383e",
+      "0xCfA3Ef56d303AE4fAabA0592388F19d7C3399FB4"
+    ],
+    "symbol": ""
+  },
+  {
+    "description": "Dyson Vault: eUSD/USDC",
+    "llamaId": "33af8d6a-936e-4d71-b8d6-682d9c4d117e",
+    "url": "https://app.dyson.money/all?id=dyson-base-aerodrome-eusd-usdc",
+    "underlyingTokens": [
+      "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+      "0xCfA3Ef56d303AE4fAabA0592388F19d7C3399FB4"
+    ],
+    "symbol": ""
+  },
+  {
+    "description": "Aerodrome bsdETH/hyUSD",
+    "llamaId": "e01552cf-4d1c-43e1-9aaa-b2a4bae5df9b",
+    "url": "https://aerodrome.finance/deposit?token0=0xCb327b99fF831bF8223cCEd12B1338FF3aA322Ff&token1=0xCc7FF230365bD730eE4B352cC2492CEdAC49383e&type=-1",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Aerodrome RSR-bsdETH",
+    "llamaId": "0112f957-4369-490f-882f-018c0e0fdf9b",
+    "url": "https://aerodrome.finance/deposit?token0=0xaB36452DbAC151bE02b16Ca17d8919826072f64a&token1=0xCb327b99fF831bF8223cCEd12B1338FF3aA322Ff&type=-1",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Beefy bsdETH/ETH",
+    "llamaId": "5f83ac83-753a-4382-869f-38c4e1658a36",
+    "url": "https://app.beefy.com/vault/aerodrome-weth-bsdeth",
+    "underlyingTokens": [
+      "0xCb327b99fF831bF8223cCEd12B1338FF3aA322Ff",
+      "0x4200000000000000000000000000000000000006"
+    ],
+    "symbol": ""
+  },
+  {
+    "description": "Convex rgUSD/USDC/eUSD",
+    "llamaId": "ccd52d5e-3e17-46a2-b917-671ba0e8efe5",
+    "url": "https://curve.convexfinance.com/stake/ethereum/333",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Uniswap ETH/ETH+",
+    "llamaId": "bceed234-64c8-448a-b5fa-7da3c6fc5307",
+    "url": "https://info.uniswap.org/#/pools/0xf649df4372d8bb3e6178e52fcd515519c78da348",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Aerodrome eUSD/USDC",
+    "llamaId": "212375c8-694c-4fa5-8b36-05f50c8e61b2",
+    "url": "https://aerodrome.finance/deposit?token0=0x833589fcd6edb6e08f4c7c32d4f71b54bda02913&token1=0xcfa3ef56d303ae4faaba0592388f19d7c3399fb4&stable=true",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Aerodrome MAI/eUSD",
+    "llamaId": "ef6bfa03-d0b5-42d7-a9d1-cd3194a207bb",
+    "url": "https://aerodrome.finance/deposit?token0=0xbf1aea8670d2528e08334083616dd9c5f3b087ae&token1=0xcfa3ef56d303ae4faaba0592388f19d7c3399fb4&stable=true",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Beefy RSR/bsdETH",
+    "llamaId": "375c9ebc-8d4c-4d75-a290-a8de7b135142",
+    "url": "https://app.beefy.finance/vault/aerodrome-rsr-bsdeth",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Uniswap WETH/bsdETH",
+    "llamaId": "e9b8a645-82fd-4969-a14b-aa0a51d742c9",
+    "url": "https://app.uniswap.org/explore/pools/base/0x8E0722194C4D0c5A01bC3BdbEE4fEc00e817F98B",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Convex pxETH/ETH+",
+    "llamaId": "90e1e665-6cc5-4fd7-92ec-ee138785ac0f",
+    "url": "https://curve.convexfinance.com/stake/ethereum/300",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Beefy hyUSD/eUSD",
+    "llamaId": "1756a554-1a80-4486-bea8-33dc3be2467d",
+    "url": "https://app.beefy.com/vault/convex-hyusdeusd",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Beefy ETH+/ETH",
+    "llamaId": "198b6ceb-b23e-4ca9-ab48-5be84255ca0b",
+    "url": "https://app.beefy.com/vault/convex-eth+",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Beefy USDC+/USDC",
+    "llamaId": "9298c95d-9d68-4ffc-82f9-2a3eccdd6a83",
+    "url": "https://app.beefy.com/vault/convex-usdc+",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "StakeDAO USDC+/USDC",
+    "llamaId": "314310d8-b80e-4273-9a35-e1adb39a67ed",
+    "url": "https://www.stakedao.org/yield",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Convex Curve  eUSD/mkUSD",
+    "llamaId": "68d3a2ae-71e8-4e1d-bc34-3d1b11f1f16e",
+    "url": "https://curve.convexfinance.com/stake/ethereum/292",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Convex Curve  eUSD/crvUSD",
+    "llamaId": "59f3544b-9df3-4216-979e-9d0e35085c55",
+    "url": "https://curve.convexfinance.com/stake/ethereum/293",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "StakeDAO TriSDT+",
+    "llamaId": "8ac7aadc-3092-4011-918f-cf6f323196b7",
+    "url": "https://www.stakedao.org/yield",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Yearn eUSD/USDbC",
+    "llamaId": "e3937ced-7560-4478-8912-da844bc1b2d1",
+    "url": "https://yearn.fi/vaults/8453/0x5b508fE98Ac33DA9352FA539E2EFA9F1DdA26c51?tab=info",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Yearn hyUSD/eUSD",
+    "llamaId": "426e9a15-3937-470e-9aee-3a25a6dfb838",
+    "url": "https://yearn.fi/vaults/8453/0x4d3ceBA4349ADB06d2De8EBD2F9320A61303aD81?tab=info",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Beefy MAI/eUSD",
+    "llamaId": "134aa80e-2eb0-43d1-891e-1bbe578ddaf0",
+    "url": "https://app.beefy.com/vault/aerodrome-mai-eusd",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Yearn eUSD/FRAXBP",
+    "llamaId": "0c8cd1cf-bf0b-482e-8945-f68ece49f416",
+    "url": "https://yearn.fi/vaults/1/0x468C76f16B7735303f7215b3839D270d058b3d7a",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "StakeDAO hyUSD/eUSD",
+    "llamaId": "19ad968c-aee6-4a02-bcb5-4de512713e17",
+    "url": "https://www.stakedao.org/yield",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "StakeDAO ETH+/ETH",
+    "llamaId": "30d38900-3d6a-40fb-afd7-c25e66725b18",
+    "url": "https://www.stakedao.org/yield",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Beefy eUSD/USDC",
+    "llamaId": "1fcd6504-eaa4-4b67-aa74-ae2045ae1dfd",
+    "url": "https://app.beefy.com/vault/aerodrome-usdc-eusd",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Extra Finance eUSD/USDbC",
+    "llamaId": "a95ff8dd-e199-4788-9357-27cf407cf53d",
+    "url": "https://app.extrafi.io/farm",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Extra Finance bsdETH/ETH",
+    "llamaId": "3878fe42-efcc-4e29-b2b4-09bd1f620d51",
+    "url": "https://app.extrafi.io/farm",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Beefy eUSD/FRAXBP",
+    "llamaId": "03da5871-6740-407e-986f-29c79fa86a7d",
+    "url": "https://app.beefy.com/vault/convex-eusdfraxbp",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Concentrator eUSD/FRAXBP",
+    "llamaId": "0639c1df-5234-49d5-bf6d-f5da4b8bbb66",
+    "url": "https://concentrator.aladdin.club/",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Beefy eUSD/USDbC",
+    "llamaId": "c9f80ada-4b5f-44e8-b670-8da359fc95c3",
+    "url": "https://app.beefy.com/vault/aerodrome-eusd-usdbc",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Beefy hyUSD/​eUSD",
+    "llamaId": "ee23472f-9d68-49c7-8441-6b96928e6352",
+    "url": "https://app.beefy.com/vault/aerodrome-hyusd-eusd",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Balancer RSR/ETH",
+    "llamaId": "207aa997-9996-4e69-bd8c-002270ed852d",
+    "url": "https://app.balancer.fi/#/ethereum/pool/0x771fbbfcbd8ba252f7f1ee47c1a486bdb0b5bc6200020000000000000000063d",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Uniswap RSR/ETH 0.3%",
+    "llamaId": "75ca1ed2-dcd0-419d-99e8-8aa13aa08364",
+    "url": "https://info.uniswap.org/#/pools/0x32d9259e6792b2150fd50395d971864647fa27b2",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Uniswap RSR/ETH 1%",
+    "llamaId": "a6f7f1ff-ffb8-48dd-8ad3-ab41925c4d35",
+    "url": "https://info.uniswap.org/#/pools/0xa3a9a863ed908aa95cb17e1781aa97e6693bf604",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Yearn USDC+/USDC",
+    "llamaId": "313de697-1863-4c81-bf57-6fe40976823b",
+    "url": "https://yearn.fi/vaults/1/0x5383C1Ab5beac04d6A6E6872Cc6a422f2Dc25576",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Yearn ETH+/ETH",
+    "llamaId": "52dd9b80-774f-414b-bf57-83fa5335f707",
+    "url": "https://yearn.fi/vaults/1/0x849dC56ceCa7Cf55AbF5ec87910DA21c5C7dA581",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Yearn hyUSD/eUSD",
+    "llamaId": "f8eff410-1a99-49be-b3e1-23966a94b57b",
+    "url": "https://yearn.fi/vaults/1/0x6a7A0481e476827857704B87bdeE7922D058cbE4",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Convex RSR/FRAXBP",
+    "llamaId": "19131596-dddf-4a6c-af71-31f75cee6e6e",
+    "url": "https://www.convexfinance.com/stake/ethereum/125",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Convex USDC+/USDC",
+    "llamaId": "59efd00b-0613-42fc-9799-7e43a9350a5d",
+    "url": "https://www.convexfinance.com/stake/ethereum/238",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Convex hyUSD/eUSD",
+    "llamaId": "c8815168-ba35-4e7c-b7b1-a0b33b6c73bc",
+    "url": "https://www.convexfinance.com/stake/ethereum/183",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Convex ETH+/ETH",
+    "llamaId": "74346f6f-c7ee-4506-a204-baf48e13decb",
+    "url": "https://www.convexfinance.com/stake/ethereum/185",
+    "underlyingTokens": null,
+    "symbol": ""
+  },
+  {
+    "description": "Convex eUSD/FRAXBP",
+    "llamaId": "c04005c9-7e34-41a6-91c4-295834ed8ac0",
+    "url": "https://www.convexfinance.com/stake/ethereum/156",
+    "underlyingTokens": null,
+    "symbol": ""
+  }
+]
