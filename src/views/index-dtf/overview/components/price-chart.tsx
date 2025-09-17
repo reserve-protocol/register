@@ -7,12 +7,12 @@ import { indexDTF7dChangeAtom, indexDTFAtom } from '@/state/dtf/atoms'
 import { formatCurrency } from '@/utils'
 import dayjs from 'dayjs'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { Line, LineChart, Tooltip, YAxis } from 'recharts'
+import { useEffect } from 'react'
+import { Area, AreaChart, Tooltip, YAxis } from 'recharts'
 import { Card } from 'theme-ui'
 import useIndexDTFPriceHistory, {
   IndexDTFPerformance,
 } from '../hooks/use-dtf-price-history'
-import { useEffect } from 'react'
 
 const chartConfig = {
   desktop: {
@@ -228,7 +228,19 @@ const PriceChart = () => {
       <div className="h-32 sm:h-60">
         {history !== undefined && timeseries.length > 0 && (
           <ChartContainer config={chartConfig} className="h-32 sm:h-60 w-full ">
-            <LineChart data={timeseries}>
+            <AreaChart data={timeseries}>
+              <defs>
+                <pattern
+                  id="dots"
+                  x="0"
+                  y="0"
+                  width="3"
+                  height="3"
+                  patternUnits="userSpaceOnUse"
+                >
+                  <circle cx="1" cy="1" r="0.4" fill="#E5EEFA" opacity="1" />
+                </pattern>
+              </defs>
               <YAxis
                 dataKey={dataType}
                 hide
@@ -236,15 +248,15 @@ const PriceChart = () => {
                 domain={['dataMin', 'dataMax']}
               />
               <Tooltip content={<CustomTooltip dataType={dataType} />} />
-              <Line
+              <Area
                 type="monotone"
                 dataKey={dataType}
                 stroke="#E5EEFA"
                 strokeWidth={1.5}
-                dot={false}
+                fill="url(#dots)"
                 isAnimationActive={false}
               />
-            </LineChart>
+            </AreaChart>
           </ChartContainer>
         )}
       </div>
