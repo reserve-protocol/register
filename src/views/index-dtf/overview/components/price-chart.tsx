@@ -8,7 +8,7 @@ import { formatCurrency } from '@/utils'
 import dayjs from 'dayjs'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
-import { Area, AreaChart, Tooltip, YAxis } from 'recharts'
+import { Area, AreaChart, Tooltip, XAxis, YAxis } from 'recharts'
 import { Card } from 'theme-ui'
 import useIndexDTFPriceHistory, {
   IndexDTFPerformance,
@@ -21,31 +21,37 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
-type Range = '1d' | '1w' | '1m' | '1y'
+type Range = '24h' | '3d' | '7d' | '1m' | '3m' | '1y'
 type DataType = 'price' | 'marketCap' | 'totalSupply'
 
 const now = Math.floor(Date.now() / 1_000)
 const currentHour = Math.floor(now / 3_600) * 3_600
 
 const historicalConfigs = {
-  '1d': { to: currentHour, from: currentHour - 86_400, interval: '1h' },
-  '1w': { to: currentHour, from: currentHour - 604_800, interval: '1h' },
+  '24h': { to: currentHour, from: currentHour - 86_400, interval: '1h' },
+  '3d': { to: currentHour, from: currentHour - 259_200, interval: '1h' },
+  '7d': { to: currentHour, from: currentHour - 604_800, interval: '1h' },
   '1m': { to: currentHour, from: currentHour - 2_592_000, interval: '1h' },
+  '3m': { to: currentHour, from: currentHour - 7_776_000, interval: '1d' },
   '1y': { to: currentHour, from: currentHour - 31_536_000, interval: '1d' },
 } as const
 
 const periodLabel = {
-  '1d': '24h',
-  '1w': '7d',
+  '24h': '24h',
+  '3d': '3d',
+  '7d': '7d',
   '1m': '30d',
+  '3m': '90d',
   '1y': '365d',
 } as const
 
 const timeRanges = [
-  { label: '1D', value: '1d' },
-  { label: '1W', value: '1w' },
+  { label: '24H', value: '24h' },
+  { label: '3D', value: '3d' },
+  { label: '7D', value: '7d' },
   { label: '1M', value: '1m' },
-  // { label: '1Y', value: '1y' },
+  { label: '3M', value: '3m' },
+  { label: '1Y', value: '1y' },
 ] as const
 
 const dataTypes = [
@@ -106,7 +112,7 @@ const TITLES = {
 }
 
 const dataTypeAtom = atom<DataType>('price')
-const timeRangeAtom = atom<Range>('1w')
+const timeRangeAtom = atom<Range>('7d')
 
 const DataTypeSelector = ({ className }: { className?: string }) => {
   const [dataType, setDataType] = useAtom(dataTypeAtom)
@@ -178,7 +184,7 @@ const PriceChart = () => {
     history?.timeseries.filter(({ price }) => Boolean(price)) || []
 
   useEffect(() => {
-    if (timeseries.length > 0 && range === '1w') {
+    if (timeseries.length > 0 && range === '7d') {
       const firstValue = timeseries[0].price
       const lastValue = timeseries[timeseries.length - 1].price
 
@@ -187,6 +193,30 @@ const PriceChart = () => {
       set7dChange(percentageChange)
     }
   }, [timeseries, range, set7dChange])
+
+  const formatXAxisTick = (timestamp: number) => {
+    const date = dayjs.unix(timestamp)
+    switch (range) {
+      case '24h':
+        return date.format('HH:mm')
+      case '3d':
+      case '7d':
+      case '1m':
+      case '3m':
+        return date.format('D MMM')
+      case '1y':
+        return date.format("MMM 'YY")
+      default:
+        return date.format('D MMM')
+    }
+  }
+
+  const formatYAxisTick = (value: number) => {
+    if (dataType === 'totalSupply') {
+      return formatCurrency(value, 0)
+    }
+    return '$' + formatCurrency(value, value < 1 ? 4 : 2)
+  }
 
   return (
     <div className="lg:rounded-4xl lg:rounded-b-none bg-[#000] dark:bg-background lg:dark:bg-muted w-full text-[#fff] dark:text-foreground p-3 sm:p-6 pb-20 h-[340px] sm:h-[538px]">
@@ -228,7 +258,10 @@ const PriceChart = () => {
       <div className="h-32 sm:h-60">
         {history !== undefined && timeseries.length > 0 && (
           <ChartContainer config={chartConfig} className="h-32 sm:h-60 w-full ">
-            <AreaChart data={timeseries}>
+            <AreaChart
+              data={timeseries}
+              margin={{ left: 0, right: 0, top: 5, bottom: 5 }}
+            >
               <defs>
                 <pattern
                   id="dots"
@@ -241,11 +274,31 @@ const PriceChart = () => {
                   <circle cx="1" cy="1" r="0.4" fill="#E5EEFA" opacity="1" />
                 </pattern>
               </defs>
+              <XAxis
+                dataKey="timestamp"
+                tick={{ fill: '#E5EEFA', fontSize: 13 }}
+                tickFormatter={formatXAxisTick}
+                axisLine={false}
+                tickLine={false}
+                interval="preserveStart"
+                ticks={[
+                  ...[0, 0.2, 0.4, 0.6, 0.8, 0.95].map(
+                    (i) =>
+                      timeseries[Math.floor(timeseries.length * i)]?.timestamp
+                  ),
+                ].filter(Boolean)}
+                tickMargin={10}
+              />
               <YAxis
                 dataKey={dataType}
-                hide
-                visibility="0"
-                domain={['dataMin', 'dataMax']}
+                orientation="right"
+                tick={{ fill: '#E5EEFA', fontSize: 13 }}
+                tickFormatter={formatYAxisTick}
+                axisLine={false}
+                tickLine={false}
+                domain={['auto', 'auto']}
+                width={55}
+                tickCount={5}
               />
               <Tooltip content={<CustomTooltip dataType={dataType} />} />
               <Area
