@@ -7,7 +7,7 @@ import IndexDisclousure from './components/index-disclousure'
 import IndexGovernanceOverview from './components/index-governance-overview'
 import IndexTokenOverview from './components/index-token-overview'
 import LandingMint from './components/landing-mint'
-import PriceChart from './components/price-chart'
+import PriceChart from './components/charts/price-chart'
 import IndexTransactionTable from './components/index-transaction-table'
 
 const Content = () => {

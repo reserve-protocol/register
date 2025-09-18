@@ -1,13 +1,11 @@
 import ChainLogo from '@/components/icons/ChainLogo'
 import CopyValue from '@/components/old/button/CopyValue'
-import TokenLogo from '@/components/token-logo'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import { chainIdAtom } from '@/state/atoms'
 import {
   indexDTFAtom,
-  indexDTFBrandAtom,
   isBrandManagerAtom,
   iTokenAddressAtom,
 } from '@/state/dtf/atoms'
@@ -19,6 +17,7 @@ import { ArrowUpRight, ImagePlus } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useTrackIndexDTFClick } from '../../hooks/useTrackIndexDTFPage'
 import IndexRolesOverview from './index-roles-overview'
+import IndexTokenLogo from './index-token-logo'
 import ZapMint from './zap-mint'
 
 const TokenNameSkeleton = () => (
@@ -94,7 +93,6 @@ const ZapBuySellButtons = () => {
 
 const IndexTokenOverview = () => {
   const dtf = useAtomValue(indexDTFAtom)
-  const brand = useAtomValue(indexDTFBrandAtom)
   const isBrandManager = useAtomValue(isBrandManagerAtom)
 
   const { trackClick } = useTrackIndexDTFClick('overview', 'overview')
@@ -103,15 +101,7 @@ const IndexTokenOverview = () => {
     <Card className="p-2">
       <div className="flex items-center flex-wrap p-2 sm:p-4">
         <div className="flex items-center mr-auto">
-          {!brand ? (
-            <Skeleton className="h-8 w-8 rounded-full" />
-          ) : (
-            <TokenLogo
-              src={brand?.dtf?.icon || undefined}
-              alt={dtf?.token.symbol ?? 'dtf token logo'}
-              size="xl"
-            />
-          )}
+          <IndexTokenLogo />
           {isBrandManager && (
             <Link to="../manage" onClick={() => trackClick('brand_manager')}>
               <Button
