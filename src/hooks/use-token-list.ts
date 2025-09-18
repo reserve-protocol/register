@@ -1,11 +1,13 @@
-import { Token } from '@/types'
-import { ChainId } from '@/utils/chains'
+import { Token, Volatility } from '@/types'
 import { RESERVE_API } from '@/utils/constants'
-import { TEMP_TOKENS } from '@/views/index-dtf/deploy/steps/basket/temp-tokens'
 import { useQuery } from '@tanstack/react-query'
 
 const getTokensApi = (chain: number) =>
   `${RESERVE_API}zapper/tokens?chainId=${chain}`
+
+type ZapToken = Token & {
+  volatility: Volatility
+}
 
 const useTokenList = (chainId: number) =>
   useQuery({
@@ -16,19 +18,7 @@ const useTokenList = (chainId: number) =>
         if (!response.ok) {
           throw new Error('Failed to fetch token list')
         }
-        const data: Token[] = await response.json()
-
-        if (chainId === ChainId.Base) {
-          const existingAddresses = new Set(
-            data.map((token) => token.address.toLowerCase())
-          )
-
-          const uniqueTempTokens = TEMP_TOKENS.filter(
-            (token) => !existingAddresses.has(token.address.toLowerCase())
-          )
-
-          data.push(...uniqueTempTokens)
-        }
+        const data: ZapToken[] = await response.json()
 
         return data
       } catch (error) {
@@ -36,7 +26,6 @@ const useTokenList = (chainId: number) =>
         throw error
       }
     },
-    staleTime: 5 * 60 * 1000, // Cache for 5 minutes
     retry: 2,
   })
 

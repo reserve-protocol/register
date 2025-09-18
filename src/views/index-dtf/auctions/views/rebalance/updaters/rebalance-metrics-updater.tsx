@@ -6,7 +6,6 @@ import { useCallback, useEffect } from 'react'
 import { currentRebalanceAtom, RebalanceByProposal } from '../../../atoms'
 import {
   areWeightsSavedAtom,
-  AUCTION_PRICE_VOLATILITY,
   rebalanceAuctionsAtom,
   rebalanceMetricsAtom,
   rebalancePercentAtom,
@@ -46,6 +45,7 @@ const RebalanceMetricsUpdater = () => {
           initialWeights,
           prices,
           isTrackingDTF,
+          tokenPriceVolatility,
         } = params
 
         // Use saved weights for hybrid DTFs on first auction if available
@@ -69,26 +69,27 @@ const RebalanceMetricsUpdater = () => {
           weightsToUse,
           prices,
           isTrackingDTF,
+          tokenPriceVolatility,
           rebalancePercent,
-          AUCTION_PRICE_VOLATILITY.MEDIUM,
           isHybridDTF
         )
 
         // Determine if auction is small based on chain
         const isSmallAuction = (auctionSize: number) => {
-          if (chainId === ChainId.BSC || chainId === ChainId.Base) return auctionSize < 100 // BSC & Base: $100
+          if (chainId === ChainId.BSC || chainId === ChainId.Base)
+            return auctionSize < 100 // BSC & Base: $100
           if (chainId === ChainId.Mainnet) return auctionSize < 1000 // Mainnet: $1000
           return false // Other chains: no adjustment
         }
 
         // Override percent to 100 if auction is small (non-dev mode only)
-        const effectivePercent = 
-          !isDevMode && isSmallAuction(initialMetrics.auctionSize ?? 0) 
-            ? 100 
+        const effectivePercent =
+          !isDevMode && isSmallAuction(initialMetrics.auctionSize ?? 0)
+            ? 100
             : rebalancePercent
 
         // Recalculate if percent was adjusted
-        const [, rebalanceMetrics] = 
+        const [, rebalanceMetrics] =
           effectivePercent !== rebalancePercent
             ? getRebalanceOpenAuction(
                 currentRebalance.rebalance.tokens,
@@ -101,8 +102,8 @@ const RebalanceMetricsUpdater = () => {
                 weightsToUse,
                 prices,
                 isTrackingDTF,
+                tokenPriceVolatility,
                 effectivePercent,
-                AUCTION_PRICE_VOLATILITY.MEDIUM,
                 isHybridDTF
               )
             : [, initialMetrics]
@@ -117,7 +118,15 @@ const RebalanceMetricsUpdater = () => {
         console.error('Error getting rebalance metrics', e)
       }
     },
-    [setRebalanceMetrics, isHybridDTF, savedWeights, areWeightsSaved, auctions, chainId, isDevMode]
+    [
+      setRebalanceMetrics,
+      isHybridDTF,
+      savedWeights,
+      areWeightsSaved,
+      auctions,
+      chainId,
+      isDevMode,
+    ]
   )
 
   useEffect(() => {
