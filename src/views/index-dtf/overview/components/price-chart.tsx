@@ -307,7 +307,9 @@ const PriceChart = () => {
                 stroke="#E5EEFA"
                 strokeWidth={1.5}
                 fill="url(#dots)"
-                isAnimationActive={false}
+                isAnimationActive={true}
+                animationDuration={500}
+                animationEasing="ease-in-out"
               />
             </AreaChart>
           </ChartContainer>
