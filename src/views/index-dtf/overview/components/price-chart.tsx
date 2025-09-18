@@ -256,8 +256,10 @@ const PriceChart = () => {
         </div>
       </div>
       <div className="h-32 sm:h-60">
-        {history !== undefined && timeseries.length > 0 && (
-          <ChartContainer config={chartConfig} className="h-32 sm:h-60 w-full ">
+        {history === undefined ? (
+          <Skeleton className="h-32 sm:h-60 w-full rounded-lg" />
+        ) : timeseries.length > 0 ? (
+          <ChartContainer config={chartConfig} className="h-32 sm:h-60 w-full">
             <AreaChart
               data={timeseries}
               margin={{ left: 0, right: 0, top: 5, bottom: 5 }}
@@ -282,7 +284,7 @@ const PriceChart = () => {
                 tickLine={false}
                 interval="preserveStart"
                 ticks={[
-                  ...[0, 0.2, 0.4, 0.6, 0.8, 0.95].map(
+                  ...[0.05, 0.23, 0.41, 0.59, 0.77, 0.95].map(
                     (i) =>
                       timeseries[Math.floor(timeseries.length * i)]?.timestamp
                   ),
@@ -313,7 +315,7 @@ const PriceChart = () => {
               />
             </AreaChart>
           </ChartContainer>
-        )}
+        ) : null}
       </div>
       <div className="flex sm:mt-7 mt-3 items-center gap-1 sm:justify-between justify-end">
         <div className="hidden sm:flex">
