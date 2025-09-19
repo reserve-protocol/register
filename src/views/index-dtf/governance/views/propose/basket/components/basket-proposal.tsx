@@ -54,8 +54,8 @@ const BasketProposal = () => {
       onValueChange={(value) => setStep(value as Step)}
     >
       <Header />
-      <BasketSetupAccordion />
       <ProposalBasketAdvanceSettings />
+      <BasketSetupAccordion />
     </Accordion>
   )
 }
