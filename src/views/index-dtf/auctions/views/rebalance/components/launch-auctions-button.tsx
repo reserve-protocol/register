@@ -5,22 +5,21 @@ import { parseDuration } from '@/utils'
 import { atom, useAtom, useAtomValue } from 'jotai'
 import { LoaderCircle } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import { toast } from 'sonner'
 import { Address } from 'viem'
 import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
 import { currentRebalanceAtom } from '../../../atoms'
 import {
+  areWeightsSavedAtom,
   isAuctionOngoingAtom,
-  AUCTION_PRICE_VOLATILITY,
   priceVolatilityAtom,
   rebalanceAuctionsAtom,
   rebalancePercentAtom,
   refreshNonceAtom,
   savedWeightsAtom,
-  areWeightsSavedAtom,
 } from '../atoms'
 import useRebalanceParams from '../hooks/use-rebalance-params'
 import getRebalanceOpenAuction from '../utils/get-rebalance-open-auction'
-import { toast } from 'sonner'
 
 const auctionNumberAtom = atom((get) => {
   const auctions = get(rebalanceAuctionsAtom)
@@ -96,8 +95,8 @@ const LaunchAuctionsButton = () => {
         weightsToUse,
         rebalanceParams.prices,
         rebalanceParams.isTrackingDTF,
+        rebalanceParams.tokenPriceVolatility,
         rebalancePercent,
-        AUCTION_PRICE_VOLATILITY[priceVolatility],
         isHybridDTF
       )
 

@@ -1,18 +1,16 @@
-import { TokenPriceWithSnapshot } from '@/hooks/use-asset-prices-with-snapshot'
+import { Token, Volatility } from '@/types'
 import {
   AuctionMetrics,
   WeightRange,
 } from '@reserve-protocol/dtf-rebalance-lib'
-import { Token } from '@/types'
-import { Rebalance } from '@reserve-protocol/dtf-rebalance-lib'
 import { atom } from 'jotai'
 import { currentRebalanceAtom } from '../../atoms'
 
-export const AUCTION_PRICE_VOLATILITY: Record<string, number> = {
-  LOW: 0.02,
-  MEDIUM: 0.05,
-  HIGH: 0.1,
-  DEGEN: 0.5,
+export const AUCTION_PRICE_VOLATILITY: Record<Volatility, number> = {
+  low: 0.02,
+  medium: 0.05,
+  high: 0.1,
+  degen: 0.5,
 }
 
 export type Auction = {
@@ -46,7 +44,7 @@ export type Auction = {
 
 export const rebalanceMetricsAtom = atom<AuctionMetrics | undefined>(undefined)
 
-export const rebalancePercentAtom = atom(90)
+export const rebalancePercentAtom = atom(98)
 export const rebalanceAuctionsAtom = atom<Auction[]>([])
 
 export const rebalanceTokenMapAtom = atom<Record<string, Token>>((get) => {
@@ -73,8 +71,7 @@ export const isAuctionOngoingAtom = atom((get) => {
   })
 })
 
-export const priceVolatilityAtom =
-  atom<keyof typeof AUCTION_PRICE_VOLATILITY>('MEDIUM')
+export const priceVolatilityAtom = atom<Volatility>('medium')
 
 // Advanced rebalance atoms for hybrid DTFs
 export const savedWeightsAtom = atom<Record<string, WeightRange> | undefined>(

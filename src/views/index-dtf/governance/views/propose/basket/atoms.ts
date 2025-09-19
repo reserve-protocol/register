@@ -14,7 +14,7 @@ import {
   isSingletonRebalanceAtom,
   iTokenAddressAtom,
 } from '@/state/dtf/atoms'
-import { Token } from '@/types'
+import { Token, Volatility } from '@/types'
 import { atom, Getter } from 'jotai'
 import { Address, encodeFunctionData, Hex, parseUnits } from 'viem'
 import { BasketInputType } from '@/views/index-dtf/deploy/atoms'
@@ -53,7 +53,7 @@ export const proposalDescriptionAtom = atom<string | undefined>(undefined)
 // ############################################################
 
 // UI Accordion controls
-export const stepAtom = atom<Step>('basket')
+export const stepAtom = atom<Step>('advance')
 export const advancedControlsAtom = atom(false)
 
 // Auction price setting (advanced controls)
@@ -478,11 +478,14 @@ export const legacyBasketProposalCalldatasAtom = atom<Hex[] | undefined>(
 
 // ############################################################
 
-const PRICE_VOLATILITY_OPTIONS: Record<string, number> = {
-  Low: VOLATILITY_VALUES[0],
-  Medium: VOLATILITY_VALUES[1],
-  High: VOLATILITY_VALUES[2],
+const REBALANCE_PRICE_VOLATILITY: Record<Volatility, number> = {
+  low: 0.25,
+  medium: 0.5,
+  high: 0.75,
+  degen: 0.9,
 }
+
+export const tokenPriceVolatilityAtom = atom<Record<string, Volatility>>({})
 
 export const basketProposalCalldatasAtom = atom<Hex[] | undefined>((get) => {
   const isSingleton = get(isSingletonRebalanceAtom)
@@ -505,11 +508,7 @@ export const basketProposalCalldatasAtom = atom<Hex[] | undefined>((get) => {
   const supply = get(dtfSupplyAtom)
   const proposedShares = get(proposedSharesAtom)
   const priceMap = get(priceMapAtom)
-  const isDeferToAuctionLauncher = get(tradeRangeOptionAtom) === 'defer'
-  const priceVolatility =
-    PRICE_VOLATILITY_OPTIONS[
-      isDeferToAuctionLauncher ? 'High' : get(priceVolatilityAtom)
-    ] ?? PRICE_VOLATILITY_OPTIONS.Medium
+  const tokenPriceVolatility = get(tokenPriceVolatilityAtom)
 
   if (
     !isConfirmed ||
@@ -547,7 +546,9 @@ export const basketProposalCalldatasAtom = atom<Hex[] | undefined>((get) => {
     }
 
     _prices.push(priceMap[asset] ?? 0)
-    error.push(priceVolatility)
+    error.push(
+      REBALANCE_PRICE_VOLATILITY[tokenPriceVolatility[asset] || 'high']
+    )
 
     index++
   }

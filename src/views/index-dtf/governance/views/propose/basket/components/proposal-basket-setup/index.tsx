@@ -48,7 +48,7 @@ const NextButton = () => {
       <Button
         disabled={!isValid}
         onClick={handleNext}
-        className="w-full my-2"
+        className="w-full mb-2 rounded-xl"
         size="lg"
       >
         Confirm & Prepare Proposal

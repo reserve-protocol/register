@@ -1,5 +1,5 @@
 import { TokenPriceWithSnapshot } from '@/hooks/use-asset-prices-with-snapshot'
-import { Token } from '@/types'
+import { Token, Volatility } from '@/types'
 import {
   getOpenAuction,
   getTargetBasket,
@@ -19,8 +19,8 @@ function getRebalanceOpenAuction(
   initialWeights: Record<string, WeightRange>,
   prices: TokenPriceWithSnapshot,
   isTrackingDTF: boolean,
+  tokenPriceVolatility: Record<string, Volatility>,
   rebalancePercent = 90,
-  priceVolatility = AUCTION_PRICE_VOLATILITY.MEDIUM,
   isHybridDTF = false
 ) {
   const tokenMap = tokens.reduce(
@@ -49,7 +49,11 @@ function getRebalanceOpenAuction(
 
     // Calculate snapshot price from initialPrices
     snapshotPrices.push(initialPrices[lowercasedAddress])
-    priceError.push(priceVolatility)
+    priceError.push(
+      AUCTION_PRICE_VOLATILITY[
+        tokenPriceVolatility[lowercasedAddress] || 'medium'
+      ]
+    )
     initialFolioAssets.push(initialAssets[lowercasedAddress] || 0n)
     currentFolioAssets.push(currentAssets[lowercasedAddress] || 0n)
     weights.push(initialWeights[lowercasedAddress])
