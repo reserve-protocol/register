@@ -1,23 +1,19 @@
-import { isSingletonRebalanceAtom } from '@/state/dtf/atoms'
-import { useAtom, useAtomValue } from 'jotai'
-import LegacyAdvancedControls from './legacy-advance-controls'
 import { AccordionContent, AccordionItem } from '@/components/ui/accordion'
-import ProposalStepTrigger from './proposal-step-trigger'
+import { NumericalInput } from '@/components/ui/input'
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
+import { isSingletonRebalanceAtom } from '@/state/dtf/atoms'
+import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { Sunrise } from 'lucide-react'
-import ProposalRebalanceLaunchSettings, {
-  PermissionOptionId,
-} from './proposal-rebalance-launch-settings'
-import { ToggleGroupItem } from '@/components/ui/toggle-group'
-import { ToggleGroup } from '@/components/ui/toggle-group'
 import {
   auctionLauncherWindowAtom,
   customAuctionLauncherWindowAtom,
   customPermissionlessLaunchingWindowAtom,
   permissionlessLaunchingWindowAtom,
-  permissionlessLaunchingAtom,
-  priceVolatilityAtom,
+  stepAtom,
 } from '../atoms'
-import { NumericalInput } from '@/components/ui/input'
+import LegacyAdvancedControls from './legacy-advance-controls'
+import ProposalStepTrigger from './proposal-step-trigger'
+import { Button } from '@/components/ui/button'
 
 const WINDOW_OPTIONS = ['0', '12', '24', '48']
 
@@ -133,50 +129,22 @@ const PermissionlessWindow = () => {
   )
 }
 
-const VOLATILITY_OPTIONS = ['Low', 'Medium', 'High']
+const ConfirmButton = () => {
+  const setStep = useSetAtom(stepAtom)
 
-const RebalancePriceVolatility = () => {
-  const [priceVolatility, setPriceVolatility] = useAtom(priceVolatilityAtom)
+  const handleConfirm = () => {
+    setStep('basket')
+  }
 
   return (
-    <div className="flex flex-col justify-center gap-3 rounded-xl bg-foreground/5 p-4">
-      <div>
-        <h4 className="font-semibold text-primary text-base">
-          Auction Price Volatility
-        </h4>
-        <div className="">
-          Specify the expected price volatility for the auction. This will be
-          used to set the price range for the auction.
-        </div>
-      </div>
-      <div className="flex items-center gap-2">
-        <ToggleGroup
-          type="single"
-          className="bg-muted-foreground/10 p-1 rounded-xl justify-start flex-grow"
-          value={priceVolatility}
-          onValueChange={(value) => {
-            if (value) {
-              setPriceVolatility(value)
-            }
-          }}
-        >
-          {VOLATILITY_OPTIONS.map((option) => (
-            <ToggleGroupItem
-              key={option}
-              value={option}
-              className="px-5 h-8 whitespace-nowrap rounded-lg data-[state=on]:bg-card text-secondary-foreground/80 data-[state=on]:text-primary flex-grow"
-            >
-              {option}
-            </ToggleGroupItem>
-          ))}
-        </ToggleGroup>
-      </div>
-    </div>
+    <Button size="lg" className="m-2 rounded-xl" onClick={handleConfirm}>
+      Confirm
+    </Button>
   )
 }
 
 // TODO: Handle error case (0 ttl)
-const ProposalBasketAdvanceSettings = () => {
+const ProposalBasketAuctionWindow = () => {
   const isSingletonRebalance = useAtomValue(isSingletonRebalanceAtom)
 
   if (!isSingletonRebalance) return <LegacyAdvancedControls />
@@ -189,24 +157,23 @@ const ProposalBasketAdvanceSettings = () => {
       <ProposalStepTrigger
         id="advance"
         icon={<Sunrise size={16} strokeWidth={1.5} />}
-        title="Advance settings"
+        title="Auction window"
       />
       <AccordionContent className="flex flex-col animate-fade-in">
-        <h2 className="text-xl  sm:text-2xl font-bold text-primary mx-4 sm:mx-6 mb-2">
-          Advance settings
+        <h2 className="text-xl sm:text-2xl font-bold text-primary mx-4 sm:mx-6 mb-2">
+          Auction window
         </h2>
         <p className="text-sm sm:text-base mx-4 sm:mx-6 mb-2">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam,
-          quos.
+          Set the auction window for the rebalance.
         </p>
-        <div className="flex flex-col p-4 gap-2">
-          <RebalancePriceVolatility />
+        <div className="flex flex-col px-2 pt-2 gap-2">
           <AuctionLauncherWindow />
           <PermissionlessWindow />
         </div>
+        <ConfirmButton />
       </AccordionContent>
     </AccordionItem>
   )
 }
 
-export default ProposalBasketAdvanceSettings
+export default ProposalBasketAuctionWindow
