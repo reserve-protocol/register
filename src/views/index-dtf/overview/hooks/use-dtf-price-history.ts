@@ -59,6 +59,8 @@ const useIndexDTFPriceHistory = ({
       supply,
     ],
     queryFn: async (): Promise<IndexDTFPerformance> => {
+      const startTime = Date.now()
+
       const sp = new URLSearchParams()
       sp.set('chainId', chainId.toString())
       sp.set('address', address?.toLowerCase() ?? '')
@@ -86,6 +88,14 @@ const useIndexDTFPriceHistory = ({
           totalSupply: numberSupply,
           basket: [],
         })
+      }
+
+      // Ensure minimum loading time of 1 second for loading skeleton
+      const elapsed = Date.now() - startTime
+      const remainingTime = Math.max(0, 1000 - elapsed)
+
+      if (remainingTime > 0) {
+        await new Promise((resolve) => setTimeout(resolve, remainingTime))
       }
 
       return data

@@ -72,7 +72,7 @@ const Mandate = () => {
 
   return (
     <div>
-      <h2 className="text-xl font-semibold mb-1">About this DTF</h2>
+      <h2 className="text-2xl font-light mb-1">About this DTF</h2>
       {!data ? (
         <div>
           <Skeleton className="w-full h-20" />

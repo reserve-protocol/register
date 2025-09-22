@@ -6,7 +6,7 @@ import {
   indexDTFAtom,
   indexDTFMarketCapAtom,
 } from '@/state/dtf/atoms'
-import { formatCurrency } from '@/utils'
+import { formatCurrency, formatToSignificantDigits } from '@/utils'
 import dayjs from 'dayjs'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useMemo } from 'react'
@@ -44,7 +44,9 @@ function CustomTooltip({ payload, active, dataType }: any) {
       .format('YYYY-M-D HH:mm:ss')
     const value = payload[0]?.payload?.[dataType]
     const formattedValue =
-      dataType === 'price' ? formatCurrency(value, 5) : formatCurrency(value, 2)
+      dataType === 'price'
+        ? formatToSignificantDigits(value)
+        : formatCurrency(value, 2)
     return (
       <Card backgroundColor="cardBackground">
         <InfoBox title={'$' + formattedValue} subtitle={subtitle} />
@@ -119,13 +121,16 @@ const PriceChart = () => {
   }
 
   return (
-    <div className="lg:rounded-4xl lg:rounded-b-none bg-[#000] dark:bg-background lg:dark:bg-muted w-full text-[#fff] dark:text-foreground p-3 sm:p-6 pb-20 h-[340px] sm:h-[572px]">
+    <div className="lg:rounded-4xl lg:rounded-b-none bg-[#000] dark:bg-background lg:dark:bg-muted w-full text-[#fff] dark:text-foreground p-3 sm:p-6 pb-20 h-[340px] sm:h-[539px]">
       <ChartOverlay timeseries={timeseries} />
-      <div className="h-32 sm:h-80">
+      <div className="h-32 sm:h-[300px]">
         {history === undefined ? (
-          <Skeleton className="h-32 sm:h-80 w-full rounded-lg" />
+          <Skeleton className="h-32 sm:h-[300px] w-full rounded-lg" />
         ) : timeseries.length > 0 ? (
-          <ChartContainer config={chartConfig} className="h-32 sm:h-80 w-full">
+          <ChartContainer
+            config={chartConfig}
+            className="h-32 sm:h-[300px] w-full"
+          >
             <AreaChart
               data={timeseries}
               margin={{ left: 0, right: 0, top: 5, bottom: 5 }}
@@ -169,7 +174,7 @@ const PriceChart = () => {
                 domain={['auto', 'auto']}
                 width={55}
                 tickCount={5}
-                tickMargin={10}
+                tickMargin={5}
               />
               <Tooltip content={<CustomTooltip dataType={dataType} />} />
               <Area
@@ -186,13 +191,6 @@ const PriceChart = () => {
           </ChartContainer>
         ) : null}
       </div>
-      {/* <div className="flex sm:mt-4 mt-3 items-center gap-1 sm:justify-between justify-end">
-        <div className="hidden sm:flex">
-          <TimeRangeSelector />
-        </div>
-
-        <MarketCap timeseries={timeseries} />
-      </div> */}
     </div>
   )
 }

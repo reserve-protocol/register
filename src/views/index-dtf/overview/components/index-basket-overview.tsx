@@ -32,6 +32,7 @@ import { ArrowUpRight } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import BridgeLabel from './bridge-label'
+import IndexTokenAddress from './index-token-address'
 
 const MAX_TOKENS = 10
 
@@ -173,7 +174,10 @@ const IndexBasketOverviewContent = ({ className }: { className?: string }) => {
 
 const IndexBasketOverview = () => (
   <Card className="py-4 sm:py-6 -mt-[1px]">
-    <h2 className="px-4 sm:px-6 text-2xl font-light">Assets in this DTF</h2>
+    <div className="px-4 sm:px-6 flex items-center gap-2 justify-between">
+      <h2 className="text-2xl font-light">Assets in this DTF</h2>
+      <IndexTokenAddress />
+    </div>
     <Separator className="mt-6 mb-3" />
     <div className="px-4 sm:px-6">
       <IndexBasketOverviewContent />

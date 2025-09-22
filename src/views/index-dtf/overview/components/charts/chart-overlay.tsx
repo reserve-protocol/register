@@ -1,7 +1,7 @@
 import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
-import { indexDTFAtom } from '@/state/dtf/atoms'
-import { formatCurrency } from '@/utils'
+import { indexDTFAtom, indexDTFPriceAtom } from '@/state/dtf/atoms'
+import { formatToSignificantDigits } from '@/utils'
 import { useAtomValue } from 'jotai'
 import { ChevronDown, ChevronUp } from 'lucide-react'
 import { IndexDTFPerformance } from '../../hooks/use-dtf-price-history'
@@ -51,6 +51,7 @@ const ChartOverlay = ({ timeseries }: { timeseries: any }) => {
   const dataType = useAtomValue(dataTypeAtom)
   const range = useAtomValue(timeRangeAtom)
   const dtf = useAtomValue(indexDTFAtom)
+  const price = useAtomValue(indexDTFPriceAtom)
 
   return (
     <div className="mb-0 sm:mb-3 flex flex-col gap-2">
@@ -62,10 +63,6 @@ const ChartOverlay = ({ timeseries }: { timeseries: any }) => {
           <TimeRangeSelector />
         </div>
       </div>
-      {/* <div className="sm:hidden items-center gap-1 flex">
-        <span className=" text-sm ">Price</span>
-        <TimeRangeSelector />
-      </div> */}
       <div className="flex flex-col gap-0.5 text-xl sm:text-2xl font-light">
         {dtf ? (
           <h2 className="text-xl sm:text-2xl font-light w-full break-words">
@@ -74,17 +71,23 @@ const ChartOverlay = ({ timeseries }: { timeseries: any }) => {
         ) : (
           <Skeleton className="w-[250px] h-8" />
         )}
-        {!timeseries.length ? (
-          <Skeleton className="w-[200px] h-8" />
-        ) : (
-          <div className="flex items-center gap-2">
-            {dataType !== 'totalSupply' ? '$' : ''}
-            {formatCurrency(timeseries[timeseries.length - 1][dataType], 5)}
-            <div className="text-sm">
-              {calculatePercentageChange(timeseries, dataType, false, range)}
-            </div>
+        <div className="flex items-center gap-2">
+          {!price ? (
+            <Skeleton className="w-[100px] h-7 mt-1" />
+          ) : (
+            <>
+              {dataType !== 'totalSupply' ? '$' : ''}
+              {formatToSignificantDigits(price)}
+            </>
+          )}
+          <div className="text-sm">
+            {!timeseries.length ? (
+              <Skeleton className="w-[100px] h-6 mt-1" />
+            ) : (
+              calculatePercentageChange(timeseries, dataType, false, range)
+            )}
           </div>
-        )}
+        </div>
       </div>
     </div>
   )
