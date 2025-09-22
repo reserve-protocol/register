@@ -82,7 +82,7 @@ const ChartOverlay = ({ timeseries }: { timeseries: any }) => {
           )}
           <div className="text-sm">
             {!timeseries.length ? (
-              <Skeleton className="w-[100px] h-6 mt-1" />
+              <Skeleton className="w-[100px] h-6" />
             ) : (
               calculatePercentageChange(timeseries, dataType, false, range)
             )}

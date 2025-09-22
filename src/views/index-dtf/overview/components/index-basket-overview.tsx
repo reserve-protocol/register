@@ -175,7 +175,7 @@ const IndexBasketOverviewContent = ({ className }: { className?: string }) => {
 const IndexBasketOverview = () => (
   <Card className="py-4 sm:py-6 -mt-[1px]">
     <div className="px-4 sm:px-6 flex items-center gap-2 justify-between">
-      <h2 className="text-2xl font-light">Assets in this DTF</h2>
+      <h2 className="text-xl sm:text-2xl font-light">Assets in this DTF</h2>
       <IndexTokenAddress />
     </div>
     <Separator className="mt-6 mb-3" />

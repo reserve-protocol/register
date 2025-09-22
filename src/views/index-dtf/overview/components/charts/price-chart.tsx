@@ -14,6 +14,7 @@ import { Area, AreaChart, Tooltip, XAxis, YAxis } from 'recharts'
 import { Card } from 'theme-ui'
 import useIndexDTFPriceHistory from '../../hooks/use-dtf-price-history'
 import ChartOverlay from './chart-overlay'
+import IndexCTAsOverviewMobile from '../index-ctas-overview-mobile'
 
 const chartConfig = {
   desktop: {
@@ -119,15 +120,15 @@ const PriceChart = () => {
   }
 
   return (
-    <div className="lg:rounded-4xl lg:rounded-b-none bg-[#000] dark:bg-background lg:dark:bg-muted w-full text-[#fff] dark:text-foreground p-3 sm:p-6 pb-20 h-[340px] sm:h-[539px]">
+    <div className="lg:rounded-4xl lg:rounded-b-none bg-[#000] dark:bg-background lg:dark:bg-muted w-full text-[#fff] dark:text-foreground p-3 sm:p-6 pb-20 h-[452px] sm:h-[600px] xl:h-[539px]">
       <ChartOverlay timeseries={timeseries} />
-      <div className="h-32 sm:h-[300px]">
+      <div className="h-48 sm:h-[300px]">
         {history === undefined ? (
-          <Skeleton className="h-32 sm:h-[300px] w-full rounded-lg" />
+          <Skeleton className="h-48 sm:h-[300px] w-full rounded-lg" />
         ) : timeseries.length > 0 ? (
           <ChartContainer
             config={chartConfig}
-            className="h-32 sm:h-[300px] w-full"
+            className="h-48 sm:h-[300px] w-full"
           >
             <AreaChart
               data={timeseries}
@@ -189,6 +190,7 @@ const PriceChart = () => {
           </ChartContainer>
         ) : null}
       </div>
+      <IndexCTAsOverviewMobile />
     </div>
   )
 }

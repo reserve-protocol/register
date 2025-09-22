@@ -47,7 +47,7 @@ const MetricsItem = ({
   loading?: boolean
 }) => {
   return (
-    <div className="p-5 flex items-center gap-1 justify-between">
+    <div className="px-4 py-2 sm:px-5 sm:py-5 flex items-center gap-1 justify-between">
       <div className="flex items-center gap-1">
         <div className="p-2">{icon}</div>
         {label}
@@ -140,7 +140,7 @@ const Website = () => {
           ?.replace('https://', '')
           .replace('http://', '')
           .replace('www.', '')
-          .slice(0, 20) + '...' || ''
+          .slice(0, 14) + '...' || ''
       }
       valueHover={brandData?.socials?.website || ''}
       icon={<Link2 size={16} />}
@@ -187,12 +187,12 @@ const Created = () => {
 const IndexMetricsOverview = () => {
   return (
     <div className="flex flex-col sm:flex-row border-t border-secondary">
-      <div className="flex-1 [&>*:not(:first-child)]:border-t [&>*:not(:first-child)]:border-secondary border-r-0 sm:border-r border-secondary">
+      <div className="flex-1 sm:[&>*:not(:first-child)]:border-t sm:[&>*:not(:first-child)]:border-secondary border-r-0 sm:border-r border-secondary">
         <Creator />
         <MarketCap />
         <UniqueHolders />
       </div>
-      <div className="flex-1 [&>*:not(:first-child)]:border-t [&>*:not(:first-child)]:border-secondary">
+      <div className="flex-1 sm:[&>*:not(:first-child)]:border-t sm:[&>*:not(:first-child)]:border-secondary">
         <Website />
         <TxVolume />
         <Created />

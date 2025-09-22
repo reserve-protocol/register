@@ -1,15 +1,14 @@
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { useAtomValue } from 'jotai'
 import useTrackIndexDTFPage from '../hooks/useTrackIndexDTFPage'
+import PriceChart from './components/charts/price-chart'
 import IndexAboutOverview from './components/index-about-overview'
+import IndexBasketOverview from './components/index-basket-overview'
 import IndexCreatorNotes from './components/index-creator-notes'
 import IndexDisclousure from './components/index-disclousure'
 import IndexGovernanceOverview from './components/index-governance-overview'
-import IndexTokenOverview from './components/index-token-overview'
-import LandingMint from './components/landing-mint'
-import PriceChart from './components/charts/price-chart'
 import IndexTransactionTable from './components/index-transaction-table'
-import IndexBasketOverview from './components/index-basket-overview'
+import LandingMint from './components/landing-mint'
 
 const Content = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
@@ -18,7 +17,6 @@ const Content = () => {
       <PriceChart />
       <div className="flex flex-col gap-1 m-1 -mt-20">
         <IndexBasketOverview />
-        {/* <IndexTokenOverview /> */}
         <IndexAboutOverview />
         {!!indexDTF?.stToken && <IndexGovernanceOverview />}
         <IndexCreatorNotes />
