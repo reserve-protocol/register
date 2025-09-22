@@ -26,6 +26,7 @@ import GovernanceUpdater from './governance/updater'
 import FeedbackButton from '@/components/feedback-button'
 import dtfIndexAbi from '@/abis/dtf-index-abi'
 import dtfIndexAbiV4 from '@/abis/dtf-index-abi-v4'
+import useIndexDTFTransactions from '@/hooks/useIndexDTFTransactions'
 
 const useChainWatch = () => {
   const { switchChain } = useSwitchChain()
@@ -146,6 +147,7 @@ const Updater = () => {
   const setRefreshFn = useSetAtom(indexDTFRefreshFnAtom)
   const chainId = NETWORKS[chain ?? '']
   const [key, setKey] = useState(0)
+  useIndexDTFTransactions(currentToken ?? '', chainId)
 
   const { data: version } = useReadContract({
     address: currentToken,

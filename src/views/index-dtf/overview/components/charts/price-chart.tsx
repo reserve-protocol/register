@@ -1,7 +1,11 @@
 import InfoBox from '@/components/old/info-box'
 import { ChartConfig, ChartContainer } from '@/components/ui/chart'
 import { Skeleton } from '@/components/ui/skeleton'
-import { indexDTF7dChangeAtom, indexDTFAtom } from '@/state/dtf/atoms'
+import {
+  indexDTF7dChangeAtom,
+  indexDTFAtom,
+  indexDTFMarketCapAtom,
+} from '@/state/dtf/atoms'
 import { formatCurrency } from '@/utils'
 import dayjs from 'dayjs'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
@@ -10,7 +14,6 @@ import { Area, AreaChart, Tooltip, XAxis, YAxis } from 'recharts'
 import { Card } from 'theme-ui'
 import useIndexDTFPriceHistory from '../../hooks/use-dtf-price-history'
 import ChartOverlay from './chart-overlay'
-import TimeRangeSelector from './time-range-selector'
 
 const chartConfig = {
   desktop: {
@@ -61,6 +64,7 @@ const PriceChart = () => {
   const range = useAtomValue(timeRangeAtom)
   const dataType = useAtomValue(dataTypeAtom)
   const set7dChange = useSetAtom(indexDTF7dChangeAtom)
+  const setMarketCap = useSetAtom(indexDTFMarketCapAtom)
 
   const showHourlyInterval = now - (dtf?.timestamp || 0) < 30 * 86_400
   const { data: history } = useIndexDTFPriceHistory({
@@ -83,6 +87,12 @@ const PriceChart = () => {
       set7dChange(percentageChange)
     }
   }, [timeseries, range, set7dChange])
+
+  useEffect(() => {
+    if (timeseries.length > 0) {
+      setMarketCap(timeseries[timeseries.length - 1].marketCap)
+    }
+  }, [timeseries, setMarketCap])
 
   const formatXAxisTick = (timestamp: number) => {
     const date = dayjs.unix(timestamp)
@@ -109,7 +119,7 @@ const PriceChart = () => {
   }
 
   return (
-    <div className="lg:rounded-4xl lg:rounded-b-none bg-[#000] dark:bg-background lg:dark:bg-muted w-full text-[#fff] dark:text-foreground p-3 sm:p-6 pb-20 h-[340px] sm:h-[614px]">
+    <div className="lg:rounded-4xl lg:rounded-b-none bg-[#000] dark:bg-background lg:dark:bg-muted w-full text-[#fff] dark:text-foreground p-3 sm:p-6 pb-20 h-[340px] sm:h-[572px]">
       <ChartOverlay timeseries={timeseries} />
       <div className="h-32 sm:h-80">
         {history === undefined ? (
@@ -159,7 +169,7 @@ const PriceChart = () => {
                 domain={['auto', 'auto']}
                 width={55}
                 tickCount={5}
-                tickMargin={5}
+                tickMargin={10}
               />
               <Tooltip content={<CustomTooltip dataType={dataType} />} />
               <Area
@@ -176,22 +186,13 @@ const PriceChart = () => {
           </ChartContainer>
         ) : null}
       </div>
-      <div className="flex sm:mt-5 mt-3 items-center gap-1 sm:justify-between justify-end">
+      {/* <div className="flex sm:mt-4 mt-3 items-center gap-1 sm:justify-between justify-end">
         <div className="hidden sm:flex">
           <TimeRangeSelector />
         </div>
 
-        <div className="flex items-center gap-1 justify-end sm:text-base text-sm">
-          <div className="text-white/80">Market Cap:</div>
-          <div className="text-white">
-            $
-            {formatCurrency(
-              timeseries[timeseries.length - 1]?.marketCap || 0,
-              0
-            )}
-          </div>
-        </div>
-      </div>
+        <MarketCap timeseries={timeseries} />
+      </div> */}
     </div>
   )
 }

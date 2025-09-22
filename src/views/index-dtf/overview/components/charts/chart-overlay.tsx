@@ -54,13 +54,18 @@ const ChartOverlay = ({ timeseries }: { timeseries: any }) => {
 
   return (
     <div className="mb-0 sm:mb-3 flex flex-col gap-2">
-      <div className="flex items-center bg-white rounded-full p-0.5 w-fit">
-        <IndexTokenLogo />
+      <div className="flex items-center gap-1 justify-between">
+        <div className="flex items-center bg-white rounded-full p-0.5 w-fit">
+          <IndexTokenLogo />
+        </div>
+        <div>
+          <TimeRangeSelector />
+        </div>
       </div>
-      <div className="sm:hidden items-center gap-1 flex">
+      {/* <div className="sm:hidden items-center gap-1 flex">
         <span className=" text-sm ">Price</span>
         <TimeRangeSelector />
-      </div>
+      </div> */}
       <div className="flex flex-col gap-0.5 text-xl sm:text-2xl font-light">
         {dtf ? (
           <h2 className="text-xl sm:text-2xl font-light w-full break-words">

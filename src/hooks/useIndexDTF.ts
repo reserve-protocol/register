@@ -55,6 +55,7 @@ type DTFQueryResponse = {
       symbol: string
       decimals: number
       totalSupply: string
+      currentHolderCount: number
     }
     stToken?: {
       id: Address
@@ -156,6 +157,7 @@ const dtfQuery = gql`
         symbol
         decimals
         totalSupply
+        currentHolderCount
       }
       stToken {
         id

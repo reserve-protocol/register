@@ -1,13 +1,38 @@
 import Money from '@/components/icons/Money'
 import { Card } from '@/components/ui/card'
-import { Separator } from '@/components/ui/separator'
 import { Skeleton } from '@/components/ui/skeleton'
-import { indexDTFAtom, indexDTFBrandAtom } from '@/state/dtf/atoms'
+import {
+  indexDTFAtom,
+  indexDTFBrandAtom,
+  isBrandManagerAtom,
+} from '@/state/dtf/atoms'
 import { formatPercentage } from '@/utils'
 import { useAtomValue } from 'jotai'
-import { BrickWall } from 'lucide-react'
-import IndexBasketOverview from './index-basket-overview'
+import { BrickWall, ImagePlus } from 'lucide-react'
+import IndexMetricsOverview from './index-metrics-overview'
 import IndexSocialsOverview from './index-socials-overview'
+import { useTrackIndexDTFClick } from '@reserve-protocol/react-zapper'
+import { Link } from 'react-router-dom'
+import { Button } from '@/components/ui/button'
+
+const BrandManagerEditButton = () => {
+  const isBrandManager = useAtomValue(isBrandManagerAtom)
+
+  const { trackClick } = useTrackIndexDTFClick('overview', 'overview')
+
+  if (!isBrandManager) {
+    return null
+  }
+
+  return (
+    <Link to="../manage" onClick={() => trackClick('brand_manager')}>
+      <Button variant="outline" size="sm" className="gap-1 rounded-full ml-3">
+        <ImagePlus size={14} />
+        Edit page
+      </Button>
+    </Link>
+  )
+}
 
 const Header = () => {
   const data = useAtomValue(indexDTFAtom)
@@ -22,11 +47,12 @@ const Header = () => {
         <Skeleton className="w-60 h-6" />
       ) : (
         <div className="flex gap-1 items-center">
-          <Money />
+          <BrandManagerEditButton />
+          {/* <Money />
           <span className="text-legend">TVL Fee:</span>
           <span className="font-bold">
             {formatPercentage(data.annualizedTvlFee * 100)}
-          </span>
+          </span> */}
         </div>
       )}
     </div>
@@ -60,12 +86,13 @@ const Mandate = () => {
 }
 
 const IndexAboutOverview = () => (
-  <Card className="p-4 sm:p-6">
-    <Header />
-    <Mandate />
-    <IndexSocialsOverview />
-    <Separator className="mt-6 mb-3" />
-    <IndexBasketOverview />
+  <Card>
+    <div className="p-4 sm:p-6">
+      <Header />
+      <Mandate />
+      <IndexSocialsOverview />
+    </div>
+    <IndexMetricsOverview />
   </Card>
 )
 

@@ -12,7 +12,7 @@ const useIndexDTFSubgraph = (
   const client = INDEX_GRAPH_CLIENTS[chainId]
 
   return useQuery<any>({
-    queryKey: query ? ['indexDTFSubgraph', chainId, variables] : null,
+    queryKey: query ? ['indexDTFSubgraph', query, chainId, variables] : null,
     queryFn: async () => {
       if (!query) return null
       return client.request(query, variables)

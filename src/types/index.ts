@@ -318,6 +318,7 @@ export type IndexDTF = {
     symbol: string
     decimals: number
     totalSupply: string
+    currentHolderCount: number
   }
   stToken?: {
     id: Address

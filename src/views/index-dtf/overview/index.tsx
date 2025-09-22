@@ -9,6 +9,7 @@ import IndexTokenOverview from './components/index-token-overview'
 import LandingMint from './components/landing-mint'
 import PriceChart from './components/charts/price-chart'
 import IndexTransactionTable from './components/index-transaction-table'
+import IndexBasketOverview from './components/index-basket-overview'
 
 const Content = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
@@ -16,7 +17,8 @@ const Content = () => {
     <div className="rounded-0xl lg:rounded-4xl bg-secondary flex-1 lg:mb-4">
       <PriceChart />
       <div className="flex flex-col gap-1 m-1 -mt-20">
-        <IndexTokenOverview />
+        <IndexBasketOverview />
+        {/* <IndexTokenOverview /> */}
         <IndexAboutOverview />
         {!!indexDTF?.stToken && <IndexGovernanceOverview />}
         <IndexCreatorNotes />

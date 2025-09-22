@@ -12,6 +12,7 @@ import React, { useEffect, useState } from 'react'
 import ZapMint from '../zap-mint'
 import { useAccount } from 'wagmi'
 import DTFBalance from './dtf-balance'
+import IndexTokenAddress from '../index-token-address'
 
 const TokenInfo = () => {
   const dtf = useAtomValue(indexDTFAtom)
@@ -20,21 +21,24 @@ const TokenInfo = () => {
 
   return (
     <div className="flex flex-col justify-between gap-8 p-4">
-      <div className="flex items-center gap-2">
-        <StackTokenLogo
-          tokens={[
-            { symbol: 'USDT', address: '0x0' },
-            { symbol: 'USDC', address: '0x1' },
-            { symbol: 'ETH', address: '0x2' },
-          ]}
-          size={24}
-        />
-        <ArrowLeftRight className="w-4 h-4" />
-        <TokenLogo
-          className="mr-auto"
-          src={brand?.dtf?.icon || undefined}
-          size="lg"
-        />
+      <div className="flex items-center gap-1 justify-between">
+        <div className="flex items-center gap-2">
+          <StackTokenLogo
+            tokens={[
+              { symbol: 'USDT', address: '0x0' },
+              { symbol: 'USDC', address: '0x1' },
+              { symbol: 'ETH', address: '0x2' },
+            ]}
+            size={24}
+          />
+          <ArrowLeftRight className="w-4 h-4" />
+          <TokenLogo
+            className="mr-auto"
+            src={brand?.dtf?.icon || undefined}
+            size="lg"
+          />
+        </div>
+        <IndexTokenAddress />
       </div>
       <div className="flex flex-col gap-1">
         <div className="text-xl font-semibold ">
