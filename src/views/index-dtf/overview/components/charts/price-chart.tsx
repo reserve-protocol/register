@@ -22,7 +22,7 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
-type Range = '24h' | '3d' | '7d' | '1m' | '3m' | '1y'
+type Range = '24h' | '7d' | '1m' | '3m' | '1y'
 export type DataType = 'price' | 'marketCap' | 'totalSupply'
 
 const now = Math.floor(Date.now() / 1_000)
@@ -30,7 +30,6 @@ const currentHour = Math.floor(now / 3_600) * 3_600
 
 const historicalConfigs = {
   '24h': { to: currentHour, from: currentHour - 86_400, interval: '1h' },
-  '3d': { to: currentHour, from: currentHour - 259_200, interval: '1h' },
   '7d': { to: currentHour, from: currentHour - 604_800, interval: '1h' },
   '1m': { to: currentHour, from: currentHour - 2_592_000, interval: '1h' },
   '3m': { to: currentHour, from: currentHour - 7_776_000, interval: '1d' },
@@ -101,7 +100,6 @@ const PriceChart = () => {
     switch (range) {
       case '24h':
         return date.format('HH:mm')
-      case '3d':
       case '7d':
       case '1m':
       case '3m':
