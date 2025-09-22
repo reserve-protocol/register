@@ -215,7 +215,7 @@ const ProposalList = () => {
         sx={{
           maxHeight: 540,
           overflow: 'scroll',
-          borderRadius: '6px',
+          borderRadius: '16px',
           '::-webkit-scrollbar': { display: 'none' },
           msOverflowStyle: 'none',
           scrollbarWidth: 'none',
