@@ -10,10 +10,11 @@ import { formatPercentage } from '@/utils'
 import { useAtomValue } from 'jotai'
 import { BrickWall, ImagePlus } from 'lucide-react'
 import IndexMetricsOverview from './index-metrics-overview'
-import IndexSocialsOverview from './index-socials-overview'
 import { useTrackIndexDTFClick } from '@reserve-protocol/react-zapper'
 import { Link } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
+import IndexSocialsOverview from './index-socials-overview'
+import IndexFactsheetOverview from './index-factsheet-overview'
 
 const BrandManagerEditButton = () => {
   const isBrandManager = useAtomValue(isBrandManagerAtom)
@@ -48,6 +49,8 @@ const Header = () => {
       ) : (
         <div className="flex gap-1 items-center">
           <BrandManagerEditButton />
+          <IndexSocialsOverview />
+
           {/* <Money />
           <span className="text-legend">TVL Fee:</span>
           <span className="font-bold">
@@ -90,7 +93,9 @@ const IndexAboutOverview = () => (
     <div className="p-4 sm:p-6">
       <Header />
       <Mandate />
-      <IndexSocialsOverview />
+      <div className="mt-3 w-fit">
+        <IndexFactsheetOverview />
+      </div>
     </div>
     <IndexMetricsOverview />
   </Card>
