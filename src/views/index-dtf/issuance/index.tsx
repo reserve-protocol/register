@@ -8,10 +8,12 @@ import useTrackIndexDTFPage, {
   useTrackIndexDTFClick,
 } from '../hooks/useTrackIndexDTFPage'
 import { RESERVE_API } from '@/utils/constants'
+import { devModeAtom } from '@/state/atoms'
 
 const IndexDTFIssuance = () => {
   useTrackIndexDTFPage('mint')
   const indexDTF = useAtomValue(indexDTFAtom)
+  const devMode = useAtomValue(devModeAtom)
   const { currentTab } = useZapperModal()
   const { trackClick } = useTrackIndexDTFClick('overview', 'mint')
 
@@ -28,6 +30,7 @@ const IndexDTFIssuance = () => {
               dtfAddress={indexDTF.id}
               mode="inline"
               apiUrl={RESERVE_API}
+              debug={devMode}
             />
           </div>
         </div>
