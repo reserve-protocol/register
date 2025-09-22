@@ -137,14 +137,16 @@ const Website = () => {
       label="Website"
       value={
         brandData?.socials?.website
-          ?.replace('https://', '')
-          .replace('http://', '')
-          .replace('www.', '')
-          .slice(0, 14) + '...' || ''
+          ? brandData?.socials?.website
+              ?.replace('https://', '')
+              .replace('http://', '')
+              .replace('www.', '')
+              .slice(0, 14) + '...'
+          : '-'
       }
       valueHover={brandData?.socials?.website || ''}
       icon={<Link2 size={16} />}
-      loading={!brandData?.socials?.website}
+      loading={brandData?.socials?.website === undefined}
       link={brandData?.socials?.website || ''}
     />
   )
