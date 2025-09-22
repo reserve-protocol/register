@@ -1,5 +1,4 @@
 import TokenLogo from '@/components/token-logo'
-import { Box } from '@/components/ui/box'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import {
@@ -10,6 +9,8 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import useScrollTo from '@/hooks/useScrollTo'
 import { cn } from '@/lib/utils'
 import { chainIdAtom } from '@/state/atoms'
 import {
@@ -18,18 +19,20 @@ import {
   indexDTFBasketSharesAtom,
 } from '@/state/dtf/atoms'
 import { getTokenName } from '@/utils'
+import { ChainId } from '@/utils/chains'
 import { capitalize } from '@/utils/constants'
 import {
   ETHERSCAN_NAMES,
   ExplorerDataType,
   getExplorerLink,
 } from '@/utils/getExplorerLink'
+import { groupByNativeAsset } from '@/utils/token-mappings'
 import { useAtomValue } from 'jotai'
-import { ArrowUpRight } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { ArrowUpRight, Copy, PackageOpen, Target } from 'lucide-react'
+import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { toast } from 'sonner'
 import BridgeLabel from './bridge-label'
-import useScrollTo from '@/hooks/useScrollTo'
 
 const MAX_TOKENS = 10
 
@@ -63,8 +66,19 @@ const IndexBasketOverview = ({ className }: { className?: string }) => {
   const basketShares = useAtomValue(indexDTFBasketSharesAtom)
   const hasBridgedAssets = useAtomValue(hasBridgedAssetsAtom)
   const chainId = useAtomValue(chainIdAtom)
+  const isBSC = chainId === ChainId.BSC
+  const [activeTab, setActiveTab] = useState(isBSC ? 'exposure' : 'collateral')
+  const isExposure = activeTab === 'exposure'
 
   const scrollTo = useScrollTo('basket', 80)
+
+  useEffect(() => {
+    if (isBSC) {
+      setActiveTab('exposure')
+    } else {
+      setActiveTab('collateral')
+    }
+  }, [isBSC])
 
   useEffect(() => {
     const section = window.location.hash.slice(1)
@@ -79,83 +93,171 @@ const IndexBasketOverview = ({ className }: { className?: string }) => {
     (token) => basketShares[token.address] !== '0.00'
   )
 
+  const exposureGroups = useMemo(() => {
+    if (!filtered || !isExposure) return null
+
+    const tokenData = filtered.map((token) => ({
+      address: token.address,
+      symbol: token.symbol,
+      name: token.name,
+      weight: parseFloat(basketShares[token.address] || '0'),
+    }))
+
+    return groupByNativeAsset(tokenData, chainId)
+  }, [filtered, basketShares, chainId, isExposure])
+
+  const handleCopy = (address: string) => {
+    navigator.clipboard.writeText(address)
+    toast.success('Copied to clipboard')
+  }
+
   return (
     <div
       className={cn('relative -mx-4 sm:-mx-5 -mb-4 sm:-mb-5 px-1', className)}
       id="basket"
     >
-      <Table>
-        <TableHeader>
-          <TableRow className="border-none text-legend bg-card sticky top-0 ">
-            <TableHead className="text-left">Token</TableHead>
-            <TableHead className="hidden sm:table-cell">Ticker</TableHead>
-            <TableHead className="text-center">Weight</TableHead>
-            <TableHead className="text-right">
-              {`${hasBridgedAssets ? 'Bridge / ' : ''}${capitalize(
-                ETHERSCAN_NAMES[chainId]
-              )}`}
-            </TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {!filtered?.length ? ( // Loading skeleton rows
-            <BasketSkeleton />
-          ) : (
-            filtered
-              .slice(0, viewAll ? filtered.length : MAX_TOKENS)
-              .map((token) => (
-                <TableRow key={token.symbol} className="border-none">
-                  <TableCell>
-                    <div className="flex items-center font-semibold gap-2 break-words">
-                      <TokenLogo
-                        size="lg"
-                        symbol={token.symbol}
-                        address={token.address}
-                        chain={chainId}
-                      />
-                      <div className="max-w-32 md:max-w-72 lg:max-w-56">
-                        <span className="block">
-                          {getTokenName(token.name)}
-                        </span>
-                        <span className="block text-xs text-legend font-normal max-w-32 md:max-w-72 lg:max-w-52 break-words">
-                          ${token.symbol}
-                        </span>
+      <Tabs defaultValue="exposure">
+        <Table>
+          <TableHeader>
+            <TableRow className="border-none text-legend bg-card sticky top-0 ">
+              <TableHead className="text-left">
+                {isBSC ? (
+                  <TabsList className="h-9 rounded-[70px] p-0.5">
+                    <TabsTrigger
+                      value="exposure"
+                      className="rounded-[60px] px-2 data-[state=active]:text-primary"
+                      onClick={() => setActiveTab('exposure')}
+                    >
+                      <Target className="w-4 h-4 mr-1" /> Exposure
+                    </TabsTrigger>
+                    <TabsTrigger
+                      value="collateral"
+                      className="rounded-[60px] px-2 data-[state=active]:text-primary"
+                      onClick={() => setActiveTab('collateral')}
+                    >
+                      <PackageOpen className="w-4 h-4 mr-1" /> Collateral
+                    </TabsTrigger>
+                  </TabsList>
+                ) : (
+                  'Token'
+                )}
+              </TableHead>
+              <TableHead className="text-center">Weight</TableHead>
+              <TableHead className={cn('text-right', isExposure && 'hidden')}>
+                {`${hasBridgedAssets ? 'Bridge / ' : ''}${capitalize(
+                  ETHERSCAN_NAMES[chainId]
+                )}`}
+              </TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {!filtered?.length ? ( // Loading skeleton rows
+              <BasketSkeleton />
+            ) : isExposure && exposureGroups ? (
+              // Exposure view - grouped by native asset
+              Array.from(exposureGroups.entries())
+                .slice(0, viewAll ? exposureGroups.size : MAX_TOKENS)
+                .map(([key, group]) => {
+                  const native = group.native || {
+                    symbol: key,
+                    name: key,
+                    logo: '',
+                  }
+                  return (
+                    <TableRow key={native.symbol} className="border-none">
+                      <TableCell>
+                        <div className="flex items-center font-semibold gap-3 break-words">
+                          <TokenLogo size="lg" src={native.logo} />
+                          <div className="max-w-32 md:max-w-72 lg:max-w-56">
+                            <span className="block">{native.name}</span>
+                            <span className="block text-xs text-legend font-normal max-w-32 md:max-w-72 lg:max-w-52 break-words">
+                              ${native.symbol}
+                              {group.tokens.length > 1 && (
+                                <span className="ml-1 text-muted-foreground">
+                                  ({group.tokens.length} sources)
+                                </span>
+                              )}
+                            </span>
+                          </div>
+                        </div>
+                      </TableCell>
+                      {/* <TableCell className="text-center">
+                        {native.marketCap
+                          ? `$${(native.marketCap / 1e9).toFixed(1)}B`
+                          : '-'}
+                      </TableCell>
+                      <TableCell className="text-center">
+                        {native.priceChange7d
+                          ? `${native.priceChange7d.toFixed(1)}%`
+                          : '-'}
+                      </TableCell> */}
+                      <TableCell className="text-primary text-center font-bold">
+                        {group.totalWeight.toFixed(2)}%
+                      </TableCell>
+                    </TableRow>
+                  )
+                })
+            ) : (
+              filtered
+                .slice(0, viewAll ? filtered.length : MAX_TOKENS)
+                .map((token) => (
+                  <TableRow key={token.symbol} className="border-none">
+                    <TableCell>
+                      <div className="flex items-center font-semibold gap-2 break-words">
+                        <TokenLogo
+                          size="lg"
+                          symbol={token.symbol}
+                          address={token.address}
+                          chain={chainId}
+                        />
+                        <div className="max-w-32 md:max-w-72 lg:max-w-56">
+                          <span className="block">
+                            {getTokenName(token.name)}
+                          </span>
+                          <span className="block text-xs text-legend font-normal max-w-32 md:max-w-72 lg:max-w-52 break-words">
+                            ${token.symbol}
+                          </span>
+                        </div>
                       </div>
-                    </div>
-                  </TableCell>
-                  <TableCell className="hidden sm:table-cell">
-                    <span className="sm:max-w-20 break-words">
-                      ${token.symbol}
-                    </span>
-                  </TableCell>
-                  <TableCell className="text-primary text-center font-bold">
-                    {basketShares[token.address]}%
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <div className="flex items-center justify-end gap-2">
-                      <BridgeLabel address={token.address} />
-                      <Link
-                        to={getExplorerLink(
-                          token.address,
-                          chainId,
-                          ExplorerDataType.TOKEN
-                        )}
-                        target="_blank"
-                      >
-                        <Box
-                          variant="circle"
+                    </TableCell>
+                    <TableCell className="text-primary text-center font-bold">
+                      {basketShares[token.address]}%
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <div className="flex items-center justify-end gap-2">
+                        <BridgeLabel address={token.address} />
+                        <Button
+                          variant="muted"
+                          size="icon-rounded"
                           className="hover:bg-primary/10 hover:text-primary"
+                          onClick={() => handleCopy(token.address)}
                         >
-                          <ArrowUpRight className="h-4 w-4" />
-                        </Box>
-                      </Link>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))
-          )}
-        </TableBody>
-      </Table>
+                          <Copy className="h-3 w-3" />
+                        </Button>
+                        <Link
+                          to={getExplorerLink(
+                            token.address,
+                            chainId,
+                            ExplorerDataType.TOKEN
+                          )}
+                          target="_blank"
+                        >
+                          <Button
+                            variant="muted"
+                            size="icon-rounded"
+                            className="hover:bg-primary/10 hover:text-primary"
+                          >
+                            <ArrowUpRight className="h-4 w-4" />
+                          </Button>
+                        </Link>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))
+            )}
+          </TableBody>
+        </Table>
+      </Tabs>
       {filtered && filtered.length > MAX_TOKENS && (
         <Button
           variant="outline"
