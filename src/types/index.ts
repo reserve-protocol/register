@@ -1,3 +1,4 @@
+import {AvailableChain} from '@/utils/chains'
 import { Address, Hex } from 'viem'
 
 export type RoleKey =
@@ -266,7 +267,7 @@ export type IndexDTF = {
   id: Address
   proxyAdmin: Address
   timestamp: number
-  chainId: number
+  chainId: AvailableChain
   deployer: Address
   ownerAddress: Address
   mintingFee: number
