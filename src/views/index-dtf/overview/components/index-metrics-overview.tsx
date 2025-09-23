@@ -6,6 +6,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
+import { uploadJsonToIpfs } from '@/lib/ipfs-upload'
 import { chainIdAtom } from '@/state/atoms'
 import {
   indexDTFAtom,
@@ -136,7 +137,7 @@ const Website = () => {
     <MetricsItem
       label="Website"
       value={
-        brandData?.socials?.website
+        brandData?.socials?.website !== undefined
           ? brandData?.socials?.website
               ?.replace('https://', '')
               .replace('http://', '')
@@ -146,7 +147,7 @@ const Website = () => {
       }
       valueHover={brandData?.socials?.website || ''}
       icon={<Link2 size={16} />}
-      loading={brandData?.socials?.website === undefined}
+      loading={brandData?.socials && brandData?.socials?.website === undefined}
       link={brandData?.socials?.website || ''}
     />
   )
