@@ -33,8 +33,10 @@ const tabs: Tab[] = [
 const DiscoverTabs = ({ className }: { className: string }) => {
   return (
     <>
-      <IndexDTFFeatured />
       <div className={cn('container pb-6 px-0 md:px-4', className)}>
+        <IndexDTFFeatured />
+        <TitleContainer title="Select a DTF Category" className="mt-10" />
+
         <Tabs
           defaultValue="index"
           onValueChange={(value) => {

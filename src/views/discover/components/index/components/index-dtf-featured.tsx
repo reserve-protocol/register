@@ -82,52 +82,178 @@ export function LcapBanner() {
       <div className="container mt-10">
         <TitleContainer title="Presenting" className="mt-4" />
       </div>
-      <div className="w-full relative overflow-hidden ">
-        {/* Blue gradient background matching the reference */}
-        <div className="bg-gradient-to-r from-[#0854A9] via-[#063B7A] to-[#042A5C] w-full px-6 py-8">
-          <div className="max-w-7xl mx-auto">
-            <div className="flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12">
-              {/* Left side - LCAP Logo */}
-              <div className="flex-shrink-0">
-                <div className="w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 relative">
+      <div className="lcap-banner-wrapper w-full relative overflow-hidden">
+        <style>{`
+          @keyframes gradientShift {
+            0%, 100% {
+              background-position: 0% 50%;
+            }
+            50% {
+              background-position: 100% 50%;
+            }
+          }
+
+          @keyframes float {
+            0%, 100% {
+              transform: translateY(0px);
+            }
+            50% {
+              transform: translateY(-10px);
+            }
+          }
+
+          @keyframes pulse {
+            0%, 100% {
+              opacity: 0.4;
+            }
+            50% {
+              opacity: 0.8;
+            }
+          }
+
+          .lcap-banner {
+            background: linear-gradient(
+              135deg,
+              #0854A9 0%,
+              #064590 20%,
+              #043B7A 35%,
+              #053570 50%,
+              #043B7A 65%,
+              #064590 80%,
+              #0854A9 100%
+            );
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            position: relative;
+          }
+
+          .lcap-banner::after {
+            content: '';
+            position: absolute;
+            top: -20%;
+            left: -10%;
+            right: -10%;
+            bottom: -20%;
+            background-image: url('https://reserve.org/assets/img/pages/home/eth_battle_bg.svg');
+            background-size: 120% 120%;
+            background-position: 20% 30%;
+            background-repeat: no-repeat;
+            opacity: 0.2;
+            filter: invert(1) brightness(2);
+            pointer-events: none;
+            animation: floatPattern 20s ease-in-out infinite;
+          }
+
+          @keyframes floatPattern {
+            0%, 100% {
+              transform: translate(0, 0) scale(1.2);
+            }
+            33% {
+              transform: translate(-5%, 5%) scale(1.25);
+            }
+            66% {
+              transform: translate(5%, -5%) scale(1.15);
+            }
+          }
+
+          .lcap-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+              90deg,
+              transparent 0%,
+              rgba(255, 255, 255, 0.1) 50%,
+              transparent 100%
+            );
+            animation: shimmer 3s infinite;
+          }
+
+          @keyframes shimmer {
+            0% {
+              left: -100%;
+            }
+            100% {
+              left: 200%;
+            }
+          }
+
+          .lcap-logo {
+            animation: float 6s ease-in-out infinite;
+            transition: transform 0.3s ease;
+            filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.15))
+                    drop-shadow(0 0 40px rgba(255, 255, 255, 0.1));
+          }
+
+          .lcap-logo:hover {
+            transform: scale(1.05);
+            filter: drop-shadow(0 0 25px rgba(255, 255, 255, 0.2))
+                    drop-shadow(0 0 50px rgba(255, 255, 255, 0.15));
+          }
+
+          .lcap-banner-bg-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0.1;
+            background-image:
+              radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.2) 0%, transparent 50%),
+              radial-gradient(circle at 80% 50%, rgba(255, 255, 255, 0.15) 0%, transparent 50%),
+              radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+          }
+        `}</style>
+
+        <div className="lcap-banner w-full px-6 py-8 rounded-4xl">
+          <div className="lcap-banner-bg-pattern rounded-4xl"></div>
+
+          <div className="max-w-7xl mx-auto relative z-10">
+            <div className="flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-16">
+              <div className="lcap-logo flex-shrink-0">
+                <div className="w-40 h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 relative">
                   <img
                     src={lcapLogo}
                     alt="LCAP Token"
-                    className="object-contain"
+                    className="object-contain w-full h-full"
                   />
                 </div>
               </div>
 
-              {/* Center - Main content */}
-              <div className="flex-1 text-center lg:text-left space-y-6">
-                <div className="space-y-4">
-                  <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-white leading-tight text-balance">
-                    Serious crypto exposure
-                    <br />
-                    in a single token
-                  </h1>
+              <div className="flex-1 text-center lg:text-left space-y-6 max-w-3xl">
+                <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-white leading-tight animate-fade-in">
+                  Serious crypto exposure
+                  <br />
+                  in a single token
+                </h1>
+                <Button variant="accent" asChild className="hover:bg-accent hover:brightness-90">
+                  <Link to={getFolioRoute('0x4da9a0f397db1397902070f93a4d6ddbc0e0e6e8', ChainId.Base)}>
+                    Discover $LCAP
+                  </Link>
+                </Button>
 
-                  <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 text-lg md:text-xl text-white/90">
-                    <span className="font-medium">$LCAP also available on</span>
-                    <div className="h-8 md:h-10 relative">
-                      <img
-                        src={krakenLogo}
-                        alt="Kraken"
-                        height={40}
-                        width={120}
-                      />
-                    </div>
-                  </div>
-                </div>
+                <a
+                  href="https://www.kraken.com/es/prices/cf-large-cap-index"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="absolute bottom-2 right-2 lg:bottom-4 lg:right-4 flex items-center gap-2 text-sm text-white/80 hover:text-white transition-all cursor-pointer group"
+                >
+                  <span className="font-medium">$LCAP also available on</span>
+                  <img
+                    src={krakenLogo}
+                    alt="Kraken"
+                    height={24}
+                    width={60}
+                  />
+                </a>
               </div>
-
-              {/* Right side - Additional visual space for balance */}
-              <div className="hidden lg:block flex-shrink-0 w-24"></div>
             </div>
           </div>
         </div>
-        {/* Subtle overlay for depth */}
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-black/10 pointer-events-none"></div>
       </div>
     </>
   )
