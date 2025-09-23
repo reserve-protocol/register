@@ -114,17 +114,32 @@ export function LcapBanner() {
           .lcap-banner {
             background: linear-gradient(
               135deg,
-              #0854A9 0%,
-              #064590 20%,
-              #043B7A 35%,
-              #053570 50%,
-              #043B7A 65%,
-              #064590 80%,
-              #0854A9 100%
+              #0266CC 0%,
+              #0254A5 20%,
+              #024080 35%,
+              #023060 50%,
+              #024080 65%,
+              #0254A5 80%,
+              #0266CC 100%
             );
             background-size: 400% 400%;
             animation: gradientShift 15s ease infinite;
             position: relative;
+          }
+
+          .light .lcap-banner {
+            background: linear-gradient(
+              135deg,
+              #0A5FB4 0%,
+              #0850A0 20%,
+              #064590 35%,
+              #053A80 50%,
+              #064590 65%,
+              #0850A0 80%,
+              #0A5FB4 100%
+            );
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
           }
 
           .lcap-banner::after {
@@ -236,9 +251,8 @@ export function LcapBanner() {
                   in a single token
                 </h1>
                 <Button
-                  variant="accent"
                   asChild
-                  className="hover:bg-accent hover:brightness-90 h-7 px-2 text-xs sm:h-10 sm:px-4 sm:text-sm"
+                  className="bg-white text-primary hover:bg-white/90 h-7 px-2 text-xs sm:h-10 sm:px-4 sm:text-sm font-bold transition-colors"
                 >
                   <Link
                     to={getFolioRoute(
@@ -251,14 +265,22 @@ export function LcapBanner() {
                 </Button>
 
                 <a
-                  href="https://www.kraken.com/es/prices/cf-large-cap-index"
+                  href="https://www.kraken.com/prices/cf-large-cap-index"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="absolute bottom-1 right-1 sm:bottom-2 sm:right-2 lg:bottom-4 lg:right-4 flex items-center gap-1 sm:gap-2 text-[10px] sm:text-xs lg:text-sm text-white/70 sm:text-white/80 hover:text-white transition-all cursor-pointer group"
                 >
-                  <span className="font-medium hidden sm:inline">$LCAP also available on</span>
+                  <span className="font-medium hidden sm:inline">
+                    $LCAP also available on
+                  </span>
                   <span className="font-medium sm:hidden">Also on</span>
-                  <img src={krakenLogo} alt="Kraken" height={20} width={50} className="h-[10px] sm:h-[12px] lg:h-[14px] w-auto" />
+                  <img
+                    src={krakenLogo}
+                    alt="Kraken"
+                    height={20}
+                    width={50}
+                    className="h-[10px] sm:h-[12px] lg:h-[14px] w-auto"
+                  />
                 </a>
               </div>
             </div>
