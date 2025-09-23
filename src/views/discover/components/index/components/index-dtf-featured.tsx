@@ -182,10 +182,15 @@ export function LcapBanner() {
           }
 
           .lcap-logo {
-            animation: float 6s ease-in-out infinite;
             transition: transform 0.3s ease;
             filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.15))
                     drop-shadow(0 0 40px rgba(255, 255, 255, 0.1));
+          }
+
+          @media (min-width: 1024px) {
+            .lcap-logo {
+              animation: float 6s ease-in-out infinite;
+            }
           }
 
           .lcap-logo:hover {
@@ -209,13 +214,13 @@ export function LcapBanner() {
           }
         `}</style>
 
-        <div className="lcap-banner w-full px-6 py-8 rounded-4xl">
-          <div className="lcap-banner-bg-pattern rounded-4xl"></div>
+        <div className="lcap-banner w-full px-4 sm:px-6 lg:px-8 py-6 sm:py-8 sm:rounded-4xl">
+          <div className="lcap-banner-bg-pattern sm:rounded-4xl"></div>
 
           <div className="max-w-7xl mx-auto relative z-10">
-            <div className="flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-16">
+            <div className="flex flex-row items-center justify-center gap-4 sm:gap-6 lg:gap-16">
               <div className="lcap-logo flex-shrink-0">
-                <div className="w-40 h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 relative">
+                <div className="w-24 h-24 sm:w-32 sm:h-32 md:w-48 md:h-48 lg:w-56 lg:h-56 relative">
                   <img
                     src={lcapLogo}
                     alt="LCAP Token"
@@ -224,14 +229,23 @@ export function LcapBanner() {
                 </div>
               </div>
 
-              <div className="flex-1 text-center lg:text-left space-y-6 max-w-3xl">
-                <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-white leading-tight animate-fade-in">
+              <div className="flex-1 text-left lg:text-left space-y-2 sm:space-y-4 lg:space-y-6 max-w-3xl">
+                <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-white leading-tight animate-fade-in">
                   Serious crypto exposure
                   <br />
                   in a single token
                 </h1>
-                <Button variant="accent" asChild className="hover:bg-accent hover:brightness-90">
-                  <Link to={getFolioRoute('0x4da9a0f397db1397902070f93a4d6ddbc0e0e6e8', ChainId.Base)}>
+                <Button
+                  variant="accent"
+                  asChild
+                  className="hover:bg-accent hover:brightness-90 h-7 px-2 text-xs sm:h-10 sm:px-4 sm:text-sm"
+                >
+                  <Link
+                    to={getFolioRoute(
+                      '0x4da9a0f397db1397902070f93a4d6ddbc0e0e6e8',
+                      ChainId.Base
+                    )}
+                  >
                     Discover $LCAP
                   </Link>
                 </Button>
@@ -240,15 +254,11 @@ export function LcapBanner() {
                   href="https://www.kraken.com/es/prices/cf-large-cap-index"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="absolute bottom-2 right-2 lg:bottom-4 lg:right-4 flex items-center gap-2 text-sm text-white/80 hover:text-white transition-all cursor-pointer group"
+                  className="absolute bottom-1 right-1 sm:bottom-2 sm:right-2 lg:bottom-4 lg:right-4 flex items-center gap-1 sm:gap-2 text-[10px] sm:text-xs lg:text-sm text-white/70 sm:text-white/80 hover:text-white transition-all cursor-pointer group"
                 >
-                  <span className="font-medium">$LCAP also available on</span>
-                  <img
-                    src={krakenLogo}
-                    alt="Kraken"
-                    height={24}
-                    width={60}
-                  />
+                  <span className="font-medium hidden sm:inline">$LCAP also available on</span>
+                  <span className="font-medium sm:hidden">Also on</span>
+                  <img src={krakenLogo} alt="Kraken" height={20} width={50} className="h-[10px] sm:h-[12px] lg:h-[14px] w-auto" />
                 </a>
               </div>
             </div>
