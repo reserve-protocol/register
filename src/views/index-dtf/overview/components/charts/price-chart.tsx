@@ -82,12 +82,35 @@ const PriceChart = () => {
         }
       : historicalConfigs[range]
 
+  // Build prefetch ranges for all other time ranges
+  const prefetchRanges = useMemo(() => {
+    const ranges: Range[] = ['24h', '7d', '1m', '3m', '1y', 'all']
+    return ranges
+      .filter((r) => r !== range) // Exclude current range
+      .map((r) => {
+        if (r === 'all') {
+          return {
+            to: currentHour,
+            from: dtf?.timestamp || 0,
+            interval: (showHourlyInterval ? '1h' : '1d') as '1h' | '1d',
+          }
+        }
+        return {
+          ...historicalConfigs[r],
+          ...(showHourlyInterval
+            ? { interval: '1h' as const }
+            : {}),
+        }
+      })
+  }, [range, dtf?.timestamp, showHourlyInterval])
+
   const { data: history } = useIndexDTFPriceHistory({
     address: dtf?.id,
     ...config,
     ...(showHourlyInterval && range !== 'all'
       ? { interval: '1h' as const }
       : {}),
+    prefetchRanges,
   })
 
   const timeseries = useMemo(() => {

@@ -1,8 +1,9 @@
 import { chainIdAtom } from '@/state/atoms'
 import { indexDTFPriceAtom } from '@/state/dtf/atoms'
 import { RESERVE_API } from '@/utils/constants'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useAtomValue } from 'jotai'
+import { useEffect } from 'react'
 import { Address, erc20Abi, formatEther } from 'viem'
 import { useReadContract } from 'wagmi'
 
@@ -28,6 +29,11 @@ export type UseIndexDTFPriceHistoryParams = {
   from: number
   to: number
   interval: '1h' | '1d'
+  prefetchRanges?: Array<{
+    from: number
+    to: number
+    interval: '1h' | '1d'
+  }>
 }
 
 const useIndexDTFPriceHistory = ({
@@ -35,6 +41,7 @@ const useIndexDTFPriceHistory = ({
   from,
   to,
   interval,
+  prefetchRanges = [],
 }: UseIndexDTFPriceHistoryParams) => {
   const chainId = useAtomValue(chainIdAtom)
   const currentPrice = useAtomValue(indexDTFPriceAtom)
@@ -48,7 +55,10 @@ const useIndexDTFPriceHistory = ({
     },
   })
 
-  return useQuery({
+  const queryClient = useQueryClient()
+
+  // Main query for selected range
+  const mainQuery = useQuery({
     queryKey: [
       'dtf-historical-price',
       address,
@@ -104,6 +114,60 @@ const useIndexDTFPriceHistory = ({
     refetchInterval: REFRESH_INTERVAL,
     staleTime: REFRESH_INTERVAL,
   })
+
+  // Prefetch other ranges in background
+  useEffect(() => {
+    if (!address || !supply || !currentPrice) return
+
+    prefetchRanges.forEach((range) => {
+      queryClient.prefetchQuery({
+        queryKey: [
+          'dtf-historical-price',
+          address,
+          range.from,
+          range.to,
+          range.interval,
+          currentPrice,
+          supply,
+        ],
+        queryFn: async (): Promise<IndexDTFPerformance> => {
+          const sp = new URLSearchParams()
+          sp.set('chainId', chainId.toString())
+          sp.set('address', address?.toLowerCase() ?? '')
+          sp.set('from', range.from.toString())
+          sp.set('to', range.to.toString())
+          sp.set('interval', range.interval)
+
+          const response = await fetch(
+            `${RESERVE_API}historical/dtf?${sp.toString()}`
+          )
+
+          if (!response.ok) {
+            throw new Error('Failed to fetch dtf price history')
+          }
+
+          const data = (await response.json()) as IndexDTFPerformance
+
+          if (currentPrice && supply) {
+            const numberSupply = +formatEther(supply)
+
+            data.timeseries.push({
+              timestamp: Math.floor(Date.now() / 1_000),
+              price: currentPrice,
+              marketCap: currentPrice * numberSupply,
+              totalSupply: numberSupply,
+              basket: [],
+            })
+          }
+
+          return data
+        },
+        staleTime: REFRESH_INTERVAL,
+      })
+    })
+  }, [address, supply, currentPrice, chainId, queryClient, prefetchRanges])
+
+  return mainQuery
 }
 
 export default useIndexDTFPriceHistory
