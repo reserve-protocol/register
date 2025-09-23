@@ -9,14 +9,11 @@ import { useZapperModal } from '@reserve-protocol/react-zapper'
 import { useAtomValue } from 'jotai'
 import { ArrowLeftRight } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
-import ZapMint from '../zap-mint'
-import { useAccount } from 'wagmi'
 import DTFBalance from './dtf-balance'
 
 const TokenInfo = () => {
   const dtf = useAtomValue(indexDTFAtom)
   const brand = useAtomValue(indexDTFBrandAtom)
-  const account = useAccount()
 
   return (
     <div className="flex flex-col justify-between gap-8 p-4">
@@ -57,38 +54,36 @@ const MintBox = () => {
   return (
     <div className="rounded-3xl bg-card p-2">
       <TokenInfo />
-      <ZapMint>
-        <div
-          className="flex flex-col gap-2"
-          onClick={(e) => {
-            if (!(e.target instanceof HTMLButtonElement)) {
-              e.preventDefault()
-            }
+      <div
+        className="flex flex-col gap-2"
+        onClick={(e) => {
+          if (!(e.target instanceof HTMLButtonElement)) {
+            e.preventDefault()
+          }
+        }}
+      >
+        <Button
+          className="rounded-xl h-12"
+          onClick={() => {
+            trackClick('buy')
+            setTab('buy')
+            open()
           }}
         >
-          <Button
-            className="rounded-xl h-12"
-            onClick={() => {
-              trackClick('buy')
-              setTab('buy')
-              open()
-            }}
-          >
-            Buy
-          </Button>
-          <Button
-            className="rounded-xl h-12"
-            variant="outline"
-            onClick={() => {
-              trackClick('sell')
-              setTab('sell')
-              open()
-            }}
-          >
-            Sell
-          </Button>
-        </div>
-      </ZapMint>
+          Buy
+        </Button>
+        <Button
+          className="rounded-xl h-12"
+          variant="outline"
+          onClick={() => {
+            trackClick('sell')
+            setTab('sell')
+            open()
+          }}
+        >
+          Sell
+        </Button>
+      </div>
     </div>
   )
 }
