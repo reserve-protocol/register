@@ -55,7 +55,7 @@ const useRebalanceCurrentData = () => {
 
       return () => clearInterval(interval)
     }
-  }, [isAuctionOngoing, result.refetch])
+  }, [isAuctionOngoing, result])
 
   return result
 }
