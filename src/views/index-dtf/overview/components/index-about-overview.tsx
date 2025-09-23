@@ -6,7 +6,7 @@ import { indexDTFAtom, indexDTFBrandAtom } from '@/state/dtf/atoms'
 import { formatPercentage } from '@/utils'
 import { useAtomValue } from 'jotai'
 import { BrickWall } from 'lucide-react'
-import IndexBasketOverview from './index-basket-overview'
+import IndexBasketOverview from './basket-overview'
 import IndexSocialsOverview from './index-socials-overview'
 
 const Header = () => {
