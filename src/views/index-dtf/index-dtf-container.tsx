@@ -12,6 +12,8 @@ import {
   indexDTFRebalanceControlAtom,
   indexDTFVersionAtom,
   iTokenAddressAtom,
+  indexDTF7dChangeAtom,
+  indexDTFBasket7dChangeAtom,
 } from '@/state/dtf/atoms'
 import { isAddress } from '@/utils'
 import { AvailableChain, supportedChains } from '@/utils/chains'
@@ -26,6 +28,7 @@ import GovernanceUpdater from './governance/updater'
 import FeedbackButton from '@/components/feedback-button'
 import dtfIndexAbi from '@/abis/dtf-index-abi'
 import dtfIndexAbiV4 from '@/abis/dtf-index-abi-v4'
+import useIndexDTFPriceHistory from './overview/hooks/use-dtf-price-history'
 
 const useChainWatch = () => {
   const { switchChain } = useSwitchChain()
@@ -123,6 +126,78 @@ const IndexDTFBasketUpdater = () => {
   return null
 }
 
+const IndexDTFPerformanceUpdater = () => {
+  const dtf = useAtomValue(indexDTFAtom)
+  const basket = useAtomValue(indexDTFBasketAtom)
+  const basketShares = useAtomValue(indexDTFBasketSharesAtom)
+  const set7dChange = useSetAtom(indexDTF7dChangeAtom)
+  const setBasket7dChange = useSetAtom(indexDTFBasket7dChangeAtom)
+
+  const currentHour = Math.floor(Date.now() / 1_000 / 3_600) * 3_600
+
+  const { data: history } = useIndexDTFPriceHistory({
+    address: dtf?.id,
+    from: currentHour - 604_800, // 7 days
+    to: currentHour,
+    interval: '1h' as const,
+  })
+
+  useEffect(() => {
+    if (history?.timeseries?.length && basket) {
+      const filtered = history.timeseries.filter(({ price }) => Boolean(price))
+
+      if (filtered.length > 0) {
+        // Calculate overall DTF 7d change
+        const firstPrice = filtered[0].price
+        const lastPrice = filtered[filtered.length - 1].price
+        const dtfChange = firstPrice === 0 ? undefined : (lastPrice - firstPrice) / firstPrice
+        set7dChange(dtfChange)
+
+        // Calculate individual collateral changes
+        // Find first and last entries with basket data
+        let firstWithBasket = filtered.find(entry => entry.basket && entry.basket.length > 0)
+        let lastWithBasket = [...filtered].reverse().find(entry => entry.basket && entry.basket.length > 0)
+
+        // If no basket data at all, try to get it from the full history
+        if (!firstWithBasket || !lastWithBasket) {
+          firstWithBasket = history.timeseries.find(entry => entry.basket && entry.basket.length > 0)
+          lastWithBasket = [...history.timeseries].reverse().find(entry => entry.basket && entry.basket.length > 0)
+        }
+
+        const basket7dChanges: Record<string, number | null> = {}
+
+        if (firstWithBasket?.basket && lastWithBasket?.basket) {
+          basket.forEach(token => {
+            const firstEntry = firstWithBasket.basket.find(
+              (b: any) => b.address.toLowerCase() === token.address.toLowerCase()
+            )
+            const lastEntry = lastWithBasket.basket.find(
+              (b: any) => b.address.toLowerCase() === token.address.toLowerCase()
+            )
+
+            if (firstEntry && lastEntry && firstEntry.price > 0) {
+              const change = (lastEntry.price - firstEntry.price) / firstEntry.price
+              basket7dChanges[token.address] = change
+            } else {
+              // Token not in 7d snapshot, set to 0 as requested
+              basket7dChanges[token.address] = 0
+            }
+          })
+        } else {
+          // No basket data available, set all to 0
+          basket.forEach(token => {
+            basket7dChanges[token.address] = 0
+          })
+        }
+
+        setBasket7dChange(basket7dChanges)
+      }
+    }
+  }, [history, basket, set7dChange, setBasket7dChange])
+
+  return null
+}
+
 const resetStateAtom = atom(null, (get, set) => {
   set(indexDTFBasketAtom, undefined)
   set(indexDTFBasketPricesAtom, {})
@@ -131,6 +206,8 @@ const resetStateAtom = atom(null, (get, set) => {
   set(indexDTFAtom, undefined)
   set(indexDTFBrandAtom, undefined)
   set(indexDTFRebalanceControlAtom, undefined)
+  set(indexDTF7dChangeAtom, undefined)
+  set(indexDTFBasket7dChangeAtom, {})
 })
 
 export const indexDTFRefreshFnAtom = atom<(() => void) | null>(null)
@@ -202,6 +279,7 @@ const Updater = () => {
     <div key={key}>
       <IndexDTFMetadataUpdater />
       <IndexDTFBasketUpdater />
+      <IndexDTFPerformanceUpdater />
       <GovernanceUpdater />
     </div>
   )

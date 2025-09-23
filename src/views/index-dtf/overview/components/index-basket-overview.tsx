@@ -17,6 +17,7 @@ import {
   hasBridgedAssetsAtom,
   indexDTFBasketAtom,
   indexDTFBasketSharesAtom,
+  indexDTFBasket7dChangeAtom,
 } from '@/state/dtf/atoms'
 import { getTokenName } from '@/utils'
 import { ChainId } from '@/utils/chains'
@@ -33,10 +34,11 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { toast } from 'sonner'
 import BridgeLabel from './bridge-label'
+import { useNativeTokenMarketCaps, formatMarketCap } from '@/hooks/use-native-token-market-caps'
 
 const MAX_TOKENS = 10
 
-const BasketSkeleton = () =>
+const BasketSkeleton = ({ isExposure = false }: { isExposure?: boolean }) =>
   Array.from({ length: 10 }).map((_, i) => (
     <TableRow key={i}>
       <TableCell className="flex items-center gap-3">
@@ -46,15 +48,34 @@ const BasketSkeleton = () =>
           <Skeleton className="h-3 w-8 lg:w-[80px]" />
         </div>
       </TableCell>
-      <TableCell className="hidden sm:table-cell">
-        <Skeleton className="h-4 w-[100px]" />
+      {!isExposure && (
+        <TableCell className="text-center">
+          <Skeleton className="h-4 w-[60px] mx-auto" />
+        </TableCell>
+      )}
+      {isExposure && (
+        <TableCell className="text-center">
+          <Skeleton className="h-4 w-[80px] mx-auto" />
+        </TableCell>
+      )}
+      <TableCell className="text-center">
+        <Skeleton className="h-4 w-[60px] mx-auto" />
       </TableCell>
-      <TableCell className="text-right">
-        <Skeleton className="h-4 w-[60px] ml-auto" />
-      </TableCell>
-      <TableCell>
-        <Skeleton className="h-4 w-4" />
-      </TableCell>
+      {isExposure && (
+        <TableCell className="text-right">
+          <Skeleton className="h-4 w-[60px] ml-auto" />
+        </TableCell>
+      )}
+      {!isExposure && (
+        <TableCell className="text-right">
+          <Skeleton className="h-4 w-[60px] ml-auto" />
+        </TableCell>
+      )}
+      {!isExposure && (
+        <TableCell>
+          <Skeleton className="h-4 w-4" />
+        </TableCell>
+      )}
     </TableRow>
   ))
 
@@ -64,6 +85,7 @@ const IndexBasketOverview = ({ className }: { className?: string }) => {
   const basket = useAtomValue(indexDTFBasketAtom)
   const [viewAll, setViewAll] = useState(false)
   const basketShares = useAtomValue(indexDTFBasketSharesAtom)
+  const basket7dChanges = useAtomValue(indexDTFBasket7dChangeAtom)
   const hasBridgedAssets = useAtomValue(hasBridgedAssetsAtom)
   const chainId = useAtomValue(chainIdAtom)
   const isBSC = chainId === ChainId.BSC
@@ -103,8 +125,39 @@ const IndexBasketOverview = ({ className }: { className?: string }) => {
       weight: parseFloat(basketShares[token.address] || '0'),
     }))
 
-    return groupByNativeAsset(tokenData, chainId)
-  }, [filtered, basketShares, chainId, isExposure])
+    const groups = groupByNativeAsset(tokenData, chainId)
+
+    // Calculate weighted 7d change for each group and add to new Map
+    const groupsWithChange = new Map()
+    groups.forEach((group) => {
+      const weightedChange = group.tokens.reduce((acc, token) => {
+        const change = basket7dChanges[token.address] ?? 0
+        const weight = token.weight / group.totalWeight
+        return acc + (change * weight)
+      }, 0)
+      groupsWithChange.set(group.native?.symbol || group.tokens[0].symbol, {
+        ...group,
+        weightedChange,
+      })
+    })
+
+    return groupsWithChange
+  }, [filtered, basketShares, chainId, isExposure, basket7dChanges])
+
+  // Extract CoinGecko IDs for market cap fetching
+  const exposureCoingeckoIds = useMemo(() => {
+    if (!exposureGroups) return []
+    const ids: string[] = []
+    exposureGroups.forEach((group) => {
+      if (group.native?.coingeckoId) {
+        ids.push(group.native.coingeckoId)
+      }
+    })
+    return ids
+  }, [exposureGroups])
+
+  // Fetch market cap data
+  const { data: marketCaps } = useNativeTokenMarketCaps(exposureCoingeckoIds)
 
   const handleCopy = (address: string) => {
     navigator.clipboard.writeText(address)
@@ -142,7 +195,10 @@ const IndexBasketOverview = ({ className }: { className?: string }) => {
                   'Token'
                 )}
               </TableHead>
-              <TableHead className="text-center">Weight</TableHead>
+              {!isExposure && <TableHead className="text-center">Weight</TableHead>}
+              {isExposure && <TableHead className="text-center">Market Cap</TableHead>}
+              <TableHead className="text-center">7d Change</TableHead>
+              {isExposure && <TableHead className="text-right">Weight</TableHead>}
               <TableHead className={cn('text-right', isExposure && 'hidden')}>
                 {`${hasBridgedAssets ? 'Bridge / ' : ''}${capitalize(
                   ETHERSCAN_NAMES[chainId]
@@ -152,7 +208,7 @@ const IndexBasketOverview = ({ className }: { className?: string }) => {
           </TableHeader>
           <TableBody>
             {!filtered?.length ? ( // Loading skeleton rows
-              <BasketSkeleton />
+              <BasketSkeleton isExposure={isExposure} />
             ) : isExposure && exposureGroups ? (
               // Exposure view - grouped by native asset
               Array.from(exposureGroups.entries())
@@ -191,7 +247,32 @@ const IndexBasketOverview = ({ className }: { className?: string }) => {
                           ? `${native.priceChange7d.toFixed(1)}%`
                           : '-'}
                       </TableCell> */}
-                      <TableCell className="text-primary text-center font-bold">
+                      <TableCell className="text-center">
+                        {marketCaps?.[group.native?.coingeckoId] ? (
+                          <span>
+                            {formatMarketCap(marketCaps[group.native.coingeckoId])}
+                          </span>
+                        ) : (
+                          <span>—</span>
+                        )}
+                      </TableCell>
+                      <TableCell className="text-center">
+                        {group.weightedChange !== undefined ? (
+                          <span
+                            className={
+                              group.weightedChange < 0
+                                ? 'text-legend'
+                                : ''
+                            }
+                          >
+                            {group.weightedChange > 0 ? '+' : ''}
+                            {(group.weightedChange * 100).toFixed(2)}%
+                          </span>
+                        ) : (
+                          <span>—</span>
+                        )}
+                      </TableCell>
+                      <TableCell className="text-right text-primary font-bold">
                         {group.totalWeight.toFixed(2)}%
                       </TableCell>
                     </TableRow>
@@ -222,6 +303,26 @@ const IndexBasketOverview = ({ className }: { className?: string }) => {
                     </TableCell>
                     <TableCell className="text-primary text-center font-bold">
                       {basketShares[token.address]}%
+                    </TableCell>
+                    <TableCell className="text-center">
+                      {(() => {
+                        const change = basket7dChanges[token.address]
+                        if (change === null || change === undefined) {
+                          return <span>—</span>
+                        }
+                        return (
+                          <span
+                            className={
+                              change < 0
+                                ? 'text-legend'
+                                : ''
+                            }
+                          >
+                            {change > 0 ? '+' : ''}
+                            {(change * 100).toFixed(2)}%
+                          </span>
+                        )
+                      })()}
                     </TableCell>
                     <TableCell className="text-right">
                       <div className="flex items-center justify-end gap-2">

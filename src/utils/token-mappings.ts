@@ -151,7 +151,7 @@ export const NATIVE_TOKENS: Record<string, NativeToken> = {
     name: 'Cronos',
     caip2: 'eip155:25',
     logo: 'https://assets.coingecko.com/coins/images/7310/large/cro_token_logo.png',
-    coingeckoId: 'cronos',
+    coingeckoId: 'crypto-com-chain',
   },
   dot: {
     symbol: 'DOT',

@@ -92,6 +92,7 @@ export const indexDTFBasketSharesAtom = atom<Record<string, string>>({})
 
 export const indexDTFAtom = atom<IndexDTF | undefined>(undefined)
 export const indexDTF7dChangeAtom = atom<number | undefined>(undefined)
+export const indexDTFBasket7dChangeAtom = atom<Record<string, number | null>>({})
 export const indexDTFBrandAtom = atom<IndexDTFBrand | undefined>(undefined)
 
 export const indexDTFFeeAtom = atom<number | undefined>(undefined)
