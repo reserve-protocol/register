@@ -205,6 +205,9 @@ const PriceChart = () => {
             <AreaChart
               data={timeseries}
               margin={{ left: 0, right: 0, top: 5, bottom: 5 }}
+              {...{
+                overflow: 'visible',
+              }}
             >
               <defs>
                 <pattern
