@@ -42,7 +42,7 @@ const calculatePercentageChange = (
         <ChevronDown className="h-4 w-4" />
       )}
       {`${percentageChange.toFixed(2)}%${wrap ? ')' : ''}`}
-      <span className="ml-1">({range})</span>
+      <span className="ml-1">({range === 'all' ? 'All' : range})</span>
     </div>
   )
 }

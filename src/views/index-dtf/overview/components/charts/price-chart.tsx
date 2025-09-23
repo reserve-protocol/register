@@ -23,25 +23,29 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
-type Range = '24h' | '7d' | '1m' | '3m' | '1y'
+type Range = '24h' | '7d' | '1m' | '3m' | '1y' | 'all'
 export type DataType = 'price' | 'marketCap' | 'totalSupply'
 
 const now = Math.floor(Date.now() / 1_000)
 const currentHour = Math.floor(now / 3_600) * 3_600
 
-const historicalConfigs = {
+const historicalConfigs: Record<
+  Range,
+  { to: number; from: number; interval: '1h' | '1d' }
+> = {
   '24h': { to: currentHour, from: currentHour - 86_400, interval: '1h' },
   '7d': { to: currentHour, from: currentHour - 604_800, interval: '1h' },
   '1m': { to: currentHour, from: currentHour - 2_592_000, interval: '1h' },
   '3m': { to: currentHour, from: currentHour - 7_776_000, interval: '1d' },
   '1y': { to: currentHour, from: currentHour - 31_536_000, interval: '1d' },
-} as const
+  all: { to: currentHour, from: 0, interval: '1d' },
+}
 
 function CustomTooltip({ payload, active, dataType }: any) {
   if (active && payload) {
     const subtitle = dayjs
       .unix(+payload[0]?.payload?.timestamp)
-      .format('YYYY-M-D HH:mm:ss')
+      .format('YYYY-M-D HH:mm')
     const value = payload[0]?.payload?.[dataType]
     const formattedValue =
       dataType === 'price'
@@ -69,10 +73,21 @@ const PriceChart = () => {
   const setMarketCap = useSetAtom(indexDTFMarketCapAtom)
 
   const showHourlyInterval = now - (dtf?.timestamp || 0) < 30 * 86_400
+  const config =
+    range === 'all'
+      ? {
+          to: currentHour,
+          from: dtf?.timestamp || 0,
+          interval: (showHourlyInterval ? '1h' : '1d') as '1h' | '1d',
+        }
+      : historicalConfigs[range]
+
   const { data: history } = useIndexDTFPriceHistory({
     address: dtf?.id,
-    ...historicalConfigs[range],
-    ...(showHourlyInterval ? { interval: '1h' } : {}),
+    ...config,
+    ...(showHourlyInterval && range !== 'all'
+      ? { interval: '1h' as const }
+      : {}),
   })
 
   const timeseries = useMemo(() => {
@@ -98,6 +113,8 @@ const PriceChart = () => {
 
   const formatXAxisTick = (timestamp: number) => {
     const date = dayjs.unix(timestamp)
+    const dtfAge = now - (dtf?.timestamp || 0)
+
     switch (range) {
       case '24h':
         return date.format('HH:mm')
@@ -107,6 +124,24 @@ const PriceChart = () => {
         return date.format('D MMM')
       case '1y':
         return date.format("MMM 'YY")
+      case 'all':
+        // Format based on DTF age
+        if (dtfAge < 86_400) {
+          // Less than 24h: use hourly format
+          return date.format('HH:mm')
+        } else if (dtfAge < 604_800) {
+          // Less than 7d: use hourly format
+          return date.format('HH:mm')
+        } else if (dtfAge < 2_592_000) {
+          // Less than 1m: use day format
+          return date.format('D MMM')
+        } else if (dtfAge < 31_536_000) {
+          // Less than 1y: use day format
+          return date.format('D MMM')
+        } else {
+          // More than 1y: use month/year format
+          return date.format("MMM 'YY")
+        }
       default:
         return date.format('D MMM')
     }
@@ -124,7 +159,7 @@ const PriceChart = () => {
       <ChartOverlay timeseries={timeseries} />
       <div className="h-48 sm:h-[300px]">
         {history === undefined ? (
-          <Skeleton className="h-48 sm:h-[300px] w-full rounded-lg" />
+          <Skeleton className="h-48 sm:h-[290px] w-full rounded-lg" />
         ) : timeseries.length > 0 ? (
           <ChartContainer
             config={chartConfig}
