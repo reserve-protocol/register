@@ -1,5 +1,105 @@
 import { ChainId } from './chains'
 
+// Universal Protocol assets on Base chain
+export const UNIVERSAL_ASSETS = new Set([
+  '0xf1143f3a8d76f1ca740d29d5671d365f66c44ed1', // uBTC
+  '0xd6a34b430c05ac78c24985f8abee2616bc1788cb', // uETH
+  '0x0f813f4785b2360009f9ac9bf6121a85f109efc6', // uSOL
+  '0xd403d1624daef243fbcbd4a80d8a6f36affe32b2', // uXRP
+  '0x7be0cc2cadcd4a8f9901b4a66244dcdd9bd02e0f', // uADA
+  '0x5ed25e305e08f58afd7995eac72563e6be65a617', // uDOGE
+  '0x378c326a472915d38b2d8d41e1345987835fab64', // uTRX
+  '0xb0505e5a99abd03d94a1169e638b78edfed26ea4', // uBCH
+  '0xa3a34a0d9a08ccddb6ed422ac0a28a06731335aa', // uLTC
+  '0xc79e06860aa9564f95e08fb7e5b61458d0c63898', // uXLM
+  // Additional Universal assets to be mapped
+  '0x90131d95a9a5b48b6a3ee0400807248becf4b7a4',
+  '0x40318ee213227894b5316e5ec84f6a5caf3bbedd',
+  '0x9c0e042d65a2e1ff31ac83f404e5cb79f452c337',
+  '0xdf5913632251585a55970134fad8a774628e9388',
+  '0xd01cb4171a985571deff48c9dc2f6e153a244d64',
+  '0xe868c3d83ec287c01bcb533a33d197d9bfa79dad',
+  '0x12e96c2bfea6e835cf8dd38a5834fa61cf723736',
+  '0x239b9c1f24f3423062b0d364796e07ee905e9fce',
+  '0xe5c436b0a34df18f1dae98af344ca5122e7d57c4',
+  '0xf653e8b6fcbd2a63246c6b7722d1e9d819611241',
+  '0xacbf16f82753f3d52a2c87e4eeda220c9a7a3762',
+  '0x3eb097375fc2fc361e4a472f5e7067238c547c52',
+  '0x9b8df6e244526ab5f6e6400d331db28c8fdddb55',
+  '0xd61bcf79b26787ae993f75b064d2e3b3cc738c5d',
+  '0x8ccf84de79df699a373421c769f1900aa71200b0',
+  '0x1b0dcc586323c0e10f8be72ecc104048f25fd625',
+  '0x901754d839cf91eaa3ff7cb11408750fc94174e4',
+  '0x6e934283dae5d5d1831cbe8d557c44c9b83f30ee',
+  '0xdb18fb11db1b972a54bd89ce04bad61855c07788',
+  '0xed1a31bb946f0b86cf9d34a1c90546ca75b091b0',
+  '0xf56ce53561a9cc084e094952232bbfe1e5fb599e',
+  '0x3d00283af5ab11ee7f6ec51573ab62b6fb6dfd8f',
+  '0x135ff404ba56e167f58bc664156beaa0a0fd95ac',
+  '0x893adcbdc7fcfa0ebb6d3803f01df1ec199bf7c5',
+  '0x0935b271ca903ada3ffe1ac1353fc4a49e7ee87b',
+  '0xfa15f1b48447d34b107c8a26cc065e1e872b1a9d',
+  '0x8f2bd24a6406142cbae4b39e14be8efc8157d951',
+  '0x1b94330eec66ba458a51b0b14f411910d5f678d0',
+  '0x17f8d5aa7779094c32536fecb177f93b33b3c3e2',
+  '0xfdf116c8bef1d4060e4117092298abff80b170ca',
+  '0xf413af1169516a3256504977b8ed0248fbd48f23',
+  '0xd7d5c59457d66fe800dba22b35e9c6c379d64499',
+  '0x8989377fd349adfa99e6ce3cb6c0d148dfc7f19e',
+  '0x16275fd42439a6671b188bdc3949a5ec61932c48',
+  '0x05f191a4aac4b358ab99db3a83a8f96216ecb274',
+  '0x5a03841c2e2f5811f9e548cf98e88e878e55d99e',
+  '0x0340ff1765f0099b3bd1c4664ce03d8fd794fad1',
+  '0xd045be6ab98d17a161cfcfc118a8b428d70543ff',
+  '0x508e751fdcf144910074cc817a16757f608db52a',
+  '0xc5cdeb649ed1a7895b935acc8eb5aa0d7a8492be',
+  '0x9af46f95a0a8be5c2e0a0274a8b153c72d617e85',
+  '0x3c07ef1bd575b5f5b1ffcb868353f5bc501ed482',
+  '0x444fa322da64a49a32d29ccd3a1f4df3de25cf52',
+  '0x3ecb91ac996e8c55fe1835969a4967f95a07ca71',
+  '0xe3ae3ee16a89973d67b678aad2c3be865dcc6880',
+  '0x544f87a5aa41fcd725ef7c78a37cd9c1c4ba1650',
+  '0x83f31af747189c2fa9e5deb253200c505eff6ed2',
+  '0xcb474f3dee195a951f3584b213d16d2d4d4ee503',
+  '0x2615a94df961278dcbc41fb0a54fec5f10a693ae',
+  '0xfb3cb973b2a9e2e09746393c59e7fb0d5189d290',
+  '0xfdca15bd55f350a36e63c47661914d80411d2c22',
+  '0x3a51f2a377ea8b55faf3c671138a00503b031af3',
+  '0xa260ba5fd9ff3fae55ac4930165a9c33519de694',
+  '0x30f16e3273ab6e4584b79b76fd944e577e49a5c8',
+  '0xd76d45358b79564817aa87f02f3b85338b96f06a',
+  '0x2198b777d5cb8cd5aa01d5c4d70f8f28fed9bc05',
+  '0xf081701af06a8d4ecf159c9c178b5ca6a78b5548',
+  '0x4b92ea5a2602fba275150db4201a6047056f6913',
+  '0xf383074c4b993d1ccd196188d27d0ddf22ad463c',
+  '0x71a67215a2025f501f386a49858a9ced2fc0249d',
+  '0x31d664ebd97a50d5a2cd49b16f7714ab2516ed25',
+])
+
+// Wormhole assets on Base chain
+export const WORMHOLE_ASSETS = new Set([
+  '0x7fdaa50d7399ac436943028eda6ed9a1bd89509f', // WBTC
+  '0xfa1df3f6108db461fd89437f320fe50c125af5f0', // WETH
+  '0x51436f6bd047797de7d11e9d32685f029aed1069', // USDC
+  '0xcb9eec5748aafa41fbcbe0b58465efed11ce176', // USDT
+  '0xf0134c5ea11d1fc75fa1b25fac00f8d82c38bd52', // DAI
+  '0x224a0cb0c937018123b441b489a74eaf689da78f', // LINK
+  '0xdc1437d7390016af12fe501e4a65ec42d35469ce', // UNI
+  '0x9a1da46efad9a87f68720b46c2777a9e3a5b4302', // AAVE
+  '0x781f50ea0dad22aee73e94bced1003f4cbd2bb5e', // SHIB
+  '0x417dbf0b8f24a1af0a2a4a76094b578c08f90a3d', // MATIC
+  // Additional Wormhole assets to be mapped
+  '0x10f4799f0feeea0e74454e0b6669d3c0cf7b93bf',
+  '0x55b3e31739247d010ece7ddc365eae512b16fa7e',
+  '0x5b0a82456d018f21881d1d5460e37aefd56d54b3',
+  '0xf905b22e30743dc07d8ed7fdf0ef0f5ec76e52be',
+  '0x6ad49f3bd3e15a7ee14a3b246824858e97910ed0',
+  '0xb0bb1cae834d533d7b75300f4f818ef3ef8a18b8',
+  '0x4c5d8a75f3762c1561d96f177694f67378705e98',
+  '0xa76a29923ccfb59e734e907688b659e48a55fd07',
+  '0x3992b27da26848c2b19cea6fd25ad5568b68ab98',
+])
+
 export type NativeToken = {
   symbol: string
   name: string
@@ -258,6 +358,84 @@ export const NATIVE_TOKENS: Record<string, NativeToken> = {
     logo: 'https://assets.coingecko.com/coins/images/29850/large/pepe-token.jpeg',
     coingeckoId: 'pepe',
   },
+  // Additional tokens for Universal and Wormhole bridges
+  vet: {
+    symbol: 'VET',
+    name: 'VeChain',
+    caip2: 'vechain:mainnet',
+    logo: 'https://assets.coingecko.com/coins/images/1167/large/VET_Token_Icon.png',
+    coingeckoId: 'vechain',
+  },
+  theta: {
+    symbol: 'THETA',
+    name: 'Theta Network',
+    caip2: 'theta:mainnet',
+    logo: 'https://assets.coingecko.com/coins/images/2538/large/theta-token-logo.png',
+    coingeckoId: 'theta-token',
+  },
+  eos: {
+    symbol: 'EOS',
+    name: 'EOS',
+    caip2: 'eos:mainnet',
+    logo: 'https://assets.coingecko.com/coins/images/738/large/eos-eos-logo.png',
+    coingeckoId: 'eos',
+  },
+  kas: {
+    symbol: 'KAS',
+    name: 'Kaspa',
+    caip2: 'kaspa:mainnet',
+    logo: 'https://assets.coingecko.com/coins/images/25751/large/kaspa-icon-exchanges.png',
+    coingeckoId: 'kaspa',
+  },
+  zec: {
+    symbol: 'ZEC',
+    name: 'Zcash',
+    caip2: 'zcash:mainnet',
+    logo: 'https://assets.coingecko.com/coins/images/486/large/circle-zcash-color.png',
+    coingeckoId: 'zcash',
+  },
+  xdc: {
+    symbol: 'XDC',
+    name: 'XDC Network',
+    caip2: 'xdc:mainnet',
+    logo: 'https://assets.coingecko.com/coins/images/2912/large/xdc-icon.png',
+    coingeckoId: 'xdce-crowd-sale',
+  },
+  dash: {
+    symbol: 'DASH',
+    name: 'Dash',
+    caip2: 'dash:mainnet',
+    logo: 'https://assets.coingecko.com/coins/images/19/large/dash-logo.png',
+    coingeckoId: 'dash',
+  },
+  qtum: {
+    symbol: 'QTUM',
+    name: 'Qtum',
+    caip2: 'qtum:mainnet',
+    logo: 'https://assets.coingecko.com/coins/images/684/large/qtum.png',
+    coingeckoId: 'qtum',
+  },
+  nano: {
+    symbol: 'XNO',
+    name: 'Nano',
+    caip2: 'nano:mainnet',
+    logo: 'https://assets.coingecko.com/coins/images/756/large/nano.png',
+    coingeckoId: 'nano',
+  },
+  btg: {
+    symbol: 'BTG',
+    name: 'Bitcoin Gold',
+    caip2: 'btg:mainnet',
+    logo: 'https://assets.coingecko.com/coins/images/1043/large/bitcoin-gold-logo.png',
+    coingeckoId: 'bitcoin-gold',
+  },
+  etc: {
+    symbol: 'ETC',
+    name: 'Ethereum Classic',
+    caip2: 'eip155:61',
+    logo: 'https://assets.coingecko.com/coins/images/453/large/ethereum-classic-logo.png',
+    coingeckoId: 'ethereum-classic',
+  },
 }
 
 export const BRIDGES: Record<string, Bridge> = {
@@ -386,6 +564,43 @@ export const BRIDGE_NATIVE_MAP: Record<
       nativeKey: 'matic',
       bridgeId: 'wormhole',
     },
+    // Additional Wormhole assets
+    '0x10f4799f0feeea0e74454e0b6669d3c0cf7b93bf': {
+      nativeKey: 'avax',
+      bridgeId: 'wormhole',
+    },
+    '0x55b3e31739247d010ece7ddc365eae512b16fa7e': {
+      nativeKey: 'sui',
+      bridgeId: 'wormhole',
+    },
+    '0x5b0a82456d018f21881d1d5460e37aefd56d54b3': {
+      nativeKey: 'atom',
+      bridgeId: 'wormhole',
+    },
+    '0xf905b22e30743dc07d8ed7fdf0ef0f5ec76e52be': {
+      nativeKey: 'near',
+      bridgeId: 'wormhole',
+    },
+    '0x6ad49f3bd3e15a7ee14a3b246824858e97910ed0': {
+      nativeKey: 'algo',
+      bridgeId: 'wormhole',
+    },
+    '0xb0bb1cae834d533d7b75300f4f818ef3ef8a18b8': {
+      nativeKey: 'fil',
+      bridgeId: 'wormhole',
+    },
+    '0x4c5d8a75f3762c1561d96f177694f67378705e98': {
+      nativeKey: 'xmr',
+      bridgeId: 'wormhole',
+    },
+    '0xa76a29923ccfb59e734e907688b659e48a55fd07': {
+      nativeKey: 'mnt',
+      bridgeId: 'wormhole',
+    },
+    '0x3992b27da26848c2b19cea6fd25ad5568b68ab98': {
+      nativeKey: 'pepe',
+      bridgeId: 'wormhole',
+    },
     // Universal assets from Base
     '0xf1143f3a8d76f1ca740d29d5671d365f66c44ed1': {
       nativeKey: 'btc',
@@ -427,6 +642,253 @@ export const BRIDGE_NATIVE_MAP: Record<
     },
     '0xc79e06860aa9564f95e08fb7e5b61458d0c63898': {
       nativeKey: 'xlm',
+      bridgeId: 'universal',
+    },
+    // Additional Universal Protocol assets
+    '0x90131d95a9a5b48b6a3ee0400807248becf4b7a4': {
+      nativeKey: 'avax',
+      bridgeId: 'universal',
+    },
+    '0x40318ee213227894b5316e5ec84f6a5caf3bbedd': {
+      nativeKey: 'sui',
+      bridgeId: 'universal',
+    },
+    '0x9c0e042d65a2e1ff31ac83f404e5cb79f452c337': {
+      nativeKey: 'hbar',
+      bridgeId: 'universal',
+    },
+    '0xdf5913632251585a55970134fad8a774628e9388': {
+      nativeKey: 'ton',
+      bridgeId: 'universal',
+    },
+    '0xd01cb4171a985571deff48c9dc2f6e153a244d64': {
+      nativeKey: 'shib',
+      bridgeId: 'universal',
+    },
+    '0xe868c3d83ec287c01bcb533a33d197d9bfa79dad': {
+      nativeKey: 'cro',
+      bridgeId: 'universal',
+    },
+    '0x12e96c2bfea6e835cf8dd38a5834fa61cf723736': {
+      nativeKey: 'dot',
+      bridgeId: 'universal',
+    },
+    '0x239b9c1f24f3423062b0d364796e07ee905e9fce': {
+      nativeKey: 'link',
+      bridgeId: 'universal',
+    },
+    '0xe5c436b0a34df18f1dae98af344ca5122e7d57c4': {
+      nativeKey: 'uni',
+      bridgeId: 'universal',
+    },
+    '0xf653e8b6fcbd2a63246c6b7722d1e9d819611241': {
+      nativeKey: 'hype',
+      bridgeId: 'universal',
+    },
+    '0xacbf16f82753f3d52a2c87e4eeda220c9a7a3762': {
+      nativeKey: 'matic',
+      bridgeId: 'universal',
+    },
+    '0x3eb097375fc2fc361e4a472f5e7067238c547c52': {
+      nativeKey: 'atom',
+      bridgeId: 'universal',
+    },
+    '0x9b8df6e244526ab5f6e6400d331db28c8fdddb55': {
+      nativeKey: 'near',
+      bridgeId: 'universal',
+    },
+    '0xd61bcf79b26787ae993f75b064d2e3b3cc738c5d': {
+      nativeKey: 'algo',
+      bridgeId: 'universal',
+    },
+    '0x8ccf84de79df699a373421c769f1900aa71200b0': {
+      nativeKey: 'fil',
+      bridgeId: 'universal',
+    },
+    '0x1b0dcc586323c0e10f8be72ecc104048f25fd625': {
+      nativeKey: 'aave',
+      bridgeId: 'universal',
+    },
+    '0x901754d839cf91eaa3ff7cb11408750fc94174e4': {
+      nativeKey: 'vet',
+      bridgeId: 'universal',
+    },
+    '0x6e934283dae5d5d1831cbe8d557c44c9b83f30ee': {
+      nativeKey: 'theta',
+      bridgeId: 'universal',
+    },
+    '0xdb18fb11db1b972a54bd89ce04bad61855c07788': {
+      nativeKey: 'eos',
+      bridgeId: 'universal',
+    },
+    '0xed1a31bb946f0b86cf9d34a1c90546ca75b091b0': {
+      nativeKey: 'kas',
+      bridgeId: 'universal',
+    },
+    '0xf56ce53561a9cc084e094952232bbfe1e5fb599e': {
+      nativeKey: 'zec',
+      bridgeId: 'universal',
+    },
+    '0x3d00283af5ab11ee7f6ec51573ab62b6fb6dfd8f': {
+      nativeKey: 'xdc',
+      bridgeId: 'universal',
+    },
+    '0x135ff404ba56e167f58bc664156beaa0a0fd95ac': {
+      nativeKey: 'dash',
+      bridgeId: 'universal',
+    },
+    '0x893adcbdc7fcfa0ebb6d3803f01df1ec199bf7c5': {
+      nativeKey: 'qtum',
+      bridgeId: 'universal',
+    },
+    '0x0935b271ca903ada3ffe1ac1353fc4a49e7ee87b': {
+      nativeKey: 'nano',
+      bridgeId: 'universal',
+    },
+    '0xfa15f1b48447d34b107c8a26cc065e1e872b1a9d': {
+      nativeKey: 'btg',
+      bridgeId: 'universal',
+    },
+    '0x8f2bd24a6406142cbae4b39e14be8efc8157d951': {
+      nativeKey: 'etc',
+      bridgeId: 'universal',
+    },
+    '0x1b94330eec66ba458a51b0b14f411910d5f678d0': {
+      nativeKey: 'xmr',
+      bridgeId: 'universal',
+    },
+    '0x17f8d5aa7779094c32536fecb177f93b33b3c3e2': {
+      nativeKey: 'mnt',
+      bridgeId: 'universal',
+    },
+    '0xfdf116c8bef1d4060e4117092298abff80b170ca': {
+      nativeKey: 'pepe',
+      bridgeId: 'universal',
+    },
+    // Additional Universal Protocol assets - these may need verification
+    '0xf413af1169516a3256504977b8ed0248fbd48f23': {
+      nativeKey: 'usdc',
+      bridgeId: 'universal',
+    },
+    '0xd7d5c59457d66fe800dba22b35e9c6c379d64499': {
+      nativeKey: 'usdt',
+      bridgeId: 'universal',
+    },
+    '0x8989377fd349adfa99e6ce3cb6c0d148dfc7f19e': {
+      nativeKey: 'dai',
+      bridgeId: 'universal',
+    },
+    // Remaining Universal Protocol assets - placeholders may need specific tokens
+    '0x16275fd42439a6671b188bdc3949a5ec61932c48': {
+      nativeKey: 'btc',  // Could be another variant
+      bridgeId: 'universal',
+    },
+    '0x05f191a4aac4b358ab99db3a83a8f96216ecb274': {
+      nativeKey: 'eth',  // Could be another variant
+      bridgeId: 'universal',
+    },
+    '0x5a03841c2e2f5811f9e548cf98e88e878e55d99e': {
+      nativeKey: 'bnb',
+      bridgeId: 'universal',
+    },
+    '0x0340ff1765f0099b3bd1c4664ce03d8fd794fad1': {
+      nativeKey: 'sol',  // Could be another variant
+      bridgeId: 'universal',
+    },
+    '0xd045be6ab98d17a161cfcfc118a8b428d70543ff': {
+      nativeKey: 'ada',  // Could be another variant
+      bridgeId: 'universal',
+    },
+    '0x508e751fdcf144910074cc817a16757f608db52a': {
+      nativeKey: 'doge',  // Could be another variant
+      bridgeId: 'universal',
+    },
+    '0xc5cdeb649ed1a7895b935acc8eb5aa0d7a8492be': {
+      nativeKey: 'xrp',  // Could be another variant
+      bridgeId: 'universal',
+    },
+    '0x9af46f95a0a8be5c2e0a0274a8b153c72d617e85': {
+      nativeKey: 'trx',  // Could be another variant
+      bridgeId: 'universal',
+    },
+    '0x3c07ef1bd575b5f5b1ffcb868353f5bc501ed482': {
+      nativeKey: 'link',  // Could be another variant
+      bridgeId: 'universal',
+    },
+    '0x444fa322da64a49a32d29ccd3a1f4df3de25cf52': {
+      nativeKey: 'ltc',  // Could be another variant
+      bridgeId: 'universal',
+    },
+    '0x3ecb91ac996e8c55fe1835969a4967f95a07ca71': {
+      nativeKey: 'bch',  // Could be another variant
+      bridgeId: 'universal',
+    },
+    '0xe3ae3ee16a89973d67b678aad2c3be865dcc6880': {
+      nativeKey: 'xlm',  // Could be another variant
+      bridgeId: 'universal',
+    },
+    '0x544f87a5aa41fcd725ef7c78a37cd9c1c4ba1650': {
+      nativeKey: 'avax',  // Could be another variant
+      bridgeId: 'universal',
+    },
+    '0x83f31af747189c2fa9e5deb253200c505eff6ed2': {
+      nativeKey: 'sui',  // Could be another variant
+      bridgeId: 'universal',
+    },
+    '0xcb474f3dee195a951f3584b213d16d2d4d4ee503': {
+      nativeKey: 'ton',  // Could be another variant
+      bridgeId: 'universal',
+    },
+    '0x2615a94df961278dcbc41fb0a54fec5f10a693ae': {
+      nativeKey: 'hbar',  // Could be another variant
+      bridgeId: 'universal',
+    },
+    '0xfb3cb973b2a9e2e09746393c59e7fb0d5189d290': {
+      nativeKey: 'shib',  // Could be another variant
+      bridgeId: 'universal',
+    },
+    '0xfdca15bd55f350a36e63c47661914d80411d2c22': {
+      nativeKey: 'cro',  // Could be another variant
+      bridgeId: 'universal',
+    },
+    '0x3a51f2a377ea8b55faf3c671138a00503b031af3': {
+      nativeKey: 'dot',  // Could be another variant
+      bridgeId: 'universal',
+    },
+    '0xa260ba5fd9ff3fae55ac4930165a9c33519de694': {
+      nativeKey: 'uni',  // Could be another variant
+      bridgeId: 'universal',
+    },
+    '0x30f16e3273ab6e4584b79b76fd944e577e49a5c8': {
+      nativeKey: 'hype',  // Could be another variant
+      bridgeId: 'universal',
+    },
+    '0xd76d45358b79564817aa87f02f3b85338b96f06a': {
+      nativeKey: 'matic',  // Could be another variant
+      bridgeId: 'universal',
+    },
+    '0x2198b777d5cb8cd5aa01d5c4d70f8f28fed9bc05': {
+      nativeKey: 'atom',  // Could be another variant
+      bridgeId: 'universal',
+    },
+    '0xf081701af06a8d4ecf159c9c178b5ca6a78b5548': {
+      nativeKey: 'near',  // Could be another variant
+      bridgeId: 'universal',
+    },
+    '0x4b92ea5a2602fba275150db4201a6047056f6913': {
+      nativeKey: 'algo',  // Could be another variant
+      bridgeId: 'universal',
+    },
+    '0xf383074c4b993d1ccd196188d27d0ddf22ad463c': {
+      nativeKey: 'fil',  // Could be another variant
+      bridgeId: 'universal',
+    },
+    '0x71a67215a2025f501f386a49858a9ced2fc0249d': {
+      nativeKey: 'aave',  // Could be another variant
+      bridgeId: 'universal',
+    },
+    '0x31d664ebd97a50d5a2cd49b16f7714ab2516ed25': {
+      nativeKey: 'xmr',  // Could be another variant
       bridgeId: 'universal',
     },
   },
