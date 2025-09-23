@@ -1,6 +1,6 @@
 import { Separator } from '@/components/ui/separator'
 import { cn } from '@/lib/utils'
-import { Hash } from 'lucide-react'
+import { Globe, Hash } from 'lucide-react'
 
 const TitleContainer = ({
   title,
@@ -16,13 +16,13 @@ const TitleContainer = ({
         className
       )}
     >
-      <Hash className="flex-shrink-0 hidden sm:block" size={16} />
+      <Globe className="flex-shrink-0 hidden sm:block" size={16} />
       <Separator orientation="horizontal" className="flex-1 hidden sm:flex" />
       <h2 className="flex-shrink-0 text-primary dark:text-foreground text-xl sm:text-2xl font-semibold whitespace-nowrap">
         {title}
       </h2>
       <Separator orientation="horizontal" className="flex-1 hidden sm:flex" />
-      <Hash className="flex-shrink-0 hidden sm:block" size={16} />
+      <Globe className="flex-shrink-0 hidden sm:block" size={16} />
     </div>
   )
 }

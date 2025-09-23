@@ -8,6 +8,10 @@ import { Link } from 'react-router-dom'
 import bloombergCover from '../../../assets/featured-bloomberg.png'
 import virtualsCover from '../../../assets/featured-virtuals.png'
 import coindeskCover from '../../../assets/featured-coindesk.png'
+import lcapLogo from '../../../assets/lcap-logo.png'
+import krakenLogo from '../../../assets/kraken-white.png'
+import reserveLogo from '../../../assets/reserve-white.png'
+import TitleContainer from '../../title-container'
 
 const FEATURED = [
   {
@@ -72,4 +76,63 @@ const IndexDTFFeatured = () => {
   )
 }
 
-export default IndexDTFFeatured
+export function LcapBanner() {
+  return (
+    <>
+      <div className="container mt-10">
+        <TitleContainer title="Presenting" className="mt-4" />
+      </div>
+      <div className="w-full relative overflow-hidden ">
+        {/* Blue gradient background matching the reference */}
+        <div className="bg-gradient-to-r from-[#0854A9] via-[#063B7A] to-[#042A5C] w-full px-6 py-8">
+          <div className="max-w-7xl mx-auto">
+            <div className="flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12">
+              {/* Left side - LCAP Logo */}
+              <div className="flex-shrink-0">
+                <div className="w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 relative">
+                  <img
+                    src={lcapLogo}
+                    alt="LCAP Token"
+                    className="object-contain"
+                  />
+                </div>
+              </div>
+
+              {/* Center - Main content */}
+              <div className="flex-1 text-center lg:text-left space-y-6">
+                <div className="space-y-4">
+                  <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-white leading-tight text-balance">
+                    Serious crypto exposure
+                    <br />
+                    in a single token
+                  </h1>
+
+                  <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 text-lg md:text-xl text-white/90">
+                    <span className="font-medium">$LCAP also available on</span>
+                    <div className="h-8 md:h-10 relative">
+                      <img
+                        src={krakenLogo}
+                        alt="Kraken"
+                        height={40}
+                        width={120}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Right side - Additional visual space for balance */}
+              <div className="hidden lg:block flex-shrink-0 w-24"></div>
+            </div>
+          </div>
+        </div>
+        {/* Subtle overlay for depth */}
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-black/10 pointer-events-none"></div>
+      </div>
+    </>
+  )
+}
+
+export default LcapBanner
+
+// export default IndexDTFFeatured
