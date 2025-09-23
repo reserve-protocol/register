@@ -10,13 +10,33 @@ interface NetPerformanceSummaryProps {
 }
 
 const monthColumns = [
-  'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-  'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec',
 ] as const
 
 const monthKeys = [
-  'jan', 'feb', 'mar', 'apr', 'may', 'jun',
-  'jul', 'aug', 'sep', 'oct', 'nov', 'dec'
+  'jan',
+  'feb',
+  'mar',
+  'apr',
+  'may',
+  'jun',
+  'jul',
+  'aug',
+  'sep',
+  'oct',
+  'nov',
+  'dec',
 ] as const
 
 const formatPerformanceValue = (value: number | null): string => {
@@ -30,21 +50,21 @@ const NetPerformanceSummary = ({ data }: NetPerformanceSummaryProps) => {
   const handleDownloadCSV = () => {
     // Create CSV content
     const headers = ['Year', ...monthColumns, 'FY/YTD']
-    const rows = data.map(yearData => {
-      const monthValues = monthKeys.map(key => {
+    const rows = data.map((yearData) => {
+      const monthValues = monthKeys.map((key) => {
         const value = yearData[key]?.value
         return value !== null ? value.toFixed(2) : ''
       })
       return [
         yearData.year,
         ...monthValues,
-        yearData.yearToDate?.toFixed(2) || ''
+        yearData.yearToDate?.toFixed(2) || '',
       ]
     })
 
     const csvContent = [
       headers.join(','),
-      ...rows.map(row => row.join(','))
+      ...rows.map((row) => row.join(',')),
     ].join('\n')
 
     // Create and trigger download
@@ -60,16 +80,16 @@ const NetPerformanceSummary = ({ data }: NetPerformanceSummaryProps) => {
   }
 
   return (
-    <Card className="bg-white dark:bg-background border-secondary rounded-2xl p-4 md:p-6 mt-6">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 md:mb-6 gap-3">
-        <h3 className="text-lg md:text-xl font-semibold">
+    <Card className="bg-background border-secondary rounded-3xl mx-1 mb-1">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 p-6">
+        <h3 className="text-xl sm:text-2xl font-light">
           Net Performance Summary - {dtf?.token?.name || 'Index'}
         </h3>
         <Button
-          variant="ghost"
+          variant="outline"
           size="sm"
           onClick={handleDownloadCSV}
-          className="flex items-center gap-2 text-primary hover:text-primary/80"
+          className="flex items-center font-light h-8 gap-2 rounded-full"
         >
           <DownloadIcon className="h-4 w-4" />
           <span className="hidden md:inline">Download CSV</span>
@@ -79,12 +99,13 @@ const NetPerformanceSummary = ({ data }: NetPerformanceSummaryProps) => {
 
       {/* Mobile view - list format */}
       <div className="block md:hidden space-y-4">
-        {data.map(yearData => (
+        {data.map((yearData) => (
           <div key={yearData.year} className="border-b pb-4">
             <div className="flex justify-between items-center mb-3">
               <span className="font-semibold text-base">{yearData.year}</span>
               <span className="text-sm text-muted-foreground">
-                FY/YTD: {yearData.yearToDate !== null
+                FY/YTD:{' '}
+                {yearData.yearToDate !== null
                   ? formatPerformanceValue(yearData.yearToDate)
                   : '-'}
               </span>
@@ -98,7 +119,13 @@ const NetPerformanceSummary = ({ data }: NetPerformanceSummaryProps) => {
                     <span className="text-muted-foreground">
                       {monthColumns[idx]} - {yearData.year}
                     </span>
-                    <span className={value !== null && value >= 0 ? 'text-green-600' : 'text-red-600'}>
+                    <span
+                      className={
+                        value !== null && value >= 0
+                          ? 'text-green-600'
+                          : 'text-red-600'
+                      }
+                    >
                       {value !== null ? formatPerformanceValue(value) : '-'}
                       {monthData?.isBest && (
                         <span className="text-green-600 ml-1">▲</span>
@@ -117,30 +144,40 @@ const NetPerformanceSummary = ({ data }: NetPerformanceSummaryProps) => {
 
       {/* Desktop view - table format */}
       <div className="hidden md:block overflow-x-auto">
-        <table className="w-full min-w-[800px]">
+        <table className="w-full min-w-[800px] border-t [&_th]:h-12 [&_td]:h-12">
           <thead>
             <tr className="border-b">
               <th className="text-left py-2 px-2 font-medium text-xs"></th>
-              {monthColumns.map(month => (
-                <th key={month} className="text-center py-2 px-1 font-medium text-xs">
+              {monthColumns.map((month) => (
+                <th
+                  key={month}
+                  className="text-center py-2 px-1 font-medium text-xs border-l"
+                >
                   {month}
                 </th>
               ))}
-              <th className="text-center py-2 px-2 font-medium text-xs">FY/YTD</th>
+              <th className="text-center py-2 px-2 font-medium text-xs border-l">
+                FY/YTD
+              </th>
             </tr>
           </thead>
           <tbody>
-            {data.map(yearData => (
-              <tr key={yearData.year} className="border-b hover:bg-muted/30">
-                <td className="py-2 px-2 font-medium text-sm">{yearData.year}</td>
-                {monthKeys.map(monthKey => {
+            {data.map((yearData) => (
+              <tr
+                key={yearData.year}
+                className="border-b last:border-b-0 hover:bg-muted/30"
+              >
+                <td className="py-2 px-2 font-medium text-sm">
+                  {yearData.year}
+                </td>
+                {monthKeys.map((monthKey) => {
                   const monthData = yearData[monthKey]
                   const value = monthData?.value
 
                   return (
                     <td
                       key={monthKey}
-                      className="text-center py-2 px-1 text-xs relative"
+                      className="text-center py-2 px-1 text-xs relative border-l"
                     >
                       {value !== null && (
                         <>
@@ -171,7 +208,7 @@ const NetPerformanceSummary = ({ data }: NetPerformanceSummaryProps) => {
                     </td>
                   )
                 })}
-                <td className="text-center py-2 px-2 text-xs font-medium">
+                <td className="text-center py-2 px-2 text-xs font-medium border-l">
                   {yearData.yearToDate !== null
                     ? formatPerformanceValue(yearData.yearToDate)
                     : '-'}
