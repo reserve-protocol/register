@@ -123,7 +123,7 @@ const UniqueHolders = () => {
   return (
     <MetricsItem
       label="Unique Holders"
-      value={dtf?.token?.currentHolderCount?.toString() || '0'}
+      value={formatCurrency(dtf?.token?.currentHolderCount || 0, 0)}
       icon={<Wallet size={16} />}
       loading={!dtf?.token?.currentHolderCount}
     />
