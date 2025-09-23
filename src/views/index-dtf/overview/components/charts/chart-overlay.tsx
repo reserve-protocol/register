@@ -3,7 +3,7 @@ import { cn } from '@/lib/utils'
 import { indexDTFAtom, indexDTFPriceAtom } from '@/state/dtf/atoms'
 import { formatToSignificantDigits } from '@/utils'
 import { useAtomValue } from 'jotai'
-import { ChevronDown, ChevronUp } from 'lucide-react'
+import { ArrowDown, ArrowUp } from 'lucide-react'
 import { IndexDTFPerformance } from '../../hooks/use-dtf-price-history'
 import IndexTokenLogo from '../index-token-logo'
 import { DataType, dataTypeAtom, timeRangeAtom } from './price-chart'
@@ -37,9 +37,9 @@ const calculatePercentageChange = (
     >
       {`${wrap ? '(' : ''}`}
       {percentageChange > 0 ? (
-        <ChevronUp className="h-4 w-4" />
+        <ArrowUp className="h-4 w-4" />
       ) : (
-        <ChevronDown className="h-4 w-4" />
+        <ArrowDown className="h-4 w-4" />
       )}
       {`${percentageChange.toFixed(2)}%${wrap ? ')' : ''}`}
       <span className="ml-1">({range === 'all' ? 'All' : range})</span>
