@@ -1,4 +1,4 @@
-import Money from '@/components/icons/Money'
+import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import {
@@ -6,15 +6,13 @@ import {
   indexDTFBrandAtom,
   isBrandManagerAtom,
 } from '@/state/dtf/atoms'
-import { formatPercentage } from '@/utils'
+import { useTrackIndexDTFClick } from '@reserve-protocol/react-zapper'
 import { useAtomValue } from 'jotai'
 import { BrickWall, ImagePlus } from 'lucide-react'
-import IndexMetricsOverview from './index-metrics-overview'
-import { useTrackIndexDTFClick } from '@reserve-protocol/react-zapper'
 import { Link } from 'react-router-dom'
-import { Button } from '@/components/ui/button'
-import IndexSocialsOverview from './index-socials-overview'
 import IndexFactsheetOverview from './index-factsheet-overview'
+import IndexMetricsOverview from './index-metrics-overview'
+import IndexSocialsOverview from './index-socials-overview'
 
 const BrandManagerEditButton = () => {
   const isBrandManager = useAtomValue(isBrandManagerAtom)
@@ -50,12 +48,6 @@ const Header = () => {
         <div className="flex gap-1 items-center">
           <BrandManagerEditButton />
           <IndexSocialsOverview />
-
-          {/* <Money />
-          <span className="text-legend">TVL Fee:</span>
-          <span className="font-bold">
-            {formatPercentage(data.annualizedTvlFee * 100)}
-          </span> */}
         </div>
       )}
     </div>
