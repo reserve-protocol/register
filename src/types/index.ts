@@ -383,3 +383,5 @@ export type DecodedCalldata = {
   callData: Hex
   data: unknown[]
 }
+
+export type Volatility = 'low' | 'medium' | 'high' | 'degen'

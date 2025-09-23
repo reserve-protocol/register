@@ -8,7 +8,7 @@ import {
   indexDTFRebalanceControlAtom,
   isHybridDTFAtom,
 } from '@/state/dtf/atoms'
-import { Token } from '@/types'
+import { Token, Volatility } from '@/types'
 import { calculatePriceFromRange } from '@/utils'
 import {
   Rebalance,
@@ -21,6 +21,7 @@ import { currentRebalanceAtom } from '../../../atoms'
 import { originalRebalanceWeightsAtom, rebalanceAuctionsAtom } from '../atoms'
 import useRebalanceCurrentData from './use-rebalance-current-data'
 import useRebalanceInitialData from './use-rebalance-initial-data'
+import useRebalancePriceVolatility from './use-rebalance-price-volatility'
 
 export type RebalanceParams = {
   supply: bigint
@@ -31,6 +32,7 @@ export type RebalanceParams = {
   initialPrices: Record<string, number>
   initialWeights: Record<string, WeightRange>
   prices: TokenPriceWithSnapshot
+  tokenPriceVolatility: Record<string, Volatility>
   isTrackingDTF: boolean
 }
 
@@ -42,6 +44,7 @@ const useRebalanceParams = () => {
   const isHybridDTF = useAtomValue(isHybridDTFAtom)
   const auctions = useAtomValue(rebalanceAuctionsAtom)
   const originalWeights = useAtomValue(originalRebalanceWeightsAtom)
+  const tokenPriceVolatility = useRebalancePriceVolatility()
 
   const rebalanceTokens = useMemo(() => {
     if (!rebalance || !basket) return []
@@ -81,7 +84,8 @@ const useRebalanceParams = () => {
       !prices ||
       !rebalanceControl ||
       !rebalance ||
-      !initialRebalance
+      !initialRebalance ||
+      !tokenPriceVolatility
     )
       return undefined
 
@@ -128,6 +132,7 @@ const useRebalanceParams = () => {
       currentAssets: currentRebalanceData.currentAssets,
       supply: currentRebalanceData.supply,
       prices,
+      tokenPriceVolatility,
       isTrackingDTF: !rebalanceControl.weightControl,
       rebalance: {
         nonce: currentRebalanceData.rebalance[0],
@@ -152,6 +157,7 @@ const useRebalanceParams = () => {
     isHybridDTF,
     auctions.length,
     originalWeights,
+    tokenPriceVolatility,
   ])
 }
 
