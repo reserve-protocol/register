@@ -250,38 +250,42 @@ export function LcapBanner() {
                   <br />
                   in a single token
                 </h1>
-                <Button
-                  asChild
-                  className="bg-white text-primary hover:bg-white/90 h-7 px-2 text-xs sm:h-10 sm:px-4 sm:text-sm font-bold transition-colors"
-                >
-                  <Link
-                    to={getFolioRoute(
-                      '0x4da9a0f397db1397902070f93a4d6ddbc0e0e6e8',
-                      ChainId.Base
-                    )}
+                <div className="flex items-center justify-between flex-wrap gap-2 pt-2 sm:pt-0">
+                  <Button
+                    asChild
+                    className="bg-white text-primary hover:bg-white/90 h-7 px-2 text-xs sm:h-10 sm:px-4 sm:text-sm font-bold transition-colors"
                   >
-                    Discover $LCAP
-                  </Link>
-                </Button>
+                    <Link
+                      to={getFolioRoute(
+                        '0x4da9a0f397db1397902070f93a4d6ddbc0e0e6e8',
+                        ChainId.Base
+                      )}
+                    >
+                      Discover $LCAP
+                    </Link>
+                  </Button>
 
-                <a
-                  href="https://www.kraken.com/prices/cf-large-cap-index"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="absolute bottom-1 right-1 sm:bottom-2 sm:right-2 lg:bottom-4 lg:right-4 flex items-center gap-1 sm:gap-2 text-[10px] sm:text-xs lg:text-sm text-white/70 sm:text-white/80 hover:text-white transition-all cursor-pointer group"
-                >
-                  <span className="font-medium hidden sm:inline">
-                    $LCAP also available on
-                  </span>
-                  <span className="font-medium sm:hidden">Also on</span>
-                  <img
-                    src={krakenLogo}
-                    alt="Kraken"
-                    height={20}
-                    width={50}
-                    className="h-[10px] sm:h-[12px] lg:h-[14px] w-auto"
-                  />
-                </a>
+                  <div className="flex items-center justify-center h-7">
+                    <a
+                      href="https://www.kraken.com/prices/cf-large-cap-index"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-1 sm:gap-2 text-[10px] sm:text-xs lg:text-sm text-white/70 sm:text-white/80 hover:text-white transition-all cursor-pointer group"
+                    >
+                      <span className="font-medium hidden sm:inline">
+                        $LCAP also available on
+                      </span>
+                      <span className="font-medium sm:hidden">Also on</span>
+                      <img
+                        src={krakenLogo}
+                        alt="Kraken"
+                        height={20}
+                        width={50}
+                        className="h-[10px] sm:h-[12px] lg:h-[14px] w-auto"
+                      />
+                    </a>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
