@@ -1,6 +1,7 @@
 import InfoBox from '@/components/old/info-box'
 import { ChartConfig, ChartContainer } from '@/components/ui/chart'
 import { Skeleton } from '@/components/ui/skeleton'
+import { useIsMobile } from '@/hooks/use-media-query'
 import {
   indexDTF7dChangeAtom,
   indexDTFAtom,
@@ -71,6 +72,7 @@ const PriceChart = () => {
   const dataType = useAtomValue(dataTypeAtom)
   const set7dChange = useSetAtom(indexDTF7dChangeAtom)
   const setMarketCap = useSetAtom(indexDTFMarketCapAtom)
+  const isMobile = useIsMobile()
 
   const showHourlyInterval = now - (dtf?.timestamp || 0) < 30 * 86_400
   const config =
@@ -97,9 +99,7 @@ const PriceChart = () => {
         }
         return {
           ...historicalConfigs[r],
-          ...(showHourlyInterval
-            ? { interval: '1h' as const }
-            : {}),
+          ...(showHourlyInterval ? { interval: '1h' as const } : {}),
         }
       })
   }, [range, dtf?.timestamp, showHourlyInterval])
@@ -116,6 +116,20 @@ const PriceChart = () => {
   const timeseries = useMemo(() => {
     return history?.timeseries.filter(({ price }) => Boolean(price)) || []
   }, [history?.timeseries])
+
+  // Different tick positions for mobile vs desktop
+  const xAxisTicks = useMemo(() => {
+    if (timeseries.length === 0) return []
+
+    const mobilePositions = [0.15, 0.38, 0.62, 0.85]
+    const desktopPositions = [0.05, 0.23, 0.41, 0.59, 0.77, 0.95]
+
+    const positions = isMobile ? mobilePositions : desktopPositions
+
+    return positions
+      .map((i) => timeseries[Math.floor(timeseries.length * i)]?.timestamp)
+      .filter(Boolean)
+  }, [timeseries, isMobile])
 
   useEffect(() => {
     if (timeseries.length > 0 && range === '7d') {
@@ -212,12 +226,7 @@ const PriceChart = () => {
                 axisLine={false}
                 tickLine={false}
                 interval="preserveStart"
-                ticks={[
-                  ...[0.05, 0.23, 0.41, 0.59, 0.77, 0.95].map(
-                    (i) =>
-                      timeseries[Math.floor(timeseries.length * i)]?.timestamp
-                  ),
-                ].filter(Boolean)}
+                ticks={xAxisTicks}
                 tickMargin={10}
               />
               <YAxis
