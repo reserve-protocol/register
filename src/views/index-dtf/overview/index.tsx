@@ -12,6 +12,7 @@ import IndexTransactionTable from './components/index-transaction-table'
 import ZapperWrapper from '../components/zapper/zapper-wrapper'
 import { wagmiConfig } from '@/state/chain'
 import { indexDTFQuoteSourceAtom } from '../issuance'
+import { RESERVE_API } from '@/utils/constants'
 
 const Content = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
@@ -33,6 +34,7 @@ const Content = () => {
             chain={indexDTF.chainId}
             dtfAddress={indexDTF.id}
             mode="modal"
+            apiUrl={RESERVE_API}
             defaultSource={quoteSource}
           />
         )}
