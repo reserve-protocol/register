@@ -9,6 +9,8 @@ import IndexTokenOverview from './components/index-token-overview'
 import LandingMint from './components/landing-mint'
 import PriceChart from './components/price-chart'
 import IndexTransactionTable from './components/index-transaction-table'
+import ZapperWrapper from '../components/zapper/zapper-wrapper'
+import { wagmiConfig } from '@/state/chain'
 
 const Content = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
@@ -22,6 +24,14 @@ const Content = () => {
         <IndexCreatorNotes />
         <IndexTransactionTable />
         <IndexDisclousure />
+        {indexDTF && (
+          <ZapperWrapper
+            wagmiConfig={wagmiConfig}
+            chain={indexDTF.chainId}
+            dtfAddress={indexDTF.id}
+            mode="modal"
+          />
+        )}
       </div>
     </div>
   )
