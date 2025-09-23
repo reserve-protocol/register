@@ -9,9 +9,14 @@ import IndexTokenOverview from './components/index-token-overview'
 import LandingMint from './components/landing-mint'
 import PriceChart from './components/price-chart'
 import IndexTransactionTable from './components/index-transaction-table'
+import ZapperWrapper from '../components/zapper/zapper-wrapper'
+import { wagmiConfig } from '@/state/chain'
+import { indexDTFQuoteSourceAtom } from '../issuance'
 
 const Content = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
+  const quoteSource = useAtomValue(indexDTFQuoteSourceAtom)
+
   return (
     <div className="rounded-0xl lg:rounded-4xl bg-secondary flex-1 lg:mb-4">
       <PriceChart />
@@ -22,6 +27,15 @@ const Content = () => {
         <IndexCreatorNotes />
         <IndexTransactionTable />
         <IndexDisclousure />
+        {indexDTF && (
+          <ZapperWrapper
+            wagmiConfig={wagmiConfig}
+            chain={indexDTF.chainId}
+            dtfAddress={indexDTF.id}
+            mode="modal"
+            defaultSource={quoteSource}
+          />
+        )}
       </div>
     </div>
   )

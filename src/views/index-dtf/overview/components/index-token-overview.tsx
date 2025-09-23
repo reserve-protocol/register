@@ -19,7 +19,6 @@ import { ArrowUpRight, ImagePlus } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useTrackIndexDTFClick } from '../../hooks/useTrackIndexDTFPage'
 import IndexRolesOverview from './index-roles-overview'
-import ZapMint from './zap-mint'
 
 const TokenNameSkeleton = () => (
   <div className="flex flex-col gap-4">
@@ -58,36 +57,34 @@ const ZapBuySellButtons = () => {
   const { open, setTab } = useZapperModal()
   return (
     <div className="block xl:hidden w-full mt-3">
-      <ZapMint>
-        <div
-          className="flex gap-2"
-          onClick={(e) => {
-            if (!(e.target instanceof HTMLButtonElement)) {
-              e.preventDefault()
-            }
+      <div
+        className="flex gap-2"
+        onClick={(e) => {
+          if (!(e.target instanceof HTMLButtonElement)) {
+            e.preventDefault()
+          }
+        }}
+      >
+        <Button
+          className="rounded-xl h-12 w-full"
+          onClick={() => {
+            setTab('buy')
+            open()
           }}
         >
-          <Button
-            className="rounded-xl h-12 w-full"
-            onClick={() => {
-              setTab('buy')
-              open()
-            }}
-          >
-            Buy
-          </Button>
-          <Button
-            className="rounded-xl h-12 w-full"
-            variant="outline"
-            onClick={() => {
-              setTab('sell')
-              open()
-            }}
-          >
-            Sell
-          </Button>
-        </div>
-      </ZapMint>
+          Buy
+        </Button>
+        <Button
+          className="rounded-xl h-12 w-full"
+          variant="outline"
+          onClick={() => {
+            setTab('sell')
+            open()
+          }}
+        >
+          Sell
+        </Button>
+      </div>
     </div>
   )
 }
