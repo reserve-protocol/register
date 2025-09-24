@@ -69,11 +69,11 @@ const ChartOverlay = ({ timeseries }: { timeseries: any }) => {
             {dtf?.token.name}
           </h2>
         ) : (
-          <Skeleton className="w-[250px] h-8" />
+          <Skeleton className="w-[250px] h-7 sm:h-8" />
         )}
         <div className="flex items-center gap-2">
           {!price ? (
-            <Skeleton className="w-[100px] h-7 mt-1" />
+            <Skeleton className="w-[100px] h-6 sm:h-7 mt-1" />
           ) : (
             <>
               {dataType !== 'totalSupply' ? '$' : ''}

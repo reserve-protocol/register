@@ -15,6 +15,7 @@ import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { useAtomValue } from 'jotai'
 import { ArrowUpRight, ChevronDown } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { toast } from 'sonner'
 
 const IndexTokenAddress = () => {
   const chainId = useAtomValue(chainIdAtom)
@@ -63,7 +64,10 @@ const IndexTokenAddress = () => {
       >
         <DropdownMenuItem
           key="copy"
-          onClick={() => navigator.clipboard.writeText(address)}
+          onClick={() => {
+            navigator.clipboard.writeText(address)
+            toast.success('Address copied to clipboard')
+          }}
           className="flex items-center gap-2 text-white/90 focus:bg-white/10 focus:text-white"
         >
           Copy address

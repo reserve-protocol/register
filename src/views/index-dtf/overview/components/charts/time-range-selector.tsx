@@ -24,7 +24,7 @@ const TimeRangeSelector = () => {
     const now = Math.floor(Date.now() / 1_000)
     const dtfAge = now - dtf.timestamp
 
-    return ALL_TIME_RANGES.filter(tr => {
+    return ALL_TIME_RANGES.filter((tr) => {
       if (tr.value === 'all') return true
       if (tr.value === '24h') return dtfAge >= 86_400
       return dtfAge >= tr.minAge
@@ -33,7 +33,7 @@ const TimeRangeSelector = () => {
 
   // Auto-update range when current selection is not available
   useEffect(() => {
-    if (availableRanges && !availableRanges.find(r => r.value === range)) {
+    if (availableRanges && !availableRanges.find((r) => r.value === range)) {
       // Default to 'all' if current range is not available
       setRange('all')
     }

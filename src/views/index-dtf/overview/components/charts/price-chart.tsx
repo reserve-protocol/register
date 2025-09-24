@@ -196,9 +196,9 @@ const PriceChart = () => {
     <div className="lg:rounded-4xl lg:rounded-b-none bg-[#000] dark:bg-background lg:dark:bg-muted w-full text-[#fff] dark:text-foreground py-3 sm:py-6 pb-20 h-[438px] sm:h-[614px] xl:h-[539px]">
       <div className="px-3 sm:px-6">
         <ChartOverlay timeseries={timeseries} />
-        <div className="h-48 sm:h-[300px]">
+        <div className="h-48 sm:h-[300px] pt-2 sm:pt-0">
           {history === undefined ? (
-            <Skeleton className="h-44 sm:h-[290px] mt-2 sm:mt-0 w-full rounded-lg" />
+            <Skeleton className="h-44 sm:h-[290px] w-full rounded-lg" />
           ) : timeseries.length > 0 ? (
             <ChartContainer
               config={chartConfig}
