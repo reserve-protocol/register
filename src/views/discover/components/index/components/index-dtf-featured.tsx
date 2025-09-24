@@ -267,7 +267,7 @@ export function LcapBanner() {
 
                   <div className="flex items-center justify-center h-7">
                     <a
-                      href="https://www.kraken.com/prices/cf-large-cap-index"
+                      href="https://www.kraken.com/prices/large-cap-dtf"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex items-center gap-1 sm:gap-2 text-[10px] sm:text-xs lg:text-sm text-white/70 sm:text-white/80 hover:text-white transition-all cursor-pointer group"
