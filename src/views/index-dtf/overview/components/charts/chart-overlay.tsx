@@ -56,7 +56,7 @@ const ChartOverlay = ({ timeseries }: { timeseries: any }) => {
   return (
     <div className="mb-0 sm:mb-3 flex flex-col gap-2">
       <div className="flex items-center gap-1 justify-between">
-        <div className="flex items-center bg-white rounded-full p-0.5 w-fit">
+        <div className="flex items-center bg-white rounded-full p-[1px] w-fit">
           <IndexTokenLogo />
         </div>
         <div>
