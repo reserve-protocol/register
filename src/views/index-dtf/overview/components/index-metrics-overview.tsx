@@ -189,7 +189,7 @@ const Created = () => {
 
 const IndexMetricsOverview = () => {
   return (
-    <div className="flex flex-col sm:flex-row border-t border-secondary pb-1 sm:-pb-0">
+    <div className="flex flex-col sm:flex-row border-t border-secondary pb-1 sm:pb-0">
       <div className="flex-1 sm:[&>*:not(:first-child)]:border-t sm:[&>*:not(:first-child)]:border-secondary border-r-0 sm:border-r border-secondary">
         <Creator />
         <MarketCap />
