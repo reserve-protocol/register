@@ -80,7 +80,7 @@ export function LcapBanner() {
   return (
     <>
       <div className="container mt-10">
-        <TitleContainer title="Presenting" className="mt-4" />
+        <TitleContainer title="Featured" className="mt-4" />
       </div>
       <div className="lcap-banner-wrapper w-full relative overflow-hidden">
         <style>{`
@@ -246,7 +246,7 @@ export function LcapBanner() {
 
               <div className="flex-1 text-left lg:text-left space-y-2 sm:space-y-4 lg:space-y-6 max-w-3xl">
                 <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-white leading-tight animate-fade-in">
-                  Serious crypto exposure
+                  Broad market exposure
                   <br />
                   in a single token
                 </h1>
@@ -273,7 +273,7 @@ export function LcapBanner() {
                       className="flex items-center gap-1 sm:gap-2 text-[10px] sm:text-xs lg:text-sm text-white/70 sm:text-white/80 hover:text-white transition-all cursor-pointer group"
                     >
                       <span className="font-medium hidden sm:inline">
-                        $LCAP also available on
+                        also available on
                       </span>
                       <span className="font-medium sm:hidden">Also on</span>
                       <img
