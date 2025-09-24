@@ -10,7 +10,7 @@ import useTrackIndexDTFPage, {
   useTrackIndexDTFClick,
 } from '../hooks/useTrackIndexDTFPage'
 
-const DTF_DISABLED_FOR_ZAP = ['0x4da9a0f397db1397902070f93a4d6ddbc0e0e6e8']
+const DTF_DISABLED_FOR_ZAP = [] as string[]
 export const indexDTFQuoteSourceAtom = atom<ZapperProps['defaultSource']>(
   (get) => {
     const dtf = get(indexDTFAtom)
