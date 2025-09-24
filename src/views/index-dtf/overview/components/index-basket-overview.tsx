@@ -162,7 +162,7 @@ const IndexBasketOverviewContent = ({ className }: { className?: string }) => {
       {filtered && filtered.length > MAX_TOKENS && (
         <Button
           variant="outline"
-          className="w-full rounded-2xl"
+          className="w-full rounded-2xl mb-1"
           onClick={() => setViewAll(!viewAll)}
         >
           {viewAll ? 'View less' : `View all ${filtered.length} assets`}
@@ -175,10 +175,14 @@ const IndexBasketOverviewContent = ({ className }: { className?: string }) => {
 const IndexBasketOverview = () => (
   <Card className="py-4 sm:py-6 -mt-[1px]">
     <div className="px-4 sm:px-6 flex items-center gap-2 justify-between">
-      <h2 className="text-xl sm:text-2xl font-light">Assets in this DTF</h2>
-      <IndexTokenAddress />
+      <h2 className="text-xl sm:text-2xl font-light whitespace-nowrap">
+        Assets in this DTF
+      </h2>
+      <div className="hidden sm:block">
+        <IndexTokenAddress />
+      </div>
     </div>
-    <Separator className="mt-6 mb-3" />
+    <Separator className="mt-4 sm:mt-6 mb-3" />
     <div className="px-4 sm:px-6">
       <IndexBasketOverviewContent />
     </div>

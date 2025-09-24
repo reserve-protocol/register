@@ -15,7 +15,7 @@ const Content = () => {
   return (
     <div className="rounded-0xl lg:rounded-4xl bg-secondary flex-1 lg:mb-4">
       <PriceChart />
-      <div className="flex flex-col gap-1 m-1 -mt-20">
+      <div className="flex flex-col gap-1 m-1 -mt-[60px] sm:-mt-20">
         <IndexBasketOverview />
         <IndexAboutOverview />
         {!!indexDTF?.stToken && <IndexGovernanceOverview />}

@@ -16,6 +16,7 @@ import { Card } from 'theme-ui'
 import useIndexDTFPriceHistory from '../../hooks/use-dtf-price-history'
 import ChartOverlay from './chart-overlay'
 import IndexCTAsOverviewMobile from '../index-ctas-overview-mobile'
+import IndexTokenAddress from '../index-token-address'
 
 const chartConfig = {
   desktop: {
@@ -192,75 +193,84 @@ const PriceChart = () => {
   }
 
   return (
-    <div className="lg:rounded-4xl lg:rounded-b-none bg-[#000] dark:bg-background lg:dark:bg-muted w-full text-[#fff] dark:text-foreground p-3 sm:p-6 pb-20 h-[452px] sm:h-[600px] xl:h-[539px]">
-      <ChartOverlay timeseries={timeseries} />
-      <div className="h-48 sm:h-[300px]">
-        {history === undefined ? (
-          <Skeleton className="h-48 sm:h-[290px] w-full rounded-lg" />
-        ) : timeseries.length > 0 ? (
-          <ChartContainer
-            config={chartConfig}
-            className="h-48 sm:h-[300px] w-full"
-          >
-            <AreaChart
-              data={timeseries}
-              margin={{ left: 0, right: 0, top: 5, bottom: 5 }}
-              {...{
-                overflow: 'visible',
-              }}
+    <div className="lg:rounded-4xl lg:rounded-b-none bg-[#000] dark:bg-background lg:dark:bg-muted w-full text-[#fff] dark:text-foreground py-3 sm:py-6 pb-20 h-[438px] sm:h-[614px] xl:h-[539px]">
+      <div className="px-3 sm:px-6">
+        <ChartOverlay timeseries={timeseries} />
+        <div className="h-48 sm:h-[300px]">
+          {history === undefined ? (
+            <Skeleton className="h-44 sm:h-[290px] mt-2 sm:mt-0 w-full rounded-lg" />
+          ) : timeseries.length > 0 ? (
+            <ChartContainer
+              config={chartConfig}
+              className="h-48 sm:h-[300px] w-full"
             >
-              <defs>
-                <pattern
-                  id="dots"
-                  x="0"
-                  y="0"
-                  width="3"
-                  height="3"
-                  patternUnits="userSpaceOnUse"
-                >
-                  <circle cx="1" cy="1" r="0.4" fill="#E5EEFA" opacity="1" />
-                </pattern>
-              </defs>
-              <XAxis
-                dataKey="timestamp"
-                tick={{ fontSize: 13, opacity: 0.7 }}
-                tickFormatter={formatXAxisTick}
-                className="[&_.recharts-cartesian-axis-tick_text]:!fill-white"
-                axisLine={false}
-                tickLine={false}
-                interval="preserveStart"
-                ticks={xAxisTicks}
-                tickMargin={10}
-              />
-              <YAxis
-                dataKey={dataType}
-                orientation="right"
-                tick={{ fontSize: 13, opacity: 0.7 }}
-                tickFormatter={formatYAxisTick}
-                className="[&_.recharts-cartesian-axis-tick_text]:!fill-white"
-                axisLine={false}
-                tickLine={false}
-                domain={['auto', 'auto']}
-                width={55}
-                tickCount={5}
-                tickMargin={5}
-              />
-              <Tooltip content={<CustomTooltip dataType={dataType} />} />
-              <Area
-                type="monotone"
-                dataKey={dataType}
-                stroke="#E5EEFA"
-                strokeWidth={1.5}
-                fill="url(#dots)"
-                isAnimationActive={true}
-                animationDuration={500}
-                animationEasing="ease-in-out"
-              />
-            </AreaChart>
-          </ChartContainer>
-        ) : null}
+              <AreaChart
+                data={timeseries}
+                margin={{ left: 0, right: 0, top: 5, bottom: 5 }}
+                {...{
+                  overflow: 'visible',
+                }}
+              >
+                <defs>
+                  <pattern
+                    id="dots"
+                    x="0"
+                    y="0"
+                    width="3"
+                    height="3"
+                    patternUnits="userSpaceOnUse"
+                  >
+                    <circle cx="1" cy="1" r="0.4" fill="#E5EEFA" opacity="1" />
+                  </pattern>
+                </defs>
+                <XAxis
+                  dataKey="timestamp"
+                  tick={{ fontSize: 13, opacity: 0.7 }}
+                  tickFormatter={formatXAxisTick}
+                  className="[&_.recharts-cartesian-axis-tick_text]:!fill-white"
+                  axisLine={false}
+                  tickLine={false}
+                  interval="preserveStart"
+                  ticks={xAxisTicks}
+                  tickMargin={10}
+                />
+                <YAxis
+                  dataKey={dataType}
+                  orientation="right"
+                  tick={{ fontSize: 13, opacity: 0.7 }}
+                  tickFormatter={formatYAxisTick}
+                  className="[&_.recharts-cartesian-axis-tick_text]:!fill-white"
+                  axisLine={false}
+                  tickLine={false}
+                  domain={['auto', 'auto']}
+                  width={55}
+                  tickCount={5}
+                  tickMargin={5}
+                />
+                <Tooltip content={<CustomTooltip dataType={dataType} />} />
+                <Area
+                  type="monotone"
+                  dataKey={dataType}
+                  stroke="#E5EEFA"
+                  strokeWidth={1.5}
+                  fill="url(#dots)"
+                  isAnimationActive={true}
+                  animationDuration={500}
+                  animationEasing="ease-in-out"
+                />
+              </AreaChart>
+            </ChartContainer>
+          ) : null}
+        </div>
       </div>
-      <IndexCTAsOverviewMobile />
+      <div className="flex items-center gap-2 justify-between xl:hidden mt-2 border-t border-border/20 pt-4">
+        <div className="flex sm:hidden flex-1 pl-3 sm:pl-6">
+          <IndexTokenAddress />
+        </div>
+        <div className="min-w-sm sm:min-w-full pr-3 sm:px-6 sm:pr-6">
+          <IndexCTAsOverviewMobile />
+        </div>
+      </div>
     </div>
   )
 }
