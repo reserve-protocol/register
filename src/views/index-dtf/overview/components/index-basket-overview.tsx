@@ -178,7 +178,7 @@ const IndexBasketOverview = () => (
       <h2 className="text-xl sm:text-2xl font-light whitespace-nowrap">
         Assets in this DTF
       </h2>
-      <div className="hidden sm:block">
+      <div className="hidden sm:block xl:hidden">
         <IndexTokenAddress />
       </div>
     </div>

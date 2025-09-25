@@ -11,6 +11,7 @@ import { ArrowLeftRight } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import ZapMint from '../zap-mint'
 import DTFBalance from './dtf-balance'
+import IndexTokenAddress from '../index-token-address'
 
 const TokenInfo = () => {
   const dtf = useAtomValue(indexDTFAtom)
@@ -33,6 +34,9 @@ const TokenInfo = () => {
           src={brand?.dtf?.icon || undefined}
           size="lg"
         />
+        <div className="hidden xl:block">
+          <IndexTokenAddress />
+        </div>
       </div>
       <div className="flex flex-col gap-1">
         <div className="text-2xl font-light text-primary">
