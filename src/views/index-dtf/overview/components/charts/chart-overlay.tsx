@@ -6,8 +6,8 @@ import { useAtomValue } from 'jotai'
 import { ArrowDown, ArrowUp } from 'lucide-react'
 import { IndexDTFPerformance } from '../../hooks/use-dtf-price-history'
 import IndexTokenLogo from '../index-token-logo'
-import { DataType, dataTypeAtom, timeRangeAtom } from './price-chart'
-import TimeRangeSelector from './time-range-selector'
+import { DataType, dataTypeAtom } from './price-chart'
+import TimeRangeSelector, { timeRangeAtom } from './time-range-selector'
 
 const calculatePercentageChange = (
   performance: IndexDTFPerformance['timeseries'],
