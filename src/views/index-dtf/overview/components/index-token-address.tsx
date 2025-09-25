@@ -1,20 +1,18 @@
 import ChainLogo from '@/components/icons/ChainLogo'
 import { Button } from '@/components/ui/button'
-import Copy from '@/components/ui/copy'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { useIsLargeDesktop, useIsMobile } from '@/hooks/use-media-query'
+import { useIsMobile } from '@/hooks/use-media-query'
 import { chainIdAtom } from '@/state/atoms'
 import { iTokenAddressAtom } from '@/state/dtf/atoms'
 import { shortenAddress } from '@/utils'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { useAtomValue } from 'jotai'
 import { ArrowUpRight, ChevronDown } from 'lucide-react'
-import { Link } from 'react-router-dom'
 import { toast } from 'sonner'
 
 const IndexTokenAddress = () => {

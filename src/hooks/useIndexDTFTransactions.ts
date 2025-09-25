@@ -7,7 +7,7 @@ import {
 import { useQuery } from '@tanstack/react-query'
 import { request } from 'graphql-request'
 import { useAtomValue, useSetAtom } from 'jotai'
-import { Address, formatEther } from 'viem'
+import { formatEther } from 'viem'
 
 type Response = {
   transferEvents: {
@@ -43,7 +43,7 @@ const useIndexDTFTransactions = (dtf: string, chain: number) => {
   const setTransactions = useSetAtom(indexDTFTransactionsAtom)
 
   return useQuery({
-    queryKey: ['transactions', dtf, chain, price],
+    queryKey: ['transfers', dtf, chain, price],
     queryFn: async () => {
       const data = await request<Response>(
         INDEX_DTF_SUBGRAPH_URL[chain],

@@ -58,14 +58,7 @@ const MintBox = () => {
   return (
     <div className="rounded-3xl bg-card p-2">
       <TokenInfo />
-      <div
-        className="flex flex-col gap-2"
-        onClick={(e) => {
-          if (!(e.target instanceof HTMLButtonElement)) {
-            e.preventDefault()
-          }
-        }}
-      >
+      <div className="flex flex-col gap-2">
         <Button
           className="rounded-xl h-12"
           onClick={() => {

@@ -5,14 +5,7 @@ const IndexCTAsOverviewMobile = () => {
   const { open, setTab } = useZapperModal()
   return (
     <div className="block xl:hidden w-full mt-0 xl:mt-3">
-      <div
-        className="flex gap-2"
-        onClick={(e) => {
-          if (!(e.target instanceof HTMLButtonElement)) {
-            e.preventDefault()
-          }
-        }}
-      >
+      <div className="flex gap-2">
         <Button
           className="rounded-3xl h-8 sm:h-12 w-full"
           variant="outline"
