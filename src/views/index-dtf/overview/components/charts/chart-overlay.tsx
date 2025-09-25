@@ -47,7 +47,11 @@ const calculatePercentageChange = (
   )
 }
 
-const ChartOverlay = ({ timeseries }: { timeseries: any }) => {
+const ChartOverlay = ({
+  timeseries,
+}: {
+  timeseries: IndexDTFPerformance['timeseries']
+}) => {
   const dataType = useAtomValue(dataTypeAtom)
   const range = useAtomValue(timeRangeAtom)
   const dtf = useAtomValue(indexDTFAtom)

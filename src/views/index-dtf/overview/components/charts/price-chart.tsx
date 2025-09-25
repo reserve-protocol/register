@@ -11,7 +11,7 @@ import { formatCurrency, formatToSignificantDigits } from '@/utils'
 import dayjs from 'dayjs'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useMemo } from 'react'
-import { Area, AreaChart, Tooltip, XAxis, YAxis } from 'recharts'
+import { Area, AreaChart, Tooltip, TooltipProps, XAxis, YAxis } from 'recharts'
 import { Card } from 'theme-ui'
 import useIndexDTFPriceHistory from '../../hooks/use-dtf-price-history'
 import IndexCTAsOverviewMobile from '../index-ctas-overview-mobile'
@@ -43,7 +43,15 @@ const historicalConfigs: Record<
   all: { to: currentHour, from: 0, interval: '1d' },
 }
 
-function CustomTooltip({ payload, active, dataType }: any) {
+function CustomTooltip({
+  payload,
+  active,
+  dataType,
+}: {
+  payload?: TooltipProps<number, string>['payload']
+  active?: boolean
+  dataType: DataType
+}) {
   if (active && payload) {
     const subtitle = dayjs
       .unix(+payload[0]?.payload?.timestamp)
