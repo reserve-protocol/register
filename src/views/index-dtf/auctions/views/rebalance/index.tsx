@@ -1,5 +1,6 @@
 import { useAtomValue } from 'jotai'
-import { AuctionRound } from '@reserve-protocol/dtf-rebalance-lib'
+import { showManageWeightsViewAtom } from './atoms'
+import ManageWeightsView from './components/manage-weights/manage-weights-view'
 import RebalanceAction from './components/rebalance-action'
 import RebalanceAuctions from './components/rebalance-auctions'
 import RebalanceCompleted from './components/rebalance-completed'
@@ -7,34 +8,14 @@ import RebalanceDebug from './components/rebalance-debug'
 import RebalanceHeader from './components/rebalance-header'
 import RebalanceOverview from './components/rebalance-overview'
 import RebalanceProgress from './components/rebalance-progress'
-import ManageWeightsView from './components/manage-weights/manage-weights-view'
+import useIsRebalanceCompleted from './hooks/use-is-rebalance-completed'
 import Updater from './updater'
-import { isCompletedAtom } from '../../atoms'
-import {
-  activeAuctionAtom,
-  rebalanceMetricsAtom,
-  showManageWeightsViewAtom,
-} from './atoms'
-import { devModeAtom } from '@/state/atoms'
 
 const RebalanceContent = () => {
-  const isCompleted = useAtomValue(isCompletedAtom)
   const showManageWeights = useAtomValue(showManageWeightsViewAtom)
-  const metrics = useAtomValue(rebalanceMetricsAtom)
-  const activeAuction = useAtomValue(activeAuctionAtom)
-  const isDebug = useAtomValue(devModeAtom)
+  const isCompleted = useIsRebalanceCompleted()
 
-  // Check if rebalance is successfully completed (FINAL round with < $1 auction size)
-  const isSuccessfullyCompleted =
-    metrics?.round === AuctionRound.FINAL && (metrics?.auctionSize ?? 0) < 1
-
-  if (
-    !isDebug &&
-    !activeAuction &&
-    (isCompleted ||
-      (metrics?.relativeProgression ?? 0) > 99.7 ||
-      isSuccessfullyCompleted)
-  ) {
+  if (isCompleted) {
     return <RebalanceCompleted />
   }
 

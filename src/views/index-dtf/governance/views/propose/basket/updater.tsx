@@ -27,8 +27,10 @@ import {
   isDeferAvailableAtom,
   tradeVolatilityAtom,
   dtfBalancesAtom,
+  tokenPriceVolatilityAtom,
 } from './atoms'
 import { PermissionOptionId } from './components/proposal-rebalance-launch-settings'
+import useAssetPriceVolatility from '@/hooks/use-asset-price-volatility'
 
 const PRICES_BASE_URL = `${RESERVE_API}current/prices?tokens=`
 
@@ -170,7 +172,8 @@ const useInitialBasket = ():
           token: asset,
           currentShares: shares[asset.address.toLowerCase()] ?? '0',
           currentUnits: formatUnits(
-            (balances[asset.address.toLowerCase()] ?? 0n) * 10n ** 18n / totalSupply,
+            ((balances[asset.address.toLowerCase()] ?? 0n) * 10n ** 18n) /
+              totalSupply,
             asset.decimals
           ),
         }
@@ -230,6 +233,25 @@ const InitialBasketUpdater = () => {
   return null
 }
 
+const currentAssetsAtom = atom((get) => {
+  const basket = get(proposedIndexBasketAtom)
+  return Object.values(basket || {}).map((token) =>
+    token.token.address.toLowerCase()
+  )
+})
+
+const TokenPriceVolatilityUpdater = () => {
+  const assets = useAtomValue(currentAssetsAtom)
+  const volatility = useAssetPriceVolatility(assets)
+  const setTokenPriceVolatility = useSetAtom(tokenPriceVolatilityAtom)
+
+  useEffect(() => {
+    setTokenPriceVolatility(volatility || {})
+  }, [volatility])
+
+  return null
+}
+
 const AtomStateUpdater = () => {
   const setStep = useSetAtom(stepAtom)
   const setProposedBasket = useSetAtom(proposedIndexBasketAtom)
@@ -279,6 +301,7 @@ const Updater = () => {
       <AtomStateUpdater />
       <BasketPriceUpdater />
       <InitialBasketUpdater />
+      <TokenPriceVolatilityUpdater />
     </>
   )
 }
