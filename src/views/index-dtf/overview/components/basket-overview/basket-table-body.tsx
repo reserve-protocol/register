@@ -1,5 +1,5 @@
 import { TableBody } from '@/components/ui/table'
-import { Token } from '@/types'
+import { Token, TimeRange } from '@/types'
 import { BasketSkeleton } from './basket-skeleton'
 import { ExposureTableRows } from './exposure-table-rows'
 import { CollateralTableRows } from './collateral-table-rows'
@@ -13,7 +13,7 @@ interface BasketTableBodyProps {
   basketPerformanceChanges: Record<string, number | null>
   performanceLoading: boolean
   newlyAddedAssets: Record<string, boolean>
-  timeRange: '1d' | '1w' | '1m'
+  timeRange: TimeRange
   marketCaps: Record<string, number> | undefined
   chainId: number
   viewAll: boolean

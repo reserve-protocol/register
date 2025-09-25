@@ -1,7 +1,7 @@
 import TokenLogo from '@/components/token-logo'
 import { Button } from '@/components/ui/button'
 import { TableCell, TableRow } from '@/components/ui/table'
-import { Token } from '@/types'
+import { Token, TimeRange } from '@/types'
 import { getTokenName } from '@/utils'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { ArrowUpRight, Copy } from 'lucide-react'
@@ -15,7 +15,7 @@ interface CollateralTableRowsProps {
   basketPerformanceChanges: Record<string, number | null>
   performanceLoading: boolean
   newlyAddedAssets: Record<string, boolean>
-  timeRange: '1d' | '1w' | '1m'
+  timeRange: TimeRange
   chainId: number
   viewAll: boolean
   maxTokens: number

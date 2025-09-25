@@ -7,11 +7,20 @@ import { capitalize } from '@/utils/constants'
 import { ETHERSCAN_NAMES } from '@/utils/getExplorerLink'
 import { performanceTimeRangeAtom } from '@/state/dtf/atoms'
 import { useAtomValue } from 'jotai'
-import { ArrowUp, ArrowDown, ArrowUpDown, PackageOpen, Target } from 'lucide-react'
+import {
+  ArrowUp,
+  ArrowDown,
+  ArrowUpDown,
+  PackageOpen,
+  Target,
+} from 'lucide-react'
 import { useEffect, useState, useMemo } from 'react'
 import { toast } from 'sonner'
 import { BasketTableBody } from './basket-table-body'
 import { useBasketOverviewData } from './use-basket-overview-data'
+import { Card } from '@/components/ui/card'
+import IndexTokenAddress from '../index-token-address'
+import { Separator } from '@/components/ui/separator'
 
 const MAX_TOKENS = 10
 
@@ -84,9 +93,12 @@ const BasketTableHeader = ({
   const timeRange = useAtomValue(performanceTimeRangeAtom)
 
   const periodLabel = {
-    '1d': '1d',
-    '1w': '7d',
+    '24h': '1d',
+    '7d': '7d',
     '1m': '30d',
+    '3m': '90d',
+    '1y': '1y',
+    'all': 'All',
   }
 
   return (
@@ -163,7 +175,7 @@ const IndexBasketOverview = () => {
   // Default sort: highest weight first
   const [sortConfig, setSortConfig] = useState<SortConfig>({
     field: 'weight',
-    direction: 'desc'
+    direction: 'desc',
   })
   const isExposure = activeTab === 'exposure'
   const scrollTo = useScrollTo('basket', 80)
@@ -210,9 +222,10 @@ const IndexBasketOverview = () => {
   }
 
   const handleSort = (field: SortField) => {
-    setSortConfig(prev => ({
+    setSortConfig((prev) => ({
       field,
-      direction: prev.field === field && prev.direction === 'desc' ? 'asc' : 'desc'
+      direction:
+        prev.field === field && prev.direction === 'desc' ? 'asc' : 'desc',
     }))
   }
 
@@ -223,7 +236,7 @@ const IndexBasketOverview = () => {
     direction: SortDirection
   ): number => {
     // Handle null/undefined - always put at the end regardless of sort direction
-    if ((aValue == null) && (bValue == null)) return 0
+    if (aValue == null && bValue == null) return 0
     if (aValue == null) return 1
     if (bValue == null) return -1
 
@@ -306,7 +319,9 @@ const IndexBasketOverview = () => {
         </Table>
       </Tabs>
       {((sortedFiltered && sortedFiltered.length > MAX_TOKENS) ||
-        (sortedExposureGroups && Array.isArray(sortedExposureGroups) && sortedExposureGroups.length > MAX_TOKENS)) && (
+        (sortedExposureGroups &&
+          Array.isArray(sortedExposureGroups) &&
+          sortedExposureGroups.length > MAX_TOKENS)) && (
         <Button
           variant="outline"
           className="w-full rounded-2xl"
@@ -316,7 +331,9 @@ const IndexBasketOverview = () => {
             ? 'View less'
             : `View all ${
                 isExposure
-                  ? (Array.isArray(sortedExposureGroups) ? sortedExposureGroups.length : 0)
+                  ? Array.isArray(sortedExposureGroups)
+                    ? sortedExposureGroups.length
+                    : 0
                   : sortedFiltered?.length || 0
               } ${isExposure ? 'assets' : 'tokens'}`}
         </Button>
@@ -325,4 +342,19 @@ const IndexBasketOverview = () => {
   )
 }
 
-export default IndexBasketOverview
+export default () => (
+  <Card className="py-4 sm:py-6 -mt-[1px]">
+    <div className="px-4 sm:px-6 flex items-center gap-2 justify-between">
+      <h2 className="text-xl sm:text-2xl font-light whitespace-nowrap">
+        Assets in this DTF
+      </h2>
+      <div className="hidden sm:block xl:hidden">
+        <IndexTokenAddress />
+      </div>
+    </div>
+    <Separator className="mt-4 sm:mt-6 mb-3" />
+    <div className="px-4 sm:px-6">
+      <IndexBasketOverview />
+    </div>
+  </Card>
+)

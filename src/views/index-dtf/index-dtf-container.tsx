@@ -33,6 +33,7 @@ import dtfIndexAbi from '@/abis/dtf-index-abi'
 import dtfIndexAbiV4 from '@/abis/dtf-index-abi-v4'
 import useIndexDTFPriceHistory from './overview/hooks/use-dtf-price-history'
 import useIndexDTFTransactions from '@/hooks/useIndexDTFTransactions'
+import { TimeRange } from '@/types'
 
 const useChainWatch = () => {
   const { switchChain } = useSwitchChain()
@@ -146,10 +147,16 @@ const IndexDTFPerformanceUpdater = () => {
   const currentHour = Math.floor(Date.now() / 1_000 / 3_600) * 3_600
 
   // Calculate time range based on selected period
-  const timeRangeConfig = {
-    '1d': { from: currentHour - 86_400, interval: '1h' as const },
-    '1w': { from: currentHour - 604_800, interval: '1h' as const },
-    '1m': { from: currentHour - 2_592_000, interval: '1h' as const },
+  const timeRangeConfig: Record<
+    TimeRange,
+    { to: number; from: number; interval: '1h' | '1d' }
+  > = {
+    '24h': { to: currentHour, from: currentHour - 86_400, interval: '1h' },
+    '7d': { to: currentHour, from: currentHour - 604_800, interval: '1h' },
+    '1m': { to: currentHour, from: currentHour - 2_592_000, interval: '1h' },
+    '3m': { to: currentHour, from: currentHour - 7_776_000, interval: '1d' },
+    '1y': { to: currentHour, from: currentHour - 31_536_000, interval: '1d' },
+    all: { to: currentHour, from: 0, interval: '1d' },
   }
 
   const { data: history } = useIndexDTFPriceHistory({
@@ -242,7 +249,7 @@ const IndexDTFPerformanceUpdater = () => {
 
     if (filtered.length > 0) {
       // Calculate overall DTF change (maintain 7d for backward compatibility)
-      if (timeRange === '1w') {
+      if (timeRange === '7d') {
         const firstPrice = filtered[0].price
         const lastPrice = filtered[filtered.length - 1].price
         const dtfChange =

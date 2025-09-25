@@ -1,17 +1,21 @@
 import { Skeleton } from '@/components/ui/skeleton'
 import Help from '@/components/ui/help'
+import { TimeRange } from '@/types'
 
 interface PerformanceCellProps {
   change: number | null
   isLoading: boolean
   isNewlyAdded: boolean
-  timeRange: '1d' | '1w' | '1m'
+  timeRange: TimeRange
 }
 
 const PERIOD_LABELS = {
-  '1d': '24 hour',
-  '1w': '7 day',
+  '24h': '24 hour',
+  '7d': '7 day',
   '1m': '30 day',
+  '3m': '90 day',
+  '1y': '1 year',
+  'all': 'all time',
 } as const
 
 export const PerformanceCell = ({

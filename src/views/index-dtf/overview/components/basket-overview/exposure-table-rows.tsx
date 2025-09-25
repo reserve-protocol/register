@@ -1,6 +1,7 @@
 import TokenLogo from '@/components/token-logo'
 import { TableCell, TableRow } from '@/components/ui/table'
 import { formatMarketCap } from '@/hooks/use-native-token-market-caps'
+import { TimeRange } from '@/types'
 import { PerformanceCell } from './performance-cell'
 
 export interface ExposureGroup {
@@ -24,7 +25,7 @@ export interface ExposureGroup {
 interface ExposureTableRowsProps {
   exposureGroups: Map<string, ExposureGroup> | Array<[string, ExposureGroup]>
   performanceLoading: boolean
-  timeRange: '1d' | '1w' | '1m'
+  timeRange: TimeRange
   marketCaps: Record<string, number> | undefined
   viewAll: boolean
   maxTokens: number
