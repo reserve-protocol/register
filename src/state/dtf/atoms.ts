@@ -67,6 +67,18 @@ export interface IndexDTFBrand {
   }
 }
 
+export type Transaction = {
+  id: string
+  hash: string
+  amount: number
+  amountUSD: number
+  timestamp: number
+  chain: number
+  to?: Address
+  from?: Address
+  type: 'Mint' | 'Redeem' | 'Transfer'
+}
+
 export const iTokenAddressAtom = atom<Address | undefined>(undefined)
 
 export const iTokenBasketAtom = atom<ITokenBasket | undefined>(undefined)
@@ -92,11 +104,15 @@ export const indexDTFBasketSharesAtom = atom<Record<string, string>>({})
 
 export const indexDTFAtom = atom<IndexDTF | undefined>(undefined)
 export const indexDTF7dChangeAtom = atom<number | undefined>(undefined)
-export const indexDTFBasketPerformanceChangeAtom = atom<Record<string, number | null>>({})
+export const indexDTFBasketPerformanceChangeAtom = atom<
+  Record<string, number | null>
+>({})
 export const performanceTimeRangeAtom = atom<'1d' | '1w' | '1m'>('1w')
 export const indexDTFPerformanceLoadingAtom = atom<boolean>(false)
 export const indexDTFNewlyAddedAssetsAtom = atom<Record<string, boolean>>({})
+export const indexDTFMarketCapAtom = atom<number | undefined>(undefined)
 export const indexDTFBrandAtom = atom<IndexDTFBrand | undefined>(undefined)
+export const indexDTFTransactionsAtom = atom<Transaction[]>([])
 
 export const indexDTFFeeAtom = atom<number | undefined>(undefined)
 

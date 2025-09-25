@@ -10,6 +10,7 @@ import { useAtomValue } from 'jotai'
 import { ArrowLeftRight } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import DTFBalance from './dtf-balance'
+import IndexTokenAddress from '../index-token-address'
 
 const TokenInfo = () => {
   const dtf = useAtomValue(indexDTFAtom)
@@ -32,10 +33,13 @@ const TokenInfo = () => {
           src={brand?.dtf?.icon || undefined}
           size="lg"
         />
+        <div className="hidden xl:block">
+          <IndexTokenAddress />
+        </div>
       </div>
       <div className="flex flex-col gap-1">
-        <div className="text-xl font-semibold ">
-          Buy/Sell {dtf?.token.symbol} onchain
+        <div className="text-2xl font-light text-primary">
+          Buy/Sell ${dtf?.token.symbol} onchain
         </div>
         <div className="text-legend text-sm">
           Our Zap-swaps support common assets like ETH, USDC, USDT, and others,
@@ -54,14 +58,7 @@ const MintBox = () => {
   return (
     <div className="rounded-3xl bg-card p-2">
       <TokenInfo />
-      <div
-        className="flex flex-col gap-2"
-        onClick={(e) => {
-          if (!(e.target instanceof HTMLButtonElement)) {
-            e.preventDefault()
-          }
-        }}
-      >
+      <div className="flex flex-col gap-2">
         <Button
           className="rounded-xl h-12"
           onClick={() => {

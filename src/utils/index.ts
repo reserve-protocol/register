@@ -214,6 +214,23 @@ export function formatTokenAmount(value: number) {
       })
 }
 
+export function formatToSignificantDigits(
+  value: number,
+  digits = 4,
+  options: Intl.NumberFormatOptions = {}
+): string {
+  return value >= 1
+    ? Intl.NumberFormat('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+        ...options,
+      }).format(value)
+    : Intl.NumberFormat('en-US', {
+        maximumSignificantDigits: digits,
+        ...options,
+      }).format(value)
+}
+
 export const formatPercentage = (value: number, decimals = 2): string =>
   (value / 100).toLocaleString('en-US', {
     style: 'percent',
@@ -322,6 +339,28 @@ export const formatDate = (timestamp?: string | number) => {
       ? 'ddd MMM DD, hh:mm a'
       : 'ddd MMM DD, YYYY, hh:mm a'
   return date.format(formatString)
+}
+
+export const humanizeDateToNow = (timestamp?: string | number) => {
+  if (timestamp === undefined || timestamp === null) return ''
+
+  let ts = Number(timestamp)
+  if (Number.isNaN(ts)) return ''
+
+  if (ts < 1e12) ts = ts * 1000
+
+  const date = dayjs(ts)
+  const diffMs = Math.abs(dayjs().diff(date))
+
+  if (diffMs < 45 * 1000) return 'just now'
+
+  const humanized = humanizeDuration(diffMs, {
+    largest: 1,
+    round: true,
+    language: 'en',
+  })
+
+  return `${humanized} ago`
 }
 
 export const humanizeMinutes = (minutes: number) => {

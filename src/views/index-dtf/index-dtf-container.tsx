@@ -32,6 +32,7 @@ import FeedbackButton from '@/components/feedback-button'
 import dtfIndexAbi from '@/abis/dtf-index-abi'
 import dtfIndexAbiV4 from '@/abis/dtf-index-abi-v4'
 import useIndexDTFPriceHistory from './overview/hooks/use-dtf-price-history'
+import useIndexDTFTransactions from '@/hooks/useIndexDTFTransactions'
 
 const useChainWatch = () => {
   const { switchChain } = useSwitchChain()
@@ -134,7 +135,9 @@ const IndexDTFPerformanceUpdater = () => {
   const basket = useAtomValue(indexDTFBasketAtom)
   const basketShares = useAtomValue(indexDTFBasketSharesAtom)
   const set7dChange = useSetAtom(indexDTF7dChangeAtom)
-  const setBasketPerformanceChange = useSetAtom(indexDTFBasketPerformanceChangeAtom)
+  const setBasketPerformanceChange = useSetAtom(
+    indexDTFBasketPerformanceChangeAtom
+  )
   const setPerformanceLoading = useSetAtom(indexDTFPerformanceLoadingAtom)
   const setNewlyAddedAssets = useSetAtom(indexDTFNewlyAddedAssetsAtom)
   const timeRange = useAtomValue(performanceTimeRangeAtom)
@@ -160,20 +163,29 @@ const IndexDTFPerformanceUpdater = () => {
   const newlyAddedTokens = useMemo(() => {
     if (!history?.timeseries?.length || !basket) return []
 
-    const firstWithBasket = history.timeseries.find(entry => entry.basket?.length > 0)
+    const firstWithBasket = history.timeseries.find(
+      (entry) => entry.basket?.length > 0
+    )
     if (!firstWithBasket?.basket) return []
 
-    return basket.filter(token => {
-      const existedAtStart = firstWithBasket.basket.some(
-        (b: any) => b.address.toLowerCase() === token.address.toLowerCase()
-      )
-      return !existedAtStart
-    }).map(t => t.address)
+    return basket
+      .filter((token) => {
+        const existedAtStart = firstWithBasket.basket.some(
+          (b: any) => b.address.toLowerCase() === token.address.toLowerCase()
+        )
+        return !existedAtStart
+      })
+      .map((t) => t.address)
   }, [history, basket])
 
   // Fetch snapshot prices for newly added assets
   const { data: snapshotPrices } = useQuery({
-    queryKey: ['asset-snapshot-prices', newlyAddedTokens, chainId, timeRangeConfig[timeRange].from],
+    queryKey: [
+      'asset-snapshot-prices',
+      newlyAddedTokens,
+      chainId,
+      timeRangeConfig[timeRange].from,
+    ],
     queryFn: async () => {
       if (!newlyAddedTokens.length) return {}
 
@@ -190,7 +202,8 @@ const IndexDTFPerformanceUpdater = () => {
 
       for (const priceResult of responses) {
         if (priceResult.timeseries?.length > 0) {
-          result[priceResult.address.toLowerCase()] = priceResult.timeseries[0].price
+          result[priceResult.address.toLowerCase()] =
+            priceResult.timeseries[0].price
         }
       }
 
@@ -215,7 +228,7 @@ const IndexDTFPerformanceUpdater = () => {
     if (!history?.timeseries?.length) {
       const emptyChanges: Record<string, number | null> = {}
       const emptyNewlyAdded: Record<string, boolean> = {}
-      basket.forEach(token => {
+      basket.forEach((token) => {
         emptyChanges[token.address] = null
         emptyNewlyAdded[token.address] = false
       })
@@ -232,26 +245,35 @@ const IndexDTFPerformanceUpdater = () => {
       if (timeRange === '1w') {
         const firstPrice = filtered[0].price
         const lastPrice = filtered[filtered.length - 1].price
-        const dtfChange = firstPrice === 0 ? undefined : (lastPrice - firstPrice) / firstPrice
+        const dtfChange =
+          firstPrice === 0 ? undefined : (lastPrice - firstPrice) / firstPrice
         set7dChange(dtfChange)
       }
 
       // Calculate individual collateral changes
       // Find first and last entries with basket data
-      let firstWithBasket = filtered.find(entry => entry.basket && entry.basket.length > 0)
-      let lastWithBasket = [...filtered].reverse().find(entry => entry.basket && entry.basket.length > 0)
+      let firstWithBasket = filtered.find(
+        (entry) => entry.basket && entry.basket.length > 0
+      )
+      let lastWithBasket = [...filtered]
+        .reverse()
+        .find((entry) => entry.basket && entry.basket.length > 0)
 
       // If no basket data at all, try to get it from the full history
       if (!firstWithBasket || !lastWithBasket) {
-        firstWithBasket = history.timeseries.find(entry => entry.basket && entry.basket.length > 0)
-        lastWithBasket = [...history.timeseries].reverse().find(entry => entry.basket && entry.basket.length > 0)
+        firstWithBasket = history.timeseries.find(
+          (entry) => entry.basket && entry.basket.length > 0
+        )
+        lastWithBasket = [...history.timeseries]
+          .reverse()
+          .find((entry) => entry.basket && entry.basket.length > 0)
       }
 
       const basketPerformanceChanges: Record<string, number | null> = {}
       const newlyAdded: Record<string, boolean> = {}
 
       if (firstWithBasket?.basket && lastWithBasket?.basket) {
-        basket.forEach(token => {
+        basket.forEach((token) => {
           const firstEntry = firstWithBasket.basket.find(
             (b: any) => b.address.toLowerCase() === token.address.toLowerCase()
           )
@@ -261,13 +283,20 @@ const IndexDTFPerformanceUpdater = () => {
 
           if (firstEntry && lastEntry && firstEntry.price > 0) {
             // Token existed at start of period
-            const change = (lastEntry.price - firstEntry.price) / firstEntry.price
+            const change =
+              (lastEntry.price - firstEntry.price) / firstEntry.price
             basketPerformanceChanges[token.address] = change
             newlyAdded[token.address] = false
-          } else if (lastEntry && snapshotPrices?.[token.address.toLowerCase()]) {
+          } else if (
+            lastEntry &&
+            snapshotPrices?.[token.address.toLowerCase()]
+          ) {
             // Token was added during period, use snapshot price
             const snapshotPrice = snapshotPrices[token.address.toLowerCase()]
-            const change = snapshotPrice > 0 ? (lastEntry.price - snapshotPrice) / snapshotPrice : 0
+            const change =
+              snapshotPrice > 0
+                ? (lastEntry.price - snapshotPrice) / snapshotPrice
+                : 0
             basketPerformanceChanges[token.address] = change
             newlyAdded[token.address] = true
           } else if (lastEntry) {
@@ -282,7 +311,7 @@ const IndexDTFPerformanceUpdater = () => {
         })
       } else {
         // No basket data available
-        basket.forEach(token => {
+        basket.forEach((token) => {
           basketPerformanceChanges[token.address] = null
           newlyAdded[token.address] = false
         })
@@ -293,7 +322,17 @@ const IndexDTFPerformanceUpdater = () => {
     }
 
     setPerformanceLoading(false)
-  }, [history, basket, snapshotPrices, timeRange, set7dChange, setBasketPerformanceChange, setNewlyAddedAssets, setPerformanceLoading, chainId])
+  }, [
+    history,
+    basket,
+    snapshotPrices,
+    timeRange,
+    set7dChange,
+    setBasketPerformanceChange,
+    setNewlyAddedAssets,
+    setPerformanceLoading,
+    chainId,
+  ])
 
   return null
 }
@@ -325,6 +364,7 @@ const Updater = () => {
   const setRefreshFn = useSetAtom(indexDTFRefreshFnAtom)
   const chainId = NETWORKS[chain ?? '']
   const [key, setKey] = useState(0)
+  useIndexDTFTransactions(currentToken ?? '', chainId)
 
   const { data: version } = useReadContract({
     address: currentToken,
