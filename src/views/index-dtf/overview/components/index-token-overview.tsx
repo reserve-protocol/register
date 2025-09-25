@@ -18,7 +18,6 @@ import { useAtomValue } from 'jotai'
 import { ArrowUpRight, ImagePlus } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useTrackIndexDTFClick } from '../../hooks/useTrackIndexDTFPage'
-import IndexRolesOverview from './index-roles-overview'
 
 const TokenNameSkeleton = () => (
   <div className="flex flex-col gap-4">
@@ -136,7 +135,6 @@ const IndexTokenOverview = () => {
           </>
         )}
       </div>
-      <IndexRolesOverview />
       <ZapBuySellButtons />
     </Card>
   )
