@@ -1,17 +1,31 @@
+import { devModeAtom } from '@/state/atoms'
 import { wagmiConfig } from '@/state/chain'
 import { indexDTFAtom } from '@/state/dtf/atoms'
-import { useZapperModal } from '@reserve-protocol/react-zapper'
-import { useAtomValue } from 'jotai'
+import { RESERVE_API } from '@/utils/constants'
+import { useZapperModal, ZapperProps } from '@reserve-protocol/react-zapper'
+import { atom, useAtomValue } from 'jotai'
 import { Link } from 'react-router-dom'
 import ZapperWrapper from '../components/zapper/zapper-wrapper'
 import useTrackIndexDTFPage, {
   useTrackIndexDTFClick,
 } from '../hooks/useTrackIndexDTFPage'
-import { RESERVE_API } from '@/utils/constants'
+
+const DTF_DISABLED_FOR_ZAP = [] as string[]
+export const indexDTFQuoteSourceAtom = atom<ZapperProps['defaultSource']>(
+  (get) => {
+    const dtf = get(indexDTFAtom)
+    if (dtf?.id && DTF_DISABLED_FOR_ZAP.includes(dtf?.id.toLowerCase())) {
+      return 'odos'
+    }
+    return 'best'
+  }
+)
 
 const IndexDTFIssuance = () => {
   useTrackIndexDTFPage('mint')
   const indexDTF = useAtomValue(indexDTFAtom)
+  const quoteSource = useAtomValue(indexDTFQuoteSourceAtom)
+  const devMode = useAtomValue(devModeAtom)
   const { currentTab } = useZapperModal()
   const { trackClick } = useTrackIndexDTFClick('overview', 'mint')
 
@@ -28,6 +42,8 @@ const IndexDTFIssuance = () => {
               dtfAddress={indexDTF.id}
               mode="inline"
               apiUrl={RESERVE_API}
+              debug={devMode}
+              defaultSource={quoteSource}
             />
           </div>
         </div>

@@ -20,6 +20,7 @@ import {
 import useRebalanceParams from '../hooks/use-rebalance-params'
 import RebalancePriceImpact from './rebalance-price-impact'
 import RebalanceBidsList from './rebalance-bids-list'
+import { Volatility } from '@/types'
 
 const RebalanceSlider = () => {
   const [rebalancePercent, setRebalancePercent] = useAtom(rebalancePercentAtom)
@@ -84,7 +85,7 @@ const ExpectedPriceVolatility = () => {
         value={priceVolatility}
         onValueChange={(value) => {
           if (value) {
-            setPriceVolatility(value)
+            setPriceVolatility(value as Volatility)
           }
         }}
       >
