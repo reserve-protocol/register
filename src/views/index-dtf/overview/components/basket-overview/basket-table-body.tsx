@@ -3,13 +3,17 @@ import { Token } from '@/types'
 import { BasketSkeleton } from './basket-skeleton'
 import { ExposureTableRows } from './exposure-table-rows'
 import { CollateralTableRows } from './collateral-table-rows'
+import type { ExposureGroup } from './exposure-table-rows'
 
 interface BasketTableBodyProps {
   filtered: Token[] | undefined
   isExposure: boolean
-  exposureGroups: Map<string, any> | null
+  exposureGroups: Map<string, ExposureGroup> | null | Array<[string, ExposureGroup]>
   basketShares: Record<string, string>
-  basket7dChanges: Record<string, number | null>
+  basketPerformanceChanges: Record<string, number | null>
+  performanceLoading: boolean
+  newlyAddedAssets: Record<string, boolean>
+  timeRange: '1d' | '1w' | '1m'
   marketCaps: Record<string, number> | undefined
   chainId: number
   viewAll: boolean
@@ -22,7 +26,10 @@ export const BasketTableBody = ({
   isExposure,
   exposureGroups,
   basketShares,
-  basket7dChanges,
+  basketPerformanceChanges,
+  performanceLoading,
+  newlyAddedAssets,
+  timeRange,
   marketCaps,
   chainId,
   viewAll,
@@ -44,6 +51,8 @@ export const BasketTableBody = ({
       <TableBody>
         <ExposureTableRows
           exposureGroups={exposureGroups}
+          performanceLoading={performanceLoading}
+          timeRange={timeRange}
           marketCaps={marketCaps}
           viewAll={viewAll}
           maxTokens={maxTokens}
@@ -58,7 +67,10 @@ export const BasketTableBody = ({
       <CollateralTableRows
         filtered={filtered}
         basketShares={basketShares}
-        basket7dChanges={basket7dChanges}
+        basketPerformanceChanges={basketPerformanceChanges}
+        performanceLoading={performanceLoading}
+        newlyAddedAssets={newlyAddedAssets}
+        timeRange={timeRange}
         chainId={chainId}
         viewAll={viewAll}
         maxTokens={maxTokens}

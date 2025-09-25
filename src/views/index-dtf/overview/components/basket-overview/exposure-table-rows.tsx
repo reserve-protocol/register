@@ -1,9 +1,30 @@
 import TokenLogo from '@/components/token-logo'
 import { TableCell, TableRow } from '@/components/ui/table'
 import { formatMarketCap } from '@/hooks/use-native-token-market-caps'
+import { PerformanceCell } from './performance-cell'
+
+export interface ExposureGroup {
+  native?: {
+    symbol: string
+    name: string
+    logo: string
+    coingeckoId?: string
+  }
+  tokens: Array<{
+    address: string
+    symbol: string
+    name?: string
+    weight: number
+  }>
+  totalWeight: number
+  weightedChange?: number | null
+  hasNewlyAdded?: boolean
+}
 
 interface ExposureTableRowsProps {
-  exposureGroups: Map<string, any>
+  exposureGroups: Map<string, ExposureGroup> | Array<[string, ExposureGroup]>
+  performanceLoading: boolean
+  timeRange: '1d' | '1w' | '1m'
   marketCaps: Record<string, number> | undefined
   viewAll: boolean
   maxTokens: number
@@ -11,14 +32,21 @@ interface ExposureTableRowsProps {
 
 export const ExposureTableRows = ({
   exposureGroups,
+  performanceLoading,
+  timeRange,
   marketCaps,
   viewAll,
   maxTokens,
 }: ExposureTableRowsProps) => {
+  // Convert to array if it's a Map
+  const groupsArray = Array.isArray(exposureGroups)
+    ? exposureGroups
+    : Array.from(exposureGroups.entries())
+
   return (
     <>
-      {Array.from(exposureGroups.entries())
-        .slice(0, viewAll ? exposureGroups.size : maxTokens)
+      {groupsArray
+        .slice(0, viewAll ? groupsArray.length : maxTokens)
         .map(([key, group]) => {
           const native = group.native || {
             symbol: key,
@@ -44,7 +72,7 @@ export const ExposureTableRows = ({
                 </div>
               </TableCell>
               <TableCell className="text-center">
-                {marketCaps?.[group.native?.coingeckoId] ? (
+                {group.native?.coingeckoId && marketCaps?.[group.native.coingeckoId] ? (
                   <span>
                     {formatMarketCap(
                       marketCaps[group.native.coingeckoId]
@@ -55,18 +83,12 @@ export const ExposureTableRows = ({
                 )}
               </TableCell>
               <TableCell className="text-center">
-                {group.weightedChange !== undefined ? (
-                  <span
-                    className={
-                      group.weightedChange < 0 ? 'text-legend' : ''
-                    }
-                  >
-                    {group.weightedChange > 0 ? '+' : ''}
-                    {(group.weightedChange * 100).toFixed(2)}%
-                  </span>
-                ) : (
-                  <span>—</span>
-                )}
+                <PerformanceCell
+                  change={group.weightedChange ?? null}
+                  isLoading={performanceLoading}
+                  isNewlyAdded={group.hasNewlyAdded || false}
+                  timeRange={timeRange}
+                />
               </TableCell>
               <TableCell className="text-right text-primary font-bold">
                 {group.totalWeight.toFixed(2)}%

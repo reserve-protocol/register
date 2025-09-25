@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button'
 import { ChartConfig, ChartContainer } from '@/components/ui/chart'
 import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
-import { indexDTFAtom } from '@/state/dtf/atoms'
+import { indexDTFAtom, performanceTimeRangeAtom } from '@/state/dtf/atoms'
 import { formatCurrency } from '@/utils'
 import dayjs from 'dayjs'
 import { atom, useAtom, useAtomValue } from 'jotai'
@@ -105,7 +105,6 @@ const TITLES = {
 }
 
 const dataTypeAtom = atom<DataType>('price')
-const timeRangeAtom = atom<Range>('1w')
 
 const DataTypeSelector = ({ className }: { className?: string }) => {
   const [dataType, setDataType] = useAtom(dataTypeAtom)
@@ -127,7 +126,7 @@ const DataTypeSelector = ({ className }: { className?: string }) => {
 }
 
 const TimeRangeSelector = ({ className }: { className?: string }) => {
-  const [range, setRange] = useAtom(timeRangeAtom)
+  const [range, setRange] = useAtom(performanceTimeRangeAtom)
 
   return (
     <div className="gap-1 ml-auto sm:ml-0 sm:mr-auto">
@@ -136,7 +135,7 @@ const TimeRangeSelector = ({ className }: { className?: string }) => {
           key={tr.value}
           variant="ghost"
           className={`h-8 px-2 mr-1 sm:px-3 text-xs sm:text-sm text-white/80 rounded-[60px] hover:bg-white hover:text-black ${tr.value === range ? 'bg-white text-black' : ''}`}
-          onClick={() => setRange(tr.value)}
+          onClick={() => setRange(tr.value as '1d' | '1w' | '1m')}
         >
           {tr.label}
         </Button>
@@ -161,7 +160,7 @@ const Selectors = ({ className }: { className?: string }) => {
 
 const PriceChart = () => {
   const dtf = useAtomValue(indexDTFAtom)
-  const range = useAtomValue(timeRangeAtom)
+  const range = useAtomValue(performanceTimeRangeAtom)
   const dataType = useAtomValue(dataTypeAtom)
 
   const showHourlyInterval = now - (dtf?.timestamp || 0) < 30 * 86_400

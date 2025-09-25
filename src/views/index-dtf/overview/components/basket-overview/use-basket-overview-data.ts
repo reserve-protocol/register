@@ -5,7 +5,10 @@ import {
   hasBridgedAssetsAtom,
   indexDTFBasketAtom,
   indexDTFBasketSharesAtom,
-  indexDTFBasket7dChangeAtom,
+  indexDTFBasketPerformanceChangeAtom,
+  performanceTimeRangeAtom,
+  indexDTFPerformanceLoadingAtom,
+  indexDTFNewlyAddedAssetsAtom,
 } from '@/state/dtf/atoms'
 import { ChainId } from '@/utils/chains'
 import { groupByNativeAsset } from '@/utils/token-mappings'
@@ -14,7 +17,10 @@ import { useNativeTokenMarketCaps } from '@/hooks/use-native-token-market-caps'
 export const useBasketOverviewData = (isExposure: boolean) => {
   const basket = useAtomValue(indexDTFBasketAtom)
   const basketShares = useAtomValue(indexDTFBasketSharesAtom)
-  const basket7dChanges = useAtomValue(indexDTFBasket7dChangeAtom)
+  const basketPerformanceChanges = useAtomValue(indexDTFBasketPerformanceChangeAtom)
+  const performanceLoading = useAtomValue(indexDTFPerformanceLoadingAtom)
+  const newlyAddedAssets = useAtomValue(indexDTFNewlyAddedAssetsAtom)
+  const timeRange = useAtomValue(performanceTimeRangeAtom)
   const hasBridgedAssets = useAtomValue(hasBridgedAssetsAtom)
   const chainId = useAtomValue(chainIdAtom)
   const isBSC = chainId === ChainId.BSC
@@ -37,22 +43,27 @@ export const useBasketOverviewData = (isExposure: boolean) => {
 
     const groups = groupByNativeAsset(tokenData, chainId)
 
-    // Calculate weighted 7d change for each group
+    // Calculate weighted change for each group
     const groupsWithChange = new Map()
     groups.forEach((group) => {
       const weightedChange = group.tokens.reduce((acc, token) => {
-        const change = basket7dChanges[token.address] ?? 0
+        const change = basketPerformanceChanges[token.address] ?? 0
         const weight = token.weight / group.totalWeight
         return acc + change * weight
       }, 0)
+
+      // Check if any token in group is newly added
+      const hasNewlyAdded = group.tokens.some(token => newlyAddedAssets[token.address])
+
       groupsWithChange.set(group.native?.symbol || group.tokens[0].symbol, {
         ...group,
         weightedChange,
+        hasNewlyAdded,
       })
     })
 
     return groupsWithChange
-  }, [filtered, basketShares, chainId, isExposure, basket7dChanges])
+  }, [filtered, basketShares, chainId, isExposure, basketPerformanceChanges, newlyAddedAssets])
 
   // Extract CoinGecko IDs for market cap fetching
   const exposureCoingeckoIds = useMemo(() => {
@@ -72,7 +83,10 @@ export const useBasketOverviewData = (isExposure: boolean) => {
   return {
     basket,
     basketShares,
-    basket7dChanges,
+    basketPerformanceChanges,
+    performanceLoading,
+    newlyAddedAssets,
+    timeRange,
     hasBridgedAssets,
     chainId,
     filtered,

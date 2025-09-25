@@ -7,11 +7,15 @@ import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { ArrowUpRight, Copy } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import BridgeLabel from '../bridge-label'
+import { PerformanceCell } from './performance-cell'
 
 interface CollateralTableRowsProps {
   filtered: Token[]
   basketShares: Record<string, string>
-  basket7dChanges: Record<string, number | null>
+  basketPerformanceChanges: Record<string, number | null>
+  performanceLoading: boolean
+  newlyAddedAssets: Record<string, boolean>
+  timeRange: '1d' | '1w' | '1m'
   chainId: number
   viewAll: boolean
   maxTokens: number
@@ -21,7 +25,10 @@ interface CollateralTableRowsProps {
 export const CollateralTableRows = ({
   filtered,
   basketShares,
-  basket7dChanges,
+  basketPerformanceChanges,
+  performanceLoading,
+  newlyAddedAssets,
+  timeRange,
   chainId,
   viewAll,
   maxTokens,
@@ -55,18 +62,12 @@ export const CollateralTableRows = ({
               {basketShares[token.address]}%
             </TableCell>
             <TableCell className="text-center">
-              {(() => {
-                const change = basket7dChanges[token.address]
-                if (change === null || change === undefined) {
-                  return <span>—</span>
-                }
-                return (
-                  <span className={change < 0 ? 'text-legend' : ''}>
-                    {change > 0 ? '+' : ''}
-                    {(change * 100).toFixed(2)}%
-                  </span>
-                )
-              })()}
+              <PerformanceCell
+                change={basketPerformanceChanges[token.address]}
+                isLoading={performanceLoading}
+                isNewlyAdded={newlyAddedAssets[token.address]}
+                timeRange={timeRange}
+              />
             </TableCell>
             <TableCell className="text-right">
               <div className="flex items-center justify-end gap-2">

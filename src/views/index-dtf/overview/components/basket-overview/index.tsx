@@ -5,13 +5,64 @@ import useScrollTo from '@/hooks/useScrollTo'
 import { cn } from '@/lib/utils'
 import { capitalize } from '@/utils/constants'
 import { ETHERSCAN_NAMES } from '@/utils/getExplorerLink'
-import { PackageOpen, Target } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { performanceTimeRangeAtom } from '@/state/dtf/atoms'
+import { useAtomValue } from 'jotai'
+import { ArrowUp, ArrowDown, ArrowUpDown, PackageOpen, Target } from 'lucide-react'
+import { useEffect, useState, useMemo } from 'react'
 import { toast } from 'sonner'
 import { BasketTableBody } from './basket-table-body'
 import { useBasketOverviewData } from './use-basket-overview-data'
 
 const MAX_TOKENS = 10
+
+type SortField = 'weight' | 'performance'
+type SortDirection = 'asc' | 'desc'
+
+interface SortConfig {
+  field: SortField
+  direction: SortDirection
+}
+
+// Reusable sortable table header component
+const TableHeaderWithSort = ({
+  field,
+  sortConfig,
+  onSort,
+  children,
+  className = '',
+}: {
+  field: SortField
+  sortConfig: SortConfig
+  onSort: (field: SortField) => void
+  children: React.ReactNode
+  className?: string
+}) => {
+  const isActive = sortConfig.field === field
+  const isDesc = isActive && sortConfig.direction === 'desc'
+  const isAsc = isActive && sortConfig.direction === 'asc'
+
+  return (
+    <TableHead className={className}>
+      <button
+        onClick={() => onSort(field)}
+        className={cn(
+          'inline-flex items-center gap-1 hover:text-primary transition-colors cursor-pointer',
+          isActive && 'text-primary',
+          className.includes('text-right') && 'ml-auto'
+        )}
+      >
+        {children}
+        {isDesc ? (
+          <ArrowDown className="h-3 w-3" />
+        ) : isAsc ? (
+          <ArrowUp className="h-3 w-3" />
+        ) : (
+          <ArrowUpDown className="h-3 w-3 opacity-50" />
+        )}
+      </button>
+    </TableHead>
+  )
+}
 
 const BasketTableHeader = ({
   isBSC,
@@ -19,13 +70,25 @@ const BasketTableHeader = ({
   hasBridgedAssets,
   chainId,
   setActiveTab,
+  sortConfig,
+  onSort,
 }: {
   isBSC: boolean
   isExposure: boolean
   hasBridgedAssets: boolean
   chainId: number
   setActiveTab: (tab: 'exposure' | 'collateral') => void
+  sortConfig: SortConfig
+  onSort: (field: SortField) => void
 }) => {
+  const timeRange = useAtomValue(performanceTimeRangeAtom)
+
+  const periodLabel = {
+    '1d': '1d',
+    '1w': '7d',
+    '1m': '30d',
+  }
+
   return (
     <TableHeader>
       <TableRow className="border-none text-legend bg-card sticky top-0 ">
@@ -51,12 +114,37 @@ const BasketTableHeader = ({
             'Token'
           )}
         </TableHead>
-        {!isExposure && <TableHead className="text-center">Weight</TableHead>}
+        {!isExposure && (
+          <TableHeaderWithSort
+            field="weight"
+            sortConfig={sortConfig}
+            onSort={onSort}
+            className="text-center"
+          >
+            Weight
+          </TableHeaderWithSort>
+        )}
         {isExposure && (
           <TableHead className="text-center">Market Cap</TableHead>
         )}
-        <TableHead className="text-center">7d Change</TableHead>
-        {isExposure && <TableHead className="text-right">Weight</TableHead>}
+        <TableHeaderWithSort
+          field="performance"
+          sortConfig={sortConfig}
+          onSort={onSort}
+          className="text-center"
+        >
+          {periodLabel[timeRange]} Change
+        </TableHeaderWithSort>
+        {isExposure && (
+          <TableHeaderWithSort
+            field="weight"
+            sortConfig={sortConfig}
+            onSort={onSort}
+            className="text-right"
+          >
+            Weight
+          </TableHeaderWithSort>
+        )}
         <TableHead className={cn('text-right', isExposure && 'hidden')}>
           {`${hasBridgedAssets ? 'Bridge / ' : ''}${capitalize(
             ETHERSCAN_NAMES[chainId]
@@ -72,6 +160,11 @@ const IndexBasketOverview = () => {
   const [activeTab, setActiveTab] = useState<'exposure' | 'collateral'>(
     'collateral'
   )
+  // Default sort: highest weight first
+  const [sortConfig, setSortConfig] = useState<SortConfig>({
+    field: 'weight',
+    direction: 'desc'
+  })
   const isExposure = activeTab === 'exposure'
   const scrollTo = useScrollTo('basket', 80)
 
@@ -80,7 +173,10 @@ const IndexBasketOverview = () => {
     filtered,
     exposureGroups,
     basketShares,
-    basket7dChanges,
+    basketPerformanceChanges,
+    performanceLoading,
+    newlyAddedAssets,
+    timeRange,
     hasBridgedAssets,
     chainId,
     marketCaps,
@@ -94,6 +190,8 @@ const IndexBasketOverview = () => {
     } else {
       setActiveTab('collateral')
     }
+    // Reset to default sort when switching views
+    setSortConfig({ field: 'weight', direction: 'desc' })
   }, [isBSC])
 
   // Handle scroll to basket on hash change
@@ -111,6 +209,72 @@ const IndexBasketOverview = () => {
     toast.success('Copied to clipboard')
   }
 
+  const handleSort = (field: SortField) => {
+    setSortConfig(prev => ({
+      field,
+      direction: prev.field === field && prev.direction === 'desc' ? 'asc' : 'desc'
+    }))
+  }
+
+  // Helper function for comparing values with null/undefined handling
+  const compareValues = (
+    aValue: number | null | undefined,
+    bValue: number | null | undefined,
+    direction: SortDirection
+  ): number => {
+    // Handle null/undefined - always put at the end regardless of sort direction
+    if ((aValue == null) && (bValue == null)) return 0
+    if (aValue == null) return 1
+    if (bValue == null) return -1
+
+    return direction === 'desc' ? bValue - aValue : aValue - bValue
+  }
+
+  // Sort collateral tokens
+  const sortedFiltered = useMemo(() => {
+    if (!filtered || isExposure) return filtered
+
+    return [...filtered].sort((a, b) => {
+      if (sortConfig.field === 'weight') {
+        const aWeight = parseFloat(basketShares[a.address] || '0')
+        const bWeight = parseFloat(basketShares[b.address] || '0')
+        return compareValues(aWeight, bWeight, sortConfig.direction)
+      } else {
+        // performance
+        return compareValues(
+          basketPerformanceChanges[a.address],
+          basketPerformanceChanges[b.address],
+          sortConfig.direction
+        )
+      }
+    })
+  }, [filtered, isExposure, sortConfig, basketShares, basketPerformanceChanges])
+
+  // Sort exposure groups
+  const sortedExposureGroups = useMemo(() => {
+    if (!exposureGroups || !isExposure) return exposureGroups
+
+    const entries = Array.isArray(exposureGroups)
+      ? exposureGroups
+      : Array.from(exposureGroups.entries())
+    return entries.sort(([, aGroup], [, bGroup]) => {
+      if (sortConfig.field === 'weight') {
+        return compareValues(
+          aGroup.totalWeight || 0,
+          bGroup.totalWeight || 0,
+          sortConfig.direction
+        )
+      } else {
+        // performance
+        return compareValues(
+          aGroup.weightedChange,
+          bGroup.weightedChange,
+          sortConfig.direction
+        )
+      }
+    })
+  }, [exposureGroups, isExposure, sortConfig])
+
   return (
     <div className="relative -mx-4 sm:-mx-5 -mb-4 sm:-mb-5 px-1" id="basket">
       <Tabs defaultValue="exposure">
@@ -121,13 +285,18 @@ const IndexBasketOverview = () => {
             hasBridgedAssets={hasBridgedAssets || false}
             chainId={chainId}
             setActiveTab={setActiveTab}
+            sortConfig={sortConfig}
+            onSort={handleSort}
           />
           <BasketTableBody
-            filtered={filtered}
+            filtered={sortedFiltered}
             isExposure={isExposure}
-            exposureGroups={exposureGroups}
+            exposureGroups={sortedExposureGroups}
             basketShares={basketShares}
-            basket7dChanges={basket7dChanges}
+            basketPerformanceChanges={basketPerformanceChanges}
+            performanceLoading={performanceLoading}
+            newlyAddedAssets={newlyAddedAssets}
+            timeRange={timeRange}
             marketCaps={marketCaps}
             chainId={chainId}
             viewAll={viewAll}
@@ -136,13 +305,20 @@ const IndexBasketOverview = () => {
           />
         </Table>
       </Tabs>
-      {filtered && filtered.length > MAX_TOKENS && (
+      {((sortedFiltered && sortedFiltered.length > MAX_TOKENS) ||
+        (sortedExposureGroups && Array.isArray(sortedExposureGroups) && sortedExposureGroups.length > MAX_TOKENS)) && (
         <Button
           variant="outline"
           className="w-full rounded-2xl"
           onClick={() => setViewAll(!viewAll)}
         >
-          {viewAll ? 'View less' : `View all ${filtered.length} assets`}
+          {viewAll
+            ? 'View less'
+            : `View all ${
+                isExposure
+                  ? (Array.isArray(sortedExposureGroups) ? sortedExposureGroups.length : 0)
+                  : sortedFiltered?.length || 0
+              } ${isExposure ? 'assets' : 'tokens'}`}
         </Button>
       )}
     </div>

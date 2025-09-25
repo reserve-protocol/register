@@ -92,7 +92,10 @@ export const indexDTFBasketSharesAtom = atom<Record<string, string>>({})
 
 export const indexDTFAtom = atom<IndexDTF | undefined>(undefined)
 export const indexDTF7dChangeAtom = atom<number | undefined>(undefined)
-export const indexDTFBasket7dChangeAtom = atom<Record<string, number | null>>({})
+export const indexDTFBasketPerformanceChangeAtom = atom<Record<string, number | null>>({})
+export const performanceTimeRangeAtom = atom<'1d' | '1w' | '1m'>('1w')
+export const indexDTFPerformanceLoadingAtom = atom<boolean>(false)
+export const indexDTFNewlyAddedAssetsAtom = atom<Record<string, boolean>>({})
 export const indexDTFBrandAtom = atom<IndexDTFBrand | undefined>(undefined)
 
 export const indexDTFFeeAtom = atom<number | undefined>(undefined)
