@@ -14,9 +14,10 @@ import { useEffect, useMemo } from 'react'
 import { Area, AreaChart, Tooltip, XAxis, YAxis } from 'recharts'
 import { Card } from 'theme-ui'
 import useIndexDTFPriceHistory from '../../hooks/use-dtf-price-history'
-import ChartOverlay from './chart-overlay'
 import IndexCTAsOverviewMobile from '../index-ctas-overview-mobile'
 import IndexTokenAddress from '../index-token-address'
+import ChartOverlay from './chart-overlay'
+import { Range, timeRangeAtom } from './time-range-selector'
 
 const chartConfig = {
   desktop: {
@@ -25,7 +26,6 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
-type Range = '24h' | '7d' | '1m' | '3m' | '1y' | 'all'
 export type DataType = 'price' | 'marketCap' | 'totalSupply'
 
 const now = Math.floor(Date.now() / 1_000)
@@ -64,7 +64,6 @@ function CustomTooltip({ payload, active, dataType }: any) {
 }
 
 export const dataTypeAtom = atom<DataType>('price')
-export const timeRangeAtom = atom<Range>('7d')
 
 // TODO: Storing 7day change here, probably not the best place
 const PriceChart = () => {

@@ -1,9 +1,12 @@
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { indexDTFAtom } from '@/state/dtf/atoms'
-import { useAtom, useAtomValue } from 'jotai'
+import { atom, useAtom, useAtomValue } from 'jotai'
 import { useEffect, useMemo } from 'react'
-import { timeRangeAtom } from './price-chart'
+
+export type Range = '24h' | '7d' | '1m' | '3m' | '1y' | 'all'
+
+export const timeRangeAtom = atom<Range>('7d')
 
 const ALL_TIME_RANGES = [
   { label: '24H', value: '24h', minAge: 0 },
@@ -54,7 +57,7 @@ const TimeRangeSelector = () => {
           key={tr.value}
           variant="ghost"
           className={`h-6 px-2 mr-1 sm:px-2 text-xs sm:text-sm text-white/80 rounded-[60px] hover:bg-white hover:text-black ${tr.value === range ? 'bg-white text-black' : ''}`}
-          onClick={() => setRange(tr.value as any)}
+          onClick={() => setRange(tr.value as Range)}
         >
           {tr.label}
         </Button>
