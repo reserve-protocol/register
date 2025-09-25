@@ -1,6 +1,8 @@
 import TokenLogo from '@/components/token-logo'
 import { Box } from '@/components/ui/box'
 import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
+import { Separator } from '@/components/ui/separator'
 import { Skeleton } from '@/components/ui/skeleton'
 import {
   Table,
@@ -10,6 +12,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import useScrollTo from '@/hooks/useScrollTo'
 import { cn } from '@/lib/utils'
 import { chainIdAtom } from '@/state/atoms'
 import {
@@ -29,7 +32,7 @@ import { ArrowUpRight } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import BridgeLabel from './bridge-label'
-import useScrollTo from '@/hooks/useScrollTo'
+import IndexTokenAddress from './index-token-address'
 
 const MAX_TOKENS = 10
 
@@ -57,7 +60,7 @@ const BasketSkeleton = () =>
 
 // TODO: had an scrollarea but it looks kind of odd?
 // TODO: above will be a problem for... 50-100 token baskets.. solve in the future!
-const IndexBasketOverview = ({ className }: { className?: string }) => {
+const IndexBasketOverviewContent = ({ className }: { className?: string }) => {
   const basket = useAtomValue(indexDTFBasketAtom)
   const [viewAll, setViewAll] = useState(false)
   const basketShares = useAtomValue(indexDTFBasketSharesAtom)
@@ -159,7 +162,7 @@ const IndexBasketOverview = ({ className }: { className?: string }) => {
       {filtered && filtered.length > MAX_TOKENS && (
         <Button
           variant="outline"
-          className="w-full rounded-2xl"
+          className="w-full rounded-2xl mb-1"
           onClick={() => setViewAll(!viewAll)}
         >
           {viewAll ? 'View less' : `View all ${filtered.length} assets`}
@@ -168,5 +171,22 @@ const IndexBasketOverview = ({ className }: { className?: string }) => {
     </div>
   )
 }
+
+const IndexBasketOverview = () => (
+  <Card className="py-4 sm:py-6 -mt-[1px]">
+    <div className="px-4 sm:px-6 flex items-center gap-2 justify-between">
+      <h2 className="text-xl sm:text-2xl font-light whitespace-nowrap">
+        Assets in this DTF
+      </h2>
+      <div className="hidden sm:block xl:hidden">
+        <IndexTokenAddress />
+      </div>
+    </div>
+    <Separator className="mt-4 sm:mt-6 mb-3" />
+    <div className="px-4 sm:px-6">
+      <IndexBasketOverviewContent />
+    </div>
+  </Card>
+)
 
 export default IndexBasketOverview
