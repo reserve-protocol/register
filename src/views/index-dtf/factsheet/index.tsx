@@ -54,7 +54,7 @@ const IndexDTFFactsheet = () => {
   })
 
   return (
-    <div className="container mx-auto px-4 py-6 max-w-7xl">
+    <div className="container mx-auto px-4 py-6 max-w-full">
       <Header />
 
       <div className="flex flex-col gap-1 bg-secondary rounded-4xl">

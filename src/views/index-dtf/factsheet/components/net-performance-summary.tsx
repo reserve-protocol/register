@@ -143,20 +143,20 @@ const NetPerformanceSummary = ({ data }: NetPerformanceSummaryProps) => {
       </div>
 
       {/* Desktop view - table format */}
-      <div className="hidden md:block overflow-x-auto">
-        <table className="w-full min-w-[800px] border-t [&_th]:h-12 [&_td]:h-12">
+      <div className="hidden md:block w-full max-w-full overflow-x-auto">
+        <table className="w-full border-t [&_th]:h-12 [&_td]:h-12">
           <thead>
             <tr className="border-b">
-              <th className="text-left py-2 px-2 font-medium text-xs"></th>
+              <th className="py-6 px-6 text-xs text-right"></th>
               {monthColumns.map((month) => (
                 <th
                   key={month}
-                  className="text-center py-2 px-1 font-medium text-xs border-l"
+                  className="py-6 px-6 text-xs text-right font-light border-l"
                 >
                   {month}
                 </th>
               ))}
-              <th className="text-center py-2 px-2 font-medium text-xs border-l">
+              <th className="py-6 px-6 text-xs text-right font-light border-l">
                 FY/YTD
               </th>
             </tr>
@@ -167,9 +167,7 @@ const NetPerformanceSummary = ({ data }: NetPerformanceSummaryProps) => {
                 key={yearData.year}
                 className="border-b last:border-b-0 hover:bg-muted/30"
               >
-                <td className="py-2 px-2 font-medium text-sm">
-                  {yearData.year}
-                </td>
+                <td className="py-6 px-6 text-sm text-left">{yearData.year}</td>
                 {monthKeys.map((monthKey) => {
                   const monthData = yearData[monthKey]
                   const value = monthData?.value
@@ -177,7 +175,7 @@ const NetPerformanceSummary = ({ data }: NetPerformanceSummaryProps) => {
                   return (
                     <td
                       key={monthKey}
-                      className="text-center py-2 px-1 text-xs relative border-l"
+                      className="py-6 px-6 text-xs text-right font-light relative border-l"
                     >
                       {value !== null && (
                         <>
@@ -189,13 +187,13 @@ const NetPerformanceSummary = ({ data }: NetPerformanceSummaryProps) => {
                             {formatPerformanceValue(value)}
                           </span>
                           {monthData.isBest && (
-                            <div className="text-[10px] text-green-600">
+                            <div className="text-[10px] text-green-600 -mt-1">
                               <span>best</span>
                               <ArrowUpIcon className="h-2 w-2 inline ml-0.5" />
                             </div>
                           )}
                           {monthData.isWorst && (
-                            <div className="text-[10px] text-red-600">
+                            <div className="text-[10px] text-red-600 -mt-1">
                               <span>worst</span>
                               <ArrowDownIcon className="h-2 w-2 inline ml-0.5" />
                             </div>
@@ -203,12 +201,12 @@ const NetPerformanceSummary = ({ data }: NetPerformanceSummaryProps) => {
                         </>
                       )}
                       {value === null && (
-                        <span className="text-muted-foreground">-</span>
+                        <span className="text-muted-foreground">N/A</span>
                       )}
                     </td>
                   )
                 })}
-                <td className="text-center py-2 px-2 text-xs font-medium border-l">
+                <td className="py-6 px-6 text-xs text-right font-light border-l">
                   {yearData.yearToDate !== null
                     ? formatPerformanceValue(yearData.yearToDate)
                     : '-'}
