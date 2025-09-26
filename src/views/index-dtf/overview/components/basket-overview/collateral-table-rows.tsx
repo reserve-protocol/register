@@ -6,7 +6,7 @@ import { getTokenName } from '@/utils'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { ArrowUpRight, Copy } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import BridgeLabel from '../bridge-label'
+import BridgeLabel from './bridge-label'
 import { PerformanceCell } from './performance-cell'
 
 interface CollateralTableRowsProps {
@@ -41,7 +41,7 @@ export const CollateralTableRows = ({
         .map((token) => (
           <TableRow key={token.symbol} className="border-none">
             <TableCell>
-              <div className="flex items-center font-semibold gap-2 break-words">
+              <div className="flex items-center font-semibold gap-3 break-words">
                 <TokenLogo
                   size="lg"
                   symbol={token.symbol}
@@ -71,7 +71,11 @@ export const CollateralTableRows = ({
             </TableCell>
             <TableCell className="text-right">
               <div className="flex items-center justify-end gap-2">
-                <BridgeLabel address={token.address} />
+                <BridgeLabel
+                  address={token.address}
+                  tokenSymbol={token.symbol}
+                  tokenName={token.name}
+                />
                 <Button
                   variant="muted"
                   size="icon-rounded"
