@@ -53,6 +53,36 @@ interface FactsheetChartProps {
   isLoading?: boolean
 }
 
+export const CustomizedAxisTick = ({
+  x,
+  y,
+  payload,
+  rotateAngle = -90,
+  formatXAxisTick,
+}: {
+  x?: number
+  y?: number
+  payload?: any
+  rotateAngle?: number
+  formatXAxisTick: (value: number) => string
+}) => {
+  return (
+    <g transform={`translate(${x},${y})`}>
+      <text
+        x={0}
+        y={0}
+        dy={16}
+        textAnchor="end"
+        fill="#666"
+        transform={`rotate(${rotateAngle})`}
+        style={{ fontSize: 11, opacity: 0.5 }}
+      >
+        {formatXAxisTick(payload.value)}
+      </text>
+    </g>
+  )
+}
+
 const FactsheetChart = ({ data, isLoading }: FactsheetChartProps) => {
   const chartType = useAtomValue(factsheetChartTypeAtom)
 
@@ -95,7 +125,10 @@ const FactsheetChart = ({ data, isLoading }: FactsheetChartProps) => {
             {chartType === 'navGrowth' ? (
               <AreaChart
                 data={chartData}
-                margin={{ left: 50, right: 10, top: 5, bottom: 30 }}
+                margin={{ left: 0, right: 0, top: 0, bottom: 30 }}
+                {...{
+                  overflow: 'visible',
+                }}
               >
                 <defs>
                   <pattern
@@ -111,9 +144,11 @@ const FactsheetChart = ({ data, isLoading }: FactsheetChartProps) => {
                 </defs>
                 <XAxis
                   dataKey="timestamp"
-                  tick={{ fontSize: 11, opacity: 0.5 }}
+                  tick={
+                    <CustomizedAxisTick formatXAxisTick={formatXAxisTick} />
+                  }
                   tickFormatter={formatXAxisTick}
-                  className="[&_.recharts-cartesian-axis-tick_text]:!fill-white/50 dark:[&_.recharts-cartesian-axis-tick_text]:!fill-foreground/50"
+                  className="[&_.recharts-cartesian-axis-tick_text]:!fill-white"
                   axisLine={false}
                   tickLine={false}
                   interval="preserveStartEnd"
@@ -124,7 +159,7 @@ const FactsheetChart = ({ data, isLoading }: FactsheetChartProps) => {
                   orientation="left"
                   tick={{ fontSize: 11, opacity: 0.5 }}
                   tickFormatter={formatYAxisTick}
-                  className="[&_.recharts-cartesian-axis-tick_text]:!fill-white/50 dark:[&_.recharts-cartesian-axis-tick_text]:!fill-foreground/50"
+                  className="[&_.recharts-cartesian-axis-tick_text]:!fill-white"
                   axisLine={false}
                   tickLine={false}
                   domain={['auto', 'auto']}
