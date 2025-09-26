@@ -72,7 +72,7 @@ export const ExposureTableRows = ({
                   </div>
                 </div>
               </TableCell>
-              <TableCell className="text-center">
+              <TableCell className="text-center hidden sm:table-cell">
                 {group.native?.coingeckoId && marketCaps?.[group.native.coingeckoId] ? (
                   <span>
                     {formatMarketCap(

@@ -112,14 +112,16 @@ const BasketTableHeader = ({
                 className="rounded-[60px] px-2 data-[state=active]:text-primary"
                 onClick={() => setActiveTab('exposure')}
               >
-                <Target className="w-4 h-4 mr-1" /> Exposure
+                <Target className="w-4 h-4 mr-1" />{' '}
+                <span className="hidden sm:block">Exposure</span>
               </TabsTrigger>
               <TabsTrigger
                 value="collateral"
                 className="rounded-[60px] px-2 data-[state=active]:text-primary"
                 onClick={() => setActiveTab('collateral')}
               >
-                <PackageOpen className="w-4 h-4 mr-1" /> Collateral
+                <PackageOpen className="w-4 h-4 mr-1" />{' '}
+                <span className="hidden sm:block">Collateral</span>
               </TabsTrigger>
             </TabsList>
           ) : (
@@ -137,7 +139,7 @@ const BasketTableHeader = ({
           </TableHeaderWithSort>
         )}
         {isExposure && (
-          <TableHead className="text-center">Market Cap</TableHead>
+          <TableHead className="text-center hidden sm:table-cell">Market Cap</TableHead>
         )}
         <TableHeaderWithSort
           field="performance"
@@ -287,8 +289,6 @@ const IndexBasketOverview = () => {
       }
     })
   }, [exposureGroups, isExposure, sortConfig])
-
-  console.log('sorted filtered', sortedFiltered)
 
   return (
     <div className="relative -mx-4 sm:-mx-5 -mb-4 sm:-mb-5 px-1" id="basket">
