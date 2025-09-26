@@ -978,11 +978,6 @@ export const BRIDGE_NATIVE_MAP: Record<
       nativeKey: 'ton', // uTON variant
       bridgeId: 'universal',
     },
-    '0x2615a94df961278dcbc41fb0a54fec5f10a693ae': {
-      nativeKey: 'xrp',
-      bridgeId: 'universal',
-      symbol: 'uXRP',
-    },
     '0xfb3cb973b2a9e2e09746393c59e7fb0d5189d290': {
       nativeKey: 'shib', // Could be another variant
       bridgeId: 'universal',
