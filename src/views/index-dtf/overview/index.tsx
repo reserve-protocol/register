@@ -3,7 +3,6 @@ import { useAtomValue } from 'jotai'
 import useTrackIndexDTFPage from '../hooks/useTrackIndexDTFPage'
 import PriceChart from './components/charts/price-chart'
 import IndexAboutOverview from './components/index-about-overview'
-import IndexBasketOverview from './components/index-basket-overview'
 import IndexCreatorNotes from './components/index-creator-notes'
 import IndexDisclousure from './components/index-disclousure'
 import IndexGovernanceOverview from './components/index-governance-overview'
@@ -13,6 +12,7 @@ import { wagmiConfig } from '@/state/chain'
 import { indexDTFQuoteSourceAtom } from '../issuance'
 import { RESERVE_API } from '@/utils/constants'
 import LandingMint from './components/landing-mint'
+import IndexBasketOverview from './components/basket-overview'
 
 const Content = () => {
   const indexDTF = useAtomValue(indexDTFAtom)

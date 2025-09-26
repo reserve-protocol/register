@@ -32,6 +32,7 @@ Register is the official web interface for the Reserve Protocol, enabling users 
 
 - On-chain token portfolios (similar to ETFs)
 - Support up to 100+ tokens on Base, 10+ on Ethereum
+- **IMPORTANT**: Arbitrum is deprecated for Index DTFs. Never consider Arbitrum for any Index DTF changes, mappings, or implementations.
 - Two types:
   - **Native DTFs** (`weightControl = true`): Maintain percentage allocations
   - **Tracking DTFs** (`weightControl = false`): Maintain fixed token units

@@ -6,6 +6,7 @@ import {
   indexDTF7dChangeAtom,
   indexDTFAtom,
   indexDTFMarketCapAtom,
+  performanceTimeRangeAtom,
 } from '@/state/dtf/atoms'
 import { formatCurrency, formatToSignificantDigits } from '@/utils'
 import dayjs from 'dayjs'
@@ -17,7 +18,7 @@ import useIndexDTFPriceHistory from '../../hooks/use-dtf-price-history'
 import IndexCTAsOverviewMobile from '../index-ctas-overview-mobile'
 import IndexTokenAddress from '../index-token-address'
 import ChartOverlay from './chart-overlay'
-import { Range, timeRangeAtom } from './time-range-selector'
+import { Range } from './time-range-selector'
 
 const chartConfig = {
   desktop: {
@@ -76,7 +77,7 @@ export const dataTypeAtom = atom<DataType>('price')
 // TODO: Storing 7day change here, probably not the best place
 const PriceChart = () => {
   const dtf = useAtomValue(indexDTFAtom)
-  const range = useAtomValue(timeRangeAtom)
+  const range = useAtomValue(performanceTimeRangeAtom)
   const dataType = useAtomValue(dataTypeAtom)
   const set7dChange = useSetAtom(indexDTF7dChangeAtom)
   const setMarketCap = useSetAtom(indexDTFMarketCapAtom)

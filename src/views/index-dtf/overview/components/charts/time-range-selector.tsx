@@ -1,12 +1,11 @@
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
-import { indexDTFAtom } from '@/state/dtf/atoms'
-import { atom, useAtom, useAtomValue } from 'jotai'
+import { indexDTFAtom, performanceTimeRangeAtom } from '@/state/dtf/atoms'
+import { TimeRange } from '@/types'
+import { useAtom, useAtomValue } from 'jotai'
 import { useEffect, useMemo } from 'react'
 
-export type Range = '24h' | '7d' | '1m' | '3m' | '1y' | 'all'
-
-export const timeRangeAtom = atom<Range>('7d')
+export type Range = TimeRange
 
 const ALL_TIME_RANGES = [
   { label: '24H', value: '24h', minAge: 0 },
@@ -18,7 +17,7 @@ const ALL_TIME_RANGES = [
 ] as const
 
 const TimeRangeSelector = () => {
-  const [range, setRange] = useAtom(timeRangeAtom)
+  const [range, setRange] = useAtom(performanceTimeRangeAtom)
   const dtf = useAtomValue(indexDTFAtom)
 
   const availableRanges = useMemo(() => {
