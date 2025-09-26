@@ -26,6 +26,7 @@ import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useState, useMemo } from 'react'
 import { Outlet, useNavigate, useParams } from 'react-router-dom'
 import { useReadContract, useSwitchChain } from 'wagmi'
+import { Address } from 'viem'
 import IndexDTFNavigation from './components/navigation'
 import GovernanceUpdater from './governance/updater'
 import FeedbackButton from '@/components/feedback-button'
@@ -47,12 +48,10 @@ const useChainWatch = () => {
   }, [chainId])
 }
 
-const IndexDTFMetadataUpdater = () => {
-  const token = useAtomValue(iTokenAddressAtom)
-  const chainId = useAtomValue(chainIdAtom)
+const IndexDTFMetadataUpdater = ({ tokenAddress, chainId }: { tokenAddress?: string; chainId: number }) => {
   const setIndexDTF = useSetAtom(indexDTFAtom)
   const setIndexDTFBrand = useSetAtom(indexDTFBrandAtom)
-  const { data } = useIndexDTF(token, chainId)
+  const { data } = useIndexDTF(tokenAddress, chainId as AvailableChain)
   const { data: brandData } = useQuery({
     queryKey: ['brand', data?.id],
     queryFn: async () => {
@@ -87,20 +86,18 @@ const IndexDTFMetadataUpdater = () => {
   return null
 }
 
-const IndexDTFBasketUpdater = () => {
-  const token = useAtomValue(iTokenAddressAtom)
-  const chainId = useAtomValue(chainIdAtom)
+const IndexDTFBasketUpdater = ({ tokenAddress, chainId }: { tokenAddress?: string; chainId: number }) => {
   const setBasket = useSetAtom(indexDTFBasketAtom)
   const setBasketPrices = useSetAtom(indexDTFBasketPricesAtom)
   const setBasketAmounts = useSetAtom(indexDTFBasketAmountsAtom)
   const setBasketShares = useSetAtom(indexDTFBasketSharesAtom)
   const setRebalanceControl = useSetAtom(indexDTFRebalanceControlAtom)
 
-  const { data } = useIndexBasket(token, chainId)
+  const { data } = useIndexBasket(tokenAddress, chainId)
   // 4.0 onwards
   const { data: rebalanceControl } = useReadContract({
     abi: dtfIndexAbiV4,
-    address: token,
+    address: tokenAddress as Address,
     functionName: 'rebalanceControl',
     chainId,
   })
@@ -131,10 +128,9 @@ const IndexDTFBasketUpdater = () => {
   return null
 }
 
-const IndexDTFPerformanceUpdater = () => {
+const IndexDTFPerformanceUpdater = ({ chainId }: { chainId: number }) => {
   const dtf = useAtomValue(indexDTFAtom)
   const basket = useAtomValue(indexDTFBasketAtom)
-  const basketShares = useAtomValue(indexDTFBasketSharesAtom)
   const set7dChange = useSetAtom(indexDTF7dChangeAtom)
   const setBasketPerformanceChange = useSetAtom(
     indexDTFBasketPerformanceChangeAtom
@@ -142,7 +138,6 @@ const IndexDTFPerformanceUpdater = () => {
   const setPerformanceLoading = useSetAtom(indexDTFPerformanceLoadingAtom)
   const setNewlyAddedAssets = useSetAtom(indexDTFNewlyAddedAssetsAtom)
   const timeRange = useAtomValue(performanceTimeRangeAtom)
-  const chainId = useAtomValue(chainIdAtom)
 
   const currentHour = Math.floor(Date.now() / 1_000 / 3_600) * 3_600
 
@@ -344,7 +339,7 @@ const IndexDTFPerformanceUpdater = () => {
   return null
 }
 
-const resetStateAtom = atom(null, (get, set) => {
+const resetStateAtom = atom(null, (_, set) => {
   set(indexDTFBasketAtom, undefined)
   set(indexDTFBasketPricesAtom, {})
   set(indexDTFBasketAmountsAtom, {})
@@ -426,9 +421,9 @@ const Updater = () => {
 
   return (
     <div key={key}>
-      <IndexDTFMetadataUpdater />
-      <IndexDTFBasketUpdater />
-      <IndexDTFPerformanceUpdater />
+      <IndexDTFMetadataUpdater tokenAddress={currentToken} chainId={chainId} />
+      <IndexDTFBasketUpdater tokenAddress={currentToken} chainId={chainId} />
+      <IndexDTFPerformanceUpdater chainId={chainId} />
       <GovernanceUpdater />
     </div>
   )

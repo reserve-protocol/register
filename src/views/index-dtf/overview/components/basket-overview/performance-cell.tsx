@@ -39,7 +39,7 @@ export const PerformanceCell = ({
 
   return (
     <div className="flex items-center justify-center gap-1">
-      <span className={changeColor}>
+      <span className={`${changeColor} text-sm sm:text-base`}>
         {formattedChange}
       </span>
       {isNewlyAdded && (

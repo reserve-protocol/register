@@ -55,7 +55,7 @@ const TableHeaderWithSort = ({
       <button
         onClick={() => onSort(field)}
         className={cn(
-          'inline-flex items-center gap-1 hover:text-primary transition-colors cursor-pointer',
+          'inline-flex items-center gap-1 hover:text-primary transition-colors cursor-pointer text-xs sm:text-base',
           isActive && 'text-primary',
           className.includes('text-right') && 'ml-auto'
         )}
@@ -104,7 +104,7 @@ const BasketTableHeader = ({
   return (
     <TableHeader>
       <TableRow className="border-none text-legend bg-card sticky top-0 ">
-        <TableHead className="text-left">
+        <TableHead className="text-left text-xs sm:text-base">
           {isBSC ? (
             <TabsList className="h-9 rounded-[70px] p-0.5">
               <TabsTrigger
@@ -133,19 +133,19 @@ const BasketTableHeader = ({
             field="weight"
             sortConfig={sortConfig}
             onSort={onSort}
-            className="text-center"
+            className="text-center px-1 sm:px-3"
           >
             Weight
           </TableHeaderWithSort>
         )}
         {isExposure && (
-          <TableHead className="text-center hidden sm:table-cell">Market Cap</TableHead>
+          <TableHead className="text-center hidden sm:table-cell text-xs sm:text-base">Market Cap</TableHead>
         )}
         <TableHeaderWithSort
           field="performance"
           sortConfig={sortConfig}
           onSort={onSort}
-          className="text-center"
+          className="text-center px-1 sm:px-3"
         >
           {periodLabel[timeRange]} Change
         </TableHeaderWithSort>
@@ -154,12 +154,12 @@ const BasketTableHeader = ({
             field="weight"
             sortConfig={sortConfig}
             onSort={onSort}
-            className="text-right"
+            className="text-right px-1 sm:px-3"
           >
             Weight
           </TableHeaderWithSort>
         )}
-        <TableHead className={cn('text-right', isExposure && 'hidden')}>
+        <TableHead className={cn('text-right text-xs sm:text-base px-1 sm:px-3', isExposure && 'hidden')}>
           {`${hasBridgedAssets ? 'Bridge / ' : ''}${capitalize(
             ETHERSCAN_NAMES[chainId]
           )}`}

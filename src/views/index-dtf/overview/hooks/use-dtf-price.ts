@@ -32,7 +32,7 @@ const useIndexDTFCurrentPrice = ({
       sp.set('address', address?.toLowerCase() ?? '')
 
       const response = await fetch(
-        `${RESERVE_API}current/dtf?${sp.toString()}&chainId=${chainId}`
+        `${RESERVE_API}current/dtf?${sp.toString()}`
       )
 
       if (!response.ok) {

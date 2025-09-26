@@ -57,11 +57,11 @@ export const ExposureTableRows = ({
           return (
             <TableRow key={native.symbol} className="border-none">
               <TableCell>
-                <div className="flex items-center font-semibold gap-3 break-words">
+                <div className="flex items-center font-semibold gap-2 sm:gap-3 break-words">
                   <TokenLogo size="lg" src={native.logo} />
                   <div className="max-w-32 md:max-w-72 lg:max-w-56">
-                    <span className="block">{native.name}</span>
-                    <span className="block text-xs text-legend font-normal max-w-32 md:max-w-72 lg:max-w-52 break-words">
+                    <span className="block text-sm sm:text-base">{native.name}</span>
+                    <span className="block text-[10px] sm:text-xs text-legend font-normal max-w-32 md:max-w-72 lg:max-w-52 break-words">
                       ${native.symbol}
                       {group.tokens.length > 1 && (
                         <span className="ml-1 text-muted-foreground">
@@ -83,7 +83,7 @@ export const ExposureTableRows = ({
                   <span>—</span>
                 )}
               </TableCell>
-              <TableCell className="text-center">
+              <TableCell className="text-center px-1 sm:px-3">
                 <PerformanceCell
                   change={group.weightedChange ?? null}
                   isLoading={performanceLoading}
@@ -91,7 +91,7 @@ export const ExposureTableRows = ({
                   timeRange={timeRange}
                 />
               </TableCell>
-              <TableCell className="text-right text-primary font-bold">
+              <TableCell className="text-right text-primary font-bold text-sm sm:text-base px-1 sm:px-3">
                 {group.totalWeight.toFixed(2)}%
               </TableCell>
             </TableRow>

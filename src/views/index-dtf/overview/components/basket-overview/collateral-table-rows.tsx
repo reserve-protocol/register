@@ -41,7 +41,7 @@ export const CollateralTableRows = ({
         .map((token) => (
           <TableRow key={token.symbol} className="border-none">
             <TableCell>
-              <div className="flex items-center font-semibold gap-3 break-words">
+              <div className="flex items-center font-semibold gap-2 sm:gap-3 break-words">
                 <TokenLogo
                   size="lg"
                   symbol={token.symbol}
@@ -49,19 +49,19 @@ export const CollateralTableRows = ({
                   chain={chainId}
                 />
                 <div className="max-w-32 md:max-w-72 lg:max-w-56">
-                  <span className="block">
+                  <span className="block text-sm sm:text-base">
                     {getTokenName(token.name)}
                   </span>
-                  <span className="block text-xs text-legend font-normal max-w-32 md:max-w-72 lg:max-w-52 break-words">
+                  <span className="block text-[10px] sm:text-xs text-legend font-normal max-w-32 md:max-w-72 lg:max-w-52 break-words">
                     ${token.symbol}
                   </span>
                 </div>
               </div>
             </TableCell>
-            <TableCell className="text-primary text-center font-bold">
+            <TableCell className="text-primary text-center font-bold text-sm sm:text-base px-1 sm:px-3">
               {basketShares[token.address]}%
             </TableCell>
-            <TableCell className="text-center">
+            <TableCell className="text-center px-1 sm:px-3">
               <PerformanceCell
                 change={basketPerformanceChanges[token.address]}
                 isLoading={performanceLoading}
@@ -69,7 +69,7 @@ export const CollateralTableRows = ({
                 timeRange={timeRange}
               />
             </TableCell>
-            <TableCell className="text-right">
+            <TableCell className="text-right px-1 sm:px-3">
               <div className="flex items-center justify-end gap-2">
                 <BridgeLabel
                   address={token.address}
@@ -79,7 +79,7 @@ export const CollateralTableRows = ({
                 <Button
                   variant="muted"
                   size="icon-rounded"
-                  className="hover:bg-primary/10 hover:text-primary"
+                  className="hover:bg-primary/10 hover:text-primary hidden sm:inline-flex"
                   onClick={() => onCopyAddress(token.address)}
                 >
                   <Copy className="h-3 w-3" />
