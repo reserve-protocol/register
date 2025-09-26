@@ -1,16 +1,25 @@
+import { Card } from '@/components/ui/card'
 import { ChartConfig, ChartContainer } from '@/components/ui/chart'
+import { Separator } from '@/components/ui/separator'
 import { Skeleton } from '@/components/ui/skeleton'
-import { Button } from '@/components/ui/button'
 import { formatCurrency } from '@/utils'
 import dayjs from 'dayjs'
-import { useAtom } from 'jotai'
+import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
-import { Area, AreaChart, Bar, BarChart, Tooltip, XAxis, YAxis, ReferenceLine } from 'recharts'
-import { Card } from '@/components/ui/card'
-import ChartOverlay from './chart-overlay'
+import {
+  Area,
+  AreaChart,
+  Bar,
+  BarChart,
+  ReferenceLine,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from 'recharts'
+import TimeRangeSelector from '../../overview/components/charts/time-range-selector'
 import { factsheetChartTypeAtom } from '../atoms'
-import type { TimeRange } from '../mocks/factsheet-data'
-import FactsheetTimeRangeSelector from './factsheet-time-range-selector'
+import ChartOverlay from './chart-overlay'
+import ChartTypeSelector from './chart-type-selector'
 
 const chartConfig = {
   desktop: {
@@ -45,14 +54,15 @@ interface FactsheetChartProps {
 }
 
 const FactsheetChart = ({ data, isLoading }: FactsheetChartProps) => {
-  const [chartType, setChartType] = useAtom(factsheetChartTypeAtom)
+  const chartType = useAtomValue(factsheetChartTypeAtom)
 
   const chartData = useMemo(() => {
     if (!data?.chartData) return []
 
     return data.chartData.map((point: any) => ({
       ...point,
-      displayValue: chartType === 'navGrowth' ? point.navGrowth : point.monthlyPL
+      displayValue:
+        chartType === 'navGrowth' ? point.navGrowth : point.monthlyPL,
     }))
   }, [data?.chartData, chartType])
 
@@ -69,42 +79,15 @@ const FactsheetChart = ({ data, isLoading }: FactsheetChartProps) => {
   }
 
   return (
-    <div className="bg-[#000] dark:bg-background lg:bg-transparent rounded-3xl lg:rounded-none text-[#fff] dark:text-foreground p-4 md:p-6 lg:p-0">
-      <div className="flex justify-between items-start mb-4">
+    <div className="bg-[#000] dark:bg-background lg:dark:bg-muted rounded-3xl text-[#fff] dark:text-foreground py-6">
+      <div className="mb-4 px-6">
         <ChartOverlay
           timeseries={chartData}
           currentNav={data?.currentNav || 0}
         />
-        {/* Chart Type Toggle - Top Right */}
-        <div className="flex gap-1 bg-white/10 rounded-full p-1">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => setChartType('navGrowth')}
-            className={`h-6 px-3 text-xs rounded-full ${
-              chartType === 'navGrowth'
-                ? 'bg-white text-black hover:bg-white hover:text-black'
-                : 'text-white/70 hover:bg-white/20 hover:text-white'
-            }`}
-          >
-            NAV
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => setChartType('monthlyPL')}
-            className={`h-6 px-3 text-xs rounded-full ${
-              chartType === 'monthlyPL'
-                ? 'bg-white text-black hover:bg-white hover:text-black'
-                : 'text-white/70 hover:bg-white/20 hover:text-white'
-            }`}
-          >
-            P&L
-          </Button>
-        </div>
       </div>
 
-      <div className="h-[300px] md:h-[400px]">
+      <div className="h-[300px] md:h-[400px] px-6">
         {isLoading ? (
           <Skeleton className="h-full w-full rounded-lg" />
         ) : chartData.length > 0 ? (
@@ -193,12 +176,13 @@ const FactsheetChart = ({ data, isLoading }: FactsheetChartProps) => {
                 <ReferenceLine y={0} stroke="#666" strokeWidth={1} />
                 <Bar
                   dataKey="displayValue"
-                  fill={(data: any) => data.displayValue >= 0 ? '#22c55e' : '#ef4444'}
+                  fill={data.displayValue >= 0 ? '#22c55e' : '#ef4444'}
                   isAnimationActive={true}
                   animationDuration={500}
                   animationEasing="ease-in-out"
                   shape={(props: any) => {
-                    const fill = props.payload.displayValue >= 0 ? '#22c55e' : '#ef4444'
+                    const fill =
+                      props.payload.displayValue >= 0 ? '#22c55e' : '#ef4444'
                     return <rect {...props} fill={fill} />
                   }}
                 />
@@ -208,15 +192,17 @@ const FactsheetChart = ({ data, isLoading }: FactsheetChartProps) => {
         ) : null}
       </div>
 
-      {/* Time Range Selector - Bottom Left */}
-      <div className="mt-4">
-        <FactsheetTimeRangeSelector />
+      <div className="mt-4 px-6 flex items-center gap-2 justify-between w-full">
+        <TimeRangeSelector />
+        <ChartTypeSelector />
       </div>
 
-      {/* Disclaimer text */}
-      <p className="text-xs text-white/40 dark:text-muted-foreground mt-4">
-        Performance shown assumes an initial investment of $100 and represents cumulative performance net of fees from
-        fund inception. *Performance for periods of one year or less is not annualized.
+      <Separator className="bg-white/10 mt-5" />
+
+      <p className="text-base text-muted-foreground pt-5 px-6">
+        Performance shown assumes an initial investment of $100 and represents
+        cumulative performance net of fees from fund inception. *Performance for
+        periods of one year or less is not annualized.
       </p>
     </div>
   )

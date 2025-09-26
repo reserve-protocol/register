@@ -1,5 +1,6 @@
 import dayjs from 'dayjs'
 import type { PerformanceData } from '../mocks/factsheet-data'
+import { CalendarRange } from 'lucide-react'
 
 interface PerformanceTableProps {
   performance: PerformanceData
@@ -8,10 +9,13 @@ interface PerformanceTableProps {
 
 const formatPerformanceValue = (value: number | null): string => {
   if (value === null) return 'N/A'
-  return `${value >= 0 ? '+' : ''}${value.toFixed(2)}%`
+  return `${value.toFixed(2)}%`
 }
 
-const PerformanceTable = ({ performance, inception }: PerformanceTableProps) => {
+const PerformanceTable = ({
+  performance,
+  inception,
+}: PerformanceTableProps) => {
   const now = Date.now() / 1000
   const inceptionDate = dayjs.unix(inception).format('MMM D, YYYY')
   const currentDate = dayjs.unix(now).format('MMM D, YYYY')
@@ -21,39 +25,48 @@ const PerformanceTable = ({ performance, inception }: PerformanceTableProps) => 
     { label: '6 Month', value: performance['6m'] },
     { label: 'YTD', value: performance.ytd },
     { label: '1 Year', value: performance['1y'] },
-    { label: 'ITD (annualized)', value: performance.all }
+    { label: 'All Time', value: performance.all },
   ]
 
   return (
-    <div className="bg-transparent text-white dark:text-foreground h-full flex flex-col justify-end">
+    <div className="bg-transparent text-white dark:text-foreground h-full flex flex-col justify-end w-full pt-6">
+      <div className="w-8 h-8 border border-white rounded-full flex items-center justify-center mb-auto mx-6">
+        <CalendarRange className="w-4 h-4" />
+      </div>
       <div>
-        <h3 className="text-base font-medium mb-1">
-          Performance from inception*
-        </h3>
-        <p className="text-xs text-white/50 dark:text-muted-foreground mb-4">
-          ({inceptionDate} - {currentDate})
-        </p>
+        <div className="mx-6 mb-6">
+          <h3 className="text-2xl font-light mb-1">
+            Performance from inception*
+          </h3>
+          <p className="text-sm">
+            ({inceptionDate} - {currentDate})
+          </p>
+        </div>
 
-        <div className="space-y-2">
-          {rows.map(row => (
-            <div
-              key={row.label}
-              className="flex justify-between items-center py-1.5 border-b border-white/10 dark:border-border/50 last:border-0"
-            >
-              <span className="text-sm text-white/70 dark:text-muted-foreground">
-                {row.label}
-              </span>
-              <span
-                className={`text-sm font-medium text-right ${
-                  row.value === null
-                    ? 'text-white/40 dark:text-muted-foreground'
-                    : 'text-white'
-                }`}
-              >
-                {formatPerformanceValue(row.value)}
-              </span>
-            </div>
-          ))}
+        <div className="border-t border-white/10">
+          <table className="w-full table-fixed">
+            <tbody>
+              {rows.map((row) => (
+                <tr
+                  key={row.label}
+                  className="border-b border-white/10 dark:border-border/50 last:border-0"
+                >
+                  <td className="w-1/2 px-5 py-6 text-sm text-white/70 dark:text-muted-foreground align-middle">
+                    {row.label}
+                  </td>
+                  <td
+                    className="w-1/2 px-5 py-6 text-sm font-light text-right align-middle border-l border-white/10 dark:border-border/50 ${
+                    row.value === null
+                      ? 'text-white/40 dark:text-muted-foreground'
+                      : 'text-white'
+                  }"
+                  >
+                    {formatPerformanceValue(row.value)}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

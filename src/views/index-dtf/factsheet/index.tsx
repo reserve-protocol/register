@@ -4,7 +4,7 @@ import { useAtomValue } from 'jotai'
 import { ArrowLeft } from 'lucide-react'
 import { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { factsheetTimeRangeAtom } from './atoms'
+import { timeRangeAtom } from '../overview/components/charts/time-range-selector'
 import FactsheetChart from './components/factsheet-chart'
 import NetPerformanceSummary from './components/net-performance-summary'
 import PerformanceTable from './components/performance-table'
@@ -40,7 +40,7 @@ const Header = () => {
 
 const IndexDTFFactsheet = () => {
   const dtf = useAtomValue(indexDTFAtom)
-  const timeRange = useAtomValue(factsheetTimeRangeAtom)
+  const timeRange = useAtomValue(timeRangeAtom)
 
   const prefetchRanges = useMemo(() => {
     const allRanges: TimeRange[] = ['24h', '7d', '1m', '3m', '1y', 'all']
@@ -60,12 +60,12 @@ const IndexDTFFactsheet = () => {
       <div className="flex flex-col gap-1 bg-secondary rounded-4xl">
         {/* Desktop */}
         <div className="hidden lg:block">
-          <div className="bg-[#000] dark:bg-background rounded-3xl p-6">
-            <div className="grid grid-cols-3 gap-8">
+          <div className="bg-[#000] dark:bg-background lg:dark:bg-muted rounded-3xl">
+            <div className="grid grid-cols-3">
               <div className="col-span-2">
                 <FactsheetChart data={data} isLoading={isLoading} />
               </div>
-              <div className="col-span-1 flex items-end">
+              <div className="col-span-1 flex items-end border-l border-white/10">
                 <PerformanceTable
                   performance={
                     data?.performance || {
