@@ -98,7 +98,7 @@ const BasketTableHeader = ({
     '1m': '30d',
     '3m': '90d',
     '1y': '1y',
-    'all': 'All',
+    all: 'All',
   }
 
   return (
@@ -287,6 +287,8 @@ const IndexBasketOverview = () => {
       }
     })
   }, [exposureGroups, isExposure, sortConfig])
+
+  console.log('sorted filtered', sortedFiltered)
 
   return (
     <div className="relative -mx-4 sm:-mx-5 -mb-4 sm:-mb-5 px-1" id="basket">

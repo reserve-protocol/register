@@ -9,6 +9,7 @@ import {
   performanceTimeRangeAtom,
   indexDTFPerformanceLoadingAtom,
   indexDTFNewlyAddedAssetsAtom,
+  indexDTFAtom,
 } from '@/state/dtf/atoms'
 import { ChainId } from '@/utils/chains'
 import { groupByNativeAsset } from '@/utils/token-mappings'
@@ -23,7 +24,11 @@ export const useBasketOverviewData = (isExposure: boolean) => {
   const timeRange = useAtomValue(performanceTimeRangeAtom)
   const hasBridgedAssets = useAtomValue(hasBridgedAssetsAtom)
   const chainId = useAtomValue(chainIdAtom)
-  const isBSC = chainId === ChainId.BSC
+  const dtf = useAtomValue(indexDTFAtom)
+
+  // Enable exposure tab for BSC or specific DTF on Base
+  const shouldShowExposureTabs = chainId === ChainId.BSC ||
+    (chainId === ChainId.Base && dtf?.id.toLowerCase() === '0x4da9a0f397db1397902070f93a4d6ddbc0e0e6e8')
 
   // Filter out zero-weight tokens
   const filtered = basket?.filter(
@@ -92,6 +97,6 @@ export const useBasketOverviewData = (isExposure: boolean) => {
     filtered,
     exposureGroups,
     marketCaps,
-    isBSC,
+    isBSC: shouldShowExposureTabs,
   }
 }
