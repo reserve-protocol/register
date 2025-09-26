@@ -60,7 +60,9 @@ export const ExposureTableRows = ({
                 <div className="flex items-center font-semibold gap-2 sm:gap-3 break-words">
                   <TokenLogo size="lg" src={native.logo} />
                   <div className="max-w-32 md:max-w-72 lg:max-w-56">
-                    <span className="block text-sm sm:text-base">{native.name}</span>
+                    <span className="block text-sm sm:text-base">
+                      {native.name}
+                    </span>
                     <span className="block text-[10px] sm:text-xs text-legend font-normal max-w-32 md:max-w-72 lg:max-w-52 break-words">
                       ${native.symbol}
                       {group.tokens.length > 1 && (
@@ -72,12 +74,11 @@ export const ExposureTableRows = ({
                   </div>
                 </div>
               </TableCell>
-              <TableCell className="text-center hidden sm:table-cell">
-                {group.native?.coingeckoId && marketCaps?.[group.native.coingeckoId] ? (
+              <TableCell className="text-center hidden text-base sm:table-cell">
+                {group.native?.coingeckoId &&
+                marketCaps?.[group.native.coingeckoId] ? (
                   <span>
-                    {formatMarketCap(
-                      marketCaps[group.native.coingeckoId]
-                    )}
+                    {formatMarketCap(marketCaps[group.native.coingeckoId])}
                   </span>
                 ) : (
                   <span>—</span>

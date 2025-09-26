@@ -139,7 +139,9 @@ const BasketTableHeader = ({
           </TableHeaderWithSort>
         )}
         {isExposure && (
-          <TableHead className="text-center hidden sm:table-cell text-xs sm:text-base">Market Cap</TableHead>
+          <TableHead className="text-center hidden sm:table-cell">
+            <span className="text-xs sm:text-base">Market Cap</span>
+          </TableHead>
         )}
         <TableHeaderWithSort
           field="performance"
