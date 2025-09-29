@@ -1,9 +1,12 @@
 import ChainLogo from '@/components/icons/ChainLogo'
 import TokenLogo from '@/components/token-logo'
 import { Button } from '@/components/ui/button'
+import { Skeleton } from '@/components/ui/skeleton'
 import { getFolioRoute } from '@/utils'
+import { cn } from '@/lib/utils'
 import { ChainId } from '@/utils/chains'
 import { ArrowRight, Sparkle } from 'lucide-react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import bloombergCover from '../../../assets/featured-bloomberg.png'
 import virtualsCover from '../../../assets/featured-virtuals.png'
@@ -11,7 +14,6 @@ import coindeskCover from '../../../assets/featured-coindesk.png'
 import lcapLogo from '../../../assets/lcap-logo.png'
 import krakenLogoWhite from '../../../assets/kraken-white.png'
 import lcapBg from '../../../assets/lcap-bg.png'
-import TitleContainer from '../../title-container'
 
 const KrakenLogo = () => (
   <svg
@@ -90,20 +92,29 @@ const FEATURED = [
   },
 ]
 
-const IndexDTFFeatured = () => {
+const FeaturedDTFCard = ({ dtf }: { dtf: typeof FEATURED[0] }) => {
+  const [imageLoaded, setImageLoaded] = useState(false)
+
   return (
-    <div className="grid grid-cols-[350px_350px_350px] xl:grid-cols-3 gap-1 sm:gap-3 overflow-x-auto md:px-0">
-      {FEATURED.map((dtf) => (
-        <Link
-          to={getFolioRoute(dtf.address, dtf.chainId)}
-          key={dtf.address}
-          className="p-1 bg-muted rounded-4xl flex flex-col min-w-[350px]"
-        >
-          <img
-            alt="featured dtf"
-            className="w-full rounded-3xl mb-1"
-            src={dtf.cover}
-          />
+    <Link
+      to={getFolioRoute(dtf.address, dtf.chainId)}
+      className="p-1 bg-muted rounded-4xl flex flex-col min-w-[350px]"
+    >
+      <div className="relative w-full rounded-3xl mb-1 overflow-hidden">
+        {!imageLoaded && (
+          <Skeleton className="w-full h-[200px] rounded-3xl" />
+        )}
+        <img
+          alt="featured dtf"
+          className={cn(
+            "w-full rounded-3xl transition-opacity duration-500",
+            imageLoaded ? "opacity-100 animate-fade-in" : "opacity-0"
+          )}
+          src={dtf.cover}
+          loading="lazy"
+          onLoad={() => setImageLoaded(true)}
+        />
+      </div>
           <div className="flex items-center gap-2 md:gap-3 flex-grow rounded-3xl bg-card p-4 py-3 md:p-6 md:py-5">
             <div className="relative">
               <TokenLogo src={dtf.icon} size="xl" />
@@ -120,7 +131,15 @@ const IndexDTFFeatured = () => {
               <ArrowRight size={16} />
             </Button>
           </div>
-        </Link>
+    </Link>
+  )
+}
+
+const IndexDTFFeatured = () => {
+  return (
+    <div className="grid grid-cols-[350px_350px_350px] xl:grid-cols-3 gap-1 sm:gap-3 overflow-x-auto md:px-0">
+      {FEATURED.map((dtf) => (
+        <FeaturedDTFCard key={dtf.address} dtf={dtf} />
       ))}
     </div>
   )
@@ -224,6 +243,5 @@ export function LcapBanner() {
   )
 }
 
+export { IndexDTFFeatured }
 export default LcapBanner
-
-// export default IndexDTFFeatured

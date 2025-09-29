@@ -69,28 +69,6 @@ const ManageAbout = () => {
           </FormItem>
         )}
       />
-      <FormField
-        control={form.control}
-        name="dtf.basketType"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Basket Type</FormLabel>
-            <FormControl>
-              <Select {...field} onValueChange={field.onChange}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Basket Type" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="percentage-based">
-                    Percentage Based
-                  </SelectItem>
-                  <SelectItem value="unit-based">Unit Based</SelectItem>
-                </SelectContent>
-              </Select>
-            </FormControl>
-          </FormItem>
-        )}
-      />
 
       <div className="flex items-center gap-6 border rounded-3xl p-3 mt-1">
         <div>
