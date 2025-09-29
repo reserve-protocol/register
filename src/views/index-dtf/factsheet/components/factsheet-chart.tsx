@@ -11,6 +11,7 @@ import {
   AreaChart,
   Bar,
   BarChart,
+  Cell,
   ReferenceLine,
   Tooltip,
   XAxis,
@@ -182,7 +183,7 @@ const FactsheetChart = ({ data, isLoading }: FactsheetChartProps) => {
             ) : (
               <BarChart
                 data={chartData}
-                margin={{ left: 50, right: 10, top: 5, bottom: 30 }}
+                margin={{ left: 50, right: 10, top: 20, bottom: 30 }}
               >
                 <XAxis
                   dataKey="timestamp"
@@ -195,32 +196,27 @@ const FactsheetChart = ({ data, isLoading }: FactsheetChartProps) => {
                   tickMargin={10}
                 />
                 <YAxis
-                  dataKey="displayValue"
                   orientation="left"
                   tick={{ fontSize: 11, opacity: 0.5 }}
                   tickFormatter={(value) => `${value.toFixed(0)}%`}
                   className="[&_.recharts-cartesian-axis-tick_text]:!fill-white/50 dark:[&_.recharts-cartesian-axis-tick_text]:!fill-foreground/50"
                   axisLine={false}
                   tickLine={false}
-                  domain={['dataMin - 10', 'dataMax + 10']}
+                  domain={['auto', 'auto']}
                   width={45}
                   tickCount={6}
                   tickMargin={5}
                 />
                 <Tooltip content={<CustomTooltip chartType={chartType} />} />
                 <ReferenceLine y={0} stroke="#666" strokeWidth={1} />
-                <Bar
-                  dataKey="displayValue"
-                  fill={data.displayValue >= 0 ? '#22c55e' : '#ef4444'}
-                  isAnimationActive={true}
-                  animationDuration={500}
-                  animationEasing="ease-in-out"
-                  shape={(props: any) => {
-                    const fill =
-                      props.payload.displayValue >= 0 ? '#22c55e' : '#ef4444'
-                    return <rect {...props} fill={fill} />
-                  }}
-                />
+                <Bar dataKey="displayValue">
+                  {chartData.map((entry: any, index: number) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={entry.displayValue >= 0 ? '#22c55e' : '#ef4444'}
+                    />
+                  ))}
+                </Bar>
               </BarChart>
             )}
           </ChartContainer>
