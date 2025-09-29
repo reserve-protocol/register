@@ -6,6 +6,7 @@ import {
   rTokenAssetsAtom,
   rTokenAtom,
   rTokenStateAtom,
+  walletAtom,
 } from 'state/atoms'
 import { wagmiConfig } from 'state/chain'
 import { safeParseEther } from 'utils'
@@ -30,6 +31,7 @@ export const redeemNonceAtom = atom((get) => {
 })
 
 export const redeemQuotesAtom = atomWithLoadable(async (get) => {
+  const account = get(walletAtom)
   const currentNonce = get(rTokenStateAtom).basketNonce
   const assets = get(rTokenAssetsAtom)
   const rToken = get(rTokenAtom)
@@ -72,6 +74,7 @@ export const redeemQuotesAtom = atomWithLoadable(async (get) => {
       functionName: 'issue',
       args: [rToken.address, parsedAmount],
       chainId,
+      account,
     })
 
     quotes[currentNonce.toString()] = tokens.reduce(
@@ -94,6 +97,7 @@ export const redeemQuotesAtom = atomWithLoadable(async (get) => {
       functionName: 'redeem',
       args: [rToken.address, parsedAmount],
       chainId,
+      account,
     })
 
     quotes[currentNonce.toString()] = tokens.reduce(
@@ -135,6 +139,7 @@ export const redeemQuotesAtom = atomWithLoadable(async (get) => {
           [parseEther('1')],
         ],
         chainId,
+        account,
       })
 
       quotes[currentNonce - 1] = tokens.reduce(
