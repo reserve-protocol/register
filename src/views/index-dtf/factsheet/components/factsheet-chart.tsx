@@ -17,8 +17,12 @@ import {
   XAxis,
   YAxis,
 } from 'recharts'
-import TimeRangeSelector from '../../overview/components/charts/time-range-selector'
+import TimeRangeSelector, {
+  timeRangeAtom,
+} from '../../overview/components/charts/time-range-selector'
 import { factsheetChartTypeAtom } from '../atoms'
+import { useSetAtom } from 'jotai'
+import { useEffect } from 'react'
 import ChartOverlay from './chart-overlay'
 import ChartTypeSelector from './chart-type-selector'
 
@@ -86,6 +90,14 @@ export const CustomizedAxisTick = ({
 
 const FactsheetChart = ({ data, isLoading }: FactsheetChartProps) => {
   const chartType = useAtomValue(factsheetChartTypeAtom)
+  const setTimeRange = useSetAtom(timeRangeAtom)
+
+  // Force 'all' time range when Monthly P&L is selected
+  useEffect(() => {
+    if (chartType === 'monthlyPL') {
+      setTimeRange('all')
+    }
+  }, [chartType, setTimeRange])
 
   const chartData = useMemo(() => {
     if (!data?.chartData) return []
@@ -183,13 +195,18 @@ const FactsheetChart = ({ data, isLoading }: FactsheetChartProps) => {
             ) : (
               <BarChart
                 data={chartData}
-                margin={{ left: 50, right: 10, top: 20, bottom: 30 }}
+                margin={{ left: 0, right: 0, top: 0, bottom: 30 }}
+                {...{
+                  overflow: 'visible',
+                }}
               >
                 <XAxis
                   dataKey="timestamp"
-                  tick={{ fontSize: 11, opacity: 0.5 }}
+                  tick={
+                    <CustomizedAxisTick formatXAxisTick={formatXAxisTick} />
+                  }
                   tickFormatter={formatXAxisTick}
-                  className="[&_.recharts-cartesian-axis-tick_text]:!fill-white/50 dark:[&_.recharts-cartesian-axis-tick_text]:!fill-foreground/50"
+                  className="[&_.recharts-cartesian-axis-tick_text]:!fill-white"
                   axisLine={false}
                   tickLine={false}
                   interval="preserveStartEnd"
@@ -199,7 +216,7 @@ const FactsheetChart = ({ data, isLoading }: FactsheetChartProps) => {
                   orientation="left"
                   tick={{ fontSize: 11, opacity: 0.5 }}
                   tickFormatter={(value) => `${value.toFixed(0)}%`}
-                  className="[&_.recharts-cartesian-axis-tick_text]:!fill-white/50 dark:[&_.recharts-cartesian-axis-tick_text]:!fill-foreground/50"
+                  className="[&_.recharts-cartesian-axis-tick_text]:!fill-white"
                   axisLine={false}
                   tickLine={false}
                   domain={['auto', 'auto']}
@@ -224,7 +241,7 @@ const FactsheetChart = ({ data, isLoading }: FactsheetChartProps) => {
       </div>
 
       <div className="mt-4 px-6 flex items-center gap-2 justify-between w-full">
-        <TimeRangeSelector />
+        {chartType === 'monthlyPL' ? <div /> : <TimeRangeSelector />}
         <ChartTypeSelector />
       </div>
 
