@@ -122,7 +122,7 @@ const BridgeInfoDialog = ({
                             className="w-4 h-4"
                           />
                           <span className="text-sm text-muted-foreground">
-                            {native.name}
+                            {CHAIN_TAGS[nativeChainId]}
                           </span>
                         </>
                       )
@@ -146,7 +146,11 @@ const BridgeInfoDialog = ({
                   <span className="font-semibold block">
                     {native.name} ({native.symbol})
                   </span>
-                  <span className="text-sm text-legend">Native L1 Asset</span>
+                  <span className="text-sm text-legend">
+                    {native.address
+                      ? shortenAddress(native.address)
+                      : 'Native L1 Asset'}
+                  </span>
                 </div>
                 {native.url && (
                   <Link to={native.url} target="_blank">
