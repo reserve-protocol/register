@@ -7,6 +7,7 @@ import {
   rTokenAssetsAtom,
   rTokenAtom,
   rTokenContractsAtom,
+  walletAtom,
 } from 'state/atoms'
 import { wagmiConfig } from 'state/chain'
 import { Token } from 'types'
@@ -183,6 +184,7 @@ export const auctionsOverviewAtom = atomWithLoadable(
     claimableEmissions: Claimable[]
   } | null> => {
     get(auctionSessionAtom) // just for refresh sake
+    const account = get(walletAtom)
     const contracts = get(rTokenContractsAtom)
     const assets = get(rTokenAssetsAtom)
     const rToken = get(rTokenAtom)
@@ -195,6 +197,7 @@ export const auctionsOverviewAtom = atomWithLoadable(
       abi: FacadeAct,
       address: FACADE_ACT_ADDRESS[chainId],
       chainId,
+      account,
     }
 
     const [
