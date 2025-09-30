@@ -1,4 +1,4 @@
-import { iTokenAddressAtom } from '@/state/dtf/atoms'
+import { indexDTFAtom, iTokenAddressAtom } from '@/state/dtf/atoms'
 import { useAtomValue } from 'jotai'
 import useIndexDTFPriceHistory from '../../overview/hooks/use-dtf-price-history'
 import { timeRangeAtom } from '../../overview/components/charts/time-range-selector'
@@ -7,6 +7,7 @@ import {
   calculateMonthlyChartData,
   calculatePerformance,
   generateNetPerformanceData,
+  priceAtBoundary,
 } from '../utils/calculations'
 import { TIME_PERIODS } from '../utils/constants'
 import type {
@@ -19,6 +20,7 @@ import { useMemo } from 'react'
 const prefetchRanges = ['24h', '7d', '1m', '3m', '1y'].map(getRangeParams)
 
 export const useFactsheetData = () => {
+  const dtf = useAtomValue(indexDTFAtom)
   const address = useAtomValue(iTokenAddressAtom)
   const timeRange = useAtomValue(timeRangeAtom)
 
@@ -64,19 +66,10 @@ export const useFactsheetData = () => {
 
     const monthlyChartData = calculateMonthlyChartData(currentTimeseries)
 
-    const currentPrice = allTimeseries[allTimeseries.length - 1].price
-    const inception = allTimeseries[0].timestamp
+    const lastPoint = allTimeseries[allTimeseries.length - 1]
+    const currentPrice = lastPoint.price
+    const inception = dtf?.timestamp || 0
     const now = Math.floor(Date.now() / 1000)
-
-    const threeMonthsAgo = allTimeseries.find(
-      (p) => p.timestamp >= now - TIME_PERIODS.THREE_MONTHS
-    )
-    const sixMonthsAgo = allTimeseries.find(
-      (p) => p.timestamp >= now - TIME_PERIODS.SIX_MONTHS
-    )
-    const yearAgo = allTimeseries.find(
-      (p) => p.timestamp >= now - TIME_PERIODS.YEAR
-    )
 
     const currentYear = new Date().getFullYear()
     const jan1Timestamp = Math.floor(
@@ -84,14 +77,31 @@ export const useFactsheetData = () => {
     )
     const yearStart = allTimeseries.find((p) => p.timestamp >= jan1Timestamp)
 
+    const lastTs = lastPoint.timestamp
+
+    // Period boundaries relative to the last datapoint (aligned clock)
+    const ts3m = lastTs - TIME_PERIODS.THREE_MONTHS
+    const ts6m = lastTs - TIME_PERIODS.SIX_MONTHS
+    const ts1y = lastTs - TIME_PERIODS.YEAR
+
+    // YTD boundary at Jan 1st 00:00:00 UTC of current year inferred from lastTs
+    const d = new Date(lastTs * 1000)
+    const y = d.getUTCFullYear()
+    const jan1Utc = Math.floor(Date.UTC(y, 0, 1) / 1000)
+
+    // Bases
+    const base3m = priceAtBoundary(allTimeseries, ts3m)
+    const base6m = priceAtBoundary(allTimeseries, ts6m)
+    const base1y = priceAtBoundary(allTimeseries, ts1y)
+    const baseYTD = priceAtBoundary(allTimeseries, jan1Utc)
+    const baseAll = allTimeseries[0]?.price ?? null // or first non-zero if prefer
+
     const performance: PerformanceData = {
-      '3m': calculatePerformance(currentPrice, threeMonthsAgo?.price),
-      '6m': calculatePerformance(currentPrice, sixMonthsAgo?.price),
-      ytd: yearStart
-        ? calculatePerformance(currentPrice, yearStart.price)
-        : null,
-      '1y': calculatePerformance(currentPrice, yearAgo?.price),
-      all: calculatePerformance(currentPrice, allTimeseries[0].price),
+      '3m': calculatePerformance(currentPrice, base3m),
+      '6m': calculatePerformance(currentPrice, base6m),
+      ytd: calculatePerformance(currentPrice, baseYTD),
+      '1y': calculatePerformance(currentPrice, base1y),
+      all: calculatePerformance(currentPrice, baseAll),
     }
 
     const netPerformance = generateNetPerformanceData(allTimeseries)

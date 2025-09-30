@@ -1,251 +1,286 @@
-import type { NetPerformanceYear, ChartDataPoint } from '../types/factsheet-data'
-import { MONTH_NAMES } from './constants'
+import { monthKeys } from '../components/net-performance-summary'
+import type {
+  MonthlyChartDataPoint,
+  NetPerformanceYear,
+} from '../types/factsheet-data'
 
 // Helper function to calculate performance percentage
 export const calculatePerformance = (
   currentPrice: number,
-  pastPrice: number | undefined
+  pastPrice: number | null | undefined
 ): number | null => {
-  if (!pastPrice || pastPrice === 0) return null
-  return ((currentPrice - pastPrice) / pastPrice) * 100
+  if (pastPrice == null || pastPrice === 0) return null
+  return (currentPrice / pastPrice - 1) * 100
 }
 
-// Helper to calculate monthly P&L for each data point
-export const calculateMonthlyReturns = (
-  timeseries: Array<{ timestamp: number; price: number }>
-): Map<number, number> => {
-  const monthlyReturns = new Map<number, number>()
+// Assumes allTimeseries is sorted by timestamp asc (if no, sort it once)
+type Point = { timestamp: number; price: number }
 
-  if (timeseries.length < 2) return monthlyReturns
-
-  // Group data points by month and calculate returns
-  const monthlyPrices = new Map<
-    string,
-    { first: number; last: number; firstTimestamp: number }
-  >()
-
-  timeseries.forEach((point) => {
-    const date = new Date(point.timestamp * 1000)
-    const monthKey = `${date.getFullYear()}-${date.getMonth()}`
-
-    if (!monthlyPrices.has(monthKey)) {
-      monthlyPrices.set(monthKey, {
-        first: point.price,
-        last: point.price,
-        firstTimestamp: point.timestamp,
-      })
+// Binary search: index of the last point with timestamp <= target, or -1 if none.
+function idxAtOrBefore(timeseries: Point[], targetTs: number): number {
+  let lo = 0,
+    hi = timeseries.length - 1,
+    ans = -1
+  while (lo <= hi) {
+    const mid = (lo + hi) >>> 1
+    const t = timeseries[mid].timestamp
+    if (t <= targetTs) {
+      ans = mid
+      lo = mid + 1
     } else {
-      const month = monthlyPrices.get(monthKey)!
-      month.last = point.price
+      hi = mid - 1
     }
-  })
-
-  // Calculate month-over-month returns
-  const months = Array.from(monthlyPrices.entries()).sort((a, b) => {
-    const [yearA, monthA] = a[0].split('-').map(Number)
-    const [yearB, monthB] = b[0].split('-').map(Number)
-    return yearA !== yearB ? yearA - yearB : monthA - monthB
-  })
-
-  for (let i = 1; i < months.length; i++) {
-    const [, prevMonthData] = months[i - 1]
-    const [currentMonthKey, currentMonthData] = months[i]
-
-    const monthlyReturn =
-      ((currentMonthData.last - prevMonthData.last) / prevMonthData.last) * 100
-
-    // Apply this return to all timestamps in this month
-    timeseries.forEach((point) => {
-      const date = new Date(point.timestamp * 1000)
-      const pointMonthKey = `${date.getFullYear()}-${date.getMonth()}`
-      if (pointMonthKey === currentMonthKey) {
-        monthlyReturns.set(point.timestamp, monthlyReturn)
-      }
-    })
   }
-
-  // For the first month, set return to 0
-  const firstMonth = months[0]
-  if (firstMonth) {
-    timeseries.forEach((point) => {
-      const date = new Date(point.timestamp * 1000)
-      const pointMonthKey = `${date.getFullYear()}-${date.getMonth()}`
-      if (
-        pointMonthKey === firstMonth[0] &&
-        !monthlyReturns.has(point.timestamp)
-      ) {
-        monthlyReturns.set(point.timestamp, 0)
-      }
-    })
-  }
-
-  return monthlyReturns
+  return ans
 }
 
-// Generate net performance data from price history
+// Get price at or before target; if none, fallback to first at or after.
+export function priceAtBoundary(
+  timeseries: Point[],
+  targetTs: number
+): number | null {
+  if (timeseries.length === 0) return null
+  const i = idxAtOrBefore(timeseries, targetTs)
+  if (i >= 0) return timeseries[i].price
+  // fallback: first point after the boundary (series starts after boundary)
+  const after = timeseries.find((p) => p.timestamp >= targetTs)
+  return after ? after.price : null
+}
+
+type MonthKey = (typeof monthKeys)[number]
+const monthIndexToKey = (i: number): MonthKey => monthKeys[i] as MonthKey
+
+/**
+ * Generates a year-by-year summary of net performance from a price time series.
+ *
+ * For each year:
+ * - Splits data by calendar month, using the first and last price in each month.
+ * - Computes monthly return as: ((monthClose / prevMonthClose) - 1) * 100.
+ *   If the previous month has no data, it searches backwards until it finds
+ *   the most recent available close price (even from past years).
+ * - Identifies the best and worst months (highest and lowest monthly return).
+ * - Computes year-to-date (YTD) return as:
+ *   (lastCloseOfYear / baseClose - 1) * 100,
+ *   where baseClose is the last available close before the first month of the year.
+ *   If no prior data exists, the first month’s close is used as the base
+ *   (so the year starts at 0%).
+ *
+ * Returns an array of NetPerformanceYear objects, each containing:
+ * - monthly returns for Jan–Dec (null if no data for that month),
+ * - flags for best/worst months,
+ * - the overall YTD performance for that year.
+ */
+
 export const generateNetPerformanceData = (
   timeseries: Array<{ timestamp: number; price: number }>
 ): NetPerformanceYear[] => {
-  const years: NetPerformanceYear[] = []
+  if (!timeseries?.length) return []
 
-  // Group data by year and month
-  const yearMonthData = new Map<
+  // Ensure chronological order so monthly open/close are correct
+  const sorted = [...timeseries].sort((a, b) => a.timestamp - b.timestamp)
+
+  // Build year->month-> { open, close }
+  const byYearMonth = new Map<
     number,
-    Map<number, { first: number; last: number }>
+    Map<number, { open: number; close: number }>
   >()
-
-  // Get the range of years from the data
   let minYear = Infinity
   let maxYear = -Infinity
 
-  timeseries.forEach((point) => {
-    const date = new Date(point.timestamp * 1000)
-    const year = date.getFullYear()
-    const month = date.getMonth()
+  for (const p of sorted) {
+    const d = new Date(p.timestamp * 1000)
+    const y = d.getFullYear()
+    const m = d.getMonth()
+    minYear = Math.min(minYear, y)
+    maxYear = Math.max(maxYear, y)
+    if (!byYearMonth.has(y)) byYearMonth.set(y, new Map())
+    const ym = byYearMonth.get(y)!
+    if (!ym.has(m)) ym.set(m, { open: p.price, close: p.price })
+    else ym.get(m)!.close = p.price
+  }
 
-    minYear = Math.min(minYear, year)
-    maxYear = Math.max(maxYear, year)
-
-    if (!yearMonthData.has(year)) {
-      yearMonthData.set(year, new Map())
-    }
-
-    const yearData = yearMonthData.get(year)!
-    if (!yearData.has(month)) {
-      yearData.set(month, { first: point.price, last: point.price })
-    } else {
-      const monthData = yearData.get(month)!
-      monthData.last = point.price
-    }
-  })
-
-  // Get previous month's last price for accurate month-over-month calculation
-  const getLastPriceOfPreviousMonth = (
-    year: number,
-    month: number
-  ): number | null => {
-    // If it's January, look at December of previous year
-    if (month === 0) {
-      const prevYearData = yearMonthData.get(year - 1)
-      if (prevYearData?.has(11)) {
-        return prevYearData.get(11)!.last
+  // Find the previous month's close (skip missing months backwards, across years)
+  const getPrevMonthClose = (year: number, month: number): number | null => {
+    let y = year
+    let m = month - 1
+    while (y >= minYear) {
+      if (m < 0) {
+        y -= 1
+        m = 11
       }
-    } else {
-      const yearData = yearMonthData.get(year)
-      if (yearData?.has(month - 1)) {
-        return yearData.get(month - 1)!.last
-      }
+      const ym = byYearMonth.get(y)
+      if (ym && ym.has(m)) return ym.get(m)!.close
+      if (y < minYear) break
+      m -= 1
     }
     return null
   }
 
-  // Calculate monthly returns for each year from minYear to maxYear
-  for (let year = minYear; year <= maxYear; year++) {
-    const yearData: any = { year }
-    let yearTotal = 0
-    let monthCount = 0
-    let bestMonth = { name: '', value: -Infinity }
-    let worstMonth = { name: '', value: Infinity }
+  const years: NetPerformanceYear[] = []
 
-    const yearPrices = yearMonthData.get(year)
+  for (let y = minYear; y <= maxYear; y++) {
+    const ym = byYearMonth.get(y)
+    const row: NetPerformanceYear = {
+      year: y,
+      jan: { value: null },
+      feb: { value: null },
+      mar: { value: null },
+      apr: { value: null },
+      may: { value: null },
+      jun: { value: null },
+      jul: { value: null },
+      aug: { value: null },
+      sep: { value: null },
+      oct: { value: null },
+      nov: { value: null },
+      dec: { value: null },
+      yearToDate: null,
+    }
 
-    MONTH_NAMES.forEach((monthName, monthIndex) => {
-      const monthData = yearPrices?.get(monthIndex)
+    let best: { key: MonthKey; v: number } | null = null
+    let worst: { key: MonthKey; v: number } | null = null
 
-      if (!monthData) {
-        yearData[monthName] = { value: null }
-      } else {
-        // Calculate monthly return using previous month's last price
-        const prevMonthLastPrice = getLastPriceOfPreviousMonth(year, monthIndex)
+    // Track first and last month with data in the year
+    let firstMonthIndex: number | null = null
+    let firstMonthClose: number | null = null
+    let lastMonthCloseOfYear: number | null = null
 
-        let monthlyReturn = 0
-        if (prevMonthLastPrice !== null) {
-          monthlyReturn =
-            ((monthData.first - prevMonthLastPrice) / prevMonthLastPrice) * 100
-        }
+    for (let m = 0; m < 12; m++) {
+      if (!ym || !ym.has(m)) continue
 
-        yearData[monthName] = { value: monthlyReturn }
-        yearTotal += monthlyReturn
-        monthCount++
+      const key = monthIndexToKey(m)
+      const { close } = ym.get(m)!
+      const prevClose = getPrevMonthClose(y, m)
 
-        if (monthlyReturn > bestMonth.value) {
-          bestMonth = { name: monthName, value: monthlyReturn }
-        }
-        if (monthlyReturn < worstMonth.value) {
-          worstMonth = { name: monthName, value: monthlyReturn }
-        }
+      // Monthly close-to-previous-close return
+      let monthlyReturn: number | null = null
+      if (prevClose !== null && prevClose > 0) {
+        monthlyReturn = (close / prevClose - 1) * 100
       }
-    })
 
-    // Mark best and worst months
-    if (bestMonth.name) {
-      yearData[bestMonth.name].isBest = true
-    }
-    if (worstMonth.name && worstMonth.name !== bestMonth.name) {
-      yearData[worstMonth.name].isWorst = true
+      row[key] = { value: monthlyReturn }
+
+      if (monthlyReturn !== null) {
+        if (!best || monthlyReturn > best.v) best = { key, v: monthlyReturn }
+        if (!worst || monthlyReturn < worst.v) worst = { key, v: monthlyReturn }
+      }
+
+      if (firstMonthIndex === null) {
+        firstMonthIndex = m
+        firstMonthClose = close
+      }
+      lastMonthCloseOfYear = close
     }
 
-    yearData.yearToDate = monthCount > 0 ? yearTotal : null
-    years.push(yearData)
+    // Mark best and worst months within valid values
+    if (best) row[best.key].isBest = true
+    if (worst && (!best || worst.key !== best.key))
+      row[worst.key].isWorst = true
+
+    // Compute YTD once per year:
+    // Base = previous close BEFORE the first month with data (searching backwards across months/years).
+    // If no previous close exists, base = first month's close (YTD starts at 0 and evolves afterwards).
+    if (firstMonthIndex !== null && lastMonthCloseOfYear !== null) {
+      const prevBeforeFirst = getPrevMonthClose(y, firstMonthIndex)
+      const ytdBase =
+        prevBeforeFirst !== null && prevBeforeFirst > 0
+          ? prevBeforeFirst
+          : firstMonthClose
+
+      if (ytdBase !== null && ytdBase > 0) {
+        row.yearToDate = (lastMonthCloseOfYear / ytdBase - 1) * 100
+      } else {
+        row.yearToDate = null
+      }
+    } else {
+      row.yearToDate = null
+    }
+
+    years.push(row)
   }
 
   return years
 }
 
-// Calculate monthly chart data for P&L
+/**
+ * Calculates monthly Profit & Loss (P&L) data from a timeseries of token prices.
+ *
+ * Process:
+ * 1. Groups price data points by month.
+ * 2. For each month, keeps track of the first and last observed price.
+ * 3. Calculates monthly P&L as the percentage change between the last price
+ *    of the current month and the last price of the previous month:
+ *      monthlyPL = ((lastPrice_current - lastPrice_previous) / lastPrice_previous) * 100
+ * 4. Normalizes each data point timestamp to the end of its month.
+ *
+ * Notes:
+ * - The first month will have `monthlyPL = null` since there is no prior month to compare.
+ * - Input timestamps are expected in seconds (UNIX epoch).
+ * - Output data is sorted chronologically by month.
+ *
+ * @param timeseries Array of objects containing { timestamp, price }
+ * @returns Array of { timestamp, monthlyPL } for each month
+ */
 export const calculateMonthlyChartData = (
   timeseries: Array<{ timestamp: number; price: number }>
-): ChartDataPoint[] => {
-  // Group data by month
-  const monthlyData = new Map<
+): MonthlyChartDataPoint[] => {
+  // 1) Sort data by timestamp (ascending)
+  const sorted = [...timeseries].sort((a, b) => a.timestamp - b.timestamp)
+
+  // 2) Group data by month, keeping track of first and last price
+  const monthlyGroups = new Map<
     string,
-    { timestamp: number; prices: number[] }
+    { firstTs: number; firstPrice: number; lastTs: number; lastPrice: number }
   >()
 
-  timeseries.forEach((point) => {
+  for (const point of sorted) {
     const date = new Date(point.timestamp * 1000)
-    const monthKey = `${date.getFullYear()}-${date.getMonth()}`
+    const monthKey = `${date.getFullYear()}-${date.getMonth()}` // month is 0–11
+    const group = monthlyGroups.get(monthKey)
 
-    if (!monthlyData.has(monthKey)) {
-      monthlyData.set(monthKey, {
-        timestamp: point.timestamp,
-        prices: [point.price],
+    if (!group) {
+      // Initialize this month
+      monthlyGroups.set(monthKey, {
+        firstTs: point.timestamp,
+        firstPrice: point.price,
+        lastTs: point.timestamp,
+        lastPrice: point.price,
       })
     } else {
-      const month = monthlyData.get(monthKey)!
-      month.prices.push(point.price)
-      // Update timestamp to last day of month in data
-      month.timestamp = point.timestamp
+      // Update last price and timestamp for this month
+      group.lastTs = point.timestamp
+      group.lastPrice = point.price
     }
-  })
+  }
 
-  // Calculate monthly P&L
-  const monthlyEntries = Array.from(monthlyData.entries()).sort((a, b) => {
+  // 3) Sort months chronologically
+  const months = Array.from(monthlyGroups.entries()).sort((a, b) => {
     const [yearA, monthA] = a[0].split('-').map(Number)
     const [yearB, monthB] = b[0].split('-').map(Number)
     return yearA !== yearB ? yearA - yearB : monthA - monthB
   })
 
-  return monthlyEntries.map((entry, index) => {
-    const [, data] = entry
-    const firstPrice = data.prices[0]
-    const lastPrice = data.prices[data.prices.length - 1]
+  // 4) Calculate monthly P&L using last price of each month vs last price of previous month
+  return months.map(([, current], index) => {
+    const monthlyPL =
+      index === 0
+        ? null // no previous month to compare
+        : ((current.lastPrice - months[index - 1][1].lastPrice) /
+            months[index - 1][1].lastPrice) *
+          100
 
-    let monthlyPL = 0
-    if (index > 0) {
-      const prevMonthLastPrice =
-        monthlyEntries[index - 1][1].prices[
-          monthlyEntries[index - 1][1].prices.length - 1
-        ]
-      monthlyPL =
-        ((firstPrice - prevMonthLastPrice) / prevMonthLastPrice) * 100
-    }
+    // Use the end of month timestamp (normalized)
+    const date = new Date(current.lastTs * 1000)
+    const endOfMonth = new Date(
+      date.getFullYear(),
+      date.getMonth() + 1,
+      0,
+      23,
+      59,
+      59
+    )
+    const ts = Math.floor(endOfMonth.getTime() / 1000)
 
-    return {
-      timestamp: data.timestamp,
-      value: lastPrice,
-      navGrowth: lastPrice,
-      monthlyPL,
-    }
+    return { timestamp: ts, monthlyPL }
   })
 }

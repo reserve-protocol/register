@@ -39,9 +39,14 @@ export interface NetPerformanceYear {
   yearToDate: number | null
 }
 
+export interface MonthlyChartDataPoint {
+  timestamp: number
+  monthlyPL: number | null
+}
+
 export interface FactsheetData {
   chartData: ChartDataPoint[]
-  monthlyChartData?: ChartDataPoint[] // Monthly aggregated data for P&L chart
+  monthlyChartData?: MonthlyChartDataPoint[]
   performance: PerformanceData
   netPerformance: NetPerformanceYear[]
   inception: number // timestamp

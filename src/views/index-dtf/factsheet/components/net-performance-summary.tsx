@@ -24,7 +24,7 @@ const monthColumns = [
   'Dec',
 ] as const
 
-const monthKeys = [
+export const monthKeys = [
   'jan',
   'feb',
   'mar',
@@ -40,7 +40,7 @@ const monthKeys = [
 ] as const
 
 const formatPerformanceValue = (value: number | null): string => {
-  if (value === null) return '-'
+  if (value === null || value === undefined) return '-'
   return `${value >= 0 ? '+' : ''}${value.toFixed(2)}%`
 }
 
@@ -69,7 +69,7 @@ const NetPerformanceSummary = ({ data }: NetPerformanceSummaryProps) => {
     const rows = data.map((yearData) => {
       const monthValues = monthKeys.map((key) => {
         const value = yearData[key]?.value
-        return value !== null ? value.toFixed(2) : ''
+        return value !== null && value !== undefined ? value.toFixed(2) : ''
       })
       return [
         yearData.year,

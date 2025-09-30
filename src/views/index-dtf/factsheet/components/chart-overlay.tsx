@@ -56,32 +56,34 @@ const ChartOverlay = ({ timeseries, currentNav }: ChartOverlayProps) => {
           ) : (
             <>${formatToSignificantDigits(currentNav)}</>
           )}
-          <div className="text-sm">
-            {percentageChange === undefined ? (
-              <Skeleton className="w-[100px] h-6" />
-            ) : (
-              <div
-                className={cn(
-                  'flex items-center',
-                  percentageChange < 0
-                    ? 'text-red-500'
-                    : percentageChange > 0
-                      ? 'text-success'
-                      : ''
-                )}
-              >
-                {percentageChange > 0 ? (
-                  <ArrowUp className="h-4 w-4" />
-                ) : (
-                  <ArrowDown className="h-4 w-4" />
-                )}
-                {`${percentageChange.toFixed(2)}%`}
-                <span className="ml-1">
-                  ({range === 'all' ? 'All' : range})
-                </span>
-              </div>
-            )}
-          </div>
+          {chartType === 'navGrowth' && (
+            <div className="text-sm">
+              {percentageChange === undefined ? (
+                <Skeleton className="w-[100px] h-6" />
+              ) : (
+                <div
+                  className={cn(
+                    'flex items-center',
+                    percentageChange < 0
+                      ? 'text-red-500'
+                      : percentageChange > 0
+                        ? 'text-success'
+                        : ''
+                  )}
+                >
+                  {percentageChange > 0 ? (
+                    <ArrowUp className="h-4 w-4" />
+                  ) : (
+                    <ArrowDown className="h-4 w-4" />
+                  )}
+                  {`${percentageChange.toFixed(2)}%`}
+                  <span className="ml-1">
+                    ({range === 'all' ? 'All' : range})
+                  </span>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </div>
