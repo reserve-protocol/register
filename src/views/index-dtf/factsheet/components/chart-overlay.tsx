@@ -8,7 +8,7 @@ import Skeleton from 'react-loading-skeleton'
 import { timeRangeAtom } from '../../overview/components/charts/time-range-selector'
 import IndexTokenLogo from '../../overview/components/index-token-logo'
 import { factsheetChartTypeAtom } from '../atoms'
-import type { ChartDataPoint } from '../mocks/factsheet-data'
+import type { ChartDataPoint } from '../types/factsheet-data'
 
 interface ChartOverlayProps {
   timeseries: ChartDataPoint[]

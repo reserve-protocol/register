@@ -3,10 +3,10 @@ import { Card } from '@/components/ui/card'
 import { ArrowDownIcon, ArrowUpIcon, DownloadIcon } from 'lucide-react'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { useAtomValue } from 'jotai'
-import type { NetPerformanceYear } from '../mocks/factsheet-data'
+import type { NetPerformanceYear } from '../types/factsheet-data'
 
 interface NetPerformanceSummaryProps {
-  data: NetPerformanceYear[]
+  data: NetPerformanceYear[] | null
 }
 
 const monthColumns = [
@@ -46,6 +46,22 @@ const formatPerformanceValue = (value: number | null): string => {
 
 const NetPerformanceSummary = ({ data }: NetPerformanceSummaryProps) => {
   const dtf = useAtomValue(indexDTFAtom)
+
+  // Show loading state or empty state if no data
+  if (!data || data.length === 0) {
+    return (
+      <Card className="bg-background border-secondary rounded-3xl mx-1 mb-1">
+        <div className="p-6">
+          <h3 className="text-xl sm:text-2xl font-light mb-4">
+            Net Performance Summary - {dtf?.token?.name || 'Index'}
+          </h3>
+          <div className="text-center py-8 text-muted-foreground">
+            Loading performance data...
+          </div>
+        </div>
+      </Card>
+    )
+  }
 
   const handleDownloadCSV = () => {
     // Create CSV content

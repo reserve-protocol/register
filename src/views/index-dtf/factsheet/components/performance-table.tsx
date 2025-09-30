@@ -1,5 +1,5 @@
 import dayjs from 'dayjs'
-import type { PerformanceData } from '../mocks/factsheet-data'
+import type { PerformanceData } from '../types/factsheet-data'
 import { CalendarRange } from 'lucide-react'
 
 interface PerformanceTableProps {
@@ -55,11 +55,11 @@ const PerformanceTable = ({
                     {row.label}
                   </td>
                   <td
-                    className="w-1/2 px-5 py-6 text-sm font-light text-right align-middle border-l border-white/10 dark:border-border/50 ${
-                    row.value === null
-                      ? 'text-white/40 dark:text-muted-foreground'
-                      : 'text-white'
-                  }"
+                    className={`w-1/2 px-5 py-6 text-sm font-light text-right align-middle border-l border-white/10 dark:border-border/50 ${
+                      row.value === null
+                        ? 'text-white/40 dark:text-muted-foreground'
+                        : 'text-white dark:text-foreground'
+                    }`}
                   >
                     {formatPerformanceValue(row.value)}
                   </td>

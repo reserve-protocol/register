@@ -2,14 +2,11 @@ import { Button } from '@/components/ui/button'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { useAtomValue } from 'jotai'
 import { ArrowLeft } from 'lucide-react'
-import { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { timeRangeAtom } from '../overview/components/charts/time-range-selector'
 import FactsheetChart from './components/factsheet-chart'
 import NetPerformanceSummary from './components/net-performance-summary'
 import PerformanceTable from './components/performance-table'
 import { useFactsheetData } from './hooks/use-factsheet-data'
-import type { TimeRange } from './mocks/factsheet-data'
 
 const Header = () => {
   const navigate = useNavigate()
@@ -39,19 +36,7 @@ const Header = () => {
 }
 
 const IndexDTFFactsheet = () => {
-  const dtf = useAtomValue(indexDTFAtom)
-  const timeRange = useAtomValue(timeRangeAtom)
-
-  const prefetchRanges = useMemo(() => {
-    const allRanges: TimeRange[] = ['24h', '7d', '1m', '3m', '1y', 'all']
-    return allRanges.filter((r) => r !== timeRange)
-  }, [timeRange])
-
-  const { data, isLoading } = useFactsheetData({
-    address: dtf?.id,
-    timeRange,
-    prefetchRanges,
-  })
+  const { data, isLoading } = useFactsheetData()
 
   return (
     <div className="container mx-auto px-4 py-6 max-w-full">
@@ -63,7 +48,10 @@ const IndexDTFFactsheet = () => {
           <div className="bg-[#000] dark:bg-background lg:dark:bg-muted rounded-3xl">
             <div className="grid grid-cols-3">
               <div className="col-span-2">
-                <FactsheetChart data={data} isLoading={isLoading} />
+                <FactsheetChart
+                  data={data}
+                  isLoading={isLoading}
+                />
               </div>
               <div className="col-span-1 flex items-end border-l border-white/10">
                 <PerformanceTable
@@ -86,7 +74,10 @@ const IndexDTFFactsheet = () => {
         {/* Mobile */}
         <div className="lg:hidden">
           <div>
-            <FactsheetChart data={data} isLoading={isLoading} />
+            <FactsheetChart
+              data={data}
+              isLoading={isLoading}
+            />
           </div>
           <div className="bg-[#000] dark:bg-background rounded-3xl p-4">
             <PerformanceTable
@@ -104,9 +95,7 @@ const IndexDTFFactsheet = () => {
           </div>
         </div>
 
-        {data?.netPerformance && (
-          <NetPerformanceSummary data={data.netPerformance} />
-        )}
+        <NetPerformanceSummary data={data?.netPerformance || null} />
       </div>
     </div>
   )

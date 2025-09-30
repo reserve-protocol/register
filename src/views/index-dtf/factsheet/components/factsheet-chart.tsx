@@ -25,6 +25,7 @@ import { useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import ChartOverlay from './chart-overlay'
 import ChartTypeSelector from './chart-type-selector'
+import type { FactsheetData } from '../types/factsheet-data'
 
 const chartConfig = {
   desktop: {
@@ -54,7 +55,7 @@ function CustomTooltip({ payload, active, chartType }: any) {
 }
 
 interface FactsheetChartProps {
-  data: any
+  data?: FactsheetData
   isLoading?: boolean
 }
 
@@ -100,14 +101,21 @@ const FactsheetChart = ({ data, isLoading }: FactsheetChartProps) => {
   }, [chartType, setTimeRange])
 
   const chartData = useMemo(() => {
-    if (!data?.chartData) return []
-
-    return data.chartData.map((point: any) => ({
-      ...point,
-      displayValue:
-        chartType === 'navGrowth' ? point.navGrowth : point.monthlyPL,
-    }))
-  }, [data?.chartData, chartType])
+    if (chartType === 'navGrowth') {
+      if (!data?.chartData) return []
+      return data.chartData.map((point: any) => ({
+        ...point,
+        displayValue: point.navGrowth,
+      }))
+    } else {
+      // Use monthly aggregated data for P&L chart
+      if (!data?.monthlyChartData) return []
+      return data.monthlyChartData.map((point: any) => ({
+        ...point,
+        displayValue: point.monthlyPL,
+      }))
+    }
+  }, [data?.chartData, data?.monthlyChartData, chartType])
 
   const formatXAxisTick = (timestamp: number) => {
     const date = dayjs.unix(timestamp)

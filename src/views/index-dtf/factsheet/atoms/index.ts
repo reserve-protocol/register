@@ -1,4 +1,4 @@
 import { atom } from 'jotai'
-import { type ChartType } from '../mocks/factsheet-data'
+import { type ChartType } from '../types/factsheet-data'
 
 export const factsheetChartTypeAtom = atom<ChartType>('navGrowth')

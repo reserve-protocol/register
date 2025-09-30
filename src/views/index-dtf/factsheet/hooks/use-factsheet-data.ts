@@ -1,60 +1,113 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query'
-import { useEffect } from 'react'
-import { Address } from 'viem'
+import { iTokenAddressAtom } from '@/state/dtf/atoms'
+import { useAtomValue } from 'jotai'
+import useIndexDTFPriceHistory from '../../overview/hooks/use-dtf-price-history'
+import { timeRangeAtom } from '../../overview/components/charts/time-range-selector'
+import { getRangeParams } from '../utils/constants'
 import {
-  type TimeRange,
-  type FactsheetData,
-  mockFactsheetData
-} from '../mocks/factsheet-data'
+  calculateMonthlyChartData,
+  calculatePerformance,
+  generateNetPerformanceData,
+} from '../utils/calculations'
+import { TIME_PERIODS } from '../utils/constants'
+import type {
+  FactsheetData,
+  ChartDataPoint,
+  PerformanceData,
+} from '../types/factsheet-data'
+import { useMemo } from 'react'
 
-interface UseFactsheetDataParams {
-  address?: Address
-  timeRange: TimeRange
-  prefetchRanges?: TimeRange[]
-}
+const prefetchRanges = ['24h', '7d', '1m', '3m', '1y'].map(getRangeParams)
 
-const REFRESH_INTERVAL = 1000 * 60 * 30 // 30 minutes
+export const useFactsheetData = () => {
+  const address = useAtomValue(iTokenAddressAtom)
+  const timeRange = useAtomValue(timeRangeAtom)
 
-// Mock API call - replace with actual API call later
-const fetchFactsheetData = async (
-  address: Address | undefined,
-  timeRange: TimeRange
-): Promise<FactsheetData> => {
-  // Simulate API delay
-  await new Promise(resolve => setTimeout(resolve, 500))
+  const currentRangeParams = getRangeParams(timeRange)
+  const allRangeParams = getRangeParams('all')
 
-  // Return mock data for now
-  return mockFactsheetData[timeRange]
-}
-
-export const useFactsheetData = ({
-  address,
-  timeRange,
-  prefetchRanges = []
-}: UseFactsheetDataParams) => {
-  const queryClient = useQueryClient()
-
-  // Main query for selected time range
-  const mainQuery = useQuery({
-    queryKey: ['factsheet-data', address, timeRange],
-    queryFn: async () => fetchFactsheetData(address, timeRange),
-    enabled: Boolean(address),
-    refetchInterval: REFRESH_INTERVAL,
-    staleTime: REFRESH_INTERVAL
-  })
-
-  // Prefetch other time ranges in background
-  useEffect(() => {
-    if (!address) return
-
-    prefetchRanges.forEach(range => {
-      queryClient.prefetchQuery({
-        queryKey: ['factsheet-data', address, range],
-        queryFn: async () => fetchFactsheetData(address, range),
-        staleTime: REFRESH_INTERVAL
-      })
+  const { data: currentRangeData, isLoading: currentLoading } =
+    useIndexDTFPriceHistory({
+      address,
+      from: currentRangeParams.from,
+      to: currentRangeParams.to,
+      interval: currentRangeParams.interval,
+      prefetchRanges,
     })
-  }, [address, queryClient, prefetchRanges])
 
-  return mainQuery
+  const { data: allRangeData, isLoading: allLoading } = useIndexDTFPriceHistory(
+    {
+      address,
+      from: allRangeParams.from,
+      to: allRangeParams.to,
+      interval: allRangeParams.interval,
+    }
+  )
+
+  const factsheetData = useMemo<FactsheetData | undefined>(() => {
+    if (!currentRangeData?.timeseries || !allRangeData?.timeseries) {
+      return undefined
+    }
+
+    const currentTimeseries = currentRangeData.timeseries
+    const allTimeseries = allRangeData.timeseries
+
+    if (currentTimeseries.length === 0 || allTimeseries.length === 0) {
+      return undefined
+    }
+
+    const navChartData: ChartDataPoint[] = currentTimeseries.map((point) => ({
+      timestamp: point.timestamp,
+      value: point.price,
+      navGrowth: point.price,
+      monthlyPL: 0,
+    }))
+
+    const monthlyChartData = calculateMonthlyChartData(currentTimeseries)
+
+    const currentPrice = allTimeseries[allTimeseries.length - 1].price
+    const inception = allTimeseries[0].timestamp
+    const now = Math.floor(Date.now() / 1000)
+
+    const threeMonthsAgo = allTimeseries.find(
+      (p) => p.timestamp >= now - TIME_PERIODS.THREE_MONTHS
+    )
+    const sixMonthsAgo = allTimeseries.find(
+      (p) => p.timestamp >= now - TIME_PERIODS.SIX_MONTHS
+    )
+    const yearAgo = allTimeseries.find(
+      (p) => p.timestamp >= now - TIME_PERIODS.YEAR
+    )
+
+    const currentYear = new Date().getFullYear()
+    const jan1Timestamp = Math.floor(
+      new Date(currentYear, 0, 1).getTime() / 1000
+    )
+    const yearStart = allTimeseries.find((p) => p.timestamp >= jan1Timestamp)
+
+    const performance: PerformanceData = {
+      '3m': calculatePerformance(currentPrice, threeMonthsAgo?.price),
+      '6m': calculatePerformance(currentPrice, sixMonthsAgo?.price),
+      ytd: yearStart
+        ? calculatePerformance(currentPrice, yearStart.price)
+        : null,
+      '1y': calculatePerformance(currentPrice, yearAgo?.price),
+      all: calculatePerformance(currentPrice, allTimeseries[0].price),
+    }
+
+    const netPerformance = generateNetPerformanceData(allTimeseries)
+
+    return {
+      chartData: navChartData,
+      monthlyChartData,
+      performance,
+      netPerformance,
+      inception,
+      currentNav: currentPrice,
+    }
+  }, [currentRangeData, allRangeData])
+
+  return {
+    data: factsheetData,
+    isLoading: currentLoading || allLoading,
+  }
 }
