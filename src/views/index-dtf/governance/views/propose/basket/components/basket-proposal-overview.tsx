@@ -3,10 +3,19 @@ import { Button } from '@/components/ui/button'
 import Timeline from '@/components/ui/timeline'
 import { useAtom, useAtomValue } from 'jotai'
 import { Link } from 'react-router-dom'
-import { isBasketProposalValidAtom, isProposalConfirmedAtom } from '../atoms'
+import {
+  isBasketProposalValidAtom,
+  isProposalConfirmedAtom,
+  basketProposalCalldatasAtom,
+  proposalDescriptionAtom,
+} from '../atoms'
 import SubmitProposalButton from './submit-proposal-button'
 import { ROUTES } from '@/utils/constants'
 import { indexDTFAtom, indexDTFBrandAtom } from '@/state/dtf/atoms'
+import SimulateProposal from '@/views/index-dtf/governance/components/simulate-proposal'
+import useProposalSimulation from '@/hooks/use-proposal-simulation'
+import { chainIdAtom } from '@/state/atoms'
+import { Address } from 'viem'
 
 // TODO: get governance route to navigate back to governance
 const Header = () => {
@@ -81,11 +90,72 @@ const ProposalInstructions = () => {
   )
 }
 
-const BasketProposalOverview = () => {
+const SimulateProposalCard = () => {
+  const isProposalConfirmed = useAtomValue(isProposalConfirmedAtom)
+  const calldatas = useAtomValue(basketProposalCalldatasAtom)
+  const description = useAtomValue(proposalDescriptionAtom)
+  const indexDTF = useAtomValue(indexDTFAtom)
+  const chainId = useAtomValue(chainIdAtom)
+
+  // Determine which governance to use (trading for basket changes)
+  const governorAddress = indexDTF?.tradingGovernance?.id as Address
+  const timelockAddress = indexDTF?.tradingGovernance?.timelock?.id as Address
+  const voteTokenAddress = indexDTF?.stToken?.id as Address
+
+  const { data, loading, error, isReady, handleSimulation } =
+    useProposalSimulation(
+      governorAddress,
+      timelockAddress,
+      voteTokenAddress,
+      chainId
+    )
+
+  const onSimulate = () => {
+    if (!calldatas || !description || !indexDTF) return
+
+    // Construct targets array (DTF address repeated for each calldata)
+    const targets = calldatas.map(() => indexDTF.id as Address)
+    const values = calldatas.map(() => 0n)
+
+    const config = {
+      targets,
+      values,
+      calldatas,
+      description,
+    }
+
+    handleSimulation(config)
+  }
+
+  if (!isProposalConfirmed) return null
+
   return (
-    <div className="border-4 overflow-hidden w-full border-secondary rounded-3xl bg-background h-[fit-content] sticky top-0">
-      <Header />
-      <ProposalInstructions />
+    <SimulateProposal
+      isLoading={loading}
+      simulation={data}
+      error={error}
+      onSimulate={onSimulate}
+      isReady={isReady && !!calldatas && !!description}
+    />
+  )
+}
+
+const BasketProposalOverview = () => {
+  const isProposalConfirmed = useAtomValue(isProposalConfirmedAtom)
+
+  return (
+    <div className="flex flex-col gap-2">
+      <div
+        className={
+          !isProposalConfirmed
+            ? 'border-4 overflow-hidden w-full border-secondary rounded-3xl bg-background h-[fit-content] sticky top-0'
+            : 'border-4 overflow-hidden w-full border-secondary rounded-3xl bg-background h-[fit-content]'
+        }
+      >
+        <Header />
+        <ProposalInstructions />
+      </div>
+      <SimulateProposalCard />
     </div>
   )
 }

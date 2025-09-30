@@ -9,9 +9,15 @@ import {
   isProposalConfirmedAtom,
   isProposalValidAtom,
   isFormValidAtom,
+  dtfSettingsProposalDataAtom,
+  proposalDescriptionAtom,
 } from '../atoms'
 import DTFSettingsProposalChanges from './dtf-settings-proposal-changes'
 import SubmitProposalButton from './submit-proposal-button'
+import SimulateProposal from '@/views/index-dtf/governance/components/simulate-proposal'
+import useProposalSimulation from '@/hooks/use-proposal-simulation'
+import { chainIdAtom } from '@/state/atoms'
+import { Address } from 'viem'
 
 const ConfirmProposalButton = () => {
   const isValid = useAtomValue(isProposalValidAtom)
@@ -127,6 +133,51 @@ const ProposalOverview = () => {
   )
 }
 
+const SimulateProposalCard = () => {
+  const isProposalConfirmed = useAtomValue(isProposalConfirmedAtom)
+  const proposalData = useAtomValue(dtfSettingsProposalDataAtom)
+  const description = useAtomValue(proposalDescriptionAtom)
+  const indexDTF = useAtomValue(indexDTFAtom)
+  const chainId = useAtomValue(chainIdAtom)
+
+  const governorAddress = indexDTF?.ownerGovernance?.id as Address
+  const timelockAddress = indexDTF?.ownerGovernance?.timelock?.id as Address
+  const voteTokenAddress = indexDTF?.stToken?.id as Address
+
+  const { data, loading, error, isReady, handleSimulation } =
+    useProposalSimulation(
+      governorAddress,
+      timelockAddress,
+      voteTokenAddress,
+      chainId
+    )
+
+  const onSimulate = () => {
+    if (!proposalData || !description) return
+
+    const config = {
+      targets: proposalData.targets,
+      values: proposalData.calldatas.map(() => 0n), // DTF settings proposals have no value transfers
+      calldatas: proposalData.calldatas,
+      description: description,
+    }
+
+    handleSimulation(config)
+  }
+
+  if (!isProposalConfirmed) return null
+
+  return (
+    <SimulateProposal
+      isLoading={loading}
+      simulation={data}
+      error={error}
+      onSimulate={onSimulate}
+      isReady={isReady && !!proposalData && !!description}
+    />
+  )
+}
+
 const DTFSettingsProposalOverview = () => {
   const isProposalConfirmed = useAtomValue(isProposalConfirmedAtom)
 
@@ -136,6 +187,7 @@ const DTFSettingsProposalOverview = () => {
         <ProposalOverview />
       </div>
       <VaultProposalChangePreview />
+      <SimulateProposalCard />
     </div>
   )
 }

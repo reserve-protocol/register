@@ -9,9 +9,15 @@ import {
   isProposalConfirmedAtom,
   isProposalValidAtom,
   isFormValidAtom,
+  basketSettingsProposalDataAtom,
+  proposalDescriptionAtom,
 } from '../atoms'
 import SubmitProposalButton from './submit-proposal-button'
 import BasketSettingsProposalChanges from './basket-settings-proposal-changes'
+import SimulateProposal from '@/views/index-dtf/governance/components/simulate-proposal'
+import useProposalSimulation from '@/hooks/use-proposal-simulation'
+import { chainIdAtom } from '@/state/atoms'
+import { Address } from 'viem'
 
 const ConfirmProposalButton = () => {
   const isValid = useAtomValue(isProposalValidAtom)
@@ -128,6 +134,51 @@ const ProposalOverview = () => {
   )
 }
 
+const SimulateProposalCard = () => {
+  const isProposalConfirmed = useAtomValue(isProposalConfirmedAtom)
+  const proposalData = useAtomValue(basketSettingsProposalDataAtom)
+  const description = useAtomValue(proposalDescriptionAtom)
+  const indexDTF = useAtomValue(indexDTFAtom)
+  const chainId = useAtomValue(chainIdAtom)
+
+  const governorAddress = indexDTF?.tradingGovernance?.id as Address
+  const timelockAddress = indexDTF?.tradingGovernance?.timelock?.id as Address
+  const voteTokenAddress = indexDTF?.stToken?.id as Address
+
+  const { data, loading, error, isReady, handleSimulation } =
+    useProposalSimulation(
+      governorAddress,
+      timelockAddress,
+      voteTokenAddress,
+      chainId
+    )
+
+  const onSimulate = () => {
+    if (!proposalData || !description) return
+
+    const config = {
+      targets: proposalData.targets,
+      values: proposalData.calldatas.map(() => 0n), // Basket settings proposals have no value transfers
+      calldatas: proposalData.calldatas,
+      description: description,
+    }
+
+    handleSimulation(config)
+  }
+
+  if (!isProposalConfirmed) return null
+
+  return (
+    <SimulateProposal
+      isLoading={loading}
+      simulation={data}
+      error={error}
+      onSimulate={onSimulate}
+      isReady={isReady && !!proposalData && !!description}
+    />
+  )
+}
+
 const BasketSettingsProposalOverview = () => {
   const isProposalConfirmed = useAtomValue(isProposalConfirmedAtom)
 
@@ -137,6 +188,7 @@ const BasketSettingsProposalOverview = () => {
         <ProposalOverview />
       </div>
       <BasketProposalChangePreview />
+      <SimulateProposalCard />
     </div>
   )
 }
