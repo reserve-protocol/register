@@ -1,9 +1,6 @@
 import { SimulationConfig } from '@/types'
 import { useCallback, useMemo, useState } from 'react'
-import {
-  TenderlyPayload,
-  TenderlySimulation,
-} from 'types'
+import { TenderlyPayload, TenderlySimulation } from 'types'
 import { Address } from 'viem'
 import { useBlock, useReadContract } from 'wagmi'
 
@@ -43,10 +40,6 @@ const getFetchOptions = (payload: any) => {
   }
 }
 
-// Note: We no longer use Tenderly's encoding API for OZ v5.0.0 contracts
-// because it doesn't support ERC-7201 namespaced storage.
-// Instead, we calculate storage slots manually using the functions above.
-
 /**
  * @notice Sends a transaction simulation request to the Tenderly API
  * @dev Uses a simple exponential backoff when requests fail, with the following parameters:
@@ -83,75 +76,98 @@ const sendSimulation = async (
 const sleep = (delay: number) =>
   new Promise((resolve) => setTimeout(resolve, delay)) // delay in milliseconds
 
-// ERC-7201 namespaced storage locations for OZ v5.0.0
-// TimelockController: keccak256(abi.encode(uint256(keccak256("openzeppelin.storage.TimelockController")) - 1)) & ~bytes32(uint256(0xff))
+// ERC-7201 namespaced storage locations for OpenZeppelin v5.0.0
+const GOVERNOR_STORAGE_LOCATION = '0x7c712897014dbe49c045ef1299aa2d5f9e67e48eea4403efa21f1e0f3ac0cb00'
+const GOVERNOR_COUNTING_STORAGE_LOCATION = '0xa1cefa0f43667ef127a258e673c94202a79b656e62899531c4376d87a7f39800'
+const GOVERNOR_TIMELOCK_STORAGE_LOCATION = '0x0d5829787b8befdbc6044ef7457d8a95c2a04bc99235349f1a212c063e59d400'
 const TIMELOCK_STORAGE_LOCATION = '0x9a37c2aa9d186a0969ff8a8267bf4e07e864c2f2768f5040949e28a624fb3600'
 
-// Governor base storage (for _proposals mapping)
-// openzeppelin.storage.Governor
-const GOVERNOR_STORAGE_LOCATION = '0x7c712897014dbe49c045ef1299aa2d5f9e67e48eea4403efa21f1e0f3ac0cb00'
-
-// GovernorCountingSimple storage (for _proposalVotes mapping)
-// openzeppelin.storage.GovernorCountingSimple
-const GOVERNOR_COUNTING_STORAGE_LOCATION = '0xa1cefa0f43667ef127a258e673c94202a79b656e62899531c4376d87a7f39800'
-
-// GovernorTimelockControl storage (for _timelockIds mapping)
-// openzeppelin.storage.GovernorTimelockControl
-const GOVERNOR_TIMELOCK_STORAGE_LOCATION = '0x0d5829787b8befdbc6044ef7457d8a95c2a04bc99235349f1a212c063e59d400'
-
 /**
- * Calculate storage slot for a mapping(bytes32 => uint256) at a namespaced location
+ * Calculate storage slot for Timelock's _timestamps mapping
+ * Location: TimelockControllerStorageLocation + 0 (first field in struct)
  */
-const getTimestampSlot = (id: `0x${string}`): `0x${string}` => {
-  // _timestamps is at offset 0 in TimelockControllerStorage struct
-  // Slot = keccak256(abi.encode(id, TIMELOCK_STORAGE_LOCATION + 0))
-  const slot = keccak256(encodeAbiParameters(
-    parseAbiParameters('bytes32, bytes32'),
-    [id, TIMELOCK_STORAGE_LOCATION as `0x${string}`]
+const getTimelockTimestampSlot = (operationId: bigint): `0x${string}` => {
+  const baseSlot = BigInt(TIMELOCK_STORAGE_LOCATION) + 0n // offset 0
+  return keccak256(encodeAbiParameters(
+    parseAbiParameters('bytes32, uint256'),
+    [toHex(operationId, { size: 32 }), baseSlot]
   ))
-  return slot
 }
 
 /**
  * Calculate storage slot for Governor's _proposals mapping
- * mapping(uint256 => ProposalCore) _proposals
+ * Location: GovernorStorageLocation + 1 (second field, after _name)
  */
-const getProposalSlot = (proposalId: bigint): `0x${string}` => {
-  // _proposals is at offset 0 in GovernorStorage struct
-  const baseSlot = GOVERNOR_STORAGE_LOCATION
-  const slot = keccak256(encodeAbiParameters(
-    parseAbiParameters('uint256, bytes32'),
-    [proposalId, baseSlot as `0x${string}`]
+const getProposalBaseSlot = (proposalId: bigint): `0x${string}` => {
+  const baseSlot = BigInt(GOVERNOR_STORAGE_LOCATION) + 1n // offset 1
+  return keccak256(encodeAbiParameters(
+    parseAbiParameters('uint256, uint256'),
+    [proposalId, baseSlot]
   ))
-  return slot
 }
 
 /**
  * Calculate storage slot for Governor's _proposalVotes mapping
- * This is in the GovernorCountingSimple extension storage namespace
+ * Location: GovernorCountingSimpleStorageLocation + 0 (first field)
  */
-const getProposalVotesSlot = (proposalId: bigint): `0x${string}` => {
-  // _proposalVotes is at offset 0 in GovernorCountingSimpleStorage struct
-  const baseSlot = GOVERNOR_COUNTING_STORAGE_LOCATION
-  const slot = keccak256(encodeAbiParameters(
-    parseAbiParameters('uint256, bytes32'),
-    [proposalId, baseSlot as `0x${string}`]
+const getProposalVotesBaseSlot = (proposalId: bigint): `0x${string}` => {
+  const baseSlot = BigInt(GOVERNOR_COUNTING_STORAGE_LOCATION) + 0n // offset 0
+  return keccak256(encodeAbiParameters(
+    parseAbiParameters('uint256, uint256'),
+    [proposalId, baseSlot]
   ))
-  return slot
 }
 
 /**
  * Calculate storage slot for Governor's _timelockIds mapping
- * This is in the GovernorTimelockControl extension storage namespace
+ * Location: GovernorTimelockControlStorageLocation + 1 (second field, after _timelock)
  */
-const getTimelockIdsSlot = (proposalId: bigint): `0x${string}` => {
-  // _timelockIds is at offset 0 in GovernorTimelockControlStorage struct
-  const baseSlot = GOVERNOR_TIMELOCK_STORAGE_LOCATION
-  const slot = keccak256(encodeAbiParameters(
-    parseAbiParameters('uint256, bytes32'),
-    [proposalId, baseSlot as `0x${string}`]
+const getTimelockIdSlot = (proposalId: bigint): `0x${string}` => {
+  const baseSlot = BigInt(GOVERNOR_TIMELOCK_STORAGE_LOCATION) + 1n // offset 1
+  return keccak256(encodeAbiParameters(
+    parseAbiParameters('uint256, uint256'),
+    [proposalId, baseSlot]
   ))
-  return slot
+}
+
+/**
+ * Pack ProposalCore struct into 2 storage slots
+ *
+ * Struct layout (38 bytes total):
+ * - address proposer (20 bytes)
+ * - uint48 voteStart (6 bytes)
+ * - uint32 voteDuration (4 bytes)
+ * - bool executed (1 byte)
+ * - bool canceled (1 byte)
+ * - uint48 etaSeconds (6 bytes)
+ *
+ * Storage layout:
+ * Slot 0: proposer(160 bits) | voteStart(48 bits) | voteDuration(32 bits) | executed(1 bit) | canceled(1 bit)
+ * Slot 1: etaSeconds(48 bits)
+ */
+const packProposalCore = (
+  proposer: Address,
+  voteStart: bigint,
+  voteDuration: bigint,
+  executed: boolean,
+  canceled: boolean,
+  etaSeconds: bigint
+): { slot0: `0x${string}`; slot1: `0x${string}` } => {
+  // Slot 0: Pack all fields except etaSeconds
+  const slot0 =
+    (BigInt(proposer) & ((1n << 160n) - 1n)) | // proposer at bits 0-159
+    ((voteStart & ((1n << 48n) - 1n)) << 160n) | // voteStart at bits 160-207
+    ((voteDuration & ((1n << 32n) - 1n)) << 208n) | // voteDuration at bits 208-239
+    ((executed ? 1n : 0n) << 240n) | // executed at bit 240
+    ((canceled ? 1n : 0n) << 241n) // canceled at bit 241
+
+  // Slot 1: etaSeconds only
+  const slot1 = etaSeconds & ((1n << 48n) - 1n)
+
+  return {
+    slot0: pad(toHex(slot0), { size: 32 }),
+    slot1: pad(toHex(slot1), { size: 32 }),
+  }
 }
 
 const simulateNew = async (
@@ -191,104 +207,67 @@ const simulateNew = async (
   }
   const timelockSalt = `0x${saltBuffer.toString('hex')}` as Address
 
-  const timelockOperationId = keccak256(
-    encodeAbiParameters(
-      parseAbiParameters('address[], uint256[], bytes[], bytes32, bytes32'),
-      [
-        targets,
-        values,
-        calldatas,
-        '0x0000000000000000000000000000000000000000000000000000000000000000',
-        timelockSalt,
-      ]
+  const timelockOperationId = BigInt(
+    keccak256(
+      encodeAbiParameters(
+        parseAbiParameters('address[], uint256[], bytes[], bytes32, bytes32'),
+        [
+          targets,
+          values,
+          calldatas,
+          '0x0000000000000000000000000000000000000000000000000000000000000000',
+          timelockSalt,
+        ]
+      )
     )
   )
 
-  // Calculate the exact storage slot for _timestamps[timelockOperationId] using ERC-7201
-  const timestampSlot = getTimestampSlot(timelockOperationId)
-
-  // Set timelock timestamp to 1 day in the past to ensure execution delay has passed
-  const timelockStorage: Record<string, string> = {
-    [timestampSlot]: toHex(simTimestamp - 86400n, { size: 32 })
-  }
-
-  // Calculate exact storage slots for governor state using ERC-7201
-  const proposalSlot = getProposalSlot(proposalId)
-  const proposalVotesSlot = getProposalVotesSlot(proposalId)
-  const timelockIdsSlot = getTimelockIdsSlot(proposalId)
-
-  // OZ v5 ProposalCore struct layout (packed in ONE slot):
-  // In Solidity storage, first field = LSB (rightmost), last field = MSB (leftmost)
-  // struct ProposalCore {
-  //   address proposer;      // bytes 0-19 (LSB/rightmost)
-  //   uint48 voteStart;      // bytes 20-25
-  //   uint32 voteDuration;   // bytes 26-29
-  //   bool executed;         // byte 30
-  //   bool canceled;         // byte 31 (MSB/leftmost)
-  // }
-  // Hex representation: 0x[canceled][executed][voteDuration][voteStart][proposer]
-
+  // Manual ERC-7201 storage slot calculation (Tenderly encoding API doesn't support this)
   const voteStartTime = simTimestamp - 200n
   const voteDuration = 100n
 
-  // Pack all ProposalCore fields into a single 32-byte slot
-  // Build from MSB to LSB (left to right in hex string)
-  const proposerAddress = '0x0000000000000000000000000000000000000001' // dummy proposer
-  const packedProposalCore =
-    '00' +  // 1 byte canceled (false) - MSB/leftmost
-    '00' +  // 1 byte executed (false)
-    voteDuration.toString(16).padStart(8, '0') +    // 4 bytes voteDuration (uint32)
-    voteStartTime.toString(16).padStart(12, '0') +  // 6 bytes voteStart (uint48)
-    proposerAddress.slice(2).padStart(40, '0')      // 20 bytes proposer - LSB/rightmost
+  // Calculate all required storage slots
+  const timelockTimestampSlot = getTimelockTimestampSlot(timelockOperationId)
+  const proposalBaseSlot = getProposalBaseSlot(proposalId)
+  const proposalVotesBaseSlot = getProposalVotesBaseSlot(proposalId)
+  const timelockIdSlot = getTimelockIdSlot(proposalId)
 
-  // ProposalVotes struct layout:
-  // struct ProposalVotes {
-  //   uint256 againstVotes;  // slot+0
-  //   uint256 forVotes;      // slot+1
-  //   uint256 abstainVotes;  // slot+2
-  // }
-  const votesSlotBase = BigInt(proposalVotesSlot)
+  // Pack ProposalCore struct
+  const proposalCore = packProposalCore(
+    '0x0000000000000000000000000000000000000000', // proposer (unused in simulation)
+    voteStartTime,
+    voteDuration,
+    false, // executed
+    false, // canceled
+    0n // etaSeconds (unused)
+  )
 
-  const governorStorage: Record<string, string> = {
-    // ProposalCore - all fields packed in one slot
-    [proposalSlot]: `0x${packedProposalCore}`,
-
-    // ProposalVotes - three separate uint256 slots (must be 32-byte hex strings)
-    [toHex(votesSlotBase, { size: 32 })]: toHex(0n, { size: 32 }), // againstVotes
-    [toHex(votesSlotBase + 1n, { size: 32 })]: toHex(voteTokenSupply, { size: 32 }), // forVotes
-    [toHex(votesSlotBase + 2n, { size: 32 })]: toHex(0n, { size: 32 }), // abstainVotes
-
-    // Link proposal to timelock operation
-    [timelockIdsSlot]: timelockOperationId,
+  // Build storage overrides for both contracts
+  const timelockStorage: Record<string, `0x${string}`> = {
+    // _timestamps[operationId] = simTimestamp
+    [timelockTimestampSlot]: pad(toHex(simTimestamp), { size: 32 }),
   }
 
-  console.log('🔍 Storage calculation details:', {
-    proposalId: proposalId.toString(),
-    timelockOperationId,
-    simTimestamp: simTimestamp.toString(),
-    voteStartTime: voteStartTime.toString(),
-    voteDuration: voteDuration.toString(),
-  })
+  const governorStorage: Record<string, `0x${string}`> = {
+    // ProposalCore struct (2 slots)
+    [proposalBaseSlot]: proposalCore.slot0,
+    [toHex(BigInt(proposalBaseSlot) + 1n)]: proposalCore.slot1,
 
-  console.log('🔍 Storage slots:', {
-    timestampSlot,
-    proposalSlot,
-    proposalVotesSlot,
-    timelockIdsSlot,
-  })
+    // ProposalVote struct (3 slots: againstVotes, forVotes, abstainVotes)
+    [proposalVotesBaseSlot]: pad(toHex(0n), { size: 32 }), // againstVotes
+    [toHex(BigInt(proposalVotesBaseSlot) + 1n)]: pad(toHex(voteTokenSupply), { size: 32 }), // forVotes
+    [toHex(BigInt(proposalVotesBaseSlot) + 2n)]: pad(toHex(0n), { size: 32 }), // abstainVotes
 
-  console.log('🔍 Storage values:', {
-    timelockStorage,
-    governorStorage,
-  })
+    // _timelockIds[proposalId] = operationId
+    [timelockIdSlot]: pad(toHex(timelockOperationId, { size: 32 }), { size: 32 }),
+  }
 
-  console.log('🔍 Packed ProposalCore:', `0x${packedProposalCore}`)
-  console.log('🔍 Decoded ProposalCore:', {
-    canceled: packedProposalCore.slice(0, 2),
-    executed: packedProposalCore.slice(2, 4),
-    voteDuration: parseInt(packedProposalCore.slice(4, 12), 16),
-    voteStart: parseInt(packedProposalCore.slice(12, 24), 16),
-    proposer: '0x' + packedProposalCore.slice(24),
+  console.log('🔍 Calculated storage slots:', {
+    timelockTimestampSlot,
+    proposalBaseSlot,
+    proposalVotesBaseSlot,
+    timelockIdSlot,
+    proposalCore,
   })
 
   const executeInputs: [
@@ -320,7 +299,7 @@ const simulateNew = async (
     },
     state_objects: {
       [DEFAULT_FROM]: { balance: '0' },
-      // Use manually calculated storage slots (bypassing Tenderly's encoding API)
+      // Use manually calculated ERC-7201 storage slots
       [timelockAddress]: {
         storage: timelockStorage,
       },
@@ -329,24 +308,12 @@ const simulateNew = async (
       },
     },
   }
-  console.log('📤 Simulation payload:', simulationPayload)
+
+  console.log('📤 Simulation payload with manual storage:', {
+    timelockStorage,
+    governorStorage,
+  })
   const sim = await sendSimulation(simulationPayload)
-
-  console.log('📥 Simulation response:', sim)
-
-  // Check if simulation executed (even if the proposal call itself reverted)
-  if (sim?.simulation?.id) {
-    console.log('✅ Simulation created successfully!')
-    console.log('Transaction status:', sim.transaction?.status)
-    console.log('Error info:', sim.transaction?.error_info)
-
-    if (!sim.transaction?.status && sim.transaction?.error_info) {
-      console.warn('⚠️ Proposal call reverted (but simulation setup worked!):', {
-        errorAddress: sim.transaction.error_info.address,
-        errorMessage: sim.transaction.error_info.error_message,
-      })
-    }
-  }
 
   if (sim?.simulation?.id) {
     // Share simulation first
@@ -363,11 +330,6 @@ const useProposalSimulation = (
   voteTokenAddress: Address,
   chainId: number
 ) => {
-  console.log('ADASDASDASDASDASD', {
-    governorAddress,
-    timelockAddress,
-    voteTokenAddress,
-  })
   const { data: block } = useBlock({ chainId })
   const { data: voteTokenSupply } = useReadContract({
     address: voteTokenAddress,
@@ -387,8 +349,6 @@ const useProposalSimulation = (
       if (!block?.number || !voteTokenSupply) {
         return
       }
-
-      console.log('test', governorAddress, timelockAddress)
 
       setSimState((prev) => ({ ...prev, loading: true }))
       try {
