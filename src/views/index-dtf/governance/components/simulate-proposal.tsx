@@ -29,7 +29,7 @@ const SimulateProposal = ({
     if (hasSimulation) {
       return isSuccess ? 'Simulation successful ✓' : 'Simulation unsuccessful ✘'
     }
-    return 'Simulate proposal'
+    return 'Simulate again'
   }
 
   const getButtonVariant = () => {
@@ -110,15 +110,15 @@ const SimulateProposal = ({
         {/* Description */}
         {!isLoading && !hasSimulation && (
           <p className="text-sm text-muted-foreground max-w-md">
-            Simulate your proposal to see the outcome of its execution. A report
-            of its execution will be generated.
+            Your proposal is being automatically simulated. A report of its
+            execution will be generated.
           </p>
         )}
 
         {/* Loading message */}
         {isLoading && (
           <p className="text-sm text-muted-foreground">
-            Please wait while the simulation executes
+            Simulating proposal execution...
           </p>
         )}
 

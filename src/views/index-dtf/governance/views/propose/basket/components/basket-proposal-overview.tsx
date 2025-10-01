@@ -16,6 +16,7 @@ import SimulateProposal from '@/views/index-dtf/governance/components/simulate-p
 import useProposalSimulation from '@/hooks/use-proposal-simulation'
 import { chainIdAtom } from '@/state/atoms'
 import { Address } from 'viem'
+import { useEffect, useRef } from 'react'
 
 // TODO: get governance route to navigate back to governance
 const Header = () => {
@@ -93,7 +94,6 @@ const ProposalInstructions = () => {
 const SimulateProposalCard = () => {
   const isProposalConfirmed = useAtomValue(isProposalConfirmedAtom)
   const calldatas = useAtomValue(basketProposalCalldatasAtom)
-  const description = useAtomValue(proposalDescriptionAtom)
   const indexDTF = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
 
@@ -102,7 +102,7 @@ const SimulateProposalCard = () => {
   const timelockAddress = indexDTF?.tradingGovernance?.timelock?.id as Address
   const voteTokenAddress = indexDTF?.stToken?.id as Address
 
-  const { data, loading, error, isReady, handleSimulation } =
+  const { data, loading, error, isReady, handleSimulation, resetSimulation } =
     useProposalSimulation(
       governorAddress,
       timelockAddress,
@@ -110,10 +110,51 @@ const SimulateProposalCard = () => {
       chainId
     )
 
-  const onSimulate = () => {
-    if (!calldatas || !description || !indexDTF) return
+  // Track last simulated calldatas to detect changes
+  const lastSimulatedCalldatasRef = useRef<string>('')
 
-    // Construct targets array (DTF address repeated for each calldata)
+  // Auto-trigger simulation when proposal is confirmed and calldatas change
+  useEffect(() => {
+    if (!isProposalConfirmed || !calldatas || !indexDTF || !isReady) return
+
+    // Serialize calldatas for comparison
+    const currentCalldatas = JSON.stringify(calldatas)
+
+    // Only simulate if calldatas have changed or this is the first confirmation
+    if (currentCalldatas !== lastSimulatedCalldatasRef.current) {
+      // Reset previous simulation state
+      resetSimulation()
+
+      // Construct simulation config
+      const targets = calldatas.map(() => indexDTF.id as Address)
+      const values = calldatas.map(() => 0n)
+
+      const config = {
+        targets,
+        values,
+        calldatas,
+        description: 'Proposal Simulation Test', // Mock description for simulation
+      }
+
+      // Trigger simulation
+      handleSimulation(config)
+
+      // Update ref to track what we just simulated
+      lastSimulatedCalldatasRef.current = currentCalldatas
+    }
+  }, [
+    isProposalConfirmed,
+    calldatas,
+    indexDTF,
+    isReady,
+    handleSimulation,
+    resetSimulation,
+  ])
+
+  // Manual simulation trigger (for re-running after auto-simulation)
+  const onSimulate = () => {
+    if (!calldatas || !indexDTF) return
+
     const targets = calldatas.map(() => indexDTF.id as Address)
     const values = calldatas.map(() => 0n)
 
@@ -121,7 +162,7 @@ const SimulateProposalCard = () => {
       targets,
       values,
       calldatas,
-      description,
+      description: 'Proposal Simulation Test',
     }
 
     handleSimulation(config)
@@ -135,7 +176,7 @@ const SimulateProposalCard = () => {
       simulation={data}
       error={error}
       onSimulate={onSimulate}
-      isReady={isReady && !!calldatas && !!description}
+      isReady={isReady && !!calldatas}
     />
   )
 }
