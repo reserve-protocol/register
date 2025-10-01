@@ -14,11 +14,9 @@ import {
 } from '../atoms'
 import SubmitProposalButton from './submit-proposal-button'
 import BasketSettingsProposalChanges from './basket-settings-proposal-changes'
-import SimulateProposal from '@/views/index-dtf/governance/components/simulate-proposal'
-import useProposalSimulation from '@/hooks/use-proposal-simulation'
+import SimulateProposalCard from '@/views/index-dtf/governance/components/simulate-proposal-card'
 import { chainIdAtom } from '@/state/atoms'
 import { Address } from 'viem'
-import { useEffect, useRef } from 'react'
 
 const ConfirmProposalButton = () => {
   const isValid = useAtomValue(isProposalValidAtom)
@@ -135,87 +133,34 @@ const ProposalOverview = () => {
   )
 }
 
-const SimulateProposalCard = () => {
+const SimulateProposalSection = () => {
   const isProposalConfirmed = useAtomValue(isProposalConfirmedAtom)
   const proposalData = useAtomValue(basketSettingsProposalDataAtom)
   const indexDTF = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
 
+  // Determine which governance to use (trading for basket settings)
   const governorAddress = indexDTF?.tradingGovernance?.id as Address
   const timelockAddress = indexDTF?.tradingGovernance?.timelock?.id as Address
   const voteTokenAddress = indexDTF?.stToken?.id as Address
 
-  const { data, loading, error, isReady, handleSimulation, resetSimulation } =
-    useProposalSimulation(
-      governorAddress,
-      timelockAddress,
-      voteTokenAddress,
-      chainId
-    )
-
-  // Track last simulated proposal data to detect changes
-  const lastSimulatedDataRef = useRef<string>('')
-
-  // Auto-trigger simulation when proposal is confirmed and data changes
-  useEffect(() => {
-    if (!isProposalConfirmed || !proposalData || !isReady) return
-
-    // Serialize proposal data for comparison (targets + calldatas)
-    const currentData = JSON.stringify({
-      targets: proposalData.targets,
-      calldatas: proposalData.calldatas,
-    })
-
-    // Only simulate if proposal data has changed
-    if (currentData !== lastSimulatedDataRef.current) {
-      // Reset previous simulation state
-      resetSimulation()
-
-      // Construct simulation config
-      const config = {
+  // Construct simulation proposal data
+  const simulationData = proposalData
+    ? {
         targets: proposalData.targets,
         values: proposalData.calldatas.map(() => 0n), // Basket settings proposals have no value transfers
         calldatas: proposalData.calldatas,
-        description: 'Proposal Simulation Test', // Mock description for simulation
       }
-
-      // Trigger simulation
-      handleSimulation(config)
-
-      // Update ref to track what we just simulated
-      lastSimulatedDataRef.current = currentData
-    }
-  }, [
-    isProposalConfirmed,
-    proposalData,
-    isReady,
-    handleSimulation,
-    resetSimulation,
-  ])
-
-  // Manual simulation trigger (for re-running after auto-simulation)
-  const onSimulate = () => {
-    if (!proposalData) return
-
-    const config = {
-      targets: proposalData.targets,
-      values: proposalData.calldatas.map(() => 0n),
-      calldatas: proposalData.calldatas,
-      description: 'Proposal Simulation Test',
-    }
-
-    handleSimulation(config)
-  }
-
-  if (!isProposalConfirmed) return null
+    : null
 
   return (
-    <SimulateProposal
-      isLoading={loading}
-      simulation={data}
-      error={error}
-      onSimulate={onSimulate}
-      isReady={isReady && !!proposalData}
+    <SimulateProposalCard
+      isProposalConfirmed={isProposalConfirmed}
+      proposalData={simulationData}
+      governorAddress={governorAddress}
+      timelockAddress={timelockAddress}
+      voteTokenAddress={voteTokenAddress}
+      chainId={chainId}
     />
   )
 }
@@ -229,7 +174,7 @@ const BasketSettingsProposalOverview = () => {
         <ProposalOverview />
       </div>
       <BasketProposalChangePreview />
-      <SimulateProposalCard />
+      <SimulateProposalSection />
     </div>
   )
 }

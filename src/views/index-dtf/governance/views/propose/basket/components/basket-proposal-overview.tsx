@@ -12,11 +12,9 @@ import {
 import SubmitProposalButton from './submit-proposal-button'
 import { ROUTES } from '@/utils/constants'
 import { indexDTFAtom, indexDTFBrandAtom } from '@/state/dtf/atoms'
-import SimulateProposal from '@/views/index-dtf/governance/components/simulate-proposal'
-import useProposalSimulation from '@/hooks/use-proposal-simulation'
+import SimulateProposalCard from '@/views/index-dtf/governance/components/simulate-proposal-card'
 import { chainIdAtom } from '@/state/atoms'
 import { Address } from 'viem'
-import { useEffect, useRef } from 'react'
 
 // TODO: get governance route to navigate back to governance
 const Header = () => {
@@ -91,7 +89,7 @@ const ProposalInstructions = () => {
   )
 }
 
-const SimulateProposalCard = () => {
+const SimulateProposalSection = () => {
   const isProposalConfirmed = useAtomValue(isProposalConfirmedAtom)
   const calldatas = useAtomValue(basketProposalCalldatasAtom)
   const indexDTF = useAtomValue(indexDTFAtom)
@@ -102,81 +100,23 @@ const SimulateProposalCard = () => {
   const timelockAddress = indexDTF?.tradingGovernance?.timelock?.id as Address
   const voteTokenAddress = indexDTF?.stToken?.id as Address
 
-  const { data, loading, error, isReady, handleSimulation, resetSimulation } =
-    useProposalSimulation(
-      governorAddress,
-      timelockAddress,
-      voteTokenAddress,
-      chainId
-    )
-
-  // Track last simulated calldatas to detect changes
-  const lastSimulatedCalldatasRef = useRef<string>('')
-
-  // Auto-trigger simulation when proposal is confirmed and calldatas change
-  useEffect(() => {
-    if (!isProposalConfirmed || !calldatas || !indexDTF || !isReady) return
-
-    // Serialize calldatas for comparison
-    const currentCalldatas = JSON.stringify(calldatas)
-
-    // Only simulate if calldatas have changed or this is the first confirmation
-    if (currentCalldatas !== lastSimulatedCalldatasRef.current) {
-      // Reset previous simulation state
-      resetSimulation()
-
-      // Construct simulation config
-      const targets = calldatas.map(() => indexDTF.id as Address)
-      const values = calldatas.map(() => 0n)
-
-      const config = {
-        targets,
-        values,
+  // Construct proposal data for simulation (targets derived from DTF address)
+  const proposalData = calldatas
+    ? {
+        targets: calldatas.map(() => indexDTF.id as Address),
+        values: calldatas.map(() => 0n),
         calldatas,
-        description: 'Proposal Simulation Test', // Mock description for simulation
       }
-
-      // Trigger simulation
-      handleSimulation(config)
-
-      // Update ref to track what we just simulated
-      lastSimulatedCalldatasRef.current = currentCalldatas
-    }
-  }, [
-    isProposalConfirmed,
-    calldatas,
-    indexDTF,
-    isReady,
-    handleSimulation,
-    resetSimulation,
-  ])
-
-  // Manual simulation trigger (for re-running after auto-simulation)
-  const onSimulate = () => {
-    if (!calldatas || !indexDTF) return
-
-    const targets = calldatas.map(() => indexDTF.id as Address)
-    const values = calldatas.map(() => 0n)
-
-    const config = {
-      targets,
-      values,
-      calldatas,
-      description: 'Proposal Simulation Test',
-    }
-
-    handleSimulation(config)
-  }
-
-  if (!isProposalConfirmed) return null
+    : null
 
   return (
-    <SimulateProposal
-      isLoading={loading}
-      simulation={data}
-      error={error}
-      onSimulate={onSimulate}
-      isReady={isReady && !!calldatas}
+    <SimulateProposalCard
+      isProposalConfirmed={isProposalConfirmed}
+      proposalData={proposalData}
+      governorAddress={governorAddress}
+      timelockAddress={timelockAddress}
+      voteTokenAddress={voteTokenAddress}
+      chainId={chainId}
     />
   )
 }
@@ -196,7 +136,7 @@ const BasketProposalOverview = () => {
         <Header />
         <ProposalInstructions />
       </div>
-      <SimulateProposalCard />
+      <SimulateProposalSection />
     </div>
   )
 }
