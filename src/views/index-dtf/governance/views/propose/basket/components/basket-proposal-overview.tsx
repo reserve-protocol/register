@@ -100,6 +100,8 @@ const SimulateProposalSection = () => {
   const timelockAddress = indexDTF?.tradingGovernance?.timelock?.id as Address
   const voteTokenAddress = indexDTF?.stToken?.id as Address
 
+  if (!indexDTF) return null
+
   // Construct proposal data for simulation (targets derived from DTF address)
   const proposalData = calldatas
     ? {
