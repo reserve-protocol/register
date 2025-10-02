@@ -9,9 +9,14 @@ import {
   isProposalConfirmedAtom,
   isProposalValidAtom,
   isFormValidAtom,
+  dtfSettingsProposalDataAtom,
+  proposalDescriptionAtom,
 } from '../atoms'
 import DTFSettingsProposalChanges from './dtf-settings-proposal-changes'
 import SubmitProposalButton from './submit-proposal-button'
+import SimulateProposalCard from '@/views/index-dtf/governance/components/simulate-proposal-card'
+import { chainIdAtom } from '@/state/atoms'
+import { Address } from 'viem'
 
 const ConfirmProposalButton = () => {
   const isValid = useAtomValue(isProposalValidAtom)
@@ -127,6 +132,38 @@ const ProposalOverview = () => {
   )
 }
 
+const SimulateProposalSection = () => {
+  const isProposalConfirmed = useAtomValue(isProposalConfirmedAtom)
+  const proposalData = useAtomValue(dtfSettingsProposalDataAtom)
+  const indexDTF = useAtomValue(indexDTFAtom)
+  const chainId = useAtomValue(chainIdAtom)
+
+  // Determine which governance to use (owner for DTF settings)
+  const governorAddress = indexDTF?.ownerGovernance?.id as Address
+  const timelockAddress = indexDTF?.ownerGovernance?.timelock?.id as Address
+  const voteTokenAddress = indexDTF?.stToken?.id as Address
+
+  // Construct simulation proposal data
+  const simulationData = proposalData
+    ? {
+        targets: proposalData.targets,
+        values: proposalData.calldatas.map(() => 0n), // DTF settings proposals have no value transfers
+        calldatas: proposalData.calldatas,
+      }
+    : null
+
+  return (
+    <SimulateProposalCard
+      isProposalConfirmed={isProposalConfirmed}
+      proposalData={simulationData}
+      governorAddress={governorAddress}
+      timelockAddress={timelockAddress}
+      voteTokenAddress={voteTokenAddress}
+      chainId={chainId}
+    />
+  )
+}
+
 const DTFSettingsProposalOverview = () => {
   const isProposalConfirmed = useAtomValue(isProposalConfirmedAtom)
 
@@ -136,6 +173,7 @@ const DTFSettingsProposalOverview = () => {
         <ProposalOverview />
       </div>
       <VaultProposalChangePreview />
+      <SimulateProposalSection />
     </div>
   )
 }

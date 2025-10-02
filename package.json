@@ -81,8 +81,8 @@
     "tailwindcss-animate": "^1.0.7",
     "theme-ui": "0.17.1",
     "vaul": "^1.1.1",
-    "viem": "2.30.0",
-    "wagmi": "^2.15.6",
+    "viem": "2.37.9",
+    "wagmi": "2.17.5",
     "zod": "^3.23.8"
   },
   "scripts": {

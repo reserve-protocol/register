@@ -9,9 +9,14 @@ import {
   isProposalConfirmedAtom,
   isProposalValidAtom,
   isFormValidAtom,
+  basketSettingsProposalDataAtom,
+  proposalDescriptionAtom,
 } from '../atoms'
 import SubmitProposalButton from './submit-proposal-button'
 import BasketSettingsProposalChanges from './basket-settings-proposal-changes'
+import SimulateProposalCard from '@/views/index-dtf/governance/components/simulate-proposal-card'
+import { chainIdAtom } from '@/state/atoms'
+import { Address } from 'viem'
 
 const ConfirmProposalButton = () => {
   const isValid = useAtomValue(isProposalValidAtom)
@@ -128,6 +133,38 @@ const ProposalOverview = () => {
   )
 }
 
+const SimulateProposalSection = () => {
+  const isProposalConfirmed = useAtomValue(isProposalConfirmedAtom)
+  const proposalData = useAtomValue(basketSettingsProposalDataAtom)
+  const indexDTF = useAtomValue(indexDTFAtom)
+  const chainId = useAtomValue(chainIdAtom)
+
+  // Determine which governance to use (trading for basket settings)
+  const governorAddress = indexDTF?.tradingGovernance?.id as Address
+  const timelockAddress = indexDTF?.tradingGovernance?.timelock?.id as Address
+  const voteTokenAddress = indexDTF?.stToken?.id as Address
+
+  // Construct simulation proposal data
+  const simulationData = proposalData
+    ? {
+        targets: proposalData.targets,
+        values: proposalData.calldatas.map(() => 0n), // Basket settings proposals have no value transfers
+        calldatas: proposalData.calldatas,
+      }
+    : null
+
+  return (
+    <SimulateProposalCard
+      isProposalConfirmed={isProposalConfirmed}
+      proposalData={simulationData}
+      governorAddress={governorAddress}
+      timelockAddress={timelockAddress}
+      voteTokenAddress={voteTokenAddress}
+      chainId={chainId}
+    />
+  )
+}
+
 const BasketSettingsProposalOverview = () => {
   const isProposalConfirmed = useAtomValue(isProposalConfirmedAtom)
 
@@ -137,6 +174,7 @@ const BasketSettingsProposalOverview = () => {
         <ProposalOverview />
       </div>
       <BasketProposalChangePreview />
+      <SimulateProposalSection />
     </div>
   )
 }
