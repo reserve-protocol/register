@@ -91,7 +91,7 @@ const useEarnTableColumns = (compact: boolean) => {
                   })
                 }}
               >
-                <StackTokenLogo tokens={data.row.original.underlyingTokens} />
+                <StackTokenLogo tokens={data.row.original.underlyingTokens} outsource={true} />
                 <Text ml="2" sx={{ textDecoration: 'underline' }}>
                   {data.getValue()}
                 </Text>

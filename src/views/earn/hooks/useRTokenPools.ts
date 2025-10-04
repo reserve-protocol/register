@@ -18,6 +18,7 @@ import {
   OTHER_POOL_TOKENS,
 } from '../utils/constants'
 import { EarnPool, getEarnPools } from '@/lib/meta'
+import useIndexDTFList from '@/hooks/useIndexDTFList'
 
 // Only map what I care about the response...
 interface DefillamaPool {
@@ -35,7 +36,7 @@ interface DefillamaPool {
   rewardTokens: string[]
 }
 
-const listedRTokens = Object.values(rtokens).reduce((acc, curr) => {
+const listedDTFs = Object.values(rtokens).reduce((acc, curr) => {
   // Defillama has some addresses on lowercase... better to transform to lowercase than to an Address format
   const lowercaseAddresses = Object.keys(curr).reduce((tokens, key) => {
     tokens[key.toLowerCase()] = curr[key]
@@ -45,13 +46,13 @@ const listedRTokens = Object.values(rtokens).reduce((acc, curr) => {
   return { ...acc, ...lowercaseAddresses }
 }, {} as StringMap)
 
-// Include bridged RTokens
+// Include bridged Yield DTFs
 Object.values(BRIDGED_RTOKENS).forEach((bridge) => {
   Object.entries(bridge).forEach(([key, tokens]) => {
-    const _token = listedRTokens[key.toLowerCase()]
+    const _token = listedDTFs[key.toLowerCase()]
     if (_token) {
       tokens.forEach((token) => {
-        listedRTokens[token.address.toLowerCase()] = {
+        listedDTFs[token.address.toLowerCase()] = {
           ..._token,
           address: token.address,
         }
@@ -60,12 +61,12 @@ Object.values(BRIDGED_RTOKENS).forEach((bridge) => {
   })
 })
 
-listedRTokens[RSR_ADDRESS[ChainId.Mainnet].toLowerCase()] = RSR
-listedRTokens[RSR_ADDRESS[ChainId.Base].toLowerCase()] = RSR
+listedDTFs[RSR_ADDRESS[ChainId.Mainnet].toLowerCase()] = RSR
+listedDTFs[RSR_ADDRESS[ChainId.Base].toLowerCase()] = RSR
 
-// Bridged RTokens
-listedRTokens['0xcfa3ef56d303ae4faaba0592388f19d7c3399fb4'] =
-  listedRTokens[EUSD_ADDRESS[ChainId.Mainnet].toLowerCase()]
+// Bridged Yield DTFs
+listedDTFs['0xcfa3ef56d303ae4faaba0592388f19d7c3399fb4'] =
+  listedDTFs[EUSD_ADDRESS[ChainId.Mainnet].toLowerCase()]
 const filterPools = (
   data: DefillamaPool[],
   ids?: string[]
@@ -73,7 +74,7 @@ const filterPools = (
   return data.filter((pool) => {
     const isUnderlyingTokenValid = (pool.underlyingTokens || []).some(
       (underlyingToken) =>
-        !!listedRTokens[underlyingToken?.toLowerCase()] ||
+        !!listedDTFs[underlyingToken?.toLowerCase()] ||
         EXTRA_POOLS_BY_UNDERLYING_TOKEN.includes(underlyingToken?.toLowerCase())
     )
     const includedId = ids ? ids.includes(pool.pool) : true
@@ -101,6 +102,7 @@ const enrichPoolUnderlyingAndId = (
 ): Omit<Pool, 'url'>[] => {
   return pools.map((pool) => {
     const cmsPool = earnPools.find((item) => item.llamaId === pool.pool)
+    const chainId = NETWORKS[pool.chain.toLowerCase()]
 
     return {
       ...pool,
@@ -117,19 +119,27 @@ const enrichPoolUnderlyingAndId = (
       ).map((token: string) => {
         const address = token?.toLowerCase() ?? ''
 
-        if (listedRTokens[address] && listedRTokens[address].symbol !== 'RSR') {
+        if (listedDTFs[address] && listedDTFs[address].symbol !== 'RSR') {
+          // For Yield DTFs: logo is just filename (e.g., "eusd.svg")
+          // For Index DTFs: logo is full URL (e.g., "https://...")
+          const logo = listedDTFs[address].logo.startsWith('http')
+            ? listedDTFs[address].logo // Keep Index DTF URL as-is
+            : `/svgs/${listedDTFs[address].logo.toLowerCase()}` // Prepend for Yield DTFs
+
           return {
-            ...listedRTokens[address],
-            logo: `/svgs/${listedRTokens[address].logo.toLowerCase()}`,
+            ...listedDTFs[address],
+            logo,
+            chain: chainId,
           }
         }
 
         return (
-          listedRTokens[address] ||
+          listedDTFs[address] ||
           OTHER_POOL_TOKENS[address] || {
             address: token,
             symbol: 'Unknown',
             logo: '',
+            chain: chainId,
           }
         )
       }),
@@ -209,19 +219,30 @@ const mapPools = (data: DefillamaPool[], earnPools: EarnPool[]) => {
 const useRTokenPools = () => {
   const { data, isLoading } = useSWRImmutable('https://yields.llama.fi/pools')
   const earnPools = getEarnPools()
+  const { data: indexDTFs } = useIndexDTFList()
 
   const [poolsCache, setPools] = useAtom(poolsAtom)
 
   useEffect(() => {
-    if (data) {
+    if (data && indexDTFs) {
+      // Add Index DTFs to the listed DTFs filter
+      indexDTFs.forEach((dtf) => {
+        listedDTFs[dtf.address.toLowerCase()] = {
+          address: dtf.address,
+          symbol: dtf.symbol,
+          name: dtf.name,
+          logo: dtf.brand?.icon || '',
+        }
+      })
+
       const pools = mapPools(data.data as DefillamaPool[], earnPools)
       setPools(pools)
     }
-  }, [data, earnPools, setPools])
+  }, [data, earnPools, indexDTFs, setPools])
 
   return {
     data: poolsCache,
-    isLoading,
+    isLoading: isLoading || !indexDTFs,
   }
 }
 

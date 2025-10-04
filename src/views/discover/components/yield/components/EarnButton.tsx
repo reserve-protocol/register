@@ -5,7 +5,7 @@ import { ListedToken } from 'hooks/useTokenList'
 import { useAtomValue } from 'jotai'
 import { memo } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { rTokenPoolsAtom } from 'state/pools/atoms'
+import { dtfPoolsAtom } from 'state/pools/atoms'
 import { mediumButton } from 'theme'
 import { Box, BoxProps, Text } from 'theme-ui'
 import { BRIDGED_RTOKENS, ROUTES } from 'utils/constants'
@@ -19,7 +19,7 @@ interface Props extends BoxProps {
 
 const EarnButton = ({ token, sx, ...props }: Props) => {
   const navigate = useNavigate()
-  const pools = useAtomValue(rTokenPoolsAtom)
+  const pools = useAtomValue(dtfPoolsAtom)
   const earnData = pools[getAddress(token.id)]
 
   const handleEarn = () => {
