@@ -5,11 +5,13 @@ import Ethereum from 'components/icons/logos/Ethereum'
 import { SearchInput } from '@/components/ui/input'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { atom, useAtom, useSetAtom } from 'jotai'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { RSR_ADDRESS } from 'utils/addresses'
-import { ChainId } from 'utils/chains'
-import { supportedChainList } from 'utils/constants'
+import {
+  supportedChainList,
+  ETH_FILTER_ADDRESSES,
+  RSR_FILTER_ADDRESSES,
+} from 'utils/constants'
 import {
   filterOptionAtom,
   poolChainsFilterAtom,
@@ -17,18 +19,6 @@ import {
   poolSearchFilterAtom,
 } from '../atoms'
 import PoolsChainFilter from './pools-chain-filter'
-
-// Includes Eth+
-const ETH_ADDRESSES = [
-  '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
-  '0xE72B141DF173b999AE7c1aDcbF60Cc9833Ce56a8',
-  '0x18C14C2D707b2212e17d1579789Fc06010cfca23',
-  '0xCb327b99fF831bF8223cCEd12B1338FF3aA322Ff',
-  '0x005F893EcD7bF9667195642f7649DA8163e23658',
-  '0x0000000000000000000000000000000000000000',
-  '0x82af49447d8a07e3bd95bd0d56f35241523fbab1',
-]
-const RSR_ADDRESSES = [RSR_ADDRESS[ChainId.Mainnet], RSR_ADDRESS[ChainId.Base]]
 
 const FilterOptions = () => {
   const [selected, onSelect] = useAtom(filterOptionAtom)
@@ -49,12 +39,12 @@ const FilterOptions = () => {
       {
         text: 'ETH',
         icon: <Ethereum />,
-        filter: { stables: false, tokens: ETH_ADDRESSES },
+        filter: { stables: false, tokens: ETH_FILTER_ADDRESSES },
       },
       {
         text: 'RSR',
         icon: <TokenLogo symbol="rsr" width="16px" />,
-        filter: { stables: false, tokens: RSR_ADDRESSES },
+        filter: { stables: false, tokens: RSR_FILTER_ADDRESSES },
       },
     ],
     []
@@ -71,7 +61,7 @@ const FilterOptions = () => {
       type="single"
       value={selected.toString()}
       onValueChange={handleSelect}
-      className="bg-card rounded-bl-3xl sm:rounded-3xl px-4 py-4 h-auto"
+      className="bg-card rounded-3xl px-4 py-4 h-auto"
     >
       {options.map(({ text, icon }, index) => (
         <ToggleGroupItem
@@ -80,14 +70,14 @@ const FilterOptions = () => {
           className="flex items-center gap-0 h-8 px-2 data-[state=on]:bg-muted data-[state=on]:text-primary hover:text-primary hover:bg-muted"
         >
           {icon}
-          <span className="hidden sm:block ml-[6px]">{text}</span>
+          <span className="hidden lg:block ml-[6px]">{text}</span>
         </ToggleGroupItem>
       ))}
     </ToggleGroup>
   )
 }
 
-const setPageSearchAtom = atom(null, (get, set, search: string) => {
+const resetFiltersAtom = atom(null, (get, set, search: string) => {
   set(filterOptionAtom, -1)
   set(poolFilterAtom, {
     stables: false,
@@ -102,31 +92,33 @@ const setPageSearchAtom = atom(null, (get, set, search: string) => {
 
 const TableFilters = () => {
   const [search, setSearch] = useAtom(poolSearchFilterAtom)
-  const setPageFilter = useSetAtom(setPageSearchAtom)
+  const resetFilters = useSetAtom(resetFiltersAtom)
   const [searchParams] = useSearchParams()
 
   // Get default token to filter if any
   useEffect(() => {
     if (searchParams.get('underlying')) {
-      setPageFilter((searchParams.get('underlying') || '').trim())
+      resetFilters((searchParams.get('underlying') || '').trim())
     }
 
     return () => {
       if (searchParams.get('underlying')) {
-        setPageFilter('')
+        resetFilters('')
       }
     }
   }, [])
 
   return (
-    <div className="flex flex-col items-stretch sm:flex-row sm:items-center gap-[2px] sm:gap-1">
+    <div className="flex flex-col items-stretch lg:flex-row lg:items-center gap-[2px] lg:gap-1">
       <SearchInput
         placeholder="Search pool"
         value={search}
         onChange={(e) => setSearch(e.target.value)}
-        className="flex-grow [&_input]:border-none [&_input]:rounded-tl-3xl [&_input]:rounded-tr-3xl sm:[&_input]:rounded-3xl"
+        className="flex-grow [&_input]:border-none [&_input]:rounded-none [&_input]:rounded-tl-3xl [&_input]:rounded-tr-3xl lg:[&_input]:rounded-3xl"
       />
-      <FilterOptions />
+      <div className="hidden lg:flex">
+        <FilterOptions />
+      </div>
       <PoolsChainFilter />
     </div>
   )

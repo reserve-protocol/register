@@ -1,52 +1,46 @@
 import { Button } from '@/components/ui/button'
+import { Skeleton } from '@/components/ui/skeleton'
 import ChainLogo from 'components/icons/ChainLogo'
 import StackTokenLogo from 'components/token-logo/StackTokenLogo'
 import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
 import { useMemo } from 'react'
-import Skeleton from 'react-loading-skeleton'
 import { Pool } from 'state/pools/atoms'
 import { PROJECT_ICONS } from '../hooks/useEarnTableColumns'
 
 const FeaturedPoolItem = ({ pool }: { pool?: Pool }) => {
   const underlyingTokens = useMemo(
     () =>
-      (pool?.underlyingTokens || [])
-        .filter((u) => u.symbol !== 'Unknown')
-        .map((u, i) => ({ ...u, left: i + 10 })),
+      (pool?.underlyingTokens || []).filter((u) => u.symbol !== 'Unknown'),
     [pool?.underlyingTokens]
   )
 
   if (!pool)
     return (
-      <div className="mx-3">
-        <Skeleton height={124} width={320} />
+      <div className="w-full md:w-auto">
+        <Skeleton className="h-[124px] w-full md:w-[320px]" />
       </div>
     )
 
   return (
-    <div className="flex items-center">
-      <div className="relative bg-secondary rounded-md w-[104px] h-32 mx-3 overflow-hidden">
-        <div className="w-5 absolute left-1/2 top-[15%] -translate-x-1/2">
+    <div className="flex items-center w-full md:w-auto">
+      <div className="relative bg-secondary rounded-md w-[80px] md:w-[104px] h-24 md:h-32 ml-2 md:ml-3 mr-3 flex-shrink-0 overflow-hidden">
+        <div className="w-4 md:w-5 absolute left-1/2 top-[15%] -translate-x-1/2">
           {PROJECT_ICONS[pool.project]}
         </div>
-        <StackTokenLogo
-          size={128}
-          tokens={pool?.underlyingTokens}
-          sx={{
-            position: 'absolute',
-            left: '50%',
-            bottom: '10%',
-            transform: 'translate(-50%, 50%)',
-          }}
-        />
+        <div className="absolute left-1/2 bottom-[10%] -translate-x-1/2 translate-y-1/2">
+          <StackTokenLogo
+            size={96}
+            tokens={pool?.underlyingTokens}
+          />
+        </div>
       </div>
-      <div className="flex flex-col justify-between gap-2">
-        <div className="flex flex-col gap-1">
-          <p className="text-foreground">Earn up to</p>
-          <p className="text-3xl font-bold leading-8">
-            {pool.apy.toFixed(2)}% <span className="text-grey">APY</span>
+      <div className="flex flex-col justify-between gap-1 md:gap-2 flex-1 min-w-0 mr-2 md:mr-0">
+        <div className="flex flex-col gap-0.5 md:gap-1">
+          <p className="text-[10px] md:text-sm text-foreground">Earn up to</p>
+          <p className="text-xl md:text-3xl font-bold leading-5 md:leading-8">
+            {pool.apy.toFixed(2)}% <span className="text-grey text-xs md:text-base">APY</span>
           </p>
-          <p className="text-foreground">
+          <p className="text-[10px] md:text-sm text-foreground truncate">
             w.{' '}
             {underlyingTokens.map(
               (u, i) =>
@@ -60,7 +54,7 @@ const FeaturedPoolItem = ({ pool }: { pool?: Pool }) => {
         <div className="flex items-center gap-2">
           <Button
             size="sm"
-            className="w-max"
+            className="w-max text-[10px] md:text-sm h-6 md:h-8 px-2 md:px-4"
             onClick={() => {
               window.open(pool.url, '_blank')
               mixpanel.track('Clicked Featured Pool', {

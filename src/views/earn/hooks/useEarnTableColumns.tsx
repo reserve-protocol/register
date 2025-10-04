@@ -30,18 +30,6 @@ import Sky from '@/components/icons/logos/Sky'
 import Origin from '@/components/icons/logos/Origin'
 import { cn } from '@/lib/utils'
 
-export const columnVisibility = []
-
-export const compactColumnVisibility = [
-  '',
-  '',
-  ['none', 'table-cell'],
-  '',
-  ['none', 'none', 'none', 'table-cell'],
-  ['none', 'none', 'none', 'table-cell'],
-  ['none', 'table-cell'],
-]
-
 export const PROJECT_ICONS: Record<string, React.ReactElement> = {
   'yearn-finance': <Yearn fontSize={16} />,
   'convex-finance': <Convex fontSize={16} />,
@@ -74,7 +62,7 @@ const useEarnTableColumns = (compact: boolean) => {
         header: t`Pool`,
         cell: (data) => {
           return (
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 min-w-[200px]">
               <div
                 className="flex items-center cursor-pointer text-muted-foreground hover:text-foreground"
                 onClick={() => {
@@ -113,7 +101,7 @@ const useEarnTableColumns = (compact: boolean) => {
       columnHelper.accessor('project', {
         header: t`Project`,
         cell: (data) => (
-          <div className="flex items-center">
+          <div className="flex items-center min-w-[120px]">
             {PROJECT_ICONS[data.getValue()] ?? ''}
             <span className="ml-2">
               {LP_PROJECTS[data.getValue()]?.name ?? data.getValue()}
@@ -125,72 +113,60 @@ const useEarnTableColumns = (compact: boolean) => {
         header: t`Chain`,
         cell: (data) => {
           return (
-            <div className="pl-[10px] flex items-center">
+            <div className="pl-[10px] flex items-center min-w-[100px]">
               <ChainLogo
                 fontSize={16}
                 chain={NETWORKS[data.getValue().toLowerCase()]}
               />
               {!compact && (
-                <span className="ml-2 block sm:hidden md:block">
+                <span className="ml-2">
                   {CHAIN_TAGS[NETWORKS[data.getValue().toLowerCase()]]}
                 </span>
               )}
             </div>
           )
         },
-        meta: {
-          className: compact ? '' : 'hidden sm:table-cell',
-        },
       }),
       columnHelper.accessor('apy', {
         header: () => {
           return (
-            <div className="flex items-center">
+            <div className="flex items-center min-w-[80px]">
               <span className="mr-1">APY</span>
               <Help content="APY = Base APY + Reward APY. For non-autocompounding pools reinvesting is not accounted, in which case APY = APR." />
             </div>
           )
         },
-        cell: (data) => `${formatCurrency(data.getValue(), 1)}%`,
+        cell: (data) => <span className="min-w-[80px] inline-block">{formatCurrency(data.getValue(), 1)}%</span>,
       }),
       columnHelper.accessor('apyBase', {
         header: () => {
           return (
-            <div className="flex items-center">
+            <div className="flex items-center min-w-[110px]">
               <span className="mr-1">Base APY</span>
               <Help content="Annualised percentage yield from trading fees/supplying. For dexes 24h fees are used and scaled those to a year." />
             </div>
           )
         },
-        cell: (data) => `${formatCurrency(data.getValue(), 1)}%`,
-        meta: {
-          className: compact ? '' : 'hidden lg:table-cell',
-        },
+        cell: (data) => <span className="min-w-[80px] inline-block">{formatCurrency(data.getValue(), 1)}%</span>,
       }),
       columnHelper.accessor('apyReward', {
         header: () => {
           return (
-            <div className="flex items-center">
+            <div className="flex items-center min-w-[130px]">
               <span className="mr-1">Reward APY</span>
               <Help content="Annualised percentage yield from incentives" />
             </div>
           )
         },
         cell: (data) => (
-          <div className="flex items-center gap-2 min-w-[156px]">
+          <span className="min-w-[80px] inline-block">
             {`${formatCurrency(data.getValue(), 1)}%`}
-          </div>
+          </span>
         ),
-        meta: {
-          className: compact ? '' : 'hidden lg:table-cell',
-        },
       }),
       columnHelper.accessor('tvlUsd', {
         header: t`TVL`,
-        cell: (data) => `$${formatCurrency(data.getValue(), 0)}`,
-        meta: {
-          className: compact ? '' : 'hidden sm:table-cell',
-        },
+        cell: (data) => <span className="min-w-[100px] inline-block">${formatCurrency(data.getValue(), 0)}</span>,
       }),
     ]
   }, [compact])
