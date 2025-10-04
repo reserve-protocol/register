@@ -1,60 +1,106 @@
-import { Table, TableProps } from '@/components/old/table'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
 import { Pool } from 'state/pools/atoms'
-import useEarnTableColumns, {
-  columnVisibility,
-  compactColumnVisibility,
-} from '../hooks/useEarnTableColumns'
+import useEarnTableColumns from '../hooks/useEarnTableColumns'
 import useRTokenPools from '../hooks/useRTokenPools'
-import { Box, Text } from 'theme-ui'
-import { useMemo } from 'react'
+import {
+  flexRender,
+  getCoreRowModel,
+  getSortedRowModel,
+  useReactTable,
+  SortingState,
+} from '@tanstack/react-table'
+import { useState } from 'react'
+import { ArrowDown, ArrowUp } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
-interface Props extends Partial<TableProps> {
+interface Props {
   data: Pool[]
   compact?: boolean
 }
 
-const PoolsTable = ({ data, compact = false, ...props }: Props) => {
+const PoolsTable = ({ data, compact = false }: Props) => {
   const columns = useEarnTableColumns(compact)
   const { isLoading } = useRTokenPools()
-  const visibility = useMemo(
-    () => (compact ? compactColumnVisibility : columnVisibility),
-    [compact]
-  )
+  const [sorting, setSorting] = useState<SortingState>([
+    { id: 'apy', desc: true },
+  ])
+
+  const table = useReactTable({
+    columns: columns as any,
+    data,
+    getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    onSortingChange: setSorting,
+    state: {
+      sorting,
+    },
+  })
 
   return (
-    <div className="bg-secondary p-1 rounded-4xl overflow-hidden">
-      <Table
-        sorting
-        sortBy={[{ id: 'apy', desc: true }]}
-        isLoading={isLoading}
-        compact
-        columns={columns}
-        data={data}
-        columnVisibility={visibility}
-        sx={{
-          borderRadius: '0 0 20px 20px',
-          backgroundColor: 'cardBackground',
-          overflow: 'auto',
-          '& tr': {
-            backgroundColor: 'cardBackground',
-          },
-          '& th': {
-            paddingTop: 4,
-            '&:first-of-type': {
-              borderTopLeftRadius: '20px',
-            },
-            '&:last-of-type': {
-              borderTopRightRadius: '20px',
-            },
-          },
-        }}
-        {...props}
-      />
-      {!isLoading && !data.length && (
-        <Box mt={5} sx={{ textAlign: 'center' }}>
-          <Text variant="legend">No yield opportunities found</Text>
-        </Box>
-      )}
+    <div className="border-[3px] border-secondary rounded-[20px] bg-cardBackground overflow-auto">
+      <Table className="border-separate border-spacing-y-2">
+        <TableHeader>
+          {table.getHeaderGroups().map((headerGroup) => (
+            <TableRow
+              key={headerGroup.id}
+              className="border-none hover:bg-transparent sticky top-0 bg-cardBackground z-10"
+            >
+              {headerGroup.headers.map((header) => (
+                <TableHead
+                  key={header.id}
+                  className={cn(
+                    'cursor-pointer',
+                    header.column.columnDef.meta?.className
+                  )}
+                  onClick={header.column.getToggleSortingHandler()}
+                >
+                  <div className="flex items-center gap-1">
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                    {{
+                      asc: <ArrowUp size={14} />,
+                      desc: <ArrowDown size={14} />,
+                    }[header.column.getIsSorted() as string] ?? null}
+                  </div>
+                </TableHead>
+              ))}
+            </TableRow>
+          ))}
+        </TableHeader>
+        <TableBody className="bg-cardBackground">
+          {!isLoading && table.getRowModel().rows.length > 0 ? (
+            table.getRowModel().rows.map((row) => (
+              <TableRow key={row.id} className="border-none">
+                {row.getVisibleCells().map((cell) => (
+                  <TableCell
+                    key={cell.id}
+                    className={cell.column.columnDef.meta?.className}
+                  >
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))
+          ) : (
+            <TableRow className="border-none">
+              <TableCell colSpan={columns.length} className="text-center">
+                <p className="text-legend py-8">No yield opportunities found</p>
+              </TableCell>
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
     </div>
   )
 }
