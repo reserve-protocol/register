@@ -37,6 +37,7 @@ interface DataTableProps<TData, TValue> {
   className?: string
   subComponentClassName?: string
   noResultsClassName?: string
+  stickyHeader?: boolean // Enable sticky table header
 }
 
 export const SorteableButton = ({
@@ -161,6 +162,8 @@ interface DataTableComponentProps<TData, TValue>
   renderSubComponent?: (props: { row: Row<TData> }) => React.ReactElement
   subComponentClassName?: string
   noResultsClassName?: string
+  stickyHeader?: boolean
+  initialSorting?: SortingState
 }
 
 const CustomTableRow = ({
@@ -228,8 +231,10 @@ function DataTable<TData, TValue>({
   renderSubComponent,
   subComponentClassName,
   noResultsClassName,
+  stickyHeader = false,
+  initialSorting = [],
 }: DataTableComponentProps<TData, TValue>) {
-  const [sorting, setSorting] = React.useState<SortingState>([])
+  const [sorting, setSorting] = React.useState<SortingState>(initialSorting)
   const [paginationState, setPaginationState] = React.useState<PaginationState>(
     {
       pageSize:
@@ -288,7 +293,10 @@ function DataTable<TData, TValue>({
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow
               key={headerGroup.id}
-              className="hover:bg-transparent h-16"
+              className={cn(
+                "hover:bg-transparent h-16",
+                stickyHeader && "sticky top-0 bg-card z-10"
+              )}
             >
               {headerGroup.headers.map((header) => {
                 return (
