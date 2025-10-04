@@ -2,12 +2,11 @@ import CirclesIcon from 'components/icons/CirclesIcon'
 import EarnNavIcon from 'components/icons/EarnNavIcon'
 import TokenLogo from 'components/icons/TokenLogo'
 import Ethereum from 'components/icons/logos/Ethereum'
-import { SearchInput } from '@/components/old/input'
+import { SearchInput } from '@/components/ui/input'
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { atom, useAtom, useSetAtom } from 'jotai'
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { borderRadius } from 'theme'
-import { Box, Text } from 'theme-ui'
 import { RSR_ADDRESS } from 'utils/addresses'
 import { ChainId } from 'utils/chains'
 import { supportedChainList } from 'utils/constants'
@@ -17,7 +16,7 @@ import {
   poolFilterAtom,
   poolSearchFilterAtom,
 } from '../atoms'
-import PoolsChainFilter from './PoolsChainFilter'
+import PoolsChainFilter from './pools-chain-filter'
 
 // Includes Eth+
 const ETH_ADDRESSES = [
@@ -61,45 +60,30 @@ const FilterOptions = () => {
     []
   )
 
-  const handleSelect = (option: number) => {
+  const handleSelect = (value: string) => {
+    const option = Number(value)
     onSelect(option)
     setFilters(options[option]?.filter ?? 0)
   }
 
   return (
-    <Box
-      sx={{
-        borderRadius: borderRadius.inputs,
-        border: '1px solid',
-        borderColor: 'border',
-      }}
-      variant="layout.verticalAlign"
-      p={'2px'}
+    <ToggleGroup
+      type="single"
+      value={selected.toString()}
+      onValueChange={handleSelect}
+      className="bg-card rounded-bl-3xl sm:rounded-3xl px-4 py-4 h-auto"
     >
       {options.map(({ text, icon }, index) => (
-        <Box
+        <ToggleGroupItem
           key={text}
-          role="button"
-          sx={{
-            cursor: 'pointer',
-            backgroundColor: index === selected ? 'border' : 'transparent',
-            width: ['40px', 'auto'],
-            height: '32px',
-            borderRadius: borderRadius.inner,
-            justifyContent: 'center',
-          }}
-          variant="layout.verticalAlign"
-          py={1}
-          px={2}
-          onClick={() => handleSelect(index)}
+          value={index.toString()}
+          className="flex items-center gap-0 h-8 px-2 data-[state=on]:bg-muted data-[state=on]:text-primary hover:text-primary hover:bg-muted"
         >
-          {icon}{' '}
-          <Text ml="6px" sx={{ display: ['none', 'block'] }}>
-            {text}
-          </Text>
-        </Box>
+          {icon}
+          <span className="hidden sm:block ml-[6px]">{text}</span>
+        </ToggleGroupItem>
       ))}
-    </Box>
+    </ToggleGroup>
   )
 }
 
@@ -135,26 +119,16 @@ const TableFilters = () => {
   }, [])
 
   return (
-    <Box
-      variant="layout.verticalAlign"
-      sx={{
-        flexShrink: 0,
-        minWidth: [200, 'auto', 'auto'],
-        flexWrap: 'wrap',
-        gap: 2,
-      }}
-      marginLeft={[0, 0, 'auto']}
-    >
+    <div className="flex flex-col items-stretch sm:flex-row sm:items-center gap-[2px] sm:gap-1">
       <SearchInput
         placeholder="Search pool"
-        p={1}
         value={search}
-        onChange={setSearch}
-        sx={{ maxWidth: ['auto', 200, 160], borderRadius: borderRadius.inputs }}
+        onChange={(e) => setSearch(e.target.value)}
+        className="flex-grow [&_input]:border-none [&_input]:rounded-tl-3xl [&_input]:rounded-tr-3xl sm:[&_input]:rounded-3xl"
       />
       <FilterOptions />
       <PoolsChainFilter />
-    </Box>
+    </div>
   )
 }
 

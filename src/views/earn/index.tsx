@@ -1,10 +1,10 @@
 import { useEffect } from 'react'
 import { Box, Flex, Text, useColorMode } from 'theme-ui'
-import Earn from './components/Earn'
+import Earn from './components/earn'
 import RegisterAbout from '@/views/discover/components/yield/components/RegisterAbout'
 import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
 import { Trans, t } from '@lingui/macro'
-import FeaturedPools from './components/FeaturedPools'
+import FeaturedPools from './components/featured-pools'
 import HelpIcon from 'components/icons/HelpIcon'
 import { Zap } from 'lucide-react'
 import { colors } from 'theme'
@@ -114,18 +114,20 @@ const EarnWrapper = () => {
   }, [])
 
   return (
-    <div className="container">
+    <>
       <Box>
         <HeroBackground />
         <Hero />
         <Info />
-        <FeaturedPools />
       </Box>
-      <Box>
-        <Earn />
-        <RegisterAbout />
-      </Box>
-    </div>
+      <div className="container mx-auto px-1 sm:px-4">
+        <div className="flex flex-col gap-3 mt-6 pb-4 sm:pb-7">
+          <FeaturedPools />
+          <Earn />
+          <RegisterAbout />
+        </div>
+      </div>
+    </>
   )
 }
 

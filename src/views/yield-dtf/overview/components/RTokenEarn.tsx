@@ -5,7 +5,7 @@ import { atom, useAtomValue } from 'jotai'
 import { selectedRTokenAtom } from 'state/atoms'
 import { poolsAtom } from 'state/pools/atoms'
 import { Box, Text } from 'theme-ui'
-import PoolsTable from 'views/earn/components/PoolsTable'
+import PoolsTable from 'views/earn/components/pools-table'
 
 const rTokenPoolsAtom = atom((get) => {
   const pools = get(poolsAtom)
