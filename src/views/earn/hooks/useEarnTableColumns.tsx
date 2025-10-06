@@ -148,7 +148,7 @@ const useEarnTableColumns = (compact: boolean) => {
           )
         },
         cell: (data) => <span className="min-w-[80px] inline-block text-sm">{formatCurrency(data.getValue(), 1)}%</span>,
-        meta: { className: 'hidden xl:table-cell' },
+        meta: { className: compact ? 'hidden' : 'hidden xl:table-cell' },
       }),
       columnHelper.accessor('apyReward', {
         header: () => {
@@ -164,7 +164,7 @@ const useEarnTableColumns = (compact: boolean) => {
             {`${formatCurrency(data.getValue(), 1)}%`}
           </span>
         ),
-        meta: { className: 'hidden xl:table-cell' },
+        meta: { className: compact ? 'hidden' : 'hidden xl:table-cell' },
       }),
       columnHelper.accessor('tvlUsd', {
         header: t`TVL`,
