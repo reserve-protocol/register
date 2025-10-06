@@ -117,7 +117,7 @@ const PoolsTable = ({ data, compact = false }: Props) => {
         {isLoading ? (
           <LoadingSkeleton />
         ) : (
-          <Table className="border-separate border-spacing-y-1 min-w-[600px] xl:min-w-[1000px]">
+          <Table className={cn("border-separate border-spacing-y-1", !compact && "min-w-[600px] xl:min-w-[1000px]")}>
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow

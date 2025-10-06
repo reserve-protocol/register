@@ -46,7 +46,9 @@ const RTokenEarn = () => {
           <Trans>Explore yield opportunities for {rToken?.symbol ?? ''}</Trans>
         </Text>
       </Box>
-      <PoolsTable compact data={data} />
+      <div className="overflow-auto">
+        <PoolsTable compact data={data} />
+      </div>
     </Box>
   )
 }
