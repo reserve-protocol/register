@@ -69,12 +69,14 @@ listedDTFs['0xcfa3ef56d303ae4faaba0592388f19d7c3399fb4'] =
   listedDTFs[EUSD_ADDRESS[ChainId.Mainnet].toLowerCase()]
 const filterPools = (
   data: DefillamaPool[],
-  ids?: string[]
+  ids?: string[],
+  additionalDTFs: StringMap = {}
 ): DefillamaPool[] => {
+  const allDTFs = { ...listedDTFs, ...additionalDTFs }
   return data.filter((pool) => {
     const isUnderlyingTokenValid = (pool.underlyingTokens || []).some(
       (underlyingToken) =>
-        !!listedDTFs[underlyingToken?.toLowerCase()] ||
+        !!allDTFs[underlyingToken?.toLowerCase()] ||
         EXTRA_POOLS_BY_UNDERLYING_TOKEN.includes(underlyingToken?.toLowerCase())
     )
     const includedId = ids ? ids.includes(pool.pool) : true
@@ -98,8 +100,10 @@ const removeByProject = (
 
 const enrichPoolUnderlyingAndId = (
   pools: DefillamaPool[],
-  earnPools: EarnPool[]
+  earnPools: EarnPool[],
+  additionalDTFs: StringMap = {}
 ): Omit<Pool, 'url'>[] => {
+  const allDTFs = { ...listedDTFs, ...additionalDTFs }
   return pools.map((pool) => {
     const cmsPool = earnPools.find((item) => item.llamaId === pool.pool)
     const chainId = NETWORKS[pool.chain.toLowerCase()]
@@ -119,22 +123,22 @@ const enrichPoolUnderlyingAndId = (
       ).map((token: string) => {
         const address = token?.toLowerCase() ?? ''
 
-        if (listedDTFs[address] && listedDTFs[address].symbol !== 'RSR') {
+        if (allDTFs[address] && allDTFs[address].symbol !== 'RSR') {
           // For Yield DTFs: logo is just filename (e.g., "eusd.svg")
           // For Index DTFs: logo is full URL (e.g., "https://...")
-          const logo = listedDTFs[address].logo.startsWith('http')
-            ? listedDTFs[address].logo // Keep Index DTF URL as-is
-            : `/svgs/${listedDTFs[address].logo.toLowerCase()}` // Prepend for Yield DTFs
+          const logo = allDTFs[address].logo.startsWith('http')
+            ? allDTFs[address].logo // Keep Index DTF URL as-is
+            : `/svgs/${allDTFs[address].logo.toLowerCase()}` // Prepend for Yield DTFs
 
           return {
-            ...listedDTFs[address],
+            ...allDTFs[address],
             logo,
             chain: chainId,
           }
         }
 
         return (
-          listedDTFs[address] ||
+          allDTFs[address] ||
           OTHER_POOL_TOKENS[address] || {
             address: token,
             symbol: 'Unknown',
@@ -192,9 +196,13 @@ const addPoolCMSMetadata = (
   })
 }
 
-const mapPools = (data: DefillamaPool[], earnPools: EarnPool[]) => {
+const mapPools = (
+  data: DefillamaPool[],
+  earnPools: EarnPool[],
+  additionalDTFs: StringMap = {}
+) => {
   const ids = earnPools.map((pool) => pool.llamaId)
-  const filteredPools = filterPools(data, ids)
+  const filteredPools = filterPools(data, ids, additionalDTFs)
 
   const filteredPoolsByChains = filterByChains(
     filteredPools,
@@ -207,7 +215,8 @@ const mapPools = (data: DefillamaPool[], earnPools: EarnPool[]) => {
 
   const enrichedPools = enrichPoolUnderlyingAndId(
     filteredPoolsByProject,
-    earnPools
+    earnPools,
+    additionalDTFs
   )
   const parsedPools = parsePoolSymbol(enrichedPools)
   const pools = addPoolCMSMetadata(parsedPools, earnPools)
@@ -215,7 +224,6 @@ const mapPools = (data: DefillamaPool[], earnPools: EarnPool[]) => {
   return pools
 }
 
-// TODO: May use a central Updater component for defillama data, currently being traversed twice for APYs and this
 const useRTokenPools = () => {
   const { data, isLoading } = useSWRImmutable('https://yields.llama.fi/pools')
   const earnPools = getEarnPools()
@@ -225,17 +233,17 @@ const useRTokenPools = () => {
 
   useEffect(() => {
     if (data && indexDTFs) {
-      // Add Index DTFs to the listed DTFs filter
-      indexDTFs.forEach((dtf) => {
-        listedDTFs[dtf.address.toLowerCase()] = {
+      const indexDTFsMap = indexDTFs.reduce((acc, dtf) => {
+        acc[dtf.address.toLowerCase()] = {
           address: dtf.address,
           symbol: dtf.symbol,
           name: dtf.name,
           logo: dtf.brand?.icon || '',
         }
-      })
+        return acc
+      }, {} as StringMap)
 
-      const pools = mapPools(data.data as DefillamaPool[], earnPools)
+      const pools = mapPools(data.data as DefillamaPool[], earnPools, indexDTFsMap)
       setPools(pools)
     }
   }, [data, earnPools, indexDTFs, setPools])

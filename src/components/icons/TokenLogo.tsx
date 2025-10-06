@@ -165,9 +165,10 @@ const TokenLogo = ({
       sx={{
         position: 'relative',
         borderRadius: '50%',
-        overflow: 'visible',
+        overflow: 'hidden',
         flexShrink: 0,
         width: width,
+        height: width,
         justifyContent: 'center',
         borderColor: 'text',
         border: bordered ? '0.5px solid' : 'none',
