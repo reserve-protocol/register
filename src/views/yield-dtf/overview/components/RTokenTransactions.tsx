@@ -9,7 +9,6 @@ import useQuery from 'hooks/useQuery'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { chainIdAtom, selectedRTokenAtom } from 'state/atoms'
-import { Box, Link, Text } from 'theme-ui'
 import {
   formatCurrency,
   formatUsdCurrencyCell,
@@ -96,9 +95,9 @@ const useTransactionColumns = () => {
       columnHelper.accessor('type', {
         header: t`Type`,
         cell: (data) => (
-          <Text variant="bold">
+          <span className="font-bold">
             {transactionTypes[data.getValue()] || data.getValue()}
-          </Text>
+          </span>
         ),
       }),
       columnHelper.accessor('amount', {
@@ -147,32 +146,35 @@ const useTransactionColumns = () => {
               : data.getValue()
 
           return (
-            <Box variant="layout.verticalAlign">
-              <Link
+            <div className="flex items-center">
+              <a
                 href={`https://debank.com/profile/${address}`}
                 target="_blank"
-                mr="2"
+                rel="noopener noreferrer"
+                className="mr-2 underline hover:no-underline text-legend"
               >
                 {shortenAddress(address)}
-              </Link>
+              </a>
               <DebankIcon />
-            </Box>
+            </div>
           )
         },
       }),
       columnHelper.accessor('hash', {
         header: t`Tx Hash`,
         cell: (data) => (
-          <Link
+          <a
             href={getExplorerLink(
               data.getValue(),
               chainId,
               ExplorerDataType.TRANSACTION
             )}
             target="_blank"
+            rel="noopener noreferrer"
+            className="underline hover:no-underline text-legend"
           >
             {shortenString(data.getValue())}
-          </Link>
+          </a>
         ),
       }),
     ]
@@ -187,34 +189,30 @@ const TransactionsTable = () => {
   const columns = useTransactionColumns()
 
   return (
-    <Table
-      compact
-      pagination
-      sorting
-      columns={columns}
-      sx={{ borderRadius: '20px 20px 20px 20px', pt: '20px' }}
-      data={data?.entries || []}
-    />
+    <div className="overflow-x-auto">
+      <Table
+        compact
+        pagination
+        sorting
+        columns={columns}
+        sx={{ borderRadius: '20px 20px 20px 20px', pt: '20px' }}
+        data={data?.entries || []}
+      />
+    </div>
   )
 }
 
 const RTokenTransactions = () => {
   return (
-    <Box>
-      <Box
-        variant="layout.verticalAlign"
-        ml="4"
-        mb={5}
-        mt={6}
-        sx={{ color: 'accent' }}
-      >
+    <div className="w-full min-w-0">
+      <div className="flex items-center ml-4 mb-5 mt-6 text-primary">
         <TransactionsIcon fontSize={24} />
-        <Text ml="2" as="h2" variant="title" sx={{ fontWeight: 400 }}>
+        <h2 className="ml-2 text-xl font-semibold">
           <Trans>Transactions</Trans>
-        </Text>
-      </Box>
+        </h2>
+      </div>
       <TransactionsTable />
-    </Box>
+    </div>
   )
 }
 
