@@ -38,7 +38,7 @@ const SectionWrapper = ({
     updateNavigationIndex([inView, navigationIndex])
   }, [inView])
 
-  return <Box {...props} ref={ref} id={`section-${navigationIndex}`} sx={{ minWidth: 0, width: '100%', ...props.sx }} />
+  return <Box {...props} ref={ref} id={`section-${navigationIndex}`} />
 }
 
 export default SectionWrapper

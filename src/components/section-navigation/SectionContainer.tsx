@@ -20,7 +20,7 @@ const SectionContainer = ({ children, ...props }: BoxProps) => {
     return () => setNavigationIndex([])
   }, [])
 
-  return <Box {...props} sx={{ minWidth: 0, ...props.sx }}>{children}</Box>
+  return <Box {...props}>{children}</Box>
 }
 
 export default SectionContainer

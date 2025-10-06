@@ -189,22 +189,20 @@ const TransactionsTable = () => {
   const columns = useTransactionColumns()
 
   return (
-    <div className="overflow-x-auto">
-      <Table
-        compact
-        pagination
-        sorting
-        columns={columns}
-        sx={{ borderRadius: '20px 20px 20px 20px', pt: '20px' }}
-        data={data?.entries || []}
-      />
-    </div>
+    <Table
+      compact
+      pagination
+      sorting
+      columns={columns}
+      sx={{ borderRadius: '20px 20px 20px 20px', pt: '20px' }}
+      data={data?.entries || []}
+    />
   )
 }
 
 const RTokenTransactions = () => {
   return (
-    <div className="w-full min-w-0">
+    <div className="w-full">
       <div className="flex items-center ml-4 mb-5 mt-6 text-primary">
         <TransactionsIcon fontSize={24} />
         <h2 className="ml-2 text-xl font-semibold">
