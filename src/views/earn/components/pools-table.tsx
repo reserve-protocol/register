@@ -109,7 +109,7 @@ const PoolsTable = ({ data, compact = false }: Props) => {
   return (
     <div className="bg-secondary p-1 rounded-4xl">
       <TableFilters />
-      <div className="overflow-x-auto bg-card rounded-3xl p-2 md:p-3 mt-1">
+      <div className="bg-card rounded-3xl p-2 md:p-3 mt-1 overflow-x-auto xl:overflow-visible">
         {isLoading ? (
           <LoadingSkeleton compact={compact} />
         ) : (
@@ -118,64 +118,64 @@ const PoolsTable = ({ data, compact = false }: Props) => {
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow
                   key={headerGroup.id}
-                  className="border-none hover:bg-transparent sticky top-0 bg-card z-10"
+                  className="border-none hover:bg-transparent xl:sticky xl:top-0 bg-card xl:z-10 text-legend"
                 >
-                  {headerGroup.headers.map((header) => (
-                    <TableHead
-                      key={header.id}
-                      className={cn(
-                        'cursor-pointer text-sm md:text-base',
-                        header.column.columnDef.meta?.className
-                      )}
-                      onClick={header.column.getToggleSortingHandler()}
-                    >
-                      <div className="flex items-center gap-1">
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
-                        {{
-                          asc: <ArrowUp size={14} />,
-                          desc: <ArrowDown size={14} />,
-                        }[header.column.getIsSorted() as string] ?? null}
-                      </div>
-                    </TableHead>
-                  ))}
-                </TableRow>
-              ))}
-            </TableHeader>
-            <TableBody className="bg-card">
-              {table.getRowModel().rows.length > 0 ? (
-                table.getRowModel().rows.map((row) => (
-                  <TableRow key={row.id} className="border-none">
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell
-                        key={cell.id}
-                        className={cell.column.columnDef.meta?.className}
-                      >
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
+                    {headerGroup.headers.map((header) => (
+                      <TableHead
+                        key={header.id}
+                        className={cn(
+                          'cursor-pointer text-sm md:text-base xl:bg-card',
+                          header.column.columnDef.meta?.className
                         )}
-                      </TableCell>
+                        onClick={header.column.getToggleSortingHandler()}
+                      >
+                        <div className="flex items-center gap-1">
+                          {header.isPlaceholder
+                            ? null
+                            : flexRender(
+                                header.column.columnDef.header,
+                                header.getContext()
+                              )}
+                          {{
+                            asc: <ArrowUp size={14} />,
+                            desc: <ArrowDown size={14} />,
+                          }[header.column.getIsSorted() as string] ?? null}
+                        </div>
+                      </TableHead>
                     ))}
                   </TableRow>
-                ))
-              ) : (
-                <TableRow className="border-none">
-                  <TableCell colSpan={columns.length} className="text-center">
-                    <p className="text-legend py-8">
-                      No yield opportunities found
-                    </p>
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        )}
-      </div>
+                ))}
+              </TableHeader>
+              <TableBody className="bg-card">
+                {table.getRowModel().rows.length > 0 ? (
+                  table.getRowModel().rows.map((row) => (
+                    <TableRow key={row.id} className="border-none">
+                      {row.getVisibleCells().map((cell) => (
+                        <TableCell
+                          key={cell.id}
+                          className={cell.column.columnDef.meta?.className}
+                        >
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
+                          )}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow className="border-none">
+                    <TableCell colSpan={columns.length} className="text-center">
+                      <p className="text-legend py-8">
+                        No yield opportunities found
+                      </p>
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          )}
+        </div>
     </div>
   )
 }
