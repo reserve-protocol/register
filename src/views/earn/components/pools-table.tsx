@@ -27,7 +27,7 @@ interface Props {
   compact?: boolean
 }
 
-const LoadingSkeleton = ({ compact }: { compact: boolean }) => {
+const LoadingSkeleton = () => {
   return (
     <Table className="border-separate border-spacing-y-1 min-w-[800px]">
       <TableHeader>
@@ -108,10 +108,14 @@ const PoolsTable = ({ data, compact = false }: Props) => {
 
   return (
     <div className="bg-secondary p-1 rounded-4xl">
-      <TableFilters />
-      <div className="bg-card rounded-3xl p-2 md:p-3 mt-1 overflow-x-auto xl:overflow-visible">
+      {!compact && (
+        <div className="mb-1">
+          <TableFilters />
+        </div>
+      )}
+      <div className="bg-card rounded-3xl p-2 md:p-3 overflow-x-auto xl:overflow-visible">
         {isLoading ? (
-          <LoadingSkeleton compact={compact} />
+          <LoadingSkeleton />
         ) : (
           <Table className="border-separate border-spacing-y-1 min-w-[600px] xl:min-w-[1000px]">
             <TableHeader>
@@ -120,62 +124,62 @@ const PoolsTable = ({ data, compact = false }: Props) => {
                   key={headerGroup.id}
                   className="border-none hover:bg-transparent xl:sticky xl:top-0 bg-card xl:z-10 text-legend"
                 >
-                    {headerGroup.headers.map((header) => (
-                      <TableHead
-                        key={header.id}
-                        className={cn(
-                          'cursor-pointer text-sm md:text-base xl:bg-card',
-                          header.column.columnDef.meta?.className
-                        )}
-                        onClick={header.column.getToggleSortingHandler()}
+                  {headerGroup.headers.map((header) => (
+                    <TableHead
+                      key={header.id}
+                      className={cn(
+                        'cursor-pointer text-sm xl:bg-card',
+                        header.column.columnDef.meta?.className
+                      )}
+                      onClick={header.column.getToggleSortingHandler()}
+                    >
+                      <div className="flex items-center gap-1">
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                        {{
+                          asc: <ArrowUp size={14} />,
+                          desc: <ArrowDown size={14} />,
+                        }[header.column.getIsSorted() as string] ?? null}
+                      </div>
+                    </TableHead>
+                  ))}
+                </TableRow>
+              ))}
+            </TableHeader>
+            <TableBody className="bg-card">
+              {table.getRowModel().rows.length > 0 ? (
+                table.getRowModel().rows.map((row) => (
+                  <TableRow key={row.id} className="border-none">
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell
+                        key={cell.id}
+                        className={cell.column.columnDef.meta?.className}
                       >
-                        <div className="flex items-center gap-1">
-                          {header.isPlaceholder
-                            ? null
-                            : flexRender(
-                                header.column.columnDef.header,
-                                header.getContext()
-                              )}
-                          {{
-                            asc: <ArrowUp size={14} />,
-                            desc: <ArrowDown size={14} />,
-                          }[header.column.getIsSorted() as string] ?? null}
-                        </div>
-                      </TableHead>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
                     ))}
                   </TableRow>
-                ))}
-              </TableHeader>
-              <TableBody className="bg-card">
-                {table.getRowModel().rows.length > 0 ? (
-                  table.getRowModel().rows.map((row) => (
-                    <TableRow key={row.id} className="border-none">
-                      {row.getVisibleCells().map((cell) => (
-                        <TableCell
-                          key={cell.id}
-                          className={cell.column.columnDef.meta?.className}
-                        >
-                          {flexRender(
-                            cell.column.columnDef.cell,
-                            cell.getContext()
-                          )}
-                        </TableCell>
-                      ))}
-                    </TableRow>
-                  ))
-                ) : (
-                  <TableRow className="border-none">
-                    <TableCell colSpan={columns.length} className="text-center">
-                      <p className="text-legend py-8">
-                        No yield opportunities found
-                      </p>
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          )}
-        </div>
+                ))
+              ) : (
+                <TableRow className="border-none">
+                  <TableCell colSpan={columns.length} className="text-center">
+                    <p className="text-legend py-8">
+                      No yield opportunities found
+                    </p>
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        )}
+      </div>
     </div>
   )
 }
