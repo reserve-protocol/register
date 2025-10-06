@@ -62,7 +62,7 @@ const useEarnTableColumns = (compact: boolean) => {
         header: t`Pool`,
         cell: (data) => {
           return (
-            <div className="flex items-center gap-3 min-w-[200px]">
+            <div className="flex items-center gap-3 min-w-[150px] xl:min-w-[200px]">
               <div
                 className="flex items-center cursor-pointer text-muted-foreground hover:text-foreground"
                 onClick={() => {
@@ -74,7 +74,7 @@ const useEarnTableColumns = (compact: boolean) => {
                 }}
               >
                 <StackTokenLogo tokens={data.row.original.underlyingTokens} outsource={true} />
-                <span className="ml-2 underline">
+                <span className="ml-2 underline text-sm md:text-base">
                   {data.getValue()}
                 </span>
               </div>
@@ -103,7 +103,7 @@ const useEarnTableColumns = (compact: boolean) => {
         cell: (data) => (
           <div className="flex items-center min-w-[120px]">
             {PROJECT_ICONS[data.getValue()] ?? ''}
-            <span className="ml-2">
+            <span className="ml-2 text-sm md:text-base">
               {LP_PROJECTS[data.getValue()]?.name ?? data.getValue()}
             </span>
           </div>
@@ -119,7 +119,7 @@ const useEarnTableColumns = (compact: boolean) => {
                 chain={NETWORKS[data.getValue().toLowerCase()]}
               />
               {!compact && (
-                <span className="ml-2">
+                <span className="ml-2 text-sm md:text-base">
                   {CHAIN_TAGS[NETWORKS[data.getValue().toLowerCase()]]}
                 </span>
               )}
@@ -136,7 +136,7 @@ const useEarnTableColumns = (compact: boolean) => {
             </div>
           )
         },
-        cell: (data) => <span className="min-w-[80px] inline-block">{formatCurrency(data.getValue(), 1)}%</span>,
+        cell: (data) => <span className="min-w-[80px] inline-block text-sm md:text-base">{formatCurrency(data.getValue(), 1)}%</span>,
       }),
       columnHelper.accessor('apyBase', {
         header: () => {
@@ -147,7 +147,8 @@ const useEarnTableColumns = (compact: boolean) => {
             </div>
           )
         },
-        cell: (data) => <span className="min-w-[80px] inline-block">{formatCurrency(data.getValue(), 1)}%</span>,
+        cell: (data) => <span className="min-w-[80px] inline-block text-sm md:text-base">{formatCurrency(data.getValue(), 1)}%</span>,
+        meta: { className: 'hidden xl:table-cell' },
       }),
       columnHelper.accessor('apyReward', {
         header: () => {
@@ -159,14 +160,15 @@ const useEarnTableColumns = (compact: boolean) => {
           )
         },
         cell: (data) => (
-          <span className="min-w-[80px] inline-block">
+          <span className="min-w-[80px] inline-block text-sm md:text-base">
             {`${formatCurrency(data.getValue(), 1)}%`}
           </span>
         ),
+        meta: { className: 'hidden xl:table-cell' },
       }),
       columnHelper.accessor('tvlUsd', {
         header: t`TVL`,
-        cell: (data) => <span className="min-w-[100px] inline-block">${formatCurrency(data.getValue(), 0)}</span>,
+        cell: (data) => <span className="min-w-[100px] inline-block text-sm md:text-base">${formatCurrency(data.getValue(), 0)}</span>,
       }),
     ]
   }, [compact])

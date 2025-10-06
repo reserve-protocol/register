@@ -113,7 +113,7 @@ const PoolsTable = ({ data, compact = false }: Props) => {
         {isLoading ? (
           <LoadingSkeleton compact={compact} />
         ) : (
-          <Table className="border-separate border-spacing-y-1 min-w-[1000px]">
+          <Table className="border-separate border-spacing-y-1 min-w-[600px] xl:min-w-[1000px]">
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow
@@ -124,7 +124,7 @@ const PoolsTable = ({ data, compact = false }: Props) => {
                     <TableHead
                       key={header.id}
                       className={cn(
-                        'cursor-pointer',
+                        'cursor-pointer text-sm md:text-base',
                         header.column.columnDef.meta?.className
                       )}
                       onClick={header.column.getToggleSortingHandler()}

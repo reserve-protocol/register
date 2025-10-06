@@ -120,7 +120,7 @@ const EarnWrapper = () => {
         <Hero />
         <Info />
       </Box>
-      <div className="container pb-6 px-0 md:px-4">
+      <div className="container pb-6 px-0 lg:px-4">
         <div className="flex flex-col gap-3 mt-4 md:mt-6">
           <FeaturedPools />
           <Earn />

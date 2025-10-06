@@ -169,10 +169,9 @@ const TokenLogo = React.forwardRef<HTMLImageElement, Props>((props, ref) => {
       width={w}
       style={{ width: w, height: h }}
       className={cn(
-        'flex-shrink-0 object-contain object-center',
+        'flex-shrink-0 object-cover object-center rounded-full',
         className,
-        TRANSPARENT_TOKENS.has(symbol?.toLowerCase() || '') && 'bg-black',
-        isWrapped ? 'bg-transparent' : 'rounded-full'
+        TRANSPARENT_TOKENS.has(symbol?.toLowerCase() || '') && 'bg-black'
       )}
       onError={() => setCurrentSrc('/svgs/defaultLogo.svg')}
       {...rest}
