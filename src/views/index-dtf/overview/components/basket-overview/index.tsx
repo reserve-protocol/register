@@ -112,7 +112,7 @@ const BasketTableHeader = ({
                 className="rounded-[60px] px-2 data-[state=active]:text-primary"
                 onClick={() => setActiveTab('exposure')}
               >
-                <Target className="w-4 h-4 mr-1" />{' '}
+                <Target className="w-4 h-4 mr-0 sm:mr-1" />{' '}
                 <span className="hidden sm:block">Exposure</span>
               </TabsTrigger>
               <TabsTrigger
@@ -120,7 +120,7 @@ const BasketTableHeader = ({
                 className="rounded-[60px] px-2 data-[state=active]:text-primary"
                 onClick={() => setActiveTab('collateral')}
               >
-                <PackageOpen className="w-4 h-4 mr-1" />{' '}
+                <PackageOpen className="w-4 h-4 mr-0 sm:mr-1" />{' '}
                 <span className="hidden sm:block">Collateral</span>
               </TabsTrigger>
             </TabsList>
@@ -161,7 +161,12 @@ const BasketTableHeader = ({
             Weight
           </TableHeaderWithSort>
         )}
-        <TableHead className={cn('text-right text-xs sm:text-base px-1 sm:px-3', isExposure && 'hidden')}>
+        <TableHead
+          className={cn(
+            'text-right text-xs sm:text-base px-1 sm:px-3',
+            isExposure && 'hidden'
+          )}
+        >
           {`${hasBridgedAssets ? 'Bridge / ' : ''}${capitalize(
             ETHERSCAN_NAMES[chainId]
           )}`}
@@ -348,15 +353,6 @@ const IndexBasketOverview = () => {
 
 export default () => (
   <Card className="py-4 sm:py-6 -mt-[1px]">
-    <div className="px-4 sm:px-6 flex items-center gap-2 justify-between">
-      <h2 className="text-xl sm:text-2xl font-light whitespace-nowrap">
-        Assets in this DTF
-      </h2>
-      <div className="hidden sm:block xl:hidden">
-        <IndexTokenAddress />
-      </div>
-    </div>
-    <Separator className="mt-4 sm:mt-6 mb-3" />
     <div className="px-4 sm:px-6">
       <IndexBasketOverview />
     </div>
