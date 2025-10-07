@@ -6,7 +6,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
-import { uploadJsonToIpfs } from '@/lib/ipfs-upload'
 import { chainIdAtom } from '@/state/atoms'
 import {
   indexDTFAtom,

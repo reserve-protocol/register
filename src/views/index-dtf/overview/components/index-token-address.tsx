@@ -6,7 +6,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { useIsMobile } from '@/hooks/use-media-query'
 import { chainIdAtom } from '@/state/atoms'
 import { iTokenAddressAtom } from '@/state/dtf/atoms'
 import { shortenAddress } from '@/utils'
@@ -15,16 +14,19 @@ import { useAtomValue } from 'jotai'
 import { ArrowUpRight, ChevronDown } from 'lucide-react'
 import { toast } from 'sonner'
 
-const IndexTokenAddress = () => {
+const IndexTokenAddress = ({
+  theme = 'dark',
+}: {
+  theme?: 'light' | 'dark'
+}) => {
   const chainId = useAtomValue(chainIdAtom)
   const address = useAtomValue(iTokenAddressAtom)
-  const isMobile = useIsMobile()
 
   if (!address) {
     return null
   }
 
-  if (!isMobile) {
+  if (theme === 'light') {
     return (
       <DropdownMenu>
         <DropdownMenuTrigger asChild>

@@ -103,8 +103,8 @@ const BasketTableHeader = ({
 
   return (
     <TableHeader>
-      <TableRow className="border-none text-legend bg-card sticky top-0 ">
-        <TableHead className="text-left text-xs sm:text-base">
+      <TableRow className="border-none text-legend bg-card sticky -top-[1px]">
+        <TableHead className="text-left text-xs sm:text-base py-1">
           {isBSC ? (
             <TabsList className="h-9 rounded-[70px] p-0.5">
               <TabsTrigger
@@ -352,7 +352,7 @@ const IndexBasketOverview = () => {
 }
 
 export default () => (
-  <Card className="py-4 sm:py-6 -mt-[1px]">
+  <Card className="py-4 sm:py-6">
     <div className="px-4 sm:px-6">
       <IndexBasketOverview />
     </div>
