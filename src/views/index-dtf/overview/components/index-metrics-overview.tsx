@@ -227,12 +227,12 @@ const IndexMetricsOverview = () => {
       <div className="flex-1 sm:[&>*:not(:first-child)]:border-t sm:[&>*:not(:first-child)]:border-secondary border-r-0 sm:border-r border-secondary">
         <Creator />
         <MarketCap />
-        <UniqueHolders />
+        {/* <UniqueHolders /> */}
         <AnnualizedTvlFee />
       </div>
       <div className="flex-1 sm:[&>*:not(:first-child)]:border-t sm:[&>*:not(:first-child)]:border-secondary">
         <Website />
-        <TxVolume />
+        {/* <TxVolume /> */}
         <Created />
         <MintingFee />
       </div>
