@@ -56,10 +56,8 @@ export const wagmiConfig = createConfig({
     [mainnet.id]: import.meta.env.VITE_MAINNET_URL
       ? http(import.meta.env.VITE_MAINNET_URL)
       : fallback([
-          http(`https://eth.merkle.io/`),
           http(`https://ethereum-rpc.publicnode.com/`),
           http(`https://mainnet.gateway.tenderly.co/`),
-          http(`https://1.rpc.thirdweb.com/`),
           http(`https://mainnet.infura.io/v3/${import.meta.env.VITE_INFURA}`),
           http(
             `https://eth-mainnet.alchemyapi.io/v2/${import.meta.env.VITE_ALCHEMY}`
@@ -67,11 +65,8 @@ export const wagmiConfig = createConfig({
           http(`https://rpc.ankr.com/mainnet/${import.meta.env.VITE_ANKR}`),
         ]),
     [base.id]: fallback([
-      http(`https://base.gateway.tenderly.co`),
       http(`https://base-rpc.publicnode.com`),
-      http(`https://base.llamarpc.com`),
-      http(`https://base.merkle.io`),
-      http(`https://8453.rpc.thirdweb.com`),
+      http(`https://base.gateway.tenderly.co`),
       http(`https://base-mainnet.infura.io/v3/${import.meta.env.VITE_INFURA}`),
       http(
         `https://base-mainnet.g.alchemy.com/v2/${import.meta.env.VITE_ALCHEMY}`
@@ -89,7 +84,6 @@ export const wagmiConfig = createConfig({
       http(`https://bsc-dataseed3.ninicoin.io`),
       http(`https://bsc-dataseed4.defibit.io`),
       http(`https://bsc-rpc.publicnode.com`),
-      http(`https://56.rpc.thirdweb.com`),
       http(`https://bsc-mainnet.infura.io/v3/${import.meta.env.VITE_INFURA}`),
       http(`https://rpc.ankr.com/bsc/${import.meta.env.VITE_ANKR}`),
       http(
