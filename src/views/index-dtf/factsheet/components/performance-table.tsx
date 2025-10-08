@@ -52,7 +52,7 @@ const PerformanceTable = ({
                   key={row.label}
                   className="border-b border-white/10 dark:border-border/50 last:border-0"
                 >
-                  <td className="w-1/2 px-5 py-6 text-sm text-white/70 dark:text-muted-foreground align-middle">
+                  <td className="w-1/2 px-6 sm:px-5 py-6 text-sm text-white/70 dark:text-muted-foreground align-middle">
                     {row.label}
                   </td>
                   <td

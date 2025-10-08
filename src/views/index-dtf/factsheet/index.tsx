@@ -75,7 +75,7 @@ const IndexDTFFactsheet = () => {
           <div>
             <FactsheetChart data={data} isLoading={isLoading} />
           </div>
-          <div className="bg-[#000] dark:bg-background sm:rounded-3xl p-4">
+          <div className="bg-[#000] dark:bg-background sm:rounded-3xl sm:p-4">
             <PerformanceTable
               performance={
                 data?.performance || {
