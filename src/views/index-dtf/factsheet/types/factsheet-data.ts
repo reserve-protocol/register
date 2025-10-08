@@ -9,6 +9,7 @@ export interface ChartDataPoint {
 }
 
 export interface PerformanceData {
+  '1m': number | null
   '3m': number | null
   '6m': number | null
   ytd: number | null

@@ -80,6 +80,7 @@ export const useFactsheetData = () => {
     const lastTs = lastPoint.timestamp
 
     // Period boundaries relative to the last datapoint (aligned clock)
+    const ts1m = lastTs - TIME_PERIODS.MONTH
     const ts3m = lastTs - TIME_PERIODS.THREE_MONTHS
     const ts6m = lastTs - TIME_PERIODS.SIX_MONTHS
     const ts1y = lastTs - TIME_PERIODS.YEAR
@@ -90,6 +91,7 @@ export const useFactsheetData = () => {
     const jan1Utc = Math.floor(Date.UTC(y, 0, 1) / 1000)
 
     // Bases
+    const base1m = priceAtBoundary(allTimeseries, ts1m)
     const base3m = priceAtBoundary(allTimeseries, ts3m)
     const base6m = priceAtBoundary(allTimeseries, ts6m)
     const base1y = priceAtBoundary(allTimeseries, ts1y)
@@ -97,6 +99,7 @@ export const useFactsheetData = () => {
     const baseAll = allTimeseries[0]?.price ?? null // or first non-zero if prefer
 
     const performance: PerformanceData = {
+      '1m': calculatePerformance(currentPrice, base1m),
       '3m': calculatePerformance(currentPrice, base3m),
       '6m': calculatePerformance(currentPrice, base6m),
       ytd: calculatePerformance(currentPrice, baseYTD),

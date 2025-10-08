@@ -21,6 +21,7 @@ const PerformanceTable = ({
   const currentDate = dayjs.unix(now).format('MMM D, YYYY')
 
   const rows = [
+    { label: '1 Month', value: performance['1m'] },
     { label: '3 Month', value: performance['3m'] },
     { label: '6 Month', value: performance['6m'] },
     { label: 'YTD', value: performance.ytd },

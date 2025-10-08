@@ -35,8 +35,6 @@ const ChartOverlay = ({ timeseries, currentNav }: ChartOverlayProps) => {
     return ((lastValue - firstValue) / firstValue) * 100
   }, [timeseries])
 
-  const chartTitle = chartType === 'navGrowth' ? 'NAV Growth' : 'Monthly P&L'
-
   return (
     <div className="mb-0 sm:mb-3 flex flex-col gap-2">
       <div className="flex items-center bg-white/20 rounded-full p-[1px] w-fit">
@@ -45,7 +43,7 @@ const ChartOverlay = ({ timeseries, currentNav }: ChartOverlayProps) => {
       <div className="flex flex-col gap-0.5 text-xl sm:text-2xl font-light">
         {dtf ? (
           <h2 className="text-xl sm:text-2xl font-light w-full break-words">
-            {chartTitle} - ${dtf?.token?.symbol}
+            ${dtf?.token?.symbol}
           </h2>
         ) : (
           <Skeleton className="w-[250px] h-7 sm:h-8" />

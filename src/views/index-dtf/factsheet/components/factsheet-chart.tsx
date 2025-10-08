@@ -252,14 +252,6 @@ const FactsheetChart = ({ data, isLoading }: FactsheetChartProps) => {
         {chartType === 'monthlyPL' ? <div /> : <TimeRangeSelector />}
         <ChartTypeSelector />
       </div>
-
-      <Separator className="bg-white/10 mt-5" />
-
-      <p className="text-base text-muted-foreground pt-5 px-6">
-        Performance shown assumes an initial investment of $100 and represents
-        cumulative performance net of fees from fund inception. *Performance for
-        periods of one year or less is not annualized.
-      </p>
     </div>
   )
 }
