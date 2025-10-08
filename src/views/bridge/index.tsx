@@ -131,7 +131,7 @@ const BridgeCard = ({
       <ChainLogo chain={ChainId.Base} height={20} width={20} />
     </div>
     <div className="flex items-center gap-2">
-      <span className="text-sm text-legend">Visit Superbridge</span>
+      <span className="text-sm text-legend hidden sm:block">Visit {name}</span>
       <a href={url} target="_blank" rel="noopener noreferrer">
         <div className="bg-muted rounded-full p-2">
           <ArrowUpRightIcon className="w-4 h-4" strokeWidth={1.5} />
@@ -201,8 +201,8 @@ const TokenListHelper = () => {
           </div>
         ))}
       </CollapsibleContent>
-      <CollapsibleTrigger className="p-4 pl-8 pr-6 flex items-center gap-2 text-sm w-full">
-        <Info size={16} strokeWidth={1.5} />
+      <CollapsibleTrigger className="p-4 pl-0 sm:pl-8 pr-6 flex  items-center gap-2 text-sm w-full">
+        <Info size={16} strokeWidth={1.5} className="hidden sm:block" />
         <div className="ml-3 mr-auto">
           <span className="font-semibold">Don’t see your token?</span>{' '}
           <span className="text-legend">
