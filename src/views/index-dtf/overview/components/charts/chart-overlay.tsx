@@ -1,6 +1,10 @@
 import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
-import { indexDTFAtom, indexDTFPriceAtom, performanceTimeRangeAtom } from '@/state/dtf/atoms'
+import {
+  indexDTFAtom,
+  indexDTFPriceAtom,
+  performanceTimeRangeAtom,
+} from '@/state/dtf/atoms'
 import { formatToSignificantDigits } from '@/utils'
 import { useAtomValue } from 'jotai'
 import { ArrowDown, ArrowUp } from 'lucide-react'
@@ -8,6 +12,7 @@ import { IndexDTFPerformance } from '../../hooks/use-dtf-price-history'
 import IndexTokenLogo from '../index-token-logo'
 import { DataType, dataTypeAtom } from './price-chart'
 import TimeRangeSelector from './time-range-selector'
+import IndexCreatorOverview from '../index-creator-overview'
 
 const calculatePercentageChange = (
   performance: IndexDTFPerformance['timeseries'],
@@ -63,7 +68,10 @@ const ChartOverlay = ({
         <div className="flex items-center bg-white/20 rounded-full p-[1px] w-fit">
           <IndexTokenLogo />
         </div>
-        <div>
+        <div className="hidden xl:block">
+          <IndexCreatorOverview />
+        </div>
+        <div className="block xl:hidden">
           <TimeRangeSelector />
         </div>
       </div>

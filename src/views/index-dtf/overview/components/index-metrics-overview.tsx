@@ -6,7 +6,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
-import { uploadJsonToIpfs } from '@/lib/ipfs-upload'
 import { chainIdAtom } from '@/state/atoms'
 import {
   indexDTFAtom,
@@ -14,7 +13,7 @@ import {
   indexDTFMarketCapAtom,
   indexDTFTransactionsAtom,
 } from '@/state/dtf/atoms'
-import { formatCurrency, humanizeDateToNow, shortenAddress } from '@/utils'
+import { formatCurrency, formatPercentage, shortenAddress } from '@/utils'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { useAtomValue } from 'jotai'
 import {
@@ -22,13 +21,17 @@ import {
   ArrowUpRight,
   BadgeDollarSign,
   Cake,
+  ChartPie,
   Crown,
+  HandCoins,
   Link2,
+  TableRowsSplit,
   Wallet,
 } from 'lucide-react'
 import { ReactNode, useMemo } from 'react'
 import Skeleton from 'react-loading-skeleton'
 import { Link } from 'react-router-dom'
+import { formatEther } from 'viem'
 
 const MetricsItem = ({
   label,
@@ -153,6 +156,51 @@ const Website = () => {
   )
 }
 
+const Supply = () => {
+  const dtf = useAtomValue(indexDTFAtom)
+  return (
+    <MetricsItem
+      label="Supply"
+      value={formatCurrency(
+        Number(formatEther(BigInt(dtf?.token?.totalSupply || 0))),
+        0
+      )}
+      icon={<HandCoins size={16} />}
+      loading={!dtf?.token?.totalSupply}
+    />
+  )
+}
+
+const Supply24h = () => {
+  const transactions = useAtomValue(indexDTFTransactionsAtom)
+  const last24h = Date.now() / 1000 - 24 * 60 * 60
+
+  const txVolume = useMemo(
+    () =>
+      transactions
+        .filter((transaction) => transaction.timestamp > last24h)
+        .filter(
+          (transaction) =>
+            transaction.type === 'Mint' || transaction.type === 'Redeem'
+        )
+        .reduce(
+          (acc, transaction) =>
+            acc + (transaction.type === 'Redeem' ? -1 : 1) * transaction.amount,
+          0
+        ),
+    [transactions]
+  )
+
+  return (
+    <MetricsItem
+      label="24h Supply Change"
+      value={`${txVolume > 0 ? '+' : ''} ${formatCurrency(txVolume, 0)}`}
+      icon={<ArrowUpDown size={16} />}
+      loading={!transactions.length}
+    />
+  )
+}
+
 const TxVolume = () => {
   const transactions = useAtomValue(indexDTFTransactionsAtom)
   const last24h = Date.now() / 1000 - 24 * 60 * 60
@@ -180,27 +228,82 @@ const Created = () => {
   return (
     <MetricsItem
       label="Created"
-      value={dtf?.timestamp ? humanizeDateToNow(dtf?.timestamp) : ''}
+      value={
+        dtf?.timestamp
+          ? new Date(dtf.timestamp * 1000).toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+            })
+          : ''
+      }
       icon={<Cake size={16} />}
       loading={!dtf?.timestamp}
     />
   )
 }
 
+const AnnualizedTvlFee = () => {
+  const dtf = useAtomValue(indexDTFAtom)
+  return (
+    <MetricsItem
+      label="Annualized TVL Fee"
+      value={
+        dtf?.annualizedTvlFee
+          ? formatPercentage(dtf?.annualizedTvlFee * 100)
+          : ''
+      }
+      icon={<TableRowsSplit size={16} />}
+      loading={!dtf?.annualizedTvlFee}
+    />
+  )
+}
+
+const MintingFee = () => {
+  const dtf = useAtomValue(indexDTFAtom)
+  return (
+    <MetricsItem
+      label="Minting Fee"
+      value={dtf?.mintingFee ? formatPercentage(dtf?.mintingFee * 100) : ''}
+      icon={<ChartPie size={16} />}
+      loading={!dtf?.mintingFee}
+    />
+  )
+}
+
 const IndexMetricsOverview = () => {
   return (
-    <div className="flex flex-col sm:flex-row border-t border-secondary pb-1 sm:pb-0">
-      <div className="flex-1 sm:[&>*:not(:first-child)]:border-t sm:[&>*:not(:first-child)]:border-secondary border-r-0 sm:border-r border-secondary">
+    <>
+      {/* Mobile view */}
+      <div className="flex flex-col sm:hidden">
         <Creator />
-        <MarketCap />
-        <UniqueHolders />
-      </div>
-      <div className="flex-1 sm:[&>*:not(:first-child)]:border-t sm:[&>*:not(:first-child)]:border-secondary">
         <Website />
-        <TxVolume />
         <Created />
+        <MarketCap />
+        <Supply />
+        <Supply24h />
+        <AnnualizedTvlFee />
+        <MintingFee />
       </div>
-    </div>
+
+      {/* Desktop view */}
+      <div className="hidden sm:flex flex-row border-t border-secondary">
+        <div className="flex-1 [&>*:not(:first-child)]:border-t [&>*:not(:first-child)]:border-secondary border-r border-secondary">
+          <Creator />
+          <MarketCap />
+          {/* <UniqueHolders /> */}
+          <Supply />
+          <AnnualizedTvlFee />
+        </div>
+        <div className="flex-1 [&>*:not(:first-child)]:border-t [&>*:not(:first-child)]:border-secondary">
+          <Website />
+          {/* <TxVolume /> */}
+          <Created />
+          <Supply24h />
+          <MintingFee />
+        </div>
+      </div>
+    </>
   )
 }
 

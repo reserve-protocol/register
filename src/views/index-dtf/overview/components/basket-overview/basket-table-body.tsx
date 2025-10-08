@@ -8,7 +8,10 @@ import type { ExposureGroup } from './exposure-table-rows'
 interface BasketTableBodyProps {
   filtered: Token[] | undefined
   isExposure: boolean
-  exposureGroups: Map<string, ExposureGroup> | null | Array<[string, ExposureGroup]>
+  exposureGroups:
+    | Map<string, ExposureGroup>
+    | null
+    | Array<[string, ExposureGroup]>
   basketShares: Record<string, string>
   basketPerformanceChanges: Record<string, number | null>
   performanceLoading: boolean
