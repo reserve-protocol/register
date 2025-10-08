@@ -273,22 +273,37 @@ const MintingFee = () => {
 
 const IndexMetricsOverview = () => {
   return (
-    <div className="flex flex-col sm:flex-row border-t border-secondary pb-1 sm:pb-0">
-      <div className="flex-1 sm:[&>*:not(:first-child)]:border-t sm:[&>*:not(:first-child)]:border-secondary border-r-0 sm:border-r border-secondary">
+    <>
+      {/* Mobile view */}
+      <div className="flex flex-col sm:hidden">
         <Creator />
-        <MarketCap />
-        {/* <UniqueHolders /> */}
-        <Supply />
-        <AnnualizedTvlFee />
-      </div>
-      <div className="flex-1 sm:[&>*:not(:first-child)]:border-t sm:[&>*:not(:first-child)]:border-secondary">
         <Website />
-        {/* <TxVolume /> */}
         <Created />
+        <MarketCap />
+        <Supply />
         <Supply24h />
+        <AnnualizedTvlFee />
         <MintingFee />
       </div>
-    </div>
+
+      {/* Desktop view */}
+      <div className="hidden sm:flex flex-row border-t border-secondary">
+        <div className="flex-1 [&>*:not(:first-child)]:border-t [&>*:not(:first-child)]:border-secondary border-r border-secondary">
+          <Creator />
+          <MarketCap />
+          {/* <UniqueHolders /> */}
+          <Supply />
+          <AnnualizedTvlFee />
+        </div>
+        <div className="flex-1 [&>*:not(:first-child)]:border-t [&>*:not(:first-child)]:border-secondary">
+          <Website />
+          {/* <TxVolume /> */}
+          <Created />
+          <Supply24h />
+          <MintingFee />
+        </div>
+      </div>
+    </>
   )
 }
 
