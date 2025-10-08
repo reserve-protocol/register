@@ -4,6 +4,7 @@ import { ArrowDownIcon, ArrowUpIcon, DownloadIcon } from 'lucide-react'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { useAtomValue } from 'jotai'
 import type { NetPerformanceYear } from '../types/factsheet-data'
+import React from 'react'
 
 interface NetPerformanceSummaryProps {
   data: NetPerformanceYear[] | null
@@ -50,7 +51,7 @@ const NetPerformanceSummary = ({ data }: NetPerformanceSummaryProps) => {
   // Show loading state or empty state if no data
   if (!data || data.length === 0) {
     return (
-      <Card className="bg-background border-secondary rounded-3xl mx-1 mb-1">
+      <Card className="bg-background border-secondary rounded-none sm:rounded-3xl mx-1 mb-1">
         <div className="p-6">
           <h3 className="text-xl sm:text-2xl font-light mb-4">
             Net Performance Summary - {dtf?.token?.name || 'Index'}
@@ -96,7 +97,7 @@ const NetPerformanceSummary = ({ data }: NetPerformanceSummaryProps) => {
   }
 
   return (
-    <Card className="bg-background border-secondary rounded-3xl mx-1 mb-1">
+    <Card className="bg-background border-secondary rounded-none sm:rounded-3xl mx-1 mb-1">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 p-6">
         <h3 className="text-xl sm:text-2xl font-light">
           Net Performance Summary - <br className="sm:hidden" />{' '}
@@ -115,48 +116,78 @@ const NetPerformanceSummary = ({ data }: NetPerformanceSummaryProps) => {
       </div>
 
       {/* Mobile view - list format */}
-      <div className="block md:hidden space-y-4 px-6 sm:px-0">
-        {data.map((yearData) => (
-          <div key={yearData.year} className="border-b pb-4">
-            <div className="flex justify-between items-center mb-3">
-              <span className="font-semibold text-base">{yearData.year}</span>
-              <span className="text-sm text-muted-foreground">
-                FY/YTD:{' '}
-                {yearData.yearToDate !== null
-                  ? formatPerformanceValue(yearData.yearToDate)
-                  : '-'}
-              </span>
-            </div>
-            <div className="grid grid-cols-3 gap-2 text-xs">
-              {monthKeys.map((monthKey, idx) => {
-                const monthData = yearData[monthKey]
-                const value = monthData?.value
-                return (
-                  <div key={monthKey} className="flex justify-between">
-                    <span className="text-muted-foreground">
-                      {monthColumns[idx]} - {yearData.year}
-                    </span>
-                    <span
-                      className={
-                        value !== null && value >= 0
-                          ? 'text-green-600'
-                          : 'text-red-600'
-                      }
-                    >
-                      {value !== null ? formatPerformanceValue(value) : '-'}
-                      {monthData?.isBest && (
-                        <span className="text-green-600 ml-1">▲</span>
-                      )}
-                      {monthData?.isWorst && (
-                        <span className="text-red-600 ml-1">▼</span>
-                      )}
-                    </span>
-                  </div>
-                )
-              })}
-            </div>
-          </div>
-        ))}
+      <div className="block md:hidden">
+        <div className="border-t border-border">
+          <table className="w-full table-fixed">
+            <tbody>
+              {data.map((yearData, yearIdx) => (
+                <React.Fragment key={yearData.year}>
+                  {monthKeys.map((monthKey, idx) => {
+                    const monthData = yearData[monthKey]
+                    const value = monthData?.value
+                    return (
+                      <tr
+                        key={`${yearData.year}-${monthKey}`}
+                        className="border-b border-border"
+                      >
+                        <td className="w-1/2 px-6 py-5 text-sm align-middle">
+                          {monthColumns[idx]} - {yearData.year}
+                        </td>
+                        <td className="w-1/2 px-5 py-5 text-sm font-light text-right align-middle border-l border-border">
+                          {value !== null ? (
+                            <span
+                              className={
+                                value >= 0 ? 'text-green-600' : 'text-red-600'
+                              }
+                            >
+                              {formatPerformanceValue(value)}
+                              {monthData?.isBest && (
+                                <span className="text-green-600 ml-1 text-xs">
+                                  ▲
+                                </span>
+                              )}
+                              {monthData?.isWorst && (
+                                <span className="text-red-600 ml-1 text-xs">
+                                  ▼
+                                </span>
+                              )}
+                            </span>
+                          ) : (
+                            <span className="text-muted-foreground">N/A</span>
+                          )}
+                        </td>
+                      </tr>
+                    )
+                  })}
+                  <tr
+                    key={`${yearData.year}-ytd`}
+                    className={`border-b ${yearIdx === data.length - 1 ? 'border-b' : 'border-b-2'} border-border`}
+                  >
+                    <td className="w-1/2 px-6 py-5 text-sm align-middle">
+                      FY/YTD - {yearData.year}
+                    </td>
+                    <td className="w-1/2 px-5 py-5 text-sm font-light text-right align-middle border-l border-border">
+                      <span
+                        className={
+                          yearData.yearToDate !== null &&
+                          yearData.yearToDate >= 0
+                            ? 'text-green-600'
+                            : yearData.yearToDate !== null
+                              ? 'text-red-600'
+                              : 'text-muted-foreground'
+                        }
+                      >
+                        {yearData.yearToDate !== null
+                          ? formatPerformanceValue(yearData.yearToDate)
+                          : 'N/A'}
+                      </span>
+                    </td>
+                  </tr>
+                </React.Fragment>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       {/* Desktop view - table format */}
