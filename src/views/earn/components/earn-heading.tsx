@@ -1,6 +1,6 @@
 import { MouseoverTooltip } from '@/components/old/tooltip'
 import { Trans, t } from '@lingui/macro'
-import HelpIcon from 'components/icons/HelpIcon'
+import HelpIcon from 'components/icons/CustomHelpIcon'
 import { Zap } from 'lucide-react'
 
 const Hero = () => (
