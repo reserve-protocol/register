@@ -130,7 +130,7 @@ const FactsheetChart = ({ data, isLoading }: FactsheetChartProps) => {
   }
 
   return (
-    <div className="bg-[#000] dark:bg-background lg:dark:bg-muted rounded-3xl text-[#fff] dark:text-foreground py-6">
+    <div className="bg-[#000] dark:bg-background lg:dark:bg-muted sm:rounded-3xl text-[#fff] dark:text-foreground py-6">
       <div className="mb-4 px-6">
         <ChartOverlay
           timeseries={chartData}
@@ -250,7 +250,9 @@ const FactsheetChart = ({ data, isLoading }: FactsheetChartProps) => {
 
       <div className="mt-4 px-6 flex items-center gap-2 justify-between w-full">
         {chartType === 'monthlyPL' ? <div /> : <TimeRangeSelector />}
-        <ChartTypeSelector />
+        <div className="hidden sm:block">
+          <ChartTypeSelector />
+        </div>
       </div>
     </div>
   )

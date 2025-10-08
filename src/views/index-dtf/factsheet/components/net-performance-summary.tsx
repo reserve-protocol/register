@@ -99,7 +99,8 @@ const NetPerformanceSummary = ({ data }: NetPerformanceSummaryProps) => {
     <Card className="bg-background border-secondary rounded-3xl mx-1 mb-1">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 p-6">
         <h3 className="text-xl sm:text-2xl font-light">
-          Net Performance Summary - {dtf?.token?.name || 'Index'}
+          Net Performance Summary - <br className="sm:hidden" />{' '}
+          {dtf?.token?.name || 'Index'}
         </h3>
         <Button
           variant="outline"
@@ -114,7 +115,7 @@ const NetPerformanceSummary = ({ data }: NetPerformanceSummaryProps) => {
       </div>
 
       {/* Mobile view - list format */}
-      <div className="block md:hidden space-y-4">
+      <div className="block md:hidden space-y-4 px-6 sm:px-0">
         {data.map((yearData) => (
           <div key={yearData.year} className="border-b pb-4">
             <div className="flex justify-between items-center mb-3">

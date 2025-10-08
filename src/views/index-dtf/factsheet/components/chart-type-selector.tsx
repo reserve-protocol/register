@@ -11,7 +11,7 @@ const ChartTypeSelector = () => {
         variant="ghost"
         size="sm"
         onClick={() => setChartType('navGrowth')}
-        className={`h-7 px-3 text-sm rounded-full ${
+        className={`h-6 sm:h-7 px-3 text-xs sm:text-sm rounded-full ${
           chartType === 'navGrowth'
             ? 'bg-white text-black hover:bg-white hover:text-black'
             : 'text-white/70 hover:bg-white/20 hover:text-white'
@@ -23,7 +23,7 @@ const ChartTypeSelector = () => {
         variant="ghost"
         size="sm"
         onClick={() => setChartType('monthlyPL')}
-        className={`h-7 px-3 text-sm rounded-full ${
+        className={`h-6 sm:h-7 px-3 text-xs sm:text-sm rounded-full ${
           chartType === 'monthlyPL'
             ? 'bg-white text-black hover:bg-white hover:text-black'
             : 'text-white/70 hover:bg-white/20 hover:text-white'

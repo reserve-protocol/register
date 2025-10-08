@@ -9,6 +9,7 @@ import { timeRangeAtom } from '../../overview/components/charts/time-range-selec
 import IndexTokenLogo from '../../overview/components/index-token-logo'
 import { factsheetChartTypeAtom } from '../atoms'
 import type { ChartDataPoint } from '../types/factsheet-data'
+import ChartTypeSelector from './chart-type-selector'
 
 interface ChartOverlayProps {
   timeseries: ChartDataPoint[]
@@ -37,8 +38,11 @@ const ChartOverlay = ({ timeseries, currentNav }: ChartOverlayProps) => {
 
   return (
     <div className="mb-0 sm:mb-3 flex flex-col gap-2">
-      <div className="flex items-center bg-white/20 rounded-full p-[1px] w-fit">
-        <IndexTokenLogo />
+      <div className="flex items-center gap-2 justify-between">
+        <div className="flex items-center bg-white/20 rounded-full p-[1px] w-fit">
+          <IndexTokenLogo />
+        </div>
+        <ChartTypeSelector />
       </div>
       <div className="flex flex-col gap-0.5 text-xl sm:text-2xl font-light">
         {dtf ? (

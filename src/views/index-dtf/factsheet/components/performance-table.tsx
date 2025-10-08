@@ -8,7 +8,7 @@ interface PerformanceTableProps {
 }
 
 const formatPerformanceValue = (value: number | null): string => {
-  if (value === null) return 'N/A'
+  if (value === null || value === undefined) return 'N/A'
   return `${value.toFixed(2)}%`
 }
 
@@ -30,7 +30,7 @@ const PerformanceTable = ({
   ]
 
   return (
-    <div className="bg-transparent text-white dark:text-foreground h-full flex flex-col justify-end w-full pt-6">
+    <div className="bg-transparent text-white dark:text-foreground h-full flex flex-col gap-2 justify-end w-full pt-6">
       <div className="w-8 h-8 border border-white rounded-full flex items-center justify-center mb-auto mx-6">
         <CalendarRange className="w-4 h-4" />
       </div>
