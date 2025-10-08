@@ -11,7 +11,7 @@ import { Address, erc20Abi } from 'viem'
 import { useBlockNumber, useReadContract, useReadContracts } from 'wagmi'
 import { readContract } from 'wagmi/actions'
 
-const PERIOD = 7n // 7 days
+const PERIOD = 30n // 30 days
 const YEAR = 365n
 const BLOCKS_PER_DAY: Record<number, bigint> = {
   [ChainId.Mainnet]: 7200n, // 1 block every 12 seconds
