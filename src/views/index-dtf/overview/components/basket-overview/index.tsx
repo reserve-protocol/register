@@ -352,7 +352,7 @@ const IndexBasketOverview = () => {
 }
 
 export default () => (
-  <Card className="py-4 sm:py-6">
+  <Card className="pt-3 pb-5 sm:pt-4 sm:pb-6">
     <div className="px-4 sm:px-6">
       <IndexBasketOverview />
     </div>

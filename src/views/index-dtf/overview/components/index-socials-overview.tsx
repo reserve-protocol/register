@@ -36,7 +36,7 @@ const IndexSocialsOverview = () => {
   }
 
   return (
-    <div className="px-1.5 py-[5px] flex gap-0.5 items-center border rounded-full">
+    <div className="px-1.5 py-[5px] flex gap-1 items-center border rounded-full">
       {socials.map(
         ([key, value]) =>
           !!value && (

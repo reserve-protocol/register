@@ -13,12 +13,7 @@ import {
   indexDTFMarketCapAtom,
   indexDTFTransactionsAtom,
 } from '@/state/dtf/atoms'
-import {
-  formatCurrency,
-  formatPercentage,
-  humanizeDateToNow,
-  shortenAddress,
-} from '@/utils'
+import { formatCurrency, formatPercentage, shortenAddress } from '@/utils'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { useAtomValue } from 'jotai'
 import {
@@ -28,6 +23,7 @@ import {
   Cake,
   ChartPie,
   Crown,
+  HandCoins,
   Link2,
   TableRowsSplit,
   Wallet,
@@ -35,6 +31,7 @@ import {
 import { ReactNode, useMemo } from 'react'
 import Skeleton from 'react-loading-skeleton'
 import { Link } from 'react-router-dom'
+import { formatEther } from 'viem'
 
 const MetricsItem = ({
   label,
@@ -159,6 +156,51 @@ const Website = () => {
   )
 }
 
+const Supply = () => {
+  const dtf = useAtomValue(indexDTFAtom)
+  return (
+    <MetricsItem
+      label="Supply"
+      value={formatCurrency(
+        Number(formatEther(BigInt(dtf?.token?.totalSupply || 0))),
+        0
+      )}
+      icon={<HandCoins size={16} />}
+      loading={!dtf?.token?.totalSupply}
+    />
+  )
+}
+
+const Supply24h = () => {
+  const transactions = useAtomValue(indexDTFTransactionsAtom)
+  const last24h = Date.now() / 1000 - 24 * 60 * 60
+
+  const txVolume = useMemo(
+    () =>
+      transactions
+        .filter((transaction) => transaction.timestamp > last24h)
+        .filter(
+          (transaction) =>
+            transaction.type === 'Mint' || transaction.type === 'Redeem'
+        )
+        .reduce(
+          (acc, transaction) =>
+            acc + (transaction.type === 'Redeem' ? -1 : 1) * transaction.amount,
+          0
+        ),
+    [transactions]
+  )
+
+  return (
+    <MetricsItem
+      label="24h Supply Change"
+      value={`${txVolume > 0 ? '+' : ''} ${formatCurrency(txVolume, 0)}`}
+      icon={<ArrowUpDown size={16} />}
+      loading={!transactions.length}
+    />
+  )
+}
+
 const TxVolume = () => {
   const transactions = useAtomValue(indexDTFTransactionsAtom)
   const last24h = Date.now() / 1000 - 24 * 60 * 60
@@ -186,7 +228,15 @@ const Created = () => {
   return (
     <MetricsItem
       label="Created"
-      value={dtf?.timestamp ? humanizeDateToNow(dtf?.timestamp) : ''}
+      value={
+        dtf?.timestamp
+          ? new Date(dtf.timestamp * 1000).toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+            })
+          : ''
+      }
       icon={<Cake size={16} />}
       loading={!dtf?.timestamp}
     />
@@ -228,12 +278,14 @@ const IndexMetricsOverview = () => {
         <Creator />
         <MarketCap />
         {/* <UniqueHolders /> */}
+        <Supply />
         <AnnualizedTvlFee />
       </div>
       <div className="flex-1 sm:[&>*:not(:first-child)]:border-t sm:[&>*:not(:first-child)]:border-secondary">
         <Website />
         {/* <TxVolume /> */}
         <Created />
+        <Supply24h />
         <MintingFee />
       </div>
     </div>

@@ -12,8 +12,7 @@ const IndexCreatorOverview = () => {
   const brandData = useAtomValue(indexDTFBrandAtom)
   const chainId = useAtomValue(chainIdAtom)
 
-  const creator =
-    brandData?.creator?.name || shortenAddress(dtf?.deployer || '')
+  const creator = brandData?.creator?.name
   const icon = brandData?.creator?.icon ? (
     <TokenLogo src={brandData.creator.icon} size="sm" />
   ) : (
@@ -22,6 +21,11 @@ const IndexCreatorOverview = () => {
   const link =
     brandData?.creator?.link ||
     getExplorerLink(dtf?.deployer || '', chainId, ExplorerDataType.ADDRESS)
+
+  if (!creator) {
+    return null
+  }
+
   return (
     <Link
       to={link}
