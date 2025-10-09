@@ -1,11 +1,10 @@
 import { cn } from '@/lib/utils'
-import { indexDTFAtom } from '@/state/dtf/atoms'
+import { indexDTFAtom, performanceTimeRangeAtom } from '@/state/dtf/atoms'
 import { formatToSignificantDigits } from '@/utils'
 import { atom, useAtomValue } from 'jotai'
 import { ArrowDown, ArrowUp } from 'lucide-react'
 import { useMemo } from 'react'
 import Skeleton from 'react-loading-skeleton'
-import { timeRangeAtom } from '../../overview/components/charts/time-range-selector'
 import IndexTokenLogo from '../../overview/components/index-token-logo'
 import { factsheetChartTypeAtom } from '../atoms'
 import type { ChartDataPoint } from '../types/factsheet-data'
@@ -17,7 +16,7 @@ interface ChartOverlayProps {
 }
 
 const timeRangeChangeAtom = atom((get) => {
-  const range = get(timeRangeAtom)
+  const range = get(performanceTimeRangeAtom)
   return range
 })
 

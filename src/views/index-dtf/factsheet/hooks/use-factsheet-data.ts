@@ -1,7 +1,10 @@
-import { indexDTFAtom, iTokenAddressAtom } from '@/state/dtf/atoms'
+import {
+  indexDTFAtom,
+  iTokenAddressAtom,
+  performanceTimeRangeAtom,
+} from '@/state/dtf/atoms'
 import { useAtomValue } from 'jotai'
 import useIndexDTFPriceHistory from '../../overview/hooks/use-dtf-price-history'
-import { timeRangeAtom } from '../../overview/components/charts/time-range-selector'
 import { getRangeParams } from '../utils/constants'
 import {
   calculateMonthlyChartData,
@@ -22,7 +25,7 @@ const prefetchRanges = ['24h', '7d', '1m', '3m', '1y'].map(getRangeParams)
 export const useFactsheetData = () => {
   const dtf = useAtomValue(indexDTFAtom)
   const address = useAtomValue(iTokenAddressAtom)
-  const timeRange = useAtomValue(timeRangeAtom)
+  const timeRange = useAtomValue(performanceTimeRangeAtom)
 
   const currentRangeParams = getRangeParams(timeRange)
   const allRangeParams = getRangeParams('all')

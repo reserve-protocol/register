@@ -1,13 +1,12 @@
 import { Card } from '@/components/ui/card'
 import { ChartConfig, ChartContainer } from '@/components/ui/chart'
-import { Separator } from '@/components/ui/separator'
 import { Skeleton } from '@/components/ui/skeleton'
-import { indexDTFAtom } from '@/state/dtf/atoms'
+import { indexDTFAtom, performanceTimeRangeAtom } from '@/state/dtf/atoms'
 import { formatCurrency } from '@/utils'
 import { formatXAxisTick as formatTick } from '@/utils/chart-formatters'
 import dayjs from 'dayjs'
-import { useAtomValue } from 'jotai'
-import { useMemo } from 'react'
+import { useAtomValue, useSetAtom } from 'jotai'
+import { useEffect, useMemo } from 'react'
 import {
   Area,
   AreaChart,
@@ -19,15 +18,11 @@ import {
   XAxis,
   YAxis,
 } from 'recharts'
-import TimeRangeSelector, {
-  timeRangeAtom,
-} from '../../overview/components/charts/time-range-selector'
+import TimeRangeSelector from '../../overview/components/charts/time-range-selector'
 import { factsheetChartTypeAtom } from '../atoms'
-import { useSetAtom } from 'jotai'
-import { useEffect } from 'react'
+import type { FactsheetData } from '../types/factsheet-data'
 import ChartOverlay from './chart-overlay'
 import ChartTypeSelector from './chart-type-selector'
-import type { FactsheetData } from '../types/factsheet-data'
 
 const chartConfig = {
   desktop: {
@@ -93,8 +88,8 @@ export const CustomizedAxisTick = ({
 
 const FactsheetChart = ({ data, isLoading }: FactsheetChartProps) => {
   const chartType = useAtomValue(factsheetChartTypeAtom)
-  const setTimeRange = useSetAtom(timeRangeAtom)
-  const timeRange = useAtomValue(timeRangeAtom)
+  const setTimeRange = useSetAtom(performanceTimeRangeAtom)
+  const timeRange = useAtomValue(performanceTimeRangeAtom)
   const dtf = useAtomValue(indexDTFAtom)
 
   // Force 'all' time range when Monthly P&L is selected
@@ -135,7 +130,7 @@ const FactsheetChart = ({ data, isLoading }: FactsheetChartProps) => {
     if (chartType === 'navGrowth') {
       return formatTick(timestamp, timeRange, dtf?.timestamp)
     }
-
+    // Monthly P&L chart always shows month/year format
     const date = dayjs.unix(timestamp)
     return date.format("MMM 'YY")
   }
