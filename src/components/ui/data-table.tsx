@@ -32,7 +32,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[]
   expandable?: boolean // Disable expandable default behavior
   allowMultipleExpand?: boolean
-  onRowClick?(data: TData, row: Row<TData>): void
+  onRowClick?(data: TData, event: React.MouseEvent, row?: Row<TData>): void
   renderSubComponent?(props: { row: Row<TData> }): React.ReactElement
   className?: string
   subComponentClassName?: string
@@ -153,7 +153,6 @@ interface DataTableComponentProps<TData, TValue>
   expandable?: boolean
   allowMultipleExpand?: boolean
   pagination?: boolean | { pageSize: number }
-  onRowClick?: (data: TData, row: Row<TData>) => void
   hoverRowComponent?: (props: {
     row: Row<TData>
     children: React.ReactNode
@@ -174,10 +173,10 @@ const CustomTableRow = ({
   hoverRowComponent,
 }: {
   row: Row<any>
-  handleRowClick: (row: Row<any>) => void
+  handleRowClick: (row: Row<any>, event: React.MouseEvent) => void
   renderSubComponent?: (props: { row: Row<any> }) => React.ReactElement
   expandable: boolean
-  onRowClick?: (data: any, row: Row<any>) => void
+  onRowClick?: (data: any, event: React.MouseEvent, row?: Row<any>) => void
   expandedRows: boolean[]
   index: number
   hoverRowComponent?: (props: {
@@ -188,7 +187,7 @@ const CustomTableRow = ({
   const baseRow = (
     <TableRow
       data-state={row.getIsSelected() && 'selected'}
-      onClick={() => handleRowClick(row)}
+      onClick={(event) => handleRowClick(row, event)}
       className={cn(
         (!!renderSubComponent && expandable) || onRowClick
           ? 'cursor-pointer border-b-[0]'
@@ -258,8 +257,8 @@ function DataTable<TData, TValue>({
     .getRowModel()
     .rows.map((row) => row.getIsExpanded())
 
-  const handleRowClick = (row: Row<TData>) => {
-    onRowClick && onRowClick(row.original, row)
+  const handleRowClick = (row: Row<TData>, event: React.MouseEvent) => {
+    onRowClick && onRowClick(row.original, event, row)
 
     if (!expandable || !renderSubComponent) return
 
