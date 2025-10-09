@@ -12,6 +12,7 @@ import { operationAtom } from './atom'
 import { useOrderStatus } from './hooks/useOrderStatus'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useMemo } from 'react'
+import { chainIdAtom } from '@/state/atoms'
 
 const STATUS_MAP: Record<CowSwapOrderStatus, string> = {
   [CowSwapOrderStatus.PRESIGNATURE_PENDING]: 'Processing',
@@ -65,6 +66,7 @@ const CowSwapOrder = ({
   orderId: string
   disableFetch?: boolean
 }) => {
+  const chainId = useAtomValue(chainIdAtom)
   const { data } = useOrderStatus({ orderId, disabled: disableFetch })
   const operation = useAtomValue(operationAtom)
   const indexDTFBasket = useAtomValue(indexDTFBasketAtom)
@@ -94,6 +96,7 @@ const CowSwapOrder = ({
           symbol={
             indexDTFBasket?.find((t) => t.address === token)?.symbol || ''
           }
+          chain={chainId}
           size="xl"
         />
         <div className="flex flex-col">

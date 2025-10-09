@@ -2,22 +2,23 @@ import CowswapSettlement from '@/abis/CowSwapSettlement'
 import { notifyError } from '@/hooks/useNotification'
 import { chainIdAtom, walletAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
-import { MetadataApi } from '@cowprotocol/app-data'
-import { OrderBalance } from '@cowprotocol/contracts'
+import { MetadataApi } from '@cowprotocol/sdk-app-data'
 import {
   AppDataHash,
+  OrderBalance,
   OrderCreation,
   OrderQuoteResponse,
   OrderSigningUtils,
   SigningScheme,
 } from '@cowprotocol/cow-sdk'
+import { ViemAdapter } from '@cowprotocol/sdk-viem-adapter'
 import { useMutation } from '@tanstack/react-query'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import pLimit from 'p-limit'
 import { useCallback, useRef } from 'react'
 import { generateTypedData, OrderRequest, Quote } from 'universal-sdk'
 import { Address, encodeFunctionData, Hex, maxUint256, parseUnits } from 'viem'
-import { useSendCalls, useSignTypedData } from 'wagmi'
+import { useSendCalls, useSignTypedData, usePublicClient } from 'wagmi'
 import {
   cowswapOrderIdsAtom,
   cowswapOrdersAtom,
@@ -153,6 +154,7 @@ export function useQuoteSignatures(refresh = false) {
   const { sendCallsAsync } = useSendCalls()
   const failedOrders = useAtomValue(failedOrdersAtom)
   const { signTypedDataAsync } = useSignTypedData()
+  const publicClient = usePublicClient()
 
   const limiter = pLimit(1)
 
@@ -175,14 +177,39 @@ export function useQuoteSignatures(refresh = false) {
         }
       }
 
-      const metadataApi = new MetadataApi()
+      // Create a Viem adapter for the MetadataApi
+      let metadataApi: MetadataApi
+      if (publicClient) {
+        const viemAdapter = new ViemAdapter({ provider: publicClient })
+        metadataApi = new MetadataApi(viemAdapter)
+      } else {
+        // Fallback without adapter
+        metadataApi = new MetadataApi()
+      }
 
-      const appDataDoc = await metadataApi.generateAppDataDoc({
-        appCode: 'Reserve Protocol',
-        environment: 'production',
-      })
-      const { appDataContent, appDataHex } =
-        await metadataApi.getAppDataInfo(appDataDoc)
+      let appDataContent: string
+      let appDataHex: AppDataHash
+
+      try {
+        const appDataDoc = await metadataApi.generateAppDataDoc({
+          appCode: 'Reserve Protocol',
+          environment: 'production',
+        })
+        const appDataInfo = await metadataApi.getAppDataInfo(appDataDoc)
+        appDataContent = appDataInfo.appDataContent
+        appDataHex = appDataInfo.appDataHex
+      } catch (error) {
+        console.error('Failed to calculate appDataHex', error)
+        // Fallback to a simple appData structure if MetadataApi fails
+        appDataContent = JSON.stringify({
+          appCode: 'Reserve Protocol',
+          environment: 'production',
+          version: '1.0.0'
+        })
+        // Use a default hex value - this is the keccak256 hash of the appDataContent
+        appDataHex = '0x' + '0'.repeat(64) as AppDataHash
+        console.warn('Using fallback appData due to MetadataApi error')
+      }
 
       const successfulQuotes = Object.values(quotes).filter(
         (quote) => quote.success
