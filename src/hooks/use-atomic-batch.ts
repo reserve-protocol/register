@@ -5,11 +5,12 @@ import { useAccount, useCapabilities } from 'wagmi'
 const useAtomicBatch = () => {
   const chainId = useAtomValue(chainIdAtom)
   const { data } = useCapabilities()
-  const { connector } = useAccount()
+  const { connector, chainId: connectedChainId } = useAccount()
 
-  const atomicBatchSupported = data?.[chainId]?.atomicBatch?.supported
+  const atomicBatchSupported =
+    data?.[connectedChainId || chainId]?.atomicBatch?.supported
   const atomicSupported = ['ready', 'supported'].includes(
-    data?.[chainId]?.atomic?.status ?? ''
+    data?.[connectedChainId || chainId]?.atomic?.status ?? ''
   )
   const isMetamask =
     connector?.id.toLowerCase().includes('metamask') ||

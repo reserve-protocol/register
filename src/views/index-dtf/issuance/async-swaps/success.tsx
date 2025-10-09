@@ -280,6 +280,7 @@ const MainTransaction = () => {
         <TokenLogo
           address={indexDTF?.id}
           symbol={indexDTF?.token.symbol}
+          chain={indexDTF?.chainId}
           size="xl"
         />
         <div className="flex flex-col">
