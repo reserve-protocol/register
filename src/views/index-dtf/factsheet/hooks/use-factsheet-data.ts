@@ -69,13 +69,6 @@ export const useFactsheetData = () => {
     const lastPoint = allTimeseries[allTimeseries.length - 1]
     const currentPrice = lastPoint.price
     const inception = dtf?.timestamp || 0
-    const now = Math.floor(Date.now() / 1000)
-
-    const currentYear = new Date().getFullYear()
-    const jan1Timestamp = Math.floor(
-      new Date(currentYear, 0, 1).getTime() / 1000
-    )
-    const yearStart = allTimeseries.find((p) => p.timestamp >= jan1Timestamp)
 
     const lastTs = lastPoint.timestamp
 

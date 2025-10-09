@@ -179,13 +179,14 @@ export const generateNetPerformanceData = (
 
     // Compute YTD once per year:
     // Base = previous close BEFORE the first month with data (searching backwards across months/years).
-    // If no previous close exists, base = first month's close (YTD starts at 0 and evolves afterwards).
+    // If no previous close exists, base = first price
     if (firstMonthIndex !== null && lastMonthCloseOfYear !== null) {
       const prevBeforeFirst = getPrevMonthClose(y, firstMonthIndex)
+      const firstPriceOfYear = timeseries[0].price
       const ytdBase =
         prevBeforeFirst !== null && prevBeforeFirst > 0
           ? prevBeforeFirst
-          : firstMonthClose
+          : firstPriceOfYear
 
       if (ytdBase !== null && ytdBase > 0) {
         row.yearToDate = (lastMonthCloseOfYear / ytdBase - 1) * 100

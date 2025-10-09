@@ -42,7 +42,9 @@ const ChartOverlay = ({ timeseries, currentNav }: ChartOverlayProps) => {
         <div className="flex items-center bg-white/20 rounded-full p-[1px] w-fit">
           <IndexTokenLogo />
         </div>
-        <ChartTypeSelector />
+        <div className="block sm:hidden">
+          <ChartTypeSelector />
+        </div>
       </div>
       <div className="flex flex-col gap-0.5 text-xl sm:text-2xl font-light">
         {dtf ? (
