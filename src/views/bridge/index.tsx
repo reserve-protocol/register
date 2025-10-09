@@ -206,7 +206,7 @@ const TokenListHelper = () => {
         <div className="ml-3 mr-auto">
           <span className="font-semibold">Don’t see your token?</span>{' '}
           <span className="text-legend">
-            You may need to import it with the token contract address.
+            You may need to import it with the L2 contract address.
           </span>
         </div>
         <div className="flex items-center text-primary gap-1">

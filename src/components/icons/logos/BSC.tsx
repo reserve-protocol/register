@@ -7,6 +7,8 @@ const BSC = (props: SVGProps<SVGSVGElement>) => (
     xmlns="http://www.w3.org/2000/svg"
     x="0px"
     y="0px"
+    width="1em"
+    height="1em"
     viewBox="0 0 2496 2496"
     enableBackground="new 0 0 2496 2496"
     {...props}

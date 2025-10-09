@@ -34,13 +34,9 @@ const BridgeLabel = ({ address, tokenSymbol, tokenName }: BridgeLabelProps) => {
         onClick={() => setOpen(true)}
       >
         {bridge.logo && (
-          <img
-            src={bridge.logo}
-            alt={bridge.name}
-            className="min-h-4 min-w-4"
-          />
+          <img src={bridge.logo} alt={bridge.name} className="h-4 w-4" />
         )}
-        <BridgeNavIcon className="min-h-4 min-w-4" />
+        <BridgeNavIcon className="h-4 w-4" />
       </div>
       <BridgeInfoDialog
         open={open}
