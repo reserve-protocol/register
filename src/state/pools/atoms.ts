@@ -11,13 +11,13 @@ export interface Pool {
   project: string
   chain: string
   tvlUsd: number
-  underlyingTokens: { address: string; symbol: string; logo: string }[]
+  underlyingTokens: { address: string; symbol: string; logo: string; chain?: number }[]
   rewardTokens: string[]
   url: string
   defillamaId?: string
 }
 
-export interface RTokenPoolsMap {
+export interface DTFPoolsMap {
   [x: string]: {
     minApy: number
     maxApy: number
@@ -25,7 +25,7 @@ export interface RTokenPoolsMap {
   }
 }
 
-export const ALL_LISTED_RTOKEN_ADDRESSES = new Set(
+export const ALL_LISTED_DTF_ADDRESSES = new Set(
   Object.values(LISTED_RTOKEN_ADDRESSES).reduce((acc, curr) => [
     ...acc,
     ...curr,
@@ -34,33 +34,33 @@ export const ALL_LISTED_RTOKEN_ADDRESSES = new Set(
 
 export const poolsAtom = atom<Pool[]>([])
 
-export const rTokenPoolsAtom = atom<RTokenPoolsMap>((get) => {
+export const dtfPoolsAtom = atom<DTFPoolsMap>((get) => {
   const pools = get(poolsAtom)
 
   if (!pools.length) {
     return {}
   }
 
-  return pools.reduce((rTokenPools, pool) => {
+  return pools.reduce((dtfPools, pool) => {
     for (const token of pool.underlyingTokens) {
       if (
-        ALL_LISTED_RTOKEN_ADDRESSES.has(token.address.toLowerCase()) ||
+        ALL_LISTED_DTF_ADDRESSES.has(token.address.toLowerCase()) ||
         BRIDGE_RTOKEN_MAP[token.address]
       ) {
         const address = BRIDGE_RTOKEN_MAP[token.address] || token.address
 
-        if (rTokenPools[address]) {
-          rTokenPools[address].pools.push(pool)
-          rTokenPools[address].minApy = Math.min(
-            rTokenPools[address].minApy,
+        if (dtfPools[address]) {
+          dtfPools[address].pools.push(pool)
+          dtfPools[address].minApy = Math.min(
+            dtfPools[address].minApy,
             pool.apy
           )
-          rTokenPools[address].maxApy = Math.max(
-            rTokenPools[address].maxApy,
+          dtfPools[address].maxApy = Math.max(
+            dtfPools[address].maxApy,
             pool.apy
           )
         } else {
-          rTokenPools[address] = {
+          dtfPools[address] = {
             minApy: pool.apy,
             maxApy: pool.apy,
             pools: [pool],
@@ -69,6 +69,6 @@ export const rTokenPoolsAtom = atom<RTokenPoolsMap>((get) => {
       }
     }
 
-    return rTokenPools
-  }, {} as RTokenPoolsMap)
+    return dtfPools
+  }, {} as DTFPoolsMap)
 })

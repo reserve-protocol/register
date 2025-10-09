@@ -13,7 +13,7 @@ const RTokenContainer = () => (
   <div className="container flex flex-col-reverse md:flex-row mb-[72px] lg:mb-0">
     <Updater />
     <TokenNavigation />
-    <div className="flex-grow">
+    <div className="flex-grow min-w-0">
       <Outlet />
     </div>
   </div>

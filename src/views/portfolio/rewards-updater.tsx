@@ -161,6 +161,7 @@ const RewardsUpdater = () => {
             functionName: 'claimRewards',
             args: [rewards],
             chainId: chainId as AvailableChain,
+            account: account as Address,
           })
       )
 
@@ -180,6 +181,7 @@ const RewardsUpdater = () => {
         {} as Record<string, Record<string, bigint>>
       )
     },
+    enabled: Object.keys(rewardsMap).length > 0 && !!account,
   })
 
   useEffect(() => {

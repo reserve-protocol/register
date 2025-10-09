@@ -1,4 +1,4 @@
-import { IndexDTF, Token } from '@/types'
+import { IndexDTF, TimeRange, Token } from '@/types'
 import { AvailableChain, ChainId } from '@/utils/chains'
 import { atom } from 'jotai'
 import { Address } from 'viem'
@@ -104,6 +104,13 @@ export const indexDTFBasketSharesAtom = atom<Record<string, string>>({})
 
 export const indexDTFAtom = atom<IndexDTF | undefined>(undefined)
 export const indexDTF7dChangeAtom = atom<number | undefined>(undefined)
+export const indexDTFBasketPerformanceChangeAtom = atom<
+  Record<string, number | null>
+>({})
+
+export const performanceTimeRangeAtom = atom<TimeRange>('7d')
+export const indexDTFPerformanceLoadingAtom = atom<boolean>(false)
+export const indexDTFNewlyAddedAssetsAtom = atom<Record<string, boolean>>({})
 export const indexDTFMarketCapAtom = atom<number | undefined>(undefined)
 export const indexDTFBrandAtom = atom<IndexDTFBrand | undefined>(undefined)
 export const indexDTFTransactionsAtom = atom<Transaction[]>([])

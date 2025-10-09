@@ -1,5 +1,7 @@
-import {AvailableChain} from '@/utils/chains'
+import { AvailableChain } from '@/utils/chains'
 import { Address, Hex } from 'viem'
+
+export type TimeRange = '24h' | '7d' | '1m' | '3m' | '1y' | 'all'
 
 export type RoleKey =
   | 'owners'

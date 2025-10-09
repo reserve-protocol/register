@@ -26,8 +26,8 @@ import {
   NETWORKS,
   capitalize,
 } from 'utils/constants'
-import tvlDark from '../assets/tvl-dark.svg'
-import tvlLight from '../assets/tvl-light.svg'
+import tvlDark from '../assets/tvl-dark.png'
+import tvlLight from '../assets/tvl-light.png'
 import useAPIProtocolMetrics, {
   Metrics,
 } from '../hooks/use-api-protocol-metrics'

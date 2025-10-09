@@ -1,3 +1,4 @@
+import binanceWallet from '@binance/w3w-rainbow-connector-v2'
 import {
   DisclaimerComponent,
   RainbowKitProvider,
@@ -17,11 +18,9 @@ import {
   safeWallet,
   walletConnectWallet,
 } from '@rainbow-me/rainbowkit/wallets'
-import binanceWallet from '@binance/w3w-rainbow-connector-v2'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { ROUTES } from 'utils/constants'
 import { WagmiProvider, createConfig, fallback, http } from 'wagmi'
-import { arbitrum, base, mainnet, bsc } from 'wagmi/chains'
+import { arbitrum, base, bsc, mainnet } from 'wagmi/chains'
 import { hashFn, structuralSharing } from 'wagmi/query'
 import AtomUpdater from './updaters/AtomUpdater'
 
@@ -57,6 +56,8 @@ export const wagmiConfig = createConfig({
     [mainnet.id]: import.meta.env.VITE_MAINNET_URL
       ? http(import.meta.env.VITE_MAINNET_URL)
       : fallback([
+          http(`https://ethereum-rpc.publicnode.com/`),
+          http(`https://mainnet.gateway.tenderly.co/`),
           http(`https://mainnet.infura.io/v3/${import.meta.env.VITE_INFURA}`),
           http(
             `https://eth-mainnet.alchemyapi.io/v2/${import.meta.env.VITE_ALCHEMY}`
@@ -64,6 +65,8 @@ export const wagmiConfig = createConfig({
           http(`https://rpc.ankr.com/mainnet/${import.meta.env.VITE_ANKR}`),
         ]),
     [base.id]: fallback([
+      http(`https://base-rpc.publicnode.com`),
+      http(`https://base.gateway.tenderly.co`),
       http(`https://base-mainnet.infura.io/v3/${import.meta.env.VITE_INFURA}`),
       http(
         `https://base-mainnet.g.alchemy.com/v2/${import.meta.env.VITE_ALCHEMY}`
@@ -77,6 +80,10 @@ export const wagmiConfig = createConfig({
       http(`https://rpc.ankr.com/arbitrum/${import.meta.env.VITE_ANKR}`),
     ]),
     [bsc.id]: fallback([
+      http(`https://bsc-dataseed2.binance.org`),
+      http(`https://bsc-dataseed3.ninicoin.io`),
+      http(`https://bsc-dataseed4.defibit.io`),
+      http(`https://bsc-rpc.publicnode.com`),
       http(`https://bsc-mainnet.infura.io/v3/${import.meta.env.VITE_INFURA}`),
       http(`https://rpc.ankr.com/bsc/${import.meta.env.VITE_ANKR}`),
       http(

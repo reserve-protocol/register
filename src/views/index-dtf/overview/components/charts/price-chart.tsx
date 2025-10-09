@@ -6,6 +6,7 @@ import {
   indexDTF7dChangeAtom,
   indexDTFAtom,
   indexDTFMarketCapAtom,
+  performanceTimeRangeAtom,
 } from '@/state/dtf/atoms'
 import { formatCurrency, formatToSignificantDigits } from '@/utils'
 import { formatXAxisTick as formatTick } from '@/utils/chart-formatters'
@@ -18,7 +19,7 @@ import useIndexDTFPriceHistory from '../../hooks/use-dtf-price-history'
 import IndexCTAsOverviewMobile from '../index-ctas-overview-mobile'
 import IndexTokenAddress from '../index-token-address'
 import ChartOverlay from './chart-overlay'
-import { Range, timeRangeAtom } from './time-range-selector'
+import TimeRangeSelector, { Range } from './time-range-selector'
 
 const chartConfig = {
   desktop: {
@@ -77,7 +78,7 @@ export const dataTypeAtom = atom<DataType>('price')
 // TODO: Storing 7day change here, probably not the best place
 const PriceChart = () => {
   const dtf = useAtomValue(indexDTFAtom)
-  const range = useAtomValue(timeRangeAtom)
+  const range = useAtomValue(performanceTimeRangeAtom)
   const dataType = useAtomValue(dataTypeAtom)
   const set7dChange = useSetAtom(indexDTF7dChangeAtom)
   const setMarketCap = useSetAtom(indexDTFMarketCapAtom)
@@ -170,7 +171,7 @@ const PriceChart = () => {
   }
 
   return (
-    <div className="lg:rounded-4xl lg:rounded-b-none bg-[#000] dark:bg-background lg:dark:bg-muted w-full text-[#fff] dark:text-foreground py-3 sm:py-6 pb-20 h-[438px] sm:h-[614px] xl:h-[539px]">
+    <div className="lg:rounded-4xl lg:rounded-b-none bg-[#000] dark:bg-background lg:dark:bg-muted w-full text-[#fff] dark:text-foreground py-3 sm:py-6 pb-20 h-[438px] sm:h-[598px] xl:h-[599px]">
       <div className="px-3 sm:px-6">
         <ChartOverlay timeseries={timeseries} />
         <div className="h-48 sm:h-[300px] pt-2 sm:pt-0">
@@ -240,11 +241,17 @@ const PriceChart = () => {
           ) : null}
         </div>
       </div>
-      <div className="flex items-center gap-2 justify-between xl:hidden mt-2 border-t border-border/20 pt-4">
-        <div className="flex sm:hidden flex-1 pl-3 sm:pl-6">
+      <div className="flex items-center gap-2 justify-between mt-2 border-t border-white/20 pt-4">
+        <div className="pl-6 hidden xl:block">
+          <TimeRangeSelector />
+        </div>
+        <div className="hidden xl:block pr-6">
           <IndexTokenAddress />
         </div>
-        <div className="min-w-sm sm:min-w-full pr-3 sm:px-6 sm:pr-6">
+        <div className="flex xl:hidden flex-1 pl-3 sm:pl-6">
+          <IndexTokenAddress />
+        </div>
+        <div className="min-w-sm pr-3 xl:pr-6 xl:hidden">
           <IndexCTAsOverviewMobile />
         </div>
       </div>

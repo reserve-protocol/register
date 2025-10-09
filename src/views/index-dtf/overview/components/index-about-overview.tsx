@@ -6,7 +6,6 @@ import {
   indexDTFBrandAtom,
   isBrandManagerAtom,
 } from '@/state/dtf/atoms'
-import { useTrackIndexDTFClick } from '@reserve-protocol/react-zapper'
 import { useAtomValue } from 'jotai'
 import { BrickWall, FileText, ImagePlus } from 'lucide-react'
 import { Link } from 'react-router-dom'
@@ -14,6 +13,7 @@ import IndexFactsheetOverview from './index-factsheet-overview'
 import IndexMetricsOverview from './index-metrics-overview'
 import IndexSocialsOverview from './index-socials-overview'
 import { ROUTES } from '@/utils/constants'
+import { useTrackIndexDTFClick } from '../../hooks/useTrackIndexDTFPage'
 
 const BrandManagerEditButton = () => {
   const isBrandManager = useAtomValue(isBrandManagerAtom)

@@ -47,9 +47,9 @@ const useWatchTransaction = ({
   })
 
   useEffect(() => {
-    if (!hash || !data) return
+    if (!hash) return
 
-    if (status === 'success') {
+    if (status === 'success' && data) {
       notify(
         successMessage?.title ?? t`Transaction confirmed`,
         successMessage?.subtitle ?? `At block ${Number(data.blockNumber)}`,

@@ -217,10 +217,10 @@ const parseFeeRecipients = (raw: string) => {
 }
 
 const useIndexDTF = (address: string | undefined, chainId: AvailableChain) => {
-  return useQuery<IndexDTF | undefined>({
+  return useQuery<IndexDTF | null>({
     queryKey: ['index-dtf-metadata', address, chainId],
     queryFn: async () => {
-      if (!address) return undefined
+      if (!address) return null
 
       const { dtf }: DTFQueryResponse = await request(
         INDEX_DTF_SUBGRAPH_URL[chainId],
@@ -230,7 +230,7 @@ const useIndexDTF = (address: string | undefined, chainId: AvailableChain) => {
         }
       )
 
-      if (!dtf) return undefined
+      if (!dtf) return null
 
       const data: IndexDTF = {
         ...dtf,

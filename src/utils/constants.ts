@@ -542,5 +542,20 @@ export const WORMHOLE_ASSETS = new Set([
   '0x3992b27da26848c2b19cea6fd25ad5568b68ab98',
 ])
 
+export const ETH_FILTER_ADDRESSES = [
+  '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+  '0xE72B141DF173b999AE7c1aDcbF60Cc9833Ce56a8',
+  '0x18C14C2D707b2212e17d1579789Fc06010cfca23',
+  '0xCb327b99fF831bF8223cCEd12B1338FF3aA322Ff',
+  '0x005F893EcD7bF9667195642f7649DA8163e23658',
+  '0x0000000000000000000000000000000000000000',
+  '0x82af49447d8a07e3bd95bd0d56f35241523fbab1',
+]
+
+export const RSR_FILTER_ADDRESSES = [
+  RSR_ADDRESS[ChainId.Mainnet],
+  RSR_ADDRESS[ChainId.Base],
+]
+
 export const UNITS_DISCLAIMER =
   "The units inputted (from csv or manually) are scaled so the portfolio value matches the DTF's NAV. Example: If the DTF trades at 100× NAV and you input 1,000 units, all units are scaled down by 100× to keep the NAV unchanged"

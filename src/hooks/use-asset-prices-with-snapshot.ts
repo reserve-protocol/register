@@ -40,7 +40,7 @@ const useAssetPricesWithSnapshot = (
           currentPrice: price,
           snapshotPrice: price,
         }
-        return acc
+        return acc            
       }, {} as TokenPriceWithSnapshot)
 
       // TODO: No longer used!

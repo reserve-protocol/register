@@ -9,7 +9,12 @@ import { quote } from 'utils/rsv'
 import { getAddress } from 'viem'
 import { simulateContract } from 'wagmi/actions'
 import { wagmiConfig } from 'state/chain'
-import { chainIdAtom, rTokenAtom, rTokenBalanceAtom } from '@/state/atoms'
+import {
+  chainIdAtom,
+  rTokenAtom,
+  rTokenBalanceAtom,
+  walletAtom,
+} from '@/state/atoms'
 
 export const wrapSidebarAtom = atom(false)
 
@@ -43,6 +48,7 @@ export const isValidIssuableAmountAtom = atom((get) => {
 })
 
 export const quantitiesAtom = atomWithLoadable(async (get) => {
+  const account = get(walletAtom)
   const rToken = get(rTokenAtom)
   const amount = get(issueAmountDebouncedAtom)
   const chainId = get(chainIdAtom)
@@ -64,6 +70,7 @@ export const quantitiesAtom = atomWithLoadable(async (get) => {
     functionName: 'issue',
     args: [rToken.address, safeParseEther(amount)],
     chainId,
+    account,
   })
 
   return tokens.reduce((prev, current, currentIndex) => {
