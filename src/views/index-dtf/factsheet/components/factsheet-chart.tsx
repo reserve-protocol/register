@@ -2,7 +2,9 @@ import { Card } from '@/components/ui/card'
 import { ChartConfig, ChartContainer } from '@/components/ui/chart'
 import { Separator } from '@/components/ui/separator'
 import { Skeleton } from '@/components/ui/skeleton'
+import { indexDTFAtom } from '@/state/dtf/atoms'
 import { formatCurrency } from '@/utils'
+import { formatXAxisTick as formatTick } from '@/utils/chart-formatters'
 import dayjs from 'dayjs'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
@@ -92,6 +94,8 @@ export const CustomizedAxisTick = ({
 const FactsheetChart = ({ data, isLoading }: FactsheetChartProps) => {
   const chartType = useAtomValue(factsheetChartTypeAtom)
   const setTimeRange = useSetAtom(timeRangeAtom)
+  const timeRange = useAtomValue(timeRangeAtom)
+  const dtf = useAtomValue(indexDTFAtom)
 
   // Force 'all' time range when Monthly P&L is selected
   useEffect(() => {
@@ -117,7 +121,21 @@ const FactsheetChart = ({ data, isLoading }: FactsheetChartProps) => {
     }
   }, [data?.chartData, data?.monthlyChartData, chartType])
 
+  // Calculate optimal tick interval based on data points
+  const xAxisInterval = useMemo(() => {
+    if (!chartData.length) return 0
+    const dataLength = chartData.length
+    const maxTicks = 10
+
+    if (dataLength <= maxTicks) return 0
+    return Math.ceil(dataLength / maxTicks) - 1
+  }, [chartData])
+
   const formatXAxisTick = (timestamp: number) => {
+    if (chartType === 'navGrowth') {
+      return formatTick(timestamp, timeRange, dtf?.timestamp)
+    }
+
     const date = dayjs.unix(timestamp)
     return date.format("MMM 'YY")
   }
@@ -172,7 +190,7 @@ const FactsheetChart = ({ data, isLoading }: FactsheetChartProps) => {
                   className="[&_.recharts-cartesian-axis-tick_text]:!fill-white"
                   axisLine={false}
                   tickLine={false}
-                  interval="preserveStartEnd"
+                  interval={xAxisInterval}
                   tickMargin={10}
                 />
                 <YAxis

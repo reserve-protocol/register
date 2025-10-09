@@ -8,6 +8,7 @@ import {
   indexDTFMarketCapAtom,
 } from '@/state/dtf/atoms'
 import { formatCurrency, formatToSignificantDigits } from '@/utils'
+import { formatXAxisTick as formatTick } from '@/utils/chart-formatters'
 import dayjs from 'dayjs'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useMemo } from 'react'
@@ -156,40 +157,9 @@ const PriceChart = () => {
     }
   }, [timeseries, setMarketCap])
 
+  // Wrapper to maintain backward compatibility
   const formatXAxisTick = (timestamp: number) => {
-    const date = dayjs.unix(timestamp)
-    const dtfAge = now - (dtf?.timestamp || 0)
-
-    switch (range) {
-      case '24h':
-        return date.format('HH:mm')
-      case '7d':
-      case '1m':
-      case '3m':
-        return date.format('D MMM')
-      case '1y':
-        return date.format("MMM 'YY")
-      case 'all':
-        // Format based on DTF age
-        if (dtfAge < 86_400) {
-          // Less than 24h: use hourly format
-          return date.format('HH:mm')
-        } else if (dtfAge < 604_800) {
-          // Less than 7d: use hourly format
-          return date.format('HH:mm')
-        } else if (dtfAge < 2_592_000) {
-          // Less than 1m: use day format
-          return date.format('D MMM')
-        } else if (dtfAge < 31_536_000) {
-          // Less than 1y: use day format
-          return date.format('D MMM')
-        } else {
-          // More than 1y: use month/year format
-          return date.format("MMM 'YY")
-        }
-      default:
-        return date.format('D MMM')
-    }
+    return formatTick(timestamp, range, dtf?.timestamp)
   }
 
   const formatYAxisTick = (value: number) => {
