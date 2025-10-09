@@ -71,55 +71,55 @@ export default defineConfig({
         manualChunks: (id) => {
           // Skip non-node_modules
           if (!id.includes('node_modules')) {
-            return undefined;
+            return undefined
           }
 
           // Core React dependencies
           if (id.includes('react-dom')) {
-            return 'react-dom';
+            return 'react-dom'
           }
           if (id.includes('react') && !id.includes('react-')) {
-            return 'react';
+            return 'react'
           }
 
           // Large libraries that should be separate
           if (id.includes('@rainbow-me/rainbowkit')) {
-            return 'rainbowkit';
+            return 'rainbowkit'
           }
           if (id.includes('wagmi') || id.includes('@wagmi')) {
-            return 'wagmi';
+            return 'wagmi'
           }
           if (id.includes('viem')) {
-            return 'viem';
+            return 'viem'
           }
           if (id.includes('@walletconnect')) {
-            return 'walletconnect';
+            return 'walletconnect'
           }
           if (id.includes('@coinbase/wallet-sdk')) {
-            return 'coinbase';
+            return 'coinbase'
           }
 
           // UI libraries
           if (id.includes('@radix-ui')) {
-            return 'radix-ui';
+            return 'radix-ui'
           }
           if (id.includes('recharts')) {
-            return 'charts';
+            return 'charts'
           }
 
           // Other vendor libs
           if (id.includes('ethers')) {
-            return 'ethers';
+            return 'ethers'
           }
           if (id.includes('@tanstack')) {
-            return 'tanstack';
+            return 'tanstack'
           }
           if (id.includes('jotai')) {
-            return 'jotai';
+            return 'jotai'
           }
-        }
-      }
-    }
+        },
+      },
+    },
   },
   resolve: {
     alias: {
@@ -127,6 +127,12 @@ export default defineConfig({
       types: path.resolve('src/types/'),
       utils: path.resolve('src/utils/'),
       '@': path.resolve(__dirname, './src'),
+      '@uniswap/uniswapx-sdk': path.resolve(
+        __dirname,
+        'node_modules/@uniswap/uniswapx-sdk/dist/src/index.js'
+      ),
+      // Polyfills for node modules - @cowprotocol/cow-sdk needs it
+      'node-fetch': 'cross-fetch',
     },
   },
   optimizeDeps: {
@@ -139,12 +145,13 @@ export default defineConfig({
       '@radix-ui/react-dialog',
       '@radix-ui/react-select',
       '@radix-ui/react-tabs',
+      '@uniswap/uniswapx-sdk',
     ],
     esbuildOptions: {
       target: 'es2020',
       // Help with tree shaking
-      treeShaking: true
-    }
+      treeShaking: true,
+    },
   },
   server: {
     port: 3000,

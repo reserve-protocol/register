@@ -7,8 +7,10 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Input, NumericalInput } from '@/components/ui/input'
+import useMediaQuery from '@/hooks/useMediaQuery'
 import { cn } from '@/lib/utils'
 import { chainIdAtom } from '@/state/atoms'
+import { indexDTFAtom, indexDTFBrandAtom } from '@/state/dtf/atoms'
 import { Token } from '@/types'
 import { formatCurrency } from '@/utils'
 import { useAtomValue } from 'jotai'
@@ -27,18 +29,16 @@ import React, {
   useState,
 } from 'react'
 import GaugeIcon from '../icons/GaugeIcon'
-import { ToggleGroup, ToggleGroupItem } from './toggle-group'
-import { Skeleton } from './skeleton'
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from './accordion'
-import { Separator } from './separator'
 import Help from './help'
-import { indexDTFAtom, indexDTFBrandAtom } from '@/state/dtf/atoms'
-import useMediaQuery from '@/hooks/useMediaQuery'
+import { Separator } from './separator'
+import { Skeleton } from './skeleton'
+import { ToggleGroup, ToggleGroupItem } from './toggle-group'
 
 type TokenWithBalance = Token & { balance?: string }
 
@@ -53,6 +53,8 @@ type SwapItem = {
   onChange?: (value: string) => void
   tokens?: TokenWithBalance[]
   onTokenSelect?: (token: Token) => void
+  disabled?: boolean
+  className?: string
 }
 
 type SwapProps = {
@@ -61,10 +63,12 @@ type SwapProps = {
   onSwap?: () => void
   loading?: boolean
 }
+
 const TokenInput = ({
   value = '',
   onChange = () => {},
-}: Pick<SwapItem, 'value' | 'onChange'>) => {
+  disabled = false,
+}: Pick<SwapItem, 'value' | 'onChange'> & { disabled?: boolean }) => {
   const ref = useRef<HTMLInputElement>(null)
   const isDesktop = useMediaQuery('(min-width: 768px)')
 
@@ -86,6 +90,7 @@ const TokenInput = ({
       className="placeholder:text-primary/70 text-primary"
       ref={ref}
       autoFocus={isDesktop}
+      disabled={disabled}
     />
   )
 }
@@ -187,7 +192,11 @@ const PriceValue = ({ price }: Pick<SwapItem, 'price'>) => (
   </div>
 )
 
-const MaxButton = ({ balance, onMax }: Pick<SwapItem, 'balance' | 'onMax'>) => (
+const MaxButton = ({
+  balance,
+  onMax,
+  disabled,
+}: Pick<SwapItem, 'balance' | 'onMax'> & { disabled?: boolean }) => (
   <div className="flex items-center gap-1 text-base">
     <span className="text-legend">Balance</span>
     <span className="font-bold">{balance}</span>
@@ -196,19 +205,25 @@ const MaxButton = ({ balance, onMax }: Pick<SwapItem, 'balance' | 'onMax'>) => (
       className="h-6 rounded-full ml-1 bg-primary/15 text-primary/80 hover:bg-primary/15 hover:text-primary/80 font-semibold"
       size="xs"
       onClick={onMax}
+      disabled={disabled}
     >
       Max
     </Button>
   </div>
 )
 
-const TokenInputBox = ({ from }: Pick<SwapProps, 'from'>) => {
+export const TokenInputBox = ({ from }: Pick<SwapProps, 'from'>) => {
   return (
-    <div className="flex flex-col gap-1 p-4 bg-muted rounded-xl">
+    <div
+      className={cn(
+        'flex flex-col gap-1 p-4 bg-muted rounded-xl',
+        from.className
+      )}
+    >
       <div>
         <h3 className="text-primary">{from?.title || 'You use:'}</h3>
         <div className="flex gap-1">
-          <TokenInput {...from} />
+          <TokenInput {...from} disabled={from.disabled} />
           <TokenSelector {...from} />
         </div>
       </div>
@@ -217,7 +232,11 @@ const TokenInputBox = ({ from }: Pick<SwapProps, 'from'>) => {
           <div className="max-w-[220px]">
             <PriceValue price={from.price} />
           </div>
-          <MaxButton balance={from.balance} onMax={from.onMax} />
+          <MaxButton
+            balance={from.balance}
+            onMax={from.onMax}
+            disabled={from.disabled}
+          />
         </div>
       </div>
     </div>
@@ -282,7 +301,10 @@ const SlowLoading = ({ enabled }: { enabled: boolean }) => {
   )
 }
 
-const TokenOutputBox = ({ to, loading }: Pick<SwapProps, 'to' | 'loading'>) => {
+export const TokenOutputBox = ({
+  to,
+  loading,
+}: Pick<SwapProps, 'to' | 'loading'>) => {
   const [slowLoading, setSlowLoading] = useState(false)
 
   useEffect(() => {
@@ -311,7 +333,12 @@ const TokenOutputBox = ({ to, loading }: Pick<SwapProps, 'to' | 'loading'>) => {
   }, [loading])
 
   return (
-    <div className="relative flex flex-col gap-1 p-4 bg-card rounded-xl border-border border">
+    <div
+      className={cn(
+        'relative flex flex-col gap-1 p-4 bg-card rounded-xl border-border border',
+        to.className
+      )}
+    >
       <SlowLoading enabled={slowLoading} />
       <div>
         <h3>{to.title || 'You receive:'}</h3>
@@ -343,11 +370,17 @@ const TokenOutputBox = ({ to, loading }: Pick<SwapProps, 'to' | 'loading'>) => {
   )
 }
 
-const ArrowSeparator = ({ onSwap }: Pick<SwapProps, 'onSwap'>) => {
+export const ArrowSeparator = ({
+  onSwap,
+  className,
+}: Pick<SwapProps, 'onSwap'> & { className?: string }) => {
   if (onSwap) {
     return (
       <Button
-        className="h-8 px-[6px] rounded-xl w-max mx-auto border-card border-2 -mt-4 -mb-4 z-20 text-foreground bg-muted hover:bg-border"
+        className={cn(
+          'h-8 px-[6px] rounded-xl w-max mx-auto border-card border-2 -mt-4 -mb-4 z-20 text-foreground bg-muted hover:bg-border',
+          className
+        )}
         onClick={onSwap}
       >
         <ArrowUpDown size={16} />
@@ -355,7 +388,12 @@ const ArrowSeparator = ({ onSwap }: Pick<SwapProps, 'onSwap'>) => {
     )
   }
   return (
-    <div className="rounded-xl bg-muted w-max p-2 mx-auto border-white border-2 -mt-4 -mb-4 z-20">
+    <div
+      className={cn(
+        'rounded-xl bg-muted w-max p-2 mx-auto border-white border-2 -mt-4 -mb-4 z-20 flex items-center justify-center',
+        className
+      )}
+    >
       <ArrowDown size={16} />
     </div>
   )

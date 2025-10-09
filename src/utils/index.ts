@@ -200,6 +200,13 @@ export function formatCurrency(
   }).format(value)
 }
 
+export function formatCurrencyCompact(value: number, decimals = 2) {
+  return formatCurrency(value, decimals, {
+    notation: 'compact',
+    compactDisplay: 'short',
+  })
+}
+
 export function formatTokenAmount(value: number) {
   return value < 1
     ? formatCurrency(value, 0, {
@@ -398,6 +405,46 @@ export const max = (...args: bigint[]): bigint => {
   }
 
   return args.reduce((max, curr) => (curr > max ? curr : max), 0n)
+}
+
+export function getTimerFormat(seconds: number) {
+  const timeUnits = {
+    days: 'd',
+    day: 'd',
+    hours: 'h',
+    hour: 'h',
+    minutes: 'm',
+    minute: 'm',
+    seconds: 's',
+    second: 's',
+  }
+
+  let str = humanizeDuration(seconds * 1000, {
+    units: ['h', 'm', 's'],
+    round: true,
+    spacer: '',
+    delimiter: ' ',
+  })
+
+  // Replace all time unit words with their shortened versions
+  for (const [word, short] of Object.entries(timeUnits)) {
+    str = str.replace(word, short)
+  }
+
+  // Ensure seconds are always shown
+  if (!str.includes('s')) {
+    str += ' 0s'
+  }
+
+  return str
+}
+
+export const uuidv4 = () => {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+    const r = (Math.random() * 16) | 0,
+      v = c == 'x' ? r : (r & 0x3) | 0x8
+    return v.toString(16)
+  })
 }
 
 // Check if the current version is greater than or equal to the required version

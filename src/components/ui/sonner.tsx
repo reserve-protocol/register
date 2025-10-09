@@ -7,11 +7,12 @@ type ToasterProps = React.ComponentProps<typeof Sonner>
 const Toaster = ({ ...props }: ToasterProps) => {
   const { theme = 'system' } = useTheme()
   const isDesktop = useMediaQuery('(min-width: 1400px)')
+  const isTablet = useMediaQuery('(min-width: 768px) and (max-width: 1400px)')
 
   return (
     <Sonner
       closeButton
-      position="top-center"
+      position={isTablet ? 'bottom-right' : 'top-center'}
       style={{
         ...(isDesktop
           ? {
@@ -21,7 +22,14 @@ const Toaster = ({ ...props }: ToasterProps) => {
               marginLeft: '516px',
               marginTop: '46px',
             }
-          : {}),
+          : isTablet
+            ? {
+                position: 'fixed',
+                right: '0%',
+                marginBottom: '44px',
+                marginRight: '10px',
+              }
+            : {}),
       }}
       theme={theme as ToasterProps['theme']}
       className="toaster group"

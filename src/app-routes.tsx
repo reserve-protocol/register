@@ -9,6 +9,7 @@ import Issuance from '@/views/yield-dtf/issuance'
 import Overview from '@/views/yield-dtf/overview'
 import Settings from '@/views/yield-dtf/settings'
 import Staking from '@/views/yield-dtf/staking'
+import { lazy, Suspense } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import RTokenContainer from 'state/rtoken/RTokenContainer'
 import { GOVERNANCE_PROPOSAL_TYPES, ROUTES } from 'utils/constants'
@@ -39,8 +40,9 @@ import IndexDTFManualIssuance from './views/index-dtf/issuance/manual'
 import IndexDTFManage from './views/index-dtf/manage'
 import IndexDTFOverview from './views/index-dtf/overview'
 import IndexDTFSettings from './views/index-dtf/settings'
-import AllYieldDTFList from './views/tokens/Tokens'
 import InternalDTFList from './views/internal/dtf-list'
+import AllYieldDTFList from './views/tokens/Tokens'
+const AsyncSwaps = lazy(() => import('./views/index-dtf/issuance/async-swaps'))
 
 // TODO: Fix recoll call on yield dtf auction page
 const AppRoutes = () => (
@@ -83,6 +85,20 @@ const AppRoutes = () => (
       <Route
         path={`${ROUTES.ISSUANCE}/manual`}
         element={<IndexDTFManualIssuance />}
+      />
+      <Route
+        path={`${ROUTES.ISSUANCE}/automated`}
+        element={
+          <Suspense
+            fallback={
+              <div className="h-screen w-100% flex items-center justify-center">
+                Loading...
+              </div>
+            }
+          >
+            <AsyncSwaps />
+          </Suspense>
+        }
       />
       <Route
         path={`${ROUTES.AUCTIONS}/legacy`}
