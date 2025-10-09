@@ -232,9 +232,9 @@ const BridgeList = () => {
         <TokenListHelper />
       </div>
       <BridgeCard
-        name="BridgeGG"
+        name="Brid.gg"
         logo={bridgeGGLogo}
-        url="https://bridge.gg/"
+        url="https://brid.gg/"
         listedTokens={['rsr']}
       />
     </div>
