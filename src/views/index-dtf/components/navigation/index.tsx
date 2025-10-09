@@ -7,18 +7,16 @@ import { ROUTES } from '@/utils/constants'
 import { t } from '@lingui/macro'
 import { useAtomValue } from 'jotai'
 import {
-  Globe,
-  Blend,
-  Landmark,
   ArrowLeftRight,
-  Fingerprint,
-  ChevronDown,
-  Wallet,
-  Wallet2,
+  Blend,
   CirclePlus,
+  Fingerprint,
+  Globe,
+  Landmark,
+  Wallet2,
 } from 'lucide-react'
 import { useMemo } from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useLocation } from 'react-router-dom'
 import { Address } from 'viem'
 import { useAccount, useWatchAsset } from 'wagmi'
 
@@ -151,6 +149,11 @@ const NavigationItems = () => {
 }
 
 const IndexDTFNavigation = () => {
+  const location = useLocation()
+  const isFactsheet = location.pathname.endsWith(`/${ROUTES.FACTSHEET}`)
+
+  if (isFactsheet) return null
+
   return (
     <div className="w-full lg:sticky lg:top-0 p-3 md:p-6 fixed bottom-0 border-t lg:border-t-0 lg:w-56 flex-shrink-0 bg-background z-[1] h-16 lg:h-full">
       <div className="sticky top-6">

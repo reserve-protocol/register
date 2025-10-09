@@ -96,6 +96,7 @@ const columns: ColumnDef<IndexDTFItem>[] = [
         <Link
           to={getFolioRoute(row.original.address, row.original.chainId)}
           className="flex gap-3 items-center"
+          onClick={(e) => e.stopPropagation()}
         >
           <div className="relative">
             <TokenLogo src={row.original.brand?.icon || undefined} size="xl" />
@@ -229,7 +230,8 @@ const IndexDTFTable = ({
 }) => {
   const navigate = useNavigate()
 
-  const handleRowClick = (row: IndexDTFItem) => {
+  const handleRowClick = (row: IndexDTFItem, event: React.MouseEvent) => {
+    event.stopPropagation()
     navigate(getFolioRoute(row.address, row.chainId))
   }
 
