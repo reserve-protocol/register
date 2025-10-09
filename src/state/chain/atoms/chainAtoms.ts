@@ -45,15 +45,15 @@ export const allrTokenListAtom = atom((get) => {
   return Object.fromEntries([
     ...Object.values(ethereumTokens).map((i) => [
       i.address,
-      { ...i, chainId: 1 },
+      { ...i, chainId: ChainId.Mainnet },
     ]),
     ...Object.values(baseTokens).map((i) => [
       i.address,
-      { ...i, chainId: 8453 },
+      { ...i, chainId: ChainId.Base },
     ]),
     ...Object.values(arbitrumTokens).map((i) => [
       i.address,
-      { ...i, chainId: 42161 },
+      { ...i, chainId: ChainId.Arbitrum },
     ]),
   ]) as Record<string, (typeof ethereumTokens)[string] & { chainId: number }>
 })
@@ -85,6 +85,8 @@ export const SUBGRAPH_URL = {
     'https://subgraph.satsuma-prod.com/327d6f1d3de6/reserve/reserve-base/api',
   [ChainId.Arbitrum]:
     'https://subgraph.satsuma-prod.com/327d6f1d3de6/reserve/reserve-arbitrum/api',
+  [ChainId.BSC]:
+    'https://subgraph.satsuma-prod.com/327d6f1d3de6/reserve/reserve-arbitrum/api', // TODO? maybe never
 }
 
 export const INDEX_DTF_SUBGRAPH_URL = {
@@ -94,6 +96,8 @@ export const INDEX_DTF_SUBGRAPH_URL = {
     'https://subgraph.satsuma-prod.com/327d6f1d3de6/reserve/dtf-index-base/api',
   [ChainId.Arbitrum]:
     'https://subgraph.satsuma-prod.com/327d6f1d3de6/reserve/dtf-index-base/api', // TODO? maybe never
+  [ChainId.BSC]:
+    'https://subgraph.satsuma-prod.com/327d6f1d3de6/reserve/dtf-index-bsc/api',
 }
 
 // TODO: Multi fork network graph
@@ -103,26 +107,17 @@ export const GRAPH_CLIENTS = {
   ),
   [ChainId.Base]: new GraphQLClient(SUBGRAPH_URL[ChainId.Base]),
   [ChainId.Arbitrum]: new GraphQLClient(SUBGRAPH_URL[ChainId.Arbitrum]),
-  CONTENTFUL: new GraphQLClient(
-    `https://graphql.contentful.com/content/v1/spaces/9pqtywannd90/environments/master`,
-    {
-      headers: {
-        authorization: `Bearer ${import.meta.env.VITE_CONTENTFUL_BEARER_TOKEN}`,
-      },
-    }
-  ),
 }
 
 export const INDEX_GRAPH_CLIENTS = {
   [ChainId.Mainnet]: new GraphQLClient(INDEX_DTF_SUBGRAPH_URL[ChainId.Mainnet]),
   [ChainId.Base]: new GraphQLClient(INDEX_DTF_SUBGRAPH_URL[ChainId.Base]),
+  [ChainId.BSC]: new GraphQLClient(INDEX_DTF_SUBGRAPH_URL[ChainId.BSC]),
 }
 
 export const gqlClientAtom = atom(
   (get) => GRAPH_CLIENTS[get(chainIdAtom)] || GRAPH_CLIENTS[ChainId.Mainnet]
 )
-
-export const contentfulClientAtom = atom(() => GRAPH_CLIENTS['CONTENTFUL'])
 
 /**
  * #########################

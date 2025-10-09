@@ -15,6 +15,7 @@ import {
   revenueSplitAtom,
 } from '../atoms'
 import ExternalRevenueSpit from './ExternalRevenueSplit'
+import { PROTOCOL_DOCS } from '@/utils/constants'
 
 const updateExternalShareAtom = atom(
   null,
@@ -102,7 +103,9 @@ const RevenueSplit = (props: BoxProps) => {
         <Text variant="title">
           <Trans>Revenue Distribution</Trans>
         </Text>
-        <DocsLink link="https://reserve.org/protocol/protocol_operations/#revenue-handling" />
+        <DocsLink
+          link={`${PROTOCOL_DOCS}yield_dtfs/overview/#revenue-handling`}
+        />
       </Box>
       <Divider my={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />
       <Field label={t`% Revenue to RToken Holders`} mb={3}>
@@ -162,7 +165,7 @@ const RevenueSplit = (props: BoxProps) => {
           <br />
         </Trans>
         <Link
-          href="https://reserve.org/protocol/protocol_operations/#revenue-distribution"
+          href={`${PROTOCOL_DOCS}yield_dtfs/protocol_operations/#revenue-distribution`}
           target="_blank"
           sx={{ textDecoration: 'underline' }}
         >

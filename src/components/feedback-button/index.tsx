@@ -9,7 +9,7 @@ const FeedbackButton = ({ className }: { className?: string }) => {
       <Button
         size="lg"
         className={cn(
-          'fixed bottom-[4.5rem] sm:bottom-4 right-3 sm:right-4 shadow-lg flex items-center justify-center gap-1.5 rounded-full bg-[#021122] text-gray-50 px-3 py-1 sm:px-5 sm:py-3 h-9 sm:h-10',
+          'fixed bottom-[4.5rem] lg:bottom-4 right-3 lg:right-4 shadow-lg flex items-center justify-center gap-1.5 rounded-full bg-[#021122] text-gray-50 px-3 py-1 lg:px-5 lg:py-3 h-9 lg:h-10',
           className
         )}
         onClick={() => {
@@ -20,9 +20,9 @@ const FeedbackButton = ({ className }: { className?: string }) => {
           )
         }}
       >
-        <MessageCirclePlus className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-        <span className="text-xs sm:text-sm">Feedback</span>
-        <ArrowUpRightIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+        <MessageCirclePlus className="w-4 h-4" />
+        <span className="text-xs lg:text-sm ">Feedback</span>
+        <ArrowUpRightIcon className="w-3.5 h-3.5 lg:w-4 sm:h-4 hidden lg:block" />
       </Button>
     </div>
   )

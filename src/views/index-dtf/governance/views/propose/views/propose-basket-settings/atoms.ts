@@ -1,6 +1,7 @@
+import timelockAbi from '@/abis/Timelock'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { atom } from 'jotai'
-import { Address, Hex } from 'viem'
+import { Address, encodeFunctionData, Hex, keccak256, toBytes } from 'viem'
 import {
   GovernanceChanges,
   ProposalData,
@@ -18,6 +19,7 @@ import {
 export const isProposalConfirmedAtom = atom(false)
 export const proposalDescriptionAtom = atom<string | undefined>(undefined)
 export const isFormValidAtom = atom(false)
+export const selectedSectionAtom = atom<string | undefined>(undefined)
 
 // Calculated quorum percentage atom
 export const currentQuorumPercentageAtom = atom((get) => {
@@ -37,15 +39,29 @@ export const hasBasketGovernanceChangesAtom = atom((get) => {
   return Object.keys(changes).length > 0
 })
 
+// Role changes atoms
+export const rolesChangesAtom = atom<{
+  guardians?: Address[]
+}>({})
+
+export const hasRolesChangesAtom = atom((get) => {
+  const changes = get(rolesChangesAtom)
+  return changes.guardians !== undefined
+})
+
 // Check if proposal is valid (has changes)
 export const isProposalValidAtom = atom((get) => {
-  return get(hasBasketGovernanceChangesAtom)
+  return get(hasBasketGovernanceChangesAtom) || get(hasRolesChangesAtom)
 })
+
+// CANCELLER_ROLE for timelock guardian
+const CANCELLER_ROLE = keccak256(toBytes('CANCELLER_ROLE'))
 
 // Generate proposal calldatas and targets
 export const basketSettingsProposalDataAtom = atom<ProposalData | undefined>(
   (get) => {
     const governanceChanges = get(basketGovernanceChangesAtom)
+    const rolesChanges = get(rolesChangesAtom)
     const dtf = get(indexDTFAtom)
 
     if (!dtf || !dtf.tradingGovernance) return undefined
@@ -92,6 +108,45 @@ export const basketSettingsProposalDataAtom = atom<ProposalData | undefined>(
         if (governanceChanges.executionDelay !== undefined && timelockAddress) {
           calldatas.push(encodeExecutionDelay(governanceChanges.executionDelay))
           targets.push(timelockAddress)
+        }
+      }
+
+      // Handle guardian role changes
+      if (rolesChanges.guardians && dtf.tradingGovernance.timelock?.id) {
+        const timelockAddress = dtf.tradingGovernance.timelock.id as Address
+        const currentGuardians = dtf.tradingGovernance.timelock.guardians || []
+        const newGuardians = rolesChanges.guardians
+
+        // Revoke removed guardians
+        for (const guardian of currentGuardians) {
+          if (!newGuardians.some(newGuardian => 
+            newGuardian.toLowerCase() === guardian.toLowerCase()
+          )) {
+            calldatas.push(
+              encodeFunctionData({
+                abi: timelockAbi,
+                functionName: 'revokeRole',
+                args: [CANCELLER_ROLE, guardian as Address],
+              })
+            )
+            targets.push(timelockAddress)
+          }
+        }
+
+        // Grant new guardians
+        for (const guardian of newGuardians) {
+          if (!currentGuardians.some(currentGuardian => 
+            currentGuardian.toLowerCase() === guardian.toLowerCase()
+          )) {
+            calldatas.push(
+              encodeFunctionData({
+                abi: timelockAbi,
+                functionName: 'grantRole',
+                args: [CANCELLER_ROLE, guardian],
+              })
+            )
+            targets.push(timelockAddress)
+          }
         }
       }
 
@@ -170,9 +225,11 @@ export const basketGovernanceChangesDisplayAtom = atom<
 })
 
 // Reset atom for clearing all state
-export const resetAtom = atom(null, (get, set) => {
+export const resetAtom = atom(null, (_, set) => {
   set(isProposalConfirmedAtom, false)
   set(proposalDescriptionAtom, undefined)
   set(basketGovernanceChangesAtom, {})
+  set(rolesChangesAtom, {})
+  set(selectedSectionAtom, undefined)
   set(isFormValidAtom, false)
 })

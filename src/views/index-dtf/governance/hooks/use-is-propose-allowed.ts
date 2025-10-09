@@ -1,7 +1,8 @@
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { useAtomValue } from 'jotai'
-import { useVotingPower } from './use-voting-power'
 import { indexGovernanceOverviewAtom } from '../atoms'
+import { useVotingPower } from './use-voting-power'
+import { formatEther } from 'viem'
 
 export const useIsProposeAllowed = () => {
   const dtf = useAtomValue(indexDTFAtom)
@@ -9,13 +10,15 @@ export const useIsProposeAllowed = () => {
   const { votingPower, isLoading } = useVotingPower()
 
   const voteSupply = governance?.voteSupply
-  const proposalThreshold = dtf?.ownerGovernance?.proposalThreshold
+  const proposalThreshold =
+    Number(formatEther(BigInt(dtf?.ownerGovernance?.proposalThreshold || 0))) /
+    100
 
   return {
     isProposeAllowed:
       !!voteSupply &&
       !!proposalThreshold &&
-      votingPower / voteSupply >= proposalThreshold / 1e20,
+      votingPower / voteSupply >= proposalThreshold,
     isLoading:
       isLoading ||
       typeof voteSupply === 'undefined' ||

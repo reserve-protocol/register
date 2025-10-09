@@ -1,8 +1,9 @@
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { formatPercentage } from '@/utils'
-import { FIXED_PLATFORM_FEE } from '@/utils/constants'
+import { getPlatformFee } from '@/utils/constants'
 import { t } from '@lingui/macro'
 import { atom, useAtomValue } from 'jotai'
+import { chainIdAtom } from '@/state/atoms'
 import {
   ChartPie,
   Hash,
@@ -22,12 +23,14 @@ type Recipient = {
 
 const feeRecipientsAtom = atom((get) => {
   const indexDTF = get(indexDTFAtom)
+  const chainId = get(chainIdAtom)
 
   if (!indexDTF) return undefined
 
+  const platformFee = getPlatformFee(chainId)
   const platformShare = {
     label: t`Fixed Platform Share`,
-    value: `${FIXED_PLATFORM_FEE}%`,
+    value: `${platformFee}%`,
     icon: <IconWrapper Component={TrainTrack} />,
   }
   const deployerShare = {
@@ -42,10 +45,10 @@ const feeRecipientsAtom = atom((get) => {
     icon: <IconWrapper Component={Landmark} />,
   }
   const externalRecipients: Recipient[] = []
-  const PERCENT_ADJUST = 100 / FIXED_PLATFORM_FEE
+  const PERCENT_ADJUST = 100 / (100 - platformFee)
 
   for (const recipient of indexDTF.feeRecipients) {
-    // Deployer share
+    // Deployer share - adjust from contract percentage to actual percentage
     if (recipient.address.toLowerCase() === indexDTF.deployer.toLowerCase()) {
       deployerShare.value = formatPercentage(
         Number(recipient.percentage) / PERCENT_ADJUST

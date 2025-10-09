@@ -15,15 +15,15 @@ export const HistoricalRebalanceItem = ({
 
   return (
     <div
-      className="bg-card rounded-3xl shadow-sm hover:shadow-md transition-shadow duration-300 md:w-[706px] cursor-pointer"
+      className="bg-card rounded-3xl cursor-pointer"
       onClick={() => navigate(`rebalance/${rebalance.proposal.id}`)}
     >
-      <div className="flex items-center justify-between  p-4 md:p-6 border-b border-secondary">
-        <h1 className="text-base md:text-2xl line-clamp-2 mr-auto">
+      <div className="flex items-center justify-between p-4 gap-4 md:p-6 border-b border-secondary">
+        <h1 className="text-base md:text-lg lg:text-2xl line-clamp-2 mr-auto">
           {getProposalTitle(rebalance.proposal.description)}
         </h1>
 
-        <h2 className="text-base md:text-2xl line-clamp-2 text-legend">
+        <h2 className="text-base md:text-lg lg:text-2xl line-clamp-2 text-legend flex-shrink-0">
           Completed
         </h2>
       </div>

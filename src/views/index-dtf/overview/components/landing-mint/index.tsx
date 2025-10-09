@@ -9,75 +9,75 @@ import { useZapperModal } from '@reserve-protocol/react-zapper'
 import { useAtomValue } from 'jotai'
 import { ArrowLeftRight } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
-import ZapMint from '../zap-mint'
+import DTFBalance from './dtf-balance'
+import IndexTokenAddress from '../index-token-address'
 
-const MintBox = () => {
+const TokenInfo = () => {
   const dtf = useAtomValue(indexDTFAtom)
   const brand = useAtomValue(indexDTFBrandAtom)
+
+  return (
+    <div className="flex flex-col justify-between gap-8 p-4">
+      <div className="flex items-center gap-2">
+        <StackTokenLogo
+          tokens={[
+            { symbol: 'USDT', address: '0x0' },
+            { symbol: 'USDC', address: '0x1' },
+            { symbol: 'ETH', address: '0x2' },
+          ]}
+          size={24}
+        />
+        <ArrowLeftRight className="w-4 h-4" />
+        <TokenLogo
+          className="mr-auto"
+          src={brand?.dtf?.icon || undefined}
+          size="lg"
+        />
+      </div>
+      <div className="flex flex-col gap-1">
+        <div className="text-2xl font-light text-primary">
+          Buy/Sell ${dtf?.token.symbol} onchain
+        </div>
+        <div className="text-legend text-sm">
+          Our Zap-swaps support common assets like ETH, USDC, USDT, and others,
+          which makes DTFs easy to enter and exit.
+        </div>
+      </div>
+      <DTFBalance />
+    </div>
+  )
+}
+
+const MintBox = () => {
   const { trackClick } = useTrackIndexDTFClick('overview', 'overview')
   const { open, setTab } = useZapperModal()
 
   return (
     <div className="rounded-3xl bg-card p-2">
-      <div className="flex flex-col justify-between gap-8 p-4">
-        <div className="flex items-center gap-2">
-          <StackTokenLogo
-            tokens={[
-              { symbol: 'USDT', address: '0x0' },
-              { symbol: 'USDC', address: '0x1' },
-              { symbol: 'ETH', address: '0x2' },
-            ]}
-            size={24}
-          />
-          <ArrowLeftRight className="w-4 h-4" />
-          <TokenLogo
-            className="mr-auto"
-            src={brand?.dtf?.icon || undefined}
-            size="lg"
-          />
-        </div>
-        <div className="flex flex-col gap-1">
-          <div className="text-xl font-semibold ">
-            Buy/Sell {dtf?.token.symbol} onchain
-          </div>
-          <div className="text-legend text-sm">
-            Our Zap-swaps support common assets like ETH, USDC, USDT, and
-            others, which makes DTFs easy to enter and exit.
-          </div>
-        </div>
-      </div>
-      <ZapMint>
-        <div
-          className="flex flex-col gap-2"
-          onClick={(e) => {
-            if (!(e.target instanceof HTMLButtonElement)) {
-              e.preventDefault()
-            }
+      <TokenInfo />
+      <div className="flex flex-col gap-2">
+        <Button
+          className="rounded-xl h-12"
+          onClick={() => {
+            trackClick('buy')
+            setTab('buy')
+            open()
           }}
         >
-          <Button
-            className="rounded-xl h-12"
-            onClick={() => {
-              trackClick('buy')
-              setTab('buy')
-              open()
-            }}
-          >
-            Buy
-          </Button>
-          <Button
-            className="rounded-xl h-12"
-            variant="outline"
-            onClick={() => {
-              trackClick('sell')
-              setTab('sell')
-              open()
-            }}
-          >
-            Sell
-          </Button>
-        </div>
-      </ZapMint>
+          Buy
+        </Button>
+        <Button
+          className="rounded-xl h-12"
+          variant="outline"
+          onClick={() => {
+            trackClick('sell')
+            setTab('sell')
+            open()
+          }}
+        >
+          Sell
+        </Button>
+      </div>
     </div>
   )
 }

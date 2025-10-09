@@ -6,17 +6,29 @@ import { useFormContext } from 'react-hook-form'
 import { erc20Abi, isAddress } from 'viem'
 import { useReadContract } from 'wagmi'
 import BasicInput from '../../components/basic-input'
+import { ChainId } from '@/utils/chains'
+
+const createMyTokenUrls = {
+  [ChainId.Mainnet]:
+    'https://www.createmytoken.com/token-generator/create-token-on-ethereum/',
+  [ChainId.Base]:
+    'https://www.createmytoken.com/token-generator/create-token-on-base/',
+  [ChainId.Arbitrum]:
+    'https://www.createmytoken.com/token-generator/create-token-on-arbitrum/',
+  [ChainId.BSC]:
+    'https://www.createmytoken.com/token-generator/create-token-on-bnb-smart-chain/',
+} as const
 
 const LaunchTokenBanner = () => {
+  const { watch } = useFormContext()
+  const chainId = useAtomValue(chainIdAtom)
+  const formChainId = watch('chain')
+
   return (
     <div
       className="flex items-center gap-2 justify-between"
       role="button"
-      onClick={() =>
-        window.open(
-          'https://www.createmytoken.com/token-generator/create-token-on-base/'
-        )
-      }
+      onClick={() => window.open(createMyTokenUrls[formChainId ?? chainId])}
     >
       <div className="flex items-center gap-2">
         <img
@@ -30,7 +42,7 @@ const LaunchTokenBanner = () => {
           </div>
           <div className="text-muted-foreground">
             We recommend launching your new ERC20 token on{' '}
-            <span className="text-primary">CreateMyToken.com</span>
+            <span className="text-primary">CreateMyToken</span>
           </div>
         </div>
       </div>

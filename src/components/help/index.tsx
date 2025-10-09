@@ -1,5 +1,5 @@
 import { Placement } from '@popperjs/core'
-import HelpIcon from 'components/icons/HelpIcon'
+import HelpIcon from 'components/icons/CustomHelpIcon'
 import { MouseoverTooltip } from '@/components/old/tooltip'
 import { ReactNode } from 'react'
 import { Box, BoxProps } from 'theme-ui'

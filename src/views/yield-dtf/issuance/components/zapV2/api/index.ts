@@ -1,9 +1,7 @@
 import { RESERVE_API } from '@/utils/constants'
 import { Address } from 'viem'
 
-// const OLD_ZAP_API = 'https://zapper-api.reserve.org'
-const BASE_ZAP_API_URL = RESERVE_API + 'zapper'
-const OLD_ZAP_API = BASE_ZAP_API_URL
+const getBaseZapApiUrl = (chain: number) => RESERVE_API + `api/zapper/${chain}`
 
 export type ZapPayload = {
   chainId: number
@@ -64,7 +62,7 @@ const zapper = {
     signer,
     trade = true,
   }: ZapPayload) =>
-    `${OLD_ZAP_API}/swap?chainId=${chainId}&signer=${signer}&tokenIn=${tokenIn}&amountIn=${amountIn}&tokenOut=${tokenOut}&slippage=${slippage}&trade=${trade}`,
+    `${getBaseZapApiUrl(chainId)}/swap?chainId=${chainId}&signer=${signer}&tokenIn=${tokenIn}&amountIn=${amountIn}&tokenOut=${tokenOut}&slippage=${slippage}&trade=${trade}`,
   zap: ({
     chainId,
     tokenIn,
@@ -75,13 +73,13 @@ const zapper = {
     trade = true,
     bypassCache = false,
   }: ZapPayload) =>
-    `${BASE_ZAP_API_URL}/swap?chainId=${chainId}&signer=${signer}&tokenIn=${tokenIn}&amountIn=${amountIn}&tokenOut=${tokenOut}&slippage=${slippage}&trade=${trade}&bypassCache=${bypassCache}`,
+    `${getBaseZapApiUrl(chainId)}/swap?chainId=${chainId}&signer=${signer}&tokenIn=${tokenIn}&amountIn=${amountIn}&tokenOut=${tokenOut}&slippage=${slippage}&trade=${trade}&bypassCache=${bypassCache}`,
 
   zapDeploy: (chainId: number) =>
-    `${BASE_ZAP_API_URL}/deploy-zap?chainId=${chainId}`,
+    `${getBaseZapApiUrl(chainId)}/deploy?chainId=${chainId}`,
 
   zapDeployUngoverned: (chainId: number) =>
-    `${BASE_ZAP_API_URL}/deploy-ungoverned-zap?chainId=${chainId}`,
+    `${getBaseZapApiUrl(chainId)}/deploy-ungoverned?chainId=${chainId}`,
 }
 
 export default zapper

@@ -19,6 +19,7 @@ export enum ProposalStatus {
 type Result = {
   proposal: {
     id: string
+    timelockId: string
     description: string
     creationTime: string
     voteStart: string
@@ -60,6 +61,7 @@ const query = gql`
   query getProposalDetail($id: String!) {
     proposal(id: $id) {
       id
+      timelockId
       description
       creationTime
       voteStart
@@ -119,6 +121,7 @@ const useProposalDetail = (proposalId: string | undefined) => {
       const proposalDetail: ProposalDetail = {
         ...proposal,
         id: proposal.id,
+        timelockId: proposal.timelockId,
         description: proposal.description,
         creationTime: +proposal.creationTime,
         creationBlock: +proposal.creationBlock,

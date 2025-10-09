@@ -66,6 +66,60 @@ export default defineConfig({
   build: {
     outDir: 'build',
     sourcemap: true,
+    rollupOptions: {
+      output: {
+        manualChunks: (id) => {
+          // Skip non-node_modules
+          if (!id.includes('node_modules')) {
+            return undefined
+          }
+
+          // Core React dependencies
+          if (id.includes('react-dom')) {
+            return 'react-dom'
+          }
+          if (id.includes('react') && !id.includes('react-')) {
+            return 'react'
+          }
+
+          // Large libraries that should be separate
+          if (id.includes('@rainbow-me/rainbowkit')) {
+            return 'rainbowkit'
+          }
+          if (id.includes('wagmi') || id.includes('@wagmi')) {
+            return 'wagmi'
+          }
+          if (id.includes('viem')) {
+            return 'viem'
+          }
+          if (id.includes('@walletconnect')) {
+            return 'walletconnect'
+          }
+          if (id.includes('@coinbase/wallet-sdk')) {
+            return 'coinbase'
+          }
+
+          // UI libraries
+          if (id.includes('@radix-ui')) {
+            return 'radix-ui'
+          }
+          if (id.includes('recharts')) {
+            return 'charts'
+          }
+
+          // Other vendor libs
+          if (id.includes('ethers')) {
+            return 'ethers'
+          }
+          if (id.includes('@tanstack')) {
+            return 'tanstack'
+          }
+          if (id.includes('jotai')) {
+            return 'jotai'
+          }
+        },
+      },
+    },
   },
   resolve: {
     alias: {
@@ -83,7 +137,21 @@ export default defineConfig({
   },
   optimizeDeps: {
     exclude: ['ts-node'],
-    include: ['@uniswap/uniswapx-sdk'],
+    include: [
+      'react',
+      'react-dom',
+      'react-router-dom',
+      '@radix-ui/react-accordion',
+      '@radix-ui/react-dialog',
+      '@radix-ui/react-select',
+      '@radix-ui/react-tabs',
+      '@uniswap/uniswapx-sdk',
+    ],
+    esbuildOptions: {
+      target: 'es2020',
+      // Help with tree shaking
+      treeShaking: true,
+    },
   },
   server: {
     port: 3000,

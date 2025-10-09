@@ -115,7 +115,7 @@ const TokenLogo = React.forwardRef<HTMLImageElement, Props>((props, ref) => {
 
       if (address && symbol && UNIVERSAL_ASSETS.has(address.toLowerCase())) {
         try {
-          const universalUrl = `https://www.universal.xyz/wrapped-tokens/UA-${symbol.toUpperCase().substring(1)}.svg`
+          const universalUrl = `https://app.universal.xyz/wrapped-tokens/UA-${symbol.toUpperCase().substring(1)}.svg`
           const url = await tryLoadImage(universalUrl)
           // cacheUrl(url) // don't cache universal logos because of the wrapper... solve later
           setCurrentSrc(url)
@@ -169,10 +169,9 @@ const TokenLogo = React.forwardRef<HTMLImageElement, Props>((props, ref) => {
       width={w}
       style={{ width: w, height: h }}
       className={cn(
-        'flex-shrink-0 object-contain object-center',
+        'flex-shrink-0 object-cover object-center rounded-full',
         className,
-        TRANSPARENT_TOKENS.has(symbol?.toLowerCase() || '') && 'bg-black',
-        isWrapped ? 'bg-transparent' : 'rounded-full'
+        TRANSPARENT_TOKENS.has(symbol?.toLowerCase() || '') && 'bg-black'
       )}
       onError={() => setCurrentSrc('/svgs/defaultLogo.svg')}
       {...rest}
@@ -186,6 +185,7 @@ export default TokenLogo
 
 export const TRANSPARENT_TOKENS = new Set(['altt', 'emp'])
 
+// TODO: Maybe we can build this list at build time? we just need to list all the svgs in the public/svgs folder
 export const SVGS = new Set([
   'aave',
   'dai',
@@ -226,6 +226,7 @@ export const SVGS = new Set([
   'stkcvx3crv',
   'stkcvxcrv3crypto',
   'stkcvxeusd3crv-f',
+  'stkcvxeth+eth',
   'stkcvxeth+eth-f',
   'stkcvxmim-3lp3crv-f',
   'sdai',
@@ -259,6 +260,11 @@ export const SVGS = new Set([
   'woeth',
   'susds',
   'saethusdt',
+  'cro',
+  'xlm',
+  'hbar',
+  'hype',
+  'sui',
 ])
 
 export const PNGS = new Set([

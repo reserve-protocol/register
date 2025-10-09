@@ -29,7 +29,7 @@ export const RebalanceItemFooter = ({
           {formatDate(proposal.creationTime * 1000)}
         </Link>
       </div>
-      <div className="flex items-center gap-1 text-sm">
+      <div className="items-center gap-1 text-sm hidden sm:flex">
         <span className="text-legend">Proposed by:</span>
         <Link
           onClick={(e) => e.stopPropagation()}

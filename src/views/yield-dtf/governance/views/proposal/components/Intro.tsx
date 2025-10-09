@@ -3,6 +3,7 @@ import { SmallButton } from '@/components/old/button'
 import { Text, BoxProps, Card, Flex } from 'theme-ui'
 import ProposalIntroIcon from 'components/icons/ProposalIntroIcon'
 import useRToken from 'hooks/useRToken'
+import { PROTOCOL_DOCS } from '@/utils/constants'
 
 const Intro = (props: BoxProps) => {
   const rToken = useRToken()
@@ -31,7 +32,7 @@ const Intro = (props: BoxProps) => {
         </SmallButton>
         <SmallButton
           variant="muted"
-          onClick={() => window.open('https://reserve.org/protocol/', '_blank')}
+          onClick={() => window.open(PROTOCOL_DOCS, '_blank')}
         >
           <Trans>Protocol Docs</Trans>
         </SmallButton>

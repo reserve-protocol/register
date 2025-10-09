@@ -1,4 +1,4 @@
-import { IndexDTF, Token } from '@/types'
+import { IndexDTF, TimeRange, Token } from '@/types'
 import { AvailableChain, ChainId } from '@/utils/chains'
 import { atom } from 'jotai'
 import { Address } from 'viem'
@@ -67,6 +67,18 @@ export interface IndexDTFBrand {
   }
 }
 
+export type Transaction = {
+  id: string
+  hash: string
+  amount: number
+  amountUSD: number
+  timestamp: number
+  chain: number
+  to?: Address
+  from?: Address
+  type: 'Mint' | 'Redeem' | 'Transfer'
+}
+
 export const iTokenAddressAtom = atom<Address | undefined>(undefined)
 
 export const iTokenBasketAtom = atom<ITokenBasket | undefined>(undefined)
@@ -91,8 +103,17 @@ export const indexDTFBasketAmountsAtom = atom<Record<string, number>>({})
 export const indexDTFBasketSharesAtom = atom<Record<string, string>>({})
 
 export const indexDTFAtom = atom<IndexDTF | undefined>(undefined)
+export const indexDTF7dChangeAtom = atom<number | undefined>(undefined)
+export const indexDTFBasketPerformanceChangeAtom = atom<
+  Record<string, number | null>
+>({})
 
+export const performanceTimeRangeAtom = atom<TimeRange>('7d')
+export const indexDTFPerformanceLoadingAtom = atom<boolean>(false)
+export const indexDTFNewlyAddedAssetsAtom = atom<Record<string, boolean>>({})
+export const indexDTFMarketCapAtom = atom<number | undefined>(undefined)
 export const indexDTFBrandAtom = atom<IndexDTFBrand | undefined>(undefined)
+export const indexDTFTransactionsAtom = atom<Transaction[]>([])
 
 export const indexDTFFeeAtom = atom<number | undefined>(undefined)
 
@@ -155,4 +176,18 @@ export const isSingletonRebalanceAtom = atom((get) => {
   const version = get(indexDTFVersionAtom)
 
   return checkVersion('4.0.0', version)
+})
+
+// ! Exclusive case for CFB DTF
+export const isHybridDTFAtom = atom((get) => {
+  const dtf = get(indexDTFAtom)
+
+  return (
+    dtf?.id.toLowerCase() === '0x4da9a0f397db1397902070f93a4d6ddbc0e0e6e8' ||
+    // TODO: remove this after testing
+    dtf?.id.toLowerCase() === '0x1532536c22366dde6b5174ebe519578bccc6b5a3' ||
+    dtf?.id.toLowerCase() === '0x045dc337c12a9a5d2c790d01554913b1a9e1044a' ||
+    dtf?.id.toLowerCase() === '0xdb35c98b919053f77356e7d89b11069cf9185764' ||
+    dtf?.id.toLowerCase() === '0x2b3e7fec6995acc564fd587974fd29b94992ba3a'
+  )
 })

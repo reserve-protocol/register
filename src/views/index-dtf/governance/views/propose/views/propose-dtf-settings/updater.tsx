@@ -1,6 +1,7 @@
-import { indexDTFAtom } from '@/state/dtf/atoms'
-import { FIXED_PLATFORM_FEE } from '@/utils/constants'
+import { indexDTFAtom, indexDTFRebalanceControlAtom } from '@/state/dtf/atoms'
+import { getPlatformFee } from '@/utils/constants'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
+import { chainIdAtom } from '@/state/atoms'
 import { useEffect, useRef } from 'react'
 import { useFormContext, useWatch } from 'react-hook-form'
 import {
@@ -14,6 +15,7 @@ import {
   revenueDistributionChangesAtom,
   dtfRevenueChangesAtom,
   auctionLengthChangeAtom,
+  weightControlChangeAtom,
   governanceChangesAtom,
   isFormValidAtom,
   currentQuorumPercentageAtom,
@@ -30,12 +32,15 @@ const resetAtom = atom(null, (get, set) => {
   set(revenueDistributionChangesAtom, {})
   set(dtfRevenueChangesAtom, {})
   set(auctionLengthChangeAtom, undefined)
+  set(weightControlChangeAtom, undefined)
   set(governanceChangesAtom, {})
 })
 
 const Updater = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
   const feeRecipients = useAtomValue(feeRecipientsAtom)
+  const rebalanceControl = useAtomValue(indexDTFRebalanceControlAtom)
+  const chainId = useAtomValue(chainIdAtom)
   const reset = useSetAtom(resetAtom)
   const { reset: resetForm, watch, formState, control } = useFormContext()
   const governanceChanges = useAtomValue(governanceChangesAtom)
@@ -46,6 +51,7 @@ const Updater = () => {
   )
   const dtfRevenueChanges = useAtomValue(dtfRevenueChangesAtom)
   const auctionLengthChange = useAtomValue(auctionLengthChangeAtom)
+  const weightControlChange = useAtomValue(weightControlChangeAtom)
   const currentQuorumPercentage = useAtomValue(currentQuorumPercentageAtom)
   const isResettingForm = useRef(false)
 
@@ -57,6 +63,7 @@ const Updater = () => {
   )
   const setDtfRevenueChanges = useSetAtom(dtfRevenueChangesAtom)
   const setAuctionLengthChange = useSetAtom(auctionLengthChangeAtom)
+  const setWeightControlChange = useSetAtom(weightControlChangeAtom)
   const setGovernanceChanges = useSetAtom(governanceChangesAtom)
   const setIsFormValid = useSetAtom(isFormValidAtom)
 
@@ -67,6 +74,7 @@ const Updater = () => {
   const governanceShare = watch('governanceShare')
   const deployerShare = watch('deployerShare')
   const auctionLength = watch('auctionLength')
+  const weightControl = watch('weightControl')
   const governanceVotingDelay = watch('governanceVotingDelay')
   const governanceVotingPeriod = watch('governanceVotingPeriod')
   const governanceVotingThreshold = watch('governanceVotingThreshold')
@@ -132,11 +140,15 @@ const Updater = () => {
           revenueDistributionChanges.additionalRecipients !== undefined
             ? revenueDistributionChanges.additionalRecipients
             : feeRecipients.externalRecipients,
-        fixedPlatformFee: FIXED_PLATFORM_FEE,
+        fixedPlatformFee: getPlatformFee(chainId),
         auctionLength:
           auctionLengthChange !== undefined
             ? auctionLengthChange
             : indexDTF.auctionLength / 60,
+        weightControl:
+          weightControlChange !== undefined
+            ? weightControlChange
+            : rebalanceControl?.weightControl ?? true,
         // Apply governance changes if they exist, otherwise use current values
         governanceVotingDelay:
           governanceChanges.votingDelay !== undefined
@@ -340,6 +352,17 @@ const Updater = () => {
       }
     }
   }, [auctionLength, indexDTF?.auctionLength])
+
+  // Watch for weight control changes
+  useEffect(() => {
+    if (rebalanceControl && weightControl !== undefined) {
+      if (weightControl !== rebalanceControl.weightControl) {
+        setWeightControlChange(weightControl)
+      } else {
+        setWeightControlChange(undefined)
+      }
+    }
+  }, [weightControl, rebalanceControl?.weightControl])
 
   // Watch for governance changes
   useEffect(() => {

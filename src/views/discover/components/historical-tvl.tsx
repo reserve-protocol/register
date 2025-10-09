@@ -1,6 +1,14 @@
+import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
+import { trackClick } from '@/hooks/useTrackPage'
+import { devModeAtom } from '@/state/atoms'
+import { ChainId } from '@/utils/chains'
 import ChainLogo from 'components/icons/ChainLogo'
 import SmallRootIcon from 'components/icons/SmallRootIcon'
+import { useAtomValue } from 'jotai'
+import { ArrowRight, Clapperboard, Play } from 'lucide-react'
+import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import {
   Area,
   AreaChart,
@@ -18,16 +26,37 @@ import {
   NETWORKS,
   capitalize,
 } from 'utils/constants'
-import { Button } from '@/components/ui/button'
-import { ArrowRight, ArrowUpRight, Clapperboard, Gem, Play } from 'lucide-react'
-import { Link } from 'react-router-dom'
-import tvlLight from '../assets/tvl-light.svg'
-import tvlDark from '../assets/tvl-dark.svg'
-import { trackClick } from '@/hooks/useTrackPage'
+import tvlDark from '../assets/tvl-dark.png'
+import tvlLight from '../assets/tvl-light.png'
 import useAPIProtocolMetrics, {
   Metrics,
 } from '../hooks/use-api-protocol-metrics'
-import { CAMPAIGN_URL } from '@/views/index-dtf/overview/hooks/use-campaign'
+
+const RoundedImageWithSkeleton = ({
+  src,
+  alt,
+  visibilityClass,
+}: {
+  src: string
+  alt: string
+  visibilityClass: string
+}) => {
+  const [loaded, setLoaded] = useState(false)
+
+  return (
+    <>
+      {!loaded && (
+        <Skeleton className={`${visibilityClass} w-10 h-10 rounded-full`} />
+      )}
+      <img
+        src={src}
+        alt={alt}
+        className={`${loaded ? visibilityClass + ' block' : 'hidden'} w-10 h-10 rounded-full object-cover`}
+        onLoad={() => setLoaded(true)}
+      />
+    </>
+  )
+}
 
 const COLORS: Record<string, any> = {
   ethereum: {
@@ -41,6 +70,11 @@ const COLORS: Record<string, any> = {
     stroke: 'hsl(var(--tvl))',
   },
   arbitrum: {
+    fill: 'hsl(var(--tvl))',
+    // stroke: '#fff',
+    stroke: 'hsl(var(--tvl))',
+  },
+  bsc: {
     fill: 'hsl(var(--tvl))',
     // stroke: '#fff',
     stroke: 'hsl(var(--tvl))',
@@ -145,16 +179,24 @@ const Heading = ({
       : data.rsrStakerAnnualizedRevenue + data.rTokenAnnualizedRevenue
   return (
     <div className="absolute top-3 sm:top-8 left-0 sm:left-0 right-3 text-tvl px-4 sm:px-6 md:px-0 w-auto sm:w-[560px]">
-      {/* Light Mode Image */}
-      <img src={tvlLight} alt="TVL Light" className="dark:hidden" />
-
-      {/* Dark Mode Image */}
-      <img src={tvlDark} alt="TVL Dark" className="hidden dark:block" />
+      {/* Light/Dark images with 40x40 rounded skeletons */}
+      <div className="relative">
+        <RoundedImageWithSkeleton
+          src={tvlLight}
+          alt="TVL Light"
+          visibilityClass="dark:hidden"
+        />
+        <RoundedImageWithSkeleton
+          src={tvlDark}
+          alt="TVL Dark"
+          visibilityClass="hidden dark:block"
+        />
+      </div>
       <h2 className="sm:text-xl text-base mt-6 mb-4 font-light leading-none">
         TVL in Reserve
       </h2>
       {isLoading ? (
-        <Skeleton className="w-[320px] h-[60px]" />
+        <Skeleton className="w-[280px] sm:w-[440px] h-[40px] sm:h-[60px]" />
       ) : (
         <div className="flex items-center ">
           <h3 className="text-4xl sm:text-5xl sm:text-[60px] font-semibold leading-none">
@@ -207,6 +249,11 @@ const Heading = ({
 }
 
 const HistoricalTVLChart = ({ data }: { data?: Metrics }) => {
+  const isDevMode = useAtomValue(devModeAtom)
+  const networks = Object.values(NETWORKS).filter(
+    (n) => isDevMode || n !== ChainId.BSC
+  )
+
   return (
     <ResponsiveContainer width="100%" height="100%">
       <AreaChart
@@ -220,7 +267,7 @@ const HistoricalTVLChart = ({ data }: { data?: Metrics }) => {
         <XAxis dataKey="timestamp" style={{ display: 'none' }} />
         <YAxis hide visibility="0" domain={['dataMin', 'dataMax']} />
         <Tooltip wrapperStyle={{ zIndex: 1000 }} content={<CustomTooltip />} />
-        {Object.values(NETWORKS).map((network) => (
+        {networks.map((network) => (
           <Area
             key={network}
             type="step"

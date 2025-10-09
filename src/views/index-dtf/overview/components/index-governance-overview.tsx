@@ -45,7 +45,7 @@ const Container = ({ children }: { children: React.ReactNode }) => {
         </div>
       </div>
       <div>
-        <h2 className="text-xl font-semibold px-2">Basket Governance</h2>
+        <h2 className="text-2xl font-light px-2">Basket Governance</h2>
         {children}
       </div>
     </Card>
@@ -81,7 +81,7 @@ const OpenLockDrawerButton = forwardRef<
       </h4>
       <Box
         variant="circle"
-        className="h-8 w-8 bg-primary dark:bg-primary text-primary-foreground"
+        className="h-8 w-8 bg-primary dark:bg-primary flex-shrink-0 text-primary-foreground"
       >
         <ArrowRight size={16} />
       </Box>

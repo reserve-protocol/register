@@ -40,9 +40,10 @@ const useAssetPricesWithSnapshot = (
           currentPrice: price,
           snapshotPrice: price,
         }
-        return acc
+        return acc            
       }, {} as TokenPriceWithSnapshot)
 
+      // TODO: No longer used!
       // Fetch snapshot prices if timestamp is provided
       if (timestamp) {
         // from is timestamp - 1 hour

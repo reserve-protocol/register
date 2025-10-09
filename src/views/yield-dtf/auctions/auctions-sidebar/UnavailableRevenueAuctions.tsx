@@ -1,6 +1,8 @@
+import TransactionButton from '@/components/old/button/TransactionButton'
 import { t } from '@lingui/macro'
 import FacadeAct from 'abis/FacadeAct'
 import AuctionsIcon from 'components/icons/AuctionsIcon'
+import useContractWrite from 'hooks/useContractWrite'
 import useWatchTransaction from 'hooks/useWatchTransaction'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
@@ -8,6 +10,7 @@ import { chainIdAtom } from 'state/atoms'
 import { Box, Divider } from 'theme-ui'
 import { FACADE_ACT_ADDRESS } from 'utils/addresses'
 import { Address, Hex, encodeFunctionData } from 'viem'
+import { UseSimulateContractParameters } from 'wagmi'
 import {
   auctionSidebarAtom,
   auctionsOverviewAtom,
@@ -15,9 +18,6 @@ import {
 } from '../atoms'
 import RevenueAuctionItem from './RevenueAuctionItem'
 import RevenueBoxContainer from './RevenueBoxContainer'
-import useContractWrite from 'hooks/useContractWrite'
-import TransactionButton from '@/components/old/button/TransactionButton'
-import { UseSimulateContractParameters } from 'wagmi'
 
 const setAuctionAtom = atom(null, (get, set, index: number) => {
   const selected = get(selectedUnavailableAuctionsAtom)
@@ -88,8 +88,7 @@ const useAuctions = () => {
 
 // TODO: maybe unnecesary
 const ConfirmAuction = () => {
-  const { isReady, write, hash, gas, validationError, isLoading } =
-    useAuctions()
+  const { isReady, write, hash, isLoading } = useAuctions()
   const { status } = useWatchTransaction({ hash, label: 'Run auctions' })
   const closeSidebar = useSetAtom(auctionSidebarAtom)
 
@@ -106,8 +105,7 @@ const ConfirmAuction = () => {
         text="Run auctions"
         variant={isLoading ? 'accentAction' : 'primary'}
         disabled={!isReady}
-        gas={gas}
-        loading={isLoading || status === 'pending'}
+        loading={isLoading || (hash && status !== 'success')}
         onClick={write}
       />
     </Box>

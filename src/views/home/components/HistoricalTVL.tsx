@@ -23,6 +23,11 @@ const COLORS: Record<string, any> = {
     stroke: colors.primary,
     // stroke: '#162B4E',
   },
+  bsc: {
+    fill: colors.primary,
+    stroke: colors.primary,
+    // stroke: '#162B4E',
+  },
 }
 
 function CustomTooltip({ payload, label, active }: any) {

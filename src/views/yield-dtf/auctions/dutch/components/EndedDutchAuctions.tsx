@@ -19,6 +19,7 @@ const EndedDutchAuctions = (props: BoxProps) => {
         <Table
           columns={columns}
           data={data}
+          className="rounded-3xl pt-4"
           compact
           pagination={{ pageSize: 5 }}
         />

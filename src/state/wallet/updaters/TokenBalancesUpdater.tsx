@@ -37,6 +37,10 @@ const ZAP_TOKENS: { [x: number]: [Address, number][] } = {
     ['0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1', 18], // DAI
     ['0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f', 8], // WBTC
   ],
+  [ChainId.BSC]: [
+    ['0x2170Ed0880ac9A755fd29B2688956BD959F933F8', 18], // WETH
+    ['0x55d398326f99059fF775485246999027B3197955', 18], // USDT
+  ],
 }
 
 // TODO: Add zapper tokens

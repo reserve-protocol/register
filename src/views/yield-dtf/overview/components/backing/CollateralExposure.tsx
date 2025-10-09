@@ -21,6 +21,7 @@ import { Box, Card, Flex, Grid, Text } from 'theme-ui'
 import { formatCurrency, shortenAddress } from 'utils'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import VerticalDivider from '@/views/discover/components/yield/components/VerticalDivider'
+import { PROTOCOL_DOCS } from '@/utils/constants'
 
 interface DetailedCollateralWithMeta extends CollateralDetail {
   website?: string
@@ -152,10 +153,7 @@ const CollateralDetails = ({
               variant="transparent"
               onClick={(e) => {
                 e.stopPropagation()
-                window.open(
-                  'https://reserve.org/protocol/introduction/',
-                  '_blank'
-                )
+                window.open(`${PROTOCOL_DOCS}introduction/`, '_blank')
               }}
             >
               <Box variant="layout.verticalAlign">
@@ -204,7 +202,11 @@ const CollateralDetails = ({
 const CollateralList = () => {
   const collaterals = useAtomValue(backingDetailAtom)
 
-  if (!collaterals) {
+  const sortedCollaterals = useMemo(() => {
+    return collaterals?.sort((a, b) => b.distribution - a.distribution)
+  }, [collaterals])
+
+  if (!sortedCollaterals) {
     return (
       <Box px={4} mb={3}>
         <Skeleton count={3} height={66} />
@@ -214,7 +216,7 @@ const CollateralList = () => {
 
   return (
     <Box>
-      {collaterals.map((collateral) => (
+      {sortedCollaterals?.map((collateral) => (
         <CollateralDetails key={collateral.address} collateral={collateral} />
       ))}
     </Box>

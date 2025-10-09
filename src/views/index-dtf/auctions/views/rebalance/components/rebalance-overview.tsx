@@ -1,12 +1,25 @@
 import DecimalDisplay from '@/components/decimal-display'
 import { Skeleton } from '@/components/ui/skeleton'
+import { isAuctionLauncherAtom, isHybridDTFAtom } from '@/state/dtf/atoms'
 import { formatPercentage } from '@/utils'
-import { atom, useAtomValue } from 'jotai'
-import { ArrowLeftRight, Target } from 'lucide-react'
-import { useMemo } from 'react'
-import { formatUnits } from 'viem'
-import { rebalanceAuctionsAtom, rebalanceMetricsAtom } from '../atoms'
+import { atom, useAtomValue, useSetAtom } from 'jotai'
+import {
+  ArrowLeftRight,
+  Check,
+  CheckCircle2,
+  ChevronRight,
+  Target,
+  X,
+} from 'lucide-react'
+import {
+  areWeightsSavedAtom,
+  areWeightsSettledAtom,
+  rebalanceAuctionsAtom,
+  rebalanceMetricsAtom,
+  showManageWeightsViewAtom,
+} from '../atoms'
 import useRebalanceParams from '../hooks/use-rebalance-params'
+import { useTotalValueTraded } from '../hooks/use-total-value-traded'
 
 const trackingErrorAtom = atom((get) => {
   const metrics = get(rebalanceMetricsAtom)
@@ -16,33 +29,49 @@ const trackingErrorAtom = atom((get) => {
   return 100 - metrics.absoluteProgression
 })
 
-const useTotalValueTraded = () => {
-  const rebalanceParams = useRebalanceParams()
+const SavedWeights = () => {
+  const areWeightsSettled = useAtomValue(areWeightsSettledAtom)
   const auctions = useAtomValue(rebalanceAuctionsAtom)
+  const isHybridDTF = useAtomValue(isHybridDTFAtom)
+  const isAuctionLauncher = useAtomValue(isAuctionLauncherAtom)
+  const setShowManageWeights = useSetAtom(showManageWeightsViewAtom)
 
-  return useMemo(() => {
-    if (!rebalanceParams || auctions.length === 0) return 0
+  if (!isHybridDTF) return null
 
-    const { prices } = rebalanceParams
+  const canEditWeights =
+    isAuctionLauncher && areWeightsSettled && auctions.length === 0
 
-    const totalValueTraded = auctions.reduce((acc, auction) => {
-      return (
-        acc +
-        auction.bids.reduce((acc, bid) => {
-          const price = prices[bid.sellToken.address]
-          const sellAmount = Number(
-            formatUnits(BigInt(bid.sellAmount), bid.sellToken.decimals)
-          )
-
-          if (!price || sellAmount === 0) return acc
-
-          return acc + price.currentPrice * sellAmount
-        }, 0)
-      )
-    }, 0)
-
-    return totalValueTraded
-  }, [rebalanceParams, auctions])
+  return (
+    <div className="flex items-center gap-2 flex-wrap mb-4">
+      <div className="flex items-center gap-2 mr-auto text-legend">
+        <CheckCircle2 className="h-4 w-4" />
+        <span>Weights saved:</span>
+      </div>
+      {canEditWeights ? (
+        <button
+          className="flex items-center gap-1 hover:opacity-80 transition-opacity"
+          onClick={() => setShowManageWeights(true)}
+        >
+          <Check className="h-4 w-4 text-primary" />
+          <span className="text-primary">Yes</span>
+          <ChevronRight className="h-4 w-4 text-primary" />
+        </button>
+      ) : (
+        <>
+          {areWeightsSettled ? (
+            <Check className="h-4 w-4 text-primary" />
+          ) : (
+            <X className="h-4 w-4 text-destructive" />
+          )}
+          <span
+            className={areWeightsSettled ? 'text-primary' : 'text-destructive'}
+          >
+            {areWeightsSettled ? 'Yes' : 'No'}
+          </span>
+        </>
+      )}
+    </div>
+  )
 }
 
 const RebalanceOverview = () => {
@@ -51,6 +80,7 @@ const RebalanceOverview = () => {
 
   return (
     <div className="border-t border-secondary p-4 md:p-6">
+      <SavedWeights />
       <div className="flex items-center gap-2 flex-wrap">
         <div className="flex items-center gap-2 mr-auto text-legend">
           <ArrowLeftRight className="h-4 w-4" />

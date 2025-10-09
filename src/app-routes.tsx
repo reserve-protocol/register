@@ -40,6 +40,7 @@ import IndexDTFManualIssuance from './views/index-dtf/issuance/manual'
 import IndexDTFManage from './views/index-dtf/manage'
 import IndexDTFOverview from './views/index-dtf/overview'
 import IndexDTFSettings from './views/index-dtf/settings'
+import InternalDTFList from './views/internal/dtf-list'
 import AllYieldDTFList from './views/tokens/Tokens'
 const AsyncSwaps = lazy(() => import('./views/index-dtf/issuance/async-swaps'))
 
@@ -47,6 +48,8 @@ const AsyncSwaps = lazy(() => import('./views/index-dtf/issuance/async-swaps'))
 const AppRoutes = () => (
   <Routes>
     <Route path={ROUTES.HOME} element={<Discover />} />
+    {/* Internal routes */}
+    <Route path="/internal/dtf-list" element={<InternalDTFList />} />
     <Route path={ROUTES.BRIDGE} element={<Bridge />} />
     <Route path={ROUTES.EARN} element={<EarnWrapper />} />
     <Route path={ROUTES.DEPLOY_YIELD} element={<DeployYieldDTF />} />

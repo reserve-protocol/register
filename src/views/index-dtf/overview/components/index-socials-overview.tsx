@@ -1,63 +1,52 @@
 import { Skeleton } from '@/components/ui/skeleton'
-import { useAtomValue } from 'jotai'
-import { FileText } from 'lucide-react'
-import DiscordIcon from '@/components/icons/DiscordIcon'
-import TelegramIcon from '@/components/icons/TelegramIcon'
-import XIcon from '@/components/icons/XIcon'
 import { indexDTFBrandAtom } from '@/state/dtf/atoms'
-import { LinkIcon } from 'lucide-react'
-import React from 'react'
+import { useAtomValue } from 'jotai'
+import React, { useMemo } from 'react'
 import { Link } from 'react-router-dom'
 
-const SOCIAL_MAP: Record<string, { icon: React.ReactNode; label: string }> = {
-  website: {
-    icon: <LinkIcon size={14} />,
-    label: 'Website',
-  },
+const SOCIAL_MAP: Record<string, { icon: React.ReactNode }> = {
   telegram: {
-    icon: <TelegramIcon />,
-    label: 'Telegram',
+    icon: <img src="/svgs/telegram.svg" className="w-6 h-6" />,
   },
   discord: {
-    icon: <DiscordIcon />,
-    label: 'Discord',
+    icon: <img src="/svgs/discord.svg" className="w-6 h-6" />,
   },
   twitter: {
-    icon: <XIcon width={20} height={20} />,
-    label: 'Twitter',
+    icon: <img src="/svgs/x.svg" className="w-6 h-6" />,
   },
 }
 
 const IndexSocialsOverview = () => {
   const data = useAtomValue(indexDTFBrandAtom)
 
+  const socials = useMemo(
+    () =>
+      Object.entries(data?.socials || {})
+        .filter(([key]) => key in SOCIAL_MAP)
+        .filter(([_, value]) => !!value),
+    [data?.socials]
+  )
+
   if (!data) {
-    return <Skeleton className="w-60 h-6" />
+    return <Skeleton className="w-20 h-8 rounded-full" />
+  }
+
+  if (socials.length === 0) {
+    return null
   }
 
   return (
-    <div className="flex gap-2 mt-3 flex-wrap">
-      {data.dtf?.prospectus && (
-        <Link
-          to={data.dtf.prospectus}
-          target="_blank"
-          className="flex items-center gap-2 border rounded-full py-1 px-2 text-sm hover:bg-primary/10 hover:text-primary"
-        >
-          <FileText size={14} />
-          DTF Factsheet
-        </Link>
-      )}
-      {Object.entries(data?.socials || {}).map(
+    <div className="px-1.5 py-[5px] flex gap-1 items-center border rounded-full">
+      {socials.map(
         ([key, value]) =>
           !!value && (
             <Link
               key={key}
               to={value}
               target="_blank"
-              className="flex items-center gap-2 border rounded-full py-1 px-2 text-sm hover:bg-primary/10 hover:text-primary"
+              className="flex items-center justify-center"
             >
               {SOCIAL_MAP[key].icon}
-              {SOCIAL_MAP[key].label}
             </Link>
           )
       )}

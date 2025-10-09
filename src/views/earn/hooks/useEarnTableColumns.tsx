@@ -24,24 +24,11 @@ import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
 import React, { useMemo } from 'react'
 import { ArrowUpRight } from 'lucide-react'
 import { Pool } from 'state/pools/atoms'
-import { colors } from 'theme'
-import { Box, Image, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { CHAIN_TAGS, LP_PROJECTS, NETWORKS } from 'utils/constants'
 import Sky from '@/components/icons/logos/Sky'
 import Origin from '@/components/icons/logos/Origin'
-
-export const columnVisibility = []
-
-export const compactColumnVisibility = [
-  '',
-  '',
-  ['none', 'table-cell'],
-  '',
-  ['none', 'none', 'none', 'table-cell'],
-  ['none', 'none', 'none', 'table-cell'],
-  ['none', 'table-cell'],
-]
+import { cn } from '@/lib/utils'
 
 export const PROJECT_ICONS: Record<string, React.ReactElement> = {
   'yearn-finance': <Yearn fontSize={16} />,
@@ -50,6 +37,7 @@ export const PROJECT_ICONS: Record<string, React.ReactElement> = {
   'aerodrome-v1': <Aerodrome />,
   'aerodrome-slipstream': <Aerodrome />,
   stakedao: <Stakedao fontSize={16} />,
+  'stake-dao': <Stakedao fontSize={16} />,
   'uniswap-v3': <Uniswap fontSize={16} />,
   'balancer-v2': <Balancer fontSize={16} />,
   'extra-finance': <Extra fontSize={16} />,
@@ -74,14 +62,9 @@ const useEarnTableColumns = (compact: boolean) => {
         header: t`Pool`,
         cell: (data) => {
           return (
-            <Box variant="layout.verticalAlign" sx={{ gap: 3 }}>
-              <Box
-                variant="layout.verticalAlign"
-                sx={{
-                  cursor: 'pointer',
-                  color: 'secondaryText',
-                  ':hover': { color: 'text' },
-                }}
+            <div className="flex items-center gap-3 min-w-[150px] xl:min-w-[200px]">
+              <div
+                className="flex items-center cursor-pointer text-muted-foreground hover:text-foreground"
                 onClick={() => {
                   window.open(data.row.original.url, '_blank')
                   mixpanel.track('Viewed External Earn Link', {
@@ -90,28 +73,13 @@ const useEarnTableColumns = (compact: boolean) => {
                   })
                 }}
               >
-                <StackTokenLogo tokens={data.row.original.underlyingTokens} />
-                <Text ml="2" sx={{ textDecoration: 'underline' }}>
+                <StackTokenLogo tokens={data.row.original.underlyingTokens} outsource={true} />
+                <span className="ml-2 underline text-sm">
                   {data.getValue()}
-                </Text>
-              </Box>
-              <Box
-                variant="layout.verticalAlign"
-                sx={{
-                  cursor: 'pointer',
-                  border: '1px solid',
-                  borderColor: 'border',
-                  backgroundColor: 'cardAlternative',
-                  borderRadius: '50px',
-                  width: 'fit-content',
-                  gap: 1,
-                  px: 2,
-                  py: 1,
-                  opacity: 0.3,
-                  ':hover': {
-                    opacity: 1,
-                  },
-                }}
+                </span>
+              </div>
+              <div
+                className="flex items-center cursor-pointer border border-border bg-card-alternative rounded-[50px] w-fit gap-1 px-2 py-1 opacity-30 hover:opacity-100"
                 onClick={() => {
                   window.open(
                     `https://defillama.com/yields/pool/${data.row.original.id}`,
@@ -123,85 +91,84 @@ const useEarnTableColumns = (compact: boolean) => {
                   })
                 }}
               >
-                <Image src="/svgs/defillama.svg" height={16} width={16} />
-                <ArrowUpRight color={colors.secondaryText} size={14} />
-              </Box>
-            </Box>
+                <img src="/svgs/defillama.svg" height={16} width={16} alt="DefiLlama" />
+                <ArrowUpRight className="text-muted-foreground" size={14} />
+              </div>
+            </div>
           )
         },
       }),
       columnHelper.accessor('project', {
         header: t`Project`,
         cell: (data) => (
-          <Box variant="layout.verticalAlign">
+          <div className="flex items-center">
             {PROJECT_ICONS[data.getValue()] ?? ''}
-            <Text ml="2">
+            <span className="ml-2 text-sm">
               {LP_PROJECTS[data.getValue()]?.name ?? data.getValue()}
-            </Text>
-          </Box>
+            </span>
+          </div>
         ),
       }),
       columnHelper.accessor('chain', {
         header: t`Chain`,
         cell: (data) => {
           return (
-            <Box pl="10px" variant="layout.verticalAlign">
+            <div className="pl-[10px] flex items-center min-w-[40px] lg:min-w-[100px]">
               <ChainLogo
                 fontSize={16}
                 chain={NETWORKS[data.getValue().toLowerCase()]}
               />
               {!compact && (
-                <Text ml="2" sx={{ display: ['block', 'none', 'block'] }}>
+                <span className="ml-2 text-sm hidden lg:inline">
                   {CHAIN_TAGS[NETWORKS[data.getValue().toLowerCase()]]}
-                </Text>
+                </span>
               )}
-            </Box>
+            </div>
           )
         },
       }),
       columnHelper.accessor('apy', {
         header: () => {
           return (
-            <Box variant="layout.verticalAlign">
-              <Text mr={1}>APY</Text>
+            <div className="flex items-center min-w-[80px]">
+              <span className="mr-1">APY</span>
               <Help content="APY = Base APY + Reward APY. For non-autocompounding pools reinvesting is not accounted, in which case APY = APR." />
-            </Box>
+            </div>
           )
         },
-        cell: (data) => `${formatCurrency(data.getValue(), 1)}%`,
+        cell: (data) => <span className="min-w-[80px] inline-block text-sm">{formatCurrency(data.getValue(), 1)}%</span>,
       }),
       columnHelper.accessor('apyBase', {
         header: () => {
           return (
-            <Box variant="layout.verticalAlign">
-              <Text mr={1}>Base APY</Text>
+            <div className="flex items-center min-w-[110px]">
+              <span className="mr-1">Base APY</span>
               <Help content="Annualised percentage yield from trading fees/supplying. For dexes 24h fees are used and scaled those to a year." />
-            </Box>
+            </div>
           )
         },
-        cell: (data) => `${formatCurrency(data.getValue(), 1)}%`,
+        cell: (data) => <span className="min-w-[80px] inline-block text-sm">{formatCurrency(data.getValue(), 1)}%</span>,
+        meta: { className: compact ? 'hidden' : 'hidden xl:table-cell' },
       }),
       columnHelper.accessor('apyReward', {
         header: () => {
           return (
-            <Box variant="layout.verticalAlign">
-              <Text mr={1}>Reward APY</Text>
+            <div className="flex items-center min-w-[130px]">
+              <span className="mr-1">Reward APY</span>
               <Help content="Annualised percentage yield from incentives" />
-            </Box>
+            </div>
           )
         },
         cell: (data) => (
-          <Box
-            variant="layout.verticalAlign"
-            sx={{ gap: 2, minWidth: '156px' }}
-          >
+          <span className="min-w-[80px] inline-block text-sm">
             {`${formatCurrency(data.getValue(), 1)}%`}
-          </Box>
+          </span>
         ),
+        meta: { className: compact ? 'hidden' : 'hidden xl:table-cell' },
       }),
       columnHelper.accessor('tvlUsd', {
         header: t`TVL`,
-        cell: (data) => `$${formatCurrency(data.getValue(), 0)}`,
+        cell: (data) => <span className="min-w-[100px] inline-block text-sm">${formatCurrency(data.getValue(), 0)}</span>,
       }),
     ]
   }, [compact])

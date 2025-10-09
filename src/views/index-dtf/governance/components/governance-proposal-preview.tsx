@@ -1,4 +1,3 @@
-import { Skeleton } from '@/components/ui/skeleton'
 import { useAtomValue } from 'jotai'
 import { Address, Hex } from 'viem'
 import { dtfContractAliasAtom } from './proposal-preview/atoms'
@@ -6,6 +5,7 @@ import ContractProposalChanges from './proposal-preview/contract-proposal-change
 import FolioChangePreview from './proposal-preview/folio-change-preview'
 import useDecodedCalldatas from '../../../../hooks/use-decoded-call-datas'
 import UnknownContractPreview from './proposal-preview/unknown-contract-preview'
+import GovernanceProposalPreviewSkeleton from './proposal-preview/governance-proposal-preview-skeleton'
 
 /**
  * GovernanceProposalPreview Component
@@ -37,7 +37,7 @@ const GovernanceProposalPreview = ({
   )
 
   if (!dataByContract.length && !unknownContracts.length) {
-    return <Skeleton className="h-80" />
+    return <GovernanceProposalPreviewSkeleton />
   }
 
   return (

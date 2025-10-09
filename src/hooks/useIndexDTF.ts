@@ -1,5 +1,6 @@
 import { INDEX_DTF_SUBGRAPH_URL } from '@/state/chain/atoms/chainAtoms'
 import { IndexDTF } from '@/types'
+import {AvailableChain} from '@/utils/chains'
 import { useQuery } from '@tanstack/react-query'
 import request, { gql } from 'graphql-request'
 import { Address, formatEther } from 'viem'
@@ -55,6 +56,7 @@ type DTFQueryResponse = {
       symbol: string
       decimals: number
       totalSupply: string
+      currentHolderCount: number
     }
     stToken?: {
       id: Address
@@ -156,6 +158,7 @@ const dtfQuery = gql`
         symbol
         decimals
         totalSupply
+        currentHolderCount
       }
       stToken {
         id
@@ -213,11 +216,11 @@ const parseFeeRecipients = (raw: string) => {
   return recipients as { address: Address; percentage: string }[]
 }
 
-const useIndexDTF = (address: string | undefined, chainId: number) => {
-  return useQuery<IndexDTF | undefined>({
+const useIndexDTF = (address: string | undefined, chainId: AvailableChain) => {
+  return useQuery<IndexDTF | null>({
     queryKey: ['index-dtf-metadata', address, chainId],
     queryFn: async () => {
-      if (!address) return undefined
+      if (!address) return null
 
       const { dtf }: DTFQueryResponse = await request(
         INDEX_DTF_SUBGRAPH_URL[chainId],
@@ -227,7 +230,7 @@ const useIndexDTF = (address: string | undefined, chainId: number) => {
         }
       )
 
-      if (!dtf) return undefined
+      if (!dtf) return null
 
       const data: IndexDTF = {
         ...dtf,

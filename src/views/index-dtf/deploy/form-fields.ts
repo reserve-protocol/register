@@ -9,6 +9,7 @@ import {
 } from './utils'
 import { Decimal } from './utils/decimals'
 import { ChainId } from '@/utils/chains'
+import { getPlatformFee } from '@/utils/constants'
 
 export type DeployStepId =
   | 'metadata'
@@ -72,6 +73,7 @@ export const dtfDeploySteps: Record<DeployStepId, { fields: string[] }> = {
 
 export const DeployFormSchema = z
   .object({
+    inputType: z.string(),
     tokenName: z
       .string()
       .min(1, 'Token name is required')
@@ -92,9 +94,15 @@ export const DeployFormSchema = z
     mandate: z.string().optional(),
     chain: z
       .number()
-      .refine((value) => value === ChainId.Mainnet || value === ChainId.Base, {
-        message: 'Chain must be either Mainnet or Base',
-      }),
+      .refine(
+        (value) =>
+          value === ChainId.Mainnet ||
+          value === ChainId.Base ||
+          value === ChainId.BSC,
+        {
+          message: 'Chain must be either Mainnet, Base or Binance Smart Chain',
+        }
+      ),
     initialValue: z.coerce.number().positive('Initial value must be positive'),
     tokensDistribution: z.array(
       z.object({
@@ -103,7 +111,7 @@ export const DeployFormSchema = z
           .refine(isAddressNotStrict, { message: 'Invalid Address' }),
         percentage: z.coerce
           .number()
-          .multipleOf(0.01, 'Max precision is 0.01%')
+          // .multipleOf(0.01, 'Max precision is 0.01%')
           .positive('Token distribution must be positive'),
       })
     ),
@@ -234,6 +242,13 @@ export const DeployFormSchema = z
   )
   .refine(
     (data) => {
+      if (data.inputType === 'unit') {
+        return data.tokensDistribution.every(
+          (token) =>
+            !isNaN(Number(token.percentage)) && Number(token.percentage) > 0
+        )
+      }
+
       const total = data.tokensDistribution?.reduce(
         (sum, { percentage }) => sum.plus(new Decimal(percentage)),
         new Decimal(0)
@@ -241,6 +256,13 @@ export const DeployFormSchema = z
       return total.eq(new Decimal(100))
     },
     (data) => {
+      if (data.inputType === 'unit') {
+        return {
+          message: `All token units must be valid positive numbers`,
+          path: ['basket'],
+        }
+      }
+
       const total =
         data.tokensDistribution?.reduce(
           (sum, { percentage }) => sum.plus(new Decimal(percentage)),
@@ -274,7 +296,8 @@ export const DeployFormSchema = z
         new Decimal(0)
       )
 
-      return total.plus(new Decimal(data.fixedPlatformFee)).eq(new Decimal(100))
+      const platformFee = getPlatformFee(data.chain)
+      return total.plus(new Decimal(platformFee)).eq(new Decimal(100))
     },
     (data) => {
       const totalShares = [
@@ -288,8 +311,9 @@ export const DeployFormSchema = z
         new Decimal(0)
       )
 
+      const platformFee = getPlatformFee(data.chain)
       const difference = new Decimal(100).minus(
-        total.plus(new Decimal(data.fixedPlatformFee))
+        total.plus(new Decimal(platformFee))
       )
 
       const absDifference = difference.abs()
@@ -389,6 +413,7 @@ export const dtfDeployDefaultValues = {
   mandate: '',
   chain: undefined,
   initialValue: 1,
+  inputType: 'unit',
   tokensDistribution: [],
   governanceERC20address: undefined,
   governanceVoteLock: undefined,
@@ -400,7 +425,7 @@ export const dtfDeployDefaultValues = {
   fixedPlatformFee: 50,
   additionalRevenueRecipients: [],
   auctionLength: 30,
-  weightControl: true,
+  weightControl: false,
   guardians: [],
   brandManagers: [],
   auctionLaunchers: [],

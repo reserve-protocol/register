@@ -4,6 +4,7 @@ import { Address, Hex } from 'viem'
 
 export interface PartialProposal {
   id: string
+  timelockId: string
   description: string
   creationTime: number
   creationBlock: number

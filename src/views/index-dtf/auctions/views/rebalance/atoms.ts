@@ -1,15 +1,16 @@
-import { TokenPriceWithSnapshot } from '@/hooks/use-asset-prices-with-snapshot'
-import { AuctionMetrics } from '@reserve-protocol/dtf-rebalance-lib'
-import { Token } from '@/types'
-import { Rebalance } from '@reserve-protocol/dtf-rebalance-lib'
+import { Token, Volatility } from '@/types'
+import {
+  AuctionMetrics,
+  WeightRange,
+} from '@reserve-protocol/dtf-rebalance-lib'
 import { atom } from 'jotai'
 import { currentRebalanceAtom } from '../../atoms'
 
-export const PRICE_VOLATILITY: Record<string, number> = {
-  LOW: 0.025,
-  MEDIUM: 0.075,
-  HIGH: 0.25,
-  DEGEN: 0.6, // not used yet
+export const AUCTION_PRICE_VOLATILITY: Record<Volatility, number> = {
+  low: 0.02,
+  medium: 0.05,
+  high: 0.1,
+  degen: 0.5,
 }
 
 export type Auction = {
@@ -41,21 +42,10 @@ export type Auction = {
   }[]
 }
 
-export type RebalanceState = {
-  rebalance: Rebalance
-  supply: bigint
-  currentFolio: Record<string, bigint>
-  initialFolio: Record<string, bigint>
-  prices: TokenPriceWithSnapshot
-  isTrackingDTF: boolean
-}
-
 export const rebalanceMetricsAtom = atom<AuctionMetrics | undefined>(undefined)
 
-export const rebalancePercentAtom = atom(100)
+export const rebalancePercentAtom = atom(98)
 export const rebalanceAuctionsAtom = atom<Auction[]>([])
-
-export const rebalanceStateAtom = atom<RebalanceState | undefined>(undefined)
 
 export const rebalanceTokenMapAtom = atom<Record<string, Token>>((get) => {
   const rebalance = get(currentRebalanceAtom)
@@ -81,7 +71,34 @@ export const isAuctionOngoingAtom = atom((get) => {
   })
 })
 
-export const priceVolatilityAtom = atom<keyof typeof PRICE_VOLATILITY>('MEDIUM')
+export const priceVolatilityAtom = atom<Volatility>('medium')
+
+// Advanced rebalance atoms for hybrid DTFs
+export const savedWeightsAtom = atom<Record<string, WeightRange> | undefined>(
+  undefined
+)
+export const areWeightsSavedAtom = atom<boolean>(false)
+export const areWeightsSettledAtom = atom<boolean>((get) => {
+  const auctions = get(rebalanceAuctionsAtom)
+  const areWeightsSaved = get(areWeightsSavedAtom)
+
+  return auctions.length > 0 || areWeightsSaved
+})
+export const showManageWeightsViewAtom = atom<boolean>(false)
+export const managedWeightUnitsAtom = atom<Record<string, string>>({})
+export const originalRebalanceWeightsAtom = atom<
+  Record<string, WeightRange> | undefined
+>(undefined)
+
+// Similar to proposedIndexBasketAtom but for manage weights
+export interface IndexAssetShares {
+  token: Token
+  currentShares: string
+  currentUnits: string
+}
+export const managedBasketAtom = atom<
+  Record<string, IndexAssetShares> | undefined
+>(undefined)
 
 // Derived atom that returns the current active auction with its index or null
 export const activeAuctionAtom = atom<{

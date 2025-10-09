@@ -1,4 +1,7 @@
+import { AvailableChain } from '@/utils/chains'
 import { Address, Hex } from 'viem'
+
+export type TimeRange = '24h' | '7d' | '1m' | '3m' | '1y' | 'all'
 
 export type RoleKey =
   | 'owners'
@@ -266,7 +269,7 @@ export type IndexDTF = {
   id: Address
   proxyAdmin: Address
   timestamp: number
-  chainId: number
+  chainId: AvailableChain
   deployer: Address
   ownerAddress: Address
   mintingFee: number
@@ -318,6 +321,7 @@ export type IndexDTF = {
     symbol: string
     decimals: number
     totalSupply: string
+    currentHolderCount: number
   }
   stToken?: {
     id: Address
@@ -382,3 +386,5 @@ export type DecodedCalldata = {
   callData: Hex
   data: unknown[]
 }
+
+export type Volatility = 'low' | 'medium' | 'high' | 'degen'

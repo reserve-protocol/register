@@ -1,57 +1,101 @@
 import TransactionButton from '@/components/old/button/TransactionButton'
+import { indexDTFAtom } from '@/state/dtf/atoms'
+import { PROPOSAL_STATES } from '@/utils/constants'
 import { t } from '@lingui/macro'
 import Timelock from 'abis/Timelock'
 import useContractWrite from 'hooks/useContractWrite'
 import useWatchTransaction from 'hooks/useWatchTransaction'
 import { atom, useAtom, useAtomValue } from 'jotai'
-import { useEffect } from 'react'
-import { rTokenGovernanceAtom, walletAtom } from 'state/atoms'
+import { useEffect, useMemo } from 'react'
+import { chainIdAtom, walletAtom } from 'state/atoms'
 import {
   encodeAbiParameters,
+  Hex,
   keccak256,
+  pad,
   parseAbiParameters,
+  stringToBytes,
   toBytes,
 } from 'viem'
 import { useReadContract } from 'wagmi'
 import { proposalDetailAtom } from '../atom'
-import { PROPOSAL_STATES } from '@/utils/constants'
 
 const timelockIdAtom = atom((get) => {
   const proposal = get(proposalDetailAtom)
 
-  const encodedParams = proposal
-    ? encodeAbiParameters(
-        parseAbiParameters('address[], uint256[], bytes[], bytes32, bytes32'),
-        [
-          proposal.targets,
-          [0n],
-          proposal.calldatas,
-          '0x0000000000000000000000000000000000000000000000000000000000000000',
-          keccak256(toBytes(proposal.description)),
-        ]
-      )
-    : undefined
+  if (!proposal) return undefined
+  if (proposal?.timelockId) return proposal.timelockId as Hex
 
-  return encodedParams ? keccak256(encodedParams) : undefined
+  const governorAddress = proposal.governor.toLowerCase() as Hex
+  const descriptionHash = keccak256(stringToBytes(proposal.description))
+
+  const governorBytes32 = pad(governorAddress, { size: 32, dir: 'right' })
+
+  // XOR by byte
+  const governorBuffer = Buffer.from(governorBytes32.slice(2), 'hex')
+  const descHashBuffer = Buffer.from(descriptionHash.slice(2), 'hex')
+
+  const saltBuffer = Buffer.alloc(32)
+  for (let i = 0; i < 32; i++) {
+    saltBuffer[i] = governorBuffer[i] ^ descHashBuffer[i]
+  }
+
+  const timelockSalt = `0x${saltBuffer.toString('hex')}` as Hex
+
+  const encodedParams = encodeAbiParameters(
+    parseAbiParameters('address[], uint256[], bytes[], bytes32, bytes32'),
+    [
+      proposal.targets,
+      [0n],
+      proposal.calldatas,
+      '0x0000000000000000000000000000000000000000000000000000000000000000',
+      timelockSalt,
+    ]
+  )
+
+  return keccak256(encodedParams)
 })
 
 const ProposalCancel = () => {
-  const governance = useAtomValue(rTokenGovernanceAtom)
+  const indexDTF = useAtomValue(indexDTFAtom)
   const timelockId = useAtomValue(timelockIdAtom)
   const account = useAtomValue(walletAtom)
   const [proposal, setProposal] = useAtom(proposalDetailAtom)
-  const deadline = proposal?.votingState.deadline
+  const chainId = useAtomValue(chainIdAtom)
+  const timelockAddress = useMemo(() => {
+    if (!indexDTF || !proposal) return undefined
+
+    if (
+      indexDTF.ownerGovernance?.id.toLowerCase() ===
+      proposal.governor.toLowerCase()
+    ) {
+      return indexDTF.ownerGovernance.timelock.id
+    }
+
+    if (
+      indexDTF.tradingGovernance?.id.toLowerCase() ===
+      proposal.governor.toLowerCase()
+    ) {
+      return indexDTF.tradingGovernance.timelock.id
+    }
+
+    return indexDTF.stToken?.governance?.timelock?.id
+  }, [indexDTF, proposal])
 
   const { data: canCancel } = useReadContract({
-    address: governance.timelock,
+    address: timelockAddress,
     abi: Timelock,
     functionName: 'hasRole',
     args: account ? [keccak256(toBytes('CANCELLER_ROLE')), account] : undefined,
+    chainId,
+    query: {
+      enabled: !!timelockAddress && !!account,
+    },
   })
 
   const { write, isLoading, hash, isReady } = useContractWrite({
     abi: Timelock,
-    address: governance?.timelock,
+    address: timelockAddress,
     functionName: 'cancel',
     args: timelockId ? [timelockId] : undefined,
     query: { enabled: canCancel },
@@ -79,8 +123,6 @@ const ProposalCancel = () => {
       )
     }
   }, [status])
-
-  if (!deadline || deadline <= 0) return null
 
   return (
     <TransactionButton

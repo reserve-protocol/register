@@ -21,6 +21,7 @@ import SettingItem from '@/views/yield-dtf/settings/components/SettingItem'
 import { isTimeunitGovernance } from '../utils'
 import AccountVotes from './AccountVotes'
 import { useReadContract } from 'wagmi'
+import { PROTOCOL_DOCS } from '@/utils/constants'
 
 const query = gql`
   query getGovernanceStats($id: String!) {
@@ -186,7 +187,7 @@ const GovernanceFormat = () => {
         variant="transparent"
         onClick={() =>
           window.open(
-            'https://reserve.org/protocol/reserve_rights_rsr/#reserve-governor-alexios',
+            `${PROTOCOL_DOCS}reserve_rights_rsr/#reserve-governor-alexios`,
             '_blank'
           )
         }

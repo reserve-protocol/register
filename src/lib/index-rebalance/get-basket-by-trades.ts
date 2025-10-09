@@ -7,7 +7,7 @@ import { D9n } from './numbers'
  *
  * @param auctions Auctions
  * @param tokens Addresses of tokens in the basket
- * @param amounts {tok} Current balances of each token per Folio share
+ * @param amounts {tok} Current balances of each token
  * @param decimals Decimals of each token
  * @param _prices {USD/wholeTok} Current USD prices for each *whole* token
  * @returns basket D18{1} Resulting basket from running the smallest auction first

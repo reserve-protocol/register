@@ -3,10 +3,18 @@ import { Button } from '@/components/ui/button'
 import Timeline from '@/components/ui/timeline'
 import { useAtom, useAtomValue } from 'jotai'
 import { Link } from 'react-router-dom'
-import { isBasketProposalValidAtom, isProposalConfirmedAtom } from '../atoms'
+import {
+  isBasketProposalValidAtom,
+  isProposalConfirmedAtom,
+  basketProposalCalldatasAtom,
+  proposalDescriptionAtom,
+} from '../atoms'
 import SubmitProposalButton from './submit-proposal-button'
 import { ROUTES } from '@/utils/constants'
 import { indexDTFAtom, indexDTFBrandAtom } from '@/state/dtf/atoms'
+import SimulateProposalCard from '@/views/index-dtf/governance/components/simulate-proposal-card'
+import { chainIdAtom } from '@/state/atoms'
+import { Address } from 'viem'
 
 // TODO: get governance route to navigate back to governance
 const Header = () => {
@@ -81,11 +89,56 @@ const ProposalInstructions = () => {
   )
 }
 
-const BasketProposalOverview = () => {
+const SimulateProposalSection = () => {
+  const isProposalConfirmed = useAtomValue(isProposalConfirmedAtom)
+  const calldatas = useAtomValue(basketProposalCalldatasAtom)
+  const indexDTF = useAtomValue(indexDTFAtom)
+  const chainId = useAtomValue(chainIdAtom)
+
+  // Determine which governance to use (trading for basket changes)
+  const governorAddress = indexDTF?.tradingGovernance?.id as Address
+  const timelockAddress = indexDTF?.tradingGovernance?.timelock?.id as Address
+  const voteTokenAddress = indexDTF?.stToken?.id as Address
+
+  if (!indexDTF) return null
+
+  // Construct proposal data for simulation (targets derived from DTF address)
+  const proposalData = calldatas
+    ? {
+        targets: calldatas.map(() => indexDTF.id as Address),
+        values: calldatas.map(() => 0n),
+        calldatas,
+      }
+    : null
+
   return (
-    <div className="border-4 overflow-hidden w-full border-secondary rounded-3xl bg-background h-[fit-content] sticky top-0">
-      <Header />
-      <ProposalInstructions />
+    <SimulateProposalCard
+      isProposalConfirmed={isProposalConfirmed}
+      proposalData={proposalData}
+      governorAddress={governorAddress}
+      timelockAddress={timelockAddress}
+      voteTokenAddress={voteTokenAddress}
+      chainId={chainId}
+    />
+  )
+}
+
+const BasketProposalOverview = () => {
+  const isProposalConfirmed = useAtomValue(isProposalConfirmedAtom)
+
+  return (
+    <div className="flex flex-col gap-2">
+      <div
+        className={
+          !isProposalConfirmed
+            ? 'border-4 overflow-hidden w-full border-secondary rounded-3xl bg-background h-[fit-content] sticky top-0'
+            : 'border-4 overflow-hidden w-full border-secondary rounded-3xl bg-background h-[fit-content]'
+        }
+      >
+        <Header />
+        <ProposalInstructions />
+      </div>
+      <SimulateProposalSection />
     </div>
   )
 }

@@ -7,6 +7,7 @@ import { ChainId } from '@/utils/chains'
 import ChainLogo from '@/components/icons/ChainLogo'
 import { LayoutGrid } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { devModeAtom } from '@/state/atoms'
 
 const SingleToggleFilter = ({
   options,
@@ -54,12 +55,13 @@ const ChainFilter = () => {
     currentFilter.length > 1 ? '0' : currentFilter[0] === 1 ? '1' : '2'
   )
   const setFilters = useSetAtom(chainFilterAtom)
+  const isDevMode = useAtomValue(devModeAtom)
 
   const chains = [
     {
       icon: <LayoutGrid />,
       text: 'All chains',
-      filter: [ChainId.Base, ChainId.Mainnet],
+      filter: [ChainId.Base, ChainId.Mainnet, ChainId.BSC],
     },
     {
       icon: <ChainLogo chain={ChainId.Mainnet} />,
@@ -71,6 +73,15 @@ const ChainFilter = () => {
       text: 'Base',
       filter: [ChainId.Base],
     },
+    ...(isDevMode
+      ? [
+          {
+            icon: <ChainLogo chain={ChainId.BSC} />,
+            text: 'Binance',
+            filter: [ChainId.BSC],
+          },
+        ]
+      : []),
   ]
 
   const handleSelect = (value: string) => {

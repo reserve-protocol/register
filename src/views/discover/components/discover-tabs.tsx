@@ -32,31 +32,35 @@ const tabs: Tab[] = [
 
 const DiscoverTabs = ({ className }: { className: string }) => {
   return (
-    <div className={cn('container pb-6 px-1 md:px-4', className)}>
-      <TitleContainer title="Featured DTFs" className="[&>h2]:text-primary" />
-      <IndexDTFFeatured />
-      <TitleContainer title="Select a DTF Category" className="mt-4 md:mt-10" />
-      <Tabs
-        defaultValue="index"
-        onValueChange={(value) => {
-          trackClick('discover', value)
-        }}
-      >
-        <DiscoverTabList tabs={tabs} className="mb-2 lg:mb-4" />
+    <>
+      <div className={cn('container pb-6 px-0 md:px-4', className)}>
+        <IndexDTFFeatured />
+        <TitleContainer title="Select a DTF Category" className="mt-10" />
 
-        <TabsContent className="mt-0" value="index">
-          <DiscoverIndexDTF />
-        </TabsContent>
+        <Tabs
+          defaultValue="index"
+          onValueChange={(value) => {
+            trackClick('discover', value)
+          }}
+        >
+          <div className="px-1 sm:px-0">
+            <DiscoverTabList tabs={tabs} className="mb-2 lg:mb-4" />
+          </div>
 
-        <TabsContent className="mt-0" value="yield">
-          <DiscoverYieldDTF />
-        </TabsContent>
+          <TabsContent className="mt-0" value="index">
+            <DiscoverIndexDTF />
+          </TabsContent>
 
-        <TabsContent className="mt-0" value="stablecoins">
-          <DiscoverYieldDTF stablecoins />
-        </TabsContent>
-      </Tabs>
-    </div>
+          <TabsContent className="mt-0" value="yield">
+            <DiscoverYieldDTF />
+          </TabsContent>
+
+          <TabsContent className="mt-0" value="stablecoins">
+            <DiscoverYieldDTF stablecoins />
+          </TabsContent>
+        </Tabs>
+      </div>
+    </>
   )
 }
 

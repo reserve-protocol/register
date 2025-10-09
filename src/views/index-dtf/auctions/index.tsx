@@ -20,7 +20,7 @@ const IndexDTFAuctions = () => {
 
   return (
     <div className="container">
-      <div className="flex flex-col items-center sm:justify-start md:justify-center gap-2 bg-secondary  min-h-[calc(100vh-80px)] rounded-4xl lg:mr-2 py-4">
+      <div className="flex flex-col items-center justify-start sm:justify-center gap-2 lg:bg-secondary sm:min-h-[calc(100vh-136px)] lg:min-h-[calc(100vh-80px)] rounded-4xl lg:mr-2 ">
         <Outlet />
         <Updater />
       </div>

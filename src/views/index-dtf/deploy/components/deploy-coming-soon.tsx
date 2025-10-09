@@ -9,7 +9,7 @@ const DeployComingSoon = () => {
   const isDarkMode = colorMode === 'dark'
   return (
     <div className="container flex gap-1 p-1 mt-1 lg:mt-6 bg-secondary rounded-4xl">
-      <div className="flex flex-col flex-grow relative min-w-full lg:min-w-[420px] bg-card rounded-3xl p-3 lg:p-6 h-[calc(100vh-132px)]">
+      <div className="flex flex-col flex-grow relative min-w-full lg:min-w-[420px] bg-card rounded-3xl p-3 lg:p-6 sm:h-[calc(100vh-132px)]">
         <div className="flex items-center gap-4 mb-6">
           <div className="border rounded-full border-foreground p-2 mr-auto">
             <Globe size={14} />
@@ -22,10 +22,10 @@ const DeployComingSoon = () => {
             Looking to create a Yield DTF?
           </a>
         </div>
-        <h4 className="text-primary mt-auto font-semibold mb-2">
+        <h4 className="text-primary mt-auto font-semibold sm:mb-2">
           Coming soon!
         </h4>
-        <h1 className="text-4xl text-primary font-semibold ">
+        <h1 className="text-3xl sm:text-4xl text-primary font-semibold ">
           Create an Index DTF
         </h1>
         <Separator className="my-6" />
@@ -59,11 +59,11 @@ const DeployComingSoon = () => {
           Leave your contact details below and ABC Labs will reach out to you
           when permissionless creation is ready!
         </p>
-        <div>
+        <div className="overflow-hidden">
           <SocialMediaInput />
         </div>
       </div>
-      <div className="rounded-3xl flex-grow h-[calc(100vh-132px)] hidden max-w-[50%]  lg:block">
+      <div className="rounded-3xl flex-grow h-[calc(100vh-132px)] hidden max-w-[50%] lg:block">
         <img
           src={isDarkMode ? '/imgs/GM-dark.svg' : '/imgs/GM-light.svg'}
           className="w-full h-full object-cover object-center rounded-3xl"

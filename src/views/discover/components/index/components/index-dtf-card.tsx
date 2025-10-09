@@ -3,13 +3,18 @@ import CoverPlaceholder from '@/components/icons/cover-placeholder'
 import TokenLogo from '@/components/token-logo'
 import StackTokenLogo from '@/components/token-logo/StackTokenLogo'
 import { Button } from '@/components/ui/button'
+import { Skeleton } from '@/components/ui/skeleton'
 import { IndexDTFItem } from '@/hooks/useIndexDTFList'
 import { formatCurrency, getFolioRoute } from '@/utils'
+import { cn } from '@/lib/utils'
 import { ArrowRight } from 'lucide-react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 
 const IndexDTFCard = ({ dtf }: { dtf: IndexDTFItem }) => {
   const LIMIT = 10
+  const [imageLoaded, setImageLoaded] = useState(false)
+  const [imageError, setImageError] = useState(false)
 
   const head = dtf.basket.slice(0, LIMIT)
 
@@ -18,17 +23,36 @@ const IndexDTFCard = ({ dtf }: { dtf: IndexDTFItem }) => {
       className="bg-background flex rounded-3xl gap-3 p-3"
       to={getFolioRoute(dtf.address, dtf.chainId)}
     >
-      {dtf?.brand?.cover ? (
-        <img
-          width={100}
-          height={100}
-          className="object-cover h-[100px] w-[100px] rounded-xl"
-          alt="DTF meme"
-          src={dtf.brand.cover}
-        />
-      ) : (
-        <CoverPlaceholder className="text-legend" width={100} height={100} />
-      )}
+      <div className="relative h-[100px] w-[100px] rounded-xl overflow-hidden flex-shrink-0">
+        {/* Show skeleton while loading */}
+        {dtf?.brand?.cover && !imageError && (
+          <>
+            {!imageLoaded && (
+              <Skeleton className="absolute inset-0 h-full w-full" />
+            )}
+            <img
+              width={100}
+              height={100}
+              className={cn(
+                "object-cover h-[100px] w-[100px] rounded-xl transition-opacity duration-500",
+                imageLoaded ? "opacity-100 animate-fade-in" : "opacity-0"
+              )}
+              alt="DTF cover"
+              src={dtf.brand.cover}
+              loading="lazy"
+              onLoad={() => setImageLoaded(true)}
+              onError={() => {
+                setImageError(true)
+                setImageLoaded(false)
+              }}
+            />
+          </>
+        )}
+        {/* Show placeholder if no image or error */}
+        {(!dtf?.brand?.cover || imageError) && (
+          <CoverPlaceholder className="text-legend" width={100} height={100} />
+        )}
+      </div>
       <div className="border-l pl-3 flex flex-grow flex-col gap-2">
         <div className="flex items-center">
           <div className="relative">

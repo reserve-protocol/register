@@ -237,11 +237,11 @@ This enables gradual rebalancing to minimize market impact. Typically the 90% (r
 ### Price Volatility Settings
 
 ```typescript
-const PRICE_VOLATILITY = {
-  LOW: 0.025, // 2.5% - For stablecoins and pegged assets
-  MEDIUM: 0.075, // 7.5% - For major cryptocurrencies
-  HIGH: 0.25, // 25% - For volatile/small-cap tokens
-  DEGEN: 0.6, // 60% - For degen tokens
+const AUCTION_PRICE_VOLATILITY = {
+  LOW: 0.02, // 2% - For stablecoins and pegged assets
+  MEDIUM: 0.05, // 5% - For major cryptocurrencies
+  HIGH: 0.1, // 10% - For volatile/small-cap tokens
+  DEGEN: 0.5, // 50% - For degen tokens
 }
 ```
 

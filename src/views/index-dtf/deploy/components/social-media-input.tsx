@@ -93,7 +93,7 @@ const SocialMediaInput = () => {
   }
 
   return (
-    <div className="relative flex-grow min-w-[360px]">
+    <div className="relative flex-grow sm:min-w-[360px]">
       <div className="absolute left-2 top-1/2 -translate-y-1/2 z-10 border-r pr-1">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

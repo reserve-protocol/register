@@ -6,6 +6,7 @@ html,
 body {
   height: 100%;
   position: relative;
+  overflow: hidden;
 }
 
 @media (prefers-color-scheme: dark) {

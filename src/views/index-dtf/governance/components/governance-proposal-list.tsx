@@ -16,28 +16,14 @@ import { Link } from 'react-router-dom'
 import { useTrackIndexDTFClick } from '../../hooks/useTrackIndexDTFPage'
 import { governanceProposalsAtom } from '../atoms'
 
-// The refresh button is a decent? idea but easily abused
 const Header = () => {
   const { trackClick } = useTrackIndexDTFClick('overview', 'governance')
-  // const [refetchTime, setRefetchToken] = useAtom(refetchTokenAtom)
-
-  // const handleRefresh = () => {
-  //   const currentTime = getCurrentTime()
-
-  //   // Prevents button spamming
-  //   if (refetchTime + 1 < currentTime) {
-  //     setRefetchToken(currentTime)
-  //   }
-  // }
 
   return (
     <div className="py-4 px-5 flex items-center gap-2">
       <h1 className="font-semibold text-xl text-primary dark:text-muted-foreground mr-auto">
         Recent proposals
       </h1>
-      {/* <Button variant="ghost" className="mr-auto" onClick={handleRefresh}>
-        <RefreshCcw className="w-4 h-4" />
-      </Button> */}
       <Link
         to={ROUTES.GOVERNANCE_PROPOSE}
         onClick={() => trackClick('create_proposal')}
@@ -84,7 +70,7 @@ const VoteStateHeader = ({ data }: { data: VotingState }) => {
 export const ProposalVotingState = ({ data }: { data: VotingState }) => {
   if (data.state === PROPOSAL_STATES.PENDING && data.deadline) {
     return (
-      <div className="flex items-center mt-2 text-sm">
+      <div className="flex items-center mt-2 text-xs sm:text-sm">
         <span className="text-legend block mr-1">Voting starts in:</span>
         <span className="font-semibold">
           {parseDuration(data.deadline, {
@@ -99,7 +85,7 @@ export const ProposalVotingState = ({ data }: { data: VotingState }) => {
   return (
     <>
       <VoteStateHeader data={data} />
-      <div className="flex items-center mt-2 gap-2 text-sm">
+      <div className="flex items-center mt-2 gap-2 text-xs sm:text-sm">
         <div>
           <span className="text-legend">Quorum?:</span>{' '}
           <span
@@ -158,55 +144,79 @@ const ProposalListItem = ({ proposal }: { proposal: PartialProposal }) => {
     }
   }, [proposalState.state])
 
+  const stateText = formatConstant(proposalState.state)
+
   return (
     <Link
       to={`proposal/${proposal.id}`}
       className="flex items-center gap-2 p-4 [&:not(:last-child)]:border-b cursor-pointer transition-all hover:bg-border/50"
     >
       <div className="mr-auto">
-        <h2 className="font-semibold">
+        <h2 className="font-semibold text-sm sm:text-base">
           {getProposalTitle(proposal.description)}
         </h2>
         <ProposalVotingState data={proposalState} />
       </div>
       <div
         className={cn(
-          'rounded-full text-sm font-semibold py-2 border px-3',
+          'rounded-full text-xs sm:text-sm font-semibold py-2 border px-3',
           `text-${BADGE_VARIANT[proposalState.state]}`
         )}
       >
-        {formatConstant(proposalState.state)}
+        {stateText.includes('reached') ? 'Quorum' : stateText}
       </div>
     </Link>
   )
 }
 
 const ProposalList = () => {
-  const data = useAtomValue(governanceProposalsAtom)
+  const [showAll, setShowAll] = useState(false)
+  const allProposals = useAtomValue(governanceProposalsAtom)
 
-  if (!data) return <Skeleton className="h-[520px] m-1 rounded-3xl" />
+  if (!allProposals) return <Skeleton className="h-[520px] m-1 rounded-3xl" />
+
+  const sortedProposals = allProposals.sort(
+    (a, b) => b.creationTime - a.creationTime
+  )
+
+  const displayedProposals = showAll
+    ? sortedProposals
+    : sortedProposals.slice(0, 10)
+
+  const hasMoreProposals = sortedProposals.length > 10
 
   return (
-    <ScrollArea className="md:max-h-[520px] bg-card overflow-y-auto rounded-3xl m-1 mt-0">
-      {data.length === 0 && (
-        <div className="flex items-center justify-center h-96">
-          <p className="text-muted-foreground">No proposals found</p>
+    <div className="bg-card rounded-3xl m-1 mt-0">
+      <ScrollArea className="overflow-y-auto">
+        {sortedProposals.length === 0 && (
+          <div className="flex items-center justify-center h-96">
+            <p className="text-muted-foreground">No proposals found</p>
+          </div>
+        )}
+        {displayedProposals.map((proposal) => (
+          <ProposalListItem key={proposal.id} proposal={proposal} />
+        ))}
+      </ScrollArea>
+      {hasMoreProposals && (
+        <div className="flex justify-center p-4 border-t">
+          <Button
+            variant="outline-primary"
+            onClick={() => setShowAll(!showAll)}
+            className="gap-2"
+          >
+            {showAll ? 'Show less' : `Show all `}
+          </Button>
         </div>
       )}
-      {data.map((proposal) => (
-        <ProposalListItem key={proposal.id} proposal={proposal} />
-      ))}
-    </ScrollArea>
-  )
-}
-
-const GovernanceProposalList = () => {
-  return (
-    <div className="rounded-4xl bg-secondary">
-      <Header />
-      <ProposalList />
     </div>
   )
 }
+
+const GovernanceProposalList = () => (
+  <div className="rounded-4xl bg-secondary h-fit">
+    <Header />
+    <ProposalList />
+  </div>
+)
 
 export default GovernanceProposalList

@@ -1,15 +1,18 @@
 import dtfIndexAbi from '@/abis/dtf-index-abi'
 import dtfIndexAbiV2 from '@/abis/dtf-index-abi-v2'
+import dtfIndexAbiV4 from '@/abis/dtf-index-abi-v4'
 import timelockAbi from '@/abis/Timelock'
 import {
   indexDTFAtom,
   indexDTFBasketAtom,
   indexDTFBasketSharesAtom,
+  indexDTFRebalanceControlAtom,
   indexDTFVersionAtom,
 } from '@/state/dtf/atoms'
 import { Token } from '@/types'
-import { BIGINT_MAX, FIXED_PLATFORM_FEE } from '@/utils/constants'
+import { BIGINT_MAX, getPlatformFee } from '@/utils/constants'
 import { atom } from 'jotai'
+import { chainIdAtom } from '@/state/atoms'
 import { Address, encodeFunctionData, Hex, parseEther } from 'viem'
 import {
   GovernanceChanges,
@@ -49,6 +52,8 @@ export const dtfRevenueChangesAtom = atom<{
 
 export const auctionLengthChangeAtom = atom<number | undefined>(undefined)
 
+export const weightControlChangeAtom = atom<boolean | undefined>(undefined)
+
 export const governanceChangesAtom = atom<GovernanceChanges>({})
 
 // Has changes atoms for easy checking
@@ -82,6 +87,11 @@ export const hasDtfRevenueChangesAtom = atom((get) => {
 
 export const hasAuctionLengthChangeAtom = atom((get) => {
   const change = get(auctionLengthChangeAtom)
+  return change !== undefined
+})
+
+export const hasWeightControlChangeAtom = atom((get) => {
+  const change = get(weightControlChangeAtom)
   return change !== undefined
 })
 
@@ -132,6 +142,7 @@ export const isProposalValidAtom = atom((get) => {
   const hasRevenueDistributionChanges = get(hasRevenueDistributionChangesAtom)
   const hasDtfRevenueChanges = get(hasDtfRevenueChangesAtom)
   const hasAuctionLengthChange = get(hasAuctionLengthChangeAtom)
+  const hasWeightControlChange = get(hasWeightControlChangeAtom)
   const hasGovernanceChanges = get(hasGovernanceChangesAtom)
   const isFormValid = get(isFormValidAtom)
 
@@ -142,6 +153,7 @@ export const isProposalValidAtom = atom((get) => {
     hasRevenueDistributionChanges ||
     hasDtfRevenueChanges ||
     hasAuctionLengthChange ||
+    hasWeightControlChange ||
     hasGovernanceChanges
 
   console.log('has changes', hasChanges)
@@ -180,6 +192,8 @@ export const dtfSettingsProposalDataAtom = atom<ProposalData | undefined>((get) 
   const revenueDistributionChanges = get(revenueDistributionChangesAtom)
   const dtfRevenueChanges = get(dtfRevenueChangesAtom)
   const auctionLengthChange = get(auctionLengthChangeAtom)
+  const weightControlChange = get(weightControlChangeAtom)
+  const rebalanceControl = get(indexDTFRebalanceControlAtom)
   const governanceChanges = get(governanceChangesAtom)
   const feeRecipients = get(feeRecipientsAtom)
 
@@ -426,6 +440,22 @@ export const dtfSettingsProposalDataAtom = atom<ProposalData | undefined>((get) 
     targets.push(indexDTF.id as Address)
   }
 
+  // 5b. Set rebalance control (weight control)
+  if (weightControlChange !== undefined && rebalanceControl) {
+    // Keep the current priceControl value, only change weightControl
+    calldatas.push(
+      encodeFunctionData({
+        abi: dtfIndexAbiV4,
+        functionName: 'setRebalanceControl',
+        args: [{
+          weightControl: weightControlChange,
+          priceControl: rebalanceControl.priceControl
+        }],
+      })
+    )
+    targets.push(indexDTF.id as Address)
+  }
+
   // 6. Set fee recipients
   if (
     revenueDistributionChanges.governanceShare !== undefined ||
@@ -438,15 +468,18 @@ export const dtfSettingsProposalDataAtom = atom<ProposalData | undefined>((get) 
     const newFeeRecipients: { recipient: Address; portion: bigint }[] = []
 
     // Calculate using the same logic as calculateRevenueDistribution
-    const totalSharesDenominator = (100 - FIXED_PLATFORM_FEE) / 100
-
+    const chainId = get(chainIdAtom)
+    const platformFee = getPlatformFee(chainId)
+    
+    // Convert from actual percentage (including platform fee) to contract percentage (excluding platform fee)
+    // User input: actual % of total revenue -> Contract needs: % of non-platform portion
+    // Example BSC: User inputs 67% -> Contract needs 100% (67% is 100% of the 67% non-platform portion)
     const calculateShare = (sharePercentage: number) => {
-      const share = sharePercentage / 100
-      if (totalSharesDenominator > 0) {
-        const shareNumerator = share / totalSharesDenominator
-        return parseEther(shareNumerator.toString())
-      }
-      return parseEther(share.toString())
+      // Convert actual percentage to fraction of non-platform portion
+      const actualFraction = sharePercentage / 100
+      const nonPlatformFraction = (100 - platformFee) / 100
+      const contractFraction = actualFraction / nonPlatformFraction
+      return parseEther(contractFraction.toString())
     }
 
     // Get current values
@@ -641,10 +674,12 @@ export const feeRecipientsAtom = atom((get) => {
   const externalRecipients: { address: string; share: number }[] = []
   let deployerShare = 0
   let governanceShare = 0
-  const PERCENT_ADJUST = 100 / FIXED_PLATFORM_FEE
+  const chainId = get(chainIdAtom)
+  const platformFee = getPlatformFee(chainId)
+  const PERCENT_ADJUST = 100 / (100 - platformFee)
 
   for (const recipient of indexDTF.feeRecipients) {
-    // Deployer share
+    // Deployer share - adjust from contract percentage to actual percentage
     if (recipient.address.toLowerCase() === indexDTF.deployer.toLowerCase()) {
       deployerShare = Number(recipient.percentage) / PERCENT_ADJUST
     } else if (

@@ -19,10 +19,11 @@ const isStaging =
 export const RESERVE_API = isStaging
   ? import.meta.env.VITE_STAGING_API
   : 'https://api.reserve.org/'
+
 export const VERSION = '3.0.0'
 export const DISCORD_INVITE = 'https://discord.gg/reserveprotocol'
 export const PROTOCOL_DOCS = 'https://reserve.org/protocol/'
-export const INDEX_PROTOCOL_DOCS = 'https://reserve.org/protocol/index_dtfs/'
+export const INDEX_PROTOCOL_DOCS = `${PROTOCOL_DOCS}index_dtfs/`
 export const REGISTER_FEEDBACK = 'https://reserve.canny.io/register-app'
 export const RESERVE_BLOG = 'https://blog.reserve.org/'
 export const RESERVE_FORUM = 'https://forum.reserve.org/'
@@ -50,6 +51,10 @@ export const LP_PROJECTS: { [x: string]: { name: string; site: string } } = {
     site: 'https://yearn.fi/vaults',
   },
   stakedao: {
+    name: 'StakeDAO',
+    site: 'https://www.stakedao.org/yield',
+  },
+  'stake-dao': {
     name: 'StakeDAO',
     site: 'https://www.stakedao.org/yield',
   },
@@ -124,6 +129,7 @@ export const NETWORKS: Record<string, number> = {
   ethereum: ChainId.Mainnet,
   base: ChainId.Base,
   arbitrum: ChainId.Arbitrum,
+  bsc: ChainId.BSC,
 }
 
 export const CHAIN_TO_NETWORK = Object.entries(NETWORKS).reduce(
@@ -247,6 +253,18 @@ export const supportedChainList = [
   ChainId.Arbitrum,
 ]
 
+// Platform fees by chain
+export const PLATFORM_FEES: Record<number, number> = {
+  [ChainId.Mainnet]: 50,
+  [ChainId.Base]: 50,
+  [ChainId.BSC]: 33,
+}
+
+export const getPlatformFee = (chainId: number): number => {
+  return PLATFORM_FEES[chainId] || 50
+}
+
+// Legacy constant for backwards compatibility
 export const FIXED_PLATFORM_FEE = 50
 // Load environment variables.
 export const TENDERLY_ACCESS_TOKEN: string = import.meta.env
@@ -270,6 +288,7 @@ export const CHAIN_TAGS = {
   [ChainId.Mainnet]: 'Ethereum',
   [ChainId.Base]: 'Base',
   [ChainId.Arbitrum]: 'Arbitrum One',
+  [ChainId.BSC]: 'BNB Smart Chain',
 }
 
 export const LISTED_RTOKEN_ADDRESSES: { [x: number]: string[] } = {
@@ -393,7 +412,8 @@ export const collateralDisplay: Record<string, string> = {
   steakusdc: 'Morpho Steakhouse USDC',
   saarbusdcn: 'AAVE USDC V3',
   saarbusdt: 'AAVE USDT V3',
-  'stkcvxeth+eth-f': 'Convex ETH+/ETH',
+  'stkcvxeth+eth': 'Convex ETH+/ETH',
+  'stkcvxeth+eth-f': 'Convex ETH+/ETH-f',
   apxeth: 'Autocompounding Pirex ETH',
   susde: 'Ethena Staked USDe',
   susds: 'Sky Savings USDS',
@@ -520,3 +540,21 @@ export const WORMHOLE_ASSETS = new Set([
   '0xcb9eec5748aaafa41fbcbe0b58465efed11ce176',
   '0x3992b27da26848c2b19cea6fd25ad5568b68ab98',
 ])
+
+export const ETH_FILTER_ADDRESSES = [
+  '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+  '0xE72B141DF173b999AE7c1aDcbF60Cc9833Ce56a8',
+  '0x18C14C2D707b2212e17d1579789Fc06010cfca23',
+  '0xCb327b99fF831bF8223cCEd12B1338FF3aA322Ff',
+  '0x005F893EcD7bF9667195642f7649DA8163e23658',
+  '0x0000000000000000000000000000000000000000',
+  '0x82af49447d8a07e3bd95bd0d56f35241523fbab1',
+]
+
+export const RSR_FILTER_ADDRESSES = [
+  RSR_ADDRESS[ChainId.Mainnet],
+  RSR_ADDRESS[ChainId.Base],
+]
+
+export const UNITS_DISCLAIMER =
+  "The units inputted (from csv or manually) are scaled so the portfolio value matches the DTF's NAV. Example: If the DTF trades at 100× NAV and you input 1,000 units, all units are scaled down by 100× to keep the NAV unchanged"

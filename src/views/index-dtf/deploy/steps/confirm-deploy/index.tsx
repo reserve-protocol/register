@@ -9,7 +9,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
 import { SubmitHandler, useFormContext } from 'react-hook-form'
-import { daoTokenAddressAtom, deployedDTFAtom } from '../../atoms'
+import {
+  basketDerivedSharesAtom,
+  basketInputTypeAtom,
+  daoTokenAddressAtom,
+  deployedDTFAtom,
+} from '../../atoms'
 import { DeployInputs } from '../../form-fields'
 import { indexDeployFormDataAtom } from './atoms'
 import ManualIndexDeploy from './manual'
@@ -19,6 +24,7 @@ import { inputAmountAtom } from './simple/atoms'
 import SuccessView from './success'
 import Ticker from '../../utils/ticker'
 import { TransactionButtonContainer } from '@/components/old/button/TransactionButton'
+import { Address } from 'viem'
 
 const Header = () => {
   const form = useAtomValue(indexDeployFormDataAtom)
@@ -44,13 +50,27 @@ const ConfirmIndexDeploy = ({ isActive }: { isActive: boolean }) => {
   const resetInitialTokens = useResetAtom(initialTokensAtom)
   const resetInput = useResetAtom(inputAmountAtom)
   const formChainId = watch('chain')
+  // for input type case
+  const derivedShares = useAtomValue(basketDerivedSharesAtom)
+  const inputType = useAtomValue(basketInputTypeAtom)
 
   const processForm: SubmitHandler<DeployInputs> = (data) => {
+    // Apply unit basket transformation regardless of DAO type
+    const processedData = {
+      ...data,
+      tokensDistribution:
+        inputType === 'unit' && derivedShares
+          ? Object.keys(derivedShares).map((address) => ({
+              address: address as Address,
+              percentage: Number(derivedShares[address]),
+            }))
+          : data.tokensDistribution,
+    }
+    
+    setFormData(processedData)
+    
     if (data.governanceVoteLock) {
-      setFormData({ ...data })
       setStTokenAddress(data.governanceVoteLock)
-    } else {
-      setFormData({ ...data })
     }
   }
 

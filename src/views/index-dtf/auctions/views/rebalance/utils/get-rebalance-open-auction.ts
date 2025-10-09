@@ -1,25 +1,27 @@
 import { TokenPriceWithSnapshot } from '@/hooks/use-asset-prices-with-snapshot'
-import { Token } from '@/types'
+import { Token, Volatility } from '@/types'
 import {
   getOpenAuction,
   getTargetBasket,
   Rebalance,
   WeightRange,
 } from '@reserve-protocol/dtf-rebalance-lib'
-import { PRICE_VOLATILITY } from '../atoms'
+import { AUCTION_PRICE_VOLATILITY } from '../atoms'
 
 function getRebalanceOpenAuction(
   tokens: Token[],
   rebalance: Rebalance,
   supply: bigint,
-  currentFolio: Record<string, bigint>,
-  initialFolio: Record<string, bigint>,
+  initialSupply: bigint,
+  currentAssets: Record<string, bigint>,
+  initialAssets: Record<string, bigint>,
   initialPrices: Record<string, number>,
   initialWeights: Record<string, WeightRange>,
   prices: TokenPriceWithSnapshot,
   isTrackingDTF: boolean,
+  tokenPriceVolatility: Record<string, Volatility>,
   rebalancePercent = 90,
-  priceVolatility = PRICE_VOLATILITY.MEDIUM
+  isHybridDTF = false
 ) {
   const tokenMap = tokens.reduce(
     (acc, token) => {
@@ -34,8 +36,8 @@ function getRebalanceOpenAuction(
   const currentPrices: number[] = []
   const snapshotPrices: number[] = []
   const priceError: number[] = []
-  const initialFolioShares: bigint[] = []
-  const currentFolioShares: bigint[] = []
+  const initialFolioAssets: bigint[] = []
+  const currentFolioAssets: bigint[] = []
   const weights: WeightRange[] = []
 
   rebalance.tokens.forEach((token) => {
@@ -47,24 +49,29 @@ function getRebalanceOpenAuction(
 
     // Calculate snapshot price from initialPrices
     snapshotPrices.push(initialPrices[lowercasedAddress])
-    priceError.push(priceVolatility)
-    initialFolioShares.push(initialFolio[lowercasedAddress] || 0n)
-    currentFolioShares.push(currentFolio[lowercasedAddress] || 0n)
+    priceError.push(
+      AUCTION_PRICE_VOLATILITY[
+        tokenPriceVolatility[lowercasedAddress] || 'medium'
+      ]
+    )
+    initialFolioAssets.push(initialAssets[lowercasedAddress] || 0n)
+    currentFolioAssets.push(currentAssets[lowercasedAddress] || 0n)
     weights.push(initialWeights[lowercasedAddress])
   })
 
   const targetBasket = getTargetBasket(
     weights,
-    isTrackingDTF ? currentPrices : snapshotPrices,
+    isTrackingDTF || isHybridDTF ? currentPrices : snapshotPrices,
     decimals
   )
 
   return getOpenAuction(
     rebalance,
     supply,
-    initialFolioShares,
+    initialSupply,
+    initialFolioAssets,
     targetBasket,
-    currentFolioShares,
+    currentFolioAssets,
     decimals,
     currentPrices,
     priceError,

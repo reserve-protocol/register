@@ -6,9 +6,10 @@ import { ChainId } from 'utils/chains'
 import { supportedChainList } from 'utils/constants'
 
 const chainIds: Record<string, number> = {
-  Ethereum: 1,
-  Base: 8453,
-  Arbitrum: 42161,
+  Ethereum: ChainId.Mainnet,
+  Base: ChainId.Base,
+  Arbitrum: ChainId.Arbitrum,
+  BSC: ChainId.BSC,
 }
 
 const poolsMap: Record<number, Record<string, string>> = {
@@ -54,6 +55,7 @@ const poolsMap: Record<number, Record<string, string>> = {
     'd1dacce1-7815-420c-bb6d-d3c4320e1b2a': 'steakpyusd',
     '043a8330-bc29-4164-aa1c-28de7bf87755': 'bbusdt',
     'a44febf3-34f6-4cd5-8ab1-f246ebe49f9e': 'steakusdc',
+    '152b7ce2-7193-475d-9b15-3f17fee66047': 'stkcvxeth+eth',
     '74346f6f-c7ee-4506-a204-baf48e13decb': 'stkcvxeth+eth-f',
     '66985a81-9c51-46ca-9977-42b4fe7bc6df': 'susde',
     '90bfb3c2-5d35-4959-a275-ba5085b08aa3': 'ethx',
@@ -67,14 +69,14 @@ const poolsMap: Record<number, Record<string, string>> = {
     '9d09b0be-f6c2-463a-ad2c-4552b3e12bd9': 'wsgusdbc',
     '7e0661bf-8cf3-45e6-9424-31916d4c7b84': 'sabasusdc',
     '833ec61b-f9e6-46ac-9eff-2785808b2389': 'sabasusdbc',
-    '212375c8-694c-4fa5-8b36-05f50c8e61b2': 'wsamm-eusd/usdc',
     'b90eba2e-ed29-414e-b16d-82f9c3eae707': 'meusd',
-    '1b52ab3b-98d5-4951-92d8-97dfca06e62f': 'wvamm-weth/aero',
-    '029c10b3-8399-4a89-818a-935a4cb3e1da': 'wvamm-mog/weth',
-    'a05a3eb9-2901-46ed-937e-5f48ea408552': 'wsamm-usdz/usdc',
-    '3c81671f-5607-4f57-b725-a08ec4cea0fa': 'wvamm-weth/cbbtc',
-    '1f0c0a53-577c-4dd0-97af-f1791f532f51': 'wvamm-weth/well',
-    '0d23d643-1000-48cf-9c57-05a5ddd96dce': 'wvamm-weth/degen',
+    'bde35fef-649f-4514-a564-e7e7da05eb52': 'wsamm-eusd/usdc',
+    '69c0fc74-dee5-4c60-9aed-a593661d54ea': 'wvamm-weth/aero',
+    '7b542141-5eed-4d70-bee6-0f9733beb362': 'wvamm-mog/weth',
+    'be8a4206-6543-4690-a5c2-b3e032245aa2': 'wsamm-usdz/usdc',
+    '593056a0-1e39-451d-acc8-081526625ab3': 'wvamm-weth/cbbtc',
+    '8af246ee-cf26-4c8e-88f8-f2021a69e44d': 'wvamm-weth/well',
+    '7e15dae2-ba5c-4658-b1a2-efb908a15200': 'wvamm-weth/degen',
     'f388573e-5c0f-4dac-9f70-116a4aabaf17': 'wsuperoethb',
   },
   [ChainId.Arbitrum]: {

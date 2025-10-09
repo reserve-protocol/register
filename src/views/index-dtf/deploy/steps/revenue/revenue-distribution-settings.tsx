@@ -1,18 +1,17 @@
 import { Button } from '@/components/ui/button'
 import { useAtomValue } from 'jotai'
 import {
-  Asterisk,
   Landmark,
   LandPlot,
-  TableColumnsSplit,
   TrainTrack,
 } from 'lucide-react'
-import { useCallback } from 'react'
+import { useCallback, useEffect } from 'react'
 import { useFormContext, useWatch } from 'react-hook-form'
 import { selectedGovernanceOptionAtom } from '../../atoms'
 import BasicInput from '../../components/basic-input'
 import { Decimal } from '../../utils/decimals'
 import AdditionalRevenueRecipients from './additional-revenue-recipients'
+import { getPlatformFee } from '@/utils/constants'
 
 const SETTINGS = [
   {
@@ -55,19 +54,21 @@ const RemainingAllocation = () => {
   useFormValues()
 
   const [
-    fixedPlatformFee,
+    chain,
     governanceShare,
     deployerShare,
     additionalRevenueRecipients,
   ] = watch([
-    'fixedPlatformFee',
+    'chain',
     'governanceShare',
     'deployerShare',
     'additionalRevenueRecipients',
   ])
 
+  const platformFee = getPlatformFee(chain)
+
   const remaining = new Decimal(100).minus(
-    new Decimal(fixedPlatformFee || 0)
+    new Decimal(platformFee)
       .plus(new Decimal(governanceShare || 0))
       .plus(new Decimal(deployerShare || 0))
       .plus(
@@ -98,7 +99,8 @@ const EvenDistributionButton = () => {
   const selectedGovOption = useAtomValue(selectedGovernanceOptionAtom)
 
   const onEvenDistribution = useCallback(() => {
-    const fixedPlatformFee = getValues('fixedPlatformFee') || 0
+    const chain = getValues('chain')
+    const platformFee = getPlatformFee(chain)
     const additionalRecipients = getValues('additionalRevenueRecipients') || []
     const isGovSharePresent = selectedGovOption !== 'governanceWalletAddress'
     const isAdditionalRecipientsPresent = additionalRecipients.length > 0
@@ -109,7 +111,7 @@ const EvenDistributionButton = () => {
       ...additionalRecipients.map(Boolean),
     ].filter(Boolean).length
 
-    const remainingPercentage = new Decimal(100).minus(fixedPlatformFee)
+    const remainingPercentage = new Decimal(100).minus(platformFee)
     const baseShare =
       Math.floor((remainingPercentage.value / participantsCount) * 100) / 100
     const totalPercentage = baseShare * (participantsCount - 1)
@@ -147,8 +149,15 @@ const EvenDistributionButton = () => {
 }
 
 const RevenueDistributionSettings = () => {
-  const { getValues } = useFormContext()
+  const { getValues, watch, setValue } = useFormContext()
   const selectedGovOption = useAtomValue(selectedGovernanceOptionAtom)
+  const chain = watch('chain')
+  const platformFee = getPlatformFee(chain)
+
+  // Update fixedPlatformFee when chain changes
+  useEffect(() => {
+    setValue('fixedPlatformFee', platformFee)
+  }, [chain, platformFee, setValue])
 
   const settings = SETTINGS.filter(
     ({ field }) =>
@@ -179,7 +188,7 @@ const RevenueDistributionSettings = () => {
             </div>
             {disabled ? (
               <div className="flex justify-end items-center gap-1 font-semibold px-[18px] border-lg bg-muted-foreground/5 rounded-lg w-19 h-10 flex-nowrap">
-                {getValues(field)} %
+                {platformFee} %
               </div>
             ) : (
               <BasicInput

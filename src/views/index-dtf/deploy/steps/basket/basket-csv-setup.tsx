@@ -63,9 +63,23 @@ const BasketCsvSetup = () => {
       const reader = new FileReader()
       reader.onload = (event) => {
         try {
+          const currentBasketPrices = basket.reduce(
+            (acc, token) => {
+              if (token.price) {
+                acc[token.address] = token.price
+              }
+              return acc
+            },
+            {} as Record<string, number>
+          )
+
           const tokenListMap = tokenList.reduce(
             (acc, token) => {
+              if (currentBasketPrices[token.address.toLowerCase()]) {
+                token.price = currentBasketPrices[token.address.toLowerCase()]
+              }
               acc[token.address.toLowerCase()] = token
+
               return acc
             },
             {} as Record<string, Token>
@@ -122,7 +136,7 @@ const BasketCsvSetup = () => {
 
       reader.readAsText(file)
     },
-    [tokenList, setValue, setBasket]
+    [tokenList, setValue, basket, setBasket]
   )
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({

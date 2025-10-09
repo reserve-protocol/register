@@ -1,7 +1,7 @@
 import { Trans } from '@lingui/macro'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import Button from '@/components/old/button'
-import WalletIcon from 'components/icons/WalletIcon'
+import WalletIcon from 'components/icons/WalletOutlineIcon'
 import { useSetAtom } from 'jotai'
 import { ChevronDown, X } from 'lucide-react'
 import { Box, Flex, Text } from 'theme-ui'
