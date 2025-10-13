@@ -1,6 +1,7 @@
 import dayjs from 'dayjs'
 import type { PerformanceData } from '../types/factsheet-data'
 import { CalendarRange } from 'lucide-react'
+import { currentHour } from '../utils/constants'
 
 interface PerformanceTableProps {
   performance: PerformanceData
@@ -16,9 +17,8 @@ const PerformanceTable = ({
   performance,
   inception,
 }: PerformanceTableProps) => {
-  const now = Date.now() / 1000
   const inceptionDate = dayjs.unix(inception).format('MMM D, YYYY')
-  const currentDate = dayjs.unix(now).format('MMM D, YYYY')
+  const currentDate = dayjs.unix(currentHour).format('MMM D, YYYY')
 
   const rows = [
     { label: '1 Month', value: performance['1m'] },

@@ -8,6 +8,7 @@ import NetPerformanceSummary from './components/net-performance-summary'
 import PerformanceTable from './components/performance-table'
 import { useFactsheetData } from './hooks/use-factsheet-data'
 import { Separator } from '@/components/ui/separator'
+import { currentHour } from './utils/constants'
 
 const Header = () => {
   const navigate = useNavigate()
@@ -63,7 +64,7 @@ const IndexDTFFactsheet = () => {
                       all: null,
                     }
                   }
-                  inception={data?.inception || Date.now() / 1000}
+                  inception={data?.inception || currentHour}
                 />
               </div>
             </div>
@@ -87,7 +88,7 @@ const IndexDTFFactsheet = () => {
                   all: null,
                 }
               }
-              inception={data?.inception || Date.now() / 1000}
+              inception={data?.inception || currentHour}
             />
           </div>
         </div>

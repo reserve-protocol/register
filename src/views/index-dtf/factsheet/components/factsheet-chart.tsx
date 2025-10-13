@@ -2,7 +2,7 @@ import { Card } from '@/components/ui/card'
 import { ChartConfig, ChartContainer } from '@/components/ui/chart'
 import { Skeleton } from '@/components/ui/skeleton'
 import { indexDTFAtom, performanceTimeRangeAtom } from '@/state/dtf/atoms'
-import { formatCurrency } from '@/utils'
+import { formatCurrency, formatToSignificantDigits } from '@/utils'
 import { formatXAxisTick as formatTick } from '@/utils/chart-formatters'
 import dayjs from 'dayjs'
 import { useAtomValue, useSetAtom } from 'jotai'
@@ -42,7 +42,7 @@ function CustomTooltip({ payload, active, chartType }: any) {
       <Card className="p-3 bg-background/95 backdrop-blur">
         <p className="text-xs text-muted-foreground">{subtitle}</p>
         <p className="text-sm font-semibold">
-          {label}: ${formatCurrency(value, 2)}
+          {label}: ${formatToSignificantDigits(value)}
           {chartType === 'monthlyPL' && '%'}
         </p>
       </Card>
@@ -139,7 +139,7 @@ const FactsheetChart = ({ data, isLoading }: FactsheetChartProps) => {
     if (chartType === 'monthlyPL') {
       return `${value.toFixed(1)}%`
     }
-    return '$' + formatCurrency(value, value < 100 ? 2 : 0)
+    return '$' + formatCurrency(value, value < 1 ? 4 : 2)
   }
 
   return (

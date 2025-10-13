@@ -20,15 +20,16 @@ import type {
 } from '../types/factsheet-data'
 import { useMemo } from 'react'
 
-const prefetchRanges = ['24h', '7d', '1m', '3m', '1y'].map(getRangeParams)
+const prefetchRanges = ['24h', '7d', '1m', '3m', '1y']
 
 export const useFactsheetData = () => {
   const dtf = useAtomValue(indexDTFAtom)
   const address = useAtomValue(iTokenAddressAtom)
   const timeRange = useAtomValue(performanceTimeRangeAtom)
+  const minFrom = dtf?.timestamp || 0
 
-  const currentRangeParams = getRangeParams(timeRange)
-  const allRangeParams = getRangeParams('all')
+  const currentRangeParams = getRangeParams(timeRange, minFrom)
+  const allRangeParams = getRangeParams('all', minFrom)
 
   const { data: currentRangeData, isLoading: currentLoading } =
     useIndexDTFPriceHistory({
@@ -36,7 +37,7 @@ export const useFactsheetData = () => {
       from: currentRangeParams.from,
       to: currentRangeParams.to,
       interval: currentRangeParams.interval,
-      prefetchRanges,
+      prefetchRanges: prefetchRanges.map((r) => getRangeParams(r, minFrom)),
     })
 
   const { data: allRangeData, isLoading: allLoading } = useIndexDTFPriceHistory(
