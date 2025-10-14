@@ -5,7 +5,7 @@ import { Dialog, DialogContent, DialogHeader } from '@/components/ui/dialog'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { ChainId } from '@/utils/chains'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
-import { getNativeToken } from '@/utils/token-mappings'
+import { NativeToken, Bridge } from '@/types/token-mappings'
 import { shortenAddress } from '@/utils'
 import {
   ArrowUpRight,
@@ -21,18 +21,23 @@ import { toast } from 'sonner'
 import { CHAIN_TAGS } from '@/utils/constants'
 import { useState } from 'react'
 
-// Helper function to get native chain ID from CAIP-2 identifier
 const getNativeChainId = (caip2: string): number | null => {
   if (caip2.startsWith('eip155:1')) return ChainId.Mainnet
   if (caip2.startsWith('eip155:56')) return ChainId.BSC
-  // Add more mappings as needed
   return null
 }
 
 interface BridgeInfoDialogProps {
   open: boolean
   setOpen: (open: boolean) => void
-  bridgeInfo: ReturnType<typeof getNativeToken> | null
+  bridgeInfo: {
+    native: NativeToken
+    bridge: Bridge
+    mapping: {
+      symbol?: string
+      wrappedVersion?: boolean
+    }
+  } | null
   tokenAddress: string
   tokenSymbol?: string
   tokenName?: string
@@ -59,7 +64,6 @@ const BridgeInfoDialog = ({
     toast.success('Address copied to clipboard')
   }
 
-  // Reset to overview when dialog opens
   const handleOpenChange = (isOpen: boolean) => {
     setOpen(isOpen)
     if (isOpen) {
@@ -127,7 +131,6 @@ const BridgeInfoDialog = ({
                         </>
                       )
                     } else {
-                      // Use native token logo as fallback for L1 native tokens
                       return (
                         <>
                           <TokenLogo size="sm" src={native.logo} />
@@ -223,7 +226,6 @@ const BridgeInfoDialog = ({
                       <FileSpreadsheet size={16} /> Read docs
                     </Button>
                   </Link>
-                  {/* Move tabs to risks tab */}
                   <Button
                     variant="ghost"
                     className="text-legend gap-2"

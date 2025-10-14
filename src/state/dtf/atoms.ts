@@ -5,6 +5,7 @@ import { Address } from 'viem'
 import { walletAtom } from '../atoms'
 import { UNIVERSAL_ASSETS, WORMHOLE_ASSETS } from '@/utils/constants'
 import { checkVersion } from '@/utils'
+import { Bridge, NativeToken } from '@/types/token-mappings'
 
 // TODO: placeholders
 export interface IToken extends Token {
@@ -79,6 +80,23 @@ export type Transaction = {
   type: 'Mint' | 'Redeem' | 'Transfer'
 }
 
+export type ExposureToken = {
+  address: string
+  symbol: string
+  name?: string
+  weight: number
+  bridge?: Bridge
+}
+
+export type ExposureGroup = {
+  native: NativeToken
+  tokens: ExposureToken[]
+  totalWeight: number
+  change?: number
+  hasNewlyAdded?: boolean
+  marketCap?: number
+}
+
 export const iTokenAddressAtom = atom<Address | undefined>(undefined)
 
 export const iTokenBasketAtom = atom<ITokenBasket | undefined>(undefined)
@@ -131,6 +149,21 @@ export const indexDTFPriceAtom = atom((get) => {
 })
 
 export const indexDTFVersionAtom = atom('4.0.0')
+
+export const indexDTFExposureDataAtom = atom<ExposureGroup[] | null>(null)
+
+export const indexDTFExposureMapAtom = atom((get) => {
+  const exposureData = get(indexDTFExposureDataAtom)
+  if (!exposureData) return null
+
+  const map = new Map<string, ExposureGroup>()
+  exposureData.forEach((group) => {
+    if (group.native?.symbol) {
+      map.set(group.native.symbol, group)
+    }
+  })
+  return map
+})
 
 // TODO: Retrieve from server, hardcoded for now
 const WHITELISTED_ADDRESSES = [
