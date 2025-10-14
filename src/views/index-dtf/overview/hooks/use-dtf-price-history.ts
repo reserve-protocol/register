@@ -117,7 +117,8 @@ const useIndexDTFPriceHistory = ({
 
   // Prefetch other ranges in background
   useEffect(() => {
-    if (!address || !supply || !currentPrice) return
+    if (!address || !supply || !currentPrice || prefetchRanges.length === 0)
+      return
 
     prefetchRanges.forEach((range) => {
       queryClient.prefetchQuery({

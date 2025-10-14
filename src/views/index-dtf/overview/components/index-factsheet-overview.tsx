@@ -14,7 +14,7 @@ const IndexFactsheetOverview = () => {
     <Link
       to={data.dtf.prospectus}
       target="_blank"
-      className="flex items-center gap-2 border rounded-full py-1 px-2 text-sm hover:bg-primary/10 hover:text-primary"
+      className="flex items-center gap-2 border rounded-full py-1 px-2 text-sm hover:bg-primary/10 hover:text-primary mt-3"
     >
       <FileText size={14} />
       DTF Factsheet

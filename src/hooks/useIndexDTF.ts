@@ -1,6 +1,6 @@
 import { INDEX_DTF_SUBGRAPH_URL } from '@/state/chain/atoms/chainAtoms'
 import { IndexDTF } from '@/types'
-import {AvailableChain} from '@/utils/chains'
+import { AvailableChain } from '@/utils/chains'
 import { useQuery } from '@tanstack/react-query'
 import request, { gql } from 'graphql-request'
 import { Address, formatEther } from 'viem'
