@@ -1,40 +1,41 @@
+import dtfIndexAbi from '@/abis/dtf-index-abi'
+import dtfIndexAbiV4 from '@/abis/dtf-index-abi-v4'
+import FeedbackButton from '@/components/feedback-button'
 import useIndexDTF from '@/hooks/useIndexDTF'
+import useIndexDTFTransactions from '@/hooks/useIndexDTFTransactions'
 import { useIndexBasket } from '@/hooks/useIndexPrice'
 import { chainIdAtom, walletChainAtom } from '@/state/atoms'
 import {
+  indexDTF7dChangeAtom,
   indexDTFAtom,
   indexDTFBasketAmountsAtom,
   indexDTFBasketAtom,
+  indexDTFBasketPerformanceChangeAtom,
   indexDTFBasketPricesAtom,
   indexDTFBasketSharesAtom,
   IndexDTFBrand,
   indexDTFBrandAtom,
+  indexDTFExposureDataAtom,
+  indexDTFNewlyAddedAssetsAtom,
+  indexDTFPerformanceLoadingAtom,
   indexDTFRebalanceControlAtom,
   indexDTFVersionAtom,
   iTokenAddressAtom,
-  indexDTF7dChangeAtom,
-  indexDTFBasketPerformanceChangeAtom,
   performanceTimeRangeAtom,
-  indexDTFPerformanceLoadingAtom,
-  indexDTFNewlyAddedAssetsAtom,
 } from '@/state/dtf/atoms'
+import { TimeRange } from '@/types'
 import { isAddress } from '@/utils'
 import { AvailableChain, supportedChains } from '@/utils/chains'
 import { NETWORKS, RESERVE_API, ROUTES } from '@/utils/constants'
 import { useQuery } from '@tanstack/react-query'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { useEffect, useState, useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Outlet, useNavigate, useParams } from 'react-router-dom'
-import { useReadContract, useSwitchChain } from 'wagmi'
 import { Address } from 'viem'
+import { useReadContract, useSwitchChain } from 'wagmi'
 import IndexDTFNavigation from './components/navigation'
 import GovernanceUpdater from './governance/updater'
-import FeedbackButton from '@/components/feedback-button'
-import dtfIndexAbi from '@/abis/dtf-index-abi'
-import dtfIndexAbiV4 from '@/abis/dtf-index-abi-v4'
 import useIndexDTFPriceHistory from './overview/hooks/use-dtf-price-history'
-import useIndexDTFTransactions from '@/hooks/useIndexDTFTransactions'
-import { TimeRange } from '@/types'
 
 const useChainWatch = () => {
   const { switchChain } = useSwitchChain()
@@ -48,7 +49,13 @@ const useChainWatch = () => {
   }, [chainId])
 }
 
-const IndexDTFMetadataUpdater = ({ tokenAddress, chainId }: { tokenAddress?: string; chainId: number }) => {
+const IndexDTFMetadataUpdater = ({
+  tokenAddress,
+  chainId,
+}: {
+  tokenAddress?: string
+  chainId: number
+}) => {
   const setIndexDTF = useSetAtom(indexDTFAtom)
   const setIndexDTFBrand = useSetAtom(indexDTFBrandAtom)
   const { data } = useIndexDTF(tokenAddress, chainId as AvailableChain)
@@ -86,7 +93,13 @@ const IndexDTFMetadataUpdater = ({ tokenAddress, chainId }: { tokenAddress?: str
   return null
 }
 
-const IndexDTFBasketUpdater = ({ tokenAddress, chainId }: { tokenAddress?: string; chainId: number }) => {
+const IndexDTFBasketUpdater = ({
+  tokenAddress,
+  chainId,
+}: {
+  tokenAddress?: string
+  chainId: number
+}) => {
   const setBasket = useSetAtom(indexDTFBasketAtom)
   const setBasketPrices = useSetAtom(indexDTFBasketPricesAtom)
   const setBasketAmounts = useSetAtom(indexDTFBasketAmountsAtom)
@@ -339,6 +352,39 @@ const IndexDTFPerformanceUpdater = ({ chainId }: { chainId: number }) => {
   return null
 }
 
+const IndexDTFExposureUpdater = ({ chainId }: { chainId: number }) => {
+  const dtf = useAtomValue(indexDTFAtom)
+  const setExposureData = useSetAtom(indexDTFExposureDataAtom)
+  const period = useAtomValue(performanceTimeRangeAtom)
+
+  const { data: exposureData, isLoading } = useQuery({
+    queryKey: ['dtf-exposure', dtf?.id, chainId, period],
+    queryFn: async () => {
+      if (!dtf?.id) return null
+
+      const response = await fetch(
+        `${RESERVE_API}dtf/exposure?chainId=${chainId}&address=${dtf.id}&period=${period}`
+      )
+
+      if (!response.ok) {
+        throw new Error(`Failed to fetch exposure data: ${response.statusText}`)
+      }
+
+      return response.json()
+    },
+    enabled: !!dtf?.id && !!chainId,
+    refetchInterval: 60000,
+  })
+
+  useEffect(() => {
+    if (exposureData) {
+      setExposureData(exposureData)
+    }
+  }, [exposureData, setExposureData])
+
+  return null
+}
+
 const resetStateAtom = atom(null, (_, set) => {
   set(indexDTFBasketAtom, undefined)
   set(indexDTFBasketPricesAtom, {})
@@ -351,6 +397,7 @@ const resetStateAtom = atom(null, (_, set) => {
   set(indexDTFBasketPerformanceChangeAtom, {})
   set(indexDTFPerformanceLoadingAtom, false)
   set(indexDTFNewlyAddedAssetsAtom, {})
+  set(indexDTFExposureDataAtom, null)
 })
 
 export const indexDTFRefreshFnAtom = atom<(() => void) | null>(null)
@@ -424,6 +471,7 @@ const Updater = () => {
       <IndexDTFMetadataUpdater tokenAddress={currentToken} chainId={chainId} />
       <IndexDTFBasketUpdater tokenAddress={currentToken} chainId={chainId} />
       <IndexDTFPerformanceUpdater chainId={chainId} />
+      <IndexDTFExposureUpdater chainId={chainId} />
       <GovernanceUpdater />
     </div>
   )
