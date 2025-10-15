@@ -10,6 +10,8 @@ import {
   userInputAtom,
 } from '../atom'
 import { useStableQuoteSignatures } from '../hooks/useQuoteSignatures'
+import { TransactionButtonContainer } from '@/components/ui/transaction'
+import { chainIdAtom } from '@/state/atoms'
 
 type SubmitMintProps = {
   loadingQuote?: boolean
@@ -25,6 +27,7 @@ const SubmitMintButton = ({
   isPending: boolean
   loadingQuote?: boolean
 }) => {
+  const chainId = useAtomValue(chainIdAtom)
   const insufficientBalance = useAtomValue(insufficientBalanceAtom)
   const selectedTokenBalance = useAtomValue(selectedTokenBalanceAtom)
   const inputAmount = useAtomValue(userInputAtom)
@@ -64,17 +67,23 @@ const SubmitMintButton = ({
   }, [insufficientBalance, isPending, loadingQuote, infoMessage])
 
   return (
-    <Button
-      size="lg"
-      className={cn(
-        'w-full rounded-xl',
-        isPending && 'opacity-50 cursor-not-allowed'
-      )}
-      onClick={handleSubmit}
-      disabled={disabled}
+    <TransactionButtonContainer
+      chain={chainId}
+      connectButtonClassName="w-full"
+      switchChainButtonClassName="w-full"
     >
-      {buttonText}
-    </Button>
+      <Button
+        size="lg"
+        className={cn(
+          'w-full rounded-xl',
+          isPending && 'opacity-50 cursor-not-allowed'
+        )}
+        onClick={handleSubmit}
+        disabled={disabled}
+      >
+        {buttonText}
+      </Button>
+    </TransactionButtonContainer>
   )
 }
 

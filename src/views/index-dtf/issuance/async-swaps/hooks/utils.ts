@@ -96,6 +96,7 @@ export async function getAssetPrice(
 // Function to handle sendCallsAsync with retry logic for user rejections
 export const sendCallsWithRetry = async (
   sendCallsAsync: any,
+  chainId: number,
   calls: any[],
   account: Address,
   maxRetries: number = 2
@@ -105,6 +106,7 @@ export const sendCallsWithRetry = async (
   for (let attempt = 0; attempt <= maxRetries; attempt++) {
     try {
       const txBundle = await sendCallsAsync({
+        chainId,
         calls,
         account,
         forceAtomic: true,

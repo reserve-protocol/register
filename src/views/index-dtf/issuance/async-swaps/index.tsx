@@ -26,6 +26,7 @@ import Collaterals, { showCollateralsAtom } from './collaterals'
 import { GlobalProtocolKitProvider } from './providers/GlobalProtocolKitProvider'
 import Config from './settings'
 import Success from './success'
+import { Skeleton } from '@/components/ui/skeleton'
 
 function Content() {
   const showSettings = useAtomValue(showSettingsAtom)
@@ -130,7 +131,7 @@ const AsyncSwaps = () => {
   const [showSettings, setShowSettings] = useAtom(showSettingsAtom)
   const indexDTF = useAtomValue(indexDTFAtom)
   const success = useAtomValue(successAtom)
-  const { atomicSupported } = useAtomicBatch()
+  const { atomicSupported, isLoading } = useAtomicBatch()
 
   const reset = () => {
     setShowSettings(false)
@@ -148,10 +149,14 @@ const AsyncSwaps = () => {
 
   if (!indexDTF) return null
 
-  if (!atomicSupported) {
+  if (isLoading || !atomicSupported) {
     return (
       <div className="container flex flex-col items-center sm:justify-start md:justify-center gap-2 lg:border-2 lg:border-secondary lg:bg-secondary/30 lg:min-h-[calc(100vh-100px)] dark:bg-card rounded-4xl w-full">
-        <AtomicBatchRequired />
+        {isLoading ? (
+          <Skeleton className="mx-auto w-[400px] h-[400px]" />
+        ) : (
+          <AtomicBatchRequired />
+        )}
       </div>
     )
   }

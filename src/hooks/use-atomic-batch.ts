@@ -1,23 +1,43 @@
-import { chainIdAtom } from '@/state/atoms'
+import { chainIdAtom, walletAtom } from '@/state/atoms'
 import { useAtomValue } from 'jotai'
-import { useAccount, useCapabilities } from 'wagmi'
+import { useEffect } from 'react'
+import { useCapabilities } from 'wagmi'
+import { notifyError } from './useNotification'
 
 const useAtomicBatch = () => {
   const chainId = useAtomValue(chainIdAtom)
-  const { data } = useCapabilities()
-  const { connector, chainId: connectedChainId } = useAccount()
-
-  const atomicBatchSupported =
-    data?.[connectedChainId || chainId]?.atomicBatch?.supported
+  const account = useAtomValue(walletAtom)
+  const { data, isLoading, failureReason, error } = useCapabilities({
+    chainId,
+    query: {
+      enabled: !!account,
+    },
+  })
+  const atomicBatchSupported = data?.atomicBatch?.supported
   const atomicSupported = ['ready', 'supported'].includes(
-    data?.[connectedChainId || chainId]?.atomic?.status ?? ''
+    data?.atomic?.status ?? ''
   )
-  const isMetamask =
-    connector?.id.toLowerCase().includes('metamask') ||
-    connector?.name.toLowerCase().includes('metamask')
+
+  useEffect(() => {
+    if (error || failureReason) {
+      const name = error?.name || failureReason?.name || 'Error'
+      const message =
+        error?.message || failureReason?.message || 'Unknown error'
+
+      if (
+        name.includes('ConnectorNotConnected') ||
+        name.includes('TypeError')
+      ) {
+        return
+      }
+
+      notifyError(name, message)
+    }
+  }, [error, failureReason])
 
   return {
-    atomicSupported: (atomicBatchSupported || atomicSupported) && !isMetamask,
+    atomicSupported: atomicBatchSupported || atomicSupported,
+    isLoading: isLoading && !failureReason,
   }
 }
 

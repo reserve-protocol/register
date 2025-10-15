@@ -1,6 +1,9 @@
 import { Button } from '@/components/ui/button'
 import Help from '@/components/ui/help'
+import { TransactionButtonContainer } from '@/components/ui/transaction'
+import { chainIdAtom } from '@/state/atoms'
 import { useConnectModal } from '@rainbow-me/rainbowkit'
+import { useAtomValue } from 'jotai'
 import { ExternalLink, OctagonAlert } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useAccount, useDisconnect } from 'wagmi'
@@ -10,6 +13,7 @@ const AtomicBatchRequired = () => {
   const { disconnect } = useDisconnect()
   const { isConnected } = useAccount()
   const [shouldOpenModal, setShouldOpenModal] = useState(false)
+  const chainId = useAtomValue(chainIdAtom)
 
   useEffect(() => {
     if (shouldOpenModal && !isConnected && openConnectModal) {
@@ -67,17 +71,23 @@ const AtomicBatchRequired = () => {
         </div>
       </div>
       <div className="p-2 pt-0">
-        <Button
-          size="lg"
-          className="w-full rounded-xl"
-          onClick={handleSwitchWallet}
+        <TransactionButtonContainer
+          chain={chainId}
+          connectButtonClassName="w-full"
+          switchChainButtonClassName="w-full"
         >
-          {isConnected ? 'Switch Wallets' : 'Connect Wallet'}
-          <span className="pl-1 opacity-50 font-light">
-            {' '}
-            - Atomic Batch Required
-          </span>
-        </Button>
+          <Button
+            size="lg"
+            className="w-full rounded-xl"
+            onClick={handleSwitchWallet}
+          >
+            {isConnected ? 'Switch Wallets' : 'Connect Wallet'}
+            <span className="pl-1 opacity-50 font-light">
+              {' '}
+              - Atomic Batch Required
+            </span>
+          </Button>
+        </TransactionButtonContainer>
         <a
           className="p-4 flex items-center gap-1 text-base font-light text-muted-foreground/80 justify-center"
           href={`https://gnosis-safe.io/`}

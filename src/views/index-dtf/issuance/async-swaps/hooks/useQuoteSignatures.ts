@@ -204,10 +204,10 @@ export function useQuoteSignatures(refresh = false) {
         appDataContent = JSON.stringify({
           appCode: 'Reserve Protocol',
           environment: 'production',
-          version: '1.0.0'
+          version: '1.0.0',
         })
         // Use a default hex value - this is the keccak256 hash of the appDataContent
-        appDataHex = '0x' + '0'.repeat(64) as AppDataHash
+        appDataHex = ('0x' + '0'.repeat(64)) as AppDataHash
         console.warn('Using fallback appData due to MetadataApi error')
       }
 
@@ -311,7 +311,7 @@ export function useQuoteSignatures(refresh = false) {
           const infoMessage = getTransactionInfoMessage(txData)
           setInfoMessage((prev) => infoMessage || prev)
 
-          await sendCallsWithRetry(sendCallsAsync, txData, address)
+          await sendCallsWithRetry(sendCallsAsync, chainId, txData, address)
         } catch (error) {
           console.error('sendCallsAsync', error)
           notifyError('Transaction failed', 'Please try again')
@@ -444,7 +444,12 @@ export function useQuoteSignatures(refresh = false) {
           )
           setInfoMessage((prev) => fallbackInfoMessage || prev)
 
-          await sendCallsWithRetry(sendCallsAsync, fallbackTxData, address)
+          await sendCallsWithRetry(
+            sendCallsAsync,
+            chainId,
+            fallbackTxData,
+            address
+          )
         } catch (error) {
           console.error('sendCallsAsync', error)
           notifyError('Transaction failed', 'Please try again')

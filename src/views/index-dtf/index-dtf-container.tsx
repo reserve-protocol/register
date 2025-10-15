@@ -48,7 +48,13 @@ const useChainWatch = () => {
   }, [chainId])
 }
 
-const IndexDTFMetadataUpdater = ({ tokenAddress, chainId }: { tokenAddress?: string; chainId: number }) => {
+const IndexDTFMetadataUpdater = ({
+  tokenAddress,
+  chainId,
+}: {
+  tokenAddress?: string
+  chainId: number
+}) => {
   const setIndexDTF = useSetAtom(indexDTFAtom)
   const setIndexDTFBrand = useSetAtom(indexDTFBrandAtom)
   const { data } = useIndexDTF(tokenAddress, chainId as AvailableChain)
@@ -86,7 +92,13 @@ const IndexDTFMetadataUpdater = ({ tokenAddress, chainId }: { tokenAddress?: str
   return null
 }
 
-const IndexDTFBasketUpdater = ({ tokenAddress, chainId }: { tokenAddress?: string; chainId: number }) => {
+const IndexDTFBasketUpdater = ({
+  tokenAddress,
+  chainId,
+}: {
+  tokenAddress?: string
+  chainId: number
+}) => {
   const setBasket = useSetAtom(indexDTFBasketAtom)
   const setBasketPrices = useSetAtom(indexDTFBasketPricesAtom)
   const setBasketAmounts = useSetAtom(indexDTFBasketAmountsAtom)
