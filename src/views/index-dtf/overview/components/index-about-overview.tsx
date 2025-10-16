@@ -6,14 +6,14 @@ import {
   indexDTFBrandAtom,
   isBrandManagerAtom,
 } from '@/state/dtf/atoms'
+import { ROUTES } from '@/utils/constants'
 import { useAtomValue } from 'jotai'
-import { BrickWall, FileText, ImagePlus } from 'lucide-react'
+import { BrickWall, FileChartColumn, ImagePlus } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { useTrackIndexDTFClick } from '../../hooks/useTrackIndexDTFPage'
 import IndexFactsheetOverview from './index-factsheet-overview'
 import IndexMetricsOverview from './index-metrics-overview'
 import IndexSocialsOverview from './index-socials-overview'
-import { ROUTES } from '@/utils/constants'
-import { useTrackIndexDTFClick } from '../../hooks/useTrackIndexDTFPage'
 
 const BrandManagerEditButton = () => {
   const isBrandManager = useAtomValue(isBrandManagerAtom)
@@ -41,8 +41,8 @@ const FactsheetButton = () => {
   return (
     <Link to={`../${ROUTES.FACTSHEET}`}>
       <Button variant="outline" size="sm" className="gap-1 rounded-full">
-        <FileText size={14} />
-        Factsheet
+        <FileChartColumn size={14} />
+        Performance
       </Button>
     </Link>
   )

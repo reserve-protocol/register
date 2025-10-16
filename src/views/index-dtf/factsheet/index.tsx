@@ -28,10 +28,10 @@ const Header = () => {
         <ArrowLeft className="h-4 w-4" strokeWidth={1.5} />
       </Button>
       <h1 className="hidden sm:block text-2xl font-light text-white sm:text-black sm:dark:text-white">
-        {dtf?.token?.name || 'Index DTF'} Fact Sheet
+        {dtf?.token?.name || 'Index DTF'} Performance
       </h1>
       <h1 className="sm:hidden text-xl font-light text-white sm:text-black sm:dark:text-white">
-        {dtf?.token?.symbol || 'Index DTF'} Fact Sheet
+        {dtf?.token?.symbol || 'Index DTF'} Performance
       </h1>
     </div>
   )
