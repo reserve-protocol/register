@@ -53,7 +53,7 @@ const MetricsItem = ({
   return (
     <div className="px-4 py-2 sm:px-5 sm:py-5 flex items-center gap-1 justify-between">
       <div className="flex items-center gap-1">
-        <div className="p-2">{icon}</div>
+        <div className="p-2 w-8 h-8">{icon}</div>
         {label}
       </div>
       {loading ? (
@@ -63,7 +63,9 @@ const MetricsItem = ({
           {valueHover ? (
             <TooltipProvider>
               <Tooltip delayDuration={0}>
-                <TooltipTrigger>{value}</TooltipTrigger>
+                <TooltipTrigger className="text-ellipsis overflow-hidden whitespace-nowrap max-w-[160px] sm:max-w-[150px] lg:max-w-[180px]">
+                  {value}
+                </TooltipTrigger>
                 <TooltipContent side="top">{valueHover || ''}</TooltipContent>
               </Tooltip>
             </TooltipProvider>
@@ -93,6 +95,9 @@ const Creator = () => {
     <MetricsItem
       label="Creator"
       value={brandData?.creator?.name || shortenAddress(dtf?.deployer || '')}
+      valueHover={
+        brandData?.creator?.name || shortenAddress(dtf?.deployer || '')
+      }
       icon={
         brandData?.creator?.icon ? (
           <TokenLogo src={brandData.creator.icon} size="sm" />
