@@ -10,32 +10,28 @@ import {
   indexDTFAtom,
   indexDTFBasketAmountsAtom,
   indexDTFBasketAtom,
-  indexDTFBasketPerformanceChangeAtom,
   indexDTFBasketPricesAtom,
   indexDTFBasketSharesAtom,
   IndexDTFBrand,
   indexDTFBrandAtom,
   indexDTFExposureDataAtom,
-  indexDTFNewlyAddedAssetsAtom,
   indexDTFPerformanceLoadingAtom,
   indexDTFRebalanceControlAtom,
   indexDTFVersionAtom,
   iTokenAddressAtom,
   performanceTimeRangeAtom,
 } from '@/state/dtf/atoms'
-import { TimeRange } from '@/types'
 import { isAddress } from '@/utils'
 import { AvailableChain, supportedChains } from '@/utils/chains'
 import { NETWORKS, RESERVE_API, ROUTES } from '@/utils/constants'
 import { useQuery } from '@tanstack/react-query'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Outlet, useNavigate, useParams } from 'react-router-dom'
 import { Address } from 'viem'
 import { useReadContract, useSwitchChain } from 'wagmi'
 import IndexDTFNavigation from './components/navigation'
 import GovernanceUpdater from './governance/updater'
-import useIndexDTFPriceHistory from './overview/hooks/use-dtf-price-history'
 
 const useChainWatch = () => {
   const { switchChain } = useSwitchChain()
@@ -141,220 +137,10 @@ const IndexDTFBasketUpdater = ({
   return null
 }
 
-const IndexDTFPerformanceUpdater = ({ chainId }: { chainId: number }) => {
-  const dtf = useAtomValue(indexDTFAtom)
-  const basket = useAtomValue(indexDTFBasketAtom)
-  const set7dChange = useSetAtom(indexDTF7dChangeAtom)
-  const setBasketPerformanceChange = useSetAtom(
-    indexDTFBasketPerformanceChangeAtom
-  )
-  const setPerformanceLoading = useSetAtom(indexDTFPerformanceLoadingAtom)
-  const setNewlyAddedAssets = useSetAtom(indexDTFNewlyAddedAssetsAtom)
-  const timeRange = useAtomValue(performanceTimeRangeAtom)
-
-  const currentHour = Math.floor(Date.now() / 1_000 / 3_600) * 3_600
-
-  // Calculate time range based on selected period
-  const timeRangeConfig: Record<
-    TimeRange,
-    { to: number; from: number; interval: '1h' | '1d' }
-  > = {
-    '24h': { to: currentHour, from: currentHour - 86_400, interval: '1h' },
-    '7d': { to: currentHour, from: currentHour - 604_800, interval: '1h' },
-    '1m': { to: currentHour, from: currentHour - 2_592_000, interval: '1h' },
-    '3m': { to: currentHour, from: currentHour - 7_776_000, interval: '1d' },
-    '1y': { to: currentHour, from: currentHour - 31_536_000, interval: '1d' },
-    all: { to: currentHour, from: 0, interval: '1d' },
-  }
-
-  const { data: history } = useIndexDTFPriceHistory({
-    address: dtf?.id,
-    from: timeRangeConfig[timeRange].from,
-    to: currentHour,
-    interval: timeRangeConfig[timeRange].interval,
-  })
-
-  // Identify newly added tokens (not in historical basket)
-  const newlyAddedTokens = useMemo(() => {
-    if (!history?.timeseries?.length || !basket) return []
-
-    const firstWithBasket = history.timeseries.find(
-      (entry) => entry.basket?.length > 0
-    )
-    if (!firstWithBasket?.basket) return []
-
-    return basket
-      .filter((token) => {
-        const existedAtStart = firstWithBasket.basket.some(
-          (b: any) => b.address.toLowerCase() === token.address.toLowerCase()
-        )
-        return !existedAtStart
-      })
-      .map((t) => t.address)
-  }, [history, basket])
-
-  // Fetch snapshot prices for newly added assets
-  const { data: snapshotPrices } = useQuery({
-    queryKey: [
-      'asset-snapshot-prices',
-      newlyAddedTokens,
-      chainId,
-      timeRangeConfig[timeRange].from,
-    ],
-    queryFn: async () => {
-      if (!newlyAddedTokens.length) return {}
-
-      const from = timeRangeConfig[timeRange].from
-      const to = from + 3600 // 1 hour window
-      const baseUrl = `${RESERVE_API}historical/prices?chainId=${chainId}&from=${from}&to=${to}&interval=1h&address=`
-
-      const calls = newlyAddedTokens.map((token) =>
-        fetch(`${baseUrl}${token}`).then((res) => res.json())
-      )
-
-      const responses = await Promise.all(calls)
-      const result: Record<string, number> = {}
-
-      for (const priceResult of responses) {
-        if (priceResult.timeseries?.length > 0) {
-          result[priceResult.address.toLowerCase()] =
-            priceResult.timeseries[0].price
-        }
-      }
-
-      return result
-    },
-    enabled: Boolean(newlyAddedTokens.length && chainId),
-  })
-
-  // Set loading when time range changes
-  useEffect(() => {
-    setPerformanceLoading(true)
-  }, [timeRange, setPerformanceLoading])
-
-  useEffect(() => {
-    // Only process if we have basket data
-    if (!basket) return
-
-    // If history is still loading (undefined), keep loading state
-    if (history === undefined) return
-
-    // If history loaded but empty, set empty results and stop loading
-    if (!history?.timeseries?.length) {
-      const emptyChanges: Record<string, number | null> = {}
-      const emptyNewlyAdded: Record<string, boolean> = {}
-      basket.forEach((token) => {
-        emptyChanges[token.address] = null
-        emptyNewlyAdded[token.address] = false
-      })
-      setBasketPerformanceChange(emptyChanges)
-      setNewlyAddedAssets(emptyNewlyAdded)
-      setPerformanceLoading(false)
-      return
-    }
-
-    const filtered = history.timeseries.filter(({ price }) => Boolean(price))
-
-    if (filtered.length > 0) {
-      // Calculate overall DTF change (maintain 7d for backward compatibility)
-      if (timeRange === '7d') {
-        const firstPrice = filtered[0].price
-        const lastPrice = filtered[filtered.length - 1].price
-        const dtfChange =
-          firstPrice === 0 ? undefined : (lastPrice - firstPrice) / firstPrice
-        set7dChange(dtfChange)
-      }
-
-      // Calculate individual collateral changes
-      // Find first and last entries with basket data
-      let firstWithBasket = filtered.find(
-        (entry) => entry.basket && entry.basket.length > 0
-      )
-      let lastWithBasket = [...filtered]
-        .reverse()
-        .find((entry) => entry.basket && entry.basket.length > 0)
-
-      // If no basket data at all, try to get it from the full history
-      if (!firstWithBasket || !lastWithBasket) {
-        firstWithBasket = history.timeseries.find(
-          (entry) => entry.basket && entry.basket.length > 0
-        )
-        lastWithBasket = [...history.timeseries]
-          .reverse()
-          .find((entry) => entry.basket && entry.basket.length > 0)
-      }
-
-      const basketPerformanceChanges: Record<string, number | null> = {}
-      const newlyAdded: Record<string, boolean> = {}
-
-      if (firstWithBasket?.basket && lastWithBasket?.basket) {
-        basket.forEach((token) => {
-          const firstEntry = firstWithBasket.basket.find(
-            (b: any) => b.address.toLowerCase() === token.address.toLowerCase()
-          )
-          const lastEntry = lastWithBasket.basket.find(
-            (b: any) => b.address.toLowerCase() === token.address.toLowerCase()
-          )
-
-          if (firstEntry && lastEntry && firstEntry.price > 0) {
-            // Token existed at start of period
-            const change =
-              (lastEntry.price - firstEntry.price) / firstEntry.price
-            basketPerformanceChanges[token.address] = change
-            newlyAdded[token.address] = false
-          } else if (
-            lastEntry &&
-            snapshotPrices?.[token.address.toLowerCase()]
-          ) {
-            // Token was added during period, use snapshot price
-            const snapshotPrice = snapshotPrices[token.address.toLowerCase()]
-            const change =
-              snapshotPrice > 0
-                ? (lastEntry.price - snapshotPrice) / snapshotPrice
-                : 0
-            basketPerformanceChanges[token.address] = change
-            newlyAdded[token.address] = true
-          } else if (lastEntry) {
-            // Have current price but no historical - mark as newly added
-            basketPerformanceChanges[token.address] = null
-            newlyAdded[token.address] = true
-          } else {
-            // No data available
-            basketPerformanceChanges[token.address] = null
-            newlyAdded[token.address] = false
-          }
-        })
-      } else {
-        // No basket data available
-        basket.forEach((token) => {
-          basketPerformanceChanges[token.address] = null
-          newlyAdded[token.address] = false
-        })
-      }
-
-      setBasketPerformanceChange(basketPerformanceChanges)
-      setNewlyAddedAssets(newlyAdded)
-    }
-
-    setPerformanceLoading(false)
-  }, [
-    history,
-    basket,
-    snapshotPrices,
-    timeRange,
-    set7dChange,
-    setBasketPerformanceChange,
-    setNewlyAddedAssets,
-    setPerformanceLoading,
-    chainId,
-  ])
-
-  return null
-}
-
 const IndexDTFExposureUpdater = ({ chainId }: { chainId: number }) => {
   const dtf = useAtomValue(indexDTFAtom)
   const setExposureData = useSetAtom(indexDTFExposureDataAtom)
+  const setPerformanceLoading = useSetAtom(indexDTFPerformanceLoadingAtom)
   const period = useAtomValue(performanceTimeRangeAtom)
 
   const { data: exposureData, isLoading } = useQuery({
@@ -382,6 +168,10 @@ const IndexDTFExposureUpdater = ({ chainId }: { chainId: number }) => {
     }
   }, [exposureData, setExposureData])
 
+  useEffect(() => {
+    setPerformanceLoading(isLoading)
+  }, [isLoading])
+
   return null
 }
 
@@ -394,10 +184,9 @@ const resetStateAtom = atom(null, (_, set) => {
   set(indexDTFBrandAtom, undefined)
   set(indexDTFRebalanceControlAtom, undefined)
   set(indexDTF7dChangeAtom, undefined)
-  set(indexDTFBasketPerformanceChangeAtom, {})
   set(indexDTFPerformanceLoadingAtom, false)
-  set(indexDTFNewlyAddedAssetsAtom, {})
   set(indexDTFExposureDataAtom, null)
+  set(performanceTimeRangeAtom, '7d')
 })
 
 export const indexDTFRefreshFnAtom = atom<(() => void) | null>(null)
@@ -470,7 +259,6 @@ const Updater = () => {
     <div key={key}>
       <IndexDTFMetadataUpdater tokenAddress={currentToken} chainId={chainId} />
       <IndexDTFBasketUpdater tokenAddress={currentToken} chainId={chainId} />
-      <IndexDTFPerformanceUpdater chainId={chainId} />
       <IndexDTFExposureUpdater chainId={chainId} />
       <GovernanceUpdater />
     </div>

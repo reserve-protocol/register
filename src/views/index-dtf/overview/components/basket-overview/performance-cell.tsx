@@ -15,7 +15,7 @@ const PERIOD_LABELS = {
   '1m': '30 day',
   '3m': '90 day',
   '1y': '1 year',
-  'all': 'all time',
+  all: 'all time',
 } as const
 
 export const PerformanceCell = ({
@@ -35,7 +35,12 @@ export const PerformanceCell = ({
   }
 
   const formattedChange = `${change > 0 ? '+' : ''}${(change * 100).toFixed(2)}%`
-  const changeColor = change < 0 ? 'text-legend' : change > 0 ? 'text-green-500' : ''
+  const changeColor =
+    change < 0
+      ? 'text-legend'
+      : change > 0
+        ? 'text-green-500'
+        : 'text-muted-foreground'
 
   return (
     <div className="flex items-center justify-center gap-1">
