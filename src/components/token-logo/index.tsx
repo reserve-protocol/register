@@ -286,6 +286,7 @@ export const PNGS = new Set([
   'moomorpho-steakhouse-weth',
   'moomorpho-smokehouse-wsteth',
   'moomorpho-smokehouse-usdc',
+  'ssr',
 ])
 
 export const EXTERNAL_ASSETS: Record<string, string> = {
