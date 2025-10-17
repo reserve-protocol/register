@@ -186,6 +186,7 @@ const resetStateAtom = atom(null, (_, set) => {
   set(indexDTF7dChangeAtom, undefined)
   set(indexDTFPerformanceLoadingAtom, false)
   set(indexDTFExposureDataAtom, null)
+  set(performanceTimeRangeAtom, '7d')
 })
 
 export const indexDTFRefreshFnAtom = atom<(() => void) | null>(null)

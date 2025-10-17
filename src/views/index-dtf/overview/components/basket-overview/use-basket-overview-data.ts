@@ -20,7 +20,7 @@ const ENABLE_EXPOSURE_TABS = [
   '0xb4da556350cf284d856353b4bc68e65d37fa509c',
 ]
 
-export const useBasketOverviewData = (isExposure: boolean) => {
+export const useBasketOverviewData = () => {
   const basket = useAtomValue(indexDTFBasketAtom)
   const basketShares = useAtomValue(indexDTFBasketSharesAtom)
   const performanceLoading = useAtomValue(indexDTFPerformanceLoadingAtom)

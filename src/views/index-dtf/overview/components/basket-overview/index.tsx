@@ -200,7 +200,7 @@ const IndexBasketOverview = () => {
     chainId,
     marketCaps,
     isBSC,
-  } = useBasketOverviewData(isExposure)
+  } = useBasketOverviewData()
 
   // Update active tab when chain changes
   useEffect(() => {
