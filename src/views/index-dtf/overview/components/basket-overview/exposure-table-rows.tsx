@@ -1,7 +1,9 @@
 import TokenLogo from '@/components/token-logo'
 import { TableCell, TableRow } from '@/components/ui/table'
-import { formatMarketCap } from '@/hooks/use-native-token-market-caps'
+import { chainIdAtom } from '@/state/atoms'
 import { TimeRange } from '@/types'
+import { formatMarketCap } from '@/utils'
+import { useAtomValue } from 'jotai'
 import { PerformanceCell } from './performance-cell'
 
 export interface ExposureGroup {
@@ -18,7 +20,7 @@ export interface ExposureGroup {
     weight: number
   }>
   totalWeight: number
-  weightedChange?: number | null
+  change?: number | null
   hasNewlyAdded?: boolean
 }
 
@@ -39,6 +41,7 @@ export const ExposureTableRows = ({
   viewAll,
   maxTokens,
 }: ExposureTableRowsProps) => {
+  const chainId = useAtomValue(chainIdAtom)
   // Convert to array if it's a Map
   const groupsArray = Array.isArray(exposureGroups)
     ? exposureGroups
@@ -58,7 +61,15 @@ export const ExposureTableRows = ({
             <TableRow key={native.symbol} className="border-none">
               <TableCell>
                 <div className="flex items-center font-semibold gap-2 sm:gap-3 break-words">
-                  <TokenLogo size="lg" src={native.logo} />
+                  {native.logo ? (
+                    <TokenLogo size="lg" src={native.logo} />
+                  ) : (
+                    <TokenLogo
+                      size="lg"
+                      address={group.tokens[0]?.address || ''}
+                      chain={chainId}
+                    />
+                  )}
                   <div className="max-w-32 md:max-w-72 lg:max-w-56">
                     <span className="block text-sm sm:text-base">
                       {native.name}
@@ -86,7 +97,7 @@ export const ExposureTableRows = ({
               </TableCell>
               <TableCell className="text-center px-1 sm:px-3">
                 <PerformanceCell
-                  change={group.weightedChange ?? null}
+                  change={group.change ?? null}
                   isLoading={performanceLoading}
                   isNewlyAdded={group.hasNewlyAdded || false}
                   timeRange={timeRange}

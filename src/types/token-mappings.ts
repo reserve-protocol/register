@@ -20,3 +20,7 @@ export type Bridge = {
   risks: string[]
   wrappedVersion: boolean
 }
+
+export type MarketCapData = {
+  [coingeckoId: string]: number
+}

@@ -1,26 +1,24 @@
 import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
 import { Table, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import useScrollTo from '@/hooks/useScrollTo'
 import { cn } from '@/lib/utils'
+import { performanceTimeRangeAtom } from '@/state/dtf/atoms'
 import { capitalize } from '@/utils/constants'
 import { ETHERSCAN_NAMES } from '@/utils/getExplorerLink'
-import { performanceTimeRangeAtom } from '@/state/dtf/atoms'
 import { useAtomValue } from 'jotai'
 import {
-  ArrowUp,
   ArrowDown,
+  ArrowUp,
   ArrowUpDown,
   PackageOpen,
   Target,
 } from 'lucide-react'
-import { useEffect, useState, useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { toast } from 'sonner'
 import { BasketTableBody } from './basket-table-body'
 import { useBasketOverviewData } from './use-basket-overview-data'
-import { Card } from '@/components/ui/card'
-import IndexTokenAddress from '../index-token-address'
-import { Separator } from '@/components/ui/separator'
 
 const MAX_TOKENS = 10
 
@@ -288,11 +286,7 @@ const IndexBasketOverview = () => {
         )
       } else {
         // performance
-        return compareValues(
-          aGroup.weightedChange,
-          bGroup.weightedChange,
-          sortConfig.direction
-        )
+        return compareValues(aGroup.change, bGroup.change, sortConfig.direction)
       }
     })
   }, [exposureGroups, isExposure, sortConfig])
