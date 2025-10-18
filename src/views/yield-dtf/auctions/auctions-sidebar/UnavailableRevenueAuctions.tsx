@@ -86,7 +86,7 @@ const useAuctions = () => {
   return useContractWrite(tx)
 }
 
-// TODO: maybe unnecesary
+// TODO: maybe unnecessary
 const ConfirmAuction = () => {
   const { isReady, write, hash, isLoading } = useAuctions()
   const { status } = useWatchTransaction({ hash, label: 'Run auctions' })
