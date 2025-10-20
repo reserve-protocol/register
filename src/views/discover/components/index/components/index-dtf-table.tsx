@@ -98,7 +98,7 @@ const columns: ColumnDef<IndexDTFItem>[] = [
           className="flex gap-3 items-center"
           onClick={(e) => e.stopPropagation()}
         >
-          <div className="relative">
+          <div className="relative flex-shrink-0">
             <TokenLogo src={row.original.brand?.icon || undefined} size="xl" />
             <ChainLogo
               chain={row.original.chainId}
