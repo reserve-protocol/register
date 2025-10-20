@@ -179,6 +179,7 @@ const Supply = () => {
 const Supply24h = () => {
   const transactions = useAtomValue(indexDTFTransactionsAtom)
   const last24h = Date.now() / 1000 - 24 * 60 * 60
+  const dtf = useAtomValue(indexDTFAtom)
 
   const txVolume = useMemo(
     () =>
@@ -199,7 +200,7 @@ const Supply24h = () => {
   return (
     <MetricsItem
       label="24h Supply Change"
-      value={`${txVolume > 0 ? '+' : ''} ${formatCurrency(txVolume, 0)}`}
+      value={`${txVolume > 0 ? '+' : ''}${formatCurrency(txVolume, 0)} ${dtf?.token?.symbol ?? ''}`}
       icon={<ArrowUpDown size={16} />}
       loading={!transactions.length}
     />
