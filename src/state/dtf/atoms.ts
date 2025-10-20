@@ -229,7 +229,8 @@ export const isHybridDTFAtom = atom((get) => {
   const dtf = get(indexDTFAtom)
 
   return (
-    dtf?.id.toLowerCase() === '0x4da9a0f397db1397902070f93a4d6ddbc0e0e6e8' ||
+    dtf?.id.toLowerCase() === '0x4da9a0f397db1397902070f93a4d6ddbc0e0e6e8' || // LCAP
+    dtf?.id.toLowerCase() === '0xe00cfa595841fb331105b93c19827797c925e3e4' || // Venionaire
     // TODO: remove this after testing
     dtf?.id.toLowerCase() === '0x1532536c22366dde6b5174ebe519578bccc6b5a3' ||
     dtf?.id.toLowerCase() === '0x045dc337c12a9a5d2c790d01554913b1a9e1044a' ||
