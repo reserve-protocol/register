@@ -1,6 +1,6 @@
 import { IndexDTFItem } from '@/hooks/useIndexDTFList'
 import { motion, AnimatePresence } from 'motion/react'
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import DTFHomeCardFixed from './dtf-home-card-fixed'
 import { ChevronUp, ChevronDown } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -34,17 +34,22 @@ const DTFCarouselSimple = ({ dtfs, isLoading }: DTFCarouselSimpleProps) => {
       if (!containerRef.current) return
 
       const rect = containerRef.current.getBoundingClientRect()
-      // Hijack scroll when sticky container is in view and stuck at top
-      const stickyTop = rect.top <= 0
-      const stickyBottom = rect.bottom >= window.innerHeight
-      const isInView = stickyTop && stickyBottom
+      const isInView = rect.top <= 0 && rect.bottom >= window.innerHeight
 
-      // Also check if we're scrolling up at the boundary
-      const scrollingUpAtStart = e.deltaY < 0 && currentIndex === 0
-      const shouldAllowNormalScroll = scrollingUpAtStart && rect.top >= 0
+      // Check if we're at boundaries and should allow normal scroll
+      const atFirstCard = currentIndex === 0
+      const atLastCard = currentIndex === totalCards - 1
+      const scrollingUp = e.deltaY < 0
+      const scrollingDown = e.deltaY > 0
 
-      if (isInView && !isTransitioning && !shouldAllowNormalScroll) {
-        // Prevent default scroll when in card zone
+      // Allow normal scroll at boundaries
+      if ((atFirstCard && scrollingUp) || (atLastCard && scrollingDown)) {
+        // Don't prevent default - allow normal scrolling
+        return
+      }
+
+      // Only hijack if in view and not transitioning
+      if (isInView && !isTransitioning) {
         e.preventDefault()
         e.stopPropagation()
 
@@ -53,7 +58,7 @@ const DTFCarouselSimple = ({ dtfs, isLoading }: DTFCarouselSimpleProps) => {
 
         // Check if we should change card
         if (Math.abs(accumulatedScroll) >= SCROLL_THRESHOLD) {
-          if (e.deltaY > 0 && currentIndex < totalCards - 1) {
+          if (scrollingDown && currentIndex < totalCards - 1) {
             // Scroll down - next card
             setIsTransitioning(true)
             setScrollDirection('down')
@@ -64,7 +69,7 @@ const DTFCarouselSimple = ({ dtfs, isLoading }: DTFCarouselSimpleProps) => {
               setIsTransitioning(false)
               setScrollDirection(null)
             }, 500)
-          } else if (e.deltaY < 0 && currentIndex > 0) {
+          } else if (scrollingUp && currentIndex > 0) {
             // Scroll up - previous card
             setIsTransitioning(true)
             setScrollDirection('up')
@@ -76,7 +81,7 @@ const DTFCarouselSimple = ({ dtfs, isLoading }: DTFCarouselSimpleProps) => {
               setScrollDirection(null)
             }, 500)
           } else {
-            // At boundaries - reset accumulator
+            // Reset accumulator if can't move
             accumulatedScroll = 0
           }
         }
@@ -92,7 +97,7 @@ const DTFCarouselSimple = ({ dtfs, isLoading }: DTFCarouselSimpleProps) => {
   }, [currentIndex, totalCards, isTransitioning])
 
   // Manual navigation
-  const goToCard = (index: number) => {
+  const goToCard = useCallback((index: number) => {
     if (index >= 0 && index < totalCards && !isTransitioning) {
       setIsTransitioning(true)
       setScrollDirection(index > currentIndex ? 'down' : 'up')
@@ -103,7 +108,7 @@ const DTFCarouselSimple = ({ dtfs, isLoading }: DTFCarouselSimpleProps) => {
         setScrollDirection(null)
       }, 500)
     }
-  }
+  }, [currentIndex, totalCards, isTransitioning])
 
   // Keyboard navigation
   useEffect(() => {
@@ -111,7 +116,7 @@ const DTFCarouselSimple = ({ dtfs, isLoading }: DTFCarouselSimpleProps) => {
       if (!containerRef.current) return
 
       const rect = containerRef.current.getBoundingClientRect()
-      const isInView = rect.top <= window.innerHeight && rect.bottom >= 0
+      const isInView = rect.top <= 0 && rect.bottom >= window.innerHeight
 
       if (isInView && !isTransitioning) {
         if (e.key === 'ArrowDown' && currentIndex < totalCards - 1) {
@@ -126,7 +131,7 @@ const DTFCarouselSimple = ({ dtfs, isLoading }: DTFCarouselSimpleProps) => {
 
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [currentIndex, totalCards, isTransitioning])
+  }, [currentIndex, totalCards, isTransitioning, goToCard])
 
   // Preload ALL images on mount for smooth transitions
   useEffect(() => {
