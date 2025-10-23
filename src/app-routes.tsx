@@ -42,11 +42,13 @@ import IndexDTFSettings from './views/index-dtf/settings'
 import AllYieldDTFList from './views/tokens/Tokens'
 import InternalDTFList from './views/internal/dtf-list'
 import IndexDTFFactsheet from './views/index-dtf/factsheet'
+import Home from './views/home'
 
 // TODO: Fix recoll call on yield dtf auction page
 const AppRoutes = () => (
   <Routes>
-    <Route path={ROUTES.HOME} element={<Discover />} />
+    <Route path={ROUTES.HOME} element={<Home />} />
+    <Route path={ROUTES.DISCOVER} element={<Discover />} />
     {/* Internal routes */}
     <Route path="/internal/dtf-list" element={<InternalDTFList />} />
     <Route path={ROUTES.BRIDGE} element={<Bridge />} />

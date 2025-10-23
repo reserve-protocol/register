@@ -85,7 +85,11 @@ const CommandMenu = () => {
 
   return (
     <>
-      <Button variant="ghost" size="icon" onClick={() => setOpen(true)}>
+      <Button
+        size="icon-rounded"
+        className="text-primary bg-primary-foreground hover:bg-primary-foreground/80"
+        onClick={() => setOpen(true)}
+      >
         <Search size={16} strokeWidth={1.5} />
       </Button>
       <CommandDialog open={open} onOpenChange={setOpen}>

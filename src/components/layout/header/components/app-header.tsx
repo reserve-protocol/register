@@ -13,7 +13,8 @@ const Container = ({ children }: { children: ReactNode }) => {
 
   const border =
     (!pathname.includes('index-dtf') || pathname.includes('deploy')) &&
-    !pathname.includes('bridge')
+    !pathname.includes('bridge') &&
+    pathname !== '/'
 
   return (
     <div className={cn('w-full flex-shrink-0', border && 'border-b')}>
@@ -28,25 +29,10 @@ const Container = ({ children }: { children: ReactNode }) => {
 const AppHeader = () => (
   <Container>
     <div className="container flex items-center h-[56px] md:h-[72px] px-4 sm:px-6">
-      <Brand className="text-primary mr-2 sm:mr-4 cursor-pointer md:-mt-1" />
+      <Brand className="text-primary mr-2 sm:mr-4 cursor-pointer" />
       <AppNavigation />
       <CommandMenu />
-      <div className="flex ml-1 items-center">
-        <ThemeColorMode
-          sx={{
-            display: 'flex',
-            px: 2,
-            mr: [2, 3],
-            py: '3px',
-            maxWidth: '32px',
-            borderRadius: '6px',
-            ml: 'auto',
-            cursor: 'pointer',
-            ':hover': {
-              backgroundColor: 'secondaryBackground',
-            },
-          }}
-        />
+      <div className="flex ml-2 items-center">
         <Account />
       </div>
     </div>
@@ -54,3 +40,19 @@ const AppHeader = () => (
 )
 
 export default AppHeader
+
+// <ThemeColorMode
+// sx={{
+//   display: 'flex',
+//   px: 2,
+//   mr: [2, 3],
+//   py: '3px',
+//   maxWidth: '32px',
+//   borderRadius: '6px',
+//   ml: 'auto',
+//   cursor: 'pointer',
+//   ':hover': {
+//     backgroundColor: 'secondaryBackground',
+//   },
+// }}
+// />

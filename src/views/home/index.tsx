@@ -1,169 +1,108 @@
-import { Box, Grid } from 'theme-ui'
-import About from './components/About'
-import UseCases from './components/UseCases'
-import RegisterAbout from '@/views/discover/components/yield/components/RegisterAbout'
-import HistoricalTVL from './components/historical-tvl'
-import { Button } from '@/components/ui/button'
-import { ArrowRight } from 'lucide-react'
-import { Link } from 'react-router-dom'
-import TokenLogo from '@/components/token-logo'
+import { useEffect, useState } from 'react'
+import RegisterAbout from '../discover/components/yield/components/RegisterAbout'
+import DTFCard from './components/dtf-home-card'
+import useFilteredDTFIndex from '../discover/components/index/hooks/use-filtered-dtf-index'
+import DTFHomeCard from './components/dtf-home-card'
 
-const Hero = () => (
-  <div className="grid lg:grid-cols-2 grid-cols-1 divide-x divide-white rounded-sm bg-primary relative h-[506px]">
-    <HistoricalTVL />
-    <div className="hidden lg:block overflow-hidden">
-      <img
-        alt="hero-splash"
-        src="https://storage.reserve.org/hero-splash.png"
-        className="w-full h-full object-cover"
-      />
+const DTFs = () => (
+  <div className="flex flex-col flex-shrink-0 pt-1">
+    <div className="rounded-full border border-primary-foreground w-8 h-8 flex items-center justify-center">
+      D
+    </div>
+    <div className="rounded-full border border-primary-foreground w-8 h-8 flex items-center justify-center -mt-[5px]">
+      T
+    </div>
+    <div className="rounded-full border border-primary-foreground w-8 h-8 flex items-center justify-center -mt-[5px]">
+      F
+    </div>
+    <div className="rounded-full border border-primary-foreground w-8 h-8 flex items-center justify-center -mt-[5px]">
+      S
     </div>
   </div>
 )
-const DTFCategory = ({
-  title,
-  description,
-  subtitle,
-  image,
-}: {
-  title: string
-  description: string
-  subtitle: string
-  image: string
-}) => {
+
+const Hero = () => {
+  const [fadeStyle, setFadeStyle] = useState<React.CSSProperties>({})
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition =
+        document.getElementById('app-container')?.scrollTop || 0
+      const fadeStart = 0
+      const fadeEnd = 300
+
+      if (scrollPosition <= fadeStart) {
+        setFadeStyle({ opacity: 1, filter: 'blur(0px)' })
+      } else if (scrollPosition >= fadeEnd) {
+        setFadeStyle({ opacity: 0, filter: 'blur(10px)' })
+      } else {
+        const progress = (scrollPosition - fadeStart) / (fadeEnd - fadeStart)
+        const opacity = 1 - progress
+        const blur = progress * 10
+        setFadeStyle({
+          opacity,
+          filter: `blur(${blur}px)`,
+          transition: 'none', // Disable transition for smooth real-time updates
+        })
+      }
+    }
+
+    const container = document.getElementById('app-container')
+    container?.addEventListener('scroll', handleScroll)
+    handleScroll()
+
+    return () => {
+      container?.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
+
   return (
     <div
-      className={`border rounded-2xl bg-[url('${image}')] bg-cover bg-center`}
+      className="flex gap-6 text-primary-foreground mt-28 mb-12 mx-6"
+      style={fadeStyle}
     >
-      <div className="h-64"></div>
-      <Link to={`/discover`}>
-        <div className="bg-card rounded-2xl p-4 m-1 border border-card hover:border-primary transition-all duration-300 cursor-pointer">
-          <h3 className="text-2xl">{title} -</h3>
-          <h4 className="text-2xl text-primary">{subtitle}</h4>
-          <p className="my-2">{description}</p>
-          <div className="flex items-center">
-            <h4 className="text-xl font-bold text-primary">View all {title}</h4>
-            <Button size="icon-rounded" className="ml-auto">
-              <ArrowRight />
-            </Button>
-          </div>
-        </div>
-      </Link>
+      <DTFs />
+      <h1 className="text-5xl leading-[1.3] max-w-[640px]">
+        Decentralized Token Folios Like ETFs, but for crypto
+      </h1>
+      <div className="ml-auto w-96">
+        <p className="text-xl">
+          Crypto markets, sectors and strategies packaged into one-click
+          indexes–transparent & decentralized on the blockchain.
+        </p>
+      </div>
     </div>
   )
 }
 
-const DTFCategories = () => {
+const DTFCards = () => {
+  const { data, isLoading } = useFilteredDTFIndex()
+
   return (
-    <div>
-      <div className="my-6 text-center">
-        <h2 className="text-primary text-xl font-bold">Our DTF Categories</h2>
-      </div>
-      <div className="grid lg:grid-cols-2 grid-cols-1 gap-4">
-        <DTFCategory
-          title="Index DTFs"
-          subtitle="Simple index exposure to narratives"
-          description="Reserve's RToken Factory Contracts: A platform for creating tokens
-          backed by a diverse array of ERC20 collateral."
-          image="https://storage.reserve.org/index-dtf-cover.png"
-        />
-        <DTFCategory
-          title="Yield DTFs"
-          subtitle="Stable to a peg & overcollateralized"
-          description="Reserve's RToken Factory Contracts: A platform for creating tokens
-          backed by a diverse array of ERC20 collateral."
-          image="https://storage.reserve.org/yield-dtf-cover.png"
-        />
-      </div>
+    <div className="flex flex-col gap-2">
+      {data.map((dtf) => (
+        <DTFHomeCard dtf={dtf} />
+      ))}
     </div>
   )
 }
 
-const FeaturedDTFs = () => {
+const Home = () => {
   return (
-    <div className="grid lg:grid-cols-2 grid-cols-1 gap-4 mt-4">
-      <div className="flex flex-col">
-        <div className="flex items-center border-b gap-2 p-4">
-          <TokenLogo symbol="rsr" size="xl" />
-          <div className="flex flex-col">
-            <span className="text-xl font-bold">RSR</span>
-            <p>Description</p>
-          </div>
-          <Button size="icon-rounded" variant="muted" className="ml-auto mr-1">
-            <ArrowRight />
-          </Button>
+    <>
+      <div className="bg-secondary relative min-h-screen">
+        <div className="container pt-20 relative px-4">
+          <Hero />
         </div>
-        <div className="flex items-center border-b gap-2 p-4">
-          <TokenLogo symbol="rsr" size="xl" />
-          <div className="flex flex-col">
-            <span className="text-xl font-bold">RSR</span>
-            <p>Description</p>
-          </div>
-          <Button size="icon-rounded" variant="muted" className="ml-auto mr-1">
-            <ArrowRight />
-          </Button>
+        <div className="contairner relative z-20 px-4">
+          <DTFCards />
         </div>
-        <div className="flex items-center border-b gap-2 p-4">
-          <TokenLogo symbol="rsr" size="xl" />
-          <div className="flex flex-col">
-            <span className="text-xl font-bold">RSR</span>
-            <p>Description</p>
-          </div>
-          <Button size="icon-rounded" variant="muted" className="ml-auto mr-1">
-            <ArrowRight />
-          </Button>
+        <div className="container pt-20 relative z-20 px-4">
+          <RegisterAbout />
         </div>
       </div>
-      <div className="flex flex-col">
-        <div className="flex items-center border-b gap-2 p-4">
-          <TokenLogo symbol="rsr" size="xl" />
-          <div className="flex flex-col">
-            <span className="text-xl font-bold">RSR</span>
-            <p>Description</p>
-          </div>
-          <Button size="icon-rounded" variant="muted" className="ml-auto mr-1">
-            <ArrowRight />
-          </Button>
-        </div>
-        <div className="flex items-center border-b gap-2 p-4">
-          <TokenLogo symbol="rsr" size="xl" />
-          <div className="flex flex-col">
-            <span className="text-xl font-bold">RSR</span>
-            <p>Description</p>
-          </div>
-          <Button size="icon-rounded" variant="muted" className="ml-auto mr-1">
-            <ArrowRight />
-          </Button>
-        </div>
-        <div className="flex items-center border-b gap-2 p-4">
-          <TokenLogo symbol="rsr" size="xl" />
-          <div className="flex flex-col">
-            <span className="text-xl font-bold">RSR</span>
-            <p>Description</p>
-          </div>
-          <Button size="icon-rounded" variant="muted" className="ml-auto mr-1">
-            <ArrowRight />
-          </Button>
-        </div>
-      </div>
-    </div>
+    </>
   )
 }
-
-const Home = () => (
-  <div className="container px-4 mb-6">
-    <div className="text-primary">
-      <svg viewBox="0 0 131 18">
-        <text x="0" y="14" fill="currentColor">
-          Indexing the world
-        </text>
-      </svg>
-    </div>
-    <Hero />
-    <DTFCategories />
-    <FeaturedDTFs />
-    <RegisterAbout />
-  </div>
-)
 
 export default Home
