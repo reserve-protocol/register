@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react'
 import RegisterAbout from '../discover/components/yield/components/RegisterAbout'
-import DTFCard from './components/dtf-home-card'
 import useFilteredDTFIndex from '../discover/components/index/hooks/use-filtered-dtf-index'
-import DTFHomeCard from './components/dtf-home-card'
+import DTFCarouselPolished from './components/dtf-carousel-polished'
 
 const DTFs = () => (
   <div className="flex flex-col flex-shrink-0 pt-1">
@@ -29,19 +28,29 @@ const Hero = () => {
       const scrollPosition =
         document.getElementById('app-container')?.scrollTop || 0
       const fadeStart = 0
-      const fadeEnd = 300
+      const fadeEnd = 200 // Faster fade for better transition to cards
 
       if (scrollPosition <= fadeStart) {
-        setFadeStyle({ opacity: 1, filter: 'blur(0px)' })
+        setFadeStyle({
+          opacity: 1,
+          filter: 'blur(0px)',
+          transform: 'translateY(0px)'
+        })
       } else if (scrollPosition >= fadeEnd) {
-        setFadeStyle({ opacity: 0, filter: 'blur(10px)' })
+        setFadeStyle({
+          opacity: 0,
+          filter: 'blur(8px)',
+          transform: 'translateY(-20px)'
+        })
       } else {
         const progress = (scrollPosition - fadeStart) / (fadeEnd - fadeStart)
         const opacity = 1 - progress
-        const blur = progress * 10
+        const blur = progress * 8
+        const translateY = progress * -20
         setFadeStyle({
           opacity,
           filter: `blur(${blur}px)`,
+          transform: `translateY(${translateY}px)`,
           transition: 'none', // Disable transition for smooth real-time updates
         })
       }
@@ -78,13 +87,7 @@ const Hero = () => {
 const DTFCards = () => {
   const { data, isLoading } = useFilteredDTFIndex()
 
-  return (
-    <div className="flex flex-col gap-2">
-      {data.map((dtf) => (
-        <DTFHomeCard dtf={dtf} />
-      ))}
-    </div>
-  )
+  return <DTFCarouselPolished dtfs={data} isLoading={isLoading} />
 }
 
 const Home = () => {
@@ -94,7 +97,7 @@ const Home = () => {
         <div className="container pt-20 relative px-4">
           <Hero />
         </div>
-        <div className="contairner relative z-20 px-4">
+        <div className="relative z-20">
           <DTFCards />
         </div>
         <div className="container pt-20 relative z-20 px-4">
