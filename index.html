@@ -22,6 +22,10 @@
     <meta name="author" content="Reserve Protocol" />
     <meta name="robots" content="index, follow" />
 
+    <!-- Security Headers -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://app.reserve.org/" />
@@ -56,27 +60,34 @@
     <link rel="apple-touch-icon" href="/logo192.png" />
     <link rel="manifest" href="/manifest.json" />
 
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://app.reserve.org/">
+
+    <!-- DNS Prefetching -->
+    <link rel="dns-prefetch" href="//www.googletagmanager.com">
+    <link rel="dns-prefetch" href="//connect.facebook.net">
+
     <!-- Preload Fonts -->
     <link
       rel="preload"
       as="font"
       type="font/otf"
       href="/fonts/TWKLausanne-300.otf"
-      crossorigin
+      crossorigin="anonymous"
     />
     <link
       rel="preload"
       as="font"
       type="font/otf"
       href="/fonts/TWKLausanne-500.otf"
-      crossorigin
+      crossorigin="anonymous"
     />
     <link
       rel="preload"
       as="font"
       type="font/otf"
       href="/fonts/TWKLausanne-700.otf"
-      crossorigin
+      crossorigin="anonymous"
     />
 
     <!-- Google Tag Manager -->
@@ -86,13 +97,13 @@
     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','GTM-WPKVXLPX');</script>
     <!-- End Google Tag Manager -->
-
-
-    <!-- 
-    <link rel="preconnect" href="https://fonts.cdnfonts.com" />
-    <link rel="stylesheet" href="https://fonts.cdnfonts.com/css/satoshi" /> -->
   </head>
   <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WPKVXLPX"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
 

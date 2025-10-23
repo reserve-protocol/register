@@ -71,55 +71,55 @@ export default defineConfig({
         manualChunks: (id) => {
           // Skip non-node_modules
           if (!id.includes('node_modules')) {
-            return undefined;
+            return undefined
           }
 
           // Core React dependencies
           if (id.includes('react-dom')) {
-            return 'react-dom';
+            return 'react-dom'
           }
           if (id.includes('react') && !id.includes('react-')) {
-            return 'react';
+            return 'react'
           }
 
           // Large libraries that should be separate
           if (id.includes('@rainbow-me/rainbowkit')) {
-            return 'rainbowkit';
+            return 'rainbowkit'
           }
           if (id.includes('wagmi') || id.includes('@wagmi')) {
-            return 'wagmi';
+            return 'wagmi'
           }
           if (id.includes('viem')) {
-            return 'viem';
+            return 'viem'
           }
           if (id.includes('@walletconnect')) {
-            return 'walletconnect';
+            return 'walletconnect'
           }
           if (id.includes('@coinbase/wallet-sdk')) {
-            return 'coinbase';
+            return 'coinbase'
           }
 
           // UI libraries
           if (id.includes('@radix-ui')) {
-            return 'radix-ui';
+            return 'radix-ui'
           }
           if (id.includes('recharts')) {
-            return 'charts';
+            return 'charts'
           }
 
           // Other vendor libs
           if (id.includes('ethers')) {
-            return 'ethers';
+            return 'ethers'
           }
           if (id.includes('@tanstack')) {
-            return 'tanstack';
+            return 'tanstack'
           }
           if (id.includes('jotai')) {
-            return 'jotai';
+            return 'jotai'
           }
-        }
-      }
-    }
+        },
+      },
+    },
   },
   resolve: {
     alias: {
@@ -143,15 +143,10 @@ export default defineConfig({
     esbuildOptions: {
       target: 'es2020',
       // Help with tree shaking
-      treeShaking: true
-    }
+      treeShaking: true,
+    },
   },
   server: {
     port: 3000,
-  },
-  test: {
-    include: ['src/lib/**/*.test.{ts,.tsx}'],
-    globals: true,
-    environment: 'node',
   },
 })

@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/react'
 import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
 import { useEffect } from 'react'
 import {
@@ -14,7 +15,6 @@ import Layout from './components/layout'
 import { Toaster } from './components/ui/sonner'
 import LanguageProvider from './i18n'
 import { theme } from './theme'
-import * as Sentry from '@sentry/react'
 
 mixpanel.init(import.meta.env.VITE_MIXPANEL_KEY || 'mixpanel_key', {
   track_pageview: true,
@@ -42,30 +42,15 @@ const ScrollToTop = () => {
   const { pathname } = useLocation()
 
   useEffect(() => {
-    document.getElementById('app-container')?.scrollTo(0, 0)
+    if (pathname !== '/') {
+      document.getElementById('app-container')?.scrollTo(0, 0)
+    }
   }, [pathname])
 
   return null
 }
 
-const handleError = (error: Error) => {
-  if (
-    error.message.includes('Failed to fetch dynamically imported module') ||
-    error.message.includes('Importing a module script failed')
-  ) {
-    window.location.reload()
-  } else {
-    console.error(error)
-  }
-}
-
-function FallbackUI({
-  error,
-  resetErrorBoundary,
-}: {
-  error: Error
-  resetErrorBoundary: () => void
-}) {
+function FallbackUI({ error }: { error: Error }) {
   useEffect(() => {
     if (
       error.message.includes('Failed to fetch dynamically imported module') ||
@@ -104,9 +89,7 @@ function FallbackUI({
  */
 const App = () => (
   <Sentry.ErrorBoundary
-    fallback={({ error, resetError }) => (
-      <FallbackUI error={error as Error} resetErrorBoundary={resetError} />
-    )}
+    fallback={({ error }) => <FallbackUI error={error as Error} />}
   >
     <Router>
       <Redirects />
