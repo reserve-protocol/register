@@ -232,20 +232,28 @@ const DTFCarouselSimple = ({ dtfs, isLoading }: DTFCarouselSimpleProps) => {
               {/* Pre-render ALL cards to avoid loading skeletons */}
               {dtfs.map((dtf, index) => {
                 const relativePosition = index - currentIndex
-                const isVisible = relativePosition >= 0 && relativePosition < 4
                 const isTopCard = relativePosition === 0
+
+                // Only show max 3 cards in stack, hide the rest
+                const maxStackDepth = 3
+                const isInStack = relativePosition >= 0 && relativePosition <= maxStackDepth
+                const isPastStack = relativePosition > maxStackDepth
 
                 // Calculate animation values based on relative position
                 const topOffset = relativePosition < 0
                   ? -800 // Card has been scrolled past
-                  : relativePosition * -CARD_OFFSET // Card in stack
+                  : isPastStack
+                  ? maxStackDepth * -CARD_OFFSET // Hidden behind the stack
+                  : relativePosition * -CARD_OFFSET // Card in visible stack
 
                 const scaleValue = relativePosition < 0
                   ? 0.82
+                  : isPastStack
+                  ? 1 - maxStackDepth * SCALE_FACTOR // Same scale as deepest visible card
                   : 1 - relativePosition * SCALE_FACTOR
 
                 const zIndexValue = totalCards - index
-                const opacityValue = relativePosition < 0 ? 0 : 1
+                const opacityValue = relativePosition < 0 ? 0 : isPastStack ? 0 : 1
 
                 return (
                   <motion.div
