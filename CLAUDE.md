@@ -719,6 +719,22 @@ src/
 - Yield DTFs: `reserve-subgraph`
 - Index DTFs: `dtf-index-subgraph`
 
+**Subgraph Queries** (Index DTFs):
+
+When asked to do "subgraph queries", refer to the comprehensive documentation:
+- `/docs/subgraph/dtf-index-subgraph.md` - Complete schema, entities, and query patterns
+- `/docs/subgraph/query-builder-guide.md` - Query construction guide
+
+Quick reference for multichain queries:
+```typescript
+// Supported chains for Index DTF subgraph
+const chains = [ChainId.Base, ChainId.Mainnet, ChainId.BSC]
+// Note: Arbitrum is DEPRECATED for Index DTFs
+
+// Use the INDEX_GRAPH_CLIENTS for queries
+import { INDEX_GRAPH_CLIENTS } from '@/state/chain/atoms/chainAtoms'
+```
+
 ## External Integrations
 
 ### CoWSwap
@@ -914,6 +930,8 @@ queryClient.invalidateQueries(['queryKey'])
 - `/docs/specs/rebalance-v4-specification.md`
 - `/docs/specs/index-dtf-governance-and-proposal.md`
 - `/docs/architecture/*.md`
+- `/docs/subgraph/dtf-index-subgraph.md` - Complete DTF Index Subgraph schema documentation
+- `/docs/subgraph/query-builder-guide.md` - GraphQL query builder guide for LLMs
 
 ### Repositories
 

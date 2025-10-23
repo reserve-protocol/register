@@ -11,7 +11,7 @@ import Settings from '@/views/yield-dtf/settings'
 import Staking from '@/views/yield-dtf/staking'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import RTokenContainer from 'state/rtoken/RTokenContainer'
-import { GOVERNANCE_PROPOSAL_TYPES, ROUTES } from 'utils/constants'
+import { GOVERNANCE_PROPOSAL_TYPES, ROUTES, RSR } from 'utils/constants'
 import Bridge from 'views/bridge'
 import EarnWrapper from 'views/earn'
 import Explorer from 'views/explorer'
@@ -42,6 +42,7 @@ import IndexDTFSettings from './views/index-dtf/settings'
 import AllYieldDTFList from './views/tokens/Tokens'
 import InternalDTFList from './views/internal/dtf-list'
 import IndexDTFFactsheet from './views/index-dtf/factsheet'
+import RSRView from './views/rsr'
 
 // TODO: Fix recoll call on yield dtf auction page
 const AppRoutes = () => (
@@ -55,6 +56,7 @@ const AppRoutes = () => (
     <Route path={ROUTES.DEPLOY_INDEX} element={<DeployComingSoon />} />
     <Route path={'/hidden/deploy'} element={<DeployIndexDTF />} />
     <Route path={ROUTES.TOKENS} element={<AllYieldDTFList />} />
+    <Route path={'/rsr'} element={<RSRView />} />
     {/* Yield DTF */}
     <Route path={`/:chain/token/:tokenId`} element={<RTokenContainer />}>
       <Route index element={<Navigate replace to={ROUTES.OVERVIEW} />} />
