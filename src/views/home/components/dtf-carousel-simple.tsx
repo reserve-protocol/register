@@ -14,75 +14,111 @@ const DTFCarouselSimple = ({ dtfs, isLoading }: DTFCarouselSimpleProps) => {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isTransitioning, setIsTransitioning] = useState(false)
   const [scrollDirection, setScrollDirection] = useState<'up' | 'down' | null>(null)
+  const [viewportHeight, setViewportHeight] = useState(800) // Default fallback
   const containerRef = useRef<HTMLDivElement>(null)
   const totalCards = dtfs.length
 
   // Configuration
-  const SCROLL_PER_CARD = 80 // vh per card
+  const SCROLL_PER_CARD = 200 // Balanced scroll space per card
   const CARD_HEIGHT = 720
   const CARD_OFFSET = 15 // Vertical spacing between stacked cards (smaller for tighter stack)
   const SCALE_FACTOR = 0.06 // How much each card scales down (matching reference)
+  const SCROLL_THRESHOLD = 100 // Pixels needed to trigger card change
 
   // Handle scroll with proper hijacking
   useEffect(() => {
     if (!containerRef.current || totalCards === 0) return
 
     let accumulatedScroll = 0
-    const SCROLL_THRESHOLD = 100 // pixels needed to trigger card change
+    let lastScrollTime = Date.now()
 
     const handleWheel = (e: WheelEvent) => {
       if (!containerRef.current) return
 
       const rect = containerRef.current.getBoundingClientRect()
-      const isInView = rect.top <= 0 && rect.bottom >= window.innerHeight
-
-      // Check if we're at boundaries and should allow normal scroll
-      const atFirstCard = currentIndex === 0
-      const atLastCard = currentIndex === totalCards - 1
+      const isSticky = rect.top <= 0
       const scrollingUp = e.deltaY < 0
       const scrollingDown = e.deltaY > 0
 
-      // Allow normal scroll at boundaries
-      if ((atFirstCard && scrollingUp) || (atLastCard && scrollingDown)) {
-        // Don't prevent default - allow normal scrolling
-        return
-      }
+      // Check if we're at boundaries
+      const atFirstCard = currentIndex === 0
+      const atLastCard = currentIndex === totalCards - 1
 
-      // Only hijack if in view and not transitioning
-      if (isInView && !isTransitioning) {
+      // ALWAYS hijack scroll when sticky is active UNLESS at boundaries
+      if (isSticky) {
+        // Handle boundary releases with PROPER scroll position adjustment
+        if (atFirstCard && scrollingUp) {
+          // Don't accumulate or prevent - just let scroll happen naturally
+          // The container start is where hero ends, so just release control
+          return // Release scroll control
+        }
+
+        if (atLastCard && scrollingDown) {
+          // Jump to near the end of the ENTIRE document to show footer immediately
+          const documentHeight = document.documentElement.scrollHeight
+          const windowHeight = window.innerHeight
+          const currentScrollY = window.scrollY
+
+          // Position viewport so footer is just coming into view
+          const targetScrollY = documentHeight - windowHeight - 100
+
+          console.log('Jumping from', currentScrollY, 'to', targetScrollY)
+
+          // Use scrollTo with immediate behavior
+          window.scrollTo(0, targetScrollY)
+
+          // Double-check it worked
+          setTimeout(() => {
+            const newScrollY = window.scrollY
+            console.log('After jump, scroll is at:', newScrollY)
+          }, 10)
+
+          return // Release scroll control
+        }
+
+        // Not at boundaries - hijack scroll for card navigation
         e.preventDefault()
         e.stopPropagation()
 
-        // Accumulate scroll
-        accumulatedScroll += e.deltaY
+        // Reset accumulator if too much time has passed
+        const currentTime = Date.now()
+        if (currentTime - lastScrollTime > 500) {
+          accumulatedScroll = 0
+        }
+        lastScrollTime = currentTime
 
-        // Check if we should change card
-        if (Math.abs(accumulatedScroll) >= SCROLL_THRESHOLD) {
-          if (scrollingDown && currentIndex < totalCards - 1) {
-            // Scroll down - next card
-            setIsTransitioning(true)
-            setScrollDirection('down')
-            setCurrentIndex(prev => prev + 1)
-            accumulatedScroll = 0
+        // IMPORTANT: Only accumulate if not transitioning to prevent multiple jumps
+        if (!isTransitioning) {
+          accumulatedScroll += e.deltaY
 
-            setTimeout(() => {
-              setIsTransitioning(false)
-              setScrollDirection(null)
-            }, 500)
-          } else if (scrollingUp && currentIndex > 0) {
-            // Scroll up - previous card
-            setIsTransitioning(true)
-            setScrollDirection('up')
-            setCurrentIndex(prev => prev - 1)
-            accumulatedScroll = 0
+          // Check if we should change card (ONE at a time)
+          if (Math.abs(accumulatedScroll) >= SCROLL_THRESHOLD) {
+            if (scrollingDown && currentIndex < totalCards - 1) {
+              // Scroll down - next card ONLY
+              setIsTransitioning(true)
+              setScrollDirection('down')
+              setCurrentIndex(prev => prev + 1)
+              accumulatedScroll = 0 // Reset immediately
 
-            setTimeout(() => {
-              setIsTransitioning(false)
-              setScrollDirection(null)
-            }, 500)
-          } else {
-            // Reset accumulator if can't move
-            accumulatedScroll = 0
+              setTimeout(() => {
+                setIsTransitioning(false)
+                setScrollDirection(null)
+              }, 500)
+            } else if (scrollingUp && currentIndex > 0) {
+              // Scroll up - previous card ONLY
+              setIsTransitioning(true)
+              setScrollDirection('up')
+              setCurrentIndex(prev => prev - 1)
+              accumulatedScroll = 0 // Reset immediately
+
+              setTimeout(() => {
+                setIsTransitioning(false)
+                setScrollDirection(null)
+              }, 500)
+            } else {
+              // At boundary, reset accumulator
+              accumulatedScroll = 0
+            }
           }
         }
       }
@@ -133,6 +169,16 @@ const DTFCarouselSimple = ({ dtfs, isLoading }: DTFCarouselSimpleProps) => {
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [currentIndex, totalCards, isTransitioning, goToCard])
 
+  // Set viewport height on mount and resize
+  useEffect(() => {
+    const updateViewportHeight = () => {
+      setViewportHeight(window.innerHeight)
+    }
+    updateViewportHeight()
+    window.addEventListener('resize', updateViewportHeight)
+    return () => window.removeEventListener('resize', updateViewportHeight)
+  }, [])
+
   // Preload ALL images on mount for smooth transitions
   useEffect(() => {
     // Preload all DTF images immediately
@@ -145,29 +191,23 @@ const DTFCarouselSimple = ({ dtfs, isLoading }: DTFCarouselSimpleProps) => {
     })
   }, [dtfs])
 
-  if (isLoading) {
-    return (
-      <div style={{ height: `${CARD_HEIGHT}px` }} className="flex items-center justify-center">
-        <div className="text-muted-foreground">Loading DTFs...</div>
-      </div>
-    )
+  // Always render the container to prevent layout jumps
+  // If no DTFs yet, render with minimum height
+  if (!dtfs || dtfs.length === 0) {
+    return <div style={{ height: `${viewportHeight}px` }} />
   }
 
-  if (dtfs.length === 0) {
-    return (
-      <div style={{ height: `${CARD_HEIGHT}px` }} className="flex items-center justify-center">
-        <div className="text-muted-foreground">No DTFs available</div>
-      </div>
-    )
-  }
-
-  const containerHeight = (totalCards - 1) * SCROLL_PER_CARD + 50
+  // Calculate container height with LARGE buffer to ensure hijacking never breaks
+  // We'll manually adjust scroll position when releasing to avoid dead space
+  const INITIAL_SCROLL_BUFFER = 400 // Extra space before cards start changing
+  const END_BUFFER = 5000 // Large buffer to ensure we never exit prematurely
+  const containerHeight = viewportHeight + INITIAL_SCROLL_BUFFER + (totalCards * SCROLL_PER_CARD) + END_BUFFER
 
   return (
     <section
       ref={containerRef}
       className="relative"
-      style={{ height: `${containerHeight}vh` }}
+      style={{ height: `${containerHeight}px` }}
     >
       {/* Sticky wrapper */}
       <div className="sticky top-0 w-full h-screen">
