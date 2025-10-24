@@ -45,7 +45,7 @@ export const useBasketOverviewData = () => {
     return Object.fromEntries(
       [...(exposureGroups?.values() ?? [])].flatMap((group: ExposureGroup) => {
         return group.tokens.map((token) => {
-          return [token.address.toLowerCase(), group.change ?? 0]
+          return [token.address.toLowerCase(), token?.change ?? 0]
         })
       })
     )
