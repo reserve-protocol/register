@@ -5,24 +5,7 @@ import { TimeRange } from '@/types'
 import { formatMarketCap } from '@/utils'
 import { useAtomValue } from 'jotai'
 import { PerformanceCell } from './performance-cell'
-
-export interface ExposureGroup {
-  native?: {
-    symbol: string
-    name: string
-    logo: string
-    coingeckoId?: string
-  }
-  tokens: Array<{
-    address: string
-    symbol: string
-    name?: string
-    weight: number
-  }>
-  totalWeight: number
-  change?: number | null
-  hasNewlyAdded?: boolean
-}
+import { ExposureGroup } from '@/state/dtf/atoms'
 
 interface ExposureTableRowsProps {
   exposureGroups: Map<string, ExposureGroup> | Array<[string, ExposureGroup]>

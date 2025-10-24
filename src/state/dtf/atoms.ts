@@ -86,6 +86,7 @@ export type ExposureToken = {
   name?: string
   weight: number
   bridge?: Bridge
+  change?: number
 }
 
 export type ExposureGroup = {
