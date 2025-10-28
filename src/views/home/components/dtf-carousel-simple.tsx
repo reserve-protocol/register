@@ -12,186 +12,225 @@ interface DTFCarouselSimpleProps {
 
 const DTFCarouselSimple = ({ dtfs, isLoading }: DTFCarouselSimpleProps) => {
   const [currentIndex, setCurrentIndex] = useState(0)
-  const [isTransitioning, setIsTransitioning] = useState(false)
+  const [isCarouselActive, setIsCarouselActive] = useState(false)
   const [scrollDirection, setScrollDirection] = useState<'up' | 'down' | null>(
     null
   )
-  const [viewportHeight, setViewportHeight] = useState(800) // Default fallback
   const containerRef = useRef<HTMLDivElement>(null)
+  const wrapperRef = useRef<HTMLDivElement>(null)
   const totalCards = dtfs.length
 
+  // Mutable refs for scroll handling (avoid stale closures)
+  const scrollAccumulator = useRef(0)
+  const lastScrollTime = useRef(Date.now())
+  const isScrollbarDragging = useRef(false)
+  const transitionTimeout = useRef<NodeJS.Timeout | null>(null)
+  const isTransitioning = useRef(false)
+  const alignmentTimeout = useRef<NodeJS.Timeout | null>(null)
+
   // Configuration
-  const SCROLL_PER_CARD = 200 // Balanced scroll space per card
+  const HEADER_HEIGHT = 72 // Desktop header height
   const CARD_HEIGHT = 720
-  const CARD_OFFSET = 15 // Vertical spacing between stacked cards (smaller for tighter stack)
-  const SCALE_FACTOR = 0.06 // How much each card scales down (matching reference)
-  const SCROLL_THRESHOLD = 100 // Pixels needed to trigger card change
+  const CARD_OFFSET = 20 // Vertical spacing between stacked cards
+  const SCALE_FACTOR = 0.05 // How much each card scales down
+  const SCROLL_THRESHOLD = 50 // Pixels needed to trigger card change
+  const TRANSITION_DURATION = 500 // ms for card transition
+  const ALIGNMENT_THRESHOLD = 50 // px threshold for auto-alignment
 
-  // ============================================================================
-  // 🔴 CORE SCROLL HIJACKING LOGIC - WHERE THE MAGIC HAPPENS
-  // ============================================================================
+
+  // Simple scroll-based activation
   useEffect(() => {
-    if (!containerRef.current || totalCards === 0) return
+    const checkVisibility = () => {
+      if (!wrapperRef.current) return
 
-    // 🔴 PROBLEM: These variables are recreated on every render, causing stale closure issues
-    // The accumulator will reset when the component re-renders (when currentIndex changes)
-    let accumulatedScroll = 0
-    let lastScrollTime = Date.now()
+      const rect = wrapperRef.current.getBoundingClientRect()
 
+      // Activate when wrapper top reaches the header (is at top of viewport)
+      // AND hasn't scrolled past (bottom is still visible)
+      const shouldActivate =
+        rect.top <= HEADER_HEIGHT &&
+        rect.bottom > window.innerHeight / 2 // At least half visible
+
+      console.log('Visibility check:', {
+        top: rect.top,
+        bottom: rect.bottom,
+        shouldActivate,
+        isActive: isCarouselActive
+      })
+
+      if (shouldActivate && !isCarouselActive) {
+        console.log('🟢 Activating carousel!')
+        setIsCarouselActive(true)
+      } else if (!shouldActivate && isCarouselActive) {
+        console.log('🔴 Deactivating carousel')
+        setIsCarouselActive(false)
+        scrollAccumulator.current = 0
+      }
+    }
+
+    // Listen to scroll events on the app container
+    const appContainer = document.getElementById('app-container')
+    appContainer?.addEventListener('scroll', checkVisibility, { passive: true })
+
+    // Check on mount and resize
+    checkVisibility()
+    window.addEventListener('resize', checkVisibility)
+
+    return () => {
+      appContainer?.removeEventListener('scroll', checkVisibility)
+      window.removeEventListener('resize', checkVisibility)
+    }
+  }, [isCarouselActive])
+
+  // Wheel event handler
+  useEffect(() => {
     const handleWheel = (e: WheelEvent) => {
-      if (!containerRef.current) return
+      console.log('Wheel event captured:', { isCarouselActive, deltaY: e.deltaY })
 
-      const rect = containerRef.current.getBoundingClientRect()
-      // 🔴 ISSUE: Only checking rect.top <= 0 isn't enough - should also check rect.bottom
-      const isSticky = rect.top <= 0
-      const scrollingUp = e.deltaY < 0
+      // Only intercept if carousel is active
+      if (!isCarouselActive || isScrollbarDragging.current) {
+        return
+      }
+
+      console.log('🎯 Intercepting wheel event!')
+
       const scrollingDown = e.deltaY > 0
+      const scrollingUp = e.deltaY < 0
 
-      // Check if we're at boundaries
+      // Check boundaries
       const atFirstCard = currentIndex === 0
       const atLastCard = currentIndex === totalCards - 1
 
-      // ALWAYS hijack scroll when sticky is active UNLESS at boundaries
-      if (isSticky) {
-        // Handle boundary releases with PROPER scroll position adjustment
-        if (atFirstCard && scrollingUp) {
-          // Don't accumulate or prevent - just let scroll happen naturally
-          // The container start is where hero ends, so just release control
-          return // Release scroll control
-        }
+      // Release control at boundaries
+      if ((atFirstCard && scrollingUp) || (atLastCard && scrollingDown)) {
+        // Let the page scroll normally
+        return
+      }
+      // Prevent default scroll
+      e.preventDefault()
+      e.stopPropagation()
 
-        // 🔴 PROBLEM: This creates a jarring jump to footer
-        if (atLastCard && scrollingDown) {
-          // Jump to near the end of the ENTIRE document to show footer immediately
-          const documentHeight = document.documentElement.scrollHeight
-          const windowHeight = window.innerHeight
-          const currentScrollY = window.scrollY
+      // Reset accumulator if too much time has passed
+      const currentTime = Date.now()
+      if (currentTime - lastScrollTime.current > 500) {
+        scrollAccumulator.current = 0
+      }
+      lastScrollTime.current = currentTime
 
-          // Position viewport so footer is just coming into view
-          const targetScrollY = documentHeight - windowHeight - 100
+      // Only accumulate if not transitioning
+      if (!isTransitioning.current) {
+        scrollAccumulator.current += e.deltaY
 
-          // 🔴 DEBUG: These console.logs should be removed in production
-          console.log('Jumping from', currentScrollY, 'to', targetScrollY)
+        // Check if we should change card
+        if (Math.abs(scrollAccumulator.current) >= SCROLL_THRESHOLD) {
+          if (scrollingDown && currentIndex < totalCards - 1) {
+            // Next card
+            isTransitioning.current = true
+            setScrollDirection('down')
+            setCurrentIndex(prev => prev + 1)
+            scrollAccumulator.current = 0
 
-          // Use scrollTo with immediate behavior
-          window.scrollTo(0, targetScrollY)
+            if (transitionTimeout.current) clearTimeout(transitionTimeout.current)
+            transitionTimeout.current = setTimeout(() => {
+              isTransitioning.current = false
+              setScrollDirection(null)
+            }, TRANSITION_DURATION)
+          } else if (scrollingUp && currentIndex > 0) {
+            // Previous card
+            isTransitioning.current = true
+            setScrollDirection('up')
+            setCurrentIndex(prev => prev - 1)
+            scrollAccumulator.current = 0
 
-          // Double-check it worked
-          setTimeout(() => {
-            const newScrollY = window.scrollY
-            console.log('After jump, scroll is at:', newScrollY)
-          }, 10)
-
-          return // Release scroll control
-        }
-
-        // Not at boundaries - hijack scroll for card navigation
-        e.preventDefault() // 🔴 CRITICAL: Prevents native scrolling
-        e.stopPropagation()
-
-        // Reset accumulator if too much time has passed
-        // 🔴 This prevents small scroll movements from accumulating over time
-        const currentTime = Date.now()
-        if (currentTime - lastScrollTime > 500) {
-          accumulatedScroll = 0
-        }
-        lastScrollTime = currentTime
-
-        // IMPORTANT: Only accumulate if not transitioning to prevent multiple jumps
-        if (!isTransitioning) {
-          // 🔴 Accumulator pattern: Collect scroll deltas until threshold is reached
-          accumulatedScroll += e.deltaY
-
-          // Check if we should change card (ONE at a time)
-          if (Math.abs(accumulatedScroll) >= SCROLL_THRESHOLD) {
-            if (scrollingDown && currentIndex < totalCards - 1) {
-              // Scroll down - next card ONLY
-              setIsTransitioning(true)
-              setScrollDirection('down')
-              setCurrentIndex((prev) => prev + 1)
-              accumulatedScroll = 0 // Reset immediately
-
-              setTimeout(() => {
-                setIsTransitioning(false)
-                setScrollDirection(null)
-              }, 500)
-            } else if (scrollingUp && currentIndex > 0) {
-              // Scroll up - previous card ONLY
-              setIsTransitioning(true)
-              setScrollDirection('up')
-              setCurrentIndex((prev) => prev - 1)
-              accumulatedScroll = 0 // Reset immediately
-
-              setTimeout(() => {
-                setIsTransitioning(false)
-                setScrollDirection(null)
-              }, 500)
-            } else {
-              // At boundary, reset accumulator
-              accumulatedScroll = 0
-            }
+            if (transitionTimeout.current) clearTimeout(transitionTimeout.current)
+            transitionTimeout.current = setTimeout(() => {
+              isTransitioning.current = false
+              setScrollDirection(null)
+            }, TRANSITION_DURATION)
           }
         }
       }
     }
 
-    // 🔴 CRITICAL: passive: false allows preventDefault() to work
-    // Without this, the browser would scroll the page while we're trying to control the carousel
-    window.addEventListener('wheel', handleWheel, { passive: false })
+    // Add to both window and app-container to ensure we catch the events
+    const appContainer = document.getElementById('app-container')
+
+    window.addEventListener('wheel', handleWheel, { passive: false, capture: true })
+    appContainer?.addEventListener('wheel', handleWheel, { passive: false, capture: true })
 
     return () => {
-      window.removeEventListener('wheel', handleWheel)
+      window.removeEventListener('wheel', handleWheel, { capture: true })
+      appContainer?.removeEventListener('wheel', handleWheel, { capture: true })
     }
-  }, [currentIndex, totalCards, isTransitioning]) // 🔴 PROBLEM: Dependencies cause event listener to re-attach on every state change
+  }, [isCarouselActive, currentIndex, totalCards])
+
+  // Detect scrollbar dragging
+  useEffect(() => {
+    const handleMouseDown = (e: MouseEvent) => {
+      // Check if clicking on scrollbar (rough detection)
+      const windowWidth = window.innerWidth
+      const scrollbarWidth = windowWidth - document.documentElement.clientWidth
+
+      if (e.clientX >= windowWidth - scrollbarWidth - 20) {
+        isScrollbarDragging.current = true
+      }
+    }
+
+    const handleMouseUp = () => {
+      isScrollbarDragging.current = false
+    }
+
+    window.addEventListener('mousedown', handleMouseDown)
+    window.addEventListener('mouseup', handleMouseUp)
+
+    return () => {
+      window.removeEventListener('mousedown', handleMouseDown)
+      window.removeEventListener('mouseup', handleMouseUp)
+    }
+  }, [])
 
   // Manual navigation
   const goToCard = useCallback(
     (index: number) => {
-      if (index >= 0 && index < totalCards && !isTransitioning) {
-        setIsTransitioning(true)
+      if (index >= 0 && index < totalCards && !isTransitioning.current) {
+        isTransitioning.current = true
         setScrollDirection(index > currentIndex ? 'down' : 'up')
         setCurrentIndex(index)
 
-        setTimeout(() => {
-          setIsTransitioning(false)
+        if (transitionTimeout.current) clearTimeout(transitionTimeout.current)
+        transitionTimeout.current = setTimeout(() => {
+          isTransitioning.current = false
           setScrollDirection(null)
-        }, 500)
+        }, TRANSITION_DURATION)
       }
     },
-    [currentIndex, totalCards, isTransitioning]
+    [currentIndex, totalCards]
   )
 
   // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (!containerRef.current) return
+      if (!isCarouselActive || isTransitioning.current) return
 
-      const rect = containerRef.current.getBoundingClientRect()
-      const isInView = rect.top <= 0 && rect.bottom >= window.innerHeight
-
-      if (isInView && !isTransitioning) {
-        if (e.key === 'ArrowDown' && currentIndex < totalCards - 1) {
-          e.preventDefault()
-          goToCard(currentIndex + 1)
-        } else if (e.key === 'ArrowUp' && currentIndex > 0) {
-          e.preventDefault()
-          goToCard(currentIndex - 1)
-        }
+      if (e.key === 'ArrowDown' && currentIndex < totalCards - 1) {
+        e.preventDefault()
+        goToCard(currentIndex + 1)
+      } else if (e.key === 'ArrowUp' && currentIndex > 0) {
+        e.preventDefault()
+        goToCard(currentIndex - 1)
       }
     }
 
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [currentIndex, totalCards, isTransitioning, goToCard])
+  }, [isCarouselActive, currentIndex, totalCards, goToCard])
 
-  // Set viewport height on mount and resize
+  // Cleanup timeouts on unmount
   useEffect(() => {
-    const updateViewportHeight = () => {
-      setViewportHeight(window.innerHeight)
+    return () => {
+      if (transitionTimeout.current) clearTimeout(transitionTimeout.current)
+      if (alignmentTimeout.current) clearTimeout(alignmentTimeout.current)
     }
-    updateViewportHeight()
-    window.addEventListener('resize', updateViewportHeight)
-    return () => window.removeEventListener('resize', updateViewportHeight)
   }, [])
 
   // Preload ALL images on mount for smooth transitions
@@ -206,30 +245,38 @@ const DTFCarouselSimple = ({ dtfs, isLoading }: DTFCarouselSimpleProps) => {
     })
   }, [dtfs])
 
+  // State for viewport height
+  const [wrapperHeight, setWrapperHeight] = useState(0)
+
+  // Update wrapper height on mount and resize
+  useEffect(() => {
+    const updateHeight = () => {
+      const height = window.innerHeight - HEADER_HEIGHT
+      setWrapperHeight(height)
+    }
+
+    updateHeight()
+    window.addEventListener('resize', updateHeight)
+    return () => window.removeEventListener('resize', updateHeight)
+  }, [])
+
   // Always render the container to prevent layout jumps
   // If no DTFs yet, render with minimum height
   if (!dtfs || dtfs.length === 0) {
-    return <div style={{ height: `${viewportHeight}px` }} />
+    return <div style={{ height: `${wrapperHeight || 800}px` }} />
   }
-
-  // Calculate container height with LARGE buffer to ensure hijacking never breaks
-  // We'll manually adjust scroll position when releasing to avoid dead space
-  const INITIAL_SCROLL_BUFFER = 400 // Extra space before cards start changing
-  const END_BUFFER = 5000 // 🔴 PROBLEM: This creates massive dead space at the end
-  const containerHeight =
-    viewportHeight +
-    INITIAL_SCROLL_BUFFER +
-    totalCards * SCROLL_PER_CARD +
-    END_BUFFER
 
   return (
     <section
       ref={containerRef}
       className="relative"
-      style={{ height: `${containerHeight}px` }}
     >
-      {/* 🔴 Sticky wrapper: This stays fixed at top of viewport while user scrolls through container height */}
-      <div className="sticky top-0 w-full h-screen">
+      {/* Wrapper that will be tracked for visibility */}
+      <div
+        ref={wrapperRef}
+        className="relative w-full"
+        style={{ height: `${wrapperHeight || 800}px` }}
+      >
         {/* Cards Container */}
         <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
           <div
@@ -253,7 +300,7 @@ const DTFCarouselSimple = ({ dtfs, isLoading }: DTFCarouselSimpleProps) => {
                 const isPastStack = relativePosition > maxStackDepth
 
                 // Calculate animation values based on relative position
-                const bottomOffset =
+                const yOffset =
                   relativePosition < 0
                     ? 800 // Card has been scrolled past (move down out of view)
                     : isPastStack
@@ -262,46 +309,46 @@ const DTFCarouselSimple = ({ dtfs, isLoading }: DTFCarouselSimpleProps) => {
 
                 const scaleValue =
                   relativePosition < 0
-                    ? 0.82
+                    ? 0.85
                     : isPastStack
                       ? 1 - maxStackDepth * SCALE_FACTOR // Same scale as deepest visible card
                       : 1 - relativePosition * SCALE_FACTOR
 
-                const zIndexValue = totalCards - index // 🔴 PROBLEM: This makes cards with lower index have higher z-index (backwards)
+                // Fixed z-index: higher index = higher z-index (cards on top of stack have higher index)
+                const zIndexValue = totalCards - relativePosition
                 const opacityValue =
                   relativePosition < 0 ? 0 : isPastStack ? 0 : 1
 
                 return (
                   <motion.div
-                    key={dtf.address} // Stable key based on DTF id, not index
+                    key={dtf.address} // Stable key based on DTF address
                     className="absolute inset-0"
                     initial={false} // Prevent initial animation on mount
                     animate={{
-                      y: bottomOffset,
+                      y: yOffset,
                       scale: scaleValue,
                       opacity: opacityValue,
                     }}
                     transition={{
                       y: {
                         type: 'spring',
-                        stiffness: 260,
-                        damping: 20,
-                        mass: 0.8,
+                        stiffness: 300,
+                        damping: 30,
+                        mass: 1,
                       },
                       scale: {
                         type: 'spring',
-                        stiffness: 260,
-                        damping: 20,
-                        mass: 0.8,
+                        stiffness: 300,
+                        damping: 30,
+                        mass: 1,
                       },
-                      opacity: { duration: 0.3, ease: 'easeOut' },
+                      opacity: { duration: 0.2, ease: 'easeInOut' },
                     }}
                     style={{
                       transformOrigin: 'bottom center',
                       pointerEvents: isTopCard ? 'auto' : 'none',
-                      willChange: 'auto',
+                      willChange: 'transform, opacity',
                       zIndex: zIndexValue,
-                      transform: 'translateZ(0)', // Force GPU acceleration
                     }}
                   >
                     <DTFHomeCardFixed dtf={dtf} />
@@ -312,14 +359,21 @@ const DTFCarouselSimple = ({ dtfs, isLoading }: DTFCarouselSimpleProps) => {
           </div>
         </div>
 
-        {/* Scroll hint */}
+        {/* Debug indicator */}
+        {isCarouselActive && (
+          <div className="fixed top-24 left-4 bg-green-500 text-white p-2 rounded z-50">
+            Carousel Active - Card {currentIndex + 1}/{totalCards}
+          </div>
+        )}
+
+        {/* Scroll hint - Show when carousel is active */}
         <AnimatePresence>
-          {currentIndex === 0 && (
+          {isCarouselActive && currentIndex === 0 && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="absolute bottom-20 left-1/2 -translate-x-1/2 text-center"
+              className="fixed bottom-20 left-1/2 -translate-x-1/2 text-center z-50"
             >
               <div className="text-xs text-muted-foreground mb-2">
                 Scroll to explore
@@ -333,6 +387,25 @@ const DTFCarouselSimple = ({ dtfs, isLoading }: DTFCarouselSimpleProps) => {
             </motion.div>
           )}
         </AnimatePresence>
+
+        {/* Navigation dots indicator */}
+        {isCarouselActive && (
+          <div className="fixed bottom-8 left-1/2 -translate-x-1/2 flex gap-2 z-50">
+            {dtfs.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => goToCard(index)}
+                className={cn(
+                  "w-2 h-2 rounded-full transition-all",
+                  index === currentIndex
+                    ? "bg-primary w-6"
+                    : "bg-muted-foreground/30 hover:bg-muted-foreground/50"
+                )}
+                aria-label={`Go to card ${index + 1}`}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </section>
   )
