@@ -27,6 +27,8 @@ const DTFCarouselSimple = ({ dtfs, isLoading }: DTFCarouselSimpleProps) => {
   const transitionTimeout = useRef<NodeJS.Timeout | null>(null)
   const isTransitioning = useRef(false)
   const alignmentTimeout = useRef<NodeJS.Timeout | null>(null)
+  const boundaryReleaseTimeout = useRef<NodeJS.Timeout | null>(null)
+  const isTryingToScrollPastBoundary = useRef(false)
 
   // Configuration
   const HEADER_HEIGHT = 72 // Desktop header height
@@ -38,33 +40,55 @@ const DTFCarouselSimple = ({ dtfs, isLoading }: DTFCarouselSimpleProps) => {
   const ALIGNMENT_THRESHOLD = 50 // px threshold for auto-alignment
 
 
+  // Store scroll position when carousel becomes active
+  const lockedScrollPosition = useRef<number | null>(null)
+
   // Simple scroll-based activation
   useEffect(() => {
     const checkVisibility = () => {
       if (!wrapperRef.current) return
 
+      const appContainer = document.getElementById('app-container')
+      if (!appContainer) return
+
       const rect = wrapperRef.current.getBoundingClientRect()
+      const currentIdx = currentIndexRef.current
 
-      // Activate when wrapper top reaches the header (is at top of viewport)
-      // AND hasn't scrolled past (bottom is still visible)
-      const shouldActivate =
-        rect.top <= HEADER_HEIGHT &&
-        rect.bottom > window.innerHeight / 2 // At least half visible
+      // Only check activation/deactivation based on position AND card index
+      if (!isCarouselActive) {
+        // Activate when wrapper is in position
+        const shouldActivate =
+          rect.top <= HEADER_HEIGHT + 50 &&
+          rect.bottom > HEADER_HEIGHT + 100
 
-      console.log('Visibility check:', {
-        top: rect.top,
-        bottom: rect.bottom,
-        shouldActivate,
-        isActive: isCarouselActive
-      })
+        if (shouldActivate) {
+          console.log('🟢 Activating carousel!')
+          setIsCarouselActive(true)
+          // Smoothly scroll to perfect position then lock
+          const targetScroll = appContainer.scrollTop + (rect.top - HEADER_HEIGHT)
+          appContainer.scrollTo({
+            top: targetScroll,
+            behavior: 'smooth'
+          })
+          setTimeout(() => {
+            lockedScrollPosition.current = targetScroll
+          }, 100)
+        }
+      } else {
+        // Only deactivate if we're at boundaries AND trying to scroll past
+        const atFirstCard = currentIdx === 0
+        const atLastCard = currentIdx === totalCards - 1
 
-      if (shouldActivate && !isCarouselActive) {
-        console.log('🟢 Activating carousel!')
-        setIsCarouselActive(true)
-      } else if (!shouldActivate && isCarouselActive) {
-        console.log('🔴 Deactivating carousel')
-        setIsCarouselActive(false)
-        scrollAccumulator.current = 0
+        // Check if trying to scroll past boundaries
+        const tryingToScrollUp = rect.top > HEADER_HEIGHT + 10
+        const tryingToScrollDown = rect.bottom < window.innerHeight - 10
+
+        if ((atFirstCard && tryingToScrollUp) || (atLastCard && tryingToScrollDown)) {
+          console.log('🔴 Deactivating carousel - at boundary')
+          setIsCarouselActive(false)
+          lockedScrollPosition.current = null
+          scrollAccumulator.current = 0
+        }
       }
     }
 
@@ -80,15 +104,55 @@ const DTFCarouselSimple = ({ dtfs, isLoading }: DTFCarouselSimpleProps) => {
       appContainer?.removeEventListener('scroll', checkVisibility)
       window.removeEventListener('resize', checkVisibility)
     }
+  }, [isCarouselActive, totalCards])
+
+  // Separate effect to lock scroll when carousel is active
+  useEffect(() => {
+    if (!isCarouselActive || lockedScrollPosition.current === null) return
+
+    const appContainer = document.getElementById('app-container')
+    if (!appContainer) return
+
+    let rafId: number | null = null
+
+    const lockScroll = (e: Event) => {
+      // Use RAF to smooth the lock
+      if (rafId) cancelAnimationFrame(rafId)
+      rafId = requestAnimationFrame(() => {
+        if (lockedScrollPosition.current !== null) {
+          appContainer.scrollTop = lockedScrollPosition.current
+        }
+      })
+    }
+
+    // Add scroll listener to lock position
+    appContainer.addEventListener('scroll', lockScroll, { passive: false })
+
+    // Set initial locked position
+    appContainer.scrollTop = lockedScrollPosition.current
+
+    return () => {
+      appContainer.removeEventListener('scroll', lockScroll)
+      if (rafId) cancelAnimationFrame(rafId)
+    }
   }, [isCarouselActive])
 
-  // Wheel event handler
+  // Store active state in ref to avoid stale closure
+  const isCarouselActiveRef = useRef(false)
+  useEffect(() => {
+    isCarouselActiveRef.current = isCarouselActive
+  }, [isCarouselActive])
+
+  const currentIndexRef = useRef(0)
+  useEffect(() => {
+    currentIndexRef.current = currentIndex
+  }, [currentIndex])
+
+  // Wheel event handler - set up once and never remove
   useEffect(() => {
     const handleWheel = (e: WheelEvent) => {
-      console.log('Wheel event captured:', { isCarouselActive, deltaY: e.deltaY })
-
-      // Only intercept if carousel is active
-      if (!isCarouselActive || isScrollbarDragging.current) {
+      // Check if carousel is active using ref (avoids stale closure)
+      if (!isCarouselActiveRef.current || isScrollbarDragging.current) {
         return
       }
 
@@ -96,17 +160,40 @@ const DTFCarouselSimple = ({ dtfs, isLoading }: DTFCarouselSimpleProps) => {
 
       const scrollingDown = e.deltaY > 0
       const scrollingUp = e.deltaY < 0
+      const currentIdx = currentIndexRef.current
 
       // Check boundaries
-      const atFirstCard = currentIndex === 0
-      const atLastCard = currentIndex === totalCards - 1
+      const atFirstCard = currentIdx === 0
+      const atLastCard = currentIdx === totalCards - 1
 
-      // Release control at boundaries
+      // Handle boundaries with delay to prevent flicker
       if ((atFirstCard && scrollingUp) || (atLastCard && scrollingDown)) {
-        // Let the page scroll normally
+        if (!isTryingToScrollPastBoundary.current) {
+          // First attempt to scroll past boundary - block it but mark
+          isTryingToScrollPastBoundary.current = true
+          e.preventDefault()
+          e.stopPropagation()
+
+          // Set a timeout to release after persistent attempts
+          if (boundaryReleaseTimeout.current) clearTimeout(boundaryReleaseTimeout.current)
+          boundaryReleaseTimeout.current = setTimeout(() => {
+            isTryingToScrollPastBoundary.current = false
+            // The deactivation will happen in the scroll check
+          }, 500)
+          return
+        }
+        // After delay, let the deactivation happen naturally
         return
+      } else {
+        // Not at boundary, clear the flag
+        isTryingToScrollPastBoundary.current = false
+        if (boundaryReleaseTimeout.current) {
+          clearTimeout(boundaryReleaseTimeout.current)
+          boundaryReleaseTimeout.current = null
+        }
       }
-      // Prevent default scroll
+
+      // ALWAYS prevent default scroll when in carousel and not at boundaries
       e.preventDefault()
       e.stopPropagation()
 
@@ -123,7 +210,7 @@ const DTFCarouselSimple = ({ dtfs, isLoading }: DTFCarouselSimpleProps) => {
 
         // Check if we should change card
         if (Math.abs(scrollAccumulator.current) >= SCROLL_THRESHOLD) {
-          if (scrollingDown && currentIndex < totalCards - 1) {
+          if (scrollingDown && currentIdx < totalCards - 1) {
             // Next card
             isTransitioning.current = true
             setScrollDirection('down')
@@ -135,7 +222,7 @@ const DTFCarouselSimple = ({ dtfs, isLoading }: DTFCarouselSimpleProps) => {
               isTransitioning.current = false
               setScrollDirection(null)
             }, TRANSITION_DURATION)
-          } else if (scrollingUp && currentIndex > 0) {
+          } else if (scrollingUp && currentIdx > 0) {
             // Previous card
             isTransitioning.current = true
             setScrollDirection('up')
@@ -152,9 +239,10 @@ const DTFCarouselSimple = ({ dtfs, isLoading }: DTFCarouselSimpleProps) => {
       }
     }
 
-    // Add to both window and app-container to ensure we catch the events
+    // Add listeners once and keep them
     const appContainer = document.getElementById('app-container')
 
+    // Use capture phase to intercept before any bubbling
     window.addEventListener('wheel', handleWheel, { passive: false, capture: true })
     appContainer?.addEventListener('wheel', handleWheel, { passive: false, capture: true })
 
@@ -162,7 +250,7 @@ const DTFCarouselSimple = ({ dtfs, isLoading }: DTFCarouselSimpleProps) => {
       window.removeEventListener('wheel', handleWheel, { capture: true })
       appContainer?.removeEventListener('wheel', handleWheel, { capture: true })
     }
-  }, [isCarouselActive, currentIndex, totalCards])
+  }, [totalCards]) // Only depend on totalCards which doesn't change
 
   // Detect scrollbar dragging
   useEffect(() => {
@@ -230,6 +318,7 @@ const DTFCarouselSimple = ({ dtfs, isLoading }: DTFCarouselSimpleProps) => {
     return () => {
       if (transitionTimeout.current) clearTimeout(transitionTimeout.current)
       if (alignmentTimeout.current) clearTimeout(alignmentTimeout.current)
+      if (boundaryReleaseTimeout.current) clearTimeout(boundaryReleaseTimeout.current)
     }
   }, [])
 
@@ -251,6 +340,7 @@ const DTFCarouselSimple = ({ dtfs, isLoading }: DTFCarouselSimpleProps) => {
   // Update wrapper height on mount and resize
   useEffect(() => {
     const updateHeight = () => {
+      // Exact viewport height minus header
       const height = window.innerHeight - HEADER_HEIGHT
       setWrapperHeight(height)
     }
@@ -274,11 +364,14 @@ const DTFCarouselSimple = ({ dtfs, isLoading }: DTFCarouselSimpleProps) => {
       {/* Wrapper that will be tracked for visibility */}
       <div
         ref={wrapperRef}
-        className="relative w-full"
-        style={{ height: `${wrapperHeight || 800}px` }}
+        className="relative w-full bg-primary"
+        style={{
+          height: `${wrapperHeight || 800}px`,
+          minHeight: `${wrapperHeight || 800}px`
+        }}
       >
         {/* Cards Container */}
-        <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
+        <div className="relative w-full h-full flex items-center justify-center overflow-hidden bg-primary">
           <div
             className="relative w-full flex items-center justify-center"
             style={{ height: `${CARD_HEIGHT}px` }}
@@ -373,7 +466,7 @@ const DTFCarouselSimple = ({ dtfs, isLoading }: DTFCarouselSimpleProps) => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed bottom-20 left-1/2 -translate-x-1/2 text-center z-50"
+              className="absolute bottom-20 left-1/2 -translate-x-1/2 text-center z-50"
             >
               <div className="text-xs text-muted-foreground mb-2">
                 Scroll to explore
@@ -390,7 +483,7 @@ const DTFCarouselSimple = ({ dtfs, isLoading }: DTFCarouselSimpleProps) => {
 
         {/* Navigation dots indicator */}
         {isCarouselActive && (
-          <div className="fixed bottom-8 left-1/2 -translate-x-1/2 flex gap-2 z-50">
+          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-2 z-50">
             {dtfs.map((_, index) => (
               <button
                 key={index}
