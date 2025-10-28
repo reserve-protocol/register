@@ -40,12 +40,14 @@ const DTFCarouselSimple = ({ dtfs, isLoading }: DTFCarouselSimpleProps) => {
   const ALIGNMENT_THRESHOLD = 50 // px threshold for auto-alignment
 
 
-  // Store scroll position when carousel becomes active
+  // States for smooth carousel activation
+  const isApproaching = useRef(false)
+  const isPositioning = useRef(false)
   const lockedScrollPosition = useRef<number | null>(null)
 
-  // Simple scroll-based activation
+  // Main scroll handler that detects approach and takes control
   useEffect(() => {
-    const checkVisibility = () => {
+    const handleScroll = () => {
       if (!wrapperRef.current) return
 
       const appContainer = document.getElementById('app-container')
@@ -54,88 +56,116 @@ const DTFCarouselSimple = ({ dtfs, isLoading }: DTFCarouselSimpleProps) => {
       const rect = wrapperRef.current.getBoundingClientRect()
       const currentIdx = currentIndexRef.current
 
-      // Only check activation/deactivation based on position AND card index
-      if (!isCarouselActive) {
-        // Activate when wrapper is in position
-        const shouldActivate =
-          rect.top <= HEADER_HEIGHT + 50 &&
-          rect.bottom > HEADER_HEIGHT + 100
+      // Early detection: when wrapper is approaching from either direction
+      const isNearingFromTop = rect.top < 300 && rect.top > -100
+      const isNearingFromBottom = rect.bottom > window.innerHeight - 300 && rect.bottom < window.innerHeight + 100
+      const isNearingWrapper = isNearingFromTop || isNearingFromBottom
 
-        if (shouldActivate) {
-          console.log('🟢 Activating carousel!')
-          setIsCarouselActive(true)
-          // Smoothly scroll to perfect position then lock
-          const targetScroll = appContainer.scrollTop + (rect.top - HEADER_HEIGHT)
+      if (!isCarouselActive && !isPositioning.current) {
+        if (isNearingWrapper && !isApproaching.current) {
+          console.log('🎯 Detecting approach - taking control...')
+          isApproaching.current = true
+          isPositioning.current = true
+
+          // Calculate perfect position (wrapper top at header)
+          const perfectPosition = appContainer.scrollTop + (rect.top - HEADER_HEIGHT)
+
+          // Smoothly scroll to perfect position
           appContainer.scrollTo({
-            top: targetScroll,
+            top: perfectPosition,
             behavior: 'smooth'
           })
+
+          // Lock the position immediately to prevent flicker
+          lockedScrollPosition.current = perfectPosition
+
+          // After smooth scroll completes, activate carousel
           setTimeout(() => {
-            lockedScrollPosition.current = targetScroll
-          }, 100)
+            console.log('✅ Carousel activated at perfect position')
+            setIsCarouselActive(true)
+            isPositioning.current = false
+
+            // Set appropriate card index based on scroll direction
+            if (isNearingFromBottom) {
+              // Coming from bottom, start at last card
+              setCurrentIndex(totalCards - 1)
+            } else {
+              // Coming from top, start at first card
+              setCurrentIndex(0)
+            }
+          }, 400) // Smooth scroll duration
         }
-      } else {
-        // Only deactivate if we're at boundaries AND trying to scroll past
+      } else if (isCarouselActive) {
+        // Check for deactivation at boundaries
         const atFirstCard = currentIdx === 0
         const atLastCard = currentIdx === totalCards - 1
 
-        // Check if trying to scroll past boundaries
-        const tryingToScrollUp = rect.top > HEADER_HEIGHT + 10
-        const tryingToScrollDown = rect.bottom < window.innerHeight - 10
-
-        if ((atFirstCard && tryingToScrollUp) || (atLastCard && tryingToScrollDown)) {
-          console.log('🔴 Deactivating carousel - at boundary')
+        // Deactivate with more lenient thresholds - only when significantly scrolled past
+        if ((atFirstCard && rect.top > HEADER_HEIGHT + 150) ||
+            (atLastCard && rect.bottom < window.innerHeight - 150)) {
+          console.log('🔴 Deactivating carousel - scrolled past boundary')
           setIsCarouselActive(false)
+          isApproaching.current = false
           lockedScrollPosition.current = null
           scrollAccumulator.current = 0
         }
       }
+
+      // Reset approach flag if scrolled away
+      if (!isNearingWrapper && !isCarouselActive) {
+        isApproaching.current = false
+      }
     }
 
-    // Listen to scroll events on the app container
     const appContainer = document.getElementById('app-container')
-    appContainer?.addEventListener('scroll', checkVisibility, { passive: true })
-
-    // Check on mount and resize
-    checkVisibility()
-    window.addEventListener('resize', checkVisibility)
+    appContainer?.addEventListener('scroll', handleScroll, { passive: true })
 
     return () => {
-      appContainer?.removeEventListener('scroll', checkVisibility)
-      window.removeEventListener('resize', checkVisibility)
+      appContainer?.removeEventListener('scroll', handleScroll)
     }
   }, [isCarouselActive, totalCards])
 
-  // Separate effect to lock scroll when carousel is active
+  // Lock scroll position when carousel is active or positioning
   useEffect(() => {
-    if (!isCarouselActive || lockedScrollPosition.current === null) return
-
     const appContainer = document.getElementById('app-container')
     if (!appContainer) return
 
-    let rafId: number | null = null
+    const lockScroll = () => {
+      // During positioning, allow the smooth scroll but nothing else
+      if (isPositioning.current) {
+        return
+      }
 
-    const lockScroll = (e: Event) => {
-      // Use RAF to smooth the lock
-      if (rafId) cancelAnimationFrame(rafId)
-      rafId = requestAnimationFrame(() => {
-        if (lockedScrollPosition.current !== null) {
-          appContainer.scrollTop = lockedScrollPosition.current
+      // If we have a locked position but carousel isn't active yet, still lock
+      // This prevents flicker during activation
+      if (lockedScrollPosition.current !== null) {
+        const currentIdx = currentIndexRef.current
+        const atFirstCard = currentIdx === 0
+        const atLastCard = currentIdx === totalCards - 1
+
+        // Check if we're trying to scroll past boundaries
+        const currentScroll = appContainer.scrollTop
+        const isScrollingUp = currentScroll < lockedScrollPosition.current
+        const isScrollingDown = currentScroll > lockedScrollPosition.current
+
+        // Only allow natural scroll at boundaries when carousel is active
+        if (isCarouselActive && ((atFirstCard && isScrollingUp) || (atLastCard && isScrollingDown))) {
+          // Don't lock - let it scroll naturally
+          return
         }
-      })
+
+        // Lock to the saved position
+        appContainer.scrollTop = lockedScrollPosition.current
+      }
     }
 
-    // Add scroll listener to lock position
-    appContainer.addEventListener('scroll', lockScroll, { passive: false })
-
-    // Set initial locked position
-    appContainer.scrollTop = lockedScrollPosition.current
+    // Always listen for scroll to apply lock when needed
+    appContainer.addEventListener('scroll', lockScroll)
 
     return () => {
       appContainer.removeEventListener('scroll', lockScroll)
-      if (rafId) cancelAnimationFrame(rafId)
     }
-  }, [isCarouselActive])
+  }, [isCarouselActive, totalCards])
 
   // Store active state in ref to avoid stale closure
   const isCarouselActiveRef = useRef(false)
@@ -151,12 +181,17 @@ const DTFCarouselSimple = ({ dtfs, isLoading }: DTFCarouselSimpleProps) => {
   // Wheel event handler - set up once and never remove
   useEffect(() => {
     const handleWheel = (e: WheelEvent) => {
+      // Block wheel events during positioning
+      if (isPositioning.current) {
+        e.preventDefault()
+        e.stopPropagation()
+        return
+      }
+
       // Check if carousel is active using ref (avoids stale closure)
       if (!isCarouselActiveRef.current || isScrollbarDragging.current) {
         return
       }
-
-      console.log('🎯 Intercepting wheel event!')
 
       const scrollingDown = e.deltaY > 0
       const scrollingUp = e.deltaY < 0
