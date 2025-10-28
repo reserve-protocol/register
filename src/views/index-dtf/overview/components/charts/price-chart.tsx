@@ -2,10 +2,12 @@ import InfoBox from '@/components/old/info-box'
 import { ChartConfig, ChartContainer } from '@/components/ui/chart'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useIsMobile } from '@/hooks/use-media-query'
+import { chainIdAtom } from '@/state/atoms'
 import {
   indexDTF7dChangeAtom,
   indexDTFAtom,
   indexDTFMarketCapAtom,
+  indexDTFPriceAtom,
   performanceTimeRangeAtom,
 } from '@/state/dtf/atoms'
 import { formatCurrency, formatToSignificantDigits } from '@/utils'
@@ -14,6 +16,8 @@ import dayjs from 'dayjs'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useMemo } from 'react'
 import { Area, AreaChart, Tooltip, TooltipProps, XAxis, YAxis } from 'recharts'
+import { Address, erc20Abi } from 'viem'
+import { useReadContract } from 'wagmi'
 import { Card } from 'theme-ui'
 import useIndexDTFPriceHistory from '../../hooks/use-dtf-price-history'
 import IndexCTAsOverviewMobile from '../index-ctas-overview-mobile'
@@ -78,11 +82,24 @@ export const dataTypeAtom = atom<DataType>('price')
 // TODO: Storing 7day change here, probably not the best place
 const PriceChart = () => {
   const dtf = useAtomValue(indexDTFAtom)
+  const chainId = useAtomValue(chainIdAtom)
+  const currentPrice = useAtomValue(indexDTFPriceAtom)
   const range = useAtomValue(performanceTimeRangeAtom)
   const dataType = useAtomValue(dataTypeAtom)
   const set7dChange = useSetAtom(indexDTF7dChangeAtom)
   const setMarketCap = useSetAtom(indexDTFMarketCapAtom)
   const isMobile = useIsMobile()
+
+  // Fetch total supply for market cap calculation
+  const { data: totalSupply } = useReadContract({
+    address: dtf?.id as Address,
+    abi: erc20Abi,
+    functionName: 'totalSupply',
+    chainId,
+    query: {
+      enabled: Boolean(dtf?.id),
+    },
+  })
 
   const showHourlyInterval = now - (dtf?.timestamp || 0) < 30 * 86_400
   const config =
@@ -116,6 +133,9 @@ const PriceChart = () => {
 
   const { data: history } = useIndexDTFPriceHistory({
     address: dtf?.id,
+    chainId,
+    currentPrice,
+    totalSupply,
     ...config,
     ...(showHourlyInterval && range !== 'all'
       ? { interval: '1h' as const }

@@ -17,7 +17,10 @@ const Container = ({ children }: { children: ReactNode }) => {
     pathname !== '/'
 
   return (
-    <div className={cn('w-full flex-shrink-0', border && 'border-b')}>
+    <div
+      id="app-header"
+      className={cn('w-full flex-shrink-0', border && 'border-b')}
+    >
       {children}
     </div>
   )

@@ -1,11 +1,7 @@
-import { chainIdAtom } from '@/state/atoms'
-import { indexDTFPriceAtom } from '@/state/dtf/atoms'
 import { RESERVE_API } from '@/utils/constants'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
-import { useAtomValue } from 'jotai'
 import { useEffect } from 'react'
-import { Address, erc20Abi, formatEther } from 'viem'
-import { useReadContract } from 'wagmi'
+import { Address, formatEther } from 'viem'
 
 export type IndexDTFPerformance = {
   address: Address
@@ -26,6 +22,9 @@ const REFRESH_INTERVAL = 1000 * 60 * 30 // 30 minutes
 
 export type UseIndexDTFPriceHistoryParams = {
   address?: Address
+  chainId: number
+  currentPrice?: number
+  totalSupply?: bigint
   from: number
   to: number
   interval: '1h' | '1d'
@@ -38,22 +37,14 @@ export type UseIndexDTFPriceHistoryParams = {
 
 const useIndexDTFPriceHistory = ({
   address,
+  chainId,
+  currentPrice,
+  totalSupply,
   from,
   to,
   interval,
   prefetchRanges = [],
 }: UseIndexDTFPriceHistoryParams) => {
-  const chainId = useAtomValue(chainIdAtom)
-  const currentPrice = useAtomValue(indexDTFPriceAtom)
-  const { data: supply } = useReadContract({
-    address: address as Address,
-    abi: erc20Abi,
-    functionName: 'totalSupply',
-    chainId,
-    query: {
-      enabled: Boolean(address),
-    },
-  })
 
   const queryClient = useQueryClient()
 
@@ -66,7 +57,7 @@ const useIndexDTFPriceHistory = ({
       to,
       interval,
       currentPrice,
-      supply,
+      totalSupply,
     ],
     queryFn: async (): Promise<IndexDTFPerformance> => {
       const startTime = Date.now()
@@ -88,8 +79,8 @@ const useIndexDTFPriceHistory = ({
 
       const data = (await response.json()) as IndexDTFPerformance
 
-      if (currentPrice && supply) {
-        const numberSupply = +formatEther(supply)
+      if (currentPrice && totalSupply) {
+        const numberSupply = +formatEther(totalSupply)
 
         data.timeseries.push({
           timestamp: Math.floor(Date.now() / 1_000),
@@ -110,14 +101,14 @@ const useIndexDTFPriceHistory = ({
 
       return data
     },
-    enabled: Boolean(address && supply && currentPrice),
+    enabled: Boolean(address),
     refetchInterval: REFRESH_INTERVAL,
     staleTime: REFRESH_INTERVAL,
   })
 
   // Prefetch other ranges in background
   useEffect(() => {
-    if (!address || !supply || !currentPrice || prefetchRanges.length === 0)
+    if (!address || prefetchRanges.length === 0)
       return
 
     prefetchRanges.forEach((range) => {
@@ -129,7 +120,7 @@ const useIndexDTFPriceHistory = ({
           range.to,
           range.interval,
           currentPrice,
-          supply,
+          totalSupply,
         ],
         queryFn: async (): Promise<IndexDTFPerformance> => {
           const sp = new URLSearchParams()
@@ -149,8 +140,8 @@ const useIndexDTFPriceHistory = ({
 
           const data = (await response.json()) as IndexDTFPerformance
 
-          if (currentPrice && supply) {
-            const numberSupply = +formatEther(supply)
+          if (currentPrice && totalSupply) {
+            const numberSupply = +formatEther(totalSupply)
 
             data.timeseries.push({
               timestamp: Math.floor(Date.now() / 1_000),
@@ -166,7 +157,7 @@ const useIndexDTFPriceHistory = ({
         staleTime: REFRESH_INTERVAL,
       })
     })
-  }, [address, supply, currentPrice, chainId, queryClient, prefetchRanges])
+  }, [address, totalSupply, currentPrice, chainId, queryClient, prefetchRanges])
 
   return mainQuery
 }

@@ -1,9 +1,13 @@
+import { chainIdAtom } from '@/state/atoms'
 import {
   indexDTFAtom,
+  indexDTFPriceAtom,
   iTokenAddressAtom,
   performanceTimeRangeAtom,
 } from '@/state/dtf/atoms'
 import { useAtomValue } from 'jotai'
+import { Address, erc20Abi } from 'viem'
+import { useReadContract } from 'wagmi'
 import useIndexDTFPriceHistory from '../../overview/hooks/use-dtf-price-history'
 import { getRangeParams } from '../utils/constants'
 import {
@@ -24,9 +28,22 @@ const prefetchRanges = ['24h', '7d', '1m', '3m', '1y']
 
 export const useFactsheetData = () => {
   const dtf = useAtomValue(indexDTFAtom)
+  const chainId = useAtomValue(chainIdAtom)
+  const currentPrice = useAtomValue(indexDTFPriceAtom)
   const address = useAtomValue(iTokenAddressAtom)
   const timeRange = useAtomValue(performanceTimeRangeAtom)
   const minFrom = dtf?.timestamp || 0
+
+  // Fetch total supply
+  const { data: totalSupply } = useReadContract({
+    address: address as Address,
+    abi: erc20Abi,
+    functionName: 'totalSupply',
+    chainId,
+    query: {
+      enabled: Boolean(address),
+    },
+  })
 
   const currentRangeParams = getRangeParams(timeRange, minFrom)
   const allRangeParams = getRangeParams('all', minFrom)
@@ -34,6 +51,9 @@ export const useFactsheetData = () => {
   const { data: currentRangeData, isLoading: currentLoading } =
     useIndexDTFPriceHistory({
       address,
+      chainId,
+      currentPrice,
+      totalSupply,
       from: currentRangeParams.from,
       to: currentRangeParams.to,
       interval: currentRangeParams.interval,
@@ -43,6 +63,9 @@ export const useFactsheetData = () => {
   const { data: allRangeData, isLoading: allLoading } = useIndexDTFPriceHistory(
     {
       address,
+      chainId,
+      currentPrice,
+      totalSupply,
       from: allRangeParams.from,
       to: allRangeParams.to,
       interval: allRangeParams.interval,

@@ -13,7 +13,9 @@ interface DTFCarouselSimpleProps {
 const DTFCarouselSimple = ({ dtfs, isLoading }: DTFCarouselSimpleProps) => {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isTransitioning, setIsTransitioning] = useState(false)
-  const [scrollDirection, setScrollDirection] = useState<'up' | 'down' | null>(null)
+  const [scrollDirection, setScrollDirection] = useState<'up' | 'down' | null>(
+    null
+  )
   const [viewportHeight, setViewportHeight] = useState(800) // Default fallback
   const containerRef = useRef<HTMLDivElement>(null)
   const totalCards = dtfs.length
@@ -25,10 +27,14 @@ const DTFCarouselSimple = ({ dtfs, isLoading }: DTFCarouselSimpleProps) => {
   const SCALE_FACTOR = 0.06 // How much each card scales down (matching reference)
   const SCROLL_THRESHOLD = 100 // Pixels needed to trigger card change
 
-  // Handle scroll with proper hijacking
+  // ============================================================================
+  // 🔴 CORE SCROLL HIJACKING LOGIC - WHERE THE MAGIC HAPPENS
+  // ============================================================================
   useEffect(() => {
     if (!containerRef.current || totalCards === 0) return
 
+    // 🔴 PROBLEM: These variables are recreated on every render, causing stale closure issues
+    // The accumulator will reset when the component re-renders (when currentIndex changes)
     let accumulatedScroll = 0
     let lastScrollTime = Date.now()
 
@@ -36,6 +42,7 @@ const DTFCarouselSimple = ({ dtfs, isLoading }: DTFCarouselSimpleProps) => {
       if (!containerRef.current) return
 
       const rect = containerRef.current.getBoundingClientRect()
+      // 🔴 ISSUE: Only checking rect.top <= 0 isn't enough - should also check rect.bottom
       const isSticky = rect.top <= 0
       const scrollingUp = e.deltaY < 0
       const scrollingDown = e.deltaY > 0
@@ -53,6 +60,7 @@ const DTFCarouselSimple = ({ dtfs, isLoading }: DTFCarouselSimpleProps) => {
           return // Release scroll control
         }
 
+        // 🔴 PROBLEM: This creates a jarring jump to footer
         if (atLastCard && scrollingDown) {
           // Jump to near the end of the ENTIRE document to show footer immediately
           const documentHeight = document.documentElement.scrollHeight
@@ -62,6 +70,7 @@ const DTFCarouselSimple = ({ dtfs, isLoading }: DTFCarouselSimpleProps) => {
           // Position viewport so footer is just coming into view
           const targetScrollY = documentHeight - windowHeight - 100
 
+          // 🔴 DEBUG: These console.logs should be removed in production
           console.log('Jumping from', currentScrollY, 'to', targetScrollY)
 
           // Use scrollTo with immediate behavior
@@ -77,10 +86,11 @@ const DTFCarouselSimple = ({ dtfs, isLoading }: DTFCarouselSimpleProps) => {
         }
 
         // Not at boundaries - hijack scroll for card navigation
-        e.preventDefault()
+        e.preventDefault() // 🔴 CRITICAL: Prevents native scrolling
         e.stopPropagation()
 
         // Reset accumulator if too much time has passed
+        // 🔴 This prevents small scroll movements from accumulating over time
         const currentTime = Date.now()
         if (currentTime - lastScrollTime > 500) {
           accumulatedScroll = 0
@@ -89,6 +99,7 @@ const DTFCarouselSimple = ({ dtfs, isLoading }: DTFCarouselSimpleProps) => {
 
         // IMPORTANT: Only accumulate if not transitioning to prevent multiple jumps
         if (!isTransitioning) {
+          // 🔴 Accumulator pattern: Collect scroll deltas until threshold is reached
           accumulatedScroll += e.deltaY
 
           // Check if we should change card (ONE at a time)
@@ -97,7 +108,7 @@ const DTFCarouselSimple = ({ dtfs, isLoading }: DTFCarouselSimpleProps) => {
               // Scroll down - next card ONLY
               setIsTransitioning(true)
               setScrollDirection('down')
-              setCurrentIndex(prev => prev + 1)
+              setCurrentIndex((prev) => prev + 1)
               accumulatedScroll = 0 // Reset immediately
 
               setTimeout(() => {
@@ -108,7 +119,7 @@ const DTFCarouselSimple = ({ dtfs, isLoading }: DTFCarouselSimpleProps) => {
               // Scroll up - previous card ONLY
               setIsTransitioning(true)
               setScrollDirection('up')
-              setCurrentIndex(prev => prev - 1)
+              setCurrentIndex((prev) => prev - 1)
               accumulatedScroll = 0 // Reset immediately
 
               setTimeout(() => {
@@ -124,27 +135,31 @@ const DTFCarouselSimple = ({ dtfs, isLoading }: DTFCarouselSimpleProps) => {
       }
     }
 
-    // Add event listener with passive: false to allow preventDefault
+    // 🔴 CRITICAL: passive: false allows preventDefault() to work
+    // Without this, the browser would scroll the page while we're trying to control the carousel
     window.addEventListener('wheel', handleWheel, { passive: false })
 
     return () => {
       window.removeEventListener('wheel', handleWheel)
     }
-  }, [currentIndex, totalCards, isTransitioning])
+  }, [currentIndex, totalCards, isTransitioning]) // 🔴 PROBLEM: Dependencies cause event listener to re-attach on every state change
 
   // Manual navigation
-  const goToCard = useCallback((index: number) => {
-    if (index >= 0 && index < totalCards && !isTransitioning) {
-      setIsTransitioning(true)
-      setScrollDirection(index > currentIndex ? 'down' : 'up')
-      setCurrentIndex(index)
+  const goToCard = useCallback(
+    (index: number) => {
+      if (index >= 0 && index < totalCards && !isTransitioning) {
+        setIsTransitioning(true)
+        setScrollDirection(index > currentIndex ? 'down' : 'up')
+        setCurrentIndex(index)
 
-      setTimeout(() => {
-        setIsTransitioning(false)
-        setScrollDirection(null)
-      }, 500)
-    }
-  }, [currentIndex, totalCards, isTransitioning])
+        setTimeout(() => {
+          setIsTransitioning(false)
+          setScrollDirection(null)
+        }, 500)
+      }
+    },
+    [currentIndex, totalCards, isTransitioning]
+  )
 
   // Keyboard navigation
   useEffect(() => {
@@ -200,8 +215,12 @@ const DTFCarouselSimple = ({ dtfs, isLoading }: DTFCarouselSimpleProps) => {
   // Calculate container height with LARGE buffer to ensure hijacking never breaks
   // We'll manually adjust scroll position when releasing to avoid dead space
   const INITIAL_SCROLL_BUFFER = 400 // Extra space before cards start changing
-  const END_BUFFER = 5000 // Large buffer to ensure we never exit prematurely
-  const containerHeight = viewportHeight + INITIAL_SCROLL_BUFFER + (totalCards * SCROLL_PER_CARD) + END_BUFFER
+  const END_BUFFER = 5000 // 🔴 PROBLEM: This creates massive dead space at the end
+  const containerHeight =
+    viewportHeight +
+    INITIAL_SCROLL_BUFFER +
+    totalCards * SCROLL_PER_CARD +
+    END_BUFFER
 
   return (
     <section
@@ -209,71 +228,19 @@ const DTFCarouselSimple = ({ dtfs, isLoading }: DTFCarouselSimpleProps) => {
       className="relative"
       style={{ height: `${containerHeight}px` }}
     >
-      {/* Sticky wrapper */}
+      {/* 🔴 Sticky wrapper: This stays fixed at top of viewport while user scrolls through container height */}
       <div className="sticky top-0 w-full h-screen">
-
-        {/* Navigation UI */}
-        <div className="fixed right-8 top-1/2 -translate-y-1/2 z-50 flex flex-col items-center gap-4">
-          {/* Progress dots */}
-          <div className="flex flex-col gap-2">
-            {dtfs.map((_, idx) => (
-              <button
-                key={idx}
-                onClick={() => goToCard(idx)}
-                disabled={isTransitioning}
-                className={cn(
-                  'w-2 h-2 rounded-full transition-all duration-300',
-                  idx === currentIndex
-                    ? 'w-3 h-3 bg-primary'
-                    : idx < currentIndex
-                    ? 'bg-primary/40'
-                    : 'bg-muted-foreground/30 hover:bg-muted-foreground/50'
-                )}
-                aria-label={`Go to DTF ${idx + 1}`}
-              />
-            ))}
-          </div>
-
-          {/* Navigation buttons */}
-          <div className="flex flex-col gap-2 mt-4">
-            <button
-              onClick={() => goToCard(currentIndex - 1)}
-              disabled={currentIndex === 0 || isTransitioning}
-              className={cn(
-                'p-2 rounded-full border transition-all',
-                currentIndex === 0 || isTransitioning
-                  ? 'opacity-30 cursor-not-allowed border-muted'
-                  : 'hover:bg-accent hover:border-primary'
-              )}
-            >
-              <ChevronUp size={20} />
-            </button>
-            <button
-              onClick={() => goToCard(currentIndex + 1)}
-              disabled={currentIndex === totalCards - 1 || isTransitioning}
-              className={cn(
-                'p-2 rounded-full border transition-all',
-                currentIndex === totalCards - 1 || isTransitioning
-                  ? 'opacity-30 cursor-not-allowed border-muted'
-                  : 'hover:bg-accent hover:border-primary'
-              )}
-            >
-              <ChevronDown size={20} />
-            </button>
-          </div>
-
-          {/* Counter */}
-          <div className="text-xs text-muted-foreground mt-2">
-            {currentIndex + 1} / {totalCards}
-          </div>
-        </div>
-
         {/* Cards Container */}
         <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
-          <div className="relative w-full flex items-center justify-center" style={{ height: `${CARD_HEIGHT}px` }}>
-
+          <div
+            className="relative w-full flex items-center justify-center"
+            style={{ height: `${CARD_HEIGHT}px` }}
+          >
             {/* Card Stack - All cards pre-rendered */}
-            <div className="relative" style={{ width: '100%', height: `${CARD_HEIGHT}px` }}>
+            <div
+              className="relative"
+              style={{ width: '100%', height: `${CARD_HEIGHT}px` }}
+            >
               {/* Pre-render ALL cards to avoid loading skeletons */}
               {dtfs.map((dtf, index) => {
                 const relativePosition = index - currentIndex
@@ -281,56 +248,60 @@ const DTFCarouselSimple = ({ dtfs, isLoading }: DTFCarouselSimpleProps) => {
 
                 // Only show max 3 cards in stack, hide the rest
                 const maxStackDepth = 3
-                const isInStack = relativePosition >= 0 && relativePosition <= maxStackDepth
+                const isInStack =
+                  relativePosition >= 0 && relativePosition <= maxStackDepth
                 const isPastStack = relativePosition > maxStackDepth
 
                 // Calculate animation values based on relative position
-                const topOffset = relativePosition < 0
-                  ? -800 // Card has been scrolled past
-                  : isPastStack
-                  ? maxStackDepth * -CARD_OFFSET // Hidden behind the stack
-                  : relativePosition * -CARD_OFFSET // Card in visible stack
+                const bottomOffset =
+                  relativePosition < 0
+                    ? 800 // Card has been scrolled past (move down out of view)
+                    : isPastStack
+                      ? maxStackDepth * CARD_OFFSET // Hidden behind the stack
+                      : relativePosition * CARD_OFFSET // Card in visible stack
 
-                const scaleValue = relativePosition < 0
-                  ? 0.82
-                  : isPastStack
-                  ? 1 - maxStackDepth * SCALE_FACTOR // Same scale as deepest visible card
-                  : 1 - relativePosition * SCALE_FACTOR
+                const scaleValue =
+                  relativePosition < 0
+                    ? 0.82
+                    : isPastStack
+                      ? 1 - maxStackDepth * SCALE_FACTOR // Same scale as deepest visible card
+                      : 1 - relativePosition * SCALE_FACTOR
 
-                const zIndexValue = totalCards - index
-                const opacityValue = relativePosition < 0 ? 0 : isPastStack ? 0 : 1
+                const zIndexValue = totalCards - index // 🔴 PROBLEM: This makes cards with lower index have higher z-index (backwards)
+                const opacityValue =
+                  relativePosition < 0 ? 0 : isPastStack ? 0 : 1
 
                 return (
                   <motion.div
-                    key={dtf.id} // Stable key based on DTF id, not index
+                    key={dtf.address} // Stable key based on DTF id, not index
                     className="absolute inset-0"
                     initial={false} // Prevent initial animation on mount
                     animate={{
-                      y: topOffset,
+                      y: bottomOffset,
                       scale: scaleValue,
-                      opacity: opacityValue
+                      opacity: opacityValue,
                     }}
                     transition={{
                       y: {
-                        type: "spring",
+                        type: 'spring',
                         stiffness: 260,
                         damping: 20,
-                        mass: 0.8
+                        mass: 0.8,
                       },
                       scale: {
-                        type: "spring",
+                        type: 'spring',
                         stiffness: 260,
                         damping: 20,
-                        mass: 0.8
+                        mass: 0.8,
                       },
-                      opacity: { duration: 0.3, ease: "easeOut" }
+                      opacity: { duration: 0.3, ease: 'easeOut' },
                     }}
                     style={{
-                      transformOrigin: 'top center',
+                      transformOrigin: 'bottom center',
                       pointerEvents: isTopCard ? 'auto' : 'none',
                       willChange: 'auto',
                       zIndex: zIndexValue,
-                      transform: 'translateZ(0)' // Force GPU acceleration
+                      transform: 'translateZ(0)', // Force GPU acceleration
                     }}
                   >
                     <DTFHomeCardFixed dtf={dtf} />

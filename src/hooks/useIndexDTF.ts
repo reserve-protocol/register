@@ -222,15 +222,16 @@ const useIndexDTF = (address: string | undefined, chainId: AvailableChain) => {
     queryFn: async () => {
       if (!address) return null
 
-      const { dtf }: DTFQueryResponse = await request(
-        INDEX_DTF_SUBGRAPH_URL[chainId],
-        dtfQuery,
-        {
-          id: address.toLowerCase(),
-        }
-      )
+      try {
+        const { dtf }: DTFQueryResponse = await request(
+          INDEX_DTF_SUBGRAPH_URL[chainId],
+          dtfQuery,
+          {
+            id: address.toLowerCase(),
+          }
+        )
 
-      if (!dtf) return null
+        if (!dtf) return null
 
       const data: IndexDTF = {
         ...dtf,
@@ -304,7 +305,11 @@ const useIndexDTF = (address: string | undefined, chainId: AvailableChain) => {
           100
       }
 
-      return data
+        return data
+      } catch (error) {
+        console.error('Error fetching index DTF metadata:', error)
+        return null
+      }
     },
     enabled: !!address,
   })

@@ -34,13 +34,13 @@ const Hero = () => {
         setFadeStyle({
           opacity: 1,
           filter: 'blur(0px)',
-          transform: 'translateY(0px)'
+          transform: 'translateY(0px)',
         })
       } else if (scrollPosition >= fadeEnd) {
         setFadeStyle({
           opacity: 0,
           filter: 'blur(8px)',
-          transform: 'translateY(-20px)'
+          transform: 'translateY(-20px)',
         })
       } else {
         const progress = (scrollPosition - fadeStart) / (fadeEnd - fadeStart)
@@ -93,15 +93,17 @@ const DTFCards = () => {
 const Home = () => {
   return (
     <>
-      <div className="bg-secondary relative min-h-screen">
+      <div className="bg-primary relative min-h-screen">
         <div className="container pt-20 relative px-4">
           <Hero />
         </div>
-        <div className="relative z-20">
+        <div className="relative z-20 px-2">
           <DTFCards />
         </div>
-        <div className="container pt-20 relative z-20 px-4">
-          <RegisterAbout />
+        <div className="bg-secondary">
+          <div className="container pt-20 relative z-20 px-4">
+            <RegisterAbout />
+          </div>
         </div>
       </div>
     </>
