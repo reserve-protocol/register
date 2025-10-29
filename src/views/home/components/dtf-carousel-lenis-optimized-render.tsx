@@ -512,10 +512,6 @@ const DTFCarouselLenisOptimizedRender = ({ dtfs, isLoading }: DTFCarouselLenisOp
                 const zIndexValue = totalCards - relativePosition
                 const opacityValue = relativePosition < 0 ? 0 : isPastStack ? 0 : 1
 
-                // Only use willChange for cards that are actively animating
-                const isAnimating = scrollDirection !== null && Math.abs(relativePosition) <= 1
-                const willChange = isAnimating ? 'transform, opacity' : 'auto'
-
                 return (
                   <motion.div
                     key={dtf.address}
@@ -544,7 +540,7 @@ const DTFCarouselLenisOptimizedRender = ({ dtfs, isLoading }: DTFCarouselLenisOp
                     style={{
                       transformOrigin: 'bottom center',
                       pointerEvents: isTopCard ? 'auto' : 'none',
-                      willChange,
+                      willChange: 'transform, opacity',
                       zIndex: zIndexValue,
                     }}
                   >
