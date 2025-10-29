@@ -1,9 +1,7 @@
 import { useEffect, useState } from 'react'
 import RegisterAbout from '../discover/components/yield/components/RegisterAbout'
 import useFilteredDTFIndex from '../discover/components/index/hooks/use-filtered-dtf-index'
-import DTFCarouselSimple from './components/dtf-carousel-simple'
-import DTFCarouselLenisMinimal from './components/dtf-carousel-lenis-minimal'
-import DTFCarouselLenisOptimizedRender from './components/dtf-carousel-lenis-optimized-render'
+import DTFCarousel from './components/dtf-carousel'
 
 const DTFs = () => (
   <div className="flex flex-col flex-shrink-0 pt-1">
@@ -88,29 +86,8 @@ const Hero = () => {
 
 const DTFCards = () => {
   const { data, isLoading } = useFilteredDTFIndex()
-  const [isMobile, setIsMobile] = useState(false)
 
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768) // md breakpoint
-    }
-
-    checkMobile()
-    window.addEventListener('resize', checkMobile)
-    return () => window.removeEventListener('resize', checkMobile)
-  }, [])
-
-  // Use carousel with Lenis for desktop, simple for mobile
-  // Toggle between optimized and minimal version with URL param
-  const useOptimized = window.location.search.includes('opt=1')
-
-  return isMobile ? (
-    <DTFCarouselSimple dtfs={data} isLoading={isLoading} />
-  ) : useOptimized ? (
-    <DTFCarouselLenisOptimizedRender dtfs={data} isLoading={isLoading} />
-  ) : (
-    <DTFCarouselLenisMinimal dtfs={data} isLoading={isLoading} />
-  )
+  return <DTFCarousel dtfs={data} isLoading={isLoading} />
 }
 
 const Home = () => {

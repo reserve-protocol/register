@@ -6,7 +6,7 @@ import { ChevronDown } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import Lenis from 'lenis'
 
-interface DTFCarouselLenisOptimizedRenderProps {
+interface DTFCarouselProps {
   dtfs: IndexDTFItem[]
   isLoading?: boolean
 }
@@ -16,8 +16,8 @@ const MemoizedCard = memo(DTFHomeCardFixed, (prevProps, nextProps) => {
   return prevProps.dtf.address === nextProps.dtf.address
 })
 
-// This is the SAME as minimal but with ONLY rendering optimizations
-const DTFCarouselLenisOptimizedRender = ({ dtfs, isLoading }: DTFCarouselLenisOptimizedRenderProps) => {
+// Production-ready DTF carousel with perfect scroll behavior
+const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isCarouselActive, setIsCarouselActive] = useState(false)
   const [scrollDirection, setScrollDirection] = useState<'up' | 'down' | null>(null)
@@ -98,7 +98,7 @@ const DTFCarouselLenisOptimizedRender = ({ dtfs, isLoading }: DTFCarouselLenisOp
 
       // Early detection: when wrapper is approaching
       const isNearingFromTop = rect.top < 300 && rect.top > -100
-      const isNearingFromBottom = rect.bottom > window.innerHeight - 300 && rect.bottom < window.innerHeight + 100
+      const isNearingFromBottom = rect.bottom > window.innerHeight - 100 && rect.bottom < window.innerHeight + 50  // Further reduced for bottom exit
       const isNearingWrapper = isNearingFromTop || isNearingFromBottom
 
       if (!isCarouselActive && !isPositioning.current) {
@@ -120,8 +120,8 @@ const DTFCarouselLenisOptimizedRender = ({ dtfs, isLoading }: DTFCarouselLenisOp
           if (exitDirection.current === 'top' && rect.top > HEADER_HEIGHT && rect.top < HEADER_HEIGHT + 100) {
             return // Still too close to exit point
           }
-          if (exitDirection.current === 'bottom' && rect.bottom < window.innerHeight && rect.bottom > window.innerHeight - 100) {
-            return // Still too close to exit point
+          if (exitDirection.current === 'bottom' && rect.bottom < window.innerHeight && rect.bottom > window.innerHeight - 200) {
+            return // Larger dead zone to prevent pull-back at bottom
           }
           // If we're approaching from opposite direction, clear exit but keep index
           if ((exitDirection.current === 'top' && isNearingFromBottom) ||
@@ -202,8 +202,8 @@ const DTFCarouselLenisOptimizedRender = ({ dtfs, isLoading }: DTFCarouselLenisOp
           // Set exit direction based on which boundary we exited from
           if (atFirstCard && rect.top > HEADER_HEIGHT + 150) {
             exitDirection.current = 'top' // Exited from top boundary
-          } else if (atLastCard && rect.bottom < window.innerHeight - 150) {
-            exitDirection.current = 'bottom' // Exited from bottom boundary
+          } else if (atLastCard && rect.bottom < window.innerHeight - 50) {
+            exitDirection.current = 'bottom' // Reduced threshold for easier exit
           }
 
           // RESTART LENIS when exiting carousel
@@ -599,4 +599,4 @@ const DTFCarouselLenisOptimizedRender = ({ dtfs, isLoading }: DTFCarouselLenisOp
   )
 }
 
-export default DTFCarouselLenisOptimizedRender
+export default DTFCarousel
