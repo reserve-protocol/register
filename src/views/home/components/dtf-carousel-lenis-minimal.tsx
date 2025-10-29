@@ -92,25 +92,30 @@ const DTFCarouselLenisMinimal = ({ dtfs, isLoading }: DTFCarouselLenisMinimalPro
       const isNearingWrapper = isNearingFromTop || isNearingFromBottom
 
       if (!isCarouselActive && !isPositioning.current) {
-        // Check exit direction to prevent immediate re-engagement
+        // First, clear exit state if carousel has moved away from viewport
         if (exitDirection.current) {
-          // If exited from top, only block re-engagement if approaching from top
-          if (exitDirection.current === 'top' && isNearingFromTop) {
-            return // Don't re-engage
-          }
-          // If exited from bottom, only block re-engagement if approaching from bottom
-          if (exitDirection.current === 'bottom' && isNearingFromBottom) {
-            return // Don't re-engage
-          }
-          // Clear exit direction if approaching from opposite side or far away
-          const isFarAway = rect.bottom < -200 || rect.top > window.innerHeight + 200
-          if (isFarAway) {
-            // Far away - clear everything for fresh engagement
+          const carouselAboveViewport = rect.bottom < 0
+          const carouselBelowViewport = rect.top > window.innerHeight
+
+          if (carouselAboveViewport || carouselBelowViewport) {
+            // Carousel is completely out of view - clear for fresh engagement
             exitDirection.current = null
             lastExitIndex.current = null
-          } else if ((exitDirection.current === 'top' && isNearingFromBottom) ||
-                     (exitDirection.current === 'bottom' && isNearingFromTop)) {
-            // Approaching from opposite direction - clear exit direction but keep index
+          }
+        }
+
+        // Then check if we should block re-engagement based on exit direction
+        if (exitDirection.current) {
+          // Only block if we're still very close to the exit point
+          if (exitDirection.current === 'top' && rect.top > HEADER_HEIGHT && rect.top < HEADER_HEIGHT + 100) {
+            return // Still too close to exit point
+          }
+          if (exitDirection.current === 'bottom' && rect.bottom < window.innerHeight && rect.bottom > window.innerHeight - 100) {
+            return // Still too close to exit point
+          }
+          // If we're approaching from opposite direction, clear exit but keep index
+          if ((exitDirection.current === 'top' && isNearingFromBottom) ||
+              (exitDirection.current === 'bottom' && isNearingFromTop)) {
             exitDirection.current = null
           }
         }
