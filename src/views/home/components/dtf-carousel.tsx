@@ -97,7 +97,7 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
       const currentIdx = currentIndexRef.current
 
       // Early detection: when wrapper is approaching
-      const isNearingFromTop = rect.top < 300 && rect.top > -100
+      const isNearingFromTop = rect.top < 200 && rect.top > -50  // Reduced for smoother top exit
       const isNearingFromBottom = rect.bottom > window.innerHeight - 100 && rect.bottom < window.innerHeight + 50  // Further reduced for bottom exit
       const isNearingWrapper = isNearingFromTop || isNearingFromBottom
 
@@ -117,8 +117,8 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
         // Then check if we should block re-engagement based on exit direction
         if (exitDirection.current) {
           // Only block if we're still very close to the exit point
-          if (exitDirection.current === 'top' && rect.top > HEADER_HEIGHT && rect.top < HEADER_HEIGHT + 100) {
-            return // Still too close to exit point
+          if (exitDirection.current === 'top' && rect.top > HEADER_HEIGHT && rect.top < HEADER_HEIGHT + 200) {
+            return // Larger dead zone to prevent pull-back at top
           }
           if (exitDirection.current === 'bottom' && rect.bottom < window.innerHeight && rect.bottom > window.innerHeight - 200) {
             return // Larger dead zone to prevent pull-back at bottom
@@ -200,8 +200,8 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
           lastExitIndex.current = currentIdx
 
           // Set exit direction based on which boundary we exited from
-          if (atFirstCard && rect.top > HEADER_HEIGHT + 150) {
-            exitDirection.current = 'top' // Exited from top boundary
+          if (atFirstCard && rect.top > HEADER_HEIGHT + 50) {
+            exitDirection.current = 'top' // Reduced threshold for easier exit
           } else if (atLastCard && rect.bottom < window.innerHeight - 50) {
             exitDirection.current = 'bottom' // Reduced threshold for easier exit
           }
