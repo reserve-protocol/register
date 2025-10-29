@@ -85,23 +85,79 @@ export const getSharesFromSplit = (
 ): [RevenueDist, ExternalDistribution[]] => {
   const SHARE_MULTIPLIER = 100 // being 0.1 of 0.1 the min number for share distribution
 
-  return [
-    {
-      rTokenDist: Math.floor(+split.holders * SHARE_MULTIPLIER),
-      rsrDist: Math.floor(+split.stakers * SHARE_MULTIPLIER),
-    },
-    split.external.map((externalSplit) => {
-      const totalShares = +externalSplit.total * SHARE_MULTIPLIER
+  const dist = {
+    rTokenDist: Math.floor(+split.holders * SHARE_MULTIPLIER),
+    rsrDist: Math.floor(+split.stakers * SHARE_MULTIPLIER),
+  }
 
-      return {
-        beneficiary: externalSplit.address as Address,
-        revShare: {
-          rTokenDist: Math.floor((totalShares * +externalSplit.holders) / 100),
-          rsrDist: Math.floor((totalShares * +externalSplit.stakers) / 100),
-        },
+  const externals = split.external.map((externalSplit) => {
+    const totalShares = +externalSplit.total * SHARE_MULTIPLIER
+
+    return {
+      beneficiary: externalSplit.address as Address,
+      revShare: {
+        rTokenDist: Math.floor((totalShares * +externalSplit.holders) / 100),
+        rsrDist: Math.floor((totalShares * +externalSplit.stakers) / 100),
+      },
+    }
+  })
+
+  // Calculate total shares to ensure they sum to exactly 10000
+  const totalShares =
+    dist.rTokenDist +
+    dist.rsrDist +
+    externals.reduce(
+      (sum, ext) => sum + ext.revShare.rTokenDist + ext.revShare.rsrDist,
+      0
+    )
+
+  // If total is not exactly 10000, adjust the largest share
+  if (totalShares !== 10000) {
+    const diff = 10000 - totalShares
+
+    // Find the largest share and add the difference
+    let maxValue = 0
+    let maxType: 'rToken' | 'rsr' | 'external' = 'rToken'
+    let maxIndex = 0
+
+    if (dist.rTokenDist > maxValue) {
+      maxValue = dist.rTokenDist
+      maxType = 'rToken'
+    }
+    if (dist.rsrDist > maxValue) {
+      maxValue = dist.rsrDist
+      maxType = 'rsr'
+    }
+
+    externals.forEach((ext, index) => {
+      if (ext.revShare.rTokenDist > maxValue) {
+        maxValue = ext.revShare.rTokenDist
+        maxType = 'external'
+        maxIndex = index
       }
-    }),
-  ]
+      if (ext.revShare.rsrDist > maxValue) {
+        maxValue = ext.revShare.rsrDist
+        maxType = 'external'
+        maxIndex = index
+      }
+    })
+
+    // Apply the adjustment to the largest share
+    if (maxType === 'rToken') {
+      dist.rTokenDist += diff
+    } else if (maxType === 'rsr') {
+      dist.rsrDist += diff
+    } else if (maxType === 'external' && externals[maxIndex]) {
+      // Determine which part of the external share is larger
+      if (externals[maxIndex].revShare.rTokenDist >= externals[maxIndex].revShare.rsrDist) {
+        externals[maxIndex].revShare.rTokenDist += diff
+      } else {
+        externals[maxIndex].revShare.rsrDist += diff
+      }
+    }
+  }
+
+  return [dist, externals]
 }
 
 export const getDeployParameters = (

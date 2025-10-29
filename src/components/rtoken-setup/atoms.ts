@@ -266,8 +266,8 @@ export const isRevenueValidAtom = atom((get) => {
     const holders = BigInt(Math.round(+external.holders * 100))
     const stakers = BigInt(Math.round(+external.stakers * 100))
 
-    // Validate internal address allocation
-    if (holders + stakers !== 10000n) {
+    // Validate internal address allocation (allow small rounding differences)
+    if (holders + stakers < 9999n || holders + stakers > 10001n) {
       return false
     }
 
@@ -279,7 +279,8 @@ export const isRevenueValidAtom = atom((get) => {
 
   const sum = stakers + holders + total
 
-  if (sum !== 10000n) {
+  // Allow for small rounding differences (9999-10001)
+  if (sum < 9999n || sum > 10001n) {
     return false
   }
 
