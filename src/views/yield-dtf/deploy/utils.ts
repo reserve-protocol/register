@@ -6,6 +6,12 @@ import {
 import { StringMap } from 'types'
 import { Address, parseEther, stringToHex, zeroAddress } from 'viem'
 import { parsePercent } from '@/utils'
+import {
+  VERSION_REGISTRY_ADDRESS,
+  ASSET_PLUGIN_REGISTRY_ADDRESS,
+  DAO_FEE_REGISTRY_ADDRESS,
+  TRUSTED_FILLER_REGISTRY_ADDRESS,
+} from 'utils/addresses'
 
 export interface RevenueDist {
   rTokenDist: number
@@ -23,6 +29,7 @@ export interface RTokenConfiguration {
   mandate: string
   params: {
     reweightable: boolean
+    enableIssuancePremium: boolean
     minTradeVolume: bigint
     rTokenMaxTradeVolume: bigint
     dist: RevenueDist
@@ -61,6 +68,13 @@ export interface BasketConfiguration {
   beneficiaries: ExternalDistribution[]
 }
 
+export interface Registries {
+  versionRegistry: Address
+  assetPluginRegistry: Address
+  daoFeeRegistry: Address
+  trustedFillerRegistry: Address
+}
+
 /**
  * Convert revenue distribution (%) to number of shares
  * The number of shares cannot have decimal numbers
@@ -94,8 +108,9 @@ export const getDeployParameters = (
   tokenConfig: StringMap,
   basket: Basket,
   backup: BackupBasket,
-  revenueSplit: RevenueSplit
-): [RTokenConfiguration, BasketConfiguration] | undefined => {
+  revenueSplit: RevenueSplit,
+  chainId: number
+): [RTokenConfiguration, BasketConfiguration, Registries] | undefined => {
   try {
     const [dist, beneficiaries] = getSharesFromSplit(revenueSplit)
 
@@ -106,6 +121,7 @@ export const getDeployParameters = (
       mandate: tokenConfig.mandate,
       params: {
         reweightable: tokenConfig.reweightable,
+        enableIssuancePremium: tokenConfig.enableIssuancePremium,
         withdrawalLeak: parsePercent(tokenConfig.withdrawalLeak),
         warmupPeriod: Number(tokenConfig.warmupPeriod),
         dutchAuctionLength: Number(tokenConfig.dutchAuctionLength),
@@ -180,7 +196,16 @@ export const getDeployParameters = (
       beneficiaries,
     }
 
-    return [config, basketConfig]
+    const registries: Registries = {
+      versionRegistry: VERSION_REGISTRY_ADDRESS[chainId] as Address,
+      assetPluginRegistry: ASSET_PLUGIN_REGISTRY_ADDRESS[chainId] as Address,
+      daoFeeRegistry: DAO_FEE_REGISTRY_ADDRESS[chainId] as Address,
+      trustedFillerRegistry: TRUSTED_FILLER_REGISTRY_ADDRESS[
+        chainId
+      ] as Address,
+    }
+
+    return [config, basketConfig, registries]
   } catch (e) {
     // TODO: Handle error case here
     console.error('Error deploying rToken', e)

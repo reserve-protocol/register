@@ -330,6 +330,7 @@ export const rTokenDefaultValues = {
   manifesto: '',
   ownerAddress: '',
   reweightable: false,
+  enableIssuancePremium: false,
   // backing params
   tradingDelay: '0',
   batchAuctionLength: '900',
