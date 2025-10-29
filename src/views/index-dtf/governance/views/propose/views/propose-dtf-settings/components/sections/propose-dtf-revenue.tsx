@@ -54,9 +54,8 @@ const ProposeDTFRevenue = () => {
   const { watch } = useFormContext()
   const folioFee = watch('folioFee')
   const mintFee = watch('mintFee')
-  const showWarningFolioFee =
-    Number(folioFee) >= 0.15 && Number(folioFee) <= 0.3
-  const showWarningMintFee = Number(mintFee) >= 0.15 && Number(mintFee) <= 0.3
+  const showWarningFolioFee = Number(folioFee) >= 0.15 && Number(folioFee) < 0.3
+  const showWarningMintFee = Number(mintFee) >= 0.15 && Number(mintFee) < 0.3
 
   return (
     <div className="">

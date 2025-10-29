@@ -55,9 +55,8 @@ const RevenueDistribution = () => {
   const { watch } = useFormContext()
   const folioFee = watch('folioFee')
   const mintFee = watch('mintFee')
-  const showWarningFolioFee =
-    Number(folioFee) >= 0.15 && Number(folioFee) <= 0.3
-  const showWarningMintFee = Number(mintFee) >= 0.15 && Number(mintFee) <= 0.3
+  const showWarningFolioFee = Number(folioFee) >= 0.15 && Number(folioFee) < 0.3
+  const showWarningMintFee = Number(mintFee) >= 0.15 && Number(mintFee) < 0.3
 
   const toggleForms = [
     {
@@ -76,7 +75,7 @@ const RevenueDistribution = () => {
         step: 0.05,
         min: 0.15,
         max: 10,
-      }
+      },
     },
 
     {
@@ -95,7 +94,7 @@ const RevenueDistribution = () => {
         step: 0.05,
         min: 0.15,
         max: 5,
-      }
+      },
     },
   ]
 

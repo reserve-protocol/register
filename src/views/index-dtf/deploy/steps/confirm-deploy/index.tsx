@@ -35,8 +35,8 @@ const Header = () => {
         Create the genesis token
       </h1>
       <p className="mt-1">
-        You need to mint at least ${form?.initialValue} worth of {form?.symbol}{' '}
-        in order to create your new Index DTF.
+        You need to mint at least $1 worth of {form?.symbol} in order to create
+        your new Index DTF.
       </p>
     </div>
   )
@@ -66,9 +66,9 @@ const ConfirmIndexDeploy = ({ isActive }: { isActive: boolean }) => {
             }))
           : data.tokensDistribution,
     }
-    
+
     setFormData(processedData)
-    
+
     if (data.governanceVoteLock) {
       setStTokenAddress(data.governanceVoteLock)
     }

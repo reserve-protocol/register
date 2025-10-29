@@ -65,6 +65,7 @@ const ChainSelector = () => {
     <div className="flex flex-col lg:flex-row gap-2 p-2 flex-wrap">
       {SUPPORTED_CHAINS.map((chain) => (
         <FormField
+          key={chain}
           name="chain"
           control={form.control}
           render={({ fieldState }) => (
