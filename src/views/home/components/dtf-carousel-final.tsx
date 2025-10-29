@@ -1,283 +1,401 @@
 import { IndexDTFItem } from '@/hooks/useIndexDTFList'
-import { motion, AnimatePresence } from 'motion/react'
-import { useEffect, useRef, useState } from 'react'
-import DTFHomeCard from './dtf-home-card'
-import { ChevronUp, ChevronDown } from 'lucide-react'
+import {
+  motion,
+  useScroll,
+  useTransform,
+  MotionValue,
+  useMotionValueEvent,
+  AnimatePresence,
+  useMotionValue,
+} from 'motion/react'
+import { useRef, useState, useLayoutEffect, useMemo, memo, useEffect } from 'react'
+import DTFHomeCardFixed from './dtf-home-card-fixed'
 import { cn } from '@/lib/utils'
+import { ChevronDown } from 'lucide-react'
+
+// ============================================================================
+// Constants & Types
+// ============================================================================
+
+const CARD_CONFIG = {
+  HEADER_HEIGHT: 72,
+  CARD_HEIGHT: 720,
+  MAX_STACK: 3,
+  STACK_OFFSET: 20,
+  STACK_SCALE_FACTOR: 0.05,
+  TRANSITION_RANGE: 0.5, // How much scroll range each transition takes
+} as const
 
 interface DTFCarouselFinalProps {
   dtfs: IndexDTFItem[]
   isLoading?: boolean
 }
 
-const DTFCarouselFinal = ({ dtfs, isLoading }: DTFCarouselFinalProps) => {
-  const [currentIndex, setCurrentIndex] = useState(0)
-  const [isFirstLoad, setIsFirstLoad] = useState(true)
-  const containerRef = useRef<HTMLDivElement>(null)
-  const isAnimatingRef = useRef(false)
-  const totalCards = dtfs.length
+interface AnimatedCardProps {
+  dtf: IndexDTFItem
+  index: number
+  progress: MotionValue<number>
+  totalCards: number
+  isCurrentCard: boolean
+}
 
-  useEffect(() => {
-    if (!containerRef.current || totalCards === 0) return
+// ============================================================================
+// Memoized Animated Card Component
+// ============================================================================
 
-    const handleScroll = () => {
-      if (!containerRef.current || isAnimatingRef.current) return
+const AnimatedCard = memo(
+  ({ dtf, index, progress, totalCards, isCurrentCard }: AnimatedCardProps) => {
+    // Single transform for all animations - more performant
+    const transform = useTransform(progress, (p) => {
+      const distance = p - index
+      const absDistance = Math.abs(distance)
 
-      const rect = containerRef.current.getBoundingClientRect()
-      const containerTop = rect.top
-      const containerHeight = rect.height
-      const viewportHeight = window.innerHeight
-
-      // Height per card section (more scroll distance needed per card)
-      const scrollPerCard = viewportHeight * 1.5 // Increase this for more scroll distance per card
-
-      // Only process when container is in view
-      if (containerTop <= viewportHeight * 0.3 && containerTop > -(containerHeight - viewportHeight)) {
-        // Calculate how much we've scrolled into the container
-        const scrolledIntoContainer = Math.abs(containerTop - viewportHeight * 0.3)
-
-        // Calculate which card should be showing (with larger scroll zones)
-        const newIndex = Math.min(
-          Math.floor(scrolledIntoContainer / scrollPerCard),
-          totalCards - 1
-        )
-
-        // Only update if index changed to avoid unnecessary renders
-        if (newIndex !== currentIndex && !isAnimatingRef.current) {
-          isAnimatingRef.current = true
-          setCurrentIndex(newIndex)
-          setIsFirstLoad(false)
-
-          // Reset animation lock after animation completes
-          setTimeout(() => {
-            isAnimatingRef.current = false
-          }, 600)
+      // Early return for cards too far away
+      if (absDistance > 2) {
+        return {
+          y: distance > 0 ? -window.innerHeight : window.innerHeight,
+          scale: 0.8,
+          opacity: 0,
+          zIndex: 0,
         }
       }
-    }
 
-    // Throttle scroll events for better performance
-    let ticking = false
-    const handleScrollThrottled = () => {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          handleScroll()
-          ticking = false
-        })
-        ticking = true
+      // Calculate position
+      let y = 0
+      let scale = 1
+      let opacity = 1
+      let zIndex = totalCards - index
+
+      if (distance < -0.5) {
+        // Card has passed (scrolled past)
+        y = -window.innerHeight
+        opacity = 0
+        scale = 0.9
+      } else if (distance < 0) {
+        // Card is leaving (current -> past)
+        const exitProgress = (distance + 0.5) * 2 // 0 to 1 as card exits
+        y = -window.innerHeight * (1 - exitProgress)
+        opacity = exitProgress
+        scale = 0.9 + 0.1 * exitProgress
+      } else if (distance <= CARD_CONFIG.MAX_STACK) {
+        // Card is in stack (upcoming cards)
+        if (distance < 1) {
+          // Card is entering (next -> current)
+          const enterProgress = 1 - distance // 1 to 0 as card approaches
+          y = distance * CARD_CONFIG.STACK_OFFSET
+          scale = 1 - distance * CARD_CONFIG.STACK_SCALE_FACTOR
+          opacity = 1
+          zIndex = totalCards - index + Math.floor(enterProgress * 10) // Boost z-index during transition
+        } else {
+          // Card is waiting in stack
+          y = Math.min(distance * CARD_CONFIG.STACK_OFFSET, CARD_CONFIG.MAX_STACK * CARD_CONFIG.STACK_OFFSET)
+          scale = Math.max(1 - distance * CARD_CONFIG.STACK_SCALE_FACTOR, 0.85)
+          opacity = 1
+        }
+      } else {
+        // Card is too far ahead
+        y = CARD_CONFIG.MAX_STACK * CARD_CONFIG.STACK_OFFSET
+        scale = 0.85
+        opacity = 0
       }
-    }
 
-    const scrollContainer = document.getElementById('app-container')
-    if (scrollContainer) {
-      scrollContainer.addEventListener('scroll', handleScrollThrottled, { passive: true })
-      handleScroll() // Initial check
-    }
+      return { y, scale, opacity, zIndex }
+    })
 
-    return () => {
-      if (scrollContainer) {
-        scrollContainer.removeEventListener('scroll', handleScrollThrottled)
-      }
-    }
-  }, [currentIndex, totalCards])
+    // Extract individual values from the transform
+    const y = useTransform(transform, (t) => t.y)
+    const scale = useTransform(transform, (t) => t.scale)
+    const opacity = useTransform(transform, (t) => t.opacity)
+    const zIndex = useTransform(transform, (t) => t.zIndex)
 
-  // Manual navigation
-  const goToCard = (index: number) => {
-    if (index >= 0 && index < totalCards && !isAnimatingRef.current) {
-      isAnimatingRef.current = true
-      setCurrentIndex(index)
-      setIsFirstLoad(false)
+    return (
+      <motion.div
+        className="absolute inset-0 flex items-center justify-center"
+        style={{
+          y,
+          scale,
+          opacity,
+          zIndex,
+          pointerEvents: isCurrentCard ? 'auto' : 'none',
+          willChange: isCurrentCard ? 'transform' : 'auto',
+        }}
+      >
+        <DTFHomeCardFixed dtf={dtf} />
+      </motion.div>
+    )
+  },
+  // Custom comparison function for memo
+  (prevProps, nextProps) => {
+    // Only re-render if these specific props change
+    return (
+      prevProps.index === nextProps.index &&
+      prevProps.totalCards === nextProps.totalCards &&
+      prevProps.isCurrentCard === nextProps.isCurrentCard &&
+      prevProps.dtf.address === nextProps.dtf.address
+    )
+  }
+)
 
-      setTimeout(() => {
-        isAnimatingRef.current = false
-      }, 600)
+AnimatedCard.displayName = 'AnimatedCard'
+
+// ============================================================================
+// Navigation Dots Component
+// ============================================================================
+
+const NavigationDots = memo(
+  ({
+    totalCards,
+    currentIndex,
+    onCardSelect,
+  }: {
+    totalCards: number
+    currentIndex: number
+    onCardSelect: (index: number) => void
+  }) => {
+    return (
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-2 z-50">
+        {Array.from({ length: totalCards }, (_, index) => (
+          <button
+            key={index}
+            onClick={() => onCardSelect(index)}
+            className={cn(
+              'h-2 rounded-full transition-all duration-300',
+              'hover:bg-muted-foreground/50',
+              index === currentIndex
+                ? 'bg-primary w-8'
+                : 'bg-muted-foreground/30 w-2'
+            )}
+            aria-label={`Go to card ${index + 1}`}
+          />
+        ))}
+      </div>
+    )
+  }
+)
+
+NavigationDots.displayName = 'NavigationDots'
+
+// ============================================================================
+// Main Carousel Component
+// ============================================================================
+
+const DTFCarouselFinal = ({ dtfs, isLoading }: DTFCarouselFinalProps) => {
+  const containerRef = useRef<HTMLDivElement>(null)
+  const [currentIndex, setCurrentIndex] = useState(0)
+  const [hasInteracted, setHasInteracted] = useState(false)
+  const [isMounted, setIsMounted] = useState(false)
+  const [isRefReady, setIsRefReady] = useState(false)
+
+  const totalCards = dtfs.length
+
+  // Create a fallback motion value for SSR
+  const fallbackProgress = useMotionValue(0)
+
+  // Ensure component and ref are ready
+  useEffect(() => {
+    // Use regular useEffect instead of useLayoutEffect for better SSR compatibility
+    setIsMounted(true)
+  }, [])
+
+  // Check if ref is ready after mount
+  useEffect(() => {
+    if (isMounted && containerRef.current && !isRefReady) {
+      setIsRefReady(true)
     }
+  }, [isMounted, isRefReady])
+
+  // Track scroll progress only when ref is ready
+  const { scrollYProgress } = useScroll(
+    isRefReady && containerRef.current
+      ? {
+          target: containerRef,
+          offset: ['start start', 'end end'],
+          layoutEffect: false,
+        }
+      : {} // Empty config when not ready
+  )
+
+  // Use fallback progress if scroll isn't ready yet
+  const activeProgress = isRefReady ? scrollYProgress : fallbackProgress
+
+  // Direct transform without spring for more precise control
+  const cardProgress = useTransform(
+    activeProgress,
+    [0, 1],
+    [0, Math.max(0, totalCards - 1)]
+  )
+
+  // Update current index based on scroll progress
+  useMotionValueEvent(cardProgress, 'change', (latest) => {
+    if (!isRefReady) return // Don't update if not ready
+
+    const newIndex = Math.round(latest)
+    if (newIndex !== currentIndex) {
+      setCurrentIndex(newIndex)
+    }
+    // Mark as interacted after first meaningful scroll
+    if (latest > 0.05 && !hasInteracted) {
+      setHasInteracted(true)
+    }
+  })
+
+  // Optimized scroll to card function
+  const scrollToCard = (index: number) => {
+    if (!containerRef.current) return
+
+    const container = containerRef.current
+    const scrollRange = container.scrollHeight - window.innerHeight
+    const targetProgress = index / (totalCards - 1)
+    const targetScroll = targetProgress * scrollRange
+
+    // Get the container's position relative to the page
+    const containerRect = container.getBoundingClientRect()
+    const currentScrollY = window.scrollY
+    const containerTop = containerRect.top + currentScrollY
+
+    // Calculate final scroll position
+    const targetPosition = containerTop + targetScroll
+
+    window.scrollTo({
+      top: targetPosition,
+      behavior: 'smooth',
+    })
   }
 
-  // Keyboard navigation
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowDown' && currentIndex < totalCards - 1) {
-        e.preventDefault()
-        goToCard(currentIndex + 1)
-      } else if (e.key === 'ArrowUp' && currentIndex > 0) {
-        e.preventDefault()
-        goToCard(currentIndex - 1)
-      }
-    }
+  // Memoize visible cards for performance
+  const visibleCards = useMemo(() => {
+    // Only render cards within a reasonable range of the current index
+    const renderRange = 3
+    const start = Math.max(0, currentIndex - renderRange)
+    const end = Math.min(totalCards - 1, currentIndex + renderRange)
 
-    window.addEventListener('keydown', handleKeyDown)
-    return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [currentIndex, totalCards])
+    return dtfs.slice(start, end + 1).map((dtf, i) => ({
+      dtf,
+      index: start + i,
+    }))
+  }, [dtfs, currentIndex, totalCards])
 
-  // Preload images
-  useEffect(() => {
-    const start = Math.max(0, currentIndex - 1)
-    const end = Math.min(totalCards, currentIndex + 2)
-
-    for (let i = start; i < end; i++) {
-      if (dtfs[i]?.brand?.cover) {
-        const img = new Image()
-        img.src = dtfs[i].brand.cover
-      }
-    }
-  }, [currentIndex, dtfs, totalCards])
-
+  // Loading state
   if (isLoading) {
     return (
-      <div className="h-screen flex items-center justify-center">
+      <div className="h-screen bg-primary flex items-center justify-center">
         <div className="text-muted-foreground">Loading DTFs...</div>
       </div>
     )
   }
 
-  if (dtfs.length === 0) {
+  // Empty state
+  if (!dtfs || dtfs.length === 0) {
+    return <div className="h-screen bg-primary" />
+  }
+
+  // SSR safety - don't render until mounted and ref is ready
+  if (!isMounted || !isRefReady) {
     return (
-      <div className="h-screen flex items-center justify-center">
-        <div className="text-muted-foreground">No DTFs available</div>
+      <div
+        ref={containerRef}
+        className="h-screen bg-primary flex items-center justify-center"
+      >
+        {/* Keep the same height to prevent layout shift */}
+        <div style={{ height: `${totalCards * 100}vh`, minHeight: '100vh' }} />
       </div>
     )
   }
 
-  // Container height: enough scroll distance for smooth transitions
-  // Each card needs about 1.5x viewport height of scroll
-  const containerHeight = `${totalCards * 150}vh`
-
   return (
-    <section
+    <div
       ref={containerRef}
-      className="relative"
-      style={{ height: containerHeight }}
+      className="relative bg-primary"
+      style={{
+        // Precise height calculation for smooth scrolling
+        height: `${totalCards * 100}vh`,
+        minHeight: '100vh',
+      }}
     >
-      {/* Sticky wrapper - stays in center of viewport */}
-      <div className="sticky top-0 h-screen flex items-center justify-center">
-
-        {/* Navigation UI - Fixed position on right */}
-        <div className="fixed right-8 top-1/2 -translate-y-1/2 z-40 flex flex-col items-center gap-4">
-          {/* Progress dots */}
-          <div className="flex flex-col gap-2">
-            {dtfs.map((_, idx) => (
-              <button
-                key={idx}
-                onClick={() => goToCard(idx)}
-                disabled={isAnimatingRef.current}
-                className={cn(
-                  'w-2 h-2 rounded-full transition-all duration-300 cursor-pointer',
-                  idx === currentIndex
-                    ? 'bg-primary w-3 h-3'
-                    : idx < currentIndex
-                    ? 'bg-primary/40'
-                    : 'bg-muted-foreground/30 hover:bg-muted-foreground/50'
-                )}
-                aria-label={`Go to DTF ${idx + 1}`}
+      {/* Sticky viewport container */}
+      <div className="sticky top-0 h-screen overflow-hidden">
+        {/* Cards container */}
+        <div className="relative w-full h-full flex items-center justify-center">
+          <div
+            className="relative w-full"
+            style={{
+              height: `${CARD_CONFIG.CARD_HEIGHT}px`,
+              maxWidth: '1400px',
+              margin: '0 auto',
+            }}
+          >
+            {/* Render only visible cards for performance */}
+            {isRefReady && visibleCards.map(({ dtf, index }) => (
+              <AnimatedCard
+                key={`${dtf.address}-${index}`}
+                dtf={dtf}
+                index={index}
+                progress={cardProgress}
+                totalCards={totalCards}
+                isCurrentCard={index === currentIndex}
               />
             ))}
           </div>
-
-          {/* Navigation buttons */}
-          <div className="flex flex-col gap-2 mt-4">
-            <button
-              onClick={() => goToCard(currentIndex - 1)}
-              disabled={currentIndex === 0 || isAnimatingRef.current}
-              className={cn(
-                'p-2 rounded-full border transition-all',
-                currentIndex === 0 || isAnimatingRef.current
-                  ? 'opacity-30 cursor-not-allowed border-muted'
-                  : 'hover:bg-accent hover:border-primary cursor-pointer'
-              )}
-              aria-label="Previous DTF"
-            >
-              <ChevronUp size={20} />
-            </button>
-            <button
-              onClick={() => goToCard(currentIndex + 1)}
-              disabled={currentIndex === totalCards - 1 || isAnimatingRef.current}
-              className={cn(
-                'p-2 rounded-full border transition-all',
-                currentIndex === totalCards - 1 || isAnimatingRef.current
-                  ? 'opacity-30 cursor-not-allowed border-muted'
-                  : 'hover:bg-accent hover:border-primary cursor-pointer'
-              )}
-              aria-label="Next DTF"
-            >
-              <ChevronDown size={20} />
-            </button>
-          </div>
-
-          {/* Current card indicator */}
-          <div className="text-xs text-muted-foreground mt-2">
-            {currentIndex + 1} / {totalCards}
-          </div>
         </div>
 
-        {/* Cards Container - Centered in viewport */}
-        <div className="relative w-full max-w-[1400px] mx-auto px-4">
-          <AnimatePresence mode="wait">
-            {dtfs.map((dtf, idx) => {
-              if (idx !== currentIndex) return null
-
-              return (
-                <motion.div
-                  key={dtf.address}
-                  initial={isFirstLoad && idx === 0 ? false : {
-                    opacity: 0,
-                    y: 100,
-                    rotateX: 15
-                  }}
-                  animate={{
-                    opacity: 1,
-                    y: 0,
-                    rotateX: 0
-                  }}
-                  exit={{
-                    opacity: 0,
-                    y: -100,
-                    rotateX: -15
-                  }}
-                  transition={{
-                    duration: 0.6,
-                    ease: [0.32, 0.72, 0, 1]
-                  }}
-                  style={{
-                    perspective: 1200,
-                    transformStyle: 'preserve-3d'
-                  }}
-                  className="w-full"
-                >
-                  <DTFHomeCard dtf={dtf} />
-                </motion.div>
-              )
-            })}
-          </AnimatePresence>
-        </div>
-
-        {/* Scroll hint - positioned at bottom of viewport */}
-        <AnimatePresence>
-          {currentIndex === 0 && (
+        {/* UI Overlays */}
+        <AnimatePresence mode="wait">
+          {/* Scroll hint */}
+          {!hasInteracted && currentIndex === 0 && (
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-30"
+              key="scroll-hint"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+              className="absolute bottom-24 left-1/2 -translate-x-1/2 text-center pointer-events-none"
             >
-              <span className="text-xs text-muted-foreground">
+              <div className="text-xs text-muted-foreground/80 mb-2">
                 Scroll to explore
-              </span>
+              </div>
               <motion.div
-                animate={{ y: [0, 5, 0] }}
+                animate={{ y: [0, 8, 0] }}
                 transition={{
                   duration: 1.5,
                   repeat: Infinity,
                   ease: 'easeInOut',
                 }}
               >
-                <ChevronDown size={20} className="text-muted-foreground" />
+                <ChevronDown
+                  size={24}
+                  className="text-muted-foreground/60"
+                />
               </motion.div>
             </motion.div>
           )}
+
+          {/* Card counter */}
+          {hasInteracted && (
+            <motion.div
+              key="counter"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.2 }}
+              className="absolute top-8 left-1/2 -translate-x-1/2 flex items-center gap-2"
+            >
+              <span className="text-2xl font-light text-primary-foreground">
+                {String(currentIndex + 1).padStart(2, '0')}
+              </span>
+              <span className="text-xs text-muted-foreground mt-2">
+                / {String(totalCards).padStart(2, '0')}
+              </span>
+            </motion.div>
+          )}
         </AnimatePresence>
+
+        {/* Navigation dots */}
+        <NavigationDots
+          totalCards={totalCards}
+          currentIndex={currentIndex}
+          onCardSelect={scrollToCard}
+        />
       </div>
-    </section>
+    </div>
   )
 }
 
