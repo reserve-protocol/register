@@ -74,6 +74,13 @@ export const ExposureTableRows = ({
                   <span>
                     {formatMarketCap(marketCaps[group.native.coingeckoId])}
                   </span>
+                ) : !group.native?.coingeckoId &&
+                  marketCaps?.[group.tokens[0]?.address.toLowerCase()] ? (
+                  <span>
+                    {formatMarketCap(
+                      marketCaps[group.tokens[0]?.address.toLowerCase()]
+                    )}
+                  </span>
                 ) : (
                   <span>—</span>
                 )}
