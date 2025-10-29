@@ -3,6 +3,7 @@ import RegisterAbout from '../discover/components/yield/components/RegisterAbout
 import useFilteredDTFIndex from '../discover/components/index/hooks/use-filtered-dtf-index'
 import DTFCarouselSimple from './components/dtf-carousel-simple'
 import DTFCarouselLenisMinimal from './components/dtf-carousel-lenis-minimal'
+import DTFCarouselLenisOptimizedRender from './components/dtf-carousel-lenis-optimized-render'
 
 const DTFs = () => (
   <div className="flex flex-col flex-shrink-0 pt-1">
@@ -100,8 +101,13 @@ const DTFCards = () => {
   }, [])
 
   // Use carousel with Lenis for desktop, simple for mobile
+  // Toggle between optimized and minimal version with URL param
+  const useOptimized = window.location.search.includes('opt=1')
+
   return isMobile ? (
     <DTFCarouselSimple dtfs={data} isLoading={isLoading} />
+  ) : useOptimized ? (
+    <DTFCarouselLenisOptimizedRender dtfs={data} isLoading={isLoading} />
   ) : (
     <DTFCarouselLenisMinimal dtfs={data} isLoading={isLoading} />
   )

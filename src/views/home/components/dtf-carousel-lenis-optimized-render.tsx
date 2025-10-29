@@ -6,18 +6,18 @@ import { ChevronDown } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import Lenis from 'lenis'
 
-interface DTFCarouselOptimizedProps {
+interface DTFCarouselLenisOptimizedRenderProps {
   dtfs: IndexDTFItem[]
   isLoading?: boolean
 }
 
-// Memoized card wrapper to prevent unnecessary re-renders of DTFHomeCardFixed
-const MemoizedCard = memo(DTFHomeCardFixed, (prev, next) => {
-  return prev.dtf.address === next.dtf.address
+// Memoize the card component with deep comparison
+const MemoizedCard = memo(DTFHomeCardFixed, (prevProps, nextProps) => {
+  return prevProps.dtf.address === nextProps.dtf.address
 })
 
-// Optimized carousel with same animations but better performance
-const DTFCarouselOptimized = ({ dtfs, isLoading }: DTFCarouselOptimizedProps) => {
+// This is the SAME as minimal but with ONLY rendering optimizations
+const DTFCarouselLenisOptimizedRender = ({ dtfs, isLoading }: DTFCarouselLenisOptimizedRenderProps) => {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isCarouselActive, setIsCarouselActive] = useState(false)
   const [scrollDirection, setScrollDirection] = useState<'up' | 'down' | null>(null)
@@ -51,7 +51,7 @@ const DTFCarouselOptimized = ({ dtfs, isLoading }: DTFCarouselOptimizedProps) =>
   const exitDirection = useRef<'top' | 'bottom' | null>(null)
   const lastExitIndex = useRef<number | null>(null)
 
-  // Initialize Lenis with optimizations
+  // Initialize Lenis ONLY for smooth scrolling
   useEffect(() => {
     const appContainer = document.getElementById('app-container')
     if (!appContainer) return
@@ -59,32 +59,28 @@ const DTFCarouselOptimized = ({ dtfs, isLoading }: DTFCarouselOptimizedProps) =>
     const lenis = new Lenis({
       wrapper: appContainer,
       content: appContainer,
-      lerp: 0.1,
+      lerp: 0.1, // Smooth scrolling
       wheelMultiplier: 1,
       touchMultiplier: 2,
       smoothWheel: true,
       syncTouch: true,
-      // Add performance hint
-      normalizeWheel: true,
     })
 
     lenisRef.current = lenis
 
-    // RAF loop for Lenis
-    let rafId: number
+    // Animation loop for Lenis
     function raf(time: number) {
       lenis.raf(time)
-      rafId = requestAnimationFrame(raf)
+      requestAnimationFrame(raf)
     }
-    rafId = requestAnimationFrame(raf)
+    requestAnimationFrame(raf)
 
     return () => {
-      cancelAnimationFrame(rafId)
       lenis.destroy()
     }
   }, [])
 
-  // Main scroll handler - direct processing for Chrome compatibility
+  // Main scroll handler (EXACTLY same as minimal)
   useEffect(() => {
     const handleScroll = () => {
       if (!wrapperRef.current) return
@@ -97,7 +93,6 @@ const DTFCarouselOptimized = ({ dtfs, isLoading }: DTFCarouselOptimizedProps) =>
 
       const rect = wrapperRef.current.getBoundingClientRect()
       const currentIdx = currentIndexRef.current
-
 
       // Early detection: when wrapper is approaching
       const isNearingFromTop = rect.top < 300 && rect.top > -100
@@ -140,7 +135,7 @@ const DTFCarouselOptimized = ({ dtfs, isLoading }: DTFCarouselOptimizedProps) =>
           isApproaching.current = true
           isPositioning.current = true
 
-          // Calculate perfect position - RESTORE ORIGINAL LOGIC
+          // Calculate perfect position
           const currentScroll = lenisRef.current?.scroll || appContainer.scrollTop
           const perfectPosition = currentScroll + (rect.top - HEADER_HEIGHT)
 
@@ -191,7 +186,7 @@ const DTFCarouselOptimized = ({ dtfs, isLoading }: DTFCarouselOptimizedProps) =>
         const atFirstCard = currentIdx === 0
         const atLastCard = currentIdx === totalCards - 1
 
-        // Deactivate with lenient thresholds - EXACT SAME AS WORKING VERSION
+        // Deactivate with lenient thresholds
         if ((atFirstCard && rect.top > HEADER_HEIGHT + 150) ||
             (atLastCard && rect.bottom < window.innerHeight - 150)) {
           setIsCarouselActive(false)
@@ -240,7 +235,7 @@ const DTFCarouselOptimized = ({ dtfs, isLoading }: DTFCarouselOptimizedProps) =>
     currentIndexRef.current = currentIndex
   }, [currentIndex])
 
-  // Wheel event handler - optimized with single listener
+  // Wheel event handler (EXACTLY same as minimal)
   useEffect(() => {
     const handleWheel = (e: WheelEvent) => {
       if (isPositioning.current) {
@@ -336,15 +331,17 @@ const DTFCarouselOptimized = ({ dtfs, isLoading }: DTFCarouselOptimizedProps) =>
       }
     }
 
-    // Single listener on window with capture
+    const appContainer = document.getElementById('app-container')
     window.addEventListener('wheel', handleWheel, { passive: false, capture: true })
+    appContainer?.addEventListener('wheel', handleWheel, { passive: false, capture: true })
 
     return () => {
       window.removeEventListener('wheel', handleWheel, { capture: true })
+      appContainer?.removeEventListener('wheel', handleWheel, { capture: true })
     }
   }, [totalCards])
 
-  // Scrollbar detection with index tracking
+  // Scrollbar detection (EXACTLY same as minimal)
   useEffect(() => {
     const handleMouseDown = (e: MouseEvent) => {
       const windowWidth = window.innerWidth
@@ -452,7 +449,7 @@ const DTFCarouselOptimized = ({ dtfs, isLoading }: DTFCarouselOptimizedProps) =>
     }
   }, [])
 
-  // Viewport height management with debounce
+  // Viewport height management
   const [wrapperHeight, setWrapperHeight] = useState(0)
 
   useEffect(() => {
@@ -462,19 +459,8 @@ const DTFCarouselOptimized = ({ dtfs, isLoading }: DTFCarouselOptimizedProps) =>
     }
 
     updateHeight()
-
-    // Debounce resize
-    let resizeTimeout: NodeJS.Timeout
-    const handleResize = () => {
-      clearTimeout(resizeTimeout)
-      resizeTimeout = setTimeout(updateHeight, 150)
-    }
-
-    window.addEventListener('resize', handleResize)
-    return () => {
-      window.removeEventListener('resize', handleResize)
-      clearTimeout(resizeTimeout)
-    }
+    window.addEventListener('resize', updateHeight)
+    return () => window.removeEventListener('resize', updateHeight)
   }, [])
 
   if (!dtfs || dtfs.length === 0) {
@@ -488,10 +474,7 @@ const DTFCarouselOptimized = ({ dtfs, isLoading }: DTFCarouselOptimizedProps) =>
         className="relative w-full bg-primary"
         style={{
           height: `${wrapperHeight || 800}px`,
-          minHeight: `${wrapperHeight || 800}px`,
-          // GPU acceleration hints
-          transform: 'translateZ(0)',
-          backfaceVisibility: 'hidden',
+          minHeight: `${wrapperHeight || 800}px`
         }}
       >
         <div className="relative w-full h-full flex items-center justify-center overflow-hidden bg-primary">
@@ -501,14 +484,9 @@ const DTFCarouselOptimized = ({ dtfs, isLoading }: DTFCarouselOptimizedProps) =>
           >
             <div
               className="relative"
-              style={{
-                width: '100%',
-                height: `${CARD_HEIGHT}px`,
-                // Optimize rendering
-                contain: 'layout',
-              }}
+              style={{ width: '100%', height: `${CARD_HEIGHT}px` }}
             >
-              {/* Render cards with selective visibility */}
+              {/* Render ALL cards - EXACT same as minimal version */}
               {dtfs.map((dtf, index) => {
                 const relativePosition = index - currentIndex
                 const isTopCard = relativePosition === 0
@@ -516,13 +494,6 @@ const DTFCarouselOptimized = ({ dtfs, isLoading }: DTFCarouselOptimizedProps) =>
                 const maxStackDepth = 3
                 const isInStack = relativePosition >= 0 && relativePosition <= maxStackDepth
                 const isPastStack = relativePosition > maxStackDepth
-
-                // Only render cards that are visible or about to be visible
-                const shouldRender = relativePosition >= -1 && relativePosition <= maxStackDepth + 1
-
-                if (!shouldRender) {
-                  return null
-                }
 
                 const yOffset =
                   relativePosition < 0
@@ -541,10 +512,9 @@ const DTFCarouselOptimized = ({ dtfs, isLoading }: DTFCarouselOptimizedProps) =>
                 const zIndexValue = totalCards - relativePosition
                 const opacityValue = relativePosition < 0 ? 0 : isPastStack ? 0 : 1
 
-                // Only animate cards that are changing
-                const willChange = isCarouselActive && Math.abs(relativePosition) <= 1
-                  ? 'transform, opacity'
-                  : undefined
+                // Only use willChange for cards that are actively animating
+                const isAnimating = scrollDirection !== null && Math.abs(relativePosition) <= 1
+                const willChange = isAnimating ? 'transform, opacity' : 'auto'
 
                 return (
                   <motion.div
@@ -557,20 +527,17 @@ const DTFCarouselOptimized = ({ dtfs, isLoading }: DTFCarouselOptimizedProps) =>
                       opacity: opacityValue,
                     }}
                     transition={{
-                      // Keep spring for smooth animations but optimize settings
                       y: {
                         type: 'spring',
                         stiffness: 300,
                         damping: 30,
                         mass: 1,
-                        restDelta: 0.001, // Stop animation sooner
                       },
                       scale: {
                         type: 'spring',
                         stiffness: 300,
                         damping: 30,
                         mass: 1,
-                        restDelta: 0.001,
                       },
                       opacity: { duration: 0.2, ease: 'easeInOut' },
                     }}
@@ -634,4 +601,4 @@ const DTFCarouselOptimized = ({ dtfs, isLoading }: DTFCarouselOptimizedProps) =>
   )
 }
 
-export default DTFCarouselOptimized
+export default DTFCarouselLenisOptimizedRender
