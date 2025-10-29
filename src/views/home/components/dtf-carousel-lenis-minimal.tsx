@@ -26,6 +26,7 @@ const DTFCarouselLenisMinimal = ({ dtfs, isLoading }: DTFCarouselLenisMinimalPro
   const scrollAccumulator = useRef(0)
   const lastScrollTime = useRef(Date.now())
   const isScrollbarDragging = useRef(false)
+  const scrollbarReleaseIndex = useRef<number | null>(null) // Track index when scrollbar was grabbed
   const transitionTimeout = useRef<NodeJS.Timeout | null>(null)
   const isTransitioning = useRef(false)
   const boundaryReleaseTimeout = useRef<NodeJS.Timeout | null>(null)
@@ -83,6 +84,9 @@ const DTFCarouselLenisMinimal = ({ dtfs, isLoading }: DTFCarouselLenisMinimalPro
       const appContainer = document.getElementById('app-container')
       if (!appContainer) return
 
+      // Skip all carousel logic if scrollbar is being dragged
+      if (isScrollbarDragging.current) return
+
       const rect = wrapperRef.current.getBoundingClientRect()
       const currentIdx = currentIndexRef.current
 
@@ -120,7 +124,10 @@ const DTFCarouselLenisMinimal = ({ dtfs, isLoading }: DTFCarouselLenisMinimalPro
           }
         }
 
-        if (isNearingWrapper && !isApproaching.current && !exitDirection.current) {
+        // Check if we have a scrollbar release index waiting to be used
+        const shouldEngageWithScrollbarIndex = scrollbarReleaseIndex.current !== null && isNearingWrapper
+
+        if ((isNearingWrapper && !isApproaching.current && !exitDirection.current) || shouldEngageWithScrollbarIndex) {
           isApproaching.current = true
           isPositioning.current = true
 
@@ -157,6 +164,10 @@ const DTFCarouselLenisMinimal = ({ dtfs, isLoading }: DTFCarouselLenisMinimalPro
             if (lastExitIndex.current !== null) {
               setCurrentIndex(lastExitIndex.current)
               lastExitIndex.current = null // Clear after using
+            } else if (scrollbarReleaseIndex.current !== null) {
+              // If user was dragging scrollbar, restore to that index
+              setCurrentIndex(scrollbarReleaseIndex.current)
+              scrollbarReleaseIndex.current = null
             } else {
               // First time engagement - set index based on approach direction
               if (isNearingFromBottom) {
@@ -328,27 +339,67 @@ const DTFCarouselLenisMinimal = ({ dtfs, isLoading }: DTFCarouselLenisMinimalPro
     }
   }, [totalCards])
 
-  // Scrollbar detection
+  // Scrollbar detection with index tracking
   useEffect(() => {
     const handleMouseDown = (e: MouseEvent) => {
       const windowWidth = window.innerWidth
       const scrollbarWidth = windowWidth - document.documentElement.clientWidth
 
+      // Check if clicking on or near the scrollbar (with some tolerance)
       if (e.clientX >= windowWidth - scrollbarWidth - 20) {
         isScrollbarDragging.current = true
+
+        // Save current index if carousel is active
+        if (isCarouselActiveRef.current) {
+          scrollbarReleaseIndex.current = currentIndexRef.current
+
+          // Deactivate carousel immediately to prevent conflicts
+          setIsCarouselActive(false)
+          isApproaching.current = false
+          lockedScrollPosition.current = null
+          scrollAccumulator.current = 0
+
+          // Restart Lenis for smooth scrollbar dragging
+          if (lenisRef.current) {
+            lenisRef.current.start()
+          }
+        }
       }
     }
 
     const handleMouseUp = () => {
-      isScrollbarDragging.current = false
+      if (isScrollbarDragging.current) {
+        isScrollbarDragging.current = false
+
+        // Clear the saved index if user scrolled far away
+        setTimeout(() => {
+          if (!wrapperRef.current) return
+
+          const rect = wrapperRef.current.getBoundingClientRect()
+          const farFromCarousel = rect.bottom < -200 || rect.top > window.innerHeight + 200
+
+          if (farFromCarousel) {
+            scrollbarReleaseIndex.current = null
+          }
+        }, 100)
+      }
+    }
+
+    // Also detect if mouse leaves the window while dragging
+    const handleMouseLeave = (e: MouseEvent) => {
+      if (e.clientX >= window.innerWidth - 50) {
+        handleMouseUp()
+      }
     }
 
     window.addEventListener('mousedown', handleMouseDown)
     window.addEventListener('mouseup', handleMouseUp)
+    window.addEventListener('mouseleave', handleMouseLeave)
 
     return () => {
       window.removeEventListener('mousedown', handleMouseDown)
       window.removeEventListener('mouseup', handleMouseUp)
+      window.removeEventListener('mouseleave', handleMouseLeave)
     }
   }, [])
 
