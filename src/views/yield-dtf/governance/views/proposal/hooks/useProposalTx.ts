@@ -61,7 +61,7 @@ import Spell from 'abis/Spell'
 import useRToken from 'hooks/useRToken'
 import { spellAddressAtom } from '../components/SpellUpgrade'
 
-const paramParse: { [x: string]: (v: string) => bigint | number } = {
+const paramParse: { [x: string]: (v: string) => bigint | number | boolean } = {
   minTrade: parseEther,
   rTokenMaxTradeVolume: parseEther,
   rewardRatio: parseEther,
@@ -74,6 +74,7 @@ const paramParse: { [x: string]: (v: string) => bigint | number } = {
   shortFreeze: Number,
   longFreeze: Number,
   warmupPeriod: Number,
+  enableIssuancePremium: (v) => v === 'true',
   minDelay: (v) => +v * 60 * 60,
   proposalThresholdAsMicroPercent: (v) => BigInt(+v * 1e6),
   quorumPercent: Number,
@@ -305,7 +306,7 @@ const useProposalTx = () => {
         } else {
           for (const contract of parameterMap[paramChange.field as ParamName]) {
             const { address, ...data } = contract
-            let proposedParam: string | bigint | number
+            let proposedParam: string | bigint | number | boolean
 
             if (
               paramChange.field === 'votingDelay' ||
