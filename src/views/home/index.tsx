@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import RegisterAbout from '../discover/components/yield/components/RegisterAbout'
 import useFilteredDTFIndex from '../discover/components/index/hooks/use-filtered-dtf-index'
 import DTFCarouselSimple from './components/dtf-carousel-simple'
-import DTFCarouselWithLenis from './components/dtf-carousel-with-lenis'
+import DTFCarouselLenisMinimal from './components/dtf-carousel-lenis-minimal'
 
 const DTFs = () => (
   <div className="flex flex-col flex-shrink-0 pt-1">
@@ -103,7 +103,7 @@ const DTFCards = () => {
   return isMobile ? (
     <DTFCarouselSimple dtfs={data} isLoading={isLoading} />
   ) : (
-    <DTFCarouselWithLenis dtfs={data} isLoading={isLoading} />
+    <DTFCarouselLenisMinimal dtfs={data} isLoading={isLoading} />
   )
 }
 

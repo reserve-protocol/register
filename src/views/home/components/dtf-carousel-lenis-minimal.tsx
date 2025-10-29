@@ -6,12 +6,14 @@ import { ChevronDown } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import Lenis from 'lenis'
 
-interface DTFCarouselWithLenisProps {
+interface DTFCarouselLenisMinimalProps {
   dtfs: IndexDTFItem[]
   isLoading?: boolean
 }
 
-const DTFCarouselWithLenis = ({ dtfs }: DTFCarouselWithLenisProps) => {
+// This is the SIMPLE carousel with MINIMAL Lenis integration
+// Lenis is ONLY used for smooth scrolling, NOT for control
+const DTFCarouselLenisMinimal = ({ dtfs, isLoading }: DTFCarouselLenisMinimalProps) => {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isCarouselActive, setIsCarouselActive] = useState(false)
   const [scrollDirection, setScrollDirection] = useState<'up' | 'down' | null>(null)
@@ -20,7 +22,7 @@ const DTFCarouselWithLenis = ({ dtfs }: DTFCarouselWithLenisProps) => {
   const lenisRef = useRef<Lenis | null>(null)
   const totalCards = dtfs.length
 
-  // Mutable refs for scroll handling (same as simple)
+  // Mutable refs for scroll handling (avoid stale closures)
   const scrollAccumulator = useRef(0)
   const lastScrollTime = useRef(Date.now())
   const isScrollbarDragging = useRef(false)
@@ -29,7 +31,7 @@ const DTFCarouselWithLenis = ({ dtfs }: DTFCarouselWithLenisProps) => {
   const boundaryReleaseTimeout = useRef<NodeJS.Timeout | null>(null)
   const isTryingToScrollPastBoundary = useRef(false)
 
-  // Configuration (same as simple)
+  // Configuration
   const HEADER_HEIGHT = 72
   const CARD_HEIGHT = 720
   const CARD_OFFSET = 20
@@ -37,42 +39,27 @@ const DTFCarouselWithLenis = ({ dtfs }: DTFCarouselWithLenisProps) => {
   const SCROLL_THRESHOLD = 50
   const TRANSITION_DURATION = 500
 
-  // States for smooth carousel activation (same as simple)
+  // States for smooth carousel activation
   const isApproaching = useRef(false)
   const isPositioning = useRef(false)
   const lockedScrollPosition = useRef<number | null>(null)
 
-  const lastScrollPositionRef = useRef(0)
-
-  // Initialize Lenis for smooth scrolling
+  // Initialize Lenis ONLY for smooth scrolling
   useEffect(() => {
     const appContainer = document.getElementById('app-container')
     if (!appContainer) return
 
-    // Create Lenis instance for smooth scrolling
     const lenis = new Lenis({
       wrapper: appContainer,
       content: appContainer,
-      lerp: 0.1, // Smoothness factor
-      wheelMultiplier: 1, // Keep normal scroll speed
+      lerp: 0.1, // Smooth scrolling
+      wheelMultiplier: 1,
       touchMultiplier: 2,
       smoothWheel: true,
       syncTouch: true,
     })
 
     lenisRef.current = lenis
-
-    // Lock position during positioning phase
-    lenis.on('scroll', ({ scroll }) => {
-      // During positioning, lock to target position
-      if (isPositioning.current && lockedScrollPosition.current !== null) {
-        const deviation = Math.abs(scroll - lockedScrollPosition.current)
-        if (deviation > 5) {
-          // Force back to locked position during positioning
-          lenis.scrollTo(lockedScrollPosition.current, { immediate: true })
-        }
-      }
-    })
 
     // Animation loop for Lenis
     function raf(time: number) {
@@ -84,9 +71,9 @@ const DTFCarouselWithLenis = ({ dtfs }: DTFCarouselWithLenisProps) => {
     return () => {
       lenis.destroy()
     }
-  }, [totalCards])
+  }, [])
 
-  // Main scroll handler
+  // Main scroll handler (EXACTLY same as simple)
   useEffect(() => {
     const handleScroll = () => {
       if (!wrapperRef.current) return
@@ -96,12 +83,6 @@ const DTFCarouselWithLenis = ({ dtfs }: DTFCarouselWithLenisProps) => {
 
       const rect = wrapperRef.current.getBoundingClientRect()
       const currentIdx = currentIndexRef.current
-      const currentScrollTop = appContainer.scrollTop
-
-      // Detect scroll direction
-      const scrollingDown = currentScrollTop > (lastScrollPositionRef.current || 0)
-      const scrollingUp = currentScrollTop < (lastScrollPositionRef.current || 0)
-      lastScrollPositionRef.current = currentScrollTop
 
       // Early detection: when wrapper is approaching
       const isNearingFromTop = rect.top < 300 && rect.top > -100
@@ -110,17 +91,17 @@ const DTFCarouselWithLenis = ({ dtfs }: DTFCarouselWithLenisProps) => {
 
       if (!isCarouselActive && !isPositioning.current) {
         if (isNearingWrapper && !isApproaching.current) {
-          // Lock in when approaching
           isApproaching.current = true
           isPositioning.current = true
 
           // Calculate perfect position
-          const perfectPosition = appContainer.scrollTop + (rect.top - HEADER_HEIGHT)
+          const currentScroll = lenisRef.current?.scroll || appContainer.scrollTop
+          const perfectPosition = currentScroll + (rect.top - HEADER_HEIGHT)
 
-          // Set lock position immediately
+          // Lock position immediately
           lockedScrollPosition.current = perfectPosition
 
-          // Use Lenis for smooth scroll to position
+          // Use Lenis to scroll smoothly
           if (lenisRef.current) {
             lenisRef.current.scrollTo(perfectPosition, {
               duration: 0.4,
@@ -148,7 +129,7 @@ const DTFCarouselWithLenis = ({ dtfs }: DTFCarouselWithLenisProps) => {
         const atFirstCard = currentIdx === 0
         const atLastCard = currentIdx === totalCards - 1
 
-        // Deactivate ONLY when at boundaries AND scrolled far enough
+        // Deactivate with lenient thresholds
         if ((atFirstCard && rect.top > HEADER_HEIGHT + 150) ||
             (atLastCard && rect.bottom < window.innerHeight - 150)) {
           setIsCarouselActive(false)
@@ -171,9 +152,47 @@ const DTFCarouselWithLenis = ({ dtfs }: DTFCarouselWithLenisProps) => {
     }
   }, [isCarouselActive, totalCards])
 
-  // No need for separate Lenis management or lock scroll - handled in Lenis scroll event
+  // Lock scroll position (EXACTLY same as simple)
+  useEffect(() => {
+    const appContainer = document.getElementById('app-container')
+    if (!appContainer) return
 
-  // Store active state in ref for immediate access
+    const lockScroll = () => {
+      if (isPositioning.current) {
+        return
+      }
+
+      if (lockedScrollPosition.current !== null) {
+        const currentIdx = currentIndexRef.current
+        const atFirstCard = currentIdx === 0
+        const atLastCard = currentIdx === totalCards - 1
+
+        const currentScroll = lenisRef.current?.scroll || appContainer.scrollTop
+        const isScrollingUp = currentScroll < lockedScrollPosition.current
+        const isScrollingDown = currentScroll > lockedScrollPosition.current
+
+        // Only allow natural scroll at boundaries when carousel is active
+        if (isCarouselActive && ((atFirstCard && isScrollingUp) || (atLastCard && isScrollingDown))) {
+          return
+        }
+
+        // Force Lenis to the locked position
+        if (lenisRef.current) {
+          lenisRef.current.scrollTo(lockedScrollPosition.current, { immediate: true })
+        } else {
+          appContainer.scrollTop = lockedScrollPosition.current
+        }
+      }
+    }
+
+    appContainer.addEventListener('scroll', lockScroll)
+
+    return () => {
+      appContainer.removeEventListener('scroll', lockScroll)
+    }
+  }, [isCarouselActive, totalCards])
+
+  // Store active state in ref
   const isCarouselActiveRef = useRef(false)
   useEffect(() => {
     isCarouselActiveRef.current = isCarouselActive
@@ -184,17 +203,15 @@ const DTFCarouselWithLenis = ({ dtfs }: DTFCarouselWithLenisProps) => {
     currentIndexRef.current = currentIndex
   }, [currentIndex])
 
-  // Wheel event handler - intercept BEFORE Lenis
+  // Wheel event handler (EXACTLY same as simple)
   useEffect(() => {
     const handleWheel = (e: WheelEvent) => {
-      // Always prevent during positioning
       if (isPositioning.current) {
         e.preventDefault()
         e.stopPropagation()
         return
       }
 
-      // If carousel not active, let Lenis handle it
       if (!isCarouselActiveRef.current || isScrollbarDragging.current) {
         return
       }
@@ -206,14 +223,11 @@ const DTFCarouselWithLenis = ({ dtfs }: DTFCarouselWithLenisProps) => {
       const atFirstCard = currentIdx === 0
       const atLastCard = currentIdx === totalCards - 1
 
-      // CRITICAL: Prevent Lenis from processing wheel events in carousel
-      // except at exit boundaries
-
-      // At first card scrolling up - allow exit after timeout
+      // At first card scrolling up - use boundary timeout
       if (atFirstCard && scrollingUp) {
         if (!isTryingToScrollPastBoundary.current) {
           isTryingToScrollPastBoundary.current = true
-          e.preventDefault() // Prevent this scroll
+          e.preventDefault()
           e.stopPropagation()
 
           if (boundaryReleaseTimeout.current) clearTimeout(boundaryReleaseTimeout.current)
@@ -222,20 +236,13 @@ const DTFCarouselWithLenis = ({ dtfs }: DTFCarouselWithLenisProps) => {
           }, 500)
           return
         }
-        // After timeout, allow scroll (don't prevent)
         return
       }
 
-      // At last card scrolling down - allow exit immediately
+      // At last card scrolling down - allow natural scroll
       if (atLastCard && scrollingDown) {
-        // Don't prevent - let Lenis handle the scroll
         return
       }
-
-      // For ALL other cases (including first card scrolling down),
-      // prevent Lenis from getting the event
-      e.preventDefault()
-      e.stopPropagation()
 
       // Clear boundary flags
       isTryingToScrollPastBoundary.current = false
@@ -243,6 +250,9 @@ const DTFCarouselWithLenis = ({ dtfs }: DTFCarouselWithLenisProps) => {
         clearTimeout(boundaryReleaseTimeout.current)
         boundaryReleaseTimeout.current = null
       }
+
+      e.preventDefault()
+      e.stopPropagation()
 
       const currentTime = Date.now()
       if (currentTime - lastScrollTime.current > 500) {
@@ -291,7 +301,7 @@ const DTFCarouselWithLenis = ({ dtfs }: DTFCarouselWithLenisProps) => {
     }
   }, [totalCards])
 
-  // Scrollbar detection (same as simple)
+  // Scrollbar detection
   useEffect(() => {
     const handleMouseDown = (e: MouseEvent) => {
       const windowWidth = window.innerWidth
@@ -315,7 +325,7 @@ const DTFCarouselWithLenis = ({ dtfs }: DTFCarouselWithLenisProps) => {
     }
   }, [])
 
-  // Manual navigation (same as simple)
+  // Manual navigation
   const goToCard = useCallback(
     (index: number) => {
       if (index >= 0 && index < totalCards && !isTransitioning.current) {
@@ -333,7 +343,7 @@ const DTFCarouselWithLenis = ({ dtfs }: DTFCarouselWithLenisProps) => {
     [currentIndex, totalCards]
   )
 
-  // Keyboard navigation (same as simple)
+  // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (!isCarouselActive || isTransitioning.current) return
@@ -351,7 +361,7 @@ const DTFCarouselWithLenis = ({ dtfs }: DTFCarouselWithLenisProps) => {
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [isCarouselActive, currentIndex, totalCards, goToCard])
 
-  // Cleanup (same as simple)
+  // Cleanup
   useEffect(() => {
     return () => {
       if (transitionTimeout.current) clearTimeout(transitionTimeout.current)
@@ -359,18 +369,7 @@ const DTFCarouselWithLenis = ({ dtfs }: DTFCarouselWithLenisProps) => {
     }
   }, [])
 
-  // Preload images (same as simple)
-  useEffect(() => {
-    dtfs.forEach((dtf) => {
-      const cover = dtf?.brand?.cover
-      if (cover) {
-        const img = new Image()
-        img.src = cover
-      }
-    })
-  }, [dtfs])
-
-  // Viewport height management (same as simple)
+  // Viewport height management
   const [wrapperHeight, setWrapperHeight] = useState(0)
 
   useEffect(() => {
@@ -407,7 +406,7 @@ const DTFCarouselWithLenis = ({ dtfs }: DTFCarouselWithLenisProps) => {
               className="relative"
               style={{ width: '100%', height: `${CARD_HEIGHT}px` }}
             >
-              {/* Render all cards with their animations (EXACTLY same as simple) */}
+              {/* Render all cards with animations */}
               {dtfs.map((dtf, index) => {
                 const relativePosition = index - currentIndex
                 const isTopCard = relativePosition === 0
@@ -518,4 +517,4 @@ const DTFCarouselWithLenis = ({ dtfs }: DTFCarouselWithLenisProps) => {
   )
 }
 
-export default DTFCarouselWithLenis
+export default DTFCarouselLenisMinimal

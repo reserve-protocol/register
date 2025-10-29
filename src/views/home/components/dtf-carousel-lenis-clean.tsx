@@ -6,12 +6,12 @@ import { ChevronDown } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import Lenis from 'lenis'
 
-interface DTFCarouselWithLenisProps {
+interface DTFCarouselLenisCleanProps {
   dtfs: IndexDTFItem[]
   isLoading?: boolean
 }
 
-const DTFCarouselWithLenis = ({ dtfs }: DTFCarouselWithLenisProps) => {
+const DTFCarouselLenisClean = ({ dtfs }: DTFCarouselLenisCleanProps) => {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isCarouselActive, setIsCarouselActive] = useState(false)
   const [scrollDirection, setScrollDirection] = useState<'up' | 'down' | null>(null)
@@ -20,16 +20,13 @@ const DTFCarouselWithLenis = ({ dtfs }: DTFCarouselWithLenisProps) => {
   const lenisRef = useRef<Lenis | null>(null)
   const totalCards = dtfs.length
 
-  // Mutable refs for scroll handling (same as simple)
+  // Mutable refs for scroll handling
   const scrollAccumulator = useRef(0)
   const lastScrollTime = useRef(Date.now())
-  const isScrollbarDragging = useRef(false)
-  const transitionTimeout = useRef<NodeJS.Timeout | null>(null)
   const isTransitioning = useRef(false)
-  const boundaryReleaseTimeout = useRef<NodeJS.Timeout | null>(null)
-  const isTryingToScrollPastBoundary = useRef(false)
+  const transitionTimeout = useRef<NodeJS.Timeout | null>(null)
 
-  // Configuration (same as simple)
+  // Configuration
   const HEADER_HEIGHT = 72
   const CARD_HEIGHT = 720
   const CARD_OFFSET = 20
@@ -37,24 +34,16 @@ const DTFCarouselWithLenis = ({ dtfs }: DTFCarouselWithLenisProps) => {
   const SCROLL_THRESHOLD = 50
   const TRANSITION_DURATION = 500
 
-  // States for smooth carousel activation (same as simple)
-  const isApproaching = useRef(false)
-  const isPositioning = useRef(false)
-  const lockedScrollPosition = useRef<number | null>(null)
-
-  const lastScrollPositionRef = useRef(0)
-
-  // Initialize Lenis for smooth scrolling
+  // Initialize Lenis
   useEffect(() => {
     const appContainer = document.getElementById('app-container')
     if (!appContainer) return
 
-    // Create Lenis instance for smooth scrolling
     const lenis = new Lenis({
       wrapper: appContainer,
       content: appContainer,
-      lerp: 0.1, // Smoothness factor
-      wheelMultiplier: 1, // Keep normal scroll speed
+      lerp: 0.1,
+      wheelMultiplier: 1,
       touchMultiplier: 2,
       smoothWheel: true,
       syncTouch: true,
@@ -62,19 +51,40 @@ const DTFCarouselWithLenis = ({ dtfs }: DTFCarouselWithLenisProps) => {
 
     lenisRef.current = lenis
 
-    // Lock position during positioning phase
+    // Listen to Lenis scroll
     lenis.on('scroll', ({ scroll }) => {
-      // During positioning, lock to target position
-      if (isPositioning.current && lockedScrollPosition.current !== null) {
-        const deviation = Math.abs(scroll - lockedScrollPosition.current)
-        if (deviation > 5) {
-          // Force back to locked position during positioning
-          lenis.scrollTo(lockedScrollPosition.current, { immediate: true })
+      if (!wrapperRef.current) return
+
+      const rect = wrapperRef.current.getBoundingClientRect()
+      const viewportCenter = window.innerHeight / 2
+
+      // Check if carousel is in the center of viewport
+      const carouselCenter = rect.top + rect.height / 2
+      const distanceFromCenter = Math.abs(carouselCenter - viewportCenter)
+
+      // Activate when carousel is centered in viewport
+      if (!isCarouselActive && distanceFromCenter < 100) {
+        setIsCarouselActive(true)
+        // Stop Lenis when carousel activates
+        lenis.stop()
+      }
+      // Deactivate when carousel is far from center
+      else if (isCarouselActive && distanceFromCenter > 300) {
+        const currentIdx = currentIndex
+        const atFirstCard = currentIdx === 0
+        const atLastCard = currentIdx === totalCards - 1
+
+        // Only deactivate at boundaries
+        if ((atFirstCard && rect.top > HEADER_HEIGHT + 150) ||
+            (atLastCard && rect.bottom < window.innerHeight - 150)) {
+          setIsCarouselActive(false)
+          // Restart Lenis when deactivating
+          lenis.start()
         }
       }
     })
 
-    // Animation loop for Lenis
+    // Animation loop
     function raf(time: number) {
       lenis.raf(time)
       requestAnimationFrame(raf)
@@ -84,165 +94,32 @@ const DTFCarouselWithLenis = ({ dtfs }: DTFCarouselWithLenisProps) => {
     return () => {
       lenis.destroy()
     }
-  }, [totalCards])
+  }, [isCarouselActive, currentIndex, totalCards])
 
-  // Main scroll handler
+  // Wheel handler for carousel navigation
   useEffect(() => {
-    const handleScroll = () => {
-      if (!wrapperRef.current) return
+    if (!isCarouselActive) return
 
-      const appContainer = document.getElementById('app-container')
-      if (!appContainer) return
-
-      const rect = wrapperRef.current.getBoundingClientRect()
-      const currentIdx = currentIndexRef.current
-      const currentScrollTop = appContainer.scrollTop
-
-      // Detect scroll direction
-      const scrollingDown = currentScrollTop > (lastScrollPositionRef.current || 0)
-      const scrollingUp = currentScrollTop < (lastScrollPositionRef.current || 0)
-      lastScrollPositionRef.current = currentScrollTop
-
-      // Early detection: when wrapper is approaching
-      const isNearingFromTop = rect.top < 300 && rect.top > -100
-      const isNearingFromBottom = rect.bottom > window.innerHeight - 300 && rect.bottom < window.innerHeight + 100
-      const isNearingWrapper = isNearingFromTop || isNearingFromBottom
-
-      if (!isCarouselActive && !isPositioning.current) {
-        if (isNearingWrapper && !isApproaching.current) {
-          // Lock in when approaching
-          isApproaching.current = true
-          isPositioning.current = true
-
-          // Calculate perfect position
-          const perfectPosition = appContainer.scrollTop + (rect.top - HEADER_HEIGHT)
-
-          // Set lock position immediately
-          lockedScrollPosition.current = perfectPosition
-
-          // Use Lenis for smooth scroll to position
-          if (lenisRef.current) {
-            lenisRef.current.scrollTo(perfectPosition, {
-              duration: 0.4,
-              easing: (t) => 1 - Math.pow(1 - t, 3),
-            })
-          } else {
-            appContainer.scrollTo({
-              top: perfectPosition,
-              behavior: 'smooth'
-            })
-          }
-
-          setTimeout(() => {
-            setIsCarouselActive(true)
-            isPositioning.current = false
-
-            if (isNearingFromBottom) {
-              setCurrentIndex(totalCards - 1)
-            } else {
-              setCurrentIndex(0)
-            }
-          }, 400)
-        }
-      } else if (isCarouselActive) {
-        const atFirstCard = currentIdx === 0
-        const atLastCard = currentIdx === totalCards - 1
-
-        // Deactivate ONLY when at boundaries AND scrolled far enough
-        if ((atFirstCard && rect.top > HEADER_HEIGHT + 150) ||
-            (atLastCard && rect.bottom < window.innerHeight - 150)) {
-          setIsCarouselActive(false)
-          isApproaching.current = false
-          lockedScrollPosition.current = null
-          scrollAccumulator.current = 0
-        }
-      }
-
-      if (!isNearingWrapper && !isCarouselActive) {
-        isApproaching.current = false
-      }
-    }
-
-    const appContainer = document.getElementById('app-container')
-    appContainer?.addEventListener('scroll', handleScroll, { passive: true })
-
-    return () => {
-      appContainer?.removeEventListener('scroll', handleScroll)
-    }
-  }, [isCarouselActive, totalCards])
-
-  // No need for separate Lenis management or lock scroll - handled in Lenis scroll event
-
-  // Store active state in ref for immediate access
-  const isCarouselActiveRef = useRef(false)
-  useEffect(() => {
-    isCarouselActiveRef.current = isCarouselActive
-  }, [isCarouselActive])
-
-  const currentIndexRef = useRef(0)
-  useEffect(() => {
-    currentIndexRef.current = currentIndex
-  }, [currentIndex])
-
-  // Wheel event handler - intercept BEFORE Lenis
-  useEffect(() => {
     const handleWheel = (e: WheelEvent) => {
-      // Always prevent during positioning
-      if (isPositioning.current) {
-        e.preventDefault()
-        e.stopPropagation()
-        return
-      }
-
-      // If carousel not active, let Lenis handle it
-      if (!isCarouselActiveRef.current || isScrollbarDragging.current) {
-        return
-      }
+      if (!isCarouselActive) return
 
       const scrollingDown = e.deltaY > 0
       const scrollingUp = e.deltaY < 0
-      const currentIdx = currentIndexRef.current
+      const currentIdx = currentIndex
 
       const atFirstCard = currentIdx === 0
       const atLastCard = currentIdx === totalCards - 1
 
-      // CRITICAL: Prevent Lenis from processing wheel events in carousel
-      // except at exit boundaries
-
-      // At first card scrolling up - allow exit after timeout
-      if (atFirstCard && scrollingUp) {
-        if (!isTryingToScrollPastBoundary.current) {
-          isTryingToScrollPastBoundary.current = true
-          e.preventDefault() // Prevent this scroll
-          e.stopPropagation()
-
-          if (boundaryReleaseTimeout.current) clearTimeout(boundaryReleaseTimeout.current)
-          boundaryReleaseTimeout.current = setTimeout(() => {
-            isTryingToScrollPastBoundary.current = false
-          }, 500)
-          return
-        }
-        // After timeout, allow scroll (don't prevent)
+      // Allow exit at boundaries
+      if ((atFirstCard && scrollingUp) || (atLastCard && scrollingDown)) {
+        // Start Lenis for exit
+        lenisRef.current?.start()
         return
       }
 
-      // At last card scrolling down - allow exit immediately
-      if (atLastCard && scrollingDown) {
-        // Don't prevent - let Lenis handle the scroll
-        return
-      }
-
-      // For ALL other cases (including first card scrolling down),
-      // prevent Lenis from getting the event
+      // Prevent default scroll and navigate cards
       e.preventDefault()
       e.stopPropagation()
-
-      // Clear boundary flags
-      isTryingToScrollPastBoundary.current = false
-      if (boundaryReleaseTimeout.current) {
-        clearTimeout(boundaryReleaseTimeout.current)
-        boundaryReleaseTimeout.current = null
-      }
 
       const currentTime = Date.now()
       if (currentTime - lastScrollTime.current > 500) {
@@ -281,41 +158,14 @@ const DTFCarouselWithLenis = ({ dtfs }: DTFCarouselWithLenisProps) => {
       }
     }
 
-    const appContainer = document.getElementById('app-container')
-    window.addEventListener('wheel', handleWheel, { passive: false, capture: true })
-    appContainer?.addEventListener('wheel', handleWheel, { passive: false, capture: true })
+    window.addEventListener('wheel', handleWheel, { passive: false })
 
     return () => {
-      window.removeEventListener('wheel', handleWheel, { capture: true })
-      appContainer?.removeEventListener('wheel', handleWheel, { capture: true })
+      window.removeEventListener('wheel', handleWheel)
     }
-  }, [totalCards])
+  }, [isCarouselActive, currentIndex, totalCards])
 
-  // Scrollbar detection (same as simple)
-  useEffect(() => {
-    const handleMouseDown = (e: MouseEvent) => {
-      const windowWidth = window.innerWidth
-      const scrollbarWidth = windowWidth - document.documentElement.clientWidth
-
-      if (e.clientX >= windowWidth - scrollbarWidth - 20) {
-        isScrollbarDragging.current = true
-      }
-    }
-
-    const handleMouseUp = () => {
-      isScrollbarDragging.current = false
-    }
-
-    window.addEventListener('mousedown', handleMouseDown)
-    window.addEventListener('mouseup', handleMouseUp)
-
-    return () => {
-      window.removeEventListener('mousedown', handleMouseDown)
-      window.removeEventListener('mouseup', handleMouseUp)
-    }
-  }, [])
-
-  // Manual navigation (same as simple)
+  // Manual navigation
   const goToCard = useCallback(
     (index: number) => {
       if (index >= 0 && index < totalCards && !isTransitioning.current) {
@@ -333,7 +183,7 @@ const DTFCarouselWithLenis = ({ dtfs }: DTFCarouselWithLenisProps) => {
     [currentIndex, totalCards]
   )
 
-  // Keyboard navigation (same as simple)
+  // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (!isCarouselActive || isTransitioning.current) return
@@ -351,26 +201,14 @@ const DTFCarouselWithLenis = ({ dtfs }: DTFCarouselWithLenisProps) => {
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [isCarouselActive, currentIndex, totalCards, goToCard])
 
-  // Cleanup (same as simple)
+  // Cleanup
   useEffect(() => {
     return () => {
       if (transitionTimeout.current) clearTimeout(transitionTimeout.current)
-      if (boundaryReleaseTimeout.current) clearTimeout(boundaryReleaseTimeout.current)
     }
   }, [])
 
-  // Preload images (same as simple)
-  useEffect(() => {
-    dtfs.forEach((dtf) => {
-      const cover = dtf?.brand?.cover
-      if (cover) {
-        const img = new Image()
-        img.src = cover
-      }
-    })
-  }, [dtfs])
-
-  // Viewport height management (same as simple)
+  // Viewport height management
   const [wrapperHeight, setWrapperHeight] = useState(0)
 
   useEffect(() => {
@@ -407,7 +245,7 @@ const DTFCarouselWithLenis = ({ dtfs }: DTFCarouselWithLenisProps) => {
               className="relative"
               style={{ width: '100%', height: `${CARD_HEIGHT}px` }}
             >
-              {/* Render all cards with their animations (EXACTLY same as simple) */}
+              {/* Render all cards with their animations */}
               {dtfs.map((dtf, index) => {
                 const relativePosition = index - currentIndex
                 const isTopCard = relativePosition === 0
@@ -518,4 +356,4 @@ const DTFCarouselWithLenis = ({ dtfs }: DTFCarouselWithLenisProps) => {
   )
 }
 
-export default DTFCarouselWithLenis
+export default DTFCarouselLenisClean
