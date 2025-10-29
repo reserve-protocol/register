@@ -42,6 +42,10 @@ const DTFCarouselWithLenis = ({ dtfs }: DTFCarouselWithLenisProps) => {
   const isPositioning = useRef(false)
   const lockedScrollPosition = useRef<number | null>(null)
 
+  // Directional memory - track where user exited from
+  const exitedFrom = useRef<'top' | 'bottom' | null>(null)
+  const lastScrollPositionRef = useRef(0)
+
   // Initialize Lenis ONLY for smooth scrolling
   useEffect(() => {
     const appContainer = document.getElementById('app-container')
@@ -82,6 +86,12 @@ const DTFCarouselWithLenis = ({ dtfs }: DTFCarouselWithLenisProps) => {
 
       const rect = wrapperRef.current.getBoundingClientRect()
       const currentIdx = currentIndexRef.current
+      const currentScrollTop = appContainer.scrollTop
+
+      // Detect scroll direction
+      const scrollingDown = currentScrollTop > (lastScrollPositionRef.current || 0)
+      const scrollingUp = currentScrollTop < (lastScrollPositionRef.current || 0)
+      lastScrollPositionRef.current = currentScrollTop
 
       // Early detection: when wrapper is approaching
       const isNearingFromTop = rect.top < 300 && rect.top > -100
@@ -89,6 +99,20 @@ const DTFCarouselWithLenis = ({ dtfs }: DTFCarouselWithLenisProps) => {
       const isNearingWrapper = isNearingFromTop || isNearingFromBottom
 
       if (!isCarouselActive && !isPositioning.current) {
+        // Check directional memory - only re-engage if scrolling opposite to exit direction
+        if (exitedFrom.current) {
+          if (exitedFrom.current === 'bottom' && !scrollingUp) {
+            // Exited from bottom, but not scrolling up - don't re-engage
+            return
+          }
+          if (exitedFrom.current === 'top' && !scrollingDown) {
+            // Exited from top, but not scrolling down - don't re-engage
+            return
+          }
+          // User is scrolling back toward carousel - clear exit memory
+          exitedFrom.current = null
+        }
+
         if (isNearingWrapper && !isApproaching.current) {
           isApproaching.current = true
           isPositioning.current = true
@@ -128,6 +152,13 @@ const DTFCarouselWithLenis = ({ dtfs }: DTFCarouselWithLenisProps) => {
 
         if ((atFirstCard && rect.top > HEADER_HEIGHT + 150) ||
             (atLastCard && rect.bottom < window.innerHeight - 150)) {
+          // Set exit direction when deactivating
+          if (atFirstCard && rect.top > HEADER_HEIGHT + 150) {
+            exitedFrom.current = 'top'
+          } else if (atLastCard && rect.bottom < window.innerHeight - 150) {
+            exitedFrom.current = 'bottom'
+          }
+
           setIsCarouselActive(false)
           isApproaching.current = false
           lockedScrollPosition.current = null
@@ -221,14 +252,19 @@ const DTFCarouselWithLenis = ({ dtfs }: DTFCarouselWithLenisProps) => {
       const atFirstCard = currentIdx === 0
       const atLastCard = currentIdx === totalCards - 1
 
-      // At last card scrolling down - let it scroll naturally to exit
+      // At last card scrolling down - mark exit direction and let it scroll naturally
       if (atLastCard && scrollingDown) {
+        // Mark that we're exiting from the bottom
+        exitedFrom.current = 'bottom'
         // Don't prevent default - allow natural scroll
         return
       }
 
-      // At first card scrolling up - use the boundary timeout logic
+      // At first card scrolling up - mark exit direction and use boundary timeout
       if (atFirstCard && scrollingUp) {
+        // Mark that we're exiting from the top
+        exitedFrom.current = 'top'
+
         if (!isTryingToScrollPastBoundary.current) {
           isTryingToScrollPastBoundary.current = true
           e.preventDefault()
