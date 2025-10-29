@@ -43,6 +43,8 @@ const DTFCarouselLenisMinimal = ({ dtfs, isLoading }: DTFCarouselLenisMinimalPro
   const isApproaching = useRef(false)
   const isPositioning = useRef(false)
   const lockedScrollPosition = useRef<number | null>(null)
+  const exitDirection = useRef<'top' | 'bottom' | null>(null) // Track which way user exited
+  const lastExitIndex = useRef<number | null>(null) // Remember which card we exited from
 
   // Initialize Lenis ONLY for smooth scrolling
   useEffect(() => {
@@ -90,7 +92,30 @@ const DTFCarouselLenisMinimal = ({ dtfs, isLoading }: DTFCarouselLenisMinimalPro
       const isNearingWrapper = isNearingFromTop || isNearingFromBottom
 
       if (!isCarouselActive && !isPositioning.current) {
-        if (isNearingWrapper && !isApproaching.current) {
+        // Check exit direction to prevent immediate re-engagement
+        if (exitDirection.current) {
+          // If exited from top, only block re-engagement if approaching from top
+          if (exitDirection.current === 'top' && isNearingFromTop) {
+            return // Don't re-engage
+          }
+          // If exited from bottom, only block re-engagement if approaching from bottom
+          if (exitDirection.current === 'bottom' && isNearingFromBottom) {
+            return // Don't re-engage
+          }
+          // Clear exit direction if approaching from opposite side or far away
+          const isFarAway = rect.bottom < -200 || rect.top > window.innerHeight + 200
+          if (isFarAway) {
+            // Far away - clear everything for fresh engagement
+            exitDirection.current = null
+            lastExitIndex.current = null
+          } else if ((exitDirection.current === 'top' && isNearingFromBottom) ||
+                     (exitDirection.current === 'bottom' && isNearingFromTop)) {
+            // Approaching from opposite direction - clear exit direction but keep index
+            exitDirection.current = null
+          }
+        }
+
+        if (isNearingWrapper && !isApproaching.current && !exitDirection.current) {
           isApproaching.current = true
           isPositioning.current = true
 
@@ -118,10 +143,22 @@ const DTFCarouselLenisMinimal = ({ dtfs, isLoading }: DTFCarouselLenisMinimalPro
             setIsCarouselActive(true)
             isPositioning.current = false
 
-            if (isNearingFromBottom) {
-              setCurrentIndex(totalCards - 1)
+            // STOP LENIS when carousel becomes active
+            if (lenisRef.current) {
+              lenisRef.current.stop()
+            }
+
+            // If we have a saved exit index, restore it (re-engagement)
+            if (lastExitIndex.current !== null) {
+              setCurrentIndex(lastExitIndex.current)
+              lastExitIndex.current = null // Clear after using
             } else {
-              setCurrentIndex(0)
+              // First time engagement - set index based on approach direction
+              if (isNearingFromBottom) {
+                setCurrentIndex(totalCards - 1)
+              } else {
+                setCurrentIndex(0)
+              }
             }
           }, 400)
         }
@@ -136,6 +173,21 @@ const DTFCarouselLenisMinimal = ({ dtfs, isLoading }: DTFCarouselLenisMinimalPro
           isApproaching.current = false
           lockedScrollPosition.current = null
           scrollAccumulator.current = 0
+
+          // Save the current index for re-engagement
+          lastExitIndex.current = currentIdx
+
+          // Set exit direction based on which boundary we exited from
+          if (atFirstCard && rect.top > HEADER_HEIGHT + 150) {
+            exitDirection.current = 'top' // Exited from top boundary
+          } else if (atLastCard && rect.bottom < window.innerHeight - 150) {
+            exitDirection.current = 'bottom' // Exited from bottom boundary
+          }
+
+          // RESTART LENIS when exiting carousel
+          if (lenisRef.current) {
+            lenisRef.current.start()
+          }
         }
       }
 
@@ -152,45 +204,7 @@ const DTFCarouselLenisMinimal = ({ dtfs, isLoading }: DTFCarouselLenisMinimalPro
     }
   }, [isCarouselActive, totalCards])
 
-  // Lock scroll position (EXACTLY same as simple)
-  useEffect(() => {
-    const appContainer = document.getElementById('app-container')
-    if (!appContainer) return
-
-    const lockScroll = () => {
-      if (isPositioning.current) {
-        return
-      }
-
-      if (lockedScrollPosition.current !== null) {
-        const currentIdx = currentIndexRef.current
-        const atFirstCard = currentIdx === 0
-        const atLastCard = currentIdx === totalCards - 1
-
-        const currentScroll = lenisRef.current?.scroll || appContainer.scrollTop
-        const isScrollingUp = currentScroll < lockedScrollPosition.current
-        const isScrollingDown = currentScroll > lockedScrollPosition.current
-
-        // Only allow natural scroll at boundaries when carousel is active
-        if (isCarouselActive && ((atFirstCard && isScrollingUp) || (atLastCard && isScrollingDown))) {
-          return
-        }
-
-        // Force Lenis to the locked position
-        if (lenisRef.current) {
-          lenisRef.current.scrollTo(lockedScrollPosition.current, { immediate: true })
-        } else {
-          appContainer.scrollTop = lockedScrollPosition.current
-        }
-      }
-    }
-
-    appContainer.addEventListener('scroll', lockScroll)
-
-    return () => {
-      appContainer.removeEventListener('scroll', lockScroll)
-    }
-  }, [isCarouselActive, totalCards])
+  // No lock scroll needed - Lenis stop() handles it when carousel is active
 
   // Store active state in ref
   const isCarouselActiveRef = useRef(false)
@@ -233,14 +247,22 @@ const DTFCarouselLenisMinimal = ({ dtfs, isLoading }: DTFCarouselLenisMinimalPro
           if (boundaryReleaseTimeout.current) clearTimeout(boundaryReleaseTimeout.current)
           boundaryReleaseTimeout.current = setTimeout(() => {
             isTryingToScrollPastBoundary.current = false
+            // Start Lenis for exit
+            if (lenisRef.current) {
+              lenisRef.current.start()
+            }
           }, 500)
           return
         }
         return
       }
 
-      // At last card scrolling down - allow natural scroll
+      // At last card scrolling down - allow exit immediately
       if (atLastCard && scrollingDown) {
+        // Start Lenis for immediate exit
+        if (lenisRef.current) {
+          lenisRef.current.start()
+        }
         return
       }
 
