@@ -2,187 +2,194 @@
 
 ## Overview
 
-The DTF Carousel is a smooth-scrolling, interactive carousel component for displaying Decentralized Token Folios (DTFs) with Lenis-powered smooth scrolling and spring animations. It provides a sophisticated scroll-hijacking experience with natural entry/exit behavior at boundaries.
+The DTF Carousel is a smooth-scrolling, interactive carousel component for displaying Decentralized Token Folios (DTFs) with Lenis-powered smooth scrolling and spring animations.
 
-## Key Features
+**Version 2.0** - Fully refactored with modular architecture and custom hooks.
 
-- **Smooth Scrolling**: Uses Lenis library for buttery-smooth cross-browser scrolling
-- **Directional Memory**: Tracks exit direction to prevent pull-back when re-engaging
-- **Index Preservation**: Maintains card position when exiting and re-entering carousel
-- **Natural Boundaries**: Allows users to exit naturally at first/last cards
-- **Spring Animations**: Framer Motion springs for fluid card transitions
-- **Performance Optimized**: Memoized cards and proper RAF cleanup
-- **Scrollbar Support**: Detects and handles scrollbar dragging correctly
+## Architecture
 
-## Component Structure
+### File Structure
+
+```
+components/
+├── dtf-carousel.tsx           # Main carousel component
+├── dtf-home-card-fixed.tsx    # Card component
+└── hooks/
+    ├── use-carousel-state.ts       # State management & navigation
+    ├── use-lenis-scroll.ts         # Lenis smooth scroll integration
+    ├── use-carousel-activation.ts  # Entry/exit detection logic
+    └── use-scrollbar-detection.ts  # Scrollbar drag handling
+```
+
+### Key Features
+
+- **Smooth Scrolling**: Lenis library for cross-browser consistency
+- **Smart Activation**: Automatic entry when carousel approaches viewport
+- **Natural Exit**: Smooth exit at boundaries without pull-back
+- **Directional Memory**: Prevents re-engagement from same exit direction
+- **Index Preservation**: Maintains position across sessions
+- **Scrollbar Support**: Handles scrollbar dragging gracefully
+- **Spring Animations**: Framer Motion for fluid transitions
+
+## Configuration
+
+All configuration is centralized in `CONFIG` object:
 
 ```typescript
-interface DTFCarouselProps {
-  dtfs: IndexDTFItem[]  // Array of DTF items to display
-  isLoading?: boolean   // Loading state
+const CONFIG = {
+  // Layout
+  HEADER_HEIGHT: 72,
+  CARD_HEIGHT: 720,
+  CARD_OFFSET: 20,          // Vertical spacing between stacked cards
+  SCALE_FACTOR: 0.05,        // Scale reduction per card
+  MAX_STACK_DEPTH: 3,        // Maximum visible cards
+
+  // Interaction
+  SCROLL_THRESHOLD: 50,      // Scroll amount to trigger navigation
+  TRANSITION_DURATION: 500,  // Card animation duration
+
+  // Activation zones
+  TOP_THRESHOLD: 200,        // Distance from top to activate
+  BOTTOM_THRESHOLD: 100,     // Distance from bottom to activate
+  EXIT_DEAD_ZONE: 200,       // Dead zone after exit
 }
 ```
 
-## Behavioral Requirements
+## Custom Hooks
 
-### Entry Behavior
-1. **Initial Lock-in**: When user scrolls into carousel area, immediately capture scroll and move to first card
-2. **Activation Zone**: Carousel activates when top edge is within 80% of viewport height
-3. **Smooth Transition**: Use Lenis smooth scroll to position first card
+### `useCarouselState`
 
-### Exit Behavior
-1. **Natural Exit at Boundaries**:
-   - First card: Allow scroll up to exit
-   - Last card: Allow scroll down to exit
-2. **No Pull-back**: Once exited, don't pull user back from the same direction
-3. **Directional Memory**: Track which direction user exited (top/bottom)
+Manages carousel state and navigation logic:
+- Tracks current index and active state
+- Handles scroll accumulation
+- Manages card transitions
+- Provides navigation methods
 
-### Re-engagement Behavior
-1. **Opposite Direction**: Can re-enter from opposite exit direction
-2. **Same Direction Block**: Prevent re-engagement from same exit direction until fully out of viewport
-3. **Index Preservation**: Return to last viewed card when re-entering
+### `useLenisScroll`
 
-## Technical Implementation
+Integrates Lenis smooth scroll:
+- Initializes Lenis instance
+- Manages RAF loop
+- Provides stop/start control
+- Handles cleanup
 
-### Core Dependencies
-- **Lenis**: Smooth scroll library (v1.1.18+)
-- **Framer Motion**: Animation library for spring physics
-- **React**: 18+ with hooks
+### `useCarouselActivation`
 
-### Key State Management
+Controls entry/exit behavior:
+- Detects approach from top/bottom
+- Manages exit direction tracking
+- Prevents unwanted re-engagement
+- Handles dead zones
 
-```typescript
-// Carousel active state
-const [isActive, setIsActive] = useState(false)
+### `useScrollbarDetection`
 
-// Current card index
-const [currentIndex, setCurrentIndex] = useState(0)
+Handles scrollbar interactions:
+- Detects scrollbar dragging
+- Deactivates carousel during drag
+- Preserves index for re-engagement
+- Manages Lenis state
 
-// Track interaction for scroll hints
-const [hasInteracted, setHasInteracted] = useState(false)
+## Behavioral Flow
 
-// Directional exit tracking (mutable refs for event handlers)
-const exitDirection = useRef<'top' | 'bottom' | null>(null)
-const lastExitIndex = useRef<number | null>(null)
-```
+### Entry Flow
 
-### Lenis Integration
+1. User scrolls near carousel (within threshold)
+2. Carousel detects approach direction
+3. Smooth scroll to locked position
+4. Lenis stops for carousel control
+5. Initial index set based on approach
 
-The component creates a Lenis instance with specific configuration:
+### Navigation Flow
 
-```typescript
-const lenis = new Lenis({
-  wrapper: wrapperRef.current,
-  content: contentRef.current,
-  touchInertiaMultiplier: 0.5,  // Slower touch scrolling
-  duration: 1.2,                 // Smooth animation duration
-  easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-  orientation: 'vertical',
-  gestureOrientation: 'vertical',
-  smoothWheel: true,
-  syncTouch: true,
-  syncTouchLerp: 0.04,          // Touch response speed
-  touchMultiplier: 1.5,
-  wheelMultiplier: 0.8,          // Slower wheel scrolling
-  infinite: false,
-  autoResize: true,
-})
-```
+1. User scrolls/swipes while active
+2. Scroll accumulates until threshold
+3. Card transition triggers
+4. Animation completes
+5. Ready for next input
 
-### Performance Optimizations
+### Exit Flow
 
-1. **Memoized Card Component**: Prevents unnecessary re-renders
-```typescript
-const MemoizedCard = memo(({ dtf }: { dtf: IndexDTFItem }) => (
-  <DTFHomeCardFixed dtf={dtf} />
-))
-```
+1. User scrolls at boundary (first/last card)
+2. Exit detection triggers
+3. Exit direction saved
+4. Lenis restarts for normal scroll
+5. Dead zone prevents immediate re-entry
 
-2. **RAF Cleanup**: Proper cleanup prevents memory leaks
-```typescript
-let rafId: number
-function raf(time: number) {
-  lenis.raf(time)
-  rafId = requestAnimationFrame(raf)
-}
-rafId = requestAnimationFrame(raf)
+## Performance Optimizations
 
-// Cleanup
-return () => {
-  cancelAnimationFrame(rafId)
-  lenis.destroy()
-}
-```
-
-## Known Issues & Pitfalls
-
-### Safari Performance
-- Safari has inherent performance limitations with complex scroll animations
-- Current implementation prioritizes correct behavior over maximum performance
-- Attempted optimizations that broke behavior:
-  - Passive event listeners (broke scroll interception)
-  - Will-change CSS (caused visual artifacts)
-  - Transform3d optimizations (broke positioning)
-  - Debounced updates (caused janky animations)
-
-### Failed Optimization Attempts
-
-1. **CSS-only Transforms**: Broke scroll position calculations
-2. **Virtual Scrolling**: Incompatible with Lenis smooth scrolling
-3. **Intersection Observer**: Too laggy for smooth transitions
-4. **Passive Wheel Events**: Prevented proper scroll hijacking
-5. **RequestIdleCallback**: Caused visible animation delays
-6. **Web Workers**: Can't access DOM for scroll calculations
-
-### Critical Implementation Details
-
-1. **Never use passive wheel listeners** - Breaks scroll interception
-2. **Always stop/start Lenis** - Don't try to override while running
-3. **Use mutable refs in event handlers** - Avoid stale closures
-4. **Track exit direction** - Essential for proper re-engagement
-5. **Preserve last index** - Users expect position memory
-
-## Testing Checklist
-
-- [ ] Initial scroll into carousel locks to first card
-- [ ] Can scroll through all cards smoothly
-- [ ] Exit from first card by scrolling up works
-- [ ] Exit from last card by scrolling down works
-- [ ] No pull-back when exiting at boundaries
-- [ ] Re-engagement from opposite direction works
-- [ ] Re-engagement preserves last viewed card
-- [ ] Scrollbar dragging works correctly
-- [ ] Touch/trackpad scrolling works smoothly
-- [ ] Spring animations are fluid
-- [ ] No memory leaks on unmount
+- **Memoized Cards**: Prevents unnecessary re-renders
+- **RAF Management**: Proper cleanup prevents memory leaks
+- **Ref-based State**: Avoids stale closures in event handlers
+- **Passive Events**: Where appropriate for better scroll performance
+- **Configuration Constants**: Centralized for easy tuning
 
 ## Browser Compatibility
 
-- ✅ Chrome/Edge: Excellent performance
-- ✅ Firefox: Good performance
-- ⚠️ Safari: Functional but reduced performance
-- ✅ Mobile Safari: Acceptable touch performance
-- ✅ Android Chrome: Good touch performance
+- ✅ Chrome/Edge: Excellent
+- ✅ Firefox: Good
+- ⚠️ Safari: Functional (reduced performance)
+- ✅ Mobile: Touch-optimized
 
-## Future Improvements
+## Known Limitations
 
-If performance becomes critical, consider:
-1. **Native CSS Scroll Snap**: Simpler but less control
-2. **Reduced Motion Mode**: Disable animations for accessibility
-3. **Progressive Enhancement**: Simpler carousel for older browsers
-4. **GPU-accelerated Transforms**: Careful implementation required
+### Safari Performance
+Safari has inherent limitations with complex scroll animations. The current implementation prioritizes correct behavior over maximum performance.
+
+### Optimization Trade-offs
+Several optimizations were attempted but rejected due to behavioral issues:
+- Passive wheel listeners (broke scroll interception)
+- CSS-only transforms (broke position calculations)
+- Debounced updates (caused janky animations)
+
+## Usage
+
+```tsx
+import DTFCarousel from './components/dtf-carousel'
+import { IndexDTFItem } from '@/hooks/useIndexDTFList'
+
+function HomePage() {
+  const { data: dtfs, isLoading } = useIndexDTFList()
+
+  return (
+    <DTFCarousel
+      dtfs={dtfs}
+      isLoading={isLoading}
+    />
+  )
+}
+```
+
+## Testing Checklist
+
+- [ ] Initial entry locks to appropriate card
+- [ ] Smooth navigation between cards
+- [ ] Exit at boundaries without pull-back
+- [ ] Dead zone prevents immediate re-entry
+- [ ] Re-engagement from opposite direction works
+- [ ] Index preserved across sessions
+- [ ] Scrollbar dragging handled correctly
+- [ ] Keyboard navigation (arrow keys)
+- [ ] Touch/trackpad scrolling smooth
+- [ ] No memory leaks on unmount
 
 ## Maintenance Notes
 
-This component went through extensive iteration to achieve the precise behavior requirements. Any changes should be carefully tested against the behavioral requirements above. The current implementation represents a careful balance between:
+The refactored architecture makes the carousel much more maintainable:
 
-- Smooth user experience
-- Predictable scroll behavior
-- Cross-browser compatibility
-- Code maintainability
+1. **Modular hooks** - Each concern is isolated
+2. **Clear configuration** - Easy to tune behavior
+3. **Separation of concerns** - UI, state, and effects are separate
+4. **Type safety** - Full TypeScript coverage
+5. **Human-readable** - Clear variable names and comments
 
-When modifying, remember:
-- Behavior correctness > Performance optimization
-- Simple, working code > Complex optimizations
+When modifying:
 - Test all entry/exit scenarios
 - Verify Safari compatibility
+- Check scrollbar interaction
+- Ensure smooth animations
+- Validate memory cleanup
+
+## Version History
+
+- **v1.0** - Initial implementation with inline logic
+- **v2.0** - Full refactor with modular architecture and custom hooks

@@ -1,220 +1,213 @@
-import { IndexDTFItem } from '@/hooks/useIndexDTFList'
-import { motion, AnimatePresence } from 'motion/react'
 import { useCallback, useEffect, useRef, useState, memo } from 'react'
-import DTFHomeCardFixed from './dtf-home-card-fixed'
+import { motion, AnimatePresence } from 'motion/react'
 import { ChevronDown } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import Lenis from 'lenis'
 
+import { IndexDTFItem } from '@/hooks/useIndexDTFList'
+import DTFHomeCardFixed from './dtf-home-card-fixed'
+
+// Custom hooks
+import { useCarouselState } from './hooks/use-carousel-state'
+import { useLenisScroll } from './hooks/use-lenis-scroll'
+import {
+  useCarouselActivation,
+  shouldActivateCarousel,
+  shouldDeactivateCarousel,
+  scrollToCarousel
+} from './hooks/use-carousel-activation'
+import { useScrollbarDetection } from './hooks/use-scrollbar-detection'
+
+// ============================================================================
+// CONFIGURATION
+// ============================================================================
+const CONFIG = {
+  // Layout
+  HEADER_HEIGHT: 72,
+  CARD_HEIGHT: 720,
+  CARD_OFFSET: 20,          // Vertical spacing between stacked cards
+  SCALE_FACTOR: 0.05,        // Scale reduction per card in stack
+  MAX_STACK_DEPTH: 3,        // Maximum visible cards in stack
+
+  // Interaction
+  SCROLL_THRESHOLD: 50,      // Scroll amount needed to trigger navigation
+  TRANSITION_DURATION: 500,  // Card animation duration
+
+  // Activation zones
+  TOP_THRESHOLD: 200,        // Distance from top to trigger activation
+  BOTTOM_THRESHOLD: 100,     // Distance from bottom to trigger activation
+  EXIT_DEAD_ZONE: 200,       // Dead zone after exit to prevent pull-back
+} as const
+
+// ============================================================================
+// MEMOIZED COMPONENTS
+// ============================================================================
+const MemoizedCard = memo(DTFHomeCardFixed, (prev, next) =>
+  prev.dtf.address === next.dtf.address
+)
+
+// ============================================================================
+// INTERFACES
+// ============================================================================
 interface DTFCarouselProps {
   dtfs: IndexDTFItem[]
   isLoading?: boolean
 }
 
-// Memoize the card component with deep comparison
-const MemoizedCard = memo(DTFHomeCardFixed, (prevProps, nextProps) => {
-  return prevProps.dtf.address === nextProps.dtf.address
-})
-
-// Production-ready DTF carousel with perfect scroll behavior
+// ============================================================================
+// MAIN CAROUSEL COMPONENT
+// ============================================================================
 const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
-  const [currentIndex, setCurrentIndex] = useState(0)
-  const [isCarouselActive, setIsCarouselActive] = useState(false)
-  const [scrollDirection, setScrollDirection] = useState<'up' | 'down' | null>(null)
-  const containerRef = useRef<HTMLDivElement>(null)
+  // Core refs
   const wrapperRef = useRef<HTMLDivElement>(null)
-  const lenisRef = useRef<Lenis | null>(null)
-  const totalCards = dtfs.length
+  const containerRef = useRef<HTMLDivElement>(null)
 
-  // Mutable refs for scroll handling (avoid stale closures)
-  const scrollAccumulator = useRef(0)
-  const lastScrollTime = useRef(Date.now())
-  const isScrollbarDragging = useRef(false)
-  const scrollbarReleaseIndex = useRef<number | null>(null)
-  const transitionTimeout = useRef<NodeJS.Timeout | null>(null)
-  const isTransitioning = useRef(false)
-  const boundaryReleaseTimeout = useRef<NodeJS.Timeout | null>(null)
-  const isTryingToScrollPastBoundary = useRef(false)
+  // Lenis smooth scroll
+  const lenisRef = useLenisScroll()
 
-  // Configuration
-  const HEADER_HEIGHT = 72
-  const CARD_HEIGHT = 720
-  const CARD_OFFSET = 20
-  const SCALE_FACTOR = 0.05
-  const SCROLL_THRESHOLD = 50
-  const TRANSITION_DURATION = 500
+  // Carousel state management
+  const {
+    currentIndex,
+    isActive,
+    scrollDirection,
+    currentIndexRef,
+    isActiveRef,
+    isTransitioning,
+    setCurrentIndex,
+    setIsActive,
+    goToCard,
+    handleScrollInput,
+    resetScroll,
+    cleanup: cleanupState
+  } = useCarouselState({
+    totalCards: dtfs.length,
+    transitionDuration: CONFIG.TRANSITION_DURATION,
+    scrollThreshold: CONFIG.SCROLL_THRESHOLD,
+  })
 
-  // States for smooth carousel activation
-  const isApproaching = useRef(false)
-  const isPositioning = useRef(false)
-  const lockedScrollPosition = useRef<number | null>(null)
-  const exitDirection = useRef<'top' | 'bottom' | null>(null)
-  const lastExitIndex = useRef<number | null>(null)
+  // Activation state management
+  const activationState = useCarouselActivation({
+    headerHeight: CONFIG.HEADER_HEIGHT,
+    topThreshold: CONFIG.TOP_THRESHOLD,
+    bottomThreshold: CONFIG.BOTTOM_THRESHOLD,
+    exitDeadZone: CONFIG.EXIT_DEAD_ZONE,
+  })
 
-  // Initialize Lenis ONLY for smooth scrolling
-  useEffect(() => {
-    const appContainer = document.getElementById('app-container')
-    if (!appContainer) return
+  // Boundary exit handling
+  const boundaryExitTimeout = useRef<NodeJS.Timeout | null>(null)
+  const isTryingToExit = useRef(false)
 
-    const lenis = new Lenis({
-      wrapper: appContainer,
-      content: appContainer,
-      lerp: 0.1, // Smooth scrolling
-      wheelMultiplier: 1,
-      touchMultiplier: 2,
-      smoothWheel: true,
-      syncTouch: true,
-    })
+  // Deactivate callback for scrollbar detection
+  const handleDeactivate = useCallback(() => {
+    setIsActive(false)
+    activationState.isApproaching.current = false
+    resetScroll()
+  }, [setIsActive, activationState, resetScroll])
 
-    lenisRef.current = lenis
+  // Scrollbar detection
+  const { isScrollbarDragging, scrollbarReleaseIndex } = useScrollbarDetection(
+    isActive,
+    currentIndex,
+    wrapperRef,
+    lenisRef,
+    handleDeactivate
+  )
 
-    // Animation loop for Lenis
-    let rafId: number
-    function raf(time: number) {
-      lenis.raf(time)
-      rafId = requestAnimationFrame(raf)
-    }
-    rafId = requestAnimationFrame(raf)
+  // Viewport height management
+  const [wrapperHeight, setWrapperHeight] = useState(0)
 
-    return () => {
-      cancelAnimationFrame(rafId)
-      lenis.destroy()
-    }
-  }, [])
-
-  // Main scroll handler (EXACTLY same as minimal)
+  // ============================================================================
+  // SCROLL DETECTION - Entry/Exit Logic
+  // ============================================================================
   useEffect(() => {
     const handleScroll = () => {
-      if (!wrapperRef.current) return
-
-      const appContainer = document.getElementById('app-container')
-      if (!appContainer) return
-
-      // Skip all carousel logic if scrollbar is being dragged
-      if (isScrollbarDragging.current) return
+      if (!wrapperRef.current || isScrollbarDragging.current) return
 
       const rect = wrapperRef.current.getBoundingClientRect()
-      const currentIdx = currentIndexRef.current
 
-      // Early detection: when wrapper is approaching
-      const isNearingFromTop = rect.top < 200 && rect.top > -50  // Reduced for smoother top exit
-      const isNearingFromBottom = rect.bottom > window.innerHeight - 100 && rect.bottom < window.innerHeight + 50  // Further reduced for bottom exit
-      const isNearingWrapper = isNearingFromTop || isNearingFromBottom
-
-      if (!isCarouselActive && !isPositioning.current) {
-        // First, clear exit state if carousel has moved away from viewport
-        if (exitDirection.current) {
-          const carouselAboveViewport = rect.bottom < 0
-          const carouselBelowViewport = rect.top > window.innerHeight
-
-          if (carouselAboveViewport || carouselBelowViewport) {
-            // Carousel is completely out of view - clear for fresh engagement
-            exitDirection.current = null
-            lastExitIndex.current = null
+      if (!isActive && !activationState.isPositioning.current) {
+        // Check if carousel should activate
+        const { shouldActivate, approachDirection } = shouldActivateCarousel(
+          rect,
+          activationState,
+          {
+            headerHeight: CONFIG.HEADER_HEIGHT,
+            topThreshold: CONFIG.TOP_THRESHOLD,
+            bottomThreshold: CONFIG.BOTTOM_THRESHOLD,
+            exitDeadZone: CONFIG.EXIT_DEAD_ZONE,
           }
-        }
+        )
 
-        // Then check if we should block re-engagement based on exit direction
-        if (exitDirection.current) {
-          // Only block if we're still very close to the exit point
-          if (exitDirection.current === 'top' && rect.top > HEADER_HEIGHT && rect.top < HEADER_HEIGHT + 200) {
-            return // Larger dead zone to prevent pull-back at top
-          }
-          if (exitDirection.current === 'bottom' && rect.bottom < window.innerHeight && rect.bottom > window.innerHeight - 200) {
-            return // Larger dead zone to prevent pull-back at bottom
-          }
-          // If we're approaching from opposite direction, clear exit but keep index
-          if ((exitDirection.current === 'top' && isNearingFromBottom) ||
-              (exitDirection.current === 'bottom' && isNearingFromTop)) {
-            exitDirection.current = null
-          }
-        }
+        // Special case: Check for scrollbar release re-engagement
+        const hasScrollbarIndex = scrollbarReleaseIndex.current !== null
 
-        // Check if we have a scrollbar release index waiting to be used
-        const shouldEngageWithScrollbarIndex = scrollbarReleaseIndex.current !== null && isNearingWrapper
+        if (shouldActivate || hasScrollbarIndex) {
+          activationState.isApproaching.current = true
+          activationState.isPositioning.current = true
 
-        if ((isNearingWrapper && !isApproaching.current && !exitDirection.current) || shouldEngageWithScrollbarIndex) {
-          isApproaching.current = true
-          isPositioning.current = true
+          // Scroll to carousel position
+          scrollToCarousel(rect, lenisRef, CONFIG.HEADER_HEIGHT)
 
-          // Calculate perfect position
-          const currentScroll = lenisRef.current?.scroll || appContainer.scrollTop
-          const perfectPosition = currentScroll + (rect.top - HEADER_HEIGHT)
-
-          // Lock position immediately
-          lockedScrollPosition.current = perfectPosition
-
-          // Use Lenis to scroll smoothly
-          if (lenisRef.current) {
-            lenisRef.current.scrollTo(perfectPosition, {
-              duration: 0.4,
-              easing: (t) => 1 - Math.pow(1 - t, 3),
-            })
-          } else {
-            appContainer.scrollTo({
-              top: perfectPosition,
-              behavior: 'smooth'
-            })
-          }
-
+          // Activate after scroll completes
           setTimeout(() => {
-            setIsCarouselActive(true)
-            isPositioning.current = false
+            setIsActive(true)
+            activationState.isPositioning.current = false
 
-            // STOP LENIS when carousel becomes active
+            // Stop Lenis for carousel control
             if (lenisRef.current) {
               lenisRef.current.stop()
             }
 
-            // If we have a saved exit index, restore it (re-engagement)
-            if (lastExitIndex.current !== null) {
-              setCurrentIndex(lastExitIndex.current)
-              lastExitIndex.current = null // Clear after using
+            // Restore index based on entry method
+            if (activationState.lastExitIndex.current !== null) {
+              // Re-entering after exit
+              setCurrentIndex(activationState.lastExitIndex.current)
+              activationState.lastExitIndex.current = null
             } else if (scrollbarReleaseIndex.current !== null) {
-              // If user was dragging scrollbar, restore to that index
+              // Re-entering after scrollbar drag
               setCurrentIndex(scrollbarReleaseIndex.current)
               scrollbarReleaseIndex.current = null
             } else {
-              // First time engagement - set index based on approach direction
-              if (isNearingFromBottom) {
-                setCurrentIndex(totalCards - 1)
-              } else {
-                setCurrentIndex(0)
-              }
+              // First time entry
+              const initialIndex = approachDirection === 'bottom' ? dtfs.length - 1 : 0
+              setCurrentIndex(initialIndex)
             }
           }, 400)
         }
-      } else if (isCarouselActive) {
-        const atFirstCard = currentIdx === 0
-        const atLastCard = currentIdx === totalCards - 1
-
-        // Deactivate with lenient thresholds
-        if ((atFirstCard && rect.top > HEADER_HEIGHT + 150) ||
-            (atLastCard && rect.bottom < window.innerHeight - 150)) {
-          setIsCarouselActive(false)
-          isApproaching.current = false
-          lockedScrollPosition.current = null
-          scrollAccumulator.current = 0
-
-          // Save the current index for re-engagement
-          lastExitIndex.current = currentIdx
-
-          // Set exit direction based on which boundary we exited from
-          if (atFirstCard && rect.top > HEADER_HEIGHT + 50) {
-            exitDirection.current = 'top' // Reduced threshold for easier exit
-          } else if (atLastCard && rect.bottom < window.innerHeight - 50) {
-            exitDirection.current = 'bottom' // Reduced threshold for easier exit
+      } else if (isActive) {
+        // Check if carousel should deactivate
+        const { shouldDeactivate, exitBoundary } = shouldDeactivateCarousel(
+          rect,
+          currentIndex,
+          dtfs.length,
+          {
+            headerHeight: CONFIG.HEADER_HEIGHT,
+            topThreshold: CONFIG.TOP_THRESHOLD,
+            bottomThreshold: CONFIG.BOTTOM_THRESHOLD,
+            exitDeadZone: CONFIG.EXIT_DEAD_ZONE,
           }
+        )
 
-          // RESTART LENIS when exiting carousel
+        if (shouldDeactivate) {
+          setIsActive(false)
+          activationState.isApproaching.current = false
+          resetScroll()
+
+          // Save exit state for re-engagement logic
+          activationState.lastExitIndex.current = currentIndex
+          activationState.exitDirection.current = exitBoundary
+
+          // Re-enable Lenis for normal scrolling
           if (lenisRef.current) {
             lenisRef.current.start()
           }
         }
       }
 
-      if (!isNearingWrapper && !isCarouselActive) {
-        isApproaching.current = false
+      // Clear approach flag if moved away
+      const rect2 = wrapperRef.current.getBoundingClientRect()
+      const isNear = Math.abs(rect2.top - CONFIG.HEADER_HEIGHT) < 300
+      if (!isNear && !isActive) {
+        activationState.isApproaching.current = false
       }
     }
 
@@ -224,50 +217,54 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
     return () => {
       appContainer?.removeEventListener('scroll', handleScroll)
     }
-  }, [isCarouselActive, totalCards])
+  }, [
+    isActive,
+    currentIndex,
+    dtfs.length,
+    setIsActive,
+    setCurrentIndex,
+    resetScroll,
+    lenisRef,
+    activationState,
+    scrollbarReleaseIndex,
+  ])
 
-  // Store active state in ref
-  const isCarouselActiveRef = useRef(false)
-  useEffect(() => {
-    isCarouselActiveRef.current = isCarouselActive
-  }, [isCarouselActive])
-
-  const currentIndexRef = useRef(0)
-  useEffect(() => {
-    currentIndexRef.current = currentIndex
-  }, [currentIndex])
-
-  // Wheel event handler (EXACTLY same as minimal)
+  // ============================================================================
+  // WHEEL HANDLING - Navigation within carousel
+  // ============================================================================
   useEffect(() => {
     const handleWheel = (e: WheelEvent) => {
-      if (isPositioning.current) {
+      // Block during positioning
+      if (activationState.isPositioning.current) {
         e.preventDefault()
         e.stopPropagation()
         return
       }
 
-      if (!isCarouselActiveRef.current || isScrollbarDragging.current) {
+      // Ignore if not active or scrollbar is being dragged
+      if (!isActiveRef.current || isScrollbarDragging.current) {
         return
       }
 
-      const scrollingDown = e.deltaY > 0
-      const scrollingUp = e.deltaY < 0
-      const currentIdx = currentIndexRef.current
+      const isScrollingDown = e.deltaY > 0
+      const isScrollingUp = e.deltaY < 0
+      const atFirstCard = currentIndexRef.current === 0
+      const atLastCard = currentIndexRef.current === dtfs.length - 1
 
-      const atFirstCard = currentIdx === 0
-      const atLastCard = currentIdx === totalCards - 1
-
-      // At first card scrolling up - use boundary timeout
-      if (atFirstCard && scrollingUp) {
-        if (!isTryingToScrollPastBoundary.current) {
-          isTryingToScrollPastBoundary.current = true
+      // Handle boundary exits
+      if (atFirstCard && isScrollingUp) {
+        // Delay exit from top to prevent accidental exit
+        if (!isTryingToExit.current) {
+          isTryingToExit.current = true
           e.preventDefault()
           e.stopPropagation()
 
-          if (boundaryReleaseTimeout.current) clearTimeout(boundaryReleaseTimeout.current)
-          boundaryReleaseTimeout.current = setTimeout(() => {
-            isTryingToScrollPastBoundary.current = false
-            // Start Lenis for exit
+          if (boundaryExitTimeout.current) {
+            clearTimeout(boundaryExitTimeout.current)
+          }
+
+          boundaryExitTimeout.current = setTimeout(() => {
+            isTryingToExit.current = false
             if (lenisRef.current) {
               lenisRef.current.start()
             }
@@ -277,160 +274,49 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
         return
       }
 
-      // At last card scrolling down - allow exit immediately
-      if (atLastCard && scrollingDown) {
-        // Start Lenis for immediate exit
+      if (atLastCard && isScrollingDown) {
+        // Immediate exit from bottom
         if (lenisRef.current) {
           lenisRef.current.start()
         }
         return
       }
 
-      // Clear boundary flags
-      isTryingToScrollPastBoundary.current = false
-      if (boundaryReleaseTimeout.current) {
-        clearTimeout(boundaryReleaseTimeout.current)
-        boundaryReleaseTimeout.current = null
+      // Clear exit attempt if scrolling away from boundary
+      isTryingToExit.current = false
+      if (boundaryExitTimeout.current) {
+        clearTimeout(boundaryExitTimeout.current)
+        boundaryExitTimeout.current = null
       }
 
+      // Prevent default and handle navigation
       e.preventDefault()
       e.stopPropagation()
 
-      const currentTime = Date.now()
-      if (currentTime - lastScrollTime.current > 500) {
-        scrollAccumulator.current = 0
-      }
-      lastScrollTime.current = currentTime
-
-      if (!isTransitioning.current) {
-        scrollAccumulator.current += e.deltaY
-
-        if (Math.abs(scrollAccumulator.current) >= SCROLL_THRESHOLD) {
-          if (scrollingDown && currentIdx < totalCards - 1) {
-            isTransitioning.current = true
-            setScrollDirection('down')
-            setCurrentIndex(prev => prev + 1)
-            scrollAccumulator.current = 0
-
-            if (transitionTimeout.current) clearTimeout(transitionTimeout.current)
-            transitionTimeout.current = setTimeout(() => {
-              isTransitioning.current = false
-              setScrollDirection(null)
-            }, TRANSITION_DURATION)
-          } else if (scrollingUp && currentIdx > 0) {
-            isTransitioning.current = true
-            setScrollDirection('up')
-            setCurrentIndex(prev => prev - 1)
-            scrollAccumulator.current = 0
-
-            if (transitionTimeout.current) clearTimeout(transitionTimeout.current)
-            transitionTimeout.current = setTimeout(() => {
-              isTransitioning.current = false
-              setScrollDirection(null)
-            }, TRANSITION_DURATION)
-          }
-        }
-      }
+      // Process scroll input for navigation
+      handleScrollInput(e.deltaY)
     }
 
-    const appContainer = document.getElementById('app-container')
+    // Attach to both window and app container for maximum capture
     window.addEventListener('wheel', handleWheel, { passive: false, capture: true })
+
+    const appContainer = document.getElementById('app-container')
     appContainer?.addEventListener('wheel', handleWheel, { passive: false, capture: true })
 
     return () => {
       window.removeEventListener('wheel', handleWheel, { capture: true })
       appContainer?.removeEventListener('wheel', handleWheel, { capture: true })
     }
-  }, [totalCards])
+  }, [dtfs.length, handleScrollInput, lenisRef, isScrollbarDragging, activationState])
 
-  // Scrollbar detection (EXACTLY same as minimal)
-  useEffect(() => {
-    const handleMouseDown = (e: MouseEvent) => {
-      const windowWidth = window.innerWidth
-      const scrollbarWidth = windowWidth - document.documentElement.clientWidth
-
-      // Check if clicking on or near the scrollbar (with some tolerance)
-      if (e.clientX >= windowWidth - scrollbarWidth - 20) {
-        isScrollbarDragging.current = true
-
-        // Save current index if carousel is active
-        if (isCarouselActiveRef.current) {
-          scrollbarReleaseIndex.current = currentIndexRef.current
-
-          // Deactivate carousel immediately to prevent conflicts
-          setIsCarouselActive(false)
-          isApproaching.current = false
-          lockedScrollPosition.current = null
-          scrollAccumulator.current = 0
-
-          // Restart Lenis for smooth scrollbar dragging
-          if (lenisRef.current) {
-            lenisRef.current.start()
-          }
-        }
-      }
-    }
-
-    const handleMouseUp = () => {
-      if (isScrollbarDragging.current) {
-        isScrollbarDragging.current = false
-
-        // Clear the saved index if user scrolled far away
-        setTimeout(() => {
-          if (!wrapperRef.current) return
-
-          const rect = wrapperRef.current.getBoundingClientRect()
-          const farFromCarousel = rect.bottom < -200 || rect.top > window.innerHeight + 200
-
-          if (farFromCarousel) {
-            scrollbarReleaseIndex.current = null
-          }
-        }, 100)
-      }
-    }
-
-    // Also detect if mouse leaves the window while dragging
-    const handleMouseLeave = (e: MouseEvent) => {
-      if (e.clientX >= window.innerWidth - 50) {
-        handleMouseUp()
-      }
-    }
-
-    window.addEventListener('mousedown', handleMouseDown)
-    window.addEventListener('mouseup', handleMouseUp)
-    window.addEventListener('mouseleave', handleMouseLeave)
-
-    return () => {
-      window.removeEventListener('mousedown', handleMouseDown)
-      window.removeEventListener('mouseup', handleMouseUp)
-      window.removeEventListener('mouseleave', handleMouseLeave)
-    }
-  }, [])
-
-  // Manual navigation
-  const goToCard = useCallback(
-    (index: number) => {
-      if (index >= 0 && index < totalCards && !isTransitioning.current) {
-        isTransitioning.current = true
-        setScrollDirection(index > currentIndex ? 'down' : 'up')
-        setCurrentIndex(index)
-
-        if (transitionTimeout.current) clearTimeout(transitionTimeout.current)
-        transitionTimeout.current = setTimeout(() => {
-          isTransitioning.current = false
-          setScrollDirection(null)
-        }, TRANSITION_DURATION)
-      }
-    },
-    [currentIndex, totalCards]
-  )
-
-  // Keyboard navigation
+  // ============================================================================
+  // KEYBOARD NAVIGATION
+  // ============================================================================
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (!isCarouselActive || isTransitioning.current) return
+      if (!isActive || isTransitioning.current) return
 
-      if (e.key === 'ArrowDown' && currentIndex < totalCards - 1) {
+      if (e.key === 'ArrowDown' && currentIndex < dtfs.length - 1) {
         e.preventDefault()
         goToCard(currentIndex + 1)
       } else if (e.key === 'ArrowUp' && currentIndex > 0) {
@@ -441,22 +327,14 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
 
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [isCarouselActive, currentIndex, totalCards, goToCard])
+  }, [isActive, currentIndex, dtfs.length, goToCard, isTransitioning])
 
-  // Cleanup
-  useEffect(() => {
-    return () => {
-      if (transitionTimeout.current) clearTimeout(transitionTimeout.current)
-      if (boundaryReleaseTimeout.current) clearTimeout(boundaryReleaseTimeout.current)
-    }
-  }, [])
-
-  // Viewport height management
-  const [wrapperHeight, setWrapperHeight] = useState(0)
-
+  // ============================================================================
+  // VIEWPORT RESIZE HANDLING
+  // ============================================================================
   useEffect(() => {
     const updateHeight = () => {
-      const height = window.innerHeight - HEADER_HEIGHT
+      const height = window.innerHeight - CONFIG.HEADER_HEIGHT
       setWrapperHeight(height)
     }
 
@@ -465,6 +343,21 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
     return () => window.removeEventListener('resize', updateHeight)
   }, [])
 
+  // ============================================================================
+  // CLEANUP
+  // ============================================================================
+  useEffect(() => {
+    return () => {
+      cleanupState()
+      if (boundaryExitTimeout.current) {
+        clearTimeout(boundaryExitTimeout.current)
+      }
+    }
+  }, [cleanupState])
+
+  // ============================================================================
+  // RENDER
+  // ============================================================================
   if (!dtfs || dtfs.length === 0) {
     return <div style={{ height: `${wrapperHeight || 800}px` }} />
   }
@@ -482,37 +375,34 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
         <div className="relative w-full h-full flex items-center justify-center overflow-hidden bg-primary">
           <div
             className="relative w-full flex items-center justify-center"
-            style={{ height: `${CARD_HEIGHT}px` }}
+            style={{ height: `${CONFIG.CARD_HEIGHT}px` }}
           >
             <div
               className="relative"
-              style={{ width: '100%', height: `${CARD_HEIGHT}px` }}
+              style={{ width: '100%', height: `${CONFIG.CARD_HEIGHT}px` }}
             >
-              {/* Render ALL cards - EXACT same as minimal version */}
+              {/* Card Stack */}
               {dtfs.map((dtf, index) => {
                 const relativePosition = index - currentIndex
                 const isTopCard = relativePosition === 0
+                const isInStack = relativePosition >= 0 && relativePosition <= CONFIG.MAX_STACK_DEPTH
+                const isPastStack = relativePosition > CONFIG.MAX_STACK_DEPTH
 
-                const maxStackDepth = 3
-                const isInStack = relativePosition >= 0 && relativePosition <= maxStackDepth
-                const isPastStack = relativePosition > maxStackDepth
+                // Calculate visual properties
+                const yOffset = relativePosition < 0
+                  ? 800  // Hidden above
+                  : isPastStack
+                    ? CONFIG.MAX_STACK_DEPTH * CONFIG.CARD_OFFSET
+                    : relativePosition * CONFIG.CARD_OFFSET
 
-                const yOffset =
-                  relativePosition < 0
-                    ? 800
-                    : isPastStack
-                      ? maxStackDepth * CARD_OFFSET
-                      : relativePosition * CARD_OFFSET
+                const scale = relativePosition < 0
+                  ? 0.85  // Hidden cards are smaller
+                  : isPastStack
+                    ? 1 - CONFIG.MAX_STACK_DEPTH * CONFIG.SCALE_FACTOR
+                    : 1 - relativePosition * CONFIG.SCALE_FACTOR
 
-                const scaleValue =
-                  relativePosition < 0
-                    ? 0.85
-                    : isPastStack
-                      ? 1 - maxStackDepth * SCALE_FACTOR
-                      : 1 - relativePosition * SCALE_FACTOR
-
-                const zIndexValue = totalCards - relativePosition
-                const opacityValue = relativePosition < 0 ? 0 : isPastStack ? 0 : 1
+                const opacity = relativePosition < 0 || isPastStack ? 0 : 1
+                const zIndex = dtfs.length - relativePosition
 
                 return (
                   <motion.div
@@ -521,8 +411,8 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
                     initial={false}
                     animate={{
                       y: yOffset,
-                      scale: scaleValue,
-                      opacity: opacityValue,
+                      scale,
+                      opacity,
                     }}
                     transition={{
                       y: {
@@ -543,7 +433,7 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
                       transformOrigin: 'bottom center',
                       pointerEvents: isTopCard ? 'auto' : 'none',
                       willChange: 'transform, opacity',
-                      zIndex: zIndexValue,
+                      zIndex,
                     }}
                   >
                     <MemoizedCard dtf={dtf} />
@@ -554,9 +444,9 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
           </div>
         </div>
 
-        {/* Scroll hint */}
+        {/* Scroll Hint */}
         <AnimatePresence>
-          {isCarouselActive && currentIndex === 0 && (
+          {isActive && currentIndex === 0 && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -576,8 +466,8 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
           )}
         </AnimatePresence>
 
-        {/* Navigation dots */}
-        {isCarouselActive && (
+        {/* Navigation Dots */}
+        {isActive && (
           <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-2 z-50">
             {dtfs.map((_, index) => (
               <button
