@@ -24,9 +24,9 @@ const CONFIG = {
   // Layout
   HEADER_HEIGHT: 72,
   CARD_HEIGHT: 720,
-  CARD_OFFSET: 20,          // Vertical spacing between stacked cards
+  CARD_OFFSET: 6,           // Vertical spacing between stacked cards (minimal peek)
   SCALE_FACTOR: 0.05,        // Scale reduction per card in stack
-  MAX_STACK_DEPTH: 3,        // Maximum visible cards in stack
+  MAX_STACK_DEPTH: 2,        // Maximum visible cards in stack (reduced from 3)
 
   // Interaction
   SCROLL_THRESHOLD: 50,      // Scroll amount needed to trigger navigation
@@ -401,7 +401,12 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
                     ? 1 - CONFIG.MAX_STACK_DEPTH * CONFIG.SCALE_FACTOR
                     : 1 - relativePosition * CONFIG.SCALE_FACTOR
 
-                const opacity = relativePosition < 0 || isPastStack ? 0 : 1
+                // Opacity: hidden = 0, last card in stack = 0.5, others = 1
+                const opacity = relativePosition < 0 || isPastStack
+                  ? 0
+                  : relativePosition === CONFIG.MAX_STACK_DEPTH
+                    ? 0.5     // Last card in stack: 50% opacity
+                    : 1       // Current and middle cards: full opacity
                 const zIndex = dtfs.length - relativePosition
 
                 return (
