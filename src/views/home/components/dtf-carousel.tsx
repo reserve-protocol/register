@@ -40,47 +40,100 @@ const CONFIG = {
 } as const
 
 // ============================================================================
-// SKELETON CARD COMPONENT
+// SKELETON CARD COMPONENT - Pixel Perfect Based on Actual Measurements
 // ============================================================================
 const SkeletonCard = () => {
   return (
     <div
       className="w-full rounded-4xl max-w-[1400px] mx-auto bg-card border border-primary-foreground"
-      style={{ minHeight: '693px' }}
+      style={{ height: '695px' }}
     >
-      <div className="grid lg:grid-cols-[320px_1fr_1fr] xl:grid-cols-[380px_1fr_1fr] gap-0 h-full" style={{ minHeight: '693px' }}>
-        {/* Left Card - Simplified */}
-        <div className="flex flex-col gap-2 border-r p-2" style={{ minHeight: '693px' }}>
-          <div className="flex-1 flex items-center justify-center">
-            <Skeleton className="w-full aspect-square rounded-3xl" />
+      <div className="grid lg:grid-cols-[320px_1fr_1fr] xl:grid-cols-[380px_1fr_1fr] gap-0" style={{ height: '693px' }}>
+        {/* Left Section - 363px cover + 306px zapper */}
+        <div className="flex flex-col gap-2 border-r p-2" style={{ height: '693px' }}>
+          {/* Cover Container - 363px height */}
+          <div className="flex items-center justify-center" style={{ height: '363px' }}>
+            <div style={{ width: '363px', height: '363px' }}>
+              <Skeleton className="w-full h-full rounded-3xl" />
+            </div>
           </div>
-          <div className="bg-card rounded-3xl p-4">
-            <Skeleton className="h-12 w-full rounded-xl" />
+
+          {/* Zapper Container - 306px height - Single skeleton box */}
+          <div className="bg-card rounded-3xl" style={{ height: '306px' }}>
+            <Skeleton className="w-full h-full rounded-3xl" />
           </div>
         </div>
 
-        {/* Middle Section - Simplified */}
-        <div className="w-full p-6 flex flex-col" style={{ minHeight: '693px' }}>
-          <Skeleton className="h-12 w-12 rounded-full mb-4" />
-          <Skeleton className="h-7 w-48 mb-2" />
-          <Skeleton className="h-7 w-32 mb-1" />
-          <Skeleton className="h-5 w-40 mb-6" />
-          <Skeleton className="h-36 w-full mb-8" />
-          <Skeleton className="h-6 w-full mb-8" />
-          <Skeleton className="h-20 w-full" />
-          <div className="flex-1" />
+        {/* Middle Section - Info */}
+        <div className="w-full flex flex-col" style={{ height: '693px' }}>
+          {/* Logo Section - 72px */}
+          <div className="flex items-center flex-shrink-0 p-6 pb-4" style={{ height: '72px' }}>
+            <Skeleton className="h-12 w-12 rounded-full" />
+          </div>
+
+          {/* Title Section - 88px */}
+          <div className="px-6" style={{ height: '88px' }}>
+            <Skeleton className="h-7 w-48 mb-2" />
+            <Skeleton className="h-7 w-32 mb-1" />
+            <Skeleton className="h-4 w-40" />
+          </div>
+
+          {/* Chart Container - 144px + padding */}
+          <div className="p-6">
+            <div style={{ height: '144px' }}>
+              <Skeleton className="h-full w-full" />
+            </div>
+            {/* Time range buttons */}
+            <div className="flex items-center justify-between w-full mt-4">
+              {['1d', '7d', '1m', '3m', 'All'].map((label) => (
+                <Skeleton key={label} className="h-4 w-8" />
+              ))}
+            </div>
+          </div>
+
+          {/* Market Cap Section - 78px */}
+          <div className="flex items-center text-lg p-6 border-y" style={{ height: '78px' }}>
+            <Skeleton className="h-5 w-24 mr-auto" />
+            <Skeleton className="h-5 w-32" />
+          </div>
+
+          {/* About Section - 156px */}
+          <div className="p-6" style={{ height: '156px' }}>
+            <Skeleton className="h-6 w-32 mb-4" />
+            <Skeleton className="h-4 w-full mb-2" />
+            <Skeleton className="h-4 w-full mb-2" />
+            <Skeleton className="h-4 w-3/4 mb-4" />
+            <Skeleton className="h-4 w-40" />
+          </div>
         </div>
 
-        {/* Right Section - Simplified */}
-        <div className="bg-primary/10 p-6 flex flex-col" style={{ minHeight: '693px' }}>
-          <Skeleton className="h-6 w-32 mb-4" />
-          <Skeleton className="h-5 w-48 mb-4" />
-          <div className="flex flex-col gap-3">
-            {[...Array(5)].map((_, i) => (
-              <Skeleton key={i} className="h-8 w-full" />
+        {/* Right Section - Basket */}
+        <div className="bg-primary/10 p-6 flex flex-col" style={{ height: '693px' }}>
+          {/* Basket Header - 24px */}
+          <div className="flex items-center mb-8" style={{ height: '24px' }}>
+            <Skeleton className="h-6 w-6 mr-auto" />
+            <Skeleton className="h-4 w-20" />
+          </div>
+
+          {/* Basket Title - 24px */}
+          <div className="mb-4" style={{ height: '24px' }}>
+            <Skeleton className="h-5 w-48" />
+          </div>
+
+          {/* Token List - 376px with 9 items */}
+          <div className="flex flex-col gap-3 overflow-y-auto" style={{ height: '376px', maxHeight: '400px' }}>
+            {[...Array(8)].map((_, i) => (
+              <div key={i} className="flex gap-2 items-center" style={{ height: '32px' }}>
+                <Skeleton className="h-8 w-8 rounded-full flex-shrink-0" />
+                <Skeleton className="h-4 w-24 mr-auto" />
+                <Skeleton className="h-4 w-12" />
+              </div>
             ))}
+            {/* "+X more" text */}
+            <div className="text-center pt-2">
+              <Skeleton className="h-3 w-16 mx-auto" />
+            </div>
           </div>
-          <div className="flex-1" />
         </div>
       </div>
     </div>
@@ -120,6 +173,9 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
 
   // Page load protection
   const [pageReady, setPageReady] = useState(false)
+
+  // Component swap protection
+  const isSwappingComponents = useRef(false)
 
   // Determine if we have data or need skeleton
   const hasData = !isLoading && dtfs && dtfs.length > 0
@@ -192,13 +248,10 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
     if (
       isCorrectingPosition.current ||
       isTransitioning.current ||
-      activationState.isPositioning.current
+      activationState.isPositioning.current ||
+      isTryingToExit.current ||
+      isSwappingComponents.current  // Don't correct during skeleton→card swap
     ) {
-      console.log('🚫 Position correction blocked:', {
-        isCorrectingPosition: isCorrectingPosition.current,
-        isTransitioning: isTransitioning.current,
-        isPositioning: activationState.isPositioning.current
-      })
       return
     }
 
@@ -207,16 +260,8 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
     const currentTop = rect.top
     const drift = currentTop - targetTop // Signed drift to see direction
 
-    console.log('📍 Carousel position check:', {
-      currentTop,
-      targetTop,
-      drift,
-      absDrift: Math.abs(drift)
-    })
-
-    // Only correct if drift exceeds tolerance (30px) - increased tolerance
-    // Also check that we're not trying to exit the carousel
-    if (Math.abs(drift) > 30 && !isTryingToExit.current) {
+    // Only correct if drift exceeds tolerance (40px)
+    if (Math.abs(drift) > 40) {
       console.log('🔧 Correcting carousel position, drift:', drift)
       isCorrectingPosition.current = true
 
@@ -280,8 +325,7 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
       // Reset correction flag after animation completes
       positionCorrectionTimeout.current = setTimeout(() => {
         isCorrectingPosition.current = false
-        console.log('✅ Position correction complete')
-      }, 500)
+      }, 600)
     }
   }, [isActive, lenisRef, isTransitioning, activationState, isTryingToExit])
 
@@ -308,12 +352,68 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
       const remainingTime = Math.max(0, animationDuration - elapsed)
 
       const timeoutId = setTimeout(() => {
+        // Store current position before swap if carousel is active
+        let shouldCorrectAfterSwap = false
+        if (isActive && wrapperRef.current) {
+          const rectBeforeSwap = wrapperRef.current.getBoundingClientRect()
+          const driftBeforeSwap = Math.abs(rectBeforeSwap.top - CONFIG.HEADER_HEIGHT)
+          shouldCorrectAfterSwap = driftBeforeSwap < 50 // Only if we're close to correct position
+          console.log('📸 Position before skeleton→card swap:', rectBeforeSwap.top, 'drift:', driftBeforeSwap)
+        }
+
+        isSwappingComponents.current = true
+
+        // Lock scroll position during swap if carousel is active
+        if (isActive && lenisRef.current) {
+          const currentScroll = lenisRef.current.scroll
+          console.log('🔒 Locking scroll at:', currentScroll)
+
+          // Stop Lenis to prevent any scrolling during swap
+          lenisRef.current.stop()
+
+          // Force scroll to stay at current position
+          const appContainer = document.getElementById('app-container')
+          if (appContainer) {
+            appContainer.scrollTop = currentScroll
+          }
+        }
+
         setAnimationComplete(true)
+
+        // Correct position after swap if carousel was active and positioned
+        if (shouldCorrectAfterSwap) {
+          requestAnimationFrame(() => {
+            setTimeout(() => {
+              if (isActive && wrapperRef.current) {
+                const rectAfterSwap = wrapperRef.current.getBoundingClientRect()
+                const driftAfterSwap = Math.abs(rectAfterSwap.top - CONFIG.HEADER_HEIGHT)
+
+                console.log('📸 Position after skeleton→card swap:', rectAfterSwap.top, 'drift:', driftAfterSwap)
+
+                if (driftAfterSwap > 30) {
+                  console.log('🔧 Correcting position after skeleton→card swap')
+                  correctCarouselPosition()
+                }
+
+                // Ensure Lenis is stopped again after correction (since carousel is active)
+                if (lenisRef.current && !lenisRef.current.isStopped) {
+                  lenisRef.current.stop()
+                }
+              }
+              isSwappingComponents.current = false
+            }, 100) // Small delay to let DOM settle
+          })
+        } else {
+          // Reset swap flag even if no correction needed
+          setTimeout(() => {
+            isSwappingComponents.current = false
+          }, 100)
+        }
       }, remainingTime)
 
       return () => clearTimeout(timeoutId)
     }
-  }, [hasData, hasEnteredView, animationComplete])
+  }, [hasData, hasEnteredView, animationComplete, isActive, correctCarouselPosition])
 
   // ============================================================================
   // SCROLL DETECTION - Entry/Exit Logic
@@ -322,9 +422,14 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
     const handleScroll = () => {
       if (!wrapperRef.current || isScrollbarDragging.current) return
 
-      // Prevent carousel activation if page is not ready
-      if (!pageReady) {
-        console.log('⚠️ Scroll ignored - page not ready')
+      // Prevent carousel activation if page is not ready or swapping components
+      if (!pageReady || isSwappingComponents.current) {
+        if (!pageReady) {
+          console.log('⚠️ Scroll ignored - page not ready')
+        }
+        if (isSwappingComponents.current) {
+          console.log('⚠️ Scroll ignored - swapping components')
+        }
         return
       }
 
@@ -420,32 +525,8 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
           }, 400)
         }
       } else if (isActive) {
-        // Monitor position and auto-correct if needed
-        const targetTop = CONFIG.HEADER_HEIGHT
-        const currentTop = rect.top
-        const drift = Math.abs(currentTop - targetTop)
-
-        console.log('👀 Active carousel position:', {
-          currentTop,
-          targetTop,
-          drift,
-          isCorrectingPosition: isCorrectingPosition.current,
-          isTransitioning: isTransitioning.current,
-          isTryingToExit: isTryingToExit.current
-        })
-
-        // Check if position needs correction (not during other operations)
-        // Also prevent correction if trying to exit boundaries
-        // Increased tolerance to 30px to prevent over-correction
-        if (
-          drift > 30 &&
-          !isCorrectingPosition.current &&
-          !isTransitioning.current &&
-          !isTryingToExit.current
-        ) {
-          console.log('🚨 Position drift detected, triggering correction')
-          correctCarouselPosition()
-        }
+        // Don't constantly monitor position in scroll handler
+        // Let the other observers handle it
 
         // Check if carousel should deactivate
         const { shouldDeactivate, exitBoundary } = shouldDeactivateCarousel(
@@ -464,6 +545,7 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
           setIsActive(false)
           activationState.isApproaching.current = false
           resetScroll()
+
 
           // Save exit state for re-engagement logic
           activationState.lastExitIndex.current = currentIndex
@@ -631,89 +713,27 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
   // RESIZE OBSERVER - Monitor layout changes
   // ============================================================================
   useEffect(() => {
-    if (!wrapperRef.current) return
+    if (!wrapperRef.current || !isActive) return
 
-    const resizeObserver = new ResizeObserver((entries) => {
-      // Only correct position if carousel is active and not already correcting
-      if (isActive && !isCorrectingPosition.current) {
-        console.log('📐 ResizeObserver detected change')
-        // Use RAF to debounce and optimize
-        requestAnimationFrame(() => {
+    const resizeObserver = new ResizeObserver(() => {
+      // Simple correction on resize
+      if (!isCorrectingPosition.current) {
+        setTimeout(() => {
           correctCarouselPosition()
-        })
+        }, 100)
       }
     })
 
     resizeObserver.observe(wrapperRef.current)
-
-    // Also observe document body for any layout shifts
-    resizeObserver.observe(document.body)
 
     return () => {
       resizeObserver.disconnect()
     }
   }, [isActive, correctCarouselPosition])
 
-  // ============================================================================
-  // MUTATION OBSERVER - Detect DOM changes
-  // ============================================================================
-  useEffect(() => {
-    if (!isActive) return
+  // Removed mutation observer - it was causing too many corrections
 
-    const mutationObserver = new MutationObserver((mutations) => {
-      // Check if any mutation might affect carousel position
-      const shouldCheck = mutations.some(mutation =>
-        mutation.type === 'childList' ||
-        (mutation.type === 'attributes' && (
-          mutation.attributeName === 'class' ||
-          mutation.attributeName === 'style'
-        ))
-      )
-
-      if (shouldCheck && !isCorrectingPosition.current) {
-        console.log('🧬 MutationObserver detected DOM change')
-        // Delay to let DOM settle
-        setTimeout(() => {
-          correctCarouselPosition()
-        }, 50)
-      }
-    })
-
-    // Observe entire document for changes
-    mutationObserver.observe(document.body, {
-      childList: true,
-      subtree: true,
-      attributes: true,
-      attributeFilter: ['class', 'style']
-    })
-
-    return () => {
-      mutationObserver.disconnect()
-    }
-  }, [isActive, correctCarouselPosition])
-
-  // ============================================================================
-  // FAILSAFE POSITION MONITORING - Periodic check
-  // ============================================================================
-  useEffect(() => {
-    if (!isActive) return
-
-    const intervalId = setInterval(() => {
-      if (wrapperRef.current && !isCorrectingPosition.current && !isTransitioning.current) {
-        const rect = wrapperRef.current.getBoundingClientRect()
-        const drift = Math.abs(rect.top - CONFIG.HEADER_HEIGHT)
-
-        if (drift > 30) {
-          console.log('⏰ Interval check found position drift:', drift)
-          correctCarouselPosition()
-        }
-      }
-    }, 500) // Check every 500ms
-
-    return () => {
-      clearInterval(intervalId)
-    }
-  }, [isActive, correctCarouselPosition, isTransitioning])
+  // Removed interval check - relying on event-based corrections only
 
   // ============================================================================
   // CLEANUP
@@ -796,7 +816,7 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
 
                 // Calculate visual properties
                 const yOffset = relativePosition < 0
-                  ? 800  // Hidden above
+                  ? -800  // Hidden above (negative to go up, not positive)
                   : isPastStack
                     ? CONFIG.MAX_STACK_DEPTH * CONFIG.CARD_OFFSET
                     : relativePosition * CONFIG.CARD_OFFSET

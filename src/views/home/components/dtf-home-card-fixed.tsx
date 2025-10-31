@@ -60,30 +60,53 @@ const DTFCover = ({ cover }: { cover: string | undefined }) => {
 }
 
 const DTFLeftCard = ({ dtf }: { dtf: IndexDTFItem }) => {
+  const [zapperMounted, setZapperMounted] = useState(false)
+  const [zapperReady, setZapperReady] = useState(false)
+
+  useEffect(() => {
+    // Mount Zapper after initial render
+    const mountTimer = setTimeout(() => setZapperMounted(true), 1000)
+    return () => clearTimeout(mountTimer)
+  }, [])
+
+  useEffect(() => {
+    // Wait for Zapper to fully render and stabilize before showing
+    if (zapperMounted) {
+      const readyTimer = setTimeout(() => setZapperReady(true), 1000)
+      return () => clearTimeout(readyTimer)
+    }
+  }, [zapperMounted])
+
   return (
-    <div className="flex flex-col gap-2 h-full border-r p-2">
-      <div className="flex-1 flex items-center justify-center">
+    <div className="dtf-left-card flex flex-col gap-2 h-full border-r p-2" style={{ minHeight: '693px' }}>
+      <div className="dtf-cover-container flex-1 flex items-center justify-center">
         <DTFCover cover={dtf.brand?.cover} />
       </div>
-      <Provider>
-        <div className="bg-card rounded-3xl">
-          <ZapperWrapper
-            wagmiConfig={wagmiConfig}
-            chain={dtf.chainId as AvailableChain}
-            dtfAddress={dtf.address}
-            mode="simple"
-            apiUrl={RESERVE_API}
-          />
+      {!zapperReady ? (
+        <div className="zapper-container bg-card rounded-3xl" style={{ height: '306px' }}>
+          <Skeleton className="w-full h-full rounded-3xl" />
         </div>
-      </Provider>
+      ) : (
+        <Provider>
+          <div className="zapper-container bg-card rounded-3xl" style={{ height: '306px' }}>
+            <ZapperWrapper
+              wagmiConfig={wagmiConfig}
+              chain={dtf.chainId as AvailableChain}
+              dtfAddress={dtf.address}
+              mode="simple"
+              apiUrl={RESERVE_API}
+            />
+          </div>
+        </Provider>
+      )}
     </div>
   )
 }
 
 const DTFBasket = ({ dtf }: { dtf: IndexDTFItem }) => {
   return (
-    <div className="bg-primary/10 p-6">
-      <div className="flex items-center mb-8">
+    <div className="dtf-basket-section bg-primary/10 p-6" style={{ minHeight: '693px' }}>
+      <div className="basket-header flex items-center mb-8">
         <Gem size={24} strokeWidth={1} />
         <div className="flex items-center text-legend ml-auto text-xs gap-1">
           <Tags size={16} />
@@ -93,7 +116,7 @@ const DTFBasket = ({ dtf }: { dtf: IndexDTFItem }) => {
         </div>
       </div>
       <h4 className="mb-4 font-semibold">What's in the {dtf.symbol} Index?</h4>
-      <div className="flex flex-col gap-3 max-h-[400px] overflow-y-auto">
+      <div className="token-list flex flex-col gap-3 max-h-[400px] overflow-y-auto">
         {dtf.basket.slice(0, 8).map((token) => (
           <div key={token.address} className="flex gap-2 items-center text-sm">
             <TokenLogo
@@ -352,34 +375,39 @@ const DTFInfo = ({ dtf }: DTFInfoProps) => {
   }
 
   return (
-    <div className="h-full w-full">
-      <div className="flex items-center flex-shrink-0 p-6 pb-4">
+    <div className="dtf-info-section h-full w-full" style={{ minHeight: '693px' }}>
+      <div className="logo-section flex items-center flex-shrink-0 p-6 pb-4">
         <TokenLogo
           src={dtf?.brand?.icon || undefined}
           size="xl"
           alt={dtf?.symbol ?? 'dtf token logo'}
         />
       </div>
-      <div className="px-6">
+      <div className="title-section px-6">
         <h4 className="text-2xl">{dtf.name}</h4>
         <h4 className="text-2xl mb-1">${formatCurrency(dtf.price)}</h4>
         {formatPerformance()}
       </div>
 
       <PerformanceChart dtf={dtf} onRangeChange={handlePerformanceChange} />
-      <div className="flex items-center text-lg p-6 border-y ">
+      <div className="market-cap-section flex items-center text-lg p-6 border-y ">
         <span className="mr-auto">Market Cap</span>
         <span>${formatCurrency(dtf.marketCap)}</span>
       </div>
-      <About dtf={dtf} />
+      <div className="about-section">
+        <About dtf={dtf} />
+      </div>
     </div>
   )
 }
 
 const DTFHomeCardFixed = ({ dtf }: { dtf: IndexDTFItem }) => {
   return (
-    <div className="w-full rounded-4xl max-w-[1400px] mx-auto bg-card border border-primary-foreground">
-      <div className="grid lg:grid-cols-[320px_1fr_1fr] xl:grid-cols-[380px_1fr_1fr] gap-0">
+    <div
+      className="w-full rounded-4xl max-w-[1400px] mx-auto bg-card border border-primary-foreground"
+      style={{ minHeight: '695px' }}
+    >
+      <div className="grid lg:grid-cols-[320px_1fr_1fr] xl:grid-cols-[380px_1fr_1fr] gap-0" style={{ minHeight: '693px' }}>
         <DTFLeftCard dtf={dtf} />
         <DTFInfo dtf={dtf} />
         <DTFBasket dtf={dtf} />
