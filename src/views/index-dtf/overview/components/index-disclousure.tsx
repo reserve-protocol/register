@@ -16,10 +16,22 @@ import {
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Signature, FileText } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { indexDTFAtom } from '@/state/dtf/atoms'
+import { useAtomValue } from 'jotai'
+import { ChainId } from '@/utils/chains'
 
 // Exclusive component for CFB LCAP whitepaper
 // Required for legal compliance
 const WhitepaperModal = () => {
+  const dtf = useAtomValue(indexDTFAtom)
+
+  const isCFB =
+    dtf?.chainId === ChainId.Base &&
+    dtf?.id?.toLowerCase() ===
+      '0x4da9a0f397db1397902070f93a4d6ddbc0e0e6e8'.toLowerCase()
+
+  if (!isCFB) return null
+
   return (
     <Dialog>
       <DialogTrigger asChild>
