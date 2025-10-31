@@ -943,11 +943,7 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
                     initial={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.5, ease: 'easeInOut' }}
-                    style={{
-                      zIndex: 9999,
-                      transform: `scale(${cardScale})`,
-                      transformOrigin: 'center'
-                    }}
+                    style={{ zIndex: 9999 }}
                   >
                     {[...Array(3)].map((_, index) => {
                       const yOffset = index * CONFIG.CARD_OFFSET

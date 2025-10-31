@@ -59,17 +59,24 @@ export function useCarouselState({ totalCards, transitionDuration, scrollThresho
    * Process scroll input and trigger navigation
    */
   const handleScrollInput = useCallback((deltaY: number): boolean => {
-    if (isTransitioning.current) return false
+    if (isTransitioning.current) {
+      console.log('🚫 Blocked scroll during transition, accumulator:', scrollAccumulator.current)
+      return false
+    }
 
     // Reset accumulator if too much time has passed
     const currentTime = Date.now()
     if (currentTime - lastScrollTime.current > 500) {
+      if (scrollAccumulator.current !== 0) {
+        console.log('⏱️ Resetting accumulator due to time gap')
+      }
       scrollAccumulator.current = 0
     }
     lastScrollTime.current = currentTime
 
     // Accumulate scroll
     scrollAccumulator.current += deltaY
+    console.log('📊 Scroll accumulator:', scrollAccumulator.current, 'delta:', deltaY)
 
     // Check if we've scrolled enough to trigger navigation
     if (Math.abs(scrollAccumulator.current) >= scrollThreshold) {
@@ -77,6 +84,8 @@ export function useCarouselState({ totalCards, transitionDuration, scrollThresho
       const newIndex = scrollingDown ? currentIndexRef.current + 1 : currentIndexRef.current - 1
 
       if (newIndex >= 0 && newIndex < totalCards) {
+        console.log('🎯 Navigation triggered:', currentIndexRef.current, '->', newIndex)
+
         // SET TRANSITION FLAG IMMEDIATELY to prevent race condition
         // This prevents multiple rapid events (touchpad) from triggering multiple navigations
         isTransitioning.current = true
@@ -95,6 +104,7 @@ export function useCarouselState({ totalCards, transitionDuration, scrollThresho
 
         // Reset after transition completes
         transitionTimeout.current = setTimeout(() => {
+          console.log('✅ Transition complete, clearing flag')
           isTransitioning.current = false
           setScrollDirection(null)
           scrollAccumulator.current = 0 // Clear again to be safe
