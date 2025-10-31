@@ -147,7 +147,7 @@ const BasketTableHeader = ({
           onSort={onSort}
           className="text-center px-1 sm:px-3"
         >
-          {periodLabel[timeRange]} Change
+          Price Change ({periodLabel[timeRange]})
         </TableHeaderWithSort>
         {isExposure && (
           <TableHeaderWithSort
