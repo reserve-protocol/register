@@ -118,6 +118,9 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
   const [animationComplete, setAnimationComplete] = useState(false)
   const animationStartTime = useRef<number>(0)
 
+  // Page load protection
+  const [pageReady, setPageReady] = useState(false)
+
   // Determine if we have data or need skeleton
   const hasData = !isLoading && dtfs && dtfs.length > 0
   // Keep showing skeleton during entrance animation to prevent lag
@@ -158,6 +161,10 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
   const boundaryExitTimeout = useRef<NodeJS.Timeout | null>(null)
   const isTryingToExit = useRef(false)
 
+  // Position correction
+  const isCorrectingPosition = useRef(false)
+  const positionCorrectionTimeout = useRef<NodeJS.Timeout | null>(null)
+
   // Deactivate callback for scrollbar detection
   const handleDeactivate = useCallback(() => {
     setIsActive(false)
@@ -177,11 +184,118 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
   // Viewport height management
   const [wrapperHeight, setWrapperHeight] = useState(0)
 
-  // Handle entrance animation
+  // Position correction function
+  const correctCarouselPosition = useCallback(() => {
+    if (!wrapperRef.current || !isActive) return
+
+    // Check for blocking conditions
+    if (
+      isCorrectingPosition.current ||
+      isTransitioning.current ||
+      activationState.isPositioning.current
+    ) {
+      console.log('🚫 Position correction blocked:', {
+        isCorrectingPosition: isCorrectingPosition.current,
+        isTransitioning: isTransitioning.current,
+        isPositioning: activationState.isPositioning.current
+      })
+      return
+    }
+
+    const rect = wrapperRef.current.getBoundingClientRect()
+    const targetTop = CONFIG.HEADER_HEIGHT
+    const currentTop = rect.top
+    const drift = currentTop - targetTop // Signed drift to see direction
+
+    console.log('📍 Carousel position check:', {
+      currentTop,
+      targetTop,
+      drift,
+      absDrift: Math.abs(drift)
+    })
+
+    // Only correct if drift exceeds tolerance (30px) - increased tolerance
+    // Also check that we're not trying to exit the carousel
+    if (Math.abs(drift) > 30 && !isTryingToExit.current) {
+      console.log('🔧 Correcting carousel position, drift:', drift)
+      isCorrectingPosition.current = true
+
+      // Clear any existing correction timeout
+      if (positionCorrectionTimeout.current) {
+        clearTimeout(positionCorrectionTimeout.current)
+      }
+
+      // Smoothly scroll to correct position
+      const appContainer = document.getElementById('app-container')
+      if (appContainer) {
+        // Don't try to calculate relative scroll, instead calculate absolute position
+        // The carousel should be at a fixed position relative to the viewport
+        const carouselElement = wrapperRef.current
+        const currentScrollTop = appContainer.scrollTop
+
+        // Calculate where the carousel currently is in the document
+        const carouselOffsetInDocument = carouselElement.offsetTop
+
+        // Calculate the target scroll position to place carousel at HEADER_HEIGHT
+        const targetScrollPosition = carouselOffsetInDocument - CONFIG.HEADER_HEIGHT
+
+        // Safety check: ensure we're not scrolling to negative values
+        const safeTargetScroll = Math.max(0, targetScrollPosition)
+
+        console.log('🎯 Position correction:', {
+          currentScrollTop,
+          carouselOffsetInDocument,
+          targetScrollPosition: safeTargetScroll,
+          currentTop: rect.top,
+          targetTop: CONFIG.HEADER_HEIGHT,
+          drift
+        })
+
+        // Since Lenis is stopped when carousel is active, we need to temporarily start it
+        // to perform the correction, then stop it again
+        if (lenisRef.current) {
+          // Temporarily start Lenis for correction
+          lenisRef.current.start()
+
+          lenisRef.current.scrollTo(safeTargetScroll, {
+            duration: 0.4,
+            easing: (t: number) => 1 - Math.pow(1 - t, 3),
+            onComplete: () => {
+              // Stop Lenis again after correction
+              if (isActive && lenisRef.current) {
+                lenisRef.current.stop()
+                console.log('🛑 Lenis stopped again after correction')
+              }
+            }
+          })
+        } else {
+          // Fallback to native scrolling
+          appContainer.scrollTo({
+            top: safeTargetScroll,
+            behavior: 'smooth'
+          })
+        }
+      }
+
+      // Reset correction flag after animation completes
+      positionCorrectionTimeout.current = setTimeout(() => {
+        isCorrectingPosition.current = false
+        console.log('✅ Position correction complete')
+      }, 500)
+    }
+  }, [isActive, lenisRef, isTransitioning, activationState, isTryingToExit])
+
+  // Handle entrance animation and page ready state
   useEffect(() => {
     if (!hasEnteredView) {
       setHasEnteredView(true)
       animationStartTime.current = Date.now()
+
+      // Mark page as ready after a short delay to prevent early scroll issues
+      setTimeout(() => {
+        setPageReady(true)
+        console.log('✅ Page ready for interactions')
+      }, 500)
     }
   }, [hasEnteredView])
 
@@ -207,6 +321,12 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
   useEffect(() => {
     const handleScroll = () => {
       if (!wrapperRef.current || isScrollbarDragging.current) return
+
+      // Prevent carousel activation if page is not ready
+      if (!pageReady) {
+        console.log('⚠️ Scroll ignored - page not ready')
+        return
+      }
 
       const rect = wrapperRef.current.getBoundingClientRect()
 
@@ -235,13 +355,53 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
 
           // Activate after scroll completes
           setTimeout(() => {
-            setIsActive(true)
-            activationState.isPositioning.current = false
-
-            // Stop Lenis for carousel control
+            // Aggressive clear of any accumulated scroll momentum/events
             if (lenisRef.current) {
+              // Force stop any ongoing animations
               lenisRef.current.stop()
+
+              // Reset all scroll-related properties
+              lenisRef.current.velocity = 0
+              lenisRef.current.direction = 0
+              lenisRef.current.animate.to = lenisRef.current.scroll
+              lenisRef.current.isScrolling = false
+              lenisRef.current.isStopped = true
+
+              console.log('🛑 Lenis stopped and scroll momentum forcefully cleared')
+
+              // Clear any pending wheel events from the browser queue
+              const wheelHandler = (e: WheelEvent) => {
+                e.preventDefault()
+                e.stopPropagation()
+                console.log('🚫 Blocked accumulated wheel event')
+              }
+
+              window.addEventListener('wheel', wheelHandler, { passive: false, capture: true })
+
+              // Remove the blocker after a brief moment
+              setTimeout(() => {
+                window.removeEventListener('wheel', wheelHandler, { capture: true })
+                console.log('✅ Wheel event blocker removed')
+              }, 100)
             }
+
+            // Small delay to ensure everything is cleared
+            requestAnimationFrame(() => {
+              setIsActive(true)
+              activationState.isPositioning.current = false
+
+              // Ensure position is correct after activation
+              setTimeout(() => {
+                if (wrapperRef.current) {
+                  const rect = wrapperRef.current.getBoundingClientRect()
+                  const drift = Math.abs(rect.top - CONFIG.HEADER_HEIGHT)
+                  if (drift > 30) {
+                    console.log('🔧 Post-activation position correction needed:', drift)
+                    correctCarouselPosition()
+                  }
+                }
+              }, 100)
+            })
 
             // Restore index based on entry method
             if (activationState.lastExitIndex.current !== null) {
@@ -260,6 +420,33 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
           }, 400)
         }
       } else if (isActive) {
+        // Monitor position and auto-correct if needed
+        const targetTop = CONFIG.HEADER_HEIGHT
+        const currentTop = rect.top
+        const drift = Math.abs(currentTop - targetTop)
+
+        console.log('👀 Active carousel position:', {
+          currentTop,
+          targetTop,
+          drift,
+          isCorrectingPosition: isCorrectingPosition.current,
+          isTransitioning: isTransitioning.current,
+          isTryingToExit: isTryingToExit.current
+        })
+
+        // Check if position needs correction (not during other operations)
+        // Also prevent correction if trying to exit boundaries
+        // Increased tolerance to 30px to prevent over-correction
+        if (
+          drift > 30 &&
+          !isCorrectingPosition.current &&
+          !isTransitioning.current &&
+          !isTryingToExit.current
+        ) {
+          console.log('🚨 Position drift detected, triggering correction')
+          correctCarouselPosition()
+        }
+
         // Check if carousel should deactivate
         const { shouldDeactivate, exitBoundary } = shouldDeactivateCarousel(
           rect,
@@ -298,7 +485,7 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
     }
 
     const appContainer = document.getElementById('app-container')
-    appContainer?.addEventListener('scroll', handleScroll, { passive: true })
+    appContainer?.addEventListener('scroll', handleScroll, { passive: false })
 
     return () => {
       appContainer?.removeEventListener('scroll', handleScroll)
@@ -313,6 +500,9 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
     lenisRef,
     activationState,
     scrollbarReleaseIndex,
+    correctCarouselPosition,
+    isTransitioning,
+    pageReady,
   ])
 
   // ============================================================================
@@ -422,12 +612,108 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
     const updateHeight = () => {
       const height = window.innerHeight - CONFIG.HEADER_HEIGHT
       setWrapperHeight(height)
+
+      // Correct position if carousel is active during resize
+      if (isActive) {
+        // Small delay to let layout settle
+        setTimeout(() => {
+          correctCarouselPosition()
+        }, 100)
+      }
     }
 
     updateHeight()
     window.addEventListener('resize', updateHeight)
     return () => window.removeEventListener('resize', updateHeight)
-  }, [])
+  }, [isActive, correctCarouselPosition])
+
+  // ============================================================================
+  // RESIZE OBSERVER - Monitor layout changes
+  // ============================================================================
+  useEffect(() => {
+    if (!wrapperRef.current) return
+
+    const resizeObserver = new ResizeObserver((entries) => {
+      // Only correct position if carousel is active and not already correcting
+      if (isActive && !isCorrectingPosition.current) {
+        console.log('📐 ResizeObserver detected change')
+        // Use RAF to debounce and optimize
+        requestAnimationFrame(() => {
+          correctCarouselPosition()
+        })
+      }
+    })
+
+    resizeObserver.observe(wrapperRef.current)
+
+    // Also observe document body for any layout shifts
+    resizeObserver.observe(document.body)
+
+    return () => {
+      resizeObserver.disconnect()
+    }
+  }, [isActive, correctCarouselPosition])
+
+  // ============================================================================
+  // MUTATION OBSERVER - Detect DOM changes
+  // ============================================================================
+  useEffect(() => {
+    if (!isActive) return
+
+    const mutationObserver = new MutationObserver((mutations) => {
+      // Check if any mutation might affect carousel position
+      const shouldCheck = mutations.some(mutation =>
+        mutation.type === 'childList' ||
+        (mutation.type === 'attributes' && (
+          mutation.attributeName === 'class' ||
+          mutation.attributeName === 'style'
+        ))
+      )
+
+      if (shouldCheck && !isCorrectingPosition.current) {
+        console.log('🧬 MutationObserver detected DOM change')
+        // Delay to let DOM settle
+        setTimeout(() => {
+          correctCarouselPosition()
+        }, 50)
+      }
+    })
+
+    // Observe entire document for changes
+    mutationObserver.observe(document.body, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['class', 'style']
+    })
+
+    return () => {
+      mutationObserver.disconnect()
+    }
+  }, [isActive, correctCarouselPosition])
+
+  // ============================================================================
+  // FAILSAFE POSITION MONITORING - Periodic check
+  // ============================================================================
+  useEffect(() => {
+    if (!isActive) return
+
+    const intervalId = setInterval(() => {
+      if (wrapperRef.current && !isCorrectingPosition.current && !isTransitioning.current) {
+        const rect = wrapperRef.current.getBoundingClientRect()
+        const drift = Math.abs(rect.top - CONFIG.HEADER_HEIGHT)
+
+        if (drift > 30) {
+          console.log('⏰ Interval check found position drift:', drift)
+          correctCarouselPosition()
+        }
+      }
+    }, 500) // Check every 500ms
+
+    return () => {
+      clearInterval(intervalId)
+    }
+  }, [isActive, correctCarouselPosition, isTransitioning])
 
   // ============================================================================
   // CLEANUP
@@ -437,6 +723,9 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
       cleanupState()
       if (boundaryExitTimeout.current) {
         clearTimeout(boundaryExitTimeout.current)
+      }
+      if (positionCorrectionTimeout.current) {
+        clearTimeout(positionCorrectionTimeout.current)
       }
     }
   }, [cleanupState])
