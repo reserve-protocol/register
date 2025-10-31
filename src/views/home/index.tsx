@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import RegisterAbout from '../discover/components/yield/components/RegisterAbout'
 import useFilteredDTFIndex from '../discover/components/index/hooks/use-filtered-dtf-index'
-import DTFCardsWrapper from './components/dtf-cards-wrapper'
+import DTFCarousel from './components/dtf-carousel'
 
 const DTFs = () => (
   <div className="flex flex-col flex-shrink-0 pt-1">
@@ -87,7 +87,7 @@ const Hero = () => {
 const DTFCards = () => {
   const { data, isLoading } = useFilteredDTFIndex()
 
-  return <DTFCardsWrapper data={data} isLoading={isLoading} />
+  return <DTFCarousel dtfs={data || []} isLoading={isLoading} />
 }
 
 const Home = () => {

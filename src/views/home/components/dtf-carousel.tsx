@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState, memo } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
 import { ChevronDown } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { Skeleton } from '@/components/ui/skeleton'
 
 import { IndexDTFItem } from '@/hooks/useIndexDTFList'
 import DTFHomeCardFixed from './dtf-home-card-fixed'
@@ -39,6 +40,54 @@ const CONFIG = {
 } as const
 
 // ============================================================================
+// SKELETON CARD COMPONENT
+// ============================================================================
+const SkeletonCard = () => {
+  return (
+    <div
+      className="w-full rounded-4xl max-w-[1400px] mx-auto bg-card border border-primary-foreground"
+      style={{ minHeight: '693px' }}
+    >
+      <div className="grid lg:grid-cols-[320px_1fr_1fr] xl:grid-cols-[380px_1fr_1fr] gap-0 h-full" style={{ minHeight: '693px' }}>
+        {/* Left Card - Simplified */}
+        <div className="flex flex-col gap-2 border-r p-2" style={{ minHeight: '693px' }}>
+          <div className="flex-1 flex items-center justify-center">
+            <Skeleton className="w-full aspect-square rounded-3xl" />
+          </div>
+          <div className="bg-card rounded-3xl p-4">
+            <Skeleton className="h-12 w-full rounded-xl" />
+          </div>
+        </div>
+
+        {/* Middle Section - Simplified */}
+        <div className="w-full p-6 flex flex-col" style={{ minHeight: '693px' }}>
+          <Skeleton className="h-12 w-12 rounded-full mb-4" />
+          <Skeleton className="h-7 w-48 mb-2" />
+          <Skeleton className="h-7 w-32 mb-1" />
+          <Skeleton className="h-5 w-40 mb-6" />
+          <Skeleton className="h-36 w-full mb-8" />
+          <Skeleton className="h-6 w-full mb-8" />
+          <Skeleton className="h-20 w-full" />
+          <div className="flex-1" />
+        </div>
+
+        {/* Right Section - Simplified */}
+        <div className="bg-primary/10 p-6 flex flex-col" style={{ minHeight: '693px' }}>
+          <Skeleton className="h-6 w-32 mb-4" />
+          <Skeleton className="h-5 w-48 mb-4" />
+          <div className="flex flex-col gap-3">
+            {[...Array(5)].map((_, i) => (
+              <Skeleton key={i} className="h-8 w-full" />
+            ))}
+          </div>
+          <div className="flex-1" />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ============================================================================
 // MEMOIZED COMPONENTS
 // ============================================================================
 const MemoizedCard = memo(DTFHomeCardFixed, (prev, next) =>
@@ -64,6 +113,17 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
   // Lenis smooth scroll
   const lenisRef = useLenisScroll()
 
+  // Entrance animation state
+  const [hasEnteredView, setHasEnteredView] = useState(false)
+  const [animationComplete, setAnimationComplete] = useState(false)
+
+  // Determine if we have data or need skeleton
+  const hasData = !isLoading && dtfs && dtfs.length > 0
+  const showSkeleton = !hasData
+
+  // Use skeleton count when loading, actual count when loaded
+  const cardCount = showSkeleton ? 3 : dtfs.length
+
   // Carousel state management
   const {
     currentIndex,
@@ -79,7 +139,7 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
     resetScroll,
     cleanup: cleanupState
   } = useCarouselState({
-    totalCards: dtfs.length,
+    totalCards: cardCount,
     transitionDuration: CONFIG.TRANSITION_DURATION,
     scrollThreshold: CONFIG.SCROLL_THRESHOLD,
   })
@@ -114,6 +174,17 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
 
   // Viewport height management
   const [wrapperHeight, setWrapperHeight] = useState(0)
+
+  // Handle entrance animation
+  useEffect(() => {
+    if (!hasEnteredView) {
+      setHasEnteredView(true)
+      // Complete animation after 600ms
+      setTimeout(() => {
+        setAnimationComplete(true)
+      }, 600)
+    }
+  }, [hasEnteredView])
 
   // ============================================================================
   // SCROLL DETECTION - Entry/Exit Logic
@@ -358,15 +429,20 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
   // ============================================================================
   // RENDER
   // ============================================================================
-  if (!dtfs || dtfs.length === 0) {
-    return <div style={{ height: `${wrapperHeight || 800}px` }} />
-  }
-
   return (
     <section ref={containerRef} className="relative">
-      <div
+      <motion.div
         ref={wrapperRef}
         className="relative w-full bg-primary"
+        initial={{ opacity: 0, y: 300 }}
+        animate={{
+          opacity: 1,
+          y: 0,
+          transition: {
+            duration: 0.6,
+            ease: [0.22, 1, 0.36, 1]
+          }
+        }}
         style={{
           height: `${wrapperHeight || 800}px`,
           minHeight: `${wrapperHeight || 800}px`
@@ -381,8 +457,34 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
               className="relative"
               style={{ width: '100%', height: `${CONFIG.CARD_HEIGHT}px` }}
             >
-              {/* Card Stack */}
-              {dtfs.map((dtf, index) => {
+              {/* Card Stack - Show skeleton or real cards */}
+              {showSkeleton ? (
+                // Skeleton cards while loading
+                [...Array(3)].map((_, index) => {
+                  const yOffset = index * CONFIG.CARD_OFFSET
+                  const scale = 1 - index * CONFIG.SCALE_FACTOR
+                  const opacity = index === 2 ? 0.5 : 1
+                  const zIndex = 3 - index
+
+                  return (
+                    <div
+                      key={`skeleton-${index}`}
+                      className="absolute inset-0"
+                      style={{
+                        transform: `translate3d(0, ${yOffset}px, 0) scale(${scale})`,
+                        transformOrigin: 'bottom center',
+                        opacity,
+                        zIndex,
+                        pointerEvents: 'none',
+                      }}
+                    >
+                      <SkeletonCard />
+                    </div>
+                  )
+                })
+              ) : (
+                // Real cards when loaded
+                dtfs.map((dtf, index) => {
                 const relativePosition = index - currentIndex
                 const isTopCard = relativePosition === 0
                 const isInStack = relativePosition >= 0 && relativePosition <= CONFIG.MAX_STACK_DEPTH
@@ -409,42 +511,43 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
                     : 1       // Current and middle cards: full opacity
                 const zIndex = dtfs.length - relativePosition
 
-                return (
-                  <motion.div
-                    key={dtf.address}
-                    className="absolute inset-0"
-                    initial={false}
-                    animate={{
-                      y: yOffset,
-                      scale,
-                      opacity,
-                    }}
-                    transition={{
-                      y: {
-                        type: 'spring',
-                        stiffness: 300,
-                        damping: 30,
-                        mass: 1,
-                      },
-                      scale: {
-                        type: 'spring',
-                        stiffness: 300,
-                        damping: 30,
-                        mass: 1,
-                      },
-                      opacity: { duration: 0.2, ease: 'easeInOut' },
-                    }}
-                    style={{
-                      transformOrigin: 'bottom center',
-                      pointerEvents: isTopCard ? 'auto' : 'none',
-                      willChange: 'transform, opacity',
-                      zIndex,
-                    }}
-                  >
-                    <MemoizedCard dtf={dtf} />
-                  </motion.div>
-                )
-              })}
+                  return (
+                    <motion.div
+                      key={dtf.address}
+                      className="absolute inset-0"
+                      initial={false}
+                      animate={{
+                        y: yOffset,
+                        scale,
+                        opacity,
+                      }}
+                      transition={{
+                        y: {
+                          type: 'spring',
+                          stiffness: 300,
+                          damping: 30,
+                          mass: 1,
+                        },
+                        scale: {
+                          type: 'spring',
+                          stiffness: 300,
+                          damping: 30,
+                          mass: 1,
+                        },
+                        opacity: { duration: 0.2, ease: 'easeInOut' },
+                      }}
+                      style={{
+                        transformOrigin: 'bottom center',
+                        pointerEvents: isTopCard ? 'auto' : 'none',
+                        willChange: 'transform, opacity',
+                        zIndex,
+                      }}
+                    >
+                      <MemoizedCard dtf={dtf} />
+                    </motion.div>
+                  )
+                })
+              )}
             </div>
           </div>
         </div>
@@ -472,7 +575,7 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
         </AnimatePresence>
 
         {/* Navigation Dots */}
-        {isActive && (
+        {isActive && !showSkeleton && (
           <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-2 z-50">
             {dtfs.map((_, index) => (
               <button
@@ -489,7 +592,7 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
             ))}
           </div>
         )}
-      </div>
+      </motion.div>
     </section>
   )
 }
