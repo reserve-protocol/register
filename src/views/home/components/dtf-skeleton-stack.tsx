@@ -1,84 +1,43 @@
 import { Skeleton } from '@/components/ui/skeleton'
 
+// Simplified skeleton card with fewer elements for better performance
+// IMPORTANT: Height must be at least 697px to match the carousel cards
 const SkeletonCard = () => {
   return (
-    <div className="w-full rounded-4xl max-w-[1400px] mx-auto bg-card border border-primary-foreground">
-      <div className="grid lg:grid-cols-[320px_1fr_1fr] xl:grid-cols-[380px_1fr_1fr] gap-0">
-        {/* Left Card Skeleton - matching DTFLeftCard */}
-        <div className="flex flex-col gap-2 h-full border-r p-2">
+    <div className="w-full rounded-4xl max-w-[1400px] mx-auto bg-card border border-primary-foreground" style={{ minHeight: '697px' }}>
+      <div className="grid lg:grid-cols-[320px_1fr_1fr] xl:grid-cols-[380px_1fr_1fr] gap-0 h-full" style={{ minHeight: '697px' }}>
+        {/* Left Card - Simplified */}
+        <div className="flex flex-col gap-2 border-r p-2" style={{ minHeight: '697px' }}>
           <div className="flex-1 flex items-center justify-center">
-            {/* Cover image skeleton */}
             <Skeleton className="w-full aspect-square rounded-3xl" />
           </div>
-          {/* Zapper button skeleton */}
           <div className="bg-card rounded-3xl p-4">
             <Skeleton className="h-12 w-full rounded-xl" />
           </div>
         </div>
 
-        {/* Middle Info Section Skeleton - matching DTFInfo */}
-        <div className="h-full w-full">
-          {/* Token Logo and Header */}
-          <div className="flex items-center flex-shrink-0 p-6 pb-4">
-            <Skeleton className="w-12 h-12 rounded-full" />
-          </div>
-          <div className="px-6">
-            <Skeleton className="h-7 w-48 mb-2" />
-            <Skeleton className="h-7 w-32 mb-1" />
-            <Skeleton className="h-5 w-40" />
-          </div>
-
-          {/* Chart Skeleton */}
-          <div className="p-6">
-            <Skeleton className="h-36 w-full mb-4" />
-            <div className="flex items-center justify-between w-full">
-              <Skeleton className="h-5 w-8" />
-              <Skeleton className="h-5 w-8" />
-              <Skeleton className="h-5 w-8" />
-              <Skeleton className="h-5 w-8" />
-              <Skeleton className="h-5 w-8" />
-            </div>
-          </div>
-
-          {/* Market Cap */}
-          <div className="flex items-center text-lg p-6 border-y">
-            <Skeleton className="h-6 w-24 mr-auto" />
-            <Skeleton className="h-6 w-32" />
-          </div>
-
-          {/* About Section */}
-          <div className="p-6">
-            <Skeleton className="h-6 w-32 mb-4" />
-            <Skeleton className="h-4 w-full mb-2" />
-            <Skeleton className="h-4 w-3/4 mb-4" />
-            <Skeleton className="h-5 w-48" />
-          </div>
+        {/* Middle Section - Simplified */}
+        <div className="w-full p-6 flex flex-col" style={{ minHeight: '697px' }}>
+          <Skeleton className="h-12 w-12 rounded-full mb-4" />
+          <Skeleton className="h-7 w-48 mb-2" />
+          <Skeleton className="h-7 w-32 mb-1" />
+          <Skeleton className="h-5 w-40 mb-6" />
+          <Skeleton className="h-36 w-full mb-8" />
+          <Skeleton className="h-6 w-full mb-8" />
+          <Skeleton className="h-20 w-full" />
+          <div className="flex-1" /> {/* Spacer to push content to fill height */}
         </div>
 
-        {/* Right Basket Section Skeleton - matching DTFBasket */}
-        <div className="bg-primary/10 p-6">
-          {/* Header with icons */}
-          <div className="flex items-center mb-8">
-            <Skeleton className="h-6 w-6" />
-            <div className="flex items-center ml-auto gap-1">
-              <Skeleton className="h-4 w-4" />
-              <Skeleton className="h-4 w-16" />
-            </div>
-          </div>
-
-          {/* Title */}
+        {/* Right Section - Simplified */}
+        <div className="bg-primary/10 p-6 flex flex-col" style={{ minHeight: '697px' }}>
+          <Skeleton className="h-6 w-32 mb-4" />
           <Skeleton className="h-5 w-48 mb-4" />
-
-          {/* Token list */}
-          <div className="flex flex-col gap-3 max-h-[400px]">
-            {[...Array(8)].map((_, i) => (
-              <div key={i} className="flex gap-2 items-center">
-                <Skeleton className="w-8 h-8 rounded-full" />
-                <Skeleton className="h-4 w-32 mr-auto" />
-                <Skeleton className="h-4 w-12" />
-              </div>
+          <div className="flex flex-col gap-3">
+            {[...Array(5)].map((_, i) => (
+              <Skeleton key={i} className="h-8 w-full" />
             ))}
           </div>
+          <div className="flex-1" /> {/* Spacer to push content to fill height */}
         </div>
       </div>
     </div>

@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
-import { motion, AnimatePresence } from 'motion/react'
 import DTFCarousel from './dtf-carousel'
 import DTFSkeletonStack from './dtf-skeleton-stack'
 import { IndexDTFItem } from '@/hooks/useIndexDTFList'
+import './dtf-entrance.css' // CSS animations for better performance
 
 interface DTFCardsWrapperProps {
   data: IndexDTFItem[] | undefined
@@ -84,74 +84,40 @@ const DTFCardsWrapper = ({ data, isLoading }: DTFCardsWrapperProps) => {
     }
   }, [animationComplete, hasData])
 
-  // Animation variants for the entrance effect - using simpler easing for performance
-  const stackVariants = {
-    hidden: {
-      y: 300,
-      opacity: 0,
-    },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        duration: 0.6,
-        ease: [0.22, 1, 0.36, 1] as const  // Custom cubic-bezier for smooth motion
-      }
-    },
-    fast: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        duration: 0.2,
-        ease: 'easeOut' as const
-      }
-    }
-  }
-
-  // Render with seamless crossfade - both components stay in DOM during transition
+  // Render with CSS animations for better performance
   return (
     <div className="relative" style={{ minHeight: `${typeof window !== 'undefined' ? window.innerHeight - 72 : 693}px` }}>
-      {/* Skeleton layer - always present but fades out */}
-      <motion.div
-        initial="hidden"
-        animate={shouldSpeedUp ? "fast" : "visible"}
-        variants={stackVariants}
+      {/* Skeleton layer - uses CSS animations */}
+      <div
+        className={`${shouldSpeedUp ? 'dtf-entrance-animation-fast' : 'dtf-entrance-animation'} ${readyToSwap ? 'dtf-crossfade-out' : ''}`}
         style={{
           position: readyToSwap ? 'absolute' : 'relative',
           width: '100%',
           top: 0,
           left: 0,
-          opacity: readyToSwap ? 0 : 1,
-          transition: readyToSwap ? 'opacity 0.6s ease-in-out' : 'none',
           pointerEvents: readyToSwap ? 'none' : 'auto',
           zIndex: 1,
-          willChange: animationComplete ? 'auto' : 'transform, opacity',
-          transform: 'translateZ(0)', // Force GPU acceleration
         }}
       >
         <DTFSkeletonStack />
-      </motion.div>
+      </div>
 
-      {/* Carousel layer - renders when data is ready and fades in */}
+      {/* Carousel layer - only renders when data is ready */}
       {hasData && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: readyToSwap ? 1 : 0 }}
-          transition={{
-            duration: 0.6,
-            ease: 'easeInOut',
-            delay: readyToSwap ? 0.1 : 0 // Small delay to ensure overlap
-          }}
+        <div
+          className={readyToSwap ? 'dtf-crossfade-in' : ''}
           style={{
             position: readyToSwap ? 'relative' : 'absolute',
             width: '100%',
             top: 0,
             left: 0,
             zIndex: 2,
+            opacity: readyToSwap ? 1 : 0,
+            transition: 'opacity 0.6s ease-in-out',
           }}
         >
           <DTFCarousel dtfs={data!} isLoading={false} />
-        </motion.div>
+        </div>
       )}
     </div>
   )

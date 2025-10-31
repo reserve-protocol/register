@@ -1,0 +1,45 @@
+@keyframes slideUpFade {
+  from {
+    transform: translate3d(0, 300px, 0);
+    opacity: 0;
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideUpFadeFast {
+  from {
+    transform: translate3d(0, 300px, 0);
+    opacity: 0;
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+  }
+}
+
+.dtf-entrance-animation {
+  animation: slideUpFade 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  will-change: transform, opacity;
+  transform: translate3d(0, 300px, 0);
+  opacity: 0;
+}
+
+.dtf-entrance-animation-fast {
+  animation: slideUpFadeFast 0.2s ease-out forwards;
+  will-change: transform, opacity;
+  transform: translate3d(0, 300px, 0);
+  opacity: 0;
+}
+
+.dtf-crossfade-out {
+  transition: opacity 0.6s ease-in-out;
+  opacity: 0;
+}
+
+.dtf-crossfade-in {
+  transition: opacity 0.6s ease-in-out;
+  opacity: 1;
+}
