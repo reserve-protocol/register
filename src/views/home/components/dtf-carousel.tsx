@@ -256,9 +256,24 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
     }
 
     const rect = wrapperRef.current.getBoundingClientRect()
-    const targetTop = CONFIG.HEADER_HEIGHT
-    const currentTop = rect.top
-    const drift = currentTop - targetTop // Signed drift to see direction
+    const targetTop = CONFIG.HEADER_HEIGHT // Where wrapper should be (72px from top)
+    const currentTop = rect.top // Where wrapper actually is
+    const currentBottom = rect.bottom // Where wrapper bottom is
+    const viewportHeight = window.innerHeight
+
+    // The wrapper should start at HEADER_HEIGHT and extend to viewport bottom
+    // This ensures blue background fills from header to bottom of viewport
+    const drift = currentTop - targetTop
+
+    console.log('📐 Carousel position check:', {
+      currentTop,
+      targetTop,
+      drift,
+      currentBottom,
+      viewportHeight,
+      bottomGap: viewportHeight - currentBottom,
+      wrapperHeight: rect.height
+    })
 
     // Only correct if drift exceeds tolerance (40px)
     if (Math.abs(drift) > 40) {
@@ -273,27 +288,72 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
       // Smoothly scroll to correct position
       const appContainer = document.getElementById('app-container')
       if (appContainer) {
-        // Don't try to calculate relative scroll, instead calculate absolute position
-        // The carousel should be at a fixed position relative to the viewport
-        const carouselElement = wrapperRef.current
         const currentScrollTop = appContainer.scrollTop
 
-        // Calculate where the carousel currently is in the document
-        const carouselOffsetInDocument = carouselElement.offsetTop
-
-        // Calculate the target scroll position to place carousel at HEADER_HEIGHT
-        const targetScrollPosition = carouselOffsetInDocument - CONFIG.HEADER_HEIGHT
+        // Calculate correction needed:
+        // drift = currentTop - targetTop
+        // If currentTop > targetTop (carousel too far down): drift is POSITIVE
+        //   → We need to scroll UP (reduce scrollTop) by drift amount
+        // If currentTop < targetTop (carousel too far up): drift is NEGATIVE
+        //   → We need to scroll DOWN (increase scrollTop) by |drift| amount
+        const targetScrollPosition = currentScrollTop - drift
 
         // Safety check: ensure we're not scrolling to negative values
         const safeTargetScroll = Math.max(0, targetScrollPosition)
 
-        console.log('🎯 Position correction:', {
+        // Special case: if already at top and carousel is still misplaced,
+        // use absolute positioning based on carousel's actual document position
+        if (currentScrollTop === 0 && targetScrollPosition < 0) {
+          console.log('⚠️ Cannot scroll up from top - carousel has wrong document position')
+          console.log('Using absolute scroll to carousel position')
+
+          // Get carousel's absolute position in document
+          const carouselRect = wrapperRef.current.getBoundingClientRect()
+          const absoluteCarouselTop = carouselRect.top + window.scrollY
+          const correctScrollPosition = absoluteCarouselTop - CONFIG.HEADER_HEIGHT
+
+          console.log('🎯 Absolute position correction:', {
+            absoluteCarouselTop,
+            correctScrollPosition,
+            headerHeight: CONFIG.HEADER_HEIGHT
+          })
+
+          if (lenisRef.current) {
+            lenisRef.current.start()
+            lenisRef.current.scrollTo(Math.max(0, correctScrollPosition), {
+              duration: 0.4,
+              easing: (t: number) => 1 - Math.pow(1 - t, 3),
+              onComplete: () => {
+                // DON'T stop Lenis immediately - let it settle first
+                setTimeout(() => {
+                  if (isActive && lenisRef.current) {
+                    lenisRef.current.stop()
+                    console.log('🛑 Lenis stopped after absolute correction (with delay)')
+                  }
+                }, 200) // Give it 200ms to fully settle
+              }
+            })
+          }
+
+          positionCorrectionTimeout.current = setTimeout(() => {
+            isCorrectingPosition.current = false
+          }, 600)
+
+          return
+        }
+
+        // Additional safety: abort if would scroll to top unexpectedly
+        if (safeTargetScroll === 0 && currentScrollTop > 500) {
+          console.log('⚠️ Aborting correction - would scroll to top unexpectedly')
+          isCorrectingPosition.current = false
+          return
+        }
+
+        console.log('🎯 Applying position correction:', {
           currentScrollTop,
-          carouselOffsetInDocument,
-          targetScrollPosition: safeTargetScroll,
-          currentTop: rect.top,
-          targetTop: CONFIG.HEADER_HEIGHT,
-          drift
+          drift,
+          targetScrollPosition,
+          safeTargetScroll
         })
 
         // Since Lenis is stopped when carousel is active, we need to temporarily start it
@@ -458,7 +518,7 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
           // Scroll to carousel position
           scrollToCarousel(rect, lenisRef, CONFIG.HEADER_HEIGHT)
 
-          // Activate after scroll completes
+          // Activate after scroll completes (wait for animation + buffer)
           setTimeout(() => {
             // Aggressive clear of any accumulated scroll momentum/events
             if (lenisRef.current) {
@@ -697,7 +757,6 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
 
       // Correct position if carousel is active during resize
       if (isActive) {
-        // Small delay to let layout settle
         setTimeout(() => {
           correctCarouselPosition()
         }, 100)
@@ -709,15 +768,27 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
     return () => window.removeEventListener('resize', updateHeight)
   }, [isActive, correctCarouselPosition])
 
+
   // ============================================================================
   // RESIZE OBSERVER - Monitor layout changes
   // ============================================================================
   useEffect(() => {
     if (!wrapperRef.current || !isActive) return
 
-    const resizeObserver = new ResizeObserver(() => {
+    const resizeObserver = new ResizeObserver((entries) => {
+      // Log what triggered the resize
+      for (const entry of entries) {
+        const { width, height } = entry.contentRect
+        console.log('📏 ResizeObserver triggered:', {
+          width,
+          height,
+          target: entry.target.className,
+          isActive
+        })
+      }
+
       // Simple correction on resize
-      if (!isCorrectingPosition.current) {
+      if (!isCorrectingPosition.current && isActive) {
         setTimeout(() => {
           correctCarouselPosition()
         }, 100)
@@ -781,34 +852,8 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
               className="relative"
               style={{ width: '100%', height: `${CONFIG.CARD_HEIGHT}px` }}
             >
-              {/* Card Stack - Show skeleton or real cards */}
-              {showSkeleton ? (
-                // Skeleton cards while loading
-                [...Array(3)].map((_, index) => {
-                  const yOffset = index * CONFIG.CARD_OFFSET
-                  const scale = 1 - index * CONFIG.SCALE_FACTOR
-                  const opacity = index === 2 ? 0.5 : 1
-                  const zIndex = 3 - index
-
-                  return (
-                    <div
-                      key={`skeleton-${index}`}
-                      className="absolute inset-0"
-                      style={{
-                        transform: `translate3d(0, ${yOffset}px, 0) scale(${scale})`,
-                        transformOrigin: 'bottom center',
-                        opacity,
-                        zIndex,
-                        pointerEvents: 'none',
-                      }}
-                    >
-                      <SkeletonCard />
-                    </div>
-                  )
-                })
-              ) : (
-                // Real cards when loaded
-                dtfs.map((dtf, index) => {
+              {/* Real cards - always rendered behind */}
+              {!showSkeleton && dtfs.map((dtf, index) => {
                 const relativePosition = index - currentIndex
                 const isTopCard = relativePosition === 0
                 const isInStack = relativePosition >= 0 && relativePosition <= CONFIG.MAX_STACK_DEPTH
@@ -835,43 +880,79 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
                     : 1       // Current and middle cards: full opacity
                 const zIndex = dtfs.length - relativePosition
 
-                  return (
-                    <motion.div
-                      key={dtf.address}
-                      className="absolute inset-0"
-                      initial={false}
-                      animate={{
-                        y: yOffset,
-                        scale,
-                        opacity,
-                      }}
-                      transition={{
-                        y: {
-                          type: 'spring',
-                          stiffness: 300,
-                          damping: 30,
-                          mass: 1,
-                        },
-                        scale: {
-                          type: 'spring',
-                          stiffness: 300,
-                          damping: 30,
-                          mass: 1,
-                        },
-                        opacity: { duration: 0.2, ease: 'easeInOut' },
-                      }}
-                      style={{
-                        transformOrigin: 'bottom center',
-                        pointerEvents: isTopCard ? 'auto' : 'none',
-                        willChange: 'transform, opacity',
-                        zIndex,
-                      }}
-                    >
-                      <MemoizedCard dtf={dtf} />
-                    </motion.div>
-                  )
-                })
-              )}
+                return (
+                  <motion.div
+                    key={dtf.address}
+                    className="absolute inset-0"
+                    initial={false}
+                    animate={{
+                      y: yOffset,
+                      scale,
+                      opacity,
+                    }}
+                    transition={{
+                      y: {
+                        type: 'spring',
+                        stiffness: 300,
+                        damping: 30,
+                        mass: 1,
+                      },
+                      scale: {
+                        type: 'spring',
+                        stiffness: 300,
+                        damping: 30,
+                        mass: 1,
+                      },
+                      opacity: { duration: 0.2, ease: 'easeInOut' },
+                    }}
+                    style={{
+                      transformOrigin: 'bottom center',
+                      pointerEvents: isTopCard ? 'auto' : 'none',
+                      willChange: 'transform, opacity',
+                      zIndex,
+                    }}
+                  >
+                    <MemoizedCard dtf={dtf} />
+                  </motion.div>
+                )
+              })}
+
+              {/* Skeleton overlay - fades out when real cards are ready */}
+              <AnimatePresence>
+                {showSkeleton && (
+                  <motion.div
+                    key="skeleton-overlay"
+                    className="absolute inset-0"
+                    initial={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.5, ease: 'easeInOut' }}
+                    style={{ zIndex: 9999 }}
+                  >
+                    {[...Array(3)].map((_, index) => {
+                      const yOffset = index * CONFIG.CARD_OFFSET
+                      const scale = 1 - index * CONFIG.SCALE_FACTOR
+                      const opacity = index === 2 ? 0.5 : 1
+                      const zIndex = 3 - index
+
+                      return (
+                        <div
+                          key={`skeleton-${index}`}
+                          className="absolute inset-0"
+                          style={{
+                            transform: `translate3d(0, ${yOffset}px, 0) scale(${scale})`,
+                            transformOrigin: 'bottom center',
+                            opacity,
+                            zIndex,
+                            pointerEvents: 'none',
+                          }}
+                        >
+                          <SkeletonCard />
+                        </div>
+                      )
+                    })}
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           </div>
         </div>
