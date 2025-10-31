@@ -77,13 +77,31 @@ export function useCarouselState({ totalCards, transitionDuration, scrollThresho
       const newIndex = scrollingDown ? currentIndexRef.current + 1 : currentIndexRef.current - 1
 
       if (newIndex >= 0 && newIndex < totalCards) {
+        // SET TRANSITION FLAG IMMEDIATELY to prevent race condition
+        // This prevents multiple rapid events (touchpad) from triggering multiple navigations
+        isTransitioning.current = true
+
         scrollAccumulator.current = 0
-        return goToCard(newIndex)
+        setScrollDirection(scrollingDown ? 'down' : 'up')
+        setCurrentIndex(newIndex)
+
+        // Clear any existing timeout
+        if (transitionTimeout.current) {
+          clearTimeout(transitionTimeout.current)
+        }
+
+        // Reset after transition completes
+        transitionTimeout.current = setTimeout(() => {
+          isTransitioning.current = false
+          setScrollDirection(null)
+        }, transitionDuration)
+
+        return true
       }
     }
 
     return false
-  }, [scrollThreshold, totalCards, goToCard])
+  }, [scrollThreshold, totalCards, transitionDuration])
 
   /**
    * Reset scroll accumulator
