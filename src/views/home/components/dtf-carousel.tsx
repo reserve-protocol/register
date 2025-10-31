@@ -525,12 +525,9 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
               // Force stop any ongoing animations
               lenisRef.current.stop()
 
-              // Reset all scroll-related properties
+              // Reset public scroll-related properties
               lenisRef.current.velocity = 0
               lenisRef.current.direction = 0
-              lenisRef.current.animate.to = lenisRef.current.scroll
-              lenisRef.current.isScrolling = false
-              lenisRef.current.isStopped = true
 
               console.log('🛑 Lenis stopped and scroll momentum forcefully cleared')
 
