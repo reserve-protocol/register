@@ -81,7 +81,10 @@ export function useCarouselState({ totalCards, transitionDuration, scrollThresho
         // This prevents multiple rapid events (touchpad) from triggering multiple navigations
         isTransitioning.current = true
 
+        // Reset accumulator and last scroll time to clear momentum
         scrollAccumulator.current = 0
+        lastScrollTime.current = Date.now() + transitionDuration // Future time to force reset
+
         setScrollDirection(scrollingDown ? 'down' : 'up')
         setCurrentIndex(newIndex)
 
@@ -94,6 +97,7 @@ export function useCarouselState({ totalCards, transitionDuration, scrollThresho
         transitionTimeout.current = setTimeout(() => {
           isTransitioning.current = false
           setScrollDirection(null)
+          scrollAccumulator.current = 0 // Clear again to be safe
         }, transitionDuration)
 
         return true
