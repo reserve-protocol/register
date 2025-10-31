@@ -239,6 +239,7 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
 
   // Viewport height management
   const [wrapperHeight, setWrapperHeight] = useState(0)
+  const [cardScale, setCardScale] = useState(1)
 
   // Position correction function
   const correctCarouselPosition = useCallback(() => {
@@ -749,8 +750,22 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
   // ============================================================================
   useEffect(() => {
     const updateHeight = () => {
-      const height = window.innerHeight - CONFIG.HEADER_HEIGHT
-      setWrapperHeight(height)
+      const viewportHeight = window.innerHeight
+      const availableHeight = viewportHeight - CONFIG.HEADER_HEIGHT
+
+      // Calculate scale for cards to fit with breathing room
+      const IDEAL_CARD_HEIGHT = CONFIG.CARD_HEIGHT // 720px
+      const BREATHING_ROOM = 50 // Top/bottom padding
+      const MIN_SCALE = 0.75 // Never scale below 75% for readability
+
+      const requiredHeight = IDEAL_CARD_HEIGHT + BREATHING_ROOM
+      const calculatedScale = availableHeight / requiredHeight
+
+      // Clamp scale between MIN_SCALE and 1.0
+      const scale = Math.max(MIN_SCALE, Math.min(1, calculatedScale))
+
+      setCardScale(scale)
+      setWrapperHeight(availableHeight)
 
       // Correct position if carousel is active during resize
       if (isActive) {
@@ -847,7 +862,12 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
           >
             <div
               className="relative"
-              style={{ width: '100%', height: `${CONFIG.CARD_HEIGHT}px` }}
+              style={{
+                width: '100%',
+                height: `${CONFIG.CARD_HEIGHT}px`,
+                transform: `scale(${cardScale})`,
+                transformOrigin: 'center'
+              }}
             >
               {/* Real cards - always rendered behind */}
               {!showSkeleton && dtfs.map((dtf, index) => {
@@ -923,7 +943,11 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
                     initial={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.5, ease: 'easeInOut' }}
-                    style={{ zIndex: 9999 }}
+                    style={{
+                      zIndex: 9999,
+                      transform: `scale(${cardScale})`,
+                      transformOrigin: 'center'
+                    }}
                   >
                     {[...Array(3)].map((_, index) => {
                       const yOffset = index * CONFIG.CARD_OFFSET
