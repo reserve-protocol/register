@@ -82,6 +82,7 @@ export type Transaction = {
 
 export type ExposureToken = {
   address: string
+  marketCap?: number
   symbol: string
   name?: string
   weight: number
@@ -175,6 +176,10 @@ export const indexDTFExposureMCapMapAtom = atom((get) => {
     if (group.native?.coingeckoId) {
       map[group.native.coingeckoId] = group.marketCap || 0
     }
+
+    group.tokens.forEach((token) => {
+      map[token.address.toLowerCase()] = token?.marketCap || 0
+    })
   })
   return map
 })
