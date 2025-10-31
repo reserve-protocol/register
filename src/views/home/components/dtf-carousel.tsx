@@ -116,10 +116,12 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
   // Entrance animation state
   const [hasEnteredView, setHasEnteredView] = useState(false)
   const [animationComplete, setAnimationComplete] = useState(false)
+  const animationStartTime = useRef<number>(0)
 
   // Determine if we have data or need skeleton
   const hasData = !isLoading && dtfs && dtfs.length > 0
-  const showSkeleton = !hasData
+  // Keep showing skeleton during entrance animation to prevent lag
+  const showSkeleton = !hasData || !animationComplete
 
   // Use skeleton count when loading, actual count when loaded
   const cardCount = showSkeleton ? 3 : dtfs.length
@@ -179,12 +181,25 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
   useEffect(() => {
     if (!hasEnteredView) {
       setHasEnteredView(true)
-      // Complete animation after 600ms
-      setTimeout(() => {
-        setAnimationComplete(true)
-      }, 600)
+      animationStartTime.current = Date.now()
     }
   }, [hasEnteredView])
+
+  // Handle animation completion and data swap
+  useEffect(() => {
+    if (hasData && hasEnteredView && !animationComplete) {
+      // Calculate remaining animation time
+      const elapsed = Date.now() - animationStartTime.current
+      const animationDuration = 700 // 600ms animation + 100ms buffer
+      const remainingTime = Math.max(0, animationDuration - elapsed)
+
+      const timeoutId = setTimeout(() => {
+        setAnimationComplete(true)
+      }, remainingTime)
+
+      return () => clearTimeout(timeoutId)
+    }
+  }, [hasData, hasEnteredView, animationComplete])
 
   // ============================================================================
   // SCROLL DETECTION - Entry/Exit Logic
