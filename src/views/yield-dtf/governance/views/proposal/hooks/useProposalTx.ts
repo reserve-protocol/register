@@ -61,7 +61,7 @@ import Spell from 'abis/Spell'
 import useRToken from 'hooks/useRToken'
 import { spellAddressAtom } from '../components/SpellUpgrade'
 
-const paramParse: { [x: string]: (v: string) => bigint | number } = {
+const paramParse: { [x: string]: (v: string) => bigint | number | boolean } = {
   minTrade: parseEther,
   rTokenMaxTradeVolume: parseEther,
   rewardRatio: parseEther,
@@ -74,6 +74,7 @@ const paramParse: { [x: string]: (v: string) => bigint | number } = {
   shortFreeze: Number,
   longFreeze: Number,
   warmupPeriod: Number,
+  enableIssuancePremium: (v) => v === 'true',
   minDelay: (v) => +v * 60 * 60,
   proposalThresholdAsMicroPercent: (v) => BigInt(+v * 1e6),
   quorumPercent: Number,
@@ -305,7 +306,7 @@ const useProposalTx = () => {
         } else {
           for (const contract of parameterMap[paramChange.field as ParamName]) {
             const { address, ...data } = contract
-            let proposedParam: string | bigint | number
+            let proposedParam: string | bigint | number | boolean
 
             if (
               paramChange.field === 'votingDelay' ||
@@ -489,53 +490,35 @@ const useProposalTx = () => {
       ############################# */
       if (revenueChanges.count) {
         const [dist, beneficiaries] = getSharesFromSplit(revenueSplit)
+        const distributionAddresses: Address[] = []
+        const distributionShares: { rTokenDist: number; rsrDist: number }[] = []
 
         for (const revChange of revenueChanges.externals) {
           if (!revChange.isNew) {
-            addresses.push(contracts.distributor.address)
-            calls.push(
-              encodeFunctionData({
-                abi: Distributor,
-                functionName: 'setDistribution',
-                args: [
-                  revChange.split.address as Address,
-                  { rTokenDist: 0, rsrDist: 0 },
-                ],
-              })
-            )
+            distributionAddresses.push(revChange.split.address as Address)
+            distributionShares.push({ rTokenDist: 0, rsrDist: 0 })
           }
         }
 
-        addresses.push(contracts.distributor.address)
-        calls.push(
-          encodeFunctionData({
-            abi: Distributor,
-            functionName: 'setDistribution',
-            args: [
-              FURNACE_ADDRESS,
-              { rTokenDist: dist.rTokenDist, rsrDist: 0 },
-            ],
-          })
-        )
-        addresses.push(contracts.distributor.address)
-        calls.push(
-          encodeFunctionData({
-            abi: Distributor,
-            functionName: 'setDistribution',
-            args: [ST_RSR_ADDRESS, { rTokenDist: 0, rsrDist: dist.rsrDist }],
-          })
-        )
+        distributionAddresses.push(FURNACE_ADDRESS)
+        distributionShares.push({ rTokenDist: dist.rTokenDist, rsrDist: 0 })
+
+        distributionAddresses.push(ST_RSR_ADDRESS)
+        distributionShares.push({ rTokenDist: 0, rsrDist: dist.rsrDist })
 
         for (const external of beneficiaries) {
-          addresses.push(contracts.distributor.address)
-          calls.push(
-            encodeFunctionData({
-              abi: Distributor,
-              functionName: 'setDistribution',
-              args: [external.beneficiary, external.revShare],
-            })
-          )
+          distributionAddresses.push(external.beneficiary)
+          distributionShares.push(external.revShare)
         }
+
+        addresses.push(contracts.distributor.address)
+        calls.push(
+          encodeFunctionData({
+            abi: Distributor,
+            functionName: 'setDistributions',
+            args: [distributionAddresses, distributionShares],
+          })
+        )
       }
 
       /* ########################## 

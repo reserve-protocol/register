@@ -83,6 +83,7 @@ export type ParamName =
   | 'batchAuctionLength'
   | 'dutchAuctionLength'
   | 'warmupPeriod'
+  | 'enableIssuancePremium'
   | 'issuanceThrottle'
   | 'redemptionThrottle'
   | 'shortFreeze'
@@ -179,6 +180,13 @@ export const parameterContractMapAtom = atom((get) => {
       {
         address: contracts?.basketHandler.address ?? '',
         functionName: 'setWarmupPeriod',
+        abi: BasketHandler,
+      },
+    ],
+    enableIssuancePremium: [
+      {
+        address: contracts?.basketHandler.address ?? '',
+        functionName: 'setIssuancePremiumEnabled',
         abi: BasketHandler,
       },
     ],
