@@ -20,6 +20,7 @@ export function useCarouselState({ totalCards, transitionDuration, scrollThresho
   const transitionTimeout = useRef<NodeJS.Timeout | null>(null)
   const scrollAccumulator = useRef(0)
   const lastScrollTime = useRef(Date.now())
+  const lastNavigationTime = useRef(0) // Track when last navigation occurred
 
   // Refs for maintaining state across renders
   const currentIndexRef = useRef(0)
@@ -59,13 +60,25 @@ export function useCarouselState({ totalCards, transitionDuration, scrollThresho
    * Process scroll input and trigger navigation
    */
   const handleScrollInput = useCallback((deltaY: number): boolean => {
+    const currentTime = Date.now()
+
     if (isTransitioning.current) {
       console.log('🚫 Blocked scroll during transition, accumulator:', scrollAccumulator.current)
       return false
     }
 
+    // Ignore tiny deltas that are likely touchpad momentum from previous navigation
+    // Real user swipes start with deltaY ~15-50, momentum is ~1-8
+    const timeSinceLastNav = currentTime - lastNavigationTime.current
+    const isTinyDelta = Math.abs(deltaY) < 8
+    const isRecentlyNavigated = timeSinceLastNav < 800
+
+    if (isTinyDelta && isRecentlyNavigated) {
+      console.log('🚫 Ignoring momentum delta:', deltaY, 'ms since nav:', timeSinceLastNav)
+      return false
+    }
+
     // Reset accumulator if too much time has passed
-    const currentTime = Date.now()
     if (currentTime - lastScrollTime.current > 500) {
       if (scrollAccumulator.current !== 0) {
         console.log('⏱️ Resetting accumulator due to time gap')
@@ -87,12 +100,12 @@ export function useCarouselState({ totalCards, transitionDuration, scrollThresho
         console.log('🎯 Navigation triggered:', currentIndexRef.current, '->', newIndex)
 
         // SET TRANSITION FLAG IMMEDIATELY to prevent race condition
-        // This prevents multiple rapid events (touchpad) from triggering multiple navigations
         isTransitioning.current = true
+        lastNavigationTime.current = currentTime
 
         // Reset accumulator and last scroll time to clear momentum
         scrollAccumulator.current = 0
-        lastScrollTime.current = Date.now() + transitionDuration // Future time to force reset
+        lastScrollTime.current = currentTime
 
         setScrollDirection(scrollingDown ? 'down' : 'up')
         setCurrentIndex(newIndex)
@@ -122,6 +135,7 @@ export function useCarouselState({ totalCards, transitionDuration, scrollThresho
    */
   const resetScroll = useCallback(() => {
     scrollAccumulator.current = 0
+    lastNavigationTime.current = 0
   }, [])
 
   /**
