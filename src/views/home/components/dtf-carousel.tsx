@@ -14,7 +14,7 @@ import {
   useCarouselActivation,
   shouldActivateCarousel,
   shouldDeactivateCarousel,
-  scrollToCarousel
+  scrollToCarousel,
 } from './hooks/use-carousel-activation'
 import { useScrollbarDetection } from './hooks/use-scrollbar-detection'
 
@@ -25,18 +25,18 @@ const CONFIG = {
   // Layout
   HEADER_HEIGHT: 72,
   CARD_HEIGHT: 720,
-  CARD_OFFSET: 6,           // Vertical spacing between stacked cards (minimal peek)
-  SCALE_FACTOR: 0.05,        // Scale reduction per card in stack
-  MAX_STACK_DEPTH: 2,        // Maximum visible cards in stack (reduced from 3)
+  CARD_OFFSET: 6, // Vertical spacing between stacked cards (minimal peek)
+  SCALE_FACTOR: 0.05, // Scale reduction per card in stack
+  MAX_STACK_DEPTH: 2, // Maximum visible cards in stack (reduced from 3)
 
   // Interaction
-  SCROLL_THRESHOLD: 50,      // Scroll amount needed to trigger navigation
-  TRANSITION_DURATION: 500,  // Card animation duration
+  SCROLL_THRESHOLD: 50, // Scroll amount needed to trigger navigation
+  TRANSITION_DURATION: 500, // Card animation duration
 
   // Activation zones
-  TOP_THRESHOLD: 200,        // Distance from top to trigger activation
-  BOTTOM_THRESHOLD: 100,     // Distance from bottom to trigger activation
-  EXIT_DEAD_ZONE: 200,       // Dead zone after exit to prevent pull-back
+  TOP_THRESHOLD: 200, // Distance from top to trigger activation
+  BOTTOM_THRESHOLD: 100, // Distance from bottom to trigger activation
+  EXIT_DEAD_ZONE: 200, // Dead zone after exit to prevent pull-back
 } as const
 
 // ============================================================================
@@ -48,11 +48,20 @@ const SkeletonCard = () => {
       className="w-full rounded-4xl max-w-[1400px] mx-auto bg-card border border-primary-foreground"
       style={{ height: '695px' }}
     >
-      <div className="grid lg:grid-cols-[320px_1fr_1fr] xl:grid-cols-[380px_1fr_1fr] gap-0" style={{ height: '693px' }}>
+      <div
+        className="grid lg:grid-cols-[320px_1fr_1fr] xl:grid-cols-[380px_1fr_1fr] gap-0"
+        style={{ height: '693px' }}
+      >
         {/* Left Section - 363px cover + 306px zapper */}
-        <div className="flex flex-col gap-2 border-r p-2" style={{ height: '693px' }}>
+        <div
+          className="flex flex-col gap-2 border-r p-2"
+          style={{ height: '693px' }}
+        >
           {/* Cover Container - 363px height */}
-          <div className="flex items-center justify-center" style={{ height: '363px' }}>
+          <div
+            className="flex items-center justify-center"
+            style={{ height: '363px' }}
+          >
             <div style={{ width: '363px', height: '363px' }}>
               <Skeleton className="w-full h-full rounded-3xl" />
             </div>
@@ -67,7 +76,10 @@ const SkeletonCard = () => {
         {/* Middle Section - Info */}
         <div className="w-full flex flex-col" style={{ height: '693px' }}>
           {/* Logo Section - 72px */}
-          <div className="flex items-center flex-shrink-0 p-6 pb-4" style={{ height: '72px' }}>
+          <div
+            className="flex items-center flex-shrink-0 p-6 pb-4"
+            style={{ height: '72px' }}
+          >
             <Skeleton className="h-12 w-12 rounded-full" />
           </div>
 
@@ -92,7 +104,10 @@ const SkeletonCard = () => {
           </div>
 
           {/* Market Cap Section - 78px */}
-          <div className="flex items-center text-lg p-6 border-y" style={{ height: '78px' }}>
+          <div
+            className="flex items-center text-lg p-6 border-y"
+            style={{ height: '78px' }}
+          >
             <Skeleton className="h-5 w-24 mr-auto" />
             <Skeleton className="h-5 w-32" />
           </div>
@@ -108,7 +123,10 @@ const SkeletonCard = () => {
         </div>
 
         {/* Right Section - Basket */}
-        <div className="bg-primary/10 p-6 flex flex-col" style={{ height: '693px' }}>
+        <div
+          className="bg-primary/10 p-6 flex flex-col"
+          style={{ height: '693px' }}
+        >
           {/* Basket Header - 24px */}
           <div className="flex items-center mb-8" style={{ height: '24px' }}>
             <Skeleton className="h-6 w-6 mr-auto" />
@@ -121,9 +139,16 @@ const SkeletonCard = () => {
           </div>
 
           {/* Token List - 376px with 9 items */}
-          <div className="flex flex-col gap-3 overflow-y-auto" style={{ height: '376px', maxHeight: '400px' }}>
+          <div
+            className="flex flex-col gap-3 overflow-y-auto"
+            style={{ height: '376px', maxHeight: '400px' }}
+          >
             {[...Array(8)].map((_, i) => (
-              <div key={i} className="flex gap-2 items-center" style={{ height: '32px' }}>
+              <div
+                key={i}
+                className="flex gap-2 items-center"
+                style={{ height: '32px' }}
+              >
                 <Skeleton className="h-8 w-8 rounded-full flex-shrink-0" />
                 <Skeleton className="h-4 w-24 mr-auto" />
                 <Skeleton className="h-4 w-12" />
@@ -143,8 +168,9 @@ const SkeletonCard = () => {
 // ============================================================================
 // MEMOIZED COMPONENTS
 // ============================================================================
-const MemoizedCard = memo(DTFHomeCardFixed, (prev, next) =>
-  prev.dtf.address === next.dtf.address
+const MemoizedCard = memo(
+  DTFHomeCardFixed,
+  (prev, next) => prev.dtf.address === next.dtf.address
 )
 
 // ============================================================================
@@ -176,14 +202,38 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
 
   // Component swap protection
   const isSwappingComponents = useRef(false)
+  const touchStateRef = useRef<{ pointerId: number | null; lastY: number }>({
+    pointerId: null,
+    lastY: 0,
+  })
 
   // Determine if we have data or need skeleton
-  const hasData = !isLoading && dtfs && dtfs.length > 0
+  const hasLoadedContent = !isLoading && dtfs.length > 0
   // Keep showing skeleton during entrance animation to prevent lag
-  const showSkeleton = !hasData || !animationComplete
+  const showSkeleton = !hasLoadedContent || !animationComplete
 
   // Use skeleton count when loading, actual count when loaded
   const cardCount = showSkeleton ? 3 : dtfs.length
+  const totalCards = cardCount
+
+  const clampIndex = useCallback(
+    (index: number) => {
+      if (totalCards <= 0) {
+        return 0
+      }
+
+      if (index < 0) {
+        return 0
+      }
+
+      if (index >= totalCards) {
+        return totalCards - 1
+      }
+
+      return index
+    },
+    [totalCards]
+  )
 
   // Carousel state management
   const {
@@ -198,7 +248,7 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
     goToCard,
     handleScrollInput,
     resetScroll,
-    cleanup: cleanupState
+    cleanup: cleanupState,
   } = useCarouselState({
     totalCards: cardCount,
     transitionDuration: CONFIG.TRANSITION_DURATION,
@@ -251,7 +301,7 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
       isTransitioning.current ||
       activationState.isPositioning.current ||
       isTryingToExit.current ||
-      isSwappingComponents.current  // Don't correct during skeleton→card swap
+      isSwappingComponents.current // Don't correct during skeleton→card swap
     ) {
       return
     }
@@ -266,19 +316,8 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
     // This ensures blue background fills from header to bottom of viewport
     const drift = currentTop - targetTop
 
-    console.log('📐 Carousel position check:', {
-      currentTop,
-      targetTop,
-      drift,
-      currentBottom,
-      viewportHeight,
-      bottomGap: viewportHeight - currentBottom,
-      wrapperHeight: rect.height
-    })
-
     // Only correct if drift exceeds tolerance (40px)
     if (Math.abs(drift) > 40) {
-      console.log('🔧 Correcting carousel position, drift:', drift)
       isCorrectingPosition.current = true
 
       // Clear any existing correction timeout
@@ -305,19 +344,11 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
         // Special case: if already at top and carousel is still misplaced,
         // use absolute positioning based on carousel's actual document position
         if (currentScrollTop === 0 && targetScrollPosition < 0) {
-          console.log('⚠️ Cannot scroll up from top - carousel has wrong document position')
-          console.log('Using absolute scroll to carousel position')
-
           // Get carousel's absolute position in document
           const carouselRect = wrapperRef.current.getBoundingClientRect()
           const absoluteCarouselTop = carouselRect.top + window.scrollY
-          const correctScrollPosition = absoluteCarouselTop - CONFIG.HEADER_HEIGHT
-
-          console.log('🎯 Absolute position correction:', {
-            absoluteCarouselTop,
-            correctScrollPosition,
-            headerHeight: CONFIG.HEADER_HEIGHT
-          })
+          const correctScrollPosition =
+            absoluteCarouselTop - CONFIG.HEADER_HEIGHT
 
           if (lenisRef.current) {
             lenisRef.current.start()
@@ -329,10 +360,9 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
                 setTimeout(() => {
                   if (isActive && lenisRef.current) {
                     lenisRef.current.stop()
-                    console.log('🛑 Lenis stopped after absolute correction (with delay)')
                   }
                 }, 200) // Give it 200ms to fully settle
-              }
+              },
             })
           }
 
@@ -345,17 +375,9 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
 
         // Additional safety: abort if would scroll to top unexpectedly
         if (safeTargetScroll === 0 && currentScrollTop > 500) {
-          console.log('⚠️ Aborting correction - would scroll to top unexpectedly')
           isCorrectingPosition.current = false
           return
         }
-
-        console.log('🎯 Applying position correction:', {
-          currentScrollTop,
-          drift,
-          targetScrollPosition,
-          safeTargetScroll
-        })
 
         // Since Lenis is stopped when carousel is active, we need to temporarily start it
         // to perform the correction, then stop it again
@@ -370,15 +392,14 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
               // Stop Lenis again after correction
               if (isActive && lenisRef.current) {
                 lenisRef.current.stop()
-                console.log('🛑 Lenis stopped again after correction')
               }
-            }
+            },
           })
         } else {
           // Fallback to native scrolling
           appContainer.scrollTo({
             top: safeTargetScroll,
-            behavior: 'smooth'
+            behavior: 'smooth',
           })
         }
       }
@@ -399,14 +420,13 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
       // Mark page as ready after a short delay to prevent early scroll issues
       setTimeout(() => {
         setPageReady(true)
-        console.log('✅ Page ready for interactions')
       }, 500)
     }
   }, [hasEnteredView])
 
   // Handle animation completion and data swap
   useEffect(() => {
-    if (hasData && hasEnteredView && !animationComplete) {
+    if (hasLoadedContent && hasEnteredView && !animationComplete) {
       // Calculate remaining animation time
       const elapsed = Date.now() - animationStartTime.current
       const animationDuration = 700 // 600ms animation + 100ms buffer
@@ -417,9 +437,10 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
         let shouldCorrectAfterSwap = false
         if (isActive && wrapperRef.current) {
           const rectBeforeSwap = wrapperRef.current.getBoundingClientRect()
-          const driftBeforeSwap = Math.abs(rectBeforeSwap.top - CONFIG.HEADER_HEIGHT)
+          const driftBeforeSwap = Math.abs(
+            rectBeforeSwap.top - CONFIG.HEADER_HEIGHT
+          )
           shouldCorrectAfterSwap = driftBeforeSwap < 50 // Only if we're close to correct position
-          console.log('📸 Position before skeleton→card swap:', rectBeforeSwap.top, 'drift:', driftBeforeSwap)
         }
 
         isSwappingComponents.current = true
@@ -427,8 +448,6 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
         // Lock scroll position during swap if carousel is active
         if (isActive && lenisRef.current) {
           const currentScroll = lenisRef.current.scroll
-          console.log('🔒 Locking scroll at:', currentScroll)
-
           // Stop Lenis to prevent any scrolling during swap
           lenisRef.current.stop()
 
@@ -447,12 +466,11 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
             setTimeout(() => {
               if (isActive && wrapperRef.current) {
                 const rectAfterSwap = wrapperRef.current.getBoundingClientRect()
-                const driftAfterSwap = Math.abs(rectAfterSwap.top - CONFIG.HEADER_HEIGHT)
-
-                console.log('📸 Position after skeleton→card swap:', rectAfterSwap.top, 'drift:', driftAfterSwap)
+                const driftAfterSwap = Math.abs(
+                  rectAfterSwap.top - CONFIG.HEADER_HEIGHT
+                )
 
                 if (driftAfterSwap > 30) {
-                  console.log('🔧 Correcting position after skeleton→card swap')
                   correctCarouselPosition()
                 }
 
@@ -474,7 +492,13 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
 
       return () => clearTimeout(timeoutId)
     }
-  }, [hasData, hasEnteredView, animationComplete, isActive, correctCarouselPosition])
+  }, [
+    hasLoadedContent,
+    hasEnteredView,
+    animationComplete,
+    isActive,
+    correctCarouselPosition,
+  ])
 
   // ============================================================================
   // SCROLL DETECTION - Entry/Exit Logic
@@ -485,12 +509,6 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
 
       // Prevent carousel activation if page is not ready or swapping components
       if (!pageReady || isSwappingComponents.current) {
-        if (!pageReady) {
-          console.log('⚠️ Scroll ignored - page not ready')
-        }
-        if (isSwappingComponents.current) {
-          console.log('⚠️ Scroll ignored - swapping components')
-        }
         return
       }
 
@@ -530,21 +548,22 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
               lenisRef.current.velocity = 0
               lenisRef.current.direction = 0
 
-              console.log('🛑 Lenis stopped and scroll momentum forcefully cleared')
-
               // Clear any pending wheel events from the browser queue
               const wheelHandler = (e: WheelEvent) => {
                 e.preventDefault()
                 e.stopPropagation()
-                console.log('🚫 Blocked accumulated wheel event')
               }
 
-              window.addEventListener('wheel', wheelHandler, { passive: false, capture: true })
+              window.addEventListener('wheel', wheelHandler, {
+                passive: false,
+                capture: true,
+              })
 
               // Remove the blocker after a brief moment
               setTimeout(() => {
-                window.removeEventListener('wheel', wheelHandler, { capture: true })
-                console.log('✅ Wheel event blocker removed')
+                window.removeEventListener('wheel', wheelHandler, {
+                  capture: true,
+                })
               }, 100)
             }
 
@@ -559,7 +578,6 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
                   const rect = wrapperRef.current.getBoundingClientRect()
                   const drift = Math.abs(rect.top - CONFIG.HEADER_HEIGHT)
                   if (drift > 30) {
-                    console.log('🔧 Post-activation position correction needed:', drift)
                     correctCarouselPosition()
                   }
                 }
@@ -569,15 +587,20 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
             // Restore index based on entry method
             if (activationState.lastExitIndex.current !== null) {
               // Re-entering after exit
-              setCurrentIndex(activationState.lastExitIndex.current)
+              const clampedIndex = clampIndex(
+                activationState.lastExitIndex.current
+              )
+              setCurrentIndex(clampedIndex)
               activationState.lastExitIndex.current = null
             } else if (scrollbarReleaseIndex.current !== null) {
               // Re-entering after scrollbar drag
-              setCurrentIndex(scrollbarReleaseIndex.current)
+              const clampedIndex = clampIndex(scrollbarReleaseIndex.current)
+              setCurrentIndex(clampedIndex)
               scrollbarReleaseIndex.current = null
             } else {
               // First time entry
-              const initialIndex = approachDirection === 'bottom' ? dtfs.length - 1 : 0
+              const initialIndex =
+                approachDirection === 'bottom' ? clampIndex(totalCards - 1) : 0
               setCurrentIndex(initialIndex)
             }
           }, 400)
@@ -590,7 +613,7 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
         const { shouldDeactivate, exitBoundary } = shouldDeactivateCarousel(
           rect,
           currentIndex,
-          dtfs.length,
+          totalCards,
           {
             headerHeight: CONFIG.HEADER_HEIGHT,
             topThreshold: CONFIG.TOP_THRESHOLD,
@@ -604,9 +627,8 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
           activationState.isApproaching.current = false
           resetScroll()
 
-
           // Save exit state for re-engagement logic
-          activationState.lastExitIndex.current = currentIndex
+          activationState.lastExitIndex.current = clampIndex(currentIndex)
           activationState.exitDirection.current = exitBoundary
 
           // Re-enable Lenis for normal scrolling
@@ -633,7 +655,7 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
   }, [
     isActive,
     currentIndex,
-    dtfs.length,
+    totalCards,
     setIsActive,
     setCurrentIndex,
     resetScroll,
@@ -643,6 +665,7 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
     correctCarouselPosition,
     isTransitioning,
     pageReady,
+    clampIndex,
   ])
 
   // ============================================================================
@@ -665,7 +688,7 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
       const isScrollingDown = e.deltaY > 0
       const isScrollingUp = e.deltaY < 0
       const atFirstCard = currentIndexRef.current === 0
-      const atLastCard = currentIndexRef.current === dtfs.length - 1
+      const atLastCard = currentIndexRef.current === totalCards - 1
 
       // Handle boundary exits
       if (atFirstCard && isScrollingUp) {
@@ -714,16 +737,101 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
     }
 
     // Attach to both window and app container for maximum capture
-    window.addEventListener('wheel', handleWheel, { passive: false, capture: true })
+    window.addEventListener('wheel', handleWheel, {
+      passive: false,
+      capture: true,
+    })
 
     const appContainer = document.getElementById('app-container')
-    appContainer?.addEventListener('wheel', handleWheel, { passive: false, capture: true })
+    appContainer?.addEventListener('wheel', handleWheel, {
+      passive: false,
+      capture: true,
+    })
 
     return () => {
       window.removeEventListener('wheel', handleWheel, { capture: true })
       appContainer?.removeEventListener('wheel', handleWheel, { capture: true })
     }
-  }, [dtfs.length, handleScrollInput, lenisRef, isScrollbarDragging, activationState])
+  }, [
+    totalCards,
+    handleScrollInput,
+    lenisRef,
+    isScrollbarDragging,
+    activationState,
+  ])
+
+  // ============================================================================
+  // TOUCH HANDLING - Touch and pointer navigation
+  // ============================================================================
+  useEffect(() => {
+    const wrapperElement = wrapperRef.current
+    if (!wrapperElement) {
+      return
+    }
+
+    const handlePointerDown = (event: PointerEvent) => {
+      if (event.pointerType !== 'touch') {
+        return
+      }
+
+      if (!isActiveRef.current || isTransitioning.current) {
+        return
+      }
+
+      touchStateRef.current.pointerId = event.pointerId
+      touchStateRef.current.lastY = event.clientY
+    }
+
+    const handlePointerMove = (event: PointerEvent) => {
+      if (event.pointerType !== 'touch') {
+        return
+      }
+
+      if (touchStateRef.current.pointerId !== event.pointerId) {
+        return
+      }
+
+      if (!isActiveRef.current || isTransitioning.current) {
+        return
+      }
+
+      const deltaY = touchStateRef.current.lastY - event.clientY
+      touchStateRef.current.lastY = event.clientY
+
+      if (deltaY === 0) {
+        return
+      }
+
+      event.preventDefault()
+      event.stopPropagation()
+      handleScrollInput(deltaY)
+    }
+
+    const handlePointerEnd = (event: PointerEvent) => {
+      if (touchStateRef.current.pointerId !== event.pointerId) {
+        return
+      }
+
+      touchStateRef.current.pointerId = null
+      touchStateRef.current.lastY = 0
+    }
+
+    wrapperElement.addEventListener('pointerdown', handlePointerDown, {
+      passive: false,
+    })
+    wrapperElement.addEventListener('pointermove', handlePointerMove, {
+      passive: false,
+    })
+    wrapperElement.addEventListener('pointerup', handlePointerEnd)
+    wrapperElement.addEventListener('pointercancel', handlePointerEnd)
+
+    return () => {
+      wrapperElement.removeEventListener('pointerdown', handlePointerDown)
+      wrapperElement.removeEventListener('pointermove', handlePointerMove)
+      wrapperElement.removeEventListener('pointerup', handlePointerEnd)
+      wrapperElement.removeEventListener('pointercancel', handlePointerEnd)
+    }
+  }, [handleScrollInput, isTransitioning])
 
   // ============================================================================
   // KEYBOARD NAVIGATION
@@ -732,7 +840,7 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (!isActive || isTransitioning.current) return
 
-      if (e.key === 'ArrowDown' && currentIndex < dtfs.length - 1) {
+      if (e.key === 'ArrowDown' && currentIndex < totalCards - 1) {
         e.preventDefault()
         goToCard(currentIndex + 1)
       } else if (e.key === 'ArrowUp' && currentIndex > 0) {
@@ -743,7 +851,7 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
 
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [isActive, currentIndex, dtfs.length, goToCard, isTransitioning])
+  }, [isActive, currentIndex, totalCards, goToCard, isTransitioning])
 
   // ============================================================================
   // VIEWPORT RESIZE HANDLING
@@ -780,25 +888,13 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
     return () => window.removeEventListener('resize', updateHeight)
   }, [isActive, correctCarouselPosition])
 
-
   // ============================================================================
   // RESIZE OBSERVER - Monitor layout changes
   // ============================================================================
   useEffect(() => {
     if (!wrapperRef.current || !isActive) return
 
-    const resizeObserver = new ResizeObserver((entries) => {
-      // Log what triggered the resize
-      for (const entry of entries) {
-        const { width, height } = entry.contentRect
-        console.log('📏 ResizeObserver triggered:', {
-          width,
-          height,
-          target: entry.target.className,
-          isActive
-        })
-      }
-
+    const resizeObserver = new ResizeObserver(() => {
       // Simple correction on resize
       if (!isCorrectingPosition.current && isActive) {
         setTimeout(() => {
@@ -847,12 +943,12 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
           y: 0,
           transition: {
             duration: 0.6,
-            ease: [0.22, 1, 0.36, 1]
-          }
+            ease: [0.22, 1, 0.36, 1],
+          },
         }}
         style={{
           height: `${wrapperHeight || 800}px`,
-          minHeight: `${wrapperHeight || 800}px`
+          minHeight: `${wrapperHeight || 800}px`,
         }}
       >
         <div className="relative w-full h-full flex items-center justify-center overflow-hidden bg-primary">
@@ -866,73 +962,79 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
                 width: '100%',
                 height: `${CONFIG.CARD_HEIGHT}px`,
                 transform: `scale(${cardScale})`,
-                transformOrigin: 'center'
+                transformOrigin: 'center',
               }}
             >
               {/* Real cards - always rendered behind */}
-              {!showSkeleton && dtfs.map((dtf, index) => {
-                const relativePosition = index - currentIndex
-                const isTopCard = relativePosition === 0
-                const isInStack = relativePosition >= 0 && relativePosition <= CONFIG.MAX_STACK_DEPTH
-                const isPastStack = relativePosition > CONFIG.MAX_STACK_DEPTH
+              {!showSkeleton &&
+                dtfs.map((dtf, index) => {
+                  const relativePosition = index - currentIndex
+                  const isTopCard = relativePosition === 0
+                  const isInStack =
+                    relativePosition >= 0 &&
+                    relativePosition <= CONFIG.MAX_STACK_DEPTH
+                  const isPastStack = relativePosition > CONFIG.MAX_STACK_DEPTH
 
-                // Calculate visual properties
-                const yOffset = relativePosition < 0
-                  ? -800  // Hidden above (negative to go up, not positive)
-                  : isPastStack
-                    ? CONFIG.MAX_STACK_DEPTH * CONFIG.CARD_OFFSET
-                    : relativePosition * CONFIG.CARD_OFFSET
+                  // Calculate visual properties
+                  const yOffset =
+                    relativePosition < 0
+                      ? -800 // Hidden above (negative to go up, not positive)
+                      : isPastStack
+                        ? CONFIG.MAX_STACK_DEPTH * CONFIG.CARD_OFFSET
+                        : relativePosition * CONFIG.CARD_OFFSET
 
-                const scale = relativePosition < 0
-                  ? 0.85  // Hidden cards are smaller
-                  : isPastStack
-                    ? 1 - CONFIG.MAX_STACK_DEPTH * CONFIG.SCALE_FACTOR
-                    : 1 - relativePosition * CONFIG.SCALE_FACTOR
+                  const scale =
+                    relativePosition < 0
+                      ? 0.85 // Hidden cards are smaller
+                      : isPastStack
+                        ? 1 - CONFIG.MAX_STACK_DEPTH * CONFIG.SCALE_FACTOR
+                        : 1 - relativePosition * CONFIG.SCALE_FACTOR
 
-                // Opacity: hidden = 0, last card in stack = 0.5, others = 1
-                const opacity = relativePosition < 0 || isPastStack
-                  ? 0
-                  : relativePosition === CONFIG.MAX_STACK_DEPTH
-                    ? 0.5     // Last card in stack: 50% opacity
-                    : 1       // Current and middle cards: full opacity
-                const zIndex = dtfs.length - relativePosition
+                  // Opacity: hidden = 0, last card in stack = 0.5, others = 1
+                  const opacity =
+                    relativePosition < 0 || isPastStack
+                      ? 0
+                      : relativePosition === CONFIG.MAX_STACK_DEPTH
+                        ? 0.5 // Last card in stack: 50% opacity
+                        : 1 // Current and middle cards: full opacity
+                  const zIndex = dtfs.length - relativePosition
 
-                return (
-                  <motion.div
-                    key={dtf.address}
-                    className="absolute inset-0"
-                    initial={false}
-                    animate={{
-                      y: yOffset,
-                      scale,
-                      opacity,
-                    }}
-                    transition={{
-                      y: {
-                        type: 'spring',
-                        stiffness: 300,
-                        damping: 30,
-                        mass: 1,
-                      },
-                      scale: {
-                        type: 'spring',
-                        stiffness: 300,
-                        damping: 30,
-                        mass: 1,
-                      },
-                      opacity: { duration: 0.2, ease: 'easeInOut' },
-                    }}
-                    style={{
-                      transformOrigin: 'bottom center',
-                      pointerEvents: isTopCard ? 'auto' : 'none',
-                      willChange: 'transform, opacity',
-                      zIndex,
-                    }}
-                  >
-                    <MemoizedCard dtf={dtf} />
-                  </motion.div>
-                )
-              })}
+                  return (
+                    <motion.div
+                      key={dtf.address}
+                      className="absolute inset-0"
+                      initial={false}
+                      animate={{
+                        y: yOffset,
+                        scale,
+                        opacity,
+                      }}
+                      transition={{
+                        y: {
+                          type: 'spring',
+                          stiffness: 300,
+                          damping: 30,
+                          mass: 1,
+                        },
+                        scale: {
+                          type: 'spring',
+                          stiffness: 300,
+                          damping: 30,
+                          mass: 1,
+                        },
+                        opacity: { duration: 0.2, ease: 'easeInOut' },
+                      }}
+                      style={{
+                        transformOrigin: 'bottom center',
+                        pointerEvents: isTopCard ? 'auto' : 'none',
+                        willChange: 'transform, opacity',
+                        zIndex,
+                      }}
+                    >
+                      <MemoizedCard dtf={dtf} />
+                    </motion.div>
+                  )
+                })}
 
               {/* Skeleton overlay - fades out when real cards are ready */}
               <AnimatePresence>
@@ -1004,10 +1106,10 @@ const DTFCarousel = ({ dtfs, isLoading }: DTFCarouselProps) => {
                 key={index}
                 onClick={() => goToCard(index)}
                 className={cn(
-                  "w-2 h-2 rounded-full transition-all",
+                  'w-2 h-2 rounded-full transition-all',
                   index === currentIndex
-                    ? "bg-primary w-6"
-                    : "bg-muted-foreground/30 hover:bg-muted-foreground/50"
+                    ? 'bg-primary w-6'
+                    : 'bg-muted-foreground/30 hover:bg-muted-foreground/50'
                 )}
                 aria-label={`Go to card ${index + 1}`}
               />

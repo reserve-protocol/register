@@ -33,12 +33,10 @@ export function useLenisScroll(config?: LenisConfig) {
 
     // Start with Lenis stopped to prevent early scrolling
     lenis.stop()
-    console.log('🚫 Lenis initially stopped to prevent early scrolling')
 
     // Start Lenis after a brief delay to let the page stabilize
     setTimeout(() => {
       lenis.start()
-      console.log('✅ Lenis started after initial delay')
     }, 300)
 
     // Animation loop
