@@ -1,5 +1,5 @@
 import { useAtomValue } from 'jotai'
-import { rTokenStateAtom } from 'state/atoms'
+import { chainIdAtom, rTokenStateAtom } from 'state/atoms'
 import DisabledByGeolocationMessage from 'state/geolocation/DisabledByGeolocationMessage'
 import { Box, Divider, Grid } from 'theme-ui'
 import About from './components/about'
@@ -17,18 +17,19 @@ import RTokenZapIssuance from './components/zapV2/RTokenZapIssuance'
 import ZapToggle from './components/zapV2/ZapToggle'
 import ZapToggleBottom from './components/zapV2/ZapToggleBottom'
 import { ZapProvider, useZap } from './components/zapV2/context/ZapContext'
+import { ChainId } from '@/utils/chains'
 
 const IssuanceMethods = () => {
+  const chainId = useAtomValue(chainIdAtom)
   const { zapEnabled, setZapEnabled } = useZap()
   const { isCollaterized } = useAtomValue(rTokenStateAtom)
 
   return (
     <Grid columns={[1, 1, 1, '2fr 1.5fr']} gap={[1, 4]}>
-      {zapEnabled ? (
+      {zapEnabled && chainId !== ChainId.Arbitrum ? (
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
           <CollateralizationBanner ml="4" mb="-4" mt="4" />
           <MaintenanceBanner ml="4" mb="-4" mt="4" />
-          <DisabledArbitrumBanner ml="4" mb="-4" mt="4" />
           <RTokenZapIssuance disableRedeem={!isCollaterized} />
           <ZapToggleBottom setZapEnabled={setZapEnabled} />
         </Box>
@@ -37,7 +38,9 @@ const IssuanceMethods = () => {
           <CollateralizationBanner mb="3" />
           <MaintenanceBanner mb="3" />
           <DisabledArbitrumBanner mb="3" />
-          <ZapToggle zapEnabled={zapEnabled} setZapEnabled={setZapEnabled} />
+          {chainId !== ChainId.Arbitrum && (
+            <ZapToggle zapEnabled={zapEnabled} setZapEnabled={setZapEnabled} />
+          )}
           <DisabledByGeolocationMessage mb={4} />
           <Grid columns={[1, 2]} gap={[1, 4]} mb={[1, 4]}>
             <Issue />
