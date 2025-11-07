@@ -33,8 +33,8 @@ export const FACADE_WRITE_ADDRESS: AddressMap = {
 }
 
 export const VERSION_REGISTRY_ADDRESS: AddressMap = {
-  [ChainId.Mainnet]: '0x37c8646139Cf69863cA8C6F09BE09300d4Dc10bf',
-  [ChainId.Base]: '0x35E6756B92daf6aE2CF2156d479e8a806898971B',
+  [ChainId.Mainnet]: '0xba8cd83f793aa046fe5ab7ba01f855742f2d6a30',
+  [ChainId.Base]: '0x3bece5ec596331033726e5c6c188c313ff4e3fe5',
 }
 
 export const ASSET_PLUGIN_REGISTRY_ADDRESS: AddressMap = {
