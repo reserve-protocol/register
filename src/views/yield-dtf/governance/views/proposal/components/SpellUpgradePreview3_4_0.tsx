@@ -1,13 +1,13 @@
 import { t } from '@lingui/macro'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { BoxProps } from 'theme-ui'
-import { proposedRolesAtom, spellUpgradeAtom } from '../atoms'
+import { proposedRolesAtom, spell3_4_0UpgradeAtom } from '../atoms'
 import { ListChangePreview } from './ItemPreview'
 import PreviewBox from './PreviewBox'
-import { spellAddressAtom } from './SpellUpgrade'
+import { spellAddressAtom } from './SpellUpgrade3_4_0'
 
-const SpellUpgradePreview = (props: BoxProps) => {
-  const [spell, setSpell] = useAtom(spellUpgradeAtom)
+const SpellUpgradePreview3_4_0 = (props: BoxProps) => {
+  const [spell, setSpell] = useAtom(spell3_4_0UpgradeAtom)
   const spellContract = useAtomValue(spellAddressAtom)
   const setProposedRoles = useSetAtom(proposedRolesAtom)
 
@@ -38,4 +38,4 @@ const SpellUpgradePreview = (props: BoxProps) => {
   )
 }
 
-export default SpellUpgradePreview
+export default SpellUpgradePreview3_4_0

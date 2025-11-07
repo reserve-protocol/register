@@ -8,7 +8,8 @@ import {
   isNewBackupProposedAtom,
   proposalDescriptionAtom,
   registerAssetsAtom,
-  spellUpgradeAtom,
+  spell3_4_0UpgradeAtom,
+  spell4_2_0UpgradeAtom,
   unregisterAssetsAtom,
 } from './../atoms'
 
@@ -57,9 +58,10 @@ import {
 } from '../atoms'
 import useUpgradeHelper from './useUpgradeHelper'
 import { isTimeunitGovernance } from '@/views/yield-dtf/governance/utils'
-import Spell from 'abis/Spell'
+import Spell3_4_0 from '@/abis/Spell3_4_0'
+import Spell4_2_0 from '@/abis/Spell4_2_0'
 import useRToken from 'hooks/useRToken'
-import { spellAddressAtom } from '../components/SpellUpgrade'
+import { spellAddressAtom } from '../components/SpellUpgrade3_4_0'
 
 const paramParse: { [x: string]: (v: string) => bigint | number } = {
   minTrade: parseEther,
@@ -145,7 +147,8 @@ const useProposalTx = () => {
   const contracts = useAtomValue(rTokenContractsAtom)
   const assets = useAtomValue(registeredAssetsAtom)
   const upgrades = useAtomValue(contractUpgradesAtom)
-  const spell = useAtomValue(spellUpgradeAtom)
+  const spell3_4_0 = useAtomValue(spell3_4_0UpgradeAtom)
+  const spell4_2_0 = useAtomValue(spell4_2_0UpgradeAtom)
   const spellContract = useAtomValue(spellAddressAtom)
   const rTokenConfig = useAtomValue(rTokenConfigurationAtom)
   const autoRegisterBasketAssets = useAtomValue(autoRegisterBasketAssetsAtom)
@@ -539,14 +542,28 @@ const useProposalTx = () => {
       }
 
       /* ########################## 
-      ##       Spell upgrade     ## 
+      ##    Spell 3.4.0 upgrade  ## 
       ############################# */
-      if (spell !== 'none' && rToken) {
+      if (spell3_4_0 !== 'none' && rToken) {
         addresses.push(spellContract)
         calls.push(
           encodeFunctionData({
-            abi: Spell,
-            functionName: spell === 'spell1' ? 'castSpell1' : 'castSpell2',
+            abi: Spell3_4_0,
+            functionName: spell3_4_0 === 'spell1' ? 'castSpell1' : 'castSpell2',
+            args: [rToken.address],
+          })
+        )
+      }
+
+      /* ########################## 
+      ##    Spell 4.2.0 upgrade  ## 
+      ############################# */
+      if (spell4_2_0 !== 'none' && rToken) {
+        addresses.push(spellContract)
+        calls.push(
+          encodeFunctionData({
+            abi: Spell4_2_0,
+            functionName: 'cast',
             args: [rToken.address],
           })
         )
