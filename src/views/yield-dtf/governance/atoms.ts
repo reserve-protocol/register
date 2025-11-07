@@ -19,7 +19,8 @@ import {
 } from 'state/atoms'
 import { ContractKey } from 'state/rtoken/atoms/rTokenContractsAtom'
 import { Abi, getAddress } from 'viem'
-import { spellAddressAtom } from './views/proposal/components/SpellUpgrade3_4_0'
+import { spell3_4_0AddressAtom } from './views/proposal/components/SpellUpgrade3_4_0'
+import { spell4_2_0AddressAtom } from './views/proposal/components/SpellUpgrade4_2_0'
 
 export interface ProposalCall {
   signature: string
@@ -97,7 +98,8 @@ export const contractDetails: InterfaceMap = {
 export const interfaceMapAtom = atom((get) => {
   const contracts = get(rTokenContractsAtom)
   const governance = get(rTokenGovernanceAtom)
-  const spell = get(spellAddressAtom)
+  const spell3_4_0Address = get(spell3_4_0AddressAtom)
+  const spell4_2_0Address = get(spell4_2_0AddressAtom)
   const rToken = get(rTokenAtom)
 
   if (!contracts) {
@@ -116,8 +118,12 @@ export const interfaceMapAtom = atom((get) => {
     map[getAddress(governance.timelock)] = contractDetails.timelock
   }
 
-  if (spell) {
-    map[getAddress(spell)] = contractDetails.spell
+  if (spell3_4_0Address) {
+    map[getAddress(spell3_4_0Address)] = contractDetails.spell
+  }
+
+  if (spell4_2_0Address) {
+    map[getAddress(spell4_2_0Address)] = contractDetails.spell
   }
 
   if (rToken) {

@@ -4,11 +4,11 @@ import { BoxProps } from 'theme-ui'
 import { proposedRolesAtom, spell3_4_0UpgradeAtom } from '../atoms'
 import { ListChangePreview } from './ItemPreview'
 import PreviewBox from './PreviewBox'
-import { spellAddressAtom } from './SpellUpgrade3_4_0'
+import { spell3_4_0AddressAtom } from './SpellUpgrade3_4_0'
 
 const SpellUpgradePreview3_4_0 = (props: BoxProps) => {
   const [spell, setSpell] = useAtom(spell3_4_0UpgradeAtom)
-  const spellContract = useAtomValue(spellAddressAtom)
+  const spellContract = useAtomValue(spell3_4_0AddressAtom)
   const setProposedRoles = useSetAtom(proposedRolesAtom)
 
   if (spell === 'none') return null

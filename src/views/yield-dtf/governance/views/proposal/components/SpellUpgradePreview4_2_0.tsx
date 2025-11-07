@@ -4,11 +4,11 @@ import { BoxProps } from 'theme-ui'
 import { proposedRolesAtom, spell4_2_0UpgradeAtom } from '../atoms'
 import { ListChangePreview } from './ItemPreview'
 import PreviewBox from './PreviewBox'
-import { spellAddressAtom } from './SpellUpgrade4_2_0'
+import { spell4_2_0AddressAtom } from './SpellUpgrade4_2_0'
 
 const SpellUpgradePreview4_2_0 = (props: BoxProps) => {
   const [spell, setSpell] = useAtom(spell4_2_0UpgradeAtom)
-  const spellContract = useAtomValue(spellAddressAtom)
+  const spellContract = useAtomValue(spell4_2_0AddressAtom)
   const setProposedRoles = useSetAtom(proposedRolesAtom)
 
   if (spell === 'none') return null
@@ -25,13 +25,13 @@ const SpellUpgradePreview4_2_0 = (props: BoxProps) => {
     <PreviewBox
       variant="layout.borderBox"
       count={1}
-      title={t`Casting 3.4.0 upgrade spell`}
+      title={t`Casting 4.2.0 upgrade spell`}
       {...props}
     >
       <ListChangePreview
         onRevert={handleRevert}
         isNew={true}
-        value={t`Cast Spell`}
+        value={t`Spell`}
         mt={3}
       />
     </PreviewBox>

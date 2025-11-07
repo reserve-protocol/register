@@ -42,6 +42,7 @@ import {
   Address,
   Hex,
   encodeFunctionData,
+  getAddress,
   parseEther,
   parseUnits,
   stringToHex,
@@ -61,7 +62,8 @@ import { isTimeunitGovernance } from '@/views/yield-dtf/governance/utils'
 import Spell3_4_0 from '@/abis/Spell3_4_0'
 import Spell4_2_0 from '@/abis/Spell4_2_0'
 import useRToken from 'hooks/useRToken'
-import { spellAddressAtom } from '../components/SpellUpgrade3_4_0'
+import { spell3_4_0AddressAtom } from '../components/SpellUpgrade3_4_0'
+import { spell4_2_0AddressAtom } from '../components/SpellUpgrade4_2_0'
 
 const paramParse: { [x: string]: (v: string) => bigint | number | boolean } = {
   minTrade: parseEther,
@@ -150,7 +152,8 @@ const useProposalTx = () => {
   const upgrades = useAtomValue(contractUpgradesAtom)
   const spell3_4_0 = useAtomValue(spell3_4_0UpgradeAtom)
   const spell4_2_0 = useAtomValue(spell4_2_0UpgradeAtom)
-  const spellContract = useAtomValue(spellAddressAtom)
+  const spell3_4_0Contract = useAtomValue(spell3_4_0AddressAtom)
+  const spell4_2_0Contract = useAtomValue(spell4_2_0AddressAtom)
   const rTokenConfig = useAtomValue(rTokenConfigurationAtom)
   const autoRegisterBasketAssets = useAtomValue(autoRegisterBasketAssetsAtom)
   const autoRegisterBackupAssets = useAtomValue(autoRegisterBackupAssetsAtom)
@@ -528,7 +531,7 @@ const useProposalTx = () => {
       ##    Spell 3.4.0 upgrade  ## 
       ############################# */
       if (spell3_4_0 !== 'none' && rToken) {
-        addresses.push(spellContract)
+        addresses.push(spell3_4_0Contract)
         calls.push(
           encodeFunctionData({
             abi: Spell3_4_0,
@@ -542,12 +545,16 @@ const useProposalTx = () => {
       ##    Spell 4.2.0 upgrade  ## 
       ############################# */
       if (spell4_2_0 !== 'none' && rToken) {
-        addresses.push(spellContract)
+        addresses.push(spell4_2_0Contract)
         calls.push(
           encodeFunctionData({
             abi: Spell4_2_0,
-            functionName: 'cast',
-            args: [rToken.address],
+            functionName: 'castSpell',
+            args: [
+              rToken.address,
+              governance.governor,
+              governance.guardians?.map(getAddress) as Address[],
+            ],
           })
         )
       }

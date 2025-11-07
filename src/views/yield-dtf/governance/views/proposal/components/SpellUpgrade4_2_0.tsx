@@ -12,7 +12,7 @@ const SPELL_CONTRACTS = {
   [ChainId.Base]: '0x890FAa00C16EAD6AA76F18A1A7fe9C40838F9122',
 }
 
-export const spellAddressAtom = atom((get) => {
+export const spell4_2_0AddressAtom = atom((get) => {
   const chainId = get(chainIdAtom)
   return SPELL_CONTRACTS[chainId]
 })
@@ -20,7 +20,7 @@ export const spellAddressAtom = atom((get) => {
 const SpellUpgrade4_2_0 = (props: BoxProps) => {
   const [spell, setSpell] = useAtom(spell4_2_0UpgradeAtom)
   const chainId = useAtomValue(chainIdAtom)
-  const spellContract = useAtomValue(spellAddressAtom)
+  const spellContract = useAtomValue(spell4_2_0AddressAtom)
   const setProposedRoles = useSetAtom(proposedRolesAtom)
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
