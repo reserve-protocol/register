@@ -108,10 +108,12 @@ export const ChangesUpdater = () => {
   const isNewBasket = useAtomValue(isNewBasketProposedAtom)
   const isNewBackup = useAtomValue(isNewBackupProposedAtom)
   const assetsToUnregister = useAtomValue(unregisterAssetsAtom)
-  const hasUpgrades = !!Object.keys(useAtomValue(contractUpgradesAtom)).length
-  const hasSpell =
-    useAtomValue(spell3_4_0UpgradeAtom) !== 'none' ||
-    useAtomValue(spell4_2_0UpgradeAtom) !== 'none'
+  const contractUpgrades = useAtomValue(contractUpgradesAtom)
+  const spell3_4_0Upgrade = useAtomValue(spell3_4_0UpgradeAtom)
+  const spell4_2_0Upgrade = useAtomValue(spell4_2_0UpgradeAtom)
+
+  const hasUpgrades = !!Object.keys(contractUpgrades).length
+  const hasSpell = spell3_4_0Upgrade !== 'none' || spell4_2_0Upgrade !== 'none'
 
   // Valid listeners
   const isBasketValid = useAtomValue(isBasketValidAtom)

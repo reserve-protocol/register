@@ -55,7 +55,7 @@ const SpellUpgrade3_4_0 = (props: BoxProps) => {
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
         <Label>
           <Radio
-            name="dark-mode"
+            name="spell-3-4-0"
             value="none"
             onChange={onChange}
             checked={spell === 'none'}
@@ -64,7 +64,7 @@ const SpellUpgrade3_4_0 = (props: BoxProps) => {
         </Label>
         <Label>
           <Radio
-            name="dark-mode"
+            name="spell-3-4-0"
             value="spell1"
             onChange={onChange}
             checked={spell === 'spell1'}
@@ -73,7 +73,7 @@ const SpellUpgrade3_4_0 = (props: BoxProps) => {
         </Label>
         <Label>
           <Radio
-            name="dark-mode"
+            name="spell-3-4-0"
             value="spell2"
             onChange={onChange}
             checked={spell === 'spell2'}
