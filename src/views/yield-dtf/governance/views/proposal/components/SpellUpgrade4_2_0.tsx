@@ -41,7 +41,7 @@ const SpellUpgrade4_2_0 = (props: BoxProps) => {
     <Card {...props} p={4}>
       <Box variant="layout.verticalAlign">
         <Text variant="title">
-          <Trans>4.2.0 Upgrade spells</Trans>
+          <Trans>4.2.0 Upgrade spell</Trans>
         </Text>
         <DocsLink
           link={getExplorerLink(
