@@ -11,7 +11,8 @@ import RegisterProposal from './RegisterProposal'
 import TraderImplementationProposal from './TraderImplementationProposal'
 import ContractUpgrades from './ContractUpgrades'
 import ProposalGovernanceParams from './forms/ProposalGovernanceParams'
-import SpellUpgrade from './SpellUpgrade'
+import SpellUpgrade3_4_0 from './SpellUpgrade3_4_0'
+import SpellUpgrade4_2_0 from './SpellUpgrade4_2_0'
 
 const sections = [
   Intro,
@@ -23,7 +24,8 @@ const sections = [
   UnregisterProposal,
   RegisterProposal,
   ContractUpgrades,
-  SpellUpgrade,
+  SpellUpgrade3_4_0,
+  SpellUpgrade4_2_0,
   ProposalGovernanceParams,
 ]
 

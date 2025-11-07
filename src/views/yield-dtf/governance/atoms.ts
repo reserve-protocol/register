@@ -8,7 +8,7 @@ import Governance from 'abis/Governance'
 import Main from 'abis/Main'
 import RToken from 'abis/RToken'
 import RevenueTrader from 'abis/RevenueTrader'
-import Spell from 'abis/Spell'
+import Spell from '@/abis/Spell3_4_0'
 import StRSR from 'abis/StRSR'
 import Timelock from 'abis/Timelock'
 import { atom } from 'jotai'
@@ -19,7 +19,7 @@ import {
 } from 'state/atoms'
 import { ContractKey } from 'state/rtoken/atoms/rTokenContractsAtom'
 import { Abi, getAddress } from 'viem'
-import { spellAddressAtom } from './views/proposal/components/SpellUpgrade'
+import { spellAddressAtom } from './views/proposal/components/SpellUpgrade3_4_0'
 
 export interface ProposalCall {
   signature: string

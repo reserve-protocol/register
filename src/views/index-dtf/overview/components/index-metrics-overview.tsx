@@ -197,10 +197,19 @@ const Supply24h = () => {
     [transactions]
   )
 
+  const supplyChange = useMemo(() => {
+    if (!dtf?.token?.totalSupply) return 0
+
+    return (
+      (txVolume / Number(formatEther(BigInt(dtf?.token?.totalSupply || 1)))) *
+      100
+    )
+  }, [txVolume])
+
   return (
     <MetricsItem
       label="24h Supply Change"
-      value={`${txVolume > 0 ? '+' : ''}${formatCurrency(txVolume, 0)} ${dtf?.token?.symbol ?? ''}`}
+      value={`${supplyChange >= 0.005 ? '+' : ''}${formatPercentage(supplyChange)}`}
       icon={<ArrowUpDown size={16} />}
       loading={!transactions.length}
     />

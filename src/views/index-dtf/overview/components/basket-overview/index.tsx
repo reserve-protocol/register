@@ -72,7 +72,6 @@ const TableHeaderWithSort = ({
 }
 
 const BasketTableHeader = ({
-  isBSC,
   isExposure,
   hasBridgedAssets,
   chainId,
@@ -80,7 +79,6 @@ const BasketTableHeader = ({
   sortConfig,
   onSort,
 }: {
-  isBSC: boolean
   isExposure: boolean
   hasBridgedAssets: boolean
   chainId: number
@@ -103,28 +101,24 @@ const BasketTableHeader = ({
     <TableHeader>
       <TableRow className="border-none text-legend bg-card sticky -top-[1px]">
         <TableHead className="text-left text-xs sm:text-base py-1">
-          {isBSC ? (
-            <TabsList className="h-9 rounded-[70px] p-0.5">
-              <TabsTrigger
-                value="exposure"
-                className="rounded-[60px] px-2 data-[state=active]:text-primary"
-                onClick={() => setActiveTab('exposure')}
-              >
-                <Target className="w-4 h-4 mr-0 sm:mr-1" />{' '}
-                <span className="hidden sm:block">Exposure</span>
-              </TabsTrigger>
-              <TabsTrigger
-                value="collateral"
-                className="rounded-[60px] px-2 data-[state=active]:text-primary"
-                onClick={() => setActiveTab('collateral')}
-              >
-                <PackageOpen className="w-4 h-4 mr-0 sm:mr-1" />{' '}
-                <span className="hidden sm:block">Collateral</span>
-              </TabsTrigger>
-            </TabsList>
-          ) : (
-            'Token'
-          )}
+          <TabsList className="h-9 rounded-[70px] p-0.5">
+            <TabsTrigger
+              value="exposure"
+              className="rounded-[60px] px-2 data-[state=active]:text-primary"
+              onClick={() => setActiveTab('exposure')}
+            >
+              <Target className="w-4 h-4 mr-0 sm:mr-1" />{' '}
+              <span className="hidden sm:block">Exposure</span>
+            </TabsTrigger>
+            <TabsTrigger
+              value="collateral"
+              className="rounded-[60px] px-2 data-[state=active]:text-primary"
+              onClick={() => setActiveTab('collateral')}
+            >
+              <PackageOpen className="w-4 h-4 mr-0 sm:mr-1" />{' '}
+              <span className="hidden sm:block">Collateral</span>
+            </TabsTrigger>
+          </TabsList>
         </TableHead>
         {!isExposure && (
           <TableHeaderWithSort
@@ -147,7 +141,7 @@ const BasketTableHeader = ({
           onSort={onSort}
           className="text-center px-1 sm:px-3"
         >
-          {periodLabel[timeRange]} Change
+          Price Change ({periodLabel[timeRange]})
         </TableHeaderWithSort>
         {isExposure && (
           <TableHeaderWithSort
@@ -177,7 +171,7 @@ const BasketTableHeader = ({
 const IndexBasketOverview = () => {
   const [viewAll, setViewAll] = useState(false)
   const [activeTab, setActiveTab] = useState<'exposure' | 'collateral'>(
-    'collateral'
+    'exposure'
   )
   // Default sort: highest weight first
   const [sortConfig, setSortConfig] = useState<SortConfig>({
@@ -199,19 +193,12 @@ const IndexBasketOverview = () => {
     hasBridgedAssets,
     chainId,
     marketCaps,
-    isBSC,
   } = useBasketOverviewData()
 
-  // Update active tab when chain changes
   useEffect(() => {
-    if (isBSC) {
-      setActiveTab('exposure')
-    } else {
-      setActiveTab('collateral')
-    }
     // Reset to default sort when switching views
     setSortConfig({ field: 'weight', direction: 'desc' })
-  }, [isBSC])
+  }, [])
 
   // Handle scroll to basket on hash change
   useEffect(() => {
@@ -296,7 +283,6 @@ const IndexBasketOverview = () => {
       <Tabs defaultValue="exposure">
         <Table>
           <BasketTableHeader
-            isBSC={isBSC}
             isExposure={isExposure}
             hasBridgedAssets={hasBridgedAssets || false}
             chainId={chainId}
