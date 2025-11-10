@@ -120,21 +120,16 @@ const BasketTableHeader = ({
             </TabsTrigger>
           </TabsList>
         </TableHead>
-        {!isExposure && (
-          <TableHeaderWithSort
-            field="weight"
-            sortConfig={sortConfig}
-            onSort={onSort}
-            className="text-center px-1 sm:px-3"
-          >
-            Weight
-          </TableHeaderWithSort>
-        )}
-        {isExposure && (
-          <TableHead className="text-center hidden sm:table-cell">
-            <span className="text-xs sm:text-base">Market Cap</span>
-          </TableHead>
-        )}
+
+        <TableHeaderWithSort
+          field="weight"
+          sortConfig={sortConfig}
+          onSort={onSort}
+          className="text-center px-1 sm:px-3"
+        >
+          Weight
+        </TableHeaderWithSort>
+
         <TableHeaderWithSort
           field="performance"
           sortConfig={sortConfig}
@@ -143,26 +138,23 @@ const BasketTableHeader = ({
         >
           Price Change ({periodLabel[timeRange]})
         </TableHeaderWithSort>
-        {isExposure && (
-          <TableHeaderWithSort
-            field="weight"
-            sortConfig={sortConfig}
-            onSort={onSort}
-            className="text-right px-1 sm:px-3"
+
+        {isExposure ? (
+          <TableHead className="text-center hidden sm:table-cell">
+            <span className="text-xs sm:text-base">Market Cap</span>
+          </TableHead>
+        ) : (
+          <TableHead
+            className={cn(
+              'text-right text-xs sm:text-base px-1 sm:px-3',
+              isExposure && 'hidden'
+            )}
           >
-            Weight
-          </TableHeaderWithSort>
+            {`${hasBridgedAssets ? 'Bridge / ' : ''}${capitalize(
+              ETHERSCAN_NAMES[chainId]
+            )}`}
+          </TableHead>
         )}
-        <TableHead
-          className={cn(
-            'text-right text-xs sm:text-base px-1 sm:px-3',
-            isExposure && 'hidden'
-          )}
-        >
-          {`${hasBridgedAssets ? 'Bridge / ' : ''}${capitalize(
-            ETHERSCAN_NAMES[chainId]
-          )}`}
-        </TableHead>
       </TableRow>
     </TableHeader>
   )
