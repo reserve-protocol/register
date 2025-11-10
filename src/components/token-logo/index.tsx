@@ -260,6 +260,7 @@ export const SVGS = new Set([
   'woeth',
   'susds',
   'saethusdt',
+  'saethrlusd',
   'cro',
   'xlm',
   'hbar',
