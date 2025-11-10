@@ -8,7 +8,8 @@ import Governance from 'abis/Governance'
 import Main from 'abis/Main'
 import RToken from 'abis/RToken'
 import RevenueTrader from 'abis/RevenueTrader'
-import Spell from '@/abis/Spell3_4_0'
+import Spell3_4_0 from '@/abis/Spell3_4_0'
+import Spell4_2_0 from '@/abis/Spell4_2_0'
 import StRSR from 'abis/StRSR'
 import Timelock from 'abis/Timelock'
 import { atom } from 'jotai'
@@ -89,9 +90,13 @@ export const contractDetails: InterfaceMap = {
     interface: RToken,
     label: 'RToken',
   },
-  spell: {
-    interface: Spell,
+  spell3_4_0: {
+    interface: Spell3_4_0,
     label: 'Upgrade 3.4.0',
+  },
+  spell4_2_0: {
+    interface: Spell4_2_0,
+    label: 'Upgrade 4.2.0',
   },
 }
 
@@ -119,11 +124,11 @@ export const interfaceMapAtom = atom((get) => {
   }
 
   if (spell3_4_0Address) {
-    map[getAddress(spell3_4_0Address)] = contractDetails.spell
+    map[getAddress(spell3_4_0Address)] = contractDetails.spell3_4_0
   }
 
   if (spell4_2_0Address) {
-    map[getAddress(spell4_2_0Address)] = contractDetails.spell
+    map[getAddress(spell4_2_0Address)] = contractDetails.spell4_2_0
   }
 
   if (rToken) {
