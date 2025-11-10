@@ -1,4 +1,4 @@
-import useIndexDTFList, { IndexDTFItem } from '@/hooks/useIndexDTFList'
+import useIndexDTFList, { IndexDTFItem } from '@/hooks/use-index-dtf-list'
 import { chainFilterAtom, searchFilterAtom } from '../atoms'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'

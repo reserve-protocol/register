@@ -18,7 +18,7 @@ import {
   OTHER_POOL_TOKENS,
 } from '../utils/constants'
 import { EarnPool, getEarnPools } from '@/lib/meta'
-import useIndexDTFList from '@/hooks/useIndexDTFList'
+import useIndexDTFList from '@/hooks/use-index-dtf-list'
 
 // Only map what I care about the response...
 interface DefillamaPool {

@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { gql, GraphQLClient } from 'graphql-request'
 import { ChainId } from '@/utils/chains'
-import useIndexDTFList from '@/hooks/useIndexDTFList'
+import useIndexDTFList from '@/hooks/use-index-dtf-list'
 
 const INDEX_DTF_SUBGRAPH_URL = {
   [ChainId.Mainnet]: 'https://subgraph.satsuma-prod.com/327d6f1d3de6/reserve/dtf-index-mainnet/api',

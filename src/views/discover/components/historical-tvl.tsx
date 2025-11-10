@@ -288,7 +288,7 @@ const HistoricalTVLChart = ({ data }: { data?: Metrics }) => {
 const HistoricalTVL = () => {
   const data = useAPIProtocolMetrics()
   return (
-    <div className="container px-0 md:px-6 2xl:px-6 h-80 sm:h-[580px]">
+    <div className="container px-0 md:px-6 h-80 sm:h-[580px]">
       <div className="relative h-full flex flex-col justify-end ">
         <div className="h-[160px] sm:h-[420px]">
           <HistoricalTVLChart {...data} />

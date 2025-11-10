@@ -9,7 +9,7 @@ import { rsrPriceAtom } from '@/state/atoms'
 import { PROTOCOL_SLUG } from '@/utils/constants'
 import { useMemo, useEffect, useState } from 'react'
 import { ChainId } from '@/utils/chains'
-import useIndexDTFList from '@/hooks/useIndexDTFList'
+import useIndexDTFList from '@/hooks/use-index-dtf-list'
 import {
   DollarSign,
   TrendingUp,

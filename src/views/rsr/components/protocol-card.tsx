@@ -40,16 +40,18 @@ const ProtocolCard = ({
   isLoading
 }: ProtocolCardProps) => {
   return (
-    <Card className="relative overflow-hidden">
-      <div className="absolute top-0 right-0 p-4">
-        <span className={`px-2 py-1 text-xs ${badgeColor} rounded`}>
-          {badge}
-        </span>
-      </div>
+    <Card className="border-2 border-secondary">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <div className={iconColor}>{icon}</div>
-          {title}
+        <CardTitle className="flex items-center justify-between">
+          <span className="flex items-center gap-2">
+            <div className="border rounded-full border-foreground p-2">
+              {icon}
+            </div>
+            {title}
+          </span>
+          <span className={`px-2 py-1 text-xs ${badgeColor} rounded-md`}>
+            {badge}
+          </span>
         </CardTitle>
       </CardHeader>
       <CardContent>
@@ -101,7 +103,7 @@ const ProtocolCard = ({
 
             {/* Stats */}
             {stats.length > 0 && (
-              <div className="grid grid-cols-2 gap-4 pt-4 border-t">
+              <div className="grid grid-cols-2 gap-4 pt-4">
                 {stats.map((stat, index) => (
                   <div key={index} className="text-center">
                     <p className="text-2xl font-bold">{stat.value}</p>

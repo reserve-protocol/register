@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
+import { cn } from '@/lib/utils'
 import { ReactNode } from 'react'
 
 interface RevenueMetricsCardProps {
@@ -20,10 +21,14 @@ const RevenueMetricsCard = ({
   className = '',
 }: RevenueMetricsCardProps) => {
   return (
-    <Card className={className}>
+    <Card className={cn("border-2 border-secondary", className)}>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-sm font-medium">{title}</CardTitle>
-        {icon && <div className="text-muted-foreground">{icon}</div>}
+        {icon && (
+          <div className="border rounded-full border-foreground p-2">
+            {icon}
+          </div>
+        )}
       </CardHeader>
       <CardContent>
         {loading ? (

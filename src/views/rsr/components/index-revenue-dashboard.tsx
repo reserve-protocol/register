@@ -1,10 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import { formatCurrency } from '@/utils'
-import { gql, GraphQLClient } from 'graphql-request'
-import { useMemo, useEffect, useState } from 'react'
-import { ChainId } from '@/utils/chains'
-import useIndexDTFList from '@/hooks/useIndexDTFList'
+import { Suspense, lazy } from 'react'
 import {
   Building,
   Users2,
@@ -14,201 +11,67 @@ import {
   Layers,
   Activity,
   PieChart,
-  Sparkles
+  Sparkles,
+  Flame
 } from 'lucide-react'
 import RevenueMetricsCard from './revenue-metrics-card'
 import RevenuePieChart from './revenue-pie-chart'
+import { useIndexRevenueEnhanced } from '../hooks/use-index-revenue-enhanced'
 
-// Subgraph URLs for Index DTF
-const INDEX_DTF_SUBGRAPH_URL = {
-  [ChainId.Mainnet]: 'https://subgraph.satsuma-prod.com/327d6f1d3de6/reserve/dtf-index-mainnet/api',
-  [ChainId.Base]: 'https://subgraph.satsuma-prod.com/327d6f1d3de6/reserve/dtf-index-base/api',
-  [ChainId.BSC]: 'https://subgraph.satsuma-prod.com/327d6f1d3de6/reserve/dtf-index-bsc/api',
-}
-
-const indexDTFRevenueQuery = gql`
-  query GetIndexDTFRevenue {
-    dtfs(first: 1000) {
-      id
-      totalRevenue
-      protocolRevenue
-      governanceRevenue
-      externalRevenue
-      feeRecipients
-      token {
-        symbol
-        totalSupply
-        decimals
-      }
-    }
-  }
-`
+// Lazy load the RSR Burn component
+const RSRBurnEstimation = lazy(() => import('./rsr-burn-estimation'))
 
 const IndexRevenueDashboard = () => {
-  const { data: indexDTFs, isLoading: loadingDTFs } = useIndexDTFList()
-  const [revenueData, setRevenueData] = useState<any>(null)
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    const fetchRevenueData = async () => {
-      try {
-        const chains = [ChainId.Mainnet, ChainId.Base, ChainId.BSC]
-        const results = await Promise.all(
-          chains.map(async (chainId) => {
-            const client = new GraphQLClient(INDEX_DTF_SUBGRAPH_URL[chainId])
-            const data: any = await client.request(indexDTFRevenueQuery)
-            return { chainId, data }
-          })
-        )
-        setRevenueData(results)
-      } catch (error) {
-        console.error('Error fetching Index DTF revenue:', error)
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    fetchRevenueData()
-  }, [])
-
-  const revenueMetrics = useMemo(() => {
-    if (!revenueData || !indexDTFs) {
-      return {
-        totalRevenue: 0,
-        governanceRevenue: 0,
-        deployerRevenue: 0,
-        externalRevenue: 0,
-        governancePercentage: 0,
-        deployerPercentage: 0,
-        externalPercentage: 0,
-        dtfCount: 0,
-        topDTFs: [],
-        totalTVL: 0,
-      }
-    }
-
-    // Create price map and calculate TVL from indexDTFs
-    const priceMap: { [key: string]: number } = {}
-    let totalTVL = 0
-
-    indexDTFs.forEach((dtf) => {
-      const address = dtf.address.toLowerCase()
-      priceMap[address] = dtf.price || 0
-      // Use marketCap as TVL for Index DTFs
-      totalTVL += dtf.marketCap || 0
-    })
-
-    let totalGovernanceRevenue = 0
-    let totalDeployerRevenue = 0
-    let totalExternalRevenue = 0
-    const dtfRevenueList: any[] = []
-
-    revenueData.forEach(({ data }: any) => {
-      if (data?.dtfs) {
-        data.dtfs.forEach((dtf: any) => {
-          const price = priceMap[dtf.id.toLowerCase()] || 0
-          const decimals = dtf.token?.decimals || 18
-
-          const governanceUSD = (Number(dtf.governanceRevenue || 0) / Math.pow(10, decimals)) * price
-          const deployerUSD = (Number(dtf.protocolRevenue || 0) / Math.pow(10, decimals)) * price
-          const externalUSD = (Number(dtf.externalRevenue || 0) / Math.pow(10, decimals)) * price
-          const totalUSD = governanceUSD + deployerUSD + externalUSD
-
-          totalGovernanceRevenue += governanceUSD
-          totalDeployerRevenue += deployerUSD
-          totalExternalRevenue += externalUSD
-
-          if (totalUSD > 0) {
-            dtfRevenueList.push({
-              symbol: dtf.token?.symbol || 'Unknown',
-              total: totalUSD,
-              governance: governanceUSD,
-              deployer: deployerUSD,
-              external: externalUSD,
-            })
-          }
-        })
-      }
-    })
-
-    const totalRevenue = totalGovernanceRevenue + totalDeployerRevenue + totalExternalRevenue
-
-    // Sort DTFs by total revenue
-    dtfRevenueList.sort((a, b) => b.total - a.total)
-
-    return {
-      totalRevenue,
-      governanceRevenue: totalGovernanceRevenue,
-      deployerRevenue: totalDeployerRevenue,
-      externalRevenue: totalExternalRevenue,
-      governancePercentage: totalRevenue > 0 ? (totalGovernanceRevenue / totalRevenue) * 100 : 0,
-      deployerPercentage: totalRevenue > 0 ? (totalDeployerRevenue / totalRevenue) * 100 : 0,
-      externalPercentage: totalRevenue > 0 ? (totalExternalRevenue / totalRevenue) * 100 : 0,
-      dtfCount: dtfRevenueList.length,
-      topDTFs: dtfRevenueList.slice(0, 5),
-      totalTVL,
-    }
-  }, [revenueData, indexDTFs])
-
-  const isLoading = loading || loadingDTFs
+  // Use the enhanced hook for all revenue calculations
+  const { data: revenueMetrics, isLoading, rsrPrice } = useIndexRevenueEnhanced()
 
   return (
     <div className="space-y-6">
-      {/* Key Metrics */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+      {/* Key Metrics - Reduced to 4 cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
         <RevenueMetricsCard
           title="Total Revenue"
           value={`$${formatCurrency(revenueMetrics.totalRevenue, 2)}`}
+          subtitle="Index DTFs"
           icon={<DollarSign className="h-4 w-4" />}
           loading={isLoading}
-          className="border-l-4 border-l-primary"
-        />
-
-        <RevenueMetricsCard
-          title="Governance Revenue"
-          value={`$${formatCurrency(revenueMetrics.governanceRevenue, 2)}`}
-          subtitle={`${revenueMetrics.governancePercentage.toFixed(1)}% of total`}
-          icon={<Users2 className="h-4 w-4" />}
-          loading={isLoading}
-          className="border-l-4 border-l-indigo-500"
-        />
-
-        <RevenueMetricsCard
-          title="Deployer Revenue"
-          value={`$${formatCurrency(revenueMetrics.deployerRevenue, 2)}`}
-          subtitle={`${revenueMetrics.deployerPercentage.toFixed(1)}% of total`}
-          icon={<Building className="h-4 w-4" />}
-          loading={isLoading}
-          className="border-l-4 border-l-amber-500"
         />
 
         <RevenueMetricsCard
           title="Total TVL"
           value={`$${formatCurrency(revenueMetrics.totalTVL, 0)}`}
-          subtitle="Index DTFs"
+          subtitle={`${revenueMetrics.dtfCount} Active DTFs`}
           icon={<TrendingUp className="h-4 w-4" />}
           loading={isLoading}
-          className="border-l-4 border-l-purple-500"
         />
 
         <RevenueMetricsCard
-          title="Active DTFs"
-          value={revenueMetrics.dtfCount.toString()}
-          subtitle="Generating revenue"
-          icon={<Layers className="h-4 w-4" />}
+          title="Locked RSR"
+          value={formatCurrency(revenueMetrics.lockedRSRInIndexDTFs, 0)}
+          subtitle="Index DTF Governance"
+          icon={<Users2 className="h-4 w-4" />}
           loading={isLoading}
-          className="border-l-4 border-l-cyan-500"
+        />
+
+        <RevenueMetricsCard
+          title="Total RSR Burned"
+          value={formatCurrency(revenueMetrics.totalRsrBurned || 0, 0)}
+          subtitle="All-time cumulative"
+          icon={<Flame className="h-4 w-4" />}
+          loading={isLoading}
         />
       </div>
 
       {/* Main Content Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-2">
         {/* Revenue Distribution */}
-        <Card className="lg:col-span-2">
+        <Card className="lg:col-span-2 border-2 border-secondary">
           <CardHeader>
             <CardTitle className="flex items-center justify-between">
               <span className="flex items-center gap-2">
-                <PieChart className="h-5 w-5 text-primary" />
+                <div className="border rounded-full border-foreground p-2">
+                  <PieChart className="h-4 w-4" />
+                </div>
                 Revenue Distribution
               </span>
               <span className="px-2 py-1 text-xs bg-secondary rounded-md">Index DTFs</span>
@@ -345,10 +208,12 @@ const IndexRevenueDashboard = () => {
         </Card>
 
         {/* Top Revenue DTFs */}
-        <Card>
+        <Card className="border-2 border-secondary">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Sparkles className="h-5 w-5 text-primary" />
+              <div className="border rounded-full border-foreground p-2">
+                <Sparkles className="h-4 w-4" />
+              </div>
               Top DTFs by Revenue
             </CardTitle>
           </CardHeader>
@@ -404,10 +269,12 @@ const IndexRevenueDashboard = () => {
       </div>
 
       {/* Chain Distribution */}
-      <Card>
+      <Card className="border-2 border-secondary">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Activity className="h-5 w-5 text-primary" />
+            <div className="border rounded-full border-foreground p-2">
+              <Activity className="h-4 w-4" />
+            </div>
             Chain Distribution
           </CardTitle>
         </CardHeader>
@@ -437,6 +304,15 @@ const IndexRevenueDashboard = () => {
           </div>
         </CardContent>
       </Card>
+
+      {/* RSR Burn Section */}
+      <Suspense fallback={<Skeleton className="h-[800px]" />}>
+        <RSRBurnEstimation
+          metrics={revenueMetrics}
+          rsrPrice={rsrPrice}
+          loading={isLoading}
+        />
+      </Suspense>
     </div>
   )
 }

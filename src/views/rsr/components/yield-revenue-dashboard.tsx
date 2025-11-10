@@ -105,56 +105,55 @@ const YieldRevenueDashboard = () => {
 
   return (
     <div className="space-y-6">
-      {/* Key Metrics */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      {/* Key Metrics - Reduced to 4 cards with consistent styling */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
         <RevenueMetricsCard
           title="Total Revenue"
           value={`$${formatCurrency(revenueMetrics.totalRevenueUSD, 2)}`}
+          subtitle="Yield DTFs"
           icon={<DollarSign className="h-4 w-4" />}
           loading={isLoading}
-          className="border-l-4 border-l-primary"
         />
 
         <RevenueMetricsCard
-          title="DTF Holders Revenue"
-          value={`$${formatCurrency(revenueMetrics.holdersRevenueUSD, 2)}`}
-          subtitle={`${revenueMetrics.holdersPercentage.toFixed(1)}% of total`}
-          icon={<Wallet className="h-4 w-4" />}
-          loading={isLoading}
-          className="border-l-4 border-l-blue-500"
-        />
-
-        <RevenueMetricsCard
-          title="RSR Stakers Revenue"
-          value={`$${formatCurrency(revenueMetrics.stakersRevenueUSD, 2)}`}
-          subtitle={`${formatCurrency(revenueMetrics.stakersRevenueRSR, 0)} RSR`}
-          icon={<Shield className="h-4 w-4" />}
-          loading={isLoading}
-          className="border-l-4 border-l-green-500"
-        />
-
-        <RevenueMetricsCard
-          title="Total Value Locked"
+          title="Total TVL"
           value={`$${formatCurrency(revenueMetrics.totalRTokenUSD + revenueMetrics.rsrStakedUSD, 0)}`}
           subtitle="RTokens + Staked RSR"
-          icon={<Zap className="h-4 w-4" />}
+          icon={<TrendingUp className="h-4 w-4" />}
           loading={isLoading}
-          className="border-l-4 border-l-purple-500"
+        />
+
+        <RevenueMetricsCard
+          title="Staked RSR"
+          value={formatCurrency(revenueMetrics.stakersRevenueRSR, 0)}
+          subtitle="Total RSR staked"
+          icon={<Shield className="h-4 w-4" />}
+          loading={isLoading}
+        />
+
+        <RevenueMetricsCard
+          title="Active Chains"
+          value="3"
+          subtitle="ETH, Base, Arbitrum"
+          icon={<Activity className="h-4 w-4" />}
+          loading={false}
         />
       </div>
 
       {/* Main Content Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-2">
         {/* Revenue Distribution Chart */}
-        <Card className="lg:col-span-2">
+        <Card className="lg:col-span-2 border-2 border-secondary">
           <CardHeader>
             <CardTitle className="flex items-center justify-between">
               <span className="flex items-center gap-2">
-                <Activity className="h-5 w-5 text-primary" />
+                <div className="border rounded-full border-foreground p-2">
+                  <Activity className="h-4 w-4" />
+                </div>
                 Revenue Distribution
               </span>
-              <span className="text-sm font-normal text-muted-foreground">
-                All-time cumulative
+              <span className="px-2 py-1 text-xs bg-secondary rounded-md">
+                Yield DTFs
               </span>
             </CardTitle>
           </CardHeader>
@@ -212,11 +211,13 @@ const YieldRevenueDashboard = () => {
         </Card>
 
         {/* Detailed Breakdown */}
-        <Card>
+        <Card className="border-2 border-secondary">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <TrendingUp className="h-5 w-5 text-primary" />
-              Breakdown
+              <div className="border rounded-full border-foreground p-2">
+                <TrendingUp className="h-4 w-4" />
+              </div>
+              Revenue Breakdown
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -279,7 +280,7 @@ const YieldRevenueDashboard = () => {
             </div>
 
             {/* RSR Price Info */}
-            <div className="pt-4 border-t">
+            <div className="pt-4">
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Current RSR Price</span>
                 <span className="font-mono font-medium">${rsrPrice.toFixed(4)}</span>
@@ -296,10 +297,12 @@ const YieldRevenueDashboard = () => {
       </div>
 
       {/* Chain Metrics */}
-      <Card>
+      <Card className="border-2 border-secondary">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Coins className="h-5 w-5 text-primary" />
+            <div className="border rounded-full border-foreground p-2">
+              <Coins className="h-4 w-4" />
+            </div>
             Revenue & TVL by Chain
           </CardTitle>
         </CardHeader>
@@ -393,7 +396,7 @@ const YieldRevenueDashboard = () => {
             )}
 
             {/* Total Summary */}
-            <div className="pt-4 border-t">
+            <div className="pt-4">
               <div className="grid grid-cols-2 gap-4">
                 <div className="text-center">
                   <p className="text-sm text-muted-foreground mb-1">Total Revenue</p>

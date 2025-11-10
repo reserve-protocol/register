@@ -22,10 +22,12 @@ const ProtocolComparison = ({
 }: ProtocolComparisonProps) => {
   if (isLoading) {
     return (
-      <Card>
+      <Card className="border-2 border-secondary">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <BarChart3 className="h-5 w-5 text-primary" />
+            <div className="border rounded-full border-foreground p-2">
+              <BarChart3 className="h-4 w-4" />
+            </div>
             Protocol Comparison
           </CardTitle>
         </CardHeader>
@@ -37,15 +39,17 @@ const ProtocolComparison = ({
   }
 
   return (
-    <Card>
+    <Card className="border-2 border-secondary">
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
           <span className="flex items-center gap-2">
-            <BarChart3 className="h-5 w-5 text-primary" />
+            <div className="border rounded-full border-foreground p-2">
+              <BarChart3 className="h-4 w-4" />
+            </div>
             Protocol Comparison
           </span>
           <div className="flex items-center gap-2">
-            <span className="px-2 py-1 text-xs border border-border rounded">All Chains</span>
+            <span className="px-2 py-1 text-xs bg-secondary rounded-md">All Chains</span>
           </div>
         </CardTitle>
       </CardHeader>
@@ -88,7 +92,7 @@ const ProtocolComparison = ({
           </div>
 
           {/* Insights */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4 border-t">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4">
             <div className="text-center">
               <p className="text-sm text-muted-foreground mb-1">Leading Protocol</p>
               <p className="font-semibold">

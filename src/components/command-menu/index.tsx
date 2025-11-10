@@ -1,4 +1,4 @@
-import useIndexDTFList from '@/hooks/useIndexDTFList'
+import useIndexDTFList from '@/hooks/use-index-dtf-list'
 import useTokenList from '@/hooks/useTokenList'
 import { getFolioRoute, getTokenRoute } from '@/utils'
 import { CHAIN_TAGS } from '@/utils/constants'

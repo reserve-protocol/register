@@ -1,4 +1,4 @@
-import { IndexDTFItem } from '@/hooks/useIndexDTFList'
+import { IndexDTFItem } from '@/hooks/use-index-dtf-list'
 
 export const calculatePercentageChange = (
   performance: IndexDTFItem['performance']

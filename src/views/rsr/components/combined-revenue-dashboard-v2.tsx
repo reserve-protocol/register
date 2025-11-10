@@ -70,56 +70,44 @@ const CombinedRevenueDashboardV2 = () => {
   }
 
   return (
-    <div className="space-y-6">
-      {/* Summary Cards - Optimized Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+    <div className="space-y-4">
+      {/* Summary Cards - Reduced to 4 key metrics */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
         <RevenueMetricsCard
           title="Total Revenue"
           value={`$${formatCurrency(combinedMetrics.totalRevenue, 2)}`}
+          subtitle="All protocols combined"
           icon={<DollarSign className="h-4 w-4" />}
           loading={false}
-          className="border-l-4 border-l-primary lg:col-span-1"
         />
 
         <RevenueMetricsCard
-          title="Yield DTF Revenue"
-          value={`$${formatCurrency(combinedMetrics.yieldRevenue, 2)}`}
-          subtitle={`${combinedMetrics.yieldPercentage.toFixed(1)}% of total`}
-          icon={<Wallet className="h-4 w-4" />}
-          loading={false}
-          className="border-l-4 border-l-blue-500"
-        />
-
-        <RevenueMetricsCard
-          title="Index DTF Revenue"
-          value={`$${formatCurrency(combinedMetrics.indexRevenue, 2)}`}
-          subtitle={`${combinedMetrics.indexPercentage.toFixed(1)}% of total`}
-          icon={<Sparkles className="h-4 w-4" />}
-          loading={false}
-          className="border-l-4 border-l-purple-500"
-        />
-
-        <RevenueMetricsCard
-          title="RSR Stakers"
-          value={formatCurrency(yieldMetrics?.stakersRevenueRSR || 0, 0)}
-          subtitle={`RSR @ $${rsrPrice.toFixed(4)}`}
-          icon={<Shield className="h-4 w-4" />}
-          loading={false}
-          className="border-l-4 border-l-green-500"
-        />
-
-        <RevenueMetricsCard
-          title="Combined TVL"
+          title="Total TVL"
           value={`$${formatCurrency(combinedMetrics.totalTVL, 0)}`}
           subtitle={`Y: $${formatCurrency((yieldMetrics?.yieldTVL || 0) / 1000000, 1)}M | I: $${formatCurrency((indexMetrics?.totalTVL || 0) / 1000000, 1)}M`}
-          icon={<Zap className="h-4 w-4" />}
+          icon={<TrendingUp className="h-4 w-4" />}
           loading={false}
-          className="border-l-4 border-l-amber-500"
+        />
+
+        <RevenueMetricsCard
+          title="Locked RSR"
+          value={formatCurrency((yieldMetrics?.stakedRSR || 0) + (indexMetrics?.lockedRSRInIndexDTFs || 0), 0)}
+          subtitle="Staked + Governance"
+          icon={<Users className="h-4 w-4" />}
+          loading={false}
+        />
+
+        <RevenueMetricsCard
+          title="Total RSR Burned"
+          value={formatCurrency(indexMetrics?.totalRsrBurned || 0, 0)}
+          subtitle="All-time cumulative"
+          icon={<Activity className="h-4 w-4" />}
+          loading={false}
         />
       </div>
 
       {/* Protocol Cards */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
         {/* Yield DTF Card */}
         <ProtocolCard
           title="Yield DTF Protocol"

@@ -6,7 +6,7 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from '@/components/ui/hover-card'
-import { type IndexDTFItem } from '@/hooks/useIndexDTFList'
+import { type IndexDTFItem } from '@/hooks/use-index-dtf-list'
 import { getFolioRoute } from '@/utils'
 import { ROUTES } from '@/utils/constants'
 import { ArrowRightIcon } from 'lucide-react'
