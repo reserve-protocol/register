@@ -401,6 +401,7 @@ export const collateralDisplay: Record<string, string> = {
   wsgusdbc: 'Stargate Base USDbC',
   saethusdc: 'AAVE USDC V3',
   saethusdt: 'AAVE USDT V3',
+  saethrlusd: 'AAVE RLUSD V3',
   stkcvxpyusdusdc: 'Convex PYUSD/USDC',
   saethpyusd: 'AAVE PYUSD V3',
   sabasusdc: 'AAVE USDC V3',
