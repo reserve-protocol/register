@@ -551,9 +551,11 @@ const useProposalTx = () => {
             abi: Spell4_2_0,
             functionName: 'castSpell',
             args: [
-              rToken.address,
-              governance.governor,
-              governance.guardians?.map(getAddress) as Address[],
+              getAddress(rToken.address),
+              getAddress(governance.governor),
+              governance.guardians?.map((guardian) =>
+                getAddress(guardian)
+              ) as Address[],
             ],
           })
         )

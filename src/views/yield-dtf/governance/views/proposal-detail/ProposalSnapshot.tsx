@@ -52,8 +52,10 @@ const ProposalSnapshot = () => {
       onClick={handleSnapshot}
       disabled={!proposal}
     >
-      <Download size={14} />
-      <Text ml={2}>Download snapshot</Text>
+      <div className="flex items-center gap-1">
+        <Download size={14} />
+        <Text>Download snapshot</Text>
+      </div>
     </Button>
   )
 }
