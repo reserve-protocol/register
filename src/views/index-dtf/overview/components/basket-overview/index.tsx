@@ -323,6 +323,8 @@ const IndexBasketOverview = () => {
   )
 }
 
+// TODO: @luis - Very badly implemented claude code, this requires a refactor, will tackle this later.
+// TODO: @luis - Any significant functionality change in this component should consider the refactor.
 export default () => (
   <Card className="pt-3 pb-5 sm:pt-4 sm:pb-6">
     <div className="px-4 sm:px-6">

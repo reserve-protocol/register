@@ -22,7 +22,7 @@ const FeaturedPoolItem = ({ pool }: { pool?: Pool }) => {
 
   return (
     <div className="flex items-center">
-      <div className="relative bg-secondary rounded-xl w-[80px] w-[104px] h-24 md:h-32 mr-3 flex-shrink-0 overflow-hidden">
+      <div className="relative bg-secondary rounded-xl w-[80px] md:w-28  h-24 md:h-32 mr-3 flex-shrink-0 overflow-hidden">
         <div className="w-4 md:w-5 absolute left-1/2 top-[15%] -translate-x-1/2">
           {PROJECT_ICONS[pool.project]}
         </div>
