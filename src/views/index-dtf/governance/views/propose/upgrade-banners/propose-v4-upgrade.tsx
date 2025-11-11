@@ -141,7 +141,7 @@ const ProposeBanner = ({ refetch }: SpellUpgradeProps) => {
         <div>
           <h4 className="font-bold text-primary">New version available</h4>
           <p className="text-sm">
-            Release 4.0.0 improves the the way in which DTFs are rebalanced. At
+            Release 4.0.0 improves the way in which DTFs are rebalanced. At
             a high level, the new rebalance mechanism is able to consider the
             entire basket at once instead of requiring individual 2-token
             auctions to be proposed in advance and performed in isolation. See
