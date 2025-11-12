@@ -17,7 +17,7 @@ import {
 
 // Hooks
 import { useYieldRevenue } from '../hooks/use-yield-revenue'
-import { useIndexRevenue } from '../hooks/use-index-revenue'
+import { useIndexRevenueEnhanced } from '../hooks/use-index-revenue-enhanced'
 
 // Components
 import RevenueMetricsCard from './revenue-metrics-card'
@@ -30,7 +30,7 @@ const CombinedRevenueDashboardV2 = () => {
 
   // Use optimized hooks
   const { data: yieldMetrics, isLoading: loadingYield } = useYieldRevenue()
-  const { data: indexMetrics, isLoading: loadingIndex } = useIndexRevenue()
+  const { data: indexMetrics, isLoading: loadingIndex } = useIndexRevenueEnhanced()
 
   // Calculate combined metrics with null safety
   const combinedMetrics = useMemo(() => {
@@ -90,16 +90,16 @@ const CombinedRevenueDashboardV2 = () => {
         />
 
         <RevenueMetricsCard
-          title="Locked RSR"
-          value={formatCurrency((yieldMetrics?.stakedRSR || 0) + (indexMetrics?.lockedRSRInIndexDTFs || 0), 0)}
-          subtitle="Staked + Governance"
+          title="RSR Staked"
+          value={`$${formatCurrency(yieldMetrics?.rsrStakedUSD || 0, 0)}`}
+          subtitle="In Yield DTFs"
           icon={<Users className="h-4 w-4" />}
           loading={false}
         />
 
         <RevenueMetricsCard
           title="Total RSR Burned"
-          value={formatCurrency(indexMetrics?.totalRsrBurned || 0, 0)}
+          value={formatCurrency(indexMetrics?.actualRsrBurned || 0, 0)}
           subtitle="All-time cumulative"
           icon={<Activity className="h-4 w-4" />}
           loading={false}

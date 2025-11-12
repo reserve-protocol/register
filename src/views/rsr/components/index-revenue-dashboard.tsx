@@ -46,18 +46,18 @@ const IndexRevenueDashboard = () => {
         />
 
         <RevenueMetricsCard
-          title="Locked RSR"
-          value={formatCurrency(revenueMetrics.lockedRSRInIndexDTFs, 0)}
-          subtitle="Index DTF Governance"
-          icon={<Users2 className="h-4 w-4" />}
+          title="RSR Burned (Actual)"
+          value={formatCurrency(revenueMetrics.actualRsrBurned || 0, 0)}
+          subtitle="From blockchain data"
+          icon={<Flame className="h-4 w-4" />}
           loading={isLoading}
         />
 
         <RevenueMetricsCard
-          title="Total RSR Burned"
-          value={formatCurrency(revenueMetrics.totalRsrBurned || 0, 0)}
-          subtitle="All-time cumulative"
-          icon={<Flame className="h-4 w-4" />}
+          title="RSR Locked"
+          value={formatCurrency(revenueMetrics.rsrLockedInDTFs || 0, 0)}
+          subtitle="In governance"
+          icon={<Activity className="h-4 w-4" />}
           loading={isLoading}
         />
       </div>
@@ -267,43 +267,6 @@ const IndexRevenueDashboard = () => {
           </CardContent>
         </Card>
       </div>
-
-      {/* Chain Distribution */}
-      <Card className="border-2 border-secondary">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <div className="border rounded-full border-foreground p-2">
-              <Activity className="h-4 w-4" />
-            </div>
-            Chain Distribution
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-3 gap-4">
-            <div className="text-center p-4 rounded-lg bg-secondary/30">
-              <p className="text-2xl font-bold mb-1">Mainnet</p>
-              <p className="text-sm text-muted-foreground">Ethereum L1</p>
-              <span className="inline-block mt-2 px-2 py-0.5 text-xs border border-border rounded">
-                Premium
-              </span>
-            </div>
-            <div className="text-center p-4 rounded-lg bg-secondary/30">
-              <p className="text-2xl font-bold mb-1">Base</p>
-              <p className="text-sm text-muted-foreground">Ethereum L2</p>
-              <span className="inline-block mt-2 px-2 py-0.5 text-xs border border-border rounded">
-                High Volume
-              </span>
-            </div>
-            <div className="text-center p-4 rounded-lg bg-secondary/30">
-              <p className="text-2xl font-bold mb-1">BSC</p>
-              <p className="text-sm text-muted-foreground">BNB Chain</p>
-              <span className="inline-block mt-2 px-2 py-0.5 text-xs border border-border rounded">
-                Emerging
-              </span>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
 
       {/* RSR Burn Section */}
       <Suspense fallback={<Skeleton className="h-[800px]" />}>

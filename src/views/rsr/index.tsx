@@ -2,7 +2,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { BarChart, DollarSign, TrendingUp } from 'lucide-react'
 import CombinedRevenueDashboard from './components/combined-revenue-dashboard-v2'
 import IndexRevenueDashboard from './components/index-revenue-dashboard'
-import YieldRevenueDashboard from './components/yield-revenue-dashboard-v2'
+import YieldRevenueDashboard from './components/yield-revenue-dashboard-v3'
 
 const Heading = () => (
   <div className="flex flex-col gap-2 mr-auto">
