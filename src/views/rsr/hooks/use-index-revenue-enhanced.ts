@@ -170,6 +170,7 @@ interface RSRBurnData {
   blockNumber: string
   timestamp: string
   transactionHash: string
+  chainId?: number
 }
 
 interface RSRBurnGlobalData {
@@ -324,6 +325,13 @@ export const useIndexRevenueEnhanced = () => {
               orderBy: 'timestamp',
               orderDirection: 'desc',
             })
+            // Add chainId to each burn record
+            if (data.rsrburns) {
+              data.rsrburns = data.rsrburns.map((burn: RSRBurnData) => ({
+                ...burn,
+                chainId: chainId
+              }))
+            }
             console.log(`RSR burn data fetched from chain ${chainId}:`, data)
             return data
           } catch (error) {
