@@ -190,7 +190,7 @@ const dtfQuery = gql`
         legacyGovernance
         rewards(where: { active: true }) {
           rewardToken {
-            address
+            address 
             name
             symbol
             decimals
