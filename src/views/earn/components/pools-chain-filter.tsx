@@ -1,11 +1,10 @@
-import { useAtom, useAtomValue } from 'jotai'
-import { useEffect, useState } from 'react'
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
-import { poolChainsFilterAtom } from '../atoms'
-import { ChainId } from '@/utils/chains'
 import ChainLogo from '@/components/icons/ChainLogo'
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
+import { ChainId } from '@/utils/chains'
+import { useAtom } from 'jotai'
 import { LayoutGrid } from 'lucide-react'
-import { devModeAtom } from '@/state/atoms'
+import { useEffect, useState } from 'react'
+import { poolChainsFilterAtom } from '../atoms'
 
 const getSelectedIndex = (currentFilter: string[]) => {
   if (currentFilter.length > 1) return '0' // All chains
@@ -17,15 +16,16 @@ const getSelectedIndex = (currentFilter: string[]) => {
 
 const PoolsChainFilter = () => {
   const [currentFilter, setFilters] = useAtom(poolChainsFilterAtom)
-  const isDevMode = useAtomValue(devModeAtom)
 
   const chains = [
     {
       icon: <LayoutGrid />,
       text: 'All chains',
-      filter: isDevMode
-        ? [ChainId.Base.toString(), ChainId.Mainnet.toString(), ChainId.BSC.toString()]
-        : [ChainId.Base.toString(), ChainId.Mainnet.toString()],
+      filter: [
+        ChainId.Base.toString(),
+        ChainId.Mainnet.toString(),
+        ChainId.BSC.toString(),
+      ],
     },
     {
       icon: <ChainLogo chain={ChainId.Mainnet} />,
@@ -37,15 +37,12 @@ const PoolsChainFilter = () => {
       text: 'Base',
       filter: [ChainId.Base.toString()],
     },
-    ...(isDevMode
-      ? [
-          {
-            icon: <ChainLogo chain={ChainId.BSC} />,
-            text: 'Binance',
-            filter: [ChainId.BSC.toString()],
-          },
-        ]
-      : []),
+
+    {
+      icon: <ChainLogo chain={ChainId.BSC} />,
+      text: 'Binance',
+      filter: [ChainId.BSC.toString()],
+    },
   ]
 
   const [selected, setSelected] = useState(getSelectedIndex(currentFilter))
