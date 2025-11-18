@@ -224,31 +224,17 @@ export const rebalanceTTLAtom = atom<{
     return isNaN(hours) ? 0 : hours * 60 * 60
   }
 
-  const permissionlessWindow = getWindowInSeconds(
-    customPermissionlessLaunchingWindow,
-    permissionlessLaunchingWindow
-  )
+  const permissionlessWindow = !permissionlessLaunching
+    ? 0
+    : getWindowInSeconds(
+        customPermissionlessLaunchingWindow,
+        permissionlessLaunchingWindow
+      )
 
   const auctionLauncherWindow = getWindowInSeconds(
     customAuctionLauncherWindow,
     auctionLauncherSelectWindow
   )
-
-  if (!permissionlessLaunching) {
-    return {
-      ttl: auctionLauncherWindow,
-      permissionlessWindow: 0,
-      auctionLauncherWindow,
-    }
-  }
-
-  // If either window is invalid, return 0
-  if (permissionlessWindow === 0 || auctionLauncherWindow === 0)
-    return {
-      ttl: 0,
-      permissionlessWindow: 0,
-      auctionLauncherWindow: 0,
-    }
 
   // Return the sum of both windows
   return {
