@@ -286,8 +286,8 @@ function DataTable<TData, TValue>({
   }
 
   return (
-    <div className={cn('w-full', className)}>
-      <Table className="text-base">
+    <div className={cn('w-full overflow-x-auto', className)}>
+      <Table className="text-sm md:text-base">
         <TableHeader className="[&_tr]:border-b-0">
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow

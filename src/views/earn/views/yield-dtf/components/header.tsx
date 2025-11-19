@@ -1,13 +1,9 @@
-import { MouseoverTooltip } from '@/components/old/tooltip'
-import { Separator } from '@/components/ui/separator'
-import { Trans, t } from '@lingui/macro'
-import HelpIcon from 'components/icons/CustomHelpIcon'
-import { Coins, LockKeyholeOpen, ShieldCheck, Zap } from 'lucide-react'
+import { Coins, LockKeyholeOpen, ShieldCheck } from 'lucide-react'
 
 const Hero = () => (
   <div className="relative">
-    <div className="mx-auto flex flex-col items-center relative max-w-[95em] pt-4 mt-2 md:mt-3 pb-0 px-2 md:px-3">
-      <div className="max-w-[900px] text-center mt-2 md:mt-7">
+    <div className="mx-auto flex flex-col items-center relative max-w-[95em] pb-0 px-2 md:px-3">
+      <div className="max-w-[900px] text-center">
         <h1 className="text-[2rem] md:text-[3.5rem] text-primary leading-9 md:leading-[62px]">
           Stake RSR on Yield DTFs
         </h1>

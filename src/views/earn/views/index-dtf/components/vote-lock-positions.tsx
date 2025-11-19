@@ -6,13 +6,14 @@ import { cn } from '@/lib/utils'
 import { formatCurrency, formatPercentage } from '@/utils'
 import { createColumnHelper } from '@tanstack/react-table'
 import { useAtomValue } from 'jotai'
-import { ArrowRight, Lock, LockOpen } from 'lucide-react'
+import { ArrowRight, ArrowUpRight, Lock, LockOpen } from 'lucide-react'
 import { useMemo } from 'react'
 import { Address, formatUnits } from 'viem'
 import { useBalance } from 'wagmi'
 import { voteLockPositionsAtom } from '../atoms'
 import { VoteLockPosition } from '../hooks/use-vote-lock-positions'
 import ChainLogo from '@/components/icons/ChainLogo'
+import { walletAtom } from '@/state/atoms'
 
 const TableFilters = () => {
   return <div className="flex items-center gap-2">Filters</div>
@@ -21,6 +22,7 @@ const TableFilters = () => {
 const VoteLockAmount = ({
   address,
   chain,
+  symbol,
   price,
   decimals,
 }: {
@@ -28,9 +30,11 @@ const VoteLockAmount = ({
   chain: number
   price: number
   decimals: number
+  symbol: string
 }) => {
+  const account = useAtomValue(walletAtom)
   const { data } = useBalance({
-    address,
+    address: account ?? undefined,
     chainId: chain,
     token: address,
   })
@@ -43,19 +47,19 @@ const VoteLockAmount = ({
     <div
       className={cn(
         'flex items-center gap-2',
-        hasBalance ? 'text-success' : 'text-legend'
+        hasBalance ? 'text-primary' : 'text-legend opacity-50'
       )}
     >
       {hasBalance ? <Lock size={20} /> : <LockOpen size={20} />}
-      {hasBalance && (
+      {hasBalance ? (
         <div className="flex flex-col">
-          <span className="text-primary">
-            {formatCurrency(Number(amount), 2)}
-          </span>
+          <span className="text-primary">${formatCurrency(usdAmount, 2)}</span>
           <span className="text-sm text-legend">
-            ${formatCurrency(usdAmount, 2)}
+            {formatCurrency(Number(amount), 2)} {symbol}
           </span>
         </div>
+      ) : (
+        'No'
       )}
     </div>
   )
@@ -65,13 +69,13 @@ const useColumns = () => {
   const columnHelper = createColumnHelper<VoteLockPosition>()
   return useMemo(() => {
     return [
-      columnHelper.accessor('underlying.token.symbol', {
+      columnHelper.accessor('underlying.token.address', {
         header: 'Gov. Token',
         cell: (data) => (
           <div className="flex items-center gap-3">
             <div className="relative flex-shrink-0">
               <TokenLogo
-                symbol={data.getValue()}
+                symbol={data.row.original.underlying.token.symbol}
                 address={data.row.original.underlying.token.address}
                 chain={data.row.original.chainId}
                 size="xl"
@@ -83,7 +87,9 @@ const useColumns = () => {
             </div>
 
             <div className="flex flex-col gap-1">
-              <span className=" font-semibold">{data.getValue()}</span>
+              <span className=" font-semibold">
+                {data.row.original.underlying.token.symbol}
+              </span>
               <div className="flex items-center gap-1 text-sm text-legend">
                 <ArrowRight size={14} />
                 {data.row.original.token.symbol}
@@ -93,12 +99,25 @@ const useColumns = () => {
         ),
       }),
       columnHelper.accessor('lockedAmountUsd', {
+        header: 'TVL',
+        cell: (data) => (
+          <div className="flex flex-col">
+            <span>${formatCurrency(data.row.original.lockedAmountUsd, 0)}</span>
+            <span className="text-sm text-legend">
+              {formatCurrency(data.row.original.lockedAmount, 0)}{' '}
+              {data.row.original.underlying.token.symbol}
+            </span>
+          </div>
+        ),
+      }),
+      columnHelper.accessor('lockedAmount', {
         header: 'Vote locked',
         cell: (data) => (
           <VoteLockAmount
             address={data.row.original.token.address as Address}
             chain={data.row.original.chainId}
             price={data.row.original.token.price}
+            symbol={data.row.original.underlying.token.symbol}
             decimals={data.row.original.token.decimals}
           />
         ),
@@ -107,7 +126,14 @@ const useColumns = () => {
         header: 'Governs',
         cell: (data) => (
           <span className="text-legend">
-            {data.row.original.dtfs.map((dtf) => dtf.symbol).join(', ')}
+            {data.row.original.dtfs.map((dtf, index) => (
+              <span key={dtf.symbol}>
+                <a href={`#`} className="hover:underline">
+                  {dtf.symbol}
+                </a>
+                {index < data.row.original.dtfs.length - 1 && ', '}
+              </span>
+            ))}
           </span>
         ),
       }),
@@ -115,17 +141,12 @@ const useColumns = () => {
         header: 'Avg. 30d%',
         cell: (data) => {
           return (
-            <div className="text-primary font-semibold">
+            <div className="flex items-center gap-1 text-primary font-semibold">
               {formatPercentage(data.getValue())} APR
+              <ArrowUpRight size={16} strokeWidth={1.5} />
             </div>
           )
         },
-      }),
-      columnHelper.accessor('token.symbol', {
-        header: 'Rewards',
-        cell: (data) => (
-          <span className="min-w-[80px] inline-block text-sm">Manage</span>
-        ),
       }),
     ]
   }, [])
