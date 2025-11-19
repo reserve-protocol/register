@@ -288,13 +288,13 @@ function DataTable<TData, TValue>({
   return (
     <div className={cn('w-full', className)}>
       <Table>
-        <TableHeader>
+        <TableHeader className="[&_tr]:border-b-0">
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow
               key={headerGroup.id}
               className={cn(
-                "hover:bg-transparent h-16",
-                stickyHeader && "sticky top-0 bg-card z-10"
+                'hover:bg-transparent h-16',
+                stickyHeader && 'sticky top-0 bg-card z-10'
               )}
             >
               {headerGroup.headers.map((header) => {

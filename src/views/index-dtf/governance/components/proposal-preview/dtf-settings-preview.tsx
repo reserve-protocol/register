@@ -1,22 +1,21 @@
-import { DecodedCalldata } from '@/types'
-import { shortenAddress } from '@/utils'
-import {
-  Shield,
-  Users,
-  DollarSign,
-  Clock,
-  Trash,
-  ArrowUpRight,
-  Edit2,
-  PlusCircle,
-  MinusCircle,
-} from 'lucide-react'
-import { Link } from 'react-router-dom'
-import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
-import { useAtomValue } from 'jotai'
 import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
+import { DecodedCalldata } from '@/types'
+import { shortenAddress } from '@/utils'
 import { getPlatformFee } from '@/utils/constants'
+import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
+import { useAtomValue } from 'jotai'
+import {
+  ArrowUpRight,
+  Clock,
+  Edit2,
+  MinusCircle,
+  PlusCircle,
+  Shield,
+  Trash,
+  Users
+} from 'lucide-react'
+import { Link } from 'react-router-dom'
 import { Address } from 'viem'
 
 // Preview component for setMandate function
@@ -323,7 +322,6 @@ export const SetMintFeePreview = ({
         <div className="flex items-center justify-between">
           <span className="text-sm text-muted-foreground">New mint fee:</span>
           <div className="flex items-center gap-2">
-            <DollarSign size={14} className="text-primary" />
             <span className="text-sm font-medium text-primary">
               {percentage.toFixed(2)}%
             </span>
@@ -355,7 +353,6 @@ export const SetTVLFeePreview = ({
         <div className="flex items-center justify-between">
           <span className="text-sm text-muted-foreground">New TVL fee:</span>
           <div className="flex items-center gap-2">
-            <DollarSign size={14} className="text-primary" />
             <span className="text-sm font-medium text-primary">
               {percentage.toFixed(2)}%
             </span>

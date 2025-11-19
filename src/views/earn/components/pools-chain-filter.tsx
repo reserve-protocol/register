@@ -4,7 +4,7 @@ import { ChainId } from '@/utils/chains'
 import { useAtom } from 'jotai'
 import { LayoutGrid } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { poolChainsFilterAtom } from '../atoms'
+import { poolChainsFilterAtom } from '../views/defi/atoms'
 
 const getSelectedIndex = (currentFilter: string[]) => {
   if (currentFilter.length > 1) return '0' // All chains
