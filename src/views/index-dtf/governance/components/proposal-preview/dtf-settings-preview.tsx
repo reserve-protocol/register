@@ -238,7 +238,6 @@ export const SetFeeRecipientsPreview = ({
               Platform (Fixed)
             </span>
             <div className="flex items-center gap-2">
-              <DollarSign size={14} className="text-muted-foreground" />
               <span className="text-sm font-medium">{platformFee}%</span>
             </div>
           </div>
@@ -250,7 +249,6 @@ export const SetFeeRecipientsPreview = ({
             <div className="flex items-center justify-between">
               <span className="text-sm text-muted-foreground">Governance</span>
               <div className="flex items-center gap-2">
-                <DollarSign size={14} className="text-primary" />
                 <span className="text-sm font-medium text-primary">
                   {adjustedGovernanceShare.toFixed(2)}%
                 </span>
@@ -265,7 +263,6 @@ export const SetFeeRecipientsPreview = ({
             <div className="flex items-center justify-between">
               <span className="text-sm text-muted-foreground">Creator</span>
               <div className="flex items-center gap-2">
-                <DollarSign size={14} className="text-primary" />
                 <span className="text-sm font-medium text-primary">
                   {adjustedDeployerShare.toFixed(2)}%
                 </span>
@@ -292,7 +289,6 @@ export const SetFeeRecipientsPreview = ({
                 <ArrowUpRight size={12} />
               </Link>
               <div className="flex items-center gap-2">
-                <DollarSign size={14} className="text-primary" />
                 <span className="text-sm font-medium text-primary">
                   {recipient.percentage.toFixed(2)}%
                 </span>
