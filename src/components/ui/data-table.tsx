@@ -287,13 +287,13 @@ function DataTable<TData, TValue>({
 
   return (
     <div className={cn('w-full', className)}>
-      <Table>
+      <Table className="text-base">
         <TableHeader className="[&_tr]:border-b-0">
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow
               key={headerGroup.id}
               className={cn(
-                'hover:bg-transparent h-16',
+                'hover:bg-transparent h-16 text-legend',
                 stickyHeader && 'sticky top-0 bg-card z-10'
               )}
             >
