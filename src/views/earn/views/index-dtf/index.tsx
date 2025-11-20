@@ -2,29 +2,38 @@ import { useEffect } from 'react'
 import Header from './components/header'
 import VoteLockPositions from './components/vote-lock-positions'
 import useVoteLockPositions from './hooks/use-vote-lock-positions'
-import { voteLockPositionsAtom } from './atoms'
+import useIndexDTFList from '@/hooks/useIndexDTFList'
+import { voteLockPositionsAtom, indexDTFListAtom } from './atoms'
 import { useSetAtom } from 'jotai'
 
 const Updater = () => {
-  const { data } = useVoteLockPositions()
+  const { data: voteLockData } = useVoteLockPositions()
+  const { data: dtfListData } = useIndexDTFList()
   const setVoteLockPositions = useSetAtom(voteLockPositionsAtom)
+  const setIndexDTFList = useSetAtom(indexDTFListAtom)
 
   useEffect(() => {
-    if (data) {
-      setVoteLockPositions(data)
+    if (voteLockData) {
+      setVoteLockPositions(voteLockData)
     }
-  }, [data])
+  }, [voteLockData, setVoteLockPositions])
+
+  useEffect(() => {
+    if (dtfListData) {
+      setIndexDTFList(dtfListData)
+    }
+  }, [dtfListData, setIndexDTFList])
 
   return null
 }
 
 const EarnIndexDTF = () => {
   return (
-    <div>
+    <>
       <Header />
       <VoteLockPositions />
       <Updater />
-    </div>
+    </>
   )
 }
 

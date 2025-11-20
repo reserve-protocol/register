@@ -1,5 +1,5 @@
 import TokenLogo from '@/components/token-logo'
-import DataTable from '@/components/ui/data-table'
+import DataTable, { SorteableButton } from '@/components/ui/data-table'
 import { Skeleton } from '@/components/ui/skeleton'
 import { TableCell, TableRow } from '@/components/ui/table'
 import { cn } from '@/lib/utils'
@@ -16,6 +16,7 @@ import ChainLogo from '@/components/icons/ChainLogo'
 import { walletAtom } from '@/state/atoms'
 import VoteLockDrawer, { type StTokenExtended } from '@/components/vote-lock'
 import TableFilters from './table-filters'
+import DecimalDisplay from '@/components/decimal-display'
 
 const VoteLockAmount = ({
   address,
@@ -67,8 +68,10 @@ const useColumns = () => {
   const columnHelper = createColumnHelper<VoteLockPosition>()
   return useMemo(() => {
     return [
-      columnHelper.accessor('underlying.token.address', {
-        header: 'Gov. Token',
+      columnHelper.accessor('underlying.token.symbol', {
+        header: ({ column }) => (
+          <SorteableButton column={column}>Gov. Token</SorteableButton>
+        ),
         cell: (data) => (
           <div className="flex items-center gap-3">
             <div className="relative flex-shrink-0">
@@ -88,21 +91,33 @@ const useColumns = () => {
               <span className=" font-semibold">
                 {data.row.original.underlying.token.symbol}
               </span>
-              <div className="flex items-center gap-1 text-sm text-legend">
-                <ArrowRight size={14} />
-                {data.row.original.token.symbol}
+              <div className="flex items-center gap-1 text-xs whitespace-nowrap sm:text-sm text-legend">
+                <ArrowRight size={14} className="hidden sm:block" />
+                <span className="w-20 overflow-hidden text-ellipsis whitespace-nowrap sm:w-auto sm:overflow-visible sm:whitespace-normal">
+                  {' '}
+                  {data.row.original.token.symbol}
+                </span>
               </div>
             </div>
           </div>
         ),
       }),
       columnHelper.accessor('lockedAmountUsd', {
-        header: 'TVL',
+        header: ({ column }) => (
+          <SorteableButton column={column}>TVL</SorteableButton>
+        ),
+        meta: {
+          className: 'hidden min-[420px]:table-cell',
+        },
         cell: (data) => (
           <div className="flex flex-col">
             <span>${formatCurrency(data.row.original.lockedAmountUsd, 0)}</span>
-            <span className="text-sm text-legend">
-              {formatCurrency(data.row.original.lockedAmount, 0)}{' '}
+            <span className="text-xs whitespace-nowrap sm:text-sm text-legend">
+              <DecimalDisplay
+                value={data.row.original.lockedAmount}
+                decimals={2}
+                compact={true}
+              />{' '}
               {data.row.original.underlying.token.symbol}
             </span>
           </div>
@@ -110,6 +125,9 @@ const useColumns = () => {
       }),
       columnHelper.accessor('lockedAmount', {
         header: 'Vote locked',
+        meta: {
+          className: 'hidden lg:table-cell',
+        },
         cell: (data) => (
           <VoteLockAmount
             address={data.row.original.token.address as Address}
@@ -120,8 +138,11 @@ const useColumns = () => {
           />
         ),
       }),
-      columnHelper.accessor('underlying.token.symbol', {
+      columnHelper.accessor('dtfs', {
         header: 'Governs',
+        meta: {
+          className: 'text-center',
+        },
         cell: (data) => (
           <span className="text-legend">
             {data.row.original.dtfs.map((dtf, index) => (
@@ -136,11 +157,14 @@ const useColumns = () => {
         ),
       }),
       columnHelper.accessor('apr', {
-        header: 'Avg. 30d%',
+        header: ({ column }) => (
+          <SorteableButton column={column}>Avg. 30d%</SorteableButton>
+        ),
         cell: (data) => {
           return (
-            <div className="flex items-center gap-1 text-primary font-semibold">
-              {formatPercentage(data.getValue())} APR
+            <div className="flex items-center gap-1 text-primary font-semibold whitespace-nowrap">
+              {formatPercentage(data.getValue())}{' '}
+              <span className="hidden md:inline">APR</span>
               <ArrowUpRight size={16} strokeWidth={1.5} />
             </div>
           )
@@ -222,7 +246,7 @@ const VoteLockPositions = () => {
         <div className="mb-1">
           <TableFilters />
         </div>
-        <div className="bg-card rounded-3xl p-2">
+        <div className="bg-card rounded-3xl overflow-hidden sm:p-2">
           <DataTable<VoteLockPosition, any>
             columns={columns}
             data={data || []}

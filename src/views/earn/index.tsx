@@ -49,7 +49,7 @@ const Earn = () => {
   }, [])
 
   return (
-    <div className="container pb-6 px-0 lg:px-4">
+    <div className="container px-0 lg:px-4">
       <EarnNavigation />
       <Outlet />
     </div>

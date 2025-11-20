@@ -52,14 +52,17 @@ export const SorteableButton = ({
   return (
     <Button
       variant="ghost"
-      className={cn('font-light text-legend text-base rounded-2xl', className)}
+      className={cn(
+        'font-light text-legend focus:text-legend text-sm px-0 hover:bg-transparent rounded-xl',
+        className
+      )}
       onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
     >
       {children}
       {column.getIsSorted() === 'asc' ? (
-        <ArrowUp className="ml-2 h-4 w-4" />
+        <ArrowUp className="ml-2 h-3 w-3" />
       ) : column.getIsSorted() === 'desc' ? (
-        <ArrowDown className="ml-2 h-4 w-4" />
+        <ArrowDown className="ml-2 h-3 w-3" />
       ) : null}
     </Button>
   )
