@@ -22,10 +22,14 @@ const EARN_ROUTES = [
 
 const EarnNavigation = () => {
   return (
-    <div className="flex justify-center mt-12 mb-10">
+    <div className="flex justify-center mt-2 md:mt-12 mb-4 md:mb-10 px-1">
       <div className="flex items-center bg-border p-1 rounded-full">
         {EARN_ROUTES.map((route) => (
-          <NavLink key={route.path} to={route.path} className="text-sm">
+          <NavLink
+            key={route.path}
+            to={route.path}
+            className="text-xs text-center sm:text-sm"
+          >
             {({ isActive }: { isActive: boolean }) => (
               <div
                 className={cn(

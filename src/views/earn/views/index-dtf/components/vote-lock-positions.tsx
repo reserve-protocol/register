@@ -1,22 +1,22 @@
+import DecimalDisplay from '@/components/decimal-display'
+import ChainLogo from '@/components/icons/ChainLogo'
 import TokenLogo from '@/components/token-logo'
 import DataTable, { SorteableButton } from '@/components/ui/data-table'
 import { Skeleton } from '@/components/ui/skeleton'
 import { TableCell, TableRow } from '@/components/ui/table'
+import VoteLockDrawer, { type StTokenExtended } from '@/components/vote-lock'
 import { cn } from '@/lib/utils'
+import { walletAtom } from '@/state/atoms'
 import { formatCurrency, formatPercentage } from '@/utils'
 import { createColumnHelper } from '@tanstack/react-table'
-import { useAtom, useAtomValue } from 'jotai'
+import { useAtomValue } from 'jotai'
 import { ArrowRight, ArrowUpRight, Lock, LockOpen } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { Address, formatUnits } from 'viem'
 import { useBalance } from 'wagmi'
 import { filteredVoteLockPositionsAtom } from '../atoms'
 import { VoteLockPosition } from '../hooks/use-vote-lock-positions'
-import ChainLogo from '@/components/icons/ChainLogo'
-import { walletAtom } from '@/state/atoms'
-import VoteLockDrawer, { type StTokenExtended } from '@/components/vote-lock'
 import TableFilters from './table-filters'
-import DecimalDisplay from '@/components/decimal-display'
 
 const VoteLockAmount = ({
   address,
@@ -261,7 +261,7 @@ const VoteLockPositions = () => {
       {currentVoteLock && (
         <VoteLockDrawer
           stToken={currentVoteLock}
-          unlockDelay={604800} // 7 days in seconds
+          unlockDelay={604800} // 7 days in seconds @TODO: add data to daos endpoint
           open={!!currentVoteLock}
           onOpenChange={(open) => !open && setCurrentVoteLock(null)}
           onClose={() => setCurrentVoteLock(null)}
