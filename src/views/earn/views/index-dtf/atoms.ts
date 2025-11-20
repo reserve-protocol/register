@@ -1,4 +1,4 @@
-import { supportedChainList } from '@/utils/constants'
+import { ChainId } from '@/utils/chains'
 import { atom } from 'jotai'
 import { VoteLockPosition } from './hooks/use-vote-lock-positions'
 import { IndexDTFItem } from '@/hooks/useIndexDTFList'
@@ -24,10 +24,13 @@ export const dtfDataMapAtom = atom((get) => {
 
 export const searchFilterAtom = atom('')
 
-// Simple atom that works with ChainFilter
-export const chainsFilterAtom = atom(
-  supportedChainList.map((chain) => chain.toString())
-)
+// Simple atom that works with ChainFilter - includes all Index DTF supported chains
+// Note: Arbitrum is deprecated for Index DTFs, BSC is supported
+export const chainsFilterAtom = atom([
+  ChainId.Mainnet.toString(),
+  ChainId.Base.toString(),
+  ChainId.BSC.toString(),
+])
 
 export const dtfsFilterAtom = atom<string[]>([])
 
