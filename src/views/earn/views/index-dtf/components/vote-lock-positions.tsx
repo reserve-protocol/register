@@ -5,19 +5,17 @@ import { TableCell, TableRow } from '@/components/ui/table'
 import { cn } from '@/lib/utils'
 import { formatCurrency, formatPercentage } from '@/utils'
 import { createColumnHelper } from '@tanstack/react-table'
-import { useAtomValue } from 'jotai'
+import { useAtom, useAtomValue } from 'jotai'
 import { ArrowRight, ArrowUpRight, Lock, LockOpen } from 'lucide-react'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { Address, formatUnits } from 'viem'
 import { useBalance } from 'wagmi'
-import { voteLockPositionsAtom } from '../atoms'
+import { filteredVoteLockPositionsAtom } from '../atoms'
 import { VoteLockPosition } from '../hooks/use-vote-lock-positions'
 import ChainLogo from '@/components/icons/ChainLogo'
 import { walletAtom } from '@/state/atoms'
-
-const TableFilters = () => {
-  return <div className="flex items-center gap-2">Filters</div>
-}
+import VoteLockDrawer, { type StTokenExtended } from '@/components/vote-lock'
+import TableFilters from './table-filters'
 
 const VoteLockAmount = ({
   address,
@@ -192,17 +190,57 @@ const TableSkeleton = () => {
 }
 
 const VoteLockPositions = () => {
-  const data = useAtomValue(voteLockPositionsAtom)
+  const data = useAtomValue(filteredVoteLockPositionsAtom)
   const columns = useColumns()
+  const [currentVoteLock, setCurrentVoteLock] =
+    useState<StTokenExtended | null>(null)
+
+  const handleRowClick = (position: VoteLockPosition) => {
+    // Convert VoteLockPosition to StTokenExtended format
+    const stToken: StTokenExtended = {
+      id: position.token.address, // Using the vote-locked token address as the staking vault address
+      chainId: position.chainId,
+      token: {
+        address: position.token.address,
+        name: position.token.name,
+        symbol: position.token.symbol,
+        decimals: position.token.decimals,
+      },
+      underlying: {
+        address: position.underlying.token.address,
+        name: position.underlying.token.name,
+        symbol: position.underlying.token.symbol,
+        decimals: position.underlying.token.decimals,
+      },
+    }
+    setCurrentVoteLock(stToken)
+  }
 
   return (
-    <div className="bg-card rounded-3xl border-2 border-secondary p-2">
-      <DataTable
-        columns={columns as any}
-        data={data || []}
-        initialSorting={[{ id: 'apr', desc: true }]}
-      />
-    </div>
+    <>
+      <div className="bg-secondary p-1 rounded-4xl">
+        <div className="mb-1">
+          <TableFilters />
+        </div>
+        <div className="bg-card rounded-3xl p-2">
+          <DataTable<VoteLockPosition, any>
+            columns={columns}
+            data={data || []}
+            onRowClick={handleRowClick}
+            initialSorting={[{ id: 'apr', desc: true }]}
+          />
+        </div>
+      </div>
+      {currentVoteLock && (
+        <VoteLockDrawer
+          stToken={currentVoteLock}
+          unlockDelay={604800} // 7 days in seconds
+          open={!!currentVoteLock}
+          onOpenChange={(open) => !open && setCurrentVoteLock(null)}
+          onClose={() => setCurrentVoteLock(null)}
+        />
+      )}
+    </>
   )
 }
 
