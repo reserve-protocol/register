@@ -160,9 +160,12 @@ const useColumns = () => {
         header: ({ column }) => (
           <SorteableButton column={column}>Avg. 30d%</SorteableButton>
         ),
+        meta: {
+          className: 'text-right',
+        },
         cell: (data) => {
           return (
-            <div className="flex items-center gap-1 text-primary font-semibold whitespace-nowrap">
+            <div className="flex items-center justify-end gap-1 text-primary font-semibold whitespace-nowrap">
               {formatPercentage(data.getValue())}{' '}
               <span className="hidden md:inline">APR</span>
               <ArrowUpRight size={16} strokeWidth={1.5} />
