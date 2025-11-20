@@ -35,7 +35,9 @@ const Updater = () => {
     address: wallet ?? undefined,
     token: stToken?.underlying.address as Address,
     chainId: stToken?.chainId,
-    enabled: !!wallet && !!stToken,
+    query: {
+      enabled: !!wallet && !!stToken,
+    },
   })
   const balance = balanceData?.value
 

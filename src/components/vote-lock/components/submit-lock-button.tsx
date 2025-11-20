@@ -37,7 +37,7 @@ export const DelegateButton = () => {
     writeContract({
       abi: dtfIndexStakingVault,
       functionName: 'delegate',
-      address: stToken?.id,
+      address: stToken?.id as `0x${string}`,
       args: [isValidDelegate ? getAddress(delegate) : account],
       chainId,
     })
@@ -94,8 +94,8 @@ const SubmitLockButton = () => {
   } = useReadContract({
     abi: erc20Abi,
     functionName: 'allowance',
-    address: stToken?.underlying.address,
-    args: [account!, stToken?.id],
+    address: stToken?.underlying.address as `0x${string}`,
+    args: [account!, stToken?.id as `0x${string}`],
     chainId,
     query: { enabled: !!account && isValidDelegate },
   })
@@ -120,9 +120,9 @@ const SubmitLockButton = () => {
 
     writeApprove({
       abi: erc20Abi,
-      address: stToken?.underlying.address,
+      address: stToken?.underlying.address as `0x${string}`,
       functionName: 'approve',
-      args: [stToken?.id, amountToLock],
+      args: [stToken?.id as `0x${string}`, amountToLock],
       chainId,
     })
   }
@@ -148,7 +148,7 @@ const SubmitLockButton = () => {
     writeContract({
       abi: dtfIndexStakingVault,
       functionName: isSelfDelegate ? 'depositAndDelegate' : 'deposit',
-      address: stToken?.id,
+      address: stToken?.id as `0x${string}`,
       args: isSelfDelegate
         ? [amountToLock]
         : [amountToLock, account as Address],

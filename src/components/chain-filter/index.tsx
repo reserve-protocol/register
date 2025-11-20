@@ -3,21 +3,12 @@ import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { ChainId } from '@/utils/chains'
 import { LayoutGrid } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { SetStateAction, WritableAtom } from 'jotai'
-import { useAtom } from 'jotai'
 
-interface ChainFilterPropsWithAtom {
-  atom: WritableAtom<string[], [SetStateAction<string[]>], void>
-  className?: string
-}
-
-interface ChainFilterPropsWithValue {
+interface ChainFilterProps {
   value: string[]
   onChange: (value: string[]) => void
   className?: string
 }
-
-type ChainFilterProps = ChainFilterPropsWithAtom | ChainFilterPropsWithValue
 
 const chains = [
   {
@@ -54,24 +45,8 @@ const getSelectedIndex = (currentFilter: string[]) => {
   return '0'
 }
 
-function isPropsWithAtom(props: ChainFilterProps): props is ChainFilterPropsWithAtom {
-  return 'atom' in props
-}
-
 const ChainFilter = (props: ChainFilterProps) => {
-  // Handle both atom-based and value/onChange patterns
-  const [atomValue, setAtomValue] = isPropsWithAtom(props)
-    ? useAtom(props.atom)
-    : [null, null]
-
-  const currentFilter = isPropsWithAtom(props)
-    ? atomValue!
-    : props.value
-
-  const setFilters = isPropsWithAtom(props)
-    ? setAtomValue!
-    : props.onChange
-
+  const { value: currentFilter, onChange: setFilters, className } = props
   const [selected, setSelected] = useState(getSelectedIndex(currentFilter))
 
   // Update selected when filter changes externally
@@ -84,14 +59,14 @@ const ChainFilter = (props: ChainFilterProps) => {
     setFilters(chains[Number(value)]?.filter ?? [])
   }
 
-  const className = props.className || "bg-card rounded-bl-3xl rounded-br-3xl lg:rounded-3xl px-4 py-4 h-auto"
+  const displayClassName = className || "bg-card rounded-bl-3xl rounded-br-3xl lg:rounded-3xl px-4 py-4 h-auto"
 
   return (
     <ToggleGroup
       type="single"
       value={selected}
       onValueChange={handleSelect}
-      className={className}
+      className={displayClassName}
     >
       {chains.map(({ text, icon }, index) => (
         <ToggleGroupItem

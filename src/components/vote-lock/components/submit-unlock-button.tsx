@@ -44,7 +44,7 @@ const SubmitUnlockButton = () => {
     writeContract({
       abi: dtfIndexStakingVault,
       functionName: 'withdraw',
-      address: stToken?.id,
+      address: stToken?.id as `0x${string}`,
       args: [amountToUnlock, account, account],
       chainId,
     })
