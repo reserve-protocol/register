@@ -863,5 +863,23 @@
     "underlyingToken": "USDT",
     "collateralAddress": "0x23878914EFE38d27C4D67Ab83ed1b93A74D4086a",
     "collateralToken": "aEthUSDT"
+  },
+  {
+    "address":"0xb1e61f452CFcF6609C2F4088EC36B4c8dd1806b5",
+    "rewardTokens":[],
+    "protocol":"AAVEv3",
+    "erc20":"0x4C813CE4e2FF315f0213563A994c20BBF4637444",
+    "chainlinkFeed":"0x26C46B7aD0012cA71F2298ada567dC9Af14E7f2A",
+    "delayUntilDefault":"86400",
+    "maxTradeVolume":"1000000",
+    "oracleTimeout":86400,
+    "targetName":"USD",
+    "version":"4.2.0",
+    "symbol":"saEthRLUSD",
+    "decimals":18,
+    "underlyingAddress":"0x8292Bb45bf1Ee4d140127049757C2E0fF06317eD",
+    "underlyingToken":"RLUSD",
+    "collateralAddress":"0xFa82580c16A31D0c1bC632A36F82e83EfEF3Eec0",
+    "collateralToken":"aEthRLUSD"
   }
 ]

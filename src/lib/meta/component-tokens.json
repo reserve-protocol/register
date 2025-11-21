@@ -1,5 +1,20 @@
 [
   {
+    "id": "rlusd",
+    "tokenTicker": "RLUSD",
+    "name": "Ripple USD",
+    "addresses": {
+      "1": "0x8292Bb45bf1Ee4d140127049757C2E0fF06317eD"
+    },
+    "color": "#016AFF",
+    "rating": "A",
+    "website": "https://ripple.com/solutions/stablecoin/",
+    "description": "Ripple USD (RLUSD) is a stablecoin that is pegged to the US dollar. It is backed by the US dollar and is issued by Ripple.",
+    "logo": {
+      "url": "https://storage-logos.reserve.org/logos/rlusd.svg"
+    }
+  },
+  {
     "id": "oeth",
     "tokenTicker": "OETH",
     "name": "Origin Ether",

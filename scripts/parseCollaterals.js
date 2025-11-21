@@ -147,6 +147,7 @@ const wrappedTokenMap = {
   sUSDS: protocols.SKY,
   wOETH: protocols.ORIGIN,
   saEthUSDT: protocols.AAVEv3,
+  saEthRLUSD: protocols.AAVEv3,
   wsuperOETHb: protocols.ORIGIN,
 }
 
