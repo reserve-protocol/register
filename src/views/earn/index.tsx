@@ -1,4 +1,3 @@
-import { navigationMenuTriggerStyle } from '@/components/ui/navigation-menu'
 import { cn } from '@/lib/utils'
 import { ROUTES } from '@/utils/constants'
 import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'

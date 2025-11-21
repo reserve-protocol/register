@@ -2,67 +2,17 @@ import DecimalDisplay from '@/components/decimal-display'
 import ChainLogo from '@/components/icons/ChainLogo'
 import TokenLogo from '@/components/token-logo'
 import DataTable, { SorteableButton } from '@/components/ui/data-table'
-import { Skeleton } from '@/components/ui/skeleton'
-import { TableCell, TableRow } from '@/components/ui/table'
 import VoteLockDrawer, { type StTokenExtended } from '@/components/vote-lock'
-import { cn } from '@/lib/utils'
-import { walletAtom } from '@/state/atoms'
 import { formatCurrency, formatPercentage } from '@/utils'
+import PositionBalance from '@/views/earn/components/position-balance'
 import { createColumnHelper } from '@tanstack/react-table'
 import { useAtomValue } from 'jotai'
-import { ArrowRight, ArrowUpRight, Lock, LockOpen } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 import { useMemo, useState } from 'react'
-import { Address, formatUnits } from 'viem'
-import { useBalance } from 'wagmi'
+import { Address } from 'viem'
 import { filteredVoteLockPositionsAtom } from '../atoms'
 import { VoteLockPosition } from '../hooks/use-vote-lock-positions'
 import TableFilters from './table-filters'
-
-const VoteLockAmount = ({
-  address,
-  chain,
-  symbol,
-  price,
-  decimals,
-}: {
-  address: Address
-  chain: number
-  price: number
-  decimals: number
-  symbol: string
-}) => {
-  const account = useAtomValue(walletAtom)
-  const { data } = useBalance({
-    address: account ?? undefined,
-    chainId: chain,
-    token: address,
-  })
-
-  const hasBalance = data && data?.value > 0n
-  const amount = formatUnits(data?.value ?? 0n, decimals)
-  const usdAmount = Number(amount) * price
-
-  return (
-    <div
-      className={cn(
-        'flex items-center gap-2',
-        hasBalance ? 'text-primary' : 'text-legend opacity-50'
-      )}
-    >
-      {hasBalance ? <Lock size={20} /> : <LockOpen size={20} />}
-      {hasBalance ? (
-        <div className="flex flex-col">
-          <span className="text-primary">${formatCurrency(usdAmount, 2)}</span>
-          <span className="text-sm text-legend">
-            {formatCurrency(Number(amount), 2)} {symbol}
-          </span>
-        </div>
-      ) : (
-        'No'
-      )}
-    </div>
-  )
-}
 
 const useColumns = () => {
   const columnHelper = createColumnHelper<VoteLockPosition>()
@@ -129,7 +79,7 @@ const useColumns = () => {
           className: 'hidden lg:table-cell',
         },
         cell: (data) => (
-          <VoteLockAmount
+          <PositionBalance
             address={data.row.original.token.address as Address}
             chain={data.row.original.chainId}
             price={data.row.original.token.price}
@@ -168,52 +118,13 @@ const useColumns = () => {
             <div className="flex items-center justify-end gap-1 text-primary font-semibold whitespace-nowrap">
               {formatPercentage(data.getValue())}{' '}
               <span className="hidden md:inline">APR</span>
-              <ArrowUpRight size={16} strokeWidth={1.5} />
+              <ArrowRight size={16} strokeWidth={1.5} />
             </div>
           )
         },
       }),
     ]
   }, [])
-}
-
-const TableSkeleton = () => {
-  return (
-    <>
-      {Array.from({ length: 10 }).map((_, index) => (
-        <TableRow key={index} className="border-none">
-          <TableCell>
-            <div className="flex items-center gap-3 min-w-[200px]">
-              <div className="flex -space-x-2">
-                {Array.from({ length: 2 }).map((_, i) => (
-                  <Skeleton
-                    key={i}
-                    className="h-6 w-6 rounded-full border-2 border-background"
-                  />
-                ))}
-              </div>
-              <Skeleton className="h-4 w-[120px]" />
-            </div>
-          </TableCell>
-          <TableCell>
-            <div className="flex items-center gap-2 min-w-[120px]">
-              <Skeleton className="h-4 w-4 rounded-full" />
-              <Skeleton className="h-4 w-[80px]" />
-            </div>
-          </TableCell>
-          <TableCell>
-            <div className="flex items-center gap-2 min-w-[100px]">
-              <Skeleton className="h-4 w-4 rounded-full" />
-              <Skeleton className="h-4 w-[60px]" />
-            </div>
-          </TableCell>
-          <TableCell>
-            <Skeleton className="h-4 w-[80px]" />
-          </TableCell>
-        </TableRow>
-      ))}
-    </>
-  )
 }
 
 const VoteLockPositions = () => {
@@ -246,10 +157,8 @@ const VoteLockPositions = () => {
   return (
     <>
       <div className="bg-secondary p-1 rounded-4xl">
-        <div className="mb-1">
-          <TableFilters />
-        </div>
-        <div className="bg-card rounded-3xl overflow-hidden sm:p-2">
+        <TableFilters />
+        <div className="bg-card rounded-3xl overflow-hidden sm:p-2 mt-1">
           <DataTable<VoteLockPosition, any>
             columns={columns}
             data={data || []}

@@ -291,7 +291,7 @@ function DataTable<TData, TValue>({
   return (
     <div className={cn('w-full overflow-x-auto', className)}>
       <Table className="text-sm md:text-base">
-        <TableHeader className="[&_tr]:border-b-0">
+        <TableHeader className="[&_tr]:border-b-0 text-sm">
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow
               key={headerGroup.id}

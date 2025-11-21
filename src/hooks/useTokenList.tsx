@@ -16,6 +16,7 @@ import { formatEther, getAddress } from 'viem'
 import { useMultichainQuery } from './useQuery'
 import useTimeFrom from './useTimeFrom'
 import { useWatchReadContracts } from './useWatchReadContract'
+import { Token } from '@/types'
 
 export interface ListedToken {
   id: string
@@ -41,6 +42,7 @@ export interface ListedToken {
   rsrStaked: number
   stakeUsd: number
   isCollaterized: boolean
+  stToken: Token
 }
 
 // TODO: Cache only while the list is short
@@ -91,6 +93,14 @@ const tokenListQuery = gql`
           rTokenDist
           rsrDist
           destination
+        }
+        rewardToken {
+          token {
+            id
+            name
+            symbol
+            decimals
+          }
         }
       }
     }
@@ -241,6 +251,10 @@ const useTokenList = () => {
               stakeUsd,
               isCollaterized:
                 collateralized?.[rTokenAddresses.indexOf(token.id)] ?? true,
+              stToken: {
+                ...token?.rToken?.rewardToken?.token,
+                address: token?.rToken?.rewardToken?.token?.id,
+              },
             }
 
             return tokenData
