@@ -14,6 +14,7 @@ import { useMemo, useState } from 'react'
 import { Address } from 'viem'
 import { filteredYieldDTFListAtom } from '../atoms'
 import TableFilters from './table-filters'
+import StakeDrawer from '@/components/stake-drawer'
 
 const useColumns = () => {
   const columnHelper = createColumnHelper<ListedToken>()
@@ -116,27 +117,42 @@ const useColumns = () => {
   }, [rsrPrice])
 }
 
-interface StakeToken extends Token {
+interface StakeDrawerData {
+  stToken: Token
+  dtf: {
+    id: string
+    symbol: string
+    name: string
+    logo?: string
+  }
   chainId: number
 }
 
 const StakingPositions = () => {
   const data = useAtomValue(filteredYieldDTFListAtom)
   const columns = useColumns()
-  const [currentStakeToken, setCurrentStakeToken] = useState<StakeToken | null>(
+  const [currentDrawerData, setCurrentDrawerData] = useState<StakeDrawerData | null>(
     null
   )
 
   const handleRowClick = (dtf: ListedToken) => {
-    // Convert VoteLockPosition to StTokenExtended format
-    const stToken: StakeToken = {
-      address: dtf.stToken.address,
-      name: dtf.stToken.name,
-      symbol: dtf.stToken.symbol,
-      decimals: dtf.stToken.decimals,
+    // Prepare data for StakeDrawer
+    const drawerData: StakeDrawerData = {
+      stToken: {
+        address: dtf.stToken.address,
+        name: dtf.stToken.name,
+        symbol: dtf.stToken.symbol,
+        decimals: dtf.stToken.decimals,
+      },
+      dtf: {
+        id: dtf.id,
+        symbol: dtf.symbol,
+        name: dtf.name,
+        logo: dtf.logo,
+      },
       chainId: dtf.chain,
     }
-    setCurrentStakeToken(stToken)
+    setCurrentDrawerData(drawerData)
   }
 
   return (
@@ -152,6 +168,17 @@ const StakingPositions = () => {
           />
         </div>
       </div>
+      {currentDrawerData && (
+        <StakeDrawer
+          stToken={currentDrawerData.stToken}
+          dtf={currentDrawerData.dtf}
+          chainId={currentDrawerData.chainId}
+          unstakeDelay={1209600} // 14 days in seconds
+          open={!!currentDrawerData}
+          onOpenChange={(open) => !open && setCurrentDrawerData(null)}
+          onClose={() => setCurrentDrawerData(null)}
+        />
+      )}
     </>
   )
 }

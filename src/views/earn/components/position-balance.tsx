@@ -3,8 +3,9 @@ import { walletAtom } from '@/state/atoms'
 import { formatCurrency } from '@/utils'
 import { useAtomValue } from 'jotai'
 import { Lock, LockOpen } from 'lucide-react'
+import { useEffect } from 'react'
 import { Address, formatUnits } from 'viem'
-import { useBalance } from 'wagmi'
+import { useBalance, useBlockNumber } from 'wagmi'
 
 const PositionBalance = ({
   address,
@@ -20,11 +21,25 @@ const PositionBalance = ({
   symbol: string
 }) => {
   const account = useAtomValue(walletAtom)
-  const { data } = useBalance({
+
+  // Watch for new blocks to update balance
+  const { data: blockNumber } = useBlockNumber({
+    chainId: chain,
+    watch: true
+  })
+
+  const { data, refetch } = useBalance({
     address: account ?? undefined,
     chainId: chain,
     token: address,
   })
+
+  // Refetch balance when block changes
+  useEffect(() => {
+    if (blockNumber && account) {
+      refetch()
+    }
+  }, [blockNumber, refetch, account])
 
   const hasBalance = data && data?.value > 0n
   const amount = formatUnits(data?.value ?? 0n, decimals)
