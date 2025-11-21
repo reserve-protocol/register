@@ -120,7 +120,7 @@ const RTokenStateUpdater = () => {
     ]
 
     // Legacy
-    if (contracts.main.version[0] !== VERSION[0]) {
+    if ((contracts.main?.version[0] ?? VERSION[0]) < VERSION[0]) {
       commonCalls.push({
         ...mainCall,
         abi: MainLegacy,
