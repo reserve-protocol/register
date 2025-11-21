@@ -100,6 +100,7 @@ const SubmitStakeButton = () => {
       abi: erc20Abi,
       functionName: 'approve',
       args: [stToken.stToken.address as Address, amount],
+      chainId: stToken.chainId,
     })
   }
 
@@ -116,6 +117,7 @@ const SubmitStakeButton = () => {
         abi: StRSRVotes,
         functionName: 'stakeAndDelegate',
         args: [amount, delegate as Address],
+        chainId: stToken.chainId,
       })
     } else {
       stake({
@@ -123,6 +125,7 @@ const SubmitStakeButton = () => {
         abi: StRSR,
         functionName: 'stake',
         args: [amount],
+        chainId: stToken.chainId,
       })
     }
   }

@@ -50,6 +50,7 @@ const SubmitUnstakeButton = () => {
       abi: StRSR,
       functionName: 'unstake',
       args: [amount],
+      chainId: stToken.chainId,
     })
   }
 
