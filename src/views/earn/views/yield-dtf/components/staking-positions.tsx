@@ -13,6 +13,7 @@ import { ArrowRight } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { Address } from 'viem'
 import { filteredYieldDTFListAtom } from '../atoms'
+import TableFilters from './table-filters'
 
 const useColumns = () => {
   const columnHelper = createColumnHelper<ListedToken>()
@@ -141,6 +142,7 @@ const StakingPositions = () => {
   return (
     <>
       <div className="bg-secondary p-1 rounded-4xl">
+        <TableFilters />
         <div className="bg-card rounded-3xl overflow-hidden sm:p-2 mt-1">
           <DataTable<ListedToken, any>
             columns={columns}

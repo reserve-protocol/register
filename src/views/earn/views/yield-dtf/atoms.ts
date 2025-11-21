@@ -5,10 +5,10 @@ import { atom } from 'jotai'
 export const yieldDTFListAtom = atom<ListedToken[] | undefined>(undefined)
 
 export const searchFilterAtom = atom('')
+// Only include Ethereum and Base for yield DTFs (Arbitrum excluded)
 export const chainsFilterAtom = atom([
   ChainId.Mainnet.toString(),
   ChainId.Base.toString(),
-  ChainId.Arbitrum.toString(),
 ])
 export const dtfsFilterAtom = atom<string[]>([])
 
@@ -21,6 +21,11 @@ export const filteredYieldDTFListAtom = atom((get) => {
   if (!positions) return undefined
 
   return positions.filter((position) => {
+    // Always filter out Arbitrum DTFs even if not in chain filter
+    if (position.chain === ChainId.Arbitrum) {
+      return false
+    }
+
     // Chain filter
     if (!chains.includes(position.chain.toString())) {
       return false
@@ -36,9 +41,25 @@ export const filteredYieldDTFListAtom = atom((get) => {
 
     // DTF filter
     if (selectedDtfs.length > 0) {
-      return selectedDtfs.includes(position.symbol.toLowerCase())
+      return selectedDtfs.includes(position.symbol)
     }
 
     return true
   })
+})
+
+// Get unique DTFs from all positions for the dropdown options
+export const availableDtfsAtom = atom((get) => {
+  const positions = get(yieldDTFListAtom)
+  if (!positions) return []
+
+  const dtfSet = new Set<string>()
+  positions
+    // Filter out Arbitrum DTFs from available options
+    .filter(position => position.chain !== ChainId.Arbitrum)
+    .forEach((position) => {
+      dtfSet.add(position.symbol)
+    })
+
+  return Array.from(dtfSet).sort()
 })
