@@ -37,7 +37,7 @@ import { NavLink, useLocation } from 'react-router-dom'
 
 const DiscoverItem = () => {
   const { pathname } = useLocation()
-  const isDTF = pathname.includes('dtf') && !pathname.includes('deploy')
+  const isDTF = (pathname.includes('/index-dtf/') || pathname.includes('/token/')) && !pathname.includes('deploy')
 
   return (
     <NavigationMenuItem>

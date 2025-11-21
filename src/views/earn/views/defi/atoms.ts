@@ -4,6 +4,8 @@ import { poolsAtom } from 'state/pools/atoms'
 import { NETWORKS, supportedChainList } from 'utils/constants'
 
 export const poolSearchFilterAtom = atom('')
+
+// Simple atom that works with ChainFilter
 export const poolChainsFilterAtom = atom(
   supportedChainList.map((chain) => chain.toString())
 )

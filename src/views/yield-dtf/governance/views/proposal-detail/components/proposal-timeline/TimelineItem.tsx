@@ -13,7 +13,7 @@ import {
   XOctagon,
   XSquare,
 } from 'lucide-react'
-import { blockTimestampAtom } from 'state/atoms'
+import { blockTimestampAtom, chainIdAtom } from 'state/atoms'
 import { colors } from 'theme'
 import { Box, Progress, Text } from 'theme-ui'
 import { formatDate, parseDuration } from 'utils'
@@ -92,6 +92,7 @@ const TimelineItem = ({
 
 export const TimelineItemCreated = () => {
   const proposal = useAtomValue(proposalDetailAtom)
+  const chainId = useAtomValue(chainIdAtom)
 
   return (
     <TimelineItem
@@ -101,7 +102,7 @@ export const TimelineItemCreated = () => {
       subtitle={
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           <Text>By:</Text>
-          <ExplorerAddress address={proposal?.proposer || ''} chain={1} />
+          <ExplorerAddress address={proposal?.proposer || ''} chain={chainId} />
         </Box>
       }
     />

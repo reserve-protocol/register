@@ -5,16 +5,17 @@ import { Zap } from 'lucide-react'
 
 const Hero = () => (
   <div className="relative">
-    <div className="mx-auto flex flex-col items-center relative max-w-[95em] pt-4 mt-2 md:mt-3 pb-0 px-2 md:px-3">
-      <div className="max-w-[900px] text-center mt-2 md:mt-7">
-        <h1 className="text-[2rem] md:text-[3.5rem] font-bold text-primary leading-9 md:leading-[62px]">
+    <div className="mx-auto flex flex-col items-center relative max-w-[95em] pb-0 px-2 md:px-3">
+      <div className="max-w-[900px] text-center">
+        <h1 className="text-[2rem] md:text-[3.5rem] text-primary leading-9 md:leading-[62px]">
           <Trans>
             Provide liquidity across DeFi & earn more with your DTFs
           </Trans>
         </h1>
-        <p className="text-base md:text-lg text-primary mt-3 md:mt-4 px-2 md:px-0">
+        <p className="text-base md:text-lg mt-3 md:mt-4 px-2 md:px-0">
           <Trans>
-            DeFi yield opportunities for DTFs in Convex, Curve, Yearn & Beefy
+            DeFi yield opportunities for DTFs in Aerodrome, Convex, Beefy, Yearn
+            & Others
           </Trans>
         </p>
       </div>

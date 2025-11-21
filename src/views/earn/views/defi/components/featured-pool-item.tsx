@@ -5,7 +5,7 @@ import StackTokenLogo from 'components/token-logo/StackTokenLogo'
 import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
 import { useMemo } from 'react'
 import { Pool } from 'state/pools/atoms'
-import { PROJECT_ICONS } from '../hooks/useEarnTableColumns'
+import { PROJECT_ICONS } from '../../../hooks/useEarnTableColumns'
 
 const FeaturedPoolItem = ({ pool }: { pool?: Pool }) => {
   const underlyingTokens = useMemo(
