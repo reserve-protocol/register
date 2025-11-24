@@ -13,6 +13,8 @@ import { Address } from 'viem'
 import { filteredVoteLockPositionsAtom } from '../atoms'
 import { VoteLockPosition } from '../hooks/use-vote-lock-positions'
 import TableFilters from './table-filters'
+import { TableRow, TableCell } from '@/components/ui/table'
+import { Skeleton } from '@/components/ui/skeleton'
 
 const useColumns = () => {
   const columnHelper = createColumnHelper<VoteLockPosition>()
@@ -127,6 +129,69 @@ const useColumns = () => {
   }, [])
 }
 
+// Custom loading skeleton that matches the exact structure
+const VoteLockPositionsSkeleton = () => {
+  // Create 5 skeleton rows
+  const skeletonRows = Array.from({ length: 5 }, (_, index) => index)
+
+  return (
+    <>
+      {skeletonRows.map((rowIndex) => (
+        <TableRow key={`skeleton-${rowIndex}`} className="border-none hover:bg-transparent">
+          {/* Gov. Token - Always visible */}
+          <TableCell>
+            <div className="flex items-center gap-3">
+              <div className="relative flex-shrink-0">
+                <Skeleton className="h-10 w-10 rounded-full" /> {/* Token logo */}
+                <Skeleton className="absolute -bottom-1 -right-1 h-4 w-4 rounded-full" /> {/* Chain logo */}
+              </div>
+              <div className="flex flex-col gap-1">
+                <Skeleton className="h-4 w-16" /> {/* Symbol */}
+                <div className="flex items-center gap-1">
+                  <Skeleton className="hidden sm:block h-3 w-3" /> {/* Arrow */}
+                  <Skeleton className="h-3 w-20 sm:w-24" /> {/* stToken symbol */}
+                </div>
+              </div>
+            </div>
+          </TableCell>
+
+          {/* TVL - Hidden on mobile < 420px */}
+          <TableCell className="hidden min-[420px]:table-cell">
+            <div className="flex flex-col gap-1">
+              <Skeleton className="h-4 w-20" /> {/* USD value */}
+              <Skeleton className="h-3 w-16" /> {/* Token amount */}
+            </div>
+          </TableCell>
+
+          {/* Vote locked - Hidden on mobile/tablet < lg */}
+          <TableCell className="hidden lg:table-cell">
+            <div className="flex flex-col gap-1">
+              <Skeleton className="h-4 w-24" /> {/* Balance */}
+              <Skeleton className="h-3 w-20" /> {/* USD value */}
+            </div>
+          </TableCell>
+
+          {/* Governs - Always visible, centered */}
+          <TableCell className="text-center">
+            <div className="flex justify-center">
+              <Skeleton className="h-4 w-32" /> {/* DTF list */}
+            </div>
+          </TableCell>
+
+          {/* Avg. 30d% - Always visible, right-aligned */}
+          <TableCell className="text-right">
+            <div className="flex items-center justify-end gap-1">
+              <Skeleton className="h-4 w-12" /> {/* Percentage */}
+              <Skeleton className="hidden md:inline h-4 w-8" /> {/* APR label */}
+              <Skeleton className="h-4 w-4" /> {/* Arrow */}
+            </div>
+          </TableCell>
+        </TableRow>
+      ))}
+    </>
+  )
+}
+
 const VoteLockPositions = () => {
   const data = useAtomValue(filteredVoteLockPositionsAtom)
   const columns = useColumns()
@@ -164,6 +229,8 @@ const VoteLockPositions = () => {
             data={data || []}
             onRowClick={handleRowClick}
             initialSorting={[{ id: 'apr', desc: true }]}
+            loading={data === undefined}
+            loadingSkeleton={<VoteLockPositionsSkeleton />}
           />
         </div>
       </div>

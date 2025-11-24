@@ -1,4 +1,4 @@
-import { Coins, LockKeyholeOpen, ShieldCheck } from 'lucide-react'
+import { Coins, LockKeyholeOpen, ShieldAlert, ShieldCheck } from 'lucide-react'
 
 const Hero = () => (
   <div className="relative">
@@ -8,9 +8,9 @@ const Hero = () => (
           Stake RSR on Yield DTFs
         </h1>
         <p className="text-base md:text-lg mt-3 md:mt-4 px-2 md:px-0">
-          Use any ERC20 to govern an Index DTF in exchange for a portion of the
-          Mint and TVL fees. There is smart contract risk associated with vote
-          locking your ERC20, but there is no slashing risk associated. 
+          Stake RSR to govern a Yield DTF and protect it from depegging in
+          exchange for a cut of the underlying yield. There is smart contract
+          and slashing risk associated with staking your RSR.
         </p>
       </div>
     </div>
@@ -22,16 +22,16 @@ const Benefits = () => {
     <div className="flex justify-center mt-6">
       <div className="flex items-center gap-6 py-6 flex-wrap px-6 border-t">
         <div className="flex items-center gap-2">
-          <ShieldCheck className="w-4 h-4" />
-          <span>No Slashing Risk</span>
+          <ShieldAlert className="w-4 h-4" />
+          <span>Slashing Risk</span>
         </div>
         <div className="flex items-center gap-2">
           <LockKeyholeOpen className="w-4 h-4" />
-          <span>Always 7-day unlock delays</span>
+          <span>14-day unlock delays</span>
         </div>
         <div className="flex items-center gap-2">
           <Coins className="w-4 h-4" />
-          <span>Payouts in DTF</span>
+          <span>Payouts in RSR</span>
         </div>
       </div>
     </div>

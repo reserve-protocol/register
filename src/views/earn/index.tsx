@@ -4,6 +4,7 @@ import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
 import { useEffect } from 'react'
 import { NavLink, Outlet } from 'react-router-dom'
 import EarnFAQ from './components/earn-faq'
+import RegisterAbout from '../discover/components/yield/components/RegisterAbout'
 
 const EARN_ROUTES = [
   {
@@ -15,7 +16,7 @@ const EARN_ROUTES = [
     path: ROUTES.EARN_YIELD,
   },
   {
-    label: 'Defi Yield',
+    label: 'DeFi Yield',
     path: ROUTES.EARN_DEFI,
   },
 ]

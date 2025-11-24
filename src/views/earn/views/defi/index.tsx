@@ -17,7 +17,6 @@ const EarnDefi = () => {
         <FeaturedPools />
         <DTFDefiEarn />
       </div>
-      <RegisterAbout />
     </>
   )
 }

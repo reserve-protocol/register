@@ -27,7 +27,7 @@ const Benefits = () => {
         </div>
         <div className="flex items-center gap-2">
           <LockKeyholeOpen className="w-4 h-4" />
-          <span>Always 7-day unlock delays</span>
+          <span>7-day unlock delays</span>
         </div>
         <div className="flex items-center gap-2">
           <Coins className="w-4 h-4" />

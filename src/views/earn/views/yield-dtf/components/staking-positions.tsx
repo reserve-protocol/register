@@ -15,6 +15,8 @@ import { Address } from 'viem'
 import { filteredYieldDTFListAtom } from '../atoms'
 import TableFilters from './table-filters'
 import StakeDrawer from '@/components/stake-drawer'
+import { TableRow, TableCell } from '@/components/ui/table'
+import { Skeleton } from '@/components/ui/skeleton'
 
 const useColumns = () => {
   const columnHelper = createColumnHelper<ListedToken>()
@@ -117,6 +119,70 @@ const useColumns = () => {
   }, [rsrPrice])
 }
 
+// Custom loading skeleton that matches the exact structure
+const StakingPositionsSkeleton = () => {
+  // Create 5 skeleton rows
+  const skeletonRows = Array.from({ length: 5 }, (_, index) => index)
+
+  return (
+    <>
+      {skeletonRows.map((rowIndex) => (
+        <TableRow key={`skeleton-${rowIndex}`} className="border-none hover:bg-transparent">
+          {/* Gov. Token (RSR) - Always visible */}
+          <TableCell>
+            <div className="flex items-center gap-3">
+              <div className="relative flex-shrink-0">
+                <Skeleton className="h-10 w-10 rounded-full" /> {/* RSR logo */}
+                <Skeleton className="absolute -bottom-1 -right-1 h-4 w-4 rounded-full" /> {/* Chain logo */}
+              </div>
+              <div className="flex flex-col gap-1">
+                <Skeleton className="h-4 w-8" /> {/* RSR text */}
+                <div className="flex items-center gap-1">
+                  <Skeleton className="hidden sm:block h-3 w-3" /> {/* Arrow */}
+                  <Skeleton className="h-3 w-20 sm:w-24" /> {/* stToken symbol */}
+                </div>
+              </div>
+            </div>
+          </TableCell>
+
+          {/* TVL - Hidden on mobile < 420px */}
+          <TableCell className="hidden min-[420px]:table-cell">
+            <div className="flex flex-col gap-1">
+              <Skeleton className="h-4 w-20" /> {/* USD value */}
+              <Skeleton className="h-3 w-16" /> {/* RSR amount */}
+            </div>
+          </TableCell>
+
+          {/* Staked - Hidden on mobile/tablet < lg */}
+          <TableCell className="hidden lg:table-cell">
+            <div className="flex flex-col gap-1">
+              <Skeleton className="h-4 w-24" /> {/* Balance */}
+              <Skeleton className="h-3 w-20" /> {/* USD value */}
+            </div>
+          </TableCell>
+
+          {/* Governs - Always visible */}
+          <TableCell>
+            <div className="flex items-center gap-1">
+              <Skeleton className="h-6 w-6 rounded-full" /> {/* Token logo */}
+              <Skeleton className="h-4 w-16" /> {/* Symbol */}
+            </div>
+          </TableCell>
+
+          {/* Avg. 30d% - Always visible, right-aligned */}
+          <TableCell className="text-right">
+            <div className="flex items-center justify-end gap-1">
+              <Skeleton className="h-4 w-12" /> {/* Percentage */}
+              <Skeleton className="hidden md:inline h-4 w-8" /> {/* APY label */}
+              <Skeleton className="h-4 w-4" /> {/* Arrow */}
+            </div>
+          </TableCell>
+        </TableRow>
+      ))}
+    </>
+  )
+}
+
 interface StakeDrawerData {
   stToken: Token
   dtf: {
@@ -165,6 +231,8 @@ const StakingPositions = () => {
             data={data || []}
             onRowClick={handleRowClick}
             initialSorting={[{ id: 'stakingApy', desc: true }]}
+            loading={data === undefined}
+            loadingSkeleton={<StakingPositionsSkeleton />}
           />
         </div>
       </div>

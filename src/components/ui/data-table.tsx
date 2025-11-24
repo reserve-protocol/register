@@ -26,6 +26,7 @@ import { Fragment, useMemo, useState } from 'react'
 import React from 'react'
 import { Button } from './button'
 import { ArrowDown, ArrowUp, ChevronLeft, ChevronRight } from 'lucide-react'
+import Spinner from './spinner'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -166,6 +167,8 @@ interface DataTableComponentProps<TData, TValue>
   noResultsClassName?: string
   stickyHeader?: boolean
   initialSorting?: SortingState
+  loading?: boolean
+  loadingSkeleton?: React.ReactNode
 }
 
 const CustomTableRow = ({
@@ -235,6 +238,8 @@ function DataTable<TData, TValue>({
   noResultsClassName,
   stickyHeader = false,
   initialSorting = [],
+  loading = false,
+  loadingSkeleton,
 }: DataTableComponentProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>(initialSorting)
   const [paginationState, setPaginationState] = React.useState<PaginationState>(
@@ -353,20 +358,54 @@ function DataTable<TData, TValue>({
                 )}
               </Fragment>
             ))
+          ) : loading ? (
+            loadingSkeleton || <LoadingSkeleton columns={columns} />
           ) : (
-            <TableRow>
-              <TableCell
-                colSpan={columns.length}
-                className={cn('h-24 text-center', noResultsClassName)}
-              >
-                <div className="my-auto">No results.</div>
-              </TableCell>
-            </TableRow>
+            <NoResultsRow
+              columns={columns}
+              noResultsClassName={noResultsClassName}
+            />
           )}
         </TableBody>
       </Table>
       {pagination && <Pagination table={table} />}
     </div>
+  )
+}
+
+function LoadingSkeleton<TData, TValue>({
+  columns,
+}: {
+  columns: ColumnDef<TData, TValue>[]
+  noResultsClassName?: string
+}) {
+  return (
+    <TableRow>
+      <TableCell colSpan={columns.length} className="h-24 text-center">
+        <div className="flex flex-col items-center justify-center gap-2 text-primary">
+          <Spinner size={24} />
+        </div>
+      </TableCell>
+    </TableRow>
+  )
+}
+
+function NoResultsRow<TData, TValue>({
+  columns,
+  noResultsClassName,
+}: {
+  columns: ColumnDef<TData, TValue>[]
+  noResultsClassName?: string
+}) {
+  return (
+    <TableRow>
+      <TableCell
+        colSpan={columns.length}
+        className={cn('h-24 text-center', noResultsClassName)}
+      >
+        <div className="my-auto">No results.</div>
+      </TableCell>
+    </TableRow>
   )
 }
 
