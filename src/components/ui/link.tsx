@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils'
 
 const Link = React.forwardRef<
   HTMLAnchorElement,
-  React.HTMLAttributes<HTMLAnchorElement>
+  React.AnchorHTMLAttributes<HTMLAnchorElement>
 >(({ className, ...props }, ref) => (
   <a
     ref={ref}

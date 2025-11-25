@@ -1,10 +1,10 @@
 import { useAtomValue } from 'jotai'
 import { filteredPoolsAtom } from '../atoms'
-import PoolsTable from './pools-table'
+import PoolsTable from '@/views/earn/components/pools-table'
 
-const Earn = () => {
+const DTFDefiEarn = () => {
   const data = useAtomValue(filteredPoolsAtom)
   return <PoolsTable data={data} />
 }
 
-export default Earn
+export default DTFDefiEarn

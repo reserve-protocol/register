@@ -23,21 +23,23 @@ import { t, Trans } from '@lingui/macro'
 import {
   ArrowRight,
   ArrowUpRight,
+  BadgePlus,
+  Binoculars,
   Cable,
   Ear,
   Flower,
-  Microscope,
-  BadgePlus,
-  Coins,
-  Binoculars,
+  Landmark,
   LayoutGrid,
+  Microscope,
 } from 'lucide-react'
 import { ReactNode, useMemo } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 
 const DiscoverItem = () => {
   const { pathname } = useLocation()
-  const isDTF = pathname.includes('dtf') && !pathname.includes('deploy')
+  const isDTF =
+    (pathname.includes('/index-dtf/') || pathname.includes('/token/')) &&
+    !pathname.includes('deploy')
 
   return (
     <NavigationMenuItem>
@@ -71,8 +73,8 @@ const AppNavigation = () => {
     () => [
       [
         {
-          label: t`Earn Yield`,
-          icon: <Coins strokeWidth={1.5} size={16} />,
+          label: t`Participate & Earn`,
+          icon: <Landmark strokeWidth={1.5} size={16} />,
           to: ROUTES.EARN,
         },
         {
