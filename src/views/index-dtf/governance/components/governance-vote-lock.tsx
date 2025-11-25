@@ -5,6 +5,7 @@ import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { useAtomValue } from 'jotai'
 import Staking from '../../overview/components/staking'
+import { useVoteLockAPR } from '../../overview/hooks/use-staking-vault-apy'
 
 const Placeholder = () => (
   <div className="rouend-3xl bg-background space-y-6 p-2 rounded-3xl">
@@ -36,6 +37,7 @@ const Placeholder = () => (
 const GovernanceVoteLock = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
+  const apr = useVoteLockAPR()
 
   if (!indexDTF) {
     return <Placeholder />
@@ -53,6 +55,11 @@ const GovernanceVoteLock = () => {
             address={indexDTF.stToken.underlying.address}
             chain={chainId}
           />
+          {apr && (
+            <div className="rounded-full bg-primary/10 border border-primary px-2 py-1 text-primary text-sm font-semibold ml-auto">
+              {Number(apr?.toFixed(2)) > 0 && `${apr?.toFixed(2)}% APR`}
+            </div>
+          )}
         </div>
         <h4 className="text-lg font-bold break-words mb-1">
           Governed by ${indexDTF.stToken.token.symbol}
