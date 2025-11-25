@@ -1,5 +1,26 @@
 [
   {
+    "name": "Aave V3 RLUSD",
+    "id": "saethrlusd",
+    "displaySymbol": "Aave V3 RLUSD",
+    "addresses": {
+      "1": "0xb1e61f452CFcF6609C2F4088EC36B4c8dd1806b5"
+    },
+    "color": "#016AFF",
+    "llamaId": "85fc6934-c94d-4ebe-9c60-66beb363669f",
+    "tokenDistribution": [
+      {
+        "token": "RLUSD",
+        "distribution": 1
+      }
+    ],
+    "description": "Ripple USD deposited and lent out in V3 of Aave. This variable yield is generated from borrower yield and a share of flash loan fees and driven by borrower demand levels.",
+    "protocol": "aavev3",
+    "underlyings": [
+      "rlusd"
+    ]
+  },
+  {
     "name": "Aave V3 USDT",
     "id": "saethusdt",
     "displaySymbol": "Aave V3 USDT",
