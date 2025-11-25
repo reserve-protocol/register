@@ -29,13 +29,14 @@ const Updater = () => {
   const setDelegationLoading = useSetAtom(delegationLoadingAtom)
 
   const { address } = useAccount()
-  const { data: blockNumber } = useBlockNumber({ watch: true })
+  const { data: blockNumber } = useBlockNumber({ watch: true, chainId: stToken?.chainId })
 
   const { data: rsrBalance } = useReadContract({
     address: stToken?.chainId ? RSR_ADDRESS[stToken.chainId] as Address : undefined,
     abi: erc20Abi,
     functionName: 'balanceOf',
     args: address ? [address] : undefined,
+    chainId: stToken?.chainId,
     query: {
       enabled: !!address && !!stToken,
     },
@@ -46,6 +47,7 @@ const Updater = () => {
     abi: erc20Abi,
     functionName: 'balanceOf',
     args: address ? [address] : undefined,
+    chainId: stToken?.chainId,
     query: {
       enabled: !!address && !!stToken,
     },
@@ -55,6 +57,7 @@ const Updater = () => {
     address: stToken?.stToken.address as Address,
     abi: StRSR,
     functionName: 'exchangeRate',
+    chainId: stToken?.chainId,
     query: {
       enabled: !!stToken,
     },
@@ -64,6 +67,7 @@ const Updater = () => {
     address: stToken?.stToken.address as Address,
     abi: StRSR,
     functionName: 'version',
+    chainId: stToken?.chainId,
     query: {
       enabled: !!stToken,
     },
@@ -74,6 +78,7 @@ const Updater = () => {
     abi: StRSRVotes,
     functionName: 'delegates',
     args: address ? [address] : undefined,
+    chainId: stToken?.chainId,
     query: {
       enabled: !!address && !!stToken && version === '3.0.0',
     },

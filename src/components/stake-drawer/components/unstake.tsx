@@ -9,6 +9,7 @@ import {
   unstakeOutputAtom,
   exchangeRateAtom,
 } from '../atoms'
+import { adjustMaxAmount } from '../utils/adjust-max-amount'
 
 const Unstake = () => {
   const stToken = useAtomValue(stTokenAtom)
@@ -19,7 +20,7 @@ const Unstake = () => {
   const exchangeRate = useAtomValue(exchangeRateAtom)
 
   const onMax = () => {
-    onChange(stTokenBalance)
+    onChange(adjustMaxAmount(stTokenBalance))
   }
 
   if (!stToken) {
