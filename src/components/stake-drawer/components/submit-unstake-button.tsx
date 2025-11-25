@@ -1,21 +1,16 @@
-import { Button } from '@/components/ui/button'
+import TransactionButton from '@/components/old/button/TransactionButton'
 import { walletAtom } from '@/state/atoms'
 import { useAtomValue, useSetAtom } from 'jotai'
-import { useEffect } from 'react'
-import {
-  useWaitForTransactionReceipt,
-  useWriteContract,
-} from 'wagmi'
+import { useEffect, useState } from 'react'
+import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
 import { Address } from 'viem'
 import { toast } from 'sonner'
-import Spinner from '@/components/ui/spinner'
 import { safeParseEther } from '@/utils'
 import {
   closeDrawerAtom,
   isValidUnstakeAmountAtom,
   stakingInputAtom,
   stTokenAtom,
-  errorMessageAtom,
 } from '../atoms'
 import StRSR from 'abis/StRSR'
 
@@ -25,25 +20,20 @@ const SubmitUnstakeButton = () => {
   const stakingInput = useAtomValue(stakingInputAtom)
   const isValid = useAtomValue(isValidUnstakeAmountAtom)
   const setCloseDrawer = useSetAtom(closeDrawerAtom)
-  const setErrorMessage = useSetAtom(errorMessageAtom)
+  const [isProcessing, setIsProcessing] = useState(false)
+
+  const amount = stakingInput ? safeParseEther(stakingInput) : 0n
+  const chainId = stToken?.chainId
 
   const {
     writeContract,
-    isPending,
+    isPending: isLoading,
     data: hash,
     error,
   } = useWriteContract()
 
-  const { isSuccess, error: receiptError } = useWaitForTransactionReceipt({
-    hash,
-  })
-
-  const handleUnstake = () => {
-    if (!stToken || !isValid || !stakingInput) return
-
-    setErrorMessage('')
-
-    const amount = safeParseEther(stakingInput)
+  const write = () => {
+    if (!stToken || !isValid || amount === 0n) return
 
     writeContract({
       address: stToken.stToken.address as Address,
@@ -54,80 +44,68 @@ const SubmitUnstakeButton = () => {
     })
   }
 
+  const { data: receipt, error: txError } = useWaitForTransactionReceipt({
+    hash,
+    chainId,
+  })
+
   useEffect(() => {
-    if (isSuccess) {
+    if (receipt?.status === 'success') {
+      setIsProcessing(true)
       toast.success('Unstaking initiated! You can withdraw your RSR after the delay period.')
-      setCloseDrawer(true)
+      const timer = setTimeout(() => {
+        setCloseDrawer(true)
+        setIsProcessing(false)
+      }, 3000)
+
+      return () => clearTimeout(timer)
     }
-  }, [isSuccess, setCloseDrawer])
+  }, [receipt, setCloseDrawer])
 
-  useEffect(() => {
-    setErrorMessage('')
-  }, [stakingInput, setErrorMessage])
-
-  const extractErrorMessage = (error: any): string => {
-    if (!error) return ''
-
-    const errorString = error.toString()
-
-    if (errorString.includes('User rejected')) {
-      return 'Transaction was rejected'
-    }
-    if (errorString.includes('insufficient funds')) {
-      return 'Insufficient funds for gas'
-    }
-
-    const revertMatch = errorString.match(/reverted with the following reason:\s*([^\.]+)/);
-    if (revertMatch) {
-      return revertMatch[1].trim()
-    }
-
-    const reasonMatch = errorString.match(/reason="([^"]+)"/)
-    if (reasonMatch) {
-      return reasonMatch[1]
-    }
-
-    return 'Transaction failed. Please try again'
-  }
-
-  useEffect(() => {
-    const errorToShow = error || receiptError
-    if (errorToShow) {
-      setErrorMessage(extractErrorMessage(errorToShow))
-    }
-  }, [error, receiptError, setErrorMessage])
-
-  const getButtonState = () => {
+  // Button text logic
+  const getButtonText = () => {
     if (!wallet) {
-      return { disabled: true, label: 'Connect wallet' }
+      return 'Connect wallet'
     }
 
     if (!isValid) {
-      return { disabled: true, label: 'Enter valid amount' }
+      return 'Enter valid amount'
     }
 
-    if (isPending) {
-      return { disabled: true, label: 'Unstaking...', loading: true }
+    if (receipt?.status === 'success') {
+      return 'Transaction confirmed'
     }
 
-    if (hash && !isSuccess && !receiptError) {
-      return { disabled: true, label: 'Confirming...', loading: true }
-    }
-
-    return { disabled: false, label: 'Unstake' }
+    return 'Unstake'
   }
 
-  const { disabled, label, loading } = getButtonState()
-
   return (
-    <Button
-      className="w-full h-12"
-      disabled={disabled}
-      onClick={handleUnstake}
-    >
-      {loading && <Spinner className="mr-2" />}
-      {label}
-    </Button>
+    <div>
+      <TransactionButton
+        chain={chainId}
+        disabled={
+          !wallet ||
+          !isValid ||
+          receipt?.status === 'success' ||
+          amount === 0n
+        }
+        loading={
+          isProcessing ||
+          (!receipt && (isLoading || !!hash || (hash && !receipt)))
+        }
+        loadingText={
+          isProcessing
+            ? 'Processing transaction...'
+            : !!hash
+              ? 'Confirming tx...'
+              : 'Pending, sign in wallet'
+        }
+        onClick={write}
+        text={getButtonText()}
+        fullWidth
+        error={error || txError}
+      />
+    </div>
   )
 }
 

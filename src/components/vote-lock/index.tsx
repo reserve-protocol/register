@@ -1,4 +1,9 @@
-import { Provider as AtomProvider, useSetAtom, useAtom, useAtomValue } from 'jotai'
+import {
+  Provider as AtomProvider,
+  useSetAtom,
+  useAtom,
+  useAtomValue,
+} from 'jotai'
 import { useResetAtom } from 'jotai/utils'
 import { ReactNode, useEffect, useState } from 'react'
 import {
@@ -36,7 +41,9 @@ import {
 } from './atoms'
 import VoteLock from './components/vote-lock'
 import VoteUnlock from './components/vote-unlock'
-import SubmitLockButton, { DelegateButton } from './components/submit-lock-button'
+import SubmitLockButton, {
+  DelegateButton,
+} from './components/submit-lock-button'
 import SubmitUnlockButton from './components/submit-unlock-button'
 import Updater from './updater'
 
@@ -190,7 +197,7 @@ const VoteLockDrawerInner = ({
   open: controlledOpen,
   onOpenChange: controlledOnOpenChange,
   onClose,
-  children
+  children,
 }: VoteLockDrawerProps) => {
   const wallet = useAtomValue(walletAtom)
   const [currentTab, setCurrentTab] = useAtom(currentStakingTabAtom)
@@ -251,10 +258,7 @@ const VoteLockDrawerInner = ({
         }}
       >
         {!!children && (
-          <DrawerTrigger
-            asChild
-            onClick={() => onOpenChange(true)}
-          >
+          <DrawerTrigger asChild onClick={() => onOpenChange(true)}>
             {children}
           </DrawerTrigger>
         )}
@@ -321,11 +325,7 @@ export interface VoteLockDrawerProps {
 }
 
 const VoteLockDrawer = (props: VoteLockDrawerProps) => {
-  return (
-    <AtomProvider>
-      <VoteLockDrawerInner {...props} />
-    </AtomProvider>
-  )
+  return <VoteLockDrawerInner {...props} />
 }
 
 export default VoteLockDrawer

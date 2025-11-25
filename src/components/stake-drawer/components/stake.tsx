@@ -9,6 +9,7 @@ import {
   stakeOutputAtom,
   inputPriceAtom,
 } from '../atoms'
+import { adjustMaxAmount } from '../utils/adjust-max-amount'
 
 const Stake = () => {
   const stToken = useAtomValue(stTokenAtom)
@@ -19,7 +20,7 @@ const Stake = () => {
   const inputUsdValue = useAtomValue(inputPriceAtom)
 
   const onMax = () => {
-    onChange(rsrBalance)
+    onChange(adjustMaxAmount(rsrBalance))
   }
 
   if (!stToken) {

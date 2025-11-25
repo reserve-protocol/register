@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/button'
+import TransactionButton from '@/components/old/button/TransactionButton'
 import { walletAtom } from '@/state/atoms'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useState } from 'react'
@@ -10,7 +10,6 @@ import {
 } from 'wagmi'
 import { Address, isAddress } from 'viem'
 import { toast } from 'sonner'
-import Spinner from '@/components/ui/spinner'
 import { safeParseEther } from '@/utils'
 import {
   closeDrawerAtom,
@@ -21,7 +20,6 @@ import {
   currentDelegateAtom,
   isLegacyAtom,
   unstakeCheckboxAtom,
-  errorMessageAtom,
   delegationLoadingAtom,
 } from '../atoms'
 import { RSR_ADDRESS } from '@/utils/addresses'
@@ -39,63 +37,46 @@ const SubmitStakeButton = () => {
   const currentDelegate = useAtomValue(currentDelegateAtom)
   const isLegacy = useAtomValue(isLegacyAtom)
   const checkbox = useAtomValue(unstakeCheckboxAtom)
-  const setErrorMessage = useSetAtom(errorMessageAtom)
   const delegationLoading = useAtomValue(delegationLoadingAtom)
   const { address } = useAccount()
   const [hasApprovedOnce, setHasApprovedOnce] = useState(false)
+  const [isProcessing, setIsProcessing] = useState(false)
 
   const amount = stakingInput ? safeParseEther(stakingInput) : 0n
   const needsValidDelegate = !isLegacy && delegate !== currentDelegate
   const isValidDelegate = !needsValidDelegate || (delegate && isAddress(delegate, { strict: false }))
+  const chainId = stToken?.chainId
 
   // Check RSR allowance
-  const { data: allowance, refetch: refetchAllowance } = useReadContract({
+  const {
+    data: allowance,
+    refetch: refetchAllowance,
+    isLoading: validatingAllowance
+  } = useReadContract({
     address: stToken?.chainId ? RSR_ADDRESS[stToken.chainId] as Address : undefined,
     abi: erc20Abi,
     functionName: 'allowance',
     args: address && stToken ? [address, stToken.stToken.address as Address] : undefined,
+    chainId,
     query: {
-      enabled: !!address && !!stToken,
+      enabled: !!address && !!stToken && isValid && checkbox,
     },
   })
 
-  const needsApproval = allowance !== undefined && amount > 0n && allowance < amount
+  const hasAllowance = (allowance || 0n) >= amount
 
   // Approve transaction
   const {
-    writeContract: approve,
-    isPending: isApproving,
-    data: approveHash,
-    error: approveError,
+    writeContract: writeApprove,
+    isPending: approving,
+    data: approvalHash,
+    error: approvalError,
   } = useWriteContract()
 
-  const {
-    isSuccess: isApproved,
-    error: approveReceiptError
-  } = useWaitForTransactionReceipt({
-    hash: approveHash,
-  })
+  const approve = () => {
+    if (!stToken || amount === 0n || hasAllowance) return
 
-  // Stake transaction
-  const {
-    writeContract: stake,
-    isPending: isStaking,
-    data: stakeHash,
-    error: stakeError,
-  } = useWriteContract()
-
-  const {
-    isSuccess: isStaked,
-    error: stakeReceiptError
-  } = useWaitForTransactionReceipt({
-    hash: stakeHash,
-  })
-
-  const handleApprove = () => {
-    if (!stToken || amount === 0n) return
-
-    setErrorMessage('')
-    approve({
+    writeApprove({
       address: RSR_ADDRESS[stToken.chainId] as Address,
       abi: erc20Abi,
       functionName: 'approve',
@@ -104,15 +85,31 @@ const SubmitStakeButton = () => {
     })
   }
 
-  const handleStake = () => {
-    if (!stToken || !isValid || delegationLoading || !delegate) return
+  const {
+    data: approvalReceipt,
+    error: approvalTxError
+  } = useWaitForTransactionReceipt({
+    hash: approvalHash,
+    chainId,
+  })
 
-    setErrorMessage('')
+  const readyToSubmit = hasAllowance || approvalReceipt?.status === 'success'
+
+  // Stake transaction
+  const {
+    writeContract,
+    isPending: isLoading,
+    data: hash,
+    error,
+  } = useWriteContract()
+
+  const write = () => {
+    if (!stToken || !readyToSubmit || !isValid || delegationLoading || !delegate) return
 
     const shouldUseStakeAndDelegate = !isLegacy && delegate !== currentDelegate
 
     if (shouldUseStakeAndDelegate) {
-      stake({
+      writeContract({
         address: stToken.stToken.address as Address,
         abi: StRSRVotes,
         functionName: 'stakeAndDelegate',
@@ -120,7 +117,7 @@ const SubmitStakeButton = () => {
         chainId: stToken.chainId,
       })
     } else {
-      stake({
+      writeContract({
         address: stToken.stToken.address as Address,
         abi: StRSR,
         functionName: 'stake',
@@ -130,119 +127,106 @@ const SubmitStakeButton = () => {
     }
   }
 
-  useEffect(() => {
-    setErrorMessage('')
-  }, [stakingInput, setErrorMessage])
+  const { data: receipt, error: txError } = useWaitForTransactionReceipt({
+    hash,
+    chainId,
+  })
 
   useEffect(() => {
-    if (isApproved) {
+    if (approvalReceipt?.status === 'success') {
       setHasApprovedOnce(true)
       refetchAllowance()
     }
-  }, [isApproved, refetchAllowance])
+  }, [approvalReceipt, refetchAllowance])
 
   useEffect(() => {
-    if (isStaked) {
+    if (receipt?.status === 'success') {
+      setIsProcessing(true)
       toast.success('RSR staked successfully!')
-      setCloseDrawer(true)
+      const timer = setTimeout(() => {
+        setCloseDrawer(true)
+        setIsProcessing(false)
+      }, 3000)
+
+      return () => clearTimeout(timer)
     }
-  }, [isStaked, setCloseDrawer])
+  }, [receipt, setCloseDrawer])
 
-  const extractErrorMessage = (error: any): string => {
-    if (!error) return ''
-
-    const errorString = error.toString()
-
-    if (errorString.includes('User rejected')) {
-      return 'Transaction was rejected'
-    }
-    if (errorString.includes('insufficient funds')) {
-      return 'Insufficient funds for gas'
-    }
-
-    const revertMatch = errorString.match(/reverted with the following reason:\s*([^\.]+)/)
-    if (revertMatch) {
-      return revertMatch[1].trim()
-    }
-
-    const reasonMatch = errorString.match(/reason="([^"]+)"/)
-    if (reasonMatch) {
-      return reasonMatch[1]
-    }
-
-    return 'Transaction failed. Please try again'
-  }
-
-  useEffect(() => {
-    const errorToShow = approveError || approveReceiptError || stakeError || stakeReceiptError
-    if (errorToShow) {
-      setErrorMessage(extractErrorMessage(errorToShow))
-    }
-  }, [approveError, approveReceiptError, stakeError, stakeReceiptError, setErrorMessage])
-
-  const getButtonState = () => {
+  // Button text logic
+  const getButtonText = () => {
     if (!wallet) {
-      return { disabled: true, label: 'Connect wallet' }
+      return 'Connect wallet'
     }
 
     if (delegationLoading) {
-      return { disabled: true, label: 'Loading...', loading: true }
+      return 'Loading...'
     }
 
     if (!isValid) {
-      return { disabled: true, label: 'Enter valid amount' }
+      return 'Enter valid amount'
     }
 
     if (!checkbox) {
-      return { disabled: true, label: 'Accept unstake delay' }
+      return 'Accept unstake delay'
     }
 
     if (needsValidDelegate && !isValidDelegate) {
-      return { disabled: true, label: 'Invalid delegate address' }
+      return 'Invalid delegate address'
     }
 
-    if (isApproving) {
-      return { disabled: true, label: 'Approving RSR...', loading: true }
+    if (receipt?.status === 'success') {
+      return 'Transaction confirmed'
     }
 
-    if (approveHash && !isApproved && !approveReceiptError) {
-      return { disabled: true, label: 'Confirming approval...', loading: true }
+    if (readyToSubmit) {
+      return 'Stake RSR'
     }
 
-    if (needsApproval && !hasApprovedOnce) {
-      return { disabled: false, label: 'Approve RSR' }
-    }
-
-    if (isStaking) {
-      return { disabled: true, label: 'Staking...', loading: true }
-    }
-
-    if (stakeHash && !isStaked && !stakeReceiptError) {
-      return { disabled: true, label: 'Confirming stake...', loading: true }
-    }
-
-    return { disabled: false, label: 'Stake RSR' }
-  }
-
-  const { disabled, label, loading } = getButtonState()
-
-  const handleClick = () => {
-    if (needsApproval && !hasApprovedOnce) {
-      handleApprove()
-    } else {
-      handleStake()
-    }
+    return 'Approve RSR'
   }
 
   return (
-    <Button
-      className="w-full h-12"
-      disabled={disabled}
-      onClick={handleClick}
-    >
-      {loading && <Spinner className="mr-2" />}
-      {label}
-    </Button>
+    <div>
+      <TransactionButton
+        chain={chainId}
+        disabled={
+          !wallet ||
+          delegationLoading ||
+          !isValid ||
+          !checkbox ||
+          (needsValidDelegate && !isValidDelegate) ||
+          receipt?.status === 'success' ||
+          amount === 0n
+        }
+        loading={
+          isProcessing ||
+          (!receipt &&
+            (readyToSubmit
+              ? isLoading || !!hash || (hash && !receipt)
+              : approving ||
+                !!approvalHash ||
+                validatingAllowance ||
+                (approvalHash && !approvalReceipt)))
+        }
+        loadingText={
+          isProcessing
+            ? 'Processing transaction...'
+            : !!hash
+              ? 'Confirming tx...'
+              : !!approvalHash
+                ? 'Confirming approval...'
+                : 'Pending, sign in wallet'
+        }
+        onClick={readyToSubmit ? write : approve}
+        text={getButtonText()}
+        fullWidth
+        error={
+          readyToSubmit
+            ? error || txError
+            : approvalError || approvalTxError
+        }
+      />
+    </div>
   )
 }
 
