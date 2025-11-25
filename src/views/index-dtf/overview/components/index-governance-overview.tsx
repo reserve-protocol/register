@@ -17,6 +17,7 @@ import { Link } from 'react-router-dom'
 import { InnerGovernanceInfo } from '../../settings/components/index-settings-governance'
 import { useVoteLockAPR } from '../hooks/use-staking-vault-apy'
 import Staking from './staking'
+import RSRBNBHelp from '../../governance/components/rsr-bnb-help'
 
 const Container = ({ children }: { children: React.ReactNode }) => {
   const dtf = useAtomValue(indexDTFAtom)
@@ -146,6 +147,7 @@ const IndexGovernanceOverview = () => {
           <OpenLockDrawerButton onClick={openConnectModal} />
         )}
       </div>
+      <RSRBNBHelp className="px-2 border-t pt-6 mt-6" />
       <Separator className="my-6" />
       <InnerGovernanceInfo kind="trading" className="[&>*]:px-0 px-2 -mt-3" />
       <ViewNonBasketGovernanceButton />

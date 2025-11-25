@@ -6,6 +6,7 @@ import { indexDTFAtom } from '@/state/dtf/atoms'
 import { useAtomValue } from 'jotai'
 import Staking from '../../overview/components/staking'
 import { useVoteLockAPR } from '../../overview/hooks/use-staking-vault-apy'
+import RSRBNBHelp from './rsr-bnb-help'
 
 const Placeholder = () => (
   <div className="rouend-3xl bg-background space-y-6 p-2 rounded-3xl">
@@ -85,6 +86,8 @@ const GovernanceVoteLock = () => {
           </span>
         </Button>
       </Staking>
+
+      <RSRBNBHelp className="p-4" />
     </div>
   )
 }
