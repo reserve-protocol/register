@@ -39,6 +39,7 @@ import {
   accountTokenPricesAtom,
   accountUnclaimedLocksAtom,
   portfolioLastUpdatedAtom,
+  portfolioLoadingAtom,
   portfolioRefreshFnAtom,
   portfolioShowRewardsAtom,
   portfolioSidebarOpenAtom,
@@ -530,6 +531,7 @@ const PORTFOLIO_TABS: { value: PortfolioTabs; label: string }[] = [
 const PortfolioContent = () => {
   const [selectedTab, setSelectedTab] = useAtom(selectedPortfolioTabAtom)
   const [isSticky, setIsSticky] = useState(false)
+  const portfolioLoading = useAtomValue(portfolioLoadingAtom)
   // hack for rainbow wallet modal
   const observerTarget = useRef(null)
 
@@ -549,6 +551,23 @@ const PortfolioContent = () => {
       observer.disconnect()
     }
   }, [])
+
+  if (portfolioLoading) {
+    return (
+      <Card className="flex h-full w-full flex-col overflow-auto">
+        <PortfolioSummary />
+        <div className="px-6 space-y-8">
+          <Skeleton className="h-7 w-full" />
+          <Skeleton className="h-7 w-32" />
+          <div className="flex flex-col gap-4">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <Skeleton key={i} className="h-12 w-full" />
+            ))}
+          </div>
+        </div>
+      </Card>
+    )
+  }
 
   return (
     <Card className="flex h-full w-full flex-col overflow-auto">
