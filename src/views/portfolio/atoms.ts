@@ -45,6 +45,17 @@ export const indexDTFIconsAtom = atom<Record<number, Record<string, string>>>(
 )
 export const portfolioLastUpdatedAtom = atom<number>(0)
 export const portfolioRefreshFnAtom = atom<(() => void) | null>(null)
+export const portfolioLoadingAtom = atom(false)
+
+export const resetPortfolioAtom = atom(null, (_, set) => {
+  set(accountIndexTokensAtom, [])
+  set(accountStakingTokensAtom, [])
+  set(accountUnclaimedLocksAtom, [])
+  set(accountTokenPricesAtom, {})
+  set(rsrBalancesAtom, {})
+  set(accountRewardsAtom, {})
+  set(portfolioLoadingAtom, true)
+})
 
 export const indexAccountHoldingsAtom = atom<number>((get) => {
   const indexTokens = get(accountIndexTokensAtom)
