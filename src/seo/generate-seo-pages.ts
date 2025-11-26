@@ -1,0 +1,187 @@
+/**
+ * Post-build script to generate SEO-optimized HTML pages for featured tokens
+ *
+ * Run after vite build: npx tsx src/seo/generate-seo-pages.ts
+ */
+
+import * as fs from 'fs'
+import * as path from 'path'
+import { fileURLToPath } from 'url'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
+interface SEOToken {
+  type: 'index-dtf'
+  chain: string
+  chainId: number
+  address: string
+  symbol: string
+  name: string
+  description: string
+  image: string
+}
+
+interface FeaturedTokensData {
+  generatedAt: string
+  tokens: SEOToken[]
+}
+
+const BUILD_DIR = path.join(__dirname, '../../build')
+const FEATURED_TOKENS_PATH = path.join(__dirname, 'featured-tokens.json')
+const BASE_URL = 'https://app.reserve.org'
+
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+}
+
+function generateMetaTags(token: SEOToken, fullUrl: string): string {
+  const title = `${token.symbol} - ${token.name} | Reserve Protocol`
+  const description = escapeHtml(token.description)
+  const image = token.image
+
+  return `
+    <!-- SEO Meta Tags - Generated for ${token.symbol} -->
+    <title>${escapeHtml(title)}</title>
+    <meta name="title" content="${escapeHtml(title)}" />
+    <meta name="description" content="${description}" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="${fullUrl}" />
+    <meta property="og:title" content="${escapeHtml(title)}" />
+    <meta property="og:description" content="${description}" />
+    <meta property="og:image" content="${image}" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="${fullUrl}" />
+    <meta name="twitter:title" content="${escapeHtml(title)}" />
+    <meta name="twitter:description" content="${description}" />
+    <meta name="twitter:image" content="${image}" />`
+}
+
+function replaceMetaTags(html: string, token: SEOToken, fullUrl: string): string {
+  // Find the position after <head> and before the first script/link
+  const headMatch = html.match(/<head[^>]*>/i)
+  if (!headMatch) {
+    console.error('Could not find <head> tag in HTML')
+    return html
+  }
+
+  const headEndPos = (headMatch.index ?? 0) + headMatch[0].length
+
+  // Remove existing meta tags that we'll replace
+  let modifiedHtml = html
+    // Remove existing title
+    .replace(/<title>[^<]*<\/title>/i, '')
+    // Remove existing meta description
+    .replace(/<meta\s+name="description"[^>]*>/gi, '')
+    .replace(/<meta\s+name="title"[^>]*>/gi, '')
+    // Remove existing og: tags
+    .replace(/<meta\s+property="og:[^"]*"[^>]*>/gi, '')
+    // Remove existing twitter: tags
+    .replace(/<meta\s+property="twitter:[^"]*"[^>]*>/gi, '')
+    .replace(/<meta\s+name="twitter:[^"]*"[^>]*>/gi, '')
+
+  // Insert new meta tags after <head>
+  const newHeadMatch = modifiedHtml.match(/<head[^>]*>/i)
+  if (newHeadMatch) {
+    const insertPos = (newHeadMatch.index ?? 0) + newHeadMatch[0].length
+    const newMetaTags = generateMetaTags(token, fullUrl)
+    modifiedHtml =
+      modifiedHtml.slice(0, insertPos) +
+      newMetaTags +
+      modifiedHtml.slice(insertPos)
+  }
+
+  return modifiedHtml
+}
+
+function generateRedirectsContent(tokens: SEOToken[]): string {
+  const lines: string[] = [
+    '# Auto-generated SEO redirects',
+    '# Do not edit manually - run npm run generate-seo to regenerate',
+    '',
+  ]
+
+  for (const token of tokens) {
+    const basePath = `/${token.chain}/index-dtf/${token.address}`
+    lines.push(
+      `${basePath}/*  ${basePath}/index.html  200`
+    )
+  }
+
+  lines.push('')
+  lines.push('# Default SPA fallback (must be last)')
+  lines.push('/*  /index.html  200')
+  lines.push('')
+
+  return lines.join('\n')
+}
+
+async function main() {
+  console.log('Generating SEO pages...\n')
+
+  // Check if build directory exists
+  if (!fs.existsSync(BUILD_DIR)) {
+    console.error(`Build directory not found: ${BUILD_DIR}`)
+    console.error('Run "npm run build" first (without SEO generation)')
+    process.exit(1)
+  }
+
+  // Read the base index.html
+  const baseHtmlPath = path.join(BUILD_DIR, 'index.html')
+  if (!fs.existsSync(baseHtmlPath)) {
+    console.error(`Base index.html not found: ${baseHtmlPath}`)
+    process.exit(1)
+  }
+  const baseHtml = fs.readFileSync(baseHtmlPath, 'utf-8')
+
+  // Read featured tokens
+  if (!fs.existsSync(FEATURED_TOKENS_PATH)) {
+    console.error(`Featured tokens not found: ${FEATURED_TOKENS_PATH}`)
+    console.error('Run "npm run generate-seo-tokens" first')
+    process.exit(1)
+  }
+  const tokensData: FeaturedTokensData = JSON.parse(
+    fs.readFileSync(FEATURED_TOKENS_PATH, 'utf-8')
+  )
+
+  console.log(`Found ${tokensData.tokens.length} tokens to process\n`)
+
+  // Generate HTML pages for each token
+  for (const token of tokensData.tokens) {
+    const tokenDir = path.join(BUILD_DIR, token.chain, 'index-dtf', token.address)
+    const tokenHtmlPath = path.join(tokenDir, 'index.html')
+    const fullUrl = `${BASE_URL}/${token.chain}/index-dtf/${token.address}`
+
+    // Create directory
+    fs.mkdirSync(tokenDir, { recursive: true })
+
+    // Generate modified HTML
+    const modifiedHtml = replaceMetaTags(baseHtml, token, fullUrl)
+
+    // Write HTML file
+    fs.writeFileSync(tokenHtmlPath, modifiedHtml)
+
+    console.log(`  ✓ ${token.symbol} → ${token.chain}/index-dtf/${token.address}/index.html`)
+  }
+
+  // Generate _redirects file
+  const redirectsContent = generateRedirectsContent(tokensData.tokens)
+  const redirectsPath = path.join(BUILD_DIR, '_redirects')
+  fs.writeFileSync(redirectsPath, redirectsContent)
+
+  console.log(`\n  ✓ Generated _redirects with ${tokensData.tokens.length} token routes`)
+  console.log(`\n✅ SEO pages generated successfully!`)
+}
+
+main().catch((error) => {
+  console.error('Error generating SEO pages:', error)
+  process.exit(1)
+})

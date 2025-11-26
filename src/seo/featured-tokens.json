@@ -1,0 +1,205 @@
+{
+  "generatedAt": "2025-11-26T21:55:03.282Z",
+  "tokens": [
+    {
+      "type": "index-dtf",
+      "chain": "ethereum",
+      "chainId": 1,
+      "address": "0x4e3b170dcbe704b248df5f56d488114ace01b1c5",
+      "symbol": "BED",
+      "name": "BTC ETH DCA Index",
+      "description": "You can set it and go to BED. An equal weighted basket of BTC and ETH aimed to DCA into each constituent through monthly rebalancing and earn additional yield through lending into high-quality, low-risk isolated risk money markets. A good night’s sleep.",
+      "image": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxMTU5lPoRix5rWy10MU6N3YbuCjQ2hleoTVF4"
+    },
+    {
+      "type": "index-dtf",
+      "chain": "ethereum",
+      "chainId": 1,
+      "address": "0x188d12eb13a5eadd0867074ce8354b1ad6f4790b",
+      "symbol": "DFX",
+      "name": "CoinDesk DeFi Select Index",
+      "description": "The CoinDesk DeFi Select Index DTF tracks the CoinDesk DeFi Select Index (DFX), designed to measure the market capitalization weighted performance of some of the largest and most liquid digital assets classified in the Decentralized Finance (“DeFi”) Sector that meet certain trading and custody requirements.",
+      "image": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXx5V0tDlhN1x8WsPzKQYEGuJwIpDVehmXl4fqM"
+    },
+    {
+      "type": "index-dtf",
+      "chain": "ethereum",
+      "chainId": 1,
+      "address": "0x9a1741e151233a82cf69209a2f1bc7442b1fb29c",
+      "symbol": "DGI",
+      "name": "DeFi Growth Index",
+      "description": "The DeFi Growth Index tracks the performance of early-stage DeFi projects that demonstrate innovative mechanisms and established market demand, with strong potential for significant growth in user base, transaction volume, and/or Total Value Locked (TVL) as relevant. This is achieved through a curated portfolio of tokens native to these projects.",
+      "image": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxx5Z4pEnKa2RzUWur86ESst14dTH3KhC5mobY"
+    },
+    {
+      "type": "index-dtf",
+      "chain": "ethereum",
+      "chainId": 1,
+      "address": "0x20d81101d254729a6e689418526be31e2c544290",
+      "symbol": "mvDEFI",
+      "name": "Large Cap DeFi Index",
+      "description": "This index tracks a curated basket of tokens from core DeFi sectors—including lending/borrowing protocols, decentralized exchanges, stablecoin issuers, yield aggregators, and other smart contract-based financial primitives.",
+      "image": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxEPb8hIqGL3YqrVoxUsP7zikIh9mNaO4QBTy8"
+    },
+    {
+      "type": "index-dtf",
+      "chain": "ethereum",
+      "chainId": 1,
+      "address": "0xa5cdea03b11042fc10b52af9eca48bb17a2107d2",
+      "symbol": "mvRWA",
+      "name": "RWA Index",
+      "description": "An index exclusively tracking governance tokens of protocols that bring real-world assets (e.g. T-bills, corporate debt, commodities) onto the blockchain, emphasizing credible tokenization, verifiable collateral, and regulatory clarity upheld by audits or attestations.",
+      "image": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxHWjFtoZo73hGVUOQXrem4RS6TkLaNEnPwBxz"
+    },
+    {
+      "type": "index-dtf",
+      "chain": "ethereum",
+      "chainId": 1,
+      "address": "0x323c03c48660fe31186fa82c289b0766d331ce21",
+      "symbol": "OPEN",
+      "name": "Open Stablecoin Index",
+      "description": "Open Stablecoin Index is an equal-weight index tracking leading stablecoin-networks advancing transparency, composability, and user-led governance. Included protocols should be evaluated on verifiable asset-backing, peg design, mint/redeem logic, safety mechanisms, yield-sharing, and decentralized control.",
+      "image": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxqD7AIQfxfH57h2mseoNual3tKBRCYyvnS1E8"
+    },
+    {
+      "type": "index-dtf",
+      "chain": "ethereum",
+      "chainId": 1,
+      "address": "0xf91384484f4717314798e8975bcd904a35fc2bf1",
+      "symbol": "SMEL",
+      "name": "Imagine The SMEL",
+      "description": "Reserve is the leading platform for permissionless DTFs and asset-backed currencies. Create, manage & trade tokenized indexes with 24/7 transparency.",
+      "image": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxxi581ZKa2RzUWur86ESst14dTH3KhC5mobYj"
+    },
+    {
+      "type": "index-dtf",
+      "chain": "bsc",
+      "chainId": 56,
+      "address": "0x2f8a339b5889ffac4c5a956787cda593b3c36867",
+      "symbol": "CMC20",
+      "name": "CoinMarketCap 20 Index DTF",
+      "description": "Reserve is the leading platform for permissionless DTFs and asset-backed currencies. Create, manage & trade tokenized indexes with 24/7 transparency.",
+      "image": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxhO6t9I2BbMt4sV2Y6jmzwPSZ3Hrav0gfieuo"
+    },
+    {
+      "type": "index-dtf",
+      "chain": "base",
+      "chainId": 8453,
+      "address": "0xebcda5b80f62dd4dd2a96357b42bb6facbf30267",
+      "symbol": "ABX",
+      "name": "Alpha Base Index",
+      "description": "The Alpha Base Index is a DAO-governed DTF, curating the top alpha Base projects with the highest risk-adjusted growth potential, leveraging the collective intelligence of the Base Trenches to identify market opportunities.",
+      "image": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxqxCVXk7fxfH57h2mseoNual3tKBRCYyvnS1E"
+    },
+    {
+      "type": "index-dtf",
+      "chain": "base",
+      "chainId": 8453,
+      "address": "0xfe45eda533e97198d9f3deeda9ae6c147141f6f9",
+      "symbol": "AI",
+      "name": "AIndex",
+      "description": "AIndex aims to provide users with diversified exposure to the top-performing AI agents and AI infrastructure projects. By leveraging the Base blockchain ecosystem, AIndex offers a carefully curated and balanced index of AI-focused tokens, allowing holders to benefit from the growth of AI technology and infrastructure while minimizing individual project risk.",
+      "image": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxYAFIGckGhrj2ScsDNeUp3lRftPgCi0ZM65Vz"
+    },
+    {
+      "type": "index-dtf",
+      "chain": "base",
+      "chainId": 8453,
+      "address": "0xb8753941196692e322846cfee9c14c97ac81928a",
+      "symbol": "BDTF",
+      "name": "Base MemeIndexer DTF",
+      "description": "Reserve is the leading platform for permissionless DTFs and asset-backed currencies. Create, manage & trade tokenized indexes with 24/7 transparency.",
+      "image": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxHVRL2EZo73hGVUOQXrem4RS6TkLaNEnPwBxz"
+    },
+    {
+      "type": "index-dtf",
+      "chain": "base",
+      "chainId": 8453,
+      "address": "0x23418de10d422ad71c9d5713a2b8991a9c586443",
+      "symbol": "BGCI",
+      "name": "Bloomberg Galaxy Crypto Index",
+      "description": "The Bloomberg Galaxy Crypto Index DTF tracks the Bloomberg Galaxy Crypto Index (“BGCI”). The BGCI is a benchmark designed to measure the performance of the largest cryptocurrencies by market capitalization traded in USD. The Index is owned and administered by Bloomberg and co-branded with Galaxy Digital Capital Management.\n\nIndex constituents are selected based on qualified exchange and daily liquidity qualifications set forth by BGCI rules. Each constituent represents a holding no more than 35% of the Index and no less than 1% of the Index’s overall value. Cryptocurrencies are considered for addition/removal to/from the Index on a monthly basis.",
+      "image": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxatO12rMDmcrOHpGTwz5KhD49x3ZgtblqPMsQ"
+    },
+    {
+      "type": "index-dtf",
+      "chain": "base",
+      "chainId": 8453,
+      "address": "0xf8ef6e785473e82527908b06023ac3e401ccfdcd",
+      "symbol": "CLUB",
+      "name": "Club Night DTF",
+      "description": "Reserve is the leading platform for permissionless DTFs and asset-backed currencies. Create, manage & trade tokenized indexes with 24/7 transparency.",
+      "image": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxEIICJFnqGL3YqrVoxUsP7zikIh9mNaO4QBTy"
+    },
+    {
+      "type": "index-dtf",
+      "chain": "base",
+      "chainId": 8453,
+      "address": "0x44551ca46fa5592bb572e20043f7c3d54c85cad7",
+      "symbol": "CLX",
+      "name": "Clanker Index",
+      "description": "Reserve is the leading platform for permissionless DTFs and asset-backed currencies. Create, manage & trade tokenized indexes with 24/7 transparency.",
+      "image": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxBA9RFeT4H9uivWURqQkxfgFXD7tedNTwsYoS"
+    },
+    {
+      "type": "index-dtf",
+      "chain": "base",
+      "chainId": 8453,
+      "address": "0x4da9a0f397db1397902070f93a4d6ddbc0e0e6e8",
+      "symbol": "LCAP",
+      "name": "CF Large Cap Index",
+      "description": "Reserve is the leading platform for permissionless DTFs and asset-backed currencies. Create, manage & trade tokenized indexes with 24/7 transparency.",
+      "image": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxBVjyB3T4H9uivWURqQkxfgFXD7tedNTwsYoS"
+    },
+    {
+      "type": "index-dtf",
+      "chain": "base",
+      "chainId": 8453,
+      "address": "0xd600e748c17ca237fcb5967fa13d688aff17be78",
+      "symbol": "MVDA25",
+      "name": "MarketVector Digital Assets 25 Index",
+      "description": "The MarketVector™ Digital Assets 25 Index DTF tracks the MarketVector™ Digital Assets 25 Index (MVDA25) which is a modified market cap-weighted index which tracks the performance of the 25 largest and most liquid digital assets. Most demanding size and liquidity screenings are applied to potential index components to ensure investability.",
+      "image": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXx5te5HJhN1x8WsPzKQYEGuJwIpDVehmXl4fqM"
+    },
+    {
+      "type": "index-dtf",
+      "chain": "base",
+      "chainId": 8453,
+      "address": "0xe8b46b116d3bdfa787ce9cf3f5acc78dc7ca380e",
+      "symbol": "MVTT10F",
+      "name": "MarketVector Token Terminal Fundamental Index",
+      "description": "The MarketVector™ Token Terminal Fundamental Index DTF tracks the MarketVector™ Token Terminal Fundamental Index (MVTT10F), designed to track the performance of the largest and most liquid digital assets that meet the fundamental criteria of daily average fees and daily average users. The fundamental data is provided by Token Terminal. The index is weighted based on fundamental factors.",
+      "image": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxKSQko5CrbmG93jXWCYL8oeizUfuh0ZFONdJD"
+    },
+    {
+      "type": "index-dtf",
+      "chain": "base",
+      "chainId": 8453,
+      "address": "0x89ff8f639d402839205a6bf03cc01bdffa4768b7",
+      "symbol": "SBR",
+      "name": "Strategic Base Reserve by SSR",
+      "description": "The Strategic Base Reserve by EnigmaFund Venture Capital is a DAO-governed DTF, curating the best of Base projects restoring liquidity and attention to the premiere projects, builders and communities. A part of the Strategic Super Reserve, governed with the $SSR token.",
+      "image": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxCMn3mS5IaG8BcjrOCHFdVzwvnJyeRXN3plWs"
+    },
+    {
+      "type": "index-dtf",
+      "chain": "base",
+      "chainId": 8453,
+      "address": "0xe00cfa595841fb331105b93c19827797c925e3e4",
+      "symbol": "VLONE",
+      "name": "Reserve Venionaire L1 Select DTF",
+      "description": "Reserve is the leading platform for permissionless DTFs and asset-backed currencies. Create, manage & trade tokenized indexes with 24/7 transparency.",
+      "image": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxBuCxaCT4H9uivWURqQkxfgFXD7tedNTwsYoS"
+    },
+    {
+      "type": "index-dtf",
+      "chain": "base",
+      "chainId": 8453,
+      "address": "0x47686106181b3cefe4eaf94c4c10b48ac750370b",
+      "symbol": "VTF",
+      "name": "Virtuals Index",
+      "description": "Reserve is the leading platform for permissionless DTFs and asset-backed currencies. Create, manage & trade tokenized indexes with 24/7 transparency.",
+      "image": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXx5AQG85hN1x8WsPzKQYEGuJwIpDVehmXl4fqM"
+    }
+  ]
+}

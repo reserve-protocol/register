@@ -89,7 +89,8 @@
   },
   "scripts": {
     "start": "vite",
-    "build": "tsc && vite build",
+    "build": "tsc && vite build && npm run generate-seo-pages",
+    "build:no-seo": "tsc && vite build",
     "serve": "vite preview",
     "analyze": "vite-bundle-visualizer 'build/static/js/*.js'",
     "test": "vite test",
@@ -97,7 +98,9 @@
     "test:lib": "npx vitest run",
     "translations": "lingui extract --clean && lingui compile",
     "forknet": "anvil --fork-url https://eth.llamarpc.com --chain-id 1 --balance 10000000",
-    "parse-collaterals": "node scripts/parseCollaterals"
+    "parse-collaterals": "node scripts/parseCollaterals",
+    "generate-seo-tokens": "npx tsx scripts/generate-seo-tokens.ts",
+    "generate-seo-pages": "npx tsx src/seo/generate-seo-pages.ts"
   },
   "engines": {
     "node": ">=20.0.0"
