@@ -31,6 +31,18 @@ const BUILD_DIR = path.join(__dirname, '../../build')
 const FEATURED_TOKENS_PATH = path.join(__dirname, 'featured-tokens.json')
 const BASE_URL = 'https://app.reserve.org'
 
+// All known sub-routes for index-dtf pages
+const INDEX_DTF_ROUTES = [
+  '', // Base route (served as /address/)
+  'overview',
+  'portfolio',
+  'trading',
+  'governance',
+  'auctions',
+  'settings',
+  'history',
+]
+
 function escapeHtml(str: string): string {
   return str
     .replace(/&/g, '&amp;')
@@ -102,28 +114,6 @@ function replaceMetaTags(html: string, token: SEOToken, fullUrl: string): string
   return modifiedHtml
 }
 
-function generateRedirectsContent(tokens: SEOToken[]): string {
-  const lines: string[] = [
-    '# Auto-generated SEO redirects',
-    '# Do not edit manually - run npm run generate-seo to regenerate',
-    '',
-  ]
-
-  for (const token of tokens) {
-    const basePath = `/${token.chain}/index-dtf/${token.address}`
-    lines.push(
-      `${basePath}/*  ${basePath}/index.html  200`
-    )
-  }
-
-  lines.push('')
-  lines.push('# Default SPA fallback (must be last)')
-  lines.push('/*  /index.html  200')
-  lines.push('')
-
-  return lines.join('\n')
-}
-
 async function main() {
   console.log('Generating SEO pages...\n')
 
@@ -154,30 +144,36 @@ async function main() {
 
   console.log(`Found ${tokensData.tokens.length} tokens to process\n`)
 
-  // Generate HTML pages for each token
+  // Generate HTML pages for each token and each sub-route
+  let totalFiles = 0
   for (const token of tokensData.tokens) {
-    const tokenDir = path.join(BUILD_DIR, token.chain, 'index-dtf', token.address)
-    const tokenHtmlPath = path.join(tokenDir, 'index.html')
+    const tokenBaseDir = path.join(BUILD_DIR, token.chain, 'index-dtf', token.address)
     const fullUrl = `${BASE_URL}/${token.chain}/index-dtf/${token.address}`
 
-    // Create directory
-    fs.mkdirSync(tokenDir, { recursive: true })
-
-    // Generate modified HTML
+    // Generate modified HTML once per token
     const modifiedHtml = replaceMetaTags(baseHtml, token, fullUrl)
 
-    // Write HTML file
-    fs.writeFileSync(tokenHtmlPath, modifiedHtml)
+    // Create index.html for each sub-route
+    for (const route of INDEX_DTF_ROUTES) {
+      const routeDir = route ? path.join(tokenBaseDir, route) : tokenBaseDir
+      const htmlPath = path.join(routeDir, 'index.html')
 
-    console.log(`  ✓ ${token.symbol} → ${token.chain}/index-dtf/${token.address}/index.html`)
+      // Create directory
+      fs.mkdirSync(routeDir, { recursive: true })
+
+      // Write HTML file
+      fs.writeFileSync(htmlPath, modifiedHtml)
+      totalFiles++
+    }
+
+    console.log(`  ✓ ${token.symbol} → ${token.chain}/index-dtf/${token.address}/ (${INDEX_DTF_ROUTES.length} routes)`)
   }
 
-  // Generate _redirects file
-  const redirectsContent = generateRedirectsContent(tokensData.tokens)
+  // Keep simple _redirects for SPA fallback only (non-SEO routes)
   const redirectsPath = path.join(BUILD_DIR, '_redirects')
-  fs.writeFileSync(redirectsPath, redirectsContent)
+  fs.writeFileSync(redirectsPath, '# SPA fallback for non-SEO routes\n/*  /index.html  200\n')
 
-  console.log(`\n  ✓ Generated _redirects with ${tokensData.tokens.length} token routes`)
+  console.log(`\n  ✓ Generated ${totalFiles} HTML files for ${tokensData.tokens.length} tokens`)
   console.log(`\n✅ SEO pages generated successfully!`)
 }
 
