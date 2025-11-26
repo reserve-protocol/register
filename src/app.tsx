@@ -1,5 +1,6 @@
 import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
 import { useEffect } from 'react'
+import { HelmetProvider } from 'react-helmet-async'
 import {
   BrowserRouter as Router,
   useLocation,
@@ -103,27 +104,29 @@ function FallbackUI({
  * @returns {JSX.Element}
  */
 const App = () => (
-  <Sentry.ErrorBoundary
-    fallback={({ error, resetError }) => (
-      <FallbackUI error={error as Error} resetErrorBoundary={resetError} />
-    )}
-  >
-    <Router>
-      <Redirects />
-      <ScrollToTop />
-      <ThemeUIProvider theme={theme}>
-        <LanguageProvider>
-          <ChainProvider>
-            <Updater />
-            <Layout>
-              <Toaster />
-              <AppRoutes />
-            </Layout>
-          </ChainProvider>
-        </LanguageProvider>
-      </ThemeUIProvider>
-    </Router>
-  </Sentry.ErrorBoundary>
+  <HelmetProvider>
+    <Sentry.ErrorBoundary
+      fallback={({ error, resetError }) => (
+        <FallbackUI error={error as Error} resetErrorBoundary={resetError} />
+      )}
+    >
+      <Router>
+        <Redirects />
+        <ScrollToTop />
+        <ThemeUIProvider theme={theme}>
+          <LanguageProvider>
+            <ChainProvider>
+              <Updater />
+              <Layout>
+                <Toaster />
+                <AppRoutes />
+              </Layout>
+            </ChainProvider>
+          </LanguageProvider>
+        </ThemeUIProvider>
+      </Router>
+    </Sentry.ErrorBoundary>
+  </HelmetProvider>
 )
 
 export default App
