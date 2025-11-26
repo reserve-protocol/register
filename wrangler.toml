@@ -1,8 +1,0 @@
-# Cloudflare Pages configuration
-# This file configures the Cloudflare Pages Functions behavior
-
-name = "register"
-compatibility_date = "2024-01-01"
-
-# Pages automatically serves static files from the build output directory
-# and executes functions from the /functions directory
