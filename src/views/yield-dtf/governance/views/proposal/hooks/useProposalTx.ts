@@ -29,6 +29,7 @@ import { useMemo } from 'react'
 import { useFormContext } from 'react-hook-form'
 import {
   rTokenAssetsAtom,
+  rTokenBackupAtom,
   rTokenConfigurationAtom,
   rTokenContractsAtom,
   rTokenGovernanceAtom,
@@ -138,6 +139,7 @@ const useProposalTx = () => {
   const newBasket = useAtomValue(isNewBasketProposedAtom)
   const basket = useAtomValue(basketAtom)
   const backup = useAtomValue(backupCollateralAtom)
+  const currentBackup = useAtomValue(rTokenBackupAtom)
   const revenueSplit = useAtomValue(revenueSplitAtom)
   const governance = useAtomValue(rTokenGovernanceAtom)
   const isTimeGovernance = isTimeunitGovernance(governance.name)
@@ -444,43 +446,63 @@ const useProposalTx = () => {
         )
       }
 
-      /* ########################## 
-      ## Parse backup            ## 
+      /* ##########################
+      ## Parse backup            ##
       ############################# */
       if (newBackup && backupChanges.count) {
-        for (const targetUnit of Object.keys(backup)) {
-          const { collaterals, diversityFactor } = backup[targetUnit]
+        // Handle edge case: when ALL emergency collateral is removed
+        if (Object.keys(backup).length === 0 && currentBackup) {
+          // Clear all backup configurations when everything is removed
+          for (const targetUnit of Object.keys(currentBackup)) {
+            addresses.push(contracts.basketHandler.address)
+            calls.push(
+              encodeFunctionData({
+                abi: BasketHandler,
+                functionName: 'setBackupConfig',
+                args: [
+                  stringToHex(targetUnit.toUpperCase(), { size: 32 }),
+                  0n, // Zero diversity factor
+                  [], // Empty collateral array
+                ],
+              })
+            )
+          }
+        } else {
+          // Normal case: process proposed backup configurations
+          for (const targetUnit of Object.keys(backup)) {
+            const { collaterals, diversityFactor } = backup[targetUnit]
 
-          const backupCollaterals: Address[] = []
+            const backupCollaterals: Address[] = []
 
-          for (const collateral of collaterals) {
-            if (autoRegisterBackupAssets) {
-              addToRegistry(collateral.address, collateral.erc20)
-              if (
-                !!collateral.rewardTokens?.length &&
-                collateral.rewardTokens[0] != zeroAddress
-              ) {
-                collateral.rewardTokens.forEach((reward) =>
-                  addToRegistry(reward as Address)
-                )
+            for (const collateral of collaterals) {
+              if (autoRegisterBackupAssets) {
+                addToRegistry(collateral.address, collateral.erc20)
+                if (
+                  !!collateral.rewardTokens?.length &&
+                  collateral.rewardTokens[0] != zeroAddress
+                ) {
+                  collateral.rewardTokens.forEach((reward) =>
+                    addToRegistry(reward as Address)
+                  )
+                }
               }
+
+              backupCollaterals.push(collateral.erc20)
             }
 
-            backupCollaterals.push(collateral.erc20)
+            addresses.push(contracts.basketHandler.address)
+            calls.push(
+              encodeFunctionData({
+                abi: BasketHandler,
+                functionName: 'setBackupConfig',
+                args: [
+                  stringToHex(targetUnit.toUpperCase(), { size: 32 }),
+                  BigInt(diversityFactor),
+                  backupCollaterals,
+                ],
+              })
+            )
           }
-
-          addresses.push(contracts.basketHandler.address)
-          calls.push(
-            encodeFunctionData({
-              abi: BasketHandler,
-              functionName: 'setBackupConfig',
-              args: [
-                stringToHex(targetUnit.toUpperCase(), { size: 32 }),
-                BigInt(diversityFactor),
-                backupCollaterals,
-              ],
-            })
-          )
         }
       }
 
@@ -568,7 +590,7 @@ const useProposalTx = () => {
       ] as [Address[], bigint[], Hex[], string],
       enabled: !!description,
     }
-  }, [contracts, assets, description, rToken])
+  }, [contracts, assets, description, rToken, currentBackup])
 }
 
 export default useProposalTx
