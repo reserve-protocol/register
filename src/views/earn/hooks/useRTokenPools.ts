@@ -177,16 +177,27 @@ const parsePoolSymbol = (pools: Omit<Pool, 'url'>[]): Omit<Pool, 'url'>[] => {
 
 const addPoolCMSMetadata = (
   pools: Omit<Pool, 'url'>[],
-  earnPools: EarnPool[]
+  earnPools: EarnPool[],
+  additionalDTFs: StringMap = {}
 ): Pool[] => {
   return pools.map((pool) => {
     const cmsPool = earnPools.find((item) => item.llamaId === pool.id)
-    const url =
+    let url =
       cmsPool?.url ||
       LP_PROJECTS[pool.project]?.site ||
       `https://defillama.com/yields/pool/${pool.id}`
 
     const symbol = cmsPool?.symbol || pool.symbol
+
+    // Adds query param to the first protocol related token for aerodrome pools
+    if (url == 'https://aerodrome.finance/') {
+      const alldtfs = { ...listedDTFs, ...additionalDTFs }
+      // find the dtf or rtoken related to the pool
+      const dtf = pool.underlyingTokens.find((token) => {
+        return !!alldtfs[token.address.toLowerCase()]
+      })
+      url += `liquidity?query=${dtf?.symbol}`
+    }
 
     return {
       ...pool,
@@ -219,7 +230,7 @@ const mapPools = (
     additionalDTFs
   )
   const parsedPools = parsePoolSymbol(enrichedPools)
-  const pools = addPoolCMSMetadata(parsedPools, earnPools)
+  const pools = addPoolCMSMetadata(parsedPools, earnPools, additionalDTFs)
 
   return pools
 }
@@ -243,7 +254,11 @@ const useRTokenPools = () => {
         return acc
       }, {} as StringMap)
 
-      const pools = mapPools(data.data as DefillamaPool[], earnPools, indexDTFsMap)
+      const pools = mapPools(
+        data.data as DefillamaPool[],
+        earnPools,
+        indexDTFsMap
+      )
       setPools(pools)
     }
   }, [data, earnPools, indexDTFs, setPools])

@@ -82,9 +82,10 @@ const SimpleIndexDeploy = () => {
     setInputAmount(inputBalance?.balance || '0')
   }
 
-  const insufficientBalance = inputBalance?.value
-    ? parseUnits(inputAmount, tokenIn.decimals) > inputBalance?.value
-    : false
+  const insufficientBalance =
+    !ongoingTx && inputBalance?.value
+      ? parseUnits(inputAmount, tokenIn.decimals) > inputBalance?.value
+      : false
 
   const { data, isLoading, isFetching, refetch, failureReason } =
     useZapDeployQuery(url, requestBody, ongoingTx)

@@ -20,6 +20,7 @@ import {
 } from '../atoms'
 import useRebalanceParams from '../hooks/use-rebalance-params'
 import getRebalanceOpenAuction from '../utils/get-rebalance-open-auction'
+import { TransactionButtonContainer } from '@/components/ui/transaction'
 
 const auctionNumberAtom = atom((get) => {
   const auctions = get(rebalanceAuctionsAtom)
@@ -120,7 +121,12 @@ const LaunchAuctionsButton = () => {
   }
 
   return (
-    <div className="p-2">
+    <TransactionButtonContainer
+      chain={dtf?.chainId}
+      className="p-2"
+      connectButtonClassName="w-full"
+      switchChainButtonClassName="w-full"
+    >
       <Button
         className="rounded-xl py-6 w-full gap-2"
         disabled={!isValid || isPending || isAuctionOngoing || isLaunching}
@@ -142,7 +148,7 @@ const LaunchAuctionsButton = () => {
           </>
         )}
       </Button>
-    </div>
+    </TransactionButtonContainer>
   )
 }
 

@@ -1,25 +1,62 @@
-import RegisterAbout from '@/views/discover/components/yield/components/RegisterAbout'
+import { cn } from '@/lib/utils'
+import { ROUTES } from '@/utils/constants'
 import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
 import { useEffect } from 'react'
-import Earn from './components/earn'
-import EarnHeading from './components/earn-heading'
-import FeaturedPools from './components/featured-pools'
+import { NavLink, Outlet } from 'react-router-dom'
 
-const EarnWrapper = () => {
+const EARN_ROUTES = [
+  {
+    label: 'Index DTF Governance',
+    path: ROUTES.EARN_INDEX,
+  },
+  {
+    label: 'Yield DTF Staking',
+    path: ROUTES.EARN_YIELD,
+  },
+  {
+    label: 'DeFi Yield',
+    path: ROUTES.EARN_DEFI,
+  },
+]
+
+const EarnNavigation = () => {
+  return (
+    <div className="flex justify-center mt-2 md:mt-12 mb-4 md:mb-10 px-1">
+      <div className="flex items-center bg-border p-1 rounded-full">
+        {EARN_ROUTES.map((route) => (
+          <NavLink
+            key={route.path}
+            to={route.path}
+            className="text-xs text-center sm:text-sm"
+          >
+            {({ isActive }: { isActive: boolean }) => (
+              <div
+                className={cn(
+                  'px-3 py-2 rounded-full',
+                  isActive && 'text-primary bg-card'
+                )}
+              >
+                <span>{route.label}</span>
+              </div>
+            )}
+          </NavLink>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+const Earn = () => {
   useEffect(() => {
     mixpanel.track('Visted Earn Page', {})
   }, [])
 
   return (
-    <div className="container pb-6 px-0 lg:px-4">
-      <EarnHeading />
-      <div className="flex flex-col gap-3 mt-4 md:mt-6">
-        <FeaturedPools />
-        <Earn />
-      </div>
-      <RegisterAbout />
+    <div className="container px-0 lg:px-4 mb-4">
+      <EarnNavigation />
+      <Outlet />
     </div>
   )
 }
 
-export default EarnWrapper
+export default Earn

@@ -12,8 +12,9 @@ const Container = ({ children }: { children: ReactNode }) => {
   const { pathname } = useLocation()
 
   const border =
-    (!pathname.includes('index-dtf') || pathname.includes('deploy')) &&
-    !pathname.includes('bridge')
+    pathname.includes('earn') ||
+    ((!pathname.includes('index-dtf') || pathname.includes('deploy')) &&
+      !pathname.includes('bridge'))
 
   return (
     <div className={cn('w-full flex-shrink-0', border && 'border-b')}>

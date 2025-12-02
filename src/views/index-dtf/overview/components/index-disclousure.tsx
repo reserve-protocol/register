@@ -1,6 +1,175 @@
 import { Card } from '@/components/ui/card'
-import { ROUTES } from '@/utils/constants'
-import { Signature } from 'lucide-react'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion'
+import { ScrollArea } from '@/components/ui/scroll-area'
+import { Signature, FileText } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { indexDTFAtom } from '@/state/dtf/atoms'
+import { useAtomValue } from 'jotai'
+import { ChainId } from '@/utils/chains'
+
+// Exclusive component for CFB LCAP whitepaper
+// Required for legal compliance
+const WhitepaperModal = () => {
+  const dtf = useAtomValue(indexDTFAtom)
+
+  const isCFB =
+    dtf?.chainId === ChainId.Base &&
+    dtf?.id?.toLowerCase() ===
+      '0x4da9a0f397db1397902070f93a4d6ddbc0e0e6e8'.toLowerCase()
+
+  if (!isCFB) return null
+
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button variant="outline" className="flex gap-2 mt-3 text-foreground">
+          Review CFB Whitepaper
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="sm:rounded-4xl max-w-3xl p-0 overflow-hidden">
+        <ScrollArea className="max-h-[85vh]">
+          <div className="p-6">
+            <DialogHeader>
+              <DialogTitle className="text-2xl">
+                CFB Token Whitepapers
+              </DialogTitle>
+              <DialogDescription className="text-muted-foreground">
+                Official documentation for the CFB LCAP token
+              </DialogDescription>
+            </DialogHeader>
+
+            <div className="flex flex-col gap-4 py-4">
+              {/* V2 Whitepaper - Current */}
+              <div className="bg-card border-2 border-secondary rounded-3xl p-4">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2">
+                    <FileText className="h-5 w-5 text-primary" />
+                    <h3 className="font-semibold text-lg">
+                      Current Version (v2)
+                    </h3>
+                  </div>
+                  <a
+                    href="https://storage.reserve.org/cfb-whitepaper-v2.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary hover:underline text-sm font-medium flex items-center gap-1"
+                  >
+                    View PDF →
+                  </a>
+                </div>
+                <p className="text-xs text-muted-foreground mb-3">
+                  Published: October 2025
+                </p>
+
+                {/* Collapsible changes */}
+                <Accordion type="single" collapsible>
+                  <AccordionItem value="changes" className="border-0">
+                    <AccordionTrigger className="text-sm font-medium hover:no-underline py-2 px-0">
+                      Summary of Changes from v1
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      <ul className="space-y-2 text-xs pt-2">
+                        <li className="leading-relaxed">
+                          <span className="font-bold">
+                            Formatting Guidance:
+                          </span>{' '}
+                          Removed the column on forms and standards which had
+                          guidelines on formatting standards to the white paper.
+                        </li>
+                        <li className="leading-relaxed">
+                          <span className="font-bold">Title Update:</span>{' '}
+                          Included the token abbreviation "CFB Token" in the
+                          title.
+                        </li>
+                        <li className="leading-relaxed">
+                          <span className="font-bold">Dates Added:</span>{' '}
+                          Inserted missing dates - notification date, admission
+                          to trading start date, and publication date
+                          (01./F.9/F.10).
+                        </li>
+                        <li className="leading-relaxed">
+                          <span className="font-bold">Launch Status:</span>{' '}
+                          Updated references to reflect that the token was
+                          launched on 24 September 2025 (Section 10).
+                        </li>
+                        <li className="leading-relaxed">
+                          <span className="font-bold">Minor Text Edit:</span>{' '}
+                          Removed the word "ongoing" from Section E.18 (no
+                          material impact).
+                        </li>
+                        <li className="leading-relaxed">
+                          <span className="font-bold">Trading Platforms:</span>{' '}
+                          Added Kraken as an additional trading platform,
+                          including its market identifier code ("MIC")
+                          (E.33/34).
+                        </li>
+                        <li className="leading-relaxed">
+                          <span className="font-bold">Token Supply:</span>{' '}
+                          Corrected F.6 to reflect that the CFB token has a
+                          dynamic collateral-based supply mechanism, not a fixed
+                          supply.
+                        </li>
+                        <li className="leading-relaxed">
+                          <span className="font-bold">Audit Status:</span>{' '}
+                          Clarified in H.8/H.9 that the LCAP token contracts are
+                          based on the Reserve Index Protocol factory smart
+                          contracts, which have been audited by Trust Security,
+                          Cantina, and Trail of Bits with no critical issues
+                          ever found.
+                        </li>
+                        <li className="leading-relaxed">
+                          <span className="font-bold">Energy Consumption:</span>{' '}
+                          Expanded J.1 to include energy usage data and the
+                          sources and methodologies used for its calculation.
+                        </li>
+                      </ul>
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
+              </div>
+
+              {/* V1 Whitepaper - Previous */}
+              <div className="bg-card border-2 border-secondary rounded-3xl p-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <FileText className="h-5 w-5 text-muted-foreground" />
+                    <h3 className="font-semibold text-lg">
+                      Previous Version (v1)
+                    </h3>
+                  </div>
+                  <a
+                    href="https://storage.reserve.org/cfb-whitepaper.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary hover:underline text-sm font-medium flex items-center gap-1"
+                  >
+                    View PDF →
+                  </a>
+                </div>
+                <p className="text-xs text-muted-foreground mt-2">
+                  Original whitepaper documentation
+                </p>
+              </div>
+            </div>
+          </div>
+        </ScrollArea>
+      </DialogContent>
+    </Dialog>
+  )
+}
 
 const IndexDisclousure = () => {
   return (
@@ -64,6 +233,7 @@ const IndexDisclousure = () => {
           >
             please see here.{' '}
           </a>
+          <WhitepaperModal />
         </p>
       </div>
     </Card>

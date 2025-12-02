@@ -82,10 +82,12 @@ export type Transaction = {
 
 export type ExposureToken = {
   address: string
+  marketCap?: number
   symbol: string
   name?: string
   weight: number
   bridge?: Bridge
+  change?: number
 }
 
 export type ExposureGroup = {
@@ -174,6 +176,10 @@ export const indexDTFExposureMCapMapAtom = atom((get) => {
     if (group.native?.coingeckoId) {
       map[group.native.coingeckoId] = group.marketCap || 0
     }
+
+    group.tokens.forEach((token) => {
+      map[token.address.toLowerCase()] = token?.marketCap || 0
+    })
   })
   return map
 })
@@ -235,6 +241,7 @@ export const isHybridDTFAtom = atom((get) => {
     dtf?.id.toLowerCase() === '0x1532536c22366dde6b5174ebe519578bccc6b5a3' ||
     dtf?.id.toLowerCase() === '0x045dc337c12a9a5d2c790d01554913b1a9e1044a' ||
     dtf?.id.toLowerCase() === '0xdb35c98b919053f77356e7d89b11069cf9185764' ||
-    dtf?.id.toLowerCase() === '0x2b3e7fec6995acc564fd587974fd29b94992ba3a'
+    dtf?.id.toLowerCase() === '0x2b3e7fec6995acc564fd587974fd29b94992ba3a' ||
+    dtf?.id.toLowerCase() === '0x384f00864a5d880a2ad79900ead6eb9ded2924d9'
   )
 })

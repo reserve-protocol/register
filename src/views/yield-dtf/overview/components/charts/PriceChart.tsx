@@ -130,7 +130,7 @@ const PriceChart = (props: BoxProps) => {
 
   return (
     <AreaChart
-      heading={t`${rToken?.symbol ?? ''} Price`}
+      heading={t`${rToken?.symbol ?? ''} ${currentPrice === 'USD' ? 'Price' : 'Exchange Rate'}`}
       title={priceTitle}
       data={rows}
       timeRange={TIME_RANGES}
