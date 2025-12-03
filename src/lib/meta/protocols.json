@@ -338,5 +338,23 @@
     "logo": {
       "url": "https://storage-logos.reserve.org/logos/598a54dcc631--coinbase.svg"
     }
+  },
+  {
+    "protocolName": "Ether.fi",
+    "id": "etherfi",
+    "protocolDescription": "Ether.fi is a decentralized and non-custodial Ethereum staking protocol",
+    "protocolSocials": [
+      "https://etherfi.medium.com/",
+      "https://x.com/ether_fi",
+      "https://discord.com/invite/etherfi",
+      "https://www.linkedin.com/company/etherfi",
+      "https://github.com/etherfi-protocol"
+    ],
+    "website": "https://ether.fi/",
+    "docs": "https://etherfi.gitbook.io/",
+    "color": "#474276",
+    "logo": {
+      "url": "https://storage-logos.reserve.org/logos/ethfi.svg"
+    }
   }
 ]
