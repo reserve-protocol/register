@@ -11,7 +11,15 @@ interface TokenPrice {
   price?: number
 }
 
+type IPSResponse =
+  | {
+      status: 'success'
+      result: TokenPrice
+    }
+  | { status: 'error' }
+
 const PRICES_BASE_URL = `${RESERVE_API}current/prices?tokens=`
+const PS_BASE_URL = `${RESERVE_API}api/prices`
 
 const BasketPriceUpdater = () => {
   const chainId = useAtomValue(chainIdAtom)
@@ -30,8 +38,28 @@ const BasketPriceUpdater = () => {
         if (!response.ok) {
           throw new Error('Failed to fetch token prices')
         }
-        const data = await response.json()
-        return data as TokenPrice[]
+        let data = (await response.json()) as TokenPrice[]
+        data = await Promise.all(
+          data.map(async (tp) => {
+            if (tp.price) {
+              return tp
+            }
+            const response = await fetch(
+              `${PS_BASE_URL}/${chainId}/${tp.address}`
+            )
+            if (!response.ok) {
+              return tp
+            }
+            const data = (await response.json()) as IPSResponse
+            if (data.status === 'error') {
+              return tp
+            }
+            tp.price = data.result.price
+            return tp
+          })
+        )
+
+        return data
       } catch (error) {
         console.error('Error fetching token prices:', error)
         throw error
@@ -45,9 +73,8 @@ const BasketPriceUpdater = () => {
   useEffect(() => {
     if (tokenPrices.length) {
       const newBasket = basket.map((token) => {
-        const price = tokenPrices.find(
-          (p) => p.address === token.address
-        )?.price
+        const price = tokenPrices.find((p) => p.address === token.address)
+          ?.price
         return { ...token, price }
       })
       setBasket(newBasket)
