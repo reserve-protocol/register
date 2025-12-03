@@ -17,6 +17,7 @@ const protocolLabels: StringMap = {
   USDM: 'Mountain Protocol',
   SKY: 'Sky Protocol',
   ORIGIN: 'Origin Protocol',
+  ETHERFI: 'Ether.fi',
 }
 
 // TODO: Remove when this collaterals are swapped from current listed RTokens

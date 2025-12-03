@@ -122,6 +122,10 @@ export const LP_PROJECTS: { [x: string]: { name: string; site: string } } = {
     name: 'Origin',
     site: 'https://www.originprotocol.com/',
   },
+  'ether.fi-staking': {
+    name: 'Ether.fi',
+    site: 'https://ether.fi/',
+  },
 }
 
 // List of supported networks with label
