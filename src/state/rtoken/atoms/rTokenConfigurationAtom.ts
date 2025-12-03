@@ -138,6 +138,10 @@ const rTokenConfigurationAtom = atomWithLoadable(async (get) => {
       address: contracts.basketHandler.address,
       functionName: 'reweightable',
     },
+    {
+      ...rTokenCall,
+      functionName: 'issuancePremiumEnabled',
+    },
   ].map((call) => ({ ...call, chainId }))
 
   try {
@@ -160,6 +164,7 @@ const rTokenConfigurationAtom = atomWithLoadable(async (get) => {
       warmupPeriod,
       withdrawalLeak,
       reweightable,
+      enableIssuancePremium,
     ] = await readContracts(wagmiConfig, { contracts: calls })
 
     return {
@@ -209,6 +214,10 @@ const rTokenConfigurationAtom = atomWithLoadable(async (get) => {
       reweightable:
         reweightable.status === 'success'
           ? Boolean(reweightable.result)
+          : false,
+      enableIssuancePremium:
+        enableIssuancePremium.status === 'success'
+          ? Boolean(enableIssuancePremium.result)
           : false,
     } as StringMap
   } catch (e) {

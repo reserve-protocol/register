@@ -9,8 +9,8 @@ export const ST_RSR_ADDRESS = '0x0000000000000000000000000000000000000002'
  * Protocol related contracts
  */
 export const DEPLOYER_ADDRESS: AddressMap = {
-  [ChainId.Mainnet]: '0x2204EC97D31E2C9eE62eaD9e6E2d5F7712D3f1bF',
-  [ChainId.Base]: '0xFD18bA9B2f9241Ce40CDE14079c1cDA1502A8D0A',
+  [ChainId.Mainnet]: '0xd01D00c99A750329412909c02CD9C9e45ffe34ee',
+  [ChainId.Base]: '0x1142Ad5E5A082077A7d79d211726c1bd39b0D5FA',
   [ChainId.Arbitrum]: '0xfd7eb6B208E1fa7B14E26A1fb10fFC17Cf695d68',
 }
 
@@ -27,9 +27,29 @@ export const FACADE_ACT_ADDRESS: AddressMap = {
 }
 
 export const FACADE_WRITE_ADDRESS: AddressMap = {
-  [ChainId.Mainnet]: '0x1D94290F82D0B417B088d9F5dB316B11C9cf220C',
-  [ChainId.Base]: '0x43E205A805c4be5A62C71d49de68dF60200548A0',
+  [ChainId.Mainnet]: '0x2536025a5c6f41879D07DBFE7f4C07c1ab9575C9',
+  [ChainId.Base]: '0x357d4dB0c2179886334cC33B8528048F7E1D3Fe3',
   [ChainId.Arbitrum]: '0xe2B652E538543d02f985A5E422645A704633956d',
+}
+
+export const VERSION_REGISTRY_ADDRESS: AddressMap = {
+  [ChainId.Mainnet]: '0xba8cd83f793aa046fe5ab7ba01f855742f2d6a30',
+  [ChainId.Base]: '0x3bece5ec596331033726e5c6c188c313ff4e3fe5',
+}
+
+export const ASSET_PLUGIN_REGISTRY_ADDRESS: AddressMap = {
+  [ChainId.Mainnet]: '0x6cf05Ea2A94a101CE6A44Ec2a2995b43F1b0958f',
+  [ChainId.Base]: '0x87A959e0377C68A50b08a91ae5ab3aFA7F41ACA4',
+}
+
+export const DAO_FEE_REGISTRY_ADDRESS: AddressMap = {
+  [ChainId.Mainnet]: '0xec716deD4eABa060937D1a915F166E237039342B',
+  [ChainId.Base]: '0x3513D2c7D2F51c678889CeC083E7D7Ae27b219aD',
+}
+
+export const TRUSTED_FILLER_REGISTRY_ADDRESS: AddressMap = {
+  [ChainId.Mainnet]: '0x279ccF56441fC74f1aAC39E7faC165Dec5A88B3A',
+  [ChainId.Base]: '0x72DB5f49D0599C314E2f2FEDf6Fe33E1bA6C7A18',
 }
 
 export const INDEX_DEPLOYER_ADDRESS: AddressMap = {
