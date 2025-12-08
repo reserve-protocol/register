@@ -1,9 +1,9 @@
+import DataTable from '@/components/ui/data-table'
 import { Trans, t } from '@lingui/macro'
-import { createColumnHelper } from '@tanstack/react-table'
+import { ColumnDef } from '@tanstack/react-table'
 import ChainLogo from 'components/icons/ChainLogo'
 import DebankIcon from 'components/icons/DebankIcon'
 import TransactionsIcon from 'components/icons/TransactionsIcon'
-import { Table } from '@/components/old/table'
 import { gql } from 'graphql-request'
 import useQuery from 'hooks/useQuery'
 import { useAtomValue } from 'jotai'
@@ -11,7 +11,6 @@ import { useMemo } from 'react'
 import { chainIdAtom, selectedRTokenAtom } from 'state/atoms'
 import {
   formatCurrency,
-  formatUsdCurrencyCell,
   getCurrentTime,
   relativeTime,
   shortenAddress,
@@ -67,9 +66,8 @@ const rTokenTransactionsQuery = gql`
   }
 `
 
-const useTransactionColumns = () => {
+const useTransactionColumns = (): ColumnDef<TransactionRecord>[] => {
   const chainId = useAtomValue(chainIdAtom)
-  const columnHelper = createColumnHelper<TransactionRecord>()
   const transactionTypes: Record<string, string> = useMemo(
     () => ({
       MINT: t`Mint`,
@@ -90,60 +88,72 @@ const useTransactionColumns = () => {
     []
   )
 
-  return useMemo(() => {
-    return [
-      columnHelper.accessor('type', {
+  return useMemo(
+    (): ColumnDef<TransactionRecord>[] => [
+      {
+        accessorKey: 'type',
+
         header: t`Type`,
-        cell: (data) => (
-          <span className="font-bold">
-            {transactionTypes[data.getValue()] || data.getValue()}
-          </span>
-        ),
-      }),
-      columnHelper.accessor('amount', {
+        cell: ({ getValue }) => {
+          const value = getValue() as string
+          return (
+            <span className="font-semibold">
+              {transactionTypes[value] || value}
+            </span>
+          )
+        },
+      },
+      {
+        accessorKey: 'amount',
         header: t`Amount`,
-        cell: (data) => {
-          const parsed = formatEther(data.getValue())
-          let symbol = data.row.original.token.symbol
+        cell: ({ getValue, row }) => {
+          const parsed = formatEther(getValue() as bigint)
+          let symbol = row.original.token.symbol
 
           if (
-            data.row.original.type === 'STAKE' ||
-            data.row.original.type === 'UNSTAKE' ||
-            data.row.original.type === 'WITHDRAW' ||
-            data.row.original.type === 'DEPOSIT' ||
-            data.row.original.type === 'WITHDRAWAL'
+            row.original.type === 'STAKE' ||
+            row.original.type === 'UNSTAKE' ||
+            row.original.type === 'WITHDRAW' ||
+            row.original.type === 'DEPOSIT' ||
+            row.original.type === 'WITHDRAWAL'
           ) {
             symbol = 'RSR'
           }
-          return `${formatCurrency(+parsed)} ${symbol}`
-        },
-      }),
-      columnHelper.accessor('amountUSD', {
-        header: t`USD Value`,
-        cell: (data) => {
-          if (isNaN(+data.getValue())) {
-            return `$${data.getValue()}`
-          }
 
-          return formatUsdCurrencyCell(data as any)
+          const amountUSD = row.original.amountUSD
+          const usdDisplay = isNaN(+amountUSD)
+            ? `$${amountUSD}`
+            : `$${formatCurrency(+amountUSD)}`
+
+          return (
+            <div className="flex flex-wrap gap-1 items-center">
+              <span className="">{usdDisplay}</span>
+              <span className="text-legend text-xs">
+                ({`${formatCurrency(+parsed)} ${symbol}`})
+              </span>
+            </div>
+          )
         },
-      }),
-      columnHelper.accessor('id', {
-        header: t`Chain`,
-        cell: () => <ChainLogo chain={chainId} />,
-      }),
-      columnHelper.accessor('timestamp', {
+      },
+      // {
+      //   accessorKey: 'id',
+      //   header: t`Chain`,
+      //   cell: () => <ChainLogo chain={chainId} />,
+      // },
+      {
+        accessorKey: 'timestamp',
         header: t`Time`,
-        cell: (data) => relativeTime(data.getValue(), getCurrentTime()),
-      }),
-      columnHelper.accessor('from.id', {
+        cell: ({ getValue }) =>
+          relativeTime(getValue() as number, getCurrentTime()),
+      },
+      {
+        accessorKey: 'from.id',
         header: t`From`,
-        cell: (data) => {
+        cell: ({ getValue, row }) => {
           const address =
-            data.row.original.type === 'MINT' ||
-            data.row.original.type === 'ISSUE'
-              ? data.row.original.to.id
-              : data.getValue()
+            row.original.type === 'MINT' || row.original.type === 'ISSUE'
+              ? row.original.to.id
+              : (getValue() as string)
 
           return (
             <div className="flex items-center">
@@ -159,13 +169,14 @@ const useTransactionColumns = () => {
             </div>
           )
         },
-      }),
-      columnHelper.accessor('hash', {
+      },
+      {
+        accessorKey: 'hash',
         header: t`Tx Hash`,
-        cell: (data) => (
+        cell: ({ getValue }) => (
           <a
             href={getExplorerLink(
-              data.getValue(),
+              getValue() as string,
               chainId,
               ExplorerDataType.TRANSACTION
             )}
@@ -173,12 +184,13 @@ const useTransactionColumns = () => {
             rel="noopener noreferrer"
             className="underline hover:no-underline text-legend"
           >
-            {shortenString(data.getValue())}
+            {shortenString(getValue() as string)}
           </a>
         ),
-      }),
-    ]
-  }, [chainId])
+      },
+    ],
+    [chainId, transactionTypes]
+  )
 }
 
 const TransactionsTable = () => {
@@ -189,13 +201,12 @@ const TransactionsTable = () => {
   const columns = useTransactionColumns()
 
   return (
-    <Table
-      compact
-      pagination
-      sorting
+    <DataTable
       columns={columns}
-      sx={{ borderRadius: '20px 20px 20px 20px', pt: '20px' }}
       data={data?.entries || []}
+      pagination={{ pageSize: 10 }}
+      className="rounded-3xl pt-5 bg-card border-[4px] border-secondary text-sm"
+      initialSorting={[{ id: 'timestamp', desc: true }]}
     />
   )
 }
@@ -205,7 +216,7 @@ const RTokenTransactions = () => {
     <div className="w-full">
       <div className="flex items-center ml-4 mb-5 mt-6 text-primary">
         <TransactionsIcon fontSize={24} />
-        <h2 className="ml-2 text-xl font-semibold">
+        <h2 className="ml-2 text-2xl font-semibold">
           <Trans>Transactions</Trans>
         </h2>
       </div>

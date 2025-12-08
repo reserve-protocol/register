@@ -1,17 +1,20 @@
 import CopyValue from '@/components/old/button/CopyValue'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover'
 import BridgeMinimalistIcon from 'components/icons/BridgeMinimalistIcon'
 import ChainLogo from 'components/icons/ChainLogo'
-import Popup from '@/components/old/popup'
 import { ListedToken } from 'hooks/useTokenList'
-import { FC, memo, useMemo, useState } from 'react'
 import { ArrowUpRight, ChevronDown, ChevronUp } from 'lucide-react'
+import { FC, memo, useMemo, useState } from 'react'
 import { colors } from 'theme'
-import { Box, BoxProps, Link, Text } from 'theme-ui'
 import { shortenString } from 'utils'
 import { BRIDGED_RTOKENS, CHAIN_TAGS } from 'utils/constants'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 
-interface Props extends BoxProps {
+interface Props {
   token: ListedToken
 }
 
@@ -29,33 +32,32 @@ const RTokenAddressItem: FC<RTokenAddressItemProps> = ({
   withChain = false,
 }) => {
   return (
-    <Box variant="layout.verticalAlign" sx={{ gap: 2 }}>
+    <div className="flex items-center gap-2">
       {withChain && <ChainLogo chain={chain} fontSize={18} />}
-      <Box variant="layout.centered" sx={{ alignItems: 'start' }}>
+      <div className="flex flex-col items-start">
         {withChain && (
-          <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
-            <Text sx={{ fontSize: 1, fontWeight: 'heading' }}>
+          <div className="flex items-center gap-1">
+            <span className="text-xs font-medium">
               {`${CHAIN_TAGS[chain]}`}
-            </Text>
+            </span>
             {isBridged && <BridgeMinimalistIcon />}
-          </Box>
+          </div>
         )}
-        <Text sx={{ fontSize: 14 }} color="secondaryText">
-          {shortenString(address)}
-        </Text>
-      </Box>
-      <Box variant="layout.verticalAlign" sx={{ gap: 1 }} ml="auto">
+        <span className="text-sm text-legend">{shortenString(address)}</span>
+      </div>
+      <div className="flex items-center gap-1 ml-auto">
         <CopyValue color={colors.secondaryText} value={address} size={14} />
-        <Link
+        <a
           href={getExplorerLink(address, chain, ExplorerDataType.TOKEN)}
           target="_blank"
-          sx={{ display: 'flex', alignItems: 'center' }}
+          rel="noopener noreferrer"
+          className="flex items-center"
           onClick={(e) => e.stopPropagation()}
         >
           <ArrowUpRight color={colors.secondaryText} size={14} />
-        </Link>
-      </Box>
-    </Box>
+        </a>
+      </div>
+    </div>
   )
 }
 
@@ -63,17 +65,7 @@ const RTokenAddressesList: FC<{ tokenList: RTokenAddressItemProps[] }> = ({
   tokenList,
 }) => {
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        backgroundColor: 'background',
-        gap: 1,
-        px: '12px',
-        py: 2,
-        borderRadius: '12px',
-      }}
-    >
+    <div className="flex flex-col bg-background gap-1 px-3 py-2 rounded-xl">
       {tokenList.map((t) => (
         <RTokenAddressItem
           key={t.address}
@@ -83,7 +75,7 @@ const RTokenAddressesList: FC<{ tokenList: RTokenAddressItemProps[] }> = ({
           withChain
         />
       ))}
-    </Box>
+    </div>
   )
 }
 
@@ -109,32 +101,27 @@ const RTokenAddresses: FC<Props> = ({ token }) => {
   }
 
   return (
-    <Popup
-      show={isVisible}
-      onDismiss={() => setVisible(false)}
-      placement="bottom"
-      zIndex={0}
-      content={<RTokenAddressesList tokenList={bridgedTokens} />}
-    >
-      <Box
-        variant="layout.verticalAlign"
-        sx={{
-          cursor: 'pointer',
-          gap: 1,
-        }}
-        onClick={(e) => {
-          e.stopPropagation()
-          setVisible(!isVisible)
-        }}
-      >
-        {isVisible ? (
-          <ChevronUp size={18} color={colors.secondaryText} />
-        ) : (
-          <ChevronDown size={18} color={colors.secondaryText} />
-        )}
-        <RTokenAddressItem address={token.id} chain={token.chain} />
-      </Box>
-    </Popup>
+    <Popover open={isVisible} onOpenChange={setVisible}>
+      <PopoverTrigger asChild>
+        <div
+          className="flex items-center cursor-pointer gap-1"
+          onClick={(e) => {
+            e.stopPropagation()
+            setVisible(!isVisible)
+          }}
+        >
+          {isVisible ? (
+            <ChevronUp size={18} color={colors.secondaryText} />
+          ) : (
+            <ChevronDown size={18} color={colors.secondaryText} />
+          )}
+          <RTokenAddressItem address={token.id} chain={token.chain} />
+        </div>
+      </PopoverTrigger>
+      <PopoverContent className="w-auto p-0" align="start">
+        <RTokenAddressesList tokenList={bridgedTokens} />
+      </PopoverContent>
+    </Popover>
   )
 }
 

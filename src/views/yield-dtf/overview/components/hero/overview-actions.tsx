@@ -1,18 +1,21 @@
-import { Trans } from '@lingui/macro'
-import { Button } from 'components'
+import { Button } from '@/components/ui/button'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover'
 import DgnETHButtonAppendix from '@/components/utils/integrations/dgneth-btn-appendix'
-import Popup from '@/components/old/popup'
+import { ChainId } from '@/utils/chains'
+import { Trans } from '@lingui/macro'
 import useRToken from 'hooks/useRToken'
 import { atom, useAtomValue } from 'jotai'
-import { useState } from 'react'
 import { MoreHorizontal } from 'lucide-react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { estimatedApyAtom, rTokenListAtom } from 'state/atoms'
 import { rTokenMetaAtom } from 'state/rtoken/atoms/rTokenAtom'
-import { Box, Card, Link } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { ROUTES } from 'utils/constants'
-import { ChainId } from '@/utils/chains'
 
 interface Socials {
   label: string
@@ -29,10 +32,9 @@ const tokenSocialsAtom = atom((get) => {
 
   const socials: Socials[] = []
 
-  // TODO: Currently only doing X/Website as those are the only applicable for current listed rtokens
   if (tokenList[token.address].social?.twitter) {
     socials.push({
-      label: 'X',
+      label: 'Twitter',
       href: tokenList[token.address].social?.twitter ?? '',
     })
   }
@@ -58,26 +60,20 @@ const SocialList = ({
   socials: Socials[]
   onClick(): void
 }) => (
-  <Card p={0}>
+  <div className=" border bg-card">
     {socials.map((social) => (
-      <Link
+      <a
         key={social.label}
-        px={4}
-        py={3}
+        className="block px-4 py-3 text-foreground cursor-pointer hover:bg-border"
         onClick={onClick}
         target="_blank"
+        rel="noopener noreferrer"
         href={social.href}
-        sx={{
-          ':hover': { background: 'border' },
-          color: 'text',
-          display: 'block',
-          cursor: 'pointer',
-        }}
       >
         {social.label}
-      </Link>
+      </a>
     ))}
-  </Card>
+  </div>
 )
 
 const TokenSocials = () => {
@@ -90,50 +86,39 @@ const TokenSocials = () => {
   }
 
   return (
-    <Popup
-      show={isVisible}
-      onDismiss={() => setVisible(false)}
-      content={
+    <Popover open={isVisible} onOpenChange={setVisible}>
+      <PopoverTrigger asChild>
+        <Button
+          size="lg"
+          variant="outline-primary"
+          className="w-full sm:w-auto"
+          onClick={() => setVisible(true)}
+        >
+          <div className="h-[22px]">
+            <MoreHorizontal />
+          </div>
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-auto p-0">
         <SocialList socials={socials} onClick={() => setVisible(false)} />
-      }
-    >
-      <Button
-        sx={{ width: ['100%', ''] }}
-        variant="bordered"
-        onClick={() => setVisible(true)}
-      >
-        <Box sx={{ height: 22 }}>
-          <MoreHorizontal />
-        </Box>
-      </Button>
-    </Popup>
+      </PopoverContent>
+    </Popover>
   )
 }
 
 const OverviewActions = () => {
   const rToken = useRToken()
   const navigate = useNavigate()
-  // TODO: Grab this from theGraph?
   const { holders, stakers, basket } = useAtomValue(estimatedApyAtom)
 
   return (
-    <Box
-      mt={4}
-      mr={[4, 0]}
-      mb={2}
-      sx={{
-        display: 'flex',
-        flexDirection: ['column', 'row'],
-        alignItems: 'left',
-        gap: [2, 3],
-      }}
-    >
+    <div className="mt-6 mr-4 sm:mr-0 mb-2 flex flex-col sm:flex-row items-start gap-2 sm:gap-3">
       {rToken?.chainId !== ChainId.Arbitrum && (
         <DgnETHButtonAppendix rTokenSymbol={rToken?.symbol} basketAPY={basket}>
           <Button
-            variant="accent"
+            size="lg"
+            className="whitespace-nowrap w-full sm:w-auto"
             onClick={() => navigate(`../${ROUTES.ISSUANCE}`)}
-            sx={{ whiteSpace: 'nowrap' }}
           >
             <Trans>
               {!!holders
@@ -144,14 +129,15 @@ const OverviewActions = () => {
         </DgnETHButtonAppendix>
       )}
       <Button
-        variant="bordered"
+        size="lg"
+        variant="outline-primary"
+        className="whitespace-nowrap w-full sm:w-auto "
         onClick={() => navigate(`../${ROUTES.STAKING}`)}
-        sx={{ whiteSpace: 'nowrap' }}
       >
         Stake RSR {!!stakers && `- ${formatCurrency(stakers, 1)}% Est. APY`}
       </Button>
       <TokenSocials />
-    </Box>
+    </div>
   )
 }
 

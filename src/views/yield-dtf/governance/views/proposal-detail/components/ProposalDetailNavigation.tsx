@@ -1,5 +1,5 @@
 import { t } from '@lingui/macro'
-import Navigation from 'components/section-navigation/Navigation'
+import Navigation from '@/components/section-navigation/section-navigation'
 import { Box } from 'theme-ui'
 
 const ProposalDetailNavigation = ({ sections }: { sections: string[] }) => (

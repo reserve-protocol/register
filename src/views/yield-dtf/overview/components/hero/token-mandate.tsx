@@ -5,7 +5,6 @@ import { useAtomValue } from 'jotai'
 import { useState } from 'react'
 import Skeleton from 'react-loading-skeleton'
 import { rTokenListAtom } from 'state/atoms'
-import { Box, Text } from 'theme-ui'
 
 const OffChainNote = () => {
   const rToken = useRToken()
@@ -17,22 +16,18 @@ const OffChainNote = () => {
   }
 
   return (
-    <Box mt={4}>
-      <Text
-        mb={2}
-        variant="strong"
+    <div className="mt-4">
+      <span
+        className="mb-2 font-semibold cursor-pointer"
         role="button"
-        sx={{ cursor: 'pointer' }}
         onClick={() => setExpanded(!expanded)}
       >
         <Trans>{expanded ? '-' : '+'} Description</Trans>
-      </Text>
+      </span>
       {expanded && (
-        <Text as="p" variant="legend">
-          {rTokenList[rToken.address]?.about}
-        </Text>
+        <p className="text-legend">{rTokenList[rToken.address]?.about}</p>
       )}
-    </Box>
+    </div>
   )
 }
 
@@ -40,28 +35,16 @@ const TokenMandate = () => {
   const rToken = useRToken()
 
   return (
-    <Box
-      sx={{
-        maxWidth: 500,
-        borderLeft: '1px solid',
-        borderColor: ['transparent', 'transparent', 'transparent', 'border'],
-        paddingLeft: [0, 0, 0, 7],
-        marginTop: 'auto',
-        '@media (min-width: 1152px) and (max-width: 1400px)': {
-          borderColor: 'transparent',
-          paddingLeft: 0,
-        },
-      }}
-    >
+    <div className="max-w-[500px] mt-auto border-l border-transparent 2xl:border-border pl-0 2xl:pl-7">
       <MandateIcon />
-      <Text sx={{ fontSize: 3 }} variant="strong" mb={2} mt={3}>
+      <span className="block text-base font-semibold mb-2 mt-3">
         <Trans>Governor mandate</Trans>
-      </Text>
-      <Text as="p" variant="legend">
+      </span>
+      <p className="text-legend">
         {rToken?.mandate ? rToken.mandate : <Skeleton count={6} />}
-      </Text>
+      </p>
       <OffChainNote />
-    </Box>
+    </div>
   )
 }
 

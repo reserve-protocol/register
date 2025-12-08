@@ -1,11 +1,11 @@
+import { cn } from '@/lib/utils'
 import TokenLogo from 'components/icons/TokenLogo'
 import React, { FC, ReactNode, useMemo } from 'react'
 import { Cell, Pie, PieChart, Tooltip } from 'recharts'
 import { colors } from 'theme'
-import { Box, BoxProps } from 'theme-ui'
 import { formatPercentage } from 'utils'
 
-interface ChartProps extends BoxProps {
+interface ChartProps {
   data: {
     name: string
     value: number
@@ -19,6 +19,7 @@ interface ChartProps extends BoxProps {
   bottomInformation?: ReactNode
   showTooltip?: boolean
   isRebalancing?: boolean
+  className?: string
 }
 
 // Value % between 0-100
@@ -54,7 +55,7 @@ const CollateralChart: FC<ChartProps> = ({
   bottomInformation,
   showTooltip = false,
   isRebalancing = false,
-  ...props
+  className,
 }) => {
   const filteredData = useMemo(
     () =>
@@ -64,20 +65,18 @@ const CollateralChart: FC<ChartProps> = ({
     [data]
   )
   return (
-    <Box {...props} variant="layout.centered" sx={{ gap: 2 }}>
+    <div
+      className={cn(
+        'flex flex-col items-center justify-center gap-2',
+        className
+      )}
+    >
       {topInformation}
-      <Box sx={{ position: 'relative' }}>
-        <Box
-          sx={{
-            top: '50%',
-            left: '50%',
-            position: 'absolute',
-            transform: 'translate(-50%, -50%)',
-          }}
-        >
+      <div className="relative">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
           <TokenLogo width={20} src={logo} />
-        </Box>
-        <Box sx={{ width: 180, height: 180 }}>
+        </div>
+        <div className="w-[180px] h-[180px]">
           <PieChart width={180} height={180} style={{ cursor: 'pointer' }}>
             <defs>
               <linearGradient
@@ -186,10 +185,10 @@ const CollateralChart: FC<ChartProps> = ({
               {...getAngles(staked)}
             />
           </PieChart>
-        </Box>
-      </Box>
+        </div>
+      </div>
       {bottomInformation}
-    </Box>
+    </div>
   )
 }
 

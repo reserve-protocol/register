@@ -1,6 +1,6 @@
 import { Trans } from '@lingui/macro'
 import { SmallButton } from '@/components/old/button'
-import SectionWrapper from 'components/section-navigation/SectionWrapper'
+import SectionWrapper from '@/components/section-navigation/section-wrapper'
 import { useState } from 'react'
 import { ChevronDown, ChevronUp } from 'lucide-react'
 import { Box, BoxProps, Button, Card, Divider, Flex, Text } from 'theme-ui'

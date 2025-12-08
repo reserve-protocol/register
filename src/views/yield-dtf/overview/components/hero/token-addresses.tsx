@@ -1,14 +1,18 @@
 import CopyValue from '@/components/old/button/CopyValue'
 import GoTo from '@/components/old/button/GoTo'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover'
+import { cn } from '@/lib/utils'
 import ChainLogo from 'components/icons/ChainLogo'
 import StackedChainLogo from 'components/icons/StackedChainLogo'
-import Popup from '@/components/old/popup'
 import { useAtomValue } from 'jotai'
-import { useMemo, useState } from 'react'
 import { ChevronDown } from 'lucide-react'
+import { useMemo, useState } from 'react'
 import { chainIdAtom, selectedRTokenAtom } from 'state/atoms'
 import { rTokenMetaAtom } from 'state/rtoken/atoms/rTokenAtom'
-import { Box, Text } from 'theme-ui'
 import { shortenAddress } from 'utils'
 import { AvailableChain } from 'utils/chains'
 import { BRIDGED_RTOKENS } from 'utils/constants'
@@ -30,27 +34,26 @@ const BridgeTokenList = () => {
   }, [current, chainId])
 
   return (
-    <Box p={3} backgroundColor="background">
+    <div className="p-3 bg-background">
       {tokenAddresses.map((token, i) => (
-        <Box
-          variant="layout.verticalAlign"
-          mt={!!i ? 2 : 0}
+        <div
+          className={cn('flex items-center', i > 0 && 'mt-2')}
           key={token.address}
         >
           <ChainLogo chain={token.chain} />
-          <Text mx={2}>{shortenAddress(token.address)}</Text>
+          <span className="mx-2">{shortenAddress(token.address)}</span>
           <CopyValue mr={1} ml="auto" value={token.address} />
           <GoTo
-            style={{ position: 'relative', top: '2px' }}
+            className="relative top-0.5"
             href={getExplorerLink(
               token.address,
               token.chain,
               ExplorerDataType.TOKEN
             )}
           />
-        </Box>
+        </div>
       ))}
-    </Box>
+    </div>
   )
 }
 
@@ -73,44 +76,39 @@ const TokenAddresses = () => {
   const isBridged = availableChains.length > 1
 
   return (
-    <Popup
-      zIndex={0}
-      show={isVisible}
-      onDismiss={() => setVisible(false)}
-      content={<BridgeTokenList />}
-      placement="auto-start"
-    >
-      <Box
-        variant="layout.verticalAlign"
-        ml={[1, 0]}
-        mb={[2, 0]}
-        sx={{
-          cursor: isBridged ? 'pointer' : 'cursor',
-          flexGrow: 0,
-          userSelect: 'none',
-        }}
-        onClick={() => isBridged && setVisible(!isVisible)}
-      >
-        <StackedChainLogo chains={availableChains} />
-        <Text mr={2} variant="legend">
-          {!!rToken && shortenAddress(rToken.address)}
-        </Text>
-        {isBridged && <ChevronDown size={16} />}
-        {!isBridged && rToken && (
-          <>
-            <CopyValue mr={1} ml="auto" value={rToken.address} />
-            <GoTo
-              style={{ position: 'relative', top: '2px' }}
-              href={getExplorerLink(
-                rToken.address,
-                chainId,
-                ExplorerDataType.TOKEN
-              )}
-            />
-          </>
-        )}
-      </Box>
-    </Popup>
+    <Popover open={isVisible} onOpenChange={setVisible}>
+      <PopoverTrigger asChild>
+        <div
+          className={cn(
+            'flex items-center ml-1 sm:ml-0 mb-2 sm:mb-0 grow-0 select-none',
+            isBridged ? 'cursor-pointer' : 'cursor-default'
+          )}
+          onClick={() => isBridged && setVisible(!isVisible)}
+        >
+          <StackedChainLogo chains={availableChains} />
+          <span className="mr-2 text-legend">
+            {!!rToken && shortenAddress(rToken.address)}
+          </span>
+          {isBridged && <ChevronDown size={16} />}
+          {!isBridged && rToken && (
+            <>
+              <CopyValue mr={1} ml="auto" value={rToken.address} />
+              <GoTo
+                className="relative top-0.5"
+                href={getExplorerLink(
+                  rToken.address,
+                  chainId,
+                  ExplorerDataType.TOKEN
+                )}
+              />
+            </>
+          )}
+        </div>
+      </PopoverTrigger>
+      <PopoverContent className="w-auto p-0" align="start">
+        <BridgeTokenList />
+      </PopoverContent>
+    </Popover>
   )
 }
 export default TokenAddresses

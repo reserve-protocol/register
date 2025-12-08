@@ -1,6 +1,6 @@
 import { t, Trans } from '@lingui/macro'
 import { SmallButton } from '@/components/old/button'
-import Navigation from 'components/section-navigation/Navigation'
+import Navigation from '@/components/section-navigation/section-navigation'
 import useRToken from 'hooks/useRToken'
 import { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'

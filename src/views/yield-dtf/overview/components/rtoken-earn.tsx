@@ -4,7 +4,6 @@ import useRToken from 'hooks/useRToken'
 import { atom, useAtomValue } from 'jotai'
 import { selectedRTokenAtom } from 'state/atoms'
 import { poolsAtom } from 'state/pools/atoms'
-import { Box, Text } from 'theme-ui'
 import PoolsTable from 'views/earn/components/pools-table'
 
 const rTokenPoolsAtom = atom((get) => {
@@ -33,23 +32,17 @@ const RTokenEarn = () => {
   const rToken = useRToken()
 
   return (
-    <Box>
-      <Box
-        variant="layout.verticalAlign"
-        ml="4"
-        mb={4}
-        mt={6}
-        sx={{ color: 'accent' }}
-      >
+    <div>
+      <div className="flex items-center ml-6 mb-6 mt-10 text-primary">
         <EarnIcon fontSize={24} />
-        <Text ml="2" as="h2" variant="title" sx={{ fontWeight: '400' }}>
+        <h2 className="ml-2 text-xl font-normal">
           <Trans>Explore yield opportunities for {rToken?.symbol ?? ''}</Trans>
-        </Text>
-      </Box>
+        </h2>
+      </div>
       <div className="overflow-auto">
         <PoolsTable compact data={data} />
       </div>
-    </Box>
+    </div>
   )
 }
 

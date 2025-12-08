@@ -1,5 +1,5 @@
-import SectionContainer from 'components/section-navigation/SectionContainer'
-import SectionWrapper from 'components/section-navigation/SectionWrapper'
+import SectionContainer from '@/components/section-navigation/section-container'
+import SectionWrapper from '@/components/section-navigation/section-wrapper'
 import BackingInfo from './BackingInfo'
 import BasicInfo from './BasicInfo'
 import BasketInfo from './BasketInfo'

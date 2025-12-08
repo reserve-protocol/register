@@ -1,5 +1,5 @@
 import RevenueSplit from 'components/rtoken-setup/token/RevenueSplit'
-import SectionWrapper from 'components/section-navigation/SectionWrapper'
+import SectionWrapper from '@/components/section-navigation/section-wrapper'
 import { Box } from 'theme-ui'
 import BackingManager from '@/views/yield-dtf/deploy/components/BackingManager'
 import OtherSetup from '@/views/yield-dtf/deploy/components/OtherSetup'

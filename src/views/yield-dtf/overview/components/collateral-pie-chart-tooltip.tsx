@@ -8,7 +8,6 @@ import { useAtomValue } from 'jotai'
 import { FC, memo, useMemo } from 'react'
 import { rsrPriceAtom } from 'state/atoms'
 import { collateralsMetadataAtom } from 'state/cms/atoms'
-import { Box, Card, Divider, Grid, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 
 type ItemProps = {
@@ -23,34 +22,15 @@ type CollateralPieChartTooltipProps = {
 
 const Item: FC<ItemProps> = ({ logo, name, value }) => {
   return (
-    <Box
-      variant="layout.verticalAlign"
-      sx={{
-        backgroundColor: 'focusedBackground',
-        border: '1px solid',
-        borderColor: 'border',
-        color: 'text',
-        px: 2,
-        py: '6px',
-        borderRadius: '6px',
-        flexGrow: 1,
-      }}
-    >
-      <Box
-        variant="layout.verticalAlign"
-        sx={{
-          justifyContent: 'space-between',
-          gap: 2,
-          flexGrow: 1,
-        }}
-      >
-        <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
+    <div className="flex items-center bg-background border border-border text-foreground px-2 py-1.5 rounded-md flex-grow">
+      <div className="flex items-center justify-between gap-2 flex-grow">
+        <div className="flex items-center gap-1">
           <TokenLogo width={16} src={logo} />
-          <Text sx={{ fontSize: 14, fontWeight: 500 }}>{name}</Text>
-        </Box>
-        <Text sx={{ fontSize: 14 }}>{value.toFixed(0)}%</Text>
-      </Box>
-    </Box>
+          <span className="text-sm font-medium">{name}</span>
+        </div>
+        <span className="text-sm">{value.toFixed(0)}%</span>
+      </div>
+    </div>
   )
 }
 
@@ -154,31 +134,13 @@ const CollateralPieChartTooltip: FC<CollateralPieChartTooltipProps> = ({
   )
 
   return (
-    <Card
-      variant="layout.centered"
-      sx={{
-        width: '100%',
-        maxWidth: ['100%', 480],
-        minWidth: ['100%', 350],
-        p: [0, 3],
-        gap: 3,
-        borderRadius: '14px',
-        backgroundColor: ['contentBackground', 'backgroundNested'],
-        alignItems: 'start',
-        border: ['none', '3px solid'],
-        borderColor: ['transparent', 'borderFocused'],
-        boxShadow: ['none', '0px 10px 45px 6px rgba(0, 0, 0, 0.10)'],
-      }}
-    >
-      <Box
-        variant="layout.centered"
-        sx={{ gap: 2, alignItems: 'start', width: '100%' }}
-      >
-        <Box variant="layout.verticalAlign" ml={2} sx={{ gap: 1 }}>
+    <div className="flex flex-col items-start w-full max-w-full sm:max-w-[480px] min-w-full sm:min-w-[350px] p-0 sm:p-4 gap-4 rounded-[14px] bg-card sm:bg-card border-none sm:border-[3px] sm:border-muted sm:shadow-[0px_10px_45px_6px_rgba(0,0,0,0.10)]">
+      <div className="flex flex-col items-start gap-2 w-full">
+        <div className="flex items-center ml-2 gap-1">
           <BasketCubeIcon width={17} height={17} />
-          <Text sx={{ fontSize: 14 }}>{t`Collateral(s)`}</Text>
-        </Box>
-        <Grid columns={[1, 2]} gap={2} sx={{ width: '100%' }}>
+          <span className="text-sm">{t`Collateral(s)`}</span>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 w-full">
           {collateralItems.map((item) => (
             <Item
               key={item.name}
@@ -187,22 +149,19 @@ const CollateralPieChartTooltip: FC<CollateralPieChartTooltipProps> = ({
               value={item.value}
             />
           ))}
-        </Grid>
-      </Box>
-      <Box
-        variant="layout.centered"
-        sx={{ gap: 2, alignItems: 'start', width: '100%' }}
-      >
-        <Box variant="layout.verticalAlign" ml={2} sx={{ gap: 1 }}>
+        </div>
+      </div>
+      <div className="flex flex-col items-start gap-2 w-full">
+        <div className="flex items-center ml-2 gap-1">
           <CirclesIcon
             color="currentColor"
             width={13}
             height={13}
             style={{ marginLeft: '1px' }}
           />
-          <Text sx={{ fontSize: 14 }}>{t`Token exposure`}</Text>
-        </Box>
-        <Grid columns={[1, 2]} gap={2} sx={{ width: '100%' }}>
+          <span className="text-sm">{t`Token exposure`}</span>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 w-full">
           {tokenItems.map((item) => (
             <Item
               key={item.name}
@@ -211,17 +170,14 @@ const CollateralPieChartTooltip: FC<CollateralPieChartTooltipProps> = ({
               value={item.value}
             />
           ))}
-        </Grid>
-      </Box>
-      <Box
-        variant="layout.centered"
-        sx={{ gap: 2, alignItems: 'start', width: '100%' }}
-      >
-        <Box variant="layout.verticalAlign" ml={2} sx={{ gap: 1 }}>
+        </div>
+      </div>
+      <div className="flex flex-col items-start gap-2 w-full">
+        <div className="flex items-center ml-2 gap-1">
           <PlatformExposureIcon />
-          <Text sx={{ fontSize: 14 }}>{t`Platform exposure`}</Text>
-        </Box>
-        <Grid columns={[1, 2]} gap={2} sx={{ width: '100%' }}>
+          <span className="text-sm">{t`Platform exposure`}</span>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 w-full">
           {platformItems.map((item) => (
             <Item
               key={item.name}
@@ -230,27 +186,24 @@ const CollateralPieChartTooltip: FC<CollateralPieChartTooltipProps> = ({
               value={item.value}
             />
           ))}
-        </Grid>
-      </Box>
-      <Divider sx={{ borderColor: 'border', width: '100%', my: 0 }} />
-      <Box
-        variant="layout.verticalAlign"
-        sx={{ gap: 2, justifyContent: 'space-between', width: '100%' }}
-      >
-        <Box variant="layout.verticalAlign" sx={{ gap: 2 }}>
+        </div>
+      </div>
+      <hr className="border-border w-full my-0" />
+      <div className="flex items-center gap-2 justify-between w-full">
+        <div className="flex items-center gap-2">
           <TokenLogo width={16} src="/svgs/rsr.svg" />
-          <Box variant="layout.centered" sx={{ alignItems: 'start' }}>
-            <Text sx={{ fontSize: 14 }}>
+          <div className="flex flex-col items-start">
+            <span className="text-sm">
               {t`Staked RSR Overcollateralisation`}
-            </Text>
-            <Text sx={{ fontWeight: 500 }}>
+            </span>
+            <span className="font-medium">
               {token.overcollaterization.toFixed(0)}%
-            </Text>
-          </Box>
-        </Box>
-        <Text sx={{ fontSize: 14, color: '#666666' }}>${rsrUSD}</Text>
-      </Box>
-    </Card>
+            </span>
+          </div>
+        </div>
+        <span className="text-sm text-[#666666]">${rsrUSD}</span>
+      </div>
+    </div>
   )
 }
 

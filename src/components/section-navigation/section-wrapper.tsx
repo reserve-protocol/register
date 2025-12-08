@@ -1,11 +1,9 @@
-import { atom } from 'jotai'
-import { useSetAtom } from 'jotai'
+import { atom, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { useInView } from 'react-intersection-observer'
-import { Box, BoxProps } from 'theme-ui'
 import { navigationIndexAtom } from './atoms'
 
-interface Props extends BoxProps {
+interface Props extends React.HTMLAttributes<HTMLDivElement> {
   navigationIndex: number
   threshold?: number
 }
@@ -25,7 +23,6 @@ const updateSectionAtom = atom(null, (get, set, section: [boolean, number]) => {
   }
 })
 
-// TODO: Store ref on atom? this would allow to use it directly rather than use js for the scrolling
 const SectionWrapper = ({
   navigationIndex,
   threshold = 0.6,
@@ -38,7 +35,7 @@ const SectionWrapper = ({
     updateNavigationIndex([inView, navigationIndex])
   }, [inView])
 
-  return <Box {...props} ref={ref} id={`section-${navigationIndex}`} />
+  return <div {...props} ref={ref} id={`section-${navigationIndex}`} />
 }
 
 export default SectionWrapper

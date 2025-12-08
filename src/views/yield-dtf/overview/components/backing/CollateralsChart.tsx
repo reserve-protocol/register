@@ -4,7 +4,7 @@ import { useMemo } from 'react'
 import { rTokenBackingDistributionAtom, rTokenStateAtom } from 'state/atoms'
 import { stringToColor } from 'utils'
 import { COLLATERAL_STATUS } from 'utils/constants'
-import CollateralPieChart from '../CollateralPieChart'
+import CollateralPieChart from '../collateral-pie-chart'
 import { collateralsMetadataAtom } from 'state/cms/atoms'
 
 const basketDistAtom = atom((get) => {
@@ -47,7 +47,7 @@ const CollateralsChart = () => {
   }, [JSON.stringify(basketDist), rToken?.address])
   return (
     <CollateralPieChart
-      my={3}
+      className="my-4"
       data={pieData}
       logo={rToken?.logo ?? ''}
       staked={distribution?.staked ?? 0}

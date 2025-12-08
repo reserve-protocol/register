@@ -1,11 +1,10 @@
+import { rTokenTargetPriceAtom } from '@/views/yield-dtf/overview/atoms'
 import { Trans } from '@lingui/macro'
 import StakedIcon from 'components/icons/StakedIcon'
 import { atom, useAtomValue } from 'jotai'
 import { rTokenPriceAtom, rTokenStateAtom, rsrPriceAtom } from 'state/atoms'
-import { Box, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
-import OverviewActions from './OverviewActions'
-import { rTokenTargetPriceAtom } from '@/views/yield-dtf/overview/atoms'
+import OverviewActions from './overview-actions'
 
 const rTokenOverviewAtom = atom((get) => {
   const state = get(rTokenStateAtom)
@@ -29,45 +28,42 @@ const TokenMetrics = () => {
 
   return (
     <>
-      <Text sx={{ display: 'block' }}>
+      <span className="block">
         <Trans>Total Market Cap</Trans>
-      </Text>
+      </span>
       {data?.pegData ? (
-        <Box sx={{ display: 'flex', alignItems: 'end', flexWrap: 'wrap' }}>
-          <Text variant="accent" mr="2" as="h1" sx={{ fontSize: [5, 6] }}>
+        <div className="flex items-center sm:items-end mt-3 flex-wrap">
+          <h1 className="text-primary mr-2 text-[32px] sm:text-5xl">
             {formatCurrency(data.pegData.supply, 0)} {data.pegData.unit}
-          </Text>
-          <Text
-            sx={{ fontSize: [3, 4], display: 'block' }}
-            pb={['6px', '12px']}
-          >
+          </h1>
+          <span className="block text-xl sm:text-2xl">
             (${formatCurrency(data?.supply ?? 0, 0)})
-          </Text>
-        </Box>
+          </span>
+        </div>
       ) : (
-        <Text variant="accent" as="h1" sx={{ fontSize: 6 }}>
+        <h1 className="text-primary text-5xl">
           ${formatCurrency(data?.supply ?? 0, 0)}
-        </Text>
+        </h1>
       )}
 
-      <Box mb={3} mt={2} variant="layout.verticalAlign">
+      <div className="mb-4 mt-3 flex items-center">
         <StakedIcon />
-        <Text ml={2}>
+        <span className="ml-2">
           <Trans>Stake pool USD value:</Trans>
-        </Text>
-        <Text ml="1" variant="strong">
+        </span>
+        <span className="ml-1 font-medium">
           ${formatCurrency(data?.staked ?? 0, 0)}
-        </Text>
-      </Box>
+        </span>
+      </div>
     </>
   )
 }
 
 const TokenStats = () => (
-  <Box>
+  <div>
     <TokenMetrics />
     <OverviewActions />
-  </Box>
+  </div>
 )
 
 export default TokenStats

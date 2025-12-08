@@ -1,4 +1,4 @@
-import SectionWrapper from 'components/section-navigation/SectionWrapper'
+import SectionWrapper from '@/components/section-navigation/section-wrapper'
 import { useState } from 'react'
 import { Card } from 'theme-ui'
 import BackupBasket from './BackupBasket'

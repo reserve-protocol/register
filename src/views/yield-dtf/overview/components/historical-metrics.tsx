@@ -1,31 +1,24 @@
 import { Trans } from '@lingui/macro'
-import { Suspense, lazy } from 'react'
 import { TrendingUp } from 'lucide-react'
+import { Suspense, lazy } from 'react'
 import Skeleton from 'react-loading-skeleton'
-import { Box, Card, Text } from 'theme-ui'
 
 const Charts = lazy(() => import('./charts'))
 
 const HistoricalMetrics = () => (
-  <Box>
-    <Box
-      variant="layout.verticalAlign"
-      ml="4"
-      mb={3}
-      mt={6}
-      sx={{ color: 'accent' }}
-    >
+  <div>
+    <div className="flex items-center ml-6 mb-4 mt-10 text-primary">
       <TrendingUp />
-      <Text ml="3" as="h2" variant="title" sx={{ fontWeight: '400' }}>
+      <h2 className="ml-4 text-2xl font-semibold">
         <Trans>Historical metrics</Trans>
-      </Text>
-    </Box>
-    <Card mt="5" p="1">
+      </h2>
+    </div>
+    <div className="mt-8 p-1 bg-secondary rounded-3xl">
       <Suspense fallback={<Skeleton count={3} height={160} />}>
         <Charts />
       </Suspense>
-    </Card>
-  </Box>
+    </div>
+  </div>
 )
 
 export default HistoricalMetrics

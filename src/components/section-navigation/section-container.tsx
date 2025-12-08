@@ -1,11 +1,13 @@
 import { useSetAtom } from 'jotai'
-import { useSearchParams } from 'react-router-dom'
-import { Box, BoxProps } from 'theme-ui'
-import { navigationIndexAtom } from './atoms'
 import { useEffect } from 'react'
-import useSectionNavigate from './useSectionNavigate'
+import { useSearchParams } from 'react-router-dom'
+import { navigationIndexAtom } from './atoms'
+import useSectionNavigate from './use-section-navigate'
 
-const SectionContainer = ({ children, ...props }: BoxProps) => {
+const SectionContainer = ({
+  children,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) => {
   let [searchParams] = useSearchParams()
   const navigate = useSectionNavigate()
   const setNavigationIndex = useSetAtom(navigationIndexAtom)
@@ -20,7 +22,7 @@ const SectionContainer = ({ children, ...props }: BoxProps) => {
     return () => setNavigationIndex([])
   }, [])
 
-  return <Box {...props}>{children}</Box>
+  return <div {...props}>{children}</div>
 }
 
 export default SectionContainer
