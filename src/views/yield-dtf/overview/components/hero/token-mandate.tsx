@@ -37,7 +37,7 @@ const TokenMandate = () => {
   return (
     <div className="max-w-[500px] mt-auto border-l border-transparent 2xl:border-border pl-0 2xl:pl-7">
       <MandateIcon />
-      <span className="block text-base font-semibold mb-2 mt-3">
+      <span className="block text-lg font-semibold mb-2 mt-3">
         <Trans>Governor mandate</Trans>
       </span>
       <p className="text-legend">

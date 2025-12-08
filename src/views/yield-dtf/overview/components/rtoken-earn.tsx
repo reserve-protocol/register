@@ -35,7 +35,7 @@ const RTokenEarn = () => {
     <div>
       <div className="flex items-center ml-6 mb-6 mt-10 text-primary">
         <EarnIcon fontSize={24} />
-        <h2 className="ml-2 text-xl font-normal">
+        <h2 className="ml-2 text-2xl font-semibold">
           <Trans>Explore yield opportunities for {rToken?.symbol ?? ''}</Trans>
         </h2>
       </div>
