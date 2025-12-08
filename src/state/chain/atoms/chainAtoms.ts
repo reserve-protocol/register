@@ -79,24 +79,24 @@ export const gasPriceAtom = atom(
 
 export const SUBGRAPH_URL = {
   [ChainId.Mainnet]:
-    'https://subgraph.satsuma-prod.com/327d6f1d3de6/reserve/reserve-mainnet/api',
+    'https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/reserve-mainnet/prod/gn',
   [ChainId.Base]:
-    'https://subgraph.satsuma-prod.com/327d6f1d3de6/reserve/reserve-base/api',
+    'https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/reserve-base/prod/gn',
   [ChainId.Arbitrum]:
-    'https://subgraph.satsuma-prod.com/327d6f1d3de6/reserve/reserve-arbitrum/api',
+    'https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/reserve-arbitrum/prod/gn',
   [ChainId.BSC]:
-    'https://subgraph.satsuma-prod.com/327d6f1d3de6/reserve/reserve-arbitrum/api', // TODO? maybe never
+    'https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/reserve-arbitrum/prod/gn', // TODO? maybe never
 }
 
 export const INDEX_DTF_SUBGRAPH_URL = {
   [ChainId.Mainnet]:
-    'https://subgraph.satsuma-prod.com/327d6f1d3de6/reserve/dtf-index-mainnet/api',
+    'https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-mainnet/prod/gn',
   [ChainId.Base]:
-    'https://subgraph.satsuma-prod.com/327d6f1d3de6/reserve/dtf-index-base/api',
+    'https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-base/prod/gn',
   [ChainId.Arbitrum]:
-    'https://subgraph.satsuma-prod.com/327d6f1d3de6/reserve/dtf-index-base/api', // TODO? maybe never
+    'https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-bsc/prod/gn', // TODO? maybe never
   [ChainId.BSC]:
-    'https://subgraph.satsuma-prod.com/327d6f1d3de6/reserve/dtf-index-bsc/api',
+    'https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-bsc/prod/gn',
 }
 
 // TODO: Multi fork network graph
