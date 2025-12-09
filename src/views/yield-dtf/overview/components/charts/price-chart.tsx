@@ -9,7 +9,6 @@ import useTimeFrom from 'hooks/useTimeFrom'
 import { useAtomValue } from 'jotai'
 import { useEffect, useMemo, useState } from 'react'
 import { rTokenPriceAtom } from 'state/atoms'
-import { Box, BoxProps } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { TIME_RANGES } from 'utils/constants'
 import ExportCSVButton from './ExportCSVButton'
@@ -52,7 +51,7 @@ const PRICE_OPTIONS = [
   },
 ]
 
-const PriceChart = (props: BoxProps) => {
+const PriceChart = ({ className }: { className?: string }) => {
   const rToken = useRToken()
   const [current, setCurrent] = useState(TIME_RANGES.MONTH)
   const [currentPrice, setCurrentPrice] = useState<'ETH' | 'USD'>('USD')
@@ -137,14 +136,9 @@ const PriceChart = (props: BoxProps) => {
       domain={['auto', 'auto']}
       currentRange={current}
       onRangeChange={handleChange}
-      sx={{
-        backgroundColor: 'backgroundNested',
-        borderRadius: '16px',
-        border: '12px solid',
-        borderColor: 'backgroundNested',
-      }}
+      className={className}
       moreActions={
-        <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
+        <div className="flex items-center gap-1">
           {rToken?.targetUnits === 'ETH' && (
             <TabMenu
               items={PRICE_OPTIONS}
@@ -163,9 +157,8 @@ const PriceChart = (props: BoxProps) => {
             rows={data?.token?.snapshots || []}
             filename={`${rToken?.symbol}-historical-price-${current}.csv`}
           />
-        </Box>
+        </div>
       }
-      {...props}
     />
   )
 }

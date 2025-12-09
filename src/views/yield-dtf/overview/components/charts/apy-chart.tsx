@@ -1,6 +1,5 @@
 import { t } from '@lingui/macro'
 import AreaChart from 'components/charts/area/AreaChart'
-import TabMenu from 'components/tab-menu'
 import dayjs from 'dayjs'
 import { gql } from 'graphql-request'
 import useQuery, { useMultiFetch } from 'hooks/useQuery'
@@ -10,7 +9,6 @@ import { useAtomValue } from 'jotai'
 import { useMemo, useState } from 'react'
 import { estimatedApyAtom, rsrPriceAtom, rTokenPriceAtom } from 'state/atoms'
 import { symbolMap } from 'state/updaters/CollateralYieldUpdater'
-import { Box, BoxProps } from 'theme-ui'
 import { formatPercentage, getUTCStartOfDay } from 'utils'
 import { ChainId } from 'utils/chains'
 import { TIME_RANGES } from 'utils/constants'
@@ -78,7 +76,7 @@ type APYOptions = (typeof APY_OPTIONS)[number]['key']
 
 const today = getUTCStartOfDay(Date.now() / 1000)
 
-const APYChart = (props: BoxProps) => {
+const APYChart = ({ className }: { className?: string }) => {
   const rToken = useRToken()
   const rsrPrice = useAtomValue(rsrPriceAtom)
   const rTokenPrice = useAtomValue(rTokenPriceAtom)
@@ -304,20 +302,8 @@ const APYChart = (props: BoxProps) => {
       }}
       currentRange={current}
       onRangeChange={handleChange}
-      sx={{
-        backgroundColor: 'backgroundNested',
-        borderRadius: '16px',
-        border: '12px solid',
-        borderColor: 'backgroundNested',
-      }}
+      className={className}
       moreActions={
-        // <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
-        //   <TabMenu
-        //     items={APY_OPTIONS}
-        //     active={selectedOption}
-        //     onMenuChange={(key) => setSelectedOption(key as APYOptions)}
-        //   />
-        // </Box>
         <ExportCSVButton
           headers={[
             { key: 'timestamp', label: 'Timestamp' },
@@ -327,7 +313,6 @@ const APYChart = (props: BoxProps) => {
           filename={`${rToken?.symbol}-historical-apy-${current}.csv`}
         />
       }
-      {...props}
     />
   )
 }

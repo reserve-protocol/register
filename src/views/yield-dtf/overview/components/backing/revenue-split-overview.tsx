@@ -21,7 +21,12 @@ interface IRevenueBox {
   className?: string
 }
 
-const RevenueBox = ({ type, distribution, address, className }: IRevenueBox) => {
+const RevenueBox = ({
+  type,
+  distribution,
+  address,
+  className,
+}: IRevenueBox) => {
   const chainId = useAtomValue(chainIdAtom)
   const [title, icon] = useMemo(() => {
     if (type === 'holders') {
@@ -39,7 +44,7 @@ const RevenueBox = ({ type, distribution, address, className }: IRevenueBox) => 
   return (
     <div
       className={cn(
-        'flex items-center p-3 flex-wrap border border-border grow rounded-xl',
+        'flex items-center p-3 flex-wrap border border-secondary bg-card grow rounded-xl',
         className
       )}
     >
@@ -95,7 +100,7 @@ const RevenueSplitOverview = ({ className }: { className?: string }) => {
     <div className={cn('px-4 pb-3', className)}>
       <div className="flex items-center mb-4 text-2xl">
         <RevenueSplitIcon />
-        <span className="ml-2 font-bold">
+        <span className="ml-2 font-semibold">
           <Trans>Revenue distribution</Trans>
         </span>
       </div>

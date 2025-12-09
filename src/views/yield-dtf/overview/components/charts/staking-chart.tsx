@@ -7,8 +7,7 @@ import useRToken from 'hooks/useRToken'
 import useTimeFrom from 'hooks/useTimeFrom'
 import { useAtomValue } from 'jotai'
 import { useMemo, useState } from 'react'
-import { rTokenStateAtom } from 'state/atoms'
-import { BoxProps } from 'theme-ui'
+import { rsrPriceAtom } from 'state/atoms'
 import { formatCurrency } from 'utils'
 import { TIME_RANGES } from 'utils/constants'
 import { formatEther } from 'viem'
@@ -16,10 +15,10 @@ import ExportCSVButton from './ExportCSVButton'
 
 const hourlyPriceQuery = gql`
   query getTokenHourlyPrice($id: String!, $fromTime: Int!) {
-    token(id: $id) {
-      snapshots: hourlyTokenSnapshot(where: { timestamp_gte: $fromTime }) {
+    rtoken(id: $id) {
+      snapshots: hourlySnapshots(where: { timestamp_gte: $fromTime }) {
         timestamp
-        supply: hourlyTotalSupply
+        rsrStaked
       }
     }
   }
@@ -27,21 +26,21 @@ const hourlyPriceQuery = gql`
 
 const dailyPriceQuery = gql`
   query getTokenDailyPrice($id: String!, $fromTime: Int!) {
-    token(id: $id) {
-      snapshots: dailyTokenSnapshot(
-        first: 1000
+    rtoken(id: $id) {
+      snapshots: dailySnapshots(
+        first: 365
         where: { timestamp_gte: $fromTime }
       ) {
         timestamp
-        supply: dailyTotalSupply
+        rsrStaked
       }
     }
   }
 `
 
-const SupplyChart = (props: BoxProps) => {
+const StakingChart = ({ className }: { className?: string }) => {
   const rToken = useRToken()
-  const { tokenSupply: supply } = useAtomValue(rTokenStateAtom)
+  const rsrPrice = useAtomValue(rsrPriceAtom)
   const [current, setCurrent] = useState(TIME_RANGES.MONTH)
   const fromTime = useTimeFrom(current)
   const query = current === TIME_RANGES.DAY ? hourlyPriceQuery : dailyPriceQuery
@@ -53,29 +52,41 @@ const SupplyChart = (props: BoxProps) => {
   const rows = useMemo(() => {
     if (data) {
       return (
-        data.token?.snapshots.map(
-          ({ timestamp, supply }: { timestamp: string; supply: bigint }) => ({
-            value: +formatEther(supply),
+        data.rtoken?.snapshots.map(
+          ({
+            timestamp,
+            rsrStaked,
+          }: {
+            timestamp: string
+            rsrStaked: bigint
+          }) => ({
+            value: +formatEther(rsrStaked) * rsrPrice,
             label: dayjs.unix(+timestamp).format('YYYY-M-D HH:mm:ss'),
-            display: `${formatCurrency(+formatEther(supply))} ${
-              rToken?.symbol
-            }`,
+            display: `$${formatCurrency(+formatEther(rsrStaked) * rsrPrice)}`,
           })
         ) || []
       )
     }
-  }, [data])
+  }, [data, rsrPrice])
 
   const csvRows = useMemo(() => {
     return (
-      data?.token?.snapshots.map(
-        ({ timestamp, supply }: { timestamp: string; supply: bigint }) => ({
+      data?.rtoken?.snapshots.map(
+        ({
+          timestamp,
+          rsrStaked,
+        }: {
+          timestamp: string
+          rsrStaked: bigint
+        }) => ({
           timestamp: timestamp,
-          supply: +formatEther(supply),
+          rsrStaked: +formatEther(rsrStaked) * rsrPrice,
         })
       ) || []
     )
-  }, [data])
+  }, [data, rsrPrice])
+
+  const currentValue = rows && rows.length ? rows[rows.length - 1].value : 0
 
   const handleChange = (range: string) => {
     setCurrent(range)
@@ -83,31 +94,25 @@ const SupplyChart = (props: BoxProps) => {
 
   return (
     <AreaChart
-      heading={t`Supply`}
-      title={`${formatCurrency(supply || 0)} ${rToken?.symbol}`}
+      heading={t`RSR Staked`}
+      title={`$${formatCurrency(currentValue)}`}
       data={rows}
       timeRange={TIME_RANGES}
       currentRange={current}
       onRangeChange={handleChange}
-      sx={{
-        backgroundColor: 'backgroundNested',
-        borderRadius: '16px',
-        border: '12px solid',
-        borderColor: 'backgroundNested',
-      }}
+      className={className}
       moreActions={
         <ExportCSVButton
           headers={[
             { key: 'timestamp', label: 'Timestamp' },
-            { key: 'supply', label: 'Supply' },
+            { key: 'rsrStaked', label: 'RSR Staked (USD)' },
           ]}
           rows={csvRows || []}
-          filename={`${rToken?.symbol}-historical-supply-${current}.csv`}
+          filename={`${rToken?.symbol}-historical-staking-${current}.csv`}
         />
       }
-      {...props}
     />
   )
 }
 
-export default SupplyChart
+export default StakingChart
