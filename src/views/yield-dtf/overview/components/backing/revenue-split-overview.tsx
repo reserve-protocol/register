@@ -1,4 +1,5 @@
 import { Trans } from '@lingui/macro'
+import { cn } from '@/lib/utils'
 import AsteriskIcon from 'components/icons/AsteriskIcon'
 import RevenueSplitIcon from 'components/icons/RevenueSplitIcon'
 import TokenLogo, { CurrentRTokenLogo } from 'components/icons/TokenLogo'
@@ -7,21 +8,20 @@ import { useMemo } from 'react'
 import { ArrowRight, ArrowUpRight } from 'lucide-react'
 import Skeleton from 'react-loading-skeleton'
 import { chainIdAtom, rTokenRevenueSplitAtom } from 'state/atoms'
-import { borderRadius } from 'theme'
-import { Box, BoxProps, Link, Text } from 'theme-ui'
 import { shortenAddress } from 'utils'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { Address } from 'viem'
 
 type RevenueType = 'holders' | 'stakers' | 'external'
 
-interface IRevenueBox extends BoxProps {
+interface IRevenueBox {
   type: RevenueType
   distribution: number
   address?: Address
+  className?: string
 }
 
-const RevenueBox = ({ type, distribution, address, ...props }: IRevenueBox) => {
+const RevenueBox = ({ type, distribution, address, className }: IRevenueBox) => {
   const chainId = useAtomValue(chainIdAtom)
   const [title, icon] = useMemo(() => {
     if (type === 'holders') {
@@ -37,39 +37,30 @@ const RevenueBox = ({ type, distribution, address, ...props }: IRevenueBox) => {
   }, [type])
 
   return (
-    <Box
-      variant="layout.verticalAlign"
-      p="3"
-      sx={{
-        flexWrap: 'wrap',
-        border: '1px solid',
-        borderColor: 'border',
-        flexGrow: 1,
-        borderRadius: borderRadius.boxes,
-      }}
-      {...props}
+    <div
+      className={cn(
+        'flex items-center p-3 flex-wrap border border-border grow rounded-xl',
+        className
+      )}
     >
       {icon}
-      <Box ml="3">
-        <Text sx={{ fontSize: 1, display: 'block' }} variant="legend">
-          {title}
-        </Text>
-        <Text variant="bold">{distribution.toFixed(2)}%</Text>
-      </Box>
+      <div className="ml-3">
+        <span className="text-sm block text-legend">{title}</span>
+        <span className="font-bold">{distribution.toFixed(2)}%</span>
+      </div>
       {type === 'external' && !!address && (
-        <Link
+        <a
           href={getExplorerLink(address, chainId, ExplorerDataType.ADDRESS)}
-          ml="auto"
+          className="ml-auto flex items-center text-sm"
           target="_blank"
-          sx={{ color: 'text', fontSize: 1 }}
-          variant="layout.verticalAlign"
+          rel="noopener noreferrer"
         >
           <ArrowRight size={14} />
-          <Text mx="2">{shortenAddress(address)}</Text>
+          <span className="mx-2">{shortenAddress(address)}</span>
           <ArrowUpRight size={14} />
-        </Link>
+        </a>
       )}
-    </Box>
+    </div>
   )
 }
 
@@ -97,22 +88,22 @@ const splitDataAtom = atom((get) => {
   ] as { type: RevenueType; distribution: number; address?: Address }[]
 })
 
-const RevenueSplitOverview = (props: BoxProps) => {
+const RevenueSplitOverview = ({ className }: { className?: string }) => {
   const data = useAtomValue(splitDataAtom)
 
   return (
-    <Box px={4} pb={3} {...props}>
-      <Box variant="layout.verticalAlign" mb="4" sx={{ fontSize: 4 }}>
+    <div className={cn('px-4 pb-3', className)}>
+      <div className="flex items-center mb-4 text-2xl">
         <RevenueSplitIcon />
-        <Text ml="2" variant="bold">
+        <span className="ml-2 font-bold">
           <Trans>Revenue distribution</Trans>
-        </Text>
-      </Box>
+        </span>
+      </div>
       {!data && <Skeleton height={64} />}
-      <Box variant="layout.verticalAlign" sx={{ flexWrap: 'wrap', gap: 4 }}>
+      <div className="flex items-center flex-wrap gap-4">
         {data?.map((item, index) => <RevenueBox key={index} {...item} />)}
-      </Box>
-    </Box>
+      </div>
+    </div>
   )
 }
 

@@ -11,9 +11,8 @@ import {
   rTokenPriceAtom,
   rTokenStateAtom,
 } from 'state/atoms'
-import { Box, Card, Flex, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
-import CollateralsChart from './CollateralsChart'
+import CollateralsChart from './collaterals-chart'
 import { rTokenTargetPriceAtom } from '@/views/yield-dtf/overview/atoms'
 
 // TODO: TARGET PEG PRICE (ETH+)
@@ -40,79 +39,59 @@ const BackingOverview = ({ current }: { current: string }) => {
   const data = useAtomValue(backingOverviewAtom)
 
   return (
-    <Card
-      variant="inner"
-      mr={1}
-      p={[3, 4]}
-      mt={[3, 3, 3, 0]}
-      sx={{
-        flexDirection: 'column',
-        width: ['100%', '100%', '100%', 280],
-        height: 'fit-content',
-        flexShrink: '0',
-        fontSize: [1, 2],
-      }}
-    >
-      <Flex sx={{ alignItems: 'flex-start' }}>
-        <Box variant="layout.verticalAlign">
+    <div className="mr-1 p-3 sm:p-4  flex flex-col w-full xl:w-[280px] h-fit shrink-0 text-sm sm:text-base bg-card rounded-2xl">
+      <div className="flex items-start">
+        <div className="flex items-center">
           <EarnNavIcon fontSize={16} />
-          <Text ml="2">1 {data.symbol}</Text>
-        </Box>
+          <span className="ml-2">1 {data.symbol}</span>
+        </div>
 
-        <Box ml="auto" sx={{ textAlign: 'right' }}>
+        <div className="ml-auto text-right">
           {!!data.pegData ? (
             <>
-              <Text variant="strong">
+              <span className="font-semibold">
                 {formatCurrency(data.pegData.price)} {data.pegData.unit}
-              </Text>
-              <Text variant="legend" sx={{ fontSize: 0 }}>
+              </span>
+              <span className="block text-legend text-xs">
                 ${formatCurrency(data?.price)}
-              </Text>
+              </span>
             </>
           ) : (
-            <Text variant="strong">${formatCurrency(data?.price)}</Text>
+            <span className="font-semibold">
+              ${formatCurrency(data?.price)}
+            </span>
           )}
-        </Box>
-      </Flex>
-      <Box mt="2" variant="layout.verticalAlign">
+        </div>
+      </div>
+      <div className="mt-2 flex items-center">
         <EarnIcon color="currentColor" />
-        <Text ml="2">Blended Yield</Text>
-        <Text ml="auto" variant="strong">
-          {data.yield.toFixed(2)}%
-        </Text>
-      </Box>
-      <Box sx={{ display: ['none', 'none', 'none', 'block'] }}>
+        <span className="ml-2">Blended Yield</span>
+        <span className="ml-auto font-semibold">{data.yield.toFixed(2)}%</span>
+      </div>
+      <div className="hidden xl:block">
         <CollateralsChart />
-      </Box>
-      <Box mt={[2, 2, 2, 0]} variant="layout.verticalAlign">
+      </div>
+      <div className="mt-2 xl:mt-0 flex items-center">
         <CircleIcon color="currentColor" />
-        <Text ml="2">
+        <span className="ml-2">
           <Trans>Backing</Trans>
-        </Text>
+        </span>
         {data.isCollaterized ? (
-          <Text ml="auto" variant="strong">
+          <span className="ml-auto font-semibold">
             {data.backing.toFixed(0)}%
-          </Text>
+          </span>
         ) : (
-          <Text
-            ml="auto"
-            sx={{
-              fontWeight: 700,
-              color: 'rebalancing',
-            }}
-          >
+          <span className="ml-auto font-semibold text-rebalancing">
             Rebalancing
-          </Text>
+          </span>
         )}
-      </Box>
-      <Box mt="2" variant="layout.verticalAlign">
+      </div>
+      <div className="mt-2 flex items-center">
         <CollaterizationIcon fontSize={16} />
-        <Text ml="2">Staked RSR</Text>
-        <Text ml="auto" variant="strong">
-          {data.staked.toFixed(0)}%
-        </Text>
-      </Box>
-    </Card>
+        <span className="ml-2">Staked RSR</span>
+        <span className="ml-auto font-semibold">{data.staked.toFixed(0)}%</span>
+      </div>
+    </div>
   )
 }
 

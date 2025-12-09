@@ -4,12 +4,11 @@ import LayersIcon from 'components/icons/LayersIcon'
 import RiskIcon from 'components/icons/RiskIcon'
 import TabMenu from 'components/tab-menu'
 import { useCallback, useMemo, useState } from 'react'
-import { Box, Card, Flex } from 'theme-ui'
-import BackingOverview from './BackingOverview'
-import CollateralExposure from './CollateralExposure'
-import PlatformExposure from './PlatformExposure'
-import Risks from './Risks'
-import TokenExposure from './TokenExposure'
+import BackingOverview from './backing-overview'
+import CollateralExposure from './collateral-exposure'
+import PlatformExposure from './platform-exposure'
+import Risks from './risks'
+import TokenExposure from './token-exposure'
 
 const tabComponents = {
   collaterals: CollateralExposure,
@@ -61,20 +60,15 @@ const AssetBreakdown = () => {
   const Current = tabComponents[current as keyof typeof tabComponents]
 
   return (
-    <Card px="1" pt="1" pb="1">
-      <Box sx={{ padding: 3 }} variant="layout.verticalAlign">
+    <div className="px-1 pt-1 pb-1 bg-secondary rounded-3xl">
+      <div className="p-4 flex items-center">
         <Menu current={current} onChange={handleChange} />
-      </Box>
-      <Flex
-        mt={1}
-        sx={{
-          flexWrap: ['wrap-reverse', 'wrap-reverse', 'wrap-reverse', 'nowrap'],
-        }}
-      >
+      </div>
+      <div className="mt-1 flex flex-wrap-reverse gap-1 w-full xl:flex-nowrap">
         <BackingOverview current={current} />
         <Current />
-      </Flex>
-    </Card>
+      </div>
+    </div>
   )
 }
 

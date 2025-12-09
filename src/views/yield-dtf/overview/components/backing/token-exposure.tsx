@@ -11,12 +11,10 @@ import Skeleton from 'react-loading-skeleton'
 import { chainIdAtom } from 'state/atoms'
 import { collateralsMetadataAtom } from 'state/cms/atoms'
 import { rTokenCollateralDetailedAtom } from 'state/rtoken/atoms/rTokenBackingDistributionAtom'
-import { Box, Card, Text } from 'theme-ui'
 import { shortenAddress } from 'utils'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
-import VerticalDivider from '@/views/discover/components/yield/components/VerticalDivider'
 
-interface TokenExposure {
+interface TokenExposureData {
   symbol: string
   distribution: number
   rating?: string
@@ -35,7 +33,7 @@ const dataAtom = atom((get) => {
     return null
   }
 
-  const tokenDetails: Record<string, TokenExposure> = {}
+  const tokenDetails: Record<string, TokenExposureData> = {}
 
   for (const collateral of collaterals) {
     const meta = metadata[collateral.symbol.toLowerCase().replace('-vault', '')]
@@ -85,90 +83,75 @@ const TokenExposure = () => {
   const data = useAtomValue(dataAtom)
 
   return (
-    <Card variant="inner">
-      <Box
-        variant="layout.verticalAlign"
-        p={[3, 4]}
-        sx={{ borderBottom: '1px solid', borderColor: 'border' }}
-      >
+    <div className="bg-secondary rounded-xl">
+      <div className="flex items-center p-3 sm:p-4 border-b border-border">
         <CirclesIcon color="currentColor" />
-        <Text ml="2" mr="auto" variant="bold" sx={{ fontSize: 3 }}>
+        <span className="ml-2 mr-auto font-bold text-xl">
           <Trans>Underlying Token Exposure</Trans>
-        </Text>
-      </Box>
+        </span>
+      </div>
       {!data && <Skeleton count={3} height={80} />}
-      {data?.map((data) => (
-        <Card
-          key={data.symbol}
-          variant="section"
-          p={[3, 4]}
-          sx={{ backgroundColor: 'backgroundNested' }}
+      {data?.map((item) => (
+        <div
+          key={item.symbol}
+          className="p-3 sm:p-4 bg-muted border-b border-border last:border-b-0"
         >
-          <Box variant="layout.verticalAlign">
-            <TokenLogo symbol={data.symbol} width={24} />
-            <Text ml="2" sx={{ color: 'accent' }} variant="bold">
-              {data.distribution.toFixed(2)}%
-            </Text>
-            <Text ml="1" variant="bold">
-              {data.symbol}
-            </Text>
-          </Box>
-          <Text mt="3" variant="legend" as="p">
-            {data.description}
-          </Text>
-          <Box mt="3" variant="layout.verticalAlign" sx={{ flexWrap: 'wrap' }}>
+          <div className="flex items-center">
+            <TokenLogo symbol={item.symbol} width={24} />
+            <span className="ml-2 text-primary font-bold">
+              {item.distribution.toFixed(2)}%
+            </span>
+            <span className="ml-1 font-bold">{item.symbol}</span>
+          </div>
+          <p className="mt-3 text-legend">{item.description}</p>
+          <div className="mt-3 flex items-center flex-wrap">
             <Button
               small
               variant="bordered"
-              onClick={() => window.open(data.website, '_blank')}
+              onClick={() => window.open(item.website, '_blank')}
             >
-              <Box variant="layout.verticalAlign">
+              <div className="flex items-center">
                 <HiperlinkIcon />
-                <Text ml="2">Website</Text>
-              </Box>
+                <span className="ml-2">Website</span>
+              </div>
             </Button>
-            {!!data.rating && (
+            {!!item.rating && (
               <Button
                 small
-                ml="3"
+                className="ml-3"
                 variant="bordered"
                 onClick={() => window.open('https://bluechip.org/', '_blank')}
               >
-                <Box variant="layout.verticalAlign">
+                <div className="flex items-center">
                   <BluechipLogo />
-                  <Text variant="bold" ml="2">
-                    Rating:
-                  </Text>
-                  <Text ml="1" sx={{ color: 'accent' }} variant="bold">
-                    {data.rating}
-                  </Text>
-                </Box>
+                  <span className="font-bold ml-2">Rating:</span>
+                  <span className="ml-1 text-primary font-bold">
+                    {item.rating}
+                  </span>
+                </div>
               </Button>
             )}
-            <VerticalDivider mx="3" sx={{ display: ['none', 'block'] }} />
-            {!!data.address && (
-              <Box
-                variant="layout.verticalAlign"
-                sx={{ flexBasis: ['100%', 'auto'], mt: [3, 0] }}
-              >
-                <Text mr={2} variant="legend">
-                  {!!data.address && shortenAddress(data.address)}
-                </Text>
-                <CopyValue mr={1} ml="auto" value={data.address} />
+            <div className="hidden sm:block w-px h-6 bg-border mx-3" />
+            {!!item.address && (
+              <div className="flex items-center basis-full sm:basis-auto mt-3 sm:mt-0">
+                <span className="mr-2 text-legend">
+                  {!!item.address && shortenAddress(item.address)}
+                </span>
+                <CopyValue mr={1} ml="auto" value={item.address} />
                 <GoTo
                   style={{ position: 'relative', top: '2px' }}
                   href={getExplorerLink(
-                    data.address,
-                    data.chain,
+                    item.address,
+                    item.chain,
                     ExplorerDataType.TOKEN
                   )}
                 />
-              </Box>
+              </div>
             )}
-          </Box>
-        </Card>
+          </div>
+        </div>
       ))}
-    </Card>
+    </div>
   )
 }
 

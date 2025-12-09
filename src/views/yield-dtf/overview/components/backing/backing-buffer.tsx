@@ -1,3 +1,4 @@
+import { cn } from '@/lib/utils'
 import Help from 'components/help'
 import BackingBufferIcon from 'components/icons/BackingBufferIcon'
 import ProgressBar from 'components/progress-bar'
@@ -10,10 +11,9 @@ import {
   rTokenPriceAtom,
   rTokenStateAtom,
 } from 'state/atoms'
-import { Box, BoxProps, Text } from 'theme-ui'
 import { formatCurrency, formatPercentage } from 'utils'
 
-const BuckingBuffer = ({ ...props }: BoxProps) => {
+const BuckingBuffer = ({ className }: { className?: string }) => {
   const rToken = useRToken()
   const backing = useAtomValue(rTokenBackingDistributionAtom)
   const rTokenState = useAtomValue(rTokenStateAtom)
@@ -37,91 +37,56 @@ const BuckingBuffer = ({ ...props }: BoxProps) => {
   }, [backing, rTokenPrice, rTokenState])
 
   return (
-    <Box {...props}>
-      <Box
-        px={4}
-        sx={{
-          display: 'flex',
-          flexDirection: ['column', 'column', 'column', 'row', 'row'],
-          alignItems: [
-            'flex-start',
-            'flex-start',
-            'flex-start',
-            'center',
-            'center',
-          ],
-          gap: 2,
-          justifyContent: 'space-between',
-          '@media (min-width: 1150px) and (max-width: 1250px)': {
-            flexDirection: 'column',
-            alignItems: 'flex-start',
-          },
-        }}
-      >
-        <Box
-          variant="layout.verticalAlign"
-          sx={{
-            gap: 2,
-            flexDirection: ['column', 'row'],
-            alignItems: ['flex-start', 'center'],
-          }}
-        >
-          <Box variant="layout.verticalAlign" sx={{ gap: 2 }}>
+    <div className={cn(className)}>
+      <div className="px-4 flex flex-col lg:flex-row items-start lg:items-center gap-2 justify-between max-[1250px]:min-[1150px]:flex-col max-[1250px]:min-[1150px]:items-start">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2">
+          <div className="flex items-center gap-2">
             <BackingBufferIcon />
-            <Text variant="sectionTitle">
+            <span className="text-lg font-semibold">
               Revenue distribution backing buffer
-            </Text>
-          </Box>
-          <Box variant="layout.verticalAlign" sx={{ gap: 2 }}>
-            <Text
-              sx={{
-                fontSize: 3,
-                opacity: 0.2,
-                mx: 2,
-                display: ['none', 'inline'],
-              }}
-            >
-              |
-            </Text>
-            <Text variant="contentTitle">
+            </span>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="hidden sm:inline text-xl opacity-20 mx-2">|</span>
+            <span className="font-medium text-legend">
               {rToken?.symbol || ''} buffer as % of mcap:
-            </Text>
-            <Text sx={{ fontSize: 1 }}>{percentageOfMCap}</Text>
-          </Box>
-        </Box>
-      </Box>
+            </span>
+            <span className="text-sm">{percentageOfMCap}</span>
+          </div>
+        </div>
+      </div>
 
-      <Box m={4}>
+      <div className="m-4">
         {backing ? (
           <ProgressBar
             percentage={percentage}
             foregroundText={
-              <Text>
-                <Text sx={{ display: ['none', 'inline', 'inline'] }}>
+              <span>
+                <span className="hidden sm:inline">
                   Current value in buffer:{' '}
-                </Text>
-                <Text sx={{ fontWeight: 'bold' }}>${actual}</Text>
-              </Text>
+                </span>
+                <span className="font-bold">${actual}</span>
+              </span>
             }
             backgroundText={
-              <Text>
+              <span>
                 100% at current mcap:{' '}
-                <Text sx={{ fontWeight: 'bold' }}>${required}</Text>
-              </Text>
+                <span className="font-bold">${required}</span>
+              </span>
             }
           />
         ) : (
           <Skeleton height={36} width="100%" />
         )}
-      </Box>
-      <Box mx="auto" px="4" variant="layout.verticalAlign" sx={{ gap: 2 }}>
-        <Text variant="contentTitle" sx={{ textAlign: ['left', 'right'] }}>
+      </div>
+      <div className="mx-auto px-4 flex items-center gap-2">
+        <span className="font-medium text-legend text-left sm:text-right">
           Collateral yield is distributed as revenue when the backing buffer is
           full
-        </Text>
+        </span>
         <Help content="The backing buffer is extra collateral held to prevent RSR seizure from trading slippage. When the buffer exceeds 100%, any additional appreciation of collateral is recognized as revenue and sold off in auctions." />
-      </Box>
-    </Box>
+      </div>
+    </div>
   )
 }
 

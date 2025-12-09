@@ -2,12 +2,10 @@ import { Trans } from '@lingui/macro'
 import { Button } from 'components'
 import HiperlinkIcon from 'components/icons/HiperlinkIcon'
 import LayersIcon from 'components/icons/LayersIcon'
-import TokenLogo from 'components/icons/TokenLogo'
 import { atom, useAtomValue } from 'jotai'
 import Skeleton from 'react-loading-skeleton'
 import { collateralsMetadataAtom } from 'state/cms/atoms'
 import { rTokenCollateralDetailedAtom } from 'state/rtoken/atoms/rTokenBackingDistributionAtom'
-import { Box, Card, Image, Text } from 'theme-ui'
 
 interface PlatformDetails {
   name: string
@@ -53,52 +51,42 @@ const PlatformExposure = () => {
   const exposure = useAtomValue(dataAtom)
 
   return (
-    <Card variant="inner">
-      <Box
-        variant="layout.verticalAlign"
-        p={[3, 4]}
-        sx={{ borderBottom: '1px solid', borderColor: 'border' }}
-      >
+    <div className="bg-secondary rounded-xl">
+      <div className="flex items-center p-3 sm:p-4 border-b border-border">
         <LayersIcon color="currentColor" />
-        <Text ml="2" mr="auto" variant="bold" sx={{ fontSize: 3 }}>
+        <span className="ml-2 mr-auto font-semibold text-xl">
           <Trans>Underlying Platform Exposure</Trans>
-        </Text>
-      </Box>
+        </span>
+      </div>
       {!exposure && <Skeleton count={3} height={80} />}
       {exposure?.map((data) => (
-        <Card
+        <div
           key={data.name}
-          variant="section"
-          p={[3, 4]}
-          sx={{ backgroundColor: 'backgroundNested' }}
+          className="p-3 sm:p-4 bg-muted border-b border-border last:border-b-0"
         >
-          <Box variant="layout.verticalAlign">
-            <Image src={data.logo} width="24px" height="auto" />
-            <Text ml="2" sx={{ color: 'accent' }} variant="bold">
+          <div className="flex items-center">
+            <img src={data.logo} className="w-6 h-auto" alt={data.name} />
+            <span className="ml-2 text-primary font-semibold">
               {data.distribution.toFixed(2)}%
-            </Text>
-            <Text ml="1" variant="bold">
-              {data.name}
-            </Text>
-          </Box>
-          <Text mt="3" variant="legend" as="p">
-            {data.description}
-          </Text>
-          <Box mt="3" variant="layout.verticalAlign" sx={{ flexWrap: 'wrap' }}>
+            </span>
+            <span className="ml-1 font-semibold">{data.name}</span>
+          </div>
+          <p className="mt-3 text-legend">{data.description}</p>
+          <div className="mt-3 flex items-center flex-wrap">
             <Button
               small
               variant="bordered"
               onClick={() => window.open(data.website, '_blank')}
             >
-              <Box variant="layout.verticalAlign">
+              <div className="flex items-center">
                 <HiperlinkIcon />
-                <Text ml="2">Website</Text>
-              </Box>
+                <span className="ml-2">Website</span>
+              </div>
             </Button>
-          </Box>
-        </Card>
+          </div>
+        </div>
       ))}
-    </Card>
+    </div>
   )
 }
 

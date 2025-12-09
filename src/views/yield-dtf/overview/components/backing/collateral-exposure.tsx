@@ -1,4 +1,5 @@
 import { Trans } from '@lingui/macro'
+import { cn } from '@/lib/utils'
 import { Button } from 'components'
 import CopyValue from '@/components/old/button/CopyValue'
 import GoTo from '@/components/old/button/GoTo'
@@ -17,10 +18,8 @@ import {
   CollateralDetail,
   rTokenCollateralDetailedAtom,
 } from 'state/rtoken/atoms/rTokenBackingDistributionAtom'
-import { Box, Card, Flex, Grid, Text } from 'theme-ui'
 import { formatCurrency, shortenAddress } from 'utils'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
-import VerticalDivider from '@/views/discover/components/yield/components/VerticalDivider'
 import { PROTOCOL_DOCS } from '@/utils/constants'
 
 interface DetailedCollateralWithMeta extends CollateralDetail {
@@ -66,62 +65,47 @@ const CollateralDetails = ({
   const chainId = useAtomValue(chainIdAtom)
   const [expanded, setExpanded] = useState(false)
   const backingType = useAtomValue(backingTypeAtom)
-  const usdValueLabelProps = collateral.valueTarget
-    ? {
-        variant: 'legend',
-        sx: { fontWeight: 400 },
-      }
-    : {}
 
   return (
-    <Box
-      sx={{
-        fontWeight: 700,
-        position: 'relative',
-        alignItems: 'center',
-        borderBottom: '1px solid',
-        borderColor: expanded ? 'inputBorder' : 'border',
-        ':last-of-type': { borderBottom: 'none' },
-      }}
+    <div
+      className={cn(
+        'font-semibold relative items-center border-b last:border-b-0',
+        expanded ? 'border-input' : 'border-border'
+      )}
     >
-      <Grid
-        columns={['1fr', '3fr 1fr 1fr 1fr']}
+      <div
         onClick={() => setExpanded(!expanded)}
-        sx={{
-          cursor: 'pointer',
-          '&:hover': { backgroundColor: ['none', 'inputBackground'] },
-        }}
-        p={[3, 4]}
+        className="grid grid-cols-1 sm:grid-cols-[3fr_1fr_1fr_1fr] cursor-pointer hover:sm:bg-muted p-3 sm:p-4"
       >
-        <Box variant="layout.verticalAlign">
+        <div className="flex items-center">
           <TokenLogo symbol={collateral.symbol} />
-          <Text ml={2} variant="accent">
+          <span className="ml-2 text-primary">
             {collateral.distribution.toFixed(2)}%
-          </Text>
-          <Text ml="2">{collateral.displayName}</Text>
-        </Box>
-        <Box>
-          <Text variant="strong" sx={{ display: ['inline', 'none'] }}>
-            Yield:{' '}
-          </Text>
-          <Text>{collateral.yield.toFixed(2)}%</Text>
-        </Box>
+          </span>
+          <span className="ml-2">{collateral.displayName}</span>
+        </div>
+        <div>
+          <span className="font-semibold sm:hidden">Yield: </span>
+          <span>{collateral.yield.toFixed(2)}%</span>
+        </div>
 
-        <Flex sx={{ flexWrap: 'wrap' }}>
-          <Text mr="1" variant="strong" sx={{ display: ['inline', 'none'] }}>
-            Value:
-          </Text>
+        <div className="flex flex-wrap">
+          <span className="mr-1 font-semibold sm:hidden">Value:</span>
           {!!collateral.valueTarget && !!collateral.valueSingleTarget && (
-            <Text mr="2" sx={{ whiteSpace: 'nowrap' }}>
+            <span className="mr-2 whitespace-nowrap">
               {formatCurrency(
                 backingType === 'total'
                   ? collateral.valueTarget
                   : collateral.valueSingleTarget
               )}{' '}
               {collateral.targetUnit}
-            </Text>
+            </span>
           )}
-          <Text {...usdValueLabelProps}>
+          <span
+            className={
+              collateral.valueTarget ? 'text-legend font-normal text-sm' : ''
+            }
+          >
             {!!collateral.valueTarget && '('}$
             {formatCurrency(
               backingType === 'total'
@@ -129,26 +113,19 @@ const CollateralDetails = ({
                 : collateral.valueSingleUsd
             )}
             {!!collateral.valueTarget && ')'}
-          </Text>
-        </Flex>
+          </span>
+        </div>
 
-        <Box
-          sx={{
-            textAlign: 'right',
-            position: ['absolute', 'relative'],
-            top: [68, 0],
-            right: [20, 0],
-          }}
-        >
+        <div className="text-right absolute sm:relative top-[68px] sm:top-0 right-5 sm:right-0 flex items-center justify-end">
           <ChevronDown size={16} />
-        </Box>
-      </Grid>
+        </div>
+      </div>
       {!!expanded && (
-        <Box mt={3} sx={{ fontWeight: 400 }} px={[3, 4]} pb={[3, 4]}>
-          <Text as="p">{collateral.description}</Text>
-          <Box mt="3" variant="layout.verticalAlign" sx={{ flexWrap: 'wrap' }}>
+        <div className="mt-3 font-normal px-3 sm:px-4 pb-3 sm:pb-4">
+          <p>{collateral.description}</p>
+          <div className="mt-3 flex items-center flex-wrap">
             <Button
-              mr="3"
+              className="mr-3"
               small
               variant="transparent"
               onClick={(e) => {
@@ -156,32 +133,29 @@ const CollateralDetails = ({
                 window.open(`${PROTOCOL_DOCS}introduction/`, '_blank')
               }}
             >
-              <Box variant="layout.verticalAlign">
+              <div className="flex items-center">
                 <HiperlinkIcon />
-                <Text ml="2">Docs</Text>
-              </Box>
+                <span className="ml-2">Docs</span>
+              </div>
             </Button>
             {!!collateral.website && (
               <Button
-                mr="3"
+                className="mr-3"
                 small
                 variant="bordered"
                 onClick={() => window.open(collateral.website, '_blank')}
               >
-                <Box variant="layout.verticalAlign">
+                <div className="flex items-center">
                   <HiperlinkIcon />
-                  <Text ml="2">Website</Text>
-                </Box>
+                  <span className="ml-2">Website</span>
+                </div>
               </Button>
             )}
-            <VerticalDivider mr="3" sx={{ display: ['none', 'block'] }} />
-            <Box
-              variant="layout.verticalAlign"
-              sx={{ flexBasis: ['100%', 'auto'], mt: [3, 0] }}
-            >
-              <Text mr={2} variant="legend">
+            <div className="hidden sm:block w-px h-6 bg-border mr-3" />
+            <div className="flex items-center basis-full sm:basis-auto mt-3 sm:mt-0">
+              <span className="mr-2 text-legend">
                 {shortenAddress(collateral.address)}
-              </Text>
+              </span>
               <CopyValue mr={1} ml="auto" value={collateral.address} />
               <GoTo
                 style={{ position: 'relative', top: '2px' }}
@@ -191,11 +165,11 @@ const CollateralDetails = ({
                   ExplorerDataType.TOKEN
                 )}
               />
-            </Box>
-          </Box>
-        </Box>
+            </div>
+          </div>
+        </div>
       )}
-    </Box>
+    </div>
   )
 }
 
@@ -208,18 +182,18 @@ const CollateralList = () => {
 
   if (!sortedCollaterals) {
     return (
-      <Box px={4} mb={3}>
+      <div className="px-4 mb-3">
         <Skeleton count={3} height={66} />
-      </Box>
+      </div>
     )
   }
 
   return (
-    <Box>
+    <div>
       {sortedCollaterals?.map((collateral) => (
         <CollateralDetails key={collateral.address} collateral={collateral} />
       ))}
-    </Box>
+    </div>
   )
 }
 
@@ -236,19 +210,11 @@ const Header = () => {
   )
 
   return (
-    <Box
-      variant="layout.verticalAlign"
-      p={[3, 4]}
-      sx={{
-        borderBottom: '1px solid',
-        borderColor: 'border',
-        flexWrap: 'wrap',
-      }}
-    >
+    <div className="flex items-center p-3 sm:p-4 border-b border-border flex-wrap">
       <CollaterizationIcon width={20} height={20} />
-      <Text ml="2" mr="auto" sx={{ fontSize: 3, fontWeight: 700 }}>
+      <span className="ml-2 mr-auto text-xl font-semibold">
         <Trans>Collateral Exposure</Trans>
-      </Text>
+      </span>
       <TabMenu
         mt={[2, 0]}
         active={backingType}
@@ -257,27 +223,22 @@ const Header = () => {
         background="border"
         onMenuChange={setBackingType}
       />
-    </Box>
+    </div>
   )
 }
 
 const CollateralExposure = () => {
   return (
-    <Card variant="inner" sx={{ height: 'fit-content' }}>
+    <div className="h-fit bg-card w-full rounded-2xl overflow-hidden">
       <Header />
-      <Grid
-        columns={'3fr 1fr 1fr 1fr'}
-        py="10px"
-        px={4}
-        sx={{ display: ['none', 'grid'], color: 'secondaryText', fontSize: 1 }}
-      >
-        <Text>Token</Text>
-        <Text>Yield</Text>
-        <Text>Value</Text>
-        <Text sx={{ textAlign: 'right' }}>Detail</Text>
-      </Grid>
+      <div className="hidden sm:grid grid-cols-[3fr_1fr_1fr_1fr] py-2.5 px-4 text-legend text-sm">
+        <span>Token</span>
+        <span>Yield</span>
+        <span>Value</span>
+        <span className="text-right">Detail</span>
+      </div>
       <CollateralList />
-    </Card>
+    </div>
   )
 }
 
