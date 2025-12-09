@@ -212,7 +212,7 @@ const Header = () => {
   return (
     <div className="flex items-center p-3 sm:p-4 border-b border-border flex-wrap">
       <CollaterizationIcon width={20} height={20} />
-      <span className="ml-2 mr-auto text-xl font-semibold">
+      <span className="ml-2 mr-auto text-xl ">
         <Trans>Collateral Exposure</Trans>
       </span>
       <TabMenu

@@ -205,7 +205,7 @@ const TransactionsTable = () => {
       columns={columns}
       data={data?.entries || []}
       pagination={{ pageSize: 10 }}
-      className="rounded-3xl pt-5 bg-card border-[4px] border-secondary text-sm"
+      className="rounded-3xl pt-5 bg-card border-[4px] border-secondary text-sm [&_table_tr]:border-none"
       initialSorting={[{ id: 'timestamp', desc: true }]}
     />
   )

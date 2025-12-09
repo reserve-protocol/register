@@ -51,10 +51,10 @@ const PlatformExposure = () => {
   const exposure = useAtomValue(dataAtom)
 
   return (
-    <div className="bg-secondary rounded-xl">
+    <div className="bg-card rounded-3xl">
       <div className="flex items-center p-3 sm:p-4 border-b border-border">
         <LayersIcon color="currentColor" />
-        <span className="ml-2 mr-auto font-semibold text-xl">
+        <span className="ml-2 mr-auto  text-xl">
           <Trans>Underlying Platform Exposure</Trans>
         </span>
       </div>
@@ -62,7 +62,7 @@ const PlatformExposure = () => {
       {exposure?.map((data) => (
         <div
           key={data.name}
-          className="p-3 sm:p-4 bg-muted border-b border-border last:border-b-0"
+          className="p-3 sm:p-4  border-b border-border last:border-b-0"
         >
           <div className="flex items-center">
             <img src={data.logo} className="w-6 h-auto" alt={data.name} />

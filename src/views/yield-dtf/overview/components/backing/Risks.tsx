@@ -102,10 +102,10 @@ const Risks = () => {
   )
 
   return (
-    <div className="bg-secondary rounded-xl">
+    <div className="bg-card rounded-3xl">
       <div className="flex items-center p-3 sm:p-4 border-b border-border">
         <RiskIcon />
-        <span className="ml-2 mr-auto font-bold text-xl">
+        <span className="ml-2 mr-auto text-xl">
           <Trans>Other Risks</Trans>
         </span>
       </div>

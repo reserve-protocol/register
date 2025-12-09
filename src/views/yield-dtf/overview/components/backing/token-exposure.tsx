@@ -83,10 +83,10 @@ const TokenExposure = () => {
   const data = useAtomValue(dataAtom)
 
   return (
-    <div className="bg-secondary rounded-xl">
+    <div className="bg-card rounded-3xl">
       <div className="flex items-center p-3 sm:p-4 border-b border-border">
         <CirclesIcon color="currentColor" />
-        <span className="ml-2 mr-auto font-bold text-xl">
+        <span className="ml-2 mr-auto text-xl">
           <Trans>Underlying Token Exposure</Trans>
         </span>
       </div>
@@ -94,7 +94,7 @@ const TokenExposure = () => {
       {data?.map((item) => (
         <div
           key={item.symbol}
-          className="p-3 sm:p-4 bg-muted border-b border-border last:border-b-0"
+          className="p-3 sm:p-4  border-b border-border last:border-b-0"
         >
           <div className="flex items-center">
             <TokenLogo symbol={item.symbol} width={24} />
