@@ -68,6 +68,17 @@ export const ExposureTableRows = ({
                   </div>
                 </div>
               </TableCell>
+              <TableCell className="text-primary text-center font-bold text-sm sm:text-base px-1 sm:px-3">
+                {group.totalWeight.toFixed(2)}%
+              </TableCell>
+              <TableCell className="text-center  px-1 sm:px-3">
+                <PerformanceCell
+                  change={group.change ?? null}
+                  isLoading={performanceLoading}
+                  isNewlyAdded={group.hasNewlyAdded || false}
+                  timeRange={timeRange}
+                />
+              </TableCell>
               <TableCell className="text-center hidden text-base sm:table-cell">
                 {group.native?.coingeckoId &&
                 marketCaps?.[group.native.coingeckoId] ? (
@@ -84,17 +95,6 @@ export const ExposureTableRows = ({
                 ) : (
                   <span>—</span>
                 )}
-              </TableCell>
-              <TableCell className="text-center px-1 sm:px-3">
-                <PerformanceCell
-                  change={group.change ?? null}
-                  isLoading={performanceLoading}
-                  isNewlyAdded={group.hasNewlyAdded || false}
-                  timeRange={timeRange}
-                />
-              </TableCell>
-              <TableCell className="text-right text-primary font-bold text-sm sm:text-base px-1 sm:px-3">
-                {group.totalWeight.toFixed(2)}%
               </TableCell>
             </TableRow>
           )

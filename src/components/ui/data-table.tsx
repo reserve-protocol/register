@@ -26,6 +26,7 @@ import { Fragment, useMemo, useState } from 'react'
 import React from 'react'
 import { Button } from './button'
 import { ArrowDown, ArrowUp, ChevronLeft, ChevronRight } from 'lucide-react'
+import Spinner from './spinner'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -52,14 +53,17 @@ export const SorteableButton = ({
   return (
     <Button
       variant="ghost"
-      className={cn('font-light text-legend text-base rounded-2xl', className)}
+      className={cn(
+        'font-light text-legend focus:text-legend text-sm px-0 hover:bg-transparent rounded-xl',
+        className
+      )}
       onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
     >
       {children}
       {column.getIsSorted() === 'asc' ? (
-        <ArrowUp className="ml-2 h-4 w-4" />
+        <ArrowUp className="ml-2 h-3 w-3" />
       ) : column.getIsSorted() === 'desc' ? (
-        <ArrowDown className="ml-2 h-4 w-4" />
+        <ArrowDown className="ml-2 h-3 w-3" />
       ) : null}
     </Button>
   )
@@ -163,6 +167,8 @@ interface DataTableComponentProps<TData, TValue>
   noResultsClassName?: string
   stickyHeader?: boolean
   initialSorting?: SortingState
+  loading?: boolean
+  loadingSkeleton?: React.ReactNode
 }
 
 const CustomTableRow = ({
@@ -232,6 +238,8 @@ function DataTable<TData, TValue>({
   noResultsClassName,
   stickyHeader = false,
   initialSorting = [],
+  loading = false,
+  loadingSkeleton,
 }: DataTableComponentProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>(initialSorting)
   const [paginationState, setPaginationState] = React.useState<PaginationState>(
@@ -286,15 +294,15 @@ function DataTable<TData, TValue>({
   }
 
   return (
-    <div className={cn('w-full', className)}>
-      <Table>
-        <TableHeader>
+    <div className={cn('w-full overflow-x-auto', className)}>
+      <Table className="text-sm md:text-base">
+        <TableHeader className="[&_tr]:border-b-0 text-sm">
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow
               key={headerGroup.id}
               className={cn(
-                "hover:bg-transparent h-16",
-                stickyHeader && "sticky top-0 bg-card z-10"
+                'hover:bg-transparent h-16 text-legend',
+                stickyHeader && 'sticky top-0 bg-card z-10'
               )}
             >
               {headerGroup.headers.map((header) => {
@@ -350,20 +358,54 @@ function DataTable<TData, TValue>({
                 )}
               </Fragment>
             ))
+          ) : loading ? (
+            loadingSkeleton || <LoadingSkeleton columns={columns} />
           ) : (
-            <TableRow>
-              <TableCell
-                colSpan={columns.length}
-                className={cn('h-24 text-center', noResultsClassName)}
-              >
-                <div className="my-auto">No results.</div>
-              </TableCell>
-            </TableRow>
+            <NoResultsRow
+              columns={columns}
+              noResultsClassName={noResultsClassName}
+            />
           )}
         </TableBody>
       </Table>
       {pagination && <Pagination table={table} />}
     </div>
+  )
+}
+
+function LoadingSkeleton<TData, TValue>({
+  columns,
+}: {
+  columns: ColumnDef<TData, TValue>[]
+  noResultsClassName?: string
+}) {
+  return (
+    <TableRow>
+      <TableCell colSpan={columns.length} className="h-24 text-center">
+        <div className="flex flex-col items-center justify-center gap-2 text-primary">
+          <Spinner size={24} />
+        </div>
+      </TableCell>
+    </TableRow>
+  )
+}
+
+function NoResultsRow<TData, TValue>({
+  columns,
+  noResultsClassName,
+}: {
+  columns: ColumnDef<TData, TValue>[]
+  noResultsClassName?: string
+}) {
+  return (
+    <TableRow>
+      <TableCell
+        colSpan={columns.length}
+        className={cn('h-24 text-center', noResultsClassName)}
+      >
+        <div className="my-auto">No results.</div>
+      </TableCell>
+    </TableRow>
   )
 }
 

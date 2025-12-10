@@ -15,8 +15,9 @@ import { ArrowRight } from 'lucide-react'
 import { forwardRef } from 'react'
 import { Link } from 'react-router-dom'
 import { InnerGovernanceInfo } from '../../settings/components/index-settings-governance'
-import { useStakingVaultAPY } from '../hooks/use-staking-vault-apy'
+import { useVoteLockAPR } from '../hooks/use-staking-vault-apy'
 import Staking from './staking'
+import RSRBNBHelp from '../../governance/components/rsr-bnb-help'
 
 const Container = ({ children }: { children: React.ReactNode }) => {
   const dtf = useAtomValue(indexDTFAtom)
@@ -58,7 +59,7 @@ const OpenLockDrawerButton = forwardRef<
 >(({ onClick }, ref) => {
   const dtf = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
-  const apy = useStakingVaultAPY()
+  const apr = useVoteLockAPR()
 
   if (!dtf) return
 
@@ -77,7 +78,7 @@ const OpenLockDrawerButton = forwardRef<
       />
       <h4 className="font-bold mr-auto text-primary">
         Lock ${dtf.stToken?.underlying.symbol ?? 'Unknown'} to Govern{' '}
-        {Number(apy.toFixed(2)) > 0 && `& Earn ${apy.toFixed(2)}% APY`}
+        {Number(apr?.toFixed(2)) > 0 && `& Earn ${apr?.toFixed(2)}% APR`}
       </h4>
       <Box
         variant="circle"
@@ -146,6 +147,7 @@ const IndexGovernanceOverview = () => {
           <OpenLockDrawerButton onClick={openConnectModal} />
         )}
       </div>
+      <RSRBNBHelp className="px-2 border-t pt-6 mt-6" />
       <Separator className="my-6" />
       <InnerGovernanceInfo kind="trading" className="[&>*]:px-0 px-2 -mt-3" />
       <ViewNonBasketGovernanceButton />

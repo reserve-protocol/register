@@ -17,7 +17,7 @@ import {
   poolChainsFilterAtom,
   poolFilterAtom,
   poolSearchFilterAtom,
-} from '../atoms'
+} from '../views/defi/atoms'
 import PoolsChainFilter from './pools-chain-filter'
 
 const FilterOptions = () => {
