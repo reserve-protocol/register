@@ -122,6 +122,10 @@ export const LP_PROJECTS: { [x: string]: { name: string; site: string } } = {
     name: 'Origin',
     site: 'https://www.originprotocol.com/',
   },
+  'ether.fi-staking': {
+    name: 'Ether.fi',
+    site: 'https://ether.fi/',
+  },
 }
 
 // List of supported networks with label
@@ -432,6 +436,7 @@ export const collateralDisplay: Record<string, string> = {
   'wvamm-mog/weth': 'Aerodrome Mog/WETH LP',
   'wvamm-weth/aero': 'Aerodrome WETH/AERO LP',
   'wsamm-usdz/usdc': 'Aerodrome USDz/USDC LP',
+  weeth: 'Ether.fi Wrapped eETH',
 }
 
 export const RTOKEN_VAULT_STAKE: Record<
