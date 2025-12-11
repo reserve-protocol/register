@@ -20,11 +20,13 @@ export const uploadFile = async ({
   folio,
   message,
   signature,
+  chainId,
 }: {
   file: File | Blob | ArrayBuffer
   folio: Address
   message: string
   signature: Hex
+  chainId: number
 }): Promise<{ url: string }> => {
   if (file instanceof ArrayBuffer) {
     file = new File([file], 'buffer')
@@ -34,6 +36,7 @@ export const uploadFile = async ({
   fd.append('folio', folio)
   fd.append('message', message)
   fd.append('signature', signature)
+  fd.append('chainId', chainId.toString())
 
   const response = await fetch(uploadUrl, {
     method: 'POST',
