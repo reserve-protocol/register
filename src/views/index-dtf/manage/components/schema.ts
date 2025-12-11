@@ -8,24 +8,7 @@ export const manageFormSchema = z.object({
     mobileCover: z.string().optional(),
     description: z.string().optional(),
     notesFromCreator: z.string().optional(),
-    prospectus: z
-      .string()
-      .url()
-      .refine(
-        (url) =>
-          !url ||
-          url.toLowerCase().includes('bbhub.io') ||
-          url.toLowerCase().includes('marketvector.com') ||
-          url.toLowerCase().includes('reserve.org') ||
-          url.toLowerCase().includes('coindesk.com') ||
-          url.toLowerCase().includes('coinmarketcap.com'),
-        {
-          message:
-            'Must be a valid URL from bbhub.io, marketvector.com, reserve.org or coindesk.com',
-        }
-      )
-      .optional()
-      .or(z.literal('')),
+    prospectus: z.string().url().optional().or(z.literal('')),
     tags: z
       .array(z.object({ value: z.string(), label: z.string() }))
       .optional(),
