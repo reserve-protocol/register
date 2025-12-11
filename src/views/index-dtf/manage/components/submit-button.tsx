@@ -169,6 +169,7 @@ const SubmitButton = () => {
               folio: dtf.id,
               message: signature.message,
               signature: signature.signature,
+              chainId,
             })
           )
         )
