@@ -5,26 +5,26 @@ import { chainIdAtom } from 'state/atoms'
 import { Box, BoxProps, Card, Divider, Label, Radio, Text } from 'theme-ui'
 import { ChainId } from 'utils/chains'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
-import { proposedRolesAtom, spellUpgradeAtom } from '../atoms'
+import { proposedRolesAtom, spell4_2_0UpgradeAtom } from '../atoms'
 
 const SPELL_CONTRACTS = {
-  [ChainId.Mainnet]: '0xb1df3a104d73ff86f9aaab60b491a5c44b090391',
-  [ChainId.Base]: '0x1744c9933feb8e76563fce63d5c95a4e7f967c2a',
+  [ChainId.Mainnet]: '0x133c3eb12b06C647A887804b20F3B597096F6A24',
+  [ChainId.Base]: '0x890FAa00C16EAD6AA76F18A1A7fe9C40838F9122',
 }
 
-export const spellAddressAtom = atom((get) => {
+export const spell4_2_0AddressAtom = atom((get) => {
   const chainId = get(chainIdAtom)
   return SPELL_CONTRACTS[chainId]
 })
 
-const SpellUpgrade = (props: BoxProps) => {
-  const [spell, setSpell] = useAtom(spellUpgradeAtom)
+const SpellUpgrade4_2_0 = (props: BoxProps) => {
+  const [spell, setSpell] = useAtom(spell4_2_0UpgradeAtom)
   const chainId = useAtomValue(chainIdAtom)
-  const spellContract = useAtomValue(spellAddressAtom)
+  const spellContract = useAtomValue(spell4_2_0AddressAtom)
   const setProposedRoles = useSetAtom(proposedRolesAtom)
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value as 'none' | 'spell1' | 'spell2'
+    const value = e.target.value as 'none' | 'spell'
     setSpell(value)
     setProposedRoles(({ owners, ...rest }) => ({
       ...rest,
@@ -41,7 +41,7 @@ const SpellUpgrade = (props: BoxProps) => {
     <Card {...props} p={4}>
       <Box variant="layout.verticalAlign">
         <Text variant="title">
-          <Trans>3.4.0 Upgrade spells</Trans>
+          <Trans>4.2.0 Upgrade spell</Trans>
         </Text>
         <DocsLink
           link={getExplorerLink(
@@ -55,7 +55,7 @@ const SpellUpgrade = (props: BoxProps) => {
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
         <Label>
           <Radio
-            name="dark-mode"
+            name="spell-4-2-0"
             value="none"
             onChange={onChange}
             checked={spell === 'none'}
@@ -64,25 +64,16 @@ const SpellUpgrade = (props: BoxProps) => {
         </Label>
         <Label>
           <Radio
-            name="dark-mode"
-            value="spell1"
+            name="spell-4-2-0"
+            value="spell"
             onChange={onChange}
-            checked={spell === 'spell1'}
+            checked={spell === 'spell'}
           />
-          <Trans>Cast Spell 1</Trans>
-        </Label>
-        <Label>
-          <Radio
-            name="dark-mode"
-            value="spell2"
-            onChange={onChange}
-            checked={spell === 'spell2'}
-          />
-          <Trans>Cast Spell 2</Trans>
+          <Trans>Cast Spell</Trans>
         </Label>
       </Box>
     </Card>
   )
 }
 
-export default SpellUpgrade
+export default SpellUpgrade4_2_0

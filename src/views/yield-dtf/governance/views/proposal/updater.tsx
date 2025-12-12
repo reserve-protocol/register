@@ -28,7 +28,8 @@ import {
   registerAssetsAtom,
   revenueSplitChangesAtom,
   roleChangesAtom,
-  spellUpgradeAtom,
+  spell3_4_0UpgradeAtom,
+  spell4_2_0UpgradeAtom,
   unregisterAssetsAtom,
 } from './atoms'
 import useBackupChanges from './hooks/useBackupChanges'
@@ -107,8 +108,12 @@ export const ChangesUpdater = () => {
   const isNewBasket = useAtomValue(isNewBasketProposedAtom)
   const isNewBackup = useAtomValue(isNewBackupProposedAtom)
   const assetsToUnregister = useAtomValue(unregisterAssetsAtom)
-  const hasUpgrades = !!Object.keys(useAtomValue(contractUpgradesAtom)).length
-  const hasSpell = useAtomValue(spellUpgradeAtom) !== 'none'
+  const contractUpgrades = useAtomValue(contractUpgradesAtom)
+  const spell3_4_0Upgrade = useAtomValue(spell3_4_0UpgradeAtom)
+  const spell4_2_0Upgrade = useAtomValue(spell4_2_0UpgradeAtom)
+
+  const hasUpgrades = !!Object.keys(contractUpgrades).length
+  const hasSpell = spell3_4_0Upgrade !== 'none' || spell4_2_0Upgrade !== 'none'
 
   // Valid listeners
   const isBasketValid = useAtomValue(isBasketValidAtom)

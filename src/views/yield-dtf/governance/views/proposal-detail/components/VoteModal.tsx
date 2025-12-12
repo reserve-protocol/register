@@ -76,8 +76,10 @@ const VoteModal = (props: ModalProps) => {
             target="_blank"
             sx={{ fontSize: 1 }}
           >
-            <ExternalLink size={12} /> <Trans>View on</Trans>{' '}
-            {ETHERSCAN_NAMES[chainId]}
+            <div className="flex items-center gap-1">
+              <ExternalLink size={12} /> <Trans>View on</Trans>{' '}
+              {ETHERSCAN_NAMES[chainId]}
+            </div>
           </Link>
         </Flex>
       </Modal>

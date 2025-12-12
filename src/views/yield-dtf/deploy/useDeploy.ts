@@ -27,6 +27,7 @@ export const useDeployParams = () => {
   const primaryBasket = useAtomValue(basketAtom)
   const backupBasket = useAtomValue(backupCollateralAtom)
   const revenueSplit = useAtomValue(revenueSplitAtom)
+  const chainId = useAtomValue(chainIdAtom)
   const formFields = useDebounce(useWatch(), 500)
   const { isValid, isValidating } = useFormState()
   const isFormValid =
@@ -42,9 +43,10 @@ export const useDeployParams = () => {
       getValues(),
       primaryBasket,
       backupBasket,
-      revenueSplit
+      revenueSplit,
+      chainId
     )
-  }, [primaryBasket, isDeployValid, backupBasket, revenueSplit, formFields])
+  }, [primaryBasket, isDeployValid, backupBasket, revenueSplit, formFields, chainId])
 }
 
 export const useDeploy = () => {

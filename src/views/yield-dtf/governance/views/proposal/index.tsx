@@ -9,7 +9,8 @@ import {
   isProposalEditingAtom,
   proposalDescriptionAtom,
   proposedRolesAtom,
-  spellUpgradeAtom,
+  spell3_4_0UpgradeAtom,
+  spell4_2_0UpgradeAtom,
 } from './atoms'
 import ConfirmProposal from './components/ConfirmProposal'
 import Proposal from './components/Proposal'
@@ -51,13 +52,15 @@ const GovernanceProposal = () => {
   const setBasketProposed = useSetAtom(isNewBasketProposedAtom)
   const setDescription = useSetAtom(proposalDescriptionAtom)
   const resetProposedRoles = useResetAtom(proposedRolesAtom)
-  const resetSpellUpgrade = useResetAtom(spellUpgradeAtom)
+  const resetSpell3_4_0Upgrade = useResetAtom(spell3_4_0UpgradeAtom)
+  const resetSpell4_2_0Upgrade = useResetAtom(spell4_2_0UpgradeAtom)
 
   useEffect(() => {
     return () => {
       setBasketProposed(false)
       resetProposedRoles()
-      resetSpellUpgrade()
+      resetSpell3_4_0Upgrade()
+      resetSpell4_2_0Upgrade()
       setEditing(true)
       setDescription('')
     }

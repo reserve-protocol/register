@@ -8,7 +8,11 @@ import { Box, BoxProps, Text, Divider, Switch } from 'theme-ui'
  */
 const TokenForm = (props: BoxProps) => {
   const { watch, register } = useFormContext()
-  const [tickerValue, reweightable] = watch(['ticker', 'reweightable'])
+  const [tickerValue, reweightable, enableIssuancePremium] = watch([
+    'ticker',
+    'reweightable',
+    'enableIssuancePremium',
+  ])
 
   return (
     <Box {...props}>
@@ -76,6 +80,28 @@ const TokenForm = (props: BoxProps) => {
             <Switch
               defaultChecked={reweightable}
               {...register('reweightable')}
+            />
+          </Box>
+        </Box>
+      </Box>
+      <Box
+        mt={3}
+        ml={3}
+        sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
+      >
+        <Text variant="bold">Issuance Premium</Text>
+        <Text mb="2" as="p" sx={{ fontSize: 1 }} variant="legend">
+          This impacts whether the RToken charges higher rates for issuance when
+          collateral is under-peg. This mechanism can be useful for preventing
+          toxic issuance but comes with the tradeoff of making the onchain
+          oracle price unreliable, as the issuance/redemption band widens as a
+          collateral approaches its de-peg threshold.
+        </Text>
+        <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
+          <Box>
+            <Switch
+              defaultChecked={enableIssuancePremium}
+              {...register('enableIssuancePremium')}
             />
           </Box>
         </Box>
