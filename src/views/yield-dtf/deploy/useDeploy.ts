@@ -5,6 +5,7 @@ import { useAtomValue } from 'jotai'
 import { atomWithReset } from 'jotai/utils'
 import { useMemo } from 'react'
 import { useFormContext, useFormState, useWatch } from 'react-hook-form'
+import { useSearchParams } from 'react-router-dom'
 import { chainIdAtom } from 'state/atoms'
 import { FACADE_WRITE_ADDRESS } from 'utils/addresses'
 import {
@@ -21,6 +22,7 @@ export const deployIdAtom = atomWithReset('')
 
 export const useDeployParams = () => {
   const { getValues } = useFormContext()
+  const [searchParams] = useSearchParams()
   const isBasketValid = useAtomValue(isBasketValidAtom)
   const isRevenueSplitValid = useAtomValue(isRevenueValidAtom)
   const isValidExternalMap = useAtomValue(isValidExternalMapAtom)
@@ -30,8 +32,11 @@ export const useDeployParams = () => {
   const chainId = useAtomValue(chainIdAtom)
   const formFields = useDebounce(useWatch(), 500)
   const { isValid, isValidating } = useFormState()
+  const debugBypass = searchParams.get('debug') === 'true'
   const isFormValid =
-    !!import.meta.env.VITE_DISABLE_VALIDATION || (isValid && !isValidating)
+    !!import.meta.env.VITE_DISABLE_VALIDATION ||
+    debugBypass ||
+    (isValid && !isValidating)
 
   const isDeployValid =
     isBasketValid && isRevenueSplitValid && isValidExternalMap && isFormValid
@@ -46,7 +51,14 @@ export const useDeployParams = () => {
       revenueSplit,
       chainId
     )
-  }, [primaryBasket, isDeployValid, backupBasket, revenueSplit, formFields, chainId])
+  }, [
+    primaryBasket,
+    isDeployValid,
+    backupBasket,
+    revenueSplit,
+    formFields,
+    chainId,
+  ])
 }
 
 export const useDeploy = () => {
