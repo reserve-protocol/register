@@ -9,8 +9,8 @@ export const ST_RSR_ADDRESS = '0x0000000000000000000000000000000000000002'
  * Protocol related contracts
  */
 export const DEPLOYER_ADDRESS: AddressMap = {
-  [ChainId.Mainnet]: '0xd5fcf4795877Ad0084FFc554b71D61bb660255AC',
-  [ChainId.Base]: '0x1142Ad5E5A082077A7d79d211726c1bd39b0D5FA',
+  [ChainId.Mainnet]: '0x8FcbD0BaaeB442F1f3F374FcB63933e6D4Cb8710',
+  [ChainId.Base]: '0x5705F85A05c8b57818663C7AB6a11f88323a1A57',
   [ChainId.Arbitrum]: '0xfd7eb6B208E1fa7B14E26A1fb10fFC17Cf695d68',
 }
 
@@ -27,19 +27,19 @@ export const FACADE_ACT_ADDRESS: AddressMap = {
 }
 
 export const FACADE_WRITE_ADDRESS: AddressMap = {
-  [ChainId.Mainnet]: '0xA8Ea6cF7beAB5E4395D437AE37D696E007739357',
-  [ChainId.Base]: '0x357d4dB0c2179886334cC33B8528048F7E1D3Fe3',
+  [ChainId.Mainnet]: '0x0a9d3d35055481bb67e5e145b07f6fb6cbef9d4b',
+  [ChainId.Base]: '0x53d8D5B20607bf04b238463F28b222B0cc47DF4F',
   [ChainId.Arbitrum]: '0xe2B652E538543d02f985A5E422645A704633956d',
 }
 
 export const VERSION_REGISTRY_ADDRESS: AddressMap = {
-  [ChainId.Mainnet]: '0xba8cd83f793aa046fe5ab7ba01f855742f2d6a30',
-  [ChainId.Base]: '0x3bece5ec596331033726e5c6c188c313ff4e3fe5',
+  [ChainId.Mainnet]: '0x1895b15B3d0a70962be86Af0E337018aD63464e0',
+  [ChainId.Base]: '0xBbC532A80DD141449330c1232C953Da6801Aed01',
 }
 
 export const ASSET_PLUGIN_REGISTRY_ADDRESS: AddressMap = {
-  [ChainId.Mainnet]: '0x6cf05Ea2A94a101CE6A44Ec2a2995b43F1b0958f',
-  [ChainId.Base]: '0x87A959e0377C68A50b08a91ae5ab3aFA7F41ACA4',
+  [ChainId.Mainnet]: '0x4a818c41131CB9FE65BadF2Bb8671dDE4D117135',
+  [ChainId.Base]: '0x7Ac954307356301A10adDb0dB4f61b4a475d3551',
 }
 
 export const DAO_FEE_REGISTRY_ADDRESS: AddressMap = {

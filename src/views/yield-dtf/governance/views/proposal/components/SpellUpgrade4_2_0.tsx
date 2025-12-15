@@ -8,8 +8,8 @@ import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { proposedRolesAtom, spell4_2_0UpgradeAtom } from '../atoms'
 
 const SPELL_CONTRACTS = {
-  [ChainId.Mainnet]: '0x133c3eb12b06C647A887804b20F3B597096F6A24',
-  [ChainId.Base]: '0x890FAa00C16EAD6AA76F18A1A7fe9C40838F9122',
+  [ChainId.Mainnet]: '0x0E6E791A5f7A104085F7b6D3E9De53F6c76625b9',
+  [ChainId.Base]: '0x908Cd3B4B4B6c60d5EB7d1Ca7ECda0e7ceCd6dB1',
 }
 
 export const spell4_2_0AddressAtom = atom((get) => {
