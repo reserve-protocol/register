@@ -68,7 +68,11 @@ import {
 const portfolioDismissibleAtom = atom(true)
 
 const getTokenValue = (
-  token: { address: Address; decimals: number; underlying?: { address: Address } },
+  token: {
+    address: Address
+    decimals: number
+    underlying?: { address: Address }
+  },
   amount: bigint | undefined,
   prices: Record<string, number>
 ) => {
@@ -77,11 +81,20 @@ const getTokenValue = (
 }
 
 const sortByValueDesc = <
-  T extends { address: Address; decimals: number; underlying?: { address: Address }; amount?: bigint },
+  T extends {
+    address: Address
+    decimals: number
+    underlying?: { address: Address }
+    amount?: bigint
+  },
 >(
   items: T[],
   prices: Record<string, number>
-) => [...items].sort((a, b) => getTokenValue(b, b.amount, prices) - getTokenValue(a, a.amount, prices))
+) =>
+  [...items].sort(
+    (a, b) =>
+      getTokenValue(b, b.amount, prices) - getTokenValue(a, a.amount, prices)
+  )
 
 interface TokenRowProps {
   children?: ReactNode
@@ -365,8 +378,16 @@ const Unlocking = () => {
     () =>
       [...locks].sort(
         (a, b) =>
-          getTokenValue({ ...b.token, underlying: b.underlying }, b.amount, prices) -
-          getTokenValue({ ...a.token, underlying: a.underlying }, a.amount, prices)
+          getTokenValue(
+            { ...b.token, underlying: b.underlying },
+            b.amount,
+            prices
+          ) -
+          getTokenValue(
+            { ...a.token, underlying: a.underlying },
+            a.amount,
+            prices
+          )
       ),
     [locks, prices]
   )
@@ -525,8 +546,8 @@ const RSR = () => {
     return Object.keys(RSR_ADDRESS)
       .map(Number)
       .sort((a, b) => {
-        const aBalance = (rsrBalances[a] as bigint) ?? 0n
-        const bBalance = (rsrBalances[b] as bigint) ?? 0n
+        const aBalance = rsrBalances[a] ?? 0n
+        const bBalance = rsrBalances[b] ?? 0n
         return aBalance > bBalance ? -1 : aBalance < bBalance ? 1 : 0
       })
   }, [rsrBalances])
@@ -541,7 +562,7 @@ const RSR = () => {
           key={chainId}
           token={{ address: RSR_ADDRESS[currentChainId], ...token }} // TODO: use currentChainId to hack rsrPrice
           chainId={Number(chainId)}
-          amount={(rsrBalances[Number(chainId)] as bigint) ?? 0n}
+          amount={rsrBalances[Number(chainId)] ?? 0n}
         />
       ))}
     </div>
