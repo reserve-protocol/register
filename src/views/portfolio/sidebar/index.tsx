@@ -1,4 +1,4 @@
-import { ArrowLeft, Loader, Power, RefreshCw, Menu } from 'lucide-react'
+import { ArrowLeft, Loader, Menu, Power, RefreshCw } from 'lucide-react'
 
 import ChainLogo from '@/components/icons/ChainLogo'
 import TokenLogo from '@/components/token-logo'
@@ -11,10 +11,17 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from '@/components/ui/drawer'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+import { Skeleton } from '@/components/ui/skeleton'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import BlockiesAvatar from '@/components/utils/blockies-avatar'
 import { cn } from '@/lib/utils'
-import { accountTokensAtom, chainIdAtom, rsrPriceAtom } from '@/state/atoms'
+import { chainIdAtom, rsrPriceAtom } from '@/state/atoms'
 import { Token } from '@/types'
 import {
   formatCurrency,
@@ -28,15 +35,12 @@ import { RSR_ADDRESS } from '@/utils/addresses'
 import { ROUTES } from '@/utils/constants'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { ReactNode, useEffect, useMemo, useRef, useState } from 'react'
+import { ReactNode, useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Address, formatUnits } from 'viem'
 import {
-  accountIndexTokensAtom,
   accountRewardsAtom,
-  accountStakingTokensAtom,
   accountTokenPricesAtom,
-  accountUnclaimedLocksAtom,
   portfolioLastUpdatedAtom,
   portfolioLoadingAtom,
   portfolioRefreshFnAtom,
@@ -44,6 +48,13 @@ import {
   portfolioSidebarOpenAtom,
   rsrBalancesAtom,
   selectedPortfolioTabAtom,
+  sortedIndexTokensAtom,
+  sortedLocksAtom,
+  sortedRSRChainIdsAtom,
+  sortedStakedRSRAtom,
+  sortedStakingTokensAtom,
+  sortedStTokensWithRewardsAtom,
+  sortedYieldDTFsAtom,
   totalAccountHoldingsAtom,
 } from '../atoms'
 import {
@@ -56,45 +67,8 @@ import {
   VoteLockAction,
   YieldDTFAction,
 } from './components/actions'
-import humanizeDuration from 'humanize-duration'
-import { Skeleton } from '@/components/ui/skeleton'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
 
 const portfolioDismissibleAtom = atom(true)
-
-const getTokenValue = (
-  token: {
-    address: Address
-    decimals: number
-    underlying?: { address: Address }
-  },
-  amount: bigint | undefined,
-  prices: Record<string, number>
-) => {
-  const numAmount = Number(formatUnits(amount ?? 0n, token.decimals))
-  return (prices[token.underlying?.address ?? token.address] ?? 0) * numAmount
-}
-
-const sortByValueDesc = <
-  T extends {
-    address: Address
-    decimals: number
-    underlying?: { address: Address }
-    amount?: bigint
-  },
->(
-  items: T[],
-  prices: Record<string, number>
-) =>
-  [...items].sort(
-    (a, b) =>
-      getTokenValue(b, b.amount, prices) - getTokenValue(a, a.amount, prices)
-  )
 
 interface TokenRowProps {
   children?: ReactNode
@@ -325,18 +299,12 @@ const PortfolioSummary = () => {
 }
 
 const VoteLocked = () => {
-  const stTokens = useAtomValue(accountStakingTokensAtom)
+  const sortedStTokens = useAtomValue(sortedStakingTokensAtom)
   const selectedTab = useAtomValue(selectedPortfolioTabAtom)
   const setShowRewards = useSetAtom(portfolioShowRewardsAtom)
   const accountRewards = useAtomValue(accountRewardsAtom)
-  const prices = useAtomValue(accountTokenPricesAtom)
 
-  const sortedStTokens = useMemo(
-    () => sortByValueDesc(stTokens, prices),
-    [stTokens, prices]
-  )
-
-  if (!stTokens.length || !['all', 'vote-locked'].includes(selectedTab))
+  if (!sortedStTokens.length || !['all', 'vote-locked'].includes(selectedTab))
     return null
 
   return (
@@ -370,29 +338,10 @@ const VoteLocked = () => {
 }
 
 const Unlocking = () => {
-  const locks = useAtomValue(accountUnclaimedLocksAtom)
+  const sortedLocks = useAtomValue(sortedLocksAtom)
   const selectedTab = useAtomValue(selectedPortfolioTabAtom)
-  const prices = useAtomValue(accountTokenPricesAtom)
 
-  const sortedLocks = useMemo(
-    () =>
-      [...locks].sort(
-        (a, b) =>
-          getTokenValue(
-            { ...b.token, underlying: b.underlying },
-            b.amount,
-            prices
-          ) -
-          getTokenValue(
-            { ...a.token, underlying: a.underlying },
-            a.amount,
-            prices
-          )
-      ),
-    [locks, prices]
-  )
-
-  if (!locks.length || !['all', 'vote-locked'].includes(selectedTab))
+  if (!sortedLocks.length || !['all', 'vote-locked'].includes(selectedTab))
     return null
 
   return (
@@ -415,16 +364,10 @@ const Unlocking = () => {
 
 const IndexDTFs = () => {
   const navigate = useNavigate()
-  const indexDTFs = useAtomValue(accountIndexTokensAtom)
+  const sortedIndexDTFs = useAtomValue(sortedIndexTokensAtom)
   const selectedTab = useAtomValue(selectedPortfolioTabAtom)
-  const prices = useAtomValue(accountTokenPricesAtom)
 
-  const sortedIndexDTFs = useMemo(
-    () => sortByValueDesc(indexDTFs, prices),
-    [indexDTFs, prices]
-  )
-
-  if (!indexDTFs.length || !['all', 'index-dtfs'].includes(selectedTab))
+  if (!sortedIndexDTFs.length || !['all', 'index-dtfs'].includes(selectedTab))
     return null
 
   return (
@@ -447,24 +390,16 @@ const IndexDTFs = () => {
 
 const YieldDTFs = () => {
   const navigate = useNavigate()
-  const yieldDTFs = useAtomValue(accountTokensAtom)
+  const sortedYieldDTFs = useAtomValue(sortedYieldDTFsAtom)
   const selectedTab = useAtomValue(selectedPortfolioTabAtom)
 
-  const filteredYieldDTFs = useMemo(
-    () =>
-      yieldDTFs
-        .filter(({ usdAmount }) => usdAmount > 0.01)
-        .sort((a, b) => b.usdAmount - a.usdAmount),
-    [yieldDTFs]
-  )
-
-  if (!filteredYieldDTFs.length || !['all', 'yield-dtfs'].includes(selectedTab))
+  if (!sortedYieldDTFs.length || !['all', 'yield-dtfs'].includes(selectedTab))
     return null
 
   return (
     <div className="p-4">
       <h2 className="mb-3 text-base font-bold">Yield DTFs</h2>
-      {filteredYieldDTFs.map((token) => (
+      {sortedYieldDTFs.map((token) => (
         <TokenRow
           key={token.address}
           token={{
@@ -489,24 +424,16 @@ const YieldDTFs = () => {
 const StakedRSR = () => {
   const navigate = useNavigate()
   const rsrPrice = useAtomValue(rsrPriceAtom)
-  const yieldDTFs = useAtomValue(accountTokensAtom)
+  const sortedStakedRSR = useAtomValue(sortedStakedRSRAtom)
   const selectedTab = useAtomValue(selectedPortfolioTabAtom)
 
-  const filteredYieldDTFs = useMemo(
-    () =>
-      yieldDTFs
-        .filter(({ stakedRSR }) => stakedRSR > 1)
-        .sort((a, b) => (b.stakedRSRUsd ?? 0) - (a.stakedRSRUsd ?? 0)),
-    [yieldDTFs]
-  )
-
-  if (!filteredYieldDTFs.length || !['all', 'staked-rsr'].includes(selectedTab))
+  if (!sortedStakedRSR.length || !['all', 'staked-rsr'].includes(selectedTab))
     return null
 
   return (
     <div className="p-4">
       <h2 className="mb-3 text-base font-bold">Staked RSR</h2>
-      {filteredYieldDTFs.map((token) => (
+      {sortedStakedRSR.map((token) => (
         <TokenRow
           key={token.address}
           token={{
@@ -534,23 +461,13 @@ const RSR = () => {
   const currentChainId = useAtomValue(chainIdAtom)
   const selectedTab = useAtomValue(selectedPortfolioTabAtom)
   const rsrBalances = useAtomValue(rsrBalancesAtom)
+  const sortedChainIds = useAtomValue(sortedRSRChainIdsAtom)
 
   const token = {
     symbol: 'RSR',
     name: 'Reserve Rights',
     decimals: 18,
   }
-
-  const sortedChainIds = useMemo(() => {
-    if (!rsrBalances) return []
-    return Object.keys(RSR_ADDRESS)
-      .map(Number)
-      .sort((a, b) => {
-        const aBalance = rsrBalances[a] ?? 0n
-        const bBalance = rsrBalances[b] ?? 0n
-        return aBalance > bBalance ? -1 : aBalance < bBalance ? 1 : 0
-      })
-  }, [rsrBalances])
 
   if (!rsrBalances || !['all', 'rsr'].includes(selectedTab)) return null
 
@@ -717,21 +634,7 @@ const PortfolioContent = () => {
 }
 
 const PortfolioRewardsContent = () => {
-  const accountStTokens = useAtomValue(accountStakingTokensAtom)
-  const accountRewards = useAtomValue(accountRewardsAtom)
-  const prices = useAtomValue(accountTokenPricesAtom)
-
-  const stTokensWithRewards = useMemo(() => {
-    const mapped = accountStTokens
-      .filter((stToken) => accountRewards[stToken.address]?.length > 0)
-      .map((stToken) => ({
-        ...stToken,
-        rewards: [...accountRewards[stToken.address]].sort(
-          (a, b) => (b.accruedUSD ?? 0) - (a.accruedUSD ?? 0)
-        ),
-      }))
-    return sortByValueDesc(mapped, prices)
-  }, [accountStTokens, accountRewards, prices])
+  const stTokensWithRewards = useAtomValue(sortedStTokensWithRewardsAtom)
 
   return (
     <Card className="flex h-full w-full flex-col overflow-auto p-4">
