@@ -575,9 +575,13 @@ const useProposalTx = () => {
             args: [
               getAddress(rToken.address),
               getAddress(governance.governor),
-              governance.guardians?.map((guardian) =>
-                getAddress(guardian)
-              ) as Address[],
+              (governance.guardians ?? [])
+                .filter(
+                  (guardian) =>
+                    guardian.toLowerCase() !==
+                    governance.governor?.toLowerCase()
+                )
+                .map((guardian) => getAddress(guardian)) as Address[],
             ],
           })
         )
