@@ -1,4 +1,5 @@
 import ChainLogo from '@/components/icons/ChainLogo'
+import StackedChainLogo from '@/components/icons/StackedChainLogo'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -62,7 +63,11 @@ const IndexTokenAddress = ({
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="sm" className={triggerClassName}>
-          <ChainLogo chain={chainId} />
+          {bridgedAddresses ? (
+            <StackedChainLogo chains={bridgedAddresses.map((b) => b.chain)} />
+          ) : (
+            <ChainLogo chain={chainId} />
+          )}
           <span className="text-sm font-light">{shortenAddress(address)}</span>
           <ChevronDown className="h-4 w-4" />
         </Button>
