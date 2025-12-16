@@ -1,7 +1,6 @@
 import { ArrowLeft, Loader, Power, RefreshCw, Menu } from 'lucide-react'
 
 import ChainLogo from '@/components/icons/ChainLogo'
-import WalletOutlineIcon from '@/components/icons/WalletOutlineIcon'
 import TokenLogo from '@/components/token-logo'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
@@ -67,6 +66,22 @@ import {
 } from '@/components/ui/dropdown-menu'
 
 const portfolioDismissibleAtom = atom(true)
+
+const getTokenValue = (
+  token: { address: Address; decimals: number; underlying?: { address: Address } },
+  amount: bigint | undefined,
+  prices: Record<string, number>
+) => {
+  const numAmount = Number(formatUnits(amount ?? 0n, token.decimals))
+  return (prices[token.underlying?.address ?? token.address] ?? 0) * numAmount
+}
+
+const sortByValueDesc = <
+  T extends { address: Address; decimals: number; underlying?: { address: Address }; amount?: bigint },
+>(
+  items: T[],
+  prices: Record<string, number>
+) => [...items].sort((a, b) => getTokenValue(b, b.amount, prices) - getTokenValue(a, a.amount, prices))
 
 interface TokenRowProps {
   children?: ReactNode
@@ -301,6 +316,12 @@ const VoteLocked = () => {
   const selectedTab = useAtomValue(selectedPortfolioTabAtom)
   const setShowRewards = useSetAtom(portfolioShowRewardsAtom)
   const accountRewards = useAtomValue(accountRewardsAtom)
+  const prices = useAtomValue(accountTokenPricesAtom)
+
+  const sortedStTokens = useMemo(
+    () => sortByValueDesc(stTokens, prices),
+    [stTokens, prices]
+  )
 
   if (!stTokens.length || !['all', 'vote-locked'].includes(selectedTab))
     return null
@@ -308,7 +329,7 @@ const VoteLocked = () => {
   return (
     <div className="p-4">
       <h2 className="mb-3 text-base font-bold">Vote Locked</h2>
-      {stTokens.map((stToken) => (
+      {sortedStTokens.map((stToken) => (
         <TokenRow
           key={`${stToken.address}-${stToken.chainId}`}
           token={stToken}
@@ -338,6 +359,17 @@ const VoteLocked = () => {
 const Unlocking = () => {
   const locks = useAtomValue(accountUnclaimedLocksAtom)
   const selectedTab = useAtomValue(selectedPortfolioTabAtom)
+  const prices = useAtomValue(accountTokenPricesAtom)
+
+  const sortedLocks = useMemo(
+    () =>
+      [...locks].sort(
+        (a, b) =>
+          getTokenValue({ ...b.token, underlying: b.underlying }, b.amount, prices) -
+          getTokenValue({ ...a.token, underlying: a.underlying }, a.amount, prices)
+      ),
+    [locks, prices]
+  )
 
   if (!locks.length || !['all', 'vote-locked'].includes(selectedTab))
     return null
@@ -345,7 +377,7 @@ const Unlocking = () => {
   return (
     <div className="p-4">
       <h2 className="mb-3 text-base font-bold">Unlocking</h2>
-      {locks.map((lock) => (
+      {sortedLocks.map((lock) => (
         <TokenRow
           key={`${lock.token.address}-${lock.lockId}-${lock.chainId}`}
           token={lock.token}
@@ -364,6 +396,12 @@ const IndexDTFs = () => {
   const navigate = useNavigate()
   const indexDTFs = useAtomValue(accountIndexTokensAtom)
   const selectedTab = useAtomValue(selectedPortfolioTabAtom)
+  const prices = useAtomValue(accountTokenPricesAtom)
+
+  const sortedIndexDTFs = useMemo(
+    () => sortByValueDesc(indexDTFs, prices),
+    [indexDTFs, prices]
+  )
 
   if (!indexDTFs.length || !['all', 'index-dtfs'].includes(selectedTab))
     return null
@@ -371,7 +409,7 @@ const IndexDTFs = () => {
   return (
     <div className="p-4">
       <h2 className="mb-3 text-base font-bold">Index DTFs</h2>
-      {indexDTFs.map((token) => (
+      {sortedIndexDTFs.map((token) => (
         <TokenRow
           key={token.address}
           token={token}
@@ -392,7 +430,10 @@ const YieldDTFs = () => {
   const selectedTab = useAtomValue(selectedPortfolioTabAtom)
 
   const filteredYieldDTFs = useMemo(
-    () => yieldDTFs.filter(({ usdAmount }) => usdAmount > 0.01),
+    () =>
+      yieldDTFs
+        .filter(({ usdAmount }) => usdAmount > 0.01)
+        .sort((a, b) => b.usdAmount - a.usdAmount),
     [yieldDTFs]
   )
 
@@ -431,7 +472,10 @@ const StakedRSR = () => {
   const selectedTab = useAtomValue(selectedPortfolioTabAtom)
 
   const filteredYieldDTFs = useMemo(
-    () => yieldDTFs.filter(({ stakedRSR }) => stakedRSR > 1),
+    () =>
+      yieldDTFs
+        .filter(({ stakedRSR }) => stakedRSR > 1)
+        .sort((a, b) => (b.stakedRSRUsd ?? 0) - (a.stakedRSRUsd ?? 0)),
     [yieldDTFs]
   )
 
@@ -476,12 +520,23 @@ const RSR = () => {
     decimals: 18,
   }
 
+  const sortedChainIds = useMemo(() => {
+    if (!rsrBalances) return []
+    return Object.keys(RSR_ADDRESS)
+      .map(Number)
+      .sort((a, b) => {
+        const aBalance = (rsrBalances[a] as bigint) ?? 0n
+        const bBalance = (rsrBalances[b] as bigint) ?? 0n
+        return aBalance > bBalance ? -1 : aBalance < bBalance ? 1 : 0
+      })
+  }, [rsrBalances])
+
   if (!rsrBalances || !['all', 'rsr'].includes(selectedTab)) return null
 
   return (
     <div className="p-4">
       <h2 className="mb-3 text-base font-bold">RSR</h2>
-      {Object.entries(RSR_ADDRESS).map(([chainId]) => (
+      {sortedChainIds.map((chainId) => (
         <TokenRow
           key={chainId}
           token={{ address: RSR_ADDRESS[currentChainId], ...token }} // TODO: use currentChainId to hack rsrPrice
@@ -643,13 +698,19 @@ const PortfolioContent = () => {
 const PortfolioRewardsContent = () => {
   const accountStTokens = useAtomValue(accountStakingTokensAtom)
   const accountRewards = useAtomValue(accountRewardsAtom)
+  const prices = useAtomValue(accountTokenPricesAtom)
 
-  const stTokensWithRewards = accountStTokens
-    .filter((stToken) => accountRewards[stToken.address]?.length > 0)
-    .map((stToken) => ({
-      ...stToken,
-      rewards: accountRewards[stToken.address],
-    }))
+  const stTokensWithRewards = useMemo(() => {
+    const mapped = accountStTokens
+      .filter((stToken) => accountRewards[stToken.address]?.length > 0)
+      .map((stToken) => ({
+        ...stToken,
+        rewards: [...accountRewards[stToken.address]].sort(
+          (a, b) => (b.accruedUSD ?? 0) - (a.accruedUSD ?? 0)
+        ),
+      }))
+    return sortByValueDesc(mapped, prices)
+  }, [accountStTokens, accountRewards, prices])
 
   return (
     <Card className="flex h-full w-full flex-col overflow-auto p-4">
