@@ -1,6 +1,6 @@
 import { Switch } from '@/components/ui/switch'
 import { humanizeMinutes } from '@/utils'
-import { Hourglass, LandPlot } from 'lucide-react'
+import { HandCoins, Hourglass, LandPlot } from 'lucide-react'
 import { Controller, useFormContext } from 'react-hook-form'
 import ToggleGroupWithCustom from '../../components/toggle-group-with-custom'
 
@@ -51,11 +51,43 @@ const WeightControl = () => {
   )
 }
 
+const BidsEnabled = () => {
+  const { control } = useFormContext()
+
+  return (
+    <div className="w-full rounded-xl flex flex-col gap-3 justify-between p-4 bg-muted/70">
+      <div className="flex items-center gap-2">
+        <div className="p-2 border border-foreground rounded-full">
+          <HandCoins size={14} strokeWidth={1.5} />
+        </div>
+
+        <div className="flex flex-col">
+          <div className="text-base font-bold">Permissionless Bids</div>
+          <div className="flex items-center gap-1 text-sm text-muted-foreground">
+            Allowing the permissionless bids will allow integrations like CoW
+            swap to bid on the rebalance auctions. It's recommended to enable
+            this for automatic rebalancing.
+          </div>
+        </div>
+
+        <Controller
+          name="bidsEnabled"
+          control={control}
+          render={({ field: { onChange, value } }) => (
+            <Switch checked={value} onCheckedChange={onChange} />
+          )}
+        />
+      </div>
+    </div>
+  )
+}
+
 const AuctionsForm = () => (
   <div className="flex flex-col gap-2 px-2 mb-2">
     {TOGGLE_FORMS.map((form) => (
       <ToggleGroupWithCustom key={form.fieldName} {...form} />
     ))}
+    <BidsEnabled />
     <WeightControl />
   </div>
 )

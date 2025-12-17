@@ -63,6 +63,7 @@ type FolioFlags = {
     weightControl: boolean
     priceControl: number
   }
+  bidsEnabled: boolean
 }
 
 type GovernanceConfig = {
@@ -156,6 +157,7 @@ const txAtom = atom<
       weightControl: formData.weightControl, // false -> tracking / true -> native
       priceControl: PriceControl.PARTIAL,
     },
+    bidsEnabled: formData.bidsEnabled, // true for cowswap
   }
 
   const guardians = formData.guardians.filter(Boolean) as Address[]
