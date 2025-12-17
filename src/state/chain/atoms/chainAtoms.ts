@@ -79,7 +79,7 @@ export const gasPriceAtom = atom(
 
 export const SUBGRAPH_URL = {
   [ChainId.Mainnet]:
-    'https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-yield-mainnet/4.2.1/gn',
+    'https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-yield-mainnet/4.2.0-v2/gn',
   [ChainId.Base]:
     'https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-yield-base/4.2.1/gn',
   [ChainId.Arbitrum]:
