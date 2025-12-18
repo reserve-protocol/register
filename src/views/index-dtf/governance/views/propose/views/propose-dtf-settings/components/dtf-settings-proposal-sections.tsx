@@ -57,8 +57,8 @@ const DTF_SETTINGS: DTF_SETTING[] = [
   {
     id: 'mandate',
     icon: <Braces size={14} strokeWidth={1.5} />,
-    title: 'Mandate',
-    titleSecondary: 'Mandate',
+    title: 'Basics',
+    titleSecondary: 'Basics',
     content: <ProposeMetadata />,
   },
   {

@@ -64,9 +64,7 @@ const BidsEnabled = () => {
         <div className="flex flex-col">
           <div className="text-base font-bold">Permissionless Bids</div>
           <div className="flex items-center gap-1 text-sm text-muted-foreground">
-            Allowing the permissionless bids will allow integrations like CoW
-            swap to bid on the rebalance auctions. It's recommended to enable
-            this for automatic rebalancing.
+            Enable bids directly via the folio.
           </div>
         </div>
 

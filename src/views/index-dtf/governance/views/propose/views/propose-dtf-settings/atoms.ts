@@ -1,6 +1,7 @@
 import dtfIndexAbi from '@/abis/dtf-index-abi-v1'
 import dtfIndexAbiV2 from '@/abis/dtf-index-abi-v2'
 import dtfIndexAbiV4 from '@/abis/dtf-index-abi-v4'
+import dtfIndexAbiV5 from '@/abis/dtf-index-abi'
 import timelockAbi from '@/abis/Timelock'
 import {
   indexDTFAtom,
@@ -31,6 +32,7 @@ import {
 export const selectedSectionAtom = atom<string | undefined>(undefined)
 
 // Change detection atoms
+export const tokenNameChangeAtom = atom<string | undefined>(undefined)
 export const mandateChangeAtom = atom<string | undefined>(undefined)
 
 export const rolesChangesAtom = atom<{
@@ -54,9 +56,16 @@ export const auctionLengthChangeAtom = atom<number | undefined>(undefined)
 
 export const weightControlChangeAtom = atom<boolean | undefined>(undefined)
 
+export const bidsEnabledChangeAtom = atom<boolean | undefined>(undefined)
+
 export const governanceChangesAtom = atom<GovernanceChanges>({})
 
 // Has changes atoms for easy checking
+export const hasTokenNameChangeAtom = atom((get) => {
+  const change = get(tokenNameChangeAtom)
+  return change !== undefined
+})
+
 export const hasMandateChangeAtom = atom((get) => {
   const change = get(mandateChangeAtom)
   return change !== undefined
@@ -92,6 +101,11 @@ export const hasAuctionLengthChangeAtom = atom((get) => {
 
 export const hasWeightControlChangeAtom = atom((get) => {
   const change = get(weightControlChangeAtom)
+  return change !== undefined
+})
+
+export const hasBidsEnabledChangeAtom = atom((get) => {
+  const change = get(bidsEnabledChangeAtom)
   return change !== undefined
 })
 
@@ -137,26 +151,28 @@ export const isFormValidAtom = atom(true)
 
 export const isProposalValidAtom = atom((get) => {
   const removedBasketTokens = get(removedBasketTokensAtom)
+  const hasTokenNameChange = get(hasTokenNameChangeAtom)
   const hasMandateChange = get(hasMandateChangeAtom)
   const hasRolesChanges = get(hasRolesChangesAtom)
   const hasRevenueDistributionChanges = get(hasRevenueDistributionChangesAtom)
   const hasDtfRevenueChanges = get(hasDtfRevenueChangesAtom)
   const hasAuctionLengthChange = get(hasAuctionLengthChangeAtom)
   const hasWeightControlChange = get(hasWeightControlChangeAtom)
+  const hasBidsEnabledChange = get(hasBidsEnabledChangeAtom)
   const hasGovernanceChanges = get(hasGovernanceChangesAtom)
   const isFormValid = get(isFormValidAtom)
 
   const hasChanges =
     removedBasketTokens.length > 0 ||
+    hasTokenNameChange ||
     hasMandateChange ||
     hasRolesChanges ||
     hasRevenueDistributionChanges ||
     hasDtfRevenueChanges ||
     hasAuctionLengthChange ||
     hasWeightControlChange ||
+    hasBidsEnabledChange ||
     hasGovernanceChanges
-
-  console.log('has changes', hasChanges)
 
   return hasChanges
 })
@@ -188,12 +204,14 @@ export const dtfSettingsProposalDataAtom = atom<ProposalData | undefined>(
     const indexDTF = get(indexDTFAtom)
     const version = get(indexDTFVersionAtom)
     const removedBasketTokens = get(removedBasketTokensAtom)
+    const tokenNameChange = get(tokenNameChangeAtom)
     const mandateChange = get(mandateChangeAtom)
     const rolesChanges = get(rolesChangesAtom)
     const revenueDistributionChanges = get(revenueDistributionChangesAtom)
     const dtfRevenueChanges = get(dtfRevenueChangesAtom)
     const auctionLengthChange = get(auctionLengthChangeAtom)
     const weightControlChange = get(weightControlChangeAtom)
+    const bidsEnabledChange = get(bidsEnabledChangeAtom)
     const rebalanceControl = get(indexDTFRebalanceControlAtom)
     const governanceChanges = get(governanceChangesAtom)
     const feeRecipients = get(feeRecipientsAtom)
@@ -228,7 +246,19 @@ export const dtfSettingsProposalDataAtom = atom<ProposalData | undefined>(
       }
     }
 
-    // 2. Set mandate
+    // 2. Set token name (v5+)
+    if (tokenNameChange !== undefined) {
+      calldatas.push(
+        encodeFunctionData({
+          abi: dtfIndexAbiV5,
+          functionName: 'setName',
+          args: [tokenNameChange],
+        })
+      )
+      targets.push(indexDTF.id as Address)
+    }
+
+    // 3. Set mandate
     if (mandateChange !== undefined) {
       calldatas.push(
         encodeFunctionData({
@@ -456,6 +486,18 @@ export const dtfSettingsProposalDataAtom = atom<ProposalData | undefined>(
               priceControl: rebalanceControl.priceControl,
             },
           ],
+        })
+      )
+      targets.push(indexDTF.id as Address)
+    }
+
+    // 5c. Set bids enabled (v5+)
+    if (bidsEnabledChange !== undefined) {
+      calldatas.push(
+        encodeFunctionData({
+          abi: dtfIndexAbiV5,
+          functionName: 'setBidsEnabled',
+          args: [bidsEnabledChange],
         })
       )
       targets.push(indexDTF.id as Address)

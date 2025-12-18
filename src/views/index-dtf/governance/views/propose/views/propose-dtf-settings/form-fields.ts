@@ -4,6 +4,7 @@ import { z } from 'zod'
 
 export const createProposeSettingsSchema = (quorumDenominator?: number) => z
   .object({
+    tokenName: z.string().min(1, 'Token name is required').max(32, 'Token name must be 32 characters or less'),
     mandate: z.string(),
     governanceVoteLock: z
       .string()
@@ -56,6 +57,7 @@ export const createProposeSettingsSchema = (quorumDenominator?: number) => z
       .min(15, 'Auction length must be at least 15 minutes')
       .max(1440, 'Auction length must not exceed 1440 minutes (24 hours)'),
     weightControl: z.boolean(),
+    bidsEnabled: z.boolean(),
     governanceVotingDelay: z.coerce.number().min(0).optional(),
     governanceVotingPeriod: z.coerce.number().min(0).optional(),
     governanceVotingQuorum: z.coerce.number().min(0).max(100).optional()
