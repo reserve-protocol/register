@@ -1,3 +1,4 @@
+import { ink } from 'wagmi/chains'
 import { ChainId } from './chains'
 
 export const ETHERSCAN_NAMES: { [chainId: number]: string } = {
@@ -14,6 +15,7 @@ const ETHERSCAN_PREFIXES: { [chainId: number]: string } = {
   [ChainId.Base]: `${ETHERSCAN_NAMES[ChainId.Base]}.org`,
   [ChainId.Arbitrum]: `${ETHERSCAN_NAMES[ChainId.Arbitrum]}.io`,
   [ChainId.BSC]: `${ETHERSCAN_NAMES[ChainId.BSC]}.com`,
+  [ink.id]: `explorer.inkonchain.com`,
 }
 
 export enum ExplorerDataType {
