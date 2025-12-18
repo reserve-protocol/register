@@ -92,7 +92,7 @@ export const INDEX_DTF_SUBGRAPH_URL = {
   [ChainId.Mainnet]:
     'https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-mainnet/prod/gn',
   [ChainId.Base]:
-    'https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-base/prod/gn',
+    'https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-base/1.8.6-test1/gn',
   [ChainId.Arbitrum]:
     'https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-bsc/prod/gn', // TODO? maybe never
   [ChainId.BSC]:
