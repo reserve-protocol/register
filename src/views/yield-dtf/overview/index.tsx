@@ -10,6 +10,7 @@ import RTokenEarn from './components/RTokenEarn'
 import RTokenTransactions from './components/RTokenTransactions'
 import Backing from './components/backing'
 import HistoricalMetrics from './components/HistoricalMetrics'
+import StargateWarning from './components/StargateWarning'
 
 // Move state management of tracking on an separate component to avoid re-renders
 const Tracking = () => {
@@ -31,6 +32,7 @@ const Tracking = () => {
  */
 const Overview = () => (
   <SectionContainer variant="layout.tokenView">
+    <StargateWarning />
     <SectionWrapper navigationIndex={0}>
       <Hero />
     </SectionWrapper>
