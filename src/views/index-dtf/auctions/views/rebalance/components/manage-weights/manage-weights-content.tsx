@@ -4,9 +4,11 @@ import {
   isHybridDTFAtom,
 } from '@/state/dtf/atoms'
 import {
+  FolioVersion,
   getStartRebalance,
   WeightRange,
 } from '@reserve-protocol/dtf-rebalance-lib'
+import { StartRebalanceArgsPartial as StartRebalanceArgsPartialV4 } from '@reserve-protocol/dtf-rebalance-lib/dist/4.0.0/types'
 import { useAtomValue, useSetAtom } from 'jotai'
 import {
   areWeightsSavedAtom,
@@ -24,6 +26,7 @@ import {
 import { calculateTargetShares, prepareRebalanceData } from './utils/weight-calculation-utils'
 import ManageWeightsHeader from './manage-weights-header'
 import ManageWeightsHero from './manage-weights-hero'
+import { getRebalanceTokens, getRebalanceWeights } from '../../utils/transforms'
 
 const ManageWeightsContent = () => {
   const rebalanceParams = useRebalanceParams()
@@ -49,8 +52,14 @@ const ManageWeightsContent = () => {
     if (!rebalanceParams || !rebalanceControl) return
 
     try {
+      // Get tokens using version-aware helper
+      const rebalanceTokens = getRebalanceTokens(
+        rebalanceParams.rebalance,
+        rebalanceParams.folioVersion
+      )
+
       const targetShares = calculateTargetShares(
-        rebalanceParams.rebalance.tokens,
+        rebalanceTokens,
         tokenMap,
         proposedUnits,
         basketItems,
@@ -60,14 +69,18 @@ const ManageWeightsContent = () => {
 
       const rebalanceData = prepareRebalanceData(
         targetShares,
-        rebalanceParams.rebalance.tokens,
+        rebalanceTokens,
         tokenMap,
         basketItems,
         rebalanceParams.currentAssets,
         rebalanceParams.prices
       )
 
-      const { weights } = getStartRebalance(
+      // Max auction size per token in USD (hardcoded to $1M)
+      const maxAuctionSizes = rebalanceData.tokens.map(() => 1_000_000)
+
+      const startRebalanceArgs = getStartRebalance(
+        rebalanceParams.folioVersion,
         rebalanceParams.supply,
         rebalanceData.tokens,
         rebalanceData.assets,
@@ -75,13 +88,26 @@ const ManageWeightsContent = () => {
         rebalanceData.targetBasket,
         rebalanceData.prices,
         rebalanceData.error,
+        maxAuctionSizes,
         rebalanceControl.weightControl,
         isHybridDTF
       )
 
+      // Get weights - for v5 we need to extract from tokens, for v4 use weights directly
+      let weights: WeightRange[]
+      if (rebalanceParams.folioVersion === FolioVersion.V5) {
+        // For v5, getRebalanceWeights helper extracts from rebalance, but here we need from startRebalanceArgs
+        // The v5 returns tokens: TokenRebalanceParams[], so we extract weights from there
+        const argsV5 = startRebalanceArgs as { tokens: Array<{ weight: WeightRange }> }
+        weights = argsV5.tokens.map((t) => t.weight)
+      } else {
+        const argsV4 = startRebalanceArgs as StartRebalanceArgsPartialV4
+        weights = argsV4.weights
+      }
+
       // Create weights map ensuring correct token order
       const weightsMap: Record<string, WeightRange> = {}
-      rebalanceParams.rebalance.tokens.forEach((tokenAddress, index) => {
+      rebalanceTokens.forEach((tokenAddress, index) => {
         const address = tokenAddress.toLowerCase()
         weightsMap[address] = weights[index]
 
@@ -94,7 +120,10 @@ const ManageWeightsContent = () => {
       })
 
       // Validate weights distribution
-      const totalWeight = weights.reduce((sum, w) => sum + Number(w.spot), 0)
+      const totalWeight = weights.reduce(
+        (sum: number, w: WeightRange) => sum + Number(w.spot),
+        0
+      )
       console.log('Total weight (should be close to 1):', totalWeight)
 
       setSavedWeights(weightsMap)
