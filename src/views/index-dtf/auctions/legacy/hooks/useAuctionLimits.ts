@@ -1,4 +1,4 @@
-import dtfIndexAbi from '@/abis/dtf-index-abi'
+import dtfIndexAbi from '@/abis/dtf-index-abi-v1'
 import { getBasketTrackingDTF } from '@/lib/index-rebalance/get-basket-by-trades'
 import { openAuction } from '@/lib/index-rebalance/open-auction'
 import { Auction } from '@/lib/index-rebalance/types'

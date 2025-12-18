@@ -1,4 +1,4 @@
-import dtfIndexAbi from '@/abis/dtf-index-abi'
+import dtfIndexAbi from '@/abis/dtf-index-abi-v1'
 import dtfIndexAbiV2 from '@/abis/dtf-index-abi-v2'
 import dtfIndexAbiV4 from '@/abis/dtf-index-abi-v4'
 import { getStartRebalance } from '@reserve-protocol/dtf-rebalance-lib'

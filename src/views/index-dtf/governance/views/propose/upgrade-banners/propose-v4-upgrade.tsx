@@ -1,5 +1,5 @@
 import dtfAdminAbi from '@/abis/dtf-admin-abi'
-import dtfIndexAbi from '@/abis/dtf-index-abi'
+import dtfIndexAbi from '@/abis/dtf-index-abi-v1'
 import DTFIndexGovernance from '@/abis/dtf-index-governance'
 import { Button } from '@/components/ui/button'
 import { getProposalState, PartialProposal } from '@/lib/governance'
