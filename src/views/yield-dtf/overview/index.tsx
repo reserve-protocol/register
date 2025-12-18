@@ -9,6 +9,7 @@ import Hero from './components/hero'
 import HistoricalMetrics from './components/historical-metrics'
 import RTokenEarn from './components/rtoken-earn'
 import RTokenTransactions from './components/rtoken-transactions'
+import StargateWarning from './components/StargateWarning'
 
 // Move state management of tracking on an separate component to avoid re-renders
 const Tracking = () => {
@@ -34,6 +35,7 @@ const SectionDivider = () => (
  */
 const Overview = () => (
   <SectionContainer className="w-full p-1 md:p-4">
+    <StargateWarning />
     <SectionWrapper navigationIndex={0}>
       <Hero />
     </SectionWrapper>
