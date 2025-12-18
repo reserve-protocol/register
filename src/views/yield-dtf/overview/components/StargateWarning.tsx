@@ -18,11 +18,12 @@ const StargateWarning = () => {
     <div className="px-4 md:px-6">
       <Alert variant="warning" className="rounded-xl">
         <AlertTriangle className="h-4 w-4" />
-        <AlertTitle>Stargate Collateral Notice</AlertTitle>
         <AlertDescription>
           {rToken?.symbol} uses Stargate collateral and has pending STG rewards.
-          STG will no longer be supported as Chainlink is discontinuing the STG
-          oracle.
+          As of January 5, 2026 the STG asset will no longer be functional, as
+          Chainlink is deprecating the STG-USD oracle. The Stargate collateral
+          will still function, but STG rewards will no longer be processed,
+          causing a drop in real {rToken?.symbol} yield.
         </AlertDescription>
       </Alert>
     </div>
