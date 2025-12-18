@@ -3,6 +3,7 @@ import {
   CMC20_ADDRESS,
   ETHPLUS_ADDRESS,
   EUSD_ADDRESS,
+  LCAP_ADDRESS,
   RGUSD_ADDRESS,
   RSR_ADDRESS,
   USD3_ADDRESS,
@@ -366,7 +367,7 @@ const buildBridgeMap = (
   return result
 }
 
-export const BRIDGED_INDEX_DTFS = buildBridgeMap(CMC20_ADDRESS)
+export const BRIDGED_INDEX_DTFS = buildBridgeMap(CMC20_ADDRESS, LCAP_ADDRESS)
 
 for (const chain of supportedChainList) {
   LISTED_RTOKEN_ADDRESSES[chain] = [
