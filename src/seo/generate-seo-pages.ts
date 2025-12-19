@@ -30,14 +30,12 @@ interface FeaturedTokensData {
 const BUILD_DIR = path.join(__dirname, '../../build')
 const FEATURED_TOKENS_PATH = path.join(__dirname, 'featured-tokens.json')
 const BASE_URL = 'https://app.reserve.org'
-// TODO: Change back to BASE_URL after deploying to production
-const PREVIEW_URL = 'https://feature-seo.register-app.pages.dev'
 
 // Custom social share images for specific tokens (by symbol, case-insensitive)
 const CUSTOM_SOCIAL_IMAGES: Record<string, string> = {
-  lcap: `${PREVIEW_URL}/imgs/socials/lcap.png`,
-  cmc20: `${PREVIEW_URL}/imgs/socials/cmc20.png`,
-  zindex: `${PREVIEW_URL}/imgs/socials/zindex.png`,
+  lcap: `${BASE_URL}/imgs/socials/lcap.png`,
+  cmc20: `${BASE_URL}/imgs/socials/cmc20.png`,
+  zindex: `${BASE_URL}/imgs/socials/zindex.png`,
 }
 
 // All known sub-routes for index-dtf pages
