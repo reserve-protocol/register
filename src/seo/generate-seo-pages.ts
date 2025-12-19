@@ -59,7 +59,7 @@ function escapeHtml(str: string): string {
 }
 
 function generateMetaTags(token: SEOToken, fullUrl: string): string {
-  const title = `${token.symbol} | Reserve Protocol`
+  const title = `Reserve | ${token.name}`
   const description = escapeHtml(token.description)
   // Use custom social image if available, otherwise fall back to token's default image
   const image = CUSTOM_SOCIAL_IMAGES[token.symbol.toLowerCase()] || token.image
