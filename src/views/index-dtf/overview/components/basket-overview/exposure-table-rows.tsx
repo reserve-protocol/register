@@ -49,6 +49,7 @@ export const ExposureTableRows = ({
                   ) : (
                     <TokenLogo
                       size="lg"
+                      symbol={native.symbol}
                       address={group.tokens[0]?.address || ''}
                       chain={chainId}
                     />

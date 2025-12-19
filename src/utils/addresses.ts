@@ -78,6 +78,11 @@ export const USD3_ADDRESS: AddressMap = {
   [ChainId.Base]: '0xEFb97aaF77993922aC4be4Da8Fbc9A2425322677',
 }
 
+export const CMC20_ADDRESS: AddressMap = {
+  [ChainId.BSC]: '0x2f8A339B5889FfaC4c5A956787cdA593b3c36867',
+  [ChainId.Base]: '0xa0A8481fc246Cd12f75227aBB96220fF5360fad3',
+}
+
 /**
  * Other contract addresses
  */
