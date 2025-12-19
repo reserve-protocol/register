@@ -43,9 +43,7 @@ const IndexDTFSEO = () => {
   const brand = useAtomValue(indexDTFBrandAtom)
   const location = useLocation()
 
-  const title = dtf
-    ? `${dtf.token.symbol} - ${dtf.token.name} | Reserve Protocol`
-    : 'Reserve Protocol | DTFs'
+  const title = dtf ? `Reserve | ${dtf.token.name}` : 'Reserve | DTFs'
 
   const description = brand?.dtf?.description || DEFAULT_DESCRIPTION
   const image = brand?.dtf?.icon || undefined
