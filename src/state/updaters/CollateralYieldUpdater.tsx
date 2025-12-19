@@ -62,6 +62,7 @@ const poolsMap: Record<number, Record<string, string>> = {
     '423681e3-4787-40ce-ae43-e9f67c5269b3': 'woeth',
     'f981a304-bb6c-45b8-b0c5-fd2f515ad23a': 'saethusdt',
     '85fc6934-c94d-4ebe-9c60-66beb363669f': 'saethrlusd',
+    '46bd2bdf-6d92-4066-b482-e885ee172264': 'weeth',
     'b55f43a8-f444-4cd8-a3a4-0a4e786ba566': 'steakusdc',
   },
   [ChainId.Base]: {

@@ -28,7 +28,7 @@ import { formatCurrency } from 'utils'
 import { CHAIN_TAGS, LP_PROJECTS, NETWORKS } from 'utils/constants'
 import Sky from '@/components/icons/logos/Sky'
 import Origin from '@/components/icons/logos/Origin'
-import { cn } from '@/lib/utils'
+import Etherfi from '@/components/icons/logos/Etherfi'
 
 export const PROJECT_ICONS: Record<string, React.ReactElement> = {
   'yearn-finance': <Yearn fontSize={16} />,
@@ -52,6 +52,7 @@ export const PROJECT_ICONS: Record<string, React.ReactElement> = {
   stader: <Stader />,
   'sky-lending': <Sky />,
   'origin-ether': <Origin />,
+  'ether.fi-staking': <Etherfi />,
 }
 
 const useEarnTableColumns = (compact: boolean) => {
@@ -73,7 +74,10 @@ const useEarnTableColumns = (compact: boolean) => {
                   })
                 }}
               >
-                <StackTokenLogo tokens={data.row.original.underlyingTokens} outsource={true} />
+                <StackTokenLogo
+                  tokens={data.row.original.underlyingTokens}
+                  outsource={true}
+                />
                 <span className="ml-2 underline text-sm">
                   {data.getValue()}
                 </span>
@@ -91,7 +95,12 @@ const useEarnTableColumns = (compact: boolean) => {
                   })
                 }}
               >
-                <img src="/svgs/defillama.svg" height={16} width={16} alt="DefiLlama" />
+                <img
+                  src="/svgs/defillama.svg"
+                  height={16}
+                  width={16}
+                  alt="DefiLlama"
+                />
                 <ArrowUpRight className="text-muted-foreground" size={14} />
               </div>
             </div>
@@ -136,7 +145,11 @@ const useEarnTableColumns = (compact: boolean) => {
             </div>
           )
         },
-        cell: (data) => <span className="min-w-[80px] inline-block text-sm">{formatCurrency(data.getValue(), 1)}%</span>,
+        cell: (data) => (
+          <span className="min-w-[80px] inline-block text-sm">
+            {formatCurrency(data.getValue(), 1)}%
+          </span>
+        ),
       }),
       columnHelper.accessor('apyBase', {
         header: () => {
@@ -147,7 +160,11 @@ const useEarnTableColumns = (compact: boolean) => {
             </div>
           )
         },
-        cell: (data) => <span className="min-w-[80px] inline-block text-sm">{formatCurrency(data.getValue(), 1)}%</span>,
+        cell: (data) => (
+          <span className="min-w-[80px] inline-block text-sm">
+            {formatCurrency(data.getValue(), 1)}%
+          </span>
+        ),
         meta: { className: compact ? 'hidden' : 'hidden xl:table-cell' },
       }),
       columnHelper.accessor('apyReward', {
@@ -168,7 +185,11 @@ const useEarnTableColumns = (compact: boolean) => {
       }),
       columnHelper.accessor('tvlUsd', {
         header: t`TVL`,
-        cell: (data) => <span className="min-w-[100px] inline-block text-sm">${formatCurrency(data.getValue(), 0)}</span>,
+        cell: (data) => (
+          <span className="min-w-[100px] inline-block text-sm">
+            ${formatCurrency(data.getValue(), 0)}
+          </span>
+        ),
       }),
     ]
   }, [compact])

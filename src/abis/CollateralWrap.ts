@@ -202,4 +202,21 @@ export default [
     stateMutability: 'nonpayable',
     type: 'function',
   },
+  // ETHERFI
+  {
+    inputs: [{ internalType: 'uint256', name: '_eETHAmount', type: 'uint256' }],
+    name: 'wrap',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'uint256', name: '_weETHAmount', type: 'uint256' },
+    ],
+    name: 'unwrap',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
 ] as const
