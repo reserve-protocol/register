@@ -31,6 +31,13 @@ const BUILD_DIR = path.join(__dirname, '../../build')
 const FEATURED_TOKENS_PATH = path.join(__dirname, 'featured-tokens.json')
 const BASE_URL = 'https://app.reserve.org'
 
+// Custom social share images for specific tokens (by symbol, case-insensitive)
+const CUSTOM_SOCIAL_IMAGES: Record<string, string> = {
+  lcap: `${BASE_URL}/imgs/socials/lcap.png`,
+  cmc20: `${BASE_URL}/imgs/socials/cmc20.png`,
+  zindex: `${BASE_URL}/imgs/socials/zindex.png`,
+}
+
 // All known sub-routes for index-dtf pages
 const INDEX_DTF_ROUTES = [
   '', // Base route (served as /address/)
@@ -54,7 +61,8 @@ function escapeHtml(str: string): string {
 function generateMetaTags(token: SEOToken, fullUrl: string): string {
   const title = `${token.symbol} - ${token.name} | Reserve Protocol`
   const description = escapeHtml(token.description)
-  const image = token.image
+  // Use custom social image if available, otherwise fall back to token's default image
+  const image = CUSTOM_SOCIAL_IMAGES[token.symbol.toLowerCase()] || token.image
 
   return `
     <!-- SEO Meta Tags - Generated for ${token.symbol} -->
