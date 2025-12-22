@@ -1,4 +1,4 @@
-import dtfIndexAbi from '@/abis/dtf-index-abi'
+import dtfIndexAbi from '@/abis/dtf-index-abi-v1'
 import { chainIdAtom } from '@/state/atoms'
 import {
   indexDTFBasketAtom,

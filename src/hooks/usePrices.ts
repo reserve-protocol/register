@@ -4,7 +4,7 @@ import { AssetPrice, DTFPrice } from '@/types/prices'
 import { RESERVE_API } from '@/utils/constants'
 import { useReadContracts } from 'wagmi'
 import { useMemo } from 'react'
-import dtfIndexAbi from '@/abis/dtf-index-abi'
+import dtfIndexAbi from '@/abis/dtf-index-abi-v1'
 
 type FolioResult = {
   status: 'success' | 'failure'

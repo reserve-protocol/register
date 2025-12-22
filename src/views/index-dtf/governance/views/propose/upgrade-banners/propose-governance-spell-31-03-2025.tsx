@@ -1,5 +1,5 @@
 import dtfAdminAbi from '@/abis/dtf-admin-abi'
-import dtfIndexAbi from '@/abis/dtf-index-abi'
+import dtfIndexAbi from '@/abis/dtf-index-abi-v1'
 import DTFIndexGovernance from '@/abis/dtf-index-governance'
 import stakingVaultAbi from '@/abis/dtf-index-staking-vault'
 import { Button } from '@/components/ui/button'
