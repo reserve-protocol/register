@@ -6,6 +6,7 @@ import { Checkbox } from '@/components/ui/checkbox'
 import Help from '@/components/ui/help'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Skeleton } from '@/components/ui/skeleton'
+import Spinner from '@/components/ui/spinner'
 import useIsUSDT from '@/hooks/useIsUSDT'
 import { cn } from '@/lib/utils'
 import { chainIdAtom } from '@/state/atoms'
@@ -27,6 +28,7 @@ import {
   allowanceMapAtom,
   assetAmountsMapAtom,
   balanceMapAtom,
+  batchApprovalStateAtom,
   modeAtom,
   unlimitedApprovalAtom,
 } from '../atoms'
@@ -44,8 +46,12 @@ const ApproveAsset = ({ address }: { address: Address }) => {
   const assetAmountsMap = useAtomValue(assetAmountsMapAtom)
   const amount = assetAmountsMap[address] ?? 0n
   const isUnlimited = useAtomValue(unlimitedApprovalAtom)
+  const batchState = useAtomValue(batchApprovalStateAtom)
 
   const { isUSDT, needsRevoke } = useIsUSDT(address, chainId, indexDTF?.id)
+
+  // Get batch approval state for this token
+  const tokenBatchState = batchState[address.toLowerCase()]
 
   if (!amount) return null
 
@@ -75,11 +81,37 @@ const ApproveAsset = ({ address }: { address: Address }) => {
     })
   }
 
+  // Check if already approved (on-chain allowance or individual success)
   if (
     isSuccess ||
     (allowanceMap[address] && amount && allowanceMap[address] >= amount)
   ) {
     return <CheckCircle2 className="mx-2" color="green" size={24} />
+  }
+
+  // Show batch approval state if active
+  if (tokenBatchState) {
+    switch (tokenBatchState.status) {
+      case 'pending':
+        return (
+          <div className="flex items-center gap-2 text-muted-foreground text-sm">
+            <Spinner size={16} />
+            <span>Signing...</span>
+          </div>
+        )
+      case 'confirming':
+        return (
+          <div className="flex items-center gap-2 text-primary text-sm">
+            <Spinner size={16} />
+            <span>Confirming...</span>
+          </div>
+        )
+      case 'success':
+        return <CheckCircle2 className="mx-2" color="green" size={24} />
+      case 'error':
+        // Show individual approve button as fallback for failed batch
+        break
+    }
   }
 
   if (needsRevoke && !isSuccessRevoke) {
