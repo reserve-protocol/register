@@ -120,6 +120,9 @@ export const proposedIndexBasketStateAtom = atom<{
   const { changed, currentAllocation } = Object.values(proposedBasket).reduce(
     (acc, token) => {
       if (!priceMap[token.token.address.toLowerCase()]) {
+        console.warn(
+          `No price for ${token.token.symbol} (${token.token.address})`
+        )
         invalidAsset = true
       }
       return {
