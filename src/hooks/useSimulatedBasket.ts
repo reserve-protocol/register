@@ -71,7 +71,7 @@ const getAssetPrices = async (
     const data = await response.json()
     return (data as TokenPrice[]).reduce(
       (acc, token) => {
-        acc[token.address] = token.price ?? 0
+        acc[token.address.toLowerCase()] = token.price ?? 0
         return acc
       },
       {} as Record<string, number>

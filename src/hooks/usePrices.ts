@@ -91,14 +91,14 @@ export const usePrices = (assets: Address[], chainId?: number) => {
   const { data: erc20Prices } = useAssetPrices(erc20Rewards, chainId)
 
   const prices = useMemo(() => {
-    const result: Record<Address, number | undefined> = {}
+    const result: Record<string, number | undefined> = {}
 
     dtfPrices?.forEach((price) => {
-      result[price.address] = price.price
+      result[price.address.toLowerCase()] = price.price
     })
 
     erc20Prices?.forEach((price) => {
-      result[price.address] = price.price
+      result[price.address.toLowerCase()] = price.price
     })
 
     return result
