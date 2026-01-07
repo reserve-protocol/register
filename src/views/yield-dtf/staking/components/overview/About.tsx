@@ -1,6 +1,11 @@
-import { Trans, t } from '@lingui/macro'
-import ExpandableContent from '@/components/old/expandable-content'
-import { Box, BoxProps, Text } from 'theme-ui'
+import { Trans } from '@lingui/macro'
+import { cn } from '@/lib/utils'
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion'
 
 const faqs = [
   {
@@ -52,12 +57,29 @@ const faqs = [
   },
 ]
 
-const About = (props: BoxProps) => (
-  <Box variant="layout.borderBox" p={4} {...props}>
-    {faqs.map((faq, i) => (
-      <ExpandableContent key={`About.${i}`} {...faq} />
-    ))}
-  </Box>
+interface AboutProps {
+  className?: string
+}
+
+const About = ({ className }: AboutProps) => (
+  <div className={cn('rounded-3xl border border-border px-6 py-4', className)}>
+    <Accordion type="single" collapsible className="w-full">
+      {faqs.map((faq, i) => (
+        <AccordionItem
+          key={`About.${i}`}
+          value={`item-${i}`}
+          className="border-b-0"
+        >
+          <AccordionTrigger className="hover:no-underline py-3">
+            <span className="font-semibold">{faq.title}</span>
+          </AccordionTrigger>
+          <AccordionContent className="text-muted-foreground">
+            {faq.content}
+          </AccordionContent>
+        </AccordionItem>
+      ))}
+    </Accordion>
+  </div>
 )
 
 export default About

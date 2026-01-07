@@ -1,6 +1,5 @@
 import RevenueSplit from 'components/rtoken-setup/token/RevenueSplit'
 import SectionWrapper from '@/components/section-navigation/section-wrapper'
-import { Box } from 'theme-ui'
 import BackingManager from '@/views/yield-dtf/deploy/components/BackingManager'
 import OtherSetup from '@/views/yield-dtf/deploy/components/OtherSetup'
 import Intro from './Intro'
@@ -28,19 +27,19 @@ const sections = [
 ]
 
 const ProposalForm = () => (
-  <Box mb={4}>
+  <div className="mb-4">
     {sections.map((Component, index) => (
       <SectionWrapper
         key={index}
         threshold={index === 3 ? 0.3 : 0.5}
         navigationIndex={index}
-        mb={4}
+        className="mb-4"
       >
         <Component />
       </SectionWrapper>
     ))}
     <ProposalBasketSetup startIndex={sections.length} />
-  </Box>
+  </div>
 )
 
 export default ProposalForm
