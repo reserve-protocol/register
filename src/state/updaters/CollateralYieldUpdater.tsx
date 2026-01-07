@@ -49,7 +49,7 @@ const poolsMap: Record<number, Record<string, string>> = {
     'd118f505-e75f-4152-bad3-49a2dc7482bf': 'saethpyusd',
     '01146cce-9140-4e03-9a2e-82c99ccc42f1': 'stkcvxpyusdusdc',
     '5b3aebb3-891d-47fc-92e2-927ada3d5b82': 'sfrxeth',
-    'bf3815bb-1059-4f24-90a3-14998e8493fa': 're7weth',
+    'd741644d-86ea-44ad-af5e-3042de381173': 're7weth',
     'a3ffd3fe-b21c-44eb-94d5-22c80057a600': 'stkcvxcrvusdusdt-f',
     '755fcec6-f4fd-4150-9184-60f099206694': 'stkcvxcrvusdusdc-f',
     'd1dacce1-7815-420c-bb6d-d3c4320e1b2a': 'steakpyusd',
