@@ -2,6 +2,7 @@ import USDT from '@/abis/USDT'
 import TokenLogo from '@/components/token-logo'
 import { Button } from '@/components/ui/button'
 import Help from '@/components/ui/help'
+import Spinner from '@/components/ui/spinner'
 import useIsUSDT from '@/hooks/useIsUSDT'
 import { cn } from '@/lib/utils'
 import { chainIdAtom, walletAtom } from '@/state/atoms'
@@ -16,9 +17,12 @@ import { Address, erc20Abi, formatUnits, parseUnits } from 'viem'
 import { useReadContract, useWriteContract } from 'wagmi'
 import {
   basketRequiredAmountsAtom,
+  deployBatchApprovalStateAtom,
   formattedAssetsAllowanceAtom,
   hasBalanceAtom,
+  tokensNeedingApprovalForDeployAtom,
 } from '../atoms'
+import ApproveAllDeployButton from './approve-all-deploy-button'
 
 const TokenBalance = ({
   address,
@@ -95,12 +99,16 @@ const ApproveAsset = ({
   } = useWriteContract()
   const chainId = useAtomValue(chainIdAtom)
   const assetsAllowance = useAtomValue(formattedAssetsAllowanceAtom)
+  const batchState = useAtomValue(deployBatchApprovalStateAtom)
 
   const { isUSDT, needsRevoke } = useIsUSDT(
     address,
     chainId,
     INDEX_DEPLOYER_ADDRESS[chainId]
   )
+
+  // Get batch approval state for this token
+  const tokenBatchState = batchState[address.toLowerCase()]
 
   const revoke = () => {
     writeContractRevoke({
@@ -125,11 +133,37 @@ const ApproveAsset = ({
     })
   }
 
+  // Check if already approved (on-chain allowance or individual success)
   if (
     isSuccess ||
     (assetsAllowance[address] && amount && assetsAllowance[address] >= amount)
   ) {
     return <CheckCircle2 className="mx-2" color="green" size={24} />
+  }
+
+  // Show batch approval state if active
+  if (tokenBatchState) {
+    switch (tokenBatchState.status) {
+      case 'pending':
+        return (
+          <div className="flex items-center gap-2 text-muted-foreground text-sm">
+            <Spinner size={16} />
+            <span>Signing...</span>
+          </div>
+        )
+      case 'confirming':
+        return (
+          <div className="flex items-center gap-2 text-primary text-sm">
+            <Spinner size={16} />
+            <span>Confirming...</span>
+          </div>
+        )
+      case 'success':
+        return <CheckCircle2 className="mx-2" color="green" size={24} />
+      case 'error':
+        // Show individual approve button as fallback for failed batch
+        break
+    }
   }
 
   if (needsRevoke && !isSuccessRevoke) {
@@ -173,10 +207,15 @@ const ApproveAsset = ({
 const DeployAssetsApproval = () => {
   const basket = useAtomValue(basketAtom)
   const basketAmountMap = useAtomValue(basketRequiredAmountsAtom)
+  const tokensNeedingApproval = useAtomValue(tokensNeedingApprovalForDeployAtom)
 
   return (
     <div className="flex flex-col mt-2 gap-2">
-      <h4 className="font-bold my-2 ml-2">Required approvals</h4>
+      <div className="flex items-center justify-between my-2 ml-2">
+        <h4 className="font-bold">Required approvals</h4>
+      </div>
+
+      {tokensNeedingApproval.length > 1 && <ApproveAllDeployButton />}
 
       {basket.map((token) => (
         <div

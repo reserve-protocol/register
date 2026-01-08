@@ -3,9 +3,6 @@ import { getFolioRoute } from '@/utils'
 import { ChainId } from '@/utils/chains'
 import { ArrowRight, Sparkle } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import krakenLogoWhite from '../../../assets/kraken-white.png'
-import lcapBg from '../../../assets/lcap-bg.png'
-import lcapLogo from '../../../assets/lcap-logo.png'
 import TokenLogo from '@/components/token-logo'
 
 const cmcLogo =
@@ -15,7 +12,12 @@ const cmcBanner =
 
 export function IndexDTFFeatured() {
   return (
-    <>
+    <Link
+      to={getFolioRoute(
+        '0x2f8a339b5889ffac4c5a956787cda593b3c36867',
+        ChainId.BSC
+      )}
+    >
       <div className="w-full relative overflow-hidden">
         <div className="rounded-3xl bg-gradient-to-b from-[#2444D4] to-[#2444D4]/20 p-1 flex flex-row  gap-1">
           <img
@@ -44,24 +46,16 @@ export function IndexDTFFeatured() {
             </p>
             <div className="flex items-center flex-row flex-wrap-reverse  gap-2 ">
               <Button
-                asChild
                 size="lg"
                 className="w-full sm:w-auto rounded-lg bg-[#2444D4] px-4 text-white"
               >
-                <Link
-                  to={getFolioRoute(
-                    '0x2f8a339b5889ffac4c5a956787cda593b3c36867',
-                    ChainId.BSC
-                  )}
-                >
-                  Discover $CMC20 <ArrowRight className="ml-2" size={16} />
-                </Link>
+                Discover $CMC20 <ArrowRight className="ml-2" size={16} />
               </Button>
             </div>
           </div>
         </div>
       </div>
-    </>
+    </Link>
   )
 }
 

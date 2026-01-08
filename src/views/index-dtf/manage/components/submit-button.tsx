@@ -1,7 +1,7 @@
 import { TransactionButtonContainer } from '@/components/old/button/TransactionButton'
 import { Button } from '@/components/ui/button'
 import Spinner from '@/components/ui/spinner'
-import { uploadFileToIpfs } from '@/lib/ipfs-upload'
+import { uploadFile } from '@/lib/api-upload'
 import { chainIdAtom, walletAtom } from '@/state/atoms'
 import {
   indexDTFAtom,
@@ -17,12 +17,11 @@ import { FieldValues, SubmitHandler, useFormContext } from 'react-hook-form'
 import { toast } from 'sonner'
 import { createSiweMessage } from 'viem/siwe'
 import { useSignMessage } from 'wagmi'
-import { signatureAtom } from '../atoms'
 import {
   useTrackIndexDTF,
   useTrackIndexDTFClick,
 } from '../../hooks/useTrackIndexDTFPage'
-import { uploadFile } from '@/lib/api-upload'
+import { signatureAtom } from '../atoms'
 
 const NONCE_ENDPOINT = `${RESERVE_API}folio-manager/nonce`
 const SAVE_DTF_DATA = `${RESERVE_API}folio-manager/save`
@@ -47,6 +46,7 @@ const currentSignatureAtom = atom((get) => {
 const AuthenticateButton = () => {
   const signature = useAtomValue(currentSignatureAtom)
   const setSignature = useSetAtom(signatureAtom)
+  const dtf = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
   const wallet = useAtomValue(walletAtom)
   const { signMessage, data: signedMessage } = useSignMessage()
@@ -65,7 +65,7 @@ const AuthenticateButton = () => {
     const message = createSiweMessage({
       nonce: nonce.nonce,
       address: wallet,
-      chainId,
+      chainId: dtf?.chainId ?? chainId,
       domain: 'app.reserve.org',
       uri: 'https://app.reserve.org',
       version: '1',
@@ -169,6 +169,7 @@ const SubmitButton = () => {
               folio: dtf.id,
               message: signature.message,
               signature: signature.signature,
+              chainId,
             })
           )
         )

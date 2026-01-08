@@ -1,8 +1,38 @@
-import { accountHoldingsAtom, rsrPriceAtom } from '@/state/atoms'
+import { accountHoldingsAtom, accountTokensAtom, rsrPriceAtom } from '@/state/atoms'
 import { Token } from '@/types'
+import { RSR_ADDRESS } from '@/utils/addresses'
 import { atom } from 'jotai'
 import { Address, Chain, formatUnits } from 'viem'
 import { PortfolioTabs } from './sidebar'
+
+const getTokenValue = (
+  token: {
+    address: Address
+    decimals: number
+    underlying?: { address: Address }
+  },
+  amount: bigint | undefined,
+  prices: Record<string, number>
+) => {
+  const numAmount = Number(formatUnits(amount ?? 0n, token.decimals))
+  return (prices[token.underlying?.address ?? token.address] ?? 0) * numAmount
+}
+
+const sortByValueDesc = <
+  T extends {
+    address: Address
+    decimals: number
+    underlying?: { address: Address }
+    amount?: bigint
+  },
+>(
+  items: T[],
+  prices: Record<string, number>
+) =>
+  [...items].sort(
+    (a, b) =>
+      getTokenValue(b, b.amount, prices) - getTokenValue(a, a.amount, prices)
+  )
 
 export interface IndexToken extends Token {
   chainId: number
@@ -99,4 +129,72 @@ export const totalAccountHoldingsAtom = atom<number>((get) => {
   const rsrHoldings = get(rsrAccountHoldingsAtom)
 
   return yieldHoldings + indexHoldings + rsrHoldings
+})
+
+export const sortedStakingTokensAtom = atom((get) => {
+  const stTokens = get(accountStakingTokensAtom)
+  const prices = get(accountTokenPricesAtom)
+  return sortByValueDesc(stTokens, prices)
+})
+
+export const sortedLocksAtom = atom((get) => {
+  const locks = get(accountUnclaimedLocksAtom)
+  const prices = get(accountTokenPricesAtom)
+  return [...locks].sort(
+    (a, b) =>
+      getTokenValue({ ...b.token, underlying: b.underlying }, b.amount, prices) -
+      getTokenValue({ ...a.token, underlying: a.underlying }, a.amount, prices)
+  )
+})
+
+export const sortedIndexTokensAtom = atom((get) => {
+  const indexDTFs = get(accountIndexTokensAtom)
+  const prices = get(accountTokenPricesAtom)
+  return sortByValueDesc(indexDTFs, prices)
+})
+
+export const sortedYieldDTFsAtom = atom((get) => {
+  const yieldDTFs = get(accountTokensAtom)
+  return yieldDTFs
+    .filter(({ usdAmount }) => usdAmount > 0.01)
+    .sort((a, b) => b.usdAmount - a.usdAmount)
+})
+
+export const sortedStakedRSRAtom = atom((get) => {
+  const yieldDTFs = get(accountTokensAtom)
+  return yieldDTFs
+    .filter(({ stakedRSR }) => stakedRSR > 1)
+    .sort((a, b) => (b.stakedRSRUsd ?? 0) - (a.stakedRSRUsd ?? 0))
+})
+
+export const sortedRSRChainIdsAtom = atom((get) => {
+  const rsrBalances = get(rsrBalancesAtom)
+  if (!rsrBalances) return []
+  return Object.keys(RSR_ADDRESS)
+    .map(Number)
+    .sort((a, b) => {
+      const aBalance = rsrBalances[a] ?? 0n
+      const bBalance = rsrBalances[b] ?? 0n
+      return aBalance > bBalance ? -1 : aBalance < bBalance ? 1 : 0
+    })
+})
+
+export interface StTokenWithRewards extends StakingToken {
+  rewards: RewardToken[]
+}
+
+export const sortedStTokensWithRewardsAtom = atom((get) => {
+  const accountStTokens = get(accountStakingTokensAtom)
+  const accountRewards = get(accountRewardsAtom)
+  const prices = get(accountTokenPricesAtom)
+
+  const mapped = accountStTokens
+    .filter((stToken) => accountRewards[stToken.address]?.length > 0)
+    .map((stToken) => ({
+      ...stToken,
+      rewards: [...accountRewards[stToken.address]].sort(
+        (a, b) => (b.accruedUSD ?? 0) - (a.accruedUSD ?? 0)
+      ),
+    }))
+  return sortByValueDesc(mapped, prices)
 })

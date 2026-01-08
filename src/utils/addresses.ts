@@ -1,6 +1,7 @@
 import { AddressMap } from 'types'
 import { ChainId } from 'utils/chains'
 import { zeroAddress } from 'viem'
+import { ink } from 'wagmi/chains'
 
 export const FURNACE_ADDRESS = '0x0000000000000000000000000000000000000001'
 export const ST_RSR_ADDRESS = '0x0000000000000000000000000000000000000002'
@@ -76,6 +77,16 @@ export const ETHPLUS_ADDRESS: AddressMap = {
 export const USD3_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0x0d86883FAf4FfD7aEb116390af37746F45b6f378',
   [ChainId.Base]: '0xEFb97aaF77993922aC4be4Da8Fbc9A2425322677',
+}
+
+export const CMC20_ADDRESS: AddressMap = {
+  [ChainId.BSC]: '0x2f8A339B5889FfaC4c5A956787cdA593b3c36867',
+  [ChainId.Base]: '0xa0A8481fc246Cd12f75227aBB96220fF5360fad3',
+}
+
+export const LCAP_ADDRESS: AddressMap = {
+  [ChainId.Base]: '0x4dA9A0f397dB1397902070f93a4D6ddBC0E0E6e8',
+  [ink.id]: '0xe8245188Db1EfC91aef32e7aA4cf346b9A5830Cf',
 }
 
 /**
