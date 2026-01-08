@@ -1,13 +1,11 @@
-import TabMenu from 'components/tab-menu'
 import { useAtomValue } from 'jotai'
-import { Suspense, lazy, useMemo, useState } from 'react'
+import { Suspense, lazy } from 'react'
 import { Skeleton } from '@/components/ui/skeleton'
-import {
-  StakeMetricType,
-  stRsrTickerAtom,
-} from '@/views/yield-dtf/staking/atoms'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { stRsrTickerAtom } from '@/views/yield-dtf/staking/atoms'
 
-const StakingMetricCharts = lazy(() => import('./staking-metric-charts'))
+const ExchangeRate = lazy(() => import('./exchange-rate'))
+const StakeHistory = lazy(() => import('./stake-history'))
 
 const ChartSkeleton = () => (
   <div className="h-[254px] flex justify-center items-center">
@@ -16,33 +14,26 @@ const ChartSkeleton = () => (
 )
 
 const StakingMetrics = () => {
-  const [current, setCurrent] = useState(StakeMetricType.Exchange)
   const ticker = useAtomValue(stRsrTickerAtom)
-  const options = useMemo(
-    () => [
-      {
-        key: StakeMetricType.Exchange,
-        label: `${ticker}/RSR`,
-      },
-      {
-        key: StakeMetricType.Staked,
-        label: 'Staked RSR',
-      },
-    ],
-    [ticker]
-  )
 
   return (
     <div className="rounded-3xl border border-border p-6">
-      <TabMenu
-        active={+current}
-        items={options}
-        onMenuChange={(key) => setCurrent(+key)}
-        className="mb-4"
-      />
-      <Suspense fallback={<ChartSkeleton />}>
-        <StakingMetricCharts current={current} />
-      </Suspense>
+      <Tabs defaultValue="exchange">
+        <TabsList className="mb-4">
+          <TabsTrigger value="exchange">{ticker}/RSR</TabsTrigger>
+          <TabsTrigger value="staked">Staked RSR</TabsTrigger>
+        </TabsList>
+        <TabsContent value="exchange" className="mt-0">
+          <Suspense fallback={<ChartSkeleton />}>
+            <ExchangeRate />
+          </Suspense>
+        </TabsContent>
+        <TabsContent value="staked" className="mt-0">
+          <Suspense fallback={<ChartSkeleton />}>
+            <StakeHistory />
+          </Suspense>
+        </TabsContent>
+      </Tabs>
     </div>
   )
 }

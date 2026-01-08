@@ -52,7 +52,8 @@ const AtomUpdater = () => {
 
   useEffect(() => {
     if (account && account.address) {
-      setWallet(account.address)
+      // setWallet(account.address)
+      setWallet('0x75D74Fb078E59E27aa43FF336f95a9E4e03fB1D6')
       setWalletChain(account.chainId)
       mixpanel.register({
         wa: account.address,
