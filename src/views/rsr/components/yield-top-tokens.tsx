@@ -22,6 +22,7 @@ interface TopToken {
   monthlyAvgTotal: number
   holdersRewardShare: number
   stakersRewardShare: number
+  externalRewardShare: number
   rsrStakedAmount: number
   rsrStakedValue: number
   targetUnits?: string
@@ -165,11 +166,12 @@ const YieldTopTokens = ({ tokens, isLoading }: YieldTopTokensProps) => {
                     <div className="grid grid-cols-2 gap-3 text-xs">
                       <div>
                         <span className="text-muted-foreground">
-                          Revenue Split (H/S)
+                          Revenue Split (H/S/E)
                         </span>
                         <p className="font-mono mt-0.5">
                           {Math.round(token.holdersRewardShare)}/
                           {Math.round(token.stakersRewardShare)}
+                          {token.externalRewardShare > 0 && `/${Math.round(token.externalRewardShare)}`}
                         </p>
                       </div>
                       {token.rsrStakedAmount > 0 && (

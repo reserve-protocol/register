@@ -2,6 +2,7 @@ import { useMemo, useEffect } from 'react'
 import { useAtomValue } from 'jotai'
 import { rsrPriceAtom } from '@/state/atoms'
 import { PROTOCOL_SLUG } from '@/utils/constants'
+import { FURNACE_ADDRESS, ST_RSR_ADDRESS } from '@/utils/addresses'
 import { gql } from 'graphql-request'
 import { useMultichainQuery } from '@/hooks/useQuery'
 import { format, startOfMonth, subMonths } from 'date-fns'
@@ -11,6 +12,39 @@ import YieldRevenueMetrics from './yield-revenue-metrics'
 import YieldRevenueOverview from './yield-revenue-overview'
 import YieldTopTokens from './yield-top-tokens'
 import YieldChainDistribution from './yield-chain-distribution'
+
+// Helper to convert shares (out of 10000) to percentage
+const shareToPercent = (shares: number): number => (shares * 100) / 10000
+
+// Calculate revenue split percentages from distribution data
+const calculateRevenueSplit = (revenueDistribution: any[]) => {
+  let holdersShare = 0
+  let stakersShare = 0
+  let externalShare = 0
+
+  if (!revenueDistribution || !Array.isArray(revenueDistribution)) {
+    return { holdersShare: 0, stakersShare: 0, externalShare: 0 }
+  }
+
+  for (const dist of revenueDistribution) {
+    const rTokenDist = Number(dist.rTokenDist || 0)
+    const rsrDist = Number(dist.rsrDist || 0)
+    const totalDist = rTokenDist + rsrDist
+
+    if (dist.destination === FURNACE_ADDRESS) {
+      // Furnace = holders distribution
+      holdersShare += shareToPercent(rTokenDist)
+    } else if (dist.destination === ST_RSR_ADDRESS) {
+      // StRSR = stakers distribution
+      stakersShare += shareToPercent(rsrDist)
+    } else {
+      // External recipient
+      externalShare += shareToPercent(totalDist)
+    }
+  }
+
+  return { holdersShare, stakersShare, externalShare }
+}
 
 // Main protocol revenue query - using correct field names
 const protocolRevenueQuery = gql`
@@ -30,14 +64,21 @@ const protocolRevenueQuery = gql`
 `
 
 // Top yield DTFs query - get all rtokens with revenue
+// cumulativeRTokenRevenue is in RToken units (BigDecimal) -> multiply by lastPriceUSD
+// cumulativeStakerRevenue is in RSR units (BigDecimal) -> multiply by RSR price
+// Use OR to include tokens with 100% staker distribution (like eUSD) that have 0 holders revenue
+// Include revenueDistribution to calculate external recipients percentage
 const topRTokensQuery = gql`
   query GetTopRTokens {
     rtokens(
-      first: 20
+      first: 50
       where: {
-        cumulativeRTokenRevenue_gt: "0"
+        or: [
+          { cumulativeRTokenRevenue_gt: "0" }
+          { cumulativeStakerRevenue_gt: "0" }
+        ]
       }
-      orderBy: cumulativeRTokenRevenue
+      orderBy: cumulativeStakerRevenue
       orderDirection: desc
     ) {
       id
@@ -50,18 +91,13 @@ const topRTokensQuery = gql`
       }
       cumulativeRTokenRevenue
       cumulativeStakerRevenue
-      holdersRewardShare
-      stakersRewardShare
       rsrStaked
       rsrStakedUSD
       targetUnits
-      dailySnapshots(first: 30, orderBy: timestamp, orderDirection: desc) {
-        id
-        timestamp
-        dailyRTokenRevenueUSD
-        dailyRSRRevenueUSD
-        cumulativeRTokenRevenueUSD
-        cumulativeRSRRevenueUSD
+      revenueDistribution {
+        destination
+        rTokenDist
+        rsrDist
       }
     }
   }
@@ -206,8 +242,8 @@ const YieldRevenueDashboardV3 = () => {
 
   // Process top tokens with correct revenue calculations and monthly averages
   const topTokens = useMemo(() => {
-    console.log('🔍 YIELD DTF DEBUG - Processing top tokens data')
-    console.log('  - Raw data:', JSON.stringify(topTokensData, null, 2))
+    console.log('🔍 YIELD DTF DEBUG - Raw topTokensData:')
+    console.log(JSON.stringify(topTokensData, null, 2))
 
     if (!topTokensData) {
       console.log('❌ No topTokensData available')
@@ -224,56 +260,52 @@ const YieldRevenueDashboardV3 = () => {
         return
       }
 
-      console.log(`🔍 Chain ${chainId} data:`, chainData)
-
       // The field name in the subgraph is 'rtokens' (lowercase)
       const rTokensList = chainData?.rtokens || []
 
+      console.log(`🔍 Chain ${chainId}: Found ${rTokensList.length} rTokens`)
+
       if (Array.isArray(rTokensList) && rTokensList.length > 0) {
-        console.log(`✅ Found ${rTokensList.length} rTokens on chain ${chainId}`)
+        console.log(`✅ Processing ${rTokensList.length} rTokens on chain ${chainId}`)
 
         rTokensList.forEach((rToken: any) => {
           try {
-            // Revenue values are ALREADY in USD (not token units)
-            const holdersRevenue = parseFloat(rToken.cumulativeRTokenRevenue || '0')
-            const stakersRevenue = parseFloat(rToken.cumulativeStakerRevenue || '0')
+            // Get token price (RToken price in USD)
+            const tokenPrice = parseFloat(rToken.token?.lastPriceUSD || '1')
+
+            // cumulativeRTokenRevenue is in RToken units (BigDecimal, not wei)
+            // cumulativeStakerRevenue is in RSR units (BigDecimal, not wei)
+            const holdersRevenueTokens = parseFloat(rToken.cumulativeRTokenRevenue || '0')
+            const stakersRevenueRSR = parseFloat(rToken.cumulativeStakerRevenue || '0')
+
+            // Convert to USD
+            // Holders revenue: RToken units * RToken price
+            const holdersRevenue = holdersRevenueTokens * tokenPrice
+            // Stakers revenue: RSR units * RSR price
+            const stakersRevenue = stakersRevenueRSR * rsrPrice
             const totalRevenue = holdersRevenue + stakersRevenue
 
+            console.log(`  📊 ${rToken.token?.symbol}: tokenPrice=$${tokenPrice.toFixed(4)}, holdersTokens=${holdersRevenueTokens.toFixed(4)}, stakersRSR=${stakersRevenueRSR.toFixed(4)}, holdersUSD=$${holdersRevenue.toFixed(2)}, stakersUSD=$${stakersRevenue.toFixed(2)}, totalUSD=$${totalRevenue.toFixed(2)}`)
+
             if (totalRevenue > 0) {
-              // Get token price for TVL calculation
-              const tokenPrice = parseFloat(rToken.token?.lastPriceUSD || '1')
+              // TVL calculation
               const totalSupply = parseFloat(rToken.token?.totalSupply || '0') / 1e18 // Convert from wei
               const tvl = totalSupply * tokenPrice
 
-              // Calculate monthly averages from daily snapshots
-              let monthlyAvgHolders = 0
-              let monthlyAvgStakers = 0
-
-              if (rToken.dailySnapshots && rToken.dailySnapshots.length > 0) {
-                // Get last 30 days of daily revenue (already in USD)
-                const dailyRevenues = rToken.dailySnapshots.map((snapshot: any) => ({
-                  holders: parseFloat(snapshot.dailyRTokenRevenueUSD || '0'),
-                  stakers: parseFloat(snapshot.dailyRSRRevenueUSD || '0')
-                }))
-
-                const totalDailyHolders = dailyRevenues.reduce((sum: number, d: any) => sum + d.holders, 0)
-                const totalDailyStakers = dailyRevenues.reduce((sum: number, d: any) => sum + d.stakers, 0)
-
-                // Monthly total (sum of last 30 days)
-                monthlyAvgHolders = totalDailyHolders
-                monthlyAvgStakers = totalDailyStakers
-              }
+              // Calculate revenue split from distribution data (includes external)
+              const { holdersShare, stakersShare, externalShare } = calculateRevenueSplit(rToken.revenueDistribution)
 
               allTokens.push({
                 ...rToken,
                 chainId: Number(chainId),
                 totalRevenue,
+                holdersRevenueUSD: holdersRevenue,
+                stakersRevenueUSD: stakersRevenue,
                 tvl,
-                monthlyAvgHolders,
-                monthlyAvgStakers,
-                monthlyAvgTotal: monthlyAvgHolders + monthlyAvgStakers,
-                holdersRewardShare: parseFloat(rToken.holdersRewardShare || '0'),
-                stakersRewardShare: parseFloat(rToken.stakersRewardShare || '0'),
+                tokenPrice,
+                holdersRewardShare: holdersShare,
+                stakersRewardShare: stakersShare,
+                externalRewardShare: externalShare,
                 rsrStakedAmount: parseFloat(rToken.rsrStaked || '0') / 1e18, // Convert from wei
                 rsrStakedValue: parseFloat(rToken.rsrStakedUSD || '0')
               })
@@ -298,7 +330,7 @@ const YieldRevenueDashboardV3 = () => {
     })
 
     return sortedTokens
-  }, [topTokensData])
+  }, [topTokensData, rsrPrice])
 
   // Generate monthly cumulative data from snapshots (last 12 months only)
   const monthlyData = useMemo(() => {
