@@ -9,6 +9,7 @@ import { rsrPriceAtom } from '@/state/atoms'
 import { PROTOCOL_SLUG } from '@/utils/constants'
 import { useMemo, useEffect, useState } from 'react'
 import { ChainId } from '@/utils/chains'
+import { INDEX_DTF_SUBGRAPH_URL } from '@/state/chain/atoms/chainAtoms'
 import useIndexDTFList from '@/hooks/use-index-dtf-list'
 import {
   DollarSign,
@@ -27,12 +28,6 @@ import {
   Activity
 } from 'lucide-react'
 import RevenueMetricsCard from './revenue-metrics-card'
-
-const INDEX_DTF_SUBGRAPH_URL = {
-  [ChainId.Mainnet]: 'https://subgraph.satsuma-prod.com/327d6f1d3de6/reserve/dtf-index-mainnet/api',
-  [ChainId.Base]: 'https://subgraph.satsuma-prod.com/327d6f1d3de6/reserve/dtf-index-base/api',
-  [ChainId.BSC]: 'https://subgraph.satsuma-prod.com/327d6f1d3de6/reserve/dtf-index-bsc/api',
-}
 
 const yieldRevenueQuery = gql`
   query GetProtocolRevenue($id: String!) {

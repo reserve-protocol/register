@@ -1,17 +1,12 @@
 import { useQuery } from '@tanstack/react-query'
 import { gql, GraphQLClient } from 'graphql-request'
 import { ChainId } from '@/utils/chains'
+import { INDEX_DTF_SUBGRAPH_URL } from '@/state/chain/atoms/chainAtoms'
 import useIndexDTFList from '@/hooks/use-index-dtf-list'
 import { useMemo } from 'react'
 import { useAtomValue } from 'jotai'
 import { rsrPriceAtom } from '@/state/atoms'
 import { formatUnits } from 'viem'
-
-const INDEX_DTF_SUBGRAPH_URL = {
-  [ChainId.Mainnet]: 'https://subgraph.satsuma-prod.com/327d6f1d3de6/reserve/dtf-index-mainnet/api',
-  [ChainId.Base]: 'https://subgraph.satsuma-prod.com/327d6f1d3de6/reserve/dtf-index-base/api',
-  [ChainId.BSC]: 'https://subgraph.satsuma-prod.com/327d6f1d3de6/reserve/dtf-index-bsc/api',
-}
 
 // Enhanced query to fetch DTF revenue with fees and stToken data
 const indexDTFRevenueQuery = gql`
@@ -586,8 +581,9 @@ export const useIndexRevenueEnhanced = () => {
     revenueData.forEach(({ dtfs, chainId }) => {
       if (dtfs) {
         dtfs.forEach((dtf) => {
-          const price = priceMap[dtf.id.toLowerCase()] || 0
-          const tvl = tvlMap[dtf.id.toLowerCase()] || 0
+          const dtfIdLower = dtf.id.toLowerCase()
+          const price = priceMap[dtfIdLower] || 0
+          const tvl = tvlMap[dtfIdLower] || 0
           const decimals = dtf.token?.decimals || 18
           const divisor = Math.pow(10, decimals)
 

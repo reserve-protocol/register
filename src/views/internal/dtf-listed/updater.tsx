@@ -1,6 +1,6 @@
 import { useSetAtom } from 'jotai'
 import { useEffect } from 'react'
-import useIndexDTFList from '@/hooks/useIndexDTFList'
+import useIndexDTFList from '@/hooks/use-index-dtf-list'
 import useListedDTFGovernance from './hooks/use-listed-dtf-governance'
 import { isLoadingAtom, listedDTFsAtom } from './atoms'
 

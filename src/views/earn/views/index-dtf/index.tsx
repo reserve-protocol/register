@@ -1,4 +1,4 @@
-import useIndexDTFList from '@/hooks/useIndexDTFList'
+import useIndexDTFList from '@/hooks/use-index-dtf-list'
 import { useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { indexDTFListAtom, voteLockPositionsAtom } from './atoms'

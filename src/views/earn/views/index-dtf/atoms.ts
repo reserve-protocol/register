@@ -1,7 +1,7 @@
 import { ChainId } from '@/utils/chains'
 import { atom } from 'jotai'
 import { VoteLockPosition } from './hooks/use-vote-lock-positions'
-import { IndexDTFItem } from '@/hooks/useIndexDTFList'
+import { IndexDTFItem } from '@/hooks/use-index-dtf-list'
 
 export const voteLockPositionsAtom = atom<VoteLockPosition[] | undefined>(
   undefined

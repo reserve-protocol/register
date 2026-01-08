@@ -1,23 +1,10 @@
-import { gql, GraphQLClient } from 'graphql-request'
+import { gql } from 'graphql-request'
 import { atomWithLoadable } from '@/utils/atoms/utils'
 import { PROTOCOL_SLUG, supportedChainList } from '@/utils/constants'
 import { ChainId } from '@/utils/chains'
+import { INDEX_GRAPH_CLIENTS } from '@/state/chain/atoms/chainAtoms'
 import { rsrPriceAtom } from '@/state/atoms'
 import { atom } from 'jotai'
-
-// Subgraph URLs for Index DTF
-const INDEX_DTF_SUBGRAPH_URL = {
-  [ChainId.Mainnet]: 'https://subgraph.satsuma-prod.com/327d6f1d3de6/reserve/dtf-index-mainnet/api',
-  [ChainId.Base]: 'https://subgraph.satsuma-prod.com/327d6f1d3de6/reserve/dtf-index-base/api',
-  [ChainId.BSC]: 'https://subgraph.satsuma-prod.com/327d6f1d3de6/reserve/dtf-index-bsc/api',
-}
-
-// GraphQL clients for Index DTF
-const INDEX_GRAPH_CLIENTS = {
-  [ChainId.Mainnet]: new GraphQLClient(INDEX_DTF_SUBGRAPH_URL[ChainId.Mainnet]),
-  [ChainId.Base]: new GraphQLClient(INDEX_DTF_SUBGRAPH_URL[ChainId.Base]),
-  [ChainId.BSC]: new GraphQLClient(INDEX_DTF_SUBGRAPH_URL[ChainId.BSC]),
-}
 
 // Query for Yield DTF revenue
 export const yieldDTFRevenueQuery = gql`

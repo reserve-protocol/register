@@ -1,13 +1,8 @@
 import { useQuery } from '@tanstack/react-query'
 import { gql, GraphQLClient } from 'graphql-request'
 import { ChainId } from '@/utils/chains'
+import { INDEX_DTF_SUBGRAPH_URL } from '@/state/chain/atoms/chainAtoms'
 import useIndexDTFList from '@/hooks/use-index-dtf-list'
-
-const INDEX_DTF_SUBGRAPH_URL = {
-  [ChainId.Mainnet]: 'https://subgraph.satsuma-prod.com/327d6f1d3de6/reserve/dtf-index-mainnet/api',
-  [ChainId.Base]: 'https://subgraph.satsuma-prod.com/327d6f1d3de6/reserve/dtf-index-base/api',
-  [ChainId.BSC]: 'https://subgraph.satsuma-prod.com/327d6f1d3de6/reserve/dtf-index-bsc/api',
-}
 
 // Optimized query - only fetch what we need
 const indexDTFRevenueQuery = gql`

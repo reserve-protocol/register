@@ -3,7 +3,7 @@ import { ChainId } from '@/utils/chains'
 import { useQuery } from '@tanstack/react-query'
 import { gql } from 'graphql-request'
 import { Address } from 'viem'
-import { IndexDTFItem } from '@/hooks/useIndexDTFList'
+import { IndexDTFItem } from '@/hooks/use-index-dtf-list'
 import { ListedDTFGovernance } from '../atoms'
 
 type DTFGovernanceResponse = {

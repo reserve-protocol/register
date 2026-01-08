@@ -2,7 +2,7 @@ import { Trans } from '@lingui/macro'
 import { Box, BoxProps, Text } from 'theme-ui'
 import AvailableUnstake from './AvailableUnstake'
 import CooldownUnstake from './CooldownUnstake'
-import Updater from './Updater'
+import Updater from './updater'
 
 const Withdraw = (props: BoxProps) => {
   return (
