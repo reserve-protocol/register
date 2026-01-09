@@ -1,3 +1,4 @@
+import ExportAnalyticsButton from './components/export-analytics-button'
 import ListedDTFTable from './components/listed-dtf-table'
 import Updater from './updater'
 
@@ -7,11 +8,16 @@ const InternalDTFListed = () => {
       <Updater />
 
       <div className="mb-8 px-2">
-        <h1 className="text-3xl font-bold mb-2">Listed DTFs</h1>
-        <p className="text-muted-foreground">
-          Whitelisted Index DTFs displayed on the discover page with their
-          governance addresses
-        </p>
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <h1 className="text-3xl font-bold mb-2">Listed DTFs</h1>
+            <p className="text-muted-foreground">
+              Whitelisted Index DTFs displayed on the discover page with their
+              governance addresses
+            </p>
+          </div>
+          <ExportAnalyticsButton />
+        </div>
       </div>
 
       <div className="space-y-4 px-2">
