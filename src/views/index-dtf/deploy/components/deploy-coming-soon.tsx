@@ -79,109 +79,116 @@ const DeployComingSoon = () => {
   }
 
   return (
-    <div className="container flex gap-1 p-1 mt-1 lg:mt-6 bg-secondary rounded-4xl">
-      <div className="flex flex-col flex-grow relative min-w-full lg:min-w-[420px] bg-card rounded-3xl p-3 lg:p-6 sm:max-h-[calc(100vh-132px)] overflow-y-auto">
-        <div className="flex items-center gap-4 mb-6">
-          <div className="border rounded-full border-foreground p-2 mr-auto">
+    <div className="container flex flex-col items-center justify-center min-h-[calc(100vh-132px)] lg:mt-6">
+      <div className="flex gap-1 p-1 w-full bg-secondary lg:rounded-4xl lg:h-[calc(100vh-132px)] lg:max-h-[900px] overflow-visible lg:overflow-hidden">
+        <div className="flex flex-col flex-grow relative min-w-full lg:min-w-[420px] bg-card lg:rounded-3xl p-3 lg:p-6 lg:pb-4 lg:h-full overflow-y-visible lg:overflow-y-auto">
+          <div className="border rounded-full border-primary p-2 w-fit text-primary">
             <Globe size={14} />
           </div>
+          <div className="flex-grow min-h-3 lg:min-h-6" />
+          <h2 className="text-3xl text-primary font-semibold mb-0.5">
+            Want to create an Index DTF?
+          </h2>
+          <p className="max-w-[520px] text-legend">
+            Fill out the information below and ABC Labs will reach out!
+          </p>
+          <div className="-mx-3 lg:-mx-6 w-[calc(100%+1.5rem)] lg:w-[calc(100%+3rem)] border-t border-secondary my-4" />
+          {submitted ? (
+            <div className="p-4 bg-primary/10 rounded-xl text-center">
+              <p className="text-primary font-medium">
+                Thank you! We'll be in touch soon.
+              </p>
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  How can we reach you? *
+                </label>
+                <div className="lg:-mx-3">
+                  <SocialMediaInput
+                    value={contactValue}
+                    onChange={(val) => setValue('contactValue', val)}
+                    selected={selectedContact}
+                    onSelectChange={setSelectedContact}
+                    disabled={submitting}
+                    error={!!errors.contactValue}
+                  />
+                </div>
+                {errors.contactValue && (
+                  <p className="text-destructive text-sm mt-1">
+                    {errors.contactValue.message}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  Can you describe the DTF you want to create? *
+                </label>
+                <Textarea
+                  {...register('dtfDescription')}
+                  placeholder="e.g. tokens to be included, strategy, methodology"
+                  className={`w-full lg:-mx-3 lg:w-[calc(100%+1.5rem)] rounded-xl ${errors.dtfDescription ? 'border-destructive' : ''}`}
+                  disabled={submitting}
+                  rows={3}
+                />
+                {errors.dtfDescription && (
+                  <p className="text-destructive text-sm mt-1">
+                    {errors.dtfDescription.message}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  How do you plan to get people to invest in your DTF?
+                </label>
+                <Textarea
+                  {...register('investmentPlan')}
+                  className="w-full lg:-mx-3 lg:w-[calc(100%+1.5rem)] rounded-xl"
+                  disabled={submitting}
+                  rows={2}
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  Why do you think people want this DTF?
+                </label>
+                <Textarea
+                  {...register('whyPeopleWant')}
+                  className="w-full lg:-mx-3 lg:w-[calc(100%+1.5rem)] rounded-xl"
+                  disabled={submitting}
+                  rows={2}
+                />
+              </div>
+
+              <Button
+                type="submit"
+                disabled={submitting}
+                className="w-full lg:-mx-3  lg:w-[calc(100%+1.5rem)] rounded-xl h-12"
+              >
+                {submitting ? 'Submitting...' : 'Contact me'}
+              </Button>
+            </form>
+          )}
         </div>
-        <h2 className="text-3xl text-primary font-semibold mb-0.5">
-          Want to create an Index DTF?
-        </h2>
-        <p className="mb-4 max-w-[520px] text-legend">
-          Fill out the information below and ABC Labs will reach out!
-        </p>
-
-        {submitted ? (
-          <div className="p-4 bg-primary/10 rounded-xl text-center">
-            <p className="text-primary font-medium">
-              Thank you! We'll be in touch soon.
-            </p>
-          </div>
-        ) : (
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium mb-1.5">
-                How can we reach you? *
-              </label>
-              <SocialMediaInput
-                value={contactValue}
-                onChange={(val) => setValue('contactValue', val)}
-                selected={selectedContact}
-                onSelectChange={setSelectedContact}
-                disabled={submitting}
-                error={!!errors.contactValue}
-              />
-              {errors.contactValue && (
-                <p className="text-destructive text-sm mt-1">
-                  {errors.contactValue.message}
-                </p>
-              )}
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium mb-1.5">
-                Can you describe the DTF you want to create? *
-              </label>
-              <Textarea
-                {...register('dtfDescription')}
-                placeholder="e.g. tokens to be included, strategy, methodology"
-                className={errors.dtfDescription ? 'border-destructive' : ''}
-                disabled={submitting}
-                rows={3}
-              />
-              {errors.dtfDescription && (
-                <p className="text-destructive text-sm mt-1">
-                  {errors.dtfDescription.message}
-                </p>
-              )}
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium mb-1.5">
-                How do you plan to get people to invest in your DTF?
-              </label>
-              <Textarea
-                {...register('investmentPlan')}
-                disabled={submitting}
-                rows={2}
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium mb-1.5">
-                Why do you think people want this DTF?
-              </label>
-              <Textarea
-                {...register('whyPeopleWant')}
-                disabled={submitting}
-                rows={2}
-              />
-            </div>
-
-            <Button type="submit" disabled={submitting} className="w-full">
-              {submitting ? 'Submitting...' : 'Contact me'}
-            </Button>
-          </form>
-        )}
-        <div className="mx-auto mt-2">
-          <a
-            href={ROUTES.DEPLOY_YIELD}
-            target="_blank"
-            className="text-legend underline"
-          >
-            Looking to create a Yield DTF?
-          </a>
+        <div className="rounded-3xl flex-grow h-full hidden max-w-[50%] lg:block overflow-hidden">
+          <img
+            src={isDarkMode ? '/imgs/GM-dark.svg' : '/imgs/GM-light.svg'}
+            className="w-full h-full object-cover object-center rounded-3xl"
+            alt="reserve splash"
+          />
         </div>
       </div>
-      <div className="rounded-3xl flex-grow max-h-[calc(100vh-132px)] h-[710px] hidden max-w-[50%] lg:block">
-        <img
-          src={isDarkMode ? '/imgs/GM-dark.svg' : '/imgs/GM-light.svg'}
-          className="w-full h-full object-cover object-center rounded-3xl"
-          alt="reserve splash"
-        />
-      </div>
+      <a
+        href={ROUTES.DEPLOY_YIELD}
+        target="_blank"
+        className="text-legend underline my-9 text-center"
+      >
+        Looking to create a Yield DTF?
+      </a>
     </div>
   )
 }
