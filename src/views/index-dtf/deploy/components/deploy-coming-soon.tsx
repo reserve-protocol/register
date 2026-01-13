@@ -121,7 +121,9 @@ const DeployComingSoon = () => {
           </li>
         </ul>
         <Separator className="my-6" />
-        <h2 className="font-semibold mb-0.5">Want to create an Index DTF?</h2>
+        <h2 className="text-xl text-primary font-semibold mb-0.5">
+          Want to create an Index DTF?
+        </h2>
         <p className="mb-4 max-w-[520px] text-legend">
           Fill out the information below and ABC Labs will reach out!
         </p>
