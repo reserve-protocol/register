@@ -46,6 +46,7 @@ const RebalanceMetricsUpdater = () => {
           prices,
           isTrackingDTF,
           tokenPriceVolatility,
+          folioVersion,
         } = params
 
         // Use saved weights for hybrid DTFs on first auction if available
@@ -59,6 +60,7 @@ const RebalanceMetricsUpdater = () => {
 
         // First, calculate metrics with the current percent to get auctionSize
         const [, initialMetrics] = getRebalanceOpenAuction(
+          folioVersion,
           currentRebalance.rebalance.tokens,
           rebalance,
           supply,
@@ -92,6 +94,7 @@ const RebalanceMetricsUpdater = () => {
         const [, rebalanceMetrics] =
           effectivePercent !== rebalancePercent
             ? getRebalanceOpenAuction(
+                folioVersion,
                 currentRebalance.rebalance.tokens,
                 rebalance,
                 supply,

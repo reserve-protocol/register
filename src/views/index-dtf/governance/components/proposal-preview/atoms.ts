@@ -15,6 +15,10 @@ import {
   spellAbi as v4SpellAbi,
   spellAddress as v4SpellAddress,
 } from '../../views/propose/upgrade-banners/propose-v4-upgrade'
+import {
+  spellAbi as v5SpellAbi,
+  spellAddress as v5SpellAddress,
+} from '../../views/propose/upgrade-banners/propose-v5-upgrade'
 
 export const dtfAbiMapppingAtom = atom((get) => {
   const dtf = get(indexDTFAtom)
@@ -54,6 +58,10 @@ export const dtfAbiMapppingAtom = atom((get) => {
 
   if (v4SpellAddress[dtf.chainId]) {
     abiMapping[v4SpellAddress[dtf.chainId].toLowerCase()] = v4SpellAbi
+  }
+
+  if (v5SpellAddress[dtf.chainId]) {
+    abiMapping[v5SpellAddress[dtf.chainId].toLowerCase()] = v5SpellAbi
   }
 
   return abiMapping
@@ -101,6 +109,10 @@ export const dtfContractAliasAtom = atom((get) => {
 
   if (v4SpellAddress[dtf.chainId]) {
     aliasMapping[v4SpellAddress[dtf.chainId].toLowerCase()] = 'V4 Upgrade Spell'
+  }
+
+  if (v5SpellAddress[dtf.chainId]) {
+    aliasMapping[v5SpellAddress[dtf.chainId].toLowerCase()] = 'V5 Upgrade Spell'
   }
 
   return aliasMapping

@@ -1,4 +1,4 @@
-import dtfIndexAbi from '@/abis/dtf-index-abi'
+import dtfIndexAbi from '@/abis/dtf-index-abi-v1'
 import dtfIndexAbiV2 from '@/abis/dtf-index-abi-v2'
 import { TransactionButtonContainer } from '@/components/old/button/TransactionButton'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
