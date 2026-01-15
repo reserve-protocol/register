@@ -1,7 +1,7 @@
+import { useQuery } from '@tanstack/react-query'
 import { useAtom } from 'jotai'
 import { useEffect } from 'react'
 import { CollateralYieldByChain, collateralYieldAtom } from 'state/atoms'
-import useSWRImmutable from 'swr/immutable'
 import { ChainId } from 'utils/chains'
 import { supportedChainList } from 'utils/constants'
 
@@ -111,9 +111,11 @@ export const symbolMap: Record<string, Record<number, string>> = Object.entries(
 
 const CollateralYieldUpdater = () => {
   const [collateralYield, setCollateralYield] = useAtom(collateralYieldAtom)
-  const { data } = useSWRImmutable('https://yields.llama.fi/pools', (...args) =>
-    fetch(...args).then((res) => res.json())
-  )
+  const { data } = useQuery({
+    queryKey: ['collateral-yields'],
+    queryFn: () => fetch('https://yields.llama.fi/pools').then((res) => res.json()),
+    staleTime: 1000 * 60 * 60, // 1 hour - mimics useSWRImmutable behavior
+  })
   useEffect(() => {
     if (data?.data) {
       const yields: CollateralYieldByChain = {

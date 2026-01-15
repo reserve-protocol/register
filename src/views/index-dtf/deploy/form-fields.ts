@@ -103,14 +103,14 @@ export const DeployFormSchema = z
           message: 'Chain must be either Mainnet, Base or Binance Smart Chain',
         }
       ),
-    initialValue: z.coerce.number().positive('Initial value must be positive'),
+    initialValue: z.coerce.number<number>().positive('Initial value must be positive'),
     tokensDistribution: z.array(
       z.object({
         address: z
           .string()
           .refine(isAddressNotStrict, { message: 'Invalid Address' }),
         percentage: z.coerce
-          .number()
+          .number<number>()
           // .multipleOf(0.01, 'Max precision is 0.01%')
           .positive('Token distribution must be positive'),
       })
@@ -128,25 +128,25 @@ export const DeployFormSchema = z
       .refine(isAddressNotStrict, { message: 'Invalid Address' })
       .optional(),
     folioFee: z.coerce
-      .number()
+      .number<number>()
       .min(0.15, 'Annualized TVL Fee must be 0.15% or greater')
       .max(10, 'Annualized TVL Fee must be 10% or less'),
     mintFee: z.coerce
-      .number()
+      .number<number>()
       .min(0.15, 'Mint Fee must be 0.15% or greater')
       .max(5, 'Mint Fee must be 5% or less'),
     governanceShare: z.coerce
-      .number()
+      .number<number>()
       .multipleOf(0.01, 'Max precision is 0.01%')
       .min(0)
       .max(100),
     deployerShare: z.coerce
-      .number()
+      .number<number>()
       .multipleOf(0.01, 'Max precision is 0.01%')
       .min(0)
       .max(100),
     fixedPlatformFee: z.coerce
-      .number()
+      .number<number>()
       .multipleOf(0.01, 'Max precision is 0.01%')
       .min(0)
       .max(100),
@@ -157,7 +157,7 @@ export const DeployFormSchema = z
             .string()
             .refine(isAddressNotStrict, { message: 'Invalid Address' }),
           share: z.coerce
-            .number()
+            .number<number>()
             .multipleOf(0.01, 'Max precision is 0.01%')
             .min(0)
             .max(100),
@@ -165,7 +165,7 @@ export const DeployFormSchema = z
       )
       .optional(),
     auctionLength: z.coerce
-      .number()
+      .number<number>()
       .min(0)
       .max(45, 'Auction length must not exceed 45 minutes'),
     weightControl: z.boolean(),
@@ -193,16 +193,16 @@ export const DeployFormSchema = z
         })
         .optional()
     ),
-    basketVotingDelay: z.coerce.number().min(0),
-    basketVotingPeriod: z.coerce.number().min(0),
-    basketVotingQuorum: z.coerce.number().min(0).max(100),
-    basketVotingThreshold: z.coerce.number().min(0).max(100),
-    basketExecutionDelay: z.coerce.number().min(0),
-    governanceVotingDelay: z.coerce.number().min(0),
-    governanceVotingPeriod: z.coerce.number().min(0),
-    governanceVotingQuorum: z.coerce.number().min(0).max(100),
-    governanceVotingThreshold: z.coerce.number().min(0).max(100),
-    governanceExecutionDelay: z.coerce.number().min(0),
+    basketVotingDelay: z.coerce.number<number>().min(0),
+    basketVotingPeriod: z.coerce.number<number>().min(0),
+    basketVotingQuorum: z.coerce.number<number>().min(0).max(100),
+    basketVotingThreshold: z.coerce.number<number>().min(0).max(100),
+    basketExecutionDelay: z.coerce.number<number>().min(0),
+    governanceVotingDelay: z.coerce.number<number>().min(0),
+    governanceVotingPeriod: z.coerce.number<number>().min(0),
+    governanceVotingQuorum: z.coerce.number<number>().min(0).max(100),
+    governanceVotingThreshold: z.coerce.number<number>().min(0).max(100),
+    governanceExecutionDelay: z.coerce.number<number>().min(0),
   })
   .refine(
     (data) =>
@@ -240,78 +240,58 @@ export const DeployFormSchema = z
       path: ['governanceVoteLock'],
     }
   )
-  .refine(
-    (data) => {
-      if (data.inputType === 'unit') {
-        return data.tokensDistribution.every(
-          (token) =>
-            !isNaN(Number(token.percentage)) && Number(token.percentage) > 0
-        )
+  .superRefine((data, ctx) => {
+    if (data.inputType === 'unit') {
+      const allValid = data.tokensDistribution.every(
+        (token) =>
+          !isNaN(Number(token.percentage)) && Number(token.percentage) > 0
+      )
+      if (!allValid) {
+        ctx.addIssue({
+          code: 'custom',
+          message: 'All token units must be valid positive numbers',
+          path: ['basket'],
+        })
       }
+      return
+    }
 
-      const total = data.tokensDistribution?.reduce(
+    const total =
+      data.tokensDistribution?.reduce(
         (sum, { percentage }) => sum.plus(new Decimal(percentage)),
         new Decimal(0)
-      )
-      return total.eq(new Decimal(100))
-    },
-    (data) => {
-      if (data.inputType === 'unit') {
-        return {
-          message: `All token units must be valid positive numbers`,
-          path: ['basket'],
-        }
-      }
+      ) || new Decimal(0)
 
-      const total =
-        data.tokensDistribution?.reduce(
-          (sum, { percentage }) => sum.plus(new Decimal(percentage)),
-          new Decimal(0)
-        ) || new Decimal(0)
+    if (!total.eq(new Decimal(100))) {
       const difference = new Decimal(100).minus(total)
-
       const absDifference = difference.abs()
       const displayDifference = absDifference.toDisplayString()
 
-      return {
+      ctx.addIssue({
+        code: 'custom',
         message: `The sum of the tokens distribution must be 100% (${
           difference.isPositive()
             ? `${displayDifference}% missing`
             : `${displayDifference}% excess`
         }).`,
         path: ['basket'],
-      }
+      })
     }
-  )
-  .refine(
-    (data) => {
-      const totalShares = [
-        data.governanceShare,
-        data.deployerShare,
-        ...(data.additionalRevenueRecipients?.map((r) => r.share) || []),
-      ]
+  })
+  .superRefine((data, ctx) => {
+    const totalShares = [
+      data.governanceShare,
+      data.deployerShare,
+      ...(data.additionalRevenueRecipients?.map((r) => r.share) || []),
+    ]
 
-      const total = totalShares.reduce(
-        (sum, share) => sum.plus(new Decimal(share || 0)),
-        new Decimal(0)
-      )
+    const total = totalShares.reduce(
+      (sum, share) => sum.plus(new Decimal(share || 0)),
+      new Decimal(0)
+    )
 
-      const platformFee = getPlatformFee(data.chain)
-      return total.plus(new Decimal(platformFee)).eq(new Decimal(100))
-    },
-    (data) => {
-      const totalShares = [
-        data.governanceShare,
-        data.deployerShare,
-        ...(data.additionalRevenueRecipients?.map((r) => r.share) || []),
-      ]
-
-      const total = totalShares.reduce(
-        (sum, share) => sum.plus(new Decimal(share || 0)),
-        new Decimal(0)
-      )
-
-      const platformFee = getPlatformFee(data.chain)
+    const platformFee = getPlatformFee(data.chain)
+    if (!total.plus(new Decimal(platformFee)).eq(new Decimal(100))) {
       const difference = new Decimal(100).minus(
         total.plus(new Decimal(platformFee))
       )
@@ -319,16 +299,17 @@ export const DeployFormSchema = z
       const absDifference = difference.abs()
       const displayDifference = absDifference.toDisplayString()
 
-      return {
+      ctx.addIssue({
+        code: 'custom',
         message: `The sum of governance share, creator share, additional recipients shares and platform share must be 100% (${
           difference.isPositive()
             ? `${displayDifference}% missing`
             : `${displayDifference}% excess`
         })`,
         path: ['revenue-distribution'],
-      }
+      })
     }
-  )
+  })
   .refine(
     (data) => {
       // Check if the governance settings are valid
@@ -407,11 +388,13 @@ export const DeployFormSchema = z
     }
   )
 
-export const dtfDeployDefaultValues = {
+export type DeployInputs = z.output<typeof DeployFormSchema>
+
+export const dtfDeployDefaultValues: DeployInputs = {
   tokenName: '',
   symbol: '',
   mandate: '',
-  chain: undefined,
+  chain: 1,
   initialValue: 1,
   inputType: 'unit',
   tokensDistribution: [],
@@ -442,5 +425,3 @@ export const dtfDeployDefaultValues = {
   governanceVotingQuorum: 10,
   governanceExecutionDelay: 2,
 }
-
-export type DeployInputs = z.infer<typeof DeployFormSchema>

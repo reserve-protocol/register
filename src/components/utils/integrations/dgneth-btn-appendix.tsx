@@ -1,6 +1,6 @@
-import { FC, PropsWithChildren, memo, useMemo } from 'react'
+import { useQuery } from '@tanstack/react-query'
 import { Plus } from 'lucide-react'
-import useSWR from 'swr'
+import { FC, PropsWithChildren, memo, useMemo } from 'react'
 import { Box, ButtonProps, Text } from 'theme-ui'
 import { ChainId } from 'utils/chains'
 import { erc20Abi, formatUnits } from 'viem'
@@ -15,8 +15,6 @@ type Props = {
 
 const TOKEN_ADDRESS = '0x005F893EcD7bF9667195642f7649DA8163e23658'
 const STAKE_TOKEN_ADDRESS = '0x5BDd1fA233843Bfc034891BE8a6769e58F1e1346'
-
-const fetcher = (url: string) => fetch(url).then((res) => res.json())
 
 const DgnETHButtonAppendix: FC<Props> = ({
   rTokenSymbol,
@@ -43,10 +41,10 @@ const DgnETHButtonAppendix: FC<Props> = ({
     allowFailure: false,
   })
 
-  const { data: yieldsAPIData } = useSWR(
-    'https://yields.reserve.org/pools',
-    fetcher
-  )
+  const { data: yieldsAPIData } = useQuery({
+    queryKey: ['yields-pools'],
+    queryFn: () => fetch('https://yields.reserve.org/pools').then((res) => res.json()),
+  })
 
   const _basketAPY = useMemo(() => {
     const apiBasketAPY =
