@@ -1,7 +1,7 @@
 import dayjs from 'dayjs'
 import { gql } from 'graphql-request'
 import useDebounce from 'hooks/useDebounce'
-import useQuery from 'hooks/useQuery'
+import useQuery from 'hooks/use-query'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'

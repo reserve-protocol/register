@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 import { gql } from 'graphql-request'
-import { useMultichainQuery } from 'hooks/useQuery'
+import { useMultichainQuery } from 'hooks/use-query'
 import { useMemo } from 'react'
 import { getUTCStartOfDay } from 'utils'
 import { CHAIN_TO_NETWORK, NETWORKS, supportedChainList } from 'utils/constants'

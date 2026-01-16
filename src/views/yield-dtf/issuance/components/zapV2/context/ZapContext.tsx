@@ -1,3 +1,4 @@
+import { useQuery } from '@tanstack/react-query'
 import { useChainlinkPrice } from 'hooks/useChainlinkPrice'
 import useDebounce from 'hooks/useDebounce'
 import { useAtomValue } from 'jotai'
@@ -10,6 +11,7 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from 'react'
 import {
@@ -23,7 +25,6 @@ import {
   walletAtom,
 } from 'state/atoms'
 import { isRTokenMintEnabled } from 'state/geolocation/atoms'
-import useSWR from 'swr'
 import { Link, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { ChainId } from 'utils/chains'
@@ -153,8 +154,6 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
   const [amountIn, _setAmountIn] = useState<string>('')
   const [selectedToken, setSelectedToken] = useState<ZapToken>()
   const [error, setError] = useState<ZapErrorType>()
-  const [retries, setRetries] = useState(0)
-  const [isRetrying, setIsRetrying] = useState(false)
 
   const chainId = useAtomValue(chainIdAtom)
   const account = useAtomValue(walletAtom) || undefined
@@ -346,36 +345,40 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     500
   )
 
+  const retriesRef = useRef(0)
+  const isRetryingRef = useRef(false)
+
   const {
     data,
     isLoading,
-    isValidating,
+    isFetching,
     error: apiError,
-    mutate: refetch,
-  } = useSWR<ZapResponse>(endpoint, fetcher, {
-    onSuccess(data, _, __) {
-      // if data.error exists, it means the zap failed.
-      if (data.error && retries < 10 && !isRetrying) {
-        setIsRetrying(true)
-        setTimeout(() => {
-          setRetries((r) => r + 1)
-          refetch()
-          setIsRetrying(false)
-        }, 500)
-      } else {
-        setRetries(0)
-        setIsRetrying(false)
-      }
-    },
-    onErrorRetry: (_, __, ___, revalidate, { retryCount }) => {
-      // Only retry up to 10 times.
-      if (retryCount >= 10) return
-
-      // Retry after 5 seconds.
-      setTimeout(() => revalidate({ retryCount }), 500)
-    },
-    refreshInterval: openSubmitModal ? 0 : REFRESH_INTERVAL,
+    refetch,
+  } = useQuery<ZapResponse>({
+    queryKey: ['zap-quote', endpoint],
+    queryFn: () => fetcher(endpoint!),
+    enabled: !!endpoint,
+    retry: 10,
+    retryDelay: 500,
+    refetchInterval: openSubmitModal ? false : REFRESH_INTERVAL,
   })
+
+  // Handle retry on data.error (API returned error in response body)
+  useEffect(() => {
+    if (data?.error && retriesRef.current < 10 && !isRetryingRef.current) {
+      isRetryingRef.current = true
+      setTimeout(() => {
+        retriesRef.current += 1
+        refetch()
+        isRetryingRef.current = false
+      }, 500)
+    } else if (!data?.error) {
+      retriesRef.current = 0
+      isRetryingRef.current = false
+    }
+  }, [data, refetch])
+
+  const isValidating = isFetching && !isLoading
 
   const [amountOut, minAmountOut, priceImpact, zapDustUSD, gasCost, spender] =
     useMemo(() => {
@@ -530,12 +533,7 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     setError,
     priceImpact,
     endpoint,
-    refetch,
-    retries,
-    setRetries,
     setOpenSubmitModal,
-    isRetrying,
-    setIsRetrying,
     rToken,
     chainId,
     account,

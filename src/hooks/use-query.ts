@@ -1,10 +1,17 @@
-import { useQuery as useReactQuery } from '@tanstack/react-query'
+import { keepPreviousData, useQuery as useReactQuery } from '@tanstack/react-query'
 import { RequestDocument } from 'graphql-request'
 import { useAtomValue } from 'jotai'
 import { GRAPH_CLIENTS, gqlClientAtom } from 'state/atoms'
 import { supportedChainList } from 'utils/constants'
 
-type FetcherArgs = [RequestDocument, Record<string, any>]
+// SWR-compatible config options
+interface QueryConfig {
+  staleTime?: number
+  refetchInterval?: number | false
+  enabled?: boolean
+  refetchOnWindowFocus?: boolean
+  keepPreviousData?: boolean // Maps to React Query's placeholderData
+}
 
 /**
  * SWR-compatible return interface for easy migration.
@@ -28,20 +35,17 @@ interface UseQueryReturn<T> {
 const useQuery = <T = any>(
   query: RequestDocument | null = null,
   variables: Record<string, any> = {},
-  config: {
-    staleTime?: number
-    refetchInterval?: number | false
-    enabled?: boolean
-    refetchOnWindowFocus?: boolean
-  } = {}
+  config: QueryConfig = {}
 ): UseQueryReturn<T> => {
   const client = useAtomValue(gqlClientAtom)
+  const { keepPreviousData: shouldKeepPrevious, ...restConfig } = config
 
   const result = useReactQuery({
     queryKey: query ? ['graphql', query, variables] : ['graphql-disabled'],
     queryFn: () => client.request<T>(query as RequestDocument, variables),
     enabled: !!query && (config.enabled !== false),
-    ...config,
+    placeholderData: shouldKeepPrevious ? keepPreviousData : undefined,
+    ...restConfig,
   })
 
   return {
@@ -59,12 +63,10 @@ const useQuery = <T = any>(
 export const useMultichainQuery = <T = any>(
   query: RequestDocument | null = null,
   variables: Record<string, any> = {},
-  config: {
-    staleTime?: number
-    refetchInterval?: number | false
-    enabled?: boolean
-  } = {}
+  config: QueryConfig = {}
 ): UseQueryReturn<{ [chainId: number]: T }> => {
+  const { keepPreviousData: shouldKeepPrevious, ...restConfig } = config
+
   const result = useReactQuery({
     queryKey: query ? ['graphql-multichain', query, variables] : ['graphql-multichain-disabled'],
     queryFn: async () => {
@@ -89,7 +91,8 @@ export const useMultichainQuery = <T = any>(
       )
     },
     enabled: !!query && (config.enabled !== false),
-    ...config,
+    placeholderData: shouldKeepPrevious ? keepPreviousData : undefined,
+    ...restConfig,
   })
 
   return {

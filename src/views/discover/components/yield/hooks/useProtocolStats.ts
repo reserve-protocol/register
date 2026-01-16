@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 import { gql } from 'graphql-request'
-import { useMultichainQuery } from 'hooks/useQuery'
+import { useMultichainQuery } from 'hooks/use-query'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { rsrPriceAtom } from 'state/atoms'

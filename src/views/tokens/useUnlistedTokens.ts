@@ -1,7 +1,7 @@
 import { gql } from 'graphql-request'
 import { useAtomValue } from 'jotai'
 import { tokenFilterAtom } from './atoms'
-import { useMultichainQuery } from 'hooks/useQuery'
+import { useMultichainQuery } from 'hooks/use-query'
 import { useEffect, useState } from 'react'
 import { supportedChainList } from 'utils/constants'
 import { Address, formatEther, getAddress } from 'viem'
