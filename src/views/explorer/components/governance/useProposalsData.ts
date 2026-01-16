@@ -1,5 +1,5 @@
 import { gql } from 'graphql-request'
-import { useMultichainQuery } from 'hooks/useQuery'
+import { useMultichainQuery } from 'hooks/use-query'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { ChainId } from 'utils/chains'

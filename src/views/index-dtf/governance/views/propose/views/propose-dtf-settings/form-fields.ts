@@ -123,33 +123,19 @@ export const createProposeSettingsSchema = (quorumDenominator?: number) => z
       path: ['roles'],
     }
   )
-  .refine(
-    (data) => {
-      const totalShares = [
-        data.governanceShare,
-        data.deployerShare,
-        ...(data.additionalRevenueRecipients?.map((r) => r.share) || []),
-      ]
+  .superRefine((data, ctx) => {
+    const totalShares = [
+      data.governanceShare,
+      data.deployerShare,
+      ...(data.additionalRevenueRecipients?.map((r) => r.share) || []),
+    ]
 
-      const total = totalShares.reduce(
-        (sum, share) => sum.plus(new Decimal(share || 0)),
-        new Decimal(0)
-      )
+    const total = totalShares.reduce(
+      (sum, share) => sum.plus(new Decimal(share || 0)),
+      new Decimal(0)
+    )
 
-      return total.plus(new Decimal(data.fixedPlatformFee)).eq(new Decimal(100))
-    },
-    (data) => {
-      const totalShares = [
-        data.governanceShare,
-        data.deployerShare,
-        ...(data.additionalRevenueRecipients?.map((r) => r.share) || []),
-      ]
-
-      const total = totalShares.reduce(
-        (sum, share) => sum.plus(new Decimal(share || 0)),
-        new Decimal(0)
-      )
-
+    if (!total.plus(new Decimal(data.fixedPlatformFee)).eq(new Decimal(100))) {
       const difference = new Decimal(100).minus(
         total.plus(new Decimal(data.fixedPlatformFee))
       )
@@ -157,16 +143,17 @@ export const createProposeSettingsSchema = (quorumDenominator?: number) => z
       const absDifference = difference.abs()
       const displayDifference = absDifference.toDisplayString()
 
-      return {
+      ctx.addIssue({
+        code: 'custom',
         message: `The sum of governance share, creator share, additional recipients shares and platform share must be 100% (${
           difference.isPositive()
             ? `${displayDifference}% missing`
             : `${displayDifference}% excess`
         })`,
         path: ['revenue-distribution'],
-      }
+      })
     }
-  )
+  })
   .refine(
     (data) => {
       const governanceAddresses = [

@@ -3,7 +3,7 @@ import Governance from 'abis/Governance'
 import { SmallButton } from '@/components/old/button'
 import IconInfo from '@/components/old/info-icon'
 import { gql } from 'graphql-request'
-import useQuery from 'hooks/useQuery'
+import useQuery from 'hooks/use-query'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
@@ -16,8 +16,8 @@ import {
 import { Box, Grid, Image, Text } from 'theme-ui'
 import { formatCurrency, getCurrentTime } from 'utils'
 import { Address, formatEther, formatEther as formatEtherViem } from 'viem'
-import RolesView from '@/views/yield-dtf/settings/components/RolesView'
-import SettingItem from '@/views/yield-dtf/settings/components/SettingItem'
+import RolesView from '@/views/yield-dtf/settings/components/roles-view'
+import SettingItem from '@/views/yield-dtf/settings/components/setting-item'
 import { isTimeunitGovernance } from '../utils'
 import AccountVotes from './AccountVotes'
 import { useReadContract } from 'wagmi'
@@ -161,13 +161,13 @@ const GovernanceFormat = () => {
       {governance && governance.governor && (
         <>
           <SettingItem
-            my={3}
+            className="my-3"
             title={t`Owner`}
             subtitle={t`Role held by:`}
             value={<RolesView roles={[governance.governor]} />}
           />
           <SettingItem
-            my={3}
+            className="my-3"
             title={t`Guardian`}
             subtitle={t`Role held by:`}
             value={<RolesView roles={governance?.guardians ?? []} />}

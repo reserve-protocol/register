@@ -1,4 +1,4 @@
-import SectionWrapper from 'components/section-navigation/SectionWrapper'
+import SectionWrapper from '@/components/section-navigation/section-wrapper'
 import { useAtomValue } from 'jotai'
 import { Box, BoxProps, Card, Spinner, Text } from 'theme-ui'
 import { Hex, decodeFunctionData, getAbiItem, getAddress } from 'viem'

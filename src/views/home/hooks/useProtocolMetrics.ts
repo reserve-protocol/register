@@ -1,5 +1,5 @@
 import { gql } from 'graphql-request'
-import { useMultichainQuery } from 'hooks/useQuery'
+import { useMultichainQuery } from 'hooks/use-query'
 import useTokenList from 'hooks/useTokenList'
 import { useMemo } from 'react'
 import { PROTOCOL_SLUG } from 'utils/constants'

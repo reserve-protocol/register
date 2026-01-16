@@ -1,6 +1,6 @@
 import DgnETHButtonAppendix from '@/components/utils/integrations/dgneth-btn-appendix'
-import CollateralPieChartWrapper from '@/views/yield-dtf/overview/components/CollateralPieChartWrapper'
-import RTokenAddresses from '@/views/yield-dtf/overview/components/RTokenAddresses'
+import CollateralPieChartWrapper from '@/views/yield-dtf/overview/components/collateral-pie-chart-wrapper'
+import RTokenAddresses from '@/views/yield-dtf/overview/components/rtoken-addresses'
 import { t, Trans } from '@lingui/macro'
 import { Button } from 'components'
 import ChainLogo from 'components/icons/ChainLogo'

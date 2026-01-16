@@ -1,6 +1,6 @@
 import GovernanceAnastasius from 'abis/GovernanceAnastasius'
 import { gql } from 'graphql-request'
-import useQuery from 'hooks/useQuery'
+import useQuery from 'hooks/use-query'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useMemo } from 'react'

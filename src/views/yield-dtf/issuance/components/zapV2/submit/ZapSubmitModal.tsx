@@ -12,7 +12,6 @@ import ZapConfirm from './ZapConfirm'
 import { ZapTxProvider } from '../context/ZapTxContext'
 import Skeleton from 'react-loading-skeleton'
 import MintersModal from '../minters-modal'
-import { keyframes } from '@emotion/react'
 
 const ZapOverview = () => {
   const [collapsed, setCollapsed] = useState(true)
@@ -103,15 +102,6 @@ const ZapOverview = () => {
   )
 }
 
-const slide = keyframes`
-  from {
-    left: 50%;
-  }
-  to {
-    left: calc(50% - 150px);
-  }
-`
-
 const ZapSubmitModal = () => {
   const { setOpenSubmitModal, operation, refreshQuote, showEliteProgramModal } =
     useZap()
@@ -125,11 +115,8 @@ const ZapSubmitModal = () => {
         borderColor: 'borderFocused',
         minWidth: 440,
         overflow: 'visible',
-        animation: [
-          'none',
-          showEliteProgramModal ? `${slide} 0.5s forwards` : 'none',
-        ],
       }}
+      className={showEliteProgramModal ? 'sm:animate-slide-left' : ''}
     >
       <Box
         sx={{

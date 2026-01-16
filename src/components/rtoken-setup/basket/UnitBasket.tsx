@@ -89,9 +89,8 @@ const UnitBasket = ({ data, readOnly, unit, ...props }: UnitBasketProps) => {
             <Flex sx={{ alignItems: 'center' }}>
               <Box sx={{ width: 64 }} mr={3}>
                 <NumericalInput
-                  variant={+data.scale > 0 ? 'smallInput' : 'inputError'}
                   value={data.scale}
-                  sx={{ textAlign: 'center' }}
+                  className={`text-center text-sm p-1 border rounded ${+data.scale > 0 ? 'border-border' : 'border-destructive'}`}
                   onChange={handleScale}
                 />
               </Box>
@@ -145,13 +144,11 @@ const UnitBasket = ({ data, readOnly, unit, ...props }: UnitBasketProps) => {
           {!readOnly ? (
             <Box ml="auto" sx={{ width: 80 }} mr={2}>
               <NumericalInput
-                sx={{ textAlign: 'center', padding: '6px', paddingLeft: '6px' }}
-                variant={
-                  +data.distribution[index] > 0 &&
-                  +data.distribution[index] <= 100
-                    ? 'smallInput'
-                    : 'inputError'
-                }
+                className={`text-center text-sm p-1.5 border rounded ${
+                  +data.distribution[index] > 0 && +data.distribution[index] <= 100
+                    ? 'border-border'
+                    : 'border-destructive'
+                }`}
                 value={data.distribution[index]}
                 disabled={data.collaterals.length > 1 ? false : true}
                 onChange={(value) => handleDistribution(index, value)}

@@ -1,4 +1,3 @@
-import { keyframes, useTheme } from '@emotion/react'
 import { Button } from 'components'
 import BankIcon from 'components/icons/BankIcon'
 import { ChevronLeft } from 'lucide-react'
@@ -6,23 +5,14 @@ import { Box, Text } from 'theme-ui'
 import { useZap } from '../context/ZapContext'
 import SocialMediaInput from './SocialMediaInput'
 
-const slideOut = keyframes`
-  from {
-    right: 0;
-  }
-  to {
-    right: -395px;
-  }
-`
-
 const MintersModal = () => {
   const { showEliteProgramModal, setShowEliteProgramModal } = useZap()
-  const theme = useTheme()
 
   if (!showEliteProgramModal) return null
 
   return (
     <Box
+      className="animate-slide-out-right"
       sx={{
         position: 'absolute',
         display: ['none', 'flex'],
@@ -33,16 +23,14 @@ const MintersModal = () => {
         width: 400,
         height: '100%',
         bg: 'borderFocused',
-        boxShadow: `0 0 0 3px ${
-          (theme as any)?.colors?.borderFocused
-        }, 0px 10px 38px 6px rgba(0, 0, 0, 0.05)`,
+        boxShadow:
+          '0 0 0 3px hsl(var(--border)), 0px 10px 38px 6px rgba(0, 0, 0, 0.05)',
         pl: 5,
         pr: 4,
         py: 4,
         borderTopRightRadius: '8px',
         borderBottomRightRadius: '8px',
         zIndex: -1,
-        animation: `${slideOut} 0.5s forwards`,
       }}
     >
       <Box

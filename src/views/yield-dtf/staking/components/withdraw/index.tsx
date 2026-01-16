@@ -1,19 +1,23 @@
 import { Trans } from '@lingui/macro'
-import { Box, BoxProps, Text } from 'theme-ui'
-import AvailableUnstake from './AvailableUnstake'
-import CooldownUnstake from './CooldownUnstake'
-import Updater from './Updater'
+import { cn } from '@/lib/utils'
+import AvailableUnstake from './available-unstake'
+import CooldownUnstake from './cooldown-unstake'
+import Updater from './updater'
 
-const Withdraw = (props: BoxProps) => {
+interface WithdrawProps {
+  className?: string
+}
+
+const Withdraw = ({ className }: WithdrawProps) => {
   return (
     <>
-      <Box {...props}>
-        <Text ml="4" variant="bold" sx={{ fontSize: 4 }}>
+      <div className={cn(className)}>
+        <h3 className="ml-4 text-xl font-semibold">
           <Trans>In Withdraw Process</Trans>
-        </Text>
-        <AvailableUnstake mt={3} />
-        <CooldownUnstake mt={3} />
-      </Box>
+        </h3>
+        <AvailableUnstake className="mt-3" />
+        <CooldownUnstake className="mt-3" />
+      </div>
       <Updater />
     </>
   )

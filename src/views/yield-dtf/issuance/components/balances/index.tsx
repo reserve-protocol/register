@@ -1,22 +1,22 @@
 import { Trans } from '@lingui/macro'
-import { Card } from 'components'
 import TokenBalance from 'components/token-balance'
 import TrackAsset from 'components/track-asset'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
 import { rTokenBalanceAtom } from 'state/atoms'
-import { Box, Flex, Grid, Spinner, Text } from 'theme-ui'
+import { Card } from '@/components/ui/card'
+import Spinner from '@/components/ui/spinner'
 import CollateralBalance from './CollateralBalance'
 
 const CollateralBalances = () => {
   const rToken = useRToken()
 
   return (
-    <Box>
-      <Text variant="subtitle" mb={3} p={4} pb={0}>
+    <div>
+      <h3 className="font-semibold mb-3 p-4 pb-0">
         <Trans>Available collateral</Trans>
-      </Text>
-      <Box sx={{ overflow: 'auto', maxHeight: 360 }} p={4} pt={0}>
+      </h3>
+      <div className="overflow-auto max-h-[360px] p-4 pt-0">
         {!rToken?.collaterals && <Spinner size={18} />}
         {rToken?.collaterals.map((collateral) => (
           <CollateralBalance
@@ -25,8 +25,8 @@ const CollateralBalances = () => {
             key={collateral.address}
           />
         ))}
-      </Box>
-    </Box>
+      </div>
+    </div>
   )
 }
 
@@ -35,19 +35,19 @@ const RTokenBalance = () => {
   const balance = useAtomValue(rTokenBalanceAtom)
 
   return (
-    <Box p={4}>
-      <Text variant="subtitle" mb={3}>
+    <div className="p-4">
+      <h3 className="font-semibold mb-3">
         <Trans>RToken in Wallet</Trans>
-      </Text>
-      <Flex>
+      </h3>
+      <div className="flex">
         <TokenBalance
           symbol={rToken?.symbol}
           balance={+balance.balance}
           mr={2}
         />
         {!!rToken && <TrackAsset token={rToken} />}
-      </Flex>
-    </Box>
+      </div>
+    </div>
   )
 }
 
@@ -56,18 +56,13 @@ const RTokenBalance = () => {
  */
 const Balances = () => {
   return (
-    <Card p={0}>
-      <Grid columns={[1, 2]} gap={0}>
+    <Card className="p-0 border-2 border-secondary">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-0">
         <CollateralBalances />
-        <Box
-          sx={(theme: any) => ({
-            borderLeft: ['none', `1px solid ${theme.colors.darkBorder}`],
-            borderTop: [`1px solid ${theme.colors.darkBorder}`, 'none'],
-          })}
-        >
+        <div className="border-t sm:border-t-0 sm:border-l border-border">
           <RTokenBalance />
-        </Box>
-      </Grid>
+        </div>
+      </div>
     </Card>
   )
 }
