@@ -764,25 +764,46 @@ VITE_INFURA_KEY=your_key
 
 ```bash
 npm install          # Install dependencies
-npm run dev         # Start dev server
-npm run build       # Build for production
-npm run lint        # Run linter
-npm run format      # Format code
+npm run start        # Start dev server (port 3000)
+npm run build        # Build for production
+npm run typecheck    # TypeScript validation
+npm run test         # Run tests (watch mode)
+npm run test:run     # Run tests (single run)
 ```
 
 ### Testing
 
-- **Current**: Manual testing on Base network
-- **Planned**: Jest for unit tests, E2E with wallet integration
-- **Note**: No current test coverage requirements
+- **Framework**: Vitest with jsdom environment
+- **Location**: `src/**/tests/**/*.test.{ts,tsx}`
+- **Run**: `npm run test` (watch) or `npm run test:run` (single)
+- **Current coverage**: Critical hooks (useQuery, useDebounce, useTimeRemaining)
+
+## Active Migration: theme-ui → Tailwind
+
+**IMPORTANT**: We are actively migrating from theme-ui to Tailwind/shadcn. See `docs/migration-plan.md` for full details.
+
+### Migration Rules
+
+1. **Update the migration doc** (`docs/migration-plan.md`) after any migration work
+2. **Record learnings** - decisions, gotchas, patterns that worked
+3. **Don't mix patterns** - new components use Tailwind only, no theme-ui
+4. **Test before/after** - run `npm run typecheck && npm run test:run` after changes
+5. **Bottom-up approach** - start with `components/old/*`, then shared, then views
+
+### Current Status
+
+- 284 files still import theme-ui
+- `@emotion/react` removed (animations now in Tailwind)
+- `swr` removed (replaced with React Query wrapper)
+- Tailwind v3.4 (v4 upgrade planned before full migration)
 
 ## Known Issues & Tech Debt
 
 ### High Priority
 
-1. **Testing Infrastructure**: No automated tests
-2. **Bundle Size**: Large SPA bundle
-3. **Legacy UI**: Yield DTFs use old theme-ui components
+1. **theme-ui Migration**: 284 files need conversion to Tailwind
+2. **Bundle Size**: Large SPA bundle (theme-ui removal will help)
+3. **Tailwind v4**: Upgrade needed before migration completes
 
 ### Complex Areas Needing Attention
 
