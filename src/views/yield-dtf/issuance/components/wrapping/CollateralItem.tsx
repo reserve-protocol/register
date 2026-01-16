@@ -327,20 +327,16 @@ const CollateralItem = ({ collateral, wrapping, ...props }: Props) => {
               {data ? formatCurrency(Number(data.formatted), 5) : 'Fetching...'}
             </Text>
           </Box>
-          <NumericalInput
-            ml="auto"
-            mr={3}
-            sx={{
-              padding: '6px',
-              paddingLeft: '6px',
-              width: [160, 160],
-              fontSize: 1,
-            }}
-            placeholder={t`${fromToken} amount`}
-            value={amount}
-            onChange={setAmount}
-            variant={debouncedAmount && !isValid ? 'inputError' : 'input'}
-          />
+          <Box ml="auto" mr={3} sx={{ width: [160, 160] }}>
+            <NumericalInput
+              className={`p-1.5 text-sm w-full border rounded ${
+                debouncedAmount && !isValid ? 'border-destructive' : 'border-border'
+              }`}
+              placeholder={t`${fromToken} amount`}
+              value={amount}
+              onChange={setAmount}
+            />
+          </Box>
           {!hasAllowance && (
             <ExecuteButton
               sx={{ flexShrink: 0 }}
