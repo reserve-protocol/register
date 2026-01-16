@@ -34,7 +34,7 @@ const DiscoverTabs = ({ className }: { className: string }) => {
   return (
     <>
       <div className={cn('container pb-6 px-0 md:px-4', className)}>
-        <IndexDTFFeatured />
+        {/* <IndexDTFFeatured /> */}
         <TitleContainer title="Select a DTF Category" className="mt-10" />
 
         <Tabs
