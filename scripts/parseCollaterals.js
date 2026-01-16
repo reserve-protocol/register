@@ -94,6 +94,11 @@ const protocols = {
     key: 'ORIGIN',
     underlying: 'asset',
   },
+  ETHERFI: {
+    key: 'ETHERFI',
+    underlying: 'eETH',
+    rewardTokens: ['KING'],
+  },
 }
 
 const wrappedTokenMap = {
@@ -149,6 +154,7 @@ const wrappedTokenMap = {
   saEthUSDT: protocols.AAVEv3,
   saEthRLUSD: protocols.AAVEv3,
   wsuperOETHb: protocols.ORIGIN,
+  weETH: protocols.ETHERFI,
 }
 
 // Default: run all collateral chains - you can comment which chain you want to run

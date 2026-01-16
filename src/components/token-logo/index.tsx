@@ -267,6 +267,8 @@ export const SVGS = new Set([
   'hype',
   'sui',
   'fxs',
+  'weeth',
+  'king',
 ])
 
 export const PNGS = new Set([
