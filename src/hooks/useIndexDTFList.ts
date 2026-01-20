@@ -55,13 +55,7 @@ const useIndexDTFList = () => {
         return data.map((item: any) => ({
           ...item,
           performancePercent: calculatePercentageChange(item.performance),
-          performance: [
-            ...item.performance,
-            {
-              timestamp: Date.now(),
-              value: item.price,
-            },
-          ],
+          performance: item.performance,
         })) as IndexDTFItem[]
       }
 
