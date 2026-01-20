@@ -17,9 +17,8 @@ const WalletFilter = () => {
         <Trans>Wallet</Trans>
       </Text>
       <Input
-        variant="smallInput"
-        mt={1}
-        onChange={setValue}
+        className="mt-1 h-8 text-sm"
+        onChange={(e) => setValue(e.target.value)}
         value={value}
         placeholder={t`Input wallet`}
       />

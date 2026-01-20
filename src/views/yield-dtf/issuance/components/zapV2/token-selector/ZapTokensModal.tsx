@@ -1,6 +1,6 @@
 import { Modal } from 'components'
 import TokenLogo from 'components/icons/TokenLogo'
-import { SearchInput } from '@/components/old/input'
+import { SearchInput } from '@/components/ui/input'
 import { useMemo, useState } from 'react'
 import { ArrowUpRight, X } from 'lucide-react'
 import { colors } from 'theme'
@@ -148,16 +148,8 @@ const ZapTokensModal = () => {
             placeholder="Search by token name or address"
             autoFocus
             value={search}
-            onChange={setSearch}
-            backgroundColor="focusedBackground"
-            sx={{
-              '&:focus': {
-                backgroundColor: 'focusedBackground',
-              },
-              '&:hover': {
-                backgroundColor: 'focusedBackground',
-              },
-            }}
+            onChange={(e) => setSearch(e.target.value)}
+            inputClassName="bg-muted"
           />
           <Divider sx={{ mx: '-12px', my: 0 }} />
           <ZapTokenList entries={entries} />

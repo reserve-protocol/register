@@ -1,6 +1,5 @@
 import { t, Trans } from '@lingui/macro'
 import Help from 'components/help'
-import IconInfo from '@/components/old/info-icon'
 import useRToken from 'hooks/useRToken'
 import useTokenStats from 'hooks/useTokenStats'
 import { useAtomValue } from 'jotai'
@@ -11,6 +10,24 @@ import {
 } from 'state/atoms'
 import { formatCurrency, formatPercentage, parseDuration } from 'utils'
 import { cn } from '@/lib/utils'
+
+const IconInfo = ({
+  icon,
+  title,
+  text,
+}: {
+  icon: React.ReactNode
+  title: string
+  text: string
+}) => (
+  <div className="flex items-center">
+    {icon}
+    <div className="ml-2">
+      <span className="text-sm text-legend">{title}</span>
+      <span className="block">{text}</span>
+    </div>
+  </div>
+)
 
 interface StakingStatsProps {
   className?: string

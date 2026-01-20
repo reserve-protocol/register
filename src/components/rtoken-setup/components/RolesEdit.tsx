@@ -24,11 +24,11 @@ const NewRoleAddress = ({
   return (
     <Box>
       <Input
-        my={3}
+        className="my-3"
         autoFocus
         value={address}
         placeholder="Input address"
-        onChange={setAddress}
+        onChange={(e) => setAddress(e.target.value)}
       />
       {((address && !isValid) || isExisting) && (
         <Text

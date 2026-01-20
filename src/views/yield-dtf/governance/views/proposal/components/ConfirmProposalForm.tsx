@@ -57,7 +57,7 @@ const ConfirmProposalForm = ({
         <Field label={t`Proposal Title`} mb={3} strong required>
           <Input
             value={title}
-            onChange={setTitle}
+            onChange={(e) => setTitle(e.target.value)}
             autoFocus
             placeholder={t`Input proposal title`}
           />
@@ -66,7 +66,7 @@ const ConfirmProposalForm = ({
           <Field label={t`RFC`} mb={3} strong required>
             <Input
               value={rfc}
-              onChange={setRFC}
+              onChange={(e) => setRFC(e.target.value)}
               placeholder={t`Input RFC link`}
             />
           </Field>

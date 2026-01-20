@@ -16,7 +16,7 @@ import CustomCollateral from './CustomCollateral'
 import PluginItem from './PluginItem'
 import collateralPlugins from 'utils/plugins'
 import { chainIdAtom } from 'state/atoms'
-import { SearchInput } from '@/components/old/input'
+import { SearchInput } from '@/components/ui/input'
 
 interface Props extends Omit<ModalProps, 'children'> {
   targetUnit?: string // filter by target unit
@@ -122,16 +122,8 @@ const CollateralModal = ({
         placeholder="Search by collateral symbol or target name"
         autoFocus
         value={search}
-        onChange={setSearch}
-        backgroundColor="focusedBackground"
-        sx={{
-          '&:focus': {
-            backgroundColor: 'focusedBackground',
-          },
-          '&:hover': {
-            backgroundColor: 'focusedBackground',
-          },
-        }}
+        onChange={(e) => setSearch(e.target.value)}
+        inputClassName="bg-muted"
       />
       <Divider mx={-4} mt={4} sx={{ borderColor: 'border' }} />
       <Box

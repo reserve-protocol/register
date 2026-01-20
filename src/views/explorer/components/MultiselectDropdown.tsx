@@ -1,5 +1,9 @@
 import { Button } from 'components'
-import Popup from '@/components/old/popup'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover'
 import { useCallback, useState } from 'react'
 import { ChevronDown, ChevronUp } from 'lucide-react'
 import { Box, BoxProps, Divider, Flex, Switch, Text } from 'theme-ui'
@@ -143,48 +147,41 @@ const MultiselectDropdrown = ({
   )
 
   return (
-    <Popup
-      show={isVisible}
-      onDismiss={() => setVisible(false)}
-      placement="bottom"
-      content={
-        isVisible ? (
-          <OptionSelection
-            options={options}
-            selected={selected}
-            onChange={handleChange}
-            allOption={allOption}
-            minLimit={minLimit}
-          />
-        ) : (
-          <Box />
-        )
-      }
-      containerProps={{
-        sx: { border: '2px solid', borderColor: 'darkBorder' },
-      }}
-    >
-      <Flex
-        sx={{
-          ...sx,
-          alignItems: 'center',
-          cursor: 'pointer',
-          justifyContent: 'space-between',
-          gap: 2,
-        }}
-        {...props}
-        onClick={() => setVisible(!isVisible)}
+    <Popover open={isVisible} onOpenChange={setVisible}>
+      <PopoverTrigger asChild>
+        <Flex
+          sx={{
+            ...sx,
+            alignItems: 'center',
+            cursor: 'pointer',
+            justifyContent: 'space-between',
+            gap: 2,
+          }}
+          {...props}
+        >
+          <Box variant="layout.verticalAlign">{children}</Box>
+          <Box variant="layout.verticalAlign">
+            {isVisible ? (
+              <ChevronUp size={18} color="#808080" />
+            ) : (
+              <ChevronDown size={18} color="#808080" />
+            )}
+          </Box>
+        </Flex>
+      </PopoverTrigger>
+      <PopoverContent
+        className="w-auto p-0 rounded-xl border-2 border-border shadow-lg"
+        align="start"
       >
-        <Box variant="layout.verticalAlign">{children}</Box>
-        <Box variant="layout.verticalAlign">
-          {isVisible ? (
-            <ChevronUp size={18} color="#808080" />
-          ) : (
-            <ChevronDown size={18} color="#808080" />
-          )}
-        </Box>
-      </Flex>
-    </Popup>
+        <OptionSelection
+          options={options}
+          selected={selected}
+          onChange={handleChange}
+          allOption={allOption}
+          minLimit={minLimit}
+        />
+      </PopoverContent>
+    </Popover>
   )
 }
 

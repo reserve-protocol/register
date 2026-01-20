@@ -101,8 +101,8 @@ const CustomCollateral = ({
             Plugin address
           </Text>
           <Input
-            mt={2}
-            onChange={handleChange}
+            className="mt-2"
+            onChange={(e) => handleChange(e.target.value)}
             value={address}
             placeholder={t`Input plugin address (not ERC-20 address)`}
           />

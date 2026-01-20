@@ -33,7 +33,7 @@ const EditContract = ({
       <Input
         placeholder="Upgrade to"
         value={newContract}
-        onChange={setContract}
+        onChange={(e) => setContract(e.target.value)}
       />
       <Button
         mr={2}

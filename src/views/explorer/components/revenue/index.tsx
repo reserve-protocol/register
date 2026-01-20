@@ -1,13 +1,12 @@
 import rtokens from '@reserve-protocol/rtokens'
 import { createColumnHelper } from '@tanstack/react-table'
 import FacadeRead from 'abis/FacadeRead'
-import CollapsableBox from '@/components/old/boxes/CollapsableBox'
 import AuctionsIcon from 'components/icons/AuctionsIcon'
 import TokenLogo from 'components/icons/TokenLogo'
 import { Table } from '@/components/old/table'
 import TokenItem from 'components/token-item'
 import { useCallback, useMemo, useState } from 'react'
-import { Check, X } from 'lucide-react'
+import { Check, X, ChevronDown, ChevronUp } from 'lucide-react'
 import Skeleton from 'react-loading-skeleton'
 import { Box, Flex, Link, Text } from 'theme-ui'
 import { Trader } from 'types'
@@ -386,6 +385,8 @@ const TradesTable = ({
 }
 
 const RTokenRevenueOverview = ({ data }: { data: RevenueDetail }) => {
+  const [isOpen, setOpen] = useState(false)
+
   const handleRun = () => {
     window.open(
       getTokenRoute(data.address, data.chain, ROUTES.AUCTIONS),
@@ -394,20 +395,28 @@ const RTokenRevenueOverview = ({ data }: { data: RevenueDetail }) => {
   }
 
   return (
-    <CollapsableBox
+    <Box
       variant="layout.borderBox"
       p={[3, 4]}
       sx={{ background: 'contentBackground' }}
-      header={
+    >
+      {/* CollapsableBox header */}
+      <Flex
+        sx={{ cursor: 'pointer', width: '100%' }}
+        onClick={() => setOpen(!isOpen)}
+      >
         <Box
           variant="layout.verticalAlign"
-          sx={{ flexWrap: 'wrap', gap: 3 }}
+          sx={{ flexWrap: 'wrap', gap: 3, width: '100%' }}
           pr={4}
         >
           <Box
             variant="layout.verticalAlign"
             sx={{ gap: 2 }}
-            onClick={handleRun}
+            onClick={(e: React.MouseEvent) => {
+              e.stopPropagation()
+              handleRun()
+            }}
             role="button"
             mr="auto"
           >
@@ -432,15 +441,31 @@ const RTokenRevenueOverview = ({ data }: { data: RevenueDetail }) => {
               <Text variant="legend">Amount:</Text>
               <Text variant="strong">${formatCurrency(data.total)}</Text>
             </Box>
-            <Button small variant="bordered" onClick={handleRun}>
+            <Button
+              small
+              variant="bordered"
+              onClick={(e: React.MouseEvent) => {
+                e.stopPropagation()
+                handleRun()
+              }}
+            >
               Run
             </Button>
           </Box>
         </Box>
-      }
-    >
-      <TradesTable rToken={false} pagination={false} trades={data.trades} />
-    </CollapsableBox>
+        <Box variant="layout.verticalAlign" ml="auto">
+          {isOpen ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+        </Box>
+      </Flex>
+
+      {/* Collapsible content */}
+      {isOpen && (
+        <>
+          <Box mx={-4} my={3} sx={{ borderTop: '1px solid', borderColor: 'border' }} />
+          <TradesTable rToken={false} pagination={false} trades={data.trades} />
+        </>
+      )}
+    </Box>
   )
 }
 

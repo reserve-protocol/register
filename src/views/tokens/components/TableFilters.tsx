@@ -20,8 +20,8 @@ const TokenSearchInput = () => {
         <Trans>Search</Trans>
       </Text>
       <Input
-        mt={1}
-        onChange={setValue}
+        className="mt-1"
+        onChange={(e) => setValue(e.target.value)}
         value={value}
         placeholder={t`Input token name or symbol`}
       />

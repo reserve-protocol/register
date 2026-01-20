@@ -1,7 +1,6 @@
 import { t, Trans } from '@lingui/macro'
 import Governance from 'abis/Governance'
 import { SmallButton } from '@/components/old/button'
-import IconInfo from '@/components/old/info-icon'
 import { gql } from 'graphql-request'
 import useQuery from 'hooks/use-query'
 import useRToken from 'hooks/useRToken'
@@ -22,6 +21,24 @@ import { isTimeunitGovernance } from '../utils'
 import AccountVotes from './AccountVotes'
 import { useReadContract } from 'wagmi'
 import { PROTOCOL_DOCS } from '@/utils/constants'
+
+const IconInfo = ({
+  icon,
+  title,
+  text,
+}: {
+  icon: React.ReactNode
+  title: string
+  text: string
+}) => (
+  <div className="flex items-center">
+    {icon}
+    <div className="ml-2">
+      <span className="text-sm text-legend">{title}</span>
+      <span className="block">{text}</span>
+    </div>
+  </div>
+)
 
 const query = gql`
   query getGovernanceStats($id: String!) {

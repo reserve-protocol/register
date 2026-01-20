@@ -2,7 +2,11 @@ import { Button, Input } from 'components'
 import DiscordColorIcon from 'components/icons/DiscordColorIcon'
 import TelegramIcon from 'components/icons/TelegramIcon'
 import XIcon from 'components/icons/XIcon'
-import Popup from '@/components/old/popup'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover'
 import { useAtomValue } from 'jotai'
 import { useCallback, useEffect, useState } from 'react'
 import { ChevronDown, ChevronUp, Mail } from 'lucide-react'
@@ -60,11 +64,38 @@ const Dropdown = ({
   const [isVisible, setVisible] = useState(false)
 
   return (
-    <Popup
-      show={isVisible}
-      onDismiss={() => setVisible(false)}
-      placement="bottom-start"
-      content={
+    <Popover open={isVisible} onOpenChange={setVisible}>
+      <PopoverTrigger asChild>
+        <Box
+          {...props}
+          variant="layout.verticalAlign"
+          sx={{
+            cursor: 'pointer',
+            display: 'flex',
+            justifyContent: 'center',
+            position: 'absolute',
+            left: '8px',
+            top: '50%',
+            transform: 'translateY(-50%)',
+            borderRight: '1px solid',
+            borderColor: 'border',
+            pr: 1,
+            pl: '2px',
+          }}
+        >
+          {selected.icon}
+          <Box pl={1} />
+          {isVisible ? (
+            <ChevronUp color="currentColor" strokeWidth={1.2} size={16} />
+          ) : (
+            <ChevronDown color="currentColor" strokeWidth={1.2} size={16} />
+          )}
+        </Box>
+      </PopoverTrigger>
+      <PopoverContent
+        className="w-auto p-0 rounded-xl border-2 border-border shadow-lg"
+        align="start"
+      >
         <Box sx={{ borderRadius: '10px', bg: 'background' }}>
           {options.map((option) => (
             <Box
@@ -92,35 +123,8 @@ const Dropdown = ({
             </Box>
           ))}
         </Box>
-      }
-    >
-      <Box
-        {...props}
-        variant="layout.verticalAlign"
-        sx={{
-          cursor: 'pointer',
-          display: 'flex',
-          justifyContent: 'center',
-          position: 'absolute',
-          left: '8px',
-          top: '50%',
-          transform: 'translateY(-50%)',
-          borderRight: '1px solid',
-          borderColor: 'border',
-          pr: 1,
-          pl: '2px',
-        }}
-        onClick={() => setVisible(!isVisible)}
-      >
-        {selected.icon}
-        <Box pl={1} />
-        {isVisible ? (
-          <ChevronUp color="currentColor" strokeWidth={1.2} size={16} />
-        ) : (
-          <ChevronDown color="currentColor" strokeWidth={1.2} size={16} />
-        )}
-      </Box>
-    </Popup>
+      </PopoverContent>
+    </Popover>
   )
 }
 
@@ -187,16 +191,10 @@ const SocialMediaInput = ({ sx, ...props }: BoxProps) => {
         }}
       />
       <Input
-        variant="smallInput"
-        sx={{
-          width: '100%',
-          pl: '58px',
-          pr: '70px',
-          fontSize: 1,
-        }}
+        className="w-full h-8 text-sm pl-14 pr-[70px]"
         placeholder={selected.placeholder}
         value={value}
-        onChange={onChange}
+        onChange={(e) => onChange(e.target.value)}
         disabled={submitted}
         onKeyDown={(e) => {
           if (e.key === 'Enter') {

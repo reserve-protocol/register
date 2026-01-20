@@ -13,8 +13,30 @@ import {
 } from '../atoms'
 import { collateralDisplay } from 'utils/constants'
 import Skeleton from 'react-loading-skeleton'
-import IconInfo from '@/components/old/info-icon'
 import { X } from 'lucide-react'
+
+const IconInfo = ({
+  icon,
+  title,
+  text,
+  help,
+}: {
+  icon: React.ReactNode
+  title: string
+  text: string
+  help?: string
+}) => (
+  <div className="flex items-center">
+    {icon}
+    <div className="ml-2">
+      <div className="flex items-center">
+        <span className="text-sm text-legend">{title}</span>
+        {!!help && <Help ml={2} content={help} />}
+      </div>
+      <span>{text}</span>
+    </div>
+  </div>
+)
 
 interface UnitBasketProps extends CardProps {
   data: PrimaryUnitBasket

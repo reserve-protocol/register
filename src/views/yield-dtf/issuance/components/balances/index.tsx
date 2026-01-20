@@ -43,7 +43,7 @@ const RTokenBalance = () => {
         <TokenBalance
           symbol={rToken?.symbol}
           balance={+balance.balance}
-          mr={2}
+          className="mr-2"
         />
         {!!rToken && <TrackAsset token={rToken} />}
       </div>
