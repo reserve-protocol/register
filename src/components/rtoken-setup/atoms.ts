@@ -62,7 +62,20 @@ export const revenueSplitAtom = atomWithReset<RevenueSplit>({
 //
 
 export const isBasketValidAtom = atom((get) => {
-  return !!Object.keys(get(basketAtom)).length
+  const basket = get(basketAtom)
+
+  const basketNotEmpty = Object.keys(basket).length > 0
+  const distributionTotal = Object.values(basket).map(({ distribution }) =>
+    distribution.reduce((acc, curr) => acc + Number(curr), 0)
+  )
+  const distributionAddsUpTo100 = distributionTotal.every(
+    (total) => total === 100
+  )
+
+  const noZeroDistribution = Object.values(basket).every(({ distribution }) =>
+    distribution.every((d) => Number(d) > 0)
+  )
+  return basketNotEmpty && distributionAddsUpTo100 && noZeroDistribution
 })
 
 export const getCollateralFromBasket = (basket: Basket | BackupBasket) => {

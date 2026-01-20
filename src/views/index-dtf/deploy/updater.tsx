@@ -46,7 +46,7 @@ const BasketPriceUpdater = () => {
     if (tokenPrices.length) {
       const newBasket = basket.map((token) => {
         const price = tokenPrices.find(
-          (p) => p.address === token.address
+          (p) => p.address.toLowerCase() === token.address.toLowerCase()
         )?.price
         return { ...token, price }
       })

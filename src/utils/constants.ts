@@ -1,7 +1,9 @@
-import { Token, Trader } from 'types'
+import { AddressMap, Token, Trader } from 'types'
 import {
+  CMC20_ADDRESS,
   ETHPLUS_ADDRESS,
   EUSD_ADDRESS,
+  LCAP_ADDRESS,
   RGUSD_ADDRESS,
   RSR_ADDRESS,
   USD3_ADDRESS,
@@ -121,6 +123,10 @@ export const LP_PROJECTS: { [x: string]: { name: string; site: string } } = {
   'origin-ether': {
     name: 'Origin',
     site: 'https://www.originprotocol.com/',
+  },
+  'ether.fi-staking': {
+    name: 'Ether.fi',
+    site: 'https://ether.fi/',
   },
 }
 
@@ -349,6 +355,24 @@ export const BRIDGE_RTOKEN_MAP = Object.entries(
   {} as Record<string, string>
 )
 
+const buildBridgeMap = (
+  ...addressMaps: AddressMap[]
+): Record<string, Array<{ address: Address; chain: number }>> => {
+  const result: Record<string, Array<{ address: Address; chain: number }>> = {}
+  for (const addressMap of addressMaps) {
+    const entries = Object.entries(addressMap).map(([chain, address]) => ({
+      address: address as Address,
+      chain: Number(chain),
+    }))
+    for (const { address } of entries) {
+      result[address.toLowerCase()] = entries
+    }
+  }
+  return result
+}
+
+export const BRIDGED_INDEX_DTFS = buildBridgeMap(CMC20_ADDRESS, LCAP_ADDRESS)
+
 for (const chain of supportedChainList) {
   LISTED_RTOKEN_ADDRESSES[chain] = [
     ...Object.keys(rtokens[chain] || {}).map((s) => s.toLowerCase()),
@@ -432,6 +456,7 @@ export const collateralDisplay: Record<string, string> = {
   'wvamm-mog/weth': 'Aerodrome Mog/WETH LP',
   'wvamm-weth/aero': 'Aerodrome WETH/AERO LP',
   'wsamm-usdz/usdc': 'Aerodrome USDz/USDC LP',
+  weeth: 'Ether.fi Wrapped eETH',
 }
 
 export const RTOKEN_VAULT_STAKE: Record<

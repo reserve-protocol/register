@@ -267,6 +267,8 @@ export const SVGS = new Set([
   'hype',
   'sui',
   'fxs',
+  'weeth',
+  'king',
 ])
 
 export const PNGS = new Set([
@@ -289,6 +291,7 @@ export const PNGS = new Set([
   'moomorpho-smokehouse-wsteth',
   'moomorpho-smokehouse-usdc',
   'ssr',
+  'avgjoescrypto',
 ])
 
 export const EXTERNAL_ASSETS: Record<string, string> = {

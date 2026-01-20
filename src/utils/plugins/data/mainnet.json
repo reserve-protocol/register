@@ -808,5 +808,21 @@
     "underlyingToken": "RLUSD",
     "collateralAddress": "0xFa82580c16A31D0c1bC632A36F82e83EfEF3Eec0",
     "collateralToken": "aEthRLUSD"
+  },
+  {
+    "address":"0x9dc6cEFC09b0917c78a05148d45f6e6594e227de",
+    "rewardTokens":["0xe64ca4AC2401D6D57cEE942B9ee01494814803f1"],
+    "protocol":"ETHERFI",
+    "erc20":"0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee",
+    "chainlinkFeed":"0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419",
+    "delayUntilDefault":"259200",
+    "maxTradeVolume":"1000000",
+    "oracleTimeout":3600,
+    "targetName":"ETH",
+    "version":"4.2.0",
+    "symbol":"weETH",
+    "decimals":18,
+    "underlyingAddress":"0x35fA164735182de50811E8e2E824cFb9B6118ac2",
+    "underlyingToken":"eETH"
   }
 ]
