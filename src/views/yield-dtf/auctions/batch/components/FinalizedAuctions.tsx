@@ -19,6 +19,7 @@ const FinalizedAuctions = (props: BoxProps) => {
         <Table
           columns={columns}
           data={data}
+          className="border-[4px] border-secondary"
           compact
           pagination={{ pageSize: 5 }}
         />

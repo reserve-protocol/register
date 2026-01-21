@@ -1,6 +1,6 @@
 import { t, Trans } from '@lingui/macro'
-import { Button, Modal } from 'components'
-import { ModalProps } from 'components'
+import { Button } from '@/components/ui/button'
+import { Modal, ModalProps } from 'components'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { useMemo, useState } from 'react'
 import { Box, Divider, Text } from 'theme-ui'
@@ -164,7 +164,7 @@ const CollateralModal = ({
       <Button
         onClick={handleSubmit}
         disabled={!Object.keys(selected).length}
-        sx={{ width: '100%' }}
+        className="w-full"
       >
         <Text>
           {basket === 'primary' ? (

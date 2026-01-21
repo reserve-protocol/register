@@ -2,7 +2,7 @@ import DgnETHButtonAppendix from '@/components/utils/integrations/dgneth-btn-app
 import CollateralPieChartWrapper from '@/views/yield-dtf/overview/components/collateral-pie-chart-wrapper'
 import RTokenAddresses from '@/views/yield-dtf/overview/components/rtoken-addresses'
 import { t, Trans } from '@lingui/macro'
-import { Button } from 'components'
+import { Button } from '@/components/ui/button'
 import ChainLogo from 'components/icons/ChainLogo'
 import ChevronRight from 'components/icons/ChevronRight'
 import CollaterizationIcon from 'components/icons/CollaterizationIcon'
@@ -262,7 +262,6 @@ const RTokenCard = ({ token, ...props }: Props) => {
                     hideLabelOnMobile
                   >
                     <Button
-                      medium
                       onClick={(e) => {
                         e.stopPropagation()
                         trackClick(
@@ -274,7 +273,7 @@ const RTokenCard = ({ token, ...props }: Props) => {
                         )
                         handleNavigate(ROUTES.ISSUANCE)
                       }}
-                      sx={{ whiteSpace: 'nowrap' }}
+                      className="whitespace-nowrap"
                     >
                       {token.tokenApy
                         ? `Mint ${token.tokenApy.toFixed(1)}% Est. APY`

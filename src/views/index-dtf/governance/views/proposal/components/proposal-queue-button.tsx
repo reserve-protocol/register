@@ -70,10 +70,9 @@ const ProposalQueue = () => {
 
   return (
     <TransactionButton
-      fullWidth
+      className="w-full ml-auto"
       loading={isMining || isLoading}
       mining={isMining}
-      ml="auto"
       disabled={!isReady}
       onClick={write}
       text={t`Queue proposal`}

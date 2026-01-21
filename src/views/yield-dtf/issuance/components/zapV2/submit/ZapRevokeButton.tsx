@@ -1,5 +1,6 @@
-import { LoadingButton } from 'components'
+import { Button } from '@/components/ui/button'
 import TokenLogo from 'components/icons/TokenLogo'
+import { Loader2 } from 'lucide-react'
 import { Box, Spinner, Text } from 'theme-ui'
 import { useZap } from '../context/ZapContext'
 import { useZapTx } from '../context/ZapTxContext'
@@ -28,6 +29,8 @@ const ZapRevokeButton = () => {
     )
   }
 
+  const isLoading = loadingRevoke || loadingZap || validatingZap
+
   return (
     <Box
       sx={{
@@ -38,13 +41,14 @@ const ZapRevokeButton = () => {
         mb: 4,
       }}
     >
-      <LoadingButton
-        onClick={revoke}
-        loading={loadingRevoke || loadingZap || validatingZap}
-        text={`Revoke existing ${tokenIn.symbol} allowance`}
-        fullWidth
-        loadingText={loadingRevoke ? 'Revoking...' : 'Finding route...'}
-      />
+      <Button onClick={revoke} disabled={isLoading} className="w-full">
+        {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+        {isLoading
+          ? loadingRevoke
+            ? 'Revoking...'
+            : 'Finding route...'
+          : `Revoke existing ${tokenIn.symbol} allowance`}
+      </Button>
       <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
         <Text variant="legend" sx={{ fontSize: 1 }}>
           Why I do need to revoke my allowance?

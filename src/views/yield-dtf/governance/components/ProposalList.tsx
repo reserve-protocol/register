@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro'
-import { SmallButton } from 'components'
+import { Button } from '@/components/ui/button'
 import EmptyBoxIcon from 'components/icons/EmptyBoxIcon'
 import { gql } from 'graphql-request'
 import useQuery from 'hooks/use-query'
@@ -202,13 +202,14 @@ const ProposalList = () => {
         <Text variant="sectionTitle">
           <Trans>Recent proposals</Trans>
         </Text>
-        <SmallButton
-          ml="auto"
+        <Button
+          size="sm"
           onClick={() => navigate('proposal')}
           disabled={disabled}
+          className="ml-auto"
         >
           <Trans>Create proposal</Trans>
-        </SmallButton>
+        </Button>
       </Box>
       <Box
         mt={2}

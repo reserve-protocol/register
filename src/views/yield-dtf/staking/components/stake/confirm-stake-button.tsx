@@ -1,5 +1,5 @@
 import { Trans, t } from '@lingui/macro'
-import { Button } from 'components'
+import { Button } from '@/components/ui/button'
 import CheckCircleIcon from 'components/icons/CheckCircleIcon'
 import GasIcon from 'components/icons/GasIcon'
 import TransactionsIcon from 'components/icons/TransactionsIcon'
@@ -76,7 +76,7 @@ const ConfirmStakeButton = () => {
     return (
       <div className="mt-4">
         <GasEstimate gasLimit={APPROVE_GAS_ESTIMATE} />
-        <Button fullWidth onClick={execute} disabled={!isReady}>
+        <Button className="w-full" onClick={execute} disabled={!isReady}>
           {!isReady ? 'Preparing approval' : 'Approve use of RSR'}
         </Button>
         {errorMsg}
@@ -152,7 +152,7 @@ const ConfirmStakeButton = () => {
             : STAKE_GAS_ESTIMATE
         }
       />
-      <Button disabled={!isReady} onClick={execute} fullWidth>
+      <Button disabled={!isReady} onClick={execute} className="w-full">
         {!isReady ? 'Preparing transaction' : 'Confirm Stake'}
       </Button>
       {errorMsg}

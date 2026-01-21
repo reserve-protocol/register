@@ -109,7 +109,7 @@ const CollateralApproval = ({
               text="Approve"
               onClick={write}
               disabled={!write}
-              small
+              size="sm"
             />
           )}
         </Box>

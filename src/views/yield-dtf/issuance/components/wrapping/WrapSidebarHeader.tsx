@@ -2,7 +2,8 @@ import { wrapSidebarAtom } from '@/views/yield-dtf/issuance/atoms'
 import { Trans } from '@lingui/macro'
 import { useSetAtom } from 'jotai'
 import { X } from 'lucide-react'
-import { Button, Divider, Flex, Text } from 'theme-ui'
+import { Divider, Flex, Text } from 'theme-ui'
+import { Button } from '@/components/ui/button'
 
 const WrapSidebarHeader = () => {
   const close = useSetAtom(wrapSidebarAtom)
@@ -20,7 +21,12 @@ const WrapSidebarHeader = () => {
         <Text variant="sectionTitle" mr={1}>
           <Trans>Wrap/Unwrap Tokens</Trans>
         </Text>
-        <Button variant="circle" ml="auto" onClick={() => close(false)}>
+        <Button
+          variant="ghost"
+          size="icon"
+          className="ml-auto rounded-full"
+          onClick={() => close(false)}
+        >
           <X />
         </Button>
       </Flex>

@@ -102,7 +102,7 @@ const SubmitUnstakeButton = () => {
         }
         onClick={write}
         text={getButtonText()}
-        fullWidth
+        className="w-full"
         error={error || txError}
       />
     </div>

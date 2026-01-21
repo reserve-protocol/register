@@ -1,4 +1,4 @@
-import { Button } from 'components'
+import { Button } from '@/components/ui/button'
 import {
   Popover,
   PopoverContent,
@@ -118,7 +118,7 @@ const OptionSelection = ({
 
       <Divider mt={2} mb={3} />
       <Box px={3} pb={3}>
-        <Button small fullWidth onClick={handleApply}>
+        <Button size="sm" className="w-full" onClick={handleApply}>
           Apply
         </Button>
       </Box>

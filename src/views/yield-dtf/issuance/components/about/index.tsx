@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro'
-import { SmallButton } from 'components'
+import { Button } from '@/components/ui/button'
 import { useSetAtom } from 'jotai'
 import { Box, Flex, Text } from 'theme-ui'
 import { wrapSidebarAtom } from '@/views/yield-dtf/issuance/atoms'
@@ -33,14 +33,15 @@ const About = () => {
           </Trans>
         </Text>
         <Flex mt={3}>
-          <SmallButton
+          <Button
+            size="sm"
+            variant="ghost"
             data-testid="wrap-btn"
-            variant="muted"
-            mr={3}
             onClick={() => setWrapping(true)}
+            className="mr-4"
           >
             <Trans>Wrap/Unwrap collateral</Trans>
-          </SmallButton>
+          </Button>
         </Flex>
       </Box>
     </Box>

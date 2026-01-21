@@ -1,4 +1,5 @@
-import { Button, Input } from 'components'
+import { Button } from '@/components/ui/button'
+import { Input } from 'components'
 import DiscordColorIcon from 'components/icons/DiscordColorIcon'
 import TelegramIcon from 'components/icons/TelegramIcon'
 import XIcon from 'components/icons/XIcon'
@@ -204,12 +205,8 @@ const SocialMediaInput = ({ sx, ...props }: BoxProps) => {
       />
       {submitted ? (
         <Button
-          sx={{
-            position: 'absolute',
-            right: '4px',
-            top: '4px',
-          }}
-          small
+          className="absolute right-1 top-1"
+          size="sm"
           disabled={copied}
           onClick={() => {
             navigator.clipboard.writeText(value)
@@ -220,12 +217,8 @@ const SocialMediaInput = ({ sx, ...props }: BoxProps) => {
         </Button>
       ) : (
         <Button
-          sx={{
-            position: 'absolute',
-            right: '4px',
-            top: '4px',
-          }}
-          small
+          className="absolute right-1 top-1"
+          size="sm"
           disabled={!value || submitted}
           onClick={() => handleTrackUsername(selected.key)}
         >

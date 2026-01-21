@@ -5,17 +5,21 @@ import viteTsconfigPaths from 'vite-tsconfig-paths'
 import { lingui } from '@lingui/vite-plugin'
 import { viteStaticCopy } from 'vite-plugin-static-copy'
 
+const isTest = process.env.NODE_ENV === 'test' || process.env.VITEST
+
 export default defineConfig({
   plugins: [
     react({
       babel: {
         plugins: [
-          'macros', // Lingui macros
+          // Skip lingui macros in test - we mock @lingui/macro directly
+          ...(!isTest ? ['macros'] : []),
           ['@locator/babel-jsx/dist', { env: 'development' }], // Click-to-source in dev
         ],
       },
     }),
-    lingui(),
+    // Skip lingui plugin in test - interferes with vi.mock
+    ...(!isTest ? [lingui()] : []),
     viteTsconfigPaths(), // Resolves tsconfig paths (@/, utils/, etc.)
     viteStaticCopy({
       targets: [

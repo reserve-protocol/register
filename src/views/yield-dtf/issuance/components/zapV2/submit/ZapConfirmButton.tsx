@@ -1,5 +1,6 @@
-import { LoadingButton } from 'components'
+import { Button } from '@/components/ui/button'
 import TransactionsIcon from 'components/icons/TransactionsIcon'
+import { Loader2 } from 'lucide-react'
 import { Box, Spinner, Text } from 'theme-ui'
 import { useZap } from '../context/ZapContext'
 import { useZapTx } from '../context/ZapTxContext'
@@ -51,16 +52,23 @@ const ZapConfirmButton = () => {
     )
   }
 
+  const isLoading = !zapResult || loadingZap || validatingZap
+
   return (
     <Box>
       {hasAllowance && (
-        <LoadingButton
+        <Button
           onClick={() => sendTransaction?.()}
-          loading={!zapResult || loadingZap || validatingZap}
-          text={operation === 'mint' ? 'Confirm Mint' : 'Confirm Redeem'}
-          fullWidth
-          loadingText="Finding route..."
-        />
+          disabled={isLoading}
+          className="w-full"
+        >
+          {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+          {isLoading
+            ? 'Finding route...'
+            : operation === 'mint'
+              ? 'Confirm Mint'
+              : 'Confirm Redeem'}
+        </Button>
       )}
       <ZapGasCost mt={2} />
     </Box>

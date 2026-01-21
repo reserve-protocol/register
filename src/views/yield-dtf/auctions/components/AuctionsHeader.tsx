@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro'
-import { Button } from 'components'
+import { Button } from '@/components/ui/button'
 import TabMenu from 'components/tab-menu'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
@@ -39,7 +39,7 @@ const AuctionsHeader = () => {
         />
       )}
 
-      <Button ml="auto" mr={3} small onClick={toggleSidebar}>
+      <Button className="ml-auto mr-4" size="sm" onClick={toggleSidebar}>
         <Text sx={{ display: ['none', 'block'] }}>
           <Trans>Check for auctions</Trans>
         </Text>

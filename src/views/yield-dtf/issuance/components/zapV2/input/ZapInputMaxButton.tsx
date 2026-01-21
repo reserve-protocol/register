@@ -1,4 +1,4 @@
-import { Button } from 'components'
+import { Button } from '@/components/ui/button'
 import { Box, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { useZap } from '../context/ZapContext'
@@ -27,10 +27,9 @@ const ZapInputMaxButton = () => {
           </Text>
         </Box>
         <Button
-          small
-          backgroundColor="#CCCCCC"
-          color="#000000"
-          style={{ borderRadius: 4 }}
+          size="sm"
+          variant="secondary"
+          className="rounded"
           onClick={onClickMax}
         >
           Max

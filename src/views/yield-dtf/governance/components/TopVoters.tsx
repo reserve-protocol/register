@@ -10,12 +10,10 @@ import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { chainIdAtom } from 'state/atoms'
-import { Box, BoxProps, Text } from 'theme-ui'
 import { formatCurrencyCell, shortenAddress } from 'utils'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { formatEther } from 'viem'
 
-// TODO: Filter zero address from mappings on theGraph side
 const query = gql`
   query getVoters($id: String!) {
     delegates(
@@ -49,7 +47,6 @@ interface Voter {
   displayAddress: string
 }
 
-// TODO: Proposal data casting?
 const useVoters = () => {
   const rToken = useRToken()
   const { data, error } = useQuery(rToken?.main ? query : null, {
@@ -77,7 +74,11 @@ const useVoters = () => {
   }, [JSON.stringify(data), ensRes])
 }
 
-const TopVoters = (props: BoxProps) => {
+interface TopVotersProps {
+  className?: string
+}
+
+const TopVoters = ({ className }: TopVotersProps) => {
   const { data } = useVoters()
   const chainId = useAtomValue(chainIdAtom)
   const columnHelper = createColumnHelper<Voter>()
@@ -89,8 +90,8 @@ const TopVoters = (props: BoxProps) => {
         cell: (data) => {
           const { displayAddress, address } = data.row.original
           return (
-            <Box variant="layout.verticalAlign">
-              <Text>{displayAddress}</Text>
+            <div className="flex items-center">
+              <span>{displayAddress}</span>
               <GoTo
                 href={getExplorerLink(
                   address,
@@ -98,7 +99,7 @@ const TopVoters = (props: BoxProps) => {
                   ExplorerDataType.ADDRESS
                 )}
               />
-            </Box>
+            </div>
           )
         },
       }),
@@ -115,13 +116,13 @@ const TopVoters = (props: BoxProps) => {
           } = data.row.original
 
           return (
-            <Text>
+            <span>
               {+(
                 (delegatedVotes / +formatEther(totalTokenSupply)) *
                 100
               ).toFixed(2) || 0}
               %
-            </Text>
+            </span>
           )
         },
       }),
@@ -133,41 +134,22 @@ const TopVoters = (props: BoxProps) => {
   )
 
   return (
-    <Box
-      variant="layout.card"
-      p={2}
-      sx={{
-        backgroundColor: 'background',
-        border: '3px solid',
-        borderColor: 'borderFocused',
-      }}
-      {...props}
+    <div
+      className={`rounded-[20px] p-2 bg-background border-[3px] border-secondary ${className || ''}`}
     >
-      <Text variant="sectionTitle" p={3}>
+      <h2 className="text-2xl font-bold p-4">
         <Trans>Top voting addresses</Trans>
-      </Text>
-      <Table
-        mt={2}
-        compact
-        columns={columns}
-        data={data}
-        className="rounded-3xl pt-4"
-      />
+      </h2>
+      <Table columns={columns} data={data} className="rounded-3xl pt-6" />
       {!data.length && (
-        <Box py={4} mt={3} sx={{ textAlign: 'center' }}>
+        <div className="py-6 mt-4 text-center">
           <EmptyBoxIcon />
-          <Text
-            mt={3}
-            variant="legend"
-            sx={{
-              display: 'block',
-            }}
-          >
+          <span className="mt-4 block text-muted-foreground">
             <Trans>No voters at this moment...</Trans>
-          </Text>
-        </Box>
+          </span>
+        </div>
       )}
-    </Box>
+    </div>
   )
 }
 

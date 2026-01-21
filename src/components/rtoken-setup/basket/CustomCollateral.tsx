@@ -2,7 +2,7 @@ import { t, Trans } from '@lingui/macro'
 import CollateralAbi from 'abis/CollateralAbi'
 import ERC20 from 'abis/ERC20'
 import { Input } from 'components'
-import { SmallButton } from 'components'
+import { Button } from '@/components/ui/button'
 import PluginsIcon from 'components/icons/PluginsIcon'
 import { useAtomValue } from 'jotai'
 import { useState } from 'react'
@@ -113,16 +113,17 @@ const CustomCollateral = ({
           )}
         </Box>
         <Flex mt={3} px={3}>
-          <SmallButton variant="muted" onClick={() => setActive(false)}>
+          <Button size="sm" variant="ghost" onClick={() => setActive(false)}>
             <Trans>Dismiss</Trans>
-          </SmallButton>
-          <SmallButton
-            ml={3}
+          </Button>
+          <Button
+            size="sm"
+            className="ml-4"
             disabled={!!error || isValidating}
             onClick={handleAdd}
           >
             {isValidating ? <Trans>Validating...</Trans> : <Trans>Save</Trans>}
-          </SmallButton>
+          </Button>
         </Flex>
       </Box>
     )
@@ -139,9 +140,14 @@ const CustomCollateral = ({
           <Trans>Use a custom plugin contract address</Trans>
         </Text>
       </Box>
-      <SmallButton ml="auto" variant="muted" onClick={() => setActive(true)}>
+      <Button
+        size="sm"
+        variant="ghost"
+        onClick={() => setActive(true)}
+        className="ml-auto"
+      >
         <Trans>Add</Trans>
-      </SmallButton>
+      </Button>
     </Flex>
   )
 }

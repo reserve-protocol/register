@@ -156,8 +156,7 @@ const DeployOverview = ({ onDeploy, sx = {}, ...props }: Props) => {
 
               <TransactionButton
                 text={t`Deploy RToken`}
-                mt={4}
-                fullWidth
+                className="mt-6 w-full"
                 disabled={!isReady}
                 onClick={write}
                 gas={gas}

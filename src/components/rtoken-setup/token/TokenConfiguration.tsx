@@ -1,9 +1,9 @@
 import { Trans } from '@lingui/macro'
-import { SmallButton } from 'components'
+import { Button } from '@/components/ui/button'
 import SectionWrapper from '@/components/section-navigation/section-wrapper'
 import { useState } from 'react'
 import { ChevronDown, ChevronUp } from 'lucide-react'
-import { Box, BoxProps, Button, Card, Divider, Flex, Text } from 'theme-ui'
+import { Box, BoxProps, Card, Divider, Flex, Text } from 'theme-ui'
 import BackingForm from './BackingForm'
 import OtherForm from './OtherForm'
 import TokenForm from './TokenForm'
@@ -34,10 +34,11 @@ const TokenConfiguration = (props: BoxProps) => {
           <Text mx={2} variant="title" sx={{ color: 'secondaryText' }}>
             <Trans>15 params</Trans>
           </Text>
-          <SmallButton
-            ml="auto"
-            variant="muted"
+          <Button
+            size="sm"
+            variant="ghost"
             onClick={() => setAdvanceConfig(!advanceConfig)}
+            className="ml-auto"
           >
             <Box variant="layout.verticalAlign">
               <Trans>Customize</Trans>
@@ -47,7 +48,7 @@ const TokenConfiguration = (props: BoxProps) => {
                 <ChevronDown {...chevronProps} />
               )}
             </Box>
-          </SmallButton>
+          </Button>
         </Flex>
         {advanceConfig && (
           <>

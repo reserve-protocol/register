@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro'
-import { SmallButton } from 'components'
+import { Button } from '@/components/ui/button'
 import { Plus, X } from 'lucide-react'
 import { Box, BoxProps, Text } from 'theme-ui'
 
@@ -23,9 +23,9 @@ const ListItemPreview = ({ isNew, label, onRevert, ...props }: Props) => (
       <Text>{label}</Text>
     </Box>
     {!!onRevert && (
-      <SmallButton ml="auto" variant="muted" onClick={onRevert}>
+      <Button size="sm" variant="ghost" onClick={onRevert} className="ml-auto">
         <Trans>Revert</Trans>
-      </SmallButton>
+      </Button>
     )}
   </Box>
 )

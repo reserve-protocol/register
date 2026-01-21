@@ -1,5 +1,5 @@
 import { Trans, t } from '@lingui/macro'
-import { SmallButton } from 'components'
+import { Button } from '@/components/ui/button'
 import CopyValue from '@/components/ui/copy-value'
 import GoTo from '@/components/ui/go-to'
 import TransactionButton from '@/components/ui/transaction-button'
@@ -95,8 +95,7 @@ const ProposalStatus = ({
   return (
     <TransactionButton
       text={t`Submit proposal on-chain`}
-      mt={4}
-      fullWidth
+      className="mt-6 w-full"
       disabled={!isReady}
       onClick={write}
       gas={gas}
@@ -125,13 +124,14 @@ const ConfirmProposalOverview = ({ tx, ...props }: Props) => {
           }}
           variant="layout.borderBox"
         >
-          <SmallButton
+          <Button
+            size="sm"
+            variant="ghost"
             onClick={() => setProposalEditing(true)}
-            variant="muted"
-            mr="auto"
+            className="mr-auto"
           >
             <Trans>Edit</Trans>
-          </SmallButton>
+          </Button>
           <ConfirmProposalActionIcon />
           <Text variant="title" mb={2}>
             <Trans>Confirm & Submit</Trans>

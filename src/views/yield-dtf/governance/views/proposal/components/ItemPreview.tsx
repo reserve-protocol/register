@@ -1,5 +1,5 @@
 import { t, Trans } from '@lingui/macro'
-import { SmallButton } from 'components'
+import { Button } from '@/components/ui/button'
 import { ArrowRight, Plus, Square, X } from 'lucide-react'
 import { useFormContext } from 'react-hook-form'
 import { Box, BoxProps, Text } from 'theme-ui'
@@ -44,9 +44,9 @@ export const ListChangePreview = ({
       </Text>
       <Text>{value}</Text>
     </Box>
-    <SmallButton ml="auto" variant="muted" onClick={onRevert}>
+    <Button size="sm" variant="ghost" onClick={onRevert} className="ml-auto">
       <Trans>Revert</Trans>
-    </SmallButton>
+    </Button>
   </Box>
 )
 
@@ -67,9 +67,9 @@ export const ParameterChangePreview = ({
         <Text>{subtitle}</Text>
       </Box>
       {!!onRevert && (
-        <SmallButton ml="auto" onClick={onRevert} variant="muted">
+        <Button size="sm" variant="ghost" onClick={onRevert} className="ml-auto">
           <Trans>Discard</Trans>
-        </SmallButton>
+        </Button>
       )}
     </Box>
     <Box

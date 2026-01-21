@@ -1,4 +1,4 @@
-import { Button } from 'components'
+import { Button } from '@/components/ui/button'
 import BankIcon from 'components/icons/BankIcon'
 import { ChevronLeft } from 'lucide-react'
 import { Box, Text } from 'theme-ui'
@@ -40,13 +40,8 @@ const MintersModal = () => {
       >
         <BankIcon />
         <Button
-          small
-          sx={{
-            background: 'transparent',
-            color: 'text',
-            border: '1px solid',
-            borderColor: 'darkBorder',
-          }}
+          size="sm"
+          variant="outline"
           onClick={() => setShowEliteProgramModal(false)}
         >
           <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>

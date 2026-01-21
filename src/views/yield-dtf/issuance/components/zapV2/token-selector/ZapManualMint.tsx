@@ -1,7 +1,7 @@
 import CirclesIcon from 'components/icons/CirclesIcon'
 import { Box, Text } from 'theme-ui'
 import { useZap } from '../context/ZapContext'
-import { Button } from 'components'
+import { Button } from '@/components/ui/button'
 
 const ZapManualMint = () => {
   const { operation, setZapEnabled } = useZap()
@@ -14,10 +14,9 @@ const ZapManualMint = () => {
       </Text>
       <Box mt={2}>
         <Button
-          backgroundColor="muted"
-          color="text"
+          variant="muted"
+          size="sm"
           onClick={() => setZapEnabled(false)}
-          small
         >
           Manual {operation === 'mint' ? 'Mint' : 'Redeem'}
         </Button>

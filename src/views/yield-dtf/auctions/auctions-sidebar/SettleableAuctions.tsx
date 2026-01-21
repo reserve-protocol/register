@@ -76,8 +76,8 @@ const SettleableAuctions = () => {
       right={
         <ExecuteButton
           text={t`Settle all`}
-          small
-          ml="auto"
+          size="sm"
+          className="ml-auto"
           successLabel="Success!"
           call={call}
           onSuccess={handleSuccess}

@@ -17,7 +17,7 @@ const Governance = () => (
     >
       <Box>
         <ProposalList />
-        <TopVoters mt={4} mb={[0, 0, 4]} />
+        <TopVoters className="mt-6 mb-0 lg:mb-6" />
       </Box>
       <GovernanceActions />
     </Grid>

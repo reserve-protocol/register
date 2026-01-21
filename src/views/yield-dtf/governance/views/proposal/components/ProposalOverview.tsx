@@ -1,6 +1,7 @@
 import { Trans } from '@lingui/macro'
 import { useAtomValue, useSetAtom } from 'jotai'
-import { Box, BoxProps, Button, Flex, Text } from 'theme-ui'
+import { Box, BoxProps, Flex, Text } from 'theme-ui'
+import { Button } from '@/components/ui/button'
 import { isProposalEditingAtom, isProposalValidAtom } from '../atoms'
 import CreateProposalActionIcon from 'components/icons/CreateProposalActionIcon'
 import ProposalPreview from './ProposalPreview'

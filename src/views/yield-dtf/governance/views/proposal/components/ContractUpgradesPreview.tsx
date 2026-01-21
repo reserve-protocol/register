@@ -1,5 +1,5 @@
 import { t } from '@lingui/macro'
-import { Button } from 'components'
+import { Button } from '@/components/ui/button'
 import { useAtom } from 'jotai'
 import { Box, BoxProps, Text } from 'theme-ui'
 import { shortenAddress } from 'utils'
@@ -37,9 +37,9 @@ const ContractUpgradesPreview = (props: BoxProps) => {
             <Text variant="legend">{shortenAddress(upgrades[contract])}</Text>
           </Box>
           <Button
-            ml="auto"
+            className="ml-auto"
             variant="muted"
-            small
+            size="sm"
             onClick={() => handleRevert(contract)}
           >
             Revert

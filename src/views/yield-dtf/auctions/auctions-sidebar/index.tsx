@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro'
-import { Button } from 'components'
+import { Button } from '@/components/ui/button'
 import Sidebar from 'components/sidebar'
 import { useAtom, useSetAtom } from 'jotai'
 import { X } from 'lucide-react'
@@ -22,7 +22,7 @@ const Header = () => {
       <Text variant="sectionTitle" mr={1}>
         <Trans>Auctions</Trans>
       </Text>
-      <Button variant="circle" ml="auto" onClick={close}>
+      <Button variant="ghost" size="icon" className="ml-auto rounded-full" onClick={close}>
         <X />
       </Button>
     </Flex>

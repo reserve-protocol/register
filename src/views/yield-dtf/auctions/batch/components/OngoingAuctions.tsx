@@ -16,7 +16,7 @@ const OngoingAuctions = (props: BoxProps) => {
         <Trans>Ongoing auctions</Trans>
       </Text>
       {data.length ? (
-        <Table columns={columns} data={data} />
+        <Table columns={columns} data={data} className="border-[4px] border-secondary" />
       ) : (
         <OngoingAuctionsSkeleton />
       )}

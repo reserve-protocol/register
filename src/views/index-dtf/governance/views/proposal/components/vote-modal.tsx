@@ -153,7 +153,7 @@ const VoteModal = (props: ModalProps) => {
         variant={!!hash ? 'accent' : 'default'}
         text={t`Vote`}
         loadingText={isMining ? t`Confirming...` : undefined}
-        fullWidth
+        className="w-full"
         onClick={write}
         disabled={!isReady || isLoading || isMining}
       />

@@ -101,7 +101,7 @@ const ConfirmAuction = () => {
   return (
     <Box>
       <TransactionButton
-        fullWidth
+        className="w-full"
         text="Run auctions"
         variant={isLoading ? 'accent' : 'default'}
         disabled={!isReady}

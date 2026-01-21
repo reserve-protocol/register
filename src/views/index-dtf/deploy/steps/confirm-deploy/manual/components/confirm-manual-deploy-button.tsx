@@ -294,7 +294,7 @@ const ConfirmManualDeployButton = () => {
           loadingText={!!hash ? 'Confirming tx...' : 'Pending, sign in wallet'}
           onClick={write}
           text={title}
-          fullWidth
+          className="w-full"
           error={validationError || error || txError}
         />
       </TransactionButtonContainer>

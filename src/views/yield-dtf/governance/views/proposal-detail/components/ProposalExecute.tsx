@@ -34,13 +34,13 @@ const ProposalExecute = () => {
 
   return (
     <TransactionButton
-      small
+      size="sm"
       loading={isMining || isLoading}
       mining={isMining}
       disabled={!isReady || !canExecute || status === 'success'}
       onClick={write}
       text={t`Execute proposal`}
-      sx={{ height: '44px' }}
+      className="h-[44px]"
     />
   )
 }

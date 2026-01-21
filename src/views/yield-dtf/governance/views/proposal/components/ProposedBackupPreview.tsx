@@ -1,5 +1,5 @@
 import { t, Trans } from '@lingui/macro'
-import { SmallButton } from 'components'
+import { Button } from '@/components/ui/button'
 import { backupCollateralAtom } from 'components/rtoken-setup/atoms'
 import { useAtom, useAtomValue } from 'jotai'
 import { Box, BoxProps, Checkbox, Text } from 'theme-ui'
@@ -79,13 +79,14 @@ const ProposedBackupPreview = (props: BoxProps) => {
           <Text variant="strong" sx={{ color: 'warning' }}>
             <Trans>New backup configuration</Trans>
           </Text>
-          <SmallButton
-            ml="auto"
-            variant="muted"
+          <Button
+            size="sm"
+            variant="ghost"
             onClick={() => setProposeNewBackup(false)}
+            className="ml-auto"
           >
             <Trans>Revert</Trans>
-          </SmallButton>
+          </Button>
         </Box>
         <label>
           <Box variant="layout.verticalAlign" mt={2}>

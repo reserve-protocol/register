@@ -1,6 +1,6 @@
 import { Trans } from '@lingui/macro'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
-import { Button } from 'components'
+import { Button } from '@/components/ui/button'
 import WalletIcon from 'components/icons/WalletOutlineIcon'
 import { useSetAtom } from 'jotai'
 import { ChevronDown, X } from 'lucide-react'
@@ -43,7 +43,7 @@ const TransactionHeader = () => {
           )
         }}
       </ConnectButton.Custom>
-      <Button variant="circle" onClick={() => setSidebar(false)}>
+      <Button variant="ghost" size="icon" className="rounded-full" onClick={() => setSidebar(false)}>
         <X />
       </Button>
     </Flex>

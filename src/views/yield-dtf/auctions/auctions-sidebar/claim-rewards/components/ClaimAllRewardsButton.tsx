@@ -41,7 +41,7 @@ const ClaimAllRewardsButton = () => {
   return (
     <TransactionButton
       text={t`Claim rewards across all traders`}
-      fullWidth
+      className="w-full"
       disabled={!isReady}
       gas={gas}
       loading={isLoading || status === 'pending'}

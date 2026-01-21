@@ -1,5 +1,5 @@
 import { Trans, t } from '@lingui/macro'
-import { LoadingButton } from 'components'
+import { Button } from '@/components/ui/button'
 import ExternalArrowIcon from 'components/icons/ExternalArrowIcon'
 import IssuanceIcon from 'components/icons/IssuanceIcon'
 import Tenderly from 'components/icons/logos/Tenderly'
@@ -50,15 +50,14 @@ const ProposalStatus = () => {
 
   return (
     <>
-      <LoadingButton
-        text={sim ? simResult : t`Simulate proposal`}
-        mt={4}
-        mb={2}
-        fullWidth
+      <Button
+        className="mt-4 mb-2 w-full"
         disabled={isLoading || !!sim}
         onClick={handleSimulation}
-        sx={getButtonStyles(sim)}
-      />
+        style={getButtonStyles(sim)}
+      >
+        {sim ? simResult : t`Simulate proposal`}
+      </Button>
       {error && (
         <Text as="p" variant="legend" color="danger">
           Simulation Error. Please try again later.

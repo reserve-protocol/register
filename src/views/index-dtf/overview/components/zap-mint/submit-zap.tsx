@@ -227,10 +227,7 @@ const SubmitZapButton = ({
             ? `${addStepTwoLabel ? 'Step 2. ' : ''}${buttonLabel}`
             : `${addStepOneLabel ? 'Step 1. ' : ''}Approve use of ${inputSymbol}`
         }
-        fullWidth
-        sx={{
-          borderRadius: '12px',
-        }}
+        className="w-full rounded-xl"
       />
       <ZapTxErrorMsg error={error} />
     </div>

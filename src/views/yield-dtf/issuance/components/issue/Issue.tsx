@@ -1,6 +1,6 @@
 import { t, Trans } from '@lingui/macro'
 import FacadeRead from 'abis/FacadeRead'
-import { Button } from 'components'
+import { Button } from '@/components/ui/button'
 import useRToken from 'hooks/useRToken'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
@@ -95,7 +95,7 @@ const Issue = () => {
       <Card className="p-4 border-2 border-secondary">
         <IssueInput title={t`Mint`} compact={false} />
         <Button
-          sx={{ width: '100%' }}
+          className="w-full mt-4"
           disabled={
             !isValid ||
             issuing ||
@@ -106,7 +106,6 @@ const Issue = () => {
             chainId === ChainId.Arbitrum
           }
           variant={missingCollateral ? 'destructive' : 'default'}
-          className="mt-4"
           onClick={handleIssue}
         >
           {chainId === ChainId.Arbitrum ? (

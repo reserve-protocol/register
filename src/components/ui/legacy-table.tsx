@@ -94,6 +94,10 @@ export function Table({
     getSpacingClass('p', p),
   ].filter(Boolean)
 
+  // Polished table styling matching yield-dtf transactions table
+  const polishedTableClassName =
+    'rounded-3xl pt-5 bg-card text-sm [&_table_tr]:border-none'
+
   return (
     <div className={cn(spacingClasses)}>
       <DataTable
@@ -105,6 +109,7 @@ export function Table({
         initialSorting={sortBy}
         loading={isLoading}
         className={cn(
+          polishedTableClassName,
           compact && '[&_td]:py-1 [&_th]:py-1',
           maxHeight !== 'auto' && `max-h-[${maxHeight}]`,
           className

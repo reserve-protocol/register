@@ -1,5 +1,5 @@
 import { t, Trans } from '@lingui/macro'
-import { SmallButton } from 'components'
+import { Button } from '@/components/ui/button'
 import { useAtom, useAtomValue } from 'jotai'
 import { Box, BoxProps, Checkbox, Text } from 'theme-ui'
 import {
@@ -28,13 +28,14 @@ const ProposedBasketPreview = (props: BoxProps) => {
           <Text variant="strong" sx={{ color: 'warning' }}>
             <Trans>New primary basket</Trans>
           </Text>
-          <SmallButton
-            ml="auto"
-            variant="muted"
+          <Button
+            size="sm"
+            variant="ghost"
             onClick={() => setProposeNewBasket(false)}
+            className="ml-auto"
           >
             <Trans>Revert</Trans>
-          </SmallButton>
+          </Button>
         </Box>
         <label>
           <Box variant="layout.verticalAlign" mt={2}>

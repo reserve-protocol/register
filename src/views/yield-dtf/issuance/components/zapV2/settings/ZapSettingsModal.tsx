@@ -1,4 +1,5 @@
-import { Button, Modal } from 'components'
+import { Button } from '@/components/ui/button'
+import { Modal } from 'components'
 import Help from 'components/help'
 import { X } from 'lucide-react'
 import { Box, Text } from 'theme-ui'
@@ -31,9 +32,10 @@ const ZapSettingsModal = () => {
         <Box variant="layout.verticalAlign" p={4} mb={[3, 0]} pt={3} pb={0}>
           <Text variant="sectionTitle">Zap Settings</Text>
           <Button
-            variant="circle"
+            variant="ghost"
+            size="icon"
+            className="ml-auto rounded-full"
             onClick={() => setOpenSettings(false)}
-            sx={{ marginLeft: 'auto', backgroundColor: 'transparent' }}
           >
             <X />
           </Button>

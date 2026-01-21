@@ -1,4 +1,4 @@
-import { Button } from 'components'
+import { Button } from '@/components/ui/button'
 import { useState } from 'react'
 import { ChevronDown, ChevronUp } from 'lucide-react'
 import { Box, BoxProps, Card, Divider, Spinner, Text } from 'theme-ui'
@@ -58,15 +58,9 @@ const RevenueBoxContainer = ({
           right
         ) : (
           <Button
-            ml="auto"
-            small
-            sx={{
-              display: 'flex',
-              flexShrink: 0,
-              alignItems: 'center',
-              backgroundColor: !muted ? 'primary' : 'secondary',
-              color: !muted ? 'white' : 'text',
-            }}
+            className="ml-auto flex shrink-0 items-center"
+            size="sm"
+            variant={!muted ? 'default' : 'secondary'}
             disabled={!!loading}
             onClick={() => setExpanded(!expanded)}
           >

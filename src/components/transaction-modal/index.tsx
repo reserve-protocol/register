@@ -47,7 +47,7 @@ const Approval = ({
         onClick={write}
         disabled={!isReady}
         text={!isReady ? `Verifying allowance...` : `Allow use of ${symbol}`}
-        fullWidth
+        className="w-full"
         gas={gas}
       />
     </>
@@ -155,9 +155,8 @@ const TransactionModal = ({
         }
         text={confirmLabel}
         onClick={handleConfirm}
-        fullWidth
+        className="w-full mt-4"
         gas={hasAllowance ? gas : undefined}
-        mt={3}
       />
       {!!validationMessage && (
         <Box sx={{ textAlign: 'center', fontSize: 1 }} mt={3}>

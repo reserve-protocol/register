@@ -140,7 +140,7 @@ const SimpleDeployButton = ({
           ? `Create ${form?.symbol || 'DTF'}`
           : `Approve use of ${usedToken.symbol || 'ERC20'}`
       }
-      fullWidth
+      className="w-full"
       error={
         approvalError ||
         approvalValidationError ||

@@ -98,8 +98,7 @@ const GovernanceStatus = () => {
 
       <TransactionButton
         text={t`Deploy Governance`}
-        mt={4}
-        fullWidth
+        className="mt-6 w-full"
         disabled={!isReady}
         onClick={write}
         gas={gas}

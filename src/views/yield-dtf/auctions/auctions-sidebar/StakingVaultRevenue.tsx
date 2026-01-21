@@ -1,6 +1,7 @@
 import StakingVault from 'abis/StakingVault'
-import { LoadingButton } from 'components'
+import { Button } from '@/components/ui/button'
 import Help from 'components/help'
+import { Loader2 } from 'lucide-react'
 import useContractWrite from 'hooks/useContractWrite'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
@@ -213,26 +214,23 @@ const StakingVaultRevenue = () => {
             )} ${rToken.symbol}`}</Text>
           </Box>
 
-          <LoadingButton
-            loading={isLoading}
-            fullWidth
+          <Button
+            className="mt-4 py-2 w-full"
             disabled={!showNudgeButton || isLoading}
             onClick={() => write?.()}
-            mt={3}
-            py={2}
-            text={
-              <Box
-                variant="layout.verticalAlign"
-                sx={{ justifyContent: 'center', gap: 1 }}
-              >
-                <Text>Nudge</Text>
-                <Help
-                  content={`Starts the next ${rTokenVault.name} reward period once the current one ends. Disabled until then.`}
-                  placement="bottom"
-                />
-              </Box>
-            }
-          />
+          >
+            {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            <Box
+              variant="layout.verticalAlign"
+              sx={{ justifyContent: 'center', gap: 1 }}
+            >
+              <Text>Nudge</Text>
+              <Help
+                content={`Starts the next ${rTokenVault.name} reward period once the current one ends. Disabled until then.`}
+                placement="bottom"
+              />
+            </Box>
+          </Button>
         </Box>
       </Card>
     </>

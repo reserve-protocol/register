@@ -1,5 +1,5 @@
 import { t } from '@lingui/macro'
-import { SmallButton } from 'components'
+import { Button } from '@/components/ui/button'
 import TokenItem from 'components/token-item'
 import dayjs from 'dayjs'
 import { useAtomValue, useSetAtom } from 'jotai'
@@ -99,12 +99,12 @@ const useColumns = (ended = false) => {
 
           return (
             <Flex sx={{ justifyContent: 'right' }}>
-              <SmallButton variant="muted" onClick={handleClick}>
+              <Button size="sm" variant="ghost" onClick={handleClick}>
                 <Box variant="layout.verticalAlign">
                   {text}
                   <ArrowUpRight style={{ marginLeft: 10 }} size={14} />
                 </Box>
-              </SmallButton>
+              </Button>
             </Flex>
           )
         },

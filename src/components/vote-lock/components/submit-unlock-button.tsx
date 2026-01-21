@@ -92,7 +92,7 @@ const SubmitUnlockButton = () => {
             ? 'Transaction confirmed'
             : `Begin ${unlockDelay ? `${unlockDelay}-day` : ''} unlock delay`
         }
-        fullWidth
+        className="w-full"
         error={error || txError}
       />
     </div>

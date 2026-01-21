@@ -63,7 +63,7 @@ export const DelegateButton = () => {
         loadingText={!!hash ? 'Confirming tx...' : 'Pending, sign in wallet'}
         onClick={write}
         text={`Delegate ${stToken?.underlying.symbol}`}
-        fullWidth
+        className="w-full"
         error={error || txError}
       />
     </div>
@@ -211,7 +211,7 @@ const SubmitLockButton = () => {
               ? `Vote lock ${stToken?.underlying.symbol}`
               : `Approve use of ${stToken?.underlying.symbol}`
         }
-        fullWidth
+        className="w-full"
         error={
           readyToSubmit
             ? error || txError

@@ -1,5 +1,5 @@
 import { t, Trans } from '@lingui/macro'
-import { SmallButton } from 'components'
+import { Button } from '@/components/ui/button'
 import {
   ExternalAddressSplit,
   revenueSplitAtom,
@@ -128,13 +128,14 @@ const ProposedRevenueSplitPreview = (props: BoxProps) => {
             </Text>
             <Text>{shortenAddress(change.split.address)}</Text>
           </Box>
-          <SmallButton
-            ml="auto"
-            variant="muted"
+          <Button
+            size="sm"
+            variant="ghost"
             onClick={() => handleRevertExternal(change)}
+            className="ml-auto"
           >
             <Trans>Revert</Trans>
-          </SmallButton>
+          </Button>
         </Box>
       ))}
     </PreviewBox>

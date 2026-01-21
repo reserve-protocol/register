@@ -1,6 +1,6 @@
-import { LoadingButton } from 'components'
+import { Button } from '@/components/ui/button'
 import TokenLogo from 'components/icons/TokenLogo'
-import { Check } from 'lucide-react'
+import { Check, Loader2 } from 'lucide-react'
 import { Box, Spinner, Text } from 'theme-ui'
 import { useZap } from '../context/ZapContext'
 import { useZapTx } from '../context/ZapTxContext'
@@ -47,14 +47,17 @@ const ZapApprovalButton = () => {
 
   if (hasAllowance) return null
 
+  const isLoading = loadingApproval || loadingZap || validatingZap
+
   return (
-    <LoadingButton
-      onClick={approve}
-      loading={loadingApproval || loadingZap || validatingZap}
-      text={`Approve use of ${tokenIn.symbol}`}
-      fullWidth
-      loadingText={loadingApproval ? 'Approving...' : 'Finding route...'}
-    />
+    <Button onClick={approve} disabled={isLoading} className="w-full">
+      {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+      {isLoading
+        ? loadingApproval
+          ? 'Approving...'
+          : 'Finding route...'
+        : `Approve use of ${tokenIn.symbol}`}
+    </Button>
   )
 }
 

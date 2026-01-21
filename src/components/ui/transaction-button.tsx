@@ -19,26 +19,6 @@ import { UseSimulateContractParameters, useSwitchChain } from 'wagmi'
 import { Button, ButtonProps } from './button'
 import { cn } from '@/lib/utils'
 
-// Spacing utility for theme-ui to Tailwind conversion
-const spacingMap: Record<number, string> = { 0: '0', 1: '1', 2: '2', 3: '4', 4: '6', 5: '8' }
-const getSpacing = (value?: number | string) => {
-  if (value === undefined) return ''
-  if (typeof value === 'string') {
-    if (value === 'auto') return 'auto'
-    return value
-  }
-  return spacingMap[value] ?? String(value)
-}
-
-const getSpacingClasses = (ml?: number | string, mr?: number | string, mt?: number | string, mb?: number | string) => {
-  return [
-    ml !== undefined && `ml-${getSpacing(ml)}`,
-    mr !== undefined && `mr-${getSpacing(mr)}`,
-    mt !== undefined && `mt-${getSpacing(mt)}`,
-    mb !== undefined && `mb-${getSpacing(mb)}`,
-  ].filter(Boolean).join(' ')
-}
-
 export interface TransactionButtonProps extends ButtonProps {
   text?: string
   gas?: bigint
@@ -48,14 +28,6 @@ export interface TransactionButtonProps extends ButtonProps {
   error?: Error | null
   chain?: number
   errorWithName?: boolean
-  fullWidth?: boolean
-  small?: boolean
-  ml?: number | string
-  mr?: number | string
-  mt?: number | string
-  mb?: number | string
-  // Allow sx but ignore it (theme-ui compat)
-  sx?: Record<string, unknown>
 }
 
 export const GasEstimateLabel = ({ gas }: { gas: bigint }) => {
@@ -71,11 +43,7 @@ export const GasEstimateLabel = ({ gas }: { gas: bigint }) => {
   )
 }
 
-export const ConnectWalletButton = ({
-  fullWidth,
-  className,
-  ...props
-}: ButtonProps & { fullWidth?: boolean }) => {
+export const ConnectWalletButton = ({ className, ...props }: ButtonProps) => {
   const { openConnectModal } = useConnectModal()
 
   return (
@@ -83,7 +51,7 @@ export const ConnectWalletButton = ({
       {...props}
       onClick={openConnectModal}
       variant="accent"
-      className={cn('rounded-xl', fullWidth && 'w-full', className)}
+      className={cn('rounded-xl', className)}
     >
       <span>
         <Trans>Connect Wallet</Trans>
@@ -111,7 +79,7 @@ export const TransactionButtonContainer = ({
   let Component = children
 
   if (!wallet) {
-    Component = <ConnectWalletButton fullWidth />
+    Component = <ConnectWalletButton className="w-full" />
   } else if (isInvalidWallet && switchChain) {
     Component = (
       <Button
@@ -138,16 +106,8 @@ const TransactionButton = ({
   loadingText,
   errorWithName = true,
   text,
-  fullWidth,
-  small,
-  ml,
-  mr,
-  mt,
-  mb,
-  sx: _sx, // Ignore sx prop
   className,
   disabled,
-  size,
   ...props
 }: TransactionButtonProps) => {
   const address = useAtomValue(walletAtom)
@@ -158,25 +118,15 @@ const TransactionButton = ({
     ? walletChain !== chain
     : walletChain !== chainId
 
-  const spacingClasses = getSpacingClasses(ml, mr, mt, mb)
-  const buttonSize = small ? 'sm' : size
-
   if (!address) {
-    return (
-      <ConnectWalletButton
-        fullWidth={fullWidth}
-        className={cn(spacingClasses, className)}
-        {...props}
-      />
-    )
+    return <ConnectWalletButton className={className} {...props} />
   }
 
   if (isInvalidWallet && switchChain) {
     return (
       <Button
         {...props}
-        size={buttonSize}
-        className={cn('rounded-xl', fullWidth && 'w-full', spacingClasses, className)}
+        className={cn('rounded-xl', className)}
         onClick={() => {
           switchChain({ chainId: chain || chainId })
         }}
@@ -193,8 +143,7 @@ const TransactionButton = ({
     <>
       <Button
         disabled={disabled || isLoading}
-        size={buttonSize}
-        className={cn(fullWidth && 'w-full', spacingClasses, className)}
+        className={className}
         {...props}
       >
         {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
@@ -219,16 +168,8 @@ export interface ExecuteButtonProps extends ButtonProps {
   txLabel?: string
   successLabel?: string
   onSuccess?(): void
-  fullWidth?: boolean
   loading?: boolean
   loadingText?: string
-  small?: boolean
-  ml?: number | string
-  mr?: number | string
-  mt?: number | string
-  mb?: number | string
-  // Allow sx but ignore it (theme-ui compat)
-  sx?: Record<string, unknown>
 }
 
 export const ExecuteButton = ({
@@ -239,16 +180,8 @@ export const ExecuteButton = ({
   disabled,
   loadingText,
   text,
-  fullWidth,
-  small,
-  ml,
-  mr,
-  mt,
-  mb,
-  sx: _sx, // Ignore sx prop
   className,
   loading: externalLoading,
-  size,
   ...props
 }: ExecuteButtonProps) => {
   const { write, hash, isLoading, validationError, reset, isReady } =
@@ -259,8 +192,6 @@ export const ExecuteButton = ({
     label: txLabel || String(text),
   })
 
-  const spacingClasses = getSpacingClasses(ml, mr, mt, mb)
-  const buttonSize = small ? 'sm' : size
   const isLoading_ = isLoading || isMining || externalLoading
   let displayText = text
   let finalLoadingText = loadingText
@@ -296,8 +227,7 @@ export const ExecuteButton = ({
     <Button
       disabled={status === 'success' || disabled || !isReady}
       onClick={write}
-      size={buttonSize}
-      className={cn(fullWidth && 'w-full', spacingClasses, className)}
+      className={className}
       {...props}
     >
       {isLoading_ && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}

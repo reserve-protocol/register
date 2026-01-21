@@ -1,4 +1,4 @@
-import { Button } from 'components'
+import { Button } from '@/components/ui/button'
 import Help from 'components/help'
 import AsteriskIcon from 'components/icons/AsteriskIcon'
 import { Box, Text } from 'theme-ui'
@@ -33,9 +33,8 @@ const ZapToggleBottom = ({
         />
       </Box>
       <Button
-        backgroundColor="muted"
-        color="text"
-        small
+        variant="muted"
+        size="sm"
         onClick={() => setZapEnabled(false)}
       >
         {`Switch to manual ${operation === 'mint' ? 'minting' : 'redemption'}`}

@@ -219,7 +219,7 @@ const SubmitStakeButton = () => {
         }
         onClick={readyToSubmit ? write : approve}
         text={getButtonText()}
-        fullWidth
+        className="w-full"
         error={
           readyToSubmit
             ? error || txError

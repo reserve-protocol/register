@@ -339,19 +339,19 @@ const CollateralItem = ({ collateral, wrapping, ...props }: Props) => {
           </Box>
           {!hasAllowance && (
             <ExecuteButton
-              sx={{ flexShrink: 0 }}
+              className="shrink-0"
               call={approveCall}
               text="Approve"
-              small
+              size="sm"
             />
           )}
           {hasAllowance && (
             <ExecuteButton
               call={executeCall}
-              sx={{ flexShrink: 0 }}
+              className="shrink-0"
               disabled={!isValid}
               text={wrapping ? 'Wrap' : 'Unwrap'}
-              small
+              size="sm"
               onSuccess={handleSuccess}
             />
           )}

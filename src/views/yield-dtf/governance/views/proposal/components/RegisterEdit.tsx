@@ -1,6 +1,6 @@
 import { Trans } from '@lingui/macro'
 import { Input } from 'components'
-import { SmallButton } from 'components'
+import { Button } from '@/components/ui/button'
 import { useAtomValue } from 'jotai'
 import { useState } from 'react'
 import { rTokenAssetsAtom } from 'state/atoms'
@@ -44,16 +44,17 @@ const NewAssetAddress = ({
           )}
         </Text>
       )}
-      <SmallButton
+      <Button
+        size="sm"
         disabled={!isValid || isExisting}
         onClick={() => {
           setAddress('')
           onSave(address)
         }}
-        ml={3}
+        className="ml-4"
       >
         <Trans>Save</Trans>
-      </SmallButton>
+      </Button>
     </Box>
   )
 }

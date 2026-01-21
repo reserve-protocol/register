@@ -18,7 +18,7 @@ const PendingToSettleAuctions = (props: BoxProps) => {
       <Text variant="strong" ml={4} mb={4}>
         <Trans>Pending auctions to settle</Trans>
       </Text>
-      <Table columns={columns} data={data} />
+      <Table columns={columns} data={data} className="border-[4px] border-secondary" />
     </Box>
   )
 }

@@ -77,8 +77,8 @@ const ClaimFromTraderButton = ({
       </Text>
       <ExecuteButton
         text={t`Claim $${formatCurrency(claimAmount)}`}
-        small
-        ml="auto"
+        size="sm"
+        className="ml-auto"
         txLabel="Claim rewards"
         onSuccess={handleSuccess}
         successLabel="Success!"

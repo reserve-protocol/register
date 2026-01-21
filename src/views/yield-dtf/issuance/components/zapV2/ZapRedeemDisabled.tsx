@@ -1,4 +1,4 @@
-import { Button } from 'components'
+import { Button } from '@/components/ui/button'
 import { Box, Text } from 'theme-ui'
 import { useZap } from './context/ZapContext'
 
@@ -29,8 +29,7 @@ const ZapRedeemDisabled = ({ disableRedeem }: { disableRedeem: boolean }) => {
         Zap Redeem not available during re-collateralization
       </Text>
       <Button
-        backgroundColor="primary"
-        small
+        size="sm"
         onClick={() => setZapEnabled(false)}
       >
         Switch to manual minting

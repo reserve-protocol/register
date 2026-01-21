@@ -1,4 +1,4 @@
-import { Button } from 'components'
+import { Button } from '@/components/ui/button'
 import { ReactNode, useEffect, useState } from 'react'
 import { Box, Text } from 'theme-ui'
 import { useZap } from '../context/ZapContext'
@@ -48,7 +48,7 @@ const ZapRefreshQuote = ({ children }: { children: ReactNode }) => {
   return (
     <Box>
       {showRefresh && !(loadingZap || validatingZap) ? (
-        <Button onClick={handleRefreshClick} fullWidth>
+        <Button onClick={handleRefreshClick} className="w-full">
           Refresh Quote
         </Button>
       ) : (

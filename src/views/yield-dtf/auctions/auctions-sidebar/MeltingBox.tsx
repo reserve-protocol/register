@@ -47,8 +47,8 @@ const MeltingBox = () => {
       right={
         <ExecuteButton
           text={t`Trigger melt`}
-          small
-          ml="auto"
+          size="sm"
+          className="ml-auto"
           successLabel="Success!"
           call={call}
         />

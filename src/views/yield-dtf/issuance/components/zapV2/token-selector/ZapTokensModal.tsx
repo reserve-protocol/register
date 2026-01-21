@@ -4,7 +4,8 @@ import { SearchInput } from '@/components/ui/input'
 import { useMemo, useState } from 'react'
 import { ArrowUpRight, X } from 'lucide-react'
 import { colors } from 'theme'
-import { Box, Button, Divider, Link, Text } from 'theme-ui'
+import { Box, Divider, Link, Text } from 'theme-ui'
+import { Button } from '@/components/ui/button'
 import { formatCurrency, shortenString } from 'utils'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { Address } from 'viem'
@@ -132,9 +133,10 @@ const ZapTokensModal = () => {
             {operation === 'mint' ? 'Mint' : 'Redeem'} using
           </Text>
           <Button
-            variant="circle"
+            variant="ghost"
+            size="icon"
+            className="ml-auto rounded-full bg-transparent"
             onClick={() => setOpenTokenSelector(false)}
-            sx={{ marginLeft: 'auto', backgroundColor: 'transparent' }}
           >
             <X />
           </Button>

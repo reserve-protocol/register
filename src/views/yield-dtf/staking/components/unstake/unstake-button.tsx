@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro'
-import { Button } from 'components'
+import { Button } from '@/components/ui/button'
 import { useAtomValue } from 'jotai'
 import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
 import { useCallback, useState } from 'react'
@@ -28,7 +28,7 @@ const UnstakeButton = () => {
     <>
       <div className="mt-4">
         <Button
-          fullWidth
+          className="w-full"
           disabled={!isValid && isAvailable}
           onClick={handleOpen}
         >

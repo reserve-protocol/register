@@ -56,13 +56,13 @@ const ProposalExecute = () => {
 
   return (
     <TransactionButton
-      small
+      size="sm"
       loading={isProcessing || isMining || isLoading}
       mining={isMining}
       disabled={!isReady || !canExecute || status === 'success'}
       onClick={write}
       text={isProcessing ? 'Processing...' : t`Execute proposal`}
-      sx={{ height: '44px' }}
+      className="h-[44px]"
       error={validationError}
       errorWithName={false}
     />
