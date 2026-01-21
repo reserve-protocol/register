@@ -1,6 +1,5 @@
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { debouncedWalletInputAtom, filtersAtom } from './atoms'
-import { Box, Flex, Text } from 'theme-ui'
 import ChainFilter from '../filters/ChainFilter'
 import TokenFilter from '../filters/TokenFilter'
 import TransactionTypeFilter from '../filters/TransactionTypeFilter'
@@ -12,17 +11,17 @@ const WalletFilter = () => {
   const setValue = useSetAtom(debouncedWalletInputAtom.debouncedValueAtom)
 
   return (
-    <Box ml={[0, 3]} sx={{ width: 160, display: ['none', 'block'] }}>
-      <Text ml={2} variant="legend">
+    <div className="hidden md:block ml-0 md:ml-4 w-40">
+      <span className="ml-2 text-legend">
         <Trans>Wallet</Trans>
-      </Text>
+      </span>
       <Input
         className="mt-1 h-8 text-sm"
         onChange={(e) => setValue(e.target.value)}
         value={value}
         placeholder={t`Input wallet`}
       />
-    </Box>
+    </div>
   )
 }
 
@@ -34,10 +33,10 @@ const TransactionFilters = () => {
   }
 
   return (
-    <Box variant="layout.verticalAlign" sx={{ gap: 3 }}>
+    <div className="flex items-center gap-4">
       <WalletFilter />
       <TokenFilter
-        sx={{ display: ['none', 'block'] }}
+        className="hidden md:block"
         selected={filters.tokens}
         onChange={(selected) => handleChange('tokens', selected)}
       />
@@ -49,7 +48,7 @@ const TransactionFilters = () => {
         selected={filters.chains}
         onChange={(selected) => handleChange('chains', selected)}
       />
-    </Box>
+    </div>
   )
 }
 

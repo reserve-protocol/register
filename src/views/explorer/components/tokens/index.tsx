@@ -93,7 +93,7 @@ const Filters = () => {
       <ChainFilter
         selected={filters.chains}
         onChange={(selected) => handleChange('chains', selected)}
-        mr={3}
+        className="mr-4"
       />
       <TargetFilter />
     </div>
