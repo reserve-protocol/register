@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
 import {
   Tooltip,
   TooltipContent,
@@ -10,10 +11,10 @@ import { Trans } from '@lingui/macro'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import ChainLogo from 'components/icons/ChainLogo'
 import { useAtomValue } from 'jotai'
-import { AlertCircle, Menu, Wallet, Power } from 'lucide-react'
+import { AlertCircle, Wallet, Power } from 'lucide-react'
 import { ReactNode } from 'react'
 import { chainIdAtom, selectedRTokenAtom } from 'state/atoms'
-import { Box, Card, Flex, Text } from 'theme-ui'
+import { cn } from '@/lib/utils'
 
 const ErrorWrapper = ({
   chainId,
@@ -32,24 +33,24 @@ const ErrorWrapper = ({
     <Tooltip>
       <TooltipTrigger asChild>{children}</TooltipTrigger>
       <TooltipContent className="p-0 border-0 bg-transparent">
-        <Card sx={{ width: 320, border: '1px solid black' }}>
-          <Text sx={{ fontWeight: 400 }} variant="legend">
+        <Card className="w-80 p-4 border border-border">
+          <span className="text-legend">
             <Trans>Network</Trans>
-          </Text>
-          <Flex my={2} variant="layout.verticalAlign">
-            <AlertCircle size={18} color="#FF0000" />
-            <Text ml={2}>Chain: {chainId}</Text>
-            <Text ml="auto" sx={{ fontWeight: 500 }}>
+          </span>
+          <div className="flex items-center my-2">
+            <AlertCircle size={18} className="text-destructive" />
+            <span className="ml-2">Chain: {chainId}</span>
+            <span className="ml-auto font-medium">
               <Trans>Unsupported</Trans>
-            </Text>
-          </Flex>
-          <Text variant="legend" sx={{ fontSize: 1 }}>
+            </span>
+          </div>
+          <span className="text-legend text-sm">
             <Trans>
               The configured network "{currentChain}" is different from the
               wallet selected network "{chainId}"". Change your network in the
               connected wallet.
             </Trans>
-          </Text>
+          </span>
         </Card>
       </TooltipContent>
     </Tooltip>
@@ -73,15 +74,11 @@ const Account = () => {
           isTokenSelected && connected && chain.id !== chainId
 
         return (
-          <Box
-            {...(!ready && {
-              'aria-hidden': true,
-              sx: {
-                opacity: 0,
-                pointerEvents: 'none',
-                userSelect: 'none',
-              },
-            })}
+          <div
+            className={cn(
+              !ready && 'opacity-0 pointer-events-none select-none'
+            )}
+            aria-hidden={!ready}
           >
             {(() => {
               if (!connected) {
@@ -108,16 +105,7 @@ const Account = () => {
                   currentChain={chainId}
                 >
                   <PortfolioSidebar>
-                    <Box
-                      variant="layout.verticalAlign"
-                      sx={{
-                        justifyContent: 'center',
-                        cursor: 'pointer',
-                        fontSize: '16px',
-                      }}
-
-                      // onClick={() => setVisible(true)}
-                    >
+                    <div className="flex items-center justify-center cursor-pointer text-base">
                       <div className="flex items-center relative">
                         <div className="flex items-center absolute lg:relative -bottom-1 -right-1 lg:bottom-0 lg:right-0">
                           {!invalidChain ? (
@@ -142,13 +130,13 @@ const Account = () => {
                           <Wallet size={16} />
                         </div>
                       </div>
-                    </Box>
+                    </div>
                   </PortfolioSidebar>
                   <Staking />
                 </ErrorWrapper>
               )
             })()}
-          </Box>
+          </div>
         )
       }}
     </ConnectButton.Custom>

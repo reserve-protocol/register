@@ -1,25 +1,25 @@
 import LegacyTokenLogo from 'components/icons/TokenLogo'
 import TokenLogo from '.'
 import React from 'react'
-import { Box, BoxProps } from 'theme-ui'
+import { cn } from '@/lib/utils'
 
-interface Props extends BoxProps {
+interface Props {
   tokens: { symbol: string; logo?: string; address: string; chain?: number }[]
   size?: number
   reverseStack?: boolean
   overlap?: number
   outsource?: boolean
+  className?: string
 }
 
 const StackTokenLogo = React.memo(
   ({
     tokens,
-    sx = {},
     size,
     reverseStack = false,
     overlap = 0,
     outsource = false,
-    ...props
+    className,
   }: Props) => {
     // Create a copy of the array before reversing it
     const orderedTokens = React.useMemo(() => {
@@ -28,25 +28,17 @@ const StackTokenLogo = React.memo(
     }, [tokens, reverseStack])
 
     return (
-      <Box
-        variant="layout.verticalAlign"
-        sx={{
-          position: 'relative',
-          display: 'flex',
-          flexDirection: reverseStack ? 'row-reverse' : 'row',
-          minWidth: 'max-content',
-          ...sx,
-        }}
-        {...props}
+      <div
+        className={cn(
+          'relative flex items-center min-w-max',
+          reverseStack ? 'flex-row-reverse' : 'flex-row',
+          className
+        )}
       >
         {orderedTokens.map((token, index) => {
           if (token.symbol === 'FRAXBP') {
             return (
-              <Box
-                variant="layout.verticalAlign"
-                sx={{ width: '28px' }}
-                key={token.address}
-              >
+              <div className="flex items-center w-7" key={token.address}>
                 <LegacyTokenLogo
                   width={size}
                   className="relative"
@@ -59,7 +51,7 @@ const StackTokenLogo = React.memo(
                   style={{ left: index ? `${-6 * (index + 1)}px` : 0 }}
                   symbol={'usdc'}
                 />
-              </Box>
+              </div>
             )
           }
 
@@ -68,13 +60,10 @@ const StackTokenLogo = React.memo(
           const m = first ? 0 : gap
 
           return (
-            <Box
+            <div
               key={token.address}
-              sx={{
-                position: 'relative',
-                left: `${m}px`,
-                marginRight: `${m}px`,
-              }}
+              className="relative"
+              style={{ left: `${m}px`, marginRight: `${m}px` }}
             >
               {outsource ? (
                 <TokenLogo
@@ -91,10 +80,10 @@ const StackTokenLogo = React.memo(
                   src={token.logo}
                 />
               )}
-            </Box>
+            </div>
           )
         })}
-      </Box>
+      </div>
     )
   }
 )

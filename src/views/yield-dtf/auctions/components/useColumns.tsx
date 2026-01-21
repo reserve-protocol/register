@@ -72,7 +72,7 @@ const useColumns = (ended = false) => {
 
           const handleClick = () => {
             if (isDutch && !data.row.original.isSettled) {
-              setSidebar(true)
+              setSidebar()
             } else if (
               data.row.original.isSettled &&
               data.row.original.settleTxHash

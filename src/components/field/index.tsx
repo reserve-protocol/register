@@ -1,15 +1,21 @@
 import { t } from '@lingui/macro'
 import Help from 'components/help'
+import { Input } from '@/components/ui/input'
+import { Textarea } from '@/components/ui/textarea'
+import { Slider } from '@/components/ui/slider'
 import React, { useMemo } from 'react'
 import { RegisterOptions, useFormContext } from 'react-hook-form'
-import { Box, Flex, Input, InputProps, Slider, Text, Textarea } from 'theme-ui'
 import { StringMap } from 'types'
+import { cn } from '@/lib/utils'
 
-interface FieldProps extends InputProps {
+interface FieldProps {
   label?: string
   strong?: boolean
   help?: string
   required?: boolean
+  children?: React.ReactNode
+  className?: string
+  mb?: number
 }
 
 interface FormFieldProps extends FieldProps {
@@ -19,6 +25,7 @@ interface FormFieldProps extends FieldProps {
   error?: string | boolean
   options?: RegisterOptions
   helper?: string
+  disabled?: boolean
 }
 
 export const getErrorMessage = (error: StringMap): string => {
@@ -36,62 +43,64 @@ export const getErrorMessage = (error: StringMap): string => {
   }
 }
 
+const mbToClass: Record<number, string> = {
+  1: 'mb-1',
+  2: 'mb-2',
+  3: 'mb-4',
+  4: 'mb-6',
+  5: 'mb-8',
+}
+
 export const Field = ({
   label,
   help,
   required,
   strong,
   children,
-  sx = {},
-  ...props
+  className,
+  mb,
 }: FieldProps) => (
-  <Box sx={{ ...sx, position: 'relative' }} {...props}>
-    <Flex mb={2} sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
-      <Box variant="layout.verticalAlign" sx={{ gap: 1 }} ml={3}>
-        <Text
-          variant="subtitle"
-          sx={{
-            fontSize: 1,
-            fontWeight: strong ? 700 : 400,
-            color: strong ? 'text' : 'inherit',
-          }}
+  <div className={cn('relative', mb && mbToClass[mb], className)}>
+    <div className="flex items-center justify-between mb-2">
+      <div className="flex items-center gap-1 ml-4">
+        <span
+          className={cn(
+            'text-sm',
+            strong ? 'font-bold text-foreground' : 'text-inherit'
+          )}
         >
           {label}
-        </Text>
-        {required && <Text color="red">*</Text>}
-      </Box>
-      {!!help && <Help mx={2} content={help} />}
-    </Flex>
+        </span>
+        {required && <span className="text-destructive">*</span>}
+      </div>
+      {!!help && <Help className="mx-2" content={help} />}
+    </div>
     {children}
-  </Box>
+  </div>
 )
 
-export const FieldInput = React.forwardRef(
-  ({ sx = {}, textarea = false, error, ...props }: FormFieldProps, ref) => {
-    const InputComponent = textarea ? Textarea : Input
+export const FieldInput = React.forwardRef<
+  HTMLInputElement | HTMLTextAreaElement,
+  FormFieldProps
+>(({ textarea = false, error, className, ...props }, ref) => {
+  const InputComponent = textarea ? Textarea : Input
 
-    return (
-      <>
-        <InputComponent
-          sx={{ ...sx, borderColor: !!error ? 'danger' : 'inputBorder' }}
-          ref={ref}
-          {...(props as any)}
-        />
+  return (
+    <>
+      <InputComponent
+        className={cn(error && 'border-destructive', className)}
+        ref={ref as any}
+        {...(props as any)}
+      />
 
-        {!!error && typeof error === 'string' && (
-          <Text
-            mt={1}
-            ml={2}
-            sx={{ display: 'block', fontSize: 1 }}
-            variant="error"
-          >
-            {error}
-          </Text>
-        )}
-      </>
-    )
-  }
-)
+      {!!error && typeof error === 'string' && (
+        <span className="block mt-1 ml-2 text-sm text-destructive">
+          {error}
+        </span>
+      )}
+    </>
+  )
+})
 
 export const FormField = ({
   placeholder,
@@ -126,17 +135,9 @@ export const FormField = ({
           {...register(name, options)}
         />
         {helper && (
-          <Text
-            variant="legend"
-            sx={{
-              position: 'absolute',
-              right: '20px',
-              top: '44px',
-              fontSize: 1,
-            }}
-          >
+          <span className="absolute right-5 top-11 text-sm text-legend">
             {helper}
-          </Text>
+          </span>
         )}
       </Field>
     ),
@@ -149,17 +150,27 @@ export const FormFieldRange = ({
   options,
   min = 0,
   max = 100,
+  className,
   ...props
-}: FormFieldProps) => {
-  const { register } = useFormContext()
+}: FormFieldProps & { min?: number; max?: number }) => {
+  const { register, watch } = useFormContext()
+  const { onChange } = register(name, options)
+  const value = watch(name)
 
   return useMemo(
     () => (
-      <Field {...props} mb={4}>
-        <Slider {...register(name, options)} min={min} max={max} />
+      <Field {...props} className={cn('mb-6', className)}>
+        <Slider
+          min={min}
+          max={max}
+          value={[Number(value) || 0]}
+          onValueChange={(val) =>
+            onChange({ target: { name, value: val[0] } })
+          }
+        />
       </Field>
     ),
-    [register]
+    [register, value]
   )
 }
 

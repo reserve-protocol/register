@@ -11,8 +11,6 @@ import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
 import { useEffect, useMemo } from 'react'
 import { NavLink } from 'react-router-dom'
 import { chainIdAtom, selectedRTokenAtom } from 'state/atoms'
-import { transition } from 'theme'
-import { Box, NavLinkProps, Text } from 'theme-ui'
 import { ROUTES } from 'utils/constants'
 import RSV from 'utils/rsv'
 
@@ -22,63 +20,33 @@ interface Item {
   Icon: React.ElementType
 }
 
-interface NavItemProps extends Item, Omit<NavLinkProps, 'title'> {
+interface NavItemProps extends Item {
   rTokenAddress: string
-  to?: any
 }
 
 const MenuItem = ({ title, Icon }: Omit<Item, 'path'>) => {
   return (
-    <Box
-      px={2}
-      sx={{
-        display: 'flex',
-        flexGrow: 1,
-        alignItems: 'center',
-        transition,
-      }}
-      my={[10, 10, 2]}
-    >
+    <div className="flex flex-grow items-center px-2 my-2.5 md:my-0.5 transition-all">
       <Icon />
-      <Text
-        sx={{
-          display: ['none', 'none', 'inherit'],
-          whiteSpace: 'nowrap',
-          fontWeight: 300,
-        }}
-        ml={2}
-      >
+      <span className="hidden md:inline whitespace-nowrap font-light ml-2">
         {title}
-      </Text>
-    </Box>
+      </span>
+    </div>
   )
 }
 
-const NavItem = ({
-  path,
-  title,
-  Icon,
-  rTokenAddress,
-  ...props
-}: NavItemProps) => {
+const NavItem = ({ path, title, Icon, rTokenAddress }: NavItemProps) => {
   const chainId = useAtomValue(chainIdAtom)
 
   return (
     <NavLink
-      style={({ isActive }) => ({
-        textDecoration: 'none',
-        marginLeft: 12,
-        marginRight: 12,
-        paddingBottom: '12px',
-        paddingTop: '12px',
-        opacity: isActive ? '1' : '0.68',
-        color: 'inherit',
-        lineHeight: '32px',
-        boxShadow: isActive
-          ? 'inset 0 0px 0px var(--theme-ui-colors-background), inset 0 -2px 0px currentColor, inset 0 0px 0px var(--theme-ui-colors-background)'
-          : 'none',
-        display: 'flex',
-      })}
+      className={({ isActive }) =>
+        `no-underline mx-3 py-3 flex ${
+          isActive
+            ? 'opacity-100 shadow-[inset_0_0px_0px_var(--background),inset_0_-2px_0px_currentColor]'
+            : 'opacity-70'
+        }`
+      }
       to={`${path}?token=${rTokenAddress}&chainId=${chainId}`}
       onClick={() =>
         mixpanel.track('Selected RToken NavItem', {
@@ -86,7 +54,6 @@ const NavItem = ({
           Target: path.slice(1),
         })
       }
-      {...props}
     >
       <MenuItem title={title} Icon={Icon} />
     </NavLink>
@@ -130,7 +97,7 @@ const Navigation = () => {
   }, [rTokenAddress])
 
   return (
-    <Box sx={{ display: 'flex' }} mx={'auto'}>
+    <div className="flex mx-auto">
       {pages.map((item) => (
         <NavItem
           key={item.path}
@@ -138,7 +105,7 @@ const Navigation = () => {
           rTokenAddress={rTokenAddress ?? ''}
         />
       ))}
-    </Box>
+    </div>
   )
 }
 

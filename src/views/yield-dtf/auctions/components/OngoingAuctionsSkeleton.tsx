@@ -12,7 +12,7 @@ const OngoingAuctionsSkeleton = () => {
         No ongoing {rToken?.symbol ?? 'rtoken'}-related auctions. Check for
         available auctions/unrealized revenue{' '}
         <button
-          onClick={() => setSidebar(true)}
+          onClick={() => setSidebar()}
           className="underline text-foreground hover:text-primary"
         >
           here

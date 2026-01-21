@@ -1,12 +1,12 @@
 import { t } from '@lingui/macro'
 import ERC20 from 'abis/ERC20'
 import TransactionButton from '@/components/ui/transaction-button'
+import { Separator } from '@/components/ui/separator'
 import { Modal, ModalProps } from 'components'
 import useContractWrite from 'hooks/useContractWrite'
 import useWatchTransaction from 'hooks/useWatchTransaction'
 import { useAtomValue } from 'jotai'
 import { chainIdAtom, walletAtom } from 'state/atoms'
-import { Divider, Text, Box } from 'theme-ui'
 import { Allowance } from 'types'
 import TransactionConfirmedModal from './TransactionConfirmedModal'
 import TransactionError from './TransactionError'
@@ -40,7 +40,7 @@ const Approval = ({
 
   return (
     <>
-      <Divider sx={{ borderColor: 'darkBorder' }} mx={-4} my={4} />
+      <Separator className="-mx-4 my-6" />
       <TransactionButton
         loading={isLoading || !!hash}
         loadingText={hash ? 'Waiting for allowance...' : 'Sign in wallet...'}
@@ -146,7 +146,7 @@ const TransactionModal = ({
       {requiredAllowance && !hasAllowance && (
         <Approval data={requiredAllowance} />
       )}
-      <Divider sx={{ borderColor: 'darkBorder' }} mx={-4} mt={4} />
+      <Separator className="-mx-4 mt-6" />
       <TransactionButton
         loading={isLoading || isPreparing}
         disabled={!isReady || disabled}
@@ -159,9 +159,9 @@ const TransactionModal = ({
         gas={hasAllowance ? gas : undefined}
       />
       {!!validationMessage && (
-        <Box sx={{ textAlign: 'center', fontSize: 1 }} mt={3}>
-          <Text variant="error">{validationMessage}</Text>
-        </Box>
+        <div className="text-center text-sm mt-4">
+          <span className="text-destructive">{validationMessage}</span>
+        </div>
       )}
     </Modal>
   )

@@ -4,7 +4,6 @@ import TransactionSignedIcon from 'components/icons/SignedTransactionIcon'
 import { Modal } from 'components'
 import { useAtomValue } from 'jotai'
 import { chainIdAtom } from 'state/atoms'
-import { Flex, Link, Text } from 'theme-ui'
 import {
   ETHERSCAN_NAMES,
   ExplorerDataType,
@@ -22,29 +21,23 @@ const TransactionConfirmedModal = ({
 
   return (
     <Modal onClose={onClose} style={{ maxWidth: '420px' }}>
-      <Flex
-        p={4}
-        sx={{
-          alignItems: 'center',
-          flexDirection: 'column',
-          justifyContent: 'center',
-        }}
-      >
+      <div className="flex flex-col items-center justify-center p-6">
         <TransactionSignedIcon />
         <br />
-        <Text variant="title">
+        <span className="text-xl font-medium">
           <Trans>Transaction signed!</Trans>
-        </Text>
+        </span>
         <br />
-        <Link
+        <a
           href={getExplorerLink(hash, chainId, ExplorerDataType.TRANSACTION)}
           target="_blank"
-          sx={{ fontSize: 1, alignItems: 'center', display: 'flex' }}
+          rel="noopener noreferrer"
+          className="flex items-center text-sm text-primary hover:underline"
         >
           <Trans>View on</Trans> {ETHERSCAN_NAMES[chainId]}{' '}
           <ExternalArrowIcon />
-        </Link>
-      </Flex>
+        </a>
+      </div>
     </Modal>
   )
 }

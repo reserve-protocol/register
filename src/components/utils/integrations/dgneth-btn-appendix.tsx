@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { Plus } from 'lucide-react'
 import { FC, PropsWithChildren, memo, useMemo } from 'react'
-import { Box, ButtonProps, Text } from 'theme-ui'
+import { cn } from '@/lib/utils'
 import { ChainId } from 'utils/chains'
 import { erc20Abi, formatUnits } from 'viem'
 import { useReadContracts } from 'wagmi'
@@ -11,7 +11,8 @@ type Props = {
   basketAPY?: number
   borderColor?: string
   hideLabelOnMobile?: boolean
-} & PropsWithChildren<ButtonProps>
+  children?: React.ReactNode
+}
 
 const TOKEN_ADDRESS = '0x005F893EcD7bF9667195642f7649DA8163e23658'
 const STAKE_TOKEN_ADDRESS = '0x5BDd1fA233843Bfc034891BE8a6769e58F1e1346'
@@ -19,7 +20,6 @@ const STAKE_TOKEN_ADDRESS = '0x5BDd1fA233843Bfc034891BE8a6769e58F1e1346'
 const DgnETHButtonAppendix: FC<Props> = ({
   rTokenSymbol,
   basketAPY,
-  borderColor = 'divaBorder',
   hideLabelOnMobile = false,
   children,
 }) => {
@@ -69,15 +69,8 @@ const DgnETHButtonAppendix: FC<Props> = ({
   if (rTokenSymbol !== 'dgnETH') return <>{children}</>
 
   return (
-    <Box
-      variant="layout.verticalAlign"
-      sx={{
-        border: '2px solid',
-        borderColor: borderColor,
-        borderRadius: '14px 46px 46px 14px',
-        gap: 2,
-        cursor: 'pointer',
-      }}
+    <div
+      className="flex items-center border-2 border-border rounded-[14px_46px_46px_14px] gap-2 cursor-pointer"
       onClick={(e) => {
         if (e.target === e.currentTarget) {
           e.stopPropagation()
@@ -86,31 +79,25 @@ const DgnETHButtonAppendix: FC<Props> = ({
       }}
     >
       {children}
-      <Box
-        variant="layout.verticalAlign"
-        pr="12px"
-        sx={{
-          gap: 1,
-        }}
+      <div
+        className="flex items-center pr-3 gap-1"
         onClick={() => {
           window.open('https://degeneth.com/', '_blank')
         }}
       >
         <Plus strokeWidth={1.2} size={16} />
-        <Text color="diva" sx={{ fontWeight: 'bold' }}>
-          {apy}
-        </Text>
-        <Text
-          className="whitespace-nowrap"
-          sx={{
-            display: [hideLabelOnMobile ? 'none' : 'flex', 'flex'],
-            fontSize: [1, 'inherit'],
-          }}
+        <span className="text-primary font-bold">{apy}</span>
+        <span
+          className={cn(
+            'whitespace-nowrap',
+            hideLabelOnMobile ? 'hidden sm:flex' : 'flex',
+            'text-sm sm:text-base'
+          )}
         >
           APY on degeneth.com
-        </Text>
-      </Box>
-    </Box>
+        </span>
+      </div>
+    </div>
   )
 }
 

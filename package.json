@@ -53,7 +53,7 @@
     "graphql": "16.12.0",
     "graphql-request": "^7.4.0",
     "humanize-duration": "^3.28.0",
-    "jotai": "^1.12.0",
+    "jotai": "^2.16.2",
     "lucide-react": "^0.461.0",
     "mixpanel-browser": "2.56.0",
     "next-themes": "^0.4.4",
