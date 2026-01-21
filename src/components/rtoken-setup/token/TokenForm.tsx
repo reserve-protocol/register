@@ -18,7 +18,7 @@ const TokenForm = ({ className }: TokenFormProps) => (
     <FormField
       label={t`Token name`}
       placeholder={t`Input token name`}
-      mb={3}
+      className="mb-4"
       name="name"
       options={{
         required: t`Token name required`,
@@ -27,7 +27,7 @@ const TokenForm = ({ className }: TokenFormProps) => (
     <FormField
       label={t`Ticker`}
       placeholder={t`Input ticker`}
-      mb={3}
+      className="mb-4"
       name="ticker"
       options={{
         required: t`Token ticker is required`,

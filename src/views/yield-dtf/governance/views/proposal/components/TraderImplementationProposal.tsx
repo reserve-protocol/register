@@ -15,7 +15,7 @@ const TraderImplementationProposal = (props: BoxProps) => {
         placeholder={t`Trader contract address`}
         help={t`Trader contract for batch trades.`}
         name="batchTradeImplementation"
-        mb={3}
+        className="mb-4"
         options={{
           required: true,
           pattern: addressPattern,

@@ -101,7 +101,7 @@ const GovernanceStatus = () => {
         gas={gas}
       />
 
-      <TransactionError mt={3} error={validationError || error} />
+      <TransactionError className="mt-4" error={validationError || error} />
     </>
   )
 }

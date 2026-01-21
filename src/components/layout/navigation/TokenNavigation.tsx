@@ -110,7 +110,7 @@ const NavContent = ({
         className={cn(
           'flex items-center p-4 md:p-2 rounded-lg no-underline',
           isActive
-            ? 'bg-card text-foreground'
+            ? 'bg-secondary text-foreground'
             : 'bg-background text-legend hover:bg-muted hover:text-foreground'
         )}
       >

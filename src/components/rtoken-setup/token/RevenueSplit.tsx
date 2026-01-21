@@ -113,7 +113,7 @@ const RevenueSplit = ({ className }: RevenueSplitProps) => {
         />
       </div>
       <Separator className="my-4 -mx-4 border-muted" />
-      <Field label={t`% Revenue to RToken Holders`} mb={3}>
+      <Field label={t`% Revenue to RToken Holders`} className="mb-4">
         <FieldInput
           placeholder={t`Input token holders revenue distribution`}
           {...register('holders', inputValidation)}

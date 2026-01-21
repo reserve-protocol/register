@@ -9,13 +9,15 @@ import {
   Tooltip,
   YAxis,
 } from 'recharts'
-import { Box, BoxProps, Card, Flex, Spinner, Text } from 'theme-ui'
+import { Card } from '@/components/ui/card'
+import Spinner from '@/components/ui/spinner'
+import { cn } from '@/lib/utils'
 import { StringMap } from 'types'
 import { formatCurrency } from 'utils'
 
 type ChartData = { value: number; label?: string; display?: string }[]
 
-interface Props extends Omit<BoxProps, 'title'> {
+interface Props {
   data: ChartData
   title: React.ReactNode
   heading?: string
@@ -25,22 +27,19 @@ interface Props extends Omit<BoxProps, 'title'> {
   height?: number
   moreActions?: React.ReactNode
   domain?: [number | string, number | string]
+  className?: string
 }
 
 function CustomTooltip({ payload, active }: any) {
   if (active && payload) {
     return (
-      <Card>
-        <Text
-          sx={{ fontSize: 2, display: 'block', color: 'text' }}
-          mb={2}
-          variant="strong"
-        >
+      <Card className="p-3">
+        <span className="text-base block text-foreground font-bold mb-2">
           {payload[0]?.payload?.display || payload[0]?.payload?.value}
-        </Text>
-        <Text variant="legend" sx={{ fontSize: 1 }}>
+        </span>
+        <span className="text-legend text-sm">
           {payload[0]?.payload?.label}
-        </Text>
+        </span>
       </Card>
     )
   }
@@ -60,23 +59,18 @@ const Gain = ({ data }: { data: ChartData }) => {
     return 0
   }, [data])
 
-  let gainColor = 'lightText'
-
-  if (gain >= 0.01) {
-    gainColor = 'primary'
-  } else if (gain < 0) {
-    gainColor = 'danger'
-  }
+  const gainColorClass =
+    gain >= 0.01 ? 'text-primary' : gain < 0 ? 'text-destructive' : 'text-legend'
 
   return (
-    <Box ml="auto" sx={{ color: gainColor }} variant="layout.verticalAlign">
+    <div className={cn('ml-auto flex items-center', gainColorClass)}>
       {gain >= 0.01 && <ArrowUp strokeWidth={1.2} />}
       {gain < 0 && <ArrowDown strokeWidth={1.2} />}
-      <Text ml="2" variant="bold">
+      <span className="ml-2 font-bold">
         {gain >= 0.01 && '+'}
         {formatCurrency(gain)}%
-      </Text>
-    </Box>
+      </span>
+    </div>
   )
 }
 
@@ -92,7 +86,7 @@ const AreaChart = ({
   height = 100,
   moreActions,
   domain,
-  ...props
+  className,
 }: Props) => {
   const options = useMemo(() => {
     if (!timeRange) {
@@ -106,16 +100,16 @@ const AreaChart = ({
   }, [JSON.stringify(timeRange)])
 
   return (
-    <Box sx={{ position: 'relative' }} {...props}>
+    <div className={cn('relative', className)}>
       {heading && (
-        <Flex variant="layout.verticalAlign" mb="1" ml="2">
-          <Text sx={{ fontSize: 3, fontWeight: 700 }}>{heading}</Text>
-        </Flex>
+        <div className="flex items-center mb-1 ml-2">
+          <span className="text-lg font-bold">{heading}</span>
+        </div>
       )}
-      <Flex sx={{ fontSize: 3 }} ml="2" mb={3}>
+      <div className="flex text-lg ml-2 mb-4">
         {title}
         <Gain data={data} />
-      </Flex>
+      </div>
       {data && !!data.length && (
         <ResponsiveContainer height={height}>
           <Chart data={data}>
@@ -133,30 +127,21 @@ const AreaChart = ({
         </ResponsiveContainer>
       )}
       {data && !data.length && (
-        <Box my={6} sx={{ textAlign: 'center', height: height - 40 }}>
-          <Text variant="legend">
+        <div className="my-8 text-center" style={{ height: height - 40 }}>
+          <span className="text-legend">
             <Trans>No data</Trans>
-          </Text>
-        </Box>
+          </span>
+        </div>
       )}
       {!data && (
-        <Box
-          sx={{
-            display: 'flex',
-            height,
-            width: '100%',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
+        <div
+          className="flex w-full justify-center items-center"
+          style={{ height }}
         >
           <Spinner size={24} />
-        </Box>
+        </div>
       )}
-      <Box
-        variant="layout.verticalAlign"
-        mt={2}
-        sx={{ justifyContent: 'space-between', px: '1' }}
-      >
+      <div className="flex items-center mt-2 justify-between px-1">
         {!!options && currentRange && onRangeChange && (
           <TabMenu
             items={options}
@@ -165,8 +150,8 @@ const AreaChart = ({
           />
         )}
         {moreActions}
-      </Box>
-    </Box>
+      </div>
+    </div>
   )
 }
 

@@ -21,7 +21,7 @@ const TokenForm = ({ className }: TokenFormProps) => {
         placeholder={t`Input token name`}
         help={t`Token name - the name of the RToken eg. Savings Dollar`}
         name="name"
-        mb={3}
+        className="mb-4"
         options={{
           required: t`Token name required`,
         }}

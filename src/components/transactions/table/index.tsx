@@ -7,13 +7,12 @@ import { useAtomValue } from 'jotai'
 import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
 import { useMemo } from 'react'
 import { blockTimestampAtom, chainIdAtom, rTokenAtom } from 'state/atoms'
-import { borderRadius } from 'theme'
-import { Box, BoxProps, Flex, Link, Text } from 'theme-ui'
+import { cn } from '@/lib/utils'
 import { StringMap, TransactionRecord } from 'types'
 import { formatUsdCurrencyCell, relativeTime, shortenString } from 'utils'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 
-interface Props extends BoxProps {
+interface Props {
   data: TransactionRecord[]
   title?: string
   help?: string
@@ -23,6 +22,7 @@ interface Props extends BoxProps {
   maxHeight?: number | string
   external?: boolean
   multichain?: boolean
+  className?: string
 }
 
 const TransactionsTable = ({
@@ -35,8 +35,7 @@ const TransactionsTable = ({
   compact,
   multichain = false,
   external = true,
-  sx = {},
-  ...props
+  className,
 }: Props) => {
   const currentTime = useAtomValue(blockTimestampAtom)
   const chainId = useAtomValue(chainIdAtom)
@@ -66,12 +65,12 @@ const TransactionsTable = ({
       columnHelper.accessor('type', {
         header: t`Type`,
         cell: (data) => (
-          <Text>
-            <span style={{ textTransform: 'capitalize' }}>
+          <span>
+            <span className="capitalize">
               {transactionTypes[data.getValue()] || data.getValue()}
             </span>{' '}
             {external && data.row.original.symbol}
-          </Text>
+          </span>
         ),
       }),
       columnHelper.accessor('amountUSD', {
@@ -94,21 +93,22 @@ const TransactionsTable = ({
           const value = data.getValue()
 
           return (
-            <Box variant="layout.verticalAlign">
+            <div className="flex items-center">
               {multichain && data.row.original.chain && (
                 <ChainLogo
                   style={{ marginRight: 10 }}
                   chain={data.row.original.chain}
                 />
               )}
-              <Link
+              <a
                 href={getExplorerLink(
                   value,
                   chainId,
                   ExplorerDataType.TRANSACTION
                 )}
                 target="_blank"
-                sx={{ display: ['none', 'inherit'] }}
+                rel="noopener noreferrer"
+                className="hidden sm:inline text-primary hover:underline"
                 onClick={() => {
                   mixpanel.track('Clicked Transaction Viewer', {
                     RToken: rToken?.address.toLowerCase() ?? '',
@@ -117,8 +117,8 @@ const TransactionsTable = ({
                 }}
               >
                 {shortenString(value)}
-              </Link>
-            </Box>
+              </a>
+            </div>
           )
         },
       }),
@@ -127,28 +127,18 @@ const TransactionsTable = ({
   )
 
   return (
-    <Box
-      {...props}
-      px={[0, 2]}
-      pt={[3, 5]}
-      sx={(theme: any) => ({
-        backgroundColor: theme.colors.contentBackground,
-        border: 'none',
-        borderRadius: borderRadius.boxes,
-        height: 'fit-content',
-        maxHeight: ['360px', 'none'],
-        overflow: 'auto',
-        ...sx,
-      })}
+    <div
+      className={cn(
+        'px-0 sm:px-2 pt-4 sm:pt-8 bg-card rounded-3xl h-fit max-h-[360px] sm:max-h-none overflow-auto',
+        className
+      )}
     >
-      <Flex variant="layout.verticalAlign" mb={5}>
+      <div className="flex items-center mb-8">
         {!!title && (
-          <Text pl={[3, 4]} variant="title" sx={{ display: 'block' }}>
-            {title}
-          </Text>
+          <span className="pl-4 sm:pl-6 block text-xl font-medium">{title}</span>
         )}
-        {!!help && <Help ml="2" mt={1} content={help} />}
-      </Flex>
+        {!!help && <Help className="ml-2 mt-1" content={help} />}
+      </div>
       <Table
         maxHeight={maxHeight}
         compact={compact}
@@ -157,13 +147,13 @@ const TransactionsTable = ({
         data={data}
       />
       {!data?.length && (
-        <Box mb={5} sx={{ textAlign: 'center' }}>
-          <Text variant="legend">
+        <div className="mb-8 text-center">
+          <span className="text-legend">
             <Trans>No transactions</Trans>
-          </Text>
-        </Box>
+          </span>
+        </div>
       )}
-    </Box>
+    </div>
   )
 }
 

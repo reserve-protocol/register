@@ -54,7 +54,7 @@ const ConfirmProposalForm = ({
           borderColor: 'contentBackground',
         }}
       >
-        <Field label={t`Proposal Title`} mb={3} strong required>
+        <Field label={t`Proposal Title`} className="mb-4" strong required>
           <Input
             value={title}
             onChange={(e) => setTitle(e.target.value)}
@@ -63,7 +63,7 @@ const ConfirmProposalForm = ({
           />
         </Field>
         {showRFC && (
-          <Field label={t`RFC`} mb={3} strong required>
+          <Field label={t`RFC`} className="mb-4" strong required>
             <Input
               value={rfc}
               onChange={(e) => setRFC(e.target.value)}

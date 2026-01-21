@@ -81,7 +81,7 @@ const GovernanceSetup = ({
           freeze and unfreeze the system
           set governance parameters
           upgrade system contracts`}
-          mb={3}
+          className="mb-4"
           name="owner"
           options={{
             required: true,
@@ -96,7 +96,7 @@ const GovernanceSetup = ({
           label={t`Guardian address`}
           placeholder={t`Input the guardian ethereum address`}
           help={t`The guardian has the ability to reject proposals even if they pass. Should be assigned to a multisig or EOA that can be trusted to act as a backstop. It is acceptable if it is relatively slow to act. Only one guardian address should be defined.`}
-          mb={3}
+          className="mb-4"
           name="guardian"
           options={{
             disabled,

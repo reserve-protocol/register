@@ -15,7 +15,6 @@ interface FieldProps {
   required?: boolean
   children?: React.ReactNode
   className?: string
-  mb?: number
 }
 
 interface FormFieldProps extends FieldProps {
@@ -43,14 +42,6 @@ export const getErrorMessage = (error: StringMap): string => {
   }
 }
 
-const mbToClass: Record<number, string> = {
-  1: 'mb-1',
-  2: 'mb-2',
-  3: 'mb-4',
-  4: 'mb-6',
-  5: 'mb-8',
-}
-
 export const Field = ({
   label,
   help,
@@ -58,9 +49,8 @@ export const Field = ({
   strong,
   children,
   className,
-  mb,
 }: FieldProps) => (
-  <div className={cn('relative', mb && mbToClass[mb], className)}>
+  <div className={cn('relative', className)}>
     <div className="flex items-center justify-between mb-2">
       <div className="flex items-center gap-1 ml-4">
         <span
