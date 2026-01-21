@@ -1,58 +1,56 @@
 import { Trans } from '@lingui/macro'
 import { Button } from '@/components/ui/button'
 import SectionWrapper from '@/components/section-navigation/section-wrapper'
+import { Card } from '@/components/ui/card'
+import { Separator } from '@/components/ui/separator'
 import { useState } from 'react'
 import { ChevronDown, ChevronUp } from 'lucide-react'
-import { Box, BoxProps, Card, Divider, Flex, Text } from 'theme-ui'
 import BackingForm from './BackingForm'
 import OtherForm from './OtherForm'
 import TokenForm from './TokenForm'
 
-const chevronProps = {
-  style: {
-    marginLeft: 10,
-  },
-  size: 14,
+interface TokenConfigurationProps {
+  className?: string
 }
 
 /**
  * View: Deploy -> Token setup
  * Display token forms
  */
-const TokenConfiguration = (props: BoxProps) => {
+const TokenConfiguration = ({ className }: TokenConfigurationProps) => {
   const [advanceConfig, setAdvanceConfig] = useState(false)
 
   return (
     <SectionWrapper navigationIndex={2}>
-      <Card p={4} {...props}>
+      <Card className={`p-4 bg-secondary ${className || ''}`}>
         <TokenForm />
-        <Divider my={4} sx={{ borderColor: 'darkBorder' }} />
-        <Flex mt={3} variant="layout.verticalAlign">
-          <Text variant="title">
+        <Separator className="my-4 -mx-4 border-muted" />
+        <div className="flex items-center mt-3">
+          <span className="text-xl font-medium">
             <Trans>Advanced config:</Trans>
-          </Text>
-          <Text mx={2} variant="title" sx={{ color: 'secondaryText' }}>
+          </span>
+          <span className="mx-2 text-xl font-medium text-legend">
             <Trans>15 params</Trans>
-          </Text>
+          </span>
           <Button
             size="sm"
             variant="ghost"
             onClick={() => setAdvanceConfig(!advanceConfig)}
             className="ml-auto"
           >
-            <Box variant="layout.verticalAlign">
+            <div className="flex items-center">
               <Trans>Customize</Trans>
               {advanceConfig ? (
-                <ChevronUp {...chevronProps} />
+                <ChevronUp className="ml-2" size={14} />
               ) : (
-                <ChevronDown {...chevronProps} />
+                <ChevronDown className="ml-2" size={14} />
               )}
-            </Box>
+            </div>
           </Button>
-        </Flex>
+        </div>
         {advanceConfig && (
           <>
-            <BackingForm my={4} />
+            <BackingForm className="my-4" />
             <OtherForm />
           </>
         )}

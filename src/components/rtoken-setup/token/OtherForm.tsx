@@ -1,20 +1,23 @@
 import { t } from '@lingui/macro'
 import { FormField } from 'components/field'
 import { useFormContext } from 'react-hook-form'
-import { Box, BoxProps } from 'theme-ui'
 import { decimalPattern, numberPattern, parseDuration } from 'utils'
+
+interface OtherFormProps {
+  className?: string
+}
 
 /**
  * View: Deploy -> Token setup
  */
-const OtherForm = (props: BoxProps) => {
+const OtherForm = ({ className }: OtherFormProps) => {
   const { watch } = useFormContext()
   const [shortFreezeHelp, longFreezeHelp, unstakingDelayHelp]: string[] = watch(
     ['shortFreeze', 'longFreeze', 'unstakingDelay']
   ).map((value) => parseDuration(+value || 0))
 
   return (
-    <Box {...props}>
+    <div className={className}>
       <FormField
         label={t`Short freeze duration (s)`}
         placeholder={t`Duration in seconds`}
@@ -32,7 +35,7 @@ const OtherForm = (props: BoxProps) => {
       <FormField
         label={t`Long freeze duration (s)`}
         placeholder={t`Duration in seconds`}
-        help={t`Long freeze duration - freeze an RToken’s system for a longer period of time. A long-freezer has 6 charges before losing the ability to freeze any more`}
+        help={t`Long freeze duration - freeze an RToken's system for a longer period of time. A long-freezer has 6 charges before losing the ability to freeze any more`}
         mb={3}
         helper={longFreezeHelp}
         name="longFreeze"
@@ -109,7 +112,7 @@ const OtherForm = (props: BoxProps) => {
           min: 0,
         }}
       />
-    </Box>
+    </div>
   )
 }
 

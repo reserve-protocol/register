@@ -1,18 +1,20 @@
 import { t, Trans } from '@lingui/macro'
 import { FormField } from 'components/field'
-import { Box, BoxProps, Divider, Text } from 'theme-ui'
-import { isAddress } from 'utils'
+
+interface TokenFormProps {
+  className?: string
+}
 
 /**
  * View: Deploy -> Token setup
  */
-const TokenForm = (props: BoxProps) => (
-  <Box {...props}>
-    <Box variant="layout.verticalAlign" mb={4}>
-      <Text ml={2} variant="title">
+const TokenForm = ({ className }: TokenFormProps) => (
+  <div className={className}>
+    <div className="flex items-center mb-4">
+      <span className="ml-2 text-xl font-medium">
         <Trans>RToken Details</Trans>
-      </Text>
-    </Box>
+      </span>
+    </div>
     <FormField
       label={t`Token name`}
       placeholder={t`Input token name`}
@@ -44,7 +46,7 @@ const TokenForm = (props: BoxProps) => (
         },
       }}
     />
-  </Box>
+  </div>
 )
 
 export default TokenForm

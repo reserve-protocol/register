@@ -28,7 +28,7 @@ const Tokens = () => {
           </p>
         </div>
         <UnlistedTokensTable />
-        <DeployHero mt={8} />
+        <DeployHero className="mt-8" />
       </div>
       <RegisterAbout />
     </>

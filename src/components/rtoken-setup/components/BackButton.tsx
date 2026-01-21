@@ -6,7 +6,6 @@ import { useCallback } from 'react'
 import { ArrowLeft } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { chainIdAtom } from 'state/atoms'
-import { Box } from 'theme-ui'
 import { getTokenRoute } from 'utils'
 
 const BackButton = () => {
@@ -24,10 +23,10 @@ const BackButton = () => {
 
   return (
     <Button variant="ghost" size="sm" onClick={handleBack}>
-      <Box variant="layout.verticalAlign">
-        <ArrowLeft size={14} style={{ marginRight: 10 }} />
+      <div className="flex items-center">
+        <ArrowLeft size={14} className="mr-2" />
         <Trans>Exit Deployer</Trans>
-      </Box>
+      </div>
     </Button>
   )
 }

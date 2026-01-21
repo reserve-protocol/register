@@ -1,13 +1,17 @@
 import { t } from '@lingui/macro'
 import { FormField } from 'components/field'
 import { useFormContext } from 'react-hook-form'
-import { Box, BoxProps } from 'theme-ui'
+import { cn } from '@/lib/utils'
 import { decimalPattern, numberPattern, parseDuration } from 'utils'
+
+interface BackingFormProps {
+  className?: string
+}
 
 /**
  * View: Deploy -> Token setup
  */
-const BackingForm = (props: BoxProps) => {
+const BackingForm = ({ className }: BackingFormProps) => {
   const { watch } = useFormContext()
   const [
     tradingDelayHelp,
@@ -22,7 +26,7 @@ const BackingForm = (props: BoxProps) => {
   ]).map((value) => parseDuration(+value || 0))
 
   return (
-    <Box {...props}>
+    <div className={className}>
       <FormField
         label={t`Trading delay (s)`}
         placeholder={t`Delay in seconds`}
@@ -82,7 +86,7 @@ const BackingForm = (props: BoxProps) => {
       <FormField
         label={t`Backing buffer (%)`}
         placeholder={t`Extra collateral to keep`}
-        help={t`Backing buffer - percentage value that describes how much additional collateral tokens to keep in the BackingManager before forwarding tokens to the RevenueTraders. The RevenueTraders here refers to the RToken and RSR traders. Why this matters? It allows collateral tokens to be periodically converted into the RToken, which is a more efficient form of revenue production than trading each individual collateral for the desired RToken. It also provides a buffer to prevent RSR seizure after trading slippage. For more info on the BackingManager and Trader types see the “Revenue distribution to RToken holders” and “Summary of revenue distribution” in our documentation.`}
+        help={t`Backing buffer - percentage value that describes how much additional collateral tokens to keep in the BackingManager before forwarding tokens to the RevenueTraders. The RevenueTraders here refers to the RToken and RSR traders. Why this matters? It allows collateral tokens to be periodically converted into the RToken, which is a more efficient form of revenue production than trading each individual collateral for the desired RToken. It also provides a buffer to prevent RSR seizure after trading slippage. For more info on the BackingManager and Trader types see the "Revenue distribution to RToken holders" and "Summary of revenue distribution" in our documentation.`}
         mb={3}
         name="backingBuffer"
         options={{
@@ -156,7 +160,7 @@ const BackingForm = (props: BoxProps) => {
           max: 1e30,
         }}
       />
-    </Box>
+    </div>
   )
 }
 

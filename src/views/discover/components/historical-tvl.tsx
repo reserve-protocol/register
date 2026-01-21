@@ -17,7 +17,6 @@ import {
   XAxis,
   YAxis,
 } from 'recharts'
-import { Box, Card, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import {
   CHAIN_TO_NETWORK,
@@ -90,78 +89,39 @@ function CustomTooltip({ payload, label, active }: any) {
   )
 
   return (
-    <Card
-      sx={{
-        display: ['none', 'flex'],
-        flexDirection: 'column',
-        border: '2px solid',
-        borderColor: 'reserveBackground',
-        background: 'cardAlternative',
-        gap: 3,
-        p: 0,
-        minWidth: '280px',
-      }}
-    >
-      <Box
-        variant="layout.verticalAlign"
-        sx={{
-          gap: 3,
-          justifyContent: 'space-between',
-          borderBottom: '1px solid',
-          borderColor: 'borderSecondary',
-        }}
-        p={3}
-      >
-        <Text sx={{ fontSize: 1 }}>
+    <div className="hidden md:flex flex-col border-2 border-muted bg-card rounded-xl min-w-[280px]">
+      <div className="flex items-center gap-4 justify-between border-b border-border p-4">
+        <span className="text-sm">
           {new Date(label).toDateString().replace(/^\S+\s/, '')}
-        </Text>
-        <Text color="secondaryText" sx={{ fontSize: 1 }}>
-          (TVL per network)
-        </Text>
-      </Box>
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 1,
-        }}
-        px={3}
-      >
+        </span>
+        <span className="text-legend text-sm">(TVL per network)</span>
+      </div>
+      <div className="flex flex-col gap-1 px-4">
         {(payload as any[]).map(
           (item: { name: string; value: number }, index) => (
-            <Box
+            <div
               key={`${item.name}${item.value}${index}`}
-              variant="layout.verticalAlign"
-              sx={{ gap: 2, justifyContent: 'space-between' }}
+              className="flex items-center gap-2 justify-between"
             >
-              <Box variant="layout.verticalAlign" sx={{ gap: '6px' }}>
+              <div className="flex items-center gap-1.5">
                 <ChainLogo chain={NETWORKS[item.name]} />
-                <Text>{capitalize(item.name)}:</Text>
-              </Box>
-              <Text variant="bold">${formatCurrency(item.value, 0)}</Text>
-            </Box>
+                <span>{capitalize(item.name)}:</span>
+              </div>
+              <span className="font-bold">${formatCurrency(item.value, 0)}</span>
+            </div>
           )
         )}
-      </Box>
-      <Box
-        variant="layout.verticalAlign"
-        sx={{
-          gap: 2,
-          justifyContent: 'space-between',
-          borderTop: '1px solid',
-          borderColor: 'borderSecondary',
-        }}
-        p={3}
-      >
-        <Box variant="layout.verticalAlign" sx={{ gap: '6px' }}>
+      </div>
+      <div className="flex items-center gap-2 justify-between border-t border-border p-4">
+        <div className="flex items-center gap-1.5">
           <SmallRootIcon />
-          <Text>Total TVL:</Text>
-        </Box>
-        <Text color="accentInverted" variant="bold">
+          <span>Total TVL:</span>
+        </div>
+        <span className="text-primary font-bold">
           ${formatCurrency(total, 0)}
-        </Text>
-      </Box>
-    </Card>
+        </span>
+      </div>
+    </div>
   )
 }
 

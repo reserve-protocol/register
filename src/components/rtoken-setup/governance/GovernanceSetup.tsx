@@ -1,72 +1,76 @@
 import { t, Trans } from '@lingui/macro'
 import { Field, FormField } from 'components/field'
 import { useFormContext } from 'react-hook-form'
+import { Card } from '@/components/ui/card'
+import { Separator } from '@/components/ui/separator'
+import { Switch } from '@/components/ui/switch'
 import {
-  Box,
-  BoxProps,
-  Card,
-  Flex,
   Select,
-  Switch,
-  Text,
-  Image,
-  Divider,
-} from 'theme-ui'
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 import { addressPattern } from 'utils'
 import GovernanceParameters from './GovernanceParameters'
 import DocsLink from '@/components/utils/docs-link'
 import RolesSetup from './RoleSetup'
 import { PROTOCOL_DOCS } from '@/utils/constants'
 
-interface Props extends BoxProps {
+interface GovernanceSetupProps {
   disabled?: boolean
+  className?: string
 }
 
-const GovernanceSetup = ({ disabled = false, ...props }: Props) => {
-  const { register, watch } = useFormContext()
+const GovernanceSetup = ({
+  disabled = false,
+  className,
+}: GovernanceSetupProps) => {
+  const { register, watch, setValue } = useFormContext()
   const defaultGovernance = watch('defaultGovernance')
   const unfreeze = watch('unfreeze')
+  const unpause = watch('unpause')
 
   return (
-    <Card p={4} variant="cards.form" {...props}>
-      <Box variant="layout.verticalAlign">
-        <Text variant="title">
+    <Card className={`p-4 bg-secondary ${className || ''}`}>
+      <div className="flex items-center">
+        <span className="text-xl font-medium">
           <Trans>Governance</Trans>
-        </Text>
+        </span>
         <DocsLink
           link={`${PROTOCOL_DOCS}yield_dtfs/deployment_guide/ui_walkthrough/#step-5-configure-governance`}
         />
-      </Box>
-      <Divider my={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />
-      <Box mb={5}>
-        <Box>
-          <Text variant="title" sx={{ display: 'block' }} mb={2}>
+      </div>
+      <Separator className="my-4 -mx-4 border-muted" />
+      <div className="mb-5">
+        <div>
+          <span className="text-xl font-medium block mb-2">
             <Trans>Use the Alexios governor format?</Trans>
-          </Text>
-          <Text variant="legend">
+          </span>
+          <span className="text-legend">
             <Trans>
               Choose between our Alexios Governor and anything between
               one-person rule to arbitrary DAO structure under your defined
               Ethereum address.
             </Trans>
-          </Text>
-        </Box>
-        <Box ml="auto" mt={3}>
+          </span>
+        </div>
+        <div className="ml-auto mt-3">
           <Switch
-            defaultChecked={defaultGovernance}
-            {...register('defaultGovernance')}
+            checked={defaultGovernance}
+            onCheckedChange={(checked) => setValue('defaultGovernance', checked)}
           />
-        </Box>
-      </Box>
-      <Divider my={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />
-      <Flex variant="layout.verticalAlign" mb={4}>
-        <Text variant="title">
+        </div>
+      </div>
+      <Separator className="my-4 -mx-4 border-muted" />
+      <div className="flex items-center mb-4">
+        <span className="text-xl font-medium">
           <Trans>Roles</Trans>
-        </Text>
+        </span>
         <DocsLink
           link={`${PROTOCOL_DOCS}yield_dtfs/smart_contracts/#governance-roles`}
         />
-      </Flex>
+      </div>
       {!defaultGovernance ? (
         <FormField
           label={t`Owner address`}
@@ -107,38 +111,42 @@ const GovernanceSetup = ({ disabled = false, ...props }: Props) => {
       <RolesSetup />
       {defaultGovernance && (
         <>
-          <Divider my={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />
+          <Separator className="my-4 -mx-4 border-muted" />
           <GovernanceParameters />
         </>
       )}
-      <Divider my={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />
-      <Flex mb={4} sx={{ alignItems: 'center' }}>
-        <Text variant="title">
+      <Separator className="my-4 -mx-4 border-muted" />
+      <div className="flex items-center mb-4">
+        <span className="text-xl font-medium">
           <Trans>Initial RToken state after deployment</Trans>
-        </Text>
+        </span>
         <DocsLink
           link={`${PROTOCOL_DOCS}yield_dtfs/deployment_guide/ui_walkthrough/#step-6-configure-initial-state`}
         />
-      </Flex>
+      </div>
       <Field label={t`Pause status`}>
-        <Select {...register('unpause')}>
-          <option value={0}>
-            <Trans>RToken will be left in pause state</Trans>
-          </option>
-          <option value={1}>
-            <Trans>RToken will be fully functional</Trans>
-          </option>
+        <Select
+          value={unpause?.toString() || '0'}
+          onValueChange={(value) => setValue('unpause', Number(value))}
+        >
+          <SelectTrigger>
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="0">
+              <Trans>RToken will be left in pause state</Trans>
+            </SelectItem>
+            <SelectItem value="1">
+              <Trans>RToken will be fully functional</Trans>
+            </SelectItem>
+          </SelectContent>
         </Select>
         {unfreeze === '0' && (
-          <Text
-            sx={{ color: 'warning', display: 'block', fontSize: 1 }}
-            mt={1}
-            ml={1}
-          >
+          <span className="text-warning block text-xs mt-1 ml-1">
             <Trans>
               Only the guardian address or governance will be able to unpause
             </Trans>
-          </Text>
+          </span>
         )}
       </Field>
     </Card>

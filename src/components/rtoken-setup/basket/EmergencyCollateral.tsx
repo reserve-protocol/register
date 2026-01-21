@@ -15,28 +15,28 @@ import {
 } from '@dnd-kit/sortable'
 import { t, Trans } from '@lingui/macro'
 import { Button } from '@/components/ui/button'
+import { Separator } from '@/components/ui/separator'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 import Help from 'components/help'
 import SortableItem from 'components/sortable/SortableItem'
 import { useSetAtom } from 'jotai'
 import { useMemo } from 'react'
 import { Move, X } from 'lucide-react'
-import {
-  Box,
-  CardProps,
-  Divider,
-  Flex,
-  IconButton,
-  Select,
-  Text,
-} from 'theme-ui'
 import { Collateral, updateBackupBasketUnitAtom } from '../atoms'
 
-interface Props extends CardProps {
+interface EmergencyCollateralProps {
   targetUnit: string
   diversityFactor?: number
   collaterals?: Collateral[]
   readOnly?: boolean
   onAdd(targetUnit: string): void
+  className?: string
 }
 
 /**
@@ -50,8 +50,8 @@ const EmergencyCollateral = ({
   collaterals = [],
   readOnly = false,
   onAdd,
-  ...props
-}: Props) => {
+  className,
+}: EmergencyCollateralProps) => {
   const updateBasket = useSetAtom(updateBackupBasketUnitAtom)
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -68,10 +68,10 @@ const EmergencyCollateral = ({
     [collaterals]
   )
 
-  const handleDiversityFactor = (e: any) => {
+  const handleDiversityFactor = (value: string) => {
     updateBasket([
       targetUnit,
-      { diversityFactor: +e.target.value, collaterals },
+      { diversityFactor: +value, collaterals },
     ])
   }
 
@@ -109,10 +109,10 @@ const EmergencyCollateral = ({
   }
 
   return (
-    <Box {...props}>
-      <Divider my={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />
-      <Flex variant="layout.verticalAlign" mb={4}>
-        <Text variant="title">{targetUnit} Backups</Text>
+    <div className={className}>
+      <Separator className="my-4 -mx-4 border-muted" />
+      <div className="flex items-center mb-4">
+        <span className="text-xl font-medium">{targetUnit} Backups</span>
         {!readOnly && (
           <Button
             size="sm"
@@ -122,44 +122,55 @@ const EmergencyCollateral = ({
             <Trans>Add to basket</Trans>
           </Button>
         )}
-      </Flex>
-      <Flex variant="layout.verticalAlign">
-        <Text>
+      </div>
+      <div className="flex items-center">
+        <span>
           <Trans>Diversity factor</Trans>
-        </Text>
+        </span>
         {readOnly ? (
-          <Box sx={{ borderRadius: 16 }} ml="auto" px={3}>
-            <Text sx={{ color: '#333' }}>{diversityFactor}</Text>
-          </Box>
+          <div className="rounded-2xl ml-auto px-3">
+            <span className="text-[#333]">{diversityFactor}</span>
+          </div>
         ) : (
           <>
-            <Box ml="auto" sx={{ width: 52 }} mr={2}>
-              <Select value={diversityFactor} onChange={handleDiversityFactor}>
-                {collaterals.map((c, index) => (
-                  <option key={index}>{index + 1}</option>
-                ))}
-                {!collaterals.length && <option>0</option>}
+            <div className="ml-auto w-[52px] mr-2">
+              <Select
+                value={diversityFactor.toString()}
+                onValueChange={handleDiversityFactor}
+              >
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {collaterals.map((c, index) => (
+                    <SelectItem key={index} value={(index + 1).toString()}>
+                      {index + 1}
+                    </SelectItem>
+                  ))}
+                  {!collaterals.length && (
+                    <SelectItem value="0">0</SelectItem>
+                  )}
+                </SelectContent>
               </Select>
-            </Box>
+            </div>
             <Help
               content={t`The diversity factor determines the amount of emergency collateral that will be deployed to the RToken basket in the case of a default.`}
             />
           </>
         )}
-      </Flex>
+      </div>
       {readOnly ? (
-        <Box>
+        <div>
           {collaterals.map((collateral, index) => (
-            <Flex
-              mt={3}
+            <div
+              className="flex items-center mt-3"
               key={collateral.address}
-              variant="layout.verticalAlign"
             >
-              <Text>{collateral.symbol}</Text>
-              <Text ml="auto">{index + 1}</Text>
-            </Flex>
+              <span>{collateral.symbol}</span>
+              <span className="ml-auto">{index + 1}</span>
+            </div>
           ))}
-        </Box>
+        </div>
       ) : (
         <DndContext
           sensors={sensors}
@@ -172,37 +183,34 @@ const EmergencyCollateral = ({
           >
             {collaterals.map((collateral, index) => (
               <SortableItem id={collateral.address} key={collateral.address}>
-                <Flex mt={3} variant="layout.verticalAlign">
+                <div className="flex items-center mt-3">
                   <Move
                     size={16}
                     style={{ cursor: 'pointer' }}
-                    color="var(--theme-ui-colors-secondaryText)"
+                    className="text-muted-foreground"
                   />
-                  <Box ml={3}>
-                    <Text
-                      variant="legend"
-                      sx={{ fontSize: 1, display: 'block' }}
-                    >
+                  <div className="ml-3">
+                    <span className="text-legend text-xs block">
                       {targetUnit}
-                    </Text>
-                    <Text sx={{ fontsize: 2 }}>{collateral.symbol}</Text>
-                  </Box>
-                  <Text ml="auto" mr={2}>
-                    {index + 1}
-                  </Text>
-                  <IconButton
-                    sx={{ cursor: 'pointer' }}
+                    </span>
+                    <span>{collateral.symbol}</span>
+                  </div>
+                  <span className="ml-auto mr-2">{index + 1}</span>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="cursor-pointer"
                     onClick={() => handleRemove(index)}
                   >
-                    <X size={20} color="var(--theme-ui-colors-lightText)" />
-                  </IconButton>
-                </Flex>
+                    <X size={20} className="text-muted-foreground" />
+                  </Button>
+                </div>
               </SortableItem>
             ))}
           </SortableContext>
         </DndContext>
       )}
-    </Box>
+    </div>
   )
 }
 

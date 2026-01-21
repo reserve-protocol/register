@@ -207,7 +207,7 @@ const Collaterals = () => {
         </div>
       </div>
       <PluginList />
-      <DeployHero mt={4} />
+      <DeployHero className="mt-6" />
     </div>
   )
 }

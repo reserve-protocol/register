@@ -4,18 +4,18 @@ import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { secondsPerBlockAtom } from 'state/atoms'
-import { Box, BoxProps, Text } from 'theme-ui'
 import { decimalPattern, numberPattern, parseDuration } from 'utils'
 import { timeToBlocks } from '../atoms'
 
-interface IGovernanceParameters extends BoxProps {
+interface GovernanceParametersProps {
   timebased?: boolean
+  className?: string
 }
 
 const GovernanceParameters = ({
   timebased = true,
-  ...props
-}: IGovernanceParameters) => {
+  className,
+}: GovernanceParametersProps) => {
   const secondsPerBlock = useAtomValue(secondsPerBlockAtom)
   const { watch } = useFormContext()
   const [votingDelay, votingPeriod, minDelay] = watch([
@@ -46,10 +46,10 @@ const GovernanceParameters = ({
     }, [timebased, secondsPerBlock, votingDelay, votingPeriod, minDelay])
 
   return (
-    <Box {...props}>
-      <Text variant="title" mb={4}>
+    <div className={className}>
+      <span className="text-xl font-medium block mb-4">
         <Trans>Governance parameters</Trans>
-      </Text>
+      </span>
       <FormField
         label={`Snapshot delay ${timebased ? '(hours)' : '(blocks)'}`}
         placeholder={t`Input delay`}
@@ -122,7 +122,7 @@ const GovernanceParameters = ({
           max: 50,
         }}
       />
-    </Box>
+    </div>
   )
 }
 

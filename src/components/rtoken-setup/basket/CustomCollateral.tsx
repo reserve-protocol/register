@@ -8,7 +8,6 @@ import { useAtomValue } from 'jotai'
 import { useState } from 'react'
 import { chainIdAtom } from 'state/atoms'
 import { wagmiConfig } from 'state/chain'
-import { Box, Flex, Text } from 'theme-ui'
 import { CollateralPlugin } from 'types'
 import { isAddress } from 'utils'
 import { Address, hexToString } from 'viem'
@@ -95,11 +94,9 @@ const CustomCollateral = ({
 
   if (isActive) {
     return (
-      <Box>
-        <Box>
-          <Text variant="legend" ml={3}>
-            Plugin address
-          </Text>
+      <div>
+        <div>
+          <span className="text-legend ml-3">Plugin address</span>
           <Input
             className="mt-2"
             onChange={(e) => handleChange(e.target.value)}
@@ -107,12 +104,10 @@ const CustomCollateral = ({
             placeholder={t`Input plugin address (not ERC-20 address)`}
           />
           {error && address && (
-            <Text sx={{ color: 'danger' }} ml={2}>
-              {error}
-            </Text>
+            <span className="text-destructive ml-2">{error}</span>
           )}
-        </Box>
-        <Flex mt={3} px={3}>
+        </div>
+        <div className="flex mt-3 px-3">
           <Button size="sm" variant="ghost" onClick={() => setActive(false)}>
             <Trans>Dismiss</Trans>
           </Button>
@@ -124,22 +119,22 @@ const CustomCollateral = ({
           >
             {isValidating ? <Trans>Validating...</Trans> : <Trans>Save</Trans>}
           </Button>
-        </Flex>
-      </Box>
+        </div>
+      </div>
     )
   }
 
   return (
-    <Flex variant="layout.verticalAlign" ml={'-3px'}>
+    <div className="flex items-center ml-[-3px]">
       <PluginsIcon />
-      <Box ml={3}>
-        <Text>
+      <div className="ml-3">
+        <span>
           <Trans>Made your own collateral?</Trans>
-        </Text>
-        <Text variant="legend" sx={{ fontSize: 1, display: 'block' }}>
+        </span>
+        <span className="text-legend text-xs block">
           <Trans>Use a custom plugin contract address</Trans>
-        </Text>
-      </Box>
+        </span>
+      </div>
       <Button
         size="sm"
         variant="ghost"
@@ -148,7 +143,7 @@ const CustomCollateral = ({
       >
         <Trans>Add</Trans>
       </Button>
-    </Flex>
+    </div>
   )
 }
 

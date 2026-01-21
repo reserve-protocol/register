@@ -4,7 +4,8 @@ import Help from 'components/help'
 import TokenLogo from 'components/icons/TokenLogo'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useMemo } from 'react'
-import { Box, CardProps, Divider, Flex, IconButton, Text } from 'theme-ui'
+import { Separator } from '@/components/ui/separator'
+import { Button } from '@/components/ui/button'
 import { formatCurrency, truncateDecimals } from 'utils'
 import {
   basketTargetUnitPriceAtom,
@@ -38,17 +39,18 @@ const IconInfo = ({
   </div>
 )
 
-interface UnitBasketProps extends CardProps {
+interface UnitBasketProps {
   data: PrimaryUnitBasket
   unit: string
   readOnly?: boolean
+  className?: string
 }
 
 /**
  * View: Deploy -> Basket setup -> PrimaryBasket
  * Display collateral composition for target unit
  */
-const UnitBasket = ({ data, readOnly, unit, ...props }: UnitBasketProps) => {
+const UnitBasket = ({ data, readOnly, unit, className }: UnitBasketProps) => {
   const updateBasket = useSetAtom(updateBasketUnitAtom)
   const targetUnitPrice = useAtomValue(basketTargetUnitPriceAtom)[unit]
 
@@ -96,59 +98,51 @@ const UnitBasket = ({ data, readOnly, unit, ...props }: UnitBasketProps) => {
   }
 
   return (
-    <Box {...props}>
-      <Divider my={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />
+    <div className={className}>
+      <Separator className="my-4 -mx-4 border-muted" />
       {!readOnly && (
         <>
-          <Flex
-            sx={{ justifyContent: 'space-between', flexWrap: 'wrap', gap: 2 }}
-            mb={3}
-            mt={4}
-          >
-            <Text variant="title">
+          <div className="flex justify-between flex-wrap gap-2 mb-3 mt-4">
+            <span className="text-xl font-medium">
               {unit} <Trans>Basket</Trans>
-            </Text>
-            <Flex sx={{ alignItems: 'center' }}>
-              <Box sx={{ width: 64 }} mr={3}>
+            </span>
+            <div className="flex items-center">
+              <div className="w-16 mr-3">
                 <NumericalInput
                   value={data.scale}
                   className={`text-center text-sm p-1 border rounded ${+data.scale > 0 ? 'border-border' : 'border-destructive'}`}
                   onChange={handleScale}
                 />
-              </Box>
-              <Box>
-                <Text mr={2}>{unit}</Text>
+              </div>
+              <div>
+                <span className="mr-2">{unit}</span>
                 {targetUnitPrice ? (
-                  <Text variant="legend" sx={{ display: 'block', fontSize: 1 }}>
+                  <span className="text-legend block text-xs">
                     1 = {formatCurrency(targetUnitPrice)}$
-                  </Text>
+                  </span>
                 ) : (
                   <Skeleton />
                 )}
-              </Box>
+              </div>
               <Help
                 content={t`Basket scale for this unit of account. This is used to initially calculate how much of each token is required for minting.`}
               />
-            </Flex>
-          </Flex>
-          <Flex variant="layout.verticalAlign">
-            <Text variant="contentTitle">
+            </div>
+          </div>
+          <div className="flex items-center">
+            <span className="font-medium text-sm">
               <Trans>{unit} Token distribution</Trans>
-            </Text>
-            <Text
-              ml="auto"
-              sx={{
-                color: totalDistribution !== 100 ? 'danger' : 'text',
-                fontSize: 1,
-              }}
+            </span>
+            <span
+              className={`ml-auto text-xs ${totalDistribution !== 100 ? 'text-destructive' : ''}`}
             >
               Filled: {totalDistribution}%
-            </Text>
-          </Flex>
+            </span>
+          </div>
         </>
       )}
       {data.collaterals.map((collateral, index) => (
-        <Flex key={collateral.address} variant="layout.verticalAlign" mt={3}>
+        <div key={collateral.address} className="flex items-center mt-3">
           <IconInfo
             icon={<TokenLogo width={18} symbol={collateral.symbol} />}
             title={unit}
@@ -164,7 +158,7 @@ const UnitBasket = ({ data, readOnly, unit, ...props }: UnitBasketProps) => {
             }
           />
           {!readOnly ? (
-            <Box ml="auto" sx={{ width: 80 }} mr={2}>
+            <div className="ml-auto w-20 mr-2">
               <NumericalInput
                 className={`text-center text-sm p-1.5 border rounded ${
                   +data.distribution[index] > 0 && +data.distribution[index] <= 100
@@ -175,26 +169,27 @@ const UnitBasket = ({ data, readOnly, unit, ...props }: UnitBasketProps) => {
                 disabled={data.collaterals.length > 1 ? false : true}
                 onChange={(value) => handleDistribution(index, value)}
               />
-            </Box>
+            </div>
           ) : (
-            <Text ml="auto">
+            <span className="ml-auto">
               {Math.round(+data.distribution[index] * 100) / 100}
-            </Text>
+            </span>
           )}
 
-          <Text>%</Text>
+          <span>%</span>
           {!readOnly && (
-            <IconButton
-              ml={2}
-              sx={{ cursor: 'pointer' }}
+            <Button
+              variant="ghost"
+              size="icon"
+              className="ml-2 cursor-pointer"
               onClick={() => handleRemove(index)}
             >
-              <X size={20} color="var(--theme-ui-colors-lightText)" />
-            </IconButton>
+              <X size={20} className="text-muted-foreground" />
+            </Button>
           )}
-        </Flex>
+        </div>
       ))}
-    </Box>
+    </div>
   )
 }
 
