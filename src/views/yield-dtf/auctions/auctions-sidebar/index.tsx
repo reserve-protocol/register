@@ -1,9 +1,9 @@
 import { Trans } from '@lingui/macro'
 import { Button } from '@/components/ui/button'
+import { Separator } from '@/components/ui/separator'
 import Sidebar from 'components/sidebar'
 import { useAtom, useSetAtom } from 'jotai'
 import { X } from 'lucide-react'
-import { Divider, Flex, Text } from 'theme-ui'
 import { auctionSidebarAtom } from '../atoms'
 import Revenue from './Revenue'
 
@@ -11,21 +11,19 @@ const Header = () => {
   const close = useSetAtom(auctionSidebarAtom)
 
   return (
-    <Flex
-      sx={{
-        alignItems: 'center',
-        flexShrink: 0,
-      }}
-      px={[3, 5]}
-      pt={3}
-    >
-      <Text variant="sectionTitle" mr={1}>
+    <div className="flex items-center shrink-0 px-4 sm:px-8 pt-4">
+      <span className="text-xl font-bold mr-1">
         <Trans>Auctions</Trans>
-      </Text>
-      <Button variant="ghost" size="icon" className="ml-auto rounded-full" onClick={close}>
+      </span>
+      <Button
+        variant="ghost"
+        size="icon"
+        className="ml-auto rounded-full"
+        onClick={close}
+      >
         <X />
       </Button>
-    </Flex>
+    </div>
   )
 }
 
@@ -37,13 +35,9 @@ const AuctionsSidebar = () => {
   }
 
   return (
-    <Sidebar
-      onClose={toggleSidebar}
-      width="600px"
-      sx={{ backgroundColor: 'background' }}
-    >
+    <Sidebar onClose={toggleSidebar} width="600px" className="bg-background">
       <Header />
-      <Divider mt={3} mb={0} mx={-4} />
+      <Separator className="mt-4 mb-0 -mx-6" />
       <Revenue />
     </Sidebar>
   )

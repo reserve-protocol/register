@@ -42,7 +42,7 @@ const MeltingBox = () => {
       subtitle={t`${formatCurrency(revenueData?.pendingToMelt ?? 0)} of ${
         rToken?.symbol ?? 'rToken'
       }`}
-      mb={3}
+      className="mb-4"
       muted={!revenueData?.pendingToMelt || revenueData?.pendingToMelt < 0.1}
       right={
         <ExecuteButton

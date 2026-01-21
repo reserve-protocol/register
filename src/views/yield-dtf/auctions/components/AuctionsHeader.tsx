@@ -4,7 +4,6 @@ import TabMenu from 'components/tab-menu'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { isModuleLegacyAtom, rTokenContractsAtom } from 'state/atoms'
-import { Box, Text } from 'theme-ui'
 import { TradeKind, auctionPlatformAtom, auctionSidebarAtom } from '../atoms'
 import AuctionsIcon from 'components/icons/AuctionsIcon'
 
@@ -27,7 +26,7 @@ const AuctionsHeader = () => {
   }, [platform, isLegacy, contracts])
 
   return (
-    <Box variant="layout.verticalAlign" mt={[3, 0]}>
+    <div className="flex items-center mt-3 md:mt-0">
       {!isLegacy && (
         <TabMenu
           active={platform}
@@ -40,18 +39,14 @@ const AuctionsHeader = () => {
       )}
 
       <Button className="ml-auto mr-4" size="sm" onClick={toggleSidebar}>
-        <Text sx={{ display: ['none', 'block'] }}>
+        <span className="hidden sm:block">
           <Trans>Check for auctions</Trans>
-        </Text>
-        <Box
-          py={1}
-          variant="layout.verticalAlign"
-          sx={{ display: ['flex', 'none'] }}
-        >
+        </span>
+        <div className="flex sm:hidden items-center py-1">
           <AuctionsIcon />
-        </Box>
+        </div>
       </Button>
-    </Box>
+    </div>
   )
 }
 

@@ -1,5 +1,7 @@
 import StakingVault from 'abis/StakingVault'
 import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
+import { Separator } from '@/components/ui/separator'
 import Help from 'components/help'
 import { Loader2 } from 'lucide-react'
 import useContractWrite from 'hooks/useContractWrite'
@@ -7,7 +9,6 @@ import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { estimatedApyAtom } from 'state/atoms'
-import { Box, Card, Divider, Text } from 'theme-ui'
 import { formatCurrency, formatPercentage } from 'utils'
 import { RTOKEN_VAULT_STAKE } from 'utils/constants'
 import { erc20Abi, formatUnits } from 'viem'
@@ -145,74 +146,40 @@ const StakingVaultRevenue = () => {
   return (
     <>
       <RevenueOverviewHeader text="Staking vault revenue stats" />
-      <Card
-        p={0}
-        sx={{
-          border: '1px solid',
-          borderColor: 'darkBorder',
-          backgroundColor: 'backgroundNested',
-        }}
-      >
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            width: '100%',
-            gap: 1,
-          }}
-          p={3}
-        >
-          <Box
-            variant="layout.verticalAlign"
-            sx={{ gap: 1, justifyContent: 'space-between' }}
-          >
-            <Text variant="legend">Current {rTokenVault.name} APY</Text>
-            <Text sx={{ fontWeight: 'bold' }}>
-              {formatPercentage(currentAPY)}
-            </Text>
-          </Box>
-          <Box
-            variant="layout.verticalAlign"
-            sx={{ gap: 1, justifyContent: 'space-between' }}
-          >
-            <Text variant="legend">30d avg {rTokenVault.name} APY</Text>
-            <Text sx={{ fontWeight: 'bold' }}>{formatPercentage(avgAPY)}</Text>
-          </Box>
+      <Card className="p-0 border border-border bg-muted">
+        <div className="flex flex-col w-full gap-1 p-4">
+          <div className="flex items-center gap-1 justify-between">
+            <span className="text-legend">Current {rTokenVault.name} APY</span>
+            <span className="font-bold">{formatPercentage(currentAPY)}</span>
+          </div>
+          <div className="flex items-center gap-1 justify-between">
+            <span className="text-legend">30d avg {rTokenVault.name} APY</span>
+            <span className="font-bold">{formatPercentage(avgAPY)}</span>
+          </div>
 
-          <Box
-            variant="layout.verticalAlign"
-            sx={{ gap: 1, justifyContent: 'space-between' }}
-          >
-            <Text variant="legend">Current reward period ends</Text>
-            <Text sx={{ fontWeight: 'bold' }}>{currentPeriodEnds}</Text>
-          </Box>
+          <div className="flex items-center gap-1 justify-between">
+            <span className="text-legend">Current reward period ends</span>
+            <span className="font-bold">{currentPeriodEnds}</span>
+          </div>
 
-          <Divider />
+          <Separator />
 
-          <Box
-            variant="layout.verticalAlign"
-            sx={{ gap: 1, justifyContent: 'space-between' }}
-          >
-            <Text variant="legend">Future sdgnETH APY (next period)</Text>
-            <Text sx={{ fontWeight: 'bold' }}>
-              {formatPercentage(nextPeriodAPY)}
-            </Text>
-          </Box>
+          <div className="flex items-center gap-1 justify-between">
+            <span className="text-legend">Future sdgnETH APY (next period)</span>
+            <span className="font-bold">{formatPercentage(nextPeriodAPY)}</span>
+          </div>
 
-          <Box
-            variant="layout.verticalAlign"
-            sx={{ gap: 1, justifyContent: 'space-between' }}
-          >
-            <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
-              <Text variant="legend">Delta from 30d avg</Text>
+          <div className="flex items-center gap-1 justify-between">
+            <div className="flex items-center gap-1">
+              <span className="text-legend">Delta from 30d avg</span>
               <Help
                 content={`How much ${rToken.symbol} is needed to hit the 30d avg`}
               />
-            </Box>
-            <Text sx={{ fontWeight: 'bold' }}>{`${formatCurrency(
+            </div>
+            <span className="font-bold">{`${formatCurrency(
               neededToHitAvg
-            )} ${rToken.symbol}`}</Text>
-          </Box>
+            )} ${rToken.symbol}`}</span>
+          </div>
 
           <Button
             className="mt-4 py-2 w-full"
@@ -220,18 +187,15 @@ const StakingVaultRevenue = () => {
             onClick={() => write?.()}
           >
             {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            <Box
-              variant="layout.verticalAlign"
-              sx={{ justifyContent: 'center', gap: 1 }}
-            >
-              <Text>Nudge</Text>
+            <div className="flex items-center justify-center gap-1">
+              <span>Nudge</span>
               <Help
                 content={`Starts the next ${rTokenVault.name} reward period once the current one ends. Disabled until then.`}
                 placement="bottom"
               />
-            </Box>
+            </div>
           </Button>
-        </Box>
+        </div>
       </Card>
     </>
   )

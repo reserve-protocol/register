@@ -4,9 +4,8 @@ import { ExecuteButton } from '@/components/ui/transaction-button'
 import useHasAllowance from 'hooks/useHasAllowance'
 import { useAtomValue } from 'jotai'
 import { useCallback, useMemo, useState } from 'react'
-import { chainIdAtom, rTokenAssetsAtom, walletAtom } from 'state/atoms'
-import { Box, Grid, Text } from 'theme-ui'
-import { formatCurrency, isAddress } from 'utils'
+import { chainIdAtom, walletAtom } from 'state/atoms'
+import { formatCurrency } from 'utils'
 import { BIGINT_MAX } from 'utils/constants'
 import { Address, Hex, formatUnits } from 'viem'
 import { useBalance } from 'wagmi'
@@ -70,8 +69,8 @@ const AuctionActions = ({
   }, [])
 
   return (
-    <Grid columns={[1, 1, 1, 'auto auto']}>
-      <Box variant="layout.verticalAlign" sx={{ flexWrap: 'wrap' }}>
+    <div className="grid grid-cols-1 xl:grid-cols-[auto_auto]">
+      <div className="flex items-center flex-wrap">
         {!hasAllowance && (
           <>
             <ExecuteButton
@@ -82,9 +81,9 @@ const AuctionActions = ({
               size="sm"
               className="ml-4"
             />
-            <Text variant="legend" sx={{ fontSize: 1 }} ml={2}>
+            <span className="text-legend text-xs ml-2">
               Prepare for bidding by approving {data.buyingTokenSymbol}
-            </Text>
+            </span>
           </>
         )}
         {hasAllowance && currentPrice !== 0n && (
@@ -102,7 +101,7 @@ const AuctionActions = ({
               size="sm"
               onSuccess={handleBid}
             />
-            <Text variant="legend" sx={{ fontSize: 1 }} ml={2}>
+            <span className="text-legend text-xs ml-2">
               1 {data.sellingTokenSymbol} ={' '}
               {formatCurrency(
                 Number(formatUnits(currentPrice, data.buyingTokenDecimals)) /
@@ -110,14 +109,14 @@ const AuctionActions = ({
                 5
               )}{' '}
               {data.buyingTokenSymbol}
-            </Text>
+            </span>
           </>
         )}
-      </Box>
+      </div>
       {!bidded && (
         <AuctionTimeIndicators start={+data.startedAt} end={+data.endAt} />
       )}
-    </Grid>
+    </div>
   )
 }
 

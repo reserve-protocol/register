@@ -4,7 +4,6 @@ import { ExecuteButton } from '@/components/ui/transaction-button'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useMemo } from 'react'
 import { rTokenContractsAtom, walletAtom } from 'state/atoms'
-import { Box, Text } from 'theme-ui'
 import { Trader } from 'types'
 import { formatCurrency } from 'utils'
 import { Address, encodeFunctionData } from 'viem'
@@ -68,13 +67,13 @@ const ClaimFromTraderButton = ({
   }
 
   return (
-    <Box variant="layout.verticalAlign" mt={3} mb={4}>
-      <Text variant="legend" sx={{ fontSize: 1 }}>
+    <div className="flex items-center mt-4 mb-6">
+      <span className="text-legend text-sm">
         {!erc20s.length && <Trans>Please select an asset to claim</Trans>}
         {!!erc20s.length && !wallet && (
           <Trans>Please connect your wallet</Trans>
         )}
-      </Text>
+      </span>
       <ExecuteButton
         text={t`Claim $${formatCurrency(claimAmount)}`}
         size="sm"
@@ -84,7 +83,7 @@ const ClaimFromTraderButton = ({
         successLabel="Success!"
         call={transaction}
       />
-    </Box>
+    </div>
   )
 }
 

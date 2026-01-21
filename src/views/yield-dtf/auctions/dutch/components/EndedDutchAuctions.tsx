@@ -1,20 +1,23 @@
 import { Trans } from '@lingui/macro'
 import { Table } from '@/components/ui/legacy-table'
 import { useAtomValue } from 'jotai'
-import { Box, BoxProps, Text } from 'theme-ui'
 import useColumns from '@/views/yield-dtf/auctions/components/useColumns'
 import { endedDutchTradesAtom } from '../atoms'
 import EndedAuctionsSkeleton from '@/views/yield-dtf/auctions/components/EndedAuctionsSkeleton'
 
-const EndedDutchAuctions = (props: BoxProps) => {
+interface EndedDutchAuctionsProps {
+  className?: string
+}
+
+const EndedDutchAuctions = ({ className }: EndedDutchAuctionsProps) => {
   const columns = useColumns(true)
   const data = useAtomValue(endedDutchTradesAtom)
 
   return (
-    <Box {...props}>
-      <Text variant="strong" ml={4} mb={4}>
+    <div className={className}>
+      <span className="font-semibold ml-4 mb-4 block">
         <Trans>Ended auctions</Trans>
-      </Text>
+      </span>
       {data.length ? (
         <Table
           columns={columns}
@@ -26,7 +29,7 @@ const EndedDutchAuctions = (props: BoxProps) => {
       ) : (
         <EndedAuctionsSkeleton />
       )}
-    </Box>
+    </div>
   )
 }
 

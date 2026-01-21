@@ -72,7 +72,7 @@ const SettleableAuctions = () => {
       icon={<Check size={24} />}
       loading={!settleable}
       subtitle={t`${settleable?.length ?? 0} auctions`}
-      mb={3}
+      className="mb-4"
       right={
         <ExecuteButton
           text={t`Settle all`}
