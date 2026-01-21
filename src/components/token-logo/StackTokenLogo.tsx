@@ -49,18 +49,14 @@ const StackTokenLogo = React.memo(
               >
                 <LegacyTokenLogo
                   width={size}
-                  sx={{
-                    position: 'relative',
-                    left: index ? `${-6 * index}px` : 0,
-                  }}
+                  className="relative"
+                  style={{ left: index ? `${-6 * index}px` : 0 }}
                   symbol={'frax'}
                 />
                 <LegacyTokenLogo
                   width={size}
-                  sx={{
-                    position: 'relative',
-                    left: index ? `${-6 * (index + 1)}px` : 0,
-                  }}
+                  className="relative"
+                  style={{ left: index ? `${-6 * (index + 1)}px` : 0 }}
                   symbol={'usdc'}
                 />
               </Box>

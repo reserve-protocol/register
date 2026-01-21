@@ -1,8 +1,10 @@
-import { Image, ImageProps } from 'theme-ui'
+interface SkyProps extends React.ImgHTMLAttributes<HTMLImageElement> {
+  width?: number | string
+}
 
-const Sky = (props: ImageProps) => {
+const Sky = ({ width = 16, ...props }: SkyProps) => {
   return (
-    <Image width={16} src="https://storage.reserve.org/sky.svg" {...props} />
+    <img width={width} src="https://storage.reserve.org/sky.svg" {...props} />
   )
 }
 export default Sky

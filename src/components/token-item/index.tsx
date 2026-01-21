@@ -24,7 +24,7 @@ const TokenItem = ({ symbol, logo, width = 24, chainId, ...props }: Props) => (
     }}
   >
     <Flex variant="layout.verticalAlign">
-      <TokenLogo width={width} mr="6px" symbol={symbol} src={logo} />
+      <TokenLogo width={width} className="mr-1.5" symbol={symbol} src={logo} />
       <Text {...props}>{symbol}</Text>
     </Flex>
     <Box>

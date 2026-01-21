@@ -93,7 +93,7 @@ const BasketDiffItem = ({ item }: { item: DiffItem }) => {
   return (
     <Grid columns={[1, 3]} gap={[1, 2]} sx={{ width: '100%' }}>
       <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
-        <TokenLogo mr="2" symbol={item.symbol} />
+        <TokenLogo className="mr-2" symbol={item.symbol} />
         <Box sx={{ fontSize: 1 }}>
           <Text variant="bold">
             {collateralDisplay[item.symbol.toLowerCase()] || item.symbol}

@@ -308,7 +308,7 @@ const CollateralItem = ({ collateral, wrapping, ...props }: Props) => {
   return (
     <Box {...props}>
       <Box variant="layout.verticalAlign">
-        <TokenLogo symbol={collateral.symbol} width={20} mr={3} />
+        <TokenLogo symbol={collateral.symbol} width={20} className="mr-4" />
         <Box sx={{ flexGrow: 1 }} variant="layout.verticalAlign">
           <Box sx={{ maxWidth: 200 }}>
             <Text as="label">

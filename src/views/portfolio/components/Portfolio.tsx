@@ -47,7 +47,7 @@ const PortfolioToken = ({ position }: { position: AccountRTokenPosition }) => {
       p={4}
     >
       <Box variant="layout.verticalAlign">
-        <TokenLogo width={24} mr={2} src={logo} />
+        <TokenLogo width={24} className="mr-2" src={logo} />
         <Text ml={1} variant="strong">
           {formatCurrency(+position.balance)} {position.symbol}
         </Text>

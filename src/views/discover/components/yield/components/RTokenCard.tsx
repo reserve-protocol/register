@@ -111,7 +111,7 @@ const RTokenCard = ({ token, ...props }: Props) => {
               <TokenLogo
                 width={32}
                 src={token.logo}
-                sx={{ display: ['block', 'none'], height: '32px' }}
+                className="block md:hidden h-8"
               />
               <ChainBadge chain={token.chain} />
               <Box sx={{ display: ['block', 'none'] }}>
@@ -137,7 +137,7 @@ const RTokenCard = ({ token, ...props }: Props) => {
               <TokenLogo
                 width={50}
                 src={token.logo}
-                sx={{ display: ['none', 'block'] }}
+                className="hidden md:block"
               />
               <Box variant="layout.centered" sx={{ alignItems: 'start' }}>
                 <Text
