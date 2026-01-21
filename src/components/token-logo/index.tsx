@@ -292,6 +292,7 @@ export const PNGS = new Set([
   'moomorpho-smokehouse-usdc',
   'ssr',
   'avgjoescrypto',
+  'eat'
 ])
 
 export const EXTERNAL_ASSETS: Record<string, string> = {
