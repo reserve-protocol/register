@@ -3,13 +3,13 @@ import Deployer from 'abis/Deployer'
 import CopyValue from '@/components/ui/copy-value'
 import GoTo from '@/components/ui/go-to'
 import TransactionButton from '@/components/ui/transaction-button'
+import Spinner from '@/components/ui/spinner'
 import DeployActionIcon from 'components/icons/DeployActionIcon'
 import useWatchTransaction from 'hooks/useWatchTransaction'
 import { useAtomValue } from 'jotai'
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { chainIdAtom } from 'state/atoms'
-import { Box, BoxProps, Flex, Spinner, Text } from 'theme-ui'
 import { shortenString } from 'utils'
 import { DEPLOYER_ADDRESS } from 'utils/addresses'
 import { ROUTES } from 'utils/constants'
@@ -20,16 +20,16 @@ import TransactionError from 'components/transaction-error/TransactionError'
 
 const Pending = () => (
   <>
-    <Spinner mt={3} size={24} mb={2} />
-    <Text sx={{ fontWeight: 500, display: 'block' }}>
+    <Spinner className="mt-3 mb-2" size={24} />
+    <span className="font-medium block">
       <Trans>Pending, sign in wallet</Trans>
-    </Text>
-    <Text as="p" variant="legend">
+    </span>
+    <p className="text-legend">
       <Trans>
         Please sign the transaction in your wallet to continue with the
         deployment process.
       </Trans>
-    </Text>
+    </p>
   </>
 )
 
@@ -38,42 +38,39 @@ const Mining = ({ hash }: { hash: string }) => {
 
   return (
     <>
-      <Spinner size={24} mt={3} mb={2} />
-      <Text sx={{ fontWeight: 500, fontSize: 3, display: 'block' }} mb={2}>
+      <Spinner size={24} className="mt-3 mb-2" />
+      <span className="font-medium text-lg block mb-2">
         <Trans>Deploy transaction submitted</Trans>
-      </Text>
-      <Text as="p" variant="legend">
+      </span>
+      <p className="text-legend">
         <Trans>
           Meditate peacefully on the stability of a future asset backed reserve
           currency while your RToken deploys 🧘‍♂️
         </Trans>
-      </Text>
-      <Text as="p" variant="legend" mt={2}>
+      </p>
+      <p className="text-legend mt-2">
         <Trans>
           Please don't close this window to avoid issues finding your way back
           here.
         </Trans>
-      </Text>
-      <Box
-        variant="layout.verticalAlign"
-        sx={{ justifyContent: 'center' }}
-        mt={4}
-      >
-        <Text>{shortenString(hash)}</Text>
+      </p>
+      <div className="flex items-center justify-center mt-4">
+        <span>{shortenString(hash)}</span>
         <CopyValue ml={3} mr={2} value={hash} />
         <GoTo
           href={getExplorerLink(hash, chainId, ExplorerDataType.TRANSACTION)}
         />
-      </Box>
+      </div>
     </>
   )
 }
 
-interface Props extends BoxProps {
+interface Props {
   onDeploy(rtoken: Address): void
+  className?: string
 }
 
-const DeployOverview = ({ onDeploy, sx = {}, ...props }: Props) => {
+const DeployOverview = ({ onDeploy, className }: Props) => {
   const navigate = useNavigate()
   const chainId = useAtomValue(chainIdAtom)
   const { gas, write, isReady, hash, validationError, error, isLoading } =
@@ -117,25 +114,14 @@ const DeployOverview = ({ onDeploy, sx = {}, ...props }: Props) => {
   }, [status])
 
   return (
-    <Box
-      variant="layout.borderBox"
-      sx={{ ...sx, height: 'fit-content' }}
-      mt={[0, 4, 6]}
-      mb={4}
-      {...props}
+    <div
+      className={`border border-border rounded-3xl p-4 h-fit mt-0 sm:mt-4 lg:mt-6 mb-4 ${className || ''}`}
     >
-      <Flex
-        sx={{
-          alignItems: 'center',
-          flexDirection: 'column',
-          textAlign: 'center',
-        }}
-        py={2}
-      >
+      <div className="flex flex-col items-center text-center py-2">
         <DeployActionIcon />
-        <Text variant="title" mt={2} mb={1}>
+        <span className="text-xl font-medium mt-2 mb-1">
           <Trans>Tx1. RToken Deploy</Trans>
-        </Text>
+        </span>
         {(() => {
           if (isLoading && !hash) {
             return <Pending />
@@ -147,12 +133,12 @@ const DeployOverview = ({ onDeploy, sx = {}, ...props }: Props) => {
 
           return (
             <>
-              <Text variant="legend" as="p" sx={{ textAlign: 'center' }}>
+              <p className="text-legend text-center">
                 <Trans>
                   You will be the temporary owner until governance is deployed
                   in transaction 2.
                 </Trans>
-              </Text>
+              </p>
 
               <TransactionButton
                 text={t`Deploy RToken`}
@@ -166,8 +152,8 @@ const DeployOverview = ({ onDeploy, sx = {}, ...props }: Props) => {
             </>
           )
         })()}
-      </Flex>
-    </Box>
+      </div>
+    </div>
   )
 }
 

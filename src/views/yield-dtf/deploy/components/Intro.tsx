@@ -1,32 +1,30 @@
 import { Trans } from '@lingui/macro'
 import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
 import DeployIntroIcon from 'components/icons/DeployIntroIcon'
-import { Box, BoxProps, Card, Flex, Text } from 'theme-ui'
 import { DISCORD_INVITE, PROTOCOL_DOCS } from 'utils/constants'
 
-const Intro = (props: BoxProps) => (
-  <Card
-    variant="cards.form"
-    p={4}
-    pt={4}
-    {...props}
-    sx={{ position: 'relative' }}
-  >
-    <Box ml={'2px'}>
+interface IntroProps {
+  className?: string
+}
+
+const Intro = ({ className }: IntroProps) => (
+  <Card className={`p-4 bg-secondary relative ${className || ''}`}>
+    <div className="ml-0.5">
       <DeployIntroIcon />
-    </Box>
-    <Text variant="sectionTitle" sx={{ fontWeight: 600 }} mb={2} mt={7}>
+    </div>
+    <span className="text-xl font-semibold block mb-2 mt-7">
       <Trans>Create a new Yield DTF</Trans>
-    </Text>
-    <Text as="p" variant="legend" pr={4} sx={{ maxWidth: '580px' }}>
+    </span>
+    <p className="text-legend pr-4 max-w-[580px]">
       <Trans>
         Deploying through this UI doesn't require deep technical knowledge as
         long as you don't need novel collateral plugins for your baskets.
         However, we encourage you to talk to someone proficient in the protocol
         and read the docs to learn more before confirming any transactions.
       </Trans>
-    </Text>
-    <Flex mt={4}>
+    </p>
+    <div className="flex mt-4">
       <Button
         variant="ghost"
         size="sm"
@@ -52,7 +50,7 @@ const Intro = (props: BoxProps) => (
       >
         <Trans>Protocol Docs</Trans>
       </Button>
-    </Flex>
+    </div>
   </Card>
 )
 
