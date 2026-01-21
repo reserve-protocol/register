@@ -1,4 +1,4 @@
-import { Button } from 'components'
+import { Button } from '@/components/ui/button'
 import ChevronRight from 'components/icons/ChevronRight'
 import EarnIcon from 'components/icons/EarnIcon'
 import { ListedToken } from 'hooks/useTokenList'
@@ -6,7 +6,6 @@ import { useAtomValue } from 'jotai'
 import { memo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { dtfPoolsAtom } from 'state/pools/atoms'
-import { mediumButton } from 'theme'
 import { Box, BoxProps, Text } from 'theme-ui'
 import { BRIDGED_RTOKENS, ROUTES } from 'utils/constants'
 import { getAddress } from 'viem'
@@ -45,12 +44,8 @@ const EarnButton = ({ token, sx, ...props }: Props) => {
           trackClick('discover', 'earn', token.id, token.symbol, token.chain)
           handleEarn()
         }}
-        variant="hover"
-        sx={{
-          width: ['100%', 'fit-content'],
-          ...mediumButton,
-          pr: [0, 3],
-        }}
+        variant="ghost"
+        className="w-full md:w-fit md:pr-4 text-sm md:text-base py-1 px-2.5 md:py-3 md:px-4 rounded-lg"
       >
         <Box
           variant="layout.verticalAlign"

@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro'
-import { SmallButton } from '@/components/old/button'
+import { Button } from '@/components/ui/button'
 import DeployIntroIcon from 'components/icons/DeployIntroIcon'
 import { Box, BoxProps, Card, Flex, Text } from 'theme-ui'
 import { DISCORD_INVITE, PROTOCOL_DOCS } from 'utils/constants'
@@ -27,28 +27,31 @@ const Intro = (props: BoxProps) => (
       </Trans>
     </Text>
     <Flex mt={4}>
-      <SmallButton
-        variant="transparent"
-        mr={3}
+      <Button
+        variant="ghost"
+        size="sm"
+        className="mr-4"
         onClick={() => window.open(DISCORD_INVITE, '_blank')}
       >
         <Trans>Community Discord</Trans>
-      </SmallButton>
-      <SmallButton
-        variant="transparent"
-        mr={3}
+      </Button>
+      <Button
+        variant="ghost"
+        size="sm"
+        className="mr-4"
         onClick={() =>
           window.open('https://www.youtube.com/watch?v=hk2v0s9wXEo', '_blank')
         }
       >
         <Trans>Tutorial video</Trans>
-      </SmallButton>
-      <SmallButton
-        variant="transparent"
+      </Button>
+      <Button
+        variant="ghost"
+        size="sm"
         onClick={() => window.open(`${PROTOCOL_DOCS}yield_dtfs/`, '_blank')}
       >
         <Trans>Protocol Docs</Trans>
-      </SmallButton>
+      </Button>
     </Flex>
   </Card>
 )

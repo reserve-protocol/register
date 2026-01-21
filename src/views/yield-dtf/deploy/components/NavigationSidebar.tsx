@@ -1,5 +1,5 @@
 import { t, Trans } from '@lingui/macro'
-import { SmallButton } from '@/components/old/button'
+import { Button } from '@/components/ui/button'
 import Navigation from '@/components/section-navigation/section-navigation'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
@@ -39,13 +39,13 @@ const NavigationSidebar = ({ governance = false }) => {
   return (
     <Box variant="layout.sticky">
       <Box mb={5} mt={[4, 4, 6]}>
-        <SmallButton variant="transparent" onClick={handleBack}>
+        <Button variant="ghost" size="sm" onClick={handleBack}>
           {governance ? (
             <Trans>Back to settings</Trans>
           ) : (
             <Trans>Exit Deployer</Trans>
           )}
-        </SmallButton>
+        </Button>
       </Box>
       <Navigation title={t`Tx 1`} sections={sections} />
       <Text sx={{ fontSize: 1, fontStyle: 'italic' }} mb={5}>

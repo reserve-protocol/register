@@ -1,6 +1,6 @@
 import DutchTradeAbi from 'abis/DutchTrade'
 import ERC20 from 'abis/ERC20'
-import { ExecuteButton } from '@/components/old/button/TransactionButton'
+import { ExecuteButton } from '@/components/ui/transaction-button'
 import useHasAllowance from 'hooks/useHasAllowance'
 import { useAtomValue } from 'jotai'
 import { useCallback, useMemo, useState } from 'react'
@@ -77,10 +77,10 @@ const AuctionActions = ({
             <ExecuteButton
               text={`Approve ${data.buyingTokenSymbol}`}
               call={approveCall}
-              variant="accentAction"
+              variant="accent"
               successLabel="Waiting allowance..."
-              small
-              ml={3}
+              size="sm"
+              className="ml-4"
             />
             <Text variant="legend" sx={{ fontSize: 1 }} ml={2}>
               Prepare for bidding by approving {data.buyingTokenSymbol}
@@ -93,13 +93,13 @@ const AuctionActions = ({
               text={`Bid ${formatCurrency(
                 +formatUnits(currentPrice, data.buyingTokenDecimals)
               )} ${data.buyingTokenSymbol}`}
-              ml={3}
+              className="ml-4"
               call={hasBalance ? bidCall : undefined}
-              variant="accentAction"
+              variant="accent"
               successLabel="Auction bidded"
               txLabel={hasBalance ? 'Auction bid' : 'Not enough balance to bid'}
               disabled={!hasBalance}
-              small
+              size="sm"
               onSuccess={handleBid}
             />
             <Text variant="legend" sx={{ fontSize: 1 }} ml={2}>

@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro'
-import Button from '@/components/old/button'
+import { Button } from '@/components/ui/button'
 import ExternalArrowIcon from 'components/icons/ExternalArrowIcon'
 import { borderRadius } from 'theme'
 import { Box, BoxProps, Flex, Image, Text } from 'theme-ui'
@@ -80,24 +80,23 @@ const DeployHero = (props: BoxProps) => {
           </Trans>
         </Text>
         <Flex mt={4}>
-          <Button onClick={handleDeploy} medium variant="blue" mr={3}>
+          <Button onClick={handleDeploy} className="mr-4">
             <Trans>Go to the RToken Deployer</Trans>
           </Button>
-          <Button medium variant="transparent" mr={2}>
-            <Box
-              variant="layout.verticalAlign"
-              onClick={() =>
-                window.open(
-                  'https://www.youtube.com/watch?v=hk2v0s9wXEo',
-                  '_blank'
-                )
-              }
-            >
-              <Text mr={2}>
-                <Trans>Watch an intro to RTokens</Trans>
-              </Text>
-              <ExternalArrowIcon />
-            </Box>
+          <Button
+            variant="ghost"
+            className="mr-2"
+            onClick={() =>
+              window.open(
+                'https://www.youtube.com/watch?v=hk2v0s9wXEo',
+                '_blank'
+              )
+            }
+          >
+            <span className="mr-2">
+              <Trans>Watch an intro to RTokens</Trans>
+            </span>
+            <ExternalArrowIcon />
           </Button>
         </Flex>
       </Box>

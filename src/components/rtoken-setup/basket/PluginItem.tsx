@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro'
-import GoTo from '@/components/old/button/GoTo'
+import GoTo from '@/components/ui/go-to'
 import TokenLogo from 'components/icons/TokenLogo'
 import { useAtomValue } from 'jotai'
 import { useState } from 'react'

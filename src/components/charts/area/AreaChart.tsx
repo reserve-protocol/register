@@ -1,5 +1,4 @@
 import { Trans } from '@lingui/macro'
-import InfoBox from '@/components/old/info-box'
 import TabMenu from 'components/tab-menu'
 import { useMemo } from 'react'
 import { ArrowDown, ArrowUp } from 'lucide-react'
@@ -28,14 +27,20 @@ interface Props extends Omit<BoxProps, 'title'> {
   domain?: [number | string, number | string]
 }
 
-function CustomTooltip({ payload, label, active }: any) {
+function CustomTooltip({ payload, active }: any) {
   if (active && payload) {
     return (
       <Card>
-        <InfoBox
-          title={payload[0]?.payload?.display || payload[0]?.payload?.value}
-          subtitle={payload[0]?.payload?.label}
-        />
+        <Text
+          sx={{ fontSize: 2, display: 'block', color: 'text' }}
+          mb={2}
+          variant="strong"
+        >
+          {payload[0]?.payload?.display || payload[0]?.payload?.value}
+        </Text>
+        <Text variant="legend" sx={{ fontSize: 1 }}>
+          {payload[0]?.payload?.label}
+        </Text>
       </Card>
     )
   }

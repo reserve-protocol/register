@@ -1,6 +1,6 @@
 import { Trans } from '@lingui/macro'
 import BlockiesAvatar from '@/components/utils/blockies-avatar'
-import GoTo from '@/components/old/button/GoTo'
+import GoTo from '@/components/ui/go-to'
 import { useEnsAddresses } from 'hooks/useEnsAddresses'
 import { atom, useAtomValue } from 'jotai'
 import { useState } from 'react'

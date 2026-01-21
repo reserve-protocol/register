@@ -1,5 +1,6 @@
 import { Trans } from '@lingui/macro'
-import { Button, Input } from 'components'
+import { Button } from '@/components/ui/button'
+import { Input } from 'components'
 import { useAtom, useAtomValue } from 'jotai'
 import { useState } from 'react'
 import Skeleton from 'react-loading-skeleton'
@@ -36,15 +37,14 @@ const EditContract = ({
         onChange={(e) => setContract(e.target.value)}
       />
       <Button
-        mr={2}
-        mt={2}
-        small
+        size="sm"
+        className="mr-2 mt-2"
         disabled={!formattedAddress}
         onClick={() => formattedAddress && onSave(formattedAddress)}
       >
         Save
       </Button>
-      <Button variant="danger" mt={2} small onClick={onDiscard}>
+      <Button variant="destructive" size="sm" className="mt-2" onClick={onDiscard}>
         Discard
       </Button>
     </Box>
@@ -83,19 +83,18 @@ const UpgradeContract = ({ contract, version, ...props }: IUpgradeContract) => {
           <Text>{currentUpgrade}</Text>
           <Box>
             <Button
-              variant="accentAction"
-              mt={2}
-              small
+              variant="accent"
+              size="sm"
+              className="mt-2"
               onClick={() => setUpgrade(true)}
             >
               {currentUpgrade ? 'Edit' : 'Upgrade'}
             </Button>
             {currentUpgrade && (
               <Button
-                ml={2}
-                variant="danger"
-                mt={2}
-                small
+                variant="destructive"
+                size="sm"
+                className="ml-2 mt-2"
                 onClick={handleDiscard}
               >
                 Discard

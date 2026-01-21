@@ -1,6 +1,6 @@
 import { t } from '@lingui/macro'
 import FacadeAct from 'abis/FacadeAct'
-import { ExecuteButton } from '@/components/old/button/TransactionButton'
+import { ExecuteButton } from '@/components/ui/transaction-button'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { Check } from 'lucide-react'
 import { chainIdAtom } from 'state/atoms'

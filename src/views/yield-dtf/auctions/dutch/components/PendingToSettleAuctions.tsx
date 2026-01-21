@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro'
-import { Table } from '@/components/old/table'
+import { Table } from '@/components/ui/legacy-table'
 import { useAtomValue } from 'jotai'
 import { Box, BoxProps, Text } from 'theme-ui'
 import useColumns from '@/views/yield-dtf/auctions/components/useColumns'

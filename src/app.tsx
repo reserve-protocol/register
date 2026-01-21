@@ -13,6 +13,7 @@ import { getTokenRoute } from 'utils'
 import AppRoutes from './app-routes'
 import Layout from './components/layout'
 import { Toaster } from './components/ui/sonner'
+import { TooltipProvider } from './components/ui/tooltip'
 import LanguageProvider from './i18n'
 import { theme } from './theme'
 import * as Sentry from '@sentry/react'
@@ -115,13 +116,15 @@ const App = () => (
         <ScrollToTop />
         <ThemeUIProvider theme={theme}>
           <LanguageProvider>
-            <ChainProvider>
-              <Updater />
-              <Layout>
-                <Toaster />
-                <AppRoutes />
-              </Layout>
-            </ChainProvider>
+            <TooltipProvider>
+              <ChainProvider>
+                <Updater />
+                <Layout>
+                  <Toaster />
+                  <AppRoutes />
+                </Layout>
+              </ChainProvider>
+            </TooltipProvider>
           </LanguageProvider>
         </ThemeUIProvider>
       </Router>

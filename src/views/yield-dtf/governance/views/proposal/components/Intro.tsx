@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro'
-import { SmallButton } from '@/components/old/button'
+import { Button } from '@/components/ui/button'
 import { Text, BoxProps, Card, Flex } from 'theme-ui'
 import ProposalIntroIcon from 'components/icons/ProposalIntroIcon'
 import useRToken from 'hooks/useRToken'
@@ -23,19 +23,21 @@ const Intro = (props: BoxProps) => {
         </Trans>
       </Text>
       <Flex mt={4}>
-        <SmallButton
-          variant="transparent"
-          mr="12px"
+        <Button
+          variant="ghost"
+          size="sm"
+          className="mr-3"
           onClick={() => window.open('https://t.co/kis3OapvFw', '_blank')}
         >
           <Trans>Community Discord</Trans>
-        </SmallButton>
-        <SmallButton
+        </Button>
+        <Button
           variant="muted"
+          size="sm"
           onClick={() => window.open(PROTOCOL_DOCS, '_blank')}
         >
           <Trans>Protocol Docs</Trans>
-        </SmallButton>
+        </Button>
       </Flex>
     </Card>
   )

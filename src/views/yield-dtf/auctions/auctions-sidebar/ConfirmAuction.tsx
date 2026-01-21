@@ -1,4 +1,4 @@
-import TransactionButton from '@/components/old/button/TransactionButton'
+import TransactionButton from '@/components/ui/transaction-button'
 import useWatchTransaction from 'hooks/useWatchTransaction'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
@@ -79,7 +79,7 @@ const ConfirmAuction = () => {
       <TransactionButton
         fullWidth
         text={btnLabel}
-        variant={isLoading ? 'accentAction' : 'primary'}
+        variant={isLoading ? 'accent' : 'default'}
         disabled={!isReady}
         gas={gas}
         loading={isLoading}

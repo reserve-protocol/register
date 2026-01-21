@@ -1,6 +1,6 @@
 import { Trans } from '@lingui/macro'
 import StRSRVotes from 'abis/StRSRVotes'
-import { Button } from 'components'
+import { Button } from '@/components/ui/button'
 import ExternalArrowIcon from 'components/icons/ExternalArrowIcon'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
@@ -33,8 +33,8 @@ const ViewExecuteTxButton = () => {
 
   return (
     <Button
-      variant="bordered"
-      sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+      variant="outline"
+      className="flex items-center justify-center border-2"
       onClick={() =>
         window.open(
           getExplorerLink(
@@ -164,7 +164,7 @@ const ProposalVote = (props: BoxProps) => {
         <Box>
           {hasUndelegatedBalance ? (
             <Button
-              sx={{ width: '100%' }}
+              className="w-full"
               onClick={() => setDelegateVisible(true)}
             >
               <Trans>Delegate voting power for future votes</Trans>
@@ -178,7 +178,7 @@ const ProposalVote = (props: BoxProps) => {
                 !votePower ||
                 votePower === '0.0'
               }
-              sx={{ width: '100%' }}
+              className="w-full"
               onClick={() => setVoteVisible(true)}
             >
               {!account ? (

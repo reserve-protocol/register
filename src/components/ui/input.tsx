@@ -147,7 +147,7 @@ const SearchInput = React.forwardRef<
         className={cn(
           inputVariants({ variant }),
           inputClassName,
-          'pl-14 pr-0 h-12 text-md rounded-2xl bg-card '
+          'pl-14 pr-0 h-16 text-md rounded-2xl bg-card '
         )}
         ref={ref}
         {...props}

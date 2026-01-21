@@ -1,4 +1,4 @@
-import TransactionButton from '@/components/old/button/TransactionButton'
+import TransactionButton from '@/components/ui/transaction-button'
 import { getCurrentTime } from '@/utils'
 import { t } from '@lingui/macro'
 import dtfIndexGovernanceAbi from 'abis/dtf-index-governance'

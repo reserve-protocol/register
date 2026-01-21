@@ -16,7 +16,7 @@ import { formatEther } from 'viem'
 import { useContractReads } from 'wagmi'
 import { Basket, basketAtom, basketTargetUnitPriceAtom } from '../atoms'
 import UnitBasket from './UnitBasket'
-import { SmallButton } from '@/components/old/button'
+import { Button } from '@/components/ui/button'
 import DocsLink from '@/components/utils/docs-link'
 import { useWatchReadContracts } from '@/hooks/useWatchReadContract'
 import { PROTOCOL_DOCS } from '@/utils/constants'
@@ -206,13 +206,13 @@ const PrimaryBasket = ({
           link={`${PROTOCOL_DOCS}yield_dtfs/deployment_guide/ui_walkthrough/#step-3-configure-basket`}
         />
         {!readOnly && (
-          <SmallButton
+          <Button
+            size="sm"
             onClick={() => onAdd({ basket: 'primary' })}
-            ml="auto"
-            variant="primary"
+            className="ml-auto"
           >
             <Trans>Add to basket</Trans>
-          </SmallButton>
+          </Button>
         )}
       </Flex>
       {!units.length && <Placeholder />}

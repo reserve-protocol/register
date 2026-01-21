@@ -1,4 +1,5 @@
-import { Button, Modal } from 'components'
+import { Button } from '@/components/ui/button'
+import { Modal } from 'components'
 import AsteriskIcon from 'components/icons/AsteriskIcon'
 import TokenLogo from 'components/icons/TokenLogo'
 import { useState } from 'react'
@@ -61,18 +62,11 @@ const ZapOverview = () => {
               m: 0,
             }}
           />
-          <Button small variant="hover" onClick={() => setCollapsed((c) => !c)}>
-            <Box
-              variant="layout.verticalAlign"
-              sx={{
-                color: 'secondaryText',
-                minWidth: 92,
-                justifyContent: 'space-between',
-              }}
-            >
-              <Text mr="2">{collapsed ? 'Show more' : 'Show less'}</Text>
+          <Button size="sm" variant="ghost" onClick={() => setCollapsed((c) => !c)}>
+            <span className="flex items-center text-muted-foreground min-w-[92px] justify-between">
+              <span className="mr-2">{collapsed ? 'Show more' : 'Show less'}</span>
               <AsteriskIcon />
-            </Box>
+            </span>
           </Button>
           <Divider
             sx={{
@@ -144,7 +138,7 @@ const ZapSubmitModal = () => {
               setOpenSubmitModal(false)
               refreshQuote()
             }}
-            sx={{ marginLeft: 'auto', backgroundColor: 'transparent' }}
+            className="ml-auto bg-transparent"
           >
             <X />
           </Button>

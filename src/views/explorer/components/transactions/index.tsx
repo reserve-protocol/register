@@ -1,6 +1,6 @@
 import { Trans } from '@lingui/macro'
 import TransactionsIcon from 'components/icons/TransactionsIcon'
-import { Table } from '@/components/old/table'
+import { Table } from '@/components/ui/legacy-table'
 import { Box, Text } from 'theme-ui'
 import useTransactionColumns from './useTransactionColumns'
 import useTransactionData from './useTransactionData'

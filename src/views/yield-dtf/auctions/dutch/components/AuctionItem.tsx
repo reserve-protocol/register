@@ -1,5 +1,9 @@
 import CalculatorIcon from 'components/icons/CalculatorIcon'
-import { MouseoverTooltip } from '@/components/old/tooltip'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
 import { ChevronDown } from 'lucide-react'
 import { Box, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
@@ -30,14 +34,17 @@ const AuctionItem = ({
       </Text>
     </Box>
     {!!price && !!forSymbol && (
-      <MouseoverTooltip
-        text={`1 ${forSymbol} = ${formatCurrency(price, 3)} ${symbol}`}
-      >
-        <Box ml={3} variant="layout.verticalAlign" sx={{ cursor: 'pointer' }}>
-          <CalculatorIcon />
-          <ChevronDown size={14} style={{ marginTop: -3 }} />
-        </Box>
-      </MouseoverTooltip>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Box ml={3} variant="layout.verticalAlign" sx={{ cursor: 'pointer' }}>
+            <CalculatorIcon />
+            <ChevronDown size={14} style={{ marginTop: -3 }} />
+          </Box>
+        </TooltipTrigger>
+        <TooltipContent>
+          {`1 ${forSymbol} = ${formatCurrency(price, 3)} ${symbol}`}
+        </TooltipContent>
+      </Tooltip>
     )}
   </Box>
 )

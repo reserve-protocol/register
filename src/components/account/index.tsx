@@ -1,5 +1,9 @@
-import Button from '@/components/old/button'
-import { MouseoverTooltipContent } from '@/components/old/tooltip'
+import { Button } from '@/components/ui/button'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
 import Staking from '@/views/index-dtf/overview/components/staking'
 import PortfolioSidebar from '@/views/portfolio/sidebar'
 import { Trans } from '@lingui/macro'
@@ -25,8 +29,9 @@ const ErrorWrapper = ({
   isValid ? (
     <>{children}</>
   ) : (
-    <MouseoverTooltipContent
-      content={
+    <Tooltip>
+      <TooltipTrigger asChild>{children}</TooltipTrigger>
+      <TooltipContent className="p-0 border-0 bg-transparent">
         <Card sx={{ width: 320, border: '1px solid black' }}>
           <Text sx={{ fontWeight: 400 }} variant="legend">
             <Trans>Network</Trans>
@@ -46,10 +51,8 @@ const ErrorWrapper = ({
             </Trans>
           </Text>
         </Card>
-      }
-    >
-      {children}
-    </MouseoverTooltipContent>
+      </TooltipContent>
+    </Tooltip>
   )
 
 /**
@@ -84,28 +87,16 @@ const Account = () => {
               if (!connected) {
                 return (
                   <Button
-                    variant="accentAction"
+                    variant="accent"
                     onClick={openConnectModal}
-                    px={'14px'}
-                    py={1}
-                    sx={{
-                      borderRadius: '40px',
-                      fontWeight: 400,
-                      '&:hover': {
-                        fontWeight: 400,
-                      },
-                    }}
+                    className="px-3.5 py-1 rounded-full font-normal"
                   >
-                    <Box
-                      sx={{ display: ['flex', 'none'] }}
-                      variant="layout.verticalAlign"
-                      py={1}
-                    >
+                    <span className="flex md:hidden items-center py-1">
                       <Power size={16} />
-                    </Box>
-                    <Text sx={{ display: ['none', 'block'], fontSize: 2 }}>
+                    </span>
+                    <span className="hidden md:block text-base">
                       <Trans>Connect</Trans>
-                    </Text>
+                    </span>
                   </Button>
                 )
               }

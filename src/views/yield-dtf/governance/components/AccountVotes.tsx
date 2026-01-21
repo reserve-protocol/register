@@ -1,7 +1,7 @@
 import { Trans } from '@lingui/macro'
 import StRSRVotes from 'abis/StRSRVotes'
-import { SmallButton } from '@/components/old/button'
-import GoTo from '@/components/old/button/GoTo'
+import { Button } from '@/components/ui/button'
+import GoTo from '@/components/ui/go-to'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
 import { useMemo, useState } from 'react'
@@ -63,14 +63,14 @@ const AccountVotes = () => {
               your vote to yourself or another Eth address.
             </Trans>
           </Text>
-          <SmallButton
-            mt={3}
-            variant="primary"
+          <Button
+            size="sm"
+            className="mt-4"
             onClick={handleDelegate}
             disabled={disabled}
           >
             <Trans>Delegate</Trans>
-          </SmallButton>
+          </Button>
           <Text ml={3} variant="legend" as="span">
             <Trans>Balance: </Trans>
           </Text>{' '}
@@ -101,9 +101,9 @@ const AccountVotes = () => {
               )}
             </Text>
           </Box>
-          <SmallButton ml="auto" variant="muted" onClick={handleDelegate}>
+          <Button size="sm" className="ml-auto" variant="muted" onClick={handleDelegate}>
             <Trans>Change</Trans>
-          </SmallButton>
+          </Button>
         </Box>
       )}
       {isVisible && (

@@ -1,4 +1,4 @@
-import Button from '@/components/old/button'
+import { Button } from '@/components/ui/button'
 import AsteriskIcon from 'components/icons/AsteriskIcon'
 import { useState } from 'react'
 import { Box, BoxProps, Divider, Text } from 'theme-ui'
@@ -12,11 +12,11 @@ const ShowMore = ({ children, ...props }: BoxProps) => {
         <Divider
           sx={{ flexGrow: 1, borderStyle: 'dashed', borderColor: 'darkBorder' }}
         />
-        <Button small variant="hover" onClick={() => setVisible(!isVisible)}>
-          <Box variant="layout.verticalAlign" sx={{ color: 'secondaryText' }}>
-            <Text mr="2">Show more</Text>
+        <Button size="sm" variant="ghost" onClick={() => setVisible(!isVisible)}>
+          <span className="flex items-center text-muted-foreground">
+            <span className="mr-2">Show more</span>
             <AsteriskIcon />
-          </Box>
+          </span>
         </Button>
         <Divider
           sx={{ flexGrow: 1, borderStyle: 'dashed', borderColor: 'darkBorder' }}

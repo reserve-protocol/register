@@ -1,4 +1,4 @@
-import { Button } from 'components'
+import { Button } from '@/components/ui/button'
 import Sparkles from 'components/icons/Sparkles'
 import { useSetAtom } from 'jotai'
 import { useState } from 'react'
@@ -65,13 +65,12 @@ const UpgradeHelper = (props: BoxProps) => {
         </Text>
       </Box>
       <Box ml={[0, 0, 0, 'auto']} mt={[3, 3, 3, 3]}>
-        <Button small variant="bordered" onClick={handleDismiss}>
+        <Button size="sm" variant="outline" className="border-2" onClick={handleDismiss}>
           Dismiss
         </Button>
         <Button
-          ml="3"
-          small
-          sx={{ backgroundColor: 'rBlue', whiteSpace: 'nowrap' }}
+          className="ml-3 bg-[#2150A9] whitespace-nowrap"
+          size="sm"
           onClick={() => {
             setAssistedUpgrade(true)
             navigate(`${ROUTES.GOVERNANCE_PROPOSAL}?token=${rToken?.address}`)

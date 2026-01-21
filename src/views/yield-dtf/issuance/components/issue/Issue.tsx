@@ -105,8 +105,8 @@ const Issue = () => {
             isEnabled.loading ||
             chainId === ChainId.Arbitrum
           }
-          variant={missingCollateral ? 'error' : 'primary'}
-          mt={3}
+          variant={missingCollateral ? 'destructive' : 'default'}
+          className="mt-4"
           onClick={handleIssue}
         >
           {chainId === ChainId.Arbitrum ? (

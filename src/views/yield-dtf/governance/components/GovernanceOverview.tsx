@@ -1,6 +1,6 @@
 import { t, Trans } from '@lingui/macro'
 import Governance from 'abis/Governance'
-import { SmallButton } from '@/components/old/button'
+import { Button } from '@/components/ui/button'
 import { gql } from 'graphql-request'
 import useQuery from 'hooks/use-query'
 import useRToken from 'hooks/useRToken'
@@ -191,17 +191,18 @@ const GovernanceFormat = () => {
           />
         </>
       )}
-      <SmallButton
-        mt={3}
+      <Button
+        className="mt-4"
+        size="sm"
         variant="muted"
         onClick={() => window.open('https://forum.reserve.org/', '_blank')}
       >
         <Trans>Governance forum</Trans>
-      </SmallButton>
-      <SmallButton
-        mt={3}
-        ml={2}
-        variant="transparent"
+      </Button>
+      <Button
+        className="mt-4 ml-2"
+        size="sm"
+        variant="ghost"
         onClick={() =>
           window.open(
             `${PROTOCOL_DOCS}reserve_rights_rsr/#reserve-governor-alexios`,
@@ -210,7 +211,7 @@ const GovernanceFormat = () => {
         }
       >
         <Trans>Documentation</Trans>
-      </SmallButton>
+      </Button>
     </Box>
   )
 }

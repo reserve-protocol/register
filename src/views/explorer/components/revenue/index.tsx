@@ -3,7 +3,7 @@ import { createColumnHelper } from '@tanstack/react-table'
 import FacadeRead from 'abis/FacadeRead'
 import AuctionsIcon from 'components/icons/AuctionsIcon'
 import TokenLogo from 'components/icons/TokenLogo'
-import { Table } from '@/components/old/table'
+import { Table } from '@/components/ui/legacy-table'
 import TokenItem from 'components/token-item'
 import { useCallback, useMemo, useState } from 'react'
 import { Check, X, ChevronDown, ChevronUp } from 'lucide-react'
@@ -19,7 +19,7 @@ import { Address, formatEther, formatUnits } from 'viem'
 import TabMenu from 'components/tab-menu'
 import CirclesIcon from 'components/icons/CirclesIcon'
 import ChainLogo from 'components/icons/ChainLogo'
-import { Button } from 'components'
+import { Button } from '@/components/ui/button'
 import { useReadContract } from 'wagmi'
 
 type RevenueResponse = {
@@ -347,8 +347,9 @@ const TradesTable = ({
         header: '',
         cell: (data) => (
           <Button
-            small
-            variant="bordered"
+            size="sm"
+            variant="outline"
+            className="border-2"
             onClick={() => {
               window.open(
                 getTokenRoute(
@@ -442,8 +443,9 @@ const RTokenRevenueOverview = ({ data }: { data: RevenueDetail }) => {
               <Text variant="strong">${formatCurrency(data.total)}</Text>
             </Box>
             <Button
-              small
-              variant="bordered"
+              size="sm"
+              variant="outline"
+              className="border-2"
               onClick={(e: React.MouseEvent) => {
                 e.stopPropagation()
                 handleRun()

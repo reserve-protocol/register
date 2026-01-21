@@ -1,6 +1,6 @@
 import { Trans } from '@lingui/macro'
+import { Button } from '@/components/ui/button'
 import { Input } from 'components'
-import { SmallButton } from '@/components/old/button'
 import Help from 'components/help'
 import { useState } from 'react'
 import { Box, BoxProps, Text } from 'theme-ui'
@@ -45,16 +45,17 @@ const NewRoleAddress = ({
           )}
         </Text>
       )}
-      <SmallButton
+      <Button
+        size="sm"
         disabled={!isValid || isExisting}
         onClick={() => onSave(address)}
-        ml={3}
+        className="ml-4"
       >
         <Trans>Save</Trans>
-      </SmallButton>
-      <SmallButton onClick={() => onDismiss()} variant="muted" ml={3}>
+      </Button>
+      <Button size="sm" onClick={() => onDismiss()} variant="muted" className="ml-4">
         <Trans>Dismiss</Trans>
-      </SmallButton>
+      </Button>
     </Box>
   )
 }
@@ -130,14 +131,14 @@ const RolesEdit = ({
             </Box>
           </Box>
 
-          <SmallButton
-            ml="auto"
-            variant="danger"
-            sx={{ backgroundColor: 'inputBorder' }}
+          <Button
+            size="sm"
+            variant="destructive"
+            className="ml-auto bg-input"
             onClick={() => handleRemove(index)}
           >
             <Trans>Remove</Trans>
-          </SmallButton>
+          </Button>
         </Box>
       ))}
       {isCreating ? (
@@ -147,14 +148,14 @@ const RolesEdit = ({
           addresses={addresses}
         />
       ) : (
-        <SmallButton
-          ml={3}
-          mt={compact ? 3 : 4}
+        <Button
+          size="sm"
+          className={`ml-4 ${compact ? 'mt-4' : 'mt-6'}`}
           onClick={() => setCreate(true)}
           variant="muted"
         >
           Add new {title.substring(0, title.length - 1).toLowerCase()}
-        </SmallButton>
+        </Button>
       )}
     </Box>
   )

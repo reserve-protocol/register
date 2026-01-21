@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro'
-import { SmallButton } from '@/components/old/button'
+import { Button } from '@/components/ui/button'
 import OverviewIcon from 'components/icons/OverviewIcon'
 import BackupBasket from 'components/rtoken-setup/basket/BackupBasket'
 import CollateralModal from 'components/rtoken-setup/basket/CollateralModal'
@@ -72,13 +72,14 @@ const PrimaryBasketWarning = ({ onPropose }: { onPropose(): void }) => {
           </Trans>
         )}
       </Text>
-      <SmallButton
-        mt={3}
+      <Button
+        size="sm"
+        className="mt-4"
         onClick={onPropose}
-        variant={warning ? 'danger' : 'primary'}
+        variant={warning ? 'destructive' : 'default'}
       >
         <Trans>Propose new basket</Trans>
-      </SmallButton>
+      </Button>
     </Box>
   )
 }
@@ -96,9 +97,9 @@ const BackupBasketWarning = ({ onPropose }: { onPropose(): void }) => (
         changes.
       </Trans>
     </Text>
-    <SmallButton mt={3} onClick={onPropose}>
+    <Button size="sm" className="mt-4" onClick={onPropose}>
       <Trans>Propose new backup configuration</Trans>
-    </SmallButton>
+    </Button>
   </Box>
 )
 

@@ -1,5 +1,5 @@
 import { t, Trans } from '@lingui/macro'
-import { SmallButton } from '@/components/old/button'
+import { Button } from '@/components/ui/button'
 import Field, { FieldInput, getErrorMessage } from 'components/field'
 import { useAtomValue } from 'jotai'
 import { useEffect } from 'react'
@@ -122,15 +122,14 @@ const ExternalRevenueSpit = ({
           />
         </Box>
       </Box>
-      <SmallButton
-        sx={{ flexShrink: 0, color: 'danger' }}
-        mt={4}
-        px={2}
-        variant="transparent"
+      <Button
+        className="flex-shrink-0 text-destructive mt-4 px-2"
+        size="sm"
+        variant="ghost"
         onClick={onRemove}
       >
         <Trans>X</Trans>
-      </SmallButton>
+      </Button>
     </Box>
   )
 }

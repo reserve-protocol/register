@@ -1,4 +1,4 @@
-import { Button } from 'components'
+import { Button } from '@/components/ui/button'
 import Sparkles from 'components/icons/Sparkles'
 import { useState } from 'react'
 import { Box, Text } from 'theme-ui'
@@ -45,13 +45,12 @@ const Announcement = () => {
         </Text>
       </Box>
       <Box ml={[0, 0, 0, 'auto']} mt={[3, 3, 3, 0]}>
-        <Button small variant="bordered" onClick={handleDismiss}>
+        <Button size="sm" variant="outline" className="border-2" onClick={handleDismiss}>
           Dismiss
         </Button>
         <Button
-          ml="3"
-          small
-          sx={{ backgroundColor: 'rBlue', whiteSpace: 'nowrap' }}
+          className="ml-4 bg-[#2150A9] whitespace-nowrap"
+          size="sm"
           onClick={() =>
             window.open(
               'https://blog.reserve.org/reserve-protocol-v1-3-0-0-release-9c539334f771',

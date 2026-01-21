@@ -1,6 +1,5 @@
-import CopyValue from '@/components/old/button/CopyValue'
-import { Card } from '@/components/ui/card'
 import Copy from '@/components/ui/copy'
+import { Card } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import useScrollTo from '@/hooks/useScrollTo'
 import { cn } from '@/lib/utils'

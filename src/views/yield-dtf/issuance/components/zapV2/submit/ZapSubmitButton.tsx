@@ -1,5 +1,5 @@
-import { LoadingButton } from '@/components/old/button'
-import { TransactionButtonContainer } from '@/components/old/button/TransactionButton'
+import { LoadingButton } from 'components'
+import { TransactionButtonContainer } from '@/components/ui/transaction-button'
 import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
 import { useCallback, useMemo } from 'react'
 import DisabledByGeolocationMessage from 'state/geolocation/DisabledByGeolocationMessage'
@@ -43,7 +43,7 @@ const ZapSubmitButton = () => {
 
   return (
     <>
-      <TransactionButtonContainer sx={{ width: '100%' }}>
+      <TransactionButtonContainer className="w-full">
         <LoadingButton
           onClick={onSubmit}
           loading={loadingZap || validatingZap}

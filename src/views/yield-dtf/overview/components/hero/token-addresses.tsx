@@ -1,5 +1,5 @@
-import CopyValue from '@/components/old/button/CopyValue'
-import GoTo from '@/components/old/button/GoTo'
+import CopyValue from '@/components/ui/copy-value'
+import GoTo from '@/components/ui/go-to'
 import {
   Popover,
   PopoverContent,

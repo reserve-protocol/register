@@ -1,4 +1,4 @@
-import Button from '@/components/old/button'
+import { Button } from '@/components/ui/button'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
 import { Download } from 'lucide-react'
@@ -47,8 +47,8 @@ const ProposalSnapshot = () => {
 
   return (
     <Button
-      small
-      variant="transparent"
+      size="sm"
+      variant="ghost"
       onClick={handleSnapshot}
       disabled={!proposal}
     >

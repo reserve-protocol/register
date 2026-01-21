@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro'
-import { SmallButton } from '@/components/old/button'
+import { Button } from '@/components/ui/button'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
 import { useCallback } from 'react'
@@ -23,12 +23,12 @@ const BackButton = () => {
   }, [rToken?.address, navigate, chainId])
 
   return (
-    <SmallButton variant="transparent" onClick={handleBack}>
+    <Button variant="ghost" size="sm" onClick={handleBack}>
       <Box variant="layout.verticalAlign">
         <ArrowLeft size={14} style={{ marginRight: 10 }} />
         <Trans>Exit Deployer</Trans>
       </Box>
-    </SmallButton>
+    </Button>
   )
 }
 

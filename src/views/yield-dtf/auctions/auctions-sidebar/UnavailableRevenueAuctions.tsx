@@ -1,4 +1,4 @@
-import TransactionButton from '@/components/old/button/TransactionButton'
+import TransactionButton from '@/components/ui/transaction-button'
 import { t } from '@lingui/macro'
 import FacadeAct from 'abis/FacadeAct'
 import AuctionsIcon from 'components/icons/AuctionsIcon'
@@ -103,7 +103,7 @@ const ConfirmAuction = () => {
       <TransactionButton
         fullWidth
         text="Run auctions"
-        variant={isLoading ? 'accentAction' : 'primary'}
+        variant={isLoading ? 'accent' : 'default'}
         disabled={!isReady}
         loading={isLoading || (hash && status !== 'success')}
         onClick={write}

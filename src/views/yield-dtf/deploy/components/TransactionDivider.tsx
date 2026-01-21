@@ -1,9 +1,8 @@
 import { Trans, t } from '@lingui/macro'
-import { InfoBox } from 'components'
-import { SmallButton } from '@/components/old/button'
+import { Button } from '@/components/ui/button'
 import { useAtomValue } from 'jotai'
 import { chainIdAtom } from 'state/atoms'
-import { Box, Card, Flex, Image } from 'theme-ui'
+import { Box, Card, Flex, Image, Text } from 'theme-ui'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 
 const Spacer = () => (
@@ -12,13 +11,29 @@ const Spacer = () => (
   </Flex>
 )
 
+// InfoBox light variant inlined
+const InfoBoxLight = ({
+  title,
+  subtitle,
+}: {
+  title: string
+  subtitle: string
+}) => (
+  <Box>
+    <Text variant="legend" sx={{ fontSize: 2, display: 'block', color: 'text' }} mb={2}>
+      {title}
+    </Text>
+    <Text sx={{ fontSize: 2 }}>{subtitle}</Text>
+  </Box>
+)
+
 const TransactionDivider = (props: { title: string; subtitle: string }) => (
   <Box>
     <Spacer />
     <Card variant="cards.form">
       <Box variant="layout.verticalAlign" px={2}>
         <Image src="/svgs/up-arrow.svg" mr={3} />
-        <InfoBox light {...props} />
+        <InfoBoxLight {...props} />
       </Box>
     </Card>
     <Spacer />
@@ -33,14 +48,14 @@ export const DeploySuccessDivider = ({ hash = '' }) => {
       <Card variant="cards.form">
         <Box variant="layout.verticalAlign">
           <Image src="/svgs/up-arrow.svg" mr={3} ml={2} />
-          <InfoBox
-            light
+          <InfoBoxLight
             title={t`Transaction 1`}
             subtitle={t`RToken Deployment Transaction succeeded`}
           />
-          <SmallButton
-            ml="auto"
-            variant="transparent"
+          <Button
+            className="ml-auto"
+            size="sm"
+            variant="ghost"
             onClick={() =>
               window.open(
                 getExplorerLink(hash, chainId, ExplorerDataType.TRANSACTION),
@@ -49,7 +64,7 @@ export const DeploySuccessDivider = ({ hash = '' }) => {
             }
           >
             <Trans>View on Etherscan</Trans>
-          </SmallButton>
+          </Button>
         </Box>
       </Card>
       <Spacer />

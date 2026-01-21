@@ -1,5 +1,5 @@
 import StakingVault from 'abis/StakingVault'
-import { LoadingButton } from '@/components/old/button'
+import { LoadingButton } from 'components'
 import Help from 'components/help'
 import useContractWrite from 'hooks/useContractWrite'
 import useRToken from 'hooks/useRToken'

@@ -1,4 +1,5 @@
-import { Button, NumericalInput } from 'components'
+import { NumericalInput } from 'components'
+import { Button } from '@/components/ui/button'
 import { useState } from 'react'
 import { Box, Text } from 'theme-ui'
 import { useZap } from '../context/ZapContext'
@@ -16,14 +17,9 @@ const ZapSettingsCustomSlippage = ({
 
   return !showCustomSlippage ? (
     <Button
-      variant="transparent"
+      variant="ghost"
       onClick={() => setShowCustomSlippage(true)}
-      sx={{
-        width: '120px',
-        borderRadius: 8,
-        px: '12px',
-        py: 2,
-      }}
+      className="w-[120px] rounded-lg px-3 py-2"
     >
       Custom
     </Button>

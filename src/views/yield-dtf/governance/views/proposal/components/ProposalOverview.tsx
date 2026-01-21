@@ -47,10 +47,8 @@ const ProposalOverview = (props: BoxProps) => {
           </Text>
           <Button
             onClick={handleProposal}
-            variant="primary"
             disabled={!isValid}
-            mt={4}
-            sx={{ width: '100%' }}
+            className="mt-6 w-full"
           >
             <Trans>Confirm & prepare proposal</Trans>
           </Button>

@@ -14,7 +14,7 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable'
 import { t, Trans } from '@lingui/macro'
-import { SmallButton } from '@/components/old/button'
+import { Button } from '@/components/ui/button'
 import Help from 'components/help'
 import SortableItem from 'components/sortable/SortableItem'
 import { useSetAtom } from 'jotai'
@@ -114,13 +114,13 @@ const EmergencyCollateral = ({
       <Flex variant="layout.verticalAlign" mb={4}>
         <Text variant="title">{targetUnit} Backups</Text>
         {!readOnly && (
-          <SmallButton
+          <Button
+            size="sm"
             onClick={() => onAdd(targetUnit)}
-            ml="auto"
-            variant="primary"
+            className="ml-auto"
           >
             <Trans>Add to basket</Trans>
-          </SmallButton>
+          </Button>
         )}
       </Flex>
       <Flex variant="layout.verticalAlign">

@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro'
-import { SmallButton } from '@/components/old/button'
+import { Button } from '@/components/ui/button'
 import { useAtomValue } from 'jotai'
 import { rTokenAssetsAtom } from 'state/atoms'
 import { Box, BoxProps, Text } from 'theme-ui'
@@ -65,14 +65,14 @@ const UnregisterEdit = ({
               <Text sx={{ wordBreak: 'break-word' }}>{asset.address}</Text>
             </Box>
           </Box>
-          <SmallButton
-            ml="auto"
-            variant="danger"
-            sx={{ backgroundColor: 'inputBorder' }}
+          <Button
+            size="sm"
+            variant="destructive"
+            className="ml-auto bg-input"
             onClick={() => handleRemove(asset.address)}
           >
             <Trans>Unregister</Trans>
-          </SmallButton>
+          </Button>
         </Box>
       ))}
     </Box>

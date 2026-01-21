@@ -1,9 +1,9 @@
 import { t, Trans } from '@lingui/macro'
 import Governance from 'abis/Governance'
 import { Modal } from 'components'
-import GoTo from '@/components/old/button/GoTo'
-import TransactionButton from '@/components/old/button/TransactionButton'
-import { ModalProps } from '@/components/old/modal'
+import GoTo from '@/components/ui/go-to'
+import TransactionButton from '@/components/ui/transaction-button'
+import { ModalProps } from 'components'
 import useContractWrite from 'hooks/useContractWrite'
 import { useAtomValue } from 'jotai'
 import { useState } from 'react'
@@ -133,7 +133,7 @@ const VoteModal = (props: ModalProps) => {
       <Divider sx={{ borderColor: 'darkBorder' }} my={4} mx={-4} />
       <TransactionButton
         loading={isLoading}
-        variant={!!hash ? 'accentAction' : 'primary'}
+        variant={!!hash ? 'accent' : 'default'}
         text={t`Vote`}
         fullWidth
         onClick={write}

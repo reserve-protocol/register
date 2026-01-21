@@ -283,7 +283,7 @@ const RTokenCard = ({ token, ...props }: Props) => {
                   </DgnETHButtonAppendix>
                 )}
                 <Button
-                  medium
+                  size="default"
                   onClick={(e) => {
                     e.stopPropagation()
                     trackClick(
@@ -295,7 +295,8 @@ const RTokenCard = ({ token, ...props }: Props) => {
                     )
                     handleNavigate(ROUTES.STAKING)
                   }}
-                  variant="bordered"
+                  variant="outline"
+                  className="border-2"
                 >
                   <Box variant="layout.verticalAlign" sx={{ gap: 2 }}>
                     <Text>

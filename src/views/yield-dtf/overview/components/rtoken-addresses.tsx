@@ -1,4 +1,4 @@
-import CopyValue from '@/components/old/button/CopyValue'
+import CopyValue from '@/components/ui/copy-value'
 import {
   Popover,
   PopoverContent,

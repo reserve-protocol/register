@@ -1,10 +1,10 @@
 import { createColumnHelper } from '@tanstack/react-table'
-import { Button } from 'components'
+import { Button } from '@/components/ui/button'
 import BasketCubeIcon from 'components/icons/BasketCubeIcon'
 import ChainLogo from 'components/icons/ChainLogo'
 import ExternalArrowIcon from 'components/icons/ExternalArrowIcon'
 import TokenLogo from 'components/icons/TokenLogo'
-import { Table } from '@/components/old/table'
+import { Table } from '@/components/ui/legacy-table'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { collateralYieldAtom } from 'state/atoms'
@@ -202,15 +202,17 @@ const Collaterals = () => {
         </Text>
         <Flex sx={{ gap: 2, ml: 2, display: ['none', 'flex'] }}>
           <Button
-            small
-            variant="bordered"
+            size="sm"
+            variant="outline"
+            className="border-2"
             onClick={() => window.open(REGISTER_FEEDBACK, '_blank')}
           >
             Request plugin
           </Button>
           <Button
-            small
-            variant="bordered"
+            size="sm"
+            variant="outline"
+            className="border-2"
             onClick={() => window.open(DISCORD_INVITE, '_blank')}
           >
             Discuss on discord

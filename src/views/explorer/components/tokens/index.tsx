@@ -1,4 +1,4 @@
-import { Table, TableProps } from '@/components/old/table'
+import { Table, TableProps } from '@/components/ui/legacy-table'
 import { Trans, t } from '@lingui/macro'
 import { Row, createColumnHelper } from '@tanstack/react-table'
 import BasketCubeIcon from 'components/icons/BasketCubeIcon'

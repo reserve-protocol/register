@@ -1,4 +1,4 @@
-import TransactionButton from '@/components/old/button/TransactionButton'
+import TransactionButton from '@/components/ui/transaction-button'
 import useContractWrite from '@/hooks/useContractWrite'
 import { ZapResult } from '@/views/yield-dtf/issuance/components/zapV2/api'
 import { useAtomValue, useSetAtom } from 'jotai'

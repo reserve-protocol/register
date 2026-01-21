@@ -1,6 +1,6 @@
 import { t } from '@lingui/macro'
 import Governance from 'abis/Governance'
-import TransactionButton from '@/components/old/button/TransactionButton'
+import TransactionButton from '@/components/ui/transaction-button'
 import useContractWrite from 'hooks/useContractWrite'
 import useWatchTransaction from 'hooks/useWatchTransaction'
 import { useAtomValue } from 'jotai'

@@ -1,7 +1,7 @@
 import { t } from '@lingui/macro'
 import { createColumnHelper } from '@tanstack/react-table'
 import ChainLogo from 'components/icons/ChainLogo'
-import { Table } from '@/components/old/table'
+import { Table } from '@/components/ui/legacy-table'
 import TokenItem from 'components/token-item'
 import { gql } from 'graphql-request'
 import { useMultichainQuery } from 'hooks/use-query'

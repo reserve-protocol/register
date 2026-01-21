@@ -1,4 +1,4 @@
-import { LoadingButton } from '@/components/old/button'
+import { LoadingButton } from 'components'
 import TransactionsIcon from 'components/icons/TransactionsIcon'
 import { Box, Spinner, Text } from 'theme-ui'
 import { useZap } from '../context/ZapContext'

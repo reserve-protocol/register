@@ -1,6 +1,6 @@
 import Address from '@/components/utils/explorer-address'
-import { SmallButton } from '@/components/old/button'
-import CopyValue from '@/components/old/button/CopyValue'
+import { Button } from '@/components/ui/button'
+import CopyValue from '@/components/ui/copy-value'
 import FilesIcon from 'components/icons/FilesIcon'
 import FingerprintIcon from 'components/icons/FingerprintIcon'
 import WalletOutlineIcon from 'components/icons/WalletOutlineIcon'
@@ -24,7 +24,7 @@ const BackButton = () => {
   }
 
   return (
-    <SmallButton variant="transparent" onClick={handleBack}>
+    <Button variant="ghost" size="sm" onClick={handleBack}>
       <Box
         sx={{
           display: 'flex',
@@ -35,7 +35,7 @@ const BackButton = () => {
       >
         <ArrowLeft size={16} />
       </Box>
-    </SmallButton>
+    </Button>
   )
 }
 
