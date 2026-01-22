@@ -81,8 +81,9 @@
   },
   "scripts": {
     "start": "vite",
-    "build": "tsc && vite build && npm run generate-seo-pages",
+    "build": "npm run refresh-token-logos && tsc && vite build && npm run generate-seo-pages",
     "build:no-seo": "tsc && vite build",
+    "refresh-token-logos": "npx tsx scripts/refresh-token-logos.ts",
     "serve": "vite preview",
     "typecheck": "tsc --noEmit",
     "typecheck:watch": "tsc --noEmit --watch",

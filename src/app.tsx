@@ -1,5 +1,5 @@
 import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { HelmetProvider } from 'react-helmet-async'
 import {
   BrowserRouter as Router,
@@ -16,9 +16,18 @@ import { TooltipProvider } from './components/ui/tooltip'
 import LanguageProvider from './i18n'
 import * as Sentry from '@sentry/react'
 
-mixpanel.init(import.meta.env.VITE_MIXPANEL_KEY || 'mixpanel_key', {
-  track_pageview: true,
-})
+// Deferred Mixpanel initialization to avoid blocking first render
+const useMixpanelInit = () => {
+  const initialized = useRef(false)
+  useEffect(() => {
+    if (!initialized.current) {
+      initialized.current = true
+      mixpanel.init(import.meta.env.VITE_MIXPANEL_KEY || 'mixpanel_key', {
+        track_pageview: true,
+      })
+    }
+  }, [])
+}
 
 // Support for old routes redirects
 const Redirects = () => {
@@ -91,30 +100,34 @@ function FallbackUI({
  *
  * @returns {JSX.Element}
  */
-const App = () => (
-  <HelmetProvider>
-    <Sentry.ErrorBoundary
-      fallback={({ error, resetError }) => (
-        <FallbackUI error={error as Error} resetErrorBoundary={resetError} />
-      )}
-    >
-      <Router>
-        <Redirects />
-        <ScrollToTop />
-        <LanguageProvider>
-          <TooltipProvider>
-            <ChainProvider>
-              <Updater />
-              <Layout>
-                <Toaster />
-                <AppRoutes />
-              </Layout>
-            </ChainProvider>
-          </TooltipProvider>
-        </LanguageProvider>
-      </Router>
-    </Sentry.ErrorBoundary>
-  </HelmetProvider>
-)
+const App = () => {
+  useMixpanelInit()
+
+  return (
+    <HelmetProvider>
+      <Sentry.ErrorBoundary
+        fallback={({ error, resetError }) => (
+          <FallbackUI error={error as Error} resetErrorBoundary={resetError} />
+        )}
+      >
+        <Router>
+          <Redirects />
+          <ScrollToTop />
+          <LanguageProvider>
+            <TooltipProvider>
+              <ChainProvider>
+                <Updater />
+                <Layout>
+                  <Toaster />
+                  <AppRoutes />
+                </Layout>
+              </ChainProvider>
+            </TooltipProvider>
+          </LanguageProvider>
+        </Router>
+      </Sentry.ErrorBoundary>
+    </HelmetProvider>
+  )
+}
 
 export default App

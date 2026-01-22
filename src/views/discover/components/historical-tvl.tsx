@@ -1,35 +1,42 @@
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { trackClick } from '@/hooks/useTrackPage'
-import { devModeAtom } from '@/state/atoms'
-import { ChainId } from '@/utils/chains'
-import ChainLogo from 'components/icons/ChainLogo'
-import SmallRootIcon from 'components/icons/SmallRootIcon'
-import { useAtomValue } from 'jotai'
 import { ArrowRight, Clapperboard, Play } from 'lucide-react'
-import { useState } from 'react'
+import { lazy, Suspense, useState } from 'react'
 import { Link } from 'react-router-dom'
-import {
-  Area,
-  AreaChart,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from 'recharts'
 import { formatCurrency } from 'utils'
-import {
-  CHAIN_TO_NETWORK,
-  DTF_VIDEO,
-  DUNE_DASHBOARD,
-  NETWORKS,
-  capitalize,
-} from 'utils/constants'
+import { DTF_VIDEO, DUNE_DASHBOARD } from 'utils/constants'
 import tvlDark from '../assets/tvl-dark.png'
 import tvlLight from '../assets/tvl-light.png'
 import useAPIProtocolMetrics, {
   Metrics,
 } from '../hooks/use-api-protocol-metrics'
+
+// Lazy load the chart component to defer recharts bundle
+const HistoricalTVLChart = lazy(() => import('./historical-tvl-chart'))
+
+// SVG skeleton that mimics an upward-trending stacked area chart
+const ChartSkeleton = () => (
+  <div className="w-full h-full animate-pulse">
+    <svg
+      viewBox="0 0 100 40"
+      preserveAspectRatio="none"
+      className="w-full h-full"
+    >
+      <defs>
+        <linearGradient id="skeleton-gradient" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="hsl(var(--muted))" stopOpacity="0.8" />
+          <stop offset="100%" stopColor="hsl(var(--muted))" stopOpacity="0.3" />
+        </linearGradient>
+      </defs>
+      {/* Upward trending area shape - mimics TVL growth */}
+      <path
+        d="M0,40 L0,35 L5,34 L10,33 L15,32 L20,30 L25,28 L30,26 L35,24 L40,22 L45,20 L50,18 L55,16 L60,14 L65,13 L70,12 L75,11 L80,10 L85,9 L90,8 L95,7 L100,6 L100,40 Z"
+        fill="url(#skeleton-gradient)"
+      />
+    </svg>
+  </div>
+)
 
 const RoundedImageWithSkeleton = ({
   src,
@@ -54,74 +61,6 @@ const RoundedImageWithSkeleton = ({
         onLoad={() => setLoaded(true)}
       />
     </>
-  )
-}
-
-const COLORS: Record<string, any> = {
-  ethereum: {
-    fill: 'hsl(var(--tvl))',
-    // stroke: '#fff',
-    stroke: 'hsl(var(--tvl))',
-  },
-  base: {
-    fill: 'hsl(var(--tvl))',
-    // stroke: '#fff',
-    stroke: 'hsl(var(--tvl))',
-  },
-  arbitrum: {
-    fill: 'hsl(var(--tvl))',
-    // stroke: '#fff',
-    stroke: 'hsl(var(--tvl))',
-  },
-  bsc: {
-    fill: 'hsl(var(--tvl))',
-    // stroke: '#fff',
-    stroke: 'hsl(var(--tvl))',
-  },
-}
-
-function CustomTooltip({ payload, label, active }: any) {
-  if (!active || !payload) return null
-
-  const total = payload?.reduce(
-    (acc: number, item: { value: number }) => acc + item.value,
-    0
-  )
-
-  return (
-    <div className="hidden md:flex flex-col border-2 border-muted bg-card rounded-xl min-w-[280px]">
-      <div className="flex items-center gap-4 justify-between border-b border-border p-4">
-        <span className="text-sm">
-          {new Date(label).toDateString().replace(/^\S+\s/, '')}
-        </span>
-        <span className="text-legend text-sm">(TVL per network)</span>
-      </div>
-      <div className="flex flex-col gap-1 px-4">
-        {(payload as any[]).map(
-          (item: { name: string; value: number }, index) => (
-            <div
-              key={`${item.name}${item.value}${index}`}
-              className="flex items-center gap-2 justify-between"
-            >
-              <div className="flex items-center gap-1.5">
-                <ChainLogo chain={NETWORKS[item.name]} />
-                <span>{capitalize(item.name)}:</span>
-              </div>
-              <span className="font-bold">${formatCurrency(item.value, 0)}</span>
-            </div>
-          )
-        )}
-      </div>
-      <div className="flex items-center gap-2 justify-between border-t border-border p-4">
-        <div className="flex items-center gap-1.5">
-          <SmallRootIcon />
-          <span>Total TVL:</span>
-        </div>
-        <span className="text-primary font-bold">
-          ${formatCurrency(total, 0)}
-        </span>
-      </div>
-    </div>
   )
 }
 
@@ -208,50 +147,15 @@ const Heading = ({
   )
 }
 
-const HistoricalTVLChart = ({ data }: { data?: Metrics }) => {
-  const isDevMode = useAtomValue(devModeAtom)
-  const networks = Object.values(NETWORKS).filter(
-    (n) => isDevMode || n !== ChainId.BSC
-  )
-
-  return (
-    <ResponsiveContainer width="100%" height="100%">
-      <AreaChart
-        data={data?.tvlTimeseries ?? []}
-        margin={{
-          right: 1,
-          bottom: -30,
-          left: 0,
-        }}
-      >
-        <XAxis dataKey="timestamp" style={{ display: 'none' }} />
-        <YAxis hide visibility="0" domain={['dataMin', 'dataMax']} />
-        <Tooltip wrapperStyle={{ zIndex: 1000 }} content={<CustomTooltip />} />
-        {networks.map((network) => (
-          <Area
-            key={network}
-            type="step"
-            name={CHAIN_TO_NETWORK[network]}
-            dataKey={network}
-            stackId="1"
-            stroke={COLORS[CHAIN_TO_NETWORK[network]].stroke}
-            fill={COLORS[CHAIN_TO_NETWORK[network]].fill}
-            fillOpacity="1"
-            activeDot={{ r: 0 }}
-          />
-        ))}
-      </AreaChart>
-    </ResponsiveContainer>
-  )
-}
-
 const HistoricalTVL = () => {
   const data = useAPIProtocolMetrics()
   return (
     <div className="container px-0 md:px-6 2xl:px-6 h-80 sm:h-[580px]">
       <div className="relative h-full flex flex-col justify-end ">
         <div className="h-[160px] sm:h-[420px]">
-          <HistoricalTVLChart {...data} />
+          <Suspense fallback={<ChartSkeleton />}>
+            <HistoricalTVLChart tvlTimeseries={data.data?.tvlTimeseries} />
+          </Suspense>
         </div>
         <Heading {...data} />
       </div>
