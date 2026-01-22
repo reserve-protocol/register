@@ -6,6 +6,7 @@ import { lingui } from '@lingui/vite-plugin'
 import { viteStaticCopy } from 'vite-plugin-static-copy'
 
 const isTest = process.env.NODE_ENV === 'test' || process.env.VITEST
+const isDev = process.env.NODE_ENV === 'development'
 
 export default defineConfig({
   plugins: [
@@ -14,7 +15,8 @@ export default defineConfig({
         plugins: [
           // Skip lingui macros in test - we mock @lingui/macro directly
           ...(!isTest ? ['macros'] : []),
-          ['@locator/babel-jsx/dist', { env: 'development' }], // Click-to-source in dev
+          // Only include locator in development - breaks React internals in prod
+          ...(isDev ? [['@locator/babel-jsx/dist', { env: 'development' }]] : []),
         ],
       },
     }),
@@ -37,49 +39,7 @@ export default defineConfig({
   build: {
     outDir: 'build',
     sourcemap: true,
-    rollupOptions: {
-      output: {
-        manualChunks: (id) => {
-          if (!id.includes('node_modules')) return undefined
-
-          // Wallet stack - large, updates together (check first, most specific)
-          if (
-            id.includes('@rainbow-me/rainbowkit') ||
-            id.includes('wagmi') ||
-            id.includes('@wagmi') ||
-            id.includes('viem') ||
-            id.includes('@walletconnect') ||
-            id.includes('@coinbase/wallet-sdk') ||
-            id.includes('@reown/') ||
-            id.includes('ox/_esm') // viem dependency
-          ) {
-            return 'wallet'
-          }
-
-          // Core React - check after wallet to avoid circular deps
-          if (id.includes('/react-dom/')) return 'react-dom'
-          if (id.includes('/react/') && !id.includes('react-')) return 'react'
-
-          // UI libraries
-          if (id.includes('@radix-ui') || id.includes('recharts')) return 'ui'
-
-          // Data/state management
-          if (
-            id.includes('@tanstack') ||
-            id.includes('jotai') ||
-            id.includes('graphql')
-          ) {
-            return 'data'
-          }
-
-          // Legacy - can remove when ethers is fully removed
-          if (id.includes('ethers')) return 'ethers'
-
-          // Everything else goes to vendor chunk
-          return 'vendor'
-        },
-      },
-    },
+    // Let Vite handle chunking automatically to avoid circular dependencies
   },
 
   // Aliases handled by viteTsconfigPaths - no need to duplicate here
