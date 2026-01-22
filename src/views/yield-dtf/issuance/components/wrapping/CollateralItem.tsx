@@ -284,6 +284,12 @@ const CollateralItem = ({ collateral, wrapping, className }: Props) => {
           functionName: wrapping ? 'deposit' : 'withdraw',
           args: [parsedAmount, wallet],
         }
+      case 'ETHERFI':
+        return {
+          ...call,
+          functionName: wrapping ? 'wrap' : 'unwrap',
+          args: wrapping ? [parsedAmount] : [parsedAmount],
+        }
       default:
         return undefined
     }

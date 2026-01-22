@@ -27,6 +27,7 @@ export type ProtocolKey =
   | 'AERODROME'
   | 'SKY'
   | 'ORIGIN'
+  | 'ETHERFI'
 
 export type AddressMap = { [chainId: number]: Address }
 

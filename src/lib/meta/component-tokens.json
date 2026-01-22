@@ -389,5 +389,20 @@
     "logo": {
       "url": "https://storage-logos.reserve.org/logos/b5f6398f0622--eUSD__1_.svg"
     }
+  },
+  {
+    "id": "eeth",
+    "tokenTicker": "eETH",
+    "name": null,
+    "addresses": {
+      "1": "0x35fA164735182de50811E8e2E824cFb9B6118ac2"
+    },
+    "color": "#A95BF7",
+    "rating": null,
+    "website": "https://www.ether.fi/app/weeth",
+    "description": "Ether.fi's eETH is a decentralized, non-custodial liquid staking token that enables Ethereum holders to earn staking rewards while maintaining full liquidity and control over their assets.",
+    "logo": {
+      "url": "https://storage-logos.reserve.org/logos/eETH.svg"
+    }
   }
 ]

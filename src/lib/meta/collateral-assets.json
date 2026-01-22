@@ -1393,5 +1393,26 @@
     "underlyings": [
       "dai"
     ]
+  },
+  {
+    "name": "Ether.fi Wrapped eETH",
+    "id": "weeth",
+    "displaySymbol": "Ether.fi Wrapped eETH",
+    "addresses": {
+      "1": "0x9dc6cEFC09b0917c78a05148d45f6e6594e227de"
+    },
+    "color": null,
+    "llamaId": "46bd2bdf-6d92-4066-b482-e885ee172264",
+    "tokenDistribution": [
+      {
+        "token": "eETH",
+        "distribution": 1
+      }
+    ],
+    "description": "Ether.fi's eETH is a decentralized, non-custodial liquid staking token that enables Ethereum holders to earn staking rewards while maintaining full liquidity and control over their assets.",
+    "protocol": "etherfi",
+    "underlyings": [
+      "eeth"
+    ]
   }
 ]
