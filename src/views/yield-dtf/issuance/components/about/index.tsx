@@ -1,29 +1,28 @@
 import { Trans } from '@lingui/macro'
 import { Button } from '@/components/ui/button'
 import { useSetAtom } from 'jotai'
-import { Box, Flex, Text } from 'theme-ui'
 import { wrapSidebarAtom } from '@/views/yield-dtf/issuance/atoms'
 
 const About = () => {
   const setWrapping = useSetAtom(wrapSidebarAtom)
 
   return (
-    <Box sx={{ height: 'fit-content' }}>
-      <Box p={7}>
-        <Text variant="strong" mb={2}>
+    <div className="h-fit">
+      <div className="p-7">
+        <span className="font-semibold mb-2 block">
           <Trans>Regular minting </Trans>
-        </Text>
-        <Text as="p" variant="legend">
+        </span>
+        <p className="text-legend">
           <Trans>
             Minting requires a deposit of the defined collateral tokens in equal
             value amounts to the RToken smart contracts.
           </Trans>
-        </Text>
+        </p>
 
-        <Text variant="strong" mt={4} mb={2}>
+        <span className="font-semibold mt-6 mb-2 block">
           <Trans>Wrapping collateral tokens</Trans>
-        </Text>
-        <Text as="p" variant="legend">
+        </span>
+        <p className="text-legend">
           <Trans>
             Some collateral tokens from protocols like Aave and Convex differ
             technically from other collateral tokens. To ensure proper handling,
@@ -31,8 +30,8 @@ const About = () => {
             wrapped, the collateral remains the same but has a new interface for
             price and appreciation tracking.
           </Trans>
-        </Text>
-        <Flex mt={3}>
+        </p>
+        <div className="flex mt-4">
           <Button
             size="sm"
             variant="ghost"
@@ -42,9 +41,9 @@ const About = () => {
           >
             <Trans>Wrap/Unwrap collateral</Trans>
           </Button>
-        </Flex>
-      </Box>
-    </Box>
+        </div>
+      </div>
+    </div>
   )
 }
 

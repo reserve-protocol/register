@@ -6,15 +6,17 @@ import { useState } from 'react'
 import Skeleton from 'react-loading-skeleton'
 import { rTokenContractsAtom } from 'state/atoms'
 import { ContractKey } from 'state/rtoken/atoms/rTokenContractsAtom'
-import { Box, BoxProps, Card, Divider, Text } from 'theme-ui'
+import { Card } from '@/components/ui/card'
+import { Separator } from '@/components/ui/separator'
 import { capitalize } from 'utils/constants'
 import { contractUpgradesAtom } from '../atoms'
 import { isAddress } from 'utils'
 import { Address } from 'viem'
 
-interface IUpgradeContract extends BoxProps {
+interface IUpgradeContract {
   contract: string
   version: string
+  className?: string
 }
 
 const EditContract = ({
@@ -30,7 +32,7 @@ const EditContract = ({
   const formattedAddress = isAddress(newContract)
 
   return (
-    <Box mt={2}>
+    <div className="mt-2">
       <Input
         placeholder="Upgrade to"
         value={newContract}
@@ -47,11 +49,11 @@ const EditContract = ({
       <Button variant="destructive" size="sm" className="mt-2" onClick={onDiscard}>
         Discard
       </Button>
-    </Box>
+    </div>
   )
 }
 
-const UpgradeContract = ({ contract, version, ...props }: IUpgradeContract) => {
+const UpgradeContract = ({ contract, version, className }: IUpgradeContract) => {
   const [upgrade, setUpgrade] = useState(false)
   const [upgrades, setUpgrades] = useAtom(contractUpgradesAtom)
   const currentUpgrade = upgrades[contract] ?? ''
@@ -69,19 +71,19 @@ const UpgradeContract = ({ contract, version, ...props }: IUpgradeContract) => {
   }
 
   return (
-    <Box {...props}>
-      <Box variant="layout.verticalAlign">
-        <Text mr={2} variant="bold">
+    <div className={className}>
+      <div className="flex items-center">
+        <span className="mr-2 font-bold">
           {capitalize(contract)}
-        </Text>
-        <Text variant="legend" sx={{ fontSize: 1 }}>
+        </span>
+        <span className="text-legend text-xs">
           (v{version})
-        </Text>
-      </Box>
+        </span>
+      </div>
       {!upgrade && (
         <>
-          <Text>{currentUpgrade}</Text>
-          <Box>
+          <span>{currentUpgrade}</span>
+          <div>
             <Button
               variant="accent"
               size="sm"
@@ -100,7 +102,7 @@ const UpgradeContract = ({ contract, version, ...props }: IUpgradeContract) => {
                 Discard
               </Button>
             )}
-          </Box>
+          </div>
         </>
       )}
       {upgrade && (
@@ -110,37 +112,37 @@ const UpgradeContract = ({ contract, version, ...props }: IUpgradeContract) => {
           onDiscard={() => setUpgrade(false)}
         />
       )}
-    </Box>
+    </div>
   )
 }
 
-const ContractUpgrades = (props: BoxProps) => {
+const ContractUpgrades = ({ className }: { className?: string }) => {
   const contracts = useAtomValue(rTokenContractsAtom)
   const contractKeys = Object.keys(contracts || {})
 
   return (
-    <Card {...props} p={4}>
-      <Text variant="sectionTitle">
+    <Card className={`p-6 ${className ?? ''}`}>
+      <span className="text-lg font-semibold">
         <Trans>Upgrade contracts</Trans>
-      </Text>
-      <Divider my={4} mx={-4} />
+      </span>
+      <Separator className="my-6 -mx-6 w-[calc(100%+3rem)]" />
       {!contractKeys.length && <Skeleton count={5} height={60} />}
       {!!contracts &&
         contractKeys.map((contractKey) => (
           <UpgradeContract
-            mb={3}
+            className="mb-4"
             key={contractKey}
             contract={contractKey}
             version={contracts[contractKey as ContractKey].version}
           />
         ))}
-      <Divider my={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />
-      <Text variant="legend" as="p" sx={{ fontSize: 1 }} mb={1} mr={2}>
+      <Separator className="my-6 -mx-6 w-[calc(100%+3rem)] border-muted-foreground/30" />
+      <p className="text-legend text-xs mb-1 mr-2">
         <Trans>
           Upgrade contract implementations to a newer version. This is usually
           performed for a protocol update or bugfix.
         </Trans>
-      </Text>
+      </p>
     </Card>
   )
 }

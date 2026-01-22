@@ -4,7 +4,6 @@ import { useAtomValue } from 'jotai'
 import { Download } from 'lucide-react'
 import { useParams } from 'react-router-dom'
 import { rTokenGovernanceAtom } from 'state/atoms'
-import { Text } from 'theme-ui'
 import useProposalDetail from './useProposalDetail'
 
 const JSONToFile = (obj: any, filename: string) => {
@@ -53,7 +52,7 @@ const ProposalSnapshot = () => {
       disabled={!proposal}
     >
       <Download size={14} />
-      <Text ml={2}>Download snapshot</Text>
+      <span className="ml-2">Download snapshot</span>
     </Button>
   )
 }

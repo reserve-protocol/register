@@ -3,7 +3,8 @@ import RolesEdit from 'components/rtoken-setup/components/RolesEdit'
 import { useAtom, useAtomValue } from 'jotai'
 import { useEffect } from 'react'
 import { rTokenGovernanceAtom, rTokenManagersAtom } from 'state/atoms'
-import { Box, BoxProps, Card, Divider, Text } from 'theme-ui'
+import { Card } from '@/components/ui/card'
+import { Separator } from '@/components/ui/separator'
 import { RoleKey } from 'types'
 import { proposedRolesAtom } from '../atoms'
 
@@ -18,7 +19,11 @@ const roleMap: {
   { roleKey: 'guardians', title: 'Guardians' },
 ]
 
-const RolesProposal = (props: BoxProps) => {
+interface RolesProposalProps {
+  className?: string
+}
+
+const RolesProposal = ({ className }: RolesProposalProps) => {
   const rTokenRoles = useAtomValue(rTokenManagersAtom)
   const { guardians = [] } = useAtomValue(rTokenGovernanceAtom)
   const [roles, setProposedRoles] = useAtom(proposedRolesAtom)
@@ -32,20 +37,20 @@ const RolesProposal = (props: BoxProps) => {
   }
 
   return (
-    <Card {...props} p={4}>
-      <Text variant="sectionTitle">
+    <Card className={`p-6 ${className || ''}`}>
+      <span className="text-lg font-semibold">
         <Trans>Governance roles</Trans>
-      </Text>
-      <Divider my={4} mx={-4} />
+      </span>
+      <Separator className="my-6 -mx-6 w-[calc(100%+3rem)]" />
       {roleMap.map(({ title, roleKey }, index) => (
-        <Box key={roleKey}>
-          {!!index && <Divider mb={3} mt={4} mx={-4} />}
+        <div key={roleKey}>
+          {!!index && <Separator className="mb-4 mt-6 -mx-6 w-[calc(100%+3rem)]" />}
           <RolesEdit
             title={title}
             addresses={roles[roleKey]}
             onChange={(value) => handleChange(roleKey, value)}
           />
-        </Box>
+        </div>
       ))}
     </Card>
   )

@@ -1,7 +1,7 @@
 import { useAtomValue } from 'jotai'
 import { chainIdAtom, rTokenStateAtom } from 'state/atoms'
 import DisabledByGeolocationMessage from 'state/geolocation/DisabledByGeolocationMessage'
-import { Box, Divider, Grid } from 'theme-ui'
+import { Separator } from '@/components/ui/separator'
 import About from './components/about'
 import Balances from './components/balances'
 import Issue from './components/issue'
@@ -25,46 +25,40 @@ const IssuanceMethods = () => {
   const { isCollaterized } = useAtomValue(rTokenStateAtom)
 
   return (
-    <Grid columns={[1, 1, 1, '2fr 1.5fr']} gap={[1, 4]}>
+    <div className="grid grid-cols-1 lg:grid-cols-[2fr_1.5fr] gap-1 sm:gap-6">
       {zapEnabled && chainId !== ChainId.Arbitrum ? (
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-          <CollateralizationBanner ml="4" mb="-4" mt="4" />
-          <MaintenanceBanner ml="4" mb="-4" mt="4" />
+        <div className="flex flex-col gap-6">
+          <CollateralizationBanner className="ml-6 -mb-6 mt-6" />
+          <MaintenanceBanner className="ml-6 -mb-6 mt-6" />
           <RTokenZapIssuance disableRedeem={!isCollaterized} />
           <ZapToggleBottom setZapEnabled={setZapEnabled} />
-        </Box>
+        </div>
       ) : (
-        <Box mt={4} ml={4} mr={[4, 4, 4, 0]}>
-          <CollateralizationBanner mb="3" />
-          <MaintenanceBanner mb="3" />
-          <DisabledArbitrumBanner mb="3" />
+        <div className="mt-6 ml-6 mr-6 lg:mr-0">
+          <CollateralizationBanner className="mb-4" />
+          <MaintenanceBanner className="mb-4" />
+          <DisabledArbitrumBanner className="mb-4" />
           {chainId !== ChainId.Arbitrum && (
             <ZapToggle zapEnabled={zapEnabled} setZapEnabled={setZapEnabled} />
           )}
-          <DisabledByGeolocationMessage mb={4} />
-          <Grid columns={[1, 2]} gap={[1, 4]} mb={[1, 4]}>
+          <DisabledByGeolocationMessage className="mb-6" />
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-1 sm:gap-6 mb-1 sm:mb-6">
             <Issue />
             <Redeem />
-          </Grid>
+          </div>
           <Balances />
-        </Box>
+        </div>
       )}
-      <Box
-        sx={{
-          borderLeft: ['none', 'none', 'none', '1px solid'],
-          borderColor: ['border', 'border', 'border', 'border'],
-          minHeight: ['auto', 'auto', 'auto', 'calc(100vh - 73px)'],
-        }}
-      >
-        <IssuanceInfo mb={[1, 0]} />
+      <div className="border-l-0 lg:border-l lg:border-border min-h-auto lg:min-h-[calc(100vh-73px)]">
+        <IssuanceInfo className="mb-1 sm:mb-0" />
         {!zapEnabled && (
           <>
-            <Divider mx={4} my={0} sx={{ borderColor: 'borderSecondary' }} />
+            <Separator className="mx-6 my-0 border-secondary" />
             <About />
           </>
         )}
-      </Box>
-    </Grid>
+      </div>
+    </div>
   )
 }
 
@@ -75,9 +69,9 @@ const Issuance = () => {
   return (
     <ZapProvider>
       <WrapSidebar />
-      <Box sx={{ width: '100', p: [1, 0] }}>
+      <div className="w-full p-1 sm:p-0">
         <IssuanceMethods />
-      </Box>
+      </div>
     </ZapProvider>
   )
 }

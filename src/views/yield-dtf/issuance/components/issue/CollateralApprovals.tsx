@@ -8,9 +8,10 @@ import useRToken from 'hooks/useRToken'
 import useWatchTransaction from 'hooks/useWatchTransaction'
 import { useAtomValue } from 'jotai'
 import { useEffect, useMemo, useState } from 'react'
-import { CheckCircle, ChevronDown, ChevronUp } from 'lucide-react'
+import { CheckCircle, ChevronDown, ChevronUp, Loader2 } from 'lucide-react'
 import { chainIdAtom } from 'state/atoms'
-import { Box, BoxProps, Divider, Flex, Spinner, Text } from 'theme-ui'
+import { Separator } from '@/components/ui/separator'
+import { cn } from '@/lib/utils'
 import { Token } from 'types'
 import { formatCurrency } from 'utils'
 import { ChainId } from 'utils/chains'
@@ -18,11 +19,12 @@ import { BIGINT_MAX } from 'utils/constants'
 import { Address, formatUnits } from 'viem'
 import { quantitiesAtom } from '@/views/yield-dtf/issuance/atoms'
 
-interface CollateralApprovalProps extends BoxProps {
+interface CollateralApprovalProps {
   collateral: Token
   amount?: bigint
   allowance: boolean
   loading: boolean
+  className?: string
 }
 
 const CollateralApproval = ({
@@ -30,7 +32,7 @@ const CollateralApproval = ({
   allowance,
   collateral,
   loading,
-  ...props
+  className,
 }: CollateralApprovalProps) => {
   const chainId = useAtomValue(chainIdAtom)
   const rToken = useRToken()
@@ -81,28 +83,28 @@ const CollateralApproval = ({
   }, [status])
 
   return (
-    <Box variant="layout.verticalAlign" {...props}>
-      <Box>
+    <div className={cn('flex items-center', className)}>
+      <div>
         <TokenItem symbol={collateral.symbol} />
-      </Box>
+      </div>
       {!amount ? (
-        <Spinner ml={2} size={14} />
+        <Loader2 className="ml-2 h-3.5 w-3.5 animate-spin" />
       ) : (
-        <Text ml={2} sx={{ fontSize: 1 }} variant="legend">
+        <span className="ml-2 text-xs text-legend">
           ({formatCurrency(Number(formatUnits(amount, collateral.decimals)), 6)}
           )
-        </Text>
+        </span>
       )}
       {!!amount && (
-        <Box ml="auto" sx={{ fontSize: 1 }}>
+        <div className="ml-auto text-xs">
           {isLoading && !hash && (
-            <Text sx={{ color: 'warning' }}>Sign in wallet</Text>
+            <span className="text-warning">Sign in wallet</span>
           )}
           {hash && status !== 'success' && (
-            <Text variant="legend">Pending</Text>
+            <span className="text-legend">Pending</span>
           )}
           {(status === 'success' || allowance) && (
-            <Text sx={{ color: 'success' }}>Confirmed</Text>
+            <span className="text-success">Confirmed</span>
           )}
           {!hash && !isLoading && !allowance && (
             <TransactionButton
@@ -112,9 +114,9 @@ const CollateralApproval = ({
               size="sm"
             />
           )}
-        </Box>
+        </div>
       )}
-    </Box>
+    </div>
   )
 }
 
@@ -131,45 +133,31 @@ const CollateralApprovals = ({
   const isFetching = !hasAllowance && !pending.length
 
   return (
-    <Box
-      sx={{
-        border: '1px solid',
-        borderColor: 'inputBorder',
-        borderRadius: '6px',
-        maxHeight: 280,
-        overflow: 'auto',
-      }}
-      px={2}
-      py={3}
-      mt={3}
-    >
-      <Flex
-        sx={{
-          alignItems: 'center',
-          cursor: 'pointer',
-        }}
+    <div className="border border-input rounded-md max-h-[280px] overflow-auto px-2 py-4 mt-4">
+      <div
+        className="flex items-center cursor-pointer"
         onClick={() => setVisible(!isVisible)}
       >
         <OverviewIcon />
-        <Text ml={2}>Collateral approvals</Text>
-        <Box ml={2}>
+        <span className="ml-2">Collateral approvals</span>
+        <div className="ml-2">
           {hasAllowance && !!quantities && (
             <CheckCircle color="#75FBC3" size={16} />
           )}
-          {!quantities && <Spinner size={16} />}
+          {!quantities && <Loader2 className="h-4 w-4 animate-spin" />}
           {!hasAllowance && pending.length && (
-            <Text sx={{ color: 'warning' }}>({pending.length})</Text>
+            <span className="text-warning">({pending.length})</span>
           )}
-        </Box>
-        <Box mx="auto" />
+        </div>
+        <div className="mx-auto" />
         {isVisible ? <ChevronUp /> : <ChevronDown />}
-      </Flex>
+      </div>
       {isVisible && (
-        <Box>
-          <Divider mx={-2} mt={3} />
+        <div>
+          <Separator className="-mx-2 mt-4" />
           {rToken?.collaterals.map((collateral) => (
             <CollateralApproval
-              mt={3}
+              className="mt-4"
               key={collateral.address}
               collateral={collateral}
               loading={isFetching}
@@ -177,9 +165,9 @@ const CollateralApprovals = ({
               allowance={pending.indexOf(collateral.address) === -1}
             />
           ))}
-        </Box>
+        </div>
       )}
-    </Box>
+    </div>
   )
 }
 

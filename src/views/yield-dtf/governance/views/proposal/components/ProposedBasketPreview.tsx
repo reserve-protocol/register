@@ -1,7 +1,8 @@
 import { t, Trans } from '@lingui/macro'
 import { Button } from '@/components/ui/button'
+import { Checkbox } from '@/components/ui/checkbox'
 import { useAtom, useAtomValue } from 'jotai'
-import { Box, BoxProps, Checkbox, Text } from 'theme-ui'
+import { cn } from '@/lib/utils'
 import {
   autoRegisterBasketAssetsAtom,
   basketChangesAtom,
@@ -10,7 +11,11 @@ import {
 import ListItemPreview from './ListItemPreview'
 import PreviewBox from './PreviewBox'
 
-const ProposedBasketPreview = (props: BoxProps) => {
+interface Props {
+  className?: string
+}
+
+const ProposedBasketPreview = ({ className }: Props) => {
   const [isNewBasketProposed, setProposeNewBasket] = useAtom(
     isNewBasketProposedAtom
   )
@@ -23,11 +28,16 @@ const ProposedBasketPreview = (props: BoxProps) => {
 
   return (
     <>
-      <Box variant="layout.borderBox" {...props}>
-        <Box variant="layout.verticalAlign">
-          <Text variant="strong" sx={{ color: 'warning' }}>
+      <div
+        className={cn(
+          'border border-border rounded-xl p-6',
+          className
+        )}
+      >
+        <div className="flex items-center">
+          <span className="font-semibold text-warning">
             <Trans>New primary basket</Trans>
-          </Text>
+          </span>
           <Button
             size="sm"
             variant="ghost"
@@ -36,27 +46,26 @@ const ProposedBasketPreview = (props: BoxProps) => {
           >
             <Trans>Revert</Trans>
           </Button>
-        </Box>
+        </div>
         <label>
-          <Box variant="layout.verticalAlign" mt={2}>
+          <div className="flex items-center mt-2 gap-2">
             <Checkbox
               checked={autoRegister}
-              onChange={() => setAutoRegister(!autoRegister)}
+              onCheckedChange={() => setAutoRegister(!autoRegister)}
             />
-            <Text variant="strong">Generate Asset Registry calls</Text>
-          </Box>
+            <span className="font-semibold">Generate Asset Registry calls</span>
+          </div>
         </label>
-      </Box>
+      </div>
       {!!basketChanges.length && (
         <PreviewBox
-          variant="layout.borderBox"
+          className="border border-border rounded-xl p-6 mt-6"
           count={basketChanges.length}
-          mt={4}
           title={t`Primary basket`}
         >
           {basketChanges.map((change, index) => (
             <ListItemPreview
-              mt={3}
+              className="mt-4"
               isNew={change.isNew}
               label={change.collateral.symbol}
               key={index}

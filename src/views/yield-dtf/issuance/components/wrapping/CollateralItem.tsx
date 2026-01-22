@@ -11,20 +11,21 @@ import { useShouldRefresh } from 'hooks/useWatchReadContract'
 import { useAtomValue } from 'jotai'
 import { useEffect, useMemo, useState } from 'react'
 import { chainIdAtom, walletAtom } from 'state/atoms'
-import { Box, BoxProps, Text } from 'theme-ui'
 import { CollateralPlugin } from 'types'
 import { formatCurrency, safeParseEther } from 'utils'
 import { ChainId } from 'utils/chains'
 import { BIGINT_MAX } from 'utils/constants'
 import { Address } from 'viem'
 import { useBalance, useReadContract } from 'wagmi'
+import { cn } from '@/lib/utils'
 
-interface Props extends BoxProps {
+interface Props {
   collateral: CollateralPlugin
   wrapping: boolean
+  className?: string
 }
 
-const CollateralItem = ({ collateral, wrapping, ...props }: Props) => {
+const CollateralItem = ({ collateral, wrapping, className }: Props) => {
   const wallet = useAtomValue(walletAtom)
   const chainId = useAtomValue(chainIdAtom)
   const fromToken = wrapping ? collateral.underlyingToken : collateral.symbol
@@ -306,37 +307,33 @@ const CollateralItem = ({ collateral, wrapping, ...props }: Props) => {
   }
 
   return (
-    <Box {...props}>
-      <Box variant="layout.verticalAlign">
+    <div className={className}>
+      <div className="flex items-center">
         <TokenLogo symbol={collateral.symbol} width={20} className="mr-4" />
-        <Box sx={{ flexGrow: 1 }} variant="layout.verticalAlign">
-          <Box sx={{ maxWidth: 200 }}>
-            <Text as="label">
+        <div className="flex-grow flex items-center">
+          <div className="max-w-[200px]">
+            <label>
               {fromToken} to {toToken}
-            </Text>
-            <Text
+            </label>
+            <a
               onClick={() => setAmount(data?.formatted ?? '')}
-              as="a"
-              variant="a"
-              sx={{ display: 'block', fontSize: 1 }}
-              ml={'auto'}
-              mt={1}
-              mr={2}
+              className="block text-xs mt-1 mr-2 ml-auto text-primary hover:underline cursor-pointer"
             >
               Max:{' '}
               {data ? formatCurrency(Number(data.formatted), 5) : 'Fetching...'}
-            </Text>
-          </Box>
-          <Box ml="auto" mr={3} sx={{ width: [160, 160] }}>
+            </a>
+          </div>
+          <div className="ml-auto mr-4 w-40">
             <NumericalInput
-              className={`p-1.5 text-sm w-full border rounded ${
+              className={cn(
+                'p-1.5 text-sm w-full border rounded',
                 debouncedAmount && !isValid ? 'border-destructive' : 'border-border'
-              }`}
+              )}
               placeholder={t`${fromToken} amount`}
               value={amount}
               onChange={setAmount}
             />
-          </Box>
+          </div>
           {!hasAllowance && (
             <ExecuteButton
               className="shrink-0"
@@ -355,9 +352,9 @@ const CollateralItem = ({ collateral, wrapping, ...props }: Props) => {
               onSuccess={handleSuccess}
             />
           )}
-        </Box>
-      </Box>
-    </Box>
+        </div>
+      </div>
+    </div>
   )
 }
 

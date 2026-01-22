@@ -12,7 +12,6 @@ import {
   rTokenGovernanceAtom,
   walletAtom,
 } from 'state/atoms'
-import { Box, Grid, Image, Text } from 'theme-ui'
 import { formatCurrency, getCurrentTime } from 'utils'
 import { Address, formatEther, formatEther as formatEtherViem } from 'viem'
 import RolesView from '@/views/yield-dtf/settings/components/roles-view'
@@ -99,16 +98,16 @@ const VotingPower = () => {
   const { data: votes } = useReadContract(snapshot)
 
   return (
-    <Box p={4} sx={{ borderBottom: '1px solid', borderColor: 'border' }}>
-      <Text variant="subtitle" mb={3}>
+    <div className="p-4 border-b border-border">
+      <span className="font-semibold block mb-4">
         <Trans>Voting power</Trans>
-      </Text>
+      </span>
       <IconInfo
-        icon={<Image src="/svgs/vote-supply.svg" />}
+        icon={<img src="/svgs/vote-supply.svg" />}
         title={t`Current`}
         text={formatCurrency(votes ? +formatEtherViem(votes) : 0)}
       />
-    </Box>
+    </div>
   )
 }
 
@@ -116,48 +115,41 @@ const GovernanceStats = () => {
   const stats = useStats()
 
   return (
-    <Box variant="layout.borderBox" p={0}>
-      <Grid gap={0} columns={2}>
-        <Box
-          p={4}
-          sx={{
-            borderRight: '1px solid',
-            borderBottom: '1px solid',
-            borderColor: 'border',
-          }}
-        >
-          <Text variant="subtitle" mb={3}>
+    <div className="border border-border rounded-3xl">
+      <div className="grid grid-cols-2">
+        <div className="p-4 border-r border-b border-border">
+          <span className="font-semibold block mb-4">
             <Trans>Proposals</Trans>
-          </Text>
+          </span>
           <IconInfo
-            icon={<Image src="/svgs/proposals.svg" />}
+            icon={<img src="/svgs/proposals.svg" />}
             title={t`All time`}
             text={formatCurrency(stats.proposals, 0)}
           />
-        </Box>
-        <Box p={4} sx={{ borderBottom: '1px solid', borderColor: 'border' }}>
-          <Text variant="subtitle" mb={3}>
+        </div>
+        <div className="p-4 border-b border-border">
+          <span className="font-semibold block mb-4">
             <Trans>Vote Supply</Trans>
-          </Text>
+          </span>
           <IconInfo
-            icon={<Image src="/svgs/vote-supply.svg" />}
+            icon={<img src="/svgs/vote-supply.svg" />}
             title={t`Current`}
             text={formatCurrency(stats.totalTokenSupply, 0)}
           />
-        </Box>
-        <Box p={4} sx={{ borderRight: '1px solid', borderColor: 'border' }}>
-          <Text variant="subtitle" mb={3}>
+        </div>
+        <div className="p-4 border-r border-border">
+          <span className="font-semibold block mb-4">
             <Trans>Voting Addresses</Trans>
-          </Text>
+          </span>
           <IconInfo
-            icon={<Image src="/svgs/voting-addresses.svg" />}
+            icon={<img src="/svgs/voting-addresses.svg" />}
             title={t`Current`}
             text={formatCurrency(stats.totalDelegates, 0)}
           />
-        </Box>
+        </div>
         <VotingPower />
-      </Grid>
-    </Box>
+      </div>
+    </div>
   )
 }
 
@@ -165,15 +157,15 @@ const GovernanceFormat = () => {
   const governance = useAtomValue(rTokenGovernanceAtom)
 
   return (
-    <Box mt={3} mb={3} variant="layout.borderBox">
-      <Text variant="subtitle">
+    <div className="mt-4 mb-4 border border-border rounded-3xl p-4">
+      <span className="font-semibold">
         <Trans>Governance format</Trans>
-      </Text>
-      <Box variant="layout.verticalAlign">
-        <Text variant="title">
+      </span>
+      <div className="flex items-center">
+        <span className="text-xl font-medium">
           {governance ? governance.name : 'Loading...'}
-        </Text>
-      </Box>
+        </span>
+      </div>
 
       {governance && governance.governor && (
         <>
@@ -212,17 +204,17 @@ const GovernanceFormat = () => {
       >
         <Trans>Documentation</Trans>
       </Button>
-    </Box>
+    </div>
   )
 }
 
 // TODO: Validate if account is above proposal threshold
 const GovernanceOverview = () => (
-  <Box>
+  <div>
     <AccountVotes />
     <GovernanceStats />
     <GovernanceFormat />
-  </Box>
+  </div>
 )
 
 export default GovernanceOverview

@@ -1,5 +1,4 @@
 import Skeleton from 'react-loading-skeleton'
-import { Text } from 'theme-ui'
 import { useZap } from '../context/ZapContext'
 
 const ZapOutput = () => {
@@ -9,7 +8,7 @@ const ZapOutput = () => {
     return <Skeleton height={30} width={320} />
   }
 
-  return <Text variant="strong">{amountOut}</Text>
+  return <span className="font-semibold">{amountOut}</span>
 }
 
 export default ZapOutput

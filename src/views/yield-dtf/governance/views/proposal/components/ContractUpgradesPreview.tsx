@@ -1,13 +1,17 @@
 import { t } from '@lingui/macro'
 import { Button } from '@/components/ui/button'
 import { useAtom } from 'jotai'
-import { Box, BoxProps, Text } from 'theme-ui'
+import { cn } from '@/lib/utils'
 import { shortenAddress } from 'utils'
 import { capitalize } from 'utils/constants'
 import { contractUpgradesAtom } from '../atoms'
 import PreviewBox from './PreviewBox'
 
-const ContractUpgradesPreview = (props: BoxProps) => {
+interface Props {
+  className?: string
+}
+
+const ContractUpgradesPreview = ({ className }: Props) => {
   const [upgrades, setUpgrades] = useAtom(contractUpgradesAtom)
   const contracts = Object.keys(upgrades)
 
@@ -25,17 +29,16 @@ const ContractUpgradesPreview = (props: BoxProps) => {
 
   return (
     <PreviewBox
-      variant="layout.borderBox"
+      className={cn('border border-border rounded-xl p-6', className)}
       count={contracts.length}
       title={t`Contract upgrades`}
-      {...props}
     >
       {contracts.map((contract) => (
-        <Box key={contract} variant="layout.verticalAlign" mt={3}>
-          <Box>
-            <Text variant="bold">{capitalize(contract)}</Text>
-            <Text variant="legend">{shortenAddress(upgrades[contract])}</Text>
-          </Box>
+        <div key={contract} className="flex items-center mt-4">
+          <div>
+            <span className="font-bold">{capitalize(contract)}</span>
+            <span className="text-legend block">{shortenAddress(upgrades[contract])}</span>
+          </div>
           <Button
             className="ml-auto"
             variant="muted"
@@ -44,7 +47,7 @@ const ContractUpgradesPreview = (props: BoxProps) => {
           >
             Revert
           </Button>
-        </Box>
+        </div>
       ))}
     </PreviewBox>
   )

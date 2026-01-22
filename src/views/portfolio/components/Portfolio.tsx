@@ -15,11 +15,12 @@ import {
   walletAtom,
 } from 'state/atoms'
 import { AccountRTokenPosition } from 'state/wallet/updaters/AccountUpdater'
-import { Box, BoxProps, Card, Grid, Text } from 'theme-ui'
 import { formatCurrency, getTokenRoute } from 'utils'
 import { RSR_ADDRESS } from 'utils/addresses'
 import { supportedChainList } from 'utils/constants'
 import { useBalance } from 'wagmi'
+import { Card } from '@/components/ui/card'
+import { cn } from '@/lib/utils'
 
 const PortfolioToken = ({ position }: { position: AccountRTokenPosition }) => {
   const logo = useRTokenLogo(position.address, position.chain)
@@ -34,55 +35,38 @@ const PortfolioToken = ({ position }: { position: AccountRTokenPosition }) => {
   }
 
   return (
-    <Grid
-      columns={['1fr', '1fr 1fr 1fr 1fr']}
-      sx={{
-        backgroundColor: 'contentBackground',
-        position: 'relative',
-        borderRadius: 20,
-        cursor: 'pointer',
-      }}
+    <div
+      className="grid grid-cols-1 sm:grid-cols-4 bg-secondary relative rounded-xl cursor-pointer mt-4 p-6"
       onClick={handleClick}
-      mt={3}
-      p={4}
     >
-      <Box variant="layout.verticalAlign">
+      <div className="flex items-center">
         <TokenLogo width={24} className="mr-2" src={logo} />
-        <Text ml={1} variant="strong">
+        <span className="ml-1 font-semibold">
           {formatCurrency(+position.balance)} {position.symbol}
-        </Text>
-      </Box>
+        </span>
+      </div>
 
-      <Box variant="layout.verticalAlign" sx={{ display: ['none', 'flex'] }}>
-        <Text mr="2" variant="strong">
-          =
-        </Text>
-        <Text variant="legend">${formatCurrency(+position.usdAmount)}</Text>
-      </Box>
+      <div className="hidden sm:flex items-center">
+        <span className="mr-2 font-semibold">=</span>
+        <span className="text-legend">${formatCurrency(+position.usdAmount)}</span>
+      </div>
 
-      <Box sx={{ flexWrap: 'wrap' }} ml={[5, 0]} variant="layout.verticalAlign">
-        <Box variant="layout.verticalAlign">
+      <div className="flex flex-wrap ml-8 sm:ml-0 items-center">
+        <div className="flex items-center">
           <PositionIcon />
-          <Text sx={{ whiteSpace: 'nowrap' }} ml="2">
+          <span className="whitespace-nowrap ml-2">
             {formatCurrency(position.stakedRSR)} RSR
-          </Text>
-        </Box>
+          </span>
+        </div>
 
-        <Text ml="2" variant="legend">
+        <span className="ml-2 text-legend">
           (${formatCurrency(+position.stakedRSRUsd)})
-        </Text>
-      </Box>
-      <Box
-        sx={{
-          textAlign: 'right',
-          position: ['absolute', 'relative'],
-          right: 20,
-          top: 'calc(50% - 10px)',
-        }}
-      >
+        </span>
+      </div>
+      <div className="text-right absolute sm:relative right-5 top-[calc(50%-10px)]">
         <ChainLogo chain={position.chain} />
-      </Box>
-    </Grid>
+      </div>
+    </div>
   )
 }
 
@@ -97,23 +81,27 @@ const AccountRSR = ({ chain }: { chain: number }) => {
   })
 
   return (
-    <Box variant="layout.verticalAlign">
-      <Box sx={{ position: 'relative' }}>
+    <div className="flex items-center">
+      <div className="relative">
         <TokenLogo width={24} symbol="rsr" bordered chain={chain} />
-      </Box>
-      <Box ml={3}>
-        <Text variant="strong">
+      </div>
+      <div className="ml-4">
+        <span className="font-semibold block">
           {formatCurrency(Number(data?.formatted ?? 0))} RSR
-        </Text>
-        <Text sx={{ fontSize: 1 }} variant="legend">
+        </span>
+        <span className="text-xs text-legend">
           ${formatCurrency(Number(data?.formatted ?? 0) * rsrPrice)}
-        </Text>
-      </Box>
-    </Box>
+        </span>
+      </div>
+    </div>
   )
 }
 
-const Portfolio = (props: BoxProps) => {
+interface PortfolioProps {
+  className?: string
+}
+
+const Portfolio = ({ className }: PortfolioProps) => {
   const rTokens = useAtomValue(accountTokensAtom)
   const wallet = useAtomValue(walletAtom)
   const holdings = useAtomValue(accountHoldingsAtom)
@@ -121,88 +109,65 @@ const Portfolio = (props: BoxProps) => {
 
   if (!wallet) {
     return (
-      <Box mx={[1, 0]}>
-        <Text ml={5} mb={4} variant="sectionTitle">
+      <div className="mx-1 sm:mx-0">
+        <h2 className="ml-8 mb-6 text-2xl font-semibold">
           <Trans>Portfolio</Trans>
-        </Text>
+        </h2>
         <Card
           onClick={openConnectModal}
-          py={6}
-          sx={{
-            border: '2px dashed',
-            borderColor: 'darkBorder',
-            textAlign: 'center',
-            cursor: 'pointer',
-          }}
+          className="py-8 border-2 border-dashed border-border text-center cursor-pointer"
         >
-          <LogIn size={32} />
+          <LogIn size={32} className="mx-auto" />
 
-          <Text mt={3} sx={{ display: 'block' }}>
+          <span className="mt-4 block">
             <Trans>Please connect your wallet</Trans>
-          </Text>
+          </span>
         </Card>
-      </Box>
+      </div>
     )
   }
 
   return (
-    <Box
-      {...props} /* sx={{border: '1px dashed',  borderColor: 'primary', borderRadius: 12}}*/
-    >
-      <Box>
-        <Box ml={4}>
-          <Text mb={1} variant="title" sx={{ color: 'secondaryText' }}>
+    <div className={cn(className)}>
+      <div>
+        <div className="ml-6">
+          <span className="mb-1 text-xl font-medium text-legend block">
             <Trans>Wallet staked RSR + RToken Value</Trans>
-          </Text>
-          <Text
-            ml={[0, '-1px']}
-            sx={{ fontSize: [4, 7], fontWeight: 400, color: 'text' }}
-            as="h1"
-          >
+          </span>
+          <h1 className="text-2xl sm:text-5xl font-normal">
             ${formatCurrency(holdings)}
-          </Text>
-          <Box mt={2} variant="layout.verticalAlign">
+          </h1>
+          <div className="mt-2 flex items-center">
             {supportedChainList.map((chain) => (
-              <Box key={chain} variant="layout.verticalAlign" mr={3}>
-                <Text mr={3} sx={{ fontSize: 4 }}>
-                  +
-                </Text>
+              <div key={chain} className="flex items-center mr-4">
+                <span className="mr-4 text-2xl">+</span>
                 <AccountRSR chain={chain} />
-              </Box>
+              </div>
             ))}
-          </Box>
-        </Box>
+          </div>
+        </div>
         {rTokens?.length > 0 && (
-          <Box mt={[4, 5]}>
-            <Text
-              pl={4}
-              mb={[3, 0]}
-              variant="title"
-              sx={{ color: 'secondaryText', fontWeight: '400' }}
-            >
+          <div className="mt-6 sm:mt-8">
+            <span className="pl-6 mb-4 sm:mb-0 text-xl font-medium text-legend block">
               <Trans>Your RTokens</Trans>
-            </Text>
-            <Grid
-              columns="1fr 1fr 1fr 1fr"
-              p={4}
-              sx={{ display: ['none', 'grid'] }}
-            >
-              <Text variant="strong">Token</Text>
-              <Text variant="legend">USD value</Text>
-              <Text variant="legend">
+            </span>
+            <div className="hidden sm:grid grid-cols-4 p-6">
+              <span className="font-semibold">Token</span>
+              <span className="text-legend">USD value</span>
+              <span className="text-legend">
                 <Trans>Your staked RSR</Trans>
-              </Text>
-              <Box></Box>
-            </Grid>
-            <Box mt={-3}>
+              </span>
+              <div></div>
+            </div>
+            <div className="-mt-4">
               {rTokens.map((position) => (
                 <PortfolioToken key={position.address} position={position} />
               ))}
-            </Box>
-          </Box>
+            </div>
+          </div>
         )}
-      </Box>
-    </Box>
+      </div>
+    </div>
   )
 }
 

@@ -1,12 +1,16 @@
 import { t } from '@lingui/macro'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { BoxProps } from 'theme-ui'
+import { cn } from '@/lib/utils'
 import { proposedRolesAtom, spellUpgradeAtom } from '../atoms'
 import { ListChangePreview } from './ItemPreview'
 import PreviewBox from './PreviewBox'
 import { spellAddressAtom } from './SpellUpgrade'
 
-const SpellUpgradePreview = (props: BoxProps) => {
+interface Props {
+  className?: string
+}
+
+const SpellUpgradePreview = ({ className }: Props) => {
   const [spell, setSpell] = useAtom(spellUpgradeAtom)
   const spellContract = useAtomValue(spellAddressAtom)
   const setProposedRoles = useSetAtom(proposedRolesAtom)
@@ -23,16 +27,15 @@ const SpellUpgradePreview = (props: BoxProps) => {
 
   return (
     <PreviewBox
-      variant="layout.borderBox"
+      className={cn('border border-border rounded-xl p-6', className)}
       count={1}
       title={t`Casting 3.4.0 upgrade spell`}
-      {...props}
     >
       <ListChangePreview
         onRevert={handleRevert}
         isNew={true}
         value={spell === 'spell1' ? t`Spell 1` : t`Spell 2`}
-        mt={3}
+        className="mt-4"
       />
     </PreviewBox>
   )

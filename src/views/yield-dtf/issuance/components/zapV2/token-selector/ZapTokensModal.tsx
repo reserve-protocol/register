@@ -3,8 +3,7 @@ import TokenLogo from 'components/icons/TokenLogo'
 import { SearchInput } from '@/components/ui/input'
 import { useMemo, useState } from 'react'
 import { ArrowUpRight, X } from 'lucide-react'
-import { colors } from 'theme'
-import { Box, Divider, Link, Text } from 'theme-ui'
+import { Separator } from '@/components/ui/separator'
 import { Button } from '@/components/ui/button'
 import { formatCurrency, shortenString } from 'utils'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
@@ -24,59 +23,41 @@ const ZapTokenList = ({
   }[]
 }) => {
   return (
-    <Box
-      sx={{
-        height: ['auto', '360px'],
-        background: 'backgroundNested',
-        display: 'flex',
-        flexDirection: 'column',
-        minWidth: '140px',
-        overflow: 'auto',
-      }}
-    >
+    <div className="h-auto sm:h-[360px] bg-card flex flex-col min-w-[140px] overflow-auto">
       {entries.map(
         ({ address, symbol, selectToken, explorerLink, balance }) => (
-          <Box
+          <div
             key={symbol}
-            variant="layout.verticalAlign"
-            px="12px"
-            py={2}
-            sx={{
-              gap: '12px',
-              cursor: 'pointer',
-              borderRadius: '10px',
-              ':hover': {
-                backgroundColor: 'contentBackground',
-              },
-            }}
+            className="flex items-center px-3 py-2 gap-3 cursor-pointer rounded-lg hover:bg-secondary"
             onClick={selectToken}
           >
             <TokenLogo symbol={symbol} width={24} />
-            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-              <Text variant="body" sx={{ fontWeight: 'bold' }}>
+            <div className="flex flex-col">
+              <span className="font-bold">
                 {symbol}
-              </Text>
-              <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
-                <Text variant="contentTitle" sx={{ color: 'darkGrey' }}>
+              </span>
+              <div className="flex items-center gap-1">
+                <span className="text-muted-foreground text-sm">
                   {shortenString(address)}
-                </Text>
-                <Link
+                </span>
+                <a
                   href={explorerLink}
                   target="_blank"
-                  sx={{ display: 'flex', alignItems: 'center' }}
+                  rel="noreferrer"
+                  className="flex items-center"
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <ArrowUpRight color={colors.secondaryText} size={14} />
-                </Link>
-              </Box>
-            </Box>
-            <Box sx={{ ml: 'auto' }}>
-              <Text>{formatCurrency(+balance, 5)}</Text>
-            </Box>
-          </Box>
+                  <ArrowUpRight className="text-legend" size={14} />
+                </a>
+              </div>
+            </div>
+            <div className="ml-auto">
+              <span>{formatCurrency(+balance, 5)}</span>
+            </div>
+          </div>
         )
       )}
-    </Box>
+    </div>
   )
 }
 
@@ -114,24 +95,16 @@ const ZapTokensModal = () => {
     <Modal
       p={0}
       width={420}
-      sx={{ border: '3px solid', borderColor: 'borderFocused' }}
+      className="border-[3px] border-secondary"
       onClose={() => setOpenTokenSelector(false)}
       closeOnClickAway
       hideCloseButton
     >
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          overflow: 'hidden',
-          height: '100%',
-          backgroundColor: 'backgroundNested',
-        }}
-      >
-        <Box variant="layout.verticalAlign" p={4} mb={[3, 0]} pt={3} pb={0}>
-          <Text variant="sectionTitle">
+      <div className="flex flex-col overflow-hidden h-full bg-card">
+        <div className="flex items-center p-6 mb-4 sm:mb-0 pt-4 pb-0">
+          <span className="text-lg font-bold">
             {operation === 'mint' ? 'Mint' : 'Redeem'} using
-          </Text>
+          </span>
           <Button
             variant="ghost"
             size="icon"
@@ -140,12 +113,8 @@ const ZapTokensModal = () => {
           >
             <X />
           </Button>
-        </Box>
-        <Box
-          p={['12px', '12px']}
-          pt={0}
-          sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
-        >
+        </div>
+        <div className="flex flex-col gap-2 p-3 pt-0">
           <SearchInput
             placeholder="Search by token name or address"
             autoFocus
@@ -153,12 +122,12 @@ const ZapTokensModal = () => {
             onChange={(e) => setSearch(e.target.value)}
             inputClassName="bg-muted"
           />
-          <Divider sx={{ mx: '-12px', my: 0 }} />
+          <Separator className="-mx-3 my-0" />
           <ZapTokenList entries={entries} />
-          <Divider sx={{ mx: '-12px', my: 0 }} />
+          <Separator className="-mx-3 my-0" />
           <ZapManualMint />
-        </Box>
-      </Box>
+        </div>
+      </div>
     </Modal>
   )
 }

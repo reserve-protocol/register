@@ -25,7 +25,6 @@ import {
   walletAtom,
 } from 'state/atoms'
 import { isRTokenMintEnabled } from 'state/geolocation/atoms'
-import { Link, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { ChainId } from 'utils/chains'
 import { CHAIN_TAGS, REGISTER_BUGS } from 'utils/constants'
@@ -471,13 +470,13 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
       setError({
         title: 'Failed to find a route',
         message: (
-          <Text>
+          <span>
             {(apiError?.message || data?.error || 'An unknown error occurred') +
               '. Please try again. If the problem persists, please '}{' '}
-            <Link target="_blank" href={REGISTER_BUGS}>
+            <a target="_blank" href={REGISTER_BUGS} rel="noreferrer" className="underline text-primary">
               contact support.
-            </Link>
-          </Text>
+            </a>
+          </span>
         ),
         color: 'danger',
         secondaryColor: 'rgba(255, 0, 0, 0.20)',

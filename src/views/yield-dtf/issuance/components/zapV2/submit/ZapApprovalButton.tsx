@@ -1,7 +1,6 @@
 import { Button } from '@/components/ui/button'
 import TokenLogo from 'components/icons/TokenLogo'
 import { Check, Loader2 } from 'lucide-react'
-import { Box, Spinner, Text } from 'theme-ui'
 import { useZap } from '../context/ZapContext'
 import { useZapTx } from '../context/ZapTxContext'
 
@@ -18,30 +17,30 @@ const ZapApprovalButton = () => {
 
   if (loadingApproval) {
     return (
-      <Box variant="layout.verticalAlign" mb={3}>
+      <div className="flex items-center mb-4">
         <TokenLogo width={24} symbol={tokenIn.symbol} />
-        <Box ml="3">
-          <Text variant="bold" sx={{ display: 'block' }}>
+        <div className="ml-4">
+          <span className="font-bold block">
             Approve in wallet
-          </Text>
-          <Text variant="legend">
+          </span>
+          <span className="text-legend">
             {!validatingApproval && 'Proceed in wallet'}
             {validatingApproval && 'Confirming transaction'}
-          </Text>
-        </Box>
-        <Spinner ml="auto" size={16} />
-      </Box>
+          </span>
+        </div>
+        <Loader2 className="ml-auto h-4 w-4 animate-spin" />
+      </div>
     )
   }
 
   if (approvalSuccess && !error) {
     return (
-      <Box variant="layout.verticalAlign" sx={{ gap: 3 }} mb={3}>
+      <div className="flex items-center gap-4 mb-4">
         <Check size={24} />
-        <Text variant="legend" sx={{ fontWeight: 'bold' }}>
+        <span className="text-legend font-bold">
           {tokenIn.symbol} Approved
-        </Text>
-      </Box>
+        </span>
+      </div>
     )
   }
 

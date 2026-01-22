@@ -1,4 +1,4 @@
-import { Box, BoxProps } from 'theme-ui'
+import { cn } from '@/lib/utils'
 import ProposedBackupPreview from './ProposedBackupPreview'
 import ProposedBasketPreview from './ProposedBasketPreview'
 import ProposedParametersPreview from './ProposedParametersPreview'
@@ -9,18 +9,22 @@ import ProposedRegisterPreview from './ProposedRegisterPreview'
 import ContractUpgradesPreview from './ContractUpgradesPreview'
 import SpellUpgradePreview from './SpellUpgradePreview'
 
-const ProposalPreview = (props: BoxProps) => (
-  <Box {...props}>
-    <ProposedBasketPreview mt={4} />
-    <ProposedBackupPreview mt={4} />
-    <ProposedRevenueSplitPreview mt={4} />
-    <ProposedParametersPreview mt={4} />
-    <ProposedRolesPreview mt={4} />
-    <ProposedUnregisterPreview mt={4} />
-    <ProposedRegisterPreview mt={4} />
-    <ContractUpgradesPreview mt={4} />
-    <SpellUpgradePreview mt={4} />
-  </Box>
+interface Props {
+  className?: string
+}
+
+const ProposalPreview = ({ className }: Props) => (
+  <div className={cn(className)}>
+    <ProposedBasketPreview className="mt-6" />
+    <ProposedBackupPreview className="mt-6" />
+    <ProposedRevenueSplitPreview className="mt-6" />
+    <ProposedParametersPreview className="mt-6" />
+    <ProposedRolesPreview className="mt-6" />
+    <ProposedUnregisterPreview className="mt-6" />
+    <ProposedRegisterPreview className="mt-6" />
+    <ContractUpgradesPreview className="mt-6" />
+    <SpellUpgradePreview className="mt-6" />
+  </div>
 )
 
 export default ProposalPreview

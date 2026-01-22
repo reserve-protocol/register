@@ -1,5 +1,4 @@
 import { Button } from '@/components/ui/button'
-import { Box, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { useZap } from '../context/ZapContext'
 import TokenLogo from 'components/icons/TokenLogo'
@@ -14,18 +13,18 @@ const ZapInputMaxButton = () => {
   }, [tokenIn.balance])
 
   return (
-    <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
+    <div className="flex items-center gap-1">
       {operation === 'redeem' && <TokenLogo symbol={tokenIn.symbol} />}
-      <Box variant="layout.verticalAlign" sx={{ gap: 2 }}>
-        <Box>
-          <Text>Balance </Text>
-          <Text sx={{ fontWeight: 'bold' }}>
+      <div className="flex items-center gap-2">
+        <div>
+          <span>Balance </span>
+          <span className="font-bold">
             {formatCurrency(+(tokenIn.balance ?? '0'), decimalsFormat, {
               notation: 'compact',
               compactDisplay: 'short',
             })}
-          </Text>
-        </Box>
+          </span>
+        </div>
         <Button
           size="sm"
           variant="secondary"
@@ -34,8 +33,8 @@ const ZapInputMaxButton = () => {
         >
           Max
         </Button>
-      </Box>
-    </Box>
+      </div>
+    </div>
   )
 }
 

@@ -1,6 +1,5 @@
 import { Button } from '@/components/ui/button'
 import { ReactNode, useEffect, useState } from 'react'
-import { Box, Text } from 'theme-ui'
 import { useZap } from '../context/ZapContext'
 import { Clock } from 'lucide-react'
 import { useZapTx } from '../context/ZapTxContext'
@@ -46,39 +45,26 @@ const ZapRefreshQuote = ({ children }: { children: ReactNode }) => {
   }
 
   return (
-    <Box>
+    <div>
       {showRefresh && !(loadingZap || validatingZap) ? (
         <Button onClick={handleRefreshClick} className="w-full">
           Refresh Quote
         </Button>
       ) : (
-        <Box>
+        <div>
           {children}
-          <Box
-            variant="layout.verticalAlign"
-            sx={{ gap: 2, justifyContent: 'space-between', fontSize: 14 }}
-          >
-            <Text>Quote expiration</Text>
-            <Box
-              variant="layout.verticalAlign"
-              sx={{ gap: 1, color: 'primary' }}
-            >
+          <div className="flex items-center gap-2 justify-between text-sm">
+            <span>Quote expiration</span>
+            <div className="flex items-center gap-1 text-primary">
               <Clock size={16} />
-              <Text
-                sx={{
-                  fontSize: 14,
-                  fontWeight: 500,
-                  width: 40,
-                  textAlign: 'right',
-                }}
-              >
+              <span className="text-sm font-medium w-10 text-right">
                 {`00:${counter.toString().padStart(2, '0')}`}
-              </Text>
-            </Box>
-          </Box>
-        </Box>
+              </span>
+            </div>
+          </div>
+        </div>
       )}
-    </Box>
+    </div>
   )
 }
 

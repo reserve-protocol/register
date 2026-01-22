@@ -1,67 +1,55 @@
 import { Trans } from '@lingui/macro'
 import OverviewIcon from 'components/icons/OverviewIcon'
 import TokenItem from 'components/token-item'
-import { ChevronDown, ChevronUp } from 'lucide-react'
+import { ChevronDown, ChevronUp, Loader2 } from 'lucide-react'
 import { useState } from 'react'
-import { Box, BoxProps, Divider, Flex, Spinner, Text } from 'theme-ui'
+import { Separator } from '@/components/ui/separator'
+import { cn } from '@/lib/utils'
 import { BigNumberMap, Token } from 'types'
 import { getAddress } from 'viem'
 import CollateralValue from './CollateralValue'
 
-interface Props extends BoxProps {
+interface Props {
   collaterals: Token[]
   quantities: BigNumberMap | null
   prices?: (number | undefined)[]
+  className?: string
 }
 
 const CollateralDistribution = ({
   collaterals,
   quantities,
   prices,
-  sx = {},
-  ...props
+  className,
 }: Props) => {
   const [isVisible, setVisible] = useState(false)
 
   return (
-    <Box
-      sx={{
-        border: '1px solid',
-        borderColor: 'inputBorder',
-        borderRadius: '6px',
-      }}
-      px={2}
-      py={3}
-      {...props}
+    <div
+      className={cn('border border-input rounded-md px-2 py-4', className)}
     >
-      <Flex
-        sx={{
-          alignItems: 'center',
-          cursor: 'pointer',
-          ...sx,
-        }}
+      <div
+        className="flex items-center cursor-pointer"
         onClick={() => setVisible(!isVisible)}
       >
         <OverviewIcon />
-        <Text ml={2}>
+        <span className="ml-2">
           <Trans>Collateral distribution</Trans>
-        </Text>
-        <Box mx="auto" />
+        </span>
+        <div className="mx-auto" />
         {isVisible ? <ChevronUp /> : <ChevronDown />}
-      </Flex>
+      </div>
       {isVisible && (
-        <Box>
-          <Divider mx={-2} />
+        <div>
+          <Separator className="-mx-2 my-2" />
           {collaterals.map((collateral, i) => (
-            <Box
+            <div
               key={collateral.address}
-              variant="layout.verticalAlign"
-              mt={2}
-              sx={{ justifyContent: 'space-between' }}
+              className="flex items-center mt-2 justify-between"
             >
-              <Box>
+              <div>
                 <TokenItem symbol={collateral.symbol} />
-              </Box>
+              </div>
               {quantities && quantities[getAddress(collateral.address)] ? (
                 <CollateralValue
                   quantity={quantities[getAddress(collateral.address)]}
@@ -69,13 +57,13 @@ const CollateralDistribution = ({
                   price={prices?.[i]}
                 />
               ) : (
-                <Spinner color="black" size={14} />
+                <Loader2 className="h-3.5 w-3.5 animate-spin text-foreground" />
               )}
-            </Box>
+            </div>
           ))}
-        </Box>
+        </div>
       )}
-    </Box>
+    </div>
   )
 }
 

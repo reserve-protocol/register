@@ -1,12 +1,16 @@
 import { Trans } from '@lingui/macro'
 import { useAtomValue, useSetAtom } from 'jotai'
-import { Box, BoxProps, Flex, Text } from 'theme-ui'
 import { Button } from '@/components/ui/button'
 import { isProposalEditingAtom, isProposalValidAtom } from '../atoms'
 import CreateProposalActionIcon from 'components/icons/CreateProposalActionIcon'
 import ProposalPreview from './ProposalPreview'
+import { cn } from '@/lib/utils'
 
-const ProposalOverview = (props: BoxProps) => {
+interface Props {
+  className?: string
+}
+
+const ProposalOverview = ({ className }: Props) => {
   const isValid = useAtomValue(isProposalValidAtom)
   const setProposalEditing = useSetAtom(isProposalEditingAtom)
 
@@ -16,36 +20,17 @@ const ProposalOverview = (props: BoxProps) => {
   }
 
   return (
-    <Box
-      sx={{ height: 'fit-content' }}
-      variant="layout.sticky"
-      p={0}
-      {...props}
-    >
-      <Box
-        sx={{
-          maxHeight: 'calc(100vh - 124px)',
-          display: 'flex',
-          flexDirection: 'column',
-          overflow: 'hidden',
-        }}
-      >
-        <Flex
-          sx={{
-            alignItems: 'center',
-            flexDirection: 'column',
-            textAlign: 'center',
-          }}
-          variant="layout.borderBox"
-        >
+    <div className={cn('h-fit sticky top-0 p-0', className)}>
+      <div className="max-h-[calc(100vh-124px)] flex flex-col overflow-hidden">
+        <div className="flex items-center flex-col text-center border border-border rounded-3xl p-4">
           <CreateProposalActionIcon />
-          <Text variant="title" mb={2}>
+          <span className="text-xl font-medium mb-2">
             <Trans>Confirm changes made</Trans>
-          </Text>
-          <Text variant="legend" as="p">
+          </span>
+          <p className="text-legend">
             Preview of function calls & adding of a proposal description is
             added in the next step.
-          </Text>
+          </p>
           <Button
             onClick={handleProposal}
             disabled={!isValid}
@@ -53,10 +38,10 @@ const ProposalOverview = (props: BoxProps) => {
           >
             <Trans>Confirm & prepare proposal</Trans>
           </Button>
-        </Flex>
-        <ProposalPreview sx={{ flexGrow: 1, overflow: 'auto' }} />
-      </Box>
-    </Box>
+        </div>
+        <ProposalPreview className="grow overflow-auto" />
+      </div>
+    </div>
   )
 }
 

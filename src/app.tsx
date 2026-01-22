@@ -8,14 +8,12 @@ import {
 } from 'react-router-dom'
 import ChainProvider from 'state/chain'
 import Updater from 'state/updater'
-import { ThemeUIProvider } from 'theme-ui'
 import { getTokenRoute } from 'utils'
 import AppRoutes from './app-routes'
 import Layout from './components/layout'
 import { Toaster } from './components/ui/sonner'
 import { TooltipProvider } from './components/ui/tooltip'
 import LanguageProvider from './i18n'
-import { theme } from './theme'
 import * as Sentry from '@sentry/react'
 
 mixpanel.init(import.meta.env.VITE_MIXPANEL_KEY || 'mixpanel_key', {
@@ -48,17 +46,6 @@ const ScrollToTop = () => {
   }, [pathname])
 
   return null
-}
-
-const handleError = (error: Error) => {
-  if (
-    error.message.includes('Failed to fetch dynamically imported module') ||
-    error.message.includes('Importing a module script failed')
-  ) {
-    window.location.reload()
-  } else {
-    console.error(error)
-  }
 }
 
 function FallbackUI({
@@ -114,19 +101,17 @@ const App = () => (
       <Router>
         <Redirects />
         <ScrollToTop />
-        <ThemeUIProvider theme={theme}>
-          <LanguageProvider>
-            <TooltipProvider>
-              <ChainProvider>
-                <Updater />
-                <Layout>
-                  <Toaster />
-                  <AppRoutes />
-                </Layout>
-              </ChainProvider>
-            </TooltipProvider>
-          </LanguageProvider>
-        </ThemeUIProvider>
+        <LanguageProvider>
+          <TooltipProvider>
+            <ChainProvider>
+              <Updater />
+              <Layout>
+                <Toaster />
+                <AppRoutes />
+              </Layout>
+            </ChainProvider>
+          </TooltipProvider>
+        </LanguageProvider>
       </Router>
     </Sentry.ErrorBoundary>
   </HelmetProvider>

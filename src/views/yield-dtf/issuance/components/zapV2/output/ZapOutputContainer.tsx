@@ -1,4 +1,4 @@
-import { Box, Text } from 'theme-ui'
+import { cn } from '@/lib/utils'
 import { useZap } from '../context/ZapContext'
 import ZapTokenSelector from '../token-selector/ZapTokenSelector'
 import ZapOutput from './ZapOutput'
@@ -9,52 +9,29 @@ const ZapOutputContainer = () => {
   const { tokenOut, operation, loadingZap } = useZap()
 
   return (
-    <Box
-      variant="layout.centered"
-      sx={{
-        position: 'relative',
-        border: '1px solid',
-        borderColor: 'borderSecondary',
-        borderRadius: '8px',
-        overflow: 'hidden',
-        gap: '8px',
-        alignItems: 'start',
-      }}
-      p={3}
-    >
-      <Text sx={{ display: 'block' }}>You receive:</Text>
-      <Box
-        variant="layout.verticalAlign"
-        sx={{ fontSize: 4, fontWeight: 700, overflow: 'hidden' }}
-      >
+    <div className="flex flex-col relative border border-border rounded-3xl overflow-hidden gap-2 items-start p-3">
+      <span className="block">You receive:</span>
+      <div className="flex items-center text-2xl font-bold overflow-hidden">
         <ZapOutput />
         {!loadingZap && (
-          <Text variant="legend" ml="2">
-            {tokenOut.symbol}
-          </Text>
+          <span className="text-legend ml-2">{tokenOut.symbol}</span>
         )}
-      </Box>
-      <Box variant="layout.verticalAlign">
+      </div>
+      <div className="flex items-center">
         <ZapOutputUSD />
-      </Box>
-      <Box
-        sx={{
-          position: 'absolute',
-          height: '100%',
-          top: 0,
-          right: 0,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'end',
-          justifyContent:
-            operation === 'redeem' ? 'space-between' : ['start', 'end'],
-        }}
-        p={3}
+      </div>
+      <div
+        className={cn(
+          'absolute h-full top-0 right-0 flex flex-col items-end p-3',
+          operation === 'redeem'
+            ? 'justify-between'
+            : 'justify-start sm:justify-end'
+        )}
       >
         {operation === 'redeem' && <ZapTokenSelector />}
         <ZapOutputBalance />
-      </Box>
-    </Box>
+      </div>
+    </div>
   )
 }
 

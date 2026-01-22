@@ -11,7 +11,6 @@ import {
   stRsrBalanceAtom,
   walletAtom,
 } from 'state/atoms'
-import { Box, Image, Text } from 'theme-ui'
 import { formatCurrency, shortenAddress } from 'utils'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import DelegateModal from './DelegateModal'
@@ -51,18 +50,18 @@ const AccountVotes = () => {
   }
 
   return (
-    <Box variant="layout.borderBox" mb={3}>
+    <div className="border border-border rounded-3xl p-4 mb-4">
       {hasNoDelegates ? (
-        <Box>
-          <Text variant="title" mb={2}>
+        <div>
+          <span className="text-xl font-medium block mb-2">
             <Trans>Configure your vote</Trans>
-          </Text>
-          <Text variant="legend" as="p">
+          </span>
+          <p className="text-legend">
             <Trans>
               Voting on the RToken you are staked on requires you to delegate
               your vote to yourself or another Eth address.
             </Trans>
-          </Text>
+          </p>
           <Button
             size="sm"
             className="mt-4"
@@ -71,26 +70,26 @@ const AccountVotes = () => {
           >
             <Trans>Delegate</Trans>
           </Button>
-          <Text ml={3} variant="legend" as="span">
+          <span className="ml-3 text-legend">
             <Trans>Balance: </Trans>
-          </Text>{' '}
-          <Text variant="legend">{formatCurrency(+stRsrBalance.balance)}</Text>
-        </Box>
+          </span>{' '}
+          <span className="text-legend">{formatCurrency(+stRsrBalance.balance)}</span>
+        </div>
       ) : (
-        <Box variant="layout.verticalAlign">
-          <Image mr={2} src="/svgs/asterisk.svg" />
-          <Box>
-            <Text sx={{ fontSize: 1 }} variant="legend">
+        <div className="flex items-center">
+          <img className="mr-2" src="/svgs/asterisk.svg" />
+          <div>
+            <span className="text-xs text-legend">
               <Trans>Voting power</Trans>
-            </Text>
-            <Text variant="strong">
+            </span>
+            <span className="block font-semibold">
               {selfDelegate ? (
                 <Trans>Delegated to self</Trans>
               ) : (
                 <>
                   <Trans>Delegated to: </Trans> {shortenAddress(delegate || '')}{' '}
                   <GoTo
-                    ml={2}
+                    className="ml-2"
                     href={getExplorerLink(
                       delegate,
                       chainId,
@@ -99,12 +98,12 @@ const AccountVotes = () => {
                   />
                 </>
               )}
-            </Text>
-          </Box>
+            </span>
+          </div>
           <Button size="sm" className="ml-auto" variant="muted" onClick={handleDelegate}>
             <Trans>Change</Trans>
           </Button>
-        </Box>
+        </div>
       )}
       {isVisible && (
         <DelegateModal
@@ -112,7 +111,7 @@ const AccountVotes = () => {
           onClose={() => setVisible(false)}
         />
       )}
-    </Box>
+    </div>
   )
 }
 

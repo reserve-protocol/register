@@ -20,7 +20,7 @@ const CollateralBalances = () => {
         {!rToken?.collaterals && <Spinner size={18} />}
         {rToken?.collaterals.map((collateral) => (
           <CollateralBalance
-            mb={2}
+            className="mb-2"
             token={collateral}
             key={collateral.address}
           />

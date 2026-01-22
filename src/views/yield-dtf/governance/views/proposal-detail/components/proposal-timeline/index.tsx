@@ -1,4 +1,3 @@
-import { Box, Text } from 'theme-ui'
 import {
   TimelineItemCreated,
   TimelineItemVotingPeriod,
@@ -11,37 +10,17 @@ import {
 
 const ProposalTimeline = () => {
   return (
-    <Box sx={{ bg: 'cardBackground', borderRadius: '8px', p: 2, mt: 2 }}>
-      <Text
-        variant="title"
-        sx={{ fontWeight: 'bold', lineHeight: '20px' }}
-        p={3}
-      >
+    <div className="bg-secondary rounded-lg p-2 mt-2">
+      <span className="text-xl font-bold leading-5 p-4 block">
         Status
-      </Text>
-      <Box
-        sx={{
-          position: 'relative',
-          bg: 'focusedBackground',
-          borderRadius: '6px',
-          overflow: 'hidden',
-          border: '1px solid',
-          borderColor: 'borderSecondary',
-          boxShadow: '0px 10px 38px 6px rgba(0, 0, 0, 0.05)',
-        }}
+      </span>
+      <div
+        className="relative bg-muted/50 rounded-md overflow-hidden border border-border shadow-[0px_10px_38px_6px_rgba(0,0,0,0.05)]"
       >
-        <Box
-          sx={{
-            position: 'absolute',
-            borderLeft: '2px solid',
-            borderColor: 'borderSecondary',
-            top: '40px',
-            left: '29px',
-            height: 'calc(100% - 80px)',
-            zIndex: 10,
-          }}
+        <div
+          className="absolute border-l-2 border-border top-10 left-[29px] h-[calc(100%-80px)] z-10"
         />
-        <Box py={2}>
+        <div className="py-2">
           <TimelineItemCreated />
           <TimelineItemVotingDelay />
           <TimelineItemVotingPeriod />
@@ -49,9 +28,9 @@ const ProposalTimeline = () => {
           <TimelineItemVotingResult />
           <TimelineItemQueued />
           <TimelineItemEnd />
-        </Box>
-      </Box>
-    </Box>
+        </div>
+      </div>
+    </div>
   )
 }
 

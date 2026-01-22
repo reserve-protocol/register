@@ -5,25 +5,23 @@ import IssuanceIcon from 'components/icons/IssuanceIcon'
 import Tenderly from 'components/icons/logos/Tenderly'
 import { useResetAtom } from 'jotai/utils'
 import { useEffect } from 'react'
-import { Box, BoxProps, Flex, Link, Spinner, Text } from 'theme-ui'
+import { Loader2 } from 'lucide-react'
 import { TenderlySimulation } from 'types'
 import { TENDERLY_SHARING_URL } from 'utils/constants'
 import { simulationStateAtom } from '../../proposal-detail/atom'
 import useProposalSimulation from '../hooks/useProposalSimulation'
 import { UseSimulateContractParameters } from 'wagmi'
+import { cn } from '@/lib/utils'
 
-interface Props extends BoxProps {
+interface Props {
   tx: UseSimulateContractParameters
+  className?: string
 }
 
 const getButtonStyles = (sim: TenderlySimulation | null) => {
-  if (!sim) return {}
+  if (!sim) return ''
 
-  return {
-    color: `var(--theme-ui-colors-${
-      sim?.transaction?.status ? 'success' : 'warning'
-    }) !important`,
-  }
+  return sim?.transaction?.status ? 'text-green-500' : 'text-warning'
 }
 
 const ProposalStatus = () => {
@@ -40,10 +38,10 @@ const ProposalStatus = () => {
   if (isLoading) {
     return (
       <>
-        <Spinner mt={3} size={24} mb={2} />
-        <Text as="p" variant="legend">
+        <Loader2 className="mt-4 mb-2 h-6 w-6 animate-spin" />
+        <p className="text-legend">
           <Trans>Please wait while the simulation executes</Trans>
-        </Text>
+        </p>
       </>
     )
   }
@@ -51,84 +49,60 @@ const ProposalStatus = () => {
   return (
     <>
       <Button
-        className="mt-4 mb-2 w-full"
+        className={cn('mt-6 mb-2 w-full', getButtonStyles(sim))}
         disabled={isLoading || !!sim}
         onClick={handleSimulation}
-        style={getButtonStyles(sim)}
       >
         {sim ? simResult : t`Simulate proposal`}
       </Button>
       {error && (
-        <Text as="p" variant="legend" color="danger">
+        <p className="text-sm text-destructive">
           Simulation Error. Please try again later.
-        </Text>
+        </p>
       )}
       {sim && (
-        <>
-          <Flex
-            sx={{
-              alignItems: 'center',
-              flexDirection: 'column',
-              textAlign: 'center',
-            }}
-          >
-            <Text sx={{ fontWeight: 700 }}>
-              View on{' '}
-              <Link
-                href={`${TENDERLY_SHARING_URL(sim.simulation.id)}`}
-                target="_blank"
-              >
-                Tenderly <ExternalArrowIcon />
-              </Link>
-            </Text>
-          </Flex>
-        </>
+        <div className="flex flex-col items-center text-center">
+          <span className="font-bold">
+            View on{' '}
+            <a
+              href={`${TENDERLY_SHARING_URL(sim.simulation.id)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary hover:underline"
+            >
+              Tenderly <ExternalArrowIcon />
+            </a>
+          </span>
+        </div>
       )}
     </>
   )
 }
-const SimulateProposal = ({ tx, ...props }: Props) => {
+const SimulateProposal = ({ tx, className }: Props) => {
   return (
-    <Box {...props}>
-      <Box
-        sx={{
-          maxHeight: 'calc(100vh - 124px)',
-          display: 'flex',
-          flexDirection: 'column',
-          overflow: 'hidden',
-        }}
+    <div className={className}>
+      <div
+        className="flex flex-col overflow-hidden"
+        style={{ maxHeight: 'calc(100vh - 124px)' }}
       >
-        <Flex
-          sx={{
-            alignItems: 'center',
-            flexDirection: 'column',
-            textAlign: 'center',
-          }}
-          variant="layout.borderBox"
-        >
+        <div className="flex flex-col items-center text-center rounded-xl border border-foreground/10 bg-card p-6">
           <IssuanceIcon />
-          <Text variant="title" mb={2}>
+          <span className="text-xl font-medium mb-2">
             <Trans>Simulate Proposal</Trans>
-          </Text>
-          <Text variant="legend" as="p">
+          </span>
+          <p className="text-legend">
             Simulate your proposal to see the outcome of its execution. A report
             of its execution will be generated
-          </Text>
+          </p>
           <br />
-          <Flex
-            sx={{
-              alignItems: 'center',
-              textAlign: 'center',
-              gap: '0.5rem',
-            }}
-          >
-            <Text>Powered by </Text>
+          <div className="flex items-center text-center gap-2">
+            <span>Powered by </span>
             <Tenderly height={30} width={100} />
-          </Flex>
+          </div>
           <ProposalStatus />
-        </Flex>
-      </Box>
-    </Box>
+        </div>
+      </div>
+    </div>
   )
 }
 

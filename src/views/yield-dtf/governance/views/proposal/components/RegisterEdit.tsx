@@ -1,10 +1,7 @@
 import { Trans } from '@lingui/macro'
 import { Input } from 'components'
 import { Button } from '@/components/ui/button'
-import { useAtomValue } from 'jotai'
 import { useState } from 'react'
-import { rTokenAssetsAtom } from 'state/atoms'
-import { Box, BoxProps, Text } from 'theme-ui'
 import { isAddress } from 'utils'
 
 const NewAssetAddress = ({
@@ -22,27 +19,21 @@ const NewAssetAddress = ({
     addresses.findIndex((a) => a.toLowerCase() === address.toLowerCase()) !== -1
 
   return (
-    <Box>
+    <div>
       <Input
-        className="my-3"
+        className="my-4"
         value={address}
         placeholder="Input address"
         onChange={(e) => setAddress(e.target.value)}
       />
       {((address && !isValid) || isExisting) && (
-        <Text
-          variant="error"
-          mt={-2}
-          mb={3}
-          ml={3}
-          sx={{ fontSize: 1, display: 'block' }}
-        >
+        <span className="text-destructive -mt-2 mb-4 ml-4 text-xs block">
           {isExisting ? (
             <Trans>This asset is already (being) registered</Trans>
           ) : (
             <Trans>Invalid asset</Trans>
           )}
-        </Text>
+        </span>
       )}
       <Button
         size="sm"
@@ -51,17 +42,18 @@ const NewAssetAddress = ({
           setAddress('')
           onSave(address)
         }}
-        className="ml-4"
+        className="ml-6"
       >
         <Trans>Save</Trans>
       </Button>
-    </Box>
+    </div>
   )
 }
 
-interface RoleEditProps extends Omit<BoxProps, 'onChange'> {
+interface RoleEditProps {
   onChange(address: string): void
   addresses: string[]
+  className?: string
 }
 
 const RegisterEdit = ({ onChange, addresses }: RoleEditProps) => {

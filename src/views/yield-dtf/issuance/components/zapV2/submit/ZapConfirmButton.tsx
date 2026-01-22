@@ -1,7 +1,6 @@
 import { Button } from '@/components/ui/button'
 import TransactionsIcon from 'components/icons/TransactionsIcon'
 import { Loader2 } from 'lucide-react'
-import { Box, Spinner, Text } from 'theme-ui'
 import { useZap } from '../context/ZapContext'
 import { useZapTx } from '../context/ZapTxContext'
 import ZapGasCost from '../overview/ZapGasCost'
@@ -20,42 +19,42 @@ const ZapConfirmButton = () => {
 
   if (onGoingConfirmation) {
     return (
-      <Box variant="layout.verticalAlign">
-        <Box variant="layout.verticalAlign" sx={{ gap: 3 }}>
+      <div className="flex items-center">
+        <div className="flex items-center gap-4">
           <TransactionsIcon />
-          <Box>
-            <Text variant="bold" sx={{ display: 'block' }}>
+          <div>
+            <span className="font-bold block">
               {!receipt
                 ? `Confirm ${operation}`
                 : receipt.status === 'success'
                   ? 'Transaction Submitted'
                   : 'Transaction Failed'}
-            </Text>
+            </span>
             {(loadingTx ||
               validatingTx ||
               (approvalSuccess && validatingZap)) && (
-              <Text variant="legend">
+              <span className="text-legend">
                 {!validatingTx &&
                   !loadingTx &&
                   validatingZap &&
                   'Validating transaction'}
                 {loadingTx && 'Proceed in wallet'}
                 {validatingTx && 'Confirming transaction'}
-              </Text>
+              </span>
             )}
-          </Box>
-        </Box>
+          </div>
+        </div>
         {(loadingTx || validatingTx || (approvalSuccess && validatingZap)) && (
-          <Spinner ml="auto" size={16} />
+          <Loader2 className="ml-auto h-4 w-4 animate-spin" />
         )}
-      </Box>
+      </div>
     )
   }
 
   const isLoading = !zapResult || loadingZap || validatingZap
 
   return (
-    <Box>
+    <div>
       {hasAllowance && (
         <Button
           onClick={() => sendTransaction?.()}
@@ -70,8 +69,8 @@ const ZapConfirmButton = () => {
               : 'Confirm Redeem'}
         </Button>
       )}
-      <ZapGasCost mt={2} />
-    </Box>
+      <ZapGasCost className="mt-2" />
+    </div>
   )
 }
 

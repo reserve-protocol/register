@@ -1,13 +1,12 @@
-import { Box } from 'theme-ui'
 import Portfolio from './components/Portfolio'
 import RegisterAbout from '@/views/discover/components/yield/components/RegisterAbout'
 
 const PortfolioWrapper = () => {
   return (
     <>
-      <Box variant="layout.wrapper" px={[1, 4]} py={[1, 8]}>
+      <div className="max-w-[95em] mx-auto px-1 sm:px-6 py-1 sm:py-8">
         <Portfolio />
-      </Box>
+      </div>
       <RegisterAbout />
     </>
   )

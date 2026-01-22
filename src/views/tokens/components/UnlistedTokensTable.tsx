@@ -8,7 +8,6 @@ import { useMultichainQuery } from 'hooks/use-query'
 import { useSetAtom } from 'jotai'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Box, Flex, Text } from 'theme-ui'
 import { StringMap } from 'types'
 import { formatCurrency, formatUsdCurrencyCell, getTokenRoute } from 'utils'
 import { LISTED_RTOKEN_ADDRESSES, supportedChainList } from 'utils/constants'
@@ -68,12 +67,12 @@ const UnlistedTokensTable = () => {
         header: t`Token`,
         cell: (data) => {
           return (
-            <Box sx={{ minWidth: 150 }}>
+            <div className="min-w-[150px]">
               <TokenItem
                 symbol={data.getValue()}
                 logo={'/svgs/defaultLogo.svg'}
               />
-            </Box>
+            </div>
           )
         },
       }),
@@ -96,14 +95,9 @@ const UnlistedTokensTable = () => {
         header: t`Target(s)`,
         cell: (data) => {
           return (
-            <Text
-              sx={{
-                width: '74px',
-                display: 'block',
-              }}
-            >
+            <span className="w-[74px] block">
               {data.getValue()}
-            </Text>
+            </span>
           )
         },
       }),
@@ -148,12 +142,12 @@ const UnlistedTokensTable = () => {
         columns={columns}
         data={data}
       />
-      <Flex mt={3} sx={{ justifyContent: 'center' }}>
-        <Text variant="legend">Total RTokens unlisted: </Text>
-        <Text ml={2} variant="strong">
+      <div className="flex mt-4 justify-center">
+        <span className="text-legend">Total RTokens unlisted: </span>
+        <span className="ml-2 font-semibold">
           {formatCurrency(rTokenCount, 0)}
-        </Text>
-      </Flex>
+        </span>
+      </div>
     </>
   )
 }

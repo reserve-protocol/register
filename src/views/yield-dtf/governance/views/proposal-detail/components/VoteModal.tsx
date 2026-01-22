@@ -15,7 +15,6 @@ import {
   ThumbsUp,
 } from 'lucide-react'
 import { chainIdAtom, rTokenGovernanceAtom } from 'state/atoms'
-import { Box, Checkbox, Divider, Flex, Link, Text } from 'theme-ui'
 import { getProposalTitle, shortenAddress } from 'utils'
 import {
   ETHERSCAN_NAMES,
@@ -23,6 +22,8 @@ import {
   getExplorerLink,
 } from 'utils/getExplorerLink'
 import { proposalDetailAtom } from '../atom'
+import { Separator } from '@/components/ui/separator'
+import { Checkbox } from '@/components/ui/checkbox'
 
 export const VOTE_TYPE = {
   AGAINST: 0,
@@ -59,78 +60,69 @@ const VoteModal = (props: ModalProps) => {
   if (hash) {
     return (
       <Modal {...props}>
-        <Flex
-          p={4}
-          sx={{
-            alignItems: 'center',
-            flexDirection: 'column',
-            justifyContent: 'center',
-          }}
-        >
+        <div className="flex flex-col items-center justify-center p-6">
           <CheckCircle size={36} />
           <br />
-          <Text>Transactions signed!</Text>
+          <span>Transactions signed!</span>
           <br />
-          <Link
+          <a
             href={getExplorerLink(hash, chainId, ExplorerDataType.TRANSACTION)}
             target="_blank"
-            sx={{ fontSize: 1 }}
+            rel="noreferrer"
+            className="text-xs"
           >
             <ExternalLink size={12} /> <Trans>View on</Trans>{' '}
             {ETHERSCAN_NAMES[chainId]}
-          </Link>
-        </Flex>
+          </a>
+        </div>
       </Modal>
     )
   }
 
   return (
     <Modal {...props} title={t`Voting`} style={{ maxWidth: 420 }}>
-      <Flex sx={{ alignItems: 'center', flexDirection: 'column' }}>
-        <Text variant="title">
+      <div className="flex flex-col items-center">
+        <span className="text-xl font-medium">
           "
           {proposal?.description
             ? getProposalTitle(proposal.description)
             : 'Loading...'}
-        </Text>
-        <Box variant="layout.verticalAlign" mt={2}>
-          <Text variant="legend">
+        </span>
+        <div className="flex items-center mt-2">
+          <span className="text-legend">
             <Trans>Proposed by</Trans>:
-          </Text>
-          <Text ml={1}>{shortenAddress(proposal?.proposer || '')}</Text>
+          </span>
+          <span className="ml-1">{shortenAddress(proposal?.proposer || '')}</span>
           <GoTo
-            ml={2}
+            className="ml-2"
             href={getExplorerLink(
               proposal?.proposer ?? '',
               chainId,
               ExplorerDataType.ADDRESS
             )}
           />
-        </Box>
-      </Flex>
-      <Divider sx={{ borderColor: 'darkBorder' }} my={4} mx={-4} />
+        </div>
+      </div>
+      <Separator className="my-6 -mx-6 w-auto" />
       {voteOptions.map((option, index) => (
-        <Box
-          variant="layout.verticalAlign"
-          mt={!!index ? 2 : 0}
+        <div
+          className={`flex items-center ${index ? 'mt-2' : ''}`}
           key={option.value}
         >
           {option.value === VOTE_TYPE.FOR && <ThumbsUp size={16} />}
           {option.value === VOTE_TYPE.AGAINST && <ThumbsDown size={16} />}
           {option.value === VOTE_TYPE.ABSTAIN && <Slash size={16} />}
-          <Text variant="strong" ml={2}>
-            {option.label}
-          </Text>
-          <label style={{ marginLeft: 'auto', cursor: 'pointer' }}>
+          <span className="font-semibold ml-2">{option.label}</span>
+          <label className="ml-auto cursor-pointer">
             <Checkbox
               checked={vote === option.value}
-              onChange={() => setVote(option.value)}
+              onCheckedChange={() => setVote(option.value)}
             />
           </label>
-        </Box>
+        </div>
       ))}
 
-      <Divider sx={{ borderColor: 'darkBorder' }} my={4} mx={-4} />
+      <Separator className="my-6 -mx-6 w-auto" />
       <TransactionButton
         loading={isLoading}
         variant={!!hash ? 'accent' : 'default'}

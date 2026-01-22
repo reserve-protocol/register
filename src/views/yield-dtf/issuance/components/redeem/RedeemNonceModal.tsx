@@ -5,7 +5,8 @@ import TokenItem from 'components/token-item'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { ChevronLeft } from 'lucide-react'
 import { rTokenAssetsAtom, rTokenStateAtom } from 'state/atoms'
-import { Box, Checkbox, Divider, IconButton, Spinner, Text } from 'theme-ui'
+import { Separator } from '@/components/ui/separator'
+import { Checkbox } from '@/components/ui/checkbox'
 import { formatCurrency } from 'utils'
 import { formatUnits } from 'viem'
 import {
@@ -39,68 +40,57 @@ const RedeemNonceModal = ({ onClose, ...props }: Props) => {
     <Modal
       title={t`Choose Redemption Basket`}
       titleProps={{ ml: 5 }}
-      sx={{ backgroundColor: '#F9F8F4' }}
+      className="bg-secondary"
       onClose={handleClose}
       {...props}
     >
-      <IconButton
+      <button
         onClick={() => setNonceModal(false)}
-        sx={{ position: 'absolute', left: 16, cursor: 'pointer', top: 24 }}
+        className="absolute left-4 top-6 cursor-pointer p-2 hover:bg-muted rounded"
       >
         <ChevronLeft />
-      </IconButton>
+      </button>
       {!!quote &&
         assets &&
         Object.keys(quote).map((quoteNonce, index) => {
           return (
-            <Box
-              variant="layout.borderBox"
-              p={3}
+            <div
+              className="rounded-xl border border-secondary bg-card p-4 mt-0 first:mt-0"
+              style={{ marginTop: index ? '12px' : '0' }}
               key={quoteNonce}
-              mt={index ? 3 : 0}
-              sx={{ backgroundColor: 'background' }}
             >
-              <Box
-                variant="layout.verticalAlign"
-                sx={{ cursor: 'pointer' }}
+              <div
+                className="flex items-center cursor-pointer"
                 onClick={() => handleSelection(Number(quoteNonce))}
               >
-                <Checkbox defaultChecked={Number(quoteNonce) === nonce} />
-                <Text ml="1">
+                <Checkbox checked={Number(quoteNonce) === nonce} />
+                <span className="ml-1">
                   {basketNonce === Number(quoteNonce) ? 'Current' : 'Previous'}{' '}
                   basket
-                </Text>
-              </Box>
-              <Divider mt={3} sx={{ borderStyle: 'dashed' }} />
-              <Box>
+                </span>
+              </div>
+              <Separator className="mt-4 border-dashed" />
+              <div>
                 {Object.keys(quote[quoteNonce]).map((erc20) => (
-                  <Box variant="layout.verticalAlign" key={erc20} mt={3}>
+                  <div className="flex items-center mt-4" key={erc20}>
                     <TokenItem symbol={assets[erc20].token.symbol} />
-                    <Text ml="auto">
+                    <span className="ml-auto">
                       {formatCurrency(
                         +formatUnits(
                           quote[quoteNonce][erc20].amount,
                           assets[erc20].token.decimals
                         )
                       )}
-                    </Text>
+                    </span>
                     {!!quote[quoteNonce][erc20].loss && (
-                      <Text
-                        ml="3"
-                        sx={{
-                          display: 'block',
-                          flexShrink: 0,
-                          fontSize: 1,
-                          color: 'danger',
-                        }}
-                      >
+                      <span className="ml-4 block flex-shrink-0 text-xs text-destructive">
                         ({formatCurrency(quote[quoteNonce][erc20].loss)})
-                      </Text>
+                      </span>
                     )}
-                  </Box>
+                  </div>
                 ))}
-              </Box>
-            </Box>
+              </div>
+            </div>
           )
         })}
     </Modal>
