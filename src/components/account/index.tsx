@@ -99,41 +99,43 @@ const Account = () => {
               }
 
               return (
-                <ErrorWrapper
-                  isValid={!invalidChain}
-                  chainId={chain.id}
-                  currentChain={chainId}
-                >
-                  <PortfolioSidebar>
-                    <div className="flex items-center justify-center cursor-pointer text-base">
-                      <div className="flex items-center relative">
-                        <div className="flex items-center absolute lg:relative -bottom-1 -right-1 lg:bottom-0 lg:right-0">
-                          {!invalidChain ? (
-                            <ChainLogo
-                              chain={chain.id}
-                              className="w-3 h-3 lg:w-4 lg:h-4"
-                            />
-                          ) : (
-                            <AlertCircle
-                              fill="#FF0000"
-                              color="#fff"
-                              className="w-3 h-3 lg:w-4 lg:h-4"
-                            />
-                          )}
-                        </div>
+                <>
+                  <ErrorWrapper
+                    isValid={!invalidChain}
+                    chainId={chain.id}
+                    currentChain={chainId}
+                  >
+                    <PortfolioSidebar>
+                      <div className="flex items-center justify-center cursor-pointer text-base">
+                        <div className="flex items-center relative">
+                          <div className="flex items-center absolute lg:relative -bottom-1 -right-1 lg:bottom-0 lg:right-0">
+                            {!invalidChain ? (
+                              <ChainLogo
+                                chain={chain.id}
+                                className="w-3 h-3 lg:w-4 lg:h-4"
+                              />
+                            ) : (
+                              <AlertCircle
+                                fill="#FF0000"
+                                color="#fff"
+                                className="w-3 h-3 lg:w-4 lg:h-4"
+                              />
+                            )}
+                          </div>
 
-                        <span className="hidden lg:inline ml-2">
-                          {account.displayName}
-                        </span>
+                          <span className="hidden lg:inline ml-2">
+                            {account.displayName}
+                          </span>
 
-                        <div className="lg:ml-3 p-2 border border-border rounded-xl">
-                          <Wallet size={16} />
+                          <div className="lg:ml-3 p-2 border border-border rounded-xl">
+                            <Wallet size={16} />
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </PortfolioSidebar>
+                    </PortfolioSidebar>
+                  </ErrorWrapper>
                   <Staking />
-                </ErrorWrapper>
+                </>
               )
             })()}
           </div>

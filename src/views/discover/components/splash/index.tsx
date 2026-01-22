@@ -12,9 +12,17 @@ import useMediaQuery from '@/hooks/useMediaQuery'
 import { DrawerContent } from '@/components/ui/drawer'
 import { Drawer } from '@/components/ui/drawer'
 import { cn } from '@/lib/utils'
-import { atomWithStorage } from 'jotai/utils'
-import { useAtom } from 'jotai'
 import { DTF_VIDEO } from '@/utils/constants'
+
+const STORAGE_KEY = 'splashVisible'
+
+// Read initial value synchronously to avoid flash
+const getInitialValue = (): boolean => {
+  if (typeof window === 'undefined') return false
+  const stored = localStorage.getItem(STORAGE_KEY)
+  // First visit (null) = show splash, otherwise parse stored value
+  return stored === null ? true : stored === 'true'
+}
 
 const Flower = (props: SVGProps<SVGSVGElement>) => (
   <svg
@@ -154,12 +162,16 @@ const Presentation = ({
   )
 }
 
-const splashVisibleAtom = atomWithStorage('splashVisible', true)
-
 const Splash = () => {
-  const [open, setOpen] = useAtom(splashVisibleAtom)
+  // Use useState with lazy initializer to read localStorage synchronously
+  const [open, setOpenState] = useState(getInitialValue)
   const isDesktop = useMediaQuery('(min-width: 967px)')
   const animationFit = useMediaQuery('(min-height: 760px)')
+
+  const setOpen = (value: boolean) => {
+    setOpenState(value)
+    localStorage.setItem(STORAGE_KEY, String(value))
+  }
 
   if (isDesktop) {
     return (
