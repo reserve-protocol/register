@@ -44,7 +44,7 @@ Register is the official web interface for the Reserve Protocol, enabling users 
 - Asset-backed, yield-bearing stablecoins
 - Secured by RSR stakers (first-loss capital)
 - Generate yield from underlying collateral
-- Legacy product with older UI (theme-ui)
+- Legacy product
 
 #### Rebalancing (v4)
 
@@ -378,16 +378,7 @@ const withNavigationGuard = (Component: React.FC) => {
 - **Q**: Should wagmi hooks be wrapped in custom hooks?
 - **A**: No, direct usage is acceptable and often clearer for simple cases
 
-### 2. Mixed UI Libraries (theme-ui + Tailwind)
-
-**Status**: ⚠️ Technical debt, not anti-pattern
-
-- **Q**: Is this intentional?
-- **A**: Yes, gradual migration from theme-ui to Tailwind/shadcn
-- **Impact**: Increased bundle size, inconsistent styling
-- **Solution**: Complete migration when time permits
-
-### 3. Console Logging in Production
+### 2. Console Logging in Production
 
 **Status**: ❌ Anti-pattern
 
@@ -396,7 +387,7 @@ const withNavigationGuard = (Component: React.FC) => {
 - **Impact**: Information leakage, performance
 - **Solution**: Use proper logging service or remove
 
-### 4. Large Component Files (150+ lines)
+### 3. Large Component Files (150+ lines)
 
 **Status**: ⚠️ Code smell, not hard rule
 
@@ -404,7 +395,7 @@ const withNavigationGuard = (Component: React.FC) => {
 - **A**: Prefer under 150 lines, but readability > arbitrary limits
 - **Solution**: Extract sub-components when it improves clarity
 
-### 5. Inconsistent Async Patterns
+### 4. Inconsistent Async Patterns
 
 **Status**: ❌ Anti-pattern
 
@@ -418,7 +409,7 @@ const data = await fetchData()
 setData(data)
 ```
 
-### 6. Missing Loading States
+### 5. Missing Loading States
 
 **Status**: ❌ Anti-pattern
 
@@ -426,7 +417,7 @@ setData(data)
 - **A**: Yes, for better UX
 - **Solution**: Use consistent loading pattern
 
-### 7. Hardcoded Values
+### 6. Hardcoded Values
 
 **Status**: ⚠️ Context-dependent
 
@@ -438,7 +429,7 @@ const MIN_AMOUNT = 0.0015
 const MIN_MINTING_FEE = parseEther('0.0015') // 0.15% minimum fee
 ```
 
-### 8. useEffect for Derived State
+### 7. useEffect for Derived State
 
 **Status**: ❌ Anti-pattern with Jotai
 
@@ -749,6 +740,8 @@ src/
 4. PR with at least one reviewer
 5. Merge to main
 
+**IMPORTANT**: Do NOT commit changes automatically. The user will handle git commits themselves.
+
 ### Environment Setup
 
 ```env
@@ -778,32 +771,12 @@ npm run test:run     # Run tests (single run)
 - **Run**: `npm run test` (watch) or `npm run test:run` (single)
 - **Current coverage**: Critical hooks (useQuery, useDebounce, useTimeRemaining)
 
-## Active Migration: theme-ui → Tailwind
-
-**IMPORTANT**: We are actively migrating from theme-ui to Tailwind/shadcn. See `docs/migration-plan.md` for full details.
-
-### Migration Rules
-
-1. **Update the migration doc** (`docs/migration-plan.md`) after any migration work
-2. **Record learnings** - decisions, gotchas, patterns that worked
-3. **Don't mix patterns** - new components use Tailwind only, no theme-ui
-4. **Test before/after** - run `npm run typecheck && npm run test:run` after changes
-5. **Bottom-up approach** - start with `components/old/*`, then shared, then views
-
-### Current Status
-
-- 284 files still import theme-ui
-- `@emotion/react` removed (animations now in Tailwind)
-- `swr` removed (replaced with React Query wrapper)
-- Tailwind v3.4 (v4 upgrade planned before full migration)
-
 ## Known Issues & Tech Debt
 
 ### High Priority
 
-1. **theme-ui Migration**: 284 files need conversion to Tailwind
-2. **Bundle Size**: Large SPA bundle (theme-ui removal will help)
-3. **Tailwind v4**: Upgrade needed before migration completes
+1. **Bundle Size**: Large SPA bundle (~10MB)
+2. **Tailwind v4**: Upgrade planned
 
 ### Complex Areas Needing Attention
 
@@ -869,8 +842,7 @@ npm run test:run     # Run tests (single run)
 - **Styling**
   - Create custom CSS files
   - Use inline style prop
-  - Mix theme-ui with new components
-  - Hard-code colors instead of using theme
+  - Hard-code colors instead of using theme variables
 - **Performance**
   - Fetch data in render phase
   - Create functions inside render (use useCallback)
