@@ -113,6 +113,10 @@
       "last 1 safari version"
     ]
   },
+  "overrides": {
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20260120.0",
     "@lingui/cli": "^5.8.0",
