@@ -329,7 +329,7 @@ const CollateralItem = ({ collateral, wrapping, className }: Props) => {
                 'p-1.5 text-sm w-full border rounded',
                 debouncedAmount && !isValid ? 'border-destructive' : 'border-border'
               )}
-              placeholder={t`${fromToken} amount`}
+              placeholder={t`${fromToken ?? ''} amount`}
               value={amount}
               onChange={setAmount}
             />

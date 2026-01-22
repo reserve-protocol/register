@@ -42,25 +42,35 @@ export default defineConfig({
         manualChunks: (id) => {
           if (!id.includes('node_modules')) return undefined
 
-          // Core React - rarely changes, cache separately
-          if (id.includes('react-dom')) return 'react-dom'
-          if (id.includes('react') && !id.includes('react-')) return 'react'
+          // Wallet stack - large, updates together (check first, most specific)
+          if (
+            id.includes('@rainbow-me/rainbowkit') ||
+            id.includes('wagmi') ||
+            id.includes('@wagmi') ||
+            id.includes('viem') ||
+            id.includes('@walletconnect') ||
+            id.includes('@coinbase/wallet-sdk') ||
+            id.includes('@reown/') ||
+            id.includes('ox/_esm') // viem dependency
+          ) {
+            return 'wallet'
+          }
 
-          // Wallet stack - large, updates together
-          if (id.includes('@rainbow-me/rainbowkit')) return 'wallet'
-          if (id.includes('wagmi') || id.includes('@wagmi')) return 'wallet'
-          if (id.includes('viem')) return 'wallet'
-          if (id.includes('@walletconnect')) return 'wallet'
-          if (id.includes('@coinbase/wallet-sdk')) return 'wallet'
+          // Core React - check after wallet to avoid circular deps
+          if (id.includes('/react-dom/')) return 'react-dom'
+          if (id.includes('/react/') && !id.includes('react-')) return 'react'
 
           // UI libraries
-          if (id.includes('@radix-ui')) return 'ui'
-          if (id.includes('recharts')) return 'ui'
+          if (id.includes('@radix-ui') || id.includes('recharts')) return 'ui'
 
           // Data/state management
-          if (id.includes('@tanstack')) return 'data'
-          if (id.includes('jotai')) return 'data'
-          if (id.includes('graphql')) return 'data'
+          if (
+            id.includes('@tanstack') ||
+            id.includes('jotai') ||
+            id.includes('graphql')
+          ) {
+            return 'data'
+          }
 
           // Legacy - can remove when ethers is fully removed
           if (id.includes('ethers')) return 'ethers'
