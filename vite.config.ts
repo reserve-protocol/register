@@ -39,7 +39,30 @@ export default defineConfig({
   build: {
     outDir: 'build',
     sourcemap: true,
-    // Let Vite handle chunking automatically to avoid circular dependencies
+    rollupOptions: {
+      output: {
+        manualChunks: (id) => {
+          if (!id.includes('node_modules')) return undefined
+
+          // Wallet stack: ~4MB self-contained chunk
+          // These packages form a cohesive unit and don't import from app code
+          if (
+            id.includes('/wagmi/') ||
+            id.includes('/@wagmi/') ||
+            id.includes('/viem/') ||
+            id.includes('/@rainbow-me/rainbowkit') ||
+            id.includes('/@walletconnect/') ||
+            id.includes('/@coinbase/wallet-sdk') ||
+            id.includes('/@reown/')
+          ) {
+            return 'wallet'
+          }
+
+          // Let Vite handle everything else to avoid circular deps
+          return undefined
+        },
+      },
+    },
   },
 
   // Aliases handled by viteTsconfigPaths - no need to duplicate here
