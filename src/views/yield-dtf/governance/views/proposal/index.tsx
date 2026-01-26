@@ -17,10 +17,12 @@ import Proposal from './components/Proposal'
 import Updater from './updater'
 import { Box } from 'theme-ui'
 import { keccak256, stringToBytes } from 'viem'
+import { isTimeunitGovernance } from '../../utils'
 
 const paramsAtom = atom((get) => {
   const config = get(rTokenConfigurationAtom)
   const governance = get(rTokenGovernanceAtom)
+  const isTimeunit = isTimeunitGovernance(governance.name)
 
   if (!config || !governance.executionDelay) {
     return null
@@ -28,8 +30,8 @@ const paramsAtom = atom((get) => {
 
   return {
     ...config,
-    votingDelay: governance.votingDelay,
-    votingPeriod: governance.votingPeriod,
+    votingDelay: Number(governance.votingDelay || 0) / (isTimeunit ? 3600 : 1),
+    votingPeriod: Number(governance.votingPeriod || 0) / (isTimeunit ? 3600 : 1),
     minDelay: +governance.executionDelay / 60 / 60,
     proposalThresholdAsMicroPercent: governance.proposalThreshold,
     quorumPercent: governance.quorumNumerator,

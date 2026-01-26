@@ -25,9 +25,9 @@ const GovernanceParameters = ({
   ])
   const [votingDelayHelper, votingPeriodHelper, minDelayHelper] =
     useMemo(() => {
-      let votingDelayHelper = parseDuration(Number(votingDelay) || 0)
-      let votingPeriodHelper = parseDuration(Number(votingPeriod) || 0)
-      let minDelayHelper = parseDuration(Number(minDelay) || 0)
+      let votingDelayHelper = parseDuration((Number(votingDelay) || 0) * 60 * 60)
+      let votingPeriodHelper = parseDuration((Number(votingPeriod) || 0) * 60 * 60)
+      let minDelayHelper = parseDuration((Number(minDelay) || 0) * 60 * 60)
 
       if (!timebased) {
         votingDelayHelper = parseDuration(
