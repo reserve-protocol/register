@@ -103,6 +103,7 @@ export const zapDeployPayloadAtom = atom<
       weightControl: formData.weightControl, // false -> tracking / true -> native
       priceControl: PriceControl.PARTIAL,
     },
+    bidsEnabled: formData.bidsEnabled, // true for cowswap
   }
 
   // Ungoverned DTF

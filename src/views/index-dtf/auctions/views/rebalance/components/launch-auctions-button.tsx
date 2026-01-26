@@ -1,4 +1,4 @@
-import dtfIndexAbiV4 from '@/abis/dtf-index-abi-v4'
+import dtfIndexAbi from '@/abis/dtf-index-abi'
 import { Button } from '@/components/ui/button'
 import { indexDTFAtom, isHybridDTFAtom } from '@/state/dtf/atoms'
 import { parseDuration } from '@/utils'
@@ -86,6 +86,7 @@ const LaunchAuctionsButton = () => {
           : rebalanceParams.initialWeights
 
       const [openAuctionArgs] = getRebalanceOpenAuction(
+        rebalanceParams.folioVersion,
         rebalance.rebalance.tokens,
         rebalanceParams.rebalance,
         rebalanceParams.supply,
@@ -103,7 +104,7 @@ const LaunchAuctionsButton = () => {
 
       writeContract({
         address: dtf?.id,
-        abi: dtfIndexAbiV4,
+        abi: dtfIndexAbi,
         functionName: 'openAuction',
         args: [
           openAuctionArgs.rebalanceNonce,
