@@ -1,13 +1,18 @@
 import { Trans } from '@lingui/macro'
 import OtherForm from 'components/rtoken-setup/token/OtherForm'
-import { BoxProps, Card, Divider, Text } from 'theme-ui'
+import { Card } from '@/components/ui/card'
+import { Separator } from '@/components/ui/separator'
 
-const OtherSetup = (props: BoxProps) => (
-  <Card p={4} variant="cards.form" {...props}>
-    <Text variant="title">
+interface OtherSetupProps {
+  className?: string
+}
+
+const OtherSetup = ({ className }: OtherSetupProps) => (
+  <Card className={`p-4 bg-secondary ${className || ''}`}>
+    <span className="text-xl font-medium">
       <Trans>Other parameters</Trans>
-    </Text>
-    <Divider my={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />
+    </span>
+    <Separator className="my-4 -mx-4 border-muted" />
     <OtherForm />
   </Card>
 )

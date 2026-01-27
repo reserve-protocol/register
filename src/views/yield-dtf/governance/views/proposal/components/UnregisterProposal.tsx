@@ -1,13 +1,18 @@
 import { Trans } from '@lingui/macro'
-import { Box, BoxProps, Card, Divider, Link, Text } from 'theme-ui'
 import { useAtom, useAtomValue } from 'jotai'
 import { rTokenAssetsAtom } from 'state/atoms'
 import { rtokenAllActiveCollateralsAtom } from 'components/rtoken-setup/atoms'
+import { Card } from '@/components/ui/card'
+import { Separator } from '@/components/ui/separator'
 import UnregisterEdit from './UnregisterEdit'
 import { unregisterAssetsAtom } from '../atoms'
 import useRToken from 'hooks/useRToken'
 
-const UnregisterProposal = (props: BoxProps) => {
+interface UnregisterProposalProps {
+  className?: string
+}
+
+const UnregisterProposal = ({ className }: UnregisterProposalProps) => {
   const rToken = useRToken()
   const registeredErc20s = useAtomValue(rTokenAssetsAtom)
   const [assetsToUnregister, setAssetsToUnregister] =
@@ -28,27 +33,28 @@ const UnregisterProposal = (props: BoxProps) => {
   }
 
   return (
-    <Card {...props} p={4}>
-      <Text variant="sectionTitle">
+    <Card className={`p-6 ${className || ''}`}>
+      <span className="text-lg font-semibold">
         <Trans>Unregister Assets</Trans>
-      </Text>
-      <Divider my={4} mx={-4} />
+      </span>
+      <Separator className="my-6 -mx-6 w-[calc(100%+3rem)]" />
       <UnregisterEdit addresses={unusedAssets} onChange={handleAssetRemoval} />
-      <Divider my={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />
-      <Text variant="legend" as="p" sx={{ fontSize: 1 }} mb={1} mr={2}>
+      <Separator className="my-6 -mx-6 w-[calc(100%+3rem)] bg-border-dark" />
+      <span className="text-legend text-xs mb-1 mr-2">
         <Trans>
           Ensure that the asset(s) you are unregistering do not have pending
           revenue that can be
         </Trans>{' '}
-        <Link
+        <a
           href={`#/auctions?token=${rToken?.address}`}
           target="_blank"
-          sx={{ textDecoration: 'underline' }}
+          rel="noreferrer"
+          className="underline"
         >
           <Trans> auctioned</Trans>
-        </Link>
+        </a>
         .
-      </Text>
+      </span>
     </Card>
   )
 }

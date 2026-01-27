@@ -1,7 +1,7 @@
 import { Trans } from '@lingui/macro'
 import TokenLogo from 'components/icons/TokenLogo'
+import Spinner from '@/components/ui/spinner'
 import { Check } from 'lucide-react'
-import { Box, Spinner, Text } from 'theme-ui'
 import { Allowance } from 'types'
 import { Hex } from 'viem'
 
@@ -14,27 +14,27 @@ interface IApprovalStatus {
 const ApprovalStatus = ({ allowance, hash, success }: IApprovalStatus) => {
   if (success) {
     return (
-      <Box variant="layout.verticalAlign" sx={{ color: 'muted' }} mb={3}>
+      <div className="flex items-center text-muted-foreground mb-4">
         <Check size={16} />
-        <Text ml="2">{allowance.symbol} Approved</Text>
-      </Box>
+        <span className="ml-2">{allowance.symbol} Approved</span>
+      </div>
     )
   }
 
   return (
-    <Box variant="layout.verticalAlign" mb={3}>
+    <div className="flex items-center mb-4">
       <TokenLogo width={24} symbol={allowance.symbol} />
-      <Box ml="3">
-        <Text variant="bold" sx={{ display: 'block' }}>
+      <div className="ml-4">
+        <span className="block font-bold">
           <Trans>Approve in wallet</Trans>
-        </Text>
-        <Text variant="legend">
+        </span>
+        <span className="text-legend">
           {!hash && 'Proceed in wallet'}
           {hash && 'Confirming transaction'}
-        </Text>
-      </Box>
-      <Spinner ml="auto" size={16} />
-    </Box>
+        </span>
+      </div>
+      <Spinner className="ml-auto" size={16} />
+    </div>
   )
 }
 

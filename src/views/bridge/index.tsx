@@ -1,5 +1,5 @@
 import ChainLogo from '@/components/icons/ChainLogo'
-import CopyValue from '@/components/old/button/CopyValue'
+import CopyValue from '@/components/ui/copy-value'
 import TokenLogo from '@/components/token-logo'
 import StackTokenLogo from '@/components/token-logo/stack-token-logo'
 import { Button } from '@/components/ui/button'

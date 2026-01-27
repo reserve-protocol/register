@@ -1,5 +1,5 @@
 import dtfIndexStakingVault from '@/abis/dtf-index-staking-vault'
-import TransactionButton from '@/components/old/button/TransactionButton'
+import TransactionButton from '@/components/ui/transaction-button'
 import { walletAtom } from '@/state/atoms'
 import { portfolioSidebarOpenAtom } from '@/views/portfolio/atoms'
 import { useAtomValue, useSetAtom } from 'jotai'
@@ -92,7 +92,7 @@ const SubmitUnlockButton = () => {
             ? 'Transaction confirmed'
             : `Begin ${unlockDelay ? `${unlockDelay}-day` : ''} unlock delay`
         }
-        fullWidth
+        className="w-full"
         error={error || txError}
       />
     </div>

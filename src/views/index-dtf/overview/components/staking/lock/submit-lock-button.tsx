@@ -1,5 +1,5 @@
 import dtfIndexStakingVault from '@/abis/dtf-index-staking-vault'
-import TransactionButton from '@/components/old/button/TransactionButton'
+import TransactionButton from '@/components/ui/transaction-button'
 import { walletAtom } from '@/state/atoms'
 import { portfolioSidebarOpenAtom } from '@/views/portfolio/atoms'
 import { useAtomValue, useSetAtom } from 'jotai'
@@ -63,7 +63,7 @@ export const DelegateButton = () => {
         loadingText={!!hash ? 'Confirming tx...' : 'Pending, sign in wallet'}
         onClick={write}
         text={`Delegate ${stToken?.underlying.symbol}`}
-        fullWidth
+        className="w-full"
         error={error || txError}
       />
     </div>
@@ -210,7 +210,7 @@ const SubmitLockButton = () => {
               ? `Vote lock ${stToken?.underlying.symbol}`
               : `Approve use of ${stToken?.underlying.symbol}`
         }
-        fullWidth
+        className="w-full"
         error={
           readyToSubmit
             ? error || txError

@@ -1,7 +1,7 @@
 import { Trans } from '@lingui/macro'
-import Help from 'components/help'
+import { Switch } from '@/components/ui/switch'
+import { cn } from '@/lib/utils'
 import { Zap as ZapIcon } from 'lucide-react'
-import { Box, Switch, Text } from 'theme-ui'
 
 const ZapToggle = ({
   zapEnabled,
@@ -10,49 +10,22 @@ const ZapToggle = ({
   zapEnabled: boolean
   setZapEnabled: (value: boolean) => void
 }) => {
-  const handleToggle = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setZapEnabled(e.target.checked)
-  }
-
   return (
-    <Box
-      variant={zapEnabled ? 'none' : 'layout.borderBox'}
-      sx={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-      }}
-      mb={zapEnabled ? [1, 2] : [1, 4]}
-      p={3}
-      mt={[2, 0]}
+    <div
+      className={cn(
+        'flex items-center justify-between p-3 mt-2 sm:mt-0',
+        zapEnabled ? 'mb-1 sm:mb-2' : 'mb-1 sm:mb-4 border rounded-xl'
+      )}
     >
-      <Box variant="layout.verticalAlign">
+      <div className="flex items-center">
         <ZapIcon size={18} />
-        <Text ml={2}>
+        <span className="ml-2">
           <Trans>Turn on Zaps to mint using 1 asset</Trans>
-        </Text>
-      </Box>
-      <Box
-        ml="auto"
-        mr={3}
-        sx={{ color: 'warning' }}
-        variant="layout.verticalAlign"
-      >
-        Beta
-        <Help
-          ml={1}
-          content="Zap Mint is currently in beta. After approval, you might encounter non-executable routes, especially with Base assets. This will not affect your funds, but may require a retry. We're working to enhance route discovery for a smoother experience."
-        />
-      </Box>
+        </span>
+      </div>
 
-      <label>
-        <Switch
-          sx={{ background: 'secondary' }}
-          defaultChecked={zapEnabled}
-          onChange={handleToggle}
-        />
-      </label>
-    </Box>
+      <Switch checked={zapEnabled} onCheckedChange={setZapEnabled} />
+    </div>
   )
 }
 

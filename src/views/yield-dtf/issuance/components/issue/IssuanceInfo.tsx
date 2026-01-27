@@ -6,7 +6,8 @@ import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
 import { ReactNode, useMemo } from 'react'
 import { rTokenStateAtom } from 'state/atoms'
-import { Box, BoxProps, Divider, Text } from 'theme-ui'
+import { Separator } from '@/components/ui/separator'
+import { cn } from '@/lib/utils'
 import { formatCurrency } from 'utils'
 
 const IssuanceInfoStat = ({
@@ -29,85 +30,54 @@ const IssuanceInfoStat = ({
   const rToken = useRToken()
 
   return (
-    <Box p={4} sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-      <Box variant="layout.verticalAlign" sx={{ gap: 2 }}>
+    <div className="p-6 flex flex-col gap-4">
+      <div className="flex items-center gap-2">
         {icon}
-        <Text variant="h3" sx={{ fontSize: 18, fontWeight: 'bold' }}>
-          {title}
-        </Text>
-      </Box>
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 1,
-          fontSize: 14,
-        }}
-      >
-        <Box
-          variant="layout.verticalAlign"
-          sx={{ justifyContent: 'space-between', fontSize: 16 }}
-          mb={2}
-        >
-          <Text sx={{ fontWeight: 'bold', whiteSpace: 'nowrap' }}>
-            {subtitle}
-          </Text>
-          <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
-            <Text
-              sx={{ fontWeight: 'bold', whiteSpace: 'nowrap' }}
-              color="primary"
-            >
+        <h3 className="text-lg font-bold">{title}</h3>
+      </div>
+      <div className="flex flex-col gap-1 text-sm">
+        <div className="flex items-center justify-between text-base mb-2">
+          <span className="font-bold whitespace-nowrap">{subtitle}</span>
+          <div className="flex items-center gap-1">
+            <span className="font-bold whitespace-nowrap text-primary">
               {formatCurrency(available, 0)}
-            </Text>
-            <Text sx={{ fontSize: 14 }}>{rToken?.symbol}</Text>
-          </Box>
-        </Box>
-        <Box
-          variant="layout.verticalAlign"
-          sx={{ justifyContent: 'space-between' }}
-        >
-          <Text>Time until fully charged</Text>
+            </span>
+            <span className="text-sm">{rToken?.symbol}</span>
+          </div>
+        </div>
+        <div className="flex items-center justify-between">
+          <span>Time until fully charged</span>
           {timeUntilCharged > 0 ? (
-            <Text sx={{ fontWeight: 'bold' }}>
+            <span className="font-bold">
               {timeUntilCharged < 1 ? '<1' : timeUntilCharged.toFixed(0)} minute
               {timeUntilCharged >= 1.5 ? 's' : ''}
-            </Text>
+            </span>
           ) : (
-            <Text sx={{ fontWeight: 'bold' }}>Fully Charged</Text>
+            <span className="font-bold">Fully Charged</span>
           )}
-        </Box>
-        <Box
-          variant="layout.verticalAlign"
-          sx={{ justifyContent: 'space-between' }}
-        >
-          <Text>0-100% Recharge time</Text>
-          <Text sx={{ fontWeight: 'bold' }}>1h</Text>
-        </Box>
-        <Box
-          variant="layout.verticalAlign"
-          sx={{ justifyContent: 'space-between' }}
-        >
-          <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
-            <Text>Current max charge</Text>
-            <Help
-              content={tooltipContent}
-              placement="bottom"
-              sx={{ mt: '2px' }}
-            />
-          </Box>
-          <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
-            <Text sx={{ fontWeight: 'bold', whiteSpace: 'nowrap' }}>
+        </div>
+        <div className="flex items-center justify-between">
+          <span>0-100% Recharge time</span>
+          <span className="font-bold">1h</span>
+        </div>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-1">
+            <span>Current max charge</span>
+            <Help content={tooltipContent} placement="bottom" />
+          </div>
+          <div className="flex items-center gap-1">
+            <span className="font-bold whitespace-nowrap">
               {formatCurrency(max, 0)}
-            </Text>
-            <Text sx={{ fontSize: 14 }}>{rToken?.symbol}</Text>
-          </Box>
-        </Box>
-      </Box>
-    </Box>
+            </span>
+            <span className="text-sm">{rToken?.symbol}</span>
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }
 
-const IssuanceInfo = (props: BoxProps) => {
+const IssuanceInfo = ({ className }: { className?: string }) => {
   const rToken = useRToken()
   const {
     tokenSupply,
@@ -168,7 +138,7 @@ const IssuanceInfo = (props: BoxProps) => {
   ])
 
   return (
-    <Box p={[0, 4]} pt={4} {...props}>
+    <div className={cn('p-0 sm:p-6 pt-6', className)}>
       <IssuanceInfoStat
         icon={<GlobalMaxMintIcon width={20} height={20} />}
         title={t`Mint - Global throttle`}
@@ -177,18 +147,18 @@ const IssuanceInfo = (props: BoxProps) => {
         max={maxMint}
         timeUntilCharged={timeUntilFullyChargedMint}
         tooltipContent={
-          <Text sx={{ fontSize: 14 }}>
+          <span className="text-sm">
             The mint max charge is either{' '}
             {(issuanceThrottleRate * 100).toFixed(1)}% of {rToken?.symbol}{' '}
             supply or a lower bound of{' '}
-            <Text sx={{ fontWeight: 'bold' }}>
+            <span className="font-bold">
               {formatCurrency(issuanceThrottleAmount, 0)}
-            </Text>{' '}
+            </span>{' '}
             {rToken?.symbol}, whichever is the higher amount.
-          </Text>
+          </span>
         }
       />
-      <Divider my={3} sx={{ borderColor: 'borderSecondary' }} />
+      <Separator className="my-4 border-secondary" />
       <IssuanceInfoStat
         icon={<GlobalMaxRedeemIcon width={20} height={20} />}
         title={t`Redeem - Global throttle`}
@@ -197,20 +167,20 @@ const IssuanceInfo = (props: BoxProps) => {
         max={maxRedeem}
         timeUntilCharged={timeUntilFullyChargedRedeem}
         tooltipContent={
-          <Text sx={{ fontSize: 14 }}>
+          <span className="text-sm">
             The redeem max charge is either{' '}
             {(redemptionThrottleRate * 100).toFixed(1)}% of {rToken?.symbol}{' '}
             supply or a lower bound of{' '}
-            <Text sx={{ fontWeight: 'bold' }}>
+            <span className="font-bold">
               {formatCurrency(redemptionThrottleAmount, 0)}
-            </Text>{' '}
+            </span>{' '}
             {rToken?.symbol}, whichever is the higher amount. If that exceeds
             the total supply, the limit is set to the total supply of{' '}
             {rToken?.symbol}.
-          </Text>
+          </span>
         }
       />
-    </Box>
+    </div>
   )
 }
 export default IssuanceInfo

@@ -1,14 +1,12 @@
-import { Button } from 'components'
-import Sparkles from 'components/icons/Sparkles'
+import { Button } from '@/components/ui/button'
 import { useSetAtom } from 'jotai'
 import { useState } from 'react'
-import { Box, BoxProps, Link, Text } from 'theme-ui'
 import { isAssistedUpgradeAtom } from '../atoms'
 import { useNavigate } from 'react-router-dom'
 import useRToken from 'hooks/useRToken'
 import { ROUTES } from 'utils/constants'
 
-const UpgradeHelper = (props: BoxProps) => {
+const UpgradeHelper = ({ className }: { className?: string }) => {
   const navigate = useNavigate()
   const rToken = useRToken()
 
@@ -24,54 +22,47 @@ const UpgradeHelper = (props: BoxProps) => {
   }
 
   return (
-    <Box
-      variant="layout.verticalAlign"
-      sx={{
-        backgroundColor: 'rBlueLight',
-        border: '1px solid',
-        borderColor: 'rBlue',
-        borderRadius: '8px',
-        flexWrap: 'wrap',
-      }}
-      px={3}
-      py={2}
-      {...props}
+    <div
+      className={`flex items-center flex-wrap bg-blue-50 border border-blue-500 rounded-lg px-4 py-2 ${className ?? ''}`}
     >
-      <Box>
-        <Box sx={{ fontWeight: 'bold' }}>
-          <Text sx={{ color: 'rBlue' }}>Upgrade to the 3.0.0 Release</Text>{' '}
-          <Text>of the Reserve Protocol</Text>
-        </Box>
-        <Text as="p">
+      <div>
+        <div className="font-bold">
+          <span className="text-blue-600">Upgrade to the 3.0.0 Release</span>{' '}
+          <span>of the Reserve Protocol</span>
+        </div>
+        <p>
           To harness the powerful new upgrades on {rToken?.symbol} (announcement{' '}
-          <Link
+          <a
             target="_blank"
+            rel="noreferrer"
             href="https://blog.reserve.org/reserve-protocol-v1-3-0-0-release-9c539334f771"
+            className="text-primary hover:underline"
           >
-            <Text>here</Text>
-          </Link>
+            here
+          </a>
           ) , consider using the upgrade helper.
           <br />
           <br />
           For a more in-depth explanation of what this proposal entails, see
           this{' '}
-          <Link
+          <a
             target="_blank"
+            rel="noreferrer"
             href="https://www.loom.com/share/8c47272036ce4e2d98b34133e67b0637"
+            className="text-primary hover:underline"
           >
-            <Text>video</Text>
-          </Link>
+            video
+          </a>
           .
-        </Text>
-      </Box>
-      <Box ml={[0, 0, 0, 'auto']} mt={[3, 3, 3, 3]}>
-        <Button small variant="bordered" onClick={handleDismiss}>
+        </p>
+      </div>
+      <div className="ml-0 lg:ml-auto mt-4">
+        <Button size="sm" variant="outline" className="border-2" onClick={handleDismiss}>
           Dismiss
         </Button>
         <Button
-          ml="3"
-          small
-          sx={{ backgroundColor: 'rBlue', whiteSpace: 'nowrap' }}
+          className="ml-3 bg-[#2150A9] whitespace-nowrap"
+          size="sm"
           onClick={() => {
             setAssistedUpgrade(true)
             navigate(`${ROUTES.GOVERNANCE_PROPOSAL}?token=${rToken?.address}`)
@@ -79,8 +70,8 @@ const UpgradeHelper = (props: BoxProps) => {
         >
           Upgrade
         </Button>
-      </Box>{' '}
-    </Box>
+      </div>{' '}
+    </div>
   )
 }
 

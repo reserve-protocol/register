@@ -1,12 +1,15 @@
-import { Image, ImageProps } from 'theme-ui'
+interface EtherfiProps extends React.ImgHTMLAttributes<HTMLImageElement> {
+  width?: number
+}
 
-const Origin = (props: ImageProps) => {
+const Etherfi = ({ width = 16, ...props }: EtherfiProps) => {
   return (
-    <Image
-      width={16}
+    <img
+      width={width}
       src="https://storage-logos.reserve.org/logos/ethfi.svg"
+      alt="Etherfi"
       {...props}
     />
   )
 }
-export default Origin
+export default Etherfi

@@ -15,7 +15,7 @@ import {
 } from 'lucide-react'
 import { blockTimestampAtom, chainIdAtom } from 'state/atoms'
 import { colors } from 'theme'
-import { Box, Progress, Text } from 'theme-ui'
+import { Progress } from '@/components/ui/progress'
 import { formatDate, parseDuration } from 'utils'
 import { PROPOSAL_STATES } from 'utils/constants'
 import { isTimeunitGovernance } from '@/views/yield-dtf/governance/utils'
@@ -41,52 +41,26 @@ const TimelineItem = ({
   progress = 0,
 }: TimelineItemProps) => {
   return (
-    <Box>
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: 3,
-          px: 3,
-          py: 2,
-        }}
-      >
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: '28px',
-            height: '28px',
-            borderRadius: '4px',
-            bg: 'bgIcon',
-            zIndex: 10,
-            opacity: enabled ? 1 : 0.8,
-          }}
+    <div>
+      <div className="flex items-center gap-4 px-4 py-2">
+        <div
+          className={`flex items-center justify-center w-7 h-7 rounded bg-muted z-10 ${enabled ? 'opacity-100' : 'opacity-80'}`}
         >
           {icon}
-        </Box>
-        <Box sx={{ opacity: enabled ? 1 : 0.5 }}>
-          {!!subtitle && <Box sx={{ fontSize: 1 }}>{surtitle}</Box>}
-          <Box sx={{ fontWeight: 'bold' }}>{title}</Box>
-          <Box sx={{ fontSize: 1 }}>{subtitle || surtitle}</Box>
-        </Box>
-      </Box>
+        </div>
+        <div className={enabled ? 'opacity-100' : 'opacity-50'}>
+          {!!subtitle && <div className="text-xs">{surtitle}</div>}
+          <div className="font-bold">{title}</div>
+          <div className="text-xs">{subtitle || surtitle}</div>
+        </div>
+      </div>
       {showProgress && (
         <Progress
           value={progress}
-          max={100}
-          sx={{
-            position: 'absolute',
-            width: '100%',
-            color: 'primary',
-            backgroundColor: 'lightgray',
-            height: 2,
-            zIndex: 20,
-          }}
+          className="absolute w-full h-0.5 rounded-none"
         />
       )}
-    </Box>
+    </div>
   )
 }
 
@@ -100,10 +74,10 @@ export const TimelineItemCreated = () => {
       title="Proposal created"
       surtitle={formatDate(+(proposal?.creationTime || 0) * 1000)}
       subtitle={
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <Text>By:</Text>
+        <div className="flex items-center gap-1">
+          <span>By:</span>
           <ExplorerAddress address={proposal?.proposer || ''} chain={chainId} />
-        </Box>
+        </div>
       }
     />
   )
@@ -190,7 +164,7 @@ const VALID_STATES = [
   PROPOSAL_STATES.EXECUTED,
   PROPOSAL_STATES.CANCELED,
 ]
-const TITLE_BY_STATE = {
+const TITLE_BY_STATE: Record<string, string> = {
   [PROPOSAL_STATES.DEFEATED]: 'Proposal defeated',
   [PROPOSAL_STATES.QUORUM_NOT_REACHED]: 'Quorum not reached',
   [PROPOSAL_STATES.EXPIRED]: 'Proposal expired',
@@ -199,7 +173,7 @@ const TITLE_BY_STATE = {
   [PROPOSAL_STATES.EXECUTED]: 'Proposal succeeded',
   [PROPOSAL_STATES.CANCELED]: 'Proposal succeeded',
 }
-const ICON_BY_STATE = {
+const ICON_BY_STATE: Record<string, ReactNode> = {
   [PROPOSAL_STATES.DEFEATED]: <XCircle color="red" size={18} />,
   [PROPOSAL_STATES.QUORUM_NOT_REACHED]: <XSquare color="orange" size={18} />,
   [PROPOSAL_STATES.EXPIRED]: <XOctagon color="gray" size={18} />,
@@ -208,14 +182,14 @@ const ICON_BY_STATE = {
   [PROPOSAL_STATES.EXECUTED]: <CheckCircle color={colors.success} size={18} />,
   [PROPOSAL_STATES.CANCELED]: <CheckCircle color={colors.success} size={18} />,
 }
-const COLOR_BY_STATE = {
-  [PROPOSAL_STATES.DEFEATED]: 'red',
-  [PROPOSAL_STATES.QUORUM_NOT_REACHED]: 'orange',
-  [PROPOSAL_STATES.EXPIRED]: 'gray',
-  [PROPOSAL_STATES.SUCCEEDED]: 'success',
-  [PROPOSAL_STATES.QUEUED]: 'success',
-  [PROPOSAL_STATES.EXECUTED]: 'success',
-  [PROPOSAL_STATES.CANCELED]: 'success',
+const COLOR_BY_STATE: Record<string, string> = {
+  [PROPOSAL_STATES.DEFEATED]: 'text-red-500',
+  [PROPOSAL_STATES.QUORUM_NOT_REACHED]: 'text-orange-500',
+  [PROPOSAL_STATES.EXPIRED]: 'text-gray-500',
+  [PROPOSAL_STATES.SUCCEEDED]: 'text-green-500',
+  [PROPOSAL_STATES.QUEUED]: 'text-green-500',
+  [PROPOSAL_STATES.EXECUTED]: 'text-green-500',
+  [PROPOSAL_STATES.CANCELED]: 'text-green-500',
 }
 export const TimelineItemVotingResult = () => {
   const proposalState = useAtomValue(getProposalStateAtom)
@@ -227,9 +201,9 @@ export const TimelineItemVotingResult = () => {
     <TimelineItem
       icon={ICON_BY_STATE[proposalState.state]}
       title={
-        <Text color={COLOR_BY_STATE[proposalState.state]}>
+        <span className={COLOR_BY_STATE[proposalState.state]}>
           {TITLE_BY_STATE[proposalState.state]}
-        </Text>
+        </span>
       }
     />
   )
@@ -271,7 +245,7 @@ const VALID_STATES_END = [
   PROPOSAL_STATES.EXECUTED,
   PROPOSAL_STATES.CANCELED,
 ]
-const TITLE_BY_STATE_END = {
+const TITLE_BY_STATE_END: Record<string, string> = {
   [PROPOSAL_STATES.QUEUED]: 'Execute proposal',
   [PROPOSAL_STATES.EXECUTED]: 'Executed',
   [PROPOSAL_STATES.CANCELED]: 'Canceled',

@@ -1,8 +1,8 @@
 import { t } from '@lingui/macro'
+import { Separator } from '@/components/ui/separator'
 import AuctionsIcon from 'components/icons/AuctionsIcon'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
-import { Box, Divider } from 'theme-ui'
 import { auctionsOverviewAtom, selectedAuctionsAtom } from '../atoms'
 import ConfirmAuction from './ConfirmAuction'
 import RevenueAuctionItem from './RevenueAuctionItem'
@@ -37,20 +37,18 @@ const AvailableRevenueAuctions = () => {
       title={t`Auctionable revenue`}
       icon={<AuctionsIcon />}
       subtitle={`${revenueData?.availableAuctions.length ?? 0} auctions`}
-      mb={3}
+      className="mb-4"
     >
       {(revenueData?.availableAuctions ?? []).map((auction, index) => (
-        <Box key={index}>
-          {!!index && (
-            <Divider mx={-4} mt={3} sx={{ borderColor: 'darkBorder' }} />
-          )}
+        <div key={index}>
+          {!!index && <Separator className="-mx-6 mt-4" />}
           <RevenueAuctionItem
             onSelect={() => setSelectedAuctions(index)}
             data={auction}
           />
-        </Box>
+        </div>
       ))}
-      <Divider my={4} mx={-4} />
+      <Separator className="my-4 -mx-4" />
       <ConfirmAuction />
     </RevenueBoxContainer>
   )

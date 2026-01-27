@@ -4,7 +4,6 @@ import CirclesIcon from 'components/icons/CirclesIcon'
 import TokenLogo from 'components/icons/TokenLogo'
 import useRTokenLogo from 'hooks/useRTokenLogo'
 import { useMemo } from 'react'
-import { Box, Text } from 'theme-ui'
 import { supportedChainList } from 'utils/constants'
 import MultiselectDropdrown, {
   IMultiselectDropdrown,
@@ -12,7 +11,7 @@ import MultiselectDropdrown, {
 } from '../MultiselectDropdown'
 
 const TokenFilter = ({
-  sx,
+  className,
   ...props
 }: Omit<IMultiselectDropdrown, 'options'>) => {
   const options = useMemo(() => {
@@ -32,19 +31,19 @@ const TokenFilter = ({
   }, [])
 
   return (
-    <Box sx={sx}>
-      <Text variant="legend">
+    <div className={className}>
+      <span className="text-legend">
         <Trans>Tokens</Trans>
-      </Text>
-      <MultiselectDropdrown mt={1} options={options} {...props} allOption>
+      </span>
+      <MultiselectDropdrown className="mt-1" options={options} {...props} allOption>
         <CirclesIcon />
-        <Text ml="2" variant="legend">
+        <span className="ml-2 text-legend">
           {props.selected.length
             ? `${props.selected.length} RTokens`
             : 'All RTokens'}
-        </Text>
+        </span>
       </MultiselectDropdrown>
-    </Box>
+    </div>
   )
 }
 

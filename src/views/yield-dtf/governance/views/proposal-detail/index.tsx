@@ -1,4 +1,3 @@
-import { Box, Grid } from 'theme-ui'
 import ProposalTimeline from './components/proposal-timeline/index'
 import ProposalDetailContent from './components/ProposalDetailContent'
 import ProposalDetailStats from './components/ProposalDetailStats'
@@ -8,52 +7,23 @@ import ProposalDetailAtomUpdater from './ProposalDetailAtomUpdater'
 import ProposalVote from './components/ProposalVote'
 
 const GovernanceProposalDetail = () => (
-  <Box
-    variant="layout.wrapper"
-    sx={{ bg: 'reserveBackground', borderRadius: '14px', m: [1, 4], p: 1 }}
-  >
+  <div className="m-1 rounded-[14px] bg-secondary p-1 sm:m-6">
     <ProposalDetailAtomUpdater />
-    <Grid
-      columns={[1, 1, 1, '10fr 5fr']}
-      gap={[2]}
-      px={[1, 2]}
-      sx={{
-        bg: 'focusedBackground',
-        borderRadius: '14px',
-        height: '100%',
-        position: 'relative',
-        alignContent: 'flex-start',
-        alignItems: 'flex-start',
-        overflowY: 'auto',
-      }}
-    >
+    <div className="grid grid-cols-1 gap-2 rounded-[14px] bg-card px-1 sm:px-2 lg:grid-cols-[10fr_5fr] [align-content:flex-start] [align-items:flex-start]">
       <ProposalHeader />
-      <Box sx={{ py: [1, 2], height: '100%' }}>
+      <div className="h-full py-1 sm:py-2">
         <ProposalVote />
-      </Box>
-    </Grid>
-    <Grid
-      columns={[1, 1, 1, '10fr 5fr']}
-      gap={[2]}
-      px={[1, 2]}
-      sx={{
-        bg: 'reserveBackground',
-        height: '100%',
-        position: 'relative',
-        alignContent: 'flex-start',
-        alignItems: 'flex-start',
-        overflowY: 'auto',
-        py: '12px',
-      }}
-    >
+      </div>
+    </div>
+    <div className="grid grid-cols-1 gap-2 bg-secondary px-1 py-3 sm:px-2 lg:grid-cols-[10fr_5fr] [align-content:flex-start] [align-items:flex-start]">
       <ProposalDetailContent />
-      <Box>
+      <div>
         <ProposalDetailStats />
         <ProposalTimeline />
         <ProposalVotes />
-      </Box>
-    </Grid>
-  </Box>
+      </div>
+    </div>
+  </div>
 )
 
 export default GovernanceProposalDetail

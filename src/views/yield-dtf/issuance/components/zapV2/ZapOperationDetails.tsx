@@ -1,5 +1,5 @@
 import GasIcon from 'components/icons/GasIcon'
-import { Box, Text } from 'theme-ui'
+import { cn } from '@/lib/utils'
 import { formatCurrency } from 'utils'
 import { useZap } from './context/ZapContext'
 import ZapRate from './overview/ZapRate'
@@ -18,56 +18,43 @@ const ZapOperationDetails = () => {
   }, [tokenIn?.price, amountIn, setCollapsed, isExpensiveZap])
 
   return (
-    <Box>
-      <Box
-        variant="layout.verticalAlign"
-        sx={{ cursor: 'pointer', gap: 1 }}
+    <div>
+      <div
+        className="flex items-center cursor-pointer gap-1 pl-4 pr-3"
         onClick={(e) => {
           e.stopPropagation()
           setCollapsed((c) => !c)
         }}
-        pl={3}
-        pr="12px"
       >
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: ['column', 'row'],
-            alignItems: ['flex-start', 'center'],
-            flexGrow: 1,
-            justifyContent: 'space-between',
-            gap: 2,
-          }}
-        >
+        <div className="flex flex-col sm:flex-row items-start sm:items-center flex-grow justify-between gap-2">
           <ZapRate />
-          <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
+          <div className="flex items-center gap-1">
             <GasIcon />
-            <Text>
+            <span>
               Estimated gas cost:{' '}
-              <Text sx={{ fontWeight: 700 }}>
+              <span className="font-bold">
                 ${gasCost ? formatCurrency(+gasCost, 2) : 0}
-              </Text>
-            </Text>
-          </Box>
-        </Box>
+              </span>
+            </span>
+          </div>
+        </div>
         {collapsed ? (
           <ChevronDown fontSize={16} strokeWidth={1.2} />
         ) : (
           <ChevronUp fontSize={16} strokeWidth={1.2} />
         )}
-      </Box>
-      <Box
-        sx={{
-          overflow: 'hidden',
-          maxHeight: collapsed ? '0px' : '1000px',
-          transition: collapsed
-            ? 'max-height 0.1s ease-in-out'
-            : 'max-height 0.4s ease-in-out',
-        }}
+      </div>
+      <div
+        className={cn(
+          'overflow-hidden transition-[max-height]',
+          collapsed
+            ? 'max-h-0 duration-100 ease-in-out'
+            : 'max-h-[1000px] duration-400 ease-in-out'
+        )}
       >
-        <ZapDetails mt={3} px={3} />
-      </Box>
-    </Box>
+        <ZapDetails className="mt-4 px-4" />
+      </div>
+    </div>
   )
 }
 

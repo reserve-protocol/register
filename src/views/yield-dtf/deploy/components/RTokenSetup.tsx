@@ -2,16 +2,17 @@ import { t } from '@lingui/macro'
 import BasketSetup from 'components/rtoken-setup/basket/BasketSetup'
 import GovernanceSetup from 'components/rtoken-setup/governance/GovernanceSetup'
 import RevenueSplit from 'components/rtoken-setup/token/RevenueSplit'
-import SectionWrapper from 'components/section-navigation/SectionWrapper'
-import { Box, BoxProps } from 'theme-ui'
+import SectionWrapper from '@/components/section-navigation/section-wrapper'
+import { cn } from '@/lib/utils'
 import BackingManager from './BackingManager'
 import Intro from './Intro'
 import OtherSetup from './OtherSetup'
 import TokenParameters from './TokenParameters'
 import TransactionDivider, { DeploySuccessDivider } from './TransactionDivider'
 
-interface Props extends BoxProps {
+interface Props {
   governance?: boolean
+  className?: string
 }
 
 const DeploySection = ({ enabled = true }) => {
@@ -30,17 +31,17 @@ const DeploySection = ({ enabled = true }) => {
       <SectionWrapper navigationIndex={0}>
         <Intro />
       </SectionWrapper>
-      <SectionWrapper navigationIndex={1} my={4}>
+      <SectionWrapper navigationIndex={1} className="my-4">
         <TokenParameters />
       </SectionWrapper>
       <BasketSetup startIndex={2} />
-      <SectionWrapper navigationIndex={4} mt={4}>
+      <SectionWrapper navigationIndex={4} className="mt-4">
         <RevenueSplit />
       </SectionWrapper>
-      <SectionWrapper navigationIndex={5} mt={4}>
+      <SectionWrapper navigationIndex={5} className="mt-4">
         <BackingManager />
       </SectionWrapper>
-      <SectionWrapper navigationIndex={6} mt={4}>
+      <SectionWrapper navigationIndex={6} className="mt-4">
         <OtherSetup />
       </SectionWrapper>
       <TransactionDivider
@@ -53,19 +54,10 @@ const DeploySection = ({ enabled = true }) => {
 
 const GovernanceSection = ({ enabled = true }) => (
   <>
-    <SectionWrapper sx={{ position: 'relative' }} navigationIndex={7}>
+    <SectionWrapper className="relative" navigationIndex={7}>
       <GovernanceSetup disabled={!enabled} />
       {!enabled && (
-        <Box
-          sx={{
-            position: 'absolute',
-            top: 0,
-            bottom: 0,
-            width: '100%',
-            backgroundColor: 'background',
-            opacity: '50%',
-          }}
-        />
+        <div className="absolute top-0 bottom-0 w-full bg-background opacity-50" />
       )}
     </SectionWrapper>
     <TransactionDivider
@@ -75,12 +67,12 @@ const GovernanceSection = ({ enabled = true }) => (
   </>
 )
 
-const RTokenSetup = ({ governance = false, ...props }: Props) => {
+const RTokenSetup = ({ governance = false, className }: Props) => {
   return (
-    <Box mt={[2, 4, 6]} {...props}>
+    <div className={cn('mt-2 sm:mt-4 md:mt-6', className)}>
       <DeploySection enabled={!governance} />
       <GovernanceSection enabled={governance} />
-    </Box>
+    </div>
   )
 }
 

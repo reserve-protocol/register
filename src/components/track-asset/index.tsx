@@ -1,6 +1,9 @@
-import { MouseoverTooltip } from '@/components/old/tooltip'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
 import { Bookmark } from 'lucide-react'
-import { IconButton } from 'theme-ui'
 import { Token } from 'types'
 import { useWalletClient } from 'wagmi'
 
@@ -25,17 +28,18 @@ const TrackAsset = ({ token }: { token: Token }) => {
   }
 
   return (
-    <IconButton
-      m={0}
-      p={0}
-      mt={'5px'}
-      sx={{ cursor: 'pointer', height: 'fit-content', width: 'auto' }}
-      onClick={handleWatch}
-    >
-      <MouseoverTooltip text={'Track token in your wallet'}>
-        <Bookmark size={12} />
-      </MouseoverTooltip>
-    </IconButton>
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <button
+          type="button"
+          className="mt-[5px] cursor-pointer h-fit w-auto p-0"
+          onClick={handleWatch}
+        >
+          <Bookmark size={12} />
+        </button>
+      </TooltipTrigger>
+      <TooltipContent>Track token in your wallet</TooltipContent>
+    </Tooltip>
   )
 }
 

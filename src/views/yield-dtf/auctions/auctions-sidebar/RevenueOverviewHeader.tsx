@@ -1,14 +1,16 @@
 import Help from 'components/help'
+import Spinner from '@/components/ui/spinner'
 import { Circle } from 'lucide-react'
-import { Box, BoxProps, Spinner, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
+import { cn } from '@/lib/utils'
 
-interface RevenueOverviewHeader extends BoxProps {
+interface RevenueOverviewHeaderProps {
   text: string
   help?: string
   amount?: number
   muted?: boolean
   loading?: boolean
+  className?: string
 }
 
 const RevenueOverviewHeader = ({
@@ -17,35 +19,37 @@ const RevenueOverviewHeader = ({
   help,
   muted,
   loading = false,
-  ...props
-}: RevenueOverviewHeader) => {
+  className,
+}: RevenueOverviewHeaderProps) => {
   return (
-    <Box
-      variant="layout.verticalAlign"
-      mx={[1, 3]}
-      mb={3}
-      sx={{ color: 'secondaryText' }}
-      {...props}
+    <div
+      className={cn(
+        'flex items-center mx-1 sm:mx-4 mb-4 text-legend',
+        className
+      )}
     >
       <Circle
         size={8}
-        fill={!muted ? '#11BB8D' : '#666666'}
-        stroke={undefined}
+        className={cn(
+          'shrink-0',
+          !muted ? 'fill-success' : 'fill-muted-foreground'
+        )}
+        stroke="transparent"
       />
-      <Text mx="2">{text}</Text>
+      <span className="mx-2">{text}</span>
       {loading ? (
-        <Spinner ml="auto" size={16} />
+        <Spinner className="ml-auto" size={16} />
       ) : (
-        <Box variant="layout.verticalAlign" ml="auto" sx={{ flexShrink: 0 }}>
+        <div className="flex items-center ml-auto shrink-0">
           {amount !== undefined && (
-            <Text variant="strong" sx={{ color: 'text' }} mr="2">
+            <span className="font-semibold text-primary mr-2">
               ${formatCurrency(amount)}
-            </Text>
+            </span>
           )}
           {help && <Help content={help} />}
-        </Box>
+        </div>
       )}
-    </Box>
+    </div>
   )
 }
 

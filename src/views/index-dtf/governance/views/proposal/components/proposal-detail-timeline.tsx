@@ -14,7 +14,7 @@ import {
 import { ReactNode } from 'react'
 import { blockTimestampAtom, chainIdAtom } from 'state/atoms'
 import { colors } from 'theme'
-import { Box, Progress, Text } from 'theme-ui'
+import { Progress } from '@/components/ui/progress'
 import { formatDate, getCurrentTime, parseDuration } from 'utils'
 import { PROPOSAL_STATES } from 'utils/constants'
 import { proposalDetailAtom } from '../atom'
@@ -55,15 +55,7 @@ const TimelineItem = ({
       {showProgress && (
         <Progress
           value={progress}
-          max={100}
-          sx={{
-            position: 'absolute',
-            width: '100%',
-            color: 'primary',
-            backgroundColor: 'lightgray',
-            height: 2,
-            zIndex: 0,
-          }}
+          className="absolute w-full h-0.5 z-0"
         />
       )}
     </div>
@@ -80,13 +72,13 @@ export const TimelineItemCreated = () => {
       title="Proposal created"
       surtitle={formatDate(+(proposal?.creationTime || 0) * 1000)}
       subtitle={
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <Text>By:</Text>
+        <div className="flex items-center gap-1">
+          <span>By:</span>
           <ExplorerAddress
             address={proposal?.proposer?.address || ''}
             chain={chainId}
           />
-        </Box>
+        </div>
       }
     />
   )
@@ -200,9 +192,9 @@ export const TimelineItemVotingResult = () => {
     <TimelineItem
       icon={ICON_BY_STATE[proposal?.votingState.state ?? '']}
       title={
-        <Text color={COLOR_BY_STATE[proposal?.votingState.state ?? '']}>
+        <span style={{ color: COLOR_BY_STATE[proposal?.votingState.state ?? ''] }}>
           {TITLE_BY_STATE[proposal?.votingState.state ?? '']}
-        </Text>
+        </span>
       }
     />
   )

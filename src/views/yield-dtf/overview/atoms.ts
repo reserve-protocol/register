@@ -1,9 +1,7 @@
 import { atom } from 'jotai'
 import {
   btcPriceAtom,
-  ethPriceAtom,
   rTokenBackingDistributionAtom,
-  rTokenPriceAtom,
   rTokenStateAtom,
 } from 'state/atoms'
 import { TARGET_UNITS } from 'utils/constants'

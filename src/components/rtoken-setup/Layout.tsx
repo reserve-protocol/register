@@ -1,26 +1,22 @@
-import { BoxProps, Grid } from 'theme-ui'
+import { cn } from '@/lib/utils'
 
-const Layout = ({ children, ...props }: BoxProps) => (
-  <Grid
+interface LayoutProps {
+  children: React.ReactNode
+  className?: string
+}
+
+const Layout = ({ children, className }: LayoutProps) => (
+  <div
     id="rtoken-setup-container"
-    columns={['1fr', '1fr 1fr', '1.5fr 1fr', '200px 1fr 440px']}
-    gap={5}
-    px={[2, 4, 5]}
-    // pt={[2, 4, 6]}
-    sx={{
-      height: '100%',
-      position: 'relative',
-      alignContent: 'flex-start',
-      alignItems: 'flex-start',
-
-      '& > div:first-of-type': {
-        display: ['none', 'none', 'none', 'inherit'],
-      },
-    }}
-    {...props}
+    className={cn(
+      'grid h-full relative content-start items-start gap-8 px-2 sm:px-6 lg:px-8',
+      'grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr] xl:grid-cols-[200px_1fr_440px]',
+      '[&>div:first-of-type]:hidden xl:[&>div:first-of-type]:block',
+      className
+    )}
   >
     {children}
-  </Grid>
+  </div>
 )
 
 export default Layout

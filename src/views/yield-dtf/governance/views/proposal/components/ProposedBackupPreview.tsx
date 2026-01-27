@@ -1,8 +1,9 @@
 import { t, Trans } from '@lingui/macro'
-import { SmallButton } from '@/components/old/button'
+import { Button } from '@/components/ui/button'
+import { Checkbox } from '@/components/ui/checkbox'
 import { backupCollateralAtom } from 'components/rtoken-setup/atoms'
 import { useAtom, useAtomValue } from 'jotai'
-import { Box, BoxProps, Checkbox, Text } from 'theme-ui'
+import { cn } from '@/lib/utils'
 import {
   autoRegisterBackupAssetsAtom,
   backupChangesAtom,
@@ -16,7 +17,11 @@ import { ParameterChangePreview } from './ItemPreview'
 import ListItemPreview from './ListItemPreview'
 import PreviewBox from './PreviewBox'
 
-const ProposedBackupPreview = (props: BoxProps) => {
+interface Props {
+  className?: string
+}
+
+const ProposedBackupPreview = ({ className }: Props) => {
   const [isNewBackupProposed, setProposeNewBackup] = useAtom(
     isNewBackupProposedAtom
   )
@@ -74,39 +79,44 @@ const ProposedBackupPreview = (props: BoxProps) => {
 
   return (
     <>
-      <Box variant="layout.borderBox" {...props}>
-        <Box variant="layout.verticalAlign">
-          <Text variant="strong" sx={{ color: 'warning' }}>
+      <div
+        className={cn(
+          'border border-border rounded-xl p-6',
+          className
+        )}
+      >
+        <div className="flex items-center">
+          <span className="font-semibold text-warning">
             <Trans>New backup configuration</Trans>
-          </Text>
-          <SmallButton
-            ml="auto"
-            variant="muted"
+          </span>
+          <Button
+            size="sm"
+            variant="ghost"
             onClick={() => setProposeNewBackup(false)}
+            className="ml-auto"
           >
             <Trans>Revert</Trans>
-          </SmallButton>
-        </Box>
+          </Button>
+        </div>
         <label>
-          <Box variant="layout.verticalAlign" mt={2}>
+          <div className="flex items-center mt-2 gap-2">
             <Checkbox
               checked={autoRegister}
-              onChange={() => setAutoRegister(!autoRegister)}
+              onCheckedChange={() => setAutoRegister(!autoRegister)}
             />
-            <Text variant="strong">Generate Asset Registry calls</Text>
-          </Box>
+            <span className="font-semibold">Generate Asset Registry calls</span>
+          </div>
         </label>
-      </Box>
+      </div>
       {!!count && (
         <PreviewBox
-          variant="layout.borderBox"
+          className="border border-border rounded-xl p-6 mt-6"
           count={count}
           title={t`Backup basket`}
-          mt={4}
         >
           {diversityFactor.map((change) => (
             <ParameterChangePreview
-              mt={3}
+              className="mt-4"
               title={t`Change diversity factor`}
               subtitle={change.target}
               current={change.current.toString()}
@@ -117,7 +127,7 @@ const ProposedBackupPreview = (props: BoxProps) => {
           ))}
           {collateralChanges.map((change) => (
             <ListItemPreview
-              mt={3}
+              className="mt-4"
               isNew={change.isNew}
               onRevert={() => handleRevertCollateral(change)}
               label={change.collateral.symbol}
@@ -127,7 +137,7 @@ const ProposedBackupPreview = (props: BoxProps) => {
           {priorityChanges.map((change) => (
             <ParameterChangePreview
               key={change.collateral.address}
-              mt={3}
+              className="mt-4"
               title={t`Change diversity factor`}
               subtitle={change.collateral.symbol}
               current={change.current.toString()}

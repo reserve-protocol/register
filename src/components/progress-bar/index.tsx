@@ -1,5 +1,5 @@
-import { FC, ReactNode } from 'react'
-import { Box, Text, useColorMode } from 'theme-ui'
+import { cn } from '@/lib/utils'
+import { FC, ReactNode, useEffect, useState } from 'react'
 import { formatPercentage } from 'utils'
 
 interface ProgressBarProps {
@@ -17,141 +17,113 @@ const ProgressBar: FC<ProgressBarProps> = ({
   height = 40,
   width = '100%',
 }) => {
-  const [colorMode] = useColorMode()
-  const isDarkMode = colorMode === 'dark'
+  const [isDarkMode, setIsDarkMode] = useState(false)
+
+  useEffect(() => {
+    const checkDarkMode = () => {
+      setIsDarkMode(document.documentElement.classList.contains('dark'))
+    }
+    checkDarkMode()
+    const observer = new MutationObserver(checkDarkMode)
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class'],
+    })
+    return () => observer.disconnect()
+  }, [])
+
   const shouldPercentageBeOnForeground = percentage <= 8
   const shouldTextBeOnForeground = percentage >= 40
   const hideBackgroundText = percentage >= 70
   const completed = percentage >= 100
 
   return (
-    <Box
-      sx={{
-        background: 'progressBar',
-        position: 'relative',
-        height,
-        width,
-        borderRadius: '8px',
-        overflow: 'hidden',
-        border: '1px solid',
-        borderColor: 'progressBarBackground',
-      }}
+    <div
+      className="relative rounded-lg overflow-hidden border bg-white dark:bg-black border-black dark:border-white"
+      style={{ height, width }}
     >
-      <Box
-        sx={{
-          height: '100%',
+      <div
+        className={cn(
+          'h-full relative transition-[width] duration-500 ease-in-out',
+          completed ? '' : 'bg-black dark:bg-white'
+        )}
+        style={{
           width: `${Math.min(100, percentage)}%`,
           background: completed
             ? isDarkMode
               ? 'linear-gradient(90deg, rgba(9, 85, 172, 0.00) 0%, rgba(9, 85, 172, 0.40) 100%)'
-              : 'linear-gradient(90deg, rgba(9, 85, 172, 0.00)0%, rgba(9, 85, 172, 0.20)100%)'
-            : 'progressBarBackground',
-          transition: 'width 0.5s ease-in-out',
-          position: 'relative',
+              : 'linear-gradient(90deg, rgba(9, 85, 172, 0.00) 0%, rgba(9, 85, 172, 0.20) 100%)'
+            : undefined,
         }}
       >
         {!shouldTextBeOnForeground && !shouldPercentageBeOnForeground && (
-          <Text
-            sx={{
-              display: ['none', 'none', 'block'],
-              position: 'absolute',
-              top: '50%',
-              right: 3,
-              transform: 'translateY(-50%)',
-              color: 'progressBar',
-              fontSize: 1,
-              fontWeight: 'bold',
-            }}
-          >
+          <span className="hidden md:block absolute top-1/2 right-4 -translate-y-1/2 text-white dark:text-black text-sm font-bold">
             {`${formatPercentage(percentage)}`}
-          </Text>
+          </span>
         )}
-      </Box>
+      </div>
       {foregroundText && (
-        <Text
-          sx={{
-            display: ['none', 'none', 'block'],
-            position: 'absolute',
-            top: '50%',
+        <span
+          className={cn(
+            'hidden md:block absolute top-1/2 whitespace-nowrap text-sm',
+            shouldTextBeOnForeground ? 'pl-2 pr-4' : 'pl-2 pr-2',
+            completed
+              ? 'text-foreground'
+              : shouldTextBeOnForeground
+                ? 'text-white dark:text-black'
+                : 'text-foreground'
+          )}
+          style={{
             left: `${Math.min(100, percentage)}%`,
             transform: shouldTextBeOnForeground
               ? 'translate(-100%, -50%)'
               : 'translateY(-50%)',
-            color: completed
-              ? 'text'
-              : shouldTextBeOnForeground
-              ? 'progressBar'
-              : 'text',
-            fontSize: 1,
-            paddingLeft: shouldTextBeOnForeground ? 2 : 2,
-            paddingRight: shouldTextBeOnForeground ? 3 : 2,
-            whiteSpace: 'nowrap',
           }}
         >
           {foregroundText}
           {(shouldTextBeOnForeground || shouldPercentageBeOnForeground) && (
             <>
-              <Text sx={{ mx: 2 }}>|</Text>
-              <Text
-                sx={{
-                  color: completed
-                    ? 'accentInverted'
+              <span className="mx-2">|</span>
+              <span
+                className={cn(
+                  'text-sm font-bold',
+                  completed
+                    ? 'text-primary'
                     : shouldPercentageBeOnForeground
-                    ? 'progressBarBackground'
-                    : 'progressBar',
-                  fontSize: 1,
-                  fontWeight: 'bold',
-                }}
+                      ? 'text-black dark:text-white'
+                      : 'text-white dark:text-black'
+                )}
               >
                 {`${formatPercentage(percentage)}`}
-              </Text>
+              </span>
             </>
           )}
-        </Text>
+        </span>
       )}
       {backgroundText && !hideBackgroundText && (
-        <Text
-          sx={{
-            display: ['none', 'none', 'block'],
-            position: 'absolute',
-            top: '50%',
-            right: 3,
-            transform: 'translateY(-50%)',
-            color: 'progressBarBackground',
-            fontSize: 1,
-          }}
-        >
+        <span className="hidden md:block absolute top-1/2 right-4 -translate-y-1/2 text-black dark:text-white text-sm">
           {backgroundText}
-        </Text>
+        </span>
       )}
-      <Text
-        sx={{
-          display: ['block', 'block', 'none'],
-          position: 'absolute',
-          top: '50%',
-          right: 3,
-          transform: 'translateY(-50%)',
-          fontSize: 1,
-          whiteSpace: 'nowrap',
-          color: completed ? 'text' : !isDarkMode ? 'progressBar' : 'none',
-          mixBlendMode: completed ? 'normal' : 'difference',
-        }}
+      <span
+        className={cn(
+          'block md:hidden absolute top-1/2 right-4 -translate-y-1/2 text-sm whitespace-nowrap',
+          completed
+            ? 'text-foreground mix-blend-normal'
+            : 'text-black dark:text-transparent mix-blend-difference'
+        )}
       >
         {foregroundText}
         <>
-          <Text sx={{ mx: 2 }}>|</Text>
-          <Text
-            sx={{
-              fontSize: 1,
-              fontWeight: 'bold',
-              color: completed ? 'accentInverted' : 'inherit',
-            }}
+          <span className="mx-2">|</span>
+          <span
+            className={cn('text-sm font-bold', completed ? 'text-primary' : '')}
           >
             {`${formatPercentage(percentage)}`}
-          </Text>
+          </span>
         </>
-      </Text>
-    </Box>
+      </span>
+    </div>
   )
 }
 

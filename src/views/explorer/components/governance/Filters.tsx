@@ -1,7 +1,6 @@
 import VoteIcon from 'components/icons/VoteIcon'
 import { useAtom } from 'jotai'
 import { useMemo } from 'react'
-import { Box, Text } from 'theme-ui'
 import { PROPOSAL_STATES } from 'utils/constants'
 import MultiselectDropdrown, {
   IMultiselectDropdrown,
@@ -31,17 +30,17 @@ const ProposalStatusFilter = (
   }, [])
 
   return (
-    <Box>
-      <Text variant="legend">Status</Text>
-      <MultiselectDropdrown mt={1} options={options} {...props} allOption>
+    <div>
+      <span className="text-legend">Status</span>
+      <MultiselectDropdrown className="mt-1" options={options} {...props} allOption>
         <VoteIcon width={18} />
-        <Text ml="2" variant="legend">
+        <span className="ml-2 text-legend">
           {props.selected.length
             ? `${props.selected.length} selected`
             : 'All statuses'}
-        </Text>
+        </span>
       </MultiselectDropdrown>
-    </Box>
+    </div>
   )
 }
 
@@ -53,7 +52,7 @@ const ProposalFilters = () => {
   }
 
   return (
-    <Box variant="layout.verticalAlign" ml="1" sx={{ gap: 3 }}>
+    <div className="flex items-center ml-1 gap-4">
       <TokenFilter
         selected={filters.tokens}
         onChange={(selected) => handleChange('tokens', selected)}
@@ -62,7 +61,7 @@ const ProposalFilters = () => {
         selected={filters.status}
         onChange={(selected) => handleChange('status', selected)}
       />
-    </Box>
+    </div>
   )
 }
 

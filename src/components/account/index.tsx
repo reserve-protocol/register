@@ -1,15 +1,20 @@
-import Button from '@/components/old/button'
-import { MouseoverTooltipContent } from '@/components/old/tooltip'
+import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
 import Staking from '@/views/index-dtf/overview/components/staking'
 import PortfolioSidebar from '@/views/portfolio/sidebar'
 import { Trans } from '@lingui/macro'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import ChainLogo from 'components/icons/ChainLogo'
 import { useAtomValue } from 'jotai'
-import { AlertCircle, Menu, Wallet, Power } from 'lucide-react'
+import { AlertCircle, Wallet, Power } from 'lucide-react'
 import { ReactNode } from 'react'
 import { chainIdAtom, selectedRTokenAtom } from 'state/atoms'
-import { Box, Card, Flex, Text } from 'theme-ui'
+import { cn } from '@/lib/utils'
 
 const ErrorWrapper = ({
   chainId,
@@ -25,31 +30,30 @@ const ErrorWrapper = ({
   isValid ? (
     <>{children}</>
   ) : (
-    <MouseoverTooltipContent
-      content={
-        <Card sx={{ width: 320, border: '1px solid black' }}>
-          <Text sx={{ fontWeight: 400 }} variant="legend">
+    <Tooltip>
+      <TooltipTrigger asChild>{children}</TooltipTrigger>
+      <TooltipContent className="p-0 border-0 bg-transparent">
+        <Card className="w-80 p-4 border border-border">
+          <span className="text-legend">
             <Trans>Network</Trans>
-          </Text>
-          <Flex my={2} variant="layout.verticalAlign">
-            <AlertCircle size={18} color="#FF0000" />
-            <Text ml={2}>Chain: {chainId}</Text>
-            <Text ml="auto" sx={{ fontWeight: 500 }}>
+          </span>
+          <div className="flex items-center my-2">
+            <AlertCircle size={18} className="text-destructive" />
+            <span className="ml-2">Chain: {chainId}</span>
+            <span className="ml-auto font-medium">
               <Trans>Unsupported</Trans>
-            </Text>
-          </Flex>
-          <Text variant="legend" sx={{ fontSize: 1 }}>
+            </span>
+          </div>
+          <span className="text-legend text-sm">
             <Trans>
               The configured network "{currentChain}" is different from the
               wallet selected network "{chainId}"". Change your network in the
               connected wallet.
             </Trans>
-          </Text>
+          </span>
         </Card>
-      }
-    >
-      {children}
-    </MouseoverTooltipContent>
+      </TooltipContent>
+    </Tooltip>
   )
 
 /**
@@ -70,94 +74,71 @@ const Account = () => {
           isTokenSelected && connected && chain.id !== chainId
 
         return (
-          <Box
-            {...(!ready && {
-              'aria-hidden': true,
-              sx: {
-                opacity: 0,
-                pointerEvents: 'none',
-                userSelect: 'none',
-              },
-            })}
+          <div
+            className={cn(
+              !ready && 'opacity-0 pointer-events-none select-none'
+            )}
+            aria-hidden={!ready}
           >
             {(() => {
               if (!connected) {
                 return (
                   <Button
-                    variant="accentAction"
+                    variant="accent"
                     onClick={openConnectModal}
-                    px={'14px'}
-                    py={1}
-                    sx={{
-                      borderRadius: '40px',
-                      fontWeight: 400,
-                      '&:hover': {
-                        fontWeight: 400,
-                      },
-                    }}
+                    className="px-3.5 py-1 rounded-full font-normal"
                   >
-                    <Box
-                      sx={{ display: ['flex', 'none'] }}
-                      variant="layout.verticalAlign"
-                      py={1}
-                    >
+                    <span className="flex md:hidden items-center py-1">
                       <Power size={16} />
-                    </Box>
-                    <Text sx={{ display: ['none', 'block'], fontSize: 2 }}>
+                    </span>
+                    <span className="hidden md:block text-base">
                       <Trans>Connect</Trans>
-                    </Text>
+                    </span>
                   </Button>
                 )
               }
 
               return (
-                <ErrorWrapper
-                  isValid={!invalidChain}
-                  chainId={chain.id}
-                  currentChain={chainId}
-                >
-                  <PortfolioSidebar>
-                    <Box
-                      variant="layout.verticalAlign"
-                      sx={{
-                        justifyContent: 'center',
-                        cursor: 'pointer',
-                        fontSize: '16px',
-                      }}
+                <>
+                  <ErrorWrapper
+                    isValid={!invalidChain}
+                    chainId={chain.id}
+                    currentChain={chainId}
+                  >
+                    <PortfolioSidebar>
+                      <div className="flex items-center justify-center cursor-pointer text-base">
+                        <div className="flex items-center relative">
+                          <div className="flex items-center absolute lg:relative -bottom-1 -right-1 lg:bottom-0 lg:right-0">
+                            {!invalidChain ? (
+                              <ChainLogo
+                                chain={chain.id}
+                                className="w-3 h-3 lg:w-4 lg:h-4"
+                              />
+                            ) : (
+                              <AlertCircle
+                                fill="#FF0000"
+                                color="#fff"
+                                className="w-3 h-3 lg:w-4 lg:h-4"
+                              />
+                            )}
+                          </div>
 
-                      // onClick={() => setVisible(true)}
-                    >
-                      <div className="flex items-center relative">
-                        <div className="flex items-center absolute lg:relative -bottom-1 -right-1 lg:bottom-0 lg:right-0">
-                          {!invalidChain ? (
-                            <ChainLogo
-                              chain={chain.id}
-                              className="w-3 h-3 lg:w-4 lg:h-4"
-                            />
-                          ) : (
-                            <AlertCircle
-                              fill="#FF0000"
-                              color="#fff"
-                              className="w-3 h-3 lg:w-4 lg:h-4"
-                            />
-                          )}
-                        </div>
+                          <span className="hidden lg:inline ml-2">
+                            {account.displayName}
+                          </span>
 
-                        <span className="hidden lg:inline ml-2">
-                          {account.displayName}
-                        </span>
-
-                        <div className="lg:ml-3 p-2 border border-border rounded-xl">
-                          <Wallet size={16} />
+                          <div className="lg:ml-3 p-2 border border-border rounded-xl">
+                            <Wallet size={16} />
+                          </div>
                         </div>
                       </div>
-                    </Box>
-                  </PortfolioSidebar>
+                    </PortfolioSidebar>
+                  </ErrorWrapper>
                   <Staking />
-                </ErrorWrapper>
+                </>
               )
             })()}
-          </Box>
+          </div>
         )
       }}
     </ConnectButton.Custom>

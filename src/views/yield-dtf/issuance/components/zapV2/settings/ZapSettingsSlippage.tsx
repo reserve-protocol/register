@@ -1,6 +1,5 @@
-import ButtonGroup from '@/components/old/button/ButtonGroup'
+import ButtonGroup from '@/components/ui/button-group'
 import { useMemo, useState } from 'react'
-import { Box } from 'theme-ui'
 import { formatNumber } from '../utils'
 import { useZap } from '../context/ZapContext'
 import ZapSettingsCustomSlippage from './ZapSettingsCustomSlippage'
@@ -30,13 +29,13 @@ const ZapSettingsSlippage = () => {
   )
 
   return (
-    <Box variant="layout.verticalAlign" sx={{ gap: 2 }}>
+    <div className="flex items-center gap-2">
       <ButtonGroup buttons={buttons} startActive={active} />
       <ZapSettingsCustomSlippage
         showCustomSlippage={showCustomSlippage}
         setShowCustomSlippage={setShowCustomSlippage}
       />
-    </Box>
+    </div>
   )
 }
 

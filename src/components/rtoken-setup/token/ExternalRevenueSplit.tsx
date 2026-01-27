@@ -1,16 +1,16 @@
 import { t, Trans } from '@lingui/macro'
-import { SmallButton } from '@/components/old/button'
+import { Button } from '@/components/ui/button'
 import Field, { FieldInput, getErrorMessage } from 'components/field'
 import { useAtomValue } from 'jotai'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
-import { Box, BoxProps, Grid } from 'theme-ui'
 import { ExternalAddressSplit, isRevenueValidAtom } from '../atoms'
 
-interface ExternalRevenueSplitProps extends Omit<BoxProps, 'onChange'> {
+interface ExternalRevenueSplitProps {
   defaultValues?: Partial<ExternalAddressSplit>
   onChange(data: ExternalAddressSplit): void
   onRemove(): void
+  className?: string
 }
 
 const inputValidation = {
@@ -24,7 +24,7 @@ const ExternalRevenueSpit = ({
   onChange,
   onRemove,
   defaultValues = {},
-  ...props
+  className,
 }: ExternalRevenueSplitProps) => {
   const {
     register,
@@ -75,63 +75,50 @@ const ExternalRevenueSpit = ({
   }, [formValues[2]])
 
   return (
-    <Box {...props} sx={{ display: 'flex' }}>
-      <Box mr={3} sx={{ flexGrow: 1 }}>
-        <Grid columns={['1fr', '1fr', '2fr 1fr 1fr']} gap={0}>
+    <div className={`flex ${className || ''}`}>
+      <div className="mr-3 flex-grow">
+        <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr_1fr] gap-0">
           <Field label={t`Total % to arbitrary address`}>
             <FieldInput
               {...register('total', inputValidation)}
               error={!!errors['total'] || !isSplitValid}
               placeholder={t`% Revenue share`}
-              sx={{
-                borderRadius: '6px 0 0 0',
-              }}
+              className="rounded-tl-md rounded-tr-none rounded-br-none rounded-bl-none lg:rounded-tl-md"
             />
           </Field>
           <Field label={t`As RToken`}>
             <FieldInput
               {...register('holders', { ...inputValidation, min: 0 })}
               error={!!errors['holders']}
-              sx={{
-                borderRadius: '0',
-                borderLeft: 'none',
-              }}
+              className="rounded-none border-l-0"
             />
           </Field>
           <Field label={t`As RSR`}>
             <FieldInput
               {...register('stakers', { ...inputValidation, min: 0 })}
               error={!!errors['stakers']}
-              sx={{
-                borderRadius: '0 6px 0 0',
-                borderLeft: 'none',
-              }}
+              className="rounded-tl-none rounded-tr-md rounded-br-none rounded-bl-none border-l-0"
             />
           </Field>
-        </Grid>
-        <Box sx={{ flex: 1 }}>
+        </div>
+        <div className="flex-1">
           <FieldInput
-            sx={{
-              flex: 1,
-              borderRadius: '0 0 6px 6px',
-              borderTop: 'none',
-            }}
+            className="flex-1 rounded-tl-none rounded-tr-none rounded-br-md rounded-bl-md border-t-0"
             {...register('address', inputValidation)}
             placeholder={t`Receiving eth address`}
             error={errors['holders'] ? getErrorMessage(errors['holders']) : ''}
           />
-        </Box>
-      </Box>
-      <SmallButton
-        sx={{ flexShrink: 0, color: 'danger' }}
-        mt={4}
-        px={2}
-        variant="transparent"
+        </div>
+      </div>
+      <Button
+        className="flex-shrink-0 text-destructive mt-4 px-2"
+        size="sm"
+        variant="ghost"
         onClick={onRemove}
       >
         <Trans>X</Trans>
-      </SmallButton>
-    </Box>
+      </Button>
+    </div>
   )
 }
 

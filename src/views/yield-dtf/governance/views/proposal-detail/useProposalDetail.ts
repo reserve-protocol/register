@@ -1,5 +1,5 @@
 import { gql } from 'graphql-request'
-import useQuery from 'hooks/useQuery'
+import useQuery from 'hooks/use-query'
 import { useMemo } from 'react'
 import { formatEther } from 'viem'
 import { ProposalDetail } from './atom'

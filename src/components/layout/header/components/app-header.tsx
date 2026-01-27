@@ -1,5 +1,5 @@
 import CommandMenu from '@/components/command-menu'
-import ThemeColorMode from '@/components/dark-mode-toggle/ThemeColorMode'
+import DarkModeToggle from '@/components/dark-mode-toggle'
 import { cn } from '@/lib/utils'
 import Account from 'components/account'
 import { ReactNode } from 'react'
@@ -33,21 +33,7 @@ const AppHeader = () => (
       <AppNavigation />
       <CommandMenu />
       <div className="flex ml-1 items-center">
-        <ThemeColorMode
-          sx={{
-            display: 'flex',
-            px: 2,
-            mr: [2, 3],
-            py: '3px',
-            maxWidth: '32px',
-            borderRadius: '6px',
-            ml: 'auto',
-            cursor: 'pointer',
-            ':hover': {
-              backgroundColor: 'secondaryBackground',
-            },
-          }}
-        />
+        <DarkModeToggle className="flex px-2 mr-2 sm:mr-3 py-[3px] max-w-8 rounded-md ml-auto cursor-pointer hover:bg-muted" />
         <Account />
       </div>
     </div>

@@ -1,6 +1,8 @@
-import GoTo from '@/components/old/button/GoTo'
-import TransactionButton from '@/components/old/button/TransactionButton'
-import { ModalProps } from '@/components/old/modal'
+import GoTo from '@/components/ui/go-to'
+import TransactionButton from '@/components/ui/transaction-button'
+import { Checkbox } from '@/components/ui/checkbox'
+import { Separator } from '@/components/ui/separator'
+import { ModalProps } from 'components'
 import useWatchTransaction from '@/hooks/useWatchTransaction'
 import { t, Trans } from '@lingui/macro'
 import Governance from 'abis/Governance'
@@ -16,7 +18,6 @@ import {
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { chainIdAtom } from 'state/atoms'
-import { Box, Checkbox, Divider, Flex, Link, Text } from 'theme-ui'
 import { getProposalTitle, shortenAddress } from 'utils'
 import {
   ETHERSCAN_NAMES,
@@ -73,87 +74,80 @@ const VoteModal = (props: ModalProps) => {
   if (hash && status === 'success') {
     return (
       <Modal {...props}>
-        <Flex
-          p={4}
-          sx={{
-            alignItems: 'center',
-            flexDirection: 'column',
-            justifyContent: 'center',
-          }}
-        >
+        <div className="flex flex-col items-center justify-center p-4">
           <CheckCircle size={36} />
           <br />
-          <Text>Transaction successful!</Text>
+          <span>Transaction successful!</span>
           <br />
-          <Link
+          <a
             href={getExplorerLink(hash, chainId, ExplorerDataType.TRANSACTION)}
             target="_blank"
+            rel="noreferrer"
             className="text-sm flex items-center gap-1"
           >
             <ExternalLink size={12} /> <Trans>View on</Trans>{' '}
             {ETHERSCAN_NAMES[chainId]}
-          </Link>
-        </Flex>
+          </a>
+        </div>
       </Modal>
     )
   }
 
   return (
     <Modal {...props} title={t`Voting`} style={{ maxWidth: 420 }}>
-      <Flex sx={{ alignItems: 'center', flexDirection: 'column' }}>
-        <Text variant="title">
+      <div className="flex flex-col items-center">
+        <span className="text-xl font-medium">
           "
           {proposal?.description
             ? getProposalTitle(proposal.description)
             : 'Loading...'}
-        </Text>
-        <Box variant="layout.verticalAlign" mt={2}>
-          <Text variant="legend">
+        </span>
+        <div className="flex items-center mt-2">
+          <span className="text-legend">
             <Trans>Proposed by</Trans>:
-          </Text>
-          <Text ml={1}>
+          </span>
+          <span className="ml-1">
             {shortenAddress(proposal?.proposer?.address ?? '')}
-          </Text>
+          </span>
           <GoTo
-            ml={2}
+            className="ml-2"
             href={getExplorerLink(
               proposal?.proposer?.address ?? '',
               chainId,
               ExplorerDataType.ADDRESS
             )}
           />
-        </Box>
-      </Flex>
-      <Divider sx={{ borderColor: 'darkBorder' }} my={4} mx={-4} />
+        </div>
+      </div>
+      <Separator className="my-4 -mx-4 w-[calc(100%+2rem)]" />
       {voteOptions.map((option, index) => (
-        <Box
-          variant="layout.verticalAlign"
-          mt={!!index ? 2 : 0}
+        <div
+          className={`flex items-center ${index ? 'mt-2' : ''}`}
           key={option.value}
         >
           {option.value === VOTE_TYPE.FOR && <ThumbsUp size={16} />}
           {option.value === VOTE_TYPE.AGAINST && <ThumbsDown size={16} />}
           {option.value === VOTE_TYPE.ABSTAIN && <Slash size={16} />}
-          <Text variant="strong" ml={2}>
+          <span className="font-semibold ml-2">
             {option.label}
-          </Text>
-          <label style={{ marginLeft: 'auto', cursor: 'pointer' }}>
+          </span>
+          <label className="ml-auto cursor-pointer">
             <Checkbox
               checked={vote === option.value}
-              onChange={() => setVote(option.value)}
+              onCheckedChange={() => setVote(option.value)}
               disabled={isLoading || isMining}
             />
           </label>
-        </Box>
+        </div>
       ))}
 
-      <Divider sx={{ borderColor: 'darkBorder' }} my={4} mx={-4} />
+      <Separator className="my-4 -mx-4 w-[calc(100%+2rem)]" />
       <TransactionButton
         loading={isLoading || isMining}
-        variant={!!hash ? 'accentAction' : 'primary'}
+        variant={!!hash ? 'accent' : 'default'}
         text={t`Vote`}
         loadingText={isMining ? t`Confirming...` : undefined}
-        fullWidth
+        className="w-full"
         onClick={write}
         disabled={!isReady || isLoading || isMining}
       />

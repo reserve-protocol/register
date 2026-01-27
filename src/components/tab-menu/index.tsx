@@ -1,7 +1,5 @@
-import React, { useMemo } from 'react'
-import { useCallback, useState } from 'react'
-import { borderRadius } from 'theme'
-import { Box, BoxProps, Text } from 'theme-ui'
+import React, { useCallback } from 'react'
+import { cn } from '@/lib/utils'
 
 interface Item {
   key: string | number
@@ -9,102 +7,67 @@ interface Item {
   icon?: JSX.Element
 }
 
-interface Props extends BoxProps {
+interface Props {
   items: Item[]
   onMenuChange(key: string): void
   active: string | number
   small?: boolean
-  background?: string
   collapse?: boolean
+  className?: string
+  ml?: string
+  mt?: number | number[]
+  background?: string
 }
-
-const defaultStyles = (
-  background: string,
-  small: boolean,
-  collapse: boolean
-) => ({
-  // border: '1px solid',
-  // borderColor: 'border',
-  color: 'secondaryText',
-  fontSize: small ? 0 : 1,
-  fontWeight: small ? 500 : 400,
-  borderRadius: borderRadius.inputs,
-  background: 'inputBackground',
-  width: 'fit-content',
-  '>div': {
-    padding: small ? '6px' : '6px 8px 6px 8px',
-    lineHeight: '16px',
-    userSelect: 'none',
-    cursor: 'pointer',
-    display: 'flex',
-    alignItems: 'center',
-    backgroundColor: 'transparent',
-    borderRadius: borderRadius.inner,
-    justifyContent: 'center',
-    width: collapse ? [40, 'auto'] : 'auto',
-    marginLeft: '2px',
-    ':first-of-type': {
-      marginLeft: 0,
-    },
-    ':hover': {
-      backgroundColor: 'inputBorder',
-    },
-    '&.active': {
-      backgroundColor: 'focusedBackground',
-      color: 'accentInverted',
-      fontWeight: 500,
-    },
-  },
-})
 
 const MenuItem = ({
   item,
   onClick,
   isActive,
   collapse,
+  small,
 }: {
   item: Item
   onClick(key: string | number): void
   isActive: boolean
   collapse: boolean
+  small: boolean
 }) => {
   return (
     <div
       role="button"
-      className={isActive ? 'active' : ''}
+      className={cn(
+        'flex items-center justify-center cursor-pointer select-none rounded-md ml-0.5 first:ml-0',
+        small ? 'p-1.5 text-xs font-medium' : 'px-2 py-1.5 text-sm',
+        collapse && 'w-10 md:w-auto',
+        'hover:bg-muted',
+        isActive && 'bg-card text-primary font-medium'
+      )}
       onClick={() => onClick(item.key)}
     >
       {item.icon}
-      <Text
-        ml={!!item.icon ? '6px' : 0}
-        sx={{ display: collapse ? ['none', 'none', 'block'] : 'block' }}
+      <span
+        className={cn(
+          item.icon && 'ml-1.5',
+          collapse && 'hidden md:block'
+        )}
       >
         {item.label}
-      </Text>
+      </span>
     </div>
   )
 }
 
-// Reusable implementation, different from token header as it doesnt relies on routes
-// TODO: refactor header menu to not rely on react-router at least on the inner component level.
 const TabMenu = ({
   items,
   onMenuChange,
   small = false,
   collapse = false,
-  background = 'transparent',
   active,
-  sx,
-  ...props
+  className,
+  ml,
+  mt,
+  background,
 }: Props) => {
-  // TODO: Styles got a typing error, for some reason userSelect: 'none' is not valid?
-  const styles: any = useMemo(() => {
-    return {
-      ...defaultStyles(background, small, collapse),
-      ...(sx ?? {}),
-    }
-  }, [background, collapse, small, sx])
-
   const handleSelect = useCallback(
     (key: string) => {
       onMenuChange(key)
@@ -113,7 +76,13 @@ const TabMenu = ({
   )
 
   return (
-    <Box variant="layout.verticalAlign" p={'2px'} sx={styles} {...props}>
+    <div
+      className={cn(
+        'flex items-center w-fit p-0.5 rounded-lg bg-muted text-legend',
+        small ? 'text-xs font-medium' : 'text-sm',
+        className
+      )}
+    >
       {items.map((item) => (
         <MenuItem
           item={item}
@@ -121,9 +90,10 @@ const TabMenu = ({
           isActive={item.key === active}
           key={item.key}
           collapse={collapse}
+          small={small}
         />
       ))}
-    </Box>
+    </div>
   )
 }
 

@@ -1,5 +1,7 @@
 import { t, Trans } from '@lingui/macro'
-import { SmallButton } from '@/components/old/button'
+import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
+import { Separator } from '@/components/ui/separator'
 import Field, { FieldInput, getErrorMessage } from 'components/field'
 import { atom, useAtom, useAtomValue } from 'jotai'
 import { useSetAtom } from 'jotai'
@@ -7,7 +9,6 @@ import { useEffect } from 'react'
 import { Plus } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import DocsLink from '@/components/utils/docs-link'
-import { Box, BoxProps, Card, Divider, Flex, Text, Link } from 'theme-ui'
 import {
   ExternalAddressSplit,
   isRevenueValidAtom,
@@ -39,7 +40,11 @@ const inputValidation = {
   max: 100,
 }
 
-const RevenueSplit = (props: BoxProps) => {
+interface RevenueSplitProps {
+  className?: string
+}
+
+const RevenueSplit = ({ className }: RevenueSplitProps) => {
   const [revenueSplit, setRevenueSplit] = useAtom(revenueSplitAtom)
   const updateExternalShare = useSetAtom(updateExternalShareAtom)
   const isValid = useAtomValue(isRevenueValidAtom)
@@ -98,17 +103,17 @@ const RevenueSplit = (props: BoxProps) => {
   }
 
   return (
-    <Card p={4} variant="cards.form" {...props}>
-      <Box variant="layout.verticalAlign">
-        <Text variant="title">
+    <Card className={`p-4 bg-secondary ${className || ''}`}>
+      <div className="flex items-center">
+        <span className="text-xl font-medium">
           <Trans>Revenue Distribution</Trans>
-        </Text>
+        </span>
         <DocsLink
           link={`${PROTOCOL_DOCS}yield_dtfs/overview/#revenue-handling`}
         />
-      </Box>
-      <Divider my={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />
-      <Field label={t`% Revenue to RToken Holders`} mb={3}>
+      </div>
+      <Separator className="my-4 -mx-4 border-muted" />
+      <Field label={t`% Revenue to RToken Holders`} className="mb-4">
         <FieldInput
           placeholder={t`Input token holders revenue distribution`}
           {...register('holders', inputValidation)}
@@ -128,7 +133,7 @@ const RevenueSplit = (props: BoxProps) => {
       </Field>
       {revenueSplit.external.map((split, index) => (
         <ExternalRevenueSpit
-          mt={3}
+          className="mt-3"
           key={index}
           defaultValues={split}
           onRemove={() => handleRemoveExternal(index)}
@@ -136,26 +141,31 @@ const RevenueSplit = (props: BoxProps) => {
         />
       ))}
       {isDirty && (!isValid || !isValidExternals) && (
-        <Box mt={3}>
-          <Text variant="error" sx={{ fontSize: 1 }}>
+        <div className="mt-3">
+          <span className="text-destructive text-xs">
             {!isValid ? (
               <Trans>Distributed revenue does not add up to 100%</Trans>
             ) : (
               <Trans>Invalid destination address</Trans>
             )}
-          </Text>
-        </Box>
+          </span>
+        </div>
       )}
-      <SmallButton variant="muted" mt={4} onClick={handleAddExternal}>
-        <Flex sx={{ alignItems: 'center', justifyContent: 'center' }}>
+      <Button
+        size="sm"
+        variant="ghost"
+        className="mt-6"
+        onClick={handleAddExternal}
+      >
+        <div className="flex items-center justify-center">
           <Plus size={16} />
-          <Text pl={1}>
+          <span className="pl-1">
             <Trans>Add new address</Trans>
-          </Text>
-        </Flex>
-      </SmallButton>
-      <Divider my={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />
-      <Text variant="legend" as="p" sx={{ fontSize: 1 }} mb={1} mr={2}>
+          </span>
+        </div>
+      </Button>
+      <Separator className="my-4 -mx-4 border-muted" />
+      <p className="text-legend text-xs mb-1 mr-2">
         <Trans>
           Define what portion of the revenue goes to the RToken holders versus
           RSR stakers. It can also be configured to send a portion of the
@@ -164,14 +174,15 @@ const RevenueSplit = (props: BoxProps) => {
           <br />
           <br />
         </Trans>
-        <Link
+        <a
           href={`${PROTOCOL_DOCS}yield_dtfs/protocol_operations/#revenue-distribution`}
           target="_blank"
-          sx={{ textDecoration: 'underline' }}
+          rel="noreferrer"
+          className="underline"
         >
           <Trans>Read more about revenue distribution</Trans>
-        </Link>
-      </Text>
+        </a>
+      </p>
     </Card>
   )
 }

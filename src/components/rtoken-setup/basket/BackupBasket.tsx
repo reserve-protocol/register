@@ -3,12 +3,11 @@ import DocsLink from '@/components/utils/docs-link'
 import EmptyBoxIcon from 'components/icons/EmptyBoxIcon'
 import { useAtomValue } from 'jotai'
 import { useCallback } from 'react'
-import { Box, BoxProps, Flex, Text } from 'theme-ui'
 import { backupCollateralAtom, basketAtom } from '../atoms'
 import EmergencyCollateral from './EmergencyCollateral'
 import { PROTOCOL_DOCS } from '@/utils/constants'
 
-interface Props extends BoxProps {
+interface BackupBasketProps {
   onAdd?(
     data: {
       basket: 'primary' | 'backup'
@@ -16,34 +15,35 @@ interface Props extends BoxProps {
     } | null
   ): void
   readOnly?: boolean
+  className?: string
 }
 
 const Placeholder = () => (
-  <Box>
-    <Box sx={{ opacity: '40%' }}>
-      <Flex variant="layout.verticalAlign" mt={4}>
-        <Text>
+  <div>
+    <div className="opacity-40">
+      <div className="flex items-center mt-4">
+        <span>
           <Trans>Diversity factor</Trans>
-        </Text>
-        <Text ml="auto">N=</Text>
-        <Box sx={{ borderRadius: 16 }} mr={2} px={3}>
-          <Text sx={{ color: '#333' }}>0</Text>
-        </Box>
-      </Flex>
-      <Box sx={{ textAlign: 'center' }} py={8} px={4}>
+        </span>
+        <span className="ml-auto">N=</span>
+        <div className="rounded-2xl mr-2 px-3">
+          <span className="text-[#333]">0</span>
+        </div>
+      </div>
+      <div className="text-center py-8 px-4">
         <EmptyBoxIcon />
-        <Text sx={{ fontWeight: 500, display: 'block' }} my={2}>
+        <span className="font-medium block my-2">
           <Trans>Empty backup basket</Trans>
-        </Text>
-        <Text variant="legend" sx={{ fontSize: 1 }}>
+        </span>
+        <span className="text-legend text-xs">
           <Trans>
             Each target unit of your primary basket will have defined emergency
             collateral to replace with in case of default.
           </Trans>
-        </Text>
-      </Box>
-    </Box>
-  </Box>
+        </span>
+      </div>
+    </div>
+  </div>
 )
 
 // TODO: Create readonly component and remove flag
@@ -54,8 +54,8 @@ const Placeholder = () => (
 const BackupBasket = ({
   onAdd = () => {},
   readOnly = false,
-  ...props
-}: Props) => {
+  className,
+}: BackupBasketProps) => {
   const targetUnits = Object.keys(useAtomValue(basketAtom))
   const backupBasket = useAtomValue(backupCollateralAtom)
 
@@ -71,22 +71,22 @@ const BackupBasket = ({
   }
 
   return (
-    <Box {...props}>
-      <Flex variant="layout.verticalAlign">
-        <Text variant="title">Emergency Collateral</Text>
+    <div className={className}>
+      <div className="flex items-center">
+        <span className="text-xl font-medium">Emergency Collateral</span>
         <DocsLink
           link={`${PROTOCOL_DOCS}yield_dtfs/deployment_guide/ui_walkthrough/#step-4-configure-backup-basket`}
         />
-      </Flex>
+      </div>
       {targetUnits.map((targetUnit) =>
         readOnly && !backupBasket[targetUnit]?.collaterals.length ? (
-          <Box my={3} px={1} key={targetUnit}>
-            <Text>
+          <div className="my-3 px-1" key={targetUnit}>
+            <span>
               <Trans>No emergency collateral for target</Trans> {targetUnit}
-            </Text>
-          </Box>
+            </span>
+          </div>
         ) : (
-          <Box key={targetUnit}>
+          <div key={targetUnit}>
             <EmergencyCollateral
               readOnly={readOnly}
               onAdd={handleAdd}
@@ -94,11 +94,11 @@ const BackupBasket = ({
               targetUnit={targetUnit}
               {...backupBasket[targetUnit]}
             />
-          </Box>
+          </div>
         )
       )}
       {!targetUnits.length && <Placeholder />}
-    </Box>
+    </div>
   )
 }
 

@@ -3,7 +3,6 @@ import { Trans } from '@lingui/macro'
 import DiscordIcon from 'components/icons/DiscordIcon'
 import GithubIcon from 'components/icons/GithubIcon'
 import { Link as RouterLink } from 'react-router-dom'
-import { Divider } from 'theme-ui'
 import {
   DISCORD_INVITE,
   PROTOCOL_DOCS,
@@ -157,7 +156,7 @@ const About = () => (
 )
 
 const DashedDivider = () => (
-  <Divider sx={{ border: '0.5px dashed', borderColor: 'text' }} my={[7, 8]} />
+  <hr className="border-0 border-t border-dashed border-foreground my-14 md:my-16" />
 )
 
 /**
