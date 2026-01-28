@@ -18,6 +18,8 @@ import SpellUpgrade4_2_0 from './SpellUpgrade4_2_0'
 import TraderImplementationProposal from './TraderImplementationProposal'
 import UnregisterProposal from './UnregisterProposal'
 
+const ALLOWED_RTOKENS = ['0xcb327b99ff831bf8223cced12b1338ff3aa322ff']
+
 const ProposalForm = () => {
   const contracts = useAtomValue(rTokenContractsAtom)
   const version = contracts?.main?.version ?? VERSION
@@ -34,7 +36,7 @@ const ProposalForm = () => {
       RegisterProposal,
       ContractUpgrades,
       ...(version < '3.4.0' ? [SpellUpgrade3_4_0] : []),
-      ...(version < '4.2.0' ? [SpellUpgrade4_2_0] : []),
+      ...(version < '4.2.0' && ALLOWED_RTOKENS.includes(contracts?.token?.address.toLowerCase() ?? '') ? [SpellUpgrade4_2_0] : []),
       ProposalGovernanceParams,
     ],
     [version]
