@@ -44,7 +44,7 @@ export const spellAbi = [
 
 export const spellAddress: Record<number, `0x${string}`> = {
   [ChainId.Mainnet]: getAddress('0x044B6F685FB8D0c3fd56D92FCBE5F0Ad947d2D53'),
-  [ChainId.Base]: getAddress('0x04B3eD311C68dfB9649D9faf695115F23DcbB540'),
+  [ChainId.Base]: getAddress('0x04B3eD311C68dfB0649D9faf695115F23DcbB540'),
   [ChainId.BSC]: getAddress('0xe8e67a366e5166c442B6D376ADc772b93CdE7825'),
 }
 
