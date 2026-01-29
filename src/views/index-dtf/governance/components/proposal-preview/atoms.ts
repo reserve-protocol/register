@@ -19,11 +19,13 @@ import {
   spellAbi as v5SpellAbi,
   spellAddress as v5SpellAddress,
 } from '../../views/propose/upgrade-banners/propose-v5-upgrade'
+import dtfIndexAbi from '@/abis/dtf-index-abi'
+import dtfIndexAbiV1 from '@/abis/dtf-index-abi-v1'
 
 export const dtfAbiMapppingAtom = atom((get) => {
   const dtf = get(indexDTFAtom)
 
-  const dtfAbi = [...dtfIndexAbiV4, ...dtfIndexAbiV2]
+  const dtfAbi = [...dtfIndexAbiV4, ...dtfIndexAbiV2, ...dtfIndexAbi, ...dtfIndexAbiV1]
 
   if (!dtf) return undefined
 
