@@ -477,7 +477,7 @@ const REBALANCE_PRICE_VOLATILITY: Record<Volatility, number> = {
 export const tokenPriceVolatilityAtom = atom<Record<string, Volatility>>({})
 
 // Max auction size per token in USD (hardcoded to $1M)
-const MAX_AUCTION_SIZE_USD = 300 // TODO: Rollback to 1M
+const MAX_AUCTION_SIZE_USD = 1_000_000
 
 export const basketProposalCalldatasAtom = atom<Hex[] | undefined>((get) => {
   const isSingleton = get(isSingletonRebalanceAtom)
