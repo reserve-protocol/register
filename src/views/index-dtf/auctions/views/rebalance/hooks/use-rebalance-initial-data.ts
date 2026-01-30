@@ -1,13 +1,12 @@
 import dtfIndexAbiV4 from '@/abis/dtf-index-abi-v4'
 import dtfIndexAbiV5 from '@/abis/dtf-index-abi'
 import { indexDTFAtom, indexDTFVersionAtom } from '@/state/dtf/atoms'
-import { FolioVersion } from '@reserve-protocol/dtf-rebalance-lib'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { useReadContracts } from 'wagmi'
 import { currentRebalanceAtom } from '../../../atoms'
 import { mapToAssets } from '../utils'
-import { getFolioVersion } from '../utils/transforms'
+import { FOLIO_VERSION_V5, getFolioVersion } from '../utils/transforms'
 
 const useRebalanceInitialData = () => {
   const dtf = useAtomValue(indexDTFAtom)
@@ -18,7 +17,7 @@ const useRebalanceInitialData = () => {
     () => getFolioVersion(versionString),
     [versionString]
   )
-  const abi = folioVersion === FolioVersion.V5 ? dtfIndexAbiV5 : dtfIndexAbiV4
+  const abi = folioVersion === FOLIO_VERSION_V5 ? dtfIndexAbiV5 : dtfIndexAbiV4
 
   return useReadContracts({
     contracts: [

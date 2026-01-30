@@ -4,7 +4,6 @@ import {
   isHybridDTFAtom,
 } from '@/state/dtf/atoms'
 import {
-  FolioVersion,
   getStartRebalance,
   WeightRange,
 } from '@reserve-protocol/dtf-rebalance-lib'
@@ -26,7 +25,8 @@ import {
 import { calculateTargetShares, prepareRebalanceData } from './utils/weight-calculation-utils'
 import ManageWeightsHeader from './manage-weights-header'
 import ManageWeightsHero from './manage-weights-hero'
-import { getRebalanceTokens, getRebalanceWeights } from '../../utils/transforms'
+import { FOLIO_VERSION_V5, getRebalanceTokens, getRebalanceWeights } from '../../utils/transforms'
+import { MAX_AUCTION_SIZE_USD } from '@/views/index-dtf/governance/views/propose/basket/atoms'
 
 const ManageWeightsContent = () => {
   const rebalanceParams = useRebalanceParams()
@@ -77,7 +77,7 @@ const ManageWeightsContent = () => {
       )
 
       // Max auction size per token in USD (hardcoded to $1M)
-      const maxAuctionSizes = rebalanceData.tokens.map(() => 1_000_000)
+      const maxAuctionSizes = rebalanceData.tokens.map(() => MAX_AUCTION_SIZE_USD)
 
       const startRebalanceArgs = getStartRebalance(
         rebalanceParams.folioVersion,
@@ -95,7 +95,7 @@ const ManageWeightsContent = () => {
 
       // Get weights - for v5 we need to extract from tokens, for v4 use weights directly
       let weights: WeightRange[]
-      if (rebalanceParams.folioVersion === FolioVersion.V5) {
+      if (rebalanceParams.folioVersion === FOLIO_VERSION_V5) {
         // For v5, getRebalanceWeights helper extracts from rebalance, but here we need from startRebalanceArgs
         // The v5 returns tokens: TokenRebalanceParams[], so we extract weights from there
         const argsV5 = startRebalanceArgs as { tokens: Array<{ weight: WeightRange }> }

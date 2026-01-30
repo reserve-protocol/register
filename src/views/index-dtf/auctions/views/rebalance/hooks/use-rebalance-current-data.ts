@@ -11,6 +11,7 @@ import { mapToAssets } from '../utils'
 import { isAuctionOngoingAtom } from '../atoms'
 import {
   extractBidsEnabledFromV5,
+  FOLIO_VERSION_V5,
   getFolioVersion,
   transformV4Rebalance,
   transformV5Rebalance,
@@ -33,7 +34,7 @@ const useRebalanceCurrentData = () => {
     () => getFolioVersion(versionString),
     [versionString]
   )
-  const isV5 = folioVersion === FolioVersion.V5
+  const isV5 = folioVersion === FOLIO_VERSION_V5
   const abi = isV5 ? dtfIndexAbiV5 : dtfIndexAbiV4
 
   const result = useReadContracts({

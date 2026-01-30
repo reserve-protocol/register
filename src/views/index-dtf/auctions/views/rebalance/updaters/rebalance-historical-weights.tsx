@@ -1,12 +1,13 @@
 import dtfIndexAbiV4 from '@/abis/dtf-index-abi-v4'
 import dtfIndexAbiV5 from '@/abis/dtf-index-abi'
 import { indexDTFAtom, indexDTFVersionAtom, isHybridDTFAtom } from '@/state/dtf/atoms'
-import { FolioVersion, WeightRange } from '@reserve-protocol/dtf-rebalance-lib'
+import { WeightRange } from '@reserve-protocol/dtf-rebalance-lib'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useMemo } from 'react'
 import { useReadContract } from 'wagmi'
 import { originalRebalanceWeightsAtom, rebalanceAuctionsAtom } from '../atoms'
 import {
+  FOLIO_VERSION_V5,
   getFolioVersion,
   getRebalanceTokens,
   getRebalanceWeights,
@@ -25,7 +26,7 @@ const RebalanceHistoricalWeightsUpdater = () => {
     () => getFolioVersion(versionString),
     [versionString]
   )
-  const abi = folioVersion === FolioVersion.V5 ? dtfIndexAbiV5 : dtfIndexAbiV4
+  const abi = folioVersion === FOLIO_VERSION_V5 ? dtfIndexAbiV5 : dtfIndexAbiV4
 
   // Query for historical weights at first auction block for hybrid DTFs
   const result = useReadContract({
@@ -50,7 +51,7 @@ const RebalanceHistoricalWeightsUpdater = () => {
   useEffect(() => {
     if (result.data && isHybridDTF) {
       const historicalRebalance =
-        folioVersion === FolioVersion.V5
+        folioVersion === FOLIO_VERSION_V5
           ? transformV5Rebalance(result.data as readonly unknown[])
           : transformV4Rebalance(result.data as readonly unknown[])
 

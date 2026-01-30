@@ -21,6 +21,7 @@ import { useReadContract } from 'wagmi'
 import { currentRebalanceAtom } from '../../../atoms'
 import { originalRebalanceWeightsAtom, rebalanceAuctionsAtom } from '../atoms'
 import {
+  FOLIO_VERSION_V5,
   getFolioVersion,
   getRebalancePrices,
   getRebalanceTokens,
@@ -62,7 +63,7 @@ const useRebalanceParams = () => {
     () => getFolioVersion(versionString),
     [versionString]
   )
-  const abi = folioVersion === FolioVersion.V5 ? dtfIndexAbiV5 : dtfIndexAbiV4
+  const abi = folioVersion === FOLIO_VERSION_V5 ? dtfIndexAbiV5 : dtfIndexAbiV4
 
   const rebalanceTokens = useMemo(() => {
     if (!rebalance || !basket) return []
@@ -118,7 +119,7 @@ const useRebalanceParams = () => {
 
     // Transform historical rebalance using version-aware helpers
     const historicalRebalance =
-      folioVersion === FolioVersion.V5
+      folioVersion === FOLIO_VERSION_V5
         ? transformV5Rebalance(initialRebalanceRaw as readonly unknown[])
         : transformV4Rebalance(initialRebalanceRaw as readonly unknown[])
 

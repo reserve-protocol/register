@@ -38,7 +38,7 @@ const SavedWeights = () => {
 
   if (!isHybridDTF) return null
 
-  const canEditWeights =
+  const canEditWeights = true
     isAuctionLauncher && areWeightsSettled && auctions.length === 0
 
   return (

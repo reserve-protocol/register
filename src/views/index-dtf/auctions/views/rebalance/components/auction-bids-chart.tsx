@@ -202,6 +202,7 @@ export default function AuctionBidsChart({
               axisLine={{ stroke: 'currentColor' }}
               tickLine={false}
               tick={false}
+              ticks={[startTime, endTime]}
               label={{
                 value: 'Time',
                 position: 'insideBottom',
