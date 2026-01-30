@@ -29,6 +29,7 @@ import {
   dtfBalancesAtom,
   tokenPriceVolatilityAtom,
 } from './atoms'
+import { resetMaxAuctionSizesAtom } from '@/state/max-auction-sizes'
 import { PermissionOptionId } from './components/proposal-rebalance-launch-settings'
 import useAssetPriceVolatility from '@/hooks/use-asset-price-volatility'
 
@@ -262,6 +263,7 @@ const AtomStateUpdater = () => {
   const tradeConfirmation = useSetAtom(isProposalConfirmedAtom)
   const setProposedShares = useSetAtom(proposedSharesAtom)
   const isDeferAvailable = useAtomValue(isDeferAvailableAtom)
+  const resetMaxAuctionSizes = useSetAtom(resetMaxAuctionSizesAtom)
 
   useEffect(() => {
     const tradeRange = isDeferAvailable ? 'defer' : 'include'
@@ -289,6 +291,7 @@ const AtomStateUpdater = () => {
       setPermissionlessLaunching(undefined)
       tradeConfirmation(false)
       setProposedUnits({})
+      resetMaxAuctionSizes()
     }
   }, [])
 

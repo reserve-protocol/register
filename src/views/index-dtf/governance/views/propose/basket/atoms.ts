@@ -17,6 +17,10 @@ import {
   isSingletonRebalanceAtom,
   iTokenAddressAtom,
 } from '@/state/dtf/atoms'
+import {
+  DEFAULT_MAX_AUCTION_SIZE_USD,
+  maxAuctionSizesAtom,
+} from '@/state/max-auction-sizes'
 import { Token, Volatility } from '@/types'
 import { atom, Getter } from 'jotai'
 import { Address, encodeFunctionData, Hex, parseUnits } from 'viem'
@@ -476,9 +480,6 @@ const REBALANCE_PRICE_VOLATILITY: Record<Volatility, number> = {
 
 export const tokenPriceVolatilityAtom = atom<Record<string, Volatility>>({})
 
-// Max auction size per token in USD (hardcoded to $1M)
-export const MAX_AUCTION_SIZE_USD = 1_000_000
-
 export const basketProposalCalldatasAtom = atom<Hex[] | undefined>((get) => {
   const isSingleton = get(isSingletonRebalanceAtom)
 
@@ -502,6 +503,7 @@ export const basketProposalCalldatasAtom = atom<Hex[] | undefined>((get) => {
   const priceMap = get(priceMapAtom)
   const tokenPriceVolatility = get(tokenPriceVolatilityAtom)
   const version = get(indexDTFVersionAtom)
+  const maxAuctionSizesMap = get(maxAuctionSizesAtom)
 
   // Determine folio version (4 and 5 are the enum values)
   const folioVersion = version.startsWith('5') ? 5 : 4
@@ -545,7 +547,9 @@ export const basketProposalCalldatasAtom = atom<Hex[] | undefined>((get) => {
     error.push(
       REBALANCE_PRICE_VOLATILITY[tokenPriceVolatility[asset] || tokenPriceVolatility[assetLower] || 'high']
     )
-    maxAuctionSizes.push(MAX_AUCTION_SIZE_USD)
+    maxAuctionSizes.push(
+      maxAuctionSizesMap[assetLower] ?? DEFAULT_MAX_AUCTION_SIZE_USD
+    )
   }
 
   const startRebalanceArgs = getStartRebalance(

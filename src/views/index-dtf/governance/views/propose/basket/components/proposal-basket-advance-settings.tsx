@@ -1,14 +1,17 @@
 import { AccordionContent, AccordionItem } from '@/components/ui/accordion'
+import MaxAuctionSizeEditor from '@/components/max-auction-size-editor'
 import { NumericalInput } from '@/components/ui/input'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
-import { isSingletonRebalanceAtom } from '@/state/dtf/atoms'
+import { isAuctionLauncherAtom, isSingletonRebalanceAtom } from '@/state/dtf/atoms'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { useMemo } from 'react'
 import { Sunrise } from 'lucide-react'
 import {
   auctionLauncherWindowAtom,
   customAuctionLauncherWindowAtom,
   customPermissionlessLaunchingWindowAtom,
   permissionlessLaunchingWindowAtom,
+  proposedIndexBasketAtom,
   stepAtom,
 } from '../atoms'
 import LegacyAdvancedControls from './legacy-advance-controls'
@@ -143,6 +146,20 @@ const ConfirmButton = () => {
   )
 }
 
+const MaxAuctionSizeSection = () => {
+  const isAuctionLauncher = useAtomValue(isAuctionLauncherAtom)
+  const proposedBasket = useAtomValue(proposedIndexBasketAtom)
+
+  const tokens = useMemo(() => {
+    if (!proposedBasket) return []
+    return Object.values(proposedBasket).map((item) => item.token)
+  }, [proposedBasket])
+
+  if (!isAuctionLauncher || !tokens.length) return null
+
+  return <MaxAuctionSizeEditor tokens={tokens} />
+}
+
 // TODO: Handle error case (0 ttl)
 const ProposalBasketAuctionWindow = () => {
   const isSingletonRebalance = useAtomValue(isSingletonRebalanceAtom)
@@ -169,6 +186,7 @@ const ProposalBasketAuctionWindow = () => {
         <div className="flex flex-col px-2 pt-2 gap-2">
           <AuctionLauncherWindow />
           <PermissionlessWindow />
+          <MaxAuctionSizeSection />
         </div>
         <ConfirmButton />
       </AccordionContent>

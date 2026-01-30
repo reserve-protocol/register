@@ -1,14 +1,20 @@
+import MaxAuctionSizeEditor from '@/components/max-auction-size-editor'
 import { Button } from '@/components/ui/button'
 import {
   indexDTFRebalanceControlAtom,
   isHybridDTFAtom,
 } from '@/state/dtf/atoms'
 import {
+  DEFAULT_MAX_AUCTION_SIZE_USD,
+  maxAuctionSizesAtom,
+} from '@/state/max-auction-sizes'
+import {
   getStartRebalance,
   WeightRange,
 } from '@reserve-protocol/dtf-rebalance-lib'
 import { StartRebalanceArgsPartial as StartRebalanceArgsPartialV4 } from '@reserve-protocol/dtf-rebalance-lib/dist/4.0.0/types'
 import { useAtomValue, useSetAtom } from 'jotai'
+import { useMemo } from 'react'
 import {
   areWeightsSavedAtom,
   savedWeightsAtom,
@@ -26,18 +32,21 @@ import { calculateTargetShares, prepareRebalanceData } from './utils/weight-calc
 import ManageWeightsHeader from './manage-weights-header'
 import ManageWeightsHero from './manage-weights-hero'
 import { FOLIO_VERSION_V5, getRebalanceTokens, getRebalanceWeights } from '../../utils/transforms'
-import { MAX_AUCTION_SIZE_USD } from '@/views/index-dtf/governance/views/propose/basket/atoms'
 
 const ManageWeightsContent = () => {
   const rebalanceParams = useRebalanceParams()
   const tokenMap = useAtomValue(rebalanceTokenMapAtom)
   const rebalanceControl = useAtomValue(indexDTFRebalanceControlAtom)
   const isHybridDTF = useAtomValue(isHybridDTFAtom)
+  const maxAuctionSizesMap = useAtomValue(maxAuctionSizesAtom)
   const setSavedWeights = useSetAtom(savedWeightsAtom)
   const setAreWeightsSaved = useSetAtom(areWeightsSavedAtom)
   const setShowView = useSetAtom(showManageWeightsViewAtom)
   const setManagedWeightUnits = useSetAtom(managedWeightUnitsAtom)
   const { basketItems, proposedUnits, validation } = useBasketSetup()
+
+  // Get token list for MaxAuctionSizeEditor
+  const tokens = useMemo(() => Object.values(tokenMap), [tokenMap])
 
   if (!rebalanceParams || !rebalanceControl) return null
 
@@ -76,8 +85,11 @@ const ManageWeightsContent = () => {
         rebalanceParams.prices
       )
 
-      // Max auction size per token in USD (hardcoded to $1M)
-      const maxAuctionSizes = rebalanceData.tokens.map(() => MAX_AUCTION_SIZE_USD)
+      // Max auction size per token in USD
+      const maxAuctionSizes = rebalanceData.tokens.map(
+        (token) =>
+          maxAuctionSizesMap[token.toLowerCase()] ?? DEFAULT_MAX_AUCTION_SIZE_USD
+      )
 
       const startRebalanceArgs = getStartRebalance(
         rebalanceParams.folioVersion,
@@ -149,6 +161,7 @@ const ManageWeightsContent = () => {
           showAddToken={false}
           readOnly={false}
         />
+        <MaxAuctionSizeEditor tokens={tokens} />
       </div>
 
       <div className="p-2 pt-0 border-t border-secondary">
