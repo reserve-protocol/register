@@ -190,7 +190,7 @@
   {
     "description": "Uniswap ETH/ETH+",
     "llamaId": "bceed234-64c8-448a-b5fa-7da3c6fc5307",
-    "url": "https://info.uniswap.org/#/pools/0xf649df4372d8bb3e6178e52fcd515519c78da348",
+    "url": "https://app.uniswap.org/explore/pools/ethereum/0xf649df4372d8bb3e6178e52fcd515519c78da348",
     "underlyingTokens": null,
     "symbol": ""
   },
@@ -232,7 +232,7 @@
   {
     "description": "Uniswap RSR/ETH 0.3%",
     "llamaId": "75ca1ed2-dcd0-419d-99e8-8aa13aa08364",
-    "url": "https://info.uniswap.org/#/pools/0x32d9259e6792b2150fd50395d971864647fa27b2",
+    "url": "https://app.uniswap.org/explore/pools/ethereum/0x32d9259e6792b2150fd50395d971864647fa27b2",
     "underlyingTokens": null,
     "symbol": ""
   },
@@ -412,7 +412,7 @@
   {
     "description": "Convex USD3/sUSDe",
     "llamaId": "25479d6a-af10-44e0-8b40-94b6929a7733",
-    "url": "https://curve.convexfinance.com/stake/ethereum/0x964573B560DA1cE5b10dd09a4723c5ccBE9f9688",
+    "url": "https://curve.convexfinance.com/stake/ethereum/408",
     "underlyingTokens": [
       "0x0d86883FAf4FfD7aEb116390af37746F45b6f378",
       "0x9D39A5DE30e57443BfF2A8307A4256c8797A3497"
@@ -432,7 +432,7 @@
   {
     "description": "Convex USD3/scrvUSD",
     "llamaId": "2340bd1f-1e31-4461-adad-fd052b7067f3",
-    "url": "https://curve.convexfinance.com/stake/ethereum/0xE99810Cd5AdCD7b13455aE1Be678B382d61f2d1E",
+    "url": "https://curve.convexfinance.com/stake/ethereum/412",
     "underlyingTokens": [
       "0x0d86883FAf4FfD7aEb116390af37746F45b6f378",
       "0x0655977FEb2f289A4aB78af67BAB0d17aAb84367"
@@ -482,7 +482,7 @@
   {
     "description": "Convex USD3/sUSDS",
     "llamaId": "a885ccfd-320d-4b07-9efb-8945bf2f5115",
-    "url": "https://curve.convexfinance.com/stake/ethereum/0x65b05F6b0472b1f36a2F6d90A14cD21900851609",
+    "url": "https://curve.convexfinance.com/stake/ethereum/475",
     "underlyingTokens": [
       "0x0d86883FAf4FfD7aEb116390af37746F45b6f378",
       "0xa3931d71877C0E7a3148CB7Eb4463524FEc27fbD"
