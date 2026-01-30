@@ -46,6 +46,7 @@ export const PROJECT_ICONS: Record<string, React.ReactElement> = {
   concentrator: <Concentrator />,
   dyson: <Dyson />,
   'morpho-blue': <Morpho />,
+  'morpho-v1': <Morpho />,
   merkl: <Merkl />,
   ethena: <Ethena />,
   'dinero-(pirex-eth)': <Dinero />,

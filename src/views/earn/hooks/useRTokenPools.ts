@@ -7,6 +7,7 @@ import { StringMap } from 'types'
 import { EUSD_ADDRESS, RSR_ADDRESS } from 'utils/addresses'
 import { ChainId } from 'utils/chains'
 import {
+  BRIDGED_INDEX_DTFS,
   BRIDGED_RTOKENS,
   LP_PROJECTS,
   NETWORKS,
@@ -253,6 +254,22 @@ const useRTokenPools = () => {
         }
         return acc
       }, {} as StringMap)
+
+      // Include bridged Index DTFs
+      Object.entries(BRIDGED_INDEX_DTFS).forEach(([address, bridges]) => {
+        const _token = indexDTFsMap[address]
+        if (_token) {
+          bridges.forEach((bridge) => {
+            const bridgeAddr = bridge.address.toLowerCase()
+            if (!indexDTFsMap[bridgeAddr]) {
+              indexDTFsMap[bridgeAddr] = {
+                ..._token,
+                address: bridge.address,
+              }
+            }
+          })
+        }
+      })
 
       const pools = mapPools(
         data.data as DefillamaPool[],
