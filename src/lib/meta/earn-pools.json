@@ -286,7 +286,7 @@
   {
     "description": "Convex ETH+/WETH",
     "llamaId": "152b7ce2-7193-475d-9b15-3f17fee66047",
-    "url": "https://curve.convexfinance.com/stake/ethereum/395",
+    "url": "https://curve.convexfinance.com/stake/ethereum/470",
     "underlyingTokens": [
       "0xE72B141DF173b999AE7c1aDcbF60Cc9833Ce56a8",
       "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
