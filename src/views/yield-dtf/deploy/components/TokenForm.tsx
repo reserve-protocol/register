@@ -1,7 +1,7 @@
+import { Switch } from '@/components/ui/switch'
 import { t, Trans } from '@lingui/macro'
 import { FormField } from 'components/field'
 import { useFormContext } from 'react-hook-form'
-import { Switch } from '@/components/ui/switch'
 
 interface TokenFormProps {
   className?: string
@@ -12,7 +12,7 @@ interface TokenFormProps {
  */
 const TokenForm = ({ className }: TokenFormProps) => {
   const { watch, setValue } = useFormContext()
-  const [tickerValue, reweightable] = watch(['ticker', 'reweightable'])
+  const [tickerValue, reweightable, enableIssuancePremium] = watch(['ticker', 'reweightable', 'enableIssuancePremium'])
 
   return (
     <div className={className}>
@@ -78,7 +78,24 @@ const TokenForm = ({ className }: TokenFormProps) => {
           />
         </div>
       </div>
+      <div className="mt-3 ml-3 flex flex-col gap-2">
+        <span className="font-bold">Issuance Premium</span>
+        <p className="text-xs text-legend mb-2">
+          This impacts whether the RToken charges higher rates for issuance when
+          collateral is under-peg. This mechanism can be useful for preventing
+          toxic issuance but comes with the tradeoff of making the onchain
+          oracle price unreliable, as the issuance/redemption band widens as a
+          collateral approaches its de-peg threshold.
+        </p>
+        <div className="flex items-center gap-1">
+          <Switch
+              checked={enableIssuancePremium}
+              onCheckedChange={(checked) => setValue('enableIssuancePremium', checked)}
+            />
+        </div>
+      </div>
     </div>
+
   )
 }
 

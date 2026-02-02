@@ -1,18 +1,18 @@
 import { t } from '@lingui/macro'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { cn } from '@/lib/utils'
-import { proposedRolesAtom, spellUpgradeAtom } from '../atoms'
+import { proposedRolesAtom, spell3_4_0UpgradeAtom } from '../atoms'
 import { ListChangePreview } from './ItemPreview'
 import PreviewBox from './PreviewBox'
-import { spellAddressAtom } from './SpellUpgrade'
+import { spell3_4_0AddressAtom } from './SpellUpgrade3_4_0'
 
 interface Props {
   className?: string
 }
 
-const SpellUpgradePreview = ({ className }: Props) => {
-  const [spell, setSpell] = useAtom(spellUpgradeAtom)
-  const spellContract = useAtomValue(spellAddressAtom)
+const SpellUpgradePreview3_4_0 = ({ className }: Props) => {
+  const [spell, setSpell] = useAtom(spell3_4_0UpgradeAtom)
+  const spellContract = useAtomValue(spell3_4_0AddressAtom)
   const setProposedRoles = useSetAtom(proposedRolesAtom)
 
   if (spell === 'none') return null
@@ -41,4 +41,4 @@ const SpellUpgradePreview = ({ className }: Props) => {
   )
 }
 
-export default SpellUpgradePreview
+export default SpellUpgradePreview3_4_0

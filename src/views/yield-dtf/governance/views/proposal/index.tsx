@@ -9,16 +9,19 @@ import {
   isProposalEditingAtom,
   proposalDescriptionAtom,
   proposedRolesAtom,
-  spellUpgradeAtom,
+  spell3_4_0UpgradeAtom,
+  spell4_2_0UpgradeAtom,
 } from './atoms'
 import ConfirmProposal from './components/ConfirmProposal'
 import Proposal from './components/Proposal'
 import Updater from './updater'
 import { keccak256, stringToBytes } from 'viem'
+import { isTimeunitGovernance } from '../../utils'
 
 const paramsAtom = atom((get) => {
   const config = get(rTokenConfigurationAtom)
   const governance = get(rTokenGovernanceAtom)
+  const isTimeunit = isTimeunitGovernance(governance.name)
 
   if (!config || !governance.executionDelay) {
     return null
@@ -26,8 +29,8 @@ const paramsAtom = atom((get) => {
 
   return {
     ...config,
-    votingDelay: governance.votingDelay,
-    votingPeriod: governance.votingPeriod,
+    votingDelay: Number(governance.votingDelay || 0) / (isTimeunit ? 3600 : 1),
+    votingPeriod: Number(governance.votingPeriod || 0) / (isTimeunit ? 3600 : 1),
     minDelay: +governance.executionDelay / 60 / 60,
     proposalThresholdAsMicroPercent: governance.proposalThreshold,
     quorumPercent: governance.quorumNumerator,
@@ -50,13 +53,15 @@ const GovernanceProposal = () => {
   const setBasketProposed = useSetAtom(isNewBasketProposedAtom)
   const setDescription = useSetAtom(proposalDescriptionAtom)
   const resetProposedRoles = useResetAtom(proposedRolesAtom)
-  const resetSpellUpgrade = useResetAtom(spellUpgradeAtom)
+  const resetSpell3_4_0Upgrade = useResetAtom(spell3_4_0UpgradeAtom)
+  const resetSpell4_2_0Upgrade = useResetAtom(spell4_2_0UpgradeAtom)
 
   useEffect(() => {
     return () => {
       setBasketProposed(false)
       resetProposedRoles()
-      resetSpellUpgrade()
+      resetSpell3_4_0Upgrade()
+      resetSpell4_2_0Upgrade()
       setEditing(true)
       setDescription('')
     }

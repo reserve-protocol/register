@@ -1,12 +1,12 @@
+import { Checkbox } from '@/components/ui/checkbox'
+import GoTo from '@/components/ui/go-to'
+import { Separator } from '@/components/ui/separator'
+import TransactionButton from '@/components/ui/transaction-button'
 import { t, Trans } from '@lingui/macro'
 import Governance from 'abis/Governance'
-import { Modal } from 'components'
-import GoTo from '@/components/ui/go-to'
-import TransactionButton from '@/components/ui/transaction-button'
-import { ModalProps } from 'components'
+import { Modal, ModalProps } from 'components'
 import useContractWrite from 'hooks/useContractWrite'
 import { useAtomValue } from 'jotai'
-import { useState } from 'react'
 import {
   CheckCircle,
   ExternalLink,
@@ -14,6 +14,7 @@ import {
   ThumbsDown,
   ThumbsUp,
 } from 'lucide-react'
+import { useState } from 'react'
 import { chainIdAtom, rTokenGovernanceAtom } from 'state/atoms'
 import { getProposalTitle, shortenAddress } from 'utils'
 import {
@@ -22,8 +23,6 @@ import {
   getExplorerLink,
 } from 'utils/getExplorerLink'
 import { proposalDetailAtom } from '../atom'
-import { Separator } from '@/components/ui/separator'
-import { Checkbox } from '@/components/ui/checkbox'
 
 export const VOTE_TYPE = {
   AGAINST: 0,

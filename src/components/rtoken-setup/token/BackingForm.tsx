@@ -51,7 +51,7 @@ const BackingForm = ({ className }: BackingFormProps) => {
         options={{
           required: true,
           pattern: numberPattern,
-          min: 0,
+          min: 60,
           max: 604800,
         }}
       />
