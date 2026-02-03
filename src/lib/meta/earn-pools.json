@@ -520,16 +520,6 @@
     "symbol": ""
   },
   {
-    "description": "StakeDAO USD3/sUSDe",
-    "llamaId": "edac9a31-0b94-4e39-bd5c-e059fac326f3",
-    "url": "https://stakedao.org/yield?search=0xB171bF919bd739144293CB1cf8376f94F7F84B77",
-    "underlyingTokens": [
-      "0x0d86883FAf4FfD7aEb116390af37746F45b6f378",
-      "0x9D39A5DE30e57443BfF2A8307A4256c8797A3497"
-    ],
-    "symbol": ""
-  },
-  {
     "description": "StakeDAO LCAP/eUSD (Base)",
     "llamaId": "7eea6b0f-9330-480e-b4db-ef713bada12b",
     "url": "https://stakedao.org/yield?search=0x52ece31A6Fc7517186B1E21cdF47c81f0f494065",
@@ -609,15 +599,6 @@
     "symbol": ""
   },
   {
-    "description": "Morpho bsdETH Market (Base)",
-    "llamaId": "8a59bccb-5a9e-496f-9414-f45e80772e4e",
-    "url": "https://app.morpho.org/market?id=0x7f90d72667171d72d10d62b5828d6a5ef7254b1e33718fe0c1f7dcf56dd1edc7&network=base",
-    "underlyingTokens": [
-      "0xCb327b99fF831bF8223cCEd12B1338FF3aA322Ff"
-    ],
-    "symbol": ""
-  },
-  {
     "description": "Beefy LCAP/eUSD (Base)",
     "llamaId": "a9dc5d7f-df4f-4fb1-8203-f7b366b89473",
     "url": "https://app.beefy.com/vault/aerodrome-lcap-eusd",
@@ -634,6 +615,15 @@
     "underlyingTokens": [
       "0xaB36452DbAC151bE02b16Ca17d8919826072f64a",
       "0xCb327b99fF831bF8223cCEd12B1338FF3aA322Ff"
+    ],
+    "symbol": ""
+  },
+  {
+    "description": "Lagoon tulipaETH+",
+    "llamaId": "386a0130-c330-4557-86a1-b875a148c190",
+    "url": "https://app.lagoon.finance/vault/1/0x9b1c616f5d2d8efb451b2823a58e789dc370705f",
+    "underlyingTokens": [
+      "0xe72b141df173b999ae7c1adcbf60cc9833ce56a8"
     ],
     "symbol": ""
   }
