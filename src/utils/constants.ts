@@ -132,6 +132,10 @@ export const LP_PROJECTS: { [x: string]: { name: string; site: string } } = {
     name: 'Ether.fi',
     site: 'https://ether.fi/',
   },
+  'lagoon': {
+    name: 'Lagoon',
+    site: 'https://lagoon.finance/',
+  },
 }
 
 // List of supported networks with label
