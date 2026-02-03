@@ -100,6 +100,10 @@ export const LP_PROJECTS: { [x: string]: { name: string; site: string } } = {
     name: 'Morpho',
     site: 'https://app.morpho.org/',
   },
+  'morpho-v1': {
+    name: 'Morpho',
+    site: 'https://app.morpho.org/',
+  },
   merkl: {
     name: 'Merkl',
     site: 'https://merkl.angle.money/',
@@ -127,6 +131,10 @@ export const LP_PROJECTS: { [x: string]: { name: string; site: string } } = {
   'ether.fi-staking': {
     name: 'Ether.fi',
     site: 'https://ether.fi/',
+  },
+  'lagoon': {
+    name: 'Lagoon',
+    site: 'https://lagoon.finance/',
   },
 }
 

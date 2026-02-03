@@ -29,6 +29,7 @@ import { CHAIN_TAGS, LP_PROJECTS, NETWORKS } from 'utils/constants'
 import Sky from '@/components/icons/logos/Sky'
 import Origin from '@/components/icons/logos/Origin'
 import Etherfi from '@/components/icons/logos/Etherfi'
+import Lagoon from '@/components/icons/logos/Lagoon'
 
 export const PROJECT_ICONS: Record<string, React.ReactElement> = {
   'yearn-finance': <Yearn fontSize={16} />,
@@ -46,6 +47,8 @@ export const PROJECT_ICONS: Record<string, React.ReactElement> = {
   concentrator: <Concentrator />,
   dyson: <Dyson />,
   'morpho-blue': <Morpho />,
+  'morpho-v1': <Morpho />,
+  lagoon: <Lagoon />,
   merkl: <Merkl />,
   ethena: <Ethena />,
   'dinero-(pirex-eth)': <Dinero />,
