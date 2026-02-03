@@ -85,8 +85,8 @@ const dtfsQuery = gql`
 `
 
 const countQuery = gql`
-  query GetDTFCount {
-    dtfs(first: 1000) {
+  query GetDTFCount($where: DTF_filter) {
+    dtfs(first: 1000, where: $where) {
       id
     }
   }
@@ -139,20 +139,22 @@ export const useInternalDTFList = (
   })
 }
 
-export const useInternalDTFCount = () => {
+export const useInternalDTFCount = (where?: any) => {
   return useQuery({
-    queryKey: ['internal-dtf-count'],
+    queryKey: ['internal-dtf-count', where],
     queryFn: async () => {
       let totalCount = 0
-      
+
       const chains = [ChainId.Base, ChainId.Mainnet, ChainId.BSC]
-      
+
       for (const chainId of chains) {
         try {
           const client = INDEX_GRAPH_CLIENTS[chainId]
           if (!client) continue
 
-          const response = await client.request(countQuery)
+          const response = await client.request(countQuery, {
+            where: where || {},
+          })
           totalCount += response.dtfs.length
         } catch (error) {
           console.error(`Failed to fetch DTF count from chain ${chainId}:`, error)
