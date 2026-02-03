@@ -7,8 +7,10 @@ import { currentRebalanceAtom, RebalanceByProposal } from '../../../atoms'
 import {
   areWeightsSavedAtom,
   rebalanceAuctionsAtom,
+  rebalanceErrorAtom,
   rebalanceMetricsAtom,
   rebalancePercentAtom,
+  rebalanceTokenMapAtom,
   savedWeightsAtom,
 } from '../atoms'
 import useRebalanceParams, {
@@ -18,6 +20,7 @@ import getRebalanceOpenAuction from '../utils/get-rebalance-open-auction'
 
 const RebalanceMetricsUpdater = () => {
   const setRebalanceMetrics = useSetAtom(rebalanceMetricsAtom)
+  const setRebalanceError = useSetAtom(rebalanceErrorAtom)
   const rebalancePercent = useAtomValue(rebalancePercentAtom)
   const rebalanceParams = useRebalanceParams()
   const currentRebalance = useAtomValue(currentRebalanceAtom)
@@ -27,6 +30,7 @@ const RebalanceMetricsUpdater = () => {
   const auctions = useAtomValue(rebalanceAuctionsAtom)
   const chainId = useAtomValue(chainIdAtom)
   const isDevMode = useAtomValue(devModeAtom)
+  const tokenMap = useAtomValue(rebalanceTokenMapAtom)
 
   const updateMetrics = useCallback(
     (
@@ -51,9 +55,9 @@ const RebalanceMetricsUpdater = () => {
         // Use saved weights for hybrid DTFs on first auction if available
         const weightsToUse =
           isHybridDTF &&
-          areWeightsSaved &&
-          savedWeights &&
-          auctions.length === 0
+            areWeightsSaved &&
+            savedWeights &&
+            auctions.length === 0
             ? savedWeights
             : initialWeights
 
@@ -92,22 +96,23 @@ const RebalanceMetricsUpdater = () => {
         const [, rebalanceMetrics] =
           effectivePercent !== rebalancePercent
             ? getRebalanceOpenAuction(
-                currentRebalance.rebalance.tokens,
-                rebalance,
-                supply,
-                initialSupply,
-                currentAssets,
-                initialAssets,
-                initialPrices,
-                weightsToUse,
-                prices,
-                isTrackingDTF,
-                tokenPriceVolatility,
-                effectivePercent,
-                isHybridDTF
-              )
+              currentRebalance.rebalance.tokens,
+              rebalance,
+              supply,
+              initialSupply,
+              currentAssets,
+              initialAssets,
+              initialPrices,
+              weightsToUse,
+              prices,
+              isTrackingDTF,
+              tokenPriceVolatility,
+              effectivePercent,
+              isHybridDTF
+            )
             : [, initialMetrics]
 
+        setRebalanceError('')
         setRebalanceMetrics({
           ...rebalanceMetrics,
           absoluteProgression: rebalanceMetrics.absoluteProgression * 100,
@@ -116,6 +121,18 @@ const RebalanceMetricsUpdater = () => {
         })
       } catch (e) {
         console.error('Error getting rebalance metrics', e)
+        if (e instanceof Error && e.message.includes('out of bounds')) {
+          const tokenAddr = e.message.split(' ')[1]?.toLowerCase().replace(':', '')
+          console.log('words', tokenAddr)
+          if (!tokenMap[tokenAddr]) {
+            setRebalanceError('One or more tokens in the rebalance is out of bounds. Rebalance must be closed.')
+          } else {
+            setRebalanceError(`Token "${tokenMap[tokenAddr].symbol}" is out of bounds. Rebalance must be closed.`)
+          }
+
+        } else {
+          setRebalanceError('Unexpected error getting Rebalance data.')
+        }
       }
     },
     [
@@ -126,6 +143,8 @@ const RebalanceMetricsUpdater = () => {
       auctions,
       chainId,
       isDevMode,
+      setRebalanceError,
+      tokenMap
     ]
   )
 

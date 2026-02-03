@@ -92,7 +92,7 @@ export const useRebalanceMetrics = (proposalId: string) => {
 
   const rebalanceData = rebalancesByProposal?.[proposalId]
 
-  const { data: apiResponse, isLoading } = useQuery({
+  const { data: apiResponse, isLoading, error } = useQuery({
     queryKey: [
       'rebalance-metrics',
       chainId,

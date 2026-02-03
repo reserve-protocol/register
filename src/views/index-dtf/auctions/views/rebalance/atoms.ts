@@ -43,6 +43,7 @@ export type Auction = {
 }
 
 export const rebalanceMetricsAtom = atom<AuctionMetrics | undefined>(undefined)
+export const rebalanceErrorAtom = atom('')
 
 export const rebalancePercentAtom = atom(98)
 export const rebalanceAuctionsAtom = atom<Auction[]>([])
