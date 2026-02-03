@@ -10,10 +10,9 @@ const NavItem = ({
 }) => (
   <NavLink
     className={({ isActive }) =>
-      `block py-3 text-center leading-8 no-underline ${
-        isActive
-          ? 'font-bold border-b-[3px] border-primary pb-[9px]'
-          : 'border-b-0'
+      `block py-3 text-center leading-8 no-underline ${isActive
+        ? 'font-bold border-b-[3px] border-primary pb-[9px]'
+        : 'border-b-0'
       }`
     }
     to={to}
@@ -38,7 +37,7 @@ const Navigation = () => {
 }
 
 const Explorer = () => (
-  <div className="container flex flex-col gap-1 py-4 lg:py-6">
+  <div className="container flex flex-col gap-1 ">
     <Navigation />
     <div className="flex-grow">
       <Outlet />

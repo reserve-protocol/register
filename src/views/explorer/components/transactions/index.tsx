@@ -32,7 +32,7 @@ const ExploreTransactions = () => {
 
   return (
     <div className="mt-4 md:mt-8 mx-2 md:mx-6">
-      <div className="flex items-center flex-wrap gap-2 pl-2 mb-8">
+      <div className="flex items-center flex-wrap gap-2 pl-5 mb-8">
         <TransactionsIcon fontSize={32} />
         <h2 className="mr-auto text-xl font-medium">
           <Trans>Transactions</Trans>
@@ -42,6 +42,7 @@ const ExploreTransactions = () => {
       <Table
         sorting
         sortBy={[{ id: 'timestamp', desc: true }]}
+        className="border-2 pt-0 border-secondary"
         onSort={handleSort}
         data={data}
         pagination={{ pageSize: 10 }}

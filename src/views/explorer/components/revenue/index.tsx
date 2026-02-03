@@ -334,7 +334,7 @@ const TradesTable = ({
           <Button
             size="sm"
             variant="outline"
-            className="border-2"
+            className="border-2 border-primary text-primary"
             onClick={() => {
               window.open(
                 getTokenRoute(
@@ -361,6 +361,7 @@ const TradesTable = ({
       columns={columns as any}
       sorting
       sortBy={[{ id: 'value', desc: true }]}
+      className='border-2 border-secondary pt-0'
       columnVisibility={
         !rToken ? ['none', '', '', '', '', '', 'none'] : undefined
       }
@@ -380,7 +381,7 @@ const RTokenRevenueOverview = ({ data }: { data: RevenueDetail }) => {
   }
 
   return (
-    <div className="border border-border rounded-[20px] p-4 md:p-6 bg-secondary">
+    <div className="border border-border rounded-3xl p-4 md:p-6 bg-secondary">
       {/* Collapsable header */}
       <div
         className="flex cursor-pointer w-full"
@@ -414,7 +415,7 @@ const RTokenRevenueOverview = ({ data }: { data: RevenueDetail }) => {
             <Button
               size="sm"
               variant="outline"
-              className="border-2"
+              className="border-2 border-primary text-primary"
               onClick={(e: React.MouseEvent) => {
                 e.stopPropagation()
                 handleRun()
@@ -491,7 +492,7 @@ const RevenueOverview = ({
 
   return (
     <div>
-      <div className="border border-border rounded-[20px] p-2 md:p-4 flex flex-wrap gap-2 md:gap-4 justify-center">
+      <div className="border-2 border-secondary rounded-4xl p-2 md:p-4 flex flex-wrap gap-2 md:gap-4 justify-center">
         <div className="flex items-center gap-1">
           <span className="text-muted-foreground">Trades:</span>
           <span className="font-medium">{data?.trades ?? 0}</span>
@@ -534,9 +535,9 @@ const AvailableRevenue = () => {
 
   return (
     <div className="mt-4 md:mt-8 mx-2 md:mx-4">
-      <div className="flex items-center mb-8">
+      <div className="flex items-center mb-8 pl-5">
         <AuctionsIcon fontSize={32} />
-        <h2 className="ml-2 text-xl font-medium">Revenue</h2>
+        <h2 className="ml-2 text-xl mr-auto font-medium">Revenue</h2>
         <Menu current={current} onChange={handleChange} />
       </div>
       <RevenueOverview data={data} type={current} />

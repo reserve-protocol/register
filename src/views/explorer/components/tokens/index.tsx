@@ -171,7 +171,7 @@ const ExploreTokens = (props: Partial<TableProps>) => {
       columnHelper.accessor('targetUnits', {
         header: t`Target(s)`,
         cell: (data) => {
-          return <span className="w-[74px] block">{data.getValue()}</span>
+          return <span className="w-[74px] block overflow-clip">{data.getValue()}</span>
         },
       }),
     ],
@@ -184,7 +184,7 @@ const ExploreTokens = (props: Partial<TableProps>) => {
 
   return (
     <div className="my-4 md:my-8 mx-2 md:mx-6">
-      <div className="flex items-center flex-wrap gap-2 mb-8">
+      <div className="flex items-center pl-5 flex-wrap gap-2 mb-8">
         <BasketCubeIcon fontSize={32} />
         <h2 className="mr-auto text-xl font-medium">
           <Trans>Featured RTokens</Trans>
@@ -197,6 +197,7 @@ const ExploreTokens = (props: Partial<TableProps>) => {
         columns={columns}
         onRowClick={handleClick}
         sorting
+        className="border-2 pt-0 border-secondary"
         sortBy={[{ id: 'supply', desc: true }]}
         renderSubComponent={renderSubComponent}
         {...props}

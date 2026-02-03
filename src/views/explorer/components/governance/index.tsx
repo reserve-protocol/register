@@ -91,7 +91,7 @@ const ExploreGovernance = () => {
 
   return (
     <div className="mt-4 md:mt-8 mx-2 md:mx-4">
-      <div className="flex items-center flex-wrap gap-2 mb-8">
+      <div className="flex items-center pl-5 flex-wrap gap-2 mb-8">
         <GovernanceIcon fontSize={32} />
         <h2 className="mr-auto text-xl font-medium">
           <Trans>Proposals</Trans>
@@ -103,6 +103,7 @@ const ExploreGovernance = () => {
         sortBy={[{ id: 'creationTime', desc: true }]}
         data={data}
         pagination={{ pageSize: 10 }}
+        className='border-2 border-secondary pt-0'
         columnVisibility={['', '', ['none', 'table-cell'], '']}
         columns={columns}
       />

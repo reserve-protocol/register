@@ -40,7 +40,7 @@ const allPluginsAtom = atomWithLoadable(async (get) => {
       ...plugin,
       apy:
         collateralYield[chainId]?.[
-          plugin.symbol.toLowerCase().replace('-vault', '')
+        plugin.symbol.toLowerCase().replace('-vault', '')
         ] ?? 0,
       supply: 0,
       chainId,
@@ -72,7 +72,7 @@ const PluginList = () => {
         cell: (data) => (
           <div className="flex items-center">
             <ChainLogo chain={data.getValue()} />
-            <span className="ml-2">{CHAIN_TAGS[data.getValue()]}</span>
+            {/* <span className="ml-2">{CHAIN_TAGS[data.getValue()]}</span> */}
           </div>
         ),
       }),
@@ -173,6 +173,7 @@ const PluginList = () => {
   return (
     <Table
       sorting
+      className='border-2 pt-0 border-secondary'
       sortBy={[{ id: 'apy', desc: true }]}
       data={data}
       columns={columns}
@@ -184,7 +185,7 @@ const Collaterals = () => {
   return (
     <div className="my-4 md:my-8 mx-2 md:mx-4">
       <CollateralYieldUpdater />
-      <div className="flex items-center gap-2 flex-wrap mb-4 md:mb-8">
+      <div className="flex items-center gap-2 pl-5 flex-wrap mb-4 md:mb-8">
         <BasketCubeIcon fontSize={32} />
         <h2 className="mr-auto text-xl font-medium">Available Collaterals</h2>
         <div className="hidden md:flex gap-2 ml-2">
