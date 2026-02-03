@@ -1,12 +1,13 @@
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useSetAtom, useAtomValue } from 'jotai'
-import { 
-  dtfListAtom, 
-  isLoadingAtom, 
+import {
+  dtfListAtom,
+  isLoadingAtom,
   totalCountAtom,
   currentPageAtom,
   pageSizeAtom,
-  marketCapsAtom 
+  marketCapsAtom,
+  searchFilterAtom,
 } from './atoms'
 import { useInternalDTFList, useInternalDTFCount } from './hooks/use-internal-dtf-list'
 import { useDTFMarketCaps } from './hooks/use-dtf-market-caps'
@@ -22,12 +23,28 @@ const Updater = () => {
   const currentPage = useAtomValue(currentPageAtom)
   const pageSize = useAtomValue(pageSizeAtom)
   const wallet = useAtomValue(walletAtom)
-  
+  const search = useAtomValue(searchFilterAtom)
+
+  // Build search filter for subgraph query
+  const whereFilter = useMemo(() => {
+    if (!search) return undefined
+    return {
+      or: [
+        { token_: { name_contains_nocase: search } },
+        { token_: { symbol_contains_nocase: search } },
+      ],
+    }
+  }, [search])
+
   // Fetch DTF list
-  const { data: dtfList, isLoading } = useInternalDTFList(currentPage, pageSize)
+  const { data: dtfList, isLoading } = useInternalDTFList(
+    currentPage,
+    pageSize,
+    whereFilter
+  )
   
-  // Fetch total count
-  const { data: totalCount } = useInternalDTFCount()
+  // Fetch total count (with same filter as list)
+  const { data: totalCount } = useInternalDTFCount(whereFilter)
   
   // Fetch market caps
   const { data: marketCaps } = useDTFMarketCaps(dtfList || [])
