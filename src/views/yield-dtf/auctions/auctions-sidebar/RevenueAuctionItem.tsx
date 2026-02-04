@@ -50,9 +50,11 @@ const Info = ({
 const RevenueAuctionItem = ({
   data,
   onSelect,
+  selected = false,
 }: {
   data: Auction
   onSelect(): void
+  selected?: boolean
 }) => {
   const [isOpen, setOpen] = useState(false)
   const isBelowMinTrade = +data.minAmount > +data.amount
@@ -80,7 +82,7 @@ const RevenueAuctionItem = ({
               <UnavailablePlaceholder isBelowMinTrade={isBelowMinTrade} />
             ) : (
               <Checkbox
-                checked={false}
+                checked={selected}
                 onCheckedChange={() => onSelect()}
                 onClick={(e) => e.stopPropagation()}
                 className="cursor-pointer"

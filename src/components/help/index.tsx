@@ -1,10 +1,11 @@
 import {
   Tooltip,
   TooltipContent,
+  TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
 import HelpIcon from 'components/icons/CustomHelpIcon'
-import { ReactNode } from 'react'
+import { ReactNode, useState } from 'react'
 import { cn } from '@/lib/utils'
 
 // Legacy theme-ui spacing to Tailwind mapping
@@ -60,6 +61,7 @@ const Help = ({
   my,
   sx, // eslint-disable-line @typescript-eslint/no-unused-vars
 }: Props) => {
+  const [open, setOpen] = useState(false)
   const defaultColor = 'secondaryText'
 
   // Build Tailwind classes from legacy props
@@ -83,23 +85,27 @@ const Help = ({
   const finalSide = side ?? placementToSide(placement)
 
   return (
-    <Tooltip>
-      <TooltipTrigger asChild>
-        <button
-          type="button"
-          className={cn(
-            'flex items-center cursor-pointer',
-            legacyClasses.join(' '),
-            className
-          )}
-        >
-          <HelpIcon color={color ? color : defaultColor} />
-        </button>
-      </TooltipTrigger>
-      <TooltipContent side={finalSide} className="max-w-[340px]">
-        {content}
-      </TooltipContent>
-    </Tooltip>
+    <TooltipProvider delayDuration={0}>
+      <Tooltip open={open}>
+        <TooltipTrigger asChild>
+          <button
+            type="button"
+            className={cn(
+              'flex items-center cursor-pointer',
+              legacyClasses.join(' '),
+              className
+            )}
+            onMouseEnter={() => setOpen(true)}
+            onMouseLeave={() => setOpen(false)}
+          >
+            <HelpIcon color={color ? color : defaultColor} />
+          </button>
+        </TooltipTrigger>
+        <TooltipContent side={finalSide} className="max-w-[340px]">
+          {content}
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   )
 }
 

@@ -114,6 +114,7 @@ const ConfirmAuction = () => {
 
 const UnavailableRevenueAuctions = () => {
   const revenueData = useAtomValue(auctionsOverviewAtom)
+  const selectedAuctions = useAtomValue(selectedUnavailableAuctionsAtom)
   const setSelectedAuctions = useSetAtom(setAuctionAtom)
   const setAuctions = useSetAtom(selectedUnavailableAuctionsAtom)
 
@@ -138,6 +139,7 @@ const UnavailableRevenueAuctions = () => {
           <RevenueAuctionItem
             onSelect={() => setSelectedAuctions(index)}
             data={auction}
+            selected={selectedAuctions.includes(index)}
           />
         </div>
       ))}

@@ -23,6 +23,7 @@ const setAuctionAtom = atom(null, (get, set, index: number) => {
 
 const AvailableRevenueAuctions = () => {
   const revenueData = useAtomValue(auctionsOverviewAtom)
+  const selectedAuctions = useAtomValue(selectedAuctionsAtom)
   const setSelectedAuctions = useSetAtom(setAuctionAtom)
   const setAuctions = useSetAtom(selectedAuctionsAtom)
 
@@ -45,6 +46,7 @@ const AvailableRevenueAuctions = () => {
           <RevenueAuctionItem
             onSelect={() => setSelectedAuctions(index)}
             data={auction}
+            selected={selectedAuctions.includes(index)}
           />
         </div>
       ))}
