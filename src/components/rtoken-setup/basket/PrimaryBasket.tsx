@@ -48,7 +48,7 @@ const getBasketComposition = (
 }
 
 const Placeholder = () => (
-  <div className="text-center max-w-[440px] mx-auto mt-5 py-6">
+  <div className="flex items-center text-center flex-col max-w-[440px] mx-auto mt-5 py-6">
     <EmptyBoxIcon />
     <span className="font-semibold block my-2">
       <Trans>Empty Basket</Trans>
@@ -185,7 +185,7 @@ const BasketEstimatedApy = () => {
  * Display primary basket (per target unit) and token composition
  */
 const PrimaryBasket = ({
-  onAdd = () => {},
+  onAdd = () => { },
   readOnly = false,
   className,
 }: PrimaryBasketProps) => {

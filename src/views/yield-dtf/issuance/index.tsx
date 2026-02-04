@@ -25,7 +25,7 @@ const IssuanceMethods = () => {
   const { isCollaterized } = useAtomValue(rTokenStateAtom)
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-[2fr_1.5fr] gap-1 sm:gap-6">
+    <div className="grid grid-cols-1 xl:grid-cols-[1fr_480px] gap-0 lg:gap-4 xl:gap-5">
       {zapEnabled && chainId !== ChainId.Arbitrum ? (
         <div className="flex flex-col gap-6">
           <CollateralizationBanner className="ml-6 -mb-6 mt-6" />
@@ -34,7 +34,7 @@ const IssuanceMethods = () => {
           <ZapToggleBottom setZapEnabled={setZapEnabled} />
         </div>
       ) : (
-        <div className="mt-6 ml-6 mr-6 lg:mr-0">
+        <div>
           <CollateralizationBanner className="mb-4" />
           <MaintenanceBanner className="mb-4" />
           <DisabledArbitrumBanner className="mb-4" />
@@ -49,11 +49,11 @@ const IssuanceMethods = () => {
           <Balances />
         </div>
       )}
-      <div className="border-l-0 lg:border-l lg:border-border min-h-auto lg:min-h-[calc(100vh-73px)]">
+      <div className="border-l-0 xl:border-l xl:border-border min-h-auto xl:min-h-[calc(100vh-73px)]">
         <IssuanceInfo className="mb-1 sm:mb-0" />
         {!zapEnabled && (
           <>
-            <Separator className="mx-6 my-0 border-secondary" />
+            <Separator className="my-0 border-secondary" />
             <About />
           </>
         )}
@@ -69,7 +69,7 @@ const Issuance = () => {
   return (
     <ZapProvider>
       <WrapSidebar />
-      <div className="w-full p-1 sm:p-0">
+      <div className="container py-1 md:py-6 px-0 sm:px-2">
         <IssuanceMethods />
       </div>
     </ZapProvider>

@@ -119,7 +119,7 @@ const PluginItem = ({ data, onCheck, selected, className }: PluginItemProps) => 
           />
         </label>
         <Button
-          variant="ghost"
+          variant="none"
           size="icon"
           className="cursor-pointer -ml-1"
           onClick={() => setVisible(!isVisible)}

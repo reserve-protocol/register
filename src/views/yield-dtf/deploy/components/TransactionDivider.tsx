@@ -19,7 +19,7 @@ const InfoBoxLight = ({
   subtitle: string
 }) => (
   <div>
-    <span className="text-sm block text-foreground mb-2">{title}</span>
+    <span className="text-sm block font-semibold text-foreground mb-1">{title}</span>
     <span className="text-sm">{subtitle}</span>
   </div>
 )
@@ -33,7 +33,9 @@ const TransactionDivider = (props: { title: string; subtitle: string }) => (
         <InfoBoxLight {...props} />
       </div>
     </Card>
-    <Spacer />
+    <div className='flex items-center justify-center py-4'>
+      🎉
+    </div>
   </div>
 )
 

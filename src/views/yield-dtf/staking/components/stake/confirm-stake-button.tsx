@@ -12,6 +12,7 @@ import { formatCurrency } from 'utils'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { stakeAllowanceAtom, stakeTransactionAtom } from './atoms'
 import { Skeleton } from '@/components/ui/skeleton'
+import Spinner from '@/components/ui/spinner'
 
 const APPROVE_GAS_ESTIMATE = 400000
 const STAKE_AND_DELEGATE_GAS_ESTIMATE = 350000
@@ -135,7 +136,7 @@ const ConfirmStakeButton = () => {
             )}
           </div>
           {!!statusText && !isConfirmed && (
-            <Skeleton className="h-4 w-4 rounded-full animate-spin" />
+            <Spinner />
           )}
           {isConfirmed && <CheckCircleIcon />}
         </div>

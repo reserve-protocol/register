@@ -55,7 +55,7 @@ const getPlugins = (
 const CollateralModal = ({
   targetUnit,
   basket = 'primary',
-  onClose = () => {},
+  onClose = () => { },
   ...props
 }: Props) => {
   // Get already added collaterals for basket
@@ -123,7 +123,7 @@ const CollateralModal = ({
         autoFocus
         value={search}
         onChange={(e) => setSearch(e.target.value)}
-        inputClassName="bg-muted"
+        inputClassName="h-14"
       />
       <Separator className="-mx-4 mt-4 border-border" />
       <div

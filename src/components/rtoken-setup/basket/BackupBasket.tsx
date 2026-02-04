@@ -30,7 +30,7 @@ const Placeholder = () => (
           <span className="text-[#333]">0</span>
         </div>
       </div>
-      <div className="text-center py-8 px-4">
+      <div className="text-center flex flex-col items-center py-8 px-4">
         <EmptyBoxIcon />
         <span className="font-medium block my-2">
           <Trans>Empty backup basket</Trans>
@@ -52,7 +52,7 @@ const Placeholder = () => (
  * Show emergency collateral per target unit
  */
 const BackupBasket = ({
-  onAdd = () => {},
+  onAdd = () => { },
   readOnly = false,
   className,
 }: BackupBasketProps) => {

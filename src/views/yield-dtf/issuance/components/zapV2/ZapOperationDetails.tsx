@@ -20,7 +20,7 @@ const ZapOperationDetails = () => {
   return (
     <div>
       <div
-        className="flex items-center cursor-pointer gap-1 pl-4 pr-3"
+        className="flex items-center cursor-pointer gap-1 py-4 pl-4 pr-3"
         onClick={(e) => {
           e.stopPropagation()
           setCollapsed((c) => !c)

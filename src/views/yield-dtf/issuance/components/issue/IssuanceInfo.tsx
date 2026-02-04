@@ -138,7 +138,7 @@ const IssuanceInfo = ({ className }: { className?: string }) => {
   ])
 
   return (
-    <div className={cn('p-0 sm:p-6 pt-6', className)}>
+    <div className={cn('p-0 xl:p-6 pt-6', className)}>
       <IssuanceInfoStat
         icon={<GlobalMaxMintIcon width={20} height={20} />}
         title={t`Mint - Global throttle`}

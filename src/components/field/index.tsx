@@ -125,7 +125,7 @@ export const FormField = ({
           {...register(name, options)}
         />
         {helper && (
-          <span className="absolute right-5 top-11 text-sm text-legend">
+          <span className="absolute right-5 top-[38px] text-sm text-legend">
             {helper}
           </span>
         )}
