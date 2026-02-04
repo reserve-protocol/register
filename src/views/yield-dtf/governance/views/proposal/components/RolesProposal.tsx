@@ -12,12 +12,12 @@ const roleMap: {
   roleKey: RoleKey
   title: string
 }[] = [
-  { roleKey: 'owners', title: 'Owners' },
-  { roleKey: 'pausers', title: 'Pausers' },
-  { roleKey: 'freezers', title: 'Freezers' },
-  { roleKey: 'longFreezers', title: 'Long Freezers' },
-  { roleKey: 'guardians', title: 'Guardians' },
-]
+    { roleKey: 'owners', title: 'Owners' },
+    { roleKey: 'pausers', title: 'Pausers' },
+    { roleKey: 'freezers', title: 'Freezers' },
+    { roleKey: 'longFreezers', title: 'Long Freezers' },
+    { roleKey: 'guardians', title: 'Guardians' },
+  ]
 
 interface RolesProposalProps {
   className?: string
@@ -37,7 +37,7 @@ const RolesProposal = ({ className }: RolesProposalProps) => {
   }
 
   return (
-    <Card className={`p-6 ${className || ''}`}>
+    <Card className={`p-6 bg-secondary ${className || ''}`}>
       <span className="text-lg font-semibold">
         <Trans>Governance roles</Trans>
       </span>

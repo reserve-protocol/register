@@ -147,7 +147,7 @@ const ProposalItem = ({ proposal }: { proposal: StringMap }) => {
 
   return (
     <div
-      className="p-4 bg-muted border-b border-border cursor-pointer hover:border-muted hover:bg-border flex items-center"
+      className="p-4 bg-background border-b border-border cursor-pointer hover:border-muted hover:bg-border flex items-center"
       onClick={() => navigate(`proposal/${proposal.id}`)}
     >
       <div className="mr-4">

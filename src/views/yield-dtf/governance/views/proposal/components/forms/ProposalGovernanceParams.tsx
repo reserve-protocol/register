@@ -9,7 +9,7 @@ const ProposalGovernanceParams = () => {
   const isTimeunit = isTimeunitGovernance(governance.name)
 
   return (
-    <Card className="p-6 pb-1">
+    <Card className="p-6 bg-secondary pb-1">
       <GovernanceParameters timebased={isTimeunit} />
     </Card>
   )

@@ -103,7 +103,7 @@ const ProposalBasketSetup = ({ startIndex }: { startIndex: number }) => {
   return (
     <>
       <SectionWrapper navigationIndex={startIndex}>
-        <Card className="p-6 relative">
+        <Card className="p-6 bg-secondary relative">
           <PrimaryBasket onAdd={setCollateralModal} />
           {!isNewBasketProposed && (
             <Overlay>
@@ -115,7 +115,7 @@ const ProposalBasketSetup = ({ startIndex }: { startIndex: number }) => {
         </Card>
       </SectionWrapper>
       <SectionWrapper navigationIndex={startIndex + 1}>
-        <Card className="mt-6 p-6 relative min-h-[360px]">
+        <Card className="mt-6 p-6 bg-secondary relative min-h-[360px]">
           <BackupBasket onAdd={setCollateralModal} />
           {!isNewBackupProposed && (
             <Overlay>

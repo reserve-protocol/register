@@ -45,7 +45,7 @@ const ConfirmProposalForm = ({
 
   return (
     <div>
-      <Card className="p-4 mb-6 bg-secondary border-8 border-muted">
+      <Card className="p-4 mb-6 bg-secondary">
         <Field label={t`Proposal Title`} className="mb-6" strong required>
           <Input
             value={title}

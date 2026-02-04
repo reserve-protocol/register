@@ -121,7 +121,7 @@ const ContractUpgrades = ({ className }: { className?: string }) => {
   const contractKeys = Object.keys(contracts || {})
 
   return (
-    <Card className={`p-6 ${className ?? ''}`}>
+    <Card className={`p-6 bg-secondary ${className ?? ''}`}>
       <span className="text-lg font-semibold">
         <Trans>Upgrade contracts</Trans>
       </span>

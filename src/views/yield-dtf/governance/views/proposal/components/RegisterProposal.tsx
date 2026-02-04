@@ -26,7 +26,7 @@ const RegisterProposal = ({ className }: RegisterProposalProps) => {
   }
 
   return (
-    <Card className={`p-6 ${className || ''}`}>
+    <Card className={`p-6 bg-secondary ${className || ''}`}>
       <span className="text-lg font-semibold">
         <Trans>Register Assets</Trans>
       </span>

@@ -14,7 +14,7 @@ const Intro = ({ className }: Props) => {
   const rToken = useRToken()
 
   return (
-    <Card className={cn('p-6 pt-8 relative', className)}>
+    <Card className={cn('p-6 pt-8 relative bg-secondary', className)}>
       <ProposalIntroIcon />
       <span className="text-lg font-bold block mb-2 mt-2">
         <Trans>Propose changes to ${rToken?.symbol}</Trans>
@@ -37,7 +37,7 @@ const Intro = ({ className }: Props) => {
           <Trans>Community Discord</Trans>
         </Button>
         <Button
-          variant="muted"
+          variant="ghost"
           size="sm"
           onClick={() => window.open(PROTOCOL_DOCS, '_blank')}
         >

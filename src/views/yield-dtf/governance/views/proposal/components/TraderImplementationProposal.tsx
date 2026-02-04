@@ -13,7 +13,7 @@ const TraderImplementationProposal = ({
   className,
 }: TraderImplementationProposalProps) => {
   return (
-    <Card className={cn('p-6', className)}>
+    <Card className={cn('p-6 bg-secondary', className)}>
       <span className="text-xl font-medium">
         <Trans>Trader implementations</Trans>
       </span>

@@ -115,7 +115,7 @@ const RolesEdit = ({
           <Button
             size="sm"
             variant="destructive"
-            className="ml-auto bg-input"
+            className="ml-auto"
             onClick={() => handleRemove(index)}
           >
             <Trans>Remove</Trans>

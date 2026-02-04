@@ -33,7 +33,7 @@ const UnregisterProposal = ({ className }: UnregisterProposalProps) => {
   }
 
   return (
-    <Card className={`p-6 ${className || ''}`}>
+    <Card className={`p-6 bg-secondary ${className || ''}`}>
       <span className="text-lg font-semibold">
         <Trans>Unregister Assets</Trans>
       </span>
