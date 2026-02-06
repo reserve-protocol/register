@@ -11,6 +11,12 @@ import {
 import { SearchInput } from '@/components/ui/input'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
 import useTokenList from '@/hooks/use-token-list'
 import { useAssetPrice } from '@/hooks/useAssetPrices'
 import useTokensInfo from '@/hooks/useTokensInfo'
@@ -39,6 +45,7 @@ import {
   searchTokenAtom,
   selectedTokensAtom,
 } from '../../atoms'
+import LiquidityConfigModal from './components/liquidity-config-modal'
 
 interface TokenButtonProps {
   variant: 'primary' | 'secondary'
@@ -92,15 +99,32 @@ const EvenDistributionButton = () => {
 
   if (inputType === 'unit') return null
 
-  return (
+  const disabled = !basket.length
+
+  const button = (
     <Button
       variant="accent"
       className="flex gap-2 text-base pl-3 pr-4 rounded-xl text-nowrap w-48 py-7 -mr-2 bg-muted/80"
       onClick={onEvenDistribution}
-      disabled={!basket.length}
+      disabled={disabled}
     >
       Even distribution
     </Button>
+  )
+
+  if (disabled) {
+    return button
+  }
+
+  return (
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>{button}</TooltipTrigger>
+        <TooltipContent className="max-w-xs">
+          <p>Distribute weights equally among all tokens in the basket.</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   )
 }
 
@@ -111,6 +135,7 @@ const OpenButtonSecondary = () => {
         <TokenButton variant="secondary" />
       </div>
       <EvenDistributionButton />
+      <LiquidityConfigModal />
     </div>
   )
 }
