@@ -1,24 +1,9 @@
-import { useAtomValue } from 'jotai'
 import ExchangeRate from '../exchange-rate'
-import GasEstimate from '../gas-estimate'
-import { unStakeAmountAtom, unstakeGasEstimateAtom } from './atoms'
-
-const Gas = () => {
-  const gasEstimate = useAtomValue(unstakeGasEstimateAtom)
-  const amount = useAtomValue(unStakeAmountAtom)
-
-  if (!amount) {
-    return null
-  }
-
-  return <GasEstimate total={gasEstimate} className="ml-auto" />
-}
 
 export const ActionOverview = () => {
   return (
-    <div className="flex items-center">
+    <div className="flex items-center justify-end mr-3 -my-2 text-legend">
       <ExchangeRate />
-      <Gas />
     </div>
   )
 }

@@ -15,7 +15,7 @@ const ZapDetails = ({ hideGasCost, className }: Props) => {
   const { priceImpact, slippage, loadingZap, minAmountOut, tokenOut } = useZap()
 
   return (
-    <div className={cn('flex flex-col gap-2', className)}>
+    <div className={cn('flex flex-col gap-2 mb-2', className)}>
       <div className="flex items-center justify-between">
         <span className="text-sm">Price Impact</span>
         {loadingZap ? (

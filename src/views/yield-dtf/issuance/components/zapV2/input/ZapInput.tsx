@@ -15,9 +15,9 @@ const ZapInput = () => {
         onChange={setAmountIn}
       />
       {!!amountIn && (
-        <div className="text-2xl font-bold absolute top-0 left-0 -z-[1]">
+        <div className="absolute top-0 left-0 h-10 flex items-center text-3xl pointer-events-none">
           <span className="invisible">{amountIn}</span>
-          <span className="select-none ml-2 text-legend">{symbol}</span>
+          <span className="ml-2 text-legend select-none">{symbol}</span>
         </div>
       )}
     </div>

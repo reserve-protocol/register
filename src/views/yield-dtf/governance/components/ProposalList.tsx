@@ -159,7 +159,7 @@ const ProposalItem = ({ proposal }: { proposal: StringMap }) => {
           'ml-auto shrink-0 px-2 py-1 rounded-full text-xs font-medium',
           BADGE_COLORS[proposalState.state] || 'bg-muted text-muted-foreground'
         )}
-      >
+      > 
         {formatConstant(proposalState.state)}
       </span>
     </div>

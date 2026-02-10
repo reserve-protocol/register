@@ -1,42 +1,18 @@
-import { Trans, t } from '@lingui/macro'
 import { Button } from '@/components/ui/button'
+import { Skeleton } from '@/components/ui/skeleton'
+import Spinner from '@/components/ui/spinner'
+import { Trans, t } from '@lingui/macro'
 import CheckCircleIcon from 'components/icons/CheckCircleIcon'
-import GasIcon from 'components/icons/GasIcon'
 import TransactionsIcon from 'components/icons/TransactionsIcon'
 import ApprovalStatus from 'components/transaction-modal/ApprovalStatus'
 import useApproveAndExecute from 'hooks/useApproveAndExecute'
-import { useStaticGasEstimate } from 'hooks/useGasEstimate'
 import { useAtomValue } from 'jotai'
 import { chainIdAtom } from 'state/atoms'
-import { formatCurrency } from 'utils'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { stakeAllowanceAtom, stakeTransactionAtom } from './atoms'
-import { Skeleton } from '@/components/ui/skeleton'
-import Spinner from '@/components/ui/spinner'
 
 const APPROVE_GAS_ESTIMATE = 400000
-const STAKE_AND_DELEGATE_GAS_ESTIMATE = 350000
-const STAKE_GAS_ESTIMATE = 300000
 
-const GasEstimate = ({ gasLimit }: { gasLimit: number }) => {
-  const [total] = useStaticGasEstimate([gasLimit])
-
-  return (
-    <div className="flex items-center mb-2">
-      <span>Estimated gas cost:</span>
-      <div className="ml-auto flex items-center">
-        <GasIcon />
-        {total ? (
-          <span className="font-semibold ml-1">
-            ${formatCurrency(total, 3)}
-          </span>
-        ) : (
-          <Skeleton className="h-4 w-12 ml-1" />
-        )}
-      </div>
-    </div>
-  )
-}
 
 const ConfirmStakeButton = () => {
   const call = useAtomValue(stakeTransactionAtom)
@@ -75,8 +51,7 @@ const ConfirmStakeButton = () => {
 
   if (!hasAllowance && !isLoading && !isApproved) {
     return (
-      <div className="mt-4">
-        <GasEstimate gasLimit={APPROVE_GAS_ESTIMATE} />
+      <div>
         <Button className="w-full" onClick={execute} disabled={!isReady}>
           {!isReady ? 'Preparing approval' : 'Approve use of RSR'}
         </Button>
@@ -145,14 +120,7 @@ const ConfirmStakeButton = () => {
   }
 
   return (
-    <div className="mt-4">
-      <GasEstimate
-        gasLimit={
-          call?.functionName === 'stakeAndDelegate'
-            ? STAKE_AND_DELEGATE_GAS_ESTIMATE
-            : STAKE_GAS_ESTIMATE
-        }
-      />
+    <div>
       <Button disabled={!isReady} onClick={execute} className="w-full">
         {!isReady ? 'Preparing transaction' : 'Confirm Stake'}
       </Button>

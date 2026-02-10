@@ -18,7 +18,7 @@ const buttonVariants = cva(
           'border border-border bg-transparent hover:bg-accent hover:text-accent-foreground',
         'outline-primary':
           'border-2 border-primary bg-transparent font-semibold text-primary hover:bg-primary hover:text-primary-foreground',
-        secondary: 'bg-black text-white hover:bg-black/80',
+        secondary: 'bg-mutedSecondary text-foreground hover:bg-mutedSecondary/80',
         ghost: 'hover:bg-accent hover:text-accent-foreground',
         'ghost-accent': 'hover:bg-primary hover:text-white',
         link: 'text-foreground underline-offset-4 hover:text-primary',
@@ -45,7 +45,7 @@ const buttonVariants = cva(
 
 export interface ButtonProps
   extends ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {
+  VariantProps<typeof buttonVariants> {
   asChild?: boolean
 }
 

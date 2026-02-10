@@ -1,39 +1,18 @@
-import { Trans } from '@lingui/macro'
 import { Button } from '@/components/ui/button'
+import { Skeleton } from '@/components/ui/skeleton'
+import { unstakeDelayAtom } from '@/views/yield-dtf/staking/atoms'
+import { Trans } from '@lingui/macro'
 import CheckCircleIcon from 'components/icons/CheckCircleIcon'
-import GasIcon from 'components/icons/GasIcon'
 import TransactionsIcon from 'components/icons/TransactionsIcon'
 import useContractWrite from 'hooks/useContractWrite'
 import useWatchTransaction from 'hooks/useWatchTransaction'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { chainIdAtom } from 'state/atoms'
-import { formatCurrency } from 'utils'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
-import { unstakeDelayAtom } from '@/views/yield-dtf/staking/atoms'
-import { unstakeGasEstimateAtom, unstakeTransactionAtom } from './atoms'
 import { UseSimulateContractParameters } from 'wagmi'
-import { Skeleton } from '@/components/ui/skeleton'
+import { unstakeTransactionAtom } from './atoms'
 
-const GasEstimate = () => {
-  const estimate = useAtomValue(unstakeGasEstimateAtom)
-
-  return (
-    <div className="flex items-center mb-2">
-      <span>Estimated gas cost:</span>
-      <div className="ml-auto flex items-center">
-        <GasIcon />
-        {estimate ? (
-          <span className="font-semibold ml-1">
-            ${formatCurrency(estimate, 3)}
-          </span>
-        ) : (
-          <Skeleton className="h-4 w-12 ml-1" />
-        )}
-      </div>
-    </div>
-  )
-}
 
 const ConfirmUnstakeButton = () => {
   const chain = useAtomValue(chainIdAtom)
@@ -102,8 +81,7 @@ const ConfirmUnstakeButton = () => {
   }
 
   return (
-    <div className="mt-4">
-      <GasEstimate />
+    <div>
       <Button disabled={!isReady} onClick={write} className="w-full">
         {!isReady ? 'Preparing transaction' : 'Begin unstaking process'}
       </Button>

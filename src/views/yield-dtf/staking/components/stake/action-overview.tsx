@@ -4,24 +4,12 @@ import ExchangeRate from '../exchange-rate'
 import GasEstimate from '../gas-estimate'
 import { stakeAmountAtom } from './atoms'
 
-const APPROVE_AND_STAKE_GAS_ESTIMATE = 400000
-
-const Gas = () => {
-  const [gasEstimate] = useStaticGasEstimate([APPROVE_AND_STAKE_GAS_ESTIMATE])
-  const amount = useAtomValue(stakeAmountAtom)
-
-  if (!amount) {
-    return null
-  }
-
-  return <GasEstimate total={gasEstimate} className="ml-auto" />
-}
 
 export const ActionOverview = () => {
   return (
-    <div className="flex items-center">
+    <div className="flex items-center justify-end mr-3 -my-2 text-legend">
       <ExchangeRate />
-      <Gas />
+
     </div>
   )
 }
