@@ -4,6 +4,7 @@ import { indexDTFIconsAtom } from '@/views/portfolio/atoms'
 import { useAtom, useAtomValue } from 'jotai'
 import * as React from 'react'
 import { routeCacheAtom } from './atoms'
+import { TOKEN_LOGO_MAPPINGS } from './token-logo-mappings'
 
 type Sizes = 'sm' | 'md' | 'lg' | 'xl'
 
@@ -111,6 +112,17 @@ const TokenLogo = React.forwardRef<HTMLImageElement, Props>((props, ref) => {
         cacheUrl(imgUrl)
         setCurrentSrc(imgUrl)
         return
+      }
+
+      // Check pre-computed mappings (build-time resolved logos)
+      if (symbol) {
+        const mappedUrl = TOKEN_LOGO_MAPPINGS[symbol.toLowerCase()]
+        if (mappedUrl) {
+          const url = await tryLoadImage(mappedUrl)
+          cacheUrl(url)
+          setCurrentSrc(url)
+          return
+        }
       }
 
       if (address && symbol && UNIVERSAL_ASSETS.has(address.toLowerCase())) {

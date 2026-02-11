@@ -5,7 +5,7 @@ import EmptyBoxIcon from 'components/icons/EmptyBoxIcon'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useCallback, useEffect, useMemo } from 'react'
 import { chainIdAtom, collateralYieldAtom } from 'state/atoms'
-import { Box, BoxProps, Divider, Flex, Text } from 'theme-ui'
+import { Separator } from '@/components/ui/separator'
 import {
   formatCurrency,
   formatPercentage,
@@ -13,15 +13,14 @@ import {
   truncateDecimals,
 } from 'utils'
 import { formatEther } from 'viem'
-import { useContractReads } from 'wagmi'
 import { Basket, basketAtom, basketTargetUnitPriceAtom } from '../atoms'
 import UnitBasket from './UnitBasket'
-import { SmallButton } from '@/components/old/button'
+import { Button } from '@/components/ui/button'
 import DocsLink from '@/components/utils/docs-link'
 import { useWatchReadContracts } from '@/hooks/useWatchReadContract'
 import { PROTOCOL_DOCS } from '@/utils/constants'
 
-interface Props extends BoxProps {
+interface PrimaryBasketProps {
   onAdd?(
     data: {
       basket: 'primary' | 'backup'
@@ -29,6 +28,7 @@ interface Props extends BoxProps {
     } | null
   ): void
   readOnly?: boolean
+  className?: string
 }
 
 const getBasketComposition = (
@@ -48,24 +48,20 @@ const getBasketComposition = (
 }
 
 const Placeholder = () => (
-  <Box
-    sx={{ textAlign: 'center', maxWidth: 440, margin: 'auto' }}
-    mt={5}
-    py={6}
-  >
+  <div className="flex items-center text-center flex-col max-w-[440px] mx-auto mt-5 py-6">
     <EmptyBoxIcon />
-    <Text variant="strong" my={2}>
+    <span className="font-semibold block my-2">
       <Trans>Empty Basket</Trans>
-    </Text>
-    <Text variant="legend" as="p" sx={{ fontSize: 1 }} mb={2}>
+    </span>
+    <p className="text-legend text-xs mb-2">
       <Trans>
         This is the target collateral basket at the onset of an RToken that
         defines which collateral needs to be deposited for issuances. The prime
         basket is directly set by governance, and only changes through
         successful governance proposals.
       </Trans>
-    </Text>
-  </Box>
+    </p>
+  </div>
 )
 
 const usePricePerTarget = (basket: Basket) => {
@@ -160,26 +156,26 @@ const BasketEstimatedApy = () => {
   }, [collateralYields, basket, chainId])
 
   return (
-    <Flex sx={{ justiftContent: 'space-between', alignItems: 'center' }}>
-      <Flex mr={'auto'} sx={{ flexDirection: 'column' }}>
-        <Text variant="legend">1 Token =</Text>
-        <Text variant="title">
+    <div className="flex justify-between items-center">
+      <div className="mr-auto flex flex-col">
+        <span className="text-legend">1 Token =</span>
+        <span className="text-xl font-medium">
           {!!units.length
             ? getBasketComposition(basket, targetUnitPrice)
             : '--'}
-        </Text>
-        <Text variant="legend" mt={2}>
+        </span>
+        <span className="text-legend mt-2">
           <Trans>Estimated basket APY</Trans> =
-        </Text>
-        <Text variant="title">{formatPercentage(getEstApy())}</Text>
-      </Flex>
+        </span>
+        <span className="text-xl font-medium">{formatPercentage(getEstApy())}</span>
+      </div>
       <Help
         ml={2}
         size={14}
         mt="1px"
         content={t`Total initial RToken scale including all targets. If your RToken only has one target unit this will be the same as the basket scale input.`}
       />
-    </Flex>
+    </div>
   )
 }
 
@@ -189,36 +185,36 @@ const BasketEstimatedApy = () => {
  * Display primary basket (per target unit) and token composition
  */
 const PrimaryBasket = ({
-  onAdd = () => {},
+  onAdd = () => { },
   readOnly = false,
-  ...props
-}: Props) => {
+  className,
+}: PrimaryBasketProps) => {
   const basket = useAtomValue(basketAtom)
   const units = Object.keys(basket)
 
   return (
-    <Box {...props}>
-      <Flex variant="layout.verticalAlign">
-        <Text variant="title">
+    <div className={className}>
+      <div className="flex items-center">
+        <span className="text-xl font-medium">
           <Trans>Primary Basket</Trans>
-        </Text>
+        </span>
         <DocsLink
           link={`${PROTOCOL_DOCS}yield_dtfs/deployment_guide/ui_walkthrough/#step-3-configure-basket`}
         />
         {!readOnly && (
-          <SmallButton
+          <Button
+            size="sm"
             onClick={() => onAdd({ basket: 'primary' })}
-            ml="auto"
-            variant="primary"
+            className="ml-auto"
           >
             <Trans>Add to basket</Trans>
-          </SmallButton>
+          </Button>
         )}
-      </Flex>
+      </div>
       {!units.length && <Placeholder />}
       {units.map((targetUnit) => (
         <UnitBasket
-          mt={3}
+          className="mt-3"
           readOnly={readOnly}
           key={targetUnit}
           data={basket[targetUnit]}
@@ -227,12 +223,12 @@ const PrimaryBasket = ({
       ))}
       {!readOnly && (
         <>
-          <Divider my={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />
+          <Separator className="my-4 -mx-4 border-muted" />
           <BasketEstimatedApy />
         </>
       )}
       <TargetPriceUpdater />
-    </Box>
+    </div>
   )
 }
 

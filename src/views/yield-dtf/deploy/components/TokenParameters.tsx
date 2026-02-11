@@ -5,7 +5,8 @@ import { useAtom, useAtomValue } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
 import { useFormContext } from 'react-hook-form'
 import { chainIdAtom, walletChainAtom } from 'state/atoms'
-import { Box, BoxProps, Card, Divider, Label, Radio, Text } from 'theme-ui'
+import { Card } from '@/components/ui/card'
+import { Separator } from '@/components/ui/separator'
 import { AvailableChain, ChainId } from 'utils/chains'
 import { CHAIN_TAGS, supportedChainList } from 'utils/constants'
 import TokenForm from './TokenForm'
@@ -35,30 +36,20 @@ const ChainOption = ({
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
 }) => {
   return (
-    <Label
-      variant="layout.verticalAlign"
-      sx={{
-        gap: 1,
-        justifyContent: 'space-between',
-        flexGrow: 1,
-        bg: 'background',
-        border: '1px solid',
-        borderRadius: '8px',
-        borderColor: 'border',
-        p: 3,
-      }}
-    >
-      <Box variant="layout.verticalAlign" sx={{ gap: 2 }}>
+    <label className="flex items-center justify-between flex-grow gap-1 bg-background border border-border rounded-lg p-3 cursor-pointer">
+      <div className="flex items-center gap-2">
         <ChainLogo chain={chainId} width={20} height={20} />
         <Trans>{CHAIN_TAGS[chainId]}</Trans>
-      </Box>
-      <Radio
-        name="dark-mode"
+      </div>
+      <input
+        type="radio"
+        name="chain-selector"
         value={chainId}
         onChange={onChange}
         checked={checked}
+        className="w-4 h-4"
       />
-    </Label>
+    </label>
   )
 }
 
@@ -100,20 +91,11 @@ const ChainSelector = () => {
   }
 
   return (
-    <Box mb="3">
-      <Text variant="subtitle" ml={3} mb="2" sx={{ fontSize: 1 }}>
+    <div className="mb-3">
+      <span className="text-xs ml-3 mb-2 block text-muted-foreground">
         Chain
-      </Text>
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: ['column', 'column', 'column', 'row'],
-          gap: 2,
-          '@media (max-width: 1430px)': {
-            flexDirection: 'column',
-          },
-        }}
-      >
+      </span>
+      <div className="flex flex-col xl:flex-row gap-2 max-[1430px]:flex-col">
         {filteredSupportedChainList.map((chain) => (
           <ChainOption
             key={chain}
@@ -122,21 +104,25 @@ const ChainSelector = () => {
             onChange={handleChainChange}
           />
         ))}
-      </Box>
-    </Box>
+      </div>
+    </div>
   )
+}
+
+interface TokenParametersProps {
+  className?: string
 }
 
 /**
  * View: Deploy -> Token setup
  * Display token forms
  */
-const TokenParameters = (props: BoxProps) => (
-  <Card p={4} variant="cards.form" {...props}>
-    <Text variant="title">
+const TokenParameters = ({ className }: TokenParametersProps) => (
+  <Card className={`p-4 bg-secondary ${className || ''}`}>
+    <span className="text-xl font-medium">
       <Trans>Basics</Trans>
-    </Text>
-    <Divider my={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />
+    </span>
+    <Separator className="my-4 -mx-4 border-muted" />
     <ChainSelector />
     <TokenForm />
   </Card>

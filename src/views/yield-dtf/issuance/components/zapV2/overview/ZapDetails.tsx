@@ -1,69 +1,56 @@
+import { cn } from '@/lib/utils'
 import Skeleton from 'react-loading-skeleton'
-import { Box, BoxProps, Text } from 'theme-ui'
 import { PRICE_IMPACT_THRESHOLD } from '../constants'
 import { useZap } from '../context/ZapContext'
 import { formatNumber, formatSlippage } from '../utils'
 import ZapGasCost from './ZapGasCost'
 import ZapRate from './ZapRate'
 
-interface Props extends BoxProps {
+interface Props {
   hideGasCost?: boolean
+  className?: string
 }
 
-const ZapDetails = ({ hideGasCost, ...props }: Props) => {
+const ZapDetails = ({ hideGasCost, className }: Props) => {
   const { priceImpact, slippage, loadingZap, minAmountOut, tokenOut } = useZap()
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }} {...props}>
-      <Box
-        variant="layout.verticalAlign"
-        sx={{ justifyContent: 'space-between' }}
-      >
-        <Text sx={{ fontSize: 14 }}>Price Impact</Text>
+    <div className={cn('flex flex-col gap-2 mb-2', className)}>
+      <div className="flex items-center justify-between">
+        <span className="text-sm">Price Impact</span>
         {loadingZap ? (
           <Skeleton width={36} height={10} />
         ) : (
-          <Text
-            sx={{
-              fontSize: 14,
-              fontWeight: 500,
-              color:
-                (priceImpact || 0) > PRICE_IMPACT_THRESHOLD ? 'danger' : 'text',
-            }}
+          <span
+            className={cn(
+              'text-sm font-medium',
+              (priceImpact || 0) > PRICE_IMPACT_THRESHOLD
+                ? 'text-destructive'
+                : 'text-foreground'
+            )}
           >
             {formatNumber(priceImpact || 0, 2)}%
-          </Text>
+          </span>
         )}
-      </Box>
-      <Box
-        variant="layout.verticalAlign"
-        sx={{ justifyContent: 'space-between' }}
-      >
-        <Text sx={{ fontSize: 14 }}>Max. slippage</Text>
-        <Text sx={{ fontSize: 14, fontWeight: 500 }}>
-          {formatSlippage(slippage)}
-        </Text>
-      </Box>
+      </div>
+      <div className="flex items-center justify-between">
+        <span className="text-sm">Max. slippage</span>
+        <span className="text-sm font-medium">{formatSlippage(slippage)}</span>
+      </div>
       {minAmountOut && (
-        <Box
-          variant="layout.verticalAlign"
-          sx={{ justifyContent: 'space-between' }}
-        >
-          <Text sx={{ fontSize: 14 }}>Min. amount out</Text>
-          <Text sx={{ fontSize: 14, fontWeight: 500 }}>
+        <div className="flex items-center justify-between">
+          <span className="text-sm">Min. amount out</span>
+          <span className="text-sm font-medium">
             {minAmountOut} {tokenOut?.symbol}
-          </Text>
-        </Box>
+          </span>
+        </div>
       )}
-      <Box
-        variant="layout.verticalAlign"
-        sx={{ justifyContent: 'space-between' }}
-      >
-        <Text sx={{ fontSize: 14 }}>Rate</Text>
-        <ZapRate sx={{ fontSize: 14, fontWeight: 500 }} />
-      </Box>
+      <div className="flex items-center justify-between">
+        <span className="text-sm">Rate</span>
+        <ZapRate className="text-sm font-medium" />
+      </div>
       {!hideGasCost && <ZapGasCost />}
-    </Box>
+    </div>
   )
 }
 

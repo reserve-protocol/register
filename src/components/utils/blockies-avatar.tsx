@@ -1,7 +1,6 @@
 import { cn } from '@/lib/utils'
 import * as blockies from 'blockies-ts'
 import { useMemo } from 'react'
-import { Image } from 'theme-ui'
 
 type BlockiesAvatarProps = {
   address: string

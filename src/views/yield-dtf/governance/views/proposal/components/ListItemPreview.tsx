@@ -1,33 +1,34 @@
 import { Trans } from '@lingui/macro'
-import { SmallButton } from '@/components/old/button'
+import { Button } from '@/components/ui/button'
 import { Plus, X } from 'lucide-react'
-import { Box, BoxProps, Text } from 'theme-ui'
+import { cn } from '@/lib/utils'
 
-interface Props extends BoxProps {
+interface Props {
   isNew: boolean
   label: string
   onRevert?(): void
+  className?: string
 }
 
-const ListItemPreview = ({ isNew, label, onRevert, ...props }: Props) => (
-  <Box variant="layout.verticalAlign" {...props}>
+const ListItemPreview = ({ isNew, label, onRevert, className }: Props) => (
+  <div className={cn('flex items-center', className)}>
     {isNew ? (
       <Plus color="#11BB8D" size={18} />
     ) : (
       <X color="#FF0000" size={18} />
     )}
-    <Box ml={2}>
-      <Text variant="legend" sx={{ fontSize: 1, display: 'block' }}>
+    <div className="ml-2">
+      <span className="text-legend text-xs block">
         {isNew ? <Trans>Add</Trans> : <Trans>Remove</Trans>}
-      </Text>
-      <Text>{label}</Text>
-    </Box>
+      </span>
+      <span>{label}</span>
+    </div>
     {!!onRevert && (
-      <SmallButton ml="auto" variant="muted" onClick={onRevert}>
+      <Button size="sm" variant="ghost" onClick={onRevert} className="ml-auto">
         <Trans>Revert</Trans>
-      </SmallButton>
+      </Button>
     )}
-  </Box>
+  </div>
 )
 
 export default ListItemPreview

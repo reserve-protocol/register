@@ -2,7 +2,7 @@ import { Trans } from '@lingui/macro'
 import AuctionsIcon from 'components/icons/AuctionsIcon'
 import { useAtomValue } from 'jotai'
 import { blockTimestampAtom } from 'state/atoms'
-import { Box, Spinner, Text } from 'theme-ui'
+import Spinner from '@/components/ui/spinner'
 import { parseDuration } from 'utils'
 
 const AuctionTimeIndicators = ({
@@ -21,40 +21,35 @@ const AuctionTimeIndicators = ({
   const isEnding = currentTime >= finalPriceTime
 
   return (
-    <Box
-      variant="layout.verticalAlign"
-      ml={[0, 0, 0, 'auto']}
-      mt={[1, 1, 1, 0]}
-      pr={3}
-      sx={{ flexWrap: 'wrap' }}
-    >
-      <Spinner color={isEnding ? 'warning' : 'primary'} size={16} />
+    <div className="flex items-center flex-wrap ml-0 xl:ml-auto mt-1 xl:mt-0 pr-3">
+      <Spinner
+        className={isEnding ? 'text-warning' : 'text-primary'}
+        size={16}
+      />
       {!isEnding && (
         <>
-          <Text variant="legend" ml={2} mr={1}>
+          <span className="text-legend ml-2 mr-1">
             <Trans>Final price in:</Trans>
-          </Text>
-          <Text variant="strong" mr={3}>
+          </span>
+          <span className="font-semibold mr-3">
             {parseDuration(finalPriceTime - currentTime, {
               units: ['m'],
               round: true,
             })}
-          </Text>
+          </span>
         </>
       )}
       {!isEnding && <AuctionsIcon />}
-      <Text ml={2} mr={1}>
-        Auction ends in:
-      </Text>
-      <Text sx={{ display: ['none', 'block'] }}>
+      <span className="ml-2 mr-1">Auction ends in:</span>
+      <span className="hidden sm:block">
         (
         {parseDuration(timeLeft, {
           units: ['m'],
           round: true,
         })}
         )
-      </Text>
-    </Box>
+      </span>
+    </div>
   )
 }
 

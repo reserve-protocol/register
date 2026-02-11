@@ -3,17 +3,18 @@ import TokenBalance from 'components/token-balance'
 import { useAtomValue } from 'jotai'
 import { Circle } from 'lucide-react'
 import { balancesAtom } from 'state/atoms'
-import { Box, BoxProps, Flex, Progress, Text } from 'theme-ui'
+import { cn } from '@/lib/utils'
 import { Token } from 'types'
 import { formatCurrency } from 'utils'
 import { formatUnits } from 'viem'
 import { quantitiesAtom } from '@/views/yield-dtf/issuance/atoms'
 
-interface Props extends BoxProps {
+interface Props {
   token: Token
+  className?: string
 }
 
-const CollateralBalance = ({ token, ...props }: Props) => {
+const CollateralBalance = ({ token, className }: Props) => {
   const quantities = useAtomValue(quantitiesAtom)
   const balances = useAtomValue(balancesAtom)
 
@@ -22,7 +23,7 @@ const CollateralBalance = ({ token, ...props }: Props) => {
       <TokenBalance
         symbol={token.symbol}
         balance={+(balances[token.address]?.balance ?? '0')}
-        {...props}
+        className={className}
       />
     )
   }
@@ -33,34 +34,35 @@ const CollateralBalance = ({ token, ...props }: Props) => {
     current && balances[token.address].value >= quantities[token.address]
 
   return (
-    <Box {...props}>
-      <Flex variant="layout.verticalAlign">
+    <div className={className}>
+      <div className="flex items-center">
         <TokenBalance
           symbol={token.symbol}
           balance={+(balances[token.address]?.balance ?? '0')}
         />
-        <Box ml="auto">
+        <div className="ml-auto">
           <Circle
             size={8}
             fill={isValid ? '#11BB8D' : '#FF0000'}
-            stroke={undefined}
+            stroke="none"
           />
-        </Box>
-      </Flex>
-      <Box sx={{ textAlign: 'right', fontSize: 0 }} mb={1} ml="auto">
-        <Text variant="legend">
+        </div>
+      </div>
+      <div className="text-right text-xs mb-1 ml-auto">
+        <span className="text-legend">
           <Trans>Required:</Trans>
-        </Text>{' '}
-        <Text
-          sx={{
-            fontWeight: 500,
-          }}
-        >
-          {formatCurrency(required, 6)}
-        </Text>
-      </Box>
-      {!isValid && <Progress mb={3} max={required} value={current} />}
-    </Box>
+        </span>{' '}
+        <span className="font-medium">{formatCurrency(required, 6)}</span>
+      </div>
+      {!isValid && (
+        <div className="mb-4 h-2 w-full overflow-hidden rounded-full bg-muted">
+          <div
+            className="h-full bg-primary transition-all"
+            style={{ width: `${Math.min((current / required) * 100, 100)}%` }}
+          />
+        </div>
+      )}
+    </div>
   )
 }
 

@@ -1,15 +1,13 @@
 import rtokens from '@reserve-protocol/rtokens'
 import { createColumnHelper } from '@tanstack/react-table'
 import FacadeRead from 'abis/FacadeRead'
-import CollapsableBox from '@/components/old/boxes/CollapsableBox'
 import AuctionsIcon from 'components/icons/AuctionsIcon'
 import TokenLogo from 'components/icons/TokenLogo'
-import { Table } from '@/components/old/table'
+import { Table } from '@/components/ui/legacy-table'
 import TokenItem from 'components/token-item'
 import { useCallback, useMemo, useState } from 'react'
-import { Check, X } from 'lucide-react'
+import { Check, X, ChevronDown, ChevronUp } from 'lucide-react'
 import Skeleton from 'react-loading-skeleton'
-import { Box, Flex, Link, Text } from 'theme-ui'
 import { Trader } from 'types'
 import { formatCurrency, formatUsdCurrencyCell, getTokenRoute } from 'utils'
 import { FACADE_ADDRESS, RSR_ADDRESS } from 'utils/addresses'
@@ -20,7 +18,7 @@ import { Address, formatEther, formatUnits } from 'viem'
 import TabMenu from 'components/tab-menu'
 import CirclesIcon from 'components/icons/CirclesIcon'
 import ChainLogo from 'components/icons/ChainLogo'
-import { Button } from 'components'
+import { Button } from '@/components/ui/button'
 import { useReadContract } from 'wagmi'
 
 type RevenueResponse = {
@@ -42,7 +40,7 @@ type RevenueCollateral = {
   surplus: number
   minTrade: number
   value: number
-  buy: string // shorthand
+  buy: string
   trader: Trader
   chain: number
   buyAddress: Address
@@ -80,23 +78,10 @@ type Revenue = {
 }
 
 const ChainBadge = ({ chain }: { chain: number }) => (
-  <Box
-    variant="layout.verticalAlign"
-    sx={{
-      display: ['none', 'flex'],
-      backgroundColor: 'rgba(0, 82, 255, 0.06)',
-      border: '1px solid',
-      borderColor: 'rgba(0, 82, 255, 0.20)',
-      borderRadius: '50px',
-      padding: '4px 8px',
-      gap: 1,
-    }}
-  >
+  <div className="hidden md:flex items-center bg-primary/5 border border-primary/20 rounded-full py-1 px-2 gap-1">
     <ChainLogo chain={chain} fontSize={12} />
-    <Text sx={{ fontSize: 12 }} color="#627EEA">
-      {CHAIN_TAGS[chain] + ' Native'}
-    </Text>
-  </Box>
+    <span className="text-xs text-primary">{CHAIN_TAGS[chain] + ' Native'}</span>
+  </div>
 )
 
 const parseRevenue = (trades: readonly RevenueResponse[], chain: number) => {
@@ -140,7 +125,6 @@ const parseRevenue = (trades: readonly RevenueResponse[], chain: number) => {
     revenue.totalRevenue += amount
     revenue.availableTrades += 1
 
-    // RSR Trader
     if (isStakerTrader) {
       revenue.tokens[trade.rToken].stakersRevenue += amount
     } else {
@@ -242,7 +226,7 @@ const useAvailableRevenue = (): Revenue | undefined => {
       return result
     }
 
-    return undefined // fetching...
+    return undefined
   }, [base, mainnet, arbitrum])
 }
 
@@ -262,82 +246,82 @@ const TradesTable = ({
       columnHelper.accessor('rTokenAddress', {
         header: 'RToken',
         cell: (data) => (
-          <Link
+          <a
             href={getExplorerLink(
               data.getValue(),
               data.row.original.chain,
               ExplorerDataType.TOKEN
             )}
             target="_blank"
-            sx={{ textDecoration: 'underline' }}
+            className="underline"
           >
             <TokenItem
               symbol={data.row.original.rTokenSymbol}
               logo={data.row.original.rTokenLogo}
               chainId={data.row.original.chain}
             />
-          </Link>
+          </a>
         ),
       }),
       columnHelper.accessor('buy', {
         header: 'Buy',
         cell: (data) => (
-          <Link
+          <a
             href={getExplorerLink(
               data.row.original.buyAddress,
               data.row.original.chain,
               ExplorerDataType.TOKEN
             )}
             target="_blank"
-            sx={{ textDecoration: 'underline' }}
+            className="underline"
           >
             <TokenItem
               symbol={data.getValue()}
               logo={data.row.original.buyLogo}
             />
-          </Link>
+          </a>
         ),
       }),
       columnHelper.accessor('symbol', {
         header: 'Sell',
         cell: (data) => (
-          <Link
+          <a
             href={getExplorerLink(
               data.row.original.address,
               data.row.original.chain,
               ExplorerDataType.TOKEN
             )}
             target="_blank"
-            sx={{ textDecoration: 'underline' }}
+            className="underline"
           >
             <TokenItem
               symbol={data.getValue()}
               logo={data.row.original.sellLogo}
             />
-          </Link>
+          </a>
         ),
       }),
       columnHelper.accessor('surplus', {
         header: 'Surplus',
         cell: (data) => (
-          <Text>
+          <span>
             {formatCurrency(data.getValue())} {data.row.original.symbol}
-          </Text>
+          </span>
         ),
       }),
       columnHelper.accessor('minTrade', {
         header: 'Min. Trade',
         cell: (data) => (
-          <Box variant="layout.verticalAlign" sx={{ gap: 2 }}>
+          <div className="flex items-center gap-2">
             {data.row.original.surplus >= data.row.original.minTrade ? (
               <Check size={16} strokeWidth={3} color="#11BB8D" />
             ) : (
               <X size={16} color="#FF8A00" />
             )}
-            <Text>
+            <span>
               {formatCurrency(data.getValue())} {data.row.original.symbol}
-            </Text>
-          </Box>
+            </span>
+          </div>
         ),
       }),
       columnHelper.accessor('value', {
@@ -348,8 +332,9 @@ const TradesTable = ({
         header: '',
         cell: (data) => (
           <Button
-            small
-            variant="bordered"
+            size="sm"
+            variant="outline"
+            className="border-2 border-primary text-primary"
             onClick={() => {
               window.open(
                 getTokenRoute(
@@ -374,9 +359,9 @@ const TradesTable = ({
     <Table
       data={trades}
       columns={columns as any}
-      compact
       sorting
       sortBy={[{ id: 'value', desc: true }]}
+      className='border-2 border-secondary pt-0'
       columnVisibility={
         !rToken ? ['none', '', '', '', '', '', 'none'] : undefined
       }
@@ -386,6 +371,8 @@ const TradesTable = ({
 }
 
 const RTokenRevenueOverview = ({ data }: { data: RevenueDetail }) => {
+  const [isOpen, setOpen] = useState(false)
+
   const handleRun = () => {
     window.open(
       getTokenRoute(data.address, data.chain, ROUTES.AUCTIONS),
@@ -394,53 +381,63 @@ const RTokenRevenueOverview = ({ data }: { data: RevenueDetail }) => {
   }
 
   return (
-    <CollapsableBox
-      variant="layout.borderBox"
-      p={[3, 4]}
-      sx={{ background: 'contentBackground' }}
-      header={
-        <Box
-          variant="layout.verticalAlign"
-          sx={{ flexWrap: 'wrap', gap: 3 }}
-          pr={4}
-        >
-          <Box
-            variant="layout.verticalAlign"
-            sx={{ gap: 2 }}
-            onClick={handleRun}
+    <div className="border border-border rounded-3xl p-4 md:p-6 bg-secondary">
+      {/* Collapsable header */}
+      <div
+        className="flex cursor-pointer w-full"
+        onClick={() => setOpen(!isOpen)}
+      >
+        <div className="flex items-center flex-wrap gap-4 w-full pr-6">
+          <div
+            className="flex items-center gap-2 mr-auto cursor-pointer"
+            onClick={(e: React.MouseEvent) => {
+              e.stopPropagation()
+              handleRun()
+            }}
             role="button"
-            mr="auto"
           >
             <TokenLogo width={24} src={data.logo} />
-            <Text
-              variant="strong"
-              sx={{ fontSize: 3, textDecoration: 'underline' }}
-            >
-              {data.symbol}
-            </Text>
+            <span className="font-medium text-xl underline">{data.symbol}</span>
             <ChainLogo chain={data.chain} />
-          </Box>
-          <Box variant="layout.verticalAlign" sx={{ gap: 3, flexWrap: 'wrap' }}>
-            <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
-              <Text variant="legend">Trades:</Text>
-              <Text variant="strong">{data.n}</Text>
-              <Text variant="legend" sx={{ fontWeight: 500 }}>
+          </div>
+          <div className="flex items-center gap-4 flex-wrap">
+            <div className="flex items-center gap-1">
+              <span className="text-muted-foreground">Trades:</span>
+              <span className="font-medium">{data.n}</span>
+              <span className="text-muted-foreground font-medium">
                 ({data.outstandingTrades} available)
-              </Text>
-            </Box>
-            <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
-              <Text variant="legend">Amount:</Text>
-              <Text variant="strong">${formatCurrency(data.total)}</Text>
-            </Box>
-            <Button small variant="bordered" onClick={handleRun}>
+              </span>
+            </div>
+            <div className="flex items-center gap-1">
+              <span className="text-muted-foreground">Amount:</span>
+              <span className="font-medium">${formatCurrency(data.total)}</span>
+            </div>
+            <Button
+              size="sm"
+              variant="outline"
+              className="border-2 border-primary text-primary"
+              onClick={(e: React.MouseEvent) => {
+                e.stopPropagation()
+                handleRun()
+              }}
+            >
               Run
             </Button>
-          </Box>
-        </Box>
-      }
-    >
-      <TradesTable rToken={false} pagination={false} trades={data.trades} />
-    </CollapsableBox>
+          </div>
+        </div>
+        <div className="flex items-center ml-auto">
+          {isOpen ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+        </div>
+      </div>
+
+      {/* Collapsible content */}
+      {isOpen && (
+        <>
+          <div className="-mx-6 my-4 border-t border-border" />
+          <TradesTable rToken={false} pagination={false} trades={data.trades} />
+        </>
+      )}
+    </div>
   )
 }
 
@@ -494,43 +491,34 @@ const RevenueOverview = ({
   }
 
   return (
-    <Box>
-      <Box
-        variant="layout.borderBox"
-        p={[2, 3]}
-        sx={{
-          gap: [2, 3],
-          display: 'flex',
-          flexWrap: 'wrap',
-          justifyContent: 'center',
-        }}
-      >
-        <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
-          <Text variant="legend">Trades:</Text>
-          <Text variant="strong">{data?.trades ?? 0}</Text>
-        </Box>
-        <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
-          <Text variant="legend">Available Trades:</Text>
-          <Text variant="strong">{data?.outstandingTrades ?? 0}</Text>
-        </Box>
-        <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
-          <Text variant="legend">Revenue:</Text>
-          <Text variant="strong">${formatCurrency(data?.revenue ?? 0)}</Text>
-        </Box>
-      </Box>
+    <div>
+      <div className="border-2 border-secondary rounded-4xl p-2 md:p-4 flex flex-wrap gap-2 md:gap-4 justify-center">
+        <div className="flex items-center gap-1">
+          <span className="text-muted-foreground">Trades:</span>
+          <span className="font-medium">{data?.trades ?? 0}</span>
+        </div>
+        <div className="flex items-center gap-1">
+          <span className="text-muted-foreground">Available Trades:</span>
+          <span className="font-medium">{data?.outstandingTrades ?? 0}</span>
+        </div>
+        <div className="flex items-center gap-1">
+          <span className="text-muted-foreground">Revenue:</span>
+          <span className="font-medium">${formatCurrency(data?.revenue ?? 0)}</span>
+        </div>
+      </div>
 
       {type === 'grid' ? (
-        <Flex mt={5} sx={{ gap: 3, flexDirection: 'column' }}>
+        <div className="mt-8 flex flex-col gap-4">
           {data.tokens.map((token) => (
             <RTokenRevenueOverview data={token} key={token.address} />
           ))}
-        </Flex>
+        </div>
       ) : (
-        <Box mt={5}>
+        <div className="mt-8">
           <TradesTable trades={trades} />
-        </Box>
+        </div>
       )}
-    </Box>
+    </div>
   )
 }
 
@@ -546,16 +534,14 @@ const AvailableRevenue = () => {
   )
 
   return (
-    <Box mt={[3, 5]} mx={[2, 3]}>
-      <Box variant="layout.verticalAlign" mb={5}>
+    <div className="mt-4 md:mt-8 mx-2 md:mx-4">
+      <div className="flex items-center mb-8 pl-5">
         <AuctionsIcon fontSize={32} />
-        <Text ml="2" as="h2" variant="title" sx={{ fontSize: 4 }}>
-          Revenue
-        </Text>
+        <h2 className="ml-2 text-xl mr-auto font-medium">Revenue</h2>
         <Menu current={current} onChange={handleChange} />
-      </Box>
+      </div>
       <RevenueOverview data={data} type={current} />
-    </Box>
+    </div>
   )
 }
 

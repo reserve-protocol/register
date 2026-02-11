@@ -1,12 +1,16 @@
 import { t } from '@lingui/macro'
 import { useAtom } from 'jotai'
-import { BoxProps } from 'theme-ui'
+import { cn } from '@/lib/utils'
 import { shortenAddress } from 'utils'
 import { registerAssetsProposedAtom } from '../atoms'
 import { ListChangePreview } from './ItemPreview'
 import PreviewBox from './PreviewBox'
 
-const ProposedRegisterPreview = (props: BoxProps) => {
+interface Props {
+  className?: string
+}
+
+const ProposedRegisterPreview = ({ className }: Props) => {
   const [proposedAssetsToRegister, setProposedAssetsToRegister] = useAtom(
     registerAssetsProposedAtom
   )
@@ -23,10 +27,9 @@ const ProposedRegisterPreview = (props: BoxProps) => {
 
   return (
     <PreviewBox
-      variant="layout.borderBox"
+      className={cn('border border-border rounded-xl p-6', className)}
       count={proposedAssetsToRegister.length}
       title={t`Registering assets`}
-      {...props}
     >
       {proposedAssetsToRegister.map((asset) => (
         <ListChangePreview
@@ -34,7 +37,7 @@ const ProposedRegisterPreview = (props: BoxProps) => {
           onRevert={() => handleRevert(asset)}
           isNew={true}
           value={shortenAddress(asset)}
-          mt={3}
+          className="mt-4"
         />
       ))}
     </PreviewBox>

@@ -1,4 +1,4 @@
-import GoTo from '@/components/old/button/GoTo'
+import GoTo from '@/components/ui/go-to'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import BlockiesAvatar from '@/components/utils/blockies-avatar'

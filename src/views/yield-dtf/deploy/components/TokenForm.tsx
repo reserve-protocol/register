@@ -1,27 +1,27 @@
+import { Switch } from '@/components/ui/switch'
 import { t, Trans } from '@lingui/macro'
 import { FormField } from 'components/field'
 import { useFormContext } from 'react-hook-form'
-import { Box, BoxProps, Text, Divider, Switch } from 'theme-ui'
+
+interface TokenFormProps {
+  className?: string
+}
 
 /**
  * View: Deploy -> Token setup
  */
-const TokenForm = (props: BoxProps) => {
-  const { watch, register } = useFormContext()
-  const [tickerValue, reweightable, enableIssuancePremium] = watch([
-    'ticker',
-    'reweightable',
-    'enableIssuancePremium',
-  ])
+const TokenForm = ({ className }: TokenFormProps) => {
+  const { watch, setValue } = useFormContext()
+  const [tickerValue, reweightable, enableIssuancePremium] = watch(['ticker', 'reweightable', 'enableIssuancePremium'])
 
   return (
-    <Box {...props}>
+    <div className={className}>
       <FormField
         label={t`Token name`}
         placeholder={t`Input token name`}
         help={t`Token name - the name of the RToken eg. Savings Dollar`}
         name="name"
-        mb={3}
+        className="mb-4"
         options={{
           required: t`Token name required`,
         }}
@@ -35,20 +35,20 @@ const TokenForm = (props: BoxProps) => {
           required: t`Token ticker is required`,
         }}
       />
-      <Box mt={2} ml={3} mb={3}>
-        <Text variant="legend" sx={{ fontSize: 1 }}>
+      <div className="mt-2 ml-3 mb-3">
+        <span className="text-legend text-xs">
           <Trans>Staking token</Trans>:
-        </Text>{' '}
-        <Text sx={{ fontSize: 1 }}>{tickerValue || 'st'}RSR Token, </Text>
-        <Text variant="legend" sx={{ fontSize: 1 }}>
+        </span>{' '}
+        <span className="text-xs">{tickerValue || 'st'}RSR Token, </span>
+        <span className="text-legend text-xs">
           <Trans>St Token Ticker</Trans>:
-        </Text>{' '}
-        <Text sx={{ fontSize: 1 }}>{tickerValue || 'st'}RSR</Text>
-      </Box>
+        </span>{' '}
+        <span className="text-xs">{tickerValue || 'st'}RSR</span>
+      </div>
       <FormField
         label={t`Mandate`}
         placeholder={t`RToken mandate`}
-        help={t`The mandate describes what goals its governors should try to achieve. By briefly explaining the RToken’s purpose and what the RToken is intended to do, it provides common ground for the governors to decide upon priorities and how to weigh tradeoffs.`}
+        help={t`The mandate describes what goals its governors should try to achieve. By briefly explaining the RToken's purpose and what the RToken is intended to do, it provides common ground for the governors to decide upon priorities and how to weigh tradeoffs.`}
         textarea
         name="mandate"
         options={{
@@ -59,13 +59,9 @@ const TokenForm = (props: BoxProps) => {
           },
         }}
       />
-      <Box
-        mt={3}
-        ml={3}
-        sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
-      >
-        <Text variant="bold">Allow RToken basket to change weights</Text>
-        <Text mb="2" as="p" sx={{ fontSize: 1 }} variant="legend">
+      <div className="mt-3 ml-3 flex flex-col gap-2">
+        <span className="font-bold">Allow RToken basket to change weights</span>
+        <p className="text-xs text-legend mb-2">
           A re-weightable RToken can have its basket changed in terms of its
           target units (USD/ETH/BTC/etc…). This flexibility allows for the
           addition, removal, and update of target units in the basket via
@@ -74,39 +70,32 @@ const TokenForm = (props: BoxProps) => {
           guarantees than holders of non-re-weightable RTokens. This option
           should only be used if an RToken must be re-weightable in order to
           accomplish its core goals.
-        </Text>
-        <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
-          <Box>
-            <Switch
-              defaultChecked={reweightable}
-              {...register('reweightable')}
-            />
-          </Box>
-        </Box>
-      </Box>
-      <Box
-        mt={3}
-        ml={3}
-        sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
-      >
-        <Text variant="bold">Issuance Premium</Text>
-        <Text mb="2" as="p" sx={{ fontSize: 1 }} variant="legend">
+        </p>
+        <div className="flex items-center gap-1">
+          <Switch
+            checked={reweightable}
+            onCheckedChange={(checked) => setValue('reweightable', checked)}
+          />
+        </div>
+      </div>
+      <div className="mt-3 ml-3 flex flex-col gap-2">
+        <span className="font-bold">Issuance Premium</span>
+        <p className="text-xs text-legend mb-2">
           This impacts whether the RToken charges higher rates for issuance when
           collateral is under-peg. This mechanism can be useful for preventing
           toxic issuance but comes with the tradeoff of making the onchain
           oracle price unreliable, as the issuance/redemption band widens as a
           collateral approaches its de-peg threshold.
-        </Text>
-        <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
-          <Box>
-            <Switch
-              defaultChecked={enableIssuancePremium}
-              {...register('enableIssuancePremium')}
+        </p>
+        <div className="flex items-center gap-1">
+          <Switch
+              checked={enableIssuancePremium}
+              onCheckedChange={(checked) => setValue('enableIssuancePremium', checked)}
             />
-          </Box>
-        </Box>
-      </Box>
-    </Box>
+        </div>
+      </div>
+    </div>
+
   )
 }
 

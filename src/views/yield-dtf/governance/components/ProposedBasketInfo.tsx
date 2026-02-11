@@ -1,9 +1,5 @@
-import { Box } from 'theme-ui'
-
 const ProposedBasketInfo = () => {
-  return <Box>
-    
-  </Box>
+  return <div></div>
 }
 
 export default ProposedBasketInfo

@@ -1,8 +1,14 @@
-import TransactionButton from '@/components/old/button/TransactionButton'
+import TransactionButton from '@/components/ui/transaction-button'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 import useWatchTransaction from 'hooks/useWatchTransaction'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
-import { Box, Select, Text } from 'theme-ui'
 import {
   TradeKind,
   auctionPlatformAtom,
@@ -53,39 +59,45 @@ const ConfirmAuction = () => {
     }
   }, [status])
 
-  const handleChangeKind = (e: any) => {
-    setTradeKind(+e.target.value)
+  const handleChangeKind = (value: string) => {
+    setTradeKind(+value)
   }
 
   return (
-    <Box>
+    <div>
       {!isLegacy && (
-        <Box mb={3} variant="layout.verticalAlign">
-          <Text as="label" ml={3} mr={4}>
-            Run auctions as:
-          </Text>
-          <Box sx={{ flexGrow: 1 }}>
+        <div className="mb-4 flex items-center">
+          <label className="ml-4 mr-6">Run auctions as:</label>
+          <div className="flex-grow">
             <Select
-              variant="smallInput"
-              value={tradeKind}
-              onChange={handleChangeKind}
+              value={String(tradeKind)}
+              onValueChange={handleChangeKind}
             >
-              <option value={TradeKind.BatchTrade}>Batch auction</option>
-              <option value={TradeKind.DutchTrade}>Dutch auction</option>
+              <SelectTrigger className="h-9">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value={String(TradeKind.BatchTrade)}>
+                  Batch auction
+                </SelectItem>
+                <SelectItem value={String(TradeKind.DutchTrade)}>
+                  Dutch auction
+                </SelectItem>
+              </SelectContent>
             </Select>
-          </Box>
-        </Box>
+          </div>
+        </div>
       )}
       <TransactionButton
-        fullWidth
+        className="w-full"
         text={btnLabel}
-        variant={isLoading ? 'accentAction' : 'primary'}
+        variant={isLoading ? 'accent' : 'default'}
         disabled={!isReady}
         gas={gas}
         loading={isLoading}
         onClick={write}
       />
-    </Box>
+    </div>
   )
 }
 

@@ -1,5 +1,4 @@
-import { Button } from 'components'
-import { Box, Text } from 'theme-ui'
+import { Button } from '@/components/ui/button'
 import { useZap } from './context/ZapContext'
 
 const ZapRedeemDisabled = ({ disableRedeem }: { disableRedeem: boolean }) => {
@@ -7,35 +6,17 @@ const ZapRedeemDisabled = ({ disableRedeem }: { disableRedeem: boolean }) => {
   if (operation !== 'redeem' || !disableRedeem) return null
 
   return (
-    <Box
-      sx={{
-        position: 'absolute',
-        top: 0,
-        right: 0,
-        bottom: 0,
-        left: 0,
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 2,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'cardAlternative',
-        borderRadius: '14px',
-        opacity: 0.95,
-        zIndex: 1,
-      }}
-    >
-      <Text sx={{ fontSize: 4 }}>
+    <div className="absolute top-0 right-0 bottom-0 left-0 flex flex-col gap-2 justify-center items-center bg-secondary rounded-3xl opacity-95 z-[1]">
+      <span className="text-xl">
         Zap Redeem not available during re-collateralization
-      </Text>
+      </span>
       <Button
-        backgroundColor="primary"
-        small
+        size="sm"
         onClick={() => setZapEnabled(false)}
       >
         Switch to manual minting
       </Button>
-    </Box>
+    </div>
   )
 }
 

@@ -1,5 +1,6 @@
-import { LoadingButton } from '@/components/old/button'
-import { TransactionButtonContainer } from '@/components/old/button/TransactionButton'
+import { Button } from '@/components/ui/button'
+import { TransactionButtonContainer } from '@/components/ui/transaction-button'
+import { Loader2 } from 'lucide-react'
 import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
 import { useCallback, useMemo } from 'react'
 import DisabledByGeolocationMessage from 'state/geolocation/DisabledByGeolocationMessage'
@@ -41,18 +42,19 @@ const ZapSubmitButton = () => {
     })
   }, [setOpenSubmitModal, operation, endpoint])
 
+  const isLoading = loadingZap || validatingZap
+
   return (
     <>
-      <TransactionButtonContainer sx={{ width: '100%' }}>
-        <LoadingButton
+      <TransactionButtonContainer className="w-full">
+        <Button
           onClick={onSubmit}
-          loading={loadingZap || validatingZap}
-          text={title}
-          backgroundColor={error?.color || 'primary'}
-          disabled={disabled}
-          loadingText="Finding route..."
-          fullWidth
-        />
+          disabled={disabled || isLoading}
+          className="w-full"
+        >
+          {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+          {isLoading ? 'Finding route...' : title}
+        </Button>
       </TransactionButtonContainer>
       <DisabledByGeolocationMessage />
     </>

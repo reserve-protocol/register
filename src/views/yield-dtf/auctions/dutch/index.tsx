@@ -1,4 +1,3 @@
-import { Box } from 'theme-ui'
 import EndedDutchAuctions from './components/EndedDutchAuctions'
 import OngoingDutchAuctions from './components/OngoingDutchAuctions'
 import PendingToSettleAuctions from './components/PendingToSettleAuctions'
@@ -8,11 +7,11 @@ const DutchAuctions = () => {
   useDutchTrades()
 
   return (
-    <Box>
+    <div>
       <OngoingDutchAuctions />
       <PendingToSettleAuctions />
       <EndedDutchAuctions />
-    </Box>
+    </div>
   )
 }
 

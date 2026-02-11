@@ -9,7 +9,7 @@ import { formatCurrency } from 'utils'
 import { TIME_RANGES } from 'utils/constants'
 import { RSVOverview } from 'utils/rsv'
 import { formatEther } from 'viem'
-import useQuery from './useQuery'
+import useQuery from './use-query'
 import useTimeFrom from './useTimeFrom'
 
 const rTokenMetricsQuery = gql`

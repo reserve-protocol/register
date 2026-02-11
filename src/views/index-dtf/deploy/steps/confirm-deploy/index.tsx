@@ -23,7 +23,7 @@ import SimpleIndexDeploy from './simple'
 import { inputAmountAtom } from './simple/atoms'
 import SuccessView from './success'
 import Ticker from '../../utils/ticker'
-import { TransactionButtonContainer } from '@/components/old/button/TransactionButton'
+import { TransactionButtonContainer } from '@/components/ui/transaction-button'
 import { Address } from 'viem'
 
 const Header = () => {

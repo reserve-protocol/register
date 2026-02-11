@@ -1,5 +1,4 @@
 import { NavLink, Outlet } from 'react-router-dom'
-import { Box } from 'theme-ui'
 import { ROUTES } from 'utils/constants'
 
 const NavItem = ({
@@ -10,19 +9,12 @@ const NavItem = ({
   children: React.ReactNode
 }) => (
   <NavLink
-    style={({ isActive }) => ({
-      textDecoration: 'none',
-      display: 'block',
-      paddingBottom: !isActive ? '15px' : '12px',
-      paddingTop: '12px',
-      // width: 120,
-      color: 'inherit',
-      lineHeight: '32px',
-      fontWeight: isActive ? 'bold' : 'normal',
-      borderBottom: isActive ? '3px solid' : '0px solid',
-      borderColor: 'primary',
-      textAlign: 'center',
-    })}
+    className={({ isActive }) =>
+      `block py-3 text-center leading-8 no-underline ${isActive
+        ? 'font-bold border-b-[3px] border-primary pb-[9px]'
+        : 'border-b-0'
+      }`
+    }
     to={to}
   >
     {children}
@@ -31,37 +23,26 @@ const NavItem = ({
 
 const Navigation = () => {
   return (
-    <Box
-      variant="layout.verticalAlign"
-      sx={{
-        borderBottom: '1px solid',
-        borderColor: 'border',
-        gap: [3, 4],
-        justifyContent: 'center',
-        fontSize: [1, 2],
-      }}
-    >
+    <div className="flex items-center border-b border-border gap-4 md:gap-6 justify-center text-sm md:text-base">
       <NavItem to={ROUTES.EXPLORER_TRANSACTIONS}>
-        <Box as="span" sx={{ display: ['block', 'none'] }}>
-          Txs
-        </Box>
-        <Box sx={{ display: ['none', 'block'] }}>Transactions</Box>
+        <span className="block md:hidden">Txs</span>
+        <span className="hidden md:block">Transactions</span>
       </NavItem>
       <NavItem to={ROUTES.EXPLORER_TOKENS}>Tokens</NavItem>
       <NavItem to={ROUTES.EXPLORER_COLLATERALS}>Collaterals</NavItem>
       <NavItem to={ROUTES.EXPLORER_GOVERNANCE}>Governance</NavItem>
       <NavItem to={ROUTES.EXPLORER_REVENUE}>Revenue</NavItem>
-    </Box>
+    </div>
   )
 }
 
 const Explorer = () => (
-  <Box variant="layout.wrapper">
+  <div className="container flex flex-col gap-1 ">
     <Navigation />
-    <Box sx={{ flexGrow: 1 }}>
+    <div className="flex-grow">
       <Outlet />
-    </Box>
-  </Box>
+    </div>
+  </div>
 )
 
 export default Explorer

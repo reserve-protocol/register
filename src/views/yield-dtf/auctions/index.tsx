@@ -1,29 +1,28 @@
 import { useAtomValue } from 'jotai'
-import { Box, Divider } from 'theme-ui'
+import { Separator } from '@/components/ui/separator'
 import { TradeKind, auctionPlatformAtom } from './atoms'
 import AuctionsSidebar from './auctions-sidebar'
 import BatchAuctions from './batch'
 import About from './components/About'
 import AuctionsHeader from './components/AuctionsHeader'
 import DutchAuctions from './dutch'
-import { useEffect } from 'react'
 
 const Auctions = () => {
   const platform = useAtomValue(auctionPlatformAtom)
 
   return (
-    <Box variant="layout.tokenView">
+    <div className="flex flex-col flex-grow p-0 md:p-6 relative">
       <AuctionsHeader />
-      <Divider my={4} />
+      <Separator className="my-4" />
       {platform === TradeKind.BatchTrade ? (
         <BatchAuctions />
       ) : (
         <DutchAuctions />
       )}
-      <Divider my={6} />
+      <Separator className="my-6" />
       <About />
       <AuctionsSidebar />
-    </Box>
+    </div>
   )
 }
 

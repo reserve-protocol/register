@@ -1,6 +1,5 @@
 import TabMenu from 'components/tab-menu'
 import { Minus, Plus } from 'lucide-react'
-import { Box } from 'theme-ui'
 import { useZap } from './context/ZapContext'
 import ZapSettings from './settings/ZapSettings'
 import ZapRefreshButton from './refresh/ZapRefreshButton'
@@ -25,10 +24,7 @@ const ZapTabs = () => {
   }, [chainId])
 
   return (
-    <Box
-      variant="layout.verticalAlign"
-      sx={{ justifyContent: 'space-between' }}
-    >
+    <div className="flex items-center justify-between">
       <TabMenu
         active={operation}
         items={backingOptions}
@@ -36,11 +32,11 @@ const ZapTabs = () => {
         background="border"
         onMenuChange={setOperation}
       />
-      <Box variant="layout.verticalAlign" sx={{ gap: 2 }}>
+      <div className="flex items-center gap-2">
         <ZapRefreshButton />
         <ZapSettings />
-      </Box>
-    </Box>
+      </div>
+    </div>
   )
 }
 

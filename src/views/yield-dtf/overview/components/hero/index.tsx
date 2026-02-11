@@ -1,26 +1,15 @@
-import { Box, Grid } from 'theme-ui'
-import TokenInfo from './TokenInfo'
-import TokenMandate from './TokenMandate'
-import TokenStats from './TokenStats'
+import TokenInfo from './token-info'
+import TokenMandate from './token-mandate'
+import TokenStats from './token-stats'
 
 const Hero = () => (
-  <Box mx="4" py={3}>
+  <div className="mx-4 sm:mx-8 mt-6">
     <TokenInfo />
-    <Grid
-      mt={[5, 8]}
-      gap={6}
-      columns={[1, 1, 1, '3fr 2fr']}
-      sx={{
-        alignItems: 'end',
-        '@media (min-width: 1152px) and (max-width: 1400px)': {
-          gridTemplateColumns: 'repeat(1, 1fr)',
-        },
-      }}
-    >
+    <div className="mt-8 sm:mt-16 gap-6 grid grid-cols-1 2xl:grid-cols-[3fr_2fr] items-end">
       <TokenStats />
       <TokenMandate />
-    </Grid>
-  </Box>
+    </div>
+  </div>
 )
 
 export default Hero

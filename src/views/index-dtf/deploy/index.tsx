@@ -8,7 +8,6 @@ import DeployAccordion from './components/deploy-accordion'
 import RightPanel from './components/right-panel'
 import {
   DeployFormSchema,
-  DeployInputs,
   dtfDeployDefaultValues,
 } from './form-fields'
 import Updater from './updater'
@@ -43,7 +42,7 @@ const DeployerHeader = () => {
 const IndexTokenDeploy = () => {
   useTrackPage('create', 'index_dtf')
 
-  const form = useForm<DeployInputs>({
+  const form = useForm({
     resolver: zodResolver(DeployFormSchema),
     defaultValues: dtfDeployDefaultValues,
   })

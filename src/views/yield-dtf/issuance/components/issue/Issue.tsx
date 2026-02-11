@@ -1,6 +1,6 @@
 import { t, Trans } from '@lingui/macro'
 import FacadeRead from 'abis/FacadeRead'
-import { Button } from 'components'
+import { Button } from '@/components/ui/button'
 import useRToken from 'hooks/useRToken'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
@@ -12,7 +12,7 @@ import {
   rTokenStateAtom,
   walletAtom,
 } from 'state/atoms'
-import { Card } from 'theme-ui'
+import { Card } from '@/components/ui/card'
 import { FACADE_ADDRESS } from 'utils/addresses'
 import {
   issueAmountAtom,
@@ -92,10 +92,10 @@ const Issue = () => {
           }}
         />
       )}
-      <Card p={4}>
+      <Card className="p-4 border-2 border-secondary">
         <IssueInput title={t`Mint`} compact={false} />
         <Button
-          sx={{ width: '100%' }}
+          className="w-full mt-4"
           disabled={
             !isValid ||
             issuing ||
@@ -105,8 +105,7 @@ const Issue = () => {
             isEnabled.loading ||
             chainId === ChainId.Arbitrum
           }
-          variant={missingCollateral ? 'error' : 'primary'}
-          mt={3}
+          variant={missingCollateral ? 'destructive' : 'default'}
           onClick={handleIssue}
         >
           {chainId === ChainId.Arbitrum ? (

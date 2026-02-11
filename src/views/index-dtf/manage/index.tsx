@@ -45,7 +45,7 @@ const defaultValues: ManageFormValues = {
 }
 
 const IndexDTFManage = () => {
-  const form = useForm<ManageFormValues>({
+  const form = useForm({
     resolver: zodResolver(manageFormSchema),
     defaultValues,
     mode: 'onChange',

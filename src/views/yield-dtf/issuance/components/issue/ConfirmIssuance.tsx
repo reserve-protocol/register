@@ -93,12 +93,12 @@ const ConfirmIssuance = ({ onClose }: { onClose: () => void }) => {
       return 'Please grant collateral allowance'
     }
 
-    return t`Begin minting ${formatCurrency(Number(amount))} ${rToken?.symbol}`
+    return t`Begin minting ${formatCurrency(Number(amount))} ${rToken?.symbol ?? ''}`
   }
 
   return (
     <TransactionModal
-      title={t`Mint ${rToken?.symbol}`}
+      title={t`Mint ${rToken?.symbol ?? ''}`}
       description={`Mint ${rToken?.symbol}`}
       call={call}
       confirmLabel={getConfirmText()}

@@ -1,31 +1,35 @@
 import { Trans } from '@lingui/macro'
-import { Table } from '@/components/old/table'
+import { Table } from '@/components/ui/legacy-table'
 import { useAtomValue } from 'jotai'
-import { Box, BoxProps, Text } from 'theme-ui'
 import { endedTradesAtom } from '../../atoms'
 import EndedAuctionsSkeleton from '../../components/EndedAuctionsSkeleton'
 import useColumns from '../../components/useColumns'
 
-const FinalizedAuctions = (props: BoxProps) => {
+interface FinalizedAuctionsProps {
+  className?: string
+}
+
+const FinalizedAuctions = ({ className }: FinalizedAuctionsProps) => {
   const columns = useColumns(true)
   const data = useAtomValue(endedTradesAtom)
 
   return (
-    <Box {...props}>
-      <Text variant="strong" ml={4} mb={4}>
+    <div className={className}>
+      <span className="font-semibold ml-4 mb-4 block">
         <Trans>Ended auctions</Trans>
-      </Text>
+      </span>
       {data.length ? (
         <Table
           columns={columns}
           data={data}
+          className="border-[4px] border-secondary"
           compact
           pagination={{ pageSize: 5 }}
         />
       ) : (
         <EndedAuctionsSkeleton />
       )}
-    </Box>
+    </div>
   )
 }
 

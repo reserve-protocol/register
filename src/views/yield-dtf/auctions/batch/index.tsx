@@ -5,7 +5,7 @@ import TradesUpdater from './TradesUpdater'
 const BatchAuctions = () => (
   <>
     <TradesUpdater />
-    <OngoingAuctions mb={6} />
+    <OngoingAuctions className="mb-6" />
     <FinalizedAuctions />
   </>
 )

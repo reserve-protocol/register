@@ -1,19 +1,18 @@
-import { Box } from 'theme-ui'
-import InputOutputSeparator from '../InputOutputSeparator'
-import ActionOverview from './ActionOverview'
-import UnstakeButton from './UnstakeButton'
-import UnstakeInput from './UnstakeInput'
-import UnstakeOutput from './UnstakeOutput'
+import InputOutputSeparator from '../input-output-separator'
+import ActionOverview from './action-overview'
+import UnstakeButton from './unstake-button'
+import UnstakeInput from './unstake-input'
+import UnstakeOutput from './unstake-output'
 
 const Unstake = () => {
   return (
-    <Box p={4}>
+    <div className="p-4">
       <UnstakeInput />
       <InputOutputSeparator />
       <UnstakeOutput />
       <ActionOverview />
       <UnstakeButton />
-    </Box>
+    </div>
   )
 }
 

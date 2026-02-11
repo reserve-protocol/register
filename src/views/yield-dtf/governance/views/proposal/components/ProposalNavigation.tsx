@@ -1,10 +1,9 @@
 import { t, Trans } from '@lingui/macro'
-import { SmallButton } from '@/components/old/button'
-import Navigation from 'components/section-navigation/Navigation'
+import { Button } from '@/components/ui/button'
+import Navigation from '@/components/section-navigation/section-navigation'
 import useRToken from 'hooks/useRToken'
 import { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Box } from 'theme-ui'
 import { ROUTES } from 'utils/constants'
 
 const ProposalNavigation = () => {
@@ -33,14 +32,14 @@ const ProposalNavigation = () => {
   }
 
   return (
-    <Box variant="layout.sticky" py={5}>
-      <Box mb={5}>
-        <SmallButton variant="transparent" onClick={handleBack}>
+    <div className="sticky top-0 py-8">
+      <div className="mb-8">
+        <Button variant="ghost" size="sm" onClick={handleBack}>
           <Trans>Back to Governance</Trans>
-        </SmallButton>
-      </Box>
+        </Button>
+      </div>
       <Navigation sections={sections} />
-    </Box>
+    </div>
   )
 }
 

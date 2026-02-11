@@ -1,21 +1,12 @@
 import { Trans } from '@lingui/macro'
-import { Box, Text } from 'theme-ui'
 
 const EndedAuctionsSkeleton = () => {
   return (
-    <Box
-      sx={{
-        border: '1px dashed',
-        borderColor: 'border',
-        textAlign: 'center',
-        borderRadius: 16,
-      }}
-      p={6}
-    >
-      <Text variant="legend">
+    <div className="border border-dashed border-border text-center rounded-2xl p-6">
+      <span className="text-legend">
         <Trans>No ended auctions</Trans>
-      </Text>
-    </Box>
+      </span>
+    </div>
   )
 }
 

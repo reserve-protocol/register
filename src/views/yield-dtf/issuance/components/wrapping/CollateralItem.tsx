@@ -3,7 +3,7 @@ import CollateralWrap from 'abis/CollateralWrap'
 import ERC20 from 'abis/ERC20'
 import USDT from 'abis/USDT'
 import { NumericalInput } from 'components'
-import { ExecuteButton } from '@/components/old/button/TransactionButton'
+import { ExecuteButton } from '@/components/ui/transaction-button'
 import TokenLogo from 'components/icons/TokenLogo'
 import useDebounce from 'hooks/useDebounce'
 import useHasAllowance from 'hooks/useHasAllowance'
@@ -11,20 +11,21 @@ import { useShouldRefresh } from 'hooks/useWatchReadContract'
 import { useAtomValue } from 'jotai'
 import { useEffect, useMemo, useState } from 'react'
 import { chainIdAtom, walletAtom } from 'state/atoms'
-import { Box, BoxProps, Text } from 'theme-ui'
 import { CollateralPlugin } from 'types'
 import { formatCurrency, safeParseEther } from 'utils'
 import { ChainId } from 'utils/chains'
 import { BIGINT_MAX } from 'utils/constants'
 import { Address } from 'viem'
 import { useBalance, useReadContract } from 'wagmi'
+import { cn } from '@/lib/utils'
 
-interface Props extends BoxProps {
+interface Props {
   collateral: CollateralPlugin
   wrapping: boolean
+  className?: string
 }
 
-const CollateralItem = ({ collateral, wrapping, ...props }: Props) => {
+const CollateralItem = ({ collateral, wrapping, className }: Props) => {
   const wallet = useAtomValue(walletAtom)
   const chainId = useAtomValue(chainIdAtom)
   const fromToken = wrapping ? collateral.underlyingToken : collateral.symbol
@@ -312,62 +313,54 @@ const CollateralItem = ({ collateral, wrapping, ...props }: Props) => {
   }
 
   return (
-    <Box {...props}>
-      <Box variant="layout.verticalAlign">
-        <TokenLogo symbol={collateral.symbol} width={20} mr={3} />
-        <Box sx={{ flexGrow: 1 }} variant="layout.verticalAlign">
-          <Box sx={{ maxWidth: 200 }}>
-            <Text as="label">
+    <div className={className}>
+      <div className="flex items-center">
+        <TokenLogo symbol={collateral.symbol} width={20} className="mr-4" />
+        <div className="flex-grow flex items-center">
+          <div className="max-w-[200px]">
+            <label>
               {fromToken} to {toToken}
-            </Text>
-            <Text
+            </label>
+            <a
               onClick={() => setAmount(data?.formatted ?? '')}
-              as="a"
-              variant="a"
-              sx={{ display: 'block', fontSize: 1 }}
-              ml={'auto'}
-              mt={1}
-              mr={2}
+              className="block text-xs mt-1 mr-2 ml-auto text-primary hover:underline cursor-pointer"
             >
               Max:{' '}
               {data ? formatCurrency(Number(data.formatted), 5) : 'Fetching...'}
-            </Text>
-          </Box>
-          <NumericalInput
-            ml="auto"
-            mr={3}
-            sx={{
-              padding: '6px',
-              paddingLeft: '6px',
-              width: [160, 160],
-              fontSize: 1,
-            }}
-            placeholder={t`${fromToken} amount`}
-            value={amount}
-            onChange={setAmount}
-            variant={debouncedAmount && !isValid ? 'inputError' : 'input'}
-          />
+            </a>
+          </div>
+          <div className="ml-auto mr-4 w-40">
+            <NumericalInput
+              className={cn(
+                'p-1.5 text-sm w-full border rounded',
+                debouncedAmount && !isValid ? 'border-destructive' : 'border-border'
+              )}
+              placeholder={t`${fromToken ?? ''} amount`}
+              value={amount}
+              onChange={setAmount}
+            />
+          </div>
           {!hasAllowance && (
             <ExecuteButton
-              sx={{ flexShrink: 0 }}
+              className="shrink-0"
               call={approveCall}
               text="Approve"
-              small
+              size="sm"
             />
           )}
           {hasAllowance && (
             <ExecuteButton
               call={executeCall}
-              sx={{ flexShrink: 0 }}
+              className="shrink-0"
               disabled={!isValid}
               text={wrapping ? 'Wrap' : 'Unwrap'}
-              small
+              size="sm"
               onSuccess={handleSuccess}
             />
           )}
-        </Box>
-      </Box>
-    </Box>
+        </div>
+      </div>
+    </div>
   )
 }
 
