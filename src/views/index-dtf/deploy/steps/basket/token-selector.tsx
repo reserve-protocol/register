@@ -130,7 +130,7 @@ const EvenDistributionButton = () => {
 
 const OpenButtonSecondary = () => {
   return (
-    <div className="flex items-center gap-4 mr-4">
+    <div className="flex items-center gap-4 mr-2">
       <div className="flex-1">
         <TokenButton variant="secondary" />
       </div>
