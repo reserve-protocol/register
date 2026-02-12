@@ -48,7 +48,7 @@ const buildLiquidityCheckPayload = (basket: Token[], chainId: number, amountPerT
   const inputToken = LIQUIDITY_CHECK_TOKEN[chainId] || LIQUIDITY_CHECK_TOKEN[1]
 
   return {
-    debug: 'true',
+    debug: true,
     tokenIn: inputToken.address,
     amountIn: parseUnits(totalAmountUsd.toString(), inputToken.decimals).toString(),
     signer: "0x8e0507C16435Caca6CB71a7Fb0e0636fd3891df4" as Address,
