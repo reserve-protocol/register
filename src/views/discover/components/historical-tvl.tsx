@@ -75,7 +75,7 @@ const Heading = ({
   const revenue =
     isLoading || !data
       ? 0
-      : data.rsrStakerAnnualizedRevenue + data.rTokenAnnualizedRevenue
+      : data.rsrStakerAnnualizedRevenue + data.rTokenAnnualizedRevenue + data.indexDTFAnnualizedRevenue
   return (
     <div className="absolute top-3 sm:top-8 left-0 sm:left-0 right-3 text-tvl px-4 sm:px-6 md:px-0 w-auto sm:w-[560px]">
       {/* Light/Dark images with 40x40 rounded skeletons */}
