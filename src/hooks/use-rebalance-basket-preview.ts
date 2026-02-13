@@ -1,10 +1,12 @@
 import dtfIndexAbiV4 from '@/abis/dtf-index-abi-v4'
+import dtfIndexAbiV5 from '@/abis/dtf-index-abi'
 import { chainIdAtom } from '@/state/atoms'
 import {
   indexDTFAtom,
   indexDTFBasketAtom,
   indexDTFBasketSharesAtom,
   indexDTFRebalanceControlAtom,
+  indexDTFVersionAtom,
 } from '@/state/dtf/atoms'
 import { DecodedCalldata, Token } from '@/types'
 import { calculatePriceFromRange } from '@/utils'
@@ -52,43 +54,83 @@ type Range = {
   high: bigint
 }
 
+// V5 TokenRebalanceParams structure from the ABI
+type TokenRebalanceParams = {
+  token: Address
+  weight: Range
+  price: { low: bigint; high: bigint }
+  maxAuctionSize: bigint
+  inRebalance: boolean
+}
+
 export const useDecodedRebalanceCalldata = (
   calldata: Hex[] | undefined
 ): { data: RebalanceCall; calldata: DecodedCalldata } | undefined => {
+  const version = useAtomValue(indexDTFVersionAtom)
+
   return useMemo(() => {
     // Rebalance calls is always only one
     if (calldata?.length !== 1) return undefined
 
+    const isV5 = version.startsWith('5')
+
     try {
-      const decodedCalldata = getDecodedCalldata(dtfIndexAbiV4, calldata[0])
+      // Try to decode with the appropriate ABI based on version
+      const abi = isV5 ? dtfIndexAbiV5 : dtfIndexAbiV4
+      const decodedCalldata = getDecodedCalldata(abi, calldata[0])
 
       if (decodedCalldata.signature !== 'startRebalance') return undefined
 
-      const data = decodedCalldata.data as unknown as [
-        Address[],
-        Range[],
-        { low: bigint; high: bigint }[],
-        Range,
-        bigint,
-        bigint,
-      ]
+      if (isV5) {
+        // V5 format: startRebalance(TokenRebalanceParams[], limits, auctionLauncherWindow, ttl)
+        const data = decodedCalldata.data as unknown as [
+          TokenRebalanceParams[],
+          Range,
+          bigint,
+          bigint,
+        ]
 
-      return {
-        data: {
-          tokens: data[0],
-          weights: data[1],
-          prices: data[2],
-          limits: data[3],
-          auctionLauncherWindow: data[4],
-          ttl: data[5],
-        } as RebalanceCall,
-        calldata: decodedCalldata,
+        const tokenParams = data[0]
+
+        return {
+          data: {
+            tokens: tokenParams.map((t) => t.token),
+            weights: tokenParams.map((t) => t.weight),
+            prices: tokenParams.map((t) => t.price),
+            limits: data[1],
+            auctionLauncherWindow: data[2],
+            ttl: data[3],
+          } as RebalanceCall,
+          calldata: decodedCalldata,
+        }
+      } else {
+        // V4 format: startRebalance(tokens[], weights[], prices[], limits, auctionLauncherWindow, ttl)
+        const data = decodedCalldata.data as unknown as [
+          Address[],
+          Range[],
+          { low: bigint; high: bigint }[],
+          Range,
+          bigint,
+          bigint,
+        ]
+
+        return {
+          data: {
+            tokens: data[0],
+            weights: data[1],
+            prices: data[2],
+            limits: data[3],
+            auctionLauncherWindow: data[4],
+            ttl: data[5],
+          } as RebalanceCall,
+          calldata: decodedCalldata,
+        }
       }
     } catch (e) {
       console.error('Error decoding rebalance calldata', e)
       return undefined
     }
-  }, [JSON.stringify(calldata)])
+  }, [JSON.stringify(calldata), version])
 }
 
 const currentBasketMapAtom = atom<Record<string, Token> | undefined>((get) => {
