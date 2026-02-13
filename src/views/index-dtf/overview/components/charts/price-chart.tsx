@@ -62,7 +62,7 @@ function CustomTooltip({
         ? formatToSignificantDigits(value)
         : formatCurrency(value, 2)
     return (
-      <div className="bg-card rounded-[20px] p-4">
+      <div className="bg-card text-card-foreground rounded-[20px] p-4">
         <span className="text-base font-medium block mb-1">
           ${formattedValue}
         </span>
