@@ -135,9 +135,8 @@ const fetchLiquidityData = async (
         result[address] = {
           address: token.address,
           priceImpact: 0,
-          liquidityLevel: 'error',
+          liquidityLevel: 'failed',
           liquidityScore: 0,
-          error: data.error,
         }
       }
     }
@@ -188,7 +187,7 @@ export const useLiquidityCheck = () => {
   const query = useQuery({
     queryKey,
     queryFn: () => fetchLiquidityData(basket, chainId, simulationAmount),
-    enabled: basket.length >= 2 && allTokensHavePrices,
+    enabled: basket.length >= 1 && allTokensHavePrices,
     staleTime: 5 * 60 * 1000,
     refetchOnWindowFocus: false,
     retry: 2,
@@ -199,13 +198,24 @@ export const useLiquidityCheck = () => {
       setStatus('loading')
     } else if (query.isError) {
       setStatus('error')
+      // Set all tokens to 'failed' when the request fails
+      const failedMap: Record<string, TokenLiquidity> = {}
+      for (const token of basket) {
+        failedMap[token.address.toLowerCase()] = {
+          address: token.address,
+          priceImpact: 0,
+          liquidityLevel: 'failed',
+          liquidityScore: 0,
+        }
+      }
+      setLiquidityMap(failedMap)
     } else if (query.isSuccess) {
       setStatus('success')
       setLiquidityMap(query.data)
     } else {
       setStatus('idle')
     }
-  }, [query.isLoading, query.isFetching, query.isError, query.isSuccess, query.data, setStatus, setLiquidityMap])
+  }, [query.isLoading, query.isFetching, query.isError, query.isSuccess, query.data, setStatus, setLiquidityMap, basket])
 
   return query
 }

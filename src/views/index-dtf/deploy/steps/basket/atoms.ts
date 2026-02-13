@@ -4,7 +4,7 @@ import { basketAtom } from '../../atoms'
 
 export const liquiditySimulationAmountAtom = atom<number>(10000)
 
-export type LiquidityLevel = 'low' | 'medium' | 'high' | 'insufficient' | 'error' | 'unknown'
+export type LiquidityLevel = 'low' | 'medium' | 'high' | 'insufficient' | 'error' | 'unknown' | 'failed'
 
 export interface TokenLiquidity {
   address: Address

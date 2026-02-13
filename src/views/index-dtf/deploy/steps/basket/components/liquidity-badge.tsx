@@ -50,6 +50,11 @@ const levelConfig: Record<
     label: 'Unknown liquidity',
     className: 'bg-muted-foreground/10 text-muted-foreground',
   },
+  failed: {
+    label: 'Unknown liquidity',
+    description: 'Simulation failed',
+    className: 'bg-muted-foreground/10 text-muted-foreground',
+  },
 }
 
 const formatAmount = (amount: number): string => {
