@@ -65,7 +65,7 @@ export const zapDeployPayloadAtom = atom<
     tokenIn: tokenIn.address,
     amountIn: parseUnits(amountIn, tokenIn.decimals).toString(),
     signer: wallet,
-    slippage: slippage ? 1 / Number(slippage) : undefined,
+    slippage: slippage && Number(slippage) ? 1 / Number(slippage) : undefined,
   }
 
   const basicDetails = {

@@ -21,7 +21,7 @@ type ExtendedFieldErrors<TFieldValues extends FieldValues> =
 const NextButton = () => {
   const readonlySteps = useAtomValue(readonlyStepsAtom)
   const [deployStep, setDeployStep] = useAtom(deployStepAtom)
-  const { trigger, formState, watch } = useFormContext<DeployInputs>()
+  const { trigger, formState, watch, clearErrors } = useFormContext<DeployInputs>()
   const setValidatedSections = useSetAtom(validatedSectionsAtom)
   const setTriggerDeploy = useSetAtom(triggerDeployDrawerAtom)
 
@@ -32,7 +32,7 @@ const NextButton = () => {
   useEffect(() => {
     const subscription = watch(() => {
       if (deployStep && formErrors[deployStep]) {
-        delete formErrors[deployStep]
+        clearErrors(deployStep as any)
       }
     })
     return () => subscription.unsubscribe()
@@ -71,7 +71,7 @@ const NextButton = () => {
       return
     }
 
-    scrollToSection(nextStepId ?? DEPLOY_STEPS[0])
+    scrollToSection(nextStepId ?? DEPLOY_STEPS[0].id)
     setDeployStep(nextStepId)
   }
 

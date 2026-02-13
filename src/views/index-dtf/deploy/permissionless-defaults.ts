@@ -19,6 +19,10 @@ export const PERMISSIONLESS_READONLY_STEPS = new Set<DeployStepId>([
   'other-changes',
 ])
 
+// Default operator for permissionless deploys (Reserve team)
+const PERMISSIONLESS_OPERATOR =
+  '0x8e0507C16435Caca6CB71a7Fb0e0636fd3891df4' as const
+
 export const getPermissionlessDefaults = (chainId: number): DeployInputs => {
   const platformFee = getPlatformFee(chainId)
 
@@ -45,9 +49,9 @@ export const getPermissionlessDefaults = (chainId: number): DeployInputs => {
     auctionLength: 30,
     weightControl: false,
     // Roles: default operator
-    guardians: ['0x8e0507C16435Caca6CB71a7Fb0e0636fd3891df4'],
-    brandManagers: ['0x8e0507C16435Caca6CB71a7Fb0e0636fd3891df4'],
-    auctionLaunchers: ['0x8e0507C16435Caca6CB71a7Fb0e0636fd3891df4'],
+    guardians: [PERMISSIONLESS_OPERATOR],
+    brandManagers: [PERMISSIONLESS_OPERATOR],
+    auctionLaunchers: [PERMISSIONLESS_OPERATOR],
     // Governance settings: defaults
     basketVotingDelay: 48,
     basketVotingPeriod: 72,
