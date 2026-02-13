@@ -6,7 +6,7 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion'
 import { cn } from '@/lib/utils'
-import { useAtom, useAtomValue } from 'jotai'
+import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
 import {
   ArrowDownUp,
@@ -31,6 +31,7 @@ import {
   daoTokenAddressAtom,
   deployedDTFAtom,
   deployStepAtom,
+  readonlyStepsAtom,
   searchTokenAtom,
   selectedTokensAtom,
   validatedSectionsAtom,
@@ -175,6 +176,8 @@ const DeployAccordion = () => {
   const { reset } = useFormContext()
   const [section, setSection] = useAtom(deployStepAtom)
   const validatedSections = useAtomValue(validatedSectionsAtom)
+  const setValidatedSections = useSetAtom(validatedSectionsAtom)
+  const readonlySteps = useAtomValue(readonlyStepsAtom)
   const resetBasket = useResetAtom(basketAtom)
   const resetDaoCreated = useResetAtom(daoCreatedAtom)
   const resetValidatedSections = useResetAtom(validatedSectionsAtom)
@@ -183,6 +186,15 @@ const DeployAccordion = () => {
   const resetDeployFormData = useResetAtom(indexDeployFormDataAtom)
   const resetSelectedTokens = useResetAtom(selectedTokensAtom)
   const resetSearchToken = useResetAtom(searchTokenAtom)
+
+  // Auto-validate readonly steps so formReadyForSubmit only depends on editable steps
+  // Separate effect because readonlyStepsAtom is set after mount by PermissionlessUpdater
+  useEffect(() => {
+    if (readonlySteps.size === 0) return
+    const validated: Partial<Record<DeployStepId, boolean>> = {}
+    for (const stepId of readonlySteps) validated[stepId] = true
+    setValidatedSections((prev) => ({ ...prev, ...validated }))
+  }, [readonlySteps, setValidatedSections])
 
   useEffect(() => {
     setSection(DEPLOY_STEPS[0].id)
@@ -230,7 +242,11 @@ const DeployAccordion = () => {
             <div className="text-2xl font-bold text-primary ml-6 mb-2">
               {titleSecondary}
             </div>
-            {content}
+            {readonlySteps.has(id) ? (
+              <div className="pointer-events-none opacity-60">{content}</div>
+            ) : (
+              content
+            )}
           </AccordionContent>
         </AccordionItem>
       ))}
