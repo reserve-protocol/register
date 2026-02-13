@@ -226,7 +226,7 @@ const Updater = () => {
         isResettingForm.current = false
       }, 100)
     }
-  }, [indexDTF?.id, !!feeRecipients])
+  }, [indexDTF?.id, !!feeRecipients, currentBidsEnabled])
 
   // Watch for token name changes (v5+ only)
   useEffect(() => {
