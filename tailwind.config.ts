@@ -3,7 +3,7 @@ import defaultTheme from 'tailwindcss/defaultTheme'
 
 const config = {
   darkMode: ['class'],
-  content: ['./index.html', './src/**/*.{ts,tsx,js,jsx}'],
+  content: ['./index.html', './src/**/*.{ts,tsx,js,jsx}', './node_modules/@reserve-protocol/react-zapper/dist/**/*.js'],
   prefix: '',
   theme: {
     container: {
@@ -131,6 +131,14 @@ const config = {
             transform: 'rotate(360deg)',
           },
         },
+        'slide-left': {
+          from: { left: '50%' },
+          to: { left: 'calc(50% - 150px)' },
+        },
+        'slide-out-right': {
+          from: { right: '0' },
+          to: { right: '-395px' },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
@@ -140,6 +148,8 @@ const config = {
         'width-expand':
           'width-expand 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) forwards',
         'spin-slow': 'spin-slow 4s linear infinite',
+        'slide-left': 'slide-left 0.5s forwards',
+        'slide-out-right': 'slide-out-right 0.5s forwards',
       },
     },
   },

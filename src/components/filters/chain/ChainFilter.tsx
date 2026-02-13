@@ -1,10 +1,9 @@
 import { devModeAtom } from '@/state/atoms'
-import { ChainId } from '@/utils/chains'
+import { cn } from '@/lib/utils'
 import ChainLogo from 'components/icons/ChainLogo'
 import StackedChainLogo from 'components/icons/StackedChainLogo'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
-import { Box, Text } from 'theme-ui'
 import {
   CHAIN_TO_NETWORK,
   NETWORKS,
@@ -50,38 +49,34 @@ const ChainFilter = ({
   )
 
   return (
-    <Box sx={{ minWidth: '162px' }}>
+    <div className="min-w-[162px]">
       <MultiselectDropdrown
         options={options}
         selected={chains}
         onChange={onChange}
-        sx={{
-          border: '1px solid',
-          borderColor: 'border',
-          borderRadius: rounded ? '16px' : '8px',
-          px: '20px',
-          py: '6px',
-          height,
-        }}
-        className={className}
+        className={cn(
+          'border border-border px-5 py-1.5',
+          rounded ? 'rounded-2xl' : 'rounded-lg',
+          className
+        )}
       >
         {Boolean(chainsLogos.length) && (
           <StackedChainLogo chains={chainsLogos} />
         )}
-        {chains.length === 0 && <Text variant="legend">Select a chain</Text>}
+        {chains.length === 0 && <span className="text-legend">Select a chain</span>}
         {chains.length == 1 && (
-          <Text variant="legend">
+          <span className="text-legend">
             {capitalize(CHAIN_TO_NETWORK[Number(chains[0])])}
-          </Text>
+          </span>
         )}
         {chains.length > 1 && chains.length !== supportedChainList.length && (
-          <Text variant="legend">{chains.length} chains</Text>
+          <span className="text-legend">{chains.length} chains</span>
         )}
         {chains.length === supportedChainList.length && (
-          <Text variant="legend">All Chains</Text>
+          <span className="text-legend">All Chains</span>
         )}
       </MultiselectDropdrown>
-    </Box>
+    </div>
   )
 }
 

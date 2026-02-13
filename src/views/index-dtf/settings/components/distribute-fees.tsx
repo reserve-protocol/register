@@ -1,5 +1,5 @@
-import dtfIndexAbi from '@/abis/dtf-index-abi-v1'
-import { TransactionButtonContainer } from '@/components/old/button/TransactionButton'
+import dtfIndexAbi from '@/abis/dtf-index-abi'
+import { TransactionButtonContainer } from '@/components/ui/transaction-button'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { indexDTFAtom, indexDTFPriceAtom } from '@/state/dtf/atoms'

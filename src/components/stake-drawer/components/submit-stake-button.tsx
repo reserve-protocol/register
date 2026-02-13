@@ -1,4 +1,4 @@
-import TransactionButton from '@/components/old/button/TransactionButton'
+import TransactionButton from '@/components/ui/transaction-button'
 import { walletAtom } from '@/state/atoms'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useState } from 'react'
@@ -219,7 +219,7 @@ const SubmitStakeButton = () => {
         }
         onClick={readyToSubmit ? write : approve}
         text={getButtonText()}
-        fullWidth
+        className="w-full"
         error={
           readyToSubmit
             ? error || txError

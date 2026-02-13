@@ -92,8 +92,8 @@ const ConfirmRedemption = ({ onClose }: { onClose: () => void }) => {
 
   return (
     <TransactionModal
-      title={t`Redeem ${rToken?.symbol}`}
-      description={t`Redeem ${rToken?.symbol}`}
+      title={t`Redeem ${rToken?.symbol ?? ''}`}
+      description={t`Redeem ${rToken?.symbol ?? ''}`}
       call={call}
       requiredAllowance={requiredAllowance}
       confirmLabel={t`Begin redemption of ${formatCurrency(Number(amount))} ${

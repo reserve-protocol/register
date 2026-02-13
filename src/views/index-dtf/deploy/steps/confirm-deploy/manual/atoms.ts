@@ -1,10 +1,11 @@
+import { TokenApprovalState } from '@/hooks/use-batch-approval'
 import { chainIdAtom } from '@/state/atoms'
 import { INDEX_DEPLOYER_ADDRESS } from '@/utils/addresses'
 import { atom } from 'jotai'
+import { atomWithReset } from 'jotai/utils'
 import { formatUnits } from 'viem'
 import { basketAtom } from '../../../atoms'
 import { indexDeployFormDataAtom } from '../atoms'
-import { atomWithReset } from 'jotai/utils'
 
 export const initialTokensAtom = atomWithReset<string>('1')
 
@@ -89,4 +90,22 @@ export const basketAllowanceAtom = atom((get) => {
     token.address,
     INDEX_DEPLOYER_ADDRESS[chainId],
   ]) as [string, string][]
+})
+
+// Batch approval state map for deploy flow
+export const deployBatchApprovalStateAtom = atom<
+  Record<string, TokenApprovalState>
+>({})
+
+// Derived: tokens needing approval for deploy
+export const tokensNeedingApprovalForDeployAtom = atom((get) => {
+  const assetsAllowance = get(formattedAssetsAllowanceAtom)
+  const basketRequiredAmounts = get(basketRequiredAmountsAtom)
+  const basket = get(basketAtom)
+
+  return basket.filter((token) => {
+    const allowance = assetsAllowance[token.address] ?? 0
+    const required = basketRequiredAmounts[token.address] ?? 0
+    return required > 0 && allowance < required
+  })
 })

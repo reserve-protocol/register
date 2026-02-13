@@ -119,6 +119,11 @@ export default [
                 type: 'bool',
               },
               {
+                internalType: 'bool',
+                name: 'enableIssuancePremium',
+                type: 'bool',
+              },
+              {
                 internalType: 'uint48',
                 name: 'tradingDelay',
                 type: 'uint48',
@@ -258,6 +263,33 @@ export default [
         ],
         internalType: 'struct SetupParams',
         name: 'setup',
+        type: 'tuple',
+      },
+      {
+        components: [
+          {
+            internalType: 'contract VersionRegistry',
+            name: 'versionRegistry',
+            type: 'address',
+          },
+          {
+            internalType: 'contract AssetPluginRegistry',
+            name: 'assetPluginRegistry',
+            type: 'address',
+          },
+          {
+            internalType: 'contract DAOFeeRegistry',
+            name: 'daoFeeRegistry',
+            type: 'address',
+          },
+          {
+            internalType: 'contract ITrustedFillerRegistry',
+            name: 'trustedFillerRegistry',
+            type: 'address',
+          },
+        ],
+        internalType: 'struct IDeployer.Registries',
+        name: 'registries',
         type: 'tuple',
       },
     ],

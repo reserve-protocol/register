@@ -1,8 +1,11 @@
-import { FC } from 'react'
-import { Box, BoxProps } from 'theme-ui'
+import { cn } from '@/lib/utils'
 
-const VerticalDivider: FC<BoxProps> = (props) => (
-  <Box variant="layout.verticalAlign" {...props}>
+interface VerticalDividerProps {
+  className?: string
+}
+
+const VerticalDivider = ({ className }: VerticalDividerProps) => (
+  <div className={cn('flex items-center', className)}>
     <svg xmlns="http://www.w3.org/2000/svg" width={2} height={6} fill="none">
       <path
         stroke="currentColor"
@@ -11,7 +14,7 @@ const VerticalDivider: FC<BoxProps> = (props) => (
         d="M.613.25h.5v5.5h-.5z"
       />
     </svg>
-  </Box>
+  </div>
 )
 
 export default VerticalDivider

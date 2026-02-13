@@ -11,7 +11,6 @@ import { useCallback, useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { chainIdAtom } from 'state/atoms'
 import { rTokenMetaAtom } from 'state/rtoken/atoms/rTokenAtom'
-import { Box } from 'theme-ui'
 import { Address } from 'viem'
 import DeployOverview from './components/DeployOverview'
 import Governance from './components/Governance'
@@ -64,17 +63,17 @@ const Deploy = () => {
   }
 
   return (
-    <Box variant="layout.wrapper">
+    <div className="max-w-[1400px] mx-auto px-4">
       <Layout>
         <FormProvider {...form}>
           <NavigationSidebar />
           <RTokenSetup governance={governance} />
-          <Box variant="layout.sticky">
+          <div className="lg:sticky lg:top-0 lg:self-start">
             <DeployOverview onDeploy={handleDeploy} />
-          </Box>
+          </div>
         </FormProvider>
       </Layout>
-    </Box>
+    </div>
   )
 }
 

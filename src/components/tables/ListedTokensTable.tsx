@@ -1,14 +1,14 @@
 import { t } from '@lingui/macro'
 import { createColumnHelper } from '@tanstack/react-table'
 import ChainLogo from 'components/icons/ChainLogo'
-import { Table, TableProps } from '@/components/old/table'
+import { Table, TableProps } from '@/components/ui/legacy-table'
 import TokenItem from 'components/token-item'
+import Spinner from '@/components/ui/spinner'
 import useRTokenLogo from 'hooks/useRTokenLogo'
 import useTokenList, { ListedToken } from 'hooks/useTokenList'
 import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
 import { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Box, Spinner, Text } from 'theme-ui'
 import {
   formatCurrency,
   formatCurrencyCell,
@@ -52,16 +52,7 @@ const ListedTokensTable = (props: Partial<TableProps>) => {
       columnHelper.accessor('targetUnits', {
         header: t`Target(s)`,
         cell: (data) => {
-          return (
-            <Text
-              sx={{
-                width: '74px',
-                display: 'block',
-              }}
-            >
-              {data.getValue()}
-            </Text>
-          )
+          return <span className="block w-[74px]">{data.getValue()}</span>
         },
       }),
       columnHelper.accessor('chain', {
@@ -93,14 +84,14 @@ const ListedTokensTable = (props: Partial<TableProps>) => {
         {...props}
       />
       {isLoading && (
-        <Box sx={{ textAlign: 'center' }} mt={3}>
+        <div className="text-center mt-4">
           <Spinner size={22} />
-        </Box>
+        </div>
       )}
       {!isLoading && !list.length && (
-        <Box sx={{ textAlign: 'center' }} mt={4}>
-          <Text variant="legend">No RTokens listed for this chain</Text>
-        </Box>
+        <div className="text-center mt-6">
+          <span className="text-legend">No RTokens listed for this chain</span>
+        </div>
       )}
     </>
   )

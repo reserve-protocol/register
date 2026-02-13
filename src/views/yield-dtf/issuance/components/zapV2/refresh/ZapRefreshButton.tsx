@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { IconButton } from 'theme-ui'
+import { cn } from '@/lib/utils'
 import { useZap } from '../context/ZapContext'
 import RefreshIcon from './RefreshIcon'
 
@@ -24,22 +24,14 @@ const RefreshButton = () => {
   }
 
   return (
-    <IconButton
-      sx={{
-        cursor: endpoint ? 'pointer' : 'not-allowed',
-        width: '34px',
-        height: '34px',
-        border: '1px solid',
-        borderColor: 'borderSecondary',
-        borderRadius: '6px',
-        position: 'relative',
-        opacity: endpoint ? 1 : 0.5,
-        color: 'accentInverted',
-        ':hover': {
-          backgroundColor: endpoint ? 'border' : 'transparent',
-        },
-      }}
-      p={0}
+    <button
+      className={cn(
+        'w-[34px] h-[34px] border border-secondary rounded-md relative text-foreground p-0',
+        'flex items-center justify-center',
+        endpoint
+          ? 'cursor-pointer opacity-100 hover:bg-muted'
+          : 'cursor-not-allowed opacity-50'
+      )}
       disabled={!endpoint}
       onClick={handleClick}
     >
@@ -51,7 +43,7 @@ const RefreshButton = () => {
       ) : (
         <RefreshIcon animationDuration="0" id={0} />
       )}
-    </IconButton>
+    </button>
   )
 }
 

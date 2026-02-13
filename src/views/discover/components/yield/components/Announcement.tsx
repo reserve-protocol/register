@@ -1,7 +1,6 @@
-import { Button } from 'components'
+import { Button } from '@/components/ui/button'
 import Sparkles from 'components/icons/Sparkles'
 import { useState } from 'react'
-import { Box, Text } from 'theme-ui'
 
 const STORAGE_KEY = '3.0-announcement'
 
@@ -18,40 +17,27 @@ const Announcement = () => {
   }
 
   return (
-    <Box
-      variant="layout.verticalAlign"
-      sx={{
-        backgroundColor: 'rBlueLight',
-        border: '1px solid',
-        borderColor: 'rBlue',
-        borderRadius: '8px',
-        flexWrap: 'wrap',
-      }}
-      px={3}
-      py={2}
-      mb={5}
-    >
-      <Box variant="layout.verticalAlign" mr={3} mb={[2, 2, 0]}>
+    <div className="flex items-center flex-wrap bg-blue-50 dark:bg-blue-950/30 border border-blue-500 rounded-lg px-4 py-2 mb-8">
+      <div className="flex items-center mr-4 mb-2 lg:mb-0">
         <Sparkles />
-      </Box>
-      <Box>
-        <Box sx={{ fontWeight: 'bold' }}>
-          <Text sx={{ color: 'rBlue' }}>Releasing 3.0.0</Text>{' '}
-          <Text>of the Reserve Protocol V.1</Text>
-        </Box>
-        <Text as="p">
+      </div>
+      <div>
+        <div className="font-bold">
+          <span className="text-blue-500">Releasing 3.0.0</span>{' '}
+          <span>of the Reserve Protocol V.1</span>
+        </div>
+        <p>
           Streamlining trades with Dutch Auctions, Fortifying Security, Enhanced
           Developer Experience & Governance improvements.
-        </Text>
-      </Box>
-      <Box ml={[0, 0, 0, 'auto']} mt={[3, 3, 3, 0]}>
-        <Button small variant="bordered" onClick={handleDismiss}>
+        </p>
+      </div>
+      <div className="ml-0 lg:ml-auto mt-4 lg:mt-0">
+        <Button size="sm" variant="outline" className="border-2" onClick={handleDismiss}>
           Dismiss
         </Button>
         <Button
-          ml="3"
-          small
-          sx={{ backgroundColor: 'rBlue', whiteSpace: 'nowrap' }}
+          className="ml-4 bg-[#2150A9] whitespace-nowrap"
+          size="sm"
           onClick={() =>
             window.open(
               'https://blog.reserve.org/reserve-protocol-v1-3-0-0-release-9c539334f771',
@@ -61,8 +47,8 @@ const Announcement = () => {
         >
           Read the blog post
         </Button>
-      </Box>
-    </Box>
+      </div>
+    </div>
   )
 }
 

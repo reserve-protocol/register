@@ -8,7 +8,8 @@ import Governance from 'abis/Governance'
 import Main from 'abis/Main'
 import RToken from 'abis/RToken'
 import RevenueTrader from 'abis/RevenueTrader'
-import Spell from 'abis/Spell'
+import Spell3_4_0 from '@/abis/Spell3_4_0'
+import Spell4_2_0 from '@/abis/Spell4_2_0'
 import StRSR from 'abis/StRSR'
 import Timelock from 'abis/Timelock'
 import { atom } from 'jotai'
@@ -19,7 +20,8 @@ import {
 } from 'state/atoms'
 import { ContractKey } from 'state/rtoken/atoms/rTokenContractsAtom'
 import { Abi, getAddress } from 'viem'
-import { spellAddressAtom } from './views/proposal/components/SpellUpgrade'
+import { spell3_4_0AddressAtom } from './views/proposal/components/SpellUpgrade3_4_0'
+import { spell4_2_0AddressAtom } from './views/proposal/components/SpellUpgrade4_2_0'
 
 export interface ProposalCall {
   signature: string
@@ -88,16 +90,21 @@ export const contractDetails: InterfaceMap = {
     interface: RToken,
     label: 'RToken',
   },
-  spell: {
-    interface: Spell,
+  spell3_4_0: {
+    interface: Spell3_4_0,
     label: 'Upgrade 3.4.0',
+  },
+  spell4_2_0: {
+    interface: Spell4_2_0,
+    label: 'Upgrade 4.2.0',
   },
 }
 
 export const interfaceMapAtom = atom((get) => {
   const contracts = get(rTokenContractsAtom)
   const governance = get(rTokenGovernanceAtom)
-  const spell = get(spellAddressAtom)
+  const spell3_4_0Address = get(spell3_4_0AddressAtom)
+  const spell4_2_0Address = get(spell4_2_0AddressAtom)
   const rToken = get(rTokenAtom)
 
   if (!contracts) {
@@ -116,8 +123,12 @@ export const interfaceMapAtom = atom((get) => {
     map[getAddress(governance.timelock)] = contractDetails.timelock
   }
 
-  if (spell) {
-    map[getAddress(spell)] = contractDetails.spell
+  if (spell3_4_0Address) {
+    map[getAddress(spell3_4_0Address)] = contractDetails.spell3_4_0
+  }
+
+  if (spell4_2_0Address) {
+    map[getAddress(spell4_2_0Address)] = contractDetails.spell4_2_0
   }
 
   if (rToken) {

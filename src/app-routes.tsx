@@ -54,10 +54,11 @@ const AppRoutes = () => (
     {/* Internal routes */}
     <Route path="/internal/dtf-list" element={<InternalDTFList />} />
     <Route path="/internal/dtf-listed" element={<InternalDTFListed />} />
+    <Route path={'/internal/deploy'} element={<DeployIndexDTF />} />
+
     <Route path={ROUTES.BRIDGE} element={<Bridge />} />
     <Route path={ROUTES.DEPLOY_YIELD} element={<DeployYieldDTF />} />
     <Route path={ROUTES.DEPLOY_INDEX} element={<DeployComingSoon />} />
-    <Route path={'/hidden/deploy'} element={<DeployIndexDTF />} />
     <Route path={ROUTES.TOKENS} element={<AllYieldDTFList />} />
     {/* EARN DTF */}
     <Route path={ROUTES.EARN} element={<Earn />}>

@@ -1,6 +1,8 @@
-import { Image, ImageProps } from 'theme-ui'
+interface ConcentratorProps extends React.ImgHTMLAttributes<HTMLImageElement> {
+  width?: number | string
+}
 
-const Concentrator = (props: ImageProps) => {
-  return <Image width={16} src="/imgs/concentrator.png" {...props} />
+const Concentrator = ({ width = 16, ...props }: ConcentratorProps) => {
+  return <img width={width} src="/imgs/concentrator.png" {...props} />
 }
 export default Concentrator

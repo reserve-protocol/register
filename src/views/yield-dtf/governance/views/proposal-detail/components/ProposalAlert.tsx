@@ -1,10 +1,10 @@
 import { useAtomValue } from 'jotai'
 import { ReactNode } from 'react'
 import { Check, Slash, X } from 'lucide-react'
-import { Box, Spinner, Text } from 'theme-ui'
 import { parseDurationShort } from 'utils'
 import { PROPOSAL_STATES } from 'utils/constants'
 import { getProposalStateAtom } from '../atom'
+import Spinner from '@/components/ui/spinner'
 
 const FinalState = ({
   label,
@@ -18,38 +18,28 @@ const FinalState = ({
   icon: ReactNode
 }) => {
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: 2,
-        height: '100%',
-        color,
-      }}
+    <div
+      className="flex h-full flex-col items-center justify-center gap-2"
+      style={{ color }}
     >
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          background: bgColor,
-          borderRadius: '50%',
-          padding: '8px',
-        }}
+      <div
+        className="flex items-center justify-center rounded-full p-2"
+        style={{ background: bgColor }}
       >
         {icon}
-      </Box>
-      <Text sx={{ fontSize: 3, fontWeight: 'bold' }}>{label}</Text>
-    </Box>
+      </div>
+      <span className="text-lg font-bold">{label}</span>
+    </div>
   )
 }
 
-const FINAL_STATES = {
+const FINAL_STATES: Record<
+  string,
+  { label: string; color: string; bgColor: string; icon: ReactNode }
+> = {
   [PROPOSAL_STATES.EXECUTED]: {
     label: 'Executed',
-    color: 'primary',
+    color: 'var(--primary)',
     bgColor: 'rgba(9, 85, 172, 0.10)',
     icon: <Check size={20} />,
   },
@@ -85,14 +75,14 @@ const FINAL_STATES = {
   },
 }
 
-const DEADLINE_STATES = {
+const DEADLINE_STATES: Record<string, { text: string; color: string }> = {
   [PROPOSAL_STATES.ACTIVE]: {
     text: 'Voting period ends in',
-    color: 'accentInverted',
+    color: 'var(--accent-inverted)',
   },
   [PROPOSAL_STATES.PENDING]: {
     text: 'Voting begins in',
-    color: 'accentInverted',
+    color: 'var(--accent-inverted)',
   },
   [PROPOSAL_STATES.QUEUED]: {
     text: 'Execution delay ends in',
@@ -130,7 +120,7 @@ const ProposalAlert = () => {
     return (
       <FinalState
         label="Passed"
-        color="primary"
+        color="var(--primary)"
         bgColor="rgba(9, 85, 172, 0.10)"
         icon={<Check size={20} />}
       />
@@ -138,25 +128,14 @@ const ProposalAlert = () => {
   }
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        color: DEADLINE_STATES[state.state].color,
-        height: '100%',
-        py: 4,
-      }}
+    <div
+      className="flex h-full flex-col items-center justify-center py-6"
+      style={{ color: DEADLINE_STATES[state.state].color }}
     >
-      <Spinner size={18} color={DEADLINE_STATES[state.state].color} />
-      <Text sx={{ fontSize: 1, mt: 1 }}>
-        {DEADLINE_STATES[state.state].text}
-      </Text>
-      <Text variant="title" sx={{ fontWeight: 'bold' }}>
-        {deadline}
-      </Text>
-    </Box>
+      <Spinner size={18} />
+      <span className="mt-1 text-xs">{DEADLINE_STATES[state.state].text}</span>
+      <span className="text-xl font-bold">{deadline}</span>
+    </div>
   )
 }
 

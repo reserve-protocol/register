@@ -1,46 +1,60 @@
 import { Trans, t } from '@lingui/macro'
-import { InfoBox } from 'components'
-import { SmallButton } from '@/components/old/button'
+import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
 import { useAtomValue } from 'jotai'
 import { chainIdAtom } from 'state/atoms'
-import { Box, Card, Flex, Image } from 'theme-ui'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 
 const Spacer = () => (
-  <Flex sx={{ justifyContent: 'center' }} my={5}>
-    <Box sx={{ width: '5px', height: '5px', backgroundColor: 'text' }} />
-  </Flex>
+  <div className="flex justify-center my-5">
+    <div className="w-[5px] h-[5px] bg-foreground" />
+  </div>
+)
+
+const InfoBoxLight = ({
+  title,
+  subtitle,
+}: {
+  title: string
+  subtitle: string
+}) => (
+  <div>
+    <span className="text-sm block font-semibold text-foreground mb-1">{title}</span>
+    <span className="text-sm">{subtitle}</span>
+  </div>
 )
 
 const TransactionDivider = (props: { title: string; subtitle: string }) => (
-  <Box>
+  <div>
     <Spacer />
-    <Card variant="cards.form">
-      <Box variant="layout.verticalAlign" px={2}>
-        <Image src="/svgs/up-arrow.svg" mr={3} />
-        <InfoBox light {...props} />
-      </Box>
+    <Card className="p-4 bg-secondary">
+      <div className="flex items-center px-2">
+        <img src="/svgs/up-arrow.svg" className="mr-3" />
+        <InfoBoxLight {...props} />
+      </div>
     </Card>
-    <Spacer />
-  </Box>
+    <div className='flex items-center justify-center py-4'>
+      🎉
+    </div>
+  </div>
 )
 
 export const DeploySuccessDivider = ({ hash = '' }) => {
   const chainId = useAtomValue(chainIdAtom)
 
   return (
-    <Box>
-      <Card variant="cards.form">
-        <Box variant="layout.verticalAlign">
-          <Image src="/svgs/up-arrow.svg" mr={3} ml={2} />
-          <InfoBox
-            light
+    <div>
+      <Card className="p-4 bg-secondary">
+        <div className="flex items-center">
+          <img src="/svgs/up-arrow.svg" className="mr-3 ml-2" />
+          <InfoBoxLight
             title={t`Transaction 1`}
             subtitle={t`RToken Deployment Transaction succeeded`}
           />
-          <SmallButton
-            ml="auto"
-            variant="transparent"
+          <Button
+            className="ml-auto"
+            size="sm"
+            variant="ghost"
             onClick={() =>
               window.open(
                 getExplorerLink(hash, chainId, ExplorerDataType.TRANSACTION),
@@ -49,11 +63,11 @@ export const DeploySuccessDivider = ({ hash = '' }) => {
             }
           >
             <Trans>View on Etherscan</Trans>
-          </SmallButton>
-        </Box>
+          </Button>
+        </div>
       </Card>
       <Spacer />
-    </Box>
+    </div>
   )
 }
 export default TransactionDivider

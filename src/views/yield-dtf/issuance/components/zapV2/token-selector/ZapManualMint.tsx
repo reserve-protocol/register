@@ -1,28 +1,26 @@
 import CirclesIcon from 'components/icons/CirclesIcon'
-import { Box, Text } from 'theme-ui'
 import { useZap } from '../context/ZapContext'
-import { Button } from 'components'
+import { Button } from '@/components/ui/button'
 
 const ZapManualMint = () => {
   const { operation, setZapEnabled } = useZap()
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, p: 3 }}>
+    <div className="flex flex-col gap-2 p-4">
       <CirclesIcon color="currentColor" />
-      <Text variant="title" sx={{ fontWeight: 700, mt: 1 }}>
+      <span className="text-lg font-bold mt-1">
         Bring your own collateral
-      </Text>
-      <Box mt={2}>
+      </span>
+      <div className="mt-2">
         <Button
-          backgroundColor="muted"
-          color="text"
+          variant="muted"
+          size="sm"
           onClick={() => setZapEnabled(false)}
-          small
         >
           Manual {operation === 'mint' ? 'Mint' : 'Redeem'}
         </Button>
-      </Box>
-    </Box>
+      </div>
+    </div>
   )
 }
 

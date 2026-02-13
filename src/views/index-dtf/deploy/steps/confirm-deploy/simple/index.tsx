@@ -1,4 +1,4 @@
-import { TransactionButtonContainer } from '@/components/old/button/TransactionButton'
+import { TransactionButtonContainer } from '@/components/ui/transaction-button'
 import { Button } from '@/components/ui/button'
 import Copy from '@/components/ui/copy'
 import Swap, { SlippageSelector } from '@/components/ui/swap'

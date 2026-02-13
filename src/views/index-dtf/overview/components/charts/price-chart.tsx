@@ -1,4 +1,3 @@
-import InfoBox from '@/components/old/info-box'
 import { ChartConfig, ChartContainer } from '@/components/ui/chart'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useIsMobile } from '@/hooks/use-media-query'
@@ -14,7 +13,6 @@ import dayjs from 'dayjs'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useMemo } from 'react'
 import { Area, AreaChart, Tooltip, TooltipProps, XAxis, YAxis } from 'recharts'
-import { Card } from 'theme-ui'
 import useIndexDTFPriceHistory from '../../hooks/use-dtf-price-history'
 import IndexCTAsOverviewMobile from '../index-ctas-overview-mobile'
 import IndexTokenAddress from '../index-token-address'
@@ -64,9 +62,12 @@ function CustomTooltip({
         ? formatToSignificantDigits(value)
         : formatCurrency(value, 2)
     return (
-      <Card backgroundColor="cardBackground">
-        <InfoBox title={'$' + formattedValue} subtitle={subtitle} />
-      </Card>
+      <div className="bg-card text-card-foreground rounded-[20px] p-4">
+        <span className="text-base font-medium block mb-1">
+          ${formattedValue}
+        </span>
+        <span className="text-sm text-muted-foreground">{subtitle}</span>
+      </div>
     )
   }
 

@@ -1,36 +1,22 @@
-import { Box, Checkbox, Text } from 'theme-ui'
+import { Checkbox } from '@/components/ui/checkbox'
 import { useZap } from '../context/ZapContext'
 
 const ZapSettingsOnlyMint = () => {
   const { onlyMint, setOnlyMint } = useZap()
 
   return (
-    <Box
-      sx={{
-        borderRadius: '8px',
-        border: '1px solid',
-        borderColor: 'borderFocused',
-        backgroundColor: 'focusedBackground',
-      }}
-    >
-      <label
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          padding: '12px',
-          cursor: 'pointer',
-        }}
-      >
-        <Box variant="layout.verticalAlign" sx={{ gap: '6px' }}>
-          <Text>Force minting RTokens</Text>
-        </Box>
+    <div className="rounded-lg border border-secondary bg-card">
+      <label className="flex justify-between p-3 cursor-pointer">
+        <div className="flex items-center gap-1.5">
+          <span>Force minting RTokens</span>
+        </div>
         <Checkbox
           title="Force minting RTokens"
-          onChange={() => setOnlyMint(!onlyMint)}
+          onCheckedChange={() => setOnlyMint(!onlyMint)}
           checked={onlyMint}
         />
       </label>
-    </Box>
+    </div>
   )
 }
 

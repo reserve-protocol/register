@@ -1,6 +1,6 @@
-import { Button, NumericalInput } from 'components'
+import { NumericalInput } from 'components'
+import { Button } from '@/components/ui/button'
 import { useState } from 'react'
-import { Box, Text } from 'theme-ui'
 import { useZap } from '../context/ZapContext'
 import { formatNumber } from '../utils'
 
@@ -16,26 +16,15 @@ const ZapSettingsCustomSlippage = ({
 
   return !showCustomSlippage ? (
     <Button
-      variant="transparent"
+      variant="ghost"
       onClick={() => setShowCustomSlippage(true)}
-      sx={{
-        width: '120px',
-        borderRadius: 8,
-        px: '12px',
-        py: 2,
-      }}
+      className="w-[120px] rounded-lg px-3 py-2"
     >
       Custom
     </Button>
   ) : (
-    <Box
-      sx={{
-        borderRadius: '8px',
-        border: '1px solid',
-        borderColor: 'darkBorder',
-      }}
-    >
-      <Box sx={{ position: 'relative', zIndex: 0, width: '100%' }}>
+    <div className="rounded-lg border border-muted-foreground/30">
+      <div className="relative z-0 w-full">
         <NumericalInput
           style={{
             maxWidth: '120px',
@@ -54,19 +43,11 @@ const ZapSettingsCustomSlippage = ({
             setSlippage(slippage)
           }}
         />
-        <Box
-          sx={{
-            fontWeight: 'bold',
-            position: 'absolute',
-            top: 2,
-            left: 92,
-            zIndex: -1,
-          }}
-        >
-          <Text sx={{ userSelect: 'none' }}>%</Text>
-        </Box>
-      </Box>
-    </Box>
+        <div className="font-bold absolute top-2 left-[92px] -z-[1]">
+          <span className="select-none">%</span>
+        </div>
+      </div>
+    </div>
   )
 }
 

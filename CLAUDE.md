@@ -44,7 +44,7 @@ Register is the official web interface for the Reserve Protocol, enabling users 
 - Asset-backed, yield-bearing stablecoins
 - Secured by RSR stakers (first-loss capital)
 - Generate yield from underlying collateral
-- Legacy product with older UI (theme-ui)
+- Legacy product
 
 #### Rebalancing (v4)
 
@@ -378,16 +378,7 @@ const withNavigationGuard = (Component: React.FC) => {
 - **Q**: Should wagmi hooks be wrapped in custom hooks?
 - **A**: No, direct usage is acceptable and often clearer for simple cases
 
-### 2. Mixed UI Libraries (theme-ui + Tailwind)
-
-**Status**: ⚠️ Technical debt, not anti-pattern
-
-- **Q**: Is this intentional?
-- **A**: Yes, gradual migration from theme-ui to Tailwind/shadcn
-- **Impact**: Increased bundle size, inconsistent styling
-- **Solution**: Complete migration when time permits
-
-### 3. Console Logging in Production
+### 2. Console Logging in Production
 
 **Status**: ❌ Anti-pattern
 
@@ -396,7 +387,7 @@ const withNavigationGuard = (Component: React.FC) => {
 - **Impact**: Information leakage, performance
 - **Solution**: Use proper logging service or remove
 
-### 4. Large Component Files (150+ lines)
+### 3. Large Component Files (150+ lines)
 
 **Status**: ⚠️ Code smell, not hard rule
 
@@ -404,7 +395,7 @@ const withNavigationGuard = (Component: React.FC) => {
 - **A**: Prefer under 150 lines, but readability > arbitrary limits
 - **Solution**: Extract sub-components when it improves clarity
 
-### 5. Inconsistent Async Patterns
+### 4. Inconsistent Async Patterns
 
 **Status**: ❌ Anti-pattern
 
@@ -418,7 +409,7 @@ const data = await fetchData()
 setData(data)
 ```
 
-### 6. Missing Loading States
+### 5. Missing Loading States
 
 **Status**: ❌ Anti-pattern
 
@@ -426,7 +417,7 @@ setData(data)
 - **A**: Yes, for better UX
 - **Solution**: Use consistent loading pattern
 
-### 7. Hardcoded Values
+### 6. Hardcoded Values
 
 **Status**: ⚠️ Context-dependent
 
@@ -438,7 +429,7 @@ const MIN_AMOUNT = 0.0015
 const MIN_MINTING_FEE = parseEther('0.0015') // 0.15% minimum fee
 ```
 
-### 8. useEffect for Derived State
+### 7. useEffect for Derived State
 
 **Status**: ❌ Anti-pattern with Jotai
 
@@ -749,6 +740,8 @@ src/
 4. PR with at least one reviewer
 5. Merge to main
 
+**IMPORTANT**: Do NOT commit changes automatically. The user will handle git commits themselves.
+
 ### Environment Setup
 
 ```env
@@ -764,25 +757,26 @@ VITE_INFURA_KEY=your_key
 
 ```bash
 npm install          # Install dependencies
-npm run dev         # Start dev server
-npm run build       # Build for production
-npm run lint        # Run linter
-npm run format      # Format code
+npm run start        # Start dev server (port 3000)
+npm run build        # Build for production
+npm run typecheck    # TypeScript validation
+npm run test         # Run tests (watch mode)
+npm run test:run     # Run tests (single run)
 ```
 
 ### Testing
 
-- **Current**: Manual testing on Base network
-- **Planned**: Jest for unit tests, E2E with wallet integration
-- **Note**: No current test coverage requirements
+- **Framework**: Vitest with jsdom environment
+- **Location**: `src/**/tests/**/*.test.{ts,tsx}`
+- **Run**: `npm run test` (watch) or `npm run test:run` (single)
+- **Current coverage**: Critical hooks (useQuery, useDebounce, useTimeRemaining)
 
 ## Known Issues & Tech Debt
 
 ### High Priority
 
-1. **Testing Infrastructure**: No automated tests
-2. **Bundle Size**: Large SPA bundle
-3. **Legacy UI**: Yield DTFs use old theme-ui components
+1. **Bundle Size**: Large SPA bundle (~10MB)
+2. **Tailwind v4**: Upgrade planned
 
 ### Complex Areas Needing Attention
 
@@ -848,8 +842,7 @@ npm run format      # Format code
 - **Styling**
   - Create custom CSS files
   - Use inline style prop
-  - Mix theme-ui with new components
-  - Hard-code colors instead of using theme
+  - Hard-code colors instead of using theme variables
 - **Performance**
   - Fetch data in render phase
   - Create functions inside render (use useCallback)

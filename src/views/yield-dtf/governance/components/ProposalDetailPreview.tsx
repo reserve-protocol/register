@@ -1,15 +1,17 @@
-import SectionWrapper from 'components/section-navigation/SectionWrapper'
+import SectionWrapper from '@/components/section-navigation/section-wrapper'
+import { Card } from '@/components/ui/card'
+import Spinner from '@/components/ui/spinner'
 import { useAtomValue } from 'jotai'
-import { Box, BoxProps, Card, Spinner, Text } from 'theme-ui'
 import { Hex, decodeFunctionData, getAbiItem, getAddress } from 'viem'
 import { ContractProposal, InterfaceMap, interfaceMapAtom } from '../atoms'
 import ContractProposalDetail from '../views/proposal-detail/components/ContractProposalDetails'
 
-interface Props extends BoxProps {
+interface Props {
   addresses: string[]
   calldatas: string[]
   snapshotBlock?: number
   borderColor?: string
+  className?: string
 }
 
 type ContractProposalMap = {
@@ -72,6 +74,7 @@ const ProposalDetail = ({
   addresses,
   calldatas,
   snapshotBlock,
+  className,
   ...props
 }: Props) => {
   const interfaceMap = useAtomValue(interfaceMapAtom)
@@ -79,14 +82,14 @@ const ProposalDetail = ({
   const calls = Object.keys(parse)
 
   return (
-    <Box>
+    <div className={className}>
       {!calls.length && (
-        <Card p={4} mb={4} sx={{ textAlign: 'center' }}>
+        <Card className="p-4 mb-4 text-center">
           <Spinner size={18} />
-          <Text sx={{ display: 'block' }}>Loading execution details...</Text>
+          <span className="block">Loading execution details...</span>
         </Card>
       )}
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+      <div className="flex flex-col gap-4">
         {calls.map((address, index) => (
           <SectionWrapper key={address} navigationIndex={index}>
             <ContractProposalDetail
@@ -96,8 +99,8 @@ const ProposalDetail = ({
             />
           </SectionWrapper>
         ))}
-      </Box>
-    </Box>
+      </div>
+    </div>
   )
 }
 

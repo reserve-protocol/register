@@ -1,8 +1,14 @@
-import { Button } from 'components'
-import Popup from '@/components/old/popup'
+import { Button } from '@/components/ui/button'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover'
+import { Separator } from '@/components/ui/separator'
+import { Switch } from '@/components/ui/switch'
+import { cn } from '@/lib/utils'
 import { useCallback, useState } from 'react'
 import { ChevronDown, ChevronUp } from 'lucide-react'
-import { Box, BoxProps, Divider, Flex, Switch, Text } from 'theme-ui'
 
 export interface SelectOption {
   label: string
@@ -10,12 +16,14 @@ export interface SelectOption {
   icon: React.ReactNode | null
 }
 
-export interface IMultiselectDropdrown extends Omit<BoxProps, 'onChange'> {
+export interface IMultiselectDropdrown {
   options: SelectOption[]
   selected: string[]
   allOption?: boolean
   minLimit?: number
   onChange: (selected: string[]) => void
+  className?: string
+  children?: React.ReactNode
 }
 
 const OptionSelection = ({
@@ -65,60 +73,49 @@ const OptionSelection = ({
   const lowerBound = allOption ? 0 : minLimit || 0
 
   return (
-    <Box
-      sx={{
-        backgroundColor: 'background',
-        borderRadius: '12px',
-      }}
-      mt={3}
-    >
-      <Box
-        sx={{ maxHeight: 260, overflow: 'auto' }}
-        className="hidden-scrollbar"
-      >
+    <div className="bg-background rounded-xl mt-4">
+      <div className="max-h-[260px] overflow-auto hidden-scrollbar">
         {allOption && (
-          <Box px={3} py={2} variant="layout.verticalAlign">
-            <Text mr="3" variant="strong">
-              All options
-            </Text>
-            <Box ml="auto">
+          <div className="flex items-center px-4 py-2">
+            <span className="mr-4 font-semibold">All options</span>
+            <div className="ml-auto">
               <Switch
+                variant="small"
                 disabled={allSelected}
                 checked={allSelected}
-                onChange={handleAll}
+                onCheckedChange={handleAll}
               />
-            </Box>
-          </Box>
+            </div>
+          </div>
         )}
         {options.map((option) => (
-          <Box px={3} py={2} variant="layout.verticalAlign" key={option.value}>
+          <div className="flex items-center px-4 py-2" key={option.value}>
             {option.icon}
-            <Text ml="1" mr="3">
-              {option.label}
-            </Text>
-            <Box ml="auto">
+            <span className="ml-1 mr-4">{option.label}</span>
+            <div className="ml-auto">
               <Switch
+                variant="small"
                 checked={values[option.value]}
                 disabled={values[option.value] && selectedCount <= lowerBound}
-                onChange={() =>
+                onCheckedChange={() =>
                   setValues({
                     ...values,
                     [option.value]: !values[option.value],
                   })
                 }
               />
-            </Box>
-          </Box>
+            </div>
+          </div>
         ))}
-      </Box>
+      </div>
 
-      <Divider mt={2} mb={3} />
-      <Box px={3} pb={3}>
-        <Button small fullWidth onClick={handleApply}>
+      <Separator className="mt-2 mb-4" />
+      <div className="px-4 pb-4">
+        <Button size="sm" className="w-full" onClick={handleApply}>
           Apply
         </Button>
-      </Box>
-    </Box>
+      </div>
+    </div>
   )
 }
 
@@ -129,8 +126,7 @@ const MultiselectDropdrown = ({
   allOption = false,
   minLimit,
   onChange,
-  sx,
-  ...props
+  className,
 }: IMultiselectDropdrown) => {
   const [isVisible, setVisible] = useState(false)
 
@@ -143,48 +139,37 @@ const MultiselectDropdrown = ({
   )
 
   return (
-    <Popup
-      show={isVisible}
-      onDismiss={() => setVisible(false)}
-      placement="bottom"
-      content={
-        isVisible ? (
-          <OptionSelection
-            options={options}
-            selected={selected}
-            onChange={handleChange}
-            allOption={allOption}
-            minLimit={minLimit}
-          />
-        ) : (
-          <Box />
-        )
-      }
-      containerProps={{
-        sx: { border: '2px solid', borderColor: 'darkBorder' },
-      }}
-    >
-      <Flex
-        sx={{
-          ...sx,
-          alignItems: 'center',
-          cursor: 'pointer',
-          justifyContent: 'space-between',
-          gap: 2,
-        }}
-        {...props}
-        onClick={() => setVisible(!isVisible)}
-      >
-        <Box variant="layout.verticalAlign">{children}</Box>
-        <Box variant="layout.verticalAlign">
-          {isVisible ? (
-            <ChevronUp size={18} color="#808080" />
-          ) : (
-            <ChevronDown size={18} color="#808080" />
+    <Popover open={isVisible} onOpenChange={setVisible}>
+      <PopoverTrigger asChild>
+        <div
+          className={cn(
+            'flex items-center cursor-pointer justify-between gap-2',
+            className
           )}
-        </Box>
-      </Flex>
-    </Popup>
+        >
+          <div className="flex items-center">{children}</div>
+          <div className="flex items-center">
+            {isVisible ? (
+              <ChevronUp size={18} color="#808080" />
+            ) : (
+              <ChevronDown size={18} color="#808080" />
+            )}
+          </div>
+        </div>
+      </PopoverTrigger>
+      <PopoverContent
+        className="w-auto p-0 rounded-xl border-2 border-border shadow-lg"
+        align="start"
+      >
+        <OptionSelection
+          options={options}
+          selected={selected}
+          onChange={handleChange}
+          allOption={allOption}
+          minLimit={minLimit}
+        />
+      </PopoverContent>
+    </Popover>
   )
 }
 

@@ -1,6 +1,8 @@
 import dtfIndexAbi from '@/abis/dtf-index-abi-v1'
 import dtfIndexAbiV4 from '@/abis/dtf-index-abi-v4'
 import FeedbackButton from '@/components/feedback-button'
+import SEO from '@/components/seo'
+import useFavicon from '@/hooks/useFavicon'
 import useIndexDTF from '@/hooks/useIndexDTF'
 import useIndexDTFTransactions from '@/hooks/useIndexDTFTransactions'
 import { useIndexBasket } from '@/hooks/useIndexPrice'
@@ -27,11 +29,29 @@ import { NETWORKS, RESERVE_API, ROUTES } from '@/utils/constants'
 import { useQuery } from '@tanstack/react-query'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useState } from 'react'
-import { Outlet, useNavigate, useParams } from 'react-router-dom'
+import { Outlet, useNavigate, useParams, useLocation } from 'react-router-dom'
 import { Address } from 'viem'
 import { useReadContract, useSwitchChain } from 'wagmi'
 import IndexDTFNavigation from './components/navigation'
 import GovernanceUpdater from './governance/updater'
+
+const DEFAULT_DESCRIPTION =
+  'Reserve is the leading platform for permissionless DTFs and asset-backed currencies. Create, manage & trade tokenized indexes with 24/7 transparency.'
+
+const IndexDTFSEO = () => {
+  const dtf = useAtomValue(indexDTFAtom)
+  const brand = useAtomValue(indexDTFBrandAtom)
+  const location = useLocation()
+
+  const title = dtf ? `Reserve | ${dtf.token.name}` : 'Reserve | DTFs'
+
+  const description = brand?.dtf?.description || DEFAULT_DESCRIPTION
+  const image = brand?.dtf?.icon || undefined
+
+  useFavicon(brand?.dtf?.icon)
+
+  return <SEO title={title} description={description} image={image} url={location.pathname} />
+}
 
 const useChainWatch = () => {
   const { switchChain } = useSwitchChain()
@@ -267,6 +287,7 @@ const Updater = () => {
 
 const IndexDTFContainer = () => (
   <div className="container flex flex-col-reverse md:flex-row mb-16 lg:mb-0">
+    <IndexDTFSEO />
     <FeedbackButton />
     <Updater />
     <IndexDTFNavigation />

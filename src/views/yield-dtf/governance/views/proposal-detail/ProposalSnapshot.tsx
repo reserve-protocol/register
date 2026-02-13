@@ -1,10 +1,9 @@
-import Button from '@/components/old/button'
+import { Button } from '@/components/ui/button'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
 import { Download } from 'lucide-react'
 import { useParams } from 'react-router-dom'
 import { rTokenGovernanceAtom } from 'state/atoms'
-import { Text } from 'theme-ui'
 import useProposalDetail from './useProposalDetail'
 
 const JSONToFile = (obj: any, filename: string) => {
@@ -47,13 +46,13 @@ const ProposalSnapshot = () => {
 
   return (
     <Button
-      small
-      variant="transparent"
+      size="sm"
+      variant="ghost"
       onClick={handleSnapshot}
       disabled={!proposal}
     >
       <Download size={14} />
-      <Text ml={2}>Download snapshot</Text>
+      <span className="ml-2">Download snapshot</span>
     </Button>
   )
 }

@@ -1,6 +1,6 @@
 import dtfIndexAbi from '@/abis/dtf-index-abi-v1'
 import dtfIndexAbiV2 from '@/abis/dtf-index-abi-v2'
-import { TransactionButtonContainer } from '@/components/old/button/TransactionButton'
+import { TransactionButtonContainer } from '@/components/ui/transaction-button'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import Spinner from '@/components/ui/spinner'
@@ -21,7 +21,9 @@ import {
   assetAmountsMapAtom,
   balanceMapAtom,
   modeAtom,
+  tokensNeedingApprovalAtom,
 } from '../atoms'
+import ApproveAllButton from './approve-all-button'
 import InputBox from './input-box'
 import ModeSelector from './mode-selector'
 import { useTrackIndexDTFClick } from '@/views/index-dtf/hooks/useTrackIndexDTFPage'
@@ -81,6 +83,18 @@ const isValidAtom = atom<[boolean, string]>((get) => {
 
 // TODO: Maybe worth doing the new tx button?
 const SubmitButton = () => {
+  const mode = useAtomValue(modeAtom)
+  const tokensNeedingApproval = useAtomValue(tokensNeedingApprovalAtom)
+
+  // Show Approve All when in buy mode and approvals are needed
+  if (mode === 'buy' && tokensNeedingApproval.length > 0) {
+    return <ApproveAllButton />
+  }
+
+  return <MintRedeemButton />
+}
+
+const MintRedeemButton = () => {
   const chainId = useAtomValue(chainIdAtom)
   const mode = useAtomValue(modeAtom)
   const [amount, setAmount] = useAtom(amountAtom)

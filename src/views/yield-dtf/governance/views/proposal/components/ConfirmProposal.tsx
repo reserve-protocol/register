@@ -1,4 +1,3 @@
-import { Container, Grid } from 'theme-ui'
 import useProposalTx from '../hooks/useProposalTx'
 import ConfirmProposalForm from './ConfirmProposalForm'
 import ConfirmProposalOverview from './ConfirmProposalOverview'
@@ -13,23 +12,27 @@ const ConfirmProposal = () => {
   }
 
   return (
-    <Grid
-      columns={['1fr', '1fr', '1.5fr 1fr']}
-      gap={5}
-      p={[1, 6]}
-      sx={{
-        position: 'relative',
-        justifyContent: 'center',
-        alignContent: 'flex-start',
-        alignItems: 'flex-start',
+    <div
+      className="grid gap-8 p-1 sm:p-8 relative justify-center content-start items-start"
+      style={{
+        gridTemplateColumns: 'repeat(1, 1fr)',
       }}
     >
-      <ConfirmProposalForm addresses={tx.args[0]} calldatas={tx.args[2]} />
-      <Container variant="layout.sticky">
-        <ConfirmProposalOverview tx={tx} />
-        <SimulateProposal mt="4" tx={tx} />
-      </Container>
-    </Grid>
+      <style>{`
+        @media (min-width: 832px) {
+          .confirm-proposal-grid {
+            grid-template-columns: 1.5fr 1fr;
+          }
+        }
+      `}</style>
+      <div className="confirm-proposal-grid grid gap-8 relative justify-center content-start items-start">
+        <ConfirmProposalForm addresses={tx.args[0]} calldatas={tx.args[2]} />
+        <div className="sticky top-6">
+          <ConfirmProposalOverview tx={tx} />
+          <SimulateProposal className="mt-6" tx={tx} />
+        </div>
+      </div>
+    </div>
   )
 }
 

@@ -1,4 +1,5 @@
-import { Button } from 'components'
+import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
 import ChevronRight from 'components/icons/ChevronRight'
 import EarnIcon from 'components/icons/EarnIcon'
 import { ListedToken } from 'hooks/useTokenList'
@@ -6,18 +7,17 @@ import { useAtomValue } from 'jotai'
 import { memo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { dtfPoolsAtom } from 'state/pools/atoms'
-import { mediumButton } from 'theme'
-import { Box, BoxProps, Text } from 'theme-ui'
 import { BRIDGED_RTOKENS, ROUTES } from 'utils/constants'
 import { getAddress } from 'viem'
 import VerticalDivider from './VerticalDivider'
 import { trackClick } from '@/hooks/useTrackPage'
 
-interface Props extends BoxProps {
+interface Props {
   token: ListedToken
+  className?: string
 }
 
-const EarnButton = ({ token, sx, ...props }: Props) => {
+const EarnButton = ({ token, className }: Props) => {
   const navigate = useNavigate()
   const pools = useAtomValue(dtfPoolsAtom)
   const earnData = pools[getAddress(token.id)]
@@ -37,54 +37,36 @@ const EarnButton = ({ token, sx, ...props }: Props) => {
   if (!earnData) return null
 
   return (
-    <Box variant="layout.verticalAlign" sx={{ gap: 1, ...sx }} {...props}>
-      <VerticalDivider sx={{ display: ['block', 'none'] }} />
+    <div className={cn('flex items-center gap-1', className)}>
+      <VerticalDivider className="block md:hidden" />
       <Button
         onClick={(e) => {
           e.stopPropagation()
           trackClick('discover', 'earn', token.id, token.symbol, token.chain)
           handleEarn()
         }}
-        variant="hover"
-        sx={{
-          width: ['100%', 'fit-content'],
-          ...mediumButton,
-          pr: [0, 3],
-        }}
+        variant="ghost"
+        className="w-full md:w-fit md:pr-4 text-sm md:text-base py-1 px-2.5 md:py-3 md:px-4 rounded-lg"
       >
-        <Box
-          variant="layout.verticalAlign"
-          sx={{
-            gap: [1, 2],
-            color: 'accentInverted',
-            justifyContent: ['space-between', 'start'],
-          }}
-        >
-          <Box variant="layout.verticalAlign" sx={{ gap: [2, 1] }}>
+        <div className="flex items-center gap-1 md:gap-2 text-primary justify-between md:justify-start">
+          <div className="flex items-center gap-2 md:gap-1">
             <EarnIcon color="currentColor" />
-            <Box
-              variant="layout.verticalAlign"
-              sx={{
-                gap: 1,
-                flexDirection: ['column', 'row'],
-                alignItems: ['start', 'center'],
-              }}
-            >
-              <Text>Earn: </Text>
-              <Text ml={[0, 1]} variant="bold">
+            <div className="flex items-start md:items-center flex-col md:flex-row gap-1">
+              <span>Earn: </span>
+              <span className="font-bold ml-0 md:ml-1">
                 {earnData.maxApy.toFixed(0)}% APY
-              </Text>
-            </Box>
-          </Box>
-          <Box sx={{ display: ['none', 'block'] }}>
+              </span>
+            </div>
+          </div>
+          <div className="hidden md:block">
             <ChevronRight color="currentColor" />
-          </Box>
-          <Box sx={{ display: ['block', 'none'] }}>
+          </div>
+          <div className="block md:hidden">
             <ChevronRight color="currentColor" width={16} height={16} />
-          </Box>
-        </Box>
+          </div>
+        </div>
       </Button>
-    </Box>
+    </div>
   )
 }
 export default memo(EarnButton)

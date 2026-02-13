@@ -1,4 +1,4 @@
-import { Box, Text } from 'theme-ui'
+import { cn } from '@/lib/utils'
 import ZapInput from './ZapInput'
 import ZapTokenSelector from '../token-selector/ZapTokenSelector'
 import ZapInputMaxButton from './ZapInputMaxButton'
@@ -9,49 +9,28 @@ const ZapInputContainer = () => {
   const { operation } = useZap()
 
   return (
-    <Box
-      variant="layout.verticalAlign"
-      sx={{
-        position: 'relative',
-        overflow: 'hidden',
-        backgroundColor: 'focusBox',
-        borderRadius: '8px',
-        gap: '8px',
-        alignItems: 'start',
-      }}
-      p={3}
+    <div
+      className={cn(
+        'flex items-center relative overflow-hidden bg-muted rounded-3xl gap-2 p-3',
+        'items-start'
+      )}
     >
-      <Box
-        variant="layout.centered"
-        sx={{
-          overflow: 'hidden',
-          gap: '8px',
-          alignItems: 'start',
-          flexGrow: 1,
-        }}
-      >
-        <Text>You use:</Text>
+      <div className="flex flex-col overflow-hidden gap-2 items-start flex-grow">
+        <span>You use:</span>
         <ZapInput />
         <ZapInputUSD />
-      </Box>
+      </div>
 
-      <Box
-        sx={{
-          position: 'absolute',
-          height: '100%',
-          top: 0,
-          right: 0,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'end',
-          justifyContent: operation === 'mint' ? 'space-between' : 'end',
-        }}
-        p={3}
+      <div
+        className={cn(
+          'absolute h-full top-0 right-0 flex flex-col items-end p-3',
+          operation === 'mint' ? 'justify-between' : 'justify-end'
+        )}
       >
         {operation === 'mint' && <ZapTokenSelector />}
         <ZapInputMaxButton />
-      </Box>
-    </Box>
+      </div>
+    </div>
   )
 }
 

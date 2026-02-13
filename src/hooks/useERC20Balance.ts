@@ -8,7 +8,7 @@ import {
 
 const ETH_ADDRESS = '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'
 
-const useERC20Balance = (address: Address | undefined) => {
+const useERC20Balance = (address: Address | undefined, chainId?: number) => {
   const wallet = useAtomValue(walletAtom)
 
   return useWatchReadContract({
@@ -17,6 +17,7 @@ const useERC20Balance = (address: Address | undefined) => {
     functionName: 'balanceOf',
     args: [wallet ?? '0x'],
     query: { enabled: !!(wallet && address && address !== ETH_ADDRESS) },
+    chainId,
   })
 }
 

@@ -1,7 +1,7 @@
 import dtfIndexDeployerAbi from '@/abis/dtf-index-deployer-abi'
 import TransactionButton, {
   TransactionButtonContainer,
-} from '@/components/old/button/TransactionButton'
+} from '@/components/ui/transaction-button'
 import useContractWrite from '@/hooks/useContractWrite'
 import { chainIdAtom, walletAtom } from '@/state/atoms'
 import { getCurrentTime } from '@/utils'
@@ -296,7 +296,7 @@ const ConfirmManualDeployButton = () => {
           loadingText={!!hash ? 'Confirming tx...' : 'Pending, sign in wallet'}
           onClick={write}
           text={title}
-          fullWidth
+          className="w-full"
           error={validationError || error || txError}
         />
       </TransactionButtonContainer>

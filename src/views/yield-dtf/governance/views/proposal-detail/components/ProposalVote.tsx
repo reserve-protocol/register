@@ -1,13 +1,12 @@
 import { Trans } from '@lingui/macro'
 import StRSRVotes from 'abis/StRSRVotes'
-import { Button } from 'components'
+import { Button } from '@/components/ui/button'
 import ExternalArrowIcon from 'components/icons/ExternalArrowIcon'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
 import { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { chainIdAtom, stRsrBalanceAtom, walletAtom } from 'state/atoms'
-import { Box, BoxProps, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { PROPOSAL_STATES } from 'utils/constants'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
@@ -23,6 +22,7 @@ import VoteModal from './VoteModal'
 import AsteriskIcon from 'components/icons/AsteriskIcon'
 import DelegateIcon from 'components/icons/DelegateIcon'
 import { useReadContract } from 'wagmi'
+import { cn } from '@/lib/utils'
 
 const ViewExecuteTxButton = () => {
   const { proposalId } = useParams()
@@ -33,8 +33,8 @@ const ViewExecuteTxButton = () => {
 
   return (
     <Button
-      variant="bordered"
-      sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+      variant="outline"
+      className="flex items-center justify-center border-2"
       onClick={() =>
         window.open(
           getExplorerLink(
@@ -46,7 +46,7 @@ const ViewExecuteTxButton = () => {
         )
       }
     >
-      <Text mr={2}>View execute tx</Text>
+      <span className="mr-2">View execute tx</span>
       <ExternalArrowIcon />
     </Button>
   )
@@ -66,8 +66,12 @@ const STATES_WITH_ACTIONS = [
   PROPOSAL_STATES.EXECUTED,
 ]
 
+interface ProposalVoteProps {
+  className?: string
+}
+
 // TODO: Validate voting power first?
-const ProposalVote = (props: BoxProps) => {
+const ProposalVote = ({ className }: ProposalVoteProps) => {
   const account = useAtomValue(walletAtom)
   const rToken = useRToken()
   const chainId = useAtomValue(chainIdAtom)
@@ -96,75 +100,52 @@ const ProposalVote = (props: BoxProps) => {
     hasNoDelegates
 
   return (
-    <Box
-      variant="layout.borderBox"
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        textAlign: 'center',
-        height: '100%',
-        justifyContent: 'space-between',
-        p: 2,
-        gap: 2,
-        borderColor: 'borderSecondary',
-      }}
-      {...props}
+    <div
+      className={cn(
+        'flex flex-col text-center h-full justify-between p-2 gap-2 border rounded-xl border-secondary',
+        className
+      )}
     >
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          height: '100%',
-          borderRadius: '8px',
-          border: STATES_WITH_ACTIONS.includes(state) ? '1px solid' : 'none',
-          borderColor: 'borderSecondary',
-          bg: FINAL_STATES.includes(state) ? 'transparent' : 'focusBox',
-        }}
+      <div
+        className={cn(
+          'flex flex-col h-full rounded-lg',
+          STATES_WITH_ACTIONS.includes(state) && 'border border-secondary',
+          !FINAL_STATES.includes(state) && 'bg-muted'
+        )}
       >
         {!FINAL_STATES.includes(state) && (
-          <Box
-            variant="layout.verticalAlign"
-            sx={{
-              gap: 2,
-              p: '12px',
-              justifyContent: 'space-between',
-              fontSize: 1,
-              flexWrap: 'wrap',
-              borderBottom: '1px solid',
-              borderColor: 'borderSecondary',
-            }}
-          >
-            <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
+          <div className="flex items-center gap-2 p-3 justify-between text-xs flex-wrap border-b border-secondary">
+            <div className="flex items-center gap-1">
               <AsteriskIcon />
-              <Text>Your voting power:</Text>
-              <Text sx={{ fontWeight: 'bold' }}>
+              <span>Your voting power:</span>
+              <span className="font-bold">
                 {formatCurrency(votePower ? +votePower : 0)}
-              </Text>
-            </Box>
-            <Box
-              variant="layout.verticalAlign"
-              sx={{
-                gap: 1,
-                color: hasUndelegatedBalance ? 'accentInverted' : 'muted',
-                cursor: hasUndelegatedBalance ? 'pointer' : 'default',
-              }}
+              </span>
+            </div>
+            <div
+              className={cn(
+                'flex items-center gap-1',
+                hasUndelegatedBalance
+                  ? 'text-primary cursor-pointer'
+                  : 'text-muted-foreground cursor-default'
+              )}
               onClick={() => hasUndelegatedBalance && setDelegateVisible(true)}
             >
               <DelegateIcon />
-              <Text sx={{ fontWeight: 700 }}>Delegate</Text>
-            </Box>
-          </Box>
+              <span className="font-bold">Delegate</span>
+            </div>
+          </div>
         )}
-        <Box sx={{ flexGrow: 1, p: '12px' }}>
+        <div className="flex-grow p-3">
           <ProposalAlert />
-        </Box>
-      </Box>
+        </div>
+      </div>
       {(state === PROPOSAL_STATES.PENDING ||
         state === PROPOSAL_STATES.ACTIVE) && (
-        <Box>
+        <div>
           {hasUndelegatedBalance ? (
             <Button
-              sx={{ width: '100%' }}
+              className="w-full"
               onClick={() => setDelegateVisible(true)}
             >
               <Trans>Delegate voting power for future votes</Trans>
@@ -178,7 +159,7 @@ const ProposalVote = (props: BoxProps) => {
                 !votePower ||
                 votePower === '0.0'
               }
-              sx={{ width: '100%' }}
+              className="w-full"
               onClick={() => setVoteVisible(true)}
             >
               {!account ? (
@@ -190,15 +171,15 @@ const ProposalVote = (props: BoxProps) => {
               )}
             </Button>
           )}
-        </Box>
+        </div>
       )}
       {state === PROPOSAL_STATES.EXECUTED && <ViewExecuteTxButton />}
       {state === PROPOSAL_STATES.SUCCEEDED && <ProposalQueue />}
       {state === PROPOSAL_STATES.QUEUED && (
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+        <div className="flex flex-col gap-1">
           <ProposalCancel />
           <ProposalExecute />
-        </Box>
+        </div>
       )}
       {isVoteVisible && <VoteModal onClose={() => setVoteVisible(false)} />}
       {isDelegateVisible && (
@@ -207,7 +188,7 @@ const ProposalVote = (props: BoxProps) => {
           onClose={() => setDelegateVisible(false)}
         />
       )}
-    </Box>
+    </div>
   )
 }
 

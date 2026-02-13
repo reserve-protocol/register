@@ -1,4 +1,4 @@
-import CopyValue from '@/components/old/button/CopyValue'
+import CopyValue from '@/components/ui/copy-value'
 import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
 import { chainIdAtom } from '@/state/atoms'

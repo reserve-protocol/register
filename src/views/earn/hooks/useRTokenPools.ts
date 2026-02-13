@@ -1,12 +1,13 @@
+import { useQuery } from '@tanstack/react-query'
 import rtokens from '@reserve-protocol/rtokens'
 import { useAtom } from 'jotai'
 import { useEffect } from 'react'
 import { Pool, poolsAtom } from 'state/pools/atoms'
-import useSWRImmutable from 'swr/immutable'
 import { StringMap } from 'types'
 import { EUSD_ADDRESS, RSR_ADDRESS } from 'utils/addresses'
 import { ChainId } from 'utils/chains'
 import {
+  BRIDGED_INDEX_DTFS,
   BRIDGED_RTOKENS,
   LP_PROJECTS,
   NETWORKS,
@@ -236,7 +237,11 @@ const mapPools = (
 }
 
 const useRTokenPools = () => {
-  const { data, isLoading } = useSWRImmutable('https://yields.llama.fi/pools')
+  const { data, isLoading } = useQuery({
+    queryKey: ['llama-pools'],
+    queryFn: () => fetch('https://yields.llama.fi/pools').then((res) => res.json()),
+    staleTime: 1000 * 60 * 60, // 1 hour - mimics useSWRImmutable behavior
+  })
   const earnPools = getEarnPools()
   const { data: indexDTFs } = useIndexDTFList()
 
@@ -253,6 +258,22 @@ const useRTokenPools = () => {
         }
         return acc
       }, {} as StringMap)
+
+      // Include bridged Index DTFs
+      Object.entries(BRIDGED_INDEX_DTFS).forEach(([address, bridges]) => {
+        const _token = indexDTFsMap[address]
+        if (_token) {
+          bridges.forEach((bridge) => {
+            const bridgeAddr = bridge.address.toLowerCase()
+            if (!indexDTFsMap[bridgeAddr]) {
+              indexDTFsMap[bridgeAddr] = {
+                ..._token,
+                address: bridge.address,
+              }
+            }
+          })
+        }
+      })
 
       const pools = mapPools(
         data.data as DefillamaPool[],

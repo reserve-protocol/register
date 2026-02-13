@@ -1,12 +1,12 @@
 import { t, Trans } from '@lingui/macro'
-import { SmallButton } from '@/components/old/button'
+import { Button } from '@/components/ui/button'
 import {
   ExternalAddressSplit,
   revenueSplitAtom,
 } from 'components/rtoken-setup/atoms'
 import { useAtom, useAtomValue } from 'jotai'
 import { Plus, X } from 'lucide-react'
-import { Box, BoxProps, Text } from 'theme-ui'
+import { cn } from '@/lib/utils'
 import { shortenAddress } from 'utils'
 import { revenueSplitChangesAtom } from '../atoms'
 import {
@@ -28,7 +28,11 @@ const getDistributionSubtitle = (change: DistributionChange) => {
   return change.key[0].toUpperCase() + change.key.substring(1)
 }
 
-const ProposedRevenueSplitPreview = (props: BoxProps) => {
+interface Props {
+  className?: string
+}
+
+const ProposedRevenueSplitPreview = ({ className }: Props) => {
   const { distributions, externals, count } = useAtomValue(
     revenueSplitChangesAtom
   )
@@ -99,14 +103,13 @@ const ProposedRevenueSplitPreview = (props: BoxProps) => {
 
   return (
     <PreviewBox
-      variant="layout.borderBox"
+      className={cn('border border-border rounded-xl p-6', className)}
       count={count}
       title={t`Revenue split`}
-      {...props}
     >
       {distributions.map((change) => (
         <ParameterChangePreview
-          mt={3}
+          className="mt-4"
           title={t`Change distribution`}
           subtitle={getDistributionSubtitle(change)}
           current={change.current}
@@ -116,26 +119,27 @@ const ProposedRevenueSplitPreview = (props: BoxProps) => {
         />
       ))}
       {externals.map((change) => (
-        <Box variant="layout.verticalAlign" key={change.split.address} mt={3}>
+        <div className="flex items-center mt-4" key={change.split.address}>
           {change.isNew ? (
             <Plus color="#11BB8D" size={18} />
           ) : (
             <X color="#FF0000" size={18} />
           )}
-          <Box ml={2}>
-            <Text variant="legend" sx={{ fontSize: 1, display: 'block' }}>
+          <div className="ml-2">
+            <span className="text-legend text-xs block">
               {change.isNew ? <Trans>Add</Trans> : <Trans>Remove</Trans>}
-            </Text>
-            <Text>{shortenAddress(change.split.address)}</Text>
-          </Box>
-          <SmallButton
-            ml="auto"
-            variant="muted"
+            </span>
+            <span>{shortenAddress(change.split.address)}</span>
+          </div>
+          <Button
+            size="sm"
+            variant="ghost"
             onClick={() => handleRevertExternal(change)}
+            className="ml-auto"
           >
             <Trans>Revert</Trans>
-          </SmallButton>
-        </Box>
+          </Button>
+        </div>
       ))}
     </PreviewBox>
   )

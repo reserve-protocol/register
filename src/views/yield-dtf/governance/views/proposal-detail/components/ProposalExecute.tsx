@@ -1,6 +1,6 @@
 import { t } from '@lingui/macro'
 import Governance from 'abis/Governance'
-import TransactionButton from '@/components/old/button/TransactionButton'
+import TransactionButton from '@/components/ui/transaction-button'
 import useContractWrite from 'hooks/useContractWrite'
 import useWatchTransaction from 'hooks/useWatchTransaction'
 import { useAtomValue } from 'jotai'
@@ -34,13 +34,13 @@ const ProposalExecute = () => {
 
   return (
     <TransactionButton
-      small
+      size="sm"
       loading={isMining || isLoading}
       mining={isMining}
       disabled={!isReady || !canExecute || status === 'success'}
       onClick={write}
       text={t`Execute proposal`}
-      sx={{ height: '44px' }}
+      className="h-[44px]"
     />
   )
 }

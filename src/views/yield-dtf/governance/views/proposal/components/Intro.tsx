@@ -1,42 +1,49 @@
 import { Trans } from '@lingui/macro'
-import { SmallButton } from '@/components/old/button'
-import { Text, BoxProps, Card, Flex } from 'theme-ui'
+import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
 import ProposalIntroIcon from 'components/icons/ProposalIntroIcon'
 import useRToken from 'hooks/useRToken'
 import { PROTOCOL_DOCS } from '@/utils/constants'
+import { cn } from '@/lib/utils'
 
-const Intro = (props: BoxProps) => {
+interface Props {
+  className?: string
+}
+
+const Intro = ({ className }: Props) => {
   const rToken = useRToken()
 
   return (
-    <Card p={4} pt={5} {...props} sx={{ position: 'relative' }}>
+    <Card className={cn('p-6 pt-8 relative bg-secondary', className)}>
       <ProposalIntroIcon />
-      <Text variant="sectionTitle" mb={2} mt={2}>
+      <span className="text-lg font-bold block mb-2 mt-2">
         <Trans>Propose changes to ${rToken?.symbol}</Trans>
-      </Text>
-      <Text as="p" variant="legend" pr={4}>
+      </span>
+      <p className="text-legend pr-6">
         <Trans>
           Make proposed changes to the backing basket, emergency collateral,
           governance params, etc. Changes in multiple areas can be batched into
           a single proposal although to make voting on issues simpler it may
           make sense to separate things if unrelated.
         </Trans>
-      </Text>
-      <Flex mt={4}>
-        <SmallButton
-          variant="transparent"
-          mr="12px"
+      </p>
+      <div className="flex mt-6">
+        <Button
+          variant="ghost"
+          size="sm"
+          className="mr-3"
           onClick={() => window.open('https://t.co/kis3OapvFw', '_blank')}
         >
           <Trans>Community Discord</Trans>
-        </SmallButton>
-        <SmallButton
-          variant="muted"
+        </Button>
+        <Button
+          variant="ghost"
+          size="sm"
           onClick={() => window.open(PROTOCOL_DOCS, '_blank')}
         >
           <Trans>Protocol Docs</Trans>
-        </SmallButton>
-      </Flex>
+        </Button>
+      </div>
     </Card>
   )
 }

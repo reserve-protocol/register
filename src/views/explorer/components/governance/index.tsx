@@ -1,12 +1,12 @@
+import { cn } from '@/lib/utils'
 import { Trans, t } from '@lingui/macro'
 import { createColumnHelper } from '@tanstack/react-table'
 import GovernanceIcon from 'components/icons/GovernanceIcon'
-import { Table } from '@/components/old/table'
+import { Table } from '@/components/ui/legacy-table'
 import TokenItem from 'components/token-item'
 import dayjs from 'dayjs'
 import useRTokenLogo from 'hooks/useRTokenLogo'
 import { useMemo } from 'react'
-import { Badge, Box, Link, Text } from 'theme-ui'
 import { StringMap } from 'types'
 import { getProposalTitle, getTokenRoute } from 'utils'
 import { PROPOSAL_STATES, ROUTES, formatConstant } from 'utils/constants'
@@ -22,9 +22,15 @@ const BADGE_VARIANT: StringMap = {
   [PROPOSAL_STATES.CANCELED]: 'danger',
 }
 
+const badgeClasses: StringMap = {
+  danger: 'bg-destructive/15 text-destructive',
+  info: 'bg-primary/15 text-primary',
+  success: 'bg-success/15 text-success',
+  muted: 'bg-muted text-muted-foreground',
+}
+
 const ExploreGovernance = () => {
   const data = useProposalsData()
-  // TODO: Proper typing to support the state
   const columnHelper = createColumnHelper<any>()
   const columns = useMemo(
     () => [
@@ -42,40 +48,41 @@ const ExploreGovernance = () => {
       columnHelper.accessor('description', {
         header: t`Description`,
         cell: (data) => (
-          <Box>
-            <Link
+          <div>
+            <a
               href={getTokenRoute(
                 data.row.original.rTokenAddress,
                 data.row.original.chain,
                 `${ROUTES.GOVERNANCE_PROPOSAL}/${data.row.original.id}`
               )}
               target="_blank"
-              sx={{ textDecoration: 'underline' }}
+              className="underline"
             >
-              <Text sx={{ textTransform: 'capitalize' }}>
+              <span className="capitalize">
                 {getProposalTitle(data.getValue())}
-              </Text>
-            </Link>
+              </span>
+            </a>
             <ProposalVotingState data={data.row.original.state} />
-          </Box>
+          </div>
         ),
       }),
       columnHelper.accessor('creationTime', {
         header: t`Created At`,
         cell: (data) => (
-          <Text>{dayjs.unix(+data.getValue()).format('YYYY-M-D')}</Text>
+          <span>{dayjs.unix(+data.getValue()).format('YYYY-M-D')}</span>
         ),
       }),
       columnHelper.accessor('status', {
         header: t`Status`,
         cell: (data) => (
-          <Badge
-            ml="auto"
-            sx={{ flexShrink: 0 }}
-            variant={BADGE_VARIANT[data.getValue()] || 'muted'}
+          <span
+            className={cn(
+              'ml-auto shrink-0 font-bold rounded-full px-3.5 py-1.5',
+              badgeClasses[BADGE_VARIANT[data.getValue()] || 'muted']
+            )}
           >
             {formatConstant(data.getValue())}
-          </Badge>
+          </span>
         ),
       }),
     ],
@@ -83,29 +90,24 @@ const ExploreGovernance = () => {
   )
 
   return (
-    <Box mt={[3, 5]} mx={[2, 3]}>
-      <Box
-        variant="layout.verticalAlign"
-        sx={{ flexWrap: 'wrap', gap: '2' }}
-        mb={5}
-      >
+    <div className="mt-4 md:mt-8 mx-2 md:mx-4">
+      <div className="flex items-center pl-5 flex-wrap gap-2 mb-8">
         <GovernanceIcon fontSize={32} />
-        <Text as="h2" mr="auto" variant="title" sx={{ fontSize: 4 }}>
+        <h2 className="mr-auto text-xl font-medium">
           <Trans>Proposals</Trans>
-        </Text>
+        </h2>
         <Filters />
-      </Box>
+      </div>
       <Table
         sorting
         sortBy={[{ id: 'creationTime', desc: true }]}
         data={data}
         pagination={{ pageSize: 10 }}
+        className='border-2 border-secondary pt-0'
         columnVisibility={['', '', ['none', 'table-cell'], '']}
         columns={columns}
-        sx={{ borderRadius: '0 0 20px 20px' }}
-        compact
       />
-    </Box>
+    </div>
   )
 }
 

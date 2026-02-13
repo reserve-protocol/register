@@ -1,9 +1,9 @@
 import { Trans } from '@lingui/macro'
+import { Button } from '@/components/ui/button'
 import { Input } from 'components'
-import { SmallButton } from '@/components/old/button'
 import Help from 'components/help'
 import { useState } from 'react'
-import { Box, BoxProps, Text } from 'theme-ui'
+import { cn } from '@/lib/utils'
 import { isAddress } from 'utils'
 
 const NewRoleAddress = ({
@@ -22,49 +22,45 @@ const NewRoleAddress = ({
     addresses.findIndex((a) => a.toLowerCase() === address.toLowerCase()) !== -1
 
   return (
-    <Box>
+    <div>
       <Input
-        my={3}
+        className="my-3"
         autoFocus
         value={address}
         placeholder="Input address"
-        onChange={setAddress}
+        onChange={(e) => setAddress(e.target.value)}
       />
       {((address && !isValid) || isExisting) && (
-        <Text
-          variant="error"
-          mt={-2}
-          mb={3}
-          ml={3}
-          sx={{ fontSize: 1, display: 'block' }}
-        >
+        <span className="block text-destructive text-xs -mt-2 mb-3 ml-3">
           {isExisting ? (
             <Trans>This address already holds this role</Trans>
           ) : (
             <Trans>Invalid address</Trans>
           )}
-        </Text>
+        </span>
       )}
-      <SmallButton
+      <Button
+        size="sm"
         disabled={!isValid || isExisting}
         onClick={() => onSave(address)}
-        ml={3}
+        className="ml-4"
       >
         <Trans>Save</Trans>
-      </SmallButton>
-      <SmallButton onClick={() => onDismiss()} variant="muted" ml={3}>
+      </Button>
+      <Button size="sm" onClick={() => onDismiss()} variant="muted" className="ml-4">
         <Trans>Dismiss</Trans>
-      </SmallButton>
-    </Box>
+      </Button>
+    </div>
   )
 }
 
-interface RoleEditProps extends Omit<BoxProps, 'onChange'> {
+interface RoleEditProps {
   title: string
   onChange(addresses: string[]): void
   addresses: string[]
   help?: string
   compact?: boolean
+  className?: string
 }
 
 const RolesEdit = ({
@@ -73,7 +69,7 @@ const RolesEdit = ({
   help,
   addresses,
   compact = false,
-  ...props
+  className,
 }: RoleEditProps) => {
   const [isCreating, setCreate] = useState(false)
 
@@ -87,58 +83,44 @@ const RolesEdit = ({
   }
 
   return (
-    <Box {...props}>
-      <Box variant="layout.verticalAlign">
-        <Text ml={compact ? 3 : 0} variant={compact ? 'strong' : 'title'}>
+    <div className={className}>
+      <div className="flex items-center">
+        <span className={cn(compact ? 'ml-3 font-semibold' : 'text-xl font-medium')}>
           {title}
-        </Text>
+        </span>
         {!!help && <Help content={help} ml={2} />}
-      </Box>
+      </div>
       {!addresses.length && !isCreating && (
-        <Text
-          variant="legend"
-          sx={{ fontStyle: 'italic', display: 'block' }}
-          mt={3}
-          ml={3}
-        >
+        <span className="block text-legend italic mt-3 ml-3">
           <Trans>No holders for this role...</Trans>
-        </Text>
+        </span>
       )}
       {addresses.map((addr, index) => (
-        <Box
-          variant="layout.verticalAlign"
-          sx={{ flexWrap: 'wrap' }}
-          key={addr}
-          mt={3}
-        >
-          <Box mr={2} variant="layout.verticalAlign">
-            <Box
-              ml={compact ? 0 : 1}
-              mr={3}
-              sx={{
-                height: '4px',
-                width: '4px',
-                borderRadius: '100%',
-                backgroundColor: 'text',
-              }}
+        <div className="flex items-center flex-wrap mt-3" key={addr}>
+          <div className="flex items-center mr-2">
+            <div
+              className={cn(
+                'h-1 w-1 rounded-full bg-foreground mr-3',
+                compact ? '' : 'ml-1'
+              )}
             />
-            <Box>
-              <Text sx={{ fontSize: 1, display: 'block' }} variant="legend">
+            <div>
+              <span className="block text-legend text-xs">
                 <Trans>Current holder</Trans>
-              </Text>
-              <Text sx={{ wordBreak: 'break-word' }}>{addr}</Text>
-            </Box>
-          </Box>
+              </span>
+              <span className="break-all">{addr}</span>
+            </div>
+          </div>
 
-          <SmallButton
-            ml="auto"
-            variant="danger"
-            sx={{ backgroundColor: 'inputBorder' }}
+          <Button
+            size="sm"
+            variant="destructive"
+            className="ml-auto"
             onClick={() => handleRemove(index)}
           >
             <Trans>Remove</Trans>
-          </SmallButton>
-        </Box>
+          </Button>
+        </div>
       ))}
       {isCreating ? (
         <NewRoleAddress
@@ -147,16 +129,16 @@ const RolesEdit = ({
           addresses={addresses}
         />
       ) : (
-        <SmallButton
-          ml={3}
-          mt={compact ? 3 : 4}
+        <Button
+          size="sm"
+          className={cn('ml-4', compact ? 'mt-4' : 'mt-6')}
           onClick={() => setCreate(true)}
           variant="muted"
         >
           Add new {title.substring(0, title.length - 1).toLowerCase()}
-        </SmallButton>
+        </Button>
       )}
-    </Box>
+    </div>
   )
 }
 

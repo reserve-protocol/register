@@ -1,30 +1,30 @@
+import { cn } from '@/lib/utils'
 import GasIcon from 'components/icons/GasIcon'
-import { Box, BoxProps, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { useZap } from '../context/ZapContext'
 import Skeleton from 'react-loading-skeleton'
 
-const ZapGasCost = (props: BoxProps) => {
+interface Props {
+  className?: string
+}
+
+const ZapGasCost = ({ className }: Props) => {
   const { gasCost, loadingZap } = useZap()
 
   return (
-    <Box
-      variant="layout.verticalAlign"
-      sx={{ justifyContent: 'space-between' }}
-      {...props}
-    >
-      <Text sx={{ fontSize: 14 }}>Estimated gas cost</Text>
-      <Box variant="layout.verticalAlign" sx={{ gap: 1, color: 'primary' }}>
+    <div className={cn('flex items-center justify-between', className)}>
+      <span className="text-sm">Estimated gas cost</span>
+      <div className="flex items-center gap-1 text-primary">
         <GasIcon />
         {loadingZap ? (
           <Skeleton height={10} width={60} />
         ) : (
-          <Text sx={{ fontSize: 14, fontWeight: 500 }}>
+          <span className="text-sm font-medium">
             ${gasCost ? formatCurrency(+gasCost, 2) : 0}
-          </Text>
+          </span>
         )}
-      </Box>
-    </Box>
+      </div>
+    </div>
   )
 }
 

@@ -3,10 +3,9 @@ import BasketCubeIcon from 'components/icons/BasketCubeIcon'
 import { atom, useAtomValue } from 'jotai'
 import Skeleton from 'react-loading-skeleton'
 import { rTokenAtom, rTokenBackingDistributionAtom } from 'state/atoms'
-import { Box, Divider, Text } from 'theme-ui'
-import AssetBreakdown from './AssetBreakdown'
-import RevenueSplitOverview from './RevenueSplitOverview'
-import BuckingBuffer from './BackingBuffer'
+import AssetBreakdown from './asset-breakdown'
+import RevenueSplitOverview from './revenue-split-overview'
+import BuckingBuffer from './backing-buffer'
 
 // TODO: Localization?
 const pegsAtom = atom((get) => {
@@ -69,49 +68,36 @@ const BackingResume = () => {
   const unitCount = useAtomValue(unitCountAtom)
   const legend = useAtomValue(pegsAtom)
 
-  if (unitCount > 2) return <Box mb={5} />
+  if (unitCount > 2) return <div className="mb-8" />
 
   return (
-    <Text
-      ml="4"
-      mt="2"
-      mb={5}
-      as="h2"
-      variant="title"
-      sx={{ fontWeight: 'bold' }}
-    >
+    <h2 className="ml-6 mt-2 mb-8 text-xl font-semibold">
       {legend ? legend : <Skeleton />}
-    </Text>
+    </h2>
   )
 }
 
 const Backing = () => (
-  <Box>
-    <Box
-      variant="layout.verticalAlign"
-      ml="4"
-      mb={4}
-      mt={6}
-      sx={{ color: 'accent' }}
-    >
+  <div>
+    <div className="flex items-center ml-6 mb-6 mt-10 text-primary">
       <BasketCubeIcon fontSize={24} />
-      <Text ml="2" as="h2" variant="title" sx={{ fontWeight: '400' }}>
+      <h2 className="ml-2 text-2xl font-semibold">
         <Trans>Backing & Risk</Trans>
-      </Text>
-    </Box>
-    <Text as="p" ml="4" sx={{ fontSize: 3, maxWidth: 540 }}>
+      </h2>
+    </div>
+    <p className="ml-6 text-lg max-w-[540px]">
       <Trans>
         RTokens are 100% backed by a diversified set of underlying collateral
         tokens...
       </Trans>
-    </Text>
+    </p>
     <BackingResume />
     <AssetBreakdown />
-    <Divider my={6} />
+    <hr className="my-10 border-border" />
     <BuckingBuffer />
-    <Divider my={6} />
+    <hr className="my-10 border-border" />
     <RevenueSplitOverview />
-  </Box>
+  </div>
 )
 
 export default Backing

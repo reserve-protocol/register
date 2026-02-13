@@ -1,7 +1,7 @@
+import { useQuery } from '@tanstack/react-query'
 import { useAtom } from 'jotai'
 import { useEffect } from 'react'
 import { CollateralYieldByChain, collateralYieldAtom } from 'state/atoms'
-import useSWRImmutable from 'swr/immutable'
 import { ChainId } from 'utils/chains'
 import { supportedChainList } from 'utils/constants'
 
@@ -49,12 +49,11 @@ const poolsMap: Record<number, Record<string, string>> = {
     'd118f505-e75f-4152-bad3-49a2dc7482bf': 'saethpyusd',
     '01146cce-9140-4e03-9a2e-82c99ccc42f1': 'stkcvxpyusdusdc',
     '5b3aebb3-891d-47fc-92e2-927ada3d5b82': 'sfrxeth',
-    'bf3815bb-1059-4f24-90a3-14998e8493fa': 're7weth',
+    'd741644d-86ea-44ad-af5e-3042de381173': 're7weth',
     'a3ffd3fe-b21c-44eb-94d5-22c80057a600': 'stkcvxcrvusdusdt-f',
     '755fcec6-f4fd-4150-9184-60f099206694': 'stkcvxcrvusdusdc-f',
     'd1dacce1-7815-420c-bb6d-d3c4320e1b2a': 'steakpyusd',
     '043a8330-bc29-4164-aa1c-28de7bf87755': 'bbusdt',
-    'a44febf3-34f6-4cd5-8ab1-f246ebe49f9e': 'steakusdc',
     '152b7ce2-7193-475d-9b15-3f17fee66047': 'stkcvxeth+eth',
     '74346f6f-c7ee-4506-a204-baf48e13decb': 'stkcvxeth+eth-f',
     '66985a81-9c51-46ca-9977-42b4fe7bc6df': 'susde',
@@ -63,6 +62,7 @@ const poolsMap: Record<number, Record<string, string>> = {
     '423681e3-4787-40ce-ae43-e9f67c5269b3': 'woeth',
     'f981a304-bb6c-45b8-b0c5-fd2f515ad23a': 'saethusdt',
     '85fc6934-c94d-4ebe-9c60-66beb363669f': 'saethrlusd',
+    '46bd2bdf-6d92-4066-b482-e885ee172264': 'weeth',
     'b55f43a8-f444-4cd8-a3a4-0a4e786ba566': 'steakusdc',
   },
   [ChainId.Base]: {
@@ -112,9 +112,11 @@ export const symbolMap: Record<string, Record<number, string>> = Object.entries(
 
 const CollateralYieldUpdater = () => {
   const [collateralYield, setCollateralYield] = useAtom(collateralYieldAtom)
-  const { data } = useSWRImmutable('https://yields.llama.fi/pools', (...args) =>
-    fetch(...args).then((res) => res.json())
-  )
+  const { data } = useQuery({
+    queryKey: ['collateral-yields'],
+    queryFn: () => fetch('https://yields.llama.fi/pools').then((res) => res.json()),
+    staleTime: 1000 * 60 * 60, // 1 hour - mimics useSWRImmutable behavior
+  })
   useEffect(() => {
     if (data?.data) {
       const yields: CollateralYieldByChain = {

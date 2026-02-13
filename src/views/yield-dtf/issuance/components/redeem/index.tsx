@@ -1,6 +1,7 @@
 import { Trans } from '@lingui/macro'
-import { Button, Card } from 'components'
+import { Button } from '@/components/ui/button'
 import useRToken from 'hooks/useRToken'
+import { Card } from '@/components/ui/card'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useState } from 'react'
 import { isValidRedeemAmountAtom } from '@/views/yield-dtf/issuance/atoms'
@@ -26,12 +27,11 @@ const Redeem = () => {
   return (
     <>
       {confirming && <ConfirmRedemption onClose={() => setConfirming(false)} />}
-      <Card p={4} sx={{ height: 'fit-content', position: 'relative' }}>
+      <Card className="p-4 h-fit relative border-2 border-secondary">
         <RedeemInput compact={false} />
         <Button
           disabled={!isValid}
-          sx={{ width: '100%' }}
-          mt={3}
+          className="w-full mt-4"
           onClick={() => setConfirming(true)}
         >
           <Trans>- Redeem {rToken?.symbol ?? ''}</Trans>

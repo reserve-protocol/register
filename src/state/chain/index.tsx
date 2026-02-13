@@ -8,13 +8,10 @@ import {
 import '@rainbow-me/rainbowkit/styles.css'
 import {
   bitgetWallet,
-  braveWallet,
   coinbaseWallet,
   injectedWallet,
   ledgerWallet,
-  metaMaskWallet,
   rabbyWallet,
-  rainbowWallet,
   safeWallet,
   walletConnectWallet,
 } from '@rainbow-me/rainbowkit/wallets'
@@ -30,16 +27,13 @@ const connectors = connectorsForWallets(
       groupName: 'Recommended',
       wallets: [
         injectedWallet,
-        metaMaskWallet,
         walletConnectWallet,
         coinbaseWallet,
-        braveWallet,
         bitgetWallet,
         binanceWallet,
         rabbyWallet,
         safeWallet,
         ledgerWallet,
-        rainbowWallet,
       ],
     },
   ],

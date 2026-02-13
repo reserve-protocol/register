@@ -3,6 +3,7 @@ import {
   CMC20_ADDRESS,
   ETHPLUS_ADDRESS,
   EUSD_ADDRESS,
+  LCAP_ADDRESS,
   RGUSD_ADDRESS,
   RSR_ADDRESS,
   USD3_ADDRESS,
@@ -99,6 +100,10 @@ export const LP_PROJECTS: { [x: string]: { name: string; site: string } } = {
     name: 'Morpho',
     site: 'https://app.morpho.org/',
   },
+  'morpho-v1': {
+    name: 'Morpho',
+    site: 'https://app.morpho.org/',
+  },
   merkl: {
     name: 'Merkl',
     site: 'https://merkl.angle.money/',
@@ -122,6 +127,14 @@ export const LP_PROJECTS: { [x: string]: { name: string; site: string } } = {
   'origin-ether': {
     name: 'Origin',
     site: 'https://www.originprotocol.com/',
+  },
+  'ether.fi-staking': {
+    name: 'Ether.fi',
+    site: 'https://ether.fi/',
+  },
+  'lagoon': {
+    name: 'Lagoon',
+    site: 'https://lagoon.finance/',
   },
 }
 
@@ -366,7 +379,7 @@ const buildBridgeMap = (
   return result
 }
 
-export const BRIDGED_INDEX_DTFS = buildBridgeMap(CMC20_ADDRESS)
+export const BRIDGED_INDEX_DTFS = buildBridgeMap(CMC20_ADDRESS, LCAP_ADDRESS)
 
 for (const chain of supportedChainList) {
   LISTED_RTOKEN_ADDRESSES[chain] = [
@@ -451,6 +464,7 @@ export const collateralDisplay: Record<string, string> = {
   'wvamm-mog/weth': 'Aerodrome Mog/WETH LP',
   'wvamm-weth/aero': 'Aerodrome WETH/AERO LP',
   'wsamm-usdz/usdc': 'Aerodrome USDz/USDC LP',
+  weeth: 'Ether.fi Wrapped eETH',
 }
 
 export const RTOKEN_VAULT_STAKE: Record<

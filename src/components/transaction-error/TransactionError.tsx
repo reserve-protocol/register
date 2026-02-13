@@ -1,11 +1,12 @@
-import { BoxProps, Box, Text } from 'theme-ui'
+import { cn } from '@/lib/utils'
 
-interface Props extends BoxProps {
+interface Props {
   error?: Error | null
   withName?: boolean
+  className?: string
 }
 
-const TransactionError = ({ error, withName = true, ...props }: Props) => {
+const TransactionError = ({ error, withName = true, className }: Props) => {
   if (!error) {
     return null
   }
@@ -24,20 +25,18 @@ const TransactionError = ({ error, withName = true, ...props }: Props) => {
   }
 
   return (
-    <Box {...props}>
-      <Text
-        variant="error"
-        sx={{
-          whiteSpace: 'break-spaces',
-          fontSize: 1,
-          wordBreak: parsed ? 'break-word' : 'break-all',
-        }}
+    <div className={className}>
+      <span
+        className={cn(
+          'text-sm text-destructive whitespace-break-spaces',
+          parsed ? 'break-words' : 'break-all'
+        )}
       >
         {withName && `${error.name}:`}
         {withName && <br />}
         {message}
-      </Text>
-    </Box>
+      </span>
+    </div>
   )
 }
 

@@ -208,7 +208,7 @@ const RewardsUpdater = () => {
                   : chainId === ChainId.BSC
                     ? bscRewardsPrices
                     : baseRewardsPrices
-              )[rewardAddress]
+              )[rewardAddress.toLowerCase()]
 
               const accruedUSD =
                 accrued !== undefined && price !== undefined

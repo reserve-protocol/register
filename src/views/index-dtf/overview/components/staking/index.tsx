@@ -240,13 +240,14 @@ const Staking = ({ children }: { children?: ReactNode }) => {
     stToken?.underlying.address,
     stToken?.chainId
   )
-  const { data: balance } = useERC20Balance(stToken?.underlying.address)
+  const { data: balance } = useERC20Balance(stToken?.underlying.address, stToken?.chainId)
 
   const { data: unlockBalanceRaw } = useWatchReadContract({
     abi: dtfIndexStakingVault,
     functionName: 'maxWithdraw',
     address: stToken?.id,
     args: [wallet ?? '0x'],
+    chainId: stToken?.chainId,
     query: { enabled: !!wallet },
   })
 
