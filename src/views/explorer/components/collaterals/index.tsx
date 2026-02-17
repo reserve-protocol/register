@@ -13,8 +13,6 @@ import { CollateralPlugin } from 'types'
 import { formatCurrency, formatPercentage, parseDuration } from 'utils'
 import { atomWithLoadable } from 'utils/atoms/utils'
 import {
-  CHAIN_TAGS,
-  DISCORD_INVITE,
   REGISTER_FEEDBACK,
   supportedChainList,
 } from 'utils/constants'
@@ -196,14 +194,6 @@ const Collaterals = () => {
             onClick={() => window.open(REGISTER_FEEDBACK, '_blank')}
           >
             Request plugin
-          </Button>
-          <Button
-            size="sm"
-            variant="outline"
-            className="border-2"
-            onClick={() => window.open(DISCORD_INVITE, '_blank')}
-          >
-            Discuss on discord
           </Button>
         </div>
       </div>

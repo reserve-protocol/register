@@ -2,7 +2,7 @@ import { Trans } from '@lingui/macro'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import DeployIntroIcon from 'components/icons/DeployIntroIcon'
-import { DISCORD_INVITE, PROTOCOL_DOCS } from 'utils/constants'
+import { PROTOCOL_DOCS, TELEGRAM_INVITE } from 'utils/constants'
 
 interface IntroProps {
   className?: string
@@ -29,9 +29,9 @@ const Intro = ({ className }: IntroProps) => (
         variant="ghost"
         size="sm"
         className="mr-4"
-        onClick={() => window.open(DISCORD_INVITE, '_blank')}
+        onClick={() => window.open(TELEGRAM_INVITE, '_blank')}
       >
-        <Trans>Community Discord</Trans>
+        <Trans>Community Telegram</Trans>
       </Button>
       <Button
         variant="ghost"
