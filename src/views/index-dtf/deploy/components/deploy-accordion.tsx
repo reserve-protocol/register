@@ -25,6 +25,7 @@ import {
 } from 'lucide-react'
 import { ReactNode, useEffect } from 'react'
 import { useFormContext } from 'react-hook-form'
+import { chainIdAtom } from '@/state/atoms'
 import {
   basketAtom,
   daoCreatedAtom,
@@ -173,8 +174,10 @@ const DeployAccordionTrigger = ({
 }
 
 const DeployAccordion = () => {
-  const { reset } = useFormContext()
+  const { reset, watch } = useFormContext()
   const [section, setSection] = useAtom(deployStepAtom)
+  const setChainId = useSetAtom(chainIdAtom)
+  const formChain = watch('chain')
   const validatedSections = useAtomValue(validatedSectionsAtom)
   const setValidatedSections = useSetAtom(validatedSectionsAtom)
   const readonlySteps = useAtomValue(readonlyStepsAtom)
@@ -186,6 +189,11 @@ const DeployAccordion = () => {
   const resetDeployFormData = useResetAtom(indexDeployFormDataAtom)
   const resetSelectedTokens = useResetAtom(selectedTokensAtom)
   const resetSearchToken = useResetAtom(searchTokenAtom)
+
+  // Sync chainIdAtom with form chain so TransactionButton and txAtom use the correct chain
+  useEffect(() => {
+    if (formChain) setChainId(formChain)
+  }, [formChain, setChainId])
 
   // Auto-validate readonly steps so formReadyForSubmit only depends on editable steps
   // Separate effect because readonlyStepsAtom is set after mount by PermissionlessUpdater

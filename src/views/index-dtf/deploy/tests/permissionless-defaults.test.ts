@@ -11,6 +11,7 @@ vi.mock('@/utils/constants', () => ({
 import {
   getPermissionlessDefaults,
   PERMISSIONLESS_VOTE_LOCK,
+  TRUSTED_ADDRESSES,
 } from '../permissionless-defaults'
 
 describe('getPermissionlessDefaults', () => {
@@ -49,20 +50,59 @@ describe('getPermissionlessDefaults', () => {
     expect(getPermissionlessDefaults(56).deployerShare).toBe(0)
   })
 
-  it('assigns operator to all role arrays', () => {
+  it('has correct fees', () => {
     const defaults = getPermissionlessDefaults(8453)
+    expect(defaults.folioFee).toBe(0.15)
+    expect(defaults.mintFee).toBe(0.15)
+  })
 
-    expect(defaults.guardians).toHaveLength(1)
-    expect(defaults.brandManagers).toHaveLength(1)
-    expect(defaults.auctionLaunchers).toHaveLength(1)
-    // All three use the same operator
-    expect(defaults.guardians[0]).toBe(defaults.brandManagers[0])
-    expect(defaults.brandManagers[0]).toBe(defaults.auctionLaunchers[0])
+  it('has weight control enabled', () => {
+    expect(getPermissionlessDefaults(8453).weightControl).toBe(true)
+  })
+
+  it('has correct basket governance timing (hours)', () => {
+    const defaults = getPermissionlessDefaults(8453)
+    expect(defaults.basketVotingDelay).toBe(0)
+    expect(defaults.basketVotingPeriod).toBe(24)
+    expect(defaults.basketVotingThreshold).toBe(1)
+    expect(defaults.basketVotingQuorum).toBe(3)
+    expect(defaults.basketExecutionDelay).toBe(24)
+  })
+
+  it('has correct non-basket governance timing (days)', () => {
+    const defaults = getPermissionlessDefaults(8453)
+    expect(defaults.governanceVotingDelay).toBe(0)
+    expect(defaults.governanceVotingPeriod).toBe(1)
+    expect(defaults.governanceVotingThreshold).toBe(1)
+    expect(defaults.governanceVotingQuorum).toBe(3)
+    expect(defaults.governanceExecutionDelay).toBe(1)
+  })
+
+  it('assigns trusted addresses to guardians and auctionLaunchers', () => {
+    const defaults = getPermissionlessDefaults(8453)
+    const trusted = TRUSTED_ADDRESSES[8453]
+
+    expect(defaults.guardians).toEqual(trusted)
+    expect(defaults.auctionLaunchers).toEqual(trusted)
+    expect(defaults.guardians).toHaveLength(4)
+  })
+
+  it('brandManagers defaults to empty (wallet injected by updater)', () => {
+    const defaults = getPermissionlessDefaults(8453)
+    expect(defaults.brandManagers).toEqual([])
   })
 
   it('has empty basket and recipients', () => {
     const defaults = getPermissionlessDefaults(8453)
     expect(defaults.tokensDistribution).toEqual([])
     expect(defaults.additionalRevenueRecipients).toEqual([])
+  })
+
+  it('auction length is 30 minutes', () => {
+    expect(getPermissionlessDefaults(8453).auctionLength).toBe(30)
+  })
+
+  it('bids are enabled', () => {
+    expect(getPermissionlessDefaults(8453).bidsEnabled).toBe(true)
   })
 })

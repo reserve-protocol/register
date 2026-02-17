@@ -70,8 +70,8 @@ const SimpleIndexDeploy = () => {
   const formChainId = form?.chain
 
   const url = form?.governanceWalletAddress
-    ? zapper.zapDeployUngoverned(chainId)
-    : zapper.zapDeploy(chainId)
+    ? zapper.zapDeployUngoverned(formChainId)
+    : zapper.zapDeploy(formChainId)
   const requestBody = useDebounce(zapDeployPayload, 500)
 
   const tokenIn = inputToken || defaultInputToken

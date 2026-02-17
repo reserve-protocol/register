@@ -61,6 +61,7 @@ const validFormData = () => ({
   additionalRevenueRecipients: [],
   auctionLength: 30,
   weightControl: false,
+  bidsEnabled: true,
   guardians: [],
   brandManagers: [],
   auctionLaunchers: [],

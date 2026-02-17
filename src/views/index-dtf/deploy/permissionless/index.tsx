@@ -4,8 +4,10 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Globe } from 'lucide-react'
 import { useEffect } from 'react'
 import { FormProvider, useForm, useFormContext } from 'react-hook-form'
-import { useSetAtom } from 'jotai'
+import { useAtomValue, useSetAtom } from 'jotai'
+import { walletAtom } from '@/state/atoms'
 import {
+  basketInputTypeAtom,
   readonlyStepsAtom,
   selectedGovernanceOptionAtom,
 } from '../atoms'
@@ -16,6 +18,7 @@ import {
   getPermissionlessDefaults,
   PERMISSIONLESS_READONLY_STEPS,
   PERMISSIONLESS_VOTE_LOCK,
+  TRUSTED_ADDRESSES,
 } from '../permissionless-defaults'
 import Updater from '../updater'
 import { ChainId } from '@/utils/chains'
@@ -26,18 +29,22 @@ const PermissionlessUpdater = () => {
   const { watch, setValue } = useFormContext()
   const setGovernanceOption = useSetAtom(selectedGovernanceOptionAtom)
   const setReadonlySteps = useSetAtom(readonlyStepsAtom)
+  const setBasketInputType = useSetAtom(basketInputTypeAtom)
+  const wallet = useAtomValue(walletAtom)
   const chain = watch('chain')
 
-  // Set readonly steps and governance option on mount, reset on unmount
+  // Set readonly steps, governance option, and basket input type on mount
   useEffect(() => {
     setReadonlySteps(PERMISSIONLESS_READONLY_STEPS)
     setGovernanceOption('governanceVoteLock')
+    setBasketInputType('share')
 
     return () => {
       setReadonlySteps(new Set<DeployStepId>())
       setGovernanceOption('governanceERC20address')
+      setBasketInputType('unit')
     }
-  }, [setReadonlySteps, setGovernanceOption])
+  }, [setReadonlySteps, setGovernanceOption, setBasketInputType])
 
   // Update governance + revenue when chain changes
   useEffect(() => {
@@ -49,6 +56,19 @@ const PermissionlessUpdater = () => {
     setValue('deployerShare', 0)
     setValue('additionalRevenueRecipients', [])
   }, [chain, setValue])
+
+  // Inject connected wallet into role arrays
+  useEffect(() => {
+    if (!wallet) return
+    const trusted = TRUSTED_ADDRESSES[chain] ?? []
+    const withWallet = [
+      wallet,
+      ...trusted.filter((a) => a.toLowerCase() !== wallet.toLowerCase()),
+    ]
+    setValue('guardians', withWallet)
+    setValue('brandManagers', [wallet])
+    setValue('auctionLaunchers', withWallet)
+  }, [wallet, chain, setValue])
 
   return null
 }
