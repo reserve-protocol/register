@@ -92,6 +92,10 @@ describe('getPermissionlessDefaults', () => {
     expect(defaults.brandManagers).toEqual([])
   })
 
+  it('defaults inputType to share', () => {
+    expect(getPermissionlessDefaults(8453).inputType).toBe('share')
+  })
+
   it('has empty basket and recipients', () => {
     const defaults = getPermissionlessDefaults(8453)
     expect(defaults.tokensDistribution).toEqual([])

@@ -146,6 +146,37 @@ describe('calculateRevenueDistribution', () => {
     expect(totalPortion).toBe(parseEther('1'))
   })
 
+  it('drops governance share when stToken is undefined', () => {
+    const data = {
+      ...baseFormData,
+      governanceShare: 25,
+      deployerShare: 25,
+    } as DeployInputs
+
+    const result = calculateRevenueDistribution(data, WALLET, undefined)
+
+    // Only deployer present, governance silently dropped
+    // NOTE: portion is NOT redistributed — deployer keeps its proportional share
+    // denominator = (100-50)/100 = 0.5 → deployer portion = (25/100)/0.5 = 0.5
+    expect(result).toHaveLength(1)
+    expect(result[0].recipient).toBe(WALLET)
+    expect(result[0].portion).toBe(parseEther('0.5'))
+  })
+
+  it('handles platformFee = 0 (denominator = 1)', () => {
+    const data = {
+      ...baseFormData,
+      governanceShare: 60,
+      deployerShare: 40,
+      fixedPlatformFee: 0,
+    } as DeployInputs
+
+    const result = calculateRevenueDistribution(data, WALLET, ST_TOKEN)
+
+    const totalPortion = result.reduce((sum, r) => sum + r.portion, 0n)
+    expect(totalPortion).toBe(parseEther('1'))
+  })
+
   it('applies denominator based on platform fee', () => {
     // platformFee = 50 → denominator = (100-50)/100 = 0.5
     // governanceShare = 50 → share = 50/100 = 0.5 → portion = 0.5/0.5 = 1.0

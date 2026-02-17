@@ -156,6 +156,7 @@ const createFormData = (overrides: Record<string, unknown> = {}) =>
     fixedPlatformFee: 50,
     auctionLength: 30,
     weightControl: false,
+    bidsEnabled: true,
     guardians: [],
     brandManagers: [],
     auctionLaunchers: [],
@@ -567,6 +568,18 @@ describe('zapDeployPayloadAtom', () => {
       const result = setupPayload({ weightControl: true })
       const payload = result.current.payload!
       expect(payload.folioFlags.rebalanceControl.weightControl).toBe(true)
+    })
+
+    it('passes bidsEnabled from form data', () => {
+      const result = setupPayload({ bidsEnabled: true })
+      const payload = result.current.payload!
+      expect(payload.folioFlags.bidsEnabled).toBe(true)
+    })
+
+    it('passes bidsEnabled false when disabled', () => {
+      const result = setupPayload({ bidsEnabled: false })
+      const payload = result.current.payload!
+      expect(payload.folioFlags.bidsEnabled).toBe(false)
     })
 
     it('uses default slippage (1/100 = 0.01)', () => {

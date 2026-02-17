@@ -645,6 +645,44 @@ describe('DeployFormSchema', () => {
     })
   })
 
+  // --- Boundary validations ---
+
+  describe('boundary values', () => {
+    it('rejects initialValue of 0 (must be positive)', async () => {
+      expect(await hasError({ ...validFormData(), initialValue: 0 }, 'initialValue')).toBe(true)
+    })
+
+    it('rejects negative initialValue', async () => {
+      expect(await hasError({ ...validFormData(), initialValue: -1 }, 'initialValue')).toBe(true)
+    })
+
+    it('accepts auctionLength of 0', async () => {
+      expect(await hasError({ ...validFormData(), auctionLength: 0 }, 'auctionLength')).toBe(false)
+    })
+
+    it('rejects negative auctionLength', async () => {
+      expect(await hasError({ ...validFormData(), auctionLength: -1 }, 'auctionLength')).toBe(true)
+    })
+
+    it('rejects governanceShare with more than 2 decimal places', async () => {
+      expect(
+        await hasError({ ...validFormData(), governanceShare: 25.123, deployerShare: 24.877 }, 'governanceShare')
+      ).toBe(true)
+    })
+
+    it('rejects deployerShare with more than 2 decimal places', async () => {
+      expect(
+        await hasError({ ...validFormData(), governanceShare: 25, deployerShare: 24.999 }, 'deployerShare')
+      ).toBe(true)
+    })
+
+    it('accepts governanceShare with exactly 2 decimal places', async () => {
+      const data = { ...validFormData(), governanceShare: 25.25, deployerShare: 24.75 }
+      expect(await hasError(data, 'governanceShare')).toBe(false)
+      expect(await hasError(data, 'deployerShare')).toBe(false)
+    })
+  })
+
   // --- Chain validation ---
 
   describe('chain', () => {

@@ -36,6 +36,7 @@ import {
   formattedAssetsAllowanceAtom,
   initialTokensAtom,
   assetsAllowanceAtom,
+  basketAllowanceAtom,
 } from '../atoms'
 import { basketAtom } from '../../../../atoms'
 import { indexDeployFormDataAtom } from '../../atoms'
@@ -286,7 +287,7 @@ describe('basketRequiredAmountsAtom', () => {
     expect(result.current.value[ADDR_A]).toBe(50)
   })
 
-  it('defaults price to 1 when token has no price', () => {
+  it('returns 0 when token has no price (price undefined)', () => {
     const wrapper = createWrapper()
 
     const useTest = () => {
@@ -299,7 +300,6 @@ describe('basketRequiredAmountsAtom', () => {
     const { result } = renderHook(() => useTest(), { wrapper })
 
     act(() => {
-      // Token without price field
       result.current.setBasket([createToken(ADDR_A, { price: undefined })])
       result.current.setFormData(
         createFormData({
@@ -309,8 +309,8 @@ describe('basketRequiredAmountsAtom', () => {
       )
     })
 
-    // Price defaults to 1: (1 * 1 * 100) / 100 / 1 = 1
-    expect(result.current.value[ADDR_A]).toBe(1)
+    // No price → amount falls back to 0
+    expect(result.current.value[ADDR_A]).toBe(0)
   })
 
   it('defaults initialTokens to 1 when empty string', () => {
@@ -341,7 +341,7 @@ describe('basketRequiredAmountsAtom', () => {
     expect(result.current.value[ADDR_A]).toBe(1)
   })
 
-  it('falls back to price=1 when token price is 0', () => {
+  it('returns 0 when token price is 0', () => {
     const wrapper = createWrapper()
 
     const useTest = () => {
@@ -354,7 +354,6 @@ describe('basketRequiredAmountsAtom', () => {
     const { result } = renderHook(() => useTest(), { wrapper })
 
     act(() => {
-      // price: 0 → falls back to || 1
       result.current.setBasket([createToken(ADDR_A, { price: 0 })])
       result.current.setFormData(
         createFormData({
@@ -364,8 +363,8 @@ describe('basketRequiredAmountsAtom', () => {
       )
     })
 
-    // price 0 || 1 = 1: (1 * 1 * 100) / 100 / 1 = 1
-    expect(result.current.value[ADDR_A]).toBe(1)
+    // price 0 → amount falls back to 0
+    expect(result.current.value[ADDR_A]).toBe(0)
   })
 })
 
@@ -680,5 +679,50 @@ describe('formattedAssetsAllowanceAtom', () => {
 
     expect(result.current.formatted[ADDR_A]).toBe(5)
     expect(result.current.formatted[ADDR_B]).toBe(100)
+  })
+})
+
+describe('basketAllowanceAtom', () => {
+  it('maps basket tokens to [tokenAddress, deployerAddress] pairs', () => {
+    const wrapper = createWrapper()
+
+    const useTest = () => {
+      const setBasket = useSetAtom(basketAtom)
+      const value = useAtomValue(basketAllowanceAtom)
+      return { setBasket, value }
+    }
+
+    const { result } = renderHook(() => useTest(), { wrapper })
+
+    act(() => {
+      result.current.setBasket([
+        createToken(ADDR_A),
+        createToken(ADDR_B),
+      ])
+    })
+
+    expect(result.current.value).toHaveLength(2)
+    // chainIdAtom is mocked to 1, deployer for chain 1
+    expect(result.current.value[0]).toEqual([
+      ADDR_A,
+      '0xBE3B47587cEeff7D48008A0114f51cD571beC63A',
+    ])
+    expect(result.current.value[1]).toEqual([
+      ADDR_B,
+      '0xBE3B47587cEeff7D48008A0114f51cD571beC63A',
+    ])
+  })
+
+  it('returns empty array when basket is empty', () => {
+    const wrapper = createWrapper()
+
+    const useTest = () => {
+      const value = useAtomValue(basketAllowanceAtom)
+      return { value }
+    }
+
+    const { result } = renderHook(() => useTest(), { wrapper })
+
+    expect(result.current.value).toEqual([])
   })
 })
