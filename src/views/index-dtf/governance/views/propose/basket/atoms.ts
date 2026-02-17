@@ -1,7 +1,10 @@
-import dtfIndexAbi from '@/abis/dtf-index-abi'
+import dtfIndexAbi from '@/abis/dtf-index-abi-v1'
 import dtfIndexAbiV2 from '@/abis/dtf-index-abi-v2'
 import dtfIndexAbiV4 from '@/abis/dtf-index-abi-v4'
+import dtfIndexAbiV5 from '@/abis/dtf-index-abi'
 import { getStartRebalance } from '@reserve-protocol/dtf-rebalance-lib'
+import { StartRebalanceArgsPartial as StartRebalanceArgsPartialV4 } from '@reserve-protocol/dtf-rebalance-lib/dist/4.0.0/types'
+import { StartRebalanceArgsPartial as StartRebalanceArgsPartialV5 } from '@reserve-protocol/dtf-rebalance-lib/dist/types'
 import { getAuctions } from '@/lib/index-rebalance/get-auctions'
 import { getCurrentBasket } from '@/lib/index-rebalance/utils'
 import {
@@ -14,6 +17,10 @@ import {
   isSingletonRebalanceAtom,
   iTokenAddressAtom,
 } from '@/state/dtf/atoms'
+import {
+  DEFAULT_MAX_AUCTION_SIZE_USD,
+  maxAuctionSizesAtom,
+} from '@/state/max-auction-sizes'
 import { Token, Volatility } from '@/types'
 import { atom, Getter } from 'jotai'
 import { Address, encodeFunctionData, Hex, parseUnits } from 'viem'
@@ -498,6 +505,11 @@ export const basketProposalCalldatasAtom = atom<Hex[] | undefined>((get) => {
   const proposedShares = get(proposedSharesAtom)
   const priceMap = get(priceMapAtom)
   const tokenPriceVolatility = get(tokenPriceVolatilityAtom)
+  const version = get(indexDTFVersionAtom)
+  const maxAuctionSizesMap = get(maxAuctionSizesAtom)
+
+  // Determine folio version (4 and 5 are the enum values)
+  const folioVersion = version.startsWith('5') ? 5 : 4
 
   if (
     !isConfirmed ||
@@ -516,61 +528,77 @@ export const basketProposalCalldatasAtom = atom<Hex[] | undefined>((get) => {
   const _prices: number[] = []
   const error: number[] = []
   const balances: bigint[] = []
-
-  let index = 0
+  const maxAuctionSizes: number[] = []
 
   for (const asset of Object.keys(proposedBasket)) {
+    const assetLower = asset.toLowerCase()
     tokens.push(asset as Address)
     decimals.push(BigInt(proposedBasket[asset].token.decimals))
     currentBasket.push(parseUnits(proposedBasket[asset].currentShares, 16))
-    balances.push(dtfBalances[asset] || 0n)
+    balances.push(dtfBalances[asset] || dtfBalances[assetLower] || 0n)
 
     if (
       (isUnitBasket || basketInputType === 'unit' || isHybridDTF) &&
       derivedProposedShares
     ) {
-      targetBasket.push(derivedProposedShares[asset])
+      targetBasket.push(derivedProposedShares[asset] || derivedProposedShares[assetLower])
     } else {
-      targetBasket.push(parseUnits(proposedShares[asset], 16))
+      targetBasket.push(parseUnits(proposedShares[asset] || proposedShares[assetLower], 16))
     }
 
-    _prices.push(priceMap[asset] ?? 0)
+    _prices.push(priceMap[asset] ?? priceMap[assetLower] ?? 0)
     error.push(
-      REBALANCE_PRICE_VOLATILITY[tokenPriceVolatility[asset] || 'high']
+      REBALANCE_PRICE_VOLATILITY[tokenPriceVolatility[asset] || tokenPriceVolatility[assetLower] || 'high']
     )
-
-    index++
+    maxAuctionSizes.push(
+      maxAuctionSizesMap[assetLower] ?? DEFAULT_MAX_AUCTION_SIZE_USD
+    )
   }
 
-  try {
-    const { weights, prices, limits } = getStartRebalance(
-      supply,
-      tokens,
-      balances,
-      decimals,
-      targetBasket,
-      _prices,
-      error,
-      rebalanceControl?.weightControl,
-      isHybridDTF
-    )
+  const startRebalanceArgs = getStartRebalance(
+    folioVersion,
+    supply,
+    tokens,
+    balances,
+    decimals,
+    targetBasket,
+    _prices,
+    error,
+    maxAuctionSizes,
+    rebalanceControl?.weightControl,
+    isHybridDTF
+  )
 
+  // Encode with version-appropriate ABI and arguments
+  if (folioVersion === 5) {
+    const argsV5 = startRebalanceArgs as StartRebalanceArgsPartialV5
+    return [
+      encodeFunctionData({
+        abi: dtfIndexAbiV5,
+        functionName: 'startRebalance',
+        args: [
+          argsV5.tokens as any,
+          argsV5.limits as any,
+          BigInt(ttl.auctionLauncherWindow),
+          BigInt(ttl.ttl),
+        ],
+      }),
+    ]
+  } else {
+    const argsV4 = startRebalanceArgs as StartRebalanceArgsPartialV4
     return [
       encodeFunctionData({
         abi: dtfIndexAbiV4,
         functionName: 'startRebalance',
         args: [
           tokens,
-          weights,
-          prices,
-          limits,
+          argsV4.weights as any,
+          argsV4.prices as any,
+          argsV4.limits as any,
           BigInt(ttl.auctionLauncherWindow),
           BigInt(ttl.ttl),
         ],
       }),
     ]
-  } catch (e) {
-    console.error('Error getting rebalance', e)
-    return undefined
   }
 })

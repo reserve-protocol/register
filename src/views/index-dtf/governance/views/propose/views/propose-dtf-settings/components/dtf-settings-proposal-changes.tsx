@@ -1,15 +1,18 @@
 import { useAtomValue } from 'jotai'
 import {
   removedBasketTokensAtom,
+  hasTokenNameChangeAtom,
   hasMandateChangeAtom,
   hasRolesChangesAtom,
   hasRevenueDistributionChangesAtom,
   hasDtfRevenueChangesAtom,
   hasAuctionLengthChangeAtom,
+  hasWeightControlChangeAtom,
+  hasBidsEnabledChangeAtom,
   hasGovernanceChangesAtom,
 } from '../atoms'
 import RemovedTokensChanges from './changes/removed-tokens-changes'
-import MandateChanges from './changes/mandate-changes'
+import BasicsChanges from './changes/basics-changes'
 import RoleChanges from './changes/role-changes'
 import RevenueChanges from './changes/revenue-changes'
 import AuctionSettingsChanges from './changes/auction-settings-changes'
@@ -17,6 +20,7 @@ import GovernanceChanges from './changes/governance-changes'
 
 const DTFSettingsProposalChanges = () => {
   const removedBasketTokens = useAtomValue(removedBasketTokensAtom)
+  const hasTokenNameChange = useAtomValue(hasTokenNameChangeAtom)
   const hasMandateChange = useAtomValue(hasMandateChangeAtom)
   const hasRolesChanges = useAtomValue(hasRolesChangesAtom)
   const hasRevenueDistributionChanges = useAtomValue(
@@ -24,15 +28,20 @@ const DTFSettingsProposalChanges = () => {
   )
   const hasDtfRevenueChanges = useAtomValue(hasDtfRevenueChangesAtom)
   const hasAuctionLengthChange = useAtomValue(hasAuctionLengthChangeAtom)
+  const hasWeightControlChange = useAtomValue(hasWeightControlChangeAtom)
+  const hasBidsEnabledChange = useAtomValue(hasBidsEnabledChangeAtom)
   const hasGovernanceChanges = useAtomValue(hasGovernanceChangesAtom)
 
   const hasAnyChanges =
     removedBasketTokens.length > 0 ||
+    hasTokenNameChange ||
     hasMandateChange ||
     hasRolesChanges ||
     hasRevenueDistributionChanges ||
     hasDtfRevenueChanges ||
     hasAuctionLengthChange ||
+    hasWeightControlChange ||
+    hasBidsEnabledChange ||
     hasGovernanceChanges
 
   if (!hasAnyChanges) {
@@ -41,7 +50,7 @@ const DTFSettingsProposalChanges = () => {
 
   return (
     <div className="space-y-4">
-      <MandateChanges />
+      <BasicsChanges />
       <RoleChanges />
       <RevenueChanges />
       <AuctionSettingsChanges />

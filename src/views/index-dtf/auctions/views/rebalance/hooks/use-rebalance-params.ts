@@ -1,4 +1,5 @@
 import dtfIndexAbiV4 from '@/abis/dtf-index-abi-v4'
+import dtfIndexAbiV5 from '@/abis/dtf-index-abi'
 import useAssetPricesWithSnapshot, {
   TokenPriceWithSnapshot,
 } from '@/hooks/use-asset-prices-with-snapshot'
@@ -6,19 +7,28 @@ import {
   indexDTFAtom,
   indexDTFBasketAtom,
   indexDTFRebalanceControlAtom,
+  indexDTFVersionAtom,
   isHybridDTFAtom,
 } from '@/state/dtf/atoms'
 import { Token, Volatility } from '@/types'
 import { calculatePriceFromRange } from '@/utils'
-import {
-  Rebalance,
-  WeightRange,
-} from '@reserve-protocol/dtf-rebalance-lib/dist/types'
+import { FolioVersion, WeightRange } from '@reserve-protocol/dtf-rebalance-lib'
+import { Rebalance as RebalanceV4 } from '@reserve-protocol/dtf-rebalance-lib/dist/4.0.0/types'
+import { Rebalance as RebalanceV5 } from '@reserve-protocol/dtf-rebalance-lib/dist/types'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { useReadContract } from 'wagmi'
 import { currentRebalanceAtom } from '../../../atoms'
 import { originalRebalanceWeightsAtom, rebalanceAuctionsAtom } from '../atoms'
+import {
+  FOLIO_VERSION_V5,
+  getFolioVersion,
+  getRebalancePrices,
+  getRebalanceTokens,
+  getRebalanceWeights,
+  transformV4Rebalance,
+  transformV5Rebalance,
+} from '../utils/transforms'
 import useRebalanceCurrentData from './use-rebalance-current-data'
 import useRebalanceInitialData from './use-rebalance-initial-data'
 import useRebalancePriceVolatility from './use-rebalance-price-volatility'
@@ -26,7 +36,7 @@ import useRebalancePriceVolatility from './use-rebalance-price-volatility'
 export type RebalanceParams = {
   supply: bigint
   initialSupply: bigint
-  rebalance: Rebalance
+  rebalance: RebalanceV4 | RebalanceV5
   currentAssets: Record<string, bigint>
   initialAssets: Record<string, bigint>
   initialPrices: Record<string, number>
@@ -34,6 +44,8 @@ export type RebalanceParams = {
   prices: TokenPriceWithSnapshot
   tokenPriceVolatility: Record<string, Volatility>
   isTrackingDTF: boolean
+  folioVersion: FolioVersion
+  bidsEnabled: boolean
 }
 
 const useRebalanceParams = () => {
@@ -45,6 +57,13 @@ const useRebalanceParams = () => {
   const auctions = useAtomValue(rebalanceAuctionsAtom)
   const originalWeights = useAtomValue(originalRebalanceWeightsAtom)
   const tokenPriceVolatility = useRebalancePriceVolatility()
+  const versionString = useAtomValue(indexDTFVersionAtom)
+
+  const folioVersion = useMemo(
+    () => getFolioVersion(versionString),
+    [versionString]
+  )
+  const abi = folioVersion === FOLIO_VERSION_V5 ? dtfIndexAbiV5 : dtfIndexAbiV4
 
   const rebalanceTokens = useMemo(() => {
     if (!rebalance || !basket) return []
@@ -65,8 +84,8 @@ const useRebalanceParams = () => {
   const { data: prices } = useAssetPricesWithSnapshot(rebalanceTokens)
   const { data: currentRebalanceData } = useRebalanceCurrentData()
   const { data: initialRebalanceData } = useRebalanceInitialData()
-  const { data: initialRebalance } = useReadContract({
-    abi: dtfIndexAbiV4,
+  const { data: initialRebalanceRaw } = useReadContract({
+    abi,
     address: dtf?.id,
     functionName: 'getRebalance',
     chainId: dtf?.chainId,
@@ -84,7 +103,7 @@ const useRebalanceParams = () => {
       !prices ||
       !rebalanceControl ||
       !rebalance ||
-      !initialRebalance ||
+      !initialRebalanceRaw ||
       !tokenPriceVolatility
     )
       return undefined
@@ -97,26 +116,26 @@ const useRebalanceParams = () => {
       },
       {} as Record<string, Token>
     )
+
+    // Transform historical rebalance using version-aware helpers
+    const historicalRebalance =
+      folioVersion === FOLIO_VERSION_V5
+        ? transformV5Rebalance(initialRebalanceRaw as readonly unknown[])
+        : transformV4Rebalance(initialRebalanceRaw as readonly unknown[])
+
+    const historicalTokens = getRebalanceTokens(historicalRebalance, folioVersion)
+    const historicalWeights = getRebalanceWeights(historicalRebalance, folioVersion)
+    const historicalPrices = getRebalancePrices(historicalRebalance, folioVersion)
+
     const initialPrices: Record<string, number> = {}
     let initialWeights: Record<string, WeightRange> = {}
 
-    for (let i = 0; i < initialRebalance[1].length; i++) {
-      const token = initialRebalance[1][i].toLowerCase()
+    for (let i = 0; i < historicalTokens.length; i++) {
+      const token = historicalTokens[i].toLowerCase()
       const decimals = tokenMap[token].decimals
 
-      initialPrices[token] = calculatePriceFromRange(
-        {
-          low: initialRebalance[3][i].low,
-          high: initialRebalance[3][i].high,
-        },
-        decimals
-      )
-
-      initialWeights[token] = {
-        low: initialRebalance[2][i].low,
-        spot: initialRebalance[2][i].spot,
-        high: initialRebalance[2][i].high,
-      }
+      initialPrices[token] = calculatePriceFromRange(historicalPrices[i], decimals)
+      initialWeights[token] = historicalWeights[i]
     }
 
     // Use historical weights for subsequent auctions in hybrid DTFs
@@ -125,7 +144,7 @@ const useRebalanceParams = () => {
     }
 
     return {
-      initialSupply: initialSupply,
+      initialSupply,
       initialPrices,
       initialWeights,
       initialAssets,
@@ -134,23 +153,14 @@ const useRebalanceParams = () => {
       prices,
       tokenPriceVolatility,
       isTrackingDTF: !rebalanceControl.weightControl,
-      rebalance: {
-        nonce: currentRebalanceData.rebalance[0],
-        tokens: currentRebalanceData.rebalance[1],
-        weights: currentRebalanceData.rebalance[2],
-        initialPrices: currentRebalanceData.rebalance[3],
-        inRebalance: currentRebalanceData.rebalance[4],
-        limits: currentRebalanceData.rebalance[5],
-        startedAt: currentRebalanceData.rebalance[6],
-        restrictedUntil: currentRebalanceData.rebalance[7],
-        availableUntil: currentRebalanceData.rebalance[8],
-        priceControl: currentRebalanceData.rebalance[9],
-      } as Rebalance,
+      rebalance: currentRebalanceData.rebalance,
+      folioVersion: currentRebalanceData.folioVersion,
+      bidsEnabled: currentRebalanceData.bidsEnabled,
     } as RebalanceParams
   }, [
     currentRebalanceData,
     initialRebalanceData,
-    initialRebalance,
+    initialRebalanceRaw,
     prices,
     rebalance,
     rebalanceControl,
@@ -158,6 +168,7 @@ const useRebalanceParams = () => {
     auctions.length,
     originalWeights,
     tokenPriceVolatility,
+    folioVersion,
   ])
 }
 

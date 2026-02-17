@@ -1,4 +1,4 @@
-import dtfIndexAbi from '@/abis/dtf-index-abi'
+import dtfIndexAbi from '@/abis/dtf-index-abi-v1'
 import dtfIndexAbiV4 from '@/abis/dtf-index-abi-v4'
 import FeedbackButton from '@/components/feedback-button'
 import SEO from '@/components/seo'

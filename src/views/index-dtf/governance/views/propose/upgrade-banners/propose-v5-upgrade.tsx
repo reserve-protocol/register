@@ -12,15 +12,10 @@ import { useAtomValue, useSetAtom } from 'jotai'
 import { AlertCircle, Loader2 } from 'lucide-react'
 import { useCallback, useEffect } from 'react'
 import { encodeFunctionData, getAddress, pad } from 'viem'
-import {
-  useReadContract,
-  useWaitForTransactionReceipt,
-  useWriteContract,
-} from 'wagmi'
+import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
 import { governanceProposalsAtom, refetchTokenAtom } from '../../../atoms'
 import { useIsProposeAllowed } from '../../../hooks/use-is-propose-allowed'
 import { toast } from 'sonner'
-import dtfIndexAbiV4 from '@/abis/dtf-index-abi-v4'
 
 export const spellAbi = [
   { inputs: [], stateMutability: 'nonpayable', type: 'constructor' },
@@ -38,24 +33,22 @@ export const spellAbi = [
     stateMutability: 'nonpayable',
     type: 'function',
   },
+  {
+    inputs: [],
+    name: 'version',
+    outputs: [{ internalType: 'string', name: '', type: 'string' }],
+    stateMutability: 'pure',
+    type: 'function',
+  },
 ] as const
 
-export const spellAddress = {
-  [ChainId.Mainnet]: getAddress('0x7498c6aB0669A09DE7B9185ba72A98fa3Ca39cC9'),
-  [ChainId.Base]: getAddress('0x4720dbCAEEF5834AEf590781F93d70fD1e3AcADB'),
+export const spellAddress: Record<number, `0x${string}`> = {
+  [ChainId.Mainnet]: getAddress('0x044B6F685FB8D0c3fd56D92FCBE5F0Ad947d2D53'),
+  [ChainId.Base]: getAddress('0x04B3eD311C68dfB0649D9faf695115F23DcbB540'),
+  [ChainId.BSC]: getAddress('0xe8e67a366e5166c442B6D376ADc772b93CdE7825'),
 }
 
-const fillerRegistryMapping = {
-  [ChainId.Mainnet]: getAddress('0x279ccF56441fC74f1aAC39E7faC165Dec5A88B3A'),
-  [ChainId.Base]: getAddress('0x72DB5f49D0599C314E2f2FEDf6Fe33E1bA6C7A18'),
-}
-
-const UPGRADE_FOLIO_MESSAGE = 'Release 4.0.0 upgrade'
-
-const queryParams = {
-  staleTime: 5 * 60 * 1000,
-  refetchInterval: 5 * 60 * 1000,
-} as const
+const UPGRADE_FOLIO_MESSAGE = 'Release 5.0.0 upgrade'
 
 type SpellUpgradeProps = {
   refetch: () => void
@@ -88,8 +81,8 @@ const ProposeBanner = ({ refetch }: SpellUpgradeProps) => {
       abi: DTFIndexGovernance,
       functionName: 'propose',
       args: [
-        [dtf.id, dtf.proxyAdmin, spell, dtf.id],
-        [0n, 0n, 0n, 0n],
+        [dtf.id, dtf.proxyAdmin, spell],
+        [0n, 0n, 0n],
         [
           encodeFunctionData({
             abi: dtfIndexAbi,
@@ -106,11 +99,6 @@ const ProposeBanner = ({ refetch }: SpellUpgradeProps) => {
             functionName: 'cast',
             args: [dtf.id, dtf.proxyAdmin],
           }),
-          encodeFunctionData({
-            abi: dtfIndexAbiV4,
-            functionName: 'setTrustedFillerRegistry',
-            args: [fillerRegistryMapping[chainId], true],
-          }),
         ],
         UPGRADE_FOLIO_MESSAGE,
       ],
@@ -119,10 +107,9 @@ const ProposeBanner = ({ refetch }: SpellUpgradeProps) => {
 
   useEffect(() => {
     if (isSuccess) {
-      // Give some time for the proposal to be created on the subgraph
       setTimeout(() => {
         toast('Proposal created!', {
-          description: 'DTF V4.0.0 upgrade proposal created',
+          description: 'DTF V5.0.0 upgrade proposal created',
           icon: '🎉',
         })
         refetch()
@@ -141,11 +128,9 @@ const ProposeBanner = ({ refetch }: SpellUpgradeProps) => {
         <div>
           <h4 className="font-bold text-primary">New version available</h4>
           <p className="text-sm">
-            Release 4.0.0 improves the the way in which DTFs are rebalanced. At
-            a high level, the new rebalance mechanism is able to consider the
-            entire basket at once instead of requiring individual 2-token
-            auctions to be proposed in advance and performed in isolation. See
-            docs.reserve.org for more details.
+            Release 5.0.0 introduces improved rebalancing with per-token auction
+            size limits and the ability to disable bids for individual tokens.
+            See docs.reserve.org for more details.
           </p>
         </div>
       </div>
@@ -191,15 +176,21 @@ const validProposalExists = (
   })
 }
 
-export default function ProposeBanners() {
+const UPGRADE_WHITELIST: string[] = []
+
+export default function ProposeV5Upgrade() {
   const { isProposeAllowed } = useIsProposeAllowed()
   const proposals = useAtomValue(governanceProposalsAtom)
-  const isUpgradeable = useAtomValue(indexDTFVersionAtom) === '2.0.0'
+  const version = useAtomValue(indexDTFVersionAtom)
+  const dtf = useAtomValue(indexDTFAtom)
   const setRefetchToken = useSetAtom(refetchTokenAtom)
 
   const refetch = useCallback(() => {
     setRefetchToken(getCurrentTime())
   }, [setRefetchToken])
+
+  // Show banner for v4.x DTFs (4.0.0 and 4.0.1)
+  const isUpgradeable = version.startsWith('4.') && UPGRADE_WHITELIST.includes(dtf?.id ?? '')
 
   if (!isProposeAllowed || !proposals || !isUpgradeable) return null
 
