@@ -1,16 +1,20 @@
 import { TokenPriceWithSnapshot } from '@/hooks/use-asset-prices-with-snapshot'
 import { Token, Volatility } from '@/types'
 import {
+  FolioVersion,
   getOpenAuction,
   getTargetBasket,
-  Rebalance,
   WeightRange,
 } from '@reserve-protocol/dtf-rebalance-lib'
+import { Rebalance as RebalanceV4 } from '@reserve-protocol/dtf-rebalance-lib/dist/4.0.0/types'
+import { Rebalance as RebalanceV5 } from '@reserve-protocol/dtf-rebalance-lib/dist/types'
 import { AUCTION_PRICE_VOLATILITY } from '../atoms'
+import { getRebalanceTokens } from './transforms'
 
 function getRebalanceOpenAuction(
+  version: FolioVersion,
   tokens: Token[],
-  rebalance: Rebalance,
+  rebalance: RebalanceV4 | RebalanceV5,
   supply: bigint,
   initialSupply: bigint,
   currentAssets: Record<string, bigint>,
@@ -31,7 +35,10 @@ function getRebalanceOpenAuction(
     {} as Record<string, Token>
   )
 
-  // Lets start by creating a map of the basket tokens
+  // Use version-aware helper to get token addresses
+  const rebalanceTokens = getRebalanceTokens(rebalance, version)
+
+  // Build arrays for the library call
   const decimals: bigint[] = []
   const currentPrices: number[] = []
   const snapshotPrices: number[] = []
@@ -40,7 +47,7 @@ function getRebalanceOpenAuction(
   const currentFolioAssets: bigint[] = []
   const weights: WeightRange[] = []
 
-  rebalance.tokens.forEach((token) => {
+  rebalanceTokens.forEach((token) => {
     const lowercasedAddress = token.toLowerCase()
     const tokenDecimals = tokenMap[lowercasedAddress].decimals
 
@@ -65,7 +72,9 @@ function getRebalanceOpenAuction(
     decimals
   )
 
+  // Pass version to the library function
   return getOpenAuction(
+    version,
     rebalance,
     supply,
     initialSupply,

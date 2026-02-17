@@ -1,5 +1,5 @@
 import dtfIndexAbiV2 from '@/abis/dtf-index-abi-v2'
-import dtfIndexAbi from '@/abis/dtf-index-abi'
+import dtfIndexAbi from '@/abis/dtf-index-abi-v1'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { chainIdAtom } from '@/state/atoms'
@@ -21,13 +21,7 @@ import { useAtomValue } from 'jotai'
 import { ArrowUpRightIcon } from 'lucide-react'
 import { useMemo } from 'react'
 import { Link } from 'react-router-dom'
-import {
-  Abi,
-  Address,
-  decodeFunctionData,
-  getAbiItem,
-  Hex,
-} from 'viem'
+import { Abi, Address, decodeFunctionData, getAbiItem, Hex } from 'viem'
 
 const TABS = {
   SUMMARY: 'overview',
@@ -140,23 +134,26 @@ const RawPreview = ({ data }: { data: DecodedCalldata[] }) => {
   )
 }
 
-
 const UnknownPreview = ({ signature }: { signature: string }) => {
-  return <div className="text-sm text-muted-foreground">Preview not available for: {signature}</div>
+  return (
+    <div className="text-sm text-muted-foreground">
+      Preview not available for: {signature}
+    </div>
+  )
 }
 
 const dtfSettingsPreviewComponents: Record<string, React.ComponentType<any>> = {
   // Token management
   removeFromBasket: RemoveFromBasketPreview,
   setDustAmount: SetDustAmountPreview,
-  
+
   // Settings updates
   setMandate: SetMandatePreview,
   setMintFee: SetMintFeePreview,
   setTVLFee: SetTVLFeePreview,
   setAuctionLength: SetAuctionLengthPreview,
   setFeeRecipients: SetFeeRecipientsPreview,
-  
+
   // Role management
   grantRole: GrantRolePreview,
   revokeRole: RevokeRolePreview,
@@ -168,10 +165,7 @@ const OverviewPreview = ({ data }: { data: DecodedCalldata[] }) => {
       {data.map((call) => {
         const Component = dtfSettingsPreviewComponents[call.signature]
         return Component ? (
-          <Component
-            key={call.callData}
-            decodedCalldata={call}
-          />
+          <Component key={call.callData} decodedCalldata={call} />
         ) : (
           <UnknownPreview key={call.callData} signature={call.signature} />
         )
