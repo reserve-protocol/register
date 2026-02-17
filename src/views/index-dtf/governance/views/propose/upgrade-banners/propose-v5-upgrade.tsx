@@ -176,10 +176,13 @@ const validProposalExists = (
   })
 }
 
+const UPGRADE_WHITELIST: string[] = []
+
 export default function ProposeV5Upgrade() {
   const { isProposeAllowed } = useIsProposeAllowed()
   const proposals = useAtomValue(governanceProposalsAtom)
   const version = useAtomValue(indexDTFVersionAtom)
+  const dtf = useAtomValue(indexDTFAtom)
   const setRefetchToken = useSetAtom(refetchTokenAtom)
 
   const refetch = useCallback(() => {
@@ -187,7 +190,7 @@ export default function ProposeV5Upgrade() {
   }, [setRefetchToken])
 
   // Show banner for v4.x DTFs (4.0.0 and 4.0.1)
-  const isUpgradeable = version.startsWith('4.')
+  const isUpgradeable = version.startsWith('4.') && UPGRADE_WHITELIST.includes(dtf?.id ?? '')
 
   if (!isProposeAllowed || !proposals || !isUpgradeable) return null
 
