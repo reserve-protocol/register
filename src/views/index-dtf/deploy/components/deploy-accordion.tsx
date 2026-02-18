@@ -233,7 +233,7 @@ const DeployAccordion = () => {
         }
       }}
     >
-      {DEPLOY_STEPS.map(({ id, icon, title, titleSecondary, content }) => (
+      {DEPLOY_STEPS.filter((step) => !readonlySteps.has(step.id)).map(({ id, icon, title, titleSecondary, content }) => (
         <AccordionItem
           key={id}
           value={id}
@@ -250,11 +250,7 @@ const DeployAccordion = () => {
             <div className="text-2xl font-bold text-primary ml-6 mb-2">
               {titleSecondary}
             </div>
-            {readonlySteps.has(id) ? (
-              <div className="pointer-events-none opacity-60">{content}</div>
-            ) : (
-              content
-            )}
+            {content}
           </AccordionContent>
         </AccordionItem>
       ))}
