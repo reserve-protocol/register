@@ -1,6 +1,6 @@
 // import HeaderMenu from './HeaderMenu'
-import DiscordIcon from '@/components/icons/DiscordIcon'
 import ReserveSquare from '@/components/icons/ReserveSquare'
+import TelegramIcon from '@/components/icons/TelegramIcon'
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -12,12 +12,12 @@ import {
 } from '@/components/ui/navigation-menu'
 import { cn } from '@/lib/utils'
 import {
-  DISCORD_INVITE,
   PROTOCOL_DOCS,
   REGISTER_FEEDBACK,
   RESERVE_BLOG,
   RESERVE_FORUM,
   ROUTES,
+  TELEGRAM_INVITE,
 } from '@/utils/constants'
 import { t, Trans } from '@lingui/macro'
 import {
@@ -141,10 +141,10 @@ const AppNavigation = () => {
           to: RESERVE_FORUM,
         },
         {
-          label: t`Reserve Discord`,
-          icon: <DiscordIcon color="#5865F2" width={20} />,
+          label: t`Reserve Telegram`,
+          icon: <TelegramIcon color="#5865F2" width={20} />,
           description: t`Join the conversation or ask questions`,
-          to: DISCORD_INVITE,
+          to: TELEGRAM_INVITE,
         },
       ],
     ],
