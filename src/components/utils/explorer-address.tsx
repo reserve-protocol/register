@@ -1,5 +1,5 @@
 import { ArrowUpRight } from 'lucide-react'
-import { Box, BoxProps } from 'theme-ui'
+import { cn } from '@/lib/utils'
 import { shortenAddress } from 'utils'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 
@@ -14,43 +14,26 @@ const ExplorerAddress = ({
   address,
   chain,
   type = ExplorerDataType.ADDRESS,
-  sx,
-  ...props
-}: ExplorerAddressProps & BoxProps) => {
+  className,
+}: ExplorerAddressProps) => {
   const handleAddress = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation()
     window.open(getExplorerLink(address, chain, type), '_blank')
   }
   return (
-    <Box
+    <div
       role="button"
       onClick={handleAddress}
-      sx={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: 1,
-        ':hover': {
-          color: 'primary',
-          cursor: 'pointer',
-        },
-        ...sx,
-      }}
-      {...props}
+      className={cn(
+        'flex items-center gap-1 hover:text-primary cursor-pointer',
+        className
+      )}
     >
       {shortenAddress(address)}
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          ':hover': {
-            color: 'primary',
-            cursor: 'pointer',
-          },
-        }}
-      >
+      <div className="flex items-center">
         <ArrowUpRight size={14} />
-      </Box>
-    </Box>
+      </div>
+    </div>
   )
 }
 

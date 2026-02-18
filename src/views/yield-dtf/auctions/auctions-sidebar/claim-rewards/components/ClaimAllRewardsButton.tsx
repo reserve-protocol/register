@@ -1,6 +1,6 @@
 import { t } from '@lingui/macro'
 import FacadeAct from 'abis/FacadeAct'
-import TransactionButton from '@/components/old/button/TransactionButton'
+import TransactionButton from '@/components/ui/transaction-button'
 import useContractWrite from 'hooks/useContractWrite'
 import useWatchTransaction from 'hooks/useWatchTransaction'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
@@ -41,7 +41,7 @@ const ClaimAllRewardsButton = () => {
   return (
     <TransactionButton
       text={t`Claim rewards across all traders`}
-      fullWidth
+      className="w-full"
       disabled={!isReady}
       gas={gas}
       loading={isLoading || status === 'pending'}

@@ -1,9 +1,9 @@
 import { useAtomValue } from 'jotai'
 import { lazy, Suspense, useState } from 'react'
-import { Box } from 'theme-ui'
 import ProposalDetail from '@/views/yield-dtf/governance/components/ProposalDetailPreview'
 import { proposalDetailAtom } from '../atom'
 import Skeleton from 'react-loading-skeleton'
+import { cn } from '@/lib/utils'
 
 const DescriptionMarkdown = lazy(() => import('./ProposalMdDescription'))
 
@@ -26,73 +26,52 @@ const ProposalDetailContent = () => {
   }
 
   return (
-    <Box sx={{ bg: 'cardBackground', borderRadius: '8px', p: 2 }}>
-      <Box variant="layout.verticalAlign" p={[0, 2]} mb="2">
-        <Box
-          variant="layout.verticalAlign"
-          sx={{
-            cursor: 'pointer',
-            borderRadius: '6px',
-            overflow: 'hidden',
-            padding: '2px',
-            fontSize: 1,
-            bg: 'inputBackground',
-          }}
-        >
-          <Box
-            py={1}
-            px={'10px'}
-            sx={{
-              textAlign: 'center',
-              borderRadius: '4px',
-              backgroundColor:
-                tab === TABS.DESCRIPTION ? 'focusedBackground' : 'none',
-              color: tab === TABS.DESCRIPTION ? 'accentInverted' : 'text',
-            }}
+    <div className="bg-secondary rounded-lg p-2">
+      <div className="flex items-center p-0 sm:p-2 mb-2">
+        <div className="flex items-center cursor-pointer rounded-md overflow-hidden p-0.5 text-xs bg-muted">
+          <div
+            className={cn(
+              'py-1 px-2.5 text-center rounded',
+              tab === TABS.DESCRIPTION
+                ? 'bg-card text-foreground'
+                : 'text-foreground'
+            )}
             onClick={() => setTab(TABS.DESCRIPTION)}
           >
             Description
-          </Box>
-          <Box
-            py={1}
-            px={'10px'}
-            sx={{
-              textAlign: 'center',
-              borderRadius: '4px',
-              backgroundColor:
-                tab === TABS.CHANGES ? 'focusedBackground' : 'none',
-              color: tab === TABS.CHANGES ? 'accentInverted' : 'text',
-            }}
+          </div>
+          <div
+            className={cn(
+              'py-1 px-2.5 text-center rounded',
+              tab === TABS.CHANGES
+                ? 'bg-card text-foreground'
+                : 'text-foreground'
+            )}
             onClick={() => setTab(TABS.CHANGES)}
           >
             Proposed changes
-          </Box>
-        </Box>
-      </Box>
+          </div>
+        </div>
+      </div>
 
       {tab === TABS.DESCRIPTION ? (
-        <Box px="3" pb="2">
+        <div className="px-4 pb-2">
           <Suspense fallback={<Skeleton />}>
             <DescriptionMarkdown description={description} />
           </Suspense>
-        </Box>
+        </div>
       ) : (
         !!proposal && (
           <ProposalDetail
             addresses={proposal.targets}
             calldatas={proposal.calldatas}
             snapshotBlock={proposal.creationBlock}
-            sx={{
-              bg: 'focusedBackground',
-              borderRadius: '6px',
-              border: '1px solid',
-              borderColor: 'borderSecondary',
-            }}
-            borderColor="borderSecondary"
+            className="bg-card rounded-md border border-border"
+            borderColor="border"
           />
         )
       )}
-    </Box>
+    </div>
   )
 }
 

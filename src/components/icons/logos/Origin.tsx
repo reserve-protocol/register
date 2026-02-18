@@ -1,8 +1,10 @@
-import { Image, ImageProps } from 'theme-ui'
+interface OriginProps extends React.ImgHTMLAttributes<HTMLImageElement> {
+  width?: number | string
+}
 
-const Origin = (props: ImageProps) => {
+const Origin = ({ width = 16, ...props }: OriginProps) => {
   return (
-    <Image width={16} src="https://storage.reserve.org/origin.svg" {...props} />
+    <img width={width} src="https://storage.reserve.org/origin.svg" {...props} />
   )
 }
 export default Origin

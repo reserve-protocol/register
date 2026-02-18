@@ -1,10 +1,10 @@
 import { NumericalInput } from 'components'
 import Help from 'components/help'
 import { useAtom } from 'jotai'
-import { Box, BoxProps, Flex, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
+import { cn } from '@/lib/utils'
 
-export interface TransactionInputProps extends BoxProps {
+export interface TransactionInputProps {
   title?: string
   placeholder?: string
   compact?: boolean
@@ -13,6 +13,7 @@ export interface TransactionInputProps extends BoxProps {
   disabled?: boolean
   autoFocus?: boolean
   hasThrottle?: boolean
+  className?: string
 }
 
 interface MaxLabelProps {
@@ -30,19 +31,19 @@ export const MaxLabel = ({
   help = '',
   handleClick,
 }: MaxLabelProps) => (
-  <Box variant="layout.verticalAlign">
-    <Text
+  <div className="flex items-center">
+    <span
       onClick={handleClick}
-      as={clickable ? 'a' : 'span'}
-      variant={clickable ? 'a' : 'legend'}
-      sx={{ display: 'block', fontSize: compact ? 1 : 2 }}
-      ml={'auto'}
-      mr={2}
+      className={cn(
+        'block ml-auto mr-2',
+        compact ? 'text-sm' : 'text-base',
+        clickable ? 'text-primary cursor-pointer hover:underline' : 'text-legend'
+      )}
     >
       {text}
-    </Text>
+    </span>
     {!!help && <Help content={help} />}
-  </Box>
+  </div>
 )
 
 const TransactionInput = ({
@@ -54,31 +55,28 @@ const TransactionInput = ({
   compact = true,
   autoFocus = false,
   hasThrottle = false,
-  ...props
+  className,
 }: TransactionInputProps) => {
   const [amount, setAmount] = useAtom(amountAtom)
 
   const maxLabel = (
-    <Text
+    <span
       onClick={() => setAmount(maxAmount)}
-      as="a"
-      variant="a"
-      sx={{ display: 'block', fontSize: compact ? 1 : 2 }}
-      ml={'auto'}
-      mr={2}
+      className={cn(
+        'block ml-auto mr-2 text-primary cursor-pointer hover:underline',
+        compact ? 'text-sm' : 'text-base'
+      )}
     >
       Max: {formatCurrency(+maxAmount, 5)}
-    </Text>
+    </span>
   )
 
   return (
-    <Box {...props}>
-      <Box variant="layout.verticalAlign" mb={2}>
-        <Text as="label" variant="legend" ml={3}>
-          {title}
-        </Text>
-        {compact && <Box ml="auto">{maxLabel}</Box>}
-      </Box>
+    <div className={className}>
+      <div className="flex items-center mb-2">
+        <label className="text-legend ml-4">{title}</label>
+        {compact && <div className="ml-auto">{maxLabel}</div>}
+      </div>
       <NumericalInput
         disabled={disabled}
         placeholder={placeholder}
@@ -86,12 +84,8 @@ const TransactionInput = ({
         onChange={setAmount}
         autoFocus={autoFocus}
       />
-      {!compact && (
-        <Flex mt={2} ml="auto">
-          {maxLabel}
-        </Flex>
-      )}
-    </Box>
+      {!compact && <div className="flex mt-2 ml-auto">{maxLabel}</div>}
+    </div>
   )
 }
 

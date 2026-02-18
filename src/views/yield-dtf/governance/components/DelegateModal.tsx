@@ -1,12 +1,11 @@
 import { t, Trans } from '@lingui/macro'
 import StRSRVotes from 'abis/StRSRVotes'
-import Input from '@/components/old/input'
+import { Input } from '@/components/ui/input'
 import TransactionModal from 'components/transaction-modal'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
 import { useMemo, useState } from 'react'
 import { walletAtom } from 'state/atoms'
-import { Text } from 'theme-ui'
 import { isAddress } from 'utils'
 
 const DelegateModal = ({
@@ -39,14 +38,14 @@ const DelegateModal = ({
       confirmLabel={t`Confirm delegate`}
       onClose={onClose}
     >
-      <Text as="label" variant="legend" ml={3}>
+      <label className="text-legend ml-3">
         <Trans>Delegate to</Trans>
-      </Text>
+      </label>
       <Input
         autoFocus
-        mt={2}
+        className="mt-2"
         value={address}
-        onChange={setAddress}
+        onChange={(e) => setAddress(e.target.value)}
         placeholder={t`ETH address`}
       />
     </TransactionModal>

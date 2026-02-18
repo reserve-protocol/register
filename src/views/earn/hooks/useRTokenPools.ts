@@ -1,8 +1,8 @@
+import { useQuery } from '@tanstack/react-query'
 import rtokens from '@reserve-protocol/rtokens'
 import { useAtom } from 'jotai'
 import { useEffect } from 'react'
 import { Pool, poolsAtom } from 'state/pools/atoms'
-import useSWRImmutable from 'swr/immutable'
 import { StringMap } from 'types'
 import { EUSD_ADDRESS, RSR_ADDRESS } from 'utils/addresses'
 import { ChainId } from 'utils/chains'
@@ -237,7 +237,11 @@ const mapPools = (
 }
 
 const useRTokenPools = () => {
-  const { data, isLoading } = useSWRImmutable('https://yields.llama.fi/pools')
+  const { data, isLoading } = useQuery({
+    queryKey: ['llama-pools'],
+    queryFn: () => fetch('https://yields.llama.fi/pools').then((res) => res.json()),
+    staleTime: 1000 * 60 * 60, // 1 hour - mimics useSWRImmutable behavior
+  })
   const earnPools = getEarnPools()
   const { data: indexDTFs } = useIndexDTFList()
 

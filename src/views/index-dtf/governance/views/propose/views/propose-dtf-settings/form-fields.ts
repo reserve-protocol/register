@@ -4,6 +4,7 @@ import { z } from 'zod'
 
 export const createProposeSettingsSchema = (quorumDenominator?: number) => z
   .object({
+    tokenName: z.string().min(1, 'Token name is required').max(32, 'Token name must be 32 characters or less'),
     mandate: z.string(),
     governanceVoteLock: z
       .string()
@@ -56,6 +57,7 @@ export const createProposeSettingsSchema = (quorumDenominator?: number) => z
       .min(15, 'Auction length must be at least 15 minutes')
       .max(1440, 'Auction length must not exceed 1440 minutes (24 hours)'),
     weightControl: z.boolean(),
+    bidsEnabled: z.boolean(),
     governanceVotingDelay: z.coerce.number().min(0).optional(),
     governanceVotingPeriod: z.coerce.number().min(0).optional(),
     governanceVotingQuorum: z.coerce.number().min(0).max(100).optional()
@@ -123,33 +125,19 @@ export const createProposeSettingsSchema = (quorumDenominator?: number) => z
       path: ['roles'],
     }
   )
-  .refine(
-    (data) => {
-      const totalShares = [
-        data.governanceShare,
-        data.deployerShare,
-        ...(data.additionalRevenueRecipients?.map((r) => r.share) || []),
-      ]
+  .superRefine((data, ctx) => {
+    const totalShares = [
+      data.governanceShare,
+      data.deployerShare,
+      ...(data.additionalRevenueRecipients?.map((r) => r.share) || []),
+    ]
 
-      const total = totalShares.reduce(
-        (sum, share) => sum.plus(new Decimal(share || 0)),
-        new Decimal(0)
-      )
+    const total = totalShares.reduce(
+      (sum, share) => sum.plus(new Decimal(share || 0)),
+      new Decimal(0)
+    )
 
-      return total.plus(new Decimal(data.fixedPlatformFee)).eq(new Decimal(100))
-    },
-    (data) => {
-      const totalShares = [
-        data.governanceShare,
-        data.deployerShare,
-        ...(data.additionalRevenueRecipients?.map((r) => r.share) || []),
-      ]
-
-      const total = totalShares.reduce(
-        (sum, share) => sum.plus(new Decimal(share || 0)),
-        new Decimal(0)
-      )
-
+    if (!total.plus(new Decimal(data.fixedPlatformFee)).eq(new Decimal(100))) {
       const difference = new Decimal(100).minus(
         total.plus(new Decimal(data.fixedPlatformFee))
       )
@@ -157,16 +145,17 @@ export const createProposeSettingsSchema = (quorumDenominator?: number) => z
       const absDifference = difference.abs()
       const displayDifference = absDifference.toDisplayString()
 
-      return {
+      ctx.addIssue({
+        code: 'custom',
         message: `The sum of governance share, creator share, additional recipients shares and platform share must be 100% (${
           difference.isPositive()
             ? `${displayDifference}% missing`
             : `${displayDifference}% excess`
         })`,
         path: ['revenue-distribution'],
-      }
+      })
     }
-  )
+  })
   .refine(
     (data) => {
       const governanceAddresses = [

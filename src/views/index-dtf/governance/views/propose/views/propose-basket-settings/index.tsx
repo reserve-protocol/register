@@ -6,7 +6,7 @@ import BasketSettingsProposalSections from './components/basket-settings-proposa
 import BasketSettingsProposalOverview from './components/basket-settings-proposal-overview'
 import Updater from './updater'
 import ConfirmBasketSettingsProposal from './components/confirm-basket-settings-proposal'
-import { createProposeBasketSettingsSchema, ProposeBasketSettings } from './form-fields'
+import { createProposeBasketSettingsSchema } from './form-fields'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { useMemo } from 'react'
 
@@ -26,7 +26,7 @@ const IndexDTFBasketSettingsProposal = () => {
     return createProposeBasketSettingsSchema(Number(quorumDenominator))
   }, [quorumDenominator])
 
-  const methods = useForm<ProposeBasketSettings>({
+  const methods = useForm({
     mode: 'onTouched',
     reValidateMode: 'onChange',
     resolver: zodResolver(schema),

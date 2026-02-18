@@ -15,7 +15,6 @@ import {
 import ConfirmProposal from './components/ConfirmProposal'
 import Proposal from './components/Proposal'
 import Updater from './updater'
-import { Box } from 'theme-ui'
 import { keccak256, stringToBytes } from 'viem'
 import { isTimeunitGovernance } from '../../utils'
 
@@ -79,12 +78,12 @@ const GovernanceProposal = () => {
   }, [tokenParameters])
 
   return (
-    <Box variant="layout.wrapper">
+    <div className="container">
       <FormProvider {...form}>
         <Updater />
         {isEditing && !isAssistedUpgrade ? <Proposal /> : <ConfirmProposal />}
       </FormProvider>
-    </Box>
+    </div>
   )
 }
 

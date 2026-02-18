@@ -1,12 +1,7 @@
 import { t } from '@lingui/macro'
 import { CopyIcon } from 'lucide-react'
 import React, { useState } from 'react'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from './tooltip'
+import { Tooltip, TooltipContent, TooltipTrigger } from './tooltip'
 
 interface CopyProps {
   value: string
@@ -37,16 +32,14 @@ const Copy: React.FC<CopyProps> = ({
   }
 
   return (
-    <TooltipProvider>
-      <Tooltip open={isOpen ? true : undefined} delayDuration={0}>
-        <TooltipTrigger onClick={handleCopy}>
-          <CopyIcon size={size} className={className} />
-        </TooltipTrigger>
-        <TooltipContent side={side} className="max-w-xs">
-          {displayText}
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
+    <Tooltip open={isOpen ? true : undefined} delayDuration={0}>
+      <TooltipTrigger onClick={handleCopy}>
+        <CopyIcon size={size} className={className} />
+      </TooltipTrigger>
+      <TooltipContent side={side} className="max-w-xs">
+        {displayText}
+      </TooltipContent>
+    </Tooltip>
   )
 }
 

@@ -1,4 +1,4 @@
-import dtfIndexAbiV4 from '@/abis/dtf-index-abi-v4'
+import dtfIndexAbi from '@/abis/dtf-index-abi'
 import { Button } from '@/components/ui/button'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { parseDuration, parseDurationShort } from '@/utils'
@@ -90,9 +90,10 @@ const CommunityLaunchAuctionsButton = () => {
     try {
       setIsLaunching(true)
       setError(null)
+
       writeContract({
         address: dtf?.id,
-        abi: dtfIndexAbiV4,
+        abi: dtfIndexAbi,
         functionName: 'openAuctionUnrestricted',
         args: [BigInt(rebalance.rebalance.nonce)],
       })

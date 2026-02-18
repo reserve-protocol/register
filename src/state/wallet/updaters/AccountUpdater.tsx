@@ -1,5 +1,5 @@
 import { gql } from 'graphql-request'
-import { useMultichainQuery } from 'hooks/useQuery'
+import { useMultichainQuery } from 'hooks/use-query'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { getAddress } from 'viem'

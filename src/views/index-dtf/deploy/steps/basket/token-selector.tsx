@@ -18,7 +18,7 @@ import { cn } from '@/lib/utils'
 import { chainIdAtom } from '@/state/atoms'
 import { Token } from '@/types'
 import { isAddress, shortenAddress } from '@/utils'
-import { DISCORD_INVITE, REGISTER_FEEDBACK } from '@/utils/constants'
+import { REGISTER_FEEDBACK, TELEGRAM_INVITE } from '@/utils/constants'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
@@ -355,9 +355,9 @@ const TokenList = ({ showSelected = false }: TokenListProps) => {
               className="flex items-center gap-2"
               asChild
             >
-              <a href={DISCORD_INVITE}>
+              <a href={TELEGRAM_INVITE}>
                 <MessageSquare className="h-4 w-4" />
-                Message us on Discord
+                Message us on Telegram
               </a>
             </Button>
           </div>

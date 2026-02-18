@@ -1,7 +1,7 @@
 import dtfIndexDeployerAbi from '@/abis/dtf-index-deployer-abi'
 import TransactionButton, {
   TransactionButtonContainer,
-} from '@/components/old/button/TransactionButton'
+} from '@/components/ui/transaction-button'
 import useContractWrite from '@/hooks/useContractWrite'
 import { chainIdAtom, walletAtom } from '@/state/atoms'
 import { getCurrentTime } from '@/utils'
@@ -63,6 +63,7 @@ type FolioFlags = {
     weightControl: boolean
     priceControl: number
   }
+  bidsEnabled: boolean
 }
 
 type GovernanceConfig = {
@@ -156,6 +157,7 @@ const txAtom = atom<
       weightControl: formData.weightControl, // false -> tracking / true -> native
       priceControl: PriceControl.PARTIAL,
     },
+    bidsEnabled: formData.bidsEnabled, // true for cowswap
   }
 
   const guardians = formData.guardians.filter(Boolean) as Address[]
@@ -294,7 +296,7 @@ const ConfirmManualDeployButton = () => {
           loadingText={!!hash ? 'Confirming tx...' : 'Pending, sign in wallet'}
           onClick={write}
           text={title}
-          fullWidth
+          className="w-full"
           error={validationError || error || txError}
         />
       </TransactionButtonContainer>

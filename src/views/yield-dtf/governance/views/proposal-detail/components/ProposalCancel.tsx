@@ -1,6 +1,6 @@
 import { t } from '@lingui/macro'
 import Timelock from 'abis/Timelock'
-import TransactionButton from '@/components/old/button/TransactionButton'
+import TransactionButton from '@/components/ui/transaction-button'
 import useContractWrite from 'hooks/useContractWrite'
 import useWatchTransaction from 'hooks/useWatchTransaction'
 import { useAtomValue } from 'jotai'
@@ -39,19 +39,16 @@ const ProposalCancel = () => {
 
   return (
     <TransactionButton
-      variant="danger"
-      small
+      variant="destructive"
+      size="sm"
       loading={isMining || isLoading}
       mining={isMining}
       disabled={!isReady || !canCancel || status === 'success'}
       onClick={write}
       text={t`Cancel proposal`}
-      sx={{
-        height: '44px',
-        bg: 'transparent',
-        border: '1px solid',
-        borderColor: account ? 'danger' : 'primary',
-      }}
+      className={`h-11 bg-transparent border ${
+        account ? 'border-destructive' : 'border-primary'
+      }`}
     />
   )
 }

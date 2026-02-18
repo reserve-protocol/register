@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro'
-import GoTo from '@/components/old/button/GoTo'
+import GoTo from '@/components/ui/go-to'
 import { MODES } from 'components/dark-mode-toggle'
 import TabMenu from 'components/tab-menu'
 import { useAtomValue } from 'jotai'
@@ -13,15 +13,6 @@ import {
 } from 'react-json-view-lite'
 import 'react-json-view-lite/dist/index.css'
 import { chainIdAtom } from 'state/atoms'
-import {
-  Box,
-  BoxProps,
-  Card,
-  Divider,
-  Flex,
-  Text,
-  useColorMode,
-} from 'theme-ui'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { safeJsonFormat } from '@/views/yield-dtf/deploy/utils'
 import {
@@ -29,45 +20,43 @@ import {
   ProposalCall,
 } from '@/views/yield-dtf/governance/atoms'
 import BasketChangeSummary from './proposal-summary/BasketChangeSummary'
+import { Card } from '@/components/ui/card'
+import { Separator } from '@/components/ui/separator'
+import { useTheme } from 'next-themes'
+import { cn } from '@/lib/utils'
 
-interface Props extends BoxProps {
+interface Props {
   data: ContractProposal
   snapshotBlock?: number
-  borderColor?: string
+  className?: string
 }
 
 const CallData = ({
   data,
-  borderColor = 'darkBorder',
 }: {
   data: string
-  borderColor?: string
 }) => {
   const [isOpen, setOpen] = useState(false)
 
   return (
-    <Box>
-      <Box
-        py={2}
-        sx={{ cursor: 'pointer' }}
-        variant="layout.verticalAlign"
+    <div>
+      <div
+        className="py-2 cursor-pointer flex items-center"
         onClick={() => setOpen(!isOpen)}
       >
-        <Text variant="bold" mr="auto">
+        <span className="font-bold mr-auto">
           <Trans>Executable code</Trans>
-        </Text>
+        </span>
         {isOpen ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
-      </Box>
+      </div>
       {isOpen && (
         <>
-          <Divider mb={3} sx={{ borderColor }} />
-          <Box as="code" sx={{ overflowWrap: 'break-word' }}>
-            {data}
-          </Box>
-          <Box mb={3} />
+          <Separator className="mb-4" />
+          <code className="break-words">{data}</code>
+          <div className="mb-4" />
         </>
       )}
-    </Box>
+    </div>
   )
 }
 
@@ -75,58 +64,54 @@ const Header = ({ label, address }: { label: string; address: string }) => {
   const chainId = useAtomValue(chainIdAtom)
 
   return (
-    <Box variant="layout.verticalAlign" color="primary" p="2">
-      <Text variant="bold" sx={{ fontSize: 3 }} mr={1}>
-        {label}
-      </Text>
+    <div className="flex items-center text-primary p-2">
+      <span className="font-bold text-lg mr-1">{label}</span>
       <GoTo
-        mt="2px"
-        color="primary"
+        className="mt-0.5"
         href={getExplorerLink(address, chainId, ExplorerDataType.ADDRESS)}
       />
-    </Box>
+    </div>
   )
 }
 
 const JSONPreview = ({ data }: { data: any }) => {
-  const [colorMode] = useColorMode()
+  const { theme } = useTheme()
 
   if (data.length > 1) {
     return (
       <JsonView
         shouldExpandNode={collapseAllNested}
-        style={colorMode === MODES.LIGHT ? defaultStyles : darkStyles}
+        style={theme === MODES.LIGHT ? defaultStyles : darkStyles}
         data={data}
       />
     )
   }
 
   return (
-    <Text variant="bold" sx={{ wordBreak: 'break-all' }}>
+    <span className="font-bold break-all">
       {data && data[0] !== undefined
         ? typeof data[0] === 'object'
           ? safeJsonFormat(data[0])
           : data[0].toString()
         : 'None'}
-    </Text>
+    </span>
   )
 }
-const borderColor = 'darkBorder'
 
 const RawCallPreview = ({ call }: { call: ProposalCall }) => (
   <>
-    <Box mb={2}>
-      <Text variant="legend" sx={{ display: 'block', fontSize: 1 }} mb={1}>
+    <div className="mb-2">
+      <span className="text-legend block text-xs mb-1">
         <Trans>Signature</Trans>
-      </Text>
-      <Text variant="bold">
+      </span>
+      <span className="font-bold">
         {call.signature}({call.parameters.join(', ')})
-      </Text>
-    </Box>
+      </span>
+    </div>
 
-    <Text variant="legend" sx={{ fontSize: 1, display: 'block' }} mb={1}>
+    <span className="text-legend text-xs block mb-1">
       <Trans>Parameters</Trans>
-    </Text>
+    </span>
     <JSONPreview data={call.data} />
   </>
 )
@@ -165,24 +150,14 @@ const CallPreview = ({
   const isDetailed = detailed === 'summary'
 
   return (
-    <Box
+    <div
       key={index}
-      p="2"
-      sx={{
-        borderRadius: 8,
-        background: 'cardAlternative',
-        boxShadow: '0px 4px 33px 0px rgba(66, 61, 43, 0.03)',
-      }}
+      className="p-2 rounded-lg bg-muted shadow-sm"
     >
-      <Box variant="layout.verticalAlign" mb="2">
-        <Text
-          variant="bold"
-          color="primary"
-          className="mr-auto"
-          sx={{ fontSize: 2 }}
-        >
+      <div className="flex items-center mb-2">
+        <span className="font-bold text-primary mr-auto text-sm">
           {index + 1}/{total} {isDetailed && 'Set Primary basket'}
-        </Text>
+        </span>
         {displayDetailedOption && (
           <TabMenu
             ml="auto"
@@ -192,15 +167,15 @@ const CallPreview = ({
             onMenuChange={(kind: string) => setDetailed(kind)}
           />
         )}
-      </Box>
+      </div>
       {isDetailed ? (
         <DetailedCallPreview call={call} snapshotBlock={snapshotBlock} />
       ) : (
         <RawCallPreview call={call} />
       )}
-      <Divider mt={3} />
-      <CallData data={call.callData} borderColor={borderColor} />
-    </Box>
+      <Separator className="mt-4" />
+      <CallData data={call.callData} />
+    </div>
   )
 }
 
@@ -214,7 +189,7 @@ const CallList = ({
   const total = calls.length
 
   return (
-    <Flex mt="2" sx={{ flexDirection: 'column', gap: 2 }}>
+    <div className="flex flex-col gap-2 mt-2">
       {calls.map((call, index) => (
         <CallPreview
           key={call.signature}
@@ -224,25 +199,22 @@ const CallList = ({
           snapshotBlock={snapshotBlock}
         />
       ))}
-    </Flex>
+    </div>
   )
 }
 
 // Actions setPrimeBasket
-const ContractProposalDetails = ({ data, snapshotBlock, ...props }: Props) => {
+const ContractProposalDetails = ({ data, snapshotBlock, className }: Props) => {
   if (!data.calls.length) {
     return null
   }
 
   return (
     <Card
-      p={2}
-      sx={{
-        background: 'cardBackground',
-        border: '8px solid',
-        borderColor: 'contentBackground',
-      }}
-      {...props}
+      className={cn(
+        'p-2 bg-secondary border-8 border-background',
+        className
+      )}
     >
       <Header label={data.label} address={data.address} />
       <CallList calls={data.calls} snapshotBlock={snapshotBlock} />

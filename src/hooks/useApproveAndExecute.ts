@@ -134,7 +134,7 @@ const useApproveAndExecute = (
     if (!hasAllowance && isSuccess && executeReady) {
       write?.()
     }
-  }, [hasAllowance, isSuccess, executeReady])
+  }, [hasAllowance, isSuccess, executeReady, write])
 
   return useMemo(() => {
     let errorText = null

@@ -5,8 +5,6 @@ import { useAtomValue } from 'jotai'
 import { ArrowDown, ArrowRight, ArrowUp, Plus, X } from 'lucide-react'
 import 'react-json-view-lite/dist/index.css'
 import { collateralYieldAtom } from 'state/atoms'
-import { borderRadius } from 'theme'
-import { Box, BoxProps, Flex, Grid, Spinner, Text } from 'theme-ui'
 import { formatPercentage } from 'utils'
 import { collateralDisplay } from 'utils/constants'
 import { ProposalCall } from '@/views/yield-dtf/governance/atoms'
@@ -15,6 +13,8 @@ import {
   DiffItem,
   useBasketChangesSummary,
 } from '@/views/yield-dtf/governance/hooks'
+import Spinner from '@/components/ui/spinner'
+import { cn } from '@/lib/utils'
 
 const useBasketApy = (
   basket: BasketItem,
@@ -32,11 +32,12 @@ const useBasketApy = (
   }, 0)
 }
 
-interface IStatusBox extends BoxProps {
+interface IStatusBox {
   status: DiffItem['status']
+  className?: string
 }
 
-const StatusBox = ({ status, sx = {}, ...props }: IStatusBox) => {
+const StatusBox = ({ status, className }: IStatusBox) => {
   const statusMap = {
     added: {
       label: 'Add',
@@ -62,27 +63,17 @@ const StatusBox = ({ status, sx = {}, ...props }: IStatusBox) => {
   }
 
   return (
-    <Box
-      variant="layout.verticalAlign"
-      px="10px"
-      py="1"
-      sx={{
-        height: 'fit-content',
-        border: '1px solid',
-        borderColor: 'border',
-        fontSize: [0, 1],
-        fontWeight: 500,
-        gap: 1,
-        borderRadius: borderRadius.boxes,
-        ...sx,
-      }}
-      {...props}
+    <div
+      className={cn(
+        'flex items-center px-2.5 py-1 h-fit border border-border text-xs sm:text-sm font-medium gap-1 rounded-xl',
+        className
+      )}
     >
       {statusMap[status].icon}
-      <Text color={status === 'unchanged' ? 'secondaryText' : 'text'}>
+      <span className={status === 'unchanged' ? 'text-muted-foreground' : ''}>
         {statusMap[status].label}
-      </Text>
-    </Box>
+      </span>
+    </div>
   )
 }
 
@@ -91,75 +82,55 @@ const BasketDiffItem = ({ item }: { item: DiffItem }) => {
   const apys = useAtomValue(collateralYieldAtom)[rToken?.chainId ?? 1] || {}
 
   return (
-    <Grid columns={[1, 3]} gap={[1, 2]} sx={{ width: '100%' }}>
-      <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
-        <TokenLogo mr="2" symbol={item.symbol} />
-        <Box sx={{ fontSize: 1 }}>
-          <Text variant="bold">
+    <div className="grid grid-cols-1 sm:grid-cols-3 gap-1 sm:gap-2 w-full">
+      <div className="flex items-center gap-1">
+        <TokenLogo className="mr-2" symbol={item.symbol} />
+        <div className="text-xs">
+          <span className="font-bold">
             {collateralDisplay[item.symbol.toLowerCase()] || item.symbol}
-          </Text>
-          <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
-            <Text sx={{ fontWeight: 500 }}>{item.targetUnit}</Text>|
-            <Text variant="legend">APY:</Text>{' '}
-            <Text sx={{ fontWeight: 500 }}>
+          </span>
+          <div className="flex items-center gap-1">
+            <span className="font-medium">{item.targetUnit}</span>|
+            <span className="text-legend">APY:</span>{' '}
+            <span className="font-medium">
               {formatPercentage(apys[item.symbol.toLowerCase()])}
-            </Text>
-          </Box>
-        </Box>
-      </Box>
-      <Box
-        variant="layout.verticalAlign"
-        sx={{
-          justifyContent: ['left', 'center'],
-          fontWeight: 500,
-        }}
-      >
+            </span>
+          </div>
+        </div>
+      </div>
+      <div className="flex items-center justify-start sm:justify-center font-medium">
         <StatusBox
-          sx={{ display: ['flex', 'none'] }}
-          mr="auto"
+          className="flex sm:hidden mr-auto"
           status={item.status}
         />
 
-        <Text
-          sx={{
-            minWidth: '52px',
-            color:
-              item.status === 'added' || item.status === 'unchanged'
-                ? 'secondaryText'
-                : 'text',
-            textAlign: 'right',
-          }}
+        <span
+          className={cn(
+            'min-w-[52px] text-right',
+            item.status === 'added' || item.status === 'unchanged'
+              ? 'text-muted-foreground'
+              : ''
+          )}
         >
           {item.status === 'added' ? 'N/A' : formatPercentage(item.oldWeight)}
-        </Text>
-        <Flex
-          mx="2"
-          sx={{
-            backgroundColor: 'inputAlternativeBackground',
-            height: '20px',
-            width: '20px',
-            justifyContent: 'center',
-            alignItems: 'center',
-            borderRadius: '4px',
-          }}
-        >
+        </span>
+        <div className="mx-2 bg-muted h-5 w-5 flex justify-center items-center rounded">
           <ArrowRight size={12} />
-        </Flex>
-        <Text
-          sx={{
-            minWidth: '52px',
-            color: item.status === 'unchanged' ? 'secondaryText' : 'text',
-          }}
+        </div>
+        <span
+          className={cn(
+            'min-w-[52px]',
+            item.status === 'unchanged' ? 'text-muted-foreground' : ''
+          )}
         >
           {formatPercentage(item.newWeight)}
-        </Text>
-      </Box>
+        </span>
+      </div>
       <StatusBox
-        sx={{ display: ['none', 'flex'] }}
-        ml="auto"
+        className="hidden sm:flex ml-auto"
         status={item.status}
       />
-    </Grid>
+    </div>
   )
 }
 
@@ -177,23 +148,14 @@ const BasketAPYDiff = ({
   const currentApy = useBasketApy(snapshot, rToken?.chainId ?? 1, meta)
 
   return (
-    <Box
-      variant="layout.verticalAlign"
-      pt="3"
-      mt="2"
-      sx={{
-        borderTop: '1px solid',
-        fontWeight: 500,
-        borderColor: 'border',
-      }}
-    >
-      <Text mr="auto">30-day blended APY:</Text>
-      <Text variant="legend" ml="3" mr="1">
+    <div className="flex items-center pt-4 mt-2 border-t border-border font-medium">
+      <span className="mr-auto">30-day blended APY:</span>
+      <span className="text-legend ml-4 mr-1">
         {formatPercentage(currentApy)}
-      </Text>
+      </span>
       <ArrowRight size={16} />
-      <Text ml="1">{formatPercentage(proposedApy)}</Text>
-    </Box>
+      <span className="ml-1">{formatPercentage(proposedApy)}</span>
+    </div>
   )
 }
 
@@ -214,43 +176,33 @@ const BasketChangeSummary = ({
 
   if (isLoading) {
     return (
-      <Flex
-        my="4"
-        sx={{ flexDirection: 'column', gap: 2, alignItems: 'center' }}
-      >
+      <div className="flex flex-col gap-2 items-center my-6">
         <Spinner size={20} />
-        <Text variant="legend">Loading summary...</Text>
-      </Flex>
+        <span className="text-legend">Loading summary...</span>
+      </div>
     )
   }
 
   return (
-    <Box mt="2">
-      <Grid
-        columns={[2, 3]}
-        gap={2}
-        mb="2"
-        sx={{ color: 'secondaryText', fontSize: 1 }}
-      >
-        <Text>Collateral token</Text>
-        <Text mr={['none', 'auto']} ml="auto">
+    <div className="mt-2">
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-2 text-muted-foreground text-xs">
+        <span>Collateral token</span>
+        <span className="mr-0 sm:mr-auto ml-auto">
           Old weight / New weight
-        </Text>
-        <Text ml="auto" sx={{ display: ['none', 'block'] }}>
-          Change
-        </Text>
-      </Grid>
-      <Flex sx={{ flexDirection: 'column', gap: [3, 2], width: '100%' }}>
+        </span>
+        <span className="ml-auto hidden sm:block">Change</span>
+      </div>
+      <div className="flex flex-col gap-4 sm:gap-2 w-full">
         {data?.diff.map((item) => (
           <BasketDiffItem key={item.address} item={item} />
         ))}
-      </Flex>
+      </div>
       <BasketAPYDiff
         proposal={data?.proposalBasket}
         snapshot={data?.snapshotBasket}
         meta={data?.tokensMeta}
       />
-    </Box>
+    </div>
   )
 }
 

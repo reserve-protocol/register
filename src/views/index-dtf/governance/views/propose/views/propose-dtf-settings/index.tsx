@@ -4,7 +4,7 @@ import Updater from './updater'
 import DTFSettingsProposalOverview from './components/dtf-settings-proposal-overview'
 import ConfirmDTFSettingsProposal from './components/confirm-dtf-settings-proposal'
 import { FormProvider, useForm } from 'react-hook-form'
-import { ProposeSettings, createProposeSettingsSchema } from './form-fields'
+import { createProposeSettingsSchema } from './form-fields'
 import { zodResolver } from '@hookform/resolvers/zod'
 import DTFSettingsProposalSections from './components/dtf-settings-proposal-sections'
 import { indexDTFAtom } from '@/state/dtf/atoms'
@@ -26,7 +26,7 @@ const ProposeDTFSettings = () => {
     return createProposeSettingsSchema(Number(quorumDenominator))
   }, [quorumDenominator])
 
-  const form = useForm<ProposeSettings>({
+  const form = useForm({
     resolver: zodResolver(schema),
     mode: 'onChange', // Enable validation on every change
   })

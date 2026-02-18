@@ -8,7 +8,7 @@ import { useAtomValue } from 'jotai'
 import { Combine, Globe, Palette, Zap } from 'lucide-react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { useColorMode } from 'theme-ui'
+import { useTheme } from 'next-themes'
 import { z } from 'zod'
 import SocialMediaInput, {
   SOCIAL_MEDIA_OPTIONS,
@@ -27,8 +27,8 @@ const formSchema = z.object({
 type FormData = z.infer<typeof formSchema>
 
 const DeployComingSoon = () => {
-  const [colorMode] = useColorMode()
-  const isDarkMode = colorMode === 'dark'
+  const { resolvedTheme } = useTheme()
+  const isDarkMode = resolvedTheme === 'dark'
   const account = useAtomValue(walletAtom)
   const [submitted, setSubmitted] = useState(false)
   const [submitting, setSubmitting] = useState(false)

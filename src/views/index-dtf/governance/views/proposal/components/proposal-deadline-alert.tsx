@@ -1,7 +1,6 @@
 import { useAtomValue } from 'jotai'
 import { ReactNode } from 'react'
-import { Check, Slash, X } from 'lucide-react'
-import { Box, Spinner, Text } from 'theme-ui'
+import { Check, Slash, X, Loader2 } from 'lucide-react'
 import { parseDurationShort } from 'utils'
 import { PROPOSAL_STATES } from 'utils/constants'
 import { proposalDetailAtom } from '../atom'
@@ -131,7 +130,7 @@ const ProposalAlert = () => {
       className="flex flex-col items-center justify-center h-full py-4"
       style={{ color: DEADLINE_STATES[state.state].color }}
     >
-      <Spinner size={18} color={DEADLINE_STATES[state.state].color} />
+      <Loader2 size={18} className="animate-spin" />
       <p className="text-sm mt-1">{DEADLINE_STATES[state.state].text}</p>
       <p className="font-bold">{deadline}</p>
     </div>

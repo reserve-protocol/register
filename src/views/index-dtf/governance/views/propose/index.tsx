@@ -11,6 +11,7 @@ import {
 } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import ProposeV4Upgrade from './upgrade-banners/propose-v4-upgrade'
+import ProposeV5Upgrade from './upgrade-banners/propose-v5-upgrade'
 
 const proposalTypes = [
   {
@@ -93,6 +94,7 @@ const ProposalTypeSelection = () => {
       <div className="flex h-[calc(100vh-146px)] lg:h-[calc(100vh-72px)] w-full">
         <div className="flex flex-col gap-4 items-center justify-center m-4 flex-grow border-none sm:border-dashed border-2 border-foreground/40 rounded-3xl">
           <ProposeV4Upgrade />
+          <ProposeV5Upgrade />
 
           <div className="bg-secondary rounded-3xl w-full sm:w-[408px]">
             <Header />

@@ -1,24 +1,21 @@
 import { Trans } from '@lingui/macro'
 import BasketCubeIcon from 'components/icons/BasketCubeIcon'
-import { Box, BoxProps, Text, useColorMode } from 'theme-ui'
+import { useTheme } from 'next-themes'
 import CompareFilters from './CompareFilters'
 
-const CompareBg = (props: BoxProps) => {
-  const [colorMode] = useColorMode()
+const CompareBg = ({ position }: { position: 'left' | 'right' }) => {
+  const { resolvedTheme } = useTheme()
+  const isDark = resolvedTheme === 'dark'
 
   return (
-    <Box
-      sx={{
-        display: ['none', 'none', 'block'],
-        width: '400px',
-        height: '158px',
-        top: 0,
-        zIndex: -1,
-        position: 'absolute',
-        background: `url(/imgs/bg-compare.png) no-repeat`,
-        backgroundSize: 'contain',
-        opacity: colorMode === 'dark' ? 0.25 : 1,
-        ...props.sx,
+    <div
+      className="hidden lg:block w-[400px] h-[158px] top-0 -z-10 absolute bg-contain bg-no-repeat"
+      style={{
+        backgroundImage: 'url(/imgs/bg-compare.png)',
+        opacity: isDark ? 0.25 : 1,
+        left: position === 'left' ? 0 : undefined,
+        right: position === 'right' ? 0 : undefined,
+        transform: position === 'right' ? 'scaleX(-1)' : undefined,
       }}
     />
   )
@@ -26,47 +23,30 @@ const CompareBg = (props: BoxProps) => {
 
 const CompareTokensTitle = () => {
   return (
-    <Box variant="layout.centered" sx={{ gap: 1 }} mt={[5, 7]} mb={[3, 7]}>
+    <div className="flex flex-col items-center gap-1 mt-8 md:mt-14 mb-4 md:mb-14">
       <BasketCubeIcon key="box-three" fontSize={36} />
 
-      <Box
-        variant="layout.verticalAlign"
-        sx={{
-          position: 'relative',
-          justifyContent: 'center',
-          width: '100%',
-          gap: 4,
-        }}
-      >
-        <CompareBg sx={{ left: 0 }} />
+      <div className="flex items-center relative justify-center w-full gap-6">
+        <CompareBg position="left" />
 
-        <Box
-          variant="layout.centered"
-          sx={{ gap: 1, textAlign: 'center', maxWidth: '400px' }}
-        >
-          <Text sx={{ display: 'block', fontSize: 5, fontWeight: '700' }}>
+        <div className="flex flex-col items-center gap-1 text-center max-w-[400px]">
+          <span className="block text-2xl font-bold">
             <Trans>Browse RTokens</Trans>
-          </Text>
-          <Text variant="legend">
+          </span>
+          <span className="text-legend">
             <Trans>
               Inspect collateral backing, mint, stake, redeem & explore
               additional earn opportunities across DeFi
             </Trans>
-          </Text>
-        </Box>
+          </span>
+        </div>
 
-        <CompareBg
-          sx={{
-            WebkitTransform: 'scaleX(-1)',
-            transform: 'scaleX(-1)',
-            right: 0,
-          }}
-        />
-      </Box>
-      <Box mt={3}>
+        <CompareBg position="right" />
+      </div>
+      <div className="mt-4">
         <CompareFilters />
-      </Box>
-    </Box>
+      </div>
+    </div>
   )
 }
 

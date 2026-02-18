@@ -1,5 +1,4 @@
 import { useAtomValue } from 'jotai'
-import { Box, Text } from 'theme-ui'
 
 import CollateralItem from './CollateralItem'
 import { collateralsByProtocolAtom, isWrappingAtom } from './atoms'
@@ -9,22 +8,22 @@ const WrapCollateralList = () => {
   const collateralsByProtocol = useAtomValue(collateralsByProtocolAtom)
 
   return (
-    <Box sx={{ flexGrow: 1, overflow: 'auto' }} px={4}>
+    <div className="flex-grow overflow-auto px-6">
       {Object.keys(collateralsByProtocol).map((protocol) => (
-        <Box mb={4} key={protocol}>
-          <Text variant="strong">{protocol}</Text>
+        <div className="mb-6" key={protocol}>
+          <span className="font-semibold">{protocol}</span>
 
           {collateralsByProtocol[protocol].map((c) => (
             <CollateralItem
               key={`${wrapping ? 'wrap' : 'unwrap'}-${c.address}`}
-              mt={3}
+              className="mt-4"
               collateral={c}
               wrapping={wrapping}
             />
           ))}
-        </Box>
+        </div>
       ))}
-    </Box>
+    </div>
   )
 }
 

@@ -1,7 +1,9 @@
 import { ChainId } from '@/utils/chains'
-import { RESERVE_API } from '@/utils/constants'
+// import { RESERVE_API } from '@/utils/constants'
 import { useQuery } from '@tanstack/react-query'
 import { Address } from 'viem'
+
+const RESERVE_API = 'https://api.reserve.org/'
 
 type Performance = { timestamp: number; value: number }
 
@@ -34,9 +36,6 @@ const calculatePercentageChange = (performance: Performance[]) => {
 
 const REFRESH_INTERVAL = 1000 * 60 * 10 // 10 minutes
 
-// TODO: Top 100 only, worry about pagination later
-// TODO: Pagination may become a problem sooner? need to fetch analytics/pricing here as well!
-// TODO: Mock data for what should come from the API
 const useIndexDTFList = () => {
   return useQuery({
     queryKey: ['index-dtf-list'],

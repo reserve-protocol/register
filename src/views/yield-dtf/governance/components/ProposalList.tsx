@@ -1,8 +1,8 @@
 import { Trans } from '@lingui/macro'
-import { SmallButton } from '@/components/old/button'
+import { Button } from '@/components/ui/button'
 import EmptyBoxIcon from 'components/icons/EmptyBoxIcon'
 import { gql } from 'graphql-request'
-import useQuery from 'hooks/useQuery'
+import useQuery from 'hooks/use-query'
 import { useBlockMemo } from 'hooks/utils'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
@@ -13,12 +13,12 @@ import {
   rTokenGovernanceAtom,
   selectedRTokenAtom,
 } from 'state/atoms'
-import { Badge, Box, Text } from 'theme-ui'
 import { StringMap } from 'types'
 import { formatPercentage, getProposalTitle, parseDuration } from 'utils'
 import { PROPOSAL_STATES, formatConstant } from 'utils/constants'
 import { getProposalState } from '../views/proposal-detail/atom'
 import type { ProposalVotingState as IProposalVotingState } from '../views/proposal-detail/atom'
+import { cn } from '@/lib/utils'
 
 const query = gql`
   query getProposals($id: String!) {
@@ -46,12 +46,12 @@ const query = gql`
   }
 `
 
-const BADGE_VARIANT: StringMap = {
-  [PROPOSAL_STATES.DEFEATED]: 'danger',
-  [PROPOSAL_STATES.QUORUM_NOT_REACHED]: 'danger',
-  [PROPOSAL_STATES.ACTIVE]: 'info',
-  [PROPOSAL_STATES.EXECUTED]: 'success',
-  [PROPOSAL_STATES.CANCELED]: 'danger',
+const BADGE_COLORS: Record<string, string> = {
+  [PROPOSAL_STATES.DEFEATED]: 'bg-destructive/10 text-destructive',
+  [PROPOSAL_STATES.QUORUM_NOT_REACHED]: 'bg-destructive/10 text-destructive',
+  [PROPOSAL_STATES.ACTIVE]: 'bg-primary/10 text-primary',
+  [PROPOSAL_STATES.EXECUTED]: 'bg-success/10 text-success',
+  [PROPOSAL_STATES.CANCELED]: 'bg-destructive/10 text-destructive',
 }
 
 const useProposals = () => {
@@ -81,56 +81,55 @@ export const ProposalVotingState = ({
       data.state === PROPOSAL_STATES.QUEUED) &&
       data.deadline &&
       data.deadline > 0 && (
-        <Box variant="layout.verticalAlign" sx={{ fontSize: 1 }}>
-          <Text variant="legend">
+        <div className="flex items-center text-xs">
+          <span className="text-legend">
             {data.state === PROPOSAL_STATES.ACTIVE
               ? 'Voting ends in:'
               : 'Execution available in:'}
-          </Text>
-          <Text variant="strong" ml="1">
+          </span>
+          <span className="font-semibold ml-1">
             {parseDuration(data.deadline, {
               units: ['d', 'h'],
               round: true,
             })}
-          </Text>
-        </Box>
+          </span>
+        </div>
       )}
     {data.state === PROPOSAL_STATES.PENDING && data.deadline ? (
-      <Box variant="layout.verticalAlign" mt={2} sx={{ fontSize: 1 }}>
+      <div className="flex items-center mt-2 text-xs">
         Voting starts in:{' '}
-        <Text variant="strong" ml="1">
+        <span className="font-semibold ml-1">
           {parseDuration(data.deadline, {
             units: ['d', 'h'],
             round: true,
           })}
-        </Text>
-      </Box>
+        </span>
+      </div>
     ) : (
-      <Box variant="layout.verticalAlign" mt={2} sx={{ gap: 2, fontSize: 1 }}>
+      <div className="flex items-center mt-2 gap-2 text-xs">
         <div>
-          <Text variant="legend">
+          <span className="text-legend">
             <Trans>Quorum?:</Trans>{' '}
-          </Text>
-          <Text
-            style={{ fontWeight: 500 }}
-            color={data.quorum ? 'success' : 'warning'}
+          </span>
+          <span
+            className={cn('font-medium', data.quorum ? 'text-success' : 'text-warning')}
           >
             {data.quorum ? 'Yes' : 'No'}
-          </Text>
+          </span>
         </div>
         <Circle size={4} />
-        <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
-          <Text variant="legend">Votes:</Text>
-          <Text color="primary" variant="strong">
+        <div className="flex items-center gap-1">
+          <span className="text-legend">Votes:</span>
+          <span className="text-primary font-semibold">
             {formatPercentage(data.for)}
-          </Text>
+          </span>
           /
-          <Text color="danger" variant="strong">
+          <span className="text-destructive font-semibold">
             {formatPercentage(data.against)}
-          </Text>
-          /<Text variant="legend">{formatPercentage(data.abstain)}</Text>
-        </Box>
-      </Box>
+          </span>
+          /<span className="text-legend">{formatPercentage(data.abstain)}</span>
+        </div>
+      </div>
     )}
   </>
 )
@@ -147,34 +146,23 @@ const ProposalItem = ({ proposal }: { proposal: StringMap }) => {
   )
 
   return (
-    <Box
-      p={3}
-      key={proposal.id}
-      sx={{
-        backgroundColor: 'backgroundNested',
-        borderBottom: '1px solid',
-        borderColor: 'border',
-        cursor: 'pointer',
-        ':hover': {
-          borderColor: 'backgroundNested',
-          backgroundColor: 'border',
-        },
-      }}
-      variant="layout.verticalAlign"
+    <div
+      className="p-4 bg-background border-b border-border cursor-pointer hover:border-muted hover:bg-border flex items-center"
       onClick={() => navigate(`proposal/${proposal.id}`)}
     >
-      <Box mr={3}>
-        <Text variant="strong">{getProposalTitle(proposal.description)}</Text>
+      <div className="mr-4">
+        <span className="font-semibold">{getProposalTitle(proposal.description)}</span>
         <ProposalVotingState data={proposalState} />
-      </Box>
-      <Badge
-        ml="auto"
-        sx={{ flexShrink: 0 }}
-        variant={BADGE_VARIANT[proposalState.state] || 'muted'}
-      >
+      </div>
+      <span
+        className={cn(
+          'ml-auto shrink-0 px-2 py-1 rounded-full text-xs font-medium',
+          BADGE_COLORS[proposalState.state] || 'bg-muted text-muted-foreground'
+        )}
+      > 
         {formatConstant(proposalState.state)}
-      </Badge>
-    </Box>
+      </span>
+    </div>
   )
 }
 
@@ -189,57 +177,34 @@ const ProposalList = () => {
   )
 
   return (
-    <Box
-      variant="layout.card"
-      p={2}
-      sx={{
-        backgroundColor: 'contentBackground',
-        border: '3px solid',
-        borderColor: 'borderFocused',
-      }}
-    >
-      <Box px={3} py={3} variant="layout.verticalAlign">
-        <Text variant="sectionTitle">
+    <div className="rounded-3xl p-2 bg-card border-[3px] border-secondary">
+      <div className="px-4 py-3 flex items-center">
+        <span className="text-lg font-bold">
           <Trans>Recent proposals</Trans>
-        </Text>
-        <SmallButton
-          ml="auto"
+        </span>
+        <Button
+          size="sm"
           onClick={() => navigate('proposal')}
           disabled={disabled}
+          className="ml-auto"
         >
           <Trans>Create proposal</Trans>
-        </SmallButton>
-      </Box>
-      <Box
-        mt={2}
-        sx={{
-          maxHeight: 540,
-          overflow: 'scroll',
-          borderRadius: '16px',
-          '::-webkit-scrollbar': { display: 'none' },
-          msOverflowStyle: 'none',
-          scrollbarWidth: 'none',
-        }}
-      >
+        </Button>
+      </div>
+      <div className="mt-2 max-h-[540px] overflow-auto rounded-2xl scrollbar-hide">
         {!data.length && (
-          <Box py={4} mt={4} sx={{ textAlign: 'center' }}>
+          <div className="py-4 mt-4 text-center">
             <EmptyBoxIcon />
-            <Text
-              mt={4}
-              variant="legend"
-              sx={{
-                display: 'block',
-              }}
-            >
+            <span className="mt-4 text-legend block">
               <Trans>No proposals created...</Trans>
-            </Text>
-          </Box>
+            </span>
+          </div>
         )}
         {data.map((proposal: StringMap) => (
           <ProposalItem key={proposal.id} proposal={proposal} />
         ))}
-      </Box>
-    </Box>
+      </div>
+    </div>
   )
 }
 

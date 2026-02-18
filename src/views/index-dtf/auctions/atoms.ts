@@ -3,6 +3,7 @@ import { Token } from '@/types'
 import { atom } from 'jotai'
 import { governanceProposalsAtom } from '../governance/atoms'
 import { RebalanceMetrics } from './views/rebalance-list/hooks/use-rebalance-metrics'
+import { indexDTFVersionAtom } from '@/state/dtf/atoms'
 
 export type Rebalance = {
   id: string
@@ -28,6 +29,16 @@ export type RebalanceByProposal = {
   rebalance: Rebalance
   proposal: PartialProposal
 }
+
+export const isV4Atom = atom((get) => {
+  const dtf = get(indexDTFVersionAtom)
+  return dtf === '4.0.0'
+})
+
+export const isV5Atom = atom((get) => {
+  const dtf = get(indexDTFVersionAtom)
+  return dtf === '5.0.0'
+})
 
 export const rebalancesAtom = atom<Rebalance[] | undefined>(undefined)
 export const currentProposalIdAtom = atom('')

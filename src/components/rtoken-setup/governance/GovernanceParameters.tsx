@@ -4,18 +4,18 @@ import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { secondsPerBlockAtom } from 'state/atoms'
-import { Box, BoxProps, Text } from 'theme-ui'
 import { decimalPattern, numberPattern, parseDuration } from 'utils'
 import { timeToBlocks } from '../atoms'
 
-interface IGovernanceParameters extends BoxProps {
+interface GovernanceParametersProps {
   timebased?: boolean
+  className?: string
 }
 
 const GovernanceParameters = ({
   timebased = true,
-  ...props
-}: IGovernanceParameters) => {
+  className,
+}: GovernanceParametersProps) => {
   const secondsPerBlock = useAtomValue(secondsPerBlockAtom)
   const { watch } = useFormContext()
   const [votingDelay, votingPeriod, minDelay] = watch([
@@ -42,10 +42,10 @@ const GovernanceParameters = ({
     }, [timebased, secondsPerBlock, votingDelay, votingPeriod, minDelay])
 
   return (
-    <Box {...props}>
-      <Text variant="title" mb={4}>
+    <div className={className}>
+      <span className="text-xl font-medium block mb-4">
         <Trans>Governance parameters</Trans>
-      </Text>
+      </span>
       <FormField
         label={`Snapshot delay ${timebased ? '(hours)' : '(blocks)'}`}
         placeholder={t`Input delay`}
@@ -53,7 +53,7 @@ const GovernanceParameters = ({
         help={`Delay (in number of ${
           timebased ? 'hours' : 'blocks'
         }) since the proposal is submitted until voting power is fixed and voting starts. This can be used to enforce a delay after a proposal is published for users to buy tokens, or delegate their votes.`}
-        mb={3}
+        className="mb-4"
         name="votingDelay"
         options={{
           required: true,
@@ -69,7 +69,7 @@ const GovernanceParameters = ({
         help={t`Delay (in number of ${
           timebased ? 'hours' : 'blocks'
         }) since the proposal starts until voting ends.`}
-        mb={4}
+        className="mb-6"
         name="votingPeriod"
         options={{
           required: true,
@@ -83,7 +83,7 @@ const GovernanceParameters = ({
         placeholder={t`Input delay in hours`}
         helper={minDelayHelper}
         help={t`The minimum amount of time after a proposal passes before it can be executed.`}
-        mb={3}
+        className="mb-4"
         name="minDelay"
         options={{
           required: true,
@@ -96,7 +96,7 @@ const GovernanceParameters = ({
         label={t`Proposal Threshold (%)`}
         placeholder={t`Input proposal threshold`}
         help={t`The minimum percentage of stRSR ownership on an RToken to be able to create a proposal.`}
-        mb={3}
+        className="mb-4"
         name="proposalThresholdAsMicroPercent"
         options={{
           required: true,
@@ -109,7 +109,7 @@ const GovernanceParameters = ({
         label={t`Quorum (%)`}
         placeholder={t`Input quorum percent`}
         help={t`The minimum percentage of stRSR voter participation (either For or Abstain) on a proposal before it can be passed.`}
-        mb={4}
+        className="mb-6"
         name="quorumPercent"
         options={{
           required: true,
@@ -118,7 +118,7 @@ const GovernanceParameters = ({
           max: 50,
         }}
       />
-    </Box>
+    </div>
   )
 }
 

@@ -1,14 +1,13 @@
+import TelegramIcon from '@/components/icons/TelegramIcon'
 import XIcon from '@/components/icons/XIcon'
 import { Trans } from '@lingui/macro'
-import DiscordIcon from 'components/icons/DiscordIcon'
 import GithubIcon from 'components/icons/GithubIcon'
 import { Link as RouterLink } from 'react-router-dom'
-import { Divider } from 'theme-ui'
 import {
-  DISCORD_INVITE,
   PROTOCOL_DOCS,
   REPOSITORY_URL,
   RESERVE_X,
+  TELEGRAM_INVITE,
 } from 'utils/constants'
 
 const SocialLinks = () => (
@@ -16,8 +15,8 @@ const SocialLinks = () => (
     <RouterLink to={REPOSITORY_URL} target="_blank" className="cursor-pointer">
       <GithubIcon />
     </RouterLink>
-    <RouterLink to={DISCORD_INVITE} className="cursor-pointer" target="_blank">
-      <DiscordIcon />
+    <RouterLink to={TELEGRAM_INVITE} className="cursor-pointer" target="_blank">
+      <TelegramIcon />
     </RouterLink>
     <RouterLink
       to={RESERVE_X}
@@ -80,7 +79,7 @@ const Intro = () => (
         </p>
         <p className="mt-2 text-sm text-legend">
           <Trans>
-            Still have questions? Come talk to us in the Reserve Discord server.
+            Still have questions? Come talk to us in the Reserve Telegram chat.
             We’d be happy to help! You can also
           </Trans>{' '}
           <a className="underline" href={PROTOCOL_DOCS} target="_blank">
@@ -157,7 +156,7 @@ const About = () => (
 )
 
 const DashedDivider = () => (
-  <Divider sx={{ border: '0.5px dashed', borderColor: 'text' }} my={[7, 8]} />
+  <hr className="border-0 border-t border-dashed border-foreground my-14 md:my-16" />
 )
 
 /**

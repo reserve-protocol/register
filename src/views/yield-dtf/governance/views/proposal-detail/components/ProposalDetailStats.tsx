@@ -2,7 +2,6 @@ import Governance from 'abis/Governance'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { Check, Slash, ThumbsDown, ThumbsUp, X } from 'lucide-react'
-import { Box, Progress, Text } from 'theme-ui'
 import { formatEther } from 'viem'
 import { getProposalStateAtom, proposalDetailAtom } from '../atom'
 import { colors } from 'theme'
@@ -11,6 +10,8 @@ import { rTokenAtom } from 'state/atoms'
 import { isTimeunitGovernance } from '@/views/yield-dtf/governance/utils'
 import { PROPOSAL_STATES } from 'utils/constants'
 import { useReadContracts } from 'wagmi'
+import { Progress } from '@/components/ui/progress'
+import { cn } from '@/lib/utils'
 
 const BooleanIcon = ({
   value,
@@ -22,21 +23,13 @@ const BooleanIcon = ({
   colorFailure?: string
 }) => {
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        alignItems: 'center',
-        p: '2px',
-        bg: 'bgIcon',
-        borderRadius: '4px',
-      }}
-    >
+    <div className="flex items-center rounded bg-muted p-0.5">
       {value ? (
         <Check size={18} color={colorSuccess} />
       ) : (
         <X size={18} color={colorFailure} />
       )}
-    </Box>
+    </div>
   )
 }
 
@@ -103,54 +96,31 @@ const ProposalDetailStats = () => {
   }, [forVotes, againstVotes])
 
   return (
-    <Box sx={{ bg: 'cardBackground', borderRadius: '8px', p: 2 }}>
-      <Text
-        variant="title"
-        sx={{ fontWeight: 'bold', lineHeight: '20px' }}
-        p={3}
-      >
+    <div className="rounded-lg bg-secondary p-2">
+      <span className="block p-4 text-xl font-bold leading-5">
         {[PROPOSAL_STATES.ACTIVE, PROPOSAL_STATES.PENDING].includes(state)
           ? 'Current'
           : 'Final'}{' '}
         votes
-      </Text>
-      <Box
-        sx={{
-          bg: 'focusedBackground',
-          borderRadius: '6px',
-          overflow: 'hidden',
-          '>div:not(:last-child)': {
-            borderBottom: '1px solid',
-            borderColor: 'borderSecondary',
-          },
-          border: '1px solid',
-          borderColor: 'borderSecondary',
-          boxShadow: '0px 10px 38px 6px rgba(0, 0, 0, 0.05)',
-        }}
-      >
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, p: 3 }}>
-          <Box
-            variant="layout.verticalAlign"
-            sx={{ gap: 2, justifyContent: 'space-between' }}
-          >
-            <Box variant="layout.verticalAlign" sx={{ gap: '12px' }}>
+      </span>
+      <div className="overflow-hidden rounded-md border border-border shadow-[0px_10px_38px_6px_rgba(0,0,0,0.05)] [&>div:not(:last-child)]:border-b [&>div:not(:last-child)]:border-border">
+        <div className="flex flex-col gap-4 bg-card p-4">
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-3">
               <BooleanIcon value={quorumReached} />
-              <Text>Quorum</Text>
-            </Box>
-            <Box
-              variant="layout.verticalAlign"
-              sx={{ gap: 2, fontSize: [1, 2] }}
-            >
-              <Text
-                sx={{
-                  fontWeight: 'bold',
-                  color: quorumReached ? 'success' : 'orange',
-                }}
+              <span>Quorum</span>
+            </div>
+            <div className="flex items-center gap-2 text-xs sm:text-sm">
+              <span
+                className={cn(
+                  'font-bold',
+                  quorumReached ? 'text-success' : 'text-orange-500'
+                )}
               >
                 {formatPercentage(quorumWeight * 100)}
-              </Text>
+              </span>
 
-              <Text color="secondaryText" sx={{ whiteSpace: 'nowrap' }}>
+              <span className="whitespace-nowrap text-secondary-foreground">
                 {formatCurrency(currentQuorum, 0, {
                   notation: 'compact',
                   compactDisplay: 'short',
@@ -160,175 +130,108 @@ const ProposalDetailStats = () => {
                   notation: 'compact',
                   compactDisplay: 'short',
                 })}
-              </Text>
-            </Box>
-          </Box>
+              </span>
+            </div>
+          </div>
           <Progress
-            max={1}
-            mt={2}
-            sx={{
-              width: '100%',
-              color: quorumReached ? 'success' : 'orange',
-              backgroundColor: 'lightgray',
-              height: 4,
-            }}
-            value={quorumWeight}
+            value={Math.min(quorumWeight * 100, 100)}
+            className="mt-2 h-1 bg-gray-300"
+            indicatorClassName={quorumReached ? 'bg-success' : 'bg-orange-500'}
           />
-        </Box>
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, p: 3 }}>
-          <Box
-            variant="layout.verticalAlign"
-            sx={{ gap: 2, justifyContent: 'space-between' }}
-          >
-            <Box variant="layout.verticalAlign" sx={{ gap: '12px' }}>
+        </div>
+        <div className="flex flex-col gap-4 bg-card p-4">
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-3">
               <BooleanIcon
                 value={majoritySupport}
                 colorSuccess={colors.accentInverted}
                 colorFailure="red"
               />
-              <Text>Majority support</Text>
-            </Box>
-            <Box
-              variant="layout.verticalAlign"
-              sx={{ gap: 2, fontSize: [1, 2] }}
-            >
-              <Text
-                sx={{
-                  fontWeight: 'bold',
-                  color: majoritySupport ? 'accentInverted' : 'red',
-                }}
+              <span>Majority support</span>
+            </div>
+            <div className="flex items-center gap-2 text-xs sm:text-sm">
+              <span
+                className={cn(
+                  'font-bold',
+                  majoritySupport ? 'text-primary' : 'text-red-500'
+                )}
               >
                 {majoritySupport ? 'Yes' : 'No'}
-              </Text>
-              <Text color="secondaryText">
+              </span>
+              <span className="text-secondary-foreground">
                 {formatPercentage(
                   (majoritySupport || !majorityWeight
                     ? majorityWeight
                     : 1 - majorityWeight) * 100
                 )}
-              </Text>
-            </Box>
-          </Box>
+              </span>
+            </div>
+          </div>
           <Progress
-            max={1}
-            mt={2}
-            sx={{
-              width: '100%',
-              color: majoritySupport ? 'accentInverted' : 'red',
-              backgroundColor: !majorityWeight
-                ? 'lightgray'
-                : majoritySupport
-                  ? 'red'
-                  : 'accentInverted',
-              height: 4,
-            }}
             value={
-              majoritySupport || !majorityWeight
+              (majoritySupport || !majorityWeight
                 ? majorityWeight
-                : 1 - majorityWeight
+                : 1 - majorityWeight) * 100
+            }
+            className={cn(
+              'mt-2 h-1',
+              !majorityWeight
+                ? 'bg-gray-300'
+                : majoritySupport
+                  ? 'bg-red-500'
+                  : 'bg-primary'
+            )}
+            indicatorClassName={
+              majoritySupport ? 'bg-primary' : 'bg-red-500'
             }
           />
-        </Box>
-        <Box variant="layout.verticalAlign">
-          <Box
-            variant="layout.verticalAlign"
-            sx={{
-              gap: '12px',
-              flexGrow: 1,
-              borderRight: '1px solid',
-              borderColor: 'borderSecondary',
-              p: 3,
-            }}
-          >
-            <Box
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: '28px',
-                height: '28px',
-                bg: 'bgIcon',
-                borderRadius: '4px',
-              }}
-            >
+        </div>
+        <div className="flex items-center bg-card">
+          <div className="flex flex-1 items-center gap-3 border-r border-border p-4">
+            <div className="flex h-7 w-7 items-center justify-center rounded bg-muted">
               <ThumbsUp size={18} color={colors.accentInverted} />
-            </Box>
-            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-              <Text sx={{ minWidth: 60 }}>For</Text>
-              <Text sx={{ fontWeight: 'bold', color: 'accentInverted' }}>
+            </div>
+            <div className="flex flex-col">
+              <span className="min-w-[60px]">For</span>
+              <span className="font-bold text-primary">
                 {formatCurrency(+forVotes, 0, {
                   notation: 'compact',
                   compactDisplay: 'short',
                 })}
-              </Text>
-            </Box>
-          </Box>
-          <Box
-            variant="layout.verticalAlign"
-            sx={{
-              gap: '12px',
-              flexGrow: 1,
-              p: 3,
-              justifyContent: 'end',
-              textAlign: 'right',
-            }}
-          >
-            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-              <Text sx={{ minWidth: 60 }}>Against</Text>
-              <Text sx={{ fontWeight: 'bold', color: 'red' }}>
+              </span>
+            </div>
+          </div>
+          <div className="flex flex-1 items-center justify-end gap-3 p-4 text-right">
+            <div className="flex flex-col">
+              <span className="min-w-[60px]">Against</span>
+              <span className="font-bold text-red-500">
                 {formatCurrency(+againstVotes, 0, {
                   notation: 'compact',
                   compactDisplay: 'short',
                 })}
-              </Text>
-            </Box>
-            <Box
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: '28px',
-                height: '28px',
-                bg: 'bgIcon',
-                borderRadius: '4px',
-              }}
-            >
+              </span>
+            </div>
+            <div className="flex h-7 w-7 items-center justify-center rounded bg-muted">
               <ThumbsDown size={18} color="red" />
-            </Box>
-          </Box>
-        </Box>
-        <Box
-          variant="layout.verticalAlign"
-          sx={{
-            p: 3,
-            justifyContent: 'space-between',
-          }}
-        >
-          <Box variant="layout.verticalAlign" sx={{ gap: '12px' }}>
-            <Box
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: '28px',
-                height: '28px',
-                bg: 'bgIcon',
-                borderRadius: '4px',
-              }}
-            >
+            </div>
+          </div>
+        </div>
+        <div className="flex items-center justify-between bg-card p-4">
+          <div className="flex items-center gap-3">
+            <div className="flex h-7 w-7 items-center justify-center rounded bg-muted">
               <Slash size={18} />
-            </Box>
-            <Text sx={{ minWidth: 60 }}>Abstain</Text>
-          </Box>
-          <Text sx={{ fontWeight: 'bold', color: 'secondaryText' }}>
+            </div>
+            <span className="min-w-[60px]">Abstain</span>
+          </div>
+          <span className="font-bold text-secondary-foreground">
             {formatCurrency(+abstainVotes, 0, {
               notation: 'compact',
               compactDisplay: 'short',
             })}
-          </Text>
-        </Box>
-      </Box>
-    </Box>
+          </span>
+        </div>
+      </div>
+    </div>
   )
 }
 

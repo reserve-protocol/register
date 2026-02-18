@@ -1,20 +1,36 @@
 import dtfIndexAbiV4 from '@/abis/dtf-index-abi-v4'
-import { indexDTFAtom, isHybridDTFAtom } from '@/state/dtf/atoms'
-import { WeightRange } from '@reserve-protocol/dtf-rebalance-lib/dist/types'
+import dtfIndexAbiV5 from '@/abis/dtf-index-abi'
+import { indexDTFAtom, indexDTFVersionAtom, isHybridDTFAtom } from '@/state/dtf/atoms'
+import { WeightRange } from '@reserve-protocol/dtf-rebalance-lib'
 import { useAtomValue, useSetAtom } from 'jotai'
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useReadContract } from 'wagmi'
 import { originalRebalanceWeightsAtom, rebalanceAuctionsAtom } from '../atoms'
+import {
+  FOLIO_VERSION_V5,
+  getFolioVersion,
+  getRebalanceTokens,
+  getRebalanceWeights,
+  transformV4Rebalance,
+  transformV5Rebalance,
+} from '../utils/transforms'
 
 const RebalanceHistoricalWeightsUpdater = () => {
   const dtf = useAtomValue(indexDTFAtom)
   const auctions = useAtomValue(rebalanceAuctionsAtom)
   const isHybridDTF = useAtomValue(isHybridDTFAtom)
   const setOriginalWeights = useSetAtom(originalRebalanceWeightsAtom)
+  const versionString = useAtomValue(indexDTFVersionAtom)
+
+  const folioVersion = useMemo(
+    () => getFolioVersion(versionString),
+    [versionString]
+  )
+  const abi = folioVersion === FOLIO_VERSION_V5 ? dtfIndexAbiV5 : dtfIndexAbiV4
 
   // Query for historical weights at first auction block for hybrid DTFs
   const result = useReadContract({
-    abi: dtfIndexAbiV4,
+    abi,
     address: dtf?.id,
     functionName: 'getRebalance',
     chainId: dtf?.chainId,
@@ -34,20 +50,21 @@ const RebalanceHistoricalWeightsUpdater = () => {
   // Store historical weights for hybrid DTFs
   useEffect(() => {
     if (result.data && isHybridDTF) {
-      const { data: historicalRebalance } = result
+      const historicalRebalance =
+        folioVersion === FOLIO_VERSION_V5
+          ? transformV5Rebalance(result.data as readonly unknown[])
+          : transformV4Rebalance(result.data as readonly unknown[])
+
+      const tokens = getRebalanceTokens(historicalRebalance, folioVersion)
+      const weightList = getRebalanceWeights(historicalRebalance, folioVersion)
 
       const weights: Record<string, WeightRange> = {}
-      for (let i = 0; i < historicalRebalance[1].length; i++) {
-        const token = historicalRebalance[1][i].toLowerCase()
-        weights[token] = {
-          low: historicalRebalance[2][i].low,
-          spot: historicalRebalance[2][i].spot,
-          high: historicalRebalance[2][i].high,
-        }
+      for (let i = 0; i < tokens.length; i++) {
+        weights[tokens[i].toLowerCase()] = weightList[i]
       }
       setOriginalWeights(weights)
     }
-  }, [result.data, isHybridDTF, setOriginalWeights])
+  }, [result.data, isHybridDTF, folioVersion, setOriginalWeights])
 
   return null
 }

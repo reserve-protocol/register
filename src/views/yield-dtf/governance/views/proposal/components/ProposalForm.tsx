@@ -1,12 +1,11 @@
+import SectionWrapper from '@/components/section-navigation/section-wrapper'
 import { rTokenContractsAtom } from '@/state/atoms'
 import { VERSION } from '@/utils/constants'
 import BackingManager from '@/views/yield-dtf/deploy/components/BackingManager'
 import OtherSetup from '@/views/yield-dtf/deploy/components/OtherSetup'
 import RevenueSplit from 'components/rtoken-setup/token/RevenueSplit'
-import SectionWrapper from 'components/section-navigation/SectionWrapper'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
-import { Box } from 'theme-ui'
 import ContractUpgrades from './ContractUpgrades'
 import ProposalGovernanceParams from './forms/ProposalGovernanceParams'
 import Intro from './Intro'
@@ -43,19 +42,19 @@ const ProposalForm = () => {
   )
 
   return (
-    <Box mb={4}>
+    <div className="mb-4">
       {sections.map((Component, index) => (
         <SectionWrapper
           key={index}
           threshold={index === 3 ? 0.3 : 0.5}
           navigationIndex={index}
-          mb={4}
+          className="mb-4"
         >
           <Component />
         </SectionWrapper>
       ))}
       <ProposalBasketSetup startIndex={sections.length} />
-    </Box>
+    </div>
   )
 }
 

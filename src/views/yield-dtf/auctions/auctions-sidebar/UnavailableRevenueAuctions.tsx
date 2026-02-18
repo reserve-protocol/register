@@ -1,4 +1,5 @@
-import TransactionButton from '@/components/old/button/TransactionButton'
+import TransactionButton from '@/components/ui/transaction-button'
+import { Separator } from '@/components/ui/separator'
 import { t } from '@lingui/macro'
 import FacadeAct from 'abis/FacadeAct'
 import AuctionsIcon from 'components/icons/AuctionsIcon'
@@ -7,7 +8,6 @@ import useWatchTransaction from 'hooks/useWatchTransaction'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { chainIdAtom } from 'state/atoms'
-import { Box, Divider } from 'theme-ui'
 import { FACADE_ACT_ADDRESS } from 'utils/addresses'
 import { Address, Hex, encodeFunctionData } from 'viem'
 import { UseSimulateContractParameters } from 'wagmi'
@@ -99,21 +99,22 @@ const ConfirmAuction = () => {
   }, [status])
 
   return (
-    <Box>
+    <div>
       <TransactionButton
-        fullWidth
+        className="w-full"
         text="Run auctions"
-        variant={isLoading ? 'accentAction' : 'primary'}
+        variant={isLoading ? 'accent' : 'default'}
         disabled={!isReady}
         loading={isLoading || (hash && status !== 'success')}
         onClick={write}
       />
-    </Box>
+    </div>
   )
 }
 
 const UnavailableRevenueAuctions = () => {
   const revenueData = useAtomValue(auctionsOverviewAtom)
+  const selectedAuctions = useAtomValue(selectedUnavailableAuctionsAtom)
   const setSelectedAuctions = useSetAtom(setAuctionAtom)
   const setAuctions = useSetAtom(selectedUnavailableAuctionsAtom)
 
@@ -130,20 +131,19 @@ const UnavailableRevenueAuctions = () => {
       subtitle={`${revenueData?.unavailableAuctions.length ?? 0} auctions`}
       btnLabel="Inspect"
       muted
-      mb={3}
+      className="mb-4"
     >
       {(revenueData?.unavailableAuctions ?? []).map((auction, index) => (
-        <Box key={index}>
-          {!!index && (
-            <Divider mx={-4} mt={3} sx={{ borderColor: 'darkBorder' }} />
-          )}
+        <div key={index}>
+          {!!index && <Separator className="-mx-6 mt-4" />}
           <RevenueAuctionItem
             onSelect={() => setSelectedAuctions(index)}
             data={auction}
+            selected={selectedAuctions.includes(index)}
           />
-        </Box>
+        </div>
       ))}
-      <Divider my={4} mx={-4} />
+      <Separator className="my-4 -mx-4" />
       <ConfirmAuction />
     </RevenueBoxContainer>
   )

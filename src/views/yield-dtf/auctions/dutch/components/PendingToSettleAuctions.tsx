@@ -1,11 +1,16 @@
 import { Trans } from '@lingui/macro'
-import { Table } from '@/components/old/table'
+import { Table } from '@/components/ui/legacy-table'
 import { useAtomValue } from 'jotai'
-import { Box, BoxProps, Text } from 'theme-ui'
 import useColumns from '@/views/yield-dtf/auctions/components/useColumns'
 import { pendingDutchTradesAtom } from '../atoms'
 
-const PendingToSettleAuctions = (props: BoxProps) => {
+interface PendingToSettleAuctionsProps {
+  className?: string
+}
+
+const PendingToSettleAuctions = ({
+  className,
+}: PendingToSettleAuctionsProps) => {
   const columns = useColumns(true)
   const data = useAtomValue(pendingDutchTradesAtom)
 
@@ -14,12 +19,16 @@ const PendingToSettleAuctions = (props: BoxProps) => {
   }
 
   return (
-    <Box {...props} mb={5}>
-      <Text variant="strong" ml={4} mb={4}>
+    <div className={`mb-5 ${className || ''}`}>
+      <span className="font-semibold ml-4 mb-4 block">
         <Trans>Pending auctions to settle</Trans>
-      </Text>
-      <Table columns={columns} data={data} />
-    </Box>
+      </span>
+      <Table
+        columns={columns}
+        data={data}
+        className="border-[4px] border-secondary"
+      />
+    </div>
   )
 }
 

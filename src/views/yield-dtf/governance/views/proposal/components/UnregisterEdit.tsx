@@ -1,22 +1,21 @@
 import { Trans } from '@lingui/macro'
-import { SmallButton } from '@/components/old/button'
+import { Button } from '@/components/ui/button'
 import { useAtomValue } from 'jotai'
 import { rTokenAssetsAtom } from 'state/atoms'
-import { Box, BoxProps, Text } from 'theme-ui'
 
-interface UnregisterEditProps extends Omit<BoxProps, 'onChange'> {
+interface UnregisterEditProps {
   onChange(addresses: string): void
   addresses: string[]
   help?: string
   compact?: boolean
+  className?: string
 }
 
 const UnregisterEdit = ({
   onChange,
-  help,
   addresses,
   compact = false,
-  ...props
+  className,
 }: UnregisterEditProps) => {
   const allAssets = useAtomValue(rTokenAssetsAtom)
 
@@ -29,53 +28,39 @@ const UnregisterEdit = ({
   }
 
   return (
-    <Box {...props}>
+    <div className={className}>
       {!addresses.length && (
-        <Text
-          variant="legend"
-          sx={{ fontStyle: 'italic', display: 'block' }}
-          mt={3}
-          ml={3}
-        >
+        <span className="text-legend italic block mt-4 ml-4">
           <Trans>No assets to unregister...</Trans>
-        </Text>
+        </span>
       )}
       {filteredAssets.map((asset) => (
-        <Box
-          variant="layout.verticalAlign"
-          sx={{ flexWrap: 'wrap' }}
+        <div
+          className="flex items-center flex-wrap mt-4"
           key={asset.address}
-          mt={3}
         >
-          <Box mr={2} variant="layout.verticalAlign">
-            <Box
-              ml={compact ? 0 : 1}
-              mr={3}
-              sx={{
-                height: '4px',
-                width: '4px',
-                borderRadius: '100%',
-                backgroundColor: 'text',
-              }}
+          <div className="mr-2 flex items-center">
+            <div
+              className={`${compact ? 'ml-0' : 'ml-1'} mr-4 h-1 w-1 rounded-full bg-foreground`}
             />
-            <Box>
-              <Text sx={{ fontSize: 1, display: 'block' }} variant="legend">
+            <div>
+              <span className="text-xs block text-legend">
                 {asset.token.symbol}
-              </Text>
-              <Text sx={{ wordBreak: 'break-word' }}>{asset.address}</Text>
-            </Box>
-          </Box>
-          <SmallButton
-            ml="auto"
-            variant="danger"
-            sx={{ backgroundColor: 'inputBorder' }}
+              </span>
+              <span className="break-all">{asset.address}</span>
+            </div>
+          </div>
+          <Button
+            size="sm"
+            variant="destructive"
+            className="ml-auto bg-input"
             onClick={() => handleRemove(asset.address)}
           >
             <Trans>Unregister</Trans>
-          </SmallButton>
-        </Box>
+          </Button>
+        </div>
       ))}
-    </Box>
+    </div>
   )
 }
 

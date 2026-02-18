@@ -1,28 +1,30 @@
 import { t, Trans } from '@lingui/macro'
-import { SmallButton } from '@/components/old/button'
+import { Button } from '@/components/ui/button'
 import { ArrowRight, Plus, Square, X } from 'lucide-react'
 import { useFormContext } from 'react-hook-form'
-import { Box, BoxProps, Text } from 'theme-ui'
 import { ParameterChange } from '../hooks/useParametersChanges'
 import { isAddress, shortenAddress } from 'utils'
 
-interface ParameterPreviewProps extends BoxProps {
+interface ParameterPreviewProps {
   values: ParameterChange
+  className?: string
 }
 
-interface ParameterChangePreview extends BoxProps {
+interface ParameterChangePreview {
   title: string
   subtitle: string
   current: string
   proposed: string
   onRevert?(): void
+  className?: string
 }
 
-interface ListChangePreviewProps extends BoxProps {
+interface ListChangePreviewProps {
   isNew: boolean
   subtitle?: string
   value: string
   onRevert(): void
+  className?: string
 }
 
 export const ListChangePreview = ({
@@ -30,24 +32,24 @@ export const ListChangePreview = ({
   value,
   subtitle = '',
   onRevert,
-  ...props
+  className,
 }: ListChangePreviewProps) => (
-  <Box variant="layout.verticalAlign" {...props}>
+  <div className={`flex items-center ${className || ''}`}>
     {isNew ? (
       <Plus color="#11BB8D" size={18} />
     ) : (
       <X color="#FF0000" size={18} />
     )}
-    <Box ml={2}>
-      <Text variant="legend" sx={{ fontSize: 1, display: 'block' }}>
+    <div className="ml-2">
+      <span className="text-legend text-xs block">
         {isNew ? <Trans>Add</Trans> : <Trans>Remove</Trans>} {subtitle}
-      </Text>
-      <Text>{value}</Text>
-    </Box>
-    <SmallButton ml="auto" variant="muted" onClick={onRevert}>
+      </span>
+      <span>{value}</span>
+    </div>
+    <Button size="sm" variant="ghost" onClick={onRevert} className="ml-auto">
       <Trans>Revert</Trans>
-    </SmallButton>
-  </Box>
+    </Button>
+  </div>
 )
 
 export const ParameterChangePreview = ({
@@ -56,57 +58,51 @@ export const ParameterChangePreview = ({
   current,
   proposed,
   onRevert,
-  ...props
+  className,
 }: ParameterChangePreview) => (
-  <Box {...props}>
-    <Box variant="layout.verticalAlign">
-      <Box>
-        <Text variant="legend" sx={{ fontSize: 1, display: 'block' }}>
-          {title}
-        </Text>
-        <Text>{subtitle}</Text>
-      </Box>
+  <div className={className}>
+    <div className="flex items-center">
+      <div>
+        <span className="text-legend text-xs block">{title}</span>
+        <span>{subtitle}</span>
+      </div>
       {!!onRevert && (
-        <SmallButton ml="auto" onClick={onRevert} variant="muted">
+        <Button size="sm" variant="ghost" onClick={onRevert} className="ml-auto">
           <Trans>Discard</Trans>
-        </SmallButton>
+        </Button>
       )}
-    </Box>
-    <Box
-      variant="layout.verticalAlign"
-      mt={2}
-      sx={{ justifyContent: 'center', flexWrap: 'wrap' }}
-    >
+    </div>
+    <div className="flex items-center mt-2 justify-center flex-wrap">
       <Square fill="#FF0000" size={4} color="#FF0000" />
-      <Box ml={2}>
-        <Text variant="legend" sx={{ fontSize: 1, display: 'block' }}>
+      <div className="ml-2">
+        <span className="text-legend text-xs block">
           <Trans>Current</Trans>
-        </Text>
-        <Text>{isAddress(current) ? shortenAddress(current) : current}</Text>
-      </Box>
+        </span>
+        <span>{isAddress(current) ? shortenAddress(current) : current}</span>
+      </div>
       <ArrowRight
         style={{ marginLeft: 24, marginRight: 24 }}
         size={18}
         color="#808080"
       />
-      <Box variant="layout.verticalAlign">
+      <div className="flex items-center">
         <Square fill="#11BB8D" size={4} color="#11BB8D" />
-        <Box ml={2}>
-          <Text variant="legend" sx={{ fontSize: 1, display: 'block' }}>
+        <div className="ml-2">
+          <span className="text-legend text-xs block">
             <Trans>Proposed</Trans>
-          </Text>
-          <Text>
+          </span>
+          <span>
             {isAddress(proposed) ? shortenAddress(proposed) : proposed}
-          </Text>
-        </Box>
-      </Box>
-    </Box>
-  </Box>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
 )
 
 export const ParameterPreview = ({
   values,
-  ...props
+  className,
 }: ParameterPreviewProps) => {
   const { resetField } = useFormContext()
   const { field, current, proposed } = values
@@ -122,7 +118,7 @@ export const ParameterPreview = ({
       current={current}
       proposed={proposed}
       onRevert={handleRevert}
-      {...props}
+      className={className}
     />
   )
 }

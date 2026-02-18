@@ -2,7 +2,8 @@ import { Trans } from '@lingui/macro'
 import DocsLink from '@/components/utils/docs-link'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { chainIdAtom } from 'state/atoms'
-import { Box, BoxProps, Card, Divider, Label, Radio, Text } from 'theme-ui'
+import { Card } from '@/components/ui/card'
+import { Separator } from '@/components/ui/separator'
 import { ChainId } from 'utils/chains'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { proposedRolesAtom, spell3_4_0UpgradeAtom } from '../atoms'
@@ -17,7 +18,7 @@ export const spell3_4_0AddressAtom = atom((get) => {
   return SPELL_CONTRACTS[chainId]
 })
 
-const SpellUpgrade3_4_0 = (props: BoxProps) => {
+const SpellUpgrade3_4_0 = ({ className }: { className?: string }) => {
   const [spell, setSpell] = useAtom(spell3_4_0UpgradeAtom)
   const chainId = useAtomValue(chainIdAtom)
   const spellContract = useAtomValue(spell3_4_0AddressAtom)
@@ -38,11 +39,11 @@ const SpellUpgrade3_4_0 = (props: BoxProps) => {
   if (!spellContract) return null
 
   return (
-    <Card {...props} p={4}>
-      <Box variant="layout.verticalAlign">
-        <Text variant="title">
+    <Card className={`p-6 ${className ?? ''}`}>
+      <div className="flex items-center">
+        <span className="text-xl font-medium">
           <Trans>3.4.0 Upgrade spells</Trans>
-        </Text>
+        </span>
         <DocsLink
           link={getExplorerLink(
             spellContract,
@@ -50,37 +51,43 @@ const SpellUpgrade3_4_0 = (props: BoxProps) => {
             ExplorerDataType.ADDRESS
           )}
         />
-      </Box>
-      <Divider my={4} mx={-4} />
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-        <Label>
-          <Radio
+      </div>
+      <Separator className="my-6 -mx-6 w-[calc(100%+3rem)]" />
+      <div className="flex flex-col gap-2">
+        <label className="flex items-center gap-2 cursor-pointer">
+          <input
+            type="radio"
             name="spell-3-4-0"
             value="none"
             onChange={onChange}
             checked={spell === 'none'}
+            className="w-4 h-4"
           />
           <Trans>None</Trans>
-        </Label>
-        <Label>
-          <Radio
+        </label>
+        <label className="flex items-center gap-2 cursor-pointer">
+          <input
+            type="radio"
             name="spell-3-4-0"
             value="spell1"
             onChange={onChange}
             checked={spell === 'spell1'}
+            className="w-4 h-4"
           />
           <Trans>Cast Spell 1</Trans>
-        </Label>
-        <Label>
-          <Radio
+        </label>
+        <label className="flex items-center gap-2 cursor-pointer">
+          <input
+            type="radio"
             name="spell-3-4-0"
             value="spell2"
             onChange={onChange}
             checked={spell === 'spell2'}
+            className="w-4 h-4"
           />
           <Trans>Cast Spell 2</Trans>
-        </Label>
-      </Box>
+        </label>
+      </div>
     </Card>
   )
 }

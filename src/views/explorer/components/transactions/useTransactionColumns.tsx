@@ -6,7 +6,6 @@ import TokenItem from 'components/token-item'
 import dayjs from 'dayjs'
 import useRTokenLogo from 'hooks/useRTokenLogo'
 import { useMemo } from 'react'
-import { Box, Link, Text } from 'theme-ui'
 import { StringMap } from 'types'
 import {
   formatCurrency,
@@ -52,25 +51,25 @@ const useTransactionColumns = () => {
           )
 
           return (
-            <Link
+            <a
               href={getTokenRoute(
                 data.row.original.tokenAddress,
                 data.row.original.chain
               )}
               target="_blank"
-              sx={{ textDecoration: 'underline' }}
+              className="underline"
             >
               <TokenItem symbol={data.getValue()} logo={logo} />
-            </Link>
+            </a>
           )
         },
       }),
       columnHelper.accessor('type', {
         header: t`Type`,
         cell: (data) => (
-          <Text variant="bold" sx={{ textTransform: 'capitalize' }}>
+          <span className="font-bold capitalize">
             {transactionTypes[data.getValue()] || data.getValue()}
-          </Text>
+          </span>
         ),
       }),
       columnHelper.accessor('amount', {
@@ -115,16 +114,16 @@ const useTransactionColumns = () => {
               : data.getValue()
 
           return (
-            <Box variant="layout.verticalAlign">
-              <Link
+            <div className="flex items-center">
+              <a
                 href={`https://debank.com/profile/${address}`}
                 target="_blank"
-                mr="2"
+                className="mr-2"
               >
                 {shortenAddress(address)}
-              </Link>
+              </a>
               <DebankIcon />
-            </Box>
+            </div>
           )
         },
       }),
@@ -132,19 +131,19 @@ const useTransactionColumns = () => {
         header: t`Platform`,
         cell: (data) => {
           return (
-            <Link
+            <a
               href={getExplorerLink(
                 data.row.original.hash,
                 data.row.original.chain,
                 ExplorerDataType.TRANSACTION
               )}
               target="_blank"
-              sx={{ display: 'flex', alignItems: 'center' }}
+              className="flex items-center"
             >
               <ChainLogo style={{ marginRight: 10 }} chain={data.getValue()} />
 
               {shortenString(data.row.original.hash)}
-            </Link>
+            </a>
           )
         },
       }),

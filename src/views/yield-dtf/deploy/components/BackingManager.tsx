@@ -1,14 +1,19 @@
 import { Trans } from '@lingui/macro'
 import BackingForm from 'components/rtoken-setup/token/BackingForm'
-import { BoxProps, Card, Divider, Text } from 'theme-ui'
+import { Card } from '@/components/ui/card'
+import { Separator } from '@/components/ui/separator'
 
-const BackingManager = (props: BoxProps) => {
+interface BackingManagerProps {
+  className?: string
+}
+
+const BackingManager = ({ className }: BackingManagerProps) => {
   return (
-    <Card p={4} variant="cards.form" {...props}>
-      <Text variant="title">
+    <Card className={`p-4 bg-secondary ${className || ''}`}>
+      <span className="text-xl font-medium">
         <Trans>Backing Manager</Trans>
-      </Text>
-      <Divider my={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />
+      </span>
+      <Separator className="my-4 -mx-4 border-muted" />
       <BackingForm />
     </Card>
   )

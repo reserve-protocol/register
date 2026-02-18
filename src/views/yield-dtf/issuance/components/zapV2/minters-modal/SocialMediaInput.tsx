@@ -1,13 +1,18 @@
-import { Button, Input } from 'components'
+import { Button } from '@/components/ui/button'
+import { Input } from 'components'
 import DiscordColorIcon from 'components/icons/DiscordColorIcon'
 import TelegramIcon from 'components/icons/TelegramIcon'
 import XIcon from 'components/icons/XIcon'
-import Popup from '@/components/old/popup'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover'
 import { useAtomValue } from 'jotai'
 import { useCallback, useEffect, useState } from 'react'
 import { ChevronDown, ChevronUp, Mail } from 'lucide-react'
 import { walletAtom } from 'state/atoms'
-import { Box, BoxProps } from 'theme-ui'
+import { cn } from '@/lib/utils'
 import { useZap } from '../context/ZapContext'
 
 const STORAGE_URL = import.meta.env.VITE_STORAGE_URL || ''
@@ -50,81 +55,59 @@ const Dropdown = ({
   selected,
   options,
   onSelectOption,
-  sx,
-  ...props
+  className,
 }: {
   selected: SocialMediaOption
   options: SocialMediaOption[]
   onSelectOption: (option: SocialMediaOption) => void
-} & BoxProps) => {
+  className?: string
+}) => {
   const [isVisible, setVisible] = useState(false)
 
   return (
-    <Popup
-      show={isVisible}
-      onDismiss={() => setVisible(false)}
-      placement="bottom-start"
-      content={
-        <Box sx={{ borderRadius: '10px', bg: 'background' }}>
+    <Popover open={isVisible} onOpenChange={setVisible}>
+      <PopoverTrigger asChild>
+        <div
+          className={cn(
+            'flex items-center cursor-pointer justify-center absolute left-2 top-1/2 -translate-y-1/2 border-r border-border pr-1 pl-0.5',
+            className
+          )}
+        >
+          {selected.icon}
+          <div className="pl-1" />
+          {isVisible ? (
+            <ChevronUp color="currentColor" strokeWidth={1.2} size={16} />
+          ) : (
+            <ChevronDown color="currentColor" strokeWidth={1.2} size={16} />
+          )}
+        </div>
+      </PopoverTrigger>
+      <PopoverContent
+        className="w-auto p-0 rounded-xl border-2 border-border shadow-lg"
+        align="start"
+      >
+        <div className="rounded-lg bg-background">
           {options.map((option) => (
-            <Box
+            <div
               key={option.key}
-              variant="layout.verticalAlign"
-              px={2}
-              py={1}
-              sx={{
-                cursor: 'pointer',
-                fontSize: 1,
-                fontWeight: 500,
-                '&:hover': {
-                  bg: 'border',
-                  borderRadius: '10px',
-                },
-              }}
+              className="flex items-center px-2 py-1 cursor-pointer text-xs font-medium hover:bg-muted hover:rounded-lg"
               onClick={() => {
                 onSelectOption(option)
                 setVisible(false)
               }}
             >
               {option.icon}
-              <Box pl={2} />
+              <div className="pl-2" />
               {option.name}
-            </Box>
+            </div>
           ))}
-        </Box>
-      }
-    >
-      <Box
-        {...props}
-        variant="layout.verticalAlign"
-        sx={{
-          cursor: 'pointer',
-          display: 'flex',
-          justifyContent: 'center',
-          position: 'absolute',
-          left: '8px',
-          top: '50%',
-          transform: 'translateY(-50%)',
-          borderRight: '1px solid',
-          borderColor: 'border',
-          pr: 1,
-          pl: '2px',
-        }}
-        onClick={() => setVisible(!isVisible)}
-      >
-        {selected.icon}
-        <Box pl={1} />
-        {isVisible ? (
-          <ChevronUp color="currentColor" strokeWidth={1.2} size={16} />
-        ) : (
-          <ChevronDown color="currentColor" strokeWidth={1.2} size={16} />
-        )}
-      </Box>
-    </Popup>
+        </div>
+      </PopoverContent>
+    </Popover>
   )
 }
 
-const SocialMediaInput = ({ sx, ...props }: BoxProps) => {
+const SocialMediaInput = ({ className }: { className?: string }) => {
   const account = useAtomValue(walletAtom)
   const [value, setValue] = useState('')
   const [submitted, setSubmitted] = useState(false)
@@ -174,9 +157,8 @@ const SocialMediaInput = ({ sx, ...props }: BoxProps) => {
   }
 
   return (
-    <Box
-      sx={{ flexGrow: '1', position: 'relative', minWidth: 360, ...sx }}
-      {...props}
+    <div
+      className={cn('flex-grow relative min-w-[360px]', className)}
     >
       <Dropdown
         selected={selected}
@@ -187,16 +169,10 @@ const SocialMediaInput = ({ sx, ...props }: BoxProps) => {
         }}
       />
       <Input
-        variant="smallInput"
-        sx={{
-          width: '100%',
-          pl: '58px',
-          pr: '70px',
-          fontSize: 1,
-        }}
+        className="w-full h-8 text-sm pl-14 pr-[70px]"
         placeholder={selected.placeholder}
         value={value}
-        onChange={onChange}
+        onChange={(e) => onChange(e.target.value)}
         disabled={submitted}
         onKeyDown={(e) => {
           if (e.key === 'Enter') {
@@ -206,12 +182,8 @@ const SocialMediaInput = ({ sx, ...props }: BoxProps) => {
       />
       {submitted ? (
         <Button
-          sx={{
-            position: 'absolute',
-            right: '4px',
-            top: '4px',
-          }}
-          small
+          className="absolute right-1 top-1"
+          size="sm"
           disabled={copied}
           onClick={() => {
             navigator.clipboard.writeText(value)
@@ -222,19 +194,15 @@ const SocialMediaInput = ({ sx, ...props }: BoxProps) => {
         </Button>
       ) : (
         <Button
-          sx={{
-            position: 'absolute',
-            right: '4px',
-            top: '4px',
-          }}
-          small
+          className="absolute right-1 top-1"
+          size="sm"
           disabled={!value || submitted}
           onClick={() => handleTrackUsername(selected.key)}
         >
           Count me in
         </Button>
       )}
-    </Box>
+    </div>
   )
 }
 

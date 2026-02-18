@@ -1,6 +1,7 @@
 import TokenLogo from 'components/icons/TokenLogo'
 import { ArrowRight } from 'lucide-react'
-import { Box, Card, Divider, Grid } from 'theme-ui'
+import { Card } from '@/components/ui/card'
+import { Separator } from '@/components/ui/separator'
 import { Address } from 'viem'
 import { DutchTrade } from '../atoms'
 import useAuctionPrices from '../hooks/useAuctionPrices'
@@ -18,9 +19,9 @@ const DutchAuction = ({ data }: Props) => {
   )
 
   return (
-    <Card p={3} sx={{ display: 'flex', alignItems: 'center' }} mb={3}>
-      <Box sx={{ flexGrow: 1 }}>
-        <Grid sx={{ flexGrow: 1 }} columns={[2, 4]}>
+    <Card className="p-4 flex items-center mb-4">
+      <div className="flex-grow">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <AuctionItem
             title="Selling"
             icon={<TokenLogo width={16} symbol={data.sellingTokenSymbol} />}
@@ -51,10 +52,10 @@ const DutchAuction = ({ data }: Props) => {
             amount={data.amount * data.worstCasePrice}
             price={data.worstCasePrice}
           />
-        </Grid>
-        <Divider my={3} sx={{ fontSize: 1 }} />
+        </div>
+        <Separator className="my-4" />
         <AuctionActions data={data} currentPrice={currentPriceRaw} />
-      </Box>
+      </div>
     </Card>
   )
 }
