@@ -14,6 +14,7 @@ import { useEffect, useMemo } from 'react'
 import { Token } from '@/types'
 import { formatUnits, parseUnits } from 'viem'
 import { getCurrentBasket } from '@/lib/index-rebalance/utils'
+import LiquidityUpdater from './components/liquidity-updater'
 
 const Description = () => (
   <div className="px-6 pb-6 text-base">
@@ -87,6 +88,7 @@ const FTokenBasket = () => {
       <BasketValue />
       <NextButton />
       <BasketUpdater />
+      <LiquidityUpdater />
     </>
   )
 }
