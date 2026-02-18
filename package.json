@@ -114,6 +114,9 @@
       "last 1 safari version"
     ]
   },
+  "optionalDependencies": {
+    "@rollup/rollup-linux-x64-gnu": "4.55.3"
+  },
   "overrides": {
     "react": "18.3.1",
     "react-dom": "18.3.1"
