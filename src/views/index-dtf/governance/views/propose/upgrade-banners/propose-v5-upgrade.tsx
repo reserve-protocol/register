@@ -128,9 +128,9 @@ const ProposeBanner = ({ refetch }: SpellUpgradeProps) => {
         <div>
           <h4 className="font-bold text-primary">New version available</h4>
           <p className="text-sm">
-            Release 5.0.0 introduces improved rebalancing with per-token auction
-            size limits and the ability to disable bids for individual tokens.
-            See docs.reserve.org for more details.
+            <strong>Release 5.0.0</strong> introduces improved rebalancing with per-token auction
+            size limits and the ability to disable bids for individual tokens. <br />
+            See the <a className='text-primary underline' href='https://github.com/reserve-protocol/reserve-index-dtf/releases/tag/r5.0.0' target="_blank">changelog</a> for more details.
           </p>
         </div>
       </div>
@@ -176,7 +176,8 @@ const validProposalExists = (
   })
 }
 
-const UPGRADE_WHITELIST: string[] = []
+// BED & SMELL
+const UPGRADE_WHITELIST: string[] = ['0xf91384484f4717314798e8975bcd904a35fc2bf1', '0xf91384484f4717314798e8975bcd904a35fc2bf1']
 
 export default function ProposeV5Upgrade() {
   const { isProposeAllowed } = useIsProposeAllowed()
