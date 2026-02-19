@@ -1,4 +1,4 @@
-import { ArrowLeft, Loader, Menu, Power, RefreshCw } from 'lucide-react'
+import { Loader, Menu, Power, RefreshCw } from 'lucide-react'
 
 import ChainLogo from '@/components/icons/ChainLogo'
 import TokenLogo from '@/components/token-logo'
@@ -176,8 +176,8 @@ const PortfolioRefresher = () => {
   }
 
   return (
-    <div className="flex items-center gap-1 sm:gap-2 flex-row-reverse sm:flex-row">
-      <div className="text-sm text-muted-foreground">
+    <div className="flex items-center gap-1 sm:gap-2 flex-row-reverse sm:flex-row shrink-0">
+      <div className="text-sm text-muted-foreground whitespace-nowrap hidden sm:block">
         {loading ? (
           <Skeleton className="h-5 w-24 bg-muted animate-pulse rounded" />
         ) : (
@@ -219,7 +219,6 @@ const PortfolioHeader = () => {
   return (
     <ConnectButton.Custom>
       {({ account, openAccountModal, accountModalOpen }) => {
-        const [showRewards, setShowRewards] = useAtom(portfolioShowRewardsAtom)
         const setDismissible = useSetAtom(portfolioDismissibleAtom)
 
         if (!account) return null
@@ -237,18 +236,9 @@ const PortfolioHeader = () => {
         }
 
         return (
-          <div className="flex items-center gap-6 p-6 pt-[22px] pb-2 justify-between flex-wrap mr-9">
+          <div className="flex items-center gap-4 p-6 pt-[22px] pb-2 justify-between mr-9">
             <div className="flex items-center gap-2">
               <div className="relative flex items-center gap-2">
-                {showRewards && (
-                  <Button
-                    variant="outline"
-                    className="rounded-xl px-2 h-9 animate-width-expand"
-                    onClick={() => setShowRewards(false)}
-                  >
-                    <ArrowLeft size={20} strokeWidth={1.5} />
-                  </Button>
-                )}
                 <BlockiesAvatar
                   size={32}
                   address={account.address}
