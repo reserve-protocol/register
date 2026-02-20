@@ -11,11 +11,10 @@ import {
   Tooltip,
   XAxis,
   YAxis,
-  CartesianGrid,
 } from 'recharts'
 import { portfolioPageTimeRangeAtom } from '../atoms'
 import { useHistoricalPortfolio } from '../hooks/use-historical-portfolio'
-import { PortfolioPeriod } from '../types'
+import { PortfolioPeriod, PortfolioResponse } from '../types'
 import { Address } from 'viem'
 import { Card } from '@/components/ui/card'
 import Spinner from '@/components/ui/spinner'
@@ -44,16 +43,39 @@ const formatYAxis = (value: number) => {
   return `$${formatCurrency(value, 0)}`
 }
 
-function ChartTooltip({ payload, active }: any) {
+type CategoryBreakdown = { label: string; proportion: number }[]
+
+function ChartTooltip({
+  payload,
+  active,
+  breakdown,
+}: any & { breakdown: CategoryBreakdown }) {
   if (!active || !payload?.[0]) return null
+  const total = payload[0]?.value as number
+  const label = payload[0]?.payload?.label as string
+
   return (
-    <Card className="px-3 py-2">
-      <span className="text-sm font-bold">
-        {payload[0]?.payload?.display ||
-          `$${formatCurrency(payload[0]?.value)}`}
-      </span>
-      <br />
-      <span className="text-xs text-legend">{payload[0]?.payload?.label}</span>
+    <Card className="px-4 py-3 min-w-[180px]">
+      <p className="text-xs text-legend mb-2">{label}</p>
+      <div className="space-y-1.5">
+        {breakdown.map((cat: CategoryBreakdown[number]) => {
+          const value = total * cat.proportion
+          return (
+            <div key={cat.label} className="flex items-center justify-between gap-6">
+              <span className="text-xs text-legend">{cat.label}</span>
+              <span className="text-xs font-medium tabular-nums">
+                ${formatCurrency(value)}
+              </span>
+            </div>
+          )
+        })}
+      </div>
+      <div className="border-t border-border mt-2 pt-2 flex items-center justify-between gap-6">
+        <span className="text-xs font-semibold">Total</span>
+        <span className="text-sm font-bold tabular-nums">
+          ${formatCurrency(total)}
+        </span>
+      </div>
     </Card>
   )
 }
@@ -84,16 +106,49 @@ const TimeRangeTabs = ({
 )
 
 const PortfolioChart = ({
-  totalValue,
+  data: portfolio,
   address,
 }: {
-  totalValue: number
+  data: PortfolioResponse
   address: Address
 }) => {
   const [timeRange, setTimeRange] = useAtom(portfolioPageTimeRangeAtom)
   const { getChartData, isLoading } = useHistoricalPortfolio(address)
 
   const chartData = getChartData(timeRange)
+  const totalValue = portfolio.totalHoldingsUSD
+
+  const breakdown = useMemo((): CategoryBreakdown => {
+    const categories = [
+      {
+        label: 'Index DTFs',
+        value: portfolio.indexDTFs.reduce((s, d) => s + (d.value || 0), 0),
+      },
+      {
+        label: 'Yield DTFs',
+        value: portfolio.yieldDTFs.reduce((s, d) => s + (d.value || 0), 0),
+      },
+      {
+        label: 'Staked RSR',
+        value: portfolio.stakedRSR.reduce((s, d) => s + (d.value || 0), 0),
+      },
+      {
+        label: 'Vote-locked',
+        value: portfolio.voteLocks.reduce((s, d) => s + (d.value || 0), 0),
+      },
+      {
+        label: 'RSR',
+        value: portfolio.rsrBalances.reduce((s, d) => s + (d.value || 0), 0),
+      },
+    ].filter((c) => c.value > 0)
+
+    const total = categories.reduce((s, c) => s + c.value, 0)
+    if (total === 0) return []
+    return categories.map((c) => ({
+      label: c.label,
+      proportion: c.value / total,
+    }))
+  }, [portfolio])
 
   const change = useMemo(() => {
     if (!chartData || chartData.length < 2) return null
@@ -152,15 +207,15 @@ const PortfolioChart = ({
 
       {/* Chart */}
       {isLoading || !chartData ? (
-        <div className="flex items-center justify-center h-[350px]">
+        <div className="flex items-center justify-center h-[420px]">
           <Spinner size={24} />
         </div>
       ) : chartData.length === 0 ? (
-        <div className="flex items-center justify-center h-[350px] text-legend">
+        <div className="flex items-center justify-center h-[420px] text-legend">
           No data available
         </div>
       ) : (
-        <ResponsiveContainer width="100%" height={350}>
+        <ResponsiveContainer width="100%" height={420}>
           <AreaChart
             data={chartData}
             margin={{ top: 8, right: 0, left: 0, bottom: 0 }}
@@ -176,20 +231,15 @@ const PortfolioChart = ({
                 <stop
                   offset="0%"
                   stopColor="hsl(var(--primary))"
-                  stopOpacity={0.6}
+                  stopOpacity={1}
                 />
                 <stop
                   offset="100%"
                   stopColor="hsl(var(--primary))"
-                  stopOpacity={0.05}
+                  stopOpacity={0.6}
                 />
               </linearGradient>
             </defs>
-            <CartesianGrid
-              vertical={false}
-              strokeDasharray="3 3"
-              stroke="hsl(var(--border))"
-            />
             <XAxis
               dataKey="ts"
               axisLine={false}
@@ -208,12 +258,12 @@ const PortfolioChart = ({
               width={50}
               tickMargin={4}
             />
-            <Tooltip content={<ChartTooltip />} />
+            <Tooltip content={<ChartTooltip breakdown={breakdown} />} />
             <Area
               type="monotone"
               dataKey="value"
               stroke="hsl(var(--primary))"
-              strokeWidth={2}
+              strokeWidth={0.5}
               fill="url(#portfolioGradient)"
               fillOpacity={1}
               activeDot={{ r: 4, fill: 'hsl(var(--primary))' }}

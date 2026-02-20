@@ -36,7 +36,7 @@ const PortfolioPage = () => {
     <div className="container mx-auto px-4 py-6 space-y-8">
       {/* Top section: Chart + Sidebar */}
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6">
-        <PortfolioChart totalValue={data.totalHoldingsUSD} address={address} />
+        <PortfolioChart data={data} address={address} />
         <div className="space-y-4">
           <PortfolioBreakdown data={data} />
           <RewardsAvailable voteLocks={data.voteLocks} />

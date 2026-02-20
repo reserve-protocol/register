@@ -37,6 +37,8 @@ const RewardsAvailable = ({
       <a
         href="/earn"
         className="flex items-center gap-0.5 text-xs font-light text-primary"
+        target="_blank"
+        rel="noreferrer"
       >
         Learn more about how to earn APY
         <ArrowUpRight size={16} />
