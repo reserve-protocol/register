@@ -4,7 +4,10 @@ import Copy from '@/components/ui/copy'
 import DataTable from '@/components/ui/data-table'
 import { formatCurrency, shortenAddress } from '@/utils'
 import { ColumnDef } from '@tanstack/react-table'
+import { Scale } from 'lucide-react'
 import { PortfolioVoteLock } from '../types'
+import { ExpandToggle, useExpandable } from './expand-toggle'
+import SectionHeader from './section-header'
 
 const columns: ColumnDef<PortfolioVoteLock, any>[] = [
   {
@@ -21,7 +24,7 @@ const columns: ColumnDef<PortfolioVoteLock, any>[] = [
     header: 'Governance Token',
     cell: ({ row }) => (
       <div className="flex items-center gap-2">
-        <div className="relative">
+        <div className="relative flex-shrink-0">
           <TokenLogo
             symbol={row.original.stTokenSymbol}
             address={row.original.stTokenAddress}
@@ -44,25 +47,51 @@ const columns: ColumnDef<PortfolioVoteLock, any>[] = [
     id: 'votingPower',
     accessorKey: 'votingPower',
     header: 'Vote Power',
-    cell: ({ row }) => (
-      <span className="text-sm">{formatCurrency(row.original.votingPower)}</span>
-    ),
+    cell: ({ row }) => {
+      const val = row.original.votingPower
+      return (
+        <span className="text-sm">
+          {val != null && !isNaN(val) ? formatCurrency(val) : '—'}
+        </span>
+      )
+    },
   },
   {
     id: 'voteWeight',
     accessorKey: 'voteWeight',
     header: 'Vote Weight',
-    cell: ({ row }) => (
-      <span className="text-sm">{formatCurrency(row.original.voteWeight)}%</span>
-    ),
-    meta: { className: 'hidden md:table-cell' },
+    cell: ({ row }) => {
+      const val = row.original.voteWeight
+      return (
+        <span className="text-sm">
+          {val != null && !isNaN(val) ? `${formatCurrency(val)}%` : '—'}
+        </span>
+      )
+    },
+    meta: { className: 'hidden lg:table-cell' },
+  },
+  {
+    id: 'voterAddress',
+    header: 'Vote-locker Address',
+    cell: ({ row }) => {
+      const addr = row.original.stTokenAddress
+      if (!addr) return <span className="text-sm text-legend">—</span>
+      return (
+        <div className="flex items-center gap-1">
+          <span className="text-sm">{shortenAddress(addr)}</span>
+          <Copy value={addr} />
+        </div>
+      )
+    },
+    meta: { className: 'hidden lg:table-cell' },
   },
   {
     id: 'delegation',
-    header: 'Delegate',
+    header: 'Delegate Address',
     cell: ({ row }) => {
       const delegation = row.original.delegation
-      if (!delegation) return <span className="text-sm text-legend">—</span>
+      if (!delegation)
+        return <span className="text-sm text-legend">—</span>
       return (
         <div className="flex items-center gap-1">
           <span className="text-sm">{shortenAddress(delegation)}</span>
@@ -70,22 +99,28 @@ const columns: ColumnDef<PortfolioVoteLock, any>[] = [
         </div>
       )
     },
-    meta: { className: 'hidden md:table-cell' },
+    meta: { className: 'hidden lg:table-cell' },
   },
 ]
 
 const VotingPower = ({ voteLocks }: { voteLocks: PortfolioVoteLock[] }) => {
+  const { displayData, expanded, toggle, hasMore, total } =
+    useExpandable(voteLocks)
+
   if (!voteLocks.length) return null
 
   return (
-    <div className="rounded-4xl bg-secondary">
-      <div className="py-4 px-5">
-        <h2 className="font-semibold text-xl text-primary dark:text-muted-foreground">
-          Voting Power
-        </h2>
-      </div>
-      <div className="bg-card rounded-3xl m-1 mt-0">
-        <DataTable columns={columns} data={voteLocks} />
+    <div>
+      <SectionHeader
+        icon={Scale}
+        title="Voting Power"
+        subtitle="Including any power delegated to me."
+      />
+      <div className="bg-card rounded-[20px] border border-border overflow-hidden">
+        <DataTable columns={columns} data={displayData} />
+        {hasMore && (
+          <ExpandToggle expanded={expanded} total={total} onToggle={toggle} />
+        )}
       </div>
     </div>
   )

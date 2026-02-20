@@ -1,25 +1,26 @@
 import ChainLogo from '@/components/icons/ChainLogo'
 import TokenLogo from '@/components/token-logo'
 import DataTable, { SorteableButton } from '@/components/ui/data-table'
-import { formatCurrency } from '@/utils'
-import { getTokenRoute } from '@/utils'
+import { formatCurrency, getTokenRoute } from '@/utils'
 import { ColumnDef } from '@tanstack/react-table'
+import { Landmark } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { PortfolioStakedRSR } from '../types'
+import { ExpandToggle, useExpandable } from './expand-toggle'
+import SectionHeader from './section-header'
 
 const columns: ColumnDef<PortfolioStakedRSR, any>[] = [
   {
-    id: 'dtfName',
-    accessorKey: 'dtfName',
+    id: 'name',
+    accessorKey: 'name',
     header: 'Position',
     cell: ({ row }) => (
       <div className="flex items-center gap-2">
-        <div className="relative">
+        <div className="relative flex-shrink-0">
           <TokenLogo
-            symbol={row.original.dtfSymbol}
-            address={row.original.dtfAddress}
+            symbol={row.original.symbol}
+            address={row.original.address}
             chain={row.original.chainId}
-            src={row.original.dtfLogo}
             size="lg"
           />
           <ChainLogo
@@ -30,13 +31,21 @@ const columns: ColumnDef<PortfolioStakedRSR, any>[] = [
           />
         </div>
         <div>
-          <p className="font-medium">{row.original.dtfSymbol}</p>
+          <p className="font-bold text-sm">{row.original.symbol}</p>
           <p className="text-xs text-legend hidden sm:block">
-            {row.original.dtfName}
+            {row.original.name}
           </p>
         </div>
       </div>
     ),
+  },
+  {
+    id: 'governs',
+    header: 'Governs',
+    cell: ({ row }) => (
+      <span className="text-sm">{row.original.symbol}</span>
+    ),
+    meta: { className: 'hidden md:table-cell' },
   },
   {
     id: 'apy',
@@ -44,44 +53,44 @@ const columns: ColumnDef<PortfolioStakedRSR, any>[] = [
     header: ({ column }) => (
       <SorteableButton column={column}>APY</SorteableButton>
     ),
-    cell: ({ row }) => (
-      <span className="text-sm text-primary">
-        {formatCurrency(row.original.apy)}%
-      </span>
-    ),
+    cell: ({ row }) => {
+      const val = row.original.apy
+      return (
+        <span className="text-sm">
+          {val != null && !isNaN(val) ? `${formatCurrency(val)}%` : '—'}
+        </span>
+      )
+    },
   },
   {
     id: 'balance',
-    accessorKey: 'balance',
+    accessorKey: 'amount',
     header: ({ column }) => (
       <SorteableButton column={column}>Balance</SorteableButton>
     ),
-    cell: ({ row }) => (
-      <span className="text-sm">{formatCurrency(row.original.balance)}</span>
-    ),
+    cell: ({ row }) => {
+      const val = Number(row.original.amount)
+      return (
+        <span className="text-sm">
+          {!isNaN(val) ? formatCurrency(val) : '—'}
+        </span>
+      )
+    },
   },
   {
-    id: 'valueUSD',
-    accessorKey: 'valueUSD',
+    id: 'value',
+    accessorKey: 'value',
     header: ({ column }) => (
-      <SorteableButton column={column}>Value (USD)</SorteableButton>
+      <SorteableButton column={column}>Value</SorteableButton>
     ),
-    cell: ({ row }) => (
-      <span className="text-sm font-semibold">
-        ${formatCurrency(row.original.valueUSD)}
-      </span>
-    ),
-  },
-  {
-    id: 'valueRSR',
-    accessorKey: 'valueRSR',
-    header: 'Value (RSR)',
-    cell: ({ row }) => (
-      <span className="text-sm">
-        {formatCurrency(row.original.valueRSR)} RSR
-      </span>
-    ),
-    meta: { className: 'hidden md:table-cell' },
+    cell: ({ row }) => {
+      const val = row.original.value
+      return (
+        <span className="text-sm font-bold">
+          {val != null && !isNaN(val) ? `$${formatCurrency(val)}` : '—'}
+        </span>
+      )
+    },
   },
 ]
 
@@ -91,25 +100,43 @@ const StakedPositions = ({
   stakedRSR: PortfolioStakedRSR[]
 }) => {
   const navigate = useNavigate()
+  const { displayData, expanded, toggle, hasMore, total } =
+    useExpandable(stakedRSR)
 
   if (!stakedRSR.length) return null
 
   return (
-    <div className="rounded-4xl bg-secondary">
-      <div className="py-4 px-5">
-        <h2 className="font-semibold text-xl text-primary dark:text-muted-foreground">
-          Staked Positions
-        </h2>
-      </div>
-      <div className="bg-card rounded-3xl m-1 mt-0">
+    <div>
+      <SectionHeader
+        icon={Landmark}
+        title="Staked Positions"
+        subtitle={
+          <>
+            Stake your RSR and earn APY rewards.{' '}
+            <a
+              href="https://reserve.org/protocol/"
+              target="_blank"
+              rel="noreferrer"
+              className="text-primary hover:underline"
+            >
+              Learn more
+            </a>
+            .
+          </>
+        }
+      />
+      <div className="bg-card rounded-[20px] border border-border overflow-hidden">
         <DataTable
           columns={columns}
-          data={stakedRSR}
+          data={displayData}
           onRowClick={(row) =>
-            navigate(getTokenRoute(row.dtfAddress, row.chainId, 'staking'))
+            navigate(getTokenRoute(row.address, row.chainId, 'staking'))
           }
-          initialSorting={[{ id: 'valueUSD', desc: true }]}
+          initialSorting={[{ id: 'value', desc: true }]}
         />
+        {hasMore && (
+          <ExpandToggle expanded={expanded} total={total} onToggle={toggle} />
+        )}
       </div>
     </div>
   )

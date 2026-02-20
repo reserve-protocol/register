@@ -5,8 +5,10 @@ import { cn } from '@/lib/utils'
 import { formatCurrency } from '@/utils'
 import { CHAIN_TAGS } from '@/utils/constants'
 import { ColumnDef } from '@tanstack/react-table'
-import { ArrowDown, ArrowUp } from 'lucide-react'
+import { ArrowDown, ArrowUp, Coins } from 'lucide-react'
 import { PortfolioRSRBalance } from '../types'
+import { ExpandToggle, useExpandable } from './expand-toggle'
+import SectionHeader from './section-header'
 
 const columns: ColumnDef<PortfolioRSRBalance, any>[] = [
   {
@@ -14,7 +16,7 @@ const columns: ColumnDef<PortfolioRSRBalance, any>[] = [
     header: 'Name',
     cell: ({ row }) => (
       <div className="flex items-center gap-2">
-        <div className="relative">
+        <div className="relative flex-shrink-0">
           <TokenLogo symbol="RSR" size="lg" />
           <ChainLogo
             chain={row.original.chainId}
@@ -24,7 +26,7 @@ const columns: ColumnDef<PortfolioRSRBalance, any>[] = [
           />
         </div>
         <div>
-          <p className="font-medium">RSR</p>
+          <p className="font-bold text-sm">RSR</p>
           <p className="text-xs text-legend hidden sm:block">
             {CHAIN_TAGS[row.original.chainId] || 'Unknown'}
           </p>
@@ -35,22 +37,26 @@ const columns: ColumnDef<PortfolioRSRBalance, any>[] = [
   {
     id: 'performance7d',
     accessorKey: 'performance7d',
-    header: '7d Perf',
+    header: 'Performance (7D)',
     cell: ({ row }) => {
       const perf = row.original.performance7d
+      if (perf == null || isNaN(perf))
+        return <span className="text-sm text-legend">—</span>
       return (
         <div
           className={cn(
-            'flex items-center gap-1',
-            perf > 0 ? 'text-primary' : perf < 0 ? 'text-destructive' : 'text-legend'
+            'flex items-center gap-0.5 text-sm',
+            perf > 0
+              ? 'text-success'
+              : perf < 0
+                ? 'text-destructive'
+                : 'text-legend'
           )}
         >
-          {perf > 0 && <ArrowUp size={12} />}
-          {perf < 0 && <ArrowDown size={12} />}
-          <span className="text-sm">
-            {perf > 0 ? '+' : ''}
-            {formatCurrency(perf)}%
-          </span>
+          {perf > 0 && <ArrowUp size={14} />}
+          {perf < 0 && <ArrowDown size={14} />}
+          {perf > 0 ? '+' : ''}
+          {formatCurrency(Math.abs(perf))}%
         </div>
       )
     },
@@ -60,19 +66,27 @@ const columns: ColumnDef<PortfolioRSRBalance, any>[] = [
     id: 'balance',
     accessorKey: 'balance',
     header: 'Balance',
-    cell: ({ row }) => (
-      <span className="text-sm">{formatCurrency(row.original.balance)}</span>
-    ),
+    cell: ({ row }) => {
+      const val = row.original.balance
+      return (
+        <span className="text-sm">
+          {val != null && !isNaN(val) ? formatCurrency(val) : '—'}
+        </span>
+      )
+    },
   },
   {
     id: 'value',
     accessorKey: 'value',
     header: 'Value',
-    cell: ({ row }) => (
-      <span className="text-sm font-semibold">
-        ${formatCurrency(row.original.value)}
-      </span>
-    ),
+    cell: ({ row }) => {
+      const val = row.original.value
+      return (
+        <span className="text-sm font-bold">
+          {val != null && !isNaN(val) ? `$${formatCurrency(val)}` : '—'}
+        </span>
+      )
+    },
   },
 ]
 
@@ -81,20 +95,23 @@ const RSRSection = ({
 }: {
   rsrBalances: PortfolioRSRBalance[]
 }) => {
+  const { displayData, expanded, toggle, hasMore, total } =
+    useExpandable(rsrBalances)
+
   if (!rsrBalances.length) return null
 
   return (
-    <div className="rounded-4xl bg-secondary">
-      <div className="py-4 px-5">
-        <h2 className="font-semibold text-xl text-primary dark:text-muted-foreground">
-          RSR
-        </h2>
-        <p className="text-sm text-legend mt-1">
-          Reserve Rights token holdings across chains
-        </p>
-      </div>
-      <div className="bg-card rounded-3xl m-1 mt-0">
-        <DataTable columns={columns} data={rsrBalances} />
+    <div>
+      <SectionHeader
+        icon={Coins}
+        title="RSR"
+        subtitle="Reserve Rights (RSR) is an ERC-20 token that unifies governance, risk management, and value accrual across the Reserve ecosystem."
+      />
+      <div className="bg-card rounded-[20px] border border-border overflow-hidden">
+        <DataTable columns={columns} data={displayData} />
+        {hasMore && (
+          <ExpandToggle expanded={expanded} total={total} onToggle={toggle} />
+        )}
       </div>
     </div>
   )

@@ -6,7 +6,7 @@ import PortfolioSkeleton from './components/portfolio-skeleton'
 import PortfolioChart from './components/portfolio-chart'
 import PortfolioBreakdown from './components/portfolio-breakdown'
 import RewardsAvailable from './components/rewards-available'
-import DTFPositions from './components/dtf-positions'
+import { IndexDTFPositions, YieldDTFPositions } from './components/dtf-positions'
 import AvailableRewards from './components/available-rewards'
 import StakedPositions from './components/staked-positions'
 import VoteLockedPositions from './components/vote-locked-positions'
@@ -33,20 +33,19 @@ const PortfolioPage = () => {
   if (isLoading || !data) return <PortfolioSkeleton />
 
   return (
-    <div className="container mx-auto py-6 space-y-6">
+    <div className="container mx-auto px-4 py-6 space-y-8">
       {/* Top section: Chart + Sidebar */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2">
-          <PortfolioChart totalValue={data.totalHoldingsUSD} address={address} />
-        </div>
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6">
+        <PortfolioChart totalValue={data.totalHoldingsUSD} address={address} />
         <div className="space-y-4">
           <PortfolioBreakdown data={data} />
           <RewardsAvailable voteLocks={data.voteLocks} />
         </div>
       </div>
 
-      {/* Tables */}
-      <DTFPositions indexDTFs={data.indexDTFs} yieldDTFs={data.yieldDTFs} />
+      {/* Sections */}
+      <IndexDTFPositions data={data.indexDTFs} />
+      <YieldDTFPositions data={data.yieldDTFs} />
       <AvailableRewards voteLocks={data.voteLocks} />
       <StakedPositions stakedRSR={data.stakedRSR} />
       <VoteLockedPositions voteLocks={data.voteLocks} />

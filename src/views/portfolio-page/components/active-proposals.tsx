@@ -6,34 +6,41 @@ import { formatCurrency, getProposalTitle } from '@/utils'
 import { formatConstant, PROPOSAL_STATES, ROUTES } from '@/utils/constants'
 import { getFolioRoute, getTokenRoute } from '@/utils'
 import { ColumnDef } from '@tanstack/react-table'
+import dayjs from 'dayjs'
+import { ScrollText } from 'lucide-react'
 import { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { PortfolioProposal, PortfolioStakedRSR, PortfolioVoteLock } from '../types'
+import {
+  PortfolioProposal,
+  PortfolioStakedRSR,
+  PortfolioVoteLock,
+} from '../types'
+import { ExpandToggle, useExpandable } from './expand-toggle'
+import SectionHeader from './section-header'
 
-const BADGE_VARIANT: Record<string, string> = {
-  [PROPOSAL_STATES.DEFEATED]: 'destructive',
-  [PROPOSAL_STATES.QUORUM_NOT_REACHED]: 'destructive',
-  [PROPOSAL_STATES.ACTIVE]: 'primary',
-  [PROPOSAL_STATES.QUEUED]: 'primary',
-  [PROPOSAL_STATES.EXECUTED]: 'success',
-  [PROPOSAL_STATES.SUCCEEDED]: 'primary',
-  [PROPOSAL_STATES.CANCELED]: 'destructive',
-  [PROPOSAL_STATES.PENDING]: 'warning',
-  [PROPOSAL_STATES.EXPIRED]: 'legend',
+const STATUS_COLOR: Record<string, string> = {
+  [PROPOSAL_STATES.DEFEATED]: 'text-destructive',
+  [PROPOSAL_STATES.QUORUM_NOT_REACHED]: 'text-destructive',
+  [PROPOSAL_STATES.ACTIVE]: 'text-success',
+  [PROPOSAL_STATES.QUEUED]: 'text-success',
+  [PROPOSAL_STATES.EXECUTED]: 'text-success',
+  [PROPOSAL_STATES.SUCCEEDED]: 'text-primary',
+  [PROPOSAL_STATES.CANCELED]: 'text-destructive',
+  [PROPOSAL_STATES.PENDING]: 'text-[#ff8a00]',
+  [PROPOSAL_STATES.EXPIRED]: 'text-legend',
 }
 
 const columns: ColumnDef<PortfolioProposal, any>[] = [
   {
     id: 'dtf',
-    header: 'DTF',
+    header: 'DTF Governed',
     cell: ({ row }) => (
       <div className="flex items-center gap-2">
-        <div className="relative">
+        <div className="relative flex-shrink-0">
           <TokenLogo
             symbol={row.original.dtfSymbol}
             address={row.original.dtfAddress}
             chain={row.original.chainId}
-            src={row.original.dtfLogo}
             size="lg"
           />
           <ChainLogo
@@ -43,41 +50,61 @@ const columns: ColumnDef<PortfolioProposal, any>[] = [
             height={12}
           />
         </div>
-        <span className="font-medium text-sm">{row.original.dtfSymbol}</span>
+        <span className="font-bold text-sm">{row.original.dtfSymbol}</span>
       </div>
     ),
   },
   {
     id: 'title',
-    header: 'Proposal',
-    cell: ({ row }) => (
-      <span className="text-sm font-medium">
-        {getProposalTitle(row.original.description)}
-      </span>
-    ),
-  },
-  {
-    id: 'votes',
-    header: 'Votes',
+    header: 'Title',
     cell: ({ row }) => {
-      const total =
-        row.original.forVotes +
-        row.original.againstVotes +
-        row.original.abstainVotes
-      const forPct = total > 0 ? (row.original.forVotes / total) * 100 : 0
-      const againstPct =
-        total > 0 ? (row.original.againstVotes / total) * 100 : 0
+      const title = getProposalTitle(row.original.description)
+      const forV = Number(row.original.forWeightedVotes) || 0
+      const againstV = Number(row.original.againstWeightedVotes) || 0
+      const abstainV = Number(row.original.abstainWeightedVotes) || 0
+      const total = forV + againstV + abstainV
+      const forPct = total > 0 ? (forV / total) * 100 : 0
+      const againstPct = total > 0 ? (againstV / total) * 100 : 0
+      const abstainPct = total > 0 ? (abstainV / total) * 100 : 0
       return (
-        <div className="flex items-center gap-1 text-sm">
-          <span className="text-primary">{formatCurrency(forPct, 0)}%</span>
-          <span className="text-legend">/</span>
-          <span className="text-destructive">
-            {formatCurrency(againstPct, 0)}%
-          </span>
+        <div>
+          <p className="font-bold text-sm text-primary">{title}</p>
+          <div className="flex items-center gap-2 mt-0.5 text-xs text-legend">
+            <span>
+              Quorum?{' '}
+              <span className="font-medium text-success">Yes</span>
+            </span>
+            <span>
+              Votes:{' '}
+              <span className="text-primary font-medium">
+                {formatCurrency(forPct, 0)}%
+              </span>
+              {' / '}
+              <span className="text-destructive font-medium">
+                {formatCurrency(againstPct, 0)}%
+              </span>
+              {' / '}
+              <span>{formatCurrency(abstainPct, 0)}%</span>
+            </span>
+          </div>
         </div>
       )
     },
-    meta: { className: 'hidden sm:table-cell' },
+  },
+  {
+    id: 'date',
+    header: 'Date Proposed',
+    cell: ({ row }) => {
+      const ts = Number(row.original.creationTime)
+      if (!ts || isNaN(ts))
+        return <span className="text-sm text-legend">—</span>
+      return (
+        <span className="text-sm">
+          {dayjs(ts * 1000).format('MMM DD, YYYY')}
+        </span>
+      )
+    },
+    meta: { className: 'hidden md:table-cell' },
   },
   {
     id: 'state',
@@ -88,8 +115,8 @@ const columns: ColumnDef<PortfolioProposal, any>[] = [
       return (
         <div
           className={cn(
-            'rounded-full text-xs font-semibold py-1.5 border px-3 w-fit',
-            `text-${BADGE_VARIANT[state] || 'legend'}`
+            'rounded-full text-xs font-medium py-1.5 border border-border px-3 w-fit',
+            STATUS_COLOR[state] || 'text-legend'
           )}
         >
           {stateText.includes('reached') ? 'Quorum' : stateText}
@@ -109,26 +136,47 @@ const ActiveProposals = ({
   const navigate = useNavigate()
 
   const proposals: PortfolioProposal[] = useMemo(() => {
-    const staked = stakedRSR.flatMap((s) => s.activeProposals || [])
-    const locked = voteLocks.flatMap((v) => v.activeProposals || [])
+    const staked = stakedRSR.flatMap((s) =>
+      (s.activeProposals || []).map((p) => ({
+        ...p,
+        dtfName: s.name,
+        dtfSymbol: s.symbol,
+        dtfAddress: s.address,
+        chainId: s.chainId,
+        isIndexDTF: false,
+      }))
+    )
+    const locked = voteLocks.flatMap((v) =>
+      (v.activeProposals || []).map((p) => ({
+        ...p,
+        dtfName: v.dtfs?.[0]?.name || v.stTokenSymbol,
+        dtfSymbol: v.dtfs?.[0]?.symbol || v.stTokenSymbol,
+        dtfAddress: v.dtfs?.[0]?.address || v.stTokenAddress,
+        chainId: v.chainId,
+        isIndexDTF: true,
+      }))
+    )
     return [...staked, ...locked].sort(
-      (a, b) => b.creationTime - a.creationTime
+      (a, b) => Number(b.creationTime) - Number(a.creationTime)
     )
   }, [stakedRSR, voteLocks])
+
+  const { displayData, expanded, toggle, hasMore, total } =
+    useExpandable(proposals)
 
   if (!proposals.length) return null
 
   return (
-    <div className="rounded-4xl bg-secondary">
-      <div className="py-4 px-5">
-        <h2 className="font-semibold text-xl text-primary dark:text-muted-foreground">
-          Active Proposals
-        </h2>
-      </div>
-      <div className="bg-card rounded-3xl m-1 mt-0">
+    <div>
+      <SectionHeader
+        icon={ScrollText}
+        title="Active Proposals"
+        subtitle="View proposals from different DTFs you have vote-locked."
+      />
+      <div className="bg-card rounded-[20px] border border-border overflow-hidden">
         <DataTable
           columns={columns}
-          data={proposals}
+          data={displayData}
           onRowClick={(row) => {
             const basePath = row.isIndexDTF
               ? getFolioRoute(row.dtfAddress, row.chainId)
@@ -136,6 +184,9 @@ const ActiveProposals = ({
             navigate(`${basePath}${ROUTES.GOVERNANCE_PROPOSAL}/${row.id}`)
           }}
         />
+        {hasMore && (
+          <ExpandToggle expanded={expanded} total={total} onToggle={toggle} />
+        )}
       </div>
     </div>
   )

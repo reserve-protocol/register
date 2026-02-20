@@ -1,32 +1,47 @@
-import { Card } from '@/components/ui/card'
 import { formatCurrency } from '@/utils'
+import { ArrowUpRight } from 'lucide-react'
 import { PortfolioVoteLock } from '../types'
-import { Gift } from 'lucide-react'
 
-const RewardsAvailable = ({ voteLocks }: { voteLocks: PortfolioVoteLock[] }) => {
+const RewardsAvailable = ({
+  voteLocks,
+}: {
+  voteLocks: PortfolioVoteLock[]
+}) => {
   const totalRewardsUSD = voteLocks.reduce(
-    (sum, lock) => sum + (lock.rewards || []).reduce((s, r) => s + r.value, 0),
+    (sum, lock) =>
+      sum + (lock.rewards || []).reduce((s, r) => s + (r.value || 0), 0),
     0
   )
 
   if (totalRewardsUSD === 0) return null
 
   return (
-    <Card className="p-4 rounded-3xl">
-      <div className="flex items-center gap-2 mb-2">
-        <Gift size={16} className="text-primary" />
-        <h3 className="font-semibold">Rewards Available</h3>
+    <div className="bg-card border border-border rounded-[20px] px-6 py-4 flex flex-col justify-between gap-3">
+      <div>
+        <h3 className="font-bold text-xl text-primary leading-[30px]">
+          Rewards Available
+        </h3>
+        <p className="text-sm font-light text-legend">
+          Your total participation awards available across all chains
+        </p>
       </div>
-      <p className="text-2xl font-bold text-primary">
+      <p className="text-xl font-bold text-primary">
         ${formatCurrency(totalRewardsUSD)}
       </p>
       <a
         href="#available-rewards"
-        className="text-sm text-primary hover:underline mt-1 inline-block"
+        className="bg-primary text-white text-xs font-medium px-4 py-2 rounded-2xl w-fit"
       >
-        View & Claim rewards
+        Collect Rewards
       </a>
-    </Card>
+      <a
+        href="/earn"
+        className="flex items-center gap-0.5 text-xs font-light text-primary"
+      >
+        Learn more about how to earn APY
+        <ArrowUpRight size={16} />
+      </a>
+    </div>
   )
 }
 

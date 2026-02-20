@@ -6,7 +6,7 @@ import { Address } from 'viem'
 import { useCallback } from 'react'
 import dayjs from 'dayjs'
 
-type ChartDataPoint = { value: number; label: string; display: string }
+type ChartDataPoint = { value: number; ts: number; label: string; display: string }
 
 const fetchHistoricalPortfolio = async (
   address: Address,
@@ -22,6 +22,7 @@ const fetchHistoricalPortfolio = async (
 
   return data.timeseries.map((point) => ({
     value: point.totalHoldingsUSD,
+    ts: point.timestamp * 1000,
     label: dayjs(point.timestamp * 1000).format('MMM DD, YYYY h:mm A'),
     display: `$${formatCurrency(point.totalHoldingsUSD)}`,
   }))

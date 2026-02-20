@@ -6,10 +6,13 @@ import DataTable from '@/components/ui/data-table'
 import { TransactionButtonContainer } from '@/components/ui/transaction'
 import { formatCurrency } from '@/utils'
 import { ColumnDef } from '@tanstack/react-table'
+import { Gift } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
 import { Address } from 'viem'
 import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
 import { PortfolioVoteLock } from '../types'
+import { ExpandToggle, useExpandable } from './expand-toggle'
+import SectionHeader from './section-header'
 
 type RewardRow = {
   address: Address
@@ -54,8 +57,7 @@ const ClaimButton = ({ reward }: { reward: RewardRow }) => {
           })
         }
         disabled={claimed || loading}
-        variant="outline"
-        className="rounded-full text-sm hover:text-primary text-primary disabled:border-border border-primary"
+        className="rounded-full text-sm"
         size="sm"
       >
         {loading
@@ -77,7 +79,7 @@ const columns: ColumnDef<RewardRow, any>[] = [
     header: 'Reward Token',
     cell: ({ row }) => (
       <div className="flex items-center gap-2">
-        <div className="relative">
+        <div className="relative flex-shrink-0">
           <TokenLogo
             symbol={row.original.symbol}
             address={row.original.address}
@@ -92,12 +94,7 @@ const columns: ColumnDef<RewardRow, any>[] = [
             height={12}
           />
         </div>
-        <div>
-          <p className="font-medium">{row.original.symbol}</p>
-          <p className="text-xs text-legend hidden sm:block">
-            {row.original.name}
-          </p>
-        </div>
+        <p className="font-bold text-sm">{row.original.symbol}</p>
       </div>
     ),
   },
@@ -105,23 +102,31 @@ const columns: ColumnDef<RewardRow, any>[] = [
     id: 'balance',
     accessorKey: 'balance',
     header: 'Balance',
-    cell: ({ row }) => (
-      <span className="text-sm">{formatCurrency(row.original.balance)}</span>
-    ),
+    cell: ({ row }) => {
+      const val = row.original.balance
+      return (
+        <span className="text-sm">
+          {val != null && !isNaN(val) ? formatCurrency(val) : '—'}
+        </span>
+      )
+    },
   },
   {
     id: 'value',
     accessorKey: 'value',
     header: 'Value',
-    cell: ({ row }) => (
-      <span className="text-sm font-semibold">
-        ${formatCurrency(row.original.value)}
-      </span>
-    ),
+    cell: ({ row }) => {
+      const val = row.original.value
+      return (
+        <span className="text-sm font-bold">
+          {val != null && !isNaN(val) ? `$${formatCurrency(val)}` : '—'}
+        </span>
+      )
+    },
   },
   {
     id: 'actions',
-    header: '',
+    header: 'Claim',
     cell: ({ row }) => <ClaimButton reward={row.original} />,
     meta: { className: 'text-right' },
   },
@@ -141,21 +146,40 @@ const AvailableRewards = ({
             stTokenAddress: lock.stTokenAddress,
           }))
         )
-        .sort((a, b) => b.value - a.value),
+        .sort((a, b) => (b.value || 0) - (a.value || 0)),
     [voteLocks]
   )
+
+  const { displayData, expanded, toggle, hasMore, total } =
+    useExpandable(rewards)
 
   if (!rewards.length) return null
 
   return (
-    <div id="available-rewards" className="rounded-4xl bg-secondary">
-      <div className="py-4 px-5">
-        <h2 className="font-semibold text-xl text-primary dark:text-muted-foreground">
-          Available Rewards
-        </h2>
-      </div>
-      <div className="bg-card rounded-3xl m-1 mt-0">
-        <DataTable columns={columns} data={rewards} />
+    <div id="available-rewards">
+      <SectionHeader
+        icon={Gift}
+        title="Available Rewards"
+        subtitle={
+          <>
+            Earn rewards by staking or participating in governance.{' '}
+            <a
+              href="https://reserve.org/protocol/"
+              target="_blank"
+              rel="noreferrer"
+              className="text-primary hover:underline"
+            >
+              Learn more
+            </a>
+            .
+          </>
+        }
+      />
+      <div className="bg-card rounded-[20px] border border-border overflow-hidden">
+        <DataTable columns={columns} data={displayData} />
+        {hasMore && (
+          <ExpandToggle expanded={expanded} total={total} onToggle={toggle} />
+        )}
       </div>
     </div>
   )

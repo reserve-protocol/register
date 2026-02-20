@@ -33,17 +33,18 @@ export interface PortfolioYieldDTF {
 }
 
 export interface PortfolioStakedRSR {
-  stTokenAddress: Address
+  address: Address
+  stRSRAddress: Address
+  name: string
+  symbol: string
   chainId: number
-  dtfName: string
-  dtfAddress: Address
-  dtfSymbol: string
-  dtfLogo?: string
-  apy: number
-  balance: number
-  valueUSD: number
-  valueRSR: number
-  activeProposals: PortfolioProposal[]
+  amount: string
+  value: number
+  performance7d: number | null
+  apy: number | null
+  votingPower: string
+  delegate: Address | null
+  activeProposals: PortfolioStakedProposal[]
 }
 
 export interface PortfolioVoteLock {
@@ -61,23 +62,33 @@ export interface PortfolioVoteLock {
   delegation?: Address
   rewards: PortfolioReward[]
   locks: { lockId: bigint; amount: number; unlockTime: number }[]
-  activeProposals: PortfolioProposal[]
+  activeProposals: PortfolioStakedProposal[]
 }
 
-export interface PortfolioProposal {
+// Raw proposal from API (nested in stakedRSR / voteLocks)
+export interface PortfolioStakedProposal {
   id: string
+  description: string
+  state: string
+  proposer: string
+  creationTime: string
+  voteStart: string
+  voteEnd: string
+  quorumVotes: string
+  forWeightedVotes: string
+  againstWeightedVotes: string
+  abstainWeightedVotes: string
+  totalWeightedVotes: string
+  queueTime: string | null
+  executionETA: string | null
+}
+
+// Enriched proposal for display (parent DTF info injected)
+export interface PortfolioProposal extends PortfolioStakedProposal {
   dtfName: string
   dtfSymbol: string
   dtfAddress: Address
-  dtfLogo?: string
   chainId: number
-  description: string
-  state: string
-  forVotes: number
-  againstVotes: number
-  abstainVotes: number
-  creationTime: number
-  // Route info for navigation
   isIndexDTF: boolean
 }
 

@@ -3,7 +3,10 @@ import TokenLogo from '@/components/token-logo'
 import DataTable, { SorteableButton } from '@/components/ui/data-table'
 import { formatCurrency } from '@/utils'
 import { ColumnDef } from '@tanstack/react-table'
+import { Lock } from 'lucide-react'
 import { PortfolioVoteLock } from '../types'
+import { ExpandToggle, useExpandable } from './expand-toggle'
+import SectionHeader from './section-header'
 
 const columns: ColumnDef<PortfolioVoteLock, any>[] = [
   {
@@ -12,7 +15,7 @@ const columns: ColumnDef<PortfolioVoteLock, any>[] = [
     header: 'Governance Token',
     cell: ({ row }) => (
       <div className="flex items-center gap-2">
-        <div className="relative">
+        <div className="relative flex-shrink-0">
           <TokenLogo
             symbol={row.original.stTokenSymbol}
             address={row.original.stTokenAddress}
@@ -28,7 +31,7 @@ const columns: ColumnDef<PortfolioVoteLock, any>[] = [
           />
         </div>
         <div>
-          <p className="font-medium">{row.original.stTokenSymbol}</p>
+          <p className="font-bold text-sm">{row.original.stTokenSymbol}</p>
           <p className="text-xs text-legend hidden sm:block">
             {row.original.stTokenName}
           </p>
@@ -52,11 +55,14 @@ const columns: ColumnDef<PortfolioVoteLock, any>[] = [
     header: ({ column }) => (
       <SorteableButton column={column}>APY</SorteableButton>
     ),
-    cell: ({ row }) => (
-      <span className="text-sm text-primary">
-        {formatCurrency(row.original.apy)}%
-      </span>
-    ),
+    cell: ({ row }) => {
+      const val = row.original.apy
+      return (
+        <span className="text-sm">
+          {val != null && !isNaN(val) ? `${formatCurrency(val)}%` : '—'}
+        </span>
+      )
+    },
   },
   {
     id: 'balance',
@@ -64,9 +70,14 @@ const columns: ColumnDef<PortfolioVoteLock, any>[] = [
     header: ({ column }) => (
       <SorteableButton column={column}>Balance</SorteableButton>
     ),
-    cell: ({ row }) => (
-      <span className="text-sm">{formatCurrency(row.original.balance)}</span>
-    ),
+    cell: ({ row }) => {
+      const val = row.original.balance
+      return (
+        <span className="text-sm">
+          {val != null && !isNaN(val) ? formatCurrency(val) : '—'}
+        </span>
+      )
+    },
   },
   {
     id: 'value',
@@ -74,11 +85,14 @@ const columns: ColumnDef<PortfolioVoteLock, any>[] = [
     header: ({ column }) => (
       <SorteableButton column={column}>Value</SorteableButton>
     ),
-    cell: ({ row }) => (
-      <span className="text-sm font-semibold">
-        ${formatCurrency(row.original.value)}
-      </span>
-    ),
+    cell: ({ row }) => {
+      const val = row.original.value
+      return (
+        <span className="text-sm font-bold">
+          {val != null && !isNaN(val) ? `$${formatCurrency(val)}` : '—'}
+        </span>
+      )
+    },
   },
 ]
 
@@ -87,21 +101,41 @@ const VoteLockedPositions = ({
 }: {
   voteLocks: PortfolioVoteLock[]
 }) => {
+  const { displayData, expanded, toggle, hasMore, total } =
+    useExpandable(voteLocks)
+
   if (!voteLocks.length) return null
 
   return (
-    <div className="rounded-4xl bg-secondary">
-      <div className="py-4 px-5">
-        <h2 className="font-semibold text-xl text-primary dark:text-muted-foreground">
-          Vote-locked Positions
-        </h2>
-      </div>
-      <div className="bg-card rounded-3xl m-1 mt-0">
+    <div>
+      <SectionHeader
+        icon={Lock}
+        title="Vote-locked positions"
+        subtitle={
+          <>
+            Participate in governance with any ERC-20 token and earn APY
+            rewards.{' '}
+            <a
+              href="https://reserve.org/protocol/"
+              target="_blank"
+              rel="noreferrer"
+              className="text-primary hover:underline"
+            >
+              Learn more
+            </a>
+            .
+          </>
+        }
+      />
+      <div className="bg-card rounded-[20px] border border-border overflow-hidden">
         <DataTable
           columns={columns}
-          data={voteLocks}
+          data={displayData}
           initialSorting={[{ id: 'value', desc: true }]}
         />
+        {hasMore && (
+          <ExpandToggle expanded={expanded} total={total} onToggle={toggle} />
+        )}
       </div>
     </div>
   )
