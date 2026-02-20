@@ -30,6 +30,7 @@ interface PriceImpactStat {
   inputToken: string[]
   outputToken: string[]
   impact: number
+  output: number
   success: boolean
 }
 
@@ -154,8 +155,11 @@ const fetchLiquidityData = async (
       stat.outputToken.some((out) => out.toLowerCase() === address)
     )
 
-    // Sum up the impacts (they can be positive or negative)
-    const totalImpact = relevantSwaps.reduce((sum, stat) => sum + (stat.impact || 0), 0)
+    // Weighted average of impacts by output value
+    const totalOutput = relevantSwaps.reduce((sum, stat) => sum + (stat.output || 0), 0)
+    const totalImpact = totalOutput > 0
+      ? relevantSwaps.reduce((sum, stat) => sum + (stat.impact || 0) * (stat.output || 0), 0) / totalOutput
+      : 0
     // Convert to percentage (impact comes as decimal like 0.003 = 0.3%)
     const priceImpact = totalImpact * 100
 
