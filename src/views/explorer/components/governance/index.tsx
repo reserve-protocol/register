@@ -1,4 +1,5 @@
 import { cn } from '@/lib/utils'
+import { ProposalVotingState } from '@/views/yield-dtf/governance/components/ProposalList'
 import { Trans, t } from '@lingui/macro'
 import { createColumnHelper } from '@tanstack/react-table'
 import GovernanceIcon from 'components/icons/GovernanceIcon'
@@ -7,14 +8,12 @@ import TokenItem from 'components/token-item'
 import dayjs from 'dayjs'
 import useRTokenLogo from 'hooks/useRTokenLogo'
 import { useMemo } from 'react'
-import { StringMap } from 'types'
-import { getProposalTitle, getTokenRoute } from 'utils'
+import { getFolioRoute, getProposalTitle, getTokenRoute } from 'utils'
 import { PROPOSAL_STATES, ROUTES, formatConstant } from 'utils/constants'
-import useProposalsData, { ProposalRecord } from './useProposalsData'
-import Filters from './Filters'
-import { ProposalVotingState } from '@/views/yield-dtf/governance/components/ProposalList'
+import useProposalsData, { type ProposalRecord } from './use-proposals-data'
+import Filters from './filters'
 
-const BADGE_VARIANT: StringMap = {
+const BADGE_VARIANT: Record<string, string> = {
   [PROPOSAL_STATES.DEFEATED]: 'danger',
   [PROPOSAL_STATES.QUORUM_NOT_REACHED]: 'danger',
   [PROPOSAL_STATES.ACTIVE]: 'info',
@@ -22,25 +21,39 @@ const BADGE_VARIANT: StringMap = {
   [PROPOSAL_STATES.CANCELED]: 'danger',
 }
 
-const badgeClasses: StringMap = {
+const badgeClasses: Record<string, string> = {
   danger: 'bg-destructive/15 text-destructive',
   info: 'bg-primary/15 text-primary',
   success: 'bg-success/15 text-success',
   muted: 'bg-muted text-muted-foreground',
 }
 
+const getProposalRoute = (proposal: ProposalRecord) => {
+  const route = `${ROUTES.GOVERNANCE_PROPOSAL}/${proposal.id}`
+
+  if (proposal.type === 'index') {
+    return getFolioRoute(proposal.tokenAddress, proposal.chain, route)
+  }
+
+  return getTokenRoute(proposal.tokenAddress, proposal.chain, route)
+}
+
+const columnHelper = createColumnHelper<ProposalRecord>()
+
 const ExploreGovernance = () => {
   const data = useProposalsData()
-  const columnHelper = createColumnHelper<any>()
+
   const columns = useMemo(
     () => [
-      columnHelper.accessor('rTokenSymbol', {
+      columnHelper.accessor('tokenSymbol', {
         header: t`Token`,
         cell: (data) => {
-          const logo = useRTokenLogo(
-            data.row.original.rTokenAddress,
-            data.row.original.chain
-          )
+          const proposal = data.row.original
+          // Yield DTFs use rtokens package logos, Index DTFs carry their logo from the API
+          const logo =
+            proposal.type === 'index'
+              ? proposal.tokenLogo
+              : useRTokenLogo(proposal.tokenAddress, proposal.chain)
 
           return <TokenItem symbol={data.getValue()} logo={logo} />
         },
@@ -50,11 +63,7 @@ const ExploreGovernance = () => {
         cell: (data) => (
           <div>
             <a
-              href={getTokenRoute(
-                data.row.original.rTokenAddress,
-                data.row.original.chain,
-                `${ROUTES.GOVERNANCE_PROPOSAL}/${data.row.original.id}`
-              )}
+              href={getProposalRoute(data.row.original)}
               target="_blank"
               className="underline"
             >
@@ -62,7 +71,7 @@ const ExploreGovernance = () => {
                 {getProposalTitle(data.getValue())}
               </span>
             </a>
-            <ProposalVotingState data={data.row.original.state} />
+            <ProposalVotingState data={data.row.original.votingState} />
           </div>
         ),
       }),
@@ -103,7 +112,7 @@ const ExploreGovernance = () => {
         sortBy={[{ id: 'creationTime', desc: true }]}
         data={data}
         pagination={{ pageSize: 10 }}
-        className='border-2 border-secondary pt-0'
+        className="border-2 border-secondary pt-0"
         columnVisibility={['', '', ['none', 'table-cell'], '']}
         columns={columns}
       />
