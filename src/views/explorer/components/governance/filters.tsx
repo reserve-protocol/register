@@ -1,12 +1,13 @@
 import VoteIcon from 'components/icons/VoteIcon'
+import TabMenu from 'components/tab-menu'
 import { useAtom } from 'jotai'
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import { PROPOSAL_STATES } from 'utils/constants'
 import MultiselectDropdrown, {
   IMultiselectDropdrown,
 } from '../MultiselectDropdown'
-import TokenFilter from '../filters/TokenFilter'
-import { filtersAtom } from './atoms'
+import TokenFilter from '../filters/token-filter'
+import { type DTFType, filtersAtom } from './atoms'
 
 export const proposalStatus = {
   [PROPOSAL_STATES.ACTIVE]: 'Active',
@@ -44,18 +45,37 @@ const ProposalStatusFilter = (
   )
 }
 
+const TYPE_ITEMS = [
+  { key: 'all', label: 'All' },
+  { key: 'yield', label: 'Yield' },
+  { key: 'index', label: 'Index' },
+]
+
 const ProposalFilters = () => {
   const [filters, setFilters] = useAtom(filtersAtom)
 
-  const handleChange = (key: string, selected: string[]) => {
+  const handleChange = (key: 'tokens' | 'status', selected: string[]) => {
     setFilters((prev) => ({ ...prev, [key]: selected }))
   }
 
+  const handleTypeChange = useCallback(
+    (key: string) => {
+      setFilters((prev) => ({ ...prev, type: key as DTFType, tokens: [] }))
+    },
+    [setFilters]
+  )
+
   return (
-    <div className="flex items-center ml-1 gap-4">
+    <div className="flex items-end ml-1 gap-4 flex-wrap">
+      <TabMenu
+        active={filters.type}
+        items={TYPE_ITEMS}
+        onMenuChange={handleTypeChange}
+      />
       <TokenFilter
         selected={filters.tokens}
         onChange={(selected) => handleChange('tokens', selected)}
+        dtfType={filters.type}
       />
       <ProposalStatusFilter
         selected={filters.status}

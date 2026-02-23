@@ -1,7 +1,7 @@
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { debouncedWalletInputAtom, filtersAtom } from './atoms'
 import ChainFilter from '../filters/ChainFilter'
-import TokenFilter from '../filters/TokenFilter'
+import TokenFilter from '../filters/token-filter'
 import TransactionTypeFilter from '../filters/TransactionTypeFilter'
 import { Trans, t } from '@lingui/macro'
 import { Input } from 'components'

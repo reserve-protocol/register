@@ -1,3 +1,6 @@
+import dtfIndexAbi from '@/abis/dtf-index-abi'
+import useIndexDTFList, { type IndexDTFItem } from '@/hooks/useIndexDTFList'
+import { TransactionButtonContainer } from '@/components/ui/transaction-button'
 import rtokens from '@reserve-protocol/rtokens'
 import { createColumnHelper } from '@tanstack/react-table'
 import FacadeRead from 'abis/FacadeRead'
@@ -6,10 +9,15 @@ import TokenLogo from 'components/icons/TokenLogo'
 import { Table } from '@/components/ui/legacy-table'
 import TokenItem from 'components/token-item'
 import { useCallback, useMemo, useState } from 'react'
-import { Check, X, ChevronDown, ChevronUp } from 'lucide-react'
+import { Check, X, ChevronDown, ChevronUp, Loader2 } from 'lucide-react'
 import Skeleton from 'react-loading-skeleton'
 import { Trader } from 'types'
-import { formatCurrency, formatUsdCurrencyCell, getTokenRoute } from 'utils'
+import {
+  formatCurrency,
+  formatUsdCurrencyCell,
+  getFolioRoute,
+  getTokenRoute,
+} from 'utils'
 import { FACADE_ADDRESS, RSR_ADDRESS } from 'utils/addresses'
 import { ChainId } from 'utils/chains'
 import { CHAIN_TAGS, ROUTES } from 'utils/constants'
@@ -19,7 +27,12 @@ import TabMenu from 'components/tab-menu'
 import CirclesIcon from 'components/icons/CirclesIcon'
 import ChainLogo from 'components/icons/ChainLogo'
 import { Button } from '@/components/ui/button'
-import { useReadContract } from 'wagmi'
+import {
+  useReadContract,
+  useReadContracts,
+  useWaitForTransactionReceipt,
+  useWriteContract,
+} from 'wagmi'
 
 type RevenueResponse = {
   balance: bigint
@@ -441,6 +454,150 @@ const RTokenRevenueOverview = ({ data }: { data: RevenueDetail }) => {
   )
 }
 
+// --- Index DTF Revenue ---
+
+type IndexDTFRevenue = {
+  dtf: IndexDTFItem
+  pendingFees: bigint
+  pendingUsd: number
+}
+
+const useIndexDTFRevenue = (): IndexDTFRevenue[] | undefined => {
+  const { data: dtfList } = useIndexDTFList()
+
+  const contracts = useMemo(() => {
+    if (!dtfList?.length) return []
+    return dtfList.map((dtf) => ({
+      abi: dtfIndexAbi,
+      address: dtf.address,
+      functionName: 'getPendingFeeShares' as const,
+      chainId: dtf.chainId,
+    }))
+  }, [dtfList])
+
+  const { data: feeResults } = useReadContracts({
+    contracts,
+    query: { enabled: contracts.length > 0 },
+  })
+
+  return useMemo(() => {
+    if (!dtfList?.length || !feeResults) return undefined
+
+    const items: IndexDTFRevenue[] = []
+
+    for (let i = 0; i < dtfList.length; i++) {
+      const dtf = dtfList[i]
+      const result = feeResults[i]
+      if (result.status !== 'success') continue
+
+      const pendingFees = result.result as bigint
+      const pendingTokens = Number(formatEther(pendingFees))
+      const pendingUsd = pendingTokens * (dtf.price ?? 0)
+
+      items.push({ dtf, pendingFees, pendingUsd })
+    }
+
+    return items.sort((a, b) => b.pendingUsd - a.pendingUsd)
+  }, [dtfList, feeResults])
+}
+
+const DistributeButton = ({ dtf }: { dtf: IndexDTFItem }) => {
+  const { data: hash, writeContract, isPending } = useWriteContract()
+  const { data: receipt, isLoading } = useWaitForTransactionReceipt({
+    hash,
+    chainId: dtf.chainId,
+  })
+
+  const handleDistribute = () => {
+    writeContract({
+      abi: dtfIndexAbi,
+      address: dtf.address,
+      functionName: 'distributeFees',
+      chainId: dtf.chainId,
+    })
+  }
+
+  const isSuccess = receipt?.status === 'success'
+
+  return (
+    <TransactionButtonContainer chain={dtf.chainId}>
+      <Button
+        size="sm"
+        variant="outline"
+        className="border-2 border-primary text-primary"
+        onClick={handleDistribute}
+        disabled={isPending || isLoading || isSuccess}
+      >
+        {(isPending || isLoading) && (
+          <Loader2 className="mr-1 h-3 w-3 animate-spin" />
+        )}
+        {isPending || isLoading
+          ? 'Loading...'
+          : isSuccess
+            ? 'Distributed'
+            : 'Distribute'}
+      </Button>
+    </TransactionButtonContainer>
+  )
+}
+
+const IndexDTFRevenueCard = ({ data }: { data: IndexDTFRevenue }) => {
+  const { dtf, pendingUsd } = data
+
+  return (
+    <div className="border border-border rounded-3xl p-4 md:p-6 bg-secondary">
+      <div className="flex w-full">
+        <div className="flex items-center flex-wrap gap-4 w-full">
+          <a
+            href={getFolioRoute(dtf.address, dtf.chainId)}
+            target="_blank"
+            className="flex items-center gap-2 mr-auto"
+          >
+            <TokenLogo width={24} src={dtf.brand?.icon} />
+            <span className="font-medium text-xl underline">{dtf.symbol}</span>
+            <ChainLogo chain={dtf.chainId} />
+          </a>
+          <div className="flex items-center gap-4 flex-wrap">
+            <div className="flex items-center gap-1">
+              <span className="text-muted-foreground">Amount:</span>
+              <span className="font-medium">${formatCurrency(pendingUsd)}</span>
+            </div>
+            <DistributeButton dtf={dtf} />
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+const IndexRevenueOverview = () => {
+  const data = useIndexDTFRevenue()
+
+  if (!data) {
+    return <Skeleton count={8} height={80} style={{ marginBottom: 20 }} />
+  }
+
+  const totalRevenue = data.reduce((sum, item) => sum + item.pendingUsd, 0)
+
+  return (
+    <div>
+      <div className="border-2 border-secondary rounded-4xl p-2 md:p-4 flex flex-wrap gap-2 md:gap-4 justify-center">
+        <div className="flex items-center gap-1">
+          <span className="text-muted-foreground">Pending Fees:</span>
+          <span className="font-medium">${formatCurrency(totalRevenue)}</span>
+        </div>
+      </div>
+      <div className="mt-8 flex flex-col gap-4">
+        {data.map((item) => (
+          <IndexDTFRevenueCard data={item} key={item.dtf.address} />
+        ))}
+      </div>
+    </div>
+  )
+}
+
+// --- Menu ---
+
 const Menu = ({
   current,
   onChange,
@@ -451,12 +608,17 @@ const Menu = ({
   const items = useMemo(
     () => [
       {
-        key: 'grid',
-        label: 'RTokens',
+        key: 'index',
+        label: 'Index',
         icon: <CirclesIcon color="currentColor" />,
       },
       {
-        key: 'list',
+        key: 'yield',
+        label: 'Yield',
+        icon: <CirclesIcon color="currentColor" />,
+      },
+      {
+        key: 'trades',
         label: 'Trades',
         icon: <AuctionsIcon />,
       },
@@ -475,17 +637,11 @@ const Menu = ({
   )
 }
 
-const RevenueOverview = ({
+const YieldRevenueOverview = ({
   data,
-  type,
 }: {
   data: Revenue | undefined
-  type: string
 }) => {
-  const trades = useMemo(() => {
-    return data?.tokens.flatMap((token) => token.trades) ?? []
-  }, [data])
-
   if (!data) {
     return <Skeleton count={8} height={80} style={{ marginBottom: 20 }} />
   }
@@ -495,36 +651,45 @@ const RevenueOverview = ({
       <div className="border-2 border-secondary rounded-4xl p-2 md:p-4 flex flex-wrap gap-2 md:gap-4 justify-center">
         <div className="flex items-center gap-1">
           <span className="text-muted-foreground">Trades:</span>
-          <span className="font-medium">{data?.trades ?? 0}</span>
+          <span className="font-medium">{data.trades}</span>
         </div>
         <div className="flex items-center gap-1">
           <span className="text-muted-foreground">Available Trades:</span>
-          <span className="font-medium">{data?.outstandingTrades ?? 0}</span>
+          <span className="font-medium">{data.outstandingTrades}</span>
         </div>
         <div className="flex items-center gap-1">
           <span className="text-muted-foreground">Revenue:</span>
-          <span className="font-medium">${formatCurrency(data?.revenue ?? 0)}</span>
+          <span className="font-medium">${formatCurrency(data.revenue)}</span>
         </div>
       </div>
+      <div className="mt-8 flex flex-col gap-4">
+        {data.tokens.map((token) => (
+          <RTokenRevenueOverview data={token} key={token.address} />
+        ))}
+      </div>
+    </div>
+  )
+}
 
-      {type === 'grid' ? (
-        <div className="mt-8 flex flex-col gap-4">
-          {data.tokens.map((token) => (
-            <RTokenRevenueOverview data={token} key={token.address} />
-          ))}
-        </div>
-      ) : (
-        <div className="mt-8">
-          <TradesTable trades={trades} />
-        </div>
-      )}
+const YieldTradesOverview = ({ data }: { data: Revenue | undefined }) => {
+  const trades = useMemo(() => {
+    return data?.tokens.flatMap((token) => token.trades) ?? []
+  }, [data])
+
+  if (!data) {
+    return <Skeleton count={8} height={80} style={{ marginBottom: 20 }} />
+  }
+
+  return (
+    <div className="mt-8">
+      <TradesTable trades={trades} />
     </div>
   )
 }
 
 const AvailableRevenue = () => {
   const data = useAvailableRevenue()
-  const [current, setCurrent] = useState('grid')
+  const [current, setCurrent] = useState('index')
 
   const handleChange = useCallback(
     (key: string) => {
@@ -540,7 +705,9 @@ const AvailableRevenue = () => {
         <h2 className="ml-2 text-xl mr-auto font-medium">Revenue</h2>
         <Menu current={current} onChange={handleChange} />
       </div>
-      <RevenueOverview data={data} type={current} />
+      {current === 'yield' && <YieldRevenueOverview data={data} />}
+      {current === 'index' && <IndexRevenueOverview />}
+      {current === 'trades' && <YieldTradesOverview data={data} />}
     </div>
   )
 }
