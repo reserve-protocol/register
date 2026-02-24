@@ -8,7 +8,10 @@ import { isAddress } from 'viem'
 import { useAccount } from 'wagmi'
 import AvailableRewards from './components/available-rewards'
 import ActiveProposals from './components/active-proposals'
-import { IndexDTFPositions, YieldDTFPositions } from './components/dtf-positions'
+import {
+  IndexDTFPositions,
+  YieldDTFPositions,
+} from './components/dtf-positions'
 import PortfolioBreakdown from './components/portfolio-breakdown'
 import PortfolioChart from './components/portfolio-chart'
 import PortfolioSkeleton from './components/portfolio-skeleton'
@@ -38,9 +41,15 @@ const ImpersonationBanner = ({
   <div className="bg-primary/10 border border-primary/20 rounded-2xl px-4 py-3 flex items-center justify-between gap-3">
     <div className="flex items-center gap-2 min-w-0">
       <Eye size={16} className="text-primary flex-shrink-0" />
-      <span className="text-sm font-medium text-primary">Viewing portfolio of</span>
-      <span className="text-sm font-mono truncate">{shortenAddress(address)}</span>
-      <Copy value={address} />
+      <div className="min-w-0 sm:flex sm:items-center sm:gap-2">
+        <p className="text-sm font-medium text-primary">Viewing portfolio of</p>
+        <div className="flex items-center gap-1">
+          <span className="text-sm font-mono truncate">
+            {shortenAddress(address)}
+          </span>
+          <Copy value={address} />
+        </div>
+      </div>
     </div>
     <button
       onClick={onClear}
@@ -59,8 +68,12 @@ const PortfolioPage = () => {
 
   const impersonatedAddress = useMemo(
     () =>
-      accountParam && isAddress(accountParam) ? accountParam : undefined,
-    [accountParam]
+      accountParam &&
+      isAddress(accountParam) &&
+      accountParam.toLowerCase() !== connectedAddress?.toLowerCase()
+        ? accountParam
+        : undefined,
+    [accountParam, connectedAddress]
   )
 
   const address = impersonatedAddress || connectedAddress
@@ -70,7 +83,8 @@ const PortfolioPage = () => {
   useHistoricalPortfolio(address)
 
   if (!address) return <ConnectPrompt />
-  if (isLoading || !data) return <PortfolioSkeleton />
+  if (isLoading || !data)
+    return <PortfolioSkeleton isImpersonating={!!impersonatedAddress} />
 
   return (
     <div className="container mx-auto px-4 py-6 space-y-8">
