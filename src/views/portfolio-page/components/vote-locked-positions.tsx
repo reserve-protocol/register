@@ -2,8 +2,12 @@ import ChainLogo from '@/components/icons/ChainLogo'
 import TokenLogo from '@/components/token-logo'
 import DataTable, { SorteableButton } from '@/components/ui/data-table'
 import { formatCurrency, formatToSignificantDigits, formatUSD } from '@/utils'
+import {
+  ExplorerDataType,
+  getExplorerLink,
+} from '@/utils/getExplorerLink'
 import { ColumnDef } from '@tanstack/react-table'
-import { Lock } from 'lucide-react'
+import { ExternalLink, Lock } from 'lucide-react'
 import { PortfolioVoteLock } from '../types'
 import { ExpandToggle, useExpandable } from './expand-toggle'
 import GovernsCell from './governs-cell'
@@ -38,6 +42,42 @@ const columns: ColumnDef<PortfolioVoteLock, any>[] = [
         </div>
       </div>
     ),
+  },
+  {
+    id: 'underlying',
+    header: 'Underlying',
+    cell: ({ row }) => {
+      const u = row.original.underlying
+      if (!u) return <span className="text-sm text-legend">—</span>
+      return (
+        <div className="flex items-center gap-2">
+          <TokenLogo
+            symbol={u.symbol}
+            address={u.address}
+            chain={row.original.chainId}
+            size="md"
+          />
+          <span className="text-sm">{u.symbol}</span>
+          <button
+            onClick={(e) => {
+              e.stopPropagation()
+              window.open(
+                getExplorerLink(
+                  u.address,
+                  row.original.chainId,
+                  ExplorerDataType.TOKEN
+                ),
+                '_blank'
+              )
+            }}
+            className="text-legend hover:text-primary"
+          >
+            <ExternalLink size={14} />
+          </button>
+        </div>
+      )
+    },
+    meta: { className: 'hidden sm:table-cell' },
   },
   {
     id: 'governs',
