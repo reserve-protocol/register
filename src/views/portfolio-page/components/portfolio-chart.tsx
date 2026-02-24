@@ -61,7 +61,10 @@ function ChartTooltip({
         {breakdown.map((cat: CategoryBreakdown[number]) => {
           const value = total * cat.proportion
           return (
-            <div key={cat.label} className="flex items-center justify-between gap-6">
+            <div
+              key={cat.label}
+              className="flex items-center justify-between gap-6"
+            >
               <span className="text-xs text-legend">{cat.label}</span>
               <span className="text-xs font-medium tabular-nums">
                 ${formatCurrency(value)}
@@ -172,7 +175,7 @@ const PortfolioChart = ({
   return (
     <div>
       {/* Top row: Value left, Tabs right */}
-      <div className="flex items-start justify-between gap-4 mb-6">
+      <div className="flex items-start justify-between gap-4">
         <div className="pl-2">
           <h1 className="text-[46px] leading-[50px] font-medium text-primary">
             ${formatCurrency(totalValue)}
@@ -215,7 +218,7 @@ const PortfolioChart = ({
           No data available
         </div>
       ) : (
-        <ResponsiveContainer width="100%" height={420}>
+        <ResponsiveContainer width="100%" height={414}>
           <AreaChart
             data={chartData}
             margin={{ top: 8, right: 0, left: 0, bottom: 0 }}

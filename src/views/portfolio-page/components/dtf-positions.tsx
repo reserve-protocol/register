@@ -31,7 +31,6 @@ const columns: ColumnDef<DTFRow, any>[] = [
             symbol={row.original.symbol}
             address={row.original.address}
             chain={row.original.chainId}
-            src={row.original.logo}
             size="lg"
           />
           <ChainLogo
@@ -84,15 +83,15 @@ const columns: ColumnDef<DTFRow, any>[] = [
   },
   {
     id: 'balance',
-    accessorKey: 'balance',
+    accessorKey: 'amount',
     header: ({ column }) => (
       <SorteableButton column={column}>Balance</SorteableButton>
     ),
     cell: ({ row }) => {
-      const val = row.original.balance
+      const val = Number(row.original.amount)
       return (
         <span className="text-sm">
-          {val != null && !isNaN(val) ? formatCurrency(val) : '—'}
+          {!isNaN(val) ? formatCurrency(val) : '—'}
         </span>
       )
     },

@@ -1,11 +1,10 @@
 import ChainLogo from '@/components/icons/ChainLogo'
 import TokenLogo from '@/components/token-logo'
 import DataTable from '@/components/ui/data-table'
-import { cn } from '@/lib/utils'
 import { formatCurrency } from '@/utils'
 import { CHAIN_TAGS } from '@/utils/constants'
 import { ColumnDef } from '@tanstack/react-table'
-import { ArrowDown, ArrowUp, Coins } from 'lucide-react'
+import { Coins } from 'lucide-react'
 import { PortfolioRSRBalance } from '../types'
 import { ExpandToggle, useExpandable } from './expand-toggle'
 import SectionHeader from './section-header'
@@ -35,42 +34,14 @@ const columns: ColumnDef<PortfolioRSRBalance, any>[] = [
     ),
   },
   {
-    id: 'performance7d',
-    accessorKey: 'performance7d',
-    header: 'Performance (7D)',
-    cell: ({ row }) => {
-      const perf = row.original.performance7d
-      if (perf == null || isNaN(perf))
-        return <span className="text-sm text-legend">—</span>
-      return (
-        <div
-          className={cn(
-            'flex items-center gap-0.5 text-sm',
-            perf > 0
-              ? 'text-success'
-              : perf < 0
-                ? 'text-destructive'
-                : 'text-legend'
-          )}
-        >
-          {perf > 0 && <ArrowUp size={14} />}
-          {perf < 0 && <ArrowDown size={14} />}
-          {perf > 0 ? '+' : ''}
-          {formatCurrency(Math.abs(perf))}%
-        </div>
-      )
-    },
-    meta: { className: 'hidden sm:table-cell' },
-  },
-  {
     id: 'balance',
-    accessorKey: 'balance',
+    accessorKey: 'amount',
     header: 'Balance',
     cell: ({ row }) => {
-      const val = row.original.balance
+      const val = Number(row.original.amount)
       return (
         <span className="text-sm">
-          {val != null && !isNaN(val) ? formatCurrency(val) : '—'}
+          {!isNaN(val) ? formatCurrency(val) : '—'}
         </span>
       )
     },

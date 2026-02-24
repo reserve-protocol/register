@@ -15,10 +15,10 @@ export interface PortfolioIndexDTF {
   chainId: number
   name: string
   symbol: string
-  logo?: string
-  balance: number
+  decimals: number
+  amount: string
   value: number
-  performance7d: number
+  performance7d: number | null
 }
 
 export interface PortfolioYieldDTF {
@@ -26,10 +26,11 @@ export interface PortfolioYieldDTF {
   chainId: number
   name: string
   symbol: string
-  logo?: string
-  balance: number
+  decimals: number
+  amount: string
   value: number
-  performance7d: number
+  performance7d: number | null
+  mintAPY: number | null
 }
 
 export interface PortfolioStakedRSR {
@@ -50,18 +51,17 @@ export interface PortfolioStakedRSR {
 export interface PortfolioVoteLock {
   stTokenAddress: Address
   chainId: number
-  stTokenSymbol: string
-  stTokenName: string
-  stTokenLogo?: string
-  dtfs: { address: Address; name: string; symbol: string; chainId: number }[]
+  name: string
+  symbol: string
+  underlying: { address: Address; symbol: string; name: string }
+  dtfs: { address: Address; name: string; symbol: string }[]
   apy: number
-  balance: number
+  amount: string
   value: number
-  votingPower: number
-  voteWeight: number
+  votingPower: string
   delegation?: Address
   rewards: PortfolioReward[]
-  locks: { lockId: bigint; amount: number; unlockTime: number }[]
+  locks: { lockId: string; amount: string; unlockTime: number }[]
   activeProposals: PortfolioStakedProposal[]
 }
 
@@ -97,17 +97,15 @@ export interface PortfolioReward {
   chainId: number
   symbol: string
   name: string
-  logo?: string
-  balance: number
+  decimals: number
+  amount: string
   value: number
-  stTokenAddress: Address
 }
 
 export interface PortfolioRSRBalance {
   chainId: number
-  balance: number
+  amount: string
   value: number
-  performance7d: number
 }
 
 // Historical portfolio response

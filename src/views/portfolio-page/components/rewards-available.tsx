@@ -16,7 +16,7 @@ const RewardsAvailable = ({
   if (totalRewardsUSD === 0) return null
 
   return (
-    <div className="bg-card border border-border rounded-[20px] px-6 py-4 flex flex-col justify-between gap-3">
+    <div className="bg-card border border-border rounded-[20px] px-6 py-4 flex flex-col justify-between gap-2">
       <div>
         <h3 className="font-bold text-xl text-primary leading-[30px]">
           Rewards Available

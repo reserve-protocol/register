@@ -149,8 +149,8 @@ const ActiveProposals = ({
     const locked = voteLocks.flatMap((v) =>
       (v.activeProposals || []).map((p) => ({
         ...p,
-        dtfName: v.dtfs?.[0]?.name || v.stTokenSymbol,
-        dtfSymbol: v.dtfs?.[0]?.symbol || v.stTokenSymbol,
+        dtfName: v.dtfs?.[0]?.name || v.symbol,
+        dtfSymbol: v.dtfs?.[0]?.symbol || v.symbol,
         dtfAddress: v.dtfs?.[0]?.address || v.stTokenAddress,
         chainId: v.chainId,
         isIndexDTF: true,

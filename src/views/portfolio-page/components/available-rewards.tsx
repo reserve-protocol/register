@@ -19,8 +19,8 @@ type RewardRow = {
   chainId: number
   symbol: string
   name: string
-  logo?: string
-  balance: number
+  decimals: number
+  amount: string
   value: number
   stTokenAddress: Address
 }
@@ -84,7 +84,6 @@ const columns: ColumnDef<RewardRow, any>[] = [
             symbol={row.original.symbol}
             address={row.original.address}
             chain={row.original.chainId}
-            src={row.original.logo}
             size="lg"
           />
           <ChainLogo
@@ -100,13 +99,13 @@ const columns: ColumnDef<RewardRow, any>[] = [
   },
   {
     id: 'balance',
-    accessorKey: 'balance',
+    accessorKey: 'amount',
     header: 'Balance',
     cell: ({ row }) => {
-      const val = row.original.balance
+      const val = Number(row.original.amount)
       return (
         <span className="text-sm">
-          {val != null && !isNaN(val) ? formatCurrency(val) : '—'}
+          {!isNaN(val) ? formatCurrency(val) : '—'}
         </span>
       )
     },

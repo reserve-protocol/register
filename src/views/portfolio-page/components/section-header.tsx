@@ -12,7 +12,7 @@ const SectionHeader = ({
   right?: ReactNode
   icon?: LucideIcon
 }) => (
-  <div className="mb-4 pl-4">
+  <div className="mb-4 px-4">
     <div className="flex items-center justify-between">
       <div className="flex items-center gap-2">
         {Icon ? (

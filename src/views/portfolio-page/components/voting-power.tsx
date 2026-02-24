@@ -26,10 +26,9 @@ const columns: ColumnDef<PortfolioVoteLock, any>[] = [
       <div className="flex items-center gap-2">
         <div className="relative flex-shrink-0">
           <TokenLogo
-            symbol={row.original.stTokenSymbol}
+            symbol={row.original.symbol}
             address={row.original.stTokenAddress}
             chain={row.original.chainId}
-            src={row.original.stTokenLogo}
             size="md"
           />
           <ChainLogo
@@ -39,7 +38,7 @@ const columns: ColumnDef<PortfolioVoteLock, any>[] = [
             height={10}
           />
         </div>
-        <span className="text-sm">{row.original.stTokenSymbol}</span>
+        <span className="text-sm">{row.original.symbol}</span>
       </div>
     ),
   },
@@ -48,27 +47,13 @@ const columns: ColumnDef<PortfolioVoteLock, any>[] = [
     accessorKey: 'votingPower',
     header: 'Vote Power',
     cell: ({ row }) => {
-      const val = row.original.votingPower
+      const val = Number(row.original.votingPower)
       return (
         <span className="text-sm">
-          {val != null && !isNaN(val) ? formatCurrency(val) : '—'}
+          {!isNaN(val) ? formatCurrency(val) : '—'}
         </span>
       )
     },
-  },
-  {
-    id: 'voteWeight',
-    accessorKey: 'voteWeight',
-    header: 'Vote Weight',
-    cell: ({ row }) => {
-      const val = row.original.voteWeight
-      return (
-        <span className="text-sm">
-          {val != null && !isNaN(val) ? `${formatCurrency(val)}%` : '—'}
-        </span>
-      )
-    },
-    meta: { className: 'hidden lg:table-cell' },
   },
   {
     id: 'voterAddress',

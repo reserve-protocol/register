@@ -17,10 +17,9 @@ const columns: ColumnDef<PortfolioVoteLock, any>[] = [
       <div className="flex items-center gap-2">
         <div className="relative flex-shrink-0">
           <TokenLogo
-            symbol={row.original.stTokenSymbol}
+            symbol={row.original.symbol}
             address={row.original.stTokenAddress}
             chain={row.original.chainId}
-            src={row.original.stTokenLogo}
             size="lg"
           />
           <ChainLogo
@@ -31,9 +30,9 @@ const columns: ColumnDef<PortfolioVoteLock, any>[] = [
           />
         </div>
         <div>
-          <p className="font-bold text-sm">{row.original.stTokenSymbol}</p>
+          <p className="font-bold text-sm">{row.original.symbol}</p>
           <p className="text-xs text-legend hidden sm:block">
-            {row.original.stTokenName}
+            {row.original.name}
           </p>
         </div>
       </div>
@@ -66,15 +65,15 @@ const columns: ColumnDef<PortfolioVoteLock, any>[] = [
   },
   {
     id: 'balance',
-    accessorKey: 'balance',
+    accessorKey: 'amount',
     header: ({ column }) => (
       <SorteableButton column={column}>Balance</SorteableButton>
     ),
     cell: ({ row }) => {
-      const val = row.original.balance
+      const val = Number(row.original.amount)
       return (
         <span className="text-sm">
-          {val != null && !isNaN(val) ? formatCurrency(val) : '—'}
+          {!isNaN(val) ? formatCurrency(val) : '—'}
         </span>
       )
     },

@@ -26,7 +26,7 @@ const PortfolioBreakdown = ({ data }: { data: PortfolioResponse }) => {
         </h3>
         <p className="text-sm font-light text-legend">Value by asset type</p>
       </div>
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-2">
         <BreakdownRow label="Index DTFs" value={indexValue} />
         <BreakdownRow label="Yield DTFs" value={yieldValue} />
         <BreakdownRow label="RSR" value={rsrValue} />
