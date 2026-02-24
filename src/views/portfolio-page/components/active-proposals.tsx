@@ -1,6 +1,7 @@
 import ChainLogo from '@/components/icons/ChainLogo'
 import TokenLogo from '@/components/token-logo'
 import DataTable from '@/components/ui/data-table'
+import { getProposalState } from '@/lib/governance'
 import { cn } from '@/lib/utils'
 import { formatCurrency, getProposalTitle } from '@/utils'
 import { formatConstant, PROPOSAL_STATES, ROUTES } from '@/utils/constants'
@@ -16,6 +17,31 @@ import {
 } from '../types'
 import { ExpandToggle, useExpandable } from './expand-toggle'
 import SectionHeader from './section-header'
+
+const ACTIVE_STATES = new Set([
+  PROPOSAL_STATES.PENDING,
+  PROPOSAL_STATES.ACTIVE,
+  PROPOSAL_STATES.SUCCEEDED,
+  PROPOSAL_STATES.QUEUED,
+])
+
+const resolveState = (p: PortfolioProposal) =>
+  getProposalState({
+    id: p.id,
+    timelockId: '',
+    description: p.description,
+    creationTime: Number(p.creationTime),
+    creationBlock: 0,
+    state: p.state,
+    forWeightedVotes: Number(p.forWeightedVotes),
+    abstainWeightedVotes: Number(p.abstainWeightedVotes),
+    againstWeightedVotes: Number(p.againstWeightedVotes),
+    quorumVotes: Number(p.quorumVotes),
+    voteStart: Number(p.voteStart),
+    voteEnd: Number(p.voteEnd),
+    executionETA: p.executionETA ? Number(p.executionETA) : undefined,
+    proposer: { address: p.proposer as `0x${string}` },
+  })
 
 const STATUS_COLOR: Record<string, string> = {
   [PROPOSAL_STATES.DEFEATED]: 'text-destructive',
@@ -58,33 +84,36 @@ const columns: ColumnDef<PortfolioProposal, any>[] = [
     header: 'Title',
     cell: ({ row }) => {
       const title = getProposalTitle(row.original.description)
-      const forV = Number(row.original.forWeightedVotes) || 0
-      const againstV = Number(row.original.againstWeightedVotes) || 0
-      const abstainV = Number(row.original.abstainWeightedVotes) || 0
-      const total = forV + againstV + abstainV
-      const forPct = total > 0 ? (forV / total) * 100 : 0
-      const againstPct = total > 0 ? (againstV / total) * 100 : 0
-      const abstainPct = total > 0 ? (abstainV / total) * 100 : 0
+      const voting = resolveState(row.original)
       return (
         <div>
           <p className="font-bold text-sm text-primary">{title}</p>
           <div className="flex items-center gap-2 mt-0.5 text-xs text-legend">
             <span>
               Quorum?{' '}
-              <span className="font-medium text-success">Yes</span>
-            </span>
-            <span>
-              Votes:{' '}
-              <span className="text-primary font-medium">
-                {formatCurrency(forPct, 0)}%
+              <span
+                className={cn(
+                  'font-medium',
+                  voting.quorum ? 'text-success' : 'text-destructive'
+                )}
+              >
+                {voting.quorum ? 'Yes' : 'No'}
               </span>
-              {' / '}
-              <span className="text-destructive font-medium">
-                {formatCurrency(againstPct, 0)}%
-              </span>
-              {' / '}
-              <span>{formatCurrency(abstainPct, 0)}%</span>
             </span>
+            {(voting.for > 0 || voting.against > 0 || voting.abstain > 0) && (
+              <span>
+                Votes:{' '}
+                <span className="text-primary font-medium">
+                  {formatCurrency(voting.for, 0)}%
+                </span>
+                {' / '}
+                <span className="text-destructive font-medium">
+                  {formatCurrency(voting.against, 0)}%
+                </span>
+                {' / '}
+                <span>{formatCurrency(voting.abstain, 0)}%</span>
+              </span>
+            )}
           </div>
         </div>
       )
@@ -109,7 +138,7 @@ const columns: ColumnDef<PortfolioProposal, any>[] = [
     id: 'state',
     header: 'Status',
     cell: ({ row }) => {
-      const state = row.original.state
+      const { state } = resolveState(row.original)
       const stateText = formatConstant(state)
       return (
         <div
@@ -118,7 +147,7 @@ const columns: ColumnDef<PortfolioProposal, any>[] = [
             STATUS_COLOR[state] || 'text-legend'
           )}
         >
-          {stateText.includes('reached') ? 'Quorum' : stateText}
+          {stateText}
         </div>
       )
     },
@@ -153,9 +182,9 @@ const ActiveProposals = ({
         isIndexDTF: true,
       }))
     )
-    return [...staked, ...locked].sort(
-      (a, b) => Number(b.creationTime) - Number(a.creationTime)
-    )
+    return [...staked, ...locked]
+      .filter((p) => ACTIVE_STATES.has(resolveState(p).state))
+      .sort((a, b) => Number(b.creationTime) - Number(a.creationTime))
   }, [stakedRSR, voteLocks])
 
   const { displayData, expanded, toggle, hasMore, total } =
