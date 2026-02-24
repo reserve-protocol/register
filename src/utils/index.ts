@@ -231,6 +231,11 @@ export function formatToSignificantDigits(
       }).format(value)
 }
 
+export const formatUSD = (value: number): string => {
+  if (value > 0 && value < 0.01) return '< $0.01'
+  return `$${formatCurrency(value)}`
+}
+
 export const formatPercentage = (value: number, decimals = 2): string =>
   (value / 100).toLocaleString('en-US', {
     style: 'percent',

@@ -31,6 +31,7 @@ import {
   Landmark,
   LayoutGrid,
   Microscope,
+  Wallet,
 } from 'lucide-react'
 import { ReactNode, useMemo } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
@@ -76,6 +77,11 @@ const AppNavigation = () => {
           label: t`Participate & Earn`,
           icon: <Landmark strokeWidth={1.5} size={16} />,
           to: ROUTES.EARN,
+        },
+        {
+          label: t`Portfolio`,
+          icon: <Wallet strokeWidth={1.5} size={16} />,
+          to: ROUTES.PORTFOLIO,
         },
         {
           label: t`Create New DTF`,
