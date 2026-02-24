@@ -3,7 +3,7 @@ import dtfIndexUnstakingManager from '@/abis/dtf-index-unstaking-manager'
 import StackTokenLogo from '@/components/token-logo/StackTokenLogo'
 import { Button } from '@/components/ui/button'
 import Spinner from '@/components/ui/spinner'
-import { TransactionButtonContainer } from '@/components/ui/transaction'
+import { SeamlessTransactionContainer } from '@/components/ui/seamless-transaction'
 import useCurrentTime from '@/hooks/useCurrentTime'
 import { formatCurrency, parseDurationShort } from '@/utils'
 import Staking from '@/views/index-dtf/overview/components/staking'
@@ -98,12 +98,7 @@ export const LockWithdrawAction = ({ token, lockId, chainId }: Lock) => {
   const loading = !receipt && (isPending || !!hash || (hash && !receipt))
 
   return (
-    <TransactionButtonContainer
-      chain={chainId}
-      size="sm"
-      switchChainButtonClassName="rounded-full"
-      connectButtonClassName="rounded-full"
-    >
+    <SeamlessTransactionContainer chain={chainId}>
       <Button
         onClick={write}
         disabled={receipt?.status === 'success' || loading}
@@ -119,7 +114,7 @@ export const LockWithdrawAction = ({ token, lockId, chainId }: Lock) => {
             ? 'Withdrawn'
             : 'Withdraw'}
       </Button>
-    </TransactionButtonContainer>
+    </SeamlessTransactionContainer>
   )
 }
 
@@ -171,12 +166,7 @@ export const CancelLockAction = ({
           <span className="text-muted-foreground">{timeLeftString}</span>
         </div>
       )}
-      <TransactionButtonContainer
-        chain={chainId}
-        size="sm"
-        switchChainButtonClassName="rounded-full"
-        connectButtonClassName="rounded-full"
-      >
+      <SeamlessTransactionContainer chain={chainId}>
         <Button
           variant="ghost"
           className="rounded-full text-sm text-red-600 hover:text-red-600"
@@ -192,7 +182,7 @@ export const CancelLockAction = ({
               ? 'Cancelled'
               : 'Cancel'}
         </Button>
-      </TransactionButtonContainer>
+      </SeamlessTransactionContainer>
     </div>
   )
 }
@@ -346,12 +336,7 @@ export const RewardAction = ({
           ? `$${formatCurrency(reward.accruedUSD, 2)}`
           : '$0'}
       </span>
-      <TransactionButtonContainer
-        chain={chainId}
-        size="sm"
-        switchChainButtonClassName="rounded-full"
-        connectButtonClassName="rounded-full"
-      >
+      <SeamlessTransactionContainer chain={chainId}>
         <Button
           onClick={write}
           disabled={receipt?.status === 'success' || loading}
@@ -367,7 +352,7 @@ export const RewardAction = ({
               ? 'Claimed'
               : 'Claim'}
         </Button>
-      </TransactionButtonContainer>
+      </SeamlessTransactionContainer>
     </div>
   )
 }
@@ -415,12 +400,7 @@ export const ClaimAllButton = ({
   const loading = !receipt && (isPending || !!hash || (hash && !receipt))
 
   return (
-    <TransactionButtonContainer
-      chain={chainId}
-      size="sm"
-      switchChainButtonClassName="rounded-full"
-      connectButtonClassName="rounded-full"
-    >
+    <SeamlessTransactionContainer chain={chainId}>
       <Button
         onClick={write}
         disabled={receipt?.status === 'success' || loading}
@@ -435,6 +415,6 @@ export const ClaimAllButton = ({
             ? 'Claimed'
             : 'Claim All'}
       </Button>
-    </TransactionButtonContainer>
+    </SeamlessTransactionContainer>
   )
 }
