@@ -1,4 +1,4 @@
-import { LucideIcon } from 'lucide-react'
+import { ComponentType } from 'react'
 import { ReactNode } from 'react'
 
 const SectionHeader = ({
@@ -10,7 +10,7 @@ const SectionHeader = ({
   title: string
   subtitle?: ReactNode
   right?: ReactNode
-  icon?: LucideIcon
+  icon?: ComponentType<{ size?: string | number; className?: string }>
 }) => (
   <div className="mb-4 px-4">
     <div className="flex items-center justify-between">

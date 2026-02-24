@@ -2,11 +2,12 @@ import ChainLogo from '@/components/icons/ChainLogo'
 import TokenLogo from '@/components/token-logo'
 import Copy from '@/components/ui/copy'
 import DataTable from '@/components/ui/data-table'
-import { formatCurrency, shortenAddress } from '@/utils'
+import { formatToSignificantDigits, shortenAddress } from '@/utils'
 import { ColumnDef } from '@tanstack/react-table'
-import { Scale } from 'lucide-react'
+import { Vote } from 'lucide-react'
 import { PortfolioVoteLock } from '../types'
 import { ExpandToggle, useExpandable } from './expand-toggle'
+import GovernsCell from './governs-cell'
 import SectionHeader from './section-header'
 
 const columns: ColumnDef<PortfolioVoteLock, any>[] = [
@@ -14,9 +15,7 @@ const columns: ColumnDef<PortfolioVoteLock, any>[] = [
     id: 'dtf',
     header: 'DTF Governed',
     cell: ({ row }) => (
-      <span className="text-sm">
-        {row.original.dtfs?.map((d) => d.symbol).join(', ') || '—'}
-      </span>
+      <GovernsCell dtfs={row.original.dtfs} chainId={row.original.chainId} />
     ),
   },
   {
@@ -50,7 +49,7 @@ const columns: ColumnDef<PortfolioVoteLock, any>[] = [
       const val = Number(row.original.votingPower)
       return (
         <span className="text-sm">
-          {!isNaN(val) ? formatCurrency(val) : '—'}
+          {!isNaN(val) ? formatToSignificantDigits(val) : '—'}
         </span>
       )
     },
@@ -75,8 +74,7 @@ const columns: ColumnDef<PortfolioVoteLock, any>[] = [
     header: 'Delegate Address',
     cell: ({ row }) => {
       const delegation = row.original.delegation
-      if (!delegation)
-        return <span className="text-sm text-legend">—</span>
+      if (!delegation) return <span className="text-sm text-legend">—</span>
       return (
         <div className="flex items-center gap-1">
           <span className="text-sm">{shortenAddress(delegation)}</span>
@@ -97,7 +95,7 @@ const VotingPower = ({ voteLocks }: { voteLocks: PortfolioVoteLock[] }) => {
   return (
     <div>
       <SectionHeader
-        icon={Scale}
+        icon={Vote}
         title="Voting Power"
         subtitle="Including any power delegated to me."
       />

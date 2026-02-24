@@ -2,17 +2,17 @@ import ChainLogo from '@/components/icons/ChainLogo'
 import TokenLogo from '@/components/token-logo'
 import DataTable, { SorteableButton } from '@/components/ui/data-table'
 import { cn } from '@/lib/utils'
-import { formatCurrency, getFolioRoute, getTokenRoute } from '@/utils'
+import {
+  formatCurrency,
+  formatToSignificantDigits,
+  formatUSD,
+  getFolioRoute,
+  getTokenRoute,
+} from '@/utils'
 import { ROUTES } from '@/utils/constants'
 import { ColumnDef } from '@tanstack/react-table'
-import {
-  ArrowDown,
-  ArrowUp,
-  ArrowRight,
-  BarChart3,
-  Percent,
-} from 'lucide-react'
-import { Link, useNavigate } from 'react-router-dom'
+import { ArrowDown, ArrowUp, ArrowRight, Globe, Flower } from 'lucide-react'
+import { Link } from 'react-router-dom'
 import { PortfolioIndexDTF, PortfolioYieldDTF } from '../types'
 import { ExpandToggle, useExpandable } from './expand-toggle'
 import SectionHeader from './section-header'
@@ -91,7 +91,7 @@ const columns: ColumnDef<DTFRow, any>[] = [
       const val = Number(row.original.amount)
       return (
         <span className="text-sm">
-          {!isNaN(val) ? formatCurrency(val) : '—'}
+          {!isNaN(val) ? formatToSignificantDigits(val) : '—'}
         </span>
       )
     },
@@ -106,7 +106,7 @@ const columns: ColumnDef<DTFRow, any>[] = [
       const val = row.original.value
       return (
         <span className="text-sm font-bold">
-          {val != null && !isNaN(val) ? `$${formatCurrency(val)}` : '—'}
+          {val != null && !isNaN(val) ? formatUSD(val) : '—'}
         </span>
       )
     },
@@ -114,7 +114,6 @@ const columns: ColumnDef<DTFRow, any>[] = [
 ]
 
 const IndexDTFPositions = ({ data }: { data: PortfolioIndexDTF[] }) => {
-  const navigate = useNavigate()
   const sorted = [...data].sort((a, b) => (b.value || 0) - (a.value || 0))
   const { displayData, expanded, toggle, hasMore, total } =
     useExpandable(sorted)
@@ -124,15 +123,16 @@ const IndexDTFPositions = ({ data }: { data: PortfolioIndexDTF[] }) => {
   return (
     <div>
       <SectionHeader
-        icon={BarChart3}
+        icon={Globe}
         title="Index DTF Positions"
         subtitle="Your Decentralized Token Folio investments."
         right={
           <Link
-            to={ROUTES.HOME}
+            to={`${ROUTES.HOME}?tab=index`}
+            target="_blank"
             className="flex items-center gap-1 text-sm text-primary font-medium hover:underline"
           >
-            Browse all DTFs
+            Browse all Index DTFs
             <ArrowRight size={16} />
           </Link>
         }
@@ -142,7 +142,7 @@ const IndexDTFPositions = ({ data }: { data: PortfolioIndexDTF[] }) => {
           columns={columns}
           data={displayData}
           onRowClick={(row) =>
-            navigate(getFolioRoute(row.address, row.chainId))
+            window.open(getFolioRoute(row.address, row.chainId), '_blank')
           }
           initialSorting={[{ id: 'value', desc: true }]}
         />
@@ -155,7 +155,6 @@ const IndexDTFPositions = ({ data }: { data: PortfolioIndexDTF[] }) => {
 }
 
 const YieldDTFPositions = ({ data }: { data: PortfolioYieldDTF[] }) => {
-  const navigate = useNavigate()
   const sorted = [...data].sort((a, b) => (b.value || 0) - (a.value || 0))
   const { displayData, expanded, toggle, hasMore, total } =
     useExpandable(sorted)
@@ -165,16 +164,26 @@ const YieldDTFPositions = ({ data }: { data: PortfolioYieldDTF[] }) => {
   return (
     <div>
       <SectionHeader
-        icon={Percent}
+        icon={Flower}
         title="Yield DTF Positions"
         subtitle="Your yield-bearing stablecoin holdings."
+        right={
+          <Link
+            to={`${ROUTES.HOME}?tab=yield`}
+            target="_blank"
+            className="flex items-center gap-1 text-sm text-primary font-medium hover:underline"
+          >
+            Browse all Yield DTFs
+            <ArrowRight size={16} />
+          </Link>
+        }
       />
       <div className="bg-card rounded-[20px] border border-border overflow-hidden">
         <DataTable
           columns={columns}
           data={displayData}
           onRowClick={(row) =>
-            navigate(getTokenRoute(row.address, row.chainId))
+            window.open(getTokenRoute(row.address, row.chainId), '_blank')
           }
           initialSorting={[{ id: 'value', desc: true }]}
         />

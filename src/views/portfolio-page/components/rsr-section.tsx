@@ -1,10 +1,10 @@
 import ChainLogo from '@/components/icons/ChainLogo'
 import TokenLogo from '@/components/token-logo'
 import DataTable from '@/components/ui/data-table'
-import { formatCurrency } from '@/utils'
+import { formatToSignificantDigits, formatUSD } from '@/utils'
 import { CHAIN_TAGS } from '@/utils/constants'
 import { ColumnDef } from '@tanstack/react-table'
-import { Coins } from 'lucide-react'
+import RsrIcon from '@/components/icons/RsrIcon'
 import { PortfolioRSRBalance } from '../types'
 import { ExpandToggle, useExpandable } from './expand-toggle'
 import SectionHeader from './section-header'
@@ -41,7 +41,7 @@ const columns: ColumnDef<PortfolioRSRBalance, any>[] = [
       const val = Number(row.original.amount)
       return (
         <span className="text-sm">
-          {!isNaN(val) ? formatCurrency(val) : '—'}
+          {!isNaN(val) ? formatToSignificantDigits(val) : '—'}
         </span>
       )
     },
@@ -54,7 +54,7 @@ const columns: ColumnDef<PortfolioRSRBalance, any>[] = [
       const val = row.original.value
       return (
         <span className="text-sm font-bold">
-          {val != null && !isNaN(val) ? `$${formatCurrency(val)}` : '—'}
+          {val != null && !isNaN(val) ? formatUSD(val) : '—'}
         </span>
       )
     },
@@ -74,7 +74,7 @@ const RSRSection = ({
   return (
     <div>
       <SectionHeader
-        icon={Coins}
+        icon={RsrIcon}
         title="RSR"
         subtitle="Reserve Rights (RSR) is an ERC-20 token that unifies governance, risk management, and value accrual across the Reserve ecosystem."
       />

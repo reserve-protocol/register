@@ -1,10 +1,15 @@
 import ChainLogo from '@/components/icons/ChainLogo'
 import TokenLogo from '@/components/token-logo'
 import DataTable, { SorteableButton } from '@/components/ui/data-table'
-import { formatCurrency, getTokenRoute } from '@/utils'
+import {
+  formatCurrency,
+  formatToSignificantDigits,
+  formatUSD,
+  getTokenRoute,
+} from '@/utils'
 import { ColumnDef } from '@tanstack/react-table'
-import { Landmark } from 'lucide-react'
-import { useNavigate } from 'react-router-dom'
+import { HandCoins } from 'lucide-react'
+import { Link } from 'react-router-dom'
 import { PortfolioStakedRSR } from '../types'
 import { ExpandToggle, useExpandable } from './expand-toggle'
 import SectionHeader from './section-header'
@@ -43,7 +48,14 @@ const columns: ColumnDef<PortfolioStakedRSR, any>[] = [
     id: 'governs',
     header: 'Governs',
     cell: ({ row }) => (
-      <span className="text-sm">{row.original.symbol}</span>
+      <Link
+        to={getTokenRoute(row.original.address, row.original.chainId)}
+        className="text-sm text-primary hover:underline"
+        target="_blank"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {row.original.symbol}
+      </Link>
     ),
     meta: { className: 'hidden md:table-cell' },
   },
@@ -72,7 +84,7 @@ const columns: ColumnDef<PortfolioStakedRSR, any>[] = [
       const val = Number(row.original.amount)
       return (
         <span className="text-sm">
-          {!isNaN(val) ? formatCurrency(val) : '—'}
+          {!isNaN(val) ? formatToSignificantDigits(val) : '—'}
         </span>
       )
     },
@@ -87,7 +99,7 @@ const columns: ColumnDef<PortfolioStakedRSR, any>[] = [
       const val = row.original.value
       return (
         <span className="text-sm font-bold">
-          {val != null && !isNaN(val) ? `$${formatCurrency(val)}` : '—'}
+          {val != null && !isNaN(val) ? formatUSD(val) : '—'}
         </span>
       )
     },
@@ -99,7 +111,6 @@ const StakedPositions = ({
 }: {
   stakedRSR: PortfolioStakedRSR[]
 }) => {
-  const navigate = useNavigate()
   const { displayData, expanded, toggle, hasMore, total } =
     useExpandable(stakedRSR)
 
@@ -108,7 +119,7 @@ const StakedPositions = ({
   return (
     <div>
       <SectionHeader
-        icon={Landmark}
+        icon={HandCoins}
         title="Staked Positions"
         subtitle={
           <>
@@ -130,7 +141,10 @@ const StakedPositions = ({
           columns={columns}
           data={displayData}
           onRowClick={(row) =>
-            navigate(getTokenRoute(row.address, row.chainId, 'staking'))
+            window.open(
+              getTokenRoute(row.address, row.chainId, 'staking'),
+              '_blank'
+            )
           }
           initialSorting={[{ id: 'value', desc: true }]}
         />

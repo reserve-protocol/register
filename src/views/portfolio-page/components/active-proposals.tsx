@@ -9,7 +9,6 @@ import { ColumnDef } from '@tanstack/react-table'
 import dayjs from 'dayjs'
 import { ScrollText } from 'lucide-react'
 import { useMemo } from 'react'
-import { useNavigate } from 'react-router-dom'
 import {
   PortfolioProposal,
   PortfolioStakedRSR,
@@ -133,8 +132,6 @@ const ActiveProposals = ({
   stakedRSR: PortfolioStakedRSR[]
   voteLocks: PortfolioVoteLock[]
 }) => {
-  const navigate = useNavigate()
-
   const proposals: PortfolioProposal[] = useMemo(() => {
     const staked = stakedRSR.flatMap((s) =>
       (s.activeProposals || []).map((p) => ({
@@ -178,10 +175,18 @@ const ActiveProposals = ({
           columns={columns}
           data={displayData}
           onRowClick={(row) => {
-            const basePath = row.isIndexDTF
-              ? getFolioRoute(row.dtfAddress, row.chainId)
-              : getTokenRoute(row.dtfAddress, row.chainId)
-            navigate(`${basePath}${ROUTES.GOVERNANCE_PROPOSAL}/${row.id}`)
+            const path = row.isIndexDTF
+              ? getFolioRoute(
+                  row.dtfAddress,
+                  row.chainId,
+                  `${ROUTES.GOVERNANCE_PROPOSAL}/${row.id}`
+                )
+              : getTokenRoute(
+                  row.dtfAddress,
+                  row.chainId,
+                  `${ROUTES.GOVERNANCE_PROPOSAL}/${row.id}`
+                )
+            window.open(path, '_blank')
           }}
         />
         {hasMore && (

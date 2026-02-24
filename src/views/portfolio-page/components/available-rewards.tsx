@@ -4,7 +4,7 @@ import TokenLogo from '@/components/token-logo'
 import { Button } from '@/components/ui/button'
 import DataTable from '@/components/ui/data-table'
 import { TransactionButtonContainer } from '@/components/ui/transaction'
-import { formatCurrency } from '@/utils'
+import { formatCurrency, formatToSignificantDigits, formatUSD } from '@/utils'
 import { ColumnDef } from '@tanstack/react-table'
 import { Gift } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
@@ -105,7 +105,7 @@ const columns: ColumnDef<RewardRow, any>[] = [
       const val = Number(row.original.amount)
       return (
         <span className="text-sm">
-          {!isNaN(val) ? formatCurrency(val) : '—'}
+          {!isNaN(val) ? formatToSignificantDigits(val) : '—'}
         </span>
       )
     },
@@ -118,7 +118,7 @@ const columns: ColumnDef<RewardRow, any>[] = [
       const val = row.original.value
       return (
         <span className="text-sm font-bold">
-          {val != null && !isNaN(val) ? `$${formatCurrency(val)}` : '—'}
+          {val != null && !isNaN(val) ? formatUSD(val) : '—'}
         </span>
       )
     },

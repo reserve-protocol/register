@@ -1,11 +1,12 @@
 import ChainLogo from '@/components/icons/ChainLogo'
 import TokenLogo from '@/components/token-logo'
 import DataTable, { SorteableButton } from '@/components/ui/data-table'
-import { formatCurrency } from '@/utils'
+import { formatCurrency, formatToSignificantDigits, formatUSD } from '@/utils'
 import { ColumnDef } from '@tanstack/react-table'
 import { Lock } from 'lucide-react'
 import { PortfolioVoteLock } from '../types'
 import { ExpandToggle, useExpandable } from './expand-toggle'
+import GovernsCell from './governs-cell'
 import SectionHeader from './section-header'
 
 const columns: ColumnDef<PortfolioVoteLock, any>[] = [
@@ -42,9 +43,7 @@ const columns: ColumnDef<PortfolioVoteLock, any>[] = [
     id: 'governs',
     header: 'Governs',
     cell: ({ row }) => (
-      <span className="text-sm">
-        {row.original.dtfs?.map((d) => d.symbol).join(', ') || '—'}
-      </span>
+      <GovernsCell dtfs={row.original.dtfs} chainId={row.original.chainId} />
     ),
     meta: { className: 'hidden md:table-cell' },
   },
@@ -73,7 +72,7 @@ const columns: ColumnDef<PortfolioVoteLock, any>[] = [
       const val = Number(row.original.amount)
       return (
         <span className="text-sm">
-          {!isNaN(val) ? formatCurrency(val) : '—'}
+          {!isNaN(val) ? formatToSignificantDigits(val) : '—'}
         </span>
       )
     },
@@ -88,7 +87,7 @@ const columns: ColumnDef<PortfolioVoteLock, any>[] = [
       const val = row.original.value
       return (
         <span className="text-sm font-bold">
-          {val != null && !isNaN(val) ? `$${formatCurrency(val)}` : '—'}
+          {val != null && !isNaN(val) ? formatUSD(val) : '—'}
         </span>
       )
     },
