@@ -826,6 +826,11 @@ npm run test:run     # Run tests (single run)
   - Use kebab-case for all files and folders
   - Place shared utilities in `/utils`
   - Keep atoms close to their usage (feature-specific)
+- **Storybook**
+  - Any change to a `src/components/` component MUST include a corresponding story update
+  - New components MUST have a `.stories.tsx` file before the work is complete
+  - Stories live alongside components: `button.tsx` → `button.stories.tsx`
+  - Run `npm run storybook` to visually verify component changes
 
 ### Don'ts ❌
 

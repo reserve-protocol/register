@@ -44,3 +44,6 @@ tests/RTokens.json
 
 # temp file for LLM integration
 /temp
+
+# Storybook
+/storybook-static

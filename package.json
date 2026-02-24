@@ -96,7 +96,9 @@
     "forknet": "anvil --fork-url https://eth.llamarpc.com --chain-id 1 --balance 10000000",
     "parse-collaterals": "node scripts/parseCollaterals",
     "generate-seo-tokens": "npx tsx scripts/generate-seo-tokens.ts",
-    "generate-seo-pages": "npx tsx src/seo/generate-seo-pages.ts"
+    "generate-seo-pages": "npx tsx src/seo/generate-seo-pages.ts",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build -o storybook-static"
   },
   "engines": {
     "node": ">=20.0.0"
@@ -123,6 +125,10 @@
     "@lingui/vite-plugin": "^5.8.0",
     "@locator/babel-jsx": "^0.4.4",
     "@playwright/test": "^1.57.0",
+    "@storybook/addon-a11y": "^10.2.11",
+    "@storybook/addon-themes": "^10.2.11",
+    "@storybook/react": "^10.2.11",
+    "@storybook/react-vite": "^10.2.11",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^14.0.4",
@@ -138,6 +144,7 @@
     "jsdom": "^27.4.0",
     "postcss": "^8.5.6",
     "prettier": "3.3.3",
+    "storybook": "^10.2.11",
     "tailwindcss": "^3.4.15",
     "typescript": "5.6.3",
     "vite": "^7.3.1",
