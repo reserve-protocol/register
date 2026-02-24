@@ -1,5 +1,16 @@
+import { chainIdAtom } from '@/state/atoms'
+import { indexDTFAtom } from '@/state/dtf/atoms'
 import { useAtomValue } from 'jotai'
-import { rebalanceErrorAtom, showManageWeightsViewAtom } from './atoms'
+import {
+  isAuctionOngoingAtom,
+  rebalanceErrorAtom,
+  showManageWeightsViewAtom,
+} from './atoms'
+import {
+  CowbotProvider,
+  CowbotInlineCard,
+  useIsListedDTF,
+} from './components/cowbot'
 import ManageWeightsView from './components/manage-weights/manage-weights-view'
 import RebalanceAction from './components/rebalance-action'
 import RebalanceAuctions from './components/rebalance-auctions'
@@ -17,8 +28,8 @@ const RebalanceError = () => {
   if (!rebalanceError) return null
 
   return (
-    <div className='rounded-3xl p-3 border border-red-500 bg-red-500/10'>
-      <h1 className='font-semibold text-red-500'>Rebalance error</h1>
+    <div className="rounded-3xl p-3 border border-red-500 bg-red-500/10">
+      <h1 className="font-semibold text-red-500">Rebalance error</h1>
       <p>{rebalanceError}</p>
     </div>
   )
@@ -46,17 +57,39 @@ const RebalanceContent = () => {
       </div>
       <RebalanceAuctions />
       <RebalanceAction />
+      <CowbotInlineCard />
       <RebalanceDebug />
     </div>
   )
 }
 
 const Rebalance = () => {
+  const dtf = useAtomValue(indexDTFAtom)
+  const chainId = useAtomValue(chainIdAtom)
+  const isAuctionOngoing = useAtomValue(isAuctionOngoingAtom)
+  const { isListed } = useIsListedDTF(dtf?.id)
+
+  if (!dtf?.id) {
+    return (
+      <>
+        <RebalanceContent />
+        <Updater />
+      </>
+    )
+  }
+
   return (
-    <>
+    <CowbotProvider
+      config={{
+        folioAddress: dtf.id,
+        chainId,
+        isAuctionActive: isAuctionOngoing,
+        isListedDTF: isListed,
+      }}
+    >
       <RebalanceContent />
       <Updater />
-    </>
+    </CowbotProvider>
   )
 }
 

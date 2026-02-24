@@ -313,22 +313,12 @@ export const DeployFormSchema = z
   })
   .refine(
     (data) => {
-      // Check if the governance settings are valid
-      const governanceExistingERC20 = data.governanceERC20address
-      const governanceExistingVoteLock = data.governanceVoteLock
-      const governanceWallet = data.governanceWalletAddress
-
-      return (
-        (governanceExistingVoteLock &&
-          !governanceExistingERC20 &&
-          !governanceWallet) ||
-        (!governanceExistingVoteLock &&
-          governanceExistingERC20 &&
-          !governanceWallet) ||
-        (!governanceExistingVoteLock &&
-          !governanceExistingERC20 &&
-          governanceWallet)
-      )
+      const options = [
+        data.governanceERC20address,
+        data.governanceVoteLock,
+        data.governanceWalletAddress,
+      ].filter(Boolean)
+      return options.length === 1
     },
     { message: 'Invalid governance settings', path: ['governance'] }
   )

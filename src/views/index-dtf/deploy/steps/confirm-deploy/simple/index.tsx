@@ -67,11 +67,11 @@ const SimpleIndexDeploy = () => {
   const zapDeployPayload = useAtomValue(zapDeployPayloadAtom)
   const tokens = useAtomValue(tokensAtom)
   const [ongoingTx, setOngoingTx] = useAtom(ongoingTxAtom)
-  const formChainId = form?.chain
+  const formChainId = form?.chain as number
 
   const url = form?.governanceWalletAddress
-    ? zapper.zapDeployUngoverned(chainId)
-    : zapper.zapDeploy(chainId)
+    ? zapper.zapDeployUngoverned(formChainId)
+    : zapper.zapDeploy(formChainId)
   const requestBody = useDebounce(zapDeployPayload, 500)
 
   const tokenIn = inputToken || defaultInputToken

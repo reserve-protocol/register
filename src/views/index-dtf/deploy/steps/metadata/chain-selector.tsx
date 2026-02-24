@@ -1,10 +1,11 @@
 import ChainLogo from '@/components/icons/ChainLogo'
 import { FormField } from '@/components/ui/form'
 import { cn } from '@/lib/utils'
-import { useAtom } from 'jotai'
+import { useAtom, useAtomValue } from 'jotai'
 import { CheckIcon } from 'lucide-react'
 import { ControllerFieldState, useFormContext } from 'react-hook-form'
 import { chainIdAtom } from 'state/atoms'
+import { readonlyStepsAtom } from '../../atoms'
 import { AvailableChain, ChainId } from 'utils/chains'
 import { CHAIN_TAGS } from 'utils/constants'
 import { useSwitchChain } from 'wagmi'
@@ -51,6 +52,11 @@ const ChainSelector = () => {
   const { watch, setValue, resetField } = useFormContext()
   const { switchChain } = useSwitchChain()
   const formChainId = watch('chain')
+  const readonlySteps = useAtomValue(readonlyStepsAtom)
+  const chains =
+    readonlySteps.size > 0
+      ? SUPPORTED_CHAINS.filter((c) => c === ChainId.Base)
+      : SUPPORTED_CHAINS
 
   const handleChainChange = (newChain: AvailableChain) => {
     resetField('chain')
@@ -63,7 +69,7 @@ const ChainSelector = () => {
 
   return (
     <div className="flex flex-col lg:flex-row gap-2 p-2 flex-wrap">
-      {SUPPORTED_CHAINS.map((chain) => (
+      {chains.map((chain) => (
         <FormField
           key={chain}
           name="chain"
