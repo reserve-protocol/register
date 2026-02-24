@@ -85,6 +85,9 @@ const columns: ColumnDef<PortfolioProposal, any>[] = [
     cell: ({ row }) => {
       const title = getProposalTitle(row.original.description)
       const voting = resolveState(row.original)
+      const forV = +row.original.forWeightedVotes || 0
+      const abstainV = +row.original.abstainWeightedVotes || 0
+      const quorumMet = forV + abstainV >= (+row.original.quorumVotes || 0)
       return (
         <div>
           <p className="font-bold text-sm text-primary">{title}</p>
@@ -94,10 +97,10 @@ const columns: ColumnDef<PortfolioProposal, any>[] = [
               <span
                 className={cn(
                   'font-medium',
-                  voting.quorum ? 'text-success' : 'text-destructive'
+                  quorumMet ? 'text-success' : 'text-destructive'
                 )}
               >
-                {voting.quorum ? 'Yes' : 'No'}
+                {quorumMet ? 'Yes' : 'No'}
               </span>
             </span>
             {(voting.for > 0 || voting.against > 0 || voting.abstain > 0) && (
