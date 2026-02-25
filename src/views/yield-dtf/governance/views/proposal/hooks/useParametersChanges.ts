@@ -3,6 +3,7 @@ import { useMemo } from 'react'
 import { useFormContext, useWatch } from 'react-hook-form'
 import { rTokenConfigurationAtom, rTokenGovernanceAtom } from 'state/atoms'
 import { StringMap } from 'types'
+import { isTimeunitGovernance } from '../../../utils'
 
 export interface ParameterChange {
   field: string
@@ -13,6 +14,7 @@ export interface ParameterChange {
 const currentParamsAtom = atom((get) => {
   const config = get(rTokenConfigurationAtom)
   const governance = get(rTokenGovernanceAtom)
+  const isTimeunit = isTimeunitGovernance(governance.name)
 
   if (!config || !governance.executionDelay) {
     return {} as StringMap
@@ -20,8 +22,8 @@ const currentParamsAtom = atom((get) => {
 
   return {
     ...config,
-    votingDelay: governance.votingDelay,
-    votingPeriod: governance.votingPeriod,
+    votingDelay: Number(governance.votingDelay || 0) / (isTimeunit ? 3600 : 1),
+    votingPeriod: Number(governance.votingPeriod || 0) / (isTimeunit ? 3600 : 1),
     minDelay: +governance.executionDelay / 60 / 60,
     proposalThresholdAsMicroPercent: governance.proposalThreshold,
     quorumPercent: governance.quorumNumerator,
