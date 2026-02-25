@@ -177,7 +177,7 @@ const validProposalExists = (
 }
 
 // BED & SMELL
-const UPGRADE_WHITELIST: string[] = ['0xf91384484f4717314798e8975bcd904a35fc2bf1', '0xf91384484f4717314798e8975bcd904a35fc2bf1']
+const UPGRADE_WHITELIST: string[] = ['0x4e3b170dcbe704b248df5f56d488114ace01b1c5', '0xf91384484f4717314798e8975bcd904a35fc2bf1']
 
 export default function ProposeV5Upgrade() {
   const { isProposeAllowed } = useIsProposeAllowed()
