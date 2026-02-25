@@ -61,24 +61,95 @@ const columns: ColumnDef<DTFRow, any>[] = [
       const perf = row.original.performance7d
       if (perf == null || isNaN(perf))
         return <span className="text-sm text-legend">—</span>
+      const abs = Math.abs(perf)
+      const isNear0 = abs < 0.01
+      let text: string
+      if (isNear0) {
+        text = '0.00%'
+      } else {
+        text = `${perf > 0 ? '+' : ''}${formatCurrency(perf)}%`
+      }
       return (
         <div
           className={cn(
             'flex items-center gap-0.5 text-sm',
-            perf > 0
-              ? 'text-success'
-              : perf < 0
-                ? 'text-destructive'
-                : 'text-legend'
+            isNear0 || perf === 0
+              ? 'text-legend'
+              : perf > 0
+                ? 'text-success'
+                : 'text-destructive'
           )}
         >
-          {perf > 0 && <ArrowUp size={14} />}
-          {perf < 0 && <ArrowDown size={14} />}
-          {perf > 0 ? '+' : ''}
-          {formatCurrency(Math.abs(perf))}%
+          {!isNear0 && perf > 0 && <ArrowUp size={14} />}
+          {!isNear0 && perf < 0 && <ArrowDown size={14} />}
+          {text}
         </div>
       )
     },
+    meta: { className: 'hidden sm:table-cell' },
+  },
+  {
+    id: 'unrealizedPnL',
+    accessorKey: 'unrealizedPnL',
+    header: ({ column }) => (
+      <SorteableButton column={column}>
+        Unrealized P/L
+      </SorteableButton>
+    ),
+    cell: ({ row }) => {
+      const val = row.original.unrealizedPnL
+      if (val == null)
+        return <span className="text-sm text-legend">—</span>
+      const abs = Math.abs(val)
+      const isNear0 = abs < 0.01
+      let text: string
+      if (isNear0) {
+        text = '$0.00'
+      } else {
+        text = val > 0 ? `+${formatUSD(val)}` : `-${formatUSD(abs)}`
+      }
+      return (
+        <span
+          className={cn(
+            'text-sm',
+            isNear0
+              ? 'text-legend'
+              : val > 0
+                ? 'text-success'
+                : 'text-destructive'
+          )}
+        >
+          {text}
+        </span>
+      )
+    },
+    meta: { className: 'hidden sm:table-cell' },
+  },
+  {
+    id: 'averageCost',
+    accessorKey: 'averageCost',
+    header: ({ column }) => (
+      <SorteableButton column={column}>Avg Cost</SorteableButton>
+    ),
+    cell: ({ row }) => {
+      const val = row.original.averageCost
+      return (
+        <span className="text-sm">
+          {val != null ? formatUSD(val) : '—'}
+        </span>
+      )
+    },
+    meta: { className: 'hidden sm:table-cell' },
+  },
+  {
+    id: 'marketCap',
+    accessorKey: 'marketCap',
+    header: ({ column }) => (
+      <SorteableButton column={column}>Market Cap</SorteableButton>
+    ),
+    cell: ({ row }) => (
+      <span className="text-sm">{formatUSD(row.original.marketCap)}</span>
+    ),
     meta: { className: 'hidden sm:table-cell' },
   },
   {

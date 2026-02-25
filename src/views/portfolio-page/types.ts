@@ -19,6 +19,11 @@ export interface PortfolioIndexDTF {
   amount: string
   value: number
   performance7d: number | null
+  price: number
+  marketCap: number
+  mintAPY?: number | null
+  averageCost: number | null
+  unrealizedPnL: number | null
 }
 
 export interface PortfolioYieldDTF {
@@ -31,6 +36,18 @@ export interface PortfolioYieldDTF {
   value: number
   performance7d: number | null
   mintAPY: number | null
+  price: number
+  marketCap: number
+  averageCost: number | null
+  unrealizedPnL: number | null
+}
+
+export interface PortfolioPendingWithdraw {
+  endId: number
+  amount: string
+  availableAt: number
+  delay: number
+  value: number
 }
 
 export interface PortfolioStakedRSR {
@@ -46,6 +63,9 @@ export interface PortfolioStakedRSR {
   votingPower: string
   delegate: Address | null
   activeProposals: PortfolioStakedProposal[]
+  rsrAmount: string
+  votingWeight: number
+  pendingWithdraws: PortfolioPendingWithdraw[]
 }
 
 export interface PortfolioVoteLock {
@@ -61,7 +81,8 @@ export interface PortfolioVoteLock {
   votingPower: string
   delegation?: Address
   rewards: PortfolioReward[]
-  locks: { lockId: string; amount: string; unlockTime: number }[]
+  locks: { lockId: string; amount: string; unlockTime: number; delay: number; value: number }[]
+  votingWeight: number
   activeProposals: PortfolioStakedProposal[]
 }
 
@@ -106,6 +127,8 @@ export interface PortfolioRSRBalance {
   chainId: number
   amount: string
   value: number
+  price: number
+  performance7d: number | null
 }
 
 // Historical portfolio response

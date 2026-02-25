@@ -22,12 +22,7 @@ const columns: ColumnDef<PortfolioStakedRSR, any>[] = [
     cell: ({ row }) => (
       <div className="flex items-center gap-2">
         <div className="relative flex-shrink-0">
-          <TokenLogo
-            symbol={row.original.symbol}
-            address={row.original.address}
-            chain={row.original.chainId}
-            size="lg"
-          />
+          <TokenLogo symbol="RSR" size="lg" />
           <ChainLogo
             chain={row.original.chainId}
             className="absolute -bottom-0.5 -right-0.5"
@@ -36,7 +31,9 @@ const columns: ColumnDef<PortfolioStakedRSR, any>[] = [
           />
         </div>
         <div>
-          <p className="font-bold text-sm">{row.original.symbol}</p>
+          <p className="font-bold text-sm">
+            {row.original.symbol.toLowerCase()}RSR
+          </p>
           <p className="text-xs text-legend hidden sm:block">
             {row.original.name}
           </p>
@@ -48,14 +45,22 @@ const columns: ColumnDef<PortfolioStakedRSR, any>[] = [
     id: 'governs',
     header: 'Governs',
     cell: ({ row }) => (
-      <Link
-        to={getTokenRoute(row.original.address, row.original.chainId)}
-        className="text-sm text-primary hover:underline"
-        target="_blank"
-        onClick={(e) => e.stopPropagation()}
-      >
-        {row.original.symbol}
-      </Link>
+      <div className="flex items-center gap-1.5">
+        <TokenLogo
+          symbol={row.original.symbol}
+          address={row.original.address}
+          chain={row.original.chainId}
+          size="sm"
+        />
+        <Link
+          to={getTokenRoute(row.original.address, row.original.chainId)}
+          className="text-sm text-primary hover:underline"
+          target="_blank"
+          onClick={(e) => e.stopPropagation()}
+        >
+          {row.original.symbol}
+        </Link>
+      </div>
     ),
     meta: { className: 'hidden md:table-cell' },
   },
@@ -111,16 +116,18 @@ const StakedPositions = ({
 }: {
   stakedRSR: PortfolioStakedRSR[]
 }) => {
+  const filtered = stakedRSR.filter((s) => Number(s.amount) > 0)
+  const sorted = [...filtered].sort((a, b) => (b.value || 0) - (a.value || 0))
   const { displayData, expanded, toggle, hasMore, total } =
-    useExpandable(stakedRSR)
+    useExpandable(sorted)
 
-  if (!stakedRSR.length) return null
+  if (!sorted.length) return null
 
   return (
     <div>
       <SectionHeader
         icon={HandCoins}
-        title="Staked Positions"
+        title="Staked RSR Positions"
         subtitle={
           <>
             Stake your RSR and earn APY rewards.{' '}

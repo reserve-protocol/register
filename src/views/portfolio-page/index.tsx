@@ -19,6 +19,7 @@ import RewardsAvailable from './components/rewards-available'
 import RSRSection from './components/rsr-section'
 import StakedPositions from './components/staked-positions'
 import VoteLockedPositions from './components/vote-locked-positions'
+import PendingWithdrawals from './components/pending-withdrawals'
 import VotingPower from './components/voting-power'
 import { useHistoricalPortfolio } from './hooks/use-historical-portfolio'
 import { usePortfolio } from './hooks/use-portfolio'
@@ -110,10 +111,11 @@ const PortfolioPage = () => {
       <IndexDTFPositions data={data.indexDTFs} />
       <YieldDTFPositions data={data.yieldDTFs} />
       <AvailableRewards voteLocks={data.voteLocks} />
+      <PendingWithdrawals stakedRSR={data.stakedRSR} voteLocks={data.voteLocks} />
       <StakedPositions stakedRSR={data.stakedRSR} />
       <VoteLockedPositions voteLocks={data.voteLocks} />
       <ActiveProposals stakedRSR={data.stakedRSR} voteLocks={data.voteLocks} />
-      <VotingPower voteLocks={data.voteLocks} />
+      <VotingPower voteLocks={data.voteLocks} stakedRSR={data.stakedRSR} />
       <RSRSection rsrBalances={data.rsrBalances} />
     </div>
   )

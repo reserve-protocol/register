@@ -1,9 +1,11 @@
 import ChainLogo from '@/components/icons/ChainLogo'
 import TokenLogo from '@/components/token-logo'
 import DataTable from '@/components/ui/data-table'
-import { formatToSignificantDigits, formatUSD } from '@/utils'
+import { cn } from '@/lib/utils'
+import { formatCurrency, formatToSignificantDigits, formatUSD } from '@/utils'
 import { CHAIN_TAGS } from '@/utils/constants'
 import { ColumnDef } from '@tanstack/react-table'
+import { ArrowDown, ArrowUp } from 'lucide-react'
 import RsrIcon from '@/components/icons/RsrIcon'
 import { PortfolioRSRBalance } from '../types'
 import { ExpandToggle, useExpandable } from './expand-toggle'
@@ -32,6 +34,41 @@ const columns: ColumnDef<PortfolioRSRBalance, any>[] = [
         </div>
       </div>
     ),
+  },
+  {
+    id: 'performance7d',
+    accessorKey: 'performance7d',
+    header: 'Performance (7D)',
+    cell: ({ row }) => {
+      const perf = row.original.performance7d
+      if (perf == null)
+        return <span className="text-sm text-legend">—</span>
+      const abs = Math.abs(perf)
+      const isNear0 = abs < 0.01
+      let text: string
+      if (isNear0) {
+        text = '0.00%'
+      } else {
+        text = `${perf > 0 ? '+' : ''}${formatCurrency(perf)}%`
+      }
+      return (
+        <div
+          className={cn(
+            'flex items-center gap-0.5 text-sm',
+            isNear0 || perf === 0
+              ? 'text-legend'
+              : perf > 0
+                ? 'text-success'
+                : 'text-destructive'
+          )}
+        >
+          {!isNear0 && perf > 0 && <ArrowUp size={14} />}
+          {!isNear0 && perf < 0 && <ArrowDown size={14} />}
+          {text}
+        </div>
+      )
+    },
+    meta: { className: 'hidden sm:table-cell' },
   },
   {
     id: 'balance',

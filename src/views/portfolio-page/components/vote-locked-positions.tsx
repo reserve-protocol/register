@@ -1,6 +1,6 @@
 import ChainLogo from '@/components/icons/ChainLogo'
 import TokenLogo from '@/components/token-logo'
-import DataTable, { SorteableButton } from '@/components/ui/data-table'
+import DataTable from '@/components/ui/data-table'
 import { formatCurrency, formatToSignificantDigits, formatUSD } from '@/utils'
 import {
   ExplorerDataType,
@@ -22,8 +22,8 @@ const columns: ColumnDef<PortfolioVoteLock, any>[] = [
       <div className="flex items-center gap-2">
         <div className="relative flex-shrink-0">
           <TokenLogo
-            symbol={row.original.symbol}
-            address={row.original.stTokenAddress}
+            symbol={row.original.underlying.symbol}
+            address={row.original.underlying.address}
             chain={row.original.chainId}
             size="lg"
           />
@@ -90,9 +90,7 @@ const columns: ColumnDef<PortfolioVoteLock, any>[] = [
   {
     id: 'apy',
     accessorKey: 'apy',
-    header: ({ column }) => (
-      <SorteableButton column={column}>APY</SorteableButton>
-    ),
+    header: 'APY',
     cell: ({ row }) => {
       const val = row.original.apy
       return (
@@ -105,9 +103,7 @@ const columns: ColumnDef<PortfolioVoteLock, any>[] = [
   {
     id: 'balance',
     accessorKey: 'amount',
-    header: ({ column }) => (
-      <SorteableButton column={column}>Balance</SorteableButton>
-    ),
+    header: 'Balance',
     cell: ({ row }) => {
       const val = Number(row.original.amount)
       return (
@@ -120,9 +116,7 @@ const columns: ColumnDef<PortfolioVoteLock, any>[] = [
   {
     id: 'value',
     accessorKey: 'value',
-    header: ({ column }) => (
-      <SorteableButton column={column}>Value</SorteableButton>
-    ),
+    header: 'Value',
     cell: ({ row }) => {
       const val = row.original.value
       return (
@@ -139,10 +133,11 @@ const VoteLockedPositions = ({
 }: {
   voteLocks: PortfolioVoteLock[]
 }) => {
+  const filtered = voteLocks.filter((v) => Number(v.amount) > 0)
   const { displayData, expanded, toggle, hasMore, total } =
-    useExpandable(voteLocks)
+    useExpandable(filtered)
 
-  if (!voteLocks.length) return null
+  if (!filtered.length) return null
 
   return (
     <div>
