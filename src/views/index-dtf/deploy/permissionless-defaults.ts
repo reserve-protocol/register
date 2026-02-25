@@ -20,17 +20,17 @@ export const PERMISSIONLESS_READONLY_STEPS = new Set<DeployStepId>([
 ])
 
 export const TRUSTED_ADDRESSES: Record<number, string[]> = {
-  [ChainId.Mainnet]: [
-  ],
+  [ChainId.Mainnet]: [],
   [ChainId.Base]: [
     '0xF2d98377d80DADf725bFb97E91357F1d81384De2',
     '0x1f4b58851cE2F1b2FF906042D32287A0FDF1B899',
     '0x2dc04Aeae96e2f2b642b066e981e80Fe57abb5b2',
     '0x8e0507C16435Caca6CB71a7Fb0e0636fd3891df4',
-    '0x03d03A026E71979BE3b08D44B01eAe4C5FF9da99'
+    '0x03d03A026E71979BE3b08D44B01eAe4C5FF9da99',
+    '0x7f7bf1d0B4bb7395bb68E99e20C732f3AEFFfe47',
+    '0x7DaAf7Bc2eE8bf4C0ac7f37E6b6cfaEB3ed9a868',
   ],
-  [ChainId.BSC]: [
-  ]
+  [ChainId.BSC]: [],
 }
 
 export const getPermissionlessDefaults = (chainId: number): DeployInputs => {
@@ -59,9 +59,9 @@ export const getPermissionlessDefaults = (chainId: number): DeployInputs => {
     auctionLength: 30,
     weightControl: true,
     // Roles: default operator
-    guardians: ['0x7f7bf1d0B4bb7395bb68E99e20C732f3AEFFfe47', ...TRUSTED_ADDRESSES[chainId]],
+    guardians: [...TRUSTED_ADDRESSES[chainId]],
     brandManagers: [], // current wallet
-    auctionLaunchers: ['0x7DaAf7Bc2eE8bf4C0ac7f37E6b6cfaEB3ed9a868', ...TRUSTED_ADDRESSES[chainId]],
+    auctionLaunchers: [...TRUSTED_ADDRESSES[chainId]],
     // Basket governance (hours)
     basketVotingDelay: 0,
     basketVotingPeriod: 24,
@@ -74,6 +74,6 @@ export const getPermissionlessDefaults = (chainId: number): DeployInputs => {
     governanceVotingThreshold: 1,
     governanceVotingQuorum: 3,
     governanceExecutionDelay: 1,
-    bidsEnabled: true
+    bidsEnabled: true,
   }
 }
