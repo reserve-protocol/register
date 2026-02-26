@@ -20,6 +20,7 @@ import RSRSection from './components/rsr-section'
 import StakedPositions from './components/staked-positions'
 import VoteLockedPositions from './components/vote-locked-positions'
 import PendingWithdrawals from './components/pending-withdrawals'
+import Transactions from './components/transactions'
 import VotingPower from './components/voting-power'
 import { useHistoricalPortfolio } from './hooks/use-historical-portfolio'
 import { usePortfolio } from './hooks/use-portfolio'
@@ -117,6 +118,7 @@ const PortfolioPage = () => {
       <ActiveProposals stakedRSR={data.stakedRSR} voteLocks={data.voteLocks} />
       <VotingPower voteLocks={data.voteLocks} stakedRSR={data.stakedRSR} />
       <RSRSection rsrBalances={data.rsrBalances} />
+      <Transactions address={address} />
     </div>
   )
 }

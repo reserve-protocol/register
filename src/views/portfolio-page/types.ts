@@ -137,6 +137,23 @@ export interface PortfolioRSRBalance {
   performance7d: number | null
 }
 
+export interface PortfolioTransaction {
+  chainId: number
+  timestamp: number
+  block: number
+  txHash: string
+  protocol: 'index' | 'yield'
+  type: string
+  title: string
+  description: string
+  token: {
+    address: Address
+    symbol: string
+    underlying?: { address: Address; symbol: string }
+  } | null
+  proposalId?: string
+}
+
 // Historical portfolio response
 export interface HistoricalPortfolioResponse {
   timeseries: HistoricalDataPoint[]
