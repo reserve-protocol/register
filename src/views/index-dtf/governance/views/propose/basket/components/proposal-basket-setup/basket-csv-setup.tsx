@@ -113,7 +113,7 @@ const BasketCsvSetup = () => {
   const isUnitBasket = useAtomValue(isUnitBasketAtom)
   const assets = useAtomValue(proposedIndexBasketAtom)
   const chainId = useAtomValue(chainIdAtom)
-  const { data: tokenList } = useTokenList(chainId)
+  const { data: tokenList } = useTokenList(chainId, { unfiltered: true })
   const setNewBasketFromCsv = useSetAtom(setNewBasketFromCsvAtom)
   const [error, setError] = useState<string | null>(null)
 
