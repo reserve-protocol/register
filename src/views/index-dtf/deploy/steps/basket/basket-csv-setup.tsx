@@ -39,7 +39,7 @@ const getRowValues = (row: string) => {
 const BasketCsvSetup = () => {
   const chainId = useAtomValue(chainIdAtom)
   const [basket, setBasket] = useAtom(basketAtom)
-  const { data: tokenList } = useTokenList(chainId)
+  const { data: tokenList } = useTokenList(chainId, { unfiltered: true })
   const { setValue, getValues } = useFormContext()
   const [error, setError] = useState<string | null>(null)
   const onDrop = useCallback(

@@ -6,7 +6,7 @@ import useTokenList from './use-token-list'
 
 const useAssetPriceVolatility = (assets: string[]) => {
   const chainId = useAtomValue(chainIdAtom)
-  const { data: tokens } = useTokenList(chainId)
+  const { data: tokens } = useTokenList(chainId, { unfiltered: true })
 
   return useMemo(() => {
     if (!tokens || !assets.length) return undefined

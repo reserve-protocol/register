@@ -2,19 +2,22 @@ import { Token, Volatility } from '@/types'
 import { RESERVE_API } from '@/utils/constants'
 import { useQuery } from '@tanstack/react-query'
 
-const getTokensApi = (chain: number) =>
-  `${RESERVE_API}zapper/tokens?chainId=${chain}`
+const getTokensApi = (chain: number, unfiltered = false) =>
+  `${RESERVE_API}zapper/tokens?chainId=${chain}${unfiltered ? '&unfiltered=true' : ''}`
 
 type ZapToken = Token & {
   volatility: Volatility
 }
 
-const useTokenList = (chainId: number) =>
+const useTokenList = (
+  chainId: number,
+  { unfiltered = false }: { unfiltered?: boolean } = {}
+) =>
   useQuery({
     queryKey: ['token-list', chainId],
     queryFn: async () => {
       try {
-        const response = await fetch(getTokensApi(chainId))
+        const response = await fetch(getTokensApi(chainId, unfiltered))
         if (!response.ok) {
           throw new Error('Failed to fetch token list')
         }
