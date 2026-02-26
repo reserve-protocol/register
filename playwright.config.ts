@@ -28,18 +28,43 @@ export default defineConfig({
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
+
+    /* Capture screenshot on test failure for debugging */
+    screenshot: 'only-on-failure',
   },
 
   /* Configure projects for major browsers */
   projects: [
     {
-      name: 'chromium',
+      name: 'desktop',
       use: {
         ...devices['Desktop Chrome'],
         launchOptions: {
           args: ['--disable-web-security'],
         },
       },
+    },
+    {
+      name: 'mobile',
+      use: {
+        ...devices['Pixel 5'],
+        launchOptions: {
+          args: ['--disable-web-security'],
+        },
+      },
+      // Only run responsive test files on mobile
+      testMatch: /responsive/,
+    },
+    {
+      name: 'tablet',
+      use: {
+        viewport: { width: 768, height: 1024 },
+        launchOptions: {
+          args: ['--disable-web-security'],
+        },
+      },
+      // Only run responsive test files on tablet
+      testMatch: /responsive/,
     },
 
     // {
@@ -50,26 +75,6 @@ export default defineConfig({
     // {
     //   name: 'webkit',
     //   use: { ...devices['Desktop Safari'] },
-    // },
-
-    /* Test against mobile viewports. */
-    // {
-    //   name: 'Mobile Chrome',
-    //   use: { ...devices['Pixel 5'] },
-    // },
-    // {
-    //   name: 'Mobile Safari',
-    //   use: { ...devices['iPhone 12'] },
-    // },
-
-    /* Test against branded browsers. */
-    // {
-    //   name: 'Microsoft Edge',
-    //   use: { ...devices['Desktop Edge'], channel: 'msedge' },
-    // },
-    // {
-    //   name: 'Google Chrome',
-    //   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
     // },
   ],
 

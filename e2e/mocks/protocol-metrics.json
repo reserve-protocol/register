@@ -1,0 +1,16 @@
+{
+  "status": "success",
+  "result": {
+    "marketCap": 105561513.33,
+    "tvl": 130196760.22,
+    "rsrLockedUSD": 7327425.69,
+    "rsrStakerAnnualizedRevenue": 453345.23,
+    "rTokenAnnualizedRevenue": 2073174.25,
+    "indexDTFAnnualizedRevenue": 185847.69,
+    "tvlTimeseries": [
+      { "1": 120000000, "8453": 8000000, "42161": 2000000, "timestamp": 1771451791 },
+      { "1": 121000000, "8453": 8100000, "42161": 2000000, "timestamp": 1771538176 },
+      { "1": 122000000, "8453": 8200000, "42161": 2000000, "timestamp": 1771624573 }
+    ]
+  }
+}
