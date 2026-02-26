@@ -188,7 +188,9 @@ const ProgressCell = ({ row }: { row: PendingWithdrawalRow }) => {
   return (
     <div className="flex items-center gap-2 min-w-[120px]">
       <Progress value={progress} className="h-1.5 flex-1" />
-      <span className="text-xs text-legend whitespace-nowrap">{timeLeftStr}</span>
+      <span className="text-xs text-legend whitespace-nowrap">
+        {timeLeftStr}
+      </span>
     </div>
   )
 }
@@ -318,7 +320,7 @@ const flattenPendingWithdrawals = (
   const rows: PendingWithdrawalRow[] = []
 
   for (const position of stakedRSR) {
-    for (const w of position.pendingWithdraws || []) {
+    for (const w of position.pendingWithdrawals || []) {
       rows.push({
         source: 'stakedRSR',
         endId: w.endId,
@@ -362,8 +364,7 @@ const PendingWithdrawals = ({
   voteLocks: PortfolioVoteLock[]
 }) => {
   const rows = flattenPendingWithdrawals(stakedRSR, voteLocks)
-  const { displayData, expanded, toggle, hasMore, total } =
-    useExpandable(rows)
+  const { displayData, expanded, toggle, hasMore, total } = useExpandable(rows)
 
   if (!rows.length) return null
 

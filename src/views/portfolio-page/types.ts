@@ -42,7 +42,7 @@ export interface PortfolioYieldDTF {
   unrealizedPnL: number | null
 }
 
-export interface PortfolioPendingWithdraw {
+export interface PortfolioPendingWithdrawal {
   endId: number
   amount: string
   availableAt: number
@@ -65,7 +65,7 @@ export interface PortfolioStakedRSR {
   activeProposals: PortfolioStakedProposal[]
   rsrAmount: string
   votingWeight: number
-  pendingWithdraws: PortfolioPendingWithdraw[]
+  pendingWithdrawals: PortfolioPendingWithdrawal[]
 }
 
 export interface PortfolioVoteLock {
@@ -81,7 +81,13 @@ export interface PortfolioVoteLock {
   votingPower: string
   delegation?: Address
   rewards: PortfolioReward[]
-  locks: { lockId: string; amount: string; unlockTime: number; delay: number; value: number }[]
+  locks: {
+    lockId: string
+    amount: string
+    unlockTime: number
+    delay: number
+    value: number
+  }[]
   votingWeight: number
   activeProposals: PortfolioStakedProposal[]
 }
