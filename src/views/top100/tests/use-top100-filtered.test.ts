@@ -23,6 +23,8 @@ const makeDTF = (overrides: Partial<Top100DTF> = {}): Top100DTF => ({
   price: 2.5,
   marketCap: 2500,
   basket: [{ address: '0xccc' as Address, symbol: 'USDC' }],
+  performance: [],
+  performancePercent: null,
   ...overrides,
 })
 
