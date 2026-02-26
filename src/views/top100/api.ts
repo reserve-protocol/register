@@ -3,7 +3,7 @@ import { RESERVE_API } from '@/utils/constants'
 import { PERMISSIONLESS_VOTE_LOCK } from '@/views/index-dtf/deploy/permissionless-defaults'
 import { Address, formatEther } from 'viem'
 import { ACTIVE_CHAINS, TOP100_QUERY } from './constants'
-import { Top100DTF } from './types'
+import { Performance, Top100DTF } from './types'
 
 const MAX_CONCURRENT = 5
 
@@ -64,6 +64,8 @@ export const fetchSubgraphDTFs = async (): Promise<Top100DTF[]> => {
           price: null,
           marketCap: null,
           basket: [],
+          performance: [],
+          performancePercent: null,
         })
       }
     } catch (error) {
@@ -151,10 +153,61 @@ export const fetchBrands = async (
   return results
 }
 
+type HistoricalResponse = {
+  timeseries?: { timestamp: number; price: number }[]
+}
+
+export type PerformanceResult = Record<string, Performance[]>
+
+export const fetchPerformance = async (
+  dtfs: Top100DTF[]
+): Promise<PerformanceResult> => {
+  const results: PerformanceResult = {}
+  const now = Math.floor(Date.now() / 1000)
+  const sevenDaysAgo = now - 7 * 24 * 60 * 60
+
+  await fetchWithConcurrency(
+    dtfs,
+    async (dtf) => {
+      try {
+        const sp = new URLSearchParams()
+        sp.set('chainId', dtf.chainId.toString())
+        sp.set('address', dtf.address.toLowerCase())
+        sp.set('from', sevenDaysAgo.toString())
+        sp.set('to', now.toString())
+        sp.set('interval', '1d')
+
+        const response = await fetch(
+          `${RESERVE_API}historical/dtf?${sp.toString()}`
+        )
+        if (!response.ok) return
+
+        const data: HistoricalResponse = await response.json()
+        if (data.timeseries?.length) {
+          const key = `${dtf.chainId}-${dtf.address.toLowerCase()}`
+          results[key] = data.timeseries.map((p) => ({
+            timestamp: p.timestamp,
+            value: p.price,
+          }))
+        }
+      } catch (error) {
+        console.error(
+          `Failed to fetch performance for ${dtf.address}:`,
+          error
+        )
+      }
+    },
+    MAX_CONCURRENT
+  )
+
+  return results
+}
+
 export const enrichDTFs = (
   dtfs: Top100DTF[],
   prices: PriceResult,
-  brands: BrandResult
+  brands: BrandResult,
+  performance: PerformanceResult
 ): Top100DTF[] => {
   return dtfs.map((dtf) => {
     const key = `${dtf.chainId}-${dtf.address.toLowerCase()}`
@@ -164,12 +217,24 @@ export const enrichDTFs = (
     const price = priceData?.price ?? null
     const supply = Number(formatEther(BigInt(dtf.totalSupply)))
     const marketCap = price !== null ? supply * price : null
+    const perf = performance[key] ?? []
+
+    let performancePercent: number | null = null
+    if (perf.length >= 2) {
+      const first = perf[0].value
+      const last = perf[perf.length - 1].value
+      if (first > 0) {
+        performancePercent = ((last - first) / first) * 100
+      }
+    }
 
     return {
       ...dtf,
       price,
       marketCap,
       basket: (priceData?.basket ?? []) as Top100DTF['basket'],
+      performance: perf,
+      performancePercent,
       brand: brandData,
     }
   })

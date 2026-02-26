@@ -1,17 +1,36 @@
 import ChainLogo from '@/components/icons/ChainLogo'
 import TokenLogo from '@/components/token-logo'
 import StackTokenLogo from '@/components/token-logo/StackTokenLogo'
+import { ChartConfig, ChartContainer } from '@/components/ui/chart'
 import DataTable, { SorteableButton } from '@/components/ui/data-table'
 import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
 import { formatCurrency, getFolioRoute, humanizeDateToNow } from '@/utils'
 import { ColumnDef } from '@tanstack/react-table'
 import { useNavigate } from 'react-router-dom'
-import { Top100DTF } from '../types'
+import { Line, LineChart, YAxis } from 'recharts'
+import { Performance, Top100DTF } from '../types'
 import Top100BasketHoverCard from './top100-basket-hover-card'
 import Top100TablePlaceholder from './top100-table-placeholder'
 
 const LIMIT_ASSETS = 7
+
+const chartConfig = {
+  desktop: {
+    label: 'Desktop',
+    color: 'hsl(var(--card))',
+  },
+} satisfies ChartConfig
+
+const formatPercentageChange = (performance: Performance[]) => {
+  if (performance.length < 2) return <span className="text-legend">No data</span>
+  const first = performance[0].value
+  const last = performance[performance.length - 1].value
+  if (first <= 0) return <span className="text-legend">No data</span>
+  const change = ((last - first) / first) * 100
+  if (Math.abs(change) < 0.005) return '0.00%'
+  return `${change > 0 ? '+' : ''}${change.toFixed(2)}%`
+}
 
 const columns: ColumnDef<Top100DTF>[] = [
   {
@@ -105,6 +124,52 @@ const columns: ColumnDef<Top100DTF>[] = [
         )}
       </div>
     ),
+  },
+  {
+    header: ({ column }) => (
+      <SorteableButton column={column}>
+        Performance (7d)
+      </SorteableButton>
+    ),
+    accessorKey: 'performancePercent',
+    cell: ({ row }) => {
+      const { performance, price } = row.original
+
+      if (price === null) {
+        return (
+          <div className="flex items-center gap-2">
+            <Skeleton className="h-5 w-[60px]" />
+            <Skeleton className="h-6 w-16" />
+          </div>
+        )
+      }
+
+      return (
+        <div className="flex items-center justify-center gap-4">
+          <div className="text-right">
+            <span>{formatPercentageChange(performance)}</span>
+            <span className="block text-legend text-xs mt-0.5">
+              (${formatCurrency(price, 5)})
+            </span>
+          </div>
+          {performance.length > 1 && (
+            <ChartContainer config={chartConfig} className="h-6 w-16">
+              <LineChart data={performance}>
+                <YAxis hide visibility="0" domain={['dataMin', 'dataMax']} />
+                <Line
+                  type="monotone"
+                  dataKey="value"
+                  stroke="currentColor"
+                  strokeWidth={1}
+                  dot={false}
+                  isAnimationActive={false}
+                />
+              </LineChart>
+            </ChartContainer>
+          )}
+        </div>
+      )
+    },
   },
   {
     header: ({ column }) => (

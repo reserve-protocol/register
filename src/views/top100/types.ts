@@ -1,5 +1,7 @@
 import { Address } from 'viem'
 
+export type Performance = { timestamp: number; value: number }
+
 export type Top100DTF = {
   address: Address
   name: string
@@ -12,6 +14,9 @@ export type Top100DTF = {
   price: number | null
   marketCap: number | null
   basket: { address: Address; symbol: string; weight?: string }[]
+  // Enriched from historical API
+  performance: Performance[]
+  performancePercent: number | null
   // Enriched from brand API (optional)
   brand?: { icon?: string; cover?: string; tags?: string[] }
 }
