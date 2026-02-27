@@ -50,9 +50,10 @@ const columns: ColumnDef<DTFRow, any>[] = [
       </SorteableButton>
     ),
     cell: ({ row }) => {
-      const perf = row.original.performance7d
-      if (perf == null || isNaN(perf))
+      const raw = row.original.performance7d
+      if (raw == null || isNaN(raw))
         return <span className="text-sm text-legend">—</span>
+      const perf = raw * 100
       const abs = Math.abs(perf)
       const isNear0 = abs < 0.01
       let text: string

@@ -33,9 +33,10 @@ const columns: ColumnDef<PortfolioRSRBalance, any>[] = [
     accessorKey: 'performance7d',
     header: 'Performance (7D)',
     cell: ({ row }) => {
-      const perf = row.original.performance7d
-      if (perf == null)
+      const raw = row.original.performance7d
+      if (raw == null)
         return <span className="text-sm text-legend">—</span>
+      const perf = raw * 100
       const abs = Math.abs(perf)
       const isNear0 = abs < 0.01
       let text: string
