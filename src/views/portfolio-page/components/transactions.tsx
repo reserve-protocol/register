@@ -11,8 +11,13 @@ import {
   ExplorerDataType,
   getExplorerLink,
 } from '@/utils/getExplorerLink'
+import {
+  portfolioStTokenAtom,
+  stakingSidebarOpenAtom,
+} from '@/views/index-dtf/overview/components/staking/atoms'
 import { ColumnDef } from '@tanstack/react-table'
 import dayjs from 'dayjs'
+import { useSetAtom } from 'jotai'
 import { ArrowUpRight, History } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { Address } from 'viem'
@@ -22,11 +27,40 @@ import { ExpandToggle, useExpandable } from './expand-toggle'
 import SectionHeader from './section-header'
 
 const TokenCell = ({ tx }: { tx: PortfolioTransaction }) => {
+  const setStakingSidebarOpen = useSetAtom(stakingSidebarOpenAtom)
+  const setPortfolioStToken = useSetAtom(portfolioStTokenAtom)
+
   if (!tx.token) return <span className="text-sm text-legend">—</span>
 
   const underlying = tx.token.underlying
   const logoSymbol = underlying?.symbol ?? tx.token.symbol
   const logoAddress = (underlying?.address ?? tx.token.address) as Address
+  const isIndexStToken = tx.protocol === 'index' && !!underlying
+
+  const handleStTokenClick = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    e.preventDefault()
+    setStakingSidebarOpen(true)
+    setPortfolioStToken({
+      id: tx.token!.address as Address,
+      token: {
+        name: tx.token!.symbol,
+        symbol: tx.token!.symbol,
+        decimals: 18,
+        totalSupply: '',
+      },
+      underlying: {
+        name: underlying!.symbol,
+        symbol: underlying!.symbol,
+        address: underlying!.address as Address,
+        decimals: 18,
+      },
+      legacyGovernance: [],
+      rewardTokens: [],
+      chainId: tx.chainId,
+    })
+  }
+
   const route =
     tx.protocol === 'index'
       ? getFolioRoute(tx.token.address, tx.chainId)
@@ -48,14 +82,23 @@ const TokenCell = ({ tx }: { tx: PortfolioTransaction }) => {
           height={10}
         />
       </div>
-      <Link
-        to={route}
-        className="text-sm text-primary hover:underline truncate max-w-[120px]"
-        target="_blank"
-        onClick={(e) => e.stopPropagation()}
-      >
-        {tx.token.symbol}
-      </Link>
+      {isIndexStToken ? (
+        <button
+          className="text-sm text-primary hover:underline truncate max-w-[120px]"
+          onClick={handleStTokenClick}
+        >
+          {tx.token.symbol}
+        </button>
+      ) : (
+        <Link
+          to={route}
+          className="text-sm text-primary hover:underline truncate max-w-[120px]"
+          target="_blank"
+          onClick={(e) => e.stopPropagation()}
+        >
+          {tx.token.symbol}
+        </Link>
+      )}
     </div>
   )
 }
@@ -66,7 +109,7 @@ const columns: ColumnDef<PortfolioTransaction, any>[] = [
     accessorKey: 'timestamp',
     header: 'Date',
     cell: ({ row }) => (
-      <span className="text-sm text-legend whitespace-nowrap h-10 flex items-center">
+      <span className="text-sm text-legend whitespace-nowrap min-h-10 flex items-center">
         {dayjs.unix(row.original.timestamp).format('MMM D, YYYY HH:mm')}
       </span>
     ),

@@ -3,7 +3,7 @@ import TokenLogo from '@/components/token-logo'
 import DataTable from '@/components/ui/data-table'
 import { getProposalState } from '@/lib/governance'
 import { cn } from '@/lib/utils'
-import { formatCurrency, getProposalTitle } from '@/utils'
+import { formatCurrency, getProposalTitle, parseDuration } from '@/utils'
 import { formatConstant, PROPOSAL_STATES, ROUTES } from '@/utils/constants'
 import { getFolioRoute, getTokenRoute } from '@/utils'
 import { ColumnDef } from '@tanstack/react-table'
@@ -85,6 +85,24 @@ const columns: ColumnDef<PortfolioProposal, any>[] = [
     cell: ({ row }) => {
       const title = getProposalTitle(row.original.description)
       const voting = resolveState(row.original)
+
+      if (voting.state === PROPOSAL_STATES.PENDING && voting.deadline) {
+        return (
+          <div>
+            <p className="font-bold text-sm text-primary">{title}</p>
+            <div className="flex items-center gap-1 mt-0.5 text-xs text-legend">
+              <span>Voting starts in:</span>
+              <span className="font-semibold text-foreground">
+                {parseDuration(voting.deadline, {
+                  units: ['d', 'h', 'm'],
+                  round: true,
+                })}
+              </span>
+            </div>
+          </div>
+        )
+      }
+
       const forV = +row.original.forWeightedVotes || 0
       const abstainV = +row.original.abstainWeightedVotes || 0
       const quorumMet = forV + abstainV >= (+row.original.quorumVotes || 0)
@@ -165,18 +183,22 @@ const ActiveProposals = ({
   voteLocks: PortfolioVoteLock[]
 }) => {
   const proposals: PortfolioProposal[] = useMemo(() => {
-    const staked = stakedRSR.flatMap((s) =>
-      (s.activeProposals || []).map((p) => ({
-        ...p,
-        dtfName: s.name,
-        dtfSymbol: s.symbol,
-        dtfAddress: s.address,
-        chainId: s.chainId,
-        isIndexDTF: false,
-      }))
-    )
-    const locked = voteLocks.flatMap((v) =>
-      (v.activeProposals || []).map((p) => ({
+    const staked = stakedRSR
+      .filter((s) => Number(s.amount) > 0)
+      .flatMap((s) =>
+        (s.activeProposals || []).map((p) => ({
+          ...p,
+          dtfName: s.name,
+          dtfSymbol: s.symbol,
+          dtfAddress: s.address,
+          chainId: s.chainId,
+          isIndexDTF: false,
+        }))
+      )
+    const locked = voteLocks
+      .filter((v) => Number(v.amount) > 0)
+      .flatMap((v) =>
+        (v.activeProposals || []).map((p) => ({
         ...p,
         dtfName: v.dtfs?.[0]?.name || v.symbol,
         dtfSymbol: v.dtfs?.[0]?.symbol || v.symbol,

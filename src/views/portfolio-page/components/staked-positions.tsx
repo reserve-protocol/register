@@ -1,5 +1,6 @@
 import ChainLogo from '@/components/icons/ChainLogo'
 import TokenLogo from '@/components/token-logo'
+import { Button } from '@/components/ui/button'
 import DataTable, { SorteableButton } from '@/components/ui/data-table'
 import {
   formatCurrency,
@@ -20,7 +21,7 @@ const columns: ColumnDef<PortfolioStakedRSR, any>[] = [
     accessorKey: 'name',
     header: 'Position',
     cell: ({ row }) => (
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 min-h-10">
         <div className="relative flex-shrink-0">
           <TokenLogo symbol="RSR" size="lg" />
           <ChainLogo
@@ -108,6 +109,32 @@ const columns: ColumnDef<PortfolioStakedRSR, any>[] = [
         </span>
       )
     },
+  },
+  {
+    id: 'action',
+    header: () => <span className="flex justify-end">Action</span>,
+    cell: ({ row }) => (
+      <div className="flex justify-end">
+        <Button
+          variant="outline"
+          size="sm"
+          className="rounded-full text-primary border-primary hover:text-primary"
+          onClick={(e) => {
+            e.stopPropagation()
+            window.open(
+              getTokenRoute(
+                row.original.address,
+                row.original.chainId,
+                'staking'
+              ),
+              '_blank'
+            )
+          }}
+        >
+          Modify
+        </Button>
+      </div>
+    ),
   },
 ]
 

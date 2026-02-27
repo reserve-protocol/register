@@ -2,23 +2,33 @@ import TokenLogo from '@/components/token-logo'
 import ChainLogo from '@/components/icons/ChainLogo'
 import DataTable from '@/components/ui/data-table'
 import { Button } from '@/components/ui/button'
-import { Progress } from '@/components/ui/progress'
-import { TransactionButtonContainer } from '@/components/ui/transaction'
 import dtfIndexStakingVault from '@/abis/dtf-index-staking-vault'
 import dtfIndexUnstakingManager from '@/abis/dtf-index-unstaking-manager'
 import StRSR from '@/abis/StRSR'
 import useCurrentTime from '@/hooks/useCurrentTime'
+import { walletAtom, walletChainAtom } from '@/state/atoms'
 import {
   formatToSignificantDigits,
   formatUSD,
+  getTokenRoute,
   parseDurationShort,
 } from '@/utils'
+import { useConnectModal } from '@rainbow-me/rainbowkit'
+import {
+  portfolioStTokenAtom,
+  stakingSidebarOpenAtom,
+} from '@/views/index-dtf/overview/components/staking/atoms'
 import { ColumnDef } from '@tanstack/react-table'
+import { useAtomValue, useSetAtom } from 'jotai'
 import { Clock } from 'lucide-react'
+import { useCallback, useEffect, useRef } from 'react'
+import { Link } from 'react-router-dom'
+import { toast } from 'sonner'
 import { Address } from 'viem'
 import {
   useAccount,
   useReadContract,
+  useSwitchChain,
   useWaitForTransactionReceipt,
   useWriteContract,
 } from 'wagmi'
@@ -36,6 +46,7 @@ type PendingWithdrawalRow =
       value: number
       chainId: number
       stRSRAddress: Address
+      dtfAddress: Address
       tokenSymbol: string
     }
   | {
@@ -63,46 +74,59 @@ const StakedRSRWithdrawButton = ({
   chainId: number
   availableAt: number
 }) => {
+  const wallet = useAtomValue(walletAtom)
+  const walletChain = useAtomValue(walletChainAtom)
+  const { openConnectModal } = useConnectModal()
+  const { switchChain } = useSwitchChain()
   const { address: account } = useAccount()
   const { writeContract, data: hash, isPending } = useWriteContract()
   const { data: receipt } = useWaitForTransactionReceipt({ hash, chainId })
   const currentTime = useCurrentTime()
   const isReady = availableAt <= currentTime
   const loading = !receipt && (isPending || !!hash)
+  const withdrawn = receipt?.status === 'success'
+  const toastedRef = useRef(false)
+
+  useEffect(() => {
+    if (withdrawn && !toastedRef.current) {
+      toastedRef.current = true
+      toast.success('Withdrawal successful')
+    }
+  }, [withdrawn])
+
+  const handleClick = useCallback(
+    (e: React.MouseEvent) => {
+      e.stopPropagation()
+      if (!wallet) {
+        openConnectModal?.()
+        return
+      }
+      if (walletChain !== chainId) {
+        switchChain?.({ chainId })
+        return
+      }
+      if (!account) return
+      writeContract({
+        abi: StRSR,
+        functionName: 'withdraw',
+        address: stRSRAddress,
+        args: [account, BigInt(endId)],
+        chainId,
+      })
+    },
+    [wallet, walletChain, chainId, account, openConnectModal, switchChain, writeContract, stRSRAddress, endId]
+  )
 
   return (
-    <TransactionButtonContainer
-      chain={chainId}
+    <Button
+      onClick={handleClick}
+      disabled={!isReady || withdrawn || loading}
+      variant="outline"
+      className="rounded-full text-sm hover:text-primary text-primary disabled:border-border border-primary"
       size="sm"
-      switchChainButtonClassName="rounded-full"
-      connectButtonClassName="rounded-full"
     >
-      <Button
-        onClick={(e) => {
-          e.stopPropagation()
-          if (!account) return
-          writeContract({
-            abi: StRSR,
-            functionName: 'withdraw',
-            address: stRSRAddress,
-            args: [account, BigInt(endId)],
-            chainId,
-          })
-        }}
-        disabled={!isReady || receipt?.status === 'success' || loading}
-        variant="outline"
-        className="rounded-full text-sm hover:text-primary text-primary disabled:border-border border-primary"
-        size="sm"
-      >
-        {loading
-          ? hash
-            ? 'Confirming tx...'
-            : 'Pending, sign in wallet'
-          : receipt?.status === 'success'
-            ? 'Withdrawn'
-            : 'Withdraw'}
-      </Button>
-    </TransactionButtonContainer>
+      {withdrawn ? 'Withdrawn' : 'Withdraw'}
+    </Button>
   )
 }
 
@@ -117,6 +141,10 @@ const VoteLockWithdrawButton = ({
   chainId: number
   unlockTime: number
 }) => {
+  const wallet = useAtomValue(walletAtom)
+  const walletChain = useAtomValue(walletChainAtom)
+  const { openConnectModal } = useConnectModal()
+  const { switchChain } = useSwitchChain()
   const { data: unstakingManagerAddress } = useReadContract({
     abi: dtfIndexStakingVault,
     functionName: 'unstakingManager',
@@ -128,40 +156,82 @@ const VoteLockWithdrawButton = ({
   const currentTime = useCurrentTime()
   const isReady = unlockTime <= currentTime
   const loading = !receipt && (isPending || !!hash)
+  const withdrawn = receipt?.status === 'success'
+  const toastedRef = useRef(false)
+
+  useEffect(() => {
+    if (withdrawn && !toastedRef.current) {
+      toastedRef.current = true
+      toast.success('Withdrawal successful')
+    }
+  }, [withdrawn])
+
+  const handleClick = useCallback(
+    (e: React.MouseEvent) => {
+      e.stopPropagation()
+      if (!wallet) {
+        openConnectModal?.()
+        return
+      }
+      if (walletChain !== chainId) {
+        switchChain?.({ chainId })
+        return
+      }
+      if (!unstakingManagerAddress) return
+      writeContract({
+        abi: dtfIndexUnstakingManager,
+        functionName: 'claimLock',
+        address: unstakingManagerAddress,
+        args: [BigInt(lockId)],
+        chainId,
+      })
+    },
+    [wallet, walletChain, chainId, unstakingManagerAddress, openConnectModal, switchChain, writeContract, lockId]
+  )
 
   return (
-    <TransactionButtonContainer
-      chain={chainId}
+    <Button
+      onClick={handleClick}
+      disabled={!isReady || withdrawn || loading}
+      variant="outline"
+      className="rounded-full text-sm hover:text-primary text-primary disabled:border-border border-primary"
       size="sm"
-      switchChainButtonClassName="rounded-full"
-      connectButtonClassName="rounded-full"
     >
-      <Button
-        onClick={(e) => {
-          e.stopPropagation()
-          if (!unstakingManagerAddress) return
-          writeContract({
-            abi: dtfIndexUnstakingManager,
-            functionName: 'claimLock',
-            address: unstakingManagerAddress,
-            args: [BigInt(lockId)],
-            chainId,
-          })
-        }}
-        disabled={!isReady || receipt?.status === 'success' || loading}
-        variant="outline"
-        className="rounded-full text-sm hover:text-primary text-primary disabled:border-border border-primary"
-        size="sm"
-      >
-        {loading
-          ? hash
-            ? 'Confirming tx...'
-            : 'Pending, sign in wallet'
-          : receipt?.status === 'success'
-            ? 'Withdrawn'
-            : 'Withdraw'}
-      </Button>
-    </TransactionButtonContainer>
+      {withdrawn ? 'Withdrawn' : 'Withdraw'}
+    </Button>
+  )
+}
+
+const CircularProgress = ({ value }: { value: number }) => {
+  const r = 6
+  const circumference = 2 * Math.PI * r
+  const offset = circumference - (value / 100) * circumference
+
+  return (
+    <svg width="16" height="16" viewBox="0 0 16 16" className="flex-shrink-0">
+      <circle
+        cx="8"
+        cy="8"
+        r={r}
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        className="text-border"
+      />
+      <circle
+        cx="8"
+        cy="8"
+        r={r}
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeDasharray={circumference}
+        strokeDashoffset={offset}
+        strokeLinecap="round"
+        className="text-primary"
+        transform="rotate(-90 8 8)"
+      />
+    </svg>
   )
 }
 
@@ -171,27 +241,69 @@ const ProgressCell = ({ row }: { row: PendingWithdrawalRow }) => {
   const isReady = deadline <= currentTime
 
   if (isReady) {
-    return (
-      <span className="rounded-full bg-success/10 border border-success px-2 py-0.5 text-xs font-medium text-success">
-        Ready
-      </span>
-    )
+    return <span className="text-sm font-light text-success">Ready</span>
   }
 
-  const elapsed = row.delay - (deadline - currentTime)
-  const progress = Math.min(100, Math.max(0, (elapsed / row.delay) * 100))
   const timeLeft = deadline - currentTime
+  const elapsed = row.delay - timeLeft
+  const progress = Math.min(100, Math.max(0, (elapsed / row.delay) * 100))
   const timeLeftStr = parseDurationShort(timeLeft)
     .replaceAll(' ', '')
     .replaceAll(',', ' ')
 
   return (
-    <div className="flex items-center gap-2 min-w-[120px]">
-      <Progress value={progress} className="h-1.5 flex-1" />
-      <span className="text-xs text-legend whitespace-nowrap">
-        {timeLeftStr}
-      </span>
+    <div className="flex items-center gap-1.5 min-w-[120px]">
+      <CircularProgress value={progress} />
+      <span className="text-sm text-legend whitespace-nowrap">{timeLeftStr}</span>
     </div>
+  )
+}
+
+const SourceCell = ({ row }: { row: PendingWithdrawalRow }) => {
+  const setStakingSidebarOpen = useSetAtom(stakingSidebarOpenAtom)
+  const setPortfolioStToken = useSetAtom(portfolioStTokenAtom)
+
+  if (row.source === 'stakedRSR') {
+    return (
+      <Link
+        to={getTokenRoute(row.dtfAddress, row.chainId, 'staking')}
+        className="text-sm text-primary hover:underline"
+        target="_blank"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {row.tokenSymbol}
+      </Link>
+    )
+  }
+
+  return (
+    <button
+      className="text-sm text-primary hover:underline"
+      onClick={(e) => {
+        e.stopPropagation()
+        setStakingSidebarOpen(true)
+        setPortfolioStToken({
+          id: row.stTokenAddress,
+          token: {
+            name: row.tokenSymbol,
+            symbol: row.tokenSymbol,
+            decimals: 18,
+            totalSupply: '',
+          },
+          underlying: {
+            name: row.underlyingSymbol,
+            symbol: row.underlyingSymbol,
+            address: row.underlyingAddress,
+            decimals: 18,
+          },
+          legacyGovernance: [],
+          rewardTokens: [],
+          chainId: row.chainId,
+        })
+      }}
+    >
+      {row.tokenSymbol}
+    </button>
   )
 }
 
@@ -224,7 +336,7 @@ const columns: ColumnDef<PendingWithdrawalRow, any>[] = [
       const d = row.original
       if (d.source === 'stakedRSR') {
         return (
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 min-h-10">
             <div className="relative flex-shrink-0">
               <TokenLogo symbol="RSR" size="lg" />
               <ChainLogo
@@ -239,7 +351,7 @@ const columns: ColumnDef<PendingWithdrawalRow, any>[] = [
         )
       }
       return (
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 min-h-10">
           <div className="relative flex-shrink-0">
             <TokenLogo
               symbol={d.underlyingSymbol}
@@ -262,14 +374,7 @@ const columns: ColumnDef<PendingWithdrawalRow, any>[] = [
   {
     id: 'source',
     header: 'Source',
-    cell: ({ row }) => {
-      const d = row.original
-      return (
-        <span className="text-sm text-legend">
-          {d.source === 'stakedRSR' ? d.tokenSymbol : d.tokenSymbol}
-        </span>
-      )
-    },
+    cell: ({ row }) => <SourceCell row={row.original} />,
     meta: { className: 'hidden sm:table-cell' },
   },
   {
@@ -330,6 +435,7 @@ const flattenPendingWithdrawals = (
         value: w.value,
         chainId: position.chainId,
         stRSRAddress: position.stRSRAddress,
+        dtfAddress: position.address,
         tokenSymbol: `${position.symbol.toLowerCase()}RSR`,
       })
     }

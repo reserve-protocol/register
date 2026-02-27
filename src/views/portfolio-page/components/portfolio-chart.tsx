@@ -126,7 +126,7 @@ const ChartLoadingSkeleton = () => {
   }, [])
 
   return (
-    <div className="relative h-[386px] rounded-2xl bg-muted animate-pulse flex items-center justify-center">
+    <div className="relative h-[414px] rounded-2xl bg-muted animate-pulse flex items-center justify-center">
       <div className="flex items-center gap-2 bg-card rounded-full px-4 py-2 text-sm text-primary border border-primary animate-fade-in">
         <Loader size={16} className="animate-spin-slow" />
         {CHART_LOADING_TEXTS[textIndex]}

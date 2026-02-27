@@ -22,12 +22,16 @@ const columns: ColumnDef<VotingPowerRow, any>[] = [
     cell: ({ row }) => {
       const d = row.original
       if (d.source === 'voteLock') {
-        return <GovernsCell dtfs={d.dtfs} chainId={d.chainId} />
+        return (
+          <div className="min-h-10 flex items-center">
+            <GovernsCell dtfs={d.dtfs} chainId={d.chainId} />
+          </div>
+        )
       }
       return (
         <Link
           to={getTokenRoute(d.address, d.chainId)}
-          className="text-sm text-primary hover:underline"
+          className="text-sm text-primary hover:underline min-h-10 flex items-center"
           target="_blank"
           onClick={(e) => e.stopPropagation()}
         >
@@ -146,8 +150,8 @@ const VotingPower = ({
   stakedRSR: PortfolioStakedRSR[]
 }) => {
   const mergedData: VotingPowerRow[] = [
-    ...voteLocks.map((v) => ({ source: 'voteLock' as const, ...v })),
-    ...stakedRSR.map((s) => ({ source: 'stakedRSR' as const, ...s })),
+    ...voteLocks.filter((v) => Number(v.votingPower) > 0).map((v) => ({ source: 'voteLock' as const, ...v })),
+    ...stakedRSR.filter((s) => Number(s.votingPower) > 0).map((s) => ({ source: 'stakedRSR' as const, ...s })),
   ]
 
   const { displayData, expanded, toggle, hasMore, total } =

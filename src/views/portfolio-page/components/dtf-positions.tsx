@@ -25,7 +25,7 @@ const columns: ColumnDef<DTFRow, any>[] = [
     accessorKey: 'name',
     header: 'Name',
     cell: ({ row }) => (
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 min-h-10">
         <div className="relative flex-shrink-0">
           <TokenLogo
             symbol={row.original.symbol}

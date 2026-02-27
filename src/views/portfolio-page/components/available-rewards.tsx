@@ -3,13 +3,20 @@ import ChainLogo from '@/components/icons/ChainLogo'
 import TokenLogo from '@/components/token-logo'
 import { Button } from '@/components/ui/button'
 import DataTable from '@/components/ui/data-table'
-import { TransactionButtonContainer } from '@/components/ui/transaction'
 import { formatCurrency, formatToSignificantDigits, formatUSD } from '@/utils'
+import { useConnectModal } from '@rainbow-me/rainbowkit'
 import { ColumnDef } from '@tanstack/react-table'
+import { useAtomValue } from 'jotai'
 import { Gift } from 'lucide-react'
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import { walletAtom, walletChainAtom } from '@/state/atoms'
+import { toast } from 'sonner'
 import { Address } from 'viem'
-import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
+import {
+  useSwitchChain,
+  useWaitForTransactionReceipt,
+  useWriteContract,
+} from 'wagmi'
 import { PortfolioVoteLock } from '../types'
 import { ExpandToggle, useExpandable } from './expand-toggle'
 import SectionHeader from './section-header'
@@ -26,6 +33,10 @@ type RewardRow = {
 }
 
 const ClaimButton = ({ reward }: { reward: RewardRow }) => {
+  const wallet = useAtomValue(walletAtom)
+  const walletChain = useAtomValue(walletChainAtom)
+  const { openConnectModal } = useConnectModal()
+  const { switchChain } = useSwitchChain()
   const { writeContract, data: hash, isPending } = useWriteContract()
   const { data: receipt } = useWaitForTransactionReceipt({
     hash,
@@ -34,41 +45,41 @@ const ClaimButton = ({ reward }: { reward: RewardRow }) => {
   const [claimed, setClaimed] = useState(false)
 
   useEffect(() => {
-    if (receipt?.status === 'success') setClaimed(true)
+    if (receipt?.status === 'success') {
+      setClaimed(true)
+      toast.success('Rewards claimed')
+    }
   }, [receipt])
 
   const loading = !receipt && (isPending || !!hash)
 
+  const handleClick = useCallback(() => {
+    if (!wallet) {
+      openConnectModal?.()
+      return
+    }
+    if (walletChain !== reward.chainId) {
+      switchChain?.({ chainId: reward.chainId })
+      return
+    }
+    writeContract({
+      abi: dtfIndexStakingVault,
+      functionName: 'claimRewards',
+      address: reward.stTokenAddress,
+      args: [[reward.address]],
+      chainId: reward.chainId,
+    })
+  }, [wallet, walletChain, reward, openConnectModal, switchChain, writeContract])
+
   return (
-    <TransactionButtonContainer
-      chain={reward.chainId}
+    <Button
+      onClick={handleClick}
+      disabled={claimed || loading}
+      className="rounded-full text-sm"
       size="sm"
-      switchChainButtonClassName="rounded-full"
-      connectButtonClassName="rounded-full"
     >
-      <Button
-        onClick={() =>
-          writeContract({
-            abi: dtfIndexStakingVault,
-            functionName: 'claimRewards',
-            address: reward.stTokenAddress,
-            args: [[reward.address]],
-            chainId: reward.chainId,
-          })
-        }
-        disabled={claimed || loading}
-        className="rounded-full text-sm"
-        size="sm"
-      >
-        {loading
-          ? hash
-            ? 'Confirming...'
-            : 'Sign in wallet'
-          : claimed
-            ? 'Claimed'
-            : 'Claim'}
-      </Button>
-    </TransactionButtonContainer>
+      {claimed ? 'Claimed' : 'Claim'}
+    </Button>
   )
 }
 

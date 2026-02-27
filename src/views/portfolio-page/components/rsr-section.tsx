@@ -16,7 +16,7 @@ const columns: ColumnDef<PortfolioRSRBalance, any>[] = [
     id: 'name',
     header: 'Name',
     cell: ({ row }) => (
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 min-h-10">
         <div className="relative flex-shrink-0">
           <TokenLogo symbol="RSR" size="lg" />
           <ChainLogo
@@ -103,10 +103,11 @@ const RSRSection = ({
 }: {
   rsrBalances: PortfolioRSRBalance[]
 }) => {
+  const filtered = rsrBalances.filter((r) => Number(r.amount) > 0)
   const { displayData, expanded, toggle, hasMore, total } =
-    useExpandable(rsrBalances)
+    useExpandable(filtered)
 
-  if (!rsrBalances.length) return null
+  if (!filtered.length) return null
 
   return (
     <div>
