@@ -36,7 +36,7 @@ const ClaimButton = ({ reward }: { reward: RewardRow }) => {
   const wallet = useAtomValue(walletAtom)
   const walletChain = useAtomValue(walletChainAtom)
   const { openConnectModal } = useConnectModal()
-  const { switchChain } = useSwitchChain()
+  const { switchChainAsync } = useSwitchChain()
   const { writeContract, data: hash, isPending } = useWriteContract()
   const { data: receipt } = useWaitForTransactionReceipt({
     hash,
@@ -53,14 +53,13 @@ const ClaimButton = ({ reward }: { reward: RewardRow }) => {
 
   const loading = !receipt && (isPending || !!hash)
 
-  const handleClick = useCallback(() => {
+  const handleClick = useCallback(async () => {
     if (!wallet) {
       openConnectModal?.()
       return
     }
     if (walletChain !== reward.chainId) {
-      switchChain?.({ chainId: reward.chainId })
-      return
+      await switchChainAsync?.({ chainId: reward.chainId })
     }
     writeContract({
       abi: dtfIndexStakingVault,
@@ -69,7 +68,7 @@ const ClaimButton = ({ reward }: { reward: RewardRow }) => {
       args: [[reward.address]],
       chainId: reward.chainId,
     })
-  }, [wallet, walletChain, reward, openConnectModal, switchChain, writeContract])
+  }, [wallet, walletChain, reward, openConnectModal, switchChainAsync, writeContract])
 
   return (
     <Button

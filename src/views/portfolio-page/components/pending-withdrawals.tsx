@@ -77,7 +77,7 @@ const StakedRSRWithdrawButton = ({
   const wallet = useAtomValue(walletAtom)
   const walletChain = useAtomValue(walletChainAtom)
   const { openConnectModal } = useConnectModal()
-  const { switchChain } = useSwitchChain()
+  const { switchChainAsync } = useSwitchChain()
   const { address: account } = useAccount()
   const { writeContract, data: hash, isPending } = useWriteContract()
   const { data: receipt } = useWaitForTransactionReceipt({ hash, chainId })
@@ -95,15 +95,14 @@ const StakedRSRWithdrawButton = ({
   }, [withdrawn])
 
   const handleClick = useCallback(
-    (e: React.MouseEvent) => {
+    async (e: React.MouseEvent) => {
       e.stopPropagation()
       if (!wallet) {
         openConnectModal?.()
         return
       }
       if (walletChain !== chainId) {
-        switchChain?.({ chainId })
-        return
+        await switchChainAsync?.({ chainId })
       }
       if (!account) return
       writeContract({
@@ -114,7 +113,7 @@ const StakedRSRWithdrawButton = ({
         chainId,
       })
     },
-    [wallet, walletChain, chainId, account, openConnectModal, switchChain, writeContract, stRSRAddress, endId]
+    [wallet, walletChain, chainId, account, openConnectModal, switchChainAsync, writeContract, stRSRAddress, endId]
   )
 
   return (
@@ -144,7 +143,7 @@ const VoteLockWithdrawButton = ({
   const wallet = useAtomValue(walletAtom)
   const walletChain = useAtomValue(walletChainAtom)
   const { openConnectModal } = useConnectModal()
-  const { switchChain } = useSwitchChain()
+  const { switchChainAsync } = useSwitchChain()
   const { data: unstakingManagerAddress } = useReadContract({
     abi: dtfIndexStakingVault,
     functionName: 'unstakingManager',
@@ -167,15 +166,14 @@ const VoteLockWithdrawButton = ({
   }, [withdrawn])
 
   const handleClick = useCallback(
-    (e: React.MouseEvent) => {
+    async (e: React.MouseEvent) => {
       e.stopPropagation()
       if (!wallet) {
         openConnectModal?.()
         return
       }
       if (walletChain !== chainId) {
-        switchChain?.({ chainId })
-        return
+        await switchChainAsync?.({ chainId })
       }
       if (!unstakingManagerAddress) return
       writeContract({
@@ -186,7 +184,7 @@ const VoteLockWithdrawButton = ({
         chainId,
       })
     },
-    [wallet, walletChain, chainId, unstakingManagerAddress, openConnectModal, switchChain, writeContract, lockId]
+    [wallet, walletChain, chainId, unstakingManagerAddress, openConnectModal, switchChainAsync, writeContract, lockId]
   )
 
   return (
