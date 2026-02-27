@@ -1,7 +1,7 @@
 import { keepPreviousData, useQuery as useReactQuery } from '@tanstack/react-query'
 import { RequestDocument } from 'graphql-request'
 import { useAtomValue } from 'jotai'
-import { GRAPH_CLIENTS, gqlClientAtom } from 'state/atoms'
+import { chainIdAtom, GRAPH_CLIENTS, gqlClientAtom } from 'state/atoms'
 import { supportedChainList } from 'utils/constants'
 
 // SWR-compatible config options
@@ -38,10 +38,11 @@ const useQuery = <T = any>(
   config: QueryConfig = {}
 ): UseQueryReturn<T> => {
   const client = useAtomValue(gqlClientAtom)
+  const chainId = useAtomValue(chainIdAtom)
   const { keepPreviousData: shouldKeepPrevious, ...restConfig } = config
 
   const result = useReactQuery({
-    queryKey: query ? ['graphql', query, variables] : ['graphql-disabled'],
+    queryKey: query ? ['graphql', chainId, query, variables] : ['graphql-disabled'],
     queryFn: () => client.request<T>(query as RequestDocument, variables),
     enabled: !!query && (config.enabled !== false),
     placeholderData: shouldKeepPrevious ? keepPreviousData : undefined,
