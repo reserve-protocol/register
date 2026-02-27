@@ -1,15 +1,16 @@
-import ChainLogo from '@/components/icons/ChainLogo'
-import TokenLogo from '@/components/token-logo'
+import TokenLogoWithChain from '@/components/token-logo/TokenLogoWithChain'
 import DataTable from '@/components/ui/data-table'
-import { getProposalState } from '@/lib/governance'
+import { getProposalState, VotingState } from '@/lib/governance'
 import { cn } from '@/lib/utils'
 import { formatCurrency, getProposalTitle, parseDuration } from '@/utils'
 import { formatConstant, PROPOSAL_STATES, ROUTES } from '@/utils/constants'
 import { getFolioRoute, getTokenRoute } from '@/utils'
 import { ColumnDef } from '@tanstack/react-table'
 import dayjs from 'dayjs'
+import { useAtomValue } from 'jotai'
 import { ScrollText } from 'lucide-react'
 import { useMemo } from 'react'
+import { portfolioStakedRSRAtom, portfolioVoteLocksAtom } from '../atoms'
 import {
   PortfolioProposal,
   PortfolioStakedRSR,
@@ -55,26 +56,19 @@ const STATUS_COLOR: Record<string, string> = {
   [PROPOSAL_STATES.EXPIRED]: 'text-legend',
 }
 
-const columns: ColumnDef<PortfolioProposal, any>[] = [
+type ProposalRow = PortfolioProposal & { voting: VotingState }
+
+const columns: ColumnDef<ProposalRow, any>[] = [
   {
     id: 'dtf',
     header: 'DTF Governed',
     cell: ({ row }) => (
       <div className="flex items-center gap-2">
-        <div className="relative flex-shrink-0">
-          <TokenLogo
-            symbol={row.original.dtfSymbol}
-            address={row.original.dtfAddress}
-            chain={row.original.chainId}
-            size="lg"
-          />
-          <ChainLogo
-            chain={row.original.chainId}
-            className="absolute -bottom-0.5 -right-0.5"
-            width={12}
-            height={12}
-          />
-        </div>
+        <TokenLogoWithChain
+          symbol={row.original.dtfSymbol}
+          address={row.original.dtfAddress}
+          chain={row.original.chainId}
+        />
         <span className="font-bold text-sm">{row.original.dtfSymbol}</span>
       </div>
     ),
@@ -84,7 +78,7 @@ const columns: ColumnDef<PortfolioProposal, any>[] = [
     header: 'Title',
     cell: ({ row }) => {
       const title = getProposalTitle(row.original.description)
-      const voting = resolveState(row.original)
+      const voting = row.original.voting
 
       if (voting.state === PROPOSAL_STATES.PENDING && voting.deadline) {
         return (
@@ -159,7 +153,7 @@ const columns: ColumnDef<PortfolioProposal, any>[] = [
     id: 'state',
     header: 'Status',
     cell: ({ row }) => {
-      const { state } = resolveState(row.original)
+      const { state } = row.original.voting
       const stateText = formatConstant(state)
       return (
         <div
@@ -175,14 +169,10 @@ const columns: ColumnDef<PortfolioProposal, any>[] = [
   },
 ]
 
-const ActiveProposals = ({
-  stakedRSR,
-  voteLocks,
-}: {
-  stakedRSR: PortfolioStakedRSR[]
-  voteLocks: PortfolioVoteLock[]
-}) => {
-  const proposals: PortfolioProposal[] = useMemo(() => {
+const ActiveProposals = () => {
+  const stakedRSR = useAtomValue(portfolioStakedRSRAtom)
+  const voteLocks = useAtomValue(portfolioVoteLocksAtom)
+  const proposals: ProposalRow[] = useMemo(() => {
     const staked = stakedRSR
       .filter((s) => Number(s.amount) > 0)
       .flatMap((s) =>
@@ -199,16 +189,17 @@ const ActiveProposals = ({
       .filter((v) => Number(v.amount) > 0)
       .flatMap((v) =>
         (v.activeProposals || []).map((p) => ({
-        ...p,
-        dtfName: v.dtfs?.[0]?.name || v.symbol,
-        dtfSymbol: v.dtfs?.[0]?.symbol || v.symbol,
-        dtfAddress: v.dtfs?.[0]?.address || v.stTokenAddress,
-        chainId: v.chainId,
-        isIndexDTF: true,
-      }))
-    )
+          ...p,
+          dtfName: v.dtfs?.[0]?.name || v.symbol,
+          dtfSymbol: v.dtfs?.[0]?.symbol || v.symbol,
+          dtfAddress: v.dtfs?.[0]?.address || v.stTokenAddress,
+          chainId: v.chainId,
+          isIndexDTF: true,
+        }))
+      )
     return [...staked, ...locked]
-      .filter((p) => ACTIVE_STATES.has(resolveState(p).state))
+      .map((p) => ({ ...p, voting: resolveState(p) }))
+      .filter((p) => ACTIVE_STATES.has(p.voting.state))
       .sort((a, b) => Number(b.creationTime) - Number(a.creationTime))
   }, [stakedRSR, voteLocks])
 

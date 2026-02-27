@@ -1,5 +1,4 @@
-import ChainLogo from '@/components/icons/ChainLogo'
-import TokenLogo from '@/components/token-logo'
+import TokenLogoWithChain from '@/components/token-logo/TokenLogoWithChain'
 import DataTable from '@/components/ui/data-table'
 import {
   Tooltip,
@@ -68,20 +67,12 @@ const TokenCell = ({ tx }: { tx: PortfolioTransaction }) => {
 
   return (
     <div className="flex items-center gap-2">
-      <div className="relative flex-shrink-0">
-        <TokenLogo
-          symbol={logoSymbol}
-          address={logoAddress}
-          chain={tx.chainId}
-          size="md"
-        />
-        <ChainLogo
-          chain={tx.chainId}
-          className="absolute -bottom-0.5 -right-0.5"
-          width={10}
-          height={10}
-        />
-      </div>
+      <TokenLogoWithChain
+        symbol={logoSymbol}
+        address={logoAddress}
+        chain={tx.chainId}
+        size="md"
+      />
       {isIndexStToken ? (
         <button
           className="text-sm text-primary hover:underline truncate max-w-[120px]"

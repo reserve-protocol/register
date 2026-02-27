@@ -1,6 +1,6 @@
 import { formatCurrency } from '@/utils'
 import { cn } from '@/lib/utils'
-import { useAtom } from 'jotai'
+import { useAtom, useAtomValue } from 'jotai'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { ArrowUpRight, ArrowDownRight, Loader } from 'lucide-react'
 import dayjs from 'dayjs'
@@ -12,9 +12,9 @@ import {
   XAxis,
   YAxis,
 } from 'recharts'
-import { portfolioPageTimeRangeAtom } from '../atoms'
+import { portfolioDataAtom, portfolioPageTimeRangeAtom } from '../atoms'
 import { useHistoricalPortfolio } from '../hooks/use-historical-portfolio'
-import { PortfolioPeriod, PortfolioResponse } from '../types'
+import { PortfolioPeriod } from '../types'
 import { Address } from 'viem'
 import { Card } from '@/components/ui/card'
 
@@ -135,20 +135,16 @@ const ChartLoadingSkeleton = () => {
   )
 }
 
-const PortfolioChart = ({
-  data: portfolio,
-  address,
-}: {
-  data: PortfolioResponse
-  address: Address
-}) => {
+const PortfolioChart = ({ address }: { address: Address }) => {
+  const portfolio = useAtomValue(portfolioDataAtom)
   const [timeRange, setTimeRange] = useAtom(portfolioPageTimeRangeAtom)
   const { getChartData, isLoading } = useHistoricalPortfolio(address)
 
   const chartData = getChartData(timeRange)
-  const totalValue = portfolio.totalHoldingsUSD
+  const totalValue = portfolio?.totalHoldingsUSD ?? 0
 
   const breakdown = useMemo((): CategoryBreakdown => {
+    if (!portfolio) return []
     const categories = [
       {
         label: 'Index DTFs',

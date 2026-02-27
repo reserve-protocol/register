@@ -1,12 +1,10 @@
 import { formatCurrency } from '@/utils'
+import { useAtomValue } from 'jotai'
 import { ArrowUpRight } from 'lucide-react'
-import { PortfolioVoteLock } from '../types'
+import { portfolioVoteLocksAtom } from '../atoms'
 
-const RewardsAvailable = ({
-  voteLocks,
-}: {
-  voteLocks: PortfolioVoteLock[]
-}) => {
+const RewardsAvailable = () => {
+  const voteLocks = useAtomValue(portfolioVoteLocksAtom)
   const totalRewardsUSD = voteLocks.reduce(
     (sum, lock) =>
       sum + (lock.rewards || []).reduce((s, r) => s + (r.value || 0), 0),

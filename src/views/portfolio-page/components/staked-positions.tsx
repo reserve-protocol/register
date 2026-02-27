@@ -1,5 +1,5 @@
-import ChainLogo from '@/components/icons/ChainLogo'
 import TokenLogo from '@/components/token-logo'
+import TokenLogoWithChain from '@/components/token-logo/TokenLogoWithChain'
 import { Button } from '@/components/ui/button'
 import DataTable, { SorteableButton } from '@/components/ui/data-table'
 import {
@@ -9,8 +9,10 @@ import {
   getTokenRoute,
 } from '@/utils'
 import { ColumnDef } from '@tanstack/react-table'
+import { useAtomValue } from 'jotai'
 import { HandCoins } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { portfolioStakedRSRAtom } from '../atoms'
 import { PortfolioStakedRSR } from '../types'
 import { ExpandToggle, useExpandable } from './expand-toggle'
 import SectionHeader from './section-header'
@@ -22,15 +24,7 @@ const columns: ColumnDef<PortfolioStakedRSR, any>[] = [
     header: 'Position',
     cell: ({ row }) => (
       <div className="flex items-center gap-2 min-h-10">
-        <div className="relative flex-shrink-0">
-          <TokenLogo symbol="RSR" size="lg" />
-          <ChainLogo
-            chain={row.original.chainId}
-            className="absolute -bottom-0.5 -right-0.5"
-            width={12}
-            height={12}
-          />
-        </div>
+        <TokenLogoWithChain symbol="RSR" chain={row.original.chainId} />
         <div>
           <p className="font-bold text-sm">
             {row.original.symbol.toLowerCase()}RSR
@@ -138,17 +132,13 @@ const columns: ColumnDef<PortfolioStakedRSR, any>[] = [
   },
 ]
 
-const StakedPositions = ({
-  stakedRSR,
-}: {
-  stakedRSR: PortfolioStakedRSR[]
-}) => {
+const StakedPositions = () => {
+  const stakedRSR = useAtomValue(portfolioStakedRSRAtom)
   const filtered = stakedRSR.filter((s) => Number(s.amount) > 0)
-  const sorted = [...filtered].sort((a, b) => (b.value || 0) - (a.value || 0))
   const { displayData, expanded, toggle, hasMore, total } =
-    useExpandable(sorted)
+    useExpandable(filtered)
 
-  if (!sorted.length) return null
+  if (!filtered.length) return null
 
   return (
     <div>

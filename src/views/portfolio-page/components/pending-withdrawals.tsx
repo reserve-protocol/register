@@ -1,5 +1,4 @@
-import TokenLogo from '@/components/token-logo'
-import ChainLogo from '@/components/icons/ChainLogo'
+import TokenLogoWithChain from '@/components/token-logo/TokenLogoWithChain'
 import DataTable from '@/components/ui/data-table'
 import { Button } from '@/components/ui/button'
 import dtfIndexStakingVault from '@/abis/dtf-index-staking-vault'
@@ -32,6 +31,7 @@ import {
   useWaitForTransactionReceipt,
   useWriteContract,
 } from 'wagmi'
+import { portfolioStakedRSRAtom, portfolioVoteLocksAtom } from '../atoms'
 import { PortfolioStakedRSR, PortfolioVoteLock } from '../types'
 import { ExpandToggle, useExpandable } from './expand-toggle'
 import SectionHeader from './section-header'
@@ -335,35 +335,18 @@ const columns: ColumnDef<PendingWithdrawalRow, any>[] = [
       if (d.source === 'stakedRSR') {
         return (
           <div className="flex items-center gap-2 min-h-10">
-            <div className="relative flex-shrink-0">
-              <TokenLogo symbol="RSR" size="lg" />
-              <ChainLogo
-                chain={d.chainId}
-                className="absolute -bottom-0.5 -right-0.5"
-                width={12}
-                height={12}
-              />
-            </div>
+            <TokenLogoWithChain symbol="RSR" chain={d.chainId} />
             <span className="text-sm font-bold">RSR</span>
           </div>
         )
       }
       return (
         <div className="flex items-center gap-2 min-h-10">
-          <div className="relative flex-shrink-0">
-            <TokenLogo
-              symbol={d.underlyingSymbol}
-              address={d.underlyingAddress}
-              chain={d.chainId}
-              size="lg"
-            />
-            <ChainLogo
-              chain={d.chainId}
-              className="absolute -bottom-0.5 -right-0.5"
-              width={12}
-              height={12}
-            />
-          </div>
+          <TokenLogoWithChain
+            symbol={d.underlyingSymbol}
+            address={d.underlyingAddress}
+            chain={d.chainId}
+          />
           <span className="text-sm font-bold">{d.underlyingSymbol}</span>
         </div>
       )
@@ -460,13 +443,9 @@ const flattenPendingWithdrawals = (
   return rows.sort((a, b) => (b.value || 0) - (a.value || 0))
 }
 
-const PendingWithdrawals = ({
-  stakedRSR,
-  voteLocks,
-}: {
-  stakedRSR: PortfolioStakedRSR[]
-  voteLocks: PortfolioVoteLock[]
-}) => {
+const PendingWithdrawals = () => {
+  const stakedRSR = useAtomValue(portfolioStakedRSRAtom)
+  const voteLocks = useAtomValue(portfolioVoteLocksAtom)
   const rows = flattenPendingWithdrawals(stakedRSR, voteLocks)
   const { displayData, expanded, toggle, hasMore, total } = useExpandable(rows)
 

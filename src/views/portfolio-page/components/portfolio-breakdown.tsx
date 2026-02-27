@@ -1,5 +1,6 @@
 import { formatUSD } from '@/utils'
-import { PortfolioResponse } from '../types'
+import { useAtomValue } from 'jotai'
+import { portfolioBreakdownAtom } from '../atoms'
 
 const BreakdownRow = ({ label, value }: { label: string; value: number }) => (
   <div className="flex items-center justify-between">
@@ -8,15 +9,10 @@ const BreakdownRow = ({ label, value }: { label: string; value: number }) => (
   </div>
 )
 
-const PortfolioBreakdown = ({ data }: { data: PortfolioResponse }) => {
-  const indexValue = data.indexDTFs.reduce((sum, d) => sum + (d.value || 0), 0)
-  const yieldValue = data.yieldDTFs.reduce((sum, d) => sum + (d.value || 0), 0)
-  const rsrValue = data.rsrBalances.reduce((sum, d) => sum + (d.value || 0), 0)
-  const stakedValue = data.stakedRSR.reduce((sum, d) => sum + (d.value || 0), 0)
-  const voteLockValue = data.voteLocks.reduce(
-    (sum, d) => sum + (d.value || 0),
-    0
-  )
+const PortfolioBreakdown = () => {
+  const breakdown = useAtomValue(portfolioBreakdownAtom)
+  if (!breakdown) return null
+  const { indexValue, yieldValue, rsrValue, stakedValue, voteLockValue } = breakdown
 
   return (
     <div className="bg-card border border-border rounded-[20px] px-6 py-4">

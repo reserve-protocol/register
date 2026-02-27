@@ -1,12 +1,13 @@
-import ChainLogo from '@/components/icons/ChainLogo'
-import TokenLogo from '@/components/token-logo'
+import TokenLogoWithChain from '@/components/token-logo/TokenLogoWithChain'
 import DataTable from '@/components/ui/data-table'
 import { cn } from '@/lib/utils'
 import { formatCurrency, formatToSignificantDigits, formatUSD } from '@/utils'
 import { CHAIN_TAGS } from '@/utils/constants'
 import { ColumnDef } from '@tanstack/react-table'
+import { useAtomValue } from 'jotai'
 import { ArrowDown, ArrowUp } from 'lucide-react'
 import RsrIcon from '@/components/icons/RsrIcon'
+import { portfolioRSRBalancesAtom } from '../atoms'
 import { PortfolioRSRBalance } from '../types'
 import { ExpandToggle, useExpandable } from './expand-toggle'
 import SectionHeader from './section-header'
@@ -17,15 +18,7 @@ const columns: ColumnDef<PortfolioRSRBalance, any>[] = [
     header: 'Name',
     cell: ({ row }) => (
       <div className="flex items-center gap-2 min-h-10">
-        <div className="relative flex-shrink-0">
-          <TokenLogo symbol="RSR" size="lg" />
-          <ChainLogo
-            chain={row.original.chainId}
-            className="absolute -bottom-0.5 -right-0.5"
-            width={12}
-            height={12}
-          />
-        </div>
+        <TokenLogoWithChain symbol="RSR" chain={row.original.chainId} />
         <div>
           <p className="font-bold text-sm">RSR</p>
           <p className="text-xs text-legend hidden sm:block">
@@ -98,11 +91,8 @@ const columns: ColumnDef<PortfolioRSRBalance, any>[] = [
   },
 ]
 
-const RSRSection = ({
-  rsrBalances,
-}: {
-  rsrBalances: PortfolioRSRBalance[]
-}) => {
+const RSRSection = () => {
+  const rsrBalances = useAtomValue(portfolioRSRBalancesAtom)
   const filtered = rsrBalances.filter((r) => Number(r.amount) > 0)
   const { displayData, expanded, toggle, hasMore, total } =
     useExpandable(filtered)

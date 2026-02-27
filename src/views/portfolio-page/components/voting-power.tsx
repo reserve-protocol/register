@@ -1,11 +1,12 @@
-import ChainLogo from '@/components/icons/ChainLogo'
-import TokenLogo from '@/components/token-logo'
+import TokenLogoWithChain from '@/components/token-logo/TokenLogoWithChain'
 import Copy from '@/components/ui/copy'
 import DataTable from '@/components/ui/data-table'
 import { formatCurrency, formatToSignificantDigits, getTokenRoute, shortenAddress } from '@/utils'
 import { ColumnDef } from '@tanstack/react-table'
+import { useAtomValue } from 'jotai'
 import { Vote } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { portfolioStakedRSRAtom, portfolioVoteLocksAtom } from '../atoms'
 import { PortfolioStakedRSR, PortfolioVoteLock } from '../types'
 import { ExpandToggle, useExpandable } from './expand-toggle'
 import GovernsCell from './governs-cell'
@@ -48,35 +49,19 @@ const columns: ColumnDef<VotingPowerRow, any>[] = [
       if (d.source === 'voteLock') {
         return (
           <div className="flex items-center gap-2">
-            <div className="relative flex-shrink-0">
-              <TokenLogo
-                symbol={d.underlying.symbol}
-                address={d.underlying.address}
-                chain={d.chainId}
-                size="md"
-              />
-              <ChainLogo
-                chain={d.chainId}
-                className="absolute -bottom-0.5 -right-0.5"
-                width={10}
-                height={10}
-              />
-            </div>
+            <TokenLogoWithChain
+              symbol={d.underlying.symbol}
+              address={d.underlying.address}
+              chain={d.chainId}
+              size="md"
+            />
             <span className="text-sm">{d.symbol}</span>
           </div>
         )
       }
       return (
         <div className="flex items-center gap-2">
-          <div className="relative flex-shrink-0">
-            <TokenLogo symbol="RSR" size="md" />
-            <ChainLogo
-              chain={d.chainId}
-              className="absolute -bottom-0.5 -right-0.5"
-              width={10}
-              height={10}
-            />
-          </div>
+          <TokenLogoWithChain symbol="RSR" chain={d.chainId} size="md" />
           <span className="text-sm">{d.symbol.toLowerCase()}RSR</span>
         </div>
       )
@@ -142,13 +127,9 @@ const columns: ColumnDef<VotingPowerRow, any>[] = [
   },
 ]
 
-const VotingPower = ({
-  voteLocks,
-  stakedRSR,
-}: {
-  voteLocks: PortfolioVoteLock[]
-  stakedRSR: PortfolioStakedRSR[]
-}) => {
+const VotingPower = () => {
+  const voteLocks = useAtomValue(portfolioVoteLocksAtom)
+  const stakedRSR = useAtomValue(portfolioStakedRSRAtom)
   const mergedData: VotingPowerRow[] = [
     ...voteLocks.filter((v) => Number(v.votingPower) > 0).map((v) => ({ source: 'voteLock' as const, ...v })),
     ...stakedRSR.filter((s) => Number(s.votingPower) > 0).map((s) => ({ source: 'stakedRSR' as const, ...s })),

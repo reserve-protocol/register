@@ -54,7 +54,7 @@ const DiscoverItem = () => {
               )}
             >
               <Binoculars strokeWidth={1.5} size={16} />
-              <span className="hidden md:block text-base">
+              <span className="hidden min-[850px]:block text-base">
                 <Trans>Discover DTFs</Trans>
               </span>
             </div>
@@ -159,7 +159,7 @@ const AppNavigation = () => {
 
   return (
     <NavigationMenu
-      className="mr-auto border md:border-none rounded-3xl"
+      className="mr-auto border min-[850px]:border-none rounded-3xl"
       vClassName="-left-10 md:left-40"
     >
       <NavigationMenuList>
@@ -176,7 +176,7 @@ const AppNavigation = () => {
                     )}
                   >
                     {item.icon}
-                    <span className="hidden md:block text-base">
+                    <span className="hidden min-[850px]:block text-base">
                       {item.label}
                     </span>
                   </div>
@@ -188,7 +188,7 @@ const AppNavigation = () => {
         <NavigationMenuItem>
           <NavigationMenuTrigger>
             <LayoutGrid strokeWidth={1.5} size={16} />
-            <span className="hidden md:block text-base">More</span>
+            <span className="hidden min-[850px]:block text-base">More</span>
           </NavigationMenuTrigger>
           <NavigationMenuContent className="rounded-4xl">
             <div className="bg-secondary w-72 sm:w-96 flex p-1 flex-col gap-1">

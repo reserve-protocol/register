@@ -1,11 +1,13 @@
 import Copy from '@/components/ui/copy'
 import { ConnectWalletButton } from '@/components/ui/transaction'
 import { shortenAddress } from '@/utils'
+import { useSetAtom } from 'jotai'
 import { Eye, X } from 'lucide-react'
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { isAddress } from 'viem'
 import { useAccount } from 'wagmi'
+import { portfolioDataAtom } from './atoms'
 import AvailableRewards from './components/available-rewards'
 import ActiveProposals from './components/active-proposals'
 import {
@@ -80,6 +82,12 @@ const PortfolioPage = () => {
 
   const address = impersonatedAddress || connectedAddress
   const { data, isLoading } = usePortfolio(address)
+  const setPortfolioData = useSetAtom(portfolioDataAtom)
+
+  useEffect(() => {
+    setPortfolioData(data ?? null)
+    return () => setPortfolioData(null)
+  }, [data, setPortfolioData])
 
   // Prefetch all historical periods
   useHistoricalPortfolio(address)
@@ -101,23 +109,23 @@ const PortfolioPage = () => {
       )}
       {/* Top section: Chart + Sidebar */}
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6">
-        <PortfolioChart data={data} address={address} />
+        <PortfolioChart address={address} />
         <div className="space-y-4">
-          <PortfolioBreakdown data={data} />
-          <RewardsAvailable voteLocks={data.voteLocks} />
+          <PortfolioBreakdown />
+          <RewardsAvailable />
         </div>
       </div>
 
       {/* Sections */}
-      <IndexDTFPositions data={data.indexDTFs} />
-      <YieldDTFPositions data={data.yieldDTFs} />
-      <AvailableRewards voteLocks={data.voteLocks} />
-      <PendingWithdrawals stakedRSR={data.stakedRSR} voteLocks={data.voteLocks} />
-      <StakedPositions stakedRSR={data.stakedRSR} />
-      <VoteLockedPositions voteLocks={data.voteLocks} />
-      <ActiveProposals stakedRSR={data.stakedRSR} voteLocks={data.voteLocks} />
-      <VotingPower voteLocks={data.voteLocks} stakedRSR={data.stakedRSR} />
-      <RSRSection rsrBalances={data.rsrBalances} />
+      <IndexDTFPositions />
+      <YieldDTFPositions />
+      <AvailableRewards />
+      <PendingWithdrawals />
+      <StakedPositions />
+      <VoteLockedPositions />
+      <ActiveProposals />
+      <VotingPower />
+      <RSRSection />
       <Transactions address={address} />
     </div>
   )

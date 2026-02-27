@@ -1,5 +1,4 @@
-import ChainLogo from '@/components/icons/ChainLogo'
-import TokenLogo from '@/components/token-logo'
+import TokenLogoWithChain from '@/components/token-logo/TokenLogoWithChain'
 import DataTable, { SorteableButton } from '@/components/ui/data-table'
 import { cn } from '@/lib/utils'
 import {
@@ -11,8 +10,10 @@ import {
 } from '@/utils'
 import { ROUTES } from '@/utils/constants'
 import { ColumnDef } from '@tanstack/react-table'
+import { useAtomValue } from 'jotai'
 import { ArrowDown, ArrowUp, ArrowRight, Globe, Flower } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { portfolioIndexDTFsAtom, portfolioYieldDTFsAtom } from '../atoms'
 import { PortfolioIndexDTF, PortfolioYieldDTF } from '../types'
 import { ExpandToggle, useExpandable } from './expand-toggle'
 import SectionHeader from './section-header'
@@ -26,20 +27,11 @@ const columns: ColumnDef<DTFRow, any>[] = [
     header: 'Name',
     cell: ({ row }) => (
       <div className="flex items-center gap-2 min-h-10">
-        <div className="relative flex-shrink-0">
-          <TokenLogo
-            symbol={row.original.symbol}
-            address={row.original.address}
-            chain={row.original.chainId}
-            size="lg"
-          />
-          <ChainLogo
-            chain={row.original.chainId}
-            className="absolute -bottom-0.5 -right-0.5"
-            width={12}
-            height={12}
-          />
-        </div>
+        <TokenLogoWithChain
+          symbol={row.original.symbol}
+          address={row.original.address}
+          chain={row.original.chainId}
+        />
         <div className="min-w-0">
           <p className="font-bold text-sm">{row.original.name}</p>
           <p className="text-xs text-legend truncate hidden sm:block">
@@ -184,10 +176,10 @@ const columns: ColumnDef<DTFRow, any>[] = [
   },
 ]
 
-const IndexDTFPositions = ({ data }: { data: PortfolioIndexDTF[] }) => {
-  const sorted = [...data].sort((a, b) => (b.value || 0) - (a.value || 0))
+const IndexDTFPositions = () => {
+  const data = useAtomValue(portfolioIndexDTFsAtom)
   const { displayData, expanded, toggle, hasMore, total } =
-    useExpandable(sorted)
+    useExpandable(data)
 
   if (!data.length) return null
 
@@ -225,10 +217,10 @@ const IndexDTFPositions = ({ data }: { data: PortfolioIndexDTF[] }) => {
   )
 }
 
-const YieldDTFPositions = ({ data }: { data: PortfolioYieldDTF[] }) => {
-  const sorted = [...data].sort((a, b) => (b.value || 0) - (a.value || 0))
+const YieldDTFPositions = () => {
+  const data = useAtomValue(portfolioYieldDTFsAtom)
   const { displayData, expanded, toggle, hasMore, total } =
-    useExpandable(sorted)
+    useExpandable(data)
 
   if (!data.length) return null
 

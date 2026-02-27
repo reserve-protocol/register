@@ -1,5 +1,5 @@
-import ChainLogo from '@/components/icons/ChainLogo'
 import TokenLogo from '@/components/token-logo'
+import TokenLogoWithChain from '@/components/token-logo/TokenLogoWithChain'
 import { Button } from '@/components/ui/button'
 import DataTable from '@/components/ui/data-table'
 import { formatCurrency, formatToSignificantDigits, formatUSD } from '@/utils'
@@ -12,8 +12,9 @@ import {
   stakingSidebarOpenAtom,
 } from '@/views/index-dtf/overview/components/staking/atoms'
 import { ColumnDef } from '@tanstack/react-table'
-import { useSetAtom } from 'jotai'
+import { useAtomValue, useSetAtom } from 'jotai'
 import { ExternalLink, Lock } from 'lucide-react'
+import { portfolioVoteLocksAtom } from '../atoms'
 import { PortfolioVoteLock } from '../types'
 import { ExpandToggle, useExpandable } from './expand-toggle'
 import GovernsCell from './governs-cell'
@@ -63,20 +64,11 @@ const columns: ColumnDef<PortfolioVoteLock, any>[] = [
     header: 'Governance Token',
     cell: ({ row }) => (
       <div className="flex items-center gap-2 min-h-10">
-        <div className="relative flex-shrink-0">
-          <TokenLogo
-            symbol={row.original.underlying.symbol}
-            address={row.original.underlying.address}
-            chain={row.original.chainId}
-            size="lg"
-          />
-          <ChainLogo
-            chain={row.original.chainId}
-            className="absolute -bottom-0.5 -right-0.5"
-            width={12}
-            height={12}
-          />
-        </div>
+        <TokenLogoWithChain
+          symbol={row.original.underlying.symbol}
+          address={row.original.underlying.address}
+          chain={row.original.chainId}
+        />
         <div>
           <p className="font-bold text-sm">{row.original.symbol}</p>
           <p className="text-xs text-legend hidden sm:block">
@@ -180,11 +172,8 @@ const columns: ColumnDef<PortfolioVoteLock, any>[] = [
   },
 ]
 
-const VoteLockedPositions = ({
-  voteLocks,
-}: {
-  voteLocks: PortfolioVoteLock[]
-}) => {
+const VoteLockedPositions = () => {
+  const voteLocks = useAtomValue(portfolioVoteLocksAtom)
   const filtered = voteLocks.filter((v) => Number(v.amount) > 0)
   const { displayData, expanded, toggle, hasMore, total } =
     useExpandable(filtered)

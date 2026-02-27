@@ -1,6 +1,5 @@
 import dtfIndexStakingVault from '@/abis/dtf-index-staking-vault'
-import ChainLogo from '@/components/icons/ChainLogo'
-import TokenLogo from '@/components/token-logo'
+import TokenLogoWithChain from '@/components/token-logo/TokenLogoWithChain'
 import { Button } from '@/components/ui/button'
 import DataTable from '@/components/ui/data-table'
 import { formatCurrency, formatToSignificantDigits, formatUSD } from '@/utils'
@@ -17,6 +16,7 @@ import {
   useWaitForTransactionReceipt,
   useWriteContract,
 } from 'wagmi'
+import { portfolioVoteLocksAtom } from '../atoms'
 import { PortfolioVoteLock } from '../types'
 import { ExpandToggle, useExpandable } from './expand-toggle'
 import SectionHeader from './section-header'
@@ -89,20 +89,11 @@ const columns: ColumnDef<RewardRow, any>[] = [
     header: 'Reward Token',
     cell: ({ row }) => (
       <div className="flex items-center gap-2">
-        <div className="relative flex-shrink-0">
-          <TokenLogo
-            symbol={row.original.symbol}
-            address={row.original.address}
-            chain={row.original.chainId}
-            size="lg"
-          />
-          <ChainLogo
-            chain={row.original.chainId}
-            className="absolute -bottom-0.5 -right-0.5"
-            width={12}
-            height={12}
-          />
-        </div>
+        <TokenLogoWithChain
+          symbol={row.original.symbol}
+          address={row.original.address}
+          chain={row.original.chainId}
+        />
         <p className="font-bold text-sm">{row.original.symbol}</p>
       </div>
     ),
@@ -141,11 +132,8 @@ const columns: ColumnDef<RewardRow, any>[] = [
   },
 ]
 
-const AvailableRewards = ({
-  voteLocks,
-}: {
-  voteLocks: PortfolioVoteLock[]
-}) => {
+const AvailableRewards = () => {
+  const voteLocks = useAtomValue(portfolioVoteLocksAtom)
   const rewards: RewardRow[] = useMemo(
     () =>
       voteLocks
