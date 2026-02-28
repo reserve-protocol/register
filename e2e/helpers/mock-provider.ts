@@ -1,4 +1,5 @@
 import type { Page } from '@playwright/test'
+import { handleRpcMethod } from './rpc-mocks'
 
 interface MockWalletConfig {
   address: string
@@ -14,6 +15,10 @@ interface MockWalletConfig {
  *
  * RainbowKit's injectedWallet listens for eip6963:announceProvider events,
  * so our mock wallet appears in the connect modal automatically.
+ *
+ * WHY: When a wallet is connected, wagmi routes eth_call and other read
+ * methods through the injected provider, NOT through HTTP. So the wallet
+ * mock must handle these methods with the same logic as the HTTP route mock.
  */
 export async function installTestWallet(
   page: Page,
@@ -29,6 +34,7 @@ export async function installTestWallet(
     'eip1193Request',
     async (request: { method: string; params?: unknown[] }) => {
       switch (request.method) {
+        // Wallet-specific methods (signing, accounts, chain switching)
         case 'eth_accounts':
         case 'eth_requestAccounts':
           return [config.address]
@@ -43,6 +49,14 @@ export async function installTestWallet(
           const params = request.params as [{ chainId: string }]
           if (params?.[0]?.chainId) {
             currentChainId = parseInt(params[0].chainId, 16)
+            // Notify the browser-side provider to emit chainChanged
+            page.evaluate(
+              (hexChainId) => {
+                const eth = (window as any).ethereum
+                if (eth?.emit) eth.emit('chainChanged', hexChainId)
+              },
+              params[0].chainId
+            ).catch(() => {})
           }
           return null
         }
@@ -54,7 +68,7 @@ export async function installTestWallet(
           return [{ parentCapability: 'eth_accounts' }]
 
         case 'eth_sendTransaction':
-          // Return mock tx hash — Phase 2 will forward to Anvil
+          // Return mock tx hash — receipt is handled by rpc-mocks
           return '0x' + 'a'.repeat(64)
 
         case 'personal_sign':
@@ -63,28 +77,15 @@ export async function installTestWallet(
         case 'eth_signTypedData_v4':
           return '0x' + 'c'.repeat(130)
 
-        case 'eth_blockNumber':
-          return '0x1000000'
-
         case 'eth_getBalance':
-          // 100 ETH
+          // 100 ETH for the test wallet
           return '0x56BC75E2D63100000'
 
-        case 'eth_estimateGas':
-          return '0x5208'
-
-        case 'eth_gasPrice':
-          return '0x3B9ACA00'
-
-        case 'eth_getCode':
-          return '0x'
-
-        case 'eth_call':
-          return '0x'
-
         default:
-          console.log(`[test-wallet] unhandled method: ${request.method}`)
-          return null
+          // Forward all other methods (eth_call, eth_getCode,
+          // eth_blockNumber, etc.) to the shared RPC handler so wagmi gets
+          // the same responses whether it routes through HTTP or the provider.
+          return handleRpcMethod(request.method, request.params)
       }
     }
   )

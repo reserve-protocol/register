@@ -1,13 +1,13 @@
 import dtfIndexGovernance from '@/abis/dtf-index-governance'
 import TransactionButton from '@/components/ui/transaction-button'
 import { indexDTFAtom } from '@/state/dtf/atoms'
-import { PROPOSAL_STATES } from '@/utils/constants'
 import { t } from '@lingui/macro'
 import useContractWrite from 'hooks/useContractWrite'
 import useWatchTransaction from 'hooks/useWatchTransaction'
-import { atom, useAtom, useAtomValue } from 'jotai'
+import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { proposalDetailAtom, proposalTxArgsAtom } from '../atom'
+import { optimisticQueueActionAtom } from '../optimistic-actions'
 
 const executionDelayAtom = atom((get) => {
   const proposal = get(proposalDetailAtom)
@@ -24,7 +24,8 @@ const executionDelayAtom = atom((get) => {
 
 const ProposalQueue = () => {
   const executionDelay = useAtomValue(executionDelayAtom)
-  const [proposal, setProposal] = useAtom(proposalDetailAtom)
+  const proposal = useAtomValue(proposalDetailAtom)
+  const optimisticQueue = useSetAtom(optimisticQueueActionAtom)
   const governor = proposal?.governor
   const txArgs = useAtomValue(proposalTxArgsAtom)
 
@@ -43,24 +44,10 @@ const ProposalQueue = () => {
 
   useEffect(() => {
     if (data && status === 'success') {
-      setProposal((prev) =>
-        prev
-          ? {
-              ...prev,
-              votingState: {
-                ...prev.votingState,
-                state: PROPOSAL_STATES.QUEUED,
-                deadline: executionDelay || 0,
-              },
-              state: PROPOSAL_STATES.QUEUED,
-              queueTime: Math.floor(Date.now() / 1000).toString(),
-              queueBlock: Number(data.blockNumber),
-              executionETA: Math.floor(
-                Date.now() / 1000 + (executionDelay || 0)
-              ),
-            }
-          : undefined
-      )
+      optimisticQueue({
+        executionDelay: executionDelay || 0,
+        blockNumber: data.blockNumber,
+      })
     }
   }, [data, status])
 

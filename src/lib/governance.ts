@@ -53,7 +53,10 @@ export interface ProposalDetail extends PartialProposal {
   votingState: VotingState
 }
 
-export const getProposalState = (proposal: PartialProposal): VotingState => {
+export const getProposalState = (
+  proposal: PartialProposal,
+  currentTime?: number
+): VotingState => {
   const state: VotingState = {
     state: proposal?.state ?? '',
     deadline: null,
@@ -63,7 +66,7 @@ export const getProposalState = (proposal: PartialProposal): VotingState => {
     abstain: 0,
   }
 
-  const timestamp = getCurrentTime()
+  const timestamp = currentTime ?? getCurrentTime()
 
   // Proposal to be executed
   if (proposal.state === PROPOSAL_STATES.QUEUED && proposal.executionETA) {

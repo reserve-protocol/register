@@ -28,7 +28,7 @@ test.describe('DTF Governance: Proposal List', () => {
     await expect(page.getByText('LCAP').first()).toBeVisible({ timeout: 10000 })
   })
 
-  test('shows all 3 proposals from subgraph mock', async ({ page }) => {
+  test('shows all 5 proposals from subgraph mock', async ({ page }) => {
     const proposals = page.getByTestId('governance-proposals')
     await expect(proposals).toBeVisible()
 
@@ -42,6 +42,12 @@ test.describe('DTF Governance: Proposal List', () => {
     ).toBeVisible()
     await expect(
       proposals.getByText(/Add new collateral type/).first()
+    ).toBeVisible()
+    await expect(
+      proposals.getByText(/Increase redemption fee/).first()
+    ).toBeVisible()
+    await expect(
+      proposals.getByText(/Lower auction delay/).first()
     ).toBeVisible()
   })
 
@@ -57,7 +63,7 @@ test.describe('DTF Governance: Proposal List', () => {
     // Proposal links have href containing "proposal/" per ProposalListItem
     const proposalLinks = proposals.locator('a[href*="proposal/"]')
     const count = await proposalLinks.count()
-    expect(count).toBeGreaterThanOrEqual(3)
+    expect(count).toBeGreaterThanOrEqual(5)
 
     // First proposal should be "Update basket" (1 day ago = newest)
     await expect(proposalLinks.first()).toContainText(
@@ -72,10 +78,12 @@ test.describe('DTF Governance: Proposal List', () => {
       proposals.getByText(/Update basket allocation/).first()
     ).toBeVisible({ timeout: 10000 })
 
-    // 3 different states from mock data
+    // 5 different states from mock data
     await expect(proposals.getByText('Active').first()).toBeVisible()
     await expect(proposals.getByText('Executed').first()).toBeVisible()
     await expect(proposals.getByText('Defeated').first()).toBeVisible()
+    await expect(proposals.getByText('Succeeded').first()).toBeVisible()
+    await expect(proposals.getByText('Queued').first()).toBeVisible()
   })
 
   test('active proposal shows voting metrics', async ({ page }) => {

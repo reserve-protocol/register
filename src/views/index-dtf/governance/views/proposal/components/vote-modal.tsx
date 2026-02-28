@@ -8,7 +8,7 @@ import { t, Trans } from '@lingui/macro'
 import Governance from 'abis/Governance'
 import { Modal } from 'components'
 import useContractWrite from 'hooks/useContractWrite'
-import { useAtomValue } from 'jotai'
+import { useAtomValue, useSetAtom } from 'jotai'
 import {
   CheckCircle,
   ExternalLink,
@@ -17,15 +17,15 @@ import {
   ThumbsUp,
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { chainIdAtom } from 'state/atoms'
+import { chainIdAtom, walletAtom } from 'state/atoms'
 import { getProposalTitle, shortenAddress } from 'utils'
 import {
   ETHERSCAN_NAMES,
   ExplorerDataType,
   getExplorerLink,
 } from 'utils/getExplorerLink'
-import { proposalDetailAtom } from '../atom'
-import { proposalRefreshFnAtom } from '../updater'
+import { accountVotesAtom, proposalDetailAtom } from '../atom'
+import { optimisticVoteActionAtom } from '../optimistic-actions'
 
 export const VOTE_TYPE = {
   AGAINST: 0,
@@ -38,8 +38,10 @@ const VoteModal = (props: ModalProps) => {
   const chainId = useAtomValue(chainIdAtom)
   const [vote, setVote] = useState(-1)
   const proposal = useAtomValue(proposalDetailAtom)
+  const account = useAtomValue(walletAtom)
+  const accountVotes = useAtomValue(accountVotesAtom)
+  const optimisticVote = useSetAtom(optimisticVoteActionAtom)
   const isValid = proposal?.id && vote !== -1
-  const refreshFn = useAtomValue(proposalRefreshFnAtom)
 
   const { hash, isLoading, isReady, write } = useContractWrite(
     isValid
@@ -64,8 +66,12 @@ const VoteModal = (props: ModalProps) => {
   })
 
   useEffect(() => {
-    if (status === 'success') {
-      refreshFn?.()
+    if (status === 'success' && account && accountVotes.votePower) {
+      optimisticVote({
+        voteType: vote,
+        votePower: accountVotes.votePower,
+        voter: account,
+      })
     }
   }, [status])
 
