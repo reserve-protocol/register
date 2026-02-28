@@ -2,9 +2,11 @@ import StakeContainer from './components/stake-container'
 import Overview from './components/overview'
 import Withdraw from './components/withdraw'
 import StakePosition from './components/stake-position'
+import TradingPausedBanner from './components/trading-paused-banner'
 
 const Staking = () => (
   <div className="container py-1 md:py-6 px-0 sm:px-2">
+    <TradingPausedBanner className="mb-4" />
     <div className="grid grid-cols-1 xl:grid-cols-[1fr_480px] gap-0 lg:gap-4 xl:gap-5">
       <div className="pr-0 lg:pr-4">
         <StakeContainer />
