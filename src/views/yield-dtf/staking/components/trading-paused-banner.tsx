@@ -17,11 +17,12 @@ const TradingPausedBanner = ({ className }: { className?: string }) => {
             Withdrawals temporarily disabled
           </span>
           <span className="block mt-1 text-warning">
-            A vulnerability was found in a 3rd-party auction contract (Gnosis
-            EasyAuction). Trading has been paused as a precaution while
-            governance proposals to disable batch auctions complete. No funds
-            are at risk. Staked RSR withdrawals are temporarily disabled during this
-            period.{' '}
+            Trading has been temporarily paused while a vulnerability in a
+            secondary fallback auction mechanism is resolved. During a trading
+            pause, the protocol keeps staked RSR available as a safety measure
+            in case recollateralization is needed — this means withdrawals are
+            blocked until trading resumes. This specific issue does not put
+            staked RSR at risk.{' '}
             <a
               href="https://x.com/reserveprotocol/status/2027121090343174359"
               target="_blank"
