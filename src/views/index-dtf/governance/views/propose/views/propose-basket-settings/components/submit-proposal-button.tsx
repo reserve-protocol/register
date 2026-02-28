@@ -7,6 +7,7 @@ import { ROUTES } from '@/utils/constants'
 import { atom, useAtomValue } from 'jotai'
 import { Loader2 } from 'lucide-react'
 import { memo, useEffect } from 'react'
+import { toast } from 'sonner'
 import { useNavigate } from 'react-router-dom'
 import { Address } from 'viem'
 import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
@@ -57,10 +58,10 @@ const SubmitProposalButton = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      // Give some time for the proposal to be created on the subgraph
-      setTimeout(() => {
-        navigate(`../${ROUTES.GOVERNANCE}`)
-      }, 10000) // TODO: who knows if this works well!!! they can just refresh the page
+      toast.success('Proposal created', {
+        description: 'It may take a moment to appear in the list',
+      })
+      navigate(`../${ROUTES.GOVERNANCE}`)
     }
   }, [isSuccess])
 

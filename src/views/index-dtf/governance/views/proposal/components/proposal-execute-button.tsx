@@ -4,10 +4,10 @@ import { t } from '@lingui/macro'
 import dtfIndexGovernanceAbi from 'abis/dtf-index-governance'
 import useContractWrite from 'hooks/useContractWrite'
 import useWatchTransaction from 'hooks/useWatchTransaction'
-import { atom, useAtomValue } from 'jotai'
-import { useEffect, useState } from 'react'
+import { atom, useAtomValue, useSetAtom } from 'jotai'
+import { useEffect } from 'react'
 import { proposalDetailAtom, proposalTxArgsAtom } from '../atom'
-import { proposalRefreshFnAtom } from '../updater'
+import { optimisticExecuteActionAtom } from '../optimistic-actions'
 
 const canExecuteAtom = atom((get) => {
   const timestamp = getCurrentTime()
@@ -22,8 +22,7 @@ const ProposalExecute = () => {
   const deadline = proposal?.votingState.deadline
   const governor = proposal?.governor
   const txArgs = useAtomValue(proposalTxArgsAtom)
-  const refreshFn = useAtomValue(proposalRefreshFnAtom)
-  const [isProcessing, setIsProcessing] = useState(false)
+  const optimisticExecute = useSetAtom(optimisticExecuteActionAtom)
 
   const { write, isLoading, hash, isReady, validationError } = useContractWrite(
     {
@@ -42,13 +41,7 @@ const ProposalExecute = () => {
 
   useEffect(() => {
     if (status === 'success') {
-      setIsProcessing(true)
-      const timer = setTimeout(() => {
-        refreshFn?.()
-        setIsProcessing(false)
-      }, 10000)
-
-      return () => clearTimeout(timer)
+      optimisticExecute()
     }
   }, [status])
 
@@ -57,11 +50,11 @@ const ProposalExecute = () => {
   return (
     <TransactionButton
       size="sm"
-      loading={isProcessing || isMining || isLoading}
+      loading={isMining || isLoading}
       mining={isMining}
       disabled={!isReady || !canExecute || status === 'success'}
       onClick={write}
-      text={isProcessing ? 'Processing...' : t`Execute proposal`}
+      text={t`Execute proposal`}
       className="h-[44px]"
       error={validationError}
       errorWithName={false}

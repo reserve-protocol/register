@@ -155,7 +155,7 @@ const IndexDTFNavigation = () => {
   if (isFactsheet) return null
 
   return (
-    <div className="w-full lg:sticky lg:top-0 p-3 md:p-6 fixed bottom-0 border-t lg:border-t-0 lg:w-56 flex-shrink-0 bg-background z-[1] h-16 lg:h-full">
+    <div data-testid="dtf-nav" className="w-full lg:sticky lg:top-0 p-3 md:p-6 fixed bottom-0 border-t lg:border-t-0 lg:w-56 flex-shrink-0 bg-background z-[1] h-16 lg:h-full">
       <div className="sticky top-6">
         <NavigationHeader />
         <Separator className="my-4 hidden lg:block" />

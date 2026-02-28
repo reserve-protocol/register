@@ -1,0 +1,96 @@
+[
+  {
+    "address": "0x4da9a0f397db1397902070f93a4d6ddbc0e0e6e8",
+    "name": "CF Large Cap Index",
+    "symbol": "LCAP",
+    "marketCap": 3539310.45,
+    "fee": 1.5,
+    "basket": [
+      { "address": "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf", "symbol": "cbBTC", "name": "Coinbase Wrapped BTC", "weight": "44.40" },
+      { "address": "0x4200000000000000000000000000000000000006", "symbol": "WETH", "name": "Wrapped Ether", "weight": "22.59" },
+      { "address": "0x2615a94df961278DcbC41Fb0a54fEc5f10a693aE", "symbol": "uXRP", "name": "XRP (Universal)", "weight": "15.20" },
+      { "address": "0x9B8Df6E244526ab5F6e6400d331DB28C8fdDdb55", "symbol": "uSOL", "name": "Solana (Universal)", "weight": "9.44" }
+    ],
+    "price": 6.20,
+    "performance": [
+      { "value": 5.91, "timestamp": 1771451791 },
+      { "value": 5.94, "timestamp": 1771538176 },
+      { "value": 6.03, "timestamp": 1771624573 },
+      { "value": 6.06, "timestamp": 1771710978 },
+      { "value": 5.95, "timestamp": 1771797372 },
+      { "value": 5.71, "timestamp": 1771883777 },
+      { "value": 5.67, "timestamp": 1771970162 },
+      { "value": 6.26, "timestamp": 1772056576 }
+    ],
+    "chainId": 8453,
+    "brand": {
+      "icon": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxBVjyB3T4H9uivWURqQkxfgFXD7tedNTwsYoS",
+      "cover": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxyoERsLrX3EJomHD1USwYFd2GKiBg5a8eIx7n",
+      "tags": ["Majors", "Bitcoin", "L1"],
+      "about": ""
+    },
+    "mandate": "The CF Large Cap Index tracks the performance of large-cap digital assets."
+  },
+  {
+    "address": "0x44551ca46fa5592bb572e20043f7c3d54c85cad7",
+    "name": "Clanker Index",
+    "symbol": "CLX",
+    "marketCap": 122888.72,
+    "fee": 2,
+    "basket": [
+      { "address": "0x1bc0c42215582d5A085795f4baDbaC3ff36d1Bcb", "symbol": "CLANKER", "name": "tokenbot", "weight": "16.95" },
+      { "address": "0x22aF33FE49fD1Fa80c7149773dDe5890D3c76F3b", "symbol": "BNKR", "name": "BankrCoin", "weight": "52.67" },
+      { "address": "0xf30Bf00edd0C22db54C9274B90D2A4C21FC09b07", "symbol": "FELIX", "name": "FELIX", "weight": "1.13" }
+    ],
+    "price": 1.03,
+    "performance": [
+      { "value": 0.97, "timestamp": 1771451791 },
+      { "value": 1.03, "timestamp": 1771538176 },
+      { "value": 1.06, "timestamp": 1771624573 },
+      { "value": 1.05, "timestamp": 1771710978 },
+      { "value": 1.04, "timestamp": 1771797372 },
+      { "value": 0.97, "timestamp": 1771883777 },
+      { "value": 0.94, "timestamp": 1771970162 },
+      { "value": 1.04, "timestamp": 1772056576 }
+    ],
+    "chainId": 8453,
+    "brand": {
+      "icon": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxBA9RFeT4H9uivWURqQkxfgFXD7tedNTwsYoS",
+      "cover": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxYULL8okGhrj2ScsDNeUp3lRftPgCi0ZM65Vz",
+      "tags": ["Memes", "SocialFi"],
+      "about": ""
+    },
+    "mandate": "One-click exposure to the best performing assets in the Clanker ecosystem."
+  },
+  {
+    "address": "0xfe45eda533e97198d9f3deeda9ae6c147141f6f9",
+    "name": "AIndex",
+    "symbol": "AI",
+    "marketCap": 12952.44,
+    "fee": 2,
+    "basket": [
+      { "address": "0x0b3e328455c4059EEb9e3f84b5543F74E24e7E1b", "symbol": "VIRTUAL", "name": "Virtual Protocol", "weight": "45.72" },
+      { "address": "0xAC1Bd2486aAf3B5C0fc3Fd868558b082a531B2B4", "symbol": "TOSHI", "name": "Toshi", "weight": "7.03" },
+      { "address": "0xacfE6019Ed1A7Dc6f7B508C02d1b04ec88cC21bf", "symbol": "VVV", "name": "Venice Token", "weight": "12.05" }
+    ],
+    "price": 0.044,
+    "performance": [
+      { "value": 0.039, "timestamp": 1771451791 },
+      { "value": 0.040, "timestamp": 1771538176 },
+      { "value": 0.042, "timestamp": 1771624573 },
+      { "value": 0.043, "timestamp": 1771710978 },
+      { "value": 0.040, "timestamp": 1771797372 },
+      { "value": 0.038, "timestamp": 1771883777 },
+      { "value": 0.039, "timestamp": 1771970162 },
+      { "value": 0.045, "timestamp": 1772056576 }
+    ],
+    "chainId": 8453,
+    "brand": {
+      "icon": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxYAFIGckGhrj2ScsDNeUp3lRftPgCi0ZM65Vz",
+      "cover": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxoS7Q0DpWJ8eBKlh20iDxdQzgc7AtSIO5MUyN",
+      "tags": ["AI", "Memes"],
+      "about": "AIndex provides diversified exposure to top AI agents and infrastructure projects."
+    },
+    "mandate": "AIndex provides diversified exposure to AI agents and infrastructure projects on Base."
+  }
+]

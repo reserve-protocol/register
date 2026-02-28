@@ -213,7 +213,7 @@ const ProposalList = () => {
 }
 
 const GovernanceProposalList = () => (
-  <div className="rounded-4xl bg-secondary h-fit">
+  <div data-testid="governance-proposals" className="rounded-4xl bg-secondary h-fit">
     <Header />
     <ProposalList />
   </div>

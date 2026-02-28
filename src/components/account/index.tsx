@@ -29,6 +29,7 @@ const Account = () => (
             if (!connected) {
               return (
                 <Button
+                  data-testid="header-connect-btn"
                   variant="accent"
                   onClick={openConnectModal}
                   className="px-3.5 py-1 rounded-full font-normal"
@@ -46,7 +47,7 @@ const Account = () => (
             return (
               <>
                 <PortfolioSidebar>
-                  <div className="flex items-center justify-center cursor-pointer text-base">
+                  <div data-testid="header-wallet" className="flex items-center justify-center cursor-pointer text-base">
                     <div className="flex items-center relative">
                       <div className="flex items-center absolute lg:relative -bottom-1 -right-1 lg:bottom-0 lg:right-0">
                         <ChainLogo
