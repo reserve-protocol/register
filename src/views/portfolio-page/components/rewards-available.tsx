@@ -26,12 +26,16 @@ const RewardsAvailable = () => {
       <p className="text-xl font-bold text-primary">
         ${formatCurrency(totalRewardsUSD)}
       </p>
-      <a
-        href="#available-rewards"
+      <button
+        onClick={() =>
+          document
+            .getElementById('available-rewards')
+            ?.scrollIntoView({ behavior: 'smooth' })
+        }
         className="bg-primary text-white text-xs font-medium px-4 py-2 rounded-2xl w-fit"
       >
         Collect Rewards
-      </a>
+      </button>
       <a
         href="/earn"
         className="flex items-center gap-0.5 text-xs font-light text-primary"

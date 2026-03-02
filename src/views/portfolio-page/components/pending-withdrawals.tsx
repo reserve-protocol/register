@@ -90,7 +90,7 @@ const StakedRSRWithdrawButton = ({
   useEffect(() => {
     if (withdrawn && !toastedRef.current) {
       toastedRef.current = true
-      toast.success('Withdrawal successful')
+      toast.success('Withdrawal successful', { duration: 8000 })
     }
   }, [withdrawn])
 
@@ -161,7 +161,7 @@ const VoteLockWithdrawButton = ({
   useEffect(() => {
     if (withdrawn && !toastedRef.current) {
       toastedRef.current = true
-      toast.success('Withdrawal successful')
+      toast.success('Withdrawal successful', { duration: 8000 })
     }
   }, [withdrawn])
 
@@ -245,7 +245,7 @@ const ProgressCell = ({ row }: { row: PendingWithdrawalRow }) => {
   const timeLeft = deadline - currentTime
   const elapsed = row.delay - timeLeft
   const progress = Math.min(100, Math.max(0, (elapsed / row.delay) * 100))
-  const timeLeftStr = parseDurationShort(timeLeft)
+  const timeLeftStr = parseDurationShort(timeLeft, { units: ['d', 'h', 'm'], round: true })
     .replaceAll(' ', '')
     .replaceAll(',', ' ')
 

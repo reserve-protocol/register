@@ -47,7 +47,7 @@ const ClaimButton = ({ reward }: { reward: RewardRow }) => {
   useEffect(() => {
     if (receipt?.status === 'success') {
       setClaimed(true)
-      toast.success('Rewards claimed')
+      toast.success('Rewards claimed', { duration: 8000 })
     }
   }, [receipt])
 
