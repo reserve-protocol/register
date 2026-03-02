@@ -82,7 +82,7 @@ const ProposalDetail = ({
   const calls = Object.keys(parse)
 
   return (
-    <div className={className}>
+    <div>
       {!calls.length && (
         <Card className="p-4 mb-4 text-center">
           <Spinner size={18} />

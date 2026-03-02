@@ -26,7 +26,7 @@ const ProposalDetailContent = () => {
   }
 
   return (
-    <div className="bg-secondary rounded-lg p-2">
+    <div className="bg-background rounded-3xl p-2">
       <div className="flex items-center p-0 sm:p-2 mb-2">
         <div className="flex items-center cursor-pointer rounded-md overflow-hidden p-0.5 text-xs bg-muted">
           <div
@@ -66,8 +66,6 @@ const ProposalDetailContent = () => {
             addresses={proposal.targets}
             calldatas={proposal.calldatas}
             snapshotBlock={proposal.creationBlock}
-            className="bg-card rounded-md border border-border"
-            borderColor="border"
           />
         )
       )}

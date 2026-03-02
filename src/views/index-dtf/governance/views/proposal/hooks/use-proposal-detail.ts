@@ -104,7 +104,7 @@ const useProposalDetail = (proposalId: string | undefined) => {
   const chainId = useAtomValue(chainIdAtom)
 
   return useQuery({
-    queryKey: ['proposal', proposalId],
+    queryKey: ['proposal', chainId, proposalId],
     queryFn: async () => {
       if (!proposalId) {
         return undefined

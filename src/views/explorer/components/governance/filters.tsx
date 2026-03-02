@@ -10,6 +10,7 @@ import TokenFilter from '../filters/token-filter'
 import { type DTFType, filtersAtom } from './atoms'
 
 export const proposalStatus = {
+  [PROPOSAL_STATES.PENDING]: 'Pending',
   [PROPOSAL_STATES.ACTIVE]: 'Active',
   [PROPOSAL_STATES.DEFEATED]: 'Defeated',
   [PROPOSAL_STATES.EXECUTED]: 'Executed',

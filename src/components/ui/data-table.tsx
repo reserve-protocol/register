@@ -25,6 +25,13 @@ import { cn } from '@/lib/utils'
 import { Fragment, useMemo, useState } from 'react'
 import React from 'react'
 import { Button } from './button'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from './select'
 import { ArrowDown, ArrowUp, ChevronLeft, ChevronRight } from 'lucide-react'
 import Spinner from './spinner'
 
@@ -69,12 +76,39 @@ export const SorteableButton = ({
   )
 }
 
-const Pagination = ({ table }: { table: TableType<any> }) => {
+const PAGE_SIZE_OPTIONS = [10, 25, 50, 100]
+
+const Pagination = ({
+  table,
+  showPageSizeSelector = false,
+}: {
+  table: TableType<any>
+  showPageSizeSelector?: boolean
+}) => {
   return (
     <div className="flex items-center justify-between md:py-4 ">
-      <div className="text-sm text-muted-foreground ml-6 opacity-0 md:opacity-100 ">
-        Showing {table.getState().pagination.pageSize} out of{' '}
-        {table.getFilteredRowModel().rows.length}
+      <div className="flex items-center gap-2 text-sm text-muted-foreground ml-6 opacity-0 md:opacity-100">
+        <span>
+          Showing {Math.min(table.getState().pagination.pageSize, table.getFilteredRowModel().rows.length)} out of{' '}
+          {table.getFilteredRowModel().rows.length}
+        </span>
+        {showPageSizeSelector && (
+          <Select
+            value={String(table.getState().pagination.pageSize)}
+            onValueChange={(value) => table.setPageSize(Number(value))}
+          >
+            <SelectTrigger className="h-8 w-[70px]">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {PAGE_SIZE_OPTIONS.map((size) => (
+                <SelectItem key={size} value={String(size)}>
+                  {size}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        )}
       </div>
       <div className=" flex items-center justify-center">
         <div className="flex items-center space-x-2">
@@ -158,6 +192,7 @@ interface DataTableComponentProps<TData, TValue>
   expandable?: boolean
   allowMultipleExpand?: boolean
   pagination?: boolean | { pageSize: number }
+  showPageSizeSelector?: boolean
   hoverRowComponent?: (props: {
     row: Row<TData>
     children: React.ReactNode
@@ -231,6 +266,7 @@ function DataTable<TData, TValue>({
   expandable = true,
   allowMultipleExpand = true,
   pagination,
+  showPageSizeSelector = false,
   onRowClick,
   hoverRowComponent,
   renderSubComponent,
@@ -368,7 +404,7 @@ function DataTable<TData, TValue>({
           )}
         </TableBody>
       </Table>
-      {pagination && <Pagination table={table} />}
+      {pagination && <Pagination table={table} showPageSizeSelector={showPageSizeSelector} />}
     </div>
   )
 }

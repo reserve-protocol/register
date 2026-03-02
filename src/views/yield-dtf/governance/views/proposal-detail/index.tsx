@@ -15,7 +15,7 @@ const GovernanceProposalDetail = () => (
         <ProposalVote />
       </div>
     </div>
-    <div className="grid grid-cols-1 gap-2 bg-secondary px-1 py-3 sm:px-2 lg:grid-cols-[10fr_5fr] [align-content:flex-start] [align-items:flex-start]">
+    <div className="grid grid-cols-1 gap-2 rounded-3xl py-2 lg:grid-cols-[10fr_5fr] [align-content:flex-start] [align-items:flex-start]">
       <ProposalDetailContent />
       <div>
         <ProposalDetailStats />

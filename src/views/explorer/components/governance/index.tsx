@@ -17,14 +17,19 @@ const BADGE_VARIANT: Record<string, string> = {
   [PROPOSAL_STATES.DEFEATED]: 'danger',
   [PROPOSAL_STATES.QUORUM_NOT_REACHED]: 'danger',
   [PROPOSAL_STATES.ACTIVE]: 'info',
+  [PROPOSAL_STATES.QUEUED]: 'info',
+  [PROPOSAL_STATES.SUCCEEDED]: 'info',
   [PROPOSAL_STATES.EXECUTED]: 'success',
   [PROPOSAL_STATES.CANCELED]: 'danger',
+  [PROPOSAL_STATES.PENDING]: 'warning',
+  [PROPOSAL_STATES.EXPIRED]: 'muted',
 }
 
 const badgeClasses: Record<string, string> = {
   danger: 'bg-destructive/15 text-destructive',
   info: 'bg-primary/15 text-primary',
   success: 'bg-success/15 text-success',
+  warning: 'bg-warning/15 text-warning',
   muted: 'bg-muted text-muted-foreground',
 }
 
@@ -86,7 +91,7 @@ const ExploreGovernance = () => {
         cell: (data) => (
           <span
             className={cn(
-              'ml-auto shrink-0 font-bold rounded-full px-3.5 py-1.5',
+              'ml-auto shrink-0 font-semibold rounded-full px-3.5 py-1.5',
               badgeClasses[BADGE_VARIANT[data.getValue()] || 'muted']
             )}
           >
@@ -111,7 +116,8 @@ const ExploreGovernance = () => {
         sorting
         sortBy={[{ id: 'creationTime', desc: true }]}
         data={data}
-        pagination={{ pageSize: 10 }}
+        pagination={{ pageSize: 50 }}
+        showPageSizeSelector
         className="border-2 border-secondary pt-0"
         columnVisibility={['', '', ['none', 'table-cell'], '']}
         columns={columns}
