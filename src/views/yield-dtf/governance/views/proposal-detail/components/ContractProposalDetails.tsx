@@ -52,8 +52,8 @@ const CallData = ({
       {isOpen && (
         <>
           <Separator className="mb-4" />
-          <code className="break-words">{data}</code>
-          <div className="mb-4" />
+          <code className="break-all">{data}</code>
+          <div className="mb-2" />
         </>
       )}
     </div>
@@ -65,7 +65,7 @@ const Header = ({ label, address }: { label: string; address: string }) => {
 
   return (
     <div className="flex items-center text-primary p-2">
-      <span className="font-bold text-lg mr-1">{label}</span>
+      <span className="font-semibold text-lg mr-1">{label}</span>
       <GoTo
         className="mt-0.5"
         href={getExplorerLink(address, chainId, ExplorerDataType.ADDRESS)}
@@ -152,7 +152,7 @@ const CallPreview = ({
   return (
     <div
       key={index}
-      className="p-2 rounded-lg bg-muted shadow-sm"
+      className="p-2 rounded-lg bg-background"
     >
       <div className="flex items-center mb-2">
         <span className="font-bold text-primary mr-auto text-sm">
@@ -189,7 +189,7 @@ const CallList = ({
   const total = calls.length
 
   return (
-    <div className="flex flex-col gap-2 mt-2">
+    <div className="flex flex-col gap-2 mx-1 mt-2">
       {calls.map((call, index) => (
         <CallPreview
           key={call.signature}
@@ -212,7 +212,7 @@ const ContractProposalDetails = ({ data, snapshotBlock, className }: Props) => {
   return (
     <Card
       className={cn(
-        'p-2 bg-secondary border-8 border-background',
+        'border-background',
         className
       )}
     >

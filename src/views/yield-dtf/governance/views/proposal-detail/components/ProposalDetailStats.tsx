@@ -96,7 +96,7 @@ const ProposalDetailStats = () => {
   }, [forVotes, againstVotes])
 
   return (
-    <div className="rounded-lg bg-secondary p-2">
+    <div className="rounded-3xl bg-background p-2">
       <span className="block p-4 text-xl font-bold leading-5">
         {[PROPOSAL_STATES.ACTIVE, PROPOSAL_STATES.PENDING].includes(state)
           ? 'Current'

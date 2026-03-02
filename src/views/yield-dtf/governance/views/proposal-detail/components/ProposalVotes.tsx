@@ -53,7 +53,7 @@ const ProposalVotes = () => {
   const ensRes: string[] = useEnsAddresses(addresses)
 
   return (
-    <div className="bg-secondary rounded-lg p-2 mt-2">
+    <div className="bg-background rounded-3xl p-2 mt-2">
       <div className="flex items-center mb-2">
         <div className="flex items-center cursor-pointer rounded-md overflow-hidden p-0.5 text-xs bg-muted">
           <div
@@ -92,7 +92,7 @@ const ProposalVotes = () => {
         </div>
       </div>
 
-      <div className="bg-background rounded-md overflow-hidden shadow-sm border border-secondary py-2">
+      <div className="bg-card rounded-2xl overflow-hidden shadow-sm border border-secondary py-2">
         <div className="max-h-[420px] overflow-auto">
           {currentVotes.map((vote, index) => (
             <div

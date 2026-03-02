@@ -27,6 +27,7 @@ export interface TableProps {
   compact?: boolean
   sorting?: boolean
   pagination?: boolean | { pageSize: number }
+  showPageSizeSelector?: boolean
   onSort?(state: SortingState): void
   defaultPageSize?: number
   onRowClick?(data: any, row: Row<any>): void
@@ -51,6 +52,7 @@ export function Table({
   sorting = false,
   compact = false,
   pagination,
+  showPageSizeSelector = false,
   isLoading = false,
   defaultPageSize = 10,
   maxHeight = 'auto',
@@ -104,6 +106,7 @@ export function Table({
         columns={columns}
         data={data}
         pagination={paginationConfig}
+        showPageSizeSelector={showPageSizeSelector}
         onRowClick={handleRowClick}
         renderSubComponent={renderSubComponent}
         initialSorting={sortBy}
