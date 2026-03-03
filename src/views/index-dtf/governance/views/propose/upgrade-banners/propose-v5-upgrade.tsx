@@ -176,9 +176,6 @@ const validProposalExists = (
   })
 }
 
-// BED & SMELL
-const UPGRADE_WHITELIST: string[] = ['0x4e3b170dcbe704b248df5f56d488114ace01b1c5', '0xf91384484f4717314798e8975bcd904a35fc2bf1']
-
 export default function ProposeV5Upgrade() {
   const { isProposeAllowed } = useIsProposeAllowed()
   const proposals = useAtomValue(governanceProposalsAtom)
@@ -191,7 +188,7 @@ export default function ProposeV5Upgrade() {
   }, [setRefetchToken])
 
   // Show banner for v4.x DTFs (4.0.0 and 4.0.1)
-  const isUpgradeable = version.startsWith('4.') && UPGRADE_WHITELIST.includes(dtf?.id ?? '')
+  const isUpgradeable = version.startsWith('4.')
 
   if (!isProposeAllowed || !proposals || !isUpgradeable) return null
 
