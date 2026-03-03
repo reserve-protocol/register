@@ -1,14 +1,14 @@
-import { t, Trans } from '@lingui/macro'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
-import Field, { FieldInput, getErrorMessage } from 'components/field'
-import { atom, useAtom, useAtomValue } from 'jotai'
-import { useSetAtom } from 'jotai'
-import { useEffect } from 'react'
-import { Plus } from 'lucide-react'
-import { useForm } from 'react-hook-form'
 import DocsLink from '@/components/utils/docs-link'
+import { YIELD_PROTOCOL_DOCS } from '@/utils/constants'
+import { t, Trans } from '@lingui/macro'
+import Field, { FieldInput, getErrorMessage } from 'components/field'
+import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { Plus } from 'lucide-react'
+import { useEffect } from 'react'
+import { useForm } from 'react-hook-form'
 import {
   ExternalAddressSplit,
   isRevenueValidAtom,
@@ -16,7 +16,6 @@ import {
   revenueSplitAtom,
 } from '../atoms'
 import ExternalRevenueSpit from './ExternalRevenueSplit'
-import { PROTOCOL_DOCS } from '@/utils/constants'
 
 const updateExternalShareAtom = atom(
   null,
@@ -109,7 +108,7 @@ const RevenueSplit = ({ className }: RevenueSplitProps) => {
           <Trans>Revenue Distribution</Trans>
         </span>
         <DocsLink
-          link={`${PROTOCOL_DOCS}yield_dtfs/overview/#revenue-handling`}
+          link={`${YIELD_PROTOCOL_DOCS}/deployment-guide/yield-dtf-deployment-walkthrough`}
         />
       </div>
       <Separator className="my-4 -mx-4 border-muted" />
@@ -175,7 +174,7 @@ const RevenueSplit = ({ className }: RevenueSplitProps) => {
           <br />
         </Trans>
         <a
-          href={`${PROTOCOL_DOCS}yield_dtfs/protocol_operations/#revenue-distribution`}
+          href={`${YIELD_PROTOCOL_DOCS}/deployment-guide/yield-dtf-deployment-walkthrough`}
           target="_blank"
           rel="noreferrer"
           className="underline"

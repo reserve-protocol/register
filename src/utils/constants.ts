@@ -24,8 +24,9 @@ export const RESERVE_API = isStaging
 
 export const VERSION = '3.0.0'
 export const TELEGRAM_INVITE = 'https://t.me/reservecurrency'
-export const PROTOCOL_DOCS = 'https://reserve.org/protocol/'
-export const INDEX_PROTOCOL_DOCS = `${PROTOCOL_DOCS}index_dtfs/`
+export const PROTOCOL_DOCS = 'https://docs.reserve.org/'
+export const INDEX_PROTOCOL_DOCS = `${PROTOCOL_DOCS}/core-components/index-dtfs`
+export const YIELD_PROTOCOL_DOCS = `${PROTOCOL_DOCS}/core-components/yield-dtfs`
 export const REGISTER_FEEDBACK = 'https://reserve.canny.io/register-app'
 export const RESERVE_BLOG = 'https://blog.reserve.org/'
 export const RESERVE_FORUM = 'https://forum.reserve.org/'

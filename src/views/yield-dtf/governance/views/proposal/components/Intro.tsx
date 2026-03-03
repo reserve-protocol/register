@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import ProposalIntroIcon from 'components/icons/ProposalIntroIcon'
 import useRToken from 'hooks/useRToken'
-import { PROTOCOL_DOCS } from '@/utils/constants'
+import { YIELD_PROTOCOL_DOCS } from '@/utils/constants'
 import { cn } from '@/lib/utils'
 
 interface Props {
@@ -39,7 +39,7 @@ const Intro = ({ className }: Props) => {
         <Button
           variant="ghost"
           size="sm"
-          onClick={() => window.open(PROTOCOL_DOCS, '_blank')}
+          onClick={() => window.open(YIELD_PROTOCOL_DOCS, '_blank')}
         >
           <Trans>Protocol Docs</Trans>
         </Button>

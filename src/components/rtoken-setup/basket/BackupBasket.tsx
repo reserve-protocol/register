@@ -1,11 +1,11 @@
-import { Trans } from '@lingui/macro'
 import DocsLink from '@/components/utils/docs-link'
+import { YIELD_PROTOCOL_DOCS } from '@/utils/constants'
+import { Trans } from '@lingui/macro'
 import EmptyBoxIcon from 'components/icons/EmptyBoxIcon'
 import { useAtomValue } from 'jotai'
 import { useCallback } from 'react'
 import { backupCollateralAtom, basketAtom } from '../atoms'
 import EmergencyCollateral from './EmergencyCollateral'
-import { PROTOCOL_DOCS } from '@/utils/constants'
 
 interface BackupBasketProps {
   onAdd?(
@@ -75,7 +75,7 @@ const BackupBasket = ({
       <div className="flex items-center">
         <span className="text-xl font-medium">Emergency Collateral</span>
         <DocsLink
-          link={`${PROTOCOL_DOCS}yield_dtfs/deployment_guide/ui_walkthrough/#step-4-configure-backup-basket`}
+          link={`${YIELD_PROTOCOL_DOCS}/deployment-guide`}
         />
       </div>
       {targetUnits.map((targetUnit) =>
