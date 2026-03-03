@@ -2,9 +2,11 @@ import dtfIndexStakingVault from '@/abis/dtf-index-staking-vault'
 import TransactionButton from '@/components/ui/transaction-button'
 import { walletAtom } from '@/state/atoms'
 import { portfolioSidebarOpenAtom } from '@/views/portfolio/atoms'
+import { useQueryClient } from '@tanstack/react-query'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
 import { useEffect, useState } from 'react'
+import { toast } from 'sonner'
 import { Address, erc20Abi, getAddress, isAddress, parseUnits } from 'viem'
 import {
   useReadContract,
@@ -14,6 +16,7 @@ import {
 import {
   currentDelegateAtom,
   delegateAtom,
+  isPortfolioPageAtom,
   lockCheckboxAtom,
   stakingInputAtom,
   stakingSidebarOpenAtom,
@@ -81,6 +84,8 @@ const SubmitLockButton = () => {
   const resetInput = useResetAtom(stakingInputAtom)
   const setPortfolioSidebarOpen = useSetAtom(portfolioSidebarOpenAtom)
   const setStakingSidebarOpen = useSetAtom(stakingSidebarOpenAtom)
+  const isPortfolioPage = useAtomValue(isPortfolioPageAtom)
+  const queryClient = useQueryClient()
   const chainId = stToken?.chainId
   const [isProcessing, setIsProcessing] = useState(false)
 
@@ -167,13 +172,18 @@ const SubmitLockButton = () => {
       const timer = setTimeout(() => {
         resetInput()
         setStakingSidebarOpen(false)
-        setPortfolioSidebarOpen(true)
+        if (isPortfolioPage) {
+          toast.success('Vote lock successful', { duration: 8000 })
+          queryClient.invalidateQueries({ queryKey: ['portfolio'] })
+        } else {
+          setPortfolioSidebarOpen(true)
+        }
         setIsProcessing(false)
-      }, 10000) // 10 seconds delay
+      }, 10000)
 
       return () => clearTimeout(timer)
     }
-  }, [receipt, resetInput, setStakingSidebarOpen, setPortfolioSidebarOpen])
+  }, [receipt, resetInput, setStakingSidebarOpen, setPortfolioSidebarOpen, isPortfolioPage, queryClient])
 
   return (
     <div>

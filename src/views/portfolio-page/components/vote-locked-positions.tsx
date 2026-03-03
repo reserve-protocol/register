@@ -190,7 +190,7 @@ const VoteLockedPositions = () => {
             Participate in governance with any ERC-20 token and earn APY
             rewards.{' '}
             <a
-              href="https://reserve.org/protocol/"
+              href="https://docs.reserve.org/core-components/index-dtfs/roles"
               target="_blank"
               rel="noreferrer"
               className="text-primary hover:underline"

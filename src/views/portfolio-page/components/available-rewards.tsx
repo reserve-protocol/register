@@ -161,7 +161,7 @@ const AvailableRewards = () => {
           <>
             Earn rewards by staking or participating in governance.{' '}
             <a
-              href="https://reserve.org/protocol/"
+              href="https://docs.reserve.org/core-components/index-dtfs/roles"
               target="_blank"
               rel="noreferrer"
               className="text-primary hover:underline"

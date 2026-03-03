@@ -149,7 +149,7 @@ const StakedPositions = () => {
           <>
             Stake your RSR and earn APY rewards.{' '}
             <a
-              href="https://reserve.org/protocol/"
+              href="https://docs.reserve.org/core-components/rsr-reserve-rights"
               target="_blank"
               rel="noreferrer"
               className="text-primary hover:underline"
