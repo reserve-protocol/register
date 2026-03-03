@@ -1,7 +1,6 @@
 import dtfIndexStakingVault from '@/abis/dtf-index-staking-vault'
 import TransactionButton from '@/components/ui/transaction-button'
 import { walletAtom } from '@/state/atoms'
-import { portfolioSidebarOpenAtom } from '@/views/portfolio/atoms'
 import { useQueryClient } from '@tanstack/react-query'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
@@ -10,7 +9,6 @@ import { toast } from 'sonner'
 import { parseUnits } from 'viem'
 import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
 import {
-  isPortfolioPageAtom,
   stakingInputAtom,
   stakingSidebarOpenAtom,
   stTokenAtom,
@@ -26,9 +24,7 @@ const SubmitUnlockButton = () => {
   const amountToUnlock = parseUnits(input, stToken?.token.decimals)
   const unlockDelay = useAtomValue(unlockDelayAtom)
   const resetInput = useResetAtom(stakingInputAtom)
-  const setPortfolioSidebarOpen = useSetAtom(portfolioSidebarOpenAtom)
   const setStakingSidebarOpen = useSetAtom(stakingSidebarOpenAtom)
-  const isPortfolioPage = useAtomValue(isPortfolioPageAtom)
   const queryClient = useQueryClient()
   const chainId = stToken?.chainId
   const [isProcessing, setIsProcessing] = useState(false)
@@ -66,18 +62,14 @@ const SubmitUnlockButton = () => {
       const timer = setTimeout(() => {
         resetInput()
         setStakingSidebarOpen(false)
-        if (isPortfolioPage) {
-          toast.success('Unlock initiated successfully', { duration: 8000 })
-          queryClient.invalidateQueries({ queryKey: ['portfolio'] })
-        } else {
-          setPortfolioSidebarOpen(true)
-        }
+        toast.success('Unlock initiated successfully', { duration: 8000 })
+        queryClient.invalidateQueries({ queryKey: ['portfolio'] })
         setIsProcessing(false)
       }, 10000)
 
       return () => clearTimeout(timer)
     }
-  }, [receipt, resetInput, setStakingSidebarOpen, setPortfolioSidebarOpen, isPortfolioPage, queryClient])
+  }, [receipt, resetInput, setStakingSidebarOpen, queryClient])
 
   return (
     <div>

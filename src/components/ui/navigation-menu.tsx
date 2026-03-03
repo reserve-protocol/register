@@ -43,7 +43,7 @@ NavigationMenuList.displayName = NavigationMenuPrimitive.List.displayName
 const NavigationMenuItem = NavigationMenuPrimitive.Item
 
 const navigationMenuTriggerStyle = cva(
-  'group inline-flex gap-1.5 h-10 w-max items-center justify-center rounded-md px-3 py-2 text-sm transition-colors hover:text-primary focus:text-primary focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:text-primary data-[state=open]:text-primary'
+  'group inline-flex gap-1.5 h-10 w-max items-center justify-center rounded-md px-2 xl:px-3 py-2 text-sm transition-colors hover:text-primary focus:text-primary focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:text-primary data-[state=open]:text-primary'
 )
 
 const NavigationMenuTrigger = React.forwardRef<

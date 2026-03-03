@@ -7,7 +7,6 @@ import { formatUnits } from 'viem'
 export type StTokenExtended = IndexDTF['stToken'] & { chainId: number }
 
 export const stakingSidebarOpenAtom = atom(false)
-export const isPortfolioPageAtom = atom(false)
 export const portfolioStTokenAtom = atomWithReset<StTokenExtended | undefined>(
   undefined
 )

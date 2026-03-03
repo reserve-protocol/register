@@ -1,7 +1,6 @@
 import Copy from '@/components/ui/copy'
 import { ConnectWalletButton } from '@/components/ui/transaction'
 import { shortenAddress } from '@/utils'
-import { isPortfolioPageAtom } from '@/views/index-dtf/overview/components/staking/atoms'
 import { useSetAtom } from 'jotai'
 import { Eye, X } from 'lucide-react'
 import { useEffect, useMemo } from 'react'
@@ -84,12 +83,6 @@ const PortfolioPage = () => {
   const address = impersonatedAddress || connectedAddress
   const { data, isLoading } = usePortfolio(address)
   const setPortfolioData = useSetAtom(portfolioDataAtom)
-  const setIsPortfolioPage = useSetAtom(isPortfolioPageAtom)
-
-  useEffect(() => {
-    setIsPortfolioPage(true)
-    return () => setIsPortfolioPage(false)
-  }, [setIsPortfolioPage])
 
   useEffect(() => {
     setPortfolioData(data ?? null)
