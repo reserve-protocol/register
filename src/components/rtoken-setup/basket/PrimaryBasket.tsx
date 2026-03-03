@@ -1,3 +1,8 @@
+import { Button } from '@/components/ui/button'
+import { Separator } from '@/components/ui/separator'
+import DocsLink from '@/components/utils/docs-link'
+import { useWatchReadContracts } from '@/hooks/useWatchReadContract'
+import { YIELD_PROTOCOL_DOCS } from '@/utils/constants'
 import { t, Trans } from '@lingui/macro'
 import NewCollateralAbi from 'abis/NewCollateralAbi'
 import Help from 'components/help'
@@ -5,7 +10,6 @@ import EmptyBoxIcon from 'components/icons/EmptyBoxIcon'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useCallback, useEffect, useMemo } from 'react'
 import { chainIdAtom, collateralYieldAtom } from 'state/atoms'
-import { Separator } from '@/components/ui/separator'
 import {
   formatCurrency,
   formatPercentage,
@@ -15,10 +19,6 @@ import {
 import { formatEther } from 'viem'
 import { Basket, basketAtom, basketTargetUnitPriceAtom } from '../atoms'
 import UnitBasket from './UnitBasket'
-import { Button } from '@/components/ui/button'
-import DocsLink from '@/components/utils/docs-link'
-import { useWatchReadContracts } from '@/hooks/useWatchReadContract'
-import { PROTOCOL_DOCS } from '@/utils/constants'
 
 interface PrimaryBasketProps {
   onAdd?(
@@ -199,7 +199,7 @@ const PrimaryBasket = ({
           <Trans>Primary Basket</Trans>
         </span>
         <DocsLink
-          link={`${PROTOCOL_DOCS}yield_dtfs/deployment_guide/ui_walkthrough/#step-3-configure-basket`}
+          link={`${YIELD_PROTOCOL_DOCS}/deployment-guide`}
         />
         {!readOnly && (
           <Button

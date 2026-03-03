@@ -15,7 +15,7 @@ import { addressPattern } from 'utils'
 import GovernanceParameters from './GovernanceParameters'
 import DocsLink from '@/components/utils/docs-link'
 import RolesSetup from './RoleSetup'
-import { PROTOCOL_DOCS } from '@/utils/constants'
+import { YIELD_PROTOCOL_DOCS } from '@/utils/constants'
 
 interface GovernanceSetupProps {
   disabled?: boolean
@@ -26,7 +26,7 @@ const GovernanceSetup = ({
   disabled = false,
   className,
 }: GovernanceSetupProps) => {
-  const { register, watch, setValue } = useFormContext()
+  const { watch, setValue } = useFormContext()
   const defaultGovernance = watch('defaultGovernance')
   const unfreeze = watch('unfreeze')
   const unpause = watch('unpause')
@@ -38,7 +38,7 @@ const GovernanceSetup = ({
           <Trans>Governance</Trans>
         </span>
         <DocsLink
-          link={`${PROTOCOL_DOCS}yield_dtfs/deployment_guide/ui_walkthrough/#step-5-configure-governance`}
+          link={`${YIELD_PROTOCOL_DOCS}/deployment-guide/yield-dtf-deployment-walkthrough`}
         />
       </div>
       <Separator className="my-4 -mx-4 border-muted" />
@@ -68,7 +68,7 @@ const GovernanceSetup = ({
           <Trans>Roles</Trans>
         </span>
         <DocsLink
-          link={`${PROTOCOL_DOCS}yield_dtfs/smart_contracts/#governance-roles`}
+          link={`${YIELD_PROTOCOL_DOCS}/deployment-guide/yield-dtf-deployment-walkthrough`}
         />
       </div>
       {!defaultGovernance ? (
@@ -121,7 +121,7 @@ const GovernanceSetup = ({
           <Trans>Initial RToken state after deployment</Trans>
         </span>
         <DocsLink
-          link={`${PROTOCOL_DOCS}yield_dtfs/deployment_guide/ui_walkthrough/#step-6-configure-initial-state`}
+          link={`${YIELD_PROTOCOL_DOCS}/deployment-guide/yield-dtf-deployment-walkthrough`}
         />
       </div>
       <Field label={t`Pause status`}>

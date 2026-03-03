@@ -2,7 +2,7 @@ import { Trans } from '@lingui/macro'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import DeployIntroIcon from 'components/icons/DeployIntroIcon'
-import { PROTOCOL_DOCS, TELEGRAM_INVITE } from 'utils/constants'
+import { TELEGRAM_INVITE, YIELD_PROTOCOL_DOCS } from 'utils/constants'
 
 interface IntroProps {
   className?: string
@@ -46,7 +46,7 @@ const Intro = ({ className }: IntroProps) => (
       <Button
         variant="ghost"
         size="sm"
-        onClick={() => window.open(`${PROTOCOL_DOCS}yield_dtfs/`, '_blank')}
+        onClick={() => window.open(`${YIELD_PROTOCOL_DOCS}`, '_blank')}
       >
         <Trans>Protocol Docs</Trans>
       </Button>

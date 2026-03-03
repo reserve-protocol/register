@@ -1,4 +1,4 @@
-import { PROTOCOL_DOCS } from '@/utils/constants'
+import { PROTOCOL_DOCS, YIELD_PROTOCOL_DOCS } from '@/utils/constants'
 import { Trans, t } from '@lingui/macro'
 import AsteriskIcon from 'components/icons/AsteriskIcon'
 import RBrand from 'components/icons/RBrand'
@@ -45,7 +45,7 @@ const Risks = () => {
             <a
               target="_blank"
               rel="noopener noreferrer"
-              href={`${PROTOCOL_DOCS}yield_dtfs/security#smart-contract-security-audits`}
+              href={`${YIELD_PROTOCOL_DOCS}/security`}
               className="text-primary hover:underline"
             >
               regular and rigorous security audits.
@@ -61,7 +61,7 @@ const Risks = () => {
             <a
               target="_blank"
               rel="noopener noreferrer"
-              href={`${PROTOCOL_DOCS}risks`}
+              href={`${PROTOCOL_DOCS}/risks`}
               className="text-primary hover:underline"
             >
               handful of risks
@@ -82,7 +82,7 @@ const Risks = () => {
             staking their RSR on the RToken, the possibility of "governance
             attacks" exists. While{' '}
             <a
-              href={`${PROTOCOL_DOCS}risks#governance-risks`}
+              href={`${PROTOCOL_DOCS}/risks`}
               target="_blank"
               rel="noopener noreferrer"
               className="text-primary hover:underline"
@@ -117,7 +117,7 @@ const Risks = () => {
         <span className="ml-2 text-legend">
           This list is not intended to be conclusive.{' '}
           <a
-            href={`${PROTOCOL_DOCS}risks`}
+            href={`${PROTOCOL_DOCS}/risks`}
             target="_blank"
             rel="noopener noreferrer"
             className="underline"

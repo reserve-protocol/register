@@ -20,7 +20,7 @@ import {
 } from 'state/rtoken/atoms/rTokenBackingDistributionAtom'
 import { formatCurrency, shortenAddress } from 'utils'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
-import { PROTOCOL_DOCS } from '@/utils/constants'
+import { YIELD_PROTOCOL_DOCS } from '@/utils/constants'
 
 interface DetailedCollateralWithMeta extends CollateralDetail {
   website?: string
@@ -130,7 +130,7 @@ const CollateralDetails = ({
               variant="ghost"
               onClick={(e) => {
                 e.stopPropagation()
-                window.open(`${PROTOCOL_DOCS}introduction/`, '_blank')
+                window.open(YIELD_PROTOCOL_DOCS, '_blank')
               }}
             >
               <div className="flex items-center">
