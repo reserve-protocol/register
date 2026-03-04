@@ -1,5 +1,10 @@
 # Index DTF Rebalance v4 Specification
 
+**Last Updated:** 2026-03-04
+**Status:** Production (v4 is the current standard; v5 upgrade available)
+
+> **Note:** v4 rebalancing is live across Ethereum, Base, and BSC. A v5 upgrade is available — the UI shows an upgrade banner for all v4 DTFs (no whitelist). See `propose-v5-upgrade.tsx` for the upgrade spell logic.
+
 ## Table of Contents
 
 1. [Overview](#overview)
@@ -415,3 +420,11 @@ rebalanceTokenMapAtom // Token address lookups
 ---
 
 _This specification documents the Index DTF Rebalance v4 system as implemented in the Register platform, focusing specifically on the rebalance flow from governance proposal to execution._
+
+## v5 Upgrade
+
+v5 is available as a governance upgrade spell. Key changes from v4:
+- Spell addresses are chain-specific (see `propose-v5-upgrade.tsx`)
+- Upgrade banner shows automatically for all `version.startsWith('4.')` DTFs
+- No token whitelist — any v4 DTF governor can propose the upgrade
+- Banner is hidden if an upgrade proposal already exists
