@@ -27,15 +27,13 @@ const IndexDTFCard = ({ dtf }: { dtf: IndexDTFItem }) => {
         {/* Show skeleton while loading */}
         {dtf?.brand?.cover && !imageError && (
           <>
-            {!imageLoaded && (
-              <Skeleton className="absolute inset-0 h-full w-full" />
-            )}
+            <Skeleton className="absolute inset-0 h-full w-full" />
             <img
               width={100}
               height={100}
               className={cn(
-                "object-cover h-[100px] w-[100px] rounded-xl transition-opacity duration-500",
-                imageLoaded ? "opacity-100 animate-fade-in" : "opacity-0"
+                "object-cover h-[100px] w-[100px] rounded-xl",
+                imageLoaded ? "animate-fade-in" : "opacity-0"
               )}
               alt="DTF cover"
               src={dtf.brand.cover}

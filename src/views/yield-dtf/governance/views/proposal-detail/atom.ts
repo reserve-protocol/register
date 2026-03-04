@@ -201,7 +201,9 @@ export const getProposalState = (
       +proposal.forWeightedVotes +
       +proposal.againstWeightedVotes +
       +proposal.abstainWeightedVotes
-    state.quorum = +proposal.forWeightedVotes >= +proposal.quorumVotes
+    state.quorum =
+      !!Number(proposal.forWeightedVotes) &&
+      +proposal.forWeightedVotes >= +proposal.quorumVotes
 
     if (totalVotes) {
       state.for = (+proposal.forWeightedVotes / totalVotes) * 100
