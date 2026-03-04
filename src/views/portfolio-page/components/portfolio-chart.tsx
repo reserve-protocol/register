@@ -51,10 +51,10 @@ const formatYAxis = (value: number) => {
 // Rendering order: bottom→top (reversed in tooltip to match visual top→bottom)
 const CATEGORIES = [
   { key: 'rsr', label: 'RSR', color: 'hsl(var(--primary))' },
-  { key: 'voteLocked', label: 'Vote-locked', color: 'hsl(var(--chart-4))' },
-  { key: 'stakedRSR', label: 'Staked RSR', color: 'hsl(var(--chart-1))' },
-  { key: 'yieldDTFs', label: 'Yield DTFs', color: 'hsl(var(--chart-2))' },
-  { key: 'indexDTFs', label: 'Index DTFs', color: 'hsl(var(--chart-3))' },
+  { key: 'voteLocked', label: 'Vote-locked', color: '#e2a735' },
+  { key: 'stakedRSR', label: 'Staked RSR', color: '#e07044' },
+  { key: 'yieldDTFs', label: 'Yield DTFs', color: '#2a9d8f' },
+  { key: 'indexDTFs', label: 'Index DTFs', color: '#4a7ebf' },
 ] as const
 
 function ChartTooltip({ payload, active, stacked }: any) {
