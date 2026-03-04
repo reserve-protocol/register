@@ -148,7 +148,7 @@ const ChartLoadingSkeleton = () => {
   }, [])
 
   return (
-    <div className="relative h-[414px] rounded-2xl bg-muted animate-pulse flex items-center justify-center">
+    <div className="relative mt-2 h-[378px] rounded-2xl bg-muted animate-pulse flex items-center justify-center">
       <div className="flex items-center gap-2 bg-card rounded-full px-4 py-2 text-sm text-primary border border-primary animate-fade-in">
         <Loader size={16} className="animate-spin-slow" />
         {CHART_LOADING_TEXTS[textIndex]}
@@ -288,15 +288,12 @@ const PortfolioChart = () => {
                   type="monotone"
                   dataKey={cat.key}
                   stackId="1"
-                  stroke={cat.color}
+                  stroke="none"
                   fill={cat.color}
-                  strokeWidth={0.5}
                   isAnimationActive={false}
                   style={{
                     fillOpacity: stacked ? 0.5 : 0,
-                    strokeOpacity: stacked ? 1 : 0,
-                    transition:
-                      'fill-opacity 300ms ease, stroke-opacity 300ms ease',
+                    transition: 'fill-opacity 300ms ease',
                   }}
                   activeDot={stacked ? { r: 3, fill: cat.color } : false}
                 />
