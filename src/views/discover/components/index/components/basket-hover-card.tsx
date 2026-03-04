@@ -23,7 +23,7 @@ export function BasketHoverCard({ indexDTF, children }: BasketHoverCardProps) {
   const navigate = useNavigate()
 
   const head = useMemo(
-    () => indexDTF.basket.slice(0, LIMIT_ASSETS),
+    () => (indexDTF.basket ?? []).slice(0, LIMIT_ASSETS),
     [indexDTF.basket]
   )
 

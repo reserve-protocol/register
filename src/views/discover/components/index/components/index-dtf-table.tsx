@@ -115,7 +115,7 @@ const columns: ColumnDef<IndexDTFItem>[] = [
     header: () => <TableHeader>Backing</TableHeader>,
     accessorKey: 'basket',
     cell: ({ row }) => {
-      const head = row.original.basket.slice(0, LIMIT_ASSETS)
+      const head = (row.original.basket ?? []).slice(0, LIMIT_ASSETS)
       return (
         <div className="flex items-center gap-2">
           <BasketHoverCard indexDTF={row.original}>

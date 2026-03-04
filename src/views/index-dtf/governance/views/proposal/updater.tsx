@@ -1,5 +1,5 @@
-import { atom, useAtom, useSetAtom } from 'jotai'
-import { useEffect, useState } from 'react'
+import { useAtom, useSetAtom } from 'jotai'
+import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { accountVotesAtom, proposalDetailAtom } from './atom'
 import useProposalDetail from './hooks/use-proposal-detail'
@@ -14,8 +14,6 @@ const FINALIZED_PROPOSAL_STATES = [
   PROPOSAL_STATES.DEFEATED,
   PROPOSAL_STATES.QUORUM_NOT_REACHED,
 ]
-
-export const proposalRefreshFnAtom = atom<(() => void) | null>(null)
 
 const ProposalUpdater = () => {
   const { proposalId } = useParams()
@@ -44,43 +42,46 @@ const ProposalUpdater = () => {
   }, [])
 
   useEffect(() => {
-    if (proposal) {
-      // Refresh proposal voting state every minute
-      if (!FINALIZED_PROPOSAL_STATES.includes(proposal.state)) {
-        const interval = setInterval(() => {
-          const votingState = getProposalState(proposal)
-          setProposalDetail({
-            ...proposal,
-            votingState,
-            state: votingState.state,
-          })
-        }, 1000 * 60)
+    if (!proposal) return
+    if (FINALIZED_PROPOSAL_STATES.includes(proposal.state)) return
 
-        return () => clearInterval(interval)
+    const deadline = proposal.votingState.deadline
+    if (deadline === null) return
+
+    // Tick faster near deadline: every 1s in last 5 min, every 10s otherwise
+    const intervalMs = deadline <= 300 ? 1000 : 10_000
+
+    const recalculate = () => {
+      // WHY: updater form to avoid overwriting optimistic updates from actions
+      setProposalDetail((prev) => {
+        if (!prev) return prev
+        const votingState = getProposalState(prev)
+        if (
+          votingState.state !== prev.votingState.state ||
+          votingState.deadline !== prev.votingState.deadline
+        ) {
+          return { ...prev, votingState, state: votingState.state }
+        }
+        return prev
+      })
+    }
+
+    const interval = setInterval(recalculate, intervalMs)
+
+    // Schedule exact state transition at deadline
+    if (deadline > 0) {
+      const timeout = setTimeout(recalculate, deadline * 1000)
+
+      return () => {
+        clearInterval(interval)
+        clearTimeout(timeout)
       }
     }
-  }, [proposal?.state])
+
+    return () => clearInterval(interval)
+  }, [proposal?.state, proposal?.votingState.deadline])
 
   return null
 }
 
-const Updater = () => {
-  const [key, setKey] = useState(0)
-  const setRefreshFn = useSetAtom(proposalRefreshFnAtom)
-
-  const refreshProposal = () => {
-    setKey((k) => k + 1)
-  }
-
-  useEffect(() => {
-    setRefreshFn(() => refreshProposal)
-  }, [])
-
-  return (
-    <div key={key}>
-      <ProposalUpdater />
-    </div>
-  )
-}
-
-export default Updater
+export default ProposalUpdater

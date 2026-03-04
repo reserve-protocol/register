@@ -9,7 +9,7 @@ import GovernanceVoteLock from './components/governance-vote-lock'
 const IndexDTFGovernance = () => {
   useTrackIndexDTFPage('governance')
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-[1.5fr_1fr] gap-2 lg:pr-2 lg:pb-4">
+    <div data-testid="dtf-governance" className="grid grid-cols-1 lg:grid-cols-[1.5fr_1fr] gap-2 lg:pr-2 lg:pb-4">
       <GovernanceProposalList />
       <div className="flex flex-col gap-1 p-1 bg-muted rounded-4xl h-fit">
         <GovernanceVoteLock />

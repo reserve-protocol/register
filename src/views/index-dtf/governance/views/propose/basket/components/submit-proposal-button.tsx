@@ -6,12 +6,12 @@ import { ROUTES } from '@/utils/constants'
 import { atom, useAtomValue } from 'jotai'
 import { Loader2 } from 'lucide-react'
 import { memo, useEffect } from 'react'
+import { toast } from 'sonner'
 import { useNavigate } from 'react-router-dom'
 import { Address } from 'viem'
 import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
 import { proposalDescriptionAtom, basketProposalCalldatasAtom } from '../atoms'
 import { useIsProposeAllowed } from '@/views/index-dtf/governance/hooks/use-is-propose-allowed'
-import { indexDTFRefreshFnAtom } from '@/views/index-dtf/index-dtf-container'
 import { TransactionButtonContainer } from '@/components/ui/transaction'
 
 const isProposalReady = atom((get) => {
@@ -51,7 +51,6 @@ const SubmitProposalButton = () => {
   const calldatas = useAtomValue(basketProposalCalldatasAtom)
   const dtf = useAtomValue(iTokenAddressAtom)
   const govAddress = useAtomValue(tradingGovAddress)
-  const refreshFn = useAtomValue(indexDTFRefreshFnAtom)
 
   const { writeContract, isPending, data, error } = useWriteContract()
   const { isSuccess } = useWaitForTransactionReceipt({
@@ -61,13 +60,10 @@ const SubmitProposalButton = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      // Give some time for the proposal to be created on the subgraph
-      const timer = setTimeout(() => {
-        refreshFn?.()
-        navigate(`../${ROUTES.GOVERNANCE}`)
-      }, 10000) // TODO: who knows if this works well!!! they can just refresh the page
-
-      return () => clearTimeout(timer)
+      toast.success('Proposal created', {
+        description: 'It may take a moment to appear in the list',
+      })
+      navigate(`../${ROUTES.GOVERNANCE}`)
     }
   }, [isSuccess])
 
