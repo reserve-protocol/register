@@ -40,7 +40,7 @@ const SpellUpgrade4_2_0 = ({ className }: { className?: string }) => {
   if (!spellContract) return null
 
   return (
-    <Card className={`p-6 ${className ?? ''}`}>
+    <Card className={`p-6 bg-secondary ${className ?? ''}`}>
       <div className="flex items-center">
         <span className="text-xl font-medium">
           <Trans>4.2.0 Upgrade spell</Trans>

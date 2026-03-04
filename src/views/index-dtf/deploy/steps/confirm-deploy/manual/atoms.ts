@@ -55,9 +55,10 @@ export const basketRequiredAmountsAtom = atom<Record<string, number>>((get) => {
   return Object.entries(assetDistribution).reduce(
     (acc, [address, percentage]) => {
       const price =
-        basket.find((token) => token.address === address)?.price || 1
-      acc[address] =
-        ((Number(initialTokens) || 1) * initialValue * percentage) / 100 / price
+        basket.find((token) => token.address === address)?.price || 0
+      acc[address] = price > 0
+        ? ((Number(initialTokens) || 1) * initialValue * percentage) / 100 / price
+        : 0
       return acc
     },
     {} as Record<string, number>

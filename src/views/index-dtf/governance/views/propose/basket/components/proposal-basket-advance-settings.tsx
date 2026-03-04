@@ -18,7 +18,8 @@ import LegacyAdvancedControls from './legacy-advance-controls'
 import ProposalStepTrigger from './proposal-step-trigger'
 import { Button } from '@/components/ui/button'
 
-const WINDOW_OPTIONS = ['0', '12', '24', '48']
+const LAUNCHER_WINDOW_OPTIONS = ['12', '24', '48', '72']
+const COMMUNITY_WINDOW_OPTIONS = ['0', '12', '24', '48']
 
 const AuctionLauncherWindow = () => {
   const isSingletonRebalance = useAtomValue(isSingletonRebalanceAtom)
@@ -54,7 +55,7 @@ const AuctionLauncherWindow = () => {
             }
           }}
         >
-          {WINDOW_OPTIONS.map((option) => (
+          {LAUNCHER_WINDOW_OPTIONS.map((option) => (
             <ToggleGroupItem
               key={option}
               value={option.toString()}
@@ -111,7 +112,7 @@ const PermissionlessWindow = () => {
             }
           }}
         >
-          {WINDOW_OPTIONS.map((option) => (
+          {COMMUNITY_WINDOW_OPTIONS.map((option) => (
             <ToggleGroupItem
               key={option}
               value={option.toString()}

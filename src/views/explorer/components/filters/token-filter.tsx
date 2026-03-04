@@ -1,4 +1,6 @@
 import rtokens from '@reserve-protocol/rtokens'
+import useIndexDTFList from '@/hooks/useIndexDTFList'
+import { type DTFType } from '@/views/explorer/components/governance/atoms'
 import { Trans } from '@lingui/macro'
 import CirclesIcon from 'components/icons/CirclesIcon'
 import TokenLogo from 'components/icons/TokenLogo'
@@ -10,11 +12,8 @@ import MultiselectDropdrown, {
   SelectOption,
 } from '../MultiselectDropdown'
 
-const TokenFilter = ({
-  className,
-  ...props
-}: Omit<IMultiselectDropdrown, 'options'>) => {
-  const options = useMemo(() => {
+const useYieldTokenOptions = (): SelectOption[] => {
+  return useMemo(() => {
     const items: SelectOption[] = []
 
     for (const chain of supportedChainList) {
@@ -29,6 +28,39 @@ const TokenFilter = ({
 
     return items
   }, [])
+}
+
+const useIndexTokenOptions = (): SelectOption[] => {
+  const { data: indexDTFs } = useIndexDTFList()
+
+  return useMemo(() => {
+    if (!indexDTFs) return []
+
+    return indexDTFs.map((dtf) => ({
+      label: dtf.symbol,
+      value: dtf.address.toLowerCase(),
+      icon: dtf.brand?.icon ? (
+        <TokenLogo src={dtf.brand.icon} />
+      ) : null,
+    }))
+  }, [indexDTFs])
+}
+
+const TokenFilter = ({
+  className,
+  dtfType,
+  ...props
+}: Omit<IMultiselectDropdrown, 'options'> & { dtfType?: DTFType }) => {
+  const yieldOptions = useYieldTokenOptions()
+  const indexOptions = useIndexTokenOptions()
+
+  const options = useMemo(() => {
+    if (dtfType === 'index') return indexOptions
+    if (dtfType === 'yield') return yieldOptions
+    return [...yieldOptions, ...indexOptions]
+  }, [dtfType, yieldOptions, indexOptions])
+
+  const label = dtfType === 'index' ? 'DTFs' : 'tokens'
 
   return (
     <div className={className}>
@@ -39,8 +71,8 @@ const TokenFilter = ({
         <CirclesIcon />
         <span className="ml-2 text-legend">
           {props.selected.length
-            ? `${props.selected.length} RTokens`
-            : 'All RTokens'}
+            ? `${props.selected.length} selected`
+            : `All ${label}`}
         </span>
       </MultiselectDropdrown>
     </div>

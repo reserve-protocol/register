@@ -128,9 +128,9 @@ const ProposeBanner = ({ refetch }: SpellUpgradeProps) => {
         <div>
           <h4 className="font-bold text-primary">New version available</h4>
           <p className="text-sm">
-            Release 5.0.0 introduces improved rebalancing with per-token auction
-            size limits and the ability to disable bids for individual tokens.
-            See docs.reserve.org for more details.
+            <strong>Release 5.0.0</strong> introduces improved rebalancing with per-token auction
+            size limits and the ability to disable bids for individual tokens. <br />
+            See the <a className='text-primary underline' href='https://github.com/reserve-protocol/reserve-index-dtf/releases/tag/r5.0.0' target="_blank">changelog</a> for more details.
           </p>
         </div>
       </div>
@@ -176,8 +176,6 @@ const validProposalExists = (
   })
 }
 
-const UPGRADE_WHITELIST: string[] = []
-
 export default function ProposeV5Upgrade() {
   const { isProposeAllowed } = useIsProposeAllowed()
   const proposals = useAtomValue(governanceProposalsAtom)
@@ -190,7 +188,7 @@ export default function ProposeV5Upgrade() {
   }, [setRefetchToken])
 
   // Show banner for v4.x DTFs (4.0.0 and 4.0.1)
-  const isUpgradeable = version.startsWith('4.') && UPGRADE_WHITELIST.includes(dtf?.id ?? '')
+  const isUpgradeable = version.startsWith('4.')
 
   if (!isProposeAllowed || !proposals || !isUpgradeable) return null
 

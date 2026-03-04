@@ -1,9 +1,10 @@
 import { Button } from '@/components/ui/button'
-import { useAtom, useSetAtom } from 'jotai'
+import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { FieldErrors, FieldValues, useFormContext } from 'react-hook-form'
-import { deployStepAtom, validatedSectionsAtom } from '../atoms'
+import { deployStepAtom, readonlyStepsAtom, validatedSectionsAtom } from '../atoms'
 import { DeployInputs, DeployStepId, dtfDeploySteps } from '../form-fields'
+import { triggerDeployDrawerAtom } from '../steps/confirm-deploy/atoms'
 import { DEPLOY_STEPS } from './deploy-accordion'
 import { scrollToSection } from '../utils'
 
@@ -18,9 +19,11 @@ type ExtendedFieldErrors<TFieldValues extends FieldValues> =
   }
 
 const NextButton = () => {
+  const readonlySteps = useAtomValue(readonlyStepsAtom)
   const [deployStep, setDeployStep] = useAtom(deployStepAtom)
-  const { trigger, formState, watch } = useFormContext<DeployInputs>()
+  const { trigger, formState, watch, clearErrors } = useFormContext<DeployInputs>()
   const setValidatedSections = useSetAtom(validatedSectionsAtom)
+  const setTriggerDeploy = useSetAtom(triggerDeployDrawerAtom)
 
   const formErrors = formState.errors as ExtendedFieldErrors<
     typeof formState.errors
@@ -29,11 +32,20 @@ const NextButton = () => {
   useEffect(() => {
     const subscription = watch(() => {
       if (deployStep && formErrors[deployStep]) {
-        delete formErrors[deployStep]
+        clearErrors(deployStep as any)
       }
     })
     return () => subscription.unsubscribe()
   }, [watch, deployStep, formErrors])
+
+  if (deployStep && readonlySteps.has(deployStep)) return null
+
+  // Check if this is the last editable step (next step is readonly)
+  const currentStepIdx = deployStep
+    ? DEPLOY_STEPS.findIndex((step) => step.id === deployStep)
+    : -1
+  const nextStepId = DEPLOY_STEPS[currentStepIdx + 1]?.id
+  const isDeployTrigger = !!nextStepId && readonlySteps.has(nextStepId)
 
   const stepError = deployStep ? formErrors[deployStep]?.message : ''
 
@@ -52,13 +64,15 @@ const NextButton = () => {
 
     if (!output) return
 
-    const currentStepIdx = DEPLOY_STEPS.findIndex(
-      (step) => step.id === deployStep
-    )
-    const nextStep = DEPLOY_STEPS[currentStepIdx + 1]?.id
+    // If next step is readonly, collapse accordion and open deploy drawer
+    if (isDeployTrigger) {
+      setDeployStep(undefined)
+      setTriggerDeploy(true)
+      return
+    }
 
-    scrollToSection(nextStep ?? DEPLOY_STEPS[0])
-    setDeployStep(nextStep)
+    scrollToSection(nextStepId ?? DEPLOY_STEPS[0].id)
+    setDeployStep(nextStepId)
   }
 
   const next = async () => {

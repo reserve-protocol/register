@@ -19,7 +19,7 @@ import SettingItem from '@/views/yield-dtf/settings/components/setting-item'
 import { isTimeunitGovernance } from '../utils'
 import AccountVotes from './AccountVotes'
 import { useReadContract } from 'wagmi'
-import { PROTOCOL_DOCS } from '@/utils/constants'
+import { YIELD_PROTOCOL_DOCS } from '@/utils/constants'
 
 const IconInfo = ({
   icon,
@@ -197,7 +197,7 @@ const GovernanceFormat = () => {
         variant="ghost"
         onClick={() =>
           window.open(
-            `${PROTOCOL_DOCS}reserve_rights_rsr/#reserve-governor-alexios`,
+            YIELD_PROTOCOL_DOCS,
             '_blank'
           )
         }

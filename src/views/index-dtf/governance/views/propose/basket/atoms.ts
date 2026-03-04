@@ -72,7 +72,7 @@ export const permissionlessLaunchingWindowAtom = atom('24')
 export const customPermissionlessLaunchingWindowAtom = atom('')
 
 // Auction launcher window (advanced controls) 4.0 only
-export const auctionLauncherWindowAtom = atom('24')
+export const auctionLauncherWindowAtom = atom('72')
 export const customAuctionLauncherWindowAtom = atom('')
 
 // Price volatility
@@ -237,9 +237,9 @@ export const rebalanceTTLAtom = atom<{
   const permissionlessWindow = !permissionlessLaunching
     ? 0
     : getWindowInSeconds(
-        customPermissionlessLaunchingWindow,
-        permissionlessLaunchingWindow
-      )
+      customPermissionlessLaunchingWindow,
+      permissionlessLaunchingWindow
+    )
 
   const auctionLauncherWindow = getWindowInSeconds(
     customAuctionLauncherWindow,

@@ -17,7 +17,7 @@ import SpellUpgrade4_2_0 from './SpellUpgrade4_2_0'
 import TraderImplementationProposal from './TraderImplementationProposal'
 import UnregisterProposal from './UnregisterProposal'
 
-const ALLOWED_RTOKENS = ['0xcb327b99ff831bf8223cced12b1338ff3aa322ff']
+const ALLOWED_RTOKENS = ['0xcb327b99ff831bf8223cced12b1338ff3aa322ff', '0x0d86883faf4ffd7aeb116390af37746f45b6f378']
 
 const ProposalForm = () => {
   const contracts = useAtomValue(rTokenContractsAtom)

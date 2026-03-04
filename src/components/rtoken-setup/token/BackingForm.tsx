@@ -66,7 +66,7 @@ const BackingForm = ({ className }: BackingFormProps) => {
           required: true,
           pattern: numberPattern,
           max: 3600,
-          min: 60,
+          min: 0,
         }}
       />
       <FormField
