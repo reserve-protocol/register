@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils'
 import { UNIVERSAL_ASSETS } from '@/utils/constants'
-import { indexDTFIconsAtom } from '@/views/portfolio/atoms'
+import { indexDTFIconsAtom } from '@/state/atoms'
 import { useAtom, useAtomValue } from 'jotai'
 import * as React from 'react'
 import { routeCacheAtom } from './atoms'

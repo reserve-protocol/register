@@ -31,6 +31,7 @@ import {
   Landmark,
   LayoutGrid,
   Microscope,
+  Wallet,
 } from 'lucide-react'
 import { ReactNode, useMemo } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
@@ -53,7 +54,7 @@ const DiscoverItem = () => {
               )}
             >
               <Binoculars strokeWidth={1.5} size={16} />
-              <span className="hidden md:block text-base">
+              <span className="hidden min-[850px]:block text-base">
                 <Trans>Discover DTFs</Trans>
               </span>
             </div>
@@ -78,12 +79,28 @@ const AppNavigation = () => {
           to: ROUTES.EARN,
         },
         {
+          label: t`Portfolio`,
+          icon: <Wallet strokeWidth={1.5} size={16} />,
+          to: ROUTES.PORTFOLIO,
+        },
+        {
           label: t`Create New DTF`,
           icon: <BadgePlus strokeWidth={1.5} size={16} />,
           to: ROUTES.DEPLOY_INDEX,
         },
       ],
       [
+        {
+          label: t`Create New DTF`,
+          icon: (
+            <IconContainer>
+              <BadgePlus size={16} />
+            </IconContainer>
+          ),
+          description: t`Launch your own Index DTF`,
+          to: ROUTES.DEPLOY_INDEX,
+          mobileOnly: true,
+        },
         {
           label: t`DTF Explorer`,
           icon: (
@@ -153,13 +170,18 @@ const AppNavigation = () => {
 
   return (
     <NavigationMenu
-      className="mr-auto border md:border-none rounded-3xl"
+      className="mr-auto border min-[850px]:border-none rounded-3xl"
       vClassName="-left-10 md:left-40"
     >
       <NavigationMenuList>
         <DiscoverItem />
         {menuItems.map((item) => (
-          <NavigationMenuItem key={item.to}>
+          <NavigationMenuItem
+            key={item.to}
+            className={cn(
+              item.to === ROUTES.DEPLOY_INDEX && 'hidden min-[850px]:block'
+            )}
+          >
             <NavigationMenuLink asChild>
               <NavLink to={item.to}>
                 {({ isActive }: { isActive: boolean }) => (
@@ -170,7 +192,7 @@ const AppNavigation = () => {
                     )}
                   >
                     {item.icon}
-                    <span className="hidden md:block text-base">
+                    <span className="hidden min-[850px]:block text-base">
                       {item.label}
                     </span>
                   </div>
@@ -182,7 +204,7 @@ const AppNavigation = () => {
         <NavigationMenuItem>
           <NavigationMenuTrigger>
             <LayoutGrid strokeWidth={1.5} size={16} />
-            <span className="hidden md:block text-base">More</span>
+            <span className="hidden min-[850px]:block text-base">More</span>
           </NavigationMenuTrigger>
           <NavigationMenuContent className="rounded-4xl">
             <div className="bg-secondary w-72 sm:w-96 flex p-1 flex-col gap-1">
@@ -190,7 +212,10 @@ const AppNavigation = () => {
                 <NavigationMenuLink
                   key={item.to}
                   asChild
-                  className="p-4 gap-2 flex items-center rounded-3xl bg-card border border-transparent hover:border-primary"
+                  className={cn(
+                    'p-4 gap-2 flex items-center rounded-3xl bg-card border border-transparent hover:border-primary',
+                    item.mobileOnly && 'min-[850px]:hidden'
+                  )}
                 >
                   <NavLink to={item.to}>
                     {item.icon}

@@ -1,4 +1,7 @@
-import { keepPreviousData, useQuery as useReactQuery } from '@tanstack/react-query'
+import {
+  keepPreviousData,
+  useQuery as useReactQuery,
+} from '@tanstack/react-query'
 import { RequestDocument } from 'graphql-request'
 import { useAtomValue } from 'jotai'
 import { GRAPH_CLIENTS, chainIdAtom, gqlClientAtom } from 'state/atoms'
@@ -42,9 +45,11 @@ const useQuery = <T = any>(
   const { keepPreviousData: shouldKeepPrevious, ...restConfig } = config
 
   const result = useReactQuery({
-    queryKey: query ? ['graphql', chainId, query, variables] : ['graphql-disabled'],
+    queryKey: query
+      ? ['graphql', chainId, query, variables]
+      : ['graphql-disabled'],
     queryFn: () => client.request<T>(query as RequestDocument, variables),
-    enabled: !!query && (config.enabled !== false),
+    enabled: !!query && config.enabled !== false,
     placeholderData: shouldKeepPrevious ? keepPreviousData : undefined,
     ...restConfig,
   })
@@ -69,7 +74,9 @@ export const useMultichainQuery = <T = any>(
   const { keepPreviousData: shouldKeepPrevious, ...restConfig } = config
 
   const result = useReactQuery({
-    queryKey: query ? ['graphql-multichain', query, variables] : ['graphql-multichain-disabled'],
+    queryKey: query
+      ? ['graphql-multichain', query, variables]
+      : ['graphql-multichain-disabled'],
     queryFn: async () => {
       const chains: Set<number> = new Set(
         variables._chain ? variables._chain : supportedChainList
@@ -77,7 +84,10 @@ export const useMultichainQuery = <T = any>(
 
       const calls = supportedChainList.map((chain) =>
         chains.has(chain)
-          ? GRAPH_CLIENTS[chain].request<T>(query as RequestDocument, variables[chain] || variables)
+          ? GRAPH_CLIENTS[chain].request<T>(
+              query as RequestDocument,
+              variables[chain] || variables
+            )
           : Promise.resolve(null)
       )
 
@@ -91,7 +101,7 @@ export const useMultichainQuery = <T = any>(
         {} as { [chainId: number]: T | null }
       )
     },
-    enabled: !!query && (config.enabled !== false),
+    enabled: !!query && config.enabled !== false,
     placeholderData: shouldKeepPrevious ? keepPreviousData : undefined,
     ...restConfig,
   })
@@ -122,7 +132,7 @@ export const useMultiFetch = <T = any>(
       const responses = await Promise.all(urls.map((url) => fetch(url)))
       return Promise.all(responses.map((res) => res.json())) as Promise<T[]>
     },
-    enabled: !!urls && (config.enabled !== false),
+    enabled: !!urls && config.enabled !== false,
     staleTime: config.staleTime ?? 1000 * 60 * 60, // 1 hour default (mimics useSWRImmutable)
     ...config,
   })

@@ -1,8 +1,8 @@
+import { indexDTFIconsAtom } from '@/state/atoms'
 import { RESERVE_API } from '@/utils/constants'
 import { useQuery } from '@tanstack/react-query'
 import { useSetAtom } from 'jotai'
 import { useEffect } from 'react'
-import { indexDTFIconsAtom } from '../atoms'
 
 const IndexDTFIconsUpdater = () => {
   const setIcons = useSetAtom(indexDTFIconsAtom)

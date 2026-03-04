@@ -6,8 +6,10 @@ import DiscoverYieldDTF from './yield/discover-yield-dtf'
 
 import { Flower, Globe, Scale } from 'lucide-react'
 import TitleContainer from './title-container'
-import IndexDTFFeatured from './index/components/index-dtf-featured'
 import { trackClick } from '@/hooks/useTrackPage'
+import useScrollTo from '@/hooks/useScrollTo'
+import { useEffect } from 'react'
+import { useSearchParams } from 'react-router-dom'
 
 const tabs: Tab[] = [
   {
@@ -30,15 +32,31 @@ const tabs: Tab[] = [
   },
 ]
 
+const VALID_TABS = ['index', 'yield', 'stablecoins']
+
 const DiscoverTabs = ({ className }: { className: string }) => {
+  const [searchParams] = useSearchParams()
+  const tabParam = searchParams.get('tab')
+  const defaultTab =
+    tabParam && VALID_TABS.includes(tabParam) ? tabParam : 'index'
+  const scrollTo = useScrollTo('dtf-table')
+
+  useEffect(() => {
+    if (tabParam && VALID_TABS.includes(tabParam)) {
+      setTimeout(() => scrollTo(), 300)
+    }
+  }, [tabParam, scrollTo])
+
   return (
     <>
-      <div className={cn('container pb-6 px-0 md:px-4', className)}>
-        {/* <IndexDTFFeatured /> */}
+      <div
+        id="dtf-table"
+        className={cn('container pb-6 px-0 md:px-4', className)}
+      >
         <TitleContainer title="Select a DTF Category" className="mt-10" />
 
         <Tabs
-          defaultValue="index"
+          defaultValue={defaultTab}
           onValueChange={(value) => {
             trackClick('discover', value)
           }}

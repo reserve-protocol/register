@@ -40,6 +40,7 @@ import IndexDTFManualIssuance from './views/index-dtf/issuance/manual'
 import IndexDTFManage from './views/index-dtf/manage'
 import IndexDTFOverview from './views/index-dtf/overview'
 import IndexDTFSettings from './views/index-dtf/settings'
+import PortfolioPage from './views/portfolio-page'
 import AllYieldDTFList from './views/tokens/Tokens'
 import InternalDTFList from './views/internal/dtf-list'
 import InternalDTFListed from './views/internal/dtf-listed'
@@ -58,6 +59,8 @@ const AppRoutes = () => (
     <Route path="/internal/dtf-listed" element={<InternalDTFListed />} />
     <Route path="/top100" element={<Top100 />} />
     <Route path={'/internal/deploy'} element={<DeployIndexDTF />} />
+
+    <Route path={ROUTES.PORTFOLIO} element={<PortfolioPage />} />
     <Route path={ROUTES.BRIDGE} element={<Bridge />} />
     <Route path={ROUTES.DEPLOY_YIELD} element={<DeployYieldDTF />} />
     <Route path={ROUTES.DEPLOY_INDEX} element={<DeployComingSoon />} />
