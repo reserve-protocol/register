@@ -162,6 +162,11 @@ export interface HistoricalPortfolioResponse {
 export interface HistoricalDataPoint {
   timestamp: number
   totalHoldingsUSD: number
+  totalIndexDTFUSD: number
+  totalYieldDTFUSD: number
+  totalStakedRSRUSD: number
+  totalVoteLockedUSD: number
+  totalRSRHoldingsUSD: number
 }
 
 export type PortfolioPeriod = '24h' | '7d' | '1m' | '3m' | '6m' | 'All'

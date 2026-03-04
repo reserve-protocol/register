@@ -46,25 +46,6 @@ export const portfolioBreakdownAtom = atom((get) => {
   }
 })
 
-export const portfolioChartBreakdownAtom = atom((get) => {
-  const breakdown = get(portfolioBreakdownAtom)
-  if (!breakdown) return []
-  const categories = [
-    { label: 'Index DTFs', value: breakdown.indexValue },
-    { label: 'Yield DTFs', value: breakdown.yieldValue },
-    { label: 'Staked RSR', value: breakdown.stakedValue },
-    { label: 'Vote-locked', value: breakdown.voteLockValue },
-    { label: 'RSR', value: breakdown.rsrValue },
-  ].filter((c) => c.value > 0)
-
-  const total = categories.reduce((s, c) => s + c.value, 0)
-  if (total === 0) return []
-  return categories.map((c) => ({
-    label: c.label,
-    proportion: c.value / total,
-  }))
-})
-
 const ACTIVE_STATES = new Set([
   PROPOSAL_STATES.PENDING,
   PROPOSAL_STATES.ACTIVE,

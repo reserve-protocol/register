@@ -6,7 +6,17 @@ import { Address } from 'viem'
 import { useCallback } from 'react'
 import dayjs from 'dayjs'
 
-type ChartDataPoint = { value: number; ts: number; label: string; display: string }
+export type ChartDataPoint = {
+  value: number
+  ts: number
+  label: string
+  display: string
+  indexDTFs: number
+  yieldDTFs: number
+  stakedRSR: number
+  voteLocked: number
+  rsr: number
+}
 
 const fetchHistoricalPortfolio = async (
   address: Address,
@@ -25,6 +35,11 @@ const fetchHistoricalPortfolio = async (
     ts: point.timestamp * 1000,
     label: dayjs(point.timestamp * 1000).format('MMM DD, YYYY h:mm A'),
     display: `$${formatCurrency(point.totalHoldingsUSD)}`,
+    indexDTFs: point.totalIndexDTFUSD,
+    yieldDTFs: point.totalYieldDTFUSD,
+    stakedRSR: point.totalStakedRSRUSD,
+    voteLocked: point.totalVoteLockedUSD,
+    rsr: point.totalRSRHoldingsUSD,
   }))
 }
 

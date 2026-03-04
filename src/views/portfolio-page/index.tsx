@@ -77,7 +77,7 @@ const PortfolioPage = () => {
       : undefined
 
   const address = impersonatedAddress || connectedAddress
-  const { data, isLoading } = usePortfolio(address)
+  const { data, isLoading, isError, refetch } = usePortfolio(address)
   const setPortfolioData = useSetAtom(portfolioDataAtom)
   const setPortfolioAddress = useSetAtom(portfolioAddressAtom)
 
@@ -91,6 +91,19 @@ const PortfolioPage = () => {
   }, [data, address, setPortfolioData, setPortfolioAddress])
 
   if (!address) return <ConnectPrompt />
+  if (isError)
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
+        <h1 className="text-2xl font-bold">Portfolio</h1>
+        <p className="text-legend">Failed to load portfolio data</p>
+        <button
+          onClick={() => refetch()}
+          className="bg-primary text-white text-sm font-medium px-6 py-2 rounded-2xl"
+        >
+          Try again
+        </button>
+      </div>
+    )
   if (isLoading || !data)
     return <PortfolioSkeleton isImpersonating={!!impersonatedAddress} />
 

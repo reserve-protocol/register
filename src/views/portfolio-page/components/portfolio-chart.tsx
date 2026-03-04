@@ -14,11 +14,13 @@ import {
 } from 'recharts'
 import {
   portfolioAddressAtom,
-  portfolioChartBreakdownAtom,
   portfolioDataAtom,
   portfolioPageTimeRangeAtom,
 } from '../atoms'
-import { useHistoricalPortfolio } from '../hooks/use-historical-portfolio'
+import {
+  ChartDataPoint,
+  useHistoricalPortfolio,
+} from '../hooks/use-historical-portfolio'
 import { PortfolioPeriod } from '../types'
 import { Card } from '@/components/ui/card'
 
@@ -46,40 +48,42 @@ const formatYAxis = (value: number) => {
   return `$${formatCurrency(value, 0)}`
 }
 
-type CategoryBreakdown = { label: string; proportion: number }[]
+const CATEGORY_LABELS: { key: keyof ChartDataPoint; label: string }[] = [
+  { key: 'indexDTFs', label: 'Index DTFs' },
+  { key: 'yieldDTFs', label: 'Yield DTFs' },
+  { key: 'stakedRSR', label: 'Staked RSR' },
+  { key: 'voteLocked', label: 'Vote-locked' },
+  { key: 'rsr', label: 'RSR' },
+]
 
-function ChartTooltip({
-  payload,
-  active,
-  breakdown,
-}: any & { breakdown: CategoryBreakdown }) {
+function ChartTooltip({ payload, active }: any) {
   if (!active || !payload?.[0]) return null
-  const total = payload[0]?.value as number
-  const label = payload[0]?.payload?.label as string
+  const point = payload[0]?.payload as ChartDataPoint
+
+  const categories = CATEGORY_LABELS
+    .map((c) => ({ label: c.label, value: point[c.key] as number }))
+    .filter((c) => c.value > 0)
 
   return (
     <Card className="px-4 py-3 min-w-[180px]">
-      <p className="text-xs text-legend mb-2">{label}</p>
+      <p className="text-xs text-legend mb-2">{point.label}</p>
       <div className="space-y-1.5">
-        {breakdown.map((cat: CategoryBreakdown[number]) => {
-          const value = total * cat.proportion
-          return (
-            <div
-              key={cat.label}
-              className="flex items-center justify-between gap-6"
-            >
-              <span className="text-xs text-legend">{cat.label}</span>
-              <span className="text-xs font-medium tabular-nums">
-                ${formatCurrency(value)}
-              </span>
-            </div>
-          )
-        })}
+        {categories.map((cat) => (
+          <div
+            key={cat.label}
+            className="flex items-center justify-between gap-6"
+          >
+            <span className="text-xs text-legend">{cat.label}</span>
+            <span className="text-xs font-medium tabular-nums">
+              ${formatCurrency(cat.value)}
+            </span>
+          </div>
+        ))}
       </div>
       <div className="border-t border-border mt-2 pt-2 flex items-center justify-between gap-6">
         <span className="text-xs font-semibold">Total</span>
         <span className="text-sm font-bold tabular-nums">
-          ${formatCurrency(total)}
+          ${formatCurrency(point.value)}
         </span>
       </div>
     </Card>
@@ -142,7 +146,6 @@ const ChartLoadingSkeleton = () => {
 const PortfolioChart = () => {
   const address = useAtomValue(portfolioAddressAtom)
   const portfolio = useAtomValue(portfolioDataAtom)
-  const breakdown = useAtomValue(portfolioChartBreakdownAtom)
   const [timeRange, setTimeRange] = useAtom(portfolioPageTimeRangeAtom)
   const { getChartData, isLoading } = useHistoricalPortfolio(address)
 
@@ -252,7 +255,7 @@ const PortfolioChart = () => {
               width={50}
               tickMargin={4}
             />
-            <Tooltip content={<ChartTooltip breakdown={breakdown} />} />
+            <Tooltip content={<ChartTooltip />} />
             <Area
               type="monotone"
               dataKey="value"
