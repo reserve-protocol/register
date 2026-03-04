@@ -1,7 +1,7 @@
-````markdown
 # State Management Architecture
 
-**Document Version:** 1.0
+**Document Version:** 1.1
+**Last Updated:** 2026-03-04
 **Status:** Active
 **Core Library:** Jotai
 
@@ -35,7 +35,6 @@ export const sourceChainAtom = atom<ChainId>(ChainId.ETHEREUM)
 export const destinationChainAtom = atom<ChainId>(ChainId.BASE)
 export const amountAtom = atom<string>('')
 ```
-````
 
 **❌ Don't:** Create large, monolithic atoms that hold multiple unrelated values.
 
@@ -131,6 +130,30 @@ Components should interact with the state using the provided Jotai hooks:
 - **Avoid Redundant State:** Before creating a new `atom()`, always ask: "Can this value be derived from existing atoms?" If yes, use a derived atom.
 - **Avoid `useEffect` for State Syncing:** This is the most critical anti-pattern. If you find yourself writing `useEffect(() => { setSomeState(...) }, [someOtherState])`, you almost certainly should be using a derived atom.
 
+---
+
+## 5. Atom Families (Dynamic Instances)
+
+When you need atoms parameterized by a key (token address, chain ID, etc.), use `atomFamily` from `jotai/utils`. This creates a unique atom per key, avoiding the need for a single large Map atom.
+
+**✔ Do:** Use atomFamily for dynamic, key-based state.
+
+```typescript
+import { atomFamily } from 'jotai/utils'
+
+// Creates a separate atom for each token address
+export const tokenBalanceAtomFamily = atomFamily((address: string) =>
+  atom<bigint>(0n)
+)
+
+// Usage in component:
+const balance = useAtomValue(tokenBalanceAtomFamily(token.address))
 ```
 
+**❌ Don't:** Store all dynamic values in a single Record atom and update the entire object.
+
+```typescript
+// AVOID THIS PATTERN
+const allBalancesAtom = atom<Record<string, bigint>>({})
+// Updating one key re-renders all consumers
 ```
