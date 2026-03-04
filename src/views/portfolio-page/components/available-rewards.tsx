@@ -7,7 +7,7 @@ import { useConnectModal } from '@rainbow-me/rainbowkit'
 import { ColumnDef } from '@tanstack/react-table'
 import { useAtomValue } from 'jotai'
 import { Gift } from 'lucide-react'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect } from 'react'
 import { walletAtom, walletChainAtom } from '@/state/atoms'
 import { toast } from 'sonner'
 import { Address } from 'viem'
@@ -16,8 +16,7 @@ import {
   useWaitForTransactionReceipt,
   useWriteContract,
 } from 'wagmi'
-import { portfolioVoteLocksAtom } from '../atoms'
-import { PortfolioVoteLock } from '../types'
+import { portfolioRewardsAtom } from '../atoms'
 import { ExpandToggle, useExpandable } from './expand-toggle'
 import SectionHeader from './section-header'
 
@@ -42,14 +41,13 @@ const ClaimButton = ({ reward }: { reward: RewardRow }) => {
     hash,
     chainId: reward.chainId,
   })
-  const [claimed, setClaimed] = useState(false)
+  const claimed = receipt?.status === 'success'
 
   useEffect(() => {
-    if (receipt?.status === 'success') {
-      setClaimed(true)
+    if (claimed) {
       toast.success('Rewards claimed', { duration: 8000 })
     }
-  }, [receipt])
+  }, [claimed])
 
   const loading = !receipt && (isPending || !!hash)
 
@@ -133,19 +131,7 @@ const columns: ColumnDef<RewardRow, any>[] = [
 ]
 
 const AvailableRewards = () => {
-  const voteLocks = useAtomValue(portfolioVoteLocksAtom)
-  const rewards: RewardRow[] = useMemo(
-    () =>
-      voteLocks
-        .flatMap((lock) =>
-          (lock.rewards || []).map((r) => ({
-            ...r,
-            stTokenAddress: lock.stTokenAddress,
-          }))
-        )
-        .sort((a, b) => (b.value || 0) - (a.value || 0)),
-    [voteLocks]
-  )
+  const rewards = useAtomValue(portfolioRewardsAtom)
 
   const { displayData, expanded, toggle, hasMore, total } =
     useExpandable(rewards)

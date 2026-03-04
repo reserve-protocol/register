@@ -7,22 +7,17 @@ import {
   ExplorerDataType,
   getExplorerLink,
 } from '@/utils/getExplorerLink'
-import {
-  portfolioStTokenAtom,
-  stakingSidebarOpenAtom,
-} from '@/views/index-dtf/overview/components/staking/atoms'
 import { ColumnDef } from '@tanstack/react-table'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { ExternalLink, Lock } from 'lucide-react'
-import { portfolioVoteLocksAtom } from '../atoms'
+import { openStakingSidebarAtom, portfolioVoteLocksAtom } from '../atoms'
 import { PortfolioVoteLock } from '../types'
 import { ExpandToggle, useExpandable } from './expand-toggle'
 import GovernsCell from './governs-cell'
 import SectionHeader from './section-header'
 
 const ModifyButton = ({ voteLock }: { voteLock: PortfolioVoteLock }) => {
-  const setStakingSidebarOpen = useSetAtom(stakingSidebarOpenAtom)
-  const setPortfolioStToken = useSetAtom(portfolioStTokenAtom)
+  const openStakingSidebar = useSetAtom(openStakingSidebarAtom)
 
   return (
     <Button
@@ -31,23 +26,11 @@ const ModifyButton = ({ voteLock }: { voteLock: PortfolioVoteLock }) => {
       className="rounded-full text-primary border-primary hover:text-primary"
       onClick={(e) => {
         e.stopPropagation()
-        setStakingSidebarOpen(true)
-        setPortfolioStToken({
+        openStakingSidebar({
           id: voteLock.stTokenAddress,
-          token: {
-            name: voteLock.name,
-            symbol: voteLock.symbol,
-            decimals: 18,
-            totalSupply: '',
-          },
-          underlying: {
-            name: voteLock.underlying.name,
-            symbol: voteLock.underlying.symbol,
-            address: voteLock.underlying.address,
-            decimals: 18,
-          },
-          legacyGovernance: [],
-          rewardTokens: [],
+          tokenSymbol: voteLock.symbol,
+          underlyingSymbol: voteLock.underlying.symbol,
+          underlyingAddress: voteLock.underlying.address,
           chainId: voteLock.chainId,
         })
       }}

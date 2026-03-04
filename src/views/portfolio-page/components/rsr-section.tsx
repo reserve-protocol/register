@@ -1,15 +1,14 @@
 import TokenLogoWithChain from '@/components/token-logo/TokenLogoWithChain'
 import DataTable from '@/components/ui/data-table'
-import { cn } from '@/lib/utils'
-import { formatCurrency, formatToSignificantDigits, formatUSD } from '@/utils'
+import { formatToSignificantDigits, formatUSD } from '@/utils'
 import { CHAIN_TAGS } from '@/utils/constants'
 import { ColumnDef } from '@tanstack/react-table'
 import { useAtomValue } from 'jotai'
-import { ArrowDown, ArrowUp } from 'lucide-react'
 import RsrIcon from '@/components/icons/RsrIcon'
 import { portfolioRSRBalancesAtom } from '../atoms'
 import { PortfolioRSRBalance } from '../types'
 import { ExpandToggle, useExpandable } from './expand-toggle'
+import PerformanceCell from './performance-cell'
 import SectionHeader from './section-header'
 
 const columns: ColumnDef<PortfolioRSRBalance, any>[] = [
@@ -32,36 +31,9 @@ const columns: ColumnDef<PortfolioRSRBalance, any>[] = [
     id: 'performance7d',
     accessorKey: 'performance7d',
     header: 'Performance (7D)',
-    cell: ({ row }) => {
-      const raw = row.original.performance7d
-      if (raw == null)
-        return <span className="text-sm text-legend">—</span>
-      const perf = raw * 100
-      const abs = Math.abs(perf)
-      const isNear0 = abs < 0.01
-      let text: string
-      if (isNear0) {
-        text = '0.00%'
-      } else {
-        text = `${perf > 0 ? '+' : ''}${formatCurrency(perf)}%`
-      }
-      return (
-        <div
-          className={cn(
-            'flex items-center gap-0.5 text-sm',
-            isNear0 || perf === 0
-              ? 'text-legend'
-              : perf > 0
-                ? 'text-success'
-                : 'text-destructive'
-          )}
-        >
-          {!isNear0 && perf > 0 && <ArrowUp size={14} />}
-          {!isNear0 && perf < 0 && <ArrowDown size={14} />}
-          {text}
-        </div>
-      )
-    },
+    cell: ({ row }) => (
+      <PerformanceCell value={row.original.performance7d} />
+    ),
     meta: { className: 'hidden sm:table-cell' },
   },
   {

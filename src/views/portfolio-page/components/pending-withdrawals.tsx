@@ -13,10 +13,6 @@ import {
   parseDurationShort,
 } from '@/utils'
 import { useConnectModal } from '@rainbow-me/rainbowkit'
-import {
-  portfolioStTokenAtom,
-  stakingSidebarOpenAtom,
-} from '@/views/index-dtf/overview/components/staking/atoms'
 import { ColumnDef } from '@tanstack/react-table'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { Clock } from 'lucide-react'
@@ -31,7 +27,11 @@ import {
   useWaitForTransactionReceipt,
   useWriteContract,
 } from 'wagmi'
-import { portfolioStakedRSRAtom, portfolioVoteLocksAtom } from '../atoms'
+import {
+  openStakingSidebarAtom,
+  portfolioStakedRSRAtom,
+  portfolioVoteLocksAtom,
+} from '../atoms'
 import { PortfolioStakedRSR, PortfolioVoteLock } from '../types'
 import { ExpandToggle, useExpandable } from './expand-toggle'
 import SectionHeader from './section-header'
@@ -63,26 +63,21 @@ type PendingWithdrawalRow =
       underlyingAddress: Address
     }
 
-const StakedRSRWithdrawButton = ({
-  stRSRAddress,
-  endId,
+const WithdrawButton = ({
   chainId,
-  availableAt,
+  isReady,
+  getWriteConfig,
 }: {
-  stRSRAddress: Address
-  endId: number
   chainId: number
-  availableAt: number
+  isReady: boolean
+  getWriteConfig: () => Parameters<ReturnType<typeof useWriteContract>['writeContract']>[0] | null
 }) => {
   const wallet = useAtomValue(walletAtom)
   const walletChain = useAtomValue(walletChainAtom)
   const { openConnectModal } = useConnectModal()
   const { switchChainAsync } = useSwitchChain()
-  const { address: account } = useAccount()
   const { writeContract, data: hash, isPending } = useWriteContract()
   const { data: receipt } = useWaitForTransactionReceipt({ hash, chainId })
-  const currentTime = useCurrentTime()
-  const isReady = availableAt <= currentTime
   const loading = !receipt && (isPending || !!hash)
   const withdrawn = receipt?.status === 'success'
   const toastedRef = useRef(false)
@@ -104,16 +99,11 @@ const StakedRSRWithdrawButton = ({
       if (walletChain !== chainId) {
         await switchChainAsync?.({ chainId })
       }
-      if (!account) return
-      writeContract({
-        abi: StRSR,
-        functionName: 'withdraw',
-        address: stRSRAddress,
-        args: [account, BigInt(endId)],
-        chainId,
-      })
+      const config = getWriteConfig()
+      if (!config) return
+      writeContract(config)
     },
-    [wallet, walletChain, chainId, account, openConnectModal, switchChainAsync, writeContract, stRSRAddress, endId]
+    [wallet, walletChain, chainId, openConnectModal, switchChainAsync, writeContract, getWriteConfig]
   )
 
   return (
@@ -129,6 +119,41 @@ const StakedRSRWithdrawButton = ({
   )
 }
 
+const StakedRSRWithdrawButton = ({
+  stRSRAddress,
+  endId,
+  chainId,
+  availableAt,
+}: {
+  stRSRAddress: Address
+  endId: number
+  chainId: number
+  availableAt: number
+}) => {
+  const { address: account } = useAccount()
+  const currentTime = useCurrentTime()
+  const isReady = availableAt <= currentTime
+
+  const getWriteConfig = useCallback(() => {
+    if (!account) return null
+    return {
+      abi: StRSR,
+      functionName: 'withdraw' as const,
+      address: stRSRAddress,
+      args: [account, BigInt(endId)] as const,
+      chainId,
+    }
+  }, [account, stRSRAddress, endId, chainId])
+
+  return (
+    <WithdrawButton
+      chainId={chainId}
+      isReady={isReady}
+      getWriteConfig={getWriteConfig}
+    />
+  )
+}
+
 const VoteLockWithdrawButton = ({
   stTokenAddress,
   lockId,
@@ -140,63 +165,32 @@ const VoteLockWithdrawButton = ({
   chainId: number
   unlockTime: number
 }) => {
-  const wallet = useAtomValue(walletAtom)
-  const walletChain = useAtomValue(walletChainAtom)
-  const { openConnectModal } = useConnectModal()
-  const { switchChainAsync } = useSwitchChain()
   const { data: unstakingManagerAddress } = useReadContract({
     abi: dtfIndexStakingVault,
     functionName: 'unstakingManager',
     address: stTokenAddress,
     chainId,
   })
-  const { writeContract, data: hash, isPending } = useWriteContract()
-  const { data: receipt } = useWaitForTransactionReceipt({ hash, chainId })
   const currentTime = useCurrentTime()
   const isReady = unlockTime <= currentTime
-  const loading = !receipt && (isPending || !!hash)
-  const withdrawn = receipt?.status === 'success'
-  const toastedRef = useRef(false)
 
-  useEffect(() => {
-    if (withdrawn && !toastedRef.current) {
-      toastedRef.current = true
-      toast.success('Withdrawal successful', { duration: 8000 })
+  const getWriteConfig = useCallback(() => {
+    if (!unstakingManagerAddress) return null
+    return {
+      abi: dtfIndexUnstakingManager,
+      functionName: 'claimLock' as const,
+      address: unstakingManagerAddress,
+      args: [BigInt(lockId)] as const,
+      chainId,
     }
-  }, [withdrawn])
-
-  const handleClick = useCallback(
-    async (e: React.MouseEvent) => {
-      e.stopPropagation()
-      if (!wallet) {
-        openConnectModal?.()
-        return
-      }
-      if (walletChain !== chainId) {
-        await switchChainAsync?.({ chainId })
-      }
-      if (!unstakingManagerAddress) return
-      writeContract({
-        abi: dtfIndexUnstakingManager,
-        functionName: 'claimLock',
-        address: unstakingManagerAddress,
-        args: [BigInt(lockId)],
-        chainId,
-      })
-    },
-    [wallet, walletChain, chainId, unstakingManagerAddress, openConnectModal, switchChainAsync, writeContract, lockId]
-  )
+  }, [unstakingManagerAddress, lockId, chainId])
 
   return (
-    <Button
-      onClick={handleClick}
-      disabled={!isReady || withdrawn || loading}
-      variant="outline"
-      className="rounded-full text-sm hover:text-primary text-primary disabled:border-border border-primary"
-      size="sm"
-    >
-      {withdrawn ? 'Withdrawn' : 'Withdraw'}
-    </Button>
+    <WithdrawButton
+      chainId={chainId}
+      isReady={isReady}
+      getWriteConfig={getWriteConfig}
+    />
   )
 }
 
@@ -258,8 +252,7 @@ const ProgressCell = ({ row }: { row: PendingWithdrawalRow }) => {
 }
 
 const SourceCell = ({ row }: { row: PendingWithdrawalRow }) => {
-  const setStakingSidebarOpen = useSetAtom(stakingSidebarOpenAtom)
-  const setPortfolioStToken = useSetAtom(portfolioStTokenAtom)
+  const openStakingSidebar = useSetAtom(openStakingSidebarAtom)
 
   if (row.source === 'stakedRSR') {
     return (
@@ -279,23 +272,11 @@ const SourceCell = ({ row }: { row: PendingWithdrawalRow }) => {
       className="text-sm text-primary hover:underline"
       onClick={(e) => {
         e.stopPropagation()
-        setStakingSidebarOpen(true)
-        setPortfolioStToken({
+        openStakingSidebar({
           id: row.stTokenAddress,
-          token: {
-            name: row.tokenSymbol,
-            symbol: row.tokenSymbol,
-            decimals: 18,
-            totalSupply: '',
-          },
-          underlying: {
-            name: row.underlyingSymbol,
-            symbol: row.underlyingSymbol,
-            address: row.underlyingAddress,
-            decimals: 18,
-          },
-          legacyGovernance: [],
-          rewardTokens: [],
+          tokenSymbol: row.tokenSymbol,
+          underlyingSymbol: row.underlyingSymbol,
+          underlyingAddress: row.underlyingAddress,
           chainId: row.chainId,
         })
       }}

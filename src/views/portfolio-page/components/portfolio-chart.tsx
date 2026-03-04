@@ -1,7 +1,7 @@
 import { formatCurrency } from '@/utils'
 import { cn } from '@/lib/utils'
 import { useAtom, useAtomValue } from 'jotai'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { ArrowUpRight, ArrowDownRight, Loader } from 'lucide-react'
 import dayjs from 'dayjs'
 import {
@@ -12,10 +12,14 @@ import {
   XAxis,
   YAxis,
 } from 'recharts'
-import { portfolioDataAtom, portfolioPageTimeRangeAtom } from '../atoms'
+import {
+  portfolioAddressAtom,
+  portfolioChartBreakdownAtom,
+  portfolioDataAtom,
+  portfolioPageTimeRangeAtom,
+} from '../atoms'
 import { useHistoricalPortfolio } from '../hooks/use-historical-portfolio'
 import { PortfolioPeriod } from '../types'
-import { Address } from 'viem'
 import { Card } from '@/components/ui/card'
 
 const PERIOD_LABELS: { key: PortfolioPeriod; label: string }[] = [
@@ -135,46 +139,15 @@ const ChartLoadingSkeleton = () => {
   )
 }
 
-const PortfolioChart = ({ address }: { address: Address }) => {
+const PortfolioChart = () => {
+  const address = useAtomValue(portfolioAddressAtom)
   const portfolio = useAtomValue(portfolioDataAtom)
+  const breakdown = useAtomValue(portfolioChartBreakdownAtom)
   const [timeRange, setTimeRange] = useAtom(portfolioPageTimeRangeAtom)
   const { getChartData, isLoading } = useHistoricalPortfolio(address)
 
   const chartData = getChartData(timeRange)
   const totalValue = portfolio?.totalHoldingsUSD ?? 0
-
-  const breakdown = useMemo((): CategoryBreakdown => {
-    if (!portfolio) return []
-    const categories = [
-      {
-        label: 'Index DTFs',
-        value: portfolio.indexDTFs.reduce((s, d) => s + (d.value || 0), 0),
-      },
-      {
-        label: 'Yield DTFs',
-        value: portfolio.yieldDTFs.reduce((s, d) => s + (d.value || 0), 0),
-      },
-      {
-        label: 'Staked RSR',
-        value: portfolio.stakedRSR.reduce((s, d) => s + (d.value || 0), 0),
-      },
-      {
-        label: 'Vote-locked',
-        value: portfolio.voteLocks.reduce((s, d) => s + (d.value || 0), 0),
-      },
-      {
-        label: 'RSR',
-        value: portfolio.rsrBalances.reduce((s, d) => s + (d.value || 0), 0),
-      },
-    ].filter((c) => c.value > 0)
-
-    const total = categories.reduce((s, c) => s + c.value, 0)
-    if (total === 0) return []
-    return categories.map((c) => ({
-      label: c.label,
-      proportion: c.value / total,
-    }))
-  }, [portfolio])
 
   const change = useMemo(() => {
     if (!chartData || chartData.length < 2) return null
@@ -187,13 +160,10 @@ const PortfolioChart = ({ address }: { address: Address }) => {
 
   const isPositive = !change || change.pct >= 0
 
-  const formatXAxis = useCallback(
-    (ts: number) => {
-      if (timeRange === '24h') return dayjs(ts).format('HH:mm')
-      return dayjs(ts).format('DD MMM')
-    },
-    [timeRange]
-  )
+  const formatXAxis = (ts: number) => {
+    if (timeRange === '24h') return dayjs(ts).format('HH:mm')
+    return dayjs(ts).format('DD MMM')
+  }
 
   return (
     <div>

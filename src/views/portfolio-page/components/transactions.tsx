@@ -10,24 +10,20 @@ import {
   ExplorerDataType,
   getExplorerLink,
 } from '@/utils/getExplorerLink'
-import {
-  portfolioStTokenAtom,
-  stakingSidebarOpenAtom,
-} from '@/views/index-dtf/overview/components/staking/atoms'
 import { ColumnDef } from '@tanstack/react-table'
 import dayjs from 'dayjs'
-import { useSetAtom } from 'jotai'
+import { useAtomValue, useSetAtom } from 'jotai'
 import { ArrowUpRight, History } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { Address } from 'viem'
+import { openStakingSidebarAtom, portfolioAddressAtom } from '../atoms'
 import { PortfolioTransaction } from '../types'
 import { useTransactions } from '../hooks/use-transactions'
 import { ExpandToggle, useExpandable } from './expand-toggle'
 import SectionHeader from './section-header'
 
 const TokenCell = ({ tx }: { tx: PortfolioTransaction }) => {
-  const setStakingSidebarOpen = useSetAtom(stakingSidebarOpenAtom)
-  const setPortfolioStToken = useSetAtom(portfolioStTokenAtom)
+  const openStakingSidebar = useSetAtom(openStakingSidebarAtom)
 
   if (!tx.token) return <span className="text-sm text-legend">—</span>
 
@@ -39,23 +35,11 @@ const TokenCell = ({ tx }: { tx: PortfolioTransaction }) => {
   const handleStTokenClick = (e: React.MouseEvent) => {
     e.stopPropagation()
     e.preventDefault()
-    setStakingSidebarOpen(true)
-    setPortfolioStToken({
+    openStakingSidebar({
       id: tx.token!.address as Address,
-      token: {
-        name: tx.token!.symbol,
-        symbol: tx.token!.symbol,
-        decimals: 18,
-        totalSupply: '',
-      },
-      underlying: {
-        name: underlying!.symbol,
-        symbol: underlying!.symbol,
-        address: underlying!.address as Address,
-        decimals: 18,
-      },
-      legacyGovernance: [],
-      rewardTokens: [],
+      tokenSymbol: tx.token!.symbol,
+      underlyingSymbol: underlying!.symbol,
+      underlyingAddress: underlying!.address as Address,
       chainId: tx.chainId,
     })
   }
@@ -160,7 +144,8 @@ const columns: ColumnDef<PortfolioTransaction, any>[] = [
   },
 ]
 
-const Transactions = ({ address }: { address: Address }) => {
+const Transactions = () => {
+  const address = useAtomValue(portfolioAddressAtom)
   const { data, isLoading } = useTransactions(address)
   const { displayData, expanded, toggle, hasMore, total } = useExpandable(
     data ?? [],

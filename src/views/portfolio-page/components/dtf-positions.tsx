@@ -2,7 +2,6 @@ import TokenLogoWithChain from '@/components/token-logo/TokenLogoWithChain'
 import DataTable, { SorteableButton } from '@/components/ui/data-table'
 import { cn } from '@/lib/utils'
 import {
-  formatCurrency,
   formatToSignificantDigits,
   formatUSD,
   getFolioRoute,
@@ -11,11 +10,12 @@ import {
 import { ROUTES } from '@/utils/constants'
 import { ColumnDef } from '@tanstack/react-table'
 import { useAtomValue } from 'jotai'
-import { ArrowDown, ArrowUp, ArrowRight, Globe, Flower } from 'lucide-react'
+import { ArrowRight, Globe, Flower } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { portfolioIndexDTFsAtom, portfolioYieldDTFsAtom } from '../atoms'
 import { PortfolioIndexDTF, PortfolioYieldDTF } from '../types'
 import { ExpandToggle, useExpandable } from './expand-toggle'
+import PerformanceCell from './performance-cell'
 import SectionHeader from './section-header'
 
 type DTFRow = PortfolioIndexDTF | PortfolioYieldDTF
@@ -49,36 +49,9 @@ const columns: ColumnDef<DTFRow, any>[] = [
         Performance <span className="text-legend">(7D)</span>
       </SorteableButton>
     ),
-    cell: ({ row }) => {
-      const raw = row.original.performance7d
-      if (raw == null || isNaN(raw))
-        return <span className="text-sm text-legend">—</span>
-      const perf = raw * 100
-      const abs = Math.abs(perf)
-      const isNear0 = abs < 0.01
-      let text: string
-      if (isNear0) {
-        text = '0.00%'
-      } else {
-        text = `${perf > 0 ? '+' : ''}${formatCurrency(perf)}%`
-      }
-      return (
-        <div
-          className={cn(
-            'flex items-center gap-0.5 text-sm',
-            isNear0 || perf === 0
-              ? 'text-legend'
-              : perf > 0
-                ? 'text-success'
-                : 'text-destructive'
-          )}
-        >
-          {!isNear0 && perf > 0 && <ArrowUp size={14} />}
-          {!isNear0 && perf < 0 && <ArrowDown size={14} />}
-          {text}
-        </div>
-      )
-    },
+    cell: ({ row }) => (
+      <PerformanceCell value={row.original.performance7d} />
+    ),
     meta: { className: 'hidden sm:table-cell' },
   },
   {

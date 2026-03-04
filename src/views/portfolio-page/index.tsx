@@ -3,11 +3,11 @@ import { ConnectWalletButton } from '@/components/ui/transaction'
 import { shortenAddress } from '@/utils'
 import { useSetAtom } from 'jotai'
 import { Eye, X } from 'lucide-react'
-import { useEffect, useMemo } from 'react'
+import { useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { isAddress } from 'viem'
 import { useAccount } from 'wagmi'
-import { portfolioDataAtom } from './atoms'
+import { portfolioAddressAtom, portfolioDataAtom } from './atoms'
 import AvailableRewards from './components/available-rewards'
 import ActiveProposals from './components/active-proposals'
 import {
@@ -70,24 +70,26 @@ const PortfolioPage = () => {
   const [searchParams, setSearchParams] = useSearchParams()
   const accountParam = searchParams.get('account')
 
-  const impersonatedAddress = useMemo(
-    () =>
-      accountParam &&
-      isAddress(accountParam) &&
-      accountParam.toLowerCase() !== connectedAddress?.toLowerCase()
-        ? accountParam
-        : undefined,
-    [accountParam, connectedAddress]
-  )
+  const impersonatedAddress =
+    accountParam &&
+    isAddress(accountParam) &&
+    accountParam.toLowerCase() !== connectedAddress?.toLowerCase()
+      ? accountParam
+      : undefined
 
   const address = impersonatedAddress || connectedAddress
   const { data, isLoading } = usePortfolio(address)
   const setPortfolioData = useSetAtom(portfolioDataAtom)
+  const setPortfolioAddress = useSetAtom(portfolioAddressAtom)
 
   useEffect(() => {
     setPortfolioData(data ?? null)
-    return () => setPortfolioData(null)
-  }, [data, setPortfolioData])
+    setPortfolioAddress(address)
+    return () => {
+      setPortfolioData(null)
+      setPortfolioAddress(undefined)
+    }
+  }, [data, address, setPortfolioData, setPortfolioAddress])
 
   // Prefetch all historical periods
   useHistoricalPortfolio(address)
@@ -109,7 +111,7 @@ const PortfolioPage = () => {
       )}
       {/* Top section: Chart + Sidebar */}
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6">
-        <PortfolioChart address={address} />
+        <PortfolioChart />
         <div className="space-y-4">
           <PortfolioBreakdown />
           <RewardsAvailable />
@@ -126,7 +128,7 @@ const PortfolioPage = () => {
       <ActiveProposals />
       <VotingPower />
       <RSRSection />
-      <Transactions address={address} />
+      <Transactions />
     </div>
   )
 }

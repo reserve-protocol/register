@@ -1,48 +1,21 @@
 import TokenLogoWithChain from '@/components/token-logo/TokenLogoWithChain'
 import DataTable from '@/components/ui/data-table'
-import { getProposalState, VotingState } from '@/lib/governance'
 import { cn } from '@/lib/utils'
-import { formatCurrency, getProposalTitle, parseDuration } from '@/utils'
+import {
+  formatCurrency,
+  getFolioRoute,
+  getProposalTitle,
+  getTokenRoute,
+  parseDuration,
+} from '@/utils'
 import { formatConstant, PROPOSAL_STATES, ROUTES } from '@/utils/constants'
-import { getFolioRoute, getTokenRoute } from '@/utils'
 import { ColumnDef } from '@tanstack/react-table'
 import dayjs from 'dayjs'
 import { useAtomValue } from 'jotai'
 import { ScrollText } from 'lucide-react'
-import { useMemo } from 'react'
-import { portfolioStakedRSRAtom, portfolioVoteLocksAtom } from '../atoms'
-import {
-  PortfolioProposal,
-  PortfolioStakedRSR,
-  PortfolioVoteLock,
-} from '../types'
+import { ActiveProposalRow, portfolioActiveProposalsAtom } from '../atoms'
 import { ExpandToggle, useExpandable } from './expand-toggle'
 import SectionHeader from './section-header'
-
-const ACTIVE_STATES = new Set([
-  PROPOSAL_STATES.PENDING,
-  PROPOSAL_STATES.ACTIVE,
-  PROPOSAL_STATES.SUCCEEDED,
-  PROPOSAL_STATES.QUEUED,
-])
-
-const resolveState = (p: PortfolioProposal) =>
-  getProposalState({
-    id: p.id,
-    timelockId: '',
-    description: p.description,
-    creationTime: Number(p.creationTime),
-    creationBlock: 0,
-    state: p.state,
-    forWeightedVotes: Number(p.forWeightedVotes),
-    abstainWeightedVotes: Number(p.abstainWeightedVotes),
-    againstWeightedVotes: Number(p.againstWeightedVotes),
-    quorumVotes: Number(p.quorumVotes),
-    voteStart: Number(p.voteStart),
-    voteEnd: Number(p.voteEnd),
-    executionETA: p.executionETA ? Number(p.executionETA) : undefined,
-    proposer: { address: p.proposer as `0x${string}` },
-  })
 
 const STATUS_COLOR: Record<string, string> = {
   [PROPOSAL_STATES.DEFEATED]: 'text-destructive',
@@ -56,7 +29,7 @@ const STATUS_COLOR: Record<string, string> = {
   [PROPOSAL_STATES.EXPIRED]: 'text-legend',
 }
 
-type ProposalRow = PortfolioProposal & { voting: VotingState }
+type ProposalRow = ActiveProposalRow
 
 const columns: ColumnDef<ProposalRow, any>[] = [
   {
@@ -170,38 +143,7 @@ const columns: ColumnDef<ProposalRow, any>[] = [
 ]
 
 const ActiveProposals = () => {
-  const stakedRSR = useAtomValue(portfolioStakedRSRAtom)
-  const voteLocks = useAtomValue(portfolioVoteLocksAtom)
-  const proposals: ProposalRow[] = useMemo(() => {
-    const staked = stakedRSR
-      .filter((s) => Number(s.amount) > 0)
-      .flatMap((s) =>
-        (s.activeProposals || []).map((p) => ({
-          ...p,
-          dtfName: s.name,
-          dtfSymbol: s.symbol,
-          dtfAddress: s.address,
-          chainId: s.chainId,
-          isIndexDTF: false,
-        }))
-      )
-    const locked = voteLocks
-      .filter((v) => Number(v.amount) > 0)
-      .flatMap((v) =>
-        (v.activeProposals || []).map((p) => ({
-          ...p,
-          dtfName: v.dtfs?.[0]?.name || v.symbol,
-          dtfSymbol: v.dtfs?.[0]?.symbol || v.symbol,
-          dtfAddress: v.dtfs?.[0]?.address || v.stTokenAddress,
-          chainId: v.chainId,
-          isIndexDTF: true,
-        }))
-      )
-    return [...staked, ...locked]
-      .map((p) => ({ ...p, voting: resolveState(p) }))
-      .filter((p) => ACTIVE_STATES.has(p.voting.state))
-      .sort((a, b) => Number(b.creationTime) - Number(a.creationTime))
-  }, [stakedRSR, voteLocks])
+  const proposals = useAtomValue(portfolioActiveProposalsAtom)
 
   const { displayData, expanded, toggle, hasMore, total } =
     useExpandable(proposals)
