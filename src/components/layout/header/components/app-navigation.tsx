@@ -91,6 +91,17 @@ const AppNavigation = () => {
       ],
       [
         {
+          label: t`Create New DTF`,
+          icon: (
+            <IconContainer>
+              <BadgePlus size={16} />
+            </IconContainer>
+          ),
+          description: t`Launch your own Index DTF`,
+          to: ROUTES.DEPLOY_INDEX,
+          mobileOnly: true,
+        },
+        {
           label: t`DTF Explorer`,
           icon: (
             <IconContainer>
@@ -165,7 +176,12 @@ const AppNavigation = () => {
       <NavigationMenuList>
         <DiscoverItem />
         {menuItems.map((item) => (
-          <NavigationMenuItem key={item.to}>
+          <NavigationMenuItem
+            key={item.to}
+            className={cn(
+              item.to === ROUTES.DEPLOY_INDEX && 'hidden min-[850px]:block'
+            )}
+          >
             <NavigationMenuLink asChild>
               <NavLink to={item.to}>
                 {({ isActive }: { isActive: boolean }) => (
@@ -196,7 +212,10 @@ const AppNavigation = () => {
                 <NavigationMenuLink
                   key={item.to}
                   asChild
-                  className="p-4 gap-2 flex items-center rounded-3xl bg-card border border-transparent hover:border-primary"
+                  className={cn(
+                    'p-4 gap-2 flex items-center rounded-3xl bg-card border border-transparent hover:border-primary',
+                    item.mobileOnly && 'min-[850px]:hidden'
+                  )}
                 >
                   <NavLink to={item.to}>
                     {item.icon}
