@@ -48,13 +48,13 @@ const formatYAxis = (value: number) => {
   return `$${formatCurrency(value, 0)}`
 }
 
-// Ordered lightest→darkest (bottom→top in stacked chart)
+// Rendering order: bottom→top (reversed in tooltip to match visual top→bottom)
 const CATEGORIES = [
-  { key: 'rsr', label: 'RSR', color: 'hsl(var(--chart-5))' },
+  { key: 'rsr', label: 'RSR', color: 'hsl(var(--primary))' },
   { key: 'voteLocked', label: 'Vote-locked', color: 'hsl(var(--chart-4))' },
-  { key: 'indexDTFs', label: 'Index DTFs', color: 'hsl(var(--chart-1))' },
+  { key: 'stakedRSR', label: 'Staked RSR', color: 'hsl(var(--chart-1))' },
   { key: 'yieldDTFs', label: 'Yield DTFs', color: 'hsl(var(--chart-2))' },
-  { key: 'stakedRSR', label: 'Staked RSR', color: 'hsl(var(--chart-3))' },
+  { key: 'indexDTFs', label: 'Index DTFs', color: 'hsl(var(--chart-3))' },
 ] as const
 
 function ChartTooltip({ payload, active, stacked }: any) {
