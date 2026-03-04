@@ -226,7 +226,7 @@ const Top100Table = ({
       onRowClick={(row: Top100DTF) =>
         navigate(getFolioRoute(row.address, row.chainId))
       }
-      initialSorting={[{ id: 'timestamp', desc: true }]}
+      initialSorting={[{ id: 'marketCap', desc: true }]}
       className={cn(
         '[&_table]:bg-card [&_table]:rounded-[20px] [&_table]:text-base',
         '[&_table_thead_th]:px-6',
