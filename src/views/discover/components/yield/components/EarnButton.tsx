@@ -31,7 +31,7 @@ const EarnButton = ({ token, className }: Props) => {
       }
     }
 
-    navigate(`${ROUTES.EARN}?underlying=${addresses.join(',')}`)
+    navigate(`${ROUTES.EARN_DEFI}?underlying=${addresses.join(',')}`)
   }
 
   if (!earnData) return null

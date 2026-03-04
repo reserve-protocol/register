@@ -90,6 +90,8 @@ export const GrantRolePreview = ({
 
   // Map role hashes to readable names
   const roleNames: Record<string, string> = {
+    '0x0000000000000000000000000000000000000000000000000000000000000000':
+      'Default Admin',
     '0xfd643c72710c63c0180259aba6b2d05451e3591a24e58b62239378085726f783':
       'Guardian',
     '0x2d8e650da9bd8c373ab2450d770f2ed39549bfc28d3630025cecc51511bcd374':
@@ -136,6 +138,8 @@ export const RevokeRolePreview = ({
   const [roleHash, account] = decodedCalldata.data as [string, string]
 
   const roleNames: Record<string, string> = {
+    '0x0000000000000000000000000000000000000000000000000000000000000000':
+      'Default Admin',
     '0xfd643c72710c63c0180259aba6b2d05451e3591a24e58b62239378085726f783':
       'Guardian',
     '0x2d8e650da9bd8c373ab2450d770f2ed39549bfc28d3630025cecc51511bcd374':
