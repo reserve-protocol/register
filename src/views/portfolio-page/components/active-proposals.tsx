@@ -103,7 +103,7 @@ const columns: ColumnDef<ProposalRow, any>[] = [
       return (
         <div>
           <p className="font-bold text-sm text-primary">{title}</p>
-          <div className="flex items-center gap-2 mt-0.5 text-xs text-legend">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-0.5 sm:gap-2 mt-0.5 text-xs text-legend">
             <span>
               Quorum?{' '}
               <span

@@ -5,7 +5,7 @@ import { portfolioBreakdownAtom } from '../atoms'
 const BreakdownRow = ({ label, value }: { label: string; value: number }) => (
   <div className="flex items-center justify-between">
     <span className="text-base font-light">{label}</span>
-    <span className="text-base font-bold">{formatUSD(value)}</span>
+    <span className="text-base font-bold whitespace-nowrap">{formatUSD(value)}</span>
   </div>
 )
 

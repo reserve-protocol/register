@@ -127,7 +127,7 @@ const columns: ColumnDef<DTFRow, any>[] = [
     cell: ({ row }) => {
       const val = row.original.averageCost
       return (
-        <span className="text-sm">
+        <span className="text-sm whitespace-nowrap">
           {val != null ? formatUSD(val) : '—'}
         </span>
       )
@@ -141,7 +141,7 @@ const columns: ColumnDef<DTFRow, any>[] = [
       <SorteableButton column={column}>Market Cap</SorteableButton>
     ),
     cell: ({ row }) => (
-      <span className="text-sm">{formatUSD(row.original.marketCap)}</span>
+      <span className="text-sm whitespace-nowrap">{formatUSD(row.original.marketCap)}</span>
     ),
     meta: { className: 'hidden sm:table-cell' },
   },
@@ -154,7 +154,7 @@ const columns: ColumnDef<DTFRow, any>[] = [
     cell: ({ row }) => {
       const val = Number(row.original.amount)
       return (
-        <span className="text-sm">
+        <span className="text-sm whitespace-nowrap">
           {!isNaN(val) ? formatToSignificantDigits(val) : '—'}
         </span>
       )
@@ -169,7 +169,7 @@ const columns: ColumnDef<DTFRow, any>[] = [
     cell: ({ row }) => {
       const val = row.original.value
       return (
-        <span className="text-sm font-bold">
+        <span className="text-sm font-bold whitespace-nowrap">
           {val != null && !isNaN(val) ? formatUSD(val) : '—'}
         </span>
       )

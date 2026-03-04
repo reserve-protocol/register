@@ -89,7 +89,7 @@ const TimeRangeTabs = ({
   active: PortfolioPeriod
   onChange: (p: PortfolioPeriod) => void
 }) => (
-  <div className="flex items-center bg-muted rounded-2xl p-0.5">
+  <div className="flex items-center bg-muted rounded-2xl p-0.5 w-fit">
     {PERIOD_LABELS.map(({ key, label }) => (
       <button
         key={key}
@@ -198,7 +198,7 @@ const PortfolioChart = ({ address }: { address: Address }) => {
   return (
     <div>
       {/* Top row: Value left, Tabs right */}
-      <div className="flex items-start justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
         <div className="pl-2">
           <h1 className="text-[46px] leading-[50px] font-medium text-primary">
             ${formatCurrency(totalValue)}

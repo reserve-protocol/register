@@ -68,7 +68,7 @@ const columns: ColumnDef<PortfolioStakedRSR, any>[] = [
     cell: ({ row }) => {
       const val = row.original.apy
       return (
-        <span className="text-sm">
+        <span className="text-sm whitespace-nowrap">
           {val != null && !isNaN(val) ? `${formatCurrency(val)}%` : '—'}
         </span>
       )
@@ -83,7 +83,7 @@ const columns: ColumnDef<PortfolioStakedRSR, any>[] = [
     cell: ({ row }) => {
       const val = Number(row.original.amount)
       return (
-        <span className="text-sm">
+        <span className="text-sm whitespace-nowrap">
           {!isNaN(val) ? formatToSignificantDigits(val) : '—'}
         </span>
       )
@@ -98,7 +98,7 @@ const columns: ColumnDef<PortfolioStakedRSR, any>[] = [
     cell: ({ row }) => {
       const val = row.original.value
       return (
-        <span className="text-sm font-bold">
+        <span className="text-sm font-bold whitespace-nowrap">
           {val != null && !isNaN(val) ? formatUSD(val) : '—'}
         </span>
       )

@@ -1,10 +1,7 @@
 import { atom } from 'jotai'
-import {
-  PortfolioPeriod,
-  PortfolioResponse,
-} from './types'
+import { PortfolioPeriod, PortfolioResponse } from './types'
 
-export const portfolioPageTimeRangeAtom = atom<PortfolioPeriod>('7d')
+export const portfolioPageTimeRangeAtom = atom<PortfolioPeriod>('3m')
 
 export const portfolioDataAtom = atom<PortfolioResponse | null>(null)
 
