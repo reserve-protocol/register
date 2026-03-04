@@ -1,6 +1,6 @@
 import GovernanceAnastasius from 'abis/GovernanceAnastasius'
 import { gql } from 'graphql-request'
-import useQuery from 'hooks/useQuery'
+import useQuery from 'hooks/use-query'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useMemo } from 'react'
@@ -14,8 +14,6 @@ import { Address } from 'viem'
 import { isTimeunitGovernance } from '@/views/yield-dtf/governance/utils'
 import { useReadContracts } from 'wagmi'
 
-// Added name order to governanceFrameworks so that "Governor Anastasius"
-// is first element (until we add a timestamp field).
 const query = gql`
   query getRTokenOwner($id: String!) {
     rtoken(id: $id) {
@@ -53,41 +51,57 @@ const RTokenGovernanceUpdater = () => {
     id: rToken?.address.toLowerCase(),
   })
 
+  const activeFramework = useMemo(() => {
+    const frameworks = data?.governance?.governanceFrameworks
+    const owners = data?.rtoken?.owners
+
+    if (!frameworks?.length) return null
+
+    return (
+      frameworks.find((gf: { timelockAddress: string }) =>
+        owners?.some(
+          (owner: string) =>
+            owner.toLowerCase() === gf.timelockAddress.toLowerCase()
+        )
+      ) || frameworks[0]
+    )
+  }, [data?.governance?.governanceFrameworks, data?.rtoken?.owners])
+
   const contracts = useMemo(() => {
-    return data?.governance?.governanceFrameworks?.[0]?.id &&
+    return activeFramework?.id &&
       rToken?.chainId &&
-      isTimeunitGovernance(data?.governance?.governanceFrameworks?.[0]?.name)
+      isTimeunitGovernance(activeFramework?.name)
       ? [
           {
             abi: GovernanceAnastasius,
             chainId: rToken.chainId,
-            address: data.governance.governanceFrameworks[0].id as Address,
+            address: activeFramework.id as Address,
             functionName: 'quorum',
             args: [BigInt(Math.floor(Date.now() / 1000 - 100))],
           },
           {
             abi: GovernanceAnastasius,
             chainId: rToken.chainId,
-            address: data.governance.governanceFrameworks[0].id as Address,
+            address: activeFramework.id as Address,
             functionName: 'quorumNumerator',
             args: [BigInt(Math.floor(Date.now() / 1000 - 100))],
           },
           {
             abi: GovernanceAnastasius,
             chainId: rToken.chainId,
-            address: data.governance.governanceFrameworks[0].id as Address,
+            address: activeFramework.id as Address,
             functionName: 'proposalThreshold',
           },
         ]
       : undefined
-  }, [data, rToken])
+  }, [activeFramework, rToken])
 
   const { data: onChainData }: { data: [bigint, bigint, bigint] | undefined } =
     useReadContracts({
       contracts,
       allowFailure: false,
       query: {
-        enabled: !!data?.governance?.governanceFrameworks?.[0]?.id,
+        enabled: !!activeFramework?.id,
       },
     })
 
@@ -95,9 +109,7 @@ const RTokenGovernanceUpdater = () => {
     if (data?.rtoken) {
       setTokenManagers(data.rtoken)
 
-      // Governance is set up
-      if (data.governance?.governanceFrameworks?.length) {
-        // TODO: Multiple governances, currently use 1
+      if (activeFramework) {
         const {
           name,
           proposalThreshold,
@@ -109,11 +121,8 @@ const RTokenGovernanceUpdater = () => {
           executionDelay,
           votingDelay,
           votingPeriod,
-        } = data.governance.governanceFrameworks[0]
+        } = activeFramework
 
-        // for Anastasius governance set by the 3.4.0 spell,
-        // we need to calculate the on-chain proposal threshold
-        // because the ProposalThresholdSet event is not listened by the subgraph
         const onChainProposalThreshold =
           onChainData?.[2] && stTokenSupply > 0
             ? Number(
@@ -136,11 +145,11 @@ const RTokenGovernanceUpdater = () => {
           executionDelay,
           quorumNumerator: onChainData?.[1]?.toString() || quorumNumerator,
           quorumVotes: onChainData?.[0]?.toString() || quorumVotes,
-          guardians: data.governance.guardians ?? [],
+          guardians: data.governance?.guardians ?? [],
         })
       }
     }
-  }, [data, onChainData, stTokenSupply])
+  }, [data, activeFramework, onChainData, stTokenSupply])
 
   return null
 }

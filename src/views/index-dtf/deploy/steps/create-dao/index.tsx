@@ -26,7 +26,7 @@ import {
   daoTokenSymbolAtom,
   formReadyForSubmitAtom,
 } from '../../atoms'
-import { TransactionButtonContainer } from '@/components/old/button/TransactionButton'
+import { TransactionButtonContainer } from '@/components/ui/transaction-button'
 
 const CreateDAO = () => {
   const chainId = useAtomValue(chainIdAtom)

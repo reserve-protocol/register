@@ -14,7 +14,7 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import RTokenContainer from 'state/rtoken/RTokenContainer'
 import { GOVERNANCE_PROPOSAL_TYPES, ROUTES } from 'utils/constants'
 import Bridge from 'views/bridge'
-import EarnWrapper from 'views/earn'
+import Earn from 'views/earn'
 import Explorer from 'views/explorer'
 import Collaterals from 'views/explorer/components/collaterals'
 import ExploreGovernance from 'views/explorer/components/governance'
@@ -27,6 +27,7 @@ import IndexDTFAuctionsLegacy from './views/index-dtf/auctions/legacy'
 import Rebalance from './views/index-dtf/auctions/views/rebalance'
 import RebalanceList from './views/index-dtf/auctions/views/rebalance-list'
 import DeployComingSoon from './views/index-dtf/deploy/components/deploy-coming-soon'
+import PermissionlessDeploy from './views/index-dtf/deploy/permissionless'
 import IndexDTFGovernance from './views/index-dtf/governance'
 import IndexProposal from './views/index-dtf/governance/views/proposal'
 import IndexDTFPropose from './views/index-dtf/governance/views/propose'
@@ -40,8 +41,15 @@ import IndexDTFManualIssuance from './views/index-dtf/issuance/manual'
 import IndexDTFManage from './views/index-dtf/manage'
 import IndexDTFOverview from './views/index-dtf/overview'
 import IndexDTFSettings from './views/index-dtf/settings'
-import InternalDTFList from './views/internal/dtf-list'
+import PortfolioPage from './views/portfolio-page'
 import AllYieldDTFList from './views/tokens/Tokens'
+import InternalDTFList from './views/internal/dtf-list'
+import InternalDTFListed from './views/internal/dtf-listed'
+import Top100 from './views/top100'
+import IndexDTFFactsheet from './views/index-dtf/factsheet'
+import EarnIndexDTF from './views/earn/views/index-dtf'
+import EarnYieldDTF from './views/earn/views/yield-dtf'
+import EarnDefi from './views/earn/views/defi'
 const AsyncSwaps = lazy(() => import('./views/index-dtf/issuance/async-swaps'))
 
 // TODO: Fix recoll call on yield dtf auction page
@@ -50,12 +58,23 @@ const AppRoutes = () => (
     <Route path={ROUTES.HOME} element={<Discover />} />
     {/* Internal routes */}
     <Route path="/internal/dtf-list" element={<InternalDTFList />} />
+    <Route path="/internal/dtf-listed" element={<InternalDTFListed />} />
+    <Route path="/top100" element={<Top100 />} />
+    <Route path={'/internal/deploy'} element={<DeployIndexDTF />} />
+
+    <Route path={ROUTES.PORTFOLIO} element={<PortfolioPage />} />
     <Route path={ROUTES.BRIDGE} element={<Bridge />} />
-    <Route path={ROUTES.EARN} element={<EarnWrapper />} />
     <Route path={ROUTES.DEPLOY_YIELD} element={<DeployYieldDTF />} />
     <Route path={ROUTES.DEPLOY_INDEX} element={<DeployComingSoon />} />
-    <Route path={'/hidden/deploy'} element={<DeployIndexDTF />} />
+    <Route path="/deploy-index" element={<PermissionlessDeploy />} />
     <Route path={ROUTES.TOKENS} element={<AllYieldDTFList />} />
+    {/* EARN DTF */}
+    <Route path={ROUTES.EARN} element={<Earn />}>
+      <Route index element={<Navigate replace to={ROUTES.EARN_INDEX} />} />
+      <Route path={ROUTES.EARN_INDEX} element={<EarnIndexDTF />} />
+      <Route path={ROUTES.EARN_YIELD} element={<EarnYieldDTF />} />
+      <Route path={ROUTES.EARN_DEFI} element={<EarnDefi />} />
+    </Route>
     {/* Yield DTF */}
     <Route path={`/:chain/token/:tokenId`} element={<RTokenContainer />}>
       <Route index element={<Navigate replace to={ROUTES.OVERVIEW} />} />
@@ -81,6 +100,7 @@ const AppRoutes = () => (
       <Route index element={<Navigate replace to={ROUTES.OVERVIEW} />} />
       <Route path={ROUTES.OVERVIEW} element={<IndexDTFOverview />} />
       <Route path={ROUTES.MANAGE} element={<IndexDTFManage />} />
+      <Route path={ROUTES.FACTSHEET} element={<IndexDTFFactsheet />} />
       <Route path={ROUTES.ISSUANCE} element={<IndexDTFIssuance />} />
       <Route
         path={`${ROUTES.ISSUANCE}/manual`}

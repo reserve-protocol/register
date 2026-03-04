@@ -1,7 +1,5 @@
 import { Trans } from '@lingui/macro'
-import CirclesIcon from 'components/icons/CirclesIcon'
 import { useMemo } from 'react'
-import { Box, Text } from 'theme-ui'
 import MultiselectDropdrown, {
   IMultiselectDropdrown,
 } from '../MultiselectDropdown'
@@ -32,19 +30,19 @@ const TransactionTypeFilter = (
   }, [])
 
   return (
-    <Box>
-      <Text variant="legend">
+    <div>
+      <span className="text-legend">
         <Trans>Tx Type</Trans>
-      </Text>
-      <MultiselectDropdrown mt={1} options={options} {...props} allOption>
+      </span>
+      <MultiselectDropdrown className="mt-1" options={options} {...props} allOption>
         <TransactionsIcon width={18} />
-        <Text ml="2" variant="legend">
+        <span className="ml-2 text-legend">
           {props.selected.length
             ? `${props.selected.length} selected`
             : 'All types'}
-        </Text>
+        </span>
       </MultiselectDropdrown>
-    </Box>
+    </div>
   )
 }
 

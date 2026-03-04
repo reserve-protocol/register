@@ -28,6 +28,11 @@ export const OTHER_POOL_TOKENS: Record<
     address: '0x417Ac0e078398C154EdFadD9Ef675d30Be60Af93',
     logo: '',
   },
+  '0x9b8df6e244526ab5f6e6400d331db28c8fdddb55': {
+    symbol: 'WETH',
+    address: '0x9B8Df6E244526ab5F6e6400d331DB28C8fdDdb55',
+    logo: '',
+  },
   '0x4200000000000000000000000000000000000006': {
     symbol: 'WETH',
     address: '0x4200000000000000000000000000000000000006',

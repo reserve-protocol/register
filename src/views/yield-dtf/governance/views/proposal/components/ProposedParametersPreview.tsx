@@ -1,10 +1,14 @@
 import { useAtomValue } from 'jotai'
-import { BoxProps } from 'theme-ui'
+import { cn } from '@/lib/utils'
 import { parametersChangesAtom } from '../atoms'
 import { ParameterPreview } from './ItemPreview'
 import PreviewBox from './PreviewBox'
 
-const ProposedParametersPreview = (props: BoxProps) => {
+interface Props {
+  className?: string
+}
+
+const ProposedParametersPreview = ({ className }: Props) => {
   const changes = useAtomValue(parametersChangesAtom)
 
   if (!changes.length) {
@@ -16,11 +20,10 @@ const ProposedParametersPreview = (props: BoxProps) => {
     <PreviewBox
       count={changes.length}
       title="Parameters"
-      variant="layout.borderBox"
-      {...props}
+      className={cn('border border-border rounded-xl p-6', className)}
     >
       {changes.map((change) => (
-        <ParameterPreview key={change.field} mt={3} values={change} />
+        <ParameterPreview key={change.field} className="mt-4" values={change} />
       ))}
     </PreviewBox>
   )

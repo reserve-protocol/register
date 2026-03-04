@@ -1,26 +1,33 @@
 import { Trans } from '@lingui/macro'
-import { Table } from '@/components/old/table'
+import { Table } from '@/components/ui/legacy-table'
 import { useAtomValue } from 'jotai'
-import { Box, BoxProps, Text } from 'theme-ui'
 import { currentTradesAtom } from '../../atoms'
 import OngoingAuctionsSkeleton from '../../components/OngoingAuctionsSkeleton'
 import useColumns from '../../components/useColumns'
 
-const OngoingAuctions = (props: BoxProps) => {
+interface OngoingAuctionsProps {
+  className?: string
+}
+
+const OngoingAuctions = ({ className }: OngoingAuctionsProps) => {
   const columns = useColumns()
   const data = useAtomValue(currentTradesAtom)
 
   return (
-    <Box {...props}>
-      <Text variant="strong" ml={4} mb={4}>
+    <div className={className}>
+      <span className="font-semibold ml-4 mb-4 block">
         <Trans>Ongoing auctions</Trans>
-      </Text>
+      </span>
       {data.length ? (
-        <Table columns={columns} data={data} />
+        <Table
+          columns={columns}
+          data={data}
+          className="border-[4px] border-secondary"
+        />
       ) : (
         <OngoingAuctionsSkeleton />
       )}
-    </Box>
+    </div>
   )
 }
 export default OngoingAuctions

@@ -1,5 +1,4 @@
 import { FC, memo } from 'react'
-import { Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { formatUnits } from 'viem'
 
@@ -15,16 +14,16 @@ const CollateralValue: FC<CollateralValueProps> = ({
   price,
 }) => {
   return (
-    <Text sx={{ fontWeight: '500' }}>
+    <span className="font-medium">
       {formatCurrency(Number(formatUnits(quantity, decimals)))}
       {price !== undefined && (
-        <Text sx={{ color: 'secondaryText', fontSize: 14 }}>
+        <span className="text-legend text-sm">
           {' '}
           ($
           {formatCurrency(Number(formatUnits(quantity, decimals)) * price, 6)})
-        </Text>
+        </span>
       )}
-    </Text>
+    </span>
   )
 }
 

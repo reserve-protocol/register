@@ -1,4 +1,3 @@
-import InfoBox from '@/components/old/info-box'
 import { ChartConfig, ChartContainer } from '@/components/ui/chart'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useIsMobile } from '@/hooks/use-media-query'
@@ -9,11 +8,11 @@ import {
   performanceTimeRangeAtom,
 } from '@/state/dtf/atoms'
 import { formatCurrency, formatToSignificantDigits } from '@/utils'
+import { formatXAxisTick as formatTick } from '@/utils/chart-formatters'
 import dayjs from 'dayjs'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useMemo } from 'react'
 import { Area, AreaChart, Tooltip, TooltipProps, XAxis, YAxis } from 'recharts'
-import { Card } from 'theme-ui'
 import useIndexDTFPriceHistory from '../../hooks/use-dtf-price-history'
 import IndexCTAsOverviewMobile from '../index-ctas-overview-mobile'
 import IndexTokenAddress from '../index-token-address'
@@ -63,9 +62,12 @@ function CustomTooltip({
         ? formatToSignificantDigits(value)
         : formatCurrency(value, 2)
     return (
-      <Card backgroundColor="cardBackground">
-        <InfoBox title={'$' + formattedValue} subtitle={subtitle} />
-      </Card>
+      <div className="bg-card text-card-foreground rounded-[20px] p-4">
+        <span className="text-base font-medium block mb-1">
+          ${formattedValue}
+        </span>
+        <span className="text-sm text-muted-foreground">{subtitle}</span>
+      </div>
     )
   }
 
@@ -157,40 +159,9 @@ const PriceChart = () => {
     }
   }, [timeseries, setMarketCap])
 
+  // Wrapper to maintain backward compatibility
   const formatXAxisTick = (timestamp: number) => {
-    const date = dayjs.unix(timestamp)
-    const dtfAge = now - (dtf?.timestamp || 0)
-
-    switch (range) {
-      case '24h':
-        return date.format('HH:mm')
-      case '7d':
-      case '1m':
-      case '3m':
-        return date.format('D MMM')
-      case '1y':
-        return date.format("MMM 'YY")
-      case 'all':
-        // Format based on DTF age
-        if (dtfAge < 86_400) {
-          // Less than 24h: use hourly format
-          return date.format('HH:mm')
-        } else if (dtfAge < 604_800) {
-          // Less than 7d: use hourly format
-          return date.format('HH:mm')
-        } else if (dtfAge < 2_592_000) {
-          // Less than 1m: use day format
-          return date.format('D MMM')
-        } else if (dtfAge < 31_536_000) {
-          // Less than 1y: use day format
-          return date.format('D MMM')
-        } else {
-          // More than 1y: use month/year format
-          return date.format("MMM 'YY")
-        }
-      default:
-        return date.format('D MMM')
-    }
+    return formatTick(timestamp, range, dtf?.timestamp)
   }
 
   const formatYAxisTick = (value: number) => {

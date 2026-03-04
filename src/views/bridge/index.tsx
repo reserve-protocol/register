@@ -1,5 +1,5 @@
 import ChainLogo from '@/components/icons/ChainLogo'
-import CopyValue from '@/components/old/button/CopyValue'
+import CopyValue from '@/components/ui/copy-value'
 import TokenLogo from '@/components/token-logo'
 import StackTokenLogo from '@/components/token-logo/stack-token-logo'
 import { Button } from '@/components/ui/button'
@@ -26,10 +26,30 @@ import {
 } from 'lucide-react'
 import bridgeGGLogo from './assets/bridgegg.png'
 import SuperbridgeLogo from './assets/superbridge.avif'
+import portalLogo from './assets/portal.avif'
 
-const BRIDGE_TOKEN_LIST: {
+type Bridge = {
+  name: string
+  logo: string
+  url: string
+  listedTokens: string[]
+  targetChain?: number
+}
+
+type BridgeTokenList = {
   [key: string]: { symbol: string; logo: string; l1: string; l2: string }
-} = {
+}
+
+const PORTAL_TOKEN_LIST: BridgeTokenList = {
+  rsr: {
+    symbol: 'RSR',
+    logo: '/svgs/rsr.svg',
+    l1: RSR_ADDRESS[ChainId.Mainnet],
+    l2: RSR_ADDRESS[ChainId.BSC],
+  },
+}
+
+const SUPERBRIDGE_TOKEN_LIST: BridgeTokenList = {
   rsr: {
     symbol: 'RSR',
     logo: '/svgs/rsr.svg',
@@ -56,23 +76,15 @@ const BRIDGE_TOKEN_LIST: {
   },
 }
 
-type Bridge = {
-  name: string
-  logo: string
-  url: string
-  listedTokens: string[]
-}
-
 const Hero = () => (
   <div className="text-center max-w-4xl">
     <h1 className="font-semibold text-4xl sm:text-5xl lg:text-6xl mb-6">
-      Our Bridge Has Been Retired
+      Bridge DTFs and RSR
     </h1>
-    <p className=" md:text-base lg:text-xl">
-      We recently deprecated our custom bridging software. We built the bridge
-      when there were no alternatives - we prefer to reallocate those developer
-      resources elsewhere. You can still move assets to and from Base using the
-      trusted external bridges listed below.
+    <p className="md:text-base lg:text-xl">
+      Transfer your DTFs and RSR across Ethereum, Base, and Binance Smart Chain.
+      Bridging lets you move tokens between networks so you can trade, stake, or
+      use them wherever you need. Select a trusted provider below to get started.
     </p>
   </div>
 )
@@ -96,14 +108,15 @@ const BridgeCard = ({
   url,
   listedTokens,
   shadow,
+  targetChain = ChainId.Base
 }: Bridge & { shadow?: boolean }) => (
   <div
-    className="flex items-center bg-card p-6 gap-3 rounded-3xl justify-between"
+    className="flex md:grid grid-cols-[1fr_auto_1fr] items-center bg-card p-6 gap-3 rounded-3xl"
     style={
       shadow ? { boxShadow: '0 6px 34px 0 rgba(0, 0, 0, 0.05)' } : undefined
     }
   >
-    <div className="flex items-center gap-3">
+    <div className="flex items-center flex-grow gap-3">
       <img src={logo} alt={name} width={32} height={32} />
       <div className="flex flex-col">
         <h3 className="font-semibold">{name}</h3>
@@ -122,15 +135,15 @@ const BridgeCard = ({
       <Rectangle />
       <StackTokenLogo
         tokens={listedTokens.map((token) => ({
-          symbol: BRIDGE_TOKEN_LIST[token].symbol,
-          logo: BRIDGE_TOKEN_LIST[token].logo,
-          address: BRIDGE_TOKEN_LIST[token].l1,
+          symbol: SUPERBRIDGE_TOKEN_LIST[token].symbol,
+          logo: SUPERBRIDGE_TOKEN_LIST[token].logo,
+          address: SUPERBRIDGE_TOKEN_LIST[token].l1,
         }))}
       />
       <Rectangle />
-      <ChainLogo chain={ChainId.Base} height={20} width={20} />
+      <ChainLogo chain={targetChain} height={20} width={20} />
     </div>
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-2 justify-end">
       <span className="text-sm text-legend hidden sm:block">Visit {name}</span>
       <a href={url} target="_blank" rel="noopener noreferrer">
         <div className="bg-muted rounded-full p-2">
@@ -156,80 +169,97 @@ const Disclaimer = () => {
   )
 }
 
-const TokenListHelper = () => {
-  return (
-    <Collapsible>
-      <CollapsibleContent>
-        {Object.values(BRIDGE_TOKEN_LIST).map((token) => (
-          <div
-            key={token.symbol}
-            className={cn(
-              'grid grid-cols-2 sm:grid-cols-4 gap-2 p-6',
-              'border-b'
-            )}
-          >
-            <div className="flex items-center gap-2">
-              <TokenLogo src={token.logo} size="xl" />
-              <span className="font-semibold">{token.symbol}</span>
-            </div>
-            <div className="hidden sm:flex items-center gap-2">
-              <ChainLogo chain={ChainId.Mainnet} height={20} width={20} />
-              <span className="text-sm text-legend">
-                {shortenAddress(token.l1)}
-              </span>
-              <CopyValue value={token.l1} />
-            </div>
-            <div className="hidden sm:flex items-center gap-2">
-              <ChainLogo chain={ChainId.Base} height={20} width={20} />
-              <span className="text-sm text-legend">
-                {shortenAddress(token.l2)}
-              </span>
-              <CopyValue value={token.l2} />
-            </div>
-            <a
-              href={`https://superbridge.app/?fromChainId=1&toChainId=8453&tokenAddress=${token.l1}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 justify-end text-legend hover:text-primary"
-            >
-              <span className="text-sm">Bridge {token.symbol}</span>
+const getBridgeUrl = (chain: number, token: { symbol: string, l1: string, l2: string }) => {
+  if (chain === ChainId.BSC) {
+    return `https://portalbridge.com/?fromChain=Ethereum&fromToken=${token.symbol}&toChain=Bsc&toToken=${token.symbol}`
+  }
 
-              <Button variant="muted" size="icon-rounded">
-                <ArrowUpRight className="w-4 h-4" />
-              </Button>
-            </a>
-          </div>
-        ))}
-      </CollapsibleContent>
-      <CollapsibleTrigger className="p-4 pl-0 sm:pl-8 pr-6 flex  items-center gap-2 text-sm w-full">
-        <Info size={16} strokeWidth={1.5} className="hidden sm:block" />
-        <div className="ml-3 mr-auto">
-          <span className="font-semibold">Don’t see your token?</span>{' '}
-          <span className="text-legend">
-            You may need to import it with the L2 contract address.
-          </span>
-        </div>
-        <div className="flex items-center text-primary gap-1">
-          <span className="hidden md:block">View list</span>
-          <ChevronsUpDown size={16} strokeWidth={1.5} />
-        </div>
-      </CollapsibleTrigger>
-    </Collapsible>
-  )
+  return `https://superbridge.app/?fromChainId=1&toChainId=8453&tokenAddress=${token.l1}`
 }
+
+const TokenListHelper = ({ tokens, targetChain = ChainId.Base, fromChain = ChainId.Ethereum }: { tokens: BridgeTokenList, targetChain?: number, fromChain?: number }) => (
+  <Collapsible>
+    <CollapsibleContent>
+      {Object.values(tokens).map((token) => (
+        <div
+          key={token.symbol}
+          className={cn(
+            'grid grid-cols-2 sm:grid-cols-4 gap-2 p-6',
+            'border-b'
+          )}
+        >
+          <div className="flex items-center gap-2">
+            <TokenLogo src={token.logo} size="xl" />
+            <span className="font-semibold">{token.symbol}</span>
+          </div>
+          <div className="hidden sm:flex items-center gap-2">
+            <ChainLogo chain={ChainId.Mainnet} height={20} width={20} />
+            <span className="text-sm text-legend">
+              {shortenAddress(token.l1)}
+            </span>
+            <CopyValue value={token.l1} />
+          </div>
+          <div className="hidden sm:flex items-center gap-2">
+            <ChainLogo chain={targetChain} height={20} width={20} />
+            <span className="text-sm text-legend">
+              {shortenAddress(token.l2)}
+            </span>
+            <CopyValue value={token.l2} />
+          </div>
+          <a
+            href={getBridgeUrl(targetChain, token)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 justify-end text-legend hover:text-primary"
+          >
+            <span className="text-sm">Bridge {token.symbol}</span>
+
+            <Button variant="muted" size="icon-rounded">
+              <ArrowUpRight className="w-4 h-4" />
+            </Button>
+          </a>
+        </div>
+      ))}
+    </CollapsibleContent>
+    <CollapsibleTrigger className="p-4 pl-0 sm:pl-8 pr-6 flex  items-center gap-2 text-sm w-full">
+      <Info size={16} strokeWidth={1.5} className="hidden sm:block" />
+      <div className="ml-3 mr-auto">
+        <span className="font-semibold">Don’t see your token?</span>{' '}
+        <span className="text-legend">
+          You may need to import it with the L2 contract address.
+        </span>
+      </div>
+      <div className="flex items-center text-primary gap-1">
+        <span className="hidden md:block">View list</span>
+        <ChevronsUpDown size={16} strokeWidth={1.5} />
+      </div>
+    </CollapsibleTrigger>
+  </Collapsible>
+)
 
 const BridgeList = () => {
   return (
     <div className="flex flex-col w-full md:w-[44rem] gap-4 my-10">
       <div className="bg-background rounded-3xl">
         <BridgeCard
+          name="Portal"
+          logo={portalLogo}
+          url="https://portalbridge.com/"
+          listedTokens={['rsr']}
+          targetChain={ChainId.BSC}
+          shadow
+        />
+        <TokenListHelper tokens={PORTAL_TOKEN_LIST} targetChain={ChainId.BSC} />
+      </div>
+      <div className="bg-background rounded-3xl">
+        <BridgeCard
           name="Superbridge"
           logo={SuperbridgeLogo}
           url="https://superbridge.app/"
-          listedTokens={Object.keys(BRIDGE_TOKEN_LIST)}
+          listedTokens={Object.keys(SUPERBRIDGE_TOKEN_LIST)}
           shadow
         />
-        <TokenListHelper />
+        <TokenListHelper tokens={SUPERBRIDGE_TOKEN_LIST} />
       </div>
       <BridgeCard
         name="Brid.gg"

@@ -128,21 +128,21 @@ body {
 
 @font-face {
   font-family: 'TWK Lausanne';
-  src: url('/fonts/TWKLausanne-300.otf') format('woff');
+  src: url('/fonts/TWKLausanne-300.otf') format('opentype');
   font-weight: 300;
   font-display: swap;
 }
 
 @font-face {
   font-family: 'TWK Lausanne';
-  src: url('/fonts/TWKLausanne-500.otf') format('woff');
+  src: url('/fonts/TWKLausanne-500.otf') format('opentype');
   font-weight: 500;
   font-display: swap;
 }
 
 @font-face {
   font-family: 'TWK Lausanne';
-  src: url('/fonts/TWKLausanne-700.otf') format('woff');
+  src: url('/fonts/TWKLausanne-700.otf') format('opentype');
   font-weight: 700;
   font-display: swap;
 }
@@ -155,6 +155,6 @@ body {
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-normal;
   }
 }

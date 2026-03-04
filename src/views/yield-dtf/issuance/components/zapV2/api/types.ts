@@ -48,6 +48,7 @@ export interface FolioFlags {
     weightControl: boolean
     priceControl: PriceControl
   }
+  bidsEnabled: boolean
 }
 
 export interface ZapDeployBody extends BaseZapDeployBody {

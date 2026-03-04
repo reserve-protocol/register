@@ -1,9 +1,9 @@
 import { t, Trans } from '@lingui/macro'
-import { Button, Modal } from 'components'
-import { ModalProps } from '@/components/old/modal'
+import { Button } from '@/components/ui/button'
+import { Separator } from '@/components/ui/separator'
+import { Modal, ModalProps } from 'components'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { useMemo, useState } from 'react'
-import { Box, Divider, Text } from 'theme-ui'
 import { CollateralPlugin } from 'types'
 import {
   addBackupCollateralAtom,
@@ -16,7 +16,7 @@ import CustomCollateral from './CustomCollateral'
 import PluginItem from './PluginItem'
 import collateralPlugins from 'utils/plugins'
 import { chainIdAtom } from 'state/atoms'
-import { SearchInput } from '@/components/old/input'
+import { SearchInput } from '@/components/ui/input'
 
 interface Props extends Omit<ModalProps, 'children'> {
   targetUnit?: string // filter by target unit
@@ -55,7 +55,7 @@ const getPlugins = (
 const CollateralModal = ({
   targetUnit,
   basket = 'primary',
-  onClose = () => {},
+  onClose = () => { },
   ...props
 }: Props) => {
   // Get already added collaterals for basket
@@ -122,65 +122,49 @@ const CollateralModal = ({
         placeholder="Search by collateral symbol or target name"
         autoFocus
         value={search}
-        onChange={setSearch}
-        backgroundColor="focusedBackground"
-        sx={{
-          '&:focus': {
-            backgroundColor: 'focusedBackground',
-          },
-          '&:hover': {
-            backgroundColor: 'focusedBackground',
-          },
-        }}
+        onChange={(e) => setSearch(e.target.value)}
+        inputClassName="h-14"
       />
-      <Divider mx={-4} mt={4} sx={{ borderColor: 'border' }} />
-      <Box
-        sx={{
-          maxHeight: ['calc(100% - 128px)', 370],
-          overflow: 'auto',
-          position: 'relative',
-        }}
-        mt={-2}
-        mb={-2}
-        pt={3}
-        mx={-4}
+      <Separator className="-mx-4 mt-4 border-border" />
+      <div
+        className="max-h-[calc(100%-128px)] sm:max-h-[370px] overflow-auto relative -mt-2 -mb-2 pt-3 -mx-4"
       >
-        <Box px={4}>
+        <div className="px-4">
           <CustomCollateral onAdd={handleAddCustom} />
-        </Box>
-        <Divider my={4} sx={{ borderColor: 'border' }} />
+        </div>
+        <Separator className="my-4 border-border" />
         {filteredCollaterals.map((plugin) => (
-          <Box key={plugin.address}>
+          <div key={plugin.address}>
             <PluginItem
-              px={4}
+              className="px-4"
               data={plugin}
               selected={plugin.custom}
               onCheck={handleToggle}
             />
-            <Divider my={3} sx={{ borderColor: 'border' }} />
-          </Box>
+            <Separator className="my-3 border-border" />
+          </div>
         ))}
         {!Object.keys(collaterals).length && (
-          <Box sx={{ textAlign: 'center' }} mb={5} mt={3}>
-            <Text variant="legend">
+          <div className="text-center mb-5 mt-3">
+            <span className="text-legend">
               <Trans>No plugins available</Trans>
-            </Text>
-          </Box>
+            </span>
+          </div>
         )}
-      </Box>
-      <Divider mx={-4} mb={4} sx={{ borderColor: 'darkBorder' }} />
+      </div>
+      <Separator className="-mx-4 mb-4 border-muted" />
       <Button
         onClick={handleSubmit}
         disabled={!Object.keys(selected).length}
-        sx={{ width: '100%' }}
+        className="w-full"
       >
-        <Text>
+        <span>
           {basket === 'primary' ? (
             <Trans>Add to primary basket</Trans>
           ) : (
             <Trans>Add to backup basket</Trans>
           )}
-        </Text>
+        </span>
       </Button>
     </Modal>
   )

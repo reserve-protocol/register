@@ -86,9 +86,7 @@ const TableHeader = ({
 const columns: ColumnDef<IndexDTFItem>[] = [
   {
     header: ({ column }) => (
-      <SorteableButton column={column} className="-ml-4">
-        Name
-      </SorteableButton>
+      <SorteableButton column={column}>Name</SorteableButton>
     ),
     accessorKey: 'name',
     cell: ({ row }) => {
@@ -96,8 +94,9 @@ const columns: ColumnDef<IndexDTFItem>[] = [
         <Link
           to={getFolioRoute(row.original.address, row.original.chainId)}
           className="flex gap-3 items-center"
+          onClick={(e) => e.stopPropagation()}
         >
-          <div className="relative">
+          <div className="relative flex-shrink-0">
             <TokenLogo src={row.original.brand?.icon || undefined} size="xl" />
             <ChainLogo
               chain={row.original.chainId}
@@ -205,7 +204,7 @@ const columns: ColumnDef<IndexDTFItem>[] = [
   // },
   {
     header: ({ column }) => (
-      <TableHeader className="text-right -mr-4">
+      <TableHeader className="text-right">
         <SorteableButton column={column}>Market Cap</SorteableButton>
       </TableHeader>
     ),
@@ -229,7 +228,8 @@ const IndexDTFTable = ({
 }) => {
   const navigate = useNavigate()
 
-  const handleRowClick = (row: IndexDTFItem) => {
+  const handleRowClick = (row: IndexDTFItem, event: React.MouseEvent) => {
+    event.stopPropagation()
     navigate(getFolioRoute(row.address, row.chainId))
   }
 

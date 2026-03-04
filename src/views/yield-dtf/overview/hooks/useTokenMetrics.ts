@@ -1,5 +1,5 @@
 import { gql } from 'graphql-request'
-import useQuery from 'hooks/useQuery'
+import useQuery from 'hooks/use-query'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { rTokenPriceAtom, rsrPriceAtom } from 'state/atoms'

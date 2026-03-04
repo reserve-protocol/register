@@ -11,6 +11,12 @@ import {
 import { SearchInput } from '@/components/ui/input'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
 import useTokenList from '@/hooks/use-token-list'
 import { useAssetPrice } from '@/hooks/useAssetPrices'
 import useTokensInfo from '@/hooks/useTokensInfo'
@@ -18,7 +24,7 @@ import { cn } from '@/lib/utils'
 import { chainIdAtom } from '@/state/atoms'
 import { Token } from '@/types'
 import { isAddress, shortenAddress } from '@/utils'
-import { DISCORD_INVITE, REGISTER_FEEDBACK } from '@/utils/constants'
+import { REGISTER_FEEDBACK, TELEGRAM_INVITE } from '@/utils/constants'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
@@ -39,6 +45,7 @@ import {
   searchTokenAtom,
   selectedTokensAtom,
 } from '../../atoms'
+import LiquidityConfigModal from './components/liquidity-config-modal'
 
 interface TokenButtonProps {
   variant: 'primary' | 'secondary'
@@ -92,25 +99,43 @@ const EvenDistributionButton = () => {
 
   if (inputType === 'unit') return null
 
-  return (
+  const disabled = !basket.length
+
+  const button = (
     <Button
       variant="accent"
       className="flex gap-2 text-base pl-3 pr-4 rounded-xl text-nowrap w-48 py-7 -mr-2 bg-muted/80"
       onClick={onEvenDistribution}
-      disabled={!basket.length}
+      disabled={disabled}
     >
       Even distribution
     </Button>
+  )
+
+  if (disabled) {
+    return button
+  }
+
+  return (
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>{button}</TooltipTrigger>
+        <TooltipContent className="max-w-xs">
+          <p>Distribute weights equally among all tokens in the basket.</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   )
 }
 
 const OpenButtonSecondary = () => {
   return (
-    <div className="flex items-center gap-4 mr-4">
+    <div className="flex items-center gap-4 mr-2">
       <div className="flex-1">
         <TokenButton variant="secondary" />
       </div>
       <EvenDistributionButton />
+      <LiquidityConfigModal />
     </div>
   )
 }
@@ -355,9 +380,9 @@ const TokenList = ({ showSelected = false }: TokenListProps) => {
               className="flex items-center gap-2"
               asChild
             >
-              <a href={DISCORD_INVITE}>
+              <a href={TELEGRAM_INVITE}>
                 <MessageSquare className="h-4 w-4" />
-                Message us on Discord
+                Message us on Telegram
               </a>
             </Button>
           </div>

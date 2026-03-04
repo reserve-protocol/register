@@ -238,6 +238,11 @@ export function formatToSignificantDigits(
       }).format(value)
 }
 
+export const formatUSD = (value: number): string => {
+  if (value > 0 && value < 0.01) return '< $0.01'
+  return `$${formatCurrency(value)}`
+}
+
 export const formatPercentage = (value: number, decimals = 2): string =>
   (value / 100).toLocaleString('en-US', {
     style: 'percent',
@@ -530,5 +535,24 @@ export function formatScientificNotation(value: number | string): string {
     }
     const cut = intPart.length + exponent
     return sign + intPart.slice(0, cut) + '.' + intPart.slice(cut) + fracPart
+  }
+}
+
+/**
+ * Format market cap value for display
+ * @param marketCap - Market cap value in USD
+ * @returns Formatted string (e.g., "1.2T", "456.7B", "89.1M")
+ */
+export const formatMarketCap = (marketCap: number): string => {
+  if (!marketCap || marketCap === 0) return '—'
+
+  if (marketCap >= 1e12) {
+    return `$${(marketCap / 1e12).toFixed(1)}T`
+  } else if (marketCap >= 1e9) {
+    return `$${(marketCap / 1e9).toFixed(1)}B`
+  } else if (marketCap >= 1e6) {
+    return `$${(marketCap / 1e6).toFixed(1)}M`
+  } else {
+    return `$${(marketCap / 1e3).toFixed(1)}K`
   }
 }

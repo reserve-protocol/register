@@ -25,7 +25,7 @@ const inputVariants = cva(
 
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement>,
-    VariantProps<typeof inputVariants> {
+  VariantProps<typeof inputVariants> {
   startAdornment?: JSX.Element
   endAdornment?: JSX.Element
 }
@@ -146,8 +146,8 @@ const SearchInput = React.forwardRef<
         type={type}
         className={cn(
           inputVariants({ variant }),
+          'pl-14 pr-0 h-16 text-md rounded-2xl bg-card',
           inputClassName,
-          'pl-14 pr-0 h-16 text-md rounded-2xl bg-card '
         )}
         ref={ref}
         {...props}

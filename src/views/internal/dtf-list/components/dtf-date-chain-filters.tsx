@@ -3,6 +3,7 @@ import {
   dateFilterAtom,
   chainFilterAtom,
   currentPageAtom,
+  searchFilterAtom,
 } from '../atoms'
 import {
   Select,
@@ -13,35 +14,54 @@ import {
 } from '@/components/ui/select'
 import { ChainId } from '@/utils/chains'
 import { Card } from '@/components/ui/card'
-import { Calendar, Globe } from 'lucide-react'
+import { Input } from '@/components/ui/input'
+import { Calendar, Globe, Search } from 'lucide-react'
 
 const DTFDateChainFilters = () => {
   const [dateFilter, setDateFilter] = useAtom(dateFilterAtom)
   const [chainFilter, setChainFilter] = useAtom(chainFilterAtom)
+  const [search, setSearch] = useAtom(searchFilterAtom)
   const setCurrentPage = useSetAtom(currentPageAtom)
-  
+
   const handleDateFilterChange = (value: string) => {
     setDateFilter(value as typeof dateFilter)
     setCurrentPage(0) // Reset to first page
   }
-  
+
   const handleChainFilterChange = (value: string) => {
     setChainFilter(value === 'all' ? 'all' : Number(value))
     setCurrentPage(0) // Reset to first page
   }
-  
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(e.target.value)
+    setCurrentPage(0) // Reset to first page
+  }
+
   return (
     <Card className="p-4">
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="space-y-2 sm:col-span-1">
+          <div className="flex items-center gap-2 text-sm font-semibold">
+            <Search className="h-4 w-4" />
+            <span>Search</span>
+          </div>
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder="Search by name or symbol"
+              value={search}
+              onChange={handleSearchChange}
+              className="pl-9"
+            />
+          </div>
+        </div>
         <div className="space-y-2">
           <div className="flex items-center gap-2 text-sm font-semibold">
             <Calendar className="h-4 w-4" />
             <span>Created</span>
           </div>
-          <Select
-            value={dateFilter}
-            onValueChange={handleDateFilterChange}
-          >
+          <Select value={dateFilter} onValueChange={handleDateFilterChange}>
             <SelectTrigger className="w-full">
               <SelectValue />
             </SelectTrigger>
@@ -54,7 +74,7 @@ const DTFDateChainFilters = () => {
             </SelectContent>
           </Select>
         </div>
-        
+
         <div className="space-y-2">
           <div className="flex items-center gap-2 text-sm font-semibold">
             <Globe className="h-4 w-4" />
@@ -69,7 +89,9 @@ const DTFDateChainFilters = () => {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All chains</SelectItem>
-              <SelectItem value={ChainId.Mainnet.toString()}>Ethereum</SelectItem>
+              <SelectItem value={ChainId.Mainnet.toString()}>
+                Ethereum
+              </SelectItem>
               <SelectItem value={ChainId.Base.toString()}>Base</SelectItem>
               <SelectItem value={ChainId.BSC.toString()}>BSC</SelectItem>
             </SelectContent>

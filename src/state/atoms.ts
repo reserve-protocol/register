@@ -12,3 +12,9 @@ export { default as rTokenBasketAtom } from './rtoken/atoms/rTokenBasketAtom'
 export { default as rTokenConfigurationAtom } from './rtoken/atoms/rTokenConfigurationAtom'
 export { default as rTokenContractsAtom } from './rtoken/atoms/rTokenContractsAtom'
 export { default as rTokenRevenueSplitAtom } from './rtoken/atoms/rTokenRevenueSplitAtom'
+
+// Index DTF icons used globally by token-logo component
+import { atom } from 'jotai'
+export const indexDTFIconsAtom = atom<Record<number, Record<string, string>>>(
+  {}
+)

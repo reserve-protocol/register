@@ -1,12 +1,14 @@
 import { Trans } from '@lingui/macro'
 import { useState } from 'react'
 import { ChevronDown, ChevronUp } from 'lucide-react'
-import { Box, BoxProps, Text } from 'theme-ui'
+import { cn } from '@/lib/utils'
 
-interface Props extends BoxProps {
+interface Props {
   count: number // number of changes
   title: string
   collapsed?: boolean
+  children?: React.ReactNode
+  className?: string
 }
 
 const PreviewBox = ({
@@ -14,40 +16,34 @@ const PreviewBox = ({
   title,
   children,
   collapsed = true,
-  ...props
+  className,
 }: Props) => {
   const [visible, setVisible] = useState(!collapsed)
 
   return (
-    <Box {...props}>
-      <Box
-        variant="layout.verticalAlign"
+    <div className={className}>
+      <div
+        className={cn(
+          'flex items-center cursor-pointer',
+          visible ? 'border-b border-border pb-4' : ''
+        )}
         onClick={() => setVisible(!visible)}
-        sx={{
-          borderBottom: visible ? '1px solid' : 'none',
-          borderColor: 'border',
-          cursor: 'pointer',
-        }}
-        pb={visible ? 3 : 0}
       >
-        <Box>
-          <Box variant="layout.verticalAlign">
-            <Text variant="strong" mr={2}>
-              {count}
-            </Text>
-            <Text variant="legend" sx={{ fontSize: 1 }}>
+        <div>
+          <div className="flex items-center">
+            <span className="font-semibold mr-2">{count}</span>
+            <span className="text-legend text-xs">
               <Trans>Change in:</Trans>
-            </Text>
-          </Box>
-
-          <Text variant="strong">{title}</Text>
-        </Box>
-        <Box ml="auto" variant="layout.verticalAlign">
+            </span>
+          </div>
+          <span className="font-semibold">{title}</span>
+        </div>
+        <div className="ml-auto flex items-center">
           {visible ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
-        </Box>
-      </Box>
+        </div>
+      </div>
       {visible && children}
-    </Box>
+    </div>
   )
 }
 

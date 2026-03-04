@@ -20,6 +20,7 @@ export type Metrics = {
   rsrLockedUSD: number
   rsrStakerAnnualizedRevenue: number
   rTokenAnnualizedRevenue: number
+  indexDTFAnnualizedRevenue: number
   tvlTimeseries: Series[]
 }
 

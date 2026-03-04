@@ -2,7 +2,6 @@ import { Trans, t } from '@lingui/macro'
 import { Input } from 'components'
 import Help from 'components/help'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { Box, Select, Text } from 'theme-ui'
 import { CHAIN_TAGS, supportedChainList } from 'utils/constants'
 import {
   chainFilterAtom,
@@ -15,17 +14,17 @@ const TokenSearchInput = () => {
   const setValue = useSetAtom(debouncedSearchInputAtom.debouncedValueAtom)
 
   return (
-    <Box ml={[0, 3]} sx={{ width: ['100%', 300] }}>
-      <Text ml={2} variant="legend">
+    <div className="ml-0 sm:ml-4 w-full sm:w-[300px]">
+      <span className="ml-2 text-legend">
         <Trans>Search</Trans>
-      </Text>
+      </span>
       <Input
-        mt={1}
-        onChange={setValue}
+        className="mt-1"
+        onChange={(e) => setValue(e.target.value)}
         value={value}
         placeholder={t`Input token name or symbol`}
       />
-    </Box>
+    </div>
   )
 }
 
@@ -37,14 +36,13 @@ const ChainSelectFilter = () => {
   }
 
   return (
-    <Box ml={[0, 5]} mt={[3, 0]} sx={{ width: ['100%', 'auto'] }}>
-      <Text ml={2} variant="legend">
+    <div className="ml-0 sm:ml-8 mt-4 sm:mt-0 w-full sm:w-auto">
+      <span className="ml-2 text-legend">
         <Trans>Network</Trans>
-      </Text>
-      <Select
-        mt={1}
+      </span>
+      <select
+        className="mt-1 w-full sm:w-[120px] p-3 border border-input rounded-lg bg-background outline-none"
         onChange={handleChange}
-        sx={{ width: ['100%', 120] }}
         value={value}
       >
         <option value={0}>All</option>
@@ -53,8 +51,8 @@ const ChainSelectFilter = () => {
             {CHAIN_TAGS[chain]}
           </option>
         ))}
-      </Select>
-    </Box>
+      </select>
+    </div>
   )
 }
 
@@ -66,38 +64,37 @@ const RecordLimitSelect = () => {
   }
 
   return (
-    <Box ml={[0, 5]} mt={[3, 0]} sx={{ display: ['none', 'block'] }}>
-      <Box variant="layout.verticalAlign">
-        <Text ml={2} mr={2} variant="legend">
+    <div className="hidden sm:block ml-0 sm:ml-8 mt-4 sm:mt-0">
+      <div className="flex items-center">
+        <span className="ml-2 mr-2 text-legend">
           <Trans>Record limit</Trans>
-        </Text>
+        </span>
         <Help content="Limit of records per chain" />
-      </Box>
+      </div>
 
-      <Select mt={1} onChange={handleChange} value={value} sx={{ width: 120 }}>
+      <select
+        className="mt-1 w-[120px] p-3 border border-input rounded-lg bg-background outline-none"
+        onChange={handleChange}
+        value={value}
+      >
         <option>10</option>
         <option>50</option>
         <option>100</option>
         <option>200</option>
         <option>500</option>
         <option>1000</option>
-      </Select>
-    </Box>
+      </select>
+    </div>
   )
 }
 
 const RTokenFilters = () => {
   return (
-    <Box
-      variant="layout.verticalAlign"
-      sx={{ justifyContent: ['center'], flexDirection: ['column', 'row'] }}
-      mb={5}
-      mx={[3, 0]}
-    >
+    <div className="flex items-center justify-center flex-col sm:flex-row mb-8 mx-4 sm:mx-0">
       <TokenSearchInput />
       <ChainSelectFilter />
       <RecordLimitSelect />
-    </Box>
+    </div>
   )
 }
 

@@ -5,6 +5,7 @@ import { Address } from 'viem'
 import { walletAtom } from '../atoms'
 import { UNIVERSAL_ASSETS, WORMHOLE_ASSETS } from '@/utils/constants'
 import { checkVersion } from '@/utils'
+import { Bridge, MarketCapData, NativeToken } from '@/types/token-mappings'
 
 // TODO: placeholders
 export interface IToken extends Token {
@@ -79,6 +80,25 @@ export type Transaction = {
   type: 'Mint' | 'Redeem' | 'Transfer'
 }
 
+export type ExposureToken = {
+  address: string
+  marketCap?: number
+  symbol: string
+  name?: string
+  weight: number
+  bridge?: Bridge
+  change?: number
+}
+
+export type ExposureGroup = {
+  native: NativeToken
+  tokens: ExposureToken[]
+  totalWeight: number
+  change?: number
+  hasNewlyAdded?: boolean
+  marketCap?: number
+}
+
 export const iTokenAddressAtom = atom<Address | undefined>(undefined)
 
 export const iTokenBasketAtom = atom<ITokenBasket | undefined>(undefined)
@@ -104,13 +124,9 @@ export const indexDTFBasketSharesAtom = atom<Record<string, string>>({})
 
 export const indexDTFAtom = atom<IndexDTF | undefined>(undefined)
 export const indexDTF7dChangeAtom = atom<number | undefined>(undefined)
-export const indexDTFBasketPerformanceChangeAtom = atom<
-  Record<string, number | null>
->({})
 
 export const performanceTimeRangeAtom = atom<TimeRange>('7d')
 export const indexDTFPerformanceLoadingAtom = atom<boolean>(false)
-export const indexDTFNewlyAddedAssetsAtom = atom<Record<string, boolean>>({})
 export const indexDTFMarketCapAtom = atom<number | undefined>(undefined)
 export const indexDTFBrandAtom = atom<IndexDTFBrand | undefined>(undefined)
 export const indexDTFTransactionsAtom = atom<Transaction[]>([])
@@ -131,6 +147,42 @@ export const indexDTFPriceAtom = atom((get) => {
 })
 
 export const indexDTFVersionAtom = atom('4.0.0')
+
+export const indexDTFExposureDataAtom = atom<ExposureGroup[] | null>(null)
+
+export const indexDTFExposureMapAtom = atom((get) => {
+  const exposureData = get(indexDTFExposureDataAtom)
+  if (!exposureData) return null
+
+  const map = new Map<string, ExposureGroup>()
+  exposureData.forEach((group) => {
+    if (group.native?.symbol) {
+      map.set(group.native.symbol, group)
+    } else {
+      group.tokens.forEach((token) => {
+        map.set(token.symbol, group)
+      })
+    }
+  })
+  return map
+})
+
+export const indexDTFExposureMCapMapAtom = atom((get) => {
+  const exposureData = get(indexDTFExposureDataAtom)
+  if (!exposureData) return {}
+
+  const map = {} as MarketCapData
+  exposureData.forEach((group) => {
+    if (group.native?.coingeckoId) {
+      map[group.native.coingeckoId] = group.marketCap || 0
+    }
+
+    group.tokens.forEach((token) => {
+      map[token.address.toLowerCase()] = token?.marketCap || 0
+    })
+  })
+  return map
+})
 
 // TODO: Retrieve from server, hardcoded for now
 const WHITELISTED_ADDRESSES = [
@@ -183,11 +235,14 @@ export const isHybridDTFAtom = atom((get) => {
   const dtf = get(indexDTFAtom)
 
   return (
-    dtf?.id.toLowerCase() === '0x4da9a0f397db1397902070f93a4d6ddbc0e0e6e8' ||
+    dtf?.id.toLowerCase() === '0x4da9a0f397db1397902070f93a4d6ddbc0e0e6e8' || // LCAP
+    dtf?.id.toLowerCase() === '0xe00cfa595841fb331105b93c19827797c925e3e4' || // Venionaire
     // TODO: remove this after testing
     dtf?.id.toLowerCase() === '0x1532536c22366dde6b5174ebe519578bccc6b5a3' ||
     dtf?.id.toLowerCase() === '0x045dc337c12a9a5d2c790d01554913b1a9e1044a' ||
     dtf?.id.toLowerCase() === '0xdb35c98b919053f77356e7d89b11069cf9185764' ||
-    dtf?.id.toLowerCase() === '0x2b3e7fec6995acc564fd587974fd29b94992ba3a'
+    dtf?.id.toLowerCase() === '0x2b3e7fec6995acc564fd587974fd29b94992ba3a' ||
+    dtf?.id.toLowerCase() === '0x384f00864a5d880a2ad79900ead6eb9ded2924d9' || 
+    dtf?.id.toLowerCase() === '0x92d7e020ab1cc45eaf744a5fe5954734fcd07119'
   )
 })

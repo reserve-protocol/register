@@ -20,14 +20,15 @@ const calculatePercentageChange = (
   wrap: boolean = false,
   range: string = '7d'
 ) => {
-  if (performance.length === 0) {
+  if (performance.length < 2) {
     return <span className="text-legend">No data</span>
   }
   const firstValue = performance[0][dataType]
-  const lastValue = performance[performance.length - 1][dataType]
+  // Don't use the last value (added manually) to match the performance of the discover page
+  const penultimateValue = performance[performance.length - 2][dataType]
 
   const percentageChange =
-    firstValue === 0 ? lastValue : ((lastValue - firstValue) / firstValue) * 100
+    firstValue === 0 ? penultimateValue : ((penultimateValue - firstValue) / firstValue) * 100
 
   return (
     <div

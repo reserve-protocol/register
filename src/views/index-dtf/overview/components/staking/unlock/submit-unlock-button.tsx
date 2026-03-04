@@ -1,10 +1,11 @@
 import dtfIndexStakingVault from '@/abis/dtf-index-staking-vault'
-import TransactionButton from '@/components/old/button/TransactionButton'
+import TransactionButton from '@/components/ui/transaction-button'
 import { walletAtom } from '@/state/atoms'
-import { portfolioSidebarOpenAtom } from '@/views/portfolio/atoms'
+import { useQueryClient } from '@tanstack/react-query'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
 import { useEffect, useState } from 'react'
+import { toast } from 'sonner'
 import { parseUnits } from 'viem'
 import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
 import {
@@ -23,8 +24,8 @@ const SubmitUnlockButton = () => {
   const amountToUnlock = parseUnits(input, stToken?.token.decimals)
   const unlockDelay = useAtomValue(unlockDelayAtom)
   const resetInput = useResetAtom(stakingInputAtom)
-  const setPortfolioSidebarOpen = useSetAtom(portfolioSidebarOpenAtom)
   const setStakingSidebarOpen = useSetAtom(stakingSidebarOpenAtom)
+  const queryClient = useQueryClient()
   const chainId = stToken?.chainId
   const [isProcessing, setIsProcessing] = useState(false)
 
@@ -61,13 +62,14 @@ const SubmitUnlockButton = () => {
       const timer = setTimeout(() => {
         resetInput()
         setStakingSidebarOpen(false)
-        setPortfolioSidebarOpen(true)
+        toast.success('Unlock initiated successfully', { duration: 8000 })
+        queryClient.invalidateQueries({ queryKey: ['portfolio'] })
         setIsProcessing(false)
-      }, 10000) // 10 seconds delay
+      }, 10000)
 
       return () => clearTimeout(timer)
     }
-  }, [receipt, resetInput, setStakingSidebarOpen, setPortfolioSidebarOpen])
+  }, [receipt, resetInput, setStakingSidebarOpen, queryClient])
 
   return (
     <div>
@@ -91,7 +93,7 @@ const SubmitUnlockButton = () => {
             ? 'Transaction confirmed'
             : `Begin ${unlockDelay ? `${unlockDelay}-day` : ''} unlock delay`
         }
-        fullWidth
+        className="w-full"
         error={error || txError}
       />
     </div>

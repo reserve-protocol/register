@@ -1,13 +1,33 @@
-import { indexDTFAtom, indexDTFVersionAtom } from '@/state/dtf/atoms'
+import dtfIndexAbiV5 from '@/abis/dtf-index-abi'
+import { chainIdAtom } from '@/state/atoms'
+import {
+  indexDTFAtom,
+  indexDTFRebalanceControlAtom,
+  indexDTFVersionAtom,
+} from '@/state/dtf/atoms'
 import { shortenAddress } from '@/utils'
 import { t } from '@lingui/macro'
 import { useAtomValue } from 'jotai'
-import { Braces, DollarSign, Hash, Signature } from 'lucide-react'
+import { Braces, DollarSign, Hash, Signature, ToggleRight } from 'lucide-react'
+import { useReadContract } from 'wagmi'
 import { IconWrapper, InfoCard, InfoCardItem } from './settings-info-card'
 
 const BasicInfo = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
   const version = useAtomValue(indexDTFVersionAtom)
+  const rebalanceControl = useAtomValue(indexDTFRebalanceControlAtom)
+  const chainId = useAtomValue(chainIdAtom)
+  const isV5 = version.startsWith('5')
+
+  const { data: bidsEnabled } = useReadContract({
+    abi: dtfIndexAbiV5,
+    address: indexDTF?.id,
+    functionName: 'bidsEnabled',
+    chainId,
+    query: {
+      enabled: !!indexDTF?.id && isV5,
+    },
+  })
 
   return (
     <InfoCard title="Basics">
@@ -47,6 +67,20 @@ const BasicInfo = () => {
         icon={<IconWrapper Component={Hash} />}
         value={version || '1.0.0'}
       />
+      {rebalanceControl && (
+        <InfoCardItem
+          label={t`Weight Control`}
+          icon={<IconWrapper Component={ToggleRight} />}
+          value={rebalanceControl.weightControl ? 'Enabled' : 'Disabled'}
+        />
+      )}
+      {isV5 && bidsEnabled !== undefined && (
+        <InfoCardItem
+          label={t`Permissionless Bids`}
+          icon={<IconWrapper Component={ToggleRight} />}
+          value={bidsEnabled ? 'Enabled' : 'Disabled'}
+        />
+      )}
     </InfoCard>
   )
 }

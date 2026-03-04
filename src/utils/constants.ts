@@ -1,7 +1,9 @@
-import { Token, Trader } from 'types'
+import { AddressMap, Token, Trader } from 'types'
 import {
+  CMC20_ADDRESS,
   ETHPLUS_ADDRESS,
   EUSD_ADDRESS,
+  LCAP_ADDRESS,
   RGUSD_ADDRESS,
   RSR_ADDRESS,
   USD3_ADDRESS,
@@ -21,9 +23,10 @@ export const RESERVE_API = isStaging
   : 'https://api.reserve.org/'
 
 export const VERSION = '3.0.0'
-export const DISCORD_INVITE = 'https://discord.gg/reserveprotocol'
-export const PROTOCOL_DOCS = 'https://reserve.org/protocol/'
-export const INDEX_PROTOCOL_DOCS = `${PROTOCOL_DOCS}index_dtfs/`
+export const TELEGRAM_INVITE = 'https://t.me/reservecurrency'
+export const PROTOCOL_DOCS = 'https://docs.reserve.org/'
+export const INDEX_PROTOCOL_DOCS = `${PROTOCOL_DOCS}/core-components/index-dtfs`
+export const YIELD_PROTOCOL_DOCS = `${PROTOCOL_DOCS}/core-components/yield-dtfs`
 export const REGISTER_FEEDBACK = 'https://reserve.canny.io/register-app'
 export const RESERVE_BLOG = 'https://blog.reserve.org/'
 export const RESERVE_FORUM = 'https://forum.reserve.org/'
@@ -98,6 +101,10 @@ export const LP_PROJECTS: { [x: string]: { name: string; site: string } } = {
     name: 'Morpho',
     site: 'https://app.morpho.org/',
   },
+  'morpho-v1': {
+    name: 'Morpho',
+    site: 'https://app.morpho.org/',
+  },
   merkl: {
     name: 'Merkl',
     site: 'https://merkl.angle.money/',
@@ -121,6 +128,14 @@ export const LP_PROJECTS: { [x: string]: { name: string; site: string } } = {
   'origin-ether': {
     name: 'Origin',
     site: 'https://www.originprotocol.com/',
+  },
+  'ether.fi-staking': {
+    name: 'Ether.fi',
+    site: 'https://ether.fi/',
+  },
+  'lagoon': {
+    name: 'Lagoon',
+    site: 'https://lagoon.finance/',
   },
 }
 
@@ -199,6 +214,7 @@ export const ROUTES = Object.freeze({
   ISSUANCE: 'issuance',
   AUCTIONS: 'auctions',
   MANAGE: 'manage',
+  FACTSHEET: 'performance',
   DEPLOY: '/deploy',
   DEPLOY_YIELD: '/deploy/yield-dtf',
   DEPLOY_INDEX: '/deploy/index-dtf',
@@ -217,6 +233,9 @@ export const ROUTES = Object.freeze({
   BRIDGE: '/bridge',
   PORTFOLIO: '/portfolio',
   EARN: '/earn',
+  EARN_DEFI: '/earn/defi',
+  EARN_YIELD: '/earn/yield-dtf',
+  EARN_INDEX: '/earn/index-dtf',
   NOT_FOUND: '/404',
   EXPLORER: '/explorer',
   EXPLORER_TOKENS: '/explorer/tokens',
@@ -345,6 +364,24 @@ export const BRIDGE_RTOKEN_MAP = Object.entries(
   {} as Record<string, string>
 )
 
+const buildBridgeMap = (
+  ...addressMaps: AddressMap[]
+): Record<string, Array<{ address: Address; chain: number }>> => {
+  const result: Record<string, Array<{ address: Address; chain: number }>> = {}
+  for (const addressMap of addressMaps) {
+    const entries = Object.entries(addressMap).map(([chain, address]) => ({
+      address: address as Address,
+      chain: Number(chain),
+    }))
+    for (const { address } of entries) {
+      result[address.toLowerCase()] = entries
+    }
+  }
+  return result
+}
+
+export const BRIDGED_INDEX_DTFS = buildBridgeMap(CMC20_ADDRESS, LCAP_ADDRESS)
+
 for (const chain of supportedChainList) {
   LISTED_RTOKEN_ADDRESSES[chain] = [
     ...Object.keys(rtokens[chain] || {}).map((s) => s.toLowerCase()),
@@ -400,6 +437,7 @@ export const collateralDisplay: Record<string, string> = {
   wsgusdbc: 'Stargate Base USDbC',
   saethusdc: 'AAVE USDC V3',
   saethusdt: 'AAVE USDT V3',
+  saethrlusd: 'AAVE RLUSD V3',
   stkcvxpyusdusdc: 'Convex PYUSD/USDC',
   saethpyusd: 'AAVE PYUSD V3',
   sabasusdc: 'AAVE USDC V3',
@@ -427,6 +465,7 @@ export const collateralDisplay: Record<string, string> = {
   'wvamm-mog/weth': 'Aerodrome Mog/WETH LP',
   'wvamm-weth/aero': 'Aerodrome WETH/AERO LP',
   'wsamm-usdz/usdc': 'Aerodrome USDz/USDC LP',
+  weeth: 'Ether.fi Wrapped eETH',
 }
 
 export const RTOKEN_VAULT_STAKE: Record<

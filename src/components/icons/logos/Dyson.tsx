@@ -1,6 +1,8 @@
-import { Image, ImageProps } from 'theme-ui'
+interface DysonProps extends React.ImgHTMLAttributes<HTMLImageElement> {
+  width?: number | string
+}
 
-const Dyson = (props: ImageProps) => {
-  return <Image width={16} src="/imgs/dyson.png" {...props} />
+const Dyson = ({ width = 16, ...props }: DysonProps) => {
+  return <img width={width} src="/imgs/dyson.png" {...props} />
 }
 export default Dyson

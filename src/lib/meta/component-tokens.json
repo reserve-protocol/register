@@ -1,5 +1,20 @@
 [
   {
+    "id": "rlusd",
+    "tokenTicker": "RLUSD",
+    "name": "Ripple USD",
+    "addresses": {
+      "1": "0x8292Bb45bf1Ee4d140127049757C2E0fF06317eD"
+    },
+    "color": "#016AFF",
+    "rating": "A",
+    "website": "https://ripple.com/solutions/stablecoin/",
+    "description": "Ripple USD (RLUSD) is a stablecoin that is pegged to the US dollar. It is backed by the US dollar and is issued by Ripple.",
+    "logo": {
+      "url": "https://storage-logos.reserve.org/logos/rlusd.svg"
+    }
+  },
+  {
     "id": "oeth",
     "tokenTicker": "OETH",
     "name": "Origin Ether",
@@ -373,6 +388,21 @@
     "description": "The Electronic Dollar (eUSD) is a decentralized 1:1 asset-backed stablecoin built with Reserve Protocol, available on the Ethereum and MobileCoin blockchains. It sets itself apart from other stablecoins due to its decentralized, community-governed, and censorship-resistant nature.\n\n",
     "logo": {
       "url": "https://storage-logos.reserve.org/logos/b5f6398f0622--eUSD__1_.svg"
+    }
+  },
+  {
+    "id": "eeth",
+    "tokenTicker": "eETH",
+    "name": null,
+    "addresses": {
+      "1": "0x35fA164735182de50811E8e2E824cFb9B6118ac2"
+    },
+    "color": "#A95BF7",
+    "rating": null,
+    "website": "https://www.ether.fi/app/weeth",
+    "description": "Ether.fi's eETH is a decentralized, non-custodial liquid staking token that enables Ethereum holders to earn staking rewards while maintaining full liquidity and control over their assets.",
+    "logo": {
+      "url": "https://storage-logos.reserve.org/logos/eETH.svg"
     }
   }
 ]

@@ -4,12 +4,15 @@ import Arbitrum from './logos/Arbitrum'
 import Base from './logos/Base'
 import BSC from './logos/BSC'
 import Ethereum from './logos/Ethereum'
+import Ink from './logos/Ink'
+import { ink } from 'wagmi/chains'
 
 export const chainIcons: Record<number | string, any> = {
   [ChainId.Mainnet]: Ethereum,
   [ChainId.Base]: Base,
   [ChainId.Arbitrum]: Arbitrum,
   [ChainId.BSC]: BSC,
+  [ink.id]: Ink,
   Ethereum: Ethereum,
   Base: Base,
   Arbitrum: Arbitrum,

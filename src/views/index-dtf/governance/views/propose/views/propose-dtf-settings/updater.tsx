@@ -1,21 +1,29 @@
-import { indexDTFAtom, indexDTFRebalanceControlAtom } from '@/state/dtf/atoms'
+import dtfIndexAbiV5 from '@/abis/dtf-index-abi'
+import {
+  indexDTFAtom,
+  indexDTFRebalanceControlAtom,
+  indexDTFVersionAtom,
+} from '@/state/dtf/atoms'
 import { getPlatformFee } from '@/utils/constants'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { chainIdAtom } from '@/state/atoms'
 import { useEffect, useRef } from 'react'
 import { useFormContext, useWatch } from 'react-hook-form'
+import { useReadContract } from 'wagmi'
 import {
   feeRecipientsAtom,
   isProposalConfirmedAtom,
   proposalDescriptionAtom,
   removedBasketTokensAtom,
   selectedSectionAtom,
+  tokenNameChangeAtom,
   mandateChangeAtom,
   rolesChangesAtom,
   revenueDistributionChangesAtom,
   dtfRevenueChangesAtom,
   auctionLengthChangeAtom,
   weightControlChangeAtom,
+  bidsEnabledChangeAtom,
   governanceChangesAtom,
   isFormValidAtom,
   currentQuorumPercentageAtom,
@@ -27,12 +35,14 @@ const resetAtom = atom(null, (get, set) => {
   set(selectedSectionAtom, undefined)
   set(isProposalConfirmedAtom, false)
   set(proposalDescriptionAtom, undefined)
+  set(tokenNameChangeAtom, undefined)
   set(mandateChangeAtom, undefined)
   set(rolesChangesAtom, {})
   set(revenueDistributionChangesAtom, {})
   set(dtfRevenueChangesAtom, {})
   set(auctionLengthChangeAtom, undefined)
   set(weightControlChangeAtom, undefined)
+  set(bidsEnabledChangeAtom, undefined)
   set(governanceChangesAtom, {})
 })
 
@@ -40,10 +50,24 @@ const Updater = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
   const feeRecipients = useAtomValue(feeRecipientsAtom)
   const rebalanceControl = useAtomValue(indexDTFRebalanceControlAtom)
+  const version = useAtomValue(indexDTFVersionAtom)
   const chainId = useAtomValue(chainIdAtom)
+  const isV5 = version.startsWith('5')
+
+  // Read bidsEnabled from contract (v5+ only)
+  const { data: currentBidsEnabled } = useReadContract({
+    abi: dtfIndexAbiV5,
+    address: indexDTF?.id,
+    functionName: 'bidsEnabled',
+    chainId: indexDTF?.chainId,
+    query: {
+      enabled: !!indexDTF?.id && isV5,
+    },
+  })
   const reset = useSetAtom(resetAtom)
   const { reset: resetForm, watch, formState, control } = useFormContext()
   const governanceChanges = useAtomValue(governanceChangesAtom)
+  const tokenNameChange = useAtomValue(tokenNameChangeAtom)
   const mandateChange = useAtomValue(mandateChangeAtom)
   const rolesChanges = useAtomValue(rolesChangesAtom)
   const revenueDistributionChanges = useAtomValue(
@@ -52,10 +76,12 @@ const Updater = () => {
   const dtfRevenueChanges = useAtomValue(dtfRevenueChangesAtom)
   const auctionLengthChange = useAtomValue(auctionLengthChangeAtom)
   const weightControlChange = useAtomValue(weightControlChangeAtom)
+  const bidsEnabledChange = useAtomValue(bidsEnabledChangeAtom)
   const currentQuorumPercentage = useAtomValue(currentQuorumPercentageAtom)
   const isResettingForm = useRef(false)
 
   // Set atoms for changes
+  const setTokenNameChange = useSetAtom(tokenNameChangeAtom)
   const setMandateChange = useSetAtom(mandateChangeAtom)
   const setRolesChanges = useSetAtom(rolesChangesAtom)
   const setRevenueDistributionChanges = useSetAtom(
@@ -64,10 +90,12 @@ const Updater = () => {
   const setDtfRevenueChanges = useSetAtom(dtfRevenueChangesAtom)
   const setAuctionLengthChange = useSetAtom(auctionLengthChangeAtom)
   const setWeightControlChange = useSetAtom(weightControlChangeAtom)
+  const setBidsEnabledChange = useSetAtom(bidsEnabledChangeAtom)
   const setGovernanceChanges = useSetAtom(governanceChangesAtom)
   const setIsFormValid = useSetAtom(isFormValidAtom)
 
   // Watch form fields
+  const tokenName = watch('tokenName')
   const mandate = watch('mandate')
   const mintFee = watch('mintFee')
   const folioFee = watch('folioFee')
@@ -75,6 +103,7 @@ const Updater = () => {
   const deployerShare = watch('deployerShare')
   const auctionLength = watch('auctionLength')
   const weightControl = watch('weightControl')
+  const bidsEnabled = watch('bidsEnabled')
   const governanceVotingDelay = watch('governanceVotingDelay')
   const governanceVotingPeriod = watch('governanceVotingPeriod')
   const governanceVotingThreshold = watch('governanceVotingThreshold')
@@ -118,6 +147,10 @@ const Updater = () => {
       )
 
       resetForm({
+        tokenName:
+          tokenNameChange !== undefined
+            ? tokenNameChange
+            : indexDTF.token.name,
         mandate: mandateChange !== undefined ? mandateChange : indexDTF.mandate,
         governanceVoteLock: indexDTF.stToken?.id,
         mintFee:
@@ -149,6 +182,10 @@ const Updater = () => {
           weightControlChange !== undefined
             ? weightControlChange
             : rebalanceControl?.weightControl ?? true,
+        bidsEnabled:
+          bidsEnabledChange !== undefined
+            ? bidsEnabledChange
+            : currentBidsEnabled ?? true,
         // Apply governance changes if they exist, otherwise use current values
         governanceVotingDelay:
           governanceChanges.votingDelay !== undefined
@@ -189,7 +226,18 @@ const Updater = () => {
         isResettingForm.current = false
       }, 100)
     }
-  }, [indexDTF?.id, !!feeRecipients])
+  }, [indexDTF?.id, !!feeRecipients, currentBidsEnabled])
+
+  // Watch for token name changes (v5+ only)
+  useEffect(() => {
+    if (indexDTF && tokenName !== undefined && isV5) {
+      if (tokenName !== indexDTF.token.name) {
+        setTokenNameChange(tokenName)
+      } else {
+        setTokenNameChange(undefined)
+      }
+    }
+  }, [tokenName, indexDTF?.token.name, isV5])
 
   // Watch for mandate changes
   useEffect(() => {
@@ -363,6 +411,17 @@ const Updater = () => {
       }
     }
   }, [weightControl, rebalanceControl?.weightControl])
+
+  // Watch for bids enabled changes (v5+ only)
+  useEffect(() => {
+    if (isV5 && bidsEnabled !== undefined && currentBidsEnabled !== undefined) {
+      if (bidsEnabled !== currentBidsEnabled) {
+        setBidsEnabledChange(bidsEnabled)
+      } else {
+        setBidsEnabledChange(undefined)
+      }
+    }
+  }, [bidsEnabled, currentBidsEnabled, isV5])
 
   // Watch for governance changes
   useEffect(() => {

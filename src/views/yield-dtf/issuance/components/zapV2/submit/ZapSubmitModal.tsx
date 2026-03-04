@@ -1,9 +1,10 @@
-import { Button, Modal } from 'components'
+import { Button } from '@/components/ui/button'
+import { Modal } from 'components'
 import AsteriskIcon from 'components/icons/AsteriskIcon'
 import TokenLogo from 'components/icons/TokenLogo'
 import { useState } from 'react'
-import { X } from 'lucide-react'
-import { Box, Divider, Text } from 'theme-ui'
+import { cn } from '@/lib/utils'
+import { Separator } from '@/components/ui/separator'
 import { useZap } from '../context/ZapContext'
 import ZapInputUSD from '../input/ZapInputUSD'
 import ZapOutputUSD from '../output/ZapOutputUSD'
@@ -12,159 +13,80 @@ import ZapConfirm from './ZapConfirm'
 import { ZapTxProvider } from '../context/ZapTxContext'
 import Skeleton from 'react-loading-skeleton'
 import MintersModal from '../minters-modal'
-import { keyframes } from '@emotion/react'
 
 const ZapOverview = () => {
   const [collapsed, setCollapsed] = useState(true)
   const { tokenIn, tokenOut, amountIn, amountOut, loadingZap } = useZap()
 
   return (
-    <Box
-      px={4}
-      py={4}
-      pt={0}
-      sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}
-    >
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-        <Box variant="layout.verticalAlign" sx={{ gap: '12px' }}>
+    <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-6">
+        <div className="flex items-center gap-3">
           <TokenLogo symbol={tokenIn.symbol} width={24} />
-          <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-            <Text>You use:</Text>
-            <Text sx={{ fontSize: 26, fontWeight: 700 }}>
+          <div className="flex flex-col">
+            <span>You use:</span>
+            <span className="text-[26px] font-bold">
               {amountIn} {tokenIn.symbol}
-            </Text>
+            </span>
             <ZapInputUSD />
-          </Box>
-        </Box>
-        <Box variant="layout.verticalAlign" sx={{ gap: '12px' }}>
+          </div>
+        </div>
+        <div className="flex items-center gap-3">
           <TokenLogo symbol={tokenOut.symbol} width={24} />
-          <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-            <Text>You receive:</Text>
+          <div className="flex flex-col">
+            <span>You receive:</span>
             {loadingZap ? (
               <Skeleton width={300} height={35} />
             ) : (
-              <Text sx={{ fontSize: 26, fontWeight: 700 }}>
+              <span className="text-[26px] font-bold">
                 {amountOut} {tokenOut.symbol}
-              </Text>
+              </span>
             )}
 
             <ZapOutputUSD />
-          </Box>
-        </Box>
-      </Box>
-      <Box>
-        <Box variant="layout.verticalAlign">
-          <Divider
-            sx={{
-              flexGrow: 1,
-              borderStyle: 'dashed',
-              borderColor: 'darkBorder',
-              m: 0,
-            }}
-          />
-          <Button small variant="hover" onClick={() => setCollapsed((c) => !c)}>
-            <Box
-              variant="layout.verticalAlign"
-              sx={{
-                color: 'secondaryText',
-                minWidth: 92,
-                justifyContent: 'space-between',
-              }}
-            >
-              <Text mr="2">{collapsed ? 'Show more' : 'Show less'}</Text>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div className="flex items-center">
+          <Separator className="flex-1 border-dashed border-muted-foreground/30" />
+          <Button size="sm" variant="ghost" onClick={() => setCollapsed((c) => !c)}>
+            <span className="flex items-center text-muted-foreground min-w-[92px] justify-between">
+              <span className="mr-2">{collapsed ? 'Show more' : 'Show less'}</span>
               <AsteriskIcon />
-            </Box>
+            </span>
           </Button>
-          <Divider
-            sx={{
-              flexGrow: 1,
-              borderStyle: 'dashed',
-              borderColor: 'darkBorder',
-              m: 0,
-            }}
-          />
-        </Box>
-        <Box
-          sx={{
-            overflow: 'hidden',
-            maxHeight: collapsed ? '0px' : '1000px',
-            transition: collapsed
-              ? 'max-height 0.1s ease-in-out'
-              : 'max-height 0.4s ease-in-out',
-          }}
+          <Separator className="flex-1 border-dashed border-muted-foreground/30" />
+        </div>
+        <div
+          className={cn(
+            'overflow-hidden transition-[max-height]',
+            collapsed
+              ? 'max-h-0 duration-100 ease-in-out'
+              : 'max-h-[1000px] duration-400 ease-in-out'
+          )}
         >
           <ZapDetails hideGasCost />
-        </Box>
-      </Box>
+        </div>
+      </div>
       <ZapTxProvider>
         <ZapConfirm />
       </ZapTxProvider>
-    </Box>
+    </div>
   )
 }
 
-const slide = keyframes`
-  from {
-    left: 50%;
-  }
-  to {
-    left: calc(50% - 150px);
-  }
-`
-
 const ZapSubmitModal = () => {
-  const { setOpenSubmitModal, operation, refreshQuote, showEliteProgramModal } =
-    useZap()
+  const { setOpenSubmitModal, operation, refreshQuote } = useZap()
+
+  const handleClose = () => {
+    setOpenSubmitModal(false)
+    refreshQuote()
+  }
 
   return (
-    <Modal
-      p={0}
-      sx={{
-        position: 'relative',
-        border: '3px solid',
-        borderColor: 'borderFocused',
-        minWidth: 440,
-        overflow: 'visible',
-        animation: [
-          'none',
-          showEliteProgramModal ? `${slide} 0.5s forwards` : 'none',
-        ],
-      }}
-    >
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          overflow: 'hidden',
-          height: '100%',
-          backgroundColor: 'backgroundNested',
-          borderRadius: '8px',
-          boxShadow: [
-            'none',
-            showEliteProgramModal
-              ? '4px 5px 35px 4px rgba(0, 0, 0, 0.10)'
-              : 'none',
-          ],
-        }}
-      >
-        <Box variant="layout.verticalAlign" p={4} mb={[3, 0]} pt={4} pb={0}>
-          <Text variant="title" sx={{ fontWeight: 'bold' }}>
-            {`Review ${operation}`}
-          </Text>
-          <Button
-            variant="circle"
-            onClick={() => {
-              setOpenSubmitModal(false)
-              refreshQuote()
-            }}
-            sx={{ marginLeft: 'auto', backgroundColor: 'transparent' }}
-          >
-            <X />
-          </Button>
-        </Box>
-
-        <ZapOverview />
-      </Box>
+    <Modal title={`Review ${operation}`} onClose={handleClose} width={440}>
+      <ZapOverview />
       <MintersModal />
     </Modal>
   )

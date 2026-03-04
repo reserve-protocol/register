@@ -1,49 +1,29 @@
 import { Trans } from '@lingui/macro'
-import { SmallButton } from '@/components/old/button'
+import { Button } from '@/components/ui/button'
 import OverviewIcon from 'components/icons/OverviewIcon'
 import BackupBasket from 'components/rtoken-setup/basket/BackupBasket'
 import CollateralModal from 'components/rtoken-setup/basket/CollateralModal'
 import PrimaryBasket from 'components/rtoken-setup/basket/PrimaryBasket'
-import SectionWrapper from 'components/section-navigation/SectionWrapper'
+import SectionWrapper from '@/components/section-navigation/section-wrapper'
 import { useAtom, useAtomValue } from 'jotai'
 import { useState } from 'react'
-import { Box, BoxProps, Card, Text } from 'theme-ui'
+import { Card } from '@/components/ui/card'
 import { isNewBackupProposedAtom, isNewBasketProposedAtom } from '../atoms'
 import { rTokenAtom, rTokenConfigurationAtom } from 'state/atoms'
+import { cn } from '@/lib/utils'
 
-const Overlay = ({ children, ...props }: BoxProps) => (
-  <Box
-    sx={{
-      position: 'absolute',
-      left: 0,
-      top: 0,
-      bottom: 0,
-      right: 0,
-    }}
-    {...props}
-  >
-    <Card
-      sx={{
-        width: '100%',
-        height: '100%',
-        opacity: '90%',
-        backgroundColor: 'contentBackground',
-      }}
-    />
-    <Box
-      sx={{
-        position: 'absolute',
-        top: 100,
-        left: 0,
-        right: 0,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}
-    >
+interface OverlayProps {
+  children: React.ReactNode
+  className?: string
+}
+
+const Overlay = ({ children, className }: OverlayProps) => (
+  <div className={cn('absolute inset-0', className)}>
+    <div className="w-full h-full opacity-90 bg-card rounded-xl" />
+    <div className="absolute top-[100px] left-0 right-0 flex items-center justify-center">
       {children}
-    </Box>
-  </Box>
+    </div>
+  </div>
 )
 
 const PrimaryBasketWarning = ({ onPropose }: { onPropose(): void }) => {
@@ -55,12 +35,17 @@ const PrimaryBasketWarning = ({ onPropose }: { onPropose(): void }) => {
       : false
 
   return (
-    <Box sx={{ maxWidth: 340, textAlign: 'center' }}>
+    <div className="max-w-[340px] text-center">
       <OverviewIcon />
-      <Text variant="title" mb={2} color={warning ? 'danger' : 'text'}>
+      <span
+        className={cn(
+          'text-xl font-medium mb-2 block',
+          warning ? 'text-destructive' : 'text-foreground'
+        )}
+      >
         <Trans>Change primary basket</Trans>
-      </Text>
-      <Text as="p" variant={warning ? 'strong' : 'legend'}>
+      </span>
+      <p className={warning ? 'font-semibold' : 'text-legend'}>
         {warning ? (
           <Trans>
             The token supply is not enough for changing the primary basket
@@ -71,35 +56,36 @@ const PrimaryBasketWarning = ({ onPropose }: { onPropose(): void }) => {
             Propose how the basket should be distributed going forward.{' '}
           </Trans>
         )}
-      </Text>
-      <SmallButton
-        mt={3}
+      </p>
+      <Button
+        size="sm"
+        className="mt-6"
         onClick={onPropose}
-        variant={warning ? 'danger' : 'primary'}
+        variant={warning ? 'destructive' : 'default'}
       >
         <Trans>Propose new basket</Trans>
-      </SmallButton>
-    </Box>
+      </Button>
+    </div>
   )
 }
 
 const BackupBasketWarning = ({ onPropose }: { onPropose(): void }) => (
-  <Box sx={{ maxWidth: 340, textAlign: 'center' }}>
+  <div className="max-w-[340px] text-center">
     <OverviewIcon />
-    <Text variant="title" mb={2}>
+    <span className="text-xl font-medium mb-2 block">
       <Trans>Change backup basket</Trans>
-    </Text>
-    <Text as="p" variant="legend">
+    </span>
+    <p className="text-legend">
       <Trans>
         Backup configuration tracks primary basket changes to update its values.
         This may not be desired on a proposal, you can choose to propose new
         changes.
       </Trans>
-    </Text>
-    <SmallButton mt={3} onClick={onPropose}>
+    </p>
+    <Button size="sm" className="mt-6" onClick={onPropose}>
       <Trans>Propose new backup configuration</Trans>
-    </SmallButton>
-  </Box>
+    </Button>
+  </div>
 )
 
 const ProposalBasketSetup = ({ startIndex }: { startIndex: number }) => {
@@ -117,7 +103,7 @@ const ProposalBasketSetup = ({ startIndex }: { startIndex: number }) => {
   return (
     <>
       <SectionWrapper navigationIndex={startIndex}>
-        <Card p={4} sx={{ position: 'relative' }}>
+        <Card className="p-6 bg-secondary relative">
           <PrimaryBasket onAdd={setCollateralModal} />
           {!isNewBasketProposed && (
             <Overlay>
@@ -129,7 +115,7 @@ const ProposalBasketSetup = ({ startIndex }: { startIndex: number }) => {
         </Card>
       </SectionWrapper>
       <SectionWrapper navigationIndex={startIndex + 1}>
-        <Card mt={4} p={4} sx={{ position: 'relative', minHeight: 360 }}>
+        <Card className="mt-6 p-6 bg-secondary relative min-h-[360px]">
           <BackupBasket onAdd={setCollateralModal} />
           {!isNewBackupProposed && (
             <Overlay>

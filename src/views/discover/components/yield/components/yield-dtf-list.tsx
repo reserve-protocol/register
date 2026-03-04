@@ -66,7 +66,7 @@ const YieldDTfList = ({ stablecoins = false }: { stablecoins?: boolean }) => {
       <CompareFilters />
       {isLoading && !filteredList.length && <CompareSkeleton />}
       {filteredList.map((token) => (
-        <RTokenCard key={token.id} token={token} mb={[2, 4]} />
+        <RTokenCard key={token.id} token={token} />
       ))}
     </div>
   )

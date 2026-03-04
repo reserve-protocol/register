@@ -6,8 +6,9 @@ import {
   DrawerTrigger,
 } from '@/components/ui/drawer'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { useAtomValue, useSetAtom } from 'jotai'
+import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
+import { useEffect, useState } from 'react'
 import { SubmitHandler, useFormContext } from 'react-hook-form'
 import {
   basketDerivedSharesAtom,
@@ -16,14 +17,14 @@ import {
   deployedDTFAtom,
 } from '../../atoms'
 import { DeployInputs } from '../../form-fields'
-import { indexDeployFormDataAtom } from './atoms'
+import { indexDeployFormDataAtom, triggerDeployDrawerAtom } from './atoms'
 import ManualIndexDeploy from './manual'
 import { initialTokensAtom } from './manual/atoms'
 import SimpleIndexDeploy from './simple'
 import { inputAmountAtom } from './simple/atoms'
 import SuccessView from './success'
 import Ticker from '../../utils/ticker'
-import { TransactionButtonContainer } from '@/components/old/button/TransactionButton'
+import { TransactionButtonContainer } from '@/components/ui/transaction-button'
 import { Address } from 'viem'
 
 const Header = () => {
@@ -35,8 +36,8 @@ const Header = () => {
         Create the genesis token
       </h1>
       <p className="mt-1">
-        You need to mint at least ${form?.initialValue} worth of {form?.symbol}{' '}
-        in order to create your new Index DTF.
+        You need to mint at least $1 worth of {form?.symbol} in order to create
+        your new Index DTF.
       </p>
     </div>
   )
@@ -54,6 +55,9 @@ const ConfirmIndexDeploy = ({ isActive }: { isActive: boolean }) => {
   const derivedShares = useAtomValue(basketDerivedSharesAtom)
   const inputType = useAtomValue(basketInputTypeAtom)
 
+  const [drawerOpen, setDrawerOpen] = useState(false)
+  const [triggerDeploy, setTriggerDeploy] = useAtom(triggerDeployDrawerAtom)
+
   const processForm: SubmitHandler<DeployInputs> = (data) => {
     // Apply unit basket transformation regardless of DAO type
     const processedData = {
@@ -66,9 +70,9 @@ const ConfirmIndexDeploy = ({ isActive }: { isActive: boolean }) => {
             }))
           : data.tokensDistribution,
     }
-    
+
     setFormData(processedData)
-    
+
     if (data.governanceVoteLock) {
       setStTokenAddress(data.governanceVoteLock)
     }
@@ -78,11 +82,27 @@ const ConfirmIndexDeploy = ({ isActive }: { isActive: boolean }) => {
     handleSubmit(processForm)()
   }
 
+  // Open drawer programmatically (e.g. from NextButton in permissionless flow)
+  useEffect(() => {
+    if (triggerDeploy && isActive) {
+      submitForm()
+      setDrawerOpen(true)
+      setTriggerDeploy(false)
+    }
+  }, [triggerDeploy, isActive])
+
   return (
-    <Drawer>
+    <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
       <TransactionButtonContainer chain={formChainId}>
         <DrawerTrigger disabled={!isActive} asChild>
-          <Button className="w-full" disabled={!isActive} onClick={submitForm}>
+          <Button
+            className="w-full"
+            disabled={!isActive}
+            onClick={() => {
+              submitForm()
+              setDrawerOpen(true)
+            }}
+          >
             <span>
               Create <Ticker defaultSymbol="" />
             </span>

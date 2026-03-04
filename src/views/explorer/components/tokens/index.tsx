@@ -1,4 +1,5 @@
-import { Table, TableProps } from '@/components/old/table'
+import { Table, TableProps } from '@/components/ui/legacy-table'
+import { cn } from '@/lib/utils'
 import { Trans, t } from '@lingui/macro'
 import { Row, createColumnHelper } from '@tanstack/react-table'
 import BasketCubeIcon from 'components/icons/BasketCubeIcon'
@@ -11,8 +12,6 @@ import useRTokenLogo from 'hooks/useRTokenLogo'
 import useTokenList, { ListedToken } from 'hooks/useTokenList'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useMemo, useState } from 'react'
-import { borderRadius } from 'theme'
-import { Box, Text } from 'theme-ui'
 import { formatCurrency, formatPercentage, formatUsdCurrencyCell } from 'utils'
 import { TARGET_UNITS, supportedChainList } from 'utils/constants'
 import ChainFilter from '../filters/ChainFilter'
@@ -24,14 +23,11 @@ const filtersAtom = atom<{ chains: string[]; targets: string[] }>({
 
 const renderSubComponent = ({ row }: { row: Row<ListedToken> }) => {
   return (
-    <Box
-      p={4}
-      sx={{ border: '2px solid', borderColor: 'text', borderRadius: 10 }}
-    >
+    <div className="p-6 border-2 border-foreground rounded-[10px]">
       <pre style={{ fontSize: '10px' }}>
         <code>{JSON.stringify(row.original, null, 2)}</code>
       </pre>
-    </Box>
+    </div>
   )
 }
 
@@ -66,38 +62,22 @@ const TargetFilter = () => {
   }
 
   return (
-    <Box
-      sx={{ borderRadius: borderRadius.inputs, background: 'inputBackground' }}
-      variant="layout.verticalAlign"
-      ml={2}
-      mr={1}
-      p={'2px'}
-    >
+    <div className="flex items-center rounded-lg bg-input ml-2 mr-1 p-[2px]">
       {options.map(({ text, icon }, index) => (
-        <Box
+        <div
           key={text}
           role="button"
-          sx={{
-            cursor: 'pointer',
-            backgroundColor:
-              index === selected ? 'backgroundNested' : 'transparent',
-            width: ['40px', 'auto'],
-            height: '32px',
-            borderRadius: borderRadius.inner,
-            justifyContent: 'center',
-          }}
-          variant="layout.verticalAlign"
-          py={1}
-          px={2}
+          className={cn(
+            'flex items-center justify-center cursor-pointer w-10 md:w-auto h-8 rounded-md py-1 px-2',
+            index === selected ? 'bg-background' : 'bg-transparent'
+          )}
           onClick={() => handleSelect(index)}
         >
           {icon}{' '}
-          <Text ml="2" sx={{ display: ['none', 'block'] }}>
-            {text}
-          </Text>
-        </Box>
+          <span className="ml-2 hidden md:block">{text}</span>
+        </div>
       ))}
-    </Box>
+    </div>
   )
 }
 
@@ -109,14 +89,14 @@ const Filters = () => {
   }
 
   return (
-    <Box variant="layout.verticalAlign" ml="1" sx={{ alignItems: 'flex-end' }}>
+    <div className="flex items-center ml-1">
       <ChainFilter
         selected={filters.chains}
         onChange={(selected) => handleChange('chains', selected)}
-        mr={3}
+        className="mr-4"
       />
       <TargetFilter />
-    </Box>
+    </div>
   )
 }
 
@@ -191,28 +171,9 @@ const ExploreTokens = (props: Partial<TableProps>) => {
       columnHelper.accessor('targetUnits', {
         header: t`Target(s)`,
         cell: (data) => {
-          return (
-            <Text
-              sx={{
-                width: '74px',
-                display: 'block',
-              }}
-            >
-              {data.getValue()}
-            </Text>
-          )
+          return <span className="w-[74px] block overflow-clip">{data.getValue()}</span>
         },
       }),
-      // columnHelper.accessor('id', {
-      //   header: '',
-      //   cell: ({ row }) => {
-      //     return row.getIsExpanded() ? (
-      //       <ChevronUp size={16} />
-      //     ) : (
-      //       <ChevronDown size={16} />
-      //     )
-      //   },
-      // }),
     ],
     []
   )
@@ -222,31 +183,26 @@ const ExploreTokens = (props: Partial<TableProps>) => {
   }
 
   return (
-    <Box my={[3, 5]} mx={[2, 4]}>
-      <Box
-        variant="layout.verticalAlign"
-        sx={{ flexWrap: 'wrap', gap: 2 }}
-        mb={5}
-      >
+    <div className="my-4 md:my-8 mx-2 md:mx-6">
+      <div className="flex items-center pl-5 flex-wrap gap-2 mb-8">
         <BasketCubeIcon fontSize={32} />
-        <Text mr="auto" as="h2" variant="title" sx={{ fontSize: 4 }}>
+        <h2 className="mr-auto text-xl font-medium">
           <Trans>Featured RTokens</Trans>
-        </Text>
+        </h2>
         <Filters />
-      </Box>
+      </div>
       <Table
         data={list}
         isLoading={isLoading && !list.length}
         columns={columns}
         onRowClick={handleClick}
         sorting
+        className="border-2 pt-0 border-secondary"
         sortBy={[{ id: 'supply', desc: true }]}
-        sx={{ borderRadius: '0 0 20px 20px' }}
-        compact
         renderSubComponent={renderSubComponent}
         {...props}
       />
-    </Box>
+    </div>
   )
 }
 

@@ -1,5 +1,6 @@
 import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
+import { HelmetProvider } from 'react-helmet-async'
 import {
   BrowserRouter as Router,
   useLocation,
@@ -7,18 +8,26 @@ import {
 } from 'react-router-dom'
 import ChainProvider from 'state/chain'
 import Updater from 'state/updater'
-import { ThemeUIProvider } from 'theme-ui'
 import { getTokenRoute } from 'utils'
 import AppRoutes from './app-routes'
 import Layout from './components/layout'
 import { Toaster } from './components/ui/sonner'
+import { TooltipProvider } from './components/ui/tooltip'
 import LanguageProvider from './i18n'
-import { theme } from './theme'
 import * as Sentry from '@sentry/react'
 
-mixpanel.init(import.meta.env.VITE_MIXPANEL_KEY || 'mixpanel_key', {
-  track_pageview: true,
-})
+// Deferred Mixpanel initialization to avoid blocking first render
+const useMixpanelInit = () => {
+  const initialized = useRef(false)
+  useEffect(() => {
+    if (!initialized.current) {
+      initialized.current = true
+      mixpanel.init(import.meta.env.VITE_MIXPANEL_KEY || 'mixpanel_key', {
+        track_pageview: true,
+      })
+    }
+  }, [])
+}
 
 // Support for old routes redirects
 const Redirects = () => {
@@ -46,17 +55,6 @@ const ScrollToTop = () => {
   }, [pathname])
 
   return null
-}
-
-const handleError = (error: Error) => {
-  if (
-    error.message.includes('Failed to fetch dynamically imported module') ||
-    error.message.includes('Importing a module script failed')
-  ) {
-    window.location.reload()
-  } else {
-    console.error(error)
-  }
 }
 
 function FallbackUI({
@@ -102,28 +100,34 @@ function FallbackUI({
  *
  * @returns {JSX.Element}
  */
-const App = () => (
-  <Sentry.ErrorBoundary
-    fallback={({ error, resetError }) => (
-      <FallbackUI error={error as Error} resetErrorBoundary={resetError} />
-    )}
-  >
-    <Router>
-      <Redirects />
-      <ScrollToTop />
-      <ThemeUIProvider theme={theme}>
-        <LanguageProvider>
-          <ChainProvider>
-            <Updater />
-            <Layout>
-              <Toaster />
-              <AppRoutes />
-            </Layout>
-          </ChainProvider>
-        </LanguageProvider>
-      </ThemeUIProvider>
-    </Router>
-  </Sentry.ErrorBoundary>
-)
+const App = () => {
+  useMixpanelInit()
+
+  return (
+    <HelmetProvider>
+      <Sentry.ErrorBoundary
+        fallback={({ error, resetError }) => (
+          <FallbackUI error={error as Error} resetErrorBoundary={resetError} />
+        )}
+      >
+        <Router>
+          <Redirects />
+          <ScrollToTop />
+          <LanguageProvider>
+            <TooltipProvider>
+              <ChainProvider>
+                <Updater />
+                <Layout>
+                  <Toaster />
+                  <AppRoutes />
+                </Layout>
+              </ChainProvider>
+            </TooltipProvider>
+          </LanguageProvider>
+        </Router>
+      </Sentry.ErrorBoundary>
+    </HelmetProvider>
+  )
+}
 
 export default App

@@ -1,4 +1,4 @@
-import dtfIndexAbi from '@/abis/dtf-index-abi'
+import dtfIndexAbi from '@/abis/dtf-index-abi-v1'
 import { useWatchReadContracts } from '@/hooks/useWatchReadContract'
 import { chainIdAtom, walletAtom } from '@/state/atoms'
 import { indexDTFAtom, indexDTFBasketAtom } from '@/state/dtf/atoms'

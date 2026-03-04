@@ -3,7 +3,7 @@ import { Token, TimeRange } from '@/types'
 import { BasketSkeleton } from './basket-skeleton'
 import { ExposureTableRows } from './exposure-table-rows'
 import { CollateralTableRows } from './collateral-table-rows'
-import type { ExposureGroup } from './exposure-table-rows'
+import { ExposureGroup } from '@/state/dtf/atoms'
 
 interface BasketTableBodyProps {
   filtered: Token[] | undefined

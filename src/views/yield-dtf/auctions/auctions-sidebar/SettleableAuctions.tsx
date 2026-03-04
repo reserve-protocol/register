@@ -1,6 +1,6 @@
 import { t } from '@lingui/macro'
 import FacadeAct from 'abis/FacadeAct'
-import { ExecuteButton } from '@/components/old/button/TransactionButton'
+import { ExecuteButton } from '@/components/ui/transaction-button'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { Check } from 'lucide-react'
 import { chainIdAtom } from 'state/atoms'
@@ -72,12 +72,12 @@ const SettleableAuctions = () => {
       icon={<Check size={24} />}
       loading={!settleable}
       subtitle={t`${settleable?.length ?? 0} auctions`}
-      mb={3}
+      className="mb-4"
       right={
         <ExecuteButton
           text={t`Settle all`}
-          small
-          ml="auto"
+          size="sm"
+          className="ml-auto"
           successLabel="Success!"
           call={call}
           onSuccess={handleSuccess}

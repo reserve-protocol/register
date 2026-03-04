@@ -6,13 +6,14 @@ import {
   indexDTFBrandAtom,
   isBrandManagerAtom,
 } from '@/state/dtf/atoms'
+import { ROUTES } from '@/utils/constants'
 import { useAtomValue } from 'jotai'
-import { BrickWall, ImagePlus } from 'lucide-react'
+import { BrickWall, FileChartColumn, ImagePlus } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { useTrackIndexDTFClick } from '../../hooks/useTrackIndexDTFPage'
 import IndexFactsheetOverview from './index-factsheet-overview'
 import IndexMetricsOverview from './index-metrics-overview'
 import IndexSocialsOverview from './index-socials-overview'
-import { useTrackIndexDTFClick } from '../../hooks/useTrackIndexDTFPage'
 
 const BrandManagerEditButton = () => {
   const isBrandManager = useAtomValue(isBrandManagerAtom)
@@ -24,10 +25,24 @@ const BrandManagerEditButton = () => {
   }
 
   return (
-    <Link to="../manage" onClick={() => trackClick('brand_manager')}>
-      <Button variant="outline" size="sm" className="gap-1 rounded-full ml-3">
+    <Link
+      to={`../${ROUTES.MANAGE}`}
+      onClick={() => trackClick('brand_manager')}
+    >
+      <Button variant="outline" size="sm" className="gap-1 rounded-full">
         <ImagePlus size={14} />
         Edit page
+      </Button>
+    </Link>
+  )
+}
+
+const FactsheetButton = () => {
+  return (
+    <Link to={`../${ROUTES.FACTSHEET}`}>
+      <Button variant="outline" size="sm" className="gap-1 rounded-full">
+        <FileChartColumn size={14} />
+        Performance
       </Button>
     </Link>
   )
@@ -47,6 +62,7 @@ const Header = () => {
       ) : (
         <div className="flex gap-1 items-center">
           <BrandManagerEditButton />
+          <FactsheetButton />
           <IndexSocialsOverview />
         </div>
       )}
@@ -85,7 +101,7 @@ const IndexAboutOverview = () => (
     <div className="p-4 sm:p-6">
       <Header />
       <Mandate />
-      <div className="mt-3 w-fit">
+      <div className="w-fit">
         <IndexFactsheetOverview />
       </div>
     </div>

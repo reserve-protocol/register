@@ -62,7 +62,20 @@ export const revenueSplitAtom = atomWithReset<RevenueSplit>({
 //
 
 export const isBasketValidAtom = atom((get) => {
-  return !!Object.keys(get(basketAtom)).length
+  const basket = get(basketAtom)
+
+  const basketNotEmpty = Object.keys(basket).length > 0
+  const distributionTotal = Object.values(basket).map(({ distribution }) =>
+    distribution.reduce((acc, curr) => acc + Number(curr), 0)
+  )
+  const distributionAddsUpTo100 = distributionTotal.every(
+    (total) => total === 100
+  )
+
+  const noZeroDistribution = Object.values(basket).every(({ distribution }) =>
+    distribution.every((d) => Number(d) > 0)
+  )
+  return basketNotEmpty && distributionAddsUpTo100 && noZeroDistribution
 })
 
 export const getCollateralFromBasket = (basket: Basket | BackupBasket) => {
@@ -266,8 +279,8 @@ export const isRevenueValidAtom = atom((get) => {
     const holders = BigInt(Math.round(+external.holders * 100))
     const stakers = BigInt(Math.round(+external.stakers * 100))
 
-    // Validate internal address allocation
-    if (holders + stakers !== 10000n) {
+    // Validate internal address allocation (allow small rounding differences)
+    if (holders + stakers < 9999n || holders + stakers > 10001n) {
       return false
     }
 
@@ -279,7 +292,8 @@ export const isRevenueValidAtom = atom((get) => {
 
   const sum = stakers + holders + total
 
-  if (sum !== 10000n) {
+  // Allow for small rounding differences (9999-10001)
+  if (sum < 9999n || sum > 10001n) {
     return false
   }
 
@@ -330,6 +344,7 @@ export const rTokenDefaultValues = {
   manifesto: '',
   ownerAddress: '',
   reweightable: false,
+  enableIssuancePremium: false,
   // backing params
   tradingDelay: '0',
   batchAuctionLength: '900',

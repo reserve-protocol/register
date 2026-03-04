@@ -1,5 +1,5 @@
 import dtfIndexGovernance from '@/abis/dtf-index-governance'
-import TransactionButton from '@/components/old/button/TransactionButton'
+import TransactionButton from '@/components/ui/transaction-button'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { PROPOSAL_STATES } from '@/utils/constants'
 import { t } from '@lingui/macro'
@@ -70,10 +70,9 @@ const ProposalQueue = () => {
 
   return (
     <TransactionButton
-      fullWidth
+      className="w-full ml-auto"
       loading={isMining || isLoading}
       mining={isMining}
-      ml="auto"
       disabled={!isReady}
       onClick={write}
       text={t`Queue proposal`}

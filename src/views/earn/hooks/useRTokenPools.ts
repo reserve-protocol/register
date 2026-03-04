@@ -1,12 +1,13 @@
+import { useQuery } from '@tanstack/react-query'
 import rtokens from '@reserve-protocol/rtokens'
 import { useAtom } from 'jotai'
 import { useEffect } from 'react'
 import { Pool, poolsAtom } from 'state/pools/atoms'
-import useSWRImmutable from 'swr/immutable'
 import { StringMap } from 'types'
 import { EUSD_ADDRESS, RSR_ADDRESS } from 'utils/addresses'
 import { ChainId } from 'utils/chains'
 import {
+  BRIDGED_INDEX_DTFS,
   BRIDGED_RTOKENS,
   LP_PROJECTS,
   NETWORKS,
@@ -177,16 +178,27 @@ const parsePoolSymbol = (pools: Omit<Pool, 'url'>[]): Omit<Pool, 'url'>[] => {
 
 const addPoolCMSMetadata = (
   pools: Omit<Pool, 'url'>[],
-  earnPools: EarnPool[]
+  earnPools: EarnPool[],
+  additionalDTFs: StringMap = {}
 ): Pool[] => {
   return pools.map((pool) => {
     const cmsPool = earnPools.find((item) => item.llamaId === pool.id)
-    const url =
+    let url =
       cmsPool?.url ||
       LP_PROJECTS[pool.project]?.site ||
       `https://defillama.com/yields/pool/${pool.id}`
 
     const symbol = cmsPool?.symbol || pool.symbol
+
+    // Adds query param to the first protocol related token for aerodrome pools
+    if (url == 'https://aerodrome.finance/') {
+      const alldtfs = { ...listedDTFs, ...additionalDTFs }
+      // find the dtf or rtoken related to the pool
+      const dtf = pool.underlyingTokens.find((token) => {
+        return !!alldtfs[token.address.toLowerCase()]
+      })
+      url += `liquidity?query=${dtf?.symbol}`
+    }
 
     return {
       ...pool,
@@ -219,13 +231,17 @@ const mapPools = (
     additionalDTFs
   )
   const parsedPools = parsePoolSymbol(enrichedPools)
-  const pools = addPoolCMSMetadata(parsedPools, earnPools)
+  const pools = addPoolCMSMetadata(parsedPools, earnPools, additionalDTFs)
 
   return pools
 }
 
 const useRTokenPools = () => {
-  const { data, isLoading } = useSWRImmutable('https://yields.llama.fi/pools')
+  const { data, isLoading } = useQuery({
+    queryKey: ['llama-pools'],
+    queryFn: () => fetch('https://yields.llama.fi/pools').then((res) => res.json()),
+    staleTime: 1000 * 60 * 60, // 1 hour - mimics useSWRImmutable behavior
+  })
   const earnPools = getEarnPools()
   const { data: indexDTFs } = useIndexDTFList()
 
@@ -243,7 +259,27 @@ const useRTokenPools = () => {
         return acc
       }, {} as StringMap)
 
-      const pools = mapPools(data.data as DefillamaPool[], earnPools, indexDTFsMap)
+      // Include bridged Index DTFs
+      Object.entries(BRIDGED_INDEX_DTFS).forEach(([address, bridges]) => {
+        const _token = indexDTFsMap[address]
+        if (_token) {
+          bridges.forEach((bridge) => {
+            const bridgeAddr = bridge.address.toLowerCase()
+            if (!indexDTFsMap[bridgeAddr]) {
+              indexDTFsMap[bridgeAddr] = {
+                ..._token,
+                address: bridge.address,
+              }
+            }
+          })
+        }
+      })
+
+      const pools = mapPools(
+        data.data as DefillamaPool[],
+        earnPools,
+        indexDTFsMap
+      )
       setPools(pools)
     }
   }, [data, earnPools, indexDTFs, setPools])

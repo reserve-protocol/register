@@ -25,14 +25,22 @@ import { cn } from '@/lib/utils'
 import { Fragment, useMemo, useState } from 'react'
 import React from 'react'
 import { Button } from './button'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from './select'
 import { ArrowDown, ArrowUp, ChevronLeft, ChevronRight } from 'lucide-react'
+import Spinner from './spinner'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
   expandable?: boolean // Disable expandable default behavior
   allowMultipleExpand?: boolean
-  onRowClick?(data: TData, row: Row<TData>): void
+  onRowClick?(data: TData, event: React.MouseEvent, row?: Row<TData>): void
   renderSubComponent?(props: { row: Row<TData> }): React.ReactElement
   className?: string
   subComponentClassName?: string
@@ -52,25 +60,55 @@ export const SorteableButton = ({
   return (
     <Button
       variant="ghost"
-      className={cn('font-light text-legend text-base rounded-2xl', className)}
+      className={cn(
+        'font-light text-legend focus:text-legend text-sm px-0 hover:bg-transparent rounded-xl',
+        className
+      )}
       onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
     >
       {children}
       {column.getIsSorted() === 'asc' ? (
-        <ArrowUp className="ml-2 h-4 w-4" />
+        <ArrowUp className="ml-2 h-3 w-3" />
       ) : column.getIsSorted() === 'desc' ? (
-        <ArrowDown className="ml-2 h-4 w-4" />
+        <ArrowDown className="ml-2 h-3 w-3" />
       ) : null}
     </Button>
   )
 }
 
-const Pagination = ({ table }: { table: TableType<any> }) => {
+const PAGE_SIZE_OPTIONS = [10, 25, 50, 100]
+
+const Pagination = ({
+  table,
+  showPageSizeSelector = false,
+}: {
+  table: TableType<any>
+  showPageSizeSelector?: boolean
+}) => {
   return (
     <div className="flex items-center justify-between md:py-4 ">
-      <div className="text-sm text-muted-foreground ml-6 opacity-0 md:opacity-100 ">
-        Showing {table.getState().pagination.pageSize} out of{' '}
-        {table.getFilteredRowModel().rows.length}
+      <div className="flex items-center gap-2 text-sm text-muted-foreground ml-6 opacity-0 md:opacity-100">
+        <span>
+          Showing {Math.min(table.getState().pagination.pageSize, table.getFilteredRowModel().rows.length)} out of{' '}
+          {table.getFilteredRowModel().rows.length}
+        </span>
+        {showPageSizeSelector && (
+          <Select
+            value={String(table.getState().pagination.pageSize)}
+            onValueChange={(value) => table.setPageSize(Number(value))}
+          >
+            <SelectTrigger className="h-8 w-[70px]">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {PAGE_SIZE_OPTIONS.map((size) => (
+                <SelectItem key={size} value={String(size)}>
+                  {size}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        )}
       </div>
       <div className=" flex items-center justify-center">
         <div className="flex items-center space-x-2">
@@ -154,7 +192,7 @@ interface DataTableComponentProps<TData, TValue>
   expandable?: boolean
   allowMultipleExpand?: boolean
   pagination?: boolean | { pageSize: number }
-  onRowClick?: (data: TData, row: Row<TData>) => void
+  showPageSizeSelector?: boolean
   hoverRowComponent?: (props: {
     row: Row<TData>
     children: React.ReactNode
@@ -164,6 +202,8 @@ interface DataTableComponentProps<TData, TValue>
   noResultsClassName?: string
   stickyHeader?: boolean
   initialSorting?: SortingState
+  loading?: boolean
+  loadingSkeleton?: React.ReactNode
 }
 
 const CustomTableRow = ({
@@ -177,10 +217,10 @@ const CustomTableRow = ({
   hoverRowComponent,
 }: {
   row: Row<any>
-  handleRowClick: (row: Row<any>) => void
+  handleRowClick: (row: Row<any>, event: React.MouseEvent) => void
   renderSubComponent?: (props: { row: Row<any> }) => React.ReactElement
   expandable: boolean
-  onRowClick?: (data: any, row: Row<any>) => void
+  onRowClick?: (data: any, event: React.MouseEvent, row?: Row<any>) => void
   expandedRows: boolean[]
   index: number
   hoverRowComponent?: (props: {
@@ -191,7 +231,7 @@ const CustomTableRow = ({
   const baseRow = (
     <TableRow
       data-state={row.getIsSelected() && 'selected'}
-      onClick={() => handleRowClick(row)}
+      onClick={(event) => handleRowClick(row, event)}
       className={cn(
         (!!renderSubComponent && expandable) || onRowClick
           ? 'cursor-pointer border-b-[0]'
@@ -226,6 +266,7 @@ function DataTable<TData, TValue>({
   expandable = true,
   allowMultipleExpand = true,
   pagination,
+  showPageSizeSelector = false,
   onRowClick,
   hoverRowComponent,
   renderSubComponent,
@@ -233,6 +274,8 @@ function DataTable<TData, TValue>({
   noResultsClassName,
   stickyHeader = false,
   initialSorting = [],
+  loading = false,
+  loadingSkeleton,
 }: DataTableComponentProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>(initialSorting)
   const [paginationState, setPaginationState] = React.useState<PaginationState>(
@@ -263,8 +306,8 @@ function DataTable<TData, TValue>({
     .getRowModel()
     .rows.map((row) => row.getIsExpanded())
 
-  const handleRowClick = (row: Row<TData>) => {
-    onRowClick && onRowClick(row.original, row)
+  const handleRowClick = (row: Row<TData>, event: React.MouseEvent) => {
+    onRowClick && onRowClick(row.original, event, row)
 
     if (!expandable || !renderSubComponent) return
 
@@ -287,15 +330,15 @@ function DataTable<TData, TValue>({
   }
 
   return (
-    <div className={cn('w-full', className)}>
-      <Table>
-        <TableHeader>
+    <div className={cn('w-full overflow-x-auto', className)}>
+      <Table className="text-sm md:text-base">
+        <TableHeader className="text-sm">
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow
               key={headerGroup.id}
               className={cn(
-                "hover:bg-transparent h-16",
-                stickyHeader && "sticky top-0 bg-card z-10"
+                'hover:bg-transparent h-16 text-legend',
+                stickyHeader && 'sticky top-0 bg-card z-10'
               )}
             >
               {headerGroup.headers.map((header) => {
@@ -351,20 +394,54 @@ function DataTable<TData, TValue>({
                 )}
               </Fragment>
             ))
+          ) : loading ? (
+            loadingSkeleton || <LoadingSkeleton columns={columns} />
           ) : (
-            <TableRow>
-              <TableCell
-                colSpan={columns.length}
-                className={cn('h-24 text-center', noResultsClassName)}
-              >
-                <div className="my-auto">No results.</div>
-              </TableCell>
-            </TableRow>
+            <NoResultsRow
+              columns={columns}
+              noResultsClassName={noResultsClassName}
+            />
           )}
         </TableBody>
       </Table>
-      {pagination && <Pagination table={table} />}
+      {pagination && <Pagination table={table} showPageSizeSelector={showPageSizeSelector} />}
     </div>
+  )
+}
+
+function LoadingSkeleton<TData, TValue>({
+  columns,
+}: {
+  columns: ColumnDef<TData, TValue>[]
+  noResultsClassName?: string
+}) {
+  return (
+    <TableRow>
+      <TableCell colSpan={columns.length} className="h-24 text-center">
+        <div className="flex flex-col items-center justify-center gap-2 text-primary">
+          <Spinner size={24} />
+        </div>
+      </TableCell>
+    </TableRow>
+  )
+}
+
+function NoResultsRow<TData, TValue>({
+  columns,
+  noResultsClassName,
+}: {
+  columns: ColumnDef<TData, TValue>[]
+  noResultsClassName?: string
+}) {
+  return (
+    <TableRow>
+      <TableCell
+        colSpan={columns.length}
+        className={cn('h-24 text-center', noResultsClassName)}
+      >
+        <div className="my-auto">No results.</div>
+      </TableCell>
+    </TableRow>
   )
 }
 

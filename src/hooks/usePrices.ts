@@ -4,7 +4,7 @@ import { AssetPrice, DTFPrice } from '@/types/prices'
 import { RESERVE_API } from '@/utils/constants'
 import { useReadContracts } from 'wagmi'
 import { useMemo } from 'react'
-import dtfIndexAbi from '@/abis/dtf-index-abi'
+import dtfIndexAbi from '@/abis/dtf-index-abi-v1'
 
 type FolioResult = {
   status: 'success' | 'failure'
@@ -91,14 +91,14 @@ export const usePrices = (assets: Address[], chainId?: number) => {
   const { data: erc20Prices } = useAssetPrices(erc20Rewards, chainId)
 
   const prices = useMemo(() => {
-    const result: Record<Address, number | undefined> = {}
+    const result: Record<string, number | undefined> = {}
 
     dtfPrices?.forEach((price) => {
-      result[price.address] = price.price
+      result[price.address.toLowerCase()] = price.price
     })
 
     erc20Prices?.forEach((price) => {
-      result[price.address] = price.price
+      result[price.address.toLowerCase()] = price.price
     })
 
     return result

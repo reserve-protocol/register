@@ -1,6 +1,6 @@
 import { Trans } from '@lingui/macro'
+import { Separator } from '@/components/ui/separator'
 import { useAtomValue } from 'jotai'
-import { Box, Text, Image, Divider } from 'theme-ui'
 import { auctionsOverviewAtom } from '../atoms'
 import ConfirmAuction from './ConfirmAuction'
 
@@ -12,32 +12,28 @@ const RecollaterizationAlert = () => {
   }
 
   return (
-    <Box
-      mt={4}
-      sx={{
-        border: '1px dashed',
-        borderRadius: '12px',
-        textAlign: 'center',
-        borderColor: 'warning',
-        backgroundColor: 'background',
-      }}
-      p={5}
-    >
-      <Image src="/svgs/asterisk.svg" height={24} width={24} mb={2} />
-      <Text variant="strong">
+    <div className="mt-4 border border-dashed border-warning rounded-xl text-center bg-background p-8">
+      <img
+        src="/svgs/asterisk.svg"
+        height={24}
+        width={24}
+        className="mb-2 mx-auto"
+        alt=""
+      />
+      <span className="font-semibold">
         <Trans>
           Unknown amount of recollateralization auctions left to run
         </Trans>
-      </Text>
-      <Text as="p" mt={2} sx={{ fontSize: 1 }} variant="legend">
+      </span>
+      <p className="mt-2 text-sm text-legend">
         <Trans>
           Wait to trigger revenue auctions until after recollateralization has
           finished.
         </Trans>
-      </Text>
-      <Divider mx={-4} my={4} />
+      </p>
+      <Separator className="-mx-4 my-4" />
       <ConfirmAuction />
-    </Box>
+    </div>
   )
 }
 export default RecollaterizationAlert

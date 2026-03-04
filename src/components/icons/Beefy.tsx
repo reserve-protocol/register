@@ -1,6 +1,8 @@
-import { Image, ImageProps } from 'theme-ui'
+interface BeefyProps extends React.ImgHTMLAttributes<HTMLImageElement> {
+  width?: number | string
+}
 
-const Beefy = (props: ImageProps) => {
-  return <Image width={16} src="/imgs/beefy.png" {...props} />
+const Beefy = ({ width = 16, ...props }: BeefyProps) => {
+  return <img width={width} src="/imgs/beefy.png" {...props} />
 }
 export default Beefy

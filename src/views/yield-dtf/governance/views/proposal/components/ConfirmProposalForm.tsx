@@ -4,7 +4,7 @@ import Field from 'components/field'
 import useRToken from 'hooks/useRToken'
 import { useSetAtom } from 'jotai'
 import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
-import { Box, Card, Text } from 'theme-ui'
+import { Card } from '@/components/ui/card'
 import { LISTED_RTOKEN_ADDRESSES } from 'utils/constants'
 import ProposalDetail from '@/views/yield-dtf/governance/components/ProposalDetailPreview'
 import { proposalDescriptionAtom } from '../atoms'
@@ -44,49 +44,36 @@ const ConfirmProposalForm = ({
   }, [title, description, rfc, showRFC, setProposalDescription])
 
   return (
-    <Box>
-      <Card
-        p={3}
-        mb={4}
-        sx={{
-          background: 'cardBackground',
-          border: '8px solid',
-          borderColor: 'contentBackground',
-        }}
-      >
-        <Field label={t`Proposal Title`} mb={3} strong required>
+    <div>
+      <Card className="p-4 mb-6 bg-secondary">
+        <Field label={t`Proposal Title`} className="mb-6" strong required>
           <Input
             value={title}
-            onChange={setTitle}
+            onChange={(e) => setTitle(e.target.value)}
             autoFocus
             placeholder={t`Input proposal title`}
           />
         </Field>
         {showRFC && (
-          <Field label={t`RFC`} mb={3} strong required>
+          <Field label={t`RFC`} className="mb-6" strong required>
             <Input
               value={rfc}
-              onChange={setRFC}
+              onChange={(e) => setRFC(e.target.value)}
               placeholder={t`Input RFC link`}
             />
           </Field>
         )}
 
-        <Text
-          variant="subtitle"
-          ml={3}
-          sx={{ fontSize: 1, fontWeight: 700, color: 'text' }}
-          mb={2}
-        >
+        <span className="ml-4 text-sm font-bold text-foreground mb-2 block">
           <Trans>Description</Trans>
-        </Text>
+        </span>
         <Suspense fallback={<Skeleton />}>
           <MDEditor value={description} onChange={setDescription} />
         </Suspense>
       </Card>
 
       <ProposalDetail addresses={addresses} calldatas={calldatas} />
-    </Box>
+    </div>
   )
 }
 

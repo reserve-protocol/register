@@ -1,5 +1,5 @@
 import { isAuctionLauncherAtom, isHybridDTFAtom } from '@/state/dtf/atoms'
-import { AuctionRound } from '@reserve-protocol/dtf-rebalance-lib'
+import { AuctionRound, WeightRange } from '@reserve-protocol/dtf-rebalance-lib'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useMemo } from 'react'
 import {
@@ -16,6 +16,7 @@ import LaunchAuctionsButton from './launch-auctions-button'
 import RebalanceActionOverview from './rebalance-action-overview'
 import { Button } from '@/components/ui/button'
 import { PencilRuler } from 'lucide-react'
+import { getRebalanceWeights } from '../utils/transforms'
 
 const ROUND_TITLE = {
   [AuctionRound.EJECT]: 'Remove Tokens',
@@ -29,10 +30,17 @@ const RoundDescription = () => {
   const tokenMap = useAtomValue(rebalanceTokenMapAtom)
 
   const description = useMemo(() => {
+    if (!params) return 'Buy/sell tokens to move closer to proposed weights.'
+
+    // Get weights using version-aware helper
+    const rebalanceWeights = getRebalanceWeights(
+      params.rebalance,
+      params.folioVersion
+    )
+
     const removal =
       metrics?.round === AuctionRound.EJECT &&
-      !!params &&
-      params?.rebalance.weights.find((w) => w.spot === 0n)
+      rebalanceWeights.find((w: WeightRange) => w.spot === 0n)
 
     if (!removal) return 'Buy/sell tokens to move closer to proposed weights.'
 

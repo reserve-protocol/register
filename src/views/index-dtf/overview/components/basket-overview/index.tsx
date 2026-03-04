@@ -1,26 +1,24 @@
 import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
 import { Table, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import useScrollTo from '@/hooks/useScrollTo'
 import { cn } from '@/lib/utils'
+import { performanceTimeRangeAtom } from '@/state/dtf/atoms'
 import { capitalize } from '@/utils/constants'
 import { ETHERSCAN_NAMES } from '@/utils/getExplorerLink'
-import { performanceTimeRangeAtom } from '@/state/dtf/atoms'
 import { useAtomValue } from 'jotai'
 import {
-  ArrowUp,
   ArrowDown,
+  ArrowUp,
   ArrowUpDown,
   PackageOpen,
   Target,
 } from 'lucide-react'
-import { useEffect, useState, useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { toast } from 'sonner'
 import { BasketTableBody } from './basket-table-body'
 import { useBasketOverviewData } from './use-basket-overview-data'
-import { Card } from '@/components/ui/card'
-import IndexTokenAddress from '../index-token-address'
-import { Separator } from '@/components/ui/separator'
 
 const MAX_TOKENS = 10
 
@@ -74,7 +72,6 @@ const TableHeaderWithSort = ({
 }
 
 const BasketTableHeader = ({
-  isBSC,
   isExposure,
   hasBridgedAssets,
   chainId,
@@ -82,7 +79,6 @@ const BasketTableHeader = ({
   sortConfig,
   onSort,
 }: {
-  isBSC: boolean
   isExposure: boolean
   hasBridgedAssets: boolean
   chainId: number
@@ -105,72 +101,60 @@ const BasketTableHeader = ({
     <TableHeader>
       <TableRow className="border-none text-legend bg-card sticky -top-[1px]">
         <TableHead className="text-left text-xs sm:text-base py-1">
-          {isBSC ? (
-            <TabsList className="h-9 rounded-[70px] p-0.5">
-              <TabsTrigger
-                value="exposure"
-                className="rounded-[60px] px-2 data-[state=active]:text-primary"
-                onClick={() => setActiveTab('exposure')}
-              >
-                <Target className="w-4 h-4 mr-0 sm:mr-1" />{' '}
-                <span className="hidden sm:block">Exposure</span>
-              </TabsTrigger>
-              <TabsTrigger
-                value="collateral"
-                className="rounded-[60px] px-2 data-[state=active]:text-primary"
-                onClick={() => setActiveTab('collateral')}
-              >
-                <PackageOpen className="w-4 h-4 mr-0 sm:mr-1" />{' '}
-                <span className="hidden sm:block">Collateral</span>
-              </TabsTrigger>
-            </TabsList>
-          ) : (
-            'Token'
-          )}
+          <TabsList className="h-9 rounded-[70px] p-0.5">
+            <TabsTrigger
+              value="exposure"
+              className="rounded-[60px] px-2 data-[state=active]:text-primary"
+              onClick={() => setActiveTab('exposure')}
+            >
+              <Target className="w-4 h-4 mr-0 sm:mr-1" />{' '}
+              <span className="hidden sm:block">Exposure</span>
+            </TabsTrigger>
+            <TabsTrigger
+              value="collateral"
+              className="rounded-[60px] px-2 data-[state=active]:text-primary"
+              onClick={() => setActiveTab('collateral')}
+            >
+              <PackageOpen className="w-4 h-4 mr-0 sm:mr-1" />{' '}
+              <span className="hidden sm:block">Collateral</span>
+            </TabsTrigger>
+          </TabsList>
         </TableHead>
-        {!isExposure && (
-          <TableHeaderWithSort
-            field="weight"
-            sortConfig={sortConfig}
-            onSort={onSort}
-            className="text-center px-1 sm:px-3"
-          >
-            Weight
-          </TableHeaderWithSort>
-        )}
-        {isExposure && (
-          <TableHead className="text-center hidden sm:table-cell">
-            <span className="text-xs sm:text-base">Market Cap</span>
-          </TableHead>
-        )}
+
+        <TableHeaderWithSort
+          field="weight"
+          sortConfig={sortConfig}
+          onSort={onSort}
+          className="text-center px-1 sm:px-3"
+        >
+          Weight
+        </TableHeaderWithSort>
+
         <TableHeaderWithSort
           field="performance"
           sortConfig={sortConfig}
           onSort={onSort}
           className="text-center px-1 sm:px-3"
         >
-          {periodLabel[timeRange]} Change
+          Price Change ({periodLabel[timeRange]})
         </TableHeaderWithSort>
-        {isExposure && (
-          <TableHeaderWithSort
-            field="weight"
-            sortConfig={sortConfig}
-            onSort={onSort}
-            className="text-right px-1 sm:px-3"
+
+        {isExposure ? (
+          <TableHead className="text-center hidden sm:table-cell">
+            <span className="text-xs sm:text-base">Market Cap</span>
+          </TableHead>
+        ) : (
+          <TableHead
+            className={cn(
+              'text-right text-xs sm:text-base px-1 sm:px-3',
+              isExposure && 'hidden'
+            )}
           >
-            Weight
-          </TableHeaderWithSort>
+            {`${hasBridgedAssets ? 'Bridge / ' : ''}${capitalize(
+              ETHERSCAN_NAMES[chainId]
+            )}`}
+          </TableHead>
         )}
-        <TableHead
-          className={cn(
-            'text-right text-xs sm:text-base px-1 sm:px-3',
-            isExposure && 'hidden'
-          )}
-        >
-          {`${hasBridgedAssets ? 'Bridge / ' : ''}${capitalize(
-            ETHERSCAN_NAMES[chainId]
-          )}`}
-        </TableHead>
       </TableRow>
     </TableHeader>
   )
@@ -179,7 +163,7 @@ const BasketTableHeader = ({
 const IndexBasketOverview = () => {
   const [viewAll, setViewAll] = useState(false)
   const [activeTab, setActiveTab] = useState<'exposure' | 'collateral'>(
-    'collateral'
+    'exposure'
   )
   // Default sort: highest weight first
   const [sortConfig, setSortConfig] = useState<SortConfig>({
@@ -201,19 +185,12 @@ const IndexBasketOverview = () => {
     hasBridgedAssets,
     chainId,
     marketCaps,
-    isBSC,
-  } = useBasketOverviewData(isExposure)
+  } = useBasketOverviewData()
 
-  // Update active tab when chain changes
   useEffect(() => {
-    if (isBSC) {
-      setActiveTab('exposure')
-    } else {
-      setActiveTab('collateral')
-    }
     // Reset to default sort when switching views
     setSortConfig({ field: 'weight', direction: 'desc' })
-  }, [isBSC])
+  }, [])
 
   // Handle scroll to basket on hash change
   useEffect(() => {
@@ -288,11 +265,7 @@ const IndexBasketOverview = () => {
         )
       } else {
         // performance
-        return compareValues(
-          aGroup.weightedChange,
-          bGroup.weightedChange,
-          sortConfig.direction
-        )
+        return compareValues(aGroup.change, bGroup.change, sortConfig.direction)
       }
     })
   }, [exposureGroups, isExposure, sortConfig])
@@ -302,7 +275,6 @@ const IndexBasketOverview = () => {
       <Tabs defaultValue="exposure">
         <Table>
           <BasketTableHeader
-            isBSC={isBSC}
             isExposure={isExposure}
             hasBridgedAssets={hasBridgedAssets || false}
             chainId={chainId}
@@ -351,6 +323,8 @@ const IndexBasketOverview = () => {
   )
 }
 
+// TODO: @luis - Very badly implemented claude code, this requires a refactor, will tackle this later.
+// TODO: @luis - Any significant functionality change in this component should consider the refactor.
 export default () => (
   <Card className="pt-3 pb-5 sm:pt-4 sm:pb-6">
     <div className="px-4 sm:px-6">

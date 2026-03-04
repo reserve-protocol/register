@@ -1,7 +1,7 @@
 import BridgeNavIcon from '@/components/icons/BridgeNavIcon'
 import { chainIdAtom } from '@/state/atoms'
-import { getNativeToken } from '@/utils/token-mappings'
-import { useState } from 'react'
+import { indexDTFExposureDataAtom } from '@/state/dtf/atoms'
+import { useState, useMemo } from 'react'
 import { useAtomValue } from 'jotai'
 import BridgeInfoDialog from './bridge-info-dialog'
 
@@ -14,14 +14,31 @@ interface BridgeLabelProps {
 const BridgeLabel = ({ address, tokenSymbol, tokenName }: BridgeLabelProps) => {
   const [open, setOpen] = useState(false)
   const chainId = useAtomValue(chainIdAtom)
+  const exposureData = useAtomValue(indexDTFExposureDataAtom)
 
-  // Get bridge info from the mapping
-  const bridgeInfo = getNativeToken(chainId, address)
+  const bridgeInfo = useMemo(() => {
+    if (!exposureData) return null
 
-  // If no bridge info found, don't show label
+    for (const group of exposureData) {
+      const token = group.tokens.find(
+        (t) => t.address.toLowerCase() === address.toLowerCase()
+      )
+      if (token?.bridge) {
+        return {
+          native: group.native,
+          bridge: token.bridge,
+          mapping: {
+            symbol: token.symbol,
+            wrappedVersion: token.bridge.wrappedVersion,
+          },
+        }
+      }
+    }
+    return null
+  }, [exposureData, address])
+
   if (!bridgeInfo) return null
 
-  // Don't show bridge label for wrapped tokens
   if (bridgeInfo.mapping.wrappedVersion) return null
 
   const { bridge } = bridgeInfo

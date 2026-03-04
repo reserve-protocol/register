@@ -73,15 +73,11 @@ const ChainFilter = () => {
       text: 'Base',
       filter: [ChainId.Base],
     },
-    ...(isDevMode
-      ? [
-          {
-            icon: <ChainLogo chain={ChainId.BSC} />,
-            text: 'Binance',
-            filter: [ChainId.BSC],
-          },
-        ]
-      : []),
+    {
+      icon: <ChainLogo chain={ChainId.BSC} />,
+      text: 'Binance',
+      filter: [ChainId.BSC],
+    },
   ]
 
   const handleSelect = (value: string) => {

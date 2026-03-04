@@ -1,15 +1,14 @@
 import { t } from '@lingui/macro'
-import { SmallButton } from '@/components/old/button'
+import { Button } from '@/components/ui/button'
 import TokenItem from 'components/token-item'
 import dayjs from 'dayjs'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useMemo } from 'react'
 import { ArrowUpRight } from 'lucide-react'
 import { chainIdAtom } from 'state/atoms'
-import { Box, Flex, Text } from 'theme-ui'
 import { formatCurrency, formatCurrencyCell } from 'utils'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
-import { auctionSidebarAtom, Trade, TradeKind } from '../atoms'
+import { auctionSidebarAtom, TradeKind } from '../atoms'
 import { ChainId } from 'utils/chains'
 import { createColumnHelper } from '@tanstack/react-table'
 import { DutchTrade } from '../dutch/atoms'
@@ -39,10 +38,10 @@ const useColumns = (ended = false) => {
       columnHelper.accessor('amount', {
         header: t`Amount`,
         cell: (data) => (
-          <Text>
+          <span>
             {formatCurrency(data.getValue())}{' '}
             {data.row.original.sellingTokenSymbol}
-          </Text>
+          </span>
         ),
       }),
       columnHelper.accessor('worstCasePrice', {
@@ -52,7 +51,7 @@ const useColumns = (ended = false) => {
       columnHelper.accessor('endAt', {
         header: ended ? t`Ended at` : t`Ends at`,
         cell: (data) => (
-          <Text>{dayjs(+data.getValue() * 1000).format('YYYY-M-D HH:mm')}</Text>
+          <span>{dayjs(+data.getValue() * 1000).format('YYYY-M-D HH:mm')}</span>
         ),
       }),
       columnHelper.accessor('id', {
@@ -73,7 +72,7 @@ const useColumns = (ended = false) => {
 
           const handleClick = () => {
             if (isDutch && !data.row.original.isSettled) {
-              setSidebar(true)
+              setSidebar()
             } else if (
               data.row.original.isSettled &&
               data.row.original.settleTxHash
@@ -98,14 +97,14 @@ const useColumns = (ended = false) => {
           }
 
           return (
-            <Flex sx={{ justifyContent: 'right' }}>
-              <SmallButton variant="muted" onClick={handleClick}>
-                <Box variant="layout.verticalAlign">
+            <div className="flex justify-end">
+              <Button size="sm" variant="ghost" onClick={handleClick}>
+                <div className="flex items-center">
                   {text}
                   <ArrowUpRight style={{ marginLeft: 10 }} size={14} />
-                </Box>
-              </SmallButton>
-            </Flex>
+                </div>
+              </Button>
+            </div>
           )
         },
       }),

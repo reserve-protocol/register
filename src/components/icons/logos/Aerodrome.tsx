@@ -1,6 +1,8 @@
-import { Image, ImageProps } from 'theme-ui'
+interface AerodromeProps extends React.ImgHTMLAttributes<HTMLImageElement> {
+  width?: number | string
+}
 
-const Aerodrome = (props: ImageProps) => {
-  return <Image width={16} src="/imgs/aerodrome.png" {...props} />
+const Aerodrome = ({ width = 16, ...props }: AerodromeProps) => {
+  return <img width={width} src="/imgs/aerodrome.png" {...props} />
 }
 export default Aerodrome

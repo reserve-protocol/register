@@ -1,4 +1,5 @@
-import { indexDTFAtom, indexDTFPriceAtom } from '@/state/dtf/atoms'
+import { TokenApprovalState } from '@/hooks/use-batch-approval'
+import { indexDTFAtom, indexDTFBasketAtom, indexDTFPriceAtom } from '@/state/dtf/atoms'
 import { safeParseEther } from '@/utils'
 import { atom } from 'jotai'
 import { _atomWithDebounce } from 'utils/atoms/atomWithDebounce'
@@ -97,4 +98,24 @@ export const usdAmountAtom = atom((get) => {
   }
 
   return price * Number(amount)
+})
+
+// Batch approval state map: address -> state
+export const batchApprovalStateAtom = atom<Record<string, TokenApprovalState>>(
+  {}
+)
+
+// Derived: tokens needing approval (allowance < required)
+export const tokensNeedingApprovalAtom = atom((get) => {
+  const allowanceMap = get(allowanceMapAtom)
+  const requiredAmounts = get(assetAmountsMapAtom)
+  const basket = get(indexDTFBasketAtom)
+
+  if (!basket) return []
+
+  return basket.filter((token) => {
+    const allowance = allowanceMap[token.address.toLowerCase()] ?? 0n
+    const required = requiredAmounts[token.address] ?? 0n
+    return required > 0n && allowance < required
+  })
 })

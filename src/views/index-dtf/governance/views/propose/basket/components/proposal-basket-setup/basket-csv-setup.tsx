@@ -39,6 +39,9 @@ const setNewBasketFromCsvAtom = atom(
     const newProposedShares = { ...proposedSharesMap }
     const newProposedUnits = { ...proposedUnitsMap }
 
+    // Track which addresses are present in the CSV
+    const csvAddresses = new Set<string>()
+
     // Skip header row and process each data row
     rows.slice(1).forEach((row) => {
       if (!row.trim()) return // Skip empty rows
@@ -69,6 +72,8 @@ const setNewBasketFromCsvAtom = atom(
         return
       }
 
+      csvAddresses.add(address)
+
       // Add token to basket if it doesn't exist
       if (!newProposedIndexBasket[address]) {
         newProposedIndexBasket[address] = {
@@ -88,6 +93,14 @@ const setNewBasketFromCsvAtom = atom(
       newProposedUnits[address] = normalizedValue
     })
 
+    // Set assets in current basket but not in CSV to 0
+    for (const address of Object.keys(proposedIndexBasket)) {
+      if (!csvAddresses.has(address)) {
+        newProposedShares[address] = '0'
+        newProposedUnits[address] = '0'
+      }
+    }
+
     // Update atoms with new values
     set(proposedIndexBasketAtom, newProposedIndexBasket)
     set(proposedSharesAtom, newProposedShares)
@@ -100,7 +113,7 @@ const BasketCsvSetup = () => {
   const isUnitBasket = useAtomValue(isUnitBasketAtom)
   const assets = useAtomValue(proposedIndexBasketAtom)
   const chainId = useAtomValue(chainIdAtom)
-  const { data: tokenList } = useTokenList(chainId)
+  const { data: tokenList } = useTokenList(chainId, { unfiltered: true })
   const setNewBasketFromCsv = useSetAtom(setNewBasketFromCsvAtom)
   const [error, setError] = useState<string | null>(null)
 

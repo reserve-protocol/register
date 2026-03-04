@@ -1,9 +1,13 @@
 import AlertIcon from 'components/icons/AlertIcon'
 import { useAtomValue } from 'jotai'
 import { isRTokenMintEnabled } from 'state/geolocation/atoms'
-import { Box, BoxProps, Text } from 'theme-ui'
+import { cn } from '@/lib/utils'
 
-const DisabledByGeolocationMessage = ({ sx, ...props }: BoxProps) => {
+interface Props {
+  className?: string
+}
+
+const DisabledByGeolocationMessage = ({ className }: Props) => {
   const isEnabled = useAtomValue(isRTokenMintEnabled)
 
   if (isEnabled.loading || isEnabled.value) {
@@ -11,14 +15,10 @@ const DisabledByGeolocationMessage = ({ sx, ...props }: BoxProps) => {
   }
 
   return (
-    <Box
-      {...props}
-      variant="layout.verticalAlign"
-      sx={{ ...sx, justifyContent: 'center', gap: 2 }}
-    >
+    <div className={cn('flex items-center justify-center gap-2', className)}>
       <AlertIcon />
-      <Text variant="warning">This feature is not available</Text>
-    </Box>
+      <span className="text-warning">This feature is not available</span>
+    </div>
   )
 }
 

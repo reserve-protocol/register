@@ -1,6 +1,5 @@
 import useRToken from 'hooks/useRToken'
 import { useSetAtom } from 'jotai'
-import { Box, Link, Text } from 'theme-ui'
 import { auctionSidebarAtom } from '../atoms'
 
 const OngoingAuctionsSkeleton = () => {
@@ -8,27 +7,19 @@ const OngoingAuctionsSkeleton = () => {
   const setSidebar = useSetAtom(auctionSidebarAtom)
 
   return (
-    <Box
-      sx={{
-        border: '1px dashed',
-        borderColor: 'border',
-        textAlign: 'center',
-        borderRadius: 16,
-      }}
-      p={6}
-    >
-      <Text variant="legend">
+    <div className="border border-dashed border-border text-center rounded-2xl p-6">
+      <span className="text-legend">
         No ongoing {rToken?.symbol ?? 'rtoken'}-related auctions. Check for
         available auctions/unrealized revenue{' '}
-        <Link
-          onClick={() => setSidebar(true)}
-          sx={{ textDecoration: 'underline', color: 'text' }}
+        <button
+          onClick={() => setSidebar()}
+          className="underline text-foreground hover:text-primary"
         >
           here
-        </Link>{' '}
+        </button>{' '}
         if you want to poke the protocol to start the next auction.
-      </Text>
-    </Box>
+      </span>
+    </div>
   )
 }
 

@@ -17,6 +17,8 @@ import BasicInput from '../../components/basic-input'
 import { Decimal } from '../../utils/decimals'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { cn } from '@/lib/utils'
+import LiquidityBadge from './components/liquidity-badge'
+import { isCheckingLiquidityAtom, tokenLiquidityMapAtom } from './atoms'
 
 const RemoveTokenButton = ({
   tokenIndex,
@@ -74,6 +76,8 @@ const TokenPreview = ({
   const form = useFormContext()
   const basketInputType = useAtomValue(basketInputTypeAtom)
   const basketDerivedShares = useAtomValue(basketDerivedSharesAtom)
+  const isCheckingLiquidity = useAtomValue(isCheckingLiquidityAtom)
+  const liquidityMap = useAtomValue(tokenLiquidityMapAtom)
 
   const [initialValue, tokenDistribution] = form.watch([
     `initialValue`,
@@ -90,6 +94,8 @@ const TokenPreview = ({
 
   const tokenUSD =
     tokenQty !== undefined && price ? tokenQty * price : undefined
+
+  const liquidity = liquidityMap[address.toLowerCase()]
 
   return (
     <label
@@ -139,6 +145,15 @@ const TokenPreview = ({
                 <span>Price not available</span>
               </div>
             )}
+            <span className="text-foreground text-[8px]">•</span>
+            <LiquidityBadge
+              level={liquidity?.liquidityLevel ?? 'unknown'}
+              priceImpact={liquidity?.priceImpact}
+              tokenSymbol={symbol}
+              chainId={chainId}
+              isLoading={isCheckingLiquidity}
+              error={liquidity?.error}
+            />
             <span className="text-foreground text-[8px]">•</span>
             <ExplorerAddress
               address={address}

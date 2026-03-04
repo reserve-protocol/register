@@ -1,4 +1,4 @@
-import dtfIndexAbiV4 from '@/abis/dtf-index-abi-v4'
+import dtfIndexAbi from '@/abis/dtf-index-abi'
 import { Button } from '@/components/ui/button'
 import { indexDTFAtom, isHybridDTFAtom } from '@/state/dtf/atoms'
 import { parseDuration } from '@/utils'
@@ -20,6 +20,7 @@ import {
 } from '../atoms'
 import useRebalanceParams from '../hooks/use-rebalance-params'
 import getRebalanceOpenAuction from '../utils/get-rebalance-open-auction'
+import { TransactionButtonContainer } from '@/components/ui/transaction'
 
 const auctionNumberAtom = atom((get) => {
   const auctions = get(rebalanceAuctionsAtom)
@@ -85,6 +86,7 @@ const LaunchAuctionsButton = () => {
           : rebalanceParams.initialWeights
 
       const [openAuctionArgs] = getRebalanceOpenAuction(
+        rebalanceParams.folioVersion,
         rebalance.rebalance.tokens,
         rebalanceParams.rebalance,
         rebalanceParams.supply,
@@ -102,7 +104,7 @@ const LaunchAuctionsButton = () => {
 
       writeContract({
         address: dtf?.id,
-        abi: dtfIndexAbiV4,
+        abi: dtfIndexAbi,
         functionName: 'openAuction',
         args: [
           openAuctionArgs.rebalanceNonce,
@@ -120,7 +122,12 @@ const LaunchAuctionsButton = () => {
   }
 
   return (
-    <div className="p-2">
+    <TransactionButtonContainer
+      chain={dtf?.chainId}
+      className="p-2"
+      connectButtonClassName="w-full"
+      switchChainButtonClassName="w-full"
+    >
       <Button
         className="rounded-xl py-6 w-full gap-2"
         disabled={!isValid || isPending || isAuctionOngoing || isLaunching}
@@ -142,7 +149,7 @@ const LaunchAuctionsButton = () => {
           </>
         )}
       </Button>
-    </div>
+    </TransactionButtonContainer>
   )
 }
 

@@ -1,18 +1,17 @@
-import { Box } from 'theme-ui'
-import InputOutputSeparator from '../InputOutputSeparator'
-import ActionOverview from './ActionOverview'
-import StakeButton from './StakeButton'
-import StakeInput from './StakeInput'
-import StakeOutput from './StakeOutput'
+import InputOutputSeparator from '../input-output-separator'
+import ActionOverview from './action-overview'
+import StakeButton from './stake-button'
+import StakeInput from './stake-input'
+import StakeOutput from './stake-output'
 
 const Stake = () => (
-  <Box p={4}>
+  <div className="p-4">
     <StakeInput />
     <InputOutputSeparator />
     <StakeOutput />
     <ActionOverview />
     <StakeButton />
-  </Box>
+  </div>
 )
 
 export default Stake

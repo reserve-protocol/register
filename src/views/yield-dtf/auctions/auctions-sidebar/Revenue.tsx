@@ -3,7 +3,7 @@ import EmptyBoxIcon from 'components/icons/EmptyBoxIcon'
 import { atom, useAtomValue } from 'jotai'
 import { JSXElementConstructor } from 'react'
 import Skeleton from 'react-loading-skeleton'
-import { Box, Flex, Text, useColorMode } from 'theme-ui'
+import { useTheme } from 'next-themes'
 import { auctionsOverviewAtom, auctionsToSettleAtom } from '../atoms'
 import AvailableRevenueAuctions from './AvailableRevenueAuctions'
 import MeltingBox from './MeltingBox'
@@ -15,8 +15,8 @@ import ClaimRewards from './claim-rewards'
 import StakingVaultRevenue from './StakingVaultRevenue'
 
 const Placeholder = () => {
-  const [colorMode] = useColorMode()
-  const isDarkMode = colorMode === 'dark'
+  const { resolvedTheme } = useTheme()
+  const isDarkMode = resolvedTheme === 'dark'
 
   return (
     <Skeleton
@@ -31,12 +31,12 @@ const Placeholder = () => {
 }
 
 const NoAvailableAuctions = () => (
-  <Flex my={5} sx={{ alignItems: 'center', flexDirection: 'column' }}>
+  <div className="flex flex-col items-center my-8">
     <EmptyBoxIcon />
-    <Text mt={2} sx={{ display: 'block' }} variant="legend">
+    <span className="mt-2 block text-legend">
       <Trans>No actionable revenue available</Trans>
-    </Text>
-  </Flex>
+    </span>
+  </div>
 )
 
 // Distribute components between Available/Unavailable and aggregate amounts
@@ -99,7 +99,7 @@ const ActionableRevenue = () => {
         text={t`Above minimum trade volume`}
         amount={availableAmount + emissions}
         help="Run and settle auctions."
-        mt={4}
+        className="mt-4"
         loading={isLoading}
       />
       {isLoading && <Placeholder />}
@@ -123,7 +123,7 @@ const UnavailableRevenue = () => {
         amount={unavailableAmount}
         muted
         help="Revenue auctions that are below the minimum trade or unavailable."
-        mt={4}
+        className="mt-4"
         loading={isLoading}
       />
       {isLoading && <Placeholder />}
@@ -135,13 +135,13 @@ const UnavailableRevenue = () => {
 }
 
 const Revenue = () => (
-  <Box px={[2, 4]} sx={{ overflow: 'auto' }}>
+  <div className="px-2 sm:px-4 overflow-auto">
     <RecollaterizationAlert />
     <ActionableRevenue />
     <UnavailableRevenue />
     <MeltingBox />
     <StakingVaultRevenue />
-  </Box>
+  </div>
 )
 
 export default Revenue

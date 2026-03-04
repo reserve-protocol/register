@@ -1,9 +1,10 @@
 import { cn } from '@/lib/utils'
 import { UNIVERSAL_ASSETS } from '@/utils/constants'
-import { indexDTFIconsAtom } from '@/views/portfolio/atoms'
+import { indexDTFIconsAtom } from '@/state/atoms'
 import { useAtom, useAtomValue } from 'jotai'
 import * as React from 'react'
 import { routeCacheAtom } from './atoms'
+import { TOKEN_LOGO_MAPPINGS } from './token-logo-mappings'
 
 type Sizes = 'sm' | 'md' | 'lg' | 'xl'
 
@@ -113,9 +114,20 @@ const TokenLogo = React.forwardRef<HTMLImageElement, Props>((props, ref) => {
         return
       }
 
+      // Check pre-computed mappings (build-time resolved logos)
+      if (symbol) {
+        const mappedUrl = TOKEN_LOGO_MAPPINGS[symbol.toLowerCase()]
+        if (mappedUrl) {
+          const url = await tryLoadImage(mappedUrl)
+          cacheUrl(url)
+          setCurrentSrc(url)
+          return
+        }
+      }
+
       if (address && symbol && UNIVERSAL_ASSETS.has(address.toLowerCase())) {
         try {
-          const universalUrl = `https://app.universal.xyz/wrapped-tokens/UA-${symbol.toUpperCase().substring(1)}.svg`
+          const universalUrl = `https://app2.universal.xyz/wrapped-tokens/UA-${symbol.toUpperCase().substring(1)}.svg`
           const url = await tryLoadImage(universalUrl)
           // cacheUrl(url) // don't cache universal logos because of the wrapper... solve later
           setCurrentSrc(url)
@@ -260,11 +272,15 @@ export const SVGS = new Set([
   'woeth',
   'susds',
   'saethusdt',
+  'saethrlusd',
   'cro',
   'xlm',
   'hbar',
   'hype',
   'sui',
+  'fxs',
+  'weeth',
+  'king',
 ])
 
 export const PNGS = new Set([
@@ -286,6 +302,9 @@ export const PNGS = new Set([
   'moomorpho-steakhouse-weth',
   'moomorpho-smokehouse-wsteth',
   'moomorpho-smokehouse-usdc',
+  'ssr',
+  'avgjoescrypto',
+  'eat'
 ])
 
 export const EXTERNAL_ASSETS: Record<string, string> = {
