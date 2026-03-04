@@ -63,7 +63,11 @@ function ChartTooltip({ payload, active, stacked }: any) {
 
   const categories = [...CATEGORIES]
     .reverse()
-    .map((c) => ({ label: c.label, color: c.color, value: point[c.key] as number }))
+    .map((c) => ({
+      label: c.label,
+      color: c.color,
+      value: point[c.key] as number,
+    }))
     .filter((c) => c.value > 0)
 
   return (
@@ -182,7 +186,7 @@ const PortfolioChart = () => {
   return (
     <div>
       {/* Top row: Value left, Tabs right */}
-      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-3 sm:mb-0">
         <div className="pl-2">
           <h1 className="text-[46px] leading-[50px] font-medium text-primary">
             ${formatCurrency(totalValue)}
@@ -277,9 +281,7 @@ const PortfolioChart = () => {
                 width={50}
                 tickMargin={4}
               />
-              <Tooltip
-                content={<ChartTooltip stacked={stacked} />}
-              />
+              <Tooltip content={<ChartTooltip stacked={stacked} />} />
               {CATEGORIES.map((cat) => (
                 <Area
                   key={cat.key}
@@ -296,9 +298,7 @@ const PortfolioChart = () => {
                     transition:
                       'fill-opacity 300ms ease, stroke-opacity 300ms ease',
                   }}
-                  activeDot={
-                    stacked ? { r: 3, fill: cat.color } : false
-                  }
+                  activeDot={stacked ? { r: 3, fill: cat.color } : false}
                 />
               ))}
               <Area
@@ -315,9 +315,7 @@ const PortfolioChart = () => {
                     'fill-opacity 300ms ease, stroke-opacity 300ms ease',
                 }}
                 activeDot={
-                  stacked
-                    ? false
-                    : { r: 4, fill: 'hsl(var(--primary))' }
+                  stacked ? false : { r: 4, fill: 'hsl(var(--primary))' }
                 }
               />
             </AreaChart>
