@@ -25,7 +25,15 @@ export const useBasketOverviewData = () => {
     (token) => basketShares[token.address] !== '0.00'
   )
 
-  const exposureGroups = useAtomValue(indexDTFExposureMapAtom)
+  const exposureGroupsRaw = useAtomValue(indexDTFExposureMapAtom)
+
+  const exposureGroups = exposureGroupsRaw
+    ? new Map(
+        [...exposureGroupsRaw.entries()].filter(
+          ([, group]) => group.totalWeight.toFixed(2) !== '0.00'
+        )
+      )
+    : exposureGroupsRaw
 
   const basketPerformanceChanges = useMemo(() => {
     return Object.fromEntries(
