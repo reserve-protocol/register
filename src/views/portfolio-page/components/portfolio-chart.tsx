@@ -48,20 +48,22 @@ const formatYAxis = (value: number) => {
   return `$${formatCurrency(value, 0)}`
 }
 
-const CATEGORY_LABELS: { key: keyof ChartDataPoint; label: string }[] = [
-  { key: 'indexDTFs', label: 'Index DTFs' },
-  { key: 'yieldDTFs', label: 'Yield DTFs' },
-  { key: 'stakedRSR', label: 'Staked RSR' },
-  { key: 'voteLocked', label: 'Vote-locked' },
-  { key: 'rsr', label: 'RSR' },
-]
+// Ordered lightest→darkest (bottom→top in stacked chart)
+const CATEGORIES = [
+  { key: 'rsr', label: 'RSR', color: 'hsl(var(--chart-5))' },
+  { key: 'voteLocked', label: 'Vote-locked', color: 'hsl(var(--chart-4))' },
+  { key: 'indexDTFs', label: 'Index DTFs', color: 'hsl(var(--chart-1))' },
+  { key: 'yieldDTFs', label: 'Yield DTFs', color: 'hsl(var(--chart-2))' },
+  { key: 'stakedRSR', label: 'Staked RSR', color: 'hsl(var(--chart-3))' },
+] as const
 
-function ChartTooltip({ payload, active }: any) {
+function ChartTooltip({ payload, active, stacked }: any) {
   if (!active || !payload?.[0]) return null
   const point = payload[0]?.payload as ChartDataPoint
 
-  const categories = CATEGORY_LABELS
-    .map((c) => ({ label: c.label, value: point[c.key] as number }))
+  const categories = [...CATEGORIES]
+    .reverse()
+    .map((c) => ({ label: c.label, color: c.color, value: point[c.key] as number }))
     .filter((c) => c.value > 0)
 
   return (
@@ -73,7 +75,15 @@ function ChartTooltip({ payload, active }: any) {
             key={cat.label}
             className="flex items-center justify-between gap-6"
           >
-            <span className="text-xs text-legend">{cat.label}</span>
+            <div className="flex items-center gap-1.5">
+              {stacked && (
+                <span
+                  className="w-2 h-2 rounded-full flex-shrink-0"
+                  style={{ backgroundColor: cat.color }}
+                />
+              )}
+              <span className="text-xs text-legend">{cat.label}</span>
+            </div>
             <span className="text-xs font-medium tabular-nums">
               ${formatCurrency(cat.value)}
             </span>
@@ -147,6 +157,7 @@ const PortfolioChart = () => {
   const address = useAtomValue(portfolioAddressAtom)
   const portfolio = useAtomValue(portfolioDataAtom)
   const [timeRange, setTimeRange] = useAtom(portfolioPageTimeRangeAtom)
+  const [stacked, setStacked] = useState(false)
   const { getChartData, isLoading } = useHistoricalPortfolio(address)
 
   const chartData = getChartData(timeRange)
@@ -201,7 +212,13 @@ const PortfolioChart = () => {
             )}
           </div>
         </div>
-        <TimeRangeTabs active={timeRange} onChange={setTimeRange} />
+        <TimeRangeTabs
+          active={timeRange}
+          onChange={(p) => {
+            setTimeRange(p)
+            setStacked(false)
+          }}
+        />
       </div>
 
       {/* Chart */}
@@ -212,61 +229,100 @@ const PortfolioChart = () => {
           No data available
         </div>
       ) : (
-        <ResponsiveContainer width="100%" height={414}>
-          <AreaChart
-            data={chartData}
-            margin={{ top: 8, right: 0, left: 0, bottom: 0 }}
-          >
-            <defs>
-              <linearGradient
-                id="portfolioGradient"
-                x1="0"
-                y1="0"
-                x2="0"
-                y2="1"
-              >
-                <stop
-                  offset="0%"
-                  stopColor="hsl(var(--primary))"
-                  stopOpacity={1}
+        <div
+          onMouseEnter={() => setStacked(true)}
+          onMouseLeave={() => setStacked(false)}
+          onClick={() => setStacked((s) => !s)}
+        >
+          <ResponsiveContainer width="100%" height={414}>
+            <AreaChart
+              data={chartData}
+              margin={{ top: 8, right: 0, left: 0, bottom: 0 }}
+            >
+              <defs>
+                <linearGradient
+                  id="portfolioGradient"
+                  x1="0"
+                  y1="0"
+                  x2="0"
+                  y2="1"
+                >
+                  <stop
+                    offset="0%"
+                    stopColor="hsl(var(--primary))"
+                    stopOpacity={1}
+                  />
+                  <stop
+                    offset="100%"
+                    stopColor="hsl(var(--primary))"
+                    stopOpacity={0.6}
+                  />
+                </linearGradient>
+              </defs>
+              <XAxis
+                dataKey="ts"
+                axisLine={false}
+                tickLine={false}
+                tick={{ fontSize: 11, fill: 'hsl(var(--foreground))' }}
+                tickFormatter={formatXAxis}
+                tickMargin={8}
+                minTickGap={60}
+              />
+              <YAxis
+                orientation="right"
+                axisLine={false}
+                tickLine={false}
+                tick={{ fontSize: 11, fill: 'hsl(var(--legend))' }}
+                tickFormatter={formatYAxis}
+                width={50}
+                tickMargin={4}
+              />
+              <Tooltip
+                content={<ChartTooltip stacked={stacked} />}
+              />
+              {CATEGORIES.map((cat) => (
+                <Area
+                  key={cat.key}
+                  type="monotone"
+                  dataKey={cat.key}
+                  stackId="1"
+                  stroke={cat.color}
+                  fill={cat.color}
+                  strokeWidth={0.5}
+                  isAnimationActive={false}
+                  style={{
+                    fillOpacity: stacked ? 0.5 : 0,
+                    strokeOpacity: stacked ? 1 : 0,
+                    transition:
+                      'fill-opacity 300ms ease, stroke-opacity 300ms ease',
+                  }}
+                  activeDot={
+                    stacked ? { r: 3, fill: cat.color } : false
+                  }
                 />
-                <stop
-                  offset="100%"
-                  stopColor="hsl(var(--primary))"
-                  stopOpacity={0.6}
-                />
-              </linearGradient>
-            </defs>
-            <XAxis
-              dataKey="ts"
-              axisLine={false}
-              tickLine={false}
-              tick={{ fontSize: 11, fill: 'hsl(var(--foreground))' }}
-              tickFormatter={formatXAxis}
-              tickMargin={8}
-              minTickGap={60}
-            />
-            <YAxis
-              orientation="right"
-              axisLine={false}
-              tickLine={false}
-              tick={{ fontSize: 11, fill: 'hsl(var(--legend))' }}
-              tickFormatter={formatYAxis}
-              width={50}
-              tickMargin={4}
-            />
-            <Tooltip content={<ChartTooltip />} />
-            <Area
-              type="monotone"
-              dataKey="value"
-              stroke="hsl(var(--primary))"
-              strokeWidth={0.5}
-              fill="url(#portfolioGradient)"
-              fillOpacity={1}
-              activeDot={{ r: 4, fill: 'hsl(var(--primary))' }}
-            />
-          </AreaChart>
-        </ResponsiveContainer>
+              ))}
+              <Area
+                type="monotone"
+                dataKey="value"
+                stroke="hsl(var(--primary))"
+                strokeWidth={0.5}
+                fill="url(#portfolioGradient)"
+                isAnimationActive={false}
+                style={{
+                  fillOpacity: stacked ? 0 : 1,
+                  strokeOpacity: stacked ? 0 : 1,
+                  transition:
+                    'fill-opacity 300ms ease, stroke-opacity 300ms ease',
+                }}
+                activeDot={
+                  stacked
+                    ? false
+                    : { r: 4, fill: 'hsl(var(--primary))' }
+                }
+              />
+            </AreaChart>
+          </ResponsiveContainer>
+        </div>
       )}
     </div>
   )
