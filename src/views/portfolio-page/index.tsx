@@ -24,7 +24,6 @@ import VoteLockedPositions from './components/vote-locked-positions'
 import PendingWithdrawals from './components/pending-withdrawals'
 import Transactions from './components/transactions'
 import VotingPower from './components/voting-power'
-import { useHistoricalPortfolio } from './hooks/use-historical-portfolio'
 import { usePortfolio } from './hooks/use-portfolio'
 
 const ConnectPrompt = () => (
@@ -90,9 +89,6 @@ const PortfolioPage = () => {
       setPortfolioAddress(undefined)
     }
   }, [data, address, setPortfolioData, setPortfolioAddress])
-
-  // Prefetch all historical periods
-  useHistoricalPortfolio(address)
 
   if (!address) return <ConnectPrompt />
   if (isLoading || !data)

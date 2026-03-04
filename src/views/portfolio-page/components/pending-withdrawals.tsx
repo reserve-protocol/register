@@ -29,39 +29,11 @@ import {
 } from 'wagmi'
 import {
   openStakingSidebarAtom,
-  portfolioStakedRSRAtom,
-  portfolioVoteLocksAtom,
+  PendingWithdrawalRow,
+  portfolioPendingWithdrawalsAtom,
 } from '../atoms'
-import { PortfolioStakedRSR, PortfolioVoteLock } from '../types'
 import { ExpandToggle, useExpandable } from './expand-toggle'
 import SectionHeader from './section-header'
-
-type PendingWithdrawalRow =
-  | {
-      source: 'stakedRSR'
-      endId: number
-      amount: string
-      availableAt: number
-      delay: number
-      value: number
-      chainId: number
-      stRSRAddress: Address
-      dtfAddress: Address
-      tokenSymbol: string
-    }
-  | {
-      source: 'voteLock'
-      lockId: string
-      amount: string
-      unlockTime: number
-      delay: number
-      value: number
-      chainId: number
-      stTokenAddress: Address
-      tokenSymbol: string
-      underlyingSymbol: string
-      underlyingAddress: Address
-    }
 
 const WithdrawButton = ({
   chainId,
@@ -380,54 +352,8 @@ const columns: ColumnDef<PendingWithdrawalRow, any>[] = [
   },
 ]
 
-const flattenPendingWithdrawals = (
-  stakedRSR: PortfolioStakedRSR[],
-  voteLocks: PortfolioVoteLock[]
-): PendingWithdrawalRow[] => {
-  const rows: PendingWithdrawalRow[] = []
-
-  for (const position of stakedRSR) {
-    for (const w of position.pendingWithdrawals || []) {
-      rows.push({
-        source: 'stakedRSR',
-        endId: w.endId,
-        amount: w.amount,
-        availableAt: w.availableAt,
-        delay: w.delay,
-        value: w.value,
-        chainId: position.chainId,
-        stRSRAddress: position.stRSRAddress,
-        dtfAddress: position.address,
-        tokenSymbol: `${position.symbol.toLowerCase()}RSR`,
-      })
-    }
-  }
-
-  for (const position of voteLocks) {
-    for (const lock of position.locks || []) {
-      rows.push({
-        source: 'voteLock',
-        lockId: lock.lockId,
-        amount: lock.amount,
-        unlockTime: lock.unlockTime,
-        delay: lock.delay,
-        value: lock.value,
-        chainId: position.chainId,
-        stTokenAddress: position.stTokenAddress,
-        tokenSymbol: position.symbol,
-        underlyingSymbol: position.underlying.symbol,
-        underlyingAddress: position.underlying.address,
-      })
-    }
-  }
-
-  return rows.sort((a, b) => (b.value || 0) - (a.value || 0))
-}
-
 const PendingWithdrawals = () => {
-  const stakedRSR = useAtomValue(portfolioStakedRSRAtom)
-  const voteLocks = useAtomValue(portfolioVoteLocksAtom)
-  const rows = flattenPendingWithdrawals(stakedRSR, voteLocks)
+  const rows = useAtomValue(portfolioPendingWithdrawalsAtom)
   const { displayData, expanded, toggle, hasMore, total } = useExpandable(rows)
 
   if (!rows.length) return null

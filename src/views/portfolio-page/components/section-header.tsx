@@ -1,5 +1,4 @@
-import { ComponentType } from 'react'
-import { ReactNode } from 'react'
+import { ComponentType, ReactNode } from 'react'
 
 const SectionHeader = ({
   title,

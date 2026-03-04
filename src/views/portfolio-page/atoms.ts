@@ -47,29 +47,14 @@ export const portfolioBreakdownAtom = atom((get) => {
 })
 
 export const portfolioChartBreakdownAtom = atom((get) => {
-  const portfolio = get(portfolioDataAtom)
-  if (!portfolio) return []
+  const breakdown = get(portfolioBreakdownAtom)
+  if (!breakdown) return []
   const categories = [
-    {
-      label: 'Index DTFs',
-      value: portfolio.indexDTFs.reduce((s, d) => s + (d.value || 0), 0),
-    },
-    {
-      label: 'Yield DTFs',
-      value: portfolio.yieldDTFs.reduce((s, d) => s + (d.value || 0), 0),
-    },
-    {
-      label: 'Staked RSR',
-      value: portfolio.stakedRSR.reduce((s, d) => s + (d.value || 0), 0),
-    },
-    {
-      label: 'Vote-locked',
-      value: portfolio.voteLocks.reduce((s, d) => s + (d.value || 0), 0),
-    },
-    {
-      label: 'RSR',
-      value: portfolio.rsrBalances.reduce((s, d) => s + (d.value || 0), 0),
-    },
+    { label: 'Index DTFs', value: breakdown.indexValue },
+    { label: 'Yield DTFs', value: breakdown.yieldValue },
+    { label: 'Staked RSR', value: breakdown.stakedValue },
+    { label: 'Vote-locked', value: breakdown.voteLockValue },
+    { label: 'RSR', value: breakdown.rsrValue },
   ].filter((c) => c.value > 0)
 
   const total = categories.reduce((s, c) => s + c.value, 0)
@@ -139,6 +124,78 @@ export const portfolioActiveProposalsAtom = atom<ActiveProposalRow[]>((get) => {
     .filter((p) => ACTIVE_STATES.has(p.voting.state))
     .sort((a, b) => Number(b.creationTime) - Number(a.creationTime))
 })
+
+export type PendingWithdrawalRow =
+  | {
+      source: 'stakedRSR'
+      endId: number
+      amount: string
+      availableAt: number
+      delay: number
+      value: number
+      chainId: number
+      stRSRAddress: Address
+      dtfAddress: Address
+      tokenSymbol: string
+    }
+  | {
+      source: 'voteLock'
+      lockId: string
+      amount: string
+      unlockTime: number
+      delay: number
+      value: number
+      chainId: number
+      stTokenAddress: Address
+      tokenSymbol: string
+      underlyingSymbol: string
+      underlyingAddress: Address
+    }
+
+export const portfolioPendingWithdrawalsAtom = atom<PendingWithdrawalRow[]>(
+  (get) => {
+    const stakedRSR = get(portfolioStakedRSRAtom)
+    const voteLocks = get(portfolioVoteLocksAtom)
+    const rows: PendingWithdrawalRow[] = []
+
+    for (const position of stakedRSR) {
+      for (const w of position.pendingWithdrawals || []) {
+        rows.push({
+          source: 'stakedRSR',
+          endId: w.endId,
+          amount: w.amount,
+          availableAt: w.availableAt,
+          delay: w.delay,
+          value: w.value,
+          chainId: position.chainId,
+          stRSRAddress: position.stRSRAddress,
+          dtfAddress: position.address,
+          tokenSymbol: `${position.symbol.toLowerCase()}RSR`,
+        })
+      }
+    }
+
+    for (const position of voteLocks) {
+      for (const lock of position.locks || []) {
+        rows.push({
+          source: 'voteLock',
+          lockId: lock.lockId,
+          amount: lock.amount,
+          unlockTime: lock.unlockTime,
+          delay: lock.delay,
+          value: lock.value,
+          chainId: position.chainId,
+          stTokenAddress: position.stTokenAddress,
+          tokenSymbol: position.symbol,
+          underlyingSymbol: position.underlying.symbol,
+          underlyingAddress: position.underlying.address,
+        })
+      }
+    }
+
+    return rows.sort((a, b) => (b.value || 0) - (a.value || 0))
+  }
+)
 
 export const portfolioRewardsAtom = atom((get) => {
   const voteLocks = get(portfolioVoteLocksAtom)

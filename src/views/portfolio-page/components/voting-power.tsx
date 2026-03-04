@@ -85,7 +85,7 @@ const columns: ColumnDef<VotingPowerRow, any>[] = [
     header: 'Vote Weight',
     cell: ({ row }) => {
       const d = row.original
-      const weight = d.source === 'voteLock' ? d.votingWeight : d.votingWeight
+      const weight = d.votingWeight
       return (
         <span className="text-sm">
           {weight != null ? `${formatCurrency(weight * 100, 2)}%` : '—'}

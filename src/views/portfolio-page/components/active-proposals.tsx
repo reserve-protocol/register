@@ -29,9 +29,7 @@ const STATUS_COLOR: Record<string, string> = {
   [PROPOSAL_STATES.EXPIRED]: 'text-legend',
 }
 
-type ProposalRow = ActiveProposalRow
-
-const columns: ColumnDef<ProposalRow, any>[] = [
+const columns: ColumnDef<ActiveProposalRow, any>[] = [
   {
     id: 'dtf',
     header: 'DTF Governed',
