@@ -27,7 +27,7 @@ const IndexDTFCard = ({ dtf }: { dtf: IndexDTFItem }) => {
         {/* Show skeleton while loading */}
         {dtf?.brand?.cover && !imageError && (
           <>
-            <Skeleton className="absolute inset-0 h-full w-full" />
+            <Skeleton className={cn("absolute inset-0 h-full w-full", imageLoaded && "hidden")} />
             <img
               width={100}
               height={100}

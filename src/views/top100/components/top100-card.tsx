@@ -26,7 +26,7 @@ const Top100Card = ({ dtf }: { dtf: Top100DTF }) => {
       <div className="relative h-[100px] w-[100px] rounded-xl overflow-hidden flex-shrink-0">
         {dtf?.brand?.cover && !imageError && (
           <>
-            <Skeleton className="absolute inset-0 h-full w-full" />
+            <Skeleton className={cn("absolute inset-0 h-full w-full", imageLoaded && "hidden")} />
             <img
               width={100}
               height={100}
