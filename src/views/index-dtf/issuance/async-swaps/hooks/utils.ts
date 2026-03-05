@@ -3,41 +3,8 @@ import { AvailableChain } from '@/utils/chains'
 import { RESERVE_API } from '@/utils/constants'
 import { Address, encodeFunctionData, erc20Abi, Hex } from 'viem'
 import { getPublicClient } from 'wagmi/actions'
-import { getUniversalTokenName } from '../providers/universal'
 import { COWSWAP_SETTLEMENT } from './useQuoteSignatures'
 import { notifyError } from '@/hooks/useNotification'
-
-export function convertTypeDataToBigInt(obj: any, isInDomain = false): any {
-  if (Array.isArray(obj)) {
-    return obj.map((item) => convertTypeDataToBigInt(item, isInDomain))
-  }
-
-  if (obj && typeof obj === 'object') {
-    // If we're inside the domain object, don't convert numbers
-    if (isInDomain) {
-      return obj
-    }
-
-    // Convert BigNumber
-    if (obj._isBigNumber && typeof obj._hex === 'string') {
-      return BigInt(obj._hex)
-    }
-
-    const result: Record<string, any> = {}
-    for (const key in obj) {
-      // If the key is 'domain', pass true to indicate we're inside the domain
-      result[key] = convertTypeDataToBigInt(obj[key], key === 'domain')
-    }
-    return result
-  }
-
-  // Convert numbers to BigInt if we're not in domain
-  if (!isInDomain && typeof obj === 'number') {
-    return BigInt(obj)
-  }
-
-  return obj
-}
 
 export async function getApprovalCallIfNeeded({
   chainId,
@@ -144,49 +111,6 @@ export const sendCallsWithRetry = async (
   throw lastError || new Error('Unknown error in sendCallsWithRetry')
 }
 
-// Function to handle signTypedDataAsync with retry logic for user rejections
-export const signTypedDataWithRetry = async (
-  signTypedDataAsync: any,
-  typedData: any,
-  maxRetries: number = 2
-) => {
-  let lastError: Error | null = null
-
-  for (let attempt = 0; attempt <= maxRetries; attempt++) {
-    try {
-      const signature = await signTypedDataAsync(typedData)
-      return signature
-    } catch (error) {
-      lastError = error as Error
-
-      // Check if it's a user rejection error
-      if (
-        error instanceof Error &&
-        error.message.includes('User rejected signature')
-      ) {
-        notifyError(
-          'Signature rejected',
-          `User rejected signature (attempt ${attempt + 1}/${maxRetries + 1})`
-        )
-
-        // If this was the last attempt, throw the error
-        if (attempt === maxRetries) {
-          throw new Error('USER_CANCELLED_SIGNATURE')
-        }
-
-        // Otherwise, continue to next attempt
-        continue
-      }
-
-      // For other errors, throw immediately
-      throw error
-    }
-  }
-
-  // This should never be reached, but just in case
-  throw lastError || new Error('Unknown error in signTypedDataWithRetry')
-}
-
 // Helper functions for info messages
 export const getTransactionInfoMessage = (
   txData: any[],
@@ -231,10 +155,3 @@ export const getCowswapOrdersInfoMessage = (
   return undefined
 }
 
-export const getUniversalTokenInfoMessage = (
-  tokenName: string,
-  action: 'signing' | 'submitting'
-): string => {
-  const actionText = action === 'signing' ? 'Signing swap' : 'Submitting order'
-  return `${actionText} via Universal for u${tokenName}...`
-}

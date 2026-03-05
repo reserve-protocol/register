@@ -82,7 +82,6 @@ export default defineConfig({
       '@radix-ui/react-dialog',
       '@radix-ui/react-select',
       '@radix-ui/react-tabs',
-      '@uniswap/uniswapx-sdk',
     ],
   },
 

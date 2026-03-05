@@ -4,7 +4,6 @@ import { Token } from '@/types'
 import { reducedZappableTokens } from '@/views/yield-dtf/issuance/components/zapV2/constants'
 import {
   EnrichedOrder,
-  OrderQuoteResponse,
   OrderStatus,
 } from '@cowprotocol/cow-sdk'
 import { atom } from 'jotai'
@@ -13,7 +12,6 @@ import { Address, formatUnits, parseEther, parseUnits } from 'viem'
 import {
   AsyncSwapOrderResponse,
   QuoteAggregated,
-  UniversalOrder,
 } from './types'
 
 const ASYNC_MINT_BUFFER = 0.01
@@ -25,7 +23,6 @@ export const indexDTFBalanceAtom = atom<bigint>(0n)
 export const txHashAtom = atom<string | undefined>('') // tx hash for minting or redeeming
 export const redeemAssetsAtom = atom<Record<Address, bigint>>({})
 export const quotesAtom = atom<Record<Address, QuoteAggregated>>({})
-export const fallbackQuotesAtom = atom<Record<Address, OrderQuoteResponse>>({})
 export const cowswapOrderIdsAtom = atom<string[]>([])
 export const cowswapOrdersCreatedAtAtom = atom<string | undefined>(undefined)
 export const cowswapOrdersAtom = atom<(EnrichedOrder & { orderId: string })[]>(
@@ -40,8 +37,6 @@ export const fetchingQuotesAtom = atom<boolean>(false)
 
 export const isMintingAtom = atom<boolean>(false)
 export const successAtom = atom<boolean>(false)
-
-export const universalSuccessOrdersAtom = atom<UniversalOrder[]>([])
 
 export const infoMessageAtom = atom<string | undefined>(undefined)
 

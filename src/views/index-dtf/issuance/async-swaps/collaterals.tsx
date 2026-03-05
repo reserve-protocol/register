@@ -8,10 +8,8 @@ import {
   openCollateralPanelAtom,
   operationAtom,
   ordersSubmittedAtom,
-  universalSuccessOrdersAtom,
 } from './atom'
 import CowSwapOrder from './cowswap-order'
-import UniversalOrder from './universal-order'
 
 const STATUS_PRIORITY: Record<OrderStatus, number> = {
   [OrderStatus.CANCELLED]: 0,
@@ -34,7 +32,6 @@ const Collaterals = () => {
   const cowswapOrderIds = useAtomValue(cowswapOrderIdsAtom)
   const cowswapOrders = useAtomValue(cowswapOrdersAtom)
   const ordersSubmitted = useAtomValue(ordersSubmittedAtom)
-  const universalSuccessOrders = useAtomValue(universalSuccessOrdersAtom)
   const open = useAtomValue(openCollateralPanelAtom)
   const [isVisible, setIsVisible] = useAtom(isVisibleAtom)
   const [shouldRender, setShouldRender] = useAtom(shouldRenderAtom)
@@ -79,9 +76,6 @@ const Collaterals = () => {
     >
       {sortedCowswapOrderIds.map((orderId) => (
         <CowSwapOrder key={orderId} orderId={orderId} />
-      ))}
-      {universalSuccessOrders.map((order, index) => (
-        <UniversalOrder key={`${order.id}-${index}`} order={order} />
       ))}
     </div>
   )

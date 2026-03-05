@@ -32,7 +32,6 @@ import {
   cowswapOrderIdsAtom,
   cowswapOrdersAtom,
   cowswapOrdersCreatedAtAtom,
-  fallbackQuotesAtom,
   mintValueAtom,
   operationAtom,
   quotesAtom,
@@ -40,12 +39,10 @@ import {
   savedAmountAtom,
   successAtom,
   txHashAtom,
-  universalSuccessOrdersAtom,
   userInputAtom,
 } from './atom'
 import CowSwapOrder from './cowswap-order'
 import Details from './details'
-import UniversalOrder from './universal-order'
 
 const viewTransactionsAtom = atom<boolean>(false)
 
@@ -58,8 +55,6 @@ const CloseButton = () => {
   const setCowswapOrdersCreatedAtAtom = useSetAtom(cowswapOrdersCreatedAtAtom)
   const setCowswapOrdersAtom = useSetAtom(cowswapOrdersAtom)
   const setQuotesAtom = useSetAtom(quotesAtom)
-  const setUniversalSuccessOrdersAtom = useSetAtom(universalSuccessOrdersAtom)
-  const setFallbackQuotesAtom = useSetAtom(fallbackQuotesAtom)
 
   const handleClose = () => {
     setTxHashAtom(undefined)
@@ -70,8 +65,6 @@ const CloseButton = () => {
     setCowswapOrderIdsAtom([])
     setCowswapOrdersCreatedAtAtom(undefined)
     setCowswapOrdersAtom([])
-    setUniversalSuccessOrdersAtom([])
-    setFallbackQuotesAtom({})
   }
 
   return (
@@ -317,7 +310,6 @@ const MainTransaction = () => {
 const Transactions = () => {
   const setViewTransactions = useSetAtom(viewTransactionsAtom)
   const cowswapOrders = useAtomValue(cowswapOrdersAtom)
-  const universalSuccessOrders = useAtomValue(universalSuccessOrdersAtom)
 
   return (
     <div className="bg-secondary rounded-3xl min-h-[444px] p-1">
@@ -344,9 +336,6 @@ const Transactions = () => {
               orderId={orderId}
               disableFetch
             />
-          ))}
-          {universalSuccessOrders.map((order, index) => (
-            <UniversalOrder key={`${order.id}-${index}`} order={order} />
           ))}
         </div>
       </div>
