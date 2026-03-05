@@ -66,6 +66,8 @@ export const orderIdsAtom = atom<string[]>([])
 export const ordersAtom = atom<(EnrichedOrder & { orderId: string })[]>([])
 export const ordersCreatedAtAtom = atom<string | undefined>(undefined)
 export const mintTxHashAtom = atom<string | undefined>(undefined)
+// WHY: Stores actual shares passed to mint() — more accurate than re-deriving from price
+export const actualMintedSharesAtom = atom<bigint>(0n)
 
 // ─── Async data atoms (populated by useAllocationData hook) ──────────
 // NOTE: Only valid when useAllocationData() is mounted
@@ -119,6 +121,20 @@ export const recoveryChoiceAtom = atom<RecoveryChoice>(null)
 export const leftoverCollateralAtom = atom<Record<Address, bigint>>({})
 export const reverseOrderIdsAtom = atom<string[]>([])
 
+// WHY: Only reverse what we acquired through orders, not pre-existing wallet balances
+export const acquiredBalancesAtom = atom<Record<Address, bigint>>((get) => {
+  const orders = get(ordersAtom)
+  const balances: Record<Address, bigint> = {}
+  for (const order of orders) {
+    const amount = BigInt(order.executedBuyAmount || '0')
+    if (amount > 0n) {
+      const token = order.buyToken.toLowerCase() as Address
+      balances[token] = (balances[token] || 0n) + amount
+    }
+  }
+  return balances
+})
+
 // ─── Derived order atoms ─────────────────────────────────────────────
 export const ordersSubmittedAtom = atom<boolean>((get) => {
   return Boolean(get(ordersCreatedAtAtom))
@@ -167,6 +183,7 @@ export const resetWizardAtom = atom(null, (_, set) => {
   set(ordersAtom, [])
   set(ordersCreatedAtAtom, undefined)
   set(mintTxHashAtom, undefined)
+  set(actualMintedSharesAtom, 0n)
   set(recoveryChoiceAtom, null)
   set(leftoverCollateralAtom, {})
   set(reverseOrderIdsAtom, [])

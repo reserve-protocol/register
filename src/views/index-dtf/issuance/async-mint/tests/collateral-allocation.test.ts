@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { Address, parseEther, parseUnits } from 'viem'
-import { calculateCollateralAllocation } from '../utils'
+import { calculateCollateralAllocation, calculateMaxMintAmount } from '../utils'
 
 const USDC = '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48' as Address
 const WETH = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' as Address
@@ -328,5 +328,117 @@ describe('calculateCollateralAllocation', () => {
 
     // 100 tokens * $10 = $1000 (using 18 decimals fallback)
     expect(result[UNKNOWN].usdValue).toBeCloseTo(1000, 0)
+  })
+})
+
+describe('calculateMaxMintAmount', () => {
+  it('returns input token balance for single strategy', () => {
+    const result = calculateMaxMintAmount({
+      inputTokenBalance: 3000,
+      walletBalances: {
+        [WETH.toLowerCase() as Address]: parseEther('1'),
+      },
+      tokenPrices: { [WETH.toLowerCase() as Address]: 2000 },
+      tokenDecimals: DECIMALS,
+      selectedCollaterals: new Set<Address>([WETH]),
+      strategy: 'single',
+      inputTokenAddress: USDC,
+    })
+    expect(result).toBe(3000)
+  })
+
+  it('adds selected collateral value for partial strategy', () => {
+    const result = calculateMaxMintAmount({
+      inputTokenBalance: 3000, // $3k USDC
+      walletBalances: {
+        [WETH.toLowerCase() as Address]: parseEther('1'), // 1 WETH = $2000
+        [WBTC.toLowerCase() as Address]: parseUnits('0.125', 8), // 0.125 BTC = $5000
+      },
+      tokenPrices: {
+        [WETH.toLowerCase() as Address]: 2000,
+        [WBTC.toLowerCase() as Address]: 40000,
+      },
+      tokenDecimals: DECIMALS,
+      selectedCollaterals: new Set<Address>([WETH, WBTC]),
+      strategy: 'partial',
+      inputTokenAddress: USDC,
+    })
+    // $3000 + $2000 + $5000 = $10000
+    expect(result).toBe(10000)
+  })
+
+  it('skips input token in collateral value (no double-counting)', () => {
+    const result = calculateMaxMintAmount({
+      inputTokenBalance: 3000,
+      walletBalances: {
+        [USDC.toLowerCase() as Address]: parseUnits('3000', 6), // input token
+        [WETH.toLowerCase() as Address]: parseEther('1'),
+      },
+      tokenPrices: {
+        [USDC.toLowerCase() as Address]: 1,
+        [WETH.toLowerCase() as Address]: 2000,
+      },
+      tokenDecimals: DECIMALS,
+      selectedCollaterals: new Set<Address>([USDC, WETH]),
+      strategy: 'partial',
+      inputTokenAddress: USDC,
+    })
+    // $3000 (input) + $2000 (WETH) — USDC not double-counted
+    expect(result).toBe(5000)
+  })
+
+  it('skips unselected tokens', () => {
+    const result = calculateMaxMintAmount({
+      inputTokenBalance: 3000,
+      walletBalances: {
+        [WETH.toLowerCase() as Address]: parseEther('1'),
+        [WBTC.toLowerCase() as Address]: parseUnits('1', 8),
+      },
+      tokenPrices: {
+        [WETH.toLowerCase() as Address]: 2000,
+        [WBTC.toLowerCase() as Address]: 40000,
+      },
+      tokenDecimals: DECIMALS,
+      selectedCollaterals: new Set<Address>([WETH]), // Only WETH selected
+      strategy: 'partial',
+      inputTokenAddress: USDC,
+    })
+    // $3000 + $2000 (WETH only, WBTC not selected)
+    expect(result).toBe(5000)
+  })
+
+  it('returns input balance when wallet data is empty', () => {
+    const result = calculateMaxMintAmount({
+      inputTokenBalance: 3000,
+      walletBalances: {},
+      tokenPrices: {},
+      tokenDecimals: {},
+      selectedCollaterals: new Set<Address>([WETH]),
+      strategy: 'partial',
+      inputTokenAddress: USDC,
+    })
+    expect(result).toBe(3000)
+  })
+
+  it('handles case-insensitive addresses', () => {
+    const wethChecksummed =
+      '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2' as Address
+    const wethLower = wethChecksummed.toLowerCase() as Address
+
+    const result = calculateMaxMintAmount({
+      inputTokenBalance: 1000,
+      walletBalances: {
+        [wethLower]: parseEther('1'),
+      },
+      tokenPrices: {
+        [wethLower]: 2000,
+      },
+      tokenDecimals: { [wethLower]: 18 },
+      selectedCollaterals: new Set<Address>([wethChecksummed]), // checksummed in set
+      strategy: 'partial',
+      inputTokenAddress: USDC,
+    })
+    // $1000 + $2000 = $3000
+    expect(result).toBe(3000)
   })
 })

@@ -1,6 +1,45 @@
 import { Address, formatUnits } from 'viem'
 import { CollateralAllocation, MintStrategy } from './types'
 
+// ─── Max mint amount (accounts for wallet collateral) ────────────────
+export function calculateMaxMintAmount({
+  inputTokenBalance,
+  walletBalances,
+  tokenPrices,
+  tokenDecimals,
+  selectedCollaterals,
+  strategy,
+  inputTokenAddress,
+}: {
+  inputTokenBalance: number
+  walletBalances: Record<Address, bigint>
+  tokenPrices: Record<Address, number>
+  tokenDecimals: Record<Address, number>
+  selectedCollaterals: Set<Address>
+  strategy: MintStrategy
+  inputTokenAddress: Address
+}): number {
+  if (strategy === 'single') return inputTokenBalance
+
+  // Normalize set to lowercase for consistent matching
+  const normalizedSelected = new Set<Address>(
+    [...selectedCollaterals].map((a) => a.toLowerCase() as Address)
+  )
+
+  let collateralValue = 0
+  for (const [addr, balance] of Object.entries(walletBalances)) {
+    const normalizedAddr = addr.toLowerCase() as Address
+    if (normalizedAddr === inputTokenAddress.toLowerCase()) continue
+    if (!normalizedSelected.has(normalizedAddr)) continue
+
+    const price = tokenPrices[normalizedAddr] ?? 0
+    const decimals = tokenDecimals[normalizedAddr] ?? 18
+    collateralValue += Number(formatUnits(balance, decimals)) * price
+  }
+
+  return inputTokenBalance + collateralValue
+}
+
 // ─── Pure collateral allocation calculation ──────────────────────────
 export function calculateCollateralAllocation({
   mintShares,

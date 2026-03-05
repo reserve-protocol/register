@@ -5,7 +5,7 @@ import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import useTrackIndexDTFPage from '../../hooks/useTrackIndexDTFPage'
 import { GlobalProtocolKitProvider } from '../async-swaps/providers/GlobalProtocolKitProvider'
-import { mintSharesAtom, wizardStepAtom } from './atoms'
+import { wizardStepAtom } from './atoms'
 import { useAllocationData } from './hooks/use-collateral-allocation'
 import GnosisRequired from './steps/gnosis-required'
 import OperationSelect from './steps/operation-select'
@@ -61,15 +61,9 @@ const WizardRouter = () => {
 }
 
 // Keeps balance/price syncing alive across all wizard steps
-const DataSyncInner = () => {
+const DataSync = () => {
   useAllocationData()
   return null
-}
-
-const DataSync = () => {
-  const mintShares = useAtomValue(mintSharesAtom)
-  if (mintShares === 0n) return null
-  return <DataSyncInner />
 }
 
 const AsyncMintWizard = () => {

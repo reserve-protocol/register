@@ -1,10 +1,11 @@
 import TokenLogo from '@/components/token-logo'
 import { Button } from '@/components/ui/button'
+import { TransactionButtonContainer } from '@/components/ui/transaction-button'
 import { NumericalInput } from '@/components/ui/input'
 import { Skeleton } from '@/components/ui/skeleton'
 import useDebounce from '@/hooks/useDebounce'
 import { balancesAtom, chainIdAtom } from '@/state/atoms'
-import { indexDTFAtom, indexDTFPriceAtom } from '@/state/dtf/atoms'
+import { indexDTFAtom, indexDTFBasketAtom, indexDTFPriceAtom } from '@/state/dtf/atoms'
 import { formatCurrency, formatTokenAmount } from '@/utils'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import {
@@ -15,9 +16,11 @@ import {
   RefreshCw,
   Settings,
 } from 'lucide-react'
-import { useEffect, useRef } from 'react'
-import { formatUnits } from 'viem'
+import { useEffect, useMemo, useRef } from 'react'
+import { Address, formatUnits } from 'viem'
 import {
+  ASYNC_MINT_BUFFER,
+  collateralAllocationAtom,
   inputTokenAtom,
   mintAmountAtom,
   mintQuotesAtom,
@@ -25,9 +28,12 @@ import {
   priceMovedAtom,
   quotesStaleAtom,
   recoveryChoiceAtom,
-  slippageAtom,
+  selectedCollateralsAtom,
+  tokenPricesAtom,
+  walletBalancesAtom,
   wizardStepAtom,
 } from '../atoms'
+import { calculateMaxMintAmount } from '../utils'
 import { useMintQuotes } from '../hooks/use-mint-quotes'
 import { useSubmitOrders } from '../hooks/use-submit-orders'
 
@@ -39,15 +45,25 @@ const QuoteSummary = () => {
   const inputToken = useAtomValue(inputTokenAtom)
   const [mintAmount, setMintAmount] = useAtom(mintAmountAtom)
   const quotes = useAtomValue(mintQuotesAtom)
-  const slippage = useAtomValue(slippageAtom)
   const priceMoved = useAtomValue(priceMovedAtom)
   const quotesStale = useAtomValue(quotesStaleAtom)
   const recoveryChoice = useAtomValue(recoveryChoiceAtom)
   const strategy = useAtomValue(mintStrategyAtom)
   const balances = useAtomValue(balancesAtom)
 
+  const allocation = useAtomValue(collateralAllocationAtom)
   const { refetch, isFetching } = useMintQuotes()
   const { submit, isPending } = useSubmitOrders()
+
+  // WHY: In multi-token flow, all tokens may come from wallet (no swaps needed)
+  const allocationLoaded = Object.keys(allocation).length > 0
+  const noSwapsNeeded = allocationLoaded &&
+    Object.values(allocation).every((a) => a.fromSwap === 0n)
+
+  const walletBalances = useAtomValue(walletBalancesAtom)
+  const tokenPrices = useAtomValue(tokenPricesAtom)
+  const selectedCollaterals = useAtomValue(selectedCollateralsAtom)
+  const basket = useAtomValue(indexDTFBasketAtom)
 
   // Balance
   const inputBalance = balances[inputToken.address]
@@ -55,22 +71,60 @@ const QuoteSummary = () => {
     ? Number(formatUnits(inputBalance.value ?? 0n, inputToken.decimals))
     : 0
 
+  const decimalsMap = useMemo(() => {
+    const map: Record<Address, number> = {}
+    if (basket) {
+      for (const token of basket) {
+        map[token.address.toLowerCase() as Address] = token.decimals
+      }
+    }
+    return map
+  }, [basket])
+
+  const maxMintAmount = useMemo(
+    () =>
+      calculateMaxMintAmount({
+        inputTokenBalance: availableBalance,
+        walletBalances,
+        tokenPrices,
+        tokenDecimals: decimalsMap,
+        selectedCollaterals,
+        strategy,
+        inputTokenAddress: inputToken.address as Address,
+      }),
+    [
+      availableBalance,
+      walletBalances,
+      tokenPrices,
+      decimalsMap,
+      selectedCollaterals,
+      strategy,
+      inputToken,
+    ]
+  )
+
   // Default to max on mount
   useEffect(() => {
-    if (!mintAmount && availableBalance > 0) {
-      setMintAmount(availableBalance.toString())
+    if (!mintAmount && maxMintAmount > 0) {
+      setMintAmount(maxMintAmount.toString())
     }
-  }, [availableBalance]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [maxMintAmount]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const debouncedAmount = useDebounce(mintAmount, 500)
 
   const parsedAmount = Number(mintAmount) || 0
-  const dtfAmount = dtfPrice ? parsedAmount / dtfPrice : 0
-  const slippagePct = Number(slippage) / 100
+  const dtfAmount = dtfPrice
+    ? (parsedAmount / dtfPrice) * (1 - ASYNC_MINT_BUFFER)
+    : 0
+  const dtfValue = dtfPrice ? dtfAmount * dtfPrice : 0
+  const spreadPct =
+    parsedAmount > 0 ? ((parsedAmount - dtfValue) / parsedAmount) * 100 : 0
   const hasQuotes = Object.keys(quotes).length > 0
   const successfulQuotes = Object.values(quotes).filter((q) => q.success)
-  const quoteLoading = isFetching || debouncedAmount !== mintAmount
-  const exceedsBalance = parsedAmount > availableBalance
+  const quoteLoading = noSwapsNeeded
+    ? false
+    : isFetching || debouncedAmount !== mintAmount
+  const exceedsBalance = parsedAmount > maxMintAmount
   const isValidAmount = parsedAmount >= 1
   const mintFee = indexDTF?.mintingFee
     ? (indexDTF.mintingFee * 100).toFixed(2)
@@ -88,14 +142,19 @@ const QuoteSummary = () => {
     }
   }, [debouncedAmount, refetch])
 
-  // Auto-fetch quotes on mount
+  // WHY: Auto-fetch when allocation is ready (not just on mount) — allocation
+  // may still be loading if folioDetails hasn't propagated yet
+  const hasFetchedRef = useRef(false)
   useEffect(() => {
-    if (hasQuotes) return
-    if (parsedAmount >= 1) refetch()
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+    if (hasFetchedRef.current || hasQuotes || noSwapsNeeded) return
+    if (parsedAmount >= 1 && allocationLoaded) {
+      hasFetchedRef.current = true
+      refetch()
+    }
+  }, [allocationLoaded, parsedAmount, hasQuotes, noSwapsNeeded, refetch])
 
   const handleMax = () => {
-    setMintAmount(availableBalance.toString())
+    setMintAmount(maxMintAmount.toString())
   }
 
   const backStep =
@@ -197,7 +256,7 @@ const QuoteSummary = () => {
         </div>
         <div className="flex items-center justify-between px-4 pb-4">
           <span className="text-sm font-light text-muted-foreground">
-            Avbl. ${formatCurrency(availableBalance)}
+            Avbl. ${formatCurrency(maxMintAmount)}
           </span>
           <div className="flex items-center gap-2">
             {exceedsBalance && (
@@ -258,7 +317,7 @@ const QuoteSummary = () => {
                   size="sm"
                 />
                 <span className="text-sm font-light">
-                  ${formatCurrency(parsedAmount * (1 - slippagePct / 100))}
+                  ${formatCurrency(dtfValue)}
                 </span>
                 <div className="bg-muted rounded-full flex items-center justify-center size-5">
                   <ChevronRight size={12} className="text-muted-foreground" />
@@ -266,34 +325,38 @@ const QuoteSummary = () => {
               </div>
             )}
             <span className="text-sm text-muted-foreground font-light">
-              (-{slippagePct}%)
+              (-{spreadPct.toFixed(2)}%)
             </span>
           </div>
         </div>
 
         {/* Submit button */}
-        <Button
-          size="lg"
-          className="w-full h-[49px] rounded-[12px]"
-          disabled={
-            isPending ||
-            quoteLoading ||
-            !isValidAmount ||
-            exceedsBalance ||
-            successfulQuotes.length === 0 ||
-            quotesStale
-          }
-          onClick={() => submit()}
-        >
-          {isPending ? (
-            'Signing...'
-          ) : (
-            <span className="flex items-center gap-1">
-              <span className="font-bold">Start Mint</span>
-              <span className="font-light opacity-80">- Step 1/2</span>
-            </span>
-          )}
-        </Button>
+        <TransactionButtonContainer chain={chainId}>
+          <Button
+            size="lg"
+            className="w-full h-[49px] rounded-[12px]"
+            disabled={
+              isPending ||
+              quoteLoading ||
+              !isValidAmount ||
+              exceedsBalance ||
+              (!noSwapsNeeded && successfulQuotes.length === 0) ||
+              quotesStale
+            }
+            onClick={() => noSwapsNeeded ? setStep('processing') : submit()}
+          >
+            {isPending ? (
+              'Signing...'
+            ) : noSwapsNeeded ? (
+              <span className="font-bold">Approve & Mint</span>
+            ) : (
+              <span className="flex items-center gap-1">
+                <span className="font-bold">Start Mint</span>
+                <span className="font-light opacity-80">- Step 1/2</span>
+              </span>
+            )}
+          </Button>
+        </TransactionButtonContainer>
 
         {/* Rate + fee info */}
         <div className="flex items-center justify-between px-4 pt-4 pb-3 text-sm">

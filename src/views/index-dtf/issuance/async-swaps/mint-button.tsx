@@ -101,7 +101,11 @@ const MintButton = () => {
               : encodeFunctionData({
                   abi: dtfIndexAbi,
                   functionName: 'mint',
-                  args: [maxMintableAmount, account],
+                  args: [
+                    maxMintableAmount,
+                    account,
+                    (maxMintableAmount * 99n) / 100n,
+                  ],
                 }),
           value: 0n,
         },

@@ -10,28 +10,27 @@ import {
 import { formatCurrency, formatTokenAmount, getTimerFormat } from '@/utils'
 import { useAtomValue, useSetAtom } from 'jotai'
 import {
+  ArrowDown,
   Check,
   ChevronDown,
+  ChevronRight,
   ChevronUp,
   Loader,
-  Pencil,
   RefreshCw,
   Settings,
   X,
 } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
-import { formatUnits } from 'viem'
 import {
+  ASYNC_MINT_BUFFER,
   allOrdersFulfilledAtom,
   failedOrdersAtom,
   folioDetailsAtom,
   inputTokenAtom,
   mintAmountAtom,
-  mintQuotesAtom,
   orderIdsAtom,
   ordersCreatedAtAtom,
   pendingOrdersAtom,
-  slippageAtom,
   walletBalancesAtom,
   wizardStepAtom,
 } from '../atoms'
@@ -48,8 +47,6 @@ const Processing = () => {
   const dtfPrice = useAtomValue(indexDTFPriceAtom)
   const inputToken = useAtomValue(inputTokenAtom)
   const mintAmount = useAtomValue(mintAmountAtom)
-  const quotes = useAtomValue(mintQuotesAtom)
-  const slippage = useAtomValue(slippageAtom)
   const orderIds = useAtomValue(orderIdsAtom)
   const ordersCreatedAt = useAtomValue(ordersCreatedAtAtom)
   const allFulfilled = useAtomValue(allOrdersFulfilledAtom)
@@ -90,30 +87,24 @@ const Processing = () => {
   const isSimpleRetry = allResolved && canStillMintTarget
   const isSeriousFailure = allResolved && !canStillMintTarget
 
-  // Quote summary card data
   const parsedAmount = Number(mintAmount)
-  const dtfAmount = dtfPrice ? parsedAmount / dtfPrice : 0
-  const slippagePct = Number(slippage) / 100
-  const successfulQuotes = Object.values(quotes).filter((q) => q.success)
-  const totalSellAmount = successfulQuotes.reduce((sum, q) => {
-    if (!q.success) return sum
-    return (
-      sum +
-      Number(formatUnits(BigInt(q.data.quote.sellAmount), inputToken.decimals))
-    )
-  }, 0)
-  const fee =
-    totalSellAmount > 0
-      ? ((totalSellAmount - parsedAmount) / parsedAmount) * 100
-      : 0
+  const dtfAmount = dtfPrice
+    ? (parsedAmount / dtfPrice) * (1 - ASYNC_MINT_BUFFER)
+    : 0
+  const dtfValue = dtfPrice ? dtfAmount * dtfPrice : 0
+  const spreadPct =
+    parsedAmount > 0 ? ((parsedAmount - dtfValue) / parsedAmount) * 100 : 0
+  const mintFee = indexDTF?.mintingFee
+    ? (indexDTF.mintingFee * 100).toFixed(2)
+    : '0'
 
   const tokenToggle = (
     <button
-      className="flex items-center gap-1"
+      className="border border-border rounded-full flex items-center gap-0.5 pl-2 pr-1.5 h-8"
       onClick={() => setShowOrders(!showOrders)}
     >
       <StackTokenLogo
-        tokens={(basket || []).slice(0, 5).map((t) => ({
+        tokens={(basket || []).slice(0, 3).map((t) => ({
           ...t,
           chain: indexDTF?.chainId,
         }))}
@@ -122,125 +113,136 @@ const Processing = () => {
         reverseStack
         outsource
       />
-      {showOrders ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+      {showOrders ? (
+        <ChevronUp size={14} className="text-muted-foreground" />
+      ) : (
+        <ChevronRight size={14} className="text-muted-foreground" />
+      )}
     </button>
   )
 
-  const orderList = showOrders && (
-    <div className="bg-background rounded-[20px] mx-1 px-3">
-      {orderIds.map((id) => (
-        <OrderRow key={id} orderId={id} disableFetch={allFulfilled} />
-      ))}
-    </div>
-  )
-
   return (
-    <div className="bg-secondary rounded-3xl p-1 w-full max-w-[468px] mx-auto">
+    <div className="bg-secondary rounded-3xl p-1 w-[468px] max-w-full mx-auto">
       {/* Toolbar */}
-      <div className="flex items-center justify-between px-4 pt-4 pb-2">
+      <div className="flex items-center justify-between p-2">
         <div className="flex items-center gap-1">
-          <button className="p-2 rounded-full hover:bg-background/50 transition-colors">
-            <Settings size={16} className="text-muted-foreground" />
+          <button className="bg-background rounded-[12px] h-8 w-8 flex items-center justify-center transition-colors hover:bg-primary hover:text-primary-foreground">
+            <Settings size={16} />
           </button>
           <button
-            className="p-2 rounded-full hover:bg-background/50 transition-colors"
+            className="bg-background rounded-[12px] h-8 w-8 flex items-center justify-center transition-colors hover:bg-primary hover:text-primary-foreground"
             onClick={() => refetch()}
             disabled={isFetching}
           >
             <RefreshCw
               size={16}
-              className={`text-muted-foreground ${isFetching ? 'animate-spin' : ''}`}
+              className={isFetching ? 'animate-spin' : ''}
             />
-          </button>
-          <button
-            className="flex items-center gap-1 px-2 py-1 rounded-full hover:bg-background/50 transition-colors text-sm"
-            onClick={() => setStep('amount-input')}
-          >
-            <Pencil size={14} />
-            <span>Edit</span>
           </button>
         </div>
         {(isSeriousFailure || isSimpleRetry) && (
           <button
-            className="p-2 rounded-full hover:bg-background/50 transition-colors"
+            className="bg-background rounded-[12px] h-8 w-8 flex items-center justify-center transition-colors hover:bg-primary hover:text-primary-foreground"
             onClick={() => setStep('quote-summary')}
           >
-            <X size={16} className="text-muted-foreground" />
+            <X size={16} />
           </button>
         )}
       </div>
 
-      {/* You use */}
-      <div className="bg-background rounded-[20px] mx-1 p-4">
-        <div className="text-sm text-primary font-light mb-1">You use</div>
-        <div className="flex items-center justify-between">
-          <div className="text-3xl font-semibold text-primary">
-            ${formatCurrency(parsedAmount)}
-          </div>
-          <div className="flex items-center gap-1">
-            <TokenLogo symbol={inputToken.symbol} size="lg" />
-            <ChevronDown size={14} className="text-muted-foreground" />
+      {/* You use — static display */}
+      <div className="bg-background rounded-[20px] p-2">
+        <div className="px-4 pt-4 pb-4">
+          <div className="text-sm font-light text-primary mb-2">You use</div>
+          <div className="flex items-center justify-between">
+            <div className="text-[26px] font-light text-primary leading-[24px]">
+              ${formatCurrency(parsedAmount)}
+            </div>
+            <div className="flex items-center gap-1.5 shrink-0">
+              <TokenLogo symbol={inputToken.symbol} size="lg" />
+              <div className="bg-muted rounded-full p-1">
+                <ChevronDown size={16} className="text-muted-foreground" />
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
       {/* Arrow separator */}
-      <div className="flex justify-center -my-1.5 relative z-10">
-        <div className="bg-secondary rounded-full p-1">
-          <ChevronDown size={16} className="text-muted-foreground" />
+      <div className="flex justify-center -my-[17px] relative z-10">
+        <div className="bg-background border-4 border-secondary rounded-full flex items-center justify-center size-10">
+          <ArrowDown size={16} className="text-muted-foreground" />
         </div>
       </div>
 
-      {/* You receive */}
-      <div className="bg-background rounded-[20px] mx-1 p-4">
-        <div className="text-sm text-muted-foreground mb-1">You receive:</div>
-        <div className="flex items-center justify-between">
-          <div className="text-3xl font-semibold text-primary">
-            {formatTokenAmount(dtfAmount)}
+      {/* You receive + status + fee */}
+      <div className="bg-background rounded-[20px] p-2">
+        <div className="p-4">
+          <div className="text-sm text-muted-foreground mb-2">You receive:</div>
+          <div className="flex items-center justify-between">
+            <div className="text-[26px] font-light text-primary leading-[24px]">
+              {formatTokenAmount(dtfAmount)}
+            </div>
+            <div className="flex items-center gap-1.5">
+              <TokenLogo
+                address={indexDTF?.id}
+                symbol={indexDTF?.token.symbol}
+                chain={chainId}
+                size="lg"
+              />
+              <span className="text-[26px] font-light">
+                {indexDTF?.token.symbol}
+              </span>
+            </div>
           </div>
-          <div className="flex items-center gap-2">
-            <TokenLogo
-              address={indexDTF?.id}
-              symbol={indexDTF?.token.symbol}
-              chain={chainId}
-              size="lg"
-            />
-            <span className="text-xl font-semibold">
-              {indexDTF?.token.symbol}
+          <div className="flex items-center justify-between mt-2">
+            <div className="flex items-center gap-1">
+              <TokenLogo
+                address={indexDTF?.id}
+                symbol={indexDTF?.token.symbol}
+                chain={chainId}
+                size="sm"
+              />
+              <span className="text-sm font-light">
+                ${formatCurrency(dtfValue)}
+              </span>
+              <div className="bg-muted rounded-full flex items-center justify-center size-5">
+                <ChevronRight size={12} className="text-muted-foreground" />
+              </div>
+            </div>
+            <span className="text-sm text-muted-foreground font-light">
+              (-{spreadPct.toFixed(2)}%)
             </span>
           </div>
         </div>
-        <div className="flex items-center gap-2 mt-1 text-sm text-muted-foreground">
-          <TokenLogo
-            address={indexDTF?.id}
-            symbol={indexDTF?.token.symbol}
-            chain={chainId}
-            size="sm"
-          />
-          <span>${formatCurrency(parsedAmount * (1 - slippagePct / 100))}</span>
-          <span className="ml-auto">(-{slippagePct}%)</span>
-        </div>
-      </div>
 
-      {/* Status area — varies by state */}
-      <div className="px-1 py-2">
-        {allFulfilled ? (
-          <div className="flex flex-col gap-2">
-            <div className="flex items-center justify-between p-4 bg-background rounded-[20px]">
-              <div className="flex items-center gap-2 text-primary">
-                <div className="border border-primary/80 rounded-full p-1.5">
+        {/* Status area */}
+        {/* WHY: orderIds.length === 0 means all tokens came from wallet, no CowSwap needed */}
+        {orderIds.length === 0 ? (
+          <MintExecute />
+        ) : allFulfilled ? (
+          <>
+            <div className="flex items-center justify-between px-4 py-3">
+              <div className="flex items-center gap-3 text-primary">
+                <div className="border border-primary rounded-full p-1.5">
                   <Check size={16} strokeWidth={1.5} />
                 </div>
-                <span className="font-semibold">Collateral Acquired</span>
+                <span className="font-medium">Collateral Acquired</span>
               </div>
               {tokenToggle}
             </div>
-            {orderList}
+            {showOrders && (
+              <div className="px-3 pb-2">
+                {orderIds.map((id) => (
+                  <OrderRow key={id} orderId={id} disableFetch={allFulfilled} />
+                ))}
+              </div>
+            )}
             <MintExecute />
-          </div>
+          </>
         ) : isSeriousFailure ? (
-          <div className="flex flex-col gap-2">
-            <div className="flex items-center justify-between p-4 bg-background rounded-[20px]">
+          <>
+            <div className="flex items-center justify-between px-4 py-3">
               <div className="flex flex-col">
                 <span className="text-sm font-medium text-orange-500">
                   Your order needs attention
@@ -251,18 +253,24 @@ const Processing = () => {
               </div>
               {tokenToggle}
             </div>
-            {orderList}
+            {showOrders && (
+              <div className="px-3 pb-2">
+                {orderIds.map((id) => (
+                  <OrderRow key={id} orderId={id} disableFetch />
+                ))}
+              </div>
+            )}
             <Button
               size="lg"
-              className="w-full h-[49px] rounded-[20px]"
+              className="w-full h-[49px] rounded-[12px]"
               onClick={() => setStep('recovery-options')}
             >
               Review options
             </Button>
-          </div>
+          </>
         ) : isSimpleRetry ? (
-          <div className="flex flex-col gap-2">
-            <div className="mx-1 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-[20px] p-3 flex items-center justify-between">
+          <>
+            <div className="mx-2 mb-2 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-xl p-3 flex items-center justify-between">
               <span className="text-sm font-medium">Prices have moved</span>
               <Button
                 size="sm"
@@ -273,45 +281,62 @@ const Processing = () => {
                 {isRetrying ? 'Signing...' : 'Accept new quotes'}
               </Button>
             </div>
-            {orderList}
-          </div>
+          </>
         ) : (
-          <div className="flex flex-col gap-2">
-            {/* Acquiring collateral — shimmer border */}
-            <div className="relative rounded-[20px] p-[1px] bg-gradient-to-r from-transparent via-primary to-transparent animate-[shimmer_5s_infinite] bg-[length:200%_100%]">
-              <div className="flex items-center justify-between p-4 bg-card rounded-[20px] shadow-md">
-                <div className="flex items-center gap-2 text-primary">
-                  <div className="border border-primary/40 rounded-full p-1.5">
+          <>
+            {/* Progress bar */}
+            <div className="overflow-hidden rounded-b-[12px] shadow-sm">
+              <div className="bg-primary/20 h-[2px] w-full">
+                <div
+                  className="bg-primary h-full transition-all duration-1000"
+                  style={{
+                    // WHY: CowSwap orders typically fill in 30-120s, animate to 90% over 120s
+                    width: `${Math.min(90, (elapsedTime / 120) * 90)}%`,
+                  }}
+                />
+              </div>
+              <div className="flex items-center justify-between px-4 py-3">
+                <div className="flex items-center gap-3 text-primary">
+                  <div className="border border-primary rounded-full p-1.5">
                     <Loader
                       size={16}
                       strokeWidth={1.5}
                       className="animate-spin-slow"
                     />
                   </div>
-                  <span className="font-semibold">Acquiring Collateral</span>
+                  <span className="font-medium">Acquiring Collateral</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-muted-foreground text-sm">
+                  <span className="text-muted-foreground text-sm font-medium">
                     {getTimerFormat(elapsedTime)}
                   </span>
                   {tokenToggle}
                 </div>
               </div>
             </div>
-            {orderList}
-          </div>
+            {showOrders && (
+              <div className="px-3 pb-2">
+                {orderIds.map((id) => (
+                  <OrderRow key={id} orderId={id} />
+                ))}
+              </div>
+            )}
+          </>
         )}
-      </div>
 
-      {/* Rate + fee info */}
-      <div className="flex items-center justify-between px-4 py-3 text-sm text-muted-foreground">
-        <span>
-          ≈{dtfPrice ? formatTokenAmount(1 / dtfPrice) : '...'}{' '}
-          {indexDTF?.token.symbol} = $1
-        </span>
-        <div className="flex items-center gap-1">
-          <span>Fee {fee !== 0 ? `${Math.abs(fee).toFixed(2)}%` : '0%'}</span>
-          <ChevronDown size={14} />
+        {/* Rate + fee info */}
+        <div className="flex items-center justify-between px-4 pt-4 pb-3 text-sm">
+          <span className="font-light">
+            ≈{dtfPrice ? formatTokenAmount(1 / dtfPrice) : '...'}{' '}
+            {indexDTF?.token.symbol} = $1
+          </span>
+          <div className="flex items-center gap-2">
+            <span className="text-muted-foreground font-light">Fee</span>
+            <span className="font-light">{mintFee}%</span>
+            <div className="bg-muted rounded-full flex items-center justify-center size-6">
+              <ChevronDown size={12} className="text-muted-foreground" />
+            </div>
+          </div>
         </div>
       </div>
     </div>

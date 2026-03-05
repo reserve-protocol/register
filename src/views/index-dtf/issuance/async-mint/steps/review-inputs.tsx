@@ -6,10 +6,15 @@ import { indexDTFBasketAtom } from '@/state/dtf/atoms'
 import { formatCurrency, formatTokenAmount } from '@/utils'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { ArrowLeft } from 'lucide-react'
+import { useMemo } from 'react'
 import { formatUnits } from 'viem'
+import { Address } from 'viem'
 import {
+  ASYNC_MINT_BUFFER,
   collateralAllocationAtom,
   inputTokenAtom,
+  slippageAtom,
+  tokenPricesAtom,
   wizardStepAtom,
 } from '../atoms'
 import { useAllocationData } from '../hooks/use-collateral-allocation'
@@ -20,11 +25,22 @@ const ReviewInputs = () => {
   const basket = useAtomValue(indexDTFBasketAtom)
   const chainId = useAtomValue(chainIdAtom)
   const inputToken = useAtomValue(inputTokenAtom)
+  const slippage = useAtomValue(slippageAtom)
+  const tokenPrices = useAtomValue(tokenPricesAtom)
 
   // Ensure allocation data is loaded
   useAllocationData()
 
   const entries = Object.entries(allocation)
+
+  // Split: wallet tokens shown individually, swap tokens summarized as USDC
+  const walletEntries = entries.filter(([_, alloc]) => alloc.fromWallet > 0n)
+  const totalSwapUsd = useMemo(
+    () => entries.reduce((sum, [_, alloc]) => sum + alloc.usdValue, 0),
+    [entries]
+  )
+  const slippagePct = Number(slippage) / 10000
+  const bufferReturn = totalSwapUsd * (ASYNC_MINT_BUFFER + slippagePct)
 
   return (
     <div className="bg-secondary rounded-3xl p-1 w-full max-w-[468px] mx-auto my-4 flex flex-col max-h-[calc(100vh-120px-64px)] lg:max-h-[calc(100vh-120px)]">
@@ -43,9 +59,9 @@ const ReviewInputs = () => {
             Review your inputs
           </h2>
           <p className="text-base font-light">
-            Your collateral is used up to each token's basket weight or your
-            available balance, whichever is less. The remaining amount is covered
-            by {inputToken.symbol}.
+            Your collateral is used up to each token&apos;s basket weight or
+            your available balance, whichever is less. The remaining amount is
+            covered by {inputToken.symbol}.
           </p>
         </div>
       </div>
@@ -56,45 +72,82 @@ const ReviewInputs = () => {
           {entries.length === 0 ? (
             <Skeleton className="h-32 rounded-[20px]" />
           ) : (
-            entries.map(([address, alloc]) => {
-              const token = basket?.find(
-                (t) => t.address.toLowerCase() === address.toLowerCase()
-              )
-              const decimals = token?.decimals ?? 18
-              const totalAmount = alloc.fromWallet + alloc.fromSwap
-              const formattedAmount = formatTokenAmount(
-                Number(formatUnits(totalAmount, decimals))
-              )
+            <>
+              {/* Wallet token cards */}
+              {walletEntries.map(([address, alloc]) => {
+                const token = basket?.find(
+                  (t) => t.address.toLowerCase() === address.toLowerCase()
+                )
+                const decimals = token?.decimals ?? 18
+                const price = tokenPrices[address.toLowerCase() as Address] ?? 0
+                const walletAmount = Number(formatUnits(alloc.fromWallet, decimals))
+                const formattedAmount = formatTokenAmount(walletAmount)
+                const walletUsd = walletAmount * price
 
-              return (
-                <div
-                  key={address}
-                  className="bg-background rounded-[20px] p-4 flex flex-col gap-3"
-                >
+                return (
+                  <div
+                    key={address}
+                    className="bg-background rounded-[20px] p-4 flex flex-col gap-3"
+                  >
+                    <div className="flex items-center gap-3">
+                      <TokenLogoWithChain
+                        address={address}
+                        symbol={token?.symbol || ''}
+                        chain={chainId}
+                        size="xl"
+                      />
+                      <div className="flex flex-col">
+                        <span className="font-medium text-base">
+                          ${formatCurrency(walletUsd)}
+                        </span>
+                        <span className="text-sm text-muted-foreground font-light">
+                          {formattedAmount} {token?.symbol}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="flex flex-col gap-1">
+                      <span className="text-sm font-medium">
+                        {alloc.explanation}
+                      </span>
+                    </div>
+                  </div>
+                )
+              })}
+
+              {/* USDC covering the remainder */}
+              {totalSwapUsd > 0 && (
+                <div className="bg-background rounded-[20px] p-4 flex flex-col gap-3">
                   <div className="flex items-center gap-3">
                     <TokenLogoWithChain
-                      address={address}
-                      symbol={token?.symbol || ''}
+                      symbol={inputToken.symbol}
                       chain={chainId}
                       size="xl"
                     />
-                    <div className="flex flex-col">
-                      <span className="font-semibold text-base">
-                        ${formatCurrency(alloc.usdValue)}
+                    <div className="flex flex-col gap-0.5">
+                      <span className="font-medium text-base">
+                        ${formatCurrency(totalSwapUsd)}
                       </span>
                       <span className="text-sm text-muted-foreground font-light">
-                        {formattedAmount} {token?.symbol}
+                        {formatCurrency(totalSwapUsd)} {inputToken.symbol}
                       </span>
                     </div>
                   </div>
                   <div className="flex flex-col gap-1">
-                    <span className="text-sm font-semibold">
-                      {alloc.explanation}
+                    <span className="text-sm font-medium">
+                      Covering the remainder
+                    </span>
+                    <span className="text-sm text-muted-foreground font-light">
+                      Up to {formatCurrency(totalSwapUsd)} {inputToken.symbol}{' '}
+                      will be used to complete the mint.
+                      {bufferReturn > 0 && (
+                        <> Up to ${formatCurrency(bufferReturn)}{' '}
+                        {inputToken.symbol} may be returned.</>
+                      )}
                     </span>
                   </div>
                 </div>
-              )
-            })
+              )}
+            </>
           )}
         </div>
       </div>

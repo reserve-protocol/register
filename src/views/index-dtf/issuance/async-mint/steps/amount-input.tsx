@@ -1,17 +1,22 @@
 import { Button } from '@/components/ui/button'
 import { NumericalInput } from '@/components/ui/input'
 import { balancesAtom } from '@/state/atoms'
+import { indexDTFBasketAtom } from '@/state/dtf/atoms'
 import { formatCurrency } from '@/utils'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { ArrowLeft, Minus, Plus } from 'lucide-react'
-import { useEffect, useState } from 'react'
-import { formatUnits } from 'viem'
+import { useEffect, useMemo, useState } from 'react'
+import { Address, formatUnits } from 'viem'
 import {
   inputTokenAtom,
   mintAmountAtom,
   mintStrategyAtom,
+  selectedCollateralsAtom,
+  tokenPricesAtom,
+  walletBalancesAtom,
   wizardStepAtom,
 } from '../atoms'
+import { calculateMaxMintAmount } from '../utils'
 const AmountInput = () => {
   const setStep = useSetAtom(wizardStepAtom)
   const strategy = useAtomValue(mintStrategyAtom)
@@ -20,25 +25,62 @@ const AmountInput = () => {
   const balances = useAtomValue(balancesAtom)
   const [showExplanation, setShowExplanation] = useState(false)
 
+  const walletBalances = useAtomValue(walletBalancesAtom)
+  const tokenPrices = useAtomValue(tokenPricesAtom)
+  const selectedCollaterals = useAtomValue(selectedCollateralsAtom)
+  const basket = useAtomValue(indexDTFBasketAtom)
+
   const inputBalance = balances[inputToken.address]
   const availableBalance = inputBalance
     ? Number(formatUnits(inputBalance.value ?? 0n, inputToken.decimals))
     : 0
 
+  const decimalsMap = useMemo(() => {
+    const map: Record<Address, number> = {}
+    if (basket) {
+      for (const token of basket) {
+        map[token.address.toLowerCase() as Address] = token.decimals
+      }
+    }
+    return map
+  }, [basket])
+
+  const maxMintAmount = useMemo(
+    () =>
+      calculateMaxMintAmount({
+        inputTokenBalance: availableBalance,
+        walletBalances,
+        tokenPrices,
+        tokenDecimals: decimalsMap,
+        selectedCollaterals,
+        strategy,
+        inputTokenAddress: inputToken.address as Address,
+      }),
+    [
+      availableBalance,
+      walletBalances,
+      tokenPrices,
+      decimalsMap,
+      selectedCollaterals,
+      strategy,
+      inputToken,
+    ]
+  )
+
   // Default to max balance on mount
   useEffect(() => {
-    if (!amount && availableBalance > 0) {
-      setAmount(availableBalance.toString())
+    if (!amount && maxMintAmount > 0) {
+      setAmount(maxMintAmount.toString())
     }
-  }, [availableBalance]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [maxMintAmount]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const MIN_MINT_AMOUNT = 1
   const parsedAmount = Number(amount) || 0
   const isValid = parsedAmount >= MIN_MINT_AMOUNT
-  const exceedsBalance = parsedAmount > availableBalance
+  const exceedsBalance = parsedAmount > maxMintAmount
 
   const handleMax = () => {
-    setAmount(availableBalance.toString())
+    setAmount(maxMintAmount.toString())
   }
 
   const backStep =
@@ -94,7 +136,7 @@ const AmountInput = () => {
                 Avbl.
               </span>
               <span className="text-sm font-semibold">
-                ${formatCurrency(availableBalance)}
+                ${formatCurrency(maxMintAmount)}
               </span>
               <button
                 className="text-sm font-medium text-primary bg-muted/50 rounded-full px-2 py-0.5"
@@ -124,9 +166,9 @@ const AmountInput = () => {
               {showExplanation && (
                 <p className="text-sm text-muted-foreground font-light pb-2">
                   Your collateral tokens can only be used up to their weight in
-                  the DTF. The rest depends on your {inputToken.symbol} balance,
-                  which limits your total mint to $
-                  {formatCurrency(availableBalance)}.
+                  the DTF. The max includes your {inputToken.symbol} balance
+                  plus selected collateral value ($
+                  {formatCurrency(maxMintAmount)}).
                 </p>
               )}
             </div>
@@ -136,7 +178,7 @@ const AmountInput = () => {
 
       {exceedsBalance && (
         <div className="text-sm text-destructive px-4 py-1">
-          Exceeds your {inputToken.symbol} balance
+          Exceeds available balance
         </div>
       )}
 

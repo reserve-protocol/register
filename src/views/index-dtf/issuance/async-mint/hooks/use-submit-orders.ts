@@ -61,6 +61,8 @@ export function useSubmitOrders(refresh = false) {
     mutationKey: ['async-mint/submit-orders', chainId, address, refresh],
     mutationFn: async () => {
       if (!address || !orderBookApi || !chainId || !indexDTF) {
+        console.error('Submit orders: missing prerequisites', { address: !!address, orderBookApi: !!orderBookApi, chainId, indexDTF: !!indexDTF })
+        notifyError('Cannot submit', 'Wallet or protocol not ready. Please try again.')
         return { orders: [] }
       }
 
@@ -152,7 +154,9 @@ export function useSubmitOrders(refresh = false) {
       }
 
       // Submit orders to CowSwap orderbook with retries
+      // WHY: Save IDs as we go — if one order fails, we still track the rest
       const orderIds: string[] = []
+      let failedCount = 0
       for (const data of orderData) {
         let submitted = false
         for (let attempt = 0; attempt < 3; attempt++) {
@@ -180,37 +184,45 @@ export function useSubmitOrders(refresh = false) {
           }
         }
         if (!submitted) {
-          notifyError(
-            'Order submission failed',
-            'Orders signed on-chain but not submitted to CowSwap. Your tokens are safe. Please try again.'
-          )
-          throw new Error(
-            'Orders signed on-chain but not submitted to CowSwap. Your tokens are safe.'
-          )
+          failedCount++
         }
       }
 
-      // Update state
-      if (refresh) {
-        setOrderIds((prev) => [
-          ...prev.filter(
-            (id) =>
-              !failedOrders.map((o) => o.orderId).includes(id)
-          ),
-          ...orderIds,
-        ])
-        setOrders((prev) =>
-          prev.filter(
-            (o) =>
-              !failedOrders.map((fo) => fo.orderId).includes(o.orderId)
-          )
+      if (failedCount > 0) {
+        notifyError(
+          'Some orders failed',
+          `${failedCount} of ${orderData.length} orders could not be submitted. Your tokens are safe.`
         )
-      } else {
-        setOrderIds(orderIds)
       }
-      setOrdersCreatedAt(new Date().toISOString())
-      setQuotes({})
-      setStep('processing')
+
+      // Update state — proceed to processing even with partial success
+      if (orderIds.length > 0) {
+        if (refresh) {
+          setOrderIds((prev) => [
+            ...prev.filter(
+              (id) =>
+                !failedOrders.map((o) => o.orderId).includes(id)
+            ),
+            ...orderIds,
+          ])
+          setOrders((prev) =>
+            prev.filter(
+              (o) =>
+                !failedOrders.map((fo) => fo.orderId).includes(o.orderId)
+            )
+          )
+        } else {
+          setOrderIds(orderIds)
+        }
+        setOrdersCreatedAt(new Date().toISOString())
+        setQuotes({})
+        setStep('processing')
+      } else {
+        // All orders failed — don't transition
+        throw new Error(
+          'Orders signed on-chain but not submitted to CowSwap. Your tokens are safe.'
+        )
+      }
 
       return { orders: orderIds }
     },

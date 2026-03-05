@@ -2,16 +2,19 @@ import dtfIndexAbi from '@/abis/dtf-index-abi'
 import dtfIndexAbiV2 from '@/abis/dtf-index-abi-v2'
 import TokenLogo from '@/components/token-logo'
 import { Button } from '@/components/ui/button'
+import { TransactionButtonContainer } from '@/components/ui/transaction-button'
 import { useERC20Balances } from '@/hooks/useERC20Balance'
+import { notifyError } from '@/hooks/useNotification'
 import { chainIdAtom, walletAtom } from '@/state/atoms'
 import { indexDTFAtom, indexDTFPriceAtom, indexDTFVersionAtom } from '@/state/dtf/atoms'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { Loader } from 'lucide-react'
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Address, encodeFunctionData, erc20Abi, parseEther } from 'viem'
-import { useSendCalls, useWaitForCallsStatus } from 'wagmi'
+import { useSendCalls } from 'wagmi'
 import { useFolioDetails } from '../../async-swaps/hooks/useFolioDetails'
-import { ASYNC_MINT_BUFFER, mintAmountAtom, mintTxHashAtom, wizardStepAtom } from '../atoms'
+import { sendCallsWithRetry } from '../../async-swaps/hooks/utils'
+import { ASYNC_MINT_BUFFER, actualMintedSharesAtom, mintAmountAtom, mintTxHashAtom, wizardStepAtom } from '../atoms'
 
 const MintExecute = () => {
   const account = useAtomValue(walletAtom)
@@ -21,6 +24,7 @@ const MintExecute = () => {
   const dtfPrice = useAtomValue(indexDTFPriceAtom)
   const mintAmount = useAtomValue(mintAmountAtom)
   const setMintTxHash = useSetAtom(mintTxHashAtom)
+  const setActualMintedShares = useSetAtom(actualMintedSharesAtom)
   const setStep = useSetAtom(wizardStepAtom)
 
   const [isMinting, setIsMinting] = useState(false)
@@ -36,11 +40,7 @@ const MintExecute = () => {
   )
 
   const { data: folioDetails } = useFolioDetails({ shares: safeDtfPrice > 0 ? folioAmount : undefined })
-  const { data, sendCalls, isPending, isError } = useSendCalls()
-
-  const { data: callsStatus } = useWaitForCallsStatus({
-    id: data?.id || '',
-  })
+  const { sendCallsAsync } = useSendCalls()
 
   const { data: balanceData, isFetching: isFetchingBalanceData } =
     useERC20Balances(
@@ -67,65 +67,67 @@ const MintExecute = () => {
       : 0n
   }, [folioDetails?.mintValues, balanceData, folioAmount])
 
-  const handleMint = () => {
+  const handleMint = async () => {
     if (!account || !folioDetails || !indexDTF || maxMintableAmount === 0n) return
 
     setIsMinting(true)
 
-    // WHY: Approve mintValues + 1% buffer to absorb rounding when
-    // maxMintableAmount differs slightly from folioAmount
-    const approvalCalls = folioDetails.assets.map((asset, i) => ({
-      to: asset as Address,
-      value: 0n,
-      data: encodeFunctionData({
-        abi: erc20Abi,
-        functionName: 'approve',
-        args: [indexDTF.id, (folioDetails.mintValues[i] * 101n) / 100n],
-      }),
-    }))
+    try {
+      // WHY: Scale approvals from folioAmount to maxMintableAmount + 1% buffer
+      // mintValues are proportional to folioAmount, but we mint maxMintableAmount
+      const approvalCalls = folioDetails.assets.map((asset, i) => {
+        const scaledAmount = folioAmount > 0n
+          ? (folioDetails.mintValues[i] * maxMintableAmount) / folioAmount
+          : folioDetails.mintValues[i]
+        return {
+          to: asset as Address,
+          value: 0n,
+          data: encodeFunctionData({
+            abi: erc20Abi,
+            functionName: 'approve',
+            args: [indexDTF.id, (scaledAmount * 101n) / 100n],
+          }),
+        }
+      })
 
-    const mintCall = {
-      to: indexDTF.id as Address,
-      value: 0n,
-      data:
-        indexDTFVersion === '2.0.0'
-          ? encodeFunctionData({
-              abi: dtfIndexAbiV2,
-              functionName: 'mint',
-              args: [maxMintableAmount, account, (maxMintableAmount * 99n) / 100n],
-            })
-          : encodeFunctionData({
-              abi: dtfIndexAbi,
-              functionName: 'mint',
-              args: [maxMintableAmount, account, (maxMintableAmount * 99n) / 100n],
-            }),
-    }
+      const mintCall = {
+        to: indexDTF.id as Address,
+        value: 0n,
+        data:
+          indexDTFVersion === '2.0.0'
+            ? encodeFunctionData({
+                abi: dtfIndexAbiV2,
+                functionName: 'mint',
+                args: [maxMintableAmount, account, (maxMintableAmount * 99n) / 100n],
+              })
+            : encodeFunctionData({
+                abi: dtfIndexAbi,
+                functionName: 'mint',
+                args: [maxMintableAmount, account, (maxMintableAmount * 99n) / 100n],
+              }),
+      }
 
-    sendCalls({
-      calls: [...approvalCalls, mintCall],
-      forceAtomic: true,
-    })
-  }
+      const result = await sendCallsWithRetry(
+        sendCallsAsync,
+        chainId,
+        [...approvalCalls, mintCall],
+        account as Address
+      )
 
-  // Handle success/failure from callsStatus
-  useEffect(() => {
-    if (callsStatus?.status === 'success') {
-      const receipts = callsStatus.receipts ?? []
-      const txHash = receipts.slice(-1)[0]?.transactionHash || 'tx'
-      setMintTxHash(txHash)
+      setActualMintedShares(maxMintableAmount)
+      // WHY: wallet_sendCalls returns a bundle ID, not a tx hash.
+      // Store it — success-header validates format before linking to explorer.
+      setMintTxHash(result?.id)
       setStep('success')
+    } catch (error) {
+      console.error('Mint execution failed:', error)
+      if (error instanceof Error && error.message !== 'USER_CANCELLED_TX') {
+        notifyError('Mint failed', 'Transaction failed. Please try again.')
+      }
+    } finally {
       setIsMinting(false)
     }
-    if (callsStatus?.status === 'failure') {
-      setIsMinting(false)
-    }
-  }, [callsStatus?.status, callsStatus?.receipts])
-
-  useEffect(() => {
-    if (isError) {
-      setIsMinting(false)
-    }
-  }, [isError])
+  }
 
   if (!indexDTF) return null
 
@@ -154,20 +156,22 @@ const MintExecute = () => {
     )
   }
 
-  const canMint = maxMintableAmount > 0n && !isFetchingBalanceData && !isPending
+  const canMint = maxMintableAmount > 0n && !isFetchingBalanceData
 
   return (
-    <Button
-      size="lg"
-      className="w-full h-[49px] rounded-[20px]"
-      onClick={handleMint}
-      disabled={!canMint}
-    >
-      <span className="flex items-center gap-1">
-        <span className="font-bold">Approve & Mint</span>
-        <span className="font-light">- Step 2/2</span>
-      </span>
-    </Button>
+    <TransactionButtonContainer chain={chainId}>
+      <Button
+        size="lg"
+        className="w-full h-[49px] rounded-[12px]"
+        onClick={handleMint}
+        disabled={!canMint}
+      >
+        <span className="flex items-center gap-1">
+          <span className="font-bold">Approve & Mint</span>
+          <span className="font-light opacity-80">- Step 2/2</span>
+        </span>
+      </Button>
+    </TransactionButtonContainer>
   )
 }
 

@@ -5,7 +5,7 @@ import { AppDataHash, SigningScheme } from '@cowprotocol/cow-sdk'
 import { ViemAdapter } from '@cowprotocol/sdk-viem-adapter'
 import { useMutation } from '@tanstack/react-query'
 import { useAtomValue, useSetAtom } from 'jotai'
-import { Address } from 'viem'
+import { Address, maxUint256 } from 'viem'
 import { usePublicClient, useSendCalls } from 'wagmi'
 import { getCowswapQuote } from '../../async-swaps/hooks/useQuote'
 import {
@@ -122,6 +122,7 @@ export function useReverseOrders() {
           address: address as Address,
           token: q.tokenAddress,
           requiredAmount: q.amount,
+          approvalAmount: maxUint256,
           spender: COWSWAP_VAULT as Address,
         })
         if (approval) txData.push(approval)

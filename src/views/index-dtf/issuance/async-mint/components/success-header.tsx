@@ -5,7 +5,7 @@ import { indexDTFAtom, indexDTFBasketAtom } from '@/state/dtf/atoms'
 import { shortenAddress } from '@/utils'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { useAtomValue } from 'jotai'
-import { ArrowUpRight, Check, ChevronDown, ChevronUp, X } from 'lucide-react'
+import { ArrowUpRight, Check, ChevronRight, X } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
@@ -13,20 +13,41 @@ const SuccessHeader = ({
   showTxs,
   onToggleTxs,
   onClose,
+  txHash,
 }: {
   showTxs: boolean
   onToggleTxs: () => void
   onClose: () => void
+  txHash?: string
 }) => {
   const indexDTF = useAtomValue(indexDTFAtom)
   const basket = useAtomValue(indexDTFBasketAtom)
   const chainId = useAtomValue(chainIdAtom)
   const [showConfetti, setShowConfetti] = useState(true)
 
+  // WHY: wallet_sendCalls returns a bundle ID, not always a tx hash
+  const isValidTxHash = txHash && /^0x[a-fA-F0-9]{64}$/.test(txHash)
+
   useEffect(() => {
     const timer = setTimeout(() => setShowConfetti(false), 2000)
     return () => clearTimeout(timer)
   }, [])
+
+  const txBadge = (
+    <div className="flex items-center bg-background rounded-[12px] p-0.5">
+      <div className="bg-primary rounded-[10px] flex items-center justify-center size-7 text-primary-foreground">
+        <Check size={14} />
+      </div>
+      {isValidTxHash && (
+        <div className="flex items-center gap-0.5 px-2">
+          <span className="text-sm font-light">
+            {shortenAddress(txHash)}
+          </span>
+          <ArrowUpRight size={16} className="text-muted-foreground" />
+        </div>
+      )}
+    </div>
+  )
 
   return (
     <>
@@ -49,33 +70,23 @@ const SuccessHeader = ({
       )}
       <div className="bg-[url('https://storage.reserve.org/tree.png')] bg-cover bg-center bg-no-repeat min-h-[140px] rounded-t-3xl p-6">
         <div className="flex items-center justify-between">
-          <Link
-            to={getExplorerLink(
-              indexDTF?.id || '',
-              chainId,
-              ExplorerDataType.TOKEN
-            )}
-            target="_blank"
-          >
-            <Button
-              variant="ghost"
-              size="xs"
-              className="flex items-center gap-1 rounded-full bg-background h-9 pl-0.5"
+          {isValidTxHash ? (
+            <Link
+              to={getExplorerLink(
+                txHash,
+                chainId,
+                ExplorerDataType.TRANSACTION
+              )}
+              target="_blank"
             >
-              <div className="p-2 bg-primary rounded-full text-white">
-                <Check size={16} />
-              </div>
-              <span className="font-light">
-                {shortenAddress(indexDTF?.id || '')}
-              </span>
-              <ArrowUpRight size={16} className="text-muted-foreground" />
-            </Button>
-          </Link>
-          <div className="flex items-center gap-1">
-            <Button
-              variant="ghost"
-              size="xs"
-              className="flex items-center gap-1 rounded-full bg-background h-9"
+              {txBadge}
+            </Link>
+          ) : (
+            txBadge
+          )}
+          <div className="flex items-center gap-1.5">
+            <button
+              className="flex items-center gap-1 bg-background rounded-[12px] h-8 px-2 transition-colors hover:bg-primary hover:text-primary-foreground"
               onClick={onToggleTxs}
             >
               <StackTokenLogo
@@ -88,17 +99,15 @@ const SuccessHeader = ({
                 reverseStack
                 outsource
               />
-              <span className="font-light">All Txs</span>
-              {showTxs ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
-            </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="rounded-full bg-background h-8 w-8"
+              <span className="text-sm font-light">All Txs</span>
+              <ChevronRight size={14} />
+            </button>
+            <button
+              className="bg-background rounded-[12px] h-8 w-8 flex items-center justify-center transition-colors hover:bg-primary hover:text-primary-foreground"
               onClick={onClose}
             >
               <X size={16} />
-            </Button>
+            </button>
           </div>
         </div>
       </div>

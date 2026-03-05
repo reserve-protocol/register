@@ -7,6 +7,7 @@ import { ArrowLeft, ArrowRight, Check, Plus, Undo2 } from 'lucide-react'
 import { useMemo } from 'react'
 import { Address, formatEther, formatUnits } from 'viem'
 import {
+  acquiredBalancesAtom,
   folioDetailsAtom,
   inputTokenAtom,
   leftoverCollateralAtom,
@@ -41,6 +42,7 @@ const RecoveryOptions = () => {
   const slippage = useAtomValue(slippageAtom)
   const basket = useAtomValue(indexDTFBasketAtom)
 
+  const acquiredBalances = useAtomValue(acquiredBalancesAtom)
   const { reverseAsync, isPending: isReversing } = useReverseOrders()
 
   const parsedAmount = Number(mintAmount)
@@ -86,14 +88,15 @@ const RecoveryOptions = () => {
 
   const reducedDtfAmount = Number(formatEther(reduced.reducedShares))
 
+  // WHY: Only estimate reversal for what we acquired through orders, not pre-existing wallet balances
   const reversal = useMemo(() => {
     return calculateReversalEstimate(
-      walletBalances,
+      acquiredBalances,
       tokenPrices,
       decimalsMap as Record<Address, number>,
       slippageBps
     )
-  }, [walletBalances, tokenPrices, decimalsMap, slippageBps])
+  }, [acquiredBalances, tokenPrices, decimalsMap, slippageBps])
 
   const unusedCollateralValue = useMemo(() => {
     let total = 0
@@ -119,7 +122,8 @@ const RecoveryOptions = () => {
   const handleCancel = async () => {
     setRecoveryChoice('cancel')
     try {
-      await reverseAsync(walletBalances)
+      // WHY: Only reverse what we acquired through orders, not pre-existing wallet balances
+      await reverseAsync(acquiredBalances)
       setStep('success')
     } catch {
       // User rejected or tx failed — stay on recovery screen

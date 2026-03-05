@@ -83,7 +83,9 @@ const OrderRow = ({
   const token = data?.buyToken
   const buyAmount = data?.buyAmount
   const sellAmount = data?.sellAmount
-  const tokenInfo = basket?.find((t) => t.address === token)
+  const tokenInfo = basket?.find(
+    (t) => t.address.toLowerCase() === token?.toLowerCase()
+  )
 
   return (
     <div className="flex items-center justify-between gap-2 border-b border-border py-3 last:border-b-0">
