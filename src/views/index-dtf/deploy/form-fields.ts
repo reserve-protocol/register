@@ -87,9 +87,6 @@ export const DeployFormSchema = z
       .max(12, 'Token symbol must be 12 characters or less')
       .refine((value) => !value.includes(' '), {
         message: 'Token symbol cannot contain spaces',
-      })
-      .refine(noSpecialCharacters, {
-        message: 'Token symbol cannot contain special characters or emojis',
       }),
     mandate: z.string().optional(),
     chain: z
@@ -103,7 +100,9 @@ export const DeployFormSchema = z
           message: 'Chain must be either Mainnet, Base or Binance Smart Chain',
         }
       ),
-    initialValue: z.coerce.number<number>().positive('Initial value must be positive'),
+    initialValue: z.coerce
+      .number<number>()
+      .positive('Initial value must be positive'),
     tokensDistribution: z.array(
       z.object({
         address: z
