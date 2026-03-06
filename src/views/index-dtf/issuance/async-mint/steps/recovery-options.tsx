@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button'
+import { balancesAtom } from '@/state/atoms'
 import { indexDTFAtom, indexDTFPriceAtom } from '@/state/dtf/atoms'
 import { indexDTFBasketAtom } from '@/state/dtf/atoms'
 import { formatCurrency, formatTokenAmount } from '@/utils'
@@ -42,11 +43,17 @@ const RecoveryOptions = () => {
   const slippage = useAtomValue(slippageAtom)
   const basket = useAtomValue(indexDTFBasketAtom)
 
+  const balances = useAtomValue(balancesAtom)
   const acquiredBalances = useAtomValue(acquiredBalancesAtom)
   const { reverseAsync, isPending: isReversing } = useReverseOrders()
 
   const parsedAmount = Number(mintAmount)
   const slippageBps = Number(slippage)
+
+  const inputTokenBalance = useMemo(() => {
+    const bal = balances[inputToken.address]
+    return bal ? Number(formatUnits(bal.value ?? 0n, inputToken.decimals)) : 0
+  }, [balances, inputToken])
 
   const decimalsMap = useMemo(() => {
     const map: Record<Address, number> = {}
@@ -71,6 +78,8 @@ const RecoveryOptions = () => {
   const topUp = useMemo(() => {
     return calculateTopUp(parsedAmount, totalAcquiredUsd)
   }, [parsedAmount, totalAcquiredUsd])
+
+  const canTopUp = inputTokenBalance >= topUp.topUpAmount
 
   const reduced = useMemo(() => {
     if (!folioDetails) {
@@ -157,8 +166,9 @@ const RecoveryOptions = () => {
       <div className="flex flex-col gap-0.5">
         {/* Option 1: Top up */}
         <button
-          className="bg-background rounded-[20px] p-3 w-full text-left transition-colors group"
+          className={`bg-background rounded-[20px] p-3 w-full text-left transition-colors ${canTopUp ? 'group' : 'opacity-50 cursor-not-allowed'}`}
           onClick={handleTopUp}
+          disabled={!canTopUp}
         >
           <div className="flex items-center justify-between p-3">
             <div className="flex items-center gap-3 flex-1 min-w-0">
@@ -170,12 +180,23 @@ const RecoveryOptions = () => {
                   Top up and mint full amount
                 </span>
                 <span className="text-sm text-muted-foreground font-light">
-                  Approve an additional{' '}
-                  <span className="font-semibold text-foreground">
-                    ${formatCurrency(topUp.topUpAmount)} {inputToken.symbol}
-                  </span>{' '}
-                  to receive {formatTokenAmount(parsedAmount / (dtfPrice || 1))}{' '}
-                  {indexDTF?.token.symbol}
+                  {canTopUp ? (
+                    <>
+                      Approve an additional{' '}
+                      <span className="font-semibold text-foreground">
+                        ${formatCurrency(topUp.topUpAmount)} {inputToken.symbol}
+                      </span>{' '}
+                      to receive{' '}
+                      {formatTokenAmount(parsedAmount / (dtfPrice || 1))}{' '}
+                      {indexDTF?.token.symbol}
+                    </>
+                  ) : (
+                    <>
+                      Requires ${formatCurrency(topUp.topUpAmount)}{' '}
+                      {inputToken.symbol} but you only have $
+                      {formatCurrency(inputTokenBalance)}
+                    </>
+                  )}
                 </span>
               </div>
             </div>
