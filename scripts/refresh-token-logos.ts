@@ -8,6 +8,8 @@
 import * as fs from 'fs'
 import * as path from 'path'
 import { fileURLToPath } from 'url'
+import { getAddress } from 'viem'
+import { mainnet, base, arbitrum, bsc } from 'viem/chains'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -18,32 +20,129 @@ const ONE_WEEK = 7 * 24 * 60 * 60 * 1000
 
 // Known local assets - skip these (copied from token-logo/index.tsx)
 const SVGS = new Set([
-  'aave', 'dai', 'cdai', 'rsr', 'strsr', 'rsv', 'tusd', 'usdt', 'cusdt',
-  'usdc', 'cusdc', 'usdbc', 'usdp', 'wsgusdbc', 'wcusdcv3', 'wcusdtv3',
-  'wcusdbcv3', 'wbtc', 'cwbtc', 'ceth', 'eth', 'busd', 'weth', 'sadai',
-  'sausdc', 'sabasusdbc', 'sausdt', 'eurt', 'fusdc', 'fusdt', 'fdai',
-  'wcUSDCv3', 'wsteth', 'cbeth', 'meusd', 'reth', 'stkcvx3crv',
-  'stkcvxcrv3crypto', 'stkcvxeusd3crv-f', 'stkcvxeth+eth', 'stkcvxeth+eth-f',
-  'stkcvxmim-3lp3crv-f', 'sdai', 'mrp-ausdt', 'mrp-ausdc', 'mrp-adai',
-  'mrp-awbtc', 'mrp-aweth', 'mrp-awteth', 'mrp-asteth', 'frax', 'crvusd',
-  'mkusd', 'eusd', 're7weth', 'saethusdc', 'saethpyusd', 'pyusd',
-  'sabasusdc', 'saarbusdcn', 'sfrxeth', 'usd+', 'pxeth', 'apxeth', 'susde',
-  'sdt', 'wusdm', 'eth+', 'wsamm-eusd/usdc', 'oeth', 'woeth', 'susds',
-  'saethusdt', 'saethrlusd', 'cro', 'xlm', 'hbar', 'hype', 'sui', 'fxs',
-  'weeth', 'king',
+  'aave',
+  'dai',
+  'cdai',
+  'rsr',
+  'strsr',
+  'rsv',
+  'tusd',
+  'usdt',
+  'cusdt',
+  'usdc',
+  'cusdc',
+  'usdbc',
+  'usdp',
+  'wsgusdbc',
+  'wcusdcv3',
+  'wcusdtv3',
+  'wcusdbcv3',
+  'wbtc',
+  'cwbtc',
+  'ceth',
+  'eth',
+  'busd',
+  'weth',
+  'sadai',
+  'sausdc',
+  'sabasusdbc',
+  'sausdt',
+  'eurt',
+  'fusdc',
+  'fusdt',
+  'fdai',
+  'wcUSDCv3',
+  'wsteth',
+  'cbeth',
+  'meusd',
+  'reth',
+  'stkcvx3crv',
+  'stkcvxcrv3crypto',
+  'stkcvxeusd3crv-f',
+  'stkcvxeth+eth',
+  'stkcvxeth+eth-f',
+  'stkcvxmim-3lp3crv-f',
+  'sdai',
+  'mrp-ausdt',
+  'mrp-ausdc',
+  'mrp-adai',
+  'mrp-awbtc',
+  'mrp-aweth',
+  'mrp-awteth',
+  'mrp-asteth',
+  'frax',
+  'crvusd',
+  'mkusd',
+  'eusd',
+  're7weth',
+  'saethusdc',
+  'saethpyusd',
+  'pyusd',
+  'sabasusdc',
+  'saarbusdcn',
+  'sfrxeth',
+  'usd+',
+  'pxeth',
+  'apxeth',
+  'susde',
+  'sdt',
+  'wusdm',
+  'eth+',
+  'wsamm-eusd/usdc',
+  'oeth',
+  'woeth',
+  'susds',
+  'saethusdt',
+  'saethrlusd',
+  'cro',
+  'xlm',
+  'hbar',
+  'hype',
+  'sui',
+  'fxs',
+  'weeth',
+  'king',
 ])
 
 const PNGS = new Set([
-  'steakusdc', 'mai', 'dola', 'fxusd', 'alusd', 'ethx', 'dtf', 'trx', 'wbnb',
-  'toncoin', 'bgb', 'sttao', 'bonk', 'moomorpho-steakhouse-usdc',
-  'moomorpho-steakhouse-wbtc', 'moomorpho-steakhouse-weth',
-  'moomorpho-smokehouse-wsteth', 'moomorpho-smokehouse-usdc', 'ssr',
-  'avgjoescrypto', 'eat',
+  'syrupusdc',
+  'mai',
+  'dola',
+  'fxusd',
+  'alusd',
+  'ethx',
+  'dtf',
+  'trx',
+  'wbnb',
+  'toncoin',
+  'bgb',
+  'sttao',
+  'bonk',
+  'moomorpho-steakhouse-usdc',
+  'moomorpho-steakhouse-wbtc',
+  'moomorpho-steakhouse-weth',
+  'moomorpho-smokehouse-wsteth',
+  'moomorpho-smokehouse-usdc',
+  'ssr',
+  'avgjoescrypto',
+  'eat',
+  'cbbtc',
 ])
 
 const EXTERNAL_ASSETS = new Set([
-  'leo', 'okb', 'gt', 'kas', 'mnt', 'ena', 'wld', 'jup', 'ray', 'paxg',
-  'gala', 'pyth', 'cake',
+  'leo',
+  'okb',
+  'gt',
+  'kas',
+  'mnt',
+  'ena',
+  'wld',
+  'jup',
+  'ray',
+  'paxg',
+  'gala',
+  'pyth',
+  'cake',
 ])
 
 function hasLocalAsset(symbol: string): boolean {
@@ -94,26 +193,41 @@ async function tryImageUrl(url: string): Promise<boolean> {
   }
 }
 
+const TRUST_WALLET_CHAINS: Record<number, string> = {
+  [mainnet.id]: 'ethereum',
+  [base.id]: 'base',
+  [arbitrum.id]: 'arbitrum',
+  [bsc.id]: 'smartchain',
+}
+
+function getTrustWalletUrl(address: string, chainId: number): string | null {
+  const chainName = TRUST_WALLET_CHAINS[chainId]
+  if (!chainName) return null
+  const checksumAddress = getAddress(address)
+  return `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/${chainName}/assets/${checksumAddress}/logo.png`
+}
+
 async function resolveLogoUrl(
   address: string,
   chainId: number
 ): Promise<string | null> {
-  const dexscreenerUrl = `https://dd.dexscreener.com/ds-data/tokens/base/${address.toLowerCase()}.png?size=lg`
+  const smolDappUrl = `https://raw.githubusercontent.com/SmolDapp/tokenAssets/main/tokens/${chainId}/${address.toLowerCase()}/logo-128.png`
+  const trustWalletUrl = getTrustWalletUrl(address, chainId)
   const llamaUrl = `https://token-icons.llamao.fi/icons/tokens/${chainId}/${address.toLowerCase()}`
 
-  // Try both sources in parallel, return first success
-  const results = await Promise.allSettled([
-    tryImageUrl(dexscreenerUrl).then((ok) =>
-      ok ? dexscreenerUrl : Promise.reject()
-    ),
-    tryImageUrl(llamaUrl).then((ok) => (ok ? llamaUrl : Promise.reject())),
-  ])
+  // Try SmolDapp first
+  if (await tryImageUrl(smolDappUrl)) {
+    return smolDappUrl
+  }
 
-  // Prefer dexscreener if both succeed
-  for (const result of results) {
-    if (result.status === 'fulfilled') {
-      return result.value
-    }
+  // Then Trust Wallet
+  if (trustWalletUrl && (await tryImageUrl(trustWalletUrl))) {
+    return trustWalletUrl
+  }
+
+  // Then llamao.fi
+  if (await tryImageUrl(llamaUrl)) {
+    return llamaUrl
   }
 
   return null
@@ -125,9 +239,7 @@ function loadExistingMappings(outputPath: string): Record<string, string> {
   }
   try {
     const content = fs.readFileSync(outputPath, 'utf-8')
-    const match = content.match(
-      /TOKEN_LOGO_MAPPINGS[^=]*=\s*(\{[\s\S]*?\n\})/
-    )
+    const match = content.match(/TOKEN_LOGO_MAPPINGS[^=]*=\s*(\{[\s\S]*?\n\})/)
     if (match) {
       return JSON.parse(match[1])
     }
@@ -138,13 +250,14 @@ function loadExistingMappings(outputPath: string): Record<string, string> {
 }
 
 async function main() {
+  const forceRefresh = process.argv.includes('--force')
   const outputPath = path.join(
     __dirname,
     '../src/components/token-logo/token-logo-mappings.ts'
   )
 
   // Check if we should skip (file exists and is less than a week old)
-  if (fs.existsSync(outputPath)) {
+  if (!forceRefresh && fs.existsSync(outputPath)) {
     try {
       const content = fs.readFileSync(outputPath, 'utf-8')
       const match = content.match(/LAST_UPDATED = (\d+)/)
@@ -162,18 +275,15 @@ async function main() {
 
   console.log('Refreshing token logo mappings...\n')
 
-  // Load existing mappings to validate and reuse
-  const existingMappings = loadExistingMappings(outputPath)
+  // Load existing mappings to validate and reuse (skip if --force)
+  const existingMappings = forceRefresh ? {} : loadExistingMappings(outputPath)
   const existingCount = Object.keys(existingMappings).length
   if (existingCount > 0) {
     console.log(`Loaded ${existingCount} existing mappings to validate\n`)
   }
 
   // Collect all unique tokens by symbol
-  const tokensBySymbol = new Map<
-    string,
-    { address: string; chainId: number }
-  >()
+  const tokensBySymbol = new Map<string, { address: string; chainId: number }>()
 
   for (const chainId of CHAINS_TO_FETCH) {
     console.log(`Fetching DTFs for chain ${chainId}...`)
