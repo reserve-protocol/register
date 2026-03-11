@@ -10,7 +10,7 @@ import { useAtomValue } from 'jotai'
 import { ReactNode } from 'react'
 import { ArrowLeft, ArrowUpRight } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
-import { shortenString } from 'utils'
+import { normalizeDescription, shortenString } from 'utils'
 import { ROUTES } from 'utils/constants'
 import { proposalDetailAtom } from './atom'
 import ProposalSnapshot from './ProposalSnapshot'
@@ -63,7 +63,7 @@ const ProposalHeader = () => {
   let rfcLink = ''
 
   if (proposal?.description) {
-    const [heading, rfc, _] = proposal.description.split(/\r?\n/)
+    const [heading, rfc, _] = normalizeDescription(proposal.description).split(/\r?\n/)
     title = heading.replaceAll('#', '').trim()
     if (rfc?.includes('forum')) {
       rfcLink = rfc.match(/\(([^)]+)\)/)?.[1] ?? ''

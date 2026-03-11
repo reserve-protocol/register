@@ -96,7 +96,7 @@ const RolesEdit = ({
         </span>
       )}
       {addresses.map((addr, index) => (
-        <div className="flex items-center flex-wrap mt-3" key={addr}>
+        <div className="flex items-center flex-wrap mt-3" key={`${addr}-${index}`}>
           <div className="flex items-center mr-2">
             <div
               className={cn(

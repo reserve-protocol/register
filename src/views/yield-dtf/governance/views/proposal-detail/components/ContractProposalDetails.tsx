@@ -77,6 +77,16 @@ const Header = ({ label, address }: { label: string; address: string }) => {
 const JSONPreview = ({ data }: { data: any }) => {
   const { theme } = useTheme()
 
+  if (data.length === 1 && typeof data[0] === 'object') {
+    return (
+      <JsonView
+        shouldExpandNode={collapseAllNested}
+        style={theme === MODES.LIGHT ? defaultStyles : darkStyles}
+        data={data[0]}
+      />
+    )
+  }
+
   if (data.length > 1) {
     return (
       <JsonView
@@ -89,11 +99,7 @@ const JSONPreview = ({ data }: { data: any }) => {
 
   return (
     <span className="font-bold break-all">
-      {data && data[0] !== undefined
-        ? typeof data[0] === 'object'
-          ? safeJsonFormat(data[0])
-          : data[0].toString()
-        : 'None'}
+      {data && data[0] !== undefined ? data[0].toString() : 'None'}
     </span>
   )
 }

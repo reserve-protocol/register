@@ -97,6 +97,8 @@ export const GrantRolePreview = ({
       'Brand Manager',
     '0x13ff1b2625181b311f257c723b5e6d366eb318b212d9dd694c48fcf227659df5':
       'Auction Launcher',
+    '0x4ff6ae4d6a29e79ca45c6441bdc89b93878ac6118485b33c8baa3749fc3cb130':
+      'Rebalance Manager',
   }
 
   const roleName = roleNames[roleHash] || 'Unknown Role'
@@ -144,6 +146,8 @@ export const RevokeRolePreview = ({
       'Brand Manager',
     '0x13ff1b2625181b311f257c723b5e6d366eb318b212d9dd694c48fcf227659df5':
       'Auction Launcher',
+    '0x4ff6ae4d6a29e79ca45c6441bdc89b93878ac6118485b33c8baa3749fc3cb130':
+      'Rebalance Manager',
   }
 
   const roleName = roleNames[roleHash] || 'Unknown Role'

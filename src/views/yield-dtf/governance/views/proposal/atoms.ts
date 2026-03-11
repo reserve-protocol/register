@@ -68,6 +68,10 @@ export const backupChangesAtom = atomWithReset<BackupChanges>({
 
 export const basketChangesAtom = atomWithReset<CollateralChange[]>([])
 
+export const pauseIssuanceAtom = atomWithReset<'none' | 'pause' | 'unpause'>(
+  'none'
+)
+
 export const isAssistedUpgradeAtom = atom(false)
 export const isProposalValidAtom = atom(false)
 export const isProposalEditingAtom = atom(true)

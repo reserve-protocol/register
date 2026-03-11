@@ -172,6 +172,7 @@ const simulateNew = async (
       ? {
           [`${proposalCoreKey}.voteEnd`]: (simTimestamp - 100n).toString(),
           [`${proposalCoreKey}.voteStart`]: (simTimestamp - 100n).toString(),
+          [`${proposalCoreKey}.proposedAt`]: (simTimestamp - 100n).toString(),
         }
       : {
           [`${proposalCoreKey}.voteEnd._deadline`]: (

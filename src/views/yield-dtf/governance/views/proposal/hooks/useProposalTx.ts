@@ -34,6 +34,7 @@ import {
   rTokenConfigurationAtom,
   rTokenContractsAtom,
   rTokenGovernanceAtom,
+  rTokenManagersAtom,
 } from 'state/atoms'
 import { rTokenCollateralDetailedAtom } from 'state/rtoken/atoms/rTokenBackingDistributionAtom'
 import { ContractKey } from 'state/rtoken/atoms/rTokenContractsAtom'
@@ -55,6 +56,7 @@ import {
   isNewBasketProposedAtom,
   parameterContractMapAtom,
   parametersChangesAtom,
+  pauseIssuanceAtom,
   revenueSplitChangesAtom,
   roleChangesAtom,
 } from '../atoms'
@@ -156,6 +158,8 @@ const useProposalTx = () => {
   const spell4_2_0 = useAtomValue(spell4_2_0UpgradeAtom)
   const spell3_4_0Contract = useAtomValue(spell3_4_0AddressAtom)
   const spell4_2_0Contract = useAtomValue(spell4_2_0AddressAtom)
+  const pauseAction = useAtomValue(pauseIssuanceAtom)
+  const rTokenManagers = useAtomValue(rTokenManagersAtom)
   const rTokenConfig = useAtomValue(rTokenConfigurationAtom)
   const autoRegisterBasketAssets = useAtomValue(autoRegisterBasketAssetsAtom)
   const autoRegisterBackupAssets = useAtomValue(autoRegisterBackupAssetsAtom)
@@ -643,6 +647,46 @@ const useProposalTx = () => {
             ],
           })
         )
+      }
+      /* ##########################
+      ## Parse pause issuance  ##
+      ############################# */
+      if (pauseAction !== 'none' && contracts?.main && governance.timelock) {
+        const timelockIsPauser = rTokenManagers.pausers.some(
+          (p) => p.toLowerCase() === governance.timelock!.toLowerCase()
+        )
+        const fnName =
+          pauseAction === 'pause' ? 'pauseIssuance' : 'unpauseIssuance'
+
+        if (!timelockIsPauser) {
+          addresses.push(contracts.main.address)
+          calls.push(
+            encodeFunctionData({
+              abi: Main,
+              functionName: 'grantRole',
+              args: [ROLES.pausers as Hex, governance.timelock as Address],
+            })
+          )
+        }
+
+        addresses.push(contracts.main.address)
+        calls.push(
+          encodeFunctionData({
+            abi: Main,
+            functionName: fnName,
+          })
+        )
+
+        if (!timelockIsPauser) {
+          addresses.push(contracts.main.address)
+          calls.push(
+            encodeFunctionData({
+              abi: Main,
+              functionName: 'revokeRole',
+              args: [ROLES.pausers as Hex, governance.timelock as Address],
+            })
+          )
+        }
       }
     } catch (e) {
       console.error('Error generating proposal call', e)

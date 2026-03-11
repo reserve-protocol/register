@@ -15,6 +15,7 @@ import RolesProposal from './RolesProposal'
 import SpellUpgrade3_4_0 from './SpellUpgrade3_4_0'
 import SpellUpgrade4_2_0 from './SpellUpgrade4_2_0'
 import TraderImplementationProposal from './TraderImplementationProposal'
+import PauseIssuanceProposal from './PauseIssuanceProposal'
 import UnregisterProposal from './UnregisterProposal'
 
 const ALLOWED_RTOKENS = [
@@ -34,6 +35,7 @@ const ProposalForm = () => {
       OtherSetup,
       TraderImplementationProposal,
       RolesProposal,
+      PauseIssuanceProposal,
       RevenueSplit,
       UnregisterProposal,
       RegisterProposal,
