@@ -42,6 +42,7 @@ import IndexDTFSettings from './views/index-dtf/settings'
 import AllYieldDTFList from './views/tokens/Tokens'
 import InternalDTFList from './views/internal/dtf-list'
 import InternalDTFListed from './views/internal/dtf-listed'
+import InternalYieldDTF from './views/internal/yield-dtf'
 import IndexDTFFactsheet from './views/index-dtf/factsheet'
 import EarnIndexDTF from './views/earn/views/index-dtf'
 import EarnYieldDTF from './views/earn/views/yield-dtf'
@@ -54,6 +55,7 @@ const AppRoutes = () => (
     {/* Internal routes */}
     <Route path="/internal/dtf-list" element={<InternalDTFList />} />
     <Route path="/internal/dtf-listed" element={<InternalDTFListed />} />
+    <Route path="/internal/yield-dtf" element={<InternalYieldDTF />} />
     <Route path={ROUTES.BRIDGE} element={<Bridge />} />
     <Route path={ROUTES.DEPLOY_YIELD} element={<DeployYieldDTF />} />
     <Route path={ROUTES.DEPLOY_INDEX} element={<DeployComingSoon />} />
