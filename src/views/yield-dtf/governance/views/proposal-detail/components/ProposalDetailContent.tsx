@@ -3,6 +3,7 @@ import { lazy, Suspense, useState } from 'react'
 import ProposalDetail from '@/views/yield-dtf/governance/components/ProposalDetailPreview'
 import { proposalDetailAtom } from '../atom'
 import Skeleton from 'react-loading-skeleton'
+import { normalizeDescription } from 'utils'
 import { cn } from '@/lib/utils'
 
 const DescriptionMarkdown = lazy(() => import('./ProposalMdDescription'))
@@ -18,7 +19,7 @@ const ProposalDetailContent = () => {
   let description = ''
 
   if (proposal?.description) {
-    const [_, rfc, ...content] = proposal.description.split(/\r?\n/)
+    const [_, rfc, ...content] = normalizeDescription(proposal.description).split(/\r?\n/)
     if (!rfc?.includes('forum')) {
       content.unshift(rfc)
     }
