@@ -34,9 +34,21 @@ vi.mock('../constants', async () => {
   const { gql } = await import('graphql-request')
   return {
     ACTIVE_CHAINS: [8453],
+    ALL_TOP100_CHAINS: [8453],
+    BLOCKED_DTFS: {},
+    ALLOWED_DTFS: {},
     TOP100_QUERY: gql`
       query GetTop100DTFs($first: Int!, $voteLockAddress: String!) {
         dtfs(first: $first, where: { ownerGovernance_: { token: $voteLockAddress } }) {
+          id
+          timestamp
+          token { name symbol totalSupply currentHolderCount }
+        }
+      }
+    `,
+    DTF_BY_ID_QUERY: gql`
+      query GetDTFById($id: ID!) {
+        dtf(id: $id) {
           id
           timestamp
           token { name symbol totalSupply currentHolderCount }

@@ -5,7 +5,12 @@ import { ChartConfig, ChartContainer } from '@/components/ui/chart'
 import DataTable, { SorteableButton } from '@/components/ui/data-table'
 import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
-import { formatCurrency, getFolioRoute, humanizeDateToNow } from '@/utils'
+import {
+  formatCurrency,
+  formatToSignificantDigits,
+  getFolioRoute,
+  humanizeDateToNow,
+} from '@/utils'
 import { ColumnDef } from '@tanstack/react-table'
 import { useNavigate } from 'react-router-dom'
 import { Line, LineChart, YAxis } from 'recharts'
@@ -101,7 +106,7 @@ const columns: ColumnDef<Top100DTF>[] = [
     cell: ({ row }) => (
       <div className="text-right min-w-[90px]">
         {row.original.price !== null ? (
-          `$${formatCurrency(row.original.price, 5)}`
+          `$${formatToSignificantDigits(row.original.price)}`
         ) : (
           <Skeleton className="h-5 w-[80px] ml-auto" />
         )}
@@ -149,7 +154,7 @@ const columns: ColumnDef<Top100DTF>[] = [
           <div className="text-right">
             <span>{formatPercentageChange(performance)}</span>
             <span className="block text-legend text-xs mt-0.5">
-              (${formatCurrency(price, 5)})
+              (${formatToSignificantDigits(price)})
             </span>
           </div>
           {performance.length > 1 && (
