@@ -15,6 +15,7 @@ export interface TokenLiquidity {
   liquidityLevel: LiquidityLevel
   liquidityScore: number
   error?: string
+  counterpart?: string
 }
 
 export const priceImpactToLevel = (impact: number): LiquidityLevel => {
