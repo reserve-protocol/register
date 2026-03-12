@@ -205,6 +205,11 @@ const useRebalanceLiquidityCheck = () => {
       const getTokenDecimals = (address: string): number =>
         tokenMap[address]?.decimals ?? 18
 
+      const getNativeCounterpart = (token: TokenInfo): string | undefined =>
+        token.type === 'surplus'
+          ? largestDeficit?.tokenSymbol
+          : largestSurplus?.tokenSymbol
+
       const resolveSwap = (
         token: TokenInfo
       ): { tokenIn: Address; tokenOut: Address; amountIn: string; counterpart: string } | null => {
@@ -264,6 +269,7 @@ const useRebalanceLiquidityCheck = () => {
                 priceImpact: 0,
                 liquidityLevel: 'high',
                 liquidityScore: 100,
+                counterpart: getNativeCounterpart(token),
               },
             ]
           }
