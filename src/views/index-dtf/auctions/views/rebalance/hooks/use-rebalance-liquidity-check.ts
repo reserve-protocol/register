@@ -188,9 +188,75 @@ const useRebalanceLiquidityCheck = () => {
     queryFn: async () => {
       if (!tokens.length || !rebalanceParams || !chainId) return {}
 
+      const surplusTokens = tokens.filter((t) => t.type === 'surplus')
+      const deficitTokens = tokens.filter((t) => t.type === 'deficit')
+
+      // Largest counterpart for matching
+      const largestSurplus = surplusTokens.length
+        ? surplusTokens.reduce((a, b) => (b.usdSize > a.usdSize ? b : a))
+        : null
+      const largestDeficit = deficitTokens.length
+        ? deficitTokens.reduce((a, b) => (b.usdSize > a.usdSize ? b : a))
+        : null
+
+      const getTokenPrice = (address: string): number =>
+        rebalanceParams.prices[address]?.currentPrice ?? 0
+
+      const getTokenDecimals = (address: string): number =>
+        tokenMap[address]?.decimals ?? 18
+
+      const resolveSwap = (
+        token: TokenInfo
+      ): { tokenIn: Address; tokenOut: Address; amountIn: string; counterpart: string } | null => {
+        if (isNativeToken(token.tokenAddress, chainId)) return null
+
+        const simulationUsd = Math.max(token.usdSize, MIN_USD_SIZE)
+        const isSurplus = token.type === 'surplus'
+
+        // Surplus: sell this token for the largest deficit (or native fallback)
+        // Deficit: buy this token with the largest surplus (or native fallback)
+        if (isSurplus) {
+          const counterpart = largestDeficit ?? null
+          const tokenOut = counterpart
+            ? (counterpart.tokenAddress as Address)
+            : NATIVE_TOKEN
+          const amountIn = convertUsdToTokenUnits(
+            simulationUsd,
+            getTokenPrice(token.tokenAddress),
+            getTokenDecimals(token.tokenAddress)
+          )
+          return {
+            tokenIn: token.tokenAddress as Address,
+            tokenOut,
+            amountIn,
+            counterpart: counterpart?.tokenSymbol ?? (NATIVE_SYMBOL[chainId] ?? 'WETH'),
+          }
+        }
+
+        const counterpart = largestSurplus ?? null
+        const tokenIn = counterpart
+          ? (counterpart.tokenAddress as Address)
+          : NATIVE_TOKEN
+        const price = counterpart
+          ? getTokenPrice(counterpart.tokenAddress)
+          : ethPrice
+        const decimals = counterpart
+          ? getTokenDecimals(counterpart.tokenAddress)
+          : 18
+        const amountIn = convertUsdToTokenUnits(simulationUsd, price, decimals)
+        return {
+          tokenIn,
+          tokenOut: token.tokenAddress as Address,
+          amountIn,
+          counterpart: counterpart?.tokenSymbol ?? (NATIVE_SYMBOL[chainId] ?? 'WETH'),
+        }
+      }
+
       const results = await Promise.all(
         tokens.map(async (token): Promise<[string, TokenLiquidity]> => {
-          if (isNativeToken(token.tokenAddress, chainId)) {
+          const swap = resolveSwap(token)
+
+          if (!swap) {
             return [
               token.tokenAddress,
               {
@@ -202,29 +268,7 @@ const useRebalanceLiquidityCheck = () => {
             ]
           }
 
-          // Surplus: selling token for native (token → native)
-          // Deficit: buying token with native (native → token)
-          const isSurplus = token.type === 'surplus'
-          const tokenData = tokenMap[token.tokenAddress]
-          const simulationUsd = Math.max(token.usdSize, MIN_USD_SIZE)
-
-          let tokenIn: Address
-          let tokenOut: Address
-          let amountIn: string
-
-          if (isSurplus) {
-            const decimals = tokenData?.decimals ?? 18
-            const price = rebalanceParams.prices[token.tokenAddress]?.currentPrice ?? 0
-            amountIn = convertUsdToTokenUnits(simulationUsd, price, decimals)
-            tokenIn = token.tokenAddress as Address
-            tokenOut = NATIVE_TOKEN
-          } else {
-            amountIn = convertUsdToTokenUnits(simulationUsd, ethPrice, 18)
-            tokenIn = NATIVE_TOKEN
-            tokenOut = token.tokenAddress as Address
-          }
-
-          if (amountIn === '0') {
+          if (swap.amountIn === '0') {
             return [
               token.tokenAddress,
               {
@@ -237,9 +281,9 @@ const useRebalanceLiquidityCheck = () => {
           }
 
           const { priceImpact, error } = await fetchPriceImpact(
-            tokenIn,
-            tokenOut,
-            amountIn,
+            swap.tokenIn,
+            swap.tokenOut,
+            swap.amountIn,
             chainId
           )
 
@@ -263,6 +307,7 @@ const useRebalanceLiquidityCheck = () => {
               priceImpact,
               liquidityLevel: priceImpactToLevel(priceImpact),
               liquidityScore: priceImpactToScore(priceImpact),
+              counterpart: swap.counterpart,
             },
           ]
         })

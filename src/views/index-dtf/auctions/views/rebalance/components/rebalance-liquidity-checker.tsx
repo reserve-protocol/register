@@ -36,19 +36,19 @@ const TokenRow = ({
   token,
   isLoading,
 }: {
-  token: TokenInfo & { level: LiquidityLevel; priceImpact?: number; error?: string }
+  token: TokenInfo & { level: LiquidityLevel; priceImpact?: number; error?: string; counterpart?: string }
   isLoading: boolean
 }) => {
   const chainId = useAtomValue(chainIdAtom)
   const tokenMap = useAtomValue(rebalanceTokenMapAtom)
   const tokenData = tokenMap[token.tokenAddress]
 
-  const nativeSymbol = NATIVE_SYMBOL[chainId] ?? 'ETH'
+  const counterpart = token.counterpart ?? NATIVE_SYMBOL[chainId] ?? 'WETH'
   const tradeDescription =
     token.priceImpact !== undefined
       ? token.type === 'surplus'
-        ? `${token.priceImpact.toFixed(2)}% price impact selling $${formatCurrency(token.usdSize)} of ${token.tokenSymbol} for ${nativeSymbol}`
-        : `${token.priceImpact.toFixed(2)}% price impact buying $${formatCurrency(token.usdSize)} of ${token.tokenSymbol} with ${nativeSymbol}`
+        ? `${token.priceImpact.toFixed(2)}% price impact selling $${formatCurrency(token.usdSize)} of ${token.tokenSymbol} for ${counterpart}`
+        : `${token.priceImpact.toFixed(2)}% price impact buying $${formatCurrency(token.usdSize)} of ${token.tokenSymbol} with ${counterpart}`
       : undefined
 
   return (
@@ -86,7 +86,7 @@ const TokenSection = ({
   isLoading,
 }: {
   label: string
-  tokens: (TokenInfo & { level: LiquidityLevel; priceImpact?: number; error?: string })[]
+  tokens: (TokenInfo & { level: LiquidityLevel; priceImpact?: number; error?: string; counterpart?: string })[]
   isLoading: boolean
 }) => {
   if (!tokens.length) return null
@@ -122,6 +122,7 @@ const LiquidityCheckerContent = () => {
       level: (liq?.liquidityLevel ?? 'unknown') as LiquidityLevel,
       priceImpact: liq?.priceImpact,
       error: liq?.error,
+      counterpart: liq?.counterpart,
     }
   })
 
