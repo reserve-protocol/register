@@ -16,6 +16,7 @@ import RebalanceAction from './components/rebalance-action'
 import RebalanceAuctions from './components/rebalance-auctions'
 import RebalanceCompleted from './components/rebalance-completed'
 import RebalanceDebug from './components/rebalance-debug'
+import RebalanceLiquidityChecker from './components/rebalance-liquidity-checker'
 import RebalanceHeader from './components/rebalance-header'
 import RebalanceOverview from './components/rebalance-overview'
 import RebalanceProgress from './components/rebalance-progress'
@@ -58,6 +59,7 @@ const RebalanceContent = () => {
       <RebalanceAuctions />
       <RebalanceAction />
       <CowbotInlineCard />
+      <RebalanceLiquidityChecker />
       <RebalanceDebug />
     </div>
   )
