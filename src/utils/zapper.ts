@@ -1,7 +1,7 @@
 import { Address, parseUnits } from 'viem'
 import { RESERVE_API } from '@/utils/constants'
 
-export const MIN_USD_SIZE = 100
+export const MIN_USD_SIZE = 1
 export const DUMMY_SIGNER =
   '0x0000000000000000000000000000000000000001' as Address
 

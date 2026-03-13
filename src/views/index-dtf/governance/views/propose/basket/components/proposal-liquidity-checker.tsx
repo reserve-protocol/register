@@ -235,7 +235,7 @@ const LiquidityCheckerContent = () => {
         <Help
           size={16}
           className="ml-auto text-legend flex items-center"
-          content="Simulates swaps between surplus and deficit tokens via the zapper API to estimate price impact. Trades under $100 are simulated at $100 for reliable results. Summary badge is weighted by trade size."
+          content="Simulates swaps between surplus and deficit tokens via the zapper API to estimate price impact. Trades under $1 are simulated at $1 for reliable results. Summary badge is weighted by trade size."
         />
       </div>
       <UnsupportedTokensWarning
