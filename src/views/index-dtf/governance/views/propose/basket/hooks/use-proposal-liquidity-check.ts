@@ -37,7 +37,7 @@ export type TokenInfo = {
   type: 'surplus' | 'deficit'
 }
 
-const DEBOUNCE_DELAY = 1_000
+const DEBOUNCE_DELAY = 2_500
 
 const getProposedShare = (
   address: string,
@@ -268,7 +268,7 @@ const useProposalLiquidityCheck = () => {
             ]
           }
 
-          const { priceImpact, error } = await fetchPriceImpact(
+          const { priceImpact, error, swapPath } = await fetchPriceImpact(
             swap.tokenIn,
             swap.tokenOut,
             swap.amountIn,
@@ -296,6 +296,7 @@ const useProposalLiquidityCheck = () => {
               liquidityLevel: priceImpactToLevel(priceImpact),
               liquidityScore: priceImpactToScore(priceImpact),
               counterpart: swap.counterpart,
+              swapPath,
             },
           ]
         })

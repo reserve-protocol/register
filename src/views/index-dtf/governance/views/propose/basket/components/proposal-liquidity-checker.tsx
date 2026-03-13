@@ -11,7 +11,7 @@ import {
   getExplorerLink,
 } from '@/utils/getExplorerLink'
 import { LiquidityLevel } from '@/utils/liquidity'
-import { NATIVE_SYMBOL } from '@/utils/zapper'
+import { NATIVE_SYMBOL, WRAPPED_NATIVE, SwapLeg } from '@/utils/zapper'
 import { useAtomValue } from 'jotai'
 import { AlertTriangle, ArrowUpRight } from 'lucide-react'
 import useProposalLiquidityCheck, {
@@ -25,6 +25,7 @@ type EnrichedToken = TokenInfo & {
   error?: string
   counterpart?: string
   logoURI?: string
+  swapPath?: SwapLeg[]
 }
 
 const LEVEL_SCORE: Record<LiquidityLevel, number> = {
@@ -58,9 +59,11 @@ const getWeightedLevel = (
 const TokenRow = ({
   token,
   isLoading,
+  symbolMap,
 }: {
   token: EnrichedToken
   isLoading: boolean
+  symbolMap: Record<string, string>
 }) => {
   const chainId = useAtomValue(chainIdAtom)
 
@@ -94,6 +97,9 @@ const TokenRow = ({
             priceImpact={token.priceImpact}
             error={token.error}
             tradeDescription={tradeDescription}
+            swapPath={token.swapPath}
+            chainId={chainId}
+            symbolMap={symbolMap}
           />
         )}
       </div>
@@ -105,10 +111,12 @@ const TokenSection = ({
   label,
   tokens,
   isLoading,
+  symbolMap,
 }: {
   label: string
   tokens: EnrichedToken[]
   isLoading: boolean
+  symbolMap: Record<string, string>
 }) => {
   if (!tokens.length) return null
 
@@ -120,6 +128,7 @@ const TokenSection = ({
           key={token.tokenAddress}
           token={token}
           isLoading={isLoading}
+          symbolMap={symbolMap}
         />
       ))}
     </div>
@@ -189,6 +198,16 @@ const LiquidityCheckerContent = () => {
     useProposalLiquidityCheck()
   const basket = useAtomValue(proposedIndexBasketAtom)
 
+  const symbolMap: Record<string, string> = {}
+  if (basket) {
+    for (const [addr, asset] of Object.entries(basket)) {
+      symbolMap[addr.toLowerCase()] = asset.token.symbol
+    }
+  }
+  for (const [cid, addr] of Object.entries(WRAPPED_NATIVE)) {
+    symbolMap[addr.toLowerCase()] = NATIVE_SYMBOL[Number(cid)] ?? 'WETH'
+  }
+
   if (!tokens.length) return null
 
   const enriched: EnrichedToken[] = tokens.map((t) => {
@@ -201,6 +220,7 @@ const LiquidityCheckerContent = () => {
       error: liq?.error,
       counterpart: liq?.counterpart,
       logoURI: entry?.token.logoURI,
+      swapPath: liq?.swapPath,
     }
   })
 
@@ -227,8 +247,8 @@ const LiquidityCheckerContent = () => {
         basket={basket}
         chainId={chainId}
       />
-      <TokenSection label="Selling" tokens={selling} isLoading={isLoading} />
-      <TokenSection label="Buying" tokens={buying} isLoading={isLoading} />
+      <TokenSection label="Selling" tokens={selling} isLoading={isLoading} symbolMap={symbolMap} />
+      <TokenSection label="Buying" tokens={buying} isLoading={isLoading} symbolMap={symbolMap} />
     </div>
   )
 }

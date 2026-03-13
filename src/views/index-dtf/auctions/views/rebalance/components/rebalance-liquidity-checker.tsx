@@ -6,6 +6,7 @@ import { chainIdAtom } from '@/state/atoms'
 import { devModeAtom } from '@/state/chain/atoms/chainAtoms'
 import { formatCurrency } from '@/utils'
 import { LiquidityLevel } from '@/utils/liquidity'
+import { SwapLeg, WRAPPED_NATIVE } from '@/utils/zapper'
 import { useAtomValue } from 'jotai'
 import useRebalanceLiquidityCheck, {
   TokenInfo,
@@ -18,6 +19,7 @@ type EnrichedToken = TokenInfo & {
   priceImpact?: number
   error?: string
   counterpart?: string
+  swapPath?: SwapLeg[]
 }
 
 const LEVEL_SCORE: Record<LiquidityLevel, number> = {
@@ -52,9 +54,11 @@ const getWeightedLevel = (
 const TokenRow = ({
   token,
   isLoading,
+  symbolMap,
 }: {
   token: EnrichedToken
   isLoading: boolean
+  symbolMap: Record<string, string>
 }) => {
   const chainId = useAtomValue(chainIdAtom)
   const tokenMap = useAtomValue(rebalanceTokenMapAtom)
@@ -90,6 +94,9 @@ const TokenRow = ({
             priceImpact={token.priceImpact}
             error={token.error}
             tradeDescription={tradeDescription}
+            swapPath={token.swapPath}
+            chainId={chainId}
+            symbolMap={symbolMap}
           />
         )}
       </div>
@@ -101,10 +108,12 @@ const TokenSection = ({
   label,
   tokens,
   isLoading,
+  symbolMap,
 }: {
   label: string
   tokens: EnrichedToken[]
   isLoading: boolean
+  symbolMap: Record<string, string>
 }) => {
   if (!tokens.length) return null
 
@@ -116,6 +125,7 @@ const TokenSection = ({
           key={token.tokenAddress}
           token={token}
           isLoading={isLoading}
+          symbolMap={symbolMap}
         />
       ))}
     </div>
@@ -131,8 +141,18 @@ const RebalanceLiquidityChecker = () => {
 }
 
 const LiquidityCheckerContent = () => {
+  const chainId = useAtomValue(chainIdAtom)
+  const tokenMap = useAtomValue(rebalanceTokenMapAtom)
   const { tokens, liquidityMap, isLoading, isFetching } =
     useRebalanceLiquidityCheck()
+
+  const symbolMap: Record<string, string> = {}
+  for (const [addr, token] of Object.entries(tokenMap)) {
+    symbolMap[addr.toLowerCase()] = token.symbol
+  }
+  for (const [cid, addr] of Object.entries(WRAPPED_NATIVE)) {
+    symbolMap[addr.toLowerCase()] = NATIVE_SYMBOL[Number(cid)] ?? 'WETH'
+  }
 
   if (!tokens.length) return null
 
@@ -144,6 +164,7 @@ const LiquidityCheckerContent = () => {
       priceImpact: liq?.priceImpact,
       error: liq?.error,
       counterpart: liq?.counterpart,
+      swapPath: liq?.swapPath,
     }
   })
 
@@ -165,8 +186,8 @@ const LiquidityCheckerContent = () => {
           content="Simulates swaps between surplus and deficit tokens via the zapper API to estimate price impact. Trades under $100 are simulated at $100 for reliable results. Summary badge is weighted by trade size."
         />
       </div>
-      <TokenSection label="Selling" tokens={selling} isLoading={isLoading} />
-      <TokenSection label="Buying" tokens={buying} isLoading={isLoading} />
+      <TokenSection label="Selling" tokens={selling} isLoading={isLoading} symbolMap={symbolMap} />
+      <TokenSection label="Buying" tokens={buying} isLoading={isLoading} symbolMap={symbolMap} />
     </div>
   )
 }
