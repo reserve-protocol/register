@@ -21,14 +21,14 @@ export interface TokenLiquidity {
 }
 
 export const priceImpactToLevel = (impact: number): LiquidityLevel => {
-  const absImpact = Math.abs(impact)
-  if (absImpact <= 1) return 'high'
-  if (absImpact <= 3) return 'medium'
+  if (impact <= 0) return 'high'
+  if (impact <= 1) return 'high'
+  if (impact <= 3) return 'medium'
   return 'low'
 }
 
 export const priceImpactToScore = (impact: number): number => {
-  const absImpact = Math.abs(impact)
-  return (1 - Math.min(absImpact, 10) / 10) * 100
+  if (impact <= 0) return 100
+  return (1 - Math.min(impact, 10) / 10) * 100
 }
 
