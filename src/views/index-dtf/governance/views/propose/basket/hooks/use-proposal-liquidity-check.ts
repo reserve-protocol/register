@@ -191,10 +191,16 @@ const useProposalLiquidityCheck = () => {
         amountIn: string
         counterpart: string
       } | null => {
-        if (isNativeToken(token.tokenAddress, chainId)) return null
-
         const simulationUsd = Math.max(token.usdSize, MIN_USD_SIZE)
         const isSurplus = token.type === 'surplus'
+
+        const nativeCounterpart = isSurplus ? largestDeficit : largestSurplus
+        if (
+          isNativeToken(token.tokenAddress, chainId) &&
+          (!nativeCounterpart ||
+            isNativeToken(nativeCounterpart.tokenAddress, chainId))
+        )
+          return null
 
         if (isSurplus) {
           const counterpart = largestDeficit ?? null
