@@ -2,7 +2,6 @@ import LiquidityBadge from '@/components/liquidity-badge'
 import TokenLogo from '@/components/token-logo'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import Help from '@/components/ui/help'
-import { Skeleton } from '@/components/ui/skeleton'
 import { chainIdAtom } from '@/state/atoms'
 import { devModeAtom } from '@/state/chain/atoms/chainAtoms'
 import { formatCurrency } from '@/utils'
@@ -89,19 +88,16 @@ const TokenRow = ({
         ${formatCurrency(token.usdSize)}
       </span>
       <div className="ml-auto">
-        {isLoading ? (
-          <Skeleton className="h-5 w-12" />
-        ) : (
-          <LiquidityBadge
-            level={token.level}
-            priceImpact={token.priceImpact}
-            error={token.error}
-            tradeDescription={tradeDescription}
-            swapPath={token.swapPath}
-            chainId={chainId}
-            symbolMap={symbolMap}
-          />
-        )}
+        <LiquidityBadge
+          level={token.level}
+          priceImpact={token.priceImpact}
+          isLoading={isLoading}
+          error={token.error}
+          tradeDescription={tradeDescription}
+          swapPath={token.swapPath}
+          chainId={chainId}
+          symbolMap={symbolMap}
+        />
       </div>
     </div>
   )

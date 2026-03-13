@@ -94,13 +94,18 @@ const SwapPathContent = ({
   priceImpact,
   chainId,
   symbolMap,
+  tradeDescription,
 }: {
   swapPath: SwapLeg[]
   priceImpact?: number
   chainId: number
   symbolMap: Record<string, string>
+  tradeDescription?: string
 }) => (
   <div className="flex flex-col gap-2">
+    {tradeDescription && (
+      <p className="text-xs text-muted-foreground">{tradeDescription}</p>
+    )}
     <p className="text-xs font-medium">Potential swap route</p>
     <div className="flex flex-col gap-1.5">
       {swapPath.map((leg, i) => {
@@ -217,7 +222,7 @@ const LiquidityBadge = ({
           />
         </HoverCardTrigger>
         <HoverCardContent className="w-[300px] rounded-3xl border-2 border-secondary p-3">
-          <SwapPathContent swapPath={swapPath} priceImpact={priceImpact} chainId={chainId ?? 1} symbolMap={symbolMap ?? {}} />
+          <SwapPathContent swapPath={swapPath} priceImpact={priceImpact} chainId={chainId ?? 1} symbolMap={symbolMap ?? {}} tradeDescription={tradeDescription} />
         </HoverCardContent>
       </HoverCard>
     )
