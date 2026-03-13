@@ -22,9 +22,21 @@ export const NATIVE_SYMBOL: Record<number, string> = {
   42161: 'WETH',
 }
 
+export type SwapLeg = {
+  action: string
+  address: string[]
+  inputToken: string[]
+  outputToken: string[]
+  impact: number
+  input: number
+  output: number
+  success: boolean
+}
+
 export type ZapResult = {
   truePriceImpact: number
   priceImpact: number
+  debug?: { priceImpactStats?: SwapLeg[] }
 }
 
 export type ZapResponse = {
@@ -60,7 +72,7 @@ export const fetchPriceImpact = async (
   tokenOut: Address,
   amountIn: string,
   chainId: number
-): Promise<{ priceImpact: number | null; error?: string }> => {
+): Promise<{ priceImpact: number | null; error?: string; swapPath?: SwapLeg[] }> => {
   try {
     const params = new URLSearchParams({
       chainId: chainId.toString(),
@@ -71,6 +83,7 @@ export const fetchPriceImpact = async (
       slippage: '100',
       trade: 'true',
       bypassCache: 'false',
+      debug: 'true',
     })
 
     const url = `${RESERVE_API}api/zapper/${chainId}/swap?${params.toString()}`
@@ -89,7 +102,10 @@ export const fetchPriceImpact = async (
         data.result.truePriceImpact !== undefined
           ? data.result.truePriceImpact
           : data.result.priceImpact
-      return { priceImpact: impact }
+      return {
+        priceImpact: impact,
+        swapPath: data.result.debug?.priceImpactStats,
+      }
     }
 
     return { priceImpact: null, error: data.error }

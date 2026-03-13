@@ -1,4 +1,5 @@
 import { Address } from 'viem'
+import { SwapLeg } from './zapper'
 
 export type LiquidityLevel =
   | 'low'
@@ -16,6 +17,7 @@ export interface TokenLiquidity {
   liquidityScore: number
   error?: string
   counterpart?: string
+  swapPath?: SwapLeg[]
 }
 
 export const priceImpactToLevel = (impact: number): LiquidityLevel => {
@@ -29,3 +31,4 @@ export const priceImpactToScore = (impact: number): number => {
   const absImpact = Math.abs(impact)
   return (1 - Math.min(absImpact, 10) / 10) * 100
 }
+

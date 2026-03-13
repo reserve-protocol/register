@@ -201,7 +201,7 @@ const useRebalanceLiquidityCheck = () => {
             ]
           }
 
-          const { priceImpact, error } = await fetchPriceImpact(
+          const { priceImpact, error, swapPath } = await fetchPriceImpact(
             swap.tokenIn,
             swap.tokenOut,
             swap.amountIn,
@@ -229,6 +229,7 @@ const useRebalanceLiquidityCheck = () => {
               liquidityLevel: priceImpactToLevel(priceImpact),
               liquidityScore: priceImpactToScore(priceImpact),
               counterpart: swap.counterpart,
+              swapPath,
             },
           ]
         })
