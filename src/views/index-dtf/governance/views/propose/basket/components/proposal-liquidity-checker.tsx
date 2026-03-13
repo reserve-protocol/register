@@ -1,14 +1,19 @@
 import LiquidityBadge from '@/components/liquidity-badge'
 import TokenLogo from '@/components/token-logo'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import Help from '@/components/ui/help'
 import { Skeleton } from '@/components/ui/skeleton'
 import { chainIdAtom } from '@/state/atoms'
 import { devModeAtom } from '@/state/chain/atoms/chainAtoms'
 import { formatCurrency } from '@/utils'
+import {
+  ExplorerDataType,
+  getExplorerLink,
+} from '@/utils/getExplorerLink'
 import { LiquidityLevel } from '@/utils/liquidity'
 import { NATIVE_SYMBOL } from '@/utils/zapper'
 import { useAtomValue } from 'jotai'
-import { AlertTriangle } from 'lucide-react'
+import { AlertTriangle, ArrowUpRight } from 'lucide-react'
 import useProposalLiquidityCheck, {
   TokenInfo,
 } from '../hooks/use-proposal-liquidity-check'
@@ -124,24 +129,49 @@ const TokenSection = ({
 const UnsupportedTokensWarning = ({
   unsupportedTokens,
   basket,
+  chainId,
 }: {
   unsupportedTokens: Set<string>
   basket: Record<string, { token: { symbol: string } }> | undefined
+  chainId: number
 }) => {
   if (!unsupportedTokens.size) return null
 
-  const symbols = Array.from(unsupportedTokens).map((addr) => {
+  const tokens = Array.from(unsupportedTokens).map((addr) => {
     const entry = basket?.[addr] ?? basket?.[addr.toLowerCase()]
-    return entry?.token.symbol ?? addr.slice(0, 10)
+    return { symbol: entry?.token.symbol ?? addr.slice(0, 10), address: addr }
   })
 
   return (
-    <div className="flex items-start gap-2 p-2 rounded-xl bg-yellow-500/10 text-yellow-700 text-sm">
-      <AlertTriangle size={16} className="mt-0.5 shrink-0" />
-      <span>
-        Not supported by zapper: <strong>{symbols.join(', ')}</strong>
-      </span>
-    </div>
+    <Alert
+      variant="warning"
+      className="rounded-xl bg-warning/10 border-warning/20"
+    >
+      <AlertTriangle className="h-4 w-4" />
+      <AlertTitle>Tokens not available</AlertTitle>
+      <AlertDescription>
+        <ul className="mt-1 list-disc pl-4 space-y-0.5">
+          {tokens.map((t) => (
+            <li key={t.address}>
+              <span className="font-medium">{t.symbol}</span>{' '}
+              <a
+                href={getExplorerLink(
+                  t.address,
+                  chainId,
+                  ExplorerDataType.ADDRESS
+                )}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-0.5 font-mono text-xs hover:text-foreground"
+              >
+                {t.address.slice(0, 6)}...{t.address.slice(-4)}
+                <ArrowUpRight size={12} strokeWidth={1.5} />
+              </a>
+            </li>
+          ))}
+        </ul>
+      </AlertDescription>
+    </Alert>
   )
 }
 
@@ -154,6 +184,7 @@ const ProposalLiquidityChecker = () => {
 }
 
 const LiquidityCheckerContent = () => {
+  const chainId = useAtomValue(chainIdAtom)
   const { tokens, liquidityMap, unsupportedTokens, isLoading, isFetching } =
     useProposalLiquidityCheck()
   const basket = useAtomValue(proposedIndexBasketAtom)
@@ -194,6 +225,7 @@ const LiquidityCheckerContent = () => {
       <UnsupportedTokensWarning
         unsupportedTokens={unsupportedTokens}
         basket={basket}
+        chainId={chainId}
       />
       <TokenSection label="Selling" tokens={selling} isLoading={isLoading} />
       <TokenSection label="Buying" tokens={buying} isLoading={isLoading} />
