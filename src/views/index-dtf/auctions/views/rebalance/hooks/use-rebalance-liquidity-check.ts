@@ -128,13 +128,17 @@ const useRebalanceLiquidityCheck = () => {
       const resolveSwap = (
         token: TokenInfo
       ): { tokenIn: Address; tokenOut: Address; amountIn: string; counterpart: string } | null => {
-        if (isNativeToken(token.tokenAddress, chainId)) return null
-
         const simulationUsd = Math.max(token.usdSize, MIN_USD_SIZE)
         const isSurplus = token.type === 'surplus'
 
-        // Surplus: sell this token for the largest deficit (or native fallback)
-        // Deficit: buy this token with the largest surplus (or native fallback)
+        const nativeCounterpart = isSurplus ? largestDeficit : largestSurplus
+        if (
+          isNativeToken(token.tokenAddress, chainId) &&
+          (!nativeCounterpart ||
+            isNativeToken(nativeCounterpart.tokenAddress, chainId))
+        )
+          return null
+
         if (isSurplus) {
           const counterpart = largestDeficit ?? null
           const tokenOut = counterpart
