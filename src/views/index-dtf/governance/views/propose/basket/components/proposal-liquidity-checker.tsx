@@ -4,6 +4,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import Help from '@/components/ui/help'
 import { chainIdAtom } from '@/state/atoms'
 import { devModeAtom } from '@/state/chain/atoms/chainAtoms'
+import { cn } from '@/lib/utils'
 import { formatCurrency } from '@/utils'
 import {
   ExplorerDataType,
@@ -12,7 +13,7 @@ import {
 import { LiquidityLevel } from '@/utils/liquidity'
 import { NATIVE_SYMBOL, WRAPPED_NATIVE, SwapLeg } from '@/utils/zapper'
 import { useAtomValue } from 'jotai'
-import { AlertTriangle, ArrowUpRight } from 'lucide-react'
+import { AlertTriangle, ArrowUpRight, RefreshCw } from 'lucide-react'
 import useProposalLiquidityCheck, {
   TokenInfo,
 } from '../hooks/use-proposal-liquidity-check'
@@ -59,10 +60,12 @@ const TokenRow = ({
   token,
   isLoading,
   symbolMap,
+  onRetry,
 }: {
   token: EnrichedToken
   isLoading: boolean
   symbolMap: Record<string, string>
+  onRetry: () => void
 }) => {
   const chainId = useAtomValue(chainIdAtom)
 
@@ -97,6 +100,7 @@ const TokenRow = ({
           swapPath={token.swapPath}
           chainId={chainId}
           symbolMap={symbolMap}
+          onRetry={onRetry}
         />
       </div>
     </div>
@@ -107,12 +111,16 @@ const TokenSection = ({
   label,
   tokens,
   isLoading,
+  retryingTokens,
   symbolMap,
+  onRetry,
 }: {
   label: string
   tokens: EnrichedToken[]
   isLoading: boolean
+  retryingTokens: Set<string>
   symbolMap: Record<string, string>
+  onRetry: (address: string) => void
 }) => {
   if (!tokens.length) return null
 
@@ -123,8 +131,9 @@ const TokenSection = ({
         <TokenRow
           key={token.tokenAddress}
           token={token}
-          isLoading={isLoading}
+          isLoading={isLoading || retryingTokens.has(token.tokenAddress)}
           symbolMap={symbolMap}
+          onRetry={() => onRetry(token.tokenAddress)}
         />
       ))}
     </div>
@@ -190,7 +199,7 @@ const ProposalLiquidityChecker = () => {
 
 const LiquidityCheckerContent = () => {
   const chainId = useAtomValue(chainIdAtom)
-  const { tokens, liquidityMap, unsupportedTokens, isLoading, isFetching } =
+  const { tokens, liquidityMap, unsupportedTokens, isLoading, isFetching, retryingTokens, refetch, retryToken } =
     useProposalLiquidityCheck()
   const basket = useAtomValue(proposedIndexBasketAtom)
 
@@ -229,22 +238,28 @@ const LiquidityCheckerContent = () => {
       <div className="flex items-center gap-2">
         <span className="text-legend text-sm font-medium">Liquidity</span>
         {worstLevel && !isLoading && <LiquidityBadge level={worstLevel} />}
-        {isFetching && !isLoading && (
-          <div className="animate-spin h-3 w-3 border-2 border-primary border-t-transparent rounded-full" />
-        )}
-        <Help
-          size={16}
-          className="ml-auto text-legend flex items-center"
-          content="Simulates swaps between surplus and deficit tokens via the zapper API to estimate price impact. Trades under $1 are simulated at $1 for reliable results. Summary badge is weighted by trade size."
-        />
+        <div className="ml-auto flex items-center gap-1">
+          <button
+            onClick={() => refetch()}
+            disabled={isFetching}
+            className="text-legend hover:text-foreground disabled:opacity-50"
+          >
+            <RefreshCw size={14} className={cn(isFetching && 'animate-spin')} />
+          </button>
+          <Help
+            size={16}
+            className="text-legend flex items-center"
+            content="Simulates swaps between surplus and deficit tokens via the zapper API to estimate price impact. Trades under $1 are simulated at $1 for reliable results. Summary badge is weighted by trade size."
+          />
+        </div>
       </div>
       <UnsupportedTokensWarning
         unsupportedTokens={unsupportedTokens}
         basket={basket}
         chainId={chainId}
       />
-      <TokenSection label="Selling" tokens={selling} isLoading={isLoading} symbolMap={symbolMap} />
-      <TokenSection label="Buying" tokens={buying} isLoading={isLoading} symbolMap={symbolMap} />
+      <TokenSection label="Selling" tokens={selling} isLoading={isLoading} retryingTokens={retryingTokens} symbolMap={symbolMap} onRetry={retryToken} />
+      <TokenSection label="Buying" tokens={buying} isLoading={isLoading} retryingTokens={retryingTokens} symbolMap={symbolMap} onRetry={retryToken} />
     </div>
   )
 }

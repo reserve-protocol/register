@@ -30,6 +30,7 @@ interface LiquidityBadgeProps {
   swapPath?: SwapLeg[]
   chainId?: number
   symbolMap?: Record<string, string>
+  onRetry?: () => void
 }
 
 const levelConfig: Record<
@@ -194,6 +195,7 @@ const LiquidityBadge = ({
   swapPath,
   chainId,
   symbolMap,
+  onRetry,
 }: LiquidityBadgeProps) => {
   if (isLoading) {
     return (
@@ -221,6 +223,7 @@ const LiquidityBadge = ({
           <Badge
             className={config.className}
             onMouseDown={(e) => e.preventDefault()}
+            onClick={onRetry}
           />
         </HoverCardTrigger>
         <HoverCardContent className="w-[300px] rounded-3xl border-2 border-secondary p-3">
@@ -249,6 +252,7 @@ const LiquidityBadge = ({
           <Badge
             className={config.className}
             onMouseDown={(e) => e.preventDefault()}
+            onClick={onRetry}
           />
         </TooltipTrigger>
         <TooltipContent>
