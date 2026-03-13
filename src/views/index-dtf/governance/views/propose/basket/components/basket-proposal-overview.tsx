@@ -15,6 +15,7 @@ import { indexDTFAtom, indexDTFBrandAtom } from '@/state/dtf/atoms'
 import SimulateProposalCard from '@/views/index-dtf/governance/components/simulate-proposal-card'
 import { chainIdAtom } from '@/state/atoms'
 import { Address } from 'viem'
+import ProposalLiquidityChecker from './proposal-liquidity-checker'
 
 // TODO: get governance route to navigate back to governance
 const Header = () => {
@@ -127,18 +128,19 @@ const BasketProposalOverview = () => {
   const isProposalConfirmed = useAtomValue(isProposalConfirmedAtom)
 
   return (
-    <div className="flex flex-col gap-2">
-      <div
-        className={
-          !isProposalConfirmed
-            ? 'border-4 overflow-hidden w-full border-secondary rounded-3xl bg-background h-[fit-content] sticky top-0'
-            : 'border-4 overflow-hidden w-full border-secondary rounded-3xl bg-background h-[fit-content]'
-        }
-      >
+    <div
+      className={
+        !isProposalConfirmed
+          ? 'flex flex-col gap-2 sticky top-0 self-start'
+          : 'flex flex-col gap-2'
+      }
+    >
+      <div className="border-4 overflow-hidden w-full border-secondary rounded-3xl bg-background h-[fit-content]">
         <Header />
         <ProposalInstructions />
       </div>
       <SimulateProposalSection />
+      <ProposalLiquidityChecker />
     </div>
   )
 }
