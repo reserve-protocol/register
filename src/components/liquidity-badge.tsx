@@ -68,17 +68,19 @@ const levelConfig: Record<
   },
 }
 
-const impactColor = (impact: number) => {
-  const abs = Math.abs(impact)
-  if (abs <= 1) return 'text-green-600'
-  if (abs <= 3) return 'text-yellow-600'
+const totalImpactColor = (impact: number) => {
+  if (impact <= 0) return 'text-green-600'
+  if (impact <= 3) return 'text-yellow-600'
   return 'text-red-600'
 }
 
-const formatImpact = (impact: number) => {
-  const abs = Math.abs(impact)
+const legDeltaColor = (input: number, output: number) =>
+  output >= input ? 'text-green-600' : 'text-red-600'
+
+const formatPercent = (value: number) => {
+  const abs = Math.abs(value)
   const decimals = abs < 0.01 ? 4 : abs < 0.1 ? 3 : 2
-  return `${impact > 0 ? '+' : ''}${impact.toFixed(decimals)}%`
+  return `${value > 0 ? '+' : ''}${value.toFixed(decimals)}%`
 }
 
 const resolveSymbol = (
@@ -142,8 +144,8 @@ const SwapPathContent = ({
               <span className="text-muted-foreground">
                 ${formatCurrency(leg.output)}
               </span>
-              <span className={cn('ml-auto', impactColor(leg.impact))}>
-                {formatImpact(leg.impact)}
+              <span className={cn('ml-auto', legDeltaColor(leg.input, leg.output))}>
+                {formatPercent(leg.input === 0 ? 0 : ((leg.output - leg.input) / leg.input) * 100)}
               </span>
             </div>
           </div>
@@ -155,8 +157,8 @@ const SwapPathContent = ({
         <hr className="border-border" />
         <div className="flex items-center justify-between text-xs">
           <span className="text-muted-foreground">Total impact</span>
-          <span className={cn('font-medium', impactColor(priceImpact))}>
-            {formatImpact(priceImpact)}
+          <span className={cn('font-medium', totalImpactColor(priceImpact))}>
+            {formatPercent(priceImpact)}
           </span>
         </div>
       </>
@@ -214,7 +216,7 @@ const LiquidityBadge = ({
 
   if (swapPath?.length) {
     return (
-      <HoverCard openDelay={0} closeDelay={0}>
+      <HoverCard openDelay={0} closeDelay={200}>
         <HoverCardTrigger asChild>
           <Badge
             className={config.className}
