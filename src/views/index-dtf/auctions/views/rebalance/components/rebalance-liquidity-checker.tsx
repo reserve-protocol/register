@@ -1,12 +1,14 @@
 import LiquidityBadge from '@/components/liquidity-badge'
 import TokenLogo from '@/components/token-logo'
 import Help from '@/components/ui/help'
+import { cn } from '@/lib/utils'
 import { chainIdAtom } from '@/state/atoms'
 import { devModeAtom } from '@/state/chain/atoms/chainAtoms'
 import { formatCurrency } from '@/utils'
 import { LiquidityLevel } from '@/utils/liquidity'
 import { SwapLeg, WRAPPED_NATIVE } from '@/utils/zapper'
 import { useAtomValue } from 'jotai'
+import { RefreshCw } from 'lucide-react'
 import useRebalanceLiquidityCheck, {
   TokenInfo,
   NATIVE_SYMBOL,
@@ -54,10 +56,12 @@ const TokenRow = ({
   token,
   isLoading,
   symbolMap,
+  onRetry,
 }: {
   token: EnrichedToken
   isLoading: boolean
   symbolMap: Record<string, string>
+  onRetry: () => void
 }) => {
   const chainId = useAtomValue(chainIdAtom)
   const tokenMap = useAtomValue(rebalanceTokenMapAtom)
@@ -94,6 +98,7 @@ const TokenRow = ({
           swapPath={token.swapPath}
           chainId={chainId}
           symbolMap={symbolMap}
+          onRetry={onRetry}
         />
       </div>
     </div>
@@ -104,12 +109,16 @@ const TokenSection = ({
   label,
   tokens,
   isLoading,
+  retryingTokens,
   symbolMap,
+  onRetry,
 }: {
   label: string
   tokens: EnrichedToken[]
   isLoading: boolean
+  retryingTokens: Set<string>
   symbolMap: Record<string, string>
+  onRetry: (address: string) => void
 }) => {
   if (!tokens.length) return null
 
@@ -120,8 +129,9 @@ const TokenSection = ({
         <TokenRow
           key={token.tokenAddress}
           token={token}
-          isLoading={isLoading}
+          isLoading={isLoading || retryingTokens.has(token.tokenAddress)}
           symbolMap={symbolMap}
+          onRetry={() => onRetry(token.tokenAddress)}
         />
       ))}
     </div>
@@ -137,9 +147,8 @@ const RebalanceLiquidityChecker = () => {
 }
 
 const LiquidityCheckerContent = () => {
-  const chainId = useAtomValue(chainIdAtom)
   const tokenMap = useAtomValue(rebalanceTokenMapAtom)
-  const { tokens, liquidityMap, isLoading, isFetching } =
+  const { tokens, liquidityMap, isLoading, isFetching, retryingTokens, refetch, retryToken } =
     useRebalanceLiquidityCheck()
 
   const symbolMap: Record<string, string> = {}
@@ -173,17 +182,23 @@ const LiquidityCheckerContent = () => {
       <div className="flex items-center gap-2">
         <span className="text-legend text-sm font-medium">Liquidity</span>
         {worstLevel && !isLoading && <LiquidityBadge level={worstLevel} />}
-        {isFetching && !isLoading && (
-          <div className="animate-spin h-3 w-3 border-2 border-primary border-t-transparent rounded-full" />
-        )}
-        <Help
-          size={16}
-          className="ml-auto text-legend flex items-center"
-          content="Simulates swaps between surplus and deficit tokens via the zapper API to estimate price impact. Trades under $1 are simulated at $1 for reliable results. Summary badge is weighted by trade size."
-        />
+        <div className="ml-auto flex items-center gap-1">
+          <button
+            onClick={() => refetch()}
+            disabled={isFetching}
+            className="text-legend hover:text-foreground disabled:opacity-50"
+          >
+            <RefreshCw size={14} className={cn(isFetching && 'animate-spin')} />
+          </button>
+          <Help
+            size={16}
+            className="text-legend flex items-center"
+            content="Simulates swaps between surplus and deficit tokens via the zapper API to estimate price impact. Trades under $1 are simulated at $1 for reliable results. Summary badge is weighted by trade size."
+          />
+        </div>
       </div>
-      <TokenSection label="Selling" tokens={selling} isLoading={isLoading} symbolMap={symbolMap} />
-      <TokenSection label="Buying" tokens={buying} isLoading={isLoading} symbolMap={symbolMap} />
+      <TokenSection label="Selling" tokens={selling} isLoading={isLoading} retryingTokens={retryingTokens} symbolMap={symbolMap} onRetry={retryToken} />
+      <TokenSection label="Buying" tokens={buying} isLoading={isLoading} retryingTokens={retryingTokens} symbolMap={symbolMap} onRetry={retryToken} />
     </div>
   )
 }
