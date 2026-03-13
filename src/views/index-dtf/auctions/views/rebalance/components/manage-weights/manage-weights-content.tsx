@@ -65,7 +65,7 @@ const ManageWeightsContent = () => {
   })
 
   const unsupportedTokens = useMemo(() => {
-    if (!zapperTokens) return []
+    if (!zapperTokens?.size) return []
     return Object.keys(basketItems)
       .filter(
         (addr) =>
