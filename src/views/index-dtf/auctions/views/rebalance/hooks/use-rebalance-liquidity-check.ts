@@ -91,36 +91,12 @@ const useRebalanceLiquidityCheck = () => {
   )
 
   const fetchTokenLiquidity = async (
-    token: TokenInfo,
-    allTokens: TokenInfo[]
+    token: TokenInfo
   ): Promise<[string, TokenLiquidity]> => {
-    const surplusTokens = allTokens.filter((t) => t.type === 'surplus')
-    const deficitTokens = allTokens.filter((t) => t.type === 'deficit')
-    const largestSurplus = surplusTokens.length
-      ? surplusTokens.reduce((a, b) => (b.usdSize > a.usdSize ? b : a))
-      : null
-    const largestDeficit = deficitTokens.length
-      ? deficitTokens.reduce((a, b) => (b.usdSize > a.usdSize ? b : a))
-      : null
+    const nativeSymbol = NATIVE_SYMBOL[chainId] ?? 'WETH'
 
-    const getTokenPrice = (address: string): number =>
-      rebalanceParams!.prices[address]?.currentPrice ?? 0
-    const getTokenDecimals = (address: string): number =>
-      tokenMap[address]?.decimals ?? 18
-    const getNativeCounterpart = (t: TokenInfo): string | undefined =>
-      t.type === 'surplus'
-        ? largestDeficit?.tokenSymbol
-        : largestSurplus?.tokenSymbol
-
-    const simulationUsd = Math.max(token.usdSize, MIN_USD_SIZE)
-    const isSurplus = token.type === 'surplus'
-    const nativeCounterpart = isSurplus ? largestDeficit : largestSurplus
-
-    if (
-      isNativeToken(token.tokenAddress, chainId) &&
-      (!nativeCounterpart ||
-        isNativeToken(nativeCounterpart.tokenAddress, chainId))
-    ) {
+    // Native/wrapped native is just wrap/unwrap, no liquidity concern
+    if (isNativeToken(token.tokenAddress, chainId)) {
       return [
         token.tokenAddress,
         {
@@ -128,31 +104,23 @@ const useRebalanceLiquidityCheck = () => {
           priceImpact: 0,
           liquidityLevel: 'high',
           liquidityScore: 100,
-          counterpart: getNativeCounterpart(token),
         },
       ]
     }
 
-    let tokenIn: Address, tokenOut: Address, amountIn: string, counterpart: string
+    const simulationUsd = Math.max(token.usdSize, MIN_USD_SIZE)
+    let tokenIn: Address, tokenOut: Address, amountIn: string
 
-    if (isSurplus) {
-      const cp = largestDeficit ?? null
+    if (token.type === 'surplus') {
       tokenIn = token.tokenAddress as Address
-      tokenOut = cp ? (cp.tokenAddress as Address) : NATIVE_TOKEN
-      amountIn = convertUsdToTokenUnits(
-        simulationUsd,
-        getTokenPrice(token.tokenAddress),
-        getTokenDecimals(token.tokenAddress)
-      )
-      counterpart = cp?.tokenSymbol ?? (NATIVE_SYMBOL[chainId] ?? 'WETH')
-    } else {
-      const cp = largestSurplus ?? null
-      tokenIn = cp ? (cp.tokenAddress as Address) : NATIVE_TOKEN
-      tokenOut = token.tokenAddress as Address
-      const price = cp ? getTokenPrice(cp.tokenAddress) : ethPrice
-      const decimals = cp ? getTokenDecimals(cp.tokenAddress) : 18
+      tokenOut = NATIVE_TOKEN
+      const price = rebalanceParams!.prices[token.tokenAddress]?.currentPrice ?? 0
+      const decimals = tokenMap[token.tokenAddress]?.decimals ?? 18
       amountIn = convertUsdToTokenUnits(simulationUsd, price, decimals)
-      counterpart = cp?.tokenSymbol ?? (NATIVE_SYMBOL[chainId] ?? 'WETH')
+    } else {
+      tokenIn = NATIVE_TOKEN
+      tokenOut = token.tokenAddress as Address
+      amountIn = convertUsdToTokenUnits(simulationUsd, ethPrice, 18)
     }
 
     if (amountIn === '0') {
@@ -194,7 +162,7 @@ const useRebalanceLiquidityCheck = () => {
         priceImpact,
         liquidityLevel: priceImpactToLevel(priceImpact),
         liquidityScore: priceImpactToScore(priceImpact),
-        counterpart,
+        counterpart: nativeSymbol,
         swapPath,
       },
     ]
@@ -218,7 +186,7 @@ const useRebalanceLiquidityCheck = () => {
     queryFn: async () => {
       if (!tokens.length || !rebalanceParams || !chainId) return {}
       const results = await Promise.all(
-        tokens.map((t) => fetchTokenLiquidity(t, tokens))
+        tokens.map((t) => fetchTokenLiquidity(t))
       )
       return Object.fromEntries(results) as Record<string, TokenLiquidity>
     },
@@ -234,7 +202,7 @@ const useRebalanceLiquidityCheck = () => {
 
     setRetryingTokens((prev) => new Set(prev).add(tokenAddress))
     try {
-      const [, result] = await fetchTokenLiquidity(token, tokens)
+      const [, result] = await fetchTokenLiquidity(token)
       queryClient.setQueryData(
         queryKey,
         (old: Record<string, TokenLiquidity> | undefined) => ({

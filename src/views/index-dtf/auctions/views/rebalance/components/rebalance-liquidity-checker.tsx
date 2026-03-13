@@ -67,12 +67,12 @@ const TokenRow = ({
   const tokenMap = useAtomValue(rebalanceTokenMapAtom)
   const tokenData = tokenMap[token.tokenAddress]
 
-  const counterpart = token.counterpart ?? NATIVE_SYMBOL[chainId] ?? 'WETH'
-  const tradeDescription =
-    token.priceImpact !== undefined
+  const tradeDescription = !token.counterpart
+    ? 'Wrap/unwrap only — no swap needed'
+    : token.priceImpact !== undefined
       ? token.type === 'surplus'
-        ? `${token.priceImpact.toFixed(2)}% price impact selling $${formatCurrency(token.usdSize)} of ${token.tokenSymbol} for ${counterpart}`
-        : `${token.priceImpact.toFixed(2)}% price impact buying $${formatCurrency(token.usdSize)} of ${token.tokenSymbol} with ${counterpart}`
+        ? `${token.priceImpact.toFixed(2)}% price impact selling $${formatCurrency(token.usdSize)} of ${token.tokenSymbol} for ${token.counterpart}`
+        : `${token.priceImpact.toFixed(2)}% price impact buying $${formatCurrency(token.usdSize)} of ${token.tokenSymbol} with ${token.counterpart}`
       : undefined
 
   return (
@@ -193,7 +193,7 @@ const LiquidityCheckerContent = () => {
           <Help
             size={16}
             className="text-legend flex items-center"
-            content="Simulates swaps between surplus and deficit tokens via the zapper API to estimate price impact. Trades under $1 are simulated at $1 for reliable results. Summary badge is weighted by trade size."
+            content="Simulates swaps against the native token via the Zapper API to estimate price impact. Trades under $1 are simulated at $1 for reliable results. Summary badge is weighted by trade size."
           />
         </div>
       </div>

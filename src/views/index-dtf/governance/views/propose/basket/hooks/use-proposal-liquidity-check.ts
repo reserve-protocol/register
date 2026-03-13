@@ -136,34 +136,12 @@ const useProposalLiquidityCheck = () => {
   }, [basket, debouncedShares, debouncedDerived, basketInputType, tvl])
 
   const fetchTokenLiquidity = async (
-    token: TokenInfo,
-    allTokens: TokenInfo[]
+    token: TokenInfo
   ): Promise<[string, TokenLiquidity]> => {
-    const surplusTokens = allTokens.filter((t) => t.type === 'surplus')
-    const deficitTokens = allTokens.filter((t) => t.type === 'deficit')
-    const largestSurplus = surplusTokens.length
-      ? surplusTokens.reduce((a, b) => (b.usdSize > a.usdSize ? b : a))
-      : null
-    const largestDeficit = deficitTokens.length
-      ? deficitTokens.reduce((a, b) => (b.usdSize > a.usdSize ? b : a))
-      : null
+    const nativeSymbol = NATIVE_SYMBOL[chainId] ?? 'WETH'
 
-    const getTokenPrice = (address: string): number =>
-      prices[address] ?? prices[address.toLowerCase()] ?? 0
-    const getNativeCounterpart = (t: TokenInfo): string | undefined =>
-      t.type === 'surplus'
-        ? largestDeficit?.tokenSymbol
-        : largestSurplus?.tokenSymbol
-
-    const simulationUsd = Math.max(token.usdSize, MIN_USD_SIZE)
-    const isSurplus = token.type === 'surplus'
-    const nativeCounterpart = isSurplus ? largestDeficit : largestSurplus
-
-    if (
-      isNativeToken(token.tokenAddress, chainId) &&
-      (!nativeCounterpart ||
-        isNativeToken(nativeCounterpart.tokenAddress, chainId))
-    ) {
+    // Native/wrapped native is just wrap/unwrap, no liquidity concern
+    if (isNativeToken(token.tokenAddress, chainId)) {
       return [
         token.tokenAddress,
         {
@@ -171,31 +149,22 @@ const useProposalLiquidityCheck = () => {
           priceImpact: 0,
           liquidityLevel: 'high',
           liquidityScore: 100,
-          counterpart: getNativeCounterpart(token),
         },
       ]
     }
 
-    let tokenIn: Address, tokenOut: Address, amountIn: string, counterpart: string
+    const simulationUsd = Math.max(token.usdSize, MIN_USD_SIZE)
+    let tokenIn: Address, tokenOut: Address, amountIn: string
 
-    if (isSurplus) {
-      const cp = largestDeficit ?? null
+    if (token.type === 'surplus') {
       tokenIn = token.tokenAddress as Address
-      tokenOut = cp ? (cp.tokenAddress as Address) : NATIVE_TOKEN
-      amountIn = convertUsdToTokenUnits(
-        simulationUsd,
-        getTokenPrice(token.tokenAddress),
-        token.decimals
-      )
-      counterpart = cp?.tokenSymbol ?? (NATIVE_SYMBOL[chainId] ?? 'WETH')
+      tokenOut = NATIVE_TOKEN
+      const price = prices[token.tokenAddress] ?? prices[token.tokenAddress.toLowerCase()] ?? 0
+      amountIn = convertUsdToTokenUnits(simulationUsd, price, token.decimals)
     } else {
-      const cp = largestSurplus ?? null
-      tokenIn = cp ? (cp.tokenAddress as Address) : NATIVE_TOKEN
+      tokenIn = NATIVE_TOKEN
       tokenOut = token.tokenAddress as Address
-      const price = cp ? getTokenPrice(cp.tokenAddress) : ethPrice
-      const decimals = cp ? cp.decimals : 18
-      amountIn = convertUsdToTokenUnits(simulationUsd, price, decimals)
-      counterpart = cp?.tokenSymbol ?? (NATIVE_SYMBOL[chainId] ?? 'WETH')
+      amountIn = convertUsdToTokenUnits(simulationUsd, ethPrice, 18)
     }
 
     if (amountIn === '0') {
@@ -237,7 +206,7 @@ const useProposalLiquidityCheck = () => {
         priceImpact,
         liquidityLevel: priceImpactToLevel(priceImpact),
         liquidityScore: priceImpactToScore(priceImpact),
-        counterpart,
+        counterpart: nativeSymbol,
         swapPath,
       },
     ]
@@ -277,7 +246,7 @@ const useProposalLiquidityCheck = () => {
       }
 
       const results = await Promise.all(
-        tokens.map((t) => fetchTokenLiquidity(t, tokens))
+        tokens.map((t) => fetchTokenLiquidity(t))
       )
 
       return {
@@ -298,7 +267,7 @@ const useProposalLiquidityCheck = () => {
 
     setRetryingTokens((prev) => new Set(prev).add(tokenAddress))
     try {
-      const [, result] = await fetchTokenLiquidity(token, tokens)
+      const [, result] = await fetchTokenLiquidity(token)
       queryClient.setQueryData(
         queryKey,
         (
