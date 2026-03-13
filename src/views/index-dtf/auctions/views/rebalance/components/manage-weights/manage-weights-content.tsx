@@ -5,7 +5,7 @@ import {
   indexDTFRebalanceControlAtom,
   isHybridDTFAtom,
 } from '@/state/dtf/atoms'
-import { chainIdAtom } from '@/state/atoms'
+import { chainIdAtom, devModeAtom } from '@/state/atoms'
 import {
   DEFAULT_MAX_AUCTION_SIZE_USD,
   maxAuctionSizesAtom,
@@ -55,6 +55,8 @@ const ManageWeightsContent = () => {
   const setManagedWeightUnits = useSetAtom(managedWeightUnitsAtom)
   const { basketItems, proposedUnits, validation } = useBasketSetup()
 
+  const isDevMode = useAtomValue(devModeAtom)
+
   // Get token list for MaxAuctionSizeEditor
   const tokens = useMemo(() => Object.values(tokenMap), [tokenMap])
 
@@ -62,6 +64,7 @@ const ManageWeightsContent = () => {
     queryKey: ['zapperTokens', chainId],
     queryFn: () => fetchZapperTokens(chainId),
     staleTime: 5 * 60_000,
+    enabled: isDevMode,
   })
 
   const unsupportedTokens = useMemo(() => {

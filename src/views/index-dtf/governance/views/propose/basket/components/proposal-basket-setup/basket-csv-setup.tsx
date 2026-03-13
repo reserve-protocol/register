@@ -2,7 +2,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { indexDTFAtom } from '@/state/dtf/atoms'
-import { chainIdAtom } from '@/state/atoms'
+import { chainIdAtom, devModeAtom } from '@/state/atoms'
 import { isAddress } from '@/utils'
 import {
   ExplorerDataType,
@@ -119,6 +119,7 @@ const BasketCsvSetup = () => {
   const isUnitBasket = useAtomValue(isUnitBasketAtom)
   const assets = useAtomValue(proposedIndexBasketAtom)
   const chainId = useAtomValue(chainIdAtom)
+  const isDevMode = useAtomValue(devModeAtom)
   const { data: tokenList } = useTokenList(chainId, { unfiltered: true })
   const setNewBasketFromCsv = useSetAtom(setNewBasketFromCsvAtom)
   const [error, setError] = useState<string | null>(null)
@@ -250,7 +251,7 @@ const BasketCsvSetup = () => {
           <DownloadCloud size={14} />
         </Button>
       </div>
-      {skippedTokens.length > 0 && (
+      {isDevMode && skippedTokens.length > 0 && (
         <Alert
           variant="warning"
           className="rounded-xl bg-warning/10 border-warning/20"
