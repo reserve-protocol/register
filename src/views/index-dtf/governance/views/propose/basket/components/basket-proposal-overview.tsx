@@ -135,12 +135,12 @@ const BasketProposalOverview = () => {
           : 'flex flex-col gap-2'
       }
     >
+      <ProposalLiquidityChecker />
       <div className="border-4 overflow-hidden w-full border-secondary rounded-3xl bg-background h-[fit-content]">
         <Header />
         <ProposalInstructions />
       </div>
       <SimulateProposalSection />
-      <ProposalLiquidityChecker />
     </div>
   )
 }

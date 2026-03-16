@@ -56,6 +56,12 @@ const getWeightedLevel = (
   return scoreToLevel(weightedScore)
 }
 
+const impactColor = (impact: number): string => {
+  if (impact <= 0) return 'text-emerald-500'
+  if (impact <= 3) return 'text-yellow-600'
+  return 'text-destructive'
+}
+
 const TokenRow = ({
   token,
   isLoading,
@@ -90,7 +96,12 @@ const TokenRow = ({
       <span className="text-sm text-muted-foreground">
         ${formatCurrency(token.usdSize)}
       </span>
-      <div className="ml-auto">
+      <div className="ml-auto flex items-center gap-2">
+        {token.priceImpact !== undefined && token.priceImpact > 0 && (
+          <span className={cn('text-sm font-medium', impactColor(token.priceImpact))}>
+            {token.priceImpact.toFixed(2)}%
+          </span>
+        )}
         <LiquidityBadge
           level={token.level}
           priceImpact={token.priceImpact}
@@ -233,6 +244,19 @@ const LiquidityCheckerContent = () => {
   const buying = enriched.filter((t) => t.type === 'deficit')
   const worstLevel = getWeightedLevel(enriched)
 
+  const totalTradeValue = enriched.reduce((sum, t) => sum + t.usdSize, 0)
+  const totalSlippageDollars = enriched.reduce(
+    (sum, t) => sum + ((t.priceImpact ?? 0) / 100) * t.usdSize,
+    0
+  )
+  const aggregateImpact = totalTradeValue > 0
+    ? (totalSlippageDollars / totalTradeValue) * 100
+    : 0
+
+  const highImpactTokens = enriched.filter(
+    (t) => (t.priceImpact ?? 0) > 5
+  )
+
   return (
     <div className="bg-background rounded-3xl p-4 flex flex-col gap-3 border-4 border-secondary">
       <div className="flex items-center gap-2">
@@ -253,6 +277,17 @@ const LiquidityCheckerContent = () => {
           />
         </div>
       </div>
+      {highImpactTokens.length > 0 && !isLoading && (
+        <Alert variant="destructive" className="rounded-xl">
+          <AlertTriangle className="h-4 w-4" />
+          <AlertTitle>High price impact</AlertTitle>
+          <AlertDescription>
+            {highImpactTokens.map((t) => t.tokenSymbol).join(', ')}{' '}
+            {highImpactTokens.length === 1 ? 'has' : 'have'} &gt;5% simulated
+            price impact. Estimated loss: ~${formatCurrency(totalSlippageDollars)}
+          </AlertDescription>
+        </Alert>
+      )}
       <UnsupportedTokensWarning
         unsupportedTokens={unsupportedTokens}
         basket={basket}
@@ -260,6 +295,14 @@ const LiquidityCheckerContent = () => {
       />
       <TokenSection label="Selling" tokens={selling} isLoading={isLoading} retryingTokens={retryingTokens} symbolMap={symbolMap} onRetry={retryToken} />
       <TokenSection label="Buying" tokens={buying} isLoading={isLoading} retryingTokens={retryingTokens} symbolMap={symbolMap} onRetry={retryToken} />
+      {!isLoading && totalTradeValue > 0 && (
+        <div className="flex items-center justify-between pt-2 border-t">
+          <span className="text-sm font-medium">Estimated total impact</span>
+          <span className={cn('text-sm font-bold', impactColor(aggregateImpact))}>
+            {aggregateImpact.toFixed(2)}%{totalSlippageDollars > 0 && ` (~$${formatCurrency(totalSlippageDollars)})`}
+          </span>
+        </div>
+      )}
     </div>
   )
 }
