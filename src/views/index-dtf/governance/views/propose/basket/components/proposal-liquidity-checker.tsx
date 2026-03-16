@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import LiquidityBadge from '@/components/liquidity-badge'
 import TokenLogo from '@/components/token-logo'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
@@ -12,12 +13,12 @@ import {
 } from '@/utils/getExplorerLink'
 import { LiquidityLevel } from '@/utils/liquidity'
 import { NATIVE_SYMBOL, WRAPPED_NATIVE, SwapLeg } from '@/utils/zapper'
-import { useAtomValue } from 'jotai'
+import { useAtomValue, useSetAtom } from 'jotai'
 import { AlertTriangle, ArrowUpRight, RefreshCw } from 'lucide-react'
 import useProposalLiquidityCheck, {
   TokenInfo,
 } from '../hooks/use-proposal-liquidity-check'
-import { proposedIndexBasketAtom } from '../atoms'
+import { proposedIndexBasketAtom, proposalLiquidityLoadingAtom } from '../atoms'
 
 type EnrichedToken = TokenInfo & {
   level: LiquidityLevel
@@ -97,7 +98,7 @@ const TokenRow = ({
         ${formatCurrency(token.usdSize)}
       </span>
       <div className="ml-auto flex items-center gap-2">
-        {token.priceImpact !== undefined && token.priceImpact > 0 && (
+        {token.priceImpact !== undefined && (
           <span className={cn('text-sm font-medium', impactColor(token.priceImpact))}>
             {token.priceImpact.toFixed(2)}%
           </span>
@@ -210,9 +211,17 @@ const ProposalLiquidityChecker = () => {
 
 const LiquidityCheckerContent = () => {
   const chainId = useAtomValue(chainIdAtom)
-  const { tokens, liquidityMap, unsupportedTokens, isLoading, isFetching, retryingTokens, refetch, retryToken } =
+  const { tokens, liquidityMap, unsupportedTokens, isLoading, isFetching, isDebouncing, retryingTokens, refetch, retryToken } =
     useProposalLiquidityCheck()
   const basket = useAtomValue(proposedIndexBasketAtom)
+  const setLiquidityLoading = useSetAtom(proposalLiquidityLoadingAtom)
+
+  const isPending = isDebouncing || isLoading || isFetching
+
+  useEffect(() => {
+    setLiquidityLoading(isPending)
+    return () => setLiquidityLoading(false)
+  }, [isPending, setLiquidityLoading])
 
   const symbolMap: Record<string, string> = {}
   if (basket) {
@@ -223,8 +232,6 @@ const LiquidityCheckerContent = () => {
   for (const [cid, addr] of Object.entries(WRAPPED_NATIVE)) {
     symbolMap[addr.toLowerCase()] = NATIVE_SYMBOL[Number(cid)] ?? 'WETH'
   }
-
-  if (!tokens.length) return null
 
   const enriched: EnrichedToken[] = tokens.map((t) => {
     const liq = liquidityMap[t.tokenAddress]
@@ -244,7 +251,7 @@ const LiquidityCheckerContent = () => {
   const buying = enriched.filter((t) => t.type === 'deficit')
   const worstLevel = getWeightedLevel(enriched)
 
-  const totalTradeValue = enriched.reduce((sum, t) => sum + t.usdSize, 0)
+  const totalTradeValue = selling.reduce((sum, t) => sum + t.usdSize, 0)
   const totalSlippageDollars = enriched.reduce(
     (sum, t) => sum + ((t.priceImpact ?? 0) / 100) * t.usdSize,
     0
@@ -261,14 +268,14 @@ const LiquidityCheckerContent = () => {
     <div className="bg-background rounded-3xl p-4 flex flex-col gap-3 border-4 border-secondary">
       <div className="flex items-center gap-2">
         <span className="text-legend text-sm font-medium">Liquidity</span>
-        {worstLevel && !isLoading && <LiquidityBadge level={worstLevel} />}
+        {worstLevel && !isPending && <LiquidityBadge level={worstLevel} />}
         <div className="ml-auto flex items-center gap-1">
           <button
             onClick={() => refetch()}
-            disabled={isFetching}
+            disabled={isPending}
             className="text-legend hover:text-foreground disabled:opacity-50"
           >
-            <RefreshCw size={14} className={cn(isFetching && 'animate-spin')} />
+            <RefreshCw size={14} className={cn(isPending && 'animate-spin')} />
           </button>
           <Help
             size={16}
@@ -277,6 +284,9 @@ const LiquidityCheckerContent = () => {
           />
         </div>
       </div>
+      {isPending && !tokens.length && (
+        <p className="text-sm text-muted-foreground">Analyzing liquidity...</p>
+      )}
       {highImpactTokens.length > 0 && !isLoading && (
         <Alert variant="destructive" className="rounded-xl">
           <AlertTriangle className="h-4 w-4" />
@@ -298,11 +308,17 @@ const LiquidityCheckerContent = () => {
       <TokenSection label="Selling" tokens={selling} isLoading={isLoading} retryingTokens={retryingTokens} symbolMap={symbolMap} onRetry={retryToken} />
       <TokenSection label="Buying" tokens={buying} isLoading={isLoading} retryingTokens={retryingTokens} symbolMap={symbolMap} onRetry={retryToken} />
       {!isLoading && totalTradeValue > 0 && (
-        <div className="flex items-center justify-between pt-2 border-t">
-          <span className="text-sm font-medium">Estimated total impact</span>
-          <span className={cn('text-sm font-bold', impactColor(aggregateImpact))}>
-            {aggregateImpact.toFixed(2)}%{totalSlippageDollars > 0 && ` (~$${formatCurrency(totalSlippageDollars)})`}
-          </span>
+        <div className="flex flex-col gap-1 pt-2 border-t">
+          <div className="flex items-center justify-between">
+            <span className="text-sm text-muted-foreground">Total trade value</span>
+            <span className="text-sm font-medium">${formatCurrency(totalTradeValue)}</span>
+          </div>
+          <div className="flex items-center justify-between">
+            <span className="text-sm font-medium">Estimated total impact</span>
+            <span className={cn('text-sm font-bold', impactColor(aggregateImpact))}>
+              {aggregateImpact.toFixed(2)}%{totalSlippageDollars > 0 && ` (~$${formatCurrency(totalSlippageDollars)})`}
+            </span>
+          </div>
         </div>
       )}
     </div>

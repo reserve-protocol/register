@@ -105,13 +105,21 @@ const useProposalLiquidityCheck = () => {
   const [debouncedShares, setDebouncedShares] = useState(proposedShares)
   const [debouncedDerived, setDebouncedDerived] = useState(derivedShares)
   const [retryingTokens, setRetryingTokens] = useState<Set<string>>(new Set())
+  const [isDebouncing, setIsDebouncing] = useState(false)
   const debounceTimerRef = useRef<NodeJS.Timeout>()
+  const hasInitialized = useRef(false)
 
   useEffect(() => {
+    if (!hasInitialized.current) {
+      hasInitialized.current = true
+      return
+    }
+    setIsDebouncing(true)
     if (debounceTimerRef.current) clearTimeout(debounceTimerRef.current)
     debounceTimerRef.current = setTimeout(() => {
       setDebouncedShares(proposedShares)
       setDebouncedDerived(derivedShares)
+      setIsDebouncing(false)
     }, DEBOUNCE_DELAY)
     return () => {
       if (debounceTimerRef.current) clearTimeout(debounceTimerRef.current)
@@ -291,7 +299,7 @@ const useProposalLiquidityCheck = () => {
     }
   }
 
-  return { tokens, liquidityMap, unsupportedTokens, isLoading, isFetching, retryingTokens, refetch, retryToken }
+  return { tokens, liquidityMap, unsupportedTokens, isLoading, isFetching, isDebouncing, retryingTokens, refetch, retryToken }
 }
 
 export default useProposalLiquidityCheck

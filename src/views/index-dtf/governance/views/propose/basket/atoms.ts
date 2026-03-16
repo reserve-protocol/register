@@ -54,6 +54,7 @@ export const dtfBalancesAtom = atom<Record<string, bigint> | undefined>(
 // ############################################################
 export const isProposalConfirmedAtom = atom(false)
 export const proposalDescriptionAtom = atom<string | undefined>(undefined)
+export const proposalLiquidityLoadingAtom = atom(false)
 
 // ############################################################
 // Proposal basket setup

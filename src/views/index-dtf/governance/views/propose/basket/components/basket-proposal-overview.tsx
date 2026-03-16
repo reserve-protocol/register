@@ -8,7 +8,9 @@ import {
   isProposalConfirmedAtom,
   basketProposalCalldatasAtom,
   proposalDescriptionAtom,
+  proposalLiquidityLoadingAtom,
 } from '../atoms'
+import { devModeAtom } from '@/state/chain/atoms/chainAtoms'
 import SubmitProposalButton from './submit-proposal-button'
 import { ROUTES } from '@/utils/constants'
 import { indexDTFAtom, indexDTFBrandAtom } from '@/state/dtf/atoms'
@@ -41,18 +43,26 @@ const Header = () => {
 
 const ConfirmProposalButton = () => {
   const isValid = useAtomValue(isBasketProposalValidAtom)
+  const isDevMode = useAtomValue(devModeAtom)
+  const isLiquidityLoading = useAtomValue(proposalLiquidityLoadingAtom)
   const [isProposalConfirmed, setIsProposalConfirmed] = useAtom(
     isProposalConfirmedAtom
   )
 
+  const waitForLiquidity = isDevMode && isLiquidityLoading && !isProposalConfirmed
+
   return (
     <Button
       className="w-full"
-      disabled={!isValid}
+      disabled={!isValid || waitForLiquidity}
       variant={isProposalConfirmed ? 'outline' : 'default'}
       onClick={() => setIsProposalConfirmed(!isProposalConfirmed)}
     >
-      {isProposalConfirmed ? 'Edit proposal' : 'Confirm & prepare proposal'}
+      {waitForLiquidity
+        ? 'Checking liquidity...'
+        : isProposalConfirmed
+          ? 'Edit proposal'
+          : 'Confirm & prepare proposal'}
     </Button>
   )
 }

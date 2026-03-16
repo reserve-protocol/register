@@ -96,7 +96,7 @@ const TokenRow = ({
         ${formatCurrency(token.usdSize)}
       </span>
       <div className="ml-auto flex items-center gap-2">
-        {token.priceImpact !== undefined && token.priceImpact > 0 && (
+        {token.priceImpact !== undefined && (
           <span className={cn('text-sm font-medium', impactColor(token.priceImpact))}>
             {token.priceImpact.toFixed(2)}%
           </span>
@@ -189,7 +189,7 @@ const LiquidityCheckerContent = () => {
   const buying = enriched.filter((t) => t.type === 'deficit')
   const worstLevel = getWeightedLevel(enriched)
 
-  const totalTradeValue = enriched.reduce((sum, t) => sum + t.usdSize, 0)
+  const totalTradeValue = selling.reduce((sum, t) => sum + t.usdSize, 0)
   const totalSlippageDollars = enriched.reduce(
     (sum, t) => sum + ((t.priceImpact ?? 0) / 100) * t.usdSize,
     0
@@ -238,11 +238,17 @@ const LiquidityCheckerContent = () => {
       <TokenSection label="Selling" tokens={selling} isLoading={isLoading} retryingTokens={retryingTokens} symbolMap={symbolMap} onRetry={retryToken} />
       <TokenSection label="Buying" tokens={buying} isLoading={isLoading} retryingTokens={retryingTokens} symbolMap={symbolMap} onRetry={retryToken} />
       {!isLoading && totalTradeValue > 0 && (
-        <div className="flex items-center justify-between pt-2 border-t">
-          <span className="text-sm font-medium">Estimated total impact</span>
-          <span className={cn('text-sm font-bold', impactColor(aggregateImpact))}>
-            {aggregateImpact.toFixed(2)}%{totalSlippageDollars > 0 && ` (~$${formatCurrency(totalSlippageDollars)})`}
-          </span>
+        <div className="flex flex-col gap-1 pt-2 border-t">
+          <div className="flex items-center justify-between">
+            <span className="text-sm text-muted-foreground">Total trade value</span>
+            <span className="text-sm font-medium">${formatCurrency(totalTradeValue)}</span>
+          </div>
+          <div className="flex items-center justify-between">
+            <span className="text-sm font-medium">Estimated total impact</span>
+            <span className={cn('text-sm font-bold', impactColor(aggregateImpact))}>
+              {aggregateImpact.toFixed(2)}%{totalSlippageDollars > 0 && ` (~$${formatCurrency(totalSlippageDollars)})`}
+            </span>
+          </div>
         </div>
       )}
     </div>
