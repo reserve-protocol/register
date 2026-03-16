@@ -134,7 +134,7 @@ const ProposalCancel = () => {
       onClick={write}
       text={t`Cancel proposal`}
       className={`h-11 bg-transparent border ${
-        account ? 'border-destructive' : 'border-primary'
+        account ? 'border-destructive text-destructive hover:text-destructive-foreground disabled:border-border disabled:text-muted-foreground' : 'border-primary'
       }`}
     />
   )
