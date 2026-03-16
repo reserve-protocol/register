@@ -284,7 +284,9 @@ const LiquidityCheckerContent = () => {
           <AlertDescription>
             {highImpactTokens.map((t) => t.tokenSymbol).join(', ')}{' '}
             {highImpactTokens.length === 1 ? 'has' : 'have'} &gt;5% simulated
-            price impact. Estimated loss: ~${formatCurrency(totalSlippageDollars)}
+            price impact.
+            <br />
+            Estimated loss: ~${formatCurrency(totalSlippageDollars)}
           </AlertDescription>
         </Alert>
       )}
