@@ -8,7 +8,7 @@ import { PerformanceCell } from './performance-cell'
 import { ExposureGroup } from '@/state/dtf/atoms'
 
 interface ExposureTableRowsProps {
-  exposureGroups: Map<string, ExposureGroup> | Array<[string, ExposureGroup]>
+  exposureGroups: [string, ExposureGroup][]
   performanceLoading: boolean
   timeRange: TimeRange
   marketCaps: Record<string, number> | undefined
@@ -25,15 +25,11 @@ export const ExposureTableRows = ({
   maxTokens,
 }: ExposureTableRowsProps) => {
   const chainId = useAtomValue(chainIdAtom)
-  // Convert to array if it's a Map
-  const groupsArray = Array.isArray(exposureGroups)
-    ? exposureGroups
-    : Array.from(exposureGroups.entries())
 
   return (
     <>
-      {groupsArray
-        .slice(0, viewAll ? groupsArray.length : maxTokens)
+      {exposureGroups
+        .slice(0, viewAll ? exposureGroups.length : maxTokens)
         .map(([key, group]) => {
           const native = group.native || {
             symbol: key,

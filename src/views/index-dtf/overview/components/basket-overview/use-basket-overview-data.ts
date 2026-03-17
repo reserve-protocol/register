@@ -21,37 +21,42 @@ export const useBasketOverviewData = () => {
   const hasBridgedAssets = useAtomValue(hasBridgedAssetsAtom)
   const chainId = useAtomValue(chainIdAtom)
 
-  const filtered = basket?.filter(
-    (token) => basketShares[token.address] !== '0.00'
+  const filtered = useMemo(
+    () => basket?.filter((token) => basketShares[token.address] !== '0.00'),
+    [basket, basketShares]
   )
 
   const exposureGroupsRaw = useAtomValue(indexDTFExposureMapAtom)
 
-  const exposureGroups = exposureGroupsRaw
-    ? new Map(
-        [...exposureGroupsRaw.entries()].filter(
-          ([, group]) => group.totalWeight.toFixed(2) !== '0.00'
-        )
-      )
-    : exposureGroupsRaw
+  // null = not loaded yet, [] = loaded but empty
+  const exposureGroups: [string, ExposureGroup][] | null = useMemo(() => {
+    if (!exposureGroupsRaw) return null
+    return [...exposureGroupsRaw.entries()].filter(
+      ([, group]) => group.totalWeight.toFixed(2) !== '0.00'
+    )
+  }, [exposureGroupsRaw])
 
   const basketPerformanceChanges = useMemo(() => {
+    if (!exposureGroups) return {}
     return Object.fromEntries(
-      [...(exposureGroups?.values() ?? [])].flatMap((group: ExposureGroup) => {
-        return group.tokens.map((token) => {
-          return [token.address.toLowerCase(), token?.change ?? 0]
-        })
-      })
+      exposureGroups.flatMap(([, group]) =>
+        group.tokens.map((token) => [
+          token.address.toLowerCase(),
+          token?.change ?? 0,
+        ])
+      )
     )
   }, [exposureGroups])
 
   const newlyAddedAssets = useMemo(() => {
+    if (!exposureGroups) return {}
     return Object.fromEntries(
-      [...(exposureGroups?.values() ?? [])].flatMap((group: ExposureGroup) => {
-        return group.tokens.map((token) => {
-          return [token.address.toLowerCase(), group.hasNewlyAdded || false]
-        })
-      })
+      exposureGroups.flatMap(([, group]) =>
+        group.tokens.map((token) => [
+          token.address.toLowerCase(),
+          group.hasNewlyAdded || false,
+        ])
+      )
     )
   }, [exposureGroups])
 
