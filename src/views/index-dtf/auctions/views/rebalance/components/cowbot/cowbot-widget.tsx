@@ -15,9 +15,9 @@ interface CowbotContextValue {
   stop: () => void
 }
 
-const CowbotContext = createContext<CowbotContextValue | null>(null)
+export const CowbotContext = createContext<CowbotContextValue | null>(null)
 
-const useCowbotContext = () => {
+export const useCowbotContext = () => {
   const context = useContext(CowbotContext)
   if (!context) {
     throw new Error('useCowbotContext must be used within CowbotProvider')
@@ -59,7 +59,8 @@ const CowbotProvider = ({
 
     const handleBeforeUnload = (event: BeforeUnloadEvent) => {
       event.preventDefault()
-      event.returnValue = 'CowBot is running. Are you sure you want to leave?'
+      event.returnValue =
+        'Are you sure you want to close this tab? This may cause the auction to fail and value to be lost.'
       return event.returnValue
     }
 

@@ -9,6 +9,7 @@ import {
 import {
   CowbotProvider,
   CowbotInlineCard,
+  CowbotWarningBanner,
   useIsListedDTF,
 } from './components/cowbot'
 import ManageWeightsView from './components/manage-weights/manage-weights-view'
@@ -87,6 +88,7 @@ const Rebalance = () => {
         isListedDTF: isListed,
       }}
     >
+      <CowbotWarningBanner />
       <RebalanceContent />
       <Updater />
     </CowbotProvider>
