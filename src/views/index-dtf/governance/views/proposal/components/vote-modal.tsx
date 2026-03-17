@@ -18,12 +18,13 @@ import {
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { chainIdAtom } from 'state/atoms'
-import { getProposalTitle, shortenAddress } from 'utils'
+import { getProposalTitle } from 'utils'
 import {
   ETHERSCAN_NAMES,
   ExplorerDataType,
   getExplorerLink,
 } from 'utils/getExplorerLink'
+import EnsName from '@/components/utils/ens-name'
 import { proposalDetailAtom } from '../atom'
 import { proposalRefreshFnAtom } from '../updater'
 
@@ -107,7 +108,7 @@ const VoteModal = (props: ModalProps) => {
             <Trans>Proposed by</Trans>:
           </span>
           <span className="ml-1">
-            {shortenAddress(proposal?.proposer?.address ?? '')}
+            <EnsName address={proposal?.proposer?.address ?? ''} />
           </span>
           <GoTo
             className="ml-2"

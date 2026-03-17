@@ -1,6 +1,7 @@
+import EnsName from '@/components/utils/ens-name'
 import { PartialProposal } from '@/lib/governance'
 import { chainIdAtom } from '@/state/atoms'
-import { formatDate, shortenAddress } from '@/utils'
+import { formatDate } from '@/utils'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { useAtomValue } from 'jotai'
 import { Link } from 'react-router-dom'
@@ -40,7 +41,7 @@ export const RebalanceItemFooter = ({
           )}
           target="_blank"
         >
-          {shortenAddress(proposal.proposer.address)}
+          <EnsName address={proposal.proposer.address} />
         </Link>
       </div>
     </div>

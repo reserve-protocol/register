@@ -1,6 +1,6 @@
 import { Skeleton } from '@/components/ui/skeleton'
+import EnsName from '@/components/utils/ens-name'
 import { indexDTFAtom } from '@/state/dtf/atoms'
-import { shortenAddress } from '@/utils'
 import { t } from '@lingui/macro'
 import { atom, useAtomValue } from 'jotai'
 import { Image, MousePointerClick, ShieldHalf } from 'lucide-react'
@@ -50,7 +50,7 @@ const RolesInfo = () => {
           label={t`Guardian`}
           icon={<IconWrapper Component={ShieldHalf} />}
           address={guardian}
-          value={shortenAddress(guardian)}
+          value={<EnsName address={guardian} />}
         />
       ))}
       {indexDTF?.auctionLaunchers?.map((approver) => (
@@ -59,7 +59,7 @@ const RolesInfo = () => {
           label={t`Auction Launcher`}
           icon={<IconWrapper Component={MousePointerClick} />}
           address={approver}
-          value={shortenAddress(approver)}
+          value={<EnsName address={approver} />}
         />
       ))}
       {indexDTF?.brandManagers?.map((approver) => (
@@ -68,7 +68,7 @@ const RolesInfo = () => {
           label={t`Brand Manager`}
           icon={<IconWrapper Component={Image} />}
           address={approver}
-          value={shortenAddress(approver)}
+          value={<EnsName address={approver} />}
         />
       ))}
     </InfoCard>

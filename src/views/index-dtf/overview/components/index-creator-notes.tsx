@@ -1,7 +1,7 @@
 import { Card } from '@/components/ui/card'
 import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom, indexDTFBrandAtom } from '@/state/dtf/atoms'
-import { shortenAddress } from '@/utils'
+import { useEnsName } from '@/hooks/use-ens-name'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { useAtomValue } from 'jotai'
 import { ArrowUpRight, ScrollText } from 'lucide-react'
@@ -11,6 +11,7 @@ const IndexCreatorNotes = () => {
   const brandData = useAtomValue(indexDTFBrandAtom)
   const data = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
+  const deployerName = useEnsName(data?.deployer)
 
   if (!brandData?.dtf?.notesFromCreator || !data) return null
 
@@ -33,7 +34,7 @@ const IndexCreatorNotes = () => {
             className="flex items-center gap-1"
           >
             <span className="font-bold">
-              {brandData.creator?.name || shortenAddress(data.deployer)}
+              {brandData.creator?.name || deployerName}
             </span>
             <div className="rounded-full p-1 bg-muted">
               <ArrowUpRight size={14} />
