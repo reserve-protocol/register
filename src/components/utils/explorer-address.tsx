@@ -1,5 +1,6 @@
 import { ArrowUpRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { useEnsName } from '@/hooks/use-ens-name'
 import { shortenAddress } from 'utils'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 
@@ -8,6 +9,7 @@ type ExplorerAddressProps = {
   chain: number
   type?: ExplorerDataType
   className?: string
+  ens?: boolean
 }
 
 const ExplorerAddress = ({
@@ -15,7 +17,11 @@ const ExplorerAddress = ({
   chain,
   type = ExplorerDataType.ADDRESS,
   className,
+  ens,
 }: ExplorerAddressProps) => {
+  const ensName = useEnsName(ens ? address : undefined)
+  const displayName = ens ? ensName : shortenAddress(address)
+
   const handleAddress = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation()
     window.open(getExplorerLink(address, chain, type), '_blank')
@@ -29,7 +35,7 @@ const ExplorerAddress = ({
         className
       )}
     >
-      {shortenAddress(address)}
+      {displayName}
       <div className="flex items-center">
         <ArrowUpRight size={14} />
       </div>

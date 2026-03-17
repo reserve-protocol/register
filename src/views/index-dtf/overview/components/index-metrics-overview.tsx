@@ -13,7 +13,8 @@ import {
   indexDTFMarketCapAtom,
   indexDTFTransactionsAtom,
 } from '@/state/dtf/atoms'
-import { formatCurrency, formatPercentage, shortenAddress } from '@/utils'
+import { useEnsName } from '@/hooks/use-ens-name'
+import { formatCurrency, formatPercentage } from '@/utils'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { useAtomValue } from 'jotai'
 import {
@@ -90,14 +91,14 @@ const Creator = () => {
   const dtf = useAtomValue(indexDTFAtom)
   const brandData = useAtomValue(indexDTFBrandAtom)
   const chainId = useAtomValue(chainIdAtom)
+  const deployerName = useEnsName(dtf?.deployer)
+  const displayName = brandData?.creator?.name || deployerName
 
   return (
     <MetricsItem
       label="Creator"
-      value={brandData?.creator?.name || shortenAddress(dtf?.deployer || '')}
-      valueHover={
-        brandData?.creator?.name || shortenAddress(dtf?.deployer || '')
-      }
+      value={displayName}
+      valueHover={displayName}
       icon={
         brandData?.creator?.icon ? (
           <TokenLogo src={brandData.creator.icon} size="sm" />

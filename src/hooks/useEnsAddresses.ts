@@ -1,3 +1,8 @@
+/**
+ * @deprecated Use `useEnsName` from `@/hooks/use-ens-name` instead.
+ * This hook uses a custom batch resolver contract. The new hook uses wagmi's
+ * built-in useEnsName which handles CCIP-Read for .base.eth names.
+ */
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { chainIdAtom } from 'state/atoms'

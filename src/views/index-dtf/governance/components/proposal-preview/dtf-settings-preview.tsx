@@ -1,6 +1,7 @@
 import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { DecodedCalldata } from '@/types'
+import EnsName from '@/components/utils/ens-name'
 import { shortenAddress } from '@/utils'
 import { getPlatformFee } from '@/utils/constants'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
@@ -120,7 +121,7 @@ export const GrantRolePreview = ({
           rel="noopener noreferrer"
           className="text-sm text-muted-foreground hover:text-primary flex items-center gap-1"
         >
-          {shortenAddress(account)}
+          <EnsName address={account} />
           <ArrowUpRight size={12} />
         </Link>
       </div>
@@ -171,7 +172,7 @@ export const RevokeRolePreview = ({
           rel="noopener noreferrer"
           className="text-sm text-muted-foreground hover:text-primary flex items-center gap-1"
         >
-          {shortenAddress(account)}
+          <EnsName address={account} />
           <ArrowUpRight size={12} />
         </Link>
       </div>
