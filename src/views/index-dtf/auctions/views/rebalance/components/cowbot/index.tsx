@@ -14,9 +14,10 @@
  */
 
 export { default as CowbotWidget } from './cowbot-widget'
-export { CowbotProvider, CowbotInlineCard } from './cowbot-widget'
+export { CowbotProvider, CowbotInlineCard, useCowbotContext } from './cowbot-widget'
 export { default as CowbotAnimation } from './cowbot-animation'
 export { default as CowbotCard } from './cowbot-card'
+export { default as CowbotWarningBanner } from './cowbot-warning-banner'
 export { useCowbotQuery } from './use-cowbot-query'
 export { useIsListedDTF } from './use-is-listed-dtf'
 export * from './types'

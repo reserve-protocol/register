@@ -9,6 +9,7 @@ import {
 import {
   CowbotProvider,
   CowbotInlineCard,
+  CowbotWarningBanner,
   useIsListedDTF,
 } from './components/cowbot'
 import ManageWeightsView from './components/manage-weights/manage-weights-view'
@@ -50,6 +51,7 @@ const RebalanceContent = () => {
 
   return (
     <div className="md:w-[480px] p-1 pt-4 flex flex-col gap-1 bg-secondary rounded-3xl">
+      <CowbotWarningBanner />
       <RebalanceError />
       <div className="bg-background rounded-3xl">
         <RebalanceHeader />

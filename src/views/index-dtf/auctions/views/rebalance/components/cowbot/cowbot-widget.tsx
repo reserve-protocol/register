@@ -15,9 +15,9 @@ interface CowbotContextValue {
   stop: () => void
 }
 
-const CowbotContext = createContext<CowbotContextValue | null>(null)
+export const CowbotContext = createContext<CowbotContextValue | null>(null)
 
-const useCowbotContext = () => {
+export const useCowbotContext = () => {
   const context = useContext(CowbotContext)
   if (!context) {
     throw new Error('useCowbotContext must be used within CowbotProvider')
@@ -53,18 +53,59 @@ const CowbotProvider = ({
     reset()
   }, [reset])
 
-  // Navigation warning when bot is running
+  // Tab close / refresh warning
   useEffect(() => {
     if (!isActive) return
 
     const handleBeforeUnload = (event: BeforeUnloadEvent) => {
       event.preventDefault()
-      event.returnValue = 'CowBot is running. Are you sure you want to leave?'
+      event.returnValue =
+        'Are you sure you want to close this tab? This may cause the auction to fail and value to be lost.'
       return event.returnValue
     }
 
     window.addEventListener('beforeunload', handleBeforeUnload)
     return () => window.removeEventListener('beforeunload', handleBeforeUnload)
+  }, [isActive])
+
+  // SPA navigation warning (intercepts link clicks + back/forward)
+  useEffect(() => {
+    if (!isActive) return
+
+    const message =
+      'Are you sure you want to leave? This may cause the auction to fail and value to be lost.'
+
+    // Intercept pushState/replaceState (react-router SPA navigation)
+    const originalPushState = history.pushState.bind(history)
+    const originalReplaceState = history.replaceState.bind(history)
+
+    history.pushState = (state, title, url) => {
+      if (window.confirm(message)) {
+        originalPushState(state, title, url)
+      }
+    }
+
+    history.replaceState = (state, title, url) => {
+      if (window.confirm(message)) {
+        originalReplaceState(state, title, url)
+      }
+    }
+
+    // Intercept browser back/forward
+    const handlePopState = () => {
+      if (!window.confirm(message)) {
+        // Push current URL back to cancel the navigation
+        originalPushState(null, '', window.location.href)
+      }
+    }
+
+    window.addEventListener('popstate', handlePopState)
+
+    return () => {
+      history.pushState = originalPushState
+      history.replaceState = originalReplaceState
+      window.removeEventListener('popstate', handlePopState)
+    }
   }, [isActive])
 
   return (
