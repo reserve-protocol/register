@@ -14,6 +14,10 @@ const useFilteredDTFIndex = () => {
     }
 
     const filtered = data.filter((dtf) => {
+      if (dtf.status === 'deprecated') {
+        return false
+      }
+
       if (!chains.length || !chains.includes(dtf.chainId)) {
         return false
       }
