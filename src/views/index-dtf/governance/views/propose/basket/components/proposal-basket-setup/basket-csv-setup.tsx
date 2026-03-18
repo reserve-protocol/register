@@ -1,12 +1,17 @@
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { indexDTFAtom } from '@/state/dtf/atoms'
-import { chainIdAtom } from '@/state/atoms'
+import { chainIdAtom, devModeAtom } from '@/state/atoms'
 import { isAddress } from '@/utils'
+import {
+  ExplorerDataType,
+  getExplorerLink,
+} from '@/utils/getExplorerLink'
 import useTokenList from '@/hooks/use-token-list'
 import { Token } from '@/types'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
-import { DownloadCloud, FilePlus2 } from 'lucide-react'
+import { AlertTriangle, ArrowUpRight, DownloadCloud, FilePlus2 } from 'lucide-react'
 import { useCallback, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
 import {
@@ -32,12 +37,13 @@ const setNewBasketFromCsvAtom = atom(
     const proposedUnitsMap = get(proposedUnitsAtom)
     const proposedIndexBasket = get(proposedIndexBasketAtom)
 
-    if (!proposedIndexBasket) return
+    if (!proposedIndexBasket) return []
 
     const rows = csv.split('\n')
     const newProposedIndexBasket = { ...proposedIndexBasket }
     const newProposedShares = { ...proposedSharesMap }
     const newProposedUnits = { ...proposedUnitsMap }
+    const skipped: { symbol: string; address: string }[] = []
 
     // Track which addresses are present in the CSV
     const csvAddresses = new Set<string>()
@@ -66,9 +72,7 @@ const setNewBasketFromCsvAtom = atom(
       // Skip token if not found in tokenList
       const tokenData = tokenListMap?.[address]
       if (!tokenData) {
-        console.warn(
-          `Token ${symbol} (${address}) not found in token list, skipping`
-        )
+        skipped.push({ symbol, address })
         return
       }
 
@@ -105,6 +109,8 @@ const setNewBasketFromCsvAtom = atom(
     set(proposedIndexBasketAtom, newProposedIndexBasket)
     set(proposedSharesAtom, newProposedShares)
     set(proposedUnitsAtom, newProposedUnits)
+
+    return skipped
   }
 )
 
@@ -113,13 +119,18 @@ const BasketCsvSetup = () => {
   const isUnitBasket = useAtomValue(isUnitBasketAtom)
   const assets = useAtomValue(proposedIndexBasketAtom)
   const chainId = useAtomValue(chainIdAtom)
+  const isDevMode = useAtomValue(devModeAtom)
   const { data: tokenList } = useTokenList(chainId, { unfiltered: true })
   const setNewBasketFromCsv = useSetAtom(setNewBasketFromCsvAtom)
   const [error, setError] = useState<string | null>(null)
+  const [skippedTokens, setSkippedTokens] = useState<
+    { symbol: string; address: string }[]
+  >([])
 
   const onDrop = useCallback(
     (acceptedFiles: File[], rejectedFiles: any[]) => {
       setError(null)
+      setSkippedTokens([])
 
       if (!tokenList) {
         setError('Loading token list... please try again')
@@ -154,7 +165,8 @@ const BasketCsvSetup = () => {
           )
 
           // Update the basket state with proper token data
-          setNewBasketFromCsv({ csv: csvText, tokenListMap })
+          const skipped = setNewBasketFromCsv({ csv: csvText, tokenListMap })
+          setSkippedTokens(skipped ?? [])
         } catch (err) {
           console.error('Error parsing CSV:', err)
           setError('Failed to parse CSV file. Please check the format.')
@@ -167,7 +179,7 @@ const BasketCsvSetup = () => {
 
       reader.readAsText(file)
     },
-    [tokenList, setNewBasketFromCsv]
+    [tokenList, setNewBasketFromCsv, setSkippedTokens]
   )
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -208,35 +220,70 @@ const BasketCsvSetup = () => {
   }
 
   return (
-    <div
-      className={cn(
-        'flex items-center gap-2 p-4 border border-dashed rounded-xl',
-        isDragActive && 'border-primary bg-muted/50',
-        error && 'border-destructive'
-      )}
-      {...getRootProps()}
-    >
-      <input {...getInputProps()} />
-      <div className="rounded-full border border-foreground p-2">
-        <FilePlus2 size={16} />
-      </div>
-      <div className="text-base mr-auto">
-        <p className="font-bold">Replace Basket with CSV</p>
-        <p>
-          <span className="text-primary cursor-pointer">
-            Select a CSV file to upload
-          </span>{' '}
-          <span className="text-legend">or drag and drop it here</span>
-        </p>
-      </div>
-      <Button
-        variant="ghost"
-        className="text-legend font-normal gap-2"
-        onClick={handleTemplate}
+    <div className="space-y-2">
+      <div
+        className={cn(
+          'flex items-center gap-2 p-4 border border-dashed rounded-xl',
+          isDragActive && 'border-primary bg-muted/50',
+          error && 'border-destructive'
+        )}
+        {...getRootProps()}
       >
-        CSV Template
-        <DownloadCloud size={14} />
-      </Button>
+        <input {...getInputProps()} />
+        <div className="rounded-full border border-foreground p-2">
+          <FilePlus2 size={16} />
+        </div>
+        <div className="text-base mr-auto">
+          <p className="font-bold">Replace Basket with CSV</p>
+          <p>
+            <span className="text-primary cursor-pointer">
+              Select a CSV file to upload
+            </span>{' '}
+            <span className="text-legend">or drag and drop it here</span>
+          </p>
+        </div>
+        <Button
+          variant="ghost"
+          className="text-legend font-normal gap-2"
+          onClick={handleTemplate}
+        >
+          CSV Template
+          <DownloadCloud size={14} />
+        </Button>
+      </div>
+      {isDevMode && skippedTokens.length > 0 && (
+        <Alert
+          variant="warning"
+          className="rounded-xl bg-warning/10 border-warning/20"
+        >
+          <AlertTriangle className="h-4 w-4" />
+          <AlertTitle>
+            Tokens not available
+          </AlertTitle>
+          <AlertDescription>
+            <ul className="mt-1 list-disc pl-4 space-y-0.5">
+              {skippedTokens.map((t) => (
+                <li key={t.address}>
+                  <span className="font-medium">{t.symbol}</span>{' '}
+                  <a
+                    href={getExplorerLink(
+                      t.address,
+                      chainId,
+                      ExplorerDataType.ADDRESS
+                    )}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-0.5 font-mono text-xs hover:text-foreground"
+                  >
+                    {t.address.slice(0, 6)}...{t.address.slice(-4)}
+                    <ArrowUpRight size={12} strokeWidth={1.5} />
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </AlertDescription>
+        </Alert>
+      )}
     </div>
   )
 }
