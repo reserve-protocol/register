@@ -1,6 +1,10 @@
 import Swap from '@/components/ui/swap'
 import useZapSwapQuery from '@/hooks/useZapSwapQuery'
-import { indexDTFAtom, indexDTFPriceAtom } from '@/state/dtf/atoms'
+import {
+  indexDTFAtom,
+  indexDTFPriceAtom,
+  indexDTFStatusAtom,
+} from '@/state/dtf/atoms'
 import { formatCurrency } from '@/utils'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useCallback, useEffect } from 'react'
@@ -26,6 +30,7 @@ import ZapDetails, { ZapPriceImpact } from '../zap-details'
 const Sell = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
   const indexDTFPrice = useAtomValue(indexDTFPriceAtom)
+  const isDeprecated = useAtomValue(indexDTFStatusAtom) === 'deprecated'
   const [inputAmount, setInputAmount] = useAtom(zapMintInputAtom)
   const selectedToken = useAtomValue(selectedTokenOrDefaultAtom)
   const indexDTFBalance = useAtomValue(indexDTFBalanceAtom)
@@ -127,7 +132,7 @@ const Sell = () => {
           tokens,
           onTokenSelect: setOutputToken,
         }}
-        onSwap={changeTab}
+        onSwap={isDeprecated ? undefined : changeTab}
         loading={isLoading || loadingAfterRefetch}
       />
       {!!data?.result && <ZapDetails data={data.result} />}

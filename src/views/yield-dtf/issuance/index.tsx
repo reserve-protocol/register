@@ -9,6 +9,7 @@ import IssuanceInfo from './components/issue/IssuanceInfo'
 import Redeem from './components/redeem'
 import {
   CollateralizationBanner,
+  DeprecatedBanner,
   DisabledArbitrumBanner,
   MaintenanceBanner,
 } from './components/warnings'
@@ -28,6 +29,7 @@ const IssuanceMethods = () => {
     <div className="grid grid-cols-1 xl:grid-cols-[1fr_480px] gap-0 lg:gap-4 xl:gap-5">
       {zapEnabled && chainId !== ChainId.Arbitrum ? (
         <div className="flex flex-col gap-6">
+          <DeprecatedBanner className="ml-6 -mb-6 mt-6" />
           <CollateralizationBanner className="ml-6 -mb-6 mt-6" />
           <MaintenanceBanner className="ml-6 -mb-6 mt-6" />
           <RTokenZapIssuance disableRedeem={!isCollaterized} />
@@ -35,6 +37,7 @@ const IssuanceMethods = () => {
         </div>
       ) : (
         <div>
+          <DeprecatedBanner className="mb-4" />
           <CollateralizationBanner className="mb-4" />
           <MaintenanceBanner className="mb-4" />
           <DisabledArbitrumBanner className="mb-4" />

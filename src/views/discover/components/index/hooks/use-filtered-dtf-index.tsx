@@ -14,7 +14,7 @@ const useFilteredDTFIndex = () => {
     }
 
     const filtered = data.filter((dtf) => {
-      if (dtf.status === 'deprecated') {
+      if (!search && dtf.status === 'deprecated') {
         return false
       }
 

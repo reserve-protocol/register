@@ -1,4 +1,4 @@
-import { indexDTFAtom } from '@/state/dtf/atoms'
+import { indexDTFAtom, indexDTFStatusAtom } from '@/state/dtf/atoms'
 import { useAtomValue } from 'jotai'
 import useTrackIndexDTFPage from '../hooks/useTrackIndexDTFPage'
 import PriceChart from './components/charts/price-chart'
@@ -17,6 +17,7 @@ import IndexBasketOverview from './components/basket-overview'
 const Content = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
   const quoteSource = useAtomValue(indexDTFQuoteSourceAtom)
+  const isDeprecated = useAtomValue(indexDTFStatusAtom) === 'deprecated'
 
   return (
     <div className="rounded-0xl lg:rounded-4xl bg-secondary flex-1 lg:mb-4">
@@ -36,6 +37,7 @@ const Content = () => {
             mode="modal"
             apiUrl={RESERVE_API}
             defaultSource={quoteSource}
+            sellOnly={isDeprecated}
           />
         )}
       </div>

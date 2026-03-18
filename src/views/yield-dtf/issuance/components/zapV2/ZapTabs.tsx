@@ -1,4 +1,6 @@
+import { useDTFStatus } from '@/hooks/use-dtf-status'
 import TabMenu from 'components/tab-menu'
+import useRToken from 'hooks/useRToken'
 import { Minus, Plus } from 'lucide-react'
 import { useZap } from './context/ZapContext'
 import ZapSettings from './settings/ZapSettings'
@@ -8,20 +10,24 @@ import { useEffect, useMemo } from 'react'
 
 const ZapTabs = () => {
   const { chainId, operation, setOperation } = useZap()
+  const rToken = useRToken()
+  const isDeprecated = useDTFStatus(rToken?.address, rToken?.chainId) === 'deprecated'
+  const disableMint = chainId === ChainId.Arbitrum || isDeprecated
+
   const backingOptions = useMemo(() => {
     return [
-      ...(chainId !== ChainId.Arbitrum
+      ...(!disableMint
         ? [{ key: 'mint', label: 'Mint', icon: <Plus size={16} /> }]
         : []),
       { key: 'redeem', label: 'Redeem', icon: <Minus size={16} /> },
     ]
-  }, [chainId])
+  }, [disableMint])
 
   useEffect(() => {
-    if (chainId === ChainId.Arbitrum) {
+    if (disableMint) {
       setOperation('redeem')
     }
-  }, [chainId])
+  }, [disableMint])
 
   return (
     <div className="flex items-center justify-between">

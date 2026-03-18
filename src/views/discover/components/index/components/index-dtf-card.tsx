@@ -20,7 +20,10 @@ const IndexDTFCard = ({ dtf }: { dtf: IndexDTFItem }) => {
 
   return (
     <Link
-      className="bg-background flex rounded-3xl gap-3 p-3"
+      className={cn(
+        'bg-background flex rounded-3xl gap-3 p-3',
+        dtf.status === 'deprecated' && 'opacity-30'
+      )}
       to={getFolioRoute(dtf.address, dtf.chainId)}
     >
       <div className="relative h-[100px] w-[100px] rounded-xl overflow-hidden flex-shrink-0">

@@ -3,11 +3,15 @@ import TokenLogo from '@/components/token-logo'
 import StackTokenLogo from '@/components/token-logo/StackTokenLogo'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
-import { indexDTFAtom, indexDTFBrandAtom } from '@/state/dtf/atoms'
+import {
+  indexDTFAtom,
+  indexDTFBrandAtom,
+  indexDTFStatusAtom,
+} from '@/state/dtf/atoms'
 import { useTrackIndexDTFClick } from '@/views/index-dtf/hooks/useTrackIndexDTFPage'
 import { useZapperModal } from '@reserve-protocol/react-zapper'
 import { useAtomValue } from 'jotai'
-import { ArrowLeftRight } from 'lucide-react'
+import { ArrowDown, ArrowLeftRight } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import DTFBalance from './dtf-balance'
 import IndexTokenAddress from '../index-token-address'
@@ -15,6 +19,8 @@ import IndexTokenAddress from '../index-token-address'
 const TokenInfo = () => {
   const dtf = useAtomValue(indexDTFAtom)
   const brand = useAtomValue(indexDTFBrandAtom)
+  const status = useAtomValue(indexDTFStatusAtom)
+  const isDeprecated = status === 'deprecated'
 
   return (
     <div className="flex flex-col justify-between gap-8 p-4">
@@ -27,7 +33,11 @@ const TokenInfo = () => {
           ]}
           size={24}
         />
-        <ArrowLeftRight className="w-4 h-4" />
+        {isDeprecated ? (
+          <ArrowDown className="w-4 h-4" />
+        ) : (
+          <ArrowLeftRight className="w-4 h-4" />
+        )}
         <TokenLogo
           className="mr-auto"
           src={brand?.dtf?.icon || undefined}
@@ -36,11 +46,14 @@ const TokenInfo = () => {
       </div>
       <div className="flex flex-col gap-1">
         <div className="text-2xl font-light text-primary">
-          Buy/Sell ${dtf?.token.symbol} onchain
+          {isDeprecated
+            ? `Sell $${dtf?.token.symbol} Onchain`
+            : `Buy/Sell $${dtf?.token.symbol} onchain`}
         </div>
         <div className="text-legend text-sm">
-          Our Zap-swaps support common assets like ETH, USDC, USDT, and others,
-          which makes DTFs easy to enter and exit.
+          {isDeprecated
+            ? 'New deposits are disabled due to low liquidity. Existing holders can continue to sell or redeem their assets at any time.'
+            : 'Our Zap-swaps support common assets like ETH, USDC, USDT, and others, which makes DTFs easy to enter and exit.'}
         </div>
       </div>
       <DTFBalance />
@@ -51,6 +64,8 @@ const TokenInfo = () => {
 const MintBox = () => {
   const { trackClick } = useTrackIndexDTFClick('overview', 'overview')
   const { open, setTab } = useZapperModal()
+  const status = useAtomValue(indexDTFStatusAtom)
+  const isDeprecated = status === 'deprecated'
 
   return (
     <div className="rounded-3xl bg-card p-2">
@@ -58,6 +73,7 @@ const MintBox = () => {
       <div className="flex flex-col gap-2">
         <Button
           className="rounded-xl h-12"
+          disabled={isDeprecated}
           onClick={() => {
             trackClick('buy')
             setTab('buy')
