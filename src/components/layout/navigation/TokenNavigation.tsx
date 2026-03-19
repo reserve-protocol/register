@@ -186,13 +186,11 @@ const TokenNavigation = () => {
         icon: <IssuanceIcon />,
         label: t`Mint`,
         route: ROUTES.ISSUANCE,
-        disabled: isDeprecated,
       },
       {
         icon: <StakeIcon />,
         label: t`Stake`,
         route: ROUTES.STAKING,
-        disabled: isDeprecated,
       },
       {
         icon: <AuctionsIcon />,

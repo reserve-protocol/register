@@ -2,6 +2,8 @@ import { useAtomValue } from 'jotai'
 import { chainIdAtom, rTokenStateAtom } from 'state/atoms'
 import DisabledByGeolocationMessage from 'state/geolocation/DisabledByGeolocationMessage'
 import { Separator } from '@/components/ui/separator'
+import { useDTFStatus } from '@/hooks/use-dtf-status'
+import useRToken from 'hooks/useRToken'
 import About from './components/about'
 import Balances from './components/balances'
 import Issue from './components/issue'
@@ -24,12 +26,16 @@ const IssuanceMethods = () => {
   const chainId = useAtomValue(chainIdAtom)
   const { zapEnabled, setZapEnabled } = useZap()
   const { isCollaterized } = useAtomValue(rTokenStateAtom)
+  const rToken = useRToken()
+  const isDeprecated =
+    useDTFStatus(rToken?.address, rToken?.chainId) === 'deprecated'
 
   return (
+    <>
+    <DeprecatedBanner className="mb-4" />
     <div className="grid grid-cols-1 xl:grid-cols-[1fr_480px] gap-0 lg:gap-4 xl:gap-5">
       {zapEnabled && chainId !== ChainId.Arbitrum ? (
         <div className="flex flex-col gap-6">
-          <DeprecatedBanner className="ml-6 -mb-6 mt-6" />
           <CollateralizationBanner className="ml-6 -mb-6 mt-6" />
           <MaintenanceBanner className="ml-6 -mb-6 mt-6" />
           <RTokenZapIssuance disableRedeem={!isCollaterized} />
@@ -37,7 +43,6 @@ const IssuanceMethods = () => {
         </div>
       ) : (
         <div>
-          <DeprecatedBanner className="mb-4" />
           <CollateralizationBanner className="mb-4" />
           <MaintenanceBanner className="mb-4" />
           <DisabledArbitrumBanner className="mb-4" />
@@ -45,10 +50,16 @@ const IssuanceMethods = () => {
             <ZapToggle zapEnabled={zapEnabled} setZapEnabled={setZapEnabled} />
           )}
           <DisabledByGeolocationMessage className="mb-6" />
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-1 sm:gap-6 mb-1 sm:mb-6">
-            <Issue />
-            <Redeem />
-          </div>
+          {isDeprecated ? (
+            <div className="mb-1 sm:mb-6">
+              <Redeem />
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-1 sm:gap-6 mb-1 sm:mb-6">
+              <Issue />
+              <Redeem />
+            </div>
+          )}
           <Balances />
         </div>
       )}
@@ -62,6 +73,7 @@ const IssuanceMethods = () => {
         )}
       </div>
     </div>
+    </>
   )
 }
 
