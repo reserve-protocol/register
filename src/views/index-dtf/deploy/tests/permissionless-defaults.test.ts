@@ -4,10 +4,6 @@ vi.mock('@/utils/chains', () => ({
   ChainId: { Mainnet: 1, Base: 8453, BSC: 56 },
 }))
 
-vi.mock('@/utils/constants', () => ({
-  getPlatformFee: (chainId: number) => (chainId === 56 ? 33 : 50),
-}))
-
 import {
   getPermissionlessDefaults,
   PERMISSIONLESS_VOTE_LOCK,
@@ -16,7 +12,7 @@ import {
 
 describe('getPermissionlessDefaults', () => {
   it('returns valid defaults for Base', () => {
-    const defaults = getPermissionlessDefaults(8453)
+    const defaults = getPermissionlessDefaults(8453, 50)
 
     expect(defaults.chain).toBe(8453)
     expect(defaults.governanceVoteLock).toBe(PERMISSIONLESS_VOTE_LOCK[8453])
@@ -25,7 +21,7 @@ describe('getPermissionlessDefaults', () => {
   })
 
   it('revenue shares sum to 100% with platform fee', () => {
-    const defaults = getPermissionlessDefaults(8453)
+    const defaults = getPermissionlessDefaults(8453, 50)
     const total =
       defaults.governanceShare +
       defaults.deployerShare +
@@ -35,7 +31,7 @@ describe('getPermissionlessDefaults', () => {
   })
 
   it('revenue shares sum to 100% on BSC (different platform fee)', () => {
-    const defaults = getPermissionlessDefaults(56)
+    const defaults = getPermissionlessDefaults(56, 33)
     const total =
       defaults.governanceShare +
       defaults.deployerShare +
@@ -45,23 +41,23 @@ describe('getPermissionlessDefaults', () => {
   })
 
   it('deployer share is always 0', () => {
-    expect(getPermissionlessDefaults(1).deployerShare).toBe(0)
-    expect(getPermissionlessDefaults(8453).deployerShare).toBe(0)
-    expect(getPermissionlessDefaults(56).deployerShare).toBe(0)
+    expect(getPermissionlessDefaults(1, 50).deployerShare).toBe(0)
+    expect(getPermissionlessDefaults(8453, 50).deployerShare).toBe(0)
+    expect(getPermissionlessDefaults(56, 33).deployerShare).toBe(0)
   })
 
   it('has correct fees', () => {
-    const defaults = getPermissionlessDefaults(8453)
+    const defaults = getPermissionlessDefaults(8453, 50)
     expect(defaults.folioFee).toBe(0.15)
     expect(defaults.mintFee).toBe(0.15)
   })
 
   it('has weight control enabled', () => {
-    expect(getPermissionlessDefaults(8453).weightControl).toBe(true)
+    expect(getPermissionlessDefaults(8453, 50).weightControl).toBe(true)
   })
 
   it('has correct basket governance timing (hours)', () => {
-    const defaults = getPermissionlessDefaults(8453)
+    const defaults = getPermissionlessDefaults(8453, 50)
     expect(defaults.basketVotingDelay).toBe(0)
     expect(defaults.basketVotingPeriod).toBe(24)
     expect(defaults.basketVotingThreshold).toBe(1)
@@ -70,7 +66,7 @@ describe('getPermissionlessDefaults', () => {
   })
 
   it('has correct non-basket governance timing (days)', () => {
-    const defaults = getPermissionlessDefaults(8453)
+    const defaults = getPermissionlessDefaults(8453, 50)
     expect(defaults.governanceVotingDelay).toBe(0)
     expect(defaults.governanceVotingPeriod).toBe(1)
     expect(defaults.governanceVotingThreshold).toBe(1)
@@ -79,7 +75,7 @@ describe('getPermissionlessDefaults', () => {
   })
 
   it('assigns trusted addresses to guardians and auctionLaunchers', () => {
-    const defaults = getPermissionlessDefaults(8453)
+    const defaults = getPermissionlessDefaults(8453, 50)
     const trusted = TRUSTED_ADDRESSES[8453]
 
     expect(defaults.guardians).toEqual(trusted)
@@ -88,25 +84,25 @@ describe('getPermissionlessDefaults', () => {
   })
 
   it('brandManagers defaults to empty (wallet injected by updater)', () => {
-    const defaults = getPermissionlessDefaults(8453)
+    const defaults = getPermissionlessDefaults(8453, 50)
     expect(defaults.brandManagers).toEqual([])
   })
 
   it('defaults inputType to share', () => {
-    expect(getPermissionlessDefaults(8453).inputType).toBe('share')
+    expect(getPermissionlessDefaults(8453, 50).inputType).toBe('share')
   })
 
   it('has empty basket and recipients', () => {
-    const defaults = getPermissionlessDefaults(8453)
+    const defaults = getPermissionlessDefaults(8453, 50)
     expect(defaults.tokensDistribution).toEqual([])
     expect(defaults.additionalRevenueRecipients).toEqual([])
   })
 
   it('auction length is 30 minutes', () => {
-    expect(getPermissionlessDefaults(8453).auctionLength).toBe(30)
+    expect(getPermissionlessDefaults(8453, 50).auctionLength).toBe(30)
   })
 
   it('bids are enabled', () => {
-    expect(getPermissionlessDefaults(8453).bidsEnabled).toBe(true)
+    expect(getPermissionlessDefaults(8453, 50).bidsEnabled).toBe(true)
   })
 })

@@ -11,7 +11,7 @@ import { selectedGovernanceOptionAtom } from '../../atoms'
 import BasicInput from '../../components/basic-input'
 import { Decimal } from '../../utils/decimals'
 import AdditionalRevenueRecipients from './additional-revenue-recipients'
-import { getPlatformFee } from '@/utils/constants'
+import usePlatformFee from '@/hooks/use-platform-fee'
 
 const SETTINGS = [
   {
@@ -54,18 +54,18 @@ const RemainingAllocation = () => {
   useFormValues()
 
   const [
-    chain,
+    fixedPlatformFee,
     governanceShare,
     deployerShare,
     additionalRevenueRecipients,
   ] = watch([
-    'chain',
+    'fixedPlatformFee',
     'governanceShare',
     'deployerShare',
     'additionalRevenueRecipients',
   ])
 
-  const platformFee = getPlatformFee(chain)
+  const platformFee = fixedPlatformFee ?? 0
 
   const remaining = new Decimal(100).minus(
     new Decimal(platformFee)
@@ -99,8 +99,7 @@ const EvenDistributionButton = () => {
   const selectedGovOption = useAtomValue(selectedGovernanceOptionAtom)
 
   const onEvenDistribution = useCallback(() => {
-    const chain = getValues('chain')
-    const platformFee = getPlatformFee(chain)
+    const platformFee = getValues('fixedPlatformFee') ?? 0
     const additionalRecipients = getValues('additionalRevenueRecipients') || []
     const isGovSharePresent = selectedGovOption !== 'governanceWalletAddress'
     const isAdditionalRecipientsPresent = additionalRecipients.length > 0
@@ -152,12 +151,14 @@ const RevenueDistributionSettings = () => {
   const { getValues, watch, setValue } = useFormContext()
   const selectedGovOption = useAtomValue(selectedGovernanceOptionAtom)
   const chain = watch('chain')
-  const platformFee = getPlatformFee(chain)
+  const platformFee = usePlatformFee(chain)
+  const currentPlatformFee = watch('fixedPlatformFee') ?? 0
 
-  // Update fixedPlatformFee when chain changes
   useEffect(() => {
-    setValue('fixedPlatformFee', platformFee)
-  }, [chain, platformFee, setValue])
+    if (platformFee !== undefined) {
+      setValue('fixedPlatformFee', platformFee)
+    }
+  }, [platformFee, setValue])
 
   const settings = SETTINGS.filter(
     ({ field }) =>
@@ -188,7 +189,7 @@ const RevenueDistributionSettings = () => {
             </div>
             {disabled ? (
               <div className="flex justify-end items-center gap-1 font-semibold px-[18px] border-lg bg-muted-foreground/5 rounded-lg w-19 h-10 flex-nowrap">
-                {platformFee} %
+                {currentPlatformFee} %
               </div>
             ) : (
               <BasicInput

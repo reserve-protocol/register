@@ -6,10 +6,6 @@ vi.mock('@/utils/chains', () => ({
   ChainId: { Mainnet: 1, Base: 8453, BSC: 56, Arbitrum: 42161 },
 }))
 
-vi.mock('@/utils/constants', () => ({
-  getPlatformFee: (chainId: number) => (chainId === 56 ? 33 : 50),
-}))
-
 // Mock async validators (network calls) while keeping pure functions real
 vi.mock('../utils', () => ({
   isAddressNotStrict: (address: string) => isAddress(address, { strict: false }),
