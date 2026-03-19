@@ -1,5 +1,5 @@
+import usePlatformFee from '@/hooks/use-platform-fee'
 import useTrackPage from '@/hooks/useTrackPage'
-import { getPlatformFee } from '@/utils/constants'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Globe } from 'lucide-react'
 import { useEffect } from 'react'
@@ -46,16 +46,17 @@ const PermissionlessUpdater = () => {
     }
   }, [setReadonlySteps, setGovernanceOption, setBasketInputType])
 
-  // Update governance + revenue when chain changes
+  const platformFee = usePlatformFee(chain)
+
+  // Update governance + revenue when chain changes or fee loads
   useEffect(() => {
     if (!PERMISSIONLESS_VOTE_LOCK[chain]) return
-    const platformFee = getPlatformFee(chain)
     setValue('governanceVoteLock', PERMISSIONLESS_VOTE_LOCK[chain])
     setValue('fixedPlatformFee', platformFee)
     setValue('governanceShare', 100 - platformFee)
     setValue('deployerShare', 0)
     setValue('additionalRevenueRecipients', [])
-  }, [chain, setValue])
+  }, [chain, platformFee, setValue])
 
   // Inject connected wallet into role arrays
   useEffect(() => {
@@ -87,7 +88,7 @@ const PermissionlessDeploy = () => {
 
   const form = useForm({
     resolver: zodResolver(DeployFormSchema),
-    defaultValues: getPermissionlessDefaults(ChainId.Base),
+    defaultValues: getPermissionlessDefaults(ChainId.Base, 50),
   })
 
   return (

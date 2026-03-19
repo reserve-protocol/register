@@ -15,10 +15,6 @@ vi.mock('@/utils/chains', () => ({
   ChainId: { Mainnet: 1, Base: 8453, BSC: 56, Arbitrum: 42161 },
 }))
 
-vi.mock('@/utils/constants', () => ({
-  getPlatformFee: (chainId: number) => (chainId === 56 ? 33 : 50),
-}))
-
 // Mock the FeeRecipient import source (only exports types we need)
 vi.mock(
   '../../steps/confirm-deploy/manual/components/confirm-manual-deploy-button',

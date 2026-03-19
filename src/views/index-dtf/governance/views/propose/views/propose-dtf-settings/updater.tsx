@@ -1,10 +1,10 @@
 import dtfIndexAbiV5 from '@/abis/dtf-index-abi'
 import {
   indexDTFAtom,
+  indexDTFFeeAtom,
   indexDTFRebalanceControlAtom,
   indexDTFVersionAtom,
 } from '@/state/dtf/atoms'
-import { getPlatformFee } from '@/utils/constants'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { chainIdAtom } from '@/state/atoms'
 import { useEffect, useRef } from 'react'
@@ -52,6 +52,7 @@ const Updater = () => {
   const rebalanceControl = useAtomValue(indexDTFRebalanceControlAtom)
   const version = useAtomValue(indexDTFVersionAtom)
   const chainId = useAtomValue(chainIdAtom)
+  const platformFee = useAtomValue(indexDTFFeeAtom)
   const isV5 = version.startsWith('5')
 
   // Read bidsEnabled from contract (v5+ only)
@@ -173,7 +174,7 @@ const Updater = () => {
           revenueDistributionChanges.additionalRecipients !== undefined
             ? revenueDistributionChanges.additionalRecipients
             : feeRecipients.externalRecipients,
-        fixedPlatformFee: getPlatformFee(chainId),
+        fixedPlatformFee: platformFee ?? 0,
         auctionLength:
           auctionLengthChange !== undefined
             ? auctionLengthChange

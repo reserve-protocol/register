@@ -9,7 +9,6 @@ import {
 } from './utils'
 import { Decimal } from './utils/decimals'
 import { ChainId } from '@/utils/chains'
-import { getPlatformFee } from '@/utils/constants'
 
 export type DeployStepId =
   | 'metadata'
@@ -291,10 +290,9 @@ export const DeployFormSchema = z
       new Decimal(0)
     )
 
-    const platformFee = getPlatformFee(data.chain)
-    if (!total.plus(new Decimal(platformFee)).eq(new Decimal(100))) {
+    if (!total.plus(new Decimal(data.fixedPlatformFee)).eq(new Decimal(100))) {
       const difference = new Decimal(100).minus(
-        total.plus(new Decimal(platformFee))
+        total.plus(new Decimal(data.fixedPlatformFee))
       )
 
       const absDifference = difference.abs()
