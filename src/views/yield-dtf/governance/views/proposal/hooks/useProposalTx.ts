@@ -344,27 +344,38 @@ const useProposalTx = () => {
         }
       }
 
-      /* ########################## 
-      ##   Parse role changes    ## 
+      /* ##########################
+      ##   Parse role changes    ##
       ############################# */
+      // WHY: Owner revokes must be last — if revokeRole(OWNER) runs before
+      // other calls, the timelock loses permissions and subsequent calls fail.
+      const deferredOwnerRevokes: { address: Address; call: Hex }[] = []
+
       for (const roleChange of roleChanges) {
         const isGuardian = roleChange.role === 'guardians'
+        const isOwnerRevoke =
+          roleChange.role === 'owners' && !roleChange.isNew
 
-        if (contracts?.main) {
-          addresses.push(
-            isGuardian && governance.timelock
-              ? governance.timelock
-              : contracts.main.address
-          )
-        }
+        const target =
+          isGuardian && governance.timelock
+            ? governance.timelock
+            : contracts.main.address
 
-        calls.push(
-          encodeFunctionData({
-            abi: (isGuardian ? Timelock : Main) as any,
-            functionName: roleChange.isNew ? 'grantRole' : 'revokeRole',
-            args: [ROLES[roleChange.role], roleChange.address],
+        const call = encodeFunctionData({
+          abi: (isGuardian ? Timelock : Main) as any,
+          functionName: roleChange.isNew ? 'grantRole' : 'revokeRole',
+          args: [ROLES[roleChange.role], roleChange.address],
+        })
+
+        if (isOwnerRevoke) {
+          deferredOwnerRevokes.push({
+            address: target as Address,
+            call: call as Hex,
           })
-        )
+        } else {
+          if (contracts?.main) addresses.push(target)
+          calls.push(call)
+        }
       }
 
       for (const asset of assetsToUnregister) {
@@ -687,6 +698,13 @@ const useProposalTx = () => {
             })
           )
         }
+      }
+
+      // Append deferred owner revokes last so all other calls execute
+      // while the timelock still has OWNER permissions
+      for (const deferred of deferredOwnerRevokes) {
+        addresses.push(deferred.address)
+        calls.push(deferred.call)
       }
     } catch (e) {
       console.error('Error generating proposal call', e)
