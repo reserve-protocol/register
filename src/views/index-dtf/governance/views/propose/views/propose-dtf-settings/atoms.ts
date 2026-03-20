@@ -732,18 +732,21 @@ export const feeRecipientsAtom = atom((get) => {
   if (platformFee === undefined) return undefined
   const PERCENT_ADJUST = 100 / (100 - platformFee)
 
+  const toShare = (pct: number) =>
+    Math.round((pct / PERCENT_ADJUST) * 100) / 100
+
   for (const recipient of indexDTF.feeRecipients) {
     // Deployer share - adjust from contract percentage to actual percentage
     if (recipient.address.toLowerCase() === indexDTF.deployer.toLowerCase()) {
-      deployerShare = Number(recipient.percentage) / PERCENT_ADJUST
+      deployerShare = toShare(Number(recipient.percentage))
     } else if (
       recipient.address.toLowerCase() === indexDTF.stToken?.id.toLowerCase()
     ) {
-      governanceShare = Number(recipient.percentage) / PERCENT_ADJUST
+      governanceShare = toShare(Number(recipient.percentage))
     } else {
       externalRecipients.push({
         address: recipient.address,
-        share: Number(recipient.percentage) / PERCENT_ADJUST,
+        share: toShare(Number(recipient.percentage)),
       })
     }
   }
