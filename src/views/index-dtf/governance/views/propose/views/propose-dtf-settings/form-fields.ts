@@ -10,7 +10,6 @@ export const createProposeSettingsSchema = (quorumDenominator?: number) => z
       .string()
       .refine(isAddressNotStrict, { message: 'Invalid Address' })
       .optional(),
-
     governanceWalletAddress: z
       .string()
       .refine(isAddressNotStrict, { message: 'Invalid Address' })
@@ -147,11 +146,10 @@ export const createProposeSettingsSchema = (quorumDenominator?: number) => z
 
       ctx.addIssue({
         code: 'custom',
-        message: `The sum of governance share, creator share, additional recipients shares and platform share must be 100% (${
-          difference.isPositive()
+        message: `The sum of governance share, creator share, additional recipients shares and platform share must be 100% (${difference.isPositive()
             ? `${displayDifference}% missing`
             : `${displayDifference}% excess`
-        })`,
+          })`,
         path: ['revenue-distribution'],
       })
     }
@@ -174,7 +172,7 @@ export const createProposeSettingsSchema = (quorumDenominator?: number) => z
           ...governanceAddresses,
         ]).size ===
         (data.additionalRevenueRecipients?.length || 0) +
-          governanceAddresses.length
+        governanceAddresses.length
       )
     },
     {
