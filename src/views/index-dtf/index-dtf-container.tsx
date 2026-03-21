@@ -21,10 +21,12 @@ import {
   indexDTFFeeAtom,
   indexDTFPerformanceLoadingAtom,
   indexDTFRebalanceControlAtom,
+  indexDTFStatusAtom,
   indexDTFVersionAtom,
   iTokenAddressAtom,
   performanceTimeRangeAtom,
 } from '@/state/dtf/atoms'
+import { useDTFStatus } from '@/hooks/use-dtf-status'
 import { isAddress } from '@/utils'
 import { AvailableChain, supportedChains } from '@/utils/chains'
 import { FALLBACK_PLATFORM_FEES, NETWORKS, RESERVE_API, ROUTES } from '@/utils/constants'
@@ -248,7 +250,25 @@ const resetStateAtom = atom(null, (_, set) => {
   set(indexDTFPerformanceLoadingAtom, false)
   set(indexDTFExposureDataAtom, null)
   set(performanceTimeRangeAtom, '7d')
+  set(indexDTFStatusAtom, 'active')
 })
+
+const DeprecationStatusUpdater = ({
+  tokenAddress,
+  chainId,
+}: {
+  tokenAddress?: string
+  chainId: number
+}) => {
+  const status = useDTFStatus(tokenAddress, chainId)
+  const setStatus = useSetAtom(indexDTFStatusAtom)
+
+  useEffect(() => {
+    setStatus(status)
+  }, [status])
+
+  return null
+}
 
 export const indexDTFRefreshFnAtom = atom<(() => void) | null>(null)
 
@@ -322,6 +342,7 @@ const Updater = () => {
       <IndexDTFBasketUpdater tokenAddress={currentToken} chainId={chainId} />
       <PlatformFeeUpdater tokenAddress={currentToken} chainId={chainId} />
       <IndexDTFExposureUpdater chainId={chainId} />
+      <DeprecationStatusUpdater tokenAddress={currentToken} chainId={chainId} />
       <GovernanceUpdater />
     </div>
   )

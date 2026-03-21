@@ -1,3 +1,4 @@
+import { useDTFStatus } from '@/hooks/use-dtf-status'
 import { t } from '@lingui/macro'
 import AuctionsIcon from 'components/icons/AuctionsIcon'
 import GovernanceIcon from 'components/icons/GovernanceIcon'
@@ -7,6 +8,7 @@ import StakeIcon from 'components/icons/StakeIcon'
 import { CurrentRTokenLogo } from 'components/icons/TokenLogo'
 import { navigationIndexAtom } from 'components/section-navigation/atoms'
 import useSectionNavigate from '@/components/section-navigation/use-section-navigate'
+import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
 import React, { useEffect, useMemo, useState } from 'react'
 import { ChevronDown, ChevronRight } from 'lucide-react'
@@ -24,6 +26,7 @@ interface NavigationItem {
   label: string
   route: string
   subnav?: SubNavItem[]
+  disabled?: boolean
 }
 
 interface NavContentProps extends NavigationItem {
@@ -141,16 +144,30 @@ const NavContent = ({
   )
 }
 
-const NavItem = (props: NavigationItem) => (
-  <NavLink
-    className="mb-1 no-underline block"
-    to={props.route}
-  >
-    {({ isActive }) => <NavContent {...props} isActive={isActive} />}
-  </NavLink>
-)
+const NavItem = (props: NavigationItem) => {
+  if (props.disabled) {
+    return (
+      <div className="mb-1 block opacity-50 pointer-events-none">
+        <NavContent {...props} isActive={false} />
+      </div>
+    )
+  }
+
+  return (
+    <NavLink
+      className="mb-1 no-underline block"
+      to={props.route}
+    >
+      {({ isActive }) => <NavContent {...props} isActive={isActive} />}
+    </NavLink>
+  )
+}
 
 const TokenNavigation = () => {
+  const rToken = useRToken()
+  const status = useDTFStatus(rToken?.address, rToken?.chainId)
+  const isDeprecated = status === 'deprecated'
+
   const navigation: NavigationItem[] = useMemo(
     () => [
       {
@@ -179,11 +196,13 @@ const TokenNavigation = () => {
         icon: <AuctionsIcon />,
         label: t`Auctions`,
         route: ROUTES.AUCTIONS,
+        disabled: isDeprecated,
       },
       {
         icon: <GovernanceIcon />,
         label: t`Governance`,
         route: ROUTES.GOVERNANCE,
+        disabled: isDeprecated,
       },
       {
         icon: <ManagerIcon />,
@@ -202,7 +221,7 @@ const TokenNavigation = () => {
         ],
       },
     ],
-    []
+    [isDeprecated]
   )
 
   return (

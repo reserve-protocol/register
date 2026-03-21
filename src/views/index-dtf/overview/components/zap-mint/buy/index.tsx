@@ -2,7 +2,7 @@ import Swap from '@/components/ui/swap'
 import { useChainlinkPrice } from '@/hooks/useChainlinkPrice'
 import useZapSwapQuery from '@/hooks/useZapSwapQuery'
 import { chainIdAtom } from '@/state/atoms'
-import { indexDTFAtom } from '@/state/dtf/atoms'
+import { indexDTFAtom, indexDTFStatusAtom } from '@/state/dtf/atoms'
 import { formatCurrency } from '@/utils'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useCallback, useEffect } from 'react'
@@ -28,6 +28,7 @@ import ZapDetails, { ZapPriceImpact } from '../zap-details'
 const Buy = () => {
   const chainId = useAtomValue(chainIdAtom)
   const indexDTF = useAtomValue(indexDTFAtom)
+  const isDeprecated = useAtomValue(indexDTFStatusAtom) === 'deprecated'
   const [inputAmount, setInputAmount] = useAtom(zapMintInputAtom)
   const selectedToken = useAtomValue(selectedTokenOrDefaultAtom)
   const selectedTokenBalance = useAtomValue(selectedTokenBalanceAtom)
@@ -96,6 +97,12 @@ const Buy = () => {
     setInputAmount('')
   }, [])
 
+  useEffect(() => {
+    if (isDeprecated) {
+      setCurrentTab('sell')
+    }
+  }, [isDeprecated])
+
   const onSuccess = useCallback(() => {
     setInputAmount('')
     setOpen(false)
@@ -131,7 +138,7 @@ const Buy = () => {
           ) : undefined,
           value: formatEther(BigInt(valueTo || 0)),
         }}
-        onSwap={changeTab}
+        onSwap={isDeprecated ? undefined : changeTab}
         loading={isLoading || loadingAfterRefetch}
       />
       {!!data?.result && <ZapDetails data={data.result} />}

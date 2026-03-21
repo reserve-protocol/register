@@ -250,6 +250,9 @@ const IndexDTFTable = ({
             : undefined
         }
         onRowClick={handleRowClick}
+        getRowClassName={(row) =>
+          row.original.status === 'deprecated' ? 'opacity-30' : undefined
+        }
         className={cn(
           'hidden lg:block',
           '[&_table]:bg-card [&_table]:rounded-[20px] [&_table]:text-base',

@@ -224,6 +224,8 @@ export const hasBridgedAssetsAtom = atom((get) => {
   )
 })
 
+export const indexDTFStatusAtom = atom<'active' | 'deprecated'>('active')
+
 export const isSingletonRebalanceAtom = atom((get) => {
   const version = get(indexDTFVersionAtom)
 

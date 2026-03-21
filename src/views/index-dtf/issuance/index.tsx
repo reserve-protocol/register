@@ -1,6 +1,6 @@
 import { devModeAtom } from '@/state/atoms'
 import { wagmiConfig } from '@/state/chain'
-import { indexDTFAtom } from '@/state/dtf/atoms'
+import { indexDTFAtom, indexDTFStatusAtom } from '@/state/dtf/atoms'
 import { RESERVE_API } from '@/utils/constants'
 import { useZapperModal, ZapperProps } from '@reserve-protocol/react-zapper'
 import { atom, useAtomValue } from 'jotai'
@@ -28,6 +28,7 @@ const IndexDTFIssuance = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
   const quoteSource = useAtomValue(indexDTFQuoteSourceAtom)
   const devMode = useAtomValue(devModeAtom)
+  const isDeprecated = useAtomValue(indexDTFStatusAtom) === 'deprecated'
   const { currentTab } = useZapperModal()
   const { trackClick } = useTrackIndexDTFClick('overview', 'mint')
 
@@ -46,6 +47,7 @@ const IndexDTFIssuance = () => {
               apiUrl={RESERVE_API}
               debug={devMode}
               defaultSource={quoteSource}
+              sellOnly={isDeprecated}
             />
           </div>
         </div>

@@ -1,5 +1,3 @@
-import { ChainId } from '@/utils/chains'
-// import { RESERVE_API } from '@/utils/constants'
 import { useQuery } from '@tanstack/react-query'
 import { Address } from 'viem'
 
@@ -18,20 +16,12 @@ export type IndexDTFItem = {
   performance: Performance[]
   performancePercent: number
   chainId: number
+  status: 'active' | 'deprecated'
   brand?: {
     icon?: string
     cover?: string
     tags?: string[]
   }
-}
-
-const calculatePercentageChange = (performance: Performance[]) => {
-  if (performance.length === 0) {
-    return 0
-  }
-  const firstValue = performance[0].value
-  const lastValue = performance[performance.length - 1].value
-  return ((lastValue - firstValue) / firstValue) * 100
 }
 
 const REFRESH_INTERVAL = 1000 * 60 * 10 // 10 minutes
@@ -40,29 +30,31 @@ const useIndexDTFList = () => {
   return useQuery({
     queryKey: ['index-dtf-list'],
     queryFn: async (): Promise<IndexDTFItem[]> => {
-      const f = async (chain: number) => {
-        const response = await fetch(
-          `${RESERVE_API}discover/dtf?chainId=${chain}&limit=100`
-        )
+      const response = await fetch(`${RESERVE_API}discover/dtfs?performance=true&brand=true`)
 
-        if (!response.ok) {
-          throw new Error('Failed to fetch dtf list')
-        }
-
-        const data = await response.json()
-
-        return data.map((item: any) => ({
-          ...item,
-          performancePercent: calculatePercentageChange(item.performance),
-          performance: item.performance,
-        })) as IndexDTFItem[]
+      if (!response.ok) {
+        throw new Error('Failed to fetch dtf list')
       }
 
-      const responses = await Promise.all(
-        [ChainId.Base, ChainId.Mainnet, ChainId.BSC].map(f)
-      )
+      const data = await response.json()
 
-      return responses.flat().sort((x, y) => y.marketCap - x.marketCap)
+      return data
+        .filter((item: any) => item.type === 'index')
+        .map((item: any) => ({
+          address: item.address,
+          symbol: item.symbol,
+          name: item.name,
+          price: item.price,
+          fee: item.fee,
+          marketCap: item.marketCap,
+          chainId: item.chainId,
+          basket: item.basket,
+          status: item.status ?? 'active',
+          performance: item.performance ?? [],
+          performancePercent: 0,
+          brand: item.brand,
+        }))
+        .sort((x: IndexDTFItem, y: IndexDTFItem) => y.marketCap - x.marketCap)
     },
     refetchInterval: REFRESH_INTERVAL,
     staleTime: REFRESH_INTERVAL,
