@@ -108,6 +108,7 @@ const ProposalHeader = () => {
                   <Address
                     address={proposal?.proposer}
                     chain={rToken?.chainId}
+                    ens
                   />
                 )}
               </div>

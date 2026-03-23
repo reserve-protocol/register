@@ -77,6 +77,7 @@ export const TimelineItemCreated = () => {
           <ExplorerAddress
             address={proposal?.proposer?.address || ''}
             chain={chainId}
+            ens
           />
         </div>
       }

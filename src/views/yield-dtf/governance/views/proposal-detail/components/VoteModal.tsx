@@ -1,5 +1,5 @@
 import { Checkbox } from '@/components/ui/checkbox'
-import GoTo from '@/components/ui/go-to'
+
 import { Separator } from '@/components/ui/separator'
 import TransactionButton from '@/components/ui/transaction-button'
 import { t, Trans } from '@lingui/macro'
@@ -16,7 +16,8 @@ import {
 } from 'lucide-react'
 import { useState } from 'react'
 import { chainIdAtom, rTokenGovernanceAtom } from 'state/atoms'
-import { getProposalTitle, shortenAddress } from 'utils'
+import ExplorerAddress from '@/components/utils/explorer-address'
+import { getProposalTitle } from 'utils'
 import {
   ETHERSCAN_NAMES,
   ExplorerDataType,
@@ -91,15 +92,13 @@ const VoteModal = (props: ModalProps) => {
           <span className="text-legend">
             <Trans>Proposed by</Trans>:
           </span>
-          <span className="ml-1">{shortenAddress(proposal?.proposer || '')}</span>
-          <GoTo
-            className="ml-2"
-            href={getExplorerLink(
-              proposal?.proposer ?? '',
-              chainId,
-              ExplorerDataType.ADDRESS
-            )}
-          />
+          <span className="ml-1">
+            <ExplorerAddress
+              address={proposal?.proposer || ''}
+              chain={chainId}
+              ens
+            />
+          </span>
         </div>
       </div>
       <Separator className="my-6 -mx-6 w-auto" />
