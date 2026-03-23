@@ -40,10 +40,11 @@ const InfoCard = ({
       )}
     >
       <div className="py-4 px-5 flex items-center gap-2">
-        <h1 className="font-semibold text-xl text-primary dark:text-muted-foreground mr-auto">
+        <h1 className="font-semibold text-xl text-primary dark:text-muted-foreground">
           {title}
         </h1>
         {id && <SectionAnchor id={id} />}
+        <div className="mr-auto" />
         {action}
       </div>
       <div
