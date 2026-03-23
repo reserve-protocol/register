@@ -20,6 +20,7 @@ import {
   ProposalCall,
 } from '@/views/yield-dtf/governance/atoms'
 import BasketChangeSummary from './proposal-summary/BasketChangeSummary'
+import RevenueDistributionSummary from './proposal-summary/revenue-distribution-summary'
 import { Card } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { useTheme } from 'next-themes'
@@ -185,6 +186,54 @@ const CallPreview = ({
   )
 }
 
+const DISTRIBUTION_SIGNATURES = ['setDistribution', 'setDistributions']
+
+const isDistributionCall = (call: ProposalCall) =>
+  DISTRIBUTION_SIGNATURES.includes(call.signature)
+
+const DistributionCallGroup = ({
+  calls,
+  index,
+  total,
+  snapshotBlock,
+}: {
+  calls: ProposalCall[]
+  index: number
+  total: number
+  snapshotBlock?: number
+}) => {
+  const [detailed, setDetailed] = useState('summary')
+  const isDetailed = detailed === 'summary'
+
+  return (
+    <div className="p-2 rounded-lg bg-background">
+      <div className="flex items-center mb-2">
+        <span className="font-bold text-primary mr-auto text-sm">
+          {index + 1}/{total}{' '}
+          {isDetailed && 'Set Revenue Distribution'}
+        </span>
+        <TabMenu
+          ml="auto"
+          active={detailed}
+          items={previewOptions}
+          background="border"
+          onMenuChange={(kind: string) => setDetailed(kind)}
+        />
+      </div>
+      {isDetailed ? (
+        <RevenueDistributionSummary
+          calls={calls}
+          snapshotBlock={snapshotBlock}
+        />
+      ) : (
+        calls.map((call, i) => <RawCallPreview key={i} call={call} />)
+      )}
+      <Separator className="mt-4" />
+      <CallData data={calls.map((c) => c.callData).join('\n')} />
+    </div>
+  )
+}
+
 const CallList = ({
   calls,
   snapshotBlock,
@@ -192,15 +241,27 @@ const CallList = ({
   calls: ContractProposal['calls']
   snapshotBlock?: number
 }) => {
-  const total = calls.length
+  const distributionCalls = calls.filter(isDistributionCall)
+  const otherCalls = calls.filter((c) => !isDistributionCall(c))
+  const hasDistribution = distributionCalls.length > 0
+  const total = otherCalls.length + (hasDistribution ? 1 : 0)
+  const otherStartIndex = hasDistribution ? 1 : 0
 
   return (
     <div className="flex flex-col gap-2 mx-1 mt-2">
-      {calls.map((call, index) => (
+      {hasDistribution && (
+        <DistributionCallGroup
+          calls={distributionCalls}
+          index={0}
+          total={total}
+          snapshotBlock={snapshotBlock}
+        />
+      )}
+      {otherCalls.map((call, i) => (
         <CallPreview
           key={call.signature}
           call={call}
-          index={index}
+          index={otherStartIndex + i}
           total={total}
           snapshotBlock={snapshotBlock}
         />

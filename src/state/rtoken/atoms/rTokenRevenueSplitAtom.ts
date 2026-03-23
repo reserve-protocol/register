@@ -52,7 +52,7 @@ export const formatDistribution = (data: Distribution[]) => {
 // If the distribution is not adding 10000, we add the remaining to the larger share
 // This is a temporary fix until we have a better way to handle this
 // There's a rounding issue in the subgraph (just UI issue).
-const ensureValidDistribution = (data: Distribution[]) => {
+export const ensureValidDistribution = (data: Distribution[]) => {
   const total = data.reduce(
     (acc, { rTokenDist, rsrDist }) => acc + rTokenDist + rsrDist,
     0
