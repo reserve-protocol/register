@@ -22,6 +22,7 @@ const ALLOWED_RTOKENS = [
   '0xcb327b99ff831bf8223cced12b1338ff3aa322ff',
   '0x0d86883faf4ffd7aeb116390af37746f45b6f378',
   '0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f',
+  '0xe72b141df173b999ae7c1adcbf60cc9833ce56a8',
 ]
 
 const ProposalForm = () => {
