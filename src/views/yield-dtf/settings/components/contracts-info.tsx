@@ -26,7 +26,7 @@ const ContractsInfo = () => {
   ]
 
   return (
-    <InfoCard title={t`Related Contracts`}>
+    <InfoCard title={t`Related Contracts`} id="related-contracts">
       {contractList.map(([label, prop], index) => (
         <InfoCardItem
           key={label}

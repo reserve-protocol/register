@@ -41,6 +41,7 @@ const RTokenManagement = () => {
   return (
     <InfoCard
       title={t`Roles & Controls`}
+      id="roles-controls"
       action={<DocsLink link="https://reserve.org/" />}
       secondary
     >

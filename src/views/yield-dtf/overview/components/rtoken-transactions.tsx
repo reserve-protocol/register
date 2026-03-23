@@ -1,3 +1,4 @@
+import SectionAnchor from '@/components/section-anchor'
 import DataTable from '@/components/ui/data-table'
 import { Trans, t } from '@lingui/macro'
 import { ColumnDef } from '@tanstack/react-table'
@@ -213,12 +214,13 @@ const TransactionsTable = () => {
 
 const RTokenTransactions = () => {
   return (
-    <div className="w-full">
+    <div className="w-full group/section" id="transactions">
       <div className="flex items-center ml-4 mb-5 mt-6 text-primary">
         <TransactionsIcon fontSize={24} />
-        <h2 className="ml-2 text-2xl font-semibold">
+        <h2 className="mx-2 text-2xl font-semibold">
           <Trans>Transactions</Trans>
         </h2>
+        <SectionAnchor id="transactions" />
       </div>
       <TransactionsTable />
     </div>

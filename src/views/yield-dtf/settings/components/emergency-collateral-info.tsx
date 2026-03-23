@@ -13,7 +13,7 @@ const EmergencyCollateralInfo = () => {
   const chainId = useAtomValue(chainIdAtom)
 
   return (
-    <InfoCard title={t`Emergency Collateral`}>
+    <InfoCard title={t`Emergency Collateral`} id="emergency-collateral">
       <div className="p-4">
         {units.map((unit, unitIndex) => (
           <div key={unit} className={unitIndex ? 'mt-4' : ''}>

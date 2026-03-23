@@ -1,3 +1,4 @@
+import useScrollToHash from '@/hooks/use-scroll-to-hash'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { useAtomValue } from 'jotai'
 import useTrackIndexDTFPage from '../hooks/useTrackIndexDTFPage'
@@ -17,6 +18,7 @@ import IndexBasketOverview from './components/basket-overview'
 const Content = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
   const quoteSource = useAtomValue(indexDTFQuoteSourceAtom)
+  useScrollToHash()
 
   return (
     <div className="rounded-0xl lg:rounded-4xl bg-secondary flex-1 lg:mb-4">

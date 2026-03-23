@@ -15,6 +15,7 @@ import {
 } from '@/components/ui/accordion'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Signature, FileText } from 'lucide-react'
+import SectionAnchor from '@/components/section-anchor'
 import { Button } from '@/components/ui/button'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { useAtomValue } from 'jotai'
@@ -219,14 +220,17 @@ const WhitepaperModal = () => {
 
 const IndexDisclousure = () => {
   return (
-    <Card className="p-6">
+    <Card className="p-6 group/section" id="disclosures">
       <div className="flex items-center gap-1">
         <div className="rounded-full border border-foreground p-2 mr-auto">
           <Signature size={14} />
         </div>
       </div>
       <div className="flex items-center gap-2 mb-4"></div>
-      <h2 className="text-2xl font-light mb-2">Disclosures</h2>
+      <div className="flex items-center gap-1">
+        <h2 className="text-2xl font-light mb-2">Disclosures</h2>
+        <SectionAnchor id="disclosures" />
+      </div>
       <div className="flex flex-col gap-2">
         <p className="text-legend">
           By using{' '}

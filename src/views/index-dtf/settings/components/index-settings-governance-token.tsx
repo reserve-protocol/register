@@ -13,7 +13,7 @@ const GovernanceTokenInfo = () => {
   if (indexDTF && !indexDTF.stToken) return null
 
   return (
-    <InfoCard title="Governance Token">
+    <InfoCard title="Governance Token" id="governance-token">
       <InfoCardItem
         label={t`Vote-Lock DAO Token`}
         icon={<IconWrapper Component={Hash} />}

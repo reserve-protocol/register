@@ -2,8 +2,8 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Table } from '@/components/ui/table'
 import { Tabs } from '@/components/ui/tabs'
-import useScrollTo from '@/hooks/useScrollTo'
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
+import { isAddress } from '@/utils'
 import { toast } from 'sonner'
 import { BasketTableBody } from './basket-table-body'
 import { BasketTableHeader, SortConfig, SortDirection, SortField } from './basket-table-header'
@@ -20,7 +20,6 @@ const IndexBasketOverview = () => {
   )
   const [sortConfig, setSortConfig] = useState<SortConfig>(DEFAULT_SORT)
   const isExposure = activeTab === 'exposure'
-  const scrollTo = useScrollTo('basket', 80)
 
   const {
     basket,
@@ -42,15 +41,8 @@ const IndexBasketOverview = () => {
     setViewAll(false)
   }
 
-  useEffect(() => {
-    const section = window.location.hash.slice(1)
-    if (section === 'basket' && basket?.length) {
-      setTimeout(() => scrollTo(), 100)
-    }
-  }, [scrollTo, basket])
-
   const handleCopyAddress = (address: string) => {
-    navigator.clipboard.writeText(address)
+    navigator.clipboard.writeText(isAddress(address) || address)
     toast.success('Copied to clipboard')
   }
 
@@ -111,7 +103,7 @@ const IndexBasketOverview = () => {
   const showViewAll = activeCount > MAX_TOKENS
 
   return (
-    <div className="relative -mx-4 sm:-mx-5 -mb-4 sm:-mb-5 px-1" id="basket">
+    <div className="relative -mx-4 sm:-mx-5 -mb-4 sm:-mb-5 px-1">
       <Tabs defaultValue="exposure">
         <Table>
           <BasketTableHeader
@@ -155,7 +147,7 @@ const IndexBasketOverview = () => {
 }
 
 export default () => (
-  <Card className="pt-3 pb-5 sm:pt-4 sm:pb-6">
+  <Card className="pt-3 pb-5 sm:pt-4 sm:pb-6 group/section" id="basket">
     <div className="px-4 sm:px-6">
       <IndexBasketOverview />
     </div>

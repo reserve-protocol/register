@@ -12,7 +12,7 @@ const BackingInfo = () => {
     useAtomValue(isModuleLegacyAtom)
 
   return (
-    <InfoCard title={t`Backing Parameters`}>
+    <InfoCard title={t`Backing Parameters`} id="backing-parameters">
       {!isIssuanceLegacy && (
         <>
           <InfoCardItem

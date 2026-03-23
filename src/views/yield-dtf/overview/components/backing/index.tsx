@@ -1,3 +1,4 @@
+import SectionAnchor from '@/components/section-anchor'
 import { Trans } from '@lingui/macro'
 import BasketCubeIcon from 'components/icons/BasketCubeIcon'
 import { atom, useAtomValue } from 'jotai'
@@ -78,12 +79,13 @@ const BackingResume = () => {
 }
 
 const Backing = () => (
-  <div>
+  <div id="backing" className="group/section">
     <div className="flex items-center ml-6 mb-6 mt-10 text-primary">
       <BasketCubeIcon fontSize={24} />
-      <h2 className="ml-2 text-2xl font-semibold">
+      <h2 className="mx-2 text-2xl font-semibold">
         <Trans>Backing & Risk</Trans>
       </h2>
+      <SectionAnchor id="backing" />
     </div>
     <p className="ml-6 text-lg max-w-[540px]">
       <Trans>

@@ -1,5 +1,6 @@
 import SectionContainer from '@/components/section-navigation/section-container'
 import SectionWrapper from '@/components/section-navigation/section-wrapper'
+import useScrollToHash from '@/hooks/use-scroll-to-hash'
 import { useAtomValue } from 'jotai'
 import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
 import { useEffect } from 'react'
@@ -33,7 +34,9 @@ const SectionDivider = () => (
 /**
  * RToken Overview *
  */
-const Overview = () => (
+const Overview = () => {
+  useScrollToHash()
+  return (
   <SectionContainer className="w-full p-1 md:p-4">
     <StargateWarning />
     <SectionWrapper navigationIndex={0}>
@@ -57,6 +60,7 @@ const Overview = () => (
     </SectionWrapper>
     <Tracking />
   </SectionContainer>
-)
+  )
+}
 
 export default Overview
