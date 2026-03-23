@@ -79,7 +79,7 @@ const FeesInfo = () => {
   const feeRecipients = useAtomValue(feeRecipientsAtom)
 
   return (
-    <InfoCard title={t`Fees & Revenue Distribution`} className="bg-secondary">
+    <InfoCard title={t`Fees & Revenue Distribution`} id="fees" className="bg-secondary">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-1 bg-secondary">
         <InfoCardItem
           className="bg-card rounded-3xl"

@@ -34,7 +34,7 @@ const RolesInfo = () => {
   const guardians = useAtomValue(guardiansAtom)
 
   return (
-    <InfoCard title={t`Roles`} secondary>
+    <InfoCard title={t`Roles`} id="roles" secondary>
       {!indexDTF && (
         <div className="flex items-center p-4">
           <Skeleton className="h-8 w-8 rounded-full" />

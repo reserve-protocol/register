@@ -18,6 +18,7 @@ import { InnerGovernanceInfo } from '../../settings/components/index-settings-go
 import { useVoteLockAPR } from '../hooks/use-staking-vault-apy'
 import Staking from './staking'
 import RSRBNBHelp from '../../governance/components/rsr-bnb-help'
+import SectionAnchor from '@/components/section-anchor'
 
 const Container = ({ children }: { children: React.ReactNode }) => {
   const dtf = useAtomValue(indexDTFAtom)
@@ -26,7 +27,7 @@ const Container = ({ children }: { children: React.ReactNode }) => {
   if (!dtf) return null
 
   return (
-    <Card className="p-2 sm:p-4">
+    <Card className="p-2 sm:p-4 group/section" id="governance">
       <div className="flex items-center gap-2 mb-4 px-2 pt-2 justify-between">
         <div className="rounded-full border border-foreground p-2 mr-auto">
           <GovernanceIcon />
@@ -46,7 +47,10 @@ const Container = ({ children }: { children: React.ReactNode }) => {
         </div>
       </div>
       <div>
-        <h2 className="text-2xl font-light px-2">Basket Governance</h2>
+        <div className="flex items-center gap-1 px-2">
+          <h2 className="text-2xl font-light">Basket Governance</h2>
+          <SectionAnchor id="governance" />
+        </div>
         {children}
       </div>
     </Card>

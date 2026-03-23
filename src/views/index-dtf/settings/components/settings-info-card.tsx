@@ -1,13 +1,12 @@
 import Copy from '@/components/ui/copy'
+import SectionAnchor from '@/components/section-anchor'
 import { Card } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
-import useScrollTo from '@/hooks/useScrollTo'
 import { cn } from '@/lib/utils'
 import { chainIdAtom } from '@/state/atoms'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { useAtomValue } from 'jotai'
 import { ArrowUpRight } from 'lucide-react'
-import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
 const IconWrapper = ({ Component }: { Component: React.ElementType }) => (
@@ -32,20 +31,11 @@ const InfoCard = ({
   className?: string
   id?: string
 }) => {
-  const scrollTo = useScrollTo(id || '')
-
-  useEffect(() => {
-    const section = window.location.hash.slice(1)
-    if (section && section === id) {
-      scrollTo()
-    }
-  }, [id, scrollTo])
-
   return (
     <Card
       id={id}
       className={cn(
-        'rounded-4xl flex flex-col bg-secondary',
+        'rounded-4xl flex flex-col bg-secondary group/section',
         secondary && 'bg-muted'
       )}
     >
@@ -53,6 +43,7 @@ const InfoCard = ({
         <h1 className="font-semibold text-xl text-primary dark:text-muted-foreground mr-auto">
           {title}
         </h1>
+        {id && <SectionAnchor id={id} />}
         {action}
       </div>
       <div

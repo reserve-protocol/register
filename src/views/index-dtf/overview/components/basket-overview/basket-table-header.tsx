@@ -6,6 +6,7 @@ import { capitalize } from '@/utils/constants'
 import { ETHERSCAN_NAMES } from '@/utils/getExplorerLink'
 import { useAtomValue } from 'jotai'
 import { ArrowDown, ArrowUp, ArrowUpDown, PackageOpen, Target } from 'lucide-react'
+import SectionAnchor from '@/components/section-anchor'
 
 export type SortField = 'weight' | 'performance'
 export type SortDirection = 'asc' | 'desc'
@@ -103,6 +104,7 @@ export const BasketTableHeader = ({
               <span className="hidden sm:block">Collateral</span>
             </TabsTrigger>
           </TabsList>
+          <SectionAnchor id="basket" />
         </TableHead>
 
         <TableHeaderWithSort

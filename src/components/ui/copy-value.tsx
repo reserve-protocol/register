@@ -11,6 +11,7 @@ import {
 import { useState } from 'react'
 import CopyIcon from 'components/icons/CopyIcon'
 import { cn } from '@/lib/utils'
+import { isAddress } from '@/utils'
 
 // Legacy theme-ui spacing to Tailwind mapping
 const spacingMap: Record<number, string> = {
@@ -58,7 +59,7 @@ const CopyValue = ({
 
   const handleCopy = (e: React.MouseEvent) => {
     e.stopPropagation()
-    navigator.clipboard.writeText(value)
+    navigator.clipboard.writeText(isAddress(value) || value)
     setDisplayText(confirmText)
     setTimeout(() => setDisplayText(copyText), 2000)
   }
