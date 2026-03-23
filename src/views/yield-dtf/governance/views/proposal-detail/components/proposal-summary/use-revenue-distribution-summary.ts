@@ -64,13 +64,15 @@ const parseSetDistributions = (call: ProposalCall): Distribution[] => {
   }))
 }
 
+// WHY: Subgraph returns lowercase addresses, viem calldata returns checksummed.
+// Normalize all Map keys to lowercase so they match correctly.
 const applyDistributionChanges = (
   current: Distribution[],
   calls: ProposalCall[]
 ): Distribution[] => {
   const map = new Map<string, Distribution>()
   for (const d of current) {
-    map.set(d.destination, { ...d })
+    map.set(d.destination.toLowerCase(), { ...d })
   }
 
   for (const call of calls) {
@@ -83,10 +85,11 @@ const applyDistributionChanges = (
     }
 
     for (const change of changes) {
+      const key = change.destination.toLowerCase()
       if (change.rTokenDist === 0 && change.rsrDist === 0) {
-        map.delete(change.destination)
+        map.delete(key)
       } else {
-        map.set(change.destination, change)
+        map.set(key, { ...change, destination: key })
       }
     }
   }
@@ -135,11 +138,33 @@ const useRevenueDistributionSummary = (
         normalizeSentinelAddresses(parseDistributions(rawDistributions))
       )
       const proposedDist = applyDistributionChanges(currentDist, calls)
+      const current = formatDistribution(currentDist)
+      const proposed = formatDistribution(proposedDist)
 
-      return {
-        current: formatDistribution(currentDist),
-        proposed: formatDistribution(proposedDist),
+      // Compare actual values to find what really changed
+      const changedAddresses = new Set<string>()
+      if (current.holders !== proposed.holders) {
+        changedAddresses.add(FURNACE_ADDRESS.toLowerCase())
       }
+      if (current.stakers !== proposed.stakers) {
+        changedAddresses.add(ST_RSR_ADDRESS.toLowerCase())
+      }
+      const currentExtMap = new Map(
+        current.external.map((e) => [e.address.toLowerCase(), e.total])
+      )
+      for (const ext of proposed.external) {
+        const key = ext.address.toLowerCase()
+        if (currentExtMap.get(key) !== ext.total) {
+          changedAddresses.add(key)
+        }
+        currentExtMap.delete(key)
+      }
+      // Removed externals
+      for (const [key] of currentExtMap) {
+        changedAddresses.add(key)
+      }
+
+      return { current, proposed, changedAddresses }
     },
     enabled: !!rToken?.address && !!snapshotBlock && calls.length > 0,
   })

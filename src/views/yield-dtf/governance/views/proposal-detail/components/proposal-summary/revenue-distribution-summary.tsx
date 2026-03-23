@@ -8,6 +8,7 @@ import { chainIdAtom } from 'state/atoms'
 import { shortenAddress } from 'utils'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { Address } from 'viem'
+import { FURNACE_ADDRESS, ST_RSR_ADDRESS } from 'utils/addresses'
 import { RevenueSplit } from 'components/rtoken-setup/atoms'
 import Spinner from '@/components/ui/spinner'
 import { ProposalCall } from '@/views/yield-dtf/governance/atoms'
@@ -19,9 +20,15 @@ interface RevenueBoxProps {
   type: RevenueType
   distribution: number
   address?: string
+  changed?: boolean
 }
 
-const RevenueBox = ({ type, distribution, address }: RevenueBoxProps) => {
+const RevenueBox = ({
+  type,
+  distribution,
+  address,
+  changed,
+}: RevenueBoxProps) => {
   const chainId = useAtomValue(chainIdAtom)
 
   const [title, icon] =
@@ -32,7 +39,12 @@ const RevenueBox = ({ type, distribution, address }: RevenueBoxProps) => {
         : [<Trans>External</Trans>, <AsteriskIcon />]
 
   return (
-    <div className="flex items-center p-3 flex-wrap border border-secondary bg-card grow rounded-xl">
+    <div
+      className={cn(
+        'flex items-center p-3 flex-wrap border bg-card grow rounded-xl',
+        changed ? 'border-primary' : 'border-secondary'
+      )}
+    >
       {icon}
       <div className="ml-3">
         <span className="text-sm block text-legend">{title}</span>
@@ -58,14 +70,29 @@ const RevenueBox = ({ type, distribution, address }: RevenueBoxProps) => {
   )
 }
 
-const splitToBoxes = (split: RevenueSplit) => {
+const splitToBoxes = (
+  split: RevenueSplit,
+  changedAddresses?: Set<string>
+) => {
+  const isChanged = (addr: string) =>
+    !!changedAddresses?.has(addr.toLowerCase())
+
   const boxes: RevenueBoxProps[] = [
-    { type: 'holders', distribution: +split.holders },
-    { type: 'stakers', distribution: +split.stakers },
+    {
+      type: 'holders',
+      distribution: +split.holders,
+      changed: isChanged(FURNACE_ADDRESS),
+    },
+    {
+      type: 'stakers',
+      distribution: +split.stakers,
+      changed: isChanged(ST_RSR_ADDRESS),
+    },
     ...split.external.map((ext) => ({
       type: 'external' as const,
       distribution: +ext.total,
       address: ext.address,
+      changed: isChanged(ext.address),
     })),
   ]
   return boxes
@@ -74,11 +101,13 @@ const splitToBoxes = (split: RevenueSplit) => {
 const RevenueSection = ({
   label,
   split,
+  changedAddresses,
 }: {
   label: string
   split: RevenueSplit
+  changedAddresses?: Set<string>
 }) => {
-  const boxes = splitToBoxes(split)
+  const boxes = splitToBoxes(split, changedAddresses)
 
   return (
     <div>
@@ -120,7 +149,11 @@ const RevenueDistributionSummary = ({
   return (
     <div className="flex flex-col gap-4 mt-2">
       <RevenueSection label="Current" split={data.current} />
-      <RevenueSection label="Proposed" split={data.proposed} />
+      <RevenueSection
+        label="Proposed"
+        split={data.proposed}
+        changedAddresses={data.changedAddresses}
+      />
     </div>
   )
 }
