@@ -1,9 +1,9 @@
 import { Token, Volatility } from '@/types'
-import { ZAPPER_API } from '@/utils/constants'
+import { RESERVE_API } from '@/utils/constants'
 import { useQuery } from '@tanstack/react-query'
 
 const getTokensApi = (chain: number, unfiltered = false) =>
-  `${ZAPPER_API}zapper/tokens?chainId=${chain}${unfiltered ? '&unfiltered=true' : ''}`
+  `${RESERVE_API}zapper/tokens?chainId=${chain}${unfiltered ? '&unfiltered=true' : ''}`
 
 type ZapToken = Token & {
   volatility: Volatility
