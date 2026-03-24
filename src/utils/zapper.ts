@@ -1,5 +1,5 @@
 import { Address, parseUnits } from 'viem'
-import { RESERVE_API } from '@/utils/constants'
+import { ZAPPER_API } from '@/utils/constants'
 
 export const MIN_USD_SIZE = 1
 export const DUMMY_SIGNER =
@@ -86,7 +86,7 @@ export const fetchPriceImpact = async (
       debug: 'true',
     })
 
-    const url = `${RESERVE_API}api/zapper/${chainId}/swap?${params.toString()}`
+    const url = `${ZAPPER_API}api/zapper/${chainId}/swap?${params.toString()}`
     const response = await fetch(url, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
@@ -118,7 +118,7 @@ export const fetchZapperTokens = async (
   chainId: number
 ): Promise<Set<string>> => {
   try {
-    const url = `${RESERVE_API}api/zapper/${chainId}/tokens`
+    const url = `${ZAPPER_API}api/zapper/${chainId}/tokens`
     const response = await fetch(url, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },

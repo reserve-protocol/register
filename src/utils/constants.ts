@@ -22,6 +22,10 @@ export const RESERVE_API = isStaging
   ? import.meta.env.VITE_STAGING_API
   : 'https://api.reserve.org/'
 
+export const ZAPPER_API = isStaging
+  ? 'https://staging.reserve-api.com/'
+  : 'https://api.reserve.org/'
+
 export const VERSION = '3.0.0'
 export const TELEGRAM_INVITE = 'https://t.me/reservecurrency'
 export const PROTOCOL_DOCS = 'https://docs.reserve.org/'
