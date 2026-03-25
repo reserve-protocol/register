@@ -102,8 +102,8 @@ export const DeprecatedBanner = ({
   return (
     <WarningBanner
       className={className}
-      title="Entering Redemption-Only Mode"
-      description="New deposits are disabled due to low liquidity. Existing holders can continue to sell or redeem their assets at any time."
+      title="Inactive DTF"
+      description={`This DTF is no longer actively governed and can only be sold. This DTF cannot rebalance its basket nor can it new $${rToken?.symbol} tokens be created.`}
     />
   )
 }

@@ -1,5 +1,5 @@
 import AlertIcon from 'components/icons/AlertIcon'
-import { useDTFStatus } from '@/hooks/use-dtf-status'
+import { isInactiveDTF, useDTFStatus } from '@/hooks/use-dtf-status'
 import useRToken from 'hooks/useRToken'
 import TokenInfo from './token-info'
 import TokenMandate from './token-mandate'
@@ -9,7 +9,7 @@ const DeprecatedBanner = () => {
   const rToken = useRToken()
   const status = useDTFStatus(rToken?.address, rToken?.chainId)
 
-  if (status !== 'deprecated') return null
+  if (!isInactiveDTF(status)) return null
 
   return (
     <div className="rounded-xl border border-secondary bg-card p-4 mx-4 sm:mx-8 mt-6">
@@ -17,12 +17,11 @@ const DeprecatedBanner = () => {
         <AlertIcon width={32} height={32} />
         <div className="ml-4">
           <span className="font-bold text-warning">
-            Entering Redemption-Only Mode
+            DTF Inactive
           </span>
           <br />
           <span className="block mt-1 text-warning">
-            New deposits are disabled due to low liquidity. Existing holders can
-            continue to sell or redeem their assets at any time.
+            This DTF is no longer actively governed and can only be sold. This DTF cannot rebalance its basket nor can it new ${rToken?.symbol} tokens be created.
           </span>
         </div>
       </div>
