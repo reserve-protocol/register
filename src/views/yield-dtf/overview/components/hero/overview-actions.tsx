@@ -144,10 +144,11 @@ const OverviewActions = () => {
         size="lg"
         variant="outline-primary"
         className="whitespace-nowrap w-full sm:w-auto"
-        disabled={isDeprecated}
         onClick={() => navigate(`../${ROUTES.STAKING}`)}
       >
-        Stake RSR {!!stakers && `- ${formatCurrency(stakers, 1)}% Est. APY`}
+        {isDeprecated
+          ? 'Unstake RSR'
+          : `Stake RSR ${!!stakers ? `- ${formatCurrency(stakers, 1)}% Est. APY` : ''}`}
       </Button>
       <TokenSocials />
     </div>
