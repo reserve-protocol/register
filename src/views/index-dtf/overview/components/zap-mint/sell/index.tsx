@@ -1,5 +1,6 @@
 import Swap from '@/components/ui/swap'
 import useZapSwapQuery from '@/hooks/useZapSwapQuery'
+import { isInactiveDTF } from '@/hooks/use-dtf-status'
 import {
   indexDTFAtom,
   indexDTFPriceAtom,
@@ -30,7 +31,7 @@ import ZapDetails, { ZapPriceImpact } from '../zap-details'
 const Sell = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
   const indexDTFPrice = useAtomValue(indexDTFPriceAtom)
-  const isDeprecated = useAtomValue(indexDTFStatusAtom) === 'deprecated'
+  const isDeprecated = isInactiveDTF(useAtomValue(indexDTFStatusAtom))
   const [inputAmount, setInputAmount] = useAtom(zapMintInputAtom)
   const selectedToken = useAtomValue(selectedTokenOrDefaultAtom)
   const indexDTFBalance = useAtomValue(indexDTFBalanceAtom)

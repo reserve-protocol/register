@@ -1,3 +1,4 @@
+import { isInactiveDTF } from '@/hooks/use-dtf-status'
 import { indexDTFAtom, indexDTFStatusAtom } from '@/state/dtf/atoms'
 import { useAtomValue } from 'jotai'
 import useTrackIndexDTFPage from '../hooks/useTrackIndexDTFPage'
@@ -17,7 +18,7 @@ import IndexBasketOverview from './components/basket-overview'
 const Content = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
   const quoteSource = useAtomValue(indexDTFQuoteSourceAtom)
-  const isDeprecated = useAtomValue(indexDTFStatusAtom) === 'deprecated'
+  const isDeprecated = isInactiveDTF(useAtomValue(indexDTFStatusAtom))
 
   return (
     <div className="rounded-0xl lg:rounded-4xl bg-secondary flex-1 lg:mb-4">

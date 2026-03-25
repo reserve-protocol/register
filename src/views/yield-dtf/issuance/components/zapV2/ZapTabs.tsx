@@ -1,4 +1,4 @@
-import { useDTFStatus } from '@/hooks/use-dtf-status'
+import { isInactiveDTF, useDTFStatus } from '@/hooks/use-dtf-status'
 import TabMenu from 'components/tab-menu'
 import useRToken from 'hooks/useRToken'
 import { Minus, Plus } from 'lucide-react'
@@ -11,7 +11,7 @@ import { useEffect, useMemo } from 'react'
 const ZapTabs = () => {
   const { chainId, operation, setOperation } = useZap()
   const rToken = useRToken()
-  const isDeprecated = useDTFStatus(rToken?.address, rToken?.chainId) === 'deprecated'
+  const isDeprecated = isInactiveDTF(useDTFStatus(rToken?.address, rToken?.chainId))
   const disableMint = chainId === ChainId.Arbitrum || isDeprecated
 
   const backingOptions = useMemo(() => {

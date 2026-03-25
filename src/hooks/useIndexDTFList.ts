@@ -16,7 +16,7 @@ export type IndexDTFItem = {
   performance: Performance[]
   performancePercent: number
   chainId: number
-  status: 'active' | 'deprecated'
+  status: 'active' | 'deprecated' | 'unsupported'
   brand?: {
     icon?: string
     cover?: string

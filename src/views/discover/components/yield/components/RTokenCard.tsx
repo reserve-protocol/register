@@ -61,7 +61,7 @@ const RTokenCard = ({ token, deprecated }: Props) => {
     <div
       className={cn(
         'bg-card rounded-[20px] border-b-2 border-transparent hover:md:border-primary min-h-full md:min-h-[316px] cursor-pointer transition-[border-color] duration-300 ease-in-out p-0 md:p-3',
-        deprecated && 'opacity-30'
+        deprecated && 'opacity-60'
       )}
       onClick={(e) => {
         e.stopPropagation()
@@ -89,6 +89,11 @@ const RTokenCard = ({ token, deprecated }: Props) => {
                 className="block md:hidden h-8"
               />
               <ChainBadge chain={token.chain} />
+              {deprecated && (
+                <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-yellow-500/15 text-yellow-600 dark:text-yellow-400">
+                  Inactive
+                </span>
+              )}
               <div className="block md:hidden">
                 <ChainLogo chain={token.chain} fontSize={12} />
               </div>

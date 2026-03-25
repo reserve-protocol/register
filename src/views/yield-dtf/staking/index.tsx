@@ -1,4 +1,4 @@
-import { useDTFStatus } from '@/hooks/use-dtf-status'
+import { isInactiveDTF, useDTFStatus } from '@/hooks/use-dtf-status'
 import useRToken from 'hooks/useRToken'
 import StakeContainer from './components/stake-container'
 import Overview from './components/overview'
@@ -8,8 +8,9 @@ import TradingPausedBanner from './components/trading-paused-banner'
 
 const Staking = () => {
   const rToken = useRToken()
-  const isDeprecated =
-    useDTFStatus(rToken?.address, rToken?.chainId) === 'deprecated'
+  const isDeprecated = isInactiveDTF(
+    useDTFStatus(rToken?.address, rToken?.chainId)
+  )
 
   return (
     <div className="container py-1 md:py-6 px-0 sm:px-2">

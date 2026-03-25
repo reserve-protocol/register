@@ -1,11 +1,12 @@
 import { Button } from '@/components/ui/button'
+import { isInactiveDTF } from '@/hooks/use-dtf-status'
 import { indexDTFStatusAtom } from '@/state/dtf/atoms'
 import { useZapperModal } from '@reserve-protocol/react-zapper'
 import { useAtomValue } from 'jotai'
 
 const IndexCTAsOverviewMobile = () => {
   const { open, setTab } = useZapperModal()
-  const isDeprecated = useAtomValue(indexDTFStatusAtom) === 'deprecated'
+  const isDeprecated = isInactiveDTF(useAtomValue(indexDTFStatusAtom))
 
   return (
     <div className="block xl:hidden w-full mt-0 xl:mt-3">

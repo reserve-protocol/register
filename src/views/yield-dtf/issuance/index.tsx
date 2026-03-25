@@ -2,7 +2,7 @@ import { useAtomValue } from 'jotai'
 import { chainIdAtom, rTokenStateAtom } from 'state/atoms'
 import DisabledByGeolocationMessage from 'state/geolocation/DisabledByGeolocationMessage'
 import { Separator } from '@/components/ui/separator'
-import { useDTFStatus } from '@/hooks/use-dtf-status'
+import { isInactiveDTF, useDTFStatus } from '@/hooks/use-dtf-status'
 import useRToken from 'hooks/useRToken'
 import About from './components/about'
 import Balances from './components/balances'
@@ -27,8 +27,9 @@ const IssuanceMethods = () => {
   const { zapEnabled, setZapEnabled } = useZap()
   const { isCollaterized } = useAtomValue(rTokenStateAtom)
   const rToken = useRToken()
-  const isDeprecated =
-    useDTFStatus(rToken?.address, rToken?.chainId) === 'deprecated'
+  const isDeprecated = isInactiveDTF(
+    useDTFStatus(rToken?.address, rToken?.chainId)
+  )
 
   return (
     <>

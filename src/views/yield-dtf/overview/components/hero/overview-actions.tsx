@@ -5,7 +5,7 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import DgnETHButtonAppendix from '@/components/utils/integrations/dgneth-btn-appendix'
-import { useDTFStatus } from '@/hooks/use-dtf-status'
+import { isInactiveDTF, useDTFStatus } from '@/hooks/use-dtf-status'
 import { ChainId } from '@/utils/chains'
 import { Trans } from '@lingui/macro'
 import useRToken from 'hooks/useRToken'
@@ -112,7 +112,7 @@ const OverviewActions = () => {
   const navigate = useNavigate()
   const { holders, stakers, basket } = useAtomValue(estimatedApyAtom)
   const status = useDTFStatus(rToken?.address, rToken?.chainId)
-  const isDeprecated = status === 'deprecated'
+  const isDeprecated = isInactiveDTF(status)
 
   return (
     <div className="mt-6 mr-4 sm:mr-0 mb-2 flex flex-col sm:flex-row items-start gap-2 sm:gap-3">

@@ -3,6 +3,7 @@ import TokenLogo from '@/components/token-logo'
 import StackTokenLogo from '@/components/token-logo/StackTokenLogo'
 import { ChartConfig, ChartContainer } from '@/components/ui/chart'
 import DataTable, { SorteableButton } from '@/components/ui/data-table'
+import { isInactiveDTF } from '@/hooks/use-dtf-status'
 import { type IndexDTFItem } from '@/hooks/useIndexDTFList'
 import { cn } from '@/lib/utils'
 import { formatCurrency, getFolioRoute } from '@/utils'
@@ -104,7 +105,14 @@ const columns: ColumnDef<IndexDTFItem>[] = [
             />
           </div>
           <div className="break-words  max-w-[420px]">
-            <h4 className="font-semibold ">{row.original.name}</h4>
+            <div className="flex items-center gap-2">
+              <h4 className="font-semibold ">{row.original.name}</h4>
+              {isInactiveDTF(row.original.status) && (
+                <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-yellow-500/15 text-yellow-600 dark:text-yellow-400">
+                  Inactive
+                </span>
+              )}
+            </div>
             <span className="text-legend">${row.original.symbol}</span>
           </div>
         </Link>
@@ -251,7 +259,7 @@ const IndexDTFTable = ({
         }
         onRowClick={handleRowClick}
         getRowClassName={(row) =>
-          row.original.status === 'deprecated' ? 'opacity-30' : undefined
+          isInactiveDTF(row.original.status) ? 'opacity-60' : undefined
         }
         className={cn(
           'hidden lg:block',

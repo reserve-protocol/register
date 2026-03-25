@@ -1,6 +1,7 @@
 import TokenLogo from '@/components/token-logo'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
+import { isInactiveDTF } from '@/hooks/use-dtf-status'
 import { cn } from '@/lib/utils'
 import { indexDTFAtom, indexDTFBrandAtom, indexDTFStatusAtom } from '@/state/dtf/atoms'
 import { ROUTES } from '@/utils/constants'
@@ -127,7 +128,7 @@ const DISABLED_ROUTES_WHEN_DEPRECATED: string[] = [ROUTES.GOVERNANCE, ROUTES.AUC
 const NavigationItems = () => {
   const dtf = useAtomValue(indexDTFAtom)
   const status = useAtomValue(indexDTFStatusAtom)
-  const isDeprecated = status === 'deprecated'
+  const isDeprecated = isInactiveDTF(status)
 
   const items = useMemo(
     () => [

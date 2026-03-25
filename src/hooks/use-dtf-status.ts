@@ -26,11 +26,17 @@ const KNOWN_DEPRECATED_ADDRESSES = new Set(
   KNOWN_DEPRECATED.map((d) => d.address)
 )
 
+export type DTFStatus = 'active' | 'deprecated' | 'unsupported'
+
 type DTFStatusItem = {
   address: string
   chainId: number
-  status: 'active' | 'deprecated'
+  status: DTFStatus
 }
+
+// WHY: deprecated and unsupported are treated the same in UI for now
+export const isInactiveDTF = (status: DTFStatus) =>
+  status === 'deprecated' || status === 'unsupported'
 
 const useDiscoverDTFs = () => {
   return useQuery({
@@ -60,7 +66,7 @@ const isKnownDeprecated = (address: string, chainId?: number): boolean => {
 export const useDTFStatus = (
   address?: string,
   chainId?: number
-): 'active' | 'deprecated' => {
+): DTFStatus => {
   const { data } = useDiscoverDTFs()
 
   if (!address) return 'active'
@@ -84,12 +90,12 @@ export const useDeprecatedAddresses = (): Set<string> => {
   return useMemo(() => {
     if (!data) return KNOWN_DEPRECATED_ADDRESSES
 
-    const deprecated = new Set<string>()
+    const inactive = new Set<string>()
     for (const item of data) {
-      if (item.status === 'deprecated') {
-        deprecated.add(item.address)
+      if (isInactiveDTF(item.status)) {
+        inactive.add(item.address)
       }
     }
-    return deprecated
+    return inactive
   }, [data])
 }

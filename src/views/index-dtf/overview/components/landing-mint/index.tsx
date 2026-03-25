@@ -3,6 +3,7 @@ import TokenLogo from '@/components/token-logo'
 import StackTokenLogo from '@/components/token-logo/StackTokenLogo'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
+import { isInactiveDTF } from '@/hooks/use-dtf-status'
 import {
   indexDTFAtom,
   indexDTFBrandAtom,
@@ -20,7 +21,7 @@ const TokenInfo = () => {
   const dtf = useAtomValue(indexDTFAtom)
   const brand = useAtomValue(indexDTFBrandAtom)
   const status = useAtomValue(indexDTFStatusAtom)
-  const isDeprecated = status === 'deprecated'
+  const isDeprecated = isInactiveDTF(status)
 
   return (
     <div className="flex flex-col justify-between gap-8 p-4">
@@ -47,12 +48,12 @@ const TokenInfo = () => {
       <div className="flex flex-col gap-1">
         <div className="text-2xl font-light text-primary">
           {isDeprecated
-            ? `Sell $${dtf?.token.symbol} Onchain`
+            ? `Sell $${dtf?.token.symbol} onchain`
             : `Buy/Sell $${dtf?.token.symbol} onchain`}
         </div>
         <div className="text-legend text-sm">
           {isDeprecated
-            ? 'New deposits are disabled due to low liquidity. Existing holders can continue to sell or redeem their assets at any time.'
+            ? `This DTF is no longer actively governed and can only be sold. This DTF cannot rebalance its basket nor can new $${dtf?.token.symbol} tokens be created.`
             : 'Our Zap-swaps support common assets like ETH, USDC, USDT, and others, which makes DTFs easy to enter and exit.'}
         </div>
       </div>
@@ -65,7 +66,7 @@ const MintBox = () => {
   const { trackClick } = useTrackIndexDTFClick('overview', 'overview')
   const { open, setTab } = useZapperModal()
   const status = useAtomValue(indexDTFStatusAtom)
-  const isDeprecated = status === 'deprecated'
+  const isDeprecated = isInactiveDTF(status)
 
   return (
     <div className="rounded-3xl bg-card p-2">
