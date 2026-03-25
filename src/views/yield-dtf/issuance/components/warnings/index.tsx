@@ -1,4 +1,6 @@
+import { isInactiveDTF, useDTFStatus } from '@/hooks/use-dtf-status'
 import AlertIcon from 'components/icons/AlertIcon'
+import useRToken from 'hooks/useRToken'
 import { atom, useAtomValue } from 'jotai'
 import { chainIdAtom, rTokenStateAtom } from 'state/atoms'
 import { cn } from '@/lib/utils'
@@ -83,6 +85,25 @@ export const DisabledArbitrumBanner = ({
       className={className}
       title="Arbitrum mints are no longer supported."
       description="Because of a low usage, the Reserve DApp is sunsetting mints on Arbitrum. Redemptions will continue to be supported. Yield DTFs are always backed 1:1 by underlying assets and can be permissonlessly redeemed at any time."
+    />
+  )
+}
+
+export const DeprecatedBanner = ({
+  className,
+}: {
+  className?: string
+}) => {
+  const rToken = useRToken()
+  const status = useDTFStatus(rToken?.address, rToken?.chainId)
+
+  if (!isInactiveDTF(status)) return null
+
+  return (
+    <WarningBanner
+      className={className}
+      title="Inactive DTF"
+      description={`This DTF is no longer actively governed and can only be sold. This DTF cannot rebalance its basket nor can it new $${rToken?.symbol} tokens be created.`}
     />
   )
 }

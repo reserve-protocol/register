@@ -1,3 +1,4 @@
+import { cn } from '@/lib/utils'
 import CollateralPieChartWrapper from '@/views/yield-dtf/overview/components/collateral-pie-chart-wrapper'
 import RTokenAddresses from '@/views/yield-dtf/overview/components/rtoken-addresses'
 import { trackClick } from '@/hooks/useTrackPage'
@@ -20,6 +21,7 @@ import TokenActions from './TokenActions'
 
 interface Props {
   token: ListedToken
+  deprecated?: boolean
 }
 
 const ChainBadge = ({ chain }: { chain: number }) => (
@@ -47,7 +49,7 @@ const ChainBadge = ({ chain }: { chain: number }) => (
 )
 
 // TODO: Component should be splitted
-const RTokenCard = ({ token }: Props) => {
+const RTokenCard = ({ token, deprecated }: Props) => {
   const navigate = useNavigate()
   const { priceETHTerms, supplyETHTerms } = usePriceETH(token)
 
@@ -57,7 +59,10 @@ const RTokenCard = ({ token }: Props) => {
 
   return (
     <div
-      className="bg-card rounded-[20px] border-b-2 border-transparent hover:md:border-primary min-h-full md:min-h-[316px] cursor-pointer transition-[border-color] duration-300 ease-in-out p-0 md:p-3"
+      className={cn(
+        'bg-card rounded-[20px] border-b-2 border-transparent hover:md:border-primary min-h-full md:min-h-[316px] cursor-pointer transition-[border-color] duration-300 ease-in-out p-0 md:p-3',
+        deprecated && 'opacity-60'
+      )}
       onClick={(e) => {
         e.stopPropagation()
         trackClick(
@@ -84,6 +89,11 @@ const RTokenCard = ({ token }: Props) => {
                 className="block md:hidden h-8"
               />
               <ChainBadge chain={token.chain} />
+              {deprecated && (
+                <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-yellow-500/15 text-yellow-600 dark:text-yellow-400">
+                  Inactive
+                </span>
+              )}
               <div className="block md:hidden">
                 <ChainLogo chain={token.chain} fontSize={12} />
               </div>

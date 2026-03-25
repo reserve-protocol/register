@@ -1,5 +1,6 @@
+import { isInactiveDTF } from '@/hooks/use-dtf-status'
 import useScrollToHash from '@/hooks/use-scroll-to-hash'
-import { indexDTFAtom } from '@/state/dtf/atoms'
+import { indexDTFAtom, indexDTFStatusAtom } from '@/state/dtf/atoms'
 import { useAtomValue } from 'jotai'
 import useTrackIndexDTFPage from '../hooks/useTrackIndexDTFPage'
 import PriceChart from './components/charts/price-chart'
@@ -18,6 +19,7 @@ import IndexBasketOverview from './components/basket-overview'
 const Content = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
   const quoteSource = useAtomValue(indexDTFQuoteSourceAtom)
+  const isDeprecated = isInactiveDTF(useAtomValue(indexDTFStatusAtom))
   useScrollToHash()
 
   return (
@@ -38,6 +40,7 @@ const Content = () => {
             mode="modal"
             apiUrl={ZAPPER_API}
             defaultSource={quoteSource}
+            sellOnly={isDeprecated}
           />
         )}
       </div>
