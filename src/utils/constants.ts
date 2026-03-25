@@ -22,6 +22,10 @@ export const RESERVE_API = isStaging
   ? import.meta.env.VITE_STAGING_API
   : 'https://api.reserve.org/'
 
+export const ZAPPER_API = isStaging
+  ? 'https://zapper-staging.reserve-api.com/'
+  : 'https://api.reserve.org/'
+
 export const VERSION = '3.0.0'
 export const TELEGRAM_INVITE = 'https://t.me/reservecurrency'
 export const PROTOCOL_DOCS = 'https://docs.reserve.org/'
@@ -272,19 +276,12 @@ export const supportedChainList = [
   ChainId.Arbitrum,
 ]
 
-// Platform fees by chain
-export const PLATFORM_FEES: Record<number, number> = {
+export const FALLBACK_PLATFORM_FEES: Record<number, number> = {
   [ChainId.Mainnet]: 50,
   [ChainId.Base]: 50,
   [ChainId.BSC]: 33,
 }
 
-export const getPlatformFee = (chainId: number): number => {
-  return PLATFORM_FEES[chainId] || 50
-}
-
-// Legacy constant for backwards compatibility
-export const FIXED_PLATFORM_FEE = 50
 // Load environment variables.
 export const TENDERLY_ACCESS_TOKEN: string = import.meta.env
   .VITE_TENDERLY_ACCESS_TOKEN!

@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { chainIdAtom } from '@/state/atoms'
 import { iTokenAddressAtom } from '@/state/dtf/atoms'
-import { shortenAddress } from '@/utils'
+import { isAddress, shortenAddress } from '@/utils'
 import { BRIDGED_INDEX_DTFS } from '@/utils/constants'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { useAtomValue } from 'jotai'
@@ -18,7 +18,7 @@ import { useMemo } from 'react'
 import { toast } from 'sonner'
 
 const copyAddress = (addr: string) => {
-  navigator.clipboard.writeText(addr)
+  navigator.clipboard.writeText(isAddress(addr) || addr)
   toast.success('Address copied to clipboard')
 }
 

@@ -12,7 +12,7 @@ const BasketInfo = () => {
   const chainId = useAtomValue(chainIdAtom)
 
   return (
-    <InfoCard title={t`Primary Basket`}>
+    <InfoCard title={t`Primary Basket`} id="primary-basket">
       <div className="p-4">
         {units.map((unit, unitIndex) => (
           <div key={unit} className={unitIndex ? 'mt-4' : ''}>

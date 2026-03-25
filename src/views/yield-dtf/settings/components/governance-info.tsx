@@ -26,7 +26,7 @@ const GovernanceInfo = () => {
   const isTimeunit = isTimeunitGovernance(governance.name)
 
   return (
-    <InfoCard title={t`Governance Details`}>
+    <InfoCard title={t`Governance Details`} id="governance-details">
       <InfoCardItem label={t`Name`} value={governance.name} border={false} />
       {!!governance.timelock && (
         <>

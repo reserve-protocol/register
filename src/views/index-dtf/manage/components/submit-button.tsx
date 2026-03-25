@@ -183,6 +183,14 @@ const SubmitButton = () => {
         }
       }
 
+      // Clear URLs for images that were explicitly removed
+      for (const [fileKey, filePath] of Object.entries(fileToPath)) {
+        if (files[fileKey] === null) {
+          const [key, value] = filePath.split('.')
+          payload[key][value] = ''
+        }
+      }
+
       setState('submitting')
 
       if (payload.dtf.tags.length) {

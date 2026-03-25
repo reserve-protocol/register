@@ -31,7 +31,7 @@ const BasicInfo = () => {
   })
 
   return (
-    <InfoCard title="Basics">
+    <InfoCard title="Basics" id="basics">
       <InfoCardItem
         label={t`Name`}
         icon={<IconWrapper Component={Braces} />}

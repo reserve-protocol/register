@@ -11,7 +11,7 @@ const RevenueSplitInfo = () => {
   const chainId = useAtomValue(chainIdAtom)
 
   return (
-    <InfoCard title={t`Revenue Distribution`}>
+    <InfoCard title={t`Revenue Distribution`} id="revenue-distribution">
       <InfoCardItem
         label="% to"
         value={t`RToken holders`}

@@ -1,6 +1,7 @@
 import { t } from '@lingui/macro'
 import { CopyIcon } from 'lucide-react'
 import React, { useState } from 'react'
+import { isAddress } from '@/utils'
 import { Tooltip, TooltipContent, TooltipTrigger } from './tooltip'
 
 interface CopyProps {
@@ -22,7 +23,7 @@ const Copy: React.FC<CopyProps> = ({
   const [isOpen, setIsOpen] = useState(false)
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(value)
+    navigator.clipboard.writeText(isAddress(value) || value)
     setDisplayText(confirmText)
     setIsOpen(true)
     setTimeout(() => {

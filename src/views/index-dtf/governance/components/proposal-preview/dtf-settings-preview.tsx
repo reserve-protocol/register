@@ -1,9 +1,8 @@
 import { chainIdAtom } from '@/state/atoms'
-import { indexDTFAtom } from '@/state/dtf/atoms'
+import { indexDTFAtom, indexDTFFeeAtom } from '@/state/dtf/atoms'
 import { DecodedCalldata } from '@/types'
 import EnsName from '@/components/utils/ens-name'
 import { shortenAddress } from '@/utils'
-import { getPlatformFee } from '@/utils/constants'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { useAtomValue } from 'jotai'
 import {
@@ -189,13 +188,13 @@ export const SetFeeRecipientsPreview = ({
 }) => {
   const chainId = useAtomValue(chainIdAtom)
   const indexDTF = useAtomValue(indexDTFAtom)
-  const platformFee = getPlatformFee(chainId)
+  const platformFee = useAtomValue(indexDTFFeeAtom)
   const recipients = decodedCalldata.data[0] as Array<{
     recipient: string
     portion: bigint
   }>
 
-  if (!indexDTF) return null
+  if (!indexDTF || platformFee === undefined) return null
 
   // Parse recipients into categories
   const externalRecipients: Array<{ address: string; percentage: number }> = []

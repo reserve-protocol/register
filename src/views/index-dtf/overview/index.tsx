@@ -1,4 +1,5 @@
 import { isInactiveDTF } from '@/hooks/use-dtf-status'
+import useScrollToHash from '@/hooks/use-scroll-to-hash'
 import { indexDTFAtom, indexDTFStatusAtom } from '@/state/dtf/atoms'
 import { useAtomValue } from 'jotai'
 import useTrackIndexDTFPage from '../hooks/useTrackIndexDTFPage'
@@ -11,7 +12,7 @@ import IndexTransactionTable from './components/index-transaction-table'
 import ZapperWrapper from '../components/zapper/zapper-wrapper'
 import { wagmiConfig } from '@/state/chain'
 import { indexDTFQuoteSourceAtom } from '../issuance'
-import { RESERVE_API } from '@/utils/constants'
+import { ZAPPER_API } from '@/utils/constants'
 import LandingMint from './components/landing-mint'
 import IndexBasketOverview from './components/basket-overview'
 
@@ -19,6 +20,7 @@ const Content = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
   const quoteSource = useAtomValue(indexDTFQuoteSourceAtom)
   const isDeprecated = isInactiveDTF(useAtomValue(indexDTFStatusAtom))
+  useScrollToHash()
 
   return (
     <div className="rounded-0xl lg:rounded-4xl bg-secondary flex-1 lg:mb-4">
@@ -36,7 +38,7 @@ const Content = () => {
             chain={indexDTF.chainId}
             dtfAddress={indexDTF.id}
             mode="modal"
-            apiUrl={RESERVE_API}
+            apiUrl={ZAPPER_API}
             defaultSource={quoteSource}
             sellOnly={isDeprecated}
           />
