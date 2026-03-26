@@ -20,7 +20,7 @@ const isStaging =
 
 export const RESERVE_API = isStaging
   ? import.meta.env.VITE_STAGING_API
-  : 'https://api.reserve.org/'
+  : 'https://api-staging.reserve.org/'
 
 export const ZAPPER_API = isStaging
   ? 'https://staging.reserve-api.com/'
@@ -137,7 +137,7 @@ export const LP_PROJECTS: { [x: string]: { name: string; site: string } } = {
     name: 'Ether.fi',
     site: 'https://ether.fi/',
   },
-  'lagoon': {
+  lagoon: {
     name: 'Lagoon',
     site: 'https://lagoon.finance/',
   },

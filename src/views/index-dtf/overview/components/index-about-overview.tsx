@@ -12,7 +12,6 @@ import { BrickWall, FileChartColumn, ImagePlus } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useTrackIndexDTFClick } from '../../hooks/useTrackIndexDTFPage'
 import IndexFactsheetOverview from './index-factsheet-overview'
-import IndexMetricsOverview from './index-metrics-overview'
 import IndexSocialsOverview from './index-socials-overview'
 import SectionAnchor from '@/components/section-anchor'
 
@@ -109,7 +108,6 @@ const IndexAboutOverview = () => (
         <IndexFactsheetOverview />
       </div>
     </div>
-    <IndexMetricsOverview />
   </Card>
 )
 

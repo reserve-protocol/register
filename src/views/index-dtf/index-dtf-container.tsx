@@ -17,11 +17,13 @@ import {
   indexDTFBasketSharesAtom,
   IndexDTFBrand,
   indexDTFBrandAtom,
+  indexDTFApyAtom,
   indexDTFExposureDataAtom,
   indexDTFFeeAtom,
   indexDTFPerformanceLoadingAtom,
   indexDTFRebalanceControlAtom,
   indexDTFVersionAtom,
+  isYieldIndexDTFAtom,
   iTokenAddressAtom,
   performanceTimeRangeAtom,
 } from '@/state/dtf/atoms'
@@ -235,6 +237,39 @@ const IndexDTFExposureUpdater = ({ chainId }: { chainId: number }) => {
   return null
 }
 
+const IndexDTFApyUpdater = ({ chainId }: { chainId: number }) => {
+  const dtf = useAtomValue(indexDTFAtom)
+  const isYieldIndexDTF = useAtomValue(isYieldIndexDTFAtom)
+  const setApyData = useSetAtom(indexDTFApyAtom)
+
+  const { data: apyData } = useQuery({
+    queryKey: ['dtf-apy', dtf?.id, chainId],
+    queryFn: async () => {
+      if (!dtf?.id) return null
+
+      const response = await fetch(
+        `${RESERVE_API}v1/dtf/apy/${dtf.id}?chainId=${chainId}`
+      )
+
+      if (!response.ok) {
+        throw new Error(`Failed to fetch APY data: ${response.statusText}`)
+      }
+
+      return response.json()
+    },
+    enabled: !!dtf?.id && !!chainId && isYieldIndexDTF,
+    refetchInterval: 60000,
+  })
+
+  useEffect(() => {
+    if (apyData) {
+      setApyData(apyData)
+    }
+  }, [apyData, setApyData])
+
+  return null
+}
+
 const resetStateAtom = atom(null, (_, set) => {
   set(indexDTFBasketAtom, undefined)
   set(indexDTFBasketPricesAtom, {})
@@ -247,6 +282,7 @@ const resetStateAtom = atom(null, (_, set) => {
   set(indexDTF7dChangeAtom, undefined)
   set(indexDTFPerformanceLoadingAtom, false)
   set(indexDTFExposureDataAtom, null)
+  set(indexDTFApyAtom, undefined)
   set(performanceTimeRangeAtom, '7d')
 })
 
@@ -322,6 +358,7 @@ const Updater = () => {
       <IndexDTFBasketUpdater tokenAddress={currentToken} chainId={chainId} />
       <PlatformFeeUpdater tokenAddress={currentToken} chainId={chainId} />
       <IndexDTFExposureUpdater chainId={chainId} />
+      <IndexDTFApyUpdater chainId={chainId} />
       <GovernanceUpdater />
     </div>
   )

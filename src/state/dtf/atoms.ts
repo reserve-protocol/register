@@ -242,7 +242,22 @@ export const isHybridDTFAtom = atom((get) => {
     dtf?.id.toLowerCase() === '0x045dc337c12a9a5d2c790d01554913b1a9e1044a' ||
     dtf?.id.toLowerCase() === '0xdb35c98b919053f77356e7d89b11069cf9185764' ||
     dtf?.id.toLowerCase() === '0x2b3e7fec6995acc564fd587974fd29b94992ba3a' ||
-    dtf?.id.toLowerCase() === '0x384f00864a5d880a2ad79900ead6eb9ded2924d9' || 
+    dtf?.id.toLowerCase() === '0x384f00864a5d880a2ad79900ead6eb9ded2924d9' ||
     dtf?.id.toLowerCase() === '0x92d7e020ab1cc45eaf744a5fe5954734fcd07119'
+  )
+})
+
+export type IndexDTFApyData = {
+  collateralAPY: number
+  redirectAPY: number
+  totalAPY: number
+}
+
+export const indexDTFApyAtom = atom<IndexDTFApyData | undefined>(undefined)
+
+export const isYieldIndexDTFAtom = atom((get) => {
+  const dtf = get(indexDTFAtom)
+  return (
+    dtf?.id.toLowerCase() === '0x1d55940cf6eb85321816327aa785006f8dd59ef9'
   )
 })
