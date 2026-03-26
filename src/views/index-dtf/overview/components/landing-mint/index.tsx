@@ -10,30 +10,28 @@ import {
   indexDTFStatusAtom,
 } from '@/state/dtf/atoms'
 import { useTrackIndexDTFClick } from '@/views/index-dtf/hooks/useTrackIndexDTFPage'
-import { useZapperModal } from '@reserve-protocol/react-zapper'
+import { useZapperModal, zappableTokens } from '@reserve-protocol/react-zapper'
 import { useAtomValue } from 'jotai'
 import { ArrowDown, ArrowLeftRight } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import DTFBalance from './dtf-balance'
-import IndexTokenAddress from '../index-token-address'
 
 const TokenInfo = () => {
   const dtf = useAtomValue(indexDTFAtom)
   const brand = useAtomValue(indexDTFBrandAtom)
   const status = useAtomValue(indexDTFStatusAtom)
   const isDeprecated = isInactiveDTF(status)
+  const tokens = zappableTokens[dtf?.chainId ?? 1]
+  const tokenSymbols = tokens.map((t) => t.symbol)
+  const tokensText =
+    tokenSymbols.length > 1
+      ? `${tokenSymbols.slice(0, -1).join(', ')} and ${tokenSymbols[tokenSymbols.length - 1]}`
+      : (tokenSymbols[0] ?? '')
 
   return (
     <div className="flex flex-col justify-between gap-8 p-4">
       <div className="flex items-center gap-2">
-        <StackTokenLogo
-          tokens={[
-            { symbol: 'USDT', address: '0x0' },
-            { symbol: 'USDC', address: '0x1' },
-            { symbol: 'ETH', address: '0x2' },
-          ]}
-          size={24}
-        />
+        <StackTokenLogo tokens={tokens} size={24} outsource />
         {isDeprecated ? (
           <ArrowDown className="w-4 h-4" />
         ) : (
@@ -54,7 +52,7 @@ const TokenInfo = () => {
         <div className="text-legend text-sm">
           {isDeprecated
             ? `This DTF is no longer actively governed and can only be sold. This DTF cannot rebalance its basket nor can new $${dtf?.token.symbol} tokens be created.`
-            : 'Our Zap-swaps support common assets like ETH, USDC, USDT, and others, which makes DTFs easy to enter and exit.'}
+            : `Our Zap-swaps support common assets like ${tokensText} which makes DTFs easy to enter and exit.`}
         </div>
       </div>
       <DTFBalance />
