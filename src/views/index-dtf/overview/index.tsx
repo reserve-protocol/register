@@ -12,7 +12,7 @@ import IndexTransactionTable from './components/index-transaction-table'
 import ZapperWrapper from '../components/zapper/zapper-wrapper'
 import { wagmiConfig } from '@/state/chain'
 import { indexDTFQuoteSourceAtom } from '../issuance'
-import { ZAPPER_API } from '@/utils/constants'
+import { RESERVE_API, ZAPPER_API } from '@/utils/constants'
 import LandingMint from './components/landing-mint'
 import IndexBasketOverview from './components/basket-overview'
 
@@ -38,7 +38,8 @@ const Content = () => {
             chain={indexDTF.chainId}
             dtfAddress={indexDTF.id}
             mode="modal"
-            apiUrl={ZAPPER_API}
+            apiUrl={RESERVE_API}
+            zapperApiUrl={ZAPPER_API}
             defaultSource={quoteSource}
             sellOnly={isDeprecated}
           />

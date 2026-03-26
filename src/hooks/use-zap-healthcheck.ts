@@ -1,4 +1,4 @@
-import { RESERVE_API } from '@/utils/constants'
+import { ZAPPER_API } from '@/utils/constants'
 import { useQuery } from '@tanstack/react-query'
 import { AvailableChain } from '@/utils/chains'
 
@@ -7,17 +7,23 @@ interface ZapperStatus {
   ok: boolean
 }
 
+interface HealthResponse {
+  ok: boolean
+  chains: ZapperStatus[]
+}
+
 const useZapHealthcheck = (chainId: AvailableChain) => {
   const { data } = useQuery({
     queryKey: ['zapper-healthcheck', chainId],
     queryFn: async (): Promise<ZapperStatus[]> => {
-      const response = await fetch(`${RESERVE_API}zapper/healthcheck`)
+      const response = await fetch(`${ZAPPER_API}health`)
 
       if (!response.ok) {
         throw new Error(`Error: ${response.status}`)
       }
 
-      return response.json()
+      const json: HealthResponse = await response.json()
+      return json.chains
     },
     staleTime: 120_000,
     refetchInterval: 60_000,
