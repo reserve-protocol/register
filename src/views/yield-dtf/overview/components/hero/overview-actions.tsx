@@ -5,6 +5,7 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import DgnETHButtonAppendix from '@/components/utils/integrations/dgneth-btn-appendix'
+import { isInactiveDTF, useDTFStatus } from '@/hooks/use-dtf-status'
 import { ChainId } from '@/utils/chains'
 import { Trans } from '@lingui/macro'
 import useRToken from 'hooks/useRToken'
@@ -110,10 +111,12 @@ const OverviewActions = () => {
   const rToken = useRToken()
   const navigate = useNavigate()
   const { holders, stakers, basket } = useAtomValue(estimatedApyAtom)
+  const status = useDTFStatus(rToken?.address, rToken?.chainId)
+  const isDeprecated = isInactiveDTF(status)
 
   return (
     <div className="mt-6 mr-4 sm:mr-0 mb-2 flex flex-col sm:flex-row items-start gap-2 sm:gap-3">
-      {rToken?.chainId !== ChainId.Arbitrum && (
+      {!isDeprecated && rToken?.chainId !== ChainId.Arbitrum && (
         <DgnETHButtonAppendix rTokenSymbol={rToken?.symbol} basketAPY={basket}>
           <Button
             size="lg"
@@ -128,13 +131,24 @@ const OverviewActions = () => {
           </Button>
         </DgnETHButtonAppendix>
       )}
+      {isDeprecated && (
+        <Button
+          size="lg"
+          className="whitespace-nowrap w-full sm:w-auto"
+          onClick={() => navigate(`../${ROUTES.ISSUANCE}`)}
+        >
+          Redeem
+        </Button>
+      )}
       <Button
         size="lg"
         variant="outline-primary"
-        className="whitespace-nowrap w-full sm:w-auto "
+        className="whitespace-nowrap w-full sm:w-auto"
         onClick={() => navigate(`../${ROUTES.STAKING}`)}
       >
-        Stake RSR {!!stakers && `- ${formatCurrency(stakers, 1)}% Est. APY`}
+        {isDeprecated
+          ? 'Unstake RSR'
+          : `Stake RSR ${!!stakers ? `- ${formatCurrency(stakers, 1)}% Est. APY` : ''}`}
       </Button>
       <TokenSocials />
     </div>

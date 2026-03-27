@@ -1,8 +1,9 @@
 import TokenLogo from '@/components/token-logo'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
+import { isInactiveDTF } from '@/hooks/use-dtf-status'
 import { cn } from '@/lib/utils'
-import { indexDTFAtom, indexDTFBrandAtom } from '@/state/dtf/atoms'
+import { indexDTFAtom, indexDTFBrandAtom, indexDTFStatusAtom } from '@/state/dtf/atoms'
 import { ROUTES } from '@/utils/constants'
 import { t } from '@lingui/macro'
 import { useAtomValue } from 'jotai'
@@ -105,8 +106,29 @@ const NavigationHeader = () => {
   )
 }
 
+const DisabledNavigationItem = ({
+  icon,
+  label,
+}: {
+  icon: React.ReactNode
+  label: string
+}) => {
+  return (
+    <div className="opacity-50 pointer-events-none text-legend flex items-center transition-all rounded-full gap-2">
+      <div className="h-10 w-10 md:h-6 md:w-6 flex items-center justify-center">
+        {icon}
+      </div>
+      <div className="text-base hidden md:block">{label}</div>
+    </div>
+  )
+}
+
+const DISABLED_ROUTES_WHEN_DEPRECATED: string[] = [ROUTES.GOVERNANCE, ROUTES.AUCTIONS]
+
 const NavigationItems = () => {
   const dtf = useAtomValue(indexDTFAtom)
+  const status = useAtomValue(indexDTFStatusAtom)
+  const isDeprecated = isInactiveDTF(status)
 
   const items = useMemo(
     () => [
@@ -141,9 +163,18 @@ const NavigationItems = () => {
 
   return (
     <div className="flex lg:flex-col gap-5 justify-evenly lg:justify-start">
-      {items.map((item) => (
-        <NavigationItem key={item.route} {...item} />
-      ))}
+      {items.map((item) =>
+        isDeprecated &&
+        DISABLED_ROUTES_WHEN_DEPRECATED.includes(item.route) ? (
+          <DisabledNavigationItem
+            key={item.route}
+            icon={item.icon}
+            label={item.label}
+          />
+        ) : (
+          <NavigationItem key={item.route} {...item} />
+        )
+      )}
     </div>
   )
 }

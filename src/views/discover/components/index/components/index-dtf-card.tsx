@@ -4,6 +4,7 @@ import TokenLogo from '@/components/token-logo'
 import StackTokenLogo from '@/components/token-logo/StackTokenLogo'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
+import { isInactiveDTF } from '@/hooks/use-dtf-status'
 import { IndexDTFItem } from '@/hooks/useIndexDTFList'
 import { formatCurrency, getFolioRoute } from '@/utils'
 import { cn } from '@/lib/utils'
@@ -18,9 +19,14 @@ const IndexDTFCard = ({ dtf }: { dtf: IndexDTFItem }) => {
 
   const head = dtf.basket.slice(0, LIMIT)
 
+  const inactive = isInactiveDTF(dtf.status)
+
   return (
     <Link
-      className="bg-background flex rounded-3xl gap-3 p-3"
+      className={cn(
+        'bg-background flex rounded-3xl gap-3 p-3',
+        inactive && 'opacity-60'
+      )}
       to={getFolioRoute(dtf.address, dtf.chainId)}
     >
       <div className="relative h-[100px] w-[100px] rounded-xl overflow-hidden flex-shrink-0">
@@ -69,7 +75,14 @@ const IndexDTFCard = ({ dtf }: { dtf: IndexDTFItem }) => {
             <ArrowRight size={16} />
           </Button>
         </div>
-        <h4 className="font-semibold text-sm mt-auto pt-2">{dtf.name}</h4>
+        <div className="flex items-center gap-2 mt-auto pt-2">
+          <h4 className="font-semibold text-sm">{dtf.name}</h4>
+          {inactive && (
+            <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-yellow-500/15 text-yellow-600 dark:text-yellow-400">
+              Inactive
+            </span>
+          )}
+        </div>
         <div className="flex items-end text-xs ">
           <StackTokenLogo
             tokens={head.map((r) => ({ ...r, chain: dtf.chainId }))}

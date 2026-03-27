@@ -204,6 +204,7 @@ interface DataTableComponentProps<TData, TValue>
   initialSorting?: SortingState
   loading?: boolean
   loadingSkeleton?: React.ReactNode
+  getRowClassName?: (row: Row<TData>) => string | undefined
 }
 
 const CustomTableRow = ({
@@ -215,6 +216,7 @@ const CustomTableRow = ({
   expandedRows,
   index,
   hoverRowComponent,
+  getRowClassName,
 }: {
   row: Row<any>
   handleRowClick: (row: Row<any>, event: React.MouseEvent) => void
@@ -227,6 +229,7 @@ const CustomTableRow = ({
     row: Row<any>
     children: React.ReactNode
   }) => React.ReactElement
+  getRowClassName?: (row: Row<any>) => string | undefined
 }) => {
   const baseRow = (
     <TableRow
@@ -240,7 +243,8 @@ const CustomTableRow = ({
           'bg-card border border-border rounded-tl-lg rounded-tr-lg',
         expandedRows[index - 1]
           ? '!border-t-[0]'
-          : '[&:not(:first-child)]:!border-t-[1px]'
+          : '[&:not(:first-child)]:!border-t-[1px]',
+        getRowClassName?.(row)
       )}
     >
       {row.getVisibleCells().map((cell) => (
@@ -276,6 +280,7 @@ function DataTable<TData, TValue>({
   initialSorting = [],
   loading = false,
   loadingSkeleton,
+  getRowClassName,
 }: DataTableComponentProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>(initialSorting)
   const [paginationState, setPaginationState] = React.useState<PaginationState>(
@@ -375,6 +380,7 @@ function DataTable<TData, TValue>({
                   expandedRows={expandedRows}
                   index={index}
                   hoverRowComponent={hoverRowComponent}
+                  getRowClassName={getRowClassName}
                 />
                 {!!renderSubComponent && row.getIsExpanded() && (
                   <tr

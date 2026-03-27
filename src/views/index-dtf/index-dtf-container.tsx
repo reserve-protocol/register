@@ -21,6 +21,7 @@ import {
   indexDTFFeeAtom,
   indexDTFPerformanceLoadingAtom,
   indexDTFRebalanceControlAtom,
+  indexDTFStatusAtom,
   indexDTFVersionAtom,
   iTokenAddressAtom,
   performanceTimeRangeAtom,
@@ -30,9 +31,15 @@ import {
   indexDTFPoolsDataAtom,
   indexDTFUnderlyingNamesAtom,
 } from '@/state/dtf/yield-index-atoms'
+import { useDTFStatus } from '@/hooks/use-dtf-status'
 import { isAddress } from '@/utils'
 import { AvailableChain, supportedChains } from '@/utils/chains'
-import { FALLBACK_PLATFORM_FEES, NETWORKS, RESERVE_API, ROUTES } from '@/utils/constants'
+import {
+  FALLBACK_PLATFORM_FEES,
+  NETWORKS,
+  RESERVE_API,
+  ROUTES,
+} from '@/utils/constants'
 import { useQuery } from '@tanstack/react-query'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useState } from 'react'
@@ -58,7 +65,14 @@ const IndexDTFSEO = () => {
 
   useFavicon(brand?.dtf?.icon)
 
-  return <SEO title={title} description={description} image={image} url={location.pathname} />
+  return (
+    <SEO
+      title={title}
+      description={description}
+      image={image}
+      url={location.pathname}
+    />
+  )
 }
 
 const useChainWatch = () => {
@@ -194,7 +208,7 @@ const PlatformFeeUpdater = ({
   useEffect(() => {
     if (feeDetails) {
       const [, feeNumerator, feeDenominator] = feeDetails
-      setFee(Number(feeNumerator * 100n / feeDenominator))
+      setFee(Number((feeNumerator * 100n) / feeDenominator))
     } else if (registryError || feeError) {
       setFee(FALLBACK_PLATFORM_FEES[chainId] ?? 50)
     }
@@ -257,7 +271,25 @@ const resetStateAtom = atom(null, (_, set) => {
   set(indexDTFPoolsDataAtom, undefined)
   set(indexDTFUnderlyingNamesAtom, {})
   set(performanceTimeRangeAtom, '7d')
+  set(indexDTFStatusAtom, 'active')
 })
+
+const DeprecationStatusUpdater = ({
+  tokenAddress,
+  chainId,
+}: {
+  tokenAddress?: string
+  chainId: number
+}) => {
+  const status = useDTFStatus(tokenAddress, chainId)
+  const setStatus = useSetAtom(indexDTFStatusAtom)
+
+  useEffect(() => {
+    setStatus(status)
+  }, [status])
+
+  return null
+}
 
 export const indexDTFRefreshFnAtom = atom<(() => void) | null>(null)
 
@@ -332,6 +364,7 @@ const Updater = () => {
       <PlatformFeeUpdater tokenAddress={currentToken} chainId={chainId} />
       <IndexDTFExposureUpdater chainId={chainId} />
       <YieldIndexUpdater chainId={chainId} />
+      <DeprecationStatusUpdater tokenAddress={currentToken} chainId={chainId} />
       <GovernanceUpdater />
     </div>
   )

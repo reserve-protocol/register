@@ -113,6 +113,7 @@ const PNGS = new Set([
   'ethx',
   'dtf',
   'trx',
+  'bnb',
   'wbnb',
   'toncoin',
   'bgb',
