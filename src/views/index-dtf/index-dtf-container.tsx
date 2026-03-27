@@ -7,7 +7,6 @@ import useFavicon from '@/hooks/useFavicon'
 import useIndexDTF from '@/hooks/useIndexDTF'
 import useIndexDTFTransactions from '@/hooks/useIndexDTFTransactions'
 import { useIndexBasket } from '@/hooks/useIndexPrice'
-import { wagmiConfig } from '@/state/chain'
 import { chainIdAtom, walletChainAtom } from '@/state/atoms'
 import {
   indexDTF7dChangeAtom,
@@ -18,30 +17,31 @@ import {
   indexDTFBasketSharesAtom,
   IndexDTFBrand,
   indexDTFBrandAtom,
-  COLLATERAL_POOL_MAP,
-  indexDTFApyAtom,
   indexDTFExposureDataAtom,
   indexDTFFeeAtom,
   indexDTFPerformanceLoadingAtom,
-  indexDTFPoolsDataAtom,
   indexDTFRebalanceControlAtom,
-  indexDTFUnderlyingNamesAtom,
   indexDTFVersionAtom,
-  isYieldIndexDTFAtom,
   iTokenAddressAtom,
   performanceTimeRangeAtom,
 } from '@/state/dtf/atoms'
+import {
+  indexDTFApyAtom,
+  indexDTFPoolsDataAtom,
+  indexDTFUnderlyingNamesAtom,
+} from '@/state/dtf/yield-index-atoms'
 import { isAddress } from '@/utils'
 import { AvailableChain, supportedChains } from '@/utils/chains'
 import { FALLBACK_PLATFORM_FEES, NETWORKS, RESERVE_API, ROUTES } from '@/utils/constants'
 import { useQuery } from '@tanstack/react-query'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Outlet, useNavigate, useParams, useLocation } from 'react-router-dom'
 import { Address } from 'viem'
 import { useReadContract, useSwitchChain } from 'wagmi'
 import IndexDTFNavigation from './components/navigation'
 import GovernanceUpdater from './governance/updater'
+import YieldIndexUpdater from './yield-index-updater'
 
 const DEFAULT_DESCRIPTION =
   'Reserve is the leading platform for permissionless DTFs and asset-backed currencies. Create, manage & trade tokenized indexes with 24/7 transparency.'
@@ -241,152 +241,6 @@ const IndexDTFExposureUpdater = ({ chainId }: { chainId: number }) => {
   return null
 }
 
-const IndexDTFApyUpdater = ({ chainId }: { chainId: number }) => {
-  const dtf = useAtomValue(indexDTFAtom)
-  const isYieldIndexDTF = useAtomValue(isYieldIndexDTFAtom)
-  const setApyData = useSetAtom(indexDTFApyAtom)
-
-  const { data: apyData } = useQuery({
-    queryKey: ['dtf-apy', dtf?.id, chainId],
-    queryFn: async () => {
-      if (!dtf?.id) return null
-
-      const response = await fetch(
-        `${RESERVE_API}v1/dtf/apy/${dtf.id}?chainId=${chainId}`
-      )
-
-      if (!response.ok) {
-        throw new Error(`Failed to fetch APY data: ${response.statusText}`)
-      }
-
-      return response.json()
-    },
-    enabled: !!dtf?.id && !!chainId && isYieldIndexDTF,
-    refetchInterval: 60000,
-  })
-
-  useEffect(() => {
-    if (apyData) {
-      setApyData(apyData)
-    }
-  }, [apyData, setApyData])
-
-  return null
-}
-
-const IndexDTFPoolsUpdater = ({ chainId }: { chainId: number }) => {
-  const isYieldIndexDTF = useAtomValue(isYieldIndexDTFAtom)
-  const exposureData = useAtomValue(indexDTFExposureDataAtom)
-  const setPoolsData = useSetAtom(indexDTFPoolsDataAtom)
-  const setUnderlyingNames = useSetAtom(indexDTFUnderlyingNamesAtom)
-
-  const poolIds =
-    exposureData
-      ?.flatMap((group) => group.tokens)
-      .map((t) => COLLATERAL_POOL_MAP[t.address.toLowerCase()])
-      .filter(Boolean) ?? []
-
-  const { data: poolsData } = useQuery({
-    queryKey: ['dtf-pools', ...poolIds],
-    queryFn: async () => {
-      const results = await Promise.all(
-        poolIds.map(async (poolId) => {
-          const response = await fetch(
-            `https://yields.llama.fi/poolsEnriched?pool=${poolId}`
-          )
-          if (!response.ok) return null
-          const json = await response.json()
-          return json.data?.[0] ?? null
-        })
-      )
-      return results.filter(Boolean)
-    },
-    enabled: isYieldIndexDTF && poolIds.length > 0,
-    staleTime: 3600000,
-  })
-
-  useEffect(() => {
-    if (poolsData) {
-      setPoolsData(poolsData)
-    }
-  }, [poolsData, setPoolsData])
-
-  // Fetch name/symbol for unique underlying tokens via multicall
-  const underlyingAddresses = useMemo(() => {
-    if (!poolsData) return []
-    const seen = new Set<string>()
-    return poolsData
-      .flatMap((p) => p.underlyingTokens ?? [])
-      .filter((addr) => {
-        const key = addr.toLowerCase()
-        if (seen.has(key)) return false
-        seen.add(key)
-        return true
-      })
-  }, [poolsData])
-
-  const erc20Calls = useMemo(
-    () =>
-      underlyingAddresses.flatMap((addr) => [
-        {
-          address: addr as `0x${string}`,
-          abi: [
-            {
-              name: 'name',
-              type: 'function',
-              stateMutability: 'view',
-              inputs: [],
-              outputs: [{ type: 'string' }],
-            },
-          ] as const,
-          functionName: 'name' as const,
-          chainId: chainId as 1 | 8453 | 42161,
-        },
-        {
-          address: addr as `0x${string}`,
-          abi: [
-            {
-              name: 'symbol',
-              type: 'function',
-              stateMutability: 'view',
-              inputs: [],
-              outputs: [{ type: 'string' }],
-            },
-          ] as const,
-          functionName: 'symbol' as const,
-          chainId: chainId as 1 | 8453 | 42161,
-        },
-      ]),
-    [underlyingAddresses, chainId]
-  )
-
-  const { data: nameResults } = useQuery({
-    queryKey: ['dtf-underlying-names', ...underlyingAddresses],
-    queryFn: async () => {
-      const { readContracts } = await import('wagmi/actions')
-      return readContracts(wagmiConfig, { contracts: erc20Calls })
-    },
-    enabled: underlyingAddresses.length > 0,
-    staleTime: Infinity,
-  })
-
-  useEffect(() => {
-    if (!nameResults || !underlyingAddresses.length) return
-    const names: Record<string, { name: string; symbol: string }> = {}
-    for (let i = 0; i < underlyingAddresses.length; i++) {
-      const nameResult = nameResults[i * 2]
-      const symbolResult = nameResults[i * 2 + 1]
-      names[underlyingAddresses[i].toLowerCase()] = {
-        name: (nameResult?.result as string) || '',
-        symbol: (symbolResult?.result as string) || '',
-      }
-    }
-    setUnderlyingNames(names)
-  }, [nameResults, underlyingAddresses, setUnderlyingNames])
-
-  return null
-}
-
 const resetStateAtom = atom(null, (_, set) => {
   set(indexDTFBasketAtom, undefined)
   set(indexDTFBasketPricesAtom, {})
@@ -477,8 +331,7 @@ const Updater = () => {
       <IndexDTFBasketUpdater tokenAddress={currentToken} chainId={chainId} />
       <PlatformFeeUpdater tokenAddress={currentToken} chainId={chainId} />
       <IndexDTFExposureUpdater chainId={chainId} />
-      <IndexDTFApyUpdater chainId={chainId} />
-      <IndexDTFPoolsUpdater chainId={chainId} />
+      <YieldIndexUpdater chainId={chainId} />
       <GovernanceUpdater />
     </div>
   )
