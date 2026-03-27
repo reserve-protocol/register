@@ -4,6 +4,7 @@ import { indexDTFAtom, performanceTimeRangeAtom } from '@/state/dtf/atoms'
 import { TimeRange } from '@/types'
 import { useAtom, useAtomValue } from 'jotai'
 import { useEffect, useMemo } from 'react'
+import { dataTypeAtom } from './price-chart'
 
 export type Range = TimeRange
 
@@ -19,6 +20,8 @@ const ALL_TIME_RANGES = [
 const TimeRangeSelector = () => {
   const [range, setRange] = useAtom(performanceTimeRangeAtom)
   const dtf = useAtomValue(indexDTFAtom)
+  const dataType = useAtomValue(dataTypeAtom)
+  const isYieldMode = dataType === 'yield'
 
   const availableRanges = useMemo(() => {
     if (!dtf?.timestamp) return null
@@ -28,10 +31,10 @@ const TimeRangeSelector = () => {
 
     return ALL_TIME_RANGES.filter((tr) => {
       if (tr.value === 'all') return true
-      if (tr.value === '24h') return dtfAge >= 86_400
+      if (tr.value === '24h') return !isYieldMode && dtfAge >= 86_400
       return dtfAge >= tr.minAge
     })
-  }, [dtf?.timestamp])
+  }, [dtf?.timestamp, isYieldMode])
 
   // Auto-update range when current selection is not available
   useEffect(() => {

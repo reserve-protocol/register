@@ -5,18 +5,33 @@ import {
   indexDTF7dChangeAtom,
   indexDTFAtom,
   indexDTFMarketCapAtom,
+  isYieldIndexDTFAtom,
   performanceTimeRangeAtom,
 } from '@/state/dtf/atoms'
-import { formatCurrency, formatToSignificantDigits } from '@/utils'
+import {
+  formatCurrency,
+  formatPercentage,
+  formatToSignificantDigits,
+} from '@/utils'
 import { formatXAxisTick as formatTick } from '@/utils/chart-formatters'
 import dayjs from 'dayjs'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useMemo } from 'react'
-import { Area, AreaChart, Tooltip, TooltipProps, XAxis, YAxis } from 'recharts'
+import {
+  Area,
+  AreaChart,
+  ReferenceLine,
+  Tooltip,
+  TooltipProps,
+  XAxis,
+  YAxis,
+} from 'recharts'
 import useIndexDTFPriceHistory from '../../hooks/use-dtf-price-history'
+import useIndexDTFApyHistory from '../../hooks/use-dtf-apy-history'
 import IndexCTAsOverviewMobile from '../index-ctas-overview-mobile'
 import IndexTokenAddress from '../index-token-address'
 import ChartOverlay from './chart-overlay'
+import DataTypeSelector from './data-type-selector'
 import TimeRangeSelector, { Range } from './time-range-selector'
 
 const chartConfig = {
@@ -26,7 +41,7 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
-export type DataType = 'price' | 'marketCap' | 'totalSupply'
+export type DataType = 'price' | 'marketCap' | 'totalSupply' | 'yield'
 
 const now = Math.floor(Date.now() / 1_000)
 const currentHour = Math.floor(now / 3_600) * 3_600
@@ -43,7 +58,7 @@ const historicalConfigs: Record<
   all: { to: currentHour, from: 0, interval: '1d' },
 }
 
-function CustomTooltip({
+function PriceTooltip({
   payload,
   active,
   dataType,
@@ -74,9 +89,35 @@ function CustomTooltip({
   return null
 }
 
+function YieldTooltip({
+  payload,
+  active,
+}: {
+  payload?: TooltipProps<number, string>['payload']
+  active?: boolean
+}) {
+  if (active && payload) {
+    const d = payload[0]?.payload
+    const subtitle = dayjs.unix(+d?.timestamp).format('YYYY-M-D HH:mm')
+    return (
+      <div className="bg-card text-card-foreground rounded-[20px] p-4">
+        <span className="text-base font-medium block mb-1">
+          {formatPercentage(d?.totalAPY)} Total APY
+        </span>
+        <div className="text-sm text-muted-foreground space-y-0.5 mb-1">
+          <div>{formatPercentage(d?.collateralAPY)} Base APY</div>
+          <div>{formatPercentage(d?.redirectAPY)} Revenue Boost</div>
+        </div>
+        <span className="text-sm text-muted-foreground">{subtitle}</span>
+      </div>
+    )
+  }
+
+  return null
+}
+
 export const dataTypeAtom = atom<DataType>('price')
 
-// TODO: Storing 7day change here, probably not the best place
 const PriceChart = () => {
   const dtf = useAtomValue(indexDTFAtom)
   const range = useAtomValue(performanceTimeRangeAtom)
@@ -84,6 +125,8 @@ const PriceChart = () => {
   const set7dChange = useSetAtom(indexDTF7dChangeAtom)
   const setMarketCap = useSetAtom(indexDTFMarketCapAtom)
   const isMobile = useIsMobile()
+  const isYieldIndexDTF = useAtomValue(isYieldIndexDTFAtom)
+  const isYieldMode = dataType === 'yield'
 
   const showHourlyInterval = now - (dtf?.timestamp || 0) < 30 * 86_400
   const config =
@@ -95,11 +138,10 @@ const PriceChart = () => {
         }
       : historicalConfigs[range]
 
-  // Build prefetch ranges for all other time ranges
   const prefetchRanges = useMemo(() => {
     const ranges: Range[] = ['24h', '7d', '1m', '3m', '1y', 'all']
     return ranges
-      .filter((r) => r !== range) // Exclude current range
+      .filter((r) => r !== range)
       .map((r) => {
         if (r === 'all') {
           return {
@@ -124,13 +166,32 @@ const PriceChart = () => {
     prefetchRanges,
   })
 
+  const { data: apyHistory } = useIndexDTFApyHistory()
+
   const timeseries = useMemo(() => {
     return history?.timeseries.filter(({ price }) => Boolean(price)) || []
   }, [history?.timeseries])
 
-  // Different tick positions for mobile vs desktop
+  const apyTimeseries = useMemo(() => {
+    if (!apyHistory) return []
+    const rangeFrom =
+      range === 'all' ? 0 : (historicalConfigs[range]?.from ?? 0)
+    return apyHistory.filter((d) => d.timestamp >= rangeFrom)
+  }, [apyHistory, range])
+
+  const chartData = isYieldMode ? apyTimeseries : timeseries
+  const chartKey = isYieldMode ? 'totalAPY' : dataType
+
+  const avgApy = useMemo(() => {
+    if (!apyTimeseries.length) return 0
+    return (
+      apyTimeseries.reduce((sum, d) => sum + d.totalAPY, 0) /
+      apyTimeseries.length
+    )
+  }, [apyTimeseries])
+
   const xAxisTicks = useMemo(() => {
-    if (timeseries.length === 0) return []
+    if (chartData.length === 0) return []
 
     const mobilePositions = [0.15, 0.38, 0.62, 0.85]
     const desktopPositions = [0.05, 0.23, 0.41, 0.59, 0.77, 0.95]
@@ -138,9 +199,9 @@ const PriceChart = () => {
     const positions = isMobile ? mobilePositions : desktopPositions
 
     return positions
-      .map((i) => timeseries[Math.floor(timeseries.length * i)]?.timestamp)
+      .map((i) => chartData[Math.floor(chartData.length * i)]?.timestamp)
       .filter(Boolean)
-  }, [timeseries, isMobile])
+  }, [chartData, isMobile])
 
   useEffect(() => {
     if (timeseries.length > 0 && range === '7d') {
@@ -159,48 +220,71 @@ const PriceChart = () => {
     }
   }, [timeseries, setMarketCap])
 
-  // Wrapper to maintain backward compatibility
   const formatXAxisTick = (timestamp: number) => {
     return formatTick(timestamp, range, dtf?.timestamp)
   }
 
   const formatYAxisTick = (value: number) => {
+    if (isYieldMode) {
+      return formatPercentage(value)
+    }
     if (dataType === 'totalSupply') {
       return formatCurrency(value, 0)
     }
     return '$' + formatCurrency(value, value < 1 ? 4 : 2)
   }
 
+  const isLoading = isYieldMode ? !apyHistory : history === undefined
+
   return (
-    <div className="lg:rounded-4xl lg:rounded-b-none bg-[#000] dark:bg-background lg:dark:bg-muted w-full text-[#fff] dark:text-foreground py-3 sm:py-6 pb-20 h-[438px] sm:h-[598px] xl:h-[599px]">
+    <div className="lg:rounded-4xl lg:rounded-b-none bg-[#000] dark:bg-background lg:dark:bg-muted w-full text-[#fff] dark:text-foreground py-3 sm:py-6 pb-20 h-[438px] sm:h-[598px] xl:h-[599px] overflow-hidden">
       <div className="px-3 sm:px-6">
-        <ChartOverlay timeseries={timeseries} />
+        <ChartOverlay timeseries={timeseries} apyTimeseries={apyTimeseries} />
         <div className="h-48 sm:h-[300px] pt-2 sm:pt-0">
-          {history === undefined ? (
+          {isLoading ? (
             <Skeleton className="h-44 sm:h-[290px] w-full rounded-lg" />
-          ) : timeseries.length > 0 ? (
+          ) : chartData.length > 0 ? (
             <ChartContainer
               config={chartConfig}
               className="h-48 sm:h-[300px] w-full"
             >
               <AreaChart
-                data={timeseries}
+                data={chartData}
                 margin={{ left: 0, right: 0, top: 5, bottom: 5 }}
                 {...{
                   overflow: 'visible',
                 }}
               >
                 <defs>
-                  <pattern
-                    id="dots"
-                    x="0"
-                    y="0"
-                    width="3"
-                    height="3"
-                    patternUnits="userSpaceOnUse"
-                  >
-                    <circle cx="1" cy="1" r="0.4" fill="#E5EEFA" opacity="1" />
-                  </pattern>
+                  {isYieldMode ? (
+                    <linearGradient
+                      id="yieldGradient"
+                      x1="0"
+                      y1="0"
+                      x2="0"
+                      y2="1"
+                    >
+                      <stop offset="0%" stopColor="#4ADE80" stopOpacity={0.3} />
+                      <stop offset="100%" stopColor="#4ADE80" stopOpacity={0} />
+                    </linearGradient>
+                  ) : (
+                    <pattern
+                      id="dots"
+                      x="0"
+                      y="0"
+                      width="3"
+                      height="3"
+                      patternUnits="userSpaceOnUse"
+                    >
+                      <circle
+                        cx="1"
+                        cy="1"
+                        r="0.4"
+                        fill="#E5EEFA"
+                        opacity="1"
+                      />
+                    </pattern>
+                  )}
                 </defs>
                 <XAxis
                   dataKey="timestamp"
@@ -214,7 +298,7 @@ const PriceChart = () => {
                   tickMargin={10}
                 />
                 <YAxis
-                  dataKey={dataType}
+                  dataKey={chartKey}
                   orientation="right"
                   tick={{ fontSize: 13, opacity: 0.7 }}
                   tickFormatter={formatYAxisTick}
@@ -226,13 +310,36 @@ const PriceChart = () => {
                   tickCount={5}
                   tickMargin={5}
                 />
-                <Tooltip content={<CustomTooltip dataType={dataType} />} />
+                <Tooltip
+                  content={
+                    isYieldMode ? (
+                      <YieldTooltip />
+                    ) : (
+                      <PriceTooltip dataType={dataType} />
+                    )
+                  }
+                />
+                {isYieldMode && avgApy > 0 && (
+                  <ReferenceLine
+                    y={avgApy}
+                    stroke="#fff"
+                    strokeDasharray="4 4"
+                    strokeOpacity={0.4}
+                    label={{
+                      value: `Avg ${formatPercentage(avgApy)}`,
+                      position: 'insideBottomRight',
+                      fill: '#fff',
+                      fontSize: 12,
+                      opacity: 0.8,
+                    }}
+                  />
+                )}
                 <Area
                   type="monotone"
-                  dataKey={dataType}
-                  stroke="#E5EEFA"
+                  dataKey={chartKey}
+                  stroke={isYieldMode ? '#4ADE80' : '#E5EEFA'}
                   strokeWidth={1.5}
-                  fill="url(#dots)"
+                  fill={isYieldMode ? 'url(#yieldGradient)' : 'url(#dots)'}
                   isAnimationActive={true}
                   animationDuration={500}
                   animationEasing="ease-in-out"
@@ -246,11 +353,17 @@ const PriceChart = () => {
         <div className="pl-6 hidden xl:block">
           <TimeRangeSelector />
         </div>
-        <div className="hidden xl:block pr-6">
-          <IndexTokenAddress />
-        </div>
+        {isYieldIndexDTF ? (
+          <div className="hidden xl:block pr-6">
+            <DataTypeSelector />
+          </div>
+        ) : (
+          <div className="hidden xl:block pr-6">
+            <IndexTokenAddress />
+          </div>
+        )}
         <div className="flex xl:hidden flex-1 pl-3 sm:pl-6">
-          <IndexTokenAddress />
+          {isYieldIndexDTF ? <DataTypeSelector /> : <IndexTokenAddress />}
         </div>
         <div className="min-w-sm pr-3 xl:pr-6 xl:hidden">
           <IndexCTAsOverviewMobile />

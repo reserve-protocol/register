@@ -1,18 +1,22 @@
 import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
 import {
+  indexDTFApyAtom,
   indexDTFAtom,
   indexDTFPriceAtom,
+  isYieldIndexDTFAtom,
   performanceTimeRangeAtom,
 } from '@/state/dtf/atoms'
-import { formatToSignificantDigits } from '@/utils'
+import { formatPercentage, formatToSignificantDigits } from '@/utils'
 import { useAtomValue } from 'jotai'
 import { ArrowDown, ArrowUp } from 'lucide-react'
 import { IndexDTFPerformance } from '../../hooks/use-dtf-price-history'
+import { ApyDataPoint } from '../../hooks/use-dtf-apy-history'
 import IndexTokenLogo from '../index-token-logo'
 import { DataType, dataTypeAtom } from './price-chart'
 import TimeRangeSelector from './time-range-selector'
 import IndexCreatorOverview from '../index-creator-overview'
+import IndexTokenAddress from '../index-token-address'
 
 const calculatePercentageChange = (
   performance: IndexDTFPerformance['timeseries'],
@@ -23,9 +27,8 @@ const calculatePercentageChange = (
   if (performance.length < 2) {
     return <span className="text-legend">No data</span>
   }
-  const firstValue = performance[0][dataType]
-  // Don't use the last value (added manually) to match the performance of the discover page
-  const penultimateValue = performance[performance.length - 2][dataType]
+  const firstValue = performance[0][dataType as keyof (typeof performance)[0]] as number
+  const penultimateValue = performance[performance.length - 2][dataType as keyof (typeof performance)[0]] as number
 
   const percentageChange =
     firstValue === 0 ? penultimateValue : ((penultimateValue - firstValue) / firstValue) * 100
@@ -53,30 +56,84 @@ const calculatePercentageChange = (
   )
 }
 
+const YieldOverlayInfo = ({
+  apyTimeseries,
+}: {
+  apyTimeseries: ApyDataPoint[]
+}) => {
+  const apyData = useAtomValue(indexDTFApyAtom)
+  const range = useAtomValue(performanceTimeRangeAtom)
+
+  const avg =
+    apyTimeseries.length > 0
+      ? apyTimeseries.reduce((sum, d) => sum + d.totalAPY, 0) /
+        apyTimeseries.length
+      : 0
+  const min =
+    apyTimeseries.length > 0
+      ? Math.min(...apyTimeseries.map((d) => d.totalAPY))
+      : 0
+  const max =
+    apyTimeseries.length > 0
+      ? Math.max(...apyTimeseries.map((d) => d.totalAPY))
+      : 0
+
+  return (
+    <>
+      <div className="flex items-center gap-2 text-xl sm:text-2xl font-light">
+        {apyData ? (
+          <>
+            {formatPercentage(apyData.totalAPY)} Est. APY
+          </>
+        ) : (
+          <Skeleton className="w-[200px] h-7 sm:h-8" />
+        )}
+      </div>
+      {apyTimeseries.length > 0 && (
+        <span className="text-sm text-white/60">
+          Avg {formatPercentage(avg)} · range {formatPercentage(min)}–
+          {formatPercentage(max)} ({range === 'all' ? 'All' : range})
+        </span>
+      )}
+    </>
+  )
+}
+
 const ChartOverlay = ({
   timeseries,
+  apyTimeseries = [],
 }: {
   timeseries: IndexDTFPerformance['timeseries']
+  apyTimeseries?: ApyDataPoint[]
 }) => {
   const dataType = useAtomValue(dataTypeAtom)
   const range = useAtomValue(performanceTimeRangeAtom)
   const dtf = useAtomValue(indexDTFAtom)
   const price = useAtomValue(indexDTFPriceAtom)
+  const isYieldIndexDTF = useAtomValue(isYieldIndexDTFAtom)
+  const isYieldMode = dataType === 'yield'
 
   return (
-    <div className="mb-0 sm:mb-3 flex flex-col gap-2">
+    <div className={`flex flex-col gap-2 ${isYieldMode ? '-mb-1.5 sm:-mb-2.5' : 'mb-0 sm:mb-3'}`}>
       <div className="flex items-center gap-1 justify-between">
         <div className="flex items-center bg-white/20 rounded-full p-[1px] w-fit">
           <IndexTokenLogo />
         </div>
-        <div className="hidden xl:block">
-          <IndexCreatorOverview />
-        </div>
+        {isYieldIndexDTF ? (
+          <div className="hidden xl:flex items-center gap-2">
+            <IndexTokenAddress />
+            <IndexCreatorOverview />
+          </div>
+        ) : (
+          <div className="hidden xl:block">
+            <IndexCreatorOverview />
+          </div>
+        )}
         <div className="block xl:hidden">
           <TimeRangeSelector />
         </div>
       </div>
-      <div className="flex flex-col gap-0.5 text-xl sm:text-2xl font-light">
+      <div className="flex flex-col gap-0.5">
         {dtf ? (
           <h2 className="text-xl sm:text-2xl font-light w-full break-words">
             {dtf?.token.name}
@@ -84,23 +141,27 @@ const ChartOverlay = ({
         ) : (
           <Skeleton className="w-[250px] h-7 sm:h-8" />
         )}
-        <div className="flex items-center gap-2">
-          {!price ? (
-            <Skeleton className="w-[100px] h-6 sm:h-7 mt-1" />
-          ) : (
-            <>
-              {dataType !== 'totalSupply' ? '$' : ''}
-              {formatToSignificantDigits(price)}
-            </>
-          )}
-          <div className="text-sm">
-            {!timeseries.length ? (
-              <Skeleton className="w-[100px] h-6" />
+        {isYieldMode ? (
+          <YieldOverlayInfo apyTimeseries={apyTimeseries} />
+        ) : (
+          <div className="flex items-center gap-2 text-xl sm:text-2xl font-light">
+            {!price ? (
+              <Skeleton className="w-[100px] h-6 sm:h-7 mt-1" />
             ) : (
-              calculatePercentageChange(timeseries, dataType, false, range)
+              <>
+                {dataType !== 'totalSupply' ? '$' : ''}
+                {formatToSignificantDigits(price)}
+              </>
             )}
+            <div className="text-sm">
+              {!timeseries.length ? (
+                <Skeleton className="w-[100px] h-6" />
+              ) : (
+                calculatePercentageChange(timeseries, dataType, false, range)
+              )}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   )

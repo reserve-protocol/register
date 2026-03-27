@@ -9,7 +9,7 @@ import {
 import { chainIdAtom } from '@/state/atoms'
 import { formatPercentage } from '@/utils'
 import { useAtomValue } from 'jotai'
-import { useMemo } from 'react'
+import React, { useMemo } from 'react'
 import { ChevronRight, Info } from 'lucide-react'
 import {
   Tooltip,
@@ -82,20 +82,37 @@ const ExposureSummary = () => {
   const protocolIcons = useMemo(() => {
     if (!poolsData) return []
     const seen = new Set<string>()
-    return poolsData
-      .filter((p) => {
-        if (seen.has(p.project)) return false
+    const icons: { project: string; icon: React.ReactElement }[] = []
+    for (const p of poolsData) {
+      if (!seen.has(p.project) && PROJECT_ICONS[p.project]) {
         seen.add(p.project)
-        return true
-      })
-      .map((p) => ({
-        project: p.project,
-        icon: PROJECT_ICONS[p.project],
-      }))
-      .filter((p) => p.icon)
+        icons.push({ project: p.project, icon: PROJECT_ICONS[p.project] })
+      }
+      if (p.poolMeta) {
+        const slug = p.poolMeta.toLowerCase().includes('uniswap')
+          ? 'uniswap-v3'
+          : p.poolMeta.toLowerCase()
+        if (!seen.has(slug) && PROJECT_ICONS[slug]) {
+          seen.add(slug)
+          icons.push({ project: slug, icon: PROJECT_ICONS[slug] })
+        }
+      }
+    }
+    return icons
   }, [poolsData])
 
-  const uniqueProjects = new Set(poolsData?.map((p) => p.project)).size
+  const uniqueProjects = useMemo(() => {
+    if (!poolsData) return 0
+    const projects = new Set<string>()
+    for (const p of poolsData) {
+      projects.add(p.project)
+      if (p.poolMeta) {
+        const venue = p.poolMeta.replace(/V\d+/g, '').trim().toLowerCase()
+        projects.add(venue)
+      }
+    }
+    return projects.size
+  }, [poolsData])
 
   const scrollToComposition = () => {
     const el = document.getElementById('composition')
@@ -122,13 +139,14 @@ const ExposureSummary = () => {
             {underlyingTokens.length} Assets
           </span>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-1">
           {protocolIcons.length > 0 && (
-            <div className="flex items-center -space-x-6 ml-1">
-              {protocolIcons.map((p) => (
+            <div className="flex items-center -space-x-2">
+              {protocolIcons.map((p, i) => (
                 <div
                   key={p.project}
                   className="w-4 h-4 rounded-full overflow-hidden"
+                  style={{ zIndex: protocolIcons.length - i }}
                 >
                   {p.icon}
                 </div>
