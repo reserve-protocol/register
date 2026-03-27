@@ -18,6 +18,7 @@ import {
   indexDTFBasketSharesAtom,
   IndexDTFBrand,
   indexDTFBrandAtom,
+  COLLATERAL_POOL_MAP,
   indexDTFApyAtom,
   indexDTFExposureDataAtom,
   indexDTFFeeAtom,
@@ -271,16 +272,6 @@ const IndexDTFApyUpdater = ({ chainId }: { chainId: number }) => {
   }, [apyData, setApyData])
 
   return null
-}
-
-// Collateral address → DefiLlama pool ID mapping for yield index DTFs
-const COLLATERAL_POOL_MAP: Record<string, string> = {
-  '0x03f8ccf5b5004b55309e949ea9d08136a32e9c5d':
-    '82b5e769-5e63-46a6-9846-f1dffc93ffc9',
-  '0x42302bf7a11bdd07eec372353dc31a058eaab09c':
-    '094cbd12-28a8-4da3-ac93-bc9368383918',
-  '0x73fa29651399eadb546e2b1222c2803a6cfa3376':
-    '20994285-7aad-46e0-8a5f-1135d4e04cc1',
 }
 
 const IndexDTFPoolsUpdater = ({ chainId }: { chainId: number }) => {

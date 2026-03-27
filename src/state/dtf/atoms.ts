@@ -295,7 +295,7 @@ const STRATEGY_NAME_MAP: Record<string, string> = {
 }
 
 // Collateral address (lowercase) → DefiLlama pool ID
-const COLLATERAL_POOL_MAP: Record<string, string> = {
+export const COLLATERAL_POOL_MAP: Record<string, string> = {
   '0x03f8ccf5b5004b55309e949ea9d08136a32e9c5d':
     '82b5e769-5e63-46a6-9846-f1dffc93ffc9',
   '0x42302bf7a11bdd07eec372353dc31a058eaab09c':

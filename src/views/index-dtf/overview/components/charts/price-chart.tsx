@@ -237,16 +237,22 @@ const PriceChart = () => {
   const isLoading = isYieldMode ? !apyHistory : history === undefined
 
   return (
-    <div className="lg:rounded-4xl lg:rounded-b-none bg-[#000] dark:bg-background lg:dark:bg-muted w-full text-[#fff] dark:text-foreground py-3 sm:py-6 pb-20 h-[438px] sm:h-[598px] xl:h-[599px] overflow-hidden">
+    <div
+      className={`lg:rounded-4xl lg:rounded-b-none bg-[#000] dark:bg-background lg:dark:bg-muted w-full text-[#fff] dark:text-foreground py-3 sm:py-6 pb-20 sm:h-[598px] xl:h-[599px] overflow-hidden ${isYieldIndexDTF ? 'h-[478px]' : 'h-[438px]'}`}
+    >
       <div className="px-3 sm:px-6">
         <ChartOverlay timeseries={timeseries} apyTimeseries={apyTimeseries} />
-        <div className="h-48 sm:h-[300px] pt-2 sm:pt-0">
+        <div
+          className={`pt-2 sm:pt-0 ${isYieldIndexDTF ? (isYieldMode ? 'h-[176px]' : 'h-[192px]') + ' sm:h-[254px] xl:h-[294px]' : 'h-48 sm:h-[300px]'}`}
+        >
           {isLoading ? (
-            <Skeleton className="h-44 sm:h-[290px] w-full rounded-lg" />
+            <Skeleton
+              className={`w-full rounded-lg ${isYieldIndexDTF ? (isYieldMode ? 'h-[158px]' : 'h-[174px]') + ' sm:h-[244px] xl:h-[284px]' : 'h-44 sm:h-[290px]'}`}
+            />
           ) : chartData.length > 0 ? (
             <ChartContainer
               config={chartConfig}
-              className="h-48 sm:h-[300px] w-full"
+              className={`w-full ${isYieldIndexDTF ? (isYieldMode ? 'h-[176px]' : 'h-[192px]') + ' sm:h-[254px] xl:h-[294px]' : 'h-48 sm:h-[300px]'}`}
             >
               <AreaChart
                 data={chartData}
@@ -349,24 +355,34 @@ const PriceChart = () => {
           ) : null}
         </div>
       </div>
-      <div className="flex items-center gap-2 justify-between mt-2 border-t border-white/20 pt-4">
-        <div className="pl-6 hidden xl:block">
-          <TimeRangeSelector />
-        </div>
-        {isYieldIndexDTF ? (
-          <div className="hidden xl:block pr-6">
-            <DataTypeSelector />
-          </div>
-        ) : (
-          <div className="hidden xl:block pr-6">
-            <IndexTokenAddress />
+      <div
+        className={`flex flex-col xl:flex-row gap-2 mt-2 ${isYieldIndexDTF ? 'xl:border-t xl:border-white/20 xl:pt-4' : 'border-t border-white/20 pt-4'}`}
+      >
+        {isYieldIndexDTF && (
+          <div className="flex xl:hidden items-center justify-between mb-2 px-5 pt-2 pb-4 sm:px-6 border-b border-white/20">
+            <TimeRangeSelector variant="minimal" />
+            <DataTypeSelector variant="minimal" />
           </div>
         )}
-        <div className="flex xl:hidden flex-1 pl-3 sm:pl-6">
-          {isYieldIndexDTF ? <DataTypeSelector /> : <IndexTokenAddress />}
-        </div>
-        <div className="min-w-sm pr-3 xl:pr-6 xl:hidden">
-          <IndexCTAsOverviewMobile />
+        <div className="flex items-center gap-2 justify-between xl:flex-1">
+          <div className="pl-6 hidden xl:block">
+            <TimeRangeSelector />
+          </div>
+          {isYieldIndexDTF ? (
+            <div className="hidden xl:block pr-6">
+              <DataTypeSelector />
+            </div>
+          ) : (
+            <div className="hidden xl:block pr-6">
+              <IndexTokenAddress />
+            </div>
+          )}
+          <div className="flex xl:hidden flex-1 pl-3 sm:pl-6">
+            <IndexTokenAddress />
+          </div>
+          <div className="min-w-sm pr-3 xl:pr-6 xl:hidden">
+            <IndexCTAsOverviewMobile />
+          </div>
         </div>
       </div>
     </div>

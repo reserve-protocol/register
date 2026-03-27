@@ -17,7 +17,11 @@ const ALL_TIME_RANGES = [
   { label: 'All', value: 'all', minAge: 0 },
 ] as const
 
-const TimeRangeSelector = () => {
+const TimeRangeSelector = ({
+  variant = 'default',
+}: {
+  variant?: 'default' | 'minimal'
+}) => {
   const [range, setRange] = useAtom(performanceTimeRangeAtom)
   const dtf = useAtomValue(indexDTFAtom)
   const dataType = useAtomValue(dataTypeAtom)
@@ -36,10 +40,8 @@ const TimeRangeSelector = () => {
     })
   }, [dtf?.timestamp, isYieldMode])
 
-  // Auto-update range when current selection is not available
   useEffect(() => {
     if (availableRanges && !availableRanges.find((r) => r.value === range)) {
-      // Default to 'all' if current range is not available
       setRange('all')
     }
   }, [availableRanges, range, setRange])
@@ -48,6 +50,22 @@ const TimeRangeSelector = () => {
     return (
       <div className="gap-1 sm:ml-0 sm:mr-auto bg-white/10 rounded-full p-1">
         <Skeleton className="h-6 w-[200px] rounded-full" />
+      </div>
+    )
+  }
+
+  if (variant === 'minimal') {
+    return (
+      <div className="flex gap-2">
+        {availableRanges.map((tr) => (
+          <button
+            key={tr.value}
+            className={`text-xs sm:text-sm ${tr.value === range ? 'text-white font-bold' : 'text-white/50'}`}
+            onClick={() => setRange(tr.value as Range)}
+          >
+            {tr.label}
+          </button>
+        ))}
       </div>
     )
   }

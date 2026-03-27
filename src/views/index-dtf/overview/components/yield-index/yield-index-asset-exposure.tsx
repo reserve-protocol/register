@@ -122,7 +122,7 @@ const ExposureSummary = () => {
   return (
     <button
       onClick={scrollToComposition}
-      className="flex items-center justify-between w-full text-base pt-4 border-t border-secondary mt-4 text-left hover:opacity-80 transition-opacity"
+      className="flex items-center justify-between w-full text-xs sm:text-base pt-4 border-t border-secondary mt-4 text-left hover:opacity-80 transition-opacity"
     >
       <div className="flex items-center gap-4">
         <span className="font-semibold">{strategyCount} Strategies</span>
@@ -199,13 +199,14 @@ const YieldIndexAssetExposure = () => {
           </div>
         </div>
 
-        {/* Separator */}
+        {/* Separator: vertical on desktop, horizontal on mobile */}
         <div className="hidden sm:block w-px bg-border" />
+        <div className="sm:hidden border-t border-secondary my-2" />
 
         {/* Right: Est. APY */}
-        <div className="flex-1 sm:pl-6 mt-4 sm:mt-0">
+        <div className="flex-1 sm:pl-6">
           <span className="text-base text-primary">Est. APY</span>
-          <div className="mt-6">
+          <div className="mt-3 sm:mt-6">
             {apyData ? (
               <span className="text-2xl font-medium text-primary">
                 {formatPercentage(apyData.totalAPY)}

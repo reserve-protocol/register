@@ -120,18 +120,25 @@ const ChartOverlay = ({
           <IndexTokenLogo />
         </div>
         {isYieldIndexDTF ? (
-          <div className="hidden xl:flex items-center gap-2">
-            <IndexTokenAddress />
-            <IndexCreatorOverview />
-          </div>
+          <>
+            <div className="hidden xl:flex items-center gap-2">
+              <IndexTokenAddress />
+              <IndexCreatorOverview />
+            </div>
+            <div className="flex xl:hidden items-center gap-2">
+              <IndexCreatorOverview />
+            </div>
+          </>
         ) : (
-          <div className="hidden xl:block">
-            <IndexCreatorOverview />
-          </div>
+          <>
+            <div className="hidden xl:block">
+              <IndexCreatorOverview />
+            </div>
+            <div className="block xl:hidden">
+              <TimeRangeSelector />
+            </div>
+          </>
         )}
-        <div className="block xl:hidden">
-          <TimeRangeSelector />
-        </div>
       </div>
       <div className="flex flex-col gap-0.5">
         {dtf ? (
