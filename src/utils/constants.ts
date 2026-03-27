@@ -20,7 +20,7 @@ const isStaging =
 
 export const RESERVE_API = isStaging
   ? import.meta.env.VITE_STAGING_API
-  : 'https://api-staging.reserve.org/'
+  : 'https://api.reserve.org/'
 
 export const ZAPPER_API = isStaging
   ? 'https://staging.reserve-api.com/'
@@ -68,6 +68,10 @@ export const LP_PROJECTS: { [x: string]: { name: string; site: string } } = {
   'uniswap-v3': {
     name: 'Uniswap',
     site: 'https://app.uniswap.org/',
+  },
+  'steer-protocol': {
+    name: 'Steer',
+    site: 'https://app.steer.finance/',
   },
   'balancer-v2': {
     name: 'Balancer',

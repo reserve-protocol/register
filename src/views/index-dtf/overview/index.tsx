@@ -1,4 +1,5 @@
 import useScrollToHash from '@/hooks/use-scroll-to-hash'
+import { Card } from '@/components/ui/card'
 import { indexDTFAtom, isYieldIndexDTFAtom } from '@/state/dtf/atoms'
 import { useAtomValue } from 'jotai'
 import useTrackIndexDTFPage from '../hooks/useTrackIndexDTFPage'
@@ -13,7 +14,7 @@ import { wagmiConfig } from '@/state/chain'
 import { indexDTFQuoteSourceAtom } from '../issuance'
 import { ZAPPER_API } from '@/utils/constants'
 import LandingMint from './components/landing-mint'
-import IndexBasketOverview from './components/basket-overview'
+import { IndexBasketOverviewInner } from './components/basket-overview'
 import FeesStats from './components/fees-stats'
 import YieldIndexAbout from './components/yield-index/yield-index-about'
 import YieldIndexAssetExposure from './components/yield-index/yield-index-asset-exposure'
@@ -31,15 +32,25 @@ const Content = () => {
       <div className="flex flex-col gap-1 m-1 -mt-[60px] sm:-mt-20">
         {isYieldIndexDTF ? (
           <>
-            <YieldIndexAbout />
-            <YieldIndexAssetExposure />
+            <Card id="about" className="group/section">
+              <YieldIndexAbout />
+              <div className="mx-4 sm:mx-6 border-t border-secondary" />
+              <YieldIndexAssetExposure />
+            </Card>
             <FeesStats />
             <YieldIndexComposition />
           </>
         ) : (
           <>
-            <IndexAboutOverview />
-            <IndexBasketOverview />
+            <Card
+              id="about"
+              className="group/section pt-0 sm:pt-0 pb-5 sm:pb-6"
+            >
+              <IndexAboutOverview />
+              <div className="px-4 sm:px-6">
+                <IndexBasketOverviewInner />
+              </div>
+            </Card>
             <FeesStats />
           </>
         )}
