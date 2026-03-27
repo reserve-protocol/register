@@ -30,6 +30,7 @@ import Sky from '@/components/icons/logos/Sky'
 import Origin from '@/components/icons/logos/Origin'
 import Etherfi from '@/components/icons/logos/Etherfi'
 import Lagoon from '@/components/icons/logos/Lagoon'
+import Steer from '@/components/icons/Steer'
 
 export const PROJECT_ICONS: Record<string, React.ReactElement> = {
   'yearn-finance': <Yearn fontSize={16} />,
@@ -56,6 +57,7 @@ export const PROJECT_ICONS: Record<string, React.ReactElement> = {
   'sky-lending': <Sky />,
   'origin-ether': <Origin />,
   'ether.fi-staking': <Etherfi />,
+  'steer-protocol': <Steer />,
 }
 
 const useEarnTableColumns = (compact: boolean) => {

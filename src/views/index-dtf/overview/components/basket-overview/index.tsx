@@ -146,6 +146,8 @@ const IndexBasketOverview = () => {
   )
 }
 
+export { IndexBasketOverview as IndexBasketOverviewInner }
+
 export default () => (
   <Card className="pt-3 pb-5 sm:pt-4 sm:pb-6 group/section" id="basket">
     <div className="px-4 sm:px-6">
