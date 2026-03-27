@@ -231,7 +231,7 @@ const PriceChart = () => {
     if (dataType === 'totalSupply') {
       return formatCurrency(value, 0)
     }
-    return '$' + formatCurrency(value, value < 1 ? 4 : 2)
+    return '$' + formatCurrency(value, value >= 1000 ? 0 : value < 1 ? 4 : 2)
   }
 
   const isLoading = isYieldMode ? !apyHistory : history === undefined
