@@ -1,12 +1,11 @@
 import TokenLogo from '@/components/token-logo'
 import { Button } from '@/components/ui/button'
 import { chainIdAtom } from '@/state/atoms'
-import { indexDTFBasketAtom } from '@/state/dtf/atoms'
 import { Token } from '@/types'
 import { shortenAddress } from '@/utils'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { useAtom, useAtomValue } from 'jotai'
-import { ArrowUpRight, Coins, Trash } from 'lucide-react'
+import { ArrowUpRight, Trash } from 'lucide-react'
 import { currentBasketTokensAtom, removedBasketTokensAtom } from '../../atoms'
 
 const BasketToken = ({ token }: { token: Token }) => {
@@ -57,17 +56,16 @@ const BasketToken = ({ token }: { token: Token }) => {
 
 const BasketTokensList = () => {
   const currentBasketTokens = useAtomValue(currentBasketTokensAtom)
-  const basket = useAtomValue(indexDTFBasketAtom)
 
-  if (!basket) {
+  if (!currentBasketTokens) {
     return (
       <div className="flex items-center justify-center p-8 text-muted-foreground">
-        Loading dust tokens...
+        Loading basket tokens...
       </div>
     )
   }
 
-  if (!currentBasketTokens || currentBasketTokens.length === 0) {
+  if (currentBasketTokens.length === 0) {
     return (
       <div className="flex items-center justify-center p-8 text-muted-foreground">
         No tokens to remove
@@ -88,8 +86,7 @@ const RemoveDustTokens = () => {
   return (
     <div>
       <p className="px-6">
-        There could be the case of a dust token balance remaining in the basket,
-        you can remove it here.
+        Select the tokens you want to remove from the basket.
       </p>
       <BasketTokensList />
     </div>

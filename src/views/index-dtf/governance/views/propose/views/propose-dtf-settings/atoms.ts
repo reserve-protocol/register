@@ -6,7 +6,6 @@ import timelockAbi from '@/abis/Timelock'
 import {
   indexDTFAtom,
   indexDTFBasketAtom,
-  indexDTFBasketSharesAtom,
   indexDTFFeeAtom,
   indexDTFRebalanceControlAtom,
   indexDTFVersionAtom,
@@ -126,7 +125,6 @@ export const currentBasketTokensAtom = atom((get) => {
   const indexDTF = get(indexDTFAtom)
   const basket = get(indexDTFBasketAtom)
   const removed = get(removedBasketTokensAtom)
-  const shares = get(indexDTFBasketSharesAtom)
 
   if (!indexDTF || !basket) return undefined
 
@@ -139,10 +137,7 @@ export const currentBasketTokensAtom = atom((get) => {
   )
 
   return basket.filter(
-    (token) =>
-      !removedMap[token.address.toLowerCase()] &&
-      shares[token.address] &&
-      shares[token.address] === '0.00'
+    (token) => !removedMap[token.address.toLowerCase()]
   )
 })
 

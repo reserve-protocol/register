@@ -85,7 +85,7 @@ const DTF_SETTINGS: DTF_SETTING[] = [
   {
     id: 'tokens',
     icon: <Coins size={14} strokeWidth={1.5} />,
-    title: 'Remove Dust Tokens',
+    title: 'Remove tokens from basket',
     titleSecondary: 'Remove tokens from basket',
     content: <RemoveDustTokens />,
   },

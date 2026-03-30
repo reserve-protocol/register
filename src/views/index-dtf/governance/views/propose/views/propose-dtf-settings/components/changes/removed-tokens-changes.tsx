@@ -21,7 +21,7 @@ const RemovedTokensChanges = () => {
   }
 
   return (
-    <ChangeSection title="Remove Dust Tokens" icon={<Trash size={16} />}>
+    <ChangeSection title="Remove tokens from basket" icon={<Trash size={16} />}>
       <div className="space-y-2">
         {removedBasketTokens.map((token, index) => (
           <div
