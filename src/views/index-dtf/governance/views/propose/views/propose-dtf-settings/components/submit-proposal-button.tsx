@@ -3,11 +3,9 @@ import { Button } from '@/components/ui/button'
 import { TransactionButtonContainer } from '@/components/ui/transaction'
 import { chainIdAtom, walletAtom } from '@/state/atoms'
 import { indexDTFAtom, iTokenAddressAtom } from '@/state/dtf/atoms'
-import { ROUTES } from '@/utils/constants'
 import { atom, useAtomValue } from 'jotai'
 import { Loader2 } from 'lucide-react'
-import { memo, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { memo } from 'react'
 import { Address } from 'viem'
 import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
 import {
@@ -15,6 +13,7 @@ import {
   proposalDescriptionAtom,
 } from '../atoms'
 import { useIsProposeAllowed } from '@/views/index-dtf/governance/hooks/use-is-propose-allowed'
+import useProposalCreated from '../../../hooks/use-proposal-created'
 
 const isProposalReady = atom((get) => {
   const wallet = get(walletAtom)
@@ -43,26 +42,28 @@ const ProposeGatekeeper = memo(() => {
 })
 
 const SubmitProposalButton = () => {
-  const navigate = useNavigate()
   const chainId = useAtomValue(chainIdAtom)
+  const wallet = useAtomValue(walletAtom)
   const isReady = useAtomValue(isProposalReady)
   const description = useAtomValue(proposalDescriptionAtom)
   const proposalData = useAtomValue(dtfSettingsProposalDataAtom)
   const dtf = useAtomValue(indexDTFAtom)
   const { writeContract, isPending, data } = useWriteContract()
-  const { isSuccess } = useWaitForTransactionReceipt({
+  const { data: receipt } = useWaitForTransactionReceipt({
     hash: data,
     chainId,
   })
 
-  useEffect(() => {
-    if (isSuccess) {
-      // Give some time for the proposal to be created on the subgraph
-      setTimeout(() => {
-        navigate(`../${ROUTES.GOVERNANCE}`)
-      }, 10000) // TODO: who knows if this works well!!! they can just refresh the page
-    }
-  }, [isSuccess])
+  const govAddress = dtf?.ownerGovernance?.id
+
+  useProposalCreated({
+    receipt,
+    targets: proposalData?.targets ?? [],
+    calldatas: proposalData?.calldatas ?? [],
+    description: description ?? '',
+    govAddress: (govAddress ?? '0x') as Address,
+    proposer: (wallet ?? '0x') as Address,
+  })
 
   const handleSubmit = () => {
     if (proposalData && description && dtf?.ownerGovernance?.id) {

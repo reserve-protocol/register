@@ -2,15 +2,11 @@ import { cn } from '@/lib/utils'
 import { useAtomValue } from 'jotai'
 import { CircleSlash, ThumbsDown, ThumbsUp, X } from 'lucide-react'
 
-import dtfIndexGovernance from '@/abis/dtf-index-governance'
 import { Separator } from '@/components/ui/separator'
-import { chainIdAtom } from '@/state/atoms'
 import { formatCurrency, formatPercentage } from '@/utils'
 import { PROPOSAL_STATES } from '@/utils/constants'
 import { Check } from 'lucide-react'
 import { useMemo } from 'react'
-import { formatEther } from 'viem'
-import { useReadContracts } from 'wagmi'
 import { proposalDetailAtom, proposalStateAtom } from '../atom'
 
 const BooleanIcon = ({
@@ -38,72 +34,52 @@ const BooleanIcon = ({
   )
 }
 
-// TODO: Abstract atoms from these components!
 const useProposalDetailStats = () => {
   const proposal = useAtomValue(proposalDetailAtom)
-  const chainId = useAtomValue(chainIdAtom)
-  const { data } = useReadContracts({
-    contracts: [
-      {
-        address: proposal?.governor ?? '0x1',
-        abi: dtfIndexGovernance,
-        functionName: 'proposalVotes',
-        args: [BigInt(proposal?.id || '0')],
-        chainId,
-      },
-    ],
-    allowFailure: false,
-    query: { enabled: !!proposal },
-  })
 
-  const [votes] = data ?? [[0n, 0n, 0n]]
-  const [againstVotes, forVotes, abstainVotes] = useMemo(
-    () => votes.map((v) => +formatEther(v)),
-    [votes]
-  )
+  return useMemo(() => {
+    if (!proposal)
+      return {
+        forVotes: 0,
+        againstVotes: 0,
+        abstainVotes: 0,
+        quorumWeight: 0,
+        currentQuorum: 0,
+        quorumNeeded: 0,
+        quorumReached: false,
+        majorityWeight: 0,
+        majoritySupport: false,
+      }
 
-  const [quorumWeight, currentQuorum, quorumNeeded, quorumReached] =
-    useMemo(() => {
-      if (!proposal) return [0, 0, 0, false]
-      const _quorumNeeded = proposal.quorumVotes
-      const _currentQuorum = +forVotes + +abstainVotes
+    const forVotes = proposal.forWeightedVotes
+    const againstVotes = proposal.againstWeightedVotes
+    const abstainVotes = proposal.abstainWeightedVotes
+    const quorumNeeded = proposal.quorumVotes
 
-      if (!_quorumNeeded)
-        return [
-          _currentQuorum > _quorumNeeded ? 1 : 0,
-          _currentQuorum,
-          _quorumNeeded,
-          _currentQuorum > _quorumNeeded,
-        ]
+    const currentQuorum = forVotes + abstainVotes
+    const quorumWeight = quorumNeeded
+      ? currentQuorum / quorumNeeded
+      : currentQuorum > 0
+        ? 1
+        : 0
+    const quorumReached = quorumWeight > 1
 
-      const _quorumWeight = _currentQuorum / _quorumNeeded
-      const _quorumReached = _quorumWeight > 1
+    const totalVotes = forVotes + againstVotes
+    const majorityWeight = totalVotes ? forVotes / totalVotes : 0
+    const majoritySupport = majorityWeight > 0.5
 
-      return [_quorumWeight, _currentQuorum, _quorumNeeded, _quorumReached]
-    }, [proposal, againstVotes, forVotes, abstainVotes])
-
-  const [majorityWeight, majoritySupport] = useMemo(() => {
-    const totalVotes = +forVotes + +againstVotes
-
-    if (!totalVotes) return [0, false]
-
-    const _majorityWeight = +forVotes / totalVotes
-    const _majoritySupport = _majorityWeight > 0.5
-
-    return [_majorityWeight, _majoritySupport]
-  }, [forVotes, againstVotes])
-
-  return {
-    againstVotes,
-    forVotes,
-    abstainVotes,
-    quorumWeight,
-    currentQuorum,
-    quorumNeeded,
-    quorumReached,
-    majorityWeight,
-    majoritySupport,
-  }
+    return {
+      forVotes,
+      againstVotes,
+      abstainVotes,
+      quorumWeight,
+      currentQuorum,
+      quorumNeeded,
+      quorumReached,
+      majorityWeight,
+      majoritySupport,
+    }
+  }, [proposal])
 }
 
 const QuorumStat = ({

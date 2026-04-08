@@ -764,6 +764,7 @@ npm run test:run     # Run tests (single run)
 - **Location**: `src/**/tests/**/*.test.{ts,tsx}`
 - **Run**: `npm run test` (watch) or `npm run test:run` (single)
 - **Current coverage**: Critical hooks (useQuery, useDebounce, useTimeRemaining)
+- **E2E**: Playwright with fully mocked network (e2e/ directory)
 
 ## Known Issues & Tech Debt
 

@@ -118,6 +118,9 @@ const useProposalDetail = (proposalId: string | undefined) => {
         }
       )
 
+      // Subgraph may not have indexed yet (e.g. right after proposal creation)
+      if (!proposal) return undefined
+
       const proposalDetail: ProposalDetail = {
         ...proposal,
         id: proposal.id,
@@ -158,6 +161,12 @@ const useProposalDetail = (proposalId: string | undefined) => {
       proposalDetail.state = proposalDetail.votingState.state
 
       return proposalDetail
+    },
+    // Poll every 3s while subgraph hasn't returned data (e.g. just-created proposal)
+    // Stop after ~30s (10 retries) to avoid infinite polling on invalid IDs
+    refetchInterval: (query) => {
+      if (!query.state.data && query.state.dataUpdateCount < 10) return 3000
+      return false
     },
   })
 }
