@@ -1,0 +1,44 @@
+{
+  "_meta": {
+    "source": "https://api.reserve.org/folio-manager/read?folio=0x4da9a0f397db1397902070f93a4d6ddbc0e0e6e8&chainId=8453",
+    "capturedAt": "2026-04-08T20:31:13.040Z",
+    "dtf": "0x4da9a0f397db1397902070f93a4d6ddbc0e0e6e8",
+    "chainId": 8453
+  },
+  "data": {
+    "status": "ok",
+    "parsedData": {
+      "hidden": false,
+      "dtf": {
+        "icon": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxBVjyB3T4H9uivWURqQkxfgFXD7tedNTwsYoS",
+        "cover": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxyoERsLrX3EJomHD1USwYFd2GKiBg5a8eIx7n",
+        "mobileCover": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxBVN3FAT4H9uivWURqQkxfgFXD7tedNTwsYoS",
+        "description": "",
+        "notesFromCreator": "",
+        "prospectus": "",
+        "tags": [
+          "Majors",
+          "Bitcoin",
+          "L1"
+        ],
+        "basketType": "percentage-based"
+      },
+      "creator": {
+        "name": "",
+        "icon": "",
+        "link": ""
+      },
+      "curator": {
+        "name": "",
+        "icon": "",
+        "link": ""
+      },
+      "socials": {
+        "twitter": "https://x.com/CFBenchmarks",
+        "telegram": "",
+        "discord": "",
+        "website": "https://www.cfbenchmarks.com/data/indices/CFDLCUS_RR_TR"
+      }
+    }
+  }
+}

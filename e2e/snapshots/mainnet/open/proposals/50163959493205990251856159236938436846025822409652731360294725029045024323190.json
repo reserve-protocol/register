@@ -1,0 +1,132 @@
+{
+  "_meta": {
+    "source": "https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-mainnet/prod/gn",
+    "capturedAt": "2026-04-08T20:31:23.577Z",
+    "dtf": "0x323c03c48660fe31186fa82c289b0766d331ce21",
+    "chainId": 1,
+    "query": "getProposalDetail",
+    "proposalId": "50163959493205990251856159236938436846025822409652731360294725029045024323190"
+  },
+  "data": {
+    "proposal": {
+      "id": "50163959493205990251856159236938436846025822409652731360294725029045024323190",
+      "timelockId": "0x8ac74a46daa8ef9e30d804f09fea15867a623fe153062a9390052cbb277d581d",
+      "description": "DTF V4 Upgrade",
+      "creationTime": "1752695483",
+      "voteStart": "1752868283",
+      "voteEnd": "1753127483",
+      "queueBlock": "22976518",
+      "queueTime": "1753209071",
+      "state": "EXECUTED",
+      "executionETA": "1753381871",
+      "executionTime": "1753392479",
+      "creationBlock": "22933957",
+      "cancellationTime": null,
+      "calldatas": [
+        "0x2f2ff15d00000000000000000000000000000000000000000000000000000000000000000000000000000000000000007498c6ab0669a09de7b9185ba72a98fa3ca39cc9",
+        "0xf2fde38b0000000000000000000000007498c6ab0669a09de7b9185ba72a98fa3ca39cc9",
+        "0x73e6c4d7000000000000000000000000323c03c48660fe31186fa82c289b0766d331ce210000000000000000000000000b79e381ed8d6d676c772dba61cbeea0b2d28c7d",
+        "0x1fffacd8000000000000000000000000279ccf56441fc74f1aac39e7fac165dec5a88b3a0000000000000000000000000000000000000000000000000000000000000001"
+      ],
+      "targets": [
+        "0x323c03c48660fe31186fa82c289b0766d331ce21",
+        "0x0b79e381ed8d6d676c772dba61cbeea0b2d28c7d",
+        "0x7498c6ab0669a09de7b9185ba72a98fa3ca39cc9",
+        "0x323c03c48660fe31186fa82c289b0766d331ce21"
+      ],
+      "proposer": {
+        "address": "0x9d1d4d631ae6bc24bd09adff6ca82651e928b650"
+      },
+      "votes": [
+        {
+          "choice": "FOR",
+          "voter": {
+            "address": "0x02feb744ca516fd6e41d940ae2d0f7cb6fcb1ac3"
+          },
+          "weight": "28474180125132619693704"
+        },
+        {
+          "choice": "FOR",
+          "voter": {
+            "address": "0x16c7e68ca75eb0b7ca65eadd4d067af7d7654e11"
+          },
+          "weight": "4696271236365435611803"
+        },
+        {
+          "choice": "FOR",
+          "voter": {
+            "address": "0x33229a716356a3b7474c33dc51297460a4e13257"
+          },
+          "weight": "6295193778822142651835"
+        },
+        {
+          "choice": "FOR",
+          "voter": {
+            "address": "0x81f9b40dee106a4c5822aed7641d5c1e2b40f922"
+          },
+          "weight": "192836241517929000000000"
+        },
+        {
+          "choice": "FOR",
+          "voter": {
+            "address": "0x84afb4b60844f8759154d6ff7b0580daa2d4e37d"
+          },
+          "weight": "10773498164353480000000"
+        },
+        {
+          "choice": "FOR",
+          "voter": {
+            "address": "0x9458579d65e99c59858fdea120fa59dc618e732c"
+          },
+          "weight": "1000000000000000000000"
+        },
+        {
+          "choice": "FOR",
+          "voter": {
+            "address": "0xb19d6b66b18fae0fca1023138b229e5f970b5180"
+          },
+          "weight": "63000000000000000000000"
+        },
+        {
+          "choice": "FOR",
+          "voter": {
+            "address": "0xccbf601eb2f5aa2d5d68b069610da6f1627d485d"
+          },
+          "weight": "25000000000000000000000"
+        },
+        {
+          "choice": "FOR",
+          "voter": {
+            "address": "0xd334533980c201c1b93e39bbe6bd1e04be5c0f5d"
+          },
+          "weight": "7634097770649370000000"
+        },
+        {
+          "choice": "FOR",
+          "voter": {
+            "address": "0xf7e9caaaeeb6cc9657e1dd490f044114aecc31b2"
+          },
+          "weight": "2283708403339300000000"
+        },
+        {
+          "choice": "FOR",
+          "voter": {
+            "address": "0xffa68ea3d4541493e29f9ca6f4d8219e45f5f23c"
+          },
+          "weight": "1000000000000000000000"
+        }
+      ],
+      "forWeightedVotes": "342993190996591347957342",
+      "againstWeightedVotes": "0",
+      "abstainWeightedVotes": "0",
+      "quorumVotes": "74452597332266753919558",
+      "forDelegateVotes": "11",
+      "abstainDelegateVotes": "0",
+      "againstDelegateVotes": "0",
+      "executionTxnHash": "0x1f727564454dbde123e7330bd3d58182a3cdee748cd01e6748ad48e1ab2f192a",
+      "governance": {
+        "id": "0x020d7c4a87485709d91e78aeeb2b2177ebfbaf41"
+      }
+    }
+  }
+}

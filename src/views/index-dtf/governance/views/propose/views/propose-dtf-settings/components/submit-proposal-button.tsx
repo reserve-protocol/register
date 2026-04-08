@@ -5,15 +5,16 @@ import { chainIdAtom, walletAtom } from '@/state/atoms'
 import { indexDTFAtom, iTokenAddressAtom } from '@/state/dtf/atoms'
 import { atom, useAtomValue } from 'jotai'
 import { Loader2 } from 'lucide-react'
-import { memo } from 'react'
-import { Address } from 'viem'
+import { memo, useRef } from 'react'
 import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
 import {
   dtfSettingsProposalDataAtom,
   proposalDescriptionAtom,
 } from '../atoms'
 import { useIsProposeAllowed } from '@/views/index-dtf/governance/hooks/use-is-propose-allowed'
-import useProposalCreated from '../../../hooks/use-proposal-created'
+import useProposalCreated, {
+  type SubmitProposalData,
+} from '../../../hooks/use-proposal-created'
 
 const isProposalReady = atom((get) => {
   const wallet = get(walletAtom)
@@ -54,20 +55,21 @@ const SubmitProposalButton = () => {
     chainId,
   })
 
-  const govAddress = dtf?.ownerGovernance?.id
+  const submitDataRef = useRef<SubmitProposalData | null>(null)
 
-  useProposalCreated({
-    receipt,
-    targets: proposalData?.targets ?? [],
-    calldatas: proposalData?.calldatas ?? [],
-    description: description ?? '',
-    govAddress: (govAddress ?? '0x') as Address,
-    proposer: (wallet ?? '0x') as Address,
-  })
+  useProposalCreated({ receipt, dataRef: submitDataRef })
 
   const handleSubmit = () => {
-    if (proposalData && description && dtf?.ownerGovernance?.id) {
+    if (proposalData && description && dtf?.ownerGovernance?.id && wallet) {
       const values: bigint[] = new Array(proposalData.calldatas.length).fill(0n)
+
+      submitDataRef.current = {
+        targets: proposalData.targets,
+        calldatas: proposalData.calldatas,
+        description,
+        govAddress: dtf.ownerGovernance.id,
+        proposer: wallet,
+      }
 
       writeContract({
         address: dtf.ownerGovernance?.id,

@@ -1,0 +1,47 @@
+{
+  "_meta": {
+    "source": "https://api.reserve.org/folio-manager/read?folio=0x2f8a339b5889ffac4c5a956787cda593b3c36867&chainId=56",
+    "capturedAt": "2026-04-08T20:31:17.070Z",
+    "dtf": "0x2f8a339b5889ffac4c5a956787cda593b3c36867",
+    "chainId": 56
+  },
+  "data": {
+    "status": "ok",
+    "parsedData": {
+      "hidden": false,
+      "dtf": {
+        "icon": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxhO6t9I2BbMt4sV2Y6jmzwPSZ3Hrav0gfieuo",
+        "cover": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxIC8FNf6xZOd2tbVAjQ406SzW5e3InqXoRl1x",
+        "mobileCover": "",
+        "description": "",
+        "notesFromCreator": "",
+        "prospectus": "",
+        "tags": [
+          "Majors",
+          "Bitcoin",
+          "L1",
+          "DeFi",
+          "Perps",
+          "Ecosystem"
+        ],
+        "basketType": "percentage-based"
+      },
+      "creator": {
+        "name": "ListaDAO",
+        "icon": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxgMjiAn1eYbLsDMlPqd2rjVCTxwy1a7J04GWK",
+        "link": "https://lista.org/"
+      },
+      "curator": {
+        "name": "",
+        "icon": "",
+        "link": ""
+      },
+      "socials": {
+        "twitter": "https://x.com/CoinMarketCap",
+        "telegram": "",
+        "discord": "",
+        "website": "https://coinmarketcap.com/charts/cmc20/"
+      }
+    }
+  }
+}

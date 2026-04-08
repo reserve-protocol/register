@@ -1,33 +1,36 @@
 import type { Page } from '@playwright/test'
-import { readFileSync } from 'fs'
-import { join, dirname } from 'path'
-import { fileURLToPath } from 'url'
+import { loadSnapshot, snapshotExists } from './snapshot-loader'
+import { DTF } from './test-data'
 
-const __dirname = dirname(fileURLToPath(import.meta.url))
-const mocksDir = join(__dirname, '..', 'mocks')
-
-const discoverDtfData = JSON.parse(
-  readFileSync(join(mocksDir, 'discover-dtf.json'), 'utf-8')
-)
-const protocolMetricsData = JSON.parse(
-  readFileSync(join(mocksDir, 'protocol-metrics.json'), 'utf-8')
-)
+function findDTFByAddress(address: string) {
+  const lower = address.toLowerCase()
+  return Object.values(DTF).find((d) => d.address.toLowerCase() === lower)
+}
 
 /**
- * Mock all api.reserve.org endpoints with page.route()
+ * Mock all api.reserve.org and external API endpoints with page.route()
  *
- * Uses a single route handler to avoid glob pattern issues with query strings.
- * Playwright glob `**` doesn't match `?` in URLs reliably.
+ * Uses snapshot data for discover/metrics/per-DTF endpoints.
+ * Simple mocks stay inline for endpoints that don't need real data.
  */
 export async function mockApiRoutes(page: Page) {
+  // Merkl campaign API — prevents real network calls from overview page
+  await page.route('**/api.merkl.xyz/**', (route) => {
+    route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify([]),
+    })
+  })
+
   await page.route('**/api.reserve.org/**', (route) => {
     const url = route.request().url()
-    const pathname = new URL(url).pathname
+    const parsedUrl = new URL(url)
+    const pathname = parsedUrl.pathname
 
-    // Discover DTF list — only return data for Base (8453), empty for other chains.
+    // Discover DTF list — chain-independent, return full snapshot
     if (pathname.includes('/discover/dtf')) {
-      const chainId = new URL(url).searchParams.get('chainId')
-      const data = chainId === '8453' ? discoverDtfData : []
+      const data = loadSnapshot('shared/discover-dtfs.json')
       return route.fulfill({
         status: 200,
         contentType: 'application/json',
@@ -37,53 +40,83 @@ export async function mockApiRoutes(page: Page) {
 
     // Protocol metrics (TVL, revenue, etc)
     if (pathname.includes('/protocol/metrics')) {
+      const data = loadSnapshot('shared/protocol-metrics.json')
       return route.fulfill({
         status: 200,
         contentType: 'application/json',
-        body: JSON.stringify(protocolMetricsData),
+        body: JSON.stringify(data),
       })
     }
 
-    // Folio manager / brand data
-    // Code checks `response.status !== 'ok'` and throws if missing
+    // Folio manager / brand data — load per-DTF from snapshot
     if (pathname.includes('/folio-manager')) {
+      const folio = parsedUrl.searchParams.get('folio')
+      const dtf = folio ? findDTFByAddress(folio) : undefined
+
+      if (dtf && snapshotExists(`${dtf.snapshotDir}/folio-manager.json`)) {
+        const data = loadSnapshot(`${dtf.snapshotDir}/folio-manager.json`)
+        return route.fulfill({
+          status: 200,
+          contentType: 'application/json',
+          body: JSON.stringify(data),
+        })
+      }
+
+      // No snapshot for this DTF — fail loud
+      console.error(`[api-mock] No folio-manager snapshot for: ${folio}`)
       return route.fulfill({
-        status: 200,
+        status: 500,
         contentType: 'application/json',
         body: JSON.stringify({
-          status: 'ok',
-          parsedData: {
-            dtf: {
-              icon: '',
-              cover: '',
-              mobileCover: '',
-              description:
-                'A diversified large cap index tracking the top crypto assets by market capitalization.',
-              notesFromCreator: 'Rebalanced quarterly.',
-              prospectus: '',
-              tags: ['large-cap', 'index'],
-              basketType: 'percentage-based',
-            },
-            creator: {
-              name: 'Reserve Protocol',
-              icon: '',
-              link: 'https://reserve.org',
-            },
-            curator: { name: '', icon: '', link: '' },
-            socials: {
-              twitter: 'https://twitter.com/reserveprotocol',
-              telegram: '',
-              discord: '',
-              website: 'https://reserve.org',
-            },
-          },
+          error: `No folio-manager snapshot for ${folio}`,
+        }),
+      })
+    }
+
+    // Current DTF price + basket — load per-DTF from snapshot
+    if (
+      pathname.includes('/current/dtf') ||
+      pathname.includes('/current/dtfs')
+    ) {
+      const address = parsedUrl.searchParams.get('address')
+      const dtf = address ? findDTFByAddress(address) : undefined
+
+      if (dtf && snapshotExists(`${dtf.snapshotDir}/current-price.json`)) {
+        const data = loadSnapshot(`${dtf.snapshotDir}/current-price.json`)
+        return route.fulfill({
+          status: 200,
+          contentType: 'application/json',
+          body: JSON.stringify(data),
+        })
+      }
+
+      // No snapshot for this DTF — fail loud
+      console.error(
+        `[api-mock] No current-price snapshot for: ${address}`
+      )
+      return route.fulfill({
+        status: 500,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          error: `No current-price snapshot for ${address}`,
         }),
       })
     }
 
     // DTF exposure data — must be an array (ExposureGroup[])
-    // The updater sets atom directly from response.json()
     if (pathname.includes('/dtf/exposure')) {
+      const address = parsedUrl.searchParams.get('address')
+      const dtf = address ? findDTFByAddress(address) : undefined
+
+      if (dtf && snapshotExists(`${dtf.snapshotDir}/exposure.json`)) {
+        const data = loadSnapshot(`${dtf.snapshotDir}/exposure.json`)
+        return route.fulfill({
+          status: 200,
+          contentType: 'application/json',
+          body: JSON.stringify(data),
+        })
+      }
+
       return route.fulfill({
         status: 200,
         contentType: 'application/json',
@@ -100,49 +133,20 @@ export async function mockApiRoutes(page: Page) {
       })
     }
 
-    // Current DTF price + basket (useIndexPrice.ts)
-    // Must return { price, basket: [...] } or priceResult.basket.reduce() crashes
-    if (
-      pathname.includes('/current/dtf') ||
-      pathname.includes('/current/dtfs')
-    ) {
-      return route.fulfill({
-        status: 200,
-        contentType: 'application/json',
-        body: JSON.stringify({
-          price: 1.25,
-          basket: [
-            {
-              address: '0x4200000000000000000000000000000000000006',
-              amount: 0.15,
-              price: 2450.5,
-              weight: '20.00',
-            },
-            {
-              address: '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913',
-              amount: 0.35,
-              price: 1.0,
-              weight: '35.00',
-            },
-            {
-              address: '0x2ae3f1ec7f1f5012cfeab0185bfc7aa3cf0dec22',
-              amount: 0.002,
-              price: 62450.25,
-              weight: '25.00',
-            },
-            {
-              address: '0x0b3e328455c4059eeb9e3f84b5543f74e24e7e1b',
-              amount: 1.5,
-              price: 12.45,
-              weight: '20.00',
-            },
-          ],
-        }),
-      })
-    }
-
-    // Historical DTF price data (use-dtf-price-history.ts)
+    // Historical DTF price data
     if (pathname.includes('/historical/dtf')) {
+      const address = parsedUrl.searchParams.get('address')
+      const dtf = address ? findDTFByAddress(address) : undefined
+
+      if (dtf && snapshotExists(`${dtf.snapshotDir}/historical-price.json`)) {
+        const data = loadSnapshot(`${dtf.snapshotDir}/historical-price.json`)
+        return route.fulfill({
+          status: 200,
+          contentType: 'application/json',
+          body: JSON.stringify(data),
+        })
+      }
+
       return route.fulfill({
         status: 200,
         contentType: 'application/json',
@@ -159,6 +163,15 @@ export async function mockApiRoutes(page: Page) {
       })
     }
 
+    // Health check endpoint
+    if (pathname === '/health' || pathname.endsWith('/health')) {
+      return route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({ status: 'ok' }),
+      })
+    }
+
     // Zapper widget healthcheck + quotes
     if (pathname.includes('/zapper/')) {
       return route.fulfill({
@@ -168,8 +181,26 @@ export async function mockApiRoutes(page: Page) {
       })
     }
 
-    // Current token prices
+    // Current token prices — match by chainId param
     if (pathname.includes('/current/prices')) {
+      const chainId = parsedUrl.searchParams.get('chainId')
+
+      if (chainId) {
+        const dtf = Object.values(DTF).find(
+          (d) =>
+            String(d.chain.id) === chainId &&
+            snapshotExists(`${d.snapshotDir}/token-prices.json`)
+        )
+        if (dtf) {
+          const data = loadSnapshot(`${dtf.snapshotDir}/token-prices.json`)
+          return route.fulfill({
+            status: 200,
+            contentType: 'application/json',
+            body: JSON.stringify(data),
+          })
+        }
+      }
+
       return route.fulfill({
         status: 200,
         contentType: 'application/json',
@@ -182,97 +213,16 @@ export async function mockApiRoutes(page: Page) {
       return route.fulfill({
         status: 200,
         contentType: 'application/json',
-        body: JSON.stringify([
-          {
-            chainId: 8453,
-            token: {
-              address: '0x7e6d5c4b3a2f1e0d9c8b7a69f8e7d6c5b4a3f2e1',
-              name: 'Staked LCAP',
-              symbol: 'stLCAP',
-              decimals: 18,
-              price: 1.31,
-            },
-            underlying: {
-              token: {
-                address: '0x4da9a0f397db1397902070f93a4d6ddbc0e0e6e8',
-                name: 'Large Cap Index DTF',
-                symbol: 'LCAP',
-                decimals: 18,
-                price: 1.25,
-              },
-            },
-            rewards: [
-              {
-                token: {
-                  address: '0x4da9a0f397db1397902070f93a4d6ddbc0e0e6e8',
-                  name: 'Large Cap Index DTF',
-                  symbol: 'LCAP',
-                  decimals: 18,
-                  price: 1.25,
-                },
-                amount: 125.5,
-                amountUsd: 156.88,
-              },
-            ],
-            dtfs: [
-              {
-                address: '0x4da9a0f397db1397902070f93a4d6ddbc0e0e6e8',
-                name: 'Large Cap Index DTF',
-                symbol: 'LCAP',
-                decimals: 18,
-                price: 1.25,
-              },
-            ],
-            lockedAmount: 2500000,
-            lockedAmountUsd: 3125000,
-            totalRewardAmountUsd: 156.88,
-            avgDailyRewardAmountUsd: 5.23,
-            apr: 8.42,
-          },
-          {
-            chainId: 8453,
-            token: {
-              address: '0xaa1111111111111111111111111111111111111111',
-              name: 'Staked CLX',
-              symbol: 'stCLX',
-              decimals: 18,
-              price: 2.15,
-            },
-            underlying: {
-              token: {
-                address: '0x44551ca46fa5592bb572e20043f7c3d54c85cad7',
-                name: 'Clanker Index',
-                symbol: 'CLX',
-                decimals: 18,
-                price: 2.1,
-              },
-            },
-            rewards: [],
-            dtfs: [
-              {
-                address: '0x44551ca46fa5592bb572e20043f7c3d54c85cad7',
-                name: 'Clanker Index',
-                symbol: 'CLX',
-                decimals: 18,
-                price: 2.1,
-              },
-            ],
-            lockedAmount: 1200000,
-            lockedAmountUsd: 2520000,
-            totalRewardAmountUsd: 0,
-            avgDailyRewardAmountUsd: 0,
-            apr: 5.67,
-          },
-        ]),
+        body: JSON.stringify([]),
       })
     }
 
-    // Catch-all for any other reserve API calls
-    console.log(`[api-mock] unhandled: ${url}`)
+    // Catch-all — unmocked API endpoint, fail loudly
+    console.error(`[api-mock] UNMOCKED endpoint: ${url}`)
     route.fulfill({
-      status: 200,
+      status: 500,
       contentType: 'application/json',
-      body: JSON.stringify({}),
+      body: JSON.stringify({ error: 'Unmocked API endpoint', url }),
     })
   })
 }

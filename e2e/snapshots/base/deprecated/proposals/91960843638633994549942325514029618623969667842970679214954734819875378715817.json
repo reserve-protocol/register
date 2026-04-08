@@ -1,0 +1,65 @@
+{
+  "_meta": {
+    "source": "https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-base/prod/gn",
+    "capturedAt": "2026-04-08T20:31:28.674Z",
+    "dtf": "0x47686106181b3cefe4eaf94c4c10b48ac750370b",
+    "chainId": 8453,
+    "query": "getProposalDetail",
+    "proposalId": "91960843638633994549942325514029618623969667842970679214954734819875378715817"
+  },
+  "data": {
+    "proposal": {
+      "id": "91960843638633994549942325514029618623969667842970679214954734819875378715817",
+      "timelockId": null,
+      "description": "# Eject Dust \n []() \n Eject Dust",
+      "creationTime": "1749579329",
+      "voteStart": "1749752129",
+      "voteEnd": "1750011329",
+      "queueBlock": null,
+      "queueTime": null,
+      "state": "ACTIVE",
+      "executionETA": null,
+      "executionTime": null,
+      "creationBlock": "31394991",
+      "cancellationTime": null,
+      "calldatas": [
+        "0x8cdf1288000000000000000000000000d0174292c4d6dfa7c4ee20f371f3b6d401782cd5",
+        "0x8cdf12880000000000000000000000000b3e328455c4059eeb9e3f84b5543f74e24e7e1b"
+      ],
+      "targets": [
+        "0x47686106181b3cefe4eaf94c4c10b48ac750370b",
+        "0x47686106181b3cefe4eaf94c4c10b48ac750370b"
+      ],
+      "proposer": {
+        "address": "0xd84e0c72dc2f8363b46d4adfc58bfd82e49222d9"
+      },
+      "votes": [
+        {
+          "choice": "FOR",
+          "voter": {
+            "address": "0xb209eed4d80fb47e5c16577e44dad1073c5c5015"
+          },
+          "weight": "161000000000000000000"
+        },
+        {
+          "choice": "FOR",
+          "voter": {
+            "address": "0xd84e0c72dc2f8363b46d4adfc58bfd82e49222d9"
+          },
+          "weight": "1461850479106443663897"
+        }
+      ],
+      "forWeightedVotes": "1622850479106443663897",
+      "againstWeightedVotes": "0",
+      "abstainWeightedVotes": "0",
+      "quorumVotes": "1554980616545155463783",
+      "forDelegateVotes": "2",
+      "abstainDelegateVotes": "0",
+      "againstDelegateVotes": "0",
+      "executionTxnHash": null,
+      "governance": {
+        "id": "0xa8ce43762de703d285b019fac8829148e3013442"
+      }
+    }
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "_meta": {
+    "source": "https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-base/prod/gn",
+    "capturedAt": "2026-04-08T20:31:15.802Z",
+    "dtf": "0x4da9a0f397db1397902070f93a4d6ddbc0e0e6e8",
+    "chainId": 8453,
+    "query": "getProposalDetail",
+    "proposalId": "61501961740004193021732694383712757067893478802036142853669598247049254071435"
+  },
+  "data": {
+    "proposal": {
+      "id": "61501961740004193021732694383712757067893478802036142853669598247049254071435",
+      "timelockId": "0x630c6c6da26429bb774b4f52de67b4b454efbbe4a074478b301ee8e0b39ab8d3",
+      "description": "# Adjust LCAP Revenue Distribution \n []() \n Adjust LCAP Revenue Distribution",
+      "creationTime": "1773937743",
+      "voteStart": "1774110543",
+      "voteEnd": "1774369743",
+      "queueBlock": "43832605",
+      "queueTime": "1774454557",
+      "state": "EXECUTED",
+      "executionETA": "1774627357",
+      "executionTime": "1774631565",
+      "creationBlock": "43574198",
+      "cancellationTime": null,
+      "calldatas": [
+        "0xe1e7bd590000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000300000000000000000000000045a96cd0e4d89a41eebf3cc4204b00b1cf1582fa000000000000000000000000000000000000000000000000010920bd2b0f1b2c000000000000000000000000718841c68eab4038ef389c154f8e91f9923b2fda0000000000000000000000000000000000000000000000000a5b4763ae970b08000000000000000000000000cbca96091f43c024730a020e57515a18b5dc633b000000000000000000000000000000000000000000000000027c4e92cdbdd9cc"
+      ],
+      "targets": [
+        "0x4da9a0f397db1397902070f93a4d6ddbc0e0e6e8"
+      ],
+      "proposer": {
+        "address": "0x03d03a026e71979be3b08d44b01eae4c5ff9da99"
+      },
+      "votes": [
+        {
+          "choice": "FOR",
+          "voter": {
+            "address": "0x49b4564cb533e092d43c628386258f0b78d86c52"
+          },
+          "weight": "5011992000000000000000000"
+        },
+        {
+          "choice": "FOR",
+          "voter": {
+            "address": "0xb209eed4d80fb47e5c16577e44dad1073c5c5015"
+          },
+          "weight": "6225657000000000000000000"
+        },
+        {
+          "choice": "FOR",
+          "voter": {
+            "address": "0xcfc0805e42589d04a5ab4bcaff49f81d5210e065"
+          },
+          "weight": "200000000000000000000000"
+        }
+      ],
+      "forWeightedVotes": "11437649000000000000000000",
+      "againstWeightedVotes": "0",
+      "abstainWeightedVotes": "0",
+      "quorumVotes": "6854845824700858013739399",
+      "forDelegateVotes": "3",
+      "abstainDelegateVotes": "0",
+      "againstDelegateVotes": "0",
+      "executionTxnHash": "0x52666487109be0960bba58965ec165256fd7ce17a15e3e87268ca23aa6fbb08c",
+      "governance": {
+        "id": "0x719eded05c7a6468e44acfbbd19b2df2eed7759e"
+      }
+    }
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "_meta": {
+    "source": "https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-base/prod/gn",
+    "capturedAt": "2026-04-08T20:31:28.298Z",
+    "dtf": "0x47686106181b3cefe4eaf94c4c10b48ac750370b",
+    "chainId": 8453,
+    "query": "getProposalDetail",
+    "proposalId": "69653046894811715947919219050670478064239450454632421407859134169016389687440"
+  },
+  "data": {
+    "proposal": {
+      "id": "69653046894811715947919219050670478064239450454632421407859134169016389687440",
+      "timelockId": null,
+      "description": "Deprecate VTF Index DTF",
+      "creationTime": "1773171515",
+      "voteStart": "1773344315",
+      "voteEnd": "1773603515",
+      "queueBlock": null,
+      "queueTime": null,
+      "state": "PENDING",
+      "executionETA": null,
+      "executionTime": null,
+      "creationBlock": "43191084",
+      "cancellationTime": null,
+      "calldatas": [
+        "0x7aeaafb3",
+        "0xd547741f4ff6ae4d6a29e79ca45c6441bdc89b93878ac6118485b33c8baa3749fc3cb130000000000000000000000000ccb16edde81843e42f3c39ab70598671eb668bb0",
+        "0xd547741f13ff1b2625181b311f257c723b5e6d366eb318b212d9dd694c48fcf227659df500000000000000000000000093db2e90f8b2b073010b425f9350202330bd923e",
+        "0xd547741f13ff1b2625181b311f257c723b5e6d366eb318b212d9dd694c48fcf227659df50000000000000000000000006f1d6b86d4ad705385e751e6e88b0fdfdbadf298",
+        "0xd547741f13ff1b2625181b311f257c723b5e6d366eb318b212d9dd694c48fcf227659df50000000000000000000000007daaf7bc2ee8bf4c0ac7f37e6b6cfaeb3ed9a868",
+        "0xd547741f0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000c290b859f4f6f0644600dd18d53822bcf95d2602"
+      ],
+      "targets": [
+        "0x47686106181b3cefe4eaf94c4c10b48ac750370b",
+        "0x47686106181b3cefe4eaf94c4c10b48ac750370b",
+        "0x47686106181b3cefe4eaf94c4c10b48ac750370b",
+        "0x47686106181b3cefe4eaf94c4c10b48ac750370b",
+        "0x47686106181b3cefe4eaf94c4c10b48ac750370b",
+        "0x47686106181b3cefe4eaf94c4c10b48ac750370b"
+      ],
+      "proposer": {
+        "address": "0xb209eed4d80fb47e5c16577e44dad1073c5c5015"
+      },
+      "votes": [],
+      "forWeightedVotes": "0",
+      "againstWeightedVotes": "0",
+      "abstainWeightedVotes": "0",
+      "quorumVotes": "507131123495068804257",
+      "forDelegateVotes": "0",
+      "abstainDelegateVotes": "0",
+      "againstDelegateVotes": "0",
+      "executionTxnHash": null,
+      "governance": {
+        "id": "0xa8ce43762de703d285b019fac8829148e3013442"
+      }
+    }
+  }
+}

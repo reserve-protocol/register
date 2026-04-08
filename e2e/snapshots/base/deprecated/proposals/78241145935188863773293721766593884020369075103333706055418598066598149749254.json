@@ -1,0 +1,56 @@
+{
+  "_meta": {
+    "source": "https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-base/prod/gn",
+    "capturedAt": "2026-04-08T20:31:28.482Z",
+    "dtf": "0x47686106181b3cefe4eaf94c4c10b48ac750370b",
+    "chainId": 8453,
+    "query": "getProposalDetail",
+    "proposalId": "78241145935188863773293721766593884020369075103333706055418598066598149749254"
+  },
+  "data": {
+    "proposal": {
+      "id": "78241145935188863773293721766593884020369075103333706055418598066598149749254",
+      "timelockId": "0xbcbcd47ed05cc4d4df6a3fd59adff112a5b6302097ca490f1bdf1a93212396ea",
+      "description": "Renounce ProxyAdmin ownership for VTF Index DTF",
+      "creationTime": "1773670191",
+      "voteStart": "1773842991",
+      "voteEnd": "1774102191",
+      "queueBlock": "43707727",
+      "queueTime": "1774204801",
+      "state": "EXECUTED",
+      "executionETA": "1774377601",
+      "executionTime": "1774439051",
+      "creationBlock": "43440422",
+      "cancellationTime": null,
+      "calldatas": [
+        "0x715018a6"
+      ],
+      "targets": [
+        "0x7c1faffc7f3a52aa9dbd265e5709202eea3a8a48"
+      ],
+      "proposer": {
+        "address": "0xb209eed4d80fb47e5c16577e44dad1073c5c5015"
+      },
+      "votes": [
+        {
+          "choice": "FOR",
+          "voter": {
+            "address": "0xb209eed4d80fb47e5c16577e44dad1073c5c5015"
+          },
+          "weight": "901081418538281462079"
+        }
+      ],
+      "forWeightedVotes": "901081418538281462079",
+      "againstWeightedVotes": "0",
+      "abstainWeightedVotes": "0",
+      "quorumVotes": "657829139986330893742",
+      "forDelegateVotes": "1",
+      "abstainDelegateVotes": "0",
+      "againstDelegateVotes": "0",
+      "executionTxnHash": "0x71b5553768a5281112dacfda681546ba8e12ca116b52ad87b8c51eb222ac81c9",
+      "governance": {
+        "id": "0xa8ce43762de703d285b019fac8829148e3013442"
+      }
+    }
+  }
+}

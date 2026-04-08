@@ -1,0 +1,56 @@
+{
+  "_meta": {
+    "source": "https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-base/prod/gn",
+    "capturedAt": "2026-04-08T20:31:28.043Z",
+    "dtf": "0x47686106181b3cefe4eaf94c4c10b48ac750370b",
+    "chainId": 8453,
+    "query": "getProposalDetail",
+    "proposalId": "58690251783213005655212814156332023266977544847288263505334462889426185395960"
+  },
+  "data": {
+    "proposal": {
+      "id": "58690251783213005655212814156332023266977544847288263505334462889426185395960",
+      "timelockId": "0xef109fc03293412e7ac7e0f8db8dd1dcd5bca3409a37c614b9d62f484230e376",
+      "description": "# Increase Auction Delay Window\nIncrease Auction Delay Window",
+      "creationTime": "1744063267",
+      "voteStart": "1744236067",
+      "voteEnd": "1744495267",
+      "queueBlock": "28894806",
+      "queueTime": "1744578959",
+      "state": "EXECUTED",
+      "executionETA": "1744751759",
+      "executionTime": "1744804993",
+      "creationBlock": "28636960",
+      "cancellationTime": null,
+      "calldatas": [
+        "0x820bc173000000000000000000000000000000000000000000000000000000000002a300"
+      ],
+      "targets": [
+        "0x47686106181b3cefe4eaf94c4c10b48ac750370b"
+      ],
+      "proposer": {
+        "address": "0x03d03a026e71979be3b08d44b01eae4c5ff9da99"
+      },
+      "votes": [
+        {
+          "choice": "FOR",
+          "voter": {
+            "address": "0xd84e0c72dc2f8363b46d4adfc58bfd82e49222d9"
+          },
+          "weight": "158945032746224720639"
+        }
+      ],
+      "forWeightedVotes": "158945032746224720639",
+      "againstWeightedVotes": "0",
+      "abstainWeightedVotes": "0",
+      "quorumVotes": "157138442547645418612",
+      "forDelegateVotes": "1",
+      "abstainDelegateVotes": "0",
+      "againstDelegateVotes": "0",
+      "executionTxnHash": "0x27069253bb7924ee3c881f4d24a57fa4b89ff96c4eafac944bfcb5ecd52b9378",
+      "governance": {
+        "id": "0xa8ce43762de703d285b019fac8829148e3013442"
+      }
+    }
+  }
+}

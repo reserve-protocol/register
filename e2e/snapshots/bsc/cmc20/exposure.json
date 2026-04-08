@@ -1,0 +1,674 @@
+{
+  "_meta": {
+    "source": "https://api.reserve.org/dtf/exposure?chainId=56&address=0x2f8a339b5889ffac4c5a956787cda593b3c36867&period=7d",
+    "capturedAt": "2026-04-08T20:31:17.994Z",
+    "dtf": "0x2f8a339b5889ffac4c5a956787cda593b3c36867",
+    "chainId": 56
+  },
+  "data": [
+    {
+      "native": {
+        "symbol": "BTC",
+        "name": "Bitcoin",
+        "logo": "https://assets.coingecko.com/coins/images/1/large/bitcoin.png",
+        "caip2": "bip122:000000000019d6689c085ae165831e93",
+        "url": "https://coinmarketcap.com/currencies/bitcoin/",
+        "coingeckoId": "bitcoin"
+      },
+      "tokens": [
+        {
+          "address": "0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c",
+          "symbol": "BTCB",
+          "weight": 70.7,
+          "change": 0.04629947926438521,
+          "marketCap": 4664893297,
+          "bridge": {
+            "id": "bsc_bridge",
+            "name": "BSC Bridge",
+            "url": "https://www.bnbchain.org/en/bridge",
+            "description": "Binance Smart Chain official bridge for cross-chain asset transfers",
+            "logo": "https://assets.coingecko.com/coins/images/825/large/bnb-icon2_2x.png",
+            "risks": [
+              "Centralization risk - Bridge operated by Binance",
+              "Smart contract risk - Bridge contracts could have vulnerabilities",
+              "Liquidity risk - Depends on BSC ecosystem liquidity"
+            ],
+            "wrappedVersion": false
+          }
+        }
+      ],
+      "totalWeight": 70.7,
+      "change": 0.04629947926438521,
+      "hasNewlyAdded": false,
+      "marketCap": 1429503524257
+    },
+    {
+      "native": {
+        "symbol": "ETH",
+        "name": "Ethereum",
+        "logo": "https://assets.coingecko.com/coins/images/279/large/ethereum.png",
+        "caip2": "eip155:1",
+        "url": "https://coinmarketcap.com/currencies/ethereum/",
+        "coingeckoId": "ethereum"
+      },
+      "tokens": [
+        {
+          "address": "0x2170Ed0880ac9A755fd29B2688956BD959F933F8",
+          "symbol": "ETH",
+          "weight": 13.22,
+          "change": 0.030728367916082494,
+          "marketCap": 1339760625,
+          "bridge": {
+            "id": "bsc_bridge",
+            "name": "BSC Bridge",
+            "url": "https://www.bnbchain.org/en/bridge",
+            "description": "Binance Smart Chain official bridge for cross-chain asset transfers",
+            "logo": "https://assets.coingecko.com/coins/images/825/large/bnb-icon2_2x.png",
+            "risks": [
+              "Centralization risk - Bridge operated by Binance",
+              "Smart contract risk - Bridge contracts could have vulnerabilities",
+              "Liquidity risk - Depends on BSC ecosystem liquidity"
+            ],
+            "wrappedVersion": false
+          }
+        }
+      ],
+      "totalWeight": 13.22,
+      "change": 0.030728367916082494,
+      "hasNewlyAdded": false,
+      "marketCap": 267224902690
+    },
+    {
+      "native": {
+        "symbol": "BNB",
+        "name": "BNB",
+        "logo": "https://assets.coingecko.com/coins/images/825/large/bnb-icon2_2x.png",
+        "caip2": "eip155:56",
+        "url": "https://coinmarketcap.com/currencies/bnb/",
+        "coingeckoId": "binancecoin"
+      },
+      "tokens": [
+        {
+          "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+          "symbol": "WBNB",
+          "weight": 4.08,
+          "change": -0.015296788143613857,
+          "marketCap": 1065229736,
+          "bridge": {
+            "id": "native_wrap",
+            "name": "Native Wrapped",
+            "url": "",
+            "description": "Native blockchain wrapped version (e.g., WBTC for BTC, WETH for ETH)",
+            "logo": "",
+            "risks": [
+              "Smart contract risk - Wrapper contracts could have vulnerabilities",
+              "Custodial risk - Underlying assets are held by the wrapper protocol"
+            ],
+            "wrappedVersion": true
+          }
+        }
+      ],
+      "totalWeight": 4.08,
+      "change": -0.015296788143613857,
+      "hasNewlyAdded": false,
+      "marketCap": 82426022217
+    },
+    {
+      "native": {
+        "symbol": "XRP",
+        "name": "XRP",
+        "logo": "https://assets.coingecko.com/coins/images/44/large/xrp-symbol-white-128.png",
+        "caip2": "xrpl:mainnet",
+        "url": "https://coinmarketcap.com/currencies/xrp/",
+        "coingeckoId": "ripple"
+      },
+      "tokens": [
+        {
+          "address": "0x1D2F0da169ceB9fC7B3144628dB156f3F6c60dBE",
+          "symbol": "XRP",
+          "weight": 4.11,
+          "change": -0.00040904374135544887,
+          "marketCap": 440786794,
+          "bridge": {
+            "id": "bsc_bridge",
+            "name": "BSC Bridge",
+            "url": "https://www.bnbchain.org/en/bridge",
+            "description": "Binance Smart Chain official bridge for cross-chain asset transfers",
+            "logo": "https://assets.coingecko.com/coins/images/825/large/bnb-icon2_2x.png",
+            "risks": [
+              "Centralization risk - Bridge operated by Binance",
+              "Smart contract risk - Bridge contracts could have vulnerabilities",
+              "Liquidity risk - Depends on BSC ecosystem liquidity"
+            ],
+            "wrappedVersion": false
+          }
+        }
+      ],
+      "totalWeight": 4.11,
+      "change": -0.00040904374135544887,
+      "hasNewlyAdded": false,
+      "marketCap": 82898930458
+    },
+    {
+      "native": {
+        "symbol": "SOL",
+        "name": "Solana",
+        "logo": "https://assets.coingecko.com/coins/images/4128/large/solana.png",
+        "caip2": "solana:mainnet",
+        "url": "https://coinmarketcap.com/currencies/solana/",
+        "coingeckoId": "solana"
+      },
+      "tokens": [
+        {
+          "address": "0x570A5D26f7765Ecb712C0924E4De545B89fD43dF",
+          "symbol": "SOL",
+          "weight": 2.36,
+          "change": -0.009110120428132279,
+          "marketCap": 91531951,
+          "bridge": {
+            "id": "bsc_bridge",
+            "name": "BSC Bridge",
+            "url": "https://www.bnbchain.org/en/bridge",
+            "description": "Binance Smart Chain official bridge for cross-chain asset transfers",
+            "logo": "https://assets.coingecko.com/coins/images/825/large/bnb-icon2_2x.png",
+            "risks": [
+              "Centralization risk - Bridge operated by Binance",
+              "Smart contract risk - Bridge contracts could have vulnerabilities",
+              "Liquidity risk - Depends on BSC ecosystem liquidity"
+            ],
+            "wrappedVersion": false
+          }
+        }
+      ],
+      "totalWeight": 2.36,
+      "change": -0.009110120428132279,
+      "hasNewlyAdded": false,
+      "marketCap": 47775538048
+    },
+    {
+      "native": {
+        "symbol": "TRX",
+        "name": "TRON",
+        "logo": "https://assets.coingecko.com/coins/images/1094/standard/tron-logo.png?1696502193",
+        "caip2": "tron:mainnet",
+        "url": "https://coinmarketcap.com/currencies/tron/",
+        "coingeckoId": "tron"
+      },
+      "tokens": [
+        {
+          "address": "0xCE7de646e7208a4Ef112cb6ed5038FA6cC6b12e3",
+          "symbol": "TRX",
+          "weight": 1.49,
+          "change": 0.007676523813342341,
+          "marketCap": 93975563,
+          "bridge": {
+            "id": "bsc_bridge",
+            "name": "BSC Bridge",
+            "url": "https://www.bnbchain.org/en/bridge",
+            "description": "Binance Smart Chain official bridge for cross-chain asset transfers",
+            "logo": "https://assets.coingecko.com/coins/images/825/large/bnb-icon2_2x.png",
+            "risks": [
+              "Centralization risk - Bridge operated by Binance",
+              "Smart contract risk - Bridge contracts could have vulnerabilities",
+              "Liquidity risk - Depends on BSC ecosystem liquidity"
+            ],
+            "wrappedVersion": false
+          }
+        }
+      ],
+      "totalWeight": 1.49,
+      "change": 0.007676523813342341,
+      "hasNewlyAdded": false,
+      "marketCap": 30121332670
+    },
+    {
+      "native": {
+        "symbol": "DOGE",
+        "name": "Dogecoin",
+        "logo": "https://assets.coingecko.com/coins/images/5/large/dogecoin.png",
+        "caip2": "dogecoin:mainnet",
+        "url": "https://coinmarketcap.com/currencies/dogecoin/",
+        "coingeckoId": "dogecoin"
+      },
+      "tokens": [
+        {
+          "address": "0xbA2aE424d960c26247Dd6c32edC70B295c744C43",
+          "symbol": "DOGE",
+          "weight": 0.71,
+          "change": 0.0025828764439569524,
+          "marketCap": 238875515,
+          "bridge": {
+            "id": "bsc_bridge",
+            "name": "BSC Bridge",
+            "url": "https://www.bnbchain.org/en/bridge",
+            "description": "Binance Smart Chain official bridge for cross-chain asset transfers",
+            "logo": "https://assets.coingecko.com/coins/images/825/large/bnb-icon2_2x.png",
+            "risks": [
+              "Centralization risk - Bridge operated by Binance",
+              "Smart contract risk - Bridge contracts could have vulnerabilities",
+              "Liquidity risk - Depends on BSC ecosystem liquidity"
+            ],
+            "wrappedVersion": false
+          }
+        }
+      ],
+      "totalWeight": 0.71,
+      "change": 0.0025828764439569524,
+      "hasNewlyAdded": false,
+      "marketCap": 14317399816
+    },
+    {
+      "native": {
+        "symbol": "ADA",
+        "name": "Cardano",
+        "logo": "https://assets.coingecko.com/coins/images/975/large/cardano.png",
+        "caip2": "cardano:mainnet",
+        "url": "https://coinmarketcap.com/currencies/cardano/",
+        "coingeckoId": "cardano"
+      },
+      "tokens": [
+        {
+          "address": "0x3EE2200Efb3400fAbB9AacF31297cBdD1d435D47",
+          "symbol": "ADA",
+          "weight": 0.45,
+          "change": 0.012757157520352738,
+          "marketCap": 114422798,
+          "bridge": {
+            "id": "bsc_bridge",
+            "name": "BSC Bridge",
+            "url": "https://www.bnbchain.org/en/bridge",
+            "description": "Binance Smart Chain official bridge for cross-chain asset transfers",
+            "logo": "https://assets.coingecko.com/coins/images/825/large/bnb-icon2_2x.png",
+            "risks": [
+              "Centralization risk - Bridge operated by Binance",
+              "Smart contract risk - Bridge contracts could have vulnerabilities",
+              "Liquidity risk - Depends on BSC ecosystem liquidity"
+            ],
+            "wrappedVersion": false
+          }
+        }
+      ],
+      "totalWeight": 0.45,
+      "change": 0.012757157520352738,
+      "hasNewlyAdded": false,
+      "marketCap": 9317684553
+    },
+    {
+      "native": {
+        "symbol": "HYPE",
+        "name": "Hyperliquid",
+        "logo": "https://assets.coingecko.com/coins/images/50882/standard/hyperliquid.jpg?1729431300",
+        "caip2": "hyperliquid:mainnet",
+        "url": "https://coinmarketcap.com/currencies/hyperliquid/",
+        "coingeckoId": "hyperliquid"
+      },
+      "tokens": [
+        {
+          "address": "0xAeD86A53A8f3DbBa4FB6aE7A5f65f337c606bf28",
+          "symbol": "HYPE",
+          "weight": 0.48,
+          "change": 0.050351499008292035,
+          "marketCap": 138869,
+          "bridge": {
+            "id": "celer",
+            "name": "Celer cBridge",
+            "url": "https://cbridge.celer.network/",
+            "description": "Cross-chain bridge built on the Celer State Guardian Network, enabling fast and low-cost token transfers across multiple blockchains.",
+            "logo": "https://storage.reserve.org/celer.svg",
+            "risks": [
+              "Smart contract risk - Bridge security depends on audited but complex smart contracts",
+              "Validator risk - Relies on the State Guardian Network validators for message verification",
+              "Liquidity risk - Transfer speed and success depend on available liquidity across chains"
+            ],
+            "wrappedVersion": false
+          }
+        }
+      ],
+      "totalWeight": 0.48,
+      "change": 0.050351499008292035,
+      "hasNewlyAdded": false,
+      "marketCap": 9087055911
+    },
+    {
+      "native": {
+        "symbol": "LINK",
+        "name": "Chainlink",
+        "logo": "https://assets.coingecko.com/coins/images/877/large/chainlink-new-logo.png",
+        "caip2": "eip155:1",
+        "address": "0x514910771af9ca656af840dff83e8264ecf986ca",
+        "url": "https://coinmarketcap.com/currencies/chainlink/",
+        "coingeckoId": "chainlink"
+      },
+      "tokens": [
+        {
+          "address": "0xF8A0BF9cF54Bb92F17374d9e9A321E6a111a51bD",
+          "symbol": "LINK",
+          "weight": 0.32,
+          "change": -0.0034652505416403736,
+          "marketCap": 6533842242,
+          "bridge": {
+            "id": "bsc_bridge",
+            "name": "BSC Bridge",
+            "url": "https://www.bnbchain.org/en/bridge",
+            "description": "Binance Smart Chain official bridge for cross-chain asset transfers",
+            "logo": "https://assets.coingecko.com/coins/images/825/large/bnb-icon2_2x.png",
+            "risks": [
+              "Centralization risk - Bridge operated by Binance",
+              "Smart contract risk - Bridge contracts could have vulnerabilities",
+              "Liquidity risk - Depends on BSC ecosystem liquidity"
+            ],
+            "wrappedVersion": false
+          }
+        }
+      ],
+      "totalWeight": 0.32,
+      "change": -0.0034652505416403736,
+      "hasNewlyAdded": false,
+      "marketCap": 6533842242
+    },
+    {
+      "native": {
+        "symbol": "XLM",
+        "name": "Stellar",
+        "logo": "https://assets.coingecko.com/coins/images/100/large/Stellar_symbol_black_RGB.png",
+        "caip2": "stellar:public",
+        "url": "https://coinmarketcap.com/currencies/stellar/",
+        "coingeckoId": "stellar"
+      },
+      "tokens": [
+        {
+          "address": "0x43C934A845205F0b514417d757d7235B8f53f1B9",
+          "symbol": "XLM",
+          "weight": 0.26,
+          "change": -0.07379167299796523,
+          "marketCap": 4806381,
+          "bridge": {
+            "id": "bsc_bridge",
+            "name": "BSC Bridge",
+            "url": "https://www.bnbchain.org/en/bridge",
+            "description": "Binance Smart Chain official bridge for cross-chain asset transfers",
+            "logo": "https://assets.coingecko.com/coins/images/825/large/bnb-icon2_2x.png",
+            "risks": [
+              "Centralization risk - Bridge operated by Binance",
+              "Smart contract risk - Bridge contracts could have vulnerabilities",
+              "Liquidity risk - Depends on BSC ecosystem liquidity"
+            ],
+            "wrappedVersion": false
+          }
+        }
+      ],
+      "totalWeight": 0.26,
+      "change": -0.07379167299796523,
+      "hasNewlyAdded": false,
+      "marketCap": 5235349375
+    },
+    {
+      "native": {
+        "symbol": "BCH",
+        "name": "Bitcoin Cash",
+        "logo": "https://assets.coingecko.com/coins/images/780/large/bitcoin-cash-circle.png",
+        "caip2": "bitcoincash:mainnet",
+        "url": "https://coinmarketcap.com/currencies/bitcoin-cash/",
+        "coingeckoId": "bitcoin-cash"
+      },
+      "tokens": [
+        {
+          "address": "0x8fF795a6F4D97E7887C79beA79aba5cc76444aDf",
+          "symbol": "BCH",
+          "weight": 0.44,
+          "change": -0.028321366313908337,
+          "marketCap": 42900062,
+          "bridge": {
+            "id": "bsc_bridge",
+            "name": "BSC Bridge",
+            "url": "https://www.bnbchain.org/en/bridge",
+            "description": "Binance Smart Chain official bridge for cross-chain asset transfers",
+            "logo": "https://assets.coingecko.com/coins/images/825/large/bnb-icon2_2x.png",
+            "risks": [
+              "Centralization risk - Bridge operated by Binance",
+              "Smart contract risk - Bridge contracts could have vulnerabilities",
+              "Liquidity risk - Depends on BSC ecosystem liquidity"
+            ],
+            "wrappedVersion": false
+          }
+        }
+      ],
+      "totalWeight": 0.44,
+      "change": -0.028321366313908337,
+      "hasNewlyAdded": false,
+      "marketCap": 8869007835
+    },
+    {
+      "native": {
+        "symbol": "SUI",
+        "name": "Sui",
+        "logo": "https://assets.coingecko.com/coins/images/26375/standard/sui-ocean-square.png?1727791290",
+        "caip2": "sui:mainnet",
+        "url": "https://coinmarketcap.com/currencies/sui/",
+        "coingeckoId": "sui"
+      },
+      "tokens": [
+        {
+          "address": "0xd57f2e190C11cffc667AA5aD026Cd4C8DE0772a7",
+          "symbol": "SUI",
+          "weight": 0.18,
+          "change": 0.030877935896444914,
+          "marketCap": 828459,
+          "bridge": {
+            "id": "bsc_bridge",
+            "name": "BSC Bridge",
+            "url": "https://www.bnbchain.org/en/bridge",
+            "description": "Binance Smart Chain official bridge for cross-chain asset transfers",
+            "logo": "https://assets.coingecko.com/coins/images/825/large/bnb-icon2_2x.png",
+            "risks": [
+              "Centralization risk - Bridge operated by Binance",
+              "Smart contract risk - Bridge contracts could have vulnerabilities",
+              "Liquidity risk - Depends on BSC ecosystem liquidity"
+            ],
+            "wrappedVersion": false
+          }
+        }
+      ],
+      "totalWeight": 0.18,
+      "change": 0.030877935896444914,
+      "hasNewlyAdded": false,
+      "marketCap": 3639929901
+    },
+    {
+      "native": {
+        "symbol": "AVAX",
+        "name": "Avalanche",
+        "logo": "https://assets.coingecko.com/coins/images/12559/large/coin-round-red.png",
+        "caip2": "eip155:43114",
+        "url": "https://coinmarketcap.com/currencies/avalanche/",
+        "coingeckoId": "avalanche-2"
+      },
+      "tokens": [
+        {
+          "address": "0x1CE0c2827e2eF14D5C4f29a091d735A204794041",
+          "symbol": "AVAX",
+          "weight": 0.2,
+          "change": 0.001507170551297613,
+          "marketCap": 18396910,
+          "bridge": {
+            "id": "bsc_bridge",
+            "name": "BSC Bridge",
+            "url": "https://www.bnbchain.org/en/bridge",
+            "description": "Binance Smart Chain official bridge for cross-chain asset transfers",
+            "logo": "https://assets.coingecko.com/coins/images/825/large/bnb-icon2_2x.png",
+            "risks": [
+              "Centralization risk - Bridge operated by Binance",
+              "Smart contract risk - Bridge contracts could have vulnerabilities",
+              "Liquidity risk - Depends on BSC ecosystem liquidity"
+            ],
+            "wrappedVersion": false
+          }
+        }
+      ],
+      "totalWeight": 0.2,
+      "change": 0.001507170551297613,
+      "hasNewlyAdded": false,
+      "marketCap": 3958063135
+    },
+    {
+      "native": {
+        "symbol": "HBAR",
+        "name": "Hedera",
+        "logo": "https://assets.coingecko.com/coins/images/3688/large/hbar.png",
+        "caip2": "hedera:mainnet",
+        "url": "https://coinmarketcap.com/currencies/hedera/",
+        "coingeckoId": "hedera-hashgraph"
+      },
+      "tokens": [
+        {
+          "address": "0x0422f966Bf8E978075a97D47eF4c7EFd3563Fa51",
+          "symbol": "HBAR",
+          "weight": 0.19,
+          "change": -0.0005836171005285952,
+          "marketCap": 1542553,
+          "bridge": {
+            "id": "bsc_bridge",
+            "name": "BSC Bridge",
+            "url": "https://www.bnbchain.org/en/bridge",
+            "description": "Binance Smart Chain official bridge for cross-chain asset transfers",
+            "logo": "https://assets.coingecko.com/coins/images/825/large/bnb-icon2_2x.png",
+            "risks": [
+              "Centralization risk - Bridge operated by Binance",
+              "Smart contract risk - Bridge contracts could have vulnerabilities",
+              "Liquidity risk - Depends on BSC ecosystem liquidity"
+            ],
+            "wrappedVersion": false
+          }
+        }
+      ],
+      "totalWeight": 0.19,
+      "change": -0.0005836171005285952,
+      "hasNewlyAdded": false,
+      "marketCap": 3863556922
+    },
+    {
+      "native": {
+        "symbol": "LTC",
+        "name": "Litecoin",
+        "logo": "https://assets.coingecko.com/coins/images/2/large/litecoin.png",
+        "caip2": "litecoin:mainnet",
+        "url": "https://coinmarketcap.com/currencies/litecoin/",
+        "coingeckoId": "litecoin"
+      },
+      "tokens": [
+        {
+          "address": "0x4338665CBB7B2485A8855A139b75D5e34AB0DB94",
+          "symbol": "LTC",
+          "weight": 0.2,
+          "change": 0.001584338716373301,
+          "marketCap": 40470186,
+          "bridge": {
+            "id": "bsc_bridge",
+            "name": "BSC Bridge",
+            "url": "https://www.bnbchain.org/en/bridge",
+            "description": "Binance Smart Chain official bridge for cross-chain asset transfers",
+            "logo": "https://assets.coingecko.com/coins/images/825/large/bnb-icon2_2x.png",
+            "risks": [
+              "Centralization risk - Bridge operated by Binance",
+              "Smart contract risk - Bridge contracts could have vulnerabilities",
+              "Liquidity risk - Depends on BSC ecosystem liquidity"
+            ],
+            "wrappedVersion": false
+          }
+        }
+      ],
+      "totalWeight": 0.2,
+      "change": 0.001584338716373301,
+      "hasNewlyAdded": false,
+      "marketCap": 4184460251
+    },
+    {
+      "native": {
+        "symbol": "SHIB",
+        "name": "Shiba Inu",
+        "logo": "https://assets.coingecko.com/coins/images/11939/large/shiba.png",
+        "caip2": "eip155:1",
+        "url": "https://coinmarketcap.com/currencies/shiba-inu/",
+        "coingeckoId": "shiba-inu"
+      },
+      "tokens": [
+        {
+          "address": "0x2859e4544C4bB03966803b044A93563Bd2D0DD4D",
+          "symbol": "SHIB",
+          "weight": 0.17,
+          "change": -0.009458059469687159,
+          "marketCap": 55314742,
+          "bridge": {
+            "id": "bsc_bridge",
+            "name": "BSC Bridge",
+            "url": "https://www.bnbchain.org/en/bridge",
+            "description": "Binance Smart Chain official bridge for cross-chain asset transfers",
+            "logo": "https://assets.coingecko.com/coins/images/825/large/bnb-icon2_2x.png",
+            "risks": [
+              "Centralization risk - Bridge operated by Binance",
+              "Smart contract risk - Bridge contracts could have vulnerabilities",
+              "Liquidity risk - Depends on BSC ecosystem liquidity"
+            ],
+            "wrappedVersion": false
+          }
+        }
+      ],
+      "totalWeight": 0.17,
+      "change": -0.009458059469687159,
+      "hasNewlyAdded": false,
+      "marketCap": 3520671919
+    },
+    {
+      "native": null,
+      "tokens": [
+        {
+          "address": "0x812F2f9906c2Eba046a05601711d8e8EF39cdB77",
+          "symbol": "wTAO",
+          "weight": 0.18,
+          "change": 0,
+          "marketCap": 39960
+        }
+      ],
+      "totalWeight": 0.18,
+      "change": 0,
+      "hasNewlyAdded": true,
+      "marketCap": 39960
+    },
+    {
+      "native": {
+        "symbol": "ZEC",
+        "name": "Zcash",
+        "logo": "https://assets.coingecko.com/coins/images/486/large/circle-zcash-color.png",
+        "caip2": "zcash:mainnet",
+        "url": "https://coinmarketcap.com/currencies/zcash/",
+        "coingeckoId": "zcash"
+      },
+      "tokens": [
+        {
+          "address": "0x1Ba42e5193dfA8B03D15dd1B86a3113bbBEF8Eeb",
+          "symbol": "ZEC",
+          "weight": 0.26,
+          "change": 0.28416243062980434,
+          "marketCap": 39046070,
+          "bridge": {
+            "id": "bsc_bridge",
+            "name": "BSC Bridge",
+            "url": "https://www.bnbchain.org/en/bridge",
+            "description": "Binance Smart Chain official bridge for cross-chain asset transfers",
+            "logo": "https://assets.coingecko.com/coins/images/825/large/bnb-icon2_2x.png",
+            "risks": [
+              "Centralization risk - Bridge operated by Binance",
+              "Smart contract risk - Bridge contracts could have vulnerabilities",
+              "Liquidity risk - Depends on BSC ecosystem liquidity"
+            ],
+            "wrappedVersion": false
+          }
+        }
+      ],
+      "totalWeight": 0.26,
+      "change": 0.28416243062980434,
+      "hasNewlyAdded": false,
+      "marketCap": 5410068965
+    }
+  ]
+}

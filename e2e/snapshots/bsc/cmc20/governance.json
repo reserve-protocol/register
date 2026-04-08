@@ -1,0 +1,279 @@
+{
+  "_meta": {
+    "source": "https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-bsc/prod/gn",
+    "capturedAt": "2026-04-08T20:31:18.583Z",
+    "dtf": "0x2f8a339b5889ffac4c5a956787cda593b3c36867",
+    "chainId": 56,
+    "query": "getGovernanceStats"
+  },
+  "data": {
+    "governances": [
+      {
+        "id": "0x12940889e849012c633f47ba8925bbee4ee96d45",
+        "proposals": [
+          {
+            "id": "100494821337414379311373500756008562824516816764677786702316513256347665638382",
+            "description": "# Swap Wrapped TONCOIN Basket Component \n []() \n Swap wrapped TONCOIN basket component",
+            "creationTime": "1763005163",
+            "state": "EXECUTED",
+            "forWeightedVotes": "1000000000000000000000",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "0",
+            "executionETA": "1763193238",
+            "executionTime": "1763198811",
+            "quorumVotes": "100000000000000000000",
+            "voteStart": "1763012363",
+            "voteEnd": "1763091563",
+            "executionBlock": "68263624",
+            "creationBlock": "68005509",
+            "proposer": {
+              "address": "0xb209eed4d80fb47e5c16577e44dad1073c5c5015"
+            }
+          },
+          {
+            "id": "109526748442703946698466989593652130505546993742296077897743678789317355022308",
+            "description": "# CMC20 February 2026 Rebalance \n [CMC20 February 2026 Rebalance](CMC20 February 2026 Rebalance) \n CMC20 February 2026 Rebalance",
+            "creationTime": "1769916337",
+            "state": "EXECUTED",
+            "forWeightedVotes": "14413788646483245583751548",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "0",
+            "executionETA": "1770100892",
+            "executionTime": "1770120162",
+            "quorumVotes": "8376165507738038619134005",
+            "voteStart": "1769923537",
+            "voteEnd": "1770002737",
+            "executionBlock": "79054925",
+            "creationBlock": "78602043",
+            "proposer": {
+              "address": "0x36afca412629c96afc4069ce9dbc764a4a1e3913"
+            }
+          },
+          {
+            "id": "113109332752006692543771239557549021578408654329175001872792801949199467383021",
+            "description": "# CMC20 January 2026 Rebalance \n []() \n CMC20 January 2026 Rebalance",
+            "creationTime": "1767301759",
+            "state": "EXECUTED",
+            "forWeightedVotes": "20695391011317685916871158",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "0",
+            "executionETA": "1767536456",
+            "executionTime": "1767613127",
+            "quorumVotes": "12561751959990560420982696",
+            "voteStart": "1767308959",
+            "voteEnd": "1767388159",
+            "executionBlock": "74147795",
+            "creationBlock": "73732680",
+            "proposer": {
+              "address": "0x03d03a026e71979be3b08d44b01eae4c5ff9da99"
+            }
+          },
+          {
+            "id": "113753649721255451676546048847497170489935959195110663563903991683298434175766",
+            "description": "# CMC20 December 2025 Rebalance \n []() \n CMC20 December 2025 Rebalance\n\nNew Tokens: WLFI\nRemoved Token: CRO",
+            "creationTime": "1764549589",
+            "state": "EXECUTED",
+            "forWeightedVotes": "9590662298487230000006707",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "0",
+            "executionETA": "1764729183",
+            "executionTime": "1764772952",
+            "quorumVotes": "5626749697136075610393464",
+            "voteStart": "1764556789",
+            "voteEnd": "1764635989",
+            "executionBlock": "70361896",
+            "creationBlock": "70064120",
+            "proposer": {
+              "address": "0xb209eed4d80fb47e5c16577e44dad1073c5c5015"
+            }
+          },
+          {
+            "id": "114485163268442304137012988474744284480913559177019253683680744725619259090419",
+            "description": "# March 2026 Rebalance \n []() \n March 2026 Rebalance",
+            "creationTime": "1772403081",
+            "state": "EXECUTED",
+            "forWeightedVotes": "21210286141979265583751548",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "0",
+            "executionETA": "1772576603",
+            "executionTime": "1772628447",
+            "quorumVotes": "13354011739648464677193905",
+            "voteStart": "1772410281",
+            "voteEnd": "1772489481",
+            "executionBlock": "84627470",
+            "creationBlock": "84126737",
+            "proposer": {
+              "address": "0x03d03a026e71979be3b08d44b01eae4c5ff9da99"
+            }
+          },
+          {
+            "id": "59089840633160367498874457336294345991319640752918855383516517115935982880257",
+            "description": "# CMC November 2025 Rebalance \n []() \n CMC November 2025 Rebalance",
+            "creationTime": "1761957401",
+            "state": "EXECUTED",
+            "forWeightedVotes": "1000000000000000000000",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "0",
+            "executionETA": "1762188555",
+            "executionTime": "1762195463",
+            "quorumVotes": "100000000000000000000",
+            "voteStart": "1761964601",
+            "voteEnd": "1762043801",
+            "executionBlock": "66926033",
+            "creationBlock": "66608655",
+            "proposer": {
+              "address": "0xb209eed4d80fb47e5c16577e44dad1073c5c5015"
+            }
+          },
+          {
+            "id": "69988937886725841490977944862836118119711984584085698611272945341911179131316",
+            "description": "# Update Wrapped TONCOIN Basket Component \n []() \n Update wrapped TONCOIN basket component",
+            "creationTime": "1762997880",
+            "state": "ACTIVE",
+            "forWeightedVotes": "0",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "1000000000000000000000",
+            "executionETA": null,
+            "executionTime": null,
+            "quorumVotes": "100000000000000000000",
+            "voteStart": "1763005080",
+            "voteEnd": "1763084280",
+            "executionBlock": null,
+            "creationBlock": "67995799",
+            "proposer": {
+              "address": "0xb209eed4d80fb47e5c16577e44dad1073c5c5015"
+            }
+          },
+          {
+            "id": "79884735814719970763427079505181460791275464959810542061521368023149028164763",
+            "description": "# April 2026 Rebalance \n []() \n April 2026 Rebalance",
+            "creationTime": "1775003652",
+            "state": "EXECUTED",
+            "forWeightedVotes": "21523972680987630941615137",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "0",
+            "executionETA": "1775179889",
+            "executionTime": "1775219658",
+            "quorumVotes": "21023470983455022458820172",
+            "voteStart": "1775010852",
+            "voteEnd": "1775090052",
+            "executionBlock": "90378067",
+            "creationBlock": "89898665",
+            "proposer": {
+              "address": "0x03d03a026e71979be3b08d44b01eae4c5ff9da99"
+            }
+          }
+        ],
+        "proposalCount": "8"
+      },
+      {
+        "id": "0x3d047abc5b95bc9989904c557789c1bcf3057d99",
+        "proposals": [
+          {
+            "id": "63558739590933716626332014208660253834519398753537422095983522196071635994941",
+            "description": "# Add CMC20 as Revenue Token for vlDAO \n []() \n Add CMC20 as Revenue Token for vlRSR-CMC20 DAO",
+            "creationTime": "1761943847",
+            "state": "PENDING",
+            "forWeightedVotes": "0",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "0",
+            "executionETA": null,
+            "executionTime": null,
+            "quorumVotes": "100000000000000000000",
+            "voteStart": "1762116647",
+            "voteEnd": "1762375847",
+            "executionBlock": null,
+            "creationBlock": "66590583",
+            "proposer": {
+              "address": "0xb209eed4d80fb47e5c16577e44dad1073c5c5015"
+            }
+          },
+          {
+            "id": "72998511073209140169695856282864906685657971422669560258060551757392694198717",
+            "description": "# Approve CMC20 as Revenue Token to be Claimed by vlDAO \n []() \n Approve CMC20 as a revenue token for vlDAO",
+            "creationTime": "1762458373",
+            "state": "EXECUTED",
+            "forWeightedVotes": "1000000000000000000000",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "0",
+            "executionETA": "1763151142",
+            "executionTime": "1763152100",
+            "quorumVotes": "100000000000000000000",
+            "voteStart": "1762631173",
+            "voteEnd": "1762890373",
+            "executionBlock": "68201347",
+            "creationBlock": "67276537",
+            "proposer": {
+              "address": "0xb209eed4d80fb47e5c16577e44dad1073c5c5015"
+            }
+          }
+        ],
+        "proposalCount": "2"
+      },
+      {
+        "id": "0x6304135c135da8553d66b0065c8a7c3b0d16c1e8",
+        "proposals": [],
+        "proposalCount": "0"
+      }
+    ],
+    "stakingToken": {
+      "id": "0xede6a014caa31e23e9d8c345c022101477a91292",
+      "totalDelegates": "60",
+      "token": {
+        "totalSupply": "225762091083339590148587660"
+      },
+      "delegates": [
+        {
+          "address": "0x6774db46ff94ff6bc70a5f69c438a3630ee52e68",
+          "delegatedVotes": "35704814.05206276",
+          "numberVotes": 0
+        },
+        {
+          "address": "0xc1ee3dd75c2a0582e0a9264c1429a063c9cb045f",
+          "delegatedVotes": "34615743.97155325",
+          "numberVotes": 0
+        },
+        {
+          "address": "0x5188dbf722df94569d41f3c8a32e6b76939a0ad5",
+          "delegatedVotes": "23531442.423426104990246119",
+          "numberVotes": 0
+        },
+        {
+          "address": "0xad704b7ec2dadef0d061d0379418f3e60e8f1d27",
+          "delegatedVotes": "15975508.40645789",
+          "numberVotes": 0
+        },
+        {
+          "address": "0x03d03a026e71979be3b08d44b01eae4c5ff9da99",
+          "delegatedVotes": "15367174.158314928965540169",
+          "numberVotes": 3
+        },
+        {
+          "address": "0x04f6980cbec49220e8bd380e89e962f9e5cf50fc",
+          "delegatedVotes": "15007018.67268904",
+          "numberVotes": 0
+        },
+        {
+          "address": "0x4f3beac0277a9e80fc49d2d60a0849fcdd62ed35",
+          "delegatedVotes": "12356955.30369656",
+          "numberVotes": 0
+        },
+        {
+          "address": "0x4651b2e464e94c730725f3d5b2737418e2e5fd32",
+          "delegatedVotes": "9589333.36769229",
+          "numberVotes": 0
+        },
+        {
+          "address": "0x6580d7addf982c5c293f35f2079d6b3e21888d18",
+          "delegatedVotes": "8579493.014494954744313333",
+          "numberVotes": 0
+        },
+        {
+          "address": "0x49b4564cb533e092d43c628386258f0b78d86c52",
+          "delegatedVotes": "8518178.3945",
+          "numberVotes": 3
+        }
+      ]
+    }
+  }
+}

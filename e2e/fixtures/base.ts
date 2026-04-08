@@ -32,15 +32,6 @@ export const test = base.extend<{ autoMock: void }>({
         })
       })
 
-      // Merkl campaign API — prevents real network calls from overview page
-      await page.route('**/api.merkl.xyz/**', (route) => {
-        route.fulfill({
-          status: 200,
-          contentType: 'application/json',
-          body: JSON.stringify([]),
-        })
-      })
-
       // Block Sentry error reporting during tests
       await page.route('**/sentry.io/**', (route) => route.abort())
       await page.route('**/api.mixpanel.com/**', (route) => route.abort())

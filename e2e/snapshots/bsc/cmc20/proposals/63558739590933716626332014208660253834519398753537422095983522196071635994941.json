@@ -1,0 +1,48 @@
+{
+  "_meta": {
+    "source": "https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-bsc/prod/gn",
+    "capturedAt": "2026-04-08T20:31:19.534Z",
+    "dtf": "0x2f8a339b5889ffac4c5a956787cda593b3c36867",
+    "chainId": 56,
+    "query": "getProposalDetail",
+    "proposalId": "63558739590933716626332014208660253834519398753537422095983522196071635994941"
+  },
+  "data": {
+    "proposal": {
+      "id": "63558739590933716626332014208660253834519398753537422095983522196071635994941",
+      "timelockId": null,
+      "description": "# Add CMC20 as Revenue Token for vlDAO \n []() \n Add CMC20 as Revenue Token for vlRSR-CMC20 DAO",
+      "creationTime": "1761943847",
+      "voteStart": "1762116647",
+      "voteEnd": "1762375847",
+      "queueBlock": null,
+      "queueTime": null,
+      "state": "PENDING",
+      "executionETA": null,
+      "executionTime": null,
+      "creationBlock": "66590583",
+      "cancellationTime": null,
+      "calldatas": [
+        "0x1c03e6cc0000000000000000000000002f8a339b5889ffac4c5a956787cda593b3c36867"
+      ],
+      "targets": [
+        "0xede6a014caa31e23e9d8c345c022101477a91292"
+      ],
+      "proposer": {
+        "address": "0xb209eed4d80fb47e5c16577e44dad1073c5c5015"
+      },
+      "votes": [],
+      "forWeightedVotes": "0",
+      "againstWeightedVotes": "0",
+      "abstainWeightedVotes": "0",
+      "quorumVotes": "100000000000000000000",
+      "forDelegateVotes": "0",
+      "abstainDelegateVotes": "0",
+      "againstDelegateVotes": "0",
+      "executionTxnHash": null,
+      "governance": {
+        "id": "0x3d047abc5b95bc9989904c557789c1bcf3057d99"
+      }
+    }
+  }
+}

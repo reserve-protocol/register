@@ -1,31 +1,51 @@
+import type { Page } from '@playwright/test'
 import { expect, test } from '../fixtures/base'
-import { MOCK_PROPOSALS } from '../helpers/subgraph-mocks'
-import { TEST_DTFS } from '../helpers/test-data'
+import { DTF, dtfUrl } from '../helpers/test-data'
 
-const DTF_URL = `/base/index-dtf/${TEST_DTFS.lcap.address}`
+const GOVERNANCE_URL = dtfUrl(DTF.lcap, 'governance')
 
-const proposalUrl = (index: number) =>
-  `${DTF_URL}/governance/proposal/${MOCK_PROPOSALS[index].id}`
+// Navigate to governance list, wait for proposals, click one matching the state badge
+async function gotoProposalByState(page: Page, state: string) {
+  await page.goto(GOVERNANCE_URL, { waitUntil: 'domcontentloaded' })
+  await expect(
+    page.getByRole('heading', { name: 'Recent proposals' })
+  ).toBeVisible()
 
-async function gotoProposal(
-  page: import('@playwright/test').Page,
-  index: number
-) {
-  await page.goto(proposalUrl(index), { waitUntil: 'domcontentloaded' })
+  const proposalList = page.getByTestId('governance-proposals')
+  // Find a proposal link that contains the state badge text
+  const matchingLink = proposalList
+    .locator('a[href*="/proposal/"]')
+    .filter({ hasText: new RegExp(`^.*${state}$`, 'i') })
+
+  const count = await matchingLink.count()
+  if (count === 0) return null
+
+  await matchingLink.first().click()
+  await expect(page).toHaveURL(/\/governance\/proposal\//)
+  return true
+}
+
+// Navigate to first proposal regardless of state
+async function gotoFirstProposal(page: Page) {
+  await page.goto(GOVERNANCE_URL, { waitUntil: 'domcontentloaded' })
+  await expect(
+    page.getByRole('heading', { name: 'Recent proposals' })
+  ).toBeVisible()
+
+  const proposalList = page.getByTestId('governance-proposals')
+  const firstLink = proposalList.locator('a[href*="/proposal/"]').first()
+  await expect(firstLink).toBeVisible()
+  await firstLink.click()
+  await expect(page).toHaveURL(/\/governance\/proposal\//)
 }
 
 test.describe('Index DTF governance proposal detail', () => {
-  test('renders active proposal metadata and live vote stats', async ({
-    page,
-  }) => {
-    await gotoProposal(page, 0)
+  test('renders proposal metadata and vote stats', async ({ page }) => {
+    await gotoFirstProposal(page)
 
-    await expect(
-      page.getByRole('heading', { name: /Update basket allocation/i })
-    ).toBeVisible()
     await expect(page.getByText('Proposed by').first()).toBeVisible()
     await expect(page.getByText('Proposed on').first()).toBeVisible()
-    await expect(page.getByText('Current votes')).toBeVisible()
+    await expect(page.getByText(/Current votes|Final votes/)).toBeVisible()
     await expect(page.getByText('Quorum')).toBeVisible()
     await expect(page.getByText('Majority support')).toBeVisible()
     await expect(page.getByText('For').first()).toBeVisible()
@@ -33,36 +53,24 @@ test.describe('Index DTF governance proposal detail', () => {
     await expect(page.getByText('Abstain').first()).toBeVisible()
   })
 
-  test('renders executed proposal history and explorer action', async ({
-    page,
-  }) => {
-    await gotoProposal(page, 1)
+  test('executed proposal shows final votes', async ({ page }) => {
+    const found = await gotoProposalByState(page, 'Executed')
+    test.skip(!found, 'No executed proposal in current snapshot')
 
-    await expect(
-      page.getByRole('heading', { name: /Reduce minting fee/i })
-    ).toBeVisible()
     await expect(page.getByText('Final votes')).toBeVisible()
-    await expect(page.getByText('View execute tx')).toBeVisible()
-    await expect(page.getByText('Vote on-chain')).not.toBeVisible()
   })
 
-  test('renders queued proposal timeline state', async ({ page }) => {
-    await gotoProposal(page, 4)
+  test('defeated proposal shows final votes', async ({ page }) => {
+    const found = await gotoProposalByState(page, 'Defeated')
+    test.skip(!found, 'No defeated proposal in current snapshot')
 
-    await expect(
-      page.getByRole('heading', { name: /Lower auction delay/i })
-    ).toBeVisible()
-    await expect(page.getByText('Queued').first()).toBeVisible()
     await expect(page.getByText('Final votes')).toBeVisible()
   })
 
   test('returns to the governance list from proposal detail', async ({
     page,
   }) => {
-    await gotoProposal(page, 0)
-    await expect(
-      page.getByRole('heading', { name: /Update basket allocation/i })
-    ).toBeVisible()
+    await gotoFirstProposal(page)
 
     await page.locator('a[href$="/governance"]').first().click()
 

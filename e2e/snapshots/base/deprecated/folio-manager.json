@@ -1,0 +1,43 @@
+{
+  "_meta": {
+    "source": "https://api.reserve.org/folio-manager/read?folio=0x47686106181b3cefe4eaf94c4c10b48ac750370b&chainId=8453",
+    "capturedAt": "2026-04-08T20:31:25.175Z",
+    "dtf": "0x47686106181b3cefe4eaf94c4c10b48ac750370b",
+    "chainId": 8453
+  },
+  "data": {
+    "status": "ok",
+    "parsedData": {
+      "hidden": false,
+      "dtf": {
+        "icon": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXx5AQG85hN1x8WsPzKQYEGuJwIpDVehmXl4fqM",
+        "cover": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxtUYEfjVkP0T3EBpuIeMVN91Fm8AJUZHzglct",
+        "mobileCover": "https://ipfs.satsuma.xyz/ipfs/QmeJ74irkd9GVvH67qZmLC1VLo6DRpr7nf8XmXpSxDmjxE",
+        "description": "",
+        "notesFromCreator": "",
+        "tags": [
+          "AI",
+          "Ecosystem",
+          "Memes"
+        ],
+        "basketType": "percentage-based"
+      },
+      "creator": {
+        "name": "Virtuals Protocol",
+        "icon": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXx8aNO8F9LGalgPSqjk8NZnKMIoY9WVLOwsbxD",
+        "link": "https://www.virtuals.io/"
+      },
+      "curator": {
+        "name": "Re7 Labs",
+        "icon": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxqATIzofxfH57h2mseoNual3tKBRCYyvnS1E8",
+        "link": "https://www.re7labs.xyz/"
+      },
+      "socials": {
+        "twitter": "https://x.com/virtuals_io",
+        "telegram": "https://t.me/virtuals",
+        "discord": "https://discord.com/invite/virtualsio",
+        "website": "https://www.virtuals.io/"
+      }
+    }
+  }
+}

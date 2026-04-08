@@ -5,15 +5,16 @@ import { chainIdAtom, walletAtom } from '@/state/atoms'
 import { indexDTFAtom, iTokenAddressAtom } from '@/state/dtf/atoms'
 import { atom, useAtomValue } from 'jotai'
 import { Loader2 } from 'lucide-react'
-import { memo } from 'react'
-import { Address } from 'viem'
+import { memo, useRef } from 'react'
 import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
 import {
   proposalDescriptionAtom,
   basketSettingsProposalDataAtom,
 } from '../atoms'
 import { useIsBasketProposeAllowed } from '@/views/index-dtf/governance/hooks/use-is-basket-propose-allowed'
-import useProposalCreated from '../../../hooks/use-proposal-created'
+import useProposalCreated, {
+  type SubmitProposalData,
+} from '../../../hooks/use-proposal-created'
 
 const isProposalReady = atom((get) => {
   const wallet = get(walletAtom)
@@ -54,29 +55,22 @@ const SubmitProposalButton = () => {
     chainId,
   })
 
-  const govAddress = dtf?.tradingGovernance?.id
+  const submitDataRef = useRef<SubmitProposalData | null>(null)
 
-  useProposalCreated({
-    receipt,
-    targets: proposalData?.targets ?? [],
-    calldatas: proposalData?.calldatas ?? [],
-    description: description ?? '',
-    govAddress: (govAddress ?? '0x') as Address,
-    proposer: (wallet ?? '0x') as Address,
-  })
+  useProposalCreated({ receipt, dataRef: submitDataRef })
 
   const handleSubmit = () => {
-    if (proposalData && description && dtf?.tradingGovernance?.id) {
+    if (proposalData && description && dtf?.tradingGovernance?.id && wallet) {
       const { targets, calldatas } = proposalData
       const values = targets.map(() => 0n)
 
-      console.log('proposal', {
-        address: dtf.tradingGovernance.id,
-        abi: DTFIndexGovernance,
-        functionName: 'propose',
-        args: [targets, values, calldatas, description],
-        chainId,
-      })
+      submitDataRef.current = {
+        targets,
+        calldatas,
+        description,
+        govAddress: dtf.tradingGovernance.id,
+        proposer: wallet,
+      }
 
       writeContract({
         address: dtf.tradingGovernance.id,

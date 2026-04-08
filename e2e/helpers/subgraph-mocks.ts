@@ -1,279 +1,114 @@
 import type { Page } from '@playwright/test'
-import { TEST_DTFS } from './test-data'
+import { loadSnapshot, snapshotExists } from './snapshot-loader'
+import { DTF, type TestDTF } from './test-data'
 
-// Realistic DTF entity that makes pages render actual content
-const MOCK_DTF = {
-  id: TEST_DTFS.lcap.address,
-  proxyAdmin: '0x2dc04aeae96e2f2b642b066e981e80fe57abb5b2',
-  timestamp: 1704067200,
-  deployer: '0x8e0507c16435caca6cb71a7fb0e0636fd3891df4',
-  ownerAddress: '0x03d03a026e71979be3b08d44b01eae4c5ff9da99',
-  // Fee values are D18 fractions: formatEther(BigInt(x)) → decimal, * 100 → form %
-  // mintFee form value: 0.003 * 100 = 0.3% (schema min 0.15, max 5)
-  mintingFee: '3000000000000000',
-  // tvlFee: 0.005 (display only)
-  tvlFee: '5000000000000000',
-  // folioFee form value: 0.01 * 100 = 1% (schema min 0.15, max 10)
-  annualizedTvlFee: '10000000000000000',
-  mandate: 'Large cap diversified index',
-  auctionDelay: '0',
-  // auctionLength in seconds: 1800/60 = 30 minutes (schema min 15, max 1440)
-  auctionLength: '1800',
-  auctionApprovers: ['0xd84e0c72dc2f8363b46d4adfc58bfd82e49222d9'],
-  auctionLaunchers: ['0xd84e0c72dc2f8363b46d4adfc58bfd82e49222d9'],
-  brandManagers: ['0x2dc04aeae96e2f2b642b066e981e80fe57abb5b2'],
-  totalRevenue: 1250000,
-  protocolRevenue: 625000,
-  governanceRevenue: 312500,
-  externalRevenue: 312500,
-  // WHY: feeRecipientsAtom matches addresses against deployer and stToken.id
-  // Using real addresses so governance/deployer shares are correctly identified
-  feeRecipients:
-    '0x7e6d5c4b3a2f1e0d9c8b7a69f8e7d6c5b4a3f2e1:500000000000000000,0x8e0507c16435caca6cb71a7fb0e0636fd3891df4:500000000000000000',
-  ownerGovernance: {
-    id: '0x5a3e4b2c1a9f8d7e6c5b4a3f2e1d0c9b8a7f6e5d',
-    votingDelay: 1,
-    votingPeriod: 50400,
-    // WHY: useIndexDTF multiplies proposalThreshold by 100 before storing in atom.
-    // 1e16 * 100 = 1e18 → formatEther → '1' → /100 = 0.01 (1% threshold)
-    proposalThreshold: 10000000000000000,
-    quorumNumerator: 4,
-    quorumDenominator: 100,
-    timelock: {
-      id: '0x4a3f2e1d0c9b8a7f6e5d4c3b2a19f8e7d6c5b4a3',
-      guardians: ['0x03d03a026e71979be3b08d44b01eae4c5ff9da99'],
-      executionDelay: 172800,
-    },
-  },
-  legacyAdmins: [],
-  tradingGovernance: {
-    id: '0x6b4e3d2c1b0a9f8e7d6c5b4a3f2e1d0c9b8a7f6e',
-    votingDelay: 1,
-    votingPeriod: 50400,
-    // WHY: useIndexDTF multiplies by 100. 5e15 * 100 = 5e17 → 0.5 → /100 = 0.005 (0.5%)
-    proposalThreshold: 5000000000000000,
-    quorumNumerator: 3,
-    quorumDenominator: 100,
-    timelock: {
-      id: '0x5c4b3a2f1e0d9c8b7a69f8e7d6c5b4a3f2e1d0c9',
-      guardians: ['0xd84e0c72dc2f8363b46d4adfc58bfd82e49222d9'],
-      executionDelay: 86400,
-    },
-  },
-  legacyAuctionApprovers: [],
-  token: {
-    id: TEST_DTFS.lcap.address,
-    name: 'Large Cap Index DTF',
-    symbol: 'LCAP',
-    decimals: 18,
-    totalSupply: '5000000000000000000000000',
-    currentHolderCount: 2847,
-  },
-  stToken: {
-    id: '0x7e6d5c4b3a2f1e0d9c8b7a69f8e7d6c5b4a3f2e1',
-    token: {
-      name: 'Staked LCAP',
-      symbol: 'stLCAP',
-      decimals: 18,
-      totalSupply: '2500000000000000000000000',
-    },
-    underlying: {
-      name: 'Large Cap Index DTF',
-      symbol: 'LCAP',
-      address: TEST_DTFS.lcap.address,
-      decimals: 18,
-    },
-    governance: {
-      id: '0x8f7e6d5c4b3a2f1e0d9c8b7a69f8e7d6c5b4a3f2',
-      votingDelay: 1,
-      votingPeriod: 50400,
-      // WHY: useIndexDTF multiplies by 100. 1e16 * 100 = 1e18 → 0.01 (1%)
-      proposalThreshold: 10000000000000000,
-      quorumNumerator: 4,
-      quorumDenominator: 100,
-      timelock: {
-        id: '0x9a8b7c6d5e4f3a2b1c0d9e8f7a6b5c4d3e2f1a0b',
-        guardians: ['0x03d03a026e71979be3b08d44b01eae4c5ff9da99'],
-        executionDelay: 172800,
-      },
-    },
-    legacyGovernance: [],
-    rewards: [
-      {
-        rewardToken: {
-          address: '0xfbd70d29d26efc3d7d23a9f433f7079e8f6b08b9',
-          name: 'Ethereum',
-          symbol: 'ETH',
-          decimals: 18,
-        },
-      },
-    ],
-  },
+// --- Snapshot loading ---
+
+interface DTFSnapshot {
+  dtf: Record<string, unknown>
 }
 
-const GOVERNANCE_ID = '0x5a3e4b2c1a9f8d7e6c5b4a3f2e1d0c9b8a7f6e5d'
+interface GovernanceSnapshot {
+  governances: Array<{
+    id: string
+    proposals: Array<Record<string, unknown>>
+    proposalCount?: number
+  }>
+  stakingToken: Record<string, unknown> | null
+}
 
-// On-chain proposal IDs (uint256 hashes, stored as decimal strings in subgraph)
-// BigInt-compatible — used by proposalVotes() on-chain call
-const PROPOSAL_IDS = [
-  '98374650192837465019283746501928374650',
-  '87263541098726354109872635410987263541',
-  '76152432098715243209871524320987152432',
-  '65041323098604132309860413230986041323',
-  '53930214098593021409859302140985930214',
-]
+interface ProposalSnapshot {
+  proposal: Record<string, unknown>
+}
 
-// Governance proposals — mix of states so tests can verify real rendering
-const MOCK_PROPOSALS = [
-  {
-    id: PROPOSAL_IDS[0],
-    description:
-      'Update basket allocation to increase ETH weighting from 15% to 20%',
-    creationTime: Math.floor(Date.now() / 1000) - 86400, // 1 day ago
-    creationBlock: 19214567,
-    state: 'ACTIVE',
-    forWeightedVotes: 2500000000000000000000,
-    abstainWeightedVotes: 300000000000000000000,
-    againstWeightedVotes: 400000000000000000000,
-    executionETA: null,
-    executionTime: null,
-    quorumVotes: 1000000000000000000000,
-    voteStart: Math.floor(Date.now() / 1000) - 86400,
-    voteEnd: Math.floor(Date.now() / 1000) + 259200, // 3 days from now
-    executionBlock: null,
-    proposer: { address: '0x03d03a026e71979be3b08d44b01eae4c5ff9da99' },
-  },
-  {
-    id: PROPOSAL_IDS[1],
-    description: 'Reduce minting fee from 0.1% to 0.08%',
-    creationTime: Math.floor(Date.now() / 1000) - 604800, // 7 days ago
-    creationBlock: 19197483,
-    state: 'EXECUTED',
-    forWeightedVotes: 3500000000000000000000,
-    abstainWeightedVotes: 200000000000000000000,
-    againstWeightedVotes: 100000000000000000000,
-    executionETA: Math.floor(Date.now() / 1000) - 432000,
-    executionTime: String(Math.floor(Date.now() / 1000) - 345600),
-    quorumVotes: 1000000000000000000000,
-    voteStart: Math.floor(Date.now() / 1000) - 604800,
-    voteEnd: Math.floor(Date.now() / 1000) - 518400,
-    executionBlock: '19208345',
-    proposer: { address: '0xd84e0c72dc2f8363b46d4adfc58bfd82e49222d9' },
-  },
-  {
-    id: PROPOSAL_IDS[2],
-    description: 'Add new collateral type - Lido Staked Ether',
-    creationTime: Math.floor(Date.now() / 1000) - 1209600, // 14 days ago
-    creationBlock: 19180352,
-    state: 'DEFEATED',
-    forWeightedVotes: 1200000000000000000000,
-    abstainWeightedVotes: 400000000000000000000,
-    againstWeightedVotes: 2100000000000000000000,
-    executionETA: null,
-    executionTime: null,
-    quorumVotes: 1000000000000000000000,
-    voteStart: Math.floor(Date.now() / 1000) - 1209600,
-    voteEnd: Math.floor(Date.now() / 1000) - 1123200,
-    executionBlock: null,
-    proposer: { address: '0x2dc04aeae96e2f2b642b066e981e80fe57abb5b2' },
-  },
-  {
-    id: PROPOSAL_IDS[3],
-    description: 'Increase redemption fee to 0.15%',
-    creationTime: Math.floor(Date.now() / 1000) - 432000, // 5 days ago
-    creationBlock: 19205000,
-    state: 'SUCCEEDED',
-    forWeightedVotes: 3000000000000000000000,
-    abstainWeightedVotes: 500000000000000000000,
-    againstWeightedVotes: 200000000000000000000,
-    executionETA: null,
-    executionTime: null,
-    quorumVotes: 1000000000000000000000,
-    voteStart: Math.floor(Date.now() / 1000) - 432000,
-    voteEnd: Math.floor(Date.now() / 1000) - 345600, // voting ended
-    executionBlock: null,
-    proposer: { address: '0x03d03a026e71979be3b08d44b01eae4c5ff9da99' },
-  },
-  {
-    id: PROPOSAL_IDS[4],
-    description: 'Lower auction delay from 3 days to 1 day',
-    creationTime: Math.floor(Date.now() / 1000) - 518400, // 6 days ago
-    creationBlock: 19200000,
-    state: 'QUEUED',
-    forWeightedVotes: 2800000000000000000000,
-    abstainWeightedVotes: 100000000000000000000,
-    againstWeightedVotes: 300000000000000000000,
-    executionETA: Math.floor(Date.now() / 1000) - 3600, // ETA passed (1 hour ago)
-    executionTime: null,
-    quorumVotes: 1000000000000000000000,
-    voteStart: Math.floor(Date.now() / 1000) - 518400,
-    voteEnd: Math.floor(Date.now() / 1000) - 432000,
-    executionBlock: null,
-    queueBlock: '19210000',
-    queueTime: String(Math.floor(Date.now() / 1000) - 172800),
-    proposer: { address: '0xd84e0c72dc2f8363b46d4adfc58bfd82e49222d9' },
-  },
-]
+// Lazy snapshot loading — only loads when a DTF is actually accessed
+const dtfSnapshots = new Map<string, DTFSnapshot>()
+const governanceSnapshots = new Map<string, GovernanceSnapshot>()
+const governanceIdToDtf = new Map<string, string>()
 
-/**
- * Build proposal detail response for `getProposalDetail` / `proposal(id:` queries.
- * Extends the list proposal with fields needed by the detail view.
- */
-function getProposalDetail(proposalId: string) {
-  const proposal = MOCK_PROPOSALS.find((p) => p.id === proposalId)
-  if (!proposal) return null
+function ensureDtfLoaded(dtf: TestDTF) {
+  const addr = dtf.address.toLowerCase()
+  if (dtfSnapshots.has(addr)) return
 
-  // Fake calldata + targets for queue/execute tx arg computation
-  const targets = ['0x4a3f2e1d0c9b8a7f6e5d4c3b2a19f8e7d6c5b4a3']
-  const calldatas = ['0xabcdef01']
+  if (!snapshotExists(`${dtf.snapshotDir}/dtf.json`)) return
+  dtfSnapshots.set(
+    addr,
+    loadSnapshot<DTFSnapshot>(`${dtf.snapshotDir}/dtf.json`)
+  )
 
-  // Generate some votes for the detail view
-  const votes = [
-    {
-      choice: 'For',
-      voter: { address: '0x03d03a026e71979be3b08d44b01eae4c5ff9da99' },
-      weight: String(BigInt(1500) * BigInt(10) ** BigInt(18)),
-    },
-    {
-      choice: 'For',
-      voter: { address: '0xd84e0c72dc2f8363b46d4adfc58bfd82e49222d9' },
-      weight: String(BigInt(1000) * BigInt(10) ** BigInt(18)),
-    },
-    {
-      choice: 'Against',
-      voter: { address: '0x2dc04aeae96e2f2b642b066e981e80fe57abb5b2' },
-      weight: String(BigInt(400) * BigInt(10) ** BigInt(18)),
-    },
-  ]
+  if (!snapshotExists(`${dtf.snapshotDir}/governance.json`)) return
+  const gov = loadSnapshot<GovernanceSnapshot>(
+    `${dtf.snapshotDir}/governance.json`
+  )
+  governanceSnapshots.set(addr, gov)
 
-  return {
-    ...proposal,
-    timelockId: '0x' + BigInt(proposalId).toString(16).padStart(64, '0'),
-    calldatas,
-    targets,
-    votes,
-    cancellationTime: null,
-    forDelegateVotes: '2',
-    abstainDelegateVotes: '0',
-    againstDelegateVotes: '1',
-    executionTxnHash:
-      proposal.state === 'EXECUTED'
-        ? '0xexec1234567890abcdef1234567890abcdef1234567890abcdef1234567890ab'
-        : null,
-    governance: { id: GOVERNANCE_ID },
+  // Build governance ID → DTF reverse lookup
+  for (const g of gov.governances) {
+    governanceIdToDtf.set(g.id.toLowerCase(), addr)
   }
 }
 
-// Exported for use in tests that need proposal IDs
-export { GOVERNANCE_ID, MOCK_PROPOSALS }
+function ensureAllLoaded() {
+  for (const dtf of Object.values(DTF)) {
+    ensureDtfLoaded(dtf)
+  }
+}
 
-// Transaction history
-const MOCK_TRANSFER_EVENTS = [
+// --- Public accessors for tests ---
+
+export function getSnapshotDTF(address: string) {
+  const dtf = findDtfByAddress(address) // triggers lazy load
+  if (!dtf) return null
+  return dtfSnapshots.get(dtf.address.toLowerCase())?.dtf ?? null
+}
+
+export function getSnapshotGovernance(address: string) {
+  const dtf = findDtfByAddress(address) // triggers lazy load
+  if (!dtf) return null
+  return governanceSnapshots.get(dtf.address.toLowerCase()) ?? null
+}
+
+export function getSnapshotProposals(address: string) {
+  const gov = getSnapshotGovernance(address) // triggers lazy load
+  if (!gov) return []
+  return gov.governances.flatMap((g) => g.proposals)
+}
+
+// --- Helpers ---
+
+function findDtfByAddress(id: string): TestDTF | undefined {
+  const lower = id.toLowerCase()
+  const dtf = Object.values(DTF).find(
+    (d) => d.address.toLowerCase() === lower
+  )
+  if (dtf) ensureDtfLoaded(dtf)
+  return dtf
+}
+
+function findDtfByGovernanceId(govId: string): TestDTF | undefined {
+  // Need all DTFs loaded to search by governance ID
+  ensureAllLoaded()
+  const dtfAddr = governanceIdToDtf.get(govId.toLowerCase())
+  if (!dtfAddr) return undefined
+  return findDtfByAddress(dtfAddr)
+}
+
+function loadProposalDetail(
+  dtf: TestDTF,
+  proposalId: string
+): ProposalSnapshot | null {
+  const path = `${dtf.snapshotDir}/proposals/${proposalId}.json`
+  if (!snapshotExists(path)) return null
+  return loadSnapshot<ProposalSnapshot>(path)
+}
+
+// Fallback transfer events — used when no snapshot exists
+const FALLBACK_TRANSFER_EVENTS = [
   {
     id: '0xabc-1',
     hash: '0xabcd1234567890abcd1234567890abcd1234567890abcd1234567890abcd1234',
     amount: '1500000000000000000000',
-    timestamp: String(Math.floor(Date.now() / 1000) - 3600),
+    timestamp: '1712500000',
     to: { id: '0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa' },
     from: { id: '0x0000000000000000000000000000000000000000' },
     type: 'MINT',
@@ -282,7 +117,7 @@ const MOCK_TRANSFER_EVENTS = [
     id: '0xabc-2',
     hash: '0xabcd1234567890abcd1234567890abcd1234567890abcd1234567890abcd1235',
     amount: '2500000000000000000000',
-    timestamp: String(Math.floor(Date.now() / 1000) - 7200),
+    timestamp: '1712496400',
     to: { id: '0x0000000000000000000000000000000000000000' },
     from: { id: '0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb' },
     type: 'REDEEM',
@@ -291,35 +126,27 @@ const MOCK_TRANSFER_EVENTS = [
     id: '0xabc-3',
     hash: '0xabcd1234567890abcd1234567890abcd1234567890abcd1234567890abcd1236',
     amount: '3000000000000000000000',
-    timestamp: String(Math.floor(Date.now() / 1000) - 14400),
+    timestamp: '1712489200',
     to: { id: '0xcccccccccccccccccccccccccccccccccccccccc' },
     from: { id: '0x0000000000000000000000000000000000000000' },
     type: 'MINT',
   },
 ]
 
-// Staking token with delegates
-const MOCK_STAKING_TOKEN = {
-  id: '0x7e6d5c4b3a2f1e0d9c8b7a69f8e7d6c5b4a3f2e1',
-  totalDelegates: 412,
-  token: { decimals: 18, totalSupply: '2500000000000000000000000' },
-  delegates: [
-    {
-      address: '0x03d03a026e71979be3b08d44b01eae4c5ff9da99',
-      delegatedVotes: 450000000000000000000,
-      numberVotes: 45,
-    },
-    {
-      address: '0xd84e0c72dc2f8363b46d4adfc58bfd82e49222d9',
-      delegatedVotes: 380000000000000000000,
-      numberVotes: 38,
-    },
-    {
-      address: '0x2dc04aeae96e2f2b642b066e981e80fe57abb5b2',
-      delegatedVotes: 325000000000000000000,
-      numberVotes: 32,
-    },
-  ],
+// --- Query dispatch ---
+
+interface ParsedBody {
+  operationName?: string
+  query?: string
+  variables?: Record<string, unknown>
+}
+
+function tryParseBody(body: string): ParsedBody {
+  try {
+    return JSON.parse(body)
+  } catch {
+    return {}
+  }
 }
 
 /**
@@ -328,90 +155,134 @@ const MOCK_STAKING_TOKEN = {
  */
 function getResponseForQuery(body: string, url: string) {
   const isIndexDtfSubgraph = url.includes('dtf-index')
+  const parsed = tryParseBody(body)
+  const op = parsed.operationName ?? ''
+  const vars = parsed.variables ?? {}
 
-  // Index DTF subgraph — return realistic data
   if (isIndexDtfSubgraph) {
-    // getDTF query (useIndexDTF.ts)
-    if (body.includes('getDTF') || body.includes('dtf(id:')) {
-      return { data: { dtf: MOCK_DTF } }
-    }
-
-    // Proposal detail query (use-proposal-detail.ts)
-    if (
-      body.includes('getProposalDetail') ||
-      body.includes('proposal(id:')
-    ) {
-      // Extract proposal ID from the query variables
-      const idMatch = body.match(/"id"\s*:\s*"([^"]+)"/)
-      const proposalId = idMatch?.[1] ?? ''
-      const detail = getProposalDetail(proposalId)
-      return { data: { proposal: detail } }
-    }
-
-    // transferEvents query (useIndexDTFTransactions.ts)
-    if (body.includes('transferEvents')) {
-      return { data: { transferEvents: MOCK_TRANSFER_EVENTS } }
-    }
-
-    // getGovernanceStats query (governance/updater.tsx)
-    if (body.includes('getGovernanceStats') || body.includes('governances(')) {
+    // getDTF query
+    if (op === 'getDTF' || body.includes('dtf(id:')) {
+      const id = (vars.id as string) ?? ''
+      const dtf = findDtfByAddress(id)
+      if (dtf) {
+        const snapshot = dtfSnapshots.get(dtf.address.toLowerCase())
+        if (snapshot) return { data: snapshot }
+      }
+      // No matching snapshot — loud error
       return {
-        data: {
-          governances: [
-            {
-              id: GOVERNANCE_ID,
-              proposals: MOCK_PROPOSALS,
-              proposalCount: MOCK_PROPOSALS.length,
-            },
-          ],
-          stakingToken: MOCK_STAKING_TOKEN,
-        },
+        data: { dtf: null },
+        errors: [
+          {
+            message: `[E2E] No DTF snapshot for address: ${id}`,
+          },
+        ],
       }
     }
 
-    // Rebalance queries
+    // Proposal detail query
+    if (op === 'getProposalDetail' || body.includes('proposal(id:')) {
+      const proposalId = (vars.id as string) ?? ''
+      // Search all DTFs for a matching proposal file
+      for (const dtf of Object.values(DTF)) {
+        const detail = loadProposalDetail(dtf, proposalId)
+        if (detail) return { data: detail }
+      }
+      return {
+        data: { proposal: null },
+        errors: [
+          {
+            message: `[E2E] No proposal snapshot for id: ${proposalId}`,
+          },
+        ],
+      }
+    }
+
+    // Transfer events — serve from snapshot when available
+    if (op === 'getTransferEvents' || body.includes('transferEvents')) {
+      const dtfAddr = (vars.dtf as string) ?? ''
+      const dtf = findDtfByAddress(dtfAddr)
+
+      if (dtf && snapshotExists(`${dtf.snapshotDir}/transfer-events.json`)) {
+        const snapshot = loadSnapshot<{ transferEvents: unknown[] }>(
+          `${dtf.snapshotDir}/transfer-events.json`
+        )
+        return { data: snapshot }
+      }
+
+      return { data: { transferEvents: FALLBACK_TRANSFER_EVENTS } }
+    }
+
+    // Governance stats query
+    if (op === 'getGovernanceStats' || body.includes('governances(')) {
+      // Extract governance IDs from variables to find the right DTF
+      const whereIds =
+        (vars.governanceIds as string[]) ??
+        (vars.ids as string[]) ??
+        []
+
+      // Try to match by governance IDs in variables
+      let matchedDtf: TestDTF | undefined
+      for (const gid of whereIds) {
+        matchedDtf = findDtfByGovernanceId(gid)
+        if (matchedDtf) break
+      }
+
+      // Fallback: try extracting IDs from the raw query string
+      if (!matchedDtf) {
+        const idMatches = body.match(/"id_in"\s*:\s*\[([^\]]*)\]/)?.[1]
+        if (idMatches) {
+          const ids = idMatches
+            .replace(/"/g, '')
+            .split(',')
+            .map((s) => s.trim())
+          for (const gid of ids) {
+            matchedDtf = findDtfByGovernanceId(gid)
+            if (matchedDtf) break
+          }
+        }
+      }
+
+      if (matchedDtf) {
+        const snapshot = governanceSnapshots.get(
+          matchedDtf.address.toLowerCase()
+        )
+        if (snapshot) return { data: snapshot }
+      }
+
+      // No match — return empty governance with loud error
+      return {
+        data: { governances: [], stakingToken: null },
+        errors: [
+          {
+            message: `[E2E] No governance snapshot matched for ids: ${JSON.stringify(whereIds)}`,
+          },
+        ],
+      }
+    }
+
+    // Rebalance queries — serve from snapshot when available
     if (body.includes('rebalances') || body.includes('rebalance(')) {
-      return {
-        data: {
-          rebalances: [
-            {
-              id: `${TEST_DTFS.lcap.address}-1`,
-              nonce: '1',
-              tokens: [
-                {
-                  id: '0x4200000000000000000000000000000000000006',
-                  name: 'Wrapped Ether',
-                  symbol: 'WETH',
-                  decimals: 18,
-                },
-                {
-                  id: '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913',
-                  name: 'USD Coin',
-                  symbol: 'USDC',
-                  decimals: 6,
-                },
-              ],
-              priceControl: '0',
-              weightLowLimit: ['1000000000000000000', '2000000000000000000'],
-              weightSpotLimit: ['2000000000000000000', '3500000000000000000'],
-              weightHighLimit: ['3000000000000000000', '5000000000000000000'],
-              rebalanceLowLimit: '900000000000000000',
-              rebalanceSpotLimit: '1000000000000000000',
-              rebalanceHighLimit: '1100000000000000000',
-              priceLowLimit: ['2400000000000000000000', '990000000000000000'],
-              priceHighLimit: ['2600000000000000000000', '1010000000000000000'],
-              restrictedUntil: '0',
-              availableUntil: String(
-                Math.floor(Date.now() / 1000) - 604800
-              ), // 7 days ago (historical)
-              transactionHash:
-                '0xdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abc',
-              blockNumber: '19208345', // matches Executed proposal
-              timestamp: String(Math.floor(Date.now() / 1000) - 604800),
-            },
-          ],
-        },
+      const dtfAddr = (vars.dtf as string) ?? ''
+      const dtf = findDtfByAddress(dtfAddr)
+
+      if (dtf && snapshotExists(`${dtf.snapshotDir}/rebalances.json`)) {
+        const snapshot = loadSnapshot<{ rebalances: unknown[] }>(
+          `${dtf.snapshotDir}/rebalances.json`
+        )
+        return { data: snapshot }
       }
+
+      return { data: { rebalances: [] } }
+    }
+
+    // Unmatched Index DTF query — loud error
+    return {
+      data: {},
+      errors: [
+        {
+          message: `[E2E] Unmocked Index DTF subgraph query: op="${op}"`,
+        },
+      ],
     }
   }
 
@@ -447,7 +318,7 @@ function getResponseForQuery(body: string, url: string) {
 
 /**
  * Mock all Goldsky subgraph GraphQL endpoints.
- * Index DTF queries return realistic data; yield/other queries return safe empty data.
+ * Index DTF queries return snapshot data; yield/other queries return safe empty data.
  */
 export async function mockSubgraphRoutes(page: Page) {
   await page.route('**/api.goldsky.com/**', (route) => {

@@ -5,12 +5,13 @@ import { chainIdAtom, walletAtom } from '@/state/atoms'
 import { indexDTFAtom, iTokenAddressAtom } from '@/state/dtf/atoms'
 import { atom, useAtomValue } from 'jotai'
 import { Loader2 } from 'lucide-react'
-import { memo } from 'react'
-import { Address } from 'viem'
+import { memo, useRef } from 'react'
 import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
 import { proposalDescriptionAtom, daoSettingsProposalDataAtom } from '../atoms'
 import { useIsDAOProposeAllowed } from '@/views/index-dtf/governance/hooks/use-is-dao-propose-allowed'
-import useProposalCreated from '../../../hooks/use-proposal-created'
+import useProposalCreated, {
+  type SubmitProposalData,
+} from '../../../hooks/use-proposal-created'
 
 const isProposalReady = atom((get) => {
   const wallet = get(walletAtom)
@@ -51,29 +52,22 @@ const SubmitProposalButton = () => {
     chainId,
   })
 
-  const govAddress = dtf?.stToken?.governance?.id
+  const submitDataRef = useRef<SubmitProposalData | null>(null)
 
-  useProposalCreated({
-    receipt,
-    targets: proposalData?.targets ?? [],
-    calldatas: proposalData?.calldatas ?? [],
-    description: description ?? '',
-    govAddress: (govAddress ?? '0x') as Address,
-    proposer: (wallet ?? '0x') as Address,
-  })
+  useProposalCreated({ receipt, dataRef: submitDataRef })
 
   const handleSubmit = () => {
-    if (proposalData && description && dtf?.stToken?.governance?.id) {
+    if (proposalData && description && dtf?.stToken?.governance?.id && wallet) {
       const { targets, calldatas } = proposalData
       const values: bigint[] = new Array(calldatas.length).fill(0n)
 
-      console.log('proposal', {
-        address: dtf.stToken?.governance?.id,
-        abi: DTFIndexGovernance,
-        functionName: 'propose',
-        args: [targets, values, calldatas, description],
-        chainId,
-      })
+      submitDataRef.current = {
+        targets,
+        calldatas,
+        description,
+        govAddress: dtf.stToken.governance.id,
+        proposer: wallet,
+      }
 
       writeContract({
         address: dtf.stToken?.governance?.id,

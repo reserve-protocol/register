@@ -4,13 +4,15 @@ import { chainIdAtom, walletAtom } from '@/state/atoms'
 import { indexDTFAtom, iTokenAddressAtom } from '@/state/dtf/atoms'
 import { atom, useAtomValue } from 'jotai'
 import { Loader2 } from 'lucide-react'
-import { memo, useMemo } from 'react'
+import { memo, useRef, useMemo } from 'react'
 import { Address } from 'viem'
 import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
 import { proposalDescriptionAtom, basketProposalCalldatasAtom } from '../atoms'
 import { useIsProposeAllowed } from '@/views/index-dtf/governance/hooks/use-is-propose-allowed'
 import { TransactionButtonContainer } from '@/components/ui/transaction'
-import useProposalCreated from '../../hooks/use-proposal-created'
+import useProposalCreated, {
+  type SubmitProposalData,
+} from '../../hooks/use-proposal-created'
 
 const isProposalReady = atom((get) => {
   const wallet = get(walletAtom)
@@ -49,6 +51,7 @@ const SubmitProposalButton = () => {
   const calldatas = useAtomValue(basketProposalCalldatasAtom)
   const dtf = useAtomValue(iTokenAddressAtom)
   const govAddress = useAtomValue(tradingGovAddress)
+  const submitDataRef = useRef<SubmitProposalData | null>(null)
 
   const targets = useMemo(() => {
     if (!dtf || !calldatas) return []
@@ -61,17 +64,18 @@ const SubmitProposalButton = () => {
     chainId,
   })
 
-  useProposalCreated({
-    receipt,
-    targets,
-    calldatas: calldatas ?? [],
-    description: description ?? '',
-    govAddress: (govAddress ?? '0x') as Address,
-    proposer: (wallet ?? '0x') as Address,
-  })
+  useProposalCreated({ receipt, dataRef: submitDataRef })
 
   const handleSubmit = () => {
-    if (dtf && calldatas && description && govAddress) {
+    if (dtf && calldatas && description && govAddress && wallet) {
+      submitDataRef.current = {
+        targets,
+        calldatas,
+        description,
+        govAddress: govAddress as Address,
+        proposer: wallet,
+      }
+
       const values: bigint[] = new Array(calldatas.length).fill(0n)
 
       writeContract({

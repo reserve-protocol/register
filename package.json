@@ -95,6 +95,8 @@
     "test:e2e": "npx playwright test",
     "test:e2e:governance": "npx playwright test e2e/tests/dtf-governance*.spec.ts",
     "test:e2e:headed": "npx playwright test --headed",
+    "e2e:capture": "npx tsx e2e/scripts/capture-snapshots.ts",
+    "e2e:check": "npx tsx e2e/scripts/check-snapshots.ts",
     "translations": "lingui extract --clean && lingui compile",
     "forknet": "anvil --fork-url https://eth.llamarpc.com --chain-id 1 --balance 10000000",
     "parse-collaterals": "node scripts/parseCollaterals",

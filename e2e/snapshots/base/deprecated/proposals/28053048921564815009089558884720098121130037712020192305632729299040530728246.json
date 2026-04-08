@@ -1,0 +1,63 @@
+{
+  "_meta": {
+    "source": "https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-base/prod/gn",
+    "capturedAt": "2026-04-08T20:31:27.861Z",
+    "dtf": "0x47686106181b3cefe4eaf94c4c10b48ac750370b",
+    "chainId": 8453,
+    "query": "getProposalDetail",
+    "proposalId": "28053048921564815009089558884720098121130037712020192305632729299040530728246"
+  },
+  "data": {
+    "proposal": {
+      "id": "28053048921564815009089558884720098121130037712020192305632729299040530728246",
+      "timelockId": "0x1e885a015acd6d842b50264eb2c3c501f922ede20687cf8844abac04d02cab08",
+      "description": "# Change Auction Launcher Role\nChange Auction Launcher Role",
+      "creationTime": "1742353905",
+      "voteStart": "1742526705",
+      "voteEnd": "1742785905",
+      "queueBlock": "28018136",
+      "queueTime": "1742825619",
+      "state": "EXECUTED",
+      "executionETA": "1742998419",
+      "executionTime": "1743005565",
+      "creationBlock": "27782279",
+      "cancellationTime": null,
+      "calldatas": [
+        "0x2f2ff15d13ff1b2625181b311f257c723b5e6d366eb318b212d9dd694c48fcf227659df50000000000000000000000007daaf7bc2ee8bf4c0ac7f37e6b6cfaeb3ed9a868"
+      ],
+      "targets": [
+        "0x47686106181b3cefe4eaf94c4c10b48ac750370b"
+      ],
+      "proposer": {
+        "address": "0x03d03a026e71979be3b08d44b01eae4c5ff9da99"
+      },
+      "votes": [
+        {
+          "choice": "FOR",
+          "voter": {
+            "address": "0x03d03a026e71979be3b08d44b01eae4c5ff9da99"
+          },
+          "weight": "161000000000000000000"
+        },
+        {
+          "choice": "FOR",
+          "voter": {
+            "address": "0xc164411ccb8468e0c9f6a0fc0b06e69f5845ac30"
+          },
+          "weight": "150000000000000000000"
+        }
+      ],
+      "forWeightedVotes": "311000000000000000000",
+      "againstWeightedVotes": "0",
+      "abstainWeightedVotes": "0",
+      "quorumVotes": "139143939273022946549",
+      "forDelegateVotes": "2",
+      "abstainDelegateVotes": "0",
+      "againstDelegateVotes": "0",
+      "executionTxnHash": "0x9a1e2845278e680a20a4f9f537b668f840a56323201fd92feb43fa771dcc9953",
+      "governance": {
+        "id": "0xa8ce43762de703d285b019fac8829148e3013442"
+      }
+    }
+  }
+}

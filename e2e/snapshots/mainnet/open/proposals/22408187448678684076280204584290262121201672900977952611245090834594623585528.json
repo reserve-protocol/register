@@ -1,0 +1,126 @@
+{
+  "_meta": {
+    "source": "https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-mainnet/prod/gn",
+    "capturedAt": "2026-04-08T20:31:23.478Z",
+    "dtf": "0x323c03c48660fe31186fa82c289b0766d331ce21",
+    "chainId": 1,
+    "query": "getProposalDetail",
+    "proposalId": "22408187448678684076280204584290262121201672900977952611245090834594623585528"
+  },
+  "data": {
+    "proposal": {
+      "id": "22408187448678684076280204584290262121201672900977952611245090834594623585528",
+      "timelockId": "0xde92f055e0efb211b90f395eb593b1596248136f92f1a29654b3f36d8b8cbe5a",
+      "description": "# Remove ENA dust \n []() \n Recently OPEN was rebalanced using the 2.0.0 protocol and there was ENA dust leftover. This proposal aims to clean up.",
+      "creationTime": "1754335535",
+      "voteStart": "1754508335",
+      "voteEnd": "1754767535",
+      "queueBlock": "23127695",
+      "queueTime": "1755034619",
+      "state": "EXECUTED",
+      "executionETA": "1755207419",
+      "executionTime": "1755207539",
+      "creationBlock": "23069775",
+      "cancellationTime": null,
+      "calldatas": [
+        "0x8cdf128800000000000000000000000057e114b691db790c35207b2e685d4a43181e6061"
+      ],
+      "targets": [
+        "0x323c03c48660fe31186fa82c289b0766d331ce21"
+      ],
+      "proposer": {
+        "address": "0x9d1d4d631ae6bc24bd09adff6ca82651e928b650"
+      },
+      "votes": [
+        {
+          "choice": "FOR",
+          "voter": {
+            "address": "0x02feb744ca516fd6e41d940ae2d0f7cb6fcb1ac3"
+          },
+          "weight": "28474180125132619693704"
+        },
+        {
+          "choice": "FOR",
+          "voter": {
+            "address": "0x17a8683c7a2490de2707e60c7c3a3341907a4b86"
+          },
+          "weight": "18309106197996347142734"
+        },
+        {
+          "choice": "FOR",
+          "voter": {
+            "address": "0x1a9152528aefbcd9e5df4e0770f4f510e7056913"
+          },
+          "weight": "132067362446393962827"
+        },
+        {
+          "choice": "FOR",
+          "voter": {
+            "address": "0x33229a716356a3b7474c33dc51297460a4e13257"
+          },
+          "weight": "6295193778822142651835"
+        },
+        {
+          "choice": "FOR",
+          "voter": {
+            "address": "0x35e55a4227160d4d4f1b1732318d5062f348b354"
+          },
+          "weight": "2500000000000000000000"
+        },
+        {
+          "choice": "FOR",
+          "voter": {
+            "address": "0x81f9b40dee106a4c5822aed7641d5c1e2b40f922"
+          },
+          "weight": "192836241517929000000000"
+        },
+        {
+          "choice": "FOR",
+          "voter": {
+            "address": "0x84afb4b60844f8759154d6ff7b0580daa2d4e37d"
+          },
+          "weight": "10773498164353480000000"
+        },
+        {
+          "choice": "FOR",
+          "voter": {
+            "address": "0x9d1d4d631ae6bc24bd09adff6ca82651e928b650"
+          },
+          "weight": "65628960500211600000000"
+        },
+        {
+          "choice": "FOR",
+          "voter": {
+            "address": "0xd334533980c201c1b93e39bbe6bd1e04be5c0f5d"
+          },
+          "weight": "7634097770649370000000"
+        },
+        {
+          "choice": "FOR",
+          "voter": {
+            "address": "0xf7e9caaaeeb6cc9657e1dd490f044114aecc31b2"
+          },
+          "weight": "2283708403339300000000"
+        },
+        {
+          "choice": "FOR",
+          "voter": {
+            "address": "0xffa68ea3d4541493e29f9ca6f4d8219e45f5f23c"
+          },
+          "weight": "1000000000000000000000"
+        }
+      ],
+      "forWeightedVotes": "335867053820880253451100",
+      "againstWeightedVotes": "0",
+      "abstainWeightedVotes": "0",
+      "quorumVotes": "75519979727362954279248",
+      "forDelegateVotes": "11",
+      "abstainDelegateVotes": "0",
+      "againstDelegateVotes": "0",
+      "executionTxnHash": "0xe78e081a92adc1aa6bd997a0ef2f2603ec6fa827776ac0d203ec3d36934a08d9",
+      "governance": {
+        "id": "0x020d7c4a87485709d91e78aeeb2b2177ebfbaf41"
+      }
+    }
+  }
+}

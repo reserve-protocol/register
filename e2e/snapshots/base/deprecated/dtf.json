@@ -1,0 +1,139 @@
+{
+  "_meta": {
+    "source": "https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-base/prod/gn",
+    "capturedAt": "2026-04-08T20:31:25.359Z",
+    "dtf": "0x47686106181b3cefe4eaf94c4c10b48ac750370b",
+    "chainId": 8453,
+    "query": "getDTF"
+  },
+  "data": {
+    "dtf": {
+      "id": "0x47686106181b3cefe4eaf94c4c10b48ac750370b",
+      "proxyAdmin": "0x7c1faffc7f3a52aa9dbd265e5709202eea3a8a48",
+      "timestamp": "1739494629",
+      "deployer": "0x50b7a52556e0746f190663fc58a8133427fb6be2",
+      "ownerAddress": "0xc290b859f4f6f0644600dd18d53822bcf95d2602",
+      "mintingFee": "3000000000000000",
+      "tvlFee": "318694058",
+      "annualizedTvlFee": "10000000000000000",
+      "mandate": "Curated index of the largest AI agents created on Virtuals Protocol, rebalanced frequently to capture the upside from newly launched agents in the ecosystem.",
+      "auctionDelay": "172800",
+      "auctionLength": "1800",
+      "auctionApprovers": [],
+      "auctionLaunchers": [],
+      "brandManagers": [
+        "0x50b7a52556e0746f190663fc58a8133427fb6be2",
+        "0x6f1d6b86d4ad705385e751e6e88b0fdfdbadf298"
+      ],
+      "totalRevenue": "12332801235808268414013",
+      "protocolRevenue": "6166400617904134211279",
+      "governanceRevenue": "3083200308952067101377",
+      "externalRevenue": "3083200308952067101357",
+      "feeRecipients": "0x3305c5bd8da08bd6982dd40be3eecc7b2433e5c3:500000000000000000,0x50b7a52556e0746f190663fc58a8133427fb6be2:100000000000000000,0x93db2e90f8b2b073010b425f9350202330bd923e:400000000000000000",
+      "ownerGovernance": {
+        "id": "0xa8ce43762de703d285b019fac8829148e3013442",
+        "votingDelay": "172800",
+        "votingPeriod": "259200",
+        "proposalThreshold": "10000000000000000",
+        "quorumNumerator": "10",
+        "quorumDenominator": "100",
+        "timelock": {
+          "id": "0xc290b859f4f6f0644600dd18d53822bcf95d2602",
+          "guardians": [
+            "0xa8ce43762de703d285b019fac8829148e3013442",
+            "0x50b7a52556e0746f190663fc58a8133427fb6be2",
+            "0x6f1d6b86d4ad705385e751e6e88b0fdfdbadf298"
+          ],
+          "executionDelay": "172800"
+        }
+      },
+      "legacyAdmins": [
+        "0xe926577a152ffd5f5036f88bf7e8e8d3652b558c",
+        "0x4720dbcaeef5834aef590781f93d70fd1e3acadb",
+        "0xa8ce43762de703d285b019fac8829148e3013442"
+      ],
+      "tradingGovernance": {
+        "id": "0xc570368439b4e26e30e6fb8a51122b1d33c3b3ba",
+        "votingDelay": "86400",
+        "votingPeriod": "86400",
+        "proposalThreshold": "10000000000000000",
+        "quorumNumerator": "10",
+        "quorumDenominator": "100",
+        "timelock": {
+          "id": "0xccb16edde81843e42f3c39ab70598671eb668bb0",
+          "guardians": [
+            "0xc570368439b4e26e30e6fb8a51122b1d33c3b3ba",
+            "0x50b7a52556e0746f190663fc58a8133427fb6be2",
+            "0x6f1d6b86d4ad705385e751e6e88b0fdfdbadf298"
+          ],
+          "executionDelay": "86400"
+        }
+      },
+      "legacyAuctionApprovers": [
+        "0xc570368439b4e26e30e6fb8a51122b1d33c3b3ba"
+      ],
+      "token": {
+        "id": "0x47686106181b3cefe4eaf94c4c10b48ac750370b",
+        "name": "Virtuals Index",
+        "symbol": "VTF",
+        "decimals": 18,
+        "totalSupply": "27482744889272389426060",
+        "currentHolderCount": "8134"
+      },
+      "stToken": {
+        "id": "0x3305c5bd8da08bd6982dd40be3eecc7b2433e5c3",
+        "token": {
+          "name": "Vote Lock vlVIRTUAL-VTF",
+          "symbol": "vlVIRTUAL-VTF",
+          "decimals": 18,
+          "totalSupply": "5495645434580065647501"
+        },
+        "underlying": {
+          "name": "Virtual Protocol",
+          "symbol": "VIRTUAL",
+          "address": "0x0b3e328455c4059eeb9e3f84b5543f74e24e7e1b",
+          "decimals": 18
+        },
+        "governance": {
+          "id": "0xd8f869c8d9ee22f4dd786ea37efcd236810f9942",
+          "votingDelay": "7200",
+          "votingPeriod": "10800",
+          "proposalThreshold": "10000000000000000",
+          "quorumNumerator": "10",
+          "quorumDenominator": "100",
+          "timelock": {
+            "id": "0x43dbb3412114df17125ad0ec1c43355b376fc10f",
+            "guardians": [
+              "0xd8f869c8d9ee22f4dd786ea37efcd236810f9942",
+              "0x50b7a52556e0746f190663fc58a8133427fb6be2",
+              "0x6f1d6b86d4ad705385e751e6e88b0fdfdbadf298"
+            ],
+            "executionDelay": "7200"
+          }
+        },
+        "legacyGovernance": [
+          "0x0000000000000000000000000000000000000000",
+          "0xdbd9c5a83a3684e80d51fd1c00af4a1fbfe03d14"
+        ],
+        "rewards": [
+          {
+            "rewardToken": {
+              "address": "0x47686106181b3cefe4eaf94c4c10b48ac750370b",
+              "name": "Virtuals Index",
+              "symbol": "VTF",
+              "decimals": 18
+            }
+          },
+          {
+            "rewardToken": {
+              "address": "0xab36452dbac151be02b16ca17d8919826072f64a",
+              "name": "Reserve Rights",
+              "symbol": "RSR",
+              "decimals": 18
+            }
+          }
+        ]
+      }
+    }
+  }
+}

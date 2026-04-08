@@ -1,0 +1,141 @@
+{
+  "_meta": {
+    "source": "https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-base/prod/gn",
+    "capturedAt": "2026-04-08T20:31:13.273Z",
+    "dtf": "0x4da9a0f397db1397902070f93a4d6ddbc0e0e6e8",
+    "chainId": 8453,
+    "query": "getDTF"
+  },
+  "data": {
+    "dtf": {
+      "id": "0x4da9a0f397db1397902070f93a4d6ddbc0e0e6e8",
+      "proxyAdmin": "0xf6db82f6b5f343d74a1d88af9e58fa1d2d89562e",
+      "timestamp": "1753802435",
+      "deployer": "0x5e6ef4cfd64e29981fb3a8703a584dde407032d2",
+      "ownerAddress": "0x98e702320f055c1073f9cee2b93f46c9715bc32d",
+      "mintingFee": "3000000000000000",
+      "tvlFee": "479250311",
+      "annualizedTvlFee": "15000000000000000",
+      "mandate": "The CF Large Cap Index (Diversified Weight) is a liquid, investible benchmark portfolio index designed to track the performance of large-cap digital assets. The index seeks to capture 95% of the total market capitalization of the investible digital asset universe as its constituents.",
+      "auctionDelay": "0",
+      "auctionLength": "900",
+      "auctionApprovers": [
+        "0xb785a1dac3724ea73a1368d6e0085b6a930e2ccd"
+      ],
+      "auctionLaunchers": [
+        "0x718841c68eab4038ef389c154f8e91f9923b2fda",
+        "0x7daaf7bc2ee8bf4c0ac7f37e6b6cfaeb3ed9a868"
+      ],
+      "brandManagers": [
+        "0x718841c68eab4038ef389c154f8e91f9923b2fda",
+        "0x7daaf7bc2ee8bf4c0ac7f37e6b6cfaeb3ed9a868"
+      ],
+      "totalRevenue": "7412690707623408149243",
+      "protocolRevenue": "3624756307948556508964",
+      "governanceRevenue": "373738976348893495013",
+      "externalRevenue": "3414195423325958145266",
+      "feeRecipients": "0x45a96cd0e4d89a41eebf3cc4204b00b1cf1582fa:74626865671641900,0x718841c68eab4038ef389c154f8e91f9923b2fda:746268656716417800,0xcbca96091f43c024730a020e57515a18b5dc633b:179104477611940300",
+      "ownerGovernance": {
+        "id": "0x719eded05c7a6468e44acfbbd19b2df2eed7759e",
+        "votingDelay": "172800",
+        "votingPeriod": "259200",
+        "proposalThreshold": "100000000000000",
+        "quorumNumerator": "100000000000000000",
+        "quorumDenominator": "1000000000000000000",
+        "timelock": {
+          "id": "0x98e702320f055c1073f9cee2b93f46c9715bc32d",
+          "guardians": [
+            "0x718841c68eab4038ef389c154f8e91f9923b2fda",
+            "0x7f7bf1d0b4bb7395bb68e99e20c732f3aefffe47"
+          ],
+          "executionDelay": "172800"
+        }
+      },
+      "legacyAdmins": [
+        "0xa203aa351723cf943f91684e9f5efca7175ae7ea"
+      ],
+      "tradingGovernance": {
+        "id": "0xf9edb4491fbd5e1185e05ecba2d69251dd869096",
+        "votingDelay": "7200",
+        "votingPeriod": "86400",
+        "proposalThreshold": "100000000000000",
+        "quorumNumerator": "100000000000000000",
+        "quorumDenominator": "1000000000000000000",
+        "timelock": {
+          "id": "0xb785a1dac3724ea73a1368d6e0085b6a930e2ccd",
+          "guardians": [
+            "0xf9edb4491fbd5e1185e05ecba2d69251dd869096",
+            "0x718841c68eab4038ef389c154f8e91f9923b2fda",
+            "0x5e6ef4cfd64e29981fb3a8703a584dde407032d2",
+            "0x6f1d6b86d4ad705385e751e6e88b0fdfdbadf298"
+          ],
+          "executionDelay": "172800"
+        }
+      },
+      "legacyAuctionApprovers": [],
+      "token": {
+        "id": "0x4da9a0f397db1397902070f93a4d6ddbc0e0e6e8",
+        "name": "CF Large Cap Index",
+        "symbol": "LCAP",
+        "decimals": 18,
+        "totalSupply": "560492654056016762066953",
+        "currentHolderCount": "19293"
+      },
+      "stToken": {
+        "id": "0x45a96cd0e4d89a41eebf3cc4204b00b1cf1582fa",
+        "token": {
+          "name": "Vote Lock vlRSR-LCAP",
+          "symbol": "vlRSR-LCAP",
+          "decimals": 18,
+          "totalSupply": "73813253099754097304102862"
+        },
+        "underlying": {
+          "name": "Reserve Rights",
+          "symbol": "RSR",
+          "address": "0xab36452dbac151be02b16ca17d8919826072f64a",
+          "decimals": 18
+        },
+        "governance": {
+          "id": "0x2dee428bd8131faa4288750d707de6f3901afe3c",
+          "votingDelay": "172800",
+          "votingPeriod": "259200",
+          "proposalThreshold": "100000000000000",
+          "quorumNumerator": "100000000000000000",
+          "quorumDenominator": "1000000000000000000",
+          "timelock": {
+            "id": "0x1a649a0c88a61c30a67815cc1d5cb9cbebb13bc1",
+            "guardians": [
+              "0x2dee428bd8131faa4288750d707de6f3901afe3c",
+              "0x718841c68eab4038ef389c154f8e91f9923b2fda",
+              "0x5e6ef4cfd64e29981fb3a8703a584dde407032d2",
+              "0x6f1d6b86d4ad705385e751e6e88b0fdfdbadf298"
+            ],
+            "executionDelay": "172800"
+          }
+        },
+        "legacyGovernance": [
+          "0x0000000000000000000000000000000000000000",
+          "0x1a7d043c84fe781b6df046fefcf673f71110208d"
+        ],
+        "rewards": [
+          {
+            "rewardToken": {
+              "address": "0x4da9a0f397db1397902070f93a4d6ddbc0e0e6e8",
+              "name": "CF Large Cap Index",
+              "symbol": "LCAP",
+              "decimals": 18
+            }
+          },
+          {
+            "rewardToken": {
+              "address": "0xcfa3ef56d303ae4faaba0592388f19d7c3399fb4",
+              "name": "Electronic Dollar",
+              "symbol": "eUSD",
+              "decimals": 18
+            }
+          }
+        ]
+      }
+    }
+  }
+}

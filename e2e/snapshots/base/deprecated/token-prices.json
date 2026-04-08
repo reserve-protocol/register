@@ -1,0 +1,120 @@
+{
+  "_meta": {
+    "source": "https://api.reserve.org/current/prices?chainId=8453&tokens=0x4F9Fd6Be4a90f2620860d680c0d4d5Fb53d1A825,0x1C4CcA7C5DB003824208aDDA61Bd749e55F463a3,0x731814e491571A2e9eE3c5b1F7f3b962eE8f4870,0x55cD6469F597452B5A7536e2CD98fDE4c1247ee4,0x58Db197E91Bc8Cf1587F75850683e4bd0730e6BF,0x0b3AE50BaBE7FFa4E1A50569ceE6bDEFd4ccAeE0,0x98aC5B33A4Ef1151f138941c979211599c2fF953,0xA4A2E2ca3fBfE21aed83471D28b6f65A233C6e00,0xFAC77f01957ed1B3DD1cbEa992199B8f85B6E886,0xC44141a684f6AA4E36cD9264ab55550B03C88643",
+    "capturedAt": "2026-04-08T20:31:27.113Z",
+    "dtf": "0x47686106181b3cefe4eaf94c4c10b48ac750370b",
+    "chainId": 8453
+  },
+  "data": [
+    {
+      "address": "0x4F9Fd6Be4a90f2620860d680c0d4d5Fb53d1A825",
+      "price": 0.025176936654583735,
+      "timestamp": 1775680287,
+      "priceSources": [
+        "zapper",
+        "odos",
+        "alchemy",
+        "defillama"
+      ]
+    },
+    {
+      "address": "0x1C4CcA7C5DB003824208aDDA61Bd749e55F463a3",
+      "price": 0.008849028207638254,
+      "timestamp": 1775680287,
+      "priceSources": [
+        "zapper",
+        "odos",
+        "alchemy",
+        "defillama"
+      ]
+    },
+    {
+      "address": "0x731814e491571A2e9eE3c5b1F7f3b962eE8f4870",
+      "price": 0.0011330276716192303,
+      "timestamp": 1775680287,
+      "priceSources": [
+        "zapper",
+        "odos",
+        "alchemy",
+        "defillama"
+      ]
+    },
+    {
+      "address": "0x55cD6469F597452B5A7536e2CD98fDE4c1247ee4",
+      "price": 0.006102174646193281,
+      "timestamp": 1775680287,
+      "priceSources": [
+        "zapper",
+        "odos",
+        "alchemy",
+        "defillama"
+      ]
+    },
+    {
+      "address": "0x58Db197E91Bc8Cf1587F75850683e4bd0730e6BF",
+      "price": 0.000764894916787946,
+      "timestamp": 1775680287,
+      "priceSources": [
+        "zapper",
+        "odos",
+        "alchemy",
+        "defillama"
+      ]
+    },
+    {
+      "address": "0x0b3AE50BaBE7FFa4E1A50569ceE6bDEFd4ccAeE0",
+      "price": 0.0019014154581836501,
+      "timestamp": 1775680287,
+      "priceSources": [
+        "zapper",
+        "odos",
+        "alchemy",
+        "defillama"
+      ]
+    },
+    {
+      "address": "0x98aC5B33A4Ef1151f138941c979211599c2fF953",
+      "price": 0.001192675477814276,
+      "timestamp": 1775680287,
+      "priceSources": [
+        "zapper",
+        "odos",
+        "alchemy",
+        "defillama"
+      ]
+    },
+    {
+      "address": "0xA4A2E2ca3fBfE21aed83471D28b6f65A233C6e00",
+      "price": 0.10833375196046417,
+      "timestamp": 1775680287,
+      "priceSources": [
+        "zapper",
+        "odos",
+        "alchemy",
+        "defillama"
+      ]
+    },
+    {
+      "address": "0xFAC77f01957ed1B3DD1cbEa992199B8f85B6E886",
+      "price": 0.001886414261879536,
+      "timestamp": 1775680287,
+      "priceSources": [
+        "zapper",
+        "odos",
+        "alchemy",
+        "defillama"
+      ]
+    },
+    {
+      "address": "0xC44141a684f6AA4E36cD9264ab55550B03C88643",
+      "price": 0.0012807002762687985,
+      "timestamp": 1775680287,
+      "priceSources": [
+        "zapper",
+        "odos",
+        "alchemy",
+        "defillama"
+      ]
+    }
+  ]
+}

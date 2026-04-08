@@ -1,0 +1,886 @@
+{
+  "_meta": {
+    "source": "https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-base/prod/gn",
+    "capturedAt": "2026-04-08T20:31:27.331Z",
+    "dtf": "0x47686106181b3cefe4eaf94c4c10b48ac750370b",
+    "chainId": 8453,
+    "query": "getRebalances"
+  },
+  "data": {
+    "rebalances": [
+      {
+        "id": "0x47686106181b3cefe4eaf94c4c10b48ac750370b-0x5",
+        "nonce": "5",
+        "tokens": [
+          {
+            "address": "0x0b3ae50babe7ffa4e1a50569cee6bdefd4ccaee0",
+            "name": "717ai by Virtuals",
+            "symbol": "WIRE",
+            "decimals": 18
+          },
+          {
+            "address": "0x1c4cca7c5db003824208adda61bd749e55f463a3",
+            "name": "GAME by Virtuals",
+            "symbol": "GAME",
+            "decimals": 18
+          },
+          {
+            "address": "0x4f9fd6be4a90f2620860d680c0d4d5fb53d1a825",
+            "name": "aixbt by Virtuals",
+            "symbol": "AIXBT",
+            "decimals": 18
+          },
+          {
+            "address": "0x55cd6469f597452b5a7536e2cd98fde4c1247ee4",
+            "name": "Luna by Virtuals",
+            "symbol": "LUNA",
+            "decimals": 18
+          },
+          {
+            "address": "0x58db197e91bc8cf1587f75850683e4bd0730e6bf",
+            "name": "Axelrod by Virtuals",
+            "symbol": "AXR",
+            "decimals": 18
+          },
+          {
+            "address": "0x731814e491571a2e9ee3c5b1f7f3b962ee8f4870",
+            "name": "VaderAI by Virtuals",
+            "symbol": "VADER",
+            "decimals": 18
+          },
+          {
+            "address": "0x815269d17c10f0f3df7249370e0c1b9efe781aa8",
+            "name": "SANTA by Virtuals",
+            "symbol": "SANTA",
+            "decimals": 18
+          },
+          {
+            "address": "0x98ac5b33a4ef1151f138941c979211599c2ff953",
+            "name": "VPay by Virtuals",
+            "symbol": "VPAY",
+            "decimals": 18
+          },
+          {
+            "address": "0xa4a2e2ca3fbfe21aed83471d28b6f65a233c6e00",
+            "name": "Ribbita by Virtuals",
+            "symbol": "TIBBIR",
+            "decimals": 18
+          },
+          {
+            "address": "0xc44141a684f6aa4e36cd9264ab55550b03c88643",
+            "name": "Ethy AI by Virtuals",
+            "symbol": "ETHY",
+            "decimals": 18
+          },
+          {
+            "address": "0xfac77f01957ed1b3dd1cbea992199b8f85b6e886",
+            "name": "ArAIstotle by Virtuals",
+            "symbol": "FACY",
+            "decimals": 18
+          }
+        ],
+        "priceControl": "1.0",
+        "weightLowLimit": [
+          "185879483516102024363678070",
+          "189771020209603702715406297",
+          "176958985028081172749255231",
+          "184888668349062762612851513",
+          "219597515258576483986389340",
+          "430272662693642216898957206",
+          "435995657806860699347473486",
+          "185905723427222727817212413",
+          "300566603018852184888630503",
+          "0",
+          "545218005322730687929310583"
+        ],
+        "weightSpotLimit": [
+          "1858794835161020243636780697",
+          "1897710202096037027154062966",
+          "1769589850280811727492552312",
+          "1848886683490627626128515135",
+          "878390061034305935945557361",
+          "1721090650774568867595828825",
+          "1743982631227442797389893943",
+          "1859057234272227278172124127",
+          "1202266412075408739554522012",
+          "0",
+          "2180872021290922751717242331"
+        ],
+        "weightHighLimit": [
+          "18587948351610202436367806973",
+          "18977102020960370271540629656",
+          "17695898502808117274925523119",
+          "18488866834906276261285151347",
+          "3513560244137223743782229444",
+          "6884362603098275470383315302",
+          "6975930524909771189559575770",
+          "18590572342722272781721241266",
+          "4809065648301634958218088048",
+          "0",
+          "8723488085163691006868969325"
+        ],
+        "rebalanceLowLimit": "1",
+        "rebalanceSpotLimit": "1000000000000000000",
+        "rebalanceHighLimit": "1000000000000000000",
+        "priceLowLimit": [
+          "19443267369132966",
+          "4491498447505914",
+          "2216643099216702",
+          "1387657134530078",
+          "3277811077594268",
+          "1763988787431032",
+          "2010540908017064",
+          "499890401134077",
+          "1256681186006297",
+          "687240669456477",
+          "640495167068656"
+        ],
+        "priceHighLimit": [
+          "1944326736913296600",
+          "449149844750591360",
+          "221664309921670200",
+          "138765713453007780",
+          "52444977241508280",
+          "28223820598896512",
+          "32168654528273028",
+          "49989040113407680",
+          "20106898976100756",
+          "10995850711303630",
+          "10247922673098488"
+        ],
+        "restrictedUntil": "1765632377",
+        "availableUntil": "1765632377",
+        "transactionHash": "0xc0e4398f6c15c834ba7a5447f83cd405873fadce666cb0a5a6e1c468f0a453ec",
+        "blockNumber": "39205515",
+        "timestamp": "1765200377"
+      },
+      {
+        "id": "0x47686106181b3cefe4eaf94c4c10b48ac750370b-0x4",
+        "nonce": "4",
+        "tokens": [
+          {
+            "address": "0x0b3ae50babe7ffa4e1a50569cee6bdefd4ccaee0",
+            "name": "717ai by Virtuals",
+            "symbol": "WIRE",
+            "decimals": 18
+          },
+          {
+            "address": "0x1c4cca7c5db003824208adda61bd749e55f463a3",
+            "name": "GAME by Virtuals",
+            "symbol": "GAME",
+            "decimals": 18
+          },
+          {
+            "address": "0x4f9fd6be4a90f2620860d680c0d4d5fb53d1a825",
+            "name": "aixbt by Virtuals",
+            "symbol": "AIXBT",
+            "decimals": 18
+          },
+          {
+            "address": "0x55cd6469f597452b5a7536e2cd98fde4c1247ee4",
+            "name": "Luna by Virtuals",
+            "symbol": "LUNA",
+            "decimals": 18
+          },
+          {
+            "address": "0x58db197e91bc8cf1587f75850683e4bd0730e6bf",
+            "name": "Axelrod by Virtuals",
+            "symbol": "AXR",
+            "decimals": 18
+          },
+          {
+            "address": "0x64712fbdf19ae8b5b3b6d0478750e3d5e1a17718",
+            "name": "Waveform by Virtuals",
+            "symbol": "WAVE",
+            "decimals": 18
+          },
+          {
+            "address": "0x731814e491571a2e9ee3c5b1f7f3b962ee8f4870",
+            "name": "VaderAI by Virtuals",
+            "symbol": "VADER",
+            "decimals": 18
+          },
+          {
+            "address": "0x815269d17c10f0f3df7249370e0c1b9efe781aa8",
+            "name": "SANTA by Virtuals",
+            "symbol": "SANTA",
+            "decimals": 18
+          },
+          {
+            "address": "0x98ac5b33a4ef1151f138941c979211599c2ff953",
+            "name": "VPay by Virtuals",
+            "symbol": "VPAY",
+            "decimals": 18
+          },
+          {
+            "address": "0xa4a2e2ca3fbfe21aed83471d28b6f65a233c6e00",
+            "name": "Ribbita by Virtuals",
+            "symbol": "TIBBIR",
+            "decimals": 18
+          },
+          {
+            "address": "0xce1eab31756a48915b7e7bb79c589835aac6242d",
+            "name": "Gigabrain by Virtuals",
+            "symbol": "BRAIN",
+            "decimals": 18
+          },
+          {
+            "address": "0xfac77f01957ed1b3dd1cbea992199b8f85b6e886",
+            "name": "ArAIstotle by Virtuals",
+            "symbol": "FACY",
+            "decimals": 18
+          }
+        ],
+        "priceControl": "1.0",
+        "weightLowLimit": [
+          "184707265281105888654395859",
+          "193711537157265351550479040",
+          "178280177391027149290152180",
+          "215520546653682227902440242",
+          "261932921380505171016843569",
+          "192444680776553978709888453",
+          "174972903053892476876369178",
+          "0",
+          "0",
+          "403081944145999646038994406",
+          "438945056472304241581469784",
+          "408859334478547125809958895"
+        ],
+        "weightSpotLimit": [
+          "1847072652811058886543958587",
+          "1937115371572653515504790399",
+          "1782801773910271492901521804",
+          "862082186614728911609760969",
+          "1047731685522020684067374275",
+          "1924446807765539787098884534",
+          "1749729030538924768763691776",
+          "0",
+          "0",
+          "1612327776583998584155977623",
+          "1755780225889216966325879135",
+          "1635437337914188503239835580"
+        ],
+        "weightHighLimit": [
+          "18470726528110588865439585868",
+          "19371153715726535155047903986",
+          "17828017739102714929015218042",
+          "3448328746458915646439043876",
+          "4190926742088082736269497099",
+          "19244468077655397870988845345",
+          "17497290305389247687636917759",
+          "0",
+          "0",
+          "6449311106335994336623910493",
+          "7023120903556867865303516539",
+          "6541749351656754012959342320"
+        ],
+        "rebalanceLowLimit": "1",
+        "rebalanceSpotLimit": "1000000000000000000",
+        "rebalanceHighLimit": "1000000000000000000",
+        "priceLowLimit": [
+          "33891280647362650",
+          "6894273401195977",
+          "3696717704475250",
+          "17183173639968433",
+          "4126768556949559",
+          "1185857293733724",
+          "1163900236903330",
+          "285459904766074",
+          "1378873315425144",
+          "2618207693028656",
+          "3919725125248615",
+          "5162422173533024"
+        ],
+        "priceHighLimit": [
+          "3389128064736265000",
+          "689427340119597700",
+          "369671770447525000",
+          "274930778239494920",
+          "66028296911192940",
+          "118585729373372400",
+          "116390023690333000",
+          "28545990476607367",
+          "22061973046802308",
+          "41891323088458500",
+          "62715602003977840",
+          "82598754776528380"
+        ],
+        "restrictedUntil": "1762719009",
+        "availableUntil": "1762719009",
+        "transactionHash": "0xf6cf411c3cc5ffd476b06ec405d97adb67176319d642f8bb2e1098171e6698ad",
+        "blockNumber": "37748831",
+        "timestamp": "1762287009"
+      },
+      {
+        "id": "0x47686106181b3cefe4eaf94c4c10b48ac750370b-0x3",
+        "nonce": "3",
+        "tokens": [
+          {
+            "address": "0x0b3ae50babe7ffa4e1a50569cee6bdefd4ccaee0",
+            "name": "717ai by Virtuals",
+            "symbol": "WIRE",
+            "decimals": 18
+          },
+          {
+            "address": "0x1c4cca7c5db003824208adda61bd749e55f463a3",
+            "name": "GAME by Virtuals",
+            "symbol": "GAME",
+            "decimals": 18
+          },
+          {
+            "address": "0x2d90785e30a9df6cce329c0171cb8ba0f4a5c17b",
+            "name": "BYTE by Virtuals",
+            "symbol": "BYTE",
+            "decimals": 18
+          },
+          {
+            "address": "0x4f9fd6be4a90f2620860d680c0d4d5fb53d1a825",
+            "name": "aixbt by Virtuals",
+            "symbol": "AIXBT",
+            "decimals": 18
+          },
+          {
+            "address": "0x55cd6469f597452b5a7536e2cd98fde4c1247ee4",
+            "name": "Luna by Virtuals",
+            "symbol": "LUNA",
+            "decimals": 18
+          },
+          {
+            "address": "0x58db197e91bc8cf1587f75850683e4bd0730e6bf",
+            "name": "Axelrod by Virtuals",
+            "symbol": "AXR",
+            "decimals": 18
+          },
+          {
+            "address": "0x64712fbdf19ae8b5b3b6d0478750e3d5e1a17718",
+            "name": "Waveform by Virtuals",
+            "symbol": "WAVE",
+            "decimals": 18
+          },
+          {
+            "address": "0x731814e491571a2e9ee3c5b1f7f3b962ee8f4870",
+            "name": "VaderAI by Virtuals",
+            "symbol": "VADER",
+            "decimals": 18
+          },
+          {
+            "address": "0xa4a2e2ca3fbfe21aed83471d28b6f65a233c6e00",
+            "name": "Ribbita by Virtuals",
+            "symbol": "TIBBIR",
+            "decimals": 18
+          },
+          {
+            "address": "0xaea742f80922f7c94b8fd91686c9dfbdfe90d9e6",
+            "name": "Predi by Virtuals",
+            "symbol": "PREDI",
+            "decimals": 18
+          },
+          {
+            "address": "0xce1eab31756a48915b7e7bb79c589835aac6242d",
+            "name": "Gigabrain by Virtuals",
+            "symbol": "BRAIN",
+            "decimals": 18
+          },
+          {
+            "address": "0xfac77f01957ed1b3dd1cbea992199b8f85b6e886",
+            "name": "ArAIstotle by Virtuals",
+            "symbol": "FACY",
+            "decimals": 18
+          }
+        ],
+        "priceControl": "1.0",
+        "weightLowLimit": [
+          "190324131177010675188200426",
+          "228540204188273504830651871",
+          "166890688146836756376801656",
+          "177461699742150172993529554",
+          "212324603250022662262152167",
+          "222341231753862904269282698",
+          "0",
+          "0",
+          "0",
+          "319455723296827726328677982",
+          "396933086393873615077242439",
+          "237586981610924218968822277"
+        ],
+        "weightSpotLimit": [
+          "1903241311770106751882004263",
+          "2285402041882735048306518707",
+          "667562752587347025507206623",
+          "1774616997421501729935295539",
+          "2123246032500226622621521666",
+          "2223412317538629042692826978",
+          "0",
+          "0",
+          "0",
+          "3194557232968277263286779817",
+          "1587732345575494460308969754",
+          "950347926443696875875289108"
+        ],
+        "weightHighLimit": [
+          "19032413117701067518820042631",
+          "22854020418827350483065187071",
+          "2670251010349388102028826491",
+          "17746169974215017299352955388",
+          "21232460325002266226215216660",
+          "22234123175386290426928269777",
+          "0",
+          "0",
+          "0",
+          "31945572329682772632867798168",
+          "6350929382301977841235879018",
+          "3801391705774787503501156430"
+        ],
+        "rebalanceLowLimit": "1",
+        "rebalanceSpotLimit": "1000000000000000000",
+        "rebalanceHighLimit": "1000000000000000000",
+        "priceLowLimit": [
+          "26665278962184350",
+          "9311871360254258",
+          "13768976240526832",
+          "1510767515514595",
+          "1039060733140707",
+          "843432610149185",
+          "1534840816071591",
+          "2245179441189516",
+          "736724552962316",
+          "254935653536723",
+          "1670214824787674",
+          "3852982892188536"
+        ],
+        "priceHighLimit": [
+          "2666527896218435000",
+          "931187136025425800",
+          "220303619848429304",
+          "151076751551459500",
+          "103906073314070650",
+          "84343261014918500",
+          "24557453057145460",
+          "35922871059032260",
+          "11787592847397050",
+          "25493565353672300",
+          "26723437196602780",
+          "61647726275016580"
+        ],
+        "restrictedUntil": "1760272399",
+        "availableUntil": "1760272399",
+        "transactionHash": "0x59564e21cdac4579e184e7ad497eee9cb5c457e24256ad8a479c45fae8e71052",
+        "blockNumber": "36525526",
+        "timestamp": "1759840399"
+      },
+      {
+        "id": "0x47686106181b3cefe4eaf94c4c10b48ac750370b-0x2",
+        "nonce": "2",
+        "tokens": [
+          {
+            "address": "0x0b3ae50babe7ffa4e1a50569cee6bdefd4ccaee0",
+            "name": "717ai by Virtuals",
+            "symbol": "WIRE",
+            "decimals": 18
+          },
+          {
+            "address": "0x1c4cca7c5db003824208adda61bd749e55f463a3",
+            "name": "GAME by Virtuals",
+            "symbol": "GAME",
+            "decimals": 18
+          },
+          {
+            "address": "0x2d90785e30a9df6cce329c0171cb8ba0f4a5c17b",
+            "name": "BYTE by Virtuals",
+            "symbol": "BYTE",
+            "decimals": 18
+          },
+          {
+            "address": "0x4f9fd6be4a90f2620860d680c0d4d5fb53d1a825",
+            "name": "aixbt by Virtuals",
+            "symbol": "AIXBT",
+            "decimals": 18
+          },
+          {
+            "address": "0x55cd6469f597452b5a7536e2cd98fde4c1247ee4",
+            "name": "Luna by Virtuals",
+            "symbol": "LUNA",
+            "decimals": 18
+          },
+          {
+            "address": "0x58db197e91bc8cf1587f75850683e4bd0730e6bf",
+            "name": "Axelrod by Virtuals",
+            "symbol": "AXR",
+            "decimals": 18
+          },
+          {
+            "address": "0x731814e491571a2e9ee3c5b1f7f3b962ee8f4870",
+            "name": "VaderAI by Virtuals",
+            "symbol": "VADER",
+            "decimals": 18
+          },
+          {
+            "address": "0xa4a2e2ca3fbfe21aed83471d28b6f65a233c6e00",
+            "name": "Ribbita by Virtuals",
+            "symbol": "TIBBIR",
+            "decimals": 18
+          },
+          {
+            "address": "0xab964f7b7b6391bd6c4e8512ef00d01f255d9c0d",
+            "name": "Prefrontal Cortex Convo Agent by Virtuals",
+            "symbol": "CONVO",
+            "decimals": 18
+          },
+          {
+            "address": "0xaea742f80922f7c94b8fd91686c9dfbdfe90d9e6",
+            "name": "Predi by Virtuals",
+            "symbol": "PREDI",
+            "decimals": 18
+          },
+          {
+            "address": "0xbf8566956b4e2d8beb90c4c19dbb8c67a9290c36",
+            "name": "VIRGEN by Virtuals",
+            "symbol": "VIRGEN",
+            "decimals": 18
+          },
+          {
+            "address": "0xce1eab31756a48915b7e7bb79c589835aac6242d",
+            "name": "Gigabrain by Virtuals",
+            "symbol": "BRAIN",
+            "decimals": 18
+          },
+          {
+            "address": "0xcf67815cce72e682eb4429eca46843bed81ca739",
+            "name": "GAM3S.GG",
+            "symbol": "G3",
+            "decimals": 18
+          },
+          {
+            "address": "0xfac77f01957ed1b3dd1cbea992199b8f85b6e886",
+            "name": "ArAIstotle by Virtuals",
+            "symbol": "FACY",
+            "decimals": 18
+          }
+        ],
+        "priceControl": "1.0",
+        "weightLowLimit": [
+          "406717186623926590174451262",
+          "384620234367111956274600578",
+          "409796348048614385599464244",
+          "412253392575758792631117964",
+          "395657379239562116758491330",
+          "0",
+          "228713150155838010966663395",
+          "0",
+          "0",
+          "0",
+          "160941313311561188377324306",
+          "495621215174988743075889932",
+          "452838639511523320638232379",
+          "446241246262956197511559598"
+        ],
+        "weightSpotLimit": [
+          "2033585933119632950872256309",
+          "1923101171835559781373002889",
+          "2048981740243071927997321221",
+          "2061266962878793963155589818",
+          "1978286896197810583792456652",
+          "0",
+          "1143565750779190054833316975",
+          "0",
+          "0",
+          "0",
+          "804706566557805941886621529",
+          "2478106075874943715379449659",
+          "2264193197557616603191161895",
+          "2231206231314780987557797991"
+        ],
+        "weightHighLimit": [
+          "10167929665598164754361281547",
+          "9615505859177798906865014447",
+          "10244908701215359639986606104",
+          "10306334814393969815777949090",
+          "9891434480989052918962283261",
+          "0",
+          "5717828753895950274166584874",
+          "0",
+          "0",
+          "0",
+          "4023532832789029709433107647",
+          "12390530379374718576897248297",
+          "11320965987788083015955809473",
+          "11156031156573904937788989955"
+        ],
+        "rebalanceLowLimit": "1000000000000000000",
+        "rebalanceSpotLimit": "1000000000000000000",
+        "rebalanceHighLimit": "1000000000000000000",
+        "priceLowLimit": [
+          "19577050828778386",
+          "30264029089727120",
+          "3090287473059605",
+          "2513904977071832",
+          "1584388385851729",
+          "2477290971831067",
+          "2144074312242866",
+          "425588022411682",
+          "896937789020562",
+          "158310212994311",
+          "5104404224307119",
+          "1086322949883987",
+          "881947735298848",
+          "1110236755269504"
+        ],
+        "priceHighLimit": [
+          "489426270719459650",
+          "756600727243178000",
+          "77257186826490130",
+          "62847624426795800",
+          "39609709646293230",
+          "61932274295776675",
+          "53601857806071655",
+          "10639700560292048",
+          "22423444725514050",
+          "3957755324857765",
+          "127610105607677965",
+          "27158073747099685",
+          "22048693382471200",
+          "27755918881737610"
+        ],
+        "restrictedUntil": "1757167625",
+        "availableUntil": "1757167625",
+        "transactionHash": "0x9916bfa2cc687e306d8c5bab7222e19f02a4b06b89a093c1cbf1fd654adade70",
+        "blockNumber": "35102739",
+        "timestamp": "1756994825"
+      },
+      {
+        "id": "0x47686106181b3cefe4eaf94c4c10b48ac750370b-0x1",
+        "nonce": "1",
+        "tokens": [
+          {
+            "address": "0x1185cb5122edad199bdbc0cbd7a0457e448f23c7",
+            "name": "sekoia by Virtuals",
+            "symbol": "SEKOIA",
+            "decimals": 18
+          },
+          {
+            "address": "0x1c4cca7c5db003824208adda61bd749e55f463a3",
+            "name": "GAME by Virtuals",
+            "symbol": "GAME",
+            "decimals": 18
+          },
+          {
+            "address": "0x4f9fd6be4a90f2620860d680c0d4d5fb53d1a825",
+            "name": "aixbt by Virtuals",
+            "symbol": "AIXBT",
+            "decimals": 18
+          },
+          {
+            "address": "0x504a26cf29674bc77a9341e73f88ccecc864034c",
+            "name": "Sympson by Virtuals",
+            "symbol": "SYMP",
+            "decimals": 18
+          },
+          {
+            "address": "0x55cd6469f597452b5a7536e2cd98fde4c1247ee4",
+            "name": "Luna by Virtuals",
+            "symbol": "LUNA",
+            "decimals": 18
+          },
+          {
+            "address": "0x58db197e91bc8cf1587f75850683e4bd0730e6bf",
+            "name": "Axelrod by Virtuals",
+            "symbol": "AXR",
+            "decimals": 18
+          },
+          {
+            "address": "0x731814e491571a2e9ee3c5b1f7f3b962ee8f4870",
+            "name": "VaderAI by Virtuals",
+            "symbol": "VADER",
+            "decimals": 18
+          },
+          {
+            "address": "0x73cb479f2ccf77bad90bcda91e3987358437240a",
+            "name": "BasisOS by Virtuals",
+            "symbol": "BIOS",
+            "decimals": 18
+          },
+          {
+            "address": "0x76c71f1703fbf19ffdcf3051e1e684cb9934510f",
+            "name": "aixCB by Virtuals",
+            "symbol": "AIXCB",
+            "decimals": 18
+          },
+          {
+            "address": "0x79dacb99a8698052a9898e81fdf883c29efb93cb",
+            "name": "Acolyte by Virtuals",
+            "symbol": "ACOLYT",
+            "decimals": 18
+          },
+          {
+            "address": "0x8ac984f596bac8197859434ecbab3e4595d7bb06",
+            "name": "Bizzy by Virtuals",
+            "symbol": "BIZ",
+            "decimals": 18
+          },
+          {
+            "address": "0xa4a2e2ca3fbfe21aed83471d28b6f65a233c6e00",
+            "name": "Ribbita by Virtuals",
+            "symbol": "TIBBIR",
+            "decimals": 18
+          },
+          {
+            "address": "0xab964f7b7b6391bd6c4e8512ef00d01f255d9c0d",
+            "name": "Prefrontal Cortex Convo Agent by Virtuals",
+            "symbol": "CONVO",
+            "decimals": 18
+          },
+          {
+            "address": "0xaea742f80922f7c94b8fd91686c9dfbdfe90d9e6",
+            "name": "Predi by Virtuals",
+            "symbol": "PREDI",
+            "decimals": 18
+          },
+          {
+            "address": "0xbdc27118ca76b375c6887b0ff068afb03dfc21a0",
+            "name": "Arbus by Virtuals",
+            "symbol": "ARBUS",
+            "decimals": 18
+          },
+          {
+            "address": "0xbf8566956b4e2d8beb90c4c19dbb8c67a9290c36",
+            "name": "VIRGEN by Virtuals",
+            "symbol": "VIRGEN",
+            "decimals": 18
+          },
+          {
+            "address": "0xc796e499cc8f599a2a8280825d8bda92f7a895e0",
+            "name": "Neurobro by Virtuals",
+            "symbol": "BRO",
+            "decimals": 18
+          },
+          {
+            "address": "0xce1eab31756a48915b7e7bb79c589835aac6242d",
+            "name": "Gigabrain by Virtuals",
+            "symbol": "BRAIN",
+            "decimals": 18
+          },
+          {
+            "address": "0xcf67815cce72e682eb4429eca46843bed81ca739",
+            "name": "GAM3S.GG",
+            "symbol": "G3",
+            "decimals": 18
+          }
+        ],
+        "priceControl": "1.0",
+        "weightLowLimit": [
+          "506597427555283741222627935",
+          "341372312882789569438191001",
+          "561464746439111165634796407",
+          "413782806841734244540124728",
+          "515574679231455726839289948",
+          "0",
+          "0",
+          "0",
+          "521156943365279027140678063",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "319501016192992578512712327",
+          "205312054659669332031576519",
+          "281295272347747105073772132",
+          "543318752277095730320900855"
+        ],
+        "weightSpotLimit": [
+          "2532987137776418706113139677",
+          "1706861564413947847190955003",
+          "2807323732195555828173982037",
+          "2068914034208671222700623641",
+          "2577873396157278634196449739",
+          "0",
+          "0",
+          "0",
+          "2605784716826395135703390314",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "1597505080964962892563561637",
+          "1026560273298346660157882595",
+          "1406476361738735525368860662",
+          "2716593761385478651604504274"
+        ],
+        "weightHighLimit": [
+          "12664935688882093530565698387",
+          "8534307822069739235954775015",
+          "14036618660977779140869910185",
+          "10344570171043356113503118206",
+          "12889366980786393170982248697",
+          "0",
+          "0",
+          "0",
+          "13028923584131975678516951568",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "7987525404824814462817808185",
+          "5132801366491733300789412974",
+          "7032381808693677626844303311",
+          "13582968806927393258022521369"
+        ],
+        "rebalanceLowLimit": "1000000000000000000",
+        "rebalanceSpotLimit": "1000000000000000000",
+        "rebalanceHighLimit": "1000000000000000000",
+        "priceLowLimit": [
+          "26673054327800000",
+          "24037968565200000",
+          "5527528342000000",
+          "5129844637000000",
+          "3342844329400000",
+          "2487609960000000",
+          "507005480200000",
+          "657131287600000",
+          "670907200600000",
+          "519603082400000",
+          "483310600000000",
+          "279536460000000",
+          "182154135000000",
+          "305041345600000",
+          "259303773200000",
+          "4280579461000000",
+          "1311164980200000",
+          "560996666600000",
+          "239192266200000"
+        ],
+        "priceHighLimit": [
+          "666826358195000000",
+          "600949214130000000",
+          "138188208550000000",
+          "128246115925000000",
+          "83571108235000000",
+          "62190249000000000",
+          "12675137005000000",
+          "16428282190000000",
+          "16772680015000000",
+          "12990077060000000",
+          "12082765000000000",
+          "6988411500000000",
+          "4553853375000000",
+          "7626033640000000",
+          "6482594330000000",
+          "107014486525000000",
+          "32779124505000000",
+          "14024916665000000",
+          "5979806655000000"
+        ],
+        "restrictedUntil": "1754486735",
+        "availableUntil": "1754486735",
+        "transactionHash": "0x312175d00d4a46bc5a8fefe92fb574e1a0ab5e1f4656a514bf1547ddb695a4af",
+        "blockNumber": "33762294",
+        "timestamp": "1754313935"
+      }
+    ]
+  }
+}

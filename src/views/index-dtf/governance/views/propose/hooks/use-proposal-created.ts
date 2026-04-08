@@ -13,8 +13,7 @@ import { getProposalState, type ProposalDetail } from '@/lib/governance'
 import { proposalDetailAtom } from '../../proposal/atom'
 import { ROUTES } from '@/utils/constants'
 
-interface UseProposalCreatedParams {
-  receipt: TransactionReceipt | undefined
+export interface SubmitProposalData {
   targets: Address[]
   calldatas: Hex[]
   description: string
@@ -22,19 +21,20 @@ interface UseProposalCreatedParams {
   proposer: Address
 }
 
-const useProposalCreated = ({
-  receipt,
-  targets,
-  calldatas,
-  description,
-  govAddress,
-  proposer,
-}: UseProposalCreatedParams) => {
+interface UseProposalCreatedParams {
+  receipt: TransactionReceipt | undefined
+  dataRef: React.RefObject<SubmitProposalData | null>
+}
+
+const useProposalCreated = ({ receipt, dataRef }: UseProposalCreatedParams) => {
   const navigate = useNavigate()
   const setProposalDetail = useSetAtom(proposalDetailAtom)
 
   useEffect(() => {
     if (!receipt || receipt.status !== 'success') return
+
+    const data = dataRef.current
+    if (!data) return
 
     const events = parseEventLogs({
       abi: dtfIndexGovernance,
@@ -55,7 +55,7 @@ const useProposalCreated = ({
     const optimistic: ProposalDetail = {
       id,
       timelockId: '0x' + proposalId.toString(16).padStart(64, '0'),
-      description,
+      description: data.description,
       creationTime: Math.floor(Date.now() / 1000),
       creationBlock: Number(receipt.blockNumber),
       state: 'PENDING',
@@ -65,11 +65,11 @@ const useProposalCreated = ({
       againstWeightedVotes: 0,
       abstainWeightedVotes: 0,
       quorumVotes: 0,
-      calldatas,
-      targets,
-      proposer: { address: proposer },
+      calldatas: data.calldatas,
+      targets: data.targets,
+      proposer: { address: data.proposer },
       votes: [],
-      governor: govAddress,
+      governor: data.govAddress,
       forDelegateVotes: '0',
       abstainDelegateVotes: '0',
       againstDelegateVotes: '0',

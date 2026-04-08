@@ -1,0 +1,63 @@
+{
+  "_meta": {
+    "source": "https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-base/prod/gn",
+    "capturedAt": "2026-04-08T20:31:27.974Z",
+    "dtf": "0x47686106181b3cefe4eaf94c4c10b48ac750370b",
+    "chainId": 8453,
+    "query": "getProposalDetail",
+    "proposalId": "46366792428628137513301405702666187049614045429260826945706663062187288565406"
+  },
+  "data": {
+    "proposal": {
+      "id": "46366792428628137513301405702666187049614045429260826945706663062187288565406",
+      "timelockId": "0xb32e9fb85d448db40c17ddd840557628d28afbd005a3a8711bcba894f2ce7b56",
+      "description": "# Remove ACOLYT Dust \n []() \n Remove ACOLYT Dust",
+      "creationTime": "1754670657",
+      "voteStart": "1754843457",
+      "voteEnd": "1755102657",
+      "queueBlock": "34160899",
+      "queueTime": "1755111145",
+      "state": "EXECUTED",
+      "executionETA": "1755283945",
+      "executionTime": "1755290817",
+      "creationBlock": "33940655",
+      "cancellationTime": null,
+      "calldatas": [
+        "0x8cdf128800000000000000000000000079dacb99a8698052a9898e81fdf883c29efb93cb"
+      ],
+      "targets": [
+        "0x47686106181b3cefe4eaf94c4c10b48ac750370b"
+      ],
+      "proposer": {
+        "address": "0xd8b0f4e54a8dac04e0a57392f5a630cedb99c940"
+      },
+      "votes": [
+        {
+          "choice": "FOR",
+          "voter": {
+            "address": "0x03d03a026e71979be3b08d44b01eae4c5ff9da99"
+          },
+          "weight": "1490081418538281462079"
+        },
+        {
+          "choice": "FOR",
+          "voter": {
+            "address": "0xb209eed4d80fb47e5c16577e44dad1073c5c5015"
+          },
+          "weight": "161000000000000000000"
+        }
+      ],
+      "forWeightedVotes": "1651081418538281462079",
+      "againstWeightedVotes": "0",
+      "abstainWeightedVotes": "0",
+      "quorumVotes": "1605515247181826282371",
+      "forDelegateVotes": "2",
+      "abstainDelegateVotes": "0",
+      "againstDelegateVotes": "0",
+      "executionTxnHash": "0xf4a46254ac8f06b35ebaff53aa3f69f8403b4555f3d9df3b1bbaf7664be43692",
+      "governance": {
+        "id": "0xa8ce43762de703d285b019fac8829148e3013442"
+      }
+    }
+  }
+}

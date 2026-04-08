@@ -16,7 +16,7 @@ import {
   ThumbsDown,
   ThumbsUp,
 } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { chainIdAtom, walletAtom } from 'state/atoms'
 import { getProposalTitle } from 'utils'
 import {
@@ -40,6 +40,7 @@ const VoteModal = (props: ModalProps) => {
   const [vote, setVote] = useState(-1)
   const proposal = useAtomValue(proposalDetailAtom)
   const account = useAtomValue(walletAtom)
+  const voterRef = useRef<string | null>(null)
   const accountVotes = useAtomValue(accountVotesAtom)
   const optimisticVote = useSetAtom(optimisticVoteActionAtom)
   const isValid = proposal?.id && vote !== -1
@@ -67,11 +68,11 @@ const VoteModal = (props: ModalProps) => {
   })
 
   useEffect(() => {
-    if (status === 'success' && account && accountVotes.votePower) {
+    if (status === 'success' && voterRef.current && accountVotes.votePower) {
       optimisticVote({
         voteType: vote,
         votePower: accountVotes.votePower,
-        voter: account,
+        voter: voterRef.current,
       })
     }
   }, [status])
@@ -155,7 +156,10 @@ const VoteModal = (props: ModalProps) => {
         text={t`Vote`}
         loadingText={isMining ? t`Confirming...` : undefined}
         className="w-full"
-        onClick={write}
+        onClick={() => {
+          voterRef.current = account ?? null
+          write?.()
+        }}
         disabled={!isReady || isLoading || isMining}
       />
     </Modal>
