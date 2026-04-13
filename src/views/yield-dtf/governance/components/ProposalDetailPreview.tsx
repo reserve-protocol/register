@@ -81,7 +81,7 @@ const ProposalDetail = ({
   const [groups] = parseCallDatas(addresses, calldatas, interfaceMap)
 
   return (
-    <div>
+    <div className='bg-secondary p-1 rounded-4xl'>
       {!groups.length && (
         <Card className="p-4 mb-4 text-center">
           <Spinner size={18} />
