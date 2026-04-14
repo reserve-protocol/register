@@ -103,8 +103,8 @@ export const redeemQuotesAtom = atomWithLoadable(async (get) => {
     quotes[currentNonce.toString()] = tokens.reduce(
       (prev, current, currentIndex) => {
         const assetAddress = getAddress(current)
-        const amount = withdrawals[currentIndex]
-        const targetAmount = available[currentIndex]
+        const amount = available[currentIndex]
+        const targetAmount = withdrawals[currentIndex]
         let loss = 0
 
         if (amount !== targetAmount) {
