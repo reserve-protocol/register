@@ -21,7 +21,7 @@ const quoteQuantitiesAtom = atom((get) => {
   }
 
   return Object.keys(quote[nonce]).reduce((prev, curr) => {
-    prev[curr] = quote[nonce][curr].amount
+    prev[curr] = quote[nonce][curr].targetAmount
     return prev
   }, {} as BigNumberMap)
 })
