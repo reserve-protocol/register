@@ -1,4 +1,4 @@
-import CopyValue from '@/components/old/button/CopyValue'
+import CopyValue from '@/components/ui/copy-value'
 import { Button } from '@/components/ui/button'
 import ExplorerAddress from '@/components/utils/explorer-address'
 import { chainIdAtom } from '@/state/atoms'
@@ -102,6 +102,7 @@ const ProposalParams = () => {
               <ExplorerAddress
                 address={proposal?.proposer?.address}
                 chain={chainId}
+                ens
               />
             )}
           </div>

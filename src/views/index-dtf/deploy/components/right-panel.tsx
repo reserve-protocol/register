@@ -1,4 +1,3 @@
-import DiscordIcon from '@/components/icons/DiscordIcon'
 import { RTokenIcon } from '@/components/icons/logos'
 import Timeline from '@/components/ui/timeline'
 import ExplorerAddress from '@/components/utils/explorer-address'
@@ -16,7 +15,8 @@ import {
 } from '../atoms'
 import ConfirmIndexDeploy from '../steps/confirm-deploy'
 import CreateDAO from '../steps/create-dao'
-import { DISCORD_INVITE, INDEX_PROTOCOL_DOCS } from '@/utils/constants'
+import { INDEX_PROTOCOL_DOCS, TELEGRAM_INVITE } from '@/utils/constants'
+import TelegramIcon from '@/components/icons/TelegramIcon'
 
 const IndexTokenGraphic = () => {
   return (
@@ -41,20 +41,20 @@ const DeployTimeline = () => {
     },
     ...(showCreateGovernanceDAO
       ? [
-          {
-            title: daoCreated
-              ? stTokenSymbol
-                ? `Created ${stTokenSymbol} DAO`
-                : 'Governance DAO created'
-              : 'Sign tx to create governance DAO',
-            rightText:
-              daoCreated && stTokenAddress ? (
-                <ExplorerAddress address={stTokenAddress} chain={chainId} />
-              ) : undefined,
-            children: !daoCreated && <CreateDAO />,
-            isActive: formReadyForSubmit,
-          },
-        ]
+        {
+          title: daoCreated
+            ? stTokenSymbol
+              ? `Created ${stTokenSymbol} DAO`
+              : 'Governance DAO created'
+            : 'Sign tx to create governance DAO',
+          rightText:
+            daoCreated && stTokenAddress ? (
+              <ExplorerAddress address={stTokenAddress} chain={chainId} />
+            ) : undefined,
+          children: !daoCreated && <CreateDAO />,
+          isActive: formReadyForSubmit,
+        },
+      ]
       : []),
     {
       title: 'Create Index DTF',
@@ -120,9 +120,9 @@ const HelpText = () => {
       </div>
       <div className="flex gap-2">
         <SocialMediaLink
-          href={DISCORD_INVITE}
-          icon={<DiscordIcon />}
-          title="Discord"
+          href={TELEGRAM_INVITE}
+          icon={<TelegramIcon />}
+          title="Telegram"
         />
         <SocialMediaLink
           href={INDEX_PROTOCOL_DOCS}

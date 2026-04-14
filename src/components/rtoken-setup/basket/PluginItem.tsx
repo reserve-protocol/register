@@ -1,30 +1,24 @@
 import { Trans } from '@lingui/macro'
-import GoTo from '@/components/old/button/GoTo'
+import GoTo from '@/components/ui/go-to'
+import { Separator } from '@/components/ui/separator'
+import { Checkbox } from '@/components/ui/checkbox'
+import { Button } from '@/components/ui/button'
 import TokenLogo from 'components/icons/TokenLogo'
 import { useAtomValue } from 'jotai'
 import { useState } from 'react'
 import { ChevronDown, ChevronUp } from 'lucide-react'
 import { chainIdAtom, collateralYieldAtom } from 'state/atoms'
-import {
-  Box,
-  BoxProps,
-  Checkbox,
-  Divider,
-  Flex,
-  IconButton,
-  Link,
-  Text,
-} from 'theme-ui'
 import { CollateralPlugin } from 'types'
 import { formatPercentage, parseDuration } from 'utils'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { Collateral } from '../atoms'
 import { collateralDisplay } from 'utils/constants'
 
-interface PluginItemProps extends BoxProps {
+interface PluginItemProps {
   data: CollateralPlugin | Collateral
   selected?: boolean
   onCheck(address: string): void
+  className?: string
 }
 
 const PluginInfo = ({ data }: { data: CollateralPlugin }) => {
@@ -32,47 +26,46 @@ const PluginInfo = ({ data }: { data: CollateralPlugin }) => {
 
   return (
     <>
-      <Divider mt={2} />
-      <Flex variant="layout.verticalAlign" ml={0} mt={3} sx={{ fontSize: 1 }}>
-        <Box mr={4}>
-          <Text variant="legend">
+      <Separator className="mt-2" />
+      <div className="flex items-center ml-0 mt-3 text-xs">
+        <div className="mr-4">
+          <span className="text-legend">
             <Trans>Collateral token</Trans>
-          </Text>
-          <Link
-            as="a"
+          </span>
+          <a
             href={getExplorerLink(
               data.underlyingAddress || data.erc20,
               chainId,
               ExplorerDataType.TOKEN
             )}
             target="_blank"
-            variant="legend"
-            sx={{ color: 'text', display: 'block' }}
+            rel="noreferrer"
+            className="block hover:underline"
           >
             {data.collateralToken || data.underlyingToken || data.symbol}
-          </Link>
-        </Box>
-        <Box mr={4}>
-          <Text variant="legend">
+          </a>
+        </div>
+        <div className="mr-4">
+          <span className="text-legend">
             <Trans>Decimals</Trans>
-          </Text>
-          <Text sx={{ display: 'block' }}>{data.decimals}</Text>
-        </Box>
-        <Box mr={4}>
-          <Text variant="legend">
+          </span>
+          <span className="block">{data.decimals}</span>
+        </div>
+        <div className="mr-4">
+          <span className="text-legend">
             <Trans>Default delay</Trans>
-          </Text>
-          <Text sx={{ display: 'block' }}>
+          </span>
+          <span className="block">
             {parseDuration(+data.delayUntilDefault)}
-          </Text>
-        </Box>
-        <Box>
-          <Text variant="legend">
+          </span>
+        </div>
+        <div>
+          <span className="text-legend">
             <Trans>Version</Trans>
-          </Text>
-          <Text sx={{ display: 'block' }}>{data.version}</Text>
-        </Box>
-      </Flex>
+          </span>
+          <span className="block">{data.version}</span>
+        </div>
+      </div>
     </>
   )
 }
@@ -81,7 +74,7 @@ const PluginInfo = ({ data }: { data: CollateralPlugin }) => {
  * View: Deploy -> Basket setup -> CollateralModal
  * Display collateral plugin item
  */
-const PluginItem = ({ data, onCheck, selected, ...props }: PluginItemProps) => {
+const PluginItem = ({ data, onCheck, selected, className }: PluginItemProps) => {
   const [isVisible, setVisible] = useState(false)
   const chainId = useAtomValue(chainIdAtom)
   const collateralYields = useAtomValue(collateralYieldAtom)
@@ -92,42 +85,43 @@ const PluginItem = ({ data, onCheck, selected, ...props }: PluginItemProps) => {
   const displayName = collateralDisplay[symbol.toLowerCase()] ?? symbol
 
   return (
-    <Box {...props}>
-      <Flex variant="layout.verticalAlign">
+    <div className={className}>
+      <div className="flex items-center">
         <TokenLogo width={24} symbol={data.symbol} />
-        <Box ml={3}>
-          <Box variant="layout.verticalAlign">
-            <Text>{displayName}</Text>
+        <div className="ml-3">
+          <div className="flex items-center">
+            <span>{displayName}</span>
             <GoTo
-              ml={1}
+              className="ml-1"
               href={getExplorerLink(
                 data.address,
                 chainId,
                 ExplorerDataType.ADDRESS
               )}
             />
-          </Box>
+          </div>
 
-          <Text sx={{ fontSize: 1, display: 'block' }} variant="legend">
+          <span className="text-xs block text-legend">
             <Trans>Target:</Trans> {data.targetName} | <Trans>Est. APY:</Trans>{' '}
             {formatPercentage(
               collateralYields[chainId]?.[symbol.toLowerCase()] || 0
             )}
-          </Text>
-        </Box>
-        <Box mx="auto" />
-        <label>
+          </span>
+        </div>
+        <div className="mx-auto" />
+        <label className="flex items-center">
           <Checkbox
-            sx={{ cursor: 'pointer' }}
+            className="cursor-pointer"
             defaultChecked={!!selected}
-            onChange={() => {
+            onCheckedChange={() => {
               onCheck(data.address)
             }}
           />
         </label>
-        <IconButton
-          sx={{ cursor: 'pointer' }}
-          ml={-1}
+        <Button
+          variant="none"
+          size="icon"
+          className="cursor-pointer -ml-1"
           onClick={() => setVisible(!isVisible)}
         >
           {isVisible ? (
@@ -135,10 +129,10 @@ const PluginItem = ({ data, onCheck, selected, ...props }: PluginItemProps) => {
           ) : (
             <ChevronDown color="#999999" />
           )}
-        </IconButton>
-      </Flex>
+        </Button>
+      </div>
       {isVisible && <PluginInfo data={data as CollateralPlugin} />}
-    </Box>
+    </div>
   )
 }
 

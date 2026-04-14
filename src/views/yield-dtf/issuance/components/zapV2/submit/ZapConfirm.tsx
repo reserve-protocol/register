@@ -1,4 +1,3 @@
-import { Box } from 'theme-ui'
 import ZapError from '../ZapError'
 import { useZap } from '../context/ZapContext'
 import { useZapTx } from '../context/ZapTxContext'
@@ -16,9 +15,9 @@ const ZapConfirm = () => {
     tokenIn.symbol !== 'ETH' && (!needsRevoke || revokeSuccess)
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+    <div className="flex flex-col gap-3">
       {error && <ZapError error={error} />}
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+      <div className="flex flex-col gap-1">
         <ZapRefreshQuote>
           <>
             {showRevoke && <ZapRevokeButton />}
@@ -26,8 +25,8 @@ const ZapConfirm = () => {
             <ZapConfirmButton />
           </>
         </ZapRefreshQuote>
-      </Box>
-    </Box>
+      </div>
+    </div>
   )
 }
 

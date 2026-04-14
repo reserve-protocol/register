@@ -1,10 +1,11 @@
-import GoTo from '@/components/old/button/GoTo'
+import GoTo from '@/components/ui/go-to'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import BlockiesAvatar from '@/components/utils/blockies-avatar'
+import EnsName from '@/components/utils/ens-name'
 import { cn } from '@/lib/utils'
 import { chainIdAtom } from '@/state/atoms'
-import { formatCurrency, shortenAddress } from '@/utils'
+import { formatCurrency } from '@/utils'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { Trans } from '@lingui/macro'
 import { atom, useAtomValue } from 'jotai'
@@ -58,7 +59,7 @@ const VoteList = ({ votes }: { votes: Vote[] }) => {
         {votes.map((vote) => (
           <div className="flex items-center gap-2 mb-1" key={vote.voter}>
             <BlockiesAvatar address={vote.voter} />
-            {shortenAddress(vote.voter)}
+            <EnsName address={vote.voter} />
             <GoTo
               href={getExplorerLink(
                 vote.voter,

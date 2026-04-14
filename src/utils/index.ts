@@ -231,6 +231,11 @@ export function formatToSignificantDigits(
       }).format(value)
 }
 
+export const formatUSD = (value: number): string => {
+  if (value > 0 && value < 0.01) return '< $0.01'
+  return `$${formatCurrency(value)}`
+}
+
 export const formatPercentage = (value: number, decimals = 2): string =>
   (value / 100).toLocaleString('en-US', {
     style: 'percent',
@@ -290,9 +295,15 @@ export const parsePercent = (n: string): bigint => {
   return parseEther((Number(n) / 100).toString())
 }
 
-// TODO: More robust title parsing?
+// Normalizes literal \n sequences to real newlines
+export const normalizeDescription = (description: string) =>
+  description.replace(/\\n/g, '\n')
+
 export const getProposalTitle = (description: string) => {
-  return description.split(/\r?\n/)[0].replaceAll('#', '').trim()
+  return normalizeDescription(description)
+    .split(/\r?\n/)[0]
+    .replaceAll('#', '')
+    .trim()
 }
 
 const shortEnglishHumanizer = humanizeDuration.humanizer({

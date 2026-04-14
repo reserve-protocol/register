@@ -1,4 +1,4 @@
-import { TransactionButtonContainer } from '@/components/old/button/TransactionButton'
+import { TransactionButtonContainer } from '@/components/ui/transaction-button'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import Spinner from '@/components/ui/spinner'

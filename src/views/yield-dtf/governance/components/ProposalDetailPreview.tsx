@@ -1,27 +1,25 @@
 import SectionWrapper from '@/components/section-navigation/section-wrapper'
+import { Card } from '@/components/ui/card'
+import Spinner from '@/components/ui/spinner'
 import { useAtomValue } from 'jotai'
-import { Box, BoxProps, Card, Spinner, Text } from 'theme-ui'
 import { Hex, decodeFunctionData, getAbiItem, getAddress } from 'viem'
 import { ContractProposal, InterfaceMap, interfaceMapAtom } from '../atoms'
 import ContractProposalDetail from '../views/proposal-detail/components/ContractProposalDetails'
 
-interface Props extends BoxProps {
+interface Props {
   addresses: string[]
   calldatas: string[]
   snapshotBlock?: number
   borderColor?: string
-}
-
-type ContractProposalMap = {
-  [x: string]: ContractProposal
+  className?: string
 }
 
 const parseCallDatas = (
   addresses: string[],
   calldatas: string[],
   interfaceMap: InterfaceMap
-): [ContractProposalMap, string[]] => {
-  const contractProposals: ContractProposalMap = {}
+): [ContractProposal[], string[]] => {
+  const contractProposals: ContractProposal[] = []
   const unparsed: string[] = []
 
   for (let i = 0; i < addresses.length; i++) {
@@ -35,20 +33,12 @@ const parseCallDatas = (
           data: calldatas[i] as Hex,
         })
 
-        if (!contractProposals[address]) {
-          contractProposals[address] = {
-            address,
-            label: contractDetail.label,
-            calls: [],
-          }
-        }
-
         const result = getAbiItem({
           abi: contractDetail.interface,
           name: functionCall.functionName,
         })
 
-        contractProposals[address].calls.push({
+        const call = {
           signature: functionCall.functionName,
           parameters:
             result && 'inputs' in result
@@ -56,7 +46,19 @@ const parseCallDatas = (
               : [],
           callData: calldatas[i],
           data: functionCall.args ?? [],
-        })
+        }
+
+        // Group consecutive calls to the same address
+        const lastEntry = contractProposals[contractProposals.length - 1]
+        if (lastEntry && lastEntry.address === address) {
+          lastEntry.calls.push(call)
+        } else {
+          contractProposals.push({
+            address,
+            label: contractDetail.label,
+            calls: [call],
+          })
+        }
       } else {
         unparsed.push(calldatas[i])
       }
@@ -72,32 +74,32 @@ const ProposalDetail = ({
   addresses,
   calldatas,
   snapshotBlock,
+  className,
   ...props
 }: Props) => {
   const interfaceMap = useAtomValue(interfaceMapAtom)
-  const [parse] = parseCallDatas(addresses, calldatas, interfaceMap)
-  const calls = Object.keys(parse)
+  const [groups] = parseCallDatas(addresses, calldatas, interfaceMap)
 
   return (
-    <Box>
-      {!calls.length && (
-        <Card p={4} mb={4} sx={{ textAlign: 'center' }}>
+    <div className='bg-secondary p-1 rounded-4xl'>
+      {!groups.length && (
+        <Card className="p-4 mb-4 text-center">
           <Spinner size={18} />
-          <Text sx={{ display: 'block' }}>Loading execution details...</Text>
+          <span className="block">Loading execution details...</span>
         </Card>
       )}
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-        {calls.map((address, index) => (
-          <SectionWrapper key={address} navigationIndex={index}>
+      <div className="flex flex-col gap-4">
+        {groups.map((group, index) => (
+          <SectionWrapper key={`${group.address}-${index}`} navigationIndex={index}>
             <ContractProposalDetail
-              data={parse[address]}
+              data={group}
               snapshotBlock={snapshotBlock}
               {...props}
             />
           </SectionWrapper>
         ))}
-      </Box>
-    </Box>
+      </div>
+    </div>
   )
 }
 

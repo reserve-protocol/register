@@ -44,8 +44,7 @@ const RemoveButton = ({
 
   const onRemove = () => {
     const items = watch(fieldName)
-    items.splice(index, 1)
-    setValue(fieldName, items)
+    setValue(fieldName, items.filter((_: unknown, i: number) => i !== index))
   }
 
   return (

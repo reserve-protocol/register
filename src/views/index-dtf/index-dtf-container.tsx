@@ -1,4 +1,5 @@
-import dtfIndexAbi from '@/abis/dtf-index-abi'
+import daoFeeRegistryAbi from '@/abis/dao-fee-registry-abi'
+import dtfIndexAbi from '@/abis/dtf-index-abi-v1'
 import dtfIndexAbiV4 from '@/abis/dtf-index-abi-v4'
 import FeedbackButton from '@/components/feedback-button'
 import SEO from '@/components/seo'
@@ -17,15 +18,18 @@ import {
   IndexDTFBrand,
   indexDTFBrandAtom,
   indexDTFExposureDataAtom,
+  indexDTFFeeAtom,
   indexDTFPerformanceLoadingAtom,
   indexDTFRebalanceControlAtom,
+  indexDTFStatusAtom,
   indexDTFVersionAtom,
   iTokenAddressAtom,
   performanceTimeRangeAtom,
 } from '@/state/dtf/atoms'
+import { useDTFStatus } from '@/hooks/use-dtf-status'
 import { isAddress } from '@/utils'
 import { AvailableChain, supportedChains } from '@/utils/chains'
-import { NETWORKS, RESERVE_API, ROUTES } from '@/utils/constants'
+import { FALLBACK_PLATFORM_FEES, NETWORKS, RESERVE_API, ROUTES } from '@/utils/constants'
 import { useQuery } from '@tanstack/react-query'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useState } from 'react'
@@ -157,6 +161,44 @@ const IndexDTFBasketUpdater = ({
   return null
 }
 
+const PlatformFeeUpdater = ({
+  tokenAddress,
+  chainId,
+}: {
+  tokenAddress?: string
+  chainId: number
+}) => {
+  const setFee = useSetAtom(indexDTFFeeAtom)
+
+  const { data: registryAddress, isError: registryError } = useReadContract({
+    address: tokenAddress as Address,
+    abi: dtfIndexAbi,
+    functionName: 'daoFeeRegistry',
+    chainId,
+    query: { enabled: !!tokenAddress },
+  })
+
+  const { data: feeDetails, isError: feeError } = useReadContract({
+    address: registryAddress as Address,
+    abi: daoFeeRegistryAbi,
+    functionName: 'getFeeDetails',
+    args: [tokenAddress as Address],
+    chainId,
+    query: { enabled: !!registryAddress && !!tokenAddress },
+  })
+
+  useEffect(() => {
+    if (feeDetails) {
+      const [, feeNumerator, feeDenominator] = feeDetails
+      setFee(Number(feeNumerator * 100n / feeDenominator))
+    } else if (registryError || feeError) {
+      setFee(FALLBACK_PLATFORM_FEES[chainId] ?? 50)
+    }
+  }, [feeDetails, registryError, feeError, chainId])
+
+  return null
+}
+
 const IndexDTFExposureUpdater = ({ chainId }: { chainId: number }) => {
   const dtf = useAtomValue(indexDTFAtom)
   const setExposureData = useSetAtom(indexDTFExposureDataAtom)
@@ -203,11 +245,30 @@ const resetStateAtom = atom(null, (_, set) => {
   set(indexDTFAtom, undefined)
   set(indexDTFBrandAtom, undefined)
   set(indexDTFRebalanceControlAtom, undefined)
+  set(indexDTFFeeAtom, undefined)
   set(indexDTF7dChangeAtom, undefined)
   set(indexDTFPerformanceLoadingAtom, false)
   set(indexDTFExposureDataAtom, null)
   set(performanceTimeRangeAtom, '7d')
+  set(indexDTFStatusAtom, 'active')
 })
+
+const DeprecationStatusUpdater = ({
+  tokenAddress,
+  chainId,
+}: {
+  tokenAddress?: string
+  chainId: number
+}) => {
+  const status = useDTFStatus(tokenAddress, chainId)
+  const setStatus = useSetAtom(indexDTFStatusAtom)
+
+  useEffect(() => {
+    setStatus(status)
+  }, [status])
+
+  return null
+}
 
 export const indexDTFRefreshFnAtom = atom<(() => void) | null>(null)
 
@@ -279,7 +340,9 @@ const Updater = () => {
     <div key={key}>
       <IndexDTFMetadataUpdater tokenAddress={currentToken} chainId={chainId} />
       <IndexDTFBasketUpdater tokenAddress={currentToken} chainId={chainId} />
+      <PlatformFeeUpdater tokenAddress={currentToken} chainId={chainId} />
       <IndexDTFExposureUpdater chainId={chainId} />
+      <DeprecationStatusUpdater tokenAddress={currentToken} chainId={chainId} />
       <GovernanceUpdater />
     </div>
   )

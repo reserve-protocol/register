@@ -1,8 +1,8 @@
 import { Trans } from '@lingui/macro'
 import { cn } from '@/lib/utils'
-import { Button } from 'components'
-import CopyValue from '@/components/old/button/CopyValue'
-import GoTo from '@/components/old/button/GoTo'
+import { Button } from '@/components/ui/button'
+import CopyValue from '@/components/ui/copy-value'
+import GoTo from '@/components/ui/go-to'
 import CollaterizationIcon from 'components/icons/CollaterizationIcon'
 import HiperlinkIcon from 'components/icons/HiperlinkIcon'
 import TokenLogo from 'components/icons/TokenLogo'
@@ -20,7 +20,7 @@ import {
 } from 'state/rtoken/atoms/rTokenBackingDistributionAtom'
 import { formatCurrency, shortenAddress } from 'utils'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
-import { PROTOCOL_DOCS } from '@/utils/constants'
+import { YIELD_PROTOCOL_DOCS } from '@/utils/constants'
 
 interface DetailedCollateralWithMeta extends CollateralDetail {
   website?: string
@@ -126,11 +126,11 @@ const CollateralDetails = ({
           <div className="mt-3 flex items-center flex-wrap">
             <Button
               className="mr-3"
-              small
-              variant="transparent"
+              size="sm"
+              variant="ghost"
               onClick={(e) => {
                 e.stopPropagation()
-                window.open(`${PROTOCOL_DOCS}introduction/`, '_blank')
+                window.open(YIELD_PROTOCOL_DOCS, '_blank')
               }}
             >
               <div className="flex items-center">
@@ -140,9 +140,9 @@ const CollateralDetails = ({
             </Button>
             {!!collateral.website && (
               <Button
-                className="mr-3"
-                small
-                variant="bordered"
+                className="mr-3 border-2"
+                size="sm"
+                variant="outline"
                 onClick={() => window.open(collateral.website, '_blank')}
               >
                 <div className="flex items-center">

@@ -1,12 +1,16 @@
 import { t } from '@lingui/macro'
 import { useAtom } from 'jotai'
-import { BoxProps } from 'theme-ui'
+import { cn } from '@/lib/utils'
 import { shortenAddress } from 'utils'
 import { unregisterAssetsAtom } from '../atoms'
 import { ListChangePreview } from './ItemPreview'
 import PreviewBox from './PreviewBox'
 
-const ProposedUnregisterPreview = (props: BoxProps) => {
+interface Props {
+  className?: string
+}
+
+const ProposedUnregisterPreview = ({ className }: Props) => {
   const [assetsToUnregister, setAssetsToUnregister] =
     useAtom(unregisterAssetsAtom)
 
@@ -20,10 +24,9 @@ const ProposedUnregisterPreview = (props: BoxProps) => {
 
   return (
     <PreviewBox
-      variant="layout.borderBox"
+      className={cn('border border-border rounded-xl p-6', className)}
       count={assetsToUnregister.length}
       title={t`Unregistering assets`}
-      {...props}
     >
       {assetsToUnregister.map((asset) => (
         <ListChangePreview
@@ -31,7 +34,7 @@ const ProposedUnregisterPreview = (props: BoxProps) => {
           onRevert={() => handleRevert(asset)}
           isNew={false}
           value={shortenAddress(asset)}
-          mt={3}
+          className="mt-4"
         />
       ))}
     </PreviewBox>

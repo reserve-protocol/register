@@ -29,7 +29,7 @@ const AmountsPreview = () => {
   const stAmountMemo = useMemo(() => stAmount, [!!stAmount])
 
   return (
-    <>
+    <div className='mt-4'>
       <AmountPreview
         title={t`You use:`}
         amount={Number(amount)}
@@ -44,7 +44,7 @@ const AmountsPreview = () => {
         src="/svgs/strsr.svg"
         symbol={ticker}
       />
-    </>
+    </div>
   )
 }
 
@@ -59,10 +59,10 @@ const StakeExtra = () => {
     if (currentDelegate !== delegate || !delegate) {
       setDelegate(currentDelegate || account || '')
     }
-  }, [currentDelegate])
+  }, [currentDelegate, account])
 
   return (
-    <ShowMore mt="3" mb={2}>
+    <ShowMore className="mt-4 mb-2">
       <UnstakeDelay className={!isLegacy ? 'mb-2' : ''} />
       {!isLegacy && (
         <DelegateStake

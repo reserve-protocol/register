@@ -1,53 +1,36 @@
 import { t } from '@lingui/macro'
-import CollapsableBox from '@/components/old/boxes/CollapsableBox'
-import SelectableBox from '@/components/old/boxes/SelectableBox'
 import Help from 'components/help'
 import TokenLogo from 'components/icons/TokenLogo'
 import { useAtomValue } from 'jotai'
 import { useState } from 'react'
-import { Box, BoxProps, Divider, Text } from 'theme-ui'
+import { ChevronDown, ChevronUp } from 'lucide-react'
 import { Trader } from 'types'
 import { formatCurrency } from 'utils'
 import { TRADERS, TraderLabels } from 'utils/constants'
 import { traderRewardsAtom } from '../atoms'
 import { RewardTokenWithCollaterals } from '../types'
 import ClaimFromTraderButton from './ClaimFromTraderButton'
+import { Checkbox } from '@/components/ui/checkbox'
+import { cn } from '@/lib/utils'
 
 const MIN_DOLLAR_VALUE = 10
 
-interface Props extends BoxProps {
+interface Props {
   trader: Trader
+  className?: string
 }
 
 const TraderIcon = ({ trader }: { trader: Trader }) => (
-  <Box
-    variant="layout.verticalAlign"
-    sx={{
-      div: {
-        height: '16px',
-        width: '4px',
-        ':first-of-type': {
-          borderTopLeftRadius: '2px',
-          borderBottomLeftRadius: '2px',
-          marginRight: '2px',
-        },
-        ':last-of-type': {
-          borderTopRightRadius: '2px',
-          borderBottomRightRadius: '2px',
-          marginLeft: '2px',
-        },
-      },
-    }}
-  >
+  <div className="flex items-center [&>div]:h-4 [&>div]:w-1 [&>div:first-of-type]:rounded-l-sm [&>div:first-of-type]:mr-0.5 [&>div:last-of-type]:rounded-r-sm [&>div:last-of-type]:ml-0.5">
     {TRADERS.map((currentTrader) => (
-      <Box
+      <div
         key={currentTrader}
-        sx={{
-          backgroundColor: currentTrader === trader ? 'primary' : 'disabled',
-        }}
+        className={cn(
+          currentTrader === trader ? 'bg-primary' : 'bg-muted'
+        )}
       />
     ))}
-  </Box>
+  </div>
 )
 
 const TraderHeading = ({
@@ -63,29 +46,34 @@ const TraderHeading = ({
   selected: boolean
   disabled?: boolean
 }) => (
-  <SelectableBox
-    selected={selected}
-    onSelect={onSelect}
-    unavailable={disabled}
-    unavailableComponent={<Box />}
-  >
-    <Box variant="layout.verticalAlign" py={3} sx={{ width: '100%' }} mr={2}>
+  <div className="flex items-center w-full">
+    <div className="flex items-center py-4 w-full mr-2">
       <TraderIcon trader={trader} />
-      <Text ml={3}>{TraderLabels[trader]}</Text>
-      <Text
-        ml="auto"
-        sx={{
-          color: selected ? 'rBlue' : 'text',
-          textDecoration: disabled ? 'line-through' : 'none',
-        }}
+      <span className="ml-4">{TraderLabels[trader]}</span>
+      <span
+        className={cn(
+          'ml-auto',
+          selected ? 'text-primary' : 'text-foreground',
+          disabled && 'line-through'
+        )}
       >
         ${formatCurrency(amount)}
-      </Text>
-    </Box>
-  </SelectableBox>
+      </span>
+    </div>
+    <div className="ml-auto flex items-center">
+      {!disabled && (
+        <Checkbox
+          checked={selected}
+          onCheckedChange={() => onSelect()}
+          onClick={(e) => e.stopPropagation()}
+          className="cursor-pointer"
+        />
+      )}
+    </div>
+  </div>
 )
 
-const TraderEmissions = ({ trader, ...props }: Props) => {
+const TraderEmissions = ({ trader, className }: Props) => {
   const availableRewards = useAtomValue(traderRewardsAtom)
   const [selected, setSelected] = useState<RewardTokenWithCollaterals[]>([])
   const [isOpen, setOpen] = useState(false)
@@ -126,68 +114,79 @@ const TraderEmissions = ({ trader, ...props }: Props) => {
   }
 
   return (
-    <CollapsableBox
-      open={isOpen}
-      onToggle={setOpen}
-      mt={3}
-      header={
-        <TraderHeading
-          onSelect={handleSelectAll}
-          trader={trader}
-          selected={!!selected.length}
-          amount={availableRewards[trader].total}
-          disabled={noBalance}
-        />
-      }
-    >
-      {availableRewards[trader].tokens.map((erc20) => {
-        const isSelected = !!selected.find((t) => t.address === erc20.address)
-        const isBelowMin = erc20.amount < MIN_DOLLAR_VALUE
+    <div className={cn('mt-4', className)}>
+      {/* CollapsableBox header */}
+      <div
+        className="flex items-center cursor-pointer w-full"
+        onClick={() => setOpen(!isOpen)}
+      >
+        <div className="w-full">
+          <TraderHeading
+            onSelect={handleSelectAll}
+            trader={trader}
+            selected={!!selected.length}
+            amount={availableRewards[trader].total}
+            disabled={noBalance}
+          />
+        </div>
+        <div className="flex items-center ml-auto">
+          {isOpen ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+        </div>
+      </div>
 
-        const amountColor = isBelowMin
-          ? 'secondaryText'
-          : isSelected
-            ? 'rBlue'
-            : 'text'
+      {/* Collapsible content */}
+      {isOpen && (
+        <>
+          <div className="border-t border-border my-4 -mx-6" />
+          {availableRewards[trader].tokens.map((erc20) => {
+            const isSelected = !!selected.find((t) => t.address === erc20.address)
+            const isBelowMin = erc20.amount < MIN_DOLLAR_VALUE
+            const unavailable = noBalance || erc20.amount < 1
 
-        return (
-          <SelectableBox
-            key={`${trader}-${erc20.symbol}`}
-            unavailable={noBalance || erc20.amount < 1}
-            selected={isSelected}
-            onSelect={() => handleSelect(erc20)}
-          >
-            <Box
-              variant="layout.verticalAlign"
-              py={3}
-              sx={{ width: '100%' }}
-              mr={2}
-            >
-              <TokenLogo symbol={erc20.symbol} />
-              <Text ml={3} mr="auto">
-                {erc20.symbol}
-              </Text>
-              {isBelowMin && (
-                <Help
-                  content={t`The amount of assets selected affects the gas price, this asset may not be worth claiming yet.`}
-                />
-              )}
-              <Text
-                ml="2"
-                sx={{
-                  color: amountColor,
-                  textDecoration: isBelowMin ? 'line-through' : 'none',
-                }}
+            return (
+              <div
+                key={`${trader}-${erc20.symbol}`}
+                className="flex items-center w-full"
               >
-                ${formatCurrency(erc20.amount)}
-              </Text>
-            </Box>
-          </SelectableBox>
-        )
-      })}
-      <ClaimFromTraderButton trader={trader} erc20s={selected} />
-      <Divider mx={-4} />
-    </CollapsableBox>
+                <div className="flex items-center py-4 w-full mr-2">
+                  <TokenLogo symbol={erc20.symbol} />
+                  <span className="ml-4 mr-auto">{erc20.symbol}</span>
+                  {isBelowMin && (
+                    <Help
+                      content={t`The amount of assets selected affects the gas price, this asset may not be worth claiming yet.`}
+                    />
+                  )}
+                  <span
+                    className={cn(
+                      'ml-2',
+                      isBelowMin
+                        ? 'text-muted-foreground'
+                        : isSelected
+                          ? 'text-primary'
+                          : 'text-foreground',
+                      isBelowMin && 'line-through'
+                    )}
+                  >
+                    ${formatCurrency(erc20.amount)}
+                  </span>
+                </div>
+                <div className="ml-auto flex items-center">
+                  {!unavailable && (
+                    <Checkbox
+                      checked={isSelected}
+                      onCheckedChange={() => handleSelect(erc20)}
+                      className="cursor-pointer"
+                    />
+                  )}
+                </div>
+              </div>
+            )
+          })}
+          <ClaimFromTraderButton trader={trader} erc20s={selected} />
+          <div className="border-t border-border -mx-6" />
+        </>
+      )}
+    </div>
   )
 }
 

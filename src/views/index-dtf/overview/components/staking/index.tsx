@@ -13,7 +13,7 @@ import { useAssetPrice } from '@/hooks/useAssetPrices'
 import useERC20Balance from '@/hooks/useERC20Balance'
 import { useWatchReadContract } from '@/hooks/useWatchReadContract'
 import { walletAtom } from '@/state/atoms'
-import { shortenAddress } from '@/utils'
+import { useEnsName } from '@/hooks/use-ens-name'
 import { ROUTES } from '@/utils/constants'
 import { useTrackIndexDTFClick } from '@/views/index-dtf/hooks/useTrackIndexDTFPage'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
@@ -141,6 +141,9 @@ const Delegate = () => {
     query: { enabled: !!account },
   })
 
+  const hasDelegates = !!delegates && delegates !== zeroAddress
+  const delegateName = useEnsName(hasDelegates ? delegates : undefined)
+
   useEffect(() => {
     const delegateOrSelf =
       delegates && delegates !== zeroAddress ? delegates : (account ?? '')
@@ -175,9 +178,7 @@ const Delegate = () => {
               }}
             >
               <div>
-                {delegates && delegates !== zeroAddress
-                  ? shortenAddress(delegates)
-                  : 'Delegate to self'}
+                {hasDelegates ? delegateName : 'Delegate to self'}
               </div>
               <Pencil size={14} />
             </div>
@@ -240,13 +241,14 @@ const Staking = ({ children }: { children?: ReactNode }) => {
     stToken?.underlying.address,
     stToken?.chainId
   )
-  const { data: balance } = useERC20Balance(stToken?.underlying.address)
+  const { data: balance } = useERC20Balance(stToken?.underlying.address, stToken?.chainId)
 
   const { data: unlockBalanceRaw } = useWatchReadContract({
     abi: dtfIndexStakingVault,
     functionName: 'maxWithdraw',
     address: stToken?.id,
     args: [wallet ?? '0x'],
+    chainId: stToken?.chainId,
     query: { enabled: !!wallet },
   })
 

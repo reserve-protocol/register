@@ -10,7 +10,7 @@ const BasicInfo = () => {
   const { governor, timelock } = useAtomValue(rTokenGovernanceAtom)
 
   return (
-    <InfoCard title={t`Token Details`}>
+    <InfoCard title={t`Token Details`} id="token-details">
       <InfoCardItem
         label={t`Name`}
         value={rToken?.name}

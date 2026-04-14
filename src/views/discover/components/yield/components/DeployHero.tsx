@@ -1,13 +1,16 @@
 import { Trans } from '@lingui/macro'
-import Button from '@/components/old/button'
+import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
 import ExternalArrowIcon from 'components/icons/ExternalArrowIcon'
-import { borderRadius } from 'theme'
-import { Box, BoxProps, Flex, Image, Text } from 'theme-ui'
 import DeployerImg from '../assets/deployer_img.png'
 import { useNavigate } from 'react-router-dom'
 import { ROUTES } from 'utils/constants'
 
-const DeployHero = (props: BoxProps) => {
+interface DeployHeroProps {
+  className?: string
+}
+
+const DeployHero = ({ className }: DeployHeroProps) => {
   const navigate = useNavigate()
 
   const handleDeploy = () => {
@@ -15,61 +18,24 @@ const DeployHero = (props: BoxProps) => {
   }
 
   return (
-    <Box
-      {...props}
-      px={4}
-      py={2}
-      variant="layout.verticalAlign"
-      sx={{
-        border: '1px dashed',
-        background: 'background',
-        borderRadius: borderRadius.boxes,
-        borderColor: 'rBlue',
-      }}
+    <div
+      className={cn(
+        'flex items-center px-6 py-2 border border-dashed border-blue-500 bg-background rounded-xl',
+        className
+      )}
     >
-      <Box
-        sx={{
-          borderRight: '1px solid',
-          borderColor: 'border',
-          flexShrink: 0,
-          display: ['none', 'flex'],
-          height: '200px',
-        }}
-        variant="layout.centered"
-        pl={3}
-        pr={6}
-      >
-        <Box
-          sx={{
-            width: 155,
-            height: 155,
-            borderRadius: '50%',
-            border: '1px dashed #2775CA',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <Box
-            sx={{
-              width: 145,
-              height: 145,
-              borderRadius: '50%',
-              border: '1px dashed #2775CA',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <Image width={100} height={100} src={DeployerImg} />
-          </Box>
-        </Box>
-      </Box>
-      <Box ml={[0, 6]} py={[3, 4]}>
-        <Text mb={2} sx={{ fontSize: 4 }} variant="strong">
+      <div className="hidden md:flex flex-col justify-center items-center shrink-0 border-r border-border h-[200px] pl-4 pr-10">
+        <div className="w-[155px] h-[155px] rounded-full border border-dashed border-[#2775CA] flex justify-center items-center">
+          <div className="w-[145px] h-[145px] rounded-full border border-dashed border-[#2775CA] flex justify-center items-center">
+            <img width={100} height={100} src={DeployerImg} alt="Deployer" />
+          </div>
+        </div>
+      </div>
+      <div className="ml-0 md:ml-10 py-4 md:py-6">
+        <h3 className="mb-2 text-xl font-semibold">
           <Trans>Deploy your own RToken</Trans>
-        </Text>
-        <Text as="p" variant="legend" sx={{ maxWidth: 920 }}>
+        </h3>
+        <p className="text-legend max-w-[920px]">
           <Trans>
             The creation of new RToken designs is permissionless. If you are the
             inventive type and have ideas for what assets should be in the
@@ -78,30 +44,29 @@ const DeployHero = (props: BoxProps) => {
             putting those ideas into practice or sharing them with the
             community.
           </Trans>
-        </Text>
-        <Flex mt={4}>
-          <Button onClick={handleDeploy} medium variant="blue" mr={3}>
+        </p>
+        <div className="flex mt-6">
+          <Button onClick={handleDeploy} className="mr-4">
             <Trans>Go to the RToken Deployer</Trans>
           </Button>
-          <Button medium variant="transparent" mr={2}>
-            <Box
-              variant="layout.verticalAlign"
-              onClick={() =>
-                window.open(
-                  'https://www.youtube.com/watch?v=hk2v0s9wXEo',
-                  '_blank'
-                )
-              }
-            >
-              <Text mr={2}>
-                <Trans>Watch an intro to RTokens</Trans>
-              </Text>
-              <ExternalArrowIcon />
-            </Box>
+          <Button
+            variant="ghost"
+            className="mr-2"
+            onClick={() =>
+              window.open(
+                'https://www.youtube.com/watch?v=hk2v0s9wXEo',
+                '_blank'
+              )
+            }
+          >
+            <span className="mr-2">
+              <Trans>Watch an intro to RTokens</Trans>
+            </span>
+            <ExternalArrowIcon />
           </Button>
-        </Flex>
-      </Box>
-    </Box>
+        </div>
+      </div>
+    </div>
   )
 }
 

@@ -1,4 +1,4 @@
-import { TransactionButtonContainer } from '@/components/old/button/TransactionButton'
+import { TransactionButtonContainer } from '@/components/ui/transaction-button'
 import { Button } from '@/components/ui/button'
 import Copy from '@/components/ui/copy'
 import Swap, { SlippageSelector } from '@/components/ui/swap'
@@ -67,11 +67,11 @@ const SimpleIndexDeploy = () => {
   const zapDeployPayload = useAtomValue(zapDeployPayloadAtom)
   const tokens = useAtomValue(tokensAtom)
   const [ongoingTx, setOngoingTx] = useAtom(ongoingTxAtom)
-  const formChainId = form?.chain
+  const formChainId = form?.chain as number
 
   const url = form?.governanceWalletAddress
-    ? zapper.zapDeployUngoverned(chainId)
-    : zapper.zapDeploy(chainId)
+    ? zapper.zapDeployUngoverned(formChainId)
+    : zapper.zapDeploy(formChainId)
   const requestBody = useDebounce(zapDeployPayload, 500)
 
   const tokenIn = inputToken || defaultInputToken

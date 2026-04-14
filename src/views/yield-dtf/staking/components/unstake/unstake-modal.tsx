@@ -39,7 +39,7 @@ const UnstakePreview = () => {
 }
 
 const UnstakeExtra = () => (
-  <ShowMore mt="3" mb="2">
+  <ShowMore className="mt-4 mb-2">
     <UnstakeDelay />
     <div className="flex items-center mt-2">
       <span>

@@ -1,12 +1,11 @@
 import DutchTradeAbi from 'abis/DutchTrade'
 import ERC20 from 'abis/ERC20'
-import { ExecuteButton } from '@/components/old/button/TransactionButton'
+import { ExecuteButton } from '@/components/ui/transaction-button'
 import useHasAllowance from 'hooks/useHasAllowance'
 import { useAtomValue } from 'jotai'
 import { useCallback, useMemo, useState } from 'react'
-import { chainIdAtom, rTokenAssetsAtom, walletAtom } from 'state/atoms'
-import { Box, Grid, Text } from 'theme-ui'
-import { formatCurrency, isAddress } from 'utils'
+import { chainIdAtom, walletAtom } from 'state/atoms'
+import { formatCurrency } from 'utils'
 import { BIGINT_MAX } from 'utils/constants'
 import { Address, Hex, formatUnits } from 'viem'
 import { useBalance } from 'wagmi'
@@ -70,21 +69,21 @@ const AuctionActions = ({
   }, [])
 
   return (
-    <Grid columns={[1, 1, 1, 'auto auto']}>
-      <Box variant="layout.verticalAlign" sx={{ flexWrap: 'wrap' }}>
+    <div className="grid grid-cols-1 xl:grid-cols-[auto_auto]">
+      <div className="flex items-center flex-wrap">
         {!hasAllowance && (
           <>
             <ExecuteButton
               text={`Approve ${data.buyingTokenSymbol}`}
               call={approveCall}
-              variant="accentAction"
+              variant="accent"
               successLabel="Waiting allowance..."
-              small
-              ml={3}
+              size="sm"
+              className="ml-4"
             />
-            <Text variant="legend" sx={{ fontSize: 1 }} ml={2}>
+            <span className="text-legend text-xs ml-2">
               Prepare for bidding by approving {data.buyingTokenSymbol}
-            </Text>
+            </span>
           </>
         )}
         {hasAllowance && currentPrice !== 0n && (
@@ -93,16 +92,16 @@ const AuctionActions = ({
               text={`Bid ${formatCurrency(
                 +formatUnits(currentPrice, data.buyingTokenDecimals)
               )} ${data.buyingTokenSymbol}`}
-              ml={3}
+              className="ml-4"
               call={hasBalance ? bidCall : undefined}
-              variant="accentAction"
+              variant="accent"
               successLabel="Auction bidded"
               txLabel={hasBalance ? 'Auction bid' : 'Not enough balance to bid'}
               disabled={!hasBalance}
-              small
+              size="sm"
               onSuccess={handleBid}
             />
-            <Text variant="legend" sx={{ fontSize: 1 }} ml={2}>
+            <span className="text-legend text-xs ml-2">
               1 {data.sellingTokenSymbol} ={' '}
               {formatCurrency(
                 Number(formatUnits(currentPrice, data.buyingTokenDecimals)) /
@@ -110,14 +109,14 @@ const AuctionActions = ({
                 5
               )}{' '}
               {data.buyingTokenSymbol}
-            </Text>
+            </span>
           </>
         )}
-      </Box>
+      </div>
       {!bidded && (
         <AuctionTimeIndicators start={+data.startedAt} end={+data.endAt} />
       )}
-    </Grid>
+    </div>
   )
 }
 

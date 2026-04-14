@@ -1,7 +1,7 @@
 import { Trans } from '@lingui/macro'
-import { Button } from 'components'
-import CopyValue from '@/components/old/button/CopyValue'
-import GoTo from '@/components/old/button/GoTo'
+import { Button } from '@/components/ui/button'
+import CopyValue from '@/components/ui/copy-value'
+import GoTo from '@/components/ui/go-to'
 import BluechipLogo from 'components/icons/BluechipIcon'
 import CirclesIcon from 'components/icons/CirclesIcon'
 import HiperlinkIcon from 'components/icons/HiperlinkIcon'
@@ -106,8 +106,9 @@ const TokenExposure = () => {
           <p className="mt-3 text-legend">{item.description}</p>
           <div className="mt-3 flex items-center flex-wrap">
             <Button
-              small
-              variant="bordered"
+              size="sm"
+              variant="outline"
+              className="border-2"
               onClick={() => window.open(item.website, '_blank')}
             >
               <div className="flex items-center">
@@ -117,9 +118,9 @@ const TokenExposure = () => {
             </Button>
             {!!item.rating && (
               <Button
-                small
-                className="ml-3"
-                variant="bordered"
+                size="sm"
+                className="ml-3 border-2"
+                variant="outline"
                 onClick={() => window.open('https://bluechip.org/', '_blank')}
               >
                 <div className="flex items-center">

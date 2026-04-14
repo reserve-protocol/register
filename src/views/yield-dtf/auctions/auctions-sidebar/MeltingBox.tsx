@@ -1,6 +1,6 @@
 import { t } from '@lingui/macro'
 import FacadeAct from 'abis/FacadeAct'
-import { ExecuteButton } from '@/components/old/button/TransactionButton'
+import { ExecuteButton } from '@/components/ui/transaction-button'
 import MeltIcon from 'components/icons/MeltIcon'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
@@ -42,13 +42,13 @@ const MeltingBox = () => {
       subtitle={t`${formatCurrency(revenueData?.pendingToMelt ?? 0)} of ${
         rToken?.symbol ?? 'rToken'
       }`}
-      mb={3}
+      className="mb-4"
       muted={!revenueData?.pendingToMelt || revenueData?.pendingToMelt < 0.1}
       right={
         <ExecuteButton
           text={t`Trigger melt`}
-          small
-          ml="auto"
+          size="sm"
+          className="ml-auto"
           successLabel="Success!"
           call={call}
         />

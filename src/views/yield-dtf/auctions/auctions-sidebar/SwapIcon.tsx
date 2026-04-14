@@ -1,24 +1,20 @@
 import TokenLogo from 'components/icons/TokenLogo'
-import { Box } from 'theme-ui'
 
 const SwapIcon = ({ buy, sell }: { buy: string; sell: string }) => (
-  <Box sx={{ position: 'relative', width: 20 }}>
+  <div className="relative w-5">
     <TokenLogo
       symbol={buy}
       width={20}
-      sx={{
-        position: 'absolute',
-        bottom: '-3px',
-        zIndex: 1,
-        backgroundColor: 'white',
-      }}
+      className="absolute z-[1] bg-white"
+      style={{ bottom: '-3px' }}
     />
     <TokenLogo
       width={20}
       symbol={sell}
-      sx={{ position: 'absolute', top: '-3px' }}
+      className="absolute"
+      style={{ top: '-3px' }}
     />
-  </Box>
+  </div>
 )
 
 export default SwapIcon

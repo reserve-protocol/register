@@ -26,6 +26,7 @@ import IndexDTFAuctionsLegacy from './views/index-dtf/auctions/legacy'
 import Rebalance from './views/index-dtf/auctions/views/rebalance'
 import RebalanceList from './views/index-dtf/auctions/views/rebalance-list'
 import DeployComingSoon from './views/index-dtf/deploy/components/deploy-coming-soon'
+import PermissionlessDeploy from './views/index-dtf/deploy/permissionless'
 import IndexDTFGovernance from './views/index-dtf/governance'
 import IndexProposal from './views/index-dtf/governance/views/proposal'
 import IndexDTFPropose from './views/index-dtf/governance/views/propose'
@@ -39,10 +40,12 @@ import IndexDTFManualIssuance from './views/index-dtf/issuance/manual'
 import IndexDTFManage from './views/index-dtf/manage'
 import IndexDTFOverview from './views/index-dtf/overview'
 import IndexDTFSettings from './views/index-dtf/settings'
+import PortfolioPage from './views/portfolio-page'
 import AllYieldDTFList from './views/tokens/Tokens'
 import InternalDTFList from './views/internal/dtf-list'
 import InternalDTFListed from './views/internal/dtf-listed'
 import InternalYieldDTF from './views/internal/yield-dtf'
+import Top100 from './views/top100'
 import IndexDTFFactsheet from './views/index-dtf/factsheet'
 import EarnIndexDTF from './views/earn/views/index-dtf'
 import EarnYieldDTF from './views/earn/views/yield-dtf'
@@ -56,10 +59,14 @@ const AppRoutes = () => (
     <Route path="/internal/dtf-list" element={<InternalDTFList />} />
     <Route path="/internal/dtf-listed" element={<InternalDTFListed />} />
     <Route path="/internal/yield-dtf" element={<InternalYieldDTF />} />
+    <Route path="/top100" element={<Top100 />} />
+    <Route path={'/internal/deploy'} element={<DeployIndexDTF />} />
+
+    <Route path={ROUTES.PORTFOLIO} element={<PortfolioPage />} />
     <Route path={ROUTES.BRIDGE} element={<Bridge />} />
     <Route path={ROUTES.DEPLOY_YIELD} element={<DeployYieldDTF />} />
     <Route path={ROUTES.DEPLOY_INDEX} element={<DeployComingSoon />} />
-    <Route path={'/hidden/deploy'} element={<DeployIndexDTF />} />
+    <Route path="/deploy-index" element={<PermissionlessDeploy />} />
     <Route path={ROUTES.TOKENS} element={<AllYieldDTFList />} />
     {/* EARN DTF */}
     <Route path={ROUTES.EARN} element={<Earn />}>

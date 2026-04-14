@@ -1,4 +1,4 @@
-import TransactionButton from '@/components/old/button/TransactionButton'
+import TransactionButton from '@/components/ui/transaction-button'
 import { getCurrentTime } from '@/utils'
 import { t } from '@lingui/macro'
 import dtfIndexGovernanceAbi from 'abis/dtf-index-governance'
@@ -56,13 +56,13 @@ const ProposalExecute = () => {
 
   return (
     <TransactionButton
-      small
+      size="sm"
       loading={isProcessing || isMining || isLoading}
       mining={isMining}
       disabled={!isReady || !canExecute || status === 'success'}
       onClick={write}
       text={isProcessing ? 'Processing...' : t`Execute proposal`}
-      sx={{ height: '44px' }}
+      className="h-[44px]"
       error={validationError}
       errorWithName={false}
     />

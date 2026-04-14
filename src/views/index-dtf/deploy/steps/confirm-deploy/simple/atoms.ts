@@ -65,7 +65,7 @@ export const zapDeployPayloadAtom = atom<
     tokenIn: tokenIn.address,
     amountIn: parseUnits(amountIn, tokenIn.decimals).toString(),
     signer: wallet,
-    slippage: slippage ? 1 / Number(slippage) : undefined,
+    slippage: slippage && Number(slippage) ? 1 / Number(slippage) : undefined,
   }
 
   const basicDetails = {
@@ -103,6 +103,7 @@ export const zapDeployPayloadAtom = atom<
       weightControl: formData.weightControl, // false -> tracking / true -> native
       priceControl: PriceControl.PARTIAL,
     },
+    bidsEnabled: formData.bidsEnabled, // true for cowswap
   }
 
   // Ungoverned DTF

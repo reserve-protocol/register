@@ -78,6 +78,7 @@ const RebalancePreview = ({
         currentShares: asset.currentWeight,
         targetShares: asset.targetWeight,
         delta: asset.deltaWeight,
+        isRemoved: asset.targetWeightRaw === 0n,
       }
       return acc
     }, {} as EstimatedBasket)

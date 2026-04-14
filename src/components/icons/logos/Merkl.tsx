@@ -1,6 +1,8 @@
-import { Image, ImageProps } from 'theme-ui'
+interface MerklProps extends React.ImgHTMLAttributes<HTMLImageElement> {
+  width?: number | string
+}
 
-const Merkl = (props: ImageProps) => {
-  return <Image width={16} src="/svgs/merkl.svg" {...props} />
+const Merkl = ({ width = 16, ...props }: MerklProps) => {
+  return <img width={width} src="/svgs/merkl.svg" {...props} />
 }
 export default Merkl

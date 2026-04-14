@@ -1,6 +1,8 @@
-import { Image, ImageProps } from 'theme-ui'
+interface DineroProps extends React.ImgHTMLAttributes<HTMLImageElement> {
+  width?: number | string
+}
 
-const Dinero = (props: ImageProps) => {
-  return <Image width={16} src="/imgs/dinero.png" {...props} />
+const Dinero = ({ width = 16, ...props }: DineroProps) => {
+  return <img width={width} src="/imgs/dinero.png" {...props} />
 }
 export default Dinero

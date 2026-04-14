@@ -7,7 +7,7 @@ import {
   currentRebalanceAtom,
 } from '../../atoms'
 import { useRebalanceMetrics } from '../rebalance-list/hooks/use-rebalance-metrics'
-import { rebalanceAuctionsAtom, rebalancePercentAtom } from './atoms'
+import { rebalanceAuctionsAtom, rebalanceErrorAtom, rebalancePercentAtom } from './atoms'
 import useRebalanceAuctions from './hooks/use-rebalance-auctions'
 import RebalanceHistoricalWeightsUpdater from './updaters/rebalance-historical-weights'
 import RebalanceMetricsUpdater from './updaters/rebalance-metrics-updater'
@@ -33,6 +33,7 @@ const Updater = () => {
   const setRebalanceAuctions = useSetAtom(rebalanceAuctionsAtom)
   const setRebalancePercent = useSetAtom(rebalancePercentAtom)
   const setCurrentProposalId = useSetAtom(currentProposalIdAtom)
+  const setRebalanceError = useSetAtom(rebalanceErrorAtom)
 
   useEffect(() => {
     if (data) {
@@ -43,6 +44,12 @@ const Updater = () => {
   useEffect(() => {
     return () => {
       setRebalancePercent(100)
+    }
+  }, [])
+
+  useEffect(() => {
+    return () => {
+      setRebalanceError('')
     }
   }, [])
 

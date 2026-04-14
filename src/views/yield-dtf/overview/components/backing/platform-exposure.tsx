@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro'
-import { Button } from 'components'
+import { Button } from '@/components/ui/button'
 import HiperlinkIcon from 'components/icons/HiperlinkIcon'
 import LayersIcon from 'components/icons/LayersIcon'
 import { atom, useAtomValue } from 'jotai'
@@ -74,8 +74,9 @@ const PlatformExposure = () => {
           <p className="mt-3 text-legend">{data.description}</p>
           <div className="mt-3 flex items-center flex-wrap">
             <Button
-              small
-              variant="bordered"
+              size="sm"
+              variant="outline"
+              className="border-2"
               onClick={() => window.open(data.website, '_blank')}
             >
               <div className="flex items-center">

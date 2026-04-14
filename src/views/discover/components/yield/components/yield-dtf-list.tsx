@@ -1,3 +1,4 @@
+import { useDeprecatedAddresses } from '@/hooks/use-dtf-status'
 import useTokenList from 'hooks/useTokenList'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
@@ -20,9 +21,16 @@ const YieldDTfList = ({ stablecoins = false }: { stablecoins?: boolean }) => {
   const chains = useAtomValue(chainsFilterAtom)
   const targets = useAtomValue(targetFilterAtom)
   const search = useAtomValue(searchFilterAtom)
+  const deprecatedAddresses = useDeprecatedAddresses()
 
   const filteredList = useMemo(() => {
     return list.filter((token) => {
+      const isDeprecated = deprecatedAddresses.has(token.id.toLowerCase())
+
+      if (!search && isDeprecated) {
+        return false
+      }
+
       if (!chains.length || !chains.includes(token.chain.toString())) {
         return false
       }
@@ -59,14 +67,18 @@ const YieldDTfList = ({ stablecoins = false }: { stablecoins?: boolean }) => {
 
       return true
     })
-  }, [list, chains, targets, search, stablecoins])
+  }, [list, chains, targets, search, stablecoins, deprecatedAddresses])
 
   return (
     <div className="flex flex-col gap-1 p-1 rounded-4xl bg-secondary">
       <CompareFilters />
       {isLoading && !filteredList.length && <CompareSkeleton />}
       {filteredList.map((token) => (
-        <RTokenCard key={token.id} token={token} mb={[2, 4]} />
+        <RTokenCard
+          key={token.id}
+          token={token}
+          deprecated={deprecatedAddresses.has(token.id.toLowerCase())}
+        />
       ))}
     </div>
   )

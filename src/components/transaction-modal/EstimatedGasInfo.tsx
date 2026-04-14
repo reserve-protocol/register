@@ -1,23 +1,24 @@
 import { Trans } from '@lingui/macro'
-import { Box, BoxProps, Spinner, Text } from 'theme-ui'
+import Spinner from '@/components/ui/spinner'
 import { formatCurrency } from 'utils'
 
-interface Props extends BoxProps {
+interface Props {
   fee?: number | null
+  className?: string
 }
 
-const EstimatedGasInfo = ({ fee, ...props }: Props) => {
+const EstimatedGasInfo = ({ fee, className }: Props) => {
   return (
-    <Box sx={{ fontSize: 1, textAlign: 'center' }} {...props}>
-      <Text variant="legend" mr={1}>
+    <div className={`text-sm text-center ${className ?? ''}`}>
+      <span className="text-legend mr-1">
         <Trans>Estimated gas cost:</Trans>
-      </Text>
+      </span>
       {fee ? (
-        <Text sx={{ fontWeight: 500 }}>${formatCurrency(fee)}</Text>
+        <span className="font-medium">${formatCurrency(fee)}</span>
       ) : (
-        <Spinner color="black" size={12} />
+        <Spinner size={12} />
       )}
-    </Box>
+    </div>
   )
 }
 

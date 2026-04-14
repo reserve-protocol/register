@@ -1,9 +1,7 @@
-import { indexDTFAtom } from '@/state/dtf/atoms'
+import { indexDTFAtom, indexDTFFeeAtom } from '@/state/dtf/atoms'
 import { formatPercentage } from '@/utils'
-import { getPlatformFee } from '@/utils/constants'
 import { t } from '@lingui/macro'
 import { atom, useAtomValue } from 'jotai'
-import { chainIdAtom } from '@/state/atoms'
 import {
   ChartPie,
   Hash,
@@ -23,11 +21,9 @@ type Recipient = {
 
 const feeRecipientsAtom = atom((get) => {
   const indexDTF = get(indexDTFAtom)
-  const chainId = get(chainIdAtom)
+  const platformFee = get(indexDTFFeeAtom)
 
-  if (!indexDTF) return undefined
-
-  const platformFee = getPlatformFee(chainId)
+  if (!indexDTF || platformFee === undefined) return undefined
   const platformShare = {
     label: t`Fixed Platform Share`,
     value: `${platformFee}%`,
@@ -83,7 +79,7 @@ const FeesInfo = () => {
   const feeRecipients = useAtomValue(feeRecipientsAtom)
 
   return (
-    <InfoCard title={t`Fees & Revenue Distribution`} className="bg-secondary">
+    <InfoCard title={t`Fees & Revenue Distribution`} id="fees" className="bg-secondary">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-1 bg-secondary">
         <InfoCardItem
           className="bg-card rounded-3xl"

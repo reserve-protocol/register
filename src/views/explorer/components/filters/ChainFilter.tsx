@@ -1,4 +1,3 @@
-import { Box, Text } from 'theme-ui'
 import MultiselectDropdrown, {
   IMultiselectDropdrown,
 } from '../MultiselectDropdown'
@@ -18,15 +17,15 @@ const ChainFilter = (props: Omit<IMultiselectDropdrown, 'options'>) => {
   }, [])
 
   return (
-    <Box>
-      <Text variant="legend">
+    <div>
+      <span className="text-legend">
         <Trans>Networks</Trans>
-      </Text>
-      <MultiselectDropdrown mt={1} minLimit={1} options={options} {...props}>
+      </span>
+      <MultiselectDropdrown className="mt-1" minLimit={1} options={options} {...props}>
         <StackedChainLogo chains={props.selected.map((v) => Number(v))} />
-        <Text variant="legend">{props.selected.length} chains</Text>
+        <span className="text-legend">{props.selected.length} chains</span>
       </MultiselectDropdrown>
-    </Box>
+    </div>
   )
 }
 

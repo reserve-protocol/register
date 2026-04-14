@@ -1,5 +1,5 @@
 import dtfIndexAbi from '@/abis/dtf-index-abi'
-import { TransactionButtonContainer } from '@/components/old/button/TransactionButton'
+import { TransactionButtonContainer } from '@/components/ui/transaction-button'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { indexDTFAtom, indexDTFPriceAtom } from '@/state/dtf/atoms'
@@ -44,7 +44,7 @@ const DistributeFees = () => {
   const formattedPendingFees = Number(formatEther(pendingFees ?? 0n))
 
   return (
-    <InfoCard title={t`Distribute Fees`} secondary>
+    <InfoCard title={t`Distribute Fees`} id="distribute-fees" secondary>
       <div className="p-4 flex flex-col gap-4">
         Distribute accumulated fees to the recipients. Anyone can trigger this
         transaction.

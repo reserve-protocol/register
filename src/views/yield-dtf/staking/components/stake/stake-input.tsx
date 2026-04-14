@@ -1,4 +1,5 @@
-import { Button, NumericalInput } from 'components'
+import { Button } from '@/components/ui/button'
+import { NumericalInput } from 'components'
 import TokenLogo from 'components/icons/TokenLogo'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
@@ -58,7 +59,7 @@ const StakeBalance = () => {
           compactDisplay: 'short',
         })}
       </span>
-      <Button small variant="muted" onClick={() => setAmount(balance.balance)}>
+      <Button size="sm" variant="muted" onClick={() => setAmount(balance.balance)}>
         Max
       </Button>
     </div>

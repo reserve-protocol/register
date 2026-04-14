@@ -1,7 +1,7 @@
-import { RESERVE_API } from '@/utils/constants'
+import { ZAPPER_API } from '@/utils/constants'
 import { Address } from 'viem'
 
-const getBaseZapApiUrl = (chain: number) => RESERVE_API + `api/zapper/${chain}`
+const getBaseZapApiUrl = (chain: number) => ZAPPER_API + `api/zapper/${chain}`
 
 export type ZapPayload = {
   chainId: number

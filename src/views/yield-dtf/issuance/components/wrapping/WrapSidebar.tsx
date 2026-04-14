@@ -17,7 +17,7 @@ const WrapSidebar = () => {
     <Sidebar onClose={() => setVisible(false)} width="600px">
       <WrapSidebarHeader />
       <WrapTypeToggle />
-      <DisplayMode mb={4} />
+      <DisplayMode className="mb-6" />
       <WrapCollateralList />
     </Sidebar>
   )

@@ -1,6 +1,8 @@
-import { Image, ImageProps } from 'theme-ui'
+interface StaderProps extends React.ImgHTMLAttributes<HTMLImageElement> {
+  width?: number | string
+}
 
-const Stader = (props: ImageProps) => {
-  return <Image width={16} src="/svgs/stader.svg" {...props} />
+const Stader = ({ width = 16, ...props }: StaderProps) => {
+  return <img width={width} src="/svgs/stader.svg" {...props} />
 }
 export default Stader

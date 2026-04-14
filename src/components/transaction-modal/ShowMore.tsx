@@ -1,29 +1,29 @@
-import Button from '@/components/old/button'
+import { Button } from '@/components/ui/button'
 import AsteriskIcon from 'components/icons/AsteriskIcon'
 import { useState } from 'react'
-import { Box, BoxProps, Divider, Text } from 'theme-ui'
 
-const ShowMore = ({ children, ...props }: BoxProps) => {
+interface Props {
+  children: React.ReactNode
+  className?: string
+}
+
+const ShowMore = ({ children, className }: Props) => {
   const [isVisible, setVisible] = useState(false)
 
   return (
-    <Box {...props}>
-      <Box variant="layout.verticalAlign">
-        <Divider
-          sx={{ flexGrow: 1, borderStyle: 'dashed', borderColor: 'darkBorder' }}
-        />
-        <Button small variant="hover" onClick={() => setVisible(!isVisible)}>
-          <Box variant="layout.verticalAlign" sx={{ color: 'secondaryText' }}>
-            <Text mr="2">Show more</Text>
+    <div className={className}>
+      <div className="flex items-center">
+        <div className="flex-grow border-t border-dashed border-border" />
+        <Button size="sm" variant="ghost" onClick={() => setVisible(!isVisible)}>
+          <span className="flex items-center text-muted-foreground">
+            <span className="mr-2">Show more</span>
             <AsteriskIcon />
-          </Box>
+          </span>
         </Button>
-        <Divider
-          sx={{ flexGrow: 1, borderStyle: 'dashed', borderColor: 'darkBorder' }}
-        />
-      </Box>
-      {isVisible && <Box mt={2}>{children}</Box>}
-    </Box>
+        <div className="flex-grow border-t border-dashed border-border" />
+      </div>
+      {isVisible && <div className="mt-2">{children}</div>}
+    </div>
   )
 }
 

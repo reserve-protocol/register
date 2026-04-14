@@ -59,7 +59,7 @@ const ApprovedRevenueTokens = () => {
   }
 
   return (
-    <InfoCard title="Approved Revenue Tokens">
+    <InfoCard title="Approved Revenue Tokens" id="revenue-tokens">
       {tokens.map((token, i) => (
         <InfoCardItem
           key={token.address}

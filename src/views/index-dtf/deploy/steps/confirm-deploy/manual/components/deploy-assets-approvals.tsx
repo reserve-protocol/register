@@ -233,18 +233,22 @@ const DeployAssetsApproval = () => {
               </div>
             </div>
           </div>
-          <div className="flex items-center justify-between gap-2 min-h-[32px]">
-            <TokenBalance
-              required={basketAmountMap[token.address]}
-              address={token.address}
-              decimals={token.decimals}
-            />
-            <ApproveAsset
-              address={token.address}
-              decimals={token.decimals}
-              amount={basketAmountMap[token.address]}
-            />
-          </div>
+          {!token.price ? (
+            <div className="text-destructive text-sm pb-1">Error fetching price</div>
+          ) : (
+            <div className="flex items-center justify-between gap-2 min-h-[32px]">
+              <TokenBalance
+                required={basketAmountMap[token.address]}
+                address={token.address}
+                decimals={token.decimals}
+              />
+              <ApproveAsset
+                address={token.address}
+                decimals={token.decimals}
+                amount={basketAmountMap[token.address]}
+              />
+            </div>
+          )}
         </div>
       ))}
     </div>

@@ -1,9 +1,12 @@
+import { ChainId } from '@/utils/chains'
 import { cn } from '@/lib/utils'
+import { getAddress } from 'viem'
 import { UNIVERSAL_ASSETS } from '@/utils/constants'
-import { indexDTFIconsAtom } from '@/views/portfolio/atoms'
+import { indexDTFIconsAtom } from '@/state/atoms'
 import { useAtom, useAtomValue } from 'jotai'
 import * as React from 'react'
 import { routeCacheAtom } from './atoms'
+import { TOKEN_LOGO_MAPPINGS } from './token-logo-mappings'
 
 type Sizes = 'sm' | 'md' | 'lg' | 'xl'
 
@@ -113,9 +116,20 @@ const TokenLogo = React.forwardRef<HTMLImageElement, Props>((props, ref) => {
         return
       }
 
+      // Check pre-computed mappings (build-time resolved logos)
+      if (symbol) {
+        const mappedUrl = TOKEN_LOGO_MAPPINGS[symbol.toLowerCase()]
+        if (mappedUrl) {
+          const url = await tryLoadImage(mappedUrl)
+          cacheUrl(url)
+          setCurrentSrc(url)
+          return
+        }
+      }
+
       if (address && symbol && UNIVERSAL_ASSETS.has(address.toLowerCase())) {
         try {
-          const universalUrl = `https://app.universal.xyz/wrapped-tokens/UA-${symbol.toUpperCase().substring(1)}.svg`
+          const universalUrl = `https://app2.universal.xyz/wrapped-tokens/UA-${symbol.toUpperCase().substring(1)}.svg`
           const url = await tryLoadImage(universalUrl)
           // cacheUrl(url) // don't cache universal logos because of the wrapper... solve later
           setCurrentSrc(url)
@@ -129,13 +143,27 @@ const TokenLogo = React.forwardRef<HTMLImageElement, Props>((props, ref) => {
       // If we have address and chain, try external APIs
       if (address && chain) {
         try {
-          const dexscreenerUrl = `https://dd.dexscreener.com/ds-data/tokens/base/${address?.toLowerCase()}.png?size=lg`
-          const url = await tryLoadImage(dexscreenerUrl)
+          const smolDappUrl = `https://raw.githubusercontent.com/SmolDapp/tokenAssets/main/tokens/${chain}/${address?.toLowerCase()}/logo-128.png`
+          const url = await tryLoadImage(smolDappUrl)
           cacheUrl(url)
           setCurrentSrc(url)
           return
         } catch (error) {
-          console.debug(`Failed to load dexscreener image for ${address}`)
+          console.debug(`Failed to load smoldapp image for ${address}`)
+        }
+
+        const chainName = TRUST_WALLET_CHAINS[chain]
+        if (chainName) {
+          try {
+            const checksumAddress = getAddress(address)
+            const trustWalletUrl = `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/${chainName}/assets/${checksumAddress}/logo.png`
+            const url = await tryLoadImage(trustWalletUrl)
+            cacheUrl(url)
+            setCurrentSrc(url)
+            return
+          } catch (error) {
+            console.debug(`Failed to load trust wallet image for ${address}`)
+          }
         }
 
         try {
@@ -267,10 +295,12 @@ export const SVGS = new Set([
   'hype',
   'sui',
   'fxs',
+  'weeth',
+  'king',
 ])
 
 export const PNGS = new Set([
-  'steakusdc',
+  'syrupusdc',
   'mai',
   'dola',
   'fxusd',
@@ -278,6 +308,7 @@ export const PNGS = new Set([
   'ethx',
   'dtf',
   'trx',
+  'bnb',
   'wbnb',
   'toncoin',
   'bgb',
@@ -290,6 +321,8 @@ export const PNGS = new Set([
   'moomorpho-smokehouse-usdc',
   'ssr',
   'avgjoescrypto',
+  'eat',
+  'cbbtc',
 ])
 
 export const EXTERNAL_ASSETS: Record<string, string> = {
@@ -306,6 +339,13 @@ export const EXTERNAL_ASSETS: Record<string, string> = {
   gala: 'https://assets.coingecko.com/coins/images/12493/standard/GALA_token_image_-_200PNG.png?1709725869',
   pyth: 'https://assets.coingecko.com/coins/images/31924/standard/pyth.png?1701245725',
   cake: 'https://assets.coingecko.com/coins/images/12632/standard/pancakeswap-cake-logo_%281%29.png?1696512440',
+}
+
+const TRUST_WALLET_CHAINS: Record<number, string> = {
+  [ChainId.Mainnet]: 'ethereum',
+  [ChainId.Base]: 'base',
+  [ChainId.Arbitrum]: 'arbitrum',
+  [ChainId.BSC]: 'smartchain',
 }
 
 function getKnownTokenLogo(symbol: string) {

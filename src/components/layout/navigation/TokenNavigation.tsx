@@ -1,3 +1,4 @@
+import { isInactiveDTF, useDTFStatus } from '@/hooks/use-dtf-status'
 import { t } from '@lingui/macro'
 import AuctionsIcon from 'components/icons/AuctionsIcon'
 import GovernanceIcon from 'components/icons/GovernanceIcon'
@@ -7,11 +8,12 @@ import StakeIcon from 'components/icons/StakeIcon'
 import { CurrentRTokenLogo } from 'components/icons/TokenLogo'
 import { navigationIndexAtom } from 'components/section-navigation/atoms'
 import useSectionNavigate from '@/components/section-navigation/use-section-navigate'
+import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
 import React, { useEffect, useMemo, useState } from 'react'
 import { ChevronDown, ChevronRight } from 'lucide-react'
 import { NavLink, useNavigate } from 'react-router-dom'
-import { Box, Flex, Text } from 'theme-ui'
+import { cn } from '@/lib/utils'
 import { ROUTES } from 'utils/constants'
 
 interface SubNavItem {
@@ -24,6 +26,7 @@ interface NavigationItem {
   label: string
   route: string
   subnav?: SubNavItem[]
+  disabled?: boolean
 }
 
 interface NavContentProps extends NavigationItem {
@@ -44,7 +47,7 @@ const SubNavigation = ({
   const current = useAtomValue(navigationIndexAtom)
 
   const handleSubnav = (
-    e: React.MouseEvent<HTMLDivElement, MouseEvent>,
+    e: React.MouseEvent<HTMLLIElement, MouseEvent>,
     index: number
   ) => {
     e.preventDefault()
@@ -60,28 +63,21 @@ const SubNavigation = ({
   const active = Math.min(...current)
 
   return (
-    <Box
-      pt={3}
-      pl={6}
-      as="ul"
-      sx={{ listStyleType: 'none', display: ['none', 'none', 'inherit'] }}
-    >
+    <ul className="pt-4 pl-8 list-none hidden md:block">
       {items.map(({ label, id }, currentIndex) => {
         const isActive = active === currentIndex
 
         return (
-          <Box
-            mb="2"
-            sx={{ color: isActive ? 'accent' : 'text' }}
-            as="li"
+          <li
+            className={cn('mb-2 cursor-pointer', isActive ? 'text-primary' : 'text-foreground')}
             onClick={(e) => handleSubnav(e, currentIndex)}
             key={id}
           >
             {label}
-          </Box>
+          </li>
         )
       })}
-    </Box>
+    </ul>
   )
 }
 
@@ -113,50 +109,34 @@ const NavContent = ({
 
   return (
     <>
-      <Box
-        variant="layout.verticalAlign"
-        p={[3, 3, 2]}
-        sx={{
-          textDecoration: 'none',
-          backgroundColor: isActive ? 'contentBackground' : 'background',
-          borderRadius: '8px',
-          color: isActive ? 'text' : 'secondaryText',
-          ':hover': {
-            backgroundColor: isActive ? '' : 'border',
-            color: 'text',
-          },
-        }}
+      <div
+        className={cn(
+          'flex items-center p-4 md:p-2 rounded-lg no-underline',
+          isActive
+            ? 'bg-secondary text-foreground'
+            : 'bg-background text-legend hover:bg-muted hover:text-foreground'
+        )}
       >
-        <Flex
-          sx={{
-            width: '20px',
-            fontSize: 3,
-            justifyContent: 'center',
-            color: 'text',
-          }}
-        >
+        <div className="w-5 flex justify-center text-foreground text-lg">
           {icon}
-        </Flex>
-        <Text
-          sx={{
-            fontWeight: isActive ? 700 : 500,
-            display: ['none', 'none', 'block'],
-          }}
-          ml="2"
+        </div>
+        <span
+          className={cn(
+            'hidden md:block ml-2',
+            isActive ? 'font-bold' : 'font-medium'
+          )}
         >
           {label}
-        </Text>
+        </span>
         {!!subnav && (
-          <Box
-            sx={{ display: ['none', 'none', 'flex'] }}
-            ml="auto"
-            variant="layout.verticalAlign"
+          <div
+            className="hidden md:flex items-center ml-auto"
             onClick={handleExpand}
           >
             {expanded ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
-          </Box>
+          </div>
         )}
-      </Box>
+      </div>
       {!!subnav && expanded && (
         <SubNavigation items={subnav} route={route} currentRoute={isActive} />
       )}
@@ -164,20 +144,30 @@ const NavContent = ({
   )
 }
 
-const NavItem = (props: NavigationItem) => (
-  <NavLink
-    style={{
-      marginBottom: '4px',
-      textDecoration: 'none',
-      display: 'block',
-    }}
-    to={props.route}
-  >
-    {({ isActive }) => <NavContent {...props} isActive={isActive} />}
-  </NavLink>
-)
+const NavItem = (props: NavigationItem) => {
+  if (props.disabled) {
+    return (
+      <div className="mb-1 block opacity-50 pointer-events-none">
+        <NavContent {...props} isActive={false} />
+      </div>
+    )
+  }
+
+  return (
+    <NavLink
+      className="mb-1 no-underline block"
+      to={props.route}
+    >
+      {({ isActive }) => <NavContent {...props} isActive={isActive} />}
+    </NavLink>
+  )
+}
 
 const TokenNavigation = () => {
+  const rToken = useRToken()
+  const status = useDTFStatus(rToken?.address, rToken?.chainId)
+  const isDeprecated = isInactiveDTF(status)
+
   const navigation: NavigationItem[] = useMemo(
     () => [
       {
@@ -206,11 +196,13 @@ const TokenNavigation = () => {
         icon: <AuctionsIcon />,
         label: t`Auctions`,
         route: ROUTES.AUCTIONS,
+        disabled: isDeprecated,
       },
       {
         icon: <GovernanceIcon />,
         label: t`Governance`,
         route: ROUTES.GOVERNANCE,
+        disabled: isDeprecated,
       },
       {
         icon: <ManagerIcon />,
@@ -229,37 +221,31 @@ const TokenNavigation = () => {
         ],
       },
     ],
-    []
+    [isDeprecated]
   )
 
   return (
-    <Box
-      sx={{
-        width: ['100%', '100%', '220px'],
-        borderTop: ['1px solid', '1px solid', 'none'],
-        borderColor: ['border', 'border', 'border'],
-        position: ['fixed', 'fixed', 'relative'],
-        bottom: [0, 0, undefined],
-        flexShrink: 0,
-        zIndex: 1,
-        backgroundColor: ['background', 'background', 'none'],
-        minHeight: ['auto', 'auto', 'calc(100vh - 73px)'],
-      }}
+    <div
+      className={cn(
+        'w-full md:w-[220px] shrink-0 z-[1]',
+        'border-t md:border-t-0 border-border',
+        'fixed md:relative bottom-0 md:bottom-auto',
+        'bg-background md:bg-transparent',
+        'min-h-auto md:min-h-[calc(100vh-73px)]'
+      )}
     >
-      <Box
-        sx={{
-          position: 'sticky',
-          top: 0,
-          display: ['flex', 'flex', 'block'],
-          justifyContent: ['space-evenly', 'space-evenly', 'none'],
-        }}
-        padding={[1, 1, 1, 3]}
+      <div
+        className={cn(
+          'sticky top-0',
+          'flex md:block justify-evenly md:justify-start',
+          'p-1 lg:p-4'
+        )}
       >
         {navigation.map((props) => (
           <NavItem key={props.route} {...props} />
         ))}
-      </Box>
-    </Box>
+      </div>
+    </div>
   )
 }
 export default React.memo(TokenNavigation)

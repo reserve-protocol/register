@@ -1,4 +1,4 @@
-import TransactionButton from '@/components/old/button/TransactionButton'
+import TransactionButton from '@/components/ui/transaction-button'
 import { walletAtom } from '@/state/atoms'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useState } from 'react'
@@ -102,7 +102,7 @@ const SubmitUnstakeButton = () => {
         }
         onClick={write}
         text={getButtonText()}
-        fullWidth
+        className="w-full"
         error={error || txError}
       />
     </div>

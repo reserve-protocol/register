@@ -1,4 +1,4 @@
-import { TransactionButtonContainer } from '@/components/old/button/TransactionButton'
+import { TransactionButtonContainer } from '@/components/ui/transaction-button'
 import { Button } from '@/components/ui/button'
 import Spinner from '@/components/ui/spinner'
 import { uploadFile } from '@/lib/api-upload'
@@ -180,6 +180,14 @@ const SubmitButton = () => {
             const [key, value] = path.split('.')
             payload[key][value] = file.url
           }
+        }
+      }
+
+      // Clear URLs for images that were explicitly removed
+      for (const [fileKey, filePath] of Object.entries(fileToPath)) {
+        if (files[fileKey] === null) {
+          const [key, value] = filePath.split('.')
+          payload[key][value] = ''
         }
       }
 

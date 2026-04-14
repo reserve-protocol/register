@@ -1,13 +1,17 @@
 import { t } from '@lingui/macro'
 import { useAtom, useAtomValue } from 'jotai'
-import { BoxProps } from 'theme-ui'
+import { cn } from '@/lib/utils'
 import { shortenAddress } from 'utils'
 import { proposedRolesAtom, roleChangesAtom } from '../atoms'
 import { RoleChange } from '../hooks/useRoleChanges'
 import { ListChangePreview } from './ItemPreview'
 import PreviewBox from './PreviewBox'
 
-const ProposedRolesPreview = (props: BoxProps) => {
+interface Props {
+  className?: string
+}
+
+const ProposedRolesPreview = ({ className }: Props) => {
   const changes = useAtomValue(roleChangesAtom)
   const [proposedRoles, setProposedRoles] = useAtom(proposedRolesAtom)
 
@@ -36,10 +40,9 @@ const ProposedRolesPreview = (props: BoxProps) => {
 
   return (
     <PreviewBox
-      variant="layout.borderBox"
+      className={cn('border border-border rounded-xl p-6', className)}
       count={changes.length}
       title={t`Governance roles`}
-      {...props}
     >
       {changes.map((change) => (
         <ListChangePreview
@@ -48,7 +51,7 @@ const ProposedRolesPreview = (props: BoxProps) => {
           onRevert={() => handleRevert(change)}
           isNew={change.isNew}
           value={shortenAddress(change.address)}
-          mt={3}
+          className="mt-4"
         />
       ))}
     </PreviewBox>

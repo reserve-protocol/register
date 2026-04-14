@@ -1,10 +1,10 @@
 import dtfIndexStakingVault from '@/abis/dtf-index-staking-vault'
-import TransactionButton from '@/components/old/button/TransactionButton'
+import TransactionButton from '@/components/ui/transaction-button'
 import { walletAtom } from '@/state/atoms'
-import { portfolioSidebarOpenAtom } from '@/views/portfolio/atoms'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
 import { useEffect, useState } from 'react'
+import { toast } from 'sonner'
 import { parseUnits } from 'viem'
 import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
 import {
@@ -23,7 +23,6 @@ const SubmitUnlockButton = () => {
   const amountToUnlock = parseUnits(input, stToken?.token.decimals)
   const unlockDelay = useAtomValue(unlockDelayAtom)
   const resetInput = useResetAtom(stakingInputAtom)
-  const setPortfolioSidebarOpen = useSetAtom(portfolioSidebarOpenAtom)
   const setShouldClose = useSetAtom(closeDrawerAtom)
   const chainId = stToken?.chainId
   const [isProcessing, setIsProcessing] = useState(false)
@@ -60,15 +59,14 @@ const SubmitUnlockButton = () => {
       setIsProcessing(true)
       const timer = setTimeout(() => {
         resetInput()
-        // Close drawer and open portfolio sidebar
         setShouldClose(true)
-        setPortfolioSidebarOpen(true)
+        toast.success('Unlock initiated successfully', { duration: 8000 })
         setIsProcessing(false)
-      }, 10000) // 10 seconds delay
+      }, 10000)
 
       return () => clearTimeout(timer)
     }
-  }, [receipt, resetInput, setShouldClose, setPortfolioSidebarOpen])
+  }, [receipt, resetInput, setShouldClose])
 
   return (
     <div>
@@ -92,7 +90,7 @@ const SubmitUnlockButton = () => {
             ? 'Transaction confirmed'
             : `Begin ${unlockDelay ? `${unlockDelay}-day` : ''} unlock delay`
         }
-        fullWidth
+        className="w-full"
         error={error || txError}
       />
     </div>

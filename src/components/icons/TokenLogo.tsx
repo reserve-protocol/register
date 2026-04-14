@@ -2,10 +2,10 @@ import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
 import React from 'react'
 import { rTokenMetaAtom } from 'state/rtoken/atoms/rTokenAtom'
-import { Box, BoxProps, Image } from 'theme-ui'
+import { cn } from '@/lib/utils'
 import ChainLogo from './ChainLogo'
 
-interface Props extends BoxProps {
+interface Props extends React.HTMLAttributes<HTMLDivElement> {
   symbol?: string
   width?: number | string
   src?: string
@@ -91,6 +91,8 @@ export const SVGS = new Set([
   'woeth',
   'saethusdt',
   'saethrlusd',
+  'weeth',
+  'king',
 ])
 
 const PNGS = new Set([
@@ -116,9 +118,10 @@ const TokenImage = React.memo(
     width?: number | string
   }) => {
     return (
-      <Image
+      <img
         src={src}
-        sx={{ height: 'auto', width: width }}
+        className="h-auto"
+        style={{ width }}
         onError={({ currentTarget }) => {
           currentTarget.onerror = null // prevents looping
           currentTarget.src = '/svgs/defaultLogo.svg'
@@ -134,7 +137,8 @@ const TokenLogo = ({
   chain,
   width = 20,
   bordered = false,
-  sx = {},
+  className,
+  style,
   ...props
 }: Props) => {
   let imgSrc = src
@@ -160,32 +164,24 @@ const TokenLogo = ({
   }
 
   return (
-    <Box
+    <div
       {...props}
-      variant="layout.verticalAlign"
-      sx={{
-        position: 'relative',
-        borderRadius: '50%',
-        overflow: 'hidden',
-        flexShrink: 0,
-        width: width,
-        height: width,
-        justifyContent: 'center',
-        borderColor: 'text',
-        border: bordered ? '0.5px solid' : 'none',
-        ...sx,
-      }}
+      className={cn(
+        'relative flex items-center justify-center rounded-full overflow-hidden shrink-0',
+        bordered && 'border border-foreground',
+        className
+      )}
+      style={{ width, height: width, ...style }}
     >
       <TokenImage src={imgSrc} width={width} />
 
       {!!chain && (
-        <Box
-          sx={{
-            position: 'absolute',
+        <div
+          className="absolute shrink-0"
+          style={{
             right: '-3px',
-            flexShrink: 0,
-            width: Number(width) / 2,
             bottom: '-10px',
+            width: Number(width) / 2,
           }}
         >
           <ChainLogo
@@ -193,26 +189,27 @@ const TokenLogo = ({
             width={Number(width) / 2}
             height={Number(width) / 2}
           />
-        </Box>
+        </div>
       )}
-    </Box>
+    </div>
   )
 }
 
-interface TCurrentRTokenLogo extends BoxProps {
+interface TCurrentRTokenLogo extends React.HTMLAttributes<HTMLDivElement> {
   width?: number
 }
 
 export const CurrentRTokenLogo = ({
   width = 20,
+  className,
   ...props
 }: TCurrentRTokenLogo) => {
   const rToken = useAtomValue(rTokenMetaAtom)
 
   return (
-    <Box variant="layout.verticalAlign" {...props}>
+    <div className={cn('flex items-center', className)} {...props}>
       <TokenImage src={rToken?.logo} width={width} />
-    </Box>
+    </div>
   )
 }
 

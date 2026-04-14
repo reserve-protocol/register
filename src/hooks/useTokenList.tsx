@@ -13,7 +13,7 @@ import {
   supportedChainList,
 } from 'utils/constants'
 import { formatEther, getAddress } from 'viem'
-import { useMultichainQuery } from './useQuery'
+import { useMultichainQuery } from './use-query'
 import useTimeFrom from './useTimeFrom'
 import { useWatchReadContracts } from './useWatchReadContract'
 import { Token } from '@/types'

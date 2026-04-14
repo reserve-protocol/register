@@ -13,6 +13,7 @@ import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { ColumnDef } from '@tanstack/react-table'
 import { useAtomValue } from 'jotai'
 import { ArrowDownUp, ArrowUpRight } from 'lucide-react'
+import SectionAnchor from '@/components/section-anchor'
 
 // Columns type/amount/usdAmount/Time/From/Hash
 const columns: ColumnDef<Transaction>[] = [
@@ -110,14 +111,17 @@ const TransactionTable = () => {
 
 const IndexTransactionTable = () => {
   return (
-    <Card className="p-6 pb-2">
+    <Card className="p-6 pb-2 group/section" id="transactions">
       <div className="flex items-center gap-1">
         <div className="rounded-full border border-foreground p-2 mr-auto">
           <ArrowDownUp size={14} />
         </div>
       </div>
       <div className="flex items-center gap-2 mb-4"></div>
-      <h2 className="text-2xl font-light">Transactions</h2>
+      <div className="flex items-center gap-1">
+        <h2 className="text-2xl font-light">Transactions</h2>
+        <SectionAnchor id="transactions" />
+      </div>
       <div className="flex flex-col gap-2 -mx-6 sm:-mx-4 overflow-x-auto max-w-[calc(100vw-10px)]">
         <TransactionTable />
       </div>

@@ -1,9 +1,9 @@
-import CopyValue from '@/components/old/button/CopyValue'
+import CopyValue from '@/components/ui/copy-value'
 import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
 import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
-import { shortenAddress } from '@/utils'
+import EnsName from '@/components/utils/ens-name'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { atom, useAtomValue } from 'jotai'
 import { ArrowUpRight, ShieldHalf } from 'lucide-react'
@@ -70,7 +70,7 @@ const GovernanceGuardians = () => {
           </div>
           <div className="ml-3 mr-auto">
             <span className="text-legend text-sm block">Guardians</span>
-            <span className="font-bold">{shortenAddress(guardian)}</span>
+            <span className="font-bold"><EnsName address={guardian} /></span>
           </div>
           <div className="p-1 bg-muted rounded-full mr-2">
             <CopyValue value={guardian} />

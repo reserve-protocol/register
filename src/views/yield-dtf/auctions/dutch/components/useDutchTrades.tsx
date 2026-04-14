@@ -1,5 +1,5 @@
 import { gql } from 'graphql-request'
-import useQuery from 'hooks/useQuery'
+import useQuery from 'hooks/use-query'
 import useRToken from 'hooks/useRToken'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'

@@ -22,10 +22,15 @@ export const RESERVE_API = isStaging
   ? import.meta.env.VITE_STAGING_API
   : 'https://api.reserve.org/'
 
+export const ZAPPER_API = isStaging
+  ? 'https://zapper-staging.reserve-api.com/'
+  : 'https://api.reserve.org/'
+
 export const VERSION = '3.0.0'
-export const DISCORD_INVITE = 'https://discord.gg/reserveprotocol'
-export const PROTOCOL_DOCS = 'https://reserve.org/protocol/'
-export const INDEX_PROTOCOL_DOCS = `${PROTOCOL_DOCS}index_dtfs/`
+export const TELEGRAM_INVITE = 'https://t.me/reservecurrency'
+export const PROTOCOL_DOCS = 'https://docs.reserve.org/'
+export const INDEX_PROTOCOL_DOCS = `${PROTOCOL_DOCS}/core-components/index-dtfs`
+export const YIELD_PROTOCOL_DOCS = `${PROTOCOL_DOCS}/core-components/yield-dtfs`
 export const REGISTER_FEEDBACK = 'https://reserve.canny.io/register-app'
 export const RESERVE_BLOG = 'https://blog.reserve.org/'
 export const RESERVE_FORUM = 'https://forum.reserve.org/'
@@ -100,6 +105,10 @@ export const LP_PROJECTS: { [x: string]: { name: string; site: string } } = {
     name: 'Morpho',
     site: 'https://app.morpho.org/',
   },
+  'morpho-v1': {
+    name: 'Morpho',
+    site: 'https://app.morpho.org/',
+  },
   merkl: {
     name: 'Merkl',
     site: 'https://merkl.angle.money/',
@@ -123,6 +132,14 @@ export const LP_PROJECTS: { [x: string]: { name: string; site: string } } = {
   'origin-ether': {
     name: 'Origin',
     site: 'https://www.originprotocol.com/',
+  },
+  'ether.fi-staking': {
+    name: 'Ether.fi',
+    site: 'https://ether.fi/',
+  },
+  'lagoon': {
+    name: 'Lagoon',
+    site: 'https://lagoon.finance/',
   },
 }
 
@@ -259,19 +276,12 @@ export const supportedChainList = [
   ChainId.Arbitrum,
 ]
 
-// Platform fees by chain
-export const PLATFORM_FEES: Record<number, number> = {
+export const FALLBACK_PLATFORM_FEES: Record<number, number> = {
   [ChainId.Mainnet]: 50,
   [ChainId.Base]: 50,
   [ChainId.BSC]: 33,
 }
 
-export const getPlatformFee = (chainId: number): number => {
-  return PLATFORM_FEES[chainId] || 50
-}
-
-// Legacy constant for backwards compatibility
-export const FIXED_PLATFORM_FEE = 50
 // Load environment variables.
 export const TENDERLY_ACCESS_TOKEN: string = import.meta.env
   .VITE_TENDERLY_ACCESS_TOKEN!
@@ -452,6 +462,7 @@ export const collateralDisplay: Record<string, string> = {
   'wvamm-mog/weth': 'Aerodrome Mog/WETH LP',
   'wvamm-weth/aero': 'Aerodrome WETH/AERO LP',
   'wsamm-usdz/usdc': 'Aerodrome USDz/USDC LP',
+  weeth: 'Ether.fi Wrapped eETH',
 }
 
 export const RTOKEN_VAULT_STAKE: Record<

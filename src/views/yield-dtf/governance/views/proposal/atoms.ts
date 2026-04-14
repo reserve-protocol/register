@@ -49,9 +49,10 @@ export const parametersChangesAtom = atomWithReset<ParameterChange[]>([])
 export const roleChangesAtom = atomWithReset<RoleChange[]>([])
 
 export const contractUpgradesAtom = atomWithReset<Record<string, Address>>({})
-export const spellUpgradeAtom = atomWithReset<'none' | 'spell1' | 'spell2'>(
-  'none'
-)
+export const spell3_4_0UpgradeAtom = atomWithReset<
+  'none' | 'spell1' | 'spell2'
+>('none')
+export const spell4_2_0UpgradeAtom = atomWithReset<'none' | 'spell'>('none')
 
 export const unregisterAssetsAtom = atomWithReset<string[]>([])
 
@@ -66,6 +67,10 @@ export const backupChangesAtom = atomWithReset<BackupChanges>({
 })
 
 export const basketChangesAtom = atomWithReset<CollateralChange[]>([])
+
+export const pauseIssuanceAtom = atomWithReset<'none' | 'pause' | 'unpause'>(
+  'none'
+)
 
 export const isAssistedUpgradeAtom = atom(false)
 export const isProposalValidAtom = atom(false)
@@ -83,6 +88,7 @@ export type ParamName =
   | 'batchAuctionLength'
   | 'dutchAuctionLength'
   | 'warmupPeriod'
+  | 'enableIssuancePremium'
   | 'issuanceThrottle'
   | 'redemptionThrottle'
   | 'shortFreeze'
@@ -179,6 +185,13 @@ export const parameterContractMapAtom = atom((get) => {
       {
         address: contracts?.basketHandler.address ?? '',
         functionName: 'setWarmupPeriod',
+        abi: BasketHandler,
+      },
+    ],
+    enableIssuancePremium: [
+      {
+        address: contracts?.basketHandler.address ?? '',
+        functionName: 'setIssuancePremiumEnabled',
         abi: BasketHandler,
       },
     ],

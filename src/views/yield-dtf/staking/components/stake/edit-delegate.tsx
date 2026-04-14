@@ -44,7 +44,7 @@ const EditDelegate = ({
         autoFocus
         value={address}
         placeholder="Input address"
-        onChange={setAddress}
+        onChange={(e) => setAddress(e.target.value)}
       />
       {address && !isValid && (
         <span className="text-destructive text-xs block -mt-2 mb-3 ml-3">

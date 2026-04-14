@@ -37,8 +37,7 @@ const RemoveRecipientButton = ({ index }: { index: number }) => {
 
   const onRemove = () => {
     const recipients = watch('additionalRevenueRecipients')
-    recipients.splice(index, 1)
-    setValue('additionalRevenueRecipients', recipients)
+    setValue('additionalRevenueRecipients', recipients.filter((_: unknown, i: number) => i !== index))
   }
 
   return (

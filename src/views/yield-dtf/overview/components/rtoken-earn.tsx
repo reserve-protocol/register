@@ -1,3 +1,4 @@
+import SectionAnchor from '@/components/section-anchor'
 import { Trans } from '@lingui/macro'
 import EarnIcon from 'components/icons/EarnIcon'
 import useRToken from 'hooks/useRToken'
@@ -32,12 +33,13 @@ const RTokenEarn = () => {
   const rToken = useRToken()
 
   return (
-    <div>
+    <div id="earn" className="group/section">
       <div className="flex items-center ml-6 mb-6 mt-10 text-primary">
         <EarnIcon fontSize={24} />
-        <h2 className="ml-2 text-2xl font-semibold">
+        <h2 className="mx-2 text-2xl font-semibold">
           <Trans>Explore yield opportunities for {rToken?.symbol ?? ''}</Trans>
         </h2>
+        <SectionAnchor id="earn" />
       </div>
       <div className="overflow-auto">
         <PoolsTable compact data={data} />

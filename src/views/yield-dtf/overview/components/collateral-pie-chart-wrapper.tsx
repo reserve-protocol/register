@@ -1,5 +1,9 @@
 import { cn } from '@/lib/utils'
-import { MouseoverTooltipContent } from '@/components/old/tooltip'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
 import { t } from '@lingui/macro'
 import ChevronRight from 'components/icons/ChevronRight'
 import CircleIcon from 'components/icons/CircleIcon'
@@ -40,15 +44,14 @@ const CollateralPieChartWrapper: FC<Props> = ({ token }) => {
   )
 
   return (
-    <MouseoverTooltipContent
-      content={<CollateralPieChartTooltip token={token} />}
-    >
-      <div
-        className="p-2 transition-all duration-300 hover:rounded-[10px] hover:bg-card hover:cursor-pointer"
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-      >
-        <CollateralPieChart
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <div
+          className="p-2 transition-all duration-300 hover:rounded-[10px] hover:bg-card hover:cursor-pointer"
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
+          <CollateralPieChart
           data={chartData}
           logo={token.logo}
           staked={+token.overcollaterization.toFixed(2).toString()}
@@ -111,8 +114,12 @@ const CollateralPieChartWrapper: FC<Props> = ({ token }) => {
           }
           isRebalancing={!token.isCollaterized}
         />
-      </div>
-    </MouseoverTooltipContent>
+        </div>
+      </TooltipTrigger>
+      <TooltipContent className="p-0 border-0 bg-transparent">
+        <CollateralPieChartTooltip token={token} />
+      </TooltipContent>
+    </Tooltip>
   )
 }
 

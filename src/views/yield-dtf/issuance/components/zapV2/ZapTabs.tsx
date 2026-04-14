@@ -1,6 +1,7 @@
+import { isInactiveDTF, useDTFStatus } from '@/hooks/use-dtf-status'
 import TabMenu from 'components/tab-menu'
+import useRToken from 'hooks/useRToken'
 import { Minus, Plus } from 'lucide-react'
-import { Box } from 'theme-ui'
 import { useZap } from './context/ZapContext'
 import ZapSettings from './settings/ZapSettings'
 import ZapRefreshButton from './refresh/ZapRefreshButton'
@@ -9,26 +10,27 @@ import { useEffect, useMemo } from 'react'
 
 const ZapTabs = () => {
   const { chainId, operation, setOperation } = useZap()
+  const rToken = useRToken()
+  const isDeprecated = isInactiveDTF(useDTFStatus(rToken?.address, rToken?.chainId))
+  const disableMint = chainId === ChainId.Arbitrum || isDeprecated
+
   const backingOptions = useMemo(() => {
     return [
-      ...(chainId !== ChainId.Arbitrum
+      ...(!disableMint
         ? [{ key: 'mint', label: 'Mint', icon: <Plus size={16} /> }]
         : []),
       { key: 'redeem', label: 'Redeem', icon: <Minus size={16} /> },
     ]
-  }, [chainId])
+  }, [disableMint])
 
   useEffect(() => {
-    if (chainId === ChainId.Arbitrum) {
+    if (disableMint) {
       setOperation('redeem')
     }
-  }, [chainId])
+  }, [disableMint])
 
   return (
-    <Box
-      variant="layout.verticalAlign"
-      sx={{ justifyContent: 'space-between' }}
-    >
+    <div className="flex items-center justify-between">
       <TabMenu
         active={operation}
         items={backingOptions}
@@ -36,11 +38,11 @@ const ZapTabs = () => {
         background="border"
         onMenuChange={setOperation}
       />
-      <Box variant="layout.verticalAlign" sx={{ gap: 2 }}>
+      <div className="flex items-center gap-2">
         <ZapRefreshButton />
         <ZapSettings />
-      </Box>
-    </Box>
+      </div>
+    </div>
   )
 }
 

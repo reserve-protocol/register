@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro'
-import { Button } from 'components'
+import { Button } from '@/components/ui/button'
 import { useAtomValue } from 'jotai'
 import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
 import { useCallback, useState } from 'react'
@@ -26,7 +26,7 @@ const StakeButton = () => {
   return (
     <>
       <div className="mt-4">
-        <Button fullWidth disabled={!isValid} onClick={handleOpen}>
+        <Button className="w-full" disabled={!isValid} onClick={handleOpen}>
           <Trans>Stake RSR</Trans>
         </Button>
       </div>

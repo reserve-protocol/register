@@ -14,6 +14,7 @@ import {
   BasketItem,
 } from '@/components/index-basket-setup'
 import ManageWeightsContent from './manage-weights-content'
+import { getRebalanceTokens, getRebalanceWeights } from '../../utils/transforms'
 
 const ManageWeightsView = () => {
   const [showView] = useAtom(showManageWeightsViewAtom)
@@ -30,17 +31,27 @@ const ManageWeightsView = () => {
       return { initialBasket: basket, priceMap: prices }
     }
 
+    // Get tokens and weights using version-aware helpers
+    const rebalanceTokens = getRebalanceTokens(
+      rebalanceParams.rebalance,
+      rebalanceParams.folioVersion
+    )
+    const rebalanceWeights = getRebalanceWeights(
+      rebalanceParams.rebalance,
+      rebalanceParams.folioVersion
+    )
+
     // Always calculate proposed units from rebalance weights for comparison
     let proposedUnitsFromWeights: Record<string, string> = {}
-    if (rebalanceParams.rebalance.weights) {
+    if (rebalanceWeights.length > 0) {
       // Weights are in D27 format (tok/BU - tokens per basket unit)
       // For a DTF with 1 basket unit = 1 DTF token (typical case),
       // the weight directly represents tokens per DTF token in D27 format
 
-      rebalanceParams.rebalance.tokens.forEach((tokenAddress, index) => {
+      rebalanceTokens.forEach((tokenAddress, index) => {
         const address = tokenAddress.toLowerCase()
         const token = tokenMap[address]
-        const weight = rebalanceParams.rebalance.weights[index]
+        const weight = rebalanceWeights[index]
 
         if (token && weight) {
           // The spot weight in D27 represents tokens per basket unit
@@ -53,12 +64,15 @@ const ManageWeightsView = () => {
           // whole token units = weight / 10^decimals / 10^9
           // Which is equivalent to: formatUnits(weight, decimals + 9)
 
-          proposedUnitsFromWeights[address] = formatUnits(spotWeight, token.decimals + 9)
+          proposedUnitsFromWeights[address] = formatUnits(
+            spotWeight,
+            token.decimals + 9
+          )
         }
       })
     }
 
-    const tokenData = rebalanceParams.rebalance.tokens
+    const tokenData = rebalanceTokens
       .map((tokenAddress) => {
         const address = tokenAddress.toLowerCase()
         const token = tokenMap[address]
@@ -80,14 +94,14 @@ const ManageWeightsView = () => {
       tokenData.map((d) => d.price)
     )
 
-    rebalanceParams.rebalance.tokens.forEach((tokenAddress, index) => {
+    rebalanceTokens.forEach((tokenAddress, index) => {
       const address = tokenAddress.toLowerCase()
       const token = tokenMap[address]
       const assets = rebalanceParams.currentAssets[address] || 0n
       const totalSupply = rebalanceParams.supply || 1n
 
       // TODO @audit
-      const folio = assets * 10n ** 18n / totalSupply
+      const folio = (assets * 10n ** 18n) / totalSupply
 
       if (token) {
         const folioValue = formatUnits(folio, token.decimals)

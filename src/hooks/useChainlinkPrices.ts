@@ -6,7 +6,12 @@ import { Address, formatUnits } from 'viem'
 import { useReadContract, useReadContracts } from 'wagmi'
 
 const WSTETH_ADDRESS = '0xc1CBa3fCea344f92D9239c08C0568f6F2F0ee452'
-const CHAINLINK_ETH_FEED = '0x71041dddad3595F9CEd3DcCFBe3D1F4b0a16Bb70'
+const RETH_ADDRESS = '0xae78736Cd615f374D3085123A210448E74Fc6393'
+const CHAINLINK_ETH_FEED: Record<number, Address> = {
+  [ChainId.Mainnet]: '0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419',
+  [ChainId.Base]: '0x71041dddad3595F9CEd3DcCFBe3D1F4b0a16Bb70',
+  [ChainId.Arbitrum]: '0x639Fe6ab55C921f74e7fac1ee960C0B6293ba612',
+}
 
 const CHAINLINK_FEED: Record<number, Record<string, Address>> = {
   [ChainId.Mainnet]: {
@@ -26,6 +31,7 @@ const CHAINLINK_FEED: Record<number, Record<string, Address>> = {
       '0x7A364e8770418566e3eb2001A96116E6138Eb32F', // MIM / USD
     '0x853d955aCEf822Db058eb8505911ED77F175b99e':
       '0xB9E1E3A9feFf48998E45Fa90847ed4D467E8BcfD', // FRAX / USD
+    [RETH_ADDRESS]: '0x536218f9E9Eb48863970252233c8F271f554C2d0', // rETH / ETH
   },
   [ChainId.Base]: {
     '0xd9aAEc86B65D86f6A7B5B1b0c42FFA531710b6CA':
@@ -34,10 +40,12 @@ const CHAINLINK_FEED: Record<number, Record<string, Address>> = {
       '0x7e860098F58bBFC8648a4311b374B1D669a2bc6B', // USDbC / USD
     '0x50c5725949A6F0c72E6C4a641F24049A917DB0Cb':
       '0x591e79239a7d679378eC8c847e5038150364C78F', // DAI / USD
-    '0x4200000000000000000000000000000000000006': CHAINLINK_ETH_FEED, // WETH / USD
+    '0x4200000000000000000000000000000000000006':
+      CHAINLINK_ETH_FEED[ChainId.Base], // WETH / USD
     '0x2Ae3F1Ec7F1F5012CFEab0185bfc7aa3cf0DEc22':
       '0xd7818272B9e248357d13057AAb0B417aF31E817d', // cbETH / USD
-    '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE': CHAINLINK_ETH_FEED, // ETH / USD
+    '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE':
+      CHAINLINK_ETH_FEED[ChainId.Base], // ETH / USD
     [WSTETH_ADDRESS]: '0xa669E5272E60f78299F4824495cE01a3923f4380', // wstETH / ETH
   },
   [ChainId.Arbitrum]: {
@@ -91,9 +99,14 @@ export const useChainlinkPrices = (
   })
 
   const { data: ethData } = useReadContract({
-    query: { enabled: !!tokenAddresses?.includes(WSTETH_ADDRESS) },
+    query: {
+      enabled: !!(
+        tokenAddresses?.includes(WSTETH_ADDRESS) ||
+        tokenAddresses?.includes(RETH_ADDRESS)
+      ),
+    },
     abi: Chainlink,
-    address: CHAINLINK_ETH_FEED,
+    address: CHAINLINK_ETH_FEED[chainId],
     functionName: 'latestRoundData',
     chainId,
   })
@@ -102,7 +115,7 @@ export const useChainlinkPrices = (
     if (!data) return undefined
 
     return tokenAddresses?.map((tokenAddress, i) => {
-      if (tokenAddress === WSTETH_ADDRESS) {
+      if (tokenAddress === WSTETH_ADDRESS || tokenAddress === RETH_ADDRESS) {
         if (!ethData) return undefined
         return (
           +formatUnits(ethData[1], 8) * +formatUnits((data as any)[i][1], 18)

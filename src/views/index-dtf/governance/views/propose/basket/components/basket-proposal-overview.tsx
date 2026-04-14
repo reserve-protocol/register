@@ -8,13 +8,16 @@ import {
   isProposalConfirmedAtom,
   basketProposalCalldatasAtom,
   proposalDescriptionAtom,
+  proposalLiquidityLoadingAtom,
 } from '../atoms'
+import { devModeAtom } from '@/state/chain/atoms/chainAtoms'
 import SubmitProposalButton from './submit-proposal-button'
 import { ROUTES } from '@/utils/constants'
 import { indexDTFAtom, indexDTFBrandAtom } from '@/state/dtf/atoms'
 import SimulateProposalCard from '@/views/index-dtf/governance/components/simulate-proposal-card'
 import { chainIdAtom } from '@/state/atoms'
 import { Address } from 'viem'
+import ProposalLiquidityChecker from './proposal-liquidity-checker'
 
 // TODO: get governance route to navigate back to governance
 const Header = () => {
@@ -40,18 +43,26 @@ const Header = () => {
 
 const ConfirmProposalButton = () => {
   const isValid = useAtomValue(isBasketProposalValidAtom)
+  const isDevMode = useAtomValue(devModeAtom)
+  const isLiquidityLoading = useAtomValue(proposalLiquidityLoadingAtom)
   const [isProposalConfirmed, setIsProposalConfirmed] = useAtom(
     isProposalConfirmedAtom
   )
 
+  const waitForLiquidity = isDevMode && isLiquidityLoading && !isProposalConfirmed
+
   return (
     <Button
       className="w-full"
-      disabled={!isValid}
+      disabled={!isValid || waitForLiquidity}
       variant={isProposalConfirmed ? 'outline' : 'default'}
       onClick={() => setIsProposalConfirmed(!isProposalConfirmed)}
     >
-      {isProposalConfirmed ? 'Edit proposal' : 'Confirm & prepare proposal'}
+      {waitForLiquidity
+        ? 'Checking liquidity...'
+        : isProposalConfirmed
+          ? 'Edit proposal'
+          : 'Confirm & prepare proposal'}
     </Button>
   )
 }
@@ -127,14 +138,15 @@ const BasketProposalOverview = () => {
   const isProposalConfirmed = useAtomValue(isProposalConfirmedAtom)
 
   return (
-    <div className="flex flex-col gap-2">
-      <div
-        className={
-          !isProposalConfirmed
-            ? 'border-4 overflow-hidden w-full border-secondary rounded-3xl bg-background h-[fit-content] sticky top-0'
-            : 'border-4 overflow-hidden w-full border-secondary rounded-3xl bg-background h-[fit-content]'
-        }
-      >
+    <div
+      className={
+        !isProposalConfirmed
+          ? 'flex flex-col gap-2 sticky top-0 self-start'
+          : 'flex flex-col gap-2'
+      }
+    >
+      <ProposalLiquidityChecker />
+      <div className="border-4 overflow-hidden w-full border-secondary rounded-3xl bg-background h-[fit-content]">
         <Header />
         <ProposalInstructions />
       </div>

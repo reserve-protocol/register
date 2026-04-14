@@ -1,4 +1,4 @@
-import dtfIndexAbi from '@/abis/dtf-index-abi'
+import dtfIndexAbi from '@/abis/dtf-index-abi-v1'
 import TokenLogo from '@/components/token-logo'
 import { Button } from '@/components/ui/button'
 import {

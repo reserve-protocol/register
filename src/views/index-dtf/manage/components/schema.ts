@@ -8,7 +8,7 @@ export const manageFormSchema = z.object({
     mobileCover: z.string().optional(),
     description: z.string().optional(),
     notesFromCreator: z.string().optional(),
-    prospectus: z.string().url().optional().or(z.literal('')),
+    prospectus: z.url().optional().or(z.literal('')),
     tags: z
       .array(z.object({ value: z.string(), label: z.string() }))
       .optional(),
@@ -20,16 +20,15 @@ export const manageFormSchema = z.object({
   creator: z.object({
     name: z.string().optional(),
     icon: z.string().optional(),
-    link: z.string().url().optional().or(z.literal('')),
+    link: z.url().optional().or(z.literal('')),
   }),
   curator: z.object({
     name: z.string().optional(),
     icon: z.string().optional(),
-    link: z.string().url().optional().or(z.literal('')),
+    link: z.url().optional().or(z.literal('')),
   }),
   socials: z.object({
     twitter: z
-      .string()
       .url()
       .refine(
         (url) => !url || url.includes('x.com') || url.includes('twitter.com'),
@@ -40,7 +39,6 @@ export const manageFormSchema = z.object({
       .optional()
       .or(z.literal('')),
     telegram: z
-      .string()
       .url()
       .refine((url) => !url || url.includes('t.me'), {
         message: 'Must be a valid Telegram URL',
@@ -48,7 +46,6 @@ export const manageFormSchema = z.object({
       .optional()
       .or(z.literal('')),
     discord: z
-      .string()
       .url()
       .refine(
         (url) =>
@@ -59,14 +56,14 @@ export const manageFormSchema = z.object({
       )
       .optional()
       .or(z.literal('')),
-    website: z.string().url().optional().or(z.literal('')),
+    website: z.url().optional().or(z.literal('')),
   }),
   files: z.object({
-    logo: z.instanceof(File).optional(),
-    creatorLogo: z.instanceof(File).optional(),
-    curatorLogo: z.instanceof(File).optional(),
-    desktopCover: z.instanceof(File).optional(),
-    mobileCover: z.instanceof(File).optional(),
+    logo: z.instanceof(File).nullable().optional(),
+    creatorLogo: z.instanceof(File).nullable().optional(),
+    curatorLogo: z.instanceof(File).nullable().optional(),
+    desktopCover: z.instanceof(File).nullable().optional(),
+    mobileCover: z.instanceof(File).nullable().optional(),
   }),
 })
 

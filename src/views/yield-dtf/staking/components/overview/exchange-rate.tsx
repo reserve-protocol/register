@@ -1,7 +1,7 @@
 import AreaChart from 'components/charts/area/AreaChart'
 import dayjs from 'dayjs'
 import { gql } from 'graphql-request'
-import useQuery from 'hooks/useQuery'
+import useQuery from 'hooks/use-query'
 import useRToken from 'hooks/useRToken'
 import useTimeFrom from 'hooks/useTimeFrom'
 import { useAtomValue } from 'jotai'

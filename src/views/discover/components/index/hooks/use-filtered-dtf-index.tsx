@@ -1,3 +1,4 @@
+import { isInactiveDTF } from '@/hooks/use-dtf-status'
 import useIndexDTFList, { IndexDTFItem } from '@/hooks/useIndexDTFList'
 import { chainFilterAtom, searchFilterAtom } from '../atoms'
 import { useAtomValue } from 'jotai'
@@ -14,6 +15,10 @@ const useFilteredDTFIndex = () => {
     }
 
     const filtered = data.filter((dtf) => {
+      if (!search && isInactiveDTF(dtf.status)) {
+        return false
+      }
+
       if (!chains.length || !chains.includes(dtf.chainId)) {
         return false
       }

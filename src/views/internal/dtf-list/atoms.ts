@@ -14,8 +14,9 @@ export const isLoadingAtom = atom(false)
 export const marketCapsAtom = atom<{ [key: string]: number }>({}) // key is `${chainId}-${address.toLowerCase()}`
 
 // Filter atoms
+export const searchFilterAtom = atom('')
 export const isGovernorFilterAtom = atom(false)
-export const isGuardianFilterAtom = atom(false) 
+export const isGuardianFilterAtom = atom(false)
 export const isCreatorFilterAtom = atom(false)
 export const hasBalanceFilterAtom = atom(false)
 export const dateFilterAtom = atom<'all' | '24h' | '7d' | '15d' | '30d'>('all')
@@ -121,6 +122,7 @@ export const totalPagesAtom = atom((get) => {
 
 // Reset filters atom
 export const resetFiltersAtom = atom(null, (get, set) => {
+  set(searchFilterAtom, '')
   set(isGovernorFilterAtom, false)
   set(isGuardianFilterAtom, false)
   set(isCreatorFilterAtom, false)

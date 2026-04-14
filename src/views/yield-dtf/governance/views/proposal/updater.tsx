@@ -25,10 +25,12 @@ import {
   isNewBasketProposedAtom,
   isProposalValidAtom,
   parametersChangesAtom,
+  pauseIssuanceAtom,
   registerAssetsAtom,
   revenueSplitChangesAtom,
   roleChangesAtom,
-  spellUpgradeAtom,
+  spell3_4_0UpgradeAtom,
+  spell4_2_0UpgradeAtom,
   unregisterAssetsAtom,
 } from './atoms'
 import useBackupChanges from './hooks/useBackupChanges'
@@ -77,7 +79,7 @@ export const RTokenDataUpdater = () => {
     }
 
     setSetupBasket(setupBasket)
-  }, [JSON.stringify(basket)])
+  }, [JSON.stringify(basket), collateralDetail])
 
   useEffect(() => {
     if (backup) {
@@ -107,8 +109,14 @@ export const ChangesUpdater = () => {
   const isNewBasket = useAtomValue(isNewBasketProposedAtom)
   const isNewBackup = useAtomValue(isNewBackupProposedAtom)
   const assetsToUnregister = useAtomValue(unregisterAssetsAtom)
-  const hasUpgrades = !!Object.keys(useAtomValue(contractUpgradesAtom)).length
-  const hasSpell = useAtomValue(spellUpgradeAtom) !== 'none'
+  const contractUpgrades = useAtomValue(contractUpgradesAtom)
+  const spell3_4_0Upgrade = useAtomValue(spell3_4_0UpgradeAtom)
+  const spell4_2_0Upgrade = useAtomValue(spell4_2_0UpgradeAtom)
+  const pauseIssuance = useAtomValue(pauseIssuanceAtom)
+
+  const hasUpgrades = !!Object.keys(contractUpgrades).length
+  const hasSpell = spell3_4_0Upgrade !== 'none' || spell4_2_0Upgrade !== 'none'
+  const hasPauseIssuance = pauseIssuance !== 'none'
 
   // Valid listeners
   const isBasketValid = useAtomValue(isBasketValidAtom)
@@ -161,7 +169,8 @@ export const ChangesUpdater = () => {
       !assetsToRegister.length &&
       !isNewBasket &&
       !hasUpgrades &&
-      !hasSpell
+      !hasSpell &&
+      !hasPauseIssuance
     ) {
       setValidState(false)
     } else {
@@ -182,6 +191,7 @@ export const ChangesUpdater = () => {
     assetsToRegister,
     hasUpgrades,
     hasSpell,
+    hasPauseIssuance,
     isValid,
   ])
 
