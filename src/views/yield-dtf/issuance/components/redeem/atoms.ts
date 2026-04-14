@@ -1,7 +1,6 @@
 import FacadeRead from 'abis/FacadeRead'
 import { atom } from 'jotai'
 import {
-  blockAtom,
   chainIdAtom,
   isModuleLegacyAtom,
   rTokenAssetsAtom,
@@ -32,8 +31,6 @@ export const redeemNonceAtom = atom((get) => {
 })
 
 export const redeemQuotesAtom = atomWithLoadable(async (get) => {
-  // Re-simulate on every new block so displayed amounts track basket drift (refPerTok, basketsNeeded) and match what redeemTo delivers.
-  get(blockAtom)
   const account = get(walletAtom)
   const currentNonce = get(rTokenStateAtom).basketNonce
   const assets = get(rTokenAssetsAtom)
@@ -106,8 +103,8 @@ export const redeemQuotesAtom = atomWithLoadable(async (get) => {
     quotes[currentNonce.toString()] = tokens.reduce(
       (prev, current, currentIndex) => {
         const assetAddress = getAddress(current)
-        const amount = available[currentIndex]
-        const targetAmount = withdrawals[currentIndex]
+        const amount = withdrawals[currentIndex]
+        const targetAmount = available[currentIndex]
         let loss = 0
 
         if (amount !== targetAmount) {
