@@ -5,6 +5,8 @@ import {
   DTFMonthlyMetrics,
   PriceMap,
   DTFInput,
+  InternalMintEvent,
+  InternalBalanceSnapshot,
 } from './types'
 import {
   timestampToDateKey,
@@ -23,8 +25,8 @@ const CHAIN_NAMES: Record<number, string> = {
 
 interface MonthlyAccumulator {
   // Summed values
-  totalRevenue: number
-  totalRevenueUsd: number
+  distributedRevenue: number
+  distributedRevenueUsd: number
   governanceRevenue: number
   governanceRevenueUsd: number
   externalRevenue: number
@@ -38,6 +40,15 @@ interface MonthlyAccumulator {
   mintingFeeRevenue: number
   mintingFeeRevenueUsd: number
   estRsrBurnAmount: number
+
+  // Internal wallet metrics
+  internalMintingFeeRevenue: number
+  internalMintingFeeRevenueUsd: number
+  internalTvlFeeRevenue: number
+  internalTvlFeeRevenueUsd: number
+  internalBalanceSum: number
+  internalBalanceUsdSum: number
+  internalBalanceDays: number
 
   // Month-end values (from last day of month)
   totalSupply: number
@@ -74,8 +85,8 @@ function parseBigIntToNumber(value: string | undefined | null): number {
  */
 function createEmptyAccumulator(): MonthlyAccumulator {
   return {
-    totalRevenue: 0,
-    totalRevenueUsd: 0,
+    distributedRevenue: 0,
+    distributedRevenueUsd: 0,
     governanceRevenue: 0,
     governanceRevenueUsd: 0,
     externalRevenue: 0,
@@ -89,6 +100,13 @@ function createEmptyAccumulator(): MonthlyAccumulator {
     mintingFeeRevenue: 0,
     mintingFeeRevenueUsd: 0,
     estRsrBurnAmount: 0,
+    internalMintingFeeRevenue: 0,
+    internalMintingFeeRevenueUsd: 0,
+    internalTvlFeeRevenue: 0,
+    internalTvlFeeRevenueUsd: 0,
+    internalBalanceSum: 0,
+    internalBalanceUsdSum: 0,
+    internalBalanceDays: 0,
     totalSupply: 0,
     marketCapUsd: 0,
     holderCount: 0,
@@ -104,6 +122,48 @@ function createEmptyAccumulator(): MonthlyAccumulator {
 }
 
 /**
+ * Builds a dateKey -> total mint amount map from internal mint events
+ */
+export function buildInternalMintsMap(
+  mints: InternalMintEvent[]
+): PriceMap {
+  const map: PriceMap = {}
+  for (const mint of mints) {
+    const dateKey = timestampToDateKey(mint.timestamp)
+    const amount = parseBigIntToNumber(mint.amount)
+    map[dateKey] = (map[dateKey] || 0) + amount
+  }
+  return map
+}
+
+/**
+ * Builds a dateKey -> total internal balance map from balance snapshots.
+ * Carries forward last known balance per account for days without snapshots.
+ */
+export function buildInternalBalanceMap(
+  snapshots: InternalBalanceSnapshot[]
+): PriceMap {
+  if (snapshots.length === 0) return {}
+
+  const sorted = [...snapshots].sort((a, b) => a.timestamp - b.timestamp)
+  const accountBalances: Record<string, number> = {}
+  const dailyTotals: PriceMap = {}
+
+  for (const snapshot of sorted) {
+    const dateKey = timestampToDateKey(snapshot.timestamp)
+    accountBalances[snapshot.account] = parseBigIntToNumber(snapshot.amount)
+
+    let total = 0
+    for (const balance of Object.values(accountBalances)) {
+      total += balance
+    }
+    dailyTotals[dateKey] = total
+  }
+
+  return dailyTotals
+}
+
+/**
  * Aggregates daily snapshots into monthly metrics
  */
 export function aggregateDailyToMonthly(
@@ -113,7 +173,9 @@ export function aggregateDailyToMonthly(
   rsrPrices: PriceMap,
   voteLockPrices: PriceMap,
   metadata: DTFMetadata | null,
-  tokensLockedMap: PriceMap // Map of dateKey -> tokens locked amount
+  tokensLockedMap: PriceMap, // Map of dateKey -> tokens locked amount
+  internalMintsMap: PriceMap = {},
+  internalBalanceMap: PriceMap = {}
 ): DTFMonthlyMetrics[] {
   if (dailySnapshots.length === 0) {
     return []
@@ -127,6 +189,9 @@ export function aggregateDailyToMonthly(
 
   // Group snapshots by month
   const monthlyData: Map<string, MonthlyAccumulator> = new Map()
+
+  // Track last known internal balance for carry-forward
+  let lastInternalBalance = 0
 
   for (const snapshot of dailySnapshots) {
     const monthKey = timestampToMonthKey(snapshot.timestamp)
@@ -164,8 +229,8 @@ export function aggregateDailyToMonthly(
     const dailyMintingFeeRevenue = dailyMintAmount * mintingFee
 
     // Accumulate summed values
-    acc.totalRevenue += dailyRevenue
-    acc.totalRevenueUsd += dailyRevenue * dtfPrice
+    acc.distributedRevenue += dailyRevenue
+    acc.distributedRevenueUsd += dailyRevenue * dtfPrice
     acc.governanceRevenue += dailyGovernanceRevenue
     acc.governanceRevenueUsd += dailyGovernanceRevenue * dtfPrice
     acc.externalRevenue += dailyExternalRevenue
@@ -183,6 +248,23 @@ export function aggregateDailyToMonthly(
     if (rsrPrice > 0) {
       acc.estRsrBurnAmount += (dailyProtocolRevenue * dtfPrice) / rsrPrice
     }
+
+    // Internal wallet metrics
+    const internalMintAmount = internalMintsMap[dateKey] || 0
+    const dailyInternalMintingFeeRevenue = internalMintAmount * mintingFee
+    acc.internalMintingFeeRevenue += dailyInternalMintingFeeRevenue
+    acc.internalMintingFeeRevenueUsd += dailyInternalMintingFeeRevenue * dtfPrice
+
+    if (internalBalanceMap[dateKey] !== undefined) {
+      lastInternalBalance = internalBalanceMap[dateKey]
+    }
+    const dailyInternalTvlFeeRevenue =
+      lastInternalBalance * (annualizedTvlFee / 365)
+    acc.internalTvlFeeRevenue += dailyInternalTvlFeeRevenue
+    acc.internalTvlFeeRevenueUsd += dailyInternalTvlFeeRevenue * dtfPrice
+    acc.internalBalanceSum += lastInternalBalance
+    acc.internalBalanceUsdSum += lastInternalBalance * dtfPrice
+    acc.internalBalanceDays += 1
 
     // Track price for averaging
     if (dtfPrice > 0) {
@@ -237,12 +319,14 @@ export function aggregateDailyToMonthly(
       cumulativeTokensLockedUsd: 0,
       tvlUsd: acc.marketCapUsd + acc.tokensLockedUsd,
 
-      totalRevenue: acc.totalRevenue,
-      totalRevenueUsd: acc.totalRevenueUsd,
+      totalRevenue: acc.tvlFeeRevenue + acc.mintingFeeRevenue,
+      totalRevenueUsd: acc.tvlFeeRevenueUsd + acc.mintingFeeRevenueUsd,
       tvlFeeRevenue: acc.tvlFeeRevenue,
       tvlFeeRevenueUsd: acc.tvlFeeRevenueUsd,
       mintingFeeRevenue: acc.mintingFeeRevenue,
       mintingFeeRevenueUsd: acc.mintingFeeRevenueUsd,
+      distributedRevenue: acc.distributedRevenue,
+      distributedRevenueUsd: acc.distributedRevenueUsd,
 
       monthlyMinted: acc.monthlyMinted,
       monthlyMintedUsd: acc.monthlyMintedUsd,
@@ -254,6 +338,23 @@ export function aggregateDailyToMonthly(
       protocolRevenue: acc.protocolRevenue,
       protocolRevenueUsd: acc.protocolRevenueUsd,
       estRsrBurnAmount: acc.estRsrBurnAmount,
+
+      internalTvl:
+        acc.internalBalanceDays > 0
+          ? acc.internalBalanceSum / acc.internalBalanceDays
+          : 0,
+      internalTvlUsd:
+        acc.internalBalanceDays > 0
+          ? acc.internalBalanceUsdSum / acc.internalBalanceDays
+          : 0,
+      internalMintingFeeRevenue: acc.internalMintingFeeRevenue,
+      internalMintingFeeRevenueUsd: acc.internalMintingFeeRevenueUsd,
+      internalTvlFeeRevenue: acc.internalTvlFeeRevenue,
+      internalTvlFeeRevenueUsd: acc.internalTvlFeeRevenueUsd,
+      internalRevenue:
+        acc.internalMintingFeeRevenue + acc.internalTvlFeeRevenue,
+      internalRevenueUsd:
+        acc.internalMintingFeeRevenueUsd + acc.internalTvlFeeRevenueUsd,
 
       holderCount: acc.holderCount,
 
@@ -272,7 +373,15 @@ export function aggregateDailyToMonthly(
       cumulativeExternalRevenueUsd: 0,
       cumulativeProtocolRevenue: 0,
       cumulativeProtocolRevenueUsd: 0,
+      cumulativeDistributedRevenue: 0,
+      cumulativeDistributedRevenueUsd: 0,
       cumulativeEstRsrBurnAmount: 0,
+      cumulativeInternalRevenue: 0,
+      cumulativeInternalRevenueUsd: 0,
+      cumulativeInternalMintingFeeRevenue: 0,
+      cumulativeInternalMintingFeeRevenueUsd: 0,
+      cumulativeInternalTvlFeeRevenue: 0,
+      cumulativeInternalTvlFeeRevenueUsd: 0,
     })
   }
 
@@ -292,7 +401,15 @@ export function aggregateDailyToMonthly(
   let cumExtRevenueUsd = 0
   let cumProtocolRevenue = 0
   let cumProtocolRevenueUsd = 0
+  let cumDistributedRevenue = 0
+  let cumDistributedRevenueUsd = 0
   let cumEstRsrBurn = 0
+  let cumInternalRevenue = 0
+  let cumInternalRevenueUsd = 0
+  let cumInternalMintingFeeRevenue = 0
+  let cumInternalMintingFeeRevenueUsd = 0
+  let cumInternalTvlFeeRevenue = 0
+  let cumInternalTvlFeeRevenueUsd = 0
 
   for (const metric of results) {
     cumTokensLocked += metric.tokensLocked
@@ -307,6 +424,8 @@ export function aggregateDailyToMonthly(
     cumExtRevenueUsd += metric.externalRevenueUsd
     cumProtocolRevenue += metric.protocolRevenue
     cumProtocolRevenueUsd += metric.protocolRevenueUsd
+    cumDistributedRevenue += metric.distributedRevenue
+    cumDistributedRevenueUsd += metric.distributedRevenueUsd
     cumEstRsrBurn += metric.estRsrBurnAmount
 
     metric.cumulativeTokensLocked = cumTokensLocked
@@ -321,7 +440,22 @@ export function aggregateDailyToMonthly(
     metric.cumulativeExternalRevenueUsd = cumExtRevenueUsd
     metric.cumulativeProtocolRevenue = cumProtocolRevenue
     metric.cumulativeProtocolRevenueUsd = cumProtocolRevenueUsd
+    metric.cumulativeDistributedRevenue = cumDistributedRevenue
+    metric.cumulativeDistributedRevenueUsd = cumDistributedRevenueUsd
     metric.cumulativeEstRsrBurnAmount = cumEstRsrBurn
+
+    cumInternalRevenue += metric.internalRevenue
+    cumInternalRevenueUsd += metric.internalRevenueUsd
+    cumInternalMintingFeeRevenue += metric.internalMintingFeeRevenue
+    cumInternalMintingFeeRevenueUsd += metric.internalMintingFeeRevenueUsd
+    cumInternalTvlFeeRevenue += metric.internalTvlFeeRevenue
+    cumInternalTvlFeeRevenueUsd += metric.internalTvlFeeRevenueUsd
+    metric.cumulativeInternalRevenue = cumInternalRevenue
+    metric.cumulativeInternalRevenueUsd = cumInternalRevenueUsd
+    metric.cumulativeInternalMintingFeeRevenue = cumInternalMintingFeeRevenue
+    metric.cumulativeInternalMintingFeeRevenueUsd = cumInternalMintingFeeRevenueUsd
+    metric.cumulativeInternalTvlFeeRevenue = cumInternalTvlFeeRevenue
+    metric.cumulativeInternalTvlFeeRevenueUsd = cumInternalTvlFeeRevenueUsd
   }
 
   return results

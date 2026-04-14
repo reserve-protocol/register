@@ -1,7 +1,13 @@
 import { INDEX_DTF_SUBGRAPH_URL } from '@/state/chain/atoms/chainAtoms'
 import request, { gql } from 'graphql-request'
 import { Address, formatEther } from 'viem'
-import { TokenDailySnapshot, DTFMetadata, PriceMap } from './types'
+import {
+  TokenDailySnapshot,
+  DTFMetadata,
+  PriceMap,
+  InternalMintEvent,
+  InternalBalanceSnapshot,
+} from './types'
 
 const DAILY_SNAPSHOTS_QUERY = gql`
   query GetDTFDailySnapshots($tokenId: String!, $skip: Int!) {
@@ -291,4 +297,156 @@ export async function fetchTokensLockedHistory(
     `[DTF Analytics] No stToken snapshots found for ${stTokenAddress}, tokens locked will be 0`
   )
   return {}
+}
+
+// Query mint events for internal wallets
+const INTERNAL_MINTS_QUERY = gql`
+  query GetInternalMints($token: String!, $accounts: [String!]!, $skip: Int!) {
+    transferEvents(
+      where: { token: $token, type: "MINT", to_in: $accounts }
+      orderBy: timestamp
+      orderDirection: asc
+      first: 1000
+      skip: $skip
+    ) {
+      amount
+      timestamp
+    }
+  }
+`
+
+interface InternalMintsResponse {
+  transferEvents: { amount: string; timestamp: string }[]
+}
+
+/**
+ * Fetches mint events for a list of internal wallets for a specific DTF.
+ */
+export async function fetchInternalMints(
+  dtfAddress: Address,
+  chainId: number,
+  internalWallets: string[]
+): Promise<InternalMintEvent[]> {
+  const subgraphUrl =
+    INDEX_DTF_SUBGRAPH_URL[chainId as keyof typeof INDEX_DTF_SUBGRAPH_URL]
+  if (!subgraphUrl || internalWallets.length === 0) return []
+
+  const allEvents: InternalMintEvent[] = []
+  let skip = 0
+  const pageSize = 1000
+  const token = dtfAddress.toLowerCase()
+  const accounts = internalWallets.map((a) => a.toLowerCase())
+
+  while (true) {
+    try {
+      const response: InternalMintsResponse = await request(
+        subgraphUrl,
+        INTERNAL_MINTS_QUERY,
+        { token, accounts, skip }
+      )
+
+      const events = response.transferEvents
+      if (!events || events.length === 0) break
+
+      for (const event of events) {
+        allEvents.push({
+          amount: event.amount,
+          timestamp: Number(event.timestamp),
+        })
+      }
+
+      if (events.length < pageSize) break
+      skip += pageSize
+    } catch (error) {
+      console.error(
+        `[DTF Analytics] Error fetching internal mints for ${dtfAddress}:`,
+        error
+      )
+      break
+    }
+  }
+
+  return allEvents
+}
+
+// Query daily balance snapshots for internal wallets
+const INTERNAL_BALANCE_SNAPSHOTS_QUERY = gql`
+  query GetInternalBalanceSnapshots(
+    $token: String!
+    $accounts: [String!]!
+    $skip: Int!
+  ) {
+    accountBalanceDailySnapshots(
+      where: { token: $token, account_in: $accounts }
+      orderBy: timestamp
+      orderDirection: asc
+      first: 1000
+      skip: $skip
+    ) {
+      account {
+        id
+      }
+      amount
+      timestamp
+    }
+  }
+`
+
+interface InternalBalanceSnapshotsResponse {
+  accountBalanceDailySnapshots: {
+    account: { id: string }
+    amount: string
+    timestamp: string
+  }[]
+}
+
+/**
+ * Fetches daily balance snapshots for internal wallets for a specific DTF.
+ */
+export async function fetchInternalBalanceSnapshots(
+  dtfAddress: Address,
+  chainId: number,
+  internalWallets: string[]
+): Promise<InternalBalanceSnapshot[]> {
+  const subgraphUrl =
+    INDEX_DTF_SUBGRAPH_URL[chainId as keyof typeof INDEX_DTF_SUBGRAPH_URL]
+  if (!subgraphUrl || internalWallets.length === 0) return []
+
+  const allSnapshots: InternalBalanceSnapshot[] = []
+  let skip = 0
+  const pageSize = 1000
+  const token = dtfAddress.toLowerCase()
+  const accounts = internalWallets.map((a) => a.toLowerCase())
+
+  while (true) {
+    try {
+      const response: InternalBalanceSnapshotsResponse = await request(
+        subgraphUrl,
+        INTERNAL_BALANCE_SNAPSHOTS_QUERY,
+        { token, accounts, skip }
+      )
+
+      const snapshots = response.accountBalanceDailySnapshots
+      if (!snapshots || snapshots.length === 0) break
+
+      for (const snapshot of snapshots) {
+        allSnapshots.push({
+          account: snapshot.account.id,
+          amount: snapshot.amount,
+          timestamp: Number(snapshot.timestamp),
+        })
+      }
+
+      if (snapshots.length < pageSize) break
+      skip += pageSize
+    } catch (error) {
+      console.error(
+        `[DTF Analytics] Error fetching internal balance snapshots for ${dtfAddress}:`,
+        error
+      )
+      break
+    }
+  }
+
+  return allSnapshots
 }

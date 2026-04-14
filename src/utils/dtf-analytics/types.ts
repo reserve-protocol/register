@@ -75,12 +75,14 @@ export interface DTFMonthlyMetrics {
   tvlUsd: number // marketCap + tokensLockedUsd
 
   // Revenue (summed from daily)
-  totalRevenue: number
+  totalRevenue: number // tvlFeeRevenue + mintingFeeRevenue
   totalRevenueUsd: number
   tvlFeeRevenue: number // Derived
   tvlFeeRevenueUsd: number
   mintingFeeRevenue: number // Derived
   mintingFeeRevenueUsd: number
+  distributedRevenue: number // From subgraph dailyRevenue
+  distributedRevenueUsd: number
 
   // Minting (summed from daily)
   monthlyMinted: number
@@ -94,6 +96,16 @@ export interface DTFMonthlyMetrics {
   protocolRevenue: number
   protocolRevenueUsd: number
   estRsrBurnAmount: number
+
+  // Internal wallet metrics
+  internalTvl: number
+  internalTvlUsd: number
+  internalMintingFeeRevenue: number
+  internalMintingFeeRevenueUsd: number
+  internalTvlFeeRevenue: number
+  internalTvlFeeRevenueUsd: number
+  internalRevenue: number // internalMintingFeeRevenue + internalTvlFeeRevenue
+  internalRevenueUsd: number
 
   // Stats (month-end value)
   holderCount: number
@@ -114,7 +126,27 @@ export interface DTFMonthlyMetrics {
   cumulativeExternalRevenueUsd: number
   cumulativeProtocolRevenue: number
   cumulativeProtocolRevenueUsd: number
+  cumulativeDistributedRevenue: number
+  cumulativeDistributedRevenueUsd: number
   cumulativeEstRsrBurnAmount: number
+  cumulativeInternalRevenue: number
+  cumulativeInternalRevenueUsd: number
+  cumulativeInternalMintingFeeRevenue: number
+  cumulativeInternalMintingFeeRevenueUsd: number
+  cumulativeInternalTvlFeeRevenue: number
+  cumulativeInternalTvlFeeRevenueUsd: number
+}
+
+// Internal wallet data from subgraph
+export interface InternalMintEvent {
+  amount: string // BigInt
+  timestamp: number
+}
+
+export interface InternalBalanceSnapshot {
+  account: string
+  amount: string // BigInt
+  timestamp: number
 }
 
 // Progress callback for UI

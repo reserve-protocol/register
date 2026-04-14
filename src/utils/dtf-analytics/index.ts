@@ -10,6 +10,8 @@ import {
   fetchDailySnapshots,
   fetchDTFMetadata,
   fetchTokensLockedHistory,
+  fetchInternalMints,
+  fetchInternalBalanceSnapshots,
 } from './fetch-daily-snapshots'
 import {
   fetchDTFPriceHistory,
@@ -17,8 +19,17 @@ import {
   fetchTokenPriceHistory,
   timestampToDateKey,
 } from './fetch-price-history'
-import { aggregateDailyToMonthly, getTimeRange } from './calculate-metrics'
+import {
+  aggregateDailyToMonthly,
+  getTimeRange,
+  buildInternalMintsMap,
+  buildInternalBalanceMap,
+} from './calculate-metrics'
 import { generateCSV, downloadCSV, generateFilename } from './generate-csv'
+import {
+  fetchSupabaseTvl,
+  overrideInternalBalanceMap,
+} from './fetch-supabase-tvl'
 
 // RSR addresses across chains - all are fungible and should use the same price
 const RSR_ADDRESSES: Record<string, boolean> = {
@@ -39,6 +50,9 @@ function isRSRToken(address: string): boolean {
  */
 async function processSingleDTF(
   dtf: DTFInput,
+  internalWallets: string[],
+  supabaseUrl: string,
+  supabaseKey: string,
   onProgress?: (message: string) => void
 ): Promise<DTFMonthlyMetrics[]> {
   const { address, chainId } = dtf
@@ -100,9 +114,42 @@ async function processSingleDTF(
     )
   }
 
+  // 7. Fetch internal wallet data if wallets are provided
+  let internalMintsMap: PriceMap = {}
+  let internalBalanceMap: PriceMap = {}
+  if (internalWallets.length > 0) {
+    onProgress?.(`Fetching internal wallet data...`)
+    const [internalMints, internalBalances] = await Promise.all([
+      fetchInternalMints(address as Address, chainId, internalWallets),
+      fetchInternalBalanceSnapshots(
+        address as Address,
+        chainId,
+        internalWallets
+      ),
+    ])
+    internalMintsMap = buildInternalMintsMap(internalMints)
+    internalBalanceMap = buildInternalBalanceMap(internalBalances)
+  }
+
+  // 8. Override internal TVL with Supabase data if credentials provided
+  if (supabaseUrl && supabaseKey) {
+    onProgress?.(`Fetching Supabase TVL data...`)
+    const supabaseTvlMap = await fetchSupabaseTvl(
+      address,
+      supabaseUrl,
+      supabaseKey
+    )
+    if (Object.keys(supabaseTvlMap).length > 0) {
+      internalBalanceMap = overrideInternalBalanceMap(
+        internalBalanceMap,
+        supabaseTvlMap
+      )
+    }
+  }
+
   onProgress?.(`Calculating monthly metrics...`)
 
-  // 7. Aggregate daily data to monthly
+  // 9. Aggregate daily data to monthly
   const monthlyMetrics = aggregateDailyToMonthly(
     dtf,
     dailySnapshots,
@@ -110,7 +157,9 @@ async function processSingleDTF(
     rsrPrices,
     voteLockPrices,
     metadata,
-    tokensLockedMap
+    tokensLockedMap,
+    internalMintsMap,
+    internalBalanceMap
   )
 
   onProgress?.(`Generated ${monthlyMetrics.length} monthly records`)
@@ -123,7 +172,10 @@ async function processSingleDTF(
  */
 export async function exportDTFAnalytics(
   dtfList: DTFInput[],
-  onProgress?: ProgressCallback
+  onProgress?: ProgressCallback,
+  internalWallets: string[] = [],
+  supabaseUrl: string = '',
+  supabaseKey: string = ''
 ): Promise<void> {
   console.log('[DTF Analytics] Starting export with', dtfList.length, 'DTFs')
   console.log(
@@ -156,7 +208,7 @@ export async function exportDTFAnalytics(
     })
 
     try {
-      const metrics = await processSingleDTF(dtf, (msg) => {
+      const metrics = await processSingleDTF(dtf, internalWallets, supabaseUrl, supabaseKey, (msg) => {
         onProgress?.({
           current: i,
           total,

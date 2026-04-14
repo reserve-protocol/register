@@ -4,7 +4,15 @@ import { useState } from 'react'
 import useIndexDTFList from '@/hooks/useIndexDTFList'
 import { exportDTFAnalytics, ExportProgress } from '@/utils/dtf-analytics'
 
-const ExportAnalyticsButton = () => {
+const ExportAnalyticsButton = ({
+  internalWallets,
+  supabaseUrl,
+  supabaseKey,
+}: {
+  internalWallets: string[]
+  supabaseUrl: string
+  supabaseKey: string
+}) => {
   const { data: dtfList, isLoading: isListLoading } = useIndexDTFList()
   const [isExporting, setIsExporting] = useState(false)
   const [progress, setProgress] = useState<ExportProgress>({
@@ -27,7 +35,7 @@ const ExportAnalyticsButton = () => {
         chainId: dtf.chainId,
       }))
 
-      await exportDTFAnalytics(dtfInputs, setProgress)
+      await exportDTFAnalytics(dtfInputs, setProgress, internalWallets, supabaseUrl, supabaseKey)
     } catch (error) {
       console.error('Export failed:', error)
     } finally {

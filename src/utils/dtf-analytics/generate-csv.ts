@@ -38,6 +38,8 @@ export const CSV_HEADERS: CSVHeader[] = [
   { key: 'tvlFeeRevenueUsd', label: 'TVL Fee Revenue (USD)' },
   { key: 'mintingFeeRevenue', label: 'Minting Fee Revenue (Token)' },
   { key: 'mintingFeeRevenueUsd', label: 'Minting Fee Revenue (USD)' },
+  { key: 'distributedRevenue', label: 'Distributed Revenue (Token)' },
+  { key: 'distributedRevenueUsd', label: 'Distributed Revenue (USD)' },
   { key: 'monthlyMinted', label: 'Total Minted (Token)' },
   { key: 'monthlyMintedUsd', label: 'Total Minted (USD)' },
   { key: 'governanceRevenue', label: 'Revenue to Vote Lockers (Token)' },
@@ -47,6 +49,14 @@ export const CSV_HEADERS: CSVHeader[] = [
   { key: 'protocolRevenue', label: 'Revenue to Protocol (Token)' },
   { key: 'protocolRevenueUsd', label: 'Revenue to Protocol (USD)' },
   { key: 'estRsrBurnAmount', label: 'Est RSR Burn Amount' },
+  { key: 'internalTvl', label: 'Internal TVL (Token)' },
+  { key: 'internalTvlUsd', label: 'Internal TVL (USD)' },
+  { key: 'internalRevenue', label: 'Internal Revenue (Token)' },
+  { key: 'internalRevenueUsd', label: 'Internal Revenue (USD)' },
+  { key: 'internalMintingFeeRevenue', label: 'Internal Minting Fee Revenue (Token)' },
+  { key: 'internalMintingFeeRevenueUsd', label: 'Internal Minting Fee Revenue (USD)' },
+  { key: 'internalTvlFeeRevenue', label: 'Internal TVL Fee Revenue (Token)' },
+  { key: 'internalTvlFeeRevenueUsd', label: 'Internal TVL Fee Revenue (USD)' },
   { key: 'holderCount', label: 'Holder Count' },
   { key: 'dtfPrice', label: 'DTF Price (USD)' },
   { key: 'rsrPrice', label: 'RSR Price (USD)' },
@@ -80,7 +90,39 @@ export const CSV_HEADERS: CSVHeader[] = [
     key: 'cumulativeProtocolRevenueUsd',
     label: 'Cumulative Revenue to Protocol (USD)',
   },
+  {
+    key: 'cumulativeDistributedRevenue',
+    label: 'Cumulative Distributed Revenue (Token)',
+  },
+  {
+    key: 'cumulativeDistributedRevenueUsd',
+    label: 'Cumulative Distributed Revenue (USD)',
+  },
   { key: 'cumulativeEstRsrBurnAmount', label: 'Cumulative Est RSR Burn Amount' },
+  {
+    key: 'cumulativeInternalRevenue',
+    label: 'Cumulative Internal Revenue (Token)',
+  },
+  {
+    key: 'cumulativeInternalRevenueUsd',
+    label: 'Cumulative Internal Revenue (USD)',
+  },
+  {
+    key: 'cumulativeInternalMintingFeeRevenue',
+    label: 'Cumulative Internal Minting Fee Revenue (Token)',
+  },
+  {
+    key: 'cumulativeInternalMintingFeeRevenueUsd',
+    label: 'Cumulative Internal Minting Fee Revenue (USD)',
+  },
+  {
+    key: 'cumulativeInternalTvlFeeRevenue',
+    label: 'Cumulative Internal TVL Fee Revenue (Token)',
+  },
+  {
+    key: 'cumulativeInternalTvlFeeRevenueUsd',
+    label: 'Cumulative Internal TVL Fee Revenue (USD)',
+  },
 ]
 
 /**
