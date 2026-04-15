@@ -1,7 +1,7 @@
 import { Skeleton } from '@/components/ui/skeleton'
 import IndexDTFCard from './index-dtf-card'
 import IndexDTFTable from './index-dtf-table'
-import useFilteredDTFIndex from '../../hooks/use-filtered-dtf-index'
+import useFilteredDTFIndex from '../../hooks/use-filtered-index-dtf'
 
 const MobilePlaceholder = () => {
   return (
