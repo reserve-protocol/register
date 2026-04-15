@@ -1,3 +1,4 @@
+import { getCustomDTFIcon } from '@/utils/custom-dtf-icons'
 import { useQuery } from '@tanstack/react-query'
 import { Address } from 'viem'
 
@@ -52,7 +53,10 @@ const useIndexDTFList = () => {
           status: item.status ?? 'active',
           performance: item.performance ?? [],
           performancePercent: 0,
-          brand: item.brand,
+          brand: {
+            ...item.brand,
+            icon: getCustomDTFIcon(item.address) || item.brand?.icon,
+          },
         }))
         .sort((x: IndexDTFItem, y: IndexDTFItem) => y.marketCap - x.marketCap)
     },

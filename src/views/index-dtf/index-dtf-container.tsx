@@ -1,3 +1,4 @@
+import { getCustomDTFIcon } from '@/utils/custom-dtf-icons'
 import daoFeeRegistryAbi from '@/abis/dao-fee-registry-abi'
 import dtfIndexAbi from '@/abis/dtf-index-abi-v1'
 import dtfIndexAbiV4 from '@/abis/dtf-index-abi-v4'
@@ -106,7 +107,17 @@ const IndexDTFMetadataUpdater = ({
 
   useEffect(() => {
     if (brandData) {
-      setIndexDTFBrand(brandData)
+      const customIcon = data?.token?.id
+        ? getCustomDTFIcon(data.token.id)
+        : undefined
+      if (customIcon) {
+        setIndexDTFBrand({
+          ...brandData,
+          dtf: { ...brandData.dtf, icon: customIcon },
+        })
+      } else {
+        setIndexDTFBrand(brandData)
+      }
     }
   }, [brandData])
 

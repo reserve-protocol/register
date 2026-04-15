@@ -1,3 +1,4 @@
+import { getCustomDTFIcon } from '@/utils/custom-dtf-icons'
 import rtokens from '@reserve-protocol/rtokens'
 import BasketHandler from 'abis/BasketHandler'
 import { RevenueSplit } from 'components/rtoken-setup/atoms'
@@ -241,7 +242,7 @@ const useTokenList = () => {
               overcollaterization: supply ? (lockedUsd / supply) * 100 : 0,
               stakingApy,
               chain,
-              logo: `/svgs/${rtokens[chain][
+              logo: getCustomDTFIcon(token.id) || `/svgs/${rtokens[chain][
                 getAddress(token.id)
               ].logo?.toLowerCase()}`,
               distribution: revenueSplit,

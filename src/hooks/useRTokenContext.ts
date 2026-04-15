@@ -1,3 +1,4 @@
+import { getCustomDTFIcon } from '@/utils/custom-dtf-icons'
 import rtokens from '@reserve-protocol/rtokens'
 import RToken from 'abis/RToken'
 import { useAtomValue, useSetAtom } from 'jotai'
@@ -70,13 +71,14 @@ const useRTokenContext = () => {
   // Listed
   useEffect(() => {
     if (rToken) {
+      const defaultLogo = `/svgs/${(rToken?.logo ?? 'default.svg').toLowerCase()}`
       setRToken({
         symbol: rToken.symbol,
         name: rToken.name,
         decimals: rToken.decimals,
         address: rToken.address as Address,
         chain: chainId,
-        logo: `/svgs/${(rToken?.logo ?? 'default.svg').toLowerCase()}`,
+        logo: getCustomDTFIcon(rToken.address) || defaultLogo,
       })
       setChain(chainId)
     }

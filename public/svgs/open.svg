@@ -1,0 +1,22 @@
+<svg width="1000" height="1000" viewBox="0 0 1000 1000" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="18.75" y="18.75" width="962.5" height="962.5" rx="481.25" fill="#0151AF"/>
+<rect x="18.75" y="18.75" width="962.5" height="962.5" rx="481.25" stroke="#0151AF" stroke-width="37.5"/>
+<g clip-path="url(#clip0_6653_915)">
+<rect x="155.219" y="155.176" width="689.548" height="689.548" stroke="white" stroke-width="14.1998"/>
+<rect x="499.996" y="12.1602" width="689.892" height="689.892" transform="rotate(45 499.996 12.1602)" stroke="white" stroke-width="14.1998"/>
+<rect x="743.906" y="77.5195" width="689.892" height="689.892" transform="rotate(75 743.906 77.5195)" stroke="white" stroke-width="14.1998"/>
+<rect x="922.469" y="256.125" width="689.892" height="689.892" transform="rotate(105 922.469 256.125)" stroke="white" stroke-width="14.1998"/>
+<rect x="971.203" y="373.719" width="689.892" height="689.892" transform="rotate(120 971.203 373.719)" stroke="white" stroke-width="14.1998"/>
+<rect x="971.203" y="626.285" width="689.892" height="689.892" transform="rotate(150 971.203 626.285)" stroke="white" stroke-width="14.1998"/>
+<rect x="156.836" y="156.84" width="686.326" height="686.326" rx="343.163" fill="#0151AF" stroke="white" stroke-width="14.1998"/>
+</g>
+<rect x="69.2718" y="69.2718" width="861.457" height="861.457" rx="430.728" stroke="white" stroke-width="14.1998"/>
+<path d="M547.939 487.32L510.913 508.458V590.809L527.342 601.928L510.913 628.564V712.504L547.939 689.778V630.152L565.471 599.973L633.659 560.508L650.435 570.16V631.367L687.584 609.992V529.596L670.174 520.676L687.584 490.008V406.557L649.7 428.428V490.008L633.148 518.844L563.51 558.593L547.939 549.634V487.32Z" fill="white"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M488.722 711.16L452.431 690.279V610.97L348.954 551.432V631.985L312.43 610.97V407.412L488.722 508.846V711.16ZM348.954 469.848V508.846L452.431 568.45V529.386L348.954 469.848Z" fill="white"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M323.821 389.085L500.369 490.666L676.917 389.085L500.369 287.504L323.821 389.085ZM429.995 407.567L397.873 389.085L500.369 330.111L532.491 348.594L429.995 407.567ZM500.369 447.643L468.247 429.161L569.272 370.172L602.143 389.085L500.369 447.643Z" fill="white"/>
+<defs>
+<clipPath id="clip0_6653_915">
+<rect x="62.1719" y="62.1719" width="875.657" height="875.657" rx="437.828" fill="white"/>
+</clipPath>
+</defs>
+</svg>
