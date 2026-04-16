@@ -40,7 +40,6 @@ npm run test         # Run tests (watch mode)
 
 React, TypeScript, Vite, Jotai, TailwindCSS, shadcn/ui, wagmi, viem, React Query.
 
-
 ## Related repos
 
 - [reserve-index-dtf](https://github.com/reserve-protocol/reserve-index-dtf) — Index DTF smart contracts

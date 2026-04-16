@@ -31,7 +31,12 @@ import { CHAIN_TAGS, REGISTER_BUGS } from 'utils/constants'
 import { Address, formatUnits, parseUnits, zeroAddress } from 'viem'
 import { useFeeData } from 'wagmi'
 import { ZapErrorType } from '../ZapError'
-import zapper, { ZapResponse, ZapResult, fetcher } from '../api'
+import zapper, { ZapResponse, ZapResult } from '../api'
+import {
+  ZapQuoteProvider,
+  ZapQuoteSource,
+  fetchZapQuote,
+} from '../api/quote-providers'
 import {
   PRICE_IMPACT_THRESHOLD,
   SLIPPAGE_OPTIONS,
@@ -97,6 +102,10 @@ type ZapContextType = {
   isExpensiveZap: boolean
   showEliteProgramModal: boolean
   setShowEliteProgramModal: (show: boolean) => void
+
+  quoteSource: ZapQuoteSource
+  setQuoteSource: (source: ZapQuoteSource) => void
+  selectedProvider: ZapQuoteProvider | null
 }
 
 const REFRESH_INTERVAL = 24000 // 24 seconds
@@ -135,6 +144,9 @@ const ZapContext = createContext<ZapContextType>({
   isExpensiveZap: false,
   showEliteProgramModal: false,
   setShowEliteProgramModal: () => {},
+  quoteSource: 'best',
+  setQuoteSource: () => {},
+  selectedProvider: null,
 })
 
 export const useZap = () => {
@@ -153,6 +165,9 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
   const [amountIn, _setAmountIn] = useState<string>('')
   const [selectedToken, setSelectedToken] = useState<ZapToken>()
   const [error, setError] = useState<ZapErrorType>()
+  const [quoteSource, setQuoteSource] = useState<ZapQuoteSource>('best')
+  const [selectedProvider, setSelectedProvider] =
+    useState<ZapQuoteProvider | null>(null)
 
   const chainId = useAtomValue(chainIdAtom)
   const account = useAtomValue(walletAtom) || undefined
@@ -354,8 +369,43 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     error: apiError,
     refetch,
   } = useQuery<ZapResponse>({
-    queryKey: ['zap-quote', endpoint],
-    queryFn: () => fetcher(endpoint!),
+    queryKey: ['zap-quote', endpoint, quoteSource],
+    queryFn: async () => {
+      const { selected, attempted } = await fetchZapQuote({
+        quoteSource,
+        reserveEndpoint: endpoint!,
+        chainId,
+        signer: account as Address,
+        tokenIn:
+          tokenIn.symbol === 'ETH' ? zeroAddress : (tokenIn.address as Address),
+        tokenOut:
+          tokenOut.symbol === 'ETH'
+            ? zeroAddress
+            : (tokenOut.address as Address),
+        amountIn: parseUnits(amountIn, tokenIn.decimals).toString(),
+      })
+
+      setSelectedProvider(selected.provider)
+
+      if (attempted.length > 1) {
+        mixpanel.track('zap_quote_winner', {
+          page: 'rtoken_details',
+          section: 'issuance',
+          product: 'zap',
+          payload: {
+            quoteSource,
+            winner: selected.provider,
+            attempted,
+            rtoken: rToken.symbol,
+            chain: CHAIN_TAGS[chainId],
+            tokenin: tokenIn.symbol,
+            tokenout: tokenOut.symbol,
+          },
+        })
+      }
+
+      return selected.response
+    },
     enabled: !!endpoint,
     retry: 10,
     retryDelay: 500,
@@ -644,6 +694,9 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
         isExpensiveZap,
         showEliteProgramModal,
         setShowEliteProgramModal,
+        quoteSource,
+        setQuoteSource,
+        selectedProvider,
       }}
     >
       {children}

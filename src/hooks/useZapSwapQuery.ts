@@ -1,13 +1,14 @@
 import { chainIdAtom, walletAtom } from '@/state/atoms'
 import { zapSwapEndpointAtom } from '@/views/index-dtf/overview/components/zap-mint/atom'
-import zapper, { ZapResponse } from '@/views/yield-dtf/issuance/components/zapV2/api'
+import zapper, {
+  ZapResponse,
+} from '@/views/yield-dtf/issuance/components/zapV2/api'
 import { useQuery } from '@tanstack/react-query'
 import { useAtomValue, useSetAtom } from 'jotai'
 import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
 import { useEffect, useMemo } from 'react'
 import { Address } from 'viem'
 import useDebounce from './useDebounce'
-import { fetchBestZapQuote } from './zap-quote-providers'
 
 const DUST_REFRESH_THRESHOLD = 0.025
 const PRICE_IMPACT_THRESHOLD = 2
@@ -59,62 +60,71 @@ const useZapSwapQuery = ({
 
   useEffect(() => {
     setZapSwapEndpoint(endpoint ?? '')
-  }, [endpoint, setZapSwapEndpoint])
+  }, [endpoint])
 
   return useQuery({
     queryKey: ['zapDeploy', endpoint],
     queryFn: async (): Promise<ZapResponse> => {
+      // If dust > 2.5% of amountOutValue, retry once.
       const maxDustRetries = 0
+      // If price impact > 2%, retry 3 times.
       const maxPriceImpactRetries = 0
       let dustAttempt = 0
       let priceImpactAttempt = 0
       let lastData: ZapResponse
 
       while (true) {
-        if (!endpoint) throw new Error('No endpoint available')
-        if (!account || !tokenIn || !tokenOut) {
-          throw new Error('Missing quote parameters')
-        }
+        // Bypass cache if price impact > threshold
+        const currentEndpoint = endpoint
 
-        const { selected, successfulQuotes, comparedProviders } =
-          await fetchBestZapQuote({
-            reserveEndpoint: endpoint,
+        if (!currentEndpoint) throw new Error('No endpoint available')
+
+        const response = await fetch(currentEndpoint)
+        if (!response.ok) {
+          const error = response.status
+          mixpanel.track('index-dtf-zap-swap', {
+            event: 'index-dtf-zap-swap',
+            wa: account,
+            ca: tokenIn,
+            ticker: dtfTicker,
             chainId,
-            signer: account as Address,
+            type,
+            endpoint: currentEndpoint,
+            status: 'error',
             tokenIn,
             tokenOut,
-            amountIn,
+            error,
           })
+          throw new Error(`Error: ${error}`)
+        }
+        const data = await response.json()
 
-        const data = selected.response
+        if (data) {
+          mixpanel.track('index-dtf-zap-swap', {
+            event: 'index-dtf-zap-swap',
+            wa: account,
+            ca: tokenIn,
+            ticker: dtfTicker,
+            chainId,
+            type,
+            endpoint: currentEndpoint,
+            status: data.status,
+            tokenIn,
+            tokenOut,
+            amountInValue: data.result?.amountInValue,
+            amountOutValue: data.result?.amountOutValue,
+            dustValue: data.result?.dustValue,
+            truePriceImpact: data.result?.truePriceImpact,
+          })
+        }
 
-        mixpanel.track('index-dtf-zap-swap', {
-          event: 'index-dtf-zap-swap',
-          wa: account,
-          ca: tokenIn,
-          ticker: dtfTicker,
-          chainId,
-          type,
-          endpoint,
-          status: data.status,
-          tokenIn,
-          tokenOut,
-          selectedProvider: selected.provider,
-          comparedProviders,
-          successfulProviders: successfulQuotes.length,
-          amountInValue: data.result?.amountInValue,
-          amountOutValue: data.result?.amountOutValue,
-          dustValue: data.result?.dustValue,
-          truePriceImpact: data.result?.truePriceImpact,
-        })
-
-        if (data.status === 'error') {
+        if (data && data.status === 'error') {
           throw new Error(data.error)
         }
 
         lastData = data
 
-        if (data.result) {
+        if (data && data.result) {
           const amountOut = Number(data.result.amountOutValue)
           const dust = Number(data.result.dustValue)
           const priceImpact = Number(data.result.truePriceImpact)
@@ -136,7 +146,6 @@ const useZapSwapQuery = ({
             continue
           }
         }
-
         break
       }
 

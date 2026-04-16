@@ -1,15 +1,14 @@
-import GasIcon from 'components/icons/GasIcon'
 import { cn } from '@/lib/utils'
-import { formatCurrency } from 'utils'
-import { useZap } from './context/ZapContext'
-import ZapRate from './overview/ZapRate'
-import { useEffect, useState } from 'react'
 import { ChevronDown, ChevronUp } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { useZap } from './context/ZapContext'
 import ZapDetails from './overview/ZapDetails'
+import ZapQuoteSource from './overview/ZapQuoteSource'
+import ZapRate from './overview/ZapRate'
 
 const ZapOperationDetails = () => {
   const [collapsed, setCollapsed] = useState(true)
-  const { gasCost, amountIn, tokenIn, isExpensiveZap } = useZap()
+  const { amountIn, tokenIn, isExpensiveZap } = useZap()
 
   useEffect(() => {
     if (isExpensiveZap) {
@@ -28,15 +27,7 @@ const ZapOperationDetails = () => {
       >
         <div className="flex flex-col sm:flex-row items-start sm:items-center flex-grow justify-between gap-2">
           <ZapRate />
-          <div className="flex items-center gap-1">
-            <GasIcon />
-            <span>
-              Estimated gas cost:{' '}
-              <span className="font-bold">
-                ${gasCost ? formatCurrency(+gasCost, 2) : 0}
-              </span>
-            </span>
-          </div>
+          <ZapQuoteSource />
         </div>
         {collapsed ? (
           <ChevronDown fontSize={16} strokeWidth={1.2} />
