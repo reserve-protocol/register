@@ -41,11 +41,6 @@ npm run test         # Run tests (watch mode)
 React, TypeScript, Vite, Jotai, TailwindCSS, shadcn/ui, wagmi, viem, React Query.
 
 
-## Demo and release notes
-
-- Demo notes for zap quote aggregation: `docs/demo.md`
-- Changelog: `CHANGELOG.md`
-
 ## Related repos
 
 - [reserve-index-dtf](https://github.com/reserve-protocol/reserve-index-dtf) — Index DTF smart contracts
