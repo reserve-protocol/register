@@ -1,0 +1,6 @@
+catalogMode: manual
+blockExoticSubdeps: true
+cleanupUnusedCatalogs: true
+minimumReleaseAge: 1440
+minimumReleaseAgeExclude:
+  - '@emnapi/runtime'
