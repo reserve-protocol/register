@@ -1,9 +1,7 @@
-import { Address } from 'viem'
+import { Address, ethAddress, zeroAddress } from 'viem'
 import { ZapResponse, ZapResult } from '.'
 
 const ENSO_API = 'https://api.enso.finance/api/v1/shortcuts/route'
-const NATIVE_TOKEN_SENTINEL = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
-const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
 
 export type ZapQuoteSource = 'best' | 'zap' | 'enso'
 export type ZapQuoteProvider = 'reserve' | 'enso'
@@ -24,11 +22,12 @@ export type FetchZapQuoteParams = {
 }
 
 const toEnsoTokenAddress = (token: Address) =>
-  token.toLowerCase() === ZERO_ADDRESS ? NATIVE_TOKEN_SENTINEL : token
+  token.toLowerCase() === zeroAddress ? ethAddress : token
 
-const isNativeToken = (token: Address) =>
-  token.toLowerCase() === ZERO_ADDRESS ||
-  token.toLowerCase() === NATIVE_TOKEN_SENTINEL
+const isNativeToken = (token: Address) => {
+  const lower = token.toLowerCase()
+  return lower === zeroAddress || lower === ethAddress.toLowerCase()
+}
 
 const buildEnsoEndpoint = ({
   chainId,
