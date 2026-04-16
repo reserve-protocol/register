@@ -33,47 +33,47 @@ const IssuanceMethods = () => {
 
   return (
     <>
-    <DeprecatedBanner className="mb-4" />
-    <div className="grid grid-cols-1 xl:grid-cols-[1fr_480px] gap-0 lg:gap-4 xl:gap-5">
-      {zapEnabled && chainId !== ChainId.Arbitrum ? (
-        <div className="flex flex-col gap-6">
-          <CollateralizationBanner className="ml-6 -mb-6 mt-6" />
-          <MaintenanceBanner className="ml-6 -mb-6 mt-6" />
-          <RTokenZapIssuance disableRedeem={!isCollaterized} />
-          <ZapToggleBottom setZapEnabled={setZapEnabled} />
-        </div>
-      ) : (
-        <div>
-          <CollateralizationBanner className="mb-4" />
-          <MaintenanceBanner className="mb-4" />
-          <DisabledArbitrumBanner className="mb-4" />
-          {chainId !== ChainId.Arbitrum && (
-            <ZapToggle zapEnabled={zapEnabled} setZapEnabled={setZapEnabled} />
-          )}
-          <DisabledByGeolocationMessage className="mb-6" />
-          {isDeprecated ? (
-            <div className="mb-1 sm:mb-6">
-              <Redeem />
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-1 sm:gap-6 mb-1 sm:mb-6">
-              <Issue />
-              <Redeem />
-            </div>
-          )}
-          <Balances />
-        </div>
-      )}
-      <div className="border-l-0 xl:border-l xl:border-border min-h-auto xl:min-h-[calc(100vh-73px)]">
-        <IssuanceInfo className="mb-1 sm:mb-0" />
-        {!zapEnabled && (
-          <>
-            <Separator className="my-0 border-secondary" />
-            <About />
-          </>
+      <DeprecatedBanner className="mb-4" />
+      <div className="grid grid-cols-1 xl:grid-cols-[1fr_480px] gap-0 lg:gap-4 xl:gap-5">
+        {zapEnabled && chainId !== ChainId.Arbitrum ? (
+          <div className="flex flex-col gap-4">
+            <CollateralizationBanner />
+            <MaintenanceBanner />
+            <RTokenZapIssuance disableRedeem={!isCollaterized} />
+            <ZapToggleBottom setZapEnabled={setZapEnabled} />
+          </div>
+        ) : (
+          <div>
+            <CollateralizationBanner className="mb-4" />
+            <MaintenanceBanner className="mb-4" />
+            <DisabledArbitrumBanner className="mb-4" />
+            {chainId !== ChainId.Arbitrum && (
+              <ZapToggle zapEnabled={zapEnabled} setZapEnabled={setZapEnabled} />
+            )}
+            <DisabledByGeolocationMessage className="mb-6" />
+            {isDeprecated ? (
+              <div className="mb-1 sm:mb-6">
+                <Redeem />
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-1 sm:gap-6 mb-1 sm:mb-6">
+                <Issue />
+                <Redeem />
+              </div>
+            )}
+            <Balances />
+          </div>
         )}
+        <div className="border-l-0 xl:border-l xl:border-border min-h-auto xl:min-h-[calc(100vh-73px)]">
+          <IssuanceInfo className="mb-1 sm:mb-0" />
+          {!zapEnabled && (
+            <>
+              <Separator className="my-0 border-secondary" />
+              <About />
+            </>
+          )}
+        </div>
       </div>
-    </div>
     </>
   )
 }

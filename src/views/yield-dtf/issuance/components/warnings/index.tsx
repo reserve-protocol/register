@@ -51,8 +51,8 @@ export const CollateralizationBanner = ({
   return (
     <WarningBanner
       className={className}
-      title="RToken basket is under re-collateralization."
-      description="For redemptions, please wait until the process is complete or manually redeem using the previous basket."
+      title="DTF Basket is under re-collateralization."
+      description="For redemptions, please wait until the process is complete."
     />
   )
 }

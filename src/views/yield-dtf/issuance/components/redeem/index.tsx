@@ -13,24 +13,27 @@ import { customRedeemNonceAtom, redeemNonceAtom } from './atoms'
 const Redeem = () => {
   const rToken = useRToken()
   const [confirming, setConfirming] = useState(false)
+  const { isCollaterized } = useAtomValue(rTokenStateAtom)
   const isValid = useAtomValue(isValidRedeemAmountAtom)
-  const { basketNonce, isCollaterized } = useAtomValue(rTokenStateAtom)
-  const selectedNonce = useAtomValue(redeemNonceAtom)
-  const setSelectedNonce = useSetAtom(customRedeemNonceAtom)
 
-  useEffect(() => {
-    if (!isCollaterized && basketNonce > 0 && basketNonce === selectedNonce) {
-      setSelectedNonce(basketNonce - 1)
-    }
-  }, [basketNonce, isCollaterized])
+  // TODO: Disable custom redeems
+  // const { basketNonce, isCollaterized } = useAtomValue(rTokenStateAtom)
+  // const selectedNonce = useAtomValue(redeemNonceAtom)
+  // const setSelectedNonce = useSetAtom(customRedeemNonceAtom)
+
+  // useEffect(() => {
+  //   if (!isCollaterized && basketNonce > 0 && basketNonce === selectedNonce) {
+  //     setSelectedNonce(basketNonce - 1)
+  //   }
+  // }, [basketNonce, isCollaterized])
 
   return (
     <>
       {confirming && <ConfirmRedemption onClose={() => setConfirming(false)} />}
       <Card className="p-4 h-fit relative border-2 border-secondary">
-        <RedeemInput compact={false} />
+        <RedeemInput disabled={!isCollaterized} compact={false} />
         <Button
-          disabled={!isValid}
+          disabled={!isValid || !isCollaterized}
           className="w-full mt-4"
           onClick={() => setConfirming(true)}
         >
