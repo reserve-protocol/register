@@ -120,18 +120,6 @@
   "optionalDependencies": {
     "@rollup/rollup-linux-x64-gnu": "4.55.3"
   },
-  "overrides": {
-    "react": "18.3.1",
-    "react-dom": "18.3.1",
-    "axios": "1.15.0"
-  },
-  "pnpm": {
-    "overrides": {
-      "react": "18.3.1",
-      "react-dom": "18.3.1",
-      "axios": "1.15.0"
-    }
-  },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20260415.1",
     "@lingui/cli": "^5.9.5",

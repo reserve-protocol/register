@@ -2,5 +2,7 @@ catalogMode: manual
 blockExoticSubdeps: true
 cleanupUnusedCatalogs: true
 minimumReleaseAge: 1440
-minimumReleaseAgeExclude:
-  - '@emnapi/runtime'
+overrides:
+  react: 18.3.1
+  react-dom: 18.3.1
+  axios: 1.15.0
