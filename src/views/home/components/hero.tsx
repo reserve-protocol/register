@@ -25,7 +25,7 @@ const MetricBox = ({ label, value }: { label: string; value: number | undefined 
 const Metrics = () => {
 
   return (
-    <div className="flex gap-6">
+    <div className="flex gap-6 mr-6">
       <h4 className="text-xl max-w-md mr-auto ml-6 dark:text-legend">
         These tokenized portfolios are called DTFs: <strong className="dark:text-foreground">Decentralized Token Folios</strong>
       </h4>
@@ -69,7 +69,7 @@ const Hero = () => {
     : '/imgs/home-splash.webp'
 
   return (
-    <div className="mt-10 mb-12 pb-10 px-4 sm:px-6 border-b">
+    <div className="mt-10 mb-12 pb-10 border-b">
       <h1 className="text-4xl text-primary max-w-[600px] ml-6 dark:text-foreground">Reserve lets you buy entire portfolios as a single token</h1>
       <img
         className="my-6 w-full h-auto"
