@@ -1,5 +1,6 @@
 import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
+import { btcPriceAtom } from '@/state/chain/atoms/chainAtoms'
 import {
   indexDTFApyAtom,
   indexDTFAtom,
@@ -110,8 +111,11 @@ const ChartOverlay = ({
   const range = useAtomValue(performanceTimeRangeAtom)
   const dtf = useAtomValue(indexDTFAtom)
   const price = useAtomValue(indexDTFPriceAtom)
+  const btcPrice = useAtomValue(btcPriceAtom)
   const isYieldIndexDTF = useAtomValue(isYieldIndexDTFAtom)
   const isYieldMode = dataType === 'yield'
+  const isBTCMode = dataType === 'priceBTC'
+  const priceInBTC = price && btcPrice ? price / btcPrice : null
 
   return (
     <div className={`flex flex-col gap-2 ${isYieldMode ? '-mb-1.5 sm:-mb-2.5' : 'mb-0 sm:mb-3'}`}>
@@ -152,7 +156,13 @@ const ChartOverlay = ({
           <YieldOverlayInfo apyTimeseries={apyTimeseries} />
         ) : (
           <div className="flex items-center gap-2 text-xl sm:text-2xl font-light">
-            {!price ? (
+            {isBTCMode ? (
+              priceInBTC === null ? (
+                <Skeleton className="w-[100px] h-6 sm:h-7 mt-1" />
+              ) : (
+                <>₿{formatToSignificantDigits(priceInBTC)}</>
+              )
+            ) : !price ? (
               <Skeleton className="w-[100px] h-6 sm:h-7 mt-1" />
             ) : (
               <>

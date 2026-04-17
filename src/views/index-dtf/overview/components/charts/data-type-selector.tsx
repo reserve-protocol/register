@@ -12,6 +12,7 @@ const standardDataTypes = [
 
 const yieldDataTypes = [
   { label: 'Price', value: 'price' },
+  { label: 'BTC', value: 'priceBTC' },
   { label: 'Yield', value: 'yield' },
 ] as const
 
@@ -44,7 +45,12 @@ const DataTypeSelector = ({
   }
 
   return (
-    <div className={cn('gap-1 sm:ml-0 sm:mr-auto bg-white/10 dark:bg-white/10 rounded-full p-1', className)}>
+    <div
+      className={cn(
+        'gap-1 sm:ml-0 sm:mr-auto bg-white/10 dark:bg-white/10 rounded-full p-1',
+        className
+      )}
+    >
       {options.map((dt) => (
         <Button
           key={dt.value}

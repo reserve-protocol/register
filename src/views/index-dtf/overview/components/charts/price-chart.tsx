@@ -1,6 +1,7 @@
 import { ChartConfig, ChartContainer } from '@/components/ui/chart'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useIsMobile } from '@/hooks/use-media-query'
+import { btcPriceAtom } from '@/state/chain/atoms/chainAtoms'
 import {
   indexDTF7dChangeAtom,
   indexDTFAtom,
@@ -28,6 +29,7 @@ import {
 } from 'recharts'
 import useIndexDTFPriceHistory from '../../hooks/use-dtf-price-history'
 import useIndexDTFApyHistory from '../../hooks/use-dtf-apy-history'
+import useBTCPriceHistory from '../../hooks/use-btc-price-history'
 import IndexCTAsOverviewMobile from '../index-ctas-overview-mobile'
 import IndexTokenAddress from '../index-token-address'
 import ChartOverlay from './chart-overlay'
@@ -41,7 +43,12 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
-export type DataType = 'price' | 'marketCap' | 'totalSupply' | 'yield'
+export type DataType =
+  | 'price'
+  | 'marketCap'
+  | 'totalSupply'
+  | 'yield'
+  | 'priceBTC'
 
 const now = Math.floor(Date.now() / 1_000)
 const currentHour = Math.floor(now / 3_600) * 3_600
@@ -72,14 +79,17 @@ function PriceTooltip({
       .unix(+payload[0]?.payload?.timestamp)
       .format('YYYY-M-D HH:mm')
     const value = payload[0]?.payload?.[dataType]
+    const isBTC = dataType === 'priceBTC'
     const formattedValue =
-      dataType === 'price'
+      dataType === 'price' || isBTC
         ? formatToSignificantDigits(value)
         : formatCurrency(value, 2)
+    const prefix = isBTC ? '₿' : '$'
     return (
       <div className="bg-card text-card-foreground rounded-[20px] p-4">
         <span className="text-base font-medium block mb-1">
-          ${formattedValue}
+          {prefix}
+          {formattedValue}
         </span>
         <span className="text-sm text-muted-foreground">{subtitle}</span>
       </div>
@@ -126,6 +136,7 @@ const PriceChart = () => {
   const setMarketCap = useSetAtom(indexDTFMarketCapAtom)
   const isMobile = useIsMobile()
   const isYieldIndexDTF = useAtomValue(isYieldIndexDTFAtom)
+  const currentBTCPrice = useAtomValue(btcPriceAtom)
   const isYieldMode = dataType === 'yield'
 
   const showHourlyInterval = now - (dtf?.timestamp || 0) < 30 * 86_400
@@ -168,9 +179,51 @@ const PriceChart = () => {
 
   const { data: apyHistory } = useIndexDTFApyHistory()
 
+  const isBTCMode = dataType === 'priceBTC'
+
+  const { data: btcHistory } = useBTCPriceHistory({
+    ...config,
+    ...(showHourlyInterval && range !== 'all'
+      ? { interval: '1h' as const }
+      : {}),
+    prefetchRanges,
+    enabled: isBTCMode,
+  })
+
   const timeseries = useMemo(() => {
-    return history?.timeseries.filter(({ price }) => Boolean(price)) || []
-  }, [history?.timeseries])
+    const raw = history?.timeseries.filter(({ price }) => Boolean(price)) || []
+    const btc = btcHistory?.timeseries || []
+    if (!btc.length && !currentBTCPrice) return raw
+    const tolerance = config.interval === '1h' ? 3_600 : 86_400
+    const lastBTCTimestamp = btc.length ? btc[btc.length - 1].timestamp : 0
+    let j = 0
+    return raw.map((d) => {
+      let btcPrice: number | null = null
+      if (d.timestamp > lastBTCTimestamp && currentBTCPrice) {
+        btcPrice = currentBTCPrice
+      } else if (btc.length) {
+        while (
+          j < btc.length - 1 &&
+          Math.abs(btc[j + 1].timestamp - d.timestamp) <
+            Math.abs(btc[j].timestamp - d.timestamp)
+        ) {
+          j++
+        }
+        if (Math.abs(btc[j].timestamp - d.timestamp) <= tolerance) {
+          btcPrice = btc[j].price
+        }
+      }
+      return {
+        ...d,
+        priceBTC: btcPrice && btcPrice > 0 ? d.price / btcPrice : undefined,
+      }
+    })
+  }, [
+    history?.timeseries,
+    btcHistory?.timeseries,
+    currentBTCPrice,
+    config.interval,
+  ])
 
   const apyTimeseries = useMemo(() => {
     if (!apyHistory) return []
@@ -231,10 +284,17 @@ const PriceChart = () => {
     if (dataType === 'totalSupply') {
       return formatCurrency(value, 0)
     }
+    if (isBTCMode) {
+      return '₿' + formatToSignificantDigits(value)
+    }
     return '$' + formatCurrency(value, value >= 1000 ? 0 : value < 1 ? 4 : 2)
   }
 
-  const isLoading = isYieldMode ? !apyHistory : history === undefined
+  const isLoading = isYieldMode
+    ? !apyHistory
+    : isBTCMode
+      ? history === undefined || btcHistory === undefined
+      : history === undefined
 
   return (
     <div
@@ -311,7 +371,14 @@ const PriceChart = () => {
                   className="[&_.recharts-cartesian-axis-tick_text]:!fill-white"
                   axisLine={false}
                   tickLine={false}
-                  domain={['auto', 'auto']}
+                  domain={
+                    isBTCMode
+                      ? [
+                          (dataMin: number) => dataMin * 0.9,
+                          (dataMax: number) => dataMax * 1.1,
+                        ]
+                      : ['auto', 'auto']
+                  }
                   width={55}
                   tickCount={5}
                   tickMargin={5}
