@@ -4,11 +4,11 @@ import { useEffect, useState } from "react";
 
 const MetricBox = ({ label, value }: { label: string; value: number | undefined }) => (
   <div className="flex flex-col gap-1">
-    <span className="whitespace-nowrap">
+    <span className="whitespace-nowrap dark:text-legend">
       {label}
     </span>
     {value ? (
-      <span className="flex items-center font-semibold text-primary">
+      <span className="flex items-center font-semibold text-primary dark:text-foreground">
         <span className="opacity-70">$</span>
         {formatCurrency(value, 0, {
           notation: 'compact',
@@ -16,7 +16,7 @@ const MetricBox = ({ label, value }: { label: string; value: number | undefined 
         })}
       </span>
     ) : (
-      <Skeleton className="h-5 w-12 bg-primary opacity-70 inline-block" />
+      <Skeleton className="h-5 w-12 bg-primary opacity-70 dark:bg-primary-foreground inline-block" />
     )}
 
   </div>
