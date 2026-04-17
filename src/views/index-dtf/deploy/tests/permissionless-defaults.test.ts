@@ -80,7 +80,7 @@ describe('getPermissionlessDefaults', () => {
 
     expect(defaults.guardians).toEqual(trusted)
     expect(defaults.auctionLaunchers).toEqual(trusted)
-    expect(defaults.guardians).toHaveLength(4)
+    expect(defaults.guardians).toHaveLength(7)
   })
 
   it('brandManagers defaults to empty (wallet injected by updater)', () => {
