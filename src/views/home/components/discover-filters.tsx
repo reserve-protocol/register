@@ -1,5 +1,5 @@
 import { useAtom, useAtomValue, useSetAtom } from "jotai"
-import { chainFilterAtom, dtfTypeFilterAtom, searchFilterAtom } from "../atoms"
+import { chainFilterAtom, searchFilterAtom } from "../atoms"
 import { SearchInput } from "@/components/ui/input"
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
 import { useState } from "react"
@@ -106,37 +106,9 @@ export const SearchFilter = () => {
   )
 }
 
-type DTFType = 'index' | 'yield';
-
-const DTFTypeFilter = () => {
-  const [type, setType] = useAtom<DTFType>(dtfTypeFilterAtom);
-
-  return (
-    <div className="flex items-center rounded-3xl h-16 px-2  bg-card">
-      {([
-        { label: 'Index DTFs', value: 'index' as DTFType },
-        { label: 'Yield DTFs', value: 'yield' as DTFType },
-      ]).map((tab) => (
-        <button
-          key={tab.value}
-          onClick={() => setType(tab.value)}
-          className={`px-4 py-2 -mb-px  transition-all ${type === tab.value
-            ? 'text-primary bg-muted rounded-xl font-semibold'
-            : ''
-            }`}
-          type="button"
-        >
-          {tab.label}
-        </button>
-      ))}
-    </div>
-  );
-}
-
 const DiscoverFilters = () => (
   <div className="flex flex-col items-stretch sm:flex-row sm:items-center gap-[2px] sm:gap-1">
     <SearchFilter />
-    <DTFTypeFilter />
     <ChainFilter />
   </div>
 )

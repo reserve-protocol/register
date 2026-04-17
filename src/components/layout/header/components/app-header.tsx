@@ -28,7 +28,7 @@ const Container = ({ children }: { children: ReactNode }) => {
  */
 const AppHeader = () => (
   <Container>
-    <div className="container flex items-center h-[56px] md:h-[72px] px-4 sm:px-6">
+    <div className="container flex items-center h-[56px] md:h-[72px] px-4 sm:px-12">
       <Brand className="text-primary mr-2 sm:mr-4 cursor-pointer md:-mt-1" />
       <AppNavigation />
       <CommandMenu />
