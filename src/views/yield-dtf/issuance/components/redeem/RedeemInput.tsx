@@ -15,7 +15,7 @@ const RedeemInput = (props: Partial<TransactionInputProps>) => {
       title={t`Redeem`}
       placeholder={t`Redeem amount`}
       amountAtom={redeemAmountAtom}
-      maxAmount={max.balance}
+      maxAmount={props.disabled ? '' : max.balance}
       disabled={frozen}
       {...props}
     />
