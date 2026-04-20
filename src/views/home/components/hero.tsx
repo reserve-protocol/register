@@ -34,7 +34,7 @@ const SplashImage = () => {
   return (
     <div className="relative">
       <img
-        className="lg:my-6 w-full h-auto min-h-48 sm:px-2 lg:px-0 object-cover"
+        className="lg:my-6 w-full h-auto min-h-48 px-2 2xl:px-0 object-cover"
         src={splash1x}
         srcSet={`${splash1x} 1x, ${splash2x} 2x`}
         width={2800}
