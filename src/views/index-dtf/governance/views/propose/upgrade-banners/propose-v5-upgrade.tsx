@@ -50,11 +50,30 @@ export const spellAddress: Record<number, `0x${string}`> = {
 
 const UPGRADE_FOLIO_MESSAGE = 'Release 5.0.0 upgrade'
 
-type SpellUpgradeProps = {
-  refetch: () => void
+const matchesUpgradeMessage = (description: string) =>
+  description === UPGRADE_FOLIO_MESSAGE ||
+  description.startsWith(`${UPGRADE_FOLIO_MESSAGE} #`)
+
+const getNextUpgradeDescription = (proposals: PartialProposal[]): string => {
+  let maxNonce = 0
+  const prefix = `${UPGRADE_FOLIO_MESSAGE} #`
+  for (const p of proposals) {
+    if (p.description === UPGRADE_FOLIO_MESSAGE) {
+      maxNonce = Math.max(maxNonce, 1)
+    } else if (p.description.startsWith(prefix)) {
+      const n = Number.parseInt(p.description.slice(prefix.length), 10)
+      if (Number.isFinite(n)) maxNonce = Math.max(maxNonce, n)
+    }
+  }
+  return `${UPGRADE_FOLIO_MESSAGE} #${maxNonce + 1}`
 }
 
-const ProposeBanner = ({ refetch }: SpellUpgradeProps) => {
+type SpellUpgradeProps = {
+  refetch: () => void
+  description: string
+}
+
+const ProposeBanner = ({ refetch, description }: SpellUpgradeProps) => {
   const dtf = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
   const spell = spellAddress[chainId]
@@ -100,7 +119,7 @@ const ProposeBanner = ({ refetch }: SpellUpgradeProps) => {
             args: [dtf.id, dtf.proxyAdmin],
           }),
         ],
-        UPGRADE_FOLIO_MESSAGE,
+        description,
       ],
     })
   }
@@ -128,9 +147,18 @@ const ProposeBanner = ({ refetch }: SpellUpgradeProps) => {
         <div>
           <h4 className="font-bold text-primary">New version available</h4>
           <p className="text-sm">
-            <strong>Release 5.0.0</strong> introduces improved rebalancing with per-token auction
-            size limits and the ability to disable bids for individual tokens. <br />
-            See the <a className='text-primary underline' href='https://github.com/reserve-protocol/reserve-index-dtf/releases/tag/r5.0.0' target="_blank">changelog</a> for more details.
+            <strong>Release 5.0.0</strong> introduces improved rebalancing with
+            per-token auction size limits and the ability to disable bids for
+            individual tokens. <br />
+            See the{' '}
+            <a
+              className="text-primary underline"
+              href="https://github.com/reserve-protocol/reserve-index-dtf/releases/tag/r5.0.0"
+              target="_blank"
+            >
+              changelog
+            </a>{' '}
+            for more details.
           </p>
         </div>
       </div>
@@ -150,10 +178,7 @@ const ProposeBanner = ({ refetch }: SpellUpgradeProps) => {
   )
 }
 
-const validProposalExists = (
-  proposals: PartialProposal[],
-  description: string
-): boolean => {
+const validProposalExists = (proposals: PartialProposal[]): boolean => {
   const states = [
     PROPOSAL_STATES.PENDING,
     PROPOSAL_STATES.ACTIVE,
@@ -162,7 +187,7 @@ const validProposalExists = (
     PROPOSAL_STATES.EXECUTED,
   ]
   return proposals.some((p) => {
-    if (p.description !== description) {
+    if (!matchesUpgradeMessage(p.description)) {
       return false
     }
 
@@ -192,14 +217,13 @@ export default function ProposeV5Upgrade() {
 
   if (!isProposeAllowed || !proposals || !isUpgradeable) return null
 
-  const existsFolioUpgrade = validProposalExists(
-    proposals,
-    UPGRADE_FOLIO_MESSAGE
-  )
+  const existsFolioUpgrade = validProposalExists(proposals)
 
   if (existsFolioUpgrade) {
     return null
   }
 
-  return <ProposeBanner refetch={refetch} />
+  const description = getNextUpgradeDescription(proposals)
+
+  return <ProposeBanner refetch={refetch} description={description} />
 }
