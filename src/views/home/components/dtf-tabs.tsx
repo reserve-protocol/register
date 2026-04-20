@@ -17,13 +17,13 @@ type Tab = {
 const tabs: Tab[] = [
   {
     value: 'index',
-    icon: <Globe />,
+    icon: <Globe className='h-4 lg:h-6' />,
     title: 'Index DTFs',
     subtitle: 'Get easy exposure to narratives, indexes, and ecosystems',
   },
   {
     value: 'yield',
-    icon: <Flower />,
+    icon: <Flower className='h-4 lg:h-6' />,
     title: 'Yield DTFs',
     subtitle: 'Earn yield safely with over-collateralized and diversified DeFi positions',
   },
@@ -37,8 +37,8 @@ const DtfTabTrigger = ({ value, icon, title, subtitle }: Tab) => (
       'data-[state=active]:text-primary dark:data-[state=active]:text-foreground data-[state=inactive]:text-muted-foreground/ data-[state=inactive]:grayscale'
     )}
   >
-    <div className="hidden sm:block">{icon}</div>
-    <div className="text-left ml-1 sm:ml-3">
+    <div>{icon}</div>
+    <div className="text-left lg:ml-3">
       <h4 className="text-base lg:font-bold">{title}</h4>
       <div className="hidden lg:block font-light text-wrap">
         {subtitle}
@@ -57,8 +57,8 @@ const DtfTabs = () => {
   }
 
   return (
-    <Tabs value={type} onValueChange={handleValueChange}>
-      <TabsList className="w-full h-12 gap-1 lg:h-[100px] rounded-full lg:rounded-4xl mb-6">
+    <Tabs value={type} onValueChange={handleValueChange} className='px-2 2xl:px-0'>
+      <TabsList className="w-full h-12 gap-1 lg:h-[100px] rounded-full lg:rounded-4xl mb-3 lg:mb-6">
         {tabs.map((tab) => (
           <DtfTabTrigger key={tab.value} {...tab} />
         ))}
