@@ -7,6 +7,7 @@ export interface ProposalRecord {
   id: string
   description: string
   creationTime: string
+  userVote: string | null
   votingState: VotingState
   governance: string
   forWeightedVotes: string

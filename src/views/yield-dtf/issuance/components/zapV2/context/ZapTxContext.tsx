@@ -11,6 +11,7 @@ import {
   useState,
 } from 'react'
 import { Allowance } from 'types'
+import { ChainId } from 'utils/chains'
 import { CHAIN_TAGS } from 'utils/constants'
 import { Address, TransactionReceipt, parseUnits } from 'viem'
 import { useSendTransaction } from 'wagmi'
@@ -18,6 +19,9 @@ import { useApproval } from '../hooks/useApproval'
 import { useRevokeUSDT } from '../hooks/useRevokeUSDT'
 import { ZapErrorType } from '../ZapError'
 import { useZap } from './ZapContext'
+
+// EIP-7825: per-transaction gas cap introduced in the Fusaka hardfork
+const FUSAKA_GAS_LIMIT = 2n ** 24n
 
 type ZapTxContextType = {
   error?: ZapErrorType
@@ -229,16 +233,24 @@ export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
         : `Redeem ${tokenIn.symbol}`,
   })
 
+  const gasLimit = useMemo(() => {
+    const rawGas = BigInt(zapResult?.gas ?? 0)
+    if (!rawGas) return undefined
+    const gasMultiplier = chainId === ChainId.Mainnet ? 2n : 3n
+    const buffered = rawGas * gasMultiplier
+    return buffered < FUSAKA_GAS_LIMIT ? buffered : FUSAKA_GAS_LIMIT
+  }, [zapResult?.gas, chainId])
+
   const execute = useCallback(() => {
     if (zapResult?.tx) {
       sendTransaction({
         data: zapResult.tx.data as Address,
-        gas: BigInt(zapResult.gas ?? 0) || undefined,
+        gas: gasLimit,
         to: zapResult.tx.to as Address,
         value: BigInt(zapResult.tx.value),
       })
     }
-  }, [sendTransaction, zapResult])
+  }, [sendTransaction, zapResult, gasLimit])
 
   const onGoingConfirmation = Boolean(
     (loadingApproval ||
