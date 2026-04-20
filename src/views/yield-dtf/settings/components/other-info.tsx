@@ -8,7 +8,7 @@ const OtherInfo = () => {
   const params = useAtomValue(rTokenConfigurationAtom)
 
   return (
-    <InfoCard title={t`Other Parameters`}>
+    <InfoCard title={t`Other Parameters`} id="other-parameters">
       <InfoCardItem
         label={t`Short freeze duration`}
         value={params ? parseDuration(+params.shortFreeze) : undefined}

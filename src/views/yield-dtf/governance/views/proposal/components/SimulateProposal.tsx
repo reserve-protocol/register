@@ -70,7 +70,7 @@ const ProposalStatus = () => {
               rel="noopener noreferrer"
               className="text-primary hover:underline"
             >
-              Tenderly <ExternalArrowIcon />
+              Tenderly <ExternalArrowIcon className="inline-block" />
             </a>
           </span>
         </div>

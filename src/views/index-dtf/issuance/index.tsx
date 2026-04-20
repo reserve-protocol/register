@@ -1,7 +1,8 @@
 import { devModeAtom } from '@/state/atoms'
 import { wagmiConfig } from '@/state/chain'
-import { indexDTFAtom } from '@/state/dtf/atoms'
-import { RESERVE_API } from '@/utils/constants'
+import { isInactiveDTF } from '@/hooks/use-dtf-status'
+import { indexDTFAtom, indexDTFStatusAtom } from '@/state/dtf/atoms'
+import { RESERVE_API, ZAPPER_API } from '@/utils/constants'
 import { useZapperModal, ZapperProps } from '@reserve-protocol/react-zapper'
 import { atom, useAtomValue } from 'jotai'
 import { Link } from 'react-router-dom'
@@ -28,6 +29,7 @@ const IndexDTFIssuance = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
   const quoteSource = useAtomValue(indexDTFQuoteSourceAtom)
   const devMode = useAtomValue(devModeAtom)
+  const isDeprecated = isInactiveDTF(useAtomValue(indexDTFStatusAtom))
   const { currentTab } = useZapperModal()
   const { trackClick } = useTrackIndexDTFClick('overview', 'mint')
 
@@ -44,8 +46,10 @@ const IndexDTFIssuance = () => {
               dtfAddress={indexDTF.id}
               mode="inline"
               apiUrl={RESERVE_API}
+              zapperApiUrl={ZAPPER_API}
               debug={devMode}
               defaultSource={quoteSource}
+              sellOnly={isDeprecated}
             />
           </div>
         </div>

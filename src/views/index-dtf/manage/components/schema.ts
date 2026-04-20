@@ -59,11 +59,11 @@ export const manageFormSchema = z.object({
     website: z.url().optional().or(z.literal('')),
   }),
   files: z.object({
-    logo: z.instanceof(File).optional(),
-    creatorLogo: z.instanceof(File).optional(),
-    curatorLogo: z.instanceof(File).optional(),
-    desktopCover: z.instanceof(File).optional(),
-    mobileCover: z.instanceof(File).optional(),
+    logo: z.instanceof(File).nullable().optional(),
+    creatorLogo: z.instanceof(File).nullable().optional(),
+    curatorLogo: z.instanceof(File).nullable().optional(),
+    desktopCover: z.instanceof(File).nullable().optional(),
+    mobileCover: z.instanceof(File).nullable().optional(),
   }),
 })
 

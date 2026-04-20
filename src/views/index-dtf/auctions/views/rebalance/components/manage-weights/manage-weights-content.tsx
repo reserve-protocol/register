@@ -1,19 +1,28 @@
 import MaxAuctionSizeEditor from '@/components/max-auction-size-editor'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import {
   indexDTFRebalanceControlAtom,
   isHybridDTFAtom,
 } from '@/state/dtf/atoms'
+import { chainIdAtom, devModeAtom } from '@/state/atoms'
 import {
   DEFAULT_MAX_AUCTION_SIZE_USD,
   maxAuctionSizesAtom,
 } from '@/state/max-auction-sizes'
 import {
+  ExplorerDataType,
+  getExplorerLink,
+} from '@/utils/getExplorerLink'
+import { fetchZapperTokens, isNativeToken } from '@/utils/zapper'
+import {
   getStartRebalance,
   WeightRange,
 } from '@reserve-protocol/dtf-rebalance-lib'
 import { StartRebalanceArgsPartial as StartRebalanceArgsPartialV4 } from '@reserve-protocol/dtf-rebalance-lib/dist/4.0.0/types'
+import { useQuery } from '@tanstack/react-query'
 import { useAtomValue, useSetAtom } from 'jotai'
+import { AlertTriangle, ArrowUpRight } from 'lucide-react'
 import { useMemo } from 'react'
 import {
   areWeightsSavedAtom,
@@ -36,6 +45,7 @@ import { FOLIO_VERSION_V5, getRebalanceTokens, getRebalanceWeights } from '../..
 const ManageWeightsContent = () => {
   const rebalanceParams = useRebalanceParams()
   const tokenMap = useAtomValue(rebalanceTokenMapAtom)
+  const chainId = useAtomValue(chainIdAtom)
   const rebalanceControl = useAtomValue(indexDTFRebalanceControlAtom)
   const isHybridDTF = useAtomValue(isHybridDTFAtom)
   const maxAuctionSizesMap = useAtomValue(maxAuctionSizesAtom)
@@ -45,8 +55,31 @@ const ManageWeightsContent = () => {
   const setManagedWeightUnits = useSetAtom(managedWeightUnitsAtom)
   const { basketItems, proposedUnits, validation } = useBasketSetup()
 
+  const isDevMode = useAtomValue(devModeAtom)
+
   // Get token list for MaxAuctionSizeEditor
   const tokens = useMemo(() => Object.values(tokenMap), [tokenMap])
+
+  const { data: zapperTokens } = useQuery({
+    queryKey: ['zapperTokens', chainId],
+    queryFn: () => fetchZapperTokens(chainId),
+    staleTime: 5 * 60_000,
+    enabled: isDevMode,
+  })
+
+  const unsupportedTokens = useMemo(() => {
+    if (!zapperTokens?.size) return []
+    return Object.keys(basketItems)
+      .filter(
+        (addr) =>
+          !isNativeToken(addr, chainId) &&
+          !zapperTokens.has(addr.toLowerCase())
+      )
+      .map((addr) => ({
+        symbol: tokenMap[addr]?.symbol ?? addr.slice(0, 10),
+        address: addr,
+      }))
+  }, [basketItems, zapperTokens, chainId, tokenMap])
 
   if (!rebalanceParams || !rebalanceControl) return null
 
@@ -154,6 +187,39 @@ const ManageWeightsContent = () => {
 
       <div className="p-2 space-y-2">
         <CsvImport />
+        {unsupportedTokens.length > 0 && (
+          <Alert
+            variant="warning"
+            className="rounded-xl bg-warning/10 border-warning/20"
+          >
+            <AlertTriangle className="h-4 w-4" />
+            <AlertTitle>
+              Tokens not available
+            </AlertTitle>
+            <AlertDescription>
+              <ul className="mt-1 list-disc pl-4 space-y-0.5">
+                {unsupportedTokens.map((t) => (
+                  <li key={t.address}>
+                    <span className="font-medium">{t.symbol}</span>{' '}
+                    <a
+                      href={getExplorerLink(
+                        t.address,
+                        chainId,
+                        ExplorerDataType.ADDRESS
+                      )}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-0.5 font-mono text-xs hover:text-foreground"
+                    >
+                      {t.address.slice(0, 6)}...{t.address.slice(-4)}
+                      <ArrowUpRight size={12} strokeWidth={1.5} />
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </AlertDescription>
+          </Alert>
+        )}
         <BasketTable
           mode="units"
           columns={['token', 'current', 'input', 'allocation']}

@@ -302,9 +302,15 @@ export const parsePercent = (n: string): bigint => {
   return parseEther((Number(n) / 100).toString())
 }
 
-// TODO: More robust title parsing?
+// Normalizes literal \n sequences to real newlines
+export const normalizeDescription = (description: string) =>
+  description.replace(/\\n/g, '\n')
+
 export const getProposalTitle = (description: string) => {
-  return description.split(/\r?\n/)[0].replaceAll('#', '').trim()
+  return normalizeDescription(description)
+    .split(/\r?\n/)[0]
+    .replaceAll('#', '')
+    .trim()
 }
 
 const shortEnglishHumanizer = humanizeDuration.humanizer({

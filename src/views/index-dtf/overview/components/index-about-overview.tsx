@@ -14,6 +14,7 @@ import { useTrackIndexDTFClick } from '../../hooks/useTrackIndexDTFPage'
 import IndexFactsheetOverview from './index-factsheet-overview'
 import IndexMetricsOverview from './index-metrics-overview'
 import IndexSocialsOverview from './index-socials-overview'
+import SectionAnchor from '@/components/section-anchor'
 
 const BrandManagerEditButton = () => {
   const isBrandManager = useAtomValue(isBrandManagerAtom)
@@ -80,7 +81,10 @@ const Mandate = () => {
 
   return (
     <div>
-      <h2 className="text-2xl font-light mb-1">About this DTF</h2>
+      <div className="flex items-center gap-1">
+        <h2 className="text-2xl font-light mb-1">About this DTF</h2>
+        <SectionAnchor id="about" />
+      </div>
       {!data ? (
         <div>
           <Skeleton className="w-full h-20" />
@@ -97,7 +101,7 @@ const Mandate = () => {
 }
 
 const IndexAboutOverview = () => (
-  <Card>
+  <Card id="about" className="group/section">
     <div className="p-4 sm:p-6">
       <Header />
       <Mandate />

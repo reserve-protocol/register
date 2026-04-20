@@ -1,0 +1,11 @@
+catalogMode: manual
+blockExoticSubdeps: true
+cleanupUnusedCatalogs: true
+minimumReleaseAge: 1440
+catalog:
+  react: ^18.3.1
+  react-dom: ^18.3.1
+overrides:
+  react: 'catalog:'
+  react-dom: 'catalog:'
+  axios: ^1.15.0

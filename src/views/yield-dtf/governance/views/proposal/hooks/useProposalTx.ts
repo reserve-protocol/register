@@ -34,6 +34,7 @@ import {
   rTokenConfigurationAtom,
   rTokenContractsAtom,
   rTokenGovernanceAtom,
+  rTokenManagersAtom,
 } from 'state/atoms'
 import { rTokenCollateralDetailedAtom } from 'state/rtoken/atoms/rTokenBackingDistributionAtom'
 import { ContractKey } from 'state/rtoken/atoms/rTokenContractsAtom'
@@ -55,6 +56,7 @@ import {
   isNewBasketProposedAtom,
   parameterContractMapAtom,
   parametersChangesAtom,
+  pauseIssuanceAtom,
   revenueSplitChangesAtom,
   roleChangesAtom,
 } from '../atoms'
@@ -156,6 +158,8 @@ const useProposalTx = () => {
   const spell4_2_0 = useAtomValue(spell4_2_0UpgradeAtom)
   const spell3_4_0Contract = useAtomValue(spell3_4_0AddressAtom)
   const spell4_2_0Contract = useAtomValue(spell4_2_0AddressAtom)
+  const pauseAction = useAtomValue(pauseIssuanceAtom)
+  const rTokenManagers = useAtomValue(rTokenManagersAtom)
   const rTokenConfig = useAtomValue(rTokenConfigurationAtom)
   const autoRegisterBasketAssets = useAtomValue(autoRegisterBasketAssetsAtom)
   const autoRegisterBackupAssets = useAtomValue(autoRegisterBackupAssetsAtom)
@@ -340,27 +344,38 @@ const useProposalTx = () => {
         }
       }
 
-      /* ########################## 
-      ##   Parse role changes    ## 
+      /* ##########################
+      ##   Parse role changes    ##
       ############################# */
+      // WHY: Owner revokes must be last — if revokeRole(OWNER) runs before
+      // other calls, the timelock loses permissions and subsequent calls fail.
+      const deferredOwnerRevokes: { address: Address; call: Hex }[] = []
+
       for (const roleChange of roleChanges) {
         const isGuardian = roleChange.role === 'guardians'
+        const isOwnerRevoke =
+          roleChange.role === 'owners' && !roleChange.isNew
 
-        if (contracts?.main) {
-          addresses.push(
-            isGuardian && governance.timelock
-              ? governance.timelock
-              : contracts.main.address
-          )
-        }
+        const target =
+          isGuardian && governance.timelock
+            ? governance.timelock
+            : contracts.main.address
 
-        calls.push(
-          encodeFunctionData({
-            abi: (isGuardian ? Timelock : Main) as any,
-            functionName: roleChange.isNew ? 'grantRole' : 'revokeRole',
-            args: [ROLES[roleChange.role], roleChange.address],
+        const call = encodeFunctionData({
+          abi: (isGuardian ? Timelock : Main) as any,
+          functionName: roleChange.isNew ? 'grantRole' : 'revokeRole',
+          args: [ROLES[roleChange.role], roleChange.address],
+        })
+
+        if (isOwnerRevoke) {
+          deferredOwnerRevokes.push({
+            address: target as Address,
+            call: call as Hex,
           })
-        )
+        } else {
+          if (contracts?.main) addresses.push(target)
+          calls.push(call)
+        }
       }
 
       for (const asset of assetsToUnregister) {
@@ -643,6 +658,53 @@ const useProposalTx = () => {
             ],
           })
         )
+      }
+      /* ##########################
+      ## Parse pause issuance  ##
+      ############################# */
+      if (pauseAction !== 'none' && contracts?.main && governance.timelock) {
+        const timelockIsPauser = rTokenManagers.pausers.some(
+          (p) => p.toLowerCase() === governance.timelock!.toLowerCase()
+        )
+        const fnName =
+          pauseAction === 'pause' ? 'pauseIssuance' : 'unpauseIssuance'
+
+        if (!timelockIsPauser) {
+          addresses.push(contracts.main.address)
+          calls.push(
+            encodeFunctionData({
+              abi: Main,
+              functionName: 'grantRole',
+              args: [ROLES.pausers as Hex, governance.timelock as Address],
+            })
+          )
+        }
+
+        addresses.push(contracts.main.address)
+        calls.push(
+          encodeFunctionData({
+            abi: Main,
+            functionName: fnName,
+          })
+        )
+
+        if (!timelockIsPauser) {
+          addresses.push(contracts.main.address)
+          calls.push(
+            encodeFunctionData({
+              abi: Main,
+              functionName: 'revokeRole',
+              args: [ROLES.pausers as Hex, governance.timelock as Address],
+            })
+          )
+        }
+      }
+
+      // Append deferred owner revokes last so all other calls execute
+      // while the timelock still has OWNER permissions
+      for (const deferred of deferredOwnerRevokes) {
+        addresses.push(deferred.address)
+        calls.push(deferred.call)
       }
     } catch (e) {
       console.error('Error generating proposal call', e)

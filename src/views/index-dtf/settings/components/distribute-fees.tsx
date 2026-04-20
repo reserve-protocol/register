@@ -44,7 +44,7 @@ const DistributeFees = () => {
   const formattedPendingFees = Number(formatEther(pendingFees ?? 0n))
 
   return (
-    <InfoCard title={t`Distribute Fees`} secondary>
+    <InfoCard title={t`Distribute Fees`} id="distribute-fees" secondary>
       <div className="p-4 flex flex-col gap-4">
         Distribute accumulated fees to the recipients. Anyone can trigger this
         transaction.

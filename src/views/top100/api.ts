@@ -2,7 +2,13 @@ import { INDEX_GRAPH_CLIENTS } from '@/state/chain/atoms/chainAtoms'
 import { RESERVE_API } from '@/utils/constants'
 import { PERMISSIONLESS_VOTE_LOCK } from '@/views/index-dtf/deploy/permissionless-defaults'
 import { Address, formatEther } from 'viem'
-import { ACTIVE_CHAINS, TOP100_QUERY } from './constants'
+import {
+  ACTIVE_CHAINS,
+  ALLOWED_DTFS,
+  BLOCKED_DTFS,
+  DTF_BY_ID_QUERY,
+  TOP100_QUERY,
+} from './constants'
 import { Performance, Top100DTF } from './types'
 
 const MAX_CONCURRENT = 5
@@ -36,6 +42,49 @@ type SubgraphDTF = {
   }
 }
 
+const mapSubgraphDTF = (dtf: SubgraphDTF, chainId: number): Top100DTF => ({
+  address: dtf.id as Address,
+  name: dtf.token.name,
+  symbol: dtf.token.symbol,
+  chainId,
+  totalSupply: dtf.token.totalSupply,
+  currentHolderCount: dtf.token.currentHolderCount,
+  timestamp: Number(dtf.timestamp),
+  price: null,
+  marketCap: null,
+  basket: [],
+  performance: [],
+  performancePercent: null,
+})
+
+const isBlocked = (address: string, chainId: number): boolean =>
+  BLOCKED_DTFS[chainId]?.has(address.toLowerCase()) ?? false
+
+const fetchAllowedDTFs = async (): Promise<Top100DTF[]> => {
+  const results: Top100DTF[] = []
+
+  for (const [chainId, addresses] of Object.entries(ALLOWED_DTFS)) {
+    const client = INDEX_GRAPH_CLIENTS[Number(chainId)]
+    if (!client) continue
+
+    for (const address of addresses) {
+      try {
+        const response = await client.request<{
+          dtf: SubgraphDTF | null
+        }>(DTF_BY_ID_QUERY, { id: address.toLowerCase() })
+
+        if (response.dtf) {
+          results.push(mapSubgraphDTF(response.dtf, Number(chainId)))
+        }
+      } catch (error) {
+        console.error(`Failed to fetch allowed DTF ${address}:`, error)
+      }
+    }
+  }
+
+  return results
+}
+
 export const fetchSubgraphDTFs = async (): Promise<Top100DTF[]> => {
   const allDTFs: Top100DTF[] = []
 
@@ -53,25 +102,17 @@ export const fetchSubgraphDTFs = async (): Promise<Top100DTF[]> => {
       )
 
       for (const dtf of response.dtfs) {
-        allDTFs.push({
-          address: dtf.id as Address,
-          name: dtf.token.name,
-          symbol: dtf.token.symbol,
-          chainId,
-          totalSupply: dtf.token.totalSupply,
-          currentHolderCount: dtf.token.currentHolderCount,
-          timestamp: Number(dtf.timestamp),
-          price: null,
-          marketCap: null,
-          basket: [],
-          performance: [],
-          performancePercent: null,
-        })
+        if (!isBlocked(dtf.id, chainId)) {
+          allDTFs.push(mapSubgraphDTF(dtf, chainId))
+        }
       }
     } catch (error) {
       console.error(`Failed to fetch DTFs from chain ${chainId}:`, error)
     }
   }
+
+  const allowedDTFs = await fetchAllowedDTFs()
+  allDTFs.push(...allowedDTFs)
 
   allDTFs.sort((a, b) => b.timestamp - a.timestamp)
   return allDTFs

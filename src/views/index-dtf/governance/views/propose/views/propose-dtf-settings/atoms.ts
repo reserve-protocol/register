@@ -7,13 +7,13 @@ import {
   indexDTFAtom,
   indexDTFBasketAtom,
   indexDTFBasketSharesAtom,
+  indexDTFFeeAtom,
   indexDTFRebalanceControlAtom,
   indexDTFVersionAtom,
 } from '@/state/dtf/atoms'
 import { Token } from '@/types'
-import { BIGINT_MAX, getPlatformFee } from '@/utils/constants'
+import { BIGINT_MAX } from '@/utils/constants'
 import { atom } from 'jotai'
-import { chainIdAtom } from '@/state/atoms'
 import { Address, encodeFunctionData, Hex, parseEther } from 'viem'
 import {
   GovernanceChanges,
@@ -515,8 +515,8 @@ export const dtfSettingsProposalDataAtom = atom<ProposalData | undefined>(
       const newFeeRecipients: { recipient: Address; portion: bigint }[] = []
 
       // Calculate using the same logic as calculateRevenueDistribution
-      const chainId = get(chainIdAtom)
-      const platformFee = getPlatformFee(chainId)
+      const platformFee = get(indexDTFFeeAtom)
+      if (platformFee === undefined) return undefined
 
       // Convert from actual percentage (including platform fee) to contract percentage (excluding platform fee)
       // User input: actual % of total revenue -> Contract needs: % of non-platform portion
@@ -728,22 +728,25 @@ export const feeRecipientsAtom = atom((get) => {
   const externalRecipients: { address: string; share: number }[] = []
   let deployerShare = 0
   let governanceShare = 0
-  const chainId = get(chainIdAtom)
-  const platformFee = getPlatformFee(chainId)
+  const platformFee = get(indexDTFFeeAtom)
+  if (platformFee === undefined) return undefined
   const PERCENT_ADJUST = 100 / (100 - platformFee)
+
+  const toShare = (pct: number) =>
+    Math.round((pct / PERCENT_ADJUST) * 100) / 100
 
   for (const recipient of indexDTF.feeRecipients) {
     // Deployer share - adjust from contract percentage to actual percentage
     if (recipient.address.toLowerCase() === indexDTF.deployer.toLowerCase()) {
-      deployerShare = Number(recipient.percentage) / PERCENT_ADJUST
+      deployerShare = toShare(Number(recipient.percentage))
     } else if (
       recipient.address.toLowerCase() === indexDTF.stToken?.id.toLowerCase()
     ) {
-      governanceShare = Number(recipient.percentage) / PERCENT_ADJUST
+      governanceShare = toShare(Number(recipient.percentage))
     } else {
       externalRecipients.push({
         address: recipient.address,
-        share: Number(recipient.percentage) / PERCENT_ADJUST,
+        share: toShare(Number(recipient.percentage)),
       })
     }
   }

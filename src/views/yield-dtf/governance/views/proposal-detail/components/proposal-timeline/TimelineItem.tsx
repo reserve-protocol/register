@@ -76,7 +76,7 @@ export const TimelineItemCreated = () => {
       subtitle={
         <div className="flex items-center gap-1">
           <span>By:</span>
-          <ExplorerAddress address={proposal?.proposer || ''} chain={chainId} />
+          <ExplorerAddress address={proposal?.proposer || ''} chain={chainId} ens />
         </div>
       }
     />

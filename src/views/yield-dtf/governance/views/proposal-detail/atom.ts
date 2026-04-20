@@ -201,7 +201,9 @@ export const getProposalState = (
       +proposal.forWeightedVotes +
       +proposal.againstWeightedVotes +
       +proposal.abstainWeightedVotes
-    state.quorum = +proposal.forWeightedVotes >= +proposal.quorumVotes
+    state.quorum =
+      !!Number(proposal.forWeightedVotes) &&
+      +proposal.forWeightedVotes >= +proposal.quorumVotes
 
     if (totalVotes) {
       state.for = (+proposal.forWeightedVotes / totalVotes) * 100
@@ -281,7 +283,6 @@ export const proposalTxArgsAtom = atom(
     if (
       !proposal ||
       !proposal.calldatas.length ||
-      !proposal.description ||
       !governance.governor
     ) {
       return undefined
@@ -301,15 +302,15 @@ export const timelockIdAtom = atom((get) => {
 
   const encodedParams = proposal
     ? encodeAbiParameters(
-        parseAbiParameters('address[], uint256[], bytes[], bytes32, bytes32'),
-        [
-          proposal.targets,
-          [0n],
-          proposal.calldatas,
-          '0x0000000000000000000000000000000000000000000000000000000000000000',
-          keccak256(toBytes(proposal.description)),
-        ]
-      )
+      parseAbiParameters('address[], uint256[], bytes[], bytes32, bytes32'),
+      [
+        proposal.targets,
+        [0n],
+        proposal.calldatas,
+        '0x0000000000000000000000000000000000000000000000000000000000000000',
+        keccak256(toBytes(proposal.description)),
+      ]
+    )
     : undefined
 
   return encodedParams ? keccak256(encodedParams) : undefined

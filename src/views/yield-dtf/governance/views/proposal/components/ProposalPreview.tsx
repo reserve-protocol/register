@@ -6,6 +6,7 @@ import ProposedParametersPreview from './ProposedParametersPreview'
 import ProposedRegisterPreview from './ProposedRegisterPreview'
 import ProposedRevenueSplitPreview from './ProposedRevenueSplitPreview'
 import ProposedRolesPreview from './ProposedRolesPreview'
+import PauseIssuancePreview from './PauseIssuancePreview'
 import ProposedUnregisterPreview from './ProposedUnregisterPreview'
 import SpellUpgradePreview3_4_0 from './SpellUpgradePreview3_4_0'
 import SpellUpgradePreview4_2_0 from './SpellUpgradePreview4_2_0'
@@ -21,6 +22,7 @@ const ProposalPreview = ({ className }: Props) => (
     <ProposedRevenueSplitPreview className="mt-6" />
     <ProposedParametersPreview className="mt-6" />
     <ProposedRolesPreview className="mt-6" />
+    <PauseIssuancePreview className="mt-6" />
     <ProposedUnregisterPreview className="mt-6" />
     <ProposedRegisterPreview className="mt-6" />
     <ContractUpgradesPreview className="mt-6" />

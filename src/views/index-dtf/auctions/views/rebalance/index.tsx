@@ -9,6 +9,7 @@ import {
 import {
   CowbotProvider,
   CowbotInlineCard,
+  CowbotWarningBanner,
   useIsListedDTF,
 } from './components/cowbot'
 import ManageWeightsView from './components/manage-weights/manage-weights-view'
@@ -16,6 +17,7 @@ import RebalanceAction from './components/rebalance-action'
 import RebalanceAuctions from './components/rebalance-auctions'
 import RebalanceCompleted from './components/rebalance-completed'
 import RebalanceDebug from './components/rebalance-debug'
+import RebalanceLiquidityChecker from './components/rebalance-liquidity-checker'
 import RebalanceHeader from './components/rebalance-header'
 import RebalanceOverview from './components/rebalance-overview'
 import RebalanceProgress from './components/rebalance-progress'
@@ -49,6 +51,7 @@ const RebalanceContent = () => {
 
   return (
     <div className="md:w-[480px] p-1 pt-4 flex flex-col gap-1 bg-secondary rounded-3xl">
+      <CowbotWarningBanner />
       <RebalanceError />
       <div className="bg-background rounded-3xl">
         <RebalanceHeader />
@@ -58,6 +61,7 @@ const RebalanceContent = () => {
       <RebalanceAuctions />
       <RebalanceAction />
       <CowbotInlineCard />
+      <RebalanceLiquidityChecker />
       <RebalanceDebug />
     </div>
   )

@@ -1,4 +1,4 @@
-import { formatCurrency, formatPercentage, shortenAddress } from '@/utils'
+import { formatCurrency, formatPercentage } from '@/utils'
 
 import {
   TableCell,
@@ -14,8 +14,8 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { Link } from 'react-router-dom'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { chainIdAtom } from '@/state/atoms'
+import EnsName from '@/components/utils/ens-name'
 
-// TODO: Get ENS for address
 const GovernanceDelegateList = () => {
   const chainId = useAtomValue(chainIdAtom)
   const delegates = useAtomValue(topDelegatesAtom)
@@ -66,7 +66,7 @@ const GovernanceDelegateList = () => {
                         ExplorerDataType.ADDRESS
                       )}
                     >
-                      {shortenAddress(delegate.address)}
+                      <EnsName address={delegate.address} />
                     </Link>
                   </TableCell>
                   <TableCell>

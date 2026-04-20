@@ -14,16 +14,12 @@ interface Props {
   className?: string
 }
 
-type ContractProposalMap = {
-  [x: string]: ContractProposal
-}
-
 const parseCallDatas = (
   addresses: string[],
   calldatas: string[],
   interfaceMap: InterfaceMap
-): [ContractProposalMap, string[]] => {
-  const contractProposals: ContractProposalMap = {}
+): [ContractProposal[], string[]] => {
+  const contractProposals: ContractProposal[] = []
   const unparsed: string[] = []
 
   for (let i = 0; i < addresses.length; i++) {
@@ -37,20 +33,12 @@ const parseCallDatas = (
           data: calldatas[i] as Hex,
         })
 
-        if (!contractProposals[address]) {
-          contractProposals[address] = {
-            address,
-            label: contractDetail.label,
-            calls: [],
-          }
-        }
-
         const result = getAbiItem({
           abi: contractDetail.interface,
           name: functionCall.functionName,
         })
 
-        contractProposals[address].calls.push({
+        const call = {
           signature: functionCall.functionName,
           parameters:
             result && 'inputs' in result
@@ -58,7 +46,19 @@ const parseCallDatas = (
               : [],
           callData: calldatas[i],
           data: functionCall.args ?? [],
-        })
+        }
+
+        // Group consecutive calls to the same address
+        const lastEntry = contractProposals[contractProposals.length - 1]
+        if (lastEntry && lastEntry.address === address) {
+          lastEntry.calls.push(call)
+        } else {
+          contractProposals.push({
+            address,
+            label: contractDetail.label,
+            calls: [call],
+          })
+        }
       } else {
         unparsed.push(calldatas[i])
       }
@@ -78,22 +78,21 @@ const ProposalDetail = ({
   ...props
 }: Props) => {
   const interfaceMap = useAtomValue(interfaceMapAtom)
-  const [parse] = parseCallDatas(addresses, calldatas, interfaceMap)
-  const calls = Object.keys(parse)
+  const [groups] = parseCallDatas(addresses, calldatas, interfaceMap)
 
   return (
-    <div>
-      {!calls.length && (
+    <div className='bg-secondary p-1 rounded-4xl'>
+      {!groups.length && (
         <Card className="p-4 mb-4 text-center">
           <Spinner size={18} />
           <span className="block">Loading execution details...</span>
         </Card>
       )}
       <div className="flex flex-col gap-4">
-        {calls.map((address, index) => (
-          <SectionWrapper key={address} navigationIndex={index}>
+        {groups.map((group, index) => (
+          <SectionWrapper key={`${group.address}-${index}`} navigationIndex={index}>
             <ContractProposalDetail
-              data={parse[address]}
+              data={group}
               snapshotBlock={snapshotBlock}
               {...props}
             />

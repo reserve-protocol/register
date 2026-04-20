@@ -8,10 +8,7 @@ import { ExposureGroup } from '@/state/dtf/atoms'
 interface BasketTableBodyProps {
   filtered: Token[] | undefined
   isExposure: boolean
-  exposureGroups:
-    | Map<string, ExposureGroup>
-    | null
-    | Array<[string, ExposureGroup]>
+  exposureGroups: [string, ExposureGroup][] | null
   basketShares: Record<string, string>
   basketPerformanceChanges: Record<string, number | null>
   performanceLoading: boolean
@@ -39,8 +36,7 @@ export const BasketTableBody = ({
   maxTokens,
   onCopyAddress,
 }: BasketTableBodyProps) => {
-  // Loading state - show skeleton
-  if (!filtered?.length) {
+  if (isExposure && !exposureGroups?.length) {
     return (
       <TableBody>
         <BasketSkeleton isExposure={isExposure} />
@@ -48,7 +44,14 @@ export const BasketTableBody = ({
     )
   }
 
-  // Exposure view with grouped assets
+  if (!isExposure && !filtered?.length) {
+    return (
+      <TableBody>
+        <BasketSkeleton isExposure={isExposure} />
+      </TableBody>
+    )
+  }
+
   if (isExposure && exposureGroups) {
     return (
       <TableBody>
@@ -64,7 +67,8 @@ export const BasketTableBody = ({
     )
   }
 
-  // Collateral view with individual tokens
+  if (!filtered?.length) return null
+
   return (
     <TableBody>
       <CollateralTableRows

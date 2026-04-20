@@ -25,6 +25,7 @@ import {
   isNewBasketProposedAtom,
   isProposalValidAtom,
   parametersChangesAtom,
+  pauseIssuanceAtom,
   registerAssetsAtom,
   revenueSplitChangesAtom,
   roleChangesAtom,
@@ -111,9 +112,11 @@ export const ChangesUpdater = () => {
   const contractUpgrades = useAtomValue(contractUpgradesAtom)
   const spell3_4_0Upgrade = useAtomValue(spell3_4_0UpgradeAtom)
   const spell4_2_0Upgrade = useAtomValue(spell4_2_0UpgradeAtom)
+  const pauseIssuance = useAtomValue(pauseIssuanceAtom)
 
   const hasUpgrades = !!Object.keys(contractUpgrades).length
   const hasSpell = spell3_4_0Upgrade !== 'none' || spell4_2_0Upgrade !== 'none'
+  const hasPauseIssuance = pauseIssuance !== 'none'
 
   // Valid listeners
   const isBasketValid = useAtomValue(isBasketValidAtom)
@@ -166,7 +169,8 @@ export const ChangesUpdater = () => {
       !assetsToRegister.length &&
       !isNewBasket &&
       !hasUpgrades &&
-      !hasSpell
+      !hasSpell &&
+      !hasPauseIssuance
     ) {
       setValidState(false)
     } else {
@@ -187,6 +191,7 @@ export const ChangesUpdater = () => {
     assetsToRegister,
     hasUpgrades,
     hasSpell,
+    hasPauseIssuance,
     isValid,
   ])
 

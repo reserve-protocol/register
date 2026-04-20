@@ -21,7 +21,7 @@ const quoteQuantitiesAtom = atom((get) => {
   }
 
   return Object.keys(quote[nonce]).reduce((prev, curr) => {
-    prev[curr] = quote[nonce][curr].amount
+    prev[curr] = quote[nonce][curr].targetAmount
     return prev
   }, {} as BigNumberMap)
 })
@@ -45,36 +45,38 @@ const CurrentRedemptionQuote = () => {
   )
 }
 
-const RedemptionQuoteSelector = () => {
-  const { basketNonce } = useAtomValue(rTokenStateAtom)
-  const selectedNonce = useAtomValue(redeemNonceAtom)
-  const setNonceSelection = useSetAtom(customRedeemModalAtom)
+// const RedemptionQuoteSelector = () => {
+//   const { basketNonce } = useAtomValue(rTokenStateAtom)
+//   const selectedNonce = useAtomValue(redeemNonceAtom)
+//   const setNonceSelection = useSetAtom(customRedeemModalAtom)
 
-  return (
-    <div
-      className="mt-4 flex items-center border border-input rounded-md cursor-pointer px-2 py-4"
-      onClick={() => setNonceSelection(true)}
-    >
-      <OverviewIcon />
-      <span className="ml-2 mr-auto">
-        {basketNonce === selectedNonce
-          ? 'Redeem with current basket'
-          : 'Redeem with previous basket'}
-      </span>
-      <ChevronRight size={14} />
-    </div>
-  )
-}
+//   return (
+//     <div
+//       className="mt-4 flex items-center border border-input rounded-md cursor-pointer px-2 py-4"
+//       onClick={() => setNonceSelection(true)}
+//     >
+//       <OverviewIcon />
+//       <span className="ml-2 mr-auto">
+//         {basketNonce === selectedNonce
+//           ? 'Redeem with current basket'
+//           : 'Redeem with previous basket'}
+//       </span>
+//       <ChevronRight size={14} />
+//     </div>
+//   )
+// }
 
 const RedemptionQuote = () => {
-  const { isCollaterized } = useAtomValue(rTokenStateAtom)
-  const { issuance: isLegacy } = useAtomValue(isModuleLegacyAtom)
+  // const { isCollaterized } = useAtomValue(rTokenStateAtom)
+  // const { issuance: isLegacy } = useAtomValue(isModuleLegacyAtom)
 
-  if (isCollaterized || isLegacy) {
-    return <CurrentRedemptionQuote />
-  }
+  // if (isCollaterized || isLegacy) {
+  //   return <CurrentRedemptionQuote />
+  // }
 
-  return <RedemptionQuoteSelector />
+  // return <RedemptionQuoteSelector />
+
+  return <CurrentRedemptionQuote />
 }
 
 export default RedemptionQuote

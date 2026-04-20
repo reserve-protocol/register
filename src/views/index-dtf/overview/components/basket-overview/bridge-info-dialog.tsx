@@ -6,7 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { ChainId } from '@/utils/chains'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { NativeToken, Bridge } from '@/types/token-mappings'
-import { shortenAddress } from '@/utils'
+import { isAddress, shortenAddress } from '@/utils'
 import {
   ArrowUpRight,
   Binoculars,
@@ -60,7 +60,7 @@ const BridgeInfoDialog = ({
   const { native, bridge, mapping } = bridgeInfo
 
   const handleCopyAddress = () => {
-    navigator.clipboard.writeText(tokenAddress)
+    navigator.clipboard.writeText(isAddress(tokenAddress) || tokenAddress)
     toast.success('Address copied to clipboard')
   }
 

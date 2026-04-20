@@ -6,7 +6,7 @@ import { useAtom, useSetAtom } from 'jotai'
 import { LayoutGrid } from 'lucide-react'
 import { useState } from 'react'
 import { chainFilterAtom, searchFilterAtom } from '../atoms'
-import { ACTIVE_CHAINS } from '../constants'
+import { ALL_TOP100_CHAINS } from '../constants'
 
 const CHAIN_OPTIONS: {
   icon: React.ReactNode
@@ -14,17 +14,17 @@ const CHAIN_OPTIONS: {
   filter: number[]
 }[] = [
   // Only add "All chains" if multiple chains are active
-  ...(ACTIVE_CHAINS.length > 1
+  ...(ALL_TOP100_CHAINS.length > 1
     ? [
         {
           icon: <LayoutGrid />,
           text: 'All chains',
-          filter: ACTIVE_CHAINS,
+          filter: ALL_TOP100_CHAINS,
         },
       ]
     : []),
   // Add individual chain toggles for active chains
-  ...(ACTIVE_CHAINS.includes(ChainId.Mainnet)
+  ...(ALL_TOP100_CHAINS.includes(ChainId.Mainnet)
     ? [
         {
           icon: <ChainLogo chain={ChainId.Mainnet} />,
@@ -33,7 +33,7 @@ const CHAIN_OPTIONS: {
         },
       ]
     : []),
-  ...(ACTIVE_CHAINS.includes(ChainId.Base)
+  ...(ALL_TOP100_CHAINS.includes(ChainId.Base)
     ? [
         {
           icon: <ChainLogo chain={ChainId.Base} />,
@@ -42,7 +42,7 @@ const CHAIN_OPTIONS: {
         },
       ]
     : []),
-  ...(ACTIVE_CHAINS.includes(ChainId.BSC)
+  ...(ALL_TOP100_CHAINS.includes(ChainId.BSC)
     ? [
         {
           icon: <ChainLogo chain={ChainId.BSC} />,
@@ -60,7 +60,7 @@ const ChainFilter = () => {
   const handleSelect = (value: string) => {
     if (!value) return
     setSelected(value)
-    setFilters(CHAIN_OPTIONS[Number(value)]?.filter ?? ACTIVE_CHAINS)
+    setFilters(CHAIN_OPTIONS[Number(value)]?.filter ?? ALL_TOP100_CHAINS)
   }
 
   // Don't render chain toggle if only one chain

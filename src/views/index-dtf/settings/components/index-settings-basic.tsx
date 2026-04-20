@@ -5,6 +5,7 @@ import {
   indexDTFRebalanceControlAtom,
   indexDTFVersionAtom,
 } from '@/state/dtf/atoms'
+import EnsName from '@/components/utils/ens-name'
 import { shortenAddress } from '@/utils'
 import { t } from '@lingui/macro'
 import { useAtomValue } from 'jotai'
@@ -30,7 +31,7 @@ const BasicInfo = () => {
   })
 
   return (
-    <InfoCard title="Basics">
+    <InfoCard title="Basics" id="basics">
       <InfoCardItem
         label={t`Name`}
         icon={<IconWrapper Component={Braces} />}
@@ -59,7 +60,7 @@ const BasicInfo = () => {
         icon={<IconWrapper Component={Hash} />}
         address={indexDTF?.deployer}
         value={
-          indexDTF?.deployer ? shortenAddress(indexDTF.deployer) : undefined
+          indexDTF?.deployer ? <EnsName address={indexDTF.deployer} /> : undefined
         }
       />
       <InfoCardItem

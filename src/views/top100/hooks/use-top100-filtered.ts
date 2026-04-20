@@ -3,6 +3,14 @@ import { useMemo } from 'react'
 import { chainFilterAtom, searchFilterAtom } from '../atoms'
 import { Top100DTF } from '../types'
 
+const TEST_TOKEN_PATTERN = /^test\d*$/i
+
+const isTestToken = (dtf: Top100DTF) => {
+  return (
+    TEST_TOKEN_PATTERN.test(dtf.symbol) || TEST_TOKEN_PATTERN.test(dtf.name)
+  )
+}
+
 const useTop100Filtered = (dtfs: Top100DTF[]) => {
   const search = useAtomValue(searchFilterAtom)
   const chains = useAtomValue(chainFilterAtom)
@@ -11,6 +19,8 @@ const useTop100Filtered = (dtfs: Top100DTF[]) => {
     if (!dtfs.length) return []
 
     const filtered = dtfs.filter((dtf) => {
+      if (isTestToken(dtf)) return false
+
       if (chains.length && !chains.includes(dtf.chainId)) {
         return false
       }
@@ -31,8 +41,8 @@ const useTop100Filtered = (dtfs: Top100DTF[]) => {
       return true
     })
 
-    // Sort by created time desc (newest first)
-    filtered.sort((a, b) => b.timestamp - a.timestamp)
+    // Sort by market cap desc (largest first)
+    filtered.sort((a, b) => (b.marketCap ?? 0) - (a.marketCap ?? 0))
 
     return filtered
   }, [dtfs, search, chains])

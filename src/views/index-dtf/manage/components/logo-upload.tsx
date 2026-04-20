@@ -22,6 +22,7 @@ export function ImageUploader({
   defaultImage,
 }: ImageUploaderProps) {
   const [preview, setPreview] = useState<string | null>(defaultImage || null)
+  const [cleared, setCleared] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   // Create preview when file changes
@@ -34,8 +35,6 @@ export function ImageUploader({
       if (file) {
         const objectUrl = URL.createObjectURL(file)
         setPreview(objectUrl)
-      } else if (defaultImage) {
-        setPreview(defaultImage)
       } else {
         setPreview(null)
       }
@@ -53,11 +52,11 @@ export function ImageUploader({
   }, [preview, defaultImage])
 
   useEffect(() => {
-    // Update preview if defaultImage changes
-    if (defaultImage && !value) {
+    // Update preview if defaultImage changes, unless user explicitly cleared
+    if (defaultImage && !value && !cleared) {
       setPreview(defaultImage)
     }
-  }, [defaultImage, value])
+  }, [defaultImage, value, cleared])
 
   const onDrop = useCallback(
     (acceptedFiles: File[], rejectedFiles: any[]) => {
@@ -77,6 +76,7 @@ export function ImageUploader({
         return
       }
 
+      setCleared(false)
       updatePreview(file)
       onChange?.(file)
     },
@@ -95,6 +95,7 @@ export function ImageUploader({
   const clearImage = useCallback(
     (e: React.MouseEvent) => {
       e.stopPropagation()
+      setCleared(true)
       updatePreview(null)
       onChange?.(null)
       setError(null)
@@ -104,41 +105,52 @@ export function ImageUploader({
 
   return (
     <div className="space-y-4">
-      <div
-        {...getRootProps()}
-        className={cn(
-          'relative border-2 border-dashed rounded-lg p-4 hover:bg-muted/50 transition-colors cursor-pointer',
-          isDragActive && 'border-primary bg-muted/50',
-          error && 'border-destructive',
-          className
-        )}
-      >
-        <input {...getInputProps()} />
-        {preview ? (
-          <div className="flex items-center gap-3">
+      {preview ? (
+        <div
+          className={cn(
+            'relative flex items-center gap-3 border-2 border-dashed rounded-lg p-4',
+            className
+          )}
+        >
+          <div
+            {...getRootProps()}
+            className="flex items-center gap-3 flex-1 min-w-0 cursor-pointer hover:opacity-70 transition-opacity"
+          >
+            <input {...getInputProps()} />
             <div className="relative size-10 shrink-0">
               <img
-                src={preview || '/placeholder.svg'}
+                src={preview}
                 alt="Preview"
-                className="object-cover  w-full h-full rounded-full"
+                className="object-cover w-full h-full rounded-full"
               />
             </div>
             <span className="text-sm truncate flex-1">
               {value?.name || 'Selected image'}
             </span>
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon"
-              onClick={clearImage}
-              className="ml-auto"
-            >
-              <X className="size-4" />
-              <span className="sr-only">Remove image</span>
-            </Button>
           </div>
-        ) : (
-          <div className="flex  items-center gap-2 text-center">
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            onClick={clearImage}
+            className="shrink-0 hover:bg-destructive/10 hover:text-destructive"
+          >
+            <X className="size-4" />
+            <span className="sr-only">Remove image</span>
+          </Button>
+        </div>
+      ) : (
+        <div
+          {...getRootProps()}
+          className={cn(
+            'relative border-2 border-dashed rounded-lg p-4 hover:bg-muted/50 transition-colors cursor-pointer',
+            isDragActive && 'border-primary bg-muted/50',
+            error && 'border-destructive',
+            className
+          )}
+        >
+          <input {...getInputProps()} />
+          <div className="flex items-center gap-2 text-center">
             <div className="p-1 rounded-full border border-dashed border-legend text-legend">
               <ImagePlus size={16} />
             </div>
@@ -150,16 +162,16 @@ export function ImageUploader({
             </div>
             <p className="text-primary">Browse files</p>
           </div>
-        )}
-        <div
-          className={cn(
-            'absolute inset-0 flex items-center justify-center bg-background/80 opacity-0 transition-opacity',
-            isDragActive && 'opacity-100'
-          )}
-        >
-          <p className="text-sm font-medium text-primary">Drop image here</p>
+          <div
+            className={cn(
+              'absolute inset-0 flex items-center justify-center bg-background/80 opacity-0 transition-opacity',
+              isDragActive && 'opacity-100'
+            )}
+          >
+            <p className="text-sm font-medium text-primary">Drop image here</p>
+          </div>
         </div>
-      </div>
+      )}
       {error && (
         <Alert variant="destructive">
           <AlertCircle className="h-4 w-4" />

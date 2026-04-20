@@ -1,8 +1,8 @@
 import { chainIdAtom } from '@/state/atoms'
-import { indexDTFAtom } from '@/state/dtf/atoms'
+import { indexDTFAtom, indexDTFFeeAtom } from '@/state/dtf/atoms'
 import { DecodedCalldata } from '@/types'
+import EnsName from '@/components/utils/ens-name'
 import { shortenAddress } from '@/utils'
-import { getPlatformFee } from '@/utils/constants'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { useAtomValue } from 'jotai'
 import {
@@ -16,7 +16,7 @@ import {
   Users
 } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import { Address } from 'viem'
+import { Address, zeroHash } from 'viem'
 
 // Preview component for setMandate function
 export const SetMandatePreview = ({
@@ -90,12 +90,15 @@ export const GrantRolePreview = ({
 
   // Map role hashes to readable names
   const roleNames: Record<string, string> = {
+    [zeroHash]: 'Default Admin',
     '0xfd643c72710c63c0180259aba6b2d05451e3591a24e58b62239378085726f783':
       'Guardian',
     '0x2d8e650da9bd8c373ab2450d770f2ed39549bfc28d3630025cecc51511bcd374':
       'Brand Manager',
     '0x13ff1b2625181b311f257c723b5e6d366eb318b212d9dd694c48fcf227659df5':
       'Auction Launcher',
+    '0x4ff6ae4d6a29e79ca45c6441bdc89b93878ac6118485b33c8baa3749fc3cb130':
+      'Rebalance Manager',
   }
 
   const roleName = roleNames[roleHash] || 'Unknown Role'
@@ -117,7 +120,7 @@ export const GrantRolePreview = ({
           rel="noopener noreferrer"
           className="text-sm text-muted-foreground hover:text-primary flex items-center gap-1"
         >
-          {shortenAddress(account)}
+          <EnsName address={account} />
           <ArrowUpRight size={12} />
         </Link>
       </div>
@@ -136,12 +139,15 @@ export const RevokeRolePreview = ({
   const [roleHash, account] = decodedCalldata.data as [string, string]
 
   const roleNames: Record<string, string> = {
+    [zeroHash]: 'Default Admin',
     '0xfd643c72710c63c0180259aba6b2d05451e3591a24e58b62239378085726f783':
       'Guardian',
     '0x2d8e650da9bd8c373ab2450d770f2ed39549bfc28d3630025cecc51511bcd374':
       'Brand Manager',
     '0x13ff1b2625181b311f257c723b5e6d366eb318b212d9dd694c48fcf227659df5':
       'Auction Launcher',
+    '0x4ff6ae4d6a29e79ca45c6441bdc89b93878ac6118485b33c8baa3749fc3cb130':
+      'Rebalance Manager',
   }
 
   const roleName = roleNames[roleHash] || 'Unknown Role'
@@ -165,7 +171,7 @@ export const RevokeRolePreview = ({
           rel="noopener noreferrer"
           className="text-sm text-muted-foreground hover:text-primary flex items-center gap-1"
         >
-          {shortenAddress(account)}
+          <EnsName address={account} />
           <ArrowUpRight size={12} />
         </Link>
       </div>
@@ -182,13 +188,13 @@ export const SetFeeRecipientsPreview = ({
 }) => {
   const chainId = useAtomValue(chainIdAtom)
   const indexDTF = useAtomValue(indexDTFAtom)
-  const platformFee = getPlatformFee(chainId)
+  const platformFee = useAtomValue(indexDTFFeeAtom)
   const recipients = decodedCalldata.data[0] as Array<{
     recipient: string
     portion: bigint
   }>
 
-  if (!indexDTF) return null
+  if (!indexDTF || platformFee === undefined) return null
 
   // Parse recipients into categories
   const externalRecipients: Array<{ address: string; percentage: number }> = []

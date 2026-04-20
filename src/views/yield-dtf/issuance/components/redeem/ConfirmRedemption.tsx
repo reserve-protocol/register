@@ -11,7 +11,7 @@ import {
   rTokenStateAtom,
   walletAtom,
 } from 'state/atoms'
-import { formatCurrency, safeParseEther } from 'utils'
+import { formatToSignificantDigits, safeParseEther } from 'utils'
 import { RSV_MANAGER } from 'utils/rsv'
 import { parseEther } from 'viem'
 import {
@@ -96,9 +96,9 @@ const ConfirmRedemption = ({ onClose }: { onClose: () => void }) => {
       description={t`Redeem ${rToken?.symbol ?? ''}`}
       call={call}
       requiredAllowance={requiredAllowance}
-      confirmLabel={t`Begin redemption of ${formatCurrency(Number(amount))} ${
-        rToken?.symbol ?? ''
-      }`}
+      confirmLabel={t`Begin redemption of ${formatToSignificantDigits(
+        Number(amount)
+      )} ${rToken?.symbol ?? ''}`}
       onClose={handleClose}
       onChange={(signing) => setSigning(signing)}
     >

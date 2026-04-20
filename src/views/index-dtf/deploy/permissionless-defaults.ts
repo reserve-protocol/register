@@ -1,5 +1,4 @@
 import { ChainId } from '@/utils/chains'
-import { getPlatformFee } from '@/utils/constants'
 import { Address, zeroAddress } from 'viem'
 import { DeployInputs, DeployStepId } from './form-fields'
 
@@ -33,9 +32,10 @@ export const TRUSTED_ADDRESSES: Record<number, string[]> = {
   [ChainId.BSC]: [],
 }
 
-export const getPermissionlessDefaults = (chainId: number): DeployInputs => {
-  const platformFee = getPlatformFee(chainId)
-
+export const getPermissionlessDefaults = (
+  chainId: number,
+  platformFee: number
+): DeployInputs => {
   return {
     tokenName: '',
     symbol: '',

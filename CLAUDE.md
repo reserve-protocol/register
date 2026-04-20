@@ -694,21 +694,15 @@ src/
 
 ### 4. Data Management
 
-**Blockchain Data**:
+See `/docs/data-sources.md` for the full data routing table, API endpoints, and subgraph schema reference.
 
-- Read: Custom hooks wrapping `useReadContract`
-- Write: Custom hooks wrapping `useWriteContract`
-- Events: Subgraph queries via GraphQL
-
-**Price Data**:
-
-- Yield DTFs: Chainlink oracles on-chain
-- Index DTFs: api.reserve.org (Alchemy + DefiLlama)
-
-**Subgraphs**:
-
-- Yield DTFs: `reserve-subgraph`
-- Index DTFs: `dtf-index-subgraph`
+**Quick reference**:
+- Basket/balances → RPC (`totalAssets()`)
+- Prices → Reserve API (`/current/prices`, 7-source consensus)
+- Metadata (governance, fees, roles) → Subgraph
+- Rebalance state → RPC (`getRebalance()`)
+- Proposal state → RPC (`governor.state()`) — NOT subgraph
+- Historical → Reserve API (`/historical/*`)
 
 ## External Integrations
 
@@ -894,25 +888,30 @@ queryClient.invalidateQueries(['queryKey'])
 
 ## Resources
 
-### Documentation
+### Internal Docs
+
+- `/docs/protocol-context.md` — Protocol fundamentals, rebalance lifecycle, governance, roles, chains
+- `/docs/data-sources.md` — Data routing rules, API endpoints, subgraph schema, gotchas
+- `/docs/specs/rebalance-v4-specification.md` — Rebalance v4/v5 specification
+- `/docs/specs/index-dtf-governance-and-proposal.md` — Governance and proposal system
+- `/docs/architecture/*.md` — State management, routing, component architecture, data flow
+- `/docs/prd.md` — Product requirements
+
+### Related Repositories
+
+- **SDK**: [`reserve-protocol/dtf-tools`](https://github.com/reserve-protocol/dtf-tools) — Typed reads, transaction builders, API wrappers. See `docs/KNOWLEDGE.md` for master protocol reference.
+- **Subgraph (Index DTFs)**: [`reserve-protocol/dtf-index-subgraph`](https://github.com/reserve-protocol/dtf-index-subgraph) — Schema, mappings
+- **Subgraph (Yield DTFs)**: [`reserve-protocol/reserve-subgraph`](https://github.com/reserve-protocol/reserve-subgraph)
+- **Contracts**: [`reserve-protocol/reserve-index-dtf`](https://github.com/reserve-protocol/reserve-index-dtf) — Solidity source, ABIs
+- **API**: `reserve-protocol/reserve-api` — Backend endpoints
+
+### External Documentation
 
 - [Reserve Protocol Docs](https://reserve.org/protocol/)
 - [wagmi Documentation](https://wagmi.sh)
 - [RainbowKit Docs](https://rainbowkit.com/docs)
 - [Jotai Documentation](https://jotai.org)
 - [shadcn/ui Components](https://ui.shadcn.com)
-
-### Internal Specs
-
-- `/docs/specs/rebalance-v4-specification.md`
-- `/docs/specs/index-dtf-governance-and-proposal.md`
-- `/docs/architecture/*.md`
-
-### Repositories
-
-- Frontend: Current repository
-- Yield DTF Subgraph: `reserve-protocol/reserve-subgraph`
-- Index DTF Subgraph: `reserve-protocol/dtf-index-subgraph`
 
 ---
 
