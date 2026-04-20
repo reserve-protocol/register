@@ -4,7 +4,7 @@ import { formatCurrency } from "@/utils";
 import { useEffect, useState } from "react";
 
 const MetricBox = ({ label, value }: { label: string; value: number | undefined }) => (
-  <div className="flex flex-col gap-1 border h-[74px] w-36 lg:h-auto lg:w-auto justify-center items-center lg:justify-normal lg:items-start lg:border-none rounded-lg">
+  <div className="flex flex-col flex-shrink-0 gap-1 border h-[74px] w-36 lg:h-auto lg:w-auto justify-center items-center lg:justify-normal lg:items-start lg:border-none rounded-lg">
     <span className="whitespace-nowrap dark:text-legend">
       {label}
     </span>
@@ -26,7 +26,7 @@ const MetricBox = ({ label, value }: { label: string; value: number | undefined 
 const Metrics = () => {
 
   return (
-    <div className="flex items-center gap-2 lg:gap-6 mx-2 lg:mx-0">
+    <div className="flex items-center gap-2 lg:gap-6 mx-2 lg:mx-0 overflow-hidden">
       <MetricBox label="TVL" value={undefined} />
       <MetricBox label="Partner Revenue" value={123000000} />
       <MetricBox label="RSR Accrual" value={123000000} />
