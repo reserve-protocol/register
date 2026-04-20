@@ -1,17 +1,10 @@
-import { isInactiveDTF, useDeprecatedAddresses } from '@/hooks/use-dtf-status'
-import { IndexDTFItem } from '@/hooks/useIndexDTFList'
+import { useDeprecatedAddresses } from '@/hooks/use-dtf-status'
 import useTokenList, { ListedToken } from '@/hooks/useTokenList'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { chainFilterAtom, searchFilterAtom } from '../atoms'
 
-const STABLECOINS = ['eUSD', 'rgUSD']
-
-const useFilteredYieldDTF = ({
-  stablecoins = false,
-}: {
-  stablecoins?: boolean
-}) => {
+const useFilteredYieldDTF = () => {
   const { list: data, isLoading } = useTokenList()
   const search = useAtomValue(searchFilterAtom)
   const chains = useAtomValue(chainFilterAtom)
@@ -46,17 +39,11 @@ const useFilteredYieldDTF = ({
         }
       }
 
-      // const isStablecoin = STABLECOINS.includes(dtf.symbol)
-
-      // if ((stablecoins && !isStablecoin) || (!stablecoins && isStablecoin)) {
-      //   return false
-      // }
-
       return true
     })
 
     return { data: filtered, isLoading }
-  }, [data, search, chains, isLoading])
+  }, [data, search, chains, isLoading, deprecatedAddresses])
 }
 
 export default useFilteredYieldDTF

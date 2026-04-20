@@ -12,7 +12,7 @@ import { ROUTES } from '@/utils/constants'
 import { ArrowRightIcon } from 'lucide-react'
 import { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { LIMIT_ASSETS } from './index-dtf-table'
+import { LIMIT_ASSETS } from './index-dtf-table-columns'
 import { ScrollArea } from '@/components/ui/scroll-area'
 interface BasketHoverCardProps {
   indexDTF: IndexDTFItem

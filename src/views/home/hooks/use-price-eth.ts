@@ -17,8 +17,8 @@ const usePriceETH = ({
   }
 >) => {
   const { data } = useReadContracts({
-    contracts: [
-      ...(targetUnits === 'ETH' && id && chain && (!basketsNeeded || !supply)
+    contracts:
+      targetUnits === 'ETH' && id && chain && (!basketsNeeded || !supply)
         ? [
             {
               address: getAddress(id),
@@ -33,22 +33,16 @@ const usePriceETH = ({
               chainId: chain,
             },
           ]
-        : []),
-    ],
-    query: {
-      select: (data) => {
-        return (data as bigint[]).map((value) => Number(formatEther(value)))
-      },
-    },
+        : [],
     allowFailure: false,
   })
 
-  // return  { priceETHTerms, supplyETHTerms }
   return useMemo(() => {
-    const [basketNeededValue, totalSupplyValue] = data || [
-      basketsNeeded,
-      supply,
-    ]
+    const [basketsRaw, supplyRaw] = data ?? []
+    const basketNeededValue =
+      basketsRaw !== undefined ? Number(formatEther(basketsRaw)) : basketsNeeded
+    const totalSupplyValue =
+      supplyRaw !== undefined ? Number(formatEther(supplyRaw)) : supply
 
     let priceETHTerms: number | undefined = undefined
     let supplyETHTerms: number | undefined = undefined
@@ -60,7 +54,7 @@ const usePriceETH = ({
     }
 
     return { priceETHTerms, supplyETHTerms }
-  }, [data, basketsNeeded, supply, price, targetUnits])
+  }, [data, basketsNeeded, supply, price])
 }
 
 export default usePriceETH
