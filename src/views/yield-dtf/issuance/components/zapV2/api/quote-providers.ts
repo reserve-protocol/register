@@ -1,7 +1,6 @@
-import { Address, ethAddress, zeroAddress } from 'viem'
-import { ZapResponse, ZapResult } from '.'
-
-const ENSO_API = 'https://api.enso.finance/api/v1/shortcuts/route'
+import { RESERVE_API } from '@/utils/constants'
+import { Address } from 'viem'
+import { ZapResponse } from '.'
 
 export type ZapQuoteSource = 'best' | 'zap' | 'enso'
 export type ZapQuoteProvider = 'reserve' | 'enso'
@@ -19,14 +18,7 @@ export type FetchZapQuoteParams = {
   tokenIn: Address
   tokenOut: Address
   amountIn: string
-}
-
-const toEnsoTokenAddress = (token: Address) =>
-  token.toLowerCase() === zeroAddress ? ethAddress : token
-
-const isNativeToken = (token: Address) => {
-  const lower = token.toLowerCase()
-  return lower === zeroAddress || lower === ethAddress.toLowerCase()
+  slippage: number
 }
 
 const buildEnsoEndpoint = ({
@@ -35,19 +27,21 @@ const buildEnsoEndpoint = ({
   tokenIn,
   tokenOut,
   amountIn,
+  slippage,
 }: Pick<
   FetchZapQuoteParams,
-  'chainId' | 'signer' | 'tokenIn' | 'tokenOut' | 'amountIn'
+  'chainId' | 'signer' | 'tokenIn' | 'tokenOut' | 'amountIn' | 'slippage'
 >) => {
   const params = new URLSearchParams({
     chainId: String(chainId),
-    fromAddress: signer,
-    tokenIn: toEnsoTokenAddress(tokenIn),
-    tokenOut: toEnsoTokenAddress(tokenOut),
+    signer,
+    tokenIn,
+    tokenOut,
     amountIn,
+    slippage: String(slippage),
   })
 
-  return `${ENSO_API}?${params.toString()}`
+  return `${RESERVE_API}enso/swap?${params.toString()}`
 }
 
 const parseBigIntOrZero = (value: unknown): bigint => {
@@ -62,7 +56,7 @@ const parseBigIntOrZero = (value: unknown): bigint => {
   return 0n
 }
 
-const normalizeReserveResponse = (raw: unknown): ZapResponse => {
+const normalizeProviderResponse = (raw: unknown): ZapResponse => {
   if (
     raw &&
     typeof raw === 'object' &&
@@ -75,80 +69,16 @@ const normalizeReserveResponse = (raw: unknown): ZapResponse => {
 
   return {
     status: 'error',
-    error: 'Unexpected Reserve zapper response format',
+    error: 'Unexpected zapper response format',
   }
-}
-
-const normalizeEnsoResponse = ({
-  raw,
-  tokenIn,
-  tokenOut,
-  amountIn,
-}: {
-  raw: unknown
-  tokenIn: Address
-  tokenOut: Address
-  amountIn: string
-}): ZapResponse => {
-  if (!raw || typeof raw !== 'object') {
-    return { status: 'error', error: 'Empty Enso response' }
-  }
-
-  const payload = raw as Record<string, unknown>
-  const tx = payload.tx as Record<string, unknown> | undefined
-
-  if (!tx || !tx.to || !tx.data) {
-    return { status: 'error', error: 'Enso quote missing transaction' }
-  }
-
-  const spender = String(tx.to) as Address
-
-  const result: ZapResult = {
-    tokenIn,
-    amountIn,
-    amountInValue: null,
-
-    tokenOut,
-    amountOut: String(payload.amountOut ?? 0),
-    amountOutValue: null,
-    minAmountOut:
-      payload.minAmountOut !== undefined
-        ? String(payload.minAmountOut)
-        : undefined,
-
-    approvalAddress: spender,
-    approvalNeeded: !isNativeToken(tokenIn),
-    insufficientFunds: false,
-
-    dust: [],
-    dustValue: 0,
-
-    gas: payload.gas !== undefined ? String(payload.gas) : null,
-    priceImpact: Number(payload.priceImpact) || 0,
-    truePriceImpact: Number(payload.priceImpact) || 0,
-
-    tx: {
-      data: String(tx.data),
-      to: spender,
-      value: String(tx.value ?? 0),
-    },
-  }
-
-  return { status: 'success', result }
 }
 
 const fetchProviderQuote = async ({
   provider,
   url,
-  tokenIn,
-  tokenOut,
-  amountIn,
 }: {
   provider: ZapQuoteProvider
   url: string
-  tokenIn: Address
-  tokenOut: Address
-  amountIn: string
 }): Promise<ProviderQuote> => {
   const response = await fetch(url)
   if (!response.ok) {
@@ -156,10 +86,7 @@ const fetchProviderQuote = async ({
   }
 
   const raw = await response.json()
-  const standardResponse =
-    provider === 'reserve'
-      ? normalizeReserveResponse(raw)
-      : normalizeEnsoResponse({ raw, tokenIn, tokenOut, amountIn })
+  const standardResponse = normalizeProviderResponse(raw)
 
   if (standardResponse.status === 'error') {
     throw new Error(standardResponse.error || `${provider} returned an error`)
@@ -179,24 +106,18 @@ const pickBestQuote = (quotes: ProviderQuote[]): ProviderQuote => {
 export const fetchZapQuote = async (
   params: FetchZapQuoteParams
 ): Promise<{ selected: ProviderQuote; attempted: ZapQuoteProvider[] }> => {
-  const { quoteSource, reserveEndpoint, tokenIn, tokenOut, amountIn } = params
+  const { quoteSource, reserveEndpoint } = params
 
   const reserveQuote = () =>
     fetchProviderQuote({
       provider: 'reserve',
       url: reserveEndpoint,
-      tokenIn,
-      tokenOut,
-      amountIn,
     })
 
   const ensoQuote = () =>
     fetchProviderQuote({
       provider: 'enso',
       url: buildEnsoEndpoint(params),
-      tokenIn,
-      tokenOut,
-      amountIn,
     })
 
   if (quoteSource === 'zap') {

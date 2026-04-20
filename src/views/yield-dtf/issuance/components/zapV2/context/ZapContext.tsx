@@ -383,6 +383,7 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
             ? zeroAddress
             : (tokenOut.address as Address),
         amountIn: parseUnits(amountIn, tokenIn.decimals).toString(),
+        slippage: Number(slippage),
       })
 
       setSelectedProvider(selected.provider)
