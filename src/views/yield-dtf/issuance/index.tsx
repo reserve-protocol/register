@@ -13,6 +13,8 @@ import {
   CollateralizationBanner,
   DeprecatedBanner,
   DisabledArbitrumBanner,
+  IssuancePausedBanner,
+  IssuancePausedZapBanner,
   MaintenanceBanner,
 } from './components/warnings'
 import WrapSidebar from './components/wrapping/WrapSidebar'
@@ -22,6 +24,7 @@ import ZapToggleBottom from './components/zapV2/ZapToggleBottom'
 import { ZapProvider, useZap } from './components/zapV2/context/ZapContext'
 import { ChainId } from '@/utils/chains'
 
+// TODO: Messy refactor in order when react-zapper is introduced.
 const IssuanceMethods = () => {
   const chainId = useAtomValue(chainIdAtom)
   const { zapEnabled, setZapEnabled } = useZap()
@@ -38,6 +41,7 @@ const IssuanceMethods = () => {
         {zapEnabled && chainId !== ChainId.Arbitrum ? (
           <div className="flex flex-col gap-4">
             <CollateralizationBanner />
+            <IssuancePausedZapBanner />
             <MaintenanceBanner />
             <RTokenZapIssuance disableRedeem={!isCollaterized} />
             <ZapToggleBottom setZapEnabled={setZapEnabled} />
@@ -45,6 +49,7 @@ const IssuanceMethods = () => {
         ) : (
           <div>
             <CollateralizationBanner className="mb-4" />
+            <IssuancePausedBanner className='mb-4' />
             <MaintenanceBanner className="mb-4" />
             <DisabledArbitrumBanner className="mb-4" />
             {chainId !== ChainId.Arbitrum && (
