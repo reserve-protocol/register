@@ -14,7 +14,7 @@
     "noEmit": true,
     "noFallthroughCasesInSwitch": true,
     "jsx": "react-jsx",
-    "types": ["vite/client", "vitest/globals"],
+    "types": ["vite/client", "vitest/globals", "testing-library__jest-dom"],
     "baseUrl": "src",
     "paths": {
       "@/*": ["./*"]

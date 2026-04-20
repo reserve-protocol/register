@@ -323,6 +323,7 @@ export const PNGS = new Set([
   'avgjoescrypto',
   'eat',
   'cbbtc',
+  'wtao',
 ])
 
 export const EXTERNAL_ASSETS: Record<string, string> = {
