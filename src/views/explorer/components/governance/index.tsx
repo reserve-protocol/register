@@ -7,7 +7,9 @@ import { Table } from '@/components/ui/legacy-table'
 import TokenItem from 'components/token-item'
 import dayjs from 'dayjs'
 import useRTokenLogo from 'hooks/useRTokenLogo'
+import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
+import { walletAtom } from 'state/atoms'
 import { getFolioRoute, getProposalTitle, getTokenRoute } from 'utils'
 import { PROPOSAL_STATES, ROUTES, formatConstant } from 'utils/constants'
 import useProposalsData, { type ProposalRecord } from './use-proposals-data'
@@ -45,8 +47,14 @@ const getProposalRoute = (proposal: ProposalRecord) => {
 
 const columnHelper = createColumnHelper<ProposalRecord>()
 
+const formatVoteChoice = (choice: string | null) => {
+  if (!choice) return null
+  return choice.toLowerCase().replace(/^\w/, (char) => char.toUpperCase())
+}
+
 const ExploreGovernance = () => {
   const data = useProposalsData()
+  const wallet = useAtomValue(walletAtom)
 
   const columns = useMemo(
     () => [
@@ -99,8 +107,17 @@ const ExploreGovernance = () => {
           </span>
         ),
       }),
+      columnHelper.accessor('userVote', {
+        header: t`Your Vote`,
+        cell: (data) => {
+          const choice = formatVoteChoice(data.getValue())
+          if (!wallet) return <span className="text-muted-foreground">Connect wallet</span>
+
+          return <span>{choice || 'Not voted'}</span>
+        },
+      }),
     ],
-    []
+    [wallet]
   )
 
   return (
