@@ -39,6 +39,66 @@ const WarningBanner = ({
   )
 }
 
+export const IssuancePausedBanner = ({ className }: { className?: string }) => {
+  const { issuancePaused } = useAtomValue(rTokenStateAtom)
+
+  if (!issuancePaused) return null
+
+  return (
+    <div className={cn('rounded-xl border border-secondary bg-card p-4', className)}>
+      <div className="flex items-center">
+        <AlertIcon width={24} height={24} className='flex-shrink-0' />
+        <div className="ml-4">
+          <span className="font-bold text-warning">
+            Warning
+          </span>
+          <span className="block mt-1 text-warning">
+            Minting has been temporarily paused due to an abundance of caution related to the Kelp DAO exploit.{' '}
+            <a
+              href="https://x.com/reserveprotocol/status/2046007367679267080"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline"
+            >
+              Read more
+            </a>
+          </span>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export const IssuancePausedZapBanner = ({ className }: { className?: string }) => {
+  const { issuancePaused } = useAtomValue(rTokenStateAtom)
+
+  if (!issuancePaused) return null
+
+  return (
+    <div className={cn('rounded-xl border border-secondary bg-card p-4', className)}>
+      <div className="flex items-center">
+        <AlertIcon width={24} height={24} className='flex-shrink-0' />
+        <div className="ml-4">
+          <span className="font-bold text-warning">
+            Warning
+          </span>
+          <span className="block mt-1 text-warning">
+            Due to limited liquidity on Aave related to the Kelp DAO exploit, Zaps will swap for RTokens in DEX pools. Please pay attention to price impact before redeeming.{' '}
+            <a
+              href="https://x.com/reserveprotocol/status/2046007367679267080"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline"
+            >
+              Read more
+            </a>
+          </span>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export const CollateralizationBanner = ({
   className,
 }: {
