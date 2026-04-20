@@ -7,6 +7,7 @@ import { gql } from 'graphql-request'
 import { useMultichainQuery } from 'hooks/use-query'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
+import { walletAtom } from 'state/atoms'
 import { ChainId } from 'utils/chains'
 import { LISTED_RTOKEN_ADDRESSES, supportedChainList } from 'utils/constants'
 import { Address, formatEther, getAddress, zeroAddress } from 'viem'
@@ -19,7 +20,7 @@ export type { ProposalRecord } from './atoms'
 // --- Yield DTF query ---
 
 const yieldProposalsQuery = gql`
-  query getAllProposals {
+  query getAllProposals($voter: String!) {
     proposals(orderBy: creationTime, orderDirection: desc, first: 1000) {
       id
       description
@@ -43,6 +44,9 @@ const yieldProposalsQuery = gql`
           }
         }
       }
+      votes(where: { voter_: { address: $voter } }) {
+        choice
+      }
     }
   }
 `
@@ -50,7 +54,7 @@ const yieldProposalsQuery = gql`
 // --- Index DTF queries ---
 
 const indexProposalsQuery = gql`
-  query getAllIndexProposals {
+  query getAllIndexProposals($voter: String!) {
     proposals(orderBy: creationTime, orderDirection: desc, first: 1000) {
       id
       description
@@ -65,6 +69,9 @@ const indexProposalsQuery = gql`
       executionETA
       governance {
         id
+      }
+      votes(where: { voter_: { address: $voter } }) {
+        choice
       }
     }
   }
@@ -107,6 +114,7 @@ type IndexProposalsResponse = {
     voteEnd: string
     executionETA?: string
     governance: { id: string }
+    votes: { choice: string }[]
   }[]
 }
 
@@ -132,6 +140,7 @@ type DTFInfo = {
 
 const useIndexDTFProposals = () => {
   const { data: dtfList } = useIndexDTFList()
+  const account = useAtomValue(walletAtom)
 
   // Build per-chain address lists from whitelisted DTFs
   const dtfsByChain = useMemo(() => {
@@ -162,7 +171,7 @@ const useIndexDTFProposals = () => {
   }, [dtfList])
 
   return useQuery({
-    queryKey: ['explorer-index-dtf-proposals', dtfsByChain],
+    queryKey: ['explorer-index-dtf-proposals', dtfsByChain, account],
     queryFn: async () => {
       if (!dtfsByChain || !dtfInfoMap) return null
 
@@ -176,7 +185,9 @@ const useIndexDTFProposals = () => {
 
           // Fetch proposals + governance IDs for whitelisted DTFs in parallel
           const [proposalsRes, governanceRes] = await Promise.all([
-            client.request<IndexProposalsResponse>(indexProposalsQuery),
+            client.request<IndexProposalsResponse>(indexProposalsQuery, {
+              voter: account?.toLowerCase() ?? zeroAddress,
+            }),
             client.request<IndexDTFGovernanceResponse>(indexDtfGovernanceQuery, {
               ids: addresses,
             }),
@@ -214,7 +225,10 @@ const useIndexDTFProposals = () => {
 const useProposalsData = () => {
   const blocks = useBlockChains()
   const filters = useAtomValue(filtersAtom)
-  const { data: yieldData } = useMultichainQuery(yieldProposalsQuery)
+  const account = useAtomValue(walletAtom)
+  const { data: yieldData } = useMultichainQuery(yieldProposalsQuery, {
+    voter: account?.toLowerCase() ?? zeroAddress,
+  })
   const { data: indexData } = useIndexDTFProposals()
 
   return useMemo(() => {
@@ -244,6 +258,7 @@ const useProposalsData = () => {
             id: entry.id,
             description: entry.description,
             creationTime: entry.creationTime,
+            userVote: entry.votes?.[0]?.choice ?? null,
             governance: rToken.id,
             forWeightedVotes: entry.forWeightedVotes,
             againstWeightedVotes: entry.againstWeightedVotes,
@@ -298,6 +313,7 @@ const useProposalsData = () => {
             id: entry.id,
             description: entry.description,
             creationTime: entry.creationTime,
+            userVote: entry.votes?.[0]?.choice ?? null,
             governance: govId,
             forWeightedVotes: entry.forWeightedVotes,
             againstWeightedVotes: entry.againstWeightedVotes,

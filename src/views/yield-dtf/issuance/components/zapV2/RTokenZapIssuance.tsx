@@ -19,7 +19,7 @@ const InputOutputSeparator = () => (
 
 const RTokenZapIssuance = ({ disableRedeem }: { disableRedeem: boolean }) => {
   return (
-    <Card className="lg:mr-6 rounded-3xl bg-card shadow-lg h-fit">
+    <Card className="rounded-3xl bg-card shadow-lg h-fit">
       <div className="flex items-center border-b border-border p-6">
         <ZapTabs />
       </div>

@@ -6,6 +6,7 @@ import useQuery, { useMultiFetch } from '../use-query'
 // Mock the gqlClientAtom and GRAPH_CLIENTS
 vi.mock('state/atoms', () => ({
   gqlClientAtom: {},
+  chainIdAtom: {},
   GRAPH_CLIENTS: {
     1: { request: vi.fn() },
     8453: { request: vi.fn() },

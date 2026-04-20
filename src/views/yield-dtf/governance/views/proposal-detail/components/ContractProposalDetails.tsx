@@ -65,7 +65,7 @@ const Header = ({ label, address }: { label: string; address: string }) => {
   const chainId = useAtomValue(chainIdAtom)
 
   return (
-    <div className="flex items-center text-primary p-2">
+    <div className="flex items-center text-primary pl-3 pt-4 pb-1">
       <span className="font-semibold text-lg mr-1">{label}</span>
       <GoTo
         className="mt-0.5"
@@ -279,7 +279,7 @@ const ContractProposalDetails = ({ data, snapshotBlock, className }: Props) => {
   return (
     <Card
       className={cn(
-        'border-background',
+        'border-background overflow-hidden',
         className
       )}
     >

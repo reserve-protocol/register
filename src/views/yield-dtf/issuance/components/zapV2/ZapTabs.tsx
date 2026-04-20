@@ -30,7 +30,7 @@ const ZapTabs = () => {
   }, [disableMint])
 
   return (
-    <div className="flex items-center justify-between">
+    <div className="flex w-full items-center justify-between">
       <TabMenu
         active={operation}
         items={backingOptions}

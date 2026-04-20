@@ -25,12 +25,12 @@ import {
   encodeAbiParameters,
   encodeFunctionData,
   keccak256,
+  pad,
   parseAbiParameters,
   parseEther,
   stringToBytes,
   toHex,
 } from 'viem'
-import { isTimeunitGovernance } from '@/views/yield-dtf/governance/utils'
 import { useBlock } from 'wagmi'
 import { readContract } from 'wagmi/actions'
 import { simulationStateAtom } from '../../proposal-detail/atom'
@@ -39,24 +39,22 @@ import { simulationStateAtom } from '../../proposal-detail/atom'
 const MAX_BACKOFF_DELAY = 8_000
 
 /**
- * @notice Encode state overrides
+ * @notice Encode state overrides via Tenderly API
  * @param payload State overrides to send
  */
 const sendEncodeRequest = async (
   payload: any
 ): Promise<StorageEncodingResponse> => {
-  try {
-    const response: any = await fetch(
-      TENDERLY_ENCODE_URL,
-      getFetchOptions(payload)
-    )
+  const response: any = await fetch(
+    TENDERLY_ENCODE_URL,
+    getFetchOptions(payload)
+  )
 
-    return response.json() as StorageEncodingResponse
-  } catch (err) {
-    console.log('sendEncodeRequest error:', JSON.stringify(err, null, 2))
-    console.log(JSON.stringify(payload))
-    throw err
+  if (!response.ok) {
+    throw new Error(`Tenderly encode failed: ${response.status}`)
   }
+
+  return response.json() as StorageEncodingResponse
 }
 
 /**
@@ -109,18 +107,168 @@ const getFetchOptions = (payload: any) => {
 const sleep = (delay: number) =>
   new Promise((resolve) => setTimeout(resolve, delay)) // delay in milliseconds
 
-const simulateNew = async (
+// --- Tenderly encode API path (works for older OZ contracts) ---
+
+const buildStorageViaEncodeApi = async (
+  proposalId: bigint,
+  timelockOperationId: bigint,
+  simTimestamp: bigint,
+  votingTokenSupply: number,
+  governorAddress: Address,
+  timelockAddr: Address,
+  chainId: AvailableChain,
+  blockNumber: number
+): Promise<{
+  governorStorage: Record<string, string>
+  timelockStorage: Record<string, string>
+}> => {
+  const timelockStorageObj: Record<string, string> = {
+    [`_timestamps[${toHex(timelockOperationId, { size: 32 })}]`]:
+      simTimestamp.toString(),
+  }
+
+  const proposalCoreKey = `_proposals[${proposalId.toString()}]`
+  const proposalVotesKey = `_proposalVotes[${proposalId.toString()}]`
+  const voteTimestamp = (simTimestamp - 100n).toString()
+  const governorStateOverrides: Record<string, string> = {
+    [`${proposalCoreKey}.voteEnd`]: voteTimestamp,
+    [`${proposalCoreKey}.voteStart`]: voteTimestamp,
+    [`${proposalCoreKey}.proposedAt`]: voteTimestamp,
+    [`${proposalCoreKey}.executed`]: 'false',
+    [`${proposalCoreKey}.canceled`]: 'false',
+    [`${proposalVotesKey}.forVotes`]: parseEther(
+      votingTokenSupply.toString()
+    ).toString(),
+    [`${proposalVotesKey}.againstVotes`]: '0',
+    [`${proposalVotesKey}.abstainVotes`]: '0',
+  }
+
+  const storageObj = await sendEncodeRequest({
+    networkID: chainId.toString(),
+    stateOverrides: {
+      [timelockAddr]: { value: timelockStorageObj },
+      [governorAddress]: { value: governorStateOverrides },
+    },
+    blockNumber,
+  })
+
+  return {
+    governorStorage:
+      storageObj.stateOverrides[governorAddress.toLowerCase()].value,
+    timelockStorage:
+      storageObj.stateOverrides[timelockAddr.toLowerCase()].value,
+  }
+}
+
+// --- Manual storage slot path (for OZ v4.9.3 retyped struct) ---
+
+// OZ v4.9.3 storage slot constants for Governor Anastasius
+// Governor._proposals mapping is at slot 3 (after EIP712 fallbacks + _name)
+const GOV_PROPOSALS_SLOT = 3n
+// GovernorCountingSimple._proposalVotes mapping is at slot 9
+const GOV_PROPOSAL_VOTES_SLOT = 9n
+// GovernorTimelockControl._timelockIds mapping is at slot 13
+const GOV_TIMELOCK_IDS_SLOT = 13n
+// TimelockController._timestamps mapping is at slot 1 (after AccessControl._roles)
+const TIMELOCK_TIMESTAMPS_SLOT = 1n
+
+// OZ v4.9.3 ProposalCore struct layout (3 slots):
+// Slot +0: [uint64 voteStart | address proposer | bytes4 __gap] = 32 bytes
+// Slot +1: [uint64 voteEnd | bytes24 __gap] = 32 bytes
+// Slot +2: [bool executed | bool canceled] = 2 bytes
+const getMappingSlot = (
+  key: bigint | `0x${string}`,
+  mappingSlot: bigint,
+  keyType: 'uint256' | 'bytes32' = 'uint256'
+): `0x${string}` => {
+  const keyValue =
+    keyType === 'bytes32'
+      ? typeof key === 'bigint'
+        ? toHex(key, { size: 32 })
+        : key
+      : key
+
+  return keccak256(
+    encodeAbiParameters(parseAbiParameters(`${keyType}, uint256`), [
+      keyValue as never,
+      mappingSlot,
+    ])
+  )
+}
+
+const buildStorageViaManualSlots = (
+  proposalId: bigint,
+  timelockOperationId: `0x${string}`,
+  simTimestamp: bigint,
+  votingTokenSupply: number
+): {
+  governorStorage: Record<string, `0x${string}`>
+  timelockStorage: Record<string, `0x${string}`>
+} => {
+  const voteStart = simTimestamp - 200n
+  const voteEnd = simTimestamp - 100n
+
+  // Governor storage: _proposals[proposalId] (3 slots)
+  const proposalBase = getMappingSlot(proposalId, GOV_PROPOSALS_SLOT)
+  const proposalSlot1 = toHex(BigInt(proposalBase) + 1n)
+  const proposalSlot2 = toHex(BigInt(proposalBase) + 2n)
+
+  // Governor storage: _proposalVotes[proposalId] (3 slots)
+  const votesBase = getMappingSlot(proposalId, GOV_PROPOSAL_VOTES_SLOT)
+  const votesSlot1 = toHex(BigInt(votesBase) + 1n)
+  const votesSlot2 = toHex(BigInt(votesBase) + 2n)
+
+  // Governor storage: _timelockIds[proposalId]
+  const timelockIdSlot = getMappingSlot(proposalId, GOV_TIMELOCK_IDS_SLOT)
+
+  // Timelock storage: _timestamps[operationId]
+  const timelockTimestampSlot = getMappingSlot(
+    timelockOperationId,
+    TIMELOCK_TIMESTAMPS_SLOT,
+    'bytes32'
+  )
+
+  return {
+    governorStorage: {
+      // ProposalCore slot 0: uint64 voteStart (low 8 bytes), rest 0
+      [proposalBase]: pad(toHex(voteStart & ((1n << 64n) - 1n)), { size: 32 }),
+      // ProposalCore slot 1: uint64 voteEnd (low 8 bytes)
+      [proposalSlot1]: pad(toHex(voteEnd & ((1n << 64n) - 1n)), { size: 32 }),
+      // ProposalCore slot 2: executed=false, canceled=false
+      [proposalSlot2]: pad(toHex(0n), { size: 32 }),
+      // ProposalVote: againstVotes, forVotes, abstainVotes
+      [votesBase]: pad(toHex(0n), { size: 32 }),
+      [votesSlot1]: pad(toHex(parseEther(votingTokenSupply.toString())), {
+        size: 32,
+      }),
+      [votesSlot2]: pad(toHex(0n), { size: 32 }),
+      // _timelockIds: link proposal to timelock operation
+      [timelockIdSlot]: timelockOperationId,
+    },
+    timelockStorage: {
+      // _timestamps[operationId] = simTimestamp (makes operation "ready")
+      [timelockTimestampSlot]: pad(toHex(simTimestamp), { size: 32 }),
+    },
+  }
+}
+
+// --- Main simulation function ---
+
+/**
+ * Simulate a Yield DTF governance proposal.
+ * Tries Tenderly's encode-states API first (works for older OZ contracts),
+ * falls back to manual OZ v4.9.3 storage slot calculation if encode fails.
+ */
+const simulateProposal = async (
   config: SimulationConfig,
   votingTokenSupply: number,
-  isTimeUnitGovernance: boolean,
   chainId: AvailableChain,
   blockNumber: number,
   blockTimestamp: bigint,
   governorAddress: Address
 ): Promise<TenderlySimulation> => {
   const { targets, values, calldatas, description } = config
-
-  const blockNumberToUse = blockNumber - 20 // ensure tenderly has the block
+  const blockNumberToUse = blockNumber - 20
 
   const timelockAddr = await readContract(wagmiConfig, {
     address: governorAddress,
@@ -141,70 +289,46 @@ const simulateNew = async (
 
   const simTimestamp = blockTimestamp + 1n
 
-  // Generate the state object needed to mark the transactions as queued in the Timelock's storage
-  const timelockStorageObj: Record<string, string> = {}
-
-  const id = BigInt(
-    keccak256(
-      encodeAbiParameters(
-        parseAbiParameters('address[], uint256[], bytes[], bytes32, bytes32'),
-        [
-          targets,
-          values,
-          calldatas,
-          '0x0000000000000000000000000000000000000000000000000000000000000000',
-          descriptionHash,
-        ]
-      )
+  // Timelock operation ID: hashOperationBatch(targets, values, calldatas, 0, descriptionHash)
+  const timelockOperationId = keccak256(
+    encodeAbiParameters(
+      parseAbiParameters('address[], uint256[], bytes[], bytes32, bytes32'),
+      [
+        targets,
+        values,
+        calldatas,
+        '0x0000000000000000000000000000000000000000000000000000000000000000',
+        descriptionHash,
+      ]
     )
   )
 
-  timelockStorageObj[`_timestamps[${toHex(id, { size: 32 })}]`] =
-    simTimestamp.toString()
-
-  // Use the Tenderly API to get the encoded state overrides for governor storage
-  let governorStateOverrides: Record<string, string> = {}
-
-  const proposalCoreKey = `_proposals[${proposalId.toString()}]`
-  const proposalVotesKey = `_proposalVotes[${proposalId.toString()}]`
-  governorStateOverrides = {
-    ...(isTimeUnitGovernance
-      ? {
-          [`${proposalCoreKey}.voteEnd`]: (simTimestamp - 100n).toString(),
-          [`${proposalCoreKey}.voteStart`]: (simTimestamp - 100n).toString(),
-          [`${proposalCoreKey}.proposedAt`]: (simTimestamp - 100n).toString(),
-        }
-      : {
-          [`${proposalCoreKey}.voteEnd._deadline`]: (
-            BigInt(blockNumberToUse) - 1n
-          ).toString(),
-          [`${proposalCoreKey}.voteStart._deadline`]: (
-            BigInt(blockNumberToUse) - 1n
-          ).toString(),
-        }),
-    [`${proposalCoreKey}.executed`]: 'false',
-    [`${proposalCoreKey}.canceled`]: 'false',
-    [`${proposalVotesKey}.forVotes`]: parseEther(
-      votingTokenSupply.toString()
-    ).toString(),
-    [`${proposalVotesKey}.againstVotes`]: '0',
-    [`${proposalVotesKey}.abstainVotes`]: '0',
+  // Try Tenderly encode API first, fall back to manual slots
+  let storageOverrides: {
+    governorStorage: Record<string, string>
+    timelockStorage: Record<string, string>
   }
 
-  const stateOverrides = {
-    networkID: chainId.toString(),
-    stateOverrides: {
-      [timelockAddr]: {
-        value: timelockStorageObj,
-      },
-      [governorAddress]: {
-        value: governorStateOverrides,
-      },
-    },
-    blockNumber,
+  try {
+    storageOverrides = await buildStorageViaEncodeApi(
+      proposalId,
+      BigInt(timelockOperationId),
+      simTimestamp,
+      votingTokenSupply,
+      governorAddress,
+      timelockAddr,
+      chainId,
+      blockNumber
+    )
+  } catch (err) {
+    console.warn('Tenderly encode API failed, using manual slots:', err)
+    storageOverrides = buildStorageViaManualSlots(
+      proposalId,
+      timelockOperationId,
+      simTimestamp,
+      votingTokenSupply
+    )
   }
-
-  const storageObj = await sendEncodeRequest(stateOverrides)
 
   const executeInputs: [
     readonly `0x${string}`[],
@@ -212,6 +336,7 @@ const simulateNew = async (
     readonly `0x${string}`[],
     `0x${string}`,
   ] = [targets, values, calldatas, descriptionHash]
+
   const simulationPayload: TenderlyPayload = {
     network_id: chainId,
     block_number: blockNumber,
@@ -234,19 +359,13 @@ const simulateNew = async (
     },
     state_objects: {
       [DEFAULT_FROM]: { balance: '0' },
-      // Ensure transactions are queued in the timelock
-      [timelockAddr]: {
-        storage: storageObj.stateOverrides[timelockAddr.toLowerCase()].value,
-      },
-      // Ensure governor storage is properly configured so `state(proposalId)` returns `Queued`
-      [governorAddress]: {
-        storage: storageObj.stateOverrides[governorAddress.toLowerCase()].value,
-      },
+      [timelockAddr]: { storage: storageOverrides.timelockStorage },
+      [governorAddress]: { storage: storageOverrides.governorStorage },
     },
   }
+
   const sim = await sendSimulation(simulationPayload)
   if (sim?.simulation?.id) {
-    // Share simulation first
     await fetch(TENDERLY_SHARE_URL(sim?.simulation?.id), getFetchOptions({}))
     return sim
   } else {
@@ -260,7 +379,6 @@ const useProposalSimulation = () => {
   const { stTokenSupply: votingTokenSupply } = useAtomValue(rTokenStateAtom)
   const governance = useAtomValue(rTokenGovernanceAtom)
   const [simState, setSimState] = useAtom(simulationStateAtom)
-  const isTimeUnitGovernance = isTimeunitGovernance(governance.name)
   const tx = useProposalTx()
 
   const [targets, values, calldatas, description] = tx?.args!
@@ -275,10 +393,9 @@ const useProposalSimulation = () => {
   const handleSimulation = useCallback(async () => {
     setSimState((prev) => ({ ...prev, loading: true }))
     try {
-      const result = await simulateNew(
+      const result = await simulateProposal(
         config,
         votingTokenSupply,
-        isTimeUnitGovernance,
         chainId,
         Number(block?.number ?? 0n),
         block?.timestamp ?? 0n,
