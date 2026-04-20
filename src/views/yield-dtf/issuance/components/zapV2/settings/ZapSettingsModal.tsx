@@ -4,6 +4,7 @@ import Help from 'components/help'
 import { X } from 'lucide-react'
 import { useZap } from '../context/ZapContext'
 import ZapSettingsCollectDust from './ZapSettingsCollectDust'
+import ZapSettingsQuoteSource from './ZapSettingsQuoteSource'
 import ZapSettingsSlippage from './ZapSettingsSlippage'
 import ZapSettingsOnlyMint from './ZapSettingsOnlyMint'
 
@@ -32,6 +33,15 @@ const ZapSettingsModal = () => {
           </Button>
         </div>
         <div className="flex flex-col gap-2 p-3 pt-0">
+          <div>
+            <div className="flex items-center justify-between pl-3 pr-6 py-2">
+              <span className="text-legend">Quote source</span>
+              <Help
+                content={`Which quote provider to use. 'Best Quote' fetches from Reserve and Enso in parallel and picks the higher amount out; 'Zap' only queries Reserve; 'Enso' only queries Enso.`}
+              />
+            </div>
+            <ZapSettingsQuoteSource />
+          </div>
           <div>
             <div className="flex items-center justify-between pl-3 pr-6 py-2">
               <span className="text-legend">Collect dust?</span>
