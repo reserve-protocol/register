@@ -21,7 +21,7 @@ const SubHeader = ({ className }: { className?: string }) => (
 
 const MetricsContainer = () => {
   return (
-    <div className="flex gap-6 lg:mr-6 min-w-0">
+    <div className="flex gap-1 lg:mr-6 min-w-0 overflow-hidden">
       <SubHeader className="hidden lg:block mr-auto ml-6" />
       <ProtocolMetrics />
     </div>
