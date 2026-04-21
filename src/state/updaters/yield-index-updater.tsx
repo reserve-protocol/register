@@ -1,6 +1,6 @@
 import { indexDTFAtom, indexDTFExposureDataAtom } from '@/state/dtf/atoms'
-import { COLLATERAL_POOL_MAP } from '@/state/dtf/yield-index-config'
 import {
+  COLLATERAL_POOL_MAP,
   indexDTFApyAtom,
   indexDTFPoolsDataAtom,
   indexDTFUnderlyingNamesAtom,
