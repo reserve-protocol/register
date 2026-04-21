@@ -1,11 +1,11 @@
 import { indexDTFAtom, indexDTFExposureDataAtom } from '@/state/dtf/atoms'
+import { COLLATERAL_POOL_MAP } from '@/state/dtf/yield-index-config'
 import {
   indexDTFApyAtom,
   indexDTFPoolsDataAtom,
   indexDTFUnderlyingNamesAtom,
   isYieldIndexDTFAtom,
 } from '@/state/dtf/yield-index-atoms'
-import { COLLATERAL_POOL_MAP } from './yield-index-config'
 import { RESERVE_API } from '@/utils/constants'
 import { useQuery } from '@tanstack/react-query'
 import { atom, useAtomValue, useSetAtom } from 'jotai'

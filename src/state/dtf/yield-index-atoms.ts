@@ -1,10 +1,7 @@
 import { atom } from 'jotai'
 import { LP_PROJECTS } from '@/utils/constants'
 import { DefiLlamaPool } from '@/types/defillama'
-import {
-  COLLATERAL_POOL_MAP,
-  STRATEGY_NAME_MAP,
-} from '@/views/index-dtf/yield-index-config'
+import { COLLATERAL_POOL_MAP, STRATEGY_NAME_MAP } from './yield-index-config'
 import {
   indexDTFAtom,
   indexDTFExposureDataAtom,

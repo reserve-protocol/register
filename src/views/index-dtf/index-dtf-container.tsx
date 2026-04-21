@@ -48,7 +48,7 @@ import { Address } from 'viem'
 import { useReadContract, useSwitchChain } from 'wagmi'
 import IndexDTFNavigation from './components/navigation'
 import GovernanceUpdater from './governance/updater'
-import YieldIndexUpdater from './yield-index-updater'
+import YieldIndexUpdater from '@/state/updaters/yield-index-updater'
 
 const DEFAULT_DESCRIPTION =
   'Reserve is the leading platform for permissionless DTFs and asset-backed currencies. Create, manage & trade tokenized indexes with 24/7 transparency.'
