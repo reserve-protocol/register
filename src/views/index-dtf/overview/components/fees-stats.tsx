@@ -1,5 +1,6 @@
 import { Card } from '@/components/ui/card'
 import {
+  indexDTF24hVolumeAtom,
   indexDTFAtom,
   indexDTFMarketCapAtom,
   indexDTFTransactionsAtom,
@@ -14,7 +15,6 @@ import {
   TableRowsSplit,
   Wallet,
 } from 'lucide-react'
-import { useMemo } from 'react'
 import MetricsItem from './metrics-item'
 import SectionAnchor from '@/components/section-anchor'
 
@@ -60,15 +60,7 @@ const MarketCap = () => {
 
 const TxVolume = () => {
   const transactions = useAtomValue(indexDTFTransactionsAtom)
-  const last24h = Date.now() / 1000 - 24 * 60 * 60
-
-  const txVolume = useMemo(
-    () =>
-      transactions
-        .filter((transaction) => transaction.timestamp > last24h)
-        .reduce((acc, transaction) => acc + transaction.amountUSD, 0),
-    [transactions]
-  )
+  const txVolume = useAtomValue(indexDTF24hVolumeAtom)
 
   return (
     <MetricsItem

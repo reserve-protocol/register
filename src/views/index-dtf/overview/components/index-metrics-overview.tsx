@@ -1,6 +1,7 @@
 import TokenLogo from '@/components/token-logo'
 import { chainIdAtom } from '@/state/atoms'
 import {
+  indexDTF24hVolumeAtom,
   indexDTFAtom,
   indexDTFBrandAtom,
   indexDTFMarketCapAtom,
@@ -9,7 +10,7 @@ import {
 import { useEnsName } from '@/hooks/use-ens-name'
 import { formatCurrency, formatPercentage } from '@/utils'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
-import { useAtomValue } from 'jotai'
+import { atom, useAtomValue } from 'jotai'
 import {
   ArrowUpDown,
   BadgeDollarSign,
@@ -21,9 +22,23 @@ import {
   TableRowsSplit,
   Wallet,
 } from 'lucide-react'
-import { useMemo } from 'react'
 import { formatEther } from 'viem'
 import MetricsItem from './metrics-item'
+
+const supplyChange24hAtom = atom<number>((get) => {
+  const txs = get(indexDTFTransactionsAtom)
+  const dtf = get(indexDTFAtom)
+  if (!dtf?.token?.totalSupply) return 0
+  const cutoff = Date.now() / 1000 - 24 * 60 * 60
+  const delta = txs
+    .filter((t) => t.timestamp > cutoff)
+    .filter((t) => t.type === 'Mint' || t.type === 'Redeem')
+    .reduce(
+      (acc, t) => acc + (t.type === 'Redeem' ? -1 : 1) * t.amount,
+      0
+    )
+  return (delta / Number(formatEther(BigInt(dtf.token.totalSupply)))) * 100
+})
 
 const Creator = () => {
   const dtf = useAtomValue(indexDTFAtom)
@@ -117,33 +132,7 @@ const Supply = () => {
 
 const Supply24h = () => {
   const transactions = useAtomValue(indexDTFTransactionsAtom)
-  const last24h = Date.now() / 1000 - 24 * 60 * 60
-  const dtf = useAtomValue(indexDTFAtom)
-
-  const txVolume = useMemo(
-    () =>
-      transactions
-        .filter((transaction) => transaction.timestamp > last24h)
-        .filter(
-          (transaction) =>
-            transaction.type === 'Mint' || transaction.type === 'Redeem'
-        )
-        .reduce(
-          (acc, transaction) =>
-            acc + (transaction.type === 'Redeem' ? -1 : 1) * transaction.amount,
-          0
-        ),
-    [transactions]
-  )
-
-  const supplyChange = useMemo(() => {
-    if (!dtf?.token?.totalSupply) return 0
-
-    return (
-      (txVolume / Number(formatEther(BigInt(dtf?.token?.totalSupply || 1)))) *
-      100
-    )
-  }, [txVolume])
+  const supplyChange = useAtomValue(supplyChange24hAtom)
 
   return (
     <MetricsItem
@@ -157,15 +146,7 @@ const Supply24h = () => {
 
 const TxVolume = () => {
   const transactions = useAtomValue(indexDTFTransactionsAtom)
-  const last24h = Date.now() / 1000 - 24 * 60 * 60
-
-  const txVolume = useMemo(
-    () =>
-      transactions
-        .filter((transaction) => transaction.timestamp > last24h)
-        .reduce((acc, transaction) => acc + transaction.amountUSD, 0),
-    [transactions]
-  )
+  const txVolume = useAtomValue(indexDTF24hVolumeAtom)
 
   return (
     <MetricsItem

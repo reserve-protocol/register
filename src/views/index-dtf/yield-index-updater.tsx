@@ -9,8 +9,22 @@ import {
 } from '@/state/dtf/yield-index-atoms'
 import { RESERVE_API } from '@/utils/constants'
 import { useQuery } from '@tanstack/react-query'
-import { useAtomValue, useSetAtom } from 'jotai'
+import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useMemo } from 'react'
+
+const underlyingAddressesAtom = atom<string[]>((get) => {
+  const pools = get(indexDTFPoolsDataAtom)
+  if (!pools) return []
+  const seen = new Set<string>()
+  return pools
+    .flatMap((p) => p.underlyingTokens ?? [])
+    .filter((addr) => {
+      const key = addr.toLowerCase()
+      if (seen.has(key)) return false
+      seen.add(key)
+      return true
+    })
+})
 
 const IndexDTFApyUpdater = ({ chainId }: { chainId: number }) => {
   const dtf = useAtomValue(indexDTFAtom)
@@ -83,18 +97,7 @@ const IndexDTFPoolsUpdater = ({ chainId }: { chainId: number }) => {
   }, [poolsData, setPoolsData])
 
   // Fetch name/symbol for unique underlying tokens via multicall
-  const underlyingAddresses = useMemo(() => {
-    if (!poolsData) return []
-    const seen = new Set<string>()
-    return poolsData
-      .flatMap((p) => p.underlyingTokens ?? [])
-      .filter((addr) => {
-        const key = addr.toLowerCase()
-        if (seen.has(key)) return false
-        seen.add(key)
-        return true
-      })
-  }, [poolsData])
+  const underlyingAddresses = useAtomValue(underlyingAddressesAtom)
 
   const erc20Calls = useMemo(
     () =>

@@ -1,15 +1,14 @@
 import { Skeleton } from '@/components/ui/skeleton'
 import StackTokenLogo from '@/components/token-logo/StackTokenLogo'
+import { chainIdAtom } from '@/state/atoms'
 import {
   indexDTFApyAtom,
   indexDTFCompositionAtom,
   indexDTFExposureDataAtom,
   indexDTFPoolsDataAtom,
 } from '@/state/dtf/atoms'
-import { chainIdAtom } from '@/state/atoms'
 import { formatPercentage } from '@/utils'
-import { useAtomValue } from 'jotai'
-import React, { useMemo } from 'react'
+import { atom, useAtomValue } from 'jotai'
 import { ChevronRight, Info } from 'lucide-react'
 import {
   Tooltip,
@@ -19,6 +18,59 @@ import {
 } from '@/components/ui/tooltip'
 import { PROJECT_ICONS } from '@/views/earn/hooks/useEarnTableColumns'
 import { MOCK_YIELD_DESCRIPTION } from './yield-index-mock-data'
+
+const underlyingTokensAtom = atom<
+  { symbol: string; address: string; chain: number }[]
+>((get) => {
+  const composition = get(indexDTFCompositionAtom)
+  const chainId = get(chainIdAtom)
+  if (!composition) return []
+  const seen = new Set<string>()
+  return composition.assets
+    .filter((a) => {
+      if (seen.has(a.address)) return false
+      seen.add(a.address)
+      return true
+    })
+    .map((a) => ({ symbol: a.symbol, address: a.address, chain: chainId }))
+})
+
+const protocolSlugsAtom = atom<{ project: string }[]>((get) => {
+  const pools = get(indexDTFPoolsDataAtom)
+  if (!pools) return []
+  const seen = new Set<string>()
+  const out: { project: string }[] = []
+  for (const p of pools) {
+    if (!seen.has(p.project)) {
+      seen.add(p.project)
+      out.push({ project: p.project })
+    }
+    if (p.poolMeta) {
+      const slug = p.poolMeta.toLowerCase().includes('uniswap')
+        ? 'uniswap-v3'
+        : p.poolMeta.toLowerCase()
+      if (!seen.has(slug)) {
+        seen.add(slug)
+        out.push({ project: slug })
+      }
+    }
+  }
+  return out
+})
+
+const uniqueProjectsCountAtom = atom<number>((get) => {
+  const pools = get(indexDTFPoolsDataAtom)
+  if (!pools) return 0
+  const projects = new Set<string>()
+  for (const p of pools) {
+    projects.add(p.project)
+    if (p.poolMeta) {
+      const venue = p.poolMeta.replace(/V\d+/g, '').trim().toLowerCase()
+      projects.add(venue)
+    }
+  }
+  return projects.size
+})
 
 const ApyBreakdown = () => {
   const apyData = useAtomValue(indexDTFApyAtom)
@@ -57,62 +109,12 @@ const ApyBreakdown = () => {
 
 const ExposureSummary = () => {
   const exposureData = useAtomValue(indexDTFExposureDataAtom)
-  const poolsData = useAtomValue(indexDTFPoolsDataAtom)
-  const composition = useAtomValue(indexDTFCompositionAtom)
-  const chainId = useAtomValue(chainIdAtom)
+  const underlyingTokens = useAtomValue(underlyingTokensAtom)
+  const protocolSlugs = useAtomValue(protocolSlugsAtom)
+  const uniqueProjects = useAtomValue(uniqueProjectsCountAtom)
 
   const strategyCount = exposureData?.flatMap((g) => g.tokens).length ?? 0
-
-  const underlyingTokens = useMemo(() => {
-    if (!composition) return []
-    const seen = new Set<string>()
-    return composition.assets
-      .filter((a) => {
-        if (seen.has(a.address)) return false
-        seen.add(a.address)
-        return true
-      })
-      .map((a) => ({
-        symbol: a.symbol,
-        address: a.address,
-        chain: chainId,
-      }))
-  }, [composition, chainId])
-
-  const protocolIcons = useMemo(() => {
-    if (!poolsData) return []
-    const seen = new Set<string>()
-    const icons: { project: string; icon: React.ReactElement }[] = []
-    for (const p of poolsData) {
-      if (!seen.has(p.project) && PROJECT_ICONS[p.project]) {
-        seen.add(p.project)
-        icons.push({ project: p.project, icon: PROJECT_ICONS[p.project] })
-      }
-      if (p.poolMeta) {
-        const slug = p.poolMeta.toLowerCase().includes('uniswap')
-          ? 'uniswap-v3'
-          : p.poolMeta.toLowerCase()
-        if (!seen.has(slug) && PROJECT_ICONS[slug]) {
-          seen.add(slug)
-          icons.push({ project: slug, icon: PROJECT_ICONS[slug] })
-        }
-      }
-    }
-    return icons
-  }, [poolsData])
-
-  const uniqueProjects = useMemo(() => {
-    if (!poolsData) return 0
-    const projects = new Set<string>()
-    for (const p of poolsData) {
-      projects.add(p.project)
-      if (p.poolMeta) {
-        const venue = p.poolMeta.replace(/V\d+/g, '').trim().toLowerCase()
-        projects.add(venue)
-      }
-    }
-    return projects.size
-  }, [poolsData])
+  const protocolIcons = protocolSlugs.filter((p) => PROJECT_ICONS[p.project])
 
   const scrollToComposition = () => {
     const el = document.getElementById('composition')
@@ -148,7 +150,7 @@ const ExposureSummary = () => {
                   className="w-4 h-4 rounded-full overflow-hidden"
                   style={{ zIndex: protocolIcons.length - i }}
                 >
-                  {p.icon}
+                  {PROJECT_ICONS[p.project]}
                 </div>
               ))}
             </div>

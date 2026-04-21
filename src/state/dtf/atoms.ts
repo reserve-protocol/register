@@ -133,6 +133,14 @@ export const indexDTFTransactionsAtom = atom<Transaction[]>([])
 
 export const indexDTFFeeAtom = atom<number | undefined>(undefined)
 
+export const indexDTF24hVolumeAtom = atom<number>((get) => {
+  const txs = get(indexDTFTransactionsAtom)
+  const cutoff = Date.now() / 1000 - 24 * 60 * 60
+  return txs
+    .filter((t) => t.timestamp > cutoff)
+    .reduce((acc, t) => acc + t.amountUSD, 0)
+})
+
 export const indexDTFRebalanceControlAtom = atom<
   { weightControl: boolean; priceControl: number } | undefined
 >(undefined)
