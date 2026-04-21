@@ -1,0 +1,5 @@
+Contact: https://reserve.org/en/protocol/security/
+Contact: mailto:security@reserve.org
+Preferred-Languages: en
+Canonical: https://app.reserve.org/.well-known/security.txt
+Policy: https://reserve.org/en/protocol/security/

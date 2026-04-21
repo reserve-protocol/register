@@ -51,14 +51,54 @@
       content="/imgs/og_image.webp"
     />
 
+    <!-- Canonical -->
+    <link rel="canonical" href="https://app.reserve.org/" />
+
+    <!-- Identity (rel=me) -->
+    <link rel="me" href="https://reserve.org/" />
+    <link rel="me" href="https://github.com/reserve-protocol" />
+
     <!-- Favicon -->
     <link rel="icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" href="/logo192.png" />
     <link rel="manifest" href="/manifest.json" />
 
     <!-- Preconnect to third-party domains -->
+    <link rel="preconnect" href="https://api.reserve.org" crossorigin />
     <link rel="preconnect" href="https://connect.facebook.net" crossorigin />
     <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+
+    <!-- Agent discovery -->
+    <link rel="alternate" type="text/plain" href="/llms.txt" title="llms.txt" />
+    <link rel="describedby" href="/llms.txt" />
+
+    <!-- Structured data: Organization + WebSite (static; no volatile fields) -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "https://reserve.org/#org",
+            "name": "Reserve Protocol",
+            "url": "https://reserve.org",
+            "logo": "https://app.reserve.org/logo192.png",
+            "sameAs": [
+              "https://github.com/reserve-protocol",
+              "https://x.com/reserveprotocol"
+            ]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://app.reserve.org/#site",
+            "name": "Reserve Register",
+            "url": "https://app.reserve.org/",
+            "description": "Official interface for Decentralized Token Folios (DTFs) on the Reserve Protocol.",
+            "publisher": { "@id": "https://reserve.org/#org" }
+          }
+        ]
+      }
+    </script>
 
     <!-- Preload Fonts -->
     <link

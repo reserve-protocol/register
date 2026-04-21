@@ -100,7 +100,8 @@
     "forknet": "anvil --fork-url https://eth.llamarpc.com --chain-id 1 --balance 10000000",
     "parse-collaterals": "node scripts/parseCollaterals",
     "generate-seo-tokens": "pnpm exec tsx scripts/generate-seo-tokens.ts",
-    "generate-seo-pages": "pnpm exec tsx src/seo/generate-seo-pages.ts"
+    "generate-seo-pages": "pnpm exec tsx src/seo/generate-seo-pages.ts",
+    "seo:refresh": "pnpm exec tsx scripts/seo/refresh.ts"
   },
   "engines": {
     "node": ">=20.0.0"

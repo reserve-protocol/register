@@ -1,3 +1,40 @@
 # https://www.robotstxt.org/robotstxt.html
+
 User-agent: *
-Disallow:
+Allow: /
+Disallow: /internal
+Disallow: /deploy
+Disallow: /portfolio
+
+# AI / agent crawlers — explicit allow so they can reach skill + factsheet surfaces
+User-agent: GPTBot
+Allow: /
+Disallow: /internal
+Disallow: /deploy
+Disallow: /portfolio
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /internal
+Disallow: /deploy
+Disallow: /portfolio
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /internal
+Disallow: /deploy
+Disallow: /portfolio
+
+User-agent: Google-Extended
+Allow: /
+Disallow: /internal
+Disallow: /deploy
+Disallow: /portfolio
+
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /internal
+Disallow: /deploy
+Disallow: /portfolio
+
+Sitemap: https://app.reserve.org/sitemap.xml

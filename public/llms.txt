@@ -1,0 +1,63 @@
+# Register — the official Reserve Protocol app
+
+> app.reserve.org is the canonical interface for Decentralized Token Folios (DTFs).
+> Index DTFs are the current flagship product; Yield DTFs are the legacy asset-backed line.
+> Supported chains: Ethereum, Base, BSC.
+
+## What is a DTF?
+
+A Decentralized Token Folio (DTF) is an ERC20 token backed 1:1 by a basket of
+other ERC20 tokens — an on-chain index fund. Anyone can mint a DTF by depositing
+the underlying basket tokens proportionally, and anyone can redeem for the
+underlying. Baskets and fees are set by the DTF's deployer and can be changed
+through governance. Rebalancing is executed through Dutch auctions on CoW Swap.
+
+Two product lines share the DTF name:
+
+- **Index DTFs** (flagship, Feb 2025+): governance-managed on-chain index funds.
+- **Yield DTFs** (legacy, 2020+): asset-backed yield-bearing stablecoins (formerly "RTokens"), secured by RSR stakers.
+
+## Agent skill (authoritative)
+
+- [@reserve-protocol/dtf-cli on npm](https://www.npmjs.com/package/@reserve-protocol/dtf-cli)
+- [SKILL.md source](https://github.com/reserve-protocol/reserve-sdk/blob/main/dtf-plugin/plugins/dtf/skills/dtf/SKILL.md)
+- [Mirrored skill](https://app.reserve.org/skills/dtf.md)
+- [Protocol KNOWLEDGE.md](https://github.com/reserve-protocol/reserve-sdk/blob/main/docs/KNOWLEDGE.md)
+
+## Live data
+
+- [Reserve API root](https://api.reserve.org)
+- [API catalog (RFC 9727)](https://app.reserve.org/.well-known/api-catalog)
+- [OpenAPI spec](https://api.reserve.org/documentation/v1.json)
+- [API docs](https://api.reserve.org/documentation)
+
+Use the API for any volatile data (prices, TVL, APY, holder counts, performance).
+Pages on this site are static and intentionally do not embed moving numbers.
+
+## Featured DTFs
+
+- [BED — BTC ETH DCA Index](https://app.reserve.org/ethereum/index-dtf/0x4e3b170dcbe704b248df5f56d488114ace01b1c5/): You can set it and go to BED. An equal weighted basket of BTC and ETH aimed to DCA into each constituent through monthly rebalancing and earn additional yield through lending into high-quality, low-risk isolated risk money markets. A good night’s sleep.
+- [DFX — CoinDesk DeFi Select Index](https://app.reserve.org/ethereum/index-dtf/0x188d12eb13a5eadd0867074ce8354b1ad6f4790b/): The CoinDesk DeFi Select Index DTF tracks the CoinDesk DeFi Select Index (DFX), designed to measure the market capitalization weighted performance of some of the largest and most liquid digital assets classified in the Decentralized Finance (“DeFi”) Sector that meet certain trading and custody requirements.
+- [DGI — DeFi Growth Index](https://app.reserve.org/ethereum/index-dtf/0x9a1741e151233a82cf69209a2f1bc7442b1fb29c/): The DeFi Growth Index tracks the performance of early-stage DeFi projects that demonstrate innovative mechanisms and established market demand, with strong potential for significant growth in user base, transaction volume, and/or Total Value Locked (TVL) as relevant. This is achieved through a curated portfolio of tokens native to these projects.
+- [mvDEFI — Large Cap DeFi Index](https://app.reserve.org/ethereum/index-dtf/0x20d81101d254729a6e689418526be31e2c544290/): This index tracks a curated basket of tokens from core DeFi sectors—including lending/borrowing protocols, decentralized exchanges, stablecoin issuers, yield aggregators, and other smart contract-based financial primitives.
+- [mvRWA — RWA Index](https://app.reserve.org/ethereum/index-dtf/0xa5cdea03b11042fc10b52af9eca48bb17a2107d2/): An index exclusively tracking governance tokens of protocols that bring real-world assets (e.g. T-bills, corporate debt, commodities) onto the blockchain, emphasizing credible tokenization, verifiable collateral, and regulatory clarity upheld by audits or attestations.
+- [OPEN — Open Stablecoin Index](https://app.reserve.org/ethereum/index-dtf/0x323c03c48660fe31186fa82c289b0766d331ce21/): Open Stablecoin Index is an equal-weight index tracking leading stablecoin-networks advancing transparency, composability, and user-led governance. Included protocols should be evaluated on verifiable asset-backing, peg design, mint/redeem logic, safety mechanisms, yield-sharing, and decentralized control.
+- [SMEL — Imagine The SMEL](https://app.reserve.org/ethereum/index-dtf/0xf91384484f4717314798e8975bcd904a35fc2bf1/): An equal weighted basket with monthly rebalancing aimed at outperforming the Galaxy DeFi index through exposure to a concentrated set of SMEL assets
+- [CMC20 — CoinMarketCap 20 Index DTF](https://app.reserve.org/bsc/index-dtf/0x2f8a339b5889ffac4c5a956787cda593b3c36867/): The CoinMarketCap 20 Index DTF (CMC20) is a liquid index token powered by Reserve that tracks the CoinMarketCap 20 Index. The CMC20 Index is a benchmark designed to measure the performance of the top 20 cryptocurrency projects by market capitalization, as ranked by CoinMarketCap. It excludes stablecoins (i.e. USDT), tokens that are pegged to other crypto assets (i.e. WBTC or stETH), and assets with limited investability (e.g. potential litigation risk, or limited circulating liquidity). The index represents the broader cryptocurrency market while providing insight into the performance of a diverse set of digital assets.
+- [ABX — Alpha Base Index](https://app.reserve.org/base/index-dtf/0xebcda5b80f62dd4dd2a96357b42bb6facbf30267/): The Alpha Base Index is a DAO-governed DTF, curating the top alpha Base projects with the highest risk-adjusted growth potential, leveraging the collective intelligence of the Base Trenches to identify market opportunities.
+- [AI — AIndex](https://app.reserve.org/base/index-dtf/0xfe45eda533e97198d9f3deeda9ae6c147141f6f9/): AIndex aims to provide users with diversified exposure to the top-performing AI agents and AI infrastructure projects. By leveraging the Base blockchain ecosystem, AIndex offers a carefully curated and balanced index of AI-focused tokens, allowing holders to benefit from the growth of AI technology and infrastructure while minimizing individual project risk.
+- [BDTF — Base MemeIndexer DTF](https://app.reserve.org/base/index-dtf/0xb8753941196692e322846cfee9c14c97ac81928a/): A curated basket of MemeIndexer’s favorite meme coin communities with liquidity on Base. The strongest memecoin communities, all in one decentralized token folio, rebalanced for performance and expanding as top meme coins bridge liquidity.
+- [BGCI — Bloomberg Galaxy Crypto Index](https://app.reserve.org/base/index-dtf/0x23418de10d422ad71c9d5713a2b8991a9c586443/): The Bloomberg Galaxy Crypto Index DTF tracks the Bloomberg Galaxy Crypto Index (“BGCI”). The BGCI is a benchmark designed to measure the performance of the largest cryptocurrencies by market capitalization traded in USD. The Index is owned and administered by Bloomberg and co-branded with Galaxy Digital Capital Management.
+- [CLUB — Club Night DTF](https://app.reserve.org/base/index-dtf/0xf8ef6e785473e82527908b06023ac3e401ccfdcd/): This DTF contains and shall contain whatever the ETH Denver 2025 DTF Club Night partiers want it to!
+- [CLX — Clanker Index](https://app.reserve.org/base/index-dtf/0x44551ca46fa5592bb572e20043f7c3d54c85cad7/): One-click exposure to the best performing assets in the Clanker ecosystem through a single liquid asset.
+- [LCAP — CF Large Cap Index](https://app.reserve.org/base/index-dtf/0x4da9a0f397db1397902070f93a4d6ddbc0e0e6e8/): The CF Large Cap Index (Diversified Weight) is a liquid, investible benchmark portfolio index designed to track the performance of large-cap digital assets. The index seeks to capture 95% of the total market capitalization of the investible digital asset universe as its constituents.
+- [MVDA25 — MarketVector Digital Assets 25 Index](https://app.reserve.org/base/index-dtf/0xd600e748c17ca237fcb5967fa13d688aff17be78/): The MarketVector™ Digital Assets 25 Index DTF tracks the MarketVector™ Digital Assets 25 Index (MVDA25) which is a modified market cap-weighted index which tracks the performance of the 25 largest and most liquid digital assets. Most demanding size and liquidity screenings are applied to potential index components to ensure investability.
+- [MVTT10F — MarketVector Token Terminal Fundamental Index](https://app.reserve.org/base/index-dtf/0xe8b46b116d3bdfa787ce9cf3f5acc78dc7ca380e/): The MarketVector™ Token Terminal Fundamental Index DTF tracks the MarketVector™ Token Terminal Fundamental Index (MVTT10F), designed to track the performance of the largest and most liquid digital assets that meet the fundamental criteria of daily average fees and daily average users. The fundamental data is provided by Token Terminal. The index is weighted based on fundamental factors.
+- [SBR — Strategic Base Reserve by SSR](https://app.reserve.org/base/index-dtf/0x89ff8f639d402839205a6bf03cc01bdffa4768b7/): The Strategic Base Reserve by EnigmaFund Venture Capital is a DAO-governed DTF, curating the best of Base projects restoring liquidity and attention to the premiere projects, builders and communities. A part of the Strategic Super Reserve, governed with the $SSR token.
+- [VLONE — Reserve Venionaire L1 Select DTF](https://app.reserve.org/base/index-dtf/0xe00cfa595841fb331105b93c19827797c925e3e4/): The Venionaire VLONE DTF is designed to track the Venionaire Layer-1 Select Index (VLONE), which measures the performance of leading Layer-1 blockchain protocols. These protocols constitute the foundational infrastructure of the Web3 ecosystem. The VLONE DTF offers investors diversified exposure to the performance and growth potential of premier Layer-1 assets. The index employs comprehensive qualitative and quantitative evaluation to select its constituents. Selection criteria include exchange eligibility, liquidity metrics, trading volume thresholds, and market capitalization requirements. Additionally, on-chain parameters are integrated to capture protocol-specific quality assessments through the VLONE Quality Assessment Framework. Constituents are weighted based on liquidity, market capitalization, price performance, and sector-specific quality criteria, with a 15% maximum allocation per asset to ensure diversification. The index undergoes monthly rebalancing to maintain optimal diversification and reflect evolving market dynamics.
+- [VTF — Virtuals Index](https://app.reserve.org/base/index-dtf/0x47686106181b3cefe4eaf94c4c10b48ac750370b/): Curated index of the largest AI agents created on Virtuals Protocol, rebalanced frequently to capture the upside from newly launched agents in the ecosystem.
+
+## Full context
+
+- [llms-full.txt](https://app.reserve.org/llms-full.txt) — protocol primer + all 20 factsheets concatenated
+- [/skills/dtf.md](https://app.reserve.org/skills/dtf.md) — full CLI skill definition
