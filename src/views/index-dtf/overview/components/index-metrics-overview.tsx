@@ -1,13 +1,7 @@
 import TokenLogo from '@/components/token-logo'
-import Help from '@/components/ui/help'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip'
 import { chainIdAtom } from '@/state/atoms'
 import {
+  indexDTF24hVolumeAtom,
   indexDTFAtom,
   indexDTFBrandAtom,
   indexDTFMarketCapAtom,
@@ -16,10 +10,9 @@ import {
 import { useEnsName } from '@/hooks/use-ens-name'
 import { formatCurrency, formatPercentage } from '@/utils'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
-import { useAtomValue } from 'jotai'
+import { atom, useAtomValue } from 'jotai'
 import {
   ArrowUpDown,
-  ArrowUpRight,
   BadgeDollarSign,
   Cake,
   ChartPie,
@@ -29,63 +22,23 @@ import {
   TableRowsSplit,
   Wallet,
 } from 'lucide-react'
-import { ReactNode, useMemo } from 'react'
-import Skeleton from 'react-loading-skeleton'
-import { Link } from 'react-router-dom'
 import { formatEther } from 'viem'
+import MetricsItem from './metrics-item'
 
-const MetricsItem = ({
-  label,
-  value,
-  icon,
-  valueHover,
-  help,
-  link,
-  loading,
-}: {
-  label: string
-  value: string
-  icon: ReactNode
-  valueHover?: string
-  help?: string
-  link?: string
-  loading?: boolean
-}) => {
-  return (
-    <div className="px-4 py-2 sm:px-5 sm:py-5 flex items-center gap-1 justify-between">
-      <div className="flex items-center gap-1">
-        <div className="p-2 w-8 h-8">{icon}</div>
-        {label}
-      </div>
-      {loading ? (
-        <Skeleton className="w-24 h-6" />
-      ) : (
-        <div className="flex items-center gap-1">
-          {valueHover ? (
-            <TooltipProvider>
-              <Tooltip delayDuration={0}>
-                <TooltipTrigger className="text-ellipsis overflow-hidden whitespace-nowrap max-w-[160px] sm:max-w-[150px] lg:max-w-[180px]">
-                  {value}
-                </TooltipTrigger>
-                <TooltipContent side="top">{valueHover || ''}</TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          ) : (
-            value
-          )}
-          {help && (
-            <Help content={help} size={16} className="text-muted-foreground" />
-          )}
-          {link && (
-            <Link to={link} target="_blank">
-              <ArrowUpRight size={16} className="text-muted-foreground" />
-            </Link>
-          )}
-        </div>
-      )}
-    </div>
-  )
-}
+const supplyChange24hAtom = atom<number>((get) => {
+  const txs = get(indexDTFTransactionsAtom)
+  const dtf = get(indexDTFAtom)
+  if (!dtf?.token?.totalSupply) return 0
+  const cutoff = Date.now() / 1000 - 24 * 60 * 60
+  const delta = txs
+    .filter((t) => t.timestamp > cutoff)
+    .filter((t) => t.type === 'Mint' || t.type === 'Redeem')
+    .reduce(
+      (acc, t) => acc + (t.type === 'Redeem' ? -1 : 1) * t.amount,
+      0
+    )
+  return (delta / Number(formatEther(BigInt(dtf.token.totalSupply)))) * 100
+})
 
 const Creator = () => {
   const dtf = useAtomValue(indexDTFAtom)
@@ -179,33 +132,7 @@ const Supply = () => {
 
 const Supply24h = () => {
   const transactions = useAtomValue(indexDTFTransactionsAtom)
-  const last24h = Date.now() / 1000 - 24 * 60 * 60
-  const dtf = useAtomValue(indexDTFAtom)
-
-  const txVolume = useMemo(
-    () =>
-      transactions
-        .filter((transaction) => transaction.timestamp > last24h)
-        .filter(
-          (transaction) =>
-            transaction.type === 'Mint' || transaction.type === 'Redeem'
-        )
-        .reduce(
-          (acc, transaction) =>
-            acc + (transaction.type === 'Redeem' ? -1 : 1) * transaction.amount,
-          0
-        ),
-    [transactions]
-  )
-
-  const supplyChange = useMemo(() => {
-    if (!dtf?.token?.totalSupply) return 0
-
-    return (
-      (txVolume / Number(formatEther(BigInt(dtf?.token?.totalSupply || 1)))) *
-      100
-    )
-  }, [txVolume])
+  const supplyChange = useAtomValue(supplyChange24hAtom)
 
   return (
     <MetricsItem
@@ -219,15 +146,7 @@ const Supply24h = () => {
 
 const TxVolume = () => {
   const transactions = useAtomValue(indexDTFTransactionsAtom)
-  const last24h = Date.now() / 1000 - 24 * 60 * 60
-
-  const txVolume = useMemo(
-    () =>
-      transactions
-        .filter((transaction) => transaction.timestamp > last24h)
-        .reduce((acc, transaction) => acc + transaction.amountUSD, 0),
-    [transactions]
-  )
+  const txVolume = useAtomValue(indexDTF24hVolumeAtom)
 
   return (
     <MetricsItem

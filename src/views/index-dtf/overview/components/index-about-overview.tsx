@@ -1,5 +1,4 @@
 import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import {
   indexDTFAtom,
@@ -8,17 +7,13 @@ import {
 } from '@/state/dtf/atoms'
 import { ROUTES } from '@/utils/constants'
 import { useAtomValue } from 'jotai'
-import { BrickWall, FileChartColumn, ImagePlus } from 'lucide-react'
+import { BrickWall, ImagePlus } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useTrackIndexDTFClick } from '../../hooks/useTrackIndexDTFPage'
-import IndexFactsheetOverview from './index-factsheet-overview'
-import IndexMetricsOverview from './index-metrics-overview'
-import IndexSocialsOverview from './index-socials-overview'
 import SectionAnchor from '@/components/section-anchor'
 
 const BrandManagerEditButton = () => {
   const isBrandManager = useAtomValue(isBrandManagerAtom)
-
   const { trackClick } = useTrackIndexDTFClick('overview', 'overview')
 
   if (!isBrandManager) {
@@ -38,17 +33,6 @@ const BrandManagerEditButton = () => {
   )
 }
 
-const FactsheetButton = () => {
-  return (
-    <Link to={`../${ROUTES.FACTSHEET}`}>
-      <Button variant="outline" size="sm" className="gap-1 rounded-full">
-        <FileChartColumn size={14} />
-        Performance
-      </Button>
-    </Link>
-  )
-}
-
 const Header = () => {
   const data = useAtomValue(indexDTFAtom)
 
@@ -61,11 +45,7 @@ const Header = () => {
       {!data ? (
         <Skeleton className="w-60 h-6" />
       ) : (
-        <div className="flex gap-1 items-center">
-          <BrandManagerEditButton />
-          <FactsheetButton />
-          <IndexSocialsOverview />
-        </div>
+        <BrandManagerEditButton />
       )}
     </div>
   )
@@ -85,32 +65,54 @@ const Mandate = () => {
         <h2 className="text-2xl font-light mb-1">About this DTF</h2>
         <SectionAnchor id="about" />
       </div>
-      {!data ? (
-        <div>
-          <Skeleton className="w-full h-20" />
-        </div>
-      ) : (
-        <div className="flex flex-col gap-2">
-          <p className="text-legend">
-            {brandData.dtf?.description || data.mandate}
-          </p>
-        </div>
+      <p className="text-legend">
+        {brandData.dtf?.description || data.mandate}
+      </p>
+    </div>
+  )
+}
+
+const AboutLinks = () => {
+  const brandData = useAtomValue(indexDTFBrandAtom)
+
+  return (
+    <div className="flex items-center gap-4 text-sm mt-4">
+      {brandData?.socials?.website && (
+        <Link
+          to={brandData.socials.website}
+          target="_blank"
+          className="underline text-muted-foreground hover:text-foreground"
+        >
+          Website
+        </Link>
+      )}
+      <Link
+        to={`../${ROUTES.FACTSHEET}`}
+        className="underline text-muted-foreground hover:text-foreground"
+      >
+        Performance Sheet
+      </Link>
+      {brandData?.socials?.twitter && (
+        <Link
+          to={brandData.socials.twitter}
+          target="_blank"
+          className="underline text-muted-foreground hover:text-foreground"
+        >
+          X Account
+        </Link>
       )}
     </div>
   )
 }
 
 const IndexAboutOverview = () => (
-  <Card id="about" className="group/section">
+  <div id="about" className="group/section">
     <div className="p-4 sm:p-6">
       <Header />
       <Mandate />
-      <div className="w-fit">
-        <IndexFactsheetOverview />
-      </div>
+      <AboutLinks />
     </div>
-    <IndexMetricsOverview />
-  </Card>
+  </div>
 )
 
 export default IndexAboutOverview

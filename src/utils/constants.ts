@@ -69,6 +69,10 @@ export const LP_PROJECTS: { [x: string]: { name: string; site: string } } = {
     name: 'Uniswap',
     site: 'https://app.uniswap.org/',
   },
+  'steer-protocol': {
+    name: 'Steer',
+    site: 'https://app.steer.finance/',
+  },
   'balancer-v2': {
     name: 'Balancer',
     site: 'https://app.balancer.fi/',
@@ -137,7 +141,7 @@ export const LP_PROJECTS: { [x: string]: { name: string; site: string } } = {
     name: 'Ether.fi',
     site: 'https://ether.fi/',
   },
-  'lagoon': {
+  lagoon: {
     name: 'Lagoon',
     site: 'https://lagoon.finance/',
   },
