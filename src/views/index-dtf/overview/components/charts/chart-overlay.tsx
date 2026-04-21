@@ -2,12 +2,14 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
 import { btcPriceAtom } from '@/state/chain/atoms/chainAtoms'
 import {
-  indexDTFApyAtom,
   indexDTFAtom,
   indexDTFPriceAtom,
-  isYieldIndexDTFAtom,
   performanceTimeRangeAtom,
 } from '@/state/dtf/atoms'
+import {
+  indexDTFApyAtom,
+  isYieldIndexDTFAtom,
+} from '@/state/dtf/yield-index-atoms'
 import { formatPercentage, formatToSignificantDigits } from '@/utils'
 import { useAtomValue } from 'jotai'
 import { IndexDTFPerformance } from '../../hooks/use-dtf-price-history'

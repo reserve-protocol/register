@@ -3,9 +3,9 @@ import {
   indexDTF7dChangeAtom,
   indexDTFAtom,
   indexDTFMarketCapAtom,
-  isYieldIndexDTFAtom,
   performanceTimeRangeAtom,
 } from '@/state/dtf/atoms'
+import { isYieldIndexDTFAtom } from '@/state/dtf/yield-index-atoms'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import useIndexDTFApyHistory from '../../hooks/use-dtf-apy-history'

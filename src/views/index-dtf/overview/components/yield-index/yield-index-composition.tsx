@@ -1,7 +1,7 @@
 import SectionAnchor from '@/components/section-anchor'
 import { Card } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
-import { indexDTFStrategiesAtom } from '@/state/dtf/atoms'
+import { indexDTFStrategiesAtom } from '@/state/dtf/yield-index-atoms'
 import { useAtomValue } from 'jotai'
 import { useState } from 'react'
 import CompositionDesktop from './yield-index-composition-desktop'

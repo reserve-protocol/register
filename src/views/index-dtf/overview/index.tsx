@@ -1,11 +1,8 @@
 import { isInactiveDTF } from '@/hooks/use-dtf-status'
 import useScrollToHash from '@/hooks/use-scroll-to-hash'
 import { Card } from '@/components/ui/card'
-import {
-  indexDTFAtom,
-  isYieldIndexDTFAtom,
-  indexDTFStatusAtom,
-} from '@/state/dtf/atoms'
+import { indexDTFAtom, indexDTFStatusAtom } from '@/state/dtf/atoms'
+import { isYieldIndexDTFAtom } from '@/state/dtf/yield-index-atoms'
 import { useAtomValue } from 'jotai'
 import useTrackIndexDTFPage from '../hooks/useTrackIndexDTFPage'
 import PriceChart from './components/charts/price-chart'

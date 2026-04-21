@@ -9,7 +9,7 @@ import {
   indexDTFAssetsAtom,
   indexDTFProtocolsAtom,
   indexDTFStrategiesAtom,
-} from '@/state/dtf/atoms'
+} from '@/state/dtf/yield-index-atoms'
 import { formatPercentage } from '@/utils'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { PROJECT_ICONS } from '@/views/earn/hooks/useEarnTableColumns'

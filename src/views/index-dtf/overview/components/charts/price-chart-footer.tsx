@@ -1,5 +1,5 @@
 import { cn } from '@/lib/utils'
-import { isYieldIndexDTFAtom } from '@/state/dtf/atoms'
+import { isYieldIndexDTFAtom } from '@/state/dtf/yield-index-atoms'
 import { useAtomValue } from 'jotai'
 import IndexCTAsOverviewMobile from '../index-ctas-overview-mobile'
 import IndexTokenAddress from '../index-token-address'

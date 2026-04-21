@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
-import { isYieldIndexDTFAtom } from '@/state/dtf/atoms'
+import { isYieldIndexDTFAtom } from '@/state/dtf/yield-index-atoms'
 import { useAtom, useAtomValue } from 'jotai'
 import { DataType, dataTypeAtom } from './price-chart'
 

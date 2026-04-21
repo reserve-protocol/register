@@ -5,10 +5,8 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
-import {
-  indexDTFApyAtom,
-  indexDTFExposureDataAtom,
-} from '@/state/dtf/atoms'
+import { indexDTFExposureDataAtom } from '@/state/dtf/atoms'
+import { indexDTFApyAtom } from '@/state/dtf/yield-index-atoms'
 import { formatPercentage } from '@/utils'
 import { useAtomValue } from 'jotai'
 import { Info } from 'lucide-react'

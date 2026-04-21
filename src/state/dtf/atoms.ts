@@ -257,18 +257,3 @@ export const isHybridDTFAtom = atom((get) => {
   )
 })
 
-// Yield index DTF atoms are in ./yield-index-atoms.ts
-// Re-export for backward compatibility
-export {
-  type IndexDTFApyData,
-  indexDTFApyAtom,
-  indexDTFPoolsDataAtom,
-  indexDTFUnderlyingNamesAtom,
-  isYieldIndexDTFAtom,
-  type CompositionStrategy,
-  type CompositionAsset,
-  type CompositionProtocol,
-  indexDTFStrategiesAtom,
-  indexDTFAssetsAtom,
-  indexDTFProtocolsAtom,
-} from './yield-index-atoms'

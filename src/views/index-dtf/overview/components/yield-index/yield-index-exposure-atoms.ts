@@ -2,7 +2,7 @@ import { chainIdAtom } from '@/state/atoms'
 import {
   indexDTFAssetsAtom,
   indexDTFPoolsDataAtom,
-} from '@/state/dtf/atoms'
+} from '@/state/dtf/yield-index-atoms'
 import { atom } from 'jotai'
 
 export const underlyingTokensAtom = atom<
