@@ -1,21 +1,21 @@
 import { useEffect, useRef, useState } from 'react'
 
-const SPEED = 30 // px/s cruise speed
-const FRICTION = 0.92 // per-frame (16.67ms) velocity decay during inertia
-const MIN_VELOCITY = 0.05 // px/ms — below this, inertia stops and cruise resumes
-const VELOCITY_WINDOW = 100 // ms — samples kept for pointerup velocity calc
-const KEYFRAME_NAME = 'marquee-cruise-x'
+const SPEED = 30 // px/s
+const RESUME_DELAY = 600
+const FRICTION = 0.92
+const MIN_VELOCITY = 0.05 // px/ms
+const VELOCITY_WINDOW = 100 // ms
 const DESKTOP_QUERY = '(min-width: 1024px)'
 const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)'
 
-// Inject the cruise keyframes once per document.
-let keyframesInjected = false
-const injectKeyframes = () => {
-  if (keyframesInjected || typeof document === 'undefined') return
-  const style = document.createElement('style')
-  style.textContent = `@keyframes ${KEYFRAME_NAME} { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(var(--marquee-repeat), 0, 0); } }`
-  document.head.appendChild(style)
-  keyframesInjected = true
+const addMQL = (mql: MediaQueryList, cb: () => void) => {
+  if (mql.addEventListener) mql.addEventListener('change', cb)
+  else (mql as MediaQueryList & { addListener: (cb: () => void) => void }).addListener(cb)
+}
+
+const removeMQL = (mql: MediaQueryList, cb: () => void) => {
+  if (mql.removeEventListener) mql.removeEventListener('change', cb)
+  else (mql as MediaQueryList & { removeListener: (cb: () => void) => void }).removeListener(cb)
 }
 
 export function useMarquee<T extends HTMLElement>(itemsPerCopy: number) {
@@ -31,11 +31,11 @@ export function useMarquee<T extends HTMLElement>(itemsPerCopy: number) {
     const desktop = window.matchMedia(DESKTOP_QUERY)
     const motion = window.matchMedia(REDUCED_MOTION_QUERY)
     const update = () => setDisabled(desktop.matches || motion.matches)
-    desktop.addEventListener('change', update)
-    motion.addEventListener('change', update)
+    addMQL(desktop, update)
+    addMQL(motion, update)
     return () => {
-      desktop.removeEventListener('change', update)
-      motion.removeEventListener('change', update)
+      removeMQL(desktop, update)
+      removeMQL(motion, update)
     }
   }, [])
 
@@ -43,104 +43,67 @@ export function useMarquee<T extends HTMLElement>(itemsPerCopy: number) {
     const el = ref.current
     if (!el) return
     if (disabled) {
-      el.style.animation = ''
       el.style.transform = ''
-      el.style.removeProperty('--marquee-repeat')
       return
     }
 
-    injectKeyframes()
-
+    let raf = 0
+    let lastTs = 0
+    let pauseUntil = 0
     let repeat = 0
     let visible = true
     let dragging = false
-    let inertiaRaf = 0
+    let activePointerId: number | null = null
     let dragStartX = 0
     let dragStartOffset = 0
-    let currentOffset = 0
+    let offset = 0
+    let inertialVelocity = 0
     const samples: { t: number; x: number }[] = []
 
-    const readOffset = () => {
-      const transform = getComputedStyle(el).transform
-      if (!transform || transform === 'none') return 0
-      try {
-        return new DOMMatrixReadOnly(transform).m41
-      } catch {
-        return 0
-      }
-    }
-
-    // Fold offset into the (-repeat, 0] range so we can map it back into animation progress.
-    const normalize = (offset: number) => {
+    const normalize = (nextOffset: number) => {
       if (repeat <= 0) return 0
-      let n = offset % repeat
-      if (n > 0) n -= repeat
-      return n
-    }
-
-    const startCruise = (offset = 0) => {
-      if (repeat <= 0) return
-      const duration = repeat / SPEED
-      const normalized = normalize(offset)
-      // Keyframe runs 0 → -repeat; at progress p, transform = -repeat * p.
-      // p = -normalized / repeat, so animation-delay = -p * duration = (normalized / repeat) * duration.
-      const delay = (normalized / repeat) * duration
-      el.style.setProperty('--marquee-repeat', `${-repeat}px`)
-      el.style.transform = ''
-      el.style.animation = `${KEYFRAME_NAME} ${duration}s linear ${delay}s infinite`
-      el.style.animationPlayState =
-        visible && !document.hidden ? 'running' : 'paused'
-    }
-
-    const stopCruise = () => {
-      // Order matters: read computed transform first, pin it inline, THEN clear the animation —
-      // same synchronous tick means no paint-flicker between animation-driven and inline transform.
-      const offset = readOffset()
-      el.style.transform = `translate3d(${offset}px, 0, 0)`
-      el.style.animation = ''
-      return offset
+      let normalized = nextOffset % repeat
+      if (normalized > 0) normalized -= repeat
+      return normalized
     }
 
     const measure = () => {
       const first = el.children[0] as HTMLElement | undefined
       const marker = el.children[itemsPerCopy] as HTMLElement | undefined
       if (!first || !marker) return
-      const next =
+      const nextRepeat =
         marker.getBoundingClientRect().left -
         first.getBoundingClientRect().left
-      if (next === repeat) return
-      repeat = next
-      if (!dragging && !inertiaRaf) startCruise(readOffset())
+      if (nextRepeat <= 0 || nextRepeat === repeat) return
+      repeat = nextRepeat
+      offset = normalize(offset)
+      el.style.transform = `translate3d(${offset}px, 0, 0)`
     }
 
     measure()
-    if (repeat > 0) startCruise(0)
-
     const ro = new ResizeObserver(measure)
     ro.observe(el)
     window.addEventListener('resize', measure, { passive: true })
 
-    const syncPlayState = () => {
-      if (dragging || inertiaRaf) return
-      el.style.animationPlayState =
-        visible && !document.hidden ? 'running' : 'paused'
-    }
-
+    const viewportEl = el.parentElement ?? el
     const io = new IntersectionObserver(
       ([entry]) => {
         visible = entry.isIntersecting
-        syncPlayState()
+        lastTs = 0
       },
       { threshold: 0 }
     )
-    io.observe(el)
+    io.observe(viewportEl)
 
-    document.addEventListener('visibilitychange', syncPlayState)
+    const syncVisibility = () => {
+      lastTs = 0
+    }
+    document.addEventListener('visibilitychange', syncVisibility)
 
     const pushSample = (x: number) => {
-      const t = performance.now()
-      samples.push({ t, x })
-      while (samples.length && t - samples[0].t > VELOCITY_WINDOW) {
+      const now = performance.now()
+      samples.push({ t: now, x })
+      while (samples.length && now - samples[0].t > VELOCITY_WINDOW) {
         samples.shift()
       }
     }
@@ -151,93 +114,100 @@ export function useMarquee<T extends HTMLElement>(itemsPerCopy: number) {
       const last = samples[samples.length - 1]
       const dt = last.t - first.t
       if (dt <= 0) return 0
-      return (last.x - first.x) / dt // px/ms
+      return (last.x - first.x) / dt
     }
 
-    const runInertia = (initial: number, startOffset: number) => {
-      let velocity = initial
-      let offset = startOffset
-      let last = performance.now()
-      const step = (ts: number) => {
-        const dt = ts - last
-        last = ts
-        offset += velocity * dt
-        velocity *= Math.pow(FRICTION, dt / 16.67)
-        // Keep offset wrapped so a fast flick never runs past the 3-copy strip.
-        offset = normalize(offset)
-        el.style.transform = `translate3d(${offset}px, 0, 0)`
-        if (Math.abs(velocity) > MIN_VELOCITY) {
-          inertiaRaf = requestAnimationFrame(step)
-        } else {
-          inertiaRaf = 0
-          startCruise(offset)
-        }
+    const tick = (ts: number) => {
+      if (repeat <= 0) {
+        measure()
       }
-      inertiaRaf = requestAnimationFrame(step)
+
+      if (dragging || !visible || document.hidden) {
+        lastTs = ts
+      } else if (Math.abs(inertialVelocity) > 0) {
+        if (!lastTs) {
+          lastTs = ts
+        } else {
+          const dt = ts - lastTs
+          offset = normalize(offset + inertialVelocity * dt)
+          inertialVelocity *= Math.pow(FRICTION, dt / 16.67)
+          if (Math.abs(inertialVelocity) <= MIN_VELOCITY) {
+            inertialVelocity = 0
+            pauseUntil = ts + RESUME_DELAY
+            lastTs = 0
+          } else {
+            lastTs = ts
+          }
+          el.style.transform = `translate3d(${offset}px, 0, 0)`
+        }
+      } else if (ts < pauseUntil) {
+        lastTs = 0
+      } else if (!lastTs) {
+        lastTs = ts
+      } else {
+        offset = normalize(offset - SPEED * ((ts - lastTs) / 1000))
+        el.style.transform = `translate3d(${offset}px, 0, 0)`
+        lastTs = ts
+      }
+
+      raf = requestAnimationFrame(tick)
     }
+    raf = requestAnimationFrame(tick)
 
     const onDown = (e: PointerEvent) => {
-      if (inertiaRaf) {
-        cancelAnimationFrame(inertiaRaf)
-        inertiaRaf = 0
-      }
+      if (dragging) return
       dragging = true
-      currentOffset = stopCruise()
+      inertialVelocity = 0
+      activePointerId = e.pointerId
       dragStartX = e.clientX
-      dragStartOffset = currentOffset
+      dragStartOffset = offset
+      lastTs = 0
       samples.length = 0
       pushSample(e.clientX)
-      try {
-        el.setPointerCapture(e.pointerId)
-      } catch {}
     }
 
     const onMove = (e: PointerEvent) => {
-      if (!dragging) return
-      // Wrap during drag so a long swipe can't expose the end of the 3-copy strip.
-      currentOffset = normalize(dragStartOffset + (e.clientX - dragStartX))
-      el.style.transform = `translate3d(${currentOffset}px, 0, 0)`
+      if (!dragging || e.pointerId !== activePointerId) return
+      offset = normalize(dragStartOffset + (e.clientX - dragStartX))
+      el.style.transform = `translate3d(${offset}px, 0, 0)`
       pushSample(e.clientX)
     }
 
     const endDrag = () => {
       if (!dragging) return
       dragging = false
+      activePointerId = null
       const velocity = computeVelocity()
-      if (Math.abs(velocity) > MIN_VELOCITY) {
-        runInertia(velocity, currentOffset)
-      } else {
-        startCruise(currentOffset)
+      inertialVelocity = Math.abs(velocity) > MIN_VELOCITY ? velocity : 0
+      if (!inertialVelocity) {
+        pauseUntil = performance.now() + RESUME_DELAY
       }
+      lastTs = 0
     }
 
     const onUp = (e: PointerEvent) => {
-      try {
-        el.releasePointerCapture(e.pointerId)
-      } catch {}
+      if (e.pointerId !== activePointerId) return
       endDrag()
     }
 
     el.addEventListener('pointerdown', onDown, { passive: true })
-    el.addEventListener('pointermove', onMove, { passive: true })
-    el.addEventListener('pointerup', onUp, { passive: true })
-    el.addEventListener('pointercancel', onUp, { passive: true })
+    window.addEventListener('pointermove', onMove, { passive: true })
+    window.addEventListener('pointerup', onUp, { passive: true })
+    window.addEventListener('pointercancel', onUp, { passive: true })
     el.addEventListener('lostpointercapture', endDrag, { passive: true })
 
     return () => {
-      if (inertiaRaf) cancelAnimationFrame(inertiaRaf)
+      cancelAnimationFrame(raf)
       ro.disconnect()
       io.disconnect()
       window.removeEventListener('resize', measure)
-      document.removeEventListener('visibilitychange', syncPlayState)
+      document.removeEventListener('visibilitychange', syncVisibility)
       el.removeEventListener('pointerdown', onDown)
-      el.removeEventListener('pointermove', onMove)
-      el.removeEventListener('pointerup', onUp)
-      el.removeEventListener('pointercancel', onUp)
+      window.removeEventListener('pointermove', onMove)
+      window.removeEventListener('pointerup', onUp)
+      window.removeEventListener('pointercancel', onUp)
       el.removeEventListener('lostpointercapture', endDrag)
-      el.style.animation = ''
       el.style.transform = ''
-      el.style.removeProperty('--marquee-repeat')
     }
   }, [disabled, itemsPerCopy])
 

@@ -333,6 +333,24 @@ describe('useMarquee — drag', () => {
     expect(parseTranslateX(track)).toBeCloseTo(afterRelease - 30, 1)
   })
 
+  it('continues moving with inertia after a flick release', () => {
+    const { track } = renderHost()
+    act(() => advance(16))
+    act(() => advance(1016))
+    setClock(1016)
+    act(() => pointer(track, 'pointerdown', 200))
+    setClock(1066)
+    act(() => pointer(track, 'pointermove', 150))
+    setClock(1116)
+    act(() => pointer(track, 'pointermove', 100))
+    const releasedAt = parseTranslateX(track)
+    setClock(1116)
+    act(() => pointer(track, 'pointerup', 100))
+    act(() => advance(1216))
+    act(() => advance(1316))
+    expect(parseTranslateX(track)).toBeLessThan(releasedAt)
+  })
+
   it('ends drag when lostpointercapture fires', () => {
     const { track } = renderHost()
     act(() => advance(16))
