@@ -36,6 +36,8 @@ const TokenLogo = React.forwardRef<HTMLImageElement, Props>((props, ref) => {
     width,
     className,
     src: propsSrc,
+    loading = 'lazy',
+    fetchPriority = 'low',
     ...rest
   } = props
 
@@ -197,9 +199,9 @@ const TokenLogo = React.forwardRef<HTMLImageElement, Props>((props, ref) => {
       src={currentSrc || '/svgs/defaultLogo.svg'}
       height={h}
       width={w}
-      loading="lazy"
+      loading={loading}
       decoding="async"
-      fetchPriority="low"
+      fetchPriority={fetchPriority}
       style={{ width: w, height: h }}
       className={cn(
         'flex-shrink-0 object-cover object-center rounded-full',
