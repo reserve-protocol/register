@@ -262,14 +262,13 @@ export const isHybridDTFAtom = atom((get) => {
 export {
   type IndexDTFApyData,
   indexDTFApyAtom,
-  type DefiLlamaPool,
   indexDTFPoolsDataAtom,
   indexDTFUnderlyingNamesAtom,
   isYieldIndexDTFAtom,
-  COLLATERAL_POOL_MAP,
   type CompositionStrategy,
   type CompositionAsset,
   type CompositionProtocol,
-  type CompositionData,
-  indexDTFCompositionAtom,
+  indexDTFStrategiesAtom,
+  indexDTFAssetsAtom,
+  indexDTFProtocolsAtom,
 } from './yield-index-atoms'

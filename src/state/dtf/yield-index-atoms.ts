@@ -1,5 +1,10 @@
 import { atom } from 'jotai'
 import { LP_PROJECTS } from '@/utils/constants'
+import { DefiLlamaPool } from '@/types/defillama'
+import {
+  COLLATERAL_POOL_MAP,
+  STRATEGY_NAME_MAP,
+} from '@/views/index-dtf/yield-index-config'
 import {
   indexDTFAtom,
   indexDTFExposureDataAtom,
@@ -13,20 +18,6 @@ export type IndexDTFApyData = {
 
 export const indexDTFApyAtom = atom<IndexDTFApyData | undefined>(undefined)
 
-export type DefiLlamaPool = {
-  pool: string
-  project: string
-  chain: string
-  symbol: string
-  poolMeta: string | null
-  underlyingTokens: string[]
-  tvlUsd: number
-  apy: number
-  apyBase: number
-  apyReward: number | null
-  url: string
-}
-
 export const indexDTFPoolsDataAtom = atom<DefiLlamaPool[] | undefined>(
   undefined
 )
@@ -36,27 +27,12 @@ export const indexDTFUnderlyingNamesAtom = atom<
   Record<string, { name: string; symbol: string }>
 >({})
 
+// TODO: Detect yield DTFs by inspecting the basket's constituents
+// (e.g. flag wrapped/pool collateral) rather than hardcoding a DTF address.
 export const isYieldIndexDTFAtom = atom((get) => {
   const dtf = get(indexDTFAtom)
   return dtf?.id.toLowerCase() === '0x1d55940cf6eb85321816327aa785006f8dd59ef9'
 })
-
-// Collateral address (lowercase) → strategy display name
-const STRATEGY_NAME_MAP: Record<string, string> = {
-  '0x03f8ccf5b5004b55309e949ea9d08136a32e9c5d': 'tBTC / cbBTC Curve Strategy',
-  '0x42302bf7a11bdd07eec372353dc31a058eaab09c': 'WBTC / cbBTC LP Strategy',
-  '0x73fa29651399eadb546e2b1222c2803a6cfa3376': 'tBTC / WBTC LP Strategy',
-}
-
-// Collateral address (lowercase) → DefiLlama pool ID
-export const COLLATERAL_POOL_MAP: Record<string, string> = {
-  '0x03f8ccf5b5004b55309e949ea9d08136a32e9c5d':
-    '82b5e769-5e63-46a6-9846-f1dffc93ffc9',
-  '0x42302bf7a11bdd07eec372353dc31a058eaab09c':
-    '094cbd12-28a8-4da3-ac93-bc9368383918',
-  '0x73fa29651399eadb546e2b1222c2803a6cfa3376':
-    '20994285-7aad-46e0-8a5f-1135d4e04cc1',
-}
 
 export type CompositionStrategy = {
   name: string
@@ -84,16 +60,12 @@ export type CompositionProtocol = {
   usedIn: number
 }
 
-export type CompositionData = {
-  strategies: CompositionStrategy[]
-  assets: CompositionAsset[]
-  protocols: CompositionProtocol[]
-}
-
-export const indexDTFCompositionAtom = atom<CompositionData | null>((get) => {
+// Map collateral address (lowercase) → matching DefiLlama pool, keyed off
+// COLLATERAL_POOL_MAP and the raw pools payload. Shared by the strategy,
+// asset and protocol views below.
+const poolByCollateralAddressAtom = atom((get) => {
   const exposureData = get(indexDTFExposureDataAtom)
   const poolsData = get(indexDTFPoolsDataAtom)
-  const underlyingNames = get(indexDTFUnderlyingNamesAtom)
 
   if (!exposureData || !poolsData) return null
 
@@ -101,46 +73,58 @@ export const indexDTFCompositionAtom = atom<CompositionData | null>((get) => {
   const poolByAddress: Record<string, DefiLlamaPool> = {}
   for (const token of tokens) {
     const poolId = COLLATERAL_POOL_MAP[token.address.toLowerCase()]
-    if (poolId) {
-      const pool = poolsData.find((p) => p.pool === poolId)
-      if (pool) poolByAddress[token.address.toLowerCase()] = pool
-    }
+    if (!poolId) continue
+    const pool = poolsData.find((p) => p.pool === poolId)
+    if (pool) poolByAddress[token.address.toLowerCase()] = pool
   }
+  return { tokens, poolByAddress }
+})
 
-  const strategies: CompositionStrategy[] = tokens.map((token) => {
-    const pool = poolByAddress[token.address.toLowerCase()]
-    const projectName = pool
-      ? (LP_PROJECTS[pool.project]?.name ?? pool.project)
-      : '-'
-    const venue = pool?.poolMeta
-      ? `${pool.poolMeta.replace('V3', '')} → ${projectName}`
-      : projectName
+export const indexDTFStrategiesAtom = atom<CompositionStrategy[] | null>(
+  (get) => {
+    const ctx = get(poolByCollateralAddressAtom)
+    if (!ctx) return null
 
-    const symbols = pool?.symbol?.split('-') ?? []
-    const underlyings = (pool?.underlyingTokens ?? []).map((addr, i) => ({
-      symbol: symbols[i] || '',
-      address: addr,
-    }))
+    return ctx.tokens.map((token) => {
+      const pool = ctx.poolByAddress[token.address.toLowerCase()]
+      const projectName = pool
+        ? (LP_PROJECTS[pool.project]?.name ?? pool.project)
+        : '-'
+      const venue = pool?.poolMeta
+        ? `${pool.poolMeta.replace('V3', '')} → ${projectName}`
+        : projectName
 
-    return {
-      name:
-        STRATEGY_NAME_MAP[token.address.toLowerCase()] ||
-        `${pool?.symbol?.replace('-', ' / ') || token.symbol} Strategy`,
-      collateralAddress: token.address,
-      weight: token.weight,
-      protocols: venue,
-      estApy: pool?.apy ?? 0,
-      underlyings,
-    }
-  })
+      const symbols = pool?.symbol?.split('-') ?? []
+      const underlyings = (pool?.underlyingTokens ?? []).map((addr, i) => ({
+        symbol: symbols[i] || '',
+        address: addr,
+      }))
 
-  // Unique underlyings for Assets tab
+      return {
+        name:
+          STRATEGY_NAME_MAP[token.address.toLowerCase()] ||
+          `${pool?.symbol?.replace('-', ' / ') || token.symbol} Strategy`,
+        collateralAddress: token.address,
+        weight: token.weight,
+        protocols: venue,
+        estApy: pool?.apy ?? 0,
+        underlyings,
+      }
+    })
+  }
+)
+
+export const indexDTFAssetsAtom = atom<CompositionAsset[] | null>((get) => {
+  const ctx = get(poolByCollateralAddressAtom)
+  if (!ctx) return null
+  const underlyingNames = get(indexDTFUnderlyingNamesAtom)
+
   const underlyingMap = new Map<
     string,
     { symbol: string; totalWeight: number }
   >()
-  for (const token of tokens) {
-    const pool = poolByAddress[token.address.toLowerCase()]
+  for (const token of ctx.tokens) {
+    const pool = ctx.poolByAddress[token.address.toLowerCase()]
     if (!pool) continue
     const symbols = pool.symbol.split('-')
     const underlyings = pool.underlyingTokens ?? []
@@ -151,73 +135,73 @@ export const indexDTFCompositionAtom = atom<CompositionData | null>((get) => {
       if (underlyingMap.has(key)) {
         underlyingMap.get(key)!.totalWeight += weightPerUnderlying
       } else {
-        underlyingMap.set(key, {
-          symbol: sym,
-          totalWeight: weightPerUnderlying,
-        })
+        underlyingMap.set(key, { symbol: sym, totalWeight: weightPerUnderlying })
       }
     })
   }
 
-  const assets: CompositionAsset[] = Array.from(underlyingMap.entries()).map(
-    ([address, data]) => {
-      const resolved = underlyingNames[address]
-      return {
-        name: resolved?.name || data.symbol,
-        symbol: resolved?.symbol || data.symbol,
-        address,
-        weight: Math.round(data.totalWeight),
-        // TODO: Asset type and provider should come from token metadata API
-        type: 'Wrapped',
-        provider: '-',
-      }
+  return Array.from(underlyingMap.entries()).map(([address, data]) => {
+    const resolved = underlyingNames[address]
+    return {
+      name: resolved?.name || data.symbol,
+      symbol: resolved?.symbol || data.symbol,
+      address,
+      weight: Math.round(data.totalWeight),
+      // TODO: Asset type and provider should come from token metadata API
+      type: 'Wrapped',
+      provider: '-',
     }
-  )
+  })
+})
 
-  // Protocols
-  const protocolMap = new Map<
-    string,
-    { project: string; exposureShare: number; role: string; usedIn: number }
-  >()
-  for (const token of tokens) {
-    const pool = poolByAddress[token.address.toLowerCase()]
-    if (!pool) continue
-    const projectName = LP_PROJECTS[pool.project]?.name ?? pool.project
-    if (protocolMap.has(projectName)) {
-      const existing = protocolMap.get(projectName)!
-      existing.exposureShare += token.weight
-      existing.usedIn += 1
-    } else {
-      protocolMap.set(projectName, {
-        project: pool.project,
-        exposureShare: token.weight,
-        // TODO: Role should come from API
-        role: pool.poolMeta ? 'Vault Manager' : 'Pool Venue',
-        usedIn: 1,
-      })
-    }
-    if (pool.poolMeta) {
-      const venueName = pool.poolMeta.replace('V3', ' V3').split(' ')[0]
-      if (!protocolMap.has(venueName)) {
-        protocolMap.set(venueName, {
-          project: pool.poolMeta.toLowerCase().includes('uniswap')
-            ? 'uniswap-v3'
-            : pool.poolMeta.toLowerCase(),
-          exposureShare: token.weight,
-          role: 'LP Venue',
-          usedIn: 1,
-        })
-      } else {
-        const existing = protocolMap.get(venueName)!
+export const indexDTFProtocolsAtom = atom<CompositionProtocol[] | null>(
+  (get) => {
+    const ctx = get(poolByCollateralAddressAtom)
+    if (!ctx) return null
+
+    const protocolMap = new Map<
+      string,
+      { project: string; exposureShare: number; role: string; usedIn: number }
+    >()
+    for (const token of ctx.tokens) {
+      const pool = ctx.poolByAddress[token.address.toLowerCase()]
+      if (!pool) continue
+      const projectName = LP_PROJECTS[pool.project]?.name ?? pool.project
+      if (protocolMap.has(projectName)) {
+        const existing = protocolMap.get(projectName)!
         existing.exposureShare += token.weight
         existing.usedIn += 1
+      } else {
+        protocolMap.set(projectName, {
+          project: pool.project,
+          exposureShare: token.weight,
+          // TODO: Role should come from API
+          role: pool.poolMeta ? 'Vault Manager' : 'Pool Venue',
+          usedIn: 1,
+        })
+      }
+      if (pool.poolMeta) {
+        const venueName = pool.poolMeta.replace('V3', ' V3').split(' ')[0]
+        if (!protocolMap.has(venueName)) {
+          protocolMap.set(venueName, {
+            project: pool.poolMeta.toLowerCase().includes('uniswap')
+              ? 'uniswap-v3'
+              : pool.poolMeta.toLowerCase(),
+            exposureShare: token.weight,
+            role: 'LP Venue',
+            usedIn: 1,
+          })
+        } else {
+          const existing = protocolMap.get(venueName)!
+          existing.exposureShare += token.weight
+          existing.usedIn += 1
+        }
       }
     }
+
+    return Array.from(protocolMap.entries()).map(([name, data]) => ({
+      name,
+      ...data,
+    }))
   }
-
-  const protocols: CompositionProtocol[] = Array.from(
-    protocolMap.entries()
-  ).map(([name, data]) => ({ name, ...data }))
-
-  return { strategies, assets, protocols }
-})
+)

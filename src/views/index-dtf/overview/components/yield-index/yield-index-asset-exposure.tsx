@@ -1,76 +1,19 @@
 import { Skeleton } from '@/components/ui/skeleton'
-import StackTokenLogo from '@/components/token-logo/StackTokenLogo'
-import { chainIdAtom } from '@/state/atoms'
-import {
-  indexDTFApyAtom,
-  indexDTFCompositionAtom,
-  indexDTFExposureDataAtom,
-  indexDTFPoolsDataAtom,
-} from '@/state/dtf/atoms'
-import { formatPercentage } from '@/utils'
-import { atom, useAtomValue } from 'jotai'
-import { ChevronRight, Info } from 'lucide-react'
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
-import { PROJECT_ICONS } from '@/views/earn/hooks/useEarnTableColumns'
+import {
+  indexDTFApyAtom,
+  indexDTFExposureDataAtom,
+} from '@/state/dtf/atoms'
+import { formatPercentage } from '@/utils'
+import { useAtomValue } from 'jotai'
+import { Info } from 'lucide-react'
+import ExposureSummary from './yield-index-exposure-summary'
 import { MOCK_YIELD_DESCRIPTION } from './yield-index-mock-data'
-
-const underlyingTokensAtom = atom<
-  { symbol: string; address: string; chain: number }[]
->((get) => {
-  const composition = get(indexDTFCompositionAtom)
-  const chainId = get(chainIdAtom)
-  if (!composition) return []
-  const seen = new Set<string>()
-  return composition.assets
-    .filter((a) => {
-      if (seen.has(a.address)) return false
-      seen.add(a.address)
-      return true
-    })
-    .map((a) => ({ symbol: a.symbol, address: a.address, chain: chainId }))
-})
-
-const protocolSlugsAtom = atom<{ project: string }[]>((get) => {
-  const pools = get(indexDTFPoolsDataAtom)
-  if (!pools) return []
-  const seen = new Set<string>()
-  const out: { project: string }[] = []
-  for (const p of pools) {
-    if (!seen.has(p.project)) {
-      seen.add(p.project)
-      out.push({ project: p.project })
-    }
-    if (p.poolMeta) {
-      const slug = p.poolMeta.toLowerCase().includes('uniswap')
-        ? 'uniswap-v3'
-        : p.poolMeta.toLowerCase()
-      if (!seen.has(slug)) {
-        seen.add(slug)
-        out.push({ project: slug })
-      }
-    }
-  }
-  return out
-})
-
-const uniqueProjectsCountAtom = atom<number>((get) => {
-  const pools = get(indexDTFPoolsDataAtom)
-  if (!pools) return 0
-  const projects = new Set<string>()
-  for (const p of pools) {
-    projects.add(p.project)
-    if (p.poolMeta) {
-      const venue = p.poolMeta.replace(/V\d+/g, '').trim().toLowerCase()
-      projects.add(venue)
-    }
-  }
-  return projects.size
-})
 
 const ApyBreakdown = () => {
   const apyData = useAtomValue(indexDTFApyAtom)
@@ -107,125 +50,73 @@ const ApyBreakdown = () => {
   )
 }
 
-const ExposureSummary = () => {
+const AssetExposureColumn = () => {
   const exposureData = useAtomValue(indexDTFExposureDataAtom)
-  const underlyingTokens = useAtomValue(underlyingTokensAtom)
-  const protocolSlugs = useAtomValue(protocolSlugsAtom)
-  const uniqueProjects = useAtomValue(uniqueProjectsCountAtom)
-
-  const strategyCount = exposureData?.flatMap((g) => g.tokens).length ?? 0
-  const protocolIcons = protocolSlugs.filter((p) => PROJECT_ICONS[p.project])
-
-  const scrollToComposition = () => {
-    const el = document.getElementById('composition')
-    if (el) el.scrollIntoView({ behavior: 'smooth' })
-  }
+  const primary = exposureData?.[0]
 
   return (
-    <button
-      onClick={scrollToComposition}
-      className="flex items-center justify-between w-full text-xs sm:text-base pt-4 border-t border-secondary mt-4 text-left hover:opacity-80 transition-opacity"
-    >
-      <div className="flex items-center gap-4">
-        <span className="font-semibold">{strategyCount} Strategies</span>
-        <div className="flex items-center gap-1">
-          {underlyingTokens.length > 0 && (
-            <StackTokenLogo
-              tokens={underlyingTokens}
-              size={18}
-              outsource
-              reverseStack
-            />
-          )}
-          <span className="font-semibold">
-            {underlyingTokens.length} Assets
-          </span>
-        </div>
-        <div className="flex items-center gap-1">
-          {protocolIcons.length > 0 && (
-            <div className="flex items-center -space-x-2">
-              {protocolIcons.map((p, i) => (
-                <div
-                  key={p.project}
-                  className="w-4 h-4 rounded-full overflow-hidden"
-                  style={{ zIndex: protocolIcons.length - i }}
-                >
-                  {PROJECT_ICONS[p.project]}
-                </div>
-              ))}
-            </div>
-          )}
-          <span className="font-semibold">{uniqueProjects} Protocols</span>
-        </div>
-      </div>
-      <ChevronRight size={16} className="text-muted-foreground" />
-    </button>
-  )
-}
-
-const YieldIndexAssetExposure = () => {
-  const apyData = useAtomValue(indexDTFApyAtom)
-  const exposureData = useAtomValue(indexDTFExposureDataAtom)
-
-  const primaryExposure = exposureData?.[0]
-
-  return (
-    <div className="p-4 sm:p-6">
-      <div className="flex flex-col sm:flex-row">
-        {/* Left: Asset Exposure */}
-        <div className="flex-1 sm:pr-6">
-          <span className="text-base text-legend">Asset Exposure</span>
-          <div className="mt-6">
-            {primaryExposure ? (
-              <div className="flex items-center gap-2 mb-2">
-                {primaryExposure.native?.logo && (
-                  <img
-                    src={primaryExposure.native.logo}
-                    alt={primaryExposure.native.symbol}
-                    className="w-6 h-6 rounded-full"
-                  />
-                )}
-                <span className="text-xl font-semibold">
-                  {primaryExposure.native?.name || 'Bitcoin'}
-                </span>
-              </div>
-            ) : (
-              <Skeleton className="w-32 h-6 mb-2" />
+    <div className="flex-1 sm:pr-6">
+      <span className="text-base text-legend">Asset Exposure</span>
+      <div className="mt-6">
+        {primary ? (
+          <div className="flex items-center gap-2 mb-2">
+            {primary.native?.logo && (
+              <img
+                src={primary.native.logo}
+                alt={primary.native.symbol}
+                className="w-6 h-6 rounded-full"
+              />
             )}
-            <p className="text-base text-legend">
-              {Math.round(primaryExposure?.totalWeight ?? 0)}%{' '}
-              {primaryExposure?.native?.symbol ?? ''} ·{' '}
-              {/* TODO: Yield description should come from API or brand data */}
-              {MOCK_YIELD_DESCRIPTION}
-            </p>
+            <span className="text-xl font-semibold">
+              {primary.native?.name || 'Bitcoin'}
+            </span>
           </div>
-        </div>
-
-        {/* Separator: vertical on desktop, horizontal on mobile */}
-        <div className="hidden sm:block w-px bg-border" />
-        <div className="sm:hidden border-t border-secondary my-2" />
-
-        {/* Right: Est. APY */}
-        <div className="flex-1 sm:pl-6">
-          <span className="text-base text-primary">Est. APY</span>
-          <div className="mt-3 sm:mt-6">
-            {apyData ? (
-              <span className="text-2xl font-medium text-primary">
-                {formatPercentage(apyData.totalAPY)}
-              </span>
-            ) : (
-              <Skeleton className="w-20 h-8" />
-            )}
-            <div className="mt-2">
-              <ApyBreakdown />
-            </div>
-          </div>
-        </div>
+        ) : (
+          <Skeleton className="w-32 h-6 mb-2" />
+        )}
+        <p className="text-base text-legend">
+          {formatPercentage(primary?.totalWeight ?? 0)}{' '}
+          {primary?.native?.symbol ?? ''} ·{' '}
+          {/* TODO: Yield description should come from API or brand data */}
+          {MOCK_YIELD_DESCRIPTION}
+        </p>
       </div>
-
-      <ExposureSummary />
     </div>
   )
 }
+
+const EstApyColumn = () => {
+  const apyData = useAtomValue(indexDTFApyAtom)
+
+  return (
+    <div className="flex-1 sm:pl-6">
+      <span className="text-base text-primary">Est. APY</span>
+      <div className="mt-3 sm:mt-6">
+        {apyData ? (
+          <span className="text-2xl font-medium text-primary">
+            {formatPercentage(apyData.totalAPY)}
+          </span>
+        ) : (
+          <Skeleton className="w-20 h-8" />
+        )}
+        <div className="mt-2">
+          <ApyBreakdown />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+const YieldIndexAssetExposure = () => (
+  <div className="p-4 sm:p-6">
+    <div className="flex flex-col sm:flex-row">
+      <AssetExposureColumn />
+      <div className="hidden sm:block w-px bg-border" />
+      <div className="sm:hidden border-t border-secondary my-2" />
+      <EstApyColumn />
+    </div>
+    <ExposureSummary />
+  </div>
+)
 
 export default YieldIndexAssetExposure

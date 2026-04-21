@@ -34,7 +34,12 @@ const DataTypeSelector = ({
         {options.map((dt) => (
           <button
             key={dt.value}
-            className={`text-xs sm:text-sm ${dt.value === dataType ? 'text-white font-bold' : 'text-white/50'}`}
+            className={cn(
+              'text-xs sm:text-sm',
+              dt.value === dataType
+                ? 'text-white font-bold'
+                : 'text-white/50'
+            )}
             onClick={() => setDataType(dt.value as DataType)}
           >
             {dt.label}
@@ -55,7 +60,10 @@ const DataTypeSelector = ({
         <Button
           key={dt.value}
           variant="ghost"
-          className={`h-6 px-2 mr-1 sm:px-2 text-xs sm:text-sm text-white/80 dark:text-white/80 rounded-[60px] hover:bg-white hover:text-black dark:hover:bg-white dark:hover:text-black ${dt.value === dataType ? 'bg-white text-black dark:bg-white dark:text-black' : ''}`}
+          className={cn(
+            'h-6 px-2 mr-1 sm:px-2 text-xs sm:text-sm text-white/80 dark:text-white/80 rounded-[60px] hover:bg-white hover:text-black dark:hover:bg-white dark:hover:text-black',
+            dt.value === dataType && 'bg-white text-black dark:bg-white dark:text-black'
+          )}
           onClick={() => setDataType(dt.value as DataType)}
         >
           {dt.label}

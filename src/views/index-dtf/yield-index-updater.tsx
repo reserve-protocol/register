@@ -1,16 +1,17 @@
-import { wagmiConfig } from '@/state/chain'
 import { indexDTFAtom, indexDTFExposureDataAtom } from '@/state/dtf/atoms'
 import {
-  COLLATERAL_POOL_MAP,
   indexDTFApyAtom,
   indexDTFPoolsDataAtom,
   indexDTFUnderlyingNamesAtom,
   isYieldIndexDTFAtom,
 } from '@/state/dtf/yield-index-atoms'
+import { COLLATERAL_POOL_MAP } from './yield-index-config'
 import { RESERVE_API } from '@/utils/constants'
 import { useQuery } from '@tanstack/react-query'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useMemo } from 'react'
+import { Address, erc20Abi } from 'viem'
+import { useReadContracts } from 'wagmi'
 
 const underlyingAddressesAtom = atom<string[]>((get) => {
   const pools = get(indexDTFPoolsDataAtom)
@@ -103,45 +104,28 @@ const IndexDTFPoolsUpdater = ({ chainId }: { chainId: number }) => {
     () =>
       underlyingAddresses.flatMap((addr) => [
         {
-          address: addr as `0x${string}`,
-          abi: [
-            {
-              name: 'name',
-              type: 'function',
-              stateMutability: 'view',
-              inputs: [],
-              outputs: [{ type: 'string' }],
-            },
-          ] as const,
+          address: addr as Address,
+          abi: erc20Abi,
           functionName: 'name' as const,
-          chainId: chainId as 1 | 8453 | 42161,
+          chainId,
         },
         {
-          address: addr as `0x${string}`,
-          abi: [
-            {
-              name: 'symbol',
-              type: 'function',
-              stateMutability: 'view',
-              inputs: [],
-              outputs: [{ type: 'string' }],
-            },
-          ] as const,
+          address: addr as Address,
+          abi: erc20Abi,
           functionName: 'symbol' as const,
-          chainId: chainId as 1 | 8453 | 42161,
+          chainId,
         },
       ]),
     [underlyingAddresses, chainId]
   )
 
-  const { data: nameResults } = useQuery({
-    queryKey: ['dtf-underlying-names', ...underlyingAddresses],
-    queryFn: async () => {
-      const { readContracts } = await import('wagmi/actions')
-      return readContracts(wagmiConfig, { contracts: erc20Calls })
+  const { data: nameResults } = useReadContracts({
+    contracts: erc20Calls,
+    allowFailure: true,
+    query: {
+      enabled: underlyingAddresses.length > 0,
+      staleTime: Infinity,
     },
-    enabled: underlyingAddresses.length > 0,
-    staleTime: Infinity,
   })
 
   useEffect(() => {
