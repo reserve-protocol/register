@@ -20,6 +20,7 @@
  * docs/protocol-context.md is updated.
  */
 
+import * as crypto from 'crypto'
 import * as fs from 'fs'
 import * as os from 'os'
 import * as path from 'path'
@@ -458,8 +459,30 @@ async function runSkill() {
   }
   fs.mkdirSync(path.dirname(SKILL_DEST), { recursive: true })
   fs.copyFileSync(SKILL_SRC, SKILL_DEST)
-  const lines = fs.readFileSync(SKILL_DEST, 'utf-8').split('\n').length
+  const bytes = fs.readFileSync(SKILL_DEST)
+  const lines = bytes.toString('utf-8').split('\n').length
   console.log(`  ✓ public/skills/dtf.md (${lines} lines, mirrored from reserve-sdk)`)
+
+  // Agent Skills Discovery RFC v0.2.0 — https://github.com/cloudflare/agent-skills-discovery-rfc
+  // Scanner expects `/.well-known/agent-skills/index.json` with $schema + per-skill sha256 digest.
+  const digest = crypto.createHash('sha256').update(bytes).digest('hex')
+  const skillsIndex = {
+    $schema: 'https://schemas.agentskills.io/discovery/0.2.0/schema.json',
+    skills: [
+      {
+        name: 'dtf',
+        type: 'skill-md',
+        description:
+          'Inspect, query, and transact with Reserve Protocol Decentralized Token Folios (DTFs) across Ethereum, Base, and BSC.',
+        url: `${BASE_URL}/skills/dtf.md`,
+        digest: `sha256:${digest}`,
+      },
+    ],
+  }
+  writeOutput(
+    '.well-known/agent-skills/index.json',
+    JSON.stringify(skillsIndex, null, 2) + '\n'
+  )
 }
 
 // Confirm that docs/protocol-context.md hasn't drifted so far from the

@@ -3,7 +3,7 @@
   Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
   Content-Security-Policy: object-src 'none'; base-uri 'self'; frame-ancestors 'none';
   X-Robots-Tag: index, follow
-  Content-Signal: ai-train=no, ai-search=yes
+  Content-Signal: search=yes, ai-input=yes, ai-train=no
   Link: <https://app.reserve.org/sitemap.xml>; rel="sitemap"
   Link: <https://app.reserve.org/llms.txt>; rel="describedby"; type="text/plain"
 
@@ -30,6 +30,9 @@
 
 /.well-known/api-catalog
   Content-Type: application/linkset+json; charset=utf-8
+
+/.well-known/agent-skills/index.json
+  Content-Type: application/json; charset=utf-8
 
 /skills/dtf.md
   Content-Type: text/markdown; charset=utf-8

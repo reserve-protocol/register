@@ -5,6 +5,7 @@ Allow: /
 Disallow: /internal
 Disallow: /deploy
 Disallow: /portfolio
+Content-Signal: search=yes, ai-input=yes, ai-train=no
 
 # AI / agent crawlers — explicit allow so they can reach skill + factsheet surfaces
 User-agent: GPTBot
