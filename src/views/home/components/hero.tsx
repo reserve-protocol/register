@@ -70,7 +70,7 @@ const MobileHeading = () => (
 )
 
 const Hero = () => (
-  <div className="lg:mt-10 mb-8 lg:mb-12 lg:pb-10 lg:border-b">
+  <div className="lg:mt-6 mb-8  ">
     <div className="lg:flex items-end mx-6 hidden">
       <Header />
       <DTFExplainerButton className="ml-auto " />
