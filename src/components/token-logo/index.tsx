@@ -50,6 +50,8 @@ const TokenLogo = React.forwardRef<HTMLImageElement, Props>((props, ref) => {
       img.src = url
 
       const timeoutId = setTimeout(() => {
+        // Cancel the in-flight fetch so it stops counting toward window.onload
+        img.src = ''
         reject(new Error('Image load timeout'))
       }, 5000)
 
@@ -195,6 +197,9 @@ const TokenLogo = React.forwardRef<HTMLImageElement, Props>((props, ref) => {
       src={currentSrc || '/svgs/defaultLogo.svg'}
       height={h}
       width={w}
+      loading="lazy"
+      decoding="async"
+      fetchPriority="low"
       style={{ width: w, height: h }}
       className={cn(
         'flex-shrink-0 object-cover object-center rounded-full',

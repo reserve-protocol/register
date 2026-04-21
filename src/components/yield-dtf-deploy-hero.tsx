@@ -2,15 +2,15 @@ import { Trans } from '@lingui/macro'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import ExternalArrowIcon from 'components/icons/ExternalArrowIcon'
-import DeployerImg from '../assets/deployer_img.png'
+import DeployerImg from '@/components/assets/yield-dtf-deploy-hero.png'
 import { useNavigate } from 'react-router-dom'
 import { ROUTES } from 'utils/constants'
 
-interface DeployHeroProps {
+interface YieldDTFDeployHeroProps {
   className?: string
 }
 
-const DeployHero = ({ className }: DeployHeroProps) => {
+const YieldDTFDeployHero = ({ className }: YieldDTFDeployHeroProps) => {
   const navigate = useNavigate()
 
   const handleDeploy = () => {
@@ -70,4 +70,4 @@ const DeployHero = ({ className }: DeployHeroProps) => {
   )
 }
 
-export default DeployHero
+export default YieldDTFDeployHero

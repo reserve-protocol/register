@@ -2,6 +2,12 @@ import { cn } from "@/lib/utils";
 import ProtocolMetrics from "./protocol-metrics";
 import useIsDarkMode from "@/hooks/use-is-dark-mode";
 import DTFExplainerButton from "./dtf-explainer-button";
+import { useEffect } from "react";
+
+const SPLASH_LIGHT_1X = '/imgs/home-splash@1x.webp'
+const SPLASH_LIGHT_2X = '/imgs/home-splash.webp'
+const SPLASH_DARK_1X = '/imgs/home-splash-dark@1x.webp'
+const SPLASH_DARK_2X = '/imgs/home-splash-dark.webp'
 
 const Header = ({ className }: { className?: string }) => (
   <h1 className={cn("text-4xl text-primary max-w-[600px] dark:text-foreground", className)}>Reserve lets you buy entire portfolios as a single token</h1>
@@ -24,12 +30,20 @@ const MetricsContainer = () => {
 
 const SplashImage = () => {
   const isDark = useIsDarkMode()
-  const splash1x = isDark
-    ? '/imgs/home-splash-dark@1x.webp'
-    : '/imgs/home-splash@1x.webp'
-  const splash2x = isDark
-    ? '/imgs/home-splash-dark.webp'
-    : '/imgs/home-splash.webp'
+  const splash1x = isDark ? SPLASH_DARK_1X : SPLASH_LIGHT_1X
+  const splash2x = isDark ? SPLASH_DARK_2X : SPLASH_LIGHT_2X
+
+  // Warm the opposite-theme variant so toggling dark mode is an instant swap.
+  // Deferred so the preload doesn't count toward window.onload.
+  useEffect(() => {
+    const other1x = isDark ? SPLASH_LIGHT_1X : SPLASH_DARK_1X
+    const other2x = isDark ? SPLASH_LIGHT_2X : SPLASH_DARK_2X
+    const id = setTimeout(() => {
+      new Image().src = other1x
+      new Image().src = other2x
+    }, 1500)
+    return () => clearTimeout(id)
+  }, [isDark])
 
   return (
     <div className="relative">
