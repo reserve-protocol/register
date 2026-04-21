@@ -65,8 +65,29 @@
 
     <!-- Preconnect to third-party domains -->
     <link rel="preconnect" href="https://api.reserve.org" crossorigin />
-    <link rel="preconnect" href="https://connect.facebook.net" crossorigin />
+    <link rel="preconnect" href="https://api.goldsky.com" crossorigin />
+    <link rel="dns-prefetch" href="https://token-icons.llamao.fi" />
     <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+    <link rel="dns-prefetch" href="https://connect.facebook.net" />
+
+    <!-- Preload hero splash (LCP). React-rendered so browser preloader can't
+         discover it from the initial HTML; one variant per color-scheme. -->
+    <link
+      rel="preload"
+      as="image"
+      href="/imgs/home-splash@1x.webp"
+      imagesrcset="/imgs/home-splash@1x.webp 1x, /imgs/home-splash.webp 2x"
+      fetchpriority="high"
+      media="(prefers-color-scheme: light)"
+    />
+    <link
+      rel="preload"
+      as="image"
+      href="/imgs/home-splash-dark@1x.webp"
+      imagesrcset="/imgs/home-splash-dark@1x.webp 1x, /imgs/home-splash-dark.webp 2x"
+      fetchpriority="high"
+      media="(prefers-color-scheme: dark)"
+    />
 
     <!-- Agent discovery -->
     <link rel="alternate" type="text/plain" href="/llms.txt" title="llms.txt" />
@@ -123,13 +144,26 @@
       crossorigin
     />
 
-    <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-WPKVXLPX');</script>
-    <!-- End Google Tag Manager -->
+    <!-- Google Tag Manager — deferred to idle so GTM-fired tags (Criteo,
+         Taboola, Adform, Hotjar, Mixpanel, etc.) stay off the critical path.
+         dataLayer is defined synchronously so app code can push events early. -->
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      (function () {
+        function loadGTM() {
+          window.dataLayer.push({ 'gtm.start': Date.now(), event: 'gtm.js' });
+          var s = document.createElement('script');
+          s.async = true;
+          s.src = 'https://www.googletagmanager.com/gtm.js?id=GTM-WPKVXLPX';
+          document.head.appendChild(s);
+        }
+        if ('requestIdleCallback' in window) {
+          requestIdleCallback(loadGTM, { timeout: 3000 });
+        } else {
+          addEventListener('load', function () { setTimeout(loadGTM, 1500); });
+        }
+      })();
+    </script>
 
 
     <!-- 
@@ -142,33 +176,37 @@
 
     <script type="module" src="/src/index.tsx"></script>
 
-    <!-- Meta Pixel -->
+    <!-- Meta Pixel — stub is synchronous so app code can call fbq(...) right
+         away; SDK + initial PageView load on idle. -->
     <script>
-      !(function (f, b, e, v, n, t, s) {
+      !(function (f) {
         if (f.fbq) return
-        n = f.fbq = function () {
+        var n = (f.fbq = function () {
           n.callMethod
             ? n.callMethod.apply(n, arguments)
             : n.queue.push(arguments)
-        }
+        })
         if (!f._fbq) f._fbq = n
         n.push = n
         n.loaded = !0
         n.version = '2.0'
         n.queue = []
-        t = b.createElement(e)
-        t.async = !0
-        t.src = v
-        s = b.getElementsByTagName(e)[0]
-        s.parentNode.insertBefore(t, s)
-      })(
-        window,
-        document,
-        'script',
-        'https://connect.facebook.net/en_US/fbevents.js'
-      )
-      fbq('init', '1639552693295571')
-      fbq('track', 'PageView')
+      })(window)
+      ;(function () {
+        function loadPixel() {
+          var s = document.createElement('script')
+          s.async = true
+          s.src = 'https://connect.facebook.net/en_US/fbevents.js'
+          document.head.appendChild(s)
+          fbq('init', '1639552693295571')
+          fbq('track', 'PageView')
+        }
+        if ('requestIdleCallback' in window) {
+          requestIdleCallback(loadPixel, { timeout: 3000 })
+        } else {
+          addEventListener('load', function () { setTimeout(loadPixel, 1500) })
+        }
+      })()
     </script>
     <noscript>
       <img
