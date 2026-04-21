@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
+import { RESERVE_API } from '@/utils/constants'
 
-// TODO: swap to RESERVE_API once metrics endpoint is on prod
-const METRICS_URL = 'https://api-staging.reserve.org/v2/protocol/metrics/'
+const METRICS_URL = `${RESERVE_API}v2/protocol/metrics/`
 
 export type HomeMetrics = {
   tvl: number
@@ -15,10 +15,13 @@ type MetricsResponse = {
   status: string
   result: {
     tvl: number
-    partnerRevenue: { index: number; yield: number }
-    rsrAccrual: { index: number; yield: number }
+    partnerRevenue: number
+    partnerRevenueAnnualized: number
+    rsrAccrual: number
+    rsrAccrualAnnualized: number
     yieldDistributed: number
-    mintVolume: { index: number; yield: number }
+    yieldDistributedAnnualized: number
+    mintVolume: number
   }
 }
 
@@ -29,10 +32,10 @@ const fetchHomeMetrics = async (): Promise<HomeMetrics> => {
   const { result } = json
   return {
     tvl: result.tvl,
-    partnerRevenue: result.partnerRevenue.index + result.partnerRevenue.yield,
-    rsrAccrual: result.rsrAccrual.index + result.rsrAccrual.yield,
-    yieldDistributed: result.yieldDistributed,
-    mintVolume: result.mintVolume.index + result.mintVolume.yield,
+    partnerRevenue: result.partnerRevenueAnnualized,
+    rsrAccrual: result.rsrAccrualAnnualized,
+    yieldDistributed: result.yieldDistributedAnnualized,
+    mintVolume: result.mintVolume,
   }
 }
 
