@@ -1,3 +1,4 @@
+import { deprecatedDTFAddressesAtom } from '@/views/earn/atoms'
 import { atom } from 'jotai'
 import { atomWithReset } from 'jotai/utils'
 import { poolsAtom } from 'state/pools/atoms'
@@ -25,11 +26,21 @@ export const filteredPoolsAtom = atom((get) => {
   const search = get(poolSearchFilterAtom).trim().toLowerCase()
   const filters = get(poolFilterAtom)
   const chains = get(poolChainsFilterAtom)
+  const deprecated = get(deprecatedDTFAddressesAtom)
 
   return pools.filter((pool) => {
     if (
       !chains.length ||
       !chains.includes(NETWORKS[pool.chain.toLowerCase()].toString())
+    ) {
+      return false
+    }
+
+    // Deprecated filter: drop pools whose underlying tokens include a deprecated DTF
+    if (
+      pool.underlyingTokens.some((token) =>
+        deprecated.has(token.address.toLowerCase())
+      )
     ) {
       return false
     }
