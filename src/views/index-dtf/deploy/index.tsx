@@ -45,6 +45,7 @@ const IndexTokenDeploy = () => {
   const form = useForm({
     resolver: zodResolver(DeployFormSchema),
     defaultValues: dtfDeployDefaultValues,
+    mode: 'onTouched',
   })
 
   return (

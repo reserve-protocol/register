@@ -71,7 +71,7 @@ const TimeRangeSelector = ({
   }
 
   return (
-    <div className="gap-1 sm:ml-0 sm:mr-auto bg-white/10 rounded-full p-1">
+    <div className="gap-1 sm:ml-0 sm:mr-auto bg-white/10 rounded-full p-1 flex">
       {availableRanges.map((tr) => (
         <Button
           key={tr.value}

@@ -123,7 +123,7 @@ const DisabledNavigationItem = ({
   )
 }
 
-const DISABLED_ROUTES_WHEN_DEPRECATED: string[] = [ROUTES.GOVERNANCE, ROUTES.AUCTIONS]
+const DISABLED_ROUTES_WHEN_DEPRECATED: string[] = [ROUTES.AUCTIONS]
 
 const NavigationItems = () => {
   const dtf = useAtomValue(indexDTFAtom)
