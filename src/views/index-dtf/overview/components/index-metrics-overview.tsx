@@ -265,12 +265,10 @@ const AnnualizedTvlFee = () => {
     <MetricsItem
       label="Annualized TVL Fee"
       value={
-        dtf?.annualizedTvlFee
-          ? formatPercentage(dtf?.annualizedTvlFee * 100)
-          : ''
+        dtf ? formatPercentage((dtf.annualizedTvlFee ?? 0) * 100) : ''
       }
       icon={<TableRowsSplit size={16} />}
-      loading={!dtf?.annualizedTvlFee}
+      loading={!dtf}
     />
   )
 }
@@ -280,9 +278,9 @@ const MintingFee = () => {
   return (
     <MetricsItem
       label="Minting Fee"
-      value={dtf?.mintingFee ? formatPercentage(dtf?.mintingFee * 100) : ''}
+      value={dtf ? formatPercentage((dtf.mintingFee ?? 0) * 100) : ''}
       icon={<ChartPie size={16} />}
-      loading={!dtf?.mintingFee}
+      loading={!dtf}
     />
   )
 }
