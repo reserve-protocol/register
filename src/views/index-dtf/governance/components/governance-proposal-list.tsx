@@ -18,7 +18,7 @@ import { Link } from 'react-router-dom'
 import { useTrackIndexDTFClick } from '../../hooks/useTrackIndexDTFPage'
 import { governanceProposalsAtom } from '../atoms'
 
-const CreateProposalButton = () => {
+const ProposalButton = () => {
   const { trackClick } = useTrackIndexDTFClick('overview', 'governance')
   const status = useAtomValue(indexDTFStatusAtom)
   const isDeprecated = isInactiveDTF(status)
@@ -52,7 +52,7 @@ const Header = () => (
     <h1 className="font-semibold text-xl text-primary dark:text-muted-foreground mr-auto">
       Recent proposals
     </h1>
-    <CreateProposalButton />
+    <ProposalButton />
   </div>
 )
 const VoteStateHeader = ({ data }: { data: VotingState }) => {
