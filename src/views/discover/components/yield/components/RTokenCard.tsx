@@ -1,4 +1,3 @@
-import InactiveBadge from '@/components/inactive-badge'
 import { cn } from '@/lib/utils'
 import CollateralPieChartWrapper from '@/views/yield-dtf/overview/components/collateral-pie-chart-wrapper'
 import RTokenAddresses from '@/views/yield-dtf/overview/components/rtoken-addresses'
@@ -90,7 +89,11 @@ const RTokenCard = ({ token, deprecated }: Props) => {
                 className="block md:hidden h-8"
               />
               <ChainBadge chain={token.chain} />
-              {deprecated && <InactiveBadge />}
+              {deprecated && (
+                <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-yellow-500/15 text-yellow-600 dark:text-yellow-400">
+                  Inactive
+                </span>
+              )}
               <div className="block md:hidden">
                 <ChainLogo chain={token.chain} fontSize={12} />
               </div>

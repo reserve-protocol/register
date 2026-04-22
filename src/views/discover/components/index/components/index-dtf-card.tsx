@@ -1,6 +1,5 @@
 import ChainLogo from '@/components/icons/ChainLogo'
 import CoverPlaceholder from '@/components/icons/cover-placeholder'
-import InactiveBadge from '@/components/inactive-badge'
 import TokenLogo from '@/components/token-logo'
 import StackTokenLogo from '@/components/token-logo/StackTokenLogo'
 import { Button } from '@/components/ui/button'
@@ -78,7 +77,11 @@ const IndexDTFCard = ({ dtf }: { dtf: IndexDTFItem }) => {
         </div>
         <div className="flex items-center gap-2 mt-auto pt-2">
           <h4 className="font-semibold text-sm">{dtf.name}</h4>
-          {inactive && <InactiveBadge />}
+          {inactive && (
+            <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-yellow-500/15 text-yellow-600 dark:text-yellow-400">
+              Inactive
+            </span>
+          )}
         </div>
         <div className="flex items-end text-xs ">
           <StackTokenLogo
