@@ -30,56 +30,6 @@ type ChartPoint = {
   [key: string]: number | undefined
 }
 
-const YieldGradient = () => (
-  <linearGradient id="yieldGradient" x1="0" y1="0" x2="0" y2="1">
-    <stop offset="0%" stopColor="#4ADE80" stopOpacity={0.3} />
-    <stop offset="100%" stopColor="#4ADE80" stopOpacity={0} />
-  </linearGradient>
-)
-
-const DotsPattern = () => (
-  <pattern
-    id="dots"
-    x="0"
-    y="0"
-    width="3"
-    height="3"
-    patternUnits="userSpaceOnUse"
-  >
-    <circle cx="1" cy="1" r="0.4" fill="#E5EEFA" opacity="1" />
-  </pattern>
-)
-
-const ChartDefs = ({ isYieldMode }: { isYieldMode: boolean }) => (
-  <defs>{isYieldMode ? <YieldGradient /> : <DotsPattern />}</defs>
-)
-
-const ChartTooltip = ({ dataType }: { dataType: DataType }) => {
-  if (dataType === 'yield') return <YieldTooltip />
-  return <PriceTooltip dataType={dataType} />
-}
-
-const AvgApyReferenceLine = () => {
-  const avgApy = useAtomValue(avgApyAtom)
-  if (avgApy <= 0) return null
-
-  return (
-    <ReferenceLine
-      y={avgApy}
-      stroke="#fff"
-      strokeDasharray="4 4"
-      strokeOpacity={0.4}
-      label={{
-        value: `Avg ${formatPercentage(avgApy)}`,
-        position: 'insideBottomRight',
-        fill: '#fff',
-        fontSize: 12,
-        opacity: 0.8,
-      }}
-    />
-  )
-}
-
 const buildYAxisFormatter =
   (dataType: DataType, isBTCMode: boolean, isYieldMode: boolean) =>
   (value: number) => {
@@ -105,6 +55,7 @@ const PriceChartBody = ({
   className?: string
 }) => {
   const dataType = useAtomValue(dataTypeAtom)
+  const avgApy = useAtomValue(avgApyAtom)
   const isMobile = useIsMobile()
   const isYieldMode = dataType === 'yield'
   const isBTCMode = dataType === 'priceBTC'
@@ -122,7 +73,31 @@ const PriceChartBody = ({
         margin={{ left: 0, right: 0, top: 5, bottom: 5 }}
         {...{ overflow: 'visible' }}
       >
-        <ChartDefs isYieldMode={isYieldMode} />
+        <defs>
+          {isYieldMode ? (
+            <linearGradient
+              id="yieldGradient"
+              x1="0"
+              y1="0"
+              x2="0"
+              y2="1"
+            >
+              <stop offset="0%" stopColor="#4ADE80" stopOpacity={0.3} />
+              <stop offset="100%" stopColor="#4ADE80" stopOpacity={0} />
+            </linearGradient>
+          ) : (
+            <pattern
+              id="dots"
+              x="0"
+              y="0"
+              width="3"
+              height="3"
+              patternUnits="userSpaceOnUse"
+            >
+              <circle cx="1" cy="1" r="0.4" fill="#E5EEFA" opacity="1" />
+            </pattern>
+          )}
+        </defs>
         <XAxis
           dataKey="timestamp"
           tick={{ fontSize: 13, opacity: 0.7 }}
@@ -154,8 +129,26 @@ const PriceChartBody = ({
           tickCount={5}
           tickMargin={5}
         />
-        <Tooltip content={<ChartTooltip dataType={dataType} />} />
-        {isYieldMode && <AvgApyReferenceLine />}
+        <Tooltip
+          content={
+            isYieldMode ? <YieldTooltip /> : <PriceTooltip dataType={dataType} />
+          }
+        />
+        {isYieldMode && avgApy > 0 && (
+          <ReferenceLine
+            y={avgApy}
+            stroke="#fff"
+            strokeDasharray="4 4"
+            strokeOpacity={0.4}
+            label={{
+              value: `Avg ${formatPercentage(avgApy)}`,
+              position: 'insideBottomRight',
+              fill: '#fff',
+              fontSize: 12,
+              opacity: 0.8,
+            }}
+          />
+        )}
         <Area
           type="monotone"
           dataKey={chartKey}
