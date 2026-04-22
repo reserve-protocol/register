@@ -1,4 +1,5 @@
 import ChainLogo from '@/components/icons/ChainLogo'
+import InactiveBadge from '@/components/inactive-badge'
 import TokenLogo from '@/components/token-logo'
 import StackTokenLogo from '@/components/token-logo/StackTokenLogo'
 import { ChartConfig, ChartContainer } from '@/components/ui/chart'
@@ -107,11 +108,7 @@ const columns: ColumnDef<IndexDTFItem>[] = [
           <div className="break-words  max-w-[420px]">
             <div className="flex items-center gap-2">
               <h4 className="font-semibold ">{row.original.name}</h4>
-              {isInactiveDTF(row.original.status) && (
-                <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-yellow-500/15 text-yellow-600 dark:text-yellow-400">
-                  Inactive
-                </span>
-              )}
+              {isInactiveDTF(row.original.status) && <InactiveBadge />}
             </div>
             <span className="text-legend">${row.original.symbol}</span>
           </div>

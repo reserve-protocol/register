@@ -1,9 +1,12 @@
+import InactiveBadge from '@/components/inactive-badge'
 import { Skeleton } from '@/components/ui/skeleton'
+import { isInactiveDTF } from '@/hooks/use-dtf-status'
 import { cn } from '@/lib/utils'
 import { btcPriceAtom } from '@/state/chain/atoms/chainAtoms'
 import {
   indexDTFAtom,
   indexDTFPriceAtom,
+  indexDTFStatusAtom,
   performanceTimeRangeAtom,
 } from '@/state/dtf/atoms'
 import {
@@ -51,6 +54,7 @@ const OverlayHeaderActions = () => {
 
 const OverlayTitle = () => {
   const dtf = useAtomValue(indexDTFAtom)
+  const isInactive = isInactiveDTF(useAtomValue(indexDTFStatusAtom))
 
   if (!dtf) {
     return <Skeleton className="w-[250px] h-7 sm:h-8" />
@@ -58,7 +62,10 @@ const OverlayTitle = () => {
 
   return (
     <h2 className="text-xl sm:text-2xl font-light w-full break-words">
-      {dtf.token.name}
+      <div className="flex items-center gap-2">
+        {dtf.token.name}
+        {isInactive && <InactiveBadge className="block sm:hidden" />}
+      </div>
     </h2>
   )
 }
@@ -79,8 +86,9 @@ const YieldOverlayInfo = () => {
       </div>
       {stats && (
         <span className="text-sm text-white/60">
-          Avg {formatPercentage(stats.avg)} · range {formatPercentage(stats.min)}–
-          {formatPercentage(stats.max)} ({range === 'all' ? 'All' : range})
+          Avg {formatPercentage(stats.avg)} · range{' '}
+          {formatPercentage(stats.min)}–{formatPercentage(stats.max)} (
+          {range === 'all' ? 'All' : range})
         </span>
       )}
     </>
@@ -146,6 +154,7 @@ const ChartOverlay = ({
 }) => {
   const dataType = useAtomValue(dataTypeAtom)
   const isYieldMode = dataType === 'yield'
+  const isInactive = isInactiveDTF(useAtomValue(indexDTFStatusAtom))
 
   return (
     <div
@@ -155,8 +164,11 @@ const ChartOverlay = ({
       )}
     >
       <div className="flex items-center gap-1 justify-between">
-        <div className="flex items-center bg-white/20 rounded-full p-[1px] w-fit">
-          <IndexTokenLogo />
+        <div className="flex flex-wrap items-center gap-2">
+          <div className="flex items-center bg-white/20 rounded-full p-[1px] w-fit">
+            <IndexTokenLogo />
+          </div>
+          {isInactive && <InactiveBadge className="hidden sm:block" />}
         </div>
         <OverlayHeaderActions />
       </div>
