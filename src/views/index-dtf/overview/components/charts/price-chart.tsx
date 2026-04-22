@@ -132,8 +132,8 @@ const PriceChart = () => {
   return (
     <div
       className={cn(
-        'lg:rounded-4xl lg:rounded-b-none bg-[#000] dark:bg-background lg:dark:bg-muted w-full text-[#fff] dark:text-foreground py-3 sm:py-6 pb-20 sm:h-[598px] xl:h-[599px] overflow-hidden',
-        isYieldIndexDTF ? 'h-[478px]' : 'h-[438px]'
+        'lg:rounded-4xl lg:rounded-b-none bg-[#000] dark:bg-background lg:dark:bg-muted w-full text-[#fff] dark:text-foreground py-3 sm:py-6 pb-20 sm:h-[598px] xl:h-[599px]',
+        isYieldIndexDTF ? 'h-[478px] overflow-hidden' : 'h-[438px]'
       )}
     >
       <div className="px-3 sm:px-6">
