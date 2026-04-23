@@ -9,28 +9,43 @@ import { governanceStatsAtom } from '../atoms'
 import { Archive, FileStack, Notebook } from 'lucide-react'
 import TokenLogo from '@/components/token-logo'
 import { useVotingPower } from '../hooks/use-voting-power'
+import { getDTFSettingsGovernance } from '../governance-helpers'
 
 const VotingPower = () => {
   const { votingPower } = useVotingPower()
   const dtf = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
+  const governanceToken = getDTFSettingsGovernance(dtf)?.token?.token
+  const isVoteLockToken =
+    !!dtf?.stToken?.id &&
+    governanceToken?.address.toLowerCase() === dtf.stToken.id.toLowerCase()
 
   return (
     <div className="flex items-center gap-3 p-6">
       <TokenLogo
         size="lg"
-        symbol={dtf?.stToken?.underlying.symbol}
-        address={dtf?.stToken?.underlying.address}
+        symbol={
+          isVoteLockToken
+            ? dtf?.stToken?.underlying.symbol
+            : governanceToken?.symbol
+        }
+        address={
+          isVoteLockToken
+            ? dtf?.stToken?.underlying.address
+            : governanceToken?.address
+        }
         chain={chainId}
       />
       <div className="flex flex-col ">
-        <span className="text-legend text-sm">Vote locked</span>
+        <span className="text-legend text-sm">
+          {isVoteLockToken ? 'Vote locked' : 'Voting power'}
+        </span>
         <span className="font-bold">
           {formatCurrency(votingPower, 1, {
             notation: 'compact',
             compactDisplay: 'short',
           })}{' '}
-          ${dtf?.stToken?.token.symbol}
+          {isVoteLockToken ? `$${dtf?.stToken?.token.symbol}` : governanceToken?.symbol}
         </span>
       </div>
     </div>

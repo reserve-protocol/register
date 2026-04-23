@@ -351,6 +351,25 @@ export default [
   },
   {
     type: 'function',
+    name: 'isOptimistic',
+    inputs: [
+      {
+        name: 'proposalId',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+    ],
+    outputs: [
+      {
+        name: '',
+        type: 'bool',
+        internalType: 'bool',
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
     name: 'getVotes',
     inputs: [
       {

@@ -4,6 +4,7 @@ import { Address, Hex } from 'viem'
 
 export interface PartialProposal {
   id: string
+  governor?: Address
   timelockId: string
   description: string
   creationTime: number
@@ -21,6 +22,21 @@ export interface PartialProposal {
   proposer: {
     address: Address
   }
+}
+
+const ONCHAIN_PROPOSAL_STATES = [
+  PROPOSAL_STATES.PENDING,
+  PROPOSAL_STATES.ACTIVE,
+  PROPOSAL_STATES.CANCELED,
+  PROPOSAL_STATES.DEFEATED,
+  PROPOSAL_STATES.SUCCEEDED,
+  PROPOSAL_STATES.QUEUED,
+  PROPOSAL_STATES.EXPIRED,
+  PROPOSAL_STATES.EXECUTED,
+] as const
+
+export const getOnchainProposalState = (state: number | bigint) => {
+  return ONCHAIN_PROPOSAL_STATES[Number(state)]
 }
 
 export type VotingState = {
@@ -50,6 +66,8 @@ export interface ProposalDetail extends PartialProposal {
     voter: string
   }[]
   governor: Address
+  isOptimistic?: boolean
+  voteToken?: Address
   votingState: VotingState
 }
 

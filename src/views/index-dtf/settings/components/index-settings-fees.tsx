@@ -11,6 +11,10 @@ import {
   TrainTrack,
 } from 'lucide-react'
 import { IconWrapper, InfoCard, InfoCardItem } from './settings-info-card'
+import {
+  getDTFSettingsGovernance,
+  getGovernanceVoteTokenAddress,
+} from '@/views/index-dtf/governance/governance-helpers'
 
 type Recipient = {
   label: string
@@ -22,6 +26,10 @@ type Recipient = {
 const feeRecipientsAtom = atom((get) => {
   const indexDTF = get(indexDTFAtom)
   const platformFee = get(indexDTFFeeAtom)
+  const governanceTokenAddress = getGovernanceVoteTokenAddress(
+    getDTFSettingsGovernance(indexDTF),
+    indexDTF?.stToken?.id
+  )
 
   if (!indexDTF || platformFee === undefined) return undefined
   const platformShare = {
@@ -50,7 +58,7 @@ const feeRecipientsAtom = atom((get) => {
         Number(recipient.percentage) / PERCENT_ADJUST
       )
     } else if (
-      recipient.address.toLowerCase() === indexDTF.stToken?.id.toLowerCase()
+      recipient.address.toLowerCase() === governanceTokenAddress?.toLowerCase()
     ) {
       governanceShare.value = formatPercentage(
         Number(recipient.percentage) / PERCENT_ADJUST

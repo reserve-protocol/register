@@ -45,7 +45,10 @@ export const topDelegatesAtom = atom<
 
   return overview.delegates.map((delegate) => ({
     ...delegate,
-    weightedVotes: (delegate.delegatedVotes / overview.voteSupply) * 100,
+    weightedVotes:
+      overview.voteSupply > 0
+        ? (delegate.delegatedVotes / overview.voteSupply) * 100
+        : 0,
   }))
 })
 

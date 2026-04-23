@@ -15,6 +15,7 @@ import {
   proposalDescriptionAtom,
 } from '../atoms'
 import { useIsProposeAllowed } from '@/views/index-dtf/governance/hooks/use-is-propose-allowed'
+import { getDTFSettingsGovernance } from '@/views/index-dtf/governance/governance-helpers'
 
 const isProposalReady = atom((get) => {
   const wallet = get(walletAtom)
@@ -49,6 +50,7 @@ const SubmitProposalButton = () => {
   const description = useAtomValue(proposalDescriptionAtom)
   const proposalData = useAtomValue(dtfSettingsProposalDataAtom)
   const dtf = useAtomValue(indexDTFAtom)
+  const governance = getDTFSettingsGovernance(dtf)
   const { writeContract, isPending, data } = useWriteContract()
   const { isSuccess } = useWaitForTransactionReceipt({
     hash: data,
@@ -65,11 +67,11 @@ const SubmitProposalButton = () => {
   }, [isSuccess])
 
   const handleSubmit = () => {
-    if (proposalData && description && dtf?.ownerGovernance?.id) {
+    if (proposalData && description && governance?.id) {
       const values: bigint[] = new Array(proposalData.calldatas.length).fill(0n)
 
       writeContract({
-        address: dtf.ownerGovernance?.id,
+        address: governance.id,
         abi: DTFIndexGovernance,
         functionName: 'propose',
         args: [proposalData.targets, values, proposalData.calldatas, description],
@@ -81,9 +83,7 @@ const SubmitProposalButton = () => {
   return (
     <TransactionButtonContainer chain={chainId}>
       <Button
-        disabled={
-          !isReady || isPending || !!data || !dtf?.ownerGovernance?.id
-        }
+        disabled={!isReady || isPending || !!data || !governance?.id}
         onClick={handleSubmit}
         className="w-full"
         variant="default"

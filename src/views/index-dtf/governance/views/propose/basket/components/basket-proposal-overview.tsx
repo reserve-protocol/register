@@ -18,6 +18,7 @@ import SimulateProposalCard from '@/views/index-dtf/governance/components/simula
 import { chainIdAtom } from '@/state/atoms'
 import { Address } from 'viem'
 import ProposalLiquidityChecker from './proposal-liquidity-checker'
+import { getGovernanceVoteTokenAddress } from '@/views/index-dtf/governance/governance-helpers'
 
 // TODO: get governance route to navigate back to governance
 const Header = () => {
@@ -109,7 +110,10 @@ const SimulateProposalSection = () => {
   // Determine which governance to use (trading for basket changes)
   const governorAddress = indexDTF?.tradingGovernance?.id as Address
   const timelockAddress = indexDTF?.tradingGovernance?.timelock?.id as Address
-  const voteTokenAddress = indexDTF?.stToken?.id as Address
+  const voteTokenAddress = getGovernanceVoteTokenAddress(
+    indexDTF?.tradingGovernance,
+    indexDTF?.stToken?.id
+  ) as Address
 
   if (!indexDTF) return null
 

@@ -1,5 +1,6 @@
 import TransactionButton from '@/components/ui/transaction-button'
 import { getCurrentTime } from '@/utils'
+import { PROPOSAL_STATES } from '@/utils/constants'
 import { t } from '@lingui/macro'
 import dtfIndexGovernanceAbi from 'abis/dtf-index-governance'
 import useContractWrite from 'hooks/useContractWrite'
@@ -16,9 +17,13 @@ const canExecuteAtom = atom((get) => {
   return proposal?.executionETA && proposal.executionETA <= timestamp
 })
 
-const ProposalExecute = () => {
+const ProposalExecute = ({ allowSucceeded }: { allowSucceeded?: boolean }) => {
   const proposal = useAtomValue(proposalDetailAtom)
-  const canExecute = useAtomValue(canExecuteAtom)
+  const canExecuteQueued = useAtomValue(canExecuteAtom)
+  const canExecute =
+    canExecuteQueued ||
+    (allowSucceeded &&
+      proposal?.state?.toUpperCase() === PROPOSAL_STATES.SUCCEEDED)
   const deadline = proposal?.votingState.deadline
   const governor = proposal?.governor
   const txArgs = useAtomValue(proposalTxArgsAtom)
@@ -52,7 +57,7 @@ const ProposalExecute = () => {
     }
   }, [status])
 
-  if (!deadline || deadline > 0) return null
+  if (!allowSucceeded && (!deadline || deadline > 0)) return null
 
   return (
     <TransactionButton

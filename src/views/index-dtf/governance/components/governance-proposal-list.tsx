@@ -2,19 +2,23 @@ import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Skeleton } from '@/components/ui/skeleton'
 import { isInactiveDTF } from '@/hooks/use-dtf-status'
+import dtfIndexGovernance from '@/abis/dtf-index-governance'
 import {
+  getOnchainProposalState,
   getProposalState,
   PartialProposal,
   VotingState,
 } from '@/lib/governance'
 import { cn } from '@/lib/utils'
+import { chainIdAtom } from '@/state/atoms'
 import { indexDTFStatusAtom } from '@/state/dtf/atoms'
 import { formatPercentage, getProposalTitle, parseDuration } from '@/utils'
 import { formatConstant, PROPOSAL_STATES, ROUTES } from '@/utils/constants'
 import { useAtomValue } from 'jotai'
 import { Circle, PlusSquare } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useReadContract } from 'wagmi'
 import { useTrackIndexDTFClick } from '../../hooks/useTrackIndexDTFPage'
 import { governanceProposalsAtom } from '../atoms'
 
@@ -142,7 +146,32 @@ const BADGE_VARIANT = {
 }
 
 const ProposalListItem = ({ proposal }: { proposal: PartialProposal }) => {
-  const proposalState = getProposalState(proposal)
+  const chainId = useAtomValue(chainIdAtom)
+  const fallbackProposalState = getProposalState(proposal)
+  const { data: onchainProposalState } = useReadContract({
+    address: proposal.governor,
+    abi: dtfIndexGovernance,
+    functionName: 'state',
+    args: [BigInt(proposal.id)],
+    chainId,
+    query: {
+      enabled: !!proposal.governor,
+    },
+  })
+  const proposalState = useMemo(() => {
+    if (onchainProposalState === undefined) return fallbackProposalState
+
+    const state = getOnchainProposalState(onchainProposalState)
+
+    if (!state) return fallbackProposalState
+
+    const votingState = getProposalState({ ...proposal, state })
+
+    return {
+      ...votingState,
+      state,
+    }
+  }, [fallbackProposalState, onchainProposalState, proposal])
   const [, forceUpdate] = useState({})
 
   // Re-render component every minute

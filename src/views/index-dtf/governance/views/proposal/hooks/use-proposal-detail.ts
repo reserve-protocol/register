@@ -1,9 +1,18 @@
-import { getProposalState, ProposalDetail } from '@/lib/governance'
+import dtfIndexGovernance from '@/abis/dtf-index-governance'
+import reserveOptimisticGovernorAbi from '@/abis/reserve-optimistic-governor'
+import {
+  getOnchainProposalState,
+  getProposalState,
+  ProposalDetail,
+} from '@/lib/governance'
 import { chainIdAtom, INDEX_DTF_SUBGRAPH_URL } from '@/state/atoms'
+import { PROPOSAL_STATES } from '@/utils/constants'
 import { useQuery } from '@tanstack/react-query'
 import request, { gql } from 'graphql-request'
 import { useAtomValue } from 'jotai'
+import { useMemo } from 'react'
 import { Address, formatEther, Hex } from 'viem'
+import { usePublicClient, useReadContract } from 'wagmi'
 
 export enum ProposalStatus {
   Pending,
@@ -53,11 +62,16 @@ type Result = {
     executionTxnHash?: string
     governance: {
       id: string
+      token?: {
+        token: {
+          address: Address
+        }
+      }
     }
   }
 }
 
-const query = gql`
+const proposalDetailQuery = gql`
   query getProposalDetail($id: String!) {
     proposal(id: $id) {
       id
@@ -95,6 +109,11 @@ const query = gql`
       executionTxnHash
       governance {
         id
+        token {
+          token {
+            address
+          }
+        }
       }
     }
   }
@@ -102,8 +121,9 @@ const query = gql`
 
 const useProposalDetail = (proposalId: string | undefined) => {
   const chainId = useAtomValue(chainIdAtom)
+  const publicClient = usePublicClient({ chainId })
 
-  return useQuery({
+  const proposalDetailQueryResult = useQuery({
     queryKey: ['proposal', chainId, proposalId],
     queryFn: async () => {
       if (!proposalId) {
@@ -112,7 +132,7 @@ const useProposalDetail = (proposalId: string | undefined) => {
 
       const { proposal } = await request<Result>(
         INDEX_DTF_SUBGRAPH_URL[chainId],
-        query,
+        proposalDetailQuery,
         {
           id: proposalId,
         }
@@ -145,6 +165,9 @@ const useProposalDetail = (proposalId: string | undefined) => {
         ),
         quorumVotes: +formatEther(BigInt(proposal.quorumVotes)),
         governor: proposal.governance.id as Address,
+        voteToken: proposal.governance.token?.token.address as
+          | Address
+          | undefined,
         votingState: {
           state: proposal.state,
           deadline: null,
@@ -160,6 +183,81 @@ const useProposalDetail = (proposalId: string | undefined) => {
       return proposalDetail
     },
   })
+
+  const { data: onchainProposalState } = useReadContract({
+    address: proposalDetailQueryResult.data?.governor,
+    abi: dtfIndexGovernance,
+    functionName: 'state',
+    args: [BigInt(proposalId || '0')],
+    chainId,
+    query: {
+      enabled: !!proposalDetailQueryResult.data?.governor && !!proposalId,
+    },
+  })
+
+  const { data: isOptimistic } = useQuery({
+    queryKey: [
+      'proposal-is-optimistic',
+      chainId,
+      proposalId,
+      proposalDetailQueryResult.data?.governor,
+    ],
+    queryFn: async () => {
+      if (!publicClient || !proposalDetailQueryResult.data?.governor || !proposalId) {
+        return undefined
+      }
+
+      try {
+        return await publicClient.readContract({
+          address: proposalDetailQueryResult.data.governor,
+          abi: reserveOptimisticGovernorAbi,
+          functionName: 'isOptimistic',
+          args: [BigInt(proposalId)],
+        })
+      } catch {
+        return false
+      }
+    },
+    enabled:
+      !!publicClient && !!proposalDetailQueryResult.data?.governor && !!proposalId,
+  })
+
+  const data = useMemo(() => {
+    if (!proposalDetailQueryResult.data) {
+      return proposalDetailQueryResult.data
+    }
+
+    const proposalDetail = {
+      ...proposalDetailQueryResult.data,
+      isOptimistic,
+    }
+
+    if (onchainProposalState === undefined) {
+      return proposalDetail
+    }
+
+    const state = getOnchainProposalState(onchainProposalState)
+
+    if (!state || state === proposalDetail.state) {
+      return proposalDetail
+    }
+
+    const votingState = getProposalState({ ...proposalDetail, state })
+
+    return {
+      ...proposalDetail,
+      state,
+      votingState: {
+        ...votingState,
+        state,
+      },
+    }
+  }, [proposalDetailQueryResult.data, onchainProposalState, isOptimistic])
+
+  return {
+    ...proposalDetailQueryResult,
+    data,
+  }
 }
 
 export default useProposalDetail

@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom'
 import { Address } from 'viem'
 import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
 import { proposalDescriptionAtom, basketProposalCalldatasAtom } from '../atoms'
-import { useIsProposeAllowed } from '@/views/index-dtf/governance/hooks/use-is-propose-allowed'
+import { useIsBasketProposeAllowed } from '@/views/index-dtf/governance/hooks/use-is-basket-propose-allowed'
 import { indexDTFRefreshFnAtom } from '@/views/index-dtf/index-dtf-container'
 import { TransactionButtonContainer } from '@/components/ui/transaction'
 
@@ -30,7 +30,7 @@ const tradingGovAddress = atom((get) => {
 })
 
 const ProposeGatekeeper = memo(() => {
-  const { isProposeAllowed, isLoading } = useIsProposeAllowed()
+  const { isProposeAllowed, isLoading } = useIsBasketProposeAllowed()
 
   if (!isLoading && !isProposeAllowed) {
     return (

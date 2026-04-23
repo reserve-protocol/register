@@ -17,6 +17,7 @@ import BasketSettingsProposalChanges from './basket-settings-proposal-changes'
 import SimulateProposalCard from '@/views/index-dtf/governance/components/simulate-proposal-card'
 import { chainIdAtom } from '@/state/atoms'
 import { Address } from 'viem'
+import { getGovernanceVoteTokenAddress } from '@/views/index-dtf/governance/governance-helpers'
 
 const ConfirmProposalButton = () => {
   const isValid = useAtomValue(isProposalValidAtom)
@@ -142,7 +143,10 @@ const SimulateProposalSection = () => {
   // Determine which governance to use (trading for basket settings)
   const governorAddress = indexDTF?.tradingGovernance?.id as Address
   const timelockAddress = indexDTF?.tradingGovernance?.timelock?.id as Address
-  const voteTokenAddress = indexDTF?.stToken?.id as Address
+  const voteTokenAddress = getGovernanceVoteTokenAddress(
+    indexDTF?.tradingGovernance,
+    indexDTF?.stToken?.id
+  ) as Address
 
   // Construct simulation proposal data
   const simulationData = proposalData

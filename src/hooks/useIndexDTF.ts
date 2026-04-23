@@ -34,6 +34,17 @@ type DTFQueryResponse = {
         guardians: Address[]
         executionDelay: number
       }
+      token?: {
+        id: Address
+        totalDelegates: string
+        token: {
+          address: Address
+          name: string
+          symbol: string
+          decimals: number
+          totalSupply: string
+        }
+      }
     }
     legacyAdmins: Address[]
     tradingGovernance?: {
@@ -47,6 +58,17 @@ type DTFQueryResponse = {
         id: Address
         guardians: Address[]
         executionDelay: number
+      }
+      token?: {
+        id: Address
+        totalDelegates: string
+        token: {
+          address: Address
+          name: string
+          symbol: string
+          decimals: number
+          totalSupply: string
+        }
       }
     }
     legacyAuctionApprovers: Address[]
@@ -83,6 +105,17 @@ type DTFQueryResponse = {
           id: Address
           guardians: Address[]
           executionDelay: number
+        }
+        token?: {
+          id: Address
+          totalDelegates: string
+          token: {
+            address: Address
+            name: string
+            symbol: string
+            decimals: number
+            totalSupply: string
+          }
         }
       }
       legacyGovernance: Address[]
@@ -136,6 +169,17 @@ const dtfQuery = gql`
           guardians
           executionDelay
         }
+        token {
+          id
+          totalDelegates
+          token {
+            address
+            name
+            symbol
+            decimals
+            totalSupply
+          }
+        }
       }
       legacyAdmins
       tradingGovernance {
@@ -149,6 +193,17 @@ const dtfQuery = gql`
           id
           guardians
           executionDelay
+        }
+        token {
+          id
+          totalDelegates
+          token {
+            address
+            name
+            symbol
+            decimals
+            totalSupply
+          }
         }
       }
       legacyAuctionApprovers
@@ -186,6 +241,17 @@ const dtfQuery = gql`
             guardians
             executionDelay
           }
+          token {
+            id
+            totalDelegates
+            token {
+              address
+              name
+              symbol
+              decimals
+              totalSupply
+            }
+          }
         }
         legacyGovernance
         rewards(where: { active: true }) {
@@ -216,6 +282,24 @@ const parseFeeRecipients = (raw: string) => {
   return recipients as { address: Address; percentage: string }[]
 }
 
+const parseGovernance = (
+  governance: DTFQueryResponse['dtf']['ownerGovernance']
+) => {
+  if (!governance) return undefined
+
+  return {
+    ...governance,
+    quorum:
+      (governance.quorumNumerator / governance.quorumDenominator) * 100,
+    token: governance.token
+      ? {
+          ...governance.token,
+          totalDelegates: Number(governance.token.totalDelegates),
+        }
+      : undefined,
+  }
+}
+
 const useIndexDTF = (address: string | undefined, chainId: AvailableChain) => {
   return useQuery<IndexDTF | null>({
     queryKey: ['index-dtf-metadata', address, chainId],
@@ -241,38 +325,14 @@ const useIndexDTF = (address: string | undefined, chainId: AvailableChain) => {
         auctionDelay: Number(dtf.auctionDelay),
         auctionLength: Number(dtf.auctionLength),
         feeRecipients: parseFeeRecipients(dtf.feeRecipients),
-        ownerGovernance: dtf.ownerGovernance
-          ? {
-              ...dtf.ownerGovernance,
-              quorum:
-                (dtf.ownerGovernance.quorumNumerator /
-                  dtf.ownerGovernance.quorumDenominator) *
-                100,
-            }
-          : undefined,
-        tradingGovernance: dtf.tradingGovernance
-          ? {
-              ...dtf.tradingGovernance,
-              quorum:
-                (dtf.tradingGovernance.quorumNumerator /
-                  dtf.tradingGovernance.quorumDenominator) *
-                100,
-            }
-          : undefined,
+        ownerGovernance: parseGovernance(dtf.ownerGovernance),
+        tradingGovernance: parseGovernance(dtf.tradingGovernance),
         stToken: dtf.stToken
           ? {
               ...dtf.stToken,
               rewardTokens:
                 dtf.stToken?.rewards.map((reward) => reward.rewardToken) || [],
-              governance: dtf.stToken.governance
-                ? {
-                    ...dtf.stToken.governance,
-                    quorum:
-                      (dtf.stToken.governance.quorumNumerator /
-                        dtf.stToken.governance.quorumDenominator) *
-                      100,
-                  }
-                : undefined,
+              governance: parseGovernance(dtf.stToken.governance),
             }
           : undefined,
       }

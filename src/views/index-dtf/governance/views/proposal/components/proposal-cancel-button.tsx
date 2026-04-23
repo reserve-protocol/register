@@ -19,6 +19,7 @@ import {
 } from 'viem'
 import { useReadContract } from 'wagmi'
 import { proposalDetailAtom } from '../atom'
+import { getGovernanceByAddress } from '@/views/index-dtf/governance/governance-helpers'
 
 const timelockIdAtom = atom((get) => {
   const proposal = get(proposalDetailAtom)
@@ -65,21 +66,7 @@ const ProposalCancel = () => {
   const timelockAddress = useMemo(() => {
     if (!indexDTF || !proposal) return undefined
 
-    if (
-      indexDTF.ownerGovernance?.id.toLowerCase() ===
-      proposal.governor.toLowerCase()
-    ) {
-      return indexDTF.ownerGovernance.timelock.id
-    }
-
-    if (
-      indexDTF.tradingGovernance?.id.toLowerCase() ===
-      proposal.governor.toLowerCase()
-    ) {
-      return indexDTF.tradingGovernance.timelock.id
-    }
-
-    return indexDTF.stToken?.governance?.timelock?.id
+    return getGovernanceByAddress(indexDTF, proposal.governor)?.timelock.id
   }, [indexDTF, proposal])
 
   const { data: canCancel } = useReadContract({

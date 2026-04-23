@@ -1,19 +1,24 @@
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { useAtomValue } from 'jotai'
 import { useDAOVotingPower } from './use-dao-voting-power'
-import { indexGovernanceOverviewAtom } from '../atoms'
 import { formatEther } from 'viem'
+import { getGovernanceVoteTokenAddress } from '../governance-helpers'
+import { useGovernanceTokenSupply } from './use-governance-token-supply'
 
 export const useIsDAOProposeAllowed = () => {
   const dtf = useAtomValue(indexDTFAtom)
-  const governance = useAtomValue(indexGovernanceOverviewAtom)
+  const governance = dtf?.stToken?.governance
   const { votingPower, isLoading } = useDAOVotingPower()
+  const governanceTokenAddress = getGovernanceVoteTokenAddress(
+    governance,
+    dtf?.stToken?.id
+  )
+  const { voteSupply, isLoading: isVoteSupplyLoading } =
+    useGovernanceTokenSupply(governanceTokenAddress)
 
-  // For DAO governance, we need to check the stToken governance parameters
-  const voteSupply = governance?.voteSupply
   const proposalThreshold =
     Number(
-      formatEther(BigInt(dtf?.stToken?.governance?.proposalThreshold || 0))
+      formatEther(BigInt(governance?.proposalThreshold || 0))
     ) / 100
 
   return {
@@ -23,6 +28,7 @@ export const useIsDAOProposeAllowed = () => {
       votingPower / voteSupply >= proposalThreshold,
     isLoading:
       isLoading ||
+      isVoteSupplyLoading ||
       typeof voteSupply === 'undefined' ||
       typeof proposalThreshold === 'undefined',
   }

@@ -10,6 +10,7 @@ import {
   ShieldCheck,
 } from 'lucide-react'
 import { daysToSeconds, humanizeTimeFromSeconds } from '../../../../shared'
+import { getDTFSettingsGovernance } from '@/views/index-dtf/governance/governance-helpers'
 
 const Description = () => (
   <div className="px-6 pb-6 text-base">
@@ -21,7 +22,7 @@ const Description = () => (
 
 const ProposeGovernanceSettings = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
-  const governance = indexDTF?.ownerGovernance
+  const governance = getDTFSettingsGovernance(indexDTF)
 
   const forms = [
     {
@@ -103,7 +104,7 @@ const ProposeGovernanceSettings = () => {
   if (!governance) {
     return (
       <div className="px-6 py-8 text-center text-muted-foreground">
-        This DTF does not have owner governance configured.
+        This DTF does not have Folio governance configured.
       </div>
     )
   }

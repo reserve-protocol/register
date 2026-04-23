@@ -17,6 +17,10 @@ import {
 } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { Address, zeroHash } from 'viem'
+import {
+  getDTFSettingsGovernance,
+  getGovernanceVoteTokenAddress,
+} from '@/views/index-dtf/governance/governance-helpers'
 
 // Preview component for setMandate function
 export const SetMandatePreview = ({
@@ -196,6 +200,11 @@ export const SetFeeRecipientsPreview = ({
 
   if (!indexDTF || platformFee === undefined) return null
 
+  const governanceTokenAddress = getGovernanceVoteTokenAddress(
+    getDTFSettingsGovernance(indexDTF),
+    indexDTF.stToken?.id
+  )
+
   // Parse recipients into categories
   const externalRecipients: Array<{ address: string; percentage: number }> = []
   let deployerShare = 0
@@ -207,7 +216,7 @@ export const SetFeeRecipientsPreview = ({
     if (recipient.recipient.toLowerCase() === indexDTF.deployer.toLowerCase()) {
       deployerShare = percentage
     } else if (
-      recipient.recipient.toLowerCase() === indexDTF.stToken?.id.toLowerCase()
+      recipient.recipient.toLowerCase() === governanceTokenAddress?.toLowerCase()
     ) {
       governanceShare = percentage
     } else {

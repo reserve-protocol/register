@@ -27,6 +27,10 @@ import {
   humanizeTimeFromSeconds,
   proposalThresholdToPercentage,
 } from '../../shared'
+import {
+  getDTFSettingsGovernance,
+  getGovernanceVoteTokenAddress,
+} from '@/views/index-dtf/governance/governance-helpers'
 
 // UI
 export const selectedSectionAtom = atom<string | undefined>(undefined)
@@ -183,10 +187,10 @@ export const proposalDescriptionAtom = atom<string | undefined>(undefined)
 
 // Calculated quorum percentage atom
 export const currentQuorumPercentageAtom = atom((get) => {
-  const dtf = get(indexDTFAtom)
-  if (!dtf?.ownerGovernance) return 0
+  const governance = getDTFSettingsGovernance(get(indexDTFAtom))
+  if (!governance) return 0
 
-  const { quorumNumerator, quorumDenominator } = dtf.ownerGovernance
+  const { quorumNumerator, quorumDenominator } = governance
   return (Number(quorumNumerator) / Number(quorumDenominator)) * 100
 })
 
@@ -217,6 +221,12 @@ export const dtfSettingsProposalDataAtom = atom<ProposalData | undefined>(
     const feeRecipients = get(feeRecipientsAtom)
 
     if (!isConfirmed || !indexDTF) return undefined
+
+    const governance = getDTFSettingsGovernance(indexDTF)
+    const governanceTokenAddress = getGovernanceVoteTokenAddress(
+      governance,
+      indexDTF.stToken?.id
+    )
 
     const calldatas: Hex[] = []
     const targets: Address[] = []
@@ -271,11 +281,10 @@ export const dtfSettingsProposalDataAtom = atom<ProposalData | undefined>(
     }
 
     // 3. Handle role changes
-    if (rolesChanges.guardians && indexDTF.ownerGovernance?.timelock?.id) {
-      const currentGuardians =
-        indexDTF.ownerGovernance?.timelock?.guardians || []
+    if (rolesChanges.guardians && governance?.timelock?.id) {
+      const currentGuardians = governance.timelock.guardians || []
       const newGuardians = rolesChanges.guardians
-      const timelockAddress = indexDTF.ownerGovernance.timelock.id as Address
+      const timelockAddress = governance.timelock.id as Address
 
       // Revoke removed guardians
       const removedGuardians = currentGuardians.filter(
@@ -314,8 +323,7 @@ export const dtfSettingsProposalDataAtom = atom<ProposalData | undefined>(
       }
     } else if (rolesChanges.guardians) {
       // Fallback to DTF contract if timelock not available
-      const currentGuardians =
-        indexDTF.ownerGovernance?.timelock?.guardians || []
+      const currentGuardians = governance?.timelock?.guardians || []
       const newGuardians = rolesChanges.guardians
 
       // Revoke removed guardians
@@ -563,9 +571,9 @@ export const dtfSettingsProposalDataAtom = atom<ProposalData | undefined>(
       }
 
       // Governance share
-      if (governanceShare > 0 && indexDTF.stToken) {
+      if (governanceShare > 0 && governanceTokenAddress) {
         tempRecipients.push({
-          recipient: indexDTF.stToken.id as Address,
+          recipient: governanceTokenAddress,
           portion: calculateShare(governanceShare),
         })
       }
@@ -603,9 +611,9 @@ export const dtfSettingsProposalDataAtom = atom<ProposalData | undefined>(
     }
 
     // 7. Handle governance parameter changes
-    if (indexDTF.ownerGovernance && Object.keys(governanceChanges).length > 0) {
-      const governanceAddress = indexDTF.ownerGovernance.id as Address
-      const timelockAddress = indexDTF.ownerGovernance.timelock?.id as Address
+    if (governance && Object.keys(governanceChanges).length > 0) {
+      const governanceAddress = governance.id as Address
+      const timelockAddress = governance.timelock?.id as Address
 
       // Set voting delay
       if (governanceChanges.votingDelay !== undefined) {
@@ -632,7 +640,7 @@ export const dtfSettingsProposalDataAtom = atom<ProposalData | undefined>(
         calldatas.push(
           encodeQuorum(
             governanceChanges.quorumPercent,
-            indexDTF.ownerGovernance.quorumDenominator
+            governance.quorumDenominator
           )
         )
         targets.push(governanceAddress)
@@ -653,11 +661,9 @@ export const dtfSettingsProposalDataAtom = atom<ProposalData | undefined>(
 export const dtfGovernanceChangesDisplayAtom = atom<GovernanceChangeDisplay[]>(
   (get) => {
     const governanceChanges = get(governanceChangesAtom)
-    const dtf = get(indexDTFAtom)
+    const governance = getDTFSettingsGovernance(get(indexDTFAtom))
 
-    if (!dtf?.ownerGovernance) return []
-
-    const governance = dtf.ownerGovernance
+    if (!governance) return []
     const changes = []
 
     if (governanceChanges.votingDelay !== undefined) {
@@ -722,6 +728,10 @@ export const dtfSettingsProposalCalldatasAtom = atom<Hex[] | undefined>(
 
 export const feeRecipientsAtom = atom((get) => {
   const indexDTF = get(indexDTFAtom)
+  const governanceTokenAddress = getGovernanceVoteTokenAddress(
+    getDTFSettingsGovernance(indexDTF),
+    indexDTF?.stToken?.id
+  )
 
   if (!indexDTF) return undefined
 
@@ -740,7 +750,7 @@ export const feeRecipientsAtom = atom((get) => {
     if (recipient.address.toLowerCase() === indexDTF.deployer.toLowerCase()) {
       deployerShare = toShare(Number(recipient.percentage))
     } else if (
-      recipient.address.toLowerCase() === indexDTF.stToken?.id.toLowerCase()
+      recipient.address.toLowerCase() === governanceTokenAddress?.toLowerCase()
     ) {
       governanceShare = toShare(Number(recipient.percentage))
     } else {

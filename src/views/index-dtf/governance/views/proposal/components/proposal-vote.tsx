@@ -64,8 +64,10 @@ const ViewExecuteTxButton = () => {
 
 const ProposalActionButtons = () => {
   const state = useAtomValue(proposalStateAtom)
+  const normalizedState = state?.toUpperCase()
+  const proposal = useAtomValue(proposalDetailAtom)
 
-  if (state === PROPOSAL_STATES.QUEUED) {
+  if (normalizedState === PROPOSAL_STATES.QUEUED) {
     return (
       <div className="flex flex-col gap-1">
         <ProposalCancel />
@@ -74,15 +76,26 @@ const ProposalActionButtons = () => {
     )
   }
 
-  if (state === PROPOSAL_STATES.SUCCEEDED) {
-    return <ProposalQueue />
+  if (normalizedState === PROPOSAL_STATES.SUCCEEDED) {
+    if (proposal?.isOptimistic === true) {
+      return <ProposalExecute allowSucceeded />
+    }
+
+    if (proposal?.isOptimistic === false) {
+      return <ProposalQueue />
+    }
+
+    return null
   }
 
-  if (state === PROPOSAL_STATES.EXECUTED) {
+  if (normalizedState === PROPOSAL_STATES.EXECUTED) {
     return <ViewExecuteTxButton />
   }
 
-  if (state === PROPOSAL_STATES.PENDING || state === PROPOSAL_STATES.ACTIVE) {
+  if (
+    normalizedState === PROPOSAL_STATES.PENDING ||
+    normalizedState === PROPOSAL_STATES.ACTIVE
+  ) {
     return <ProposalVoteButton />
   }
 
@@ -92,6 +105,7 @@ const ProposalActionButtons = () => {
 const ProposalVoteOverview = () => {
   const state = useAtomValue(proposalStateAtom) ?? ''
   const [isDelegateVisible, setDelegateVisible] = useState(false)
+  const proposal = useAtomValue(proposalDetailAtom)
   const { votePower = '0.0' } = useAtomValue(accountVotesAtom)
   const { hasUndelegatedBalance, hasNoDelegates } = useDelegateState()
 
@@ -121,6 +135,7 @@ const ProposalVoteOverview = () => {
       </div>
       {isDelegateVisible && (
         <DelegateModal
+          tokenAddress={proposal?.voteToken}
           delegated={!hasNoDelegates}
           onClose={() => setDelegateVisible(false)}
         />

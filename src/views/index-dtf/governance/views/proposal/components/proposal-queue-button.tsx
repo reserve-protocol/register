@@ -8,18 +8,13 @@ import useWatchTransaction from 'hooks/useWatchTransaction'
 import { atom, useAtom, useAtomValue } from 'jotai'
 import { useEffect } from 'react'
 import { proposalDetailAtom, proposalTxArgsAtom } from '../atom'
+import { getGovernanceByAddress } from '@/views/index-dtf/governance/governance-helpers'
 
 const executionDelayAtom = atom((get) => {
   const proposal = get(proposalDetailAtom)
   const indexDTF = get(indexDTFAtom)
-  const governor = proposal?.governor
-  if (governor === indexDTF?.stToken?.governance?.id) {
-    return indexDTF?.ownerGovernance?.timelock.executionDelay
-  }
-  if (governor === indexDTF?.tradingGovernance?.id) {
-    return indexDTF?.tradingGovernance?.timelock.executionDelay
-  }
-  return indexDTF?.ownerGovernance?.timelock.executionDelay
+
+  return getGovernanceByAddress(indexDTF, proposal?.governor)?.timelock.executionDelay
 })
 
 const ProposalQueue = () => {

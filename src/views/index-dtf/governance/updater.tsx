@@ -7,40 +7,33 @@ import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { Address, formatEther } from 'viem'
 import { indexGovernanceOverviewAtom, refetchTokenAtom } from './atoms'
+import {
+  getDTFSettingsGovernance,
+  getGovernanceVoteTokenAddress,
+} from './governance-helpers'
+import { useGovernanceTokenSupply } from './hooks/use-governance-token-supply'
 
 type Response = {
   governances: {
+    id: string
     proposals: PartialProposal[]
-    proposalCount: number
-  }[]
-  ownerGovernance: {
-    proposals: PartialProposal[]
-    proposalCount: number
-  }
-  tradingGovernance?: {
-    proposals: PartialProposal[]
-    proposalCount: number
-  }
-  vaultGovernance?: {
-    proposals: PartialProposal[]
-    proposalCount: number
-  }
-  stakingToken?: {
-    totalDelegates: number
-    token: {
-      decimals: number
-      totalSupply: bigint
+    proposalCount: string
+    token?: {
+      totalDelegates: string
+      token: {
+        totalSupply: string
+      }
+      delegates: {
+        address: Address
+        delegatedVotes: string
+        numberVotes: string
+      }[]
     }
-    delegates: {
-      address: Address
-      delegatedVotes: number
-      numberVotes: number
-    }[]
-  }
+  }[]
 }
 
 const query = gql`
-  query getGovernanceStats($governanceIds: [String!]!, $stToken: String!) {
+  query getGovernanceStats($governanceIds: [String!]!) {
     governances(where: { id_in: $governanceIds }) {
       id
       proposals {
@@ -63,22 +56,21 @@ const query = gql`
         }
       }
       proposalCount
-    }
-    stakingToken(id: $stToken) {
-      id
-      totalDelegates
       token {
-        totalSupply
-      }
-      delegates(
-        first: 10
-        orderBy: delegatedVotes
-        orderDirection: desc
-        where: { address_not: "0x0000000000000000000000000000000000000000" }
-      ) {
-        address
-        delegatedVotes
-        numberVotes
+        totalDelegates
+        token {
+          totalSupply
+        }
+        delegates(
+          first: 10
+          orderBy: delegatedVotes
+          orderDirection: desc
+          where: { address_not: "0x0000000000000000000000000000000000000000" }
+        ) {
+          address
+          delegatedVotes
+          numberVotes
+        }
       }
     }
   }
@@ -92,49 +84,81 @@ const Updater = () => {
   const refetchToken = useAtomValue(refetchTokenAtom)
   const dtf = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
+  const primaryGovernanceId = getDTFSettingsGovernance(dtf)?.id
+  const primaryVoteTokenAddress = getGovernanceVoteTokenAddress(
+    getDTFSettingsGovernance(dtf),
+    dtf?.stToken?.id
+  )
+  const { voteSupply } = useGovernanceTokenSupply(primaryVoteTokenAddress)
+
   const { data } = useQuery({
-    queryKey: ['governance-overview', dtf?.ownerGovernance?.id, refetchToken],
+    queryKey: ['governance-overview', dtf?.id, primaryGovernanceId, refetchToken],
     queryFn: async () => {
-      const data = await request<Response>(
-        INDEX_DTF_SUBGRAPH_URL[chainId],
-        query,
-        {
-          governanceIds: [
+      const governanceIds = Array.from(
+        new Set(
+          [
             dtf?.ownerGovernance?.id,
             ...(dtf?.legacyAdmins || []),
             dtf?.tradingGovernance?.id,
             ...(dtf?.legacyAuctionApprovers || []),
             dtf?.stToken?.governance?.id,
             ...(dtf?.stToken?.legacyGovernance || []),
-          ],
-          stToken: dtf?.stToken?.id ?? '',
+          ].filter(Boolean)
+        )
+      )
+
+      const data = await request<Response>(
+        INDEX_DTF_SUBGRAPH_URL[chainId],
+        query,
+        {
+          governanceIds,
         }
+      )
+
+      const primaryGovernance = data.governances.find(
+        (governance) =>
+          governance.id.toLowerCase() === primaryGovernanceId?.toLowerCase()
       )
 
       return {
         proposals: data.governances
-          .flatMap((g) => g.proposals)
+          .flatMap((g) =>
+            g.proposals.map((proposal) => ({
+              ...proposal,
+              governor: g.id as Address,
+            }))
+          )
           .sort((a, b) => b.creationTime - a.creationTime),
         proposalCount: data.governances.reduce(
-          (x, y) => x + Number(y.proposalCount),
+          (count, governance) => count + Number(governance.proposalCount),
           0
         ),
-        delegates: data.stakingToken?.delegates ?? [],
-        delegatesCount: +(data.stakingToken?.totalDelegates ?? 0),
-        voteSupply: +formatEther(data.stakingToken?.token.totalSupply ?? 0n),
+        delegates:
+          primaryGovernance?.token?.delegates.map((delegate) => ({
+            ...delegate,
+            delegatedVotes: Number(delegate.delegatedVotes),
+            numberVotes: Number(delegate.numberVotes),
+          })) ?? [],
+        delegatesCount: Number(primaryGovernance?.token?.totalDelegates ?? 0),
+        voteSupply: +formatEther(
+          BigInt(primaryGovernance?.token?.token.totalSupply ?? '0')
+        ),
       }
     },
-    enabled: !!dtf?.ownerGovernance?.id && !!dtf?.stToken?.id,
+    enabled: !!primaryGovernanceId,
     refetchInterval: 1000 * 60 * 10, // 10 minutes
   })
 
   useEffect(() => {
     if (data) {
-      setGovernanceOverview(data)
+      setGovernanceOverview({
+        ...data,
+        voteSupply: voteSupply ?? data.voteSupply,
+      })
     } else {
       setGovernanceOverview(undefined)
     }
-  }, [data])
+  }, [data, voteSupply])
 
   return null
 }

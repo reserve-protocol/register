@@ -1,34 +1,35 @@
-import dtfIndexStakingVault from '@/abis/dtf-index-staking-vault'
+import votesTokenAbi from '@/abis/votes-token'
 import TransactionModal from '@/components/transaction-modal'
 import { Input } from '@/components/ui/input'
 import { walletAtom } from '@/state/atoms'
-import { indexDTFAtom } from '@/state/dtf/atoms'
 import { isAddress } from '@/utils'
 import { t, Trans } from '@lingui/macro'
 import { useAtomValue } from 'jotai'
 import { useMemo, useState } from 'react'
+import { Address } from 'viem'
 
 const DelegateModal = ({
   onClose,
   delegated,
+  tokenAddress,
 }: {
   onClose: () => void
   delegated: boolean
+  tokenAddress?: Address
 }) => {
   const account = useAtomValue(walletAtom)
-  const dtf = useAtomValue(indexDTFAtom)
   const [address, setAddress] = useState(!delegated && account ? account : '')
   const validAddress = isAddress(address)
   const call = useMemo(() => {
-    return dtf?.stToken && validAddress
+    return tokenAddress && validAddress
       ? {
-          abi: dtfIndexStakingVault,
-          address: dtf.stToken.id,
+          abi: votesTokenAbi,
+          address: tokenAddress,
           functionName: 'delegate',
           args: [validAddress],
         }
       : undefined
-  }, [dtf?.stToken?.id, validAddress])
+  }, [tokenAddress, validAddress])
 
   return (
     <TransactionModal

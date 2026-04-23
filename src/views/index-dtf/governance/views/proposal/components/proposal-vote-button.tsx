@@ -5,12 +5,13 @@ import { Trans } from '@lingui/macro'
 import { useAtomValue } from 'jotai'
 import { useState } from 'react'
 import DelegateModal from '../../../components/delegate-modal'
-import { accountVotesAtom, proposalStateAtom } from '../atom'
+import { accountVotesAtom, proposalDetailAtom, proposalStateAtom } from '../atom'
 import useDelegateState from '../hooks/use-delegate-state'
 import VoteModal from './vote-modal'
 
 const DelegateButton = () => {
   const [isDelegateVisible, setDelegateVisible] = useState(false)
+  const proposal = useAtomValue(proposalDetailAtom)
   const { hasNoDelegates } = useDelegateState()
 
   return (
@@ -20,6 +21,7 @@ const DelegateButton = () => {
       </Button>
       {isDelegateVisible && (
         <DelegateModal
+          tokenAddress={proposal?.voteToken}
           delegated={!hasNoDelegates}
           onClose={() => setDelegateVisible(false)}
         />

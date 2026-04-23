@@ -1,6 +1,8 @@
 import { cn } from '@/lib/utils'
+import { indexDTFAtom } from '@/state/dtf/atoms'
 import { GOVERNANCE_PROPOSAL_TYPES, ROUTES } from '@/utils/constants'
 import { Trans } from '@lingui/macro'
+import { useAtomValue } from 'jotai'
 import {
   ArrowLeft,
   ArrowRight,
@@ -12,33 +14,7 @@ import {
 import { Link } from 'react-router-dom'
 import ProposeV4Upgrade from './upgrade-banners/propose-v4-upgrade'
 import ProposeV5Upgrade from './upgrade-banners/propose-v5-upgrade'
-
-const proposalTypes = [
-  {
-    icon: <Boxes strokeWidth={1.5} size={16} />,
-    title: 'DTF Basket',
-    route: GOVERNANCE_PROPOSAL_TYPES.BASKET,
-    enabled: true,
-  },
-  {
-    icon: <Settings size={16} strokeWidth={1.5} />,
-    title: 'DTF Settings',
-    route: GOVERNANCE_PROPOSAL_TYPES.DTF,
-    enabled: true,
-  },
-  {
-    icon: <Crown size={16} strokeWidth={1.5} />,
-    title: 'Basket settings',
-    route: GOVERNANCE_PROPOSAL_TYPES.BASKET_SETTINGS,
-    enabled: true,
-  },
-  {
-    icon: <LayoutGrid size={16} strokeWidth={1.5} />,
-    title: 'DAO',
-    route: GOVERNANCE_PROPOSAL_TYPES.OTHER,
-    enabled: true,
-  },
-]
+import { getDTFSettingsGovernance } from '../../governance-helpers'
 
 const Header = () => (
   <div className="flex flex-row items-center border-none p-4 pl-7 pb-3">
@@ -54,9 +30,38 @@ const Header = () => (
   </div>
 )
 
-const TypeList = () => (
-  <div className="bg-card m-1 rounded-3xl">
-    {proposalTypes.map(({ title, icon, route, enabled }, index) => (
+const TypeList = () => {
+  const dtf = useAtomValue(indexDTFAtom)
+  const proposalTypes = [
+    {
+      icon: <Boxes strokeWidth={1.5} size={16} />,
+      title: 'DTF Basket',
+      route: GOVERNANCE_PROPOSAL_TYPES.BASKET,
+      enabled: !!dtf?.tradingGovernance?.id,
+    },
+    {
+      icon: <Settings size={16} strokeWidth={1.5} />,
+      title: 'DTF Settings',
+      route: GOVERNANCE_PROPOSAL_TYPES.DTF,
+      enabled: !!getDTFSettingsGovernance(dtf)?.id,
+    },
+    {
+      icon: <Crown size={16} strokeWidth={1.5} />,
+      title: 'Basket settings',
+      route: GOVERNANCE_PROPOSAL_TYPES.BASKET_SETTINGS,
+      enabled: !!dtf?.tradingGovernance?.id,
+    },
+    {
+      icon: <LayoutGrid size={16} strokeWidth={1.5} />,
+      title: 'DAO',
+      route: GOVERNANCE_PROPOSAL_TYPES.OTHER,
+      enabled: !!dtf?.stToken?.governance?.id,
+    },
+  ]
+
+  return (
+    <div className="bg-card m-1 rounded-3xl">
+      {proposalTypes.map(({ title, icon, route, enabled }, index) => (
       <Link
         key={title}
         to={enabled ? route : ''}
@@ -72,7 +77,7 @@ const TypeList = () => (
         <h4 className="bg-card m-1 mr-auto font-bold">{title}</h4>
         {!enabled && (
           <div className="text-nowrap text-legend text-xs border rounded-full px-2 py-1 bg-card">
-            Coming soon
+            Unavailable
           </div>
         )}
         <div
@@ -85,8 +90,9 @@ const TypeList = () => (
         </div>
       </Link>
     ))}
-  </div>
-)
+    </div>
+  )
+}
 
 const ProposalTypeSelection = () => {
   return (

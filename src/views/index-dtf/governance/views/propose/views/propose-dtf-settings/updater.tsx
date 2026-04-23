@@ -29,6 +29,10 @@ import {
   currentQuorumPercentageAtom,
 } from './atoms'
 import { proposalThresholdToPercentage, secondsToDays } from '../../shared'
+import {
+  getDTFSettingsGovernance,
+  getGovernanceVoteTokenAddress,
+} from '@/views/index-dtf/governance/governance-helpers'
 
 const resetAtom = atom(null, (get, set) => {
   set(removedBasketTokensAtom, [])
@@ -54,6 +58,11 @@ const Updater = () => {
   const chainId = useAtomValue(chainIdAtom)
   const platformFee = useAtomValue(indexDTFFeeAtom)
   const isV5 = version.startsWith('5')
+  const governance = getDTFSettingsGovernance(indexDTF)
+  const governanceVoteLock = getGovernanceVoteTokenAddress(
+    governance,
+    indexDTF?.stToken?.id
+  )
 
   // Read bidsEnabled from contract (v5+ only)
   const { data: currentBidsEnabled } = useReadContract({
@@ -130,21 +139,21 @@ const Updater = () => {
   })
 
   useEffect(() => {
-    if (indexDTF && indexDTF.ownerGovernance && feeRecipients) {
+    if (indexDTF && governance && feeRecipients) {
       isResettingForm.current = true
 
       // Get current governance values
       const currentVotingDelay = secondsToDays(
-        Number(indexDTF.ownerGovernance.votingDelay)
+        Number(governance.votingDelay)
       )
       const currentVotingPeriod = secondsToDays(
-        Number(indexDTF.ownerGovernance.votingPeriod)
+        Number(governance.votingPeriod)
       )
       const currentThreshold = proposalThresholdToPercentage(
-        indexDTF.ownerGovernance.proposalThreshold
+        governance.proposalThreshold
       )
       const currentExecutionDelay = secondsToDays(
-        Number(indexDTF.ownerGovernance.timelock.executionDelay)
+        Number(governance.timelock.executionDelay)
       )
 
       resetForm({
@@ -153,7 +162,7 @@ const Updater = () => {
             ? tokenNameChange
             : indexDTF.token.name,
         mandate: mandateChange !== undefined ? mandateChange : indexDTF.mandate,
-        governanceVoteLock: indexDTF.stToken?.id,
+        governanceVoteLock,
         mintFee:
           dtfRevenueChanges.mintFee !== undefined
             ? dtfRevenueChanges.mintFee
@@ -211,7 +220,7 @@ const Updater = () => {
         guardians:
           rolesChanges.guardians !== undefined
             ? rolesChanges.guardians
-            : indexDTF.ownerGovernance.timelock.guardians,
+            : governance.timelock.guardians,
         brandManagers:
           rolesChanges.brandManagers !== undefined
             ? rolesChanges.brandManagers
@@ -253,16 +262,14 @@ const Updater = () => {
 
   // Watch for role changes
   useEffect(() => {
-    if (indexDTF && indexDTF.ownerGovernance) {
+    if (indexDTF && governance) {
       const changes: any = {}
 
       // Check guardians
       if (
         guardians &&
         JSON.stringify(guardians.filter(Boolean).sort()) !==
-          JSON.stringify(
-            (indexDTF.ownerGovernance.timelock.guardians || []).sort()
-          )
+          JSON.stringify((governance.timelock.guardians || []).sort())
       ) {
         changes.guardians = guardians.filter(Boolean)
       }
@@ -426,9 +433,7 @@ const Updater = () => {
 
   // Watch for governance changes
   useEffect(() => {
-    if (indexDTF && indexDTF.ownerGovernance) {
-      const governance = indexDTF.ownerGovernance
-
+    if (indexDTF && governance) {
       setGovernanceChanges((prevChanges) => {
         const changes = { ...prevChanges }
 
@@ -495,14 +500,13 @@ const Updater = () => {
     governanceVotingThreshold,
     governanceVotingQuorum,
     governanceExecutionDelay,
-    indexDTF?.ownerGovernance,
+    governance,
     setGovernanceChanges,
     currentQuorumPercentage,
   ])
 
   // Track form validation state
   useEffect(() => {
-    console.log('formState.isValid', formState.errors)
     setIsFormValid(formState.isValid)
   }, [formState.isValid, setIsFormValid])
 

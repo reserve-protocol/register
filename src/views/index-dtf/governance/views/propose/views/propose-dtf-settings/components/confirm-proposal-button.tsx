@@ -29,14 +29,13 @@ const ProposalDescription = () => {
 
 const ProposalPreview = () => {
   const calldatas = useAtomValue(dtfSettingsProposalCalldatasAtom)
-  // Should always be set at this stage
-  const vaultAddress = useAtomValue(indexDTFAtom)?.stToken?.id ?? '0x'
+  const folioAddress = useAtomValue(indexDTFAtom)?.id ?? '0x'
 
   return (
     <div className="bg-background rounded-4xl">
       <DTFSettingsProposalPreview
         calldatas={calldatas}
-        address={vaultAddress}
+        address={folioAddress}
       />
     </div>
   )

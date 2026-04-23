@@ -266,6 +266,34 @@ export interface TenderlySimulation {
 
 export type Trader = 'backingManager' | 'rsrTrader' | 'rTokenTrader'
 
+export type IndexDTFGovernanceToken = {
+  id: Address
+  totalDelegates: number
+  token: {
+    address: Address
+    name: string
+    symbol: string
+    decimals: number
+    totalSupply: string
+  }
+}
+
+export type IndexDTFGovernance = {
+  id: Address
+  votingDelay: number
+  votingPeriod: number
+  proposalThreshold: number
+  quorumNumerator: number
+  quorumDenominator: number
+  quorum: number
+  timelock: {
+    id: Address
+    guardians: Address[]
+    executionDelay: number
+  }
+  token?: IndexDTFGovernanceToken
+}
+
 export type IndexDTF = {
   id: Address
   proxyAdmin: Address
@@ -286,35 +314,9 @@ export type IndexDTF = {
     address: Address
     percentage: string
   }[]
-  ownerGovernance?: {
-    id: Address
-    votingDelay: number
-    votingPeriod: number
-    proposalThreshold: number
-    quorumNumerator: number
-    quorumDenominator: number
-    quorum: number
-    timelock: {
-      id: Address
-      guardians: Address[]
-      executionDelay: number
-    }
-  }
+  ownerGovernance?: IndexDTFGovernance
   legacyAdmins: Address[]
-  tradingGovernance?: {
-    id: Address
-    votingDelay: number
-    votingPeriod: number
-    proposalThreshold: number
-    quorumNumerator: number
-    quorumDenominator: number
-    quorum: number
-    timelock: {
-      id: Address
-      guardians: Address[]
-      executionDelay: number
-    }
-  }
+  tradingGovernance?: IndexDTFGovernance
   legacyAuctionApprovers: Address[]
   token: {
     id: Address
@@ -338,20 +340,7 @@ export type IndexDTF = {
       address: Address
       decimals: number
     }
-    governance?: {
-      id: Address
-      votingDelay: number
-      votingPeriod: number
-      proposalThreshold: number
-      quorumNumerator: number
-      quorumDenominator: number
-      quorum: number
-      timelock: {
-        id: Address
-        guardians: Address[]
-        executionDelay: number
-      }
-    }
+    governance?: IndexDTFGovernance
     legacyGovernance: Address[]
     rewardTokens: Token[]
   }

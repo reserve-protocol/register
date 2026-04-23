@@ -9,6 +9,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import DTFSettingsProposalSections from './components/dtf-settings-proposal-sections'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { useMemo } from 'react'
+import { getDTFSettingsGovernance } from '@/views/index-dtf/governance/governance-helpers'
 
 const ProposalStage = () => {
   const isConfirmed = useAtomValue(isProposalConfirmedAtom)
@@ -20,7 +21,7 @@ const ProposalStage = () => {
 
 const ProposeDTFSettings = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
-  const quorumDenominator = indexDTF?.ownerGovernance?.quorumDenominator
+  const quorumDenominator = getDTFSettingsGovernance(indexDTF)?.quorumDenominator
 
   const schema = useMemo(() => {
     return createProposeSettingsSchema(Number(quorumDenominator))

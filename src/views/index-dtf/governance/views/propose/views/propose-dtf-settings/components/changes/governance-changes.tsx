@@ -9,6 +9,7 @@ import {
 } from '../../atoms'
 import { ChangeSection, RevertButton } from './shared'
 import { secondsToDays, proposalThresholdToPercentage } from '../../../../shared'
+import { getDTFSettingsGovernance } from '@/views/index-dtf/governance/governance-helpers'
 
 const iconMap = {
   'votingDelay': <Pause size={16} />,
@@ -25,7 +26,7 @@ const GovernanceChanges = () => {
   const displayChanges = useAtomValue(dtfGovernanceChangesDisplayAtom)
   const { setValue } = useFormContext()
 
-  const governance = indexDTF?.ownerGovernance
+  const governance = getDTFSettingsGovernance(indexDTF)
 
   if (!hasGovernanceChanges || !governance) return null
 

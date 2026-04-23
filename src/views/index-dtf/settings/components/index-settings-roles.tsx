@@ -3,8 +3,15 @@ import EnsName from '@/components/utils/ens-name'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { t } from '@lingui/macro'
 import { atom, useAtomValue } from 'jotai'
-import { Image, MousePointerClick, ShieldHalf } from 'lucide-react'
+import {
+  Image,
+  MousePointerClick,
+  ShieldAlert,
+  ShieldHalf,
+} from 'lucide-react'
 import { IconWrapper, InfoCard, InfoCardItem } from './settings-info-card'
+import useOptimisticGovernance from '../use-optimistic-governance'
+import { getDTFSettingsGovernance } from '@/views/index-dtf/governance/governance-helpers'
 
 const guardiansAtom = atom((get) => {
   const dtf = get(indexDTFAtom)
@@ -32,6 +39,29 @@ const guardiansAtom = atom((get) => {
 const RolesInfo = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
   const guardians = useAtomValue(guardiansAtom)
+  const { isOptimisticGovernance, optimisticProposers, cancellers } =
+    useOptimisticGovernance(indexDTF)
+  const governance = getDTFSettingsGovernance(indexDTF)
+
+  const guardianLabel = t`Guardian`
+  const optimisticProposerLabel = t`Optimistic Proposer`
+  const cancellerLabel = t`Canceller`
+  const guardianAddresses = new Set(
+    (guardians ?? []).map((address) => address.toLowerCase())
+  )
+
+  const filteredCancellers = cancellers.filter(
+    (address) =>
+      address.toLowerCase() !== governance?.id?.toLowerCase()
+  )
+
+  const standaloneOptimisticProposers = optimisticProposers.filter(
+    (address) => !guardianAddresses.has(address.toLowerCase())
+  )
+
+  const standaloneCancellers = filteredCancellers.filter(
+    (address) => !guardianAddresses.has(address.toLowerCase())
+  )
 
   return (
     <InfoCard title={t`Roles`} id="roles" secondary>
@@ -47,7 +77,7 @@ const RolesInfo = () => {
       {guardians?.map((guardian) => (
         <InfoCardItem
           key={guardian}
-          label={t`Guardian`}
+          label={guardianLabel}
           icon={<IconWrapper Component={ShieldHalf} />}
           address={guardian}
           value={<EnsName address={guardian} />}
@@ -69,6 +99,28 @@ const RolesInfo = () => {
           icon={<IconWrapper Component={Image} />}
           address={approver}
           value={<EnsName address={approver} />}
+        />
+      ))}
+      {isOptimisticGovernance &&
+        standaloneOptimisticProposers.map((address, index) => (
+        <InfoCardItem
+          key={address}
+          label={optimisticProposerLabel}
+          icon={<IconWrapper Component={MousePointerClick} />}
+          address={address}
+          value={<EnsName address={address} />}
+          border={!!index}
+        />
+      ))}
+      {isOptimisticGovernance &&
+        standaloneCancellers.map((address, index) => (
+        <InfoCardItem
+          key={address}
+          label={cancellerLabel}
+          icon={<IconWrapper Component={ShieldAlert} />}
+          address={address}
+          value={<EnsName address={address} />}
+          border={standaloneOptimisticProposers.length > 0 || !!index}
         />
       ))}
     </InfoCard>

@@ -17,6 +17,10 @@ import SubmitProposalButton from './submit-proposal-button'
 import SimulateProposalCard from '@/views/index-dtf/governance/components/simulate-proposal-card'
 import { chainIdAtom } from '@/state/atoms'
 import { Address } from 'viem'
+import {
+  getDTFSettingsGovernance,
+  getGovernanceVoteTokenAddress,
+} from '@/views/index-dtf/governance/governance-helpers'
 
 const ConfirmProposalButton = () => {
   const isValid = useAtomValue(isProposalValidAtom)
@@ -137,11 +141,14 @@ const SimulateProposalSection = () => {
   const proposalData = useAtomValue(dtfSettingsProposalDataAtom)
   const indexDTF = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
+  const governance = getDTFSettingsGovernance(indexDTF)
 
-  // Determine which governance to use (owner for DTF settings)
-  const governorAddress = indexDTF?.ownerGovernance?.id as Address
-  const timelockAddress = indexDTF?.ownerGovernance?.timelock?.id as Address
-  const voteTokenAddress = indexDTF?.stToken?.id as Address
+  const governorAddress = governance?.id as Address
+  const timelockAddress = governance?.timelock?.id as Address
+  const voteTokenAddress = getGovernanceVoteTokenAddress(
+    governance,
+    indexDTF?.stToken?.id
+  ) as Address
 
   // Construct simulation proposal data
   const simulationData = proposalData

@@ -22,6 +22,7 @@ import { cn } from '@/lib/utils'
 import { Link } from 'react-router-dom'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { chainIdAtom } from '@/state/atoms'
+import { getDTFSettingsGovernance } from '@/views/index-dtf/governance/governance-helpers'
 
 const RoleIcon = ({ role }: { role: string }) => {
   switch (role) {
@@ -178,10 +179,11 @@ const RoleChanges = () => {
   const [rolesChanges, setRolesChanges] = useAtom(rolesChangesAtom)
   const hasRolesChanges = useAtomValue(hasRolesChangesAtom)
   const { setValue } = useFormContext()
+  const governance = getDTFSettingsGovernance(indexDTF)
 
   if (!hasRolesChanges || !indexDTF) return null
 
-  const currentGuardians = indexDTF.ownerGovernance?.timelock?.guardians || []
+  const currentGuardians = governance?.timelock?.guardians || []
   const currentBrandManagers = indexDTF.brandManagers || []
   const currentAuctionLaunchers = indexDTF.auctionLaunchers || []
 
