@@ -1,5 +1,6 @@
 import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
+import { isYieldIndexDTFAtom } from '@/state/dtf/yield-index-atoms'
 import { RESERVE_API } from '@/utils/constants'
 import { useQuery } from '@tanstack/react-query'
 import { useAtomValue } from 'jotai'
@@ -14,6 +15,7 @@ export type ApyDataPoint = {
 const useIndexDTFApyHistory = () => {
   const dtf = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
+  const isYieldIndexDTF = useAtomValue(isYieldIndexDTFAtom)
 
   return useQuery({
     queryKey: ['dtf-apy-history', dtf?.id, chainId],
@@ -30,7 +32,7 @@ const useIndexDTFApyHistory = () => {
 
       return response.json()
     },
-    enabled: !!dtf?.id && !!chainId,
+    enabled: !!dtf?.id && !!chainId && isYieldIndexDTF,
     staleTime: 1800000,
   })
 }

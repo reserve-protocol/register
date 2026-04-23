@@ -12,7 +12,6 @@ import useTrackIndexDTFPage, {
 } from '../hooks/useTrackIndexDTFPage'
 
 const DTF_DISABLED_FOR_ZAP = [] as string[]
-// TODO: re-enable ODOS when issue is resolved
 export const indexDTFQuoteSourceAtom = atom<ZapperProps['defaultSource']>(
   (get) => {
     // const dtf = get(indexDTFAtom)
@@ -20,7 +19,7 @@ export const indexDTFQuoteSourceAtom = atom<ZapperProps['defaultSource']>(
     //   return 'odos'
     // }
     // return 'best'
-    return 'zap'
+    return 'best'
   }
 )
 
