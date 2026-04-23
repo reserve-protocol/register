@@ -77,7 +77,7 @@ const MobileHeading = () => (
 )
 
 const DesktopSubHeader = () => (
-  <SubHeader className="hidden lg:block text-center mx-auto mt-[72px]" />
+  <SubHeader className="hidden lg:block text-center mx-auto mt-24" />
 )
 
 const Hero = () => (
@@ -88,7 +88,7 @@ const Hero = () => (
     <div className="relative">
       <SplashImage />
       <MobileHeading />
-      <div className="lg:absolute lg:inset-x-0 lg:bottom-6 lg:translate-y-1/2 lg:flex lg:justify-center lg:px-6">
+      <div className="lg:absolute lg:inset-x-0 lg:bottom-0 lg:translate-y-1/2 lg:flex lg:justify-center lg:px-6">
         <MetricsContainer />
       </div>
     </div>
