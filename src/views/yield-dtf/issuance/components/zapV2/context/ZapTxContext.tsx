@@ -13,7 +13,7 @@ import {
 import { Allowance } from 'types'
 import { ChainId } from 'utils/chains'
 import { CHAIN_TAGS } from 'utils/constants'
-import { capFusakaGasLimit } from 'utils/gas'
+import { safeGasLimit } from 'utils/gas'
 import { Address, TransactionReceipt, parseUnits } from 'viem'
 import { useSendTransaction } from 'wagmi'
 import { useApproval } from '../hooks/useApproval'
@@ -235,7 +235,7 @@ export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     const rawGas = BigInt(zapResult?.gas ?? 0)
     if (!rawGas) return undefined
     const gasMultiplier = chainId === ChainId.Mainnet ? 2n : 3n
-    return capFusakaGasLimit(rawGas * gasMultiplier)
+    return safeGasLimit(rawGas * gasMultiplier)
   }, [zapResult?.gas, chainId])
 
   const execute = useCallback(() => {
@@ -256,7 +256,7 @@ export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
       validatingTx ||
       receipt ||
       loadingRevoke) &&
-      !error
+    !error
   )
 
   useEffect(() => {
