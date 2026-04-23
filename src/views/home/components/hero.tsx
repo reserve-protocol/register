@@ -10,7 +10,7 @@ const SPLASH_DARK_1X = '/imgs/home-splash-dark@1x.webp'
 const SPLASH_DARK_2X = '/imgs/home-splash-dark.webp'
 
 const Header = ({ className }: { className?: string }) => (
-  <h1 className={cn("text-4xl text-primary max-w-[600px] dark:text-foreground", className)}>Reserve lets you buy entire portfolios as a single token</h1>
+  <h1 className={cn("text-5xl text-primary dark:text-foreground", className)}>Reserve lets you buy entire portfolios<br /> as a single token</h1>
 )
 
 const SubHeader = ({ className }: { className?: string }) => (
@@ -64,7 +64,7 @@ const SplashImage = () => {
         fetchPriority="high"
         decoding="async"
       />
-      <DTFExplainerButton className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 dark:text-legend dark:bg-muted text-primary bg-[#DBE5F2] rounded-full border-background border-4 py-5" />
+      <DTFExplainerButton className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 dark:border-legend dark:border-[1px] dark:hover:text-primary dark:hover:border-primary dark:text-legend dark:bg-muted text-primary bg-[#DBE5F2] rounded-full border-background border-4 py-5" />
     </div>
   )
 }
