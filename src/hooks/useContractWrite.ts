@@ -6,6 +6,7 @@ import {
   useWriteContract,
 } from 'wagmi'
 import { getSafeGasLimit } from './../utils/index'
+import { capFusakaGasLimit } from './../utils/gas'
 import type { Abi } from 'abitype'
 import { useAtomValue } from 'jotai'
 import { isWalletInvalidAtom } from 'state/atoms'
@@ -55,7 +56,7 @@ const useContractWrite = <
 
   const handleWrite = useCallback(() => {
     if (data?.request && gas) {
-      writeContract({ ...data.request, gas: getSafeGasLimit(gas) })
+      writeContract({ ...data.request, gas: capFusakaGasLimit(getSafeGasLimit(gas)) })
     }
   }, [data?.request, writeContract, gas])
 
