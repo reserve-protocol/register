@@ -23,7 +23,7 @@ const MetricBox = ({
     <TooltipTrigger asChild>
       <div
         aria-hidden={ariaHidden || undefined}
-        className="flex flex-col flex-shrink-0 gap-1 border h-[74px] w-44 lg:h-auto lg:w-auto justify-center items-center lg:justify-normal lg:items-start lg:border-none rounded-lg"
+        className="flex flex-col flex-shrink-0 gap-1 border h-[74px] w-44 lg:h-auto lg:w-auto justify-center items-center  lg:border-none rounded-lg"
       >
         <span className="whitespace-nowrap dark:text-legend">{label}</span>
         {value !== undefined ? (
@@ -35,7 +35,7 @@ const MetricBox = ({
             })}
           </span>
         ) : (
-          <Skeleton className="h-5 w-12 bg-primary opacity-70 dark:bg-primary-foreground inline-block" />
+          <Skeleton className="h-6 w-[50px] bg-primary opacity-70 dark:bg-primary-foreground inline-block" />
         )}
       </div>
     </TooltipTrigger>

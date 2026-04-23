@@ -21,8 +21,15 @@ const SubHeader = ({ className }: { className?: string }) => (
 
 const MetricsContainer = () => {
   return (
-    <div className="flex gap-1 lg:mr-6 min-w-0 overflow-hidden">
-      <SubHeader className="hidden lg:block mr-auto ml-6" />
+    <div
+      className={cn(
+        "flex gap-1 min-w-0 overflow-hidden",
+        "lg:overflow-visible",
+        "lg:rounded-full lg:px-10 lg:py-6",
+        "lg:border lg:border-[#f9eddd] dark:lg:border-white/10",
+        "lg:backdrop-blur-[7px]"
+      )}
+    >
       <ProtocolMetrics />
     </div>
   )
@@ -57,7 +64,7 @@ const SplashImage = () => {
         fetchPriority="high"
         decoding="async"
       />
-      <DTFExplainerButton className="lg:hidden absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 dark:text-legend dark:bg-muted text-primary bg-[#DBE5F2] rounded-full border-background border-4 py-5" />
+      <DTFExplainerButton className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 dark:text-legend dark:bg-muted text-primary bg-[#DBE5F2] rounded-full border-background border-4 py-5" />
     </div>
   )
 }
@@ -69,15 +76,23 @@ const MobileHeading = () => (
   </div>
 )
 
+const DesktopSubHeader = () => (
+  <SubHeader className="hidden lg:block text-center mx-auto mt-[72px]" />
+)
+
 const Hero = () => (
-  <div className="lg:mt-6 mb-8  ">
-    <div className="lg:flex items-end mx-6 hidden">
-      <Header />
-      <DTFExplainerButton className="ml-auto " />
+  <div className="lg:mt-6 mb-12">
+    <div className="hidden lg:block mx-6 text-center">
+      <Header className="mx-auto" />
     </div>
-    <SplashImage />
-    <MobileHeading />
-    <MetricsContainer />
+    <div className="relative">
+      <SplashImage />
+      <MobileHeading />
+      <div className="lg:absolute lg:inset-x-0 lg:bottom-6 lg:translate-y-1/2 lg:flex lg:justify-center lg:px-6">
+        <MetricsContainer />
+      </div>
+    </div>
+    <DesktopSubHeader />
   </div>
 )
 
